@@ -37,14 +37,14 @@
         </div>
 
         <div class="d-flex gap-2 mt-3">
-            <button type="submit" class="btn btn-pems-solid"><i class="bi bi-check-lg"></i> Save Layout</button>
+            <pems-button tone="primary" type="submit"><i class="bi bi-check-lg"></i> Save Layout</pems-button>
             <a asp-controller="Home" asp-action="Index" class="btn btn-outline-secondary">@Localizer["Back to Dashboard"]</a>
         </div>
     </form>
 
     <form asp-action="Reset" method="post" class="mt-2">
-        <button type="submit" class="btn btn-sm btn-outline-danger" onclick="return confirm('Reset to default dashboard layout?')">
+        <pems-button tone="danger" size="small" outline="true" type="submit" onclick="return confirm('Reset to default dashboard layout?')">
             <i class="bi bi-arrow-counterclockwise"></i> Reset to Default
-        </button>
+        </pems-button>
     </form>
 </div>

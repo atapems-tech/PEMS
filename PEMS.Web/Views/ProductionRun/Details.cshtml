@@ -23,21 +23,21 @@
         <div class="d-flex flex-column gap-1" style="min-width:160px">
             @if (Model.Status == "Planned")
             {
-                <form asp-action="Start" asp-route-id="@Model.ProductionRunId" method="post"><button class="btn btn-sm btn-pems-solid w-100" type="submit"><i class="bi bi-play-fill"></i> @Localizer["Start"]</button></form>
+                <form asp-action="Start" asp-route-id="@Model.ProductionRunId" method="post"><pems-button tone="primary" size="small" css="w-100" type="submit"><i class="bi bi-play-fill"></i> @Localizer["Start"]</pems-button></form>
             }
             @if (Model.Status == "InProgress")
             {
-                <form asp-action="Pause" asp-route-id="@Model.ProductionRunId" method="post"><button class="btn btn-sm btn-outline-secondary w-100" type="submit"><i class="bi bi-pause-fill"></i> Pause</button></form>
-                <button class="btn btn-sm btn-outline-warning w-100" type="button" data-bs-toggle="modal" data-bs-target="#holdRunModal"><i class="bi bi-exclamation-circle"></i> @Localizer["Hold"]</button>
-                <form asp-action="Complete" asp-route-id="@Model.ProductionRunId" method="post"><button class="btn btn-sm btn-pems-solid w-100" type="submit"><i class="bi bi-check2-circle"></i> Complete</button></form>
+                <form asp-action="Pause" asp-route-id="@Model.ProductionRunId" method="post"><pems-button tone="neutral" size="small" outline="true" css="w-100" type="submit"><i class="bi bi-pause-fill"></i> Pause</pems-button></form>
+                <pems-button tone="warning" size="small" outline="true" css="w-100" type="button" data-bs-toggle="modal" data-bs-target="#holdRunModal"><i class="bi bi-exclamation-circle"></i> @Localizer["Hold"]</pems-button>
+                <form asp-action="Complete" asp-route-id="@Model.ProductionRunId" method="post"><pems-button tone="primary" size="small" css="w-100" type="submit"><i class="bi bi-check2-circle"></i> Complete</pems-button></form>
             }
             @if (Model.Status is "Paused" or "OnHold")
             {
-                <form asp-action="Resume" asp-route-id="@Model.ProductionRunId" method="post"><button class="btn btn-sm btn-outline-success w-100" type="submit"><i class="bi bi-play-circle"></i> Resume</button></form>
+                <form asp-action="Resume" asp-route-id="@Model.ProductionRunId" method="post"><pems-button tone="success" size="small" outline="true" css="w-100" type="submit"><i class="bi bi-play-circle"></i> Resume</pems-button></form>
             }
             @if (Model.Status is "Planned" or "Paused" or "OnHold")
             {
-                <button class="btn btn-sm btn-outline-danger w-100" type="button" data-bs-toggle="modal" data-bs-target="#cancelRunModal"><i class="bi bi-x-circle"></i> @Localizer["Cancel"]</button>
+                <pems-button tone="danger" size="small" outline="true" css="w-100" type="button" data-bs-toggle="modal" data-bs-target="#cancelRunModal"><i class="bi bi-x-circle"></i> @Localizer["Cancel"]</pems-button>
             }
         </div>
     </div>
@@ -94,7 +94,7 @@
                     <div class="mb-2"><input type="number" step="0.001" min="0.001" name="quantity" class="form-control form-control-sm" placeholder="@Localizer["Quantity"]" required /></div>
                     <div class="mb-2"><input type="number" name="sourceProductionBatchId" class="form-control form-control-sm" placeholder="Source batch ID (optional)" /></div>
                     <div class="mb-2"><input type="text" name="notes" class="form-control form-control-sm" placeholder="@Localizer["Notes"]" /></div>
-                    <button type="submit" class="btn btn-sm btn-outline-primary w-100">@Localizer["Record Input"]</button>
+                    <pems-button tone="primary" size="small" outline="true" css="w-100" type="submit">@Localizer["Record Input"]</pems-button>
                 </form>
             </div>
         </div>
@@ -121,7 +121,7 @@
                         </select>
                     </div>
                     <div class="mb-2"><input type="text" name="notes" class="form-control form-control-sm" placeholder="@Localizer["Notes"]" /></div>
-                    <button type="submit" class="btn btn-sm btn-outline-primary w-100">@Localizer["Record Output"]</button>
+                    <pems-button tone="primary" size="small" outline="true" css="w-100" type="submit">@Localizer["Record Output"]</pems-button>
                 </form>
             </div>
         </div>
@@ -141,7 +141,7 @@
                         </select>
                     </div>
                     <div class="mb-2"><input type="text" name="notes" class="form-control form-control-sm" placeholder="@Localizer["Notes"]" /></div>
-                    <button type="submit" class="btn btn-sm btn-outline-warning w-100">@Localizer["Record Loss"]</button>
+                    <pems-button tone="warning" size="small" outline="true" css="w-100" type="submit">@Localizer["Record Loss"]</pems-button>
                 </form>
             </div>
         </div>
@@ -166,7 +166,7 @@
                                 <td>
                                     @if (!i.PostedToInventory)
                                     {
-                                        <button type="button" class="btn btn-sm btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#postInputModal-@i.ProductionInputId">Post</button>
+                                        <pems-button tone="neutral" size="small" outline="true" type="button" data-bs-toggle="modal" data-bs-target="#postInputModal-@i.ProductionInputId">Post</pems-button>
                                         <div class="modal fade" id="postInputModal-@i.ProductionInputId" tabindex="-1">
                                             <div class="modal-dialog"><div class="modal-content">
                                                 <form asp-action="PostInputToInventory" method="post">
@@ -211,7 +211,7 @@
                                 <td>
                                     @if (!o.PostedToInventory)
                                     {
-                                        <button type="button" class="btn btn-sm btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#postOutputModal-@o.ProductionOutputId">Post</button>
+                                        <pems-button tone="neutral" size="small" outline="true" type="button" data-bs-toggle="modal" data-bs-target="#postOutputModal-@o.ProductionOutputId">Post</pems-button>
                                         <div class="modal fade" id="postOutputModal-@o.ProductionOutputId" tabindex="-1">
                                             <div class="modal-dialog"><div class="modal-content">
                                                 <form asp-action="PostOutputToInventory" method="post">
@@ -279,7 +279,7 @@
         <form asp-action="Hold" asp-route-id="@Model.ProductionRunId" method="post">
             <div class="modal-header"><h6 class="modal-title">Hold Production Run</h6><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div>
             <div class="modal-body"><label class="form-label">@Localizer["Reason"]</label><textarea name="reason" class="form-control" required></textarea></div>
-            <div class="modal-footer"><button type="submit" class="btn btn-warning">@Localizer["Hold"]</button></div>
+            <div class="modal-footer"><pems-button tone="warning" type="submit">@Localizer["Hold"]</pems-button></div>
         </form>
     </div></div>
 </div>
@@ -289,7 +289,7 @@
         <form asp-action="Cancel" asp-route-id="@Model.ProductionRunId" method="post">
             <div class="modal-header"><h6 class="modal-title">Cancel Production Run</h6><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div>
             <div class="modal-body"><label class="form-label">@Localizer["Reason"]</label><textarea name="reason" class="form-control" required></textarea></div>
-            <div class="modal-footer"><button type="submit" class="btn btn-danger">Cancel Run</button></div>
+            <div class="modal-footer"><pems-button tone="danger" type="submit">Cancel Run</pems-button></div>
         </form>
     </div></div>
 </div>

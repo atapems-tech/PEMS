@@ -22,7 +22,7 @@
             <a class="btn btn-sm btn-outline-secondary" asp-action="AllWork" asp-route-WorkSpaceId="@Model.Space.Id" asp-route-StatusCategory="NotDone"><i class="bi bi-funnel" aria-hidden="true"></i> @Localizer["Tm_AllWork"]</a>
             @if (Model.CanCreate)
             {
-                <button type="button" class="btn btn-sm btn-pems-solid" data-bs-toggle="modal" data-bs-target="#tmCreateModal"><i class="bi bi-plus-lg" aria-hidden="true"></i> @Localizer["Tm_Create"]</button>
+                <pems-button tone="primary" size="small" type="button" data-bs-toggle="modal" data-bs-target="#tmCreateModal"><i class="bi bi-plus-lg" aria-hidden="true"></i> @Localizer["Tm_Create"]</pems-button>
             }
         </div>
     </div>

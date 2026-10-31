@@ -20,7 +20,7 @@
             <span asp-validation-for="CurrentPassword" class="text-danger small"></span>
         </div>
         <div class="col-sm-6">
-            <button type="submit" class="btn btn-sm btn-pems-solid"><i class="bi bi-arrow-repeat me-1"></i> @Localizer["Generate new codes"]</button>
+            <pems-button tone="primary" size="small" type="submit"><i class="bi bi-arrow-repeat me-1"></i> @Localizer["Generate new codes"]</pems-button>
         </div>
     </form>
     <p class="text-body-secondary small mt-2">@Localizer["Generating a new set invalidates every code you have not used yet."]</p>

@@ -102,7 +102,7 @@
                             <input type="date" name="responseDueDate" id="detResponseDue" class="form-control form-control-sm"
                                    value="@(l.ResponseDueDate?.ToString("yyyy-MM-dd"))" min="@l.LetterDate.ToString("yyyy-MM-dd")" />
                         </div>
-                        <button type="submit" class="btn btn-sm btn-outline-secondary">@Localizer["Save"]</button>
+                        <pems-button tone="neutral" size="small" outline="true" type="submit">@Localizer["Save"]</pems-button>
                     </form>
                 </details>
             }
@@ -120,48 +120,48 @@
             {
                 <form asp-controller="LetterCompose" asp-action="Send" method="post" onsubmit="return confirm('@Localizer["Lc_ConfirmSend"]');">
                     <input type="hidden" name="letterId" value="@l.LetterId" />
-                    <button type="submit" class="btn btn-pems-solid btn-sm"><i class="bi bi-send-check" aria-hidden="true"></i> @Localizer["Lt_Send"]</button>
+                    <pems-button tone="primary" size="small" type="submit"><i class="bi bi-send-check" aria-hidden="true"></i> @Localizer["Lt_Send"]</pems-button>
                 </form>
             }
             @if (canArchive && (l.Status is "Sent" or "Closed" or "Issued" or "Acknowledged" or "Registered"))
             {
                 <form asp-controller="LetterCompose" asp-action="Archive" method="post" onsubmit="return confirm('@Localizer["Lc_ConfirmArchive"]');">
                     <input type="hidden" name="letterId" value="@l.LetterId" />
-                    <button type="submit" class="btn btn-outline-secondary btn-sm"><i class="bi bi-archive" aria-hidden="true"></i> @Localizer["Lc_Archive"]</button>
+                    <pems-button tone="neutral" size="small" outline="true" type="submit"><i class="bi bi-archive" aria-hidden="true"></i> @Localizer["Lc_Archive"]</pems-button>
                 </form>
             }
             @if (l.Status == "Draft" && canEditDraft)
             {
                 <form asp-action="SubmitForReview" method="post" onsubmit="return confirm('Submit this draft for review?');">
                     <input type="hidden" name="letterId" value="@l.LetterId" />
-                    <button type="submit" class="btn btn-pems-solid btn-sm"><i class="bi bi-send"></i> @Localizer["Submit for Review"]</button>
+                    <pems-button tone="primary" size="small" type="submit"><i class="bi bi-send"></i> @Localizer["Submit for Review"]</pems-button>
                 </form>
             }
             @if (l.Status == "ReturnedForRevision" && canEditReturned)
             {
-                <button type="button" class="btn btn-pems-solid btn-sm" onclick="toggleBodyEdit()"><i class="bi bi-pencil-square"></i> Edit &amp; Resubmit</button>
+                <pems-button tone="primary" size="small" type="button" onclick="toggleBodyEdit()"><i class="bi bi-pencil-square"></i> Edit &amp; Resubmit</pems-button>
             }
             @if (l.Status == "PendingApproval" && (canReview || isCurrentApprover))
             {
                 <form asp-action="Approve" method="post" class="d-inline" onsubmit="return confirm('Approve this letter?');">
                     <input type="hidden" name="letterId" value="@l.LetterId" />
-                    <button type="submit" class="btn btn-success btn-sm"><i class="bi bi-check-lg"></i> @Localizer["Approve"]</button>
+                    <pems-button tone="success" size="small" type="submit"><i class="bi bi-check-lg"></i> @Localizer["Approve"]</pems-button>
                 </form>
-                <button type="button" class="btn btn-outline-warning btn-sm" data-bs-toggle="modal" data-bs-target="#returnModal"><i class="bi bi-arrow-return-left"></i> Return</button>
-                <button type="button" class="btn btn-outline-danger btn-sm" data-bs-toggle="modal" data-bs-target="#rejectModal"><i class="bi bi-x-lg"></i> @Localizer["Reject"]</button>
+                <pems-button tone="warning" size="small" outline="true" type="button" data-bs-toggle="modal" data-bs-target="#returnModal"><i class="bi bi-arrow-return-left"></i> Return</pems-button>
+                <pems-button tone="danger" size="small" outline="true" type="button" data-bs-toggle="modal" data-bs-target="#rejectModal"><i class="bi bi-x-lg"></i> @Localizer["Reject"]</pems-button>
             }
             @if (l.Status == "Approved" && canReview && l.LetterType != "Internal")
             {
                 <form asp-action="Issue" method="post" onsubmit="return confirm('Issue this letter?');">
                     <input type="hidden" name="letterId" value="@l.LetterId" />
-                    <button type="submit" class="btn btn-pems-solid btn-sm"><i class="bi bi-send-check"></i> Issue</button>
+                    <pems-button tone="primary" size="small" type="submit"><i class="bi bi-send-check"></i> Issue</pems-button>
                 </form>
             }
             @if (l.Status == "Issued" && canReview)
             {
                 <form asp-action="Close" method="post" onsubmit="return confirm('Close this letter?');">
                     <input type="hidden" name="letterId" value="@l.LetterId" />
-                    <button type="submit" class="btn btn-outline-secondary btn-sm"><i class="bi bi-archive"></i> Close</button>
+                    <pems-button tone="neutral" size="small" outline="true" type="submit"><i class="bi bi-archive"></i> Close</pems-button>
                 </form>
             }
 
@@ -172,9 +172,9 @@
                 <a class="btn btn-outline-warning btn-sm" asp-controller="LetterCompose" asp-action="Compose" asp-route-referTo="@l.LetterId"><i class="bi bi-signpost-split" aria-hidden="true"></i> @Localizer["Ct_Refer"]</a>
             }
             <div class="dropdown">
-                <button class="btn btn-outline-secondary btn-sm" type="button" data-bs-toggle="dropdown" aria-expanded="false" title="More">
+                <pems-button tone="neutral" size="small" outline="true" type="button" data-bs-toggle="dropdown" aria-expanded="false" title="More">
                     <i class="bi bi-three-dots-vertical"></i>
-                </button>
+                </pems-button>
                 <ul class="dropdown-menu dropdown-menu-end">
                     <li><a class="dropdown-item" asp-action="Reply" asp-route-id="@l.LetterId"><i class="bi bi-reply-fill me-1"></i> Reply</a></li>
                     <li><a class="dropdown-item" asp-action="ExportPdf" asp-route-id="@l.LetterId"><i class="bi bi-file-earmark-pdf me-1"></i> Export PDF</a></li>
@@ -226,7 +226,7 @@
                     @foreach (var c in new[] { "secondary", "primary", "success", "danger", "warning", "info", "dark" })
                     { <option value="@c">@c</option> }
                 </select>
-                <button class="btn btn-sm btn-pems-solid">+</button>
+                <pems-button tone="primary" size="small">+</pems-button>
             </form>
         </div>
     </div>
@@ -274,7 +274,7 @@
                                     <option value="@opt.UserId">@opt.FullName</option>
                                 }
                             </select>
-                            <button class="btn btn-sm btn-outline-secondary" type="submit">@Localizer["Lc_Reassign"]</button>
+                            <pems-button tone="neutral" size="small" outline="true" type="submit">@Localizer["Lc_Reassign"]</pems-button>
                         </form>
                     }
                 </li>
@@ -291,8 +291,8 @@
         <div class="d-flex align-items-center gap-2 mb-2">
             <div class="section-title mb-0" id="cvTitle"><i class="bi bi-chat-left-text me-1" aria-hidden="true"></i> @Localizer["Ct_ConversationTitle"] (@conversation.Count)</div>
             <span class="ms-auto d-inline-flex gap-2">
-                <button type="button" class="btn btn-sm btn-outline-secondary" data-cv-toggle="open">@Localizer["Ct_ExpandAll"]</button>
-                <button type="button" class="btn btn-sm btn-outline-secondary" data-cv-toggle="close">@Localizer["Ct_CollapseAll"]</button>
+                <pems-button tone="neutral" size="small" outline="true" type="button" data-cv-toggle="open">@Localizer["Ct_ExpandAll"]</pems-button>
+                <pems-button tone="neutral" size="small" outline="true" type="button" data-cv-toggle="close">@Localizer["Ct_CollapseAll"]</pems-button>
             </span>
         </div>
         @foreach (var m in conversation)
@@ -406,10 +406,10 @@
             </div>
             <textarea name="body" id="letterBodyEditEditor" class="form-control">@Html.Raw(Model.Body)</textarea>
             <div class="mt-2 d-flex gap-2">
-                <button type="submit" class="btn btn-sm btn-pems-solid">@submitLabel</button>
+                <pems-button tone="primary" size="small" type="submit">@submitLabel</pems-button>
                 @if (!showEditFormByDefault)
                 {
-                    <button type="button" class="btn btn-sm btn-outline-secondary" onclick="toggleBodyEdit()">@Localizer["Cancel"]</button>
+                    <pems-button tone="neutral" size="small" outline="true" type="button" onclick="toggleBodyEdit()">@Localizer["Cancel"]</pems-button>
                 }
             </div>
         </form>
@@ -497,7 +497,7 @@
                                             <form asp-action="MarkRecipientRead" method="post" class="d-inline">
                                                 <input type="hidden" name="letterId" value="@l.LetterId" />
                                                 <input type="hidden" name="letterRecipientId" value="@r.LetterRecipientId" />
-                                                <button class="btn btn-sm btn-outline-secondary">@Localizer["Mark Read"]</button>
+                                                <pems-button tone="neutral" size="small" outline="true">@Localizer["Mark Read"]</pems-button>
                                             </form>
                                         }
                                     </td>
@@ -528,7 +528,7 @@
                             @foreach (var d in departments) { <option value="@d.DepartmentId">@d.Name</option> }
                         </select>
                     </div>
-                    <div class="col-md-2"><button class="btn btn-sm btn-pems-solid w-100"><i class="bi bi-plus-lg"></i> @Localizer["Add"]</button></div>
+                    <div class="col-md-2"><pems-button tone="primary" size="small" css="w-100"><i class="bi bi-plus-lg"></i> @Localizer["Add"]</pems-button></div>
                 </form>
             </div>
         </div>
@@ -557,7 +557,7 @@
                 <form asp-action="UploadAttachment" method="post" enctype="multipart/form-data" class="d-flex gap-2">
                     <input type="hidden" name="letterId" value="@l.LetterId" />
                     <input type="file" name="file" class="form-control form-control-sm" required />
-                    <button class="btn btn-sm btn-outline-primary"><i class="bi bi-upload"></i> @Localizer["Upload"]</button>
+                    <pems-button tone="primary" size="small" outline="true"><i class="bi bi-upload"></i> @Localizer["Upload"]</pems-button>
                 </form>
             </div>
         </div>
@@ -597,7 +597,7 @@
                                             <form asp-action="MarkReferralRead" method="post" class="d-inline">
                                                 <input type="hidden" name="referralId" value="@r.LetterReferralId" />
                                                 <input type="hidden" name="letterId" value="@l.LetterId" />
-                                                <button class="btn btn-sm btn-outline-secondary">@Localizer["Mark Read"]</button>
+                                                <pems-button tone="neutral" size="small" outline="true">@Localizer["Mark Read"]</pems-button>
                                             </form>
                                         }
                                     </td>
@@ -609,7 +609,7 @@
                                                 <input type="hidden" name="referralId" value="@r.LetterReferralId" />
                                                 <input type="hidden" name="letterId" value="@l.LetterId" />
                                                 <input name="responseNote" class="form-control form-control-sm" placeholder="@Localizer["Response"]" />
-                                                <button class="btn btn-sm btn-success">Done</button>
+                                                <pems-button tone="success" size="small">Done</pems-button>
                                             </form>
                                         }
                                         else
@@ -638,7 +638,7 @@
                     </div>
                     <div class="col-md-3"><input name="instructions" class="form-control form-control-sm" placeholder="@Localizer["Instructions"]" /></div>
                     <div class="col-md-2"><input name="dueDate" type="date" class="form-control form-control-sm" /></div>
-                    <div class="col-md-1"><button class="btn btn-sm btn-pems-solid w-100"><i class="bi bi-send"></i></button></div>
+                    <div class="col-md-1"><pems-button tone="primary" size="small" css="w-100"><i class="bi bi-send"></i></pems-button></div>
                 </form>
             </div>
         </div>
@@ -707,8 +707,8 @@
                 <textarea name="reason" class="form-control" rows="3" required></textarea>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">@Localizer["Cancel"]</button>
-                <button type="submit" class="btn btn-warning btn-sm">@Localizer["Return for Revision"]</button>
+                <pems-button tone="neutral" size="small" outline="true" type="button" data-bs-dismiss="modal">@Localizer["Cancel"]</pems-button>
+                <pems-button tone="warning" size="small" type="submit">@Localizer["Return for Revision"]</pems-button>
             </div>
         </form>
     </div>
@@ -724,8 +724,8 @@
                 <textarea name="reason" class="form-control" rows="3" required></textarea>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">@Localizer["Cancel"]</button>
-                <button type="submit" class="btn btn-danger btn-sm">@Localizer["Reject"]</button>
+                <pems-button tone="neutral" size="small" outline="true" type="button" data-bs-dismiss="modal">@Localizer["Cancel"]</pems-button>
+                <pems-button tone="danger" size="small" type="submit">@Localizer["Reject"]</pems-button>
             </div>
         </form>
     </div>
@@ -742,8 +742,8 @@
                 <div class="form-text small">Lightweight electronic acknowledgment (typed name + timestamp), not a PKI digital signature.</div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">@Localizer["Cancel"]</button>
-                <button type="submit" class="btn btn-pems-solid btn-sm">Sign</button>
+                <pems-button tone="neutral" size="small" outline="true" type="button" data-bs-dismiss="modal">@Localizer["Cancel"]</pems-button>
+                <pems-button tone="primary" size="small" type="submit">Sign</pems-button>
             </div>
         </form>
     </div>

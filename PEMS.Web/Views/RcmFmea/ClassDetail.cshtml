@@ -68,7 +68,7 @@
                 <h6 class="mb-0">@Localizer["Functional Requirements"]</h6>
                 @if (canEdit)
                 {
-                    <button class="btn btn-sm btn-pems-solid" data-bs-toggle="modal" data-bs-target="#createFrModal"><i class="bi bi-plus-lg"></i> @Localizer["New"]</button>
+                    <pems-button tone="primary" size="small" data-bs-toggle="modal" data-bs-target="#createFrModal"><i class="bi bi-plus-lg"></i> @Localizer["New"]</pems-button>
                 }
             </div>
             @foreach (var fr in functionalRequirements)
@@ -90,7 +90,7 @@
             </table>
             @if (canEdit)
             {
-                <button class="btn btn-sm btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#createFfModal"><i class="bi bi-plus-lg"></i> New Functional Failure</button>
+                <pems-button tone="neutral" size="small" outline="true" data-bs-toggle="modal" data-bs-target="#createFfModal"><i class="bi bi-plus-lg"></i> New Functional Failure</pems-button>
             }
         </div>
     </div>
@@ -104,7 +104,7 @@
                     <input type="hidden" name="equipmentClassId" value="@equipmentClass.EquipmentClassId" />
                     <div class="col-md-4"><input name="title" class="form-control form-control-sm" placeholder="Analysis title" required /></div>
                     <div class="col-md-6"><input name="description" class="form-control form-control-sm" placeholder="@Localizer["Description"]" /></div>
-                    <div class="col-md-2"><button type="submit" class="btn btn-sm btn-pems-solid w-100">New FMEA Draft</button></div>
+                    <div class="col-md-2"><pems-button tone="primary" size="small" css="w-100" type="submit">New FMEA Draft</pems-button></div>
                 </form>
             </div>
         }
@@ -120,7 +120,7 @@
                             <form asp-action="SubmitFmea" method="post" class="d-inline">
                                 <input type="hidden" name="equipmentClassId" value="@equipmentClass.EquipmentClassId" />
                                 <input type="hidden" name="fmeaAnalysisId" value="@fmea.FMEAAnalysisId" />
-                                <button type="submit" class="btn btn-sm btn-outline-primary">@Localizer["Submit for Review"]</button>
+                                <pems-button tone="primary" size="small" outline="true" type="submit">@Localizer["Submit for Review"]</pems-button>
                             </form>
                         }
                         @if (fmea.Status == "UNDER_REVIEW" && canApprove)
@@ -128,12 +128,12 @@
                             <form asp-action="ApproveFmea" method="post" class="d-inline">
                                 <input type="hidden" name="equipmentClassId" value="@equipmentClass.EquipmentClassId" />
                                 <input type="hidden" name="fmeaAnalysisId" value="@fmea.FMEAAnalysisId" />
-                                <button type="submit" class="btn btn-sm btn-outline-success">@Localizer["Approve"]</button>
+                                <pems-button tone="success" size="small" outline="true" type="submit">@Localizer["Approve"]</pems-button>
                             </form>
                             <form asp-action="RejectFmea" method="post" class="d-inline">
                                 <input type="hidden" name="equipmentClassId" value="@equipmentClass.EquipmentClassId" />
                                 <input type="hidden" name="fmeaAnalysisId" value="@fmea.FMEAAnalysisId" />
-                                <button type="submit" class="btn btn-sm btn-outline-danger">@Localizer["Reject → Draft"]</button>
+                                <pems-button tone="danger" size="small" outline="true" type="submit">@Localizer["Reject → Draft"]</pems-button>
                             </form>
                         }
                     </div>
@@ -185,7 +185,7 @@
                                 @foreach (var st in strategyTypes) { <option value="@st.MaintenanceStrategyTypeId">@st.Name</option> }
                             </select>
                         </div>
-                        <div class="col-12"><button type="submit" class="btn btn-sm btn-outline-secondary"><i class="bi bi-plus-lg"></i> Add Item</button></div>
+                        <div class="col-12"><pems-button tone="neutral" size="small" outline="true" type="submit"><i class="bi bi-plus-lg"></i> Add Item</pems-button></div>
                     </form>
                 }
             </div>
@@ -206,7 +206,7 @@
                             @foreach (var fmea in fmeaAnalyses.Where(x => x.Status == "APPROVED")) { <option value="@fmea.FMEAAnalysisId">@fmea.Title (Rev. @fmea.Revision)</option> }
                         </select>
                     </div>
-                    <div class="col-md-4"><button type="submit" class="btn btn-sm btn-pems-solid w-100">New RCM Draft</button></div>
+                    <div class="col-md-4"><pems-button tone="primary" size="small" css="w-100" type="submit">New RCM Draft</pems-button></div>
                 </form>
             </div>
         }
@@ -228,7 +228,7 @@
                             <form asp-action="SubmitRcm" method="post" class="d-inline">
                                 <input type="hidden" name="equipmentClassId" value="@equipmentClass.EquipmentClassId" />
                                 <input type="hidden" name="rcmAnalysisId" value="@rcm.RCMAnalysisId" />
-                                <button type="submit" class="btn btn-sm btn-outline-primary">@Localizer["Submit for Review"]</button>
+                                <pems-button tone="primary" size="small" outline="true" type="submit">@Localizer["Submit for Review"]</pems-button>
                             </form>
                         }
                         @if (rcm.Status == "UNDER_REVIEW" && canApprove)
@@ -236,12 +236,12 @@
                             <form asp-action="ApproveRcm" method="post" class="d-inline">
                                 <input type="hidden" name="equipmentClassId" value="@equipmentClass.EquipmentClassId" />
                                 <input type="hidden" name="rcmAnalysisId" value="@rcm.RCMAnalysisId" />
-                                <button type="submit" class="btn btn-sm btn-outline-success">@Localizer["Approve"]</button>
+                                <pems-button tone="success" size="small" outline="true" type="submit">@Localizer["Approve"]</pems-button>
                             </form>
                             <form asp-action="RejectRcm" method="post" class="d-inline">
                                 <input type="hidden" name="equipmentClassId" value="@equipmentClass.EquipmentClassId" />
                                 <input type="hidden" name="rcmAnalysisId" value="@rcm.RCMAnalysisId" />
-                                <button type="submit" class="btn btn-sm btn-outline-danger">@Localizer["Reject → Draft"]</button>
+                                <pems-button tone="danger" size="small" outline="true" type="submit">@Localizer["Reject → Draft"]</pems-button>
                             </form>
                         }
                     </div>
@@ -265,15 +265,15 @@
                                         <form asp-action="ApproveRcmDecision" method="post" class="d-inline">
                                             <input type="hidden" name="equipmentClassId" value="@equipmentClass.EquipmentClassId" />
                                             <input type="hidden" name="rcmDecisionId" value="@d.RCMDecisionId" />
-                                            <button type="submit" class="btn btn-sm btn-outline-success">@Localizer["Approve"]</button>
+                                            <pems-button tone="success" size="small" outline="true" type="submit">@Localizer["Approve"]</pems-button>
                                         </form>
                                     }
                                     @* طبق «PEMS Phase 6.1»: تنها مسیر UI به پل عملیاتی - فقط برای تصمیم APPROVED و کاربر دارای Approve *@
                                     @if (d.Status == "APPROVED" && canApprove)
                                     {
-                                        <button type="button" class="btn btn-sm btn-pems-solid" data-bs-toggle="modal" data-bs-target="#applyRcmModal_@d.RCMDecisionId">
+                                        <pems-button tone="primary" size="small" type="button" data-bs-toggle="modal" data-bs-target="#applyRcmModal_@d.RCMDecisionId">
                                             <i class="bi bi-gear-fill"></i> @Localizer["Apply"]
-                                        </button>
+                                        </pems-button>
                                     }
                                 </td>
                             </tr>
@@ -328,10 +328,10 @@
                                         }
                                     </div>
                                     <div class="modal-footer">
-                                        <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">@Localizer["Cancel"]</button>
+                                        <pems-button tone="neutral" size="small" outline="true" type="button" data-bs-dismiss="modal">@Localizer["Cancel"]</pems-button>
                                         @if (equipmentInClass.Any())
                                         {
-                                            <button type="submit" class="btn btn-pems-solid btn-sm">Apply RCM Decision</button>
+                                            <pems-button tone="primary" size="small" type="submit">Apply RCM Decision</pems-button>
                                         }
                                     </div>
                                 </form>
@@ -386,7 +386,7 @@
                             </select>
                         </div>
                         <div class="col-md-6"><input name="rationale" class="form-control form-control-sm" placeholder="@Localizer["Rationale"]" /></div>
-                        <div class="col-md-2"><button type="submit" class="btn btn-sm btn-outline-secondary w-100"><i class="bi bi-plus-lg"></i> Add Decision</button></div>
+                        <div class="col-md-2"><pems-button tone="neutral" size="small" outline="true" css="w-100" type="submit"><i class="bi bi-plus-lg"></i> Add Decision</pems-button></div>
                     </form>
                 }
             </div>
@@ -409,8 +409,8 @@
                     <div class="mb-2"><label class="form-label small">@Localizer["Description"]</label><textarea name="description" class="form-control form-control-sm" rows="2"></textarea></div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">@Localizer["Cancel"]</button>
-                    <button type="submit" class="btn btn-pems-solid btn-sm">@Localizer["Save"]</button>
+                    <pems-button tone="neutral" size="small" outline="true" type="button" data-bs-dismiss="modal">@Localizer["Cancel"]</pems-button>
+                    <pems-button tone="primary" size="small" type="submit">@Localizer["Save"]</pems-button>
                 </div>
             </form>
         </div></div>
@@ -435,8 +435,8 @@
                     <div class="mb-2"><label class="form-label small">Failure Definition</label><textarea name="failureDefinition" class="form-control form-control-sm" rows="2"></textarea></div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">@Localizer["Cancel"]</button>
-                    <button type="submit" class="btn btn-pems-solid btn-sm">@Localizer["Save"]</button>
+                    <pems-button tone="neutral" size="small" outline="true" type="button" data-bs-dismiss="modal">@Localizer["Cancel"]</pems-button>
+                    <pems-button tone="primary" size="small" type="submit">@Localizer["Save"]</pems-button>
                 </div>
             </form>
         </div></div>

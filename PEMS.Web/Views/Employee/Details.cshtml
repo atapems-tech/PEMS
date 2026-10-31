@@ -84,9 +84,9 @@
                 <p class="small text-muted font-monospace mb-3">ID: @Model.PersonnelCode</p>
             }
             <div class="d-flex gap-2 flex-wrap mt-2">
-                <button type="button" class="btn btn-pems-solid btn-sm" data-bs-toggle="modal" data-bs-target="#editProfileModal">
+                <pems-button tone="primary" size="small" type="button" data-bs-toggle="modal" data-bs-target="#editProfileModal">
                     <i class="bi bi-pencil"></i> @L("Edit Profile", "ویرایش پروفایل")
-                </button>
+                </pems-button>
                 <a asp-action="Index" class="btn btn-outline-secondary btn-sm">
                     <i class="bi bi-arrow-@(isRtl ? "right" : "left")"></i> @L("Back to list", "بازگشت به فهرست")
                 </a>
@@ -301,9 +301,9 @@
         <div class="content-card h-100">
             <div class="d-flex justify-content-between align-items-center mb-3 pb-2 border-bottom">
                 <h6 class="mb-0 d-flex align-items-center gap-2"><i class="bi bi-cash-coin text-warning"></i> @L("Labor Rate", "نرخ دستمزد")</h6>
-                <button type="button" class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#setRateModal">
+                <pems-button tone="primary" size="small" outline="true" type="button" data-bs-toggle="modal" data-bs-target="#setRateModal">
                     <i class="bi bi-plus-lg"></i> @L("New Rate", "ثبت نرخ جدید")
-                </button>
+                </pems-button>
             </div>
             <table class="table table-sm">
                 <thead><tr><th>@L("Type", "نوع")</th><th>@L("Rate", "نرخ")</th><th>@L("From", "از تاریخ")</th><th>@L("To", "تا تاریخ")</th></tr></thead>
@@ -353,9 +353,9 @@
         <div class="content-card h-100">
             <div class="d-flex justify-content-between align-items-center mb-3 pb-2 border-bottom">
                 <h6 class="mb-0 d-flex align-items-center gap-2"><i class="bi bi-mortarboard text-warning"></i> @L("Skills", "مهارت‌ها")</h6>
-                <button type="button" class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#addSkillModal">
+                <pems-button tone="primary" size="small" outline="true" type="button" data-bs-toggle="modal" data-bs-target="#addSkillModal">
                     <i class="bi bi-plus-lg"></i> @L("Add", "افزودن")
-                </button>
+                </pems-button>
             </div>
             <ul class="list-unstyled mb-0">
                 @foreach (var es in employeeSkills)
@@ -369,7 +369,7 @@
                         <form asp-action="RemoveSkill" method="post" class="d-inline">
                             <input type="hidden" name="employeeSkillId" value="@es.EmployeeSkillId" />
                             <input type="hidden" name="employeeId" value="@Model.EmployeeId" />
-                            <button type="submit" class="btn btn-sm btn-outline-danger py-0 px-1" onclick="return confirm('@L("Remove this skill?", "این مهارت حذف بشه؟")')"><i class="bi bi-x"></i></button>
+                            <pems-button tone="danger" size="small" outline="true" css="py-0 px-1" type="submit" onclick="return confirm('@L("Remove this skill?", "این مهارت حذف بشه؟")')"><i class="bi bi-x"></i></pems-button>
                         </form>
                     </li>
                 }
@@ -382,9 +382,9 @@
         <div class="content-card h-100">
             <div class="d-flex justify-content-between align-items-center mb-3 pb-2 border-bottom">
                 <h6 class="mb-0 d-flex align-items-center gap-2"><i class="bi bi-patch-check text-warning"></i> @L("Qualifications", "صلاحیت‌ها")</h6>
-                <button type="button" class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#addQualificationModal">
+                <pems-button tone="primary" size="small" outline="true" type="button" data-bs-toggle="modal" data-bs-target="#addQualificationModal">
                     <i class="bi bi-plus-lg"></i> @L("Add", "افزودن")
-                </button>
+                </pems-button>
             </div>
             <ul class="list-unstyled mb-0">
                 @foreach (var eq in employeeQualifications)
@@ -399,7 +399,7 @@
                         <form asp-action="RemoveQualification" method="post" class="d-inline">
                             <input type="hidden" name="employeeQualificationId" value="@eq.EmployeeQualificationId" />
                             <input type="hidden" name="employeeId" value="@Model.EmployeeId" />
-                            <button type="submit" class="btn btn-sm btn-outline-danger py-0 px-1" onclick="return confirm('@L("Remove this qualification?", "این صلاحیت حذف بشه؟")')"><i class="bi bi-x"></i></button>
+                            <pems-button tone="danger" size="small" outline="true" css="py-0 px-1" type="submit" onclick="return confirm('@L("Remove this qualification?", "این صلاحیت حذف بشه؟")')"><i class="bi bi-x"></i></pems-button>
                         </form>
                     </li>
                 }
@@ -412,9 +412,9 @@
         <div class="content-card h-100">
             <div class="d-flex justify-content-between align-items-center mb-3 pb-2 border-bottom">
                 <h6 class="mb-0 d-flex align-items-center gap-2"><i class="bi bi-award text-warning"></i> @L("Certifications", "گواهینامه‌ها")</h6>
-                <button type="button" class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#addCertificationModal">
+                <pems-button tone="primary" size="small" outline="true" type="button" data-bs-toggle="modal" data-bs-target="#addCertificationModal">
                     <i class="bi bi-plus-lg"></i> @L("Add", "افزودن")
-                </button>
+                </pems-button>
             </div>
             <ul class="list-unstyled mb-0">
                 @foreach (var ec in employeeCertifications)
@@ -429,7 +429,7 @@
                         <form asp-action="RemoveCertification" method="post" class="d-inline">
                             <input type="hidden" name="employeeCertificationId" value="@ec.EmployeeCertificationId" />
                             <input type="hidden" name="employeeId" value="@Model.EmployeeId" />
-                            <button type="submit" class="btn btn-sm btn-outline-danger py-0 px-1" onclick="return confirm('@L("Remove this certification?", "این گواهینامه حذف بشه؟")')"><i class="bi bi-x"></i></button>
+                            <pems-button tone="danger" size="small" outline="true" css="py-0 px-1" type="submit" onclick="return confirm('@L("Remove this certification?", "این گواهینامه حذف بشه؟")')"><i class="bi bi-x"></i></pems-button>
                         </form>
                     </li>
                 }
@@ -487,8 +487,8 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">@L("Cancel", "انصراف")</button>
-                    <button type="submit" class="btn btn-pems-solid btn-sm">@L("Save", "ذخیره")</button>
+                    <pems-button tone="neutral" size="small" outline="true" type="button" data-bs-dismiss="modal">@L("Cancel", "انصراف")</pems-button>
+                    <pems-button tone="primary" size="small" type="submit">@L("Save", "ذخیره")</pems-button>
                 </div>
             </form>
         </div>
@@ -522,8 +522,8 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">@L("Cancel", "انصراف")</button>
-                <button type="submit" class="btn btn-pems-solid btn-sm">@L("Add", "افزودن")</button>
+                <pems-button tone="neutral" size="small" outline="true" type="button" data-bs-dismiss="modal">@L("Cancel", "انصراف")</pems-button>
+                <pems-button tone="primary" size="small" type="submit">@L("Add", "افزودن")</pems-button>
             </div>
         </form>
     </div></div>
@@ -546,8 +546,8 @@
                 <div class="mb-2"><label class="form-label small">@L("Expiry Date (optional)", "تاریخ انقضا (اختیاری)")</label><input name="expiryDate" type="date" class="form-control form-control-sm" /></div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">@L("Cancel", "انصراف")</button>
-                <button type="submit" class="btn btn-pems-solid btn-sm">@L("Add", "افزودن")</button>
+                <pems-button tone="neutral" size="small" outline="true" type="button" data-bs-dismiss="modal">@L("Cancel", "انصراف")</pems-button>
+                <pems-button tone="primary" size="small" type="submit">@L("Add", "افزودن")</pems-button>
             </div>
         </form>
     </div></div>
@@ -571,8 +571,8 @@
                 <div class="mb-2"><label class="form-label small">@L("Expiry Date (optional)", "تاریخ انقضا (اختیاری)")</label><input name="expiryDate" type="date" class="form-control form-control-sm" /></div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">@L("Cancel", "انصراف")</button>
-                <button type="submit" class="btn btn-pems-solid btn-sm">@L("Add", "افزودن")</button>
+                <pems-button tone="neutral" size="small" outline="true" type="button" data-bs-dismiss="modal">@L("Cancel", "انصراف")</pems-button>
+                <pems-button tone="primary" size="small" type="submit">@L("Add", "افزودن")</pems-button>
             </div>
         </form>
     </div></div>
@@ -596,8 +596,8 @@
                 <div class="mb-2"><label class="form-label small">@L("Effective From", "از تاریخ")</label><input name="effectiveFrom" type="date" class="form-control form-control-sm" required /></div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">@L("Cancel", "انصراف")</button>
-                <button type="submit" class="btn btn-pems-solid btn-sm">@L("Save", "ثبت")</button>
+                <pems-button tone="neutral" size="small" outline="true" type="button" data-bs-dismiss="modal">@L("Cancel", "انصراف")</pems-button>
+                <pems-button tone="primary" size="small" type="submit">@L("Save", "ثبت")</pems-button>
             </div>
         </form>
     </div></div>

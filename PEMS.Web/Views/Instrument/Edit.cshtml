@@ -77,7 +77,7 @@
             <div class="col-md-4"><label class="form-label">@Localizer["Calibration Interval (days)"]</label><input name="CalibrationInterval" type="number" value="@Model.CalibrationInterval" class="form-control" /></div>
         </div>
 
-        <button type="submit" class="btn btn-pems-solid">@Localizer["Save"]</button>
+        <pems-button tone="primary" type="submit">@Localizer["Save"]</pems-button>
         <a asp-action="Passport" asp-route-id="@Model.InstrumentId" class="btn btn-outline-secondary">Cancel</a>
     </form>
 </div>

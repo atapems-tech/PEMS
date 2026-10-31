@@ -31,11 +31,11 @@
         </div>
         <div class="col-md-3"><input name="q" value="@ViewBag.SearchTerm" class="form-control form-control-sm" placeholder="Search name, code, email..." /></div>
         <div class="col-md-3 d-flex gap-2">
-            <button type="submit" class="btn btn-sm btn-pems-solid flex-fill"><i class="bi bi-funnel"></i> @Localizer["Filter"]</button>
+            <pems-button tone="primary" size="small" css="flex-fill" type="submit"><i class="bi bi-funnel"></i> @Localizer["Filter"]</pems-button>
             <a asp-action="Index" class="btn btn-sm btn-outline-danger" title="@Localizer["Reset"]"><i class="bi bi-x-lg"></i></a>
-            <button type="button" class="btn btn-sm btn-outline-secondary flex-fill" data-bs-toggle="modal" data-bs-target="#createEmpModal">
+            <pems-button tone="neutral" size="small" outline="true" css="flex-fill" type="button" data-bs-toggle="modal" data-bs-target="#createEmpModal">
                 <i class="bi bi-person-plus"></i> @Localizer["New"]
-            </button>
+            </pems-button>
         </div>
     </form>
     <div class="d-flex gap-2 mt-2">
@@ -45,9 +45,9 @@
 
 <div class="content-card">
     <div class="d-flex justify-content-end mb-2">
-        <button type="button" class="btn btn-sm btn-outline-secondary" onclick="PemsDataGrid.resetColumns('Employee')">
+        <pems-button tone="neutral" size="small" outline="true" type="button" onclick="PemsDataGrid.resetColumns('Employee')">
             <i class="bi bi-arrow-counterclockwise"></i> @Localizer["Reset columns"]
-        </button>
+        </pems-button>
     </div>
     <div class="table-scroll-area pems-grid-scroll" style="max-height:65vh; overflow-y:auto;">
     <table class="table table-enterprise pems-grid-table" data-grid-key="Employee">
@@ -77,9 +77,9 @@
                     <td class="small">@e.Email</td>
                     <td><span class="badge @(e.IsActive ? "bg-success" : "bg-secondary")">@(e.IsActive ? "Active" : "Inactive")</span></td>
                     <td class="text-end">
-                        <button type="button" class="btn btn-sm btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#editEmpModal_@e.EmployeeId">
+                        <pems-button tone="neutral" size="small" outline="true" type="button" data-bs-toggle="modal" data-bs-target="#editEmpModal_@e.EmployeeId">
                             <i class="bi bi-pencil"></i>
-                        </button>
+                        </pems-button>
                         <form asp-action="ToggleActive" method="post" class="d-inline">
                             <input type="hidden" name="employeeId" value="@e.EmployeeId" />
                             <button type="submit" class="btn btn-sm btn-outline-@(e.IsActive ? "danger" : "success")">
@@ -196,8 +196,8 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">@Localizer["Cancel"]</button>
-                    <button type="submit" class="btn btn-pems-solid">@Localizer["Save"]</button>
+                    <pems-button tone="neutral" outline="true" type="button" data-bs-dismiss="modal">@Localizer["Cancel"]</pems-button>
+                    <pems-button tone="primary" type="submit">@Localizer["Save"]</pems-button>
                 </div>
             </form>
         </div>
@@ -255,8 +255,8 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">@Localizer["Cancel"]</button>
-                        <button type="submit" class="btn btn-pems-solid">@Localizer["Save"]</button>
+                        <pems-button tone="neutral" outline="true" type="button" data-bs-dismiss="modal">@Localizer["Cancel"]</pems-button>
+                        <pems-button tone="primary" type="submit">@Localizer["Save"]</pems-button>
                     </div>
                 </form>
             </div>

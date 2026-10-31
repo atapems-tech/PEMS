@@ -104,7 +104,7 @@
                         <label class="form-label small" for="e-due">@Localizer["Tm_Field_DueDate"]</label>
                         <input id="e-due" name="DueDate" type="date" value="@TaskManagerUi.DateInput(i.DueDate)" class="form-control form-control-sm" />
                     </div>
-                    <div class="col-md-4 d-flex align-items-end"><button class="btn btn-sm btn-pems-solid w-100">@Localizer["Tm_Save"]</button></div>
+                    <div class="col-md-4 d-flex align-items-end"><pems-button tone="primary" size="small" css="w-100">@Localizer["Tm_Save"]</pems-button></div>
                 </form>
             }
             else
@@ -130,7 +130,7 @@
                         <input type="hidden" name="createAnother" value="true" />
                         <label class="visually-hidden" for="st-title">@Localizer["Tm_NewSubtask"]</label>
                         <input id="st-title" name="Title" class="form-control form-control-sm" placeholder="@Localizer["Tm_NewSubtask"]" required maxlength="300" />
-                        <button class="btn btn-sm btn-outline-secondary text-nowrap"><i class="bi bi-plus-lg" aria-hidden="true"></i> @Localizer["Tm_Add"]</button>
+                        <pems-button tone="neutral" size="small" outline="true" css="text-nowrap"><i class="bi bi-plus-lg" aria-hidden="true"></i> @Localizer["Tm_Add"]</pems-button>
                     </form>
                 }
             </section>
@@ -182,7 +182,7 @@
                         <label class="visually-hidden" for="lk-target">@Localizer["Tm_LinkTarget"]</label>
                         <input id="lk-target" name="target" class="form-control form-control-sm" placeholder="@Localizer["Tm_LinkTargetPlaceholder"]" required maxlength="30" />
                     </div>
-                    <div class="col-md-3"><button class="btn btn-sm btn-outline-secondary w-100"><i class="bi bi-link-45deg" aria-hidden="true"></i> @Localizer["Tm_AddLink"]</button></div>
+                    <div class="col-md-3"><pems-button tone="neutral" size="small" outline="true" css="w-100"><i class="bi bi-link-45deg" aria-hidden="true"></i> @Localizer["Tm_AddLink"]</pems-button></div>
                 </form>
             }
         </section>
@@ -197,7 +197,7 @@
                     <textarea id="c-body" name="body" class="form-control form-control-sm mb-2" rows="3" maxlength="5000" required placeholder="@Localizer["Tm_AddComment"]"></textarea>
                     <div class="d-flex justify-content-between align-items-center">
                         <span class="small text-muted">@Localizer["Tm_CtrlEnterHint"]</span>
-                        <button class="btn btn-sm btn-pems-solid">@Localizer["Tm_AddComment"]</button>
+                        <pems-button tone="primary" size="small">@Localizer["Tm_AddComment"]</pems-button>
                     </div>
                 </form>
             }
@@ -270,7 +270,7 @@
                     }
                     <label class="visually-hidden" for="tr-note">@Localizer["Tm_CompletionNote"]</label>
                     <input id="tr-note" name="note" class="form-control form-control-sm" maxlength="2000" placeholder="@Localizer["Tm_CompletionNoteOptional"]" />
-                    <button class="btn btn-sm btn-pems-solid">@Localizer["Tm_ChangeStatus"]</button>
+                    <pems-button tone="primary" size="small">@Localizer["Tm_ChangeStatus"]</pems-button>
                 </form>
             }
             else
@@ -296,7 +296,7 @@
                                 @if (i.AssigneeEmployeeId != null && assignees.Candidates.All(e => e.EmployeeId != i.AssigneeEmployeeId))
                                 { <option value="@i.AssigneeEmployeeId" selected>@i.AssigneeName (@Localizer["Tm_NotEligible"])</option> }
                             </select>
-                            <button class="btn btn-sm btn-outline-secondary">@Localizer["Tm_Save"]</button>
+                            <pems-button tone="neutral" size="small" outline="true">@Localizer["Tm_Save"]</pems-button>
                         </form>
                         @if (assignees.State != "RESOLVED") { <div id="as-help" class="form-text text-warning">@Localizer["Tm_Diag_" + assignees.State]</div> }
                     }

@@ -16,7 +16,7 @@
             <form asp-action="Preview" method="post" enctype="multipart/form-data" class="d-flex gap-2">
                 <input type="hidden" name="kind" value="strategies" />
                 <input type="file" name="file" accept=".xlsx" class="form-control form-control-sm" required />
-                <button class="btn btn-sm btn-pems-solid">@Localizer["Rcm_Validate"]</button>
+                <pems-button tone="primary" size="small">@Localizer["Rcm_Validate"]</pems-button>
             </form>
             <a asp-action="Template" asp-route-kind="strategies" class="small">@Localizer["Rcm_DownloadTemplate"]</a>
         </div>
@@ -27,7 +27,7 @@
             <form asp-action="Preview" method="post" enctype="multipart/form-data" class="d-flex gap-2">
                 <input type="hidden" name="kind" value="assignments" />
                 <input type="file" name="file" accept=".xlsx" class="form-control form-control-sm" required />
-                <button class="btn btn-sm btn-pems-solid">@Localizer["Rcm_Validate"]</button>
+                <pems-button tone="primary" size="small">@Localizer["Rcm_Validate"]</pems-button>
             </form>
             <a asp-action="Template" asp-route-kind="assignments" class="small">@Localizer["Rcm_DownloadTemplate"]</a>
         </div>
@@ -48,7 +48,7 @@
                 {
                     <form asp-action="Commit" method="post" onsubmit="return confirm('@Localizer["Rcm_ConfirmImport"]');">
                         <input type="hidden" name="token" value="@Model.Token" /><input type="hidden" name="kind" value="@Model.Kind" />
-                        <button class="btn btn-sm btn-success"><i class="bi bi-check2-all"></i> @Localizer["Rcm_CommitValidRows"]</button>
+                        <pems-button tone="success" size="small"><i class="bi bi-check2-all"></i> @Localizer["Rcm_CommitValidRows"]</pems-button>
                     </form>
                 }
                 @if (r.RowsRejected > 0 && !string.IsNullOrEmpty(Model.Token))

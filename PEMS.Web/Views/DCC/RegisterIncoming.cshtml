@@ -74,7 +74,7 @@
     <div class="dcr-banner dcr-banner--warn" id="dcrDuplicate" role="alert" hidden>
         <i class="bi bi-exclamation-triangle-fill" aria-hidden="true"></i>
         <div class="dcr-grow"><span id="dcrDuplicateText"></span> <a id="dcrDuplicateLink" href="#" target="_blank" rel="noopener" class="dcr-link">@L("Dcc_OpenLetter")</a></div>
-        <button type="button" class="btn btn-sm btn-outline-warning" id="dcrDuplicateConfirm">@L("Dcc_RegisterAnyway")</button>
+        <pems-button tone="warning" size="small" outline="true" type="button" id="dcrDuplicateConfirm">@L("Dcc_RegisterAnyway")</pems-button>
     </div>
 
     <form id="dcrForm" class="dcr-grid" novalidate autocomplete="off">
@@ -333,8 +333,8 @@
             <span class="dcr-foot-hint">@L("Dcc_ShortcutHint")</span>
             <div class="dcr-foot-actions">
                 <a asp-action="Index" class="btn btn-outline-secondary">@L("Dcc_Cancel")</a>
-                <button type="submit" class="btn btn-outline-primary" id="dcrSubmitNext" data-mode="next"><i class="bi bi-arrow-repeat" aria-hidden="true"></i> @L("Dcc_RegisterNext")</button>
-                <button type="submit" class="btn btn-pems-solid" id="dcrSubmit" data-mode="open"><i class="bi bi-check2-circle" aria-hidden="true"></i> @L("Dcc_Register")</button>
+                <pems-button tone="primary" outline="true" type="submit" id="dcrSubmitNext" data-mode="next"><i class="bi bi-arrow-repeat" aria-hidden="true"></i> @L("Dcc_RegisterNext")</pems-button>
+                <pems-button tone="primary" type="submit" id="dcrSubmit" data-mode="open"><i class="bi bi-check2-circle" aria-hidden="true"></i> @L("Dcc_Register")</pems-button>
             </div>
         </footer>
     </form>

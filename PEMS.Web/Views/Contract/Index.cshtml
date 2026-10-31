@@ -6,12 +6,12 @@
 
 <div class="content-card">
     <div class="d-flex justify-content-between mb-3">
-        <button type="button" class="btn btn-sm btn-outline-secondary" onclick="PemsDataGrid.resetColumns('Contract')">
+        <pems-button tone="neutral" size="small" outline="true" type="button" onclick="PemsDataGrid.resetColumns('Contract')">
             <i class="bi bi-arrow-counterclockwise"></i> @Localizer["Reset columns"]
-        </button>
-        <button type="button" class="btn btn-pems-solid btn-sm" data-bs-toggle="modal" data-bs-target="#createContractModal">
+        </pems-button>
+        <pems-button tone="primary" size="small" type="button" data-bs-toggle="modal" data-bs-target="#createContractModal">
             <i class="bi bi-plus-lg"></i> @Localizer["New Contract"]
-        </button>
+        </pems-button>
     </div>
     <div class="table-responsive table-scroll-area pems-grid-scroll" style="max-height:65vh; overflow-y:auto;">
         <table class="table table-enterprise pems-grid-table" data-grid-key="Contract">
@@ -93,8 +93,8 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">@Localizer["Cancel"]</button>
-                    <button type="submit" class="btn btn-pems-solid">@Localizer["Save"]</button>
+                    <pems-button tone="neutral" outline="true" type="button" data-bs-dismiss="modal">@Localizer["Cancel"]</pems-button>
+                    <pems-button tone="primary" type="submit">@Localizer["Save"]</pems-button>
                 </div>
             </form>
         </div>

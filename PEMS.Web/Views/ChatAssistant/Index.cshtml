@@ -11,7 +11,7 @@
             مثال: «چند مدرک در انتظار تایید داریم؟» یا «آخرین مدارک ثبت‌شده کدامند؟»
         </p>
         <form asp-action="Clear" method="post">
-            <button class="btn btn-sm btn-outline-secondary"><i class="bi bi-trash"></i> @Localizer["Clear"]</button>
+            <pems-button tone="neutral" size="small" outline="true"><i class="bi bi-trash"></i> @Localizer["Clear"]</pems-button>
         </form>
     </div>
 
@@ -29,7 +29,7 @@
     <form id="chatForm" class="d-flex gap-2">
         @Html.AntiForgeryToken()
         <input type="text" id="messageInput" class="form-control" placeholder="Ask a question about the system..." autocomplete="off" />
-        <button type="submit" class="btn btn-pems-solid"><i class="bi bi-send"></i></button>
+        <pems-button tone="primary" type="submit"><i class="bi bi-send"></i></pems-button>
     </form>
 </div>
 

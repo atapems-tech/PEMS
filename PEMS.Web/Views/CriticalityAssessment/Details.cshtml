@@ -44,13 +44,13 @@
         @if (Model.Status == "DRAFT" && canEdit)
         {
             <div class="col-auto">
-                <button type="button" class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#scoresModal">@Localizer["Set Dimension Scores"]</button>
+                <pems-button tone="primary" size="small" outline="true" type="button" data-bs-toggle="modal" data-bs-target="#scoresModal">@Localizer["Set Dimension Scores"]</pems-button>
             </div>
         }
         @if (Model.Status != "APPROVED" && Model.Status != "SUPERSEDED" && canEdit)
         {
             <div class="col-auto">
-                <button type="button" class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#evidenceModal">@Localizer["Add Evidence"]</button>
+                <pems-button tone="primary" size="small" outline="true" type="button" data-bs-toggle="modal" data-bs-target="#evidenceModal">@Localizer["Add Evidence"]</pems-button>
             </div>
         }
         @if (Model.Status == "DRAFT" && canEdit)
@@ -58,7 +58,7 @@
             <div class="col-auto">
                 <form asp-action="SubmitForReview" method="post">
                     <input type="hidden" name="id" value="@Model.CriticalityAssessmentId" />
-                    <button type="submit" class="btn btn-sm btn-outline-warning">@Localizer["Submit for Review"]</button>
+                    <pems-button tone="warning" size="small" outline="true" type="submit">@Localizer["Submit for Review"]</pems-button>
                 </form>
             </div>
         }
@@ -67,13 +67,13 @@
             <div class="col-auto">
                 <form asp-action="Approve" method="post" onsubmit="return confirm('تایید این ارزیابی، نتیجه را بلافاصله در EquipmentCriticality منتشر می‌کند. ادامه می‌دهید؟');">
                     <input type="hidden" name="id" value="@Model.CriticalityAssessmentId" />
-                    <button type="submit" class="btn btn-sm btn-success">Approve &amp; Publish</button>
+                    <pems-button tone="success" size="small" type="submit">Approve &amp; Publish</pems-button>
                 </form>
             </div>
             <div class="col-auto">
                 <form asp-action="Reject" method="post">
                     <input type="hidden" name="id" value="@Model.CriticalityAssessmentId" />
-                    <button type="submit" class="btn btn-sm btn-outline-danger">@Localizer["Reject → Draft"]</button>
+                    <pems-button tone="danger" size="small" outline="true" type="submit">@Localizer["Reject → Draft"]</pems-button>
                 </form>
             </div>
         }
@@ -189,8 +189,8 @@
                     <div class="mb-2"><label class="form-label small">@Localizer["Rationale"]</label><textarea name="rationale" class="form-control form-control-sm" rows="2">@Model.Rationale</textarea></div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">@Localizer["Cancel"]</button>
-                    <button type="submit" class="btn btn-pems-solid btn-sm">@Localizer["Save"]</button>
+                    <pems-button tone="neutral" size="small" outline="true" type="button" data-bs-dismiss="modal">@Localizer["Cancel"]</pems-button>
+                    <pems-button tone="primary" size="small" type="submit">@Localizer["Save"]</pems-button>
                 </div>
             </form>
         </div></div>
@@ -221,8 +221,8 @@
                     <div class="mb-2"><label class="form-label small">@Localizer["Description"]</label><textarea name="description" class="form-control form-control-sm" rows="2" required></textarea></div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">@Localizer["Cancel"]</button>
-                    <button type="submit" class="btn btn-pems-solid btn-sm">@Localizer["Save"]</button>
+                    <pems-button tone="neutral" size="small" outline="true" type="button" data-bs-dismiss="modal">@Localizer["Cancel"]</pems-button>
+                    <pems-button tone="primary" size="small" type="submit">@Localizer["Save"]</pems-button>
                 </div>
             </form>
         </div></div>

@@ -35,7 +35,7 @@
                 <input type="number" name="equipmentClassId" class="form-control form-control-sm" style="width:160px" />
             </div>
             <div class="col-auto">
-                <button type="submit" class="btn btn-sm btn-pems-solid">Generate Insights (Ollama, local)</button>
+                <pems-button tone="primary" size="small" type="submit">Generate Insights (Ollama, local)</pems-button>
             </div>
         </form>
     </div>
@@ -76,13 +76,13 @@
                                 @Html.AntiForgeryToken()
                                 <input type="hidden" name="insightId" value="@insight.AIReliabilityInsightId" />
                                 <input type="hidden" name="approve" value="true" />
-                                <button type="submit" class="btn btn-sm btn-outline-success">@Localizer["Approve"]</button>
+                                <pems-button tone="success" size="small" outline="true" type="submit">@Localizer["Approve"]</pems-button>
                             </form>
                             <form method="post" asp-action="ReviewAiInsight" class="d-inline">
                                 @Html.AntiForgeryToken()
                                 <input type="hidden" name="insightId" value="@insight.AIReliabilityInsightId" />
                                 <input type="hidden" name="approve" value="false" />
-                                <button type="submit" class="btn btn-sm btn-outline-danger">@Localizer["Reject"]</button>
+                                <pems-button tone="danger" size="small" outline="true" type="submit">@Localizer["Reject"]</pems-button>
                             </form>
                         }
                     </td>

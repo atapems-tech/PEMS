@@ -20,10 +20,10 @@
         </div>
         <div class="d-flex gap-2">
             <a asp-action="Edit" asp-route-id="@Model.InstrumentId" class="btn btn-sm btn-outline-secondary"><i class="bi bi-pencil"></i> @Localizer["Edit"]</a>
-            <button onclick="window.print()" class="btn btn-sm btn-outline-secondary"><i class="bi bi-printer"></i> Print</button>
+            <pems-button tone="neutral" size="small" outline="true" onclick="window.print()"><i class="bi bi-printer"></i> Print</pems-button>
             <form asp-action="GenerateCalibrationWorkOrder" method="post" class="d-inline">
                 <input type="hidden" name="instrumentId" value="@Model.InstrumentId" />
-                <button type="submit" class="btn btn-sm btn-outline-primary"><i class="bi bi-clipboard-plus"></i> Generate WO</button>
+                <pems-button tone="primary" size="small" outline="true" type="submit"><i class="bi bi-clipboard-plus"></i> Generate WO</pems-button>
             </form>
         </div>
     </div>
@@ -129,7 +129,7 @@
         <div class="col-md-2"><label class="form-label small">Certificate No.</label><input name="certificateNo" class="form-control form-control-sm" /></div>
         <div class="col-md-4"><label class="form-label small">Standard Reference</label><input name="standardReference" class="form-control form-control-sm" /></div>
         <div class="col-md-4"><label class="form-label small">@Localizer["Remarks"]</label><input name="remarks" class="form-control form-control-sm" /></div>
-        <div class="col-md-4"><button type="submit" class="btn btn-sm btn-pems-solid w-100"><i class="bi bi-plus-lg"></i> Record Calibration</button></div>
+        <div class="col-md-4"><pems-button tone="primary" size="small" css="w-100" type="submit"><i class="bi bi-plus-lg"></i> Record Calibration</pems-button></div>
     </form>
 
     <h6>Calibration History</h6>
@@ -181,7 +181,7 @@
         <div class="col-md-1"><label class="form-label small">@Localizer["Unit"]</label><input name="unit" class="form-control form-control-sm" /></div>
         <div class="col-md-3"><label class="form-label small">@Localizer["Action"]</label><input name="action" class="form-control form-control-sm" /></div>
         <div class="col-md-6"><label class="form-label small">@Localizer["Description"]</label><input name="description" class="form-control form-control-sm" /></div>
-        <div class="col-md-3"><button type="submit" class="btn btn-sm btn-pems-solid w-100"><i class="bi bi-plus-lg"></i> Add Alarm</button></div>
+        <div class="col-md-3"><pems-button tone="primary" size="small" css="w-100" type="submit"><i class="bi bi-plus-lg"></i> Add Alarm</pems-button></div>
     </form>
 
     <h6>Alarms &amp; Cause / Effect</h6>
@@ -217,7 +217,7 @@
                             <td>
                                 <form asp-action="RaiseWorkRequestFromCauseEffect" method="post" class="d-inline">
                                     <input type="hidden" name="causeEffectId" value="@ce.CauseEffectId" />
-                                    <button type="submit" class="btn btn-sm btn-outline-danger"><i class="bi bi-exclamation-triangle"></i> Raise Work Request</button>
+                                    <pems-button tone="danger" size="small" outline="true" type="submit"><i class="bi bi-exclamation-triangle"></i> Raise Work Request</pems-button>
                                 </form>
                             </td>
                         </tr>
@@ -238,7 +238,7 @@
                 </div>
                 <div class="col-md-2"><input name="tripSignal" class="form-control form-control-sm" placeholder="@Localizer["Trip Signal"]" /></div>
                 <div class="col-md-2"><input name="description" class="form-control form-control-sm" placeholder="@Localizer["Description"]" /></div>
-                <div class="col-md-2"><button type="submit" class="btn btn-sm btn-outline-primary w-100">+ C&amp;E</button></div>
+                <div class="col-md-2"><pems-button tone="primary" size="small" outline="true" css="w-100" type="submit">+ C&amp;E</pems-button></div>
             </form>
         </div>
     }
@@ -271,7 +271,7 @@
                     <div class="col-md-6"><input name="controllerSystem" class="form-control form-control-sm" placeholder="DCS/PLC Name" /></div>
                     <div class="col-md-6"><input name="processArea" class="form-control form-control-sm" placeholder="Process Area" /></div>
                     <div class="col-md-12"><input name="description" class="form-control form-control-sm" placeholder="@Localizer["Description"]" /></div>
-                    <div class="col-md-12"><button type="submit" class="btn btn-sm btn-pems-solid w-100">Assign Loop</button></div>
+                    <div class="col-md-12"><pems-button tone="primary" size="small" css="w-100" type="submit">Assign Loop</pems-button></div>
                 </form>
             }
         </div>

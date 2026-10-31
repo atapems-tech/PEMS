@@ -9,9 +9,9 @@
 <div class="content-card">
     <div class="d-flex justify-content-end gap-2 mb-3">
         <a asp-action="Export" class="btn btn-outline-primary btn-sm"><i class="bi bi-file-earmark-excel"></i> @Localizer["Export"]</a>
-        <button type="button" class="btn btn-pems-solid btn-sm" data-bs-toggle="modal" data-bs-target="#createDeptModal">
+        <pems-button tone="primary" size="small" type="button" data-bs-toggle="modal" data-bs-target="#createDeptModal">
             <i class="bi bi-plus-lg"></i> @Localizer["New Department"]
-        </button>
+        </pems-button>
     </div>
     <div class="table-responsive table-scroll-area" style="max-height:65vh; overflow-y:auto;">
     <table class="table table-enterprise">
@@ -27,9 +27,9 @@
                     <td><a asp-controller="Employee" asp-action="Index" asp-route-departmentId="@d.DepartmentId" class="badge bg-secondary text-decoration-none">@empCount</a></td>
                     <td><span class="badge @(d.IsActive ? "bg-success" : "bg-secondary")">@(d.IsActive ? "Active" : "Inactive")</span></td>
                     <td class="text-end">
-                        <button type="button" class="btn btn-sm btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#editDeptModal_@d.DepartmentId">
+                        <pems-button tone="neutral" size="small" outline="true" type="button" data-bs-toggle="modal" data-bs-target="#editDeptModal_@d.DepartmentId">
                             <i class="bi bi-pencil"></i>
-                        </button>
+                        </pems-button>
                         <form asp-action="ToggleActive" method="post" class="d-inline">
                             <input type="hidden" name="departmentId" value="@d.DepartmentId" />
                             <button type="submit" class="btn btn-sm btn-outline-@(d.IsActive ? "danger" : "success")">
@@ -58,8 +58,8 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">@Localizer["Cancel"]</button>
-                    <button type="submit" class="btn btn-pems-solid">@Localizer["Save"]</button>
+                    <pems-button tone="neutral" outline="true" type="button" data-bs-dismiss="modal">@Localizer["Cancel"]</pems-button>
+                    <pems-button tone="primary" type="submit">@Localizer["Save"]</pems-button>
                 </div>
             </form>
         </div>
@@ -82,8 +82,8 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">@Localizer["Cancel"]</button>
-                        <button type="submit" class="btn btn-pems-solid">@Localizer["Save"]</button>
+                        <pems-button tone="neutral" outline="true" type="button" data-bs-dismiss="modal">@Localizer["Cancel"]</pems-button>
+                        <pems-button tone="primary" type="submit">@Localizer["Save"]</pems-button>
                     </div>
                 </form>
             </div>

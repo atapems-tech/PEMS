@@ -11,7 +11,7 @@
 <div class="content-card mb-3">
     <form asp-action="Search" method="get" class="d-flex gap-2" style="max-width:520px;">
         <input type="search" name="q" value="@query" class="form-control" placeholder="@L("Search Help...", "جستجو در راهنما...")" />
-        <button type="submit" class="btn btn-pems-solid"><i class="bi bi-search"></i> @L("Search", "جستجو")</button>
+        <pems-button tone="primary" type="submit"><i class="bi bi-search"></i> @L("Search", "جستجو")</pems-button>
     </form>
 </div>
 

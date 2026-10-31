@@ -46,22 +46,22 @@
         </div>
 
         <div class="d-flex align-items-center gap-1" role="toolbar" aria-label="@Localizer["ابزار نمودار سازمانی"]">
-            <button type="button" id="orgChartExpandAll" class="btn btn-outline-secondary btn-sm" title="@Localizer["باز کردن همه"]">
+            <pems-button tone="neutral" size="small" outline="true" type="button" id="orgChartExpandAll" title="@Localizer["باز کردن همه"]">
                 <i class="bi bi-arrows-expand"></i>
-            </button>
-            <button type="button" id="orgChartCollapseAll" class="btn btn-outline-secondary btn-sm" title="@Localizer["بستن همه"]">
+            </pems-button>
+            <pems-button tone="neutral" size="small" outline="true" type="button" id="orgChartCollapseAll" title="@Localizer["بستن همه"]">
                 <i class="bi bi-arrows-collapse"></i>
-            </button>
+            </pems-button>
             <div class="vr mx-1"></div>
-            <button type="button" id="orgChartZoomOut" class="btn btn-outline-secondary btn-sm" title="@Localizer["کوچک‌نمایی"]">
+            <pems-button tone="neutral" size="small" outline="true" type="button" id="orgChartZoomOut" title="@Localizer["کوچک‌نمایی"]">
                 <i class="bi bi-zoom-out"></i>
-            </button>
-            <button type="button" id="orgChartZoomIn" class="btn btn-outline-secondary btn-sm" title="@Localizer["بزرگ‌نمایی"]">
+            </pems-button>
+            <pems-button tone="neutral" size="small" outline="true" type="button" id="orgChartZoomIn" title="@Localizer["بزرگ‌نمایی"]">
                 <i class="bi bi-zoom-in"></i>
-            </button>
-            <button type="button" id="orgChartFit" class="btn btn-outline-secondary btn-sm" title="@Localizer["تناسب با صفحه"]">
+            </pems-button>
+            <pems-button tone="neutral" size="small" outline="true" type="button" id="orgChartFit" title="@Localizer["تناسب با صفحه"]">
                 <i class="bi bi-aspect-ratio"></i>
-            </button>
+            </pems-button>
         </div>
     </div>
 
@@ -71,9 +71,9 @@
                 <div class="pems-org-summary-head">
                     <strong>@Localizer["خلاصه‌ی اشغال سمت‌ها"]</strong>
                     <div class="btn-group btn-group-sm" role="group" aria-label="@Localizer["نمایش سمت‌ها"]" id="orgChartVacancyFilter">
-                        <button type="button" class="btn btn-outline-secondary active" data-filter="all" aria-pressed="true">@Localizer["همه"]</button>
-                        <button type="button" class="btn btn-outline-secondary" data-filter="filled" aria-pressed="false">@Localizer["تکمیل‌شده"] (<span id="orgChartFilterFilled">0</span>)</button>
-                        <button type="button" class="btn btn-outline-secondary" data-filter="vacant" aria-pressed="false">@Localizer["خالی"] (<span id="orgChartFilterVacant">0</span>)</button>
+                        <pems-button tone="neutral" outline="true" css="active" type="button" data-filter="all" aria-pressed="true">@Localizer["همه"]</pems-button>
+                        <pems-button tone="neutral" outline="true" type="button" data-filter="filled" aria-pressed="false">@Localizer["تکمیل‌شده"] (<span id="orgChartFilterFilled">0</span>)</pems-button>
+                        <pems-button tone="neutral" outline="true" type="button" data-filter="vacant" aria-pressed="false">@Localizer["خالی"] (<span id="orgChartFilterVacant">0</span>)</pems-button>
                     </div>
                 </div>
                 <div class="pems-org-stats">
@@ -97,7 +97,7 @@
                 <div id="orgChartError" class="pems-orgchart-state text-danger" hidden>
                     <i class="bi bi-exclamation-triangle"></i>
                     <span id="orgChartErrorText"></span>
-                    <button type="button" id="orgChartRetry" class="btn btn-sm btn-outline-danger ms-2">@Localizer["تلاش دوباره"]</button>
+                    <pems-button tone="danger" size="small" outline="true" css="ms-2" type="button" id="orgChartRetry">@Localizer["تلاش دوباره"]</pems-button>
                 </div>
                 <div id="orgChartEmpty" class="pems-orgchart-state" hidden>
                     <i class="bi bi-diagram-3"></i>

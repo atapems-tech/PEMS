@@ -158,11 +158,11 @@
                 }
 
                 <div class="lc-rcpt-tools">
-                    <button type="button" class="btn btn-sm btn-outline-secondary" id="lcToggleBcc"><i class="bi bi-eye-slash" aria-hidden="true"></i> @Localizer["Lc_AddBcc"]</button>
-                    <button type="button" class="btn btn-sm btn-outline-secondary" id="lcImportBtn"><i class="bi bi-file-earmark-spreadsheet" aria-hidden="true"></i> @Localizer["Lc_ImportList"]</button>
+                    <pems-button tone="neutral" size="small" outline="true" type="button" id="lcToggleBcc"><i class="bi bi-eye-slash" aria-hidden="true"></i> @Localizer["Lc_AddBcc"]</pems-button>
+                    <pems-button tone="neutral" size="small" outline="true" type="button" id="lcImportBtn"><i class="bi bi-file-earmark-spreadsheet" aria-hidden="true"></i> @Localizer["Lc_ImportList"]</pems-button>
                     <input type="file" id="lcImportFile" accept=".csv,.txt,text/csv,text/plain" hidden />
                     <div class="dropdown d-inline-block">
-                        <button type="button" class="btn btn-sm btn-outline-secondary dropdown-toggle" id="lcGroupBtn" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi bi-person-lines-fill" aria-hidden="true"></i> @Localizer["Ct_AddFromGroup"]</button>
+                        <pems-button tone="neutral" size="small" outline="true" css="dropdown-toggle" type="button" id="lcGroupBtn" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi bi-person-lines-fill" aria-hidden="true"></i> @Localizer["Ct_AddFromGroup"]</pems-button>
                         <ul class="dropdown-menu" id="lcGroupMenu" aria-labelledby="lcGroupBtn"></ul>
                     </div>
                     <span class="lc-help align-self-center" id="lcRcptCount"></span>
@@ -204,7 +204,7 @@
                             <i class="bi bi-file-earmark" aria-hidden="true"></i>
                             <span>@a.Name</span>
                             <small class="text-muted">@(Math.Max(1, a.Size / 1024)) KB</small>
-                            <button type="button" class="btn btn-sm btn-outline-danger" data-remove-attachment="@a.Id" aria-label="@Localizer["Lc_Remove"] @a.Name"><i class="bi bi-x-lg" aria-hidden="true"></i></button>
+                            <pems-button tone="danger" size="small" outline="true" type="button" data-remove-attachment="@a.Id" aria-label="@Localizer["Lc_Remove"] @a.Name"><i class="bi bi-x-lg" aria-hidden="true"></i></pems-button>
                         </li>
                     }
                 </ul>
@@ -227,7 +227,7 @@
                                 <option value="@t.LetterTemplateId" selected="@((int?)ViewBag.SelectedTemplateId == t.LetterTemplateId)">@t.Name</option>
                             }
                         </select>
-                        <button class="btn btn-outline-secondary" type="submit">@Localizer["LtT_Apply"]</button>
+                        <pems-button tone="neutral" outline="true" type="submit">@Localizer["LtT_Apply"]</pems-button>
                     </form>
                     <div class="lc-help">@Localizer["Lc_TemplateWarn"]</div>
                 </section>
@@ -347,7 +347,7 @@
                                 </optgroup>
                             }
                         </select>
-                        <button type="button" class="btn btn-outline-secondary" id="lcApproverAdd" aria-label="@Localizer["Lc_AddApprover"]"><i class="bi bi-plus-lg" aria-hidden="true"></i></button>
+                        <pems-button tone="neutral" outline="true" type="button" id="lcApproverAdd" aria-label="@Localizer["Lc_AddApprover"]"><i class="bi bi-plus-lg" aria-hidden="true"></i></pems-button>
                     </div>
                     <div class="lc-help">@Localizer["Lc_ChainHelp"]</div>
                     <div class="lc-error" data-error-for="approvers" role="alert" hidden></div>
@@ -357,13 +357,13 @@
     </div>
 
     <div class="lc-actions" role="group" aria-label="@Localizer["Lc_Actions"]">
-        <button type="button" class="btn btn-outline-secondary" id="lcSaveBtn"><i class="bi bi-save" aria-hidden="true"></i> @Localizer["Lt_SaveDraft"]</button>
-        <button type="button" class="btn btn-outline-secondary" id="lcPreviewBtn"><i class="bi bi-eye" aria-hidden="true"></i> @Localizer["Lc_Preview"]</button>
+        <pems-button tone="neutral" outline="true" type="button" id="lcSaveBtn"><i class="bi bi-save" aria-hidden="true"></i> @Localizer["Lt_SaveDraft"]</pems-button>
+        <pems-button tone="neutral" outline="true" type="button" id="lcPreviewBtn"><i class="bi bi-eye" aria-hidden="true"></i> @Localizer["Lc_Preview"]</pems-button>
         @if (input.LetterId.HasValue)
         {
             <form asp-action="Discard" asp-controller="LetterCompose" method="post" id="lcDiscardForm" class="d-inline">
                 <input type="hidden" name="letterId" value="@input.LetterId" />
-                <button type="submit" class="btn btn-outline-danger" id="lcDiscardBtn"><i class="bi bi-trash" aria-hidden="true"></i> @Localizer["Lc_Discard"]</button>
+                <pems-button tone="danger" outline="true" type="submit" id="lcDiscardBtn"><i class="bi bi-trash" aria-hidden="true"></i> @Localizer["Lc_Discard"]</pems-button>
             </form>
         }
         <span class="lc-spacer"></span>
@@ -384,8 +384,8 @@
             </div>
             <div class="modal-body" id="lcPreviewBody"></div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-outline-secondary" onclick="window.print()"><i class="bi bi-printer" aria-hidden="true"></i> @Localizer["Lc_Print"]</button>
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">@Localizer["Lc_Close"]</button>
+                <pems-button tone="neutral" outline="true" type="button" onclick="window.print()"><i class="bi bi-printer" aria-hidden="true"></i> @Localizer["Lc_Print"]</pems-button>
+                <pems-button tone="neutral" type="button" data-bs-dismiss="modal">@Localizer["Lc_Close"]</pems-button>
             </div>
         </div>
     </div>

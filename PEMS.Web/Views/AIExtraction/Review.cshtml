@@ -51,12 +51,12 @@
                                        placeholder="@Localizer["جستجوی تجهیز..."]" data-pems-search data-search-type="Equipment"
                                        data-search-hidden="#extTagEq_@tag.ExtractedTagId" autocomplete="off" />
                                 <input type="hidden" name="equipmentId" id="extTagEq_@tag.ExtractedTagId" />
-                                <button type="submit" class="btn btn-sm btn-success">@Localizer["Approve"]</button>
+                                <pems-button tone="success" size="small" type="submit">@Localizer["Approve"]</pems-button>
                             </form>
                             <form asp-action="RejectExtractedTag" method="post" class="d-inline mt-1">
                                 <input type="hidden" name="extractedTagId" value="@tag.ExtractedTagId" />
                                 <input type="hidden" name="attachmentId" value="@Model.AttachmentId" />
-                                <button type="submit" class="btn btn-sm btn-outline-danger">@Localizer["Reject"]</button>
+                                <pems-button tone="danger" size="small" outline="true" type="submit">@Localizer["Reject"]</pems-button>
                             </form>
                         }
                     </td>
@@ -95,12 +95,12 @@
                             <form asp-action="ApproveExtractedSpecification" method="post" class="d-inline">
                                 <input type="hidden" name="extractedSpecificationId" value="@spec.ExtractedSpecificationId" />
                                 <input type="hidden" name="attachmentId" value="@Model.AttachmentId" />
-                                <button type="submit" class="btn btn-sm btn-success">@Localizer["Approve"]</button>
+                                <pems-button tone="success" size="small" type="submit">@Localizer["Approve"]</pems-button>
                             </form>
                             <form asp-action="RejectExtractedSpecification" method="post" class="d-inline">
                                 <input type="hidden" name="extractedSpecificationId" value="@spec.ExtractedSpecificationId" />
                                 <input type="hidden" name="attachmentId" value="@Model.AttachmentId" />
-                                <button type="submit" class="btn btn-sm btn-outline-danger">@Localizer["Reject"]</button>
+                                <pems-button tone="danger" size="small" outline="true" type="submit">@Localizer["Reject"]</pems-button>
                             </form>
                         }
                     </td>

@@ -29,31 +29,31 @@
         <div class="d-flex flex-column gap-1" style="min-width:180px">
             @if (Model.Status == "Draft")
             {
-                <form asp-action="Plan" asp-route-id="@Model.ProductionOrderId" method="post"><button class="btn btn-sm btn-outline-primary w-100" type="submit"><i class="bi bi-calendar-check"></i> Plan</button></form>
+                <form asp-action="Plan" asp-route-id="@Model.ProductionOrderId" method="post"><pems-button tone="primary" size="small" outline="true" css="w-100" type="submit"><i class="bi bi-calendar-check"></i> Plan</pems-button></form>
             }
             @if (Model.Status == "Planned")
             {
-                <form asp-action="Release" asp-route-id="@Model.ProductionOrderId" method="post"><button class="btn btn-sm btn-pems-solid w-100" type="submit"><i class="bi bi-send-check"></i> Release</button></form>
+                <form asp-action="Release" asp-route-id="@Model.ProductionOrderId" method="post"><pems-button tone="primary" size="small" css="w-100" type="submit"><i class="bi bi-send-check"></i> Release</pems-button></form>
             }
             @if (Model.Status == "Released" || Model.Status == "InProgress")
             {
-                <button class="btn btn-sm btn-outline-warning w-100" type="button" data-bs-toggle="modal" data-bs-target="#holdOrderModal"><i class="bi bi-pause-circle"></i> @Localizer["Hold"]</button>
+                <pems-button tone="warning" size="small" outline="true" css="w-100" type="button" data-bs-toggle="modal" data-bs-target="#holdOrderModal"><i class="bi bi-pause-circle"></i> @Localizer["Hold"]</pems-button>
             }
             @if (Model.Status == "OnHold")
             {
-                <form asp-action="Resume" asp-route-id="@Model.ProductionOrderId" method="post"><button class="btn btn-sm btn-outline-success w-100" type="submit"><i class="bi bi-play-circle"></i> Resume</button></form>
+                <form asp-action="Resume" asp-route-id="@Model.ProductionOrderId" method="post"><pems-button tone="success" size="small" outline="true" css="w-100" type="submit"><i class="bi bi-play-circle"></i> Resume</pems-button></form>
             }
             @if (Model.Status is "Draft" or "Planned" or "Released" or "OnHold")
             {
-                <button class="btn btn-sm btn-outline-danger w-100" type="button" data-bs-toggle="modal" data-bs-target="#cancelOrderModal"><i class="bi bi-x-circle"></i> @Localizer["Cancel"]</button>
+                <pems-button tone="danger" size="small" outline="true" css="w-100" type="button" data-bs-toggle="modal" data-bs-target="#cancelOrderModal"><i class="bi bi-x-circle"></i> @Localizer["Cancel"]</pems-button>
             }
             @if (Model.Status == "InProgress")
             {
-                <form asp-action="Complete" asp-route-id="@Model.ProductionOrderId" method="post"><button class="btn btn-sm btn-pems-solid w-100" type="submit"><i class="bi bi-check2-circle"></i> Complete</button></form>
+                <form asp-action="Complete" asp-route-id="@Model.ProductionOrderId" method="post"><pems-button tone="primary" size="small" css="w-100" type="submit"><i class="bi bi-check2-circle"></i> Complete</pems-button></form>
             }
             @if (Model.Status == "Completed")
             {
-                <form asp-action="Close" asp-route-id="@Model.ProductionOrderId" method="post"><button class="btn btn-sm btn-outline-secondary w-100" type="submit"><i class="bi bi-lock"></i> Close</button></form>
+                <form asp-action="Close" asp-route-id="@Model.ProductionOrderId" method="post"><pems-button tone="neutral" size="small" outline="true" css="w-100" type="submit"><i class="bi bi-lock"></i> Close</pems-button></form>
             }
             @if (Model.Status is "Released" or "InProgress")
             {
@@ -92,7 +92,7 @@
         <form asp-action="Hold" asp-route-id="@Model.ProductionOrderId" method="post">
             <div class="modal-header"><h6 class="modal-title">Hold Production Order</h6><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div>
             <div class="modal-body"><label class="form-label">@Localizer["Reason"]</label><textarea name="reason" class="form-control" required></textarea></div>
-            <div class="modal-footer"><button type="submit" class="btn btn-warning">@Localizer["Hold"]</button></div>
+            <div class="modal-footer"><pems-button tone="warning" type="submit">@Localizer["Hold"]</pems-button></div>
         </form>
     </div></div>
 </div>
@@ -102,7 +102,7 @@
         <form asp-action="Cancel" asp-route-id="@Model.ProductionOrderId" method="post">
             <div class="modal-header"><h6 class="modal-title">Cancel Production Order</h6><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div>
             <div class="modal-body"><label class="form-label">@Localizer["Reason"]</label><textarea name="reason" class="form-control" required></textarea></div>
-            <div class="modal-footer"><button type="submit" class="btn btn-danger">Cancel Order</button></div>
+            <div class="modal-footer"><pems-button tone="danger" type="submit">Cancel Order</pems-button></div>
         </form>
     </div></div>
 </div>

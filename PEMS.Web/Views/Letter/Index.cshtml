@@ -322,7 +322,7 @@
                 <i class="bi bi-search" aria-hidden="true"></i>
                 <input type="search" name="q" id="lpSearchInput" value="@searchQuery" placeholder="@Localizer["Lp_SearchPlaceholder"]" aria-label="@Localizer["Lp_SearchPlaceholder"]"
                        data-pems-search data-search-type="Letter" autocomplete="off" />
-                <button type="submit" class="btn btn-sm btn-pems-solid">@Localizer["Search"]</button>
+                <pems-button tone="primary" size="small" type="submit">@Localizer["Search"]</pems-button>
                 <button type="button" class="lp-icon-btn" id="lpSearchClose" aria-label="@Localizer["Lp_SearchClose"]"><i class="bi bi-x-lg" aria-hidden="true"></i></button>
             </form>
 
@@ -405,7 +405,7 @@
                             </div>
                             <div class="lp-fp-foot">
                                 <a href="@Without(filterKeys)" class="btn btn-sm btn-link">@Localizer["Reset"]</a>
-                                <button type="submit" class="btn btn-sm btn-pems-solid"><i class="bi bi-funnel" aria-hidden="true"></i> @Localizer["Lt_ApplyFilters"]</button>
+                                <pems-button tone="primary" size="small" type="submit"><i class="bi bi-funnel" aria-hidden="true"></i> @Localizer["Lt_ApplyFilters"]</pems-button>
                             </div>
                         </form>
                     </div>
@@ -487,7 +487,7 @@
                 @if (Model.TotalCount > 0)
                 {
                     <form asp-action="EmptyTrash" method="post" class="ms-auto" data-confirm="@Localizer["Ct_ConfirmEmptyTrash"]">
-                        <button type="submit" class="btn btn-sm btn-outline-danger"><i class="bi bi-trash3" aria-hidden="true"></i> @Localizer["Ct_EmptyTrash"]</button>
+                        <pems-button tone="danger" size="small" outline="true" type="submit"><i class="bi bi-trash3" aria-hidden="true"></i> @Localizer["Ct_EmptyTrash"]</pems-button>
                     </form>
                 }
             </div>
@@ -503,17 +503,17 @@
                     <span id="letterBulkCount" class="pems-bulk-count" role="status" aria-live="polite" data-template="@Localizer["Lt_SelectedCount"]" data-empty="@Localizer["Ct_NoSelection"]"></span>
                     @if (inTrash)
                     {
-                        <button type="submit" name="op" value="restore" class="btn btn-sm btn-outline-secondary" data-bulk-op="restore" disabled><i class="bi bi-arrow-counterclockwise" aria-hidden="true"></i> @Localizer["Ct_Restore"]</button>
-                        <button type="submit" name="op" value="purge" class="btn btn-sm btn-outline-danger" data-bulk-op="purge" data-confirm="@Localizer["Ct_ConfirmPurge"]" disabled><i class="bi bi-x-octagon" aria-hidden="true"></i> @Localizer["Ct_PurgeForever"]</button>
+                        <pems-button tone="neutral" size="small" outline="true" type="submit" name="op" value="restore" data-bulk-op="restore" disabled><i class="bi bi-arrow-counterclockwise" aria-hidden="true"></i> @Localizer["Ct_Restore"]</pems-button>
+                        <pems-button tone="danger" size="small" outline="true" type="submit" name="op" value="purge" data-bulk-op="purge" data-confirm="@Localizer["Ct_ConfirmPurge"]" disabled><i class="bi bi-x-octagon" aria-hidden="true"></i> @Localizer["Ct_PurgeForever"]</pems-button>
                     }
                     else
                     {
-                        <button type="submit" name="op" value="read" class="btn btn-sm btn-outline-secondary" data-bulk-op="read" title="@Localizer["Ct_MarkRead"]" disabled><i class="bi bi-envelope-open" aria-hidden="true"></i> <span class="d-none d-xxl-inline">@Localizer["Ct_MarkRead"]</span></button>
-                        <button type="submit" name="op" value="unread" class="btn btn-sm btn-outline-secondary" data-bulk-op="unread" title="@Localizer["Ct_MarkUnread"]" disabled><i class="bi bi-envelope" aria-hidden="true"></i> <span class="d-none d-xxl-inline">@Localizer["Ct_MarkUnread"]</span></button>
+                        <pems-button tone="neutral" size="small" outline="true" type="submit" name="op" value="read" data-bulk-op="read" title="@Localizer["Ct_MarkRead"]" disabled><i class="bi bi-envelope-open" aria-hidden="true"></i> <span class="d-none d-xxl-inline">@Localizer["Ct_MarkRead"]</span></pems-button>
+                        <pems-button tone="neutral" size="small" outline="true" type="submit" name="op" value="unread" data-bulk-op="unread" title="@Localizer["Ct_MarkUnread"]" disabled><i class="bi bi-envelope" aria-hidden="true"></i> <span class="d-none d-xxl-inline">@Localizer["Ct_MarkUnread"]</span></pems-button>
                         @if (tagNodes.Count > 0)
                         {
                             <div class="dropdown">
-                                <button type="button" class="btn btn-sm btn-outline-secondary dropdown-toggle" data-bulk-op="tag-menu" data-bs-toggle="dropdown" aria-expanded="false" disabled><i class="bi bi-tags" aria-hidden="true"></i> @Localizer["Ct_Tag"]</button>
+                                <pems-button tone="neutral" size="small" outline="true" css="dropdown-toggle" type="button" data-bulk-op="tag-menu" data-bs-toggle="dropdown" aria-expanded="false" disabled><i class="bi bi-tags" aria-hidden="true"></i> @Localizer["Ct_Tag"]</pems-button>
                                 <ul class="dropdown-menu ct-bulk-menu">
                                     <li><h6 class="dropdown-header">@Localizer["Ct_ApplyTag"]</h6></li>
                                     @foreach (var t in tagNodes)
@@ -529,19 +529,19 @@
                                 </ul>
                             </div>
                         }
-                        <button type="submit" name="op" value="star" class="btn btn-sm btn-outline-secondary" data-bulk-op="star" title="@Localizer["Lt_BulkStar"]" disabled><i class="bi bi-star" aria-hidden="true"></i> <span class="d-none d-xxl-inline">@Localizer["Lt_BulkStar"]</span></button>
-                        <button type="submit" name="op" value="unstar" class="btn btn-sm btn-outline-secondary" data-bulk-op="unstar" title="@Localizer["Lt_BulkUnstar"]" disabled><i class="bi bi-star-half" aria-hidden="true"></i></button>
+                        <pems-button tone="neutral" size="small" outline="true" type="submit" name="op" value="star" data-bulk-op="star" title="@Localizer["Lt_BulkStar"]" disabled><i class="bi bi-star" aria-hidden="true"></i> <span class="d-none d-xxl-inline">@Localizer["Lt_BulkStar"]</span></pems-button>
+                        <pems-button tone="neutral" size="small" outline="true" type="submit" name="op" value="unstar" data-bulk-op="unstar" title="@Localizer["Lt_BulkUnstar"]" disabled><i class="bi bi-star-half" aria-hidden="true"></i></pems-button>
                         @if (inArchive)
                         {
-                            <button type="submit" name="op" value="unarchiveme" class="btn btn-sm btn-outline-secondary" data-bulk-op="unarchiveme" disabled><i class="bi bi-box-arrow-up" aria-hidden="true"></i> @Localizer["Ct_Unarchive"]</button>
+                            <pems-button tone="neutral" size="small" outline="true" type="submit" name="op" value="unarchiveme" data-bulk-op="unarchiveme" disabled><i class="bi bi-box-arrow-up" aria-hidden="true"></i> @Localizer["Ct_Unarchive"]</pems-button>
                         }
                         else
                         {
-                            <button type="submit" name="op" value="archiveme" class="btn btn-sm btn-outline-secondary" data-bulk-op="archiveme" disabled><i class="bi bi-archive" aria-hidden="true"></i> <span class="d-none d-xxl-inline">@Localizer["Ct_ArchiveForMe"]</span></button>
+                            <pems-button tone="neutral" size="small" outline="true" type="submit" name="op" value="archiveme" data-bulk-op="archiveme" disabled><i class="bi bi-archive" aria-hidden="true"></i> <span class="d-none d-xxl-inline">@Localizer["Ct_ArchiveForMe"]</span></pems-button>
                         }
-                        <button type="submit" name="op" value="trash" class="btn btn-sm btn-outline-danger" data-bulk-op="trash" data-confirm-trash="@Localizer["Ct_ConfirmTrash"]" disabled><i class="bi bi-trash3" aria-hidden="true"></i> <span class="d-none d-xxl-inline">@Localizer["Ct_MoveToTrash"]</span></button>
+                        <pems-button tone="danger" size="small" outline="true" type="submit" name="op" value="trash" data-bulk-op="trash" data-confirm-trash="@Localizer["Ct_ConfirmTrash"]" disabled><i class="bi bi-trash3" aria-hidden="true"></i> <span class="d-none d-xxl-inline">@Localizer["Ct_MoveToTrash"]</span></pems-button>
                         <div class="dropdown">
-                            <button type="button" class="btn btn-sm btn-outline-secondary dropdown-toggle" data-bulk-op="more-menu" data-bs-toggle="dropdown" aria-expanded="false" disabled>@Localizer["Lp_More"]</button>
+                            <pems-button tone="neutral" size="small" outline="true" css="dropdown-toggle" type="button" data-bulk-op="more-menu" data-bs-toggle="dropdown" aria-expanded="false" disabled>@Localizer["Lp_More"]</pems-button>
                             <ul class="dropdown-menu">
                                 <li><button type="submit" name="op" value="submit" class="dropdown-item" data-bulk-op="submit" data-confirm="@Localizer["Lt_BulkSubmitConfirm"]"><i class="bi bi-send-check" aria-hidden="true"></i> @Localizer["Lt_BulkSubmit"]</button></li>
                                 @if (canBulkArchive)
@@ -576,8 +576,8 @@
                                     <div id="letterArchiveReasonError" class="text-danger small mt-1" hidden><i class="bi bi-exclamation-circle" aria-hidden="true"></i> @Localizer["Lt_ArchiveReasonRequired"]</div>
                                 </div>
                                 <div class="modal-footer">
-                                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">@Localizer["Cancel"]</button>
-                                    <button type="submit" name="op" value="archive" class="btn btn-danger"><i class="bi bi-archive" aria-hidden="true"></i> @Localizer["Lt_ArchiveConfirm"]</button>
+                                    <pems-button tone="neutral" outline="true" type="button" data-bs-dismiss="modal">@Localizer["Cancel"]</pems-button>
+                                    <pems-button tone="danger" type="submit" name="op" value="archive"><i class="bi bi-archive" aria-hidden="true"></i> @Localizer["Lt_ArchiveConfirm"]</pems-button>
                                 </div>
                             </div>
                         </div>
@@ -714,7 +714,7 @@
                         <i class="bi @(inTrash ? "bi-trash3" : "bi-inbox")" aria-hidden="true"></i>
                         <strong>@Localizer[inTrash ? "Ct_TrashEmpty" : "Lp_NoResults"]</strong>
                         <span>@Localizer[inTrash ? "Ct_TrashEmptyHint" : "Lp_NoResultsHint"]</span>
-                        @if (chips.Count > 0) { <a href="@Without(filterKeys)" class="btn btn-sm btn-outline-secondary mt-2">@Localizer["Lt_ClearAll"]</a> }
+                        @if (chips.Count > 0) { <pems-button tone="neutral" size="small" outline="true" css="mt-2" as="a" href="@Without(filterKeys)">@Localizer["Lt_ClearAll"]</pems-button> }
                     </div>
                 }
             </div>
@@ -816,8 +816,8 @@
                 <div class="ct-msg" id="ctReminderMsg" role="status"></div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-sm btn-outline-secondary" data-bs-dismiss="modal">@Localizer["Cancel"]</button>
-                <button type="button" class="btn btn-sm btn-pems-solid" id="ctReminderSave">@Localizer["Save"]</button>
+                <pems-button tone="neutral" size="small" outline="true" type="button" data-bs-dismiss="modal">@Localizer["Cancel"]</pems-button>
+                <pems-button tone="primary" size="small" type="button" id="ctReminderSave">@Localizer["Save"]</pems-button>
             </div>
         </div>
     </div>
@@ -905,8 +905,8 @@
             </div>
             <div class="modal-footer">
                 <span class="ct-msg me-auto" id="ctSettingsMsg" role="status"></span>
-                <button type="button" class="btn btn-sm btn-outline-secondary" data-bs-dismiss="modal">@Localizer["Cancel"]</button>
-                <button type="button" class="btn btn-sm btn-pems-solid" id="ctSettingsSave">@Localizer["Save"]</button>
+                <pems-button tone="neutral" size="small" outline="true" type="button" data-bs-dismiss="modal">@Localizer["Cancel"]</pems-button>
+                <pems-button tone="primary" size="small" type="button" id="ctSettingsSave">@Localizer["Save"]</pems-button>
             </div>
         </div>
     </div>

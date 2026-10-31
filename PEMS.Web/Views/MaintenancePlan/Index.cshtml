@@ -72,7 +72,7 @@
                                         <input type="hidden" name="planId" value="@p.MaintenancePlanId" />
                                         <input type="number" step="0.01" name="currentReading" class="form-control form-control-sm" style="width:90px;"
                                                placeholder="@Localizer["Mp_CurrentReading"]" aria-label="@Localizer["Mp_CurrentReading"]" required />
-                                        <button type="submit" class="btn btn-sm btn-outline-info">@Localizer["Mp_Record"]</button>
+                                        <pems-button tone="info" size="small" outline="true" type="submit">@Localizer["Mp_Record"]</pems-button>
                                     </form>
                                 }
                             </td>
@@ -84,7 +84,7 @@
                             <td class="text-nowrap text-end">
                                 <form asp-action="GenerateWorkOrder" method="post" class="d-inline">
                                     <input type="hidden" name="planId" value="@p.MaintenancePlanId" />
-                                    <button type="submit" class="btn btn-sm btn-outline-primary"><i class="bi bi-clipboard-plus" aria-hidden="true"></i> @Localizer["Mp_GenerateWo"]</button>
+                                    <pems-button tone="primary" size="small" outline="true" type="submit"><i class="bi bi-clipboard-plus" aria-hidden="true"></i> @Localizer["Mp_GenerateWo"]</pems-button>
                                 </form>
                                 <form asp-action="Deactivate" method="post" class="d-inline">
                                     <input type="hidden" name="planId" value="@p.MaintenancePlanId" />

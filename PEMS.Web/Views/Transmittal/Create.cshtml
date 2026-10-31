@@ -63,7 +63,7 @@
             <div class="col-12">
                 <label class="form-label d-block">Recipients <span class="text-muted small">(structured - required)</span></label>
                 <div id="recipientRows"></div>
-                <button type="button" id="addRecipientBtn" class="btn btn-sm btn-outline-secondary mt-1"><i class="bi bi-plus-lg"></i> Add Recipient</button>
+                <pems-button tone="neutral" size="small" outline="true" css="mt-1" type="button" id="addRecipientBtn"><i class="bi bi-plus-lg"></i> Add Recipient</pems-button>
             </div>
 
             <div class="col-12">
@@ -99,7 +99,7 @@
         </div>
 
         <div class="mt-4">
-            <button type="submit" class="btn btn-pems-solid">Create Transmittal</button>
+            <pems-button tone="primary" type="submit">Create Transmittal</pems-button>
             <a asp-action="Index" class="btn btn-outline-secondary">@Localizer["Cancel"]</a>
         </div>
     </form>
@@ -121,7 +121,7 @@
             <input type="checkbox" class="form-check-input" name="recipientResponseRequired" value="true" />
             <label class="form-check-label small">Response req.</label>
         </div>
-        <div class="col-md-1"><button type="button" class="btn btn-sm btn-outline-danger remove-recipient-btn"><i class="bi bi-x-lg"></i></button></div>
+        <div class="col-md-1"><pems-button tone="danger" size="small" outline="true" css="remove-recipient-btn" type="button"><i class="bi bi-x-lg"></i></pems-button></div>
     </div>
 </template>
 

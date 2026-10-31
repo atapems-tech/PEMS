@@ -100,9 +100,9 @@ else
             {
                 @if (nextStatus == "Completed")
                 {
-                    <button type="button" class="btn btn-pems-solid btn-sm" data-bs-toggle="modal" data-bs-target="#completeFailureModal">
+                    <pems-button tone="primary" size="small" type="button" data-bs-toggle="modal" data-bs-target="#completeFailureModal">
                         Advance to Completed
-                    </button>
+                    </pems-button>
 
                     <div class="modal fade" id="completeFailureModal" tabindex="-1">
                         <div class="modal-dialog"><div class="modal-content">
@@ -164,8 +164,8 @@ else
                                     </div>
                                 </div>
                                 <div class="modal-footer">
-                                    <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">@Localizer["انصراف"]</button>
-                                    <button type="submit" class="btn btn-pems-solid btn-sm">@Localizer["ثبت و تکمیل"]</button>
+                                    <pems-button tone="neutral" size="small" outline="true" type="button" data-bs-dismiss="modal">@Localizer["انصراف"]</pems-button>
+                                    <pems-button tone="primary" size="small" type="submit">@Localizer["ثبت و تکمیل"]</pems-button>
                                 </div>
                             </form>
                         </div></div>
@@ -183,7 +183,7 @@ else
                             </select>
                         }
                         <input name="reason" class="form-control form-control-sm d-inline-block" style="width:180px;" placeholder="@Localizer["دلیل (اختیاری)"]" />
-                        <button type="submit" class="btn btn-pems-solid btn-sm">Advance to @nextStatus</button>
+                        <pems-button tone="primary" size="small" type="submit">Advance to @nextStatus</pems-button>
                     </form>
                 }
             }
@@ -199,14 +199,14 @@ else
                 <form asp-action="Hold" method="post" class="d-inline ms-1">
                     <input type="hidden" name="id" value="@Model.WorkOrderId" />
                     <input name="reason" required class="form-control form-control-sm d-inline-block" style="width:160px;" placeholder="@Localizer["Reason (required)"]" />
-                    <button type="submit" data-legacy="hold" class="btn btn-outline-warning btn-sm"><i class="bi bi-pause-circle"></i> @Localizer["Hold"]</button>
+                    <pems-button tone="warning" size="small" outline="true" type="submit" data-legacy="hold"><i class="bi bi-pause-circle"></i> @Localizer["Hold"]</pems-button>
                 </form>
             }
             @if (canEditWo && Model.Status == "OnHold")
             {
                 <form asp-action="Resume" method="post" class="d-inline ms-1">
                     <input type="hidden" name="id" value="@Model.WorkOrderId" />
-                    <button type="submit" class="btn btn-pems-solid btn-sm"><i class="bi bi-play-circle"></i> Resume</button>
+                    <pems-button tone="primary" size="small" type="submit"><i class="bi bi-play-circle"></i> Resume</pems-button>
                 </form>
             }
             @if (canApproveWo && Model.Status == "Open")
@@ -214,7 +214,7 @@ else
                 <form asp-action="Reject" method="post" class="d-inline ms-1">
                     <input type="hidden" name="id" value="@Model.WorkOrderId" />
                     <input name="reason" required class="form-control form-control-sm d-inline-block" style="width:160px;" placeholder="@Localizer["Reason (required)"]" />
-                    <button type="submit" class="btn btn-outline-danger btn-sm" onclick="return confirm('این WorkOrder رد شود؟');">@Localizer["Reject"]</button>
+                    <pems-button tone="danger" size="small" outline="true" type="submit" onclick="return confirm('این WorkOrder رد شود؟');">@Localizer["Reject"]</pems-button>
                 </form>
             }
             @if (canApproveWo && Model.Status is "Open" or "Assigned" or "InProgress" or "OnHold")
@@ -222,7 +222,7 @@ else
                 <form asp-action="Cancel" method="post" class="d-inline ms-1">
                     <input type="hidden" name="id" value="@Model.WorkOrderId" />
                     <input name="reason" required class="form-control form-control-sm d-inline-block" style="width:160px;" placeholder="@Localizer["Reason (required)"]" />
-                    <button type="submit" data-legacy="cancel" class="btn btn-outline-secondary btn-sm" onclick="return confirm('این WorkOrder لغو شود؟');">@Localizer["Cancel"]</button>
+                    <pems-button tone="neutral" size="small" outline="true" type="submit" data-legacy="cancel" onclick="return confirm('این WorkOrder لغو شود؟');">@Localizer["Cancel"]</pems-button>
                 </form>
             }
         </div>
@@ -378,7 +378,7 @@ else
                                 <option value="">--</option>
                                 @foreach (var d in (IEnumerable<dynamic>)ViewBag.Disciplines) { <option value="@d.DisciplineId" selected="@(Model.ResponsibleDisciplineId == (int)d.DisciplineId)">@d.Name</option> }
                             </select></div>
-                        <button type="submit" class="btn btn-outline-primary btn-sm">@Localizer["Save"]</button>
+                        <pems-button tone="primary" size="small" outline="true" type="submit">@Localizer["Save"]</pems-button>
                     </form>
                 </div>
                 }
@@ -404,7 +404,7 @@ else
                                 <select name="employeeId" class="form-select form-select-sm"><option value="">--</option>
                                     @foreach (var e in (IEnumerable<dynamic>)ViewBag.Employees) { <option value="@e.EmployeeId">@e.FullName</option> }
                                 </select></div>
-                            <button type="submit" class="btn btn-outline-primary btn-sm">@Localizer["Assign"]</button>
+                            <pems-button tone="primary" size="small" outline="true" type="submit">@Localizer["Assign"]</pems-button>
                         </form>
                     </div>
                 }
@@ -421,7 +421,7 @@ else
                             <div><label class="form-label small mb-1">@Localizer["Planned Finish"]</label>
                                 <input type="datetime-local" name="plannedFinish" class="form-control form-control-sm"
                                        value="@(Model.PlannedFinish?.ToString("yyyy-MM-ddTHH:mm"))" required /></div>
-                            <button type="submit" class="btn btn-outline-primary btn-sm">@Localizer["Save Schedule"]</button>
+                            <pems-button tone="primary" size="small" outline="true" type="submit">@Localizer["Save Schedule"]</pems-button>
                         </form>
                     </div>
                 }
@@ -494,9 +494,9 @@ else
     }
     else if (!hasPendingReview)
     {
-        <button type="button" class="btn btn-outline-primary btn-sm" data-bs-toggle="modal" data-bs-target="#requestReviewModal">
+        <pems-button tone="primary" size="small" outline="true" type="button" data-bs-toggle="modal" data-bs-target="#requestReviewModal">
             <i class="bi bi-send"></i> @Localizer["درخواست بازبینی چند-دیسیپلینه"]
-        </button>
+        </pems-button>
 
         <div class="modal fade" id="requestReviewModal" tabindex="-1">
             <div class="modal-dialog"><div class="modal-content">
@@ -513,8 +513,8 @@ else
                         }
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">@Localizer["انصراف"]</button>
-                        <button type="submit" class="btn btn-pems-solid btn-sm">@Localizer["شروع بازبینی"]</button>
+                        <pems-button tone="neutral" size="small" outline="true" type="button" data-bs-dismiss="modal">@Localizer["انصراف"]</pems-button>
+                        <pems-button tone="primary" size="small" type="submit">@Localizer["شروع بازبینی"]</pems-button>
                     </div>
                 </form>
             </div></div>
@@ -533,9 +533,9 @@ else
         var myPending = reviewStatus.FirstOrDefault(x => x.DisciplineId == myDisciplineId && x.Status == "Pending");
         @if (myPending != null)
         {
-            <button type="button" class="btn btn-pems-solid btn-sm" data-bs-toggle="modal" data-bs-target="#respondReviewModal">
+            <pems-button tone="primary" size="small" type="button" data-bs-toggle="modal" data-bs-target="#respondReviewModal">
                 <i class="bi bi-reply"></i> ثبت نظر دیسیپلین من
-            </button>
+            </pems-button>
 
             <div class="modal fade" id="respondReviewModal" tabindex="-1">
                 <div class="modal-dialog"><div class="modal-content">
@@ -575,8 +575,8 @@ else
                             </div>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">@Localizer["انصراف"]</button>
-                            <button type="submit" class="btn btn-pems-solid btn-sm">@Localizer["ثبت"]</button>
+                            <pems-button tone="neutral" size="small" outline="true" type="button" data-bs-dismiss="modal">@Localizer["انصراف"]</pems-button>
+                            <pems-button tone="primary" size="small" type="submit">@Localizer["ثبت"]</pems-button>
                         </div>
                     </form>
                 </div></div>
@@ -625,7 +625,7 @@ else
         <form asp-action="ReopenWorkOrder" method="post" class="row g-2">
             <input type="hidden" name="id" value="@Model.WorkOrderId" />
             <div class="col-md-9"><input name="reason" class="form-control form-control-sm" maxlength="500" required placeholder="@Localizer["Reason for reopening (required)"]" /></div>
-            <div class="col-md-3"><button type="submit" class="btn btn-sm btn-outline-warning w-100"><i class="bi bi-unlock"></i> @Localizer["Reopen"]</button></div>
+            <div class="col-md-3"><pems-button tone="warning" size="small" outline="true" css="w-100" type="submit"><i class="bi bi-unlock"></i> @Localizer["Reopen"]</pems-button></div>
         </form>
     </div>
 }
@@ -696,7 +696,7 @@ else
         <div class="col-md-1"><input name="regularHours" type="number" step="0.5" min="0" class="form-control form-control-sm" placeholder="Reg" /></div>
         <div class="col-md-1"><input name="overtimeHours" type="number" step="0.5" min="0" class="form-control form-control-sm" placeholder="OT" /></div>
         <div class="col-md-2"><input name="notes" class="form-control form-control-sm" placeholder="@Localizer["Notes (optional)"]" /></div>
-        <div class="col-md-1"><button class="btn btn-sm btn-pems-solid w-100"><i class="bi bi-plus-lg"></i></button></div>
+        <div class="col-md-1"><pems-button tone="primary" size="small" css="w-100"><i class="bi bi-plus-lg"></i></pems-button></div>
     </form>
     }
     else
@@ -746,7 +746,7 @@ else
                                     <input name="reason" class="form-control form-control-sm" style="width:140px;" maxlength="500" required placeholder="@Localizer["Correction reason"]" />
                                 }
                                 <input type="number" name="returnQuantity" step="0.01" max="@outstanding" class="form-control form-control-sm" style="width:80px;" placeholder="@Localizer["Qty"]" required />
-                                <button type="submit" class="btn btn-sm btn-outline-secondary" title="Return"><i class="bi bi-arrow-return-left"></i></button>
+                                <pems-button tone="neutral" size="small" outline="true" type="submit" title="Return"><i class="bi bi-arrow-return-left"></i></pems-button>
                             </form>
                         }
                     </td>
@@ -773,7 +773,7 @@ else
     <div class="input-group input-group-sm mb-2" style="max-width:420px;">
         <span class="input-group-text"><i class="bi bi-upc-scan"></i></span>
         <input type="text" id="spareUsageScanInput" class="form-control" dir="ltr" placeholder="@Localizer["Scan Material barcode..."]" />
-        <button type="button" class="btn btn-outline-secondary" id="spareUsageScanBtn">@Localizer["Resolve"]</button>
+        <pems-button tone="neutral" outline="true" type="button" id="spareUsageScanBtn">@Localizer["Resolve"]</pems-button>
     </div>
     <form asp-action="AddSpareUsage" method="post" class="row g-2 mt-2">
         <input type="hidden" name="workOrderId" value="@Model.WorkOrderId" />
@@ -788,7 +788,7 @@ else
         </div>
         <div class="col-md-3"><input name="quantity" type="number" step="0.01" class="form-control form-control-sm" placeholder="@Localizer["Quantity"]" required /></div>
         <div class="col-md-3"><input name="unitCost" type="number" step="0.01" class="form-control form-control-sm" placeholder="@Localizer["Unit cost (optional)"]" /></div>
-        <div class="col-md-2"><button class="btn btn-sm btn-pems-solid w-100"><i class="bi bi-plus-lg"></i> @Localizer["Add"]</button></div>
+        <div class="col-md-2"><pems-button tone="primary" size="small" css="w-100"><i class="bi bi-plus-lg"></i> @Localizer["Add"]</pems-button></div>
     </form>
     }
 </div>
@@ -883,7 +883,7 @@ else
             </select>
         </div>
         <div class="col-md-2"><input name="plannedHours" type="number" step="0.5" class="form-control form-control-sm" placeholder="@Localizer["Planned h"]" /></div>
-        <div class="col-md-3"><button class="btn btn-sm btn-pems-solid w-100"><i class="bi bi-plus-lg"></i> @Localizer["Add"]</button></div>
+        <div class="col-md-3"><pems-button tone="primary" size="small" css="w-100"><i class="bi bi-plus-lg"></i> @Localizer["Add"]</pems-button></div>
     </form>
     }
     else
@@ -920,7 +920,7 @@ else
                                     <option value="@code" selected="@(code == rm.SupplyCode)">@Localizer["Whi_Supply_" + code]</option>
                                 }
                             </select>
-                            <button type="submit" class="btn btn-sm btn-outline-secondary" title="@Localizer["Whi_Save"]"><i class="bi bi-check2"></i></button>
+                            <pems-button tone="neutral" size="small" outline="true" type="submit" title="@Localizer["Whi_Save"]"><i class="bi bi-check2"></i></pems-button>
                         </form>
                         }
                         else
@@ -945,7 +945,7 @@ else
                         <form asp-action="RemoveRequiredMaterial" method="post" class="d-inline">
                             <input type="hidden" name="workOrderMaterialId" value="@rm.WorkOrderMaterialId" />
                             <input type="hidden" name="workOrderId" value="@Model.WorkOrderId" />
-                            <button type="submit" class="btn btn-sm btn-outline-danger" title="@Localizer["حذف"]"><i class="bi bi-x"></i></button>
+                            <pems-button tone="danger" size="small" outline="true" type="submit" title="@Localizer["حذف"]"><i class="bi bi-x"></i></pems-button>
                         </form>
                         }
                     </td>
@@ -978,7 +978,7 @@ else
                 {
                     <form asp-action="RequestWarehouseMaterials" method="post" class="d-inline">
                         <input type="hidden" name="workOrderId" value="@Model.WorkOrderId" />
-                        <button type="submit" class="btn btn-sm btn-outline-primary"><i class="bi bi-send" aria-hidden="true"></i> @Localizer["Whi_Request"]</button>
+                        <pems-button tone="primary" size="small" outline="true" type="submit"><i class="bi bi-send" aria-hidden="true"></i> @Localizer["Whi_Request"]</pems-button>
                     </form>
                 }
                 <span class="text-muted">@Localizer["Whi_RequestHint"]</span>
@@ -1002,7 +1002,7 @@ else
     <div class="input-group input-group-sm mb-2" style="max-width:420px;">
         <span class="input-group-text"><i class="bi bi-upc-scan"></i></span>
         <input type="text" id="requiredMaterialScanInput" class="form-control" dir="ltr" placeholder="@Localizer["Scan Material barcode..."]" />
-        <button type="button" class="btn btn-outline-secondary" id="requiredMaterialScanBtn">@Localizer["Resolve"]</button>
+        <pems-button tone="neutral" outline="true" type="button" id="requiredMaterialScanBtn">@Localizer["Resolve"]</pems-button>
     </div>
     <form asp-action="AddRequiredMaterial" method="post" class="row g-2">
         <input type="hidden" name="workOrderId" value="@Model.WorkOrderId" />
@@ -1012,7 +1012,7 @@ else
             </select>
         </div>
         <div class="col-md-3"><input name="requiredQuantity" type="number" step="0.001" class="form-control form-control-sm" placeholder="@Localizer["Quantity"]" required /></div>
-        <div class="col-md-3"><button class="btn btn-sm btn-pems-solid w-100"><i class="bi bi-plus-lg"></i> @Localizer["Add"]</button></div>
+        <div class="col-md-3"><pems-button tone="primary" size="small" css="w-100"><i class="bi bi-plus-lg"></i> @Localizer["Add"]</pems-button></div>
     </form>
     }
 </div>
@@ -1041,7 +1041,7 @@ else
             <input type="hidden" name="workOrderId" value="@Model.WorkOrderId" />
             <div class="col-md-4"><input name="code" class="form-control form-control-sm" placeholder="@Localizer["کد Crew"]" required /></div>
             <div class="col-md-5"><input name="name" class="form-control form-control-sm" placeholder="@Localizer["نام Crew"]" required /></div>
-            <div class="col-md-3"><button class="btn btn-sm btn-outline-primary w-100"><i class="bi bi-plus-lg"></i> @Localizer["ساخت Crew برای این WorkOrder"]</button></div>
+            <div class="col-md-3"><pems-button tone="primary" size="small" outline="true" css="w-100"><i class="bi bi-plus-lg"></i> @Localizer["ساخت Crew برای این WorkOrder"]</pems-button></div>
         </form>
     }
 </div>

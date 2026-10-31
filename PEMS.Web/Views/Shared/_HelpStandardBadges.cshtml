@@ -44,8 +44,8 @@
 
     @if (!string.IsNullOrWhiteSpace(Model.OfficialReferenceUrl))
     {
-        <a href="@Model.OfficialReferenceUrl" target="_blank" rel="noopener noreferrer" class="btn btn-sm btn-outline-secondary">
+        <pems-button tone="neutral" size="small" outline="true" as="a" href="@Model.OfficialReferenceUrl" target="_blank" rel="noopener noreferrer">
             <i class="bi bi-box-arrow-up-right"></i> @L("Official source", "منبع رسمی")
-        </a>
+        </pems-button>
     }
 </div>

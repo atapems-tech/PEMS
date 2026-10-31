@@ -19,9 +19,9 @@
             {
                 <form asp-action="StageForReview" method="post" class="d-inline">
                     <input type="hidden" name="attachmentId" value="@attachment.AttachmentId" />
-                    <button type="submit" class="btn btn-sm btn-pems-solid">
+                    <pems-button tone="primary" size="small" type="submit">
                         <i class="bi bi-link-45deg"></i> Stage for Review (link to Equipment)
-                    </button>
+                    </pems-button>
                 </form>
             }
             <a asp-action="Index" class="btn btn-sm btn-outline-secondary"><i class="bi bi-arrow-left"></i> Back</a>

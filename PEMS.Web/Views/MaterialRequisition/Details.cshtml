@@ -95,7 +95,7 @@
                                 { <option value="@v" selected="@(v == q.ApprovalStatus)">@v</option> }
                             </select>
 
-                            <button type="submit" class="btn btn-sm btn-outline-primary">@Localizer["Save"]</button>
+                            <pems-button tone="primary" size="small" outline="true" type="submit">@Localizer["Save"]</pems-button>
                         </form>
                     </td>
                 </tr>
@@ -119,7 +119,7 @@
         <div class="col-md-2"><input name="inquiryDate" type="date" class="form-control form-control-sm" /></div>
         <div class="col-md-2"><input name="quotedAmount" type="number" step="0.01" class="form-control form-control-sm" placeholder="@Localizer["Amount"]" /></div>
         <div class="col-md-1"><input name="currency" class="form-control form-control-sm" value="USD" /></div>
-        <div class="col-md-2"><button type="submit" class="btn btn-sm btn-pems-solid w-100">@Localizer["Add"]</button></div>
+        <div class="col-md-2"><pems-button tone="primary" size="small" css="w-100" type="submit">@Localizer["Add"]</pems-button></div>
     </form>
 </div>
 

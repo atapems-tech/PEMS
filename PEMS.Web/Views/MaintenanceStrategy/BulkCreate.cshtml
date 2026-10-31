@@ -143,7 +143,7 @@
             }
         </div>
         <div class="col-md-6 d-flex align-items-end">
-            <button class="btn btn-sm btn-pems-solid w-100"><i class="bi bi-funnel"></i> @Localizer["فیلتر تجهیزات"]</button>
+            <pems-button tone="primary" size="small" css="w-100"><i class="bi bi-funnel"></i> @Localizer["فیلتر تجهیزات"]</pems-button>
         </div>
 
         @if (equipmentWithFlCount < 50)
@@ -181,8 +181,8 @@ else if (matchingCount.HasValue && matchingCount.Value > maxResults)
                 <div class="d-flex justify-content-between align-items-center mb-2">
                     <h6 class="mb-0 small fw-bold">انتخاب تجهیزات (@equipments.Count)</h6>
                     <div>
-                        <button type="button" class="btn btn-sm btn-outline-secondary" onclick="document.querySelectorAll('.eq-check').forEach(c => c.checked = true)">همه</button>
-                        <button type="button" class="btn btn-sm btn-outline-secondary" onclick="document.querySelectorAll('.eq-check').forEach(c => c.checked = false)">هیچ‌کدام</button>
+                        <pems-button tone="neutral" size="small" outline="true" type="button" onclick="document.querySelectorAll('.eq-check').forEach(c => c.checked = true)">همه</pems-button>
+                        <pems-button tone="neutral" size="small" outline="true" type="button" onclick="document.querySelectorAll('.eq-check').forEach(c => c.checked = false)">هیچ‌کدام</pems-button>
                     </div>
                 </div>
 
@@ -201,10 +201,10 @@ else if (matchingCount.HasValue && matchingCount.Value > maxResults)
                             </h2>
                             <div id="@areaSafeId" class="accordion-collapse collapse" data-bs-parent="#areaAccordion">
                                 <div class="accordion-body p-2">
-                                    <button type="button" class="btn btn-sm btn-outline-primary mb-2"
+                                    <pems-button tone="primary" size="small" outline="true" css="mb-2" type="button"
                                             onclick="document.querySelectorAll('.area-@areaSafeId').forEach(c => c.checked = true)">
                                         <i class="bi bi-check2-square"></i> انتخاب کل این واحد
-                                    </button>
+                                    </pems-button>
 
                                     @foreach (var typeGroup in byType)
                                     {
@@ -213,10 +213,10 @@ else if (matchingCount.HasValue && matchingCount.Value > maxResults)
                                         <div class="border rounded p-2 mb-2">
                                             <div class="d-flex justify-content-between align-items-center mb-1">
                                                 <span class="small fw-bold"><i class="bi bi-gear"></i> @typeGroup.Key <span class="badge bg-light text-dark">@typeGroup.Count()</span></span>
-                                                <button type="button" class="btn btn-sm btn-outline-secondary py-0"
+                                                <pems-button tone="neutral" size="small" outline="true" css="py-0" type="button"
                                                         onclick="document.querySelectorAll('.type-@typeSafeId').forEach(c => c.checked = true)">
                                                     انتخاب این نوع
-                                                </button>
+                                                </pems-button>
                                             </div>
                                             <table class="table table-sm mb-0">
                                                 <tbody>
@@ -267,7 +267,7 @@ else if (matchingCount.HasValue && matchingCount.Value > maxResults)
                         <li>@Localizer["Rcm_HasConflict"]: <strong>@conflicts</strong> <span class="text-muted">(@Localizer["Rcm_ConflictsSkipped"])</span></li>
                     </ul>
                     <p class="small text-muted">@Localizer["Rcm_AssignAtomicNote"]</p>
-                    <button type="submit" class="btn btn-pems-solid" onclick="return confirm('@Localizer["Rcm_ConfirmBulkAssign"]');"><i class="bi bi-check2-all"></i> @Localizer["Rcm_AssignSelected"]</button>
+                    <pems-button tone="primary" type="submit" onclick="return confirm('@Localizer["Rcm_ConfirmBulkAssign"]');"><i class="bi bi-check2-all"></i> @Localizer["Rcm_AssignSelected"]</pems-button>
                 }
                 <div class="small text-muted mt-3">@Localizer["Rcm_NeedTemplate"] <a asp-action="Create">@Localizer["Rcm_NewStrategy"]</a></div>
             </div>

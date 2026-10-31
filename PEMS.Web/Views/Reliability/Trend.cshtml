@@ -44,7 +44,7 @@
         {
             <div><label class="form-label small mb-0">@Localizer["From"]</label><input type="date" name="from" value="@Model.FromDate.ToString("yyyy-MM-dd")" class="form-control form-control-sm" /></div>
             <div><label class="form-label small mb-0">@Localizer["To"]</label><input type="date" name="to" value="@Model.ToDate.ToString("yyyy-MM-dd")" class="form-control form-control-sm" /></div>
-            <button type="submit" class="btn btn-sm btn-outline-primary">@Localizer["Apply"]</button>
+            <pems-button tone="primary" size="small" outline="true" type="submit">@Localizer["Apply"]</pems-button>
         }
     </form>
     <div class="small text-muted mt-2">

@@ -40,7 +40,7 @@
         @if (ViewBag.CanRunReminders == true)
         {
             <form asp-action="SendReminders" method="post" onsubmit="return confirm('@Localizer["Lt_RemindersConfirm"]');">
-                <button type="submit" class="btn btn-sm btn-outline-secondary"><i class="bi bi-bell" aria-hidden="true"></i> @Localizer["Lt_RemindersRun"]</button>
+                <pems-button tone="neutral" size="small" outline="true" type="submit"><i class="bi bi-bell" aria-hidden="true"></i> @Localizer["Lt_RemindersRun"]</pems-button>
             </form>
         }
         <a asp-action="Index" class="btn btn-sm btn-outline-secondary"><i class="bi bi-arrow-left-short" aria-hidden="true"></i> @Localizer["Correspondence"]</a>

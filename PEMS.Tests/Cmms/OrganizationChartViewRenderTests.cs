@@ -46,7 +46,7 @@ public class OrganizationChartViewRenderTests
 
         // exactly three filter buttons, "all" pressed by default
         Assert.Equal(3, Regex.Matches(html, "data-filter=\"(all|filled|vacant)\"").Count);
-        Assert.Matches(new Regex("class=\"btn btn-outline-secondary active\" data-filter=\"all\" aria-pressed=\"true\""), html);
+        Assert.Matches(new Regex("class=\"btn btn-outline-secondary active\"[^>]* data-filter=\"all\" aria-pressed=\"true\""), html);
         Assert.Contains("data-filter=\"filled\" aria-pressed=\"false\"", html);
         Assert.Contains("data-filter=\"vacant\" aria-pressed=\"false\"", html);
     }

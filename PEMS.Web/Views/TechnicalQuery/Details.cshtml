@@ -73,7 +73,7 @@
     <form asp-action="UploadAttachment" method="post" enctype="multipart/form-data" class="d-flex gap-2">
         <input type="hidden" name="technicalQueryId" value="@Model.TechnicalQueryId" />
         <input type="file" name="file" class="form-control form-control-sm" required />
-        <button type="submit" class="btn btn-outline-primary btn-sm text-nowrap"><i class="bi bi-upload"></i> افزودن</button>
+        <pems-button tone="primary" size="small" outline="true" css="text-nowrap" type="submit"><i class="bi bi-upload"></i> افزودن</pems-button>
     </form>
 </div>
 
@@ -92,7 +92,7 @@
             <form asp-action="Respond" method="post">
                 <input type="hidden" name="technicalQueryId" value="@Model.TechnicalQueryId" />
                 <textarea name="responseText" class="form-control mb-2" rows="3" placeholder="@Localizer["متن پاسخ..."]" required></textarea>
-                <button type="submit" class="btn btn-pems-solid btn-sm"><i class="bi bi-reply"></i> ثبت پاسخ</button>
+                <pems-button tone="primary" size="small" type="submit"><i class="bi bi-reply"></i> ثبت پاسخ</pems-button>
             </form>
         }
     }
@@ -102,11 +102,11 @@
         <div class="d-flex gap-2">
             <form asp-action="Confirm" method="post">
                 <input type="hidden" name="technicalQueryId" value="@Model.TechnicalQueryId" />
-                <button type="submit" class="btn btn-success btn-sm"><i class="bi bi-check-lg"></i> پاسخ کافیه - ببند</button>
+                <pems-button tone="success" size="small" type="submit"><i class="bi bi-check-lg"></i> پاسخ کافیه - ببند</pems-button>
             </form>
-            <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#reopenModal">
+            <pems-button tone="danger" size="small" type="button" data-bs-toggle="modal" data-bs-target="#reopenModal">
                 <i class="bi bi-arrow-repeat"></i> پاسخ کافی نیست
-            </button>
+            </pems-button>
         </div>
 
         <div class="modal fade" id="reopenModal" tabindex="-1">
@@ -116,8 +116,8 @@
                     <div class="modal-header"><h6 class="modal-title">@Localizer["دلیل بازگشت"]</h6></div>
                     <div class="modal-body"><textarea name="reason" class="form-control" rows="3" required></textarea></div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">@Localizer["انصراف"]</button>
-                        <button type="submit" class="btn btn-danger btn-sm">@Localizer["بازگشت به دیسیپلین"]</button>
+                        <pems-button tone="neutral" size="small" outline="true" type="button" data-bs-dismiss="modal">@Localizer["انصراف"]</pems-button>
+                        <pems-button tone="danger" size="small" type="submit">@Localizer["بازگشت به دیسیپلین"]</pems-button>
                     </div>
                 </form>
             </div></div>

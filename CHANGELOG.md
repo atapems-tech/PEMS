@@ -3,6 +3,14 @@
 All notable changes to PEMS. No system version is defined yet (plan row F_CI), so entries are grouped by date
 and theme and were reconstructed from the git history (initial import 2026-09-05). Newest first.
 
+## 2026-10-31 - `<pems-button>` and the buttons in the views (SCRUM-53, #31)
+
+### Added
+- `<pems-button tone size outline css as>text</pems-button>`: writes a `button` (or an `a` with `as="a"`) with the classes from `ButtonState`, keeps the page's own attributes (type, id, href, data-*, onclick) and content. Tones neutral, primary, danger, success, warning, info, light, dark; sizes small, medium, large.
+
+### Changed
+- 741 static buttons and links in 181 views now use `<pems-button>` with the same classes; the button ratchet fell from 1126 to 385. Not moved: tags with `asp-*` attributes (the built-in anchor helper does not run on a renamed element), tags with Razor expressions in the start tag, buttons inside `<script>` strings, solid `btn-primary`, `btn-link`, and other special forms.
+
 ## 2026-10-31 - Badge and Button skin, `<pems-badge>` (SCRUM-53, #31)
 
 ### Added

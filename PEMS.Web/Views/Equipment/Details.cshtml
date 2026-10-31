@@ -145,8 +145,8 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">@Localizer["Cancel"]</button>
-                <button type="submit" class="btn btn-pems-solid btn-sm">@Localizer["Save"]</button>
+                <pems-button tone="neutral" size="small" outline="true" type="button" data-bs-dismiss="modal">@Localizer["Cancel"]</pems-button>
+                <pems-button tone="primary" size="small" type="submit">@Localizer["Save"]</pems-button>
             </div>
         </form>
     </div></div>
@@ -447,7 +447,7 @@
                     </div>
                     <div class="col-md-2">
                         <input type="hidden" name="status" value="Active" />
-                        <button type="submit" class="btn btn-sm btn-pems-solid"><i class="bi bi-plus-lg"></i> @Localizer["Cm_CreateAsset"]</button>
+                        <pems-button tone="primary" size="small" type="submit"><i class="bi bi-plus-lg"></i> @Localizer["Cm_CreateAsset"]</pems-button>
                     </div>
                 </form>
             }
@@ -653,9 +653,9 @@
         <div class="content-card">
             <div class="d-flex justify-content-between align-items-center mb-3">
                 <h6 class="mb-0"><i class="bi bi-clipboard-pulse"></i> @Localizer["Cm_SecInspections"]</h6>
-                <button type="button" class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#newInspectionModal">
+                <pems-button tone="primary" size="small" outline="true" type="button" data-bs-toggle="modal" data-bs-target="#newInspectionModal">
                     <i class="bi bi-plus-lg"></i> @Localizer["Cm_NewInspection"]
-                </button>
+                </pems-button>
             </div>
             <table class="table table-enterprise mb-0">
                 <thead>
@@ -691,7 +691,7 @@
                                 {
                                     <form asp-controller="Inspection" asp-action="RaiseWorkRequest" method="post" class="d-inline">
                                         <input type="hidden" name="inspectionRecordId" value="@i.InspectionRecordId" />
-                                        <button type="submit" class="btn btn-sm btn-outline-danger"><i class="bi bi-exclamation-triangle"></i> @Localizer["Cm_RaiseWr"]</button>
+                                        <pems-button tone="danger" size="small" outline="true" type="submit"><i class="bi bi-exclamation-triangle"></i> @Localizer["Cm_RaiseWr"]</pems-button>
                                     </form>
                                 }
                             </td>
@@ -734,8 +734,8 @@
                             <textarea name="description" class="form-control form-control-sm" rows="2"></textarea></div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">@Localizer["Cancel"]</button>
-                        <button type="submit" class="btn btn-pems-solid btn-sm">@Localizer["Save"]</button>
+                        <pems-button tone="neutral" size="small" outline="true" type="button" data-bs-dismiss="modal">@Localizer["Cancel"]</pems-button>
+                        <pems-button tone="primary" size="small" type="submit">@Localizer["Save"]</pems-button>
                     </div>
                 </form>
             </div></div>

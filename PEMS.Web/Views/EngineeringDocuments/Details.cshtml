@@ -243,9 +243,9 @@
             {
                 <form asp-action="Unfreeze" asp-route-id="@Model.DocumentId" method="post" class="d-flex flex-wrap gap-2 align-items-center">
                     <input type="text" name="reason" class="form-control form-control-sm" style="max-width:240px;" placeholder="Unfreeze reason (required)" required />
-                    <button type="submit" class="btn btn-outline-dark btn-sm" onclick="return confirm('انجماد این مدرک برداشته شود؟');">
+                    <pems-button tone="dark" size="small" outline="true" type="submit" onclick="return confirm('انجماد این مدرک برداشته شود؟');">
                         <i class="bi bi-sun"></i> @Localizer["Unfreeze"]
-                    </button>
+                    </pems-button>
                 </form>
             }
         </pems-alert>
@@ -260,9 +260,9 @@
             {
                 <form asp-action="ReleaseHold" asp-route-id="@Model.DocumentId" method="post" class="d-flex flex-wrap gap-2 align-items-center">
                     <input type="text" name="reason" class="form-control form-control-sm" style="max-width:240px;" placeholder="Release reason (required)" required />
-                    <button type="submit" class="btn btn-outline-dark btn-sm" onclick="return confirm('Hold این مدرک رفع شود؟');">
+                    <pems-button tone="dark" size="small" outline="true" type="submit" onclick="return confirm('Hold این مدرک رفع شود؟');">
                         <i class="bi bi-play-circle"></i> @Localizer["Release Hold"]
-                    </button>
+                    </pems-button>
                 </form>
             }
         </pems-alert>
@@ -487,10 +487,10 @@
                     <p class="small text-muted border rounded p-2 text-center mb-2">@Localizer["Ed_NoCommentsHint"]</p>
                 }
                 <div class="d-flex flex-wrap gap-2">
-                    <button type="button" class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#addEngCommentModal"><i class="bi bi-plus-lg" aria-hidden="true"></i> @Localizer["Add Comment"]</button>
+                    <pems-button tone="primary" size="small" outline="true" type="button" data-bs-toggle="modal" data-bs-target="#addEngCommentModal"><i class="bi bi-plus-lg" aria-hidden="true"></i> @Localizer["Add Comment"]</pems-button>
                     @if (engComments.Any())
                     {
-                        <button type="button" class="btn btn-sm btn-outline-secondary" data-bs-toggle="tab" data-bs-target="#tab-comments">@Localizer["Ed_ViewAll"]</button>
+                        <pems-button tone="neutral" size="small" outline="true" type="button" data-bs-toggle="tab" data-bs-target="#tab-comments">@Localizer["Ed_ViewAll"]</pems-button>
                     }
                 </div>
             </div>
@@ -501,7 +501,7 @@
                     <a asp-action="UploadAttachment" asp-route-id="@Model.DocumentId" class="btn btn-sm btn-outline-secondary"><i class="bi bi-upload" aria-hidden="true"></i> @Localizer["Ed_Upload"]</a>
                     @if ((Model.Attachments?.Count ?? 0) > 0)
                     {
-                        <button type="button" class="btn btn-sm btn-outline-secondary" data-bs-toggle="tab" data-bs-target="#tab-attachments">@Localizer["Ed_ViewAll"]</button>
+                        <pems-button tone="neutral" size="small" outline="true" type="button" data-bs-toggle="tab" data-bs-target="#tab-attachments">@Localizer["Ed_ViewAll"]</pems-button>
                     }
                 </div>
             </div>
@@ -579,10 +579,10 @@
                                             <a asp-controller="EngineeringDocumentIntelligence" asp-action="Review" asp-route-id="@Model.DocumentId" class="btn btn-sm btn-outline-secondary">Intelligence</a>
                                         }
                                         <form asp-controller="OCRProcessing" asp-action="Retry" asp-route-id="@file.AttachmentId" method="post" class="d-inline">
-                                            <button class="btn btn-sm btn-outline-secondary" data-bs-toggle="tooltip" title="Re-analyze" aria-label="Re-analyze @file.FileName"><i class="bi bi-arrow-repeat"></i></button>
+                                            <pems-button tone="neutral" size="small" outline="true" data-bs-toggle="tooltip" title="Re-analyze" aria-label="Re-analyze @file.FileName"><i class="bi bi-arrow-repeat"></i></pems-button>
                                         </form>
                                         <form asp-action="DeleteAttachment" asp-route-id="@file.AttachmentId" method="post" class="d-inline" onsubmit="return confirm('Delete file?')">
-                                            <button class="btn btn-sm btn-outline-danger" data-bs-toggle="tooltip" title="Delete attachment" aria-label="Delete @file.FileName"><i class="bi bi-trash"></i></button>
+                                            <pems-button tone="danger" size="small" outline="true" data-bs-toggle="tooltip" title="Delete attachment" aria-label="Delete @file.FileName"><i class="bi bi-trash"></i></pems-button>
                                         </form>
                                     </div>
                                 </td>
@@ -874,11 +874,11 @@
         <div class="d-flex justify-content-between align-items-center mb-2">
             <h6 class="mb-0"><i class="bi bi-file-earmark-pdf"></i> Document Viewer <span class="text-muted small">(click anywhere on the page to pin a comment)</span></h6>
             <div class="d-flex align-items-center gap-2">
-                <button type="button" class="btn btn-sm btn-outline-secondary" id="pdfPrevPage" data-bs-toggle="tooltip" title="@Localizer["Previous page"]" aria-label="@Localizer["Previous page"]"><i class="bi bi-chevron-left"></i></button>
+                <pems-button tone="neutral" size="small" outline="true" type="button" id="pdfPrevPage" data-bs-toggle="tooltip" title="@Localizer["Previous page"]" aria-label="@Localizer["Previous page"]"><i class="bi bi-chevron-left"></i></pems-button>
                 <span class="small" id="pdfPageLabel">Page - / -</span>
-                <button type="button" class="btn btn-sm btn-outline-secondary" id="pdfNextPage" data-bs-toggle="tooltip" title="@Localizer["Next page"]" aria-label="@Localizer["Next page"]"><i class="bi bi-chevron-right"></i></button>
-                <button type="button" class="btn btn-sm btn-outline-secondary" id="pdfZoomOut" data-bs-toggle="tooltip" title="@Localizer["Zoom out"]" aria-label="@Localizer["Zoom out"]"><i class="bi bi-zoom-out"></i></button>
-                <button type="button" class="btn btn-sm btn-outline-secondary" id="pdfZoomIn" data-bs-toggle="tooltip" title="@Localizer["Zoom in"]" aria-label="@Localizer["Zoom in"]"><i class="bi bi-zoom-in"></i></button>
+                <pems-button tone="neutral" size="small" outline="true" type="button" id="pdfNextPage" data-bs-toggle="tooltip" title="@Localizer["Next page"]" aria-label="@Localizer["Next page"]"><i class="bi bi-chevron-right"></i></pems-button>
+                <pems-button tone="neutral" size="small" outline="true" type="button" id="pdfZoomOut" data-bs-toggle="tooltip" title="@Localizer["Zoom out"]" aria-label="@Localizer["Zoom out"]"><i class="bi bi-zoom-out"></i></pems-button>
+                <pems-button tone="neutral" size="small" outline="true" type="button" id="pdfZoomIn" data-bs-toggle="tooltip" title="@Localizer["Zoom in"]" aria-label="@Localizer["Zoom in"]"><i class="bi bi-zoom-in"></i></pems-button>
             </div>
         </div>
         <div id="pdfCanvasWrapper" style="position:relative; border:1px solid var(--pems-surface-border,#dee2e6); overflow:auto; max-height:75vh; text-align:center; cursor:crosshair;">
@@ -1039,9 +1039,9 @@
                         }
                         @if (string.IsNullOrEmpty(c.ResponseText) && string.IsNullOrEmpty(c.ReplyAttachmentFilePath))
                         {
-                            <button type="button" class="btn btn-sm btn-outline-primary mt-1" data-bs-toggle="modal" data-bs-target="#engReplyModal_@c.VDRCommentId">
+                            <pems-button tone="primary" size="small" outline="true" css="mt-1" type="button" data-bs-toggle="modal" data-bs-target="#engReplyModal_@c.VDRCommentId">
                                 <i class="bi bi-reply"></i> Reply
-                            </button>
+                            </pems-button>
                         }
                     </td>
                 </tr>
@@ -1050,9 +1050,9 @@
     </table>
     @if (!engComments.Any()) { <p class="text-muted">No comments recorded yet.</p> }
 
-    <button type="button" class="btn btn-sm btn-pems-solid" data-bs-toggle="modal" data-bs-target="#addEngCommentModal">
+    <pems-button tone="primary" size="small" type="button" data-bs-toggle="modal" data-bs-target="#addEngCommentModal">
         <i class="bi bi-plus-lg"></i> @Localizer["Add Comment"]
-    </button>
+    </pems-button>
 </div>
     </div>
 
@@ -1101,8 +1101,8 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">@Localizer["انصراف"]</button>
-                    <button type="submit" class="btn btn-warning btn-sm"><i class="bi bi-send"></i> @Localizer["تایید و ارسال"]</button>
+                    <pems-button tone="neutral" size="small" outline="true" type="button" data-bs-dismiss="modal">@Localizer["انصراف"]</pems-button>
+                    <pems-button tone="warning" size="small" type="submit"><i class="bi bi-send"></i> @Localizer["تایید و ارسال"]</pems-button>
                 </div>
             </form>
         </div>
@@ -1125,8 +1125,8 @@
                     <textarea name="comment" class="form-control form-control-sm" rows="3" required></textarea>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">@Localizer["انصراف"]</button>
-                    <button type="submit" class="btn btn-warning btn-sm">@Localizer["ثبت کامنت"]</button>
+                    <pems-button tone="neutral" size="small" outline="true" type="button" data-bs-dismiss="modal">@Localizer["انصراف"]</pems-button>
+                    <pems-button tone="warning" size="small" type="submit">@Localizer["ثبت کامنت"]</pems-button>
                 </div>
             </form>
         </div>
@@ -1145,8 +1145,8 @@
                     <textarea name="comment" class="form-control form-control-sm" rows="3" required></textarea>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">@Localizer["انصراف"]</button>
-                    <button type="submit" class="btn btn-danger btn-sm">@Localizer["رد کن"]</button>
+                    <pems-button tone="neutral" size="small" outline="true" type="button" data-bs-dismiss="modal">@Localizer["انصراف"]</pems-button>
+                    <pems-button tone="danger" size="small" type="submit">@Localizer["رد کن"]</pems-button>
                 </div>
             </form>
         </div>
@@ -1166,8 +1166,8 @@
                     <textarea name="comment" class="form-control form-control-sm" rows="3" placeholder="@Localizer["توضیح اصلاحات لازم"]" required></textarea>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">@Localizer["انصراف"]</button>
-                    <button type="submit" class="btn btn-warning btn-sm">@Localizer["برگردان برای اصلاح"]</button>
+                    <pems-button tone="neutral" size="small" outline="true" type="button" data-bs-dismiss="modal">@Localizer["انصراف"]</pems-button>
+                    <pems-button tone="warning" size="small" type="submit">@Localizer["برگردان برای اصلاح"]</pems-button>
                 </div>
             </form>
         </div>
@@ -1190,8 +1190,8 @@
                         <input type="text" name="reason" class="form-control form-control-sm" required />
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">@Localizer["Cancel"]</button>
-                        <button type="submit" class="btn btn-outline-dark btn-sm"><i class="bi bi-snow"></i> @Localizer["Freeze"]</button>
+                        <pems-button tone="neutral" size="small" outline="true" type="button" data-bs-dismiss="modal">@Localizer["Cancel"]</pems-button>
+                        <pems-button tone="dark" size="small" outline="true" type="submit"><i class="bi bi-snow"></i> @Localizer["Freeze"]</pems-button>
                     </div>
                 </form>
             </div>
@@ -1211,8 +1211,8 @@
                         <input type="text" name="reason" class="form-control form-control-sm" required />
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">@Localizer["Cancel"]</button>
-                        <button type="submit" class="btn btn-outline-dark btn-sm"><i class="bi bi-pause-circle"></i> @Localizer["Hold"]</button>
+                        <pems-button tone="neutral" size="small" outline="true" type="button" data-bs-dismiss="modal">@Localizer["Cancel"]</pems-button>
+                        <pems-button tone="dark" size="small" outline="true" type="submit"><i class="bi bi-pause-circle"></i> @Localizer["Hold"]</pems-button>
                     </div>
                 </form>
             </div>
@@ -1301,7 +1301,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">@Localizer["انصراف"]</button>
+                    <pems-button tone="neutral" size="small" outline="true" type="button" data-bs-dismiss="modal">@Localizer["انصراف"]</pems-button>
                     <button type="submit" class="btn btn-primary btn-sm"><i class="bi bi-send-check"></i> تایید و صدور</button>
                 </div>
             </form>
@@ -1380,7 +1380,7 @@
                     }
                 </div>
                 <div class="modal-footer">
-                    <button type="submit" class="btn btn-pems-solid btn-sm">Create Revision</button>
+                    <pems-button tone="primary" size="small" type="submit">Create Revision</pems-button>
                 </div>
             </form>
         </div>
@@ -1491,8 +1491,8 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">@Localizer["Cancel"]</button>
-                    <button type="submit" class="btn btn-pems-solid">Save Comment</button>
+                    <pems-button tone="neutral" outline="true" type="button" data-bs-dismiss="modal">@Localizer["Cancel"]</pems-button>
+                    <pems-button tone="primary" type="submit">Save Comment</pems-button>
                 </div>
             </form>
         </div>
@@ -1520,8 +1520,8 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">@Localizer["Cancel"]</button>
-                        <button type="submit" class="btn btn-pems-solid btn-sm">Save Reply</button>
+                        <pems-button tone="neutral" outline="true" type="button" data-bs-dismiss="modal">@Localizer["Cancel"]</pems-button>
+                        <pems-button tone="primary" size="small" type="submit">Save Reply</pems-button>
                     </div>
                 </form>
             </div>

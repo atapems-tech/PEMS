@@ -12,7 +12,7 @@
     <form asp-action="Index" method="get" class="d-flex gap-2" role="search">
         <input type="search" name="q" value="@query" class="form-control" placeholder="@Localizer["GlobalSearch_Placeholder"]"
                aria-label="@Localizer["GlobalSearch_Placeholder"]" minlength="2" autofocus />
-        <button class="btn btn-pems-solid"><i class="bi bi-search" aria-hidden="true"></i> @Localizer["Search"]</button>
+        <pems-button tone="primary"><i class="bi bi-search" aria-hidden="true"></i> @Localizer["Search"]</pems-button>
     </form>
     <p class="text-muted small mt-2 mb-0">@Localizer["GlobalSearch_PaletteHint"]</p>
 </div>

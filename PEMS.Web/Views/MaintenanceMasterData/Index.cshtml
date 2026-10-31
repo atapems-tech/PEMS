@@ -111,9 +111,9 @@
                     گروه‌بندی تعمیراتی دقیق‌تر از Discipline (مثلاً «Rotating Equipment» زیر «Mechanical») -
                     Team ها زیر همین گروه‌ها تعریف می‌شوند.
                 </p>
-                <button type="button" class="btn btn-pems-solid btn-sm text-nowrap" data-bs-toggle="modal" data-bs-target="#createGroupModal">
+                <pems-button tone="primary" size="small" css="text-nowrap" type="button" data-bs-toggle="modal" data-bs-target="#createGroupModal">
                     <i class="bi bi-plus-lg"></i> @Localizer["گروه جدید"]
-                </button>
+                </pems-button>
             </div>
 
             <table class="table table-enterprise">
@@ -130,7 +130,7 @@
                             <td class="text-end">
                                 <form asp-action="ToggleGroupActive" method="post" class="d-inline">
                                     <input type="hidden" name="id" value="@g.MaintenanceGroupId" />
-                                    <button type="submit" class="btn btn-sm btn-outline-secondary" title="@Localizer["غیرفعال کردن"]" onclick="return confirm('این گروه غیرفعال بشه؟')"><i class="bi bi-x-circle"></i></button>
+                                    <pems-button tone="neutral" size="small" outline="true" type="submit" title="@Localizer["غیرفعال کردن"]" onclick="return confirm('این گروه غیرفعال بشه؟')"><i class="bi bi-x-circle"></i></pems-button>
                                 </form>
                             </td>
                         </tr>
@@ -148,9 +148,9 @@
                     فهرست مشترک مهارت‌ها - از صفحه‌ی هر کارمند به او تخصیص داده می‌شود، یا به‌عنوان
                     پیش‌نیاز روی یک Work Order ثبت می‌شود.
                 </p>
-                <button type="button" class="btn btn-pems-solid btn-sm text-nowrap" data-bs-toggle="modal" data-bs-target="#createSkillModal">
+                <pems-button tone="primary" size="small" css="text-nowrap" type="button" data-bs-toggle="modal" data-bs-target="#createSkillModal">
                     <i class="bi bi-plus-lg"></i> @Localizer["مهارت جدید"]
-                </button>
+                </pems-button>
             </div>
 
             <table class="table table-enterprise">
@@ -165,7 +165,7 @@
                             <td class="text-end">
                                 <form asp-action="ToggleSkillActive" method="post" class="d-inline">
                                     <input type="hidden" name="id" value="@s.SkillId" />
-                                    <button type="submit" class="btn btn-sm btn-outline-secondary" title="@Localizer["غیرفعال کردن"]" onclick="return confirm('این مهارت غیرفعال بشه؟')"><i class="bi bi-x-circle"></i></button>
+                                    <pems-button tone="neutral" size="small" outline="true" type="submit" title="@Localizer["غیرفعال کردن"]" onclick="return confirm('این مهارت غیرفعال بشه؟')"><i class="bi bi-x-circle"></i></pems-button>
                                 </form>
                             </td>
                         </tr>
@@ -182,9 +182,9 @@
                 <p class="text-muted small mb-0">
                     فهرست مشترک انواع صلاحیت - نمونه‌ی هر کارمند از صفحه‌ی جزئیات همان کارمند ثبت می‌شود.
                 </p>
-                <button type="button" class="btn btn-pems-solid btn-sm text-nowrap" data-bs-toggle="modal" data-bs-target="#createQualificationModal">
+                <pems-button tone="primary" size="small" css="text-nowrap" type="button" data-bs-toggle="modal" data-bs-target="#createQualificationModal">
                     <i class="bi bi-plus-lg"></i> @Localizer["صلاحیت جدید"]
-                </button>
+                </pems-button>
             </div>
 
             <table class="table table-enterprise">
@@ -199,7 +199,7 @@
                             <td class="text-end">
                                 <form asp-action="ToggleQualificationActive" method="post" class="d-inline">
                                     <input type="hidden" name="id" value="@q.QualificationId" />
-                                    <button type="submit" class="btn btn-sm btn-outline-secondary" title="@Localizer["غیرفعال کردن"]" onclick="return confirm('این صلاحیت غیرفعال بشه؟')"><i class="bi bi-x-circle"></i></button>
+                                    <pems-button tone="neutral" size="small" outline="true" type="submit" title="@Localizer["غیرفعال کردن"]" onclick="return confirm('این صلاحیت غیرفعال بشه؟')"><i class="bi bi-x-circle"></i></pems-button>
                                 </form>
                             </td>
                         </tr>
@@ -216,9 +216,9 @@
                 <p class="text-muted small mb-0">
                     فهرست مشترک انواع گواهینامه - شماره‌ی گواهی و تاریخ انقضای هر کارمند از صفحه‌ی جزئیات همان کارمند ثبت می‌شود.
                 </p>
-                <button type="button" class="btn btn-pems-solid btn-sm text-nowrap" data-bs-toggle="modal" data-bs-target="#createCertificationModal">
+                <pems-button tone="primary" size="small" css="text-nowrap" type="button" data-bs-toggle="modal" data-bs-target="#createCertificationModal">
                     <i class="bi bi-plus-lg"></i> @Localizer["گواهینامه جدید"]
-                </button>
+                </pems-button>
             </div>
 
             <table class="table table-enterprise">
@@ -233,7 +233,7 @@
                             <td class="text-end">
                                 <form asp-action="ToggleCertificationActive" method="post" class="d-inline">
                                     <input type="hidden" name="id" value="@c.CertificationId" />
-                                    <button type="submit" class="btn btn-sm btn-outline-secondary" title="@Localizer["غیرفعال کردن"]" onclick="return confirm('این گواهینامه غیرفعال بشه؟')"><i class="bi bi-x-circle"></i></button>
+                                    <pems-button tone="neutral" size="small" outline="true" type="submit" title="@Localizer["غیرفعال کردن"]" onclick="return confirm('این گواهینامه غیرفعال بشه؟')"><i class="bi bi-x-circle"></i></pems-button>
                                 </form>
                             </td>
                         </tr>
@@ -251,9 +251,9 @@
                     طبقه‌بندی استاندارد «نوع کار» (Corrective/Preventive/Predictive/...) - مرجع
                     داده‌محور برای Work Order و کاتالوگ Activity، طبق ISO 14224/SMRP.
                 </p>
-                <button type="button" class="btn btn-pems-solid btn-sm text-nowrap" data-bs-toggle="modal" data-bs-target="#createMaintenanceTypeModal">
+                <pems-button tone="primary" size="small" css="text-nowrap" type="button" data-bs-toggle="modal" data-bs-target="#createMaintenanceTypeModal">
                     <i class="bi bi-plus-lg"></i> @Localizer["Maintenance Type جدید"]
-                </button>
+                </pems-button>
             </div>
 
             <table class="table table-enterprise">
@@ -269,7 +269,7 @@
                             <td class="text-end">
                                 <form asp-action="ToggleMaintenanceTypeActive" method="post" class="d-inline">
                                     <input type="hidden" name="id" value="@t.MaintenanceTypeId" />
-                                    <button type="submit" class="btn btn-sm btn-outline-secondary" title="@Localizer["غیرفعال کردن"]" onclick="return confirm('این Maintenance Type غیرفعال بشه؟')"><i class="bi bi-x-circle"></i></button>
+                                    <pems-button tone="neutral" size="small" outline="true" type="submit" title="@Localizer["غیرفعال کردن"]" onclick="return confirm('این Maintenance Type غیرفعال بشه؟')"><i class="bi bi-x-circle"></i></pems-button>
                                 </form>
                             </td>
                         </tr>
@@ -287,9 +287,9 @@
                     سیاست RCM («چرا این استراتژی انتخاب شد» - PM/PDM/CBM/CM/EM/RTF/RCM/...) - جدا از
                     Maintenance Type بالا (که «نوع کار» را طبقه‌بندی می‌کند).
                 </p>
-                <button type="button" class="btn btn-pems-solid btn-sm text-nowrap" data-bs-toggle="modal" data-bs-target="#createStrategyTypeModal">
+                <pems-button tone="primary" size="small" css="text-nowrap" type="button" data-bs-toggle="modal" data-bs-target="#createStrategyTypeModal">
                     <i class="bi bi-plus-lg"></i> @Localizer["Strategy Type جدید"]
-                </button>
+                </pems-button>
             </div>
 
             <table class="table table-enterprise">
@@ -305,7 +305,7 @@
                             <td class="text-end">
                                 <form asp-action="ToggleMaintenanceStrategyTypeActive" method="post" class="d-inline">
                                     <input type="hidden" name="id" value="@t.MaintenanceStrategyTypeId" />
-                                    <button type="submit" class="btn btn-sm btn-outline-secondary" title="@Localizer["غیرفعال کردن"]" onclick="return confirm('این Strategy Type غیرفعال بشه؟')"><i class="bi bi-x-circle"></i></button>
+                                    <pems-button tone="neutral" size="small" outline="true" type="submit" title="@Localizer["غیرفعال کردن"]" onclick="return confirm('این Strategy Type غیرفعال بشه؟')"><i class="bi bi-x-circle"></i></pems-button>
                                 </form>
                             </td>
                         </tr>
@@ -323,9 +323,9 @@
                     طبقه‌بندی تجهیزات (مثلاً «Centrifugal Pump») - جدا از EquipmentType متنی روی
                     خودِ Equipment؛ برای پیوند Activity ↔ تجهیز به‌صورت داده‌محور استفاده می‌شود.
                 </p>
-                <button type="button" class="btn btn-pems-solid btn-sm text-nowrap" data-bs-toggle="modal" data-bs-target="#createEquipmentClassModal">
+                <pems-button tone="primary" size="small" css="text-nowrap" type="button" data-bs-toggle="modal" data-bs-target="#createEquipmentClassModal">
                     <i class="bi bi-plus-lg"></i> @Localizer["Equipment Class جدید"]
-                </button>
+                </pems-button>
             </div>
 
             <table class="table table-enterprise">
@@ -341,7 +341,7 @@
                             <td class="text-end">
                                 <form asp-action="ToggleEquipmentClassActive" method="post" class="d-inline">
                                     <input type="hidden" name="id" value="@t.EquipmentClassId" />
-                                    <button type="submit" class="btn btn-sm btn-outline-secondary" title="@Localizer["غیرفعال کردن"]" onclick="return confirm('این Equipment Class غیرفعال بشه؟')"><i class="bi bi-x-circle"></i></button>
+                                    <pems-button tone="neutral" size="small" outline="true" type="submit" title="@Localizer["غیرفعال کردن"]" onclick="return confirm('این Equipment Class غیرفعال بشه؟')"><i class="bi bi-x-circle"></i></pems-button>
                                 </form>
                             </td>
                         </tr>
@@ -359,9 +359,9 @@
                     فقط ابرداده‌ی استانداردهای صنعتی (سازمان/شماره/عنوان/دسته) - هیچ متن دارای
                     Copyright خودِ استاندارد این‌جا ذخیره نمی‌شود.
                 </p>
-                <button type="button" class="btn btn-pems-solid btn-sm text-nowrap" data-bs-toggle="modal" data-bs-target="#createStandardModal">
+                <pems-button tone="primary" size="small" css="text-nowrap" type="button" data-bs-toggle="modal" data-bs-target="#createStandardModal">
                     <i class="bi bi-plus-lg"></i> Standard Reference جدید
-                </button>
+                </pems-button>
             </div>
 
             <table class="table table-enterprise">
@@ -379,7 +379,7 @@
                             <td class="text-end">
                                 <form asp-action="ToggleStandardReferenceActive" method="post" class="d-inline">
                                     <input type="hidden" name="id" value="@s.StandardReferenceId" />
-                                    <button type="submit" class="btn btn-sm btn-outline-secondary" title="@Localizer["غیرفعال کردن"]" onclick="return confirm('این Standard Reference غیرفعال بشه؟')"><i class="bi bi-x-circle"></i></button>
+                                    <pems-button tone="neutral" size="small" outline="true" type="submit" title="@Localizer["غیرفعال کردن"]" onclick="return confirm('این Standard Reference غیرفعال بشه؟')"><i class="bi bi-x-circle"></i></pems-button>
                                 </form>
                             </td>
                         </tr>
@@ -397,9 +397,9 @@
                     کاتالوگ فعالیت‌های استاندارد تعمیراتی (مثلاً «Vibration Measurement») - زیر یک
                     Maintenance Group و Maintenance Type دسته‌بندی می‌شود.
                 </p>
-                <button type="button" class="btn btn-pems-solid btn-sm text-nowrap" data-bs-toggle="modal" data-bs-target="#createActivityModal">
+                <pems-button tone="primary" size="small" css="text-nowrap" type="button" data-bs-toggle="modal" data-bs-target="#createActivityModal">
                     <i class="bi bi-plus-lg"></i> Activity جدید
-                </button>
+                </pems-button>
             </div>
 
             <table class="table table-enterprise">
@@ -416,7 +416,7 @@
                             <td class="text-end">
                                 <form asp-action="ToggleMaintenanceActivityActive" method="post" class="d-inline">
                                     <input type="hidden" name="id" value="@a.MaintenanceActivityId" />
-                                    <button type="submit" class="btn btn-sm btn-outline-secondary" title="@Localizer["غیرفعال کردن"]" onclick="return confirm('این Activity غیرفعال بشه؟')"><i class="bi bi-x-circle"></i></button>
+                                    <pems-button tone="neutral" size="small" outline="true" type="submit" title="@Localizer["غیرفعال کردن"]" onclick="return confirm('این Activity غیرفعال بشه؟')"><i class="bi bi-x-circle"></i></pems-button>
                                 </form>
                             </td>
                         </tr>
@@ -449,7 +449,7 @@
                             <td class="text-end">
                                 <form asp-action="ToggleFailureModeActive" method="post" class="d-inline">
                                     <input type="hidden" name="id" value="@fm.FailureModeId" />
-                                    <button type="submit" class="btn btn-sm btn-outline-secondary" title="@Localizer["غیرفعال کردن"]" onclick="return confirm('این Failure Mode غیرفعال بشه؟')"><i class="bi bi-x-circle"></i></button>
+                                    <pems-button tone="neutral" size="small" outline="true" type="submit" title="@Localizer["غیرفعال کردن"]" onclick="return confirm('این Failure Mode غیرفعال بشه؟')"><i class="bi bi-x-circle"></i></pems-button>
                                 </form>
                             </td>
                         </tr>
@@ -482,7 +482,7 @@
                             <td class="text-end">
                                 <form asp-action="TogglePMTemplateActive" method="post" class="d-inline">
                                     <input type="hidden" name="id" value="@pt.PMTemplateId" />
-                                    <button type="submit" class="btn btn-sm btn-outline-secondary" title="@Localizer["غیرفعال کردن"]" onclick="return confirm('این PM Template غیرفعال بشه؟')"><i class="bi bi-x-circle"></i></button>
+                                    <pems-button tone="neutral" size="small" outline="true" type="submit" title="@Localizer["غیرفعال کردن"]" onclick="return confirm('این PM Template غیرفعال بشه؟')"><i class="bi bi-x-circle"></i></pems-button>
                                 </form>
                             </td>
                         </tr>
@@ -501,9 +501,9 @@
                     (Normal/Warning/Alarm/Critical) جداگانه و فقط با مقدار واقعی مهندسی ثبت می‌شوند؛
                     نبودِ یک ردیف Limit یعنی «هنوز پیکربندی نشده»، نه صفر/عادی فرضی.
                 </p>
-                <button type="button" class="btn btn-pems-solid btn-sm text-nowrap" data-bs-toggle="modal" data-bs-target="#createEvaluationProfileModal">
+                <pems-button tone="primary" size="small" css="text-nowrap" type="button" data-bs-toggle="modal" data-bs-target="#createEvaluationProfileModal">
                     <i class="bi bi-plus-lg"></i> @Localizer["Evaluation Profile جدید"]
-                </button>
+                </pems-button>
             </div>
 
             <table class="table table-enterprise">
@@ -534,12 +534,12 @@
                                 }
                             </td>
                             <td class="text-end text-nowrap">
-                                <button type="button" class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#addLimitModal" data-profile-id="@p.EvaluationProfileId" data-profile-code="@p.Code" title="@Localizer["Add Limit"]">
+                                <pems-button tone="primary" size="small" outline="true" type="button" data-bs-toggle="modal" data-bs-target="#addLimitModal" data-profile-id="@p.EvaluationProfileId" data-profile-code="@p.Code" title="@Localizer["Add Limit"]">
                                     <i class="bi bi-plus-circle"></i>
-                                </button>
+                                </pems-button>
                                 <form asp-action="ToggleEvaluationProfileActive" method="post" class="d-inline">
                                     <input type="hidden" name="id" value="@p.EvaluationProfileId" />
-                                    <button type="submit" class="btn btn-sm btn-outline-secondary" title="@Localizer["غیرفعال کردن"]" onclick="return confirm('این Evaluation Profile غیرفعال بشه؟')"><i class="bi bi-x-circle"></i></button>
+                                    <pems-button tone="neutral" size="small" outline="true" type="submit" title="@Localizer["غیرفعال کردن"]" onclick="return confirm('این Evaluation Profile غیرفعال بشه؟')"><i class="bi bi-x-circle"></i></pems-button>
                                 </form>
                             </td>
                         </tr>
@@ -556,9 +556,9 @@
                 <p class="text-muted small mb-0">
                     @Localizer["این نگاشت تعیین می‌کند که یافتن یک وضعیت (Condition) چه اولویتی (Priority) برای Work Request نتیجه‌شده دارد - قبلاً این نگاشت مستقیم در کد برنامه نوشته شده بود؛ حالا اینجا قابل‌مشاهده و قابل‌ویرایش است."]
                 </p>
-                <button type="button" class="btn btn-pems-solid btn-sm text-nowrap" data-bs-toggle="modal" data-bs-target="#createPriorityMappingModal">
+                <pems-button tone="primary" size="small" css="text-nowrap" type="button" data-bs-toggle="modal" data-bs-target="#createPriorityMappingModal">
                     <i class="bi bi-plus-lg"></i> @Localizer["نگاشت جدید"]
-                </button>
+                </pems-button>
             </div>
 
             <table class="table table-enterprise">
@@ -583,7 +583,7 @@
                             <td class="text-end">
                                 <form asp-action="ToggleConditionPriorityMappingActive" method="post" class="d-inline">
                                     <input type="hidden" name="id" value="@m.ConditionPriorityMappingId" />
-                                    <button type="submit" class="btn btn-sm btn-outline-secondary" title="@Localizer["غیرفعال کردن"]" onclick="return confirm('این نگاشت غیرفعال بشه؟')"><i class="bi bi-x-circle"></i></button>
+                                    <pems-button tone="neutral" size="small" outline="true" type="submit" title="@Localizer["غیرفعال کردن"]" onclick="return confirm('این نگاشت غیرفعال بشه؟')"><i class="bi bi-x-circle"></i></pems-button>
                                 </form>
                             </td>
                         </tr>
@@ -615,8 +615,8 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">@Localizer["انصراف"]</button>
-                <button type="submit" class="btn btn-pems-solid btn-sm">@Localizer["ساخت"]</button>
+                <pems-button tone="neutral" size="small" outline="true" type="button" data-bs-dismiss="modal">@Localizer["انصراف"]</pems-button>
+                <pems-button tone="primary" size="small" type="submit">@Localizer["ساخت"]</pems-button>
             </div>
         </form>
     </div></div>
@@ -644,8 +644,8 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">@Localizer["انصراف"]</button>
-                <button type="submit" class="btn btn-pems-solid btn-sm">@Localizer["ساخت"]</button>
+                <pems-button tone="neutral" size="small" outline="true" type="button" data-bs-dismiss="modal">@Localizer["انصراف"]</pems-button>
+                <pems-button tone="primary" size="small" type="submit">@Localizer["ساخت"]</pems-button>
             </div>
         </form>
     </div></div>
@@ -676,8 +676,8 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">@Localizer["انصراف"]</button>
-                <button type="submit" class="btn btn-pems-solid btn-sm">@Localizer["ساخت"]</button>
+                <pems-button tone="neutral" size="small" outline="true" type="button" data-bs-dismiss="modal">@Localizer["انصراف"]</pems-button>
+                <pems-button tone="primary" size="small" type="submit">@Localizer["ساخت"]</pems-button>
             </div>
         </form>
     </div></div>
@@ -705,8 +705,8 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">@Localizer["انصراف"]</button>
-                <button type="submit" class="btn btn-pems-solid btn-sm">@Localizer["ساخت"]</button>
+                <pems-button tone="neutral" size="small" outline="true" type="button" data-bs-dismiss="modal">@Localizer["انصراف"]</pems-button>
+                <pems-button tone="primary" size="small" type="submit">@Localizer["ساخت"]</pems-button>
             </div>
         </form>
     </div></div>
@@ -735,8 +735,8 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">@Localizer["انصراف"]</button>
-                <button type="submit" class="btn btn-pems-solid btn-sm">@Localizer["ساخت"]</button>
+                <pems-button tone="neutral" size="small" outline="true" type="button" data-bs-dismiss="modal">@Localizer["انصراف"]</pems-button>
+                <pems-button tone="primary" size="small" type="submit">@Localizer["ساخت"]</pems-button>
             </div>
         </form>
     </div></div>
@@ -765,8 +765,8 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">@Localizer["انصراف"]</button>
-                <button type="submit" class="btn btn-pems-solid btn-sm">@Localizer["ساخت"]</button>
+                <pems-button tone="neutral" size="small" outline="true" type="button" data-bs-dismiss="modal">@Localizer["انصراف"]</pems-button>
+                <pems-button tone="primary" size="small" type="submit">@Localizer["ساخت"]</pems-button>
             </div>
         </form>
     </div></div>
@@ -795,8 +795,8 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">@Localizer["انصراف"]</button>
-                <button type="submit" class="btn btn-pems-solid btn-sm">@Localizer["ساخت"]</button>
+                <pems-button tone="neutral" size="small" outline="true" type="button" data-bs-dismiss="modal">@Localizer["انصراف"]</pems-button>
+                <pems-button tone="primary" size="small" type="submit">@Localizer["ساخت"]</pems-button>
             </div>
         </form>
     </div></div>
@@ -834,8 +834,8 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">@Localizer["انصراف"]</button>
-                <button type="submit" class="btn btn-pems-solid btn-sm">@Localizer["ساخت"]</button>
+                <pems-button tone="neutral" size="small" outline="true" type="button" data-bs-dismiss="modal">@Localizer["انصراف"]</pems-button>
+                <pems-button tone="primary" size="small" type="submit">@Localizer["ساخت"]</pems-button>
             </div>
         </form>
     </div></div>
@@ -877,8 +877,8 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">@Localizer["انصراف"]</button>
-                <button type="submit" class="btn btn-pems-solid btn-sm">@Localizer["ساخت"]</button>
+                <pems-button tone="neutral" size="small" outline="true" type="button" data-bs-dismiss="modal">@Localizer["انصراف"]</pems-button>
+                <pems-button tone="primary" size="small" type="submit">@Localizer["ساخت"]</pems-button>
             </div>
         </form>
     </div></div>
@@ -906,8 +906,8 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">@Localizer["انصراف"]</button>
-                <button type="submit" class="btn btn-pems-solid btn-sm">@Localizer["ساخت"]</button>
+                <pems-button tone="neutral" size="small" outline="true" type="button" data-bs-dismiss="modal">@Localizer["انصراف"]</pems-button>
+                <pems-button tone="primary" size="small" type="submit">@Localizer["ساخت"]</pems-button>
             </div>
         </form>
     </div></div>
@@ -964,8 +964,8 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">@Localizer["انصراف"]</button>
-                <button type="submit" class="btn btn-pems-solid btn-sm">@Localizer["ساخت"]</button>
+                <pems-button tone="neutral" size="small" outline="true" type="button" data-bs-dismiss="modal">@Localizer["انصراف"]</pems-button>
+                <pems-button tone="primary" size="small" type="submit">@Localizer["ساخت"]</pems-button>
             </div>
         </form>
     </div></div>
@@ -1009,8 +1009,8 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">@Localizer["انصراف"]</button>
-                <button type="submit" class="btn btn-pems-solid btn-sm">@Localizer["ثبت"]</button>
+                <pems-button tone="neutral" size="small" outline="true" type="button" data-bs-dismiss="modal">@Localizer["انصراف"]</pems-button>
+                <pems-button tone="primary" size="small" type="submit">@Localizer["ثبت"]</pems-button>
             </div>
         </form>
     </div></div>

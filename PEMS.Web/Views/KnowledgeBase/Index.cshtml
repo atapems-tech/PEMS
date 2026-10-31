@@ -11,7 +11,7 @@
     </p>
     <form asp-action="Index" method="get" class="d-flex gap-2">
         <input type="text" name="q" value="@ViewBag.Query" class="form-control" placeholder="e.g. مدارک مربوط به فشار طراحی، یا مشکلات ویبره پمپ" />
-        <button class="btn btn-pems-solid"><i class="bi bi-search"></i> @Localizer["Search"]</button>
+        <pems-button tone="primary"><i class="bi bi-search"></i> @Localizer["Search"]</pems-button>
     </form>
 </div>
 

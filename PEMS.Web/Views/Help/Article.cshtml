@@ -70,9 +70,9 @@
             <h6 class="mb-3"><i class="bi bi-robot"></i> @L("Ask PEMS AI", "پرسش از هوش مصنوعی PEMS")</h6>
             <p class="text-muted small">@L("Ask a question about this article - the answer is based only on its content.", "درباره‌ی همین مقاله سوال بپرسید - پاسخ فقط بر اساس محتوای همین مقاله است.")</p>
             <textarea id="helpAiQuestion" class="form-control form-control-sm mb-2" rows="3" placeholder="@L("e.g. What happens if I don't respond to IDC?", "مثلاً اگر به IDC پاسخ ندهم چه می‌شود؟")"></textarea>
-            <button type="button" class="btn btn-sm btn-pems-solid w-100" id="helpAiAskBtn">
+            <pems-button tone="primary" size="small" css="w-100" type="button" id="helpAiAskBtn">
                 <i class="bi bi-send"></i> @L("Ask", "پرسیدن")
-            </button>
+            </pems-button>
             <div id="helpAiAnswer" class="small mt-2" hidden></div>
         </div>
     </div>

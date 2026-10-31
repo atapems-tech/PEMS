@@ -51,7 +51,7 @@
             <label class="form-label small">To</label>
             <input type="date" name="to" value="@(to?.ToString("yyyy-MM-dd"))" class="form-control form-control-sm" />
         </div>
-        <div class="col-md-2"><button type="submit" class="btn btn-sm btn-pems-solid">@Localizer["Apply"]</button></div>
+        <div class="col-md-2"><pems-button tone="primary" size="small" type="submit">@Localizer["Apply"]</pems-button></div>
         <div class="col-md-4 text-muted small">
             Period: @(from?.ToString("yyyy-MM-dd") ?? "all history") → @(to?.ToString("yyyy-MM-dd") ?? "now")
         </div>

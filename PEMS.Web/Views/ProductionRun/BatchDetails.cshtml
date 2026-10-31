@@ -25,17 +25,17 @@
         <div class="d-flex flex-column gap-1" style="min-width:170px">
             @if (Model.QualityStatus == "Produced")
             {
-                <form asp-action="SubmitBatchForQc" asp-route-id="@Model.ProductionBatchId" method="post"><button class="btn btn-sm btn-outline-primary w-100" type="submit"><i class="bi bi-clipboard-check"></i> Submit for QC</button></form>
+                <form asp-action="SubmitBatchForQc" asp-route-id="@Model.ProductionBatchId" method="post"><pems-button tone="primary" size="small" outline="true" css="w-100" type="submit"><i class="bi bi-clipboard-check"></i> Submit for QC</pems-button></form>
             }
             @if (Model.QualityStatus == "AwaitingQC")
             {
-                <form asp-action="ReleaseBatch" asp-route-id="@Model.ProductionBatchId" method="post"><button class="btn btn-sm btn-pems-solid w-100" type="submit"><i class="bi bi-check2-circle"></i> Release</button></form>
-                <button class="btn btn-sm btn-outline-warning w-100" type="button" data-bs-toggle="modal" data-bs-target="#blockModal"><i class="bi bi-slash-circle"></i> Block</button>
-                <button class="btn btn-sm btn-outline-danger w-100" type="button" data-bs-toggle="modal" data-bs-target="#rejectModal"><i class="bi bi-x-circle"></i> @Localizer["Reject"]</button>
+                <form asp-action="ReleaseBatch" asp-route-id="@Model.ProductionBatchId" method="post"><pems-button tone="primary" size="small" css="w-100" type="submit"><i class="bi bi-check2-circle"></i> Release</pems-button></form>
+                <pems-button tone="warning" size="small" outline="true" css="w-100" type="button" data-bs-toggle="modal" data-bs-target="#blockModal"><i class="bi bi-slash-circle"></i> Block</pems-button>
+                <pems-button tone="danger" size="small" outline="true" css="w-100" type="button" data-bs-toggle="modal" data-bs-target="#rejectModal"><i class="bi bi-x-circle"></i> @Localizer["Reject"]</pems-button>
             }
             @if (Model.QualityStatus == "Blocked")
             {
-                <form asp-action="UnblockBatch" asp-route-id="@Model.ProductionBatchId" method="post"><button class="btn btn-sm btn-outline-success w-100" type="submit"><i class="bi bi-arrow-counterclockwise"></i> Back to QC</button></form>
+                <form asp-action="UnblockBatch" asp-route-id="@Model.ProductionBatchId" method="post"><pems-button tone="success" size="small" outline="true" css="w-100" type="submit"><i class="bi bi-arrow-counterclockwise"></i> Back to QC</pems-button></form>
             }
         </div>
     </div>
@@ -46,7 +46,7 @@
         <form asp-action="BlockBatch" asp-route-id="@Model.ProductionBatchId" method="post">
             <div class="modal-header"><h6 class="modal-title">Block Batch</h6><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div>
             <div class="modal-body"><label class="form-label">@Localizer["Reason"]</label><textarea name="reason" class="form-control" required></textarea></div>
-            <div class="modal-footer"><button type="submit" class="btn btn-warning">Block</button></div>
+            <div class="modal-footer"><pems-button tone="warning" type="submit">Block</pems-button></div>
         </form>
     </div></div>
 </div>
@@ -56,7 +56,7 @@
         <form asp-action="RejectBatch" asp-route-id="@Model.ProductionBatchId" method="post">
             <div class="modal-header"><h6 class="modal-title">Reject Batch</h6><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div>
             <div class="modal-body"><label class="form-label">@Localizer["Reason"]</label><textarea name="reason" class="form-control" required></textarea></div>
-            <div class="modal-footer"><button type="submit" class="btn btn-danger">@Localizer["Reject"]</button></div>
+            <div class="modal-footer"><pems-button tone="danger" type="submit">@Localizer["Reject"]</pems-button></div>
         </form>
     </div></div>
 </div>

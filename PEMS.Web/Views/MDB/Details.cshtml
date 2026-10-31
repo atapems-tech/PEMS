@@ -34,23 +34,23 @@
     <div class="d-flex flex-wrap gap-2 mt-3">
         @if (Model.IndexOfContentsSubmittedDate == null)
         {
-            <form asp-action="MarkIndexSubmitted" method="post"><input type="hidden" name="mdbId" value="@Model.MDBId" /><button class="btn btn-sm btn-outline-primary">Mark Index Submitted</button></form>
+            <form asp-action="MarkIndexSubmitted" method="post"><input type="hidden" name="mdbId" value="@Model.MDBId" /><pems-button tone="primary" size="small" outline="true">Mark Index Submitted</pems-button></form>
         }
         @if (Model.Status != "FinalIssued" && Model.Status != "Delivered")
         {
-            <form asp-action="MarkFinalIssued" method="post"><input type="hidden" name="mdbId" value="@Model.MDBId" /><button class="btn btn-sm btn-outline-primary">Mark Final Issued</button></form>
+            <form asp-action="MarkFinalIssued" method="post"><input type="hidden" name="mdbId" value="@Model.MDBId" /><pems-button tone="primary" size="small" outline="true">Mark Final Issued</pems-button></form>
         }
         @if (!Model.HardCopyShippedDate.HasValue)
         {
             <form asp-action="MarkHardCopyShipped" method="post" class="d-flex gap-1">
                 <input type="hidden" name="mdbId" value="@Model.MDBId" />
                 <input type="number" name="hardCopyCount" class="form-control form-control-sm" style="width:90px;" placeholder="# volumes" />
-                <button class="btn btn-sm btn-outline-primary">Mark Hard Copy Shipped</button>
+                <pems-button tone="primary" size="small" outline="true">Mark Hard Copy Shipped</pems-button>
             </form>
         }
         @if (!Model.SoftCopyDeliveredDate.HasValue)
         {
-            <form asp-action="MarkSoftCopyDelivered" method="post"><input type="hidden" name="mdbId" value="@Model.MDBId" /><button class="btn btn-sm btn-outline-primary">Mark Soft Copy Delivered</button></form>
+            <form asp-action="MarkSoftCopyDelivered" method="post"><input type="hidden" name="mdbId" value="@Model.MDBId" /><pems-button tone="primary" size="small" outline="true">Mark Soft Copy Delivered</pems-button></form>
         }
     </div>
 </div>
@@ -82,7 +82,7 @@
                             <form asp-action="RemoveDocument" method="post">
                                 <input type="hidden" name="mdbId" value="@Model.MDBId" />
                                 <input type="hidden" name="mdbDocumentId" value="@d.MDBDocumentId" />
-                                <button class="btn btn-sm btn-outline-danger"><i class="bi bi-trash"></i></button>
+                                <pems-button tone="danger" size="small" outline="true"><i class="bi bi-trash"></i></pems-button>
                             </form>
                         </td>
                     </tr>
@@ -112,7 +112,7 @@
                 <input type="checkbox" name="isNotApplicable" value="true" class="form-check-input me-1" id="na_@code" />
                 <label class="form-check-label small" for="na_@code">Not applicable</label>
             </div>
-            <div class="col-md-2"><button class="btn btn-sm btn-outline-primary w-100"><i class="bi bi-plus-lg"></i> @Localizer["Add"]</button></div>
+            <div class="col-md-2"><pems-button tone="primary" size="small" outline="true" css="w-100"><i class="bi bi-plus-lg"></i> @Localizer["Add"]</pems-button></div>
         </form>
     </div>
 }
