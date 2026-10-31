@@ -124,6 +124,13 @@ Owner decisions 2026-10-30:
 - `PurchaseOrderService.IssueAsync` issues only an **approved** PO (Draft → Submitted → Approved → Issued). The issue action keeps its guard (PurchaseOrder Approve permission, creator cannot issue, SystemAdmin rule). Imported POs still arrive as Issued.
 - R6: a concurrent issue now shows a clear message instead of the error page.
 
+## 2026-10-31 - Jira issue-creation guard (SCRUM-479)
+
+### Added
+- `plan_sync.py tracker-check` also fails on an issue (SCRUM-400 and later) without a parent epic, without a `[#N]` title equal to its `plan-N` label, without `area-`, `doer-`, `effort-` labels, or In Review without `qa-pending`; the REST client now reads `parent` and the issue type. Tests added.
+- Creation checklist in `AGENTS.md` and chapter 00 section 5d; learnings-log entry; open points for the owner in chapter 06 (required Parent in Jira, `JIRA_*` secrets).
+- Plan rows 0423 and 0478 for issues that had none.
+
 ## 2026-10-29 - Pre-procurement intake in the procurement cartable (SCRUM-471)
 
 ### Added

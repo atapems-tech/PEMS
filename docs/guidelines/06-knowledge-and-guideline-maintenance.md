@@ -61,5 +61,7 @@ Four layers (README section 3). Maintainers check periodically:
 
 ## 6. Open points
 
+- **Jira cannot enforce the creation checklist yet (owner action, SCRUM-479):** make *Parent* a required field on the Task, Story and Bug create screens (Space settings > Work types > Create screen), so an issue without an epic cannot be saved; and finish SCRUM-475 (the `JIRA_*` secrets) so the nightly `plan-sync.yml` runs `tracker-check` against the live project.
+
 - **Jira workflow enforcement (owner action):** the SCRUM workflow still allows In Progress -> Done, and SCRUM-353, -367, -368 and -371 were closed that way (found 2026-10-27). In Space settings > Work types > Task > Edit workflow remove the transitions To Do -> Done and In Progress -> Done so that only In Review -> Done exists; keep Done -> In Review (reopen) and In Review -> To Do (failed QA). Until then the rule in chapter 00 section 4a is checked by the weekly audit.
 - `PLAN_TRACKER_WORKFLOW.md` maps statuses On Hold, Backlog and Won't Do. SCRUM now has On Hold (2026-10-26; the 13 held issues were moved into it); Backlog and Won't Do are still missing (project statuses: To Do, On Hold, In Progress, In Review, Done, Bugs). Add them in Jira or change the mapping.
