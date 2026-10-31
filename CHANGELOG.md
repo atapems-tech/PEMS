@@ -3,6 +3,13 @@
 All notable changes to PEMS. No system version is defined yet (plan row F_CI), so entries are grouped by date
 and theme and were reconstructed from the git history (initial import 2026-09-05). Newest first.
 
+## 2026-11-01 - List page component, wave 4b: Administration settings lists (SCRUM-337)
+
+### Changed
+- SoD policies, storage providers, storage routes, workflow definitions, help articles and the PO authority table are built from the list-page component; 32 texts in English and Persian (headings, notes, empty texts, provider health, confirmations, publish / unpublish).
+- The storage provider count cards are the KPI row; the help filters are chips; the PO authority rule form opens from the toolbar (`pems-list-popover`). Row actions stay.
+- Not converted: contract approval authority, numbering and routing rules edit their rows in place; they move with the RelatedList / DataTable row-form mode.
+
 ## 2026-10-31 - List page component, wave 4a: users, roles and base data (SCRUM-337)
 
 ### Changed

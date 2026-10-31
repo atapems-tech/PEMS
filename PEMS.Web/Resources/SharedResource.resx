@@ -3596,4 +3596,36 @@
   <data name="AlL_Act_Delete" xml:space="preserve"><value>Delete</value></data>
   <data name="SeL_Title" xml:space="preserve"><value>Security events</value></data>
   <data name="AzL_Title" xml:space="preserve"><value>Authorization audit</value></data>
+  <data name="SodL_Title" xml:space="preserve"><value>Segregation of duties</value></data>
+  <data name="SodL_New" xml:space="preserve"><value>New policy</value></data>
+  <data name="SrtL_Title" xml:space="preserve"><value>Storage routes</value></data>
+  <data name="SrtL_Hint" xml:space="preserve"><value>Which module / document type is saved to which storage provider.</value></data>
+  <data name="SrtL_Empty" xml:space="preserve"><value>No storage routes configured: uploads fall back to the default storage provider.</value></data>
+  <data name="SrtL_New" xml:space="preserve"><value>New route</value></data>
+  <data name="SrtL_Any" xml:space="preserve"><value>(any)</value></data>
+  <data name="SrtL_ConfirmDelete" xml:space="preserve"><value>Delete this storage route?</value></data>
+  <data name="StpL_Title" xml:space="preserve"><value>Storage providers</value></data>
+  <data name="StpL_Hint" xml:space="preserve"><value>Local, network share, FTP and SFTP storage destinations that the administrator configures.</value></data>
+  <data name="StpL_Empty" xml:space="preserve"><value>No storage providers configured yet.</value></data>
+  <data name="StpL_New" xml:space="preserve"><value>New provider</value></data>
+  <data name="StpL_Routes" xml:space="preserve"><value>Routes</value></data>
+  <data name="StpL_Health" xml:space="preserve"><value>Health</value></data>
+  <data name="StpL_Test" xml:space="preserve"><value>Test connection</value></data>
+  <data name="StpL_SetDefault" xml:space="preserve"><value>Set as default</value></data>
+  <data name="StpL_ConfirmDelete" xml:space="preserve"><value>Delete this storage provider? This cannot be undone.</value></data>
+  <data name="StpL_Health_Online" xml:space="preserve"><value>Online</value></data>
+  <data name="StpL_Health_Offline" xml:space="preserve"><value>Offline</value></data>
+  <data name="StpL_Health_AuthenticationFailed" xml:space="preserve"><value>Authentication failed</value></data>
+  <data name="StpL_Health_PermissionDenied" xml:space="preserve"><value>Permission denied</value></data>
+  <data name="StpL_Health_Disabled" xml:space="preserve"><value>Disabled</value></data>
+  <data name="StpL_Health_Unknown" xml:space="preserve"><value>Unknown</value></data>
+  <data name="WfL_Title" xml:space="preserve"><value>Workflow definitions</value></data>
+  <data name="WfL_Empty" xml:space="preserve"><value>No workflow definitions.</value></data>
+  <data name="HlL_Hint" xml:space="preserve"><value>Help articles shown in the app, by category; publish an article to show it.</value></data>
+  <data name="HlL_Empty" xml:space="preserve"><value>No help articles match this filter.</value></data>
+  <data name="HlL_Published" xml:space="preserve"><value>Published</value></data>
+  <data name="HlL_Draft" xml:space="preserve"><value>Draft</value></data>
+  <data name="HlL_Publish" xml:space="preserve"><value>Publish</value></data>
+  <data name="HlL_Unpublish" xml:space="preserve"><value>Unpublish</value></data>
+  <data name="HlL_ConfirmDelete" xml:space="preserve"><value>Delete this help article permanently?</value></data>
 </root>

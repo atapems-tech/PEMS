@@ -1,70 +1,106 @@
 @model IReadOnlyList<PEMS.Application.Interfaces.PoAuthorityRuleView>
 @using Microsoft.Extensions.Localization
 @using PEMS.Web.Resources
+@using PEMS.Web.Helpers
 @inject IStringLocalizer<SharedResource> Localizer
 @{
     // SCRUM-470: the PO authority table (separate from the contract rules)
     var roles = (IEnumerable<string>)ViewBag.Roles;
 }
 
-@if (TempData["Message"] != null) { <div class="alert alert-success py-2 px-3 small">@TempData["Message"]</div> }
-@if (TempData["Error"] != null) { <div class="alert alert-danger py-2 px-3 small">@TempData["Error"]</div> }
+@section Styles {
+    <link rel="stylesheet" href="~/css/pems-workspace.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/_content/PEMS.UI/pems-list.css" asp-append-version="true" />
+}
 
-<div class="content-card mb-3">
-    <h5 class="mb-1"><i class="bi bi-shield-check" aria-hidden="true"></i> @Localizer["Po_AuthorityTitle"]</h5>
-    <p class="small text-muted mb-0">@Localizer["Po_AuthorityHint"]</p>
-</div>
+@* SCRUM-337 W4b: built from the PEMS.UI list-page component. The rule form opens from the toolbar ("New rule",
+   pems-list-popover); activate / deactivate stays on each rule. *@
+<pems-list-page texts="@ListPageTexts.From(Localizer)">
+    @if (TempData["Message"] != null) { <pems-alert tone="success" css="py-2 px-3 small">@TempData["Message"]</pems-alert> }
+    @if (TempData["Error"] != null) { <pems-alert tone="danger" css="py-2 px-3 small">@TempData["Error"]</pems-alert> }
 
-<div class="content-card mb-3">
-    @if (Model.Count == 0)
-    {
-        <p class="small text-muted mb-0">@Localizer["Po_NoRules"]</p>
-    }
-    else
-    {
-    <div class="table-responsive">
-        <table class="table table-enterprise table-sm align-middle mb-0">
-            <thead><tr><th>@Localizer["Po_Level"]</th><th>@Localizer["Po_Currency"]</th><th class="text-end">@Localizer["Po_From"]</th><th class="text-end">@Localizer["Po_To"]</th><th>@Localizer["Po_ApproverRole"]</th><th>@Localizer["Description"]</th><th>@Localizer["Status"]</th><th></th></tr></thead>
-            <tbody>
-            @foreach (var r in Model)
-            {
-                <tr>
-                    <td dir="ltr">@r.Level</td>
-                    <td dir="ltr">@r.Currency</td>
-                    <td class="text-end" dir="ltr">@r.MinAmount.ToString("N0")</td>
-                    <td class="text-end" dir="ltr">@(r.MaxAmount?.ToString("N0") ?? "∞")</td>
-                    <td dir="ltr">@r.ApproverRole</td>
-                    <td class="small">@r.Description</td>
-                    <td><span class="vs-pill @(r.IsActive ? "vs-pill--success" : "vs-pill--neutral")">@Localizer[r.IsActive ? "Po_Active" : "Po_Inactive"]</span></td>
-                    <td class="text-end">
-                        <form asp-action="Save" method="post" class="d-inline">
-                            <input type="hidden" name="id" value="@r.Id" /><input type="hidden" name="level" value="@r.Level" />
-                            <input type="hidden" name="minAmount" value="@r.MinAmount.ToString(System.Globalization.CultureInfo.InvariantCulture)" />
-                            <input type="hidden" name="maxAmount" value="@r.MaxAmount?.ToString(System.Globalization.CultureInfo.InvariantCulture)" />
-                            <input type="hidden" name="currency" value="@r.Currency" /><input type="hidden" name="approverRole" value="@r.ApproverRole" />
-                            <input type="hidden" name="description" value="@r.Description" /><input type="hidden" name="isActive" value="@((!r.IsActive).ToString().ToLowerInvariant())" />
-                            <button type="submit" class="btn btn-sm btn-outline-secondary">@Localizer[r.IsActive ? "Po_Deactivate" : "Po_Activate"]</button>
-                        </form>
-                    </td>
-                </tr>
-            }
-            </tbody>
-        </table>
-    </div>
-    }
-</div>
+    <pems-list-panel>
 
-<form asp-action="Save" method="post" class="content-card">
-    <h6 class="mb-2"><i class="bi bi-plus-circle" aria-hidden="true"></i> @Localizer["Po_NewRule"]</h6>
-    <div class="row g-2 align-items-end small">
-        <div class="col-md-1"><label class="form-label" for="rLevel">@Localizer["Po_Level"]</label><input id="rLevel" name="level" type="number" min="1" value="1" class="form-control form-control-sm" dir="ltr" required /></div>
-        <div class="col-md-1"><label class="form-label" for="rCurrency">@Localizer["Po_Currency"]</label><input id="rCurrency" name="currency" value="IRR" maxlength="10" class="form-control form-control-sm" dir="ltr" required /></div>
-        <div class="col-md-2"><label class="form-label" for="rMin">@Localizer["Po_From"]</label><input id="rMin" name="minAmount" type="number" min="0" step="any" value="0" class="form-control form-control-sm" dir="ltr" required /></div>
-        <div class="col-md-2"><label class="form-label" for="rMax">@Localizer["Po_To"]</label><input id="rMax" name="maxAmount" type="number" min="0" step="any" class="form-control form-control-sm" dir="ltr" placeholder="∞" /></div>
-        <div class="col-md-2"><label class="form-label" for="rRole">@Localizer["Po_ApproverRole"]</label>
-            <select id="rRole" name="approverRole" class="form-select form-select-sm" required><option value="">—</option>@foreach (var role in roles) { <option value="@role">@role</option> }</select></div>
-        <div class="col-md-2"><label class="form-label" for="rDesc">@Localizer["Description"]</label><input id="rDesc" name="description" class="form-control form-control-sm" /></div>
-        <div class="col-md-1"><div class="form-check mt-4"><input class="form-check-input" type="checkbox" name="isActive" value="true" id="rActive" checked /><label class="form-check-label" for="rActive">@Localizer["Po_Active"]</label></div></div>
-        <div class="col-md-auto"><button type="submit" class="btn btn-sm btn-primary"><i class="bi bi-check2" aria-hidden="true"></i> @Localizer["Po_SaveRule"]</button></div>
-    </div>
-</form>
+        <pems-list-toolbar heading="@Localizer["Po_AuthorityTitle"]" heading-title="@Localizer["Po_AuthorityHint"]" total="@Model.Count">
+            <pems-list-tools>
+                <pems-list-popover id="poRuleNew" icon="bi-plus-lg" label="@Localizer["Po_NewRule"]" primary="true">
+                    <form asp-action="Save" method="post">
+                        <div>
+                            <label class="lp-lbl" for="rLevel">@Localizer["Po_Level"]</label>
+                            <input id="rLevel" name="level" type="number" min="1" value="1" class="form-control" dir="ltr" required />
+                        </div>
+                        <div>
+                            <label class="lp-lbl" for="rCurrency">@Localizer["Po_Currency"]</label>
+                            <input id="rCurrency" name="currency" value="IRR" maxlength="10" class="form-control" dir="ltr" required />
+                        </div>
+                        <div>
+                            <label class="lp-lbl" for="rMin">@Localizer["Po_From"]</label>
+                            <input id="rMin" name="minAmount" type="number" min="0" step="any" value="0" class="form-control" dir="ltr" required />
+                        </div>
+                        <div>
+                            <label class="lp-lbl" for="rMax">@Localizer["Po_To"]</label>
+                            <input id="rMax" name="maxAmount" type="number" min="0" step="any" class="form-control" dir="ltr" placeholder="∞" />
+                        </div>
+                        <pems-list-filter-select id="rRole" name="approverRole" label="@Localizer["Po_ApproverRole"]" all-text="—" items="@roles.Select(r => new SelectListItem(r, r))" />
+                        <div>
+                            <label class="lp-lbl" for="rDesc">@Localizer["Ed_Description"]</label>
+                            <input id="rDesc" name="description" class="form-control" />
+                        </div>
+                        <div class="form-check small">
+                            <input class="form-check-input" type="checkbox" name="isActive" value="true" id="rActive" checked />
+                            <label class="form-check-label" for="rActive">@Localizer["Po_Active"]</label>
+                        </div>
+                        <div class="lp-fp-foot px-0 pb-0">
+                            <pems-button tone="primary" size="small" type="submit"><i class="bi bi-check2" aria-hidden="true"></i> @Localizer["Po_SaveRule"]</pems-button>
+                        </div>
+                    </form>
+                </pems-list-popover>
+            </pems-list-tools>
+        </pems-list-toolbar>
+
+        <pems-list-grid>
+            <pems-list-table empty="@(Model.Count == 0)" empty-text="@Localizer["Po_NoRules"]">
+                <thead>
+                    <tr>
+                        <th style="width:70px">@Localizer["Po_Level"]</th>
+                        <th style="width:90px">@Localizer["Po_Currency"]</th>
+                        <th style="width:140px" class="text-end">@Localizer["Po_From"]</th>
+                        <th style="width:140px" class="text-end">@Localizer["Po_To"]</th>
+                        <th style="width:170px">@Localizer["Po_ApproverRole"]</th>
+                        <th>@Localizer["Ed_Description"]</th>
+                        <th style="width:110px">@Localizer["Ed_Status"]</th>
+                        <th style="width:60px"><span class="visually-hidden">@Localizer["Ed_Actions"]</span></th>
+                    </tr>
+                </thead>
+                <tbody>
+                @foreach (var r in Model)
+                {
+                    <tr class="lp-row">
+                        <td dir="ltr"><span class="vs-num">@r.Level</span></td>
+                        <td dir="ltr"><span class="vs-num">@r.Currency</span></td>
+                        <td class="text-end" dir="ltr"><span class="vs-num">@r.MinAmount.ToString("N0")</span></td>
+                        <td class="text-end" dir="ltr"><span class="vs-num">@(r.MaxAmount?.ToString("N0") ?? "∞")</span></td>
+                        <td dir="ltr" class="small">@r.ApproverRole</td>
+                        <td class="small"><span class="vs-title-cell" title="@r.Description">@r.Description</span></td>
+                        <td><span class="vs-pill @(r.IsActive ? "vs-pill--success" : "vs-pill--neutral")">@Localizer[r.IsActive ? "Po_Active" : "Po_Inactive"]</span></td>
+                        <td class="text-end">
+                            <form asp-action="Save" method="post" class="d-inline">
+                                <input type="hidden" name="id" value="@r.Id" /><input type="hidden" name="level" value="@r.Level" />
+                                <input type="hidden" name="minAmount" value="@r.MinAmount.ToString(System.Globalization.CultureInfo.InvariantCulture)" />
+                                <input type="hidden" name="maxAmount" value="@r.MaxAmount?.ToString(System.Globalization.CultureInfo.InvariantCulture)" />
+                                <input type="hidden" name="currency" value="@r.Currency" /><input type="hidden" name="approverRole" value="@r.ApproverRole" />
+                                <input type="hidden" name="description" value="@r.Description" /><input type="hidden" name="isActive" value="@((!r.IsActive).ToString().ToLowerInvariant())" />
+                                <button type="submit" class="lp-act lp-act--always" title="@Localizer[r.IsActive ? "Po_Deactivate" : "Po_Activate"]" aria-label="@Localizer[r.IsActive ? "Po_Deactivate" : "Po_Activate"]"><i class="bi @(r.IsActive ? "bi-toggle-on" : "bi-toggle-off")" aria-hidden="true"></i></button>
+                            </form>
+                        </td>
+                    </tr>
+                }
+                </tbody>
+            </pems-list-table>
+        </pems-list-grid>
+    </pems-list-panel>
+</pems-list-page>
+
+@section Scripts {
+    <script src="~/_content/PEMS.UI/pems-list.js" asp-append-version="true"></script>
+}

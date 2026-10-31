@@ -4381,4 +4381,36 @@
   <data name="AlL_Act_Delete" xml:space="preserve"><value>حذف</value></data>
   <data name="SeL_Title" xml:space="preserve"><value>رویدادهای امنیتی</value></data>
   <data name="AzL_Title" xml:space="preserve"><value>ممیزی مجوزها</value></data>
+  <data name="SodL_Title" xml:space="preserve"><value>تفکیک وظایف (SoD)</value></data>
+  <data name="SodL_New" xml:space="preserve"><value>سیاست جدید</value></data>
+  <data name="SrtL_Title" xml:space="preserve"><value>مسیرهای ذخیره‌سازی</value></data>
+  <data name="SrtL_Hint" xml:space="preserve"><value>هر ماژول یا نوع سند در کدام محل ذخیره‌سازی ذخیره می‌شود.</value></data>
+  <data name="SrtL_Empty" xml:space="preserve"><value>مسیری تعریف نشده است؛ فایل‌ها در محل ذخیره‌سازی پیش‌فرض ذخیره می‌شوند.</value></data>
+  <data name="SrtL_New" xml:space="preserve"><value>مسیر جدید</value></data>
+  <data name="SrtL_Any" xml:space="preserve"><value>(همه)</value></data>
+  <data name="SrtL_ConfirmDelete" xml:space="preserve"><value>این مسیر ذخیره‌سازی حذف شود؟</value></data>
+  <data name="StpL_Title" xml:space="preserve"><value>محل‌های ذخیره‌سازی</value></data>
+  <data name="StpL_Hint" xml:space="preserve"><value>محل‌های ذخیره‌سازی محلی، اشتراک شبکه، FTP و SFTP که مدیر سیستم تعریف می‌کند.</value></data>
+  <data name="StpL_Empty" xml:space="preserve"><value>هنوز محل ذخیره‌سازی تعریف نشده است.</value></data>
+  <data name="StpL_New" xml:space="preserve"><value>محل ذخیره‌سازی جدید</value></data>
+  <data name="StpL_Routes" xml:space="preserve"><value>مسیرها</value></data>
+  <data name="StpL_Health" xml:space="preserve"><value>سلامت</value></data>
+  <data name="StpL_Test" xml:space="preserve"><value>آزمایش اتصال</value></data>
+  <data name="StpL_SetDefault" xml:space="preserve"><value>پیش‌فرض کردن</value></data>
+  <data name="StpL_ConfirmDelete" xml:space="preserve"><value>این محل ذخیره‌سازی حذف شود؟ این کار برگشت‌پذیر نیست.</value></data>
+  <data name="StpL_Health_Online" xml:space="preserve"><value>برخط</value></data>
+  <data name="StpL_Health_Offline" xml:space="preserve"><value>قطع</value></data>
+  <data name="StpL_Health_AuthenticationFailed" xml:space="preserve"><value>خطای احراز هویت</value></data>
+  <data name="StpL_Health_PermissionDenied" xml:space="preserve"><value>دسترسی رد شد</value></data>
+  <data name="StpL_Health_Disabled" xml:space="preserve"><value>غیرفعال</value></data>
+  <data name="StpL_Health_Unknown" xml:space="preserve"><value>نامشخص</value></data>
+  <data name="WfL_Title" xml:space="preserve"><value>تعریف‌های گردش کار</value></data>
+  <data name="WfL_Empty" xml:space="preserve"><value>تعریف گردش کاری وجود ندارد.</value></data>
+  <data name="HlL_Hint" xml:space="preserve"><value>مقاله‌های راهنمای برنامه به تفکیک گروه؛ برای نمایش، مقاله را منتشر کنید.</value></data>
+  <data name="HlL_Empty" xml:space="preserve"><value>مقاله‌ی راهنمایی با این فیلتر یافت نشد.</value></data>
+  <data name="HlL_Published" xml:space="preserve"><value>منتشرشده</value></data>
+  <data name="HlL_Draft" xml:space="preserve"><value>پیش‌نویس</value></data>
+  <data name="HlL_Publish" xml:space="preserve"><value>انتشار</value></data>
+  <data name="HlL_Unpublish" xml:space="preserve"><value>لغو انتشار</value></data>
+  <data name="HlL_ConfirmDelete" xml:space="preserve"><value>این مقاله‌ی راهنما برای همیشه حذف شود؟</value></data>
 </root>
