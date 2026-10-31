@@ -9,6 +9,12 @@
   "options": {
     "type": "object",
     "properties": {
+      "skin": {
+        "enum": [
+          "bootstrap",
+          "pems"
+        ]
+      },
       "label": {
         "oneOf": [
           {

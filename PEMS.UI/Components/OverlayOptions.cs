@@ -2,6 +2,12 @@ using PEMS.UI.Abstractions;
 
 namespace PEMS.UI.Components;
 
+/// <summary>
+/// How a component looks and behaves in the page. <see cref="Bootstrap"/> (the default) renders the Bootstrap markup the pages use today, so replacing a
+/// hand-written block changes nothing visible; <see cref="Pems"/> renders the library's own <c>pems-*</c> classes and native dialog.
+/// </summary>
+public enum ComponentSkin { Bootstrap, Pems }
+
 public enum AlertTone { Info, Success, Warning, Danger }
 
 public enum OverlaySize { Small, Medium, Large }
@@ -14,6 +20,7 @@ public enum DrawerSide { End, Start }
 /// </summary>
 public sealed record AlertOptions
 {
+    public ComponentSkin Skin { get; init; } = ComponentSkin.Bootstrap;
     public required TranslatableText Title { get; init; }
     public TranslatableText? Message { get; init; }
     public AlertTone Tone { get; init; } = AlertTone.Info;
@@ -26,6 +33,7 @@ public sealed record AlertOptions
 /// <summary>Inputs of <see cref="PemsModal"/>: a native dialog opened by any element with <c>data-pems-open="#id"</c>. One modal serves many rows: the opener's <c>data-pems-row-key</c> is copied into the dialog.</summary>
 public sealed record ModalOptions
 {
+    public ComponentSkin Skin { get; init; } = ComponentSkin.Bootstrap;
     public required string Id { get; init; }
     public required TranslatableText Title { get; init; }
     public required TranslatableText CloseLabel { get; init; }
@@ -36,6 +44,7 @@ public sealed record ModalOptions
 /// <summary>Inputs of <see cref="PemsDrawer"/>: a side panel dialog. Same opening rule as the modal.</summary>
 public sealed record DrawerOptions
 {
+    public ComponentSkin Skin { get; init; } = ComponentSkin.Bootstrap;
     public required string Id { get; init; }
     public required TranslatableText Title { get; init; }
     public required TranslatableText CloseLabel { get; init; }
@@ -50,6 +59,7 @@ public sealed record DrawerOptions
 /// </summary>
 public sealed record ConfirmDialogOptions
 {
+    public ComponentSkin Skin { get; init; } = ComponentSkin.Bootstrap;
     public required string Id { get; init; }
     public required string Action { get; init; }
     public required TranslatableText Title { get; init; }
@@ -73,6 +83,7 @@ public sealed record TabItem
 /// <summary>Inputs of <see cref="PemsTabs"/>: panels in the page, switched without a request; arrow keys move between tabs.</summary>
 public sealed record TabsOptions
 {
+    public ComponentSkin Skin { get; init; } = ComponentSkin.Bootstrap;
     public required string Id { get; init; }
     public required TranslatableText Label { get; init; }
     public required IReadOnlyList<TabItem> Items { get; init; }
@@ -88,6 +99,7 @@ public sealed record Crumb
 /// <summary>Inputs of <see cref="PemsBreadcrumb"/>: the last item is the current page and is not a link.</summary>
 public sealed record BreadcrumbOptions
 {
+    public ComponentSkin Skin { get; init; } = ComponentSkin.Bootstrap;
     public required TranslatableText Label { get; init; }
     public required IReadOnlyList<Crumb> Items { get; init; }
 }

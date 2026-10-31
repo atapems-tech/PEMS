@@ -3,6 +3,12 @@
 All notable changes to PEMS. No system version is defined yet (plan row F_CI), so entries are grouped by date
 and theme and were reconstructed from the git history (initial import 2026-09-05). Newest first.
 
+## 2026-10-31 - PEMS.UI components render today's look (SCRUM-480)
+
+### Changed
+- **PEMS.UI:** alert, modal, drawer, confirm-dialog, tabs and breadcrumb take `Skin`; the default `Bootstrap` renders the Bootstrap markup the pages use now, `Pems` keeps the library classes and native dialog. `pems-overlay.js` copies the row key of a Bootstrap modal opener.
+- **Layouts** (`_Layout`, `_LayoutEmbed`, `_AuthLayout`): load `pems-ui.css`, `pems-overlay.js` and `pems-form.js` from PEMS.UI.
+
 ## 2026-10-31 - List page component, wave 2: CMMS (SCRUM-337)
 
 ### Added

@@ -91,6 +91,14 @@
         });
     }
 
+    // Bootstrap skin (the default): a Bootstrap modal has no native open hook, so the opener's row key is copied on Bootstrap's own event.
+    document.addEventListener('show.bs.modal', function (e) {
+        var opener = e.relatedTarget, key = opener ? opener.getAttribute('data-pems-row-key') : null;
+        if (key === null) return;
+        e.target.dataset.rowKey = key;
+        e.target.querySelectorAll('[data-pems-row-key-target]').forEach(function (t) { t.value = key; });
+    });
+
     if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', function () { init(); });
     else init();
     window.PemsOverlay = { init: init };
