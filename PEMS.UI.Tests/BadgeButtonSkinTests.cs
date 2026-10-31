@@ -60,3 +60,27 @@ public sealed class BadgeButtonSkinTests
     public void The_pems_button_skin_keeps_the_library_classes()
         => Assert.Equal("pems-btn pems-btn--danger pems-btn--small", ButtonState.From(new ButtonOptions { Label = "Go", Tone = Tone.Danger, Size = Size.Small, Skin = ComponentSkin.Pems }).Css);
 }
+
+public sealed class ButtonTagHelperTests
+{
+    private static string Run(PemsButtonTagHelper helper, TagHelperAttributeList attributes, string inner)
+    {
+        var context = new TagHelperContext("pems-button", new TagHelperAttributeList(), new Dictionary<object, object>(), "c");
+        var output = new TagHelperOutput("pems-button", attributes, (_, _) => Task.FromResult<TagHelperContent>(new DefaultTagHelperContent().SetHtmlContent(inner)));
+        output.Content.SetHtmlContent(inner);
+        helper.Process(context, output);
+        using var writer = new StringWriter();
+        output.WriteTo(writer, HtmlEncoder.Default);
+        return writer.ToString();
+    }
+
+    [Fact]
+    public void A_button_keeps_its_attributes_and_content_and_gets_the_classes()
+        => Assert.Equal("<button class=\"btn btn-sm btn-outline-secondary w-100\" type=\"submit\" id=\"go\"><i class=\"bi bi-x\"></i> Cancel</button>",
+            Run(new PemsButtonTagHelper { Tone = "neutral", Size = "small", Outline = true, Css = "w-100" },
+                [new("type", "submit"), new("id", "go")], "<i class=\"bi bi-x\"></i> Cancel"));
+
+    [Fact]
+    public void A_link_is_written_with_as_a()
+        => Assert.Equal("<a class=\"btn btn-pems-solid\" href=\"/x\">Open</a>", Run(new PemsButtonTagHelper { As = "a" }, [new("href", "/x")], "Open"));
+}

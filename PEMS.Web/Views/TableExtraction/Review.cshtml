@@ -50,17 +50,17 @@
             <input type="search" id="rowSearch" class="form-control" placeholder="Filter by tag..." autocomplete="off" />
         </div>
         <div class="btn-group btn-group-sm" role="group">
-            <button type="button" class="btn btn-outline-secondary status-filter active" data-status="all">@Localizer["All"]</button>
-            <button type="button" class="btn btn-outline-secondary status-filter" data-status="Unmatched">@Localizer["Unmatched"]</button>
-            <button type="button" class="btn btn-outline-secondary status-filter" data-status="MatchedNoInstrument">Needs Instrument</button>
-            <button type="button" class="btn btn-outline-secondary status-filter" data-status="MatchedHasInstrument">Has Instrument</button>
-            <button type="button" class="btn btn-outline-secondary status-filter" data-status="Confirmed">@Localizer["Confirmed"]</button>
-            <button type="button" class="btn btn-outline-secondary status-filter" data-status="Rejected">@Localizer["Rejected"]</button>
+            <pems-button tone="neutral" outline="true" css="status-filter active" type="button" data-status="all">@Localizer["All"]</pems-button>
+            <pems-button tone="neutral" outline="true" css="status-filter" type="button" data-status="Unmatched">@Localizer["Unmatched"]</pems-button>
+            <pems-button tone="neutral" outline="true" css="status-filter" type="button" data-status="MatchedNoInstrument">Needs Instrument</pems-button>
+            <pems-button tone="neutral" outline="true" css="status-filter" type="button" data-status="MatchedHasInstrument">Has Instrument</pems-button>
+            <pems-button tone="neutral" outline="true" css="status-filter" type="button" data-status="Confirmed">@Localizer["Confirmed"]</pems-button>
+            <pems-button tone="neutral" outline="true" css="status-filter" type="button" data-status="Rejected">@Localizer["Rejected"]</pems-button>
         </div>
-        <button type="submit" form="bulkConfirmForm" id="bulkConfirmBtn" class="btn btn-sm btn-pems-solid ms-auto" disabled
+        <pems-button tone="primary" size="small" css="ms-auto" type="submit" form="bulkConfirmForm" id="bulkConfirmBtn" disabled
                 onclick="return confirm('تعداد ' + document.getElementById('selectedCount').textContent + ' ردیف انتخاب‌شده به Instrument متصل شود؟');">
             <i class="bi bi-link-45deg"></i> Confirm Selected (<span id="selectedCount">0</span>)
-        </button>
+        </pems-button>
     </div>
 </div>
 
@@ -114,7 +114,7 @@
                                     <form asp-action="RejectRow" method="post" class="d-inline">
                                         <input type="hidden" name="rowId" value="@row.TableExtractionRowId" />
                                         <input type="hidden" name="batchId" value="@Model.TableExtractionBatchId" />
-                                        <button type="submit" class="btn btn-sm btn-outline-secondary">@Localizer["Reject"]</button>
+                                        <pems-button tone="neutral" size="small" outline="true" type="submit">@Localizer["Reject"]</pems-button>
                                     </form>
                                 </div>
                             }
@@ -124,7 +124,7 @@
                                     <input type="hidden" name="rowId" value="@row.TableExtractionRowId" />
                                     <input type="hidden" name="batchId" value="@Model.TableExtractionBatchId" />
                                     <input type="text" name="equipmentTagNumber" class="form-control form-control-sm" placeholder="Equipment tag..." style="max-width:160px;" />
-                                    <button type="submit" class="btn btn-sm btn-pems-solid">Link</button>
+                                    <pems-button tone="primary" size="small" type="submit">Link</pems-button>
                                 </form>
                             }
                             else if (row.MatchStatus == "Confirmed")

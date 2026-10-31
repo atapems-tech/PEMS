@@ -34,7 +34,7 @@
         @if (canGenerate)
         {
             <form asp-action="GenerateRcmEvidence" method="post" class="d-inline">
-                <button type="submit" class="btn btn-pems-solid btn-sm"><i class="bi bi-search"></i> Generate Evidence</button>
+                <pems-button tone="primary" size="small" type="submit"><i class="bi bi-search"></i> Generate Evidence</pems-button>
             </form>
         }
     </div>
@@ -91,12 +91,12 @@
                             <form asp-action="ReviewRcmRecommendation" method="post" class="d-inline">
                                 <input type="hidden" name="recommendationId" value="@r.RcmReviewRecommendationId" />
                                 <input type="hidden" name="accept" value="true" />
-                                <button type="submit" class="btn btn-sm btn-outline-success"><i class="bi bi-check-lg"></i></button>
+                                <pems-button tone="success" size="small" outline="true" type="submit"><i class="bi bi-check-lg"></i></pems-button>
                             </form>
                             <form asp-action="ReviewRcmRecommendation" method="post" class="d-inline">
                                 <input type="hidden" name="recommendationId" value="@r.RcmReviewRecommendationId" />
                                 <input type="hidden" name="accept" value="false" />
-                                <button type="submit" class="btn btn-sm btn-outline-danger"><i class="bi bi-x-lg"></i></button>
+                                <pems-button tone="danger" size="small" outline="true" type="submit"><i class="bi bi-x-lg"></i></pems-button>
                             </form>
                         }
                     </td>

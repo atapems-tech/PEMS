@@ -76,7 +76,7 @@
             <div class="col-md-2"><label class="form-label">@Localizer["Downtime Hours"]</label><input name="reportedDowntimeHours" type="number" min="0" step="0.1" class="form-control" /></div>
         </div>
         <div class="mt-4">
-            <button type="submit" class="btn btn-pems-solid">Submit Request</button>
+            <pems-button tone="primary" type="submit">Submit Request</pems-button>
             <a asp-action="Index" class="btn btn-outline-secondary">@Localizer["Cancel"]</a>
         </div>
     </form>

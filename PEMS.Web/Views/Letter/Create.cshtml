@@ -42,7 +42,7 @@
                     }
                 </select>
             </div>
-            <button type="submit" class="btn btn-sm btn-outline-secondary"><i class="bi bi-file-earmark-text" aria-hidden="true"></i> @Localizer["LtT_Apply"]</button>
+            <pems-button tone="neutral" size="small" outline="true" type="submit"><i class="bi bi-file-earmark-text" aria-hidden="true"></i> @Localizer["LtT_Apply"]</pems-button>
         </form>
     }
 
@@ -81,9 +81,9 @@
             </div>
         </div>
 
-        <button type="button" class="btn btn-sm btn-outline-secondary mt-3" data-bs-toggle="collapse" data-bs-target="#moreDetails" aria-expanded="false" aria-controls="moreDetails">
+        <pems-button tone="neutral" size="small" outline="true" css="mt-3" type="button" data-bs-toggle="collapse" data-bs-target="#moreDetails" aria-expanded="false" aria-controls="moreDetails">
             <i class="bi bi-three-dots" aria-hidden="true"></i> @Localizer["Lt_MoreDetails"]
-        </button>
+        </pems-button>
 
         <div class="collapse mt-3" id="moreDetails">
             <div class="row g-3">
@@ -151,7 +151,7 @@
         </div>
 
         <div class="mt-4">
-            <button type="submit" class="btn btn-pems-solid">@saveLabel</button>
+            <pems-button tone="primary" type="submit">@saveLabel</pems-button>
             <a asp-action="Index" class="btn btn-outline-secondary">@Localizer["Cancel"]</a>
         </div>
     </form>

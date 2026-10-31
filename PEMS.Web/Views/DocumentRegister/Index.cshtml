@@ -127,7 +127,7 @@
 
         <pems-list-bulk count-text="@Localizer["Lp_SelectedCount"]">
             <form asp-action="ExportSelected" method="post">
-                <button type="submit" class="btn btn-sm btn-outline-success"><i class="bi bi-file-earmark-excel" aria-hidden="true"></i> @Localizer["Dr_ExportSelected"]</button>
+                <pems-button tone="success" size="small" outline="true" type="submit"><i class="bi bi-file-earmark-excel" aria-hidden="true"></i> @Localizer["Dr_ExportSelected"]</pems-button>
             </form>
         </pems-list-bulk>
 
@@ -226,7 +226,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="submit" class="btn btn-pems-solid btn-sm">@Localizer["Save"]</button>
+                    <pems-button tone="primary" size="small" type="submit">@Localizer["Save"]</pems-button>
                 </div>
             </form>
         </div>

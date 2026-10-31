@@ -17,7 +17,7 @@
     <p class="text-muted mb-3">@L("Browse Help by module, or search across all articles in English and Persian.", "راهنما را بر اساس ماژول مرور کنید، یا در همه‌ی مقالات به انگلیسی و فارسی جستجو کنید.")</p>
     <form asp-action="Search" method="get" class="d-flex gap-2" style="max-width:520px;">
         <input type="search" name="q" class="form-control" placeholder="@L("Search Help... (e.g. \"work order\", \"IDC\", \"مجوز کار\")", "جستجو در راهنما... (مثلاً «دستور کار»، «IDC»، work order)")" />
-        <button type="submit" class="btn btn-pems-solid"><i class="bi bi-search"></i> @L("Search", "جستجو")</button>
+        <pems-button tone="primary" type="submit"><i class="bi bi-search"></i> @L("Search", "جستجو")</pems-button>
     </form>
 </div>
 

@@ -50,7 +50,7 @@
                                 <form asp-action="SetActive" method="post" class="d-inline">
                                     <input type="hidden" name="id" value="@t.LetterTemplateId" />
                                     <input type="hidden" name="active" value="@(t.IsActive ? "false" : "true")" />
-                                    <button type="submit" class="btn btn-sm btn-outline-secondary">@Localizer[t.IsActive ? "LtT_Deactivate" : "LtT_Activate"]</button>
+                                    <pems-button tone="neutral" size="small" outline="true" type="submit">@Localizer[t.IsActive ? "LtT_Deactivate" : "LtT_Activate"]</pems-button>
                                 </form>
                             </td>
                         </tr>

@@ -43,7 +43,7 @@
         {
             <form asp-action="CloseBidding" method="post" class="d-inline">
                 <input type="hidden" name="tenderId" value="@Model.TenderId" />
-                <button type="submit" class="btn btn-warning btn-sm">@Localizer["Close Bidding"]</button>
+                <pems-button tone="warning" size="small" type="submit">@Localizer["Close Bidding"]</pems-button>
             </form>
         }
         @if (Model.Status == "Awarded" && Model.ContractId == null)
@@ -51,7 +51,7 @@
             <form asp-action="CreateContract" method="post" class="d-flex gap-1 align-items-center">
                 <input type="hidden" name="tenderId" value="@Model.TenderId" />
                 @await Component.InvokeAsync("DocumentNumberField", new { documentType = "Contract", name = "contractNo", label = Localizer["Contract No"].Value, inputCss = "form-control form-control-sm w-auto", compact = true })
-                <button type="submit" class="btn btn-success btn-sm">@Localizer["Create Contract Draft"]</button>
+                <pems-button tone="success" size="small" type="submit">@Localizer["Create Contract Draft"]</pems-button>
             </form>
         }
         @if (Model.ContractId != null)
@@ -151,7 +151,7 @@
                                         <form asp-action="SendInvitations" method="post" class="d-inline">
                                             <input type="hidden" name="tenderId" value="@Model.TenderId" />
                                             <input type="hidden" name="vendorIds" value="@d.VendorId" />
-                                            <button type="submit" class="btn btn-outline-secondary btn-sm">@Localizer["Tinv_Resend"]</button>
+                                            <pems-button tone="neutral" size="small" outline="true" type="submit">@Localizer["Tinv_Resend"]</pems-button>
                                         </form>
                                     }
                                 </td>
@@ -203,7 +203,7 @@
                         <option value="Failed">@Localizer["Failed"]</option>
                     </select>
                     <input type="text" name="comment" class="form-control form-control-sm" placeholder="@Localizer["Comment"]" style="width:180px" />
-                    <button type="submit" class="btn btn-outline-primary btn-sm">@Localizer["Record Evaluation"]</button>
+                    <pems-button tone="primary" size="small" outline="true" type="submit">@Localizer["Record Evaluation"]</pems-button>
                 </form>
             }
 
@@ -214,7 +214,7 @@
                     <input type="hidden" name="bidId" value="@bid.BidId" />
                     <input type="number" step="0.01" name="negotiatedValue" class="form-control form-control-sm" placeholder="@Localizer["New value"]" style="width:130px" required />
                     <input type="text" name="justification" class="form-control form-control-sm" placeholder="@Localizer["Justification"]" style="width:180px" />
-                    <button type="submit" class="btn btn-outline-warning btn-sm">@Localizer["Propose Negotiation"]</button>
+                    <pems-button tone="warning" size="small" outline="true" type="submit">@Localizer["Propose Negotiation"]</pems-button>
                 </form>
 
                 @if (bid.Negotiations.Any(n => n.Status == "Proposed"))
@@ -223,7 +223,7 @@
                     <form asp-action="ApproveNegotiation" method="post" class="d-inline mt-1">
                         <input type="hidden" name="tenderId" value="@Model.TenderId" />
                         <input type="hidden" name="bidNegotiationId" value="@pending.BidNegotiationId" />
-                        <button type="submit" class="btn btn-success btn-sm">@Localizer["Approve Negotiation"] (@pending.NegotiatedValue?.ToString("N0"))</button>
+                        <pems-button tone="success" size="small" type="submit">@Localizer["Approve Negotiation"] (@pending.NegotiatedValue?.ToString("N0"))</pems-button>
                     </form>
                 }
 
@@ -232,7 +232,7 @@
                     <form asp-action="SelectWinner" method="post" class="d-inline mt-1">
                         <input type="hidden" name="tenderId" value="@Model.TenderId" />
                         <input type="hidden" name="bidId" value="@bid.BidId" />
-                        <button type="submit" class="btn btn-success btn-sm">@Localizer["Select as Winner"]</button>
+                        <pems-button tone="success" size="small" type="submit">@Localizer["Select as Winner"]</pems-button>
                     </form>
                 }
             }
@@ -281,7 +281,7 @@
                     <input type="hidden" name="procurementPackageId" value="@Model.ProcurementPackageId" />
                     <input type="hidden" name="communicationId" value="@c.ProcurementCommunicationId" />
                     <input type="text" name="responseText" class="form-control form-control-sm" placeholder="@Localizer["Response"]" required />
-                    <button type="submit" class="btn btn-outline-primary btn-sm">@Localizer["Respond"]</button>
+                    <pems-button tone="primary" size="small" outline="true" type="submit">@Localizer["Respond"]</pems-button>
                 </form>
             }
         </div>

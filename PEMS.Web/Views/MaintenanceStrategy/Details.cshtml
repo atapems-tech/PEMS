@@ -85,8 +85,8 @@
         {
             <form asp-action="Review" asp-route-id="@s.MaintenanceStrategyId" method="post" class="d-inline-flex gap-2">
                 <input name="comment" class="form-control form-control-sm" placeholder="@Localizer["Rcm_Comment"]" style="width:220px" />
-                <button name="approve" value="true" class="btn btn-sm btn-success"><i class="bi bi-check2"></i> @Localizer["Rcm_Approve"]</button>
-                <button name="approve" value="false" class="btn btn-sm btn-outline-danger"><i class="bi bi-x"></i> @Localizer["Rcm_Reject"]</button>
+                <pems-button tone="success" size="small" name="approve" value="true"><i class="bi bi-check2"></i> @Localizer["Rcm_Approve"]</pems-button>
+                <pems-button tone="danger" size="small" outline="true" name="approve" value="false"><i class="bi bi-x"></i> @Localizer["Rcm_Reject"]</pems-button>
             </form>
             @if (Model.IsAuthorOrSubmitter) { <span class="small text-muted align-self-center">@Localizer["Rcm_SodNotice"]</span> }
         }
@@ -94,13 +94,13 @@
         {
             <form asp-action="Activate" asp-route-id="@s.MaintenanceStrategyId" method="post" class="d-inline-flex gap-2 align-items-center">
                 <div class="form-check small mb-0"><input class="form-check-input" type="checkbox" name="moveAssignments" value="true" checked id="mv" /><label class="form-check-label" for="mv">@Localizer["Rcm_MoveAssignments"]</label></div>
-                <button class="btn btn-sm btn-success"><i class="bi bi-lightning"></i> @Localizer["Rcm_Activate"]</button>
+                <pems-button tone="success" size="small"><i class="bi bi-lightning"></i> @Localizer["Rcm_Activate"]</pems-button>
             </form>
         }
         @if (Model.CanApprove && live)
         {
             <form asp-action="Retire" asp-route-id="@s.MaintenanceStrategyId" method="post" class="d-inline" onsubmit="return confirm('@Localizer["Rcm_ConfirmRetire"]');">
-                <button class="btn btn-sm btn-outline-danger"><i class="bi bi-slash-circle"></i> @Localizer["Rcm_Retire"]</button>
+                <pems-button tone="danger" size="small" outline="true"><i class="bi bi-slash-circle"></i> @Localizer["Rcm_Retire"]</pems-button>
             </form>
         }
     </div>
@@ -131,7 +131,7 @@
                     <input type="text" class="form-control form-control-sm" placeholder="@Localizer["Rcm_SearchEquipmentPlaceholder"]" style="width:260px"
                            data-pems-search data-search-type="Equipment" data-search-hidden="#assignEquipmentId" autocomplete="off" required />
                     <input type="hidden" name="equipmentIds" id="assignEquipmentId" />
-                    <button class="btn btn-sm btn-outline-primary">@Localizer["Rcm_AssignTag"]</button>
+                    <pems-button tone="primary" size="small" outline="true">@Localizer["Rcm_AssignTag"]</pems-button>
                 </form>
                 <a asp-action="BulkCreate" asp-route-strategyId="@s.MaintenanceStrategyId" asp-route-classId="@i.EquipmentClassId" class="btn btn-sm btn-outline-primary"><i class="bi bi-collection"></i> @Localizer["Rcm_BulkAssign"]</a>
             </div>
@@ -169,14 +169,14 @@
                                 <form asp-action="DecideOverride" method="post" class="d-flex gap-1 mt-1">
                                     <input type="hidden" name="assignmentId" value="@a.AssignmentId" /><input type="hidden" name="strategyId" value="@s.MaintenanceStrategyId" />
                                     <input name="comment" class="form-control form-control-sm" placeholder="@Localizer["Rcm_Comment"]" />
-                                    <button name="approve" value="true" class="btn btn-sm btn-success">✓</button>
-                                    <button name="approve" value="false" class="btn btn-sm btn-outline-danger">✗</button>
+                                    <pems-button tone="success" size="small" name="approve" value="true">✓</pems-button>
+                                    <pems-button tone="danger" size="small" outline="true" name="approve" value="false">✗</pems-button>
                                 </form>
                             }
                         }
                         else if (Model.CanEdit && usable)
                         {
-                            <button type="button" class="btn btn-sm btn-outline-secondary py-0" data-bs-toggle="modal" data-bs-target="#overrideModal" data-assignment="@a.AssignmentId" data-tag="@a.Equipment.Tag">@Localizer["Rcm_RequestOverride"]</button>
+                            <pems-button tone="neutral" size="small" outline="true" css="py-0" type="button" data-bs-toggle="modal" data-bs-target="#overrideModal" data-assignment="@a.AssignmentId" data-tag="@a.Equipment.Tag">@Localizer["Rcm_RequestOverride"]</pems-button>
                         }
                     </td>
                     <td class="text-end">
@@ -184,7 +184,7 @@
                         {
                             <form asp-action="Unassign" method="post" class="d-inline" onsubmit="return confirm('@Localizer["Rcm_ConfirmUnassign"]');">
                                 <input type="hidden" name="assignmentId" value="@a.AssignmentId" /><input type="hidden" name="strategyId" value="@s.MaintenanceStrategyId" />
-                                <button class="btn btn-sm btn-outline-danger py-0"><i class="bi bi-x-lg"></i></button>
+                                <pems-button tone="danger" size="small" outline="true" css="py-0"><i class="bi bi-x-lg"></i></pems-button>
                             </form>
                         }
                     </td>
@@ -246,8 +246,8 @@
                     <div class="mb-2"><label class="form-label">@Localizer["Rcm_Justification"] *</label><textarea name="overrideJustification" class="form-control" rows="2" minlength="20" required maxlength="1000"></textarea></div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">@Localizer["Cancel"]</button>
-                    <button type="submit" class="btn btn-pems-solid">@Localizer["Save"]</button>
+                    <pems-button tone="neutral" outline="true" type="button" data-bs-dismiss="modal">@Localizer["Cancel"]</pems-button>
+                    <pems-button tone="primary" type="submit">@Localizer["Save"]</pems-button>
                 </div>
             </form>
         </div>

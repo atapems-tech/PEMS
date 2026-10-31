@@ -76,10 +76,10 @@
                 </div>
             </div>
         </template>
-        <button type="button" class="btn btn-sm btn-outline-secondary" id="addItemBtn"><i class="bi bi-plus"></i> @Localizer["Mr_AddItem"]</button>
+        <pems-button tone="neutral" size="small" outline="true" type="button" id="addItemBtn"><i class="bi bi-plus"></i> @Localizer["Mr_AddItem"]</pems-button>
 
         <div class="mt-4">
-            <button type="submit" class="btn btn-pems-solid">Save MR</button>
+            <pems-button tone="primary" type="submit">Save MR</pems-button>
             <a asp-action="Index" class="btn btn-outline-secondary">@Localizer["Cancel"]</a>
         </div>
     </form>

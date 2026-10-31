@@ -68,7 +68,7 @@
                     }
                 </select>
             </div>
-            <button type="submit" class="btn btn-sm btn-outline-secondary"><i class="bi bi-file-earmark-text" aria-hidden="true"></i> @Localizer["LtT_Apply"]</button>
+            <pems-button tone="neutral" size="small" outline="true" type="submit"><i class="bi bi-file-earmark-text" aria-hidden="true"></i> @Localizer["LtT_Apply"]</pems-button>
         </form>
     }
 
@@ -91,7 +91,7 @@
         </div>
 
         <div class="mt-4">
-            <button type="submit" class="btn btn-pems-solid"><i class="bi bi-reply-fill"></i> Send Reply</button>
+            <pems-button tone="primary" type="submit"><i class="bi bi-reply-fill"></i> Send Reply</pems-button>
             <a asp-action="Details" asp-route-id="@parentLetterId" class="btn btn-outline-secondary">Cancel</a>
         </div>
     </form>

@@ -164,9 +164,9 @@
             <div class="col-md-3"><label class="form-label">@Localizer["Vd_UnitCode"]</label><input name="unitCode" class="form-control" placeholder="e.g. 85" /></div>
             <div class="col-md-3"><label class="form-label">@Localizer["Vd_MaterialCode"]</label><input name="materialCode" class="form-control" value="@Model.MaterialCode" placeholder="e.g. 0611" /></div>
         </div>
-        <button type="submit" class="btn btn-outline-primary btn-sm mt-3">
+        <pems-button tone="primary" size="small" outline="true" css="mt-3" type="submit">
             <i class="bi bi-hash"></i> @Localizer["Vd_GenOfficial"]
-        </button>
+        </pems-button>
     </form>
 </div>
 
@@ -187,9 +187,9 @@
             <div class="col-md-4"><label class="form-label">@Localizer["Vd_UnitCode"]</label><input name="unitCode" class="form-control" placeholder="e.g. 85" /></div>
             <div class="col-md-4"><label class="form-label">@Localizer["Vd_TypologyCode"]</label><input name="typologyCode" class="form-control" value="@Model.TypologyCode" placeholder="e.g. GS, LG, IS ..." /></div>
         </div>
-        <button type="submit" class="btn btn-outline-primary btn-sm mt-3">
+        <pems-button tone="primary" size="small" outline="true" css="mt-3" type="submit">
             <i class="bi bi-hash"></i> @Localizer["Vd_GenVendor"]
-        </button>
+        </pems-button>
     </form>
 </div>
 </div>
@@ -245,7 +245,7 @@
                                 <input type="hidden" name="vdrItemId" value="@Model.VDRItemId" />
                                 <input type="hidden" name="submissionId" value="@s.VDRSubmissionId" />
                                 <input type="file" name="file" class="form-control form-control-sm" style="max-width:120px;" required />
-                                <button class="btn btn-sm btn-outline-primary" title="@Localizer["Vd_UploadFtp"]"><i class="bi bi-cloud-upload"></i></button>
+                                <pems-button tone="primary" size="small" outline="true" title="@Localizer["Vd_UploadFtp"]"><i class="bi bi-cloud-upload"></i></pems-button>
                             </form>
                         }
                     </td>
@@ -256,7 +256,7 @@
                     <td>
                         @if (!string.IsNullOrEmpty(s.CommentSheetFilePath))
                         {
-                            <a href="@Url.Action("Download", "Files", new { id = s.CommentSheetAttachmentId })" target="_blank" class="btn btn-sm btn-outline-secondary" title="@s.CommentSheetFileName"><i class="bi bi-file-earmark-text"></i></a>
+                            <pems-button tone="neutral" size="small" outline="true" as="a" href="@Url.Action("Download", "Files", new { id = s.CommentSheetAttachmentId })" target="_blank" title="@s.CommentSheetFileName"><i class="bi bi-file-earmark-text"></i></pems-button>
                         }
                         else
                         {
@@ -264,14 +264,14 @@
                                 <input type="hidden" name="vdrItemId" value="@Model.VDRItemId" />
                                 <input type="hidden" name="submissionId" value="@s.VDRSubmissionId" />
                                 <input type="file" name="file" class="form-control form-control-sm" style="max-width:120px;" required />
-                                <button class="btn btn-sm btn-outline-primary"><i class="bi bi-upload"></i></button>
+                                <pems-button tone="primary" size="small" outline="true"><i class="bi bi-upload"></i></pems-button>
                             </form>
                         }
                     </td>
                     <td>
                         @if (!string.IsNullOrEmpty(s.ReplySheetFilePath))
                         {
-                            <a href="@Url.Action("Download", "Files", new { id = s.ReplySheetAttachmentId })" target="_blank" class="btn btn-sm btn-outline-secondary" title="@s.ReplySheetFileName"><i class="bi bi-file-earmark-text"></i></a>
+                            <pems-button tone="neutral" size="small" outline="true" as="a" href="@Url.Action("Download", "Files", new { id = s.ReplySheetAttachmentId })" target="_blank" title="@s.ReplySheetFileName"><i class="bi bi-file-earmark-text"></i></pems-button>
                         }
                         else
                         {
@@ -279,7 +279,7 @@
                                 <input type="hidden" name="vdrItemId" value="@Model.VDRItemId" />
                                 <input type="hidden" name="submissionId" value="@s.VDRSubmissionId" />
                                 <input type="file" name="file" class="form-control form-control-sm" style="max-width:120px;" required />
-                                <button class="btn btn-sm btn-outline-primary"><i class="bi bi-upload"></i></button>
+                                <pems-button tone="primary" size="small" outline="true"><i class="bi bi-upload"></i></pems-button>
                             </form>
                         }
                     </td>
@@ -306,11 +306,11 @@
         <div class="d-flex justify-content-between align-items-center mb-2">
             <h6 class="mb-0"><i class="bi bi-file-earmark-pdf"></i> @Localizer["Vd_DocViewer"] <span class="text-muted small">@Localizer["Vd_PinHint"]</span></h6>
             <div class="d-flex align-items-center gap-2">
-                <button type="button" class="btn btn-sm btn-outline-secondary" id="pdfPrevPage"><i class="bi bi-chevron-left"></i></button>
+                <pems-button tone="neutral" size="small" outline="true" type="button" id="pdfPrevPage"><i class="bi bi-chevron-left"></i></pems-button>
                 <span class="small" id="pdfPageLabel">@Localizer["Vd_Page"] - / -</span>
-                <button type="button" class="btn btn-sm btn-outline-secondary" id="pdfNextPage"><i class="bi bi-chevron-right"></i></button>
-                <button type="button" class="btn btn-sm btn-outline-secondary" id="pdfZoomOut"><i class="bi bi-zoom-out"></i></button>
-                <button type="button" class="btn btn-sm btn-outline-secondary" id="pdfZoomIn"><i class="bi bi-zoom-in"></i></button>
+                <pems-button tone="neutral" size="small" outline="true" type="button" id="pdfNextPage"><i class="bi bi-chevron-right"></i></pems-button>
+                <pems-button tone="neutral" size="small" outline="true" type="button" id="pdfZoomOut"><i class="bi bi-zoom-out"></i></pems-button>
+                <pems-button tone="neutral" size="small" outline="true" type="button" id="pdfZoomIn"><i class="bi bi-zoom-in"></i></pems-button>
             </div>
         </div>
         <div id="pdfCanvasWrapper" style="position:relative; border:1px solid var(--pems-surface-border,#dee2e6); overflow:auto; max-height:75vh; text-align:center; cursor:crosshair;">
@@ -460,9 +460,9 @@
                         }
                         @if (string.IsNullOrEmpty(c.ResponseText) && string.IsNullOrEmpty(c.ReplyAttachmentFilePath))
                         {
-                            <button type="button" class="btn btn-sm btn-outline-primary mt-1" data-bs-toggle="modal" data-bs-target="#replyModal_@c.VDRCommentId">
+                            <pems-button tone="primary" size="small" outline="true" css="mt-1" type="button" data-bs-toggle="modal" data-bs-target="#replyModal_@c.VDRCommentId">
                                 <i class="bi bi-reply"></i> @Localizer["Vd_Reply"]
-                            </button>
+                            </pems-button>
                         }
                     </td>
                 </tr>
@@ -473,9 +473,9 @@
 
     @if (Model.Submissions.Any())
     {
-        <button type="button" class="btn btn-sm btn-pems-solid" data-bs-toggle="modal" data-bs-target="#addCommentModal">
+        <pems-button tone="primary" size="small" type="button" data-bs-toggle="modal" data-bs-target="#addCommentModal">
             <i class="bi bi-plus-lg"></i> @Localizer["Vd_AddComment"]
-        </button>
+        </pems-button>
     }
 </div>
 </div>
@@ -528,8 +528,8 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">@Localizer["Vd_Cancel"]</button>
-                    <button type="submit" class="btn btn-pems-solid">@Localizer["Vd_SaveComment"]</button>
+                    <pems-button tone="neutral" outline="true" type="button" data-bs-dismiss="modal">@Localizer["Vd_Cancel"]</pems-button>
+                    <pems-button tone="primary" type="submit">@Localizer["Vd_SaveComment"]</pems-button>
                 </div>
             </form>
         </div>
@@ -559,8 +559,8 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">@Localizer["Vd_Cancel"]</button>
-                        <button type="submit" class="btn btn-pems-solid btn-sm">@Localizer["Vd_SaveReply"]</button>
+                        <pems-button tone="neutral" outline="true" type="button" data-bs-dismiss="modal">@Localizer["Vd_Cancel"]</pems-button>
+                        <pems-button tone="primary" size="small" type="submit">@Localizer["Vd_SaveReply"]</pems-button>
                     </div>
                 </form>
             </div>
@@ -650,7 +650,7 @@
                                 <h2 id="vdrStep2Title" class="vs-section__title mb-1">@Localizer["Vd_Step2Title"] <span class="fw-normal text-muted small">(@Localizer["Vd_Optional"])</span></h2>
                                 <p class="small text-muted mb-0" id="vdrDiscSummary" aria-live="polite" data-none="@Localizer["Vd_NoDiscSelected"]" data-some="@Localizer["Vd_DiscSelected"]">@Localizer["Vd_NoDiscSelected"]</p>
                             </div>
-                            <button type="button" class="btn btn-sm btn-outline-secondary" data-bs-toggle="collapse" data-bs-target="#vdrDiscPicker" aria-expanded="false" aria-controls="vdrDiscPicker">@Localizer["Vd_ChooseDisciplines"]</button>
+                            <pems-button tone="neutral" size="small" outline="true" type="button" data-bs-toggle="collapse" data-bs-target="#vdrDiscPicker" aria-expanded="false" aria-controls="vdrDiscPicker">@Localizer["Vd_ChooseDisciplines"]</pems-button>
                         </div>
                         <div class="collapse mt-3" id="vdrDiscPicker">
                             <div class="small fw-bold mb-2">@Localizer["Vd_ReviewDisciplines"]</div>
@@ -680,7 +680,7 @@
                             <dt class="text-muted fw-normal">@Localizer["Vd_Step2Title"]</dt>
                             <dd class="mb-0" id="vdrSummaryDisc" data-none="@Localizer["Vd_None"]">@Localizer["Vd_None"]</dd>
                         </dl>
-                        <button type="submit" class="btn btn-pems-solid w-100" id="vdrStartBtn" aria-describedby="vdrWhyDisabled"><i class="bi bi-play-fill" aria-hidden="true"></i> @Localizer["Vd_StartReview"]</button>
+                        <pems-button tone="primary" css="w-100" type="submit" id="vdrStartBtn" aria-describedby="vdrWhyDisabled"><i class="bi bi-play-fill" aria-hidden="true"></i> @Localizer["Vd_StartReview"]</pems-button>
                         <p id="vdrWhyDisabled" class="small text-warning-emphasis mt-2 mb-0" hidden>@Localizer["Vd_EnterTransmittalToEnable"]</p>
                     </div>
                 </section>
@@ -719,10 +719,10 @@ else
                 <form asp-action="DisciplineRespond" method="post" class="d-inline">
                     <input type="hidden" name="vdrItemId" value="@Model.VDRItemId" />
                     <input type="hidden" name="decision" value="Approve" />
-                    <button class="btn btn-success btn-sm">@Localizer["Vd_Approve"]</button>
+                    <pems-button tone="success" size="small">@Localizer["Vd_Approve"]</pems-button>
                 </form>
-                <button type="button" class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#vdrCommentModal">@Localizer["Vd_CommentBtn"]</button>
-                <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#vdrRejectModal">@Localizer["Vd_RejectBtn"]</button>
+                <pems-button tone="warning" size="small" type="button" data-bs-toggle="modal" data-bs-target="#vdrCommentModal">@Localizer["Vd_CommentBtn"]</pems-button>
+                <pems-button tone="danger" size="small" type="button" data-bs-toggle="modal" data-bs-target="#vdrRejectModal">@Localizer["Vd_RejectBtn"]</pems-button>
             </div>
 
             <div class="modal fade" id="vdrCommentModal" tabindex="-1">
@@ -733,8 +733,8 @@ else
                         <div class="modal-header"><h6 class="modal-title">@Localizer["Vd_RecordComment"]</h6></div>
                         <div class="modal-body"><textarea name="comment" class="form-control form-control-sm" rows="3" required></textarea></div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">@Localizer["Vd_Cancel"]</button>
-                            <button type="submit" class="btn btn-warning btn-sm">@Localizer["Vd_Submit"]</button>
+                            <pems-button tone="neutral" size="small" outline="true" type="button" data-bs-dismiss="modal">@Localizer["Vd_Cancel"]</pems-button>
+                            <pems-button tone="warning" size="small" type="submit">@Localizer["Vd_Submit"]</pems-button>
                         </div>
                     </form>
                 </div></div>
@@ -747,8 +747,8 @@ else
                         <div class="modal-header"><h6 class="modal-title">@Localizer["Vd_RejectTitle"]</h6></div>
                         <div class="modal-body"><textarea name="comment" class="form-control form-control-sm" rows="3" required></textarea></div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">@Localizer["Vd_Cancel"]</button>
-                            <button type="submit" class="btn btn-danger btn-sm">@Localizer["Vd_RejectBtn"]</button>
+                            <pems-button tone="neutral" size="small" outline="true" type="button" data-bs-dismiss="modal">@Localizer["Vd_Cancel"]</pems-button>
+                            <pems-button tone="danger" size="small" type="submit">@Localizer["Vd_RejectBtn"]</pems-button>
                         </div>
                     </form>
                 </div></div>
@@ -777,7 +777,7 @@ else
             <div class="col-md-3"><label class="form-label small">@Localizer["Vd_CommentSheetNo"]</label><input name="clientCommentSheetNo" class="form-control form-control-sm" /></div>
             <div class="col-md-3"><label class="form-label small">@Localizer["Vd_CommentDate"]</label><input name="clientCommentDate" type="date" class="form-control form-control-sm" /></div>
             <div class="col-md-3 d-flex align-items-end">
-                <button type="submit" class="btn btn-sm btn-pems-solid w-100">@Localizer["Vd_RecordFinal"]</button>
+                <pems-button tone="primary" size="small" css="w-100" type="submit">@Localizer["Vd_RecordFinal"]</pems-button>
             </div>
         </form>
     }
@@ -790,7 +790,7 @@ else
             <div class="col-md-4"><label class="form-label small">@Localizer["Vd_ReplySheetNo"]</label><input name="replySheetNo" class="form-control form-control-sm" /></div>
             <div class="col-md-4"><label class="form-label small">@Localizer["Vd_ClientTransmittalNo"]</label><input name="clientTransmittalNo" class="form-control form-control-sm" /></div>
             <div class="col-md-4 d-flex align-items-end">
-                <button type="submit" class="btn btn-sm btn-pems-solid w-100"><i class="bi bi-send"></i> @Localizer["Vd_ReturnToVendor"]</button>
+                <pems-button tone="primary" size="small" css="w-100" type="submit"><i class="bi bi-send"></i> @Localizer["Vd_ReturnToVendor"]</pems-button>
             </div>
         </form>
     }

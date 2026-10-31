@@ -34,7 +34,7 @@
             </div>
         </div>
         <div class="col-md-10"><label class="form-label small" for="sp-desc">@Localizer["Tm_Field_Description"]</label><input id="sp-desc" name="Description" value="@s.Description" class="form-control form-control-sm" maxlength="1000" /></div>
-        <div class="col-md-2 d-flex align-items-end"><button class="btn btn-sm btn-pems-solid w-100">@Localizer["Tm_Save"]</button></div>
+        <div class="col-md-2 d-flex align-items-end"><pems-button tone="primary" size="small" css="w-100">@Localizer["Tm_Save"]</pems-button></div>
     </form>
     <p class="small text-muted mt-2 mb-0">@Localizer["Tm_KeyImmutable"]</p>
 </section>
@@ -62,7 +62,7 @@
                                         </select>
                                         <input class="form-check-input" type="checkbox" name="isActive" value="true" checked="@m.IsActive" aria-label="@Localizer["Tm_Field_Active"] @m.Name" />
                                         <input type="hidden" name="isActive" value="false" />
-                                        <button class="btn btn-sm btn-outline-secondary">@Localizer["Tm_Save"]</button>
+                                        <pems-button tone="neutral" size="small" outline="true">@Localizer["Tm_Save"]</pems-button>
                                     </form>
                                 </td>
                             </tr>
@@ -81,7 +81,7 @@
                 <select id="am-role" name="role" class="form-select form-select-sm w-auto">
                     @foreach (var r in PEMS.Domain.Entities.WorkSpaceMemberRoles.All) { <option value="@r">@Localizer["Tm_Role_" + r]</option> }
                 </select>
-                <button class="btn btn-sm btn-pems-solid">@Localizer["Tm_Add"]</button>
+                <pems-button tone="primary" size="small">@Localizer["Tm_Add"]</pems-button>
             </form>
         </section>
 
@@ -110,7 +110,7 @@
                 <div class="col-md-3"><label class="form-label small" for="at-icon">@Localizer["Tm_Field_Icon"]</label><input id="at-icon" name="icon" value="bi-check2-square" class="form-control form-control-sm" required pattern="bi-[a-z0-9-]{1,40}" /></div>
                 <div class="col-md-3 d-flex align-items-end gap-2">
                     <div class="form-check"><input class="form-check-input" type="checkbox" id="at-sub" name="isSubtask" value="true" /><label class="form-check-label small" for="at-sub">@Localizer["Tm_Subtask"]</label></div>
-                    <button class="btn btn-sm btn-pems-solid">@Localizer["Tm_Add"]</button>
+                    <pems-button tone="primary" size="small">@Localizer["Tm_Add"]</pems-button>
                 </div>
             </form>
         </section>
@@ -136,7 +136,7 @@
                         <input class="form-check-input" type="checkbox" name="isActive" value="true" checked="@st.IsActive" aria-label="@Localizer["Tm_Field_Active"]" />
                         <input type="hidden" name="isActive" value="false" />
                     </div>
-                    <div class="col-2"><button class="btn btn-sm btn-outline-secondary w-100">@Localizer["Tm_Save"]</button></div>
+                    <div class="col-2"><pems-button tone="neutral" size="small" outline="true" css="w-100">@Localizer["Tm_Save"]</pems-button></div>
                 </form>
             }
             <form asp-action="AddStatus" method="post" class="row g-1 mt-2">
@@ -148,7 +148,7 @@
                         @foreach (var c in PEMS.Domain.Entities.WorkItemStatusCategories.All) { <option value="@c">@Localizer["Tm_Category_" + c]</option> }
                     </select>
                 </div>
-                <div class="col-2"><button class="btn btn-sm btn-pems-solid w-100">@Localizer["Tm_Add"]</button></div>
+                <div class="col-2"><pems-button tone="primary" size="small" css="w-100">@Localizer["Tm_Add"]</pems-button></div>
             </form>
         </section>
 

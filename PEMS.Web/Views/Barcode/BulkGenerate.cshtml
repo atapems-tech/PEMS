@@ -39,7 +39,7 @@
             <input name="tagSearch" class="form-control" dir="ltr" />
         </div>
         <div class="col-md-1 d-flex align-items-end">
-            <button type="submit" class="btn btn-pems-solid w-100"><i class="bi bi-funnel"></i></button>
+            <pems-button tone="primary" css="w-100" type="submit"><i class="bi bi-funnel"></i></pems-button>
         </div>
     </form>
 </div>
@@ -59,9 +59,9 @@ else
                         <option value="Code128">@Localizer["Code128"]</option>
                         <option value="QR">QR</option>
                     </select>
-                    <button type="submit" class="btn btn-pems-solid btn-sm" onclick="return confirm('Generate barcodes for the selected Equipment? Equipment that already has an active barcode is skipped.')">
+                    <pems-button tone="primary" size="small" type="submit" onclick="return confirm('Generate barcodes for the selected Equipment? Equipment that already has an active barcode is skipped.')">
                         <i class="bi bi-upc-scan"></i> Generate &amp; Print Labels
-                    </button>
+                    </pems-button>
                 </div>
             </div>
             <div class="table-responsive table-scroll-area" style="max-height:55vh; overflow-y:auto;">

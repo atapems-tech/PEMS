@@ -26,9 +26,9 @@
 
 <div class="content-card mb-3">
     <div class="d-flex justify-content-end mb-2">
-        <button type="button" class="btn btn-sm btn-outline-secondary" onclick="PemsDataGrid.resetColumns('Task')">
+        <pems-button tone="neutral" size="small" outline="true" type="button" onclick="PemsDataGrid.resetColumns('Task')">
             <i class="bi bi-arrow-counterclockwise"></i> @Localizer["Reset columns"]
-        </button>
+        </pems-button>
     </div>
     <div class="pems-grid-scroll">
     <table class="table table-enterprise pems-grid-table mb-0" data-grid-key="Task">
@@ -94,7 +94,7 @@
                                     <select id="st-@t.TaskItemId" name="status" class="form-select form-select-sm" style="width:130px;">
                                         @foreach (var s in targets) { <option value="@s">@TaskManagerUi.LegacyStatus(Localizer, s)</option> }
                                     </select>
-                                    <button class="btn btn-sm btn-outline-secondary" aria-label="@Localizer["Tm_ChangeStatus"]"><i class="bi bi-check2" aria-hidden="true"></i></button>
+                                    <pems-button tone="neutral" size="small" outline="true" aria-label="@Localizer["Tm_ChangeStatus"]"><i class="bi bi-check2" aria-hidden="true"></i></pems-button>
                                 </form>
                                 @if (closed && !string.IsNullOrEmpty(t.CompletionNote)) { <div class="small text-muted">@t.CompletionNote</div> }
                             }
@@ -158,7 +158,7 @@
                     @foreach (var p in TaskItemPriorities.All) { <option value="@p" selected="@(p == "Normal")">@TaskManagerUi.Priority(Localizer, p)</option> }
                 </select>
             </div>
-            <div class="col-md-1"><button class="btn btn-sm btn-pems-solid w-100" aria-label="@Localizer["Tm_Create"]"><i class="bi bi-plus-lg" aria-hidden="true"></i></button></div>
+            <div class="col-md-1"><pems-button tone="primary" size="small" css="w-100" aria-label="@Localizer["Tm_Create"]"><i class="bi bi-plus-lg" aria-hidden="true"></i></pems-button></div>
             <div class="col-12">
                 <label class="visually-hidden" for="nt-desc">@Localizer["Description (optional)"]</label>
                 <input id="nt-desc" name="description" class="form-control form-control-sm" placeholder="@Localizer["Description (optional)"]" maxlength="8000" />

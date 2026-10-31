@@ -14,7 +14,7 @@
         {
             <form asp-action="ItpApprove" method="post">
                 <input type="hidden" name="id" value="@Model.InspectionTestPlanId" />
-                <button class="btn btn-success btn-sm"><i class="bi bi-check-lg"></i> Approve &amp; Activate</button>
+                <pems-button tone="success" size="small"><i class="bi bi-check-lg"></i> Approve &amp; Activate</pems-button>
             </form>
         }
     </div>
@@ -71,14 +71,14 @@
                             <form asp-action="ItpNotifyHoldPoint" method="post">
                                 <input type="hidden" name="lineItemId" value="@li.ITPLineItemId" />
                                 <input type="hidden" name="itpId" value="@Model.InspectionTestPlanId" />
-                                <button class="btn btn-warning btn-sm w-100"><i class="bi bi-bell"></i> Notify Hold Point</button>
+                                <pems-button tone="warning" size="small" css="w-100"><i class="bi bi-bell"></i> Notify Hold Point</pems-button>
                             </form>
                         }
                         @if (li.Status != "Passed" && li.Status != "Failed")
                         {
-                            <button type="button" class="btn btn-outline-primary btn-sm" data-bs-toggle="modal" data-bs-target="#inspectModal_@li.ITPLineItemId">
+                            <pems-button tone="primary" size="small" outline="true" type="button" data-bs-toggle="modal" data-bs-target="#inspectModal_@li.ITPLineItemId">
                                 <i class="bi bi-clipboard-check"></i> Perform Inspection
-                            </button>
+                            </pems-button>
                         }
                     </td>
                 </tr>
@@ -109,8 +109,8 @@
                                     </div>
                                 </div>
                                 <div class="modal-footer">
-                                    <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">@Localizer["Cancel"]</button>
-                                    <button type="submit" class="btn btn-pems-solid btn-sm">Save Result</button>
+                                    <pems-button tone="neutral" size="small" outline="true" type="button" data-bs-dismiss="modal">@Localizer["Cancel"]</pems-button>
+                                    <pems-button tone="primary" size="small" type="submit">Save Result</pems-button>
                                 </div>
                             </form>
                         </div>
@@ -156,7 +156,7 @@
             </div>
         </div>
         <div class="mt-3">
-            <button type="submit" class="btn btn-pems-solid btn-sm">@Localizer["Add"]</button>
+            <pems-button tone="primary" size="small" type="submit">@Localizer["Add"]</pems-button>
         </div>
     </form>
 </div>

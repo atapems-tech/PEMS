@@ -18,7 +18,7 @@
             </p>
         </div>
         <form asp-action="RematchDisciplines" method="post">
-            <button type="submit" class="btn btn-sm btn-outline-primary"><i class="bi bi-arrow-repeat"></i> Fix Discipline Matching</button>
+            <pems-button tone="primary" size="small" outline="true" type="submit"><i class="bi bi-arrow-repeat"></i> Fix Discipline Matching</pems-button>
         </form>
     </div>
 </div>
@@ -34,7 +34,7 @@
             </p>
         </div>
         <form asp-action="FixLegacyStatuses" method="post">
-            <button type="submit" class="btn btn-sm btn-outline-primary"><i class="bi bi-speedometer2"></i> Fix Status Values</button>
+            <pems-button tone="primary" size="small" outline="true" type="submit"><i class="bi bi-speedometer2"></i> Fix Status Values</pems-button>
         </form>
     </div>
 </div>
@@ -57,7 +57,7 @@
             <input type="file" name="file" class="form-control" accept=".xlsx" required />
         </div>
         <div class="col-md-2">
-            <button type="submit" class="btn btn-pems-solid w-100"><i class="bi bi-cloud-upload"></i> @Localizer["Upload"]</button>
+            <pems-button tone="primary" css="w-100" type="submit"><i class="bi bi-cloud-upload"></i> @Localizer["Upload"]</pems-button>
         </div>
     </form>
 </div>

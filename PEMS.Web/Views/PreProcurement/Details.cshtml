@@ -101,6 +101,6 @@
         <input type="hidden" name="id" value="@d.ProcurementDemandId" />
         <label class="form-label small" for="pprReason">@Localizer[isMr ? "Ppr_ReturnReason" : "Ppr_DismissReason"]</label>
         <textarea id="pprReason" name="reason" class="form-control form-control-sm mb-2" rows="2" required></textarea>
-        <button type="submit" class="btn btn-sm btn-outline-danger"><i class="bi bi-x-circle" aria-hidden="true"></i> @Localizer[isMr ? "Ppr_Return" : "Ppr_Dismiss"]</button>
+        <pems-button tone="danger" size="small" outline="true" type="submit"><i class="bi bi-x-circle" aria-hidden="true"></i> @Localizer[isMr ? "Ppr_Return" : "Ppr_Dismiss"]</pems-button>
     </form>
 }

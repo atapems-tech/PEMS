@@ -20,7 +20,7 @@
     </div>
     <form asp-action="Search" method="get" class="d-flex gap-2 mt-2">
         <input type="text" name="q" value="@ViewBag.Query" class="form-control" placeholder="e.g. P-101, or a vendor name, or a document number" />
-        <button class="btn btn-pems-solid"><i class="bi bi-diagram-3"></i> @Localizer["Explore"]</button>
+        <pems-button tone="primary"><i class="bi bi-diagram-3"></i> @Localizer["Explore"]</pems-button>
     </form>
 </div>
 
@@ -35,9 +35,9 @@
                 <input type="hidden" name="targetType" value="@TempData["ConflictTargetType"]" />
                 <input type="hidden" name="targetId" value="@TempData["ConflictTargetId"]" />
                 <input type="hidden" name="force" value="true" />
-                <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('مطمئنی؟ رابطه‌ی قبلی جایگزین می‌شه.')">
+                <pems-button tone="danger" size="small" type="submit" onclick="return confirm('مطمئنی؟ رابطه‌ی قبلی جایگزین می‌شه.')">
                     <i class="bi bi-exclamation-octagon"></i> بله، جایگزین کن (Force)
-                </button>
+                </pems-button>
             </form>
         }
     </div>
@@ -100,7 +100,7 @@ else
                             <input type="hidden" name="equipmentId" value="@Model.RootId" />
                             <input type="hidden" name="targetType" value="@suggestion.NodeType" />
                             <input type="hidden" name="targetId" value="@suggestion.NodeId" />
-                            <button type="submit" class="btn btn-success btn-sm"><i class="bi bi-check-lg"></i> تایید اتصال</button>
+                            <pems-button tone="success" size="small" type="submit"><i class="bi bi-check-lg"></i> تایید اتصال</pems-button>
                         </form>
                     </li>
                 }

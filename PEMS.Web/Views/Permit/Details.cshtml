@@ -177,14 +177,14 @@
         {
             <form asp-action="AdvanceStatus" method="post" class="d-flex gap-2">
                 <input type="hidden" name="id" value="@Model.PermitId" />
-                <button type="submit" class="btn btn-sm btn-pems-solid">Advance to @nextStatus</button>
+                <pems-button tone="primary" size="small" type="submit">Advance to @nextStatus</pems-button>
             </form>
         }
         @if (Model.Status == "Submitted" && approvalInstance == null)
         {
             <form asp-action="SubmitForApproval" method="post" class="d-flex gap-2">
                 <input type="hidden" name="id" value="@Model.PermitId" />
-                <button type="submit" class="btn btn-sm btn-pems-solid"><i class="bi bi-signpost-split"></i> Submit for Approval</button>
+                <pems-button tone="primary" size="small" type="submit"><i class="bi bi-signpost-split"></i> Submit for Approval</pems-button>
             </form>
         }
         @if (Model.Status == "Active")
@@ -192,7 +192,7 @@
             <form asp-action="Suspend" method="post" class="d-flex flex-wrap gap-2">
                 <input type="hidden" name="id" value="@Model.PermitId" />
                 <input type="text" name="reason" class="form-control form-control-sm flex-grow-1" style="min-width:160px;max-width:280px;" placeholder="Suspend reason" />
-                <button type="submit" class="btn btn-sm btn-outline-warning">Suspend</button>
+                <pems-button tone="warning" size="small" outline="true" type="submit">Suspend</pems-button>
             </form>
             <form asp-action="Close" method="post">
                 <input type="hidden" name="id" value="@Model.PermitId" />
@@ -204,7 +204,7 @@
         {
             <form asp-action="Cancel" method="post">
                 <input type="hidden" name="id" value="@Model.PermitId" />
-                <button type="submit" class="btn btn-sm btn-outline-secondary" onclick="return confirm('این Permit لغو شود؟');">@Localizer["Cancel"]</button>
+                <pems-button tone="neutral" size="small" outline="true" type="submit" onclick="return confirm('این Permit لغو شود؟');">@Localizer["Cancel"]</pems-button>
             </form>
         }
         @if (Model.Status is "Approved" or "Issued" or "Active")
@@ -212,7 +212,7 @@
             <form asp-action="Revoke" method="post" class="d-flex flex-wrap gap-2">
                 <input type="hidden" name="id" value="@Model.PermitId" />
                 <input type="text" name="reason" class="form-control form-control-sm flex-grow-1" style="min-width:160px;max-width:280px;" placeholder="Revocation reason" />
-                <button type="submit" class="btn btn-sm btn-outline-danger" onclick="return confirm('این Permit ابطال شود؟');">@Localizer["Revoke"]</button>
+                <pems-button tone="danger" size="small" outline="true" type="submit" onclick="return confirm('این Permit ابطال شود؟');">@Localizer["Revoke"]</pems-button>
             </form>
         }
         @if (nextStatus == null && Model.Status is not ("Active" or "Draft" or "Submitted" or "Approved" or "Issued"))
@@ -274,10 +274,10 @@
                 <form asp-controller="ExecutionGate" asp-action="EmergencyOverride" method="post" class="d-flex flex-wrap gap-2">
                     <input type="hidden" name="permitId" value="@Model.PermitId" />
                     <input type="text" name="reason" class="form-control form-control-sm flex-grow-1" style="min-width:160px;max-width:280px;" placeholder="Emergency reason (required)" required />
-                    <button type="button" class="btn btn-sm btn-outline-danger"
+                    <pems-button tone="danger" size="small" outline="true" type="button"
                             onclick="if(confirm('Emergency Override یک اقدام واقعاً استثنایی است. مطمئن هستید؟')) pemsSubmitWithStepUp(this)">
                         <i class="bi bi-exclamation-triangle"></i> Emergency Override
-                    </button>
+                    </pems-button>
                 </form>
             }
         </div>
@@ -381,7 +381,7 @@
             <form asp-action="ReturnForRework" method="post" class="d-flex flex-wrap gap-2 align-items-center mt-2">
                 <input type="hidden" name="id" value="@Model.PermitId" />
                 <input type="text" name="comment" class="form-control form-control-sm flex-grow-1" style="min-width:160px;max-width:280px;" placeholder="Rework instructions" />
-                <button type="submit" class="btn btn-sm btn-outline-warning" onclick="return confirm('Permit برای اصلاح به Draft برگردد؟');">Return for Rework</button>
+                <pems-button tone="warning" size="small" outline="true" type="submit" onclick="return confirm('Permit برای اصلاح به Draft برگردد؟');">Return for Rework</pems-button>
             </form>
         }
         else if (approvalInstance.Status == "Running")
@@ -466,12 +466,12 @@
                                 <input type="hidden" name="permitId" value="@Model.PermitId" />
                                 <input type="text" name="lockNumber" class="form-control form-control-sm d-inline-block" placeholder="Lock #" style="width:90px;" />
                                 <input type="text" name="tagNumber" class="form-control form-control-sm d-inline-block" placeholder="Tag #" style="width:90px;" />
-                                <button type="submit" class="btn btn-sm btn-outline-warning"><i class="bi bi-lock-fill"></i> Isolate</button>
+                                <pems-button tone="warning" size="small" outline="true" type="submit"><i class="bi bi-lock-fill"></i> Isolate</pems-button>
                             </form>
                             <form asp-controller="Isolation" asp-action="Cancel" method="post" class="d-inline">
                                 <input type="hidden" name="id" value="@p.IsolationPointId" />
                                 <input type="hidden" name="permitId" value="@Model.PermitId" />
-                                <button type="submit" class="btn btn-sm btn-outline-secondary" onclick="return confirm('این نقطه لغو شود؟');">@Localizer["Cancel"]</button>
+                                <pems-button tone="neutral" size="small" outline="true" type="submit" onclick="return confirm('این نقطه لغو شود؟');">@Localizer["Cancel"]</pems-button>
                             </form>
                         }
                         @if (p.Status == "Isolated")
@@ -487,7 +487,7 @@
                             <form asp-controller="Isolation" asp-action="Deisolate" method="post" class="d-inline">
                                 <input type="hidden" name="id" value="@p.IsolationPointId" />
                                 <input type="hidden" name="permitId" value="@Model.PermitId" />
-                                <button type="submit" class="btn btn-sm btn-outline-secondary" onclick="return confirm('این ایزوله‌سازی برداشته شود (De-isolation)؟');">De-isolate</button>
+                                <pems-button tone="neutral" size="small" outline="true" type="submit" onclick="return confirm('این ایزوله‌سازی برداشته شود (De-isolation)؟');">De-isolate</pems-button>
                             </form>
                         }
                     </td>
@@ -511,7 +511,7 @@
             <div class="col-md-2"><label class="form-label small">Normal State</label><input name="normalState" class="form-control form-control-sm" /></div>
             <div class="col-md-2"><label class="form-label small">Required Isolation State</label><input name="requiredIsolationState" class="form-control form-control-sm" /></div>
             <div class="col-md-2"><label class="form-label small">Method</label><input name="isolationMethod" class="form-control form-control-sm" /></div>
-            <div class="col-md-1"><button type="submit" class="btn btn-sm btn-pems-solid w-100">@Localizer["Add"]</button></div>
+            <div class="col-md-1"><pems-button tone="primary" size="small" css="w-100" type="submit">@Localizer["Add"]</pems-button></div>
         </form>
     }
 </div>
@@ -578,7 +578,7 @@
                     <input type="hidden" name="id" value="@g.GasTestId" />
                     <input type="hidden" name="permitId" value="@Model.PermitId" />
                     <input type="text" name="reason" class="form-control form-control-sm" placeholder="Invalidation reason" style="max-width:260px;" required />
-                    <button type="submit" class="btn btn-sm btn-outline-danger" onclick="return confirm('این تست گاز باطل شود؟');">Invalidate</button>
+                    <pems-button tone="danger" size="small" outline="true" type="submit" onclick="return confirm('این تست گاز باطل شود؟');">Invalidate</pems-button>
                 </form>
             }
             else
@@ -608,7 +608,7 @@
             }
             <div class="col-md-1"><label class="form-label small">@Localizer["Other"]</label><input type="number" step="0.01" name="otherValue" class="form-control form-control-sm" /></div>
             <div class="col-md-1"><label class="form-label small">@Localizer["Unit"]</label><input type="text" name="otherUnit" class="form-control form-control-sm" placeholder="e.g. PPM" /></div>
-            <div class="col-md-1"><button type="submit" class="btn btn-sm btn-pems-solid w-100">Record</button></div>
+            <div class="col-md-1"><pems-button tone="primary" size="small" css="w-100" type="submit">Record</pems-button></div>
         </form>
     }
 </div>
@@ -735,7 +735,7 @@
                             <form asp-controller="Simops" asp-action="Create" method="post" class="d-inline">
                                 <input type="hidden" name="permitId" value="@Model.PermitId" />
                                 <input type="hidden" name="otherPermitId" value="@cand.PermitId" />
-                                <button type="submit" class="btn btn-sm btn-outline-danger">Raise Conflict</button>
+                                <pems-button tone="danger" size="small" outline="true" type="submit">Raise Conflict</pems-button>
                             </form>
                         </td>
                     </tr>

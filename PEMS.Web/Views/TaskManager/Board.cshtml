@@ -69,7 +69,7 @@
                                     @foreach (var s in view.Statuses.Where(s => targets.Contains(s.Id)))
                                     { <option value="@s.Id">@TaskManagerUi.Name(s.Name, s.NameFa)</option> }
                                 </select>
-                                <button class="btn btn-sm btn-outline-secondary" aria-label="@Localizer["Tm_Move"] @i.Key"><i class="bi bi-arrow-right-short" aria-hidden="true"></i></button>
+                                <pems-button tone="neutral" size="small" outline="true" aria-label="@Localizer["Tm_Move"] @i.Key"><i class="bi bi-arrow-right-short" aria-hidden="true"></i></pems-button>
                             </form>
                         }
                     </article>

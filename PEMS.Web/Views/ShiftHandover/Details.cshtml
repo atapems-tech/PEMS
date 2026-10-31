@@ -43,21 +43,21 @@
         {
             <form asp-action="Prepare" method="post" class="d-inline">
                 <input type="hidden" name="id" value="@Model.ShiftHandoverId" />
-                <button type="submit" class="btn btn-sm btn-outline-warning">Prepare (snapshot current operational status)</button>
+                <pems-button tone="warning" size="small" outline="true" type="submit">Prepare (snapshot current operational status)</pems-button>
             </form>
         }
         @if (Model.Status == "Prepared" && isIncoming)
         {
             <form asp-action="Acknowledge" method="post" class="d-inline">
                 <input type="hidden" name="id" value="@Model.ShiftHandoverId" />
-                <button type="submit" class="btn btn-sm btn-outline-info">Acknowledge</button>
+                <pems-button tone="info" size="small" outline="true" type="submit">Acknowledge</pems-button>
             </form>
         }
         @if (Model.Status == "Acknowledged" && isOutgoing)
         {
             <form asp-action="Complete" method="post" class="d-inline">
                 <input type="hidden" name="id" value="@Model.ShiftHandoverId" />
-                <button type="submit" class="btn btn-sm btn-outline-success">Complete</button>
+                <pems-button tone="success" size="small" outline="true" type="submit">Complete</pems-button>
             </form>
         }
         @if (Model.Status == "Prepared" && !isIncoming)

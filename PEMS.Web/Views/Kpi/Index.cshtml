@@ -22,7 +22,7 @@
         <label class="form-label small mb-0">To</label>
         <input type="date" name="toDate" class="form-control form-control-sm" value="@(Model.ToDate?.ToString("yyyy-MM-dd"))" />
     </div>
-    <button type="submit" class="btn btn-sm btn-pems-solid">@Localizer["Filter"]</button>
+    <pems-button tone="primary" size="small" type="submit">@Localizer["Filter"]</pems-button>
     <a asp-action="Index" class="btn btn-sm btn-outline-secondary">@Localizer["Clear"]</a>
 </form>
 

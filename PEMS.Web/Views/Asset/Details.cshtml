@@ -45,7 +45,7 @@
                 <tr><th class="text-muted">@Localizer["Risk Level"]</th><td>@(Model.RiskLevel ?? "N/A")</td></tr>
                 <tr><th class="text-muted">@Localizer["Description"]</th><td>@(Model.Description ?? "N/A")</td></tr>
             </table>
-            <button type="button" class="btn btn-sm btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#editAssetModal"><i class="bi bi-pencil"></i> @Localizer["Edit"]</button>
+            <pems-button tone="neutral" size="small" outline="true" type="button" data-bs-toggle="modal" data-bs-target="#editAssetModal"><i class="bi bi-pencil"></i> @Localizer["Edit"]</pems-button>
         </div>
 
         <div class="content-card">
@@ -196,8 +196,8 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">@Localizer["Cancel"]</button>
-                    <button type="submit" class="btn btn-pems-solid">@Localizer["Save"]</button>
+                    <pems-button tone="neutral" outline="true" type="button" data-bs-dismiss="modal">@Localizer["Cancel"]</pems-button>
+                    <pems-button tone="primary" type="submit">@Localizer["Save"]</pems-button>
                 </div>
             </form>
         </div>

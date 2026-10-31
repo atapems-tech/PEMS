@@ -57,13 +57,13 @@
                                     <input type="hidden" name="id" value="@item.SuggestionId" />
                                     <input type="hidden" name="status" value="@status" />
                                     <input type="hidden" name="page" value="@Model.Page" />
-                                    <button type="submit" class="btn btn-sm btn-outline-success" title="@Localizer["تایید"]"><i class="bi bi-check-lg"></i></button>
+                                    <pems-button tone="success" size="small" outline="true" type="submit" title="@Localizer["تایید"]"><i class="bi bi-check-lg"></i></pems-button>
                                 </form>
                                 <form asp-action="Reject" method="post" class="d-inline">
                                     <input type="hidden" name="id" value="@item.SuggestionId" />
                                     <input type="hidden" name="status" value="@status" />
                                     <input type="hidden" name="page" value="@Model.Page" />
-                                    <button type="submit" class="btn btn-sm btn-outline-danger" title="رد"><i class="bi bi-x-lg"></i></button>
+                                    <pems-button tone="danger" size="small" outline="true" type="submit" title="رد"><i class="bi bi-x-lg"></i></pems-button>
                                 </form>
                             </td>
                         }

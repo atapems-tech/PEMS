@@ -47,9 +47,9 @@
     </form>
 
     <div class="d-flex justify-content-end mb-2">
-        <button type="button" class="btn btn-sm btn-outline-secondary" onclick="PemsDataGrid.resetColumns('OCRProcessing')">
+        <pems-button tone="neutral" size="small" outline="true" type="button" onclick="PemsDataGrid.resetColumns('OCRProcessing')">
             <i class="bi bi-arrow-counterclockwise"></i> @Localizer["Reset columns"]
-        </button>
+        </pems-button>
     </div>
     <div class="table-responsive pems-grid-scroll table-scroll-area" style="max-height:65vh; overflow-y:auto;">
         <table class="table table-enterprise pems-grid-table" data-grid-key="OCRProcessing">
@@ -91,7 +91,7 @@
                         <td>@a.UploadDate.ToString("yyyy-MM-dd HH:mm")</td>
                         <td>
                             <form asp-action="Retry" asp-route-id="@a.AttachmentId" method="post" class="d-inline">
-                                <button class="btn btn-sm btn-outline-secondary"><i class="bi bi-arrow-repeat"></i></button>
+                                <pems-button tone="neutral" size="small" outline="true"><i class="bi bi-arrow-repeat"></i></pems-button>
                             </form>
                             @if (a.AIStatus == "Completed")
                             {

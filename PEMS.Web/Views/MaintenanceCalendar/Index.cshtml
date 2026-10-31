@@ -40,9 +40,9 @@
 <div class="content-card mb-3">
     <div class="d-flex flex-wrap gap-2 align-items-center justify-content-between mb-3">
         <div class="d-flex gap-2 align-items-center">
-            <a class="btn btn-sm btn-outline-secondary" href="@NavUrl(d: DateTime.Today)">@Localizer["Today"]</a>
-            <a class="btn btn-sm btn-outline-secondary" href="@NavUrl(d: StepPrev())"><i class="bi bi-chevron-left"></i></a>
-            <a class="btn btn-sm btn-outline-secondary" href="@NavUrl(d: StepNext())"><i class="bi bi-chevron-right"></i></a>
+            <pems-button tone="neutral" size="small" outline="true" as="a" href="@NavUrl(d: DateTime.Today)">@Localizer["Today"]</pems-button>
+            <pems-button tone="neutral" size="small" outline="true" as="a" href="@NavUrl(d: StepPrev())"><i class="bi bi-chevron-left"></i></pems-button>
+            <pems-button tone="neutral" size="small" outline="true" as="a" href="@NavUrl(d: StepNext())"><i class="bi bi-chevron-right"></i></pems-button>
             <strong class="ms-2" dir="@(view == "week" ? "ltr" : null)">@(view == "month" ? anchor.ToString("MMMM yyyy") : view == "week" ? $"{ViewBag.RangeStart:MMM d} - {((DateTime)ViewBag.RangeEnd).AddDays(-1):MMM d, yyyy}" : anchor.ToString("dddd, MMM d yyyy"))</strong>
         </div>
         <div class="btn-group btn-group-sm">
@@ -83,7 +83,7 @@
                 @foreach (var s in new[] { "Low", "Medium", "High", "Critical" })
                 { <option value="@s" selected="@(s == (string?)ViewBag.Priority)">@s</option> }
             </select></div>
-        <a class="btn btn-sm btn-outline-secondary" href="@Url.Action("Index", new { view })">@Localizer["Reset"]</a>
+        <pems-button tone="neutral" size="small" outline="true" as="a" href="@Url.Action("Index", new { view })">@Localizer["Reset"]</pems-button>
     </form>
 </div>
 

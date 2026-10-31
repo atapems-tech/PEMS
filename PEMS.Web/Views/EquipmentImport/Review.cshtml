@@ -24,15 +24,15 @@
         <div class="pems-command-bar">
             <form asp-action="Commit" method="post">
                 <input type="hidden" name="batchId" value="@Model.EquipmentImportBatchId" />
-                <button type="submit" class="btn btn-pems-solid" onclick="return confirm('Commit the selected rows into the live Equipment register?')">
+                <pems-button tone="primary" type="submit" onclick="return confirm('Commit the selected rows into the live Equipment register?')">
                     <i class="bi bi-check-circle"></i> Commit Selected Rows
-                </button>
+                </pems-button>
             </form>
             <form asp-action="Discard" method="post">
                 <input type="hidden" name="batchId" value="@Model.EquipmentImportBatchId" />
-                <button type="submit" class="btn btn-outline-danger" onclick="return confirm('Discard this entire import batch?')">
+                <pems-button tone="danger" outline="true" type="submit" onclick="return confirm('Discard this entire import batch?')">
                     <i class="bi bi-trash"></i> Discard Batch
-                </button>
+                </pems-button>
             </form>
         </div>
     }

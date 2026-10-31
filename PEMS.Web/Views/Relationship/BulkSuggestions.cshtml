@@ -26,9 +26,9 @@ else
                 <input type="checkbox" id="selectAll" onclick="document.querySelectorAll('.item-check').forEach(c => c.checked = this.checked);" />
                 <label for="selectAll" class="ms-1">انتخاب همه (@Model.Count مورد)</label>
             </div>
-            <button type="submit" class="btn btn-pems-solid btn-sm" onclick="return confirm('موارد انتخاب‌شده رسماً وصل می‌شن. مطمئنی؟')">
+            <pems-button tone="primary" size="small" type="submit" onclick="return confirm('موارد انتخاب‌شده رسماً وصل می‌شن. مطمئنی؟')">
                 <i class="bi bi-check2-all"></i> تایید موارد انتخاب‌شده
-            </button>
+            </pems-button>
         </div>
 
         <div class="content-card">

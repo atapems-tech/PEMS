@@ -98,14 +98,14 @@
         </div>
 
         <div class="mt-4 d-flex gap-2">
-            <button type="submit" class="btn btn-pems-solid"><i class="bi bi-signpost-split"></i> Confirm &amp; Route</button>
+            <pems-button tone="primary" type="submit"><i class="bi bi-signpost-split"></i> Confirm &amp; Route</pems-button>
         </div>
     </form>
 
     <form asp-action="Reject" method="post" class="mt-2">
         <input type="hidden" name="attachmentId" value="@Model.AttachmentId" />
-        <button type="submit" class="btn btn-outline-danger btn-sm" onclick="return confirm('Reject this file from the intake queue?')">
+        <pems-button tone="danger" size="small" outline="true" type="submit" onclick="return confirm('Reject this file from the intake queue?')">
             <i class="bi bi-x-lg"></i> @Localizer["Reject"]
-        </button>
+        </pems-button>
     </form>
 </div>

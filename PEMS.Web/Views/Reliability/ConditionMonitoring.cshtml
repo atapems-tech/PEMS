@@ -73,7 +73,7 @@
             <label class="form-label small mb-0">@Localizer["Equipment ID"]</label>
             <input type="number" name="equipmentId" value="@equipmentId" class="form-control form-control-sm" style="width:140px" />
         </div>
-        <div class="col-auto"><button type="submit" class="btn btn-sm btn-pems-solid">Load Points</button></div>
+        <div class="col-auto"><pems-button tone="primary" size="small" type="submit">Load Points</pems-button></div>
     </form>
 </div>
 
@@ -106,9 +106,9 @@
                                 <div class="small text-muted">@p.EvaluationProfileCode</div>
                                 @if (p.LastReadingId.HasValue && (p.LastReadingEvaluationStatus == "Warning" || p.LastReadingEvaluationStatus == "Alarm" || p.LastReadingEvaluationStatus == "Critical"))
                                 {
-                                    <button type="button" class="btn btn-sm btn-outline-danger mt-1" data-bs-toggle="modal" data-bs-target="#raiseFindingModal" data-reading-id="@p.LastReadingId" data-point-label="@p.VariableType — @p.Tag">
+                                    <pems-button tone="danger" size="small" outline="true" css="mt-1" type="button" data-bs-toggle="modal" data-bs-target="#raiseFindingModal" data-reading-id="@p.LastReadingId" data-point-label="@p.VariableType — @p.Tag">
                                         <i class="bi bi-flag"></i> @Localizer["Raise Finding"]
-                                    </button>
+                                    </pems-button>
                                 }
                             }
                             else
@@ -124,7 +124,7 @@
                                             <option value="@ep.EvaluationProfileId">@ep.Code (@ep.VariableType)</option>
                                         }
                                     </select>
-                                    <button type="submit" class="btn btn-sm btn-outline-secondary" title="@Localizer["Assign evaluation profile"]"><i class="bi bi-link-45deg"></i></button>
+                                    <pems-button tone="neutral" size="small" outline="true" type="submit" title="@Localizer["Assign evaluation profile"]"><i class="bi bi-link-45deg"></i></pems-button>
                                 </form>
                             }
                             @if (p.LastReadingId.HasValue && p.LastReadingEvaluationStatus != "RequiresEngineeringReview")
@@ -133,9 +133,9 @@
                                     @Html.AntiForgeryToken()
                                     <input type="hidden" name="equipmentId" value="@equipmentId" />
                                     <input type="hidden" name="readingId" value="@p.LastReadingId" />
-                                    <button type="submit" class="btn btn-sm btn-outline-info mt-1" title="@Localizer["Mark for Engineering Review"]">
+                                    <pems-button tone="info" size="small" outline="true" css="mt-1" type="submit" title="@Localizer["Mark for Engineering Review"]">
                                         <i class="bi bi-person-check"></i>
-                                    </button>
+                                    </pems-button>
                                 </form>
                             }
                         </td>
@@ -150,9 +150,9 @@
                                     @Html.AntiForgeryToken()
                                     <input type="hidden" name="equipmentId" value="@equipmentId" />
                                     <input type="hidden" name="conditionMonitoringPointId" value="@p.ConditionMonitoringPointId" />
-                                    <button type="submit" class="btn btn-sm btn-outline-primary" title="@Localizer["ساخت استراتژی CBM برای این نقطه‌ی پایش"]">
+                                    <pems-button tone="primary" size="small" outline="true" type="submit" title="@Localizer["ساخت استراتژی CBM برای این نقطه‌ی پایش"]">
                                         <i class="bi bi-plus-lg"></i> @Localizer["CBM"]
-                                    </button>
+                                    </pems-button>
                                 </form>
                             }
                         </td>
@@ -182,7 +182,7 @@
                         <div class="col"><label class="form-label small">Alarm Low</label><input type="number" step="0.01" name="alarmLow" class="form-control form-control-sm" /></div>
                         <div class="col"><label class="form-label small">Alarm High</label><input type="number" step="0.01" name="alarmHigh" class="form-control form-control-sm" /></div>
                     </div>
-                    <button type="submit" class="btn btn-sm btn-pems-solid">Create Point</button>
+                    <pems-button tone="primary" size="small" type="submit">Create Point</pems-button>
                 </form>
             </div>
         </div>
@@ -214,7 +214,7 @@
                             </select>
                         </div>
                     }
-                    <button type="submit" class="btn btn-sm btn-pems-solid">Record Reading</button>
+                    <pems-button tone="primary" size="small" type="submit">Record Reading</pems-button>
                 </form>
             </div>
         </div>
@@ -253,8 +253,8 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">@Localizer["انصراف"]</button>
-                <button type="submit" class="btn btn-danger btn-sm">@Localizer["Raise Finding"]</button>
+                <pems-button tone="neutral" size="small" outline="true" type="button" data-bs-dismiss="modal">@Localizer["انصراف"]</pems-button>
+                <pems-button tone="danger" size="small" type="submit">@Localizer["Raise Finding"]</pems-button>
             </div>
         </form>
     </div></div>

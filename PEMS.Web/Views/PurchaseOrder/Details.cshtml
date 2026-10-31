@@ -43,7 +43,7 @@
     @if (ViewBag.CanIssue == true)
     {
         <form asp-action="Issue" asp-route-id="@Model.PoId" method="post" class="mt-3">
-            <button type="submit" class="btn btn-sm btn-pems-solid"><i class="bi bi-send-check"></i> @Localizer["Issue Purchase Order"]</button>
+            <pems-button tone="primary" size="small" type="submit"><i class="bi bi-send-check"></i> @Localizer["Issue Purchase Order"]</pems-button>
         </form>
     }
 </div>
@@ -90,7 +90,7 @@
                             <td class="text-end text-nowrap">
                                 <form asp-action="RemoveLine" method="post" class="d-inline">
                                     <input type="hidden" name="id" value="@Model.PoId" /><input type="hidden" name="lineId" value="@l.PurchaseOrderLineId" />
-                                    <button type="submit" class="btn btn-sm btn-outline-danger" title="@Localizer["Po_RemoveLine"]"><i class="bi bi-x" aria-hidden="true"></i></button>
+                                    <pems-button tone="danger" size="small" outline="true" type="submit" title="@Localizer["Po_RemoveLine"]"><i class="bi bi-x" aria-hidden="true"></i></pems-button>
                                 </form>
                             </td>
                         }
@@ -114,7 +114,7 @@
                                             <select name="commodityGroupId" class="form-select form-select-sm"><option value="">—</option>@foreach (var g in groups ?? Array.Empty<(int, string, string)>()) { <option value="@g.Id" selected="@(g.Id == l.CommodityGroupId)">@g.Code - @g.Description</option> }</select></div>
                                         <div class="col-md-2"><label class="form-label">@Localizer["Po_FreeTextReason"]</label><input name="freeTextReason" class="form-control form-control-sm" value="@l.FreeTextReason" /></div>
                                     }
-                                    <div class="col-md-auto"><button type="submit" class="btn btn-sm btn-outline-secondary"><i class="bi bi-check2" aria-hidden="true"></i> @Localizer["Po_SaveLine"]</button></div>
+                                    <div class="col-md-auto"><pems-button tone="neutral" size="small" outline="true" type="submit"><i class="bi bi-check2" aria-hidden="true"></i> @Localizer["Po_SaveLine"]</pems-button></div>
                                 </form>
                             </td>
                         </tr>
@@ -132,7 +132,7 @@
                 <input type="hidden" name="id" value="@Model.PoId" />
                 <div><label class="form-label" for="poAddMr">@Localizer["Po_AddFromMr"]</label>
                     <select id="poAddMr" name="mrId" class="form-select form-select-sm">@foreach (var m in requisitions.Where(m => m.ProjectId == Model.ProjectId)) { <option value="@m.Id">@m.Number - @m.Description</option> }</select></div>
-                <button type="submit" class="btn btn-sm btn-outline-primary"><i class="bi bi-plus" aria-hidden="true"></i> @Localizer["Po_AddLines"]</button>
+                <pems-button tone="primary" size="small" outline="true" type="submit"><i class="bi bi-plus" aria-hidden="true"></i> @Localizer["Po_AddLines"]</pems-button>
             </form>
         }
     </div>
@@ -150,7 +150,7 @@
             @if (canEdit)
             {
                 <form asp-action="RouteAgain" method="post" class="d-inline"><input type="hidden" name="id" value="@Model.PoId" />
-                    <button type="submit" class="btn btn-sm btn-outline-primary"><i class="bi bi-arrow-repeat" aria-hidden="true"></i> @Localizer["Po_RouteAgain"]</button></form>
+                    <pems-button tone="primary" size="small" outline="true" type="submit"><i class="bi bi-arrow-repeat" aria-hidden="true"></i> @Localizer["Po_RouteAgain"]</pems-button></form>
             }
         }
         @if (isDraft && canEdit && a.Lines.Count > 0)
@@ -175,7 +175,7 @@
         {
             <form asp-action="Reject" method="post" class="mt-2 d-flex flex-wrap gap-2 align-items-end"><input type="hidden" name="id" value="@Model.PoId" />
                 <div class="flex-grow-1"><label class="form-label small" for="poReject">@Localizer["Po_RejectReason"]</label><input id="poReject" name="reason" class="form-control form-control-sm" required /></div>
-                <button type="submit" class="btn btn-sm btn-outline-danger"><i class="bi bi-arrow-counterclockwise" aria-hidden="true"></i> @Localizer["Po_Reject"]</button></form>
+                <pems-button tone="danger" size="small" outline="true" type="submit"><i class="bi bi-arrow-counterclockwise" aria-hidden="true"></i> @Localizer["Po_Reject"]</pems-button></form>
         }
     </div>
 }
@@ -216,7 +216,7 @@
                                 <form asp-action="ReleaseInspection" method="post" class="d-flex gap-1">
                                     <input type="hidden" name="id" value="@Model.PoId" /><input type="hidden" name="lineId" value="@r.PurchaseOrderLineId" />
                                     <select name="inspectionTestPlanId" class="form-select form-select-sm"><option value="">@Localizer["Rcv_NoItp"]</option>@foreach (var p in plans) { <option value="@p.InspectionTestPlanId">@p.ITPNumber</option> }</select>
-                                    <button type="submit" class="btn btn-sm btn-outline-secondary">@Localizer["Rcv_Release"]</button>
+                                    <pems-button tone="neutral" size="small" outline="true" type="submit">@Localizer["Rcv_Release"]</pems-button>
                                 </form>
                                 @if (r.InspectionRequired) { <div class="text-warning">@Localizer["Rcv_NotReleased"]</div> }
                             }

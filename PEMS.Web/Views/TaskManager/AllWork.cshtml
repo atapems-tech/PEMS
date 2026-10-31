@@ -80,7 +80,7 @@
         <input type="hidden" name="Sort" value="@q.Sort" />
         <input type="hidden" name="Descending" value="@(q.Descending ? "true" : "false")" />
         <div class="col-auto d-flex gap-2">
-            <button class="btn btn-sm btn-pems-solid"><i class="bi bi-funnel" aria-hidden="true"></i> @Localizer["Tm_Filter"]</button>
+            <pems-button tone="primary" size="small"><i class="bi bi-funnel" aria-hidden="true"></i> @Localizer["Tm_Filter"]</pems-button>
             <a class="btn btn-sm btn-outline-secondary" asp-action="AllWork">@Localizer["Tm_Reset"]</a>
         </div>
     </form>

@@ -55,7 +55,7 @@
             <label class="form-label small mb-0" for="kpiTo">@Localizer["To"]</label>
             <input type="date" id="kpiTo" name="toDate" class="form-control form-control-sm" value="@Model.To.ToString("yyyy-MM-dd")" />
         </div>
-        <button type="submit" class="btn btn-sm btn-pems-solid">@Localizer["Filter"]</button>
+        <pems-button tone="primary" size="small" type="submit">@Localizer["Filter"]</pems-button>
         <span class="small text-muted ms-auto">@Localizer["Kpi_Exec_Generated"]: @d.GeneratedAt.ToString("yyyy-MM-dd HH:mm")</span>
     </form>
 
@@ -161,7 +161,7 @@
                                     <input type="hidden" name="key" value="@tg.Key" />
                                     <input type="hidden" name="fromDate" value="@Model.From.ToString("yyyy-MM-dd")" />
                                     <input type="hidden" name="toDate" value="@Model.To.ToString("yyyy-MM-dd")" />
-                                    <button type="submit" class="btn btn-sm btn-outline-primary">@Localizer["Save"]</button>
+                                    <pems-button tone="primary" size="small" outline="true" type="submit">@Localizer["Save"]</pems-button>
                                 </form>
                             </td>
                         </tr>
