@@ -4168,4 +4168,149 @@
   <data name="Fla_Review" xml:space="preserve"><value>بازبینی</value></data>
   <data name="Fla_St_Staging" xml:space="preserve"><value>در انتظار بازبینی</value></data>
   <data name="Fla_St_Committed" xml:space="preserve"><value>ثبت‌شده</value></data>
+  <data name="Ed_Search" xml:space="preserve"><value>جستجو</value></data>
+  <data name="PoL_Title" xml:space="preserve"><value>سفارش‌های خرید</value></data>
+  <data name="PoL_Hint" xml:space="preserve"><value>سفارش‌های خرید با تأمین‌کننده، قرارداد، مبلغ و وضعیت تأیید. برای دیدن ردیف‌ها یکی را باز کنید.</value></data>
+  <data name="PoL_Empty" xml:space="preserve"><value>هنوز سفارش خریدی ثبت نشده است.</value></data>
+  <data name="PoL_New" xml:space="preserve"><value>سفارش خرید جدید</value></data>
+  <data name="PoL_No" xml:space="preserve"><value>شماره سفارش</value></data>
+  <data name="PoL_Project" xml:space="preserve"><value>پروژه</value></data>
+  <data name="PoL_Vendor" xml:space="preserve"><value>تأمین‌کننده</value></data>
+  <data name="PoL_Contract" xml:space="preserve"><value>شماره قرارداد</value></data>
+  <data name="PoL_Value" xml:space="preserve"><value>مبلغ</value></data>
+  <data name="Tn_Title" xml:space="preserve"><value>مناقصه‌ها</value></data>
+  <data name="Tn_Hint" xml:space="preserve"><value>مناقصه‌ها و استعلام‌های بسته‌های خرید. برای شروع مناقصه‌ی جدید، بسته‌ی خرید را باز کنید.</value></data>
+  <data name="Tn_Empty" xml:space="preserve"><value>هنوز مناقصه‌ای ثبت نشده است.</value></data>
+  <data name="Tn_New" xml:space="preserve"><value>مناقصه‌ی جدید</value></data>
+  <data name="Tn_No" xml:space="preserve"><value>شماره مناقصه</value></data>
+  <data name="Tn_TitleCol" xml:space="preserve"><value>عنوان</value></data>
+  <data name="Tn_Package" xml:space="preserve"><value>بسته‌ی خرید</value></data>
+  <data name="Tn_Deadline" xml:space="preserve"><value>مهلت پاسخ</value></data>
+  <data name="Tn_St_Draft" xml:space="preserve"><value>پیش‌نویس</value></data>
+  <data name="Tn_St_Open" xml:space="preserve"><value>باز</value></data>
+  <data name="Tn_St_Closed" xml:space="preserve"><value>بسته‌شده</value></data>
+  <data name="Tn_St_Awarded" xml:space="preserve"><value>واگذارشده</value></data>
+  <data name="Tn_St_Cancelled" xml:space="preserve"><value>لغوشده</value></data>
+  <data name="MrL_Title" xml:space="preserve"><value>درخواست‌های خرید کالا (MR)</value></data>
+  <data name="MrL_Hint" xml:space="preserve"><value>درخواست‌های خرید کالا (MR) و تعداد استعلام‌های قیمت (MRQ) هر کدام.</value></data>
+  <data name="MrL_Empty" xml:space="preserve"><value>هنوز درخواست خرید کالایی ثبت نشده است.</value></data>
+  <data name="MrL_New" xml:space="preserve"><value>MR جدید</value></data>
+  <data name="MrL_No" xml:space="preserve"><value>شماره MR</value></data>
+  <data name="MrL_Tag" xml:space="preserve"><value>تگ تجهیز</value></data>
+  <data name="MrL_Required" xml:space="preserve"><value>تاریخ نیاز</value></data>
+  <data name="MrL_Responsible" xml:space="preserve"><value>مسئول</value></data>
+  <data name="MrL_Mrqs" xml:space="preserve"><value>MRQها</value></data>
+  <data name="MrL_St_Draft" xml:space="preserve"><value>پیش‌نویس</value></data>
+  <data name="MrL_St_Submitted" xml:space="preserve"><value>ارسال‌شده</value></data>
+  <data name="MrL_St_Approved" xml:space="preserve"><value>تأییدشده</value></data>
+  <data name="MrL_St_Sent" xml:space="preserve"><value>ارسال‌شده</value></data>
+  <data name="MrL_St_Evaluated" xml:space="preserve"><value>ارزیابی‌شده</value></data>
+  <data name="MrL_St_Closed" xml:space="preserve"><value>بسته‌شده</value></data>
+  <data name="MrL_St_Cancelled" xml:space="preserve"><value>لغوشده</value></data>
+  <data name="CtL_Title" xml:space="preserve"><value>قراردادها</value></data>
+  <data name="CtL_Hint" xml:space="preserve"><value>قراردادهای تأمین‌کنندگان: مبلغ، تاریخ‌ها و وضعیت. برای دامنه‌ی کار، مدارک و سفارش‌ها یکی را باز کنید.</value></data>
+  <data name="CtL_Empty" xml:space="preserve"><value>هنوز قراردادی ثبت نشده است.</value></data>
+  <data name="CtL_New" xml:space="preserve"><value>قرارداد جدید</value></data>
+  <data name="CtL_No" xml:space="preserve"><value>شماره قرارداد</value></data>
+  <data name="CtL_Vendor" xml:space="preserve"><value>تأمین‌کننده</value></data>
+  <data name="CtL_Value" xml:space="preserve"><value>مبلغ</value></data>
+  <data name="CtL_Start" xml:space="preserve"><value>شروع</value></data>
+  <data name="CtL_End" xml:space="preserve"><value>پایان</value></data>
+  <data name="CtL_St_Draft" xml:space="preserve"><value>پیش‌نویس</value></data>
+  <data name="CtL_St_UnderReview" xml:space="preserve"><value>در حال بررسی</value></data>
+  <data name="CtL_St_Signed" xml:space="preserve"><value>امضاشده</value></data>
+  <data name="CtL_St_Effective" xml:space="preserve"><value>نافذ</value></data>
+  <data name="CtL_St_Completed" xml:space="preserve"><value>تکمیل‌شده</value></data>
+  <data name="CtL_St_Closed" xml:space="preserve"><value>بسته‌شده</value></data>
+  <data name="CtL_St_Terminated" xml:space="preserve"><value>فسخ‌شده</value></data>
+  <data name="PkL_Title" xml:space="preserve"><value>بسته‌های خرید</value></data>
+  <data name="PkL_Hint" xml:space="preserve"><value>MR، MRQ، استعلام از تأمین‌کننده، شفاف‌سازی فنی و تاریخچه‌ی تأیید همه زیر یک بسته‌ی خرید مدیریت می‌شوند: MR ← استعلام ← شفاف‌سازی فنی ← MRQ ← پاسخ ← تأیید ← بستن.</value></data>
+  <data name="PkL_Empty" xml:space="preserve"><value>هنوز بسته‌ی خریدی ثبت نشده است.</value></data>
+  <data name="PkL_New" xml:space="preserve"><value>بسته‌ی خرید جدید</value></data>
+  <data name="PkL_No" xml:space="preserve"><value>شماره بسته</value></data>
+  <data name="PkL_Stage" xml:space="preserve"><value>مرحله</value></data>
+  <data name="PkL_Mrs" xml:space="preserve"><value>MRها</value></data>
+  <data name="PkL_Mrqs" xml:space="preserve"><value>MRQها</value></data>
+  <data name="PkL_OpenComms" xml:space="preserve"><value>مکاتبات باز</value></data>
+  <data name="PkL_AllMrs" xml:space="preserve"><value>همه‌ی MRها (نمای قدیمی)</value></data>
+  <data name="PkL_AllMrqs" xml:space="preserve"><value>همه‌ی MRQها (نمای قدیمی)</value></data>
+  <data name="PkL_Stage_MR" xml:space="preserve"><value>MR</value></data>
+  <data name="PkL_Stage_Approval" xml:space="preserve"><value>تأیید</value></data>
+  <data name="PkL_Stage_Closeout" xml:space="preserve"><value>بستن</value></data>
+  <data name="PkL_St_Open" xml:space="preserve"><value>باز</value></data>
+  <data name="PkL_St_InProgress" xml:space="preserve"><value>در جریان</value></data>
+  <data name="PkL_St_Closed" xml:space="preserve"><value>بسته‌شده</value></data>
+  <data name="ItL_Title" xml:space="preserve"><value>تراکنش‌های انبار</value></data>
+  <data name="ItL_Hint" xml:space="preserve"><value>همه‌ی جابه‌جایی‌های موجودی: ورود، خروج، برگشت، انتقال، اصلاح و رزرو.</value></data>
+  <data name="ItL_Empty" xml:space="preserve"><value>تراکنشی با این فیلترها یافت نشد.</value></data>
+  <data name="ItL_Warehouse" xml:space="preserve"><value>انبار</value></data>
+  <data name="ItL_AllWarehouses" xml:space="preserve"><value>همه‌ی انبارها</value></data>
+  <data name="ItL_AllTypes" xml:space="preserve"><value>همه‌ی نوع‌ها</value></data>
+  <data name="ItL_From" xml:space="preserve"><value>از تاریخ</value></data>
+  <data name="ItL_To" xml:space="preserve"><value>تا تاریخ</value></data>
+  <data name="ItL_Material" xml:space="preserve"><value>کالا</value></data>
+  <data name="ItL_Qty" xml:space="preserve"><value>تعداد</value></data>
+  <data name="ItL_Reference" xml:space="preserve"><value>مرجع</value></data>
+  <data name="ItL_By" xml:space="preserve"><value>توسط</value></data>
+  <data name="ItL_Reason" xml:space="preserve"><value>دلیل</value></data>
+  <data name="ItL_Type_Receipt" xml:space="preserve"><value>ورود</value></data>
+  <data name="ItL_Type_Issue" xml:space="preserve"><value>خروج</value></data>
+  <data name="ItL_Type_Return" xml:space="preserve"><value>برگشت</value></data>
+  <data name="ItL_Type_Transfer" xml:space="preserve"><value>انتقال</value></data>
+  <data name="ItL_Type_Adjustment" xml:space="preserve"><value>اصلاح موجودی</value></data>
+  <data name="ItL_Type_Reservation" xml:space="preserve"><value>رزرو</value></data>
+  <data name="ItL_Type_ReservationRelease" xml:space="preserve"><value>آزادسازی رزرو</value></data>
+  <data name="SrL_Title" xml:space="preserve"><value>درخواست‌های کالا از انبار</value></data>
+  <data name="SrL_Hint" xml:space="preserve"><value>درخواست‌های خروج کالا از انبار، از پیش‌نویس تا تحویل و بستن.</value></data>
+  <data name="SrL_Empty" xml:space="preserve"><value>درخواست کالایی یافت نشد.</value></data>
+  <data name="SrL_New" xml:space="preserve"><value>درخواست کالای جدید</value></data>
+  <data name="SrL_No" xml:space="preserve"><value>شماره</value></data>
+  <data name="SrL_RequestedBy" xml:space="preserve"><value>درخواست‌کننده</value></data>
+  <data name="SrL_Purpose" xml:space="preserve"><value>هدف</value></data>
+  <data name="SrL_St_Draft" xml:space="preserve"><value>پیش‌نویس</value></data>
+  <data name="SrL_St_Submitted" xml:space="preserve"><value>ارسال‌شده</value></data>
+  <data name="SrL_St_Approved" xml:space="preserve"><value>تأییدشده</value></data>
+  <data name="SrL_St_Reserved" xml:space="preserve"><value>رزروشده</value></data>
+  <data name="SrL_St_PartiallyIssued" xml:space="preserve"><value>تحویل ناقص</value></data>
+  <data name="SrL_St_Issued" xml:space="preserve"><value>تحویل‌شده</value></data>
+  <data name="SrL_St_Closed" xml:space="preserve"><value>بسته‌شده</value></data>
+  <data name="SrL_St_Rejected" xml:space="preserve"><value>ردشده</value></data>
+  <data name="SrL_St_Cancelled" xml:space="preserve"><value>لغوشده</value></data>
+  <data name="IrnL_Title" xml:space="preserve"><value>رسیدهای ورود کالا (IRN)</value></data>
+  <data name="IrnL_Hint" xml:space="preserve"><value>کالاهای دریافتی از تأمین‌کنندگان، با یا بدون سفارش خرید، پیش از ورود به موجودی.</value></data>
+  <data name="IrnL_Empty" xml:space="preserve"><value>رسید ورودی یافت نشد.</value></data>
+  <data name="IrnL_New" xml:space="preserve"><value>IRN جدید</value></data>
+  <data name="IrnL_No" xml:space="preserve"><value>شماره IRN</value></data>
+  <data name="IrnL_ReceivedBy" xml:space="preserve"><value>تحویل‌گیرنده</value></data>
+  <data name="IrnL_Date" xml:space="preserve"><value>تاریخ دریافت</value></data>
+  <data name="IrnL_Lines" xml:space="preserve"><value>ردیف‌ها</value></data>
+  <data name="IrnL_St_Draft" xml:space="preserve"><value>پیش‌نویس</value></data>
+  <data name="IrnL_St_Submitted" xml:space="preserve"><value>ارسال‌شده</value></data>
+  <data name="IrnL_St_PendingApproval" xml:space="preserve"><value>در انتظار تأیید</value></data>
+  <data name="IrnL_St_Closed" xml:space="preserve"><value>بسته‌شده</value></data>
+  <data name="IrnL_St_Cancelled" xml:space="preserve"><value>لغوشده</value></data>
+  <data name="Repl_Title" xml:space="preserve"><value>پیشنهادهای تأمین مجدد</value></data>
+  <data name="Repl_St_Open" xml:space="preserve"><value>باز</value></data>
+  <data name="Repl_St_Dismissed" xml:space="preserve"><value>ردشده</value></data>
+  <data name="Repl_St_Closed" xml:space="preserve"><value>بسته‌شده</value></data>
+  <data name="MiL_Title" xml:space="preserve"><value>فهرست کالاها</value></data>
+  <data name="MiL_Hint" xml:space="preserve"><value>همه‌ی کالاها با موجودی و مقدار قابل‌استفاده. ستاره یعنی قطعه‌ی یدکی بحرانی.</value></data>
+  <data name="MiL_Empty" xml:space="preserve"><value>کالایی یافت نشد.</value></data>
+  <data name="MiL_New" xml:space="preserve"><value>کالای جدید</value></data>
+  <data name="MiL_SearchPlaceholder" xml:space="preserve"><value>جستجوی کد یا شرح...</value></data>
+  <data name="MiL_Category" xml:space="preserve"><value>گروه</value></data>
+  <data name="MiL_AllCategories" xml:space="preserve"><value>همه‌ی گروه‌ها</value></data>
+  <data name="MiL_LowStockOnly" xml:space="preserve"><value>فقط موجودی کم</value></data>
+  <data name="MiL_CriticalOnly" xml:space="preserve"><value>فقط بحرانی</value></data>
+  <data name="MiL_Total" xml:space="preserve"><value>کل کالاها</value></data>
+  <data name="MiL_LowStockPage" xml:space="preserve"><value>موجودی کم (این صفحه)</value></data>
+  <data name="MiL_LowStockPageHint" xml:space="preserve"><value>در همین صفحه شمرده شده؛ برای دیدن همه‌ی کالاهای کم‌موجودی کلیک کنید.</value></data>
+  <data name="MiL_Code" xml:space="preserve"><value>کد</value></data>
+  <data name="MiL_Uom" xml:space="preserve"><value>واحد</value></data>
+  <data name="MiL_Manufacturer" xml:space="preserve"><value>سازنده</value></data>
+  <data name="MiL_OnHand" xml:space="preserve"><value>موجودی</value></data>
+  <data name="MiL_Available" xml:space="preserve"><value>قابل‌استفاده</value></data>
+  <data name="MiL_Critical" xml:space="preserve"><value>بحرانی</value></data>
+  <data name="PcL_View" xml:space="preserve"><value>نما</value></data>
+  <data name="PcL_Hint" xml:space="preserve"><value>درخواست‌های افزودن یا تغییر قطعه در کاتالوگ IFS، با مرحله‌ی تأیید آن‌ها.</value></data>
 </root>

@@ -1,39 +1,74 @@
 @model IEnumerable<PEMS.Application.DTOs.PurchaseOrderDto>
 @using Microsoft.Extensions.Localization
 @using PEMS.Web.Resources
+@using PEMS.Web.Helpers
 @inject IStringLocalizer<SharedResource> Localizer
+@{
+    var rows = Model.ToList();
+    string StatusText(string? s) => VdrUi.Loc(Localizer, "Po_Status_", s);
+    string StatusTone(string? s) => s switch
+    {
+        "Issued" or "Approved" => "vs-pill--success",
+        "Submitted" => "vs-pill--warning",
+        "Closed" => "vs-pill--info",
+        "Cancelled" => "vs-pill--danger",
+        _ => "vs-pill--neutral"
+    };
+}
 
-<div class="content-card">
-    <div class="d-flex justify-content-end mb-2">
-        <pems-button tone="primary" size="small" as="a" asp-action="Create">@Localizer["New Purchase Order"]</pems-button>
-    </div>
-    <div class="table-scroll-area">
-        <table class="table table-enterprise pems-grid-table">
-            <thead>
-                <tr>
-                    <th>@Localizer["PO Number"]</th>
-                    <th>@Localizer["Project"]</th>
-                    <th>@Localizer["Vendor"]</th>
-                    <th>@Localizer["Contract No"]</th>
-                    <th>@Localizer["Value"]</th>
-                    <th>@Localizer["Status"]</th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var po in Model)
-                {
+@section Styles {
+    <link rel="stylesheet" href="~/css/pems-workspace.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/_content/PEMS.UI/pems-list.css" asp-append-version="true" />
+}
+
+@* SCRUM-337 W3: built from the PEMS.UI list-page component; the page keeps its columns and the New action. *@
+<pems-list-page texts="@ListPageTexts.From(Localizer)">
+    @if (TempData["Message"] != null) { <pems-alert tone="success" css="py-2 px-3 small">@TempData["Message"]</pems-alert> }
+    @if (TempData["Error"] != null) { <pems-alert tone="danger" css="py-2 px-3 small">@TempData["Error"]</pems-alert> }
+
+    <pems-list-panel>
+
+        <pems-list-toolbar heading="@Localizer["PoL_Title"]" heading-title="@Localizer["PoL_Hint"]" total="@rows.Count">
+            <pems-list-tools>
+                <pems-list-reset-columns grid-key="PurchaseOrder" />
+                <pems-list-new href="@Url.Action("Create")" text="@Localizer["PoL_New"]" />
+            </pems-list-tools>
+        </pems-list-toolbar>
+
+        <pems-list-grid>
+            <pems-list-table grid-key="PurchaseOrder" empty="@(!rows.Any())" empty-text="@Localizer["PoL_Empty"]">
+                <thead>
                     <tr>
-                        <td>@po.PoNumber</td>
-                        <td>@po.ProjectName</td>
-                        <td>@po.VendorName</td>
-                        <td>@po.ContractNo</td>
-                        <td>@po.Value?.ToString("N0")</td>
-                        <td><pems-badge tone="info">@po.Status</pems-badge></td>
-                        <td><pems-button tone="primary" size="small" outline="true" as="a" asp-action="Details" asp-route-id="@po.PoId">@Localizer["Details"]</pems-button></td>
+                        <th data-col-key="no" data-resizable="true" data-min-width="100" data-max-width="220" style="width:150px">@Localizer["PoL_No"]</th>
+                        <th data-col-key="project" data-resizable="true" data-min-width="100" data-max-width="300" class="vs-hide-md">@Localizer["PoL_Project"]</th>
+                        <th data-col-key="vendor" data-resizable="true" data-min-width="100" data-max-width="300">@Localizer["PoL_Vendor"]</th>
+                        <th data-col-key="contract" data-resizable="true" data-min-width="90" data-max-width="200" style="width:140px" class="vs-hide-md">@Localizer["PoL_Contract"]</th>
+                        <th data-col-key="value" data-resizable="true" data-min-width="90" data-max-width="180" style="width:130px" class="text-end">@Localizer["PoL_Value"]</th>
+                        <th data-col-key="status" data-resizable="true" data-min-width="90" data-max-width="160" style="width:120px">@Localizer["Ed_Status"]</th>
+                        <th data-col-key="actions" data-resizable="false" style="width:60px"><span class="visually-hidden">@Localizer["Ed_Actions"]</span></th>
                     </tr>
-                }
-            </tbody>
-        </table>
-    </div>
-</div>
+                </thead>
+                <tbody>
+                    @foreach (var po in rows)
+                    {
+                        <tr class="lp-row">
+                            <td class="lp-no"><a asp-action="Details" asp-route-id="@po.PoId" class="lp-subject" title="@po.PoNumber">@po.PoNumber</a></td>
+                            <td class="small vs-hide-md">@po.ProjectName</td>
+                            <td class="small">@po.VendorName</td>
+                            <td class="small vs-hide-md"><span class="vs-num">@po.ContractNo</span></td>
+                            <td class="text-end"><span class="vs-num">@po.Value?.ToString("N0")</span></td>
+                            <td><span class="vs-pill @StatusTone(po.Status)">@StatusText(po.Status)</span></td>
+                            <td class="text-end">
+                                <a asp-action="Details" asp-route-id="@po.PoId" class="lp-act lp-act--always" title="@Localizer["Ed_View"]" aria-label="@Localizer["Ed_View"]"><i class="bi bi-eye" aria-hidden="true"></i></a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </pems-list-table>
+        </pems-list-grid>
+    </pems-list-panel>
+</pems-list-page>
+
+@section Scripts {
+    <script src="~/_content/PEMS.UI/pems-list.js" asp-append-version="true"></script>
+}

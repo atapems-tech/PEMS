@@ -3,6 +3,13 @@
 All notable changes to PEMS. No system version is defined yet (plan row F_CI), so entries are grouped by date
 and theme and were reconstructed from the git history (initial import 2026-09-05). Newest first.
 
+## 2026-10-31 - List page component, wave 3: procurement and warehouse lists (SCRUM-337)
+
+### Changed
+- Purchase Orders, Tenders, Material Requisitions, Vendors, Contracts, Procurement Packages, Inventory Transactions, Store Requisitions, Incoming Receipts (IRN), Replenishment, the Material Master and Part Catalogue Requests are built from the list-page component; 145 texts in English and Persian (headings, columns, empty texts, notes, and the statuses and transaction types that were shown as stored values).
+- Filter rows, status selects and the Part Catalogue side panel moved into the filters dropdown (`<pems-list-filter-select>`), each active filter is a chip, and paging keeps the filters (the Material Master pager lost "low stock" and "critical"). A tender list opened from a package shows the package as a chip and offers New for that package.
+- The warehouse views load the PEMS.UI tag helpers from the area's `_ViewImports`. The create modals stay until SCRUM-482. The adoption baseline is lower for these views.
+
 ## 2026-10-31 - Badge completed in the views (SCRUM-53, #31)
 
 ### Changed

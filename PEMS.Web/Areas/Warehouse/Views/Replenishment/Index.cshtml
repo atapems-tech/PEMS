@@ -1,127 +1,153 @@
 @model PEMS.Application.DTOs.PagedResult<PEMS.Application.Replenishment.ReplenishmentListItem>
 @using Microsoft.Extensions.Localization
 @using PEMS.Web.Resources
+@using PEMS.Web.Helpers
 @inject IStringLocalizer<SharedResource> Localizer
 @{
     var statuses = new[] { "Open", "Dismissed", "Closed" };
     var last = ViewBag.LastRun as PEMS.Application.Replenishment.ReplenishmentRunSummary;
     var canRun = (bool)ViewBag.CanRun;
     var attribution = (IReadOnlyList<string>)ViewBag.AttributionEntries;
+    var status = (string?)ViewBag.SelectedStatus;
+    var q = (string?)ViewBag.Search;
+    var definitiveOnly = (bool)ViewBag.DefinitiveOnly;
+    var filterCount = (string.IsNullOrEmpty(status) ? 0 : 1) + (definitiveOnly ? 1 : 0);
+
+    string StatusText(string? s) => VdrUi.Loc(Localizer, "Repl_St_", s);
+    string StatusTone(string? s) => s switch { "Open" => "vs-pill--warning", "Dismissed" => "vs-pill--neutral", _ => "vs-pill--success" };
+    string Query(string? skip)
+    {
+        var parts = new List<string>();
+        if (!string.IsNullOrEmpty(status) && skip != "status") parts.Add($"status={Uri.EscapeDataString(status)}");
+        if (!string.IsNullOrEmpty(q) && skip != "q") parts.Add($"q={Uri.EscapeDataString(q)}");
+        if (definitiveOnly && skip != "definitive") parts.Add("definitiveOnly=true");
+        return string.Join("&", parts);
+    }
+    string Without(string key) { var s = Query(key); return Url.Action("Index") + (s.Length > 0 ? "?" + s : ""); }
 }
 
-@if (TempData["Message"] != null)
-{
-    <div class="alert alert-success py-2 px-3 small">@TempData["Message"]</div>
-}
-@if (TempData["Error"] != null)
-{
-    <div class="alert alert-danger py-2 px-3 small">@TempData["Error"]</div>
+@section Styles {
+    <link rel="stylesheet" href="~/css/pems-workspace.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/_content/PEMS.UI/pems-list.css" asp-append-version="true" />
 }
 
-<div class="alert alert-info py-2 px-3 small">
-    <i class="bi bi-info-circle"></i> @Localizer["Repl_StockOnlyNote"]
-</div>
+@* SCRUM-337 W3: built from the PEMS.UI list-page component. The search opens over the title; status and "definitive
+   only" are filters with chips; "Run" is a toolbar tool for who may run it; the stock-only note and the last run stay
+   above the table. *@
+<pems-list-page texts="@ListPageTexts.From(Localizer)">
+    @if (TempData["Message"] != null) { <pems-alert tone="success" css="py-2 px-3 small">@TempData["Message"]</pems-alert> }
+    @if (TempData["Error"] != null) { <pems-alert tone="danger" css="py-2 px-3 small">@TempData["Error"]</pems-alert> }
+    <pems-alert tone="info" css="py-2 px-3 small"><i class="bi bi-info-circle" aria-hidden="true"></i> @Localizer["Repl_StockOnlyNote"]</pems-alert>
+    @if (attribution.Count > 0)
+    {
+        <pems-alert tone="warning" css="py-2 px-3 small">
+            <i class="bi bi-exclamation-triangle" aria-hidden="true"></i> <strong>@Localizer["Repl_RequiresAttribution"]</strong> — @Localizer["Repl_RequiresAttributionHelp"]
+            <ul class="mb-0 mt-1">@foreach (var a in attribution) { <li>@a</li> }</ul>
+        </pems-alert>
+    }
 
-@if (attribution.Count > 0)
-{
-    <div class="alert alert-warning py-2 px-3 small">
-        <i class="bi bi-exclamation-triangle"></i> <strong>@Localizer["Repl_RequiresAttribution"]</strong> — @Localizer["Repl_RequiresAttributionHelp"]
-        <ul class="mb-0 mt-1">@foreach (var a in attribution) { <li>@a</li> }</ul>
-    </div>
-}
+    <pems-list-panel>
 
-<div class="content-card mb-3">
-    <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
-        <form method="get" class="d-flex gap-2 flex-wrap align-items-center">
-            <select name="status" class="form-select form-select-sm" style="max-width:160px;" onchange="this.form.submit()">
-                <option value="">@Localizer["All statuses"]</option>
-                @foreach (var s in statuses) { <option value="@s" selected="@(s == (string?)ViewBag.SelectedStatus)">@s</option> }
-            </select>
-            <input type="text" name="q" value="@ViewBag.Search" class="form-control form-control-sm" style="max-width:220px;" placeholder="@Localizer["Repl_SearchPlaceholder"]" />
-            <div class="form-check form-check-inline small mb-0">
-                <input class="form-check-input" type="checkbox" name="definitiveOnly" value="true" id="defOnly" checked="@((bool)ViewBag.DefinitiveOnly)" onchange="this.form.submit()" />
-                <label class="form-check-label" for="defOnly">@Localizer["Repl_DefinitiveOnly"]</label>
-            </div>
-            <button type="submit" class="btn btn-sm btn-outline-secondary"><i class="bi bi-search"></i></button>
-        </form>
-        @if (canRun)
+        <pems-list-toolbar heading="@Localizer["Repl_Title"]" heading-title="@Localizer["Repl_StockOnlyNote"]" total="@Model.TotalCount">
+            <pems-list-search id="replSearch" action="@Url.Action("Index")" input-id="replQ" name="q" value="@q" placeholder="@Localizer["Repl_SearchPlaceholder"]">
+                @if (!string.IsNullOrEmpty(status)) { <input type="hidden" name="status" value="@status" /> }
+                @if (definitiveOnly) { <input type="hidden" name="definitiveOnly" value="true" /> }
+            </pems-list-search>
+            <pems-list-tools search-for="replSearch">
+                <pems-list-filters form-id="replFilterForm" action="@Url.Action("Index")" count="@filterCount" reset-href="@Url.Action("Index")">
+                    @if (!string.IsNullOrEmpty(q)) { <input type="hidden" name="q" value="@q" /> }
+                    <pems-list-filter-select id="replFilterStatus" name="status" label="@Localizer["Ed_Status"]" value="@status"
+                                             all-text="@Localizer["Eq_AllStatuses"]" items="@statuses.Select(s => new SelectListItem(StatusText(s), s))" />
+                    <div class="form-check small mb-0">
+                        <input class="form-check-input" type="checkbox" name="definitiveOnly" value="true" id="defOnly" checked="@definitiveOnly" />
+                        <label class="form-check-label" for="defOnly">@Localizer["Repl_DefinitiveOnly"]</label>
+                    </div>
+                </pems-list-filters>
+                <pems-list-reset-columns grid-key="Replenishment" />
+                @if (canRun)
+                {
+                    <form asp-action="Run" method="post" class="d-inline">
+                        <input type="hidden" name="requestKey" value="@ViewBag.RequestKey" />
+                        <button type="submit" class="lp-icon-btn" title="@Localizer["Repl_Run"]" aria-label="@Localizer["Repl_Run"]"><i class="bi bi-calculator" aria-hidden="true"></i></button>
+                    </form>
+                }
+            </pems-list-tools>
+        </pems-list-toolbar>
+
+        <pems-list-chips reset-href="@Url.Action("Index")">
+            @if (!string.IsNullOrEmpty(q)) { <pems-list-chip label="@Localizer["Ed_Search"]" value="@q" remove-href="@Without("q")" /> }
+            @if (!string.IsNullOrEmpty(status)) { <pems-list-chip label="@Localizer["Ed_Status"]" value="@StatusText(status)" remove-href="@Without("status")" /> }
+            @if (definitiveOnly) { <pems-list-chip label="@Localizer["Repl_DefinitiveOnly"]" remove-href="@Without("definitive")" /> }
+        </pems-list-chips>
+
+        @if (last != null)
         {
-            <form asp-action="Run" method="post" class="d-flex align-items-center gap-2">
-                @Html.AntiForgeryToken()
-                <input type="hidden" name="requestKey" value="@ViewBag.RequestKey" />
-                <button type="submit" class="btn btn-pems-solid btn-sm"><i class="bi bi-calculator"></i> @Localizer["Repl_Run"]</button>
-            </form>
+            <div class="small text-muted px-3 py-2">
+                @Localizer["Repl_LastRun"]: #@last.RunId · @Localizer["Repl_CalculatedAt"] @last.StartedAt.ToString("yyyy-MM-dd HH:mm") → @(last.CompletedAt?.ToString("yyyy-MM-dd HH:mm") ?? "-") · @last.Status ·
+                @last.ResultsEvaluated @Localizer["Repl_Evaluated"], @last.Created @Localizer["Repl_New"], @last.Updated @Localizer["Repl_Updated"],
+                @last.Closed @Localizer["Repl_ClosedCount"], @last.NotDefinitive @Localizer["Repl_NotDefinitiveCount"]
+                <div>@Localizer["Repl_FreshnessDisclaimer"]</div>
+                @if (last.NotDefinitiveSummary.Count > 0)
+                {
+                    <details class="mt-1"><summary>@Localizer["Repl_NotRecommended"]</summary>
+                        <ul class="mb-0">@foreach (var s in last.NotDefinitiveSummary) { <li>@s</li> }</ul>
+                    </details>
+                }
+            </div>
         }
-    </div>
-    @if (last != null)
-    {
-        <div class="small text-muted mt-2">
-            @Localizer["Repl_LastRun"]: #@last.RunId · @Localizer["Repl_CalculatedAt"] @last.StartedAt.ToString("yyyy-MM-dd HH:mm") → @(last.CompletedAt?.ToString("yyyy-MM-dd HH:mm") ?? "-") · @last.Status ·
-            @last.ResultsEvaluated @Localizer["Repl_Evaluated"], @last.Created @Localizer["Repl_New"], @last.Updated @Localizer["Repl_Updated"],
-            @last.Closed @Localizer["Repl_ClosedCount"], @last.NotDefinitive @Localizer["Repl_NotDefinitiveCount"]
-            <div>@Localizer["Repl_FreshnessDisclaimer"]</div>
-            @if (last.NotDefinitiveSummary.Count > 0)
-            {
-                <details class="mt-1"><summary>@Localizer["Repl_NotRecommended"]</summary>
-                    <ul class="mb-0">@foreach (var s in last.NotDefinitiveSummary) { <li>@s</li> }</ul>
-                </details>
-            }
-        </div>
-    }
-</div>
 
-<div class="content-card">
-    <div class="pems-grid-scroll">
-    <table class="table table-enterprise pems-grid-table mb-0" data-grid-key="Replenishment">
-        <thead>
-            <tr>
-                <th data-col-key="material" data-resizable="true" data-min-width="140" data-max-width="360">@Localizer["Repl_Material"]</th>
-                <th data-col-key="warehouse" data-resizable="true" data-min-width="80" data-max-width="140">@Localizer["Warehouse"]</th>
-                <th data-col-key="usable" class="text-end">@Localizer["Repl_Usable"]</th>
-                <th data-col-key="demand" class="text-end">@Localizer["Repl_UnreservedDemand"]</th>
-                <th data-col-key="shortage" class="text-end">@Localizer["Repl_Shortage"]</th>
-                <th data-col-key="status">@Localizer["Status"]</th>
-                <th data-col-key="evaluated">@Localizer["Repl_Evaluated"]</th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var r in Model.Items)
-            {
-                var badge = r.Status switch { "Open" => "bg-warning text-dark", "Dismissed" => "bg-secondary", _ => "bg-light text-dark border" };
-                <tr>
-                    <td class="small"><a asp-action="Details" asp-route-id="@r.Id"><strong>@r.MaterialCode</strong></a> <span class="text-muted">@r.MaterialDescription</span></td>
-                    <td class="small">@r.WarehouseCode</td>
-                    <td class="small text-end">@r.UsableQuantity.ToString("0.###")</td>
-                    <td class="small text-end">@r.UnreservedDemand.ToString("0.###")</td>
-                    <td class="small text-end fw-bold">@r.ShortageQuantity.ToString("0.###")</td>
-                    <td>
-                        <span class="badge @badge">@r.Status</span>
-                        @if (!r.IsCurrentlyDefinitive) { <span class="badge bg-danger" title="@Localizer["Repl_NotDefinitiveHint"]">@Localizer["Repl_NotDefinitive"]</span> }
-                    </td>
-                    <td class="small">@r.LastEvaluatedAt.ToString("yyyy-MM-dd HH:mm")</td>
-                    <td class="text-end"><a asp-action="Details" asp-route-id="@r.Id" class="btn btn-sm btn-outline-secondary"><i class="bi bi-card-text"></i></a></td>
-                </tr>
-            }
-        </tbody>
-    </table>
-    </div>
-    @if (!Model.Items.Any()) { <p class="text-muted text-center py-4 mb-0">@Localizer["Repl_NoItems"]</p> }
+        <pems-list-grid>
+            <pems-list-table grid-key="Replenishment" empty="@(!Model.Items.Any())" empty-text="@Localizer["Repl_NoItems"]">
+                <thead>
+                    <tr>
+                        <th data-col-key="material" data-resizable="true" data-min-width="140" data-max-width="420">@Localizer["Repl_Material"]</th>
+                        <th data-col-key="warehouse" data-resizable="true" data-min-width="80" data-max-width="140" style="width:100px">@Localizer["ItL_Warehouse"]</th>
+                        <th data-col-key="usable" data-resizable="true" data-min-width="70" data-max-width="140" style="width:100px" class="text-end">@Localizer["Repl_Usable"]</th>
+                        <th data-col-key="demand" data-resizable="true" data-min-width="70" data-max-width="160" style="width:120px" class="text-end vs-hide-md">@Localizer["Repl_UnreservedDemand"]</th>
+                        <th data-col-key="shortage" data-resizable="true" data-min-width="70" data-max-width="140" style="width:100px" class="text-end">@Localizer["Repl_Shortage"]</th>
+                        <th data-col-key="status" data-resizable="true" data-min-width="90" data-max-width="220" style="width:160px">@Localizer["Ed_Status"]</th>
+                        <th data-col-key="evaluated" data-resizable="true" data-min-width="110" data-max-width="180" style="width:140px" class="vs-hide-md">@Localizer["Repl_Evaluated"]</th>
+                        <th data-col-key="actions" data-resizable="false" style="width:60px"><span class="visually-hidden">@Localizer["Ed_Actions"]</span></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var r in Model.Items)
+                    {
+                        <tr class="lp-row">
+                            <td class="small"><a asp-action="Details" asp-route-id="@r.Id" class="lp-subject"><span class="vs-num">@r.MaterialCode</span></a> <span class="text-muted">@r.MaterialDescription</span></td>
+                            <td class="small"><span class="vs-num">@r.WarehouseCode</span></td>
+                            <td class="text-end"><span class="vs-num">@r.UsableQuantity.ToString("0.###")</span></td>
+                            <td class="text-end vs-hide-md"><span class="vs-num">@r.UnreservedDemand.ToString("0.###")</span></td>
+                            <td class="text-end fw-bold"><span class="vs-num">@r.ShortageQuantity.ToString("0.###")</span></td>
+                            <td>
+                                <span class="vs-pill @StatusTone(r.Status)">@StatusText(r.Status)</span>
+                                @if (!r.IsCurrentlyDefinitive) { <span class="vs-pill vs-pill--danger" title="@Localizer["Repl_NotDefinitiveHint"]">@Localizer["Repl_NotDefinitive"]</span> }
+                            </td>
+                            <td class="small vs-hide-md"><span class="vs-num">@r.LastEvaluatedAt.ToString("yyyy-MM-dd HH:mm")</span></td>
+                            <td class="text-end">
+                                <a asp-action="Details" asp-route-id="@r.Id" class="lp-act lp-act--always" title="@Localizer["Ed_View"]" aria-label="@Localizer["Ed_View"]"><i class="bi bi-card-text" aria-hidden="true"></i></a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </pems-list-table>
 
-    @{
-        var qsParts = new List<string>();
-        if (!string.IsNullOrEmpty((string?)ViewBag.SelectedStatus)) qsParts.Add($"status={Uri.EscapeDataString((string)ViewBag.SelectedStatus)}");
-        if (!string.IsNullOrEmpty((string?)ViewBag.Search)) qsParts.Add($"q={Uri.EscapeDataString((string)ViewBag.Search)}");
-        if ((bool)ViewBag.DefinitiveOnly) qsParts.Add("definitiveOnly=true");
-    }
-    @await Html.PartialAsync("_Pagination", new PEMS.Web.ViewModels.PaginationViewModel
-    {
-        Page = Model.Page,
-        TotalPages = Model.TotalPages,
-        TotalCount = Model.TotalCount,
-        PageSize = Model.PageSize,
-        GridKey = "Replenishment",
-        BaseUrl = Url.Action("Index") ?? "",
-        ExistingQueryString = string.Join("&", qsParts)
-    })
-</div>
+            <pems-list-footer>
+                @await Html.PartialAsync("_Pagination", new PEMS.Web.ViewModels.PaginationViewModel
+                {
+                    Page = Model.Page,
+                    TotalPages = Model.TotalPages,
+                    TotalCount = Model.TotalCount,
+                    PageSize = Model.PageSize,
+                    GridKey = "Replenishment",
+                    BaseUrl = Url.Action("Index") ?? "",
+                    ExistingQueryString = Query(null)
+                })
+            </pems-list-footer>
+        </pems-list-grid>
+    </pems-list-panel>
+</pems-list-page>
+
+@section Scripts {
+    <script src="~/_content/PEMS.UI/pems-list.js" asp-append-version="true"></script>
+}
