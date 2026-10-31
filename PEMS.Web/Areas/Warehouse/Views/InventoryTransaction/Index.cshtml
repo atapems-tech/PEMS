@@ -1,89 +1,115 @@
 @model PEMS.Application.DTOs.PagedResult<PEMS.Application.DTOs.InventoryTransactionRowDto>
 @using Microsoft.Extensions.Localization
 @using PEMS.Web.Resources
+@using PEMS.Web.Helpers
 @inject IStringLocalizer<SharedResource> Localizer
 @{
-    var warehouses = (IEnumerable<dynamic>)ViewBag.Warehouses;
+    var warehouses = ((IEnumerable<dynamic>)ViewBag.Warehouses).ToList();
     var types = new[] { "Receipt", "Issue", "Return", "Transfer", "Adjustment", "Reservation", "ReservationRelease" };
+    var warehouseId = (int?)ViewBag.WarehouseId;
+    var type = (string?)ViewBag.TransactionType;
+    var from = (DateTime?)ViewBag.FromDate;
+    var to = (DateTime?)ViewBag.ToDate;
+    var warehouseCode = warehouseId.HasValue ? (string?)warehouses.FirstOrDefault(w => (int)w.WarehouseId == warehouseId.Value)?.Code : null;
+    var filterCount = (warehouseId.HasValue ? 1 : 0) + (string.IsNullOrEmpty(type) ? 0 : 1) + (from.HasValue ? 1 : 0) + (to.HasValue ? 1 : 0);
+
+    string TypeText(string? t) => VdrUi.Loc(Localizer, "ItL_Type_", t);
+    string Query(string? skip)
+    {
+        var parts = new List<string>();
+        if (warehouseId.HasValue && skip != "warehouse") parts.Add($"warehouseId={warehouseId}");
+        if (!string.IsNullOrEmpty(type) && skip != "type") parts.Add($"transactionType={Uri.EscapeDataString(type)}");
+        if (from.HasValue && skip != "from") parts.Add($"fromDate={from:yyyy-MM-dd}");
+        if (to.HasValue && skip != "to") parts.Add($"toDate={to:yyyy-MM-dd}");
+        return string.Join("&", parts);
+    }
+    string Without(string key) { var q = Query(key); return Url.Action("Index") + (q.Length > 0 ? "?" + q : ""); }
 }
 
-<div class="content-card">
-    <form method="get" class="d-flex flex-wrap gap-2 mb-3">
-        <select name="warehouseId" class="form-select form-select-sm" style="max-width:180px;">
-            <option value="">All warehouses</option>
-            @foreach (var w in warehouses) { <option value="@w.WarehouseId" selected="@(w.WarehouseId == (int?)ViewBag.WarehouseId)">@w.Code</option> }
-        </select>
-        <select name="transactionType" class="form-select form-select-sm" style="max-width:200px;">
-            <option value="">All types</option>
-            @foreach (var t in types) { <option value="@t" selected="@(t == (string?)ViewBag.TransactionType)">@t</option> }
-        </select>
-        <input type="date" name="fromDate" value="@(((DateTime?)ViewBag.FromDate)?.ToString("yyyy-MM-dd"))" class="form-control form-control-sm" style="max-width:160px;" />
-        <input type="date" name="toDate" value="@(((DateTime?)ViewBag.ToDate)?.ToString("yyyy-MM-dd"))" class="form-control form-control-sm" style="max-width:160px;" />
-        <button type="submit" class="btn btn-sm btn-outline-primary"><i class="bi bi-funnel"></i> @Localizer["Filter"]</button>
-        <a asp-action="Index" class="btn btn-sm btn-outline-secondary">@Localizer["Reset"]</a>
-    </form>
+@section Styles {
+    <link rel="stylesheet" href="~/css/pems-workspace.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/_content/PEMS.UI/pems-list.css" asp-append-version="true" />
+}
 
-    <div class="d-flex justify-content-end mb-2">
-        <button type="button" class="btn btn-sm btn-outline-secondary" onclick="PemsDataGrid.resetColumns('InventoryTransaction')">
-            <i class="bi bi-arrow-counterclockwise"></i> @Localizer["Reset columns"]
-        </button>
-    </div>
-    <div class="table-scroll-area pems-grid-scroll" style="max-height:70vh; overflow-y:auto;">
-        <table class="table table-enterprise table-sm pems-grid-table" data-grid-key="InventoryTransaction">
-            <thead>
-                <tr>
-                    <th data-col-key="date" data-resizable="true" data-min-width="120" data-max-width="200">@Localizer["Date"]</th>
-                    <th data-col-key="material" data-resizable="true" data-min-width="160" data-max-width="360">@Localizer["Material"]</th>
-                    <th data-col-key="type" data-resizable="true" data-min-width="90" data-max-width="180">@Localizer["Type"]</th>
-                    <th data-col-key="warehouse" data-resizable="true" data-min-width="80" data-max-width="160">@Localizer["Warehouse"]</th>
-                    <th data-col-key="qty" data-resizable="true" data-min-width="70" data-max-width="120">@Localizer["Qty"]</th>
-                    <th data-col-key="reference" data-resizable="true" data-min-width="100" data-max-width="220">@Localizer["Reference"]</th>
-                    <th data-col-key="by" data-resizable="true" data-min-width="100" data-max-width="220">By</th>
-                    <th data-col-key="reason" data-resizable="true" data-min-width="120" data-max-width="320">@Localizer["Reason"]</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var t in Model.Items)
-                {
+@* SCRUM-337 W3: built from the PEMS.UI list-page component. The filter row (warehouse, type, from, to) moved into the
+   filters dropdown; every active filter is a chip. *@
+<pems-list-page texts="@ListPageTexts.From(Localizer)">
+    <pems-list-panel>
+
+        <pems-list-toolbar heading="@Localizer["ItL_Title"]" heading-title="@Localizer["ItL_Hint"]" total="@Model.TotalCount">
+            <pems-list-tools>
+                <pems-list-filters form-id="itFilterForm" action="@Url.Action("Index")" count="@filterCount" reset-href="@Url.Action("Index")">
+                    <pems-list-filter-select id="itFilterWarehouse" name="warehouseId" label="@Localizer["ItL_Warehouse"]" value="@warehouseId?.ToString()"
+                                             all-text="@Localizer["ItL_AllWarehouses"]" items="@warehouses.Select(w => new SelectListItem((string)w.Code, ((int)w.WarehouseId).ToString()))" />
+                    <pems-list-filter-select id="itFilterType" name="transactionType" label="@Localizer["Cm_Type"]" value="@type"
+                                             all-text="@Localizer["ItL_AllTypes"]" items="@types.Select(t => new SelectListItem(TypeText(t), t))" />
+                    <div>
+                        <label class="lp-lbl" for="itFilterFrom">@Localizer["ItL_From"]</label>
+                        <input type="date" id="itFilterFrom" name="fromDate" value="@from?.ToString("yyyy-MM-dd")" class="form-control" />
+                    </div>
+                    <div>
+                        <label class="lp-lbl" for="itFilterTo">@Localizer["ItL_To"]</label>
+                        <input type="date" id="itFilterTo" name="toDate" value="@to?.ToString("yyyy-MM-dd")" class="form-control" />
+                    </div>
+                </pems-list-filters>
+                <pems-list-reset-columns grid-key="InventoryTransaction" />
+            </pems-list-tools>
+        </pems-list-toolbar>
+
+        <pems-list-chips reset-href="@Url.Action("Index")">
+            @if (warehouseId.HasValue) { <pems-list-chip label="@Localizer["ItL_Warehouse"]" value="@(warehouseCode ?? warehouseId.ToString())" remove-href="@Without("warehouse")" /> }
+            @if (!string.IsNullOrEmpty(type)) { <pems-list-chip label="@Localizer["Cm_Type"]" value="@TypeText(type)" remove-href="@Without("type")" /> }
+            @if (from.HasValue) { <pems-list-chip label="@Localizer["ItL_From"]" value="@from.Value.ToString("yyyy-MM-dd")" remove-href="@Without("from")" /> }
+            @if (to.HasValue) { <pems-list-chip label="@Localizer["ItL_To"]" value="@to.Value.ToString("yyyy-MM-dd")" remove-href="@Without("to")" /> }
+        </pems-list-chips>
+
+        <pems-list-grid>
+            <pems-list-table grid-key="InventoryTransaction" empty="@(!Model.Items.Any())" empty-text="@Localizer["ItL_Empty"]">
+                <thead>
                     <tr>
-                        <td class="small">@t.TransactionDate.ToString("yyyy-MM-dd HH:mm")</td>
-                        <td class="small">@t.MaterialCode - @t.MaterialDescription</td>
-                        <td><span class="badge bg-light text-dark border">@t.TransactionType</span></td>
-                        <td>@t.WarehouseCode</td>
-                        <td>@t.Quantity</td>
-                        <td class="small">@(t.ReferenceType ?? "-") @(t.ReferenceId?.ToString() ?? "")</td>
-                        <td class="small">@(t.EmployeeName ?? "-")</td>
-                        <td class="small text-muted">@(t.Reason ?? "-")</td>
+                        <th data-col-key="date" data-resizable="true" data-min-width="120" data-max-width="200" style="width:140px">@Localizer["Cm_Date"]</th>
+                        <th data-col-key="material" data-resizable="true" data-min-width="160" data-max-width="420">@Localizer["ItL_Material"]</th>
+                        <th data-col-key="type" data-resizable="true" data-min-width="90" data-max-width="180" style="width:120px">@Localizer["Cm_Type"]</th>
+                        <th data-col-key="warehouse" data-resizable="true" data-min-width="80" data-max-width="160" style="width:100px">@Localizer["ItL_Warehouse"]</th>
+                        <th data-col-key="qty" data-resizable="true" data-min-width="70" data-max-width="120" style="width:90px" class="text-end">@Localizer["ItL_Qty"]</th>
+                        <th data-col-key="reference" data-resizable="true" data-min-width="100" data-max-width="220" style="width:140px" class="vs-hide-md">@Localizer["ItL_Reference"]</th>
+                        <th data-col-key="by" data-resizable="true" data-min-width="100" data-max-width="220" style="width:140px" class="vs-hide-md">@Localizer["ItL_By"]</th>
+                        <th data-col-key="reason" data-resizable="true" data-min-width="120" data-max-width="320" class="vs-hide-md">@Localizer["ItL_Reason"]</th>
                     </tr>
-                }
-            </tbody>
-        </table>
-    </div>
-    @if (!Model.Items.Any()) { <p class="text-muted text-center py-4">@Localizer["تراکنشی یافت نشد."]</p> }
+                </thead>
+                <tbody>
+                    @foreach (var t in Model.Items)
+                    {
+                        <tr class="lp-row">
+                            <td class="small"><span class="vs-num">@t.TransactionDate.ToString("yyyy-MM-dd HH:mm")</span></td>
+                            <td class="small"><span class="vs-title-cell" title="@t.MaterialDescription"><span class="vs-num">@t.MaterialCode</span> - @t.MaterialDescription</span></td>
+                            <td><span class="vs-pill vs-pill--neutral">@TypeText(t.TransactionType)</span></td>
+                            <td class="small"><span class="vs-num">@t.WarehouseCode</span></td>
+                            <td class="text-end"><span class="vs-num">@t.Quantity</span></td>
+                            <td class="small vs-hide-md">@(t.ReferenceType ?? "-") <span class="vs-num">@(t.ReferenceId?.ToString() ?? "")</span></td>
+                            <td class="small vs-hide-md">@(t.EmployeeName ?? "-")</td>
+                            <td class="small text-muted vs-hide-md">@(t.Reason ?? "-")</td>
+                        </tr>
+                    }
+                </tbody>
+            </pems-list-table>
 
-    @{
-        var qsParts = new List<string>();
-        if (ViewBag.WarehouseId != null) qsParts.Add($"warehouseId={ViewBag.WarehouseId}");
-        if (!string.IsNullOrEmpty((string?)ViewBag.TransactionType)) qsParts.Add($"transactionType={Uri.EscapeDataString((string)ViewBag.TransactionType)}");
-        if (ViewBag.FromDate != null) qsParts.Add($"fromDate={((DateTime)ViewBag.FromDate):yyyy-MM-dd}");
-        if (ViewBag.ToDate != null) qsParts.Add($"toDate={((DateTime)ViewBag.ToDate):yyyy-MM-dd}");
-    }
-    @await Html.PartialAsync("_Pagination", new PEMS.Web.ViewModels.PaginationViewModel
-    {
-        Page = Model.Page,
-        TotalPages = Model.TotalPages,
-        TotalCount = Model.TotalCount,
-        PageSize = Model.PageSize,
-        GridKey = "InventoryTransaction",
-        BaseUrl = Url.Action("Index") ?? "",
-        ExistingQueryString = string.Join("&", qsParts)
-    })
-</div>
+            <pems-list-footer>
+                @await Html.PartialAsync("_Pagination", new PEMS.Web.ViewModels.PaginationViewModel
+                {
+                    Page = Model.Page,
+                    TotalPages = Model.TotalPages,
+                    TotalCount = Model.TotalCount,
+                    PageSize = Model.PageSize,
+                    GridKey = "InventoryTransaction",
+                    BaseUrl = Url.Action("Index") ?? "",
+                    ExistingQueryString = Query(null)
+                })
+            </pems-list-footer>
+        </pems-list-grid>
+    </pems-list-panel>
+</pems-list-page>
 
 @section Scripts {
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            PemsDataGrid.initColumnResize('InventoryTransaction');
-        });
-    </script>
+    <script src="~/_content/PEMS.UI/pems-list.js" asp-append-version="true"></script>
 }

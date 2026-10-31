@@ -3383,4 +3383,149 @@
   <data name="Fla_Review" xml:space="preserve"><value>Review</value></data>
   <data name="Fla_St_Staging" xml:space="preserve"><value>Waiting for review</value></data>
   <data name="Fla_St_Committed" xml:space="preserve"><value>Committed</value></data>
+  <data name="Ed_Search" xml:space="preserve"><value>Search</value></data>
+  <data name="PoL_Title" xml:space="preserve"><value>Purchase orders</value></data>
+  <data name="PoL_Hint" xml:space="preserve"><value>Purchase orders with their vendor, contract, value and approval status. Open one to see its lines.</value></data>
+  <data name="PoL_Empty" xml:space="preserve"><value>No purchase orders yet.</value></data>
+  <data name="PoL_New" xml:space="preserve"><value>New purchase order</value></data>
+  <data name="PoL_No" xml:space="preserve"><value>PO number</value></data>
+  <data name="PoL_Project" xml:space="preserve"><value>Project</value></data>
+  <data name="PoL_Vendor" xml:space="preserve"><value>Vendor</value></data>
+  <data name="PoL_Contract" xml:space="preserve"><value>Contract no</value></data>
+  <data name="PoL_Value" xml:space="preserve"><value>Value</value></data>
+  <data name="Tn_Title" xml:space="preserve"><value>Tenders</value></data>
+  <data name="Tn_Hint" xml:space="preserve"><value>Tenders and RFQs of the procurement packages. Open a package to start a new tender from it.</value></data>
+  <data name="Tn_Empty" xml:space="preserve"><value>No tenders yet.</value></data>
+  <data name="Tn_New" xml:space="preserve"><value>New tender</value></data>
+  <data name="Tn_No" xml:space="preserve"><value>Tender no</value></data>
+  <data name="Tn_TitleCol" xml:space="preserve"><value>Title</value></data>
+  <data name="Tn_Package" xml:space="preserve"><value>Package</value></data>
+  <data name="Tn_Deadline" xml:space="preserve"><value>Response deadline</value></data>
+  <data name="Tn_St_Draft" xml:space="preserve"><value>Draft</value></data>
+  <data name="Tn_St_Open" xml:space="preserve"><value>Open</value></data>
+  <data name="Tn_St_Closed" xml:space="preserve"><value>Closed</value></data>
+  <data name="Tn_St_Awarded" xml:space="preserve"><value>Awarded</value></data>
+  <data name="Tn_St_Cancelled" xml:space="preserve"><value>Cancelled</value></data>
+  <data name="MrL_Title" xml:space="preserve"><value>Material requisitions</value></data>
+  <data name="MrL_Hint" xml:space="preserve"><value>Material requisitions (MR) and the number of quotations (MRQ) received for each.</value></data>
+  <data name="MrL_Empty" xml:space="preserve"><value>No material requisitions yet.</value></data>
+  <data name="MrL_New" xml:space="preserve"><value>New MR</value></data>
+  <data name="MrL_No" xml:space="preserve"><value>MR number</value></data>
+  <data name="MrL_Tag" xml:space="preserve"><value>Equipment tag</value></data>
+  <data name="MrL_Required" xml:space="preserve"><value>Required date</value></data>
+  <data name="MrL_Responsible" xml:space="preserve"><value>Responsible</value></data>
+  <data name="MrL_Mrqs" xml:space="preserve"><value>MRQs</value></data>
+  <data name="MrL_St_Draft" xml:space="preserve"><value>Draft</value></data>
+  <data name="MrL_St_Submitted" xml:space="preserve"><value>Submitted</value></data>
+  <data name="MrL_St_Approved" xml:space="preserve"><value>Approved</value></data>
+  <data name="MrL_St_Sent" xml:space="preserve"><value>Sent</value></data>
+  <data name="MrL_St_Evaluated" xml:space="preserve"><value>Evaluated</value></data>
+  <data name="MrL_St_Closed" xml:space="preserve"><value>Closed</value></data>
+  <data name="MrL_St_Cancelled" xml:space="preserve"><value>Cancelled</value></data>
+  <data name="CtL_Title" xml:space="preserve"><value>Contracts</value></data>
+  <data name="CtL_Hint" xml:space="preserve"><value>Contracts with vendors: value, dates and status. Open one for its scope, documents and purchase orders.</value></data>
+  <data name="CtL_Empty" xml:space="preserve"><value>No contracts yet.</value></data>
+  <data name="CtL_New" xml:space="preserve"><value>New contract</value></data>
+  <data name="CtL_No" xml:space="preserve"><value>Contract no</value></data>
+  <data name="CtL_Vendor" xml:space="preserve"><value>Vendor</value></data>
+  <data name="CtL_Value" xml:space="preserve"><value>Value</value></data>
+  <data name="CtL_Start" xml:space="preserve"><value>Start</value></data>
+  <data name="CtL_End" xml:space="preserve"><value>End</value></data>
+  <data name="CtL_St_Draft" xml:space="preserve"><value>Draft</value></data>
+  <data name="CtL_St_UnderReview" xml:space="preserve"><value>Under review</value></data>
+  <data name="CtL_St_Signed" xml:space="preserve"><value>Signed</value></data>
+  <data name="CtL_St_Effective" xml:space="preserve"><value>Effective</value></data>
+  <data name="CtL_St_Completed" xml:space="preserve"><value>Completed</value></data>
+  <data name="CtL_St_Closed" xml:space="preserve"><value>Closed</value></data>
+  <data name="CtL_St_Terminated" xml:space="preserve"><value>Terminated</value></data>
+  <data name="PkL_Title" xml:space="preserve"><value>Procurement packages</value></data>
+  <data name="PkL_Hint" xml:space="preserve"><value>MR, MRQ, vendor inquiry, technical clarification and approval history live under one procurement package: MR → vendor inquiry → technical clarification → MRQ → response → approval → closeout.</value></data>
+  <data name="PkL_Empty" xml:space="preserve"><value>No procurement packages yet.</value></data>
+  <data name="PkL_New" xml:space="preserve"><value>New procurement package</value></data>
+  <data name="PkL_No" xml:space="preserve"><value>Package no</value></data>
+  <data name="PkL_Stage" xml:space="preserve"><value>Stage</value></data>
+  <data name="PkL_Mrs" xml:space="preserve"><value>MRs</value></data>
+  <data name="PkL_Mrqs" xml:space="preserve"><value>MRQs</value></data>
+  <data name="PkL_OpenComms" xml:space="preserve"><value>Open communications</value></data>
+  <data name="PkL_AllMrs" xml:space="preserve"><value>All MRs (legacy view)</value></data>
+  <data name="PkL_AllMrqs" xml:space="preserve"><value>All MRQs (legacy view)</value></data>
+  <data name="PkL_Stage_MR" xml:space="preserve"><value>MR</value></data>
+  <data name="PkL_Stage_Approval" xml:space="preserve"><value>Approval</value></data>
+  <data name="PkL_Stage_Closeout" xml:space="preserve"><value>Closeout</value></data>
+  <data name="PkL_St_Open" xml:space="preserve"><value>Open</value></data>
+  <data name="PkL_St_InProgress" xml:space="preserve"><value>In progress</value></data>
+  <data name="PkL_St_Closed" xml:space="preserve"><value>Closed</value></data>
+  <data name="ItL_Title" xml:space="preserve"><value>Inventory transactions</value></data>
+  <data name="ItL_Hint" xml:space="preserve"><value>Every stock movement: receipts, issues, returns, transfers, adjustments and reservations.</value></data>
+  <data name="ItL_Empty" xml:space="preserve"><value>No transactions match the filters.</value></data>
+  <data name="ItL_Warehouse" xml:space="preserve"><value>Warehouse</value></data>
+  <data name="ItL_AllWarehouses" xml:space="preserve"><value>All warehouses</value></data>
+  <data name="ItL_AllTypes" xml:space="preserve"><value>All types</value></data>
+  <data name="ItL_From" xml:space="preserve"><value>From</value></data>
+  <data name="ItL_To" xml:space="preserve"><value>To</value></data>
+  <data name="ItL_Material" xml:space="preserve"><value>Material</value></data>
+  <data name="ItL_Qty" xml:space="preserve"><value>Qty</value></data>
+  <data name="ItL_Reference" xml:space="preserve"><value>Reference</value></data>
+  <data name="ItL_By" xml:space="preserve"><value>By</value></data>
+  <data name="ItL_Reason" xml:space="preserve"><value>Reason</value></data>
+  <data name="ItL_Type_Receipt" xml:space="preserve"><value>Receipt</value></data>
+  <data name="ItL_Type_Issue" xml:space="preserve"><value>Issue</value></data>
+  <data name="ItL_Type_Return" xml:space="preserve"><value>Return</value></data>
+  <data name="ItL_Type_Transfer" xml:space="preserve"><value>Transfer</value></data>
+  <data name="ItL_Type_Adjustment" xml:space="preserve"><value>Adjustment</value></data>
+  <data name="ItL_Type_Reservation" xml:space="preserve"><value>Reservation</value></data>
+  <data name="ItL_Type_ReservationRelease" xml:space="preserve"><value>Reservation release</value></data>
+  <data name="SrL_Title" xml:space="preserve"><value>Store requisitions</value></data>
+  <data name="SrL_Hint" xml:space="preserve"><value>Requests to issue stock from a warehouse, from draft to issued and closed.</value></data>
+  <data name="SrL_Empty" xml:space="preserve"><value>No store requisitions found.</value></data>
+  <data name="SrL_New" xml:space="preserve"><value>New store requisition</value></data>
+  <data name="SrL_No" xml:space="preserve"><value>No.</value></data>
+  <data name="SrL_RequestedBy" xml:space="preserve"><value>Requested by</value></data>
+  <data name="SrL_Purpose" xml:space="preserve"><value>Purpose</value></data>
+  <data name="SrL_St_Draft" xml:space="preserve"><value>Draft</value></data>
+  <data name="SrL_St_Submitted" xml:space="preserve"><value>Submitted</value></data>
+  <data name="SrL_St_Approved" xml:space="preserve"><value>Approved</value></data>
+  <data name="SrL_St_Reserved" xml:space="preserve"><value>Reserved</value></data>
+  <data name="SrL_St_PartiallyIssued" xml:space="preserve"><value>Partially issued</value></data>
+  <data name="SrL_St_Issued" xml:space="preserve"><value>Issued</value></data>
+  <data name="SrL_St_Closed" xml:space="preserve"><value>Closed</value></data>
+  <data name="SrL_St_Rejected" xml:space="preserve"><value>Rejected</value></data>
+  <data name="SrL_St_Cancelled" xml:space="preserve"><value>Cancelled</value></data>
+  <data name="IrnL_Title" xml:space="preserve"><value>Incoming receipts (IRN)</value></data>
+  <data name="IrnL_Hint" xml:space="preserve"><value>Goods received from vendors, with or without a purchase order, before they are put into stock.</value></data>
+  <data name="IrnL_Empty" xml:space="preserve"><value>No incoming receipts found.</value></data>
+  <data name="IrnL_New" xml:space="preserve"><value>New IRN</value></data>
+  <data name="IrnL_No" xml:space="preserve"><value>IRN no.</value></data>
+  <data name="IrnL_ReceivedBy" xml:space="preserve"><value>Received by</value></data>
+  <data name="IrnL_Date" xml:space="preserve"><value>Receiving date</value></data>
+  <data name="IrnL_Lines" xml:space="preserve"><value>Lines</value></data>
+  <data name="IrnL_St_Draft" xml:space="preserve"><value>Draft</value></data>
+  <data name="IrnL_St_Submitted" xml:space="preserve"><value>Submitted</value></data>
+  <data name="IrnL_St_PendingApproval" xml:space="preserve"><value>Pending approval</value></data>
+  <data name="IrnL_St_Closed" xml:space="preserve"><value>Closed</value></data>
+  <data name="IrnL_St_Cancelled" xml:space="preserve"><value>Cancelled</value></data>
+  <data name="Repl_Title" xml:space="preserve"><value>Replenishment recommendations</value></data>
+  <data name="Repl_St_Open" xml:space="preserve"><value>Open</value></data>
+  <data name="Repl_St_Dismissed" xml:space="preserve"><value>Dismissed</value></data>
+  <data name="Repl_St_Closed" xml:space="preserve"><value>Closed</value></data>
+  <data name="MiL_Title" xml:space="preserve"><value>Material master</value></data>
+  <data name="MiL_Hint" xml:space="preserve"><value>Every material with its stock on hand and available. A star marks a critical spare.</value></data>
+  <data name="MiL_Empty" xml:space="preserve"><value>No materials found.</value></data>
+  <data name="MiL_New" xml:space="preserve"><value>New material</value></data>
+  <data name="MiL_SearchPlaceholder" xml:space="preserve"><value>Search code or description...</value></data>
+  <data name="MiL_Category" xml:space="preserve"><value>Category</value></data>
+  <data name="MiL_AllCategories" xml:space="preserve"><value>All categories</value></data>
+  <data name="MiL_LowStockOnly" xml:space="preserve"><value>Low stock only</value></data>
+  <data name="MiL_CriticalOnly" xml:space="preserve"><value>Critical only</value></data>
+  <data name="MiL_Total" xml:space="preserve"><value>Total materials</value></data>
+  <data name="MiL_LowStockPage" xml:space="preserve"><value>Low stock (this page)</value></data>
+  <data name="MiL_LowStockPageHint" xml:space="preserve"><value>Counted on this page; click to list every low-stock material.</value></data>
+  <data name="MiL_Code" xml:space="preserve"><value>Code</value></data>
+  <data name="MiL_Uom" xml:space="preserve"><value>UOM</value></data>
+  <data name="MiL_Manufacturer" xml:space="preserve"><value>Manufacturer</value></data>
+  <data name="MiL_OnHand" xml:space="preserve"><value>On hand</value></data>
+  <data name="MiL_Available" xml:space="preserve"><value>Available</value></data>
+  <data name="MiL_Critical" xml:space="preserve"><value>Critical</value></data>
+  <data name="PcL_View" xml:space="preserve"><value>View</value></data>
+  <data name="PcL_Hint" xml:space="preserve"><value>Requests to add or change a part in the IFS catalogue, with their approval stage.</value></data>
 </root>

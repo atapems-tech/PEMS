@@ -1,98 +1,101 @@
 @model PEMS.Application.DTOs.PagedResult<PEMS.Application.DTOs.IrnReceiptListDto>
 @using Microsoft.Extensions.Localization
 @using PEMS.Web.Resources
+@using PEMS.Web.Helpers
 @inject IStringLocalizer<SharedResource> Localizer
 @{
     var vendors = (IEnumerable<dynamic>)ViewBag.Vendors;
     var warehouses = (IEnumerable<dynamic>)ViewBag.Warehouses;
     var statuses = new[] { "Draft", "Submitted", "PendingApproval", "Closed", "Cancelled" };
-}
-
-@if (TempData["Message"] != null)
-{
-    <div class="alert alert-success py-2 px-3 small">@TempData["Message"]</div>
-}
-@if (TempData["Error"] != null)
-{
-    <div class="alert alert-danger py-2 px-3 small">@TempData["Error"]</div>
-}
-
-<div class="content-card mb-3">
-    <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
-        <form method="get" class="d-flex gap-2">
-            <select name="status" class="form-select form-select-sm" style="max-width:180px;" onchange="this.form.submit()">
-                <option value="">@Localizer["All statuses"]</option>
-                @foreach (var s in statuses) { <option value="@s" selected="@(s == (string?)ViewBag.SelectedStatus)">@s</option> }
-            </select>
-        </form>
-        <button type="button" class="btn btn-pems-solid btn-sm" data-bs-toggle="modal" data-bs-target="#createIrnModal">
-            <i class="bi bi-plus-lg"></i> @Localizer["New IRN"]
-        </button>
-    </div>
-</div>
-
-<div class="content-card">
-    <div class="d-flex justify-content-end mb-2">
-        <button type="button" class="btn btn-sm btn-outline-secondary" onclick="PemsDataGrid.resetColumns('IrnReceipt')">
-            <i class="bi bi-arrow-counterclockwise"></i> @Localizer["Reset columns"]
-        </button>
-    </div>
-    <div class="pems-grid-scroll">
-    <table class="table table-enterprise pems-grid-table mb-0" data-grid-key="IrnReceipt">
-        <thead>
-            <tr>
-                <th data-col-key="number" data-resizable="true" data-min-width="110" data-max-width="200">@Localizer["IRN No."]</th>
-                <th data-col-key="vendor" data-resizable="true" data-min-width="120" data-max-width="260">@Localizer["Vendor"]</th>
-                <th data-col-key="warehouse" data-resizable="true" data-min-width="90" data-max-width="160">@Localizer["Warehouse"]</th>
-                <th data-col-key="receivedBy" data-resizable="true" data-min-width="120" data-max-width="240">@Localizer["Received By"]</th>
-                <th data-col-key="date" data-resizable="true" data-min-width="90" data-max-width="160">@Localizer["Receiving Date"]</th>
-                <th data-col-key="lines" data-resizable="true" data-min-width="60" data-max-width="100">@Localizer["Lines"]</th>
-                <th data-col-key="status" data-resizable="true" data-min-width="90" data-max-width="160">@Localizer["Status"]</th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var r in Model.Items)
-            {
-                var badgeClass = r.Status switch
-                {
-                    "Submitted" => "bg-warning text-dark",
-                    "PendingApproval" => "bg-info text-dark",
-                    "Closed" => "bg-success",
-                    "Cancelled" => "bg-secondary",
-                    _ => "bg-light text-dark border"
-                };
-                <tr>
-                    <td class="small fw-bold"><a asp-action="Details" asp-route-id="@r.IrnReceiptId">@r.IrnNumber</a></td>
-                    <td class="small">@r.VendorName</td>
-                    <td class="small">@r.WarehouseCode</td>
-                    <td class="small">@r.ReceivedByName</td>
-                    <td class="small">@r.ReceivingDate.ToString("yyyy-MM-dd")</td>
-                    <td class="small">@r.LineCount</td>
-                    <td><span class="badge @badgeClass">@r.Status</span></td>
-                    <td class="text-end"><a asp-action="Details" asp-route-id="@r.IrnReceiptId" class="btn btn-sm btn-outline-secondary"><i class="bi bi-card-text"></i></a></td>
-                </tr>
-            }
-        </tbody>
-    </table>
-    </div>
-    @if (!Model.Items.Any()) { <p class="text-muted text-center py-4 mb-0">@Localizer["No incoming receipts found."]</p> }
-
-    @{
-        var qsParts = new List<string>();
-        if (!string.IsNullOrEmpty((string?)ViewBag.SelectedStatus)) qsParts.Add($"status={Uri.EscapeDataString((string)ViewBag.SelectedStatus)}");
-    }
-    @await Html.PartialAsync("_Pagination", new PEMS.Web.ViewModels.PaginationViewModel
+    var status = (string?)ViewBag.SelectedStatus;
+    var filterCount = string.IsNullOrEmpty(status) ? 0 : 1;
+    string StatusText(string? s) => VdrUi.Loc(Localizer, "IrnL_St_", s);
+    string StatusTone(string? s) => s switch
     {
-        Page = Model.Page,
-        TotalPages = Model.TotalPages,
-        TotalCount = Model.TotalCount,
-        PageSize = Model.PageSize,
-        GridKey = "IrnReceipt",
-        BaseUrl = Url.Action("Index") ?? "",
-        ExistingQueryString = string.Join("&", qsParts)
-    })
-</div>
+        "Submitted" => "vs-pill--warning",
+        "PendingApproval" => "vs-pill--info",
+        "Closed" => "vs-pill--success",
+        "Cancelled" => "vs-pill--danger",
+        _ => "vs-pill--neutral"
+    };
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/pems-workspace.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/_content/PEMS.UI/pems-list.css" asp-append-version="true" />
+}
+
+@* SCRUM-337 W3: built from the PEMS.UI list-page component. The status select moved into the filters dropdown; the
+   create modal stays (it moves to PemsModal with SCRUM-482). *@
+<pems-list-page texts="@ListPageTexts.From(Localizer)">
+    @if (TempData["Message"] != null) { <pems-alert tone="success" css="py-2 px-3 small">@TempData["Message"]</pems-alert> }
+    @if (TempData["Error"] != null) { <pems-alert tone="danger" css="py-2 px-3 small">@TempData["Error"]</pems-alert> }
+
+    <pems-list-panel>
+
+        <pems-list-toolbar heading="@Localizer["IrnL_Title"]" heading-title="@Localizer["IrnL_Hint"]" total="@Model.TotalCount">
+            <pems-list-tools>
+                <pems-list-filters form-id="irnFilterForm" action="@Url.Action("Index")" count="@filterCount" reset-href="@Url.Action("Index")">
+                    <pems-list-filter-select id="irnFilterStatus" name="status" label="@Localizer["Ed_Status"]" value="@status"
+                                             all-text="@Localizer["Eq_AllStatuses"]" items="@statuses.Select(s => new SelectListItem(StatusText(s), s))" />
+                </pems-list-filters>
+                <pems-list-reset-columns grid-key="IrnReceipt" />
+                <pems-list-new modal="createIrnModal" text="@Localizer["IrnL_New"]" />
+            </pems-list-tools>
+        </pems-list-toolbar>
+
+        <pems-list-chips>
+            @if (!string.IsNullOrEmpty(status)) { <pems-list-chip label="@Localizer["Ed_Status"]" value="@StatusText(status)" remove-href="@Url.Action("Index")" /> }
+        </pems-list-chips>
+
+        <pems-list-grid>
+            <pems-list-table grid-key="IrnReceipt" empty="@(!Model.Items.Any())" empty-text="@Localizer["IrnL_Empty"]">
+                <thead>
+                    <tr>
+                        <th data-col-key="number" data-resizable="true" data-min-width="110" data-max-width="200" style="width:140px">@Localizer["IrnL_No"]</th>
+                        <th data-col-key="vendor" data-resizable="true" data-min-width="120" data-max-width="300">@Localizer["CtL_Vendor"]</th>
+                        <th data-col-key="warehouse" data-resizable="true" data-min-width="90" data-max-width="160" style="width:110px">@Localizer["ItL_Warehouse"]</th>
+                        <th data-col-key="receivedBy" data-resizable="true" data-min-width="120" data-max-width="240" style="width:150px" class="vs-hide-md">@Localizer["IrnL_ReceivedBy"]</th>
+                        <th data-col-key="date" data-resizable="true" data-min-width="90" data-max-width="160" style="width:120px">@Localizer["IrnL_Date"]</th>
+                        <th data-col-key="lines" data-resizable="true" data-min-width="60" data-max-width="100" style="width:80px" class="text-end">@Localizer["IrnL_Lines"]</th>
+                        <th data-col-key="status" data-resizable="true" data-min-width="90" data-max-width="160" style="width:130px">@Localizer["Ed_Status"]</th>
+                        <th data-col-key="actions" data-resizable="false" style="width:60px"><span class="visually-hidden">@Localizer["Ed_Actions"]</span></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var r in Model.Items)
+                    {
+                        <tr class="lp-row">
+                            <td class="lp-no"><a asp-action="Details" asp-route-id="@r.IrnReceiptId" class="lp-subject" title="@r.IrnNumber">@r.IrnNumber</a></td>
+                            <td class="small">@r.VendorName</td>
+                            <td class="small"><span class="vs-num">@r.WarehouseCode</span></td>
+                            <td class="small vs-hide-md">@r.ReceivedByName</td>
+                            <td class="small"><span class="vs-num">@r.ReceivingDate.ToString("yyyy-MM-dd")</span></td>
+                            <td class="text-end"><span class="vs-num">@r.LineCount</span></td>
+                            <td><span class="vs-pill @StatusTone(r.Status)">@StatusText(r.Status)</span></td>
+                            <td class="text-end">
+                                <a asp-action="Details" asp-route-id="@r.IrnReceiptId" class="lp-act lp-act--always" title="@Localizer["Ed_View"]" aria-label="@Localizer["Ed_View"]"><i class="bi bi-card-text" aria-hidden="true"></i></a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </pems-list-table>
+
+            <pems-list-footer>
+                @await Html.PartialAsync("_Pagination", new PEMS.Web.ViewModels.PaginationViewModel
+                {
+                    Page = Model.Page,
+                    TotalPages = Model.TotalPages,
+                    TotalCount = Model.TotalCount,
+                    PageSize = Model.PageSize,
+                    GridKey = "IrnReceipt",
+                    BaseUrl = Url.Action("Index") ?? "",
+                    ExistingQueryString = string.IsNullOrEmpty(status) ? "" : $"status={Uri.EscapeDataString(status)}"
+                })
+            </pems-list-footer>
+        </pems-list-grid>
+    </pems-list-panel>
+</pems-list-page>
 
 <div class="modal fade" id="createIrnModal" tabindex="-1">
     <div class="modal-dialog"><div class="modal-content">
@@ -128,17 +131,13 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">@Localizer["Cancel"]</button>
-                <button type="submit" class="btn btn-pems-solid btn-sm">@Localizer["Create"]</button>
+                <pems-button tone="neutral" size="small" outline="true" type="button" data-bs-dismiss="modal">@Localizer["Cancel"]</pems-button>
+                <pems-button tone="primary" size="small" type="submit">@Localizer["Create"]</pems-button>
             </div>
         </form>
     </div></div>
 </div>
 
 @section Scripts {
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            PemsDataGrid.initColumnResize('IrnReceipt');
-        });
-    </script>
+    <script src="~/_content/PEMS.UI/pems-list.js" asp-append-version="true"></script>
 }
