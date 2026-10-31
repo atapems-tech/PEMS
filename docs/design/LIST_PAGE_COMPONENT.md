@@ -1,6 +1,6 @@
 # List page component (SCRUM-337)
 
-Status: 2026-10-31, waves 0, 1, 2, 2b and 3. The look comes from the correspondence list and the Engineering Documents list (SCRUM-408).
+Status: 2026-10-31, waves 0, 1, 2, 2b, 3 and 4a. The look comes from the correspondence list and the Engineering Documents list (SCRUM-408).
 It lives in `PEMS.UI` (ADR-0007: Tag Helper facade for MVC pages). Texts are inputs (SCRUM-416).
 
 ## What the component gives every list page
@@ -139,7 +139,8 @@ Column resize needs `data-col-key` / `data-resizable` on the `th` elements; the 
 | W2 | CMMS: WorkOrder, WorkRequest, Equipment, FunctionalLocation, Instrument, Tag (letter tags), MaintenancePlan, MaintenanceStrategy, JobPlan, SparePart, Permit, Inspection, Finding, Asset | done |
 | W2b | the other single-table CMMS lists: CriticalityAssessment, EquipmentCriticality, MechanicalEquipment, FailureModeCatalog, ShiftHandover, RcmFmea, EquipmentFunctionalLocationAssignment | done |
 | W3 | procurement and warehouse: PurchaseOrder, Tender, MaterialRequisition, Vendor, Contract, ProcurementPackage, InventoryTransaction, StoreRequisition, IrnReceipt, Replenishment, MaterialItem, PartCatalogueRequest (not lists: Inventory dashboard, InventoryMasterData and PartCatalogueAdmin admin pages, MrsImport, the PreProcurement cartable) | done |
-| W4 | admin and base data: Users, Roles, Department, Discipline, Employee, AuditLog, SecurityEvents, ... | |
+| W4a | users, roles and base data: Users, Roles, Department, Discipline, Employee, AuditLog, SecurityEvents, AuthorizationAudit | done |
+| W4b | Administration settings tables: ContractApprovalAuthority, PurchaseOrderAuthority, Numbering, SoDPolicy, StorageProviders, StorageRouting, RoutingRules, WorkflowManagement, Help (not lists: NavigationMenu / NavigationVisibility editors, PermissionMatrix, Organization tree, OrganizationImport, DatabaseUpdate, License, ProjectIntelligence) | next |
 
 Not converted, because they are not record lists: dashboards, import wizards, AI tools and reports (in CMMS also
 Reliability, MaintenanceMasterData, MaintenanceCalendar, EquipmentClassification and the Crew cards). The Letter list

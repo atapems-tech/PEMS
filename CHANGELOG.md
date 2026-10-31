@@ -3,6 +3,13 @@
 All notable changes to PEMS. No system version is defined yet (plan row F_CI), so entries are grouped by date
 and theme and were reconstructed from the git history (initial import 2026-09-05). Newest first.
 
+## 2026-10-31 - List page component, wave 4a: users, roles and base data (SCRUM-337)
+
+### Changed
+- Users, Roles, Departments, Disciplines, Employees, the Audit Log, Security Events and the Authorization Audit are built from the list-page component; 68 texts in English and Persian (headings, notes, columns, empty texts, statuses, confirmations, audit actions, personnel types).
+- Filter rows moved into the filters dropdown, each active filter (also a user opened from another page) is a chip, and paging keeps the filters. The user confirmations read in the language. Row actions, the reset-administrator link and the create / edit modals stay.
+- The Admin area loads the PEMS.UI tag helpers from its `_ViewImports`. The adoption baseline is lower for these views. The settings tables of Administration (approval authorities, numbering, SoD, storage, routing, workflow, help) follow in wave 4b.
+
 ## 2026-10-31 - List page component, wave 3: procurement and warehouse lists (SCRUM-337)
 
 ### Changed

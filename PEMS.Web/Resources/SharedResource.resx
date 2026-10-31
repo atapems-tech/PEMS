@@ -3528,4 +3528,72 @@
   <data name="MiL_Critical" xml:space="preserve"><value>Critical</value></data>
   <data name="PcL_View" xml:space="preserve"><value>View</value></data>
   <data name="PcL_Hint" xml:space="preserve"><value>Requests to add or change a part in the IFS catalogue, with their approval stage.</value></data>
+  <data name="Cm_Action" xml:space="preserve"><value>Action</value></data>
+  <data name="UsL_Title" xml:space="preserve"><value>Users</value></data>
+  <data name="UsL_Hint" xml:space="preserve"><value>Manage accounts, roles, access status and sign-in activity.</value></data>
+  <data name="UsL_Empty" xml:space="preserve"><value>No users found. Create the first user to get started.</value></data>
+  <data name="UsL_New" xml:space="preserve"><value>New user</value></data>
+  <data name="UsL_SearchPlaceholder" xml:space="preserve"><value>Search username, name, email or role...</value></data>
+  <data name="UsL_Account" xml:space="preserve"><value>Account</value></data>
+  <data name="UsL_Contact" xml:space="preserve"><value>Contact</value></data>
+  <data name="UsL_Roles" xml:space="preserve"><value>Roles</value></data>
+  <data name="UsL_LastLogin" xml:space="preserve"><value>Last login</value></data>
+  <data name="UsL_Never" xml:space="preserve"><value>Never</value></data>
+  <data name="UsL_Active" xml:space="preserve"><value>Active</value></data>
+  <data name="UsL_Inactive" xml:space="preserve"><value>Inactive</value></data>
+  <data name="UsL_Locked" xml:space="preserve"><value>Locked</value></data>
+  <data name="UsL_ToggleActive" xml:space="preserve"><value>Activate / deactivate</value></data>
+  <data name="UsL_ConfirmActivate" xml:space="preserve"><value>Activate user {0}?</value></data>
+  <data name="UsL_ConfirmDeactivate" xml:space="preserve"><value>Deactivate user {0}?</value></data>
+  <data name="RoL_Title" xml:space="preserve"><value>Roles</value></data>
+  <data name="RoL_Hint" xml:space="preserve"><value>Define role boundaries and review how many users are assigned to each role. System roles are protected.</value></data>
+  <data name="RoL_Empty" xml:space="preserve"><value>No roles configured.</value></data>
+  <data name="RoL_New" xml:space="preserve"><value>New role</value></data>
+  <data name="RoL_Users" xml:space="preserve"><value>Users</value></data>
+  <data name="RoL_Authorization" xml:space="preserve"><value>Authorization</value></data>
+  <data name="RoL_Custom" xml:space="preserve"><value>Custom</value></data>
+  <data name="RoL_ConfirmDelete" xml:space="preserve"><value>Delete this role?</value></data>
+  <data name="DpL_Title" xml:space="preserve"><value>Departments</value></data>
+  <data name="DpL_Hint" xml:space="preserve"><value>Departments of the organization and how many employees each one has.</value></data>
+  <data name="DpL_Empty" xml:space="preserve"><value>No departments yet.</value></data>
+  <data name="DpL_New" xml:space="preserve"><value>New department</value></data>
+  <data name="DpL_Name" xml:space="preserve"><value>Name</value></data>
+  <data name="DpL_Employees" xml:space="preserve"><value>Employees</value></data>
+  <data name="DpL_Activate" xml:space="preserve"><value>Activate</value></data>
+  <data name="DpL_Deactivate" xml:space="preserve"><value>Deactivate</value></data>
+  <data name="DsL_Title" xml:space="preserve"><value>Disciplines</value></data>
+  <data name="DsL_Hint" xml:space="preserve"><value>Each discipline has its own workspace (equipment, documents, VDR, MR/MRQ, tasks, KPI); the database is shared, only the view is filtered.</value></data>
+  <data name="DsL_Empty" xml:space="preserve"><value>No disciplines configured yet.</value></data>
+  <data name="DsL_Vdr" xml:space="preserve"><value>VDR</value></data>
+  <data name="DsL_OpenTasks" xml:space="preserve"><value>Open tasks</value></data>
+  <data name="DsL_OpenWorkspace" xml:space="preserve"><value>Open workspace</value></data>
+  <data name="EmL_Title" xml:space="preserve"><value>Employees</value></data>
+  <data name="EmL_Hint" xml:space="preserve"><value>Personnel of the organization and contractors, with department, discipline and position.</value></data>
+  <data name="EmL_Empty" xml:space="preserve"><value>No employees found.</value></data>
+  <data name="EmL_New" xml:space="preserve"><value>New employee</value></data>
+  <data name="EmL_Edit" xml:space="preserve"><value>Edit employee</value></data>
+  <data name="EmL_SearchPlaceholder" xml:space="preserve"><value>Search name, code, email...</value></data>
+  <data name="EmL_Department" xml:space="preserve"><value>Department</value></data>
+  <data name="EmL_AllDepartments" xml:space="preserve"><value>All departments</value></data>
+  <data name="EmL_Position" xml:space="preserve"><value>Position</value></data>
+  <data name="EmL_PersonnelType" xml:space="preserve"><value>Personnel type</value></data>
+  <data name="EmL_Email" xml:space="preserve"><value>Email</value></data>
+  <data name="EmL_Type_Internal" xml:space="preserve"><value>Internal</value></data>
+  <data name="EmL_Type_Contractor" xml:space="preserve"><value>Contractor</value></data>
+  <data name="EmL_Type_External" xml:space="preserve"><value>External</value></data>
+  <data name="EmL_Type_Temporary" xml:space="preserve"><value>Temporary</value></data>
+  <data name="AlL_Title" xml:space="preserve"><value>Audit log</value></data>
+  <data name="AlL_Hint" xml:space="preserve"><value>Administrative changes with user, entity, action and time.</value></data>
+  <data name="AlL_Empty" xml:space="preserve"><value>No audit entries found. Try changing the filters.</value></data>
+  <data name="AlL_Entity" xml:space="preserve"><value>Entity</value></data>
+  <data name="AlL_AllEntities" xml:space="preserve"><value>All entities</value></data>
+  <data name="AlL_User" xml:space="preserve"><value>User</value></data>
+  <data name="AlL_Time" xml:space="preserve"><value>Time</value></data>
+  <data name="AlL_Key" xml:space="preserve"><value>Key</value></data>
+  <data name="AlL_ChangedFields" xml:space="preserve"><value>Changed fields</value></data>
+  <data name="AlL_Act_Insert" xml:space="preserve"><value>Insert</value></data>
+  <data name="AlL_Act_Update" xml:space="preserve"><value>Update</value></data>
+  <data name="AlL_Act_Delete" xml:space="preserve"><value>Delete</value></data>
+  <data name="SeL_Title" xml:space="preserve"><value>Security events</value></data>
+  <data name="AzL_Title" xml:space="preserve"><value>Authorization audit</value></data>
 </root>
