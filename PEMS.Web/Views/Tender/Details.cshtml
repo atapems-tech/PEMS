@@ -185,8 +185,8 @@
                 </div>
             </div>
             <div class="mt-2 d-flex gap-3 flex-wrap">
-                <span class="badge @(technicalPassed ? "bg-success" : "bg-secondary")">@Localizer["Technical"]: @(technicalPassed ? Localizer["Passed"] : Localizer["Pending"])</span>
-                <span class="badge @(commercialPassed ? "bg-success" : "bg-secondary")">@Localizer["Commercial"]: @(commercialPassed ? Localizer["Passed"] : Localizer["Pending"])</span>
+                <pems-badge tone="@(technicalPassed ? "success" : "neutral")">@Localizer["Technical"]: @(technicalPassed ? Localizer["Passed"] : Localizer["Pending"])</pems-badge>
+                <pems-badge tone="@(commercialPassed ? "success" : "neutral")">@Localizer["Commercial"]: @(commercialPassed ? Localizer["Passed"] : Localizer["Pending"])</pems-badge>
             </div>
 
             @if (Model.Status == "Closed" || Model.Status == "Open")
@@ -264,7 +264,7 @@
         <div class="border rounded p-2 mb-2">
             <div class="d-flex justify-content-between flex-wrap">
                 <div><pems-badge tone="neutral">@c.Type</pems-badge> <strong>@c.Subject</strong> @(c.Vendor != null ? "— " + c.Vendor.Name : "")</div>
-                <span class="badge @(c.ActionStatus == "Answered" ? "bg-success" : "bg-warning text-dark")">@c.ActionStatus</span>
+                <pems-badge tone="@(c.ActionStatus == "Answered" ? "success" : "warning")">@c.ActionStatus</pems-badge>
             </div>
             <p class="mb-1 mt-1">@c.Body</p>
             @foreach (var r in c.Responses.OrderBy(r => r.ResponseDate))

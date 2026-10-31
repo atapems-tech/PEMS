@@ -49,7 +49,7 @@
                         <td dir="ltr"><code>@b.Code</code></td>
                         <td>@b.Symbology</td>
                         <td class="small">@b.TargetType #@b.TargetId</td>
-                        <td><span class="badge @(b.Status == "Active" ? "bg-success" : b.Status == "Disabled" ? "bg-secondary" : "bg-danger")">@b.Status</span></td>
+                        <td><pems-badge tone="@(b.Status == "Active" ? "success" : b.Status == "Disabled" ? "neutral" : "danger")">@b.Status</pems-badge></td>
                         <td class="text-end">@b.PrintCount</td>
                         <td class="small">@(((DateTime)b.CreatedDate).ToString("yyyy-MM-dd HH:mm"))</td>
                     </tr>

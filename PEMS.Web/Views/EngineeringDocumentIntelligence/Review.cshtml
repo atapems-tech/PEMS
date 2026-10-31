@@ -20,7 +20,7 @@
                     "Processing" => "bg-warning text-dark",
                     _ => "bg-secondary"
                 };
-                <span class="badge @aiBadge mt-1">AI: @Model.AIProcessingStatus</span>
+                <pems-badge tone="none" css="@aiBadge mt-1">AI: @Model.AIProcessingStatus</pems-badge>
             }
         </div>
         <pems-button tone="neutral" size="small" outline="true" as="a" asp-controller="EngineeringDocuments" asp-action="Details" asp-route-id="@Model.DocumentId">
@@ -54,7 +54,7 @@
                 @{
                     var cb = c.ReviewStatus switch { "Approved" => "bg-success", "Rejected" => "bg-danger", _ => "bg-secondary" };
                 }
-                <span class="badge @cb">@c.ReviewStatus</span>
+                <pems-badge tone="none" css="@cb">@c.ReviewStatus</pems-badge>
             </div>
 
             @if (c.ReviewStatus == "Draft")
@@ -116,7 +116,7 @@
                         @{
                             var tb = t.ReviewStatus switch { "Approved" => "bg-success", "Rejected" => "bg-danger", _ => "bg-secondary" };
                         }
-                        <span class="badge @tb">@t.ReviewStatus</span>
+                        <pems-badge tone="none" css="@tb">@t.ReviewStatus</pems-badge>
                     </td>
                     <td>
                         @if (t.IsAIProposed && t.ReviewStatus == "Draft")
@@ -157,7 +157,7 @@
                         @{
                             var ab = c.ActionStatus switch { "Closed" => "bg-success", "Verified" => "bg-info text-dark", "ResponsePending" => "bg-warning text-dark", "NoActionRequired" => "bg-secondary", _ => "bg-danger" };
                         }
-                        <span class="badge @ab">@c.ActionStatus</span>
+                        <pems-badge tone="none" css="@ab">@c.ActionStatus</pems-badge>
                         <form asp-action="SetCommentAction" method="post" class="d-inline">
                             <input type="hidden" name="documentId" value="@Model.DocumentId" />
                             <input type="hidden" name="commentId" value="@c.EngineeringDocumentCommentId" />

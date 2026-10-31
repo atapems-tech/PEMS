@@ -51,7 +51,7 @@
         @Model.FromDate.ToString("yyyy-MM-dd") → @Model.ToDate.ToString("yyyy-MM-dd") · @Model.TotalInRange readings in range
         @if (Model.Truncated)
         {
-            <span class="badge text-bg-warning">Truncated — showing first @Model.Points.Count of @Model.TotalInRange; narrow the range to see all</span>
+            <pems-badge tone="warning">Truncated — showing first @Model.Points.Count of @Model.TotalInRange; narrow the range to see all</pems-badge>
         }
     </div>
 </div>
@@ -72,7 +72,7 @@
                 <tr class="@(pt.IsAlarm ? "table-danger" : "")">
                     <td class="small">@pt.ReadingDate.ToString("yyyy-MM-dd HH:mm")</td>
                     <td class="text-end">@pt.Value @Model.Unit</td>
-                    <td><span class="badge @EvalBadge(pt.EvaluationStatus)">@pt.EvaluationStatus</span></td>
+                    <td><pems-badge tone="none" css="@EvalBadge(pt.EvaluationStatus)">@pt.EvaluationStatus</pems-badge></td>
                 </tr>
             }
         </tbody>

@@ -216,8 +216,8 @@ else
                         <div class="fw-bold">@it.WorkOrderNumber &middot; @it.EquipmentTagNumber</div>
                         <div class="small">@it.EquipmentDescription</div>
                         <div class="small">
-                            <span class="badge @TypeBadgeClass(it.WorkOrderType)">@it.WorkOrderType</span>
-                            <span class="badge @PriorityBadgeClass(it.Priority)">@it.Priority</span>
+                            <pems-badge tone="none" css="@TypeBadgeClass(it.WorkOrderType)">@it.WorkOrderType</pems-badge>
+                            <pems-badge tone="none" css="@PriorityBadgeClass(it.Priority)">@it.Priority</pems-badge>
                             <pems-badge tone="neutral">@it.Status</pems-badge>
                             @if (it.IsOverdue) { <pems-badge tone="dark">@Localizer["Overdue"]</pems-badge> }
                             @if (it.HasEmployeeConflict) { <pems-badge tone="danger"><i class="bi bi-exclamation-triangle"></i> @Localizer["Conflict"]</pems-badge> }
@@ -242,7 +242,7 @@ else
                         <div class="fw-bold small">@u.WorkOrderNumber</div>
                         <div class="small">@u.EquipmentTagNumber &middot; @u.EquipmentDescription</div>
                         <div class="small">
-                            <span class="badge @PriorityBadgeClass(u.Priority)">@u.Priority</span>
+                            <pems-badge tone="none" css="@PriorityBadgeClass(u.Priority)">@u.Priority</pems-badge>
                             <pems-badge tone="neutral">@u.WorkOrderType</pems-badge>
                         </div>
                         <div class="small text-muted">@(u.AssignedTeamName ?? Localizer["No team"])</div>

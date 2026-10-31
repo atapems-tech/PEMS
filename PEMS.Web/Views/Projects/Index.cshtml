@@ -48,7 +48,7 @@
                                     _ => "bg-secondary"
                                 };
                             }
-                            <span class="badge @badge">@p.Status</span>
+                            <pems-badge tone="none" css="@badge">@p.Status</pems-badge>
                             @if (!p.IsActive)
                             {
                                 <pems-badge tone="dark">Inactive</pems-badge>

@@ -36,7 +36,7 @@
         <section class="tm-col" data-tm-status="@col.Status.Id" aria-labelledby="col-@col.Status.Id">
             <header class="tm-col__head">
                 <h3 class="h6 mb-0" id="col-@col.Status.Id">@TaskManagerUi.Name(col.Status.Name, col.Status.NameFa)</h3>
-                <span class="badge @TaskManagerUi.CategoryBadge(col.Status.Category)" data-tm-col-count>@col.Items.Count</span>
+                <pems-badge tone="none" css="@TaskManagerUi.CategoryBadge(col.Status.Category)" data-tm-col-count>@col.Items.Count</pems-badge>
             </header>
             <div class="tm-col__body" data-tm-dropzone>
                 @foreach (var i in col.Items)

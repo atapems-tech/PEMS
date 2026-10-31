@@ -9,11 +9,11 @@
 
     string StatusBadge(string status) => status switch
     {
-        "READY" => "text-bg-success",
-        "PARTIAL" => "text-bg-warning",
-        "INSUFFICIENT_DATA" => "text-bg-warning",
-        "NOT_READY" => "text-bg-secondary",
-        _ => "text-bg-light border"
+        "READY" => "success",
+        "PARTIAL" => "warning",
+        "INSUFFICIENT_DATA" => "warning",
+        "NOT_READY" => "neutral",
+        _ => "light"
     };
 }
 
@@ -30,7 +30,7 @@
     <div class="col-md-4">
         <div class="content-card h-100">
             <h6>@Localizer["Reliability"]</h6>
-            <span class="badge @StatusBadge(Model.ReliabilityDataStatus)">@Model.ReliabilityDataStatus</span>
+            <pems-badge tone="@StatusBadge(Model.ReliabilityDataStatus)">@Model.ReliabilityDataStatus</pems-badge>
             <div class="small mt-2">MTBF: @(Model.MTBFHours.HasValue ? $"{Model.MTBFHours.Value:N1} h" : "N/A")</div>
             <div class="small">Failure Rate (λ): @(Model.FailureRateLambdaPerHour.HasValue ? Model.FailureRateLambdaPerHour.Value.ToString("E3") + "/h" : "N/A")</div>
             <div class="small">Sample Size: @Model.FailureSampleSize</div>
@@ -39,15 +39,15 @@
     <div class="col-md-4">
         <div class="content-card h-100">
             <h6>Maintainability</h6>
-            <span class="badge @StatusBadge(Model.MaintainabilityDataStatus)">@Model.MaintainabilityDataStatus</span>
+            <pems-badge tone="@StatusBadge(Model.MaintainabilityDataStatus)">@Model.MaintainabilityDataStatus</pems-badge>
             <div class="small mt-2">MTTR: @(Model.MTTRHours.HasValue ? $"{Model.MTTRHours.Value:N1} h" : "N/A")</div>
         </div>
     </div>
     <div class="col-md-4">
         <div class="content-card h-100">
             <h6>@Localizer["Availability"]</h6>
-            <div class="small">Inherent: <span class="badge @StatusBadge(Model.InherentAvailabilityDataStatus)">@Model.InherentAvailabilityDataStatus</span> @(Model.InherentAvailabilityPercent.HasValue ? $"{Model.InherentAvailabilityPercent.Value:N2}%" : "")</div>
-            <div class="small mt-2">Operational: <span class="badge @StatusBadge(Model.OperationalAvailabilityDataStatus)">@Model.OperationalAvailabilityDataStatus</span> @(Model.OperationalAvailabilityPercent.HasValue ? $"{Model.OperationalAvailabilityPercent.Value:N2}%" : "")</div>
+            <div class="small">Inherent: <pems-badge tone="@StatusBadge(Model.InherentAvailabilityDataStatus)">@Model.InherentAvailabilityDataStatus</pems-badge> @(Model.InherentAvailabilityPercent.HasValue ? $"{Model.InherentAvailabilityPercent.Value:N2}%" : "")</div>
+            <div class="small mt-2">Operational: <pems-badge tone="@StatusBadge(Model.OperationalAvailabilityDataStatus)">@Model.OperationalAvailabilityDataStatus</pems-badge> @(Model.OperationalAvailabilityPercent.HasValue ? $"{Model.OperationalAvailabilityPercent.Value:N2}%" : "")</div>
             @if (Model.CalendarWindowHoursConsidered.HasValue)
             {
                 <div class="small text-muted">Window: @Model.CalendarWindowHoursConsidered.Value.ToString("N0")h, Downtime: @Model.TotalDowntimeHoursConsidered?.ToString("N1")h</div>
@@ -58,7 +58,7 @@
 
 <div class="content-card mb-3">
     <h6 class="mb-2">Weibull Analysis (2-parameter)</h6>
-    <span class="badge @StatusBadge(weibull.DataStatus)">@weibull.DataStatus</span>
+    <pems-badge tone="@StatusBadge(weibull.DataStatus)">@weibull.DataStatus</pems-badge>
     <span class="small text-muted ms-2">Sample: @weibull.SampleSize intervals (minimum required: @weibull.RequiredMinimumSample failure records)</span>
     @if (weibull.Reason != null) { <div class="small text-muted mt-1">@weibull.Reason</div> }
 

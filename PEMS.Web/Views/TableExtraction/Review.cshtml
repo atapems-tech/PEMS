@@ -99,7 +99,7 @@
                         <td class="small">@(row.JunctionBox ?? "-")</td>
                         <td class="small">@(row.CableNo ?? "-")</td>
                         <td class="small">@(row.DcsTagNo ?? "-")</td>
-                        <td><span class="badge @badgeClass">@row.MatchStatus</span></td>
+                        <td><pems-badge tone="none" css="@badgeClass">@row.MatchStatus</pems-badge></td>
                         <td>
                             @if (row.MatchStatus is "MatchedNoInstrument" or "MatchedHasInstrument")
                             {

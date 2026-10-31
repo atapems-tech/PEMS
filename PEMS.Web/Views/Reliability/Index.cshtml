@@ -78,9 +78,9 @@
                             <td class="small">
                                 @if (r.AvailabilityPercent.HasValue)
                                 {
-                                    <span class="badge @(r.AvailabilityPercent >= 95 ? "bg-success" : r.AvailabilityPercent >= 85 ? "bg-warning text-dark" : "bg-danger")">
+                                    <pems-badge tone="@(r.AvailabilityPercent >= 95 ? "success" : r.AvailabilityPercent >= 85 ? "warning" : "danger")">
                                         @r.AvailabilityPercent.Value.ToString("N1")%
-                                    </span>
+                                    </pems-badge>
                                 }
                                 else { <span class="text-muted">N/A</span> }
                             </td>

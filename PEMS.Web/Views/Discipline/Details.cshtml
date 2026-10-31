@@ -94,7 +94,7 @@
                     <tbody>
                         @foreach (var d in Model.Documents)
                         {
-                            <tr><td><a asp-controller="EngineeringDocuments" asp-action="Details" asp-route-id="@d.DocumentId">@d.DocumentNo</a></td><td>@d.Title</td><td><span class="badge badge-status-@d.Status">@d.Status</span></td></tr>
+                            <tr><td><a asp-controller="EngineeringDocuments" asp-action="Details" asp-route-id="@d.DocumentId">@d.DocumentNo</a></td><td>@d.Title</td><td><pems-badge tone="none" css="badge-status-@d.Status">@d.Status</pems-badge></td></tr>
                         }
                     </tbody>
                 </table>

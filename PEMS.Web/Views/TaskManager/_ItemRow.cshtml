@@ -26,7 +26,7 @@
         @if (i.ParentKey != null) { <span class="small text-muted ms-1">↳ @i.ParentKey</span> }
         @if (!i.IsActive) { <pems-badge tone="light" css="ms-1">@Localizer["Tm_Archived"]</pems-badge> }
     </td>
-    <td><span class="badge @TaskManagerUi.CategoryBadge(i.StatusCategory)">@TaskManagerUi.StatusLabel(Localizer, i)</span></td>
+    <td><pems-badge tone="none" css="@TaskManagerUi.CategoryBadge(i.StatusCategory)">@TaskManagerUi.StatusLabel(Localizer, i)</pems-badge></td>
     <td class="text-nowrap"><i class="bi @TaskManagerUi.PriorityIcon(i.Priority)" aria-hidden="true"></i> <span class="small">@TaskManagerUi.Priority(Localizer, i.Priority)</span></td>
     <td class="small">@(i.AssigneeName ?? Localizer["Tm_Unassigned"].Value)</td>
     <td class="small text-nowrap">

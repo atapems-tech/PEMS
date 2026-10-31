@@ -61,7 +61,7 @@
     <div class="d-flex align-items-center gap-3 mb-2 flex-wrap">
         <div class="kpi-icon bg-icon-blue" style="width:56px;height:56px;font-size:26px;"><i class="bi bi-clipboard-plus"></i></div>
         <div>
-            <h5 class="mb-0">@Model.RequestNumber &mdash; @Model.Title <span class="badge @badgeClass">@Model.Status</span></h5>
+            <h5 class="mb-0">@Model.RequestNumber &mdash; @Model.Title <pems-badge tone="none" css="@badgeClass">@Model.Status</pems-badge></h5>
             <span class="text-muted small">@Localizer["Requested By"] @Model.RequestedByName @Localizer["on"] <bdi dir="ltr">@Model.RequestedDate.ToString("yyyy-MM-dd")</bdi></span>
         </div>
     </div>
@@ -73,7 +73,7 @@
             <strong>@Localizer["Priority:"]</strong> @Model.Priority
             @if (!string.IsNullOrWhiteSpace(Model.EquipmentCriticalityClass))
             {
-                <span class="badge bg-light text-dark border" title="Equipment Criticality (context only, not auto-applied)">Crit: @Model.EquipmentCriticalityClass</span>
+                <pems-badge tone="light" title="Equipment Criticality (context only, not auto-applied)">Crit: @Model.EquipmentCriticalityClass</pems-badge>
             }
         </div>
     </div>

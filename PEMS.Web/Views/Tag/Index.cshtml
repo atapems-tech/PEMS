@@ -33,7 +33,7 @@
                     @foreach (var t in Model)
                     {
                         <tr class="lp-row">
-                            <td><span class="badge bg-@t.Color">@t.Name</span></td>
+                            <td><pems-badge tone="none" css="bg-@t.Color">@t.Name</pems-badge></td>
                             <td class="small">@string.Format(Localizer["Tg_LetterCount"].Value, t.LetterCount)</td>
                             <td class="lp-actions">
                                 <form asp-action="Delete" method="post" class="d-inline" data-confirm="@Localizer["Tg_DeleteConfirm"]" onsubmit="return confirm(this.dataset.confirm)">

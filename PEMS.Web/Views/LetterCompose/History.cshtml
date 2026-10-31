@@ -9,7 +9,7 @@
     <div class="lc-header">
         <h2 class="vs-section__title mb-0">@Localizer["Lc_HistoryTitle"]</h2>
         <span class="lc-number">@Model.Report.LetterNumber</span>
-        <span class="badge text-bg-secondary">@Model.Report.Status</span>
+        <pems-badge tone="neutral">@Model.Report.Status</pems-badge>
         <span class="lc-savestate">
             <pems-button tone="neutral" size="small" outline="true" as="a" asp-controller="Letter" asp-action="Details" asp-route-id="@Model.Report.LetterId">@Localizer["Lc_BackToLetter"]</pems-button>
             <pems-button tone="primary" size="small" outline="true" as="a" asp-action="ComplianceExport" asp-route-id="@Model.Report.LetterId"><i class="bi bi-download" aria-hidden="true"></i> @Localizer["Lc_ExportCsv"]</pems-button>

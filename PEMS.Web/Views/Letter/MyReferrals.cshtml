@@ -16,7 +16,7 @@
                     <td>@l.LetterNumber</td>
                     <td>@l.Subject</td>
                     <td>@l.LetterDate.ToString("yyyy-MM-dd")</td>
-                    <td><span class="badge @PEMS.Web.Helpers.LetterStatusBadge.CssClass(l.Status)">@l.Status</span></td>
+                    <td><pems-badge tone="none" css="@PEMS.Web.Helpers.LetterStatusBadge.CssClass(l.Status)">@l.Status</pems-badge></td>
                     <td><pems-button tone="neutral" size="small" outline="true" as="a" asp-action="Details" asp-route-id="@l.LetterId"><i class="bi bi-eye"></i></pems-button></td>
                 </tr>
             }

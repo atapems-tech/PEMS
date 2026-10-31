@@ -15,7 +15,7 @@
 <div class="content-card mb-3 d-print-none">
     <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
         <div>
-            <h4 class="mb-0">@Model.Equipment?.TagNumber <span class="badge @badgeClass ms-1">@status</span></h4>
+            <h4 class="mb-0">@Model.Equipment?.TagNumber <pems-badge tone="none" css="@badgeClass ms-1">@status</pems-badge></h4>
             <span class="text-muted small">@Model.InstrumentType - @Model.Equipment?.Name (@NA(Model.Equipment?.Manufacturer) / @NA(Model.Equipment?.Model))</span>
         </div>
         <div class="d-flex gap-2">
@@ -198,7 +198,7 @@
             <div class="d-flex justify-content-between align-items-center">
                 <div class="small">
                     <strong>@alarm.AlarmTag</strong> - @alarm.AlarmType
-                    <span class="badge @alarmBadge">@alarm.Priority</span>
+                    <pems-badge tone="none" css="@alarmBadge">@alarm.Priority</pems-badge>
                     - SP: @(alarm.SetPoint?.ToString() ?? "N/A") @alarm.Unit
                 </div>
             </div>

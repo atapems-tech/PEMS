@@ -24,8 +24,8 @@
         <div class="col-md-6"><strong>Equipment Class:</strong> @(Model.EquipmentClassName ?? "N/A")</div>
         <div class="col-md-6">
             <strong>Safety Controls:</strong>
-            <span class="badge @(Model.PermitRequired ? "text-bg-warning" : "text-bg-light border")">Permit @(Model.PermitRequired ? "Required" : "Not Required")</span>
-            <span class="badge @(Model.LOTORequired ? "text-bg-warning" : "text-bg-light border")">LOTO @(Model.LOTORequired ? "Required" : "Not Required")</span>
+            <pems-badge tone="@(Model.PermitRequired ? "warning" : "light")">Permit @(Model.PermitRequired ? "Required" : "Not Required")</pems-badge>
+            <pems-badge tone="@(Model.LOTORequired ? "warning" : "light")">LOTO @(Model.LOTORequired ? "Required" : "Not Required")</pems-badge>
         </div>
     </div>
 </div>

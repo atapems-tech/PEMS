@@ -50,7 +50,7 @@
                             <span class="tm-key">@s.Key</span>
                             <h4 class="h6 mb-1 mt-1"><a asp-action="Space" asp-route-key="@s.Key">@TaskManagerUi.Name(s.Name, s.NameFa)</a></h4>
                         </div>
-                        @if (s.IsLead) { <span class="badge bg-primary-subtle text-primary-emphasis">@Localizer["Tm_Role_Lead"]</span> }
+                        @if (s.IsLead) { <pems-badge tone="none" css="bg-primary-subtle text-primary-emphasis">@Localizer["Tm_Role_Lead"]</pems-badge> }
                     </div>
                     @if (!string.IsNullOrWhiteSpace(s.OwnerDepartmentName)) { <div class="small text-muted"><i class="bi bi-diagram-3" aria-hidden="true"></i> @s.OwnerDepartmentName</div> }
                     <div class="small mt-2">@Localizer["Tm_OpenItems"]: <strong>@s.OpenItemCount</strong></div>

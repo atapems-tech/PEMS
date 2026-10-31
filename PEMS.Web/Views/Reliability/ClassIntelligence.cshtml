@@ -5,11 +5,11 @@
 @{
     string StatusBadge(string status) => status switch
     {
-        "READY" => "text-bg-success",
-        "PARTIALLY_READY" => "text-bg-warning",
-        "INSUFFICIENT_DATA" => "text-bg-warning",
-        "NOT_APPLICABLE" => "text-bg-light border",
-        _ => "text-bg-light border"
+        "READY" => "success",
+        "PARTIALLY_READY" => "warning",
+        "INSUFFICIENT_DATA" => "warning",
+        "NOT_APPLICABLE" => "light",
+        _ => "light"
     };
 }
 
@@ -53,8 +53,8 @@
     <div class="col-md-6">
         <div class="content-card h-100">
             <h6 class="mb-2">FMEA / RCM Coverage</h6>
-            <div>FMEA: <span class="badge @StatusBadge(Model.FMEAReadiness)">@Model.FMEAReadiness</span> (@Model.ApprovedFMEACount approved)</div>
-            <div>RCM: <span class="badge @StatusBadge(Model.RCMReadiness)">@Model.RCMReadiness</span> (@Model.ApprovedRCMCount approved)</div>
+            <div>FMEA: <pems-badge tone="@StatusBadge(Model.FMEAReadiness)">@Model.FMEAReadiness</pems-badge> (@Model.ApprovedFMEACount approved)</div>
+            <div>RCM: <pems-badge tone="@StatusBadge(Model.RCMReadiness)">@Model.RCMReadiness</pems-badge> (@Model.ApprovedRCMCount approved)</div>
             <hr />
             <div class="small">Definitional Coverage (direct+inherited counts):</div>
             <div class="small">Activities: @Model.TotalActivityCoverage | PM Templates: @Model.TotalPMTemplateCoverage | Failure Modes: @Model.TotalFailureModeCoverage</div>

@@ -32,7 +32,8 @@
           "warning",
           "info",
           "light",
-          "dark"
+          "dark",
+          null
         ]
       },
       "cssClass": {
@@ -45,6 +46,12 @@
         "enum": [
           "bootstrap",
           "pems"
+        ]
+      },
+      "attributes": {
+        "type": [
+          "object",
+          "null"
         ]
       }
     },
