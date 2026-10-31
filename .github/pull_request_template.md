@@ -14,5 +14,6 @@ Jira: SCRUM-___    Plan ID (#): ___
 - [ ] Tests added or updated; the affected groups pass - or this PR lists the commands I could not run (they become line 1 of the QA checklist)
 - [ ] Schema change has a migration (never edit an applied one); new settings are in every `env/*.env` file
 - [ ] New UI uses PEMS.UI components only (no new raw form/table/modal/badge markup, inline styles or CDN references)
+- [ ] `dotnet test PEMS.UI.Tests --filter AdoptionRatchet` passes; if this PR replaced hand-written markup by a component, the baseline `tools/UiAudit/adoption-baseline.json` was lowered in the same PR (`PEMS_RATCHET_RECORD=1 dotnet test PEMS.UI.Tests --filter AdoptionRatchet`)
 - [ ] After the merge I move the issue to In Review with the label `qa-pending`; the QA check in the UI (guideline chapter 07) decides Done
 - [ ] Before the move to In Review (and again after every failed QA) the Jira issue has the QA checklist comment and the Tests paragraph, checked against this change (guideline chapter 07 section 1a)

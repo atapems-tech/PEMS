@@ -3,6 +3,11 @@
 All notable changes to PEMS. No system version is defined yet (plan row F_CI), so entries are grouped by date
 and theme and were reconstructed from the git history (initial import 2026-09-05). Newest first.
 
+## 2026-10-31 - Adoption ratchet (SCRUM-341)
+
+### Added
+- **PEMS.UI.Tests/AdoptionRatchetTests** and **tools/UiAudit/adoption-baseline.json**: per-view and per-script counts of 22 hand-written patterns (buttons 1148, text inputs 1379, badges 689, selects 716, tables 248 ...). The test fails when a count rises or a new file brings a pattern, and when a count falls without lowering the baseline. Pull request template and guideline 02 updated.
+
 ## 2026-10-31 - Alerts come from the component (SCRUM-481)
 
 ### Changed
