@@ -55,8 +55,8 @@
                     @if (!string.IsNullOrWhiteSpace(s.OwnerDepartmentName)) { <div class="small text-muted"><i class="bi bi-diagram-3" aria-hidden="true"></i> @s.OwnerDepartmentName</div> }
                     <div class="small mt-2">@Localizer["Tm_OpenItems"]: <strong>@s.OpenItemCount</strong></div>
                     <div class="d-flex gap-2 mt-2">
-                        <a class="btn btn-sm btn-outline-secondary" asp-action="Space" asp-route-key="@s.Key" asp-route-view="backlog"><i class="bi bi-list-ol" aria-hidden="true"></i> @Localizer["Tm_Backlog"]</a>
-                        <a class="btn btn-sm btn-outline-secondary" asp-action="Space" asp-route-key="@s.Key" asp-route-view="board"><i class="bi bi-kanban" aria-hidden="true"></i> @Localizer["Tm_Board"]</a>
+                        <pems-button tone="neutral" size="small" outline="true" as="a" asp-action="Space" asp-route-key="@s.Key" asp-route-view="backlog"><i class="bi bi-list-ol" aria-hidden="true"></i> @Localizer["Tm_Backlog"]</pems-button>
+                        <pems-button tone="neutral" size="small" outline="true" as="a" asp-action="Space" asp-route-key="@s.Key" asp-route-view="board"><i class="bi bi-kanban" aria-hidden="true"></i> @Localizer["Tm_Board"]</pems-button>
                     </div>
                 </article>
             }

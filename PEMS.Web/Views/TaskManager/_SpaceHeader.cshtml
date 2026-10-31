@@ -19,7 +19,7 @@
                 <a class="btn @(mode == "backlog" ? "btn-pems-solid" : "btn-outline-secondary")" asp-action="Space" asp-route-key="@Model.Space.Key" asp-route-view="backlog" aria-current="@(mode == "backlog" ? "page" : null)"><i class="bi bi-list-ol" aria-hidden="true"></i> @Localizer["Tm_Backlog"]</a>
                 <a class="btn @(mode == "board" ? "btn-pems-solid" : "btn-outline-secondary")" asp-action="Space" asp-route-key="@Model.Space.Key" asp-route-view="board" aria-current="@(mode == "board" ? "page" : null)"><i class="bi bi-kanban" aria-hidden="true"></i> @Localizer["Tm_Board"]</a>
             </div>
-            <a class="btn btn-sm btn-outline-secondary" asp-action="AllWork" asp-route-WorkSpaceId="@Model.Space.Id" asp-route-StatusCategory="NotDone"><i class="bi bi-funnel" aria-hidden="true"></i> @Localizer["Tm_AllWork"]</a>
+            <pems-button tone="neutral" size="small" outline="true" as="a" asp-action="AllWork" asp-route-WorkSpaceId="@Model.Space.Id" asp-route-StatusCategory="NotDone"><i class="bi bi-funnel" aria-hidden="true"></i> @Localizer["Tm_AllWork"]</pems-button>
             @if (Model.CanCreate)
             {
                 <pems-button tone="primary" size="small" type="button" data-bs-toggle="modal" data-bs-target="#tmCreateModal"><i class="bi bi-plus-lg" aria-hidden="true"></i> @Localizer["Tm_Create"]</pems-button>

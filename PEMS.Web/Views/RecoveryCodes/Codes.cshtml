@@ -19,7 +19,7 @@
     </div>
     <p class="text-body-secondary small">@Localizer["Generated"]: <span dir="ltr">@Model.GeneratedAtUtc.ToString("yyyy-MM-dd HH:mm") UTC</span></p>
 
-    <a asp-action="Index" class="btn btn-pems-solid mt-2">@Localizer["Done"]</a>
+    <pems-button tone="primary" css="mt-2" as="a" asp-action="Index">@Localizer["Done"]</pems-button>
 </div>
 
 @section Scripts {

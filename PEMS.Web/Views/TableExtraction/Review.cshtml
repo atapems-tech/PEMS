@@ -16,7 +16,7 @@
             <h5 class="mb-0">@Model.SourceFileName</h5>
             <span class="text-muted small">Batch #@Model.TableExtractionBatchId - @Model.ExtractionMethod - @Model.TotalRows rows - @Model.CreatedDate.ToString("yyyy-MM-dd HH:mm")</span>
         </div>
-        <a asp-action="Index" class="btn btn-sm btn-outline-secondary"><i class="bi bi-arrow-left"></i> Back</a>
+        <pems-button tone="neutral" size="small" outline="true" as="a" asp-action="Index"><i class="bi bi-arrow-left"></i> Back</pems-button>
     </div>
 </div>
 

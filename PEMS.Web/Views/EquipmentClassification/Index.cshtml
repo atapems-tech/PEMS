@@ -30,12 +30,12 @@
             <div class="text-muted small">@Localizer["Pending Review"]</div>
         </div>
         <div class="col-md-2">
-            <a asp-action="ReviewQueue" class="btn btn-pems-solid btn-sm mt-2">
+            <pems-button tone="primary" size="small" css="mt-2" as="a" asp-action="ReviewQueue">
                 <i class="bi bi-list-check"></i> Review Queue
-            </a>
-            <a asp-action="Coverage" class="btn btn-outline-secondary btn-sm mt-2">
+            </pems-button>
+            <pems-button tone="neutral" size="small" outline="true" css="mt-2" as="a" asp-action="Coverage">
                 <i class="bi bi-grid-3x3-gap"></i> Coverage Matrix
-            </a>
+            </pems-button>
         </div>
     </div>
 </div>

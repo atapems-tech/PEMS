@@ -19,6 +19,6 @@
     <h2 class="vs-section__title">@Localizer["Lt_Body"]</h2>
     <div class="border rounded p-3 mb-3">@Html.Raw((string?)ViewBag.Body)</div>
 
-    <a asp-action="Index" class="btn btn-outline-secondary">@Localizer["Cancel"]</a>
-    <a asp-action="Edit" asp-route-id="@Model.LetterTemplateId" class="btn btn-pems-solid"><i class="bi bi-pencil" aria-hidden="true"></i> @Localizer["Edit"]</a>
+    <pems-button tone="neutral" outline="true" as="a" asp-action="Index">@Localizer["Cancel"]</pems-button>
+    <pems-button tone="primary" as="a" asp-action="Edit" asp-route-id="@Model.LetterTemplateId"><i class="bi bi-pencil" aria-hidden="true"></i> @Localizer["Edit"]</pems-button>
 </div>

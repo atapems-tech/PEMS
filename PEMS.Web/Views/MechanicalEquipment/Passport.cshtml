@@ -24,11 +24,11 @@
             <div class="text-muted small">@Model.EquipmentType @(Model.Equipment != null ? $"— {Model.Equipment.Name}" : "")</div>
         </div>
         <div class="d-print-none d-flex gap-2">
-            <a asp-action="Edit" asp-route-id="@Model.MechanicalEquipmentId" class="btn btn-sm btn-outline-secondary"><i class="bi bi-pencil"></i> @Localizer["Edit"]</a>
+            <pems-button tone="neutral" size="small" outline="true" as="a" asp-action="Edit" asp-route-id="@Model.MechanicalEquipmentId"><i class="bi bi-pencil"></i> @Localizer["Edit"]</pems-button>
             <pems-button tone="neutral" size="small" outline="true" type="button" onclick="window.print()"><i class="bi bi-printer"></i> @Localizer["Print"]</pems-button>
             @if (Model.EquipmentId.HasValue)
             {
-                <a asp-controller="Equipment" asp-action="Details" asp-route-id="@Model.EquipmentId" class="btn btn-sm btn-outline-secondary"><i class="bi bi-box-seam"></i> @Localizer["Equipment"]</a>
+                <pems-button tone="neutral" size="small" outline="true" as="a" asp-controller="Equipment" asp-action="Details" asp-route-id="@Model.EquipmentId"><i class="bi bi-box-seam"></i> @Localizer["Equipment"]</pems-button>
             }
         </div>
     </div>

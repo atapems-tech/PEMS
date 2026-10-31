@@ -332,7 +332,7 @@
             </label>
             <span class="dcr-foot-hint">@L("Dcc_ShortcutHint")</span>
             <div class="dcr-foot-actions">
-                <a asp-action="Index" class="btn btn-outline-secondary">@L("Dcc_Cancel")</a>
+                <pems-button tone="neutral" outline="true" as="a" asp-action="Index">@L("Dcc_Cancel")</pems-button>
                 <pems-button tone="primary" outline="true" type="submit" id="dcrSubmitNext" data-mode="next"><i class="bi bi-arrow-repeat" aria-hidden="true"></i> @L("Dcc_RegisterNext")</pems-button>
                 <pems-button tone="primary" type="submit" id="dcrSubmit" data-mode="open"><i class="bi bi-check2-circle" aria-hidden="true"></i> @L("Dcc_Register")</pems-button>
             </div>

@@ -66,8 +66,8 @@
                             </div>
                         </td>
                         <td>
-                            <a asp-controller="EngineeringDocuments" asp-action="Details" asp-route-id="@r.DocumentId"
-                               class="btn btn-sm btn-outline-secondary"><i class="bi bi-eye"></i></a>
+                            <pems-button tone="neutral" size="small" outline="true" as="a" asp-controller="EngineeringDocuments" asp-action="Details" asp-route-id="@r.DocumentId"
+                              ><i class="bi bi-eye"></i></pems-button>
                         </td>
                     </tr>
                 }

@@ -8,7 +8,7 @@
 
 <div class="content-card">
     <div class="d-flex justify-content-end gap-2 mb-3">
-        <a asp-action="Export" class="btn btn-outline-primary btn-sm"><i class="bi bi-file-earmark-excel"></i> @Localizer["Export"]</a>
+        <pems-button tone="primary" size="small" outline="true" as="a" asp-action="Export"><i class="bi bi-file-earmark-excel"></i> @Localizer["Export"]</pems-button>
         <pems-button tone="primary" size="small" type="button" data-bs-toggle="modal" data-bs-target="#createDeptModal">
             <i class="bi bi-plus-lg"></i> @Localizer["New Department"]
         </pems-button>

@@ -3,9 +3,9 @@
 @inject IStringLocalizer<SharedResource> Localizer
 <div class="d-flex justify-content-end align-items-center mb-2">
     <div class="d-flex gap-2">
-        <a asp-action="Kpi" class="btn btn-outline-secondary btn-sm"><i class="bi bi-graph-up"></i> KPI Report</a>
-        <a asp-action="ItpCreate" class="btn btn-outline-primary btn-sm"><i class="bi bi-plus-lg"></i> New ITP</a>
-        <a asp-action="NcrCreate" class="btn btn-danger btn-sm"><i class="bi bi-exclamation-triangle"></i> @Localizer["Raise NCR"]</a>
+        <pems-button tone="neutral" size="small" outline="true" as="a" asp-action="Kpi"><i class="bi bi-graph-up"></i> KPI Report</pems-button>
+        <pems-button tone="primary" size="small" outline="true" as="a" asp-action="ItpCreate"><i class="bi bi-plus-lg"></i> New ITP</pems-button>
+        <pems-button tone="danger" size="small" as="a" asp-action="NcrCreate"><i class="bi bi-exclamation-triangle"></i> @Localizer["Raise NCR"]</pems-button>
     </div>
 </div>
 

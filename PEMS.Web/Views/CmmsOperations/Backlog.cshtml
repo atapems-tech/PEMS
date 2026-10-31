@@ -17,7 +17,7 @@
 }
 
 <div class="d-flex justify-content-end align-items-center mb-2">
-    <a asp-action="Dashboard" class="btn btn-outline-secondary btn-sm">@Localizer["← Dashboard"]</a>
+    <pems-button tone="neutral" size="small" outline="true" as="a" asp-action="Dashboard">@Localizer["← Dashboard"]</pems-button>
 </div>
 <p class="text-muted small">
     طبق «PEMS Phase 8» بند ۲۲: WorkOrder های واقعی در وضعیت غیرنهایی (Open/Assigned/InProgress/
@@ -89,7 +89,7 @@
                     </td>
                     <td class="text-end">@wo.AgeDays</td>
                     <td class="small">@(wo.AssignedEmployeeName ?? wo.AssignedTeamName ?? "—")</td>
-                    <td><a asp-controller="WorkOrder" asp-action="Details" asp-route-id="@wo.WorkOrderId" class="btn btn-sm btn-outline-secondary">Open</a></td>
+                    <td><pems-button tone="neutral" size="small" outline="true" as="a" asp-controller="WorkOrder" asp-action="Details" asp-route-id="@wo.WorkOrderId">Open</pems-button></td>
                 </tr>
             }
         </tbody>

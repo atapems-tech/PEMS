@@ -16,13 +16,13 @@
 }
 
 <div class="d-flex flex-wrap gap-2 mb-3">
-    <a asp-action="Index" class="btn btn-sm btn-outline-secondary"><i class="bi bi-envelope-paper"></i> @Localizer["Correspondence"]</a>
-    <a asp-action="Engineering" class="btn btn-sm btn-outline-secondary"><i class="bi bi-file-earmark-text"></i> @Localizer["Engineering Documents"]</a>
-    <a asp-action="Vdr" class="btn btn-sm btn-outline-secondary"><i class="bi bi-journal-check"></i> @Localizer["VDR"]</a>
-    <a asp-action="Procurement" class="btn btn-sm btn-outline-secondary"><i class="bi bi-cart-check"></i> @Localizer["Procurement"]</a>
-    <a asp-action="Cmms" class="btn btn-sm btn-pems-solid"><i class="bi bi-tools"></i> CMMS</a>
-    <a asp-action="Operations" class="btn btn-sm btn-outline-secondary"><i class="bi bi-clipboard-data"></i> @Localizer["Operations"]</a>
-    <a asp-area="Warehouse" asp-controller="PartCatalogueReport" asp-action="Index" class="btn btn-sm btn-outline-secondary"><i class="bi bi-journal-plus"></i> @Localizer["Pc_Menu"]</a>
+    <pems-button tone="neutral" size="small" outline="true" as="a" asp-action="Index"><i class="bi bi-envelope-paper"></i> @Localizer["Correspondence"]</pems-button>
+    <pems-button tone="neutral" size="small" outline="true" as="a" asp-action="Engineering"><i class="bi bi-file-earmark-text"></i> @Localizer["Engineering Documents"]</pems-button>
+    <pems-button tone="neutral" size="small" outline="true" as="a" asp-action="Vdr"><i class="bi bi-journal-check"></i> @Localizer["VDR"]</pems-button>
+    <pems-button tone="neutral" size="small" outline="true" as="a" asp-action="Procurement"><i class="bi bi-cart-check"></i> @Localizer["Procurement"]</pems-button>
+    <pems-button tone="primary" size="small" as="a" asp-action="Cmms"><i class="bi bi-tools"></i> CMMS</pems-button>
+    <pems-button tone="neutral" size="small" outline="true" as="a" asp-action="Operations"><i class="bi bi-clipboard-data"></i> @Localizer["Operations"]</pems-button>
+    <pems-button tone="neutral" size="small" outline="true" as="a" asp-area="Warehouse" asp-controller="PartCatalogueReport" asp-action="Index"><i class="bi bi-journal-plus"></i> @Localizer["Pc_Menu"]</pems-button>
 </div>
 
 <div class="content-card mb-3">

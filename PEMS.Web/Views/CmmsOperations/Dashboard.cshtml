@@ -5,10 +5,10 @@
 
 <div class="d-flex justify-content-end align-items-center mb-2">
     <div>
-        <a asp-action="Backlog" class="btn btn-outline-primary btn-sm"><i class="bi bi-list-task"></i> @Localizer["Maintenance Backlog"]</a>
-        <a asp-controller="WorkRequest" asp-action="Index" class="btn btn-outline-secondary btn-sm">@Localizer["Work Requests"]</a>
-        <a asp-controller="WorkOrder" asp-action="Index" class="btn btn-outline-secondary btn-sm">@Localizer["Work Orders"]</a>
-        <a asp-controller="Reliability" asp-action="Intelligence" class="btn btn-outline-secondary btn-sm">@Localizer["Maintenance Intelligence"]</a>
+        <pems-button tone="primary" size="small" outline="true" as="a" asp-action="Backlog"><i class="bi bi-list-task"></i> @Localizer["Maintenance Backlog"]</pems-button>
+        <pems-button tone="neutral" size="small" outline="true" as="a" asp-controller="WorkRequest" asp-action="Index">@Localizer["Work Requests"]</pems-button>
+        <pems-button tone="neutral" size="small" outline="true" as="a" asp-controller="WorkOrder" asp-action="Index">@Localizer["Work Orders"]</pems-button>
+        <pems-button tone="neutral" size="small" outline="true" as="a" asp-controller="Reliability" asp-action="Intelligence">@Localizer["Maintenance Intelligence"]</pems-button>
     </div>
 </div>
 <p class="text-muted small">

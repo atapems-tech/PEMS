@@ -3,6 +3,11 @@
 All notable changes to PEMS. No system version is defined yet (plan row F_CI), so entries are grouped by date
 and theme and were reconstructed from the git history (initial import 2026-09-05). Newest first.
 
+## 2026-10-31 - `<pems-button>` takes `asp-*` routing (SCRUM-53, #31)
+
+### Changed
+- `<pems-button as="a" asp-controller asp-action asp-route-*>` builds its href through the built-in anchor helper (the tag helper derives from it); 291 more links in 147 views moved; the button ratchet fell again.
+
 ## 2026-10-31 - `<pems-button>` and the buttons in the views (SCRUM-53, #31)
 
 ### Added

@@ -54,7 +54,7 @@
                         <td><pems-badge tone="info">@d.AIWorkflowStage</pems-badge></td>
                         <td><pems-badge tone="warning">@d.Classifications.Count(c => c.ReviewStatus == "Draft")</pems-badge></td>
                         <td><pems-badge tone="warning">@d.TagLinks.Count(t => t.IsAIProposed && t.ReviewStatus == "Draft")</pems-badge></td>
-                        <td><a asp-action="Review" asp-route-id="@d.DocumentId" class="btn btn-sm btn-pems-solid">Review</a></td>
+                        <td><pems-button tone="primary" size="small" as="a" asp-action="Review" asp-route-id="@d.DocumentId">Review</pems-button></td>
                     </tr>
                 }
             </tbody>

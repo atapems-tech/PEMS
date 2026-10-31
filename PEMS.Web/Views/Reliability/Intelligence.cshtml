@@ -32,8 +32,8 @@
 
 <div class="d-flex justify-content-end align-items-center mb-2">
     <div>
-        <a asp-action="Index" class="btn btn-outline-secondary btn-sm"><i class="bi bi-graph-up-arrow"></i> @Localizer["Reliability"]</a>
-        <a asp-action="RcmFeedback" class="btn btn-outline-secondary btn-sm"><i class="bi bi-arrow-repeat"></i> @Localizer["RCM Feedback"]</a>
+        <pems-button tone="neutral" size="small" outline="true" as="a" asp-action="Index"><i class="bi bi-graph-up-arrow"></i> @Localizer["Reliability"]</pems-button>
+        <pems-button tone="neutral" size="small" outline="true" as="a" asp-action="RcmFeedback"><i class="bi bi-arrow-repeat"></i> @Localizer["RCM Feedback"]</pems-button>
     </div>
 </div>
 <p class="text-muted small">

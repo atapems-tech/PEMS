@@ -30,7 +30,7 @@
 
 <div class="d-flex justify-content-end align-items-center mb-2">
     <div>
-        <a asp-action="Intelligence" class="btn btn-outline-secondary btn-sm"><i class="bi bi-clipboard-data-fill"></i> @Localizer["Maintenance Intelligence"]</a>
+        <pems-button tone="neutral" size="small" outline="true" as="a" asp-action="Intelligence"><i class="bi bi-clipboard-data-fill"></i> @Localizer["Maintenance Intelligence"]</pems-button>
         @if (canGenerate)
         {
             <form asp-action="GenerateRcmEvidence" method="post" class="d-inline">

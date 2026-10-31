@@ -53,7 +53,7 @@
 
         <div class="d-flex gap-2">
             <pems-button tone="primary" type="submit"><i class="bi bi-save"></i> @Localizer["ذخیره"]</pems-button>
-            <a asp-action="Passport" asp-route-id="@Model.MechanicalEquipmentId" class="btn btn-outline-secondary">@Localizer["انصراف"]</a>
+            <pems-button tone="neutral" outline="true" as="a" asp-action="Passport" asp-route-id="@Model.MechanicalEquipmentId">@Localizer["انصراف"]</pems-button>
         </div>
     </form>
 </div>

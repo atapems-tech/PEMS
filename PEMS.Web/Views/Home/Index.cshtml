@@ -197,9 +197,9 @@
 {
     <div class="d-flex justify-content-between align-items-center mt-4 mb-2">
         <h6 class="mb-0">@Localizer["My Dashboard"]</h6>
-        <a asp-controller="DashboardSettings" asp-action="Index" class="btn btn-sm btn-outline-secondary">
+        <pems-button tone="neutral" size="small" outline="true" as="a" asp-controller="DashboardSettings" asp-action="Index">
             <i class="bi bi-sliders"></i> @Localizer["Customize"]
-        </a>
+        </pems-button>
     </div>
 
     <div class="row g-3">
@@ -230,9 +230,9 @@
 else
 {
     <div class="text-center mt-3">
-        <a asp-controller="DashboardSettings" asp-action="Index" class="btn btn-sm btn-outline-primary">
+        <pems-button tone="primary" size="small" outline="true" as="a" asp-controller="DashboardSettings" asp-action="Index">
             <i class="bi bi-sliders"></i> Customize your dashboard
-        </a>
+        </pems-button>
     </div>
 }
 

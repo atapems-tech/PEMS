@@ -4,7 +4,7 @@
 @inject IStringLocalizer<SharedResource> Localizer
 
 <div class="d-flex justify-content-end align-items-center mb-2">
-    <a asp-action="NcrCreate" class="btn btn-danger btn-sm"><i class="bi bi-plus-lg"></i> @Localizer["Raise NCR"]</a>
+    <pems-button tone="danger" size="small" as="a" asp-action="NcrCreate"><i class="bi bi-plus-lg"></i> @Localizer["Raise NCR"]</pems-button>
 </div>
 
 <div class="content-card">

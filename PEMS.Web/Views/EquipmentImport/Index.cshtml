@@ -71,7 +71,7 @@
                     <td>
                         @if (b.Status == "Staging")
                         {
-                            <a asp-action="Review" asp-route-batchId="@b.EquipmentImportBatchId" class="btn btn-sm btn-outline-primary">Review</a>
+                            <pems-button tone="primary" size="small" outline="true" as="a" asp-action="Review" asp-route-batchId="@b.EquipmentImportBatchId">Review</pems-button>
                         }
                     </td>
                 </tr>

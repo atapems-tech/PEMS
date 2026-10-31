@@ -38,9 +38,9 @@
                         }
                         else
                         {
-                            <a asp-area="@e.Area" asp-controller="@e.Controller" asp-action="@e.Action" class="btn btn-sm btn-outline-primary align-self-start">
+                            <pems-button tone="primary" size="small" outline="true" css="align-self-start" as="a" asp-area="@e.Area" asp-controller="@e.Controller" asp-action="@e.Action">
                                 <i class="bi bi-box-arrow-in-right"></i> @Localizer["IC_Open"]
-                            </a>
+                            </pems-button>
                         }
                     </div>
                 </div>

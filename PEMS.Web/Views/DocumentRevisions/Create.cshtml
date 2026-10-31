@@ -42,7 +42,7 @@
 
         <div class="mt-4">
             <pems-button tone="primary" type="submit">Save Revision</pems-button>
-            <a asp-action="Index" asp-route-documentId="@document.DocumentId" class="btn btn-outline-secondary">Cancel</a>
+            <pems-button tone="neutral" outline="true" as="a" asp-action="Index" asp-route-documentId="@document.DocumentId">Cancel</pems-button>
         </div>
     </form>
 </div>

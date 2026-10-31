@@ -21,7 +21,7 @@
         }
         @if (!string.IsNullOrEmpty((string?)ViewBag.SelectedStage))
         {
-            <a asp-action="Index" class="btn btn-sm btn-outline-danger"><i class="bi bi-x-lg"></i> @Localizer["Reset"]</a>
+            <pems-button tone="danger" size="small" outline="true" as="a" asp-action="Index"><i class="bi bi-x-lg"></i> @Localizer["Reset"]</pems-button>
         }
     </div>
 </div>
@@ -81,7 +81,7 @@
                         <td>
                             @if (i.IntakeStage != "Routed" && i.IntakeStage != "Rejected")
                             {
-                                <a asp-action="Review" asp-route-id="@i.AttachmentId" class="btn btn-sm btn-pems-solid">Review</a>
+                                <pems-button tone="primary" size="small" as="a" asp-action="Review" asp-route-id="@i.AttachmentId">Review</pems-button>
                             }
                         </td>
                     </tr>

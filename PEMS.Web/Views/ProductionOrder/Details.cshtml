@@ -57,7 +57,7 @@
             }
             @if (Model.Status is "Released" or "InProgress")
             {
-                <a asp-controller="ProductionRun" asp-action="Create" asp-route-productionOrderId="@Model.ProductionOrderId" class="btn btn-sm btn-outline-primary w-100"><i class="bi bi-plus-lg"></i> New Run</a>
+                <pems-button tone="primary" size="small" outline="true" css="w-100" as="a" asp-controller="ProductionRun" asp-action="Create" asp-route-productionOrderId="@Model.ProductionOrderId"><i class="bi bi-plus-lg"></i> New Run</pems-button>
             }
         </div>
     </div>
@@ -78,7 +78,7 @@
                         <td class="small">@(r.EndDate?.ToString("yyyy-MM-dd HH:mm"))</td>
                         <td>@r.TotalOutputQuantity.ToString("N3")</td>
                         <td>@r.TotalLossQuantity.ToString("N3")</td>
-                        <td class="text-end"><a asp-controller="ProductionRun" asp-action="Details" asp-route-id="@r.ProductionRunId" class="btn btn-sm btn-outline-primary">Open</a></td>
+                        <td class="text-end"><pems-button tone="primary" size="small" outline="true" as="a" asp-controller="ProductionRun" asp-action="Details" asp-route-id="@r.ProductionRunId">Open</pems-button></td>
                     </tr>
                 }
             </tbody>

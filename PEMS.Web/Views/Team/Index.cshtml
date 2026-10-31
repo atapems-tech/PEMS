@@ -4,9 +4,9 @@
 @inject IStringLocalizer<SharedResource> Localizer
 
 <div class="d-flex justify-content-end align-items-center gap-2 mb-2">
-    <a asp-action="OrganizationChart" class="btn btn-outline-secondary btn-sm">
+    <pems-button tone="neutral" size="small" outline="true" as="a" asp-action="OrganizationChart">
         <i class="bi bi-diagram-3"></i> @Localizer["نمودار سازمانی"]
-    </a>
+    </pems-button>
     <pems-button tone="primary" size="small" type="button" data-bs-toggle="modal" data-bs-target="#createTeamModal">
         <i class="bi bi-plus-lg"></i> @Localizer["تیم جدید"]
     </pems-button>
@@ -27,9 +27,9 @@
                         {
                             <pems-badge tone="primary"><i class="bi bi-star"></i> سرپرست: @team.SupervisorEmployee.FirstName @team.SupervisorEmployee.LastName</pems-badge>
                         }
-                        <a asp-action="TeamDetails" asp-route-teamId="@team.TeamId" class="btn btn-sm btn-outline-secondary">
+                        <pems-button tone="neutral" size="small" outline="true" as="a" asp-action="TeamDetails" asp-route-teamId="@team.TeamId">
                             <i class="bi bi-diagram-2"></i> @Localizer["جزئیات و نیروی انسانی"]
-                        </a>
+                        </pems-button>
                     </div>
                 </div>
 

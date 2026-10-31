@@ -41,7 +41,7 @@
         </div>
         <div class="mt-3 d-flex gap-2">
             <pems-button tone="primary" type="submit"><i class="bi bi-check-lg"></i> Create Run</pems-button>
-            <a asp-controller="ProductionOrder" asp-action="Details" asp-route-id="@order.ProductionOrderId" class="btn btn-outline-secondary">Cancel</a>
+            <pems-button tone="neutral" outline="true" as="a" asp-controller="ProductionOrder" asp-action="Details" asp-route-id="@order.ProductionOrderId">Cancel</pems-button>
         </div>
     </form>
 </div>

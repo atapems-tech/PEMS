@@ -28,7 +28,7 @@
 }
 
 <div class="d-flex flex-wrap align-items-center gap-2 mb-3">
-    <a asp-controller="Letter" asp-action="Index" class="btn btn-sm btn-outline-secondary"><i class="bi bi-arrow-left-right" aria-hidden="true"></i> @Localizer["Correspondence"]</a>
+    <pems-button tone="neutral" size="small" outline="true" as="a" asp-controller="Letter" asp-action="Index"><i class="bi bi-arrow-left-right" aria-hidden="true"></i> @Localizer["Correspondence"]</pems-button>
     <form method="get" class="d-flex flex-wrap align-items-end gap-2 ms-auto">
         <div><label class="form-label small mb-0" for="rFrom">@Localizer["Lp_From"]</label><input id="rFrom" type="date" name="from" value="@Model.FromDate.ToString("yyyy-MM-dd")" class="form-control form-control-sm" /></div>
         <div><label class="form-label small mb-0" for="rTo">@Localizer["Lp_To"]</label><input id="rTo" type="date" name="to" value="@Model.ToDate.ToString("yyyy-MM-dd")" class="form-control form-control-sm" /></div>

@@ -114,7 +114,7 @@
                اعتبارسنجی می‌کند - این‌جا فقط UX است) *@
             @if (isFormal && (l.Status == "Draft" || l.Status == "ReturnedForRevision") && isAuthor)
             {
-                <a class="btn btn-outline-secondary btn-sm" asp-controller="LetterCompose" asp-action="Compose" asp-route-id="@l.LetterId"><i class="bi bi-pencil-square" aria-hidden="true"></i> @Localizer["Lc_EditInComposer"]</a>
+                <pems-button tone="neutral" size="small" outline="true" as="a" asp-controller="LetterCompose" asp-action="Compose" asp-route-id="@l.LetterId"><i class="bi bi-pencil-square" aria-hidden="true"></i> @Localizer["Lc_EditInComposer"]</pems-button>
             }
             @if (l.Status == "Approved" && l.LetterType == "Internal" && isAuthor)
             {
@@ -168,8 +168,8 @@
             @if (l.Status != "Draft" && l.Status != "PendingApproval" && l.Status != "Rejected")
             {
                 @* reply and referral are one flow: both open the composer on this letter (the referral keeps the subject and only takes the «referral» tag) *@
-                <a class="btn btn-outline-primary btn-sm" asp-controller="LetterCompose" asp-action="Compose" asp-route-replyTo="@l.LetterId"><i class="bi bi-reply" aria-hidden="true"></i> @Localizer["Ct_Reply"]</a>
-                <a class="btn btn-outline-warning btn-sm" asp-controller="LetterCompose" asp-action="Compose" asp-route-referTo="@l.LetterId"><i class="bi bi-signpost-split" aria-hidden="true"></i> @Localizer["Ct_Refer"]</a>
+                <pems-button tone="primary" size="small" outline="true" as="a" asp-controller="LetterCompose" asp-action="Compose" asp-route-replyTo="@l.LetterId"><i class="bi bi-reply" aria-hidden="true"></i> @Localizer["Ct_Reply"]</pems-button>
+                <pems-button tone="warning" size="small" outline="true" as="a" asp-controller="LetterCompose" asp-action="Compose" asp-route-referTo="@l.LetterId"><i class="bi bi-signpost-split" aria-hidden="true"></i> @Localizer["Ct_Refer"]</pems-button>
             }
             <div class="dropdown">
                 <pems-button tone="neutral" size="small" outline="true" type="button" data-bs-toggle="dropdown" aria-expanded="false" title="More">
@@ -624,7 +624,7 @@
                 { <p class="text-muted small">No referrals yet.</p> }
 
                 <div class="d-flex align-items-center gap-2 mb-3">
-                    <a class="btn btn-sm btn-pems-solid" asp-controller="LetterCompose" asp-action="Compose" asp-route-referTo="@l.LetterId"><i class="bi bi-signpost-split" aria-hidden="true"></i> @Localizer["Ct_ReferToPerson"]</a>
+                    <pems-button tone="primary" size="small" as="a" asp-controller="LetterCompose" asp-action="Compose" asp-route-referTo="@l.LetterId"><i class="bi bi-signpost-split" aria-hidden="true"></i> @Localizer["Ct_ReferToPerson"]</pems-button>
                     <span class="small text-muted">@Localizer["Ct_ReferToPersonHint"]</span>
                 </div>
                 <div class="small text-muted mb-1">@Localizer["Ct_ReferToDepartment"]</div>

@@ -8,7 +8,7 @@
         <pems-button tone="neutral" size="small" outline="true" type="button" onclick="PemsDataGrid.resetColumns('MaterialRequisition')">
             <i class="bi bi-arrow-counterclockwise"></i> @Localizer["Reset columns"]
         </pems-button>
-        <a asp-action="Create" class="btn btn-pems-solid btn-sm"><i class="bi bi-plus-lg"></i> New MR</a>
+        <pems-button tone="primary" size="small" as="a" asp-action="Create"><i class="bi bi-plus-lg"></i> New MR</pems-button>
     </div>
 
     <div class="pems-grid-scroll">
@@ -38,7 +38,7 @@
                     <td class="small">@m.ResponsibleEngineerName</td>
                     <td><pems-badge tone="neutral">@m.Status</pems-badge></td>
                     <td><pems-badge tone="info">@m.QuotationsCount</pems-badge></td>
-                    <td><a asp-action="Details" asp-route-id="@m.MRId" class="btn btn-sm btn-outline-secondary"><i class="bi bi-eye"></i></a></td>
+                    <td><pems-button tone="neutral" size="small" outline="true" as="a" asp-action="Details" asp-route-id="@m.MRId"><i class="bi bi-eye"></i></pems-button></td>
                 </tr>
             }
         </tbody>

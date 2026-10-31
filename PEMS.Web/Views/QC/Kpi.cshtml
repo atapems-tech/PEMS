@@ -2,7 +2,7 @@
 @using PEMS.Web.Resources
 @inject IStringLocalizer<SharedResource> Localizer
 <div class="d-flex justify-content-end align-items-center mb-2">
-    <a asp-action="Index" class="btn btn-outline-secondary btn-sm">@Localizer["Back to Dashboard"]</a>
+    <pems-button tone="neutral" size="small" outline="true" as="a" asp-action="Index">@Localizer["Back to Dashboard"]</pems-button>
 </div>
 
 <div class="row g-3 mb-3">
