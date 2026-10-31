@@ -146,7 +146,7 @@
                             <td class="small">@(p.PreparedBy ?? "-")</td>
                             <td class="small">@(p.ApprovedBy ?? "-")</td>
                             <td class="small">@p.CreatedDate.ToString("yyyy-MM-dd")</td>
-                            <td><a asp-action="Details" asp-route-id="@p.CriticalityAssessmentId" class="btn btn-sm btn-outline-secondary"><i class="bi bi-eye"></i></a></td>
+                            <td><pems-button tone="neutral" size="small" outline="true" as="a" asp-action="Details" asp-route-id="@p.CriticalityAssessmentId"><i class="bi bi-eye"></i></pems-button></td>
                         </tr>
                     }
                 </tbody>

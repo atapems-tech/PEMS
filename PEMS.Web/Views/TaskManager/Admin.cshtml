@@ -32,7 +32,7 @@
                             <td>@s.MemberCount</td>
                             <td>@s.OpenItemCount</td>
                             <td>@(s.IsActive ? Localizer["Tm_Yes"] : Localizer["Tm_No"])</td>
-                            <td><a class="btn btn-sm btn-outline-secondary" asp-action="AdminSpace" asp-route-id="@s.Id">@Localizer["Tm_Configure"]</a></td>
+                            <td><pems-button tone="neutral" size="small" outline="true" as="a" asp-action="AdminSpace" asp-route-id="@s.Id">@Localizer["Tm_Configure"]</pems-button></td>
                         </tr>
                     }
                 </tbody>

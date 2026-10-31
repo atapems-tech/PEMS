@@ -768,7 +768,7 @@
             <div class="d-flex flex-column gap-1">
                 @foreach (var d in disciplines)
                 {
-                    <a asp-action="Index" asp-route-disciplineId="@d.DisciplineId" class="btn btn-sm btn-outline-secondary text-start">@d.Name</a>
+                    <pems-button tone="neutral" size="small" outline="true" css="text-start" as="a" asp-action="Index" asp-route-disciplineId="@d.DisciplineId">@d.Name</pems-button>
                 }
             </div>
         }

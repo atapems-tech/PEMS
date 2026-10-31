@@ -87,9 +87,9 @@
                 <pems-button tone="primary" size="small" type="button" data-bs-toggle="modal" data-bs-target="#editProfileModal">
                     <i class="bi bi-pencil"></i> @L("Edit Profile", "ویرایش پروفایل")
                 </pems-button>
-                <a asp-action="Index" class="btn btn-outline-secondary btn-sm">
+                <pems-button tone="neutral" size="small" outline="true" as="a" asp-action="Index">
                     <i class="bi bi-arrow-@(isRtl ? "right" : "left")"></i> @L("Back to list", "بازگشت به فهرست")
-                </a>
+                </pems-button>
             </div>
         </div>
     </div>
@@ -237,7 +237,7 @@
                 @if (User.IsInRole(PEMS.Persistence.Identity.SystemRoles.SystemAdmin))
                 {
                     <div class="mt-3">
-                        <a class="btn btn-sm btn-outline-secondary" asp-area="Admin" asp-controller="Users" asp-action="Edit" asp-route-id="@linkedUser.Id"><i class="bi bi-person-gear"></i> @L("Manage Access", "مدیریت دسترسی")</a>
+                        <pems-button tone="neutral" size="small" outline="true" as="a" asp-area="Admin" asp-controller="Users" asp-action="Edit" asp-route-id="@linkedUser.Id"><i class="bi bi-person-gear"></i> @L("Manage Access", "مدیریت دسترسی")</pems-button>
                     </div>
                 }
             }

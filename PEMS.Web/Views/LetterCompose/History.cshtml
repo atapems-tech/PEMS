@@ -11,8 +11,8 @@
         <span class="lc-number">@Model.Report.LetterNumber</span>
         <span class="badge text-bg-secondary">@Model.Report.Status</span>
         <span class="lc-savestate">
-            <a class="btn btn-sm btn-outline-secondary" asp-controller="Letter" asp-action="Details" asp-route-id="@Model.Report.LetterId">@Localizer["Lc_BackToLetter"]</a>
-            <a class="btn btn-sm btn-outline-primary" asp-action="ComplianceExport" asp-route-id="@Model.Report.LetterId"><i class="bi bi-download" aria-hidden="true"></i> @Localizer["Lc_ExportCsv"]</a>
+            <pems-button tone="neutral" size="small" outline="true" as="a" asp-controller="Letter" asp-action="Details" asp-route-id="@Model.Report.LetterId">@Localizer["Lc_BackToLetter"]</pems-button>
+            <pems-button tone="primary" size="small" outline="true" as="a" asp-action="ComplianceExport" asp-route-id="@Model.Report.LetterId"><i class="bi bi-download" aria-hidden="true"></i> @Localizer["Lc_ExportCsv"]</pems-button>
         </span>
     </div>
     <p class="text-muted">@Model.Report.Subject</p>

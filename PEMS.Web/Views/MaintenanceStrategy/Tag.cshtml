@@ -6,7 +6,7 @@
 
 <div class="d-flex justify-content-between align-items-center mb-3">
     <h5 class="mb-0"><i class="bi bi-tag"></i> @Localizer["Rcm_TagMaintenance"] — @Model.Equipment.Tag</h5>
-    <a asp-action="Index" asp-route-equipmentId="@Model.Equipment.EquipmentId" class="btn btn-outline-secondary btn-sm">@Localizer["Rcm_Back"]</a>
+    <pems-button tone="neutral" size="small" outline="true" as="a" asp-action="Index" asp-route-equipmentId="@Model.Equipment.EquipmentId">@Localizer["Rcm_Back"]</pems-button>
 </div>
 
 @await Html.PartialAsync("_EquipmentIdentity", Model.Equipment)
@@ -23,7 +23,7 @@
                 <td>v@(a.StrategyVersion)</td>
                 <td class="small">@Localizer.Label("OverrideStatus", a.OverrideStatus)</td>
                 <td>@a.PlanCount</td>
-                <td class="text-end"><a asp-controller="MaintenancePlan" asp-action="Create" asp-route-assignmentId="@a.AssignmentId" class="btn btn-sm btn-outline-primary py-0"><i class="bi bi-calendar-plus"></i></a></td>
+                <td class="text-end"><pems-button tone="primary" size="small" outline="true" css="py-0" as="a" asp-controller="MaintenancePlan" asp-action="Create" asp-route-assignmentId="@a.AssignmentId"><i class="bi bi-calendar-plus"></i></pems-button></td>
             </tr>
         }
         </tbody>

@@ -16,7 +16,7 @@
         <span class="badge @RcmDisplay.StatusBadge(s.Status) ms-2">@Localizer.Label("Status", s.Status)</span>
         <pems-badge tone="light">v@(s.VersionNumber)</pems-badge>
     </h5>
-    <a asp-action="Index" class="btn btn-outline-secondary btn-sm">@Localizer["Rcm_Back"]</a>
+    <pems-button tone="neutral" size="small" outline="true" as="a" asp-action="Index">@Localizer["Rcm_Back"]</pems-button>
 </div>
 
 @await Html.PartialAsync("_RcmErrors", Model.Errors)
@@ -73,7 +73,7 @@
     <div class="mt-3 d-flex flex-wrap gap-2">
         @if (Model.CanEdit && live)
         {
-            <a asp-action="Edit" asp-route-id="@s.MaintenanceStrategyId" class="btn btn-sm btn-outline-secondary"><i class="bi bi-pencil"></i> @(usable ? Localizer["Rcm_NewVersion"] : Localizer["Rcm_Edit"])</a>
+            <pems-button tone="neutral" size="small" outline="true" as="a" asp-action="Edit" asp-route-id="@s.MaintenanceStrategyId"><i class="bi bi-pencil"></i> @(usable ? Localizer["Rcm_NewVersion"] : Localizer["Rcm_Edit"])</pems-button>
         }
         @if (Model.CanEdit && s.Status == "Draft")
         {
@@ -133,7 +133,7 @@
                     <input type="hidden" name="equipmentIds" id="assignEquipmentId" />
                     <pems-button tone="primary" size="small" outline="true">@Localizer["Rcm_AssignTag"]</pems-button>
                 </form>
-                <a asp-action="BulkCreate" asp-route-strategyId="@s.MaintenanceStrategyId" asp-route-classId="@i.EquipmentClassId" class="btn btn-sm btn-outline-primary"><i class="bi bi-collection"></i> @Localizer["Rcm_BulkAssign"]</a>
+                <pems-button tone="primary" size="small" outline="true" as="a" asp-action="BulkCreate" asp-route-strategyId="@s.MaintenanceStrategyId" asp-route-classId="@i.EquipmentClassId"><i class="bi bi-collection"></i> @Localizer["Rcm_BulkAssign"]</pems-button>
             </div>
         }
     </div>

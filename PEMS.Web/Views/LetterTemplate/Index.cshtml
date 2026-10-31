@@ -7,8 +7,8 @@
     <div class="d-flex justify-content-between align-items-center mb-3">
         <p class="text-muted small mb-0">@Localizer["LtT_Help"]</p>
         <div class="d-flex gap-2">
-            <a asp-controller="Letter" asp-action="Index" class="btn btn-sm btn-outline-secondary"><i class="bi bi-arrow-left-short" aria-hidden="true"></i> @Localizer["Correspondence"]</a>
-            <a asp-action="Edit" asp-route-id="0" class="btn btn-sm btn-pems-solid"><i class="bi bi-plus-lg" aria-hidden="true"></i> @Localizer["LtT_New"]</a>
+            <pems-button tone="neutral" size="small" outline="true" as="a" asp-controller="Letter" asp-action="Index"><i class="bi bi-arrow-left-short" aria-hidden="true"></i> @Localizer["Correspondence"]</pems-button>
+            <pems-button tone="primary" size="small" as="a" asp-action="Edit" asp-route-id="0"><i class="bi bi-plus-lg" aria-hidden="true"></i> @Localizer["LtT_New"]</pems-button>
         </div>
     </div>
 
@@ -45,8 +45,8 @@
                                 else { <pems-badge tone="neutral"><i class="bi bi-slash-circle" aria-hidden="true"></i> @Localizer["LtT_Inactive"]</pems-badge> }
                             </td>
                             <td class="text-nowrap">
-                                <a asp-action="Preview" asp-route-id="@t.LetterTemplateId" class="btn btn-sm btn-outline-secondary"><i class="bi bi-eye" aria-hidden="true"></i> @Localizer["LtT_Preview"]</a>
-                                <a asp-action="Edit" asp-route-id="@t.LetterTemplateId" class="btn btn-sm btn-outline-secondary"><i class="bi bi-pencil" aria-hidden="true"></i> @Localizer["Edit"]</a>
+                                <pems-button tone="neutral" size="small" outline="true" as="a" asp-action="Preview" asp-route-id="@t.LetterTemplateId"><i class="bi bi-eye" aria-hidden="true"></i> @Localizer["LtT_Preview"]</pems-button>
+                                <pems-button tone="neutral" size="small" outline="true" as="a" asp-action="Edit" asp-route-id="@t.LetterTemplateId"><i class="bi bi-pencil" aria-hidden="true"></i> @Localizer["Edit"]</pems-button>
                                 <form asp-action="SetActive" method="post" class="d-inline">
                                     <input type="hidden" name="id" value="@t.LetterTemplateId" />
                                     <input type="hidden" name="active" value="@(t.IsActive ? "false" : "true")" />

@@ -1,3 +1,6 @@
+using Microsoft.AspNetCore.Mvc.Routing;
+using Microsoft.AspNetCore.Mvc.TagHelpers;
+using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.AspNetCore.Razor.TagHelpers;
 using PEMS.UI.Components;
 
@@ -7,9 +10,10 @@ namespace PEMS.UI.TagHelpers;
 /// MVC facade for the button classes: <c>&lt;pems-button tone="neutral" size="small" outline="true" css="w-100"&gt;text&lt;/pems-button&gt;</c> becomes a
 /// <c>button</c> (or an <c>a</c> with <c>as="a"</c>). The element keeps every other attribute the page wrote (type, id, href, data-*, onclick, disabled) and its content;
 /// the classes come from <see cref="ButtonState"/>, the same code <see cref="PemsButton"/> uses, so no view writes <c>class="btn btn-*"</c> by hand.
+/// A link can carry <c>asp-controller</c>, <c>asp-action</c>, <c>asp-route-*</c> and the other routing attributes of the built-in anchor helper (this class derives from it).
 /// </summary>
 [HtmlTargetElement("pems-button")]
-public sealed class PemsButtonTagHelper : TagHelper
+public sealed class PemsButtonTagHelper(IHtmlGenerator generator) : AnchorTagHelper(generator)
 {
     /// <summary>neutral, primary, danger, success, warning, info, light or dark (lower case in the page).</summary>
     [HtmlAttributeName("tone")] public string Tone { get; set; } = "primary";

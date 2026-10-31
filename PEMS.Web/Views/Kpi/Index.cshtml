@@ -5,7 +5,7 @@
 
 <div class="d-flex justify-content-between align-items-center mb-3">
     <h5 class="mb-0"><i class="bi bi-speedometer2"></i> Maintenance &amp; Cost KPI Dashboard</h5>
-    <a asp-action="Executive" class="btn btn-sm btn-outline-secondary"><i class="bi bi-bar-chart-line"></i> @Localizer["Kpi_Exec_Title"]</a>
+    <pems-button tone="neutral" size="small" outline="true" as="a" asp-action="Executive"><i class="bi bi-bar-chart-line"></i> @Localizer["Kpi_Exec_Title"]</pems-button>
 </div>
 <p class="text-muted small">
     طبق CMMS Production Baseline v1 - CMMS-08: از روی داده‌ی واقعی تراکنشی موجود محاسبه می‌شود
@@ -23,7 +23,7 @@
         <input type="date" name="toDate" class="form-control form-control-sm" value="@(Model.ToDate?.ToString("yyyy-MM-dd"))" />
     </div>
     <pems-button tone="primary" size="small" type="submit">@Localizer["Filter"]</pems-button>
-    <a asp-action="Index" class="btn btn-sm btn-outline-secondary">@Localizer["Clear"]</a>
+    <pems-button tone="neutral" size="small" outline="true" as="a" asp-action="Index">@Localizer["Clear"]</pems-button>
 </form>
 
 @{

@@ -60,9 +60,9 @@
                             </a>
                         </td>
                         <td class="text-end">
-                            <a asp-action="Edit" asp-route-id="@p.ProjectId" class="btn btn-sm btn-outline-secondary">
+                            <pems-button tone="neutral" size="small" outline="true" as="a" asp-action="Edit" asp-route-id="@p.ProjectId">
                                 <i class="bi bi-pencil"></i>
-                            </a>
+                            </pems-button>
                             <form asp-action="ToggleActive" asp-route-id="@p.ProjectId" method="post" class="d-inline">
                                 <pems-button tone="warning" size="small" outline="true" title="Activate/Deactivate">
                                     <i class="bi bi-power"></i>

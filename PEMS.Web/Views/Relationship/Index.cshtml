@@ -10,12 +10,12 @@
             روابط مهندسی مرتبط (مدارک، P&amp;ID، Vendor، قرارداد، PO، MR/MRQ، نگهداری و تعمیرات) نمایش داده شود.
         </p>
         <div class="d-flex gap-2">
-            <a asp-action="BulkSuggestions" class="btn btn-outline-warning btn-sm text-nowrap">
+            <pems-button tone="warning" size="small" outline="true" css="text-nowrap" as="a" asp-action="BulkSuggestions">
                 <i class="bi bi-check2-all"></i> @Localizer["تایید دسته‌جمعی اتصال‌ها"]
-            </a>
-            <a asp-action="GapReport" class="btn btn-outline-secondary btn-sm text-nowrap">
+            </pems-button>
+            <pems-button tone="neutral" size="small" outline="true" css="text-nowrap" as="a" asp-action="GapReport">
                 <i class="bi bi-clipboard-x"></i> @Localizer["گزارش تجهیزات ناقص"]
-            </a>
+            </pems-button>
         </div>
     </div>
     <form asp-action="Search" method="get" class="d-flex gap-2 mt-2">

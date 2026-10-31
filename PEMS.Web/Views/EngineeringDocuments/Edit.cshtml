@@ -29,9 +29,9 @@
             <span class="text-muted small ms-2">Rev @Model.RevisionNo</span>
             @if (Model.IsFrozen) { <pems-badge tone="info" css="ms-1"><i class="bi bi-snow"></i> Frozen</pems-badge> }
         </div>
-        <a asp-action="Details" asp-route-id="@Model.DocumentId" class="btn btn-sm btn-outline-secondary">
+        <pems-button tone="neutral" size="small" outline="true" as="a" asp-action="Details" asp-route-id="@Model.DocumentId">
             <i class="bi bi-arrow-return-left"></i> Back to Details
-        </a>
+        </pems-button>
     </div>
     <p class="text-muted small mb-0 mt-2">
         Status, revision, and freeze are managed through the document workflow (Submit / Approve / Reject / Create Revision
@@ -142,6 +142,6 @@
 
     <div class="content-card mt-3">
         <pems-button tone="primary" type="submit"><i class="bi bi-check-lg"></i> Save Changes</pems-button>
-        <a asp-action="Details" asp-route-id="@Model.DocumentId" class="btn btn-outline-secondary">Cancel</a>
+        <pems-button tone="neutral" outline="true" as="a" asp-action="Details" asp-route-id="@Model.DocumentId">Cancel</pems-button>
     </div>
 </form>

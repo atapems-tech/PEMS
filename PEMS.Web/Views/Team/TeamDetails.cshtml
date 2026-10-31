@@ -28,18 +28,18 @@
 
 <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-3">
     <div class="d-flex align-items-center gap-2 flex-wrap">
-        <a asp-action="OrganizationChart" class="btn btn-outline-secondary btn-sm">
+        <pems-button tone="neutral" size="small" outline="true" as="a" asp-action="OrganizationChart">
             <i class="bi bi-diagram-3"></i> @Localizer["نمودار سازمانی"]
-        </a>
-        <a asp-action="Index" class="btn btn-outline-secondary btn-sm">
+        </pems-button>
+        <pems-button tone="neutral" size="small" outline="true" as="a" asp-action="Index">
             <i class="bi bi-people"></i> @Localizer["تیم‌های تعمیرونگهداری"]
-        </a>
+        </pems-button>
         @if (Model.ParentTeamId.HasValue)
         {
-            <a asp-action="TeamDetails" asp-route-teamId="@Model.ParentTeamId" class="btn btn-outline-secondary btn-sm">
+            <pems-button tone="neutral" size="small" outline="true" as="a" asp-action="TeamDetails" asp-route-teamId="@Model.ParentTeamId">
                 <i class="bi bi-arrow-@(System.Globalization.CultureInfo.CurrentUICulture.TextInfo.IsRightToLeft ? "bar-right" : "bar-left")"></i>
                 @Localizer["تیم والد"]
-            </a>
+            </pems-button>
         }
     </div>
 
@@ -130,9 +130,9 @@
                                 <span class="pems-vacant-badge"> (@child.VacantPositionCount @Localizer["خالی (Vacant)"])</span>
                             }
                         </div>
-                        <a asp-action="TeamDetails" asp-route-teamId="@child.TeamId" class="btn btn-sm btn-outline-secondary mt-2 w-100">
+                        <pems-button tone="neutral" size="small" outline="true" css="mt-2 w-100" as="a" asp-action="TeamDetails" asp-route-teamId="@child.TeamId">
                             @Localizer["مشاهده‌ی جزئیات تیم"]
-                        </a>
+                        </pems-button>
                     </div>
                 </div>
             }

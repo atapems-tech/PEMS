@@ -95,8 +95,8 @@
                             </form>
                             @if (a.AIStatus == "Completed")
                             {
-                                <a asp-controller="AIExtraction" asp-action="Review" asp-route-attachmentId="@a.AttachmentId"
-                                   class="btn btn-sm btn-outline-warning"><i class="bi bi-eye"></i></a>
+                                <pems-button tone="warning" size="small" outline="true" as="a" asp-controller="AIExtraction" asp-action="Review" asp-route-attachmentId="@a.AttachmentId"
+                                  ><i class="bi bi-eye"></i></pems-button>
                             }
                         </td>
                     </tr>

@@ -18,7 +18,7 @@
             <span class="text-muted small">@s.ProjectName @(s.DisciplineName != null ? " | " + s.DisciplineName : "")</span>
         </div>
         <div class="d-flex align-items-center gap-2">
-            <a asp-controller="Relationship" asp-action="ProcurementPackage" asp-route-id="@s.ProcurementPackageId" class="btn btn-sm btn-outline-secondary"><i class="bi bi-diagram-3"></i> @Localizer["Cm_Relationships"]</a>
+            <pems-button tone="neutral" size="small" outline="true" as="a" asp-controller="Relationship" asp-action="ProcurementPackage" asp-route-id="@s.ProcurementPackageId"><i class="bi bi-diagram-3"></i> @Localizer["Cm_Relationships"]</pems-button>
             <span class="badge @(s.Status == "Closed" ? "bg-success" : "bg-warning text-dark") fs-6">@s.Status</span>
         </div>
     </div>
@@ -32,18 +32,18 @@
                 @foreach (var t in tenders)
                 {
                     <span class="btn-group">
-                        <a asp-controller="Tender" asp-action="Details" asp-route-id="@t.TenderId" class="btn btn-sm btn-outline-secondary">
+                        <pems-button tone="neutral" size="small" outline="true" as="a" asp-controller="Tender" asp-action="Details" asp-route-id="@t.TenderId">
                             @t.TenderNumber <pems-badge tone="neutral">@t.Status</pems-badge>
                             @if (t.AwardedBid != null)
                             {
                                 <text> — @Localizer["Awarded"]: @t.AwardedBid.Vendor?.Name</text>
                             }
-                        </a>
+                        </pems-button>
                         @if (t.ContractId != null)
                         {
-                            <a asp-controller="Contract" asp-action="Details" asp-route-id="@t.ContractId" class="btn btn-sm btn-outline-success">
+                            <pems-button tone="success" size="small" outline="true" as="a" asp-controller="Contract" asp-action="Details" asp-route-id="@t.ContractId">
                                 <i class="bi bi-arrow-right-short"></i> @Localizer["Contract"]
-                            </a>
+                            </pems-button>
                         }
                     </span>
                 }
@@ -51,8 +51,8 @@
         </div>
     }
     <div class="mt-2">
-        <a asp-controller="Tender" asp-action="Index" asp-route-procurementPackageId="@s.ProcurementPackageId" class="btn btn-sm btn-outline-primary">@Localizer["Tenders"]</a>
-        <a asp-controller="Tender" asp-action="Create" asp-route-procurementPackageId="@s.ProcurementPackageId" class="btn btn-sm btn-outline-primary">@Localizer["New Tender"]</a>
+        <pems-button tone="primary" size="small" outline="true" as="a" asp-controller="Tender" asp-action="Index" asp-route-procurementPackageId="@s.ProcurementPackageId">@Localizer["Tenders"]</pems-button>
+        <pems-button tone="primary" size="small" outline="true" as="a" asp-controller="Tender" asp-action="Create" asp-route-procurementPackageId="@s.ProcurementPackageId">@Localizer["New Tender"]</pems-button>
     </div>
 
     <div class="d-flex flex-wrap gap-2 mt-3">

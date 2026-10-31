@@ -43,9 +43,9 @@
                         <td>
                             @if (!p.HasOpenMOC)
                             {
-                                <a asp-controller="MOC" asp-action="Raise" asp-route-relatedEquipmentId="@p.EquipmentId" class="btn btn-sm btn-outline-primary">
+                                <pems-button tone="primary" size="small" outline="true" as="a" asp-controller="MOC" asp-action="Raise" asp-route-relatedEquipmentId="@p.EquipmentId">
                                     <i class="bi bi-plus-lg"></i> ثبت MOC
-                                </a>
+                                </pems-button>
                             }
                         </td>
                     </tr>

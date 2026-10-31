@@ -6,7 +6,7 @@
 <div class="content-card">
     @if (ViewBag.CanManageMaster == true)
     {
-        <div class="mb-3"><a asp-action="Manage" class="btn btn-sm btn-outline-secondary"><i class="bi bi-sliders"></i> @Localizer["Manage disciplines"]</a></div>
+        <div class="mb-3"><pems-button tone="neutral" size="small" outline="true" as="a" asp-action="Manage"><i class="bi bi-sliders"></i> @Localizer["Manage disciplines"]</pems-button></div>
     }
     <p class="text-muted">
         هر دیسیپلین یک Workspace اختصاصی دارد (Equipment, Documents, VDR, MR/MRQ, Tasks, KPI) —
@@ -34,7 +34,7 @@
                             else
                             { <pems-badge tone="success">0</pems-badge> }
                         </td>
-                        <td><a asp-action="Details" asp-route-id="@d.DisciplineId" class="btn btn-sm btn-pems-solid"><i class="bi bi-box-arrow-in-right"></i> Open Workspace</a></td>
+                        <td><pems-button tone="primary" size="small" as="a" asp-action="Details" asp-route-id="@d.DisciplineId"><i class="bi bi-box-arrow-in-right"></i> Open Workspace</pems-button></td>
                     </tr>
                 }
             </tbody>

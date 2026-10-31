@@ -4,7 +4,7 @@
 @inject IStringLocalizer<SharedResource> Localizer
 
 <div class="d-flex justify-content-end align-items-center mb-2">
-    <a asp-controller="FunctionalLocation" asp-action="Index" class="btn btn-outline-secondary btn-sm">← Functional Locations</a>
+    <pems-button tone="neutral" size="small" outline="true" as="a" asp-controller="FunctionalLocation" asp-action="Index">← Functional Locations</pems-button>
 </div>
 
 <div class="content-card mb-3">
@@ -46,7 +46,7 @@
                     <td class="text-end">@if (b.InvalidCount > 0) { <pems-badge tone="danger">@b.InvalidCount</pems-badge> } else { @b.InvalidCount }</td>
                     <td><span class="badge @(b.Status == "Committed" ? "bg-success" : "bg-secondary")">@b.Status</span></td>
                     <td>
-                        <a asp-action="Review" asp-route-batchId="@b.FunctionalLocationImportBatchId" class="btn btn-sm btn-outline-primary">Review</a>
+                        <pems-button tone="primary" size="small" outline="true" as="a" asp-action="Review" asp-route-batchId="@b.FunctionalLocationImportBatchId">Review</pems-button>
                     </td>
                 </tr>
             }

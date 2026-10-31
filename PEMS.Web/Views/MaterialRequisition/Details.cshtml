@@ -144,7 +144,7 @@
                         <td>@l.Subject</td>
                         <td>@l.LetterDate.ToString("yyyy-MM-dd")</td>
                         <td><pems-badge tone="info">@l.Status</pems-badge></td>
-                        <td><a asp-controller="Letter" asp-action="Details" asp-route-id="@l.LetterId" class="btn btn-sm btn-outline-secondary"><i class="bi bi-eye"></i></a></td>
+                        <td><pems-button tone="neutral" size="small" outline="true" as="a" asp-controller="Letter" asp-action="Details" asp-route-id="@l.LetterId"><i class="bi bi-eye"></i></pems-button></td>
                     </tr>
                 }
             </tbody>

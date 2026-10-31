@@ -32,8 +32,8 @@
 }
 
 <div class="d-flex justify-content-end align-items-center gap-2 mb-2">
-    <a asp-controller="Finding" asp-action="Index" asp-route-equipmentId="@equipmentId" class="btn btn-outline-danger btn-sm"><i class="bi bi-flag"></i> @Localizer["Findings"]</a>
-    <a asp-action="Index" class="btn btn-outline-secondary btn-sm">@Localizer["← Reliability"]</a>
+    <pems-button tone="danger" size="small" outline="true" as="a" asp-controller="Finding" asp-action="Index" asp-route-equipmentId="@equipmentId"><i class="bi bi-flag"></i> @Localizer["Findings"]</pems-button>
+    <pems-button tone="neutral" size="small" outline="true" as="a" asp-action="Index">@Localizer["← Reliability"]</pems-button>
 </div>
 <p class="text-muted small">
     طبق «PEMS Phase 9» بند ۱۵: زیرساخت نرم‌افزاری همیشه آماده است - آنچه به داده‌ی واقعی نیاز
@@ -95,7 +95,7 @@
                             @p.ReadingCount
                             @if (p.ReadingCount > 0)
                             {
-                                <a asp-action="Trend" asp-route-pointId="@p.ConditionMonitoringPointId" class="btn btn-sm btn-outline-secondary ms-1" title="@Localizer["Trend"]"><i class="bi bi-graph-up"></i></a>
+                                <pems-button tone="neutral" size="small" outline="true" css="ms-1" as="a" asp-action="Trend" asp-route-pointId="@p.ConditionMonitoringPointId" title="@Localizer["Trend"]"><i class="bi bi-graph-up"></i></pems-button>
                             }
                         </td>
                         <td class="small">@(p.LastReadingDate.HasValue ? $"{p.LastValue} @ {p.LastReadingDate.Value:yyyy-MM-dd}" : "No readings yet")</td>

@@ -10,7 +10,7 @@
             <h5 class="mb-0">@Model.Equipment?.TagNumber <span class="text-muted small">(@Model.Equipment?.Manufacturer / @Model.Equipment?.Model)</span></h5>
             <span class="text-muted small">Tag, manufacturer, model and description are edited on the Equipment record - <a asp-controller="Equipment" asp-action="Details" asp-route-id="@Model.EquipmentId">open Equipment</a>.</span>
         </div>
-        <a asp-action="Passport" asp-route-id="@Model.InstrumentId" class="btn btn-sm btn-outline-secondary"><i class="bi bi-card-text"></i> @Localizer["Passport"]</a>
+        <pems-button tone="neutral" size="small" outline="true" as="a" asp-action="Passport" asp-route-id="@Model.InstrumentId"><i class="bi bi-card-text"></i> @Localizer["Passport"]</pems-button>
     </div>
 </div>
 
@@ -78,6 +78,6 @@
         </div>
 
         <pems-button tone="primary" type="submit">@Localizer["Save"]</pems-button>
-        <a asp-action="Passport" asp-route-id="@Model.InstrumentId" class="btn btn-outline-secondary">Cancel</a>
+        <pems-button tone="neutral" outline="true" as="a" asp-action="Passport" asp-route-id="@Model.InstrumentId">Cancel</pems-button>
     </form>
 </div>

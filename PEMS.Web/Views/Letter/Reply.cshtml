@@ -92,7 +92,7 @@
 
         <div class="mt-4">
             <pems-button tone="primary" type="submit"><i class="bi bi-reply-fill"></i> Send Reply</pems-button>
-            <a asp-action="Details" asp-route-id="@parentLetterId" class="btn btn-outline-secondary">Cancel</a>
+            <pems-button tone="neutral" outline="true" as="a" asp-action="Details" asp-route-id="@parentLetterId">Cancel</pems-button>
         </div>
     </form>
 </div>

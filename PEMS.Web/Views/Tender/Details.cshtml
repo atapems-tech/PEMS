@@ -56,7 +56,7 @@
         }
         @if (Model.ContractId != null)
         {
-            <a asp-controller="Contract" asp-action="Details" asp-route-id="@Model.ContractId" class="btn btn-outline-success btn-sm">@Localizer["View Contract"]</a>
+            <pems-button tone="success" size="small" outline="true" as="a" asp-controller="Contract" asp-action="Details" asp-route-id="@Model.ContractId">@Localizer["View Contract"]</pems-button>
         }
     </div>
 </div>

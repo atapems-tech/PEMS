@@ -5,7 +5,7 @@
 
 <div class="d-flex justify-content-between align-items-center mb-3">
     <h5 class="mb-0"><i class="bi bi-clipboard-x"></i> @Localizer["گزارش تحلیل شکاف - رابطه‌های ناقص تجهیزات"]</h5>
-    <a asp-action="Index" class="btn btn-outline-secondary btn-sm">@Localizer["بازگشت به Explorer"]</a>
+    <pems-button tone="neutral" size="small" outline="true" as="a" asp-action="Index">@Localizer["بازگشت به Explorer"]</pems-button>
 </div>
 
 <p class="text-muted small">
@@ -62,7 +62,7 @@
                     <td class="text-center">@(item.HasVdrItems ? "✅" : "❌")</td>
                     <td class="text-center">@(item.HasMR ? "✅" : "❌")</td>
                     <td class="text-center">@(item.HasWorkOrders ? "✅" : "❌")</td>
-                    <td><a asp-action="Equipment" asp-route-id="@item.EquipmentId" class="btn btn-sm btn-outline-primary"><i class="bi bi-diagram-3"></i></a></td>
+                    <td><pems-button tone="primary" size="small" outline="true" as="a" asp-action="Equipment" asp-route-id="@item.EquipmentId"><i class="bi bi-diagram-3"></i></pems-button></td>
                 </tr>
             }
         </tbody>

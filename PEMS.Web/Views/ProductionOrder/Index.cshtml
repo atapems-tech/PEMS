@@ -16,7 +16,7 @@
             <input type="text" name="search" value="@ViewBag.Search" class="form-control form-control-sm" placeholder="Order # or material..." style="width:220px" />
             <pems-button tone="neutral" size="small" outline="true" type="submit"><i class="bi bi-search"></i></pems-button>
         </form>
-        <a asp-action="Create" class="btn btn-pems-solid btn-sm"><i class="bi bi-plus-lg"></i> New Production Order</a>
+        <pems-button tone="primary" size="small" as="a" asp-action="Create"><i class="bi bi-plus-lg"></i> New Production Order</pems-button>
     </div>
 
     <div class="table-scroll-area" style="max-height:65vh; overflow-y:auto;">
@@ -39,7 +39,7 @@
                         <td class="small">@(o.PlannedStartDate?.ToString("yyyy-MM-dd"))</td>
                         <td class="small">@(o.PlannedFinishDate?.ToString("yyyy-MM-dd"))</td>
                         <td>@o.RunCount</td>
-                        <td class="text-end"><a asp-action="Details" asp-route-id="@o.ProductionOrderId" class="btn btn-sm btn-outline-primary">Open</a></td>
+                        <td class="text-end"><pems-button tone="primary" size="small" outline="true" as="a" asp-action="Details" asp-route-id="@o.ProductionOrderId">Open</pems-button></td>
                     </tr>
                 }
             </tbody>

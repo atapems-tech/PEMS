@@ -30,12 +30,12 @@
 
 <div class="d-flex justify-content-end align-items-center mb-2">
     <div>
-        <a asp-action="Index" class="btn btn-outline-secondary btn-sm">Fleet Reliability</a>
-        <a asp-action="Intelligence" class="btn btn-outline-secondary btn-sm">@Localizer["Maintenance Intelligence"]</a>
-        <a asp-action="PredictiveMaintenance" class="btn btn-outline-secondary btn-sm">@Localizer["Predictive"]</a>
-        <a asp-action="ConditionMonitoring" class="btn btn-outline-secondary btn-sm">@Localizer["Condition Monitoring"]</a>
-        <a asp-action="CBMDashboard" class="btn btn-outline-secondary btn-sm">@Localizer["CBM Dashboard"]</a>
-        <a asp-action="AiInsights" class="btn btn-outline-secondary btn-sm">@Localizer["AI Insights"]</a>
+        <pems-button tone="neutral" size="small" outline="true" as="a" asp-action="Index">Fleet Reliability</pems-button>
+        <pems-button tone="neutral" size="small" outline="true" as="a" asp-action="Intelligence">@Localizer["Maintenance Intelligence"]</pems-button>
+        <pems-button tone="neutral" size="small" outline="true" as="a" asp-action="PredictiveMaintenance">@Localizer["Predictive"]</pems-button>
+        <pems-button tone="neutral" size="small" outline="true" as="a" asp-action="ConditionMonitoring">@Localizer["Condition Monitoring"]</pems-button>
+        <pems-button tone="neutral" size="small" outline="true" as="a" asp-action="CBMDashboard">@Localizer["CBM Dashboard"]</pems-button>
+        <pems-button tone="neutral" size="small" outline="true" as="a" asp-action="AiInsights">@Localizer["AI Insights"]</pems-button>
     </div>
 </div>
 <p class="text-muted small">

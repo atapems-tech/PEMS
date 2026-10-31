@@ -4,7 +4,7 @@
 @inject IStringLocalizer<SharedResource> Localizer
 
 <div class="d-flex justify-content-end align-items-center mb-2">
-    <a asp-controller="Reliability" asp-action="ConditionMonitoring" class="btn btn-outline-secondary btn-sm">@Localizer["← Condition Monitoring"]</a>
+    <pems-button tone="neutral" size="small" outline="true" as="a" asp-controller="Reliability" asp-action="ConditionMonitoring">@Localizer["← Condition Monitoring"]</pems-button>
 </div>
 
 <div class="content-card mb-3">
@@ -48,7 +48,7 @@
                     <td class="text-end">@if (b.ConflictCount > 0) { <pems-badge tone="danger">@b.ConflictCount</pems-badge> } else { @b.ConflictCount }</td>
                     <td><span class="badge @(b.Status == "Committed" ? "bg-success" : "bg-secondary")">@b.Status</span></td>
                     <td>
-                        <a asp-action="Review" asp-route-batchId="@b.ConditionReadingImportBatchId" class="btn btn-sm btn-outline-primary">@Localizer["Review"]</a>
+                        <pems-button tone="primary" size="small" outline="true" as="a" asp-action="Review" asp-route-batchId="@b.ConditionReadingImportBatchId">@Localizer["Review"]</pems-button>
                     </td>
                 </tr>
             }

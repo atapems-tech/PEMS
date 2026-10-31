@@ -2,9 +2,9 @@
 @using PEMS.Web.Resources
 @inject IStringLocalizer<SharedResource> Localizer
 <div class="d-flex justify-content-end align-items-center mb-2">
-    <a asp-action="RegisterIncoming" class="btn btn-pems-solid btn-sm">
+    <pems-button tone="primary" size="small" as="a" asp-action="RegisterIncoming">
         <i class="bi bi-envelope-plus"></i> @Localizer["ثبت مکاتبه‌ی وارده"]
-    </a>
+    </pems-button>
 </div>
 
 <div class="row g-3 mb-3">

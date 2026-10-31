@@ -498,7 +498,7 @@
                 <h2 class="vs-section__title"><i class="bi bi-paperclip"></i> @Localizer["Ed_TabFiles"]</h2>
                 <p class="small text-muted mb-2">@((Model.Attachments?.Count ?? 0) == 0 ? Localizer["Ed_NoFilesHint"].Value : string.Format(Localizer["Ed_FilesCount"].Value, Model.Attachments!.Count))</p>
                 <div class="d-flex flex-wrap gap-2">
-                    <a asp-action="UploadAttachment" asp-route-id="@Model.DocumentId" class="btn btn-sm btn-outline-secondary"><i class="bi bi-upload" aria-hidden="true"></i> @Localizer["Ed_Upload"]</a>
+                    <pems-button tone="neutral" size="small" outline="true" as="a" asp-action="UploadAttachment" asp-route-id="@Model.DocumentId"><i class="bi bi-upload" aria-hidden="true"></i> @Localizer["Ed_Upload"]</pems-button>
                     @if ((Model.Attachments?.Count ?? 0) > 0)
                     {
                         <pems-button tone="neutral" size="small" outline="true" type="button" data-bs-toggle="tab" data-bs-target="#tab-attachments">@Localizer["Ed_ViewAll"]</pems-button>
@@ -514,9 +514,9 @@
         <div class="vs-section">
             <div class="d-flex justify-content-between align-items-center mb-3">
                 <h6 class="mb-0">@Localizer["Ed_SecFiles"]</h6>
-                <a asp-action="UploadAttachment" asp-route-id="@Model.DocumentId" class="btn btn-sm btn-pems-solid">
+                <pems-button tone="primary" size="small" as="a" asp-action="UploadAttachment" asp-route-id="@Model.DocumentId">
                     <i class="bi bi-upload"></i> @Localizer["Ed_Upload"]
-                </a>
+                </pems-button>
             </div>
 
             @if (Model.Attachments != null && Model.Attachments.Any())
@@ -572,11 +572,11 @@
                                 <td class="small text-muted">@file.UploadDate.ToString("yyyy-MM-dd")</td>
                                 <td class="text-end">
                                     <div class="d-flex gap-1 justify-content-end flex-wrap">
-                                        <a asp-action="DownloadAttachment" asp-route-id="@file.AttachmentId" class="btn btn-sm btn-outline-primary" data-bs-toggle="tooltip" title="Download attachment" aria-label="Download @file.FileName"><i class="bi bi-download"></i></a>
+                                        <pems-button tone="primary" size="small" outline="true" as="a" asp-action="DownloadAttachment" asp-route-id="@file.AttachmentId" data-bs-toggle="tooltip" title="Download attachment" aria-label="Download @file.FileName"><i class="bi bi-download"></i></pems-button>
                                         @if (file.AIStatus == "Completed")
                                         {
-                                            <a asp-controller="AIExtraction" asp-action="Review" asp-route-attachmentId="@file.AttachmentId" class="btn btn-sm btn-outline-warning">AI Data</a>
-                                            <a asp-controller="EngineeringDocumentIntelligence" asp-action="Review" asp-route-id="@Model.DocumentId" class="btn btn-sm btn-outline-secondary">Intelligence</a>
+                                            <pems-button tone="warning" size="small" outline="true" as="a" asp-controller="AIExtraction" asp-action="Review" asp-route-attachmentId="@file.AttachmentId">AI Data</pems-button>
+                                            <pems-button tone="neutral" size="small" outline="true" as="a" asp-controller="EngineeringDocumentIntelligence" asp-action="Review" asp-route-id="@Model.DocumentId">Intelligence</pems-button>
                                         }
                                         <form asp-controller="OCRProcessing" asp-action="Retry" asp-route-id="@file.AttachmentId" method="post" class="d-inline">
                                             <pems-button tone="neutral" size="small" outline="true" data-bs-toggle="tooltip" title="Re-analyze" aria-label="Re-analyze @file.FileName"><i class="bi bi-arrow-repeat"></i></pems-button>
@@ -820,7 +820,7 @@
                                 <td>@l.Subject</td>
                                 <td class="small text-muted">@l.LetterDate.ToString("yyyy-MM-dd")</td>
                                 <td><pems-badge tone="info">@l.Status</pems-badge></td>
-                                <td><a asp-controller="Letter" asp-action="Details" asp-route-id="@l.LetterId" class="btn btn-sm btn-outline-secondary" data-bs-toggle="tooltip" title="View letter" aria-label="View letter @l.LetterNumber"><i class="bi bi-eye"></i></a></td>
+                                <td><pems-button tone="neutral" size="small" outline="true" as="a" asp-controller="Letter" asp-action="Details" asp-route-id="@l.LetterId" data-bs-toggle="tooltip" title="View letter" aria-label="View letter @l.LetterNumber"><i class="bi bi-eye"></i></pems-button></td>
                             </tr>
                         }
                     </tbody>
@@ -853,7 +853,7 @@
                                 <td>@t.Purpose</td>
                                 <td class="small text-muted">@(t.SentDate?.ToString("yyyy-MM-dd") ?? t.TransmittalDate.ToString("yyyy-MM-dd"))</td>
                                 <td><span class="vs-pill @PEMS.Web.Helpers.VdrUi.TransmittalTone(t.Status)">@VdrUi.Loc(Localizer, "St_", t.Status)</span></td>
-                                <td><a asp-controller="Transmittal" asp-action="Details" asp-route-id="@t.TransmittalId" class="btn btn-sm btn-outline-secondary" data-bs-toggle="tooltip" title="View transmittal" aria-label="View transmittal @t.TransmittalNo"><i class="bi bi-eye"></i></a></td>
+                                <td><pems-button tone="neutral" size="small" outline="true" as="a" asp-controller="Transmittal" asp-action="Details" asp-route-id="@t.TransmittalId" data-bs-toggle="tooltip" title="View transmittal" aria-label="View transmittal @t.TransmittalNo"><i class="bi bi-eye"></i></pems-button></td>
                             </tr>
                         }
                     </tbody>

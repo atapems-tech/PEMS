@@ -9,7 +9,7 @@
 
 <div class="d-flex justify-content-between align-items-center mb-3">
     <h5 class="mb-0"><i class="bi bi-pie-chart"></i> @Localizer["Rcm_Coverage"]</h5>
-    <a asp-action="Index" class="btn btn-outline-secondary btn-sm">@Localizer["Rcm_Back"]</a>
+    <pems-button tone="neutral" size="small" outline="true" as="a" asp-action="Index">@Localizer["Rcm_Back"]</pems-button>
 </div>
 <p class="text-muted small">@Localizer["Rcm_CoverageHint"]</p>
 
@@ -61,7 +61,7 @@
 <div class="content-card">
     <div class="d-flex justify-content-between align-items-center mb-2">
         <h6 class="small fw-bold mb-0">@Localizer["Rcm_CriticalWithoutStrategy"] (@Model.CriticalWithoutStrategyTotal.ToString("N0"))</h6>
-        <a asp-action="ExportUncovered" class="btn btn-sm btn-outline-secondary"><i class="bi bi-download"></i> CSV</a>
+        <pems-button tone="neutral" size="small" outline="true" as="a" asp-action="ExportUncovered"><i class="bi bi-download"></i> CSV</pems-button>
     </div>
     <table class="table table-sm table-enterprise">
         <thead><tr><th>@Localizer["Rcm_Tag"]</th><th>@Localizer["Rcm_EquipmentName"]</th><th>@Localizer["Rcm_EquipmentClass"]</th><th>@Localizer["Rcm_AreaUnit"]</th></tr></thead>

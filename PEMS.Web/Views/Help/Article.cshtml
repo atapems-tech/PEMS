@@ -58,7 +58,7 @@
                 <div class="d-flex flex-wrap gap-2">
                     @foreach (var r in Model.RelatedArticles)
                     {
-                        <a asp-action="Article" asp-route-code="@r.Code" class="btn btn-sm btn-outline-secondary">@r.Title</a>
+                        <pems-button tone="neutral" size="small" outline="true" as="a" asp-action="Article" asp-route-code="@r.Code">@r.Title</pems-button>
                     }
                 </div>
             </div>

@@ -38,7 +38,7 @@
 
         <div class="d-flex gap-2 mt-3">
             <pems-button tone="primary" type="submit"><i class="bi bi-check-lg"></i> Save Layout</pems-button>
-            <a asp-controller="Home" asp-action="Index" class="btn btn-outline-secondary">@Localizer["Back to Dashboard"]</a>
+            <pems-button tone="neutral" outline="true" as="a" asp-controller="Home" asp-action="Index">@Localizer["Back to Dashboard"]</pems-button>
         </div>
     </form>
 

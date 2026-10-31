@@ -5,9 +5,9 @@
 
 <div class="d-flex justify-content-end align-items-center mb-2">
     <div>
-        <a asp-action="Index" class="btn btn-outline-secondary btn-sm"><i class="bi bi-list-check"></i> Assessment Queue</a>
-        <a asp-controller="EquipmentCriticality" asp-action="Index" class="btn btn-outline-secondary btn-sm"><i class="bi bi-clock-history"></i> Published Criticality</a>
-        <a asp-controller="CmmsReadiness" asp-action="Index" class="btn btn-outline-secondary btn-sm"><i class="bi bi-clipboard-check"></i> Activation Backlog</a>
+        <pems-button tone="neutral" size="small" outline="true" as="a" asp-action="Index"><i class="bi bi-list-check"></i> Assessment Queue</pems-button>
+        <pems-button tone="neutral" size="small" outline="true" as="a" asp-controller="EquipmentCriticality" asp-action="Index"><i class="bi bi-clock-history"></i> Published Criticality</pems-button>
+        <pems-button tone="neutral" size="small" outline="true" as="a" asp-controller="CmmsReadiness" asp-action="Index"><i class="bi bi-clipboard-check"></i> Activation Backlog</pems-button>
     </div>
 </div>
 <p class="text-muted small">

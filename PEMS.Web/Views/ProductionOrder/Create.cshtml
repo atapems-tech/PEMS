@@ -78,7 +78,7 @@
 
         <div class="mt-3 d-flex gap-2">
             <pems-button tone="primary" type="submit"><i class="bi bi-check-lg"></i> Create (Draft)</pems-button>
-            <a asp-action="Index" class="btn btn-outline-secondary">@Localizer["Cancel"]</a>
+            <pems-button tone="neutral" outline="true" as="a" asp-action="Index">@Localizer["Cancel"]</pems-button>
         </div>
     </form>
 </div>

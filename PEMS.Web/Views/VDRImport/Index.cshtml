@@ -55,7 +55,7 @@
                     <td>
                         @if (b.Status == "Staged")
                         {
-                            <a asp-action="Review" asp-route-batchId="@b.VDRImportBatchId" class="btn btn-sm btn-outline-primary">Review</a>
+                            <pems-button tone="primary" size="small" outline="true" as="a" asp-action="Review" asp-route-batchId="@b.VDRImportBatchId">Review</pems-button>
                         }
                     </td>
                 </tr>

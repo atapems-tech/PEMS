@@ -38,8 +38,8 @@
                             { <pems-badge tone="success">0</pems-badge> }
                         </td>
                         <td>
-                            <a asp-action="Review" asp-route-attachmentId="@item.Attachment.AttachmentId"
-                               class="btn btn-sm btn-pems-solid">Review</a>
+                            <pems-button tone="primary" size="small" as="a" asp-action="Review" asp-route-attachmentId="@item.Attachment.AttachmentId"
+                              >Review</pems-button>
                         </td>
                     </tr>
                 }

@@ -17,9 +17,9 @@
 <div class="d-flex justify-content-between align-items-center mb-3">
     <h5 class="mb-0"><i class="bi bi-person-badge"></i> Equipment Intelligence — @Model.TagNumber <span class="text-muted small">@Model.Name</span></h5>
     <div>
-        <a asp-action="Details" asp-route-id="@Model.EquipmentId" class="btn btn-outline-secondary btn-sm">Reliability Detail</a>
-        <a asp-action="Ram" asp-route-id="@Model.EquipmentId" class="btn btn-outline-primary btn-sm">RAM / Weibull</a>
-        <a asp-controller="EquipmentCriticality" asp-action="Index" class="btn btn-outline-secondary btn-sm">@Localizer["Criticality"]</a>
+        <pems-button tone="neutral" size="small" outline="true" as="a" asp-action="Details" asp-route-id="@Model.EquipmentId">Reliability Detail</pems-button>
+        <pems-button tone="primary" size="small" outline="true" as="a" asp-action="Ram" asp-route-id="@Model.EquipmentId">RAM / Weibull</pems-button>
+        <pems-button tone="neutral" size="small" outline="true" as="a" asp-controller="EquipmentCriticality" asp-action="Index">@Localizer["Criticality"]</pems-button>
     </div>
 </div>
 <p class="text-muted small">

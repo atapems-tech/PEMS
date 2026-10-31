@@ -12,5 +12,5 @@
         <h6 class="alert-heading"><i class="bi bi-exclamation-triangle-fill"></i> @errorCode</h6>
         <p class="mb-0">@message</p>
     </pems-alert>
-    <a asp-action="Index" class="btn btn-outline-secondary btn-sm mt-3">@Localizer["← Back to Barcode"]</a>
+    <pems-button tone="neutral" size="small" outline="true" css="mt-3" as="a" asp-action="Index">@Localizer["← Back to Barcode"]</pems-button>
 </div>

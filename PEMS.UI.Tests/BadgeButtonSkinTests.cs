@@ -77,10 +77,10 @@ public sealed class ButtonTagHelperTests
     [Fact]
     public void A_button_keeps_its_attributes_and_content_and_gets_the_classes()
         => Assert.Equal("<button class=\"btn btn-sm btn-outline-secondary w-100\" type=\"submit\" id=\"go\"><i class=\"bi bi-x\"></i> Cancel</button>",
-            Run(new PemsButtonTagHelper { Tone = "neutral", Size = "small", Outline = true, Css = "w-100" },
+            Run(new PemsButtonTagHelper(null!) { Tone = "neutral", Size = "small", Outline = true, Css = "w-100" },
                 [new("type", "submit"), new("id", "go")], "<i class=\"bi bi-x\"></i> Cancel"));
 
     [Fact]
     public void A_link_is_written_with_as_a()
-        => Assert.Equal("<a class=\"btn btn-pems-solid\" href=\"/x\">Open</a>", Run(new PemsButtonTagHelper { As = "a" }, [new("href", "/x")], "Open"));
+        => Assert.Equal("<a class=\"btn btn-pems-solid\" href=\"/x\">Open</a>", Run(new PemsButtonTagHelper(null!) { As = "a" }, [new("href", "/x")], "Open"));
 }

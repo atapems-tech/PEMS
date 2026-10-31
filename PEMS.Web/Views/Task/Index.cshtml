@@ -19,9 +19,9 @@
     <a asp-action="Index" asp-route-tab="followup" class="btn btn-sm @(tab == "followup" ? "btn-pems-solid" : "btn-outline-secondary")" aria-current="@(tab == "followup" ? "page" : null)">
         <i class="bi bi-eye" aria-hidden="true"></i> @Localizer["Tm_Tab_Followup"]
     </a>
-    <a asp-controller="TaskManager" asp-action="Index" class="btn btn-sm btn-outline-secondary ms-auto">
+    <pems-button tone="neutral" size="small" outline="true" css="ms-auto" as="a" asp-controller="TaskManager" asp-action="Index">
         <i class="bi bi-kanban" aria-hidden="true"></i> @Localizer["Tm_Title"]
-    </a>
+    </pems-button>
 </div>
 
 <div class="content-card mb-3">
@@ -83,7 +83,7 @@
                             @if (t.WorkSpaceId != null)
                             {
                                 @* وضعیت وظیفه‌ی فضا از طرح وضعیت همان فضا تغییر می‌کند *@
-                                <a asp-action="Details" asp-route-id="@t.TaskItemId" class="btn btn-sm btn-outline-secondary">@Localizer["Tm_Open"]</a>
+                                <pems-button tone="neutral" size="small" outline="true" as="a" asp-action="Details" asp-route-id="@t.TaskItemId">@Localizer["Tm_Open"]</pems-button>
                             }
                             else if (canEdit && TaskItemStatuses.Transitions.TryGetValue(t.Status, out var targets) && targets.Length > 0)
                             {
