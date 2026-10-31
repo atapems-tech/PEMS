@@ -1,61 +1,95 @@
 @using Microsoft.Extensions.Localization
 @using PEMS.Web.Resources
+@using PEMS.Web.Helpers
 @inject IStringLocalizer<SharedResource> Localizer
 @{
     ViewData["HidePageTitle"] = true;
     var articles = (IReadOnlyList<PEMS.Application.DTOs.HelpArticleSummaryDto>)ViewBag.Articles;
-    var categories = (IEnumerable<dynamic>)ViewBag.Categories;
+    var categories = ((IEnumerable<dynamic>)ViewBag.Categories).ToList();
+    var categoryId = (int?)ViewBag.SelectedCategoryId;
+    var isPublished = (bool?)ViewBag.SelectedIsPublished;
+    var categoryName = categoryId.HasValue ? (string?)categories.FirstOrDefault(c => (int)c.HelpCategoryId == categoryId.Value)?.NameEn : null;
+    var filterCount = (categoryId.HasValue ? 1 : 0) + (isPublished.HasValue ? 1 : 0);
+    string PublishedText(bool p) => p ? Localizer["HlL_Published"].Value : Localizer["HlL_Draft"].Value;
+    string Without(string key)
+    {
+        var parts = new List<string>();
+        if (categoryId.HasValue && key != "category") parts.Add($"categoryId={categoryId}");
+        if (isPublished.HasValue && key != "published") parts.Add($"isPublished={isPublished.Value.ToString().ToLowerInvariant()}");
+        return Url.Action("Index") + (parts.Count > 0 ? "?" + string.Join("&", parts) : "");
+    }
 }
 
-<div class="content-card mb-3">
-    <div class="d-flex justify-content-between align-items-center">
-        <h5 class="mb-0"><i class="bi bi-life-preserver"></i> @Localizer["Help Administration"]</h5>
-        <a asp-action="Create" class="btn btn-sm btn-pems-solid"><i class="bi bi-plus-lg"></i> @Localizer["New Article"]</a>
-    </div>
-    <form method="get" class="row g-2 mt-2">
-        <div class="col-md-3">
-            <select name="categoryId" class="form-select form-select-sm" onchange="this.form.submit()">
-                <option value="">@Localizer["All Categories"]</option>
-                @foreach (var c in categories) { <option value="@c.HelpCategoryId" selected="@(c.HelpCategoryId == (int?)ViewBag.SelectedCategoryId)">@c.NameEn</option> }
-            </select>
-        </div>
-        <div class="col-md-3">
-            <select name="isPublished" class="form-select form-select-sm" onchange="this.form.submit()">
-                <option value="">@Localizer["All statuses"]</option>
-                <option value="true" selected="@((bool?)ViewBag.SelectedIsPublished == true)">Published</option>
-                <option value="false" selected="@((bool?)ViewBag.SelectedIsPublished == false)">Draft</option>
-            </select>
-        </div>
-    </form>
-</div>
+@section Styles {
+    <link rel="stylesheet" href="~/css/pems-workspace.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/_content/PEMS.UI/pems-list.css" asp-append-version="true" />
+}
 
-<div class="content-card">
-    <table class="table table-enterprise">
-        <thead><tr><th>@Localizer["Code"]</th><th>@Localizer["Category"]</th><th>@Localizer["Type"]</th><th>@Localizer["Title (EN)"]</th><th>@Localizer["Help Key"]</th><th>@Localizer["Status"]</th><th></th></tr></thead>
-        <tbody>
-            @foreach (var a in articles)
-            {
-                <tr>
-                    <td class="small font-monospace">@a.Code</td>
-                    <td class="small">@a.CategoryName</td>
-                    <td><span class="badge bg-light text-dark border">@a.ArticleType</span></td>
-                    <td><a asp-action="Edit" asp-route-id="@a.HelpArticleId">@a.Title</a></td>
-                    <td class="small text-muted">@(a.HelpKey ?? "—")</td>
-                    <td><span class="badge @(a.IsPublished ? "bg-success" : "bg-secondary")">@(a.IsPublished ? "Published" : "Draft")</span></td>
-                    <td class="text-end">
-                        <form asp-action="SetPublished" asp-route-id="@a.HelpArticleId" method="post" class="d-inline">
-                            <input type="hidden" name="isPublished" value="@(!a.IsPublished)" />
-                            <button type="submit" class="btn btn-sm btn-outline-@(a.IsPublished ? "secondary" : "success")">
-                                @(a.IsPublished ? "Unpublish" : "Publish")
-                            </button>
-                        </form>
-                        <form asp-action="Delete" asp-route-id="@a.HelpArticleId" method="post" class="d-inline" onsubmit="return confirm('Delete this Help article permanently?')">
-                            <button type="submit" class="btn btn-sm btn-outline-danger"><i class="bi bi-trash"></i></button>
-                        </form>
-                    </td>
-                </tr>
-            }
-        </tbody>
-    </table>
-    @if (!articles.Any()) { <p class="text-muted text-center py-4">No Help articles match this filter.</p> }
-</div>
+@* SCRUM-337 W4b: built from the PEMS.UI list-page component; category and published are filters with chips; publish /
+   unpublish and delete stay on each article. *@
+<pems-list-page texts="@ListPageTexts.From(Localizer)">
+    @if (TempData["Message"] != null) { <pems-alert tone="success" css="py-2 px-3 small">@TempData["Message"]</pems-alert> }
+    @if (TempData["Error"] != null) { <pems-alert tone="danger" css="py-2 px-3 small">@TempData["Error"]</pems-alert> }
+
+    <pems-list-panel>
+
+        <pems-list-toolbar heading="@Localizer["Help Administration"]" heading-title="@Localizer["HlL_Hint"]" total="@articles.Count">
+            <pems-list-tools>
+                <pems-list-filters form-id="hlFilterForm" action="@Url.Action("Index")" count="@filterCount" reset-href="@Url.Action("Index")">
+                    <pems-list-filter-select id="hlFilterCategory" name="categoryId" label="@Localizer["MiL_Category"]" value="@categoryId?.ToString()"
+                                             all-text="@Localizer["MiL_AllCategories"]" items="@categories.Select(c => new SelectListItem((string)c.NameEn, ((int)c.HelpCategoryId).ToString()))" />
+                    <pems-list-filter-select id="hlFilterPublished" name="isPublished" label="@Localizer["Ed_Status"]" value="@isPublished?.ToString().ToLowerInvariant()"
+                                             all-text="@Localizer["Eq_AllStatuses"]" items="@(new[] { new SelectListItem(PublishedText(true), "true"), new SelectListItem(PublishedText(false), "false") })" />
+                </pems-list-filters>
+                <pems-list-new href="@Url.Action("Create")" text="@Localizer["New Article"]" />
+            </pems-list-tools>
+        </pems-list-toolbar>
+
+        <pems-list-chips reset-href="@Url.Action("Index")">
+            @if (categoryId.HasValue) { <pems-list-chip label="@Localizer["MiL_Category"]" value="@(categoryName ?? categoryId.ToString())" remove-href="@Without("category")" /> }
+            @if (isPublished.HasValue) { <pems-list-chip label="@Localizer["Ed_Status"]" value="@PublishedText(isPublished.Value)" remove-href="@Without("published")" /> }
+        </pems-list-chips>
+
+        <pems-list-grid>
+            <pems-list-table empty="@(!articles.Any())" empty-text="@Localizer["HlL_Empty"]">
+                <thead>
+                    <tr>
+                        <th style="width:130px">@Localizer["MiL_Code"]</th>
+                        <th style="width:150px" class="vs-hide-md">@Localizer["MiL_Category"]</th>
+                        <th style="width:110px">@Localizer["Ed_Type"]</th>
+                        <th>@Localizer["Title (EN)"]</th>
+                        <th style="width:180px" class="vs-hide-md">@Localizer["Help Key"]</th>
+                        <th style="width:110px">@Localizer["Ed_Status"]</th>
+                        <th style="width:90px"><span class="visually-hidden">@Localizer["Ed_Actions"]</span></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var a in articles)
+                    {
+                        <tr class="lp-row">
+                            <td class="small"><span class="vs-mono">@a.Code</span></td>
+                            <td class="small vs-hide-md">@a.CategoryName</td>
+                            <td><span class="vs-pill vs-pill--neutral">@a.ArticleType</span></td>
+                            <td><a asp-action="Edit" asp-route-id="@a.HelpArticleId" class="lp-subject">@a.Title</a></td>
+                            <td class="small text-muted vs-hide-md">@(a.HelpKey ?? "—")</td>
+                            <td><span class="vs-pill @(a.IsPublished ? "vs-pill--success" : "vs-pill--neutral")">@PublishedText(a.IsPublished)</span></td>
+                            <td class="text-end text-nowrap">
+                                <form asp-action="SetPublished" asp-route-id="@a.HelpArticleId" method="post" class="d-inline">
+                                    <input type="hidden" name="isPublished" value="@(!a.IsPublished)" />
+                                    <button type="submit" class="lp-act lp-act--always @(a.IsPublished ? "" : "text-success")" title="@(a.IsPublished ? Localizer["HlL_Unpublish"] : Localizer["HlL_Publish"])" aria-label="@(a.IsPublished ? Localizer["HlL_Unpublish"] : Localizer["HlL_Publish"])"><i class="bi @(a.IsPublished ? "bi-eye-slash" : "bi-send-check")" aria-hidden="true"></i></button>
+                                </form>
+                                <form asp-action="Delete" asp-route-id="@a.HelpArticleId" method="post" class="d-inline" onsubmit="return confirm(this.dataset.confirm)" data-confirm="@Localizer["HlL_ConfirmDelete"]">
+                                    <button type="submit" class="lp-act lp-act--always text-danger" title="@Localizer["Ed_Delete"]" aria-label="@Localizer["Ed_Delete"]"><i class="bi bi-trash" aria-hidden="true"></i></button>
+                                </form>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </pems-list-table>
+        </pems-list-grid>
+    </pems-list-panel>
+</pems-list-page>
+
+@section Scripts {
+    <script src="~/_content/PEMS.UI/pems-list.js" asp-append-version="true"></script>
+}

@@ -1,47 +1,67 @@
 @model List<PEMS.Application.DTOs.StorageRouteDto>
 @using Microsoft.Extensions.Localization
 @using PEMS.Web.Resources
+@using PEMS.Web.Helpers
 @inject IStringLocalizer<SharedResource> Localizer
 
-<div class="admin-page-shell">
-    <div class="admin-hero">
-        <div class="d-flex align-items-center gap-3">
-            <div><p>Which module / document type is saved to which Storage Provider.</p></div>
-        </div>
-        <a asp-action="Create" class="btn btn-pems-solid"><i class="bi bi-plus-lg me-1"></i> @Localizer["New Route"]</a>
-    </div>
+@section Styles {
+    <link rel="stylesheet" href="~/css/pems-workspace.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/_content/PEMS.UI/pems-list.css" asp-append-version="true" />
+}
 
-    @if (TempData["Message"] != null) { <div class="alert alert-success">@TempData["Message"]</div> }
-    @if (TempData["Error"] != null) { <div class="alert alert-danger">@TempData["Error"]</div> }
+@* SCRUM-337 W4b: built from the PEMS.UI list-page component; edit and delete stay on each route. *@
+<pems-list-page texts="@ListPageTexts.From(Localizer)">
+    @if (TempData["Message"] != null) { <pems-alert tone="success" css="py-2 px-3 small">@TempData["Message"]</pems-alert> }
+    @if (TempData["Error"] != null) { <pems-alert tone="danger" css="py-2 px-3 small">@TempData["Error"]</pems-alert> }
 
-    <div class="content-card">
-        <div class="table-responsive">
-            <table class="table table-enterprise">
-                <thead><tr><th>@Localizer["Module"]</th><th>@Localizer["Document Type"]</th><th>@Localizer["Storage Provider"]</th><th>@Localizer["Relative Root"]</th><th>@Localizer["Priority"]</th><th>@Localizer["Default"]</th><th>@Localizer["Status"]</th><th>@Localizer["Actions"]</th></tr></thead>
+    <pems-list-panel>
+
+        <pems-list-toolbar heading="@Localizer["SrtL_Title"]" heading-title="@Localizer["SrtL_Hint"]" total="@Model.Count">
+            <pems-list-tools>
+                <a class="lp-icon-btn" asp-controller="StorageProviders" asp-action="Index" title="@Localizer["StpL_Title"]" aria-label="@Localizer["StpL_Title"]"><i class="bi bi-hdd-network" aria-hidden="true"></i></a>
+                <pems-list-new href="@Url.Action("Create")" text="@Localizer["SrtL_New"]" />
+            </pems-list-tools>
+        </pems-list-toolbar>
+
+        <pems-list-grid>
+            <pems-list-table empty="@(Model.Count == 0)" empty-text="@Localizer["SrtL_Empty"]">
+                <thead>
+                    <tr>
+                        <th style="width:150px">@Localizer["Module"]</th>
+                        <th style="width:150px">@Localizer["Document Type"]</th>
+                        <th style="width:180px">@Localizer["Storage Provider"]</th>
+                        <th class="vs-hide-md">@Localizer["Relative Root"]</th>
+                        <th style="width:80px" class="text-end">@Localizer["Priority"]</th>
+                        <th style="width:80px">@Localizer["Default"]</th>
+                        <th style="width:110px">@Localizer["Ed_Status"]</th>
+                        <th style="width:90px"><span class="visually-hidden">@Localizer["Ed_Actions"]</span></th>
+                    </tr>
+                </thead>
                 <tbody>
                 @foreach (var r in Model)
                 {
-                    <tr>
-                        <td><span class="row-primary">@r.Module</span></td>
-                        <td>@(r.DocumentType ?? "(any)")</td>
-                        <td>@r.StorageProviderName</td>
-                        <td class="text-muted small">@r.RelativeRootPath</td>
-                        <td>@r.Priority</td>
-                        <td>@if (r.IsDefault) { <i class="bi bi-star-fill text-warning"></i> }</td>
-                        <td>@if (r.IsEnabled) { <span class="badge bg-success-subtle text-success">@Localizer["Enabled"]</span> } else { <span class="badge bg-secondary-subtle text-secondary">@Localizer["Disabled"]</span> }</td>
-                        <td>
-                            <div class="d-flex gap-1">
-                                <a asp-action="Edit" asp-route-id="@r.StorageRouteId" class="btn btn-sm btn-outline-primary"><i class="bi bi-pencil"></i></a>
-                                <form asp-action="Delete" asp-route-id="@r.StorageRouteId" method="post" class="d-inline" onsubmit="return confirm('Delete this storage route?');">
-                                    <button type="submit" class="btn btn-sm btn-outline-danger"><i class="bi bi-trash"></i></button>
-                                </form>
-                            </div>
+                    <tr class="lp-row">
+                        <td><a asp-action="Edit" asp-route-id="@r.StorageRouteId" class="lp-subject">@r.Module</a></td>
+                        <td class="small">@(r.DocumentType ?? Localizer["SrtL_Any"].Value)</td>
+                        <td class="small">@r.StorageProviderName</td>
+                        <td class="small text-muted vs-hide-md"><span class="vs-num">@r.RelativeRootPath</span></td>
+                        <td class="text-end"><span class="vs-num">@r.Priority</span></td>
+                        <td>@if (r.IsDefault) { <i class="bi bi-star-fill text-warning" title="@Localizer["Default"]" aria-label="@Localizer["Default"]"></i> }</td>
+                        <td><span class="vs-pill @(r.IsEnabled ? "vs-pill--success" : "vs-pill--neutral")">@(r.IsEnabled ? Localizer["Enabled"] : Localizer["Disabled"])</span></td>
+                        <td class="text-end text-nowrap">
+                            <a asp-action="Edit" asp-route-id="@r.StorageRouteId" class="lp-act lp-act--always" title="@Localizer["Ed_Edit"]" aria-label="@Localizer["Ed_Edit"]"><i class="bi bi-pencil" aria-hidden="true"></i></a>
+                            <form asp-action="Delete" asp-route-id="@r.StorageRouteId" method="post" class="d-inline" onsubmit="return confirm(this.dataset.confirm)" data-confirm="@Localizer["SrtL_ConfirmDelete"]">
+                                <button type="submit" class="lp-act lp-act--always text-danger" title="@Localizer["Ed_Delete"]" aria-label="@Localizer["Ed_Delete"]"><i class="bi bi-trash" aria-hidden="true"></i></button>
+                            </form>
                         </td>
                     </tr>
                 }
                 </tbody>
-            </table>
-        </div>
-        @if (Model.Count == 0) { <div class="admin-empty"><i class="bi bi-signpost-2"></i><strong>No storage routes configured — uploads fall back to the global default Storage Provider</strong></div> }
-    </div>
-</div>
+            </pems-list-table>
+        </pems-list-grid>
+    </pems-list-panel>
+</pems-list-page>
+
+@section Scripts {
+    <script src="~/_content/PEMS.UI/pems-list.js" asp-append-version="true"></script>
+}
