@@ -1,49 +1,69 @@
 ﻿@model List<PEMS.Domain.Entities.Department>
 @using Microsoft.Extensions.Localization
 @using PEMS.Web.Resources
+@using PEMS.Web.Helpers
 @inject IStringLocalizer<SharedResource> Localizer
 @{
     var counts = (Dictionary<int, int>)ViewBag.EmployeeCounts;
 }
 
-<div class="content-card">
-    <div class="d-flex justify-content-end gap-2 mb-3">
-        <pems-button tone="primary" size="small" outline="true" as="a" asp-action="Export"><i class="bi bi-file-earmark-excel"></i> @Localizer["Export"]</pems-button>
-        <pems-button tone="primary" size="small" type="button" data-bs-toggle="modal" data-bs-target="#createDeptModal">
-            <i class="bi bi-plus-lg"></i> @Localizer["New Department"]
-        </pems-button>
-    </div>
-    <div class="table-responsive table-scroll-area" style="max-height:65vh; overflow-y:auto;">
-    <table class="table table-enterprise">
-        <thead><tr><th>@Localizer["Code"]</th><th>@Localizer["Name"]</th><th>@Localizer["Description"]</th><th>@Localizer["Employees"]</th><th>@Localizer["Status"]</th><th></th></tr></thead>
-        <tbody>
-            @foreach (var d in Model)
-            {
-                var empCount = counts.TryGetValue(d.DepartmentId, out var c) ? c : 0;
-                <tr>
-                    <td>@d.Code</td>
-                    <td>@d.Name</td>
-                    <td class="small text-muted">@d.Description</td>
-                    <td><a asp-controller="Employee" asp-action="Index" asp-route-departmentId="@d.DepartmentId" class="text-decoration-none"><pems-badge tone="neutral">@empCount</pems-badge></a></td>
-                    <td><pems-badge tone="@(d.IsActive ? "success" : "neutral")">@(d.IsActive ? "Active" : "Inactive")</pems-badge></td>
-                    <td class="text-end">
-                        <pems-button tone="neutral" size="small" outline="true" type="button" data-bs-toggle="modal" data-bs-target="#editDeptModal_@d.DepartmentId">
-                            <i class="bi bi-pencil"></i>
-                        </pems-button>
-                        <form asp-action="ToggleActive" method="post" class="d-inline">
-                            <input type="hidden" name="departmentId" value="@d.DepartmentId" />
-                            <button type="submit" class="btn btn-sm btn-outline-@(d.IsActive ? "danger" : "success")">
-                                <i class="bi @(d.IsActive ? "bi-slash-circle" : "bi-check-circle")"></i>
-                            </button>
-                        </form>
-                    </td>
-                </tr>
-            }
-        </tbody>
-    </table>
-    </div>
-    @if (!Model.Any()) { <p class="text-muted text-center py-4">No departments yet.</p> }
-</div>
+@section Styles {
+    <link rel="stylesheet" href="~/css/pems-workspace.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/_content/PEMS.UI/pems-list.css" asp-append-version="true" />
+}
+
+@* SCRUM-337 W4: built from the PEMS.UI list-page component; Export and New are toolbar tools; the create and edit
+   modals stay (they move to PemsModal with SCRUM-482). *@
+<pems-list-page texts="@ListPageTexts.From(Localizer)">
+    @if (TempData["Message"] != null) { <pems-alert tone="success" css="py-2 px-3 small">@TempData["Message"]</pems-alert> }
+    @if (TempData["Error"] != null) { <pems-alert tone="danger" css="py-2 px-3 small">@TempData["Error"]</pems-alert> }
+
+    <pems-list-panel>
+
+        <pems-list-toolbar heading="@Localizer["DpL_Title"]" heading-title="@Localizer["DpL_Hint"]" total="@Model.Count">
+            <pems-list-tools>
+                <pems-list-export href="@Url.Action("Export")" />
+                <pems-list-reset-columns grid-key="Department" />
+                <pems-list-new modal="createDeptModal" text="@Localizer["DpL_New"]" />
+            </pems-list-tools>
+        </pems-list-toolbar>
+
+        <pems-list-grid>
+            <pems-list-table grid-key="Department" empty="@(!Model.Any())" empty-text="@Localizer["DpL_Empty"]">
+                <thead>
+                    <tr>
+                        <th data-col-key="code" data-resizable="true" data-min-width="70" data-max-width="160" style="width:100px">@Localizer["MiL_Code"]</th>
+                        <th data-col-key="name" data-resizable="true" data-min-width="120" data-max-width="320" style="width:220px">@Localizer["DpL_Name"]</th>
+                        <th data-col-key="description" data-resizable="true" data-min-width="160" data-max-width="520" class="vs-hide-md">@Localizer["Ed_Description"]</th>
+                        <th data-col-key="employees" data-resizable="true" data-min-width="80" data-max-width="140" style="width:100px" class="text-end">@Localizer["DpL_Employees"]</th>
+                        <th data-col-key="status" data-resizable="true" data-min-width="80" data-max-width="140" style="width:110px">@Localizer["Ed_Status"]</th>
+                        <th data-col-key="actions" data-resizable="false" style="width:100px"><span class="visually-hidden">@Localizer["Ed_Actions"]</span></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var d in Model)
+                    {
+                        var empCount = counts.TryGetValue(d.DepartmentId, out var c) ? c : 0;
+                        <tr class="lp-row">
+                            <td class="lp-no"><span class="vs-num">@d.Code</span></td>
+                            <td><span class="vs-cell-strong">@d.Name</span></td>
+                            <td class="small text-muted vs-hide-md"><span class="vs-title-cell" title="@d.Description">@d.Description</span></td>
+                            <td class="text-end"><a asp-controller="Employee" asp-action="Index" asp-route-departmentId="@d.DepartmentId" class="lp-subject"><span class="vs-num">@empCount</span></a></td>
+                            <td><span class="vs-pill @(d.IsActive ? "vs-pill--success" : "vs-pill--neutral")">@(d.IsActive ? Localizer["UsL_Active"] : Localizer["UsL_Inactive"])</span></td>
+                            <td class="text-end text-nowrap">
+                                <button type="button" class="lp-act lp-act--always" data-bs-toggle="modal" data-bs-target="#editDeptModal_@d.DepartmentId" title="@Localizer["Ed_Edit"]" aria-label="@Localizer["Ed_Edit"] @d.Name"><i class="bi bi-pencil" aria-hidden="true"></i></button>
+                                <form asp-action="ToggleActive" method="post" class="d-inline">
+                                    <input type="hidden" name="departmentId" value="@d.DepartmentId" />
+                                    <button type="submit" class="lp-act lp-act--always @(d.IsActive ? "text-danger" : "text-success")" title="@(d.IsActive ? Localizer["DpL_Deactivate"] : Localizer["DpL_Activate"])" aria-label="@(d.IsActive ? Localizer["DpL_Deactivate"] : Localizer["DpL_Activate"]) @d.Name"><i class="bi @(d.IsActive ? "bi-slash-circle" : "bi-check-circle")" aria-hidden="true"></i></button>
+                                </form>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </pems-list-table>
+        </pems-list-grid>
+    </pems-list-panel>
+</pems-list-page>
 
 <div class="modal fade" id="createDeptModal" tabindex="-1">
     <div class="modal-dialog">
@@ -89,4 +109,8 @@
             </div>
         </div>
     </div>
+}
+
+@section Scripts {
+    <script src="~/_content/PEMS.UI/pems-list.js" asp-append-version="true"></script>
 }

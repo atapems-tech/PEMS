@@ -4313,4 +4313,72 @@
   <data name="MiL_Critical" xml:space="preserve"><value>بحرانی</value></data>
   <data name="PcL_View" xml:space="preserve"><value>نما</value></data>
   <data name="PcL_Hint" xml:space="preserve"><value>درخواست‌های افزودن یا تغییر قطعه در کاتالوگ IFS، با مرحله‌ی تأیید آن‌ها.</value></data>
+  <data name="Cm_Action" xml:space="preserve"><value>اقدام</value></data>
+  <data name="UsL_Title" xml:space="preserve"><value>کاربران</value></data>
+  <data name="UsL_Hint" xml:space="preserve"><value>مدیریت حساب‌ها، نقش‌ها، وضعیت دسترسی و فعالیت ورود.</value></data>
+  <data name="UsL_Empty" xml:space="preserve"><value>کاربری یافت نشد. برای شروع اولین کاربر را بسازید.</value></data>
+  <data name="UsL_New" xml:space="preserve"><value>کاربر جدید</value></data>
+  <data name="UsL_SearchPlaceholder" xml:space="preserve"><value>جستجوی نام کاربری، نام، ایمیل یا نقش...</value></data>
+  <data name="UsL_Account" xml:space="preserve"><value>حساب</value></data>
+  <data name="UsL_Contact" xml:space="preserve"><value>تماس</value></data>
+  <data name="UsL_Roles" xml:space="preserve"><value>نقش‌ها</value></data>
+  <data name="UsL_LastLogin" xml:space="preserve"><value>آخرین ورود</value></data>
+  <data name="UsL_Never" xml:space="preserve"><value>هرگز</value></data>
+  <data name="UsL_Active" xml:space="preserve"><value>فعال</value></data>
+  <data name="UsL_Inactive" xml:space="preserve"><value>غیرفعال</value></data>
+  <data name="UsL_Locked" xml:space="preserve"><value>قفل‌شده</value></data>
+  <data name="UsL_ToggleActive" xml:space="preserve"><value>فعال / غیرفعال کردن</value></data>
+  <data name="UsL_ConfirmActivate" xml:space="preserve"><value>کاربر {0} فعال شود؟</value></data>
+  <data name="UsL_ConfirmDeactivate" xml:space="preserve"><value>کاربر {0} غیرفعال شود؟</value></data>
+  <data name="RoL_Title" xml:space="preserve"><value>نقش‌ها</value></data>
+  <data name="RoL_Hint" xml:space="preserve"><value>محدوده‌ی نقش‌ها را تعریف کنید و ببینید چند کاربر هر نقش را دارند. نقش‌های سیستمی محافظت‌شده‌اند.</value></data>
+  <data name="RoL_Empty" xml:space="preserve"><value>نقشی تعریف نشده است.</value></data>
+  <data name="RoL_New" xml:space="preserve"><value>نقش جدید</value></data>
+  <data name="RoL_Users" xml:space="preserve"><value>کاربران</value></data>
+  <data name="RoL_Authorization" xml:space="preserve"><value>مجوزها</value></data>
+  <data name="RoL_Custom" xml:space="preserve"><value>سفارشی</value></data>
+  <data name="RoL_ConfirmDelete" xml:space="preserve"><value>این نقش حذف شود؟</value></data>
+  <data name="DpL_Title" xml:space="preserve"><value>دپارتمان‌ها</value></data>
+  <data name="DpL_Hint" xml:space="preserve"><value>دپارتمان‌های سازمان و تعداد کارمندان هر کدام.</value></data>
+  <data name="DpL_Empty" xml:space="preserve"><value>هنوز دپارتمانی ثبت نشده است.</value></data>
+  <data name="DpL_New" xml:space="preserve"><value>دپارتمان جدید</value></data>
+  <data name="DpL_Name" xml:space="preserve"><value>نام</value></data>
+  <data name="DpL_Employees" xml:space="preserve"><value>کارمندان</value></data>
+  <data name="DpL_Activate" xml:space="preserve"><value>فعال کردن</value></data>
+  <data name="DpL_Deactivate" xml:space="preserve"><value>غیرفعال کردن</value></data>
+  <data name="DsL_Title" xml:space="preserve"><value>دیسیپلین‌ها</value></data>
+  <data name="DsL_Hint" xml:space="preserve"><value>هر دیسیپلین یک فضای کاری اختصاصی دارد (تجهیزات، مدارک، VDR، MR/MRQ، وظایف، KPI)؛ دیتابیس مشترک است و فقط نما فیلتر می‌شود.</value></data>
+  <data name="DsL_Empty" xml:space="preserve"><value>هنوز دیسیپلینی تعریف نشده است.</value></data>
+  <data name="DsL_Vdr" xml:space="preserve"><value>VDR</value></data>
+  <data name="DsL_OpenTasks" xml:space="preserve"><value>وظایف باز</value></data>
+  <data name="DsL_OpenWorkspace" xml:space="preserve"><value>باز کردن فضای کاری</value></data>
+  <data name="EmL_Title" xml:space="preserve"><value>کارمندان</value></data>
+  <data name="EmL_Hint" xml:space="preserve"><value>کارکنان سازمان و پیمانکاران، با دپارتمان، دیسیپلین و سمت.</value></data>
+  <data name="EmL_Empty" xml:space="preserve"><value>کارمندی یافت نشد.</value></data>
+  <data name="EmL_New" xml:space="preserve"><value>کارمند جدید</value></data>
+  <data name="EmL_Edit" xml:space="preserve"><value>ویرایش کارمند</value></data>
+  <data name="EmL_SearchPlaceholder" xml:space="preserve"><value>جستجوی نام، کد، ایمیل...</value></data>
+  <data name="EmL_Department" xml:space="preserve"><value>دپارتمان</value></data>
+  <data name="EmL_AllDepartments" xml:space="preserve"><value>همه‌ی دپارتمان‌ها</value></data>
+  <data name="EmL_Position" xml:space="preserve"><value>سمت</value></data>
+  <data name="EmL_PersonnelType" xml:space="preserve"><value>نوع پرسنل</value></data>
+  <data name="EmL_Email" xml:space="preserve"><value>ایمیل</value></data>
+  <data name="EmL_Type_Internal" xml:space="preserve"><value>داخلی</value></data>
+  <data name="EmL_Type_Contractor" xml:space="preserve"><value>پیمانکار</value></data>
+  <data name="EmL_Type_External" xml:space="preserve"><value>خارجی</value></data>
+  <data name="EmL_Type_Temporary" xml:space="preserve"><value>موقت</value></data>
+  <data name="AlL_Title" xml:space="preserve"><value>گزارش ممیزی</value></data>
+  <data name="AlL_Hint" xml:space="preserve"><value>تغییرات مدیریتی با کاربر، موجودیت، اقدام و زمان.</value></data>
+  <data name="AlL_Empty" xml:space="preserve"><value>رکورد ممیزی یافت نشد. فیلترها را تغییر دهید.</value></data>
+  <data name="AlL_Entity" xml:space="preserve"><value>موجودیت</value></data>
+  <data name="AlL_AllEntities" xml:space="preserve"><value>همه‌ی موجودیت‌ها</value></data>
+  <data name="AlL_User" xml:space="preserve"><value>کاربر</value></data>
+  <data name="AlL_Time" xml:space="preserve"><value>زمان</value></data>
+  <data name="AlL_Key" xml:space="preserve"><value>کلید</value></data>
+  <data name="AlL_ChangedFields" xml:space="preserve"><value>فیلدهای تغییرکرده</value></data>
+  <data name="AlL_Act_Insert" xml:space="preserve"><value>ایجاد</value></data>
+  <data name="AlL_Act_Update" xml:space="preserve"><value>ویرایش</value></data>
+  <data name="AlL_Act_Delete" xml:space="preserve"><value>حذف</value></data>
+  <data name="SeL_Title" xml:space="preserve"><value>رویدادهای امنیتی</value></data>
+  <data name="AzL_Title" xml:space="preserve"><value>ممیزی مجوزها</value></data>
 </root>

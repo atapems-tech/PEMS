@@ -1,76 +1,96 @@
 @model PEMS.Application.DTOs.PagedResult<PEMS.Domain.Entities.AuditLog>
 @using Microsoft.Extensions.Localization
 @using PEMS.Web.Resources
+@using PEMS.Web.Helpers
 @inject IStringLocalizer<SharedResource> Localizer
 @{
     var entityNames = (List<string>)ViewBag.EntityNames;
-    var qsParts = new List<string>();
-    if (!string.IsNullOrEmpty((string?)ViewBag.SelectedEntityName)) qsParts.Add($"entityName={Uri.EscapeDataString((string)ViewBag.SelectedEntityName)}");
-    if (!string.IsNullOrEmpty((string?)ViewBag.SelectedUserName)) qsParts.Add($"userName={Uri.EscapeDataString((string)ViewBag.SelectedUserName)}");
+    var entity = (string?)ViewBag.SelectedEntityName;
+    var user = (string?)ViewBag.SelectedUserName;
+    var filterCount = (string.IsNullOrEmpty(entity) ? 0 : 1) + (string.IsNullOrEmpty(user) ? 0 : 1);
+    string Query(string? skip)
+    {
+        var parts = new List<string>();
+        if (!string.IsNullOrEmpty(entity) && skip != "entity") parts.Add($"entityName={Uri.EscapeDataString(entity)}");
+        if (!string.IsNullOrEmpty(user) && skip != "user") parts.Add($"userName={Uri.EscapeDataString(user)}");
+        return string.Join("&", parts);
+    }
+    string Without(string key) { var s = Query(key); return Url.Action("Index") + (s.Length > 0 ? "?" + s : ""); }
+    string ActionTone(string? a) => a switch { "Insert" => "vs-pill--success", "Delete" => "vs-pill--danger", _ => "vs-pill--info" };
+    string ActionText(string? a) => VdrUi.Loc(Localizer, "AlL_Act_", a);
 }
 
-<div class="admin-page-shell">
-    <div class="admin-hero">
-        <div class="d-flex align-items-center gap-3"><div><p>Trace administrative changes with user, entity, action and timestamp context.</p></div></div>
-    </div>
-    <div class="content-card">
-        <form method="get" class="admin-toolbar">
-            <div class="admin-toolbar-main">
-                <div><label class="form-label small mb-1">@Localizer["Entity"]</label><select name="entityName" class="form-select form-select-sm"><option value="">@Localizer["All entities"]</option>@foreach(var e in entityNames){<option value="@e" selected="@(e == (string?)ViewBag.SelectedEntityName)">@e</option>}</select></div>
-                <div><label class="form-label small mb-1">@Localizer["User"]</label><input type="search" name="userName" value="@ViewBag.SelectedUserName" class="form-control form-control-sm" placeholder="@Localizer["Username"]" /></div>
-            </div>
-            <div class="admin-toolbar-actions">
-                <button type="submit" class="btn btn-pems-solid btn-sm"><i class="bi bi-funnel me-1"></i> @Localizer["Apply filters"]</button>
-                <a asp-action="Index" class="btn btn-outline-secondary btn-sm">@Localizer["Reset"]</a>
-                <button type="button" class="btn btn-outline-secondary btn-sm" onclick="PemsDataGrid.resetColumns('AuditLogs')"><i class="bi bi-arrow-counterclockwise"></i> @Localizer["ResetColumns"]</button>
-            </div>
-        </form>
-        <div class="table-responsive pems-grid-scroll">
-            <table class="table table-enterprise pems-grid-table" data-grid-key="AuditLogs">
+@section Styles {
+    <link rel="stylesheet" href="~/css/pems-workspace.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/_content/PEMS.UI/pems-list.css" asp-append-version="true" />
+}
+
+@* SCRUM-337 W4: built from the PEMS.UI list-page component; entity and user are filters with chips; paging keeps them. *@
+<pems-list-page texts="@ListPageTexts.From(Localizer)">
+    <pems-list-panel>
+
+        <pems-list-toolbar heading="@Localizer["AlL_Title"]" heading-title="@Localizer["AlL_Hint"]" total="@Model.TotalCount">
+            <pems-list-tools>
+                <pems-list-filters form-id="alFilterForm" action="@Url.Action("Index")" count="@filterCount" reset-href="@Url.Action("Index")">
+                    <pems-list-filter-select id="alFilterEntity" name="entityName" label="@Localizer["AlL_Entity"]" value="@entity"
+                                             all-text="@Localizer["AlL_AllEntities"]" items="@entityNames.Select(e => new SelectListItem(e, e))" />
+                    <div>
+                        <label class="lp-lbl" for="alFilterUser">@Localizer["AlL_User"]</label>
+                        <input type="search" id="alFilterUser" name="userName" value="@user" class="form-control" placeholder="@Localizer["Username"]" />
+                    </div>
+                </pems-list-filters>
+                <pems-list-reset-columns grid-key="AuditLogs" />
+            </pems-list-tools>
+        </pems-list-toolbar>
+
+        <pems-list-chips reset-href="@Url.Action("Index")">
+            @if (!string.IsNullOrEmpty(entity)) { <pems-list-chip label="@Localizer["AlL_Entity"]" value="@entity" remove-href="@Without("entity")" /> }
+            @if (!string.IsNullOrEmpty(user)) { <pems-list-chip label="@Localizer["AlL_User"]" value="@user" remove-href="@Without("user")" /> }
+        </pems-list-chips>
+
+        <pems-list-grid>
+            <pems-list-table grid-key="AuditLogs" empty="@(Model.Items.Count == 0)" empty-text="@Localizer["AlL_Empty"]">
                 <thead>
                     <tr>
-                        <th data-col-key="time" data-resizable="true" data-min-width="130" data-max-width="220" style="width:160px">@Localizer["Time"]</th>
-                        <th data-col-key="user" data-resizable="true" data-min-width="90" data-max-width="200" style="width:130px">@Localizer["User"]</th>
-                        <th data-col-key="entity" data-resizable="true" data-min-width="100" data-max-width="220" style="width:150px">@Localizer["Entity"]</th>
-                        <th data-col-key="key" data-resizable="true" data-min-width="80" data-max-width="200" style="width:120px">Key</th>
-                        <th data-col-key="action" data-resizable="true" data-min-width="90" data-max-width="160" style="width:110px">@Localizer["Action"]</th>
-                        <th data-col-key="changedFields" data-resizable="true" data-min-width="180" data-max-width="500" style="width:400px">@Localizer["Changed Fields"]</th>
+                        <th data-col-key="time" data-resizable="true" data-min-width="130" data-max-width="220" style="width:160px">@Localizer["AlL_Time"]</th>
+                        <th data-col-key="user" data-resizable="true" data-min-width="90" data-max-width="200" style="width:130px">@Localizer["AlL_User"]</th>
+                        <th data-col-key="entity" data-resizable="true" data-min-width="100" data-max-width="220" style="width:150px">@Localizer["AlL_Entity"]</th>
+                        <th data-col-key="key" data-resizable="true" data-min-width="80" data-max-width="200" style="width:110px" class="vs-hide-md">@Localizer["AlL_Key"]</th>
+                        <th data-col-key="action" data-resizable="true" data-min-width="90" data-max-width="160" style="width:110px">@Localizer["Cm_Action"]</th>
+                        <th data-col-key="changedFields" data-resizable="true" data-min-width="180" data-max-width="600">@Localizer["AlL_ChangedFields"]</th>
                     </tr>
                 </thead>
                 <tbody>
                     @foreach (var log in Model.Items)
                     {
-                        var ab = log.Action switch { "Insert" => "active", "Delete" => "locked", _ => "inactive" };
-                        <tr>
-                            <td class="row-secondary">@log.Timestamp.ToString("yyyy-MM-dd HH:mm:ss")</td>
-                            <td class="row-primary" title="@(log.UserName ?? "system")">@(log.UserName ?? "system")</td>
-                            <td title="@log.EntityName">@log.EntityName</td>
-                            <td class="row-secondary" title="@log.EntityKeyValue">@log.EntityKeyValue</td>
-                            <td><span class="admin-status @ab">@log.Action</span></td>
-                            <td class="row-secondary" title="@log.ChangedFieldsSummary">@log.ChangedFieldsSummary</td>
+                        <tr class="lp-row">
+                            <td class="small"><span class="vs-num">@log.Timestamp.ToString("yyyy-MM-dd HH:mm:ss")</span></td>
+                            <td class="small"><span class="vs-cell-strong">@(log.UserName ?? "system")</span></td>
+                            <td class="small" title="@log.EntityName">@log.EntityName</td>
+                            <td class="small vs-hide-md"><span class="vs-num" title="@log.EntityKeyValue">@log.EntityKeyValue</span></td>
+                            <td><span class="vs-pill @ActionTone(log.Action)">@ActionText(log.Action)</span></td>
+                            <td class="small text-muted"><span class="vs-title-cell" title="@log.ChangedFieldsSummary">@log.ChangedFieldsSummary</span></td>
                         </tr>
                     }
                 </tbody>
-            </table>
-            @if (Model.Items.Count == 0) { <div class="admin-empty"><i class="bi bi-journal-check"></i><strong>No audit entries found</strong><div>Try changing the filters or date range.</div></div> }
-        </div>
-        @await Html.PartialAsync("_Pagination", new PEMS.Web.ViewModels.PaginationViewModel
-        {
-            Page = Model.Page,
-            TotalPages = Model.TotalPages,
-            TotalCount = Model.TotalCount,
-            PageSize = Model.PageSize,
-            GridKey = "AuditLogs",
-            BaseUrl = Url.Action("Index") ?? "",
-            ExistingQueryString = string.Join("&", qsParts)
-        })
-    </div>
-</div>
+            </pems-list-table>
+
+            <pems-list-footer>
+                @await Html.PartialAsync("_Pagination", new PEMS.Web.ViewModels.PaginationViewModel
+                {
+                    Page = Model.Page,
+                    TotalPages = Model.TotalPages,
+                    TotalCount = Model.TotalCount,
+                    PageSize = Model.PageSize,
+                    GridKey = "AuditLogs",
+                    BaseUrl = Url.Action("Index") ?? "",
+                    ExistingQueryString = Query(null)
+                })
+            </pems-list-footer>
+        </pems-list-grid>
+    </pems-list-panel>
+</pems-list-page>
 
 @section Scripts {
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            PemsDataGrid.initColumnResize('AuditLogs');
-        });
-    </script>
+    <script src="~/_content/PEMS.UI/pems-list.js" asp-append-version="true"></script>
 }
