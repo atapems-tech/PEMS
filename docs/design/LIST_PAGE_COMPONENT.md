@@ -1,6 +1,6 @@
 # List page component (SCRUM-337)
 
-Status: 2026-10-30, waves 0 and 1. The look comes from the correspondence list and the Engineering Documents list (SCRUM-408).
+Status: 2026-10-30, waves 0, 1 and 2. The look comes from the correspondence list and the Engineering Documents list (SCRUM-408).
 It lives in `PEMS.UI` (ADR-0007: Tag Helper facade for MVC pages). Texts are inputs (SCRUM-416).
 
 ## What the component gives every list page
@@ -90,6 +90,23 @@ Optional tools added in wave 1:
    row cell:    <input type="checkbox" class="form-check-input" value="@id" data-lp-select aria-label="..." />  (th/td class lp-select) *@
 ```
 
+Options added in wave 2:
+
+```cshtml
+@* "New ..." that opens the page's own Bootstrap modal instead of a page *@
+<pems-list-new modal="createPartModal" text="@Localizer["..."]" />
+
+@* an export that is not the filtered list (for example every row) says so in its own label *@
+<pems-list-export href="@Url.Action("Export")" label="@Localizer["..."]" />
+
+@* a TempData message sits above the panel, as a direct child of the page *@
+@if (TempData["Message"] != null) { <div class="alert alert-success py-2 px-3 small">@TempData["Message"]</div> }
+```
+
+A page note (what the list is, where to add a record) becomes the `heading-title` tool tip of the title, not a
+paragraph above the table. Page actions that are not "New" (for example "Generate due PMs") are icon tools in
+`<pems-list-tools>` or items of a `<pems-list-menu>`.
+
 A page with a second list (for example a history under a queue) puts a second `<pems-list-panel>` in the same
 `<pems-list-page>`: the panels share the height and each table scrolls inside its own panel.
 
@@ -108,14 +125,16 @@ Column resize needs `data-col-key` / `data-resizable` on the `th` elements; the 
 |---|---|---|
 | W0 | component; Engineering Documents and VDR moved onto it | done |
 | W1 | document control: DocumentRegister, DocumentRevisions, Transmittal, TechnicalQuery, MDB, MOC, DocumentWorkflow (DCC is a desk, not a list) | done |
-| W2 | CMMS: WorkOrder, WorkRequest, Equipment, FunctionalLocation, Instrument, Tag, MaintenancePlan, MaintenanceStrategy, JobPlan, SparePart, Permit, Inspection, Finding, Asset, ... | next |
+| W2 | CMMS: WorkOrder, WorkRequest, Equipment, FunctionalLocation, Instrument, Tag (letter tags), MaintenancePlan, MaintenanceStrategy, JobPlan, SparePart, Permit, Inspection, Finding, Asset | done |
+| W2b | the other single-table CMMS lists: CriticalityAssessment, EquipmentCriticality, MechanicalEquipment, FailureModeCatalog, ShiftHandover, RcmFmea, EquipmentFunctionalLocationAssignment | next |
 | W3 | warehouse and procurement: Inventory, MaterialItem, MaterialRequisition, StoreRequisition, PurchaseOrder, ProcurementPackage, Tender, Contract, Vendor, IrnReceipt, ... | |
 | W4 | admin and base data: Users, Roles, Department, Discipline, Employee, AuditLog, SecurityEvents, ... | |
 
-Not converted, because they are not record lists: dashboards, import wizards, AI tools and reports. The Letter list
+Not converted, because they are not record lists: dashboards, import wizards, AI tools and reports (in CMMS also
+Reliability, MaintenanceMasterData, MaintenanceCalendar, EquipmentClassification and the Crew cards). The Letter list
 keeps its own richer frame (folders, preview, bulk actions) but uses the same stylesheet.
 
 ## Tests
 
 - `ListPageComponentTests` checks each tag on its own: texts, optional tools, badge, chips, empty state and accessibility.
-- The page tests (`EngineeringDocumentsListLookTests`, `VdrIndexLayoutTests`, `DocumentControlListPagesTests`) render the real views.
+- The page tests (`EngineeringDocumentsListLookTests`, `VdrIndexLayoutTests`, `DocumentControlListPagesTests`, `CmmsListPagesTests`) render the real views.

@@ -13,6 +13,10 @@ It is short on purpose. The rules live in [docs/guidelines/](docs/guidelines/REA
 4. **CLOSE** - after merging, **delete the working branch** (local and remote); tests (if the session can run them) -> PR -> **merge into `main`** -> Jira **In Review** (conditional done, label `qa-pending`) -> QA check in the UI, whose line 1 is the local test run ([chapter 7 of the guideline](docs/guidelines/07-qa-check-in-the-ui.md); every test or check you could not run is an unchecked line of the Jira QA checklist, not just a sentence in chat) -> **Done**; six artefacts updated (rule 22), Jira comment (kept current while you work, rule 27), Jira status. Then **update the guideline** if you learned
    something durable ([chapter 6](docs/guidelines/06-knowledge-and-guideline-maintenance.md)). Propose next tasks and wait.
 
+## Creating a Jira issue (every creator, every time)
+
+Create it with its **parent Epic** (the milestone epic of the plan row), the labels `area-*`, `doer-*`, `effort-*`, `plan-<key number>`, and the title `[#<key number>] ...` (edit the title right after creation, the number is the Jira key's), after searching for an existing task (rule 28). Then add the plan row with `plan_sync.py new` and run `check`. Full checklist: [chapter 0, section 5d](docs/guidelines/00-task-lifecycle.md). `plan_sync.py tracker-check` fails on a missing epic, title prefix or label.
+
 ## Five rules you must never forget
 
 - Jira project `SCRUM` (https://atapems.atlassian.net). Never write code before the issue is In Progress, and never leave a started issue without an assignee (yourself, or Saber if it is not yours). Never mark Done before the tests are green and the QA check passed; never mark In Review before the merge into `main`, and when you could not run the tests say exactly which and why (tests and review are one step for now).

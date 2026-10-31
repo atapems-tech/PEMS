@@ -3,6 +3,15 @@
 All notable changes to PEMS. No system version is defined yet (plan row F_CI), so entries are grouped by date
 and theme and were reconstructed from the git history (initial import 2026-09-05). Newest first.
 
+## 2026-10-31 - List page component, wave 2: CMMS (SCRUM-337)
+
+### Added
+- `<pems-list-new modal="...">` opens the page's own create modal (a button instead of a link); `<pems-list-export label="...">` names an export that is not the filtered list. A page's TempData message can sit inside the full-height list page.
+
+### Changed
+- Work Orders, Work Requests, Equipment, Functional Locations, Instruments, Letter Tags, Maintenance Plans, Maintenance Strategies, Job Plans, Spare Parts, Permits, Inspections, Findings and Assets are built from the list-page component. Each page keeps its filters, columns, modals, row actions and permissions. Count cards became KPI chips on demand; status button rows (Work Requests, Permits) became the status filter, and "pending my approval" a switch in it; page notes became the title tool tip; coverage, the failure-mode catalogue and bulk assignment moved into the strategies' "more" menu; status badges became tone pills.
+- The English and Persian texts written in these pages (headings, columns, empty texts, notes, confirmations and work-order, work-request, permit, finding, instrument and asset statuses, priorities) are resource keys in both languages now (prefixes `Wo_`, `Wr_`, `Tg_`, `Ins_`, `Fn_`, `Mp_`, `Jp_`, `Pt_`, `Eq_`, `Fl_`, `In_`, `Ms_`, `Sp_`, `As_`, `Pri_`).
+
 ## 2026-10-31 - Login page in one language (SCRUM-477)
 
 ### Fixed
@@ -114,6 +123,13 @@ Owner decisions 2026-10-30:
 ### Changed
 - `PurchaseOrderService.IssueAsync` issues only an **approved** PO (Draft → Submitted → Approved → Issued). The issue action keeps its guard (PurchaseOrder Approve permission, creator cannot issue, SystemAdmin rule). Imported POs still arrive as Issued.
 - R6: a concurrent issue now shows a clear message instead of the error page.
+
+## 2026-10-31 - Jira issue-creation guard (SCRUM-479)
+
+### Added
+- `plan_sync.py tracker-check` also fails on an issue (SCRUM-400 and later) without a parent epic, without a `[#N]` title equal to its `plan-N` label, without `area-`, `doer-`, `effort-` labels, or In Review without `qa-pending`; the REST client now reads `parent` and the issue type. Tests added.
+- Creation checklist in `AGENTS.md` and chapter 00 section 5d; learnings-log entry; open points for the owner in chapter 06 (required Parent in Jira, `JIRA_*` secrets).
+- Plan rows 0423 and 0478 for issues that had none.
 
 ## 2026-10-29 - Pre-procurement intake in the procurement cartable (SCRUM-471)
 

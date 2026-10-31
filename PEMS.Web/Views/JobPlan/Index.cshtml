@@ -1,87 +1,87 @@
 @model PEMS.Application.DTOs.PagedResult<PEMS.Application.DTOs.JobPlanListDto>
 @using Microsoft.Extensions.Localization
 @using PEMS.Web.Resources
+@using PEMS.Web.Helpers
 @inject IStringLocalizer<SharedResource> Localizer
 @{
     var equipmentClasses = (IEnumerable<dynamic>)ViewBag.EquipmentClasses;
 }
 
-<div class="d-flex justify-content-end align-items-center mb-2">
-    <button type="button" class="btn btn-pems-solid btn-sm" data-bs-toggle="modal" data-bs-target="#createJobPlanModal">
-        <i class="bi bi-plus-lg"></i> @Localizer["New Job Plan"]
-    </button>
-</div>
-<p class="text-muted small">
-    طبق CMMS Production Baseline v1 بند ۱۰.۳: دستورالعمل اجرای قابل استفاده‌ی مجدد - یک بار
-    ساخته می‌شود، توسط چند Maintenance Plan استفاده می‌شود.
-</p>
-
-@if (TempData["Message"] != null)
-{
-    <div class="alert alert-success py-2 px-3 small">@TempData["Message"]</div>
-}
-@if (TempData["Error"] != null)
-{
-    <div class="alert alert-danger py-2 px-3 small">@TempData["Error"]</div>
+@section Styles {
+    <link rel="stylesheet" href="~/css/pems-workspace.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/_content/PEMS.UI/pems-list.css" asp-append-version="true" />
 }
 
-<div class="content-card">
-    <div class="d-flex justify-content-end mb-2">
-        <button type="button" class="btn btn-sm btn-outline-secondary" onclick="PemsDataGrid.resetColumns('JobPlan')">
-            <i class="bi bi-arrow-counterclockwise"></i> @Localizer["Reset columns"]
-        </button>
-    </div>
-    <div class="pems-grid-scroll">
-    <table class="table table-enterprise pems-grid-table mb-0" data-grid-key="JobPlan">
-        <thead>
-            <tr>
-                <th data-col-key="number" data-resizable="true" data-min-width="100" data-max-width="200">@Localizer["Number"]</th>
-                <th data-col-key="title" data-resizable="true" data-min-width="160" data-max-width="400">@Localizer["Title"]</th>
-                <th data-col-key="duration" data-resizable="true" data-min-width="100" data-max-width="160">Est. Duration</th>
-                <th data-col-key="tasks" data-resizable="true" data-min-width="70" data-max-width="120">@Localizer["Tasks"]</th>
-                <th data-col-key="usage" data-resizable="true" data-min-width="90" data-max-width="150">Used by Plans</th>
-                <th data-col-key="safety" data-resizable="true" data-min-width="100" data-max-width="180">@Localizer["Safety"]</th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var jp in Model.Items)
-            {
-                <tr>
-                    <td class="small fw-bold">@jp.JobPlanNumber</td>
-                    <td class="small">@jp.Title</td>
-                    <td class="small">@(jp.EstimatedDurationHours.HasValue ? jp.EstimatedDurationHours + " h" : "-")</td>
-                    <td class="small">@jp.TaskCount</td>
-                    <td class="small">@jp.PlanUsageCount</td>
-                    <td class="small">
-                        @if (jp.PermitRequired) { <span class="badge text-bg-warning">@Localizer["Permit"]</span> }
-                        @if (jp.LOTORequired) { <span class="badge text-bg-warning">LOTO</span> }
-                        @if (!jp.PermitRequired && !jp.LOTORequired) { <span class="text-muted">-</span> }
-                    </td>
-                    <td><a asp-action="Details" asp-route-id="@jp.JobPlanId" class="btn btn-sm btn-outline-secondary"><i class="bi bi-eye"></i></a></td>
-                </tr>
-            }
-        </tbody>
-    </table>
-    </div>
-    @if (!Model.Items.Any()) { <p class="text-muted text-center py-4 mb-0">@Localizer["هنوز Job Plan ای ثبت نشده."]</p> }
+@* SCRUM-337 W2: built from the PEMS.UI list-page component. The page note (a job plan is written once and used by many
+   maintenance plans) became the tool tip of the title; "New job plan" still opens the create modal. *@
+<pems-list-page texts="@ListPageTexts.From(Localizer)">
+    @if (TempData["Message"] != null) { <div class="alert alert-success py-2 px-3 small">@TempData["Message"]</div> }
+    @if (TempData["Error"] != null) { <div class="alert alert-danger py-2 px-3 small">@TempData["Error"]</div> }
 
-    @await Html.PartialAsync("_Pagination", new PEMS.Web.ViewModels.PaginationViewModel
-    {
-        Page = Model.Page,
-        TotalPages = Model.TotalPages,
-        TotalCount = Model.TotalCount,
-        PageSize = Model.PageSize,
-        GridKey = "JobPlan",
-        BaseUrl = Url.Action("Index") ?? "",
-        ExistingQueryString = ""
-    })
-</div>
+    <pems-list-panel>
+
+        <pems-list-toolbar heading="@Localizer["Jp_Title"]" heading-title="@Localizer["Jp_Hint"]" total="@Model.TotalCount">
+            <pems-list-tools>
+                <pems-list-reset-columns grid-key="JobPlan" />
+                <pems-list-new modal="createJobPlanModal" text="@Localizer["Jp_New"]" />
+            </pems-list-tools>
+        </pems-list-toolbar>
+
+        <pems-list-grid>
+            <pems-list-table grid-key="JobPlan" empty="@(!Model.Items.Any())" empty-text="@Localizer["Jp_Empty"]">
+                <thead>
+                    <tr>
+                        <th data-col-key="number" data-resizable="true" data-min-width="100" data-max-width="200" style="width:140px">@Localizer["Jp_Number"]</th>
+                        <th data-col-key="title" data-resizable="true" data-min-width="160" data-max-width="400" style="width:280px">@Localizer["Cm_Title"]</th>
+                        <th data-col-key="duration" data-resizable="true" data-min-width="100" data-max-width="160" style="width:120px">@Localizer["Jp_Duration"]</th>
+                        <th data-col-key="tasks" data-resizable="true" data-min-width="70" data-max-width="120" style="width:90px">@Localizer["Jp_Tasks"]</th>
+                        <th data-col-key="usage" data-resizable="true" data-min-width="90" data-max-width="150" style="width:120px" class="vs-hide-md">@Localizer["Jp_UsedByPlans"]</th>
+                        <th data-col-key="safety" data-resizable="true" data-min-width="100" data-max-width="180" style="width:140px">@Localizer["Jp_Safety"]</th>
+                        <th data-col-key="actions" data-resizable="false" style="width:60px"><span class="visually-hidden">@Localizer["Ed_Actions"]</span></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var jp in Model.Items)
+                    {
+                        <tr class="lp-row">
+                            <td class="lp-no"><a asp-action="Details" asp-route-id="@jp.JobPlanId" class="lp-subject" title="@jp.JobPlanNumber">@jp.JobPlanNumber</a></td>
+                            <td><span class="vs-title-cell" title="@jp.Title">@jp.Title</span></td>
+                            <td class="small"><span class="vs-num">@(jp.EstimatedDurationHours.HasValue ? string.Format(Localizer["Jp_Hours"].Value, jp.EstimatedDurationHours) : "-")</span></td>
+                            <td class="small"><span class="vs-num">@jp.TaskCount</span></td>
+                            <td class="small vs-hide-md"><span class="vs-num">@jp.PlanUsageCount</span></td>
+                            <td class="small">
+                                @if (jp.PermitRequired) { <span class="vs-pill vs-pill--warning">@Localizer["Jp_Permit"]</span> }
+                                @if (jp.LOTORequired) { <span class="vs-pill vs-pill--warning">@Localizer["Jp_Loto"]</span> }
+                                @if (!jp.PermitRequired && !jp.LOTORequired) { <span class="text-muted">-</span> }
+                            </td>
+                            <td class="lp-actions">
+                                <a asp-action="Details" asp-route-id="@jp.JobPlanId" class="lp-act lp-act--always" title="@Localizer["Lp_Details"]" aria-label="@Localizer["Lp_Details"]"><i class="bi bi-eye" aria-hidden="true"></i></a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </pems-list-table>
+
+            <pems-list-footer>
+                @await Html.PartialAsync("_Pagination", new PEMS.Web.ViewModels.PaginationViewModel
+                {
+                    Page = Model.Page,
+                    TotalPages = Model.TotalPages,
+                    TotalCount = Model.TotalCount,
+                    PageSize = Model.PageSize,
+                    GridKey = "JobPlan",
+                    BaseUrl = Url.Action("Index") ?? "",
+                    ExistingQueryString = ""
+                })
+            </pems-list-footer>
+        </pems-list-grid>
+    </pems-list-panel>
+</pems-list-page>
 
 <div class="modal fade" id="createJobPlanModal" tabindex="-1">
     <div class="modal-dialog"><div class="modal-content">
         <form asp-action="Create" method="post">
-            <div class="modal-header"><h6 class="modal-title">@Localizer["New Job Plan"]</h6></div>
+            <div class="modal-header"><h6 class="modal-title">@Localizer["Jp_New"]</h6></div>
             <div class="modal-body">
                 <div class="mb-2"><label class="form-label small">@Localizer["Title"]</label><input name="title" class="form-control form-control-sm" required /></div>
                 <div class="mb-2"><label class="form-label small">@Localizer["Scope"]</label><textarea name="scope" class="form-control form-control-sm" rows="2"></textarea></div>
@@ -115,9 +115,5 @@
 </div>
 
 @section Scripts {
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            PemsDataGrid.initColumnResize('JobPlan');
-        });
-    </script>
+    <script src="~/_content/PEMS.UI/pems-list.js" asp-append-version="true"></script>
 }

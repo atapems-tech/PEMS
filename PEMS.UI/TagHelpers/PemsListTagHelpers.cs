@@ -272,15 +272,18 @@ public sealed class PemsListKpiToggleTagHelper : TagHelper
     }
 }
 
-/// <summary>Excel export of the filtered list (the page builds the link with its filters).</summary>
+/// <summary>Excel export of the filtered list (the page builds the link with its filters). <c>label</c> (W2) replaces the
+/// default text when the export is not the filtered list (for example an export of every row).</summary>
 [HtmlTargetElement("pems-list-export", TagStructure = TagStructure.WithoutEndTag)]
 public sealed class PemsListExportTagHelper : TagHelper
 {
     [HtmlAttributeName("href")] public string Href { get; set; } = "";
+    [HtmlAttributeName("label")] public string? Label { get; set; }
 
     public override void Process(TagHelperContext context, TagHelperOutput output)
     {
-        var a = PemsList.IconTool("a", "bi-file-earmark-excel", PemsList.Texts(context).Export);
+        var text = PemsList.Texts(context).Export;
+        var a = PemsList.IconTool("a", "bi-file-earmark-excel", string.IsNullOrEmpty(Label) ? text : Label);
         a.Attributes["href"] = Href;
         output.TagName = null;
         output.TagMode = TagMode.StartTagAndEndTag;
@@ -305,17 +308,30 @@ public sealed class PemsListResetColumnsTagHelper : TagHelper
     }
 }
 
-/// <summary>The primary "New ..." action; the label collapses to the icon on phones.</summary>
+/// <summary>The primary "New ..." action; the label collapses to the icon on phones. <c>href</c> opens a page;
+/// <c>modal</c> (an element id, W2) opens the page's own Bootstrap modal instead.</summary>
 [HtmlTargetElement("pems-list-new", TagStructure = TagStructure.WithoutEndTag)]
 public sealed class PemsListNewTagHelper : TagHelper
 {
     [HtmlAttributeName("href")] public string Href { get; set; } = "";
+    [HtmlAttributeName("modal")] public string? Modal { get; set; }
     [HtmlAttributeName("text")] public string Text { get; set; } = "";
 
     public override void Process(TagHelperContext context, TagHelperOutput output)
     {
-        var a = new TagBuilder("a");
-        a.Attributes["href"] = Href;
+        TagBuilder a;
+        if (!string.IsNullOrEmpty(Modal))
+        {
+            a = new TagBuilder("button");
+            a.Attributes["type"] = "button";
+            a.Attributes["data-bs-toggle"] = "modal";
+            a.Attributes["data-bs-target"] = "#" + Modal;
+        }
+        else
+        {
+            a = new TagBuilder("a");
+            a.Attributes["href"] = Href;
+        }
         a.AddCssClass("btn btn-sm btn-pems-solid lp-compose");
         a.InnerHtml.AppendHtml(PemsList.Icon("bi-plus-lg"));
         a.InnerHtml.Append(" ");

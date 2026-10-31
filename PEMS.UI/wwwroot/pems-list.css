@@ -139,6 +139,7 @@ body.lp-compact .lp-snippet, body.lp-compact .lp-badges { display: none; }
    the pagination footer stays at the bottom. Used by list pages that follow the correspondence look (Engineering Documents). */
 .lp-page { display: flex; flex-direction: column; gap: 8px; height: calc(100dvh - 112px); min-height: 520px; }
 .lp-page > .vs-subnav { flex: none; margin-bottom: 0; }
+.lp-page > .alert { flex: none; margin-bottom: 0; }   /* W2: the page's TempData message sits above the panel */
 .lp-page > .lp-panel { flex: 1 1 auto; min-height: 0; }
 .lp-page .lp-tablewrap { display: flex; flex-direction: column; flex: 1 1 auto; min-height: 0; }
 .lp-page .lp-scroll { flex: 1 1 auto; max-height: none; min-height: 0; overflow: auto; }

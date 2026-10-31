@@ -1,111 +1,122 @@
-﻿@model PEMS.Application.DTOs.PagedResult<PEMS.Application.DTOs.SparePartListDto>
+@model PEMS.Application.DTOs.PagedResult<PEMS.Application.DTOs.SparePartListDto>
 @using Microsoft.Extensions.Localization
 @using PEMS.Web.Resources
+@using PEMS.Web.Helpers
 @inject IStringLocalizer<SharedResource> Localizer
+@{
+    var q = (string?)ViewBag.SearchTerm;
+    var lowStockOnly = (bool)ViewBag.LowStockOnly;
+    bool? low = lowStockOnly ? true : null;
+    var filterCount = lowStockOnly ? 1 : 0;
 
-<div class="row g-3 mb-3">
-    <div class="col-md-4">
-        <div class="content-card text-center">
-            <div class="fs-3 fw-bold text-danger">@ViewBag.LowStockCount</div>
-            <div class="text-muted small"><i class="bi bi-exclamation-triangle"></i> @Localizer["قطعات با موجودی کم"]</div>
-        </div>
-    </div>
-</div>
-
-<div class="content-card mb-3">
-    <form method="get" class="row g-2">
-        <div class="col-md-5"><input name="q" value="@ViewBag.SearchTerm" class="form-control form-control-sm" placeholder="Search part number or name..." /></div>
-        <div class="col-md-3">
-            <div class="form-check mt-1">
-                <input class="form-check-input" type="checkbox" name="lowStockOnly" value="true" id="lowStockOnly" checked="@((bool)ViewBag.LowStockOnly)" onchange="this.form.submit()" />
-                <label class="form-check-label small" for="lowStockOnly">@Localizer["فقط موجودی کم"]</label>
-            </div>
-        </div>
-        <div class="col-md-2"><button class="btn btn-sm btn-pems-solid w-100"><i class="bi bi-search"></i> @Localizer["Search"]</button></div>
-        <div class="col-md-2 text-end">
-            <button type="button" class="btn btn-sm btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#createPartModal">
-                <i class="bi bi-plus-lg"></i> New Part
-            </button>
-        </div>
-    </form>
-</div>
-
-<div class="content-card">
-    <div class="d-flex justify-content-end mb-2">
-        <button type="button" class="btn btn-sm btn-outline-secondary" onclick="PemsDataGrid.resetColumns('SparePart')">
-            <i class="bi bi-arrow-counterclockwise"></i> @Localizer["Reset columns"]
-        </button>
-    </div>
-    <div class="table-scroll-area pems-grid-scroll" style="max-height:65vh; overflow-y:auto;">
-        <table class="table table-enterprise pems-grid-table" data-grid-key="SparePart">
-            <thead>
-                <tr>
-                    <th data-col-key="partNo" data-resizable="true" data-min-width="100" data-max-width="220" style="width:140px">@Localizer["Part No"]</th>
-                    <th data-col-key="name" data-resizable="true" data-min-width="140" data-max-width="320" style="width:200px">@Localizer["Name"]</th>
-                    <th data-col-key="mfr" data-resizable="true" data-min-width="100" data-max-width="220" style="width:140px">@Localizer["Manufacturer"]</th>
-                    <th data-col-key="location" data-resizable="true" data-min-width="100" data-max-width="220" style="width:140px">@Localizer["Location"]</th>
-                    <th data-col-key="qty" data-resizable="true" data-min-width="100" data-max-width="200" style="width:130px">@Localizer["موجودی"]</th>
-                    <th data-col-key="actions" data-resizable="false" style="width:90px"></th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var p in Model.Items)
-                {
-                    <tr>
-                        <td>@p.PartNumber</td>
-                        <td>@p.PartName</td>
-                        <td class="small">@p.Manufacturer</td>
-                        <td class="small">@p.StorageLocation</td>
-                        <td>
-                            <span class="badge @(p.IsLowStock ? "bg-danger" : "bg-success")">@p.QuantityOnHand @p.Unit</span>
-                            @if (p.IsLowStock) { <i class="bi bi-exclamation-triangle text-danger" title="@Localizer["زیر نقطه‌ی سفارش مجدد"]"></i> }
-                        </td>
-                        <td class="text-end">
-                            <button type="button" class="btn btn-sm btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#editPartModal_@p.SparePartId">
-                                <i class="bi bi-pencil"></i>
-                            </button>
-                            <form asp-action="Deactivate" method="post" class="d-inline">
-                                <input type="hidden" name="sparePartId" value="@p.SparePartId" />
-                                <button type="submit" class="btn btn-sm btn-outline-danger"><i class="bi bi-slash-circle"></i></button>
-                            </form>
-                        </td>
-                    </tr>
-                }
-            </tbody>
-        </table>
-    </div>
-    @if (!Model.Items.Any()) { <p class="text-muted text-center py-4">No spare parts found.</p> }
-
-    @{
-        var qsParts = new List<string>();
-        if ((bool)ViewBag.LowStockOnly) qsParts.Add("lowStockOnly=true");
-        if (!string.IsNullOrEmpty((string?)ViewBag.SearchTerm)) qsParts.Add($"q={Uri.EscapeDataString((string)ViewBag.SearchTerm)}");
-    }
-    @await Html.PartialAsync("_Pagination", new PEMS.Web.ViewModels.PaginationViewModel
-    {
-        Page = Model.Page,
-        TotalPages = Model.TotalPages,
-        TotalCount = Model.TotalCount,
-        PageSize = Model.PageSize,
-        GridKey = "SparePart",
-        BaseUrl = Url.Action("Index") ?? "",
-        ExistingQueryString = string.Join("&", qsParts)
-    })
-</div>
-
-@section Scripts {
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            PemsDataGrid.initColumnResize('SparePart');
-        });
-    </script>
+    var qsParts = new List<string>();
+    if (lowStockOnly) qsParts.Add("lowStockOnly=true");
+    if (!string.IsNullOrEmpty(q)) qsParts.Add($"q={Uri.EscapeDataString(q)}");
 }
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/pems-workspace.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/_content/PEMS.UI/pems-list.css" asp-append-version="true" />
+}
+
+@* SCRUM-337 W2: built from the PEMS.UI list-page component. The low-stock card became a KPI chip, "low stock only" a
+   filter; create and edit stay modals. *@
+<pems-list-page texts="@ListPageTexts.From(Localizer)">
+    <pems-list-panel>
+
+        <pems-list-toolbar heading="@Localizer["Sp_Title"]" total="@Model.TotalCount">
+            <pems-list-search id="spSearchForm" action="@Url.Action("Index")" input-id="spQuickSearch" name="q" value="@q"
+                              placeholder="@Localizer["Sp_SearchPlaceholder"]">
+                @if (lowStockOnly) { <input type="hidden" name="lowStockOnly" value="true" /> }
+            </pems-list-search>
+
+            <pems-list-tools search-for="spSearchForm">
+                <pems-list-filters form-id="spFilterForm" action="@Url.Action("Index")" count="@filterCount" reset-href="@Url.Action("Index", new { q })">
+                    <input type="hidden" name="q" value="@q" />
+                    <div class="form-check form-switch mb-0">
+                        <input class="form-check-input" type="checkbox" role="switch" name="lowStockOnly" value="true" id="lowStockOnly" checked="@lowStockOnly" />
+                        <label class="form-check-label small" for="lowStockOnly">@Localizer["Sp_LowStockOnly"]</label>
+                    </div>
+                </pems-list-filters>
+                <pems-list-kpi-toggle target="spKpis" storage-key="pems.sparepart.kpis" />
+                <pems-list-reset-columns grid-key="SparePart" />
+                <pems-list-new modal="createPartModal" text="@Localizer["Sp_New"]" />
+            </pems-list-tools>
+        </pems-list-toolbar>
+
+        <pems-list-kpis id="spKpis">
+            <a class="vs-chip text-decoration-none @(((int?)ViewBag.LowStockCount ?? 0) > 0 ? "vs-chip--danger" : "")" href="@Url.Action("Index", new { lowStockOnly = true })"><i class="bi bi-exclamation-triangle" aria-hidden="true"></i> @Localizer["Sp_LowStockCount"] <strong>@ViewBag.LowStockCount</strong></a>
+        </pems-list-kpis>
+
+        <pems-list-chips reset-href="@Url.Action("Index")">
+            @if (!string.IsNullOrEmpty(q))
+            { <pems-list-chip label="@Localizer["Search"]" value="@q" remove-href="@Url.Action("Index", new { lowStockOnly = low })" /> }
+            @if (lowStockOnly)
+            { <pems-list-chip label="@Localizer["Sp_LowStockOnly"]" remove-href="@Url.Action("Index", new { q })" /> }
+        </pems-list-chips>
+
+        <pems-list-grid>
+            <pems-list-table grid-key="SparePart" empty="@(!Model.Items.Any())" empty-text="@Localizer["Sp_Empty"]"
+                             filtered="@(filterCount > 0 || !string.IsNullOrEmpty(q))" clear-href="@Url.Action("Index")">
+                <thead>
+                    <tr>
+                        <th data-col-key="partNo" data-resizable="true" data-min-width="100" data-max-width="220" style="width:140px">@Localizer["Sp_PartNo"]</th>
+                        <th data-col-key="name" data-resizable="true" data-min-width="140" data-max-width="320" style="width:220px">@Localizer["Eq_Name"]</th>
+                        <th data-col-key="mfr" data-resizable="true" data-min-width="100" data-max-width="220" style="width:140px" class="vs-hide-md">@Localizer["Sp_Manufacturer"]</th>
+                        <th data-col-key="location" data-resizable="true" data-min-width="100" data-max-width="220" style="width:140px" class="vs-hide-md">@Localizer["Sp_Location"]</th>
+                        <th data-col-key="qty" data-resizable="true" data-min-width="100" data-max-width="200" style="width:130px">@Localizer["Sp_Stock"]</th>
+                        <th data-col-key="actions" data-resizable="false" style="width:90px"><span class="visually-hidden">@Localizer["Ed_Actions"]</span></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var p in Model.Items)
+                    {
+                        <tr class="lp-row">
+                            <td class="lp-no"><span class="vs-num">@p.PartNumber</span></td>
+                            <td><span class="vs-title-cell" title="@p.PartName">@p.PartName</span></td>
+                            <td class="small vs-hide-md">@p.Manufacturer</td>
+                            <td class="small vs-hide-md">@p.StorageLocation</td>
+                            <td>
+                                @if (p.IsLowStock)
+                                { <span class="vs-pill vs-pill--icon vs-pill--danger" title="@Localizer["Sp_BelowReorder"]"><i class="bi bi-exclamation-triangle" aria-hidden="true"></i> @p.QuantityOnHand @p.Unit</span> }
+                                else
+                                { <span class="vs-pill vs-pill--success">@p.QuantityOnHand @p.Unit</span> }
+                            </td>
+                            <td class="lp-actions">
+                                <button type="button" class="lp-act lp-act--always" data-bs-toggle="modal" data-bs-target="#editPartModal_@p.SparePartId" title="@Localizer["Edit"]" aria-label="@Localizer["Edit"]">
+                                    <i class="bi bi-pencil" aria-hidden="true"></i>
+                                </button>
+                                <form asp-action="Deactivate" method="post" class="d-inline">
+                                    <input type="hidden" name="sparePartId" value="@p.SparePartId" />
+                                    <button type="submit" class="lp-act lp-act--always" title="@Localizer["Sp_Deactivate"]" aria-label="@Localizer["Sp_Deactivate"]"><i class="bi bi-slash-circle" aria-hidden="true"></i></button>
+                                </form>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </pems-list-table>
+
+            <pems-list-footer>
+                @await Html.PartialAsync("_Pagination", new PEMS.Web.ViewModels.PaginationViewModel
+                {
+                    Page = Model.Page,
+                    TotalPages = Model.TotalPages,
+                    TotalCount = Model.TotalCount,
+                    PageSize = Model.PageSize,
+                    GridKey = "SparePart",
+                    BaseUrl = Url.Action("Index") ?? "",
+                    ExistingQueryString = string.Join("&", qsParts)
+                })
+            </pems-list-footer>
+        </pems-list-grid>
+    </pems-list-panel>
+</pems-list-page>
 
 <div class="modal fade" id="createPartModal" tabindex="-1">
     <div class="modal-dialog">
         <div class="modal-content">
             <form asp-action="Create" method="post">
-                <div class="modal-header"><h6 class="modal-title">New Spare Part</h6></div>
+                <div class="modal-header"><h6 class="modal-title">@Localizer["Sp_New"]</h6></div>
                 <div class="modal-body">
                     <div class="row g-3">
                         <div class="col-md-6"><label class="form-label">@Localizer["Part Number"]</label><input name="partNumber" class="form-control" required /></div>
@@ -137,7 +148,7 @@
             <div class="modal-content">
                 <form asp-action="Edit" method="post">
                     <input type="hidden" name="sparePartId" value="@p.SparePartId" />
-                    <div class="modal-header"><h6 class="modal-title">Edit Spare Part</h6></div>
+                    <div class="modal-header"><h6 class="modal-title">@Localizer["Sp_Edit"]</h6></div>
                     <div class="modal-body">
                         <div class="row g-3">
                             <div class="col-md-6"><label class="form-label">@Localizer["Part Number"]</label><input name="partNumber" value="@p.PartNumber" class="form-control" required /></div>
@@ -160,4 +171,8 @@
             </div>
         </div>
     </div>
+}
+
+@section Scripts {
+    <script src="~/_content/PEMS.UI/pems-list.js" asp-append-version="true"></script>
 }
