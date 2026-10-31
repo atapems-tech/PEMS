@@ -17,6 +17,8 @@ It is short on purpose. The rules live in [docs/guidelines/](docs/guidelines/REA
 
 Create it with its **parent Epic** (the milestone epic of the plan row), the labels `area-*`, `doer-*`, `effort-*`, `plan-<key number>`, and the title `[#<key number>] ...` (edit the title right after creation, the number is the Jira key's), after searching for an existing task (rule 28). Then add the plan row with `plan_sync.py new` and run `check`. Full checklist: [chapter 0, section 5d](docs/guidelines/00-task-lifecycle.md). `plan_sync.py tracker-check` fails on a missing epic, title prefix or label.
 
+Until the nightly check runs (SCRUM-475 open), **you are the check**: read the issue back right after creating it, and sweep the open issues from SCRUM-400 on (no parent, title, labels, `qa-pending`) at the start of a session and before any In Review; fix metadata findings in the same step and report the rest. The exact queries are in chapter 0, section 5d.
+
 ## Five rules you must never forget
 
 - Jira project `SCRUM` (https://atapems.atlassian.net). Never write code before the issue is In Progress, and never leave a started issue without an assignee (yourself, or Saber if it is not yours). Never mark Done before the tests are green and the QA check passed; never mark In Review before the merge into `main`, and when you could not run the tests say exactly which and why (tests and review are one step for now).
