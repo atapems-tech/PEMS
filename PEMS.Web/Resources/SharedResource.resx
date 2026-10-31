@@ -3295,4 +3295,92 @@
   <data name="As_St_Active" xml:space="preserve"><value>Active</value></data>
   <data name="As_St_Standby" xml:space="preserve"><value>Standby</value></data>
   <data name="As_St_Retired" xml:space="preserve"><value>Retired</value></data>
+  <data name="Ca_Title" xml:space="preserve"><value>Criticality assessments</value></data>
+  <data name="Ca_New" xml:space="preserve"><value>New assessment</value></data>
+  <data name="Ca_Empty" xml:space="preserve"><value>No assessment matches these filters.</value></data>
+  <data name="Ca_Dashboard" xml:space="preserve"><value>Criticality dashboard</value></data>
+  <data name="Ca_Framework" xml:space="preserve"><value>Framework</value></data>
+  <data name="Ca_Proposed" xml:space="preserve"><value>Proposed class</value></data>
+  <data name="Ca_PreparedBy" xml:space="preserve"><value>Prepared by</value></data>
+  <data name="Ca_ApprovedBy" xml:space="preserve"><value>Approved by</value></data>
+  <data name="Ca_Created" xml:space="preserve"><value>Created</value></data>
+  <data name="Ca_St_DRAFT" xml:space="preserve"><value>Draft</value></data>
+  <data name="Ca_St_UNDER_REVIEW" xml:space="preserve"><value>Under review</value></data>
+  <data name="Ca_St_APPROVED" xml:space="preserve"><value>Approved</value></data>
+  <data name="Ca_St_SUPERSEDED" xml:space="preserve"><value>Superseded</value></data>
+  <data name="Ec_Title" xml:space="preserve"><value>Equipment criticality</value></data>
+  <data name="Ec_Hint" xml:space="preserve"><value>Equipment criticality classes (A = critical, B = important, C = normal) set the maintenance priority, following ISO 55000 / RCM.</value></data>
+  <data name="Ec_New" xml:space="preserve"><value>New analysis</value></data>
+  <data name="Ec_Empty" xml:space="preserve"><value>No analysis recorded yet.</value></data>
+  <data name="Ec_Class" xml:space="preserve"><value>Class</value></data>
+  <data name="Ec_Risk" xml:space="preserve"><value>Risk</value></data>
+  <data name="Ec_Safety" xml:space="preserve"><value>Safety impact</value></data>
+  <data name="Ec_Production" xml:space="preserve"><value>Production impact</value></data>
+  <data name="Ec_Environment" xml:space="preserve"><value>Environmental impact</value></data>
+  <data name="Ec_Unassessed" xml:space="preserve"><value>Not assessed yet</value></data>
+  <data name="Ec_Class_A" xml:space="preserve"><value>A (critical)</value></data>
+  <data name="Ec_Class_B" xml:space="preserve"><value>B (important)</value></data>
+  <data name="Ec_Class_C" xml:space="preserve"><value>C (normal)</value></data>
+  <data name="Me_Title" xml:space="preserve"><value>Mechanical equipment</value></data>
+  <data name="Me_New" xml:space="preserve"><value>New mechanical equipment</value></data>
+  <data name="Me_Empty" xml:space="preserve"><value>No mechanical equipment found.</value></data>
+  <data name="Me_SearchPlaceholder" xml:space="preserve"><value>Search tag / manufacturer...</value></data>
+  <data name="Me_SubType" xml:space="preserve"><value>Sub-type</value></data>
+  <data name="Me_Tag" xml:space="preserve"><value>Tag</value></data>
+  <data name="Me_Passport" xml:space="preserve"><value>Passport</value></data>
+  <data name="Me_Sub_Rotating" xml:space="preserve"><value>Rotating</value></data>
+  <data name="Me_Sub_Static" xml:space="preserve"><value>Static</value></data>
+  <data name="Me_Sub_Unclassified" xml:space="preserve"><value>Unclassified</value></data>
+  <data name="Sh_Title" xml:space="preserve"><value>Shift handovers</value></data>
+  <data name="Sh_Hint" xml:space="preserve"><value>CMMS-10e: Draft → Prepared → Acknowledged → Completed. One handover between a named outgoing and incoming employee, with a snapshot of the operating data taken at Prepare.</value></data>
+  <data name="Sh_New" xml:space="preserve"><value>New handover</value></data>
+  <data name="Sh_Empty" xml:space="preserve"><value>No shift handover recorded yet.</value></data>
+  <data name="Sh_Outgoing" xml:space="preserve"><value>Outgoing</value></data>
+  <data name="Sh_Incoming" xml:space="preserve"><value>Incoming</value></data>
+  <data name="Sh_Shift" xml:space="preserve"><value>Shift</value></data>
+  <data name="Sh_Date" xml:space="preserve"><value>Handover date</value></data>
+  <data name="Sh_Items" xml:space="preserve"><value>Items</value></data>
+  <data name="Sh_St_Draft" xml:space="preserve"><value>Draft</value></data>
+  <data name="Sh_St_Prepared" xml:space="preserve"><value>Prepared</value></data>
+  <data name="Sh_St_Acknowledged" xml:space="preserve"><value>Acknowledged</value></data>
+  <data name="Sh_St_Completed" xml:space="preserve"><value>Completed</value></data>
+  <data name="Rf_Title" xml:space="preserve"><value>RCM / FMEA coverage</value></data>
+  <data name="Rf_Hint" xml:space="preserve"><value>The analysis scope is the equipment class, never one analysis per equipment (Class first). A class is not called ready only because it exists or has an analysis that is not approved.</value></data>
+  <data name="Rf_Empty" xml:space="preserve"><value>No equipment class has equipment yet.</value></data>
+  <data name="Rf_ClassesWithEquipment" xml:space="preserve"><value>Classes with equipment</value></data>
+  <data name="Rf_FmeaReady" xml:space="preserve"><value>FMEA ready</value></data>
+  <data name="Rf_FmeaPartial" xml:space="preserve"><value>FMEA partly ready</value></data>
+  <data name="Rf_RcmReady" xml:space="preserve"><value>RCM ready</value></data>
+  <data name="Rf_RcmPartial" xml:space="preserve"><value>RCM partly ready</value></data>
+  <data name="Rf_Approved" xml:space="preserve"><value>Approved FMEA / RCM</value></data>
+  <data name="Rf_FuncReq" xml:space="preserve"><value>Functional requirements</value></data>
+  <data name="Rf_Causes" xml:space="preserve"><value>Causes</value></data>
+  <data name="Rf_Effects" xml:space="preserve"><value>Effects</value></data>
+  <data name="Rf_Consequences" xml:space="preserve"><value>Consequences</value></data>
+  <data name="Rf_StrategyTypes" xml:space="preserve"><value>Strategy types</value></data>
+  <data name="Rf_Fmea" xml:space="preserve"><value>FMEA</value></data>
+  <data name="Rf_Rcm" xml:space="preserve"><value>RCM</value></data>
+  <data name="Rf_ApprovedCount" xml:space="preserve"><value>({0} approved)</value></data>
+  <data name="Rf_Rd_READY" xml:space="preserve"><value>Ready</value></data>
+  <data name="Rf_Rd_PARTIALLY_READY" xml:space="preserve"><value>Partly ready</value></data>
+  <data name="Rf_Rd_INSUFFICIENT_DATA" xml:space="preserve"><value>Not enough data</value></data>
+  <data name="Rf_Rd_NOT_APPLICABLE" xml:space="preserve"><value>Not applicable</value></data>
+  <data name="Fla_Title" xml:space="preserve"><value>Equipment ↔ functional location assignment</value></data>
+  <data name="Fla_Hint" xml:space="preserve"><value>Excel batches that assign equipment to functional locations; nothing changes until a batch is reviewed and committed.</value></data>
+  <data name="Fla_Equipment" xml:space="preserve"><value>Equipment list</value></data>
+  <data name="Fla_Upload" xml:space="preserve"><value>Upload assignment file</value></data>
+  <data name="Fla_FileLabel" xml:space="preserve"><value>Assignment Excel file (.xlsx)</value></data>
+  <data name="Fla_UploadRules" xml:space="preserve"><value>The file has Equipment Tag and Functional Location Code columns; optional Plant / Area / Unit columns are used only to cross-check the resolved functional location. Only exact tag / code matches are resolved, and nothing is written to the live equipment table until you review the proposed assignments and commit. Equipment that already has a different functional location is never overwritten silently: replacing an assignment always needs a separate confirmation on the review page.</value></data>
+  <data name="Fla_Empty" xml:space="preserve"><value>No assignment batches yet.</value></data>
+  <data name="Fla_File" xml:space="preserve"><value>File</value></data>
+  <data name="Fla_Date" xml:space="preserve"><value>Date</value></data>
+  <data name="Fla_ImportedBy" xml:space="preserve"><value>Imported by</value></data>
+  <data name="Fla_Total" xml:space="preserve"><value>Total</value></data>
+  <data name="Fla_Exact" xml:space="preserve"><value>Exact</value></data>
+  <data name="Fla_AlreadyAssigned" xml:space="preserve"><value>Already assigned</value></data>
+  <data name="Fla_Unresolved" xml:space="preserve"><value>Unresolved</value></data>
+  <data name="Fla_Conflicts" xml:space="preserve"><value>Conflicts</value></data>
+  <data name="Fla_Review" xml:space="preserve"><value>Review</value></data>
+  <data name="Fla_St_Staging" xml:space="preserve"><value>Waiting for review</value></data>
+  <data name="Fla_St_Committed" xml:space="preserve"><value>Committed</value></data>
 </root>

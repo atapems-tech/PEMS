@@ -3,6 +3,16 @@
 All notable changes to PEMS. No system version is defined yet (plan row F_CI), so entries are grouped by date
 and theme and were reconstructed from the git history (initial import 2026-09-05). Newest first.
 
+## 2026-10-31 - List page component, wave 2b: the other CMMS lists (SCRUM-337)
+
+### Added
+- `open="true"` on `<pems-list-kpis>` and `<pems-list-kpi-toggle>`: the KPI row shows first until the viewer hides it.
+- `<pems-list-filter-select id name label value all-text items>`: one select in the filters dropdown, so a page no longer writes the select by hand (SCRUM-341 ratchet).
+- `<pems-list-popover id icon label primary>`: a toolbar tool that opens a dropdown panel with the page's own short form (no modal).
+
+### Changed
+- Criticality Assessments, Equipment Criticality, Mechanical Equipment, Failure Mode Catalogue, Shift Handovers, RCM / FMEA coverage and the Equipment / Functional Location assignment batches are built from the list-page component; 88 texts in English and Persian. Paging on Criticality Assessments now keeps the filters. The assignment upload opens from the toolbar's Upload button. The adoption baseline is lower for these seven views (badges, buttons, tables, inline scripts).
+
 ## 2026-10-31 - Organization import saves again (SCRUM-497)
 
 ### Fixed
@@ -37,6 +47,7 @@ Owner request 2026-10-31: reports of the Part Catalogue for any period, with an 
 
 ### Changed
 - The request list and the reports share one visibility rule (`PartCatalogueRequestScope`). The list behaves as before.
+
 ## 2026-10-31 - Agents run the issue-creation check themselves until SCRUM-475 (SCRUM-475)
 
 ### Changed

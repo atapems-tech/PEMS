@@ -1,103 +1,98 @@
-﻿@model PEMS.Application.DTOs.PagedResult<PEMS.Application.DTOs.EquipmentCriticalityListDto>
+@model PEMS.Application.DTOs.PagedResult<PEMS.Application.DTOs.EquipmentCriticalityListDto>
 @using Microsoft.Extensions.Localization
 @using PEMS.Web.Resources
+@using PEMS.Web.Helpers
 @inject IStringLocalizer<SharedResource> Localizer
+@{
+    var selectedClass = (string?)ViewBag.SelectedClass;
+    var classes = new[] { "A", "B", "C" };
+    var filterCount = string.IsNullOrEmpty(selectedClass) ? 0 : 1;
 
-<div class="d-flex justify-content-end align-items-center mb-2">
-    <button type="button" class="btn btn-pems-solid btn-sm" data-bs-toggle="modal" data-bs-target="#assessModal">
-        <i class="bi bi-plus-lg"></i> @Localizer["ثبت تحلیل جدید"]
-    </button>
-</div>
-<p class="text-muted small">
-    طبقه‌بندی بحرانی‌بودن تجهیزات (A = بحرانی، B = مهم، C = عادی) - پایه‌ی اولویت‌بندی
-    نگهداری طبق ISO 55000/RCM.
-</p>
+    var qsParts = new List<string>();
+    if (!string.IsNullOrEmpty(selectedClass)) qsParts.Add($"criticalityClass={Uri.EscapeDataString(selectedClass)}");
 
-<div class="row g-3 mb-3">
-    <div class="col-md-3">
-        <div class="content-card text-center">
-            <div class="fs-3 fw-bold text-danger">@ViewBag.ClassACount</div>
-            <div class="text-muted small">@Localizer["کلاس A (بحرانی)"]</div>
-        </div>
-    </div>
-    <div class="col-md-3">
-        <div class="content-card text-center">
-            <div class="fs-3 fw-bold text-warning">@ViewBag.ClassBCount</div>
-            <div class="text-muted small">@Localizer["کلاس B (مهم)"]</div>
-        </div>
-    </div>
-    <div class="col-md-3">
-        <div class="content-card text-center">
-            <div class="fs-3 fw-bold text-secondary">@ViewBag.ClassCCount</div>
-            <div class="text-muted small">@Localizer["کلاس C (عادی)"]</div>
-        </div>
-    </div>
-    <div class="col-md-3">
-        <div class="content-card text-center">
-            <div class="fs-3 fw-bold">@ViewBag.UnassessedCount</div>
-            <div class="text-muted small">@Localizer["هنوز تحلیل نشده"]</div>
-        </div>
-    </div>
-</div>
-
-<div class="content-card">
-    <div class="d-flex justify-content-end mb-2">
-        <button type="button" class="btn btn-sm btn-outline-secondary" onclick="PemsDataGrid.resetColumns('EquipmentCriticality')">
-            <i class="bi bi-arrow-counterclockwise"></i> @Localizer["Reset columns"]
-        </button>
-    </div>
-    <div class="pems-grid-scroll">
-    <table class="table table-enterprise pems-grid-table mb-0" data-grid-key="EquipmentCriticality">
-        <thead>
-            <tr>
-                <th data-col-key="equipment" data-resizable="true" data-min-width="100" data-max-width="200">@Localizer["Equipment"]</th>
-                <th data-col-key="class" data-resizable="true" data-min-width="70" data-max-width="120">@Localizer["کلاس"]</th>
-                <th data-col-key="risk" data-resizable="true" data-min-width="80" data-max-width="140">@Localizer["ریسک"]</th>
-                <th data-col-key="safety" data-resizable="true" data-min-width="120" data-max-width="280">@Localizer["اثر ایمنی"]</th>
-                <th data-col-key="production" data-resizable="true" data-min-width="120" data-max-width="280">@Localizer["اثر تولید"]</th>
-                <th data-col-key="environment" data-resizable="true" data-min-width="120" data-max-width="280">@Localizer["اثر زیست‌محیطی"]</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var c in Model.Items)
-            {
-                <tr>
-                    <td class="small"><a asp-controller="Equipment" asp-action="Details" asp-route-id="@c.EquipmentId">@c.EquipmentTagNumber</a></td>
-                    <td><span class="badge @(c.CriticalityClass == "A" ? "bg-danger" : c.CriticalityClass == "B" ? "bg-warning text-dark" : "bg-secondary")">@c.CriticalityClass</span></td>
-                    <td class="small">@c.RiskLevel</td>
-                    <td class="small">@c.SafetyImpact</td>
-                    <td class="small">@c.ProductionImpact</td>
-                    <td class="small">@c.EnvironmentImpact</td>
-                </tr>
-            }
-        </tbody>
-    </table>
-    </div>
-    @if (!Model.Items.Any()) { <p class="text-muted text-center py-4 mb-0">@Localizer["هنوز تحلیلی ثبت نشده."]</p> }
-
-    @{
-        var qsParts = new List<string>();
-        if (!string.IsNullOrEmpty((string?)ViewBag.SelectedClass)) qsParts.Add($"criticalityClass={Uri.EscapeDataString((string)ViewBag.SelectedClass)}");
-    }
-    @await Html.PartialAsync("_Pagination", new PEMS.Web.ViewModels.PaginationViewModel
-    {
-        Page = Model.Page,
-        TotalPages = Model.TotalPages,
-        TotalCount = Model.TotalCount,
-        PageSize = Model.PageSize,
-        GridKey = "EquipmentCriticality",
-        BaseUrl = Url.Action("Index") ?? "",
-        ExistingQueryString = string.Join("&", qsParts)
-    })
-</div>
-
-@section Scripts {
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            PemsDataGrid.initColumnResize('EquipmentCriticality');
-        });
-    </script>
+    string ClassText(string? c) => VdrUi.Loc(Localizer, "Ec_Class_", c);
+    string ClassTone(string? c) => c switch { "A" => "vs-pill--danger", "B" => "vs-pill--warning", _ => "vs-pill--neutral" };
 }
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/pems-workspace.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/_content/PEMS.UI/pems-list.css" asp-append-version="true" />
+}
+
+@* SCRUM-337 W2b: built from the PEMS.UI list-page component. The A / B / C / not-assessed counts are KPI chips (the class
+   chips filter the list), the class filter that the controller already took is now in the filters dropdown, and
+   "New analysis" still opens the assess modal. *@
+<pems-list-page texts="@ListPageTexts.From(Localizer)">
+    <pems-list-panel>
+
+        <pems-list-toolbar heading="@Localizer["Ec_Title"]" heading-title="@Localizer["Ec_Hint"]" total="@Model.TotalCount">
+            <pems-list-tools>
+                <pems-list-filters form-id="ecFilterForm" action="@Url.Action("Index")" count="@filterCount" reset-href="@Url.Action("Index")">
+                    <pems-list-filter-select id="ecFilterClass" name="criticalityClass" label="@Localizer["Ec_Class"]" value="@selectedClass"
+                                             all-text="@Localizer["Rcm_All"]" items="@classes.Select(c => new SelectListItem(ClassText(c), c))" />
+                </pems-list-filters>
+                <pems-list-kpi-toggle target="ecKpis" storage-key="pems.equipmentCriticality.kpis" />
+                <pems-list-reset-columns grid-key="EquipmentCriticality" />
+                <pems-list-new modal="assessModal" text="@Localizer["Ec_New"]" />
+            </pems-list-tools>
+        </pems-list-toolbar>
+
+        <pems-list-kpis id="ecKpis">
+            <a class="vs-chip vs-chip--danger" href="@Url.Action("Index", new { criticalityClass = "A" })">@ClassText("A") <strong>@ViewBag.ClassACount</strong></a>
+            <a class="vs-chip" href="@Url.Action("Index", new { criticalityClass = "B" })">@ClassText("B") <strong>@ViewBag.ClassBCount</strong></a>
+            <a class="vs-chip" href="@Url.Action("Index", new { criticalityClass = "C" })">@ClassText("C") <strong>@ViewBag.ClassCCount</strong></a>
+            <span class="vs-chip"><i class="bi bi-question-circle" aria-hidden="true"></i> @Localizer["Ec_Unassessed"] <strong>@ViewBag.UnassessedCount</strong></span>
+        </pems-list-kpis>
+
+        <pems-list-chips reset-href="@Url.Action("Index")">
+            @if (!string.IsNullOrEmpty(selectedClass))
+            { <pems-list-chip label="@Localizer["Ec_Class"]" value="@ClassText(selectedClass)" remove-href="@Url.Action("Index")" /> }
+        </pems-list-chips>
+
+        <pems-list-grid>
+            <pems-list-table grid-key="EquipmentCriticality" empty="@(!Model.Items.Any())" empty-text="@Localizer["Ec_Empty"]"
+                             filtered="@(filterCount > 0)" clear-href="@Url.Action("Index")">
+                <thead>
+                    <tr>
+                        <th data-col-key="equipment" data-resizable="true" data-min-width="100" data-max-width="200" style="width:140px">@Localizer["Equipment"]</th>
+                        <th data-col-key="class" data-resizable="true" data-min-width="70" data-max-width="160" style="width:110px">@Localizer["Ec_Class"]</th>
+                        <th data-col-key="risk" data-resizable="true" data-min-width="80" data-max-width="140" style="width:100px">@Localizer["Ec_Risk"]</th>
+                        <th data-col-key="safety" data-resizable="true" data-min-width="120" data-max-width="280" style="width:180px">@Localizer["Ec_Safety"]</th>
+                        <th data-col-key="production" data-resizable="true" data-min-width="120" data-max-width="280" style="width:180px" class="vs-hide-md">@Localizer["Ec_Production"]</th>
+                        <th data-col-key="environment" data-resizable="true" data-min-width="120" data-max-width="280" style="width:180px" class="vs-hide-md">@Localizer["Ec_Environment"]</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var c in Model.Items)
+                    {
+                        <tr class="lp-row">
+                            <td class="lp-no"><a asp-controller="Equipment" asp-action="Details" asp-route-id="@c.EquipmentId" class="lp-subject"><span class="vs-num">@c.EquipmentTagNumber</span></a></td>
+                            <td><span class="vs-pill @ClassTone(c.CriticalityClass)">@ClassText(c.CriticalityClass)</span></td>
+                            <td class="small">@VdrUi.Loc(Localizer, "Pri_", c.RiskLevel)</td>
+                            <td class="small"><span class="vs-title-cell" title="@c.SafetyImpact">@c.SafetyImpact</span></td>
+                            <td class="small vs-hide-md"><span class="vs-title-cell" title="@c.ProductionImpact">@c.ProductionImpact</span></td>
+                            <td class="small vs-hide-md"><span class="vs-title-cell" title="@c.EnvironmentImpact">@c.EnvironmentImpact</span></td>
+                        </tr>
+                    }
+                </tbody>
+            </pems-list-table>
+
+            <pems-list-footer>
+                @await Html.PartialAsync("_Pagination", new PEMS.Web.ViewModels.PaginationViewModel
+                {
+                    Page = Model.Page,
+                    TotalPages = Model.TotalPages,
+                    TotalCount = Model.TotalCount,
+                    PageSize = Model.PageSize,
+                    GridKey = "EquipmentCriticality",
+                    BaseUrl = Url.Action("Index") ?? "",
+                    ExistingQueryString = string.Join("&", qsParts)
+                })
+            </pems-list-footer>
+        </pems-list-grid>
+    </pems-list-panel>
+</pems-list-page>
 
 <div class="modal fade" id="assessModal" tabindex="-1">
     <div class="modal-dialog"><div class="modal-content">
@@ -138,3 +133,7 @@
         </form>
     </div></div>
 </div>
+
+@section Scripts {
+    <script src="~/_content/PEMS.UI/pems-list.js" asp-append-version="true"></script>
+}

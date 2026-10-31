@@ -88,6 +88,40 @@ public class ListPageComponentTests
     }
 
     [Fact]
+    public async Task Filter_select_labels_the_select_offers_all_and_selects_the_current_value()
+    {
+        var items = new[] { new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem("Draft", "Draft"), new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem("Done <ok>", "Done") };
+        var html = await Run(new PemsListFilterSelectTagHelper { Id = "st", Name = "status", Label = "Status", Value = "Done", AllText = "All", Items = items },
+            "pems-list-filter-select");
+
+        Assert.Contains("<label class=\"lp-lbl\" for=\"st\">Status</label>", html);
+        Assert.Matches("<select class=\"form-select form-select-sm\" id=\"st\" name=\"status\">", html);
+        Assert.Contains("<option value=\"\">All</option>", html);
+        Assert.Contains("<option value=\"Draft\">Draft</option>", html);
+        Assert.Contains("<option selected=\"selected\" value=\"Done\">Done &lt;ok&gt;</option>", html);    // texts are encoded
+
+        var none = await Run(new PemsListFilterSelectTagHelper { Id = "st", Name = "status", Label = "Status", AllText = "All", Items = items }, "pems-list-filter-select");
+        Assert.Contains("<option selected=\"selected\" value=\"\">All</option>", none);
+    }
+
+    [Theory]
+    [InlineData(false)]
+    [InlineData(true)]
+    public async Task Popover_tool_opens_the_page_content_in_a_dropdown_without_a_modal(bool primary)
+    {
+        var html = await Run(new PemsListPopoverTagHelper { Id = "up", Icon = "bi-cloud-upload", Label = "Upload", Primary = primary },
+            "pems-list-popover", "<form action=\"/Upload\"></form>");
+
+        Assert.Contains("id=\"upBtn\"", html);
+        Assert.Contains("data-bs-toggle=\"dropdown\"", html);
+        Assert.Contains("aria-controls=\"up\"", html);
+        Assert.Contains("<div class=\"lp-fp-body\"><form action=\"/Upload\"></form></div>", html);
+        Assert.DoesNotContain("modal", html);
+        Assert.Equal(primary, html.Contains("lp-compose-label"));
+        Assert.Contains("Upload", html);                                                       // label visible or as tool tip
+    }
+
+    [Fact]
     public async Task Chips_render_nothing_without_a_chip_and_offer_reset_all_from_two_chips_on()
     {
         Assert.Equal("", await Run(new PemsListChipsTagHelper { ResetHref = "/x" }, "pems-list-chips", "   "));
@@ -156,7 +190,22 @@ public class ListPageComponentTests
         var toggle = await Run(new PemsListKpiToggleTagHelper { Target = "edKpis", StorageKey = "pems.docs.kpis" }, "pems-list-kpi-toggle");
         Assert.Contains("aria-controls=\"edKpis\"", toggle);
         Assert.Contains("data-storage-key=\"pems.docs.kpis\"", toggle);
+        Assert.Contains("aria-expanded=\"false\"", toggle);
+        Assert.DoesNotContain("data-lp-open", toggle);
     }
+
+    [Fact]
+    public async Task Kpi_row_can_start_open_for_pages_whose_counts_are_the_point()
+    {
+        // W2b: RCM / FMEA coverage shows its counts first; a choice stored in the browser still wins (pems-list.js)
+        var row = await Run(new PemsListKpisTagHelper { Id = "rfKpis", Open = true }, "pems-list-kpis");
+        Assert.StartsWith("<div class=\"lp-kpis\" id=\"rfKpis\">", row);
+
+        var toggle = await Run(new PemsListKpiToggleTagHelper { Target = "rfKpis", StorageKey = "pems.rcmFmea.kpis", Open = true }, "pems-list-kpi-toggle");
+        Assert.Contains("aria-expanded=\"true\"", toggle);
+        Assert.Contains("data-lp-open=\"1\"", toggle);
+    }
+
     [Fact]
     public async Task Bulk_bar_starts_hidden_with_a_live_count_and_the_page_text_and_field_name()
     {
