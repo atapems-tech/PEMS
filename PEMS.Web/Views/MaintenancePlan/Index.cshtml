@@ -47,7 +47,7 @@
                                 <a asp-controller="MaintenanceStrategy" asp-action="Tag" asp-route-equipmentId="@p.EquipmentId" class="lp-subject">@p.EquipmentTagNumber</a>
                                 <div class="text-muted">@p.EquipmentName</div>
                                 <div class="text-muted">@(p.EquipmentClassName ?? Localizer["Rcm_Unclassified"].Value)
-                                    <span class="badge @RcmDisplay.CriticalityBadge(p.CriticalityClass ?? "Unrated")">@Localizer.Label("Criticality", p.CriticalityClass ?? "Unrated")</span></div>
+                                    <pems-badge tone="none" css="@RcmDisplay.CriticalityBadge(p.CriticalityClass ?? "Unrated")">@Localizer.Label("Criticality", p.CriticalityClass ?? "Unrated")</pems-badge></div>
                             </td>
                             <td><span class="vs-title-cell" title="@p.Title">@p.Title</span></td>
                             <td class="small">

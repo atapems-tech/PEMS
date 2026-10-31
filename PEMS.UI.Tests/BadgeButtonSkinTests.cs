@@ -10,12 +10,12 @@ namespace PEMS.UI.Tests;
 /// <summary>SCRUM-53 / #31: Badge and Button write the markup the pages wrote by hand (Bootstrap skin, the default); the Pems skin keeps the library classes.</summary>
 public sealed class BadgeButtonSkinTests
 {
-    private static async Task<string> Badge(string tone, string? css, string inner)
+    private static async Task<string> Badge(string tone, string? css, string inner, TagHelperAttributeList? attributes = null)
     {
         await using var provider = new ServiceCollection().AddPemsUi().BuildServiceProvider();
         var helper = new PemsBadgeTagHelper(provider.CreateScope().ServiceProvider.GetRequiredService<IPemsComponentRenderer>()) { Tone = tone, Css = css };
         var context = new TagHelperContext("pems-badge", new TagHelperAttributeList(), new Dictionary<object, object>(), "b");
-        var output = new TagHelperOutput("pems-badge", new TagHelperAttributeList(),
+        var output = new TagHelperOutput("pems-badge", attributes ?? new TagHelperAttributeList(),
             (_, _) => Task.FromResult<TagHelperContent>(new DefaultTagHelperContent().SetHtmlContent(inner)));
         await helper.ProcessAsync(context, output);
         using var writer = new StringWriter();
@@ -35,6 +35,17 @@ public sealed class BadgeButtonSkinTests
     [InlineData("danger", "ms-1", "badge bg-danger ms-1")]
     public async Task The_tag_helper_writes_the_badge_classes_the_pages_wrote(string tone, string? css, string expected)
         => Assert.Equal($"<span class=\"{expected}\">Active <b>2</b></span>", await Badge(tone, css, "Active <b>2</b>"));
+
+    [Fact]
+    public async Task Tone_none_writes_only_the_classes_the_page_passes()
+        => Assert.Equal("<span class=\"badge text-bg-success fs-6\">Ready</span>", await Badge("none", "text-bg-success fs-6", "Ready"));
+
+    [Fact]
+    public async Task Other_attributes_of_the_tag_stay_on_the_element_and_are_encoded_once()
+    {
+        var attributes = new TagHelperAttributeList { new("title", "A & \"B\""), new("style", "min-width:70px;") };
+        Assert.Equal("<span class=\"badge bg-danger\" title=\"A &amp; &quot;B&quot;\" style=\"min-width:70px;\">3</span>", await Badge("danger", null, "3", attributes));
+    }
 
     [Fact]
     public async Task The_pems_skin_keeps_the_library_classes()

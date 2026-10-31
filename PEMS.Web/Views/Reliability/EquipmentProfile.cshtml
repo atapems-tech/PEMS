@@ -5,12 +5,12 @@
 @{
     string StatusBadge(string status) => status switch
     {
-        "READY" => "text-bg-success",
-        "PARTIAL" => "text-bg-warning",
-        "INSUFFICIENT_DATA" => "text-bg-warning",
-        "NOT_READY" => "text-bg-secondary",
-        "NOT_APPLICABLE" => "text-bg-light border",
-        _ => "text-bg-light border"
+        "READY" => "success",
+        "PARTIAL" => "warning",
+        "INSUFFICIENT_DATA" => "warning",
+        "NOT_READY" => "neutral",
+        "NOT_APPLICABLE" => "light",
+        _ => "light"
     };
 }
 
@@ -47,7 +47,7 @@
     <div class="col-md-3">
         <div class="content-card h-100">
             <div class="small text-muted">@Localizer["Reliability"]</div>
-            <span class="badge @StatusBadge(Model.ReliabilityDataStatus)">@Model.ReliabilityDataStatus</span>
+            <pems-badge tone="@StatusBadge(Model.ReliabilityDataStatus)">@Model.ReliabilityDataStatus</pems-badge>
             <div class="small mt-1">MTBF: @(Model.MTBFHours.HasValue ? $"{Model.MTBFHours.Value:N1}h" : "N/A")</div>
             <div class="small">MTTR: @(Model.MTTRHours.HasValue ? $"{Model.MTTRHours.Value:N1}h" : "N/A")</div>
             <div class="small">Availability: @(Model.AvailabilityPercent.HasValue ? $"{Model.AvailabilityPercent.Value:N1}%" : "N/A")</div>
@@ -56,10 +56,10 @@
     <div class="col-md-3">
         <div class="content-card h-100">
             <div class="small text-muted">Intelligence Signals</div>
-            <div class="small">Bad Actor: <span class="badge @(Model.IsBadActor ? "text-bg-danger" : "text-bg-secondary")">@(Model.IsBadActor ? "Yes" : "No")</span></div>
-            <div class="small">Weibull: <span class="badge @StatusBadge(Model.WeibullDataStatus)">@Model.WeibullDataStatus</span></div>
-            <div class="small">Predictive: <span class="badge @StatusBadge(Model.PredictiveStatus)">@Model.PredictiveStatus</span></div>
-            <div class="small">Condition Monitoring: <span class="badge @StatusBadge(Model.ConditionMonitoringStatus)">@Model.ConditionMonitoringStatus</span></div>
+            <div class="small">Bad Actor: <pems-badge tone="@(Model.IsBadActor ? "danger" : "neutral")">@(Model.IsBadActor ? "Yes" : "No")</pems-badge></div>
+            <div class="small">Weibull: <pems-badge tone="@StatusBadge(Model.WeibullDataStatus)">@Model.WeibullDataStatus</pems-badge></div>
+            <div class="small">Predictive: <pems-badge tone="@StatusBadge(Model.PredictiveStatus)">@Model.PredictiveStatus</pems-badge></div>
+            <div class="small">Condition Monitoring: <pems-badge tone="@StatusBadge(Model.ConditionMonitoringStatus)">@Model.ConditionMonitoringStatus</pems-badge></div>
         </div>
     </div>
 </div>
@@ -93,8 +93,8 @@
                 <div class="small text-muted">No failure history recorded.</div>
             }
             <hr />
-            <div class="small">FMEA (class-level): <span class="badge @StatusBadge(Model.FMEAReadiness)">@Model.FMEAReadiness</span></div>
-            <div class="small">RCM (class-level): <span class="badge @StatusBadge(Model.RCMReadiness)">@Model.RCMReadiness</span></div>
+            <div class="small">FMEA (class-level): <pems-badge tone="@StatusBadge(Model.FMEAReadiness)">@Model.FMEAReadiness</pems-badge></div>
+            <div class="small">RCM (class-level): <pems-badge tone="@StatusBadge(Model.RCMReadiness)">@Model.RCMReadiness</pems-badge></div>
             <div class="small mt-1">Permit Required: @(Model.AnyLinkedJobPlanRequiresPermit ? "Yes" : "No / Unknown")</div>
             <div class="small">LOTO Required: @(Model.AnyLinkedJobPlanRequiresLOTO ? "Yes" : "No / Unknown")</div>
         </div>

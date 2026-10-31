@@ -9,7 +9,7 @@
         <span class="text-muted small">@Model.QCDiscipline?.Name @(Model.Equipment != null ? " | " + Model.Equipment.TagNumber : "")</span>
     </div>
     <div class="d-flex align-items-center gap-2">
-        <span class="badge @(Model.Status == "Active" ? "bg-success" : Model.Status == "Draft" ? "bg-secondary" : "bg-info") fs-6">@Model.Status</span>
+        <pems-badge tone="none" css="@(Model.Status == "Active" ? "bg-success" : Model.Status == "Draft" ? "bg-secondary" : "bg-info") fs-6">@Model.Status</pems-badge>
         @if (Model.Status == "Draft")
         {
             <form asp-action="ItpApprove" method="post">
@@ -54,12 +54,12 @@
                     <td class="small">@li.Activity</td>
                     <td class="small">@li.QCDiscipline?.Name</td>
                     <td>
-                        <span class="badge bg-secondary" title="H=Hold, W=Witness, R=Review, S=Surveillance, M=Monitor">@li.InspectionCategory</span>
+                        <pems-badge tone="neutral" title="H=Hold, W=Witness, R=Review, S=Surveillance, M=Monitor">@li.InspectionCategory</pems-badge>
                     </td>
                     <td class="small">@li.AcceptanceCriteria</td>
                     <td class="small">@li.ResponsibleParty</td>
                     <td>
-                        <span class="badge @(li.Status == "Passed" ? "bg-success" : li.Status == "Failed" ? "bg-danger" : li.Status == "Notified" ? "bg-info" : "bg-light text-dark")">@li.Status</span>
+                        <pems-badge tone="none" css="@(li.Status == "Passed" ? "bg-success" : li.Status == "Failed" ? "bg-danger" : li.Status == "Notified" ? "bg-info" : "bg-light text-dark")">@li.Status</pems-badge>
                         @if (li.NotifiedDate.HasValue)
                         {
                             <div class="text-muted small">اعلان: @li.NotifiedDate.Value.ToString("yyyy-MM-dd HH:mm")</div>

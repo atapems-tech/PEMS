@@ -36,7 +36,7 @@
             <div class="col-md-9">
                 <div class="row g-2 small mb-2">
                     <div class="col-md-3"><strong>@Localizer["Symbology"]</strong><div>@b.Symbology</div></div>
-                    <div class="col-md-3"><strong>@Localizer["Status"]</strong><div><span class="badge @(b.Status == "Active" ? "bg-success" : "bg-secondary")">@b.Status</span></div></div>
+                    <div class="col-md-3"><strong>@Localizer["Status"]</strong><div><pems-badge tone="@(b.Status == "Active" ? "success" : "neutral")">@b.Status</pems-badge></div></div>
                     <div class="col-md-3"><strong>@Localizer["Prints"]</strong><div>@b.PrintCount</div></div>
                     <div class="col-md-3"><strong>@Localizer["Created"]</strong><div>@b.CreatedDate.ToString("yyyy-MM-dd")</div></div>
                 </div>

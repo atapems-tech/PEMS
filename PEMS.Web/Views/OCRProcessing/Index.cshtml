@@ -83,7 +83,7 @@
                                     _ => "bg-secondary"
                                 };
                             }
-                            <span class="badge @badge">@a.AIStatus</span>
+                            <pems-badge tone="none" css="@badge">@a.AIStatus</pems-badge>
                         </td>
                         <td class="small text-muted" style="max-width:260px;">
                             @(a.AIStatus == "Failed" ? a.AIError : a.AISummary)

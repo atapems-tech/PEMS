@@ -39,7 +39,7 @@
                 {
                     <li class="d-flex justify-content-between border-bottom py-1">
                         <a asp-action="ItpDetails" asp-route-id="@i.InspectionTestPlanId">@i.ITPNumber &mdash; @i.Title</a>
-                        <span class="badge @(i.Status == "Active" ? "bg-success" : i.Status == "Draft" ? "bg-secondary" : "bg-info")">@i.Status</span>
+                        <pems-badge tone="none" css="@(i.Status == "Active" ? "bg-success" : i.Status == "Draft" ? "bg-secondary" : "bg-info")">@i.Status</pems-badge>
                     </li>
                 }
             </ul>
@@ -60,7 +60,7 @@
                 {
                     <li class="d-flex justify-content-between border-bottom py-1">
                         <a asp-action="NcrDetails" asp-route-id="@n.NonConformanceReportId">@n.NCRNumber</a>
-                        <span class="badge @(n.Status == "Closed" ? "bg-success" : n.Severity == "Critical" ? "bg-danger" : "bg-warning text-dark")">@n.Status</span>
+                        <pems-badge tone="@(n.Status == "Closed" ? "success" : n.Severity == "Critical" ? "danger" : "warning")">@n.Status</pems-badge>
                     </li>
                 }
             </ul>

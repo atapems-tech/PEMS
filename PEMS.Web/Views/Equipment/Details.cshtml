@@ -163,7 +163,7 @@
         <div class="d-flex flex-wrap gap-2">
             @foreach (var s in Model.SuggestedLinks)
             {
-                <span class="badge bg-warning text-dark"><i class="bi bi-robot"></i> @s.Label <span class="small">(@s.SubLabel)</span></span>
+                <pems-badge tone="warning"><i class="bi bi-robot"></i> @s.Label <span class="small">(@s.SubLabel)</span></pems-badge>
             }
         </div>
     </div>
@@ -277,7 +277,7 @@
                     <div class="col-md-3"><strong>@Localizer["Type"]</strong><div>@NA(inst.InstrumentType)</div></div>
                     <div class="col-md-3"><strong>@Localizer["Loop No."]</strong><div>@NA(inst.LoopNumber)</div></div>
                     <div class="col-md-3"><strong>System / Signal</strong><div>@NA(inst.System) / @NA(inst.SignalClass)</div></div>
-                    <div class="col-md-3"><strong>Next Calibration</strong><div>@(inst.NextCalibrationDue?.ToString("yyyy-MM-dd") ?? "N/A") <span class="badge @calBadgeClass">@inst.CalibrationStatus</span></div></div>
+                    <div class="col-md-3"><strong>Next Calibration</strong><div>@(inst.NextCalibrationDue?.ToString("yyyy-MM-dd") ?? "N/A") <pems-badge tone="none" css="@calBadgeClass">@inst.CalibrationStatus</pems-badge></div></div>
                 </div>
             </div>
         }
@@ -317,7 +317,7 @@
 
                     <div class="col-md-3"><strong>@Localizer["System Cabinet"]</strong><div>@NA(inst.SystemCabinet)</div></div>
                     <div class="col-md-3"><strong>@Localizer["Last Calibration"]</strong><div>@(inst.LastCalibrationDate?.ToString("yyyy-MM-dd") ?? "N/A")</div></div>
-                    <div class="col-md-3"><strong>Next Calibration Due</strong><div>@(inst.NextCalibrationDue?.ToString("yyyy-MM-dd") ?? "N/A") <span class="badge @calBadgeClass">@inst.CalibrationStatus</span></div></div>
+                    <div class="col-md-3"><strong>Next Calibration Due</strong><div>@(inst.NextCalibrationDue?.ToString("yyyy-MM-dd") ?? "N/A") <pems-badge tone="none" css="@calBadgeClass">@inst.CalibrationStatus</pems-badge></div></div>
                     <div class="col-md-3"><strong>Next Maintenance Due</strong><div>@(inst.NextMaintenanceDue?.ToString("yyyy-MM-dd") ?? "N/A")</div></div>
                 </div>
             </div>
@@ -398,7 +398,7 @@
                                 <td>
                                     @if (p.EvaluationProfileId.HasValue)
                                     {
-                                        <span class="badge @CmEvalBadge(p.LastReadingEvaluationStatus)">@p.LastReadingEvaluationStatus</span>
+                                        <pems-badge tone="none" css="@CmEvalBadge(p.LastReadingEvaluationStatus)">@p.LastReadingEvaluationStatus</pems-badge>
                                     }
                                     else
                                     {
@@ -466,7 +466,7 @@
                     {
                         <tr>
                             <td>@d.DocumentNo</td><td>@d.Title</td><td>@d.DocumentType</td><td>@d.DisciplineName</td>
-                            <td>@d.RevisionNo</td><td><span class="badge badge-status-@d.Status">@d.Status</span></td>
+                            <td>@d.RevisionNo</td><td><pems-badge tone="none" css="badge-status-@d.Status">@d.Status</pems-badge></td>
                             <td><pems-button tone="neutral" size="small" outline="true" as="a" asp-controller="EngineeringDocuments" asp-action="Details" asp-route-id="@d.DocumentId"><i class="bi bi-eye"></i></pems-button></td>
                         </tr>
                     }
@@ -753,7 +753,7 @@
                         {
                             <li class="d-flex justify-content-between border-bottom py-1">
                                 <a asp-controller="QC" asp-action="NcrDetails" asp-route-id="@n.NodeId">@n.Label</a>
-                                <span class="badge @(n.Priority == "Urgent" ? "bg-danger" : "bg-secondary")">@n.SubLabel</span>
+                                <pems-badge tone="@(n.Priority == "Urgent" ? "danger" : "neutral")">@n.SubLabel</pems-badge>
                             </li>
                         }
                     </ul>
@@ -768,7 +768,7 @@
                         {
                             <li class="d-flex justify-content-between border-bottom py-1">
                                 <a asp-controller="MOC" asp-action="Details" asp-route-id="@m.NodeId">@m.Label</a>
-                                <span class="badge @(m.Priority == "Urgent" ? "bg-danger" : "bg-secondary")">@m.SubLabel</span>
+                                <pems-badge tone="@(m.Priority == "Urgent" ? "danger" : "neutral")">@m.SubLabel</pems-badge>
                             </li>
                         }
                     </ul>
@@ -783,7 +783,7 @@
                         {
                             <li class="d-flex justify-content-between border-bottom py-1">
                                 <a asp-controller="TechnicalQuery" asp-action="Details" asp-route-id="@t.NodeId">@t.Label</a>
-                                <span class="badge @(t.Priority == "Urgent" ? "bg-danger" : "bg-secondary")">@t.SubLabel</span>
+                                <pems-badge tone="@(t.Priority == "Urgent" ? "danger" : "neutral")">@t.SubLabel</pems-badge>
                             </li>
                         }
                     </ul>
@@ -806,14 +806,14 @@
                 <div class="row g-2 small">
                     <div class="col-md-3"><strong>@Localizer["Equipment Class"]</strong><div>@intel.EquipmentClassName <code>@intel.EquipmentClassCode</code></div></div>
                     <div class="col-md-3"><strong>Class Hierarchy</strong><div>@string.Join(" ← ", intel.ResolvedClassHierarchy)</div></div>
-                    <div class="col-md-3"><strong>@Localizer["Confidence"]</strong><div><span class="badge text-bg-info">@intel.ClassificationConfidence</span></div></div>
-                    <div class="col-md-3"><strong>@Localizer["Source"]</strong><div><span class="badge text-bg-secondary">@intel.ClassificationSource</span></div></div>
+                    <div class="col-md-3"><strong>@Localizer["Confidence"]</strong><div><pems-badge tone="info">@intel.ClassificationConfidence</pems-badge></div></div>
+                    <div class="col-md-3"><strong>@Localizer["Source"]</strong><div><pems-badge tone="neutral">@intel.ClassificationSource</pems-badge></div></div>
                 </div>
                 @if (explanation?.MatchedRuleTier != null)
                 {
                     <div class="alert alert-light border small mt-3 mb-0">
                         <strong>@Localizer["چرا این طبقه‌بندی؟"]</strong>
-                        Rule tier: <span class="badge text-bg-light border">@explanation.MatchedRuleTier</span> &middot;
+                        Rule tier: <pems-badge tone="light">@explanation.MatchedRuleTier</pems-badge> &middot;
                         Matched on: <code>@explanation.MatchedInput</code> &middot;
                         @explanation.Reason
                     </div>
@@ -828,7 +828,7 @@
             {
                 <pems-alert tone="warning" css="small mt-3 mb-0">
                     <strong>پیشنهاد در انتظار بازبینی:</strong> @pendingSuggestion.SuggestedEquipmentClassName
-                    (<span class="badge text-bg-warning">@pendingSuggestion.Confidence</span>) &mdash; @pendingSuggestion.Reason
+                    (<pems-badge tone="warning">@pendingSuggestion.Confidence</pems-badge>) &mdash; @pendingSuggestion.Reason
                     <a asp-controller="EquipmentClassification" asp-action="ReviewQueue" class="ms-2">بازبینی در صف →</a>
                 </pems-alert>
             }

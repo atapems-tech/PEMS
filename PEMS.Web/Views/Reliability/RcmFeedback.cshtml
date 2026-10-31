@@ -9,10 +9,10 @@
 
     string StatusBadge(string status) => status switch
     {
-        "ACCEPTED" => "text-bg-success",
-        "REJECTED" => "text-bg-secondary",
-        "PENDING" => "text-bg-warning",
-        _ => "text-bg-light border"
+        "ACCEPTED" => "success",
+        "REJECTED" => "neutral",
+        "PENDING" => "warning",
+        _ => "light"
     };
 
     string TriggerLabel(string reason) => reason switch
@@ -73,9 +73,9 @@
                 <tr>
                     <td class="fw-bold">@r.EquipmentTagNumber</td>
                     <td class="small text-muted">@(r.MaintenanceStrategyType ?? "-") @(r.FailureModeCode != null ? $"({r.FailureModeCode})" : "")</td>
-                    <td><span class="badge text-bg-info">@TriggerLabel(r.TriggerReason)</span></td>
+                    <td><pems-badge tone="info">@TriggerLabel(r.TriggerReason)</pems-badge></td>
                     <td class="small">@r.Evidence</td>
-                    <td><span class="badge @StatusBadge(r.Status)">@r.Status</span></td>
+                    <td><pems-badge tone="@StatusBadge(r.Status)">@r.Status</pems-badge></td>
                     <td class="small">@r.GeneratedDate.ToString("yyyy-MM-dd")</td>
                     <td class="small text-muted">
                         @if (r.ReviewedBy != null)

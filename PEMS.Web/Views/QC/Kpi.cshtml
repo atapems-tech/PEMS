@@ -60,7 +60,7 @@
                 {
                     var badgeClass = s.Severity == "Critical" ? "bg-danger" : s.Severity == "Major" ? "bg-warning text-dark" : "bg-secondary";
                     <li class="d-flex justify-content-between border-bottom py-1">
-                        <span class="badge @badgeClass">@s.Severity</span>
+                        <pems-badge tone="none" css="@badgeClass">@s.Severity</pems-badge>
                         <strong>@s.Count</strong>
                     </li>
                 }

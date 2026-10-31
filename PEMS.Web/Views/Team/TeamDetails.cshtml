@@ -46,7 +46,7 @@
     <div class="d-flex align-items-center gap-2 flex-wrap">
         @if (!Model.IsActive)
         {
-            <span class="badge text-bg-secondary">@Localizer["غیرفعال"]</span>
+            <pems-badge tone="neutral">@Localizer["غیرفعال"]</pems-badge>
         }
         <pems-button tone="neutral" size="small" outline="true" type="button" data-bs-toggle="modal" data-bs-target="#addChildNodeModal">
             <i class="bi bi-diagram-2"></i> @Localizer["افزودن زیرتیم/شیفت"]
@@ -192,11 +192,11 @@
                         <td data-label="@Localizer["وضعیت"]">
                             @if (p.IsActive)
                             {
-                                <span class="badge text-bg-success"><i class="bi bi-check-circle"></i> @Localizer["فعال"]</span>
+                                <pems-badge tone="success"><i class="bi bi-check-circle"></i> @Localizer["فعال"]</pems-badge>
                             }
                             else
                             {
-                                <span class="badge text-bg-secondary"><i class="bi bi-dash-circle"></i> @Localizer["غیرفعال"]</span>
+                                <pems-badge tone="neutral"><i class="bi bi-dash-circle"></i> @Localizer["غیرفعال"]</pems-badge>
                             }
                         </td>
                         <td class="text-end pems-actions-cell">
@@ -303,11 +303,11 @@
                         <td data-label="@Localizer["وضعیت"]">
                             @if (row.Assignment.IsActive)
                             {
-                                <span class="badge text-bg-success"><i class="bi bi-play-circle"></i> @Localizer["جاری"]</span>
+                                <pems-badge tone="success"><i class="bi bi-play-circle"></i> @Localizer["جاری"]</pems-badge>
                             }
                             else
                             {
-                                <span class="badge text-bg-secondary"><i class="bi bi-check2"></i> @Localizer["پایان‌یافته"]</span>
+                                <pems-badge tone="neutral"><i class="bi bi-check2"></i> @Localizer["پایان‌یافته"]</pems-badge>
                             }
                         </td>
                     </tr>

@@ -3,6 +3,11 @@
 All notable changes to PEMS. No system version is defined yet (plan row F_CI), so entries are grouped by date
 and theme and were reconstructed from the git history (initial import 2026-09-05). Newest first.
 
+## 2026-10-31 - Badge completed in the views (SCRUM-53, #31)
+
+### Changed
+- `<pems-badge>` takes `tone="none"` (the page passes the classes), a runtime tone (`tone="@x"`) and the other attributes of the tag; 258 more badges in 106 views moved, the `text-bg-*` view helpers now return tone names, the badge ratchet is down to the 4 toast lines in `_Layout` (the counter no longer counts `bi-person-badge` icons).
+
 ## 2026-10-31 - `<pems-button>` takes `asp-*` routing (SCRUM-53, #31)
 
 ### Changed

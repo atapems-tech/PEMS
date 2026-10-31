@@ -13,7 +13,7 @@
 <div class="d-flex justify-content-between align-items-center mb-3">
     <h5 class="mb-0"><i class="bi bi-diagram-3"></i>
         @(isEdit ? Localizer["Rcm_EditStrategy"] : Localizer["Rcm_NewStrategy"])
-        @if (isEdit) { <span class="badge @RcmDisplay.StatusBadge(Model.Status) ms-2">@Localizer.Label("Status", Model.Status) · v@(Model.VersionNumber)</span> }
+        @if (isEdit) { <pems-badge tone="none" css="@RcmDisplay.StatusBadge(Model.Status) ms-2">@Localizer.Label("Status", Model.Status) · v@(Model.VersionNumber)</pems-badge> }
     </h5>
     <a asp-action="@(isEdit ? "Details" : "Index")" asp-route-id="@Model.MaintenanceStrategyId" class="btn btn-outline-secondary btn-sm">@Localizer["Rcm_Back"]</a>
 </div>

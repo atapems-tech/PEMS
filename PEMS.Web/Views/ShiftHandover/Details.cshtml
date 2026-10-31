@@ -28,7 +28,7 @@
     <div class="d-flex align-items-center gap-3 mb-2 flex-wrap">
         <div class="kpi-icon bg-icon-blue" style="width:56px;height:56px;font-size:26px;"><i class="bi bi-arrow-left-right"></i></div>
         <div>
-            <h5 class="mb-0">Handover #@Model.ShiftHandoverId <span class="badge @badgeClass">@Model.Status</span></h5>
+            <h5 class="mb-0">Handover #@Model.ShiftHandoverId <pems-badge tone="none" css="@badgeClass">@Model.Status</pems-badge></h5>
             <span class="text-muted small">@Model.OutgoingName → @Model.IncomingName @(Model.ShiftLabel != null ? $"- {Model.ShiftLabel}" : "") - @Model.HandoverDate.ToString("yyyy-MM-dd HH:mm")</span>
         </div>
     </div>

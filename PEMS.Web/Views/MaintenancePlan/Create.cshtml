@@ -42,7 +42,7 @@
             <a asp-controller="MaintenanceStrategy" asp-action="Details" asp-route-id="@ctx.StrategyId">#@ctx.StrategyId · v@(ctx.StrategyVersion)</a>
             · <pems-badge tone="neutral">@Localizer.Label("StrategyType", ctx.StrategyType)</pems-badge>
             · @RcmDisplay.Name(ctx.FailureModeName, ctx.FailureModeNameFa)
-            · <span class="badge @RcmDisplay.ConsequenceBadge(ctx.ConsequenceCategory)">@Localizer.Label("Consequence", ctx.ConsequenceCategory)</span>
+            · <pems-badge tone="none" css="@RcmDisplay.ConsequenceBadge(ctx.ConsequenceCategory)">@Localizer.Label("Consequence", ctx.ConsequenceCategory)</pems-badge>
         </div>
 
         <form asp-action="Create" method="post">

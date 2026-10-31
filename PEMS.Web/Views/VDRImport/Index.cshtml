@@ -51,7 +51,7 @@
                     <td><pems-badge tone="warning">@b.RowsWarning</pems-badge></td>
                     <td><pems-badge tone="danger">@b.RowsError</pems-badge></td>
                     <td><pems-badge tone="neutral">@b.RowsDuplicate</pems-badge></td>
-                    <td><span class="badge @(b.Status == "Committed" ? "bg-success" : "bg-secondary")">@b.Status</span></td>
+                    <td><pems-badge tone="@(b.Status == "Committed" ? "success" : "neutral")">@b.Status</pems-badge></td>
                     <td>
                         @if (b.Status == "Staged")
                         {

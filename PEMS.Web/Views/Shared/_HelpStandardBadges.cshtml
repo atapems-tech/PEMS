@@ -25,7 +25,7 @@
     <div class="d-flex flex-wrap gap-3 small mb-2">
         <div><strong>@L("Applicability", "قابلیت‌اعمال")</strong>: <pems-badge tone="light">@Model.ApplicabilityStatus</pems-badge></div>
         <div><strong>@L("Verification", "تایید منبع")</strong>: <pems-badge tone="light">@Model.VerificationStatus</pems-badge></div>
-        <div><strong>@L("PEMS status", "وضعیت در PEMS")</strong>: <span class="badge @ImplBadgeClass(Model.PEMSImplementationStatus)">@Model.PEMSImplementationStatus</span></div>
+        <div><strong>@L("PEMS status", "وضعیت در PEMS")</strong>: <pems-badge tone="none" css="@ImplBadgeClass(Model.PEMSImplementationStatus)">@Model.PEMSImplementationStatus</pems-badge></div>
     </div>
 
     @if (Model.PEMSImplementationStatus != "ComplianceEvidenceAvailable")

@@ -31,7 +31,7 @@
             <div>
                 <h3 class="h6 mb-0" id="sprint-@sprint.Id">
                     @sprint.Name
-                    <span class="badge @(isActive ? "bg-success" : "bg-secondary") ms-1">@Localizer["Tm_SprintState_" + sprint.State]</span>
+                    <pems-badge tone="@(isActive ? "success" : "neutral")" css="ms-1">@Localizer["Tm_SprintState_" + sprint.State]</pems-badge>
                 </h3>
                 <div class="small text-muted">
                     @TaskManagerUi.Date(sprint.StartDate) @(sprint.StartDate != null || sprint.EndDate != null ? "–" : "") @TaskManagerUi.Date(sprint.EndDate)

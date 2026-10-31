@@ -19,8 +19,8 @@
                     <td><a asp-action="NcrDetails" asp-route-id="@n.NonConformanceReportId">@n.NCRNumber</a></td>
                     <td class="small">@n.QCDiscipline?.Name</td>
                     <td class="small">@n.Equipment?.TagNumber</td>
-                    <td><span class="badge @(n.Severity == "Critical" ? "bg-danger" : n.Severity == "Major" ? "bg-warning text-dark" : "bg-secondary")">@n.Severity</span></td>
-                    <td><span class="badge @(n.Status == "Closed" ? "bg-success" : n.Status == "Dispositioned" ? "bg-info" : n.Status == "PendingApproval" ? "bg-warning text-dark" : "bg-secondary")">@n.Status</span></td>
+                    <td><pems-badge tone="@(n.Severity == "Critical" ? "danger" : n.Severity == "Major" ? "warning" : "neutral")">@n.Severity</pems-badge></td>
+                    <td><pems-badge tone="none" css="@(n.Status == "Closed" ? "bg-success" : n.Status == "Dispositioned" ? "bg-info" : n.Status == "PendingApproval" ? "bg-warning text-dark" : "bg-secondary")">@n.Status</pems-badge></td>
                     <td class="small">@n.RaisedDate.ToString("yyyy-MM-dd")</td>
                 </tr>
             }

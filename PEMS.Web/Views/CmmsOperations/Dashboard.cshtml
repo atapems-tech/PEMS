@@ -88,7 +88,7 @@
             <h6 class="mb-2">PM Compliance <span class="text-muted small">@Localizer["(از IReliabilityIntelligenceService)"]</span></h6>
             @if (Model.PmCompliance is { } pm)
             {
-                <span class="badge @(pm.DataStatus == "READY" ? "text-bg-success" : pm.DataStatus == "PARTIAL" ? "text-bg-warning" : "text-bg-secondary") mb-2">@pm.DataStatus</span>
+                <pems-badge tone="@(pm.DataStatus == "READY" ? "success" : pm.DataStatus == "PARTIAL" ? "warning" : "neutral")" css="mb-2">@pm.DataStatus</pems-badge>
                 @if (pm.CompliancePercent.HasValue)
                 {
                     <div class="fs-4 fw-bold">@pm.CompliancePercent.Value.ToString("N1")%</div>
@@ -113,7 +113,7 @@
             <h6 class="mb-2">Maintenance Type Breakdown <span class="text-muted small">@Localizer["(از IReliabilityIntelligenceService)"]</span></h6>
             @if (Model.MaintenanceTypeBreakdown is { } tb)
             {
-                <span class="badge @(tb.DataStatus == "READY" ? "text-bg-success" : "text-bg-secondary") mb-2">@tb.DataStatus</span>
+                <pems-badge tone="@(tb.DataStatus == "READY" ? "success" : "neutral")" css="mb-2">@tb.DataStatus</pems-badge>
                 <table class="table table-enterprise table-sm mb-0">
                     <tbody>
                         @foreach (var item in tb.Items)

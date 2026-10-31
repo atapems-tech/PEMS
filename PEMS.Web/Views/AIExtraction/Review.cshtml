@@ -39,7 +39,7 @@
                         @{
                             var tagBadge = tag.ReviewStatus switch { "Approved" => "bg-success", "Rejected" => "bg-danger", _ => "bg-secondary" };
                         }
-                        <span class="badge @tagBadge">@tag.ReviewStatus</span>
+                        <pems-badge tone="none" css="@tagBadge">@tag.ReviewStatus</pems-badge>
                     </td>
                     <td>
                         @if (tag.ReviewStatus == "Draft")
@@ -87,7 +87,7 @@
                         @{
                             var specBadge = spec.ReviewStatus switch { "Approved" => "bg-success", "Rejected" => "bg-danger", _ => "bg-secondary" };
                         }
-                        <span class="badge @specBadge">@spec.ReviewStatus</span>
+                        <pems-badge tone="none" css="@specBadge">@spec.ReviewStatus</pems-badge>
                     </td>
                     <td>
                         @if (spec.ReviewStatus == "Draft")

@@ -73,7 +73,7 @@
     <div class="d-flex align-items-center gap-3 mb-2 flex-wrap">
         <div class="kpi-icon bg-icon-blue" style="width:56px;height:56px;font-size:26px;"><i class="bi bi-shield-check"></i></div>
         <div>
-            <h5 class="mb-0">@Model.PermitNumber &mdash; @Model.Title <span class="badge @badgeClass">@Model.Status</span></h5>
+            <h5 class="mb-0">@Model.PermitNumber &mdash; @Model.Title <pems-badge tone="none" css="@badgeClass">@Model.Status</pems-badge></h5>
             <span class="text-muted small">@Model.PermitType - Requested by @Model.RequestedByName on @Model.CreatedDate.ToString("yyyy-MM-dd")</span>
         </div>
     </div>
@@ -233,7 +233,7 @@
     <div class="content-card mb-3" id="executiongate">
         <h6 class="mb-3">
             <i class="bi bi-door-open"></i> Execution Gate
-            <span class="badge @gateBadge">@executionGate.Result.ToUpper()</span>
+            <pems-badge tone="none" css="@gateBadge">@executionGate.Result.ToUpper()</pems-badge>
         </h6>
         @if (errorArea == "ExecutionGate" && pageError != null && pageError.Contains(passkeyMissingMarker))
         {
@@ -291,7 +291,7 @@
                         <tr>
                             <td class="small">@d.FromStatus</td>
                             <td class="small">@d.ToStatus</td>
-                            <td><span class="badge @(d.Result == "Eligible" ? "bg-success" : "bg-danger")">@d.Result</span></td>
+                            <td><pems-badge tone="@(d.Result == "Eligible" ? "success" : "danger")">@d.Result</pems-badge></td>
                             <td class="small">@(d.ActorName ?? "-")</td>
                             <td class="small">@d.DecisionDate.ToString("yyyy-MM-dd HH:mm")</td>
                             <td>@(d.IsEmergencyOverride ? "Yes" : "-")</td>
@@ -307,7 +307,7 @@
 @if (approvalInstance != null)
 {
     <div class="content-card mb-3" id="approval">
-        <h6 class="mb-3"><i class="bi bi-diagram-3"></i> Approval Progress <span class="badge @(approvalInstance.Status == "Completed" ? "bg-success" : approvalInstance.Status == "Rejected" ? "bg-danger" : "bg-primary")">@approvalInstance.Status</span></h6>
+        <h6 class="mb-3"><i class="bi bi-diagram-3"></i> Approval Progress <pems-badge tone="@(approvalInstance.Status == "Completed" ? "success" : approvalInstance.Status == "Rejected" ? "danger" : "primary")">@approvalInstance.Status</pems-badge></h6>
         @if (errorArea == "Approval" && pageError != null && pageError.Contains(passkeyMissingMarker))
         {
             <pems-alert tone="danger" css="py-2 px-3 small">@pageError <a asp-controller="Account" asp-action="ManagePasskeys" class="alert-link">Manage Passkeys &rarr;</a></pems-alert>
@@ -420,7 +420,7 @@
         <i class="bi bi-lock"></i> Isolation Points (LOTO)
         @if (isolationPoints.Any())
         {
-            <span class="badge @(unverifiedCount == 0 ? "bg-success" : "bg-warning text-dark")">@verifiedCount / @isolationPoints.Count Verified</span>
+            <pems-badge tone="@(unverifiedCount == 0 ? "success" : "warning")">@verifiedCount / @isolationPoints.Count Verified</pems-badge>
         }
     </h6>
     @if (errorArea == "LOTO" && pageError != null && pageError.Contains(passkeyMissingMarker))
@@ -455,7 +455,7 @@
                     <td class="small">@p.EnergyType</td>
                     <td class="small">@p.Location @(p.EquipmentTagNumber != null ? $"({p.EquipmentTagNumber})" : "")</td>
                     <td class="small">@(p.LockNumber ?? "-") / @(p.TagNumber ?? "-")</td>
-                    <td><span class="badge @isoBadge">@p.Status</span></td>
+                    <td><pems-badge tone="none" css="@isoBadge">@p.Status</pems-badge></td>
                     <td class="small">@(p.IsolatedByName ?? "-")</td>
                     <td class="small">@(p.VerifiedByName ?? "-")</td>
                     <td class="text-nowrap">
@@ -524,7 +524,7 @@
         <i class="bi bi-clouds"></i> Gas Testing
         @if (gasTests.Any())
         {
-            <span class="badge @(passedGasTests > 0 ? "bg-success" : "bg-warning text-dark")">@passedGasTests / @gasTests.Count Valid</span>
+            <pems-badge tone="@(passedGasTests > 0 ? "success" : "warning")">@passedGasTests / @gasTests.Count Valid</pems-badge>
         }
     </h6>
 
@@ -546,14 +546,14 @@
         };
         <div class="border rounded p-2 mb-2">
             <div class="d-flex flex-wrap align-items-center gap-2 mb-2">
-                <span class="badge @gasBadge">@g.Status</span>
+                <pems-badge tone="none" css="@gasBadge">@g.Status</pems-badge>
                 @if (g.IsExpired && g.Status != "Invalidated") { <pems-badge tone="neutral">Expired</pems-badge> }
                 <span class="small">@g.Location</span>
                 <span class="small text-muted">Tested by @(g.TesterName ?? "-") @g.TestedAt.ToString("yyyy-MM-dd HH:mm")</span>
                 @if (g.ValidUntil.HasValue) { <span class="small text-muted">Valid Until @g.ValidUntil.Value.ToString("yyyy-MM-dd HH:mm")</span> }
                 @if (!string.IsNullOrWhiteSpace(g.InstrumentTag))
                 {
-                    <span class="small text-muted">Instrument: @g.InstrumentTag <span class="badge @calBadge">@g.InstrumentCalibrationStatus</span></span>
+                    <span class="small text-muted">Instrument: @g.InstrumentTag <pems-badge tone="none" css="@calBadge">@g.InstrumentCalibrationStatus</pems-badge></span>
                 }
             </div>
             <table class="table table-enterprise table-sm mb-2">
@@ -566,7 +566,7 @@
                             <td class="small">@r.Parameter</td>
                             <td class="small">@r.Value</td>
                             <td class="small">@r.Unit</td>
-                            <td><span class="badge @resultBadge">@r.Result</span></td>
+                            <td><pems-badge tone="none" css="@resultBadge">@r.Result</pems-badge></td>
                         </tr>
                     }
                 </tbody>
@@ -622,7 +622,7 @@
         <i class="bi bi-arrows-angle-contract"></i> SIMOPS
         @if (simopsConflicts.Any())
         {
-            <span class="badge @(unresolvedSimopsCount == 0 ? "bg-success" : "bg-warning text-dark")">@unresolvedSimopsCount unresolved</span>
+            <pems-badge tone="@(unresolvedSimopsCount == 0 ? "success" : "warning")">@unresolvedSimopsCount unresolved</pems-badge>
         }
     </h6>
     @if (errorArea == "Simops" && pageError != null && pageError.Contains(passkeyMissingMarker))
@@ -677,8 +677,8 @@
                     <tr>
                         <td class="small"><a asp-action="Details" asp-route-id="@otherPermitId">@otherPermitNumber</a></td>
                         <td class="small">@c.ConflictBasis</td>
-                        <td><span class="badge @sevBadge">@c.Severity</span></td>
-                        <td><span class="badge @simopsBadge">@c.Status</span></td>
+                        <td><pems-badge tone="none" css="@sevBadge">@c.Severity</pems-badge></td>
+                        <td><pems-badge tone="none" css="@simopsBadge">@c.Status</pems-badge></td>
                         <td class="small text-muted">
                             @if (c.Status == "Resolved") { <text>@c.ResolutionNotes</text> }
                             else if (c.Status == "AcceptedRisk") { <text>@c.AcceptanceJustification</text> }

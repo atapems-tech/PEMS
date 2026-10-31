@@ -21,11 +21,11 @@
 
     string StatusBadge(string status) => status switch
     {
-        "APPROVED" => "text-bg-success",
-        "UNDER_REVIEW" => "text-bg-warning",
-        "SUPERSEDED" => "text-bg-secondary",
-        "ARCHIVED" => "text-bg-secondary",
-        _ => "text-bg-light border"
+        "APPROVED" => "success",
+        "UNDER_REVIEW" => "warning",
+        "SUPERSEDED" => "neutral",
+        "ARCHIVED" => "neutral",
+        _ => "light"
     };
 }
 
@@ -41,8 +41,8 @@
     {
         <div class="row g-2 small mt-2">
             <div class="col-md-3"><strong>@Localizer["Equipment"]</strong><div>@readiness.EquipmentCount.ToString("N0")</div></div>
-            <div class="col-md-3"><strong>FMEA Readiness</strong><div><span class="badge @(readiness.FMEAReadiness == "READY" ? "text-bg-success" : readiness.FMEAReadiness == "PARTIALLY_READY" ? "text-bg-warning" : "text-bg-secondary")">@readiness.FMEAReadiness</span></div></div>
-            <div class="col-md-3"><strong>RCM Readiness</strong><div><span class="badge @(readiness.RCMReadiness == "READY" ? "text-bg-success" : readiness.RCMReadiness == "PARTIALLY_READY" ? "text-bg-warning" : "text-bg-secondary")">@readiness.RCMReadiness</span></div></div>
+            <div class="col-md-3"><strong>FMEA Readiness</strong><div><pems-badge tone="@(readiness.FMEAReadiness == "READY" ? "success" : readiness.FMEAReadiness == "PARTIALLY_READY" ? "warning" : "neutral")">@readiness.FMEAReadiness</pems-badge></div></div>
+            <div class="col-md-3"><strong>RCM Readiness</strong><div><pems-badge tone="@(readiness.RCMReadiness == "READY" ? "success" : readiness.RCMReadiness == "PARTIALLY_READY" ? "warning" : "neutral")">@readiness.RCMReadiness</pems-badge></div></div>
             <div class="col-md-3"><strong>Strategy Types Available</strong><div>@readiness.StrategyTypeCount</div></div>
         </div>
         @if (readiness.MissingDimensions.Any())
@@ -113,7 +113,7 @@
         {
             <div class="content-card mb-3">
                 <div class="d-flex justify-content-between align-items-center">
-                    <h6 class="mb-0">@fmea.Title <span class="text-muted small">Rev. @fmea.Revision</span> <span class="badge @StatusBadge(fmea.Status)">@fmea.Status</span></h6>
+                    <h6 class="mb-0">@fmea.Title <span class="text-muted small">Rev. @fmea.Revision</span> <pems-badge tone="@StatusBadge(fmea.Status)">@fmea.Status</pems-badge></h6>
                     <div>
                         @if (fmea.Status == "DRAFT" && canEdit)
                         {
@@ -221,7 +221,7 @@
 
             <div class="content-card mb-3">
                 <div class="d-flex justify-content-between align-items-center">
-                    <h6 class="mb-0">RCM Rev. @rcm.Revision <span class="badge @StatusBadge(rcm.Status)">@rcm.Status</span></h6>
+                    <h6 class="mb-0">RCM Rev. @rcm.Revision <pems-badge tone="@StatusBadge(rcm.Status)">@rcm.Status</pems-badge></h6>
                     <div>
                         @if (rcm.Status == "DRAFT" && canEdit)
                         {
@@ -258,7 +258,7 @@
                                 <td class="small text-muted">@(d.MaintenanceStrategyTypeName ?? "-")</td>
                                 <td class="small text-muted">@(d.RecommendedPMTemplateName ?? "-")</td>
                                 <td class="small text-muted">@d.ConsequenceCategory</td>
-                                <td><span class="badge @StatusBadge(d.Status)">@d.Status</span></td>
+                                <td><pems-badge tone="@StatusBadge(d.Status)">@d.Status</pems-badge></td>
                                 <td>
                                     @if (d.Status == "DRAFT" && canApprove)
                                     {
@@ -301,7 +301,7 @@
                                     </div>
                                     <div class="modal-body">
                                         <div class="row g-2 small mb-2">
-                                            <div class="col-6"><strong>@Localizer["Status"]</strong><div><span class="badge @StatusBadge(d.Status)">@d.Status</span></div></div>
+                                            <div class="col-6"><strong>@Localizer["Status"]</strong><div><pems-badge tone="@StatusBadge(d.Status)">@d.Status</pems-badge></div></div>
                                             <div class="col-6"><strong>Decision Type</strong><div>@d.DecisionType</div></div>
                                             <div class="col-6"><strong>Recommended Strategy</strong><div>@(d.MaintenanceStrategyTypeName ?? "-")</div></div>
                                             <div class="col-6"><strong>Recommended PM Template</strong><div>@(d.RecommendedPMTemplateName ?? "-")</div></div>

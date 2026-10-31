@@ -46,8 +46,8 @@
                         <td class="small">@item.EquipmentName</td>
                         <td class="small text-muted">@item.EquipmentType</td>
                         <td class="small text-muted">@(item.DisciplineName ?? "-")</td>
-                        <td class="small"><span class="badge text-bg-light border">@item.SuggestedEquipmentClassName</span></td>
-                        <td><span class="badge text-bg-warning">@item.Confidence</span></td>
+                        <td class="small"><pems-badge tone="light">@item.SuggestedEquipmentClassName</pems-badge></td>
+                        <td><pems-badge tone="warning">@item.Confidence</pems-badge></td>
                         <td class="small text-muted">@item.Source</td>
                         <td class="small text-muted">@item.Reason</td>
                         @if (status == "PENDING")

@@ -70,7 +70,7 @@
     <div class="lc-header">
         <h2 class="vs-section__title mb-0">@Localizer[isReferral ? "Ct_TitleReferral" : Model.ParentLetterId.HasValue ? "Lc_TitleReply" : isOutgoing ? "Lc_TitleOutgoing" : "Lc_TitleInternal"]</h2>
         <span class="lc-number" id="lcNumber" title="@Localizer["Lt_Number"]">@(Model.LetterNumber ?? Localizer["Lc_NumberPending"].Value)</span>
-        <span class="badge text-bg-secondary" id="lcStatus">@Model.Status</span>
+        <pems-badge tone="neutral" id="lcStatus">@Model.Status</pems-badge>
         <span class="lc-savestate" id="lcSaveState" data-state="idle" role="status" aria-live="polite">
             <i class="bi bi-cloud-check" aria-hidden="true"></i> <span id="lcSaveText">@Localizer["Lc_NotSavedYet"]</span>
         </span>

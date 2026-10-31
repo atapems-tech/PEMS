@@ -53,7 +53,7 @@
                         <td>@p.ProjectName</td>
                         <td>@p.DisciplineName</td>
                         <td><pems-badge tone="info">@p.Stage</pems-badge></td>
-                        <td><span class="badge @(p.Status == "Closed" ? "bg-success" : p.Status == "Open" ? "bg-secondary" : "bg-warning text-dark")">@p.Status</span></td>
+                        <td><pems-badge tone="@(p.Status == "Closed" ? "success" : p.Status == "Open" ? "neutral" : "warning")">@p.Status</pems-badge></td>
                         <td><pems-badge tone="neutral">@p.MRCount</pems-badge></td>
                         <td><pems-badge tone="neutral">@p.MRQCount</pems-badge></td>
                         <td>
