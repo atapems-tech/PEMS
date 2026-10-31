@@ -34,12 +34,12 @@ public sealed class OverlayComponentsTests : IAsyncLifetime
     [Fact]
     public async Task Alert_danger_is_an_alert_with_trace_id_and_a_copy_button_and_info_is_a_status()
     {
-        var o = new AlertOptions { Title = T("ذخیره نشد", "Could not save"), Message = T("دوباره تلاش کنید", "Try again"), Tone = AlertTone.Danger, TraceId = "00-abc123", TraceLabel = T("شناسه", "Trace"), CopyLabel = T("کپی", "Copy"), DismissLabel = T("بستن", "Dismiss") };
+        var o = new AlertOptions { Skin = ComponentSkin.Pems, Title = T("ذخیره نشد", "Could not save"), Message = T("دوباره تلاش کنید", "Try again"), Tone = AlertTone.Danger, TraceId = "00-abc123", TraceLabel = T("شناسه", "Trace"), CopyLabel = T("کپی", "Copy"), DismissLabel = T("بستن", "Dismiss") };
         var en = await Render("alert", o, "en");
         Has("role=\"alert\"", en); Has("pems-alert--danger", en); Has(">Could not save<", en); Has("<code dir=\"ltr\">00-abc123</code>", en);
         Has("data-pems-copy=\"00-abc123\"", en); Has(">Copy</button>", en); Has("aria-label=\"Dismiss\"", en);
         Has(">ذخیره نشد<", await Render("alert", o, "fa"));
-        var info = await Render("alert", new AlertOptions { Title = T("ثبت شد", "Saved") }, "en");
+        var info = await Render("alert", new AlertOptions { Skin = ComponentSkin.Pems, Title = T("ثبت شد", "Saved") }, "en");
         Has("role=\"status\"", info); HasNot("pems-alert__trace", info); HasNot("data-pems-dismiss", info);
     }
 
@@ -47,7 +47,7 @@ public sealed class OverlayComponentsTests : IAsyncLifetime
     [Fact]
     public async Task Modal_is_a_labelled_native_dialog_with_a_close_button_in_each_language()
     {
-        var o = new ModalOptions { Id = "m1", Title = T("جزئیات", "Details"), CloseLabel = T("بستن", "Close"), Body = T("متن", "Body text"), Size = OverlaySize.Large };
+        var o = new ModalOptions { Skin = ComponentSkin.Pems, Id = "m1", Title = T("جزئیات", "Details"), CloseLabel = T("بستن", "Close"), Body = T("متن", "Body text"), Size = OverlaySize.Large };
         var en = await Render("modal", o, "en");
         Has("<dialog id=\"m1\"", en); Has("pems-modal--large", en); Has("aria-labelledby=\"m1-title\"", en); Has("id=\"m1-title\"", en);
         Has("data-pems-close", en); Has("aria-label=\"Close\"", en); Has(">Body text<", en);
@@ -58,7 +58,7 @@ public sealed class OverlayComponentsTests : IAsyncLifetime
     [Fact]
     public async Task Drawer_sits_on_the_requested_side_and_is_a_dialog_too()
     {
-        var o = new DrawerOptions { Id = "d1", Title = T("فیلترها", "Filters"), CloseLabel = T("بستن", "Close"), Side = DrawerSide.Start };
+        var o = new DrawerOptions { Skin = ComponentSkin.Pems, Id = "d1", Title = T("فیلترها", "Filters"), CloseLabel = T("بستن", "Close"), Side = DrawerSide.Start };
         var html = await Render("drawer", o, "en");
         Has("<dialog id=\"d1\"", html); Has("pems-drawer--start", html); Has("aria-labelledby=\"d1-title\"", html);
         Has("pems-drawer--end", await Render("drawer", o with { Side = DrawerSide.End }, "en"));
@@ -69,6 +69,7 @@ public sealed class OverlayComponentsTests : IAsyncLifetime
     {
         var o = new ConfirmDialogOptions
         {
+            Skin = ComponentSkin.Pems,
             Id = "c1", Action = "/orders/cancel", Title = T("لغو", "Cancel order"), Message = T("مطمئن هستید؟", "Are you sure?"), ConfirmLabel = T("بله", "Yes"), CancelLabel = T("خیر", "No"),
             ReasonLabel = T("دلیل", "Reason"), RequestToken = "tok123"
         };
@@ -95,6 +96,7 @@ public sealed class OverlayComponentsTests : IAsyncLifetime
     {
         var o = new TabsOptions
         {
+            Skin = ComponentSkin.Pems,
             Id = "t1", Label = T("بخش‌ها", "Sections"), Active = "b",
             Items = [new TabItem { Key = "a", Label = T("عمومی", "General"), Content = T("اول", "First") }, new TabItem { Key = "b", Label = T("یادداشت", "Notes"), Content = T("دوم", "Second") }]
         };
@@ -111,7 +113,7 @@ public sealed class OverlayComponentsTests : IAsyncLifetime
     [Fact]
     public async Task Breadcrumb_marks_the_current_page_and_links_the_rest()
     {
-        var o = new BreadcrumbOptions { Label = T("مسیر", "Path"), Items = [new Crumb { Label = T("خانه", "Home"), Href = "/" }, new Crumb { Label = T("سفارش‌ها", "Orders"), Href = "/o" }, new Crumb { Label = T("سفارش ۱", "Order 1"), Href = "/o/1" }] };
+        var o = new BreadcrumbOptions { Skin = ComponentSkin.Pems, Label = T("مسیر", "Path"), Items = [new Crumb { Label = T("خانه", "Home"), Href = "/" }, new Crumb { Label = T("سفارش‌ها", "Orders"), Href = "/o" }, new Crumb { Label = T("سفارش ۱", "Order 1"), Href = "/o/1" }] };
         var html = await Render("breadcrumb", o, "en");
         Has("<nav class=\"pems-breadcrumb\" aria-label=\"Path\"", html); Has("<a href=\"/\">Home</a>", html);
         Has("aria-current=\"page\">Order 1</span>", html); HasNot("href=\"/o/1\"", html);
@@ -141,6 +143,44 @@ public sealed class OverlayComponentsTests : IAsyncLifetime
         Has("pems-sidenav__item--active", en); Has("aria-current=\"page\"", en); Has(">1,250<", en); Assert.Equal(1, Regex.Matches(en, "aria-current").Count);
         Has("۱٬۲۵۰", await Render("side-panel-nav", o, "fa"));
     }
+
+    // ---- the as-is skin (SCRUM-480): the default renders the Bootstrap markup the pages write today
+    [Fact]
+    public async Task Default_skin_is_bootstrap_for_alert_and_dismiss_uses_the_bootstrap_close_button()
+    {
+        var html = await Render("alert", new AlertOptions { Title = T("ثبت شد", "Saved"), Tone = AlertTone.Success, DismissLabel = T("بستن", "Close") }, "en");
+        Has("class=\"alert alert-success alert-dismissible fade show\"", html); Has("data-bs-dismiss=\"alert\"", html); HasNot("pems-", html);
+        Has("class=\"alert alert-danger\" role=\"alert\"", await Render("alert", new AlertOptions { Title = T("خطا", "Error"), Tone = AlertTone.Danger }, "en"));
+    }
+
+    [Fact]
+    public async Task Default_skin_tabs_are_bootstrap_nav_tabs_with_the_first_tab_active()
+    {
+        var o = new TabsOptions { Id = "t", Label = T("بخش‌ها", "Sections"), Items = [new TabItem { Key = "a", Label = T("الف", "Alpha") }, new TabItem { Key = "b", Label = T("ب", "Beta") }], Active = "b" };
+        var html = await Render("tabs", o, "en");
+        Has("class=\"nav nav-tabs mb-3\"", html); Has("data-bs-toggle=\"tab\"", html); Has("data-bs-target=\"#t-panel-b\"", html);
+        Has("class=\"nav-link active\"", html); Has("class=\"tab-pane fade show active\"", html); Has("class=\"tab-content\"", html); HasNot("pems-", html);
+    }
+
+    [Fact]
+    public async Task Default_skin_breadcrumb_marks_the_last_item_active()
+    {
+        var o = new BreadcrumbOptions { Label = T("مسیر", "Path"), Items = [new Crumb { Label = T("خانه", "Home"), Href = "/" }, new Crumb { Label = T("اکنون", "Now") }] };
+        var html = await Render("breadcrumb", o, "en");
+        Has("<ol class=\"breadcrumb mb-0 small\">", html); Has("class=\"breadcrumb-item active\"", html); Has("<a href=\"/\">Home</a>", html); HasNot("pems-", html);
+    }
+
+    [Fact]
+    public async Task Default_skin_modal_drawer_and_confirm_are_bootstrap_markup()
+    {
+        var modal = await Render("modal", new ModalOptions { Id = "m", Title = T("جزئیات", "Details"), CloseLabel = T("بستن", "Close"), Size = OverlaySize.Large }, "en");
+        Has("class=\"modal fade\"", modal); Has("class=\"modal-dialog modal-lg\"", modal); Has("data-bs-dismiss=\"modal\"", modal); HasNot("<dialog", modal);
+        var drawer = await Render("drawer", new DrawerOptions { Id = "d", Title = T("فیلتر", "Filters"), CloseLabel = T("بستن", "Close"), Side = DrawerSide.Start }, "en");
+        Has("class=\"offcanvas offcanvas-start\"", drawer); Has("data-bs-dismiss=\"offcanvas\"", drawer); HasNot("<dialog", drawer);
+        var confirm = await Render("confirm-dialog", new ConfirmDialogOptions { Id = "c", Action = "/x", Title = T("؟", "Sure?"), Message = T("پیام", "Message"), ConfirmLabel = T("بله", "Yes"), CancelLabel = T("خیر", "No") }, "en");
+        Has("class=\"modal fade\"", confirm); Has("class=\"btn btn-danger\"", confirm); Has("data-bs-dismiss=\"modal\"", confirm); Has("data-pems-row-key-target", confirm); HasNot("<dialog", confirm);
+    }
+
 
     [Fact]
     public void The_overlay_script_and_stylesheet_are_offline_and_idempotent()
