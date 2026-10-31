@@ -233,17 +233,17 @@
 
     @if (l.Status == "ReturnedForRevision" && !string.IsNullOrEmpty(l.ReturnReason))
     {
-        <div class="alert alert-warning mt-3 mb-0 py-2 small">
+        <pems-alert tone="warning" css="mt-3 mb-0 py-2 small">
             <i class="bi bi-arrow-return-left"></i> Returned for revision by <strong>@l.ReturnedByName</strong>
             on @l.ReturnedDate?.ToString("yyyy-MM-dd HH:mm") &mdash; <em>@l.ReturnReason</em>
-        </div>
+        </pems-alert>
     }
     @if (l.Status == "Rejected" && !string.IsNullOrEmpty(l.RejectReason))
     {
-        <div class="alert alert-danger mt-3 mb-0 py-2 small">
+        <pems-alert tone="danger" css="mt-3 mb-0 py-2 small">
             <i class="bi bi-x-circle"></i> Rejected by <strong>@l.RejectedByName</strong>
             on @l.RejectedDate?.ToString("yyyy-MM-dd HH:mm") &mdash; <em>@l.RejectReason</em>
-        </div>
+        </pems-alert>
     }
 </div>
 
@@ -448,9 +448,9 @@
 
 @if (!string.IsNullOrEmpty(l.SignedByName))
 {
-    <div class="alert alert-success py-2 small mb-3">
+    <pems-alert tone="success" css="py-2 small mb-3">
         <i class="bi bi-patch-check-fill"></i> Electronically acknowledged by <strong>@l.SignedByName</strong> on @l.SignedDate?.ToString("yyyy-MM-dd HH:mm")
-    </div>
+    </pems-alert>
 }
 
 @if ((l.RelatedDocumentId.HasValue || l.RelatedMRId.HasValue))

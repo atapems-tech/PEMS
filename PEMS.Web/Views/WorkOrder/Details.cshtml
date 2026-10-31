@@ -246,12 +246,12 @@ else
 
     @if (!string.IsNullOrWhiteSpace(Model.FailureModeCode) || !string.IsNullOrWhiteSpace(Model.RootCause))
     {
-        <div class="alert alert-secondary small mt-2 mb-0">
+        <pems-alert tone="secondary" css="small mt-2 mb-0">
             <strong><i class="bi bi-clipboard-data"></i> Failure Analysis:</strong>
             @Model.FailureModeCode / @Model.FailureCauseCode
             @if (Model.DowntimeHours.HasValue) { <span> — Downtime: @Model.DowntimeHours ساعت</span> }
             @if (!string.IsNullOrWhiteSpace(Model.RootCause)) { <div>Root Cause: @Model.RootCause</div> }
-        </div>
+        </pems-alert>
     }
 
     <div class="row g-3 mt-2">
@@ -387,10 +387,10 @@ else
                     @if (!((IEnumerable<dynamic>)ViewBag.Teams).Any())
                     {
                         <div class="col-12">
-                            <div class="alert alert-info small py-2 mb-0">
+                            <pems-alert tone="info" css="small py-2 mb-0">
                                 <i class="bi bi-info-circle"></i> @Localizer["No teams exist for the responsible discipline yet; assign an individual executor or create a team first."]
                                 <a asp-controller="Team" asp-action="Index" class="alert-link">@Localizer["Go to Teams"]</a>
-                            </div>
+                            </pems-alert>
                         </div>
                     }
                     <div class="col-md-6">
@@ -611,10 +611,10 @@ else
 
 @if (secPage != null && (secPage.Phase is WoPhase.Closed or WoPhase.Cancelled or WoPhase.Rejected))
 {
-    <div class="alert alert-secondary d-flex align-items-center gap-2 small" role="status">
+    <pems-alert tone="secondary" css="d-flex align-items-center gap-2 small">
         <i class="bi bi-lock-fill"></i>
         <span>@Localizer["This Work Order is {0} and immutable; every section is read-only.", fa ? WorkOrderSectionPolicy.PhaseNameFa(secPage.Phase) : WorkOrderSectionPolicy.PhaseNameEn(secPage.Phase)]</span>
-    </div>
+    </pems-alert>
 }
 
 @if (secPage != null && secPage.CanReopen)
@@ -640,10 +640,10 @@ else
     <h6 class="mb-3"><i class="bi bi-person-workspace"></i> @Localizer["Labor (ساعت‌کار واقعی)"]</h6>
     @if (TempData.Peek("LaborRateEmployeeId") is int rateEmployeeId)
     {
-        <div class="alert alert-warning small py-2">
+        <pems-alert tone="warning" css="small py-2">
             <i class="bi bi-cash-coin"></i> @Localizer["This employee has no hourly rate defined."]
             <a asp-controller="Employee" asp-action="Details" asp-route-id="@rateEmployeeId" class="alert-link">@Localizer["Go to rate setup"]</a>
-        </div>
+        </pems-alert>
     }
     <p class="text-muted small">
         <strong>Assigned Employee</strong> فقط نشون می‌ده مسئول اجرای این WorkOrder کیه؛ اینجا
@@ -763,10 +763,10 @@ else
     }
     else if (!hasMaterialItems)
     {
-        <div class="alert alert-info small mb-0">
+        <pems-alert tone="info" css="small mb-0">
             @Localizer["No materials exist in the Material Master yet; define materials first."]
             @if (!string.IsNullOrEmpty(materialMasterUrl)) { <a href="@materialMasterUrl" class="alert-link">@Localizer["Go to Material Master"]</a> }
-        </div>
+        </pems-alert>
     }
     else
     {
@@ -992,10 +992,10 @@ else
     }
     else if (!hasMaterialItems)
     {
-        <div class="alert alert-info small mb-0">
+        <pems-alert tone="info" css="small mb-0">
             @Localizer["No materials exist in the Material Master yet; define materials first."]
             @if (!string.IsNullOrEmpty(materialMasterUrl)) { <a href="@materialMasterUrl" class="alert-link">@Localizer["Go to Material Master"]</a> }
-        </div>
+        </pems-alert>
     }
     else
     {

@@ -826,11 +826,11 @@
 
             @if (pendingSuggestion != null)
             {
-                <div class="alert alert-warning small mt-3 mb-0">
+                <pems-alert tone="warning" css="small mt-3 mb-0">
                     <strong>پیشنهاد در انتظار بازبینی:</strong> @pendingSuggestion.SuggestedEquipmentClassName
                     (<span class="badge text-bg-warning">@pendingSuggestion.Confidence</span>) &mdash; @pendingSuggestion.Reason
                     <a asp-controller="EquipmentClassification" asp-action="ReviewQueue" class="ms-2">بازبینی در صف →</a>
-                </div>
+                </pems-alert>
             }
         </div>
 

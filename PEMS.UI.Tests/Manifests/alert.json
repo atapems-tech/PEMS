@@ -43,12 +43,20 @@
           }
         ]
       },
+      "cssClass": {
+        "type": [
+          "string",
+          "null"
+        ]
+      },
       "tone": {
         "enum": [
           "info",
           "success",
           "warning",
-          "danger"
+          "danger",
+          "primary",
+          "secondary"
         ]
       },
       "traceId": {
@@ -100,12 +108,15 @@
         ]
       }
     },
-    "required": [
-      "title"
-    ],
     "additionalProperties": false
   },
   "parameters": [
+    {
+      "name": "childContent",
+      "type": "RenderFragment",
+      "kind": "slot",
+      "required": false
+    },
     {
       "name": "options",
       "type": "AlertOptions",

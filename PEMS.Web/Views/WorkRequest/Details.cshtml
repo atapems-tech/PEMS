@@ -112,13 +112,13 @@
 
     @if (Model.Status == "Rejected")
     {
-        <div class="alert alert-danger py-2 px-3 small mt-2 mb-0"><strong>@Localizer["Rejection Reason:"]</strong> @Model.RejectionReason</div>
+        <pems-alert tone="danger" css="py-2 px-3 small mt-2 mb-0"><strong>@Localizer["Rejection Reason:"]</strong> @Model.RejectionReason</pems-alert>
     }
     @if (Model.LinkedWorkOrderId.HasValue)
     {
-        <div class="alert alert-success py-2 px-3 small mt-2 mb-0">
+        <pems-alert tone="success" css="py-2 px-3 small mt-2 mb-0">
             @Localizer["Converted to"] <a asp-controller="WorkOrder" asp-action="Details" asp-route-id="@Model.LinkedWorkOrderId">@Model.LinkedWorkOrderNumber</a>
-        </div>
+        </pems-alert>
     }
 </div>
 

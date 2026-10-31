@@ -29,8 +29,8 @@
     };
 }
 
-@if (TempData["Message"] != null) { <div class="alert alert-success py-2 px-3 small">@TempData["Message"]</div> }
-@if (TempData["Error"] != null) { <div class="alert alert-danger py-2 px-3 small">@TempData["Error"]</div> }
+@if (TempData["Message"] != null) { <pems-alert tone="success" css="py-2 px-3 small">@TempData["Message"]</pems-alert> }
+@if (TempData["Error"] != null) { <pems-alert tone="danger" css="py-2 px-3 small">@TempData["Error"]</pems-alert> }
 
 <div class="content-card mb-3">
     <div class="d-flex justify-content-between align-items-center">
@@ -306,11 +306,11 @@
                                             <div class="col-6"><strong>Recommended Strategy</strong><div>@(d.MaintenanceStrategyTypeName ?? "-")</div></div>
                                             <div class="col-6"><strong>Recommended PM Template</strong><div>@(d.RecommendedPMTemplateName ?? "-")</div></div>
                                         </div>
-                                        <div class="alert alert-warning small py-2 px-3">
+                                        <pems-alert tone="warning" css="small py-2 px-3">
                                             Applying this approved RCM decision will <strong>create or update the operational Maintenance Strategy</strong> for the equipment selected below
                                             (and its Maintenance Plan, if a PM Template was recommended). This is not a preview — it changes real operational configuration.
                                             Re-applying to the same equipment will safely reuse the existing Maintenance Strategy/Plan, never duplicate it.
-                                        </div>
+                                        </pems-alert>
                                         @if (equipmentInClass.Any())
                                         {
                                             <label class="form-label small">@Localizer["Equipment"]</label>

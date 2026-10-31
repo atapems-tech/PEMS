@@ -6,9 +6,9 @@
 <div class="content-card" style="max-width:720px;" data-pems-secret-reveal>
     <h2 class="h5 mb-3"><i class="bi bi-check-circle-fill text-success me-1"></i> @Localizer["New recovery codes"]: <strong>@Model.UserName</strong></h2>
 
-    <div class="alert alert-warning" role="alert">
+    <pems-alert tone="warning">
         @Localizer["Print or download these codes now and keep them offline. They are shown only once; the previous codes no longer work."]
-    </div>
+    </pems-alert>
 
     <pre dir="ltr" class="fs-5 px-3 py-2 border rounded user-select-all" data-secret-value>@string.Join("\n", Model.Codes)</pre>
 

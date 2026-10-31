@@ -8,9 +8,9 @@
 }
 
 <div class="content-card">
-    <div class="alert alert-danger mb-0">
+    <pems-alert tone="danger" css="mb-0">
         <h6 class="alert-heading"><i class="bi bi-exclamation-triangle-fill"></i> @errorCode</h6>
         <p class="mb-0">@message</p>
-    </div>
+    </pems-alert>
     <a asp-action="Index" class="btn btn-outline-secondary btn-sm mt-3">@Localizer["← Back to Barcode"]</a>
 </div>

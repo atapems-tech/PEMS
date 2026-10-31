@@ -28,13 +28,13 @@
 
     @if (Model.IsFullyComplete)
     {
-        <div class="alert alert-success mt-3 mb-0 d-flex align-items-center gap-2">
+        <pems-alert tone="success" css="mt-3 mb-0 d-flex align-items-center gap-2">
             <i class="bi bi-check-circle-fill fs-4"></i>
             <div>
                 <strong>PEMS Setup Complete.</strong> Your system is ready for operational use.
                 You can revisit this page any time - Quick Setup never locks.
             </div>
-        </div>
+        </pems-alert>
     }
 </div>
 
@@ -58,7 +58,7 @@
 
                 @if (step.Status == PEMS.Application.DTOs.SetupStepStatus.Blocked)
                 {
-                    <div class="alert alert-warning small py-2 mb-2">
+                    <pems-alert tone="warning" css="small py-2 mb-2">
                         <div class="fw-semibold mb-1"><i class="bi bi-exclamation-triangle"></i> Cannot complete yet. Missing:</div>
                         <ul class="mb-0 ps-3">
                             @foreach (var missing in step.MissingDependencies)
@@ -66,7 +66,7 @@
                                 <li>@missing</li>
                             }
                         </ul>
-                    </div>
+                    </pems-alert>
                 }
 
                 @{

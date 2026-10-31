@@ -24,7 +24,7 @@
 
     @if (Model.AIStatus == "Failed")
     {
-        <div class="alert alert-danger mt-3 mb-0">AI analysis failed: @Model.AIError. You can still classify and route this file manually below.</div>
+        <pems-alert tone="danger" css="mt-3 mb-0">AI analysis failed: @Model.AIError. You can still classify and route this file manually below.</pems-alert>
     }
 </div>
 

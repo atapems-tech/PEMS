@@ -45,8 +45,8 @@
    "pending my approval" switch (which keeps its own columns: current stage and waiting since). The lifecycle note became
    the tool tip of the title. *@
 <pems-list-page texts="@ListPageTexts.From(Localizer)">
-    @if (TempData["Message"] != null) { <div class="alert alert-success py-2 px-3 small">@TempData["Message"]</div> }
-    @if (TempData["Error"] != null) { <div class="alert alert-danger py-2 px-3 small">@TempData["Error"]</div> }
+    @if (TempData["Message"] != null) { <pems-alert tone="success" css="py-2 px-3 small">@TempData["Message"]</pems-alert> }
+    @if (TempData["Error"] != null) { <pems-alert tone="danger" css="py-2 px-3 small">@TempData["Error"]</pems-alert> }
 
     <pems-list-panel>
 

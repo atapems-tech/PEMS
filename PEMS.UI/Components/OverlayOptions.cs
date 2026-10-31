@@ -8,7 +8,7 @@ namespace PEMS.UI.Components;
 /// </summary>
 public enum ComponentSkin { Bootstrap, Pems }
 
-public enum AlertTone { Info, Success, Warning, Danger }
+public enum AlertTone { Info, Success, Warning, Danger, Primary, Secondary }
 
 public enum OverlaySize { Small, Medium, Large }
 
@@ -21,8 +21,10 @@ public enum DrawerSide { End, Start }
 public sealed record AlertOptions
 {
     public ComponentSkin Skin { get; init; } = ComponentSkin.Bootstrap;
-    public required TranslatableText Title { get; init; }
+    public TranslatableText? Title { get; init; }
     public TranslatableText? Message { get; init; }
+    /// <summary>Extra Bootstrap utility classes added after the tone class in the Bootstrap skin, as today's pages write them (<c>py-2 px-3 small</c>).</summary>
+    public string? CssClass { get; init; }
     public AlertTone Tone { get; init; } = AlertTone.Info;
     public string? TraceId { get; init; }
     public TranslatableText? TraceLabel { get; init; }

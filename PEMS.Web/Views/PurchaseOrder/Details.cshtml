@@ -23,8 +23,8 @@
     var isIssued = a?.Status == PEMS.Domain.Entities.PurchaseOrderStatuses.Issued || Model.Status == PEMS.Domain.Entities.PurchaseOrderStatuses.Issued;
 }
 
-@if (TempData["Message"] != null) { <div class="alert alert-success py-2 px-3 small">@TempData["Message"]</div> }
-@if (TempData["Error"] != null) { <div class="alert alert-danger py-2 px-3 small">@TempData["Error"]</div> }
+@if (TempData["Message"] != null) { <pems-alert tone="success" css="py-2 px-3 small">@TempData["Message"]</pems-alert> }
+@if (TempData["Error"] != null) { <pems-alert tone="danger" css="py-2 px-3 small">@TempData["Error"]</pems-alert> }
 
 <div class="content-card">
     <div class="row g-3">
@@ -54,7 +54,7 @@
         <h6 class="mb-2"><i class="bi bi-list-ol" aria-hidden="true"></i> @Localizer["Po_Lines"]</h6>
         @if (!string.IsNullOrEmpty(a.RejectionReason) && isDraft)
         {
-            <div class="alert alert-warning py-2 px-3 small"><strong>@Localizer["Po_RejectedBecause"]:</strong> @a.RejectionReason</div>
+            <pems-alert tone="warning" css="py-2 px-3 small"><strong>@Localizer["Po_RejectedBecause"]:</strong> @a.RejectionReason</pems-alert>
         }
         @if (a.Lines.Count == 0)
         {
@@ -146,7 +146,7 @@
         </dl>
         @if (a.ResponsibleNotSet)
         {
-            <div class="alert alert-warning py-2 px-3 small mb-2"><i class="bi bi-exclamation-triangle" aria-hidden="true"></i> @Localizer["Po_ResponsibleNotSet"]</div>
+            <pems-alert tone="warning" css="py-2 px-3 small mb-2"><i class="bi bi-exclamation-triangle" aria-hidden="true"></i> @Localizer["Po_ResponsibleNotSet"]</pems-alert>
             @if (canEdit)
             {
                 <form asp-action="RouteAgain" method="post" class="d-inline"><input type="hidden" name="id" value="@Model.PoId" />

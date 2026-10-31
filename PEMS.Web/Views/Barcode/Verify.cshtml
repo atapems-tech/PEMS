@@ -10,24 +10,24 @@
 <div class="content-card">
     @if (mismatch)
     {
-        <div class="alert alert-danger">
+        <pems-alert tone="danger">
             <strong><i class="bi bi-exclamation-octagon-fill"></i> EQUIPMENT IDENTITY MISMATCH</strong>
             <p class="mb-0 small">This barcode resolves to a different target than expected. Do not assume this label is attached to the correct physical object without further investigation.</p>
-        </div>
+        </pems-alert>
     }
     else if (resolution?.Success == true)
     {
-        <div class="alert alert-success mb-0">
+        <pems-alert tone="success" css="mb-0">
             <strong><i class="bi bi-check-circle-fill"></i> Match</strong>
             <p class="mb-0 small">Resolved to @Model?.TargetType #@Model?.TargetDisplayLabel - Status: @Model?.Status</p>
-        </div>
+        </pems-alert>
     }
     else
     {
-        <div class="alert alert-danger mb-0">
+        <pems-alert tone="danger" css="mb-0">
             <strong>@resolution?.ErrorCode</strong>
             <p class="mb-0 small">@resolution?.ErrorMessage</p>
-        </div>
+        </pems-alert>
     }
     <p class="text-muted small mt-3 mb-0">
         Barcode verification confirms the digital identity only - it cannot prove the physical label is

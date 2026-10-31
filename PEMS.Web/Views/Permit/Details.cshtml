@@ -107,15 +107,15 @@
 
     @if (Model.Status == "Cancelled" && !string.IsNullOrWhiteSpace(Model.CancellationReason))
     {
-        <div class="alert alert-secondary py-2 px-3 small mt-2 mb-0"><strong>Cancellation Reason:</strong> @Model.CancellationReason</div>
+        <pems-alert tone="secondary" css="py-2 px-3 small mt-2 mb-0"><strong>Cancellation Reason:</strong> @Model.CancellationReason</pems-alert>
     }
     @if (Model.Status == "Revoked" && !string.IsNullOrWhiteSpace(Model.RevocationReason))
     {
-        <div class="alert alert-danger py-2 px-3 small mt-2 mb-0"><strong>Revocation Reason:</strong> @Model.RevocationReason</div>
+        <pems-alert tone="danger" css="py-2 px-3 small mt-2 mb-0"><strong>Revocation Reason:</strong> @Model.RevocationReason</pems-alert>
     }
     @if (Model.ClosedDate.HasValue)
     {
-        <div class="alert alert-success py-2 px-3 small mt-2 mb-0">Closed on @Model.ClosedDate.Value.ToString("yyyy-MM-dd HH:mm")</div>
+        <pems-alert tone="success" css="py-2 px-3 small mt-2 mb-0">Closed on @Model.ClosedDate.Value.ToString("yyyy-MM-dd HH:mm")</pems-alert>
     }
 </div>
 
@@ -136,17 +136,17 @@
    صورت پیام همان‌جایی که اقدام مربوطه انجام شد نمایش داده می‌شود (پایین‌تر در این فایل). *@
 @if (pageMessage != null && errorArea == null)
 {
-    <div class="alert alert-success py-2 px-3 small">@pageMessage</div>
+    <pems-alert tone="success" css="py-2 px-3 small">@pageMessage</pems-alert>
 }
 @if (pageError != null && errorArea == null)
 {
     @if (pageError.Contains(passkeyMissingMarker))
     {
-        <div class="alert alert-danger py-2 px-3 small">@pageError <a asp-controller="Account" asp-action="ManagePasskeys" class="alert-link">Manage Passkeys &rarr;</a></div>
+        <pems-alert tone="danger" css="py-2 px-3 small">@pageError <a asp-controller="Account" asp-action="ManagePasskeys" class="alert-link">Manage Passkeys &rarr;</a></pems-alert>
     }
     else
     {
-        <div class="alert alert-danger py-2 px-3 small">@pageError</div>
+        <pems-alert tone="danger" css="py-2 px-3 small">@pageError</pems-alert>
     }
 }
 
@@ -156,11 +156,11 @@
     {
         @if (pageError != null && pageError.Contains(passkeyMissingMarker))
         {
-            <div class="alert alert-danger py-2 px-3 small">@pageError <a asp-controller="Account" asp-action="ManagePasskeys" class="alert-link">Manage Passkeys &rarr;</a></div>
+            <pems-alert tone="danger" css="py-2 px-3 small">@pageError <a asp-controller="Account" asp-action="ManagePasskeys" class="alert-link">Manage Passkeys &rarr;</a></pems-alert>
         }
         else
         {
-            <div class="alert @(pageError != null ? "alert-danger" : "alert-success") py-2 px-3 small">@(pageError ?? pageMessage)</div>
+            <pems-alert tone="@(pageError != null ? "danger" : "success")" css="py-2 px-3 small">@(pageError ?? pageMessage)</pems-alert>
         }
     }
     @if (closeElig != null && closeElig.Result != "Eligible")
@@ -237,11 +237,11 @@
         </h6>
         @if (errorArea == "ExecutionGate" && pageError != null && pageError.Contains(passkeyMissingMarker))
         {
-            <div class="alert alert-danger py-2 px-3 small">@pageError <a asp-controller="Account" asp-action="ManagePasskeys" class="alert-link">Manage Passkeys &rarr;</a></div>
+            <pems-alert tone="danger" css="py-2 px-3 small">@pageError <a asp-controller="Account" asp-action="ManagePasskeys" class="alert-link">Manage Passkeys &rarr;</a></pems-alert>
         }
         else if (errorArea == "ExecutionGate" && (pageMessage != null || pageError != null))
         {
-            <div class="alert @(pageError != null ? "alert-danger" : "alert-success") py-2 px-3 small">@(pageError ?? pageMessage)</div>
+            <pems-alert tone="@(pageError != null ? "danger" : "success")" css="py-2 px-3 small">@(pageError ?? pageMessage)</pems-alert>
         }
         <ul class="list-unstyled mb-2">
             @foreach (var c in executionGate.Checks)
@@ -310,11 +310,11 @@
         <h6 class="mb-3"><i class="bi bi-diagram-3"></i> Approval Progress <span class="badge @(approvalInstance.Status == "Completed" ? "bg-success" : approvalInstance.Status == "Rejected" ? "bg-danger" : "bg-primary")">@approvalInstance.Status</span></h6>
         @if (errorArea == "Approval" && pageError != null && pageError.Contains(passkeyMissingMarker))
         {
-            <div class="alert alert-danger py-2 px-3 small">@pageError <a asp-controller="Account" asp-action="ManagePasskeys" class="alert-link">Manage Passkeys &rarr;</a></div>
+            <pems-alert tone="danger" css="py-2 px-3 small">@pageError <a asp-controller="Account" asp-action="ManagePasskeys" class="alert-link">Manage Passkeys &rarr;</a></pems-alert>
         }
         else if (errorArea == "Approval" && (pageMessage != null || pageError != null))
         {
-            <div class="alert @(pageError != null ? "alert-danger" : "alert-success") py-2 px-3 small">@(pageError ?? pageMessage)</div>
+            <pems-alert tone="@(pageError != null ? "danger" : "success")" css="py-2 px-3 small">@(pageError ?? pageMessage)</pems-alert>
         }
 
         @{
@@ -425,11 +425,11 @@
     </h6>
     @if (errorArea == "LOTO" && pageError != null && pageError.Contains(passkeyMissingMarker))
     {
-        <div class="alert alert-danger py-2 px-3 small">@pageError <a asp-controller="Account" asp-action="ManagePasskeys" class="alert-link">Manage Passkeys &rarr;</a></div>
+        <pems-alert tone="danger" css="py-2 px-3 small">@pageError <a asp-controller="Account" asp-action="ManagePasskeys" class="alert-link">Manage Passkeys &rarr;</a></pems-alert>
     }
     else if (errorArea == "LOTO" && (pageMessage != null || pageError != null))
     {
-        <div class="alert @(pageError != null ? "alert-danger" : "alert-success") py-2 px-3 small">@(pageError ?? pageMessage)</div>
+        <pems-alert tone="@(pageError != null ? "danger" : "success")" css="py-2 px-3 small">@(pageError ?? pageMessage)</pems-alert>
     }
     @if (lotoVerifyElig != null && lotoVerifyElig.Result != "Eligible")
     {
@@ -627,11 +627,11 @@
     </h6>
     @if (errorArea == "Simops" && pageError != null && pageError.Contains(passkeyMissingMarker))
     {
-        <div class="alert alert-danger py-2 px-3 small">@pageError <a asp-controller="Account" asp-action="ManagePasskeys" class="alert-link">Manage Passkeys &rarr;</a></div>
+        <pems-alert tone="danger" css="py-2 px-3 small">@pageError <a asp-controller="Account" asp-action="ManagePasskeys" class="alert-link">Manage Passkeys &rarr;</a></pems-alert>
     }
     else if (errorArea == "Simops" && (pageMessage != null || pageError != null))
     {
-        <div class="alert @(pageError != null ? "alert-danger" : "alert-success") py-2 px-3 small">@(pageError ?? pageMessage)</div>
+        <pems-alert tone="@(pageError != null ? "danger" : "success")" css="py-2 px-3 small">@(pageError ?? pageMessage)</pems-alert>
     }
     @if ((simopsConfirmElig != null && simopsConfirmElig.Result != "Eligible") || (simopsResolveElig != null && simopsResolveElig.Result != "Eligible") || (simopsAcceptRiskElig != null && simopsAcceptRiskElig.Result != "Eligible"))
     {

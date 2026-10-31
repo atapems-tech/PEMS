@@ -161,17 +161,17 @@
 
 @if (noFilterApplied)
 {
-    <div class="alert alert-warning small">
+    <pems-alert tone="warning" css="small">
         طبق «PEMS Phase 7.6»: این فرم برای فعال‌سازی کنترل‌شده است، نه مرور کل ناوگان تجهیزات
         - ابتدا حداقل یک فیلتر (Discipline، نوع تجهیز، Functional Location/Plant/Area/Unit، یا Tag) را انتخاب کنید تا کاندیدها نمایش داده شوند.
-    </div>
+    </pems-alert>
 }
 else if (matchingCount.HasValue && matchingCount.Value > maxResults)
 {
-    <div class="alert alert-warning small">
+    <pems-alert tone="warning" css="small">
         @matchingCount.Value.ToString("N0") تجهیز با این فیلتر مطابقت دارد - فقط @maxResults مورد
         اول نمایش داده می‌شود. برای محدودتر کردن نتیجه، فیلتر دقیق‌تری انتخاب کنید.
-    </div>
+    </pems-alert>
 }
 
 <form asp-action="BulkCreate" method="post">
@@ -255,7 +255,7 @@ else if (matchingCount.HasValue && matchingCount.Value > maxResults)
                 <h6 class="small fw-bold mb-3">@Localizer["Rcm_AssignSummary"]</h6>
                 @if (!bulk.StrategyId.HasValue)
                 {
-                    <div class="alert alert-info small">@Localizer["Rcm_PickStrategyFirst"]</div>
+                    <pems-alert tone="info" css="small">@Localizer["Rcm_PickStrategyFirst"]</pems-alert>
                 }
                 else
                 {

@@ -43,8 +43,8 @@
     </div>
     <p class="text-muted small mb-3">@Localizer["Kpi_Exec_Intro"]</p>
 
-    @if (!string.IsNullOrEmpty(message)) { <div class="alert alert-success py-2 small" role="status">@Localizer[message]</div> }
-    @if (!string.IsNullOrEmpty(error)) { <div class="alert alert-danger py-2 small" role="alert">@Localizer[error]</div> }
+    @if (!string.IsNullOrEmpty(message)) { <pems-alert tone="success" css="py-2 small">@Localizer[message]</pems-alert> }
+    @if (!string.IsNullOrEmpty(error)) { <pems-alert tone="danger" css="py-2 small">@Localizer[error]</pems-alert> }
 
     <form method="get" class="d-flex gap-2 align-items-end flex-wrap mb-3">
         <div>

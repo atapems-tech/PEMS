@@ -8,9 +8,9 @@
 }
 
 <h2>@Localizer["Account recovered"]</h2>
-<div class="alert alert-success small">
+<pems-alert tone="success" css="small">
     @Localizer["The new password is set and the recovery code is used up. Sign in with the new password and enroll MFA again."]
-</div>
+</pems-alert>
 <p class="small">@Localizer["Recovery codes left"]: <strong>@Model.RemainingCodes</strong></p>
 @if (Model.RemainingCodes <= 3)
 {

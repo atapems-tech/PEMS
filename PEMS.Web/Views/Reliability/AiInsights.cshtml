@@ -18,12 +18,12 @@
 <div class="d-flex justify-content-end align-items-center mb-2">
     <a asp-action="Index" class="btn btn-outline-secondary btn-sm">@Localizer["← Reliability"]</a>
 </div>
-<div class="alert alert-info small">
+<pems-alert tone="info" css="small">
     طبق «PEMS Phase 9» بند ۱۷ (AI Governance): این بینش‌ها فقط <strong>@Localizer["پیشنهاد"]</strong> هستند -
     هرگز خودکار هیچ RCMDecision/MaintenanceStrategy/EquipmentCriticality/FailureRecord/WorkOrder
     ای را تغییر نمی‌دهند. هر بینش باید توسط یک مهندس انسانی بازبینی (تایید/رد) شود. مدل و منبع
     داده‌ی واقعی همیشه ثبت می‌شود.
-</div>
+</pems-alert>
 
 @if (canGenerate)
 {
