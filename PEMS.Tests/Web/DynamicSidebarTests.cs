@@ -274,12 +274,14 @@ public class DynamicSidebarTests
     [InlineData("proc.claims", "Module:ContractManagement")]
     [InlineData("proc.wh.irn", "Module:Inventory&Perm:IRN.View")]
     [InlineData("proc.wh.partcatalogue", "Flag:PartCatalogue")]
+    [InlineData("proc.wh.partcatalogue.reports", "Flag:PartCatalogueReports")]   // SCRUM-478
     public void ProcurementSection_KeepsEveryLinksFormerGate(string key, string rule)
     {
         var all = NavigationMenuDefaults.All;
         Assert.Equal(rule, all.Single(d => d.Key == key).VisibilityRule);
         var section = all.Single(d => d.Key == "sec.procurement");
-        Assert.Equal("Module:EngineeringManagement|Module:ContractManagement|Module:Inventory|Flag:PartCatalogue", section.VisibilityRule);
+        // SCRUM-478: a user with only PartCatalogue View sees the section for the Part Catalogue reports
+        Assert.Equal("Module:EngineeringManagement|Module:ContractManagement|Module:Inventory|Flag:PartCatalogue|Flag:PartCatalogueReports", section.VisibilityRule);
         string? parent = all.Single(d => d.Key == key).ParentKey;
         while (parent != null && parent != "sec.procurement") parent = all.Single(d => d.Key == parent).ParentKey;
         Assert.Equal("sec.procurement", parent);

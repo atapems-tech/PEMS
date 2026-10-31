@@ -1,0 +1,317 @@
+@model PEMS.Web.Areas.Warehouse.Models.PcReportViewModel
+@using Microsoft.Extensions.Localization
+@using PEMS.Application.DTOs
+@using PEMS.Web.Areas.Warehouse.Models
+@using PEMS.Web.Helpers
+@using PEMS.Web.Resources
+@using Microsoft.AspNetCore.Routing
+@inject IStringLocalizer<SharedResource> Localizer
+@addTagHelper *, PEMS.UI
+@{
+    // SCRUM-478: Part Catalogue reports. One tab = one table = one Excel sheet; Summary = KPIs, charts and the whole workbook.
+    var r = Model.Report;
+    var f = r.Filter;
+    var t = new PartCatalogueReportTexts(Localizer, Model.IsPersian);
+    var tab = f.Tab;
+    var p = r.Pipeline;
+
+    RouteValueDictionary Query(string? tabOverride = null, Action<Dictionary<string, string?>>? change = null)
+    {
+        var d = new Dictionary<string, string?>
+        {
+            ["Tab"] = tabOverride ?? tab, ["Period"] = f.Period,
+            ["From"] = f.Period == PartCatalogueReportPeriods.Custom ? f.From?.ToString("yyyy-MM-dd") : null,
+            ["To"] = f.Period == PartCatalogueReportPeriods.Custom ? f.To?.ToString("yyyy-MM-dd") : null,
+            ["SectionId"] = f.SectionId?.ToString(), ["RequestType"] = f.RequestType, ["Status"] = f.Status,
+            ["EmployeeId"] = f.EmployeeId?.ToString(), ["EquipmentId"] = f.EquipmentId?.ToString()
+        };
+        change?.Invoke(d);
+        var values = new RouteValueDictionary();
+        foreach (var kv in d.Where(kv => !string.IsNullOrEmpty(kv.Value))) values[kv.Key] = kv.Value;
+        return values;
+    }
+    string IndexUrl(string? tabOverride = null, Action<Dictionary<string, string?>>? change = null) =>
+        Url.Action("Index", Query(tabOverride, change))!;
+    string Without(string key) => IndexUrl(null, d => d[key] = null);
+
+    var activeFilters = new[] { f.SectionId?.ToString(), f.RequestType, f.Status, f.EmployeeId?.ToString(), f.EquipmentId?.ToString() }
+        .Count(v => !string.IsNullOrEmpty(v));
+    var sheet = tab == "summary" ? null : tab;
+    var exportValues = Query();
+    if (sheet != null) exportValues["sheet"] = sheet;
+    var exportUrl = Url.Action("ExportXlsx", exportValues);
+    string? sectionName = Model.Sections.FirstOrDefault(s => s.Id == f.SectionId)?.Text;
+    string? personName = r.Employees.FirstOrDefault(e => e.Id == f.EmployeeId)?.Text;
+    string? equipmentName = r.EquipmentOptions.FirstOrDefault(e => e.Id == f.EquipmentId)?.Text;
+
+    var (heading, total) = tab switch
+    {
+        "people" => (Localizer["PcRpt_Tab_People"].Value, r.Activity.People.Count),
+        "activity" => (Localizer["PcRpt_Tab_Activity"].Value, r.Activity.Rows.Count),
+        "equipment" => (Localizer["PcRpt_Tab_Equipment"].Value, r.Equipment.Equipment.Count),
+        "parts" => (Localizer["PcRpt_Tab_Parts"].Value, r.Equipment.Parts.Count),
+        "stages" => (Localizer["PcRpt_Tab_Stages"].Value, p.Total),
+        _ => (Localizer["Part Catalogue Reports"].Value, p.Total)
+    };
+
+    var noData = Localizer["Chart_NoData"].Value;
+    var trendChart = BkChartSpec.MonthlyBars(Localizer["PcRpt_Chart_Trend"].Value, noData, p.Months.Select(m => m.Month),
+        BkSeries.Of(Localizer["PcRpt_Col_Created"].Value, p.Months.Select(m => m.Created), BkChartSpec.Primary),
+        BkSeries.Of(Localizer["PcRpt_Col_CompletedDate"].Value, p.Months.Select(m => m.Completed), BkChartSpec.Positive));
+    var statusChart = BkChartSpec.Donut(Localizer["PcRpt_ByStatus"].Value, noData, Localizer["Total"].Value,
+        p.ByStatus.Where(s => s.Count > 0).Select(s => (t.Status(s.Key), (double)s.Count)));
+    var peopleRows = BkChartSpec.TopWithOthers(r.Activity.People.Where(x => x.PartNumbersRegistered > 0).Select(x => (x.EmployeeName, x.PartNumbersRegistered)), 10, Localizer["Chart_Other"].Value);
+    var peopleChart = BkChartSpec.HBars(Localizer["PcRpt_Chart_TopPeople"].Value, noData, peopleRows.Select(x => x.Label), false,
+        new BkSeries(Localizer["PcRpt_Col_Registered"].Value, peopleRows.Select(x => x.Value).ToList(), BkChartSpec.Accent));
+    var equipmentRows = BkChartSpec.TopWithOthers(r.Equipment.Equipment.Where(x => x.RegisteredPartNumbers > 0).Select(x => (x.EquipmentTag ?? "-", x.RegisteredPartNumbers)), 10, Localizer["Chart_Other"].Value);
+    var equipmentChart = BkChartSpec.HBars(Localizer["PcRpt_Chart_TopEquipment"].Value, noData, equipmentRows.Select(x => x.Label), false,
+        new BkSeries(Localizer["PcRpt_Col_RegisteredParts"].Value, equipmentRows.Select(x => x.Value).ToList(), BkChartSpec.Primary));
+
+    KpiCardViewModel Kpi(string titleKey, int count, string icon, string color, string? url = null, string? hintKey = null) =>
+        new() { Title = Localizer[titleKey].Value, Count = count, IconClass = icon, ColorClass = color, Url = url, Hint = hintKey == null ? null : Localizer[hintKey].Value };
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/_content/PEMS.UI/pems-list.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/part-catalogue-report.css" asp-append-version="true" />
+    <partial name="_BkChartStyles" />
+}
+
+<pems-list-page texts="@ListPageTexts.From(Localizer)">
+    <nav class="vs-subnav" aria-label="@Localizer["Part Catalogue Reports"]">
+        @foreach (var tb in new[] { "summary", "people", "activity", "equipment", "parts", "stages" })
+        {
+            var key = "PcRpt_Tab_" + char.ToUpperInvariant(tb[0]) + tb[1..];
+            if (tb == tab)
+            { <a href="@IndexUrl(tb)" class="active" aria-current="page">@Localizer[key]</a> }
+            else
+            { <a href="@IndexUrl(tb)">@Localizer[key]</a> }
+        }
+        <a asp-controller="PartCatalogueRequest" asp-action="Index" class="pc-rpt-back"><i class="bi bi-journal-plus" aria-hidden="true"></i> @Localizer["Pc_Menu"]</a>
+    </nav>
+
+    <pems-list-panel>
+        <pems-list-toolbar heading="@heading" heading-title="@t.PeriodName(f.Period) (@t.Period(r))" total="@total">
+            <pems-list-tools>
+                <pems-list-menu id="pcRptPeriodBtn" icon="bi-calendar3" label="@Localizer["PcRpt_Filter_Period"]">
+                    @foreach (var per in PartCatalogueReportPeriods.Values.Where(v => v != PartCatalogueReportPeriods.Custom))
+                    {
+                        <li><a class="dropdown-item @(per == f.Period ? "active" : "")" href="@IndexUrl(null, d => { d["Period"] = per; d["From"] = null; d["To"] = null; })">@t.PeriodName(per)</a></li>
+                    }
+                </pems-list-menu>
+                <pems-list-filters form-id="pcRptFilter" action="@Url.Action("Index")" count="@activeFilters" reset-href="@Url.Action("Index", new { Tab = tab, Period = f.Period })">
+                    <input type="hidden" name="Tab" value="@tab" />
+                    <div>
+                        <label class="lp-lbl" for="pcRptPeriod">@Localizer["PcRpt_Filter_Period"]</label>
+                        <select id="pcRptPeriod" name="Period" class="form-select form-select-sm">
+                            @foreach (var per in PartCatalogueReportPeriods.Values)
+                            { <option value="@per" selected="@(per == f.Period)">@t.PeriodName(per)</option> }
+                        </select>
+                    </div>
+                    <div class="pc-rpt-dates">
+                        <div>
+                            <label class="lp-lbl" for="pcRptFrom">@Localizer["PcRpt_Filter_From"]</label>
+                            <input id="pcRptFrom" name="From" type="date" class="form-control form-control-sm" value="@(f.Period == PartCatalogueReportPeriods.Custom ? f.From?.ToString("yyyy-MM-dd") : null)" />
+                        </div>
+                        <div>
+                            <label class="lp-lbl" for="pcRptTo">@Localizer["PcRpt_Filter_To"]</label>
+                            <input id="pcRptTo" name="To" type="date" class="form-control form-control-sm" value="@(f.Period == PartCatalogueReportPeriods.Custom ? f.To?.ToString("yyyy-MM-dd") : null)" />
+                        </div>
+                    </div>
+                    <p class="lp-hint small text-muted mb-0">@Localizer["PcRpt_Filter_CustomHint"]</p>
+                    <div>
+                        <label class="lp-lbl" for="pcRptSection">@Localizer["Pc_F_SectionId"]</label>
+                        <select id="pcRptSection" name="SectionId" class="form-select form-select-sm">
+                            <option value="">@Localizer["Ed_All"]</option>
+                            @foreach (var s in Model.Sections) { <option value="@s.Id" selected="@(s.Id == f.SectionId)">@s.Text</option> }
+                        </select>
+                    </div>
+                    <div>
+                        <label class="lp-lbl" for="pcRptType">@Localizer["PcRpt_Col_Type"]</label>
+                        <select id="pcRptType" name="RequestType" class="form-select form-select-sm">
+                            <option value="">@Localizer["Ed_All"]</option>
+                            @foreach (var ty in new[] { "Add", "Change" }) { <option value="@ty" selected="@(ty == f.RequestType)">@t.Type(ty)</option> }
+                        </select>
+                    </div>
+                    <div>
+                        <label class="lp-lbl" for="pcRptStatus">@Localizer["PcRpt_Col_Status"]</label>
+                        <select id="pcRptStatus" name="Status" class="form-select form-select-sm">
+                            <option value="">@Localizer["Ed_All"]</option>
+                            @foreach (var st in new[] { "Draft", "InApproval", "Returned", "OrgResolution", "Completed", "Cancelled" })
+                            { <option value="@st" selected="@(st == f.Status)">@t.Status(st)</option> }
+                        </select>
+                    </div>
+                    <div>
+                        <label class="lp-lbl" for="pcRptPerson">@Localizer["PcRpt_Col_Person"]</label>
+                        <select id="pcRptPerson" name="EmployeeId" class="form-select form-select-sm">
+                            <option value="">@Localizer["Ed_All"]</option>
+                            @foreach (var e in r.Employees) { <option value="@e.Id" selected="@(e.Id == f.EmployeeId)">@e.Text</option> }
+                        </select>
+                    </div>
+                    <div>
+                        <label class="lp-lbl" for="pcRptEquipment">@Localizer["PcRpt_Col_Tag"]</label>
+                        <select id="pcRptEquipment" name="EquipmentId" class="form-select form-select-sm">
+                            <option value="">@Localizer["Ed_All"]</option>
+                            @foreach (var e in r.EquipmentOptions) { <option value="@e.Id" selected="@(e.Id == f.EquipmentId)">@e.Text</option> }
+                        </select>
+                    </div>
+                </pems-list-filters>
+                <pems-list-export href="@exportUrl" />
+            </pems-list-tools>
+        </pems-list-toolbar>
+
+        <pems-list-chips reset-href="@Url.Action("Index", new { Tab = tab, Period = f.Period })">
+            @if (f.SectionId.HasValue) { <pems-list-chip label="@Localizer["Pc_F_SectionId"]" value="@(sectionName ?? f.SectionId.ToString())" remove-href="@Without("SectionId")" /> }
+            @if (!string.IsNullOrEmpty(f.RequestType)) { <pems-list-chip label="@Localizer["PcRpt_Col_Type"]" value="@t.Type(f.RequestType)" remove-href="@Without("RequestType")" /> }
+            @if (!string.IsNullOrEmpty(f.Status)) { <pems-list-chip label="@Localizer["PcRpt_Col_Status"]" value="@t.Status(f.Status)" remove-href="@Without("Status")" /> }
+            @if (f.EmployeeId.HasValue) { <pems-list-chip label="@Localizer["PcRpt_Col_Person"]" value="@(personName ?? "#" + f.EmployeeId)" remove-href="@Without("EmployeeId")" /> }
+            @if (f.EquipmentId.HasValue) { <pems-list-chip label="@Localizer["PcRpt_Col_Tag"]" value="@(equipmentName ?? "#" + f.EquipmentId)" remove-href="@Without("EquipmentId")" /> }
+        </pems-list-chips>
+
+        @if (!r.SeesAll || r.Truncated)
+        {
+            <div class="pc-rpt-notes small text-muted">
+                @if (!r.SeesAll) { <span><i class="bi bi-eye-slash" aria-hidden="true"></i> @Localizer["PcRpt_ScopeNote"]</span> }
+                @if (r.Truncated) { <span><i class="bi bi-scissors" aria-hidden="true"></i> @Localizer["PcRpt_Truncated", PartCatalogueReportDto.MaxRows]</span> }
+            </div>
+        }
+
+        @if (tab == "summary")
+        {
+            <div class="pc-rpt-summary">
+                <div class="row g-3 mb-3">
+                    <div class="col-xl-2 col-md-4 col-6"><partial name="_KpiCard" model="@Kpi("PcRpt_Kpi_Requests", p.Total, "bi-journal-text", "bg-icon-slate", IndexUrl("stages"), "PcRpt_Hint_Requests")" /></div>
+                    <div class="col-xl-2 col-md-4 col-6"><partial name="_KpiCard" model="@Kpi("PcRpt_Kpi_Open", p.Open, "bi-hourglass-split", "bg-icon-amber", IndexUrl("stages"), "PcRpt_Hint_Open")" /></div>
+                    <div class="col-xl-2 col-md-4 col-6"><partial name="_KpiCard" model="@Kpi("PcRpt_Kpi_Completed", p.CompletedInPeriod, "bi-check-circle", "bg-icon-green", null, "PcRpt_Hint_Completed")" /></div>
+                    <div class="col-xl-2 col-md-4 col-6"><partial name="_KpiCard" model="@Kpi("PcRpt_Kpi_Registered", p.PartNumbersRegisteredInPeriod, "bi-upc-scan", "bg-icon-blue", IndexUrl("people"), "PcRpt_Hint_Registered")" /></div>
+                    <div class="col-xl-2 col-md-4 col-6"><partial name="_KpiCard" model="@Kpi("PcRpt_Kpi_Equipment", r.Equipment.Equipment.Count, "bi-gear-wide-connected", "bg-icon-purple", IndexUrl("equipment"), "PcRpt_Hint_Equipment")" /></div>
+                    <div class="col-xl-2 col-md-4 col-6"><partial name="_KpiCard" model="@Kpi("PcRpt_Kpi_People", r.Activity.People.Count, "bi-people", "bg-icon-teal", IndexUrl("people"), "PcRpt_Hint_People")" /></div>
+                </div>
+                <div class="row g-3">
+                    <div class="col-lg-8"><div class="content-card"><h6 class="mb-3">@Localizer["PcRpt_Chart_Trend"]</h6><partial name="_BkChart" model="@trendChart" /></div></div>
+                    <div class="col-lg-4"><div class="content-card"><h6 class="mb-3">@Localizer["PcRpt_ByStatus"]</h6><partial name="_BkChart" model="@statusChart" /></div></div>
+                    <div class="col-lg-6"><div class="content-card"><h6 class="mb-3">@Localizer["PcRpt_Chart_TopPeople"]</h6><partial name="_BkChart" model="@peopleChart" /></div></div>
+                    <div class="col-lg-6"><div class="content-card"><h6 class="mb-3">@Localizer["PcRpt_Chart_TopEquipment"]</h6><partial name="_BkChart" model="@equipmentChart" /></div></div>
+                </div>
+            </div>
+        }
+        else
+        {
+            <pems-list-grid>
+                @if (tab == "people")
+                {
+                    <pems-list-table grid-key="PcRptPeople" empty="@(!r.Activity.People.Any())" empty-text="@Localizer["PcRpt_Empty"]" filtered="@(activeFilters > 0)" clear-href="@Url.Action("Index", new { Tab = tab, Period = f.Period })">
+                        <thead><tr>
+                            <th>@Localizer["PcRpt_Col_Person"]</th><th class="text-end">@Localizer["PcRpt_Col_Created"]</th><th class="text-end">@Localizer["PcRpt_Col_Submitted"]</th>
+                            <th class="text-end">@Localizer["PcRpt_Col_Approved"]</th><th class="text-end">@Localizer["PcRpt_Col_Returned"]</th><th class="text-end">@Localizer["PcRpt_Col_Cancelled"]</th>
+                            <th class="text-end">@Localizer["PcRpt_Col_Registered"]</th><th class="text-end">@Localizer["PcRpt_Col_Total"]</th>
+                        </tr></thead>
+                        <tbody>
+                            @foreach (var x in r.Activity.People)
+                            {
+                                <tr class="lp-row">
+                                    <td><a href="@IndexUrl("activity", d => d["EmployeeId"] = x.EmployeeId.ToString())">@x.EmployeeName</a></td>
+                                    <td class="text-end">@x.Created</td><td class="text-end">@x.Submitted</td><td class="text-end">@x.Approved</td>
+                                    <td class="text-end">@x.Returned</td><td class="text-end">@x.Cancelled</td>
+                                    <td class="text-end fw-semibold">@x.PartNumbersRegistered</td><td class="text-end">@x.Total</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </pems-list-table>
+                }
+                else if (tab == "activity")
+                {
+                    <pems-list-table grid-key="PcRptActivity" empty="@(!r.Activity.Rows.Any())" empty-text="@Localizer["PcRpt_Empty"]" filtered="@(activeFilters > 0)" clear-href="@Url.Action("Index", new { Tab = tab, Period = f.Period })">
+                        <thead><tr>
+                            <th>@Localizer["PcRpt_Col_Date"]</th><th>@Localizer["PcRpt_Col_Person"]</th><th>@Localizer["PcRpt_Col_Action"]</th><th>@Localizer["PcRpt_Col_Request"]</th>
+                            <th>@Localizer["PcRpt_Col_Type"]</th><th>@Localizer["PcRpt_Col_Mpn"]</th><th>@Localizer["PcRpt_Col_PartNumber"]</th><th>@Localizer["PcRpt_Col_TechClass"]</th><th>@Localizer["PcRpt_Col_Status"]</th>
+                        </tr></thead>
+                        <tbody>
+                            @foreach (var a in r.Activity.Rows.Take(PcReportViewModel.PageRows))
+                            {
+                                <tr class="lp-row">
+                                    <td class="text-nowrap">@a.Date.ToString("yyyy-MM-dd HH:mm")</td><td>@a.EmployeeName</td><td>@t.Action(a.Action)</td>
+                                    <td><a asp-controller="PartCatalogueRequest" asp-action="Details" asp-route-id="@a.RequestId">@(a.RequestNumber ?? "#" + a.RequestId)</a></td>
+                                    <td>@t.Type(a.RequestType)</td><td>@a.ManufacturerPartNumber</td><td class="fw-semibold">@a.AssignedPartNumber</td><td>@a.TechnicalClass</td><td>@t.Status(a.Status)</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </pems-list-table>
+                }
+                else if (tab == "equipment")
+                {
+                    <pems-list-table grid-key="PcRptEquipment" empty="@(!r.Equipment.Equipment.Any())" empty-text="@Localizer["PcRpt_Empty"]" filtered="@(activeFilters > 0)" clear-href="@Url.Action("Index", new { Tab = tab, Period = f.Period })">
+                        <thead><tr>
+                            <th>@Localizer["PcRpt_Col_Tag"]</th><th>@Localizer["PcRpt_Col_EquipmentName"]</th><th>@Localizer["PcRpt_Col_InRegister"]</th>
+                            <th class="text-end">@Localizer["PcRpt_Col_Requests"]</th><th class="text-end">@Localizer["PcRpt_Col_RegisteredParts"]</th>
+                            <th class="text-end">@Localizer["PcRpt_Col_InProgress"]</th><th class="text-end">@Localizer["PcRpt_Col_Critical"]</th>
+                        </tr></thead>
+                        <tbody>
+                            @foreach (var e in r.Equipment.Equipment)
+                            {
+                                <tr class="lp-row">
+                                    <td>
+                                        @if (e.EquipmentId.HasValue) { <a href="@IndexUrl("parts", d => d["EquipmentId"] = e.EquipmentId.ToString())">@e.EquipmentTag</a> }
+                                        else { @e.EquipmentTag }
+                                    </td>
+                                    <td>@e.EquipmentName</td><td>@t.YesNo(e.InRegister)</td>
+                                    <td class="text-end">@e.Requests</td><td class="text-end fw-semibold">@e.RegisteredPartNumbers</td>
+                                    <td class="text-end">@e.InProgress</td><td class="text-end">@e.Critical</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </pems-list-table>
+                }
+                else if (tab == "parts")
+                {
+                    <pems-list-table grid-key="PcRptParts" empty="@(!r.Equipment.Parts.Any())" empty-text="@Localizer["PcRpt_Empty"]" filtered="@(activeFilters > 0)" clear-href="@Url.Action("Index", new { Tab = tab, Period = f.Period })">
+                        <thead><tr>
+                            <th>@Localizer["PcRpt_Col_Tag"]</th><th>@Localizer["PcRpt_Col_PartNumber"]</th><th>@Localizer["PcRpt_Col_Request"]</th><th>@Localizer["PcRpt_Col_Status"]</th>
+                            <th>@Localizer["PcRpt_Col_Manufacturer"]</th><th>@Localizer["PcRpt_Col_Mpn"]</th><th>@Localizer["PcRpt_Col_Supplier"]</th><th>@Localizer["PcRpt_Col_SupplierPn"]</th>
+                            <th>@Localizer["PcRpt_Col_TechClass"]</th><th>@Localizer["PcRpt_Col_Uom"]</th><th class="text-end">@Localizer["PcRpt_Col_InstalledQty"]</th>
+                            <th>@Localizer["PcRpt_Col_Critical"]</th><th>@Localizer["PcRpt_Col_Attributes"]</th>
+                        </tr></thead>
+                        <tbody>
+                            @foreach (var x in r.Equipment.Parts.Take(PcReportViewModel.PageRows))
+                            {
+                                <tr class="lp-row">
+                                    <td>@x.EquipmentTag</td><td class="fw-semibold">@x.AssignedPartNumber</td>
+                                    <td><a asp-controller="PartCatalogueRequest" asp-action="Details" asp-route-id="@x.RequestId">@(x.RequestNumber ?? "#" + x.RequestId)</a></td>
+                                    <td>@t.Status(x.Status)</td><td>@x.ManufacturerName</td><td>@x.ManufacturerPartNumber</td><td>@x.SupplierName</td><td>@x.SupplierPartNumber</td>
+                                    <td>@x.TechnicalClass</td><td>@x.UnitOfMeasure</td><td class="text-end">@x.InstalledQuantity.ToString("0.##")</td>
+                                    <td>@t.YesNo(x.IsCritical)</td><td class="pc-rpt-attrs">@x.Attributes</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </pems-list-table>
+                }
+                else
+                {
+                    <pems-list-table grid-key="PcRptStages" empty="@(p.Total == 0)" empty-text="@Localizer["PcRpt_Empty"]" filtered="@(activeFilters > 0)" clear-href="@Url.Action("Index", new { Tab = tab, Period = f.Period })">
+                        <thead><tr><th>@Localizer["PcRpt_Col_Group"]</th><th>@Localizer["PcRpt_Col_Item"]</th><th class="text-end">@Localizer["PcRpt_Col_Count"]</th></tr></thead>
+                        <tbody>
+                            @foreach (var s in p.ByStatus)
+                            { <tr class="lp-row"><td>@Localizer["PcRpt_ByStatus"]</td><td>@t.Status(s.Key)</td><td class="text-end">@s.Count</td></tr> }
+                            @foreach (var s in p.ByStep)
+                            { <tr class="lp-row"><td>@Localizer["PcRpt_ByStep"]</td><td>@t.Step(s)</td><td class="text-end">@s.Count</td></tr> }
+                            @foreach (var a in p.OpenAge)
+                            { <tr class="lp-row"><td>@Localizer["PcRpt_OpenAge"]</td><td>@t.Days(a.Label)</td><td class="text-end">@a.Count</td></tr> }
+                            <tr class="lp-row"><td>@Localizer["PcRpt_Throughput"]</td><td>@Localizer["PcRpt_Kpi_Completed"]</td><td class="text-end">@p.CompletedInPeriod</td></tr>
+                            <tr class="lp-row"><td>@Localizer["PcRpt_Throughput"]</td><td>@Localizer["PcRpt_Kpi_AvgDays"]</td><td class="text-end">@(p.AverageDaysToComplete?.ToString("0.0") ?? "-")</td></tr>
+                            <tr class="lp-row"><td>@Localizer["PcRpt_Throughput"]</td><td>@Localizer["PcRpt_Kpi_MedianDays"]</td><td class="text-end">@(p.MedianDaysToComplete?.ToString("0.0") ?? "-")</td></tr>
+                        </tbody>
+                    </pems-list-table>
+                }
+                @if ((tab == "activity" && r.Activity.Rows.Count > PcReportViewModel.PageRows) || (tab == "parts" && r.Equipment.Parts.Count > PcReportViewModel.PageRows))
+                {
+                    <pems-list-footer><span class="small text-muted">@Localizer["PcRpt_PageRows", PcReportViewModel.PageRows]</span></pems-list-footer>
+                }
+            </pems-list-grid>
+        }
+    </pems-list-panel>
+</pems-list-page>
+
+@section Scripts {
+    <script src="~/_content/PEMS.UI/pems-list.js" asp-append-version="true"></script>
+    <partial name="_BkChartScripts" />
+}

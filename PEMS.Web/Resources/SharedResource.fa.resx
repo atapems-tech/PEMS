@@ -3838,4 +3838,93 @@
   <data name="Login_Err_Locked" xml:space="preserve"><value>حساب کاربری به دلیل تلاش‌های ناموفق متعدد موقتاً قفل شده است.</value></data>
   <data name="Auth_BrandName" xml:space="preserve"><value>سامانه مدیریت سازمانی پارمیس</value></data>
   <data name="Auth_Footer" xml:space="preserve"><value>مرکز فرماندهی مهندسی</value></data>
+  <data name="Part Catalogue Reports" xml:space="preserve"><value>گزارش‌های کاتالوگ قطعه</value></data>
+  <data name="PcRpt_Menu" xml:space="preserve"><value>گزارش‌های کاتالوگ قطعه</value></data>
+  <data name="PcRpt_Action_Create" xml:space="preserve"><value>ایجاد شد</value></data>
+  <data name="PcRpt_Tab_Summary" xml:space="preserve"><value>خلاصه</value></data>
+  <data name="PcRpt_Tab_People" xml:space="preserve"><value>به تفکیک شخص</value></data>
+  <data name="PcRpt_Tab_Activity" xml:space="preserve"><value>فعالیت‌ها</value></data>
+  <data name="PcRpt_Tab_Equipment" xml:space="preserve"><value>به تفکیک تجهیز</value></data>
+  <data name="PcRpt_Tab_Parts" xml:space="preserve"><value>قطعات هر تجهیز</value></data>
+  <data name="PcRpt_Tab_Stages" xml:space="preserve"><value>مراحل</value></data>
+  <data name="PcRpt_Sheet_Summary" xml:space="preserve"><value>خلاصه</value></data>
+  <data name="PcRpt_Sheet_People" xml:space="preserve"><value>به تفکیک شخص</value></data>
+  <data name="PcRpt_Sheet_Activity" xml:space="preserve"><value>فعالیت‌ها</value></data>
+  <data name="PcRpt_Sheet_Equipment" xml:space="preserve"><value>به تفکیک تجهیز</value></data>
+  <data name="PcRpt_Sheet_Parts" xml:space="preserve"><value>قطعات هر تجهیز</value></data>
+  <data name="PcRpt_Sheet_Stages" xml:space="preserve"><value>مراحل</value></data>
+  <data name="PcRpt_Period_ThisMonth" xml:space="preserve"><value>این ماه</value></data>
+  <data name="PcRpt_Period_LastMonth" xml:space="preserve"><value>ماه گذشته</value></data>
+  <data name="PcRpt_Period_ThisQuarter" xml:space="preserve"><value>این فصل</value></data>
+  <data name="PcRpt_Period_ThisYear" xml:space="preserve"><value>امسال</value></data>
+  <data name="PcRpt_Period_All" xml:space="preserve"><value>همه‌ی زمان‌ها</value></data>
+  <data name="PcRpt_Period_Custom" xml:space="preserve"><value>بازه‌ی دلخواه</value></data>
+  <data name="PcRpt_Filter_Period" xml:space="preserve"><value>دوره</value></data>
+  <data name="PcRpt_Filter_From" xml:space="preserve"><value>از تاریخ</value></data>
+  <data name="PcRpt_Filter_To" xml:space="preserve"><value>تا تاریخ</value></data>
+  <data name="PcRpt_Filter_CustomHint" xml:space="preserve"><value>تاریخ‌ها وقتی اعمال می‌شوند که دوره «بازه‌ی دلخواه» باشد.</value></data>
+  <data name="PcRpt_Kpi_Requests" xml:space="preserve"><value>درخواست‌ها</value></data>
+  <data name="PcRpt_Kpi_Open" xml:space="preserve"><value>باز</value></data>
+  <data name="PcRpt_Kpi_Completed" xml:space="preserve"><value>تکمیل‌شده</value></data>
+  <data name="PcRpt_Kpi_Registered" xml:space="preserve"><value>پارت‌نامبرهای ثبت‌شده</value></data>
+  <data name="PcRpt_Kpi_Equipment" xml:space="preserve"><value>تجهیزات</value></data>
+  <data name="PcRpt_Kpi_People" xml:space="preserve"><value>اشخاص</value></data>
+  <data name="PcRpt_Kpi_AvgDays" xml:space="preserve"><value>میانگین روز تا تکمیل</value></data>
+  <data name="PcRpt_Kpi_MedianDays" xml:space="preserve"><value>میانه‌ی روز تا تکمیل</value></data>
+  <data name="PcRpt_Hint_Requests" xml:space="preserve"><value>درخواست‌هایی که در این دوره ایجاد شده‌اند.</value></data>
+  <data name="PcRpt_Hint_Open" xml:space="preserve"><value>درخواست‌های ایجادشده در این دوره که هنوز پیش‌نویس، در تأیید یا برگشتی هستند.</value></data>
+  <data name="PcRpt_Hint_Completed" xml:space="preserve"><value>درخواست‌هایی که در این دوره تکمیل شده‌اند.</value></data>
+  <data name="PcRpt_Hint_Registered" xml:space="preserve"><value>پارت‌نامبرهای IFS که کاتالوگ‌کننده در این دوره ثبت کرده است.</value></data>
+  <data name="PcRpt_Hint_Equipment" xml:space="preserve"><value>تجهیزاتی که در درخواست‌های ایجادشده در این دوره آمده‌اند.</value></data>
+  <data name="PcRpt_Hint_People" xml:space="preserve"><value>اشخاصی که در این دوره درخواست ایجاد یا رسیدگی کرده‌اند.</value></data>
+  <data name="PcRpt_Chart_Trend" xml:space="preserve"><value>درخواست‌های ایجادشده و تکمیل‌شده در هر ماه</value></data>
+  <data name="PcRpt_Chart_TopPeople" xml:space="preserve"><value>پارت‌نامبرهای ثبت‌شده به تفکیک شخص</value></data>
+  <data name="PcRpt_Chart_TopEquipment" xml:space="preserve"><value>پارت‌نامبرهای ثبت‌شده به تفکیک تجهیز</value></data>
+  <data name="PcRpt_ByStatus" xml:space="preserve"><value>بر اساس وضعیت</value></data>
+  <data name="PcRpt_ByStep" xml:space="preserve"><value>در تأیید، به تفکیک مرحله</value></data>
+  <data name="PcRpt_OpenAge" xml:space="preserve"><value>سن درخواست‌های باز</value></data>
+  <data name="PcRpt_Throughput" xml:space="preserve"><value>عملکرد</value></data>
+  <data name="PcRpt_Days" xml:space="preserve"><value>{0} روز</value></data>
+  <data name="PcRpt_Col_Item" xml:space="preserve"><value>مورد</value></data>
+  <data name="PcRpt_Col_Value" xml:space="preserve"><value>مقدار</value></data>
+  <data name="PcRpt_Col_Group" xml:space="preserve"><value>گروه</value></data>
+  <data name="PcRpt_Col_Count" xml:space="preserve"><value>تعداد</value></data>
+  <data name="PcRpt_Col_Person" xml:space="preserve"><value>شخص</value></data>
+  <data name="PcRpt_Col_Created" xml:space="preserve"><value>ایجاد</value></data>
+  <data name="PcRpt_Col_Submitted" xml:space="preserve"><value>ارسال</value></data>
+  <data name="PcRpt_Col_Approved" xml:space="preserve"><value>تأیید</value></data>
+  <data name="PcRpt_Col_Returned" xml:space="preserve"><value>برگشت</value></data>
+  <data name="PcRpt_Col_Cancelled" xml:space="preserve"><value>لغو</value></data>
+  <data name="PcRpt_Col_Registered" xml:space="preserve"><value>پارت‌نامبر ثبت‌شده</value></data>
+  <data name="PcRpt_Col_Total" xml:space="preserve"><value>جمع</value></data>
+  <data name="PcRpt_Col_Date" xml:space="preserve"><value>تاریخ</value></data>
+  <data name="PcRpt_Col_Action" xml:space="preserve"><value>اقدام</value></data>
+  <data name="PcRpt_Col_Request" xml:space="preserve"><value>درخواست</value></data>
+  <data name="PcRpt_Col_Type" xml:space="preserve"><value>نوع</value></data>
+  <data name="PcRpt_Col_Status" xml:space="preserve"><value>وضعیت</value></data>
+  <data name="PcRpt_Col_Mpn" xml:space="preserve"><value>شماره قطعه‌ی سازنده</value></data>
+  <data name="PcRpt_Col_PartNumber" xml:space="preserve"><value>پارت‌نامبر (IFS)</value></data>
+  <data name="PcRpt_Col_TechClass" xml:space="preserve"><value>کلاس فنی</value></data>
+  <data name="PcRpt_Col_Tag" xml:space="preserve"><value>تجهیز</value></data>
+  <data name="PcRpt_Col_EquipmentName" xml:space="preserve"><value>نام تجهیز</value></data>
+  <data name="PcRpt_Col_InRegister" xml:space="preserve"><value>در فهرست تجهیزات</value></data>
+  <data name="PcRpt_Col_Requests" xml:space="preserve"><value>درخواست‌ها</value></data>
+  <data name="PcRpt_Col_RegisteredParts" xml:space="preserve"><value>پارت‌نامبرهای ثبت‌شده</value></data>
+  <data name="PcRpt_Col_InProgress" xml:space="preserve"><value>در جریان</value></data>
+  <data name="PcRpt_Col_Critical" xml:space="preserve"><value>بحرانی</value></data>
+  <data name="PcRpt_Col_Capital" xml:space="preserve"><value>سرمایه‌ای</value></data>
+  <data name="PcRpt_Col_InstalledQty" xml:space="preserve"><value>تعداد نصب‌شده</value></data>
+  <data name="PcRpt_Col_Manufacturer" xml:space="preserve"><value>سازنده</value></data>
+  <data name="PcRpt_Col_Supplier" xml:space="preserve"><value>تأمین‌کننده</value></data>
+  <data name="PcRpt_Col_SupplierPn" xml:space="preserve"><value>شماره قطعه‌ی تأمین‌کننده</value></data>
+  <data name="PcRpt_Col_Commodity" xml:space="preserve"><value>گروه کالایی</value></data>
+  <data name="PcRpt_Col_Uom" xml:space="preserve"><value>واحد</value></data>
+  <data name="PcRpt_Col_Attributes" xml:space="preserve"><value>مشخصات</value></data>
+  <data name="PcRpt_Col_Requester" xml:space="preserve"><value>درخواست‌دهنده</value></data>
+  <data name="PcRpt_Col_CompletedDate" xml:space="preserve"><value>تکمیل</value></data>
+  <data name="PcRpt_Empty" xml:space="preserve"><value>در این دوره با این فیلترها موردی نیست.</value></data>
+  <data name="PcRpt_Note" xml:space="preserve"><value>توضیح</value></data>
+  <data name="PcRpt_ScopeNote" xml:space="preserve"><value>فقط درخواست‌هایی شمرده شده‌اند که خودتان ثبت کرده‌اید یا در تأیید آن‌ها هستید.</value></data>
+  <data name="PcRpt_Truncated" xml:space="preserve"><value>فهرست‌های جزئیات در {0} ردیف بریده شدند.</value></data>
+  <data name="PcRpt_PageRows" xml:space="preserve"><value>صفحه {0} ردیف اول را نشان می‌دهد؛ فایل Excel همه را دارد.</value></data>
 </root>

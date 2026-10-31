@@ -123,6 +123,8 @@ public class DynamicSidebarBuilder
         {
             ["PartCatalogue"] = pc.Values.Any(v => v),
             ["PartCatalogueAdmin"] = pc["Admin"],
+            // SCRUM-478: the reports are for everyone who may view the Part Catalogue
+            ["PartCatalogueReports"] = pc["Review"] || pc["Approve"] || pc["Admin"] || await _roleActions.HasActionAsync(roles, "PartCatalogue", "View"),
             ["Replenishment"] = _replenishment.IsEnabled && await _permissions.HasPermissionAsync(roles, "ReplenishmentRecommendation", "View"),
             ["DisciplineMaster"] = await _permissions.HasPermissionAsync(roles, "DisciplineMaster", "View"),
         };

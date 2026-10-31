@@ -22,6 +22,9 @@
         pcActions[a] = await RoleActions.HasActionAsync(CurrentUserService.Roles, "PartCatalogue", a);
     var canSeePartCatalogue = pcActions.Values.Any(v => v);
     var canAdminPartCatalogue = pcActions["Admin"];
+    // SCRUM-478: the reports are for everyone who may view the Part Catalogue (View, Review, Approve or Admin)
+    var canSeePartCatalogueReports = pcActions["Review"] || pcActions["Approve"] || pcActions["Admin"]
+        || await RoleActions.HasActionAsync(CurrentUserService.Roles, "PartCatalogue", "View");
 
     var canSeeQuickSetup = await PermissionService.HasPermissionAsync(CurrentUserService.Roles, "Setup", "View");
     // Phase 2 / P5: توصیه‌های تأمین مجوزمحور است (ماژول ReplenishmentRecommendation)؛ بدون مجوز، لینک دیده نمی‌شود (Sidebar visible + denied = BAD)
@@ -368,6 +371,12 @@
             {
                 <a class="nav-link @(IsActive("PartCatalogueRequest", "Warehouse") ? "active" : "")" asp-controller="PartCatalogueRequest" asp-action="Index" asp-area="Warehouse">
                     <i class="bi bi-journal-plus"></i> @Localizer["Pc_Menu"]
+                </a>
+            }
+            @if (canSeePartCatalogueReports)
+            {
+                <a class="nav-link @(IsActive("PartCatalogueReport", "Warehouse") ? "active" : "")" asp-controller="PartCatalogueReport" asp-action="Index" asp-area="Warehouse">
+                    <i class="bi bi-bar-chart-line"></i> @Localizer["PcRpt_Menu"]
                 </a>
             }
             @if (canAdminPartCatalogue)
