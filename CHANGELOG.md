@@ -3,6 +3,11 @@
 All notable changes to PEMS. No system version is defined yet (plan row F_CI), so entries are grouped by date
 and theme and were reconstructed from the git history (initial import 2026-09-05). Newest first.
 
+## 2026-10-31 - Organization import saves again (SCRUM-497)
+
+### Fixed
+- **Administration > Organization > Excel import:** committing a valid file failed with "Nothing was saved: The configured execution strategy 'SqlServerRetryingExecutionStrategy' does not support user-initiated transactions". The save now runs inside the SQL Server retry strategy, like the other services. New `OrganizationImportSqlServerTests` (real SQL Server with `EnableRetryOnFailure`); guideline 01 section 3 states the rule.
+
 ## 2026-10-31 - Adoption ratchet (SCRUM-341)
 
 ### Added
