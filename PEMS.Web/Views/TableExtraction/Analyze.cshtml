@@ -32,7 +32,7 @@
 @if (!Model.Success)
 {
     <div class="content-card">
-        <div class="alert alert-danger mb-0">@Model.ErrorMessage</div>
+        <pems-alert tone="danger" css="mb-0">@Model.ErrorMessage</pems-alert>
     </div>
     return;
 }
@@ -50,7 +50,7 @@
 @if (Model.Warnings.Any())
 {
     <div class="content-card mb-3">
-        <div class="alert alert-warning mb-0">
+        <pems-alert tone="warning" css="mb-0">
             <strong>Warnings reported by the model:</strong>
             <ul class="mb-0">
                 @foreach (var w in Model.Warnings)
@@ -58,7 +58,7 @@
                     <li>@w</li>
                 }
             </ul>
-        </div>
+        </pems-alert>
     </div>
 }
 

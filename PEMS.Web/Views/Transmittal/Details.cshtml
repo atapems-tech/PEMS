@@ -44,9 +44,9 @@
 
     @if (Model.Status == "Cancelled")
     {
-        <div class="alert alert-danger py-2 px-3 small mb-2">
+        <pems-alert tone="danger" css="py-2 px-3 small mb-2">
             @Localizer["Td_Cancelled"] @Model.CancelledDate?.ToString("yyyy-MM-dd") - @Model.CancelledReason
-        </div>
+        </pems-alert>
     }
 
     @if (Model.Status == "Draft")
@@ -72,9 +72,9 @@
 
     @if (Model.Status == "Sent" || Model.Status == "Acknowledged")
     {
-        <div class="alert alert-secondary py-2 px-3 small mt-2 mb-2">
+        <pems-alert tone="secondary" css="py-2 px-3 small mt-2 mb-2">
             <i class="bi bi-lock"></i> @Localizer["Td_Locked"]
-        </div>
+        </pems-alert>
 
         @if ((bool)(ViewBag.CanCancel ?? false))
         {

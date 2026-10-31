@@ -79,9 +79,9 @@
 
     @if (!string.IsNullOrWhiteSpace(delay.NarrativeSummary))
     {
-        <div class="alert alert-info small">
+        <pems-alert tone="info" css="small">
             <i class="bi bi-stars"></i> <strong>خلاصه‌ی هوش مصنوعی:</strong> @delay.NarrativeSummary
-        </div>
+        </pems-alert>
     }
     else if (delay.TotalDelayedDocuments > 0)
     {

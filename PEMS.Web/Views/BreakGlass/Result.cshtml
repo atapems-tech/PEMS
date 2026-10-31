@@ -9,9 +9,9 @@
 
 <div data-pems-secret-reveal>
     <h2>@Localizer["Account reset"]: <strong>@Model.TargetUserName</strong></h2>
-    <div class="alert alert-warning small">
+    <pems-alert tone="warning" css="small">
         @Localizer["Copy or print this password now. It cannot be shown again; if it is lost, reset the account again."]
-    </div>
+    </pems-alert>
 
     <div class="d-flex align-items-center gap-2 mb-2">
         <code dir="ltr" class="fs-5 px-3 py-2 border rounded user-select-all" data-secret-value>@Model.TemporaryPassword</code>

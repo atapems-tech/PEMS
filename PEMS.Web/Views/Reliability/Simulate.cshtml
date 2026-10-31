@@ -14,10 +14,10 @@
     <a asp-action="Ram" asp-route-id="@equipmentId" class="btn btn-outline-secondary btn-sm">← RAM / Weibull</a>
 </div>
 
-<div class="alert alert-warning small">
+<pems-alert tone="warning" css="small">
     <strong>Provenance = SIMULATED.</strong> این نتیجه یک برون‌یابی احتمالاتی از پارامترهای محاسبه‌شده
     است - هرگز به‌عنوان عملکرد واقعی کارخانه تفسیر نشود. @Model.MethodologyNote
-</div>
+</pems-alert>
 
 <span class="badge @StatusBadge(Model.DataStatus)">@Model.DataStatus</span>
 @if (Model.Reason != null) { <p class="text-muted small mt-2">@Model.Reason</p> }

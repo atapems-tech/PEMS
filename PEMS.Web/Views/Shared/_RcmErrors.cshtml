@@ -1,12 +1,12 @@
 @model IEnumerable<string>
 @if (Model != null && Model.Any())
 {
-    <div class="alert alert-danger small" role="alert">
+    <pems-alert tone="danger" css="small">
         <ul class="mb-0">
             @foreach (var e in Model)
             {
                 <li>@e</li>
             }
         </ul>
-    </div>
+    </pems-alert>
 }

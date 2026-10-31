@@ -9,7 +9,7 @@
 <div class="content-card" style="max-width:800px;">
     @if (!string.IsNullOrEmpty(error))
     {
-        <div class="alert alert-danger" role="alert"><i class="bi bi-exclamation-triangle" aria-hidden="true"></i> @error</div>
+        <pems-alert tone="danger"><i class="bi bi-exclamation-triangle" aria-hidden="true"></i> @error</pems-alert>
     }
     <p class="text-muted small">@Localizer["LtT_PrefillNote"]</p>
 

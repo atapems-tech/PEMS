@@ -28,11 +28,11 @@
 
 @if (TempData["Message"] != null)
 {
-    <div class="alert alert-success">@TempData["Message"]</div>
+    <pems-alert tone="success">@TempData["Message"]</pems-alert>
 }
 @if (TempData["Error"] != null)
 {
-    <div class="alert alert-danger">@TempData["Error"]</div>
+    <pems-alert tone="danger">@TempData["Error"]</pems-alert>
 }
 
 @* ================= PROCUREMENT ORIGIN ================= *@

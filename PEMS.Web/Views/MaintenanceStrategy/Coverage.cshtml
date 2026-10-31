@@ -22,7 +22,7 @@
 
 @if (Model.UnratedEquipment == Model.TotalEquipment && Model.TotalEquipment > 0)
 {
-    <div class="alert alert-warning small"><i class="bi bi-exclamation-triangle"></i> @Localizer["Rcm_NoCriticalityData"]</div>
+    <pems-alert tone="warning" css="small"><i class="bi bi-exclamation-triangle"></i> @Localizer["Rcm_NoCriticalityData"]</pems-alert>
 }
 
 <div class="row">

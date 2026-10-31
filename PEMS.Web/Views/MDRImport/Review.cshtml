@@ -14,7 +14,7 @@
 
     @if (Model.HeaderWarnings.Any())
     {
-        <div class="alert alert-warning mt-3 mb-0 small">
+        <pems-alert tone="warning" css="mt-3 mb-0 small">
             <strong><i class="bi bi-exclamation-triangle"></i> ستون‌های شناسایی‌نشده در فایل اکسل:</strong>
             <ul class="mb-0 mt-1">
                 @foreach (var w in Model.HeaderWarnings)
@@ -22,7 +22,7 @@
                     <li>@w</li>
                 }
             </ul>
-        </div>
+        </pems-alert>
     }
 
     @if (Model.Status == "Staged")

@@ -10,7 +10,7 @@
     <p class="mb-3">@Localizer["Recovery codes left"]: <strong>@Model.Remaining</strong></p>
     @if (Model.Remaining == 0)
     {
-        <div class="alert alert-warning small" role="alert">@Localizer["You have no recovery codes. Generate a set now and keep it in a safe place."]</div>
+        <pems-alert tone="warning" css="small">@Localizer["You have no recovery codes. Generate a set now and keep it in a safe place."]</pems-alert>
     }
 
     <form asp-action="Generate" method="post" class="row g-2 align-items-end" autocomplete="off">

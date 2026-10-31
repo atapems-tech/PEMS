@@ -3,6 +3,11 @@
 All notable changes to PEMS. No system version is defined yet (plan row F_CI), so entries are grouped by date
 and theme and were reconstructed from the git history (initial import 2026-09-05). Newest first.
 
+## 2026-10-31 - Alerts come from the component (SCRUM-481)
+
+### Changed
+- **PEMS.Web views:** 133 hand-written `alert alert-*` blocks in 67 views are now `<pems-alert tone=... css=...>` (new tag helper in PEMS.UI); the markup is the same, with a `role` added. `PemsAlert` takes page markup as content, extra classes (`CssClass`) and the tones primary and secondary.
+
 ## 2026-10-31 - Part Catalogue reports (SCRUM-478)
 
 Owner request 2026-10-31: reports of the Part Catalogue for any period, with an Excel download. Everyone who may view the Part Catalogue sees them; the rows follow the request list's visibility rule.

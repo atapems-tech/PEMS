@@ -9,11 +9,11 @@
 
 @if (TempData["Message"] != null)
 {
-    <div class="alert alert-success">@TempData["Message"]</div>
+    <pems-alert tone="success">@TempData["Message"]</pems-alert>
 }
 @if (TempData["Error"] != null)
 {
-    <div class="alert alert-danger">@TempData["Error"]</div>
+    <pems-alert tone="danger">@TempData["Error"]</pems-alert>
 }
 
 <div class="content-card">
@@ -107,7 +107,7 @@
         </div>
         @if (!emailEnabled)
         {
-            <div class="alert alert-secondary py-2 mb-2" role="status"><i class="bi bi-info-circle"></i> @Localizer["Tinv_EmailOffHint"]</div>
+            <pems-alert tone="secondary" css="py-2 mb-2"><i class="bi bi-info-circle"></i> @Localizer["Tinv_EmailOffHint"]</pems-alert>
         }
         else if (mayEditTender && !statusAllowsSend)
         {

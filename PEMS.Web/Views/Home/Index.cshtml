@@ -9,10 +9,10 @@
 
 @if (ViewBag.DashboardWarning != null)
 {
-    <div class="alert alert-warning d-flex align-items-start gap-2">
+    <pems-alert tone="warning" css="d-flex align-items-start gap-2">
         <i class="bi bi-exclamation-triangle-fill mt-1"></i>
         <div class="small">@ViewBag.DashboardWarning</div>
-    </div>
+    </pems-alert>
 }
 
 @{

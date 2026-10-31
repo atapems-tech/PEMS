@@ -3,12 +3,12 @@
 @using PEMS.Web.Resources
 @inject IStringLocalizer<SharedResource> Localizer
 
-<div class="alert alert-info py-2 px-3 small mb-3">
+<pems-alert tone="info" css="py-2 px-3 small mb-3">
     <i class="bi bi-info-circle"></i> ستون‌های MR No / PO No فقط به‌عنوان متن ذخیره می‌شوند - دیگر
     خودکار Vendor/MR/VDR جدید ساخته نمی‌شود. برای اتصال به داده‌ی موجود، بعد از Commit به
     <a asp-controller="Relationship" asp-action="Equipment" asp-route-id="0" onclick="return false;" class="text-decoration-underline">@Localizer["Relationship Explorer"]</a>
     هر تجهیز مراجعه کن و پیشنهاد اتصال را تایید کن.
-</div>
+</pems-alert>
 
 <div class="content-card mb-3">
     <div class="row g-3">

@@ -78,7 +78,7 @@
 
     @if (!string.IsNullOrEmpty(Model.ExistingErrors))
     {
-        <div class="alert alert-danger" role="alert">@Model.ExistingErrors</div>
+        <pems-alert tone="danger">@Model.ExistingErrors</pems-alert>
     }
 
     @if (Model.ParentLetterId.HasValue)

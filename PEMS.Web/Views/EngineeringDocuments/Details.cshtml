@@ -234,7 +234,7 @@
        مسدود می‌کند (نه فقط این بنر)؛ این‌جا فقط نمایش وضعیت + اکشن رفع آن است. *@
     @if (Model.IsFrozen)
     {
-        <div class="alert alert-info d-flex justify-content-between align-items-center flex-wrap gap-2 mt-3 mb-0 py-2">
+        <pems-alert tone="info" css="d-flex justify-content-between align-items-center flex-wrap gap-2 mt-3 mb-0 py-2">
             <div class="small">
                 <i class="bi bi-snow"></i> <strong>FROZEN</strong> — Revision @Model.RevisionNo is frozen and cannot be modified.
                 <div class="text-muted">Frozen by @(Model.FrozenByName ?? "-") on @(Model.FrozenDate?.ToString("yyyy-MM-dd HH:mm") ?? "-")@(!string.IsNullOrWhiteSpace(Model.FreezeReason) ? " — " + Model.FreezeReason : "")</div>
@@ -248,11 +248,11 @@
                     </button>
                 </form>
             }
-        </div>
+        </pems-alert>
     }
     @if (Model.IsOnHold)
     {
-        <div class="alert alert-warning d-flex justify-content-between align-items-center flex-wrap gap-2 mt-3 mb-0 py-2">
+        <pems-alert tone="warning" css="d-flex justify-content-between align-items-center flex-wrap gap-2 mt-3 mb-0 py-2">
             <div class="small">
                 <i class="bi bi-pause-circle"></i> <strong>ON HOLD</strong> — این مدرک قابل تأیید (Approve) یا صدور (Issue) نیست تا زمانی که Hold رفع شود.
             </div>
@@ -265,7 +265,7 @@
                     </button>
                 </form>
             }
-        </div>
+        </pems-alert>
     }
 
     @{
@@ -1273,9 +1273,9 @@
                     </div>
 
                     <div id="issueExternalFields" style="display:none;">
-                        <div class="alert alert-warning py-2 px-3 small">
+                        <pems-alert tone="warning" css="py-2 px-3 small">
                             برای تحویل بیرونی، ثبت نامه‌ی رسمی خروجی الزامی است.
-                        </div>
+                        </pems-alert>
                         <div class="mb-2">
                             <label class="form-label small">نام گیرنده (مثلاً DCC کارفرما)</label>
                             <input type="text" name="externalReceiverName" class="form-control form-control-sm" />
@@ -1416,10 +1416,10 @@
                         }
                         else
                         {
-                            <div class="alert alert-warning py-2 px-3 small mb-0">
+                            <pems-alert tone="warning" css="py-2 px-3 small mb-0">
                                 هیچ نامه‌ی وارده‌ای ثبت نشده. اول باید نامه‌ی رسیده از کارفرما رو توی
                                 ماژول «نامه‌نگاری» به‌عنوان Incoming ثبت کنی، بعد این‌جا انتخابش کن.
-                            </div>
+                            </pems-alert>
                         }
                     </div>
 
