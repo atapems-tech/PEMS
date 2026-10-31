@@ -96,8 +96,8 @@ public static class NavigationMenuDefaults
         // ---- تدارکات و زنجیره‌ی تأمین (SCRUM-423): خرید، قرارداد، فروشنده و انبار در یک بخش، مثل CMMS. هر پیوند همان دروازه‌ی
         // قبلی‌اش را دارد به‌اضافه‌ی ماژولِ بخشِ قبلی‌اش (مهندسی/قرارداد/انبار)، پس هیچ نقشی پیوندی بیشتر یا کمتر نمی‌بیند؛ بخش وقتی
         // دیده می‌شود که کاربر یکی از آن ماژول‌ها را ببیند.
-        Section("sec.procurement", 500, "Nav_ProcurementSupplyChain", "bi-cart3", "Module:EngineeringManagement|Module:ContractManagement|Module:Inventory|Flag:PartCatalogue",
-            "ProcurementPackage,Tender,MaterialRequisition,Contract,Vendor,PurchaseOrder,Inventory,MaterialItem,IrnReceipt,InventoryMasterData,InventoryTransaction,StoreRequisition,Replenishment,PartCatalogueRequest,PartCatalogueAdmin"),
+        Section("sec.procurement", 500, "Nav_ProcurementSupplyChain", "bi-cart3", "Module:EngineeringManagement|Module:ContractManagement|Module:Inventory|Flag:PartCatalogue|Flag:PartCatalogueReports",
+            "ProcurementPackage,Tender,MaterialRequisition,Contract,Vendor,PurchaseOrder,Inventory,MaterialItem,IrnReceipt,InventoryMasterData,InventoryTransaction,StoreRequisition,Replenishment,PartCatalogueRequest,PartCatalogueReport,PartCatalogueAdmin"),
         Link("proc.vendors", "sec.procurement", 10, "Vendors", "bi-building", "Vendor", rule: "Module:ContractManagement&Perm:Vendors.View"),
         Sub("proc.sub.purchasing", "sec.procurement", 20, "Nav_Proc_Purchasing"),
         // SCRUM-471: the procurement cartable (pre-procurement queue), first under Purchasing
@@ -119,6 +119,8 @@ public static class NavigationMenuDefaults
         Link("proc.wh.replenishment", "proc.sub.warehouse", 60, "Repl_Menu", "bi-cart-plus", "Replenishment", area: "Warehouse", rule: "Module:Inventory&Flag:Replenishment"),
         Link("proc.wh.masterdata", "proc.sub.warehouse", 70, "Master Data", "bi-collection", "InventoryMasterData", area: "Warehouse", rule: "Module:Inventory&Perm:InventoryMasterData.View"),
         Link("proc.wh.partcatalogue", "proc.sub.warehouse", 80, "Pc_Menu", "bi-journal-plus", "PartCatalogueRequest", area: "Warehouse", rule: "Flag:PartCatalogue", badge: NavigationBadges.MyWorkPartCatalogue),
+        // SCRUM-478: Part Catalogue reports
+        Link("proc.wh.partcatalogue.reports", "proc.sub.warehouse", 85, "PcRpt_Menu", "bi-bar-chart-line", "PartCatalogueReport", area: "Warehouse", rule: "Flag:PartCatalogueReports"),
         Link("proc.wh.partcatalogue.admin", "proc.sub.warehouse", 90, "Pc_Title_Admin", "bi-sliders", "PartCatalogueAdmin", area: "Warehouse", rule: "Flag:PartCatalogueAdmin"),
 
         // ---- کنترل پروژه

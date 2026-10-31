@@ -584,6 +584,7 @@ builder.Services.AddScoped<INavigationCountService, NavigationCountService>();
 builder.Services.AddScoped<PEMS.Web.Navigation.DynamicSidebarBuilder>();
 builder.Services.AddScoped<PEMS.Web.Navigation.NavigationBadgeService>();
 builder.Services.AddScoped<IPartCatalogueService, PartCatalogueService>();
+builder.Services.AddScoped<IPartCatalogueReportService, PartCatalogueReportService>();   // SCRUM-478
 builder.Services.AddScoped<IPartCatalogueAdminService, PartCatalogueAdminService>();
 builder.Services.AddScoped<IPartCatalogueSettingsService, PartCatalogueSettingsService>();
 

@@ -3053,6 +3053,95 @@
   <data name="Login_Err_Locked" xml:space="preserve"><value>The account is temporarily locked after repeated failed attempts.</value></data>
   <data name="Auth_BrandName" xml:space="preserve"><value>Parmis Enterprise Management System</value></data>
   <data name="Auth_Footer" xml:space="preserve"><value>Engineering Command Center</value></data>
+  <data name="Part Catalogue Reports" xml:space="preserve"><value>Part Catalogue Reports</value></data>
+  <data name="PcRpt_Menu" xml:space="preserve"><value>Part Catalogue reports</value></data>
+  <data name="PcRpt_Action_Create" xml:space="preserve"><value>Created</value></data>
+  <data name="PcRpt_Tab_Summary" xml:space="preserve"><value>Summary</value></data>
+  <data name="PcRpt_Tab_People" xml:space="preserve"><value>By person</value></data>
+  <data name="PcRpt_Tab_Activity" xml:space="preserve"><value>Activity</value></data>
+  <data name="PcRpt_Tab_Equipment" xml:space="preserve"><value>By equipment</value></data>
+  <data name="PcRpt_Tab_Parts" xml:space="preserve"><value>Parts per equipment</value></data>
+  <data name="PcRpt_Tab_Stages" xml:space="preserve"><value>Stages</value></data>
+  <data name="PcRpt_Sheet_Summary" xml:space="preserve"><value>Summary</value></data>
+  <data name="PcRpt_Sheet_People" xml:space="preserve"><value>By person</value></data>
+  <data name="PcRpt_Sheet_Activity" xml:space="preserve"><value>Activity</value></data>
+  <data name="PcRpt_Sheet_Equipment" xml:space="preserve"><value>By equipment</value></data>
+  <data name="PcRpt_Sheet_Parts" xml:space="preserve"><value>Parts per equipment</value></data>
+  <data name="PcRpt_Sheet_Stages" xml:space="preserve"><value>Stages</value></data>
+  <data name="PcRpt_Period_ThisMonth" xml:space="preserve"><value>This month</value></data>
+  <data name="PcRpt_Period_LastMonth" xml:space="preserve"><value>Last month</value></data>
+  <data name="PcRpt_Period_ThisQuarter" xml:space="preserve"><value>This quarter</value></data>
+  <data name="PcRpt_Period_ThisYear" xml:space="preserve"><value>This year</value></data>
+  <data name="PcRpt_Period_All" xml:space="preserve"><value>All time</value></data>
+  <data name="PcRpt_Period_Custom" xml:space="preserve"><value>Custom range</value></data>
+  <data name="PcRpt_Filter_Period" xml:space="preserve"><value>Period</value></data>
+  <data name="PcRpt_Filter_From" xml:space="preserve"><value>From</value></data>
+  <data name="PcRpt_Filter_To" xml:space="preserve"><value>To</value></data>
+  <data name="PcRpt_Filter_CustomHint" xml:space="preserve"><value>The dates apply when the period is "Custom range".</value></data>
+  <data name="PcRpt_Kpi_Requests" xml:space="preserve"><value>Requests</value></data>
+  <data name="PcRpt_Kpi_Open" xml:space="preserve"><value>Open</value></data>
+  <data name="PcRpt_Kpi_Completed" xml:space="preserve"><value>Completed</value></data>
+  <data name="PcRpt_Kpi_Registered" xml:space="preserve"><value>Part numbers registered</value></data>
+  <data name="PcRpt_Kpi_Equipment" xml:space="preserve"><value>Equipment</value></data>
+  <data name="PcRpt_Kpi_People" xml:space="preserve"><value>People</value></data>
+  <data name="PcRpt_Kpi_AvgDays" xml:space="preserve"><value>Average days to complete</value></data>
+  <data name="PcRpt_Kpi_MedianDays" xml:space="preserve"><value>Median days to complete</value></data>
+  <data name="PcRpt_Hint_Requests" xml:space="preserve"><value>Requests created in the period.</value></data>
+  <data name="PcRpt_Hint_Open" xml:space="preserve"><value>Requests created in the period that are still draft, in approval or returned.</value></data>
+  <data name="PcRpt_Hint_Completed" xml:space="preserve"><value>Requests completed in the period.</value></data>
+  <data name="PcRpt_Hint_Registered" xml:space="preserve"><value>IFS part numbers registered by the part cataloguer in the period.</value></data>
+  <data name="PcRpt_Hint_Equipment" xml:space="preserve"><value>Equipment named on requests created in the period.</value></data>
+  <data name="PcRpt_Hint_People" xml:space="preserve"><value>People who created or handled requests in the period.</value></data>
+  <data name="PcRpt_Chart_Trend" xml:space="preserve"><value>Requests created and completed by month</value></data>
+  <data name="PcRpt_Chart_TopPeople" xml:space="preserve"><value>Part numbers registered by person</value></data>
+  <data name="PcRpt_Chart_TopEquipment" xml:space="preserve"><value>Registered part numbers by equipment</value></data>
+  <data name="PcRpt_ByStatus" xml:space="preserve"><value>By status</value></data>
+  <data name="PcRpt_ByStep" xml:space="preserve"><value>In approval, by step</value></data>
+  <data name="PcRpt_OpenAge" xml:space="preserve"><value>Age of open requests</value></data>
+  <data name="PcRpt_Throughput" xml:space="preserve"><value>Throughput</value></data>
+  <data name="PcRpt_Days" xml:space="preserve"><value>{0} days</value></data>
+  <data name="PcRpt_Col_Item" xml:space="preserve"><value>Item</value></data>
+  <data name="PcRpt_Col_Value" xml:space="preserve"><value>Value</value></data>
+  <data name="PcRpt_Col_Group" xml:space="preserve"><value>Group</value></data>
+  <data name="PcRpt_Col_Count" xml:space="preserve"><value>Count</value></data>
+  <data name="PcRpt_Col_Person" xml:space="preserve"><value>Person</value></data>
+  <data name="PcRpt_Col_Created" xml:space="preserve"><value>Created</value></data>
+  <data name="PcRpt_Col_Submitted" xml:space="preserve"><value>Submitted</value></data>
+  <data name="PcRpt_Col_Approved" xml:space="preserve"><value>Approved</value></data>
+  <data name="PcRpt_Col_Returned" xml:space="preserve"><value>Returned</value></data>
+  <data name="PcRpt_Col_Cancelled" xml:space="preserve"><value>Cancelled</value></data>
+  <data name="PcRpt_Col_Registered" xml:space="preserve"><value>Part numbers registered</value></data>
+  <data name="PcRpt_Col_Total" xml:space="preserve"><value>Total</value></data>
+  <data name="PcRpt_Col_Date" xml:space="preserve"><value>Date</value></data>
+  <data name="PcRpt_Col_Action" xml:space="preserve"><value>Action</value></data>
+  <data name="PcRpt_Col_Request" xml:space="preserve"><value>Request</value></data>
+  <data name="PcRpt_Col_Type" xml:space="preserve"><value>Type</value></data>
+  <data name="PcRpt_Col_Status" xml:space="preserve"><value>Status</value></data>
+  <data name="PcRpt_Col_Mpn" xml:space="preserve"><value>Manufacturer part number</value></data>
+  <data name="PcRpt_Col_PartNumber" xml:space="preserve"><value>Part number (IFS)</value></data>
+  <data name="PcRpt_Col_TechClass" xml:space="preserve"><value>Technical class</value></data>
+  <data name="PcRpt_Col_Tag" xml:space="preserve"><value>Equipment</value></data>
+  <data name="PcRpt_Col_EquipmentName" xml:space="preserve"><value>Equipment name</value></data>
+  <data name="PcRpt_Col_InRegister" xml:space="preserve"><value>In equipment register</value></data>
+  <data name="PcRpt_Col_Requests" xml:space="preserve"><value>Requests</value></data>
+  <data name="PcRpt_Col_RegisteredParts" xml:space="preserve"><value>Registered part numbers</value></data>
+  <data name="PcRpt_Col_InProgress" xml:space="preserve"><value>In progress</value></data>
+  <data name="PcRpt_Col_Critical" xml:space="preserve"><value>Critical</value></data>
+  <data name="PcRpt_Col_Capital" xml:space="preserve"><value>Capital</value></data>
+  <data name="PcRpt_Col_InstalledQty" xml:space="preserve"><value>Installed quantity</value></data>
+  <data name="PcRpt_Col_Manufacturer" xml:space="preserve"><value>Manufacturer</value></data>
+  <data name="PcRpt_Col_Supplier" xml:space="preserve"><value>Supplier</value></data>
+  <data name="PcRpt_Col_SupplierPn" xml:space="preserve"><value>Supplier part number</value></data>
+  <data name="PcRpt_Col_Commodity" xml:space="preserve"><value>Commodity group</value></data>
+  <data name="PcRpt_Col_Uom" xml:space="preserve"><value>Unit</value></data>
+  <data name="PcRpt_Col_Attributes" xml:space="preserve"><value>Specifications</value></data>
+  <data name="PcRpt_Col_Requester" xml:space="preserve"><value>Requester</value></data>
+  <data name="PcRpt_Col_CompletedDate" xml:space="preserve"><value>Completed</value></data>
+  <data name="PcRpt_Empty" xml:space="preserve"><value>Nothing in this period with these filters.</value></data>
+  <data name="PcRpt_Note" xml:space="preserve"><value>Note</value></data>
+  <data name="PcRpt_ScopeNote" xml:space="preserve"><value>Only the requests you raised or are an approver on are counted.</value></data>
+  <data name="PcRpt_Truncated" xml:space="preserve"><value>The detail lists were cut at {0} rows.</value></data>
+  <data name="PcRpt_PageRows" xml:space="preserve"><value>The page shows the first {0} rows; the Excel file has them all.</value></data>
   <data name="Lp_Details" xml:space="preserve"><value>Details</value></data>
   <data name="Pri_Critical" xml:space="preserve"><value>Critical</value></data>
   <data name="Pri_High" xml:space="preserve"><value>High</value></data>

@@ -3,6 +3,25 @@
 All notable changes to PEMS. No system version is defined yet (plan row F_CI), so entries are grouped by date
 and theme and were reconstructed from the git history (initial import 2026-09-05). Newest first.
 
+## 2026-10-31 - Part Catalogue reports (SCRUM-478)
+
+Owner request 2026-10-31: reports of the Part Catalogue for any period, with an Excel download. Everyone who may view the Part Catalogue sees them; the rows follow the request list's visibility rule.
+
+### Added
+- **Warehouse > Part Catalogue reports** (`PartCatalogueReport`). The page uses the list component and has six tabs. Each tab is one table and one Excel sheet:
+  - **Summary:** KPIs and charts.
+  - **By person:** who created, submitted, approved, returned or cancelled requests, and who registered IFS part numbers.
+  - **Activity:** every action with its request.
+  - **By equipment:** requests, registered part numbers, in progress and critical.
+  - **Parts per equipment:** manufacturer, part numbers, supplier, class, unit, installed quantity, critical, specifications.
+  - **Stages:** counts by status and by approval step, age of open requests, completed, average and median days to complete.
+- **Period:** this month, last month, this quarter, this year, all time, or a custom range (both dates included). There are also filters for section, type, status, person and equipment.
+- **Excel:** the Summary tab downloads the whole workbook; the other tabs download their own sheet. Headers follow the language, and the sheets are right to left in Persian.
+- **Links:** both sidebars (Warehouse) and the report hub.
+- **Accounts without an employee record** (for example a system admin) can open the reports. With Admin, Review or Approve they see every request; otherwise they see nothing.
+
+### Changed
+- The request list and the reports share one visibility rule (`PartCatalogueRequestScope`). The list behaves as before.
 ## 2026-10-31 - Agents run the issue-creation check themselves until SCRUM-475 (SCRUM-475)
 
 ### Changed

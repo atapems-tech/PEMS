@@ -56,13 +56,12 @@ public class PartCatalogueService : IPartCatalogueService
     private static string PermissionForKind(string kind) =>
         kind == PartCatalogueStepKinds.Approval ? "Approve" : "Review";
 
-    private async Task<bool> CanSeeAllAsync(PcActor a) =>
-        await HasAsync(a, "Admin") || await HasAsync(a, "Review") || await HasAsync(a, "Approve");
+    // SCRUM-478: the visibility rule is shared with the reports (PartCatalogueRequestScope)
+    private PartCatalogueRequestScope Scope => new(_ctx, _actions);
 
-    private async Task<HashSet<string>> MyPoolKeysAsync(int employeeId) =>
-        (await _ctx.PartCatalogueApproverAssignments
-            .Where(x => x.EmployeeId == employeeId && x.IsActive)
-            .Select(x => x.StepKey).ToListAsync()).ToHashSet();
+    private Task<bool> CanSeeAllAsync(PcActor a) => Scope.CanSeeAllAsync(a);
+
+    private Task<HashSet<string>> MyPoolKeysAsync(int employeeId) => Scope.PoolKeysAsync(employeeId);
 
     private static bool Editable(PartCatalogueRequest r) =>
         r.Status == PartCatalogueStatuses.Draft || r.Status == PartCatalogueStatuses.Returned;
@@ -1319,14 +1318,7 @@ public class PartCatalogueService : IPartCatalogueService
         return new PagedResult<PartCatalogueListItemDto> { Items = items, Page = page, PageSize = size, TotalCount = total };
     }
 
-    private IQueryable<PartCatalogueRequest> ScopedQuery(bool seeAll, PcActor actor, HashSet<string> pool)
-    {
-        var q = _ctx.PartCatalogueRequests.AsNoTracking().Where(r => r.IsActive);
-        if (seeAll) return q;
-        return q.Where(r => r.RequesterEmployeeId == actor.EmployeeId
-                            || (r.WorkflowInstanceId == null && r.Steps.Any(st => st.AssignedEmployeeId == actor.EmployeeId || pool.Contains(st.StepKey)))
-                            || (r.WorkflowInstanceId != null && _ctx.WorkflowInstanceStageCandidates.Any(c => c.EmployeeId == actor.EmployeeId && c.InstanceStage!.WorkflowInstanceId == r.WorkflowInstanceId)));
-    }
+    private IQueryable<PartCatalogueRequest> ScopedQuery(bool seeAll, PcActor actor, HashSet<string> pool) => Scope.Query(seeAll, actor, pool);
 
     public async Task<PartCatalogueSummaryDto> GetSummaryAsync(PcActor actor)
     {
