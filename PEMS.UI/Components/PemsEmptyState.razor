@@ -13,7 +13,7 @@
     }
     @if (Options.Action is not null)
     {
-        <PemsButton Options="@(new ButtonOptions { Label = Options.Action.Label, Tone = Tone.Primary, Href = Options.Action.Href })" />
+        <PemsButton Options="@(new ButtonOptions { Label = Options.Action.Label, Tone = Tone.Primary, Skin = ComponentSkin.Pems, Href = Options.Action.Href })" />
     }
 </div>
 @code {

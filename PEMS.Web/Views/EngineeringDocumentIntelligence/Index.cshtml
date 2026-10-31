@@ -32,7 +32,7 @@
         @foreach (var s in new[] { "Uploaded", "AIProcessing", "Classified", "DisciplineAssigned", "UnderReview", "CommentOpen", "Revision", "Approved", "KnowledgeBase" })
         {
             var count = dash.ByStage.TryGetValue(s, out var c) ? c : 0;
-            <span class="badge bg-secondary p-2">@s: @count</span>
+            <pems-badge tone="neutral" css="p-2">@s: @count</pems-badge>
         }
     </div>
 </div>
@@ -51,9 +51,9 @@
                     <tr>
                         <td>@d.DocumentNo</td>
                         <td>@d.Title</td>
-                        <td><span class="badge bg-info text-dark">@d.AIWorkflowStage</span></td>
-                        <td><span class="badge bg-warning text-dark">@d.Classifications.Count(c => c.ReviewStatus == "Draft")</span></td>
-                        <td><span class="badge bg-warning text-dark">@d.TagLinks.Count(t => t.IsAIProposed && t.ReviewStatus == "Draft")</span></td>
+                        <td><pems-badge tone="info">@d.AIWorkflowStage</pems-badge></td>
+                        <td><pems-badge tone="warning">@d.Classifications.Count(c => c.ReviewStatus == "Draft")</pems-badge></td>
+                        <td><pems-badge tone="warning">@d.TagLinks.Count(t => t.IsAIProposed && t.ReviewStatus == "Draft")</pems-badge></td>
                         <td><a asp-action="Review" asp-route-id="@d.DocumentId" class="btn btn-sm btn-pems-solid">Review</a></td>
                     </tr>
                 }

@@ -2,7 +2,7 @@ using PEMS.UI.Abstractions;
 
 namespace PEMS.UI.Components;
 
-public enum Tone { Neutral, Primary, Danger, Success, Warning }
+public enum Tone { Neutral, Primary, Danger, Success, Warning, Info, Light, Dark }
 
 public enum Size { Small, Medium, Large }
 
@@ -18,4 +18,10 @@ public sealed record ButtonOptions
     /// <summary>Id of a modal, drawer or confirm dialog this button opens (pems-overlay.js). The row key is copied into the dialog.</summary>
     public string? Opens { get; init; }
     public string? RowKey { get; init; }
+    /// <summary>Bootstrap skin only: the outlined form (<c>btn-outline-*</c>) instead of the solid one.</summary>
+    public bool Outline { get; init; }
+    /// <summary>Extra classes the page needs on the element (layout helpers such as <c>w-100</c>); not a way to restyle the component.</summary>
+    public string? CssClass { get; init; }
+    /// <summary>Bootstrap (default) writes today's markup; Pems writes the library's own classes.</summary>
+    public ComponentSkin Skin { get; init; } = ComponentSkin.Bootstrap;
 }

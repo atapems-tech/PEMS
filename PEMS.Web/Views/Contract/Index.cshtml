@@ -37,7 +37,7 @@
                         <td>@(c.ContractValue.HasValue ? $"{c.ContractValue:N0} {c.Currency}" : "-")</td>
                         <td>@(c.StartDate?.ToString("yyyy-MM-dd"))</td>
                         <td>@(c.EndDate?.ToString("yyyy-MM-dd"))</td>
-                        <td><span class="badge bg-secondary">@c.Status</span></td>
+                        <td><pems-badge tone="neutral">@c.Status</pems-badge></td>
                         <td><a asp-action="Details" asp-route-id="@c.ContractId" class="btn btn-sm btn-outline-secondary"><i class="bi bi-eye"></i></a></td>
                     </tr>
                 }

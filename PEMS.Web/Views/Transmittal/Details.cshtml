@@ -93,11 +93,11 @@
                 <strong>@Localizer["Td_ResponseDue"]</strong> @(Model.ResponseDueDate?.ToString("yyyy-MM-dd") ?? "-")
                 @if (Model.IsResponseOverdue)
                 {
-                    <span class="badge bg-danger">@Localizer["Td_Overdue"]</span>
+                    <pems-badge tone="danger">@Localizer["Td_Overdue"]</pems-badge>
                 }
                 @if (Model.ResponseReceivedDate.HasValue)
                 {
-                    <span class="badge bg-success">@Localizer["Td_Received"] @Model.ResponseReceivedDate.Value.ToString("yyyy-MM-dd")</span>
+                    <pems-badge tone="success">@Localizer["Td_Received"] @Model.ResponseReceivedDate.Value.ToString("yyyy-MM-dd")</pems-badge>
                     <div class="small text-muted">@Model.ResponseNote</div>
                 }
                 else if ((bool)(ViewBag.CanRecordResponse ?? false))
@@ -136,7 +136,7 @@
                     <td>
                         @if (r.AcknowledgedAt.HasValue)
                         {
-                            <span class="badge bg-success">@Localizer["Td_Acknowledged"] @r.AcknowledgedAt.Value.ToString("yyyy-MM-dd")</span>
+                            <pems-badge tone="success">@Localizer["Td_Acknowledged"] @r.AcknowledgedAt.Value.ToString("yyyy-MM-dd")</pems-badge>
                             @if (!string.IsNullOrEmpty(r.AcknowledgedByName)) { <div class="small text-muted">@Localizer["Td_By"] @r.AcknowledgedByName</div> }
                             @if (!string.IsNullOrEmpty(r.AcknowledgementNote)) { <div class="small text-muted">@r.AcknowledgementNote</div> }
                         }
@@ -176,7 +176,7 @@
                 <tr>
                     <td>@item.DocumentNo</td>
                     <td>@item.DocumentTitle</td>
-                    <td><span class="badge bg-secondary">@item.RevisionNo</span></td>
+                    <td><pems-badge tone="neutral">@item.RevisionNo</pems-badge></td>
                     <td class="small">
                         @if (!string.IsNullOrEmpty(item.SnapshotFileName))
                         {

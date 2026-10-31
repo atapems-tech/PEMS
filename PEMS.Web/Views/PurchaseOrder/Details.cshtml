@@ -33,7 +33,7 @@
         <div class="col-md-4"><strong>@Localizer["Vendor"]:</strong> @Model.VendorName</div>
         <div class="col-md-4"><strong>@Localizer["Contract No"]:</strong> @(Model.ContractNo ?? "-")</div>
         <div class="col-md-4"><strong>@Localizer["Value"]:</strong> @Model.Value?.ToString("N0") @a?.Currency</div>
-        <div class="col-md-4"><strong>@Localizer["Status"]:</strong> <span class="badge bg-info text-dark">@Localizer["Po_Status_" + Model.Status]</span></div>
+        <div class="col-md-4"><strong>@Localizer["Status"]:</strong> <pems-badge tone="info">@Localizer["Po_Status_" + Model.Status]</pems-badge></div>
         <div class="col-12"><strong>@Localizer["Description"]:</strong> @Model.Description</div>
         @if (a?.MaterialRequisitionId != null)
         {

@@ -28,7 +28,7 @@
         foreach (var g in Model)
         {
             <section class="content-card mb-3" aria-labelledby="gs-@g.Type">
-                <h2 class="h6 mb-3" id="gs-@g.Type"><i class="bi @g.Icon" aria-hidden="true"></i> @g.Title <span class="badge bg-secondary">@g.Total</span></h2>
+                <h2 class="h6 mb-3" id="gs-@g.Type"><i class="bi @g.Icon" aria-hidden="true"></i> @g.Title <pems-badge tone="neutral">@g.Total</pems-badge></h2>
                 <ul class="list-unstyled mb-0">
                     @foreach (var item in g.Items)
                     {

@@ -44,7 +44,7 @@
                             <div class="col-md-3"><input name="description" value="@d.Description" class="form-control form-control-sm" aria-label="@Localizer["Description"]" /></div>
                             <div class="col-md-2"><input name="importAliases" value="@d.ImportAliases" class="form-control form-control-sm" aria-label="@Localizer["Import aliases"]" /></div>
                             <div class="col-md-1"><input name="transmittalCode" value="@d.TransmittalCode" class="form-control form-control-sm" maxlength="1" aria-label="@Localizer["Transmittal code"]" /></div>
-                            <div class="col-md-1"><span class="badge bg-secondary">@d.EmployeeCount</span> <span class="badge bg-secondary">@d.DocumentCount</span></div>
+                            <div class="col-md-1"><pems-badge tone="neutral">@d.EmployeeCount</pems-badge> <pems-badge tone="neutral">@d.DocumentCount</pems-badge></div>
                             <div class="col-md-1"><button class="btn btn-sm btn-outline-secondary" title="@Localizer["Save"]" aria-label="@Localizer["Save"]"><i class="bi bi-save"></i></button></div>
                         </form>
                     </td>

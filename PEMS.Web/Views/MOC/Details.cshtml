@@ -66,7 +66,7 @@
 }
 
 <div class="content-card mb-3">
-    <h6 class="mb-3"><i class="bi bi-paperclip"></i> Attachments <span class="badge bg-secondary">@Model.Attachments.Count</span></h6>
+    <h6 class="mb-3"><i class="bi bi-paperclip"></i> Attachments <pems-badge tone="neutral">@Model.Attachments.Count</pems-badge></h6>
     @if (Model.Attachments.Any())
     {
         <ul class="list-unstyled mb-3">
@@ -159,7 +159,7 @@
                         <span class="small"><i class="bi bi-file-earmark-check"></i> به‌روزرسانی مدارک متاثر</span>
                         @if (Model.DocumentsUpdated)
                         {
-                            <span class="badge bg-success">@Localizer["تکمیل‌شده"]</span>
+                            <pems-badge tone="success">@Localizer["تکمیل‌شده"]</pems-badge>
                         }
                         else
                         {
@@ -178,7 +178,7 @@
                         <span class="small"><i class="bi bi-mortarboard"></i> آموزش @(Model.TrainingRequired ? "" : "(نیاز ندارد)")</span>
                         @if (!Model.TrainingRequired || Model.TrainingCompleted)
                         {
-                            <span class="badge bg-success">@(Model.TrainingRequired ? "تکمیل‌شده" : "نامرتبط")</span>
+                            <pems-badge tone="success">@(Model.TrainingRequired ? "تکمیل‌شده" : "نامرتبط")</pems-badge>
                         }
                         else
                         {

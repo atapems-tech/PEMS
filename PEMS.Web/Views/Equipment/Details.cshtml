@@ -196,7 +196,7 @@
         <li class="nav-item" role="presentation">
             <button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-cm" type="button">
                 <i class="bi bi-activity"></i> @Localizer["Condition Monitoring"]
-                @if (cm.OpenFindingCount > 0) { <span class="badge bg-danger">@cm.OpenFindingCount</span> }
+                @if (cm.OpenFindingCount > 0) { <pems-badge tone="danger">@cm.OpenFindingCount</pems-badge> }
             </button>
         </li>
     }
@@ -208,44 +208,44 @@
     <li class="nav-item" role="presentation">
         <button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-asset" type="button">
             <i class="bi bi-diagram-2"></i> @Localizer["Cm_TabAsset"]
-            @if (asset != null) { <span class="badge bg-secondary">@asset.Status</span> }
+            @if (asset != null) { <pems-badge tone="neutral">@asset.Status</pems-badge> }
         </button>
     </li>
     <li class="nav-item" role="presentation">
         <button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-documents" type="button">
             <i class="bi bi-file-earmark-text"></i> @Localizer["Cm_EngDocs"]
-            <span class="badge bg-secondary">@(Model.Documents.Count + Model.VDRItems.Count)</span>
+            <pems-badge tone="neutral">@(Model.Documents.Count + Model.VDRItems.Count)</pems-badge>
         </button>
     </li>
     <li class="nav-item" role="presentation">
         <button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-procurement" type="button">
-            <i class="bi bi-cart-check"></i> @Localizer["Cm_TabProcurement"] <span class="badge bg-secondary">@Model.RelatedMRs.Count</span>
+            <i class="bi bi-cart-check"></i> @Localizer["Cm_TabProcurement"] <pems-badge tone="neutral">@Model.RelatedMRs.Count</pems-badge>
         </button>
     </li>
     <li class="nav-item" role="presentation">
         <button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-maintenance" type="button">
-            <i class="bi bi-tools"></i> @Localizer["Cm_TabMaintenance"] <span class="badge bg-secondary">@Model.WorkRequests.Count</span>
+            <i class="bi bi-tools"></i> @Localizer["Cm_TabMaintenance"] <pems-badge tone="neutral">@Model.WorkRequests.Count</pems-badge>
         </button>
     </li>
     <li class="nav-item" role="presentation">
         <button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-inspection" type="button">
             <i class="bi bi-clipboard-pulse"></i> @Localizer["Cm_TabInspections"]
-            @if (inspections.Any()) { <span class="badge bg-secondary">@inspections.Count</span> }
-            @if (inspections.Any(x => x.ConditionStatus == "Alert")) { <span class="badge bg-danger">@Localizer["Alert"]</span> }
+            @if (inspections.Any()) { <pems-badge tone="neutral">@inspections.Count</pems-badge> }
+            @if (inspections.Any(x => x.ConditionStatus == "Alert")) { <pems-badge tone="danger">@Localizer["Alert"]</pems-badge> }
         </button>
     </li>
     <li class="nav-item" role="presentation">
         <button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-quality" type="button">
             <i class="bi bi-shield-exclamation"></i> @Localizer["Cm_TabQuality"]
             @{ var qcCount = Model.NonConformanceReports.Count + Model.MOCs.Count + Model.TechnicalQueries.Count; }
-            @if (qcCount > 0) { <span class="badge bg-secondary">@qcCount</span> }
+            @if (qcCount > 0) { <pems-badge tone="neutral">@qcCount</pems-badge> }
         </button>
     </li>
     <li class="nav-item" role="presentation">
         <button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-classification" type="button">
             <i class="bi bi-diagram-3-fill"></i> @Localizer["Cm_TabClassification"]
             @{ var pendingSuggestion = ViewBag.PendingClassificationSuggestion as PEMS.Application.DTOs.ReviewQueueItemDto; }
-            @if (pendingSuggestion != null) { <span class="badge bg-warning text-dark">1</span> }
+            @if (pendingSuggestion != null) { <pems-badge tone="warning">1</pems-badge> }
         </button>
     </li>
 </ul>
@@ -337,7 +337,7 @@
                 </div>
                 <div class="row g-2 small">
                     <div class="col-md-3"><strong>@Localizer["Equipment Type"]</strong><div>@NA(mech.EquipmentType)</div></div>
-                    <div class="col-md-3"><strong>@Localizer["Sub-Type"]</strong><div><span class="badge bg-secondary">@mech.SubType</span></div></div>
+                    <div class="col-md-3"><strong>@Localizer["Sub-Type"]</strong><div><pems-badge tone="neutral">@mech.SubType</pems-badge></div></div>
                     <div class="col-md-3"><strong>@Localizer["Manufacturer"]</strong><div>@NA(mech.Manufacturer)</div></div>
                     <div class="col-md-3"><strong>@Localizer["Model"]</strong><div>@NA(mech.Model)</div></div>
 
@@ -402,7 +402,7 @@
                                     }
                                     else
                                     {
-                                        <span class="badge bg-secondary">@Localizer["NotEvaluated"]</span>
+                                        <pems-badge tone="neutral">@Localizer["NotEvaluated"]</pems-badge>
                                     }
                                 </td>
                             </tr>
@@ -487,7 +487,7 @@
                         <tr>
                             <td>@v.DocumentNumber</td><td>@v.DocumentDescription</td><td>@v.VendorName</td>
                             <td>@v.LatestRevisionNo</td><td>@v.LatestReviewCategory</td>
-                            <td><span class="badge bg-secondary">@v.WorkflowStatus</span></td>
+                            <td><pems-badge tone="neutral">@v.WorkflowStatus</pems-badge></td>
                             <td><a asp-controller="VDR" asp-action="Details" asp-route-id="@v.VDRItemId" class="btn btn-sm btn-outline-secondary"><i class="bi bi-eye"></i></a></td>
                         </tr>
                     }
@@ -510,7 +510,7 @@
                     {
                         <tr>
                             <td>@m.MRNumber</td><td>@m.ProjectName</td><td>@m.DisciplineName</td><td>@m.Description</td>
-                            <td><span class="badge bg-secondary">@m.Status</span></td>
+                            <td><pems-badge tone="neutral">@m.Status</pems-badge></td>
                             <td><a asp-controller="MaterialRequisition" asp-action="Details" asp-route-id="@m.MRId" class="btn btn-sm btn-outline-secondary"><i class="bi bi-eye"></i></a></td>
                         </tr>
                     }
@@ -671,8 +671,8 @@
                             <td class="small">
                                 @switch (i.ConditionStatus)
                                 {
-                                    case "Alert": <span class="badge bg-danger">@Localizer["Alert"]</span> break;
-                                    case "Normal": <span class="badge bg-success">@Localizer["Normal"]</span> break;
+                                    case "Alert": <pems-badge tone="danger">@Localizer["Alert"]</pems-badge> break;
+                                    case "Normal": <pems-badge tone="success">@Localizer["Normal"]</pems-badge> break;
                                     default: <span class="text-muted">N/A</span> break;
                                 }
                             </td>
@@ -680,9 +680,9 @@
                             <td class="small">
                                 @switch (i.DueStatus)
                                 {
-                                    case "Overdue": <span class="badge bg-danger">@Localizer["Overdue"]</span> break;
-                                    case "DueSoon": <span class="badge bg-warning text-dark">@Localizer["Due Soon"]</span> break;
-                                    case "OK": <span class="badge bg-success">OK</span> break;
+                                    case "Overdue": <pems-badge tone="danger">@Localizer["Overdue"]</pems-badge> break;
+                                    case "DueSoon": <pems-badge tone="warning">@Localizer["Due Soon"]</pems-badge> break;
+                                    case "OK": <pems-badge tone="success">OK</pems-badge> break;
                                     default: <span class="text-muted">N/A</span> break;
                                 }
                             </td>
@@ -747,7 +747,7 @@
         <div class="row g-3">
             <div class="col-md-4">
                 <div class="content-card h-100">
-                    <h6 class="mb-3"><i class="bi bi-exclamation-triangle"></i> NCR <span class="badge bg-secondary">@Model.NonConformanceReports.Count</span></h6>
+                    <h6 class="mb-3"><i class="bi bi-exclamation-triangle"></i> NCR <pems-badge tone="neutral">@Model.NonConformanceReports.Count</pems-badge></h6>
                     <ul class="list-unstyled mb-0">
                         @foreach (var n in Model.NonConformanceReports)
                         {
@@ -762,7 +762,7 @@
             </div>
             <div class="col-md-4">
                 <div class="content-card h-100">
-                    <h6 class="mb-3"><i class="bi bi-arrow-repeat"></i> MOC <span class="badge bg-secondary">@Model.MOCs.Count</span></h6>
+                    <h6 class="mb-3"><i class="bi bi-arrow-repeat"></i> MOC <pems-badge tone="neutral">@Model.MOCs.Count</pems-badge></h6>
                     <ul class="list-unstyled mb-0">
                         @foreach (var m in Model.MOCs)
                         {
@@ -777,7 +777,7 @@
             </div>
             <div class="col-md-4">
                 <div class="content-card h-100">
-                    <h6 class="mb-3"><i class="bi bi-question-circle"></i> TQ / TSR / RFI <span class="badge bg-secondary">@Model.TechnicalQueries.Count</span></h6>
+                    <h6 class="mb-3"><i class="bi bi-question-circle"></i> TQ / TSR / RFI <pems-badge tone="neutral">@Model.TechnicalQueries.Count</pems-badge></h6>
                     <ul class="list-unstyled mb-0">
                         @foreach (var t in Model.TechnicalQueries)
                         {
@@ -839,7 +839,7 @@
             <div class="row g-3">
                 <div class="col-md-6">
                     <div class="content-card h-100">
-                        <h6 class="mb-3">@Localizer["Cm_ApplicableActivities"] <span class="badge bg-secondary">@intel.ApplicableActivities.Count</span></h6>
+                        <h6 class="mb-3">@Localizer["Cm_ApplicableActivities"] <pems-badge tone="neutral">@intel.ApplicableActivities.Count</pems-badge></h6>
                         <ul class="list-unstyled mb-0 small">
                             @foreach (var a in intel.ApplicableActivities)
                             {
@@ -854,7 +854,7 @@
                 </div>
                 <div class="col-md-6">
                     <div class="content-card h-100">
-                        <h6 class="mb-3">@Localizer["Cm_PmTemplates"] <span class="badge bg-secondary">@intel.CandidatePMTemplates.Count</span></h6>
+                        <h6 class="mb-3">@Localizer["Cm_PmTemplates"] <pems-badge tone="neutral">@intel.CandidatePMTemplates.Count</pems-badge></h6>
                         <ul class="list-unstyled mb-0 small">
                             @foreach (var t in intel.CandidatePMTemplates)
                             {
@@ -869,7 +869,7 @@
                 </div>
                 <div class="col-md-6">
                     <div class="content-card h-100">
-                        <h6 class="mb-3">@Localizer["Cm_FailureModes"] <span class="badge bg-secondary">@intel.ApplicableFailureModes.Count</span></h6>
+                        <h6 class="mb-3">@Localizer["Cm_FailureModes"] <pems-badge tone="neutral">@intel.ApplicableFailureModes.Count</pems-badge></h6>
                         <ul class="list-unstyled mb-0 small">
                             @foreach (var fm in intel.ApplicableFailureModes)
                             {
@@ -884,7 +884,7 @@
                 </div>
                 <div class="col-md-6">
                     <div class="content-card h-100">
-                        <h6 class="mb-3">@Localizer["Cm_StdRefs"] <span class="badge bg-secondary">@intel.ApplicableStandardReferences.Count</span></h6>
+                        <h6 class="mb-3">@Localizer["Cm_StdRefs"] <pems-badge tone="neutral">@intel.ApplicableStandardReferences.Count</pems-badge></h6>
                         <ul class="list-unstyled mb-0 small">
                             @foreach (var s in intel.ApplicableStandardReferences)
                             {

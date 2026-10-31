@@ -14,7 +14,7 @@
 <div class="d-flex justify-content-between align-items-center mb-3">
     <h5 class="mb-0"><i class="bi bi-diagram-3"></i> @(string.IsNullOrWhiteSpace(i.Title) ? Localizer["Rcm_Strategy"].Value : i.Title)
         <span class="badge @RcmDisplay.StatusBadge(s.Status) ms-2">@Localizer.Label("Status", s.Status)</span>
-        <span class="badge bg-light text-dark border">v@(s.VersionNumber)</span>
+        <pems-badge tone="light">v@(s.VersionNumber)</pems-badge>
     </h5>
     <a asp-action="Index" class="btn btn-outline-secondary btn-sm">@Localizer["Rcm_Back"]</a>
 </div>
@@ -44,10 +44,10 @@
 <div class="content-card mb-3">
     <div class="row g-3 small">
         <div class="col-md-3"><div class="text-muted">@Localizer["Rcm_EquipmentClass"]</div><div>@(s.EquipmentClassName ?? "-")</div></div>
-        <div class="col-md-3"><div class="text-muted">@Localizer["Rcm_StrategyType"]</div><span class="badge bg-secondary">@Localizer.Label("StrategyType", i.StrategyType)</span></div>
+        <div class="col-md-3"><div class="text-muted">@Localizer["Rcm_StrategyType"]</div><pems-badge tone="neutral">@Localizer.Label("StrategyType", i.StrategyType)</pems-badge></div>
         <div class="col-md-3"><div class="text-muted">@Localizer["Rcm_FailureMode"]</div><div>@RcmDisplay.Name(s.FailureModeName, s.FailureModeNameFa)</div></div>
         <div class="col-md-3"><div class="text-muted">@Localizer["Rcm_Consequence"]</div><span class="badge @RcmDisplay.ConsequenceBadge(i.ConsequenceCategory)">@Localizer.Label("Consequence", i.ConsequenceCategory)</span>
-            @if (i.IsHiddenFailure) { <span class="badge bg-dark">@Localizer["Rcm_HiddenFailure"]</span> }</div>
+            @if (i.IsHiddenFailure) { <pems-badge tone="dark">@Localizer["Rcm_HiddenFailure"]</pems-badge> }</div>
         <div class="col-md-3"><div class="text-muted">@Localizer["Rcm_TaskType"]</div><div>@Localizer.Label("TaskType", i.TaskType)</div></div>
         <div class="col-md-3"><div class="text-muted">@Localizer["Rcm_OwnerDiscipline"]</div><div>@(s.OwnerDisciplineName ?? "-")</div></div>
         <div class="col-md-3"><div class="text-muted">@Localizer["Rcm_Frequency"]</div><div>@Localizer.Label("Frequency", i.Frequency) @(i.DefaultIntervalDays.HasValue ? $"({i.DefaultIntervalDays} d)" : "")</div></div>
@@ -162,7 +162,7 @@
                     <td class="small">
                         @if (a.OverrideStatus != "None")
                         {
-                            <div><span class="badge bg-info text-dark">@Localizer.Label("OverrideStatus", a.OverrideStatus)</span> @(a.OverrideIntervalDays.HasValue ? a.OverrideIntervalDays + " d" : "")</div>
+                            <div><pems-badge tone="info">@Localizer.Label("OverrideStatus", a.OverrideStatus)</pems-badge> @(a.OverrideIntervalDays.HasValue ? a.OverrideIntervalDays + " d" : "")</div>
                             <div class="text-muted">@a.OverrideJustification</div>
                             @if (a.OverrideStatus == "Pending" && Model.CanApprove)
                             {

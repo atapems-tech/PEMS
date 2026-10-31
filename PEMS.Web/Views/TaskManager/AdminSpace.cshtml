@@ -92,7 +92,7 @@
                     @foreach (var t in Model.Types)
                     {
                         <tr class="@(t.IsActive ? "" : "text-muted")">
-                            <td><i class="bi @t.Icon" aria-hidden="true"></i> @TaskManagerUi.Name(t.Name, t.NameFa) @if (t.IsSubtask) { <span class="badge bg-light text-dark border">@Localizer["Tm_Subtask"]</span> }</td>
+                            <td><i class="bi @t.Icon" aria-hidden="true"></i> @TaskManagerUi.Name(t.Name, t.NameFa) @if (t.IsSubtask) { <pems-badge tone="light">@Localizer["Tm_Subtask"]</pems-badge> }</td>
                             <td class="text-end">
                                 <form asp-action="SetTypeActive" method="post">
                                     <input type="hidden" name="workSpaceId" value="@s.Id" /><input type="hidden" name="typeId" value="@t.Id" /><input type="hidden" name="isActive" value="@(t.IsActive ? "false" : "true")" />

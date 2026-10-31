@@ -19,12 +19,12 @@
    صریح «این تایید انطباق رسمی نیست» هم اضافه می‌شود. *@
 <div class="content-card mb-3" role="group" aria-label="@L("Standard reference summary", "خلاصه‌ی مرجع استاندارد")">
     <div class="d-flex flex-wrap gap-2 align-items-center mb-2">
-        <span class="badge bg-dark fs-6">@Model.Identifier</span>
+        <pems-badge tone="dark" css="fs-6">@Model.Identifier</pems-badge>
         <span class="text-muted small">@Model.IssuingOrganization@(string.IsNullOrWhiteSpace(Model.EditionOrYear) ? "" : $" · {Model.EditionOrYear}")</span>
     </div>
     <div class="d-flex flex-wrap gap-3 small mb-2">
-        <div><strong>@L("Applicability", "قابلیت‌اعمال")</strong>: <span class="badge bg-light text-dark border">@Model.ApplicabilityStatus</span></div>
-        <div><strong>@L("Verification", "تایید منبع")</strong>: <span class="badge bg-light text-dark border">@Model.VerificationStatus</span></div>
+        <div><strong>@L("Applicability", "قابلیت‌اعمال")</strong>: <pems-badge tone="light">@Model.ApplicabilityStatus</pems-badge></div>
+        <div><strong>@L("Verification", "تایید منبع")</strong>: <pems-badge tone="light">@Model.VerificationStatus</pems-badge></div>
         <div><strong>@L("PEMS status", "وضعیت در PEMS")</strong>: <span class="badge @ImplBadgeClass(Model.PEMSImplementationStatus)">@Model.PEMSImplementationStatus</span></div>
     </div>
 

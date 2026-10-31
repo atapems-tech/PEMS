@@ -41,8 +41,8 @@
                             <td>@Localizer["Lt_P_" + t.Priority]</td>
                             <td>@t.ConfidentialityLevel</td>
                             <td>
-                                @if (t.IsActive) { <span class="badge bg-success"><i class="bi bi-check-circle" aria-hidden="true"></i> @Localizer["LtT_Active"]</span> }
-                                else { <span class="badge bg-secondary"><i class="bi bi-slash-circle" aria-hidden="true"></i> @Localizer["LtT_Inactive"]</span> }
+                                @if (t.IsActive) { <pems-badge tone="success"><i class="bi bi-check-circle" aria-hidden="true"></i> @Localizer["LtT_Active"]</pems-badge> }
+                                else { <pems-badge tone="neutral"><i class="bi bi-slash-circle" aria-hidden="true"></i> @Localizer["LtT_Inactive"]</pems-badge> }
                             </td>
                             <td class="text-nowrap">
                                 <a asp-action="Preview" asp-route-id="@t.LetterTemplateId" class="btn btn-sm btn-outline-secondary"><i class="bi bi-eye" aria-hidden="true"></i> @Localizer["LtT_Preview"]</a>

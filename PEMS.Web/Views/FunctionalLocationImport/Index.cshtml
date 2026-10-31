@@ -40,10 +40,10 @@
                     <td class="small">@b.ImportedByName</td>
                     <td class="text-end">@b.SourceRowCount</td>
                     <td class="text-end">@b.ExpandedLocationCount</td>
-                    <td class="text-end"><span class="badge bg-success">@b.NewCount</span></td>
-                    <td class="text-end"><span class="badge bg-secondary">@b.ExistingCount</span></td>
-                    <td class="text-end">@if (b.ConflictCount > 0) { <span class="badge bg-warning text-dark">@b.ConflictCount</span> } else { @b.ConflictCount }</td>
-                    <td class="text-end">@if (b.InvalidCount > 0) { <span class="badge bg-danger">@b.InvalidCount</span> } else { @b.InvalidCount }</td>
+                    <td class="text-end"><pems-badge tone="success">@b.NewCount</pems-badge></td>
+                    <td class="text-end"><pems-badge tone="neutral">@b.ExistingCount</pems-badge></td>
+                    <td class="text-end">@if (b.ConflictCount > 0) { <pems-badge tone="warning">@b.ConflictCount</pems-badge> } else { @b.ConflictCount }</td>
+                    <td class="text-end">@if (b.InvalidCount > 0) { <pems-badge tone="danger">@b.InvalidCount</pems-badge> } else { @b.InvalidCount }</td>
                     <td><span class="badge @(b.Status == "Committed" ? "bg-success" : "bg-secondary")">@b.Status</span></td>
                     <td>
                         <a asp-action="Review" asp-route-batchId="@b.FunctionalLocationImportBatchId" class="btn btn-sm btn-outline-primary">Review</a>

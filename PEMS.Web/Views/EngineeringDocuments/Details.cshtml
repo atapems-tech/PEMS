@@ -344,7 +344,7 @@
     </li>
     <li class="nav-item" role="presentation">
         <button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-attachments" type="button">
-            <i class="bi bi-paperclip"></i> @Localizer["Ed_TabFiles"] <span class="badge bg-secondary">@(Model.Attachments?.Count ?? 0)</span>
+            <i class="bi bi-paperclip"></i> @Localizer["Ed_TabFiles"] <pems-badge tone="neutral">@(Model.Attachments?.Count ?? 0)</pems-badge>
         </button>
     </li>
     @* طبق بخش ۲۵ ممیزی UX: IDC حالا یک تب اختصاصی است، نه فقط چند Badge کوچک توی هدر -
@@ -354,19 +354,19 @@
     {
         <li class="nav-item" role="presentation">
             <button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-idc" type="button">
-                <i class="bi bi-diagram-3"></i> @Localizer["Ed_TabIdc"] <span class="badge bg-secondary">@idcApprovedCount/@idcStatusForPage.Count</span>
+                <i class="bi bi-diagram-3"></i> @Localizer["Ed_TabIdc"] <pems-badge tone="neutral">@idcApprovedCount/@idcStatusForPage.Count</pems-badge>
             </button>
         </li>
     }
     <li class="nav-item" role="presentation">
         <button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-revisions" type="button">
-            <i class="bi bi-clock-history"></i> @Localizer["Ed_TabRevisions"] <span class="badge bg-secondary">@(Model.Revisions?.Count ?? 0)</span>
+            <i class="bi bi-clock-history"></i> @Localizer["Ed_TabRevisions"] <pems-badge tone="neutral">@(Model.Revisions?.Count ?? 0)</pems-badge>
         </button>
     </li>
     <li class="nav-item" role="presentation">
         <button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-transmittals" type="button">
             <i class="bi bi-truck"></i> @Localizer["Ed_TabTransmittals"]
-            @if (relatedTransmittals.Any()) { <span class="badge bg-secondary">@relatedTransmittals.Count</span> }
+            @if (relatedTransmittals.Any()) { <pems-badge tone="neutral">@relatedTransmittals.Count</pems-badge> }
         </button>
     </li>
     <li class="nav-item" role="presentation">
@@ -383,7 +383,7 @@
     <li class="nav-item" role="presentation">
         <button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-correspondence" type="button">
             <i class="bi bi-envelope-paper"></i> @Localizer["Ed_TabDistribution"]
-            @if (relatedLetters.Any()) { <span class="badge bg-secondary">@relatedLetters.Count</span> }
+            @if (relatedLetters.Any()) { <pems-badge tone="neutral">@relatedLetters.Count</pems-badge> }
         </button>
     </li>
 </ul>
@@ -549,7 +549,7 @@
                                 <td>
                                     @if (file.DocumentRevisionId.HasValue)
                                     {
-                                        <span class="badge bg-secondary">@Localizer["Ed_CurrentRev"] @file.RevisionNo</span>
+                                        <pems-badge tone="neutral">@Localizer["Ed_CurrentRev"] @file.RevisionNo</pems-badge>
                                         @if (fileIsCurrentRev) { <span class="vs-pill vs-pill--current">@Localizer["Ed_CurrentRevFile"]</span> }
                                         else { <span class="vs-sub">@Localizer["Ed_PreviousRevFile"]</span> }
                                         @if (file.IsOfficial)
@@ -761,7 +761,7 @@
                             <div class="pems-timeline-content">
                                 <div class="d-flex justify-content-between flex-wrap gap-2">
                                     <div>
-                                        <span class="badge bg-secondary">@item.ActionType</span>
+                                        <pems-badge tone="neutral">@item.ActionType</pems-badge>
                                         <span class="small text-muted ms-1">@(item.FromStageName ?? "—") &rarr; @(item.ToStageName ?? "—")</span>
                                     </div>
                                     <span class="small text-muted">@item.ActionDate.ToString("yyyy-MM-dd HH:mm")</span>
@@ -786,7 +786,7 @@
                                 <tr>
                                     <td>@(item.FromStageName ?? "—")</td>
                                     <td>@(item.ToStageName ?? "—")</td>
-                                    <td><span class="badge bg-secondary">@item.ActionType</span></td>
+                                    <td><pems-badge tone="neutral">@item.ActionType</pems-badge></td>
                                     <td>@item.Comment</td>
                                     <td class="small text-muted">@item.ActionDate.ToString("yyyy-MM-dd HH:mm")</td>
                                     <td>@(item.ActorName ?? "System")</td>
@@ -815,11 +815,11 @@
                         @foreach (var l in relatedLetters)
                         {
                             <tr>
-                                <td><span class="badge bg-secondary">@l.LetterType</span></td>
+                                <td><pems-badge tone="neutral">@l.LetterType</pems-badge></td>
                                 <td>@l.LetterNumber</td>
                                 <td>@l.Subject</td>
                                 <td class="small text-muted">@l.LetterDate.ToString("yyyy-MM-dd")</td>
-                                <td><span class="badge bg-info text-dark">@l.Status</span></td>
+                                <td><pems-badge tone="info">@l.Status</pems-badge></td>
                                 <td><a asp-controller="Letter" asp-action="Details" asp-route-id="@l.LetterId" class="btn btn-sm btn-outline-secondary" data-bs-toggle="tooltip" title="View letter" aria-label="View letter @l.LetterNumber"><i class="bi bi-eye"></i></a></td>
                             </tr>
                         }
@@ -979,8 +979,8 @@
                 <tr>
                     <td><strong>@c.CommentNo</strong></td>
                     <td>
-                        @if (!string.IsNullOrEmpty(c.Category)) { <span class="badge bg-secondary">@c.Category</span> }
-                        @if (!string.IsNullOrEmpty(c.Severity)) { <span class="badge bg-dark">@c.Severity</span> }
+                        @if (!string.IsNullOrEmpty(c.Category)) { <pems-badge tone="neutral">@c.Category</pems-badge> }
+                        @if (!string.IsNullOrEmpty(c.Severity)) { <pems-badge tone="dark">@c.Severity</pems-badge> }
                     </td>
                     <td class="small">@c.Sheet @c.Zone</td>
                     <td class="small">
@@ -996,14 +996,14 @@
                         @if (c.MarksRevisionRequired)
                         {
                             <div>
-                                <span class="badge bg-warning text-dark"><i class="bi bi-cloud-fill"></i> Marked for Revision</span>
+                                <pems-badge tone="warning"><i class="bi bi-cloud-fill"></i> Marked for Revision</pems-badge>
                                 @if (c.TriggeredRevisionId.HasValue)
                                 {
-                                    <span class="badge bg-success">Rev @c.TriggeredRevisionNo created</span>
+                                    <pems-badge tone="success">Rev @c.TriggeredRevisionNo created</pems-badge>
                                 }
                                 else
                                 {
-                                    <span class="badge bg-secondary">no revision yet</span>
+                                    <pems-badge tone="neutral">no revision yet</pems-badge>
                                 }
                             </div>
                         }

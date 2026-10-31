@@ -75,10 +75,10 @@
                     <td>@b.ProjectName</td>
                     <td>@b.ImportDate.ToString("yyyy-MM-dd HH:mm")</td>
                     <td>@b.RowsTotal</td>
-                    <td><span class="badge bg-success">@b.RowsValid</span></td>
-                    <td><span class="badge bg-warning text-dark">@b.RowsWarning</span></td>
-                    <td><span class="badge bg-danger">@b.RowsError</span></td>
-                    <td><span class="badge bg-secondary">@b.RowsDuplicate</span></td>
+                    <td><pems-badge tone="success">@b.RowsValid</pems-badge></td>
+                    <td><pems-badge tone="warning">@b.RowsWarning</pems-badge></td>
+                    <td><pems-badge tone="danger">@b.RowsError</pems-badge></td>
+                    <td><pems-badge tone="neutral">@b.RowsDuplicate</pems-badge></td>
                     <td><span class="badge @(b.Status == "Committed" ? "bg-success" : "bg-secondary")">@b.Status</span></td>
                     <td>
                         @if (b.Status == "Staged")

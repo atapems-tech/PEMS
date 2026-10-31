@@ -23,7 +23,7 @@
                         <td>@t.TenderNumber</td>
                         <td>@t.Title</td>
                         <td>@t.ProcurementPackage?.PackageNumber</td>
-                        <td><span class="badge bg-info text-dark">@t.Status</span></td>
+                        <td><pems-badge tone="info">@t.Status</pems-badge></td>
                         <td>@t.ResponseDeadline?.ToString("yyyy-MM-dd")</td>
                         <td><a asp-action="Details" asp-route-id="@t.TenderId" class="btn btn-sm btn-outline-primary">@Localizer["Details"]</a></td>
                     </tr>

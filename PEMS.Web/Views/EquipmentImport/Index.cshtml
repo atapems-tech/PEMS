@@ -65,8 +65,8 @@
                     <td>@b.ProjectName</td>
                     <td>@b.ImportDate.ToString("yyyy-MM-dd HH:mm")</td>
                     <td>@b.Rows.Count</td>
-                    <td><span class="badge bg-success">@b.Rows.Count(x => !x.IsUpdate)</span></td>
-                    <td><span class="badge bg-info text-dark">@b.Rows.Count(x => x.IsUpdate)</span></td>
+                    <td><pems-badge tone="success">@b.Rows.Count(x => !x.IsUpdate)</pems-badge></td>
+                    <td><pems-badge tone="info">@b.Rows.Count(x => x.IsUpdate)</pems-badge></td>
                     <td><span class="badge @(b.Status == "Committed" ? "bg-success" : "bg-secondary")">@b.Status</span></td>
                     <td>
                         @if (b.Status == "Staging")

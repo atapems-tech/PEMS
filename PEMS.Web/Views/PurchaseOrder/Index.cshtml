@@ -29,7 +29,7 @@
                         <td>@po.VendorName</td>
                         <td>@po.ContractNo</td>
                         <td>@po.Value?.ToString("N0")</td>
-                        <td><span class="badge bg-info text-dark">@po.Status</span></td>
+                        <td><pems-badge tone="info">@po.Status</pems-badge></td>
                         <td><a asp-action="Details" asp-route-id="@po.PoId" class="btn btn-sm btn-outline-primary">@Localizer["Details"]</a></td>
                     </tr>
                 }

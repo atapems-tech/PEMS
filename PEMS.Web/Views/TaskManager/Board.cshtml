@@ -54,7 +54,7 @@
                         <div class="d-flex justify-content-between align-items-center small text-muted mt-1">
                             <span>@(i.AssigneeName ?? Localizer["Tm_Unassigned"].Value)</span>
                             <span>
-                                @if (i.StoryPoints != null) { <span class="badge bg-light text-dark border">@i.StoryPoints?.ToString("0.#")</span> }
+                                @if (i.StoryPoints != null) { <pems-badge tone="light">@i.StoryPoints?.ToString("0.#")</pems-badge> }
                                 @if (i.DueDate != null) { <span class="@(i.IsOverdue ? "text-danger fw-semibold" : "")">@TaskManagerUi.Date(i.DueDate)</span> }
                             </span>
                         </div>

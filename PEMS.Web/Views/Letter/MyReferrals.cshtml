@@ -12,7 +12,7 @@
             @foreach (var l in Model)
             {
                 <tr>
-                    <td><span class="badge bg-secondary">@l.LetterType</span></td>
+                    <td><pems-badge tone="neutral">@l.LetterType</pems-badge></td>
                     <td>@l.LetterNumber</td>
                     <td>@l.Subject</td>
                     <td>@l.LetterDate.ToString("yyyy-MM-dd")</td>

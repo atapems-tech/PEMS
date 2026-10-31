@@ -12,7 +12,7 @@
             <h5 class="mb-0">MDB - @Model.EquipmentTagNumber</h5>
             <span class="text-muted small">@Model.VendorName &middot; @Model.ProjectName @(Model.PoNumber != null ? $"· PO {Model.PoNumber}" : "")</span>
         </div>
-        <span class="badge bg-secondary fs-6">@Model.Status</span>
+        <pems-badge tone="neutral" css="fs-6">@Model.Status</pems-badge>
     </div>
 
     <hr class="my-2" />
@@ -23,7 +23,7 @@
             <strong>Index of Contents Due:</strong> @(Model.IndexOfContentsDueDate?.ToString("yyyy-MM-dd") ?? "-")
             @if (Model.IsIndexOverdue)
             {
-                <span class="badge bg-danger">@Localizer["Overdue"]</span>
+                <pems-badge tone="danger">@Localizer["Overdue"]</pems-badge>
             }
         </div>
         <div class="col-md-3"><strong>Index Submitted:</strong> @(Model.IndexOfContentsSubmittedDate?.ToString("yyyy-MM-dd") ?? "-")</div>

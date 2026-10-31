@@ -199,10 +199,10 @@ public sealed class SpikeTests(SpikeHost host, ITestOutputHelper output) : IClas
     [Fact]
     public void Component_state_is_plain_csharp_and_testable_without_rendering()
     {
-        var button = ButtonState.From(new ButtonOptions { Label = "Save", Tone = Tone.Danger, Size = Size.Small, Href = "/x" });
+        var button = ButtonState.From(new ButtonOptions { Label = "Save", Tone = Tone.Danger, Size = Size.Small, Href = "/x", Skin = ComponentSkin.Pems });
         Assert.Equal("pems-btn pems-btn--danger pems-btn--small", button.Css);
         Assert.True(button.AsLink);
-        Assert.False(ButtonState.From(new ButtonOptions { Label = "Save", Href = "/x", Disabled = true }).AsLink);
+        Assert.False(ButtonState.From(new ButtonOptions { Label = "Save", Href = "/x", Disabled = true, Skin = ComponentSkin.Pems }).AsLink);
 
         var field = FieldState.From(new FieldDescriptor { Name = "Items[0].Name", Label = "Name", HelpText = "h" }, hasError: true);
         Assert.Equal("f-Items-0--Name", field.Id);

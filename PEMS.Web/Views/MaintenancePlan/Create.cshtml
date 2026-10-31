@@ -40,7 +40,7 @@
         <div class="small mb-3">
             <span class="text-muted">@Localizer["Rcm_Strategy"]:</span>
             <a asp-controller="MaintenanceStrategy" asp-action="Details" asp-route-id="@ctx.StrategyId">#@ctx.StrategyId · v@(ctx.StrategyVersion)</a>
-            · <span class="badge bg-secondary">@Localizer.Label("StrategyType", ctx.StrategyType)</span>
+            · <pems-badge tone="neutral">@Localizer.Label("StrategyType", ctx.StrategyType)</pems-badge>
             · @RcmDisplay.Name(ctx.FailureModeName, ctx.FailureModeNameFa)
             · <span class="badge @RcmDisplay.ConsequenceBadge(ctx.ConsequenceCategory)">@Localizer.Label("Consequence", ctx.ConsequenceCategory)</span>
         </div>

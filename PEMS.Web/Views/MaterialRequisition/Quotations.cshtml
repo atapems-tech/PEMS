@@ -32,7 +32,7 @@
                     <td class="small">@q.MRNumber</td>
                     <td class="small">@q.VendorName</td>
                     <td class="small">@(q.QuotedAmount.HasValue ? $"{q.QuotedAmount:N2} {q.Currency}" : "-")</td>
-                    <td><span class="badge bg-secondary">@q.QuotationStatus</span></td>
+                    <td><pems-badge tone="neutral">@q.QuotationStatus</pems-badge></td>
                     <td><span class="badge @(q.TechnicalEvaluation == "Passed" ? "bg-success" : q.TechnicalEvaluation == "Failed" ? "bg-danger" : "bg-secondary")">@q.TechnicalEvaluation</span></td>
                     <td><span class="badge @(q.CommercialEvaluation == "Passed" ? "bg-success" : q.CommercialEvaluation == "Failed" ? "bg-danger" : "bg-secondary")">@q.CommercialEvaluation</span></td>
                     <td><span class="badge @(q.ApprovalStatus == "Approved" ? "bg-success" : q.ApprovalStatus == "Rejected" ? "bg-danger" : "bg-secondary")">@q.ApprovalStatus</span></td>

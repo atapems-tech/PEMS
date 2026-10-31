@@ -96,7 +96,7 @@
             <strong>Permit Receiver:</strong> @(Model.ReceiverName ?? "N/A")
             @if (!string.IsNullOrWhiteSpace(Model.ReceiverPersonnelType) && Model.ReceiverPersonnelType != "Internal")
             {
-                <span class="badge bg-light text-dark border">@Model.ReceiverPersonnelType @(Model.ReceiverVendorName != null ? $"- {Model.ReceiverVendorName}" : "")</span>
+                <pems-badge tone="light">@Model.ReceiverPersonnelType @(Model.ReceiverVendorName != null ? $"- {Model.ReceiverVendorName}" : "")</pems-badge>
             }
         </div>
         <div class="col-md-4"><strong>Validity:</strong> @(Model.ValidFrom?.ToString("yyyy-MM-dd") ?? "N/A") &rarr; @(Model.ValidTo?.ToString("yyyy-MM-dd") ?? "N/A")</div>
@@ -166,7 +166,7 @@
     @if (closeElig != null && closeElig.Result != "Eligible")
     {
         <div class="mb-2">
-            <span class="badge bg-danger">Not Eligible to Close</span>
+            <pems-badge tone="danger">Not Eligible to Close</pems-badge>
             <ul class="small text-muted mb-0 mt-1">
                 @foreach (var c in closeElig.Checks.Where(c => !c.Passed)) { <li>@c.Detail</li> }
             </ul>
@@ -359,13 +359,13 @@
                 <div class="border-top pt-3 mb-0">
                     @if (approveElig != null && approveElig.Result != "Eligible")
                     {
-                        <div class="mb-1"><span class="badge bg-danger">Not Eligible to Approve</span>
+                        <div class="mb-1"><pems-badge tone="danger">Not Eligible to Approve</pems-badge>
                             <ul class="small text-muted mb-0 mt-1">@foreach (var c in approveElig.Checks.Where(c => !c.Passed)) { <li>@c.Detail</li> }</ul>
                         </div>
                     }
                     @if (rejectElig != null && rejectElig.Result != "Eligible")
                     {
-                        <div class="mb-1"><span class="badge bg-danger">Not Eligible to Reject</span>
+                        <div class="mb-1"><pems-badge tone="danger">Not Eligible to Reject</pems-badge>
                             <ul class="small text-muted mb-0 mt-1">@foreach (var c in rejectElig.Checks.Where(c => !c.Passed)) { <li>@c.Detail</li> }</ul>
                         </div>
                     }
@@ -433,7 +433,7 @@
     }
     @if (lotoVerifyElig != null && lotoVerifyElig.Result != "Eligible")
     {
-        <div class="mb-2"><span class="badge bg-danger">Not Eligible to Verify</span>
+        <div class="mb-2"><pems-badge tone="danger">Not Eligible to Verify</pems-badge>
             <ul class="small text-muted mb-0 mt-1">@foreach (var c in lotoVerifyElig.Checks.Where(c => !c.Passed)) { <li>@c.Detail</li> }</ul>
         </div>
     }
@@ -547,7 +547,7 @@
         <div class="border rounded p-2 mb-2">
             <div class="d-flex flex-wrap align-items-center gap-2 mb-2">
                 <span class="badge @gasBadge">@g.Status</span>
-                @if (g.IsExpired && g.Status != "Invalidated") { <span class="badge bg-secondary">Expired</span> }
+                @if (g.IsExpired && g.Status != "Invalidated") { <pems-badge tone="neutral">Expired</pems-badge> }
                 <span class="small">@g.Location</span>
                 <span class="small text-muted">Tested by @(g.TesterName ?? "-") @g.TestedAt.ToString("yyyy-MM-dd HH:mm")</span>
                 @if (g.ValidUntil.HasValue) { <span class="small text-muted">Valid Until @g.ValidUntil.Value.ToString("yyyy-MM-dd HH:mm")</span> }
@@ -638,19 +638,19 @@
         <div class="mb-2">
             @if (simopsConfirmElig != null && simopsConfirmElig.Result != "Eligible")
             {
-                <div class="mb-1"><span class="badge bg-danger">Not Eligible to Confirm</span>
+                <div class="mb-1"><pems-badge tone="danger">Not Eligible to Confirm</pems-badge>
                     <ul class="small text-muted mb-0 mt-1">@foreach (var c in simopsConfirmElig.Checks.Where(c => !c.Passed)) { <li>@c.Detail</li> }</ul>
                 </div>
             }
             @if (simopsResolveElig != null && simopsResolveElig.Result != "Eligible")
             {
-                <div class="mb-1"><span class="badge bg-danger">Not Eligible to Resolve</span>
+                <div class="mb-1"><pems-badge tone="danger">Not Eligible to Resolve</pems-badge>
                     <ul class="small text-muted mb-0 mt-1">@foreach (var c in simopsResolveElig.Checks.Where(c => !c.Passed)) { <li>@c.Detail</li> }</ul>
                 </div>
             }
             @if (simopsAcceptRiskElig != null && simopsAcceptRiskElig.Result != "Eligible")
             {
-                <div class="mb-1"><span class="badge bg-danger">Not Eligible to Accept Risk</span>
+                <div class="mb-1"><pems-badge tone="danger">Not Eligible to Accept Risk</pems-badge>
                     <ul class="small text-muted mb-0 mt-1">@foreach (var c in simopsAcceptRiskElig.Checks.Where(c => !c.Passed)) { <li>@c.Detail</li> }</ul>
                 </div>
             }

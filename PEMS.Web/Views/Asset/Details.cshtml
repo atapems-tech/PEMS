@@ -79,7 +79,7 @@
                             <tr>
                                 <td><a asp-controller="WorkOrder" asp-action="Details" asp-route-id="@w.WorkOrderId">@w.WorkOrderNo</a></td>
                                 <td class="small">@(w.Description ?? "-")</td>
-                                <td><span class="badge bg-secondary">@w.Status</span></td>
+                                <td><pems-badge tone="neutral">@w.Status</pems-badge></td>
                                 <td class="small">@(w.CreatedDate?.ToString("yyyy-MM-dd") ?? "-")</td>
                             </tr>
                         }

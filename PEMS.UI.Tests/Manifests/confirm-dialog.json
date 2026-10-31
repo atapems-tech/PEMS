@@ -83,7 +83,10 @@
           "primary",
           "danger",
           "success",
-          "warning"
+          "warning",
+          "info",
+          "light",
+          "dark"
         ]
       },
       "reasonLabel": {

@@ -106,7 +106,7 @@
     </li>
     <li class="nav-item" role="presentation">
         <button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-submissions" type="button">
-            <i class="bi bi-clock-history"></i> @Localizer["Vs_TabSubmissions"] <span class="badge bg-secondary">@Model.Submissions.Count</span>
+            <i class="bi bi-clock-history"></i> @Localizer["Vs_TabSubmissions"] <pems-badge tone="neutral">@Model.Submissions.Count</pems-badge>
         </button>
     </li>
     <li class="nav-item" role="presentation">
@@ -117,7 +117,7 @@
     <li class="nav-item" role="presentation">
         <button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-correspondence" type="button">
             <i class="bi bi-envelope-paper"></i> @Localizer["Vs_TabCorrespondence"]
-            @if (relatedLetters.Any()) { <span class="badge bg-secondary">@relatedLetters.Count</span> }
+            @if (relatedLetters.Any()) { <pems-badge tone="neutral">@relatedLetters.Count</pems-badge> }
         </button>
     </li>
 </ul>
@@ -251,7 +251,7 @@
                     </td>
                     <td>@s.ClientCommentSheetNo</td>
                     <td>@(s.ClientCommentDate?.ToString("yyyy-MM-dd"))</td>
-                    <td><span class="badge bg-secondary">@s.ReviewCategory</span></td>
+                    <td><pems-badge tone="neutral">@s.ReviewCategory</pems-badge></td>
                     <td>@(s.RequiresResubmission ? Localizer["Vd_Yes"].Value : "")</td>
                     <td>
                         @if (!string.IsNullOrEmpty(s.CommentSheetFilePath))
@@ -414,8 +414,8 @@
                     <td><strong>@c.CommentNo</strong></td>
                     <td>@c.RevisionNo</td>
                     <td>
-                        @if (!string.IsNullOrEmpty(c.Category)) { <span class="badge bg-secondary">@VdrUi.Loc(Localizer, "Vd_Cat_", c.Category)</span> }
-                        @if (!string.IsNullOrEmpty(c.Severity)) { <span class="badge bg-dark">@VdrUi.Loc(Localizer, "Vd_Sev_", c.Severity)</span> }
+                        @if (!string.IsNullOrEmpty(c.Category)) { <pems-badge tone="neutral">@VdrUi.Loc(Localizer, "Vd_Cat_", c.Category)</pems-badge> }
+                        @if (!string.IsNullOrEmpty(c.Severity)) { <pems-badge tone="dark">@VdrUi.Loc(Localizer, "Vd_Sev_", c.Severity)</pems-badge> }
                     </td>
                     <td class="small">@c.Sheet @c.Zone</td>
                     <td class="small">
@@ -756,7 +756,7 @@ else
         }
         else
         {
-            <span class="badge bg-warning text-dark"><i class="bi bi-hourglass-split"></i> @Localizer["Vd_WaitingOthers"]</span>
+            <pems-badge tone="warning"><i class="bi bi-hourglass-split"></i> @Localizer["Vd_WaitingOthers"]</pems-badge>
         }
     }
     else if (currentStageName == "LeadReview")
@@ -811,7 +811,7 @@ else
                     <tr>
                         <td class="small">@VdrUi.Loc(Localizer, "Vd_Stage_", h.FromStageName)</td>
                         <td class="small">@VdrUi.Loc(Localizer, "Vd_Stage_", h.ToStageName)</td>
-                        <td><span class="badge bg-secondary">@h.ActionType</span></td>
+                        <td><pems-badge tone="neutral">@h.ActionType</pems-badge></td>
                         <td class="small">@h.Decision</td>
                         <td class="small">@h.Comment</td>
                         <td class="small text-muted">@h.ActionDate.ToString("yyyy-MM-dd HH:mm")</td>
@@ -839,11 +839,11 @@ else
                 @foreach (var l in relatedLetters)
                 {
                     <tr>
-                        <td><span class="badge bg-secondary">@l.LetterType</span></td>
+                        <td><pems-badge tone="neutral">@l.LetterType</pems-badge></td>
                         <td>@l.LetterNumber</td>
                         <td>@l.Subject</td>
                         <td class="small text-muted">@l.LetterDate.ToString("yyyy-MM-dd")</td>
-                        <td><span class="badge bg-info text-dark">@l.Status</span></td>
+                        <td><pems-badge tone="info">@l.Status</pems-badge></td>
                         <td><a asp-controller="Letter" asp-action="Details" asp-route-id="@l.LetterId" class="btn btn-sm btn-outline-secondary"><i class="bi bi-eye"></i></a></td>
                     </tr>
                 }
