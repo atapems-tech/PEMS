@@ -3,6 +3,11 @@
 All notable changes to PEMS. No system version is defined yet (plan row F_CI), so entries are grouped by date
 and theme and were reconstructed from the git history (initial import 2026-09-05). Newest first.
 
+## 2026-11-01 - Contract creation SQL tests pass again (SCRUM-498)
+
+### Fixed
+- `ContractCreationAtomicitySqlTests` T12 and T13 failed with Forbid: the test user had no user name, so the tender creator separation (P0-10) could not verify the approver and failed closed. The test user now has its name; the product behaviour is unchanged.
+
 ## 2026-11-01 - List page component, wave 4b: Administration settings lists (SCRUM-337)
 
 ### Changed

@@ -664,7 +664,9 @@ public sealed class ContractCreationAtomicitySqlTests : IAsyncLifetime
         var m1 = await AddManager(ManagerOne);
         var m2 = await AddManager(ManagerTwo);
 
-        var user2 = new FakeCurrentUserService { UserId = m1, Roles = new[] { SystemRoles.ContractManager } };
+        // SCRUM-498: a signed-in user always has a user name; without it the tender creator separation (P0-10) cannot verify
+        // the approver and fails closed with Forbid
+        var user2 = new FakeCurrentUserService { UserId = m1, UserName = ManagerOne, Roles = new[] { SystemRoles.ContractManager } };
         var tenderService = new TenderService(ctx, _numbering);
         var controller = new TenderController(tenderService, new ProcurementPackageService(ctx), permissionService, user2, ctx, accessControl).WithTempData();
         ctx.CurrentUserName = ManagerOne;
