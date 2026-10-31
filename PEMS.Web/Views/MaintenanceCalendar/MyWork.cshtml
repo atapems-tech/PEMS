@@ -39,8 +39,8 @@
                     <div class="small">@it.EquipmentDescription</div>
                     <div class="small">
                         <span class="badge @TypeBadgeClass(it.WorkOrderType)">@it.WorkOrderType</span>
-                        <span class="badge bg-secondary">@it.Status</span>
-                        @if (it.HasEmployeeConflict) { <span class="badge bg-danger"><i class="bi bi-exclamation-triangle"></i> @Localizer["Conflict"]</span> }
+                        <pems-badge tone="neutral">@it.Status</pems-badge>
+                        @if (it.HasEmployeeConflict) { <pems-badge tone="danger"><i class="bi bi-exclamation-triangle"></i> @Localizer["Conflict"]</pems-badge> }
                     </div>
                     <div class="small text-muted">@it.AssignedTeamName</div>
                 </div>

@@ -37,8 +37,8 @@
                     <td class="small">@m.Location</td>
                     <td class="small">@m.OrganizerName</td>
                     <td class="small">@m.ProjectName</td>
-                    <td><span class="badge bg-secondary">@m.AttendeeCount</span></td>
-                    <td><span class="badge bg-info text-dark">@m.ActionItemCount</span></td>
+                    <td><pems-badge tone="neutral">@m.AttendeeCount</pems-badge></td>
+                    <td><pems-badge tone="info">@m.ActionItemCount</pems-badge></td>
                     <td><span class="badge @(m.Status == "Completed" ? "bg-success" : m.Status == "Cancelled" ? "bg-dark" : "bg-warning text-dark")">@m.Status</span></td>
                     <td><a asp-action="Details" asp-route-id="@m.MeetingId" class="btn btn-sm btn-outline-secondary"><i class="bi bi-eye"></i></a></td>
                 </tr>

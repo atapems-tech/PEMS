@@ -34,7 +34,10 @@
                 "primary",
                 "danger",
                 "success",
-                "warning"
+                "warning",
+                "info",
+                "light",
+                "dark"
               ]
             },
             "size": {
@@ -66,6 +69,21 @@
               "type": [
                 "string",
                 "null"
+              ]
+            },
+            "outline": {
+              "type": "boolean"
+            },
+            "cssClass": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "skin": {
+              "enum": [
+                "bootstrap",
+                "pems"
               ]
             }
           },

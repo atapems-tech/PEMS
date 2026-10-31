@@ -74,7 +74,7 @@
                     <td>@q.MRQNumber</td>
                     <td>@q.VendorName</td>
                     <td>@(q.QuotedAmount.HasValue ? $"{q.QuotedAmount:N2} {q.Currency}" : "-")</td>
-                    <td><span class="badge bg-secondary">@q.QuotationStatus</span></td>
+                    <td><pems-badge tone="neutral">@q.QuotationStatus</pems-badge></td>
                     <td colspan="4">
                         <form asp-action="UpdateQuotationEvaluation" method="post" class="d-flex gap-1 align-items-center flex-wrap">
                             <input type="hidden" name="mrId" value="@Model.MRId" />
@@ -139,11 +139,11 @@
                 @foreach (var l in relatedLettersMR)
                 {
                     <tr>
-                        <td><span class="badge bg-secondary">@l.LetterType</span></td>
+                        <td><pems-badge tone="neutral">@l.LetterType</pems-badge></td>
                         <td>@l.LetterNumber</td>
                         <td>@l.Subject</td>
                         <td>@l.LetterDate.ToString("yyyy-MM-dd")</td>
-                        <td><span class="badge bg-info text-dark">@l.Status</span></td>
+                        <td><pems-badge tone="info">@l.Status</pems-badge></td>
                         <td><a asp-controller="Letter" asp-action="Details" asp-route-id="@l.LetterId" class="btn btn-sm btn-outline-secondary"><i class="bi bi-eye"></i></a></td>
                     </tr>
                 }

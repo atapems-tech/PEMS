@@ -29,7 +29,22 @@
           "primary",
           "danger",
           "success",
-          "warning"
+          "warning",
+          "info",
+          "light",
+          "dark"
+        ]
+      },
+      "cssClass": {
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "skin": {
+        "enum": [
+          "bootstrap",
+          "pems"
         ]
       }
     },
@@ -39,6 +54,12 @@
     "additionalProperties": false
   },
   "parameters": [
+    {
+      "name": "childContent",
+      "type": "RenderFragment",
+      "kind": "slot",
+      "required": false
+    },
     {
       "name": "options",
       "type": "BadgeOptions",

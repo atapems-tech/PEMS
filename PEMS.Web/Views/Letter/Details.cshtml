@@ -62,11 +62,11 @@
             <div class="d-flex align-items-center flex-wrap gap-2">
                 <h5 class="mb-0">@l.LetterNumber</h5>
                 <span class="badge @statusBadgeClass">@l.Status</span>
-                <span class="badge bg-light text-dark border">@l.LetterType</span>
+                <pems-badge tone="light">@l.LetterType</pems-badge>
                 @if (l.ConfidentialityLevel != "Public" && l.ConfidentialityLevel != "Internal")
-                { <span class="badge bg-dark"><i class="bi bi-lock-fill"></i> @l.ConfidentialityLevel</span> }
+                { <pems-badge tone="dark"><i class="bi bi-lock-fill"></i> @l.ConfidentialityLevel</pems-badge> }
                 @if (l.RevisionCount > 0)
-                { <span class="badge bg-light text-dark border">Rev. @l.RevisionCount</span> }
+                { <pems-badge tone="light">Rev. @l.RevisionCount</pems-badge> }
             </div>
             <h6 class="mt-2 mb-1">@l.Subject</h6>
             <div class="d-flex flex-wrap gap-3 small meta-item">
@@ -81,9 +81,9 @@
                 {
                     <span>
                         <strong>@Localizer["Lt_ResponseDueDate"]:</strong> @l.ResponseDueDate.Value.ToString("yyyy-MM-dd")
-                        @if (l.ResponseAnswered) { <span class="badge bg-success"><i class="bi bi-check-circle" aria-hidden="true"></i> @Localizer["Lt_ResponseAnswered"]</span> }
-                        else if (l.ResponseOverdue) { <span class="badge bg-danger"><i class="bi bi-exclamation-triangle" aria-hidden="true"></i> @Localizer["Lt_Overdue"]</span> }
-                        else { <span class="badge bg-secondary"><i class="bi bi-hourglass-split" aria-hidden="true"></i> @Localizer["Lt_ResponsePending"]</span> }
+                        @if (l.ResponseAnswered) { <pems-badge tone="success"><i class="bi bi-check-circle" aria-hidden="true"></i> @Localizer["Lt_ResponseAnswered"]</pems-badge> }
+                        else if (l.ResponseOverdue) { <pems-badge tone="danger"><i class="bi bi-exclamation-triangle" aria-hidden="true"></i> @Localizer["Lt_Overdue"]</pems-badge> }
+                        else { <pems-badge tone="neutral"><i class="bi bi-hourglass-split" aria-hidden="true"></i> @Localizer["Lt_ResponsePending"]</pems-badge> }
                     </span>
                 }
             </div>
@@ -378,7 +378,7 @@
         {
             var latestReturnReview = Model.Reviews.FirstOrDefault(r => r.Decision == "ReturnedForRevision");
             <div class="d-flex align-items-center justify-content-between mt-2">
-                <span class="badge bg-light text-dark border">Revision @(l.RevisionCount + 1)</span>
+                <pems-badge tone="light">Revision @(l.RevisionCount + 1)</pems-badge>
                 @if (latestReturnReview?.PreviousBodySnapshot != null)
                 {
                     <button type="button" class="btn btn-sm btn-link p-0" data-bs-toggle="collapse" data-bs-target="#previousVersionPanel">
@@ -587,7 +587,7 @@
                                             var sb = r.Status switch { "Completed" => "bg-success", "InProgress" => "bg-info text-dark", _ => "bg-warning text-dark" };
                                         }
                                         <span class="badge @sb">@r.Status</span>
-                                        @if (r.IsOverdue) { <span class="badge bg-danger">@Localizer["Overdue"]</span> }
+                                        @if (r.IsOverdue) { <pems-badge tone="danger">@Localizer["Overdue"]</pems-badge> }
                                     </td>
                                     <td>
                                         @if (r.IsRead)

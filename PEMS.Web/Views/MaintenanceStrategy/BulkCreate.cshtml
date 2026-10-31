@@ -196,7 +196,7 @@ else if (matchingCount.HasValue && matchingCount.Value > maxResults)
                             <h2 class="accordion-header">
                                 <button class="accordion-button collapsed small" type="button" data-bs-toggle="collapse" data-bs-target="#@areaSafeId">
                                     <i class="bi bi-geo-alt me-2"></i> @areaGroup.Key
-                                    <span class="badge bg-secondary ms-2">@areaGroup.Count()</span>
+                                    <pems-badge tone="neutral" css="ms-2">@areaGroup.Count()</pems-badge>
                                 </button>
                             </h2>
                             <div id="@areaSafeId" class="accordion-collapse collapse" data-bs-parent="#areaAccordion">

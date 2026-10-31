@@ -228,7 +228,7 @@
                         <p class="mb-0">
                             @if (((IEnumerable<string>)linkedUser.Roles).Any())
                             {
-                                foreach (var role in (IEnumerable<string>)linkedUser.Roles) { <span class="badge bg-info text-dark me-1">@role</span> }
+                                foreach (var role in (IEnumerable<string>)linkedUser.Roles) { <pems-badge tone="info" css="me-1">@role</pems-badge> }
                             }
                             else { <span class="text-muted">—</span> }
                         </p>
@@ -363,7 +363,7 @@
                     <li class="d-flex justify-content-between align-items-center border-bottom py-2">
                         <span>
                             <span class="small">@es.Skill?.Name</span>
-                            <span class="badge bg-secondary">@es.ProficiencyLevel</span>
+                            <pems-badge tone="neutral">@es.ProficiencyLevel</pems-badge>
                             @if (es.CertifiedDate.HasValue) { <span class="text-muted small">— @es.CertifiedDate.Value.ToString("yyyy-MM-dd")</span> }
                         </span>
                         <form asp-action="RemoveSkill" method="post" class="d-inline">

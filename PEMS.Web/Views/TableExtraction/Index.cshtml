@@ -37,7 +37,7 @@
                         <td>@attachment.FileExtension</td>
                         <td class="small text-muted">@attachment.UploadDate.ToString("yyyy-MM-dd HH:mm")</td>
                         <td>
-                            <span class="badge bg-secondary">@attachment.AIStatus</span>
+                            <pems-badge tone="neutral">@attachment.AIStatus</pems-badge>
                         </td>
                         <td>
                             <form asp-action="Analyze" method="post" id="aiForm_@attachment.AttachmentId">

@@ -110,13 +110,13 @@
                             @if (dayItems.Count > 0)
                             {
                                 <div class="pems-cal-summary">
-                                    <span class="badge bg-secondary">@dayItems.Count</span>
+                                    <pems-badge tone="neutral">@dayItems.Count</pems-badge>
                                     @{
                                         var critical = dayItems.Count(x => x.Priority == "Critical" || x.Priority == "High");
                                         var overdue = dayItems.Count(x => x.IsOverdue);
                                     }
-                                    @if (critical > 0) { <span class="badge bg-danger">@critical @Localizer["High/Critical"]</span> }
-                                    @if (overdue > 0) { <span class="badge bg-dark">@overdue @Localizer["Overdue"]</span> }
+                                    @if (critical > 0) { <pems-badge tone="danger">@critical @Localizer["High/Critical"]</pems-badge> }
+                                    @if (overdue > 0) { <pems-badge tone="dark">@overdue @Localizer["Overdue"]</pems-badge> }
                                 </div>
                                 @foreach (var it in dayItems.Take(2))
                                 {
@@ -218,9 +218,9 @@ else
                         <div class="small">
                             <span class="badge @TypeBadgeClass(it.WorkOrderType)">@it.WorkOrderType</span>
                             <span class="badge @PriorityBadgeClass(it.Priority)">@it.Priority</span>
-                            <span class="badge bg-secondary">@it.Status</span>
-                            @if (it.IsOverdue) { <span class="badge bg-dark">@Localizer["Overdue"]</span> }
-                            @if (it.HasEmployeeConflict) { <span class="badge bg-danger"><i class="bi bi-exclamation-triangle"></i> @Localizer["Conflict"]</span> }
+                            <pems-badge tone="neutral">@it.Status</pems-badge>
+                            @if (it.IsOverdue) { <pems-badge tone="dark">@Localizer["Overdue"]</pems-badge> }
+                            @if (it.HasEmployeeConflict) { <pems-badge tone="danger"><i class="bi bi-exclamation-triangle"></i> @Localizer["Conflict"]</pems-badge> }
                         </div>
                         <div class="small text-muted">@it.AssignedTeamName @(it.AssignedEmployeeName != null ? "· " + it.AssignedEmployeeName : "")</div>
                     </div>
@@ -233,7 +233,7 @@ else
 @if (Model.Unscheduled.Any())
 {
     <div class="content-card mb-3">
-        <h6 class="mb-3">@Localizer["Unscheduled Work"] <span class="badge bg-secondary">@Model.Unscheduled.Count</span></h6>
+        <h6 class="mb-3">@Localizer["Unscheduled Work"] <pems-badge tone="neutral">@Model.Unscheduled.Count</pems-badge></h6>
         <div class="row g-2">
             @foreach (var u in Model.Unscheduled)
             {
@@ -243,7 +243,7 @@ else
                         <div class="small">@u.EquipmentTagNumber &middot; @u.EquipmentDescription</div>
                         <div class="small">
                             <span class="badge @PriorityBadgeClass(u.Priority)">@u.Priority</span>
-                            <span class="badge bg-secondary">@u.WorkOrderType</span>
+                            <pems-badge tone="neutral">@u.WorkOrderType</pems-badge>
                         </div>
                         <div class="small text-muted">@(u.AssignedTeamName ?? Localizer["No team"])</div>
                     </a>

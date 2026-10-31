@@ -105,15 +105,15 @@
                     <td>
                         @if (l.RelatedDocumentId != null)
                         {
-                            <span class="badge bg-success">@Localizer["مدرک"]</span>
+                            <pems-badge tone="success">@Localizer["مدرک"]</pems-badge>
                         }
                         else if (l.RelatedMRId != null)
                         {
-                            <span class="badge bg-success">MR</span>
+                            <pems-badge tone="success">MR</pems-badge>
                         }
                         else
                         {
-                            <span class="badge bg-warning text-dark">@Localizer["وصل‌نشده"]</span>
+                            <pems-badge tone="warning">@Localizer["وصل‌نشده"]</pems-badge>
                         }
                     </td>
                 </tr>

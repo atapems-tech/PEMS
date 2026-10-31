@@ -34,7 +34,7 @@
                         <td><a asp-action="Details" asp-route-id="@o.ProductionOrderId">@o.OrderNumber</a></td>
                         <td>@o.MaterialCode <div class="text-muted small">@o.MaterialDescription</div></td>
                         <td>@o.PlannedQuantity.ToString("N3") @o.UomCode</td>
-                        <td><span class="badge bg-secondary">@o.Status</span></td>
+                        <td><pems-badge tone="neutral">@o.Status</pems-badge></td>
                         <td>@o.WorkCenterCode</td>
                         <td class="small">@(o.PlannedStartDate?.ToString("yyyy-MM-dd"))</td>
                         <td class="small">@(o.PlannedFinishDate?.ToString("yyyy-MM-dd"))</td>

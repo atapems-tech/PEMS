@@ -27,15 +27,15 @@
                         <td>@(item.Attachment.AIConfidence.HasValue ? $"{item.Attachment.AIConfidence:P0}" : "-")</td>
                         <td>
                             @if (item.PendingTags > 0)
-                            { <span class="badge bg-warning text-dark">@item.PendingTags</span> }
+                            { <pems-badge tone="warning">@item.PendingTags</pems-badge> }
                             else
-                            { <span class="badge bg-success">0</span> }
+                            { <pems-badge tone="success">0</pems-badge> }
                         </td>
                         <td>
                             @if (item.PendingSpecs > 0)
-                            { <span class="badge bg-warning text-dark">@item.PendingSpecs</span> }
+                            { <pems-badge tone="warning">@item.PendingSpecs</pems-badge> }
                             else
-                            { <span class="badge bg-success">0</span> }
+                            { <pems-badge tone="success">0</pems-badge> }
                         </td>
                         <td>
                             <a asp-action="Review" asp-route-attachmentId="@item.Attachment.AttachmentId"

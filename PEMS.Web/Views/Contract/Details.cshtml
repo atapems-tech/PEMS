@@ -80,7 +80,7 @@
             <span class="badge @statusBadge">@Model.Status</span>
             @if (Model.RequiresInspection)
             {
-                <span class="badge bg-warning text-dark">@Localizer["Requires Inspection"]</span>
+                <pems-badge tone="warning">@Localizer["Requires Inspection"]</pems-badge>
             }
         </div>
         <div class="col-12"><strong>@Localizer["Scope:"]</strong> @Model.ScopeOfWork</div>
@@ -269,7 +269,7 @@
                 <ul class="list-unstyled mb-2">
                     @foreach (var n in ntps)
                     {
-                        <li>@n.NTPNumber — <span class="badge bg-secondary">@n.Status</span> (@n.IssuedDate.ToString("yyyy-MM-dd"))</li>
+                        <li>@n.NTPNumber — <pems-badge tone="neutral">@n.Status</pems-badge> (@n.IssuedDate.ToString("yyyy-MM-dd"))</li>
                     }
                 </ul>
             }
@@ -289,7 +289,7 @@
                 <ul class="list-unstyled mb-2">
                     @foreach (var m in kickoffs)
                     {
-                        <li><a asp-controller="Meeting" asp-action="Details" asp-route-id="@m.MeetingId">@m.Title</a> — <span class="badge bg-secondary">@m.Status</span> (@m.MeetingDate.ToString("yyyy-MM-dd"))</li>
+                        <li><a asp-controller="Meeting" asp-action="Details" asp-route-id="@m.MeetingId">@m.Title</a> — <pems-badge tone="neutral">@m.Status</pems-badge> (@m.MeetingDate.ToString("yyyy-MM-dd"))</li>
                     }
                 </ul>
             }
@@ -310,7 +310,7 @@
                 <ul class="list-unstyled mb-0">
                     @foreach (var itp in linkedItps)
                     {
-                        <li><a asp-controller="QC" asp-action="ItpDetails" asp-route-id="@itp.InspectionTestPlanId">@itp.ITPNumber</a> — <span class="badge bg-secondary">@itp.Status</span></li>
+                        <li><a asp-controller="QC" asp-action="ItpDetails" asp-route-id="@itp.InspectionTestPlanId">@itp.ITPNumber</a> — <pems-badge tone="neutral">@itp.Status</pems-badge></li>
                     }
                 </ul>
             }

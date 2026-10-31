@@ -28,13 +28,13 @@
                         <h6 class="mb-0">@crew.Code — @crew.Name</h6>
                         @if (crew.WorkOrder != null)
                         {
-                            <span class="badge bg-info text-dark">
+                            <pems-badge tone="info">
                                 <i class="bi bi-clipboard-check"></i> اختصاصی <a asp-controller="WorkOrder" asp-action="Details" asp-route-id="@crew.WorkOrder.WorkOrderId" class="text-dark">@crew.WorkOrder.WorkOrderNumber</a>
-                            </span>
+                            </pems-badge>
                         }
                         else
                         {
-                            <span class="badge bg-secondary">@Localizer["مستقل / پایدار"]</span>
+                            <pems-badge tone="neutral">@Localizer["مستقل / پایدار"]</pems-badge>
                         }
                     </div>
                 </div>
@@ -48,7 +48,7 @@
                         <li class="d-flex justify-content-between align-items-center border-bottom py-1">
                             <span class="small">@m.Employee?.FirstName @m.Employee?.LastName</span>
                             <span class="d-flex align-items-center gap-2">
-                                <span class="badge bg-secondary">@m.Role?.Name</span>
+                                <pems-badge tone="neutral">@m.Role?.Name</pems-badge>
                                 <form asp-action="RemoveMember" method="post" class="d-inline">
                                     <input type="hidden" name="crewMemberId" value="@m.CrewMemberId" />
                                     <button type="submit" class="btn btn-sm btn-outline-danger py-0 px-1" onclick="return confirm('این عضو از Crew خارج بشه؟')"><i class="bi bi-x"></i></button>

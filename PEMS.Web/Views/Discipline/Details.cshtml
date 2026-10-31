@@ -38,7 +38,7 @@
             @foreach (var t in Model.Tasks)
             {
                 <tr class="@(t.IsOverdue ? "table-danger" : "")">
-                    <td><span class="badge bg-secondary">@t.Type</span></td>
+                    <td><pems-badge tone="neutral">@t.Type</pems-badge></td>
                     <td>@t.Title</td>
                     <td>@t.ProjectName</td>
                     <td>@t.ResponsibleName</td>
@@ -128,7 +128,7 @@
                     <tbody>
                         @foreach (var v in Model.VDRItems)
                         {
-                            <tr><td><a asp-controller="VDR" asp-action="Details" asp-route-id="@v.VDRItemId">@v.DocumentNumber</a></td><td>@v.VendorName</td><td><span class="badge bg-secondary">@v.WorkflowStatus</span></td></tr>
+                            <tr><td><a asp-controller="VDR" asp-action="Details" asp-route-id="@v.VDRItemId">@v.DocumentNumber</a></td><td>@v.VendorName</td><td><pems-badge tone="neutral">@v.WorkflowStatus</pems-badge></td></tr>
                         }
                     </tbody>
                 </table>
@@ -143,7 +143,7 @@
                 <tbody>
                     @foreach (var m in Model.MRs)
                     {
-                        <tr><td>@m.MRNumber</td><td><span class="badge bg-secondary">@m.Status</span></td></tr>
+                        <tr><td>@m.MRNumber</td><td><pems-badge tone="neutral">@m.Status</pems-badge></td></tr>
                     }
                 </tbody>
             </table>

@@ -91,7 +91,7 @@ else
             <h5 class="mb-1">@Model.WorkOrderNumber</h5>
             <span class="badge @statusClass">@Model.Status</span>
             <span class="badge @(Model.Priority == "Critical" ? "bg-danger" : "bg-secondary")">@Model.Priority</span>
-            <span class="badge bg-secondary">@Model.WorkOrderType</span>
+            <pems-badge tone="neutral">@Model.WorkOrderType</pems-badge>
         </div>
         @if (isLegacy)
         {
@@ -189,7 +189,7 @@ else
             }
             else if (Model.Status != "OnHold")
             {
-                <span class="badge bg-success"><i class="bi bi-check2-circle"></i> Final Status</span>
+                <pems-badge tone="success"><i class="bi bi-check2-circle"></i> Final Status</pems-badge>
             }
 
             @* طبق CMMS Production Baseline v1 بند ۹.۲: مسیرهای انشعابی OnHold/Cancelled/Rejected -
@@ -467,7 +467,7 @@ else
             @foreach (var h in statusHistory)
             {
                 <li class="d-flex justify-content-between border-bottom py-2 small">
-                    <span><span class="badge bg-secondary">@h.FromStatus</span> → <span class="badge bg-secondary">@h.ToStatus</span>
+                    <span><pems-badge tone="neutral">@h.FromStatus</pems-badge> → <pems-badge tone="neutral">@h.ToStatus</pems-badge>
                         @if (!string.IsNullOrWhiteSpace(h.Reason)) { <span class="text-muted"> — @h.Reason</span> }
                     </span>
                     <span class="text-muted">
@@ -584,7 +584,7 @@ else
         }
         else
         {
-            <span class="badge bg-warning text-dark"><i class="bi bi-hourglass-split"></i> در انتظار پاسخ سایر دیسیپلین‌ها</span>
+            <pems-badge tone="warning"><i class="bi bi-hourglass-split"></i> در انتظار پاسخ سایر دیسیپلین‌ها</pems-badge>
         }
     }
 
@@ -848,7 +848,7 @@ else
     <div class="d-flex flex-wrap gap-2 mb-3">
         @foreach (var rs in requiredSkills)
         {
-            <span class="badge bg-secondary d-flex align-items-center gap-1">
+            <pems-badge tone="neutral" css="d-flex align-items-center gap-1">
                 @rs.Skill?.Name @(string.IsNullOrWhiteSpace(rs.MinimumProficiencyLevel) ? "" : $"({rs.MinimumProficiencyLevel}+)")
                 @(rs.PlannedHours.HasValue ? $"[{rs.PlannedHours}h]" : "")
                 @if (Ctl(WoSection.RequiredSkills))
@@ -859,7 +859,7 @@ else
                     <button type="submit" class="btn btn-sm p-0 border-0 text-white" style="line-height:1;" title="@Localizer["حذف"]"><i class="bi bi-x"></i></button>
                 </form>
                 }
-            </span>
+            </pems-badge>
         }
     </div>
     @if (!requiredSkills.Any()) { <p class="text-muted small">@Localizer["مهارت موردنیازی ثبت نشده."]</p> }

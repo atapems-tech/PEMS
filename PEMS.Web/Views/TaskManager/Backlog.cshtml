@@ -83,7 +83,7 @@
 
 <section class="vs-panel mb-3" aria-labelledby="backlogTitle">
     <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-2">
-        <h3 class="h6 mb-0" id="backlogTitle">@Localizer["Tm_Backlog"] <span class="badge bg-light text-dark border">@Model.BacklogItems.Count</span></h3>
+        <h3 class="h6 mb-0" id="backlogTitle">@Localizer["Tm_Backlog"] <pems-badge tone="light">@Model.BacklogItems.Count</pems-badge></h3>
         @if (view.CanManageSprints)
         {
             <button class="btn btn-sm btn-outline-secondary" type="button" data-bs-toggle="collapse" data-bs-target="#newSprint" aria-expanded="false" aria-controls="newSprint"><i class="bi bi-plus-lg" aria-hidden="true"></i> @Localizer["Tm_CreateSprint"]</button>

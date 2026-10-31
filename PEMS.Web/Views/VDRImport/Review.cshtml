@@ -75,7 +75,7 @@
                         <td>@r.VendorNameRaw</td>
                         <td>@r.Payload?.DocumentTypeCode</td>
                         <td>@r.Payload?.DisciplineCodeRaw</td>
-                        <td><span class="badge bg-secondary">@(r.Payload?.Submissions.Count ?? 0)</span></td>
+                        <td><pems-badge tone="neutral">@(r.Payload?.Submissions.Count ?? 0)</pems-badge></td>
                         <td>
                             @{
                                 var vb = r.ValidationStatus switch { "Error" => "bg-danger", "Warning" => "bg-warning text-dark", _ => "bg-success" };

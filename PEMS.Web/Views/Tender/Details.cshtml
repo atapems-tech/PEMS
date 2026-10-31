@@ -21,7 +21,7 @@
         <div class="col-md-3"><strong>@Localizer["Tender No"]:</strong> @Model.TenderNumber</div>
         <div class="col-md-3"><strong>@Localizer["Title"]:</strong> @Model.Title</div>
         <div class="col-md-3"><strong>@Localizer["Package"]:</strong> @Model.ProcurementPackage?.PackageNumber</div>
-        <div class="col-md-3"><strong>@Localizer["Status"]:</strong> <span class="badge bg-info text-dark">@Model.Status</span></div>
+        <div class="col-md-3"><strong>@Localizer["Status"]:</strong> <pems-badge tone="info">@Model.Status</pems-badge></div>
         <div class="col-md-3"><strong>@Localizer["Deadline"]:</strong> @Model.ResponseDeadline?.ToString("yyyy-MM-dd")</div>
         <div class="col-md-3"><strong>@Localizer["Requires Vendor Qualification"]:</strong> @(Model.RequiresVendorQualification ? Localizer["Yes"] : Localizer["No"])</div>
         @if (Model.AwardedBid != null)
@@ -174,7 +174,7 @@
             <div class="d-flex justify-content-between flex-wrap">
                 <div>
                     <strong>@bid.Vendor?.Name</strong> — @bid.BidNumber
-                    <span class="badge bg-secondary">@bid.Status</span>
+                    <pems-badge tone="neutral">@bid.Status</pems-badge>
                 </div>
                 <div>
                     @Localizer["Original"]: @bid.OriginalValue?.ToString("N0") @bid.Currency
@@ -263,7 +263,7 @@
     {
         <div class="border rounded p-2 mb-2">
             <div class="d-flex justify-content-between flex-wrap">
-                <div><span class="badge bg-secondary">@c.Type</span> <strong>@c.Subject</strong> @(c.Vendor != null ? "— " + c.Vendor.Name : "")</div>
+                <div><pems-badge tone="neutral">@c.Type</pems-badge> <strong>@c.Subject</strong> @(c.Vendor != null ? "— " + c.Vendor.Name : "")</div>
                 <span class="badge @(c.ActionStatus == "Answered" ? "bg-success" : "bg-warning text-dark")">@c.ActionStatus</span>
             </div>
             <p class="mb-1 mt-1">@c.Body</p>

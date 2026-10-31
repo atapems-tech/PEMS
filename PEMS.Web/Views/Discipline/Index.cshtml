@@ -23,16 +23,16 @@
                     <tr>
                         <td>@d.Code</td>
                         <td>@d.Name</td>
-                        <td><span class="badge bg-secondary">@d.DocumentsCount</span></td>
-                        <td><span class="badge bg-warning text-dark">@d.PendingDocumentsCount</span></td>
-                        <td><span class="badge bg-secondary">@d.EquipmentCount</span></td>
-                        <td><span class="badge bg-secondary">@d.VDRItemsCount</span></td>
-                        <td><span class="badge bg-info text-dark">@d.OpenTasksCount</span></td>
+                        <td><pems-badge tone="neutral">@d.DocumentsCount</pems-badge></td>
+                        <td><pems-badge tone="warning">@d.PendingDocumentsCount</pems-badge></td>
+                        <td><pems-badge tone="neutral">@d.EquipmentCount</pems-badge></td>
+                        <td><pems-badge tone="neutral">@d.VDRItemsCount</pems-badge></td>
+                        <td><pems-badge tone="info">@d.OpenTasksCount</pems-badge></td>
                         <td>
                             @if (d.OverdueTasksCount > 0)
-                            { <span class="badge bg-danger">@d.OverdueTasksCount</span> }
+                            { <pems-badge tone="danger">@d.OverdueTasksCount</pems-badge> }
                             else
-                            { <span class="badge bg-success">0</span> }
+                            { <pems-badge tone="success">0</pems-badge> }
                         </td>
                         <td><a asp-action="Details" asp-route-id="@d.DisciplineId" class="btn btn-sm btn-pems-solid"><i class="bi bi-box-arrow-in-right"></i> Open Workspace</a></td>
                     </tr>

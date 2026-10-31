@@ -27,16 +27,16 @@
                 {
                     <tr>
                         <td><a asp-controller="Equipment" asp-action="Details" asp-route-id="@p.EquipmentId">@p.EquipmentTagNumber</a></td>
-                        <td><span class="badge bg-danger">@p.NcrCount</span></td>
+                        <td><pems-badge tone="danger">@p.NcrCount</pems-badge></td>
                         <td class="small">@p.DominantQCDiscipline</td>
                         <td>
                             @if (p.HasOpenMOC)
                             {
-                                <span class="badge bg-info text-dark">@Localizer["MOC باز دارد"]</span>
+                                <pems-badge tone="info">@Localizer["MOC باز دارد"]</pems-badge>
                             }
                             else
                             {
-                                <span class="badge bg-warning text-dark">@Localizer["بدون MOC"]</span>
+                                <pems-badge tone="warning">@Localizer["بدون MOC"]</pems-badge>
                             }
                         </td>
                         <td class="small">@p.Suggestion</td>

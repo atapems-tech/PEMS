@@ -8,8 +8,8 @@
     <div class="d-flex justify-content-between align-items-center">
         <div>
             <h5 class="mb-0">@Model.DocumentNo &mdash; @Model.Title</h5>
-            <span class="badge bg-info text-dark mt-1">Stage: @Model.AIWorkflowStage</span>
-            <span class="badge bg-secondary mt-1">Status: @Model.Status</span>
+            <pems-badge tone="info" css="mt-1">Stage: @Model.AIWorkflowStage</pems-badge>
+            <pems-badge tone="neutral" css="mt-1">Status: @Model.Status</pems-badge>
             @if (!string.IsNullOrWhiteSpace(Model.AIProcessingStatus))
             {
                 @* طبق بخش ۴ سند: جدا از Stage/Status - آیا خودِ پردازش AI موفق بود یا نه *@

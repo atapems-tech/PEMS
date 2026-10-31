@@ -25,8 +25,8 @@
                 @foreach (var r in Model)
                 {
                     <tr>
-                        <td><span class="badge bg-info text-dark">@r.SimilarityScore.ToString("P0")</span></td>
-                        <td><span class="badge bg-secondary">@r.SourceType #@r.SourceId</span></td>
+                        <td><pems-badge tone="info">@r.SimilarityScore.ToString("P0")</pems-badge></td>
+                        <td><pems-badge tone="neutral">@r.SourceType #@r.SourceId</pems-badge></td>
                         <td class="small">@r.Content</td>
                     </tr>
                 }

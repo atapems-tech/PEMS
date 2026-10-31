@@ -8,7 +8,7 @@
         <div>
             <div class="d-flex align-items-center gap-2 flex-wrap">
                 <h4 class="mb-0">@Model.RunNumber</h4>
-                <span class="badge bg-secondary">@Model.Status</span>
+                <pems-badge tone="neutral">@Model.Status</pems-badge>
             </div>
             <div class="text-muted">Order: <a asp-controller="ProductionOrder" asp-action="Details" asp-route-id="@Model.ProductionOrderId">@Model.OrderNumber</a> - @Model.MaterialCode (@Model.MaterialDescription)</div>
             <div class="text-muted small mt-1">
@@ -249,7 +249,7 @@
                 <tbody>
                     @foreach (var l in Model.Losses)
                     {
-                        <tr><td>@l.Quantity.ToString("N3") @l.UomCode</td><td><span class="badge bg-warning text-dark">@l.LossCategory</span></td><td class="small text-muted">@l.Notes</td></tr>
+                        <tr><td>@l.Quantity.ToString("N3") @l.UomCode</td><td><pems-badge tone="warning">@l.LossCategory</pems-badge></td><td class="small text-muted">@l.Notes</td></tr>
                     }
                 </tbody>
             </table>

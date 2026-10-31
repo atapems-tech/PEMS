@@ -94,7 +94,7 @@
                     <td>@t.Title</td>
                     <td class="small">@t.AssignedToEmployeeName</td>
                     <td class="small">@(t.DueDate?.ToString("yyyy-MM-dd"))</td>
-                    <td><span class="badge bg-secondary">@t.Status</span></td>
+                    <td><pems-badge tone="neutral">@t.Status</pems-badge></td>
                 </tr>
             }
         </tbody>

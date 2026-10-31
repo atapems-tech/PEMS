@@ -43,7 +43,7 @@ else
                         <tr>
                             <td><input type="checkbox" class="item-check" name="selectedItems" value="@value" /></td>
                             <td><a asp-action="Equipment" asp-route-id="@item.EquipmentId">@item.EquipmentTagNumber</a></td>
-                            <td><span class="badge bg-secondary">@item.TargetType</span></td>
+                            <td><pems-badge tone="neutral">@item.TargetType</pems-badge></td>
                             <td>@item.TargetLabel</td>
                             <td class="text-muted small">@item.MatchedOnRawValue</td>
                         </tr>

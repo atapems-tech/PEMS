@@ -79,7 +79,7 @@
     <div class="d-flex flex-wrap gap-2 mb-3">
         @foreach (var rs in Model.RequiredSkills)
         {
-            <span class="badge bg-secondary d-flex align-items-center gap-1">
+            <pems-badge tone="neutral" css="d-flex align-items-center gap-1">
                 @rs.SkillName @(string.IsNullOrWhiteSpace(rs.MinimumProficiencyLevel) ? "" : $"({rs.MinimumProficiencyLevel}+)")
                 @(rs.PlannedHours.HasValue ? $"[{rs.PlannedHours}h]" : "")
                 <form asp-action="RemoveRequiredSkill" method="post" class="d-inline">
@@ -87,7 +87,7 @@
                     <input type="hidden" name="jobPlanId" value="@Model.JobPlanId" />
                     <button type="submit" class="btn btn-sm p-0 border-0 text-white" style="line-height:1;" title="@Localizer["حذف"]"><i class="bi bi-x"></i></button>
                 </form>
-            </span>
+            </pems-badge>
         }
     </div>
     @if (!Model.RequiredSkills.Any()) { <p class="text-muted small">@Localizer["مهارت موردنیازی ثبت نشده."]</p> }

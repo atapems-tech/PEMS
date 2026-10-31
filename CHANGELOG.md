@@ -3,6 +3,16 @@
 All notable changes to PEMS. No system version is defined yet (plan row F_CI), so entries are grouped by date
 and theme and were reconstructed from the git history (initial import 2026-09-05). Newest first.
 
+## 2026-10-31 - Badge and Button skin, `<pems-badge>` (SCRUM-53, #31)
+
+### Added
+- `BadgeOptions` and `ButtonOptions` get `Skin` (default Bootstrap: today's `badge bg-*` / `btn btn-*` markup; Pems: the library classes) and `CssClass` (layout helpers such as `ms-1`, `w-100`). `ButtonOptions.Outline` writes `btn-outline-*`. `Tone` gains Info, Light and Dark (no Pems-skin colour yet).
+- `<pems-badge tone="warning" css="ms-1">text</pems-badge>`: tones neutral, primary, danger, success, warning, info, light, dark.
+
+### Changed
+- 265 static `<span class="badge bg-*">` blocks in 82 views now use `<pems-badge>` with the same output; the ratchet baseline for badges fell from 689 to 405. Badges with computed classes (`@badgeClass`) and `text-bg-*` stay for the next batch.
+- The button and badge golden manifests were re-recorded; the empty and error states keep the Pems skin for their button.
+
 ## 2026-10-31 - List page component, wave 2b: the other CMMS lists (SCRUM-337)
 
 ### Added

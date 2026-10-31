@@ -36,8 +36,8 @@
                     <td class="small">@m.EquipmentTagNumber</td>
                     <td class="small">@(m.RequiredDate?.ToString("yyyy-MM-dd") ?? "-")</td>
                     <td class="small">@m.ResponsibleEngineerName</td>
-                    <td><span class="badge bg-secondary">@m.Status</span></td>
-                    <td><span class="badge bg-info text-dark">@m.QuotationsCount</span></td>
+                    <td><pems-badge tone="neutral">@m.Status</pems-badge></td>
+                    <td><pems-badge tone="info">@m.QuotationsCount</pems-badge></td>
                     <td><a asp-action="Details" asp-route-id="@m.MRId" class="btn btn-sm btn-outline-secondary"><i class="bi bi-eye"></i></a></td>
                 </tr>
             }

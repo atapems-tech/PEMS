@@ -35,13 +35,13 @@
             </div>
             <h2 class="h5 mb-1">@i.Title</h2>
             <span class="badge @TaskManagerUi.CategoryBadge(i.StatusCategory)">@TaskManagerUi.StatusLabel(Localizer, i)</span>
-            @if (i.IsOverdue) { <span class="badge bg-danger">@Localizer["Overdue"]</span> }
-            @if (!i.IsActive) { <span class="badge bg-light text-dark border">@Localizer["Tm_Archived"]</span> }
+            @if (i.IsOverdue) { <pems-badge tone="danger">@Localizer["Overdue"]</pems-badge> }
+            @if (!i.IsActive) { <pems-badge tone="light">@Localizer["Tm_Archived"]</pems-badge> }
         </div>
         <div class="d-flex flex-wrap gap-2">
             <form asp-controller="TaskManager" asp-action="Watch" method="post">
                 <input type="hidden" name="id" value="@i.Id" /><input type="hidden" name="watch" value="@(Model.IsWatching ? "false" : "true")" /><input type="hidden" name="returnUrl" value="@returnUrl" />
-                <button class="btn btn-sm btn-outline-secondary" aria-pressed="@(Model.IsWatching ? "true" : "false")"><i class="bi @(Model.IsWatching ? "bi-eye-slash" : "bi-eye")" aria-hidden="true"></i> @(Model.IsWatching ? Localizer["Tm_Unwatch"] : Localizer["Tm_Watch"]) <span class="badge bg-light text-dark border">@Model.Watchers.Count</span></button>
+                <button class="btn btn-sm btn-outline-secondary" aria-pressed="@(Model.IsWatching ? "true" : "false")"><i class="bi @(Model.IsWatching ? "bi-eye-slash" : "bi-eye")" aria-hidden="true"></i> @(Model.IsWatching ? Localizer["Tm_Unwatch"] : Localizer["Tm_Watch"]) <pems-badge tone="light">@Model.Watchers.Count</pems-badge></button>
             </form>
             @if (Model.CanArchive)
             {
@@ -117,7 +117,7 @@
         @if (!Model.IsLegacy)
         {
             <section class="vs-panel mb-3" aria-labelledby="subTitle">
-                <h3 class="h6" id="subTitle">@Localizer["Tm_Subtasks"] <span class="badge bg-light text-dark border">@Model.Subtasks.Count</span></h3>
+                <h3 class="h6" id="subTitle">@Localizer["Tm_Subtasks"] <pems-badge tone="light">@Model.Subtasks.Count</pems-badge></h3>
                 <partial name="~/Views/TaskManager/_ItemTable.cshtml" model="Model.Subtasks" view-data='new ViewDataDictionary(ViewData) { ["ShowBulk"] = false, ["CanRank"] = false }' />
                 @if (Model.CanEdit && subtaskType != null && i.ParentId == null)
                 {
@@ -188,7 +188,7 @@
         </section>
 
         <section class="vs-panel mb-3" aria-labelledby="commentTitle">
-            <h3 class="h6" id="commentTitle">@Localizer["Tm_Comments"] <span class="badge bg-light text-dark border">@Model.Comments.Count(c => !c.IsDeleted)</span></h3>
+            <h3 class="h6" id="commentTitle">@Localizer["Tm_Comments"] <pems-badge tone="light">@Model.Comments.Count(c => !c.IsDeleted)</pems-badge></h3>
             @if (Model.CanComment)
             {
                 <form asp-controller="TaskManager" asp-action="Comment" method="post" class="mb-3" data-tm-dirty-guard data-tm-ctrl-enter>

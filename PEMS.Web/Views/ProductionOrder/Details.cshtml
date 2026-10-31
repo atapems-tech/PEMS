@@ -8,7 +8,7 @@
         <div>
             <div class="d-flex align-items-center gap-2 flex-wrap">
                 <h4 class="mb-0">@Model.OrderNumber</h4>
-                <span class="badge bg-secondary">@Model.Status</span>
+                <pems-badge tone="neutral">@Model.Status</pems-badge>
             </div>
             <div class="text-muted">@Model.MaterialCode - @Model.MaterialDescription</div>
             <div class="text-muted small mt-1">
@@ -73,7 +73,7 @@
                 {
                     <tr>
                         <td>@r.RunNumber</td>
-                        <td><span class="badge bg-secondary">@r.Status</span></td>
+                        <td><pems-badge tone="neutral">@r.Status</pems-badge></td>
                         <td class="small">@(r.StartDate?.ToString("yyyy-MM-dd HH:mm"))</td>
                         <td class="small">@(r.EndDate?.ToString("yyyy-MM-dd HH:mm"))</td>
                         <td>@r.TotalOutputQuantity.ToString("N3")</td>

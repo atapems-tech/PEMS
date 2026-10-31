@@ -33,7 +33,7 @@
                 {
                     <span class="btn-group">
                         <a asp-controller="Tender" asp-action="Details" asp-route-id="@t.TenderId" class="btn btn-sm btn-outline-secondary">
-                            @t.TenderNumber <span class="badge bg-secondary">@t.Status</span>
+                            @t.TenderNumber <pems-badge tone="neutral">@t.Status</pems-badge>
                             @if (t.AwardedBid != null)
                             {
                                 <text> — @Localizer["Awarded"]: @t.AwardedBid.Vendor?.Name</text>
@@ -75,7 +75,7 @@
 <div class="row g-3 mb-3">
     <div class="col-md-6">
         <div class="content-card h-100">
-            <h6 class="mb-3"><i class="bi bi-cart-check"></i> Material Requisitions <span class="badge bg-secondary">@Model.MaterialRequisitions.Count</span></h6>
+            <h6 class="mb-3"><i class="bi bi-cart-check"></i> Material Requisitions <pems-badge tone="neutral">@Model.MaterialRequisitions.Count</pems-badge></h6>
             <div class="table-responsive table-scroll-area" style="max-height:65vh; overflow-y:auto;">
             <table class="table table-enterprise">
                 <thead><tr><th>MR No</th><th>@Localizer["Description"]</th><th>@Localizer["Status"]</th></tr></thead>
@@ -83,7 +83,7 @@
                     @foreach (var mr in Model.MaterialRequisitions)
                     {
                         <tr><td><a asp-controller="MaterialRequisition" asp-action="Details" asp-route-id="@mr.MRId">@mr.MRNumber</a></td>
-                            <td class="small">@mr.Description</td><td><span class="badge bg-secondary">@mr.Status</span></td></tr>
+                            <td class="small">@mr.Description</td><td><pems-badge tone="neutral">@mr.Status</pems-badge></td></tr>
                     }
                 </tbody>
             </table>
@@ -105,14 +105,14 @@
 
     <div class="col-md-6">
         <div class="content-card h-100">
-            <h6 class="mb-3"><i class="bi bi-file-earmark-spreadsheet"></i> Quotations (MRQ) <span class="badge bg-secondary">@Model.Quotations.Count</span></h6>
+            <h6 class="mb-3"><i class="bi bi-file-earmark-spreadsheet"></i> Quotations (MRQ) <pems-badge tone="neutral">@Model.Quotations.Count</pems-badge></h6>
             <div class="table-responsive table-scroll-area" style="max-height:65vh; overflow-y:auto;">
             <table class="table table-enterprise">
                 <thead><tr><th>@Localizer["MRQ No"]</th><th>@Localizer["Vendor"]</th><th>@Localizer["Status"]</th></tr></thead>
                 <tbody>
                     @foreach (var q in Model.Quotations)
                     {
-                        <tr><td>@q.MRQNumber</td><td>@q.VendorName</td><td><span class="badge bg-secondary">@q.QuotationStatus</span></td></tr>
+                        <tr><td>@q.MRQNumber</td><td>@q.VendorName</td><td><pems-badge tone="neutral">@q.QuotationStatus</pems-badge></td></tr>
                     }
                 </tbody>
             </table>
@@ -131,7 +131,7 @@
             @foreach (var c in Model.Communications)
             {
                 <tr>
-                    <td><span class="badge bg-secondary">@c.Type</span></td>
+                    <td><pems-badge tone="neutral">@c.Type</pems-badge></td>
                     <td>@c.Subject<div class="small text-muted">@c.Body</div></td>
                     <td>@c.VendorName</td>
                     <td>@c.RaisedByName</td>

@@ -89,7 +89,7 @@
 <div class="content-card mb-3">
     <div class="d-flex justify-content-between align-items-center mb-3">
         <h6 class="mb-0"><i class="bi bi-shield-check"></i> Engineering Health</h6>
-        <span class="badge bg-primary rounded-pill fs-6">@Model.EngineeringHealthScore / 100</span>
+        <pems-badge tone="primary" css="rounded-pill fs-6">@Model.EngineeringHealthScore / 100</pems-badge>
     </div>
     <p class="text-muted small mb-3">
         Deterministic health score = weighted quality + backlog + overdue + risk. Values are computed from actual summary and revision data in the selected scope.
@@ -167,7 +167,7 @@
                             <td class="small">@(q.DisciplineName ?? "-")</td>
                             <td class="small">@(q.VendorName ?? "-")</td>
                             <td><span class="badge badge-status-@q.Status">@q.Status</span></td>
-                            <td><span class="badge bg-danger">@q.RejectionCount</span></td>
+                            <td><pems-badge tone="danger">@q.RejectionCount</pems-badge></td>
                             <td class="small">@q.RevisionCount</td>
                         </tr>
                     }
@@ -204,7 +204,7 @@
                             <td><a asp-controller="EngineeringDocuments" asp-action="Details" asp-route-id="@q.DocumentId">@q.DocumentNo</a></td>
                             <td class="small">@(q.DisciplineName ?? "-")</td>
                             <td><span class="badge badge-status-@q.Status">@q.Status</span></td>
-                            <td><span class="badge bg-warning text-dark">@q.RevisionCount</span></td>
+                            <td><pems-badge tone="warning">@q.RevisionCount</pems-badge></td>
                             <td class="small">
                                 @if (q.FirstPassApproved == true) { <i class="bi bi-check-circle text-success" title="@Localizer["FirstPass"]" aria-label="@Localizer["FirstPass"]"></i> }
                                 else if (q.FirstPassApproved == false) { <i class="bi bi-x-circle text-danger" title="@Localizer["NotFirstPass"]" aria-label="@Localizer["NotFirstPass"]"></i> }
@@ -255,19 +255,19 @@
                            <td>
                                @if (item.Severity == "Critical")
                                {
-                                   <span class="badge bg-danger">@item.Severity</span>
+                                   <pems-badge tone="danger">@item.Severity</pems-badge>
                                }
                                else if (item.Severity == "High")
                                {
-                                   <span class="badge bg-warning text-dark">@item.Severity</span>
+                                   <pems-badge tone="warning">@item.Severity</pems-badge>
                                }
                                else
                                {
-                                   <span class="badge bg-secondary">@item.Severity</span>
+                                   <pems-badge tone="neutral">@item.Severity</pems-badge>
                                }
                            </td>
-                           <td><span class="badge bg-info text-dark">@item.RevisionCount</span></td>
-                           <td><span class="badge bg-danger">@item.RejectionCount</span></td>
+                           <td><pems-badge tone="info">@item.RevisionCount</pems-badge></td>
+                           <td><pems-badge tone="danger">@item.RejectionCount</pems-badge></td>
                        </tr>
                    }
                </tbody>

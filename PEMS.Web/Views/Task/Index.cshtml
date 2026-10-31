@@ -66,7 +66,7 @@
                                 var sb = t.Status switch { "Completed" => "bg-success", "InProgress" => "bg-info text-dark", "Cancelled" => "bg-dark", _ => "bg-secondary" };
                             }
                             <span class="badge @sb">@(t.WorkSpaceId != null ? TaskManagerUi.Name(t.StatusName, t.StatusNameFa) : TaskManagerUi.LegacyStatus(Localizer, t.Status))</span>
-                            @if (t.IsOverdue) { <span class="badge bg-danger">@Localizer["Overdue"]</span> }
+                            @if (t.IsOverdue) { <pems-badge tone="danger">@Localizer["Overdue"]</pems-badge> }
                         </td>
                         <td class="small">
                             @if (!string.IsNullOrEmpty(t.RelatedType))

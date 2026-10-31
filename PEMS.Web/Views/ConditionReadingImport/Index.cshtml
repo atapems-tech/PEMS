@@ -42,10 +42,10 @@
                     <td>@b.ImportDate.ToString("yyyy-MM-dd HH:mm")</td>
                     <td class="small">@b.ImportedByName</td>
                     <td class="text-end">@b.TotalRows</td>
-                    <td class="text-end"><span class="badge bg-success">@b.NewCount</span></td>
-                    <td class="text-end">@if (b.DuplicateCount > 0) { <span class="badge bg-warning text-dark">@b.DuplicateCount</span> } else { @b.DuplicateCount }</td>
-                    <td class="text-end">@if (b.UnresolvedCount > 0) { <span class="badge bg-danger">@b.UnresolvedCount</span> } else { @b.UnresolvedCount }</td>
-                    <td class="text-end">@if (b.ConflictCount > 0) { <span class="badge bg-danger">@b.ConflictCount</span> } else { @b.ConflictCount }</td>
+                    <td class="text-end"><pems-badge tone="success">@b.NewCount</pems-badge></td>
+                    <td class="text-end">@if (b.DuplicateCount > 0) { <pems-badge tone="warning">@b.DuplicateCount</pems-badge> } else { @b.DuplicateCount }</td>
+                    <td class="text-end">@if (b.UnresolvedCount > 0) { <pems-badge tone="danger">@b.UnresolvedCount</pems-badge> } else { @b.UnresolvedCount }</td>
+                    <td class="text-end">@if (b.ConflictCount > 0) { <pems-badge tone="danger">@b.ConflictCount</pems-badge> } else { @b.ConflictCount }</td>
                     <td><span class="badge @(b.Status == "Committed" ? "bg-success" : "bg-secondary")">@b.Status</span></td>
                     <td>
                         <a asp-action="Review" asp-route-batchId="@b.ConditionReadingImportBatchId" class="btn btn-sm btn-outline-primary">@Localizer["Review"]</a>

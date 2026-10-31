@@ -52,15 +52,15 @@
                         <td>@p.Title</td>
                         <td>@p.ProjectName</td>
                         <td>@p.DisciplineName</td>
-                        <td><span class="badge bg-info text-dark">@p.Stage</span></td>
+                        <td><pems-badge tone="info">@p.Stage</pems-badge></td>
                         <td><span class="badge @(p.Status == "Closed" ? "bg-success" : p.Status == "Open" ? "bg-secondary" : "bg-warning text-dark")">@p.Status</span></td>
-                        <td><span class="badge bg-secondary">@p.MRCount</span></td>
-                        <td><span class="badge bg-secondary">@p.MRQCount</span></td>
+                        <td><pems-badge tone="neutral">@p.MRCount</pems-badge></td>
+                        <td><pems-badge tone="neutral">@p.MRQCount</pems-badge></td>
                         <td>
                             @if (p.OpenCommunicationsCount > 0)
-                            { <span class="badge bg-danger">@p.OpenCommunicationsCount</span> }
+                            { <pems-badge tone="danger">@p.OpenCommunicationsCount</pems-badge> }
                             else
-                            { <span class="badge bg-success">0</span> }
+                            { <pems-badge tone="success">0</pems-badge> }
                         </td>
                         <td><a asp-action="Details" asp-route-id="@p.ProcurementPackageId" class="btn btn-sm btn-outline-secondary"><i class="bi bi-eye"></i></a></td>
                     </tr>

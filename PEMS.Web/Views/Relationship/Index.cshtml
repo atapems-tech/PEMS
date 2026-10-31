@@ -58,7 +58,7 @@ else
             <div class="d-flex align-items-center gap-2">
                 @if (!string.IsNullOrWhiteSpace(Model.RootArea))
                 {
-                    <span class="badge bg-secondary"><i class="bi bi-geo-alt"></i> @Model.RootArea</span>
+                    <pems-badge tone="neutral"><i class="bi bi-geo-alt"></i> @Model.RootArea</pems-badge>
                 }
                 @if (Model.RootType == "Equipment")
                 {
@@ -92,7 +92,7 @@ else
                 {
                     <li class="d-flex justify-content-between align-items-center border-bottom py-2">
                         <span>
-                            <span class="badge bg-warning text-dark"><i class="bi bi-robot"></i> @Localizer["پیشنهاد"]</span>
+                            <pems-badge tone="warning"><i class="bi bi-robot"></i> @Localizer["پیشنهاد"]</pems-badge>
                             @suggestion.Label
                             <span class="text-muted small">@suggestion.SubLabel</span>
                         </span>
@@ -137,7 +137,7 @@ else
         {
             <div class="col-md-6">
                 <div class="content-card h-100">
-                    <h6 class="mb-3"><i class="bi @s.Icon"></i> @s.Title <span class="badge bg-secondary">@s.Items.Count</span></h6>
+                    <h6 class="mb-3"><i class="bi @s.Icon"></i> @s.Title <pems-badge tone="neutral">@s.Items.Count</pems-badge></h6>
                     @if (s.Items.Any())
                     {
                         <ul class="list-unstyled mb-0">
@@ -156,7 +156,7 @@ else
 
                                         @if (item.Priority == "High" || item.Priority == "Urgent")
                                         {
-                                            <span class="badge bg-danger ms-1">@item.Priority</span>
+                                            <pems-badge tone="danger" css="ms-1">@item.Priority</pems-badge>
                                         }
                                         else if (!string.IsNullOrWhiteSpace(item.Priority))
                                         {

@@ -651,8 +651,8 @@
                                             @if (l.MyReminderAt.HasValue) { <span class="ct-chip ct-chip--remind" title="@l.MyReminderAt.Value.ToString("yyyy-MM-dd HH:mm")"><i class="bi bi-bell" aria-hidden="true"></i> @l.MyReminderAt.Value.ToString("MM-dd")</span> }
                                             @if (l.IsTrashed && !inTrash) { <span class="ct-chip ct-chip--trash"><i class="bi bi-trash3" aria-hidden="true"></i> @Localizer["Ct_FolderTrash"]</span> }
                                             @if (l.ConfidentialityLevel != "Public" && l.ConfidentialityLevel != "Internal") { <span class="badge @(veryConfidential ? "ct-chip ct-chip--vconf" : "bg-dark")"><i class="bi bi-lock-fill"></i> @l.ConfidentialityLevel</span> }
-                                            @if (!string.IsNullOrEmpty(l.RelatedDocumentNo)) { <span class="badge bg-info text-dark"><i class="bi bi-file-earmark-text"></i> @l.RelatedDocumentNo</span> }
-                                            @if (!string.IsNullOrEmpty(l.RelatedMRNumber)) { <span class="badge bg-info text-dark"><i class="bi bi-cart-check"></i> @l.RelatedMRNumber</span> }
+                                            @if (!string.IsNullOrEmpty(l.RelatedDocumentNo)) { <pems-badge tone="info"><i class="bi bi-file-earmark-text"></i> @l.RelatedDocumentNo</pems-badge> }
+                                            @if (!string.IsNullOrEmpty(l.RelatedMRNumber)) { <pems-badge tone="info"><i class="bi bi-cart-check"></i> @l.RelatedMRNumber</pems-badge> }
                                             @if (l.OpenReferralsCount > 0) { <span class="badge @(l.HasOverdueReferral ? "bg-danger" : "bg-warning text-dark")"><i class="bi bi-signpost-split"></i> @l.OpenReferralsCount</span> }
                                             @foreach (var tag in l.Tags) { <span class="badge bg-@tag.Color">@tag.Name</span> }
                                         </div>

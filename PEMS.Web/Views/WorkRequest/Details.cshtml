@@ -81,9 +81,9 @@
     {
         <div class="row g-2 small mt-1">
             <div class="col-md-4">
-                @if (Model.IsEmergency) { <span class="badge bg-danger">@Localizer["Emergency"]</span> }
-                @if (Model.IsHseRelated) { <span class="badge bg-warning text-dark">HSE</span> }
-                @if (Model.RiskScore.HasValue) { <span class="badge bg-light text-dark border">@Localizer["Risk"]: @Model.RiskLikelihood×@Model.RiskSeverity = @Model.RiskScore (@Model.RiskLevel)</span> }
+                @if (Model.IsEmergency) { <pems-badge tone="danger">@Localizer["Emergency"]</pems-badge> }
+                @if (Model.IsHseRelated) { <pems-badge tone="warning">HSE</pems-badge> }
+                @if (Model.RiskScore.HasValue) { <pems-badge tone="light">@Localizer["Risk"]: @Model.RiskLikelihood×@Model.RiskSeverity = @Model.RiskScore (@Model.RiskLevel)</pems-badge> }
             </div>
             <div class="col-md-4">
                 @if (Model.ResponseDueDate.HasValue) { <span><strong>@Localizer["Response due:"]</strong> <bdi dir="ltr">@Model.ResponseDueDate.Value.ToString("yyyy-MM-dd HH:mm")</bdi></span> }
@@ -209,7 +209,7 @@
         else if (Model.IsLegacyWithoutWorkflow)
         {
             @* رکورد Legacy قبل از مهاجرت (بدون Instance): مسیر قدیمی تا تخلیه‌ی طبیعی این رکوردها باقی می‌ماند *@
-            <span class="badge bg-light text-dark border">@Localizer["Legacy record - no workflow instance"]</span>
+            <pems-badge tone="light">@Localizer["Legacy record - no workflow instance"]</pems-badge>
             @if (nextStatus != null)
             {
                 <form asp-action="AdvanceStatus" method="post" class="d-flex gap-2">
