@@ -4,107 +4,114 @@
 @using PEMS.Web.Helpers
 @inject IStringLocalizer<SharedResource> Localizer
 
-<div class="content-card">
-    <div class="d-flex justify-content-between mb-3">
-        <button type="button" class="btn btn-sm btn-outline-secondary" onclick="PemsDataGrid.resetColumns('MaintenancePlan')">
-            <i class="bi bi-arrow-counterclockwise"></i> @Localizer["Reset columns"]
-        </button>
-        <div class="d-flex gap-2">
-            <form asp-action="GenerateDueWorkOrders" method="post" class="d-inline" onsubmit="return confirm('برای همه‌ی Plan های سررسیدرسیده (که Work Order فعال ندارند) Work Order ساخته شود؟');">
-                <button type="submit" class="btn btn-sm btn-outline-primary"><i class="bi bi-lightning-charge"></i> Generate Due PMs</button>
-            </form>
-            <a asp-action="Create" class="btn btn-pems-solid btn-sm"><i class="bi bi-plus-lg"></i> @Localizer["Rcm_NewPlan"]</a>
-        </div>
-    </div>
-    <div class="table-scroll-area pems-grid-scroll" style="max-height:65vh; overflow-y:auto;">
-        <table class="table table-enterprise pems-grid-table" data-grid-key="MaintenancePlan">
-            <thead>
-                <tr>
-                    <th data-col-key="planNo" data-resizable="true" data-min-width="100" data-max-width="220" style="width:140px">Plan No</th>
-                    <th data-col-key="equipment" data-resizable="true" data-min-width="100" data-max-width="220" style="width:140px">@Localizer["Equipment"]</th>
-                    <th data-col-key="title" data-resizable="true" data-min-width="140" data-max-width="320" style="width:200px">@Localizer["Title"]</th>
-                    <th data-col-key="strategy" data-resizable="true" data-min-width="100" data-max-width="200" style="width:130px">@Localizer["Strategy"]</th>
-                    <th data-col-key="trigger" data-resizable="true" data-min-width="140" data-max-width="320" style="width:220px">@Localizer["Trigger"]</th>
-                    <th data-col-key="lastDone" data-resizable="true" data-min-width="100" data-max-width="180" style="width:120px">Last Done</th>
-                    <th data-col-key="nextDue" data-resizable="true" data-min-width="100" data-max-width="200" style="width:150px">@Localizer["Next Due"]</th>
-                    <th data-col-key="actions" data-resizable="false" style="width:170px"></th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var p in Model.Items)
-                {
-                    <tr class="@(p.IsOverdue ? "table-danger" : "")">
-                        <td>@p.PlanNumber</td>
-                        <td class="small">
-                            <a asp-controller="MaintenanceStrategy" asp-action="Tag" asp-route-equipmentId="@p.EquipmentId" class="fw-bold">@p.EquipmentTagNumber</a>
-                            <div class="text-muted">@p.EquipmentName</div>
-                            <div class="text-muted">@(p.EquipmentClassName ?? Localizer["Rcm_Unclassified"].Value)
-                                <span class="badge @RcmDisplay.CriticalityBadge(p.CriticalityClass ?? "Unrated")">@Localizer.Label("Criticality", p.CriticalityClass ?? "Unrated")</span></div>
-                        </td>
-                        <td>@p.Title</td>
-                        <td class="small">
-                            <span class="badge bg-secondary">@Localizer.Label("StrategyType", p.StrategyType)</span>
-                            @if (p.StrategyId.HasValue) { <a asp-controller="MaintenanceStrategy" asp-action="Details" asp-route-id="@p.StrategyId">v@(p.StrategyVersion)</a> }
-                            <div class="text-muted">@RcmDisplay.Name(p.FailureModeName, p.FailureModeNameFa)</div>
-                            <div class="text-muted">@Localizer.Label("ScheduleMode", p.ScheduleMode)</div>
-                            @if (!p.HasAssignment) { <span class="badge bg-warning text-dark" title="@Localizer["Rcm_PlanNoAssignment"]">@Localizer["Rcm_NoAssignmentBadge"]</span> }
-                        </td>
-                        <td class="small">
-                            @if (p.TriggerType is "Calendar" or "Both")
-                            {
-                                <div>@(p.IntervalDays.HasValue ? p.IntervalDays + " روز" : "-")</div>
-                            }
-                            @if (p.TriggerType is "Meter" or "Both")
-                            {
-                                <div>
-                                    <span class="badge bg-info text-dark">@p.MeterType: هر @p.MeterInterval</span>
-                                    @if (p.NextDueMeterReading.HasValue) { <span class="text-muted">(سررسید در @p.NextDueMeterReading)</span> }
-                                </div>
-                                <form asp-action="RecordMeterReading" method="post" class="d-flex gap-1 mt-1">
-                                    <input type="hidden" name="planId" value="@p.MaintenancePlanId" />
-                                    <input type="number" step="0.01" name="currentReading" class="form-control form-control-sm" style="width:90px;" placeholder="@Localizer["قرائت فعلی"]" required />
-                                    <button type="submit" class="btn btn-sm btn-outline-info">@Localizer["ثبت"]</button>
-                                </form>
-                            }
-                        </td>
-                        <td class="small">@(p.LastExecutionDate?.ToString("yyyy-MM-dd"))</td>
-                        <td class="small">
-                            @(p.NextDueDate?.ToString("yyyy-MM-dd"))
-                            @if (p.IsOverdue) { <span class="badge bg-danger ms-1">@Localizer["Overdue"]</span> }
-                        </td>
-                        <td class="text-end">
-                            <form asp-action="GenerateWorkOrder" method="post" class="d-inline">
-                                <input type="hidden" name="planId" value="@p.MaintenancePlanId" />
-                                <button type="submit" class="btn btn-sm btn-outline-primary"><i class="bi bi-clipboard-plus"></i> Generate WO</button>
-                            </form>
-                            <form asp-action="Deactivate" method="post" class="d-inline">
-                                <input type="hidden" name="planId" value="@p.MaintenancePlanId" />
-                                <button type="submit" class="btn btn-sm btn-outline-danger"><i class="bi bi-slash-circle"></i></button>
-                            </form>
-                        </td>
-                    </tr>
-                }
-            </tbody>
-        </table>
-    </div>
-    @if (!Model.Items.Any()) { <p class="text-muted text-center py-4">No maintenance plans yet.</p> }
+@section Styles {
+    <link rel="stylesheet" href="~/css/pems-workspace.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/_content/PEMS.UI/pems-list.css" asp-append-version="true" />
+}
 
-    @await Html.PartialAsync("_Pagination", new PEMS.Web.ViewModels.PaginationViewModel
-    {
-        Page = Model.Page,
-        TotalPages = Model.TotalPages,
-        TotalCount = Model.TotalCount,
-        PageSize = Model.PageSize,
-        GridKey = "MaintenancePlan",
-        BaseUrl = Url.Action("Index") ?? "",
-        ExistingQueryString = ""
-    })
-</div>
+@* SCRUM-337 W2: built from the PEMS.UI list-page component; the page keeps its columns, the meter-reading form in the
+   trigger column and the generate / deactivate actions. "Generate due PMs" is a tool of the toolbar. *@
+<pems-list-page texts="@ListPageTexts.From(Localizer)">
+    <pems-list-panel>
+
+        <pems-list-toolbar heading="@Localizer["Mp_Title"]" total="@Model.TotalCount">
+            <pems-list-tools>
+                <form asp-action="GenerateDueWorkOrders" method="post" class="d-inline" data-confirm="@Localizer["Mp_GenerateDueConfirm"]" onsubmit="return confirm(this.dataset.confirm)">
+                    <button type="submit" class="lp-icon-btn" title="@Localizer["Mp_GenerateDue"]"><i class="bi bi-lightning-charge" aria-hidden="true"></i><span class="visually-hidden">@Localizer["Mp_GenerateDue"]</span></button>
+                </form>
+                <pems-list-reset-columns grid-key="MaintenancePlan" />
+                <pems-list-new href="@Url.Action("Create")" text="@Localizer["Rcm_NewPlan"]" />
+            </pems-list-tools>
+        </pems-list-toolbar>
+
+        <pems-list-grid>
+            <pems-list-table grid-key="MaintenancePlan" empty="@(!Model.Items.Any())" empty-text="@Localizer["Mp_Empty"]">
+                <thead>
+                    <tr>
+                        <th data-col-key="planNo" data-resizable="true" data-min-width="100" data-max-width="220" style="width:140px">@Localizer["Mp_PlanNo"]</th>
+                        <th data-col-key="equipment" data-resizable="true" data-min-width="100" data-max-width="220" style="width:160px">@Localizer["Equipment"]</th>
+                        <th data-col-key="title" data-resizable="true" data-min-width="140" data-max-width="320" style="width:200px">@Localizer["Cm_Title"]</th>
+                        <th data-col-key="strategy" data-resizable="true" data-min-width="100" data-max-width="220" style="width:150px">@Localizer["Cm_Strategy"]</th>
+                        <th data-col-key="trigger" data-resizable="true" data-min-width="140" data-max-width="320" style="width:220px">@Localizer["Cm_Trigger"]</th>
+                        <th data-col-key="lastDone" data-resizable="true" data-min-width="100" data-max-width="180" style="width:120px" class="vs-hide-md">@Localizer["Cm_LastDone"]</th>
+                        <th data-col-key="nextDue" data-resizable="true" data-min-width="100" data-max-width="200" style="width:150px">@Localizer["Cm_NextDue"]</th>
+                        <th data-col-key="actions" data-resizable="false" style="width:170px"><span class="visually-hidden">@Localizer["Ed_Actions"]</span></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var p in Model.Items)
+                    {
+                        <tr class="lp-row">
+                            <td class="lp-no"><span class="vs-num">@p.PlanNumber</span></td>
+                            <td class="small">
+                                <a asp-controller="MaintenanceStrategy" asp-action="Tag" asp-route-equipmentId="@p.EquipmentId" class="lp-subject">@p.EquipmentTagNumber</a>
+                                <div class="text-muted">@p.EquipmentName</div>
+                                <div class="text-muted">@(p.EquipmentClassName ?? Localizer["Rcm_Unclassified"].Value)
+                                    <span class="badge @RcmDisplay.CriticalityBadge(p.CriticalityClass ?? "Unrated")">@Localizer.Label("Criticality", p.CriticalityClass ?? "Unrated")</span></div>
+                            </td>
+                            <td><span class="vs-title-cell" title="@p.Title">@p.Title</span></td>
+                            <td class="small">
+                                <span class="vs-pill vs-pill--neutral">@Localizer.Label("StrategyType", p.StrategyType)</span>
+                                @if (p.StrategyId.HasValue) { <a asp-controller="MaintenanceStrategy" asp-action="Details" asp-route-id="@p.StrategyId">v@(p.StrategyVersion)</a> }
+                                <div class="text-muted">@RcmDisplay.Name(p.FailureModeName, p.FailureModeNameFa)</div>
+                                <div class="text-muted">@Localizer.Label("ScheduleMode", p.ScheduleMode)</div>
+                                @if (!p.HasAssignment) { <span class="vs-pill vs-pill--warning" title="@Localizer["Rcm_PlanNoAssignment"]">@Localizer["Rcm_NoAssignmentBadge"]</span> }
+                            </td>
+                            <td class="small">
+                                @if (p.TriggerType is "Calendar" or "Both")
+                                {
+                                    <div>@(p.IntervalDays.HasValue ? string.Format(Localizer["Mp_EveryDays"].Value, p.IntervalDays) : "-")</div>
+                                }
+                                @if (p.TriggerType is "Meter" or "Both")
+                                {
+                                    <div>
+                                        <span class="vs-pill vs-pill--info">@string.Format(Localizer["Mp_MeterEvery"].Value, p.MeterType, p.MeterInterval)</span>
+                                        @if (p.NextDueMeterReading.HasValue) { <span class="text-muted">@string.Format(Localizer["Mp_DueAtReading"].Value, p.NextDueMeterReading)</span> }
+                                    </div>
+                                    <form asp-action="RecordMeterReading" method="post" class="d-flex gap-1 mt-1">
+                                        <input type="hidden" name="planId" value="@p.MaintenancePlanId" />
+                                        <input type="number" step="0.01" name="currentReading" class="form-control form-control-sm" style="width:90px;"
+                                               placeholder="@Localizer["Mp_CurrentReading"]" aria-label="@Localizer["Mp_CurrentReading"]" required />
+                                        <button type="submit" class="btn btn-sm btn-outline-info">@Localizer["Mp_Record"]</button>
+                                    </form>
+                                }
+                            </td>
+                            <td class="small vs-hide-md"><span class="vs-num">@(p.LastExecutionDate?.ToString("yyyy-MM-dd"))</span></td>
+                            <td class="small">
+                                <span class="vs-num">@(p.NextDueDate?.ToString("yyyy-MM-dd"))</span>
+                                @if (p.IsOverdue) { <div><span class="vs-pill vs-pill--icon vs-pill--danger"><i class="bi bi-clock-history" aria-hidden="true"></i> @Localizer["Overdue"]</span></div> }
+                            </td>
+                            <td class="text-nowrap text-end">
+                                <form asp-action="GenerateWorkOrder" method="post" class="d-inline">
+                                    <input type="hidden" name="planId" value="@p.MaintenancePlanId" />
+                                    <button type="submit" class="btn btn-sm btn-outline-primary"><i class="bi bi-clipboard-plus" aria-hidden="true"></i> @Localizer["Mp_GenerateWo"]</button>
+                                </form>
+                                <form asp-action="Deactivate" method="post" class="d-inline">
+                                    <input type="hidden" name="planId" value="@p.MaintenancePlanId" />
+                                    <button type="submit" class="lp-act lp-act--always" title="@Localizer["Mp_Deactivate"]" aria-label="@Localizer["Mp_Deactivate"]"><i class="bi bi-slash-circle" aria-hidden="true"></i></button>
+                                </form>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </pems-list-table>
+
+            <pems-list-footer>
+                @await Html.PartialAsync("_Pagination", new PEMS.Web.ViewModels.PaginationViewModel
+                {
+                    Page = Model.Page,
+                    TotalPages = Model.TotalPages,
+                    TotalCount = Model.TotalCount,
+                    PageSize = Model.PageSize,
+                    GridKey = "MaintenancePlan",
+                    BaseUrl = Url.Action("Index") ?? "",
+                    ExistingQueryString = ""
+                })
+            </pems-list-footer>
+        </pems-list-grid>
+    </pems-list-panel>
+</pems-list-page>
 
 @section Scripts {
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            PemsDataGrid.initColumnResize('MaintenancePlan');
-        });
-    </script>
+    <script src="~/_content/PEMS.UI/pems-list.js" asp-append-version="true"></script>
 }

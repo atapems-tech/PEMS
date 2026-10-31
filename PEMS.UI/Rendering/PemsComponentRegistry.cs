@@ -30,6 +30,17 @@ public sealed class PemsComponentRegistry : IPemsComponentRegistry
         Register("field", typeof(PemsField));
         Register("table", typeof(PemsTable));
         Register("form", typeof(PemsForm));
+        Register("form-section", typeof(PemsFormSection));
+        Register("action-bar", typeof(PemsActionBar));
+        Register("alert", typeof(PemsAlert));
+        Register("modal", typeof(PemsModal));
+        Register("drawer", typeof(PemsDrawer));
+        Register("confirm-dialog", typeof(PemsConfirmDialog));
+        Register("tabs", typeof(PemsTabs));
+        Register("breadcrumb", typeof(PemsBreadcrumb));
+        Register("stepper", typeof(PemsStepper));
+        Register("menu", typeof(PemsMenu));
+        Register("side-panel-nav", typeof(PemsSidePanelNav));
     }
 
     public void Register(string key, Type componentType)

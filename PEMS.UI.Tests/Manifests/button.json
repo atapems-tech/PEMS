@@ -50,6 +50,18 @@
           "string",
           "null"
         ]
+      },
+      "opens": {
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "rowKey": {
+        "type": [
+          "string",
+          "null"
+        ]
       }
     },
     "required": [

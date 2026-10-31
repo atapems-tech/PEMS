@@ -433,14 +433,15 @@ class Jira:
     def issues(self):
         out, token = [], None
         while True:
-            body = {"jql": f'project = "{self.project}" ORDER BY key', "fields": ["summary", "status", "labels", "priority"], "maxResults": 100}
+            body = {"jql": f'project = "{self.project}" ORDER BY key', "fields": ["summary", "status", "labels", "priority", "parent", "issuetype"], "maxResults": 100}
             if token:
                 body["nextPageToken"] = token
             page = self.request("POST", "/rest/api/3/search/jql", body)
             for i in page.get("issues", []):
                 f = i.get("fields", {})
                 out.append({"key": i["key"], "summary": clean(f.get("summary")), "status": clean((f.get("status") or {}).get("name")),
-                            "labels": list(f.get("labels") or []), "priority": clean((f.get("priority") or {}).get("name"))})
+                            "labels": list(f.get("labels") or []), "priority": clean((f.get("priority") or {}).get("name")),
+                            "parent": clean((f.get("parent") or {}).get("key")), "type": clean((f.get("issuetype") or {}).get("name"))})
             token = page.get("nextPageToken")
             if page.get("isLast", True) or not token:
                 return out
@@ -561,6 +562,36 @@ def tracker_findings(res):
     return f
 
 
+HYGIENE_FROM = 400          # issues before this key were imported or created before the creation rules existed
+HYGIENE_PREFIXES = ("area-", "doer-", "effort-")
+
+
+def hygiene_findings(issues):
+    """Creation rules of chapter 00 (rule 28 and 'no issue without an epic'): epic, [#N] title equal to the plan-N label, area/doer/effort labels,
+    qa-pending on In Review. The parent is checked only when the source says (REST API, CSV 'Parent' column); Done, Won't Do and duplicates are skipped."""
+    out = []
+    for i in issues:
+        m = re.fullmatch(r"[A-Z][A-Z0-9_]*-(\d+)", i["key"])
+        labs = i.get("labels", [])
+        if not m or int(m.group(1)) < HYGIENE_FROM or i.get("status") in ("Done", "Won't Do") or "duplicate" in labs or i.get("type") == "Epic":
+            continue
+        k = i["key"]
+        if "parent" in i and not i["parent"]:
+            out.append(f"{k} has no parent epic (every issue is created with its epic; attach it now)")
+        title = re.match(r"\s*\[#(\d+)\]", i.get("summary", ""))
+        label = next((int(x.group(1)) for x in map(lambda l: re.fullmatch(r"plan-(\d+)", l), labs) if x), None)
+        if not title:
+            out.append(f"{k} title has no [#N] Plan ID prefix: {i.get('summary', '')[:60]}")
+        elif label is not None and label != int(title.group(1)):
+            out.append(f"{k} title [#{title.group(1)}] and label plan-{label} disagree")
+        if label is None:
+            out.append(f"{k} has no plan-N label")
+        out += [f"{k} has no {p}* label" for p in HYGIENE_PREFIXES if not any(l.startswith(p) for l in labs)]
+        if i.get("status") == "In Review" and "qa-pending" not in labs and "qa-passed" not in labs and "qa-failed" not in labs:
+            out.append(f"{k} is In Review without the label qa-pending")
+    return out
+
+
 def cmd_reconcile(args):
     _, rows = load_rows()
     print("\n".join(reconcile_lines(reconcile(rows, load_issues(args), load_tracker_map()))))
@@ -569,7 +600,8 @@ def cmd_reconcile(args):
 
 def cmd_tracker_check(args):
     _, rows = load_rows()
-    problems = tracker_findings(reconcile(rows, load_issues(args), load_tracker_map()))
+    issues = load_issues(args)
+    problems = tracker_findings(reconcile(rows, issues, load_tracker_map())) + hygiene_findings(issues)
     for p in problems:
         print("FINDING:", p)
     print(f"tracker check: {len(problems)} finding(s)")

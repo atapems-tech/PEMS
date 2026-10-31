@@ -10,12 +10,13 @@ namespace PEMS.Tests.Web;
 /// <summary>
 /// SCRUM-425: pages that set a title but showed no heading at all now show the shared title row (_PageHeader).
 /// The layout still does not render it (GlobalPageHeaderTests); each page calls it itself.
+/// SCRUM-337 W2: Finding/Index left this list; its heading now comes from the list-page toolbar (CmmsListPagesTests).
 /// </summary>
 public class PageHeaderCallersTests
 {
     public static readonly string[] Callers =
     [
-        "Finding/Index.cshtml", "ImportCenter/Index.cshtml", "ShiftHandover/Create.cshtml",
+        "ImportCenter/Index.cshtml", "ShiftHandover/Create.cshtml",
         "CriticalityAssessment/Create.cshtml", "Barcode/Verify.cshtml"
     ];
 

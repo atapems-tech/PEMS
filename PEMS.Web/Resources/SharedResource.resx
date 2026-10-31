@@ -3142,4 +3142,157 @@
   <data name="PcRpt_ScopeNote" xml:space="preserve"><value>Only the requests you raised or are an approver on are counted.</value></data>
   <data name="PcRpt_Truncated" xml:space="preserve"><value>The detail lists were cut at {0} rows.</value></data>
   <data name="PcRpt_PageRows" xml:space="preserve"><value>The page shows the first {0} rows; the Excel file has them all.</value></data>
+  <data name="Lp_Details" xml:space="preserve"><value>Details</value></data>
+  <data name="Pri_Critical" xml:space="preserve"><value>Critical</value></data>
+  <data name="Pri_High" xml:space="preserve"><value>High</value></data>
+  <data name="Pri_Medium" xml:space="preserve"><value>Medium</value></data>
+  <data name="Pri_Low" xml:space="preserve"><value>Low</value></data>
+  <data name="Wo_Title" xml:space="preserve"><value>Work orders</value></data>
+  <data name="Wo_Empty" xml:space="preserve"><value>No work orders yet.</value></data>
+  <data name="Wo_St_Open" xml:space="preserve"><value>Open</value></data>
+  <data name="Wo_St_Assigned" xml:space="preserve"><value>Assigned</value></data>
+  <data name="Wo_St_InProgress" xml:space="preserve"><value>In progress</value></data>
+  <data name="Wo_St_Completed" xml:space="preserve"><value>Completed</value></data>
+  <data name="Wo_St_Closed" xml:space="preserve"><value>Closed</value></data>
+  <data name="Wr_Title" xml:space="preserve"><value>Work requests</value></data>
+  <data name="Wr_New" xml:space="preserve"><value>New request</value></data>
+  <data name="Wr_Empty" xml:space="preserve"><value>No work requests yet.</value></data>
+  <data name="Wr_RequestedBy" xml:space="preserve"><value>Requested by</value></data>
+  <data name="Wr_St_Draft" xml:space="preserve"><value>Draft</value></data>
+  <data name="Wr_St_Submitted" xml:space="preserve"><value>Submitted</value></data>
+  <data name="Wr_St_UnderReview" xml:space="preserve"><value>Under review</value></data>
+  <data name="Wr_St_Approved" xml:space="preserve"><value>Approved</value></data>
+  <data name="Wr_St_Planned" xml:space="preserve"><value>Planned</value></data>
+  <data name="Wr_St_Converted" xml:space="preserve"><value>Converted to WO</value></data>
+  <data name="Wr_St_Rejected" xml:space="preserve"><value>Rejected</value></data>
+  <data name="Wr_St_Cancelled" xml:space="preserve"><value>Cancelled</value></data>
+  <data name="Tg_Title" xml:space="preserve"><value>Letter tags</value></data>
+  <data name="Tg_New" xml:space="preserve"><value>New tag</value></data>
+  <data name="Tg_Empty" xml:space="preserve"><value>No tags yet.</value></data>
+  <data name="Tg_Tag" xml:space="preserve"><value>Tag</value></data>
+  <data name="Tg_UsedOn" xml:space="preserve"><value>Used on</value></data>
+  <data name="Tg_LetterCount" xml:space="preserve"><value>{0} letters</value></data>
+  <data name="Tg_DeleteConfirm" xml:space="preserve"><value>Delete this tag?</value></data>
+  <data name="Tg_Name" xml:space="preserve"><value>Tag name</value></data>
+  <data name="Tg_Color" xml:space="preserve"><value>Colour</value></data>
+  <data name="Ins_Title" xml:space="preserve"><value>Condition monitoring inspections</value></data>
+  <data name="Ins_Hint" xml:space="preserve"><value>Periodic and measured inspections of equipment (condition monitoring), separate from ITP acceptance inspections before commissioning. Alert and overdue items are at the top. To record a new inspection, use the Inspections tab of the equipment page.</value></data>
+  <data name="Ins_Empty" xml:space="preserve"><value>No inspections recorded yet.</value></data>
+  <data name="Ins_Tag" xml:space="preserve"><value>Tag number</value></data>
+  <data name="Ins_Limits" xml:space="preserve"><value>Limits</value></data>
+  <data name="Ins_Alert" xml:space="preserve"><value>Alert</value></data>
+  <data name="Ins_Normal" xml:space="preserve"><value>Normal</value></data>
+  <data name="Ins_NotApplicable" xml:space="preserve"><value>N/A</value></data>
+  <data name="Ins_DueSoon" xml:space="preserve"><value>Due soon</value></data>
+  <data name="Ins_Ok" xml:space="preserve"><value>OK</value></data>
+  <data name="Fn_Title" xml:space="preserve"><value>Findings</value></data>
+  <data name="Fn_Empty" xml:space="preserve"><value>No findings recorded.</value></data>
+  <data name="Fn_EquipmentId" xml:space="preserve"><value>Equipment ID</value></data>
+  <data name="Fn_Source" xml:space="preserve"><value>Source</value></data>
+  <data name="Fn_CmReading" xml:space="preserve"><value>CM reading</value></data>
+  <data name="Fn_Inspection" xml:space="preserve"><value>Inspection</value></data>
+  <data name="Fn_FailureModeCause" xml:space="preserve"><value>Failure mode / cause</value></data>
+  <data name="Fn_Observed" xml:space="preserve"><value>Observed</value></data>
+  <data name="Fn_WorkRequest" xml:space="preserve"><value>WR</value></data>
+  <data name="Fn_Close" xml:space="preserve"><value>Close finding</value></data>
+  <data name="Fn_CloseConfirm" xml:space="preserve"><value>Close this finding?</value></data>
+  <data name="Fn_St_Open" xml:space="preserve"><value>Open</value></data>
+  <data name="Fn_St_Linked" xml:space="preserve"><value>Linked</value></data>
+  <data name="Fn_St_Closed" xml:space="preserve"><value>Closed</value></data>
+  <data name="Mp_Title" xml:space="preserve"><value>Maintenance plans</value></data>
+  <data name="Mp_Empty" xml:space="preserve"><value>No maintenance plans yet.</value></data>
+  <data name="Mp_PlanNo" xml:space="preserve"><value>Plan no.</value></data>
+  <data name="Mp_GenerateDue" xml:space="preserve"><value>Generate due PM work orders</value></data>
+  <data name="Mp_GenerateDueConfirm" xml:space="preserve"><value>Create a work order for every due plan that has no open work order?</value></data>
+  <data name="Mp_GenerateWo" xml:space="preserve"><value>Generate WO</value></data>
+  <data name="Mp_Deactivate" xml:space="preserve"><value>Deactivate plan</value></data>
+  <data name="Mp_EveryDays" xml:space="preserve"><value>Every {0} days</value></data>
+  <data name="Mp_MeterEvery" xml:space="preserve"><value>{0}: every {1}</value></data>
+  <data name="Mp_DueAtReading" xml:space="preserve"><value>(due at {0})</value></data>
+  <data name="Mp_CurrentReading" xml:space="preserve"><value>Current reading</value></data>
+  <data name="Mp_Record" xml:space="preserve"><value>Record</value></data>
+  <data name="Jp_Title" xml:space="preserve"><value>Job plans</value></data>
+  <data name="Jp_Hint" xml:space="preserve"><value>A reusable execution procedure: written once, used by many maintenance plans.</value></data>
+  <data name="Jp_New" xml:space="preserve"><value>New job plan</value></data>
+  <data name="Jp_Empty" xml:space="preserve"><value>No job plans yet.</value></data>
+  <data name="Jp_Number" xml:space="preserve"><value>Number</value></data>
+  <data name="Jp_Duration" xml:space="preserve"><value>Est. duration</value></data>
+  <data name="Jp_Hours" xml:space="preserve"><value>{0} h</value></data>
+  <data name="Jp_Tasks" xml:space="preserve"><value>Tasks</value></data>
+  <data name="Jp_UsedByPlans" xml:space="preserve"><value>Used by plans</value></data>
+  <data name="Jp_Safety" xml:space="preserve"><value>Safety</value></data>
+  <data name="Jp_Permit" xml:space="preserve"><value>Permit</value></data>
+  <data name="Jp_Loto" xml:space="preserve"><value>LOTO</value></data>
+  <data name="Pt_Title" xml:space="preserve"><value>Permits to work</value></data>
+  <data name="Pt_Hint" xml:space="preserve"><value>Permit lifecycle: Draft, Submitted, Under review, Approved, Issued, Active, Suspended or Closed. The approval matrix, LOTO, gas test, SIMOPS and the execution gate are on each permit's details page.</value></data>
+  <data name="Pt_New" xml:space="preserve"><value>New permit</value></data>
+  <data name="Pt_Empty" xml:space="preserve"><value>No permits yet.</value></data>
+  <data name="Pt_EmptyPending" xml:space="preserve"><value>No permits are waiting for your approval.</value></data>
+  <data name="Pt_Number" xml:space="preserve"><value>Permit no.</value></data>
+  <data name="Pt_PendingMine" xml:space="preserve"><value>Pending my approval</value></data>
+  <data name="Pt_CurrentStage" xml:space="preserve"><value>Current stage</value></data>
+  <data name="Pt_WaitingSince" xml:space="preserve"><value>Waiting since</value></data>
+  <data name="Pt_WaitingDays" xml:space="preserve"><value>waiting {0}d {1}h</value></data>
+  <data name="Pt_WaitingHours" xml:space="preserve"><value>waiting {0}h {1}m</value></data>
+  <data name="Pt_WaitingUnderHour" xml:space="preserve"><value>waiting under 1h</value></data>
+  <data name="Pt_Issuer" xml:space="preserve"><value>Issuer</value></data>
+  <data name="Pt_Receiver" xml:space="preserve"><value>Receiver</value></data>
+  <data name="Pt_Valid" xml:space="preserve"><value>Valid from / to</value></data>
+  <data name="Pt_St_Draft" xml:space="preserve"><value>Draft</value></data>
+  <data name="Pt_St_Submitted" xml:space="preserve"><value>Submitted</value></data>
+  <data name="Pt_St_UnderReview" xml:space="preserve"><value>Under review</value></data>
+  <data name="Pt_St_Approved" xml:space="preserve"><value>Approved</value></data>
+  <data name="Pt_St_Issued" xml:space="preserve"><value>Issued</value></data>
+  <data name="Pt_St_Active" xml:space="preserve"><value>Active</value></data>
+  <data name="Pt_St_Suspended" xml:space="preserve"><value>Suspended</value></data>
+  <data name="Pt_St_Closed" xml:space="preserve"><value>Closed</value></data>
+  <data name="Pt_St_Cancelled" xml:space="preserve"><value>Cancelled</value></data>
+  <data name="Pt_St_Rejected" xml:space="preserve"><value>Rejected</value></data>
+  <data name="Pt_St_Revoked" xml:space="preserve"><value>Revoked</value></data>
+  <data name="Eq_Title" xml:space="preserve"><value>Equipment</value></data>
+  <data name="Eq_Empty" xml:space="preserve"><value>No equipment found.</value></data>
+  <data name="Eq_Name" xml:space="preserve"><value>Name</value></data>
+  <data name="Eq_Docs" xml:space="preserve"><value>Docs</value></data>
+  <data name="Fl_Title" xml:space="preserve"><value>Functional locations</value></data>
+  <data name="Fl_Hint" xml:space="preserve"><value>The plant / area / unit hierarchy where equipment is installed. Equipment and assets link to this list (not free text).</value></data>
+  <data name="Fl_New" xml:space="preserve"><value>New functional location</value></data>
+  <data name="Fl_Edit" xml:space="preserve"><value>Edit functional location</value></data>
+  <data name="Fl_Empty" xml:space="preserve"><value>No functional locations yet.</value></data>
+  <data name="Fl_Code" xml:space="preserve"><value>Code</value></data>
+  <data name="Fl_Path" xml:space="preserve"><value>Path</value></data>
+  <data name="Fl_Plant" xml:space="preserve"><value>Plant</value></data>
+  <data name="Fl_Unit" xml:space="preserve"><value>Unit</value></data>
+  <data name="In_Title" xml:space="preserve"><value>Master instrument list</value></data>
+  <data name="In_New" xml:space="preserve"><value>New instrument</value></data>
+  <data name="In_Empty" xml:space="preserve"><value>No instruments found.</value></data>
+  <data name="In_SearchPlaceholder" xml:space="preserve"><value>Search tag / loop</value></data>
+  <data name="In_CalStatus" xml:space="preserve"><value>Calibration</value></data>
+  <data name="In_DueSoon30" xml:space="preserve"><value>Due soon (30 days)</value></data>
+  <data name="In_ExportAll" xml:space="preserve"><value>Export all instruments to Excel</value></data>
+  <data name="In_Loop" xml:space="preserve"><value>Loop</value></data>
+  <data name="In_LastCal" xml:space="preserve"><value>Last calibration</value></data>
+  <data name="In_Passport" xml:space="preserve"><value>Passport</value></data>
+  <data name="In_St_Overdue" xml:space="preserve"><value>Overdue</value></data>
+  <data name="In_St_DueSoon" xml:space="preserve"><value>Due soon</value></data>
+  <data name="In_St_OK" xml:space="preserve"><value>OK</value></data>
+  <data name="In_St_Unknown" xml:space="preserve"><value>Unknown</value></data>
+  <data name="Ms_Title" xml:space="preserve"><value>Maintenance strategies</value></data>
+  <data name="Sp_Title" xml:space="preserve"><value>Spare parts</value></data>
+  <data name="Sp_New" xml:space="preserve"><value>New spare part</value></data>
+  <data name="Sp_Edit" xml:space="preserve"><value>Edit spare part</value></data>
+  <data name="Sp_Empty" xml:space="preserve"><value>No spare parts found.</value></data>
+  <data name="Sp_SearchPlaceholder" xml:space="preserve"><value>Search part number or name</value></data>
+  <data name="Sp_LowStockOnly" xml:space="preserve"><value>Low stock only</value></data>
+  <data name="Sp_LowStockCount" xml:space="preserve"><value>Low stock parts</value></data>
+  <data name="Sp_BelowReorder" xml:space="preserve"><value>Below the reorder point</value></data>
+  <data name="Sp_PartNo" xml:space="preserve"><value>Part no.</value></data>
+  <data name="Sp_Manufacturer" xml:space="preserve"><value>Manufacturer</value></data>
+  <data name="Sp_Location" xml:space="preserve"><value>Location</value></data>
+  <data name="Sp_Stock" xml:space="preserve"><value>Stock</value></data>
+  <data name="Sp_Deactivate" xml:space="preserve"><value>Deactivate part</value></data>
+  <data name="As_Title" xml:space="preserve"><value>Assets</value></data>
+  <data name="As_Empty" xml:space="preserve"><value>No assets found.</value></data>
+  <data name="As_St_Active" xml:space="preserve"><value>Active</value></data>
+  <data name="As_St_Standby" xml:space="preserve"><value>Standby</value></data>
+  <data name="As_St_Retired" xml:space="preserve"><value>Retired</value></data>
 </root>

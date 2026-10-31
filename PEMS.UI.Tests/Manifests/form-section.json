@@ -1,0 +1,235 @@
+{
+  "key": "form-section",
+  "component": "PEMS.UI.Components.PemsFormSection",
+  "category": "forms",
+  "icon": "bi-card-heading",
+  "nameKey": "component.form-section",
+  "optionsParameter": null,
+  "manifestVersion": 1,
+  "options": {
+    "type": "object",
+    "properties": {
+      "options": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "oneOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "object",
+                "minProperties": 1,
+                "additionalProperties": {
+                  "type": "string"
+                }
+              }
+            ]
+          },
+          "description": {
+            "oneOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "object",
+                "minProperties": 1,
+                "additionalProperties": {
+                  "type": "string"
+                }
+              }
+            ]
+          },
+          "fields": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "label": {
+                  "oneOf": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "type": "object",
+                      "minProperties": 1,
+                      "additionalProperties": {
+                        "type": "string"
+                      }
+                    }
+                  ]
+                },
+                "kind": {
+                  "enum": [
+                    "text",
+                    "textArea",
+                    "number",
+                    "date",
+                    "select",
+                    "checkbox",
+                    "file",
+                    "richText",
+                    "password",
+                    "money",
+                    "time",
+                    "radio",
+                    "switch",
+                    "tags",
+                    "checkboxMatrix"
+                  ]
+                },
+                "required": {
+                  "type": "boolean"
+                },
+                "readOnly": {
+                  "type": "boolean"
+                },
+                "helpText": {
+                  "oneOf": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "type": "object",
+                      "minProperties": 1,
+                      "additionalProperties": {
+                        "type": "string"
+                      }
+                    }
+                  ]
+                },
+                "maxLength": {
+                  "type": [
+                    "string",
+                    "integer",
+                    "null"
+                  ],
+                  "pattern": "^-?(?:0|[1-9]\\d*)$"
+                },
+                "options": {
+                  "type": [
+                    "array",
+                    "null"
+                  ],
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "value": {
+                        "type": "string"
+                      },
+                      "label": {
+                        "oneOf": [
+                          {
+                            "type": "string"
+                          },
+                          {
+                            "type": "object",
+                            "minProperties": 1,
+                            "additionalProperties": {
+                              "type": "string"
+                            }
+                          }
+                        ]
+                      }
+                    },
+                    "required": [
+                      "value",
+                      "label"
+                    ],
+                    "additionalProperties": false
+                  }
+                },
+                "columns": {
+                  "type": [
+                    "array",
+                    "null"
+                  ],
+                  "items": {
+                    "$ref": "#/properties/fields/items/properties/options/items"
+                  }
+                },
+                "placeholder": {
+                  "oneOf": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "type": "object",
+                      "minProperties": 1,
+                      "additionalProperties": {
+                        "type": "string"
+                      }
+                    }
+                  ]
+                }
+              },
+              "required": [
+                "name",
+                "label"
+              ],
+              "additionalProperties": false
+            }
+          }
+        },
+        "required": [
+          "title",
+          "fields"
+        ],
+        "additionalProperties": false
+      },
+      "state": {
+        "type": "object",
+        "properties": {
+          "values": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            }
+          },
+          "errors": {
+            "type": "object"
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "additionalProperties": false,
+    "required": [
+      "options"
+    ]
+  },
+  "parameters": [
+    {
+      "name": "options",
+      "type": "FormSectionOptions",
+      "kind": "option",
+      "required": true
+    },
+    {
+      "name": "state",
+      "type": "FormState",
+      "kind": "option",
+      "required": false
+    }
+  ],
+  "sample": {
+    "options": {
+      "title": {
+        "en": "General",
+        "fa": "عمومی"
+      },
+      "fields": [
+        {
+          "name": "tag",
+          "label": {
+            "en": "Tag",
+            "fa": "تگ"
+          }
+        }
+      ]
+    }
+  }
+}

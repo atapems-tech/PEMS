@@ -1,7 +1,7 @@
 @namespace PEMS.UI.Components
 @attribute [PEMS.UI.Rendering.PemsComponent("form", Category = "forms", Icon = "bi-ui-checks")]
 @inject IPemsLocale Locale
-<form method="post" action="@Definition.Action" enctype="multipart/form-data" id="@Definition.Id" class="pems-form">
+<form method="post" action="@Definition.Action" enctype="multipart/form-data" id="@Definition.Id" class="pems-form" data-pems-dirty-guard="@(Definition.WarnOnLeave ? "" : null)">
     @if (RequestToken is not null)
     {
         <input type="hidden" name="@RequestTokenName" value="@RequestToken" />

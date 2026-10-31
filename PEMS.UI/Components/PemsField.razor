@@ -11,13 +11,61 @@
     string? placeholderAttr = placeholder.Length > 0 ? placeholder : null;
 }
 <div class="pems-field">
-    @if (Descriptor.Kind == FieldKind.Checkbox)
+    @if (Descriptor.Kind is FieldKind.Checkbox or FieldKind.Switch)
     {
         <label class="pems-field__check">
-            <input type="checkbox" id="@state.Id" name="@Descriptor.Name" value="true" checked="@(Value == "true")"
+            <input type="checkbox" id="@state.Id" name="@Descriptor.Name" value="true" checked="@(Value == "true")" role="@(Descriptor.Kind == FieldKind.Switch ? "switch" : null)"
                    disabled="@Descriptor.ReadOnly" aria-describedby="@state.DescribedBy" aria-invalid="@(state.Invalid ? "true" : null)" />
             @label
         </label>
+    }
+    else if (Descriptor.Kind == FieldKind.Radio)
+    {
+        <fieldset class="pems-field__group" aria-describedby="@state.DescribedBy">
+            <legend class="pems-field__label">
+                @label
+                @if (Descriptor.Required)
+                {
+                    <span class="pems-field__required" aria-hidden="true">*</span>
+                }
+            </legend>
+            @foreach (var o in Descriptor.Options ?? [])
+            {
+                <label class="pems-field__check">
+                    <input type="radio" name="@Descriptor.Name" value="@o.Value" checked="@(o.Value == Value)" required="@Descriptor.Required" disabled="@Descriptor.ReadOnly" />
+                    @Locale.Text(o.Label)
+                </label>
+            }
+        </fieldset>
+    }
+    else if (Descriptor.Kind == FieldKind.CheckboxMatrix)
+    {
+        <fieldset class="pems-field__group" aria-describedby="@state.DescribedBy">
+            <legend class="pems-field__label">@label</legend>
+            <table class="pems-table pems-matrix" data-pems-matrix>
+                <thead>
+                    <tr>
+                        <td></td>
+                        @foreach (var c in Descriptor.Columns ?? [])
+                        {
+                            <th scope="col">@Locale.Text(c.Label)</th>
+                        }
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var r in Descriptor.Options ?? [])
+                    {
+                        <tr>
+                            <th scope="row">@Locale.Text(r.Label)</th>
+                            @foreach (var c in Descriptor.Columns ?? [])
+                            {
+                                <td><input type="checkbox" name="@Descriptor.Name" value="@(r.Value + "|" + c.Value)" checked="@IsChecked(r.Value, c.Value)" disabled="@Descriptor.ReadOnly" aria-label="@(Locale.Text(r.Label) + " / " + Locale.Text(c.Label))" /></td>
+                            }
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </fieldset>
     }
     else
     {
@@ -55,7 +103,8 @@
                        aria-describedby="@state.DescribedBy" aria-invalid="@(state.Invalid ? "true" : null)" />
                 break;
             default:
-                <input type="@InputType" id="@state.Id" name="@Descriptor.Name" class="@state.InputCss" value="@Value"
+                <input type="@InputType" id="@state.Id" name="@Descriptor.Name" class="@state.InputCss" value="@(Descriptor.Kind == FieldKind.Password ? null : Value)"
+                       inputmode="@(Descriptor.Kind == FieldKind.Money ? "decimal" : null)" dir="@(Descriptor.Kind == FieldKind.Money ? "ltr" : null)" autocomplete="@(Descriptor.Kind == FieldKind.Password ? "new-password" : null)" data-pems-tags="@(Descriptor.Kind == FieldKind.Tags ? "," : null)"
                        maxlength="@Descriptor.MaxLength" placeholder="@placeholderAttr" required="@Descriptor.Required" readonly="@Descriptor.ReadOnly"
                        aria-describedby="@state.DescribedBy" aria-invalid="@(state.Invalid ? "true" : null)" />
                 break;
@@ -75,11 +124,17 @@
     /// <summary>The value as an HTML input needs it (data, never translated; dates as yyyy-MM-dd).</summary>
     [Parameter] public string? Value { get; set; }
     [Parameter] public TranslatableText? Error { get; set; }
+    /// <summary>The selected "row|column" pairs of a checkbox matrix.</summary>
+    [Parameter] public IReadOnlyList<string>? Values { get; set; }
+
+    private bool IsChecked(string row, string column) => Values?.Contains(row + "|" + column) == true;
 
     private string InputType => Descriptor.Kind switch
     {
         FieldKind.Number => "number",
         FieldKind.Date => "date",
+        FieldKind.Time => "time",
+        FieldKind.Password => "password",
         _ => "text"
     };
 }

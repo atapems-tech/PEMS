@@ -18,6 +18,17 @@ public static class ComponentSamples
         ["loading-state"] = """{"title":{"en":"Loading","fa":"در حال بارگذاری"},"lines":2}""",
         ["field"] = """{"descriptor":{"name":"tag","label":{"en":"Tag","fa":"تگ"}},"value":"PT-0001"}""",
         ["table"] = """{"view":{"id":"items","title":{"en":"Items","fa":"موارد"},"columns":[{"key":"tag","header":{"en":"Tag","fa":"تگ"}}]},"rows":[]}""",
+        ["form-section"] = """{"options":{"title":{"en":"General","fa":"عمومی"},"fields":[{"name":"tag","label":{"en":"Tag","fa":"تگ"}}]}}""",
+        ["action-bar"] = """{"actions":[{"label":{"en":"Save","fa":"ذخیره"},"type":"submit"},{"label":{"en":"Cancel","fa":"انصراف"},"tone":"neutral","href":"/x"}],"sticky":true}""",
+        ["alert"] = """{"title":{"en":"Could not save","fa":"ذخیره نشد"},"tone":"danger","traceId":"00-abc","copyLabel":{"en":"Copy","fa":"کپی"}}""",
+        ["modal"] = """{"id":"m1","title":{"en":"Details","fa":"جزئیات"},"closeLabel":{"en":"Close","fa":"بستن"},"body":{"en":"Text","fa":"متن"}}""",
+        ["drawer"] = """{"id":"d1","title":{"en":"Filters","fa":"فیلترها"},"closeLabel":{"en":"Close","fa":"بستن"},"side":"end"}""",
+        ["confirm-dialog"] = """{"id":"c1","action":"/x/cancel","title":{"en":"Cancel order","fa":"لغو سفارش"},"message":{"en":"Are you sure?","fa":"مطمئن هستید؟"},"confirmLabel":{"en":"Yes","fa":"بله"},"cancelLabel":{"en":"No","fa":"خیر"},"reasonLabel":{"en":"Reason","fa":"دلیل"}}""",
+        ["tabs"] = """{"id":"t1","label":{"en":"Sections","fa":"بخش‌ها"},"items":[{"key":"a","label":{"en":"General","fa":"عمومی"},"content":{"en":"First","fa":"اول"}},{"key":"b","label":{"en":"Notes","fa":"یادداشت"}}]}""",
+        ["breadcrumb"] = """{"label":{"en":"Path","fa":"مسیر"},"items":[{"label":{"en":"Home","fa":"خانه"},"href":"/"},{"label":{"en":"Orders","fa":"سفارش‌ها"}}]}""",
+        ["stepper"] = """{"label":{"en":"Stages","fa":"مراحل"},"steps":[{"label":{"en":"Draft","fa":"پیش‌نویس"},"state":"done"},{"label":{"en":"Review","fa":"بررسی"},"state":"current"},{"label":{"en":"Approved","fa":"تأیید"}}]}""",
+        ["menu"] = """{"label":{"en":"Actions","fa":"عملیات"},"items":[{"label":{"en":"Edit","fa":"ویرایش"},"href":"/x/edit"}]}""",
+        ["side-panel-nav"] = """{"label":{"en":"Folders","fa":"پوشه‌ها"},"items":[{"label":{"en":"Inbox","fa":"دریافتی"},"href":"/l","count":12,"active":true}]}""",
         ["form"] = """{"definition":{"id":"item","title":{"en":"Item","fa":"مورد"},"action":"/items","fields":[{"name":"tag","label":{"en":"Tag","fa":"تگ"}}],"submitLabel":{"en":"Save","fa":"ذخیره"}}}"""
     };
 

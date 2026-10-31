@@ -190,6 +190,34 @@ public class ListPageComponentTests
     }
 
     [Fact]
+    public async Task New_action_is_a_link_by_default_and_a_modal_button_when_the_page_gives_a_modal()
+    {
+        // W2: CMMS pages create in a modal of their own
+        var link = await Run(new PemsListNewTagHelper { Href = "/Docs/Create", Text = "New document" }, "pems-list-new");
+        Assert.StartsWith("<a ", link);
+        Assert.Contains("href=\"/Docs/Create\"", link);
+
+        var modal = await Run(new PemsListNewTagHelper { Modal = "createPartModal", Text = "New part" }, "pems-list-new");
+        Assert.StartsWith("<button ", modal);
+        Assert.Contains("type=\"button\"", modal);
+        Assert.Contains("data-bs-toggle=\"modal\"", modal);
+        Assert.Contains("data-bs-target=\"#createPartModal\"", modal);
+        Assert.DoesNotContain("href=", modal);
+        Assert.Contains(">New part</span>", modal);
+    }
+
+    [Fact]
+    public async Task Export_uses_the_page_text_unless_the_page_names_a_different_export()
+    {
+        var filtered = await Run(new PemsListExportTagHelper { Href = "/x" }, "pems-list-export");
+        Assert.Contains("title=\"Excel\"", filtered);
+
+        var all = await Run(new PemsListExportTagHelper { Href = "/x", Label = "Export every row" }, "pems-list-export");
+        Assert.Contains("title=\"Export every row\"", all);
+        Assert.Contains("<span class=\"visually-hidden\">Export every row</span>", all);
+    }
+
+    [Fact]
     public void List_script_drives_the_bulk_bar_and_posts_the_ticked_ids()
     {
         var dir = new DirectoryInfo(AppContext.BaseDirectory);

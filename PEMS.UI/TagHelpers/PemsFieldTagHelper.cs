@@ -70,6 +70,9 @@ public sealed class PemsFieldTagHelper(IPemsComponentRenderer renderer) : TagHel
     private static FieldKind InferKind(Type type, string? dataType)
     {
         var t = Nullable.GetUnderlyingType(type) ?? type;
+        if (dataType == "Password") return FieldKind.Password;
+        if (dataType == "Currency") return FieldKind.Money;
+        if (dataType == "Time" || t == typeof(TimeOnly)) return FieldKind.Time;
         if (t == typeof(bool)) return FieldKind.Checkbox;
         if (t == typeof(DateTime) || t == typeof(DateOnly)) return FieldKind.Date;
         if (t == typeof(int) || t == typeof(long) || t == typeof(decimal) || t == typeof(double)) return FieldKind.Number;

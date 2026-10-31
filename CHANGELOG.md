@@ -22,6 +22,25 @@ Owner request 2026-10-31: reports of the Part Catalogue for any period, with an 
 
 ### Changed
 - The request list and the reports share one visibility rule (`PartCatalogueRequestScope`). The list behaves as before.
+## 2026-10-31 - Agents run the issue-creation check themselves until SCRUM-475 (SCRUM-475)
+
+### Changed
+- Chapter 0 section 5d and AGENTS.md: until the nightly `tracker-check` runs, an agent reads each issue back after creating it and sweeps the open issues from SCRUM-400 on (parent epic, `[#N]` title, labels, `qa-pending`) at the start of a session and before any In Review, fixes metadata findings and reports the rest.
+
+## 2026-10-31 - PEMS.UI components render today's look (SCRUM-480)
+
+### Changed
+- **PEMS.UI:** alert, modal, drawer, confirm-dialog, tabs and breadcrumb take `Skin`; the default `Bootstrap` renders the Bootstrap markup the pages use now, `Pems` keeps the library classes and native dialog. `pems-overlay.js` copies the row key of a Bootstrap modal opener.
+- **Layouts** (`_Layout`, `_LayoutEmbed`, `_AuthLayout`): load `pems-ui.css`, `pems-overlay.js` and `pems-form.js` from PEMS.UI.
+
+## 2026-10-31 - List page component, wave 2: CMMS (SCRUM-337)
+
+### Added
+- `<pems-list-new modal="...">` opens the page's own create modal (a button instead of a link); `<pems-list-export label="...">` names an export that is not the filtered list. A page's TempData message can sit inside the full-height list page.
+
+### Changed
+- Work Orders, Work Requests, Equipment, Functional Locations, Instruments, Letter Tags, Maintenance Plans, Maintenance Strategies, Job Plans, Spare Parts, Permits, Inspections, Findings and Assets are built from the list-page component. Each page keeps its filters, columns, modals, row actions and permissions. Count cards became KPI chips on demand; status button rows (Work Requests, Permits) became the status filter, and "pending my approval" a switch in it; page notes became the title tool tip; coverage, the failure-mode catalogue and bulk assignment moved into the strategies' "more" menu; status badges became tone pills.
+- The English and Persian texts written in these pages (headings, columns, empty texts, notes, confirmations and work-order, work-request, permit, finding, instrument and asset statuses, priorities) are resource keys in both languages now (prefixes `Wo_`, `Wr_`, `Tg_`, `Ins_`, `Fn_`, `Mp_`, `Jp_`, `Pt_`, `Eq_`, `Fl_`, `In_`, `Ms_`, `Sp_`, `As_`, `Pri_`).
 
 ## 2026-10-31 - Login page in one language (SCRUM-477)
 
@@ -135,6 +154,13 @@ Owner decisions 2026-10-30:
 - `PurchaseOrderService.IssueAsync` issues only an **approved** PO (Draft → Submitted → Approved → Issued). The issue action keeps its guard (PurchaseOrder Approve permission, creator cannot issue, SystemAdmin rule). Imported POs still arrive as Issued.
 - R6: a concurrent issue now shows a clear message instead of the error page.
 
+## 2026-10-31 - Jira issue-creation guard (SCRUM-479)
+
+### Added
+- `plan_sync.py tracker-check` also fails on an issue (SCRUM-400 and later) without a parent epic, without a `[#N]` title equal to its `plan-N` label, without `area-`, `doer-`, `effort-` labels, or In Review without `qa-pending`; the REST client now reads `parent` and the issue type. Tests added.
+- Creation checklist in `AGENTS.md` and chapter 00 section 5d; learnings-log entry; open points for the owner in chapter 06 (required Parent in Jira, `JIRA_*` secrets).
+- Plan rows 0423 and 0478 for issues that had none.
+
 ## 2026-10-29 - Pre-procurement intake in the procurement cartable (SCRUM-471)
 
 ### Added
@@ -151,6 +177,16 @@ Owner decisions 2026-10-30:
 
 ### Changed
 - Replenishment run: quantity already in procurement (open items, and converted items whose MR is not closed or cancelled) is subtracted before recommending (design §6.1 PlannedSupply), so a shortage is never recommended twice. A recommendation fully covered closes as `CoveredByProcurement`.
+
+## 2026-10-31 - PEMS.UI: overlays, navigation, more field kinds and the form shell (SCRUM-336, SCRUM-338, SCRUM-352)
+
+### Added
+- Components in `PEMS.UI` (each with typed options, texts as inputs, a manifest snapshot, a sample, render tests in fa and en): `alert` (trace id + copy), `modal` (native dialog, one modal for many rows through the opener's row key), `drawer`, `confirm-dialog` (optional required reason, antiforgery token, posts the row key), `tabs`, `breadcrumb`, `stepper`, `menu`, `side-panel-nav`, `form-section`, `action-bar`.
+- Field kinds: Password (value never rendered back), Money, Time, Radio, Switch, Tags, CheckboxMatrix (`Options` rows x `Columns`, posts `row|column` pairs); `<pems-field>` maps DataType Password, Currency, Time.
+- `pems-overlay.js` (dialogs, tabs, menu, copy, dismiss) and `pems-form.js` (leave guard when `FormDefinition.WarnOnLeave`), both offline and idempotent; `ButtonOptions.Opens` / `RowKey` open a dialog for a row.
+
+### Not built (follow-ups)
+- No page uses the new components yet: adoption tasks per component are in the plan (see the adoption tasks of SCRUM-338). Lookup/TreeSelect fields stay with SCRUM-57 and the registry (#10).
 
 ## 2026-10-29 - Design token file moved into PEMS.UI (SCRUM-29, SCRUM-19)
 

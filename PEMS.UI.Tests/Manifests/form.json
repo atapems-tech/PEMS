@@ -63,7 +63,14 @@
                     "select",
                     "checkbox",
                     "file",
-                    "richText"
+                    "richText",
+                    "password",
+                    "money",
+                    "time",
+                    "radio",
+                    "switch",
+                    "tags",
+                    "checkboxMatrix"
                   ]
                 },
                 "required": {
@@ -127,6 +134,15 @@
                     "additionalProperties": false
                   }
                 },
+                "columns": {
+                  "type": [
+                    "array",
+                    "null"
+                  ],
+                  "items": {
+                    "$ref": "#/properties/fields/items/properties/options/items"
+                  }
+                },
                 "placeholder": {
                   "oneOf": [
                     {
@@ -162,6 +178,9 @@
                 }
               }
             ]
+          },
+          "warnOnLeave": {
+            "type": "boolean"
           }
         },
         "required": [

@@ -1,118 +1,123 @@
 @model PEMS.Application.DTOs.PagedResult<PEMS.Application.DTOs.AssetListDto>
 @using Microsoft.Extensions.Localization
 @using PEMS.Web.Resources
+@using PEMS.Web.Helpers
 @inject IStringLocalizer<SharedResource> Localizer
 @{
     var equipmentOptions = (IEnumerable<dynamic>)ViewBag.Equipments;
+    var q = (string?)ViewBag.SearchTerm;
+    var status = (string?)ViewBag.SelectedStatus;
+    var statuses = new[] { "Active", "Standby", "Retired" };
+    var filterCount = string.IsNullOrEmpty(status) ? 0 : 1;
+
+    var qsParts = new List<string>();
+    if (!string.IsNullOrEmpty(status)) qsParts.Add($"status={Uri.EscapeDataString(status)}");
+    if (!string.IsNullOrEmpty(q)) qsParts.Add($"q={Uri.EscapeDataString(q)}");
+
+    string StatusText(string? s) => VdrUi.Loc(Localizer, "As_St_", s);
+    string StatusTone(string? s) => s switch { "Active" => "vs-pill--success", "Standby" => "vs-pill--warning", _ => "vs-pill--neutral" };
 }
 
-@if (TempData["Message"] != null)
-{
-    <div class="alert alert-success py-2 px-3 small">@TempData["Message"]</div>
-}
-@if (TempData["Error"] != null)
-{
-    <div class="alert alert-danger py-2 px-3 small">@TempData["Error"]</div>
+@section Styles {
+    <link rel="stylesheet" href="~/css/pems-workspace.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/_content/PEMS.UI/pems-list.css" asp-append-version="true" />
 }
 
-<div class="vs-chips">
-    <span class="vs-chip">@Localizer["Eq_Total"] <strong>@ViewBag.TotalCount</strong></span>
-    <span class="vs-chip"><i class="bi bi-check-circle" aria-hidden="true"></i> @Localizer["Eq_Active"] <strong>@ViewBag.ActiveCount</strong></span>
-</div>
+@* SCRUM-337 W2: built from the PEMS.UI list-page component; the page keeps its search, status filter, counts (KPI row)
+   and columns; "New asset" still opens the create modal. *@
+<pems-list-page texts="@ListPageTexts.From(Localizer)">
+    @if (TempData["Message"] != null) { <div class="alert alert-success py-2 px-3 small">@TempData["Message"]</div> }
+    @if (TempData["Error"] != null) { <div class="alert alert-danger py-2 px-3 small">@TempData["Error"]</div> }
 
-<form method="get" class="vs-toolbar" role="search">
-    <div class="pems-search-bar">
-        <i class="bi bi-search pems-search-icon" aria-hidden="true"></i>
-        <input type="search" name="q" value="@ViewBag.SearchTerm" class="form-control" placeholder="@Localizer["As_SearchPlaceholder"]" aria-label="@Localizer["As_SearchPlaceholder"]" />
-    </div>
-    <select name="status" class="form-select form-select-sm" aria-label="@Localizer["Ed_Status"]">
-        <option value="">@Localizer["Eq_AllStatuses"]</option>
-        @foreach (var s in new[] { "Active", "Standby", "Retired" })
-        {
-            <option value="@s" selected="@(s == (string?)ViewBag.SelectedStatus)">@s</option>
-        }
-    </select>
-    <button type="submit" class="vs-btn vs-btn--sm"><i class="bi bi-funnel" aria-hidden="true"></i> @Localizer["Eq_Apply"]</button>
-    <a asp-action="Index" class="vs-icon-btn" title="@Localizer["Reset"]" aria-label="@Localizer["Reset"]"><i class="bi bi-x-lg" aria-hidden="true"></i></a>
-    <span class="vs-toolbar__end">
-        <button type="button" class="vs-btn vs-btn--primary vs-btn--sm" data-bs-toggle="modal" data-bs-target="#createAssetModal">
-            <i class="bi bi-plus-lg" aria-hidden="true"></i> @Localizer["As_NewAsset"]
-        </button>
-    </span>
-</form>
+    <pems-list-panel>
 
-<div class="content-card">
-    <div class="d-flex justify-content-end mb-2">
-        <button type="button" class="btn btn-sm btn-outline-secondary" onclick="PemsDataGrid.resetColumns('Asset')">
-            <i class="bi bi-arrow-counterclockwise"></i> @Localizer["ResetColumns"]
-        </button>
-    </div>
-    <div class="table-scroll-area pems-grid-scroll" style="max-height:65vh; overflow-y:auto;">
-        <table class="table table-enterprise pems-grid-table" data-grid-key="Asset">
-            <thead>
-                <tr>
-                    <th data-col-key="assetNo" data-resizable="true" data-min-width="100" data-max-width="220" style="width:140px">@Localizer["As_ColNo"]</th>
-                    <th data-col-key="equipment" data-resizable="true" data-min-width="140" data-max-width="320" style="width:220px">@Localizer["Wo_ColEquipment"]</th>
-                    <th data-col-key="maintClass" data-resizable="true" data-min-width="100" data-max-width="220" style="width:150px">@Localizer["As_ColMaint"]</th>
-                    <th data-col-key="criticality" data-resizable="true" data-min-width="90" data-max-width="160" style="width:110px">@Localizer["Cm_Criticality"]</th>
-                    <th data-col-key="commissioning" data-resizable="true" data-min-width="100" data-max-width="180" style="width:130px">@Localizer["As_ColCommissioning"]</th>
-                    <th data-col-key="openWos" data-resizable="true" data-min-width="80" data-max-width="140" style="width:100px">@Localizer["As_ColOpenWos"]</th>
-                    <th data-col-key="status" data-resizable="true" data-min-width="90" data-max-width="160" style="width:110px">@Localizer["Ed_Status"]</th>
-                    <th data-col-key="actions" data-resizable="false" style="width:70px"></th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var a in Model.Items)
-                {
-                    var badgeClass = a.Status switch { "Active" => "bg-success", "Standby" => "bg-warning text-dark", "Retired" => "bg-secondary", _ => "bg-secondary" };
+        <pems-list-toolbar heading="@Localizer["As_Title"]" total="@Model.TotalCount">
+            <pems-list-search id="asSearchForm" action="@Url.Action("Index")" input-id="asQuickSearch" name="q" value="@q"
+                              placeholder="@Localizer["As_SearchPlaceholder"]">
+                @if (!string.IsNullOrEmpty(status)) { <input type="hidden" name="status" value="@status" /> }
+            </pems-list-search>
+
+            <pems-list-tools search-for="asSearchForm">
+                <pems-list-filters form-id="asFilterForm" action="@Url.Action("Index")" count="@filterCount" reset-href="@Url.Action("Index", new { q })">
+                    <input type="hidden" name="q" value="@q" />
+                    <div>
+                        <label class="lp-lbl" for="asFilterStatus">@Localizer["Ed_Status"]</label>
+                        <select id="asFilterStatus" name="status" class="form-select form-select-sm">
+                            <option value="">@Localizer["Eq_AllStatuses"]</option>
+                            @foreach (var s in statuses)
+                            { <option value="@s" selected="@(s == status)">@StatusText(s)</option> }
+                        </select>
+                    </div>
+                </pems-list-filters>
+                <pems-list-kpi-toggle target="asKpis" storage-key="pems.asset.kpis" />
+                <pems-list-reset-columns grid-key="Asset" />
+                <pems-list-new modal="createAssetModal" text="@Localizer["As_NewAsset"]" />
+            </pems-list-tools>
+        </pems-list-toolbar>
+
+        <pems-list-kpis id="asKpis">
+            <span class="vs-chip">@Localizer["Eq_Total"] <strong>@ViewBag.TotalCount</strong></span>
+            <span class="vs-chip"><i class="bi bi-check-circle" aria-hidden="true"></i> @Localizer["Eq_Active"] <strong>@ViewBag.ActiveCount</strong></span>
+        </pems-list-kpis>
+
+        <pems-list-chips reset-href="@Url.Action("Index")">
+            @if (!string.IsNullOrEmpty(q))
+            { <pems-list-chip label="@Localizer["Search"]" value="@q" remove-href="@Url.Action("Index", new { status })" /> }
+            @if (!string.IsNullOrEmpty(status))
+            { <pems-list-chip label="@Localizer["Ed_Status"]" value="@StatusText(status)" remove-href="@Url.Action("Index", new { q })" /> }
+        </pems-list-chips>
+
+        <pems-list-grid>
+            <pems-list-table grid-key="Asset" empty="@(!Model.Items.Any())" empty-text="@Localizer["As_Empty"]"
+                             filtered="@(filterCount > 0 || !string.IsNullOrEmpty(q))" clear-href="@Url.Action("Index")">
+                <thead>
                     <tr>
-                        <td class="vs-num"><a asp-action="Details" asp-route-id="@a.AssetId">@a.AssetNumber</a></td>
-                        <td class="small">@a.EquipmentTagNumber - @a.EquipmentName</td>
-                        <td>@(a.MaintenanceClass ?? "-")</td>
-                        <td>@(a.CriticalityClass ?? "-")</td>
-                        <td class="small">@(a.CommissioningDate?.ToString("yyyy-MM-dd") ?? "-")</td>
-                        <td>@a.OpenWorkOrderCount</td>
-                        <td><span class="badge @badgeClass">@a.Status</span></td>
-                        <td class="text-end">
-                            <a asp-action="Details" asp-route-id="@a.AssetId" class="btn btn-sm btn-outline-secondary" title="@Localizer["Details"]"><i class="bi bi-card-text"></i></a>
-                        </td>
+                        <th data-col-key="assetNo" data-resizable="true" data-min-width="100" data-max-width="220" style="width:140px">@Localizer["As_ColNo"]</th>
+                        <th data-col-key="equipment" data-resizable="true" data-min-width="140" data-max-width="320" style="width:220px">@Localizer["Wo_ColEquipment"]</th>
+                        <th data-col-key="maintClass" data-resizable="true" data-min-width="100" data-max-width="220" style="width:150px" class="vs-hide-md">@Localizer["As_ColMaint"]</th>
+                        <th data-col-key="criticality" data-resizable="true" data-min-width="90" data-max-width="160" style="width:110px">@Localizer["Cm_Criticality"]</th>
+                        <th data-col-key="commissioning" data-resizable="true" data-min-width="100" data-max-width="180" style="width:130px" class="vs-hide-md">@Localizer["As_ColCommissioning"]</th>
+                        <th data-col-key="openWos" data-resizable="true" data-min-width="80" data-max-width="140" style="width:100px">@Localizer["As_ColOpenWos"]</th>
+                        <th data-col-key="status" data-resizable="true" data-min-width="90" data-max-width="160" style="width:110px">@Localizer["Ed_Status"]</th>
                     </tr>
-                }
-            </tbody>
-        </table>
-    </div>
-    @if (!Model.Items.Any()) { <p class="text-muted text-center py-4">@Localizer["No assets found."]</p> }
+                </thead>
+                <tbody>
+                    @foreach (var a in Model.Items)
+                    {
+                        <tr class="lp-row">
+                            <td class="lp-no"><a asp-action="Details" asp-route-id="@a.AssetId" class="lp-subject" title="@a.AssetNumber">@a.AssetNumber</a></td>
+                            <td class="small"><span class="vs-title-cell" title="@a.EquipmentTagNumber - @a.EquipmentName"><span class="vs-num">@a.EquipmentTagNumber</span> - @a.EquipmentName</span></td>
+                            <td class="small vs-hide-md">@(a.MaintenanceClass ?? "-")</td>
+                            <td class="small">@(a.CriticalityClass ?? "-")</td>
+                            <td class="small vs-hide-md"><span class="vs-num">@(a.CommissioningDate?.ToString("yyyy-MM-dd") ?? "-")</span></td>
+                            <td><span class="vs-num">@a.OpenWorkOrderCount</span></td>
+                            <td><span class="vs-pill @StatusTone(a.Status)">@StatusText(a.Status)</span></td>
+                        </tr>
+                    }
+                </tbody>
+            </pems-list-table>
 
-    @{
-        var qsParts = new List<string>();
-        if (!string.IsNullOrEmpty((string?)ViewBag.SelectedStatus)) qsParts.Add($"status={Uri.EscapeDataString((string)ViewBag.SelectedStatus)}");
-        if (!string.IsNullOrEmpty((string?)ViewBag.SearchTerm)) qsParts.Add($"q={Uri.EscapeDataString((string)ViewBag.SearchTerm)}");
-    }
-    @await Html.PartialAsync("_Pagination", new PEMS.Web.ViewModels.PaginationViewModel
-    {
-        Page = Model.Page,
-        TotalPages = Model.TotalPages,
-        TotalCount = Model.TotalCount,
-        PageSize = Model.PageSize,
-        GridKey = "Asset",
-        BaseUrl = Url.Action("Index") ?? "",
-        ExistingQueryString = string.Join("&", qsParts)
-    })
-</div>
-
-@section Scripts {
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            PemsDataGrid.initColumnResize('Asset');
-        });
-    </script>
-}
+            <pems-list-footer>
+                @await Html.PartialAsync("_Pagination", new PEMS.Web.ViewModels.PaginationViewModel
+                {
+                    Page = Model.Page,
+                    TotalPages = Model.TotalPages,
+                    TotalCount = Model.TotalCount,
+                    PageSize = Model.PageSize,
+                    GridKey = "Asset",
+                    BaseUrl = Url.Action("Index") ?? "",
+                    ExistingQueryString = string.Join("&", qsParts)
+                })
+            </pems-list-footer>
+        </pems-list-grid>
+    </pems-list-panel>
+</pems-list-page>
 
 <div class="modal fade" id="createAssetModal" tabindex="-1">
     <div class="modal-dialog">
         <div class="modal-content">
             <form asp-action="Create" method="post">
-                <div class="modal-header"><h6 class="modal-title">@Localizer["New Asset"]</h6></div>
+                <div class="modal-header"><h6 class="modal-title">@Localizer["As_NewAsset"]</h6></div>
                 <div class="modal-body">
                     <p class="text-muted small">
                         Tag number, manufacturer and model come from the Equipment record itself - pick the
@@ -186,3 +191,7 @@
         </div>
     </div>
 </div>
+
+@section Scripts {
+    <script src="~/_content/PEMS.UI/pems-list.js" asp-append-version="true"></script>
+}

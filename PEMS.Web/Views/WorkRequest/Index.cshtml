@@ -1,95 +1,107 @@
+@model PEMS.Application.DTOs.PagedResult<PEMS.Application.DTOs.WorkRequestListDto>
 @using Microsoft.Extensions.Localization
 @using PEMS.Web.Resources
+@using PEMS.Web.Helpers
 @inject IStringLocalizer<SharedResource> Localizer
+@{
+    var status = (string?)ViewBag.SelectedStatus;
+    var statuses = new[] { "Draft", "Submitted", "UnderReview", "Approved", "Planned", "Converted", "Rejected", "Cancelled" };
+    var filterCount = string.IsNullOrEmpty(status) ? 0 : 1;
+    var existingQueryString = string.IsNullOrEmpty(status) ? "" : $"status={Uri.EscapeDataString(status)}";
+
+    string StatusText(string? s) => VdrUi.Loc(Localizer, "Wr_St_", s);
+    string StatusTone(string? s) => s switch
+    {
+        "Converted" or "Approved" or "Planned" => "vs-pill--success",
+        "Rejected" => "vs-pill--danger",
+        "Cancelled" or "Draft" => "vs-pill--neutral",
+        _ => "vs-pill--info"
+    };
+    string StatusIcon(string? s) => s switch
+    {
+        "Draft" => "bi-pencil", "Submitted" => "bi-send", "UnderReview" => "bi-hourglass-split", "Approved" => "bi-check-circle",
+        "Planned" => "bi-calendar-check", "Converted" => "bi-box-arrow-up-right", "Rejected" => "bi-x-circle", "Cancelled" => "bi-slash-circle", _ => "bi-circle"
+    };
+    string PriorityTone(string? p) => p switch { "Critical" => "vs-pill--danger", "High" => "vs-pill--warning", _ => "vs-pill--neutral" };
+}
+
 @section Styles {
     <link rel="stylesheet" href="~/css/pems-workspace.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/_content/PEMS.UI/pems-list.css" asp-append-version="true" />
 }
-@model PEMS.Application.DTOs.PagedResult<PEMS.Application.DTOs.WorkRequestListDto>
 
-<div class="d-flex justify-content-end align-items-center mb-2">
-    <a asp-action="Create" class="btn btn-pems-solid btn-sm"><i class="bi bi-plus-lg"></i> @Localizer["New Request"]</a>
-</div>
+@* SCRUM-337 W2: built from the PEMS.UI list-page component; the status button row became the status filter. *@
+<pems-list-page texts="@ListPageTexts.From(Localizer)">
+    <pems-list-panel>
 
-<div class="content-card mb-3">
-    <div class="btn-group btn-group-sm flex-wrap">
-        <a asp-action="Index" class="btn btn-outline-secondary @(ViewBag.SelectedStatus == null ? "active" : "")">All</a>
-        @foreach (var s in new[] { "Draft", "Submitted", "UnderReview", "Approved", "Planned", "Converted", "Rejected", "Cancelled" })
-        {
-            <a asp-action="Index" asp-route-status="@s" class="btn btn-outline-secondary @(ViewBag.SelectedStatus == s ? "active" : "")">@s</a>
-        }
-    </div>
-</div>
+        <pems-list-toolbar heading="@Localizer["Wr_Title"]" total="@Model.TotalCount">
+            <pems-list-tools>
+                <pems-list-filters form-id="wrFilterForm" action="@Url.Action("Index")" count="@filterCount" reset-href="@Url.Action("Index")">
+                    <div>
+                        <label class="lp-lbl" for="wrFilterStatus">@Localizer["Ed_Status"]</label>
+                        <select id="wrFilterStatus" name="status" class="form-select form-select-sm">
+                            <option value="">@Localizer["Ed_All"]</option>
+                            @foreach (var s in statuses)
+                            { <option value="@s" selected="@(s == status)">@StatusText(s)</option> }
+                        </select>
+                    </div>
+                </pems-list-filters>
+                <pems-list-reset-columns grid-key="WorkRequest" />
+                <pems-list-new href="@Url.Action("Create")" text="@Localizer["Wr_New"]" />
+            </pems-list-tools>
+        </pems-list-toolbar>
 
-<div class="content-card">
-    <div class="d-flex justify-content-end mb-2">
-        <button type="button" class="btn btn-sm btn-outline-secondary" onclick="PemsDataGrid.resetColumns('WorkRequest')">
-            <i class="bi bi-arrow-counterclockwise"></i> @Localizer["Reset columns"]
-        </button>
-    </div>
-    <div class="pems-grid-scroll">
-    <table class="table table-enterprise pems-grid-table mb-0" data-grid-key="WorkRequest">
-        <thead>
-            <tr>
-                <th data-col-key="number" data-resizable="true" data-min-width="100" data-max-width="200">@Localizer["Number"]</th>
-                <th data-col-key="title" data-resizable="true" data-min-width="160" data-max-width="400">@Localizer["Title"]</th>
-                <th data-col-key="equipment" data-resizable="true" data-min-width="100" data-max-width="220">@Localizer["Equipment"]</th>
-                <th data-col-key="priority" data-resizable="true" data-min-width="80" data-max-width="140">@Localizer["Priority"]</th>
-                <th data-col-key="status" data-resizable="true" data-min-width="90" data-max-width="180">@Localizer["Status"]</th>
-                <th data-col-key="requestedBy" data-resizable="true" data-min-width="120" data-max-width="260">@Localizer["Requested By"]</th>
-                <th data-col-key="date" data-resizable="true" data-min-width="90" data-max-width="160">@Localizer["Date"]</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var wr in Model.Items)
-            {
-                var tone = wr.Status switch
+        <pems-list-chips>
+            @if (!string.IsNullOrEmpty(status))
+            { <pems-list-chip label="@Localizer["Ed_Status"]" value="@StatusText(status)" remove-href="@Url.Action("Index")" /> }
+        </pems-list-chips>
+
+        <pems-list-grid>
+            <pems-list-table grid-key="WorkRequest" empty="@(!Model.Items.Any())" empty-text="@Localizer["Wr_Empty"]"
+                             filtered="@(filterCount > 0)" clear-href="@Url.Action("Index")">
+                <thead>
+                    <tr>
+                        <th data-col-key="number" data-resizable="true" data-min-width="100" data-max-width="200" style="width:130px">@Localizer["Cm_WrNumber"]</th>
+                        <th data-col-key="title" data-resizable="true" data-min-width="160" data-max-width="400" style="width:260px">@Localizer["Cm_Title"]</th>
+                        <th data-col-key="equipment" data-resizable="true" data-min-width="100" data-max-width="220" style="width:140px">@Localizer["Equipment"]</th>
+                        <th data-col-key="priority" data-resizable="true" data-min-width="80" data-max-width="140" style="width:100px">@Localizer["Cm_Priority"]</th>
+                        <th data-col-key="status" data-resizable="true" data-min-width="90" data-max-width="180" style="width:140px">@Localizer["Ed_Status"]</th>
+                        <th data-col-key="requestedBy" data-resizable="true" data-min-width="120" data-max-width="260" style="width:160px" class="vs-hide-md">@Localizer["Wr_RequestedBy"]</th>
+                        <th data-col-key="date" data-resizable="true" data-min-width="90" data-max-width="160" style="width:110px">@Localizer["Ed_Date"]</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var wr in Model.Items)
+                    {
+                        <tr class="lp-row">
+                            <td class="lp-no"><a asp-action="Details" asp-route-id="@wr.WorkRequestId" class="lp-subject" title="@wr.RequestNumber">@wr.RequestNumber</a></td>
+                            <td><span class="vs-title-cell" title="@wr.Title">@wr.Title</span></td>
+                            <td class="small"><span class="vs-num">@(wr.EquipmentTagNumber ?? "-")</span></td>
+                            <td><span class="vs-pill @PriorityTone(wr.Priority)">@VdrUi.Loc(Localizer, "Pri_", wr.Priority)</span></td>
+                            <td><span class="vs-pill vs-pill--icon @StatusTone(wr.Status)"><i class="bi @StatusIcon(wr.Status)" aria-hidden="true"></i> @StatusText(wr.Status)</span></td>
+                            <td class="small vs-hide-md">@wr.RequestedByName</td>
+                            <td class="small"><span class="vs-num">@wr.RequestedDate.ToString("yyyy-MM-dd")</span></td>
+                        </tr>
+                    }
+                </tbody>
+            </pems-list-table>
+
+            <pems-list-footer>
+                @await Html.PartialAsync("_Pagination", new PEMS.Web.ViewModels.PaginationViewModel
                 {
-                    "Converted" or "Approved" or "Planned" => "vs-pill--success",
-                    "Rejected" => "vs-pill--danger",
-                    "Cancelled" or "Draft" => "vs-pill--neutral",
-                    _ => "vs-pill--info"
-                };
-                var icon = wr.Status switch
-                {
-                    "Draft" => "bi-pencil", "Submitted" => "bi-send", "UnderReview" => "bi-hourglass-split", "Approved" => "bi-check-circle",
-                    "Planned" => "bi-calendar-check", "Converted" => "bi-box-arrow-up-right", "Rejected" => "bi-x-circle", "Cancelled" => "bi-slash-circle", _ => "bi-circle"
-                };
-                var prioTone = wr.Priority switch { "Critical" => "vs-pill--danger", "High" => "vs-pill--warning", _ => "vs-pill--neutral" };
-                <tr>
-                    <td class="small fw-bold vs-num"><a asp-action="Details" asp-route-id="@wr.WorkRequestId">@wr.RequestNumber</a></td>
-                    <td class="small">@wr.Title</td>
-                    <td class="small vs-num">@(wr.EquipmentTagNumber ?? "-")</td>
-                    <td><span class="vs-pill @prioTone">@wr.Priority</span></td>
-                    <td><span class="vs-pill vs-pill--icon @tone"><i class="bi @icon" aria-hidden="true"></i> @wr.Status</span></td>
-                    <td class="small">@wr.RequestedByName</td>
-                    <td class="small vs-num">@wr.RequestedDate.ToString("yyyy-MM-dd")</td>
-                </tr>
-            }
-        </tbody>
-    </table>
-    </div>
-    @if (!Model.Items.Any()) { <p class="text-muted text-center py-4 mb-0">@Localizer["هنوز Work Request ای ثبت نشده."]</p> }
-
-    @{
-        var qsParts = new List<string>();
-        if (!string.IsNullOrEmpty((string?)ViewBag.SelectedStatus)) qsParts.Add($"status={Uri.EscapeDataString((string)ViewBag.SelectedStatus)}");
-    }
-    @await Html.PartialAsync("_Pagination", new PEMS.Web.ViewModels.PaginationViewModel
-    {
-        Page = Model.Page,
-        TotalPages = Model.TotalPages,
-        TotalCount = Model.TotalCount,
-        PageSize = Model.PageSize,
-        GridKey = "WorkRequest",
-        BaseUrl = Url.Action("Index") ?? "",
-        ExistingQueryString = string.Join("&", qsParts)
-    })
-</div>
+                    Page = Model.Page,
+                    TotalPages = Model.TotalPages,
+                    TotalCount = Model.TotalCount,
+                    PageSize = Model.PageSize,
+                    GridKey = "WorkRequest",
+                    BaseUrl = Url.Action("Index") ?? "",
+                    ExistingQueryString = existingQueryString
+                })
+            </pems-list-footer>
+        </pems-list-grid>
+    </pems-list-panel>
+</pems-list-page>
 
 @section Scripts {
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            PemsDataGrid.initColumnResize('WorkRequest');
-        });
-    </script>
+    <script src="~/_content/PEMS.UI/pems-list.js" asp-append-version="true"></script>
 }

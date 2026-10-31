@@ -15,4 +15,7 @@ public sealed record ButtonOptions
     public bool Disabled { get; init; }
     public string Type { get; init; } = "button";
     public string? Href { get; init; }
+    /// <summary>Id of a modal, drawer or confirm dialog this button opens (pems-overlay.js). The row key is copied into the dialog.</summary>
+    public string? Opens { get; init; }
+    public string? RowKey { get; init; }
 }
