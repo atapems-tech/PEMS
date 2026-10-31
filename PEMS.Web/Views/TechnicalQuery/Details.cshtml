@@ -17,7 +17,7 @@
             <span class="text-muted small">@Model.Project?.ProjectName &middot; @Model.Discipline?.Name</span>
         </div>
         <div class="d-flex align-items-center gap-2">
-            <span class="badge @sb fs-6">@Model.Status</span>
+            <pems-badge tone="none" css="@sb fs-6">@Model.Status</pems-badge>
             @if (Model.IsOverdue) { <pems-badge tone="danger" css="fs-6"><i class="bi bi-clock-history"></i> @Localizer["Overdue"]</pems-badge> }
         </div>
     </div>

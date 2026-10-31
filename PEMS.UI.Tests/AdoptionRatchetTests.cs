@@ -17,7 +17,7 @@ public sealed class AdoptionRatchetTests
     private static readonly (string Name, Regex Pattern, bool Views, bool Scripts)[] Patterns =
     [
         ("alert", new Regex(@"class=""alert(?![\w-])|class=""[^""]*\balert alert-", RegexOptions.Compiled), true, false),
-        ("badge", new Regex(@"class=""[^""]*\bbadge\b|\btext-bg-[a-z]+", RegexOptions.Compiled), true, false),
+        ("badge", new Regex(@"class=""[^""]*(?<![\w-])badge(?![\w-])|\btext-bg-[a-z]+", RegexOptions.Compiled), true, false),
         ("button", new Regex(@"\bbtn btn-[a-z-]+", RegexOptions.Compiled), true, false),
         ("text-input", new Regex(@"\bform-control\b", RegexOptions.Compiled), true, false),
         ("select", new Regex(@"\bform-select\b", RegexOptions.Compiled), true, false),

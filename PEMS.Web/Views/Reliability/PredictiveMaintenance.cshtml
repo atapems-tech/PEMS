@@ -8,10 +8,10 @@
 
     string StatusBadge(string status) => status switch
     {
-        "READY" => "text-bg-success",
-        "PARTIAL" => "text-bg-warning",
-        "NOT_READY" => "text-bg-secondary",
-        _ => "text-bg-light border"
+        "READY" => "success",
+        "PARTIAL" => "warning",
+        "NOT_READY" => "neutral",
+        _ => "light"
     };
 }
 
@@ -27,13 +27,13 @@
     <div class="col-md-6">
         <div class="content-card h-100 text-center">
             <div class="text-muted small">Engine (software/architecture)</div>
-            <span class="badge fs-6 @StatusBadge(readiness.EngineStatus)">@readiness.EngineStatus</span>
+            <pems-badge tone="@StatusBadge(readiness.EngineStatus)" css="fs-6">@readiness.EngineStatus</pems-badge>
         </div>
     </div>
     <div class="col-md-6">
         <div class="content-card h-100 text-center">
             <div class="text-muted small">Production Model (validated on real data)</div>
-            <span class="badge fs-6 @StatusBadge(readiness.ProductionModelStatus)">@readiness.ProductionModelStatus</span>
+            <pems-badge tone="@StatusBadge(readiness.ProductionModelStatus)" css="fs-6">@readiness.ProductionModelStatus</pems-badge>
         </div>
     </div>
 </div>
@@ -49,7 +49,7 @@
                 <tr>
                     <td>@m.TargetName</td>
                     <td class="small">@m.Algorithm</td>
-                    <td><span class="badge @StatusBadge(m.TrainingDataStatus)">@m.TrainingDataStatus</span></td>
+                    <td><pems-badge tone="@StatusBadge(m.TrainingDataStatus)">@m.TrainingDataStatus</pems-badge></td>
                     <td class="small">@m.ValidationStatus</td>
                     <td class="text-end">@m.ResultCount</td>
                 </tr>

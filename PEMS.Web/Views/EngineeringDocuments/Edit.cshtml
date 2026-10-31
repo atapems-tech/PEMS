@@ -25,7 +25,7 @@
     <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
         <div>
             <h5 class="mb-1">Editing: @Model.DocumentNo</h5>
-            <span class="badge @statusClass">@Model.Status</span>
+            <pems-badge tone="none" css="@statusClass">@Model.Status</pems-badge>
             <span class="text-muted small ms-2">Rev @Model.RevisionNo</span>
             @if (Model.IsFrozen) { <pems-badge tone="info" css="ms-1"><i class="bi bi-snow"></i> Frozen</pems-badge> }
         </div>

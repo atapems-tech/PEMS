@@ -10,6 +10,11 @@ and theme and were reconstructed from the git history (initial import 2026-09-05
 - Filter rows, status selects and the Part Catalogue side panel moved into the filters dropdown (`<pems-list-filter-select>`), each active filter is a chip, and paging keeps the filters (the Material Master pager lost "low stock" and "critical"). A tender list opened from a package shows the package as a chip and offers New for that package.
 - The warehouse views load the PEMS.UI tag helpers from the area's `_ViewImports`. The create modals stay until SCRUM-482. The adoption baseline is lower for these views.
 
+## 2026-10-31 - Badge completed in the views (SCRUM-53, #31)
+
+### Changed
+- `<pems-badge>` takes `tone="none"` (the page passes the classes), a runtime tone (`tone="@x"`) and the other attributes of the tag; 258 more badges in 106 views moved, the `text-bg-*` view helpers now return tone names, the badge ratchet is down to the 4 toast lines in `_Layout` (the counter no longer counts `bi-person-badge` icons).
+
 ## 2026-10-31 - `<pems-button>` takes `asp-*` routing (SCRUM-53, #31)
 
 ### Changed

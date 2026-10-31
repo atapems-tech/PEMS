@@ -59,13 +59,13 @@
                             @{
                                 var pb = TaskManagerUi.PriorityBadge(t.Priority);
                             }
-                            <span class="badge @pb">@TaskManagerUi.Priority(Localizer, t.Priority)</span>
+                            <pems-badge tone="none" css="@pb">@TaskManagerUi.Priority(Localizer, t.Priority)</pems-badge>
                         </td>
                         <td>
                             @{
                                 var sb = t.Status switch { "Completed" => "bg-success", "InProgress" => "bg-info text-dark", "Cancelled" => "bg-dark", _ => "bg-secondary" };
                             }
-                            <span class="badge @sb">@(t.WorkSpaceId != null ? TaskManagerUi.Name(t.StatusName, t.StatusNameFa) : TaskManagerUi.LegacyStatus(Localizer, t.Status))</span>
+                            <pems-badge tone="none" css="@sb">@(t.WorkSpaceId != null ? TaskManagerUi.Name(t.StatusName, t.StatusNameFa) : TaskManagerUi.LegacyStatus(Localizer, t.Status))</pems-badge>
                             @if (t.IsOverdue) { <pems-badge tone="danger">@Localizer["Overdue"]</pems-badge> }
                         </td>
                         <td class="small">

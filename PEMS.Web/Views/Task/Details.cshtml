@@ -34,7 +34,7 @@
                 · <span class="tm-key">@title</span>
             </div>
             <h2 class="h5 mb-1">@i.Title</h2>
-            <span class="badge @TaskManagerUi.CategoryBadge(i.StatusCategory)">@TaskManagerUi.StatusLabel(Localizer, i)</span>
+            <pems-badge tone="none" css="@TaskManagerUi.CategoryBadge(i.StatusCategory)">@TaskManagerUi.StatusLabel(Localizer, i)</pems-badge>
             @if (i.IsOverdue) { <pems-badge tone="danger">@Localizer["Overdue"]</pems-badge> }
             @if (!i.IsActive) { <pems-badge tone="light">@Localizer["Tm_Archived"]</pems-badge> }
         </div>
@@ -150,7 +150,7 @@
                                 @if (l.OtherVisible)
                                 {
                                     <a asp-action="Details" asp-route-id="@l.OtherId" class="tm-key ms-1">@(l.OtherKey ?? "#" + l.OtherId)</a> <span>@l.OtherTitle</span>
-                                    <span class="badge @TaskManagerUi.CategoryBadge(l.OtherStatusCategory)">@Localizer["Tm_Category_" + l.OtherStatusCategory]</span>
+                                    <pems-badge tone="none" css="@TaskManagerUi.CategoryBadge(l.OtherStatusCategory)">@Localizer["Tm_Category_" + l.OtherStatusCategory]</pems-badge>
                                 }
                                 else
                                 {
@@ -275,7 +275,7 @@
             }
             else
             {
-                <span class="badge @TaskManagerUi.CategoryBadge(i.StatusCategory)">@TaskManagerUi.StatusLabel(Localizer, i)</span>
+                <pems-badge tone="none" css="@TaskManagerUi.CategoryBadge(i.StatusCategory)">@TaskManagerUi.StatusLabel(Localizer, i)</pems-badge>
             }
             @if (!string.IsNullOrWhiteSpace(Model.CompletionNote)) { <div class="small mt-2"><strong>@Localizer["Tm_CompletionNote"]:</strong> @Model.CompletionNote</div> }
         </section>

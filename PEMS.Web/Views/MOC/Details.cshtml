@@ -17,8 +17,8 @@
             <span class="text-muted small">@Model.Project?.ProjectName &middot; @Model.Discipline?.Name &middot; @Model.ChangeType</span>
         </div>
         <div class="d-flex align-items-center gap-2">
-            <span class="badge @(Model.RiskLevel == "High" ? "bg-danger" : Model.RiskLevel == "Medium" ? "bg-warning text-dark" : "bg-secondary") fs-6">Risk: @Model.RiskLevel</span>
-            <span class="badge @sb fs-6">@Model.Status</span>
+            <pems-badge tone="@(Model.RiskLevel == "High" ? "danger" : Model.RiskLevel == "Medium" ? "warning" : "neutral")" css="fs-6">Risk: @Model.RiskLevel</pems-badge>
+            <pems-badge tone="none" css="@sb fs-6">@Model.Status</pems-badge>
         </div>
     </div>
 </div>

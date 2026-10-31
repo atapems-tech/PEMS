@@ -34,7 +34,7 @@
         <div class="col-md-2"><strong>@Localizer["New"]:</strong> @Model.NewCount</div>
         <div class="col-md-2"><strong>@Localizer["Duplicate"]:</strong> @Model.DuplicateCount</div>
         <div class="col-md-1"><strong>@Localizer["Unresolved:"]</strong> @Model.UnresolvedCount</div>
-        <div class="col-md-2"><strong>@Localizer["Status:"]</strong> <span class="badge @(Model.Status == "Committed" ? "bg-success" : "bg-secondary")">@Model.Status</span></div>
+        <div class="col-md-2"><strong>@Localizer["Status:"]</strong> <pems-badge tone="@(Model.Status == "Committed" ? "success" : "neutral")">@Model.Status</pems-badge></div>
     </div>
 
     @if (Model.Status == "Staging")
@@ -123,7 +123,7 @@
                         <td class="small">@(r.VariableType ?? "-")</td>
                         <td class="small" dir="ltr">@(r.ReadingDate?.ToString("yyyy-MM-dd HH:mm") ?? "-")</td>
                         <td class="small text-end" dir="ltr">@(r.Value?.ToString() ?? "-")</td>
-                        <td><span class="badge @StatusBadge(r.Status)">@StatusLabel(r.Status)</span></td>
+                        <td><pems-badge tone="none" css="@StatusBadge(r.Status)">@StatusLabel(r.Status)</pems-badge></td>
                         <td class="small">
                             @if (r.ValidationMessage != null)
                             {

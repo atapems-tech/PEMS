@@ -38,7 +38,7 @@
                     <div class="fw-bold">@it.WorkOrderNumber &middot; @it.EquipmentTagNumber</div>
                     <div class="small">@it.EquipmentDescription</div>
                     <div class="small">
-                        <span class="badge @TypeBadgeClass(it.WorkOrderType)">@it.WorkOrderType</span>
+                        <pems-badge tone="none" css="@TypeBadgeClass(it.WorkOrderType)">@it.WorkOrderType</pems-badge>
                         <pems-badge tone="neutral">@it.Status</pems-badge>
                         @if (it.HasEmployeeConflict) { <pems-badge tone="danger"><i class="bi bi-exclamation-triangle"></i> @Localizer["Conflict"]</pems-badge> }
                     </div>

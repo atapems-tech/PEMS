@@ -33,9 +33,9 @@
                     <td class="small">@q.VendorName</td>
                     <td class="small">@(q.QuotedAmount.HasValue ? $"{q.QuotedAmount:N2} {q.Currency}" : "-")</td>
                     <td><pems-badge tone="neutral">@q.QuotationStatus</pems-badge></td>
-                    <td><span class="badge @(q.TechnicalEvaluation == "Passed" ? "bg-success" : q.TechnicalEvaluation == "Failed" ? "bg-danger" : "bg-secondary")">@q.TechnicalEvaluation</span></td>
-                    <td><span class="badge @(q.CommercialEvaluation == "Passed" ? "bg-success" : q.CommercialEvaluation == "Failed" ? "bg-danger" : "bg-secondary")">@q.CommercialEvaluation</span></td>
-                    <td><span class="badge @(q.ApprovalStatus == "Approved" ? "bg-success" : q.ApprovalStatus == "Rejected" ? "bg-danger" : "bg-secondary")">@q.ApprovalStatus</span></td>
+                    <td><pems-badge tone="@(q.TechnicalEvaluation == "Passed" ? "success" : q.TechnicalEvaluation == "Failed" ? "danger" : "neutral")">@q.TechnicalEvaluation</pems-badge></td>
+                    <td><pems-badge tone="@(q.CommercialEvaluation == "Passed" ? "success" : q.CommercialEvaluation == "Failed" ? "danger" : "neutral")">@q.CommercialEvaluation</pems-badge></td>
+                    <td><pems-badge tone="@(q.ApprovalStatus == "Approved" ? "success" : q.ApprovalStatus == "Rejected" ? "danger" : "neutral")">@q.ApprovalStatus</pems-badge></td>
                     <td><pems-button tone="neutral" size="small" outline="true" as="a" asp-action="Details" asp-route-id="@q.MRId"><i class="bi bi-eye"></i></pems-button></td>
                 </tr>
             }

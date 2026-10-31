@@ -8,10 +8,10 @@
 
     string StatusBadge(string status) => status switch
     {
-        "APPROVED" => "text-bg-success",
-        "UNDER_REVIEW" => "text-bg-warning",
-        "SUPERSEDED" => "text-bg-secondary",
-        _ => "text-bg-light border"
+        "APPROVED" => "success",
+        "UNDER_REVIEW" => "warning",
+        "SUPERSEDED" => "neutral",
+        _ => "light"
     };
 
     string ScoreLabel(int? score) => score switch
@@ -30,7 +30,7 @@
             <h5 class="mb-0">@Model.EquipmentTagNumber <span class="text-muted small">(@(Model.EquipmentClassName ?? "Unclassified"))</span></h5>
             <span class="text-muted small">Framework @Model.FrameworkVersion</span>
         </div>
-        <span class="badge @StatusBadge(Model.Status) ms-auto" style="font-size:1rem;">@Model.Status</span>
+        <pems-badge tone="@StatusBadge(Model.Status)" css="ms-auto" style="font-size:1rem;">@Model.Status</pems-badge>
     </div>
 
     <div class="row g-2 small mt-2">
@@ -141,7 +141,7 @@
                     @foreach (var p in Model.PriorAssessments)
                     {
                         <tr>
-                            <td><span class="badge @StatusBadge(p.Status)">@p.Status</span></td>
+                            <td><pems-badge tone="@StatusBadge(p.Status)">@p.Status</pems-badge></td>
                             <td>@(p.ProposedCriticalityClass ?? "-")</td>
                             <td class="small">@(p.PreparedBy ?? "-")</td>
                             <td class="small">@(p.ApprovedBy ?? "-")</td>

@@ -89,8 +89,8 @@ else
     <div class="d-flex justify-content-between align-items-start flex-wrap gap-2">
         <div>
             <h5 class="mb-1">@Model.WorkOrderNumber</h5>
-            <span class="badge @statusClass">@Model.Status</span>
-            <span class="badge @(Model.Priority == "Critical" ? "bg-danger" : "bg-secondary")">@Model.Priority</span>
+            <pems-badge tone="none" css="@statusClass">@Model.Status</pems-badge>
+            <pems-badge tone="@(Model.Priority == "Critical" ? "danger" : "neutral")">@Model.Priority</pems-badge>
             <pems-badge tone="neutral">@Model.WorkOrderType</pems-badge>
         </div>
         @if (isLegacy)
@@ -526,7 +526,7 @@ else
             @foreach (var r in reviewStatus)
             {
                 var badgeClass = r.Status switch { "Approve" => "bg-success", "Comment" => "bg-warning text-dark", "Reject" => "bg-danger", _ => "bg-secondary" };
-                <span class="badge @badgeClass">@r.DisciplineName: @r.Status</span>
+                <pems-badge tone="none" css="@badgeClass">@r.DisciplineName: @r.Status</pems-badge>
             }
         </div>
 
@@ -598,7 +598,7 @@ else
                 <li class="border-bottom py-2">
                     <div class="d-flex justify-content-between">
                         <span class="fw-bold small">@f.Discipline?.Name</span>
-                        <span class="badge @(f.Decision == "Approve" ? "bg-success" : f.Decision == "Comment" ? "bg-warning text-dark" : "bg-danger")">@f.Decision</span>
+                        <pems-badge tone="@(f.Decision == "Approve" ? "success" : f.Decision == "Comment" ? "warning" : "danger")">@f.Decision</pems-badge>
                     </div>
                     @if (!string.IsNullOrWhiteSpace(f.Findings)) { <p class="small mb-0">@f.Findings</p> }
                     @if (!string.IsNullOrWhiteSpace(f.FailureModeCode)) { <p class="small text-muted mb-0">@f.FailureModeCode / @f.FailureCauseCode</p> }

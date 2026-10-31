@@ -151,7 +151,7 @@
             <div class="dropdown">
                 <a href="#" class="text-secondary position-relative dropdown-toggle" data-bs-toggle="dropdown" id="notifBell" title="@Localizer["Notifications"]" onclick="loadNotifDropdown()">
                     <i class="bi bi-bell fs-5"></i>
-                    <span id="notifBadge" class="badge bg-danger rounded-pill position-absolute top-0 start-100 translate-middle @(unreadCount > 0 ? "" : "d-none")">@(unreadCount > 0 ? unreadCount.ToString() : "")</span>
+                    <pems-badge tone="none" css="bg-danger rounded-pill position-absolute top-0 start-100 translate-middle @(unreadCount > 0 ? "" : "d-none")" id="notifBadge">@(unreadCount > 0 ? unreadCount.ToString() : "")</pems-badge>
                 </a>
                 <div class="dropdown-menu dropdown-menu-end p-0" style="min-width:320px;max-height:400px;overflow-y:auto;" id="notifDropdownBody">
                     <span class="dropdown-item small text-muted">@Localizer["Loading"]</span>

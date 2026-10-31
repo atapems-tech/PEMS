@@ -19,7 +19,7 @@
         </div>
         <div class="d-flex align-items-center gap-2">
             <pems-button tone="neutral" size="small" outline="true" as="a" asp-controller="Relationship" asp-action="ProcurementPackage" asp-route-id="@s.ProcurementPackageId"><i class="bi bi-diagram-3"></i> @Localizer["Cm_Relationships"]</pems-button>
-            <span class="badge @(s.Status == "Closed" ? "bg-success" : "bg-warning text-dark") fs-6">@s.Status</span>
+            <pems-badge tone="@(s.Status == "Closed" ? "success" : "warning")" css="fs-6">@s.Status</pems-badge>
         </div>
     </div>
 
@@ -140,7 +140,7 @@
                         @{
                             var ab = c.ActionStatus switch { "Closed" => "bg-success", "Answered" => "bg-info text-dark", _ => "bg-danger" };
                         }
-                        <span class="badge @ab">@c.ActionStatus</span>
+                        <pems-badge tone="none" css="@ab">@c.ActionStatus</pems-badge>
                         <form asp-action="SetCommunicationStatus" method="post" class="d-inline">
                             <input type="hidden" name="packageId" value="@s.ProcurementPackageId" />
                             <input type="hidden" name="communicationId" value="@c.ProcurementCommunicationId" />
@@ -203,7 +203,7 @@
             @foreach (var a in Model.Approvals)
             {
                 <tr><td>@a.ApproverName</td>
-                    <td><span class="badge @(a.Decision == "Approved" ? "bg-success" : "bg-danger")">@a.Decision</span></td>
+                    <td><pems-badge tone="@(a.Decision == "Approved" ? "success" : "danger")">@a.Decision</pems-badge></td>
                     <td>@a.Comment</td><td>@a.ApprovalDate.ToString("yyyy-MM-dd")</td></tr>
             }
         </tbody>

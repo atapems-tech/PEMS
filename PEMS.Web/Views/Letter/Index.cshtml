@@ -631,7 +631,7 @@
                                         @if (l.IsUnread) { <span class="visually-hidden">@Localizer["Lp_Unread"]</span> }
                                         @if (!string.IsNullOrEmpty(l.MyRecipientType))
                                         {
-                                            <span class="badge @(l.MyRecipientType == "To" ? "bg-primary" : "bg-secondary")">@(l.MyRecipientType == "To" ? "To" : "Cc")</span>
+                                            <pems-badge tone="@(l.MyRecipientType == "To" ? "primary" : "neutral")">@(l.MyRecipientType == "To" ? "To" : "Cc")</pems-badge>
                                         }
                                         <a asp-action="Details" asp-route-id="@l.LetterId" class="lp-subject" data-preview-url="@Url.Action("Details", new { id = l.LetterId, embed = true })">@l.Subject</a>
                                         @if (l.ThreadCount > 1)
@@ -650,17 +650,17 @@
                                             @if (l.IsRevived) { <span class="ct-chip ct-chip--revived"><i class="bi bi-arrow-repeat" aria-hidden="true"></i> @Localizer["Ct_RevivedChip"]</span> }
                                             @if (l.MyReminderAt.HasValue) { <span class="ct-chip ct-chip--remind" title="@l.MyReminderAt.Value.ToString("yyyy-MM-dd HH:mm")"><i class="bi bi-bell" aria-hidden="true"></i> @l.MyReminderAt.Value.ToString("MM-dd")</span> }
                                             @if (l.IsTrashed && !inTrash) { <span class="ct-chip ct-chip--trash"><i class="bi bi-trash3" aria-hidden="true"></i> @Localizer["Ct_FolderTrash"]</span> }
-                                            @if (l.ConfidentialityLevel != "Public" && l.ConfidentialityLevel != "Internal") { <span class="badge @(veryConfidential ? "ct-chip ct-chip--vconf" : "bg-dark")"><i class="bi bi-lock-fill"></i> @l.ConfidentialityLevel</span> }
+                                            @if (l.ConfidentialityLevel != "Public" && l.ConfidentialityLevel != "Internal") { <pems-badge tone="@(veryConfidential ? "ct-chip ct-chip--vconf" : "dark")"><i class="bi bi-lock-fill"></i> @l.ConfidentialityLevel</pems-badge> }
                                             @if (!string.IsNullOrEmpty(l.RelatedDocumentNo)) { <pems-badge tone="info"><i class="bi bi-file-earmark-text"></i> @l.RelatedDocumentNo</pems-badge> }
                                             @if (!string.IsNullOrEmpty(l.RelatedMRNumber)) { <pems-badge tone="info"><i class="bi bi-cart-check"></i> @l.RelatedMRNumber</pems-badge> }
-                                            @if (l.OpenReferralsCount > 0) { <span class="badge @(l.HasOverdueReferral ? "bg-danger" : "bg-warning text-dark")"><i class="bi bi-signpost-split"></i> @l.OpenReferralsCount</span> }
-                                            @foreach (var tag in l.Tags) { <span class="badge bg-@tag.Color">@tag.Name</span> }
+                                            @if (l.OpenReferralsCount > 0) { <pems-badge tone="@(l.HasOverdueReferral ? "danger" : "warning")"><i class="bi bi-signpost-split"></i> @l.OpenReferralsCount</pems-badge> }
+                                            @foreach (var tag in l.Tags) { <pems-badge tone="none" css="bg-@tag.Color">@tag.Name</pems-badge> }
                                         </div>
                                     }
                                 </td>
                                 <td class="lp-no">@l.LetterNumber</td>
                                 <td><div class="lp-who"><span class="lp-av lp-av-@(l.LetterId % 7)" aria-hidden="true">@Initials(who)</span><span class="lp-who-name">@who</span></div></td>
-                                <td><span class="badge ct-status @PEMS.Web.Helpers.LetterStatusBadge.CssClass(l.Status)" title="@StatusLabel(l.Status)">@StatusLabel(l.Status)</span></td>
+                                <td><pems-badge tone="none" css="ct-status @PEMS.Web.Helpers.LetterStatusBadge.CssClass(l.Status)" title="@StatusLabel(l.Status)">@StatusLabel(l.Status)</pems-badge></td>
                                 <td class="small"><span class="lp-pri lp-pri--@l.Priority.ToLowerInvariant()"><i class="bi @prIcon" aria-hidden="true"></i> @Localizer["Lt_P_" + l.Priority]</span></td>
                                 <td class="small">
                                     @if (l.NextResponseDue.HasValue)

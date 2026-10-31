@@ -9,10 +9,10 @@
 
     string PriorityBadge(string p) => p switch
     {
-        "Critical" => "text-bg-danger",
-        "High" => "text-bg-warning",
-        "Medium" => "text-bg-info",
-        _ => "text-bg-secondary"
+        "Critical" => "danger",
+        "High" => "warning",
+        "Medium" => "info",
+        _ => "neutral"
     };
 }
 
@@ -74,13 +74,13 @@
                     <td class="fw-bold">@wo.WorkOrderNumber</td>
                     <td>@wo.EquipmentTagNumber <span class="text-muted small">@wo.EquipmentDescription</span></td>
                     <td>@wo.WorkOrderType</td>
-                    <td><span class="badge @PriorityBadge(wo.Priority)">@wo.Priority</span></td>
+                    <td><pems-badge tone="@PriorityBadge(wo.Priority)">@wo.Priority</pems-badge></td>
                     <td>@wo.Status</td>
                     <td>
                         @if (wo.DueDate.HasValue)
                         {
                             @wo.DueDate.Value.ToString("yyyy-MM-dd")
-                            @if (wo.IsOverdue) { <span class="badge text-bg-danger ms-1">@Localizer["Overdue"]</span> }
+                            @if (wo.IsOverdue) { <pems-badge tone="danger" css="ms-1">@Localizer["Overdue"]</pems-badge> }
                         }
                         else
                         {

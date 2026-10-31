@@ -90,16 +90,16 @@
                     <td class="text-end">@c.StrategyReadyCount</td>
                     <td class="text-end">@c.PmPlanReadyCount</td>
                     <td class="text-end">
-                        <span class="badge @(c.ExecutionReadyCount > 0 ? "text-bg-success" : "text-bg-secondary")">@c.ExecutionReadyCount</span>
+                        <pems-badge tone="@(c.ExecutionReadyCount > 0 ? "success" : "neutral")">@c.ExecutionReadyCount</pems-badge>
                     </td>
                     <td class="small">
                         @if (c.HasDefensibleBasis)
                         {
-                            <span class="badge text-bg-success">Defensible</span>
+                            <pems-badge tone="success">Defensible</pems-badge>
                         }
                         else
                         {
-                            <span class="badge text-bg-secondary">None yet</span>
+                            <pems-badge tone="neutral">None yet</pems-badge>
                         }
                     </td>
                     <td class="small text-muted">

@@ -126,7 +126,7 @@
                             <td>@g.Name</td>
                             <td>@g.Discipline?.Name</td>
                             <td class="small text-muted">@(g.Description ?? "-")</td>
-                            <td>@if (g.IsSystemDefault) { <span class="badge text-bg-info">@Localizer["System"]</span> }</td>
+                            <td>@if (g.IsSystemDefault) { <pems-badge tone="info">@Localizer["System"]</pems-badge> }</td>
                             <td class="text-end">
                                 <form asp-action="ToggleGroupActive" method="post" class="d-inline">
                                     <input type="hidden" name="id" value="@g.MaintenanceGroupId" />
@@ -265,7 +265,7 @@
                             <td><code>@t.Code</code></td>
                             <td>@t.Name</td>
                             <td>@(t.NameFa ?? "-")</td>
-                            <td>@if (t.IsSystemDefault) { <span class="badge text-bg-info">@Localizer["System"]</span> }</td>
+                            <td>@if (t.IsSystemDefault) { <pems-badge tone="info">@Localizer["System"]</pems-badge> }</td>
                             <td class="text-end">
                                 <form asp-action="ToggleMaintenanceTypeActive" method="post" class="d-inline">
                                     <input type="hidden" name="id" value="@t.MaintenanceTypeId" />
@@ -301,7 +301,7 @@
                             <td><code>@t.Code</code></td>
                             <td>@t.Name</td>
                             <td>@(t.NameFa ?? "-")</td>
-                            <td>@if (t.IsSystemDefault) { <span class="badge text-bg-info">@Localizer["System"]</span> }</td>
+                            <td>@if (t.IsSystemDefault) { <pems-badge tone="info">@Localizer["System"]</pems-badge> }</td>
                             <td class="text-end">
                                 <form asp-action="ToggleMaintenanceStrategyTypeActive" method="post" class="d-inline">
                                     <input type="hidden" name="id" value="@t.MaintenanceStrategyTypeId" />
@@ -337,7 +337,7 @@
                             <td><code>@t.Code</code></td>
                             <td>@t.Name</td>
                             <td>@(t.NameFa ?? "-")</td>
-                            <td>@if (t.IsSystemDefault) { <span class="badge text-bg-info">@Localizer["System"]</span> }</td>
+                            <td>@if (t.IsSystemDefault) { <pems-badge tone="info">@Localizer["System"]</pems-badge> }</td>
                             <td class="text-end">
                                 <form asp-action="ToggleEquipmentClassActive" method="post" class="d-inline">
                                     <input type="hidden" name="id" value="@t.EquipmentClassId" />
@@ -375,7 +375,7 @@
                             <td>@s.StandardNumber</td>
                             <td class="small">@s.Title</td>
                             <td class="small text-muted">@(s.Category ?? "-")</td>
-                            <td>@if (s.IsSystemDefault) { <span class="badge text-bg-info">@Localizer["System"]</span> }</td>
+                            <td>@if (s.IsSystemDefault) { <pems-badge tone="info">@Localizer["System"]</pems-badge> }</td>
                             <td class="text-end">
                                 <form asp-action="ToggleStandardReferenceActive" method="post" class="d-inline">
                                     <input type="hidden" name="id" value="@s.StandardReferenceId" />
@@ -412,7 +412,7 @@
                             <td>@a.Name</td>
                             <td class="small">@a.MaintenanceGroup?.Name</td>
                             <td class="small text-muted">@(a.MaintenanceType?.Name ?? "-")</td>
-                            <td>@if (a.IsSystemDefault) { <span class="badge text-bg-info">@Localizer["System"]</span> }</td>
+                            <td>@if (a.IsSystemDefault) { <pems-badge tone="info">@Localizer["System"]</pems-badge> }</td>
                             <td class="text-end">
                                 <form asp-action="ToggleMaintenanceActivityActive" method="post" class="d-inline">
                                     <input type="hidden" name="id" value="@a.MaintenanceActivityId" />
@@ -445,7 +445,7 @@
                             <td class="small">@(fm.EquipmentClass?.Name ?? "-")</td>
                             <td class="small text-muted">@(fm.FailureEffect?.Name ?? "-")</td>
                             <td class="small text-muted">@(fm.FailureConsequence?.Name ?? "-")</td>
-                            <td>@if (fm.IsSystemDefault) { <span class="badge text-bg-info">@Localizer["System"]</span> }</td>
+                            <td>@if (fm.IsSystemDefault) { <pems-badge tone="info">@Localizer["System"]</pems-badge> }</td>
                             <td class="text-end">
                                 <form asp-action="ToggleFailureModeActive" method="post" class="d-inline">
                                     <input type="hidden" name="id" value="@fm.FailureModeId" />
@@ -478,7 +478,7 @@
                             <td class="small">@(pt.EquipmentClass?.Name ?? "-")</td>
                             <td class="small text-muted">@pt.TriggerType</td>
                             <td class="small text-muted">@(pt.IntervalDays.HasValue ? $"{pt.IntervalDays} روز" : (pt.MeterInterval.HasValue ? $"{pt.MeterInterval} {pt.MeterType}" : "-"))</td>
-                            <td>@if (pt.IsSystemDefault) { <span class="badge text-bg-info">@Localizer["System"]</span> }</td>
+                            <td>@if (pt.IsSystemDefault) { <pems-badge tone="info">@Localizer["System"]</pems-badge> }</td>
                             <td class="text-end">
                                 <form asp-action="TogglePMTemplateActive" method="post" class="d-inline">
                                     <input type="hidden" name="id" value="@pt.PMTemplateId" />
@@ -514,7 +514,7 @@
                         <tr>
                             <td><code>@p.Code</code></td>
                             <td>@p.Name</td>
-                            <td><span class="badge text-bg-secondary">@p.VariableType</span></td>
+                            <td><pems-badge tone="neutral">@p.VariableType</pems-badge></td>
                             <td class="small text-muted">@(p.EquipmentClass?.Name ?? "عمومی")</td>
                             <td class="small text-muted">@(p.StandardReference?.Code ?? "-")</td>
                             <td class="small">v@(p.Version)</td>
@@ -523,14 +523,14 @@
                                 {
                                     foreach (var l in p.Limits.Where(l => l.IsActive))
                                     {
-                                        <span class="badge text-bg-light border me-1" title="@l.Status">
+                                        <pems-badge tone="light" css="me-1" title="@l.Status">
                                             @l.Status: @(l.LowValue?.ToString() ?? "−") … @(l.HighValue?.ToString() ?? "−")
-                                        </span>
+                                        </pems-badge>
                                     }
                                 }
                                 else
                                 {
-                                    <span class="badge text-bg-warning-subtle text-warning-emphasis">@Localizer["پیکربندی نشده"]</span>
+                                    <pems-badge tone="none" css="text-warning-emphasis">@Localizer["پیکربندی نشده"]</pems-badge>
                                 }
                             </td>
                             <td class="text-end text-nowrap">
@@ -579,7 +579,7 @@
                                     </select>
                                 </form>
                             </td>
-                            <td>@if (m.IsSystemDefault) { <span class="badge text-bg-info">@Localizer["System"]</span> }</td>
+                            <td>@if (m.IsSystemDefault) { <pems-badge tone="info">@Localizer["System"]</pems-badge> }</td>
                             <td class="text-end">
                                 <form asp-action="ToggleConditionPriorityMappingActive" method="post" class="d-inline">
                                     <input type="hidden" name="id" value="@m.ConditionPriorityMappingId" />

@@ -4,9 +4,9 @@
 
     string StatusBadge(string status) => status switch
     {
-        "READY" => "text-bg-success",
-        "NOT_READY" => "text-bg-secondary",
-        _ => "text-bg-light border"
+        "READY" => "success",
+        "NOT_READY" => "neutral",
+        _ => "light"
     };
 }
 
@@ -19,7 +19,7 @@
     است - هرگز به‌عنوان عملکرد واقعی کارخانه تفسیر نشود. @Model.MethodologyNote
 </pems-alert>
 
-<span class="badge @StatusBadge(Model.DataStatus)">@Model.DataStatus</span>
+<pems-badge tone="@StatusBadge(Model.DataStatus)">@Model.DataStatus</pems-badge>
 @if (Model.Reason != null) { <p class="text-muted small mt-2">@Model.Reason</p> }
 
 @if (Model.DataStatus == "READY")

@@ -61,7 +61,7 @@
         <div>
             <div class="d-flex align-items-center flex-wrap gap-2">
                 <h5 class="mb-0">@l.LetterNumber</h5>
-                <span class="badge @statusBadgeClass">@l.Status</span>
+                <pems-badge tone="none" css="@statusBadgeClass">@l.Status</pems-badge>
                 <pems-badge tone="light">@l.LetterType</pems-badge>
                 @if (l.ConfidentialityLevel != "Public" && l.ConfidentialityLevel != "Internal")
                 { <pems-badge tone="dark"><i class="bi bi-lock-fill"></i> @l.ConfidentialityLevel</pems-badge> }
@@ -197,14 +197,14 @@
         <div class="d-flex flex-wrap align-items-center gap-1 mt-2">
             @foreach (var tag in l.Tags)
             {
-                <span class="badge bg-@tag.Color">
+                <pems-badge tone="none" css="bg-@tag.Color">
                     @tag.Name
                     <form asp-action="DetachTag" method="post" class="d-inline">
                         <input type="hidden" name="letterId" value="@l.LetterId" />
                         <input type="hidden" name="tagId" value="@tag.TagId" />
                         <button type="submit" class="btn-close btn-close-white btn-sm" style="font-size:8px;" title="Remove tag"></button>
                     </form>
-                </span>
+                </pems-badge>
             }
         </div>
     }
@@ -256,9 +256,9 @@
             {
                 var stepBadge = step.Status switch { "Approved" => "bg-success", "Rejected" => "bg-danger", "Returned" => "bg-warning text-dark", _ => step.IsCurrent ? "bg-primary" : "bg-secondary" };
                 <li class="d-flex flex-wrap align-items-center gap-2 py-1 @(step.IsCurrent ? "fw-semibold" : "")">
-                    <span class="badge rounded-pill bg-light text-dark border">@step.StepOrder</span>
+                    <pems-badge tone="light" css="rounded-pill">@step.StepOrder</pems-badge>
                     <span>@step.ApproverName</span>
-                    <span class="badge @stepBadge">@(step.IsCurrent ? Localizer["Lc_StepCurrent"].Value : step.Status)</span>
+                    <pems-badge tone="none" css="@stepBadge">@(step.IsCurrent ? Localizer["Lc_StepCurrent"].Value : step.Status)</pems-badge>
                     @if (step.DecidedDate.HasValue) { <small class="text-muted">@step.DecidedDate.Value.ToString("yyyy-MM-dd HH:mm")</small> }
                     @if (!string.IsNullOrWhiteSpace(step.Comment)) { <small class="text-muted">&mdash; @step.Comment</small> }
                     @if (isAdmin && step.Status == "Pending" && l.Status == "PendingApproval")
@@ -305,7 +305,7 @@
                         <span class="cv-kind cv-kind--@kindClass"><i class="bi @(m.Kind == "Referral" ? "bi-signpost-split" : m.Kind == "Reply" ? "bi-reply" : "bi-envelope")" aria-hidden="true"></i> @Localizer["Ct_Kind_" + m.Kind]</span>
                         <span class="cv-who">@m.SenderName</span>
                         <span class="text-muted">@m.LetterNumber &middot; @m.LetterDate.ToString("yyyy-MM-dd")</span>
-                        <span class="badge text-bg-primary ms-auto">@Localizer["Ct_ThisLetter"]</span>
+                        <pems-badge tone="primary" css="ms-auto">@Localizer["Ct_ThisLetter"]</pems-badge>
                     </div>
                 }
                 else
@@ -435,7 +435,7 @@
             {
                 var decColor = rv.Decision switch { "Approved" => "success", "Rejected" => "danger", _ => "warning" };
                 <li class="d-flex gap-2 pb-2 small">
-                    <span class="badge bg-@decColor" style="height:fit-content;">@rv.Decision</span>
+                    <pems-badge tone="none" css="bg-@decColor" style="height:fit-content;">@rv.Decision</pems-badge>
                     <div>
                         <div>by <strong>@rv.ReviewerName</strong> &middot; @rv.CreatedDate.ToString("yyyy-MM-dd HH:mm")</div>
                         @if (!string.IsNullOrEmpty(rv.Comment)) { <div class="text-muted">@rv.Comment</div> }
@@ -487,7 +487,7 @@
                             @foreach (var r in Model.Recipients)
                             {
                                 <tr>
-                                    <td><span class="badge @(r.RecipientType == "To" ? "bg-primary" : "bg-secondary")">@(r.RecipientType == "To" ? "To" : "Cc")</span></td>
+                                    <td><pems-badge tone="@(r.RecipientType == "To" ? "primary" : "neutral")">@(r.RecipientType == "To" ? "To" : "Cc")</pems-badge></td>
                                     <td>@r.DisplayName</td>
                                     <td>
                                         @if (r.IsRead)
@@ -586,7 +586,7 @@
                                         @{
                                             var sb = r.Status switch { "Completed" => "bg-success", "InProgress" => "bg-info text-dark", _ => "bg-warning text-dark" };
                                         }
-                                        <span class="badge @sb">@r.Status</span>
+                                        <pems-badge tone="none" css="@sb">@r.Status</pems-badge>
                                         @if (r.IsOverdue) { <pems-badge tone="danger">@Localizer["Overdue"]</pems-badge> }
                                     </td>
                                     <td>

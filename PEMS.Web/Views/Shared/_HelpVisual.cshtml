@@ -44,7 +44,7 @@
                         var badgeClass = e.Kind == "reject" ? "bg-danger" : (e.Kind == "terminal" ? "bg-secondary" : "bg-success");
 
                         <li class="d-flex align-items-center gap-2 py-1 border-bottom">
-                            <span class="badge @badgeClass" style="min-width:70px;">@e.Label</span>
+                            <pems-badge tone="none" css="@badgeClass" style="min-width:70px;">@e.Label</pems-badge>
                             <span>@fromLabel <i class="bi bi-arrow-@(isRtl ? "left" : "right")"></i> @toLabel</span>
                         </li>
                     }

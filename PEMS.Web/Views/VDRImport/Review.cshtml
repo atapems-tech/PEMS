@@ -18,7 +18,7 @@
         <div class="col-md-3"><strong>@Localizer["Project:"]</strong> @Model.ProjectName</div>
         <div class="col-md-2"><strong>@Localizer["Total:"]</strong> @Model.RowsTotal</div>
         <div class="col-md-2"><strong>@Localizer["Duplicates:"]</strong> @Model.RowsDuplicate</div>
-        <div class="col-md-2"><strong>@Localizer["Status:"]</strong> <span class="badge @(Model.Status == "Committed" ? "bg-success" : "bg-secondary")">@Model.Status</span></div>
+        <div class="col-md-2"><strong>@Localizer["Status:"]</strong> <pems-badge tone="@(Model.Status == "Committed" ? "success" : "neutral")">@Model.Status</pems-badge></div>
     </div>
 
     @if (Model.Status == "Staged")
@@ -80,7 +80,7 @@
                             @{
                                 var vb = r.ValidationStatus switch { "Error" => "bg-danger", "Warning" => "bg-warning text-dark", _ => "bg-success" };
                             }
-                            <span class="badge @vb">@r.ValidationStatus</span>
+                            <pems-badge tone="none" css="@vb">@r.ValidationStatus</pems-badge>
                         </td>
                         <td class="small text-muted">@r.ValidationMessage</td>
                         <td>@(r.IsDuplicate ? "Update existing" : "New")</td>

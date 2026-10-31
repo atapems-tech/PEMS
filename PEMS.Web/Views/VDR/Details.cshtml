@@ -223,21 +223,21 @@
                     <td>
                         @if (s.ClientCommentDate == null && s.ContractorCommentDueDate.HasValue)
                         {
-                            <span class="badge @(s.IsContractorCommentOverdue ? "bg-danger" : "bg-info text-dark")">
+                            <pems-badge tone="@(s.IsContractorCommentOverdue ? "danger" : "info")">
                                 @Localizer["Vd_ContractorDue"] @s.ContractorCommentDueDate.Value.ToString("yyyy-MM-dd")@(s.IsContractorCommentOverdue ? " " + Localizer["Vd_OverdueParen"].Value : "")
-                            </span>
+                            </pems-badge>
                         }
                         else if (s.ReplySheetDate == null && s.VendorReturnDueDate.HasValue)
                         {
-                            <span class="badge @(s.IsVendorReturnOverdue ? "bg-danger" : "bg-info text-dark")">
+                            <pems-badge tone="@(s.IsVendorReturnOverdue ? "danger" : "info")">
                                 @Localizer["Vd_ReturnDue"] @s.VendorReturnDueDate.Value.ToString("yyyy-MM-dd")@(s.IsVendorReturnOverdue ? " " + Localizer["Vd_OverdueParen"].Value : "")
-                            </span>
+                            </pems-badge>
                         }
                     </td>
                     <td>
                         @if (s.FtpUploadedDate.HasValue)
                         {
-                            <span class="badge bg-success" title="@s.FtpRemotePath"><i class="bi bi-check-circle"></i> @s.FtpUploadedDate.Value.ToString("yyyy-MM-dd")</span>
+                            <pems-badge tone="success" title="@s.FtpRemotePath"><i class="bi bi-check-circle"></i> @s.FtpUploadedDate.Value.ToString("yyyy-MM-dd")</pems-badge>
                         }
                         else
                         {
@@ -709,7 +709,7 @@ else
             @foreach (var r in reviewStatus)
             {
                 var badgeClass = r.Status switch { "Approve" => "bg-success", "Comment" => "bg-warning text-dark", "Reject" => "bg-danger", _ => "bg-secondary" };
-                <span class="badge @badgeClass">@r.DisciplineName: @VdrUi.Loc(Localizer, "St_", r.Status)</span>
+                <pems-badge tone="none" css="@badgeClass">@r.DisciplineName: @VdrUi.Loc(Localizer, "St_", r.Status)</pems-badge>
             }
         </div>
 

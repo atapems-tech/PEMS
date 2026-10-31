@@ -18,7 +18,7 @@
             @{
                 var lb = Model.ConfidenceLevel switch { "High" => "bg-success", "Medium" => "bg-warning text-dark", _ => "bg-danger" };
             }
-            <span class="badge @lb fs-6">Confidence: @Model.ConfidenceLevel (@Model.ConfidenceScore.ToString("P0"))</span>
+            <pems-badge tone="none" css="@lb fs-6">Confidence: @Model.ConfidenceLevel (@Model.ConfidenceScore.ToString("P0"))</pems-badge>
         </div>
     </div>
 
