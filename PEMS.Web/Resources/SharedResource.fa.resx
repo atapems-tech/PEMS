@@ -4080,4 +4080,92 @@
   <data name="As_St_Active" xml:space="preserve"><value>فعال</value></data>
   <data name="As_St_Standby" xml:space="preserve"><value>آماده‌به‌کار</value></data>
   <data name="As_St_Retired" xml:space="preserve"><value>از رده خارج</value></data>
+  <data name="Ca_Title" xml:space="preserve"><value>ارزیابی‌های بحرانی‌بودن</value></data>
+  <data name="Ca_New" xml:space="preserve"><value>ارزیابی جدید</value></data>
+  <data name="Ca_Empty" xml:space="preserve"><value>هیچ ارزیابی‌ای با این فیلتر موجود نیست.</value></data>
+  <data name="Ca_Dashboard" xml:space="preserve"><value>داشبورد بحرانی‌بودن</value></data>
+  <data name="Ca_Framework" xml:space="preserve"><value>چارچوب</value></data>
+  <data name="Ca_Proposed" xml:space="preserve"><value>کلاس پیشنهادی</value></data>
+  <data name="Ca_PreparedBy" xml:space="preserve"><value>تهیه‌کننده</value></data>
+  <data name="Ca_ApprovedBy" xml:space="preserve"><value>تأییدکننده</value></data>
+  <data name="Ca_Created" xml:space="preserve"><value>تاریخ ایجاد</value></data>
+  <data name="Ca_St_DRAFT" xml:space="preserve"><value>پیش‌نویس</value></data>
+  <data name="Ca_St_UNDER_REVIEW" xml:space="preserve"><value>در حال بررسی</value></data>
+  <data name="Ca_St_APPROVED" xml:space="preserve"><value>تأییدشده</value></data>
+  <data name="Ca_St_SUPERSEDED" xml:space="preserve"><value>جایگزین‌شده</value></data>
+  <data name="Ec_Title" xml:space="preserve"><value>تحلیل بحرانی‌بودن تجهیزات</value></data>
+  <data name="Ec_Hint" xml:space="preserve"><value>طبقه‌بندی بحرانی‌بودن تجهیزات (A = بحرانی، B = مهم، C = عادی) پایه‌ی اولویت‌بندی نگهداری طبق ISO 55000 / RCM است.</value></data>
+  <data name="Ec_New" xml:space="preserve"><value>ثبت تحلیل جدید</value></data>
+  <data name="Ec_Empty" xml:space="preserve"><value>هنوز تحلیلی ثبت نشده.</value></data>
+  <data name="Ec_Class" xml:space="preserve"><value>کلاس</value></data>
+  <data name="Ec_Risk" xml:space="preserve"><value>ریسک</value></data>
+  <data name="Ec_Safety" xml:space="preserve"><value>اثر ایمنی</value></data>
+  <data name="Ec_Production" xml:space="preserve"><value>اثر تولید</value></data>
+  <data name="Ec_Environment" xml:space="preserve"><value>اثر زیست‌محیطی</value></data>
+  <data name="Ec_Unassessed" xml:space="preserve"><value>هنوز تحلیل نشده</value></data>
+  <data name="Ec_Class_A" xml:space="preserve"><value>A (بحرانی)</value></data>
+  <data name="Ec_Class_B" xml:space="preserve"><value>B (مهم)</value></data>
+  <data name="Ec_Class_C" xml:space="preserve"><value>C (عادی)</value></data>
+  <data name="Me_Title" xml:space="preserve"><value>فهرست تجهیزات مکانیکی</value></data>
+  <data name="Me_New" xml:space="preserve"><value>تجهیز مکانیکی جدید</value></data>
+  <data name="Me_Empty" xml:space="preserve"><value>تجهیز مکانیکی‌ای پیدا نشد.</value></data>
+  <data name="Me_SearchPlaceholder" xml:space="preserve"><value>جستجوی تگ / سازنده...</value></data>
+  <data name="Me_SubType" xml:space="preserve"><value>زیرنوع</value></data>
+  <data name="Me_Tag" xml:space="preserve"><value>تگ</value></data>
+  <data name="Me_Passport" xml:space="preserve"><value>شناسنامه</value></data>
+  <data name="Me_Sub_Rotating" xml:space="preserve"><value>دوار</value></data>
+  <data name="Me_Sub_Static" xml:space="preserve"><value>ثابت</value></data>
+  <data name="Me_Sub_Unclassified" xml:space="preserve"><value>طبقه‌بندی‌نشده</value></data>
+  <data name="Sh_Title" xml:space="preserve"><value>تحویل شیفت‌ها</value></data>
+  <data name="Sh_Hint" xml:space="preserve"><value>طبق CMMS-10e: پیش‌نویس ← آماده‌شده ← دریافت‌شده ← تکمیل‌شده. یک تحویل شیفت بین یک کارمند خروجی و یک کارمند ورودی مشخص، به‌همراه تصویر لحظه‌ای اطلاعات عملیاتی در زمان آماده‌سازی.</value></data>
+  <data name="Sh_New" xml:space="preserve"><value>تحویل شیفت جدید</value></data>
+  <data name="Sh_Empty" xml:space="preserve"><value>هنوز تحویل شیفتی ثبت نشده.</value></data>
+  <data name="Sh_Outgoing" xml:space="preserve"><value>تحویل‌دهنده</value></data>
+  <data name="Sh_Incoming" xml:space="preserve"><value>تحویل‌گیرنده</value></data>
+  <data name="Sh_Shift" xml:space="preserve"><value>شیفت</value></data>
+  <data name="Sh_Date" xml:space="preserve"><value>تاریخ تحویل</value></data>
+  <data name="Sh_Items" xml:space="preserve"><value>موارد</value></data>
+  <data name="Sh_St_Draft" xml:space="preserve"><value>پیش‌نویس</value></data>
+  <data name="Sh_St_Prepared" xml:space="preserve"><value>آماده‌شده</value></data>
+  <data name="Sh_St_Acknowledged" xml:space="preserve"><value>دریافت‌شده</value></data>
+  <data name="Sh_St_Completed" xml:space="preserve"><value>تکمیل‌شده</value></data>
+  <data name="Rf_Title" xml:space="preserve"><value>پوشش RCM / FMEA</value></data>
+  <data name="Rf_Hint" xml:space="preserve"><value>دامنه‌ی تحلیل عمداً کلاس تجهیز است، نه تک‌تک تجهیزات (طبق «Class First»). آماده‌بودن صرفاً به دلیل وجود کلاس یا وجود یک تحلیل تأییدنشده اعلام نمی‌شود.</value></data>
+  <data name="Rf_Empty" xml:space="preserve"><value>هنوز هیچ کلاس تجهیزی، تجهیز ندارد.</value></data>
+  <data name="Rf_ClassesWithEquipment" xml:space="preserve"><value>کلاس‌های دارای تجهیز</value></data>
+  <data name="Rf_FmeaReady" xml:space="preserve"><value>FMEA آماده</value></data>
+  <data name="Rf_FmeaPartial" xml:space="preserve"><value>FMEA نیمه‌آماده</value></data>
+  <data name="Rf_RcmReady" xml:space="preserve"><value>RCM آماده</value></data>
+  <data name="Rf_RcmPartial" xml:space="preserve"><value>RCM نیمه‌آماده</value></data>
+  <data name="Rf_Approved" xml:space="preserve"><value>FMEA / RCM تأییدشده</value></data>
+  <data name="Rf_FuncReq" xml:space="preserve"><value>الزامات عملکردی</value></data>
+  <data name="Rf_Causes" xml:space="preserve"><value>علت‌ها</value></data>
+  <data name="Rf_Effects" xml:space="preserve"><value>اثرها</value></data>
+  <data name="Rf_Consequences" xml:space="preserve"><value>پیامدها</value></data>
+  <data name="Rf_StrategyTypes" xml:space="preserve"><value>انواع راهبرد</value></data>
+  <data name="Rf_Fmea" xml:space="preserve"><value>FMEA</value></data>
+  <data name="Rf_Rcm" xml:space="preserve"><value>RCM</value></data>
+  <data name="Rf_ApprovedCount" xml:space="preserve"><value>({0} تأییدشده)</value></data>
+  <data name="Rf_Rd_READY" xml:space="preserve"><value>آماده</value></data>
+  <data name="Rf_Rd_PARTIALLY_READY" xml:space="preserve"><value>نیمه‌آماده</value></data>
+  <data name="Rf_Rd_INSUFFICIENT_DATA" xml:space="preserve"><value>داده ناکافی</value></data>
+  <data name="Rf_Rd_NOT_APPLICABLE" xml:space="preserve"><value>موضوعیت ندارد</value></data>
+  <data name="Fla_Title" xml:space="preserve"><value>تخصیص تجهیز به مکان عملکردی</value></data>
+  <data name="Fla_Hint" xml:space="preserve"><value>دسته‌های اکسلی که تجهیز را به مکان عملکردی تخصیص می‌دهند؛ تا بازبینی و ثبت نهایی هر دسته، چیزی تغییر نمی‌کند.</value></data>
+  <data name="Fla_Equipment" xml:space="preserve"><value>فهرست تجهیزات</value></data>
+  <data name="Fla_Upload" xml:space="preserve"><value>بارگذاری فایل تخصیص</value></data>
+  <data name="Fla_FileLabel" xml:space="preserve"><value>فایل اکسل تخصیص (.xlsx)</value></data>
+  <data name="Fla_UploadRules" xml:space="preserve"><value>فایل ستون‌های «Equipment Tag» و «Functional Location Code» دارد؛ ستون‌های اختیاری Plant / Area / Unit فقط برای کنترل مکان عملکردی پیداشده به کار می‌روند. فقط تطابق دقیق تگ / کد پذیرفته می‌شود و تا وقتی تخصیص‌های پیشنهادی را بازبینی و ثبت نهایی نکنید، چیزی در جدول تجهیزات نوشته نمی‌شود. تجهیزی که از قبل مکان عملکردی دیگری دارد هرگز بی‌صدا بازنویسی نمی‌شود: جایگزینی یک تخصیص همیشه تأیید جداگانه در صفحه‌ی بازبینی لازم دارد.</value></data>
+  <data name="Fla_Empty" xml:space="preserve"><value>هنوز دسته‌ی تخصیصی ثبت نشده.</value></data>
+  <data name="Fla_File" xml:space="preserve"><value>فایل</value></data>
+  <data name="Fla_Date" xml:space="preserve"><value>تاریخ</value></data>
+  <data name="Fla_ImportedBy" xml:space="preserve"><value>واردکننده</value></data>
+  <data name="Fla_Total" xml:space="preserve"><value>کل</value></data>
+  <data name="Fla_Exact" xml:space="preserve"><value>دقیق</value></data>
+  <data name="Fla_AlreadyAssigned" xml:space="preserve"><value>از قبل تخصیص‌یافته</value></data>
+  <data name="Fla_Unresolved" xml:space="preserve"><value>حل‌نشده</value></data>
+  <data name="Fla_Conflicts" xml:space="preserve"><value>تعارض‌ها</value></data>
+  <data name="Fla_Review" xml:space="preserve"><value>بازبینی</value></data>
+  <data name="Fla_St_Staging" xml:space="preserve"><value>در انتظار بازبینی</value></data>
+  <data name="Fla_St_Committed" xml:space="preserve"><value>ثبت‌شده</value></data>
 </root>

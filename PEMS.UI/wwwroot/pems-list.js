@@ -3,7 +3,7 @@
 // its column widths. Markup contract:
 //   [data-lp-toolbar]  [data-lp-search-open]  form[data-lp-search] (hidden) with input + [data-lp-search-close]
 //     input[data-pems-search] inside it: picking a result opens it, Enter without a pick submits the form
-//   [data-lp-kpi-toggle] (aria-controls = id of the KPI row, data-storage-key = localStorage key)
+//   [data-lp-kpi-toggle] (aria-controls = id of the KPI row, data-storage-key = localStorage key, data-lp-open = shown by default)
 //   table.lp-table[data-grid-key] (column resize, PemsDataGrid)   [data-lp-reset-columns="gridKey"]
 //   [data-lp-bulk="name"] bulk bar: shown while input[data-lp-select] rows are ticked (input[data-lp-select-all] ticks all);
 //     its forms get the ticked values as hidden inputs called "name" on submit; [data-lp-bulk-count] shows data-count-text
@@ -73,7 +73,8 @@
 
         var stored = null;
         try { stored = key ? window.localStorage.getItem(key) : null; } catch (e) { /* storage blocked: default stays hidden */ }
-        apply(stored === '1');
+        // no stored choice: hidden, unless the page opens its KPI row by default (data-lp-open)
+        apply(stored === null ? btn.getAttribute('data-lp-open') === '1' : stored === '1');
 
         btn.addEventListener('click', function () {
             var show = row.hidden;

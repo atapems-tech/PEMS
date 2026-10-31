@@ -252,20 +252,120 @@ public sealed class PemsListFiltersTagHelper : TagHelper
     }
 }
 
-/// <summary>Button that shows/hides the KPI row (<c>target</c> = its id); the choice is kept per browser under <c>storage-key</c>.</summary>
+/// <summary>
+/// One select inside <c>&lt;pems-list-filters&gt;</c> (W2b): label, an "all" option (empty value) when <c>all-text</c> is set,
+/// then <c>items</c>; the item whose value equals <c>value</c> is selected. The page owns the values and their texts.
+/// </summary>
+[HtmlTargetElement("pems-list-filter-select", TagStructure = TagStructure.WithoutEndTag)]
+public sealed class PemsListFilterSelectTagHelper : TagHelper
+{
+    [HtmlAttributeName("id")] public string Id { get; set; } = "";
+    [HtmlAttributeName("name")] public string Name { get; set; } = "";
+    [HtmlAttributeName("label")] public string Label { get; set; } = "";
+    [HtmlAttributeName("value")] public string? Value { get; set; }
+    [HtmlAttributeName("all-text")] public string? AllText { get; set; }
+    [HtmlAttributeName("items")] public IEnumerable<SelectListItem> Items { get; set; } = Array.Empty<SelectListItem>();
+
+    public override void Process(TagHelperContext context, TagHelperOutput output)
+    {
+        output.TagName = "div";
+        output.TagMode = TagMode.StartTagAndEndTag;
+
+        var label = new TagBuilder("label");
+        label.AddCssClass("lp-lbl");
+        label.Attributes["for"] = Id;
+        label.InnerHtml.Append(Label);
+
+        var select = new TagBuilder("select");
+        select.Attributes["id"] = Id;
+        select.Attributes["name"] = Name;
+        select.AddCssClass("form-select form-select-sm");
+        if (AllText != null) select.InnerHtml.AppendHtml(Option("", AllText, string.IsNullOrEmpty(Value)));
+        foreach (var item in Items)
+            select.InnerHtml.AppendHtml(Option(item.Value ?? "", item.Text ?? "", !string.IsNullOrEmpty(Value) && string.Equals(item.Value, Value, StringComparison.Ordinal)));
+
+        output.Content.AppendHtml(label);
+        output.Content.AppendHtml(select);
+    }
+
+    private static TagBuilder Option(string value, string text, bool selected)
+    {
+        var o = new TagBuilder("option");
+        o.Attributes["value"] = value;
+        if (selected) o.Attributes["selected"] = "selected";
+        o.InnerHtml.Append(text);
+        return o;
+    }
+}
+
+/// <summary>
+/// A toolbar tool that opens a dropdown panel with the page's own content (W2b), for a short form that belongs to the list
+/// (for example an upload) without a modal. <c>primary</c> shows the label next to the icon, like the New button.
+/// </summary>
+[HtmlTargetElement("pems-list-popover")]
+public sealed class PemsListPopoverTagHelper : TagHelper
+{
+    [HtmlAttributeName("id")] public string Id { get; set; } = "";
+    [HtmlAttributeName("icon")] public string Icon { get; set; } = "bi-three-dots";
+    [HtmlAttributeName("label")] public string Label { get; set; } = "";
+    [HtmlAttributeName("primary")] public bool Primary { get; set; }
+
+    public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
+    {
+        PemsList.Become(output, "div", "dropdown");
+
+        TagBuilder button;
+        if (Primary)
+        {
+            button = new TagBuilder("button");
+            button.Attributes["type"] = "button";
+            button.AddCssClass("btn btn-sm btn-pems-solid lp-compose");     // same look as <pems-list-new>
+            button.InnerHtml.AppendHtml(PemsList.Icon(Icon));
+            button.InnerHtml.Append(" ");
+            var text = new TagBuilder("span");
+            text.AddCssClass("lp-compose-label");
+            text.InnerHtml.Append(Label);
+            button.InnerHtml.AppendHtml(text);
+        }
+        else button = PemsList.IconTool("button", Icon, Label);
+        button.Attributes["id"] = Id + "Btn";
+        button.Attributes["data-bs-toggle"] = "dropdown";
+        button.Attributes["data-bs-auto-close"] = "outside";
+        button.Attributes["aria-expanded"] = "false";
+        button.Attributes["aria-controls"] = Id;
+
+        var body = new TagBuilder("div");
+        body.AddCssClass("lp-fp-body");
+        body.InnerHtml.AppendHtml(await output.GetChildContentAsync());
+
+        var menu = new TagBuilder("div");
+        menu.Attributes["id"] = Id;
+        menu.Attributes["aria-labelledby"] = Id + "Btn";
+        menu.AddCssClass("dropdown-menu dropdown-menu-end lp-filter-pop p-0");
+        menu.InnerHtml.AppendHtml(body);
+
+        output.Content.AppendHtml(button);
+        output.Content.AppendHtml(menu);
+    }
+}
+
+/// <summary>Button that shows/hides the KPI row (<c>target</c> = its id); the choice is kept per browser under <c>storage-key</c>.
+/// <c>open</c> (W2b) shows the row until the viewer hides it, for pages whose counts are the point (give the row <c>open</c> too).</summary>
 [HtmlTargetElement("pems-list-kpi-toggle", TagStructure = TagStructure.WithoutEndTag)]
 public sealed class PemsListKpiToggleTagHelper : TagHelper
 {
     [HtmlAttributeName("target")] public string Target { get; set; } = "";
     [HtmlAttributeName("storage-key")] public string StorageKey { get; set; } = "";
+    [HtmlAttributeName("open")] public bool Open { get; set; }
 
     public override void Process(TagHelperContext context, TagHelperOutput output)
     {
         var b = PemsList.IconTool("button", "bi-bar-chart-line", PemsList.Texts(context).Kpis);
         b.Attributes["data-lp-kpi-toggle"] = "";
         b.Attributes["aria-controls"] = Target;
-        b.Attributes["aria-expanded"] = "false";
+        b.Attributes["aria-expanded"] = Open ? "true" : "false";
         b.Attributes["data-storage-key"] = StorageKey;
+        if (Open) b.Attributes["data-lp-open"] = "1";
         output.TagName = null;
         output.TagMode = TagMode.StartTagAndEndTag;
         output.Content.SetHtmlContent(b);
@@ -345,17 +445,18 @@ public sealed class PemsListNewTagHelper : TagHelper
     }
 }
 
-/// <summary>The KPI row; hidden until the KPI toggle shows it. Child content = the page's KPI chips.</summary>
+/// <summary>The KPI row; hidden until the KPI toggle shows it, or shown first when <c>open</c> (W2b). Child content = the page's KPI chips.</summary>
 [HtmlTargetElement("pems-list-kpis")]
 public sealed class PemsListKpisTagHelper : TagHelper
 {
     [HtmlAttributeName("id")] public string Id { get; set; } = "";
+    [HtmlAttributeName("open")] public bool Open { get; set; }
 
     public override void Process(TagHelperContext context, TagHelperOutput output)
     {
         PemsList.Become(output, "div", "lp-kpis");
         output.Attributes.SetAttribute("id", Id);
-        output.Attributes.SetAttribute("hidden", "hidden");
+        if (!Open) output.Attributes.SetAttribute("hidden", "hidden");
     }
 }
 

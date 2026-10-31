@@ -17,6 +17,8 @@ namespace PEMS.Tests.Web;
 /// Maintenance Plans, Maintenance Strategies, Job Plans, Spare Parts, Permits, Inspections, Findings and Assets are built from
 /// the PEMS.UI list-page component. Each page keeps its own filters, columns, modals, actions and permissions; the old
 /// hand-written frame (content cards, count cards, status button rows, inline column-resize script) is gone.
+/// Wave 2b adds Criticality Assessments, Equipment Criticality, Mechanical Equipment, the Failure Mode Catalogue, Shift
+/// Handovers, RCM / FMEA coverage and the Equipment / Functional Location assignment batches.
 /// </summary>
 public class CmmsListPagesTests
 {
@@ -24,6 +26,9 @@ public class CmmsListPagesTests
     {
         "WorkOrder", "WorkRequest", "Equipment", "FunctionalLocation", "Instrument", "Tag", "MaintenancePlan",
         "MaintenanceStrategy", "JobPlan", "SparePart", "Permit", "Inspection", "Finding", "Asset",
+        // wave 2b
+        "CriticalityAssessment", "EquipmentCriticality", "MechanicalEquipment", "FailureModeCatalog", "ShiftHandover", "RcmFmea",
+        "EquipmentFunctionalLocationAssignment",
     };
 
     private static Task<string> Render<TController>(string view, object model, Action<ViewDataDictionary> data) where TController : Controller
@@ -374,6 +379,159 @@ public class CmmsListPagesTests
         Assert.Contains("vs-pill vs-pill--warning", html);
         Assert.Contains("Standby", Chips(html));
         Assert.Matches("<button[^>]*data-bs-target=\"#createAssetModal\"", html);
+    }
+
+    // ================= wave 2b: the remaining CMMS lists =================
+
+    // ---------- Criticality assessments ----------
+
+    [Fact]
+    public async Task CriticalityAssessments_KeepStatusAndClassFilters_AndNewOnlyForEditors()
+    {
+        static Task<string> Queue(bool canEdit, string? status, int? classId) => Render<CriticalityAssessmentController>(
+            "/Views/CriticalityAssessment/Index.cshtml",
+            Page(new CriticalityAssessmentListDto { CriticalityAssessmentId = 4, EquipmentTagNumber = "P-101A", EquipmentClassName = "Pump", FrameworkVersion = "v1", Status = "UNDER_REVIEW", CreatedDate = new DateTime(2026, 10, 1) }),
+            v =>
+            {
+                v["StatusFilter"] = status; v["EquipmentClassId"] = classId; v["CanEdit"] = canEdit;
+                v["EquipmentClasses"] = new List<object> { Obj(("EquipmentClassId", 2), ("Name", "Pump"), ("Code", "PU")) };
+            });
+
+        var editor = await Queue(true, "UNDER_REVIEW", 2);
+        AssertBuiltFromTheComponent(editor, "CriticalityAssessmentQueue", 1);
+        Assert.Matches("<span class=\"lp-badge\">2<", editor);                       // status + class
+        Assert.Equal(2, Regex.Matches(Chips(editor), "class=\"pems-filter-chip\"").Count);
+        Assert.Contains("vs-pill--warning", editor);                                  // under review
+        Assert.Contains("bi-speedometer2", editor);                                   // the dashboard tool
+        Assert.Contains("lp-compose", editor);
+
+        var reader = await Queue(false, null, null);
+        Assert.DoesNotContain("lp-compose", reader);
+        Assert.Equal("", Chips(reader));
+    }
+
+    // ---------- Equipment criticality ----------
+
+    [Fact]
+    public async Task EquipmentCriticality_CountsAreKpiChips_TheClassFilterWorks_AndNewOpensTheAssessModal()
+    {
+        var html = await Render<EquipmentCriticalityController>("/Views/EquipmentCriticality/Index.cshtml", Page(
+            new EquipmentCriticalityListDto { EquipmentId = 3, EquipmentTagNumber = "P-101A", CriticalityClass = "A", RiskLevel = "High", SafetyImpact = "Fire" },
+            new EquipmentCriticalityListDto { EquipmentId = 4, EquipmentTagNumber = "P-102", CriticalityClass = "C", RiskLevel = "Low" }),
+            v => { v["ClassACount"] = 1; v["ClassBCount"] = 0; v["ClassCCount"] = 1; v["UnassessedCount"] = 7; v["SelectedClass"] = "A"; });
+
+        AssertBuiltFromTheComponent(html, "EquipmentCriticality", 2);
+        Assert.Single(Regex.Matches(Chips(html), "class=\"pems-filter-chip\""));
+        Assert.Contains("vs-pill--danger", html);                                     // class A
+        Assert.Matches("<button[^>]*data-bs-target=\"#assessModal\"", html);
+        Assert.Contains("id=\"assessModal\"", html);                                  // the modal is kept
+        Assert.Equal(4, Regex.Matches(Kpis(html, "ecKpis"), "class=\"vs-chip").Count);
+    }
+
+    // ---------- Mechanical equipment ----------
+
+    [Fact]
+    public async Task MechanicalEquipment_KeepsSearchSubTypeFilterAndRowActions()
+    {
+        var html = await Render<MechanicalEquipmentController>("/Views/MechanicalEquipment/Index.cshtml", Page(
+            new MechanicalEquipmentListDto { MechanicalEquipmentId = 5, TagNumber = "C-201", Manufacturer = "Atlas", Model = "GA90", EquipmentType = "Compressor", SubType = "Rotating" }),
+            v =>
+            {
+                v["Equipments"] = new List<object>(); v["SearchTerm"] = "atlas"; v["SelectedSubType"] = "Rotating";
+                v["TotalCount"] = 1; v["RotatingCount"] = 1; v["StaticCount"] = 0; v["UnclassifiedCount"] = 0;
+            });
+
+        AssertBuiltFromTheComponent(html, "MechanicalEquipment", 1);
+        Assert.Contains("id=\"meSearchForm\"", html);
+        Assert.Equal(2, Regex.Matches(Chips(html), "class=\"pems-filter-chip\"").Count);   // search + sub-type
+        Assert.Contains("bi-card-text", html);                                         // passport
+        Assert.Contains("bi-pencil", html);                                            // edit
+        Assert.Matches("<button[^>]*data-bs-target=\"#createMechanicalModal\"", html);
+        Assert.Equal(4, Regex.Matches(Kpis(html, "meKpis"), "class=\"vs-chip").Count);
+    }
+
+    // ---------- Failure mode catalogue ----------
+
+    [Fact]
+    public async Task FailureModeCatalog_EditAndDeactivateOnlyForEditors()
+    {
+        static Task<string> Catalog(bool canEdit) => Render<FailureModeCatalogController>("/Views/FailureModeCatalog/Index.cshtml",
+            new List<FailureModeOptionDto>
+            {
+                new() { FailureModeId = 1, Code = "VIB", Name = "Vibration", EquipmentClassName = "Pump", Causes = { new FailureCauseOptionDto { Code = "MIS", Name = "Misalignment" } } },
+            },
+            v => { v["Classes"] = new List<LookupItem> { new() { Id = 2, Text = "Pump", Code = "PU" } }; v["ClassId"] = 2; v["Query"] = null; v["CanEdit"] = canEdit; });
+
+        var editor = await Catalog(true);
+        AssertBuiltFromTheComponent(editor, null, 1);
+        Assert.Contains("Misalignment", editor);
+        Assert.Single(Regex.Matches(Chips(editor), "class=\"pems-filter-chip\""));
+        Assert.Contains("name=\"active\" value=\"false\"", editor);
+        Assert.Contains("lp-compose", editor);
+
+        var reader = await Catalog(false);
+        Assert.DoesNotContain("name=\"active\"", reader);
+        Assert.DoesNotContain("lp-compose", reader);
+    }
+
+    // ---------- Shift handovers ----------
+
+    [Fact]
+    public async Task ShiftHandovers_StatusButtonsBecameTheStatusFilter()
+    {
+        var html = await Render<ShiftHandoverController>("/Views/ShiftHandover/Index.cshtml", new List<ShiftHandoverListDto>
+        {
+            new() { ShiftHandoverId = 12, OutgoingName = "A. Karimi", IncomingName = "R. Moradi", HandoverDate = new DateTime(2026, 10, 30, 19, 0, 0), Status = "Prepared", ItemCount = 4 },
+        }, v => v["SelectedStatus"] = "Prepared");
+
+        AssertBuiltFromTheComponent(html, null, 1);
+        Assert.Contains("name=\"status\"", html);
+        Assert.Single(Regex.Matches(Chips(html), "class=\"pems-filter-chip\""));
+        Assert.Contains("vs-pill--warning", html);
+        Assert.Contains("2026-10-30 19:00", html);
+    }
+
+    // ---------- RCM / FMEA coverage ----------
+
+    [Fact]
+    public async Task RcmFmeaCoverage_ShowsItsCountsFirst_AndListsOnlyClassesWithEquipment()
+    {
+        var html = await Render<RcmFmeaController>("/Views/RcmFmea/Index.cshtml", new RcmFmeaCoverageMatrixDto
+        {
+            ClassesWithEquipment = 1, ClassesFmeaReady = 1,
+            Classes =
+            {
+                new() { EquipmentClassId = 2, Code = "PU", Name = "Pump", EquipmentCount = 12, FMEAReadiness = "READY", RCMReadiness = "PARTIALLY_READY", ApprovedFMEACount = 1 },
+                new() { EquipmentClassId = 3, Code = "VS", Name = "Vessel", EquipmentCount = 0 },
+            },
+        }, _ => { });
+
+        AssertBuiltFromTheComponent(html, null, 1);
+        Assert.Matches("<div class=\"lp-kpis\" id=\"rfKpis\">", html);               // open: no hidden attribute
+        Assert.Contains("data-lp-open=\"1\"", html);
+        Assert.Contains("vs-pill--success", html);
+        Assert.Contains("vs-pill--warning", html);
+        Assert.DoesNotContain("Vessel", html);
+    }
+
+    // ---------- Equipment <-> functional location assignment ----------
+
+    [Fact]
+    public async Task AssignmentBatches_UploadOpensFromTheToolbar_WithoutAModal_AndCountsArePills()
+    {
+        var html = await Render<EquipmentFunctionalLocationAssignmentController>("/Views/EquipmentFunctionalLocationAssignment/Index.cshtml",
+            new List<EquipmentFunctionalLocationAssignmentBatchSummaryDto>
+            {
+                new() { EquipmentFunctionalLocationAssignmentBatchId = 9, FileName = "fl.xlsx", ImportDate = new DateTime(2026, 10, 29), Status = "Staging", TotalRows = 10, ExactCount = 7, UnresolvedCount = 2, ConflictCount = 1 },
+            }, _ => { });
+
+        AssertBuiltFromTheComponent(html, null, 1);
+        Assert.Contains("id=\"flaUploadBtn\"", html);
+        Assert.DoesNotContain("class=\"modal", html);                                   // SCRUM-341 ratchet: no new hand-written modal
+        var upload = html[html.IndexOf("id=\"flaUpload\"", StringComparison.Ordinal)..];
+        Assert.Contains("type=\"file\"", upload);
+        Assert.Contains("enctype=\"multipart/form-data\"", upload);
+        Assert.Equal(2, Regex.Matches(html, "vs-pill vs-pill--danger").Count);         // unresolved + conflicts
     }
 
     [Fact]

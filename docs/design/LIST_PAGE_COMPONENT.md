@@ -1,6 +1,6 @@
 # List page component (SCRUM-337)
 
-Status: 2026-10-30, waves 0, 1 and 2. The look comes from the correspondence list and the Engineering Documents list (SCRUM-408).
+Status: 2026-10-31, waves 0, 1, 2 and 2b. The look comes from the correspondence list and the Engineering Documents list (SCRUM-408).
 It lives in `PEMS.UI` (ADR-0007: Tag Helper facade for MVC pages). Texts are inputs (SCRUM-416).
 
 ## What the component gives every list page
@@ -103,6 +103,17 @@ Options added in wave 2:
 @if (TempData["Message"] != null) { <div class="alert alert-success py-2 px-3 small">@TempData["Message"]</div> }
 ```
 
+Option added in wave 2b: `<pems-list-kpis id="x" open="true">` with `<pems-list-kpi-toggle ... open="true" />` shows the KPI row first,
+for pages whose counts are the point (RCM / FMEA coverage); a choice the viewer stored still wins.
+
+Also added in wave 2b, so a page writes no Bootstrap control by hand (the SCRUM-341 adoption ratchet counts them):
+
+- `<pems-list-filter-select id="st" name="status" label="..." value="@current" all-text="..." items="@list.Select(x => new SelectListItem(text, value))" />`
+  inside `<pems-list-filters>`: label, an "all" option when `all-text` is set, the current value selected.
+- `<pems-list-popover id="up" icon="bi-cloud-upload" label="..." primary="true">...</pems-list-popover>` in `<pems-list-tools>`:
+  a tool (with `primary`, a labelled button like New) that opens a dropdown panel with the page's short form, for example an upload.
+  Use it instead of a new modal; a page's existing modal stays until SCRUM-482 moves it to `PemsModal`.
+
 A page note (what the list is, where to add a record) becomes the `heading-title` tool tip of the title, not a
 paragraph above the table. Page actions that are not "New" (for example "Generate due PMs") are icon tools in
 `<pems-list-tools>` or items of a `<pems-list-menu>`.
@@ -126,7 +137,7 @@ Column resize needs `data-col-key` / `data-resizable` on the `th` elements; the 
 | W0 | component; Engineering Documents and VDR moved onto it | done |
 | W1 | document control: DocumentRegister, DocumentRevisions, Transmittal, TechnicalQuery, MDB, MOC, DocumentWorkflow (DCC is a desk, not a list) | done |
 | W2 | CMMS: WorkOrder, WorkRequest, Equipment, FunctionalLocation, Instrument, Tag (letter tags), MaintenancePlan, MaintenanceStrategy, JobPlan, SparePart, Permit, Inspection, Finding, Asset | done |
-| W2b | the other single-table CMMS lists: CriticalityAssessment, EquipmentCriticality, MechanicalEquipment, FailureModeCatalog, ShiftHandover, RcmFmea, EquipmentFunctionalLocationAssignment | next |
+| W2b | the other single-table CMMS lists: CriticalityAssessment, EquipmentCriticality, MechanicalEquipment, FailureModeCatalog, ShiftHandover, RcmFmea, EquipmentFunctionalLocationAssignment | done |
 | W3 | warehouse and procurement: Inventory, MaterialItem, MaterialRequisition, StoreRequisition, PurchaseOrder, ProcurementPackage, Tender, Contract, Vendor, IrnReceipt, ... | |
 | W4 | admin and base data: Users, Roles, Department, Discipline, Employee, AuditLog, SecurityEvents, ... | |
 
