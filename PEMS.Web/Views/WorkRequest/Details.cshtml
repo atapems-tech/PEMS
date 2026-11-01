@@ -8,7 +8,6 @@
     var nextStatus = (string?)ViewBag.NextStatus;
     var canCreate = (bool?)ViewBag.CanCreate ?? false;
     var employeeNames = (Dictionary<int, string>?)ViewBag.EmployeeNames ?? new Dictionary<int, string>();
-    string NA(string? v) => string.IsNullOrWhiteSpace(v) ? "N/A" : v;
 
     var wf = Model.Workflow;
     var fa = System.Globalization.CultureInfo.CurrentUICulture.TwoLetterISOLanguageName == "fa";
@@ -65,50 +64,38 @@
             <span class="text-muted small">@Localizer["Requested By"] @Model.RequestedByName @Localizer["on"] <bdi dir="ltr">@Model.RequestedDate.ToString("yyyy-MM-dd")</bdi></span>
         </div>
     </div>
-    <div class="row g-2 small mt-1">
-        <div class="col-md-3"><strong>@Localizer["Equipment:"]</strong> <bdi dir="ltr">@(Model.EquipmentTagNumber ?? "N/A")</bdi></div>
-        <div class="col-md-3"><strong>@Localizer["Asset:"]</strong> <bdi dir="ltr">@(Model.AssetNumber ?? "N/A")</bdi></div>
-        <div class="col-md-3"><strong>@Localizer["Functional Location:"]</strong> @(Model.FunctionalLocationBreadcrumb ?? "N/A")</div>
-        <div class="col-md-3">
-            <strong>@Localizer["Priority:"]</strong> @Model.Priority
+    @if (Model.IsEmergency || Model.IsHseRelated || Model.RiskScore.HasValue)
+    {
+        <div class="d-flex flex-wrap gap-1 small mt-2">
+            @if (Model.IsEmergency) { <pems-badge tone="danger">@Localizer["Emergency"]</pems-badge> }
+            @if (Model.IsHseRelated) { <pems-badge tone="warning">HSE</pems-badge> }
+            @if (Model.RiskScore.HasValue) { <pems-badge tone="light">@Localizer["Risk"]: @Model.RiskLikelihood×@Model.RiskSeverity = @Model.RiskScore (@Model.RiskLevel)</pems-badge> }
+        </div>
+    }
+    @if (!string.IsNullOrWhiteSpace(Model.PriorityRationale)) { <div class="small text-muted mt-1"><i class="bi bi-calculator" aria-hidden="true"></i> @Model.PriorityRationale</div> }
+    <pems-info-grid class="mt-2">
+        <pems-info-item label="@Localizer["Equipment"]" num>@Model.EquipmentTagNumber</pems-info-item>
+        <pems-info-item label="@Localizer["Info_Asset"]" num>@Model.AssetNumber</pems-info-item>
+        <pems-info-item label="@Localizer["Functional Location"]">@Model.FunctionalLocationBreadcrumb</pems-info-item>
+        <pems-info-item label="@Localizer["Priority"]">
+            @Model.Priority
             @if (!string.IsNullOrWhiteSpace(Model.EquipmentCriticalityClass))
             {
                 <pems-badge tone="light" title="Equipment Criticality (context only, not auto-applied)">Crit: @Model.EquipmentCriticalityClass</pems-badge>
             }
-        </div>
-    </div>
-    @if (Model.IsEmergency || Model.IsHseRelated || Model.RiskScore.HasValue || Model.ResponseDueDate.HasValue)
-    {
-        <div class="row g-2 small mt-1">
-            <div class="col-md-4">
-                @if (Model.IsEmergency) { <pems-badge tone="danger">@Localizer["Emergency"]</pems-badge> }
-                @if (Model.IsHseRelated) { <pems-badge tone="warning">HSE</pems-badge> }
-                @if (Model.RiskScore.HasValue) { <pems-badge tone="light">@Localizer["Risk"]: @Model.RiskLikelihood×@Model.RiskSeverity = @Model.RiskScore (@Model.RiskLevel)</pems-badge> }
-            </div>
-            <div class="col-md-4">
-                @if (Model.ResponseDueDate.HasValue) { <span><strong>@Localizer["Response due:"]</strong> <bdi dir="ltr">@Model.ResponseDueDate.Value.ToString("yyyy-MM-dd HH:mm")</bdi></span> }
-            </div>
-            <div class="col-md-4">
-                @if (Model.ResolutionDueDate.HasValue) { <span><strong>@Localizer["Resolution due:"]</strong> <bdi dir="ltr">@Model.ResolutionDueDate.Value.ToString("yyyy-MM-dd HH:mm")</bdi></span> }
-            </div>
-            @if (!string.IsNullOrWhiteSpace(Model.PriorityRationale)) { <div class="col-12 text-muted"><i class="bi bi-calculator"></i> @Model.PriorityRationale</div> }
-        </div>
-    }
-    @if (!string.IsNullOrWhiteSpace(Model.FailureModeName) || !string.IsNullOrWhiteSpace(Model.FailureEffect) || Model.ReportedDowntimeHours.HasValue)
-    {
-        <div class="row g-2 small mt-1">
-            <div class="col-md-4"><strong>@Localizer["Failure Mode"]:</strong> @NA(Model.FailureModeName)</div>
-            <div class="col-md-5"><strong>@Localizer["Failure Effect"]:</strong> @NA(Model.FailureEffect)</div>
-            <div class="col-md-3"><strong>@Localizer["Downtime Hours"]:</strong> @(Model.ReportedDowntimeHours?.ToString("0.##") ?? "N/A")</div>
-        </div>
-    }
-    <div class="row g-2 small mt-1">
-        <div class="col-md-6"><strong>@Localizer["Reported Condition:"]</strong> @NA(Model.ReportedCondition)</div>
-        <div class="col-md-6"><strong>@Localizer["Suggested Discipline:"]</strong> @(Model.SuggestedDisciplineName ?? "N/A")</div>
-    </div>
-    <div class="row g-2 small mt-1">
-        <div class="col-12"><strong>@Localizer["Description:"]</strong> @NA(Model.Description)</div>
-    </div>
+        </pems-info-item>
+        @if (Model.ResponseDueDate.HasValue) { <pems-info-item label="@Localizer["Info_ResponseDue"]" num>@Model.ResponseDueDate.Value.ToString("yyyy-MM-dd HH:mm")</pems-info-item> }
+        @if (Model.ResolutionDueDate.HasValue) { <pems-info-item label="@Localizer["Info_ResolutionDue"]" num>@Model.ResolutionDueDate.Value.ToString("yyyy-MM-dd HH:mm")</pems-info-item> }
+        @if (!string.IsNullOrWhiteSpace(Model.FailureModeName) || !string.IsNullOrWhiteSpace(Model.FailureEffect) || Model.ReportedDowntimeHours.HasValue)
+        {
+            <pems-info-item label="@Localizer["Failure Mode"]">@Model.FailureModeName</pems-info-item>
+            <pems-info-item label="@Localizer["Failure Effect"]">@Model.FailureEffect</pems-info-item>
+            <pems-info-item label="@Localizer["Downtime Hours"]" num>@Model.ReportedDowntimeHours?.ToString("0.##")</pems-info-item>
+        }
+        <pems-info-item label="@Localizer["Info_ReportedCondition"]">@Model.ReportedCondition</pems-info-item>
+        <pems-info-item label="@Localizer["Info_SuggestedDiscipline"]">@Model.SuggestedDisciplineName</pems-info-item>
+        <pems-info-item label="@Localizer["Description"]" wide>@Model.Description</pems-info-item>
+    </pems-info-grid>
 
     @if (Model.Status == "Rejected")
     {

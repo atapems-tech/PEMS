@@ -200,4 +200,5 @@ lists; label over value at phone width); `value-class` keeps a page's own hook o
 Waves: I1 user, engineering document, equipment, VDR and vendor details (done); I2 the `<dl>` pages (PartCatalogueRequest,
 PreProcurement, PurchaseOrder and Task details, rows layout) (done); I3 procurement and warehouse headers (PurchaseOrder, Contract,
 Tender, MaterialRequisition, MaterialItem) (done; a subtitle line such as the IRN header stays text, quantity tiles wait for KpiTile);
-I4 CMMS and the remaining details (WorkOrder, Asset, MaintenanceStrategy, ...).
+I4 JobPlan, MaintenanceStrategy, Permit, WorkOrder, WorkRequest and Transmittal headers (done). All InfoGrid waves are done;
+the asset, reliability and production run quantity tiles wait for KpiTile.

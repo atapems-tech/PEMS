@@ -23,16 +23,15 @@
         </div>
         <pems-button tone="neutral" size="small" outline="true" css="ms-auto" type="button" data-bs-toggle="modal" data-bs-target="#editJobPlanModal"><i class="bi bi-pencil"></i> @Localizer["Edit"]</pems-button>
     </div>
-    <div class="row g-2 small mt-1">
-        <div class="col-md-6"><strong>@Localizer["Scope:"]</strong> @(Model.Scope ?? "N/A")</div>
-        <div class="col-md-6"><strong>Safety Requirements:</strong> @(Model.SafetyRequirements ?? "N/A")</div>
-        <div class="col-md-6"><strong>Equipment Class:</strong> @(Model.EquipmentClassName ?? "N/A")</div>
-        <div class="col-md-6">
-            <strong>Safety Controls:</strong>
+    <pems-info-grid class="mt-2">
+        <pems-info-item label="@Localizer["Scope"]">@Model.Scope</pems-info-item>
+        <pems-info-item label="@Localizer["Safety Requirements"]">@Model.SafetyRequirements</pems-info-item>
+        <pems-info-item label="@Localizer["Equipment Class"]">@Model.EquipmentClassName</pems-info-item>
+        <pems-info-item label="@Localizer["Info_SafetyControls"]">
             <pems-badge tone="@(Model.PermitRequired ? "warning" : "light")">Permit @(Model.PermitRequired ? "Required" : "Not Required")</pems-badge>
             <pems-badge tone="@(Model.LOTORequired ? "warning" : "light")">LOTO @(Model.LOTORequired ? "Required" : "Not Required")</pems-badge>
-        </div>
-    </div>
+        </pems-info-item>
+    </pems-info-grid>
 </div>
 
 @if (TempData["Message"] != null)

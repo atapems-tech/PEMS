@@ -42,33 +42,32 @@
 }
 
 <div class="content-card mb-3">
-    <div class="row g-3 small">
-        <div class="col-md-3"><div class="text-muted">@Localizer["Rcm_EquipmentClass"]</div><div>@(s.EquipmentClassName ?? "-")</div></div>
-        <div class="col-md-3"><div class="text-muted">@Localizer["Rcm_StrategyType"]</div><pems-badge tone="neutral">@Localizer.Label("StrategyType", i.StrategyType)</pems-badge></div>
-        <div class="col-md-3"><div class="text-muted">@Localizer["Rcm_FailureMode"]</div><div>@RcmDisplay.Name(s.FailureModeName, s.FailureModeNameFa)</div></div>
-        <div class="col-md-3"><div class="text-muted">@Localizer["Rcm_Consequence"]</div><pems-badge tone="none" css="@RcmDisplay.ConsequenceBadge(i.ConsequenceCategory)">@Localizer.Label("Consequence", i.ConsequenceCategory)</pems-badge>
-            @if (i.IsHiddenFailure) { <pems-badge tone="dark">@Localizer["Rcm_HiddenFailure"]</pems-badge> }</div>
-        <div class="col-md-3"><div class="text-muted">@Localizer["Rcm_TaskType"]</div><div>@Localizer.Label("TaskType", i.TaskType)</div></div>
-        <div class="col-md-3"><div class="text-muted">@Localizer["Rcm_OwnerDiscipline"]</div><div>@(s.OwnerDisciplineName ?? "-")</div></div>
-        <div class="col-md-3"><div class="text-muted">@Localizer["Rcm_Frequency"]</div><div>@Localizer.Label("Frequency", i.Frequency) @(i.DefaultIntervalDays.HasValue ? $"({i.DefaultIntervalDays} d)" : "")</div></div>
-        <div class="col-md-3"><div class="text-muted">@Localizer["Rcm_Source"]</div><div>@Localizer.Label("Source", i.Source)</div></div>
-        <div class="col-md-6"><div class="text-muted">@Localizer["Rcm_FunctionalFailure"]</div><div>@(i.FunctionalFailure ?? "-")</div></div>
-        <div class="col-md-6"><div class="text-muted">@Localizer["Rcm_FailureEffect"]</div><div>@(i.FailureEffect ?? "-")</div></div>
+    <pems-info-grid>
+        <pems-info-item label="@Localizer["Rcm_EquipmentClass"]">@(s.EquipmentClassName)</pems-info-item>
+        <pems-info-item label="@Localizer["Rcm_StrategyType"]"><pems-badge tone="neutral">@Localizer.Label("StrategyType", i.StrategyType)</pems-badge></pems-info-item>
+        <pems-info-item label="@Localizer["Rcm_FailureMode"]">@RcmDisplay.Name(s.FailureModeName, s.FailureModeNameFa)</pems-info-item>
+        <pems-info-item label="@Localizer["Rcm_Consequence"]"><pems-badge tone="none" css="@RcmDisplay.ConsequenceBadge(i.ConsequenceCategory)">@Localizer.Label("Consequence", i.ConsequenceCategory)</pems-badge>@if (i.IsHiddenFailure) { <pems-badge tone="dark">@Localizer["Rcm_HiddenFailure"]</pems-badge> }</pems-info-item>
+        <pems-info-item label="@Localizer["Rcm_TaskType"]">@Localizer.Label("TaskType", i.TaskType)</pems-info-item>
+        <pems-info-item label="@Localizer["Rcm_OwnerDiscipline"]">@(s.OwnerDisciplineName)</pems-info-item>
+        <pems-info-item label="@Localizer["Rcm_Frequency"]">@Localizer.Label("Frequency", i.Frequency) @(i.DefaultIntervalDays.HasValue ? $"({i.DefaultIntervalDays} d)" : "")</pems-info-item>
+        <pems-info-item label="@Localizer["Rcm_Source"]">@Localizer.Label("Source", i.Source)</pems-info-item>
+        <pems-info-item label="@Localizer["Rcm_FunctionalFailure"]">@(i.FunctionalFailure)</pems-info-item>
+        <pems-info-item label="@Localizer["Rcm_FailureEffect"]">@(i.FailureEffect)</pems-info-item>
         @if (i.StrategyType is "CBM" or "Predictive")
         {
-            <div class="col-md-3"><div class="text-muted">@Localizer["Rcm_CbmParameter"]</div><div>@i.CbmParameter @i.ThresholdUnit</div></div>
-            <div class="col-md-3"><div class="text-muted">@Localizer["Rcm_AlarmThreshold"] / @Localizer["Rcm_TripThreshold"]</div><div>@i.AlarmThreshold / @i.TripThreshold</div></div>
-            <div class="col-md-3"><div class="text-muted">@Localizer["Rcm_PfInterval"]</div><div>@i.PfIntervalDays</div></div>
-            <div class="col-md-3"><div class="text-muted">@Localizer["Rcm_InspectionInterval"]</div><div>@i.InspectionIntervalDays</div></div>
+            <pems-info-item label="@Localizer["Rcm_CbmParameter"]">@i.CbmParameter @i.ThresholdUnit</pems-info-item>
+            <pems-info-item label="@Localizer["Rcm_AlarmThreshold"] / @Localizer["Rcm_TripThreshold"]">@i.AlarmThreshold / @i.TripThreshold</pems-info-item>
+            <pems-info-item label="@Localizer["Rcm_PfInterval"]">@i.PfIntervalDays</pems-info-item>
+            <pems-info-item label="@Localizer["Rcm_InspectionInterval"]">@i.InspectionIntervalDays</pems-info-item>
         }
-        <div class="col-12"><div class="text-muted">@Localizer["Rcm_Justification"]</div><div>@i.Justification</div></div>
-        <div class="col-md-3"><div class="text-muted">@Localizer["Rcm_ReviewDate"]</div><div>@(i.ReviewDate?.ToString("yyyy-MM-dd") ?? "-")</div></div>
-        <div class="col-md-3"><div class="text-muted">@Localizer["Rcm_ApprovedBy"]</div><div>@(s.ApprovedBy ?? "-") @(s.ApprovedAt?.ToString("yyyy-MM-dd"))</div></div>
+        <pems-info-item label="@Localizer["Rcm_Justification"]" wide>@i.Justification</pems-info-item>
+        <pems-info-item label="@Localizer["Rcm_ReviewDate"]">@(i.ReviewDate?.ToString("yyyy-MM-dd"))</pems-info-item>
+        <pems-info-item label="@Localizer["Rcm_ApprovedBy"]">@(s.ApprovedBy) @(s.ApprovedAt?.ToString("yyyy-MM-dd"))</pems-info-item>
         @if (!string.IsNullOrEmpty(s.LegacyEquipmentTag))
         {
-            <div class="col-md-3"><div class="text-muted">@Localizer["Rcm_LegacyTag"]</div><a asp-action="Tag" asp-route-equipmentId="@s.LegacyEquipmentId">@s.LegacyEquipmentTag</a></div>
+            <pems-info-item label="@Localizer["Rcm_LegacyTag"]"><a asp-action="Tag" asp-route-equipmentId="@s.LegacyEquipmentId">@s.LegacyEquipmentTag</a></pems-info-item>
         }
-    </div>
+    </pems-info-grid>
 
     <div class="mt-3 d-flex flex-wrap gap-2">
         @if (Model.CanEdit && live)

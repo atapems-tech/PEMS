@@ -18,7 +18,6 @@
     var simopsConflicts = (List<PEMS.Application.DTOs.SimopsConflictListDto>)ViewBag.SimopsConflicts;
     bool RoleMatchesMe(string? assignedToRole) =>
         assignedToRole != null && assignedToRole.Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries).Any(currentUserRoles.Contains);
-    string NA(string? v) => string.IsNullOrWhiteSpace(v) ? "N/A" : v;
     string WaitingSince(DateTime since)
     {
         var span = DateTime.Now - since;
@@ -83,33 +82,23 @@
             <span class="text-muted small">@Model.PermitType - Requested by @Model.RequestedByName on @Model.CreatedDate.ToString("yyyy-MM-dd")</span>
         </div>
     </div>
-    <div class="row g-2 small mt-1">
-        <div class="col-md-3"><strong>@Localizer["Equipment:"]</strong> @(Model.EquipmentTagNumber ?? "N/A")</div>
-        <div class="col-md-3"><strong>@Localizer["Functional Location:"]</strong> @(Model.FunctionalLocationBreadcrumb ?? "N/A")</div>
-        <div class="col-md-3">
-            <strong>Work Order:</strong>
-            @if (Model.WorkOrderId.HasValue)
-            {
-                <a asp-controller="WorkOrder" asp-action="Details" asp-route-id="@Model.WorkOrderId">@Model.WorkOrderNumber</a>
-            }
-            else { <text>N/A</text> }
-        </div>
-        <div class="col-md-3"><strong>@Localizer["Priority:"]</strong> @Model.Priority</div>
-    </div>
-    <div class="row g-2 small mt-1">
-        <div class="col-md-4"><strong>Permit Issuer:</strong> @(Model.IssuerName ?? "N/A")</div>
-        <div class="col-md-4">
-            <strong>Permit Receiver:</strong> @(Model.ReceiverName ?? "N/A")
+    <pems-info-grid class="mt-2">
+        <pems-info-item label="@Localizer["Equipment"]" num>@Model.EquipmentTagNumber</pems-info-item>
+        <pems-info-item label="@Localizer["Functional Location"]">@Model.FunctionalLocationBreadcrumb</pems-info-item>
+        <pems-info-item label="@Localizer["Work Order"]" num>@if (Model.WorkOrderId.HasValue) { <a asp-controller="WorkOrder" asp-action="Details" asp-route-id="@Model.WorkOrderId">@Model.WorkOrderNumber</a> }</pems-info-item>
+        <pems-info-item label="@Localizer["Priority"]">@Model.Priority</pems-info-item>
+        <pems-info-item label="@Localizer["Info_PermitIssuer"]">@Model.IssuerName</pems-info-item>
+        <pems-info-item label="@Localizer["Info_PermitReceiver"]">
+            @Model.ReceiverName
             @if (!string.IsNullOrWhiteSpace(Model.ReceiverPersonnelType) && Model.ReceiverPersonnelType != "Internal")
             {
                 <pems-badge tone="light">@Model.ReceiverPersonnelType @(Model.ReceiverVendorName != null ? $"- {Model.ReceiverVendorName}" : "")</pems-badge>
             }
-        </div>
-        <div class="col-md-4"><strong>Validity:</strong> @(Model.ValidFrom?.ToString("yyyy-MM-dd") ?? "N/A") &rarr; @(Model.ValidTo?.ToString("yyyy-MM-dd") ?? "N/A")</div>
-    </div>
-    <div class="row g-2 small mt-1">
-        <div class="col-12"><strong>@Localizer["Description:"]</strong> @NA(Model.Description)</div>
-    </div>
+        </pems-info-item>
+        <pems-info-item label="@Localizer["Info_ValidFrom"]" num>@Model.ValidFrom?.ToString("yyyy-MM-dd")</pems-info-item>
+        <pems-info-item label="@Localizer["Info_ValidTo"]" num>@Model.ValidTo?.ToString("yyyy-MM-dd")</pems-info-item>
+        <pems-info-item label="@Localizer["Description"]" wide>@Model.Description</pems-info-item>
+    </pems-info-grid>
 
     @if (Model.Status == "Cancelled" && !string.IsNullOrWhiteSpace(Model.CancellationReason))
     {
