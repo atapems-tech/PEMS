@@ -618,9 +618,7 @@
                     تعیین نمی‌کنند - حتی اگر یک یا چند دیسیپلین «Reject» بدهند. تصمیم نهایی (Approve/Reject/Revise &amp;
                     Resubmit) همیشه توسط سازنده/تأییدکننده‌ی مدرک، با در نظر گرفتن مجموع این نظرات، گرفته می‌شود.
                 </p>
-                <div class="progress mb-3" style="height:8px;" role="progressbar" aria-valuenow="@idcApprovedCount" aria-valuemin="0" aria-valuemax="@idcStatusForPage.Count">
-                    <div class="progress-bar bg-success" style="width:@(idcStatusForPage.Count > 0 ? idcApprovedCount * 100 / idcStatusForPage.Count : 0)%"></div>
-                </div>
+                <pems-progress value="@idcApprovedCount" max="@idcStatusForPage.Count" tone="success" height="8px" css="mb-3"></pems-progress>
                 <table class="table table-enterprise">
                     <thead><tr><th>@Localizer["Discipline"]</th><th>@Localizer["Status"]</th><th>@Localizer["Comment"]</th><th>Responded By</th><th>Responded Date</th></tr></thead>
                     <tbody>

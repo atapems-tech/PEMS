@@ -25,7 +25,7 @@
     <div class="col-md-3">
         <div class="content-card">
             <h6 class="mb-3">@L("Categories", "دسته‌ها")</h6>
-            <div class="list-group list-group-flush">
+            <pems-list-group flush="true">
                 <a asp-action="Index" class="list-group-item list-group-item-action @(selectedCategoryId == null ? "active" : "")">
                     <i class="bi bi-grid"></i> @L("All", "همه")
                 </a>
@@ -36,7 +36,7 @@
                         <pems-badge tone="neutral" css="rounded-pill">@c.ArticleCount</pems-badge>
                     </a>
                 }
-            </div>
+            </pems-list-group>
         </div>
     </div>
 
@@ -68,7 +68,7 @@
                 }
                 else
                 {
-                    <div class="list-group list-group-flush">
+                    <pems-list-group flush="true">
                         @foreach (var a in articles.OrderBy(a => a.DisplayOrder))
                         {
                             <a asp-action="Article" asp-route-code="@a.Code" class="list-group-item list-group-item-action">
@@ -81,7 +81,7 @@
                                 <p class="text-muted small mb-0 mt-1">@a.Summary</p>
                             </a>
                         }
-                    </div>
+                    </pems-list-group>
                 }
             </div>
         }

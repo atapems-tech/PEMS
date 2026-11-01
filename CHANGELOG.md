@@ -9,6 +9,14 @@ and theme and were reconstructed from the git history (initial import 2026-09-05
 - Part catalogue request (edit): the equipment, attribute and note tables come from `<pems-related-table>`; removing an equipment line uses `<pems-related-remove>`. The page keeps its own sections, the sticky table headers and the attribute script (it finds the table by its `id`).
 - RCM / FMEA class detail: the functional failure, FMEA item and RCM decision tables come from `<pems-related-table>`.
 
+## 2026-11-01 - Card, progress, accordion, list-group and spinner components (SCRUM-53, #31)
+
+### Added
+- `PemsCard`, `PemsProgress`, `PemsAccordion`/`PemsAccordionItem`, `PemsListGroup`, `PemsSpinner` in `PEMS.UI` (options records, manifests, samples, tag helpers `pems-card`, `pems-progress`, `pems-accordion`, `pems-accordion-item`/`-header`, `pems-list-group`, `pems-spinner`) writing the Bootstrap markup the pages wrote by hand.
+
+### Changed
+- All 25 hand-written blocks in 14 views moved; ratchet baselines for card, progress, accordion, list-group and spinner are now empty (the accordion-item counter no longer matches `pems-accordion-item`). `Letter/Dashboard` `BarRow` became async because it contains a tag helper.
+
 ## 2026-11-01 - RelatedList wave R2: tender, procurement package and receipt details (SCRUM-337)
 
 ### Changed

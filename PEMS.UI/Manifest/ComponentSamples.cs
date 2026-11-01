@@ -29,6 +29,12 @@ public static class ComponentSamples
         ["stepper"] = """{"label":{"en":"Stages","fa":"مراحل"},"steps":[{"label":{"en":"Draft","fa":"پیش‌نویس"},"state":"done"},{"label":{"en":"Review","fa":"بررسی"},"state":"current"},{"label":{"en":"Approved","fa":"تأیید"}}]}""",
         ["menu"] = """{"label":{"en":"Actions","fa":"عملیات"},"items":[{"label":{"en":"Edit","fa":"ویرایش"},"href":"/x/edit"}]}""",
         ["side-panel-nav"] = """{"label":{"en":"Folders","fa":"پوشه‌ها"},"items":[{"label":{"en":"Inbox","fa":"دریافتی"},"href":"/l","count":12,"active":true}]}""",
+        ["card"] = """{"cssClass":"shadow-sm"}""",
+        ["progress"] = """{"value":40,"tone":"success","height":"8px"}""",
+        ["accordion"] = """{"id":"a1"}""",
+        ["accordion-item"] = """{"target":"a1-item","parentId":"a1"}""",
+        ["list-group"] = """{"flush":true}""",
+        ["spinner"] = """{"size":"small","tone":"neutral"}""",
         ["form"] = """{"definition":{"id":"item","title":{"en":"Item","fa":"مورد"},"action":"/items","fields":[{"name":"tag","label":{"en":"Tag","fa":"تگ"}}],"submitLabel":{"en":"Save","fa":"ذخیره"}}}"""
     };
 

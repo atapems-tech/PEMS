@@ -1,0 +1,50 @@
+{
+  "key": "spinner",
+  "component": "PEMS.UI.Components.PemsSpinner",
+  "category": "feedback",
+  "icon": "bi-arrow-repeat",
+  "nameKey": "component.spinner",
+  "optionsParameter": "Options",
+  "manifestVersion": 1,
+  "options": {
+    "type": "object",
+    "properties": {
+      "grow": {
+        "type": "boolean"
+      },
+      "size": {
+        "enum": [
+          "small",
+          "medium",
+          "large"
+        ]
+      },
+      "tone": {
+        "enum": [
+          "neutral",
+          "primary",
+          "danger",
+          "success",
+          "warning",
+          "info",
+          "light",
+          "dark",
+          null
+        ]
+      }
+    },
+    "additionalProperties": false
+  },
+  "parameters": [
+    {
+      "name": "options",
+      "type": "SpinnerOptions",
+      "kind": "option",
+      "required": true
+    }
+  ],
+  "sample": {
+    "size": "small",
+    "tone": "neutral"
+  }
+}
