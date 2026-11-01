@@ -29,6 +29,10 @@
     };
 }
 
+@section Styles {
+    <link rel="stylesheet" href="~/_content/PEMS.UI/pems-list.css" asp-append-version="true" />
+}
+
 @if (TempData["Message"] != null) { <pems-alert tone="success" css="py-2 px-3 small">@TempData["Message"]</pems-alert> }
 @if (TempData["Error"] != null) { <pems-alert tone="danger" css="py-2 px-3 small">@TempData["Error"]</pems-alert> }
 
@@ -75,7 +79,7 @@
             {
                 <div class="small text-muted">@fr.Code — @fr.Title</div>
             }
-            <table class="table table-enterprise table-sm mt-2">
+            <pems-related-table>
                 <thead><tr><th>@Localizer["Code"]</th><th>@Localizer["Title"]</th><th>@Localizer["Required Function"]</th></tr></thead>
                 <tbody>
                     @foreach (var ff in functionalFailures)
@@ -87,7 +91,7 @@
                         </tr>
                     }
                 </tbody>
-            </table>
+            </pems-related-table>
             @if (canEdit)
             {
                 <pems-button tone="neutral" size="small" outline="true" data-bs-toggle="modal" data-bs-target="#createFfModal"><i class="bi bi-plus-lg"></i> New Functional Failure</pems-button>
@@ -140,7 +144,7 @@
                 </div>
                 <div class="small text-muted">Prepared by @fmea.PreparedBy @(fmea.ApprovedBy != null ? $"· Approved by {fmea.ApprovedBy} on {fmea.ApprovedAt:yyyy-MM-dd}" : "")</div>
 
-                <table class="table table-enterprise table-sm mt-2">
+                <pems-related-table>
                     <thead><tr><th>@Localizer["Failure Mode"]</th><th>@Localizer["Cause"]</th><th>@Localizer["Effect"]</th><th>@Localizer["Consequence"]</th><th>S/O/D</th><th>RPN</th><th>@Localizer["Strategy"]</th></tr></thead>
                     <tbody>
                         @foreach (var item in fmea.Items)
@@ -156,7 +160,7 @@
                             </tr>
                         }
                     </tbody>
-                </table>
+                </pems-related-table>
 
                 @if (fmea.Status == "DRAFT" && canEdit)
                 {
@@ -247,7 +251,7 @@
                     </div>
                 </div>
 
-                <table class="table table-enterprise table-sm mt-2">
+                <pems-related-table>
                     <thead><tr><th>@Localizer["Failure Mode"]</th><th>@Localizer["Decision"]</th><th>@Localizer["Strategy Type"]</th><th>PM Template</th><th>@Localizer["Consequence"]</th><th>@Localizer["Status"]</th><th></th></tr></thead>
                     <tbody>
                         @foreach (var d in rcm.Decisions)
@@ -279,7 +283,7 @@
                             </tr>
                         }
                     </tbody>
-                </table>
+                </pems-related-table>
 
                 @* ==================== Apply RCM Decision → Operational Bridge ====================
                    طبق «PEMS Phase 6.1»: هیچ منطق کسب‌وکاری جدیدی این‌جا نیست - این Modal فقط

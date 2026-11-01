@@ -506,7 +506,6 @@
     "PEMS.Web/Views/QC/ItpIndex.cshtml": 1,
     "PEMS.Web/Views/QC/Kpi.cshtml": 1,
     "PEMS.Web/Views/QC/NcrIndex.cshtml": 1,
-    "PEMS.Web/Views/RcmFmea/ClassDetail.cshtml": 3,
     "PEMS.Web/Views/Relationship/BulkSuggestions.cshtml": 1,
     "PEMS.Web/Views/Relationship/GapReport.cshtml": 1,
     "PEMS.Web/Views/Reliability/AiInsights.cshtml": 1,

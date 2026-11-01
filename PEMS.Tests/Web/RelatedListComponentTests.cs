@@ -184,4 +184,23 @@ public class RelatedListComponentTests
             Assert.DoesNotContain("<table class=\"table", view);                                   // every table comes from the component
         }
     }
+
+    [Fact]
+    public void Wave3aPages_TakeTheirTablesFromTheComponent()
+    {
+        var dir = new DirectoryInfo(AppContext.BaseDirectory);
+        while (dir != null && !File.Exists(Path.Combine(dir.FullName, "PEMS.Web", "PEMS.Web.csproj"))) dir = dir.Parent;
+        Assert.NotNull(dir);
+        var web = Path.Combine(dir!.FullName, "PEMS.Web");
+        var pcr = File.ReadAllText(Path.Combine(web, "Areas", "Warehouse", "Views", "PartCatalogueRequest", "Edit.cshtml"));
+        Assert.Contains("<pems-related-table id=\"pcAttrTable\">", pcr);                 // pems-part-catalogue.js finds it by id
+        Assert.Contains("<pems-related-remove action=\"@Url.Action(\"RemoveEquipment\")\"", pcr);
+        var rcm = File.ReadAllText(Path.Combine(web, "Views", "RcmFmea", "ClassDetail.cshtml"));
+        Assert.Equal(3, System.Text.RegularExpressions.Regex.Matches(rcm, "<pems-related-table>").Count);
+        foreach (var view in new[] { pcr, rcm })
+        {
+            Assert.DoesNotContain("<table", view);
+            Assert.Contains("_content/PEMS.UI/pems-list.css", view);
+        }
+    }
 }
