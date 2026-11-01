@@ -77,13 +77,13 @@
             <a asp-action="Index" class="vs-btn"><i class="bi bi-arrow-left"></i> @Localizer["Users"]</a>
         </div>
     </div>
-    <div class="vs-info">
-        <div><p class="vs-info__label">@Localizer["Roles"]</p><p class="vs-info__value vs-num">@Model.RoleNames.Count</p></div>
-        <div><p class="vs-info__label">@Localizer["Effective Permissions"]</p><p class="vs-info__value vs-num"><span id="permInfoAllowed">@Model.AllowedCount</span> <span class="text-muted small">/ @Model.EffectivePermissions.Count</span></p></div>
-        <div><p class="vs-info__label">@Localizer["Potential SoD conflicts"]</p><p class="vs-info__value vs-num">@Model.SoDExposureCount</p></div>
-        <div><p class="vs-info__label">@Localizer["Employee link"]</p><p class="vs-info__value">@(Model.HasLinkedEmployee ? Localizer["Linked"] : Localizer["Not linked"])</p></div>
-        <div><p class="vs-info__label">@Localizer["Last Login"]</p><p class="vs-info__value vs-num">@(Model.LastLoginDate?.ToString("yyyy-MM-dd HH:mm") ?? Localizer["Never"].Value)</p></div>
-    </div>
+    <pems-info-grid>
+        <pems-info-item label="@Localizer["Roles"]" num>@Model.RoleNames.Count</pems-info-item>
+        <pems-info-item label="@Localizer["Effective Permissions"]" num><span id="permInfoAllowed">@Model.AllowedCount</span> <span class="text-muted small">/ @Model.EffectivePermissions.Count</span></pems-info-item>
+        <pems-info-item label="@Localizer["Potential SoD conflicts"]" num>@Model.SoDExposureCount</pems-info-item>
+        <pems-info-item label="@Localizer["Employee link"]">@(Model.HasLinkedEmployee ? Localizer["Linked"] : Localizer["Not linked"])</pems-info-item>
+        <pems-info-item label="@Localizer["Last Login"]" num>@(Model.LastLoginDate?.ToString("yyyy-MM-dd HH:mm") ?? Localizer["Never"].Value)</pems-info-item>
+    </pems-info-grid>
 </div>
 
 <ul class="nav nav-tabs mb-3" id="userTabs" role="tablist">
@@ -108,12 +108,12 @@
 
     <div class="tab-pane fade show active" id="tab-overview" role="tabpanel">
         <div class="content-card">
-            <div class="vs-info">
-                <div><p class="vs-info__label">@Localizer["Username"]</p><p class="vs-info__value vs-num">@Model.UserName</p></div>
-                <div><p class="vs-info__label">@Localizer["Full Name"]</p><p class="vs-info__value">@Model.FullName</p></div>
-                <div><p class="vs-info__label">@Localizer["Email"]</p><p class="vs-info__value">@(Model.Email ?? Localizer["N/A"].Value)</p></div>
-                <div><p class="vs-info__label">@Localizer["Status"]</p><p class="vs-info__value">@statusPill.Item3</p></div>
-            </div>
+            <pems-info-grid>
+                <pems-info-item label="@Localizer["Username"]" num>@Model.UserName</pems-info-item>
+                <pems-info-item label="@Localizer["Full Name"]">@Model.FullName</pems-info-item>
+                <pems-info-item label="@Localizer["Email"]">@(Model.Email ?? Localizer["N/A"].Value)</pems-info-item>
+                <pems-info-item label="@Localizer["Status"]">@statusPill.Item3</pems-info-item>
+            </pems-info-grid>
         </div>
     </div>
 
@@ -123,11 +123,11 @@
             {
                 <div class="alert alert-warning py-2 px-3 small">@Localizer["This user has no linked employee - discipline-based document visibility, letter referrals, and task assignment will not work correctly for them until this is set."]</div>
             }
-            <div class="vs-info">
-                <div><p class="vs-info__label">@Localizer["Department"]</p><p class="vs-info__value">@(Model.DepartmentName ?? Localizer["N/A"].Value)</p></div>
-                <div><p class="vs-info__label">@Localizer["Discipline"]</p><p class="vs-info__value">@(Model.DisciplineName ?? Localizer["N/A"].Value)</p></div>
-                <div><p class="vs-info__label">@Localizer["Position / Title"]</p><p class="vs-info__value">@(Model.Position ?? Localizer["N/A"].Value)</p></div>
-            </div>
+            <pems-info-grid>
+                <pems-info-item label="@Localizer["Department"]">@(Model.DepartmentName ?? Localizer["N/A"].Value)</pems-info-item>
+                <pems-info-item label="@Localizer["Discipline"]">@(Model.DisciplineName ?? Localizer["N/A"].Value)</pems-info-item>
+                <pems-info-item label="@Localizer["Position / Title"]">@(Model.Position ?? Localizer["N/A"].Value)</pems-info-item>
+            </pems-info-grid>
         </div>
     </div>
 

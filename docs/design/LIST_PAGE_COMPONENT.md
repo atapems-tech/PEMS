@@ -176,3 +176,26 @@ The forms carry the antiforgery token. Rows edited in a modal keep the modal unt
 Waves: R1 JobPlan details, Numbering, RoutingRules, ContractApprovalAuthority (done); R2 Tender, ProcurementPackage and
 IrnReceipt details (done); R3a PartCatalogueRequest Edit and RcmFmea ClassDetail tables (done); R3b Permit details (done); R3c VDR details (done); R3d WorkOrder details (done). All RelatedList waves are done.
 A page with its own section design (form pages) keeps its sections and takes only `<pems-related-table>` / `<pems-related-remove>`.
+
+## InfoGrid (label / value block of a detail page)
+
+The block of labels and values at the top of a detail page (code, dates, people, contact) is a `<pems-info-grid>`:
+
+```cshtml
+<pems-info-grid>
+    <pems-info-item label="@Localizer["Vs_VendorCode"]" mono>@Model.VendorCode</pems-info-item>
+    <pems-info-item label="@Localizer["Ed_Revision"]" num>@Model.RevisionNo</pems-info-item>
+    <pems-info-item label="@Localizer["Vs_ContactPhone"]" ltr>@Model.ContactPhone</pems-info-item>
+    <pems-info-item label="@Localizer["Vs_Overdue"]" tone="@(Model.Overdue > 0 ? "danger" : "")">@Model.Overdue</pems-info-item>
+    <pems-info-item label="@Localizer["Ed_Description"]" wide>@Model.Description</pems-info-item>
+</pems-info-grid>
+```
+
+It renders a description list (`dl` > `div` > `dt` + `dd`) in a responsive grid. The value is the page's own markup (links,
+badges, conditions); an empty value shows `empty-text` (a dash). `num` and `ltr` put the value in a left-to-right run so it
+stays at the start edge of a Persian page. Styles: `pems-ui.css` (`pems-info*`), loaded by the layout. The ratchet pattern
+`info-grid` counts hand-written `vs-info__label` and `<dt>`.
+
+Waves: I1 user, engineering document, equipment, VDR and vendor details (done); I2 the `<dl>` pages (PartCatalogueRequest,
+PreProcurement, PurchaseOrder and Task details); I3 procurement and warehouse details with a muted label over the value;
+I4 CMMS and the remaining details (WorkOrder, Asset, MaintenanceStrategy, ...).

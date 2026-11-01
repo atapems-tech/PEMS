@@ -3,6 +3,15 @@
 All notable changes to PEMS. No system version is defined yet (plan row F_CI), so entries are grouped by date
 and theme and were reconstructed from the git history (initial import 2026-09-05). Newest first.
 
+## 2026-11-01 - InfoGrid wave I1: the label / value block of detail pages (SCRUM-337)
+
+### Added
+- `<pems-info-grid>` / `<pems-info-item label="...">` in PEMS.UI: the label / value block at the top of a detail page, written as a description list (screen readers read each label with its value) in the responsive grid the pages already used. Options: `wide`, `num` (numbers, codes and dates in a fixed-width left-to-right run), `mono`, `ltr` (phone numbers), `tone="danger"`; an empty value shows a dash. Styles in `pems-ui.css`, loaded by the layout.
+- Adoption ratchet pattern `info-grid` (hand-written `vs-info__label` and `<dt>`), so the hand-written form cannot come back.
+
+### Changed
+- User, engineering document, equipment, VDR and vendor details take their label / value blocks from the component (8 grids, 49 items). The look stays the same.
+
 ## 2026-11-01 - RelatedList wave R3d: work order details (SCRUM-337)
 
 ### Changed

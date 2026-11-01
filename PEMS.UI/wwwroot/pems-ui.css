@@ -93,3 +93,13 @@
 .pems-sidenav__item:hover { background: var(--pems-row-hover); }
 .pems-sidenav__item--active { background: var(--pems-selection); font-weight: 600; }
 .pems-sidenav__count { color: var(--pems-text-muted); font-size: .85rem; }
+/* SCRUM-337 InfoGrid: <pems-info-grid> / <pems-info-item>, the label / value block of a detail page */
+.pems-info { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px 24px; margin: 0; }
+.pems-info__item { min-inline-size: 0; }
+.pems-info__item--wide { grid-column: 1 / -1; }
+.pems-info__label { margin: 0 0 2px; font-size: 11px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--pems-text-muted); }
+.pems-info__value { margin: 0; font-weight: 600; color: var(--pems-text); overflow-wrap: anywhere; }
+.pems-info__num { display: inline-block; unicode-bidi: isolate; font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-variant-numeric: tabular-nums; }
+.pems-info__value--mono { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 12px; color: var(--pems-text-muted); }
+.pems-info__value--warning { color: var(--pems-chart-warning-text, var(--pems-text)); }
+.pems-info__value--success { color: var(--pems-chart-positive-text, var(--pems-text)); }

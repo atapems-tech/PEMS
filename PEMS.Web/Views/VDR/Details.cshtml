@@ -129,23 +129,20 @@
 <div class="tab-pane fade @(vdrDefaultTab == "overview" ? "show active" : "")" id="tab-overview" role="tabpanel">
 <div class="vs-panel">
     <div class="vs-panel__body">
-        <div class="vs-info">
-            <div><p class="vs-info__label">@Localizer["Vs_Type"]</p><p class="vs-info__value">@Model.DocumentTypeCode</p></div>
-            <div><p class="vs-info__label">@Localizer["Vs_Po"]</p><p class="vs-info__value">@Model.PoNumber</p></div>
-            <div>
-                <p class="vs-info__label">@Localizer["Vs_Equipment"]</p>
-                <p class="vs-info__value">
+        <pems-info-grid>
+            <pems-info-item label="@Localizer["Vs_Type"]">@Model.DocumentTypeCode</pems-info-item>
+            <pems-info-item label="@Localizer["Vs_Po"]">@Model.PoNumber</pems-info-item>
+            <pems-info-item label="@Localizer["Vs_Equipment"]">
                     @if (Model.EquipmentId.HasValue)
                     { <a asp-controller="Equipment" asp-action="Details" asp-route-id="@Model.EquipmentId">@Model.EquipmentTagNumber</a> }
                     else
                     { <span class="text-muted">-</span> }
-                </p>
-            </div>
-            <div><p class="vs-info__label">@Localizer["Vs_Discipline"]</p><p class="vs-info__value">@Model.DisciplineCodeRaw @(Model.IsMultiDiscipline ? Localizer["Vs_MultiDiscipline"].Value : "")</p></div>
-            <div><p class="vs-info__label">@Localizer["Vs_Class"]</p><p class="vs-info__value">@Model.DocumentClass</p></div>
-            <div><p class="vs-info__label">@Localizer["Vs_PlannedFirstIssue"]</p><p class="vs-info__value">@(Model.PlannedFirstIssueDate?.ToString("yyyy-MM-dd"))</p></div>
-            <div class="vs-info__wide"><p class="vs-info__label">@Localizer["Vs_Description"]</p><p class="vs-info__value">@Model.DocumentDescription</p></div>
-        </div>
+            </pems-info-item>
+            <pems-info-item label="@Localizer["Vs_Discipline"]">@Model.DisciplineCodeRaw @(Model.IsMultiDiscipline ? Localizer["Vs_MultiDiscipline"].Value : "")</pems-info-item>
+            <pems-info-item label="@Localizer["Vs_Class"]">@Model.DocumentClass</pems-info-item>
+            <pems-info-item label="@Localizer["Vs_PlannedFirstIssue"]">@(Model.PlannedFirstIssueDate?.ToString("yyyy-MM-dd"))</pems-info-item>
+            <pems-info-item label="@Localizer["Vs_Description"]" wide>@Model.DocumentDescription</pems-info-item>
+        </pems-info-grid>
     </div>
 </div>
 
