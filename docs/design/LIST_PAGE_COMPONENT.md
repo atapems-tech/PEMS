@@ -198,5 +198,6 @@ lists; label over value at phone width); `value-class` keeps a page's own hook o
 `info-grid` counts hand-written `vs-info__label` and `<dt>`.
 
 Waves: I1 user, engineering document, equipment, VDR and vendor details (done); I2 the `<dl>` pages (PartCatalogueRequest,
-PreProcurement, PurchaseOrder and Task details, rows layout) (done); I3 procurement and warehouse details with a muted label over the value;
+PreProcurement, PurchaseOrder and Task details, rows layout) (done); I3 procurement and warehouse headers (PurchaseOrder, Contract,
+Tender, MaterialRequisition, MaterialItem) (done; a subtitle line such as the IRN header stays text, quantity tiles wait for KpiTile);
 I4 CMMS and the remaining details (WorkOrder, Asset, MaintenanceStrategy, ...).

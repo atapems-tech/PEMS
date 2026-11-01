@@ -5,15 +5,14 @@
 
 
 <div class="content-card mb-3">
-    <div class="row g-3">
-        <div class="col-md-3"><strong>MR Number:</strong> @Model.MRNumber</div>
-        <div class="col-md-3"><strong>@Localizer["Project:"]</strong> @Model.ProjectName</div>
-        <div class="col-md-3"><strong>@Localizer["Discipline:"]</strong> @Model.DisciplineName</div>
-        <div class="col-md-3"><strong>Equipment Tag:</strong> @Model.EquipmentTagNumber</div>
-        <div class="col-md-3"><strong>Required Date:</strong> @(Model.RequiredDate?.ToString("yyyy-MM-dd") ?? "-")</div>
-        <div class="col-md-3"><strong>Responsible:</strong> @Model.ResponsibleEngineerName</div>
-        <div class="col-md-6">
-            <strong>@Localizer["Status:"]</strong>
+    <pems-info-grid>
+        <pems-info-item label="@Localizer["MR Number"]" num>@Model.MRNumber</pems-info-item>
+        <pems-info-item label="@Localizer["Project"]">@Model.ProjectName</pems-info-item>
+        <pems-info-item label="@Localizer["Discipline"]">@Model.DisciplineName</pems-info-item>
+        <pems-info-item label="@Localizer["Equipment Tag"]" num>@Model.EquipmentTagNumber</pems-info-item>
+        <pems-info-item label="@Localizer["Required Date"]" num>@Model.RequiredDate?.ToString("yyyy-MM-dd")</pems-info-item>
+        <pems-info-item label="@Localizer["Responsible"]">@Model.ResponsibleEngineerName</pems-info-item>
+        <pems-info-item label="@Localizer["Status"]">
             <form asp-action="ChangeStatus" method="post" class="d-inline">
                 <input type="hidden" name="mrId" value="@Model.MRId" />
                 <select name="status" class="form-select form-select-sm d-inline w-auto" onchange="this.form.submit()">
@@ -23,10 +22,9 @@
                     }
                 </select>
             </form>
-        </div>
-    </div>
-
-    <p class="mt-3">@Model.Description</p>
+        </pems-info-item>
+        <pems-info-item label="@Localizer["Description"]" wide>@Model.Description</pems-info-item>
+    </pems-info-grid>
 </div>
 
 <div class="content-card mb-3">

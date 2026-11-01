@@ -122,6 +122,23 @@ public class InfoGridComponentTests
         Assert.DoesNotContain("<dt", text);
     }
 
+    [Theory]
+    [InlineData("Views/PurchaseOrder/Details.cshtml", 2, 11)]
+    [InlineData("Views/Contract/Details.cshtml", 2, 12)]
+    [InlineData("Views/Tender/Details.cshtml", 1, 7)]
+    [InlineData("Views/MaterialRequisition/Details.cshtml", 1, 8)]
+    [InlineData("Areas/Warehouse/Views/MaterialItem/Details.cshtml", 1, 8)]
+    public void WaveI3_ProcurementHeaders_TakeTheirLabelsFromTheComponent(string view, int grids, int items)
+    {
+        var text = File.ReadAllText(Path.Combine(RepoRoot(), "PEMS.Web", view));
+        Assert.Equal(grids, Regex.Matches(text, "<pems-info-grid[ >]").Count);
+        Assert.Equal(items, Regex.Matches(text, "<pems-info-item ").Count);
+        // no "Label:" in bold before a value, no muted label over a value, no label key carrying its own colon
+        Assert.DoesNotMatch(@"<strong>[^<]*:</strong>\s*@Model", text);
+        Assert.DoesNotMatch(@"class=""col-md-3""><div class=""text-muted small"">", text);
+        Assert.DoesNotMatch(@"label=""@Localizer\[""[^""]*:""\]""", text);
+    }
+
     private static string RepoRoot()
     {
         var dir = new DirectoryInfo(AppContext.BaseDirectory);
