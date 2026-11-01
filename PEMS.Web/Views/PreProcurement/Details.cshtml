@@ -30,26 +30,25 @@
         <span class="vs-pill @(d.Status == ProcurementDemandStatuses.Open ? "vs-pill--warning" : d.Status == ProcurementDemandStatuses.Dismissed ? "vs-pill--neutral" : "vs-pill--success")">@Localizer["Ppr_Status_" + d.Status]</span>
     </div>
 
-    <dl class="row small mt-3 mb-0">
-        <dt class="col-sm-3">@Localizer["Ppr_Item"]</dt>
-        <dd class="col-sm-9">@if (d.MaterialCode != null) { <span dir="ltr">@d.MaterialCode</span><text> - </text> }@d.Description
+    <pems-info-grid layout="rows" class="small mt-3 mb-0">
+        <pems-info-item label="@Localizer["Ppr_Item"]">@if (d.MaterialCode != null) { <span dir="ltr">@d.MaterialCode</span><text> - </text> }@d.Description
             @if (!isMr) { <span class="vs-pill @(Model.MaterialItemId.HasValue ? "vs-pill--success" : "vs-pill--warning") ms-1">@Localizer[Model.MaterialItemId.HasValue ? "Mr_PartCatalogued" : "Mr_PartNotCatalogued"]</span> }
-        </dd>
+        </pems-info-item>
         @if (!isMr)
         {
-            <dt class="col-sm-3">@Localizer["Ppr_Quantity"]</dt><dd class="col-sm-9" dir="ltr">@d.Quantity.ToString("0.###") @d.UnitName</dd>
+            <pems-info-item label="@Localizer["Ppr_Quantity"]" ltr>@d.Quantity.ToString("0.###") @d.UnitName</pems-info-item>
         }
-        @if (d.WarehouseCode != null) { <dt class="col-sm-3">@Localizer["Ppr_Warehouse"]</dt><dd class="col-sm-9" dir="ltr">@d.WarehouseCode</dd> }
+        @if (d.WarehouseCode != null) { <pems-info-item label="@Localizer["Ppr_Warehouse"]" ltr>@d.WarehouseCode</pems-info-item> }
         @if (d.MaterialRequisitionId.HasValue)
         {
-            <dt class="col-sm-3">MR</dt><dd class="col-sm-9"><a href="/MaterialRequisition/Details/@d.MaterialRequisitionId" dir="ltr">@d.MaterialRequisitionNumber</a></dd>
+            <pems-info-item label="MR"><a href="/MaterialRequisition/Details/@d.MaterialRequisitionId" dir="ltr">@d.MaterialRequisitionNumber</a></pems-info-item>
         }
         @if (Model.DecidedAt.HasValue)
         {
-            <dt class="col-sm-3">@Localizer["Ppr_Decided"]</dt><dd class="col-sm-9"><span dir="ltr">@Model.DecidedAt.Value.ToString("yyyy-MM-dd HH:mm")</span> @Model.DecidedBy</dd>
+            <pems-info-item label="@Localizer["Ppr_Decided"]"><span dir="ltr">@Model.DecidedAt.Value.ToString("yyyy-MM-dd HH:mm")</span> @Model.DecidedBy</pems-info-item>
         }
-        @if (!string.IsNullOrWhiteSpace(Model.DecisionReason)) { <dt class="col-sm-3">@Localizer["Ppr_Reason"]</dt><dd class="col-sm-9">@Model.DecisionReason</dd> }
-    </dl>
+        @if (!string.IsNullOrWhiteSpace(Model.DecisionReason)) { <pems-info-item label="@Localizer["Ppr_Reason"]">@Model.DecisionReason</pems-info-item> }
+    </pems-info-grid>
 </div>
 
 @if (canDecide && !isMr)

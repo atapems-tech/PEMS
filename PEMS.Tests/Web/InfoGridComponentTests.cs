@@ -64,6 +64,22 @@ public class InfoGridComponentTests
     }
 
     [Fact]
+    public async Task Grid_RowsLayout_PutsEachLabelBesideItsValue()
+    {
+        var html = await Run(new PemsInfoGridTagHelper { Layout = "rows" }, "pems-info-grid", "", new TagHelperAttributeList { { "class", "small" } });
+        Assert.StartsWith("<dl class=\"pems-info pems-info--rows small\">", html);
+        var css = File.ReadAllText(Path.Combine(RepoRoot(), "PEMS.UI", "wwwroot", "pems-ui.css"));
+        Assert.Contains(".pems-info--rows .pems-info__item { display: contents; }", css);
+    }
+
+    [Fact]
+    public async Task Item_KeepsThePagesValueClass()
+    {
+        var html = await Run(new PemsInfoItemTagHelper { Label = "Full text", ValueClass = "pc-fft-view" }, "pems-info-item", "a\nb");
+        Assert.Contains("<dd class=\"pems-info__value pc-fft-view\">", html);
+    }
+
+    [Fact]
     public async Task Item_EncodesItsLabel()
     {
         var html = await Run(new PemsInfoItemTagHelper { Label = "P&ID <x>" }, "pems-info-item", "1");
@@ -91,6 +107,19 @@ public class InfoGridComponentTests
         Assert.Equal(grids, Regex.Matches(text, "<pems-info-grid>").Count);
         Assert.Equal(items, Regex.Matches(text, "<pems-info-item ").Count);
         Assert.DoesNotContain("vs-info", text);
+    }
+
+    [Theory]
+    [InlineData("Areas/Warehouse/Views/PartCatalogueRequest/Details.cshtml", 3)]
+    [InlineData("Views/PreProcurement/Details.cshtml", 1)]
+    [InlineData("Views/PurchaseOrder/Details.cshtml", 1)]
+    [InlineData("Views/Task/Details.cshtml", 1)]
+    public void WaveI2_TheDescriptionListPagesUseTheRowsLayout(string view, int grids)
+    {
+        var text = File.ReadAllText(Path.Combine(RepoRoot(), "PEMS.Web", view));
+        Assert.Equal(grids, Regex.Matches(text, "<pems-info-grid layout=\"rows\"").Count);
+        Assert.DoesNotContain("<dl", text);
+        Assert.DoesNotContain("<dt", text);
     }
 
     private static string RepoRoot()

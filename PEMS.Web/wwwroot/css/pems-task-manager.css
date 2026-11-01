@@ -33,9 +33,6 @@
 .tm-card__move select { min-inline-size: 0; }
 
 .tm-comment { border-block-start: 1px solid var(--vs-border, #dee2e6); padding-block: 8px; }
-.tm-dl { display: grid; grid-template-columns: max-content 1fr; gap: 6px 12px; }
-.tm-dl dt { font-weight: 500; color: var(--bs-secondary-color, #6c757d); }
-.tm-dl dd { margin: 0; min-inline-size: 0; overflow-wrap: anywhere; }
 .tm-matrix th, .tm-matrix td { font-size: 12px; }
 
 @media (prefers-reduced-motion: reduce) {

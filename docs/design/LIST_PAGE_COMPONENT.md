@@ -193,9 +193,10 @@ The block of labels and values at the top of a detail page (code, dates, people,
 
 It renders a description list (`dl` > `div` > `dt` + `dd`) in a responsive grid. The value is the page's own markup (links,
 badges, conditions); an empty value shows `empty-text` (a dash). `num` and `ltr` put the value in a left-to-right run so it
-stays at the start edge of a Persian page. Styles: `pems-ui.css` (`pems-info*`), loaded by the layout. The ratchet pattern
+stays at the start edge of a Persian page. `layout="rows"` puts each label beside its value (side panels, long technical
+lists; label over value at phone width); `value-class` keeps a page's own hook on a value. Styles: `pems-ui.css` (`pems-info*`), loaded by the layout. The ratchet pattern
 `info-grid` counts hand-written `vs-info__label` and `<dt>`.
 
 Waves: I1 user, engineering document, equipment, VDR and vendor details (done); I2 the `<dl>` pages (PartCatalogueRequest,
-PreProcurement, PurchaseOrder and Task details); I3 procurement and warehouse details with a muted label over the value;
+PreProcurement, PurchaseOrder and Task details, rows layout) (done); I3 procurement and warehouse details with a muted label over the value;
 I4 CMMS and the remaining details (WorkOrder, Asset, MaintenanceStrategy, ...).

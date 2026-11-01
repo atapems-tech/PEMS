@@ -139,58 +139,58 @@
         <div class="col-lg-8">
             <section class="vs-panel pc-card">
                 <h2 class="vs-section__title"><i class="bi bi-card-checklist"></i> @Localizer["Pc_Sec_PartInfo"]</h2>
-                <dl class="pc-dl">
-                    <dt>@L("SectionId")</dt><dd>@Label("SectionId")</dd>
-                    <dt>@L("TechnicalClassId")</dt><dd>@Label("TechnicalClassId")</dd>
+                <pems-info-grid layout="rows">
+                    <pems-info-item label="@L("SectionId")">@Label("SectionId")</pems-info-item>
+                    <pems-info-item label="@L("TechnicalClassId")">@Label("TechnicalClassId")</pems-info-item>
                     @* تعریف (Definition) کلاس فنی فقط برای راهنمایی هنگام تکمیل پیش‌نویس است؛ پس از ثبت (در جریان تأیید/برگشتی/تکمیل/لغو) نمایش داده نمی‌شود. *@
-                    @if (d.Status == "Draft" && !string.IsNullOrEmpty(d.TechnicalClassLongDescription)) { <dt></dt><dd class="small text-muted">@d.TechnicalClassLongDescription</dd> }
-                    <dt>@L("AssetType")</dt><dd>@Localizer["Pc_Asset_" + f.AssetType]</dd>
-                    <dt>@L("CommodityGroup1Id")</dt><dd>@Label("CommodityGroup1Id")</dd>
-                    <dt>@L("CommodityGroup2Id")</dt><dd>@Label("CommodityGroup2Id")</dd>
-                    <dt>@L("ProductFamilyId")</dt><dd>@Label("ProductFamilyId")</dd>
-                    <dt>@L("UnitOfMeasureId")</dt><dd>@Label("UnitOfMeasureId")</dd>
-                    <dt>@L("ManufacturerId")</dt><dd>@Label("ManufacturerId") @if (f.IsNewManufacturer) { <span class="vs-pill vs-pill--warning">@L("IsNewManufacturer")</span> }</dd>
-                    <dt>@L("ManufacturerPartNumber")</dt><dd>@f.ManufacturerPartNumber</dd>
-                    <dt>@L("SupplierId")</dt><dd>@Label("SupplierId") @f.SupplierPartNumber</dd>
-                    <dt>@L("PartPrice")</dt><dd>@(f.PartPrice.HasValue ? f.PartPrice.Value.ToString("N2") + " " + Label("CurrencyId") : "")</dd>
-                    <dt>@L("TypeDesignationId")</dt><dd>@Label("TypeDesignationId")</dd>
-                    <dt>@L("IsCritical")</dt><dd>@YesNo(d.IsCritical)</dd>
-                    <dt>@L("IsCapital")</dt><dd>@YesNo(d.IsCapital)</dd>
-                    <dt>@L("SparePartSerialNo")</dt><dd>@f.SparePartSerialNo</dd>
-                    <dt>@L("EquipmentSerialNo")</dt><dd>@f.EquipmentSerialNo</dd>
-                    <dt>@L("ManufacturerDrawingNo")</dt><dd>@f.ManufacturerDrawingNo</dd>
-                    <dt>@L("DocumentNo")</dt><dd>@f.DocumentNo</dd>
+                    @if (d.Status == "Draft" && !string.IsNullOrEmpty(d.TechnicalClassLongDescription)) { <pems-info-item label="" value-class="small text-muted">@d.TechnicalClassLongDescription</pems-info-item> }
+                    <pems-info-item label="@L("AssetType")">@Localizer["Pc_Asset_" + f.AssetType]</pems-info-item>
+                    <pems-info-item label="@L("CommodityGroup1Id")">@Label("CommodityGroup1Id")</pems-info-item>
+                    <pems-info-item label="@L("CommodityGroup2Id")">@Label("CommodityGroup2Id")</pems-info-item>
+                    <pems-info-item label="@L("ProductFamilyId")">@Label("ProductFamilyId")</pems-info-item>
+                    <pems-info-item label="@L("UnitOfMeasureId")">@Label("UnitOfMeasureId")</pems-info-item>
+                    <pems-info-item label="@L("ManufacturerId")">@Label("ManufacturerId") @if (f.IsNewManufacturer) { <span class="vs-pill vs-pill--warning">@L("IsNewManufacturer")</span> }</pems-info-item>
+                    <pems-info-item label="@L("ManufacturerPartNumber")">@f.ManufacturerPartNumber</pems-info-item>
+                    <pems-info-item label="@L("SupplierId")">@Label("SupplierId") @f.SupplierPartNumber</pems-info-item>
+                    <pems-info-item label="@L("PartPrice")">@(f.PartPrice.HasValue ? f.PartPrice.Value.ToString("N2") + " " + Label("CurrencyId") : "")</pems-info-item>
+                    <pems-info-item label="@L("TypeDesignationId")">@Label("TypeDesignationId")</pems-info-item>
+                    <pems-info-item label="@L("IsCritical")">@YesNo(d.IsCritical)</pems-info-item>
+                    <pems-info-item label="@L("IsCapital")">@YesNo(d.IsCapital)</pems-info-item>
+                    <pems-info-item label="@L("SparePartSerialNo")">@f.SparePartSerialNo</pems-info-item>
+                    <pems-info-item label="@L("EquipmentSerialNo")">@f.EquipmentSerialNo</pems-info-item>
+                    <pems-info-item label="@L("ManufacturerDrawingNo")">@f.ManufacturerDrawingNo</pems-info-item>
+                    <pems-info-item label="@L("DocumentNo")">@f.DocumentNo</pems-info-item>
                     @if (d.RequestType == "Change")
                     {
-                        <dt>@L("IsRd")</dt><dd>@YesNo(f.IsRd)</dd>
-                        <dt>@L("ExistingPartNumber")</dt><dd>@f.ExistingPartNumber</dd>
-                        <dt>@L("ChangesMatchInventory")</dt><dd>@(f.ChangesMatchInventory.HasValue ? YesNo(f.ChangesMatchInventory.Value) : "")</dd>
+                        <pems-info-item label="@L("IsRd")">@YesNo(f.IsRd)</pems-info-item>
+                        <pems-info-item label="@L("ExistingPartNumber")">@f.ExistingPartNumber</pems-info-item>
+                        <pems-info-item label="@L("ChangesMatchInventory")">@(f.ChangesMatchInventory.HasValue ? YesNo(f.ChangesMatchInventory.Value) : "")</pems-info-item>
                     }
-                </dl>
+                </pems-info-grid>
             </section>
 
             <section class="vs-panel pc-card mt-3">
                 <h2 class="vs-section__title"><i class="bi bi-box-seam"></i> @Localizer["Pc_Sec_Planning"]</h2>
-                <dl class="pc-dl">
-                    <dt>@L("PlanningMethodId")</dt><dd>@Label("PlanningMethodId")</dd>
-                    <dt>@L("MinimumStock")</dt><dd>@f.MinimumStock</dd>
-                    <dt>@L("MaxConsumptionRate")</dt><dd>@f.MaxConsumptionRate</dd>
-                    <dt>@L("FirstPurchaseQuantity")</dt><dd>@f.FirstPurchaseQuantity</dd>
-                    <dt>@L("PrimaryIssuedRequired")</dt><dd>@YesNo(f.PrimaryIssuedRequired)</dd>
-                    <dt>@L("IssuedQty")</dt><dd>@f.IssuedQty</dd>
-                    <dt>@L("StockGradeId")</dt><dd>@Label("StockGradeId")</dd>
-                    <dt>@L("WantedReceiptDate")</dt><dd>@f.WantedReceiptDate?.ToString("yyyy-MM-dd")</dd>
-                    <dt>@L("StorageVolume")</dt><dd>@f.StorageVolume</dd>
-                </dl>
+                <pems-info-grid layout="rows">
+                    <pems-info-item label="@L("PlanningMethodId")">@Label("PlanningMethodId")</pems-info-item>
+                    <pems-info-item label="@L("MinimumStock")">@f.MinimumStock</pems-info-item>
+                    <pems-info-item label="@L("MaxConsumptionRate")">@f.MaxConsumptionRate</pems-info-item>
+                    <pems-info-item label="@L("FirstPurchaseQuantity")">@f.FirstPurchaseQuantity</pems-info-item>
+                    <pems-info-item label="@L("PrimaryIssuedRequired")">@YesNo(f.PrimaryIssuedRequired)</pems-info-item>
+                    <pems-info-item label="@L("IssuedQty")">@f.IssuedQty</pems-info-item>
+                    <pems-info-item label="@L("StockGradeId")">@Label("StockGradeId")</pems-info-item>
+                    <pems-info-item label="@L("WantedReceiptDate")">@f.WantedReceiptDate?.ToString("yyyy-MM-dd")</pems-info-item>
+                    <pems-info-item label="@L("StorageVolume")">@f.StorageVolume</pems-info-item>
+                </pems-info-grid>
             </section>
 
             <section class="vs-panel pc-card mt-3">
                 <h2 class="vs-section__title"><i class="bi bi-diagram-3"></i> @L("Attributes")</h2>
-                <dl class="pc-dl">
-                    <dt>@FftName</dt><dd class="pc-fft-view">@fft</dd>
+                <pems-info-grid layout="rows">
+                    <pems-info-item label="@FftName" value-class="pc-fft-view">@fft</pems-info-item>
                     @foreach (var at in f.Attributes.Where(x => !string.Equals(x.Name, FftName, StringComparison.OrdinalIgnoreCase)))
-                    { <dt>@at.Name</dt><dd>@at.Value</dd> }
-                </dl>
+                    { <pems-info-item label="@at.Name">@at.Value</pems-info-item> }
+                </pems-info-grid>
             </section>
         </div>
 

@@ -126,9 +126,6 @@
     "PEMS.Web/Views/Letter/Index.cshtml": 20,
     "PEMS.Web/Views/LetterCompose/Compose.cshtml": 5,
     "PEMS.Web/Views/LetterTemplate/Preview.cshtml": 4,
-    "PEMS.Web/Views/PreProcurement/Details.cshtml": 6,
-    "PEMS.Web/Views/PurchaseOrder/Details.cshtml": 3,
-    "PEMS.Web/Views/Task/Details.cshtml": 12,
     "PEMS.Web/Views/VDR/Details.cshtml": 2
   },
   "inline-script": {

@@ -3,6 +3,14 @@
 All notable changes to PEMS. No system version is defined yet (plan row F_CI), so entries are grouped by date
 and theme and were reconstructed from the git history (initial import 2026-09-05). Newest first.
 
+## 2026-11-01 - InfoGrid wave I2: description lists of detail pages (SCRUM-337)
+
+### Added
+- `<pems-info-grid layout="rows">`: each label beside its value (side panels, long technical lists), label over value again at phone width. `value-class` keeps a page's own hook on a value.
+
+### Changed
+- Part catalogue request, pre-procurement, purchase order and task details take their description lists from the component (6 grids, 54 items). The page styles `pc-dl` and `tm-dl` are removed. An empty value now shows a dash.
+
 ## 2026-11-01 - InfoGrid wave I1: the label / value block of detail pages (SCRUM-337)
 
 ### Added

@@ -282,9 +282,8 @@
 
         <section class="vs-panel mb-3" aria-labelledby="detailsTitle">
             <h3 class="h6" id="detailsTitle">@Localizer["Tm_Details"]</h3>
-            <dl class="tm-dl small mb-0">
-                <dt>@Localizer["Tm_Field_Assignee"]</dt>
-                <dd>
+            <pems-info-grid layout="rows" class="small mb-0">
+                <pems-info-item label="@Localizer["Tm_Field_Assignee"]">
                     @if (Model.CanAssign)
                     {
                         <form asp-controller="TaskManager" asp-action="Assign" method="post" class="d-flex gap-1">
@@ -301,23 +300,22 @@
                         @if (assignees.State != "RESOLVED") { <div id="as-help" class="form-text text-warning">@Localizer["Tm_Diag_" + assignees.State]</div> }
                     }
                     else { @(i.AssigneeName ?? Localizer["Tm_Unassigned"].Value) }
-                </dd>
-                <dt>@Localizer["Tm_Reporter"]</dt><dd>@(i.ReporterName ?? "—")</dd>
-                @if (Model.AssignedByName != null && Model.AssignedByName != i.ReporterName) { <dt>@Localizer["Tm_AssignedBy"]</dt><dd>@Model.AssignedByName</dd> }
-                <dt>@Localizer["Tm_Field_Priority"]</dt><dd><i class="bi @TaskManagerUi.PriorityIcon(i.Priority)" aria-hidden="true"></i> @TaskManagerUi.Priority(Localizer, i.Priority)</dd>
+                </pems-info-item>
+                <pems-info-item label="@Localizer["Tm_Reporter"]">@(i.ReporterName ?? "—")</pems-info-item>
+                @if (Model.AssignedByName != null && Model.AssignedByName != i.ReporterName) { <pems-info-item label="@Localizer["Tm_AssignedBy"]">@Model.AssignedByName</pems-info-item> }
+                <pems-info-item label="@Localizer["Tm_Field_Priority"]"><i class="bi @TaskManagerUi.PriorityIcon(i.Priority)" aria-hidden="true"></i> @TaskManagerUi.Priority(Localizer, i.Priority)</pems-info-item>
                 @if (!Model.IsLegacy)
                 {
-                    <dt>@Localizer["Tm_Field_Sprint"]</dt><dd>@(Model.SprintName ?? Localizer["Tm_Backlog"].Value)</dd>
-                    <dt>@Localizer["Tm_Field_StoryPoints"]</dt><dd>@(i.StoryPoints?.ToString("0.#") ?? "—")</dd>
+                    <pems-info-item label="@Localizer["Tm_Field_Sprint"]">@(Model.SprintName ?? Localizer["Tm_Backlog"].Value)</pems-info-item>
+                    <pems-info-item label="@Localizer["Tm_Field_StoryPoints"]">@(i.StoryPoints?.ToString("0.#") ?? "—")</pems-info-item>
                 }
-                <dt>@Localizer["Tm_Field_StartDate"]</dt><dd>@(TaskManagerUi.Date(i.StartDate) is { Length: > 0 } sd ? sd : "—")</dd>
-                <dt>@Localizer["Tm_Field_DueDate"]</dt><dd class="@(i.IsOverdue ? "text-danger fw-semibold" : "")">@(TaskManagerUi.Date(i.DueDate) is { Length: > 0 } dd ? dd : "—")</dd>
-                <dt>@Localizer["Tm_Created"]</dt><dd>@TaskManagerUi.Date(i.CreatedDate)</dd>
-                @if (Model.CompletedDate != null) { <dt>@Localizer["Tm_Completed"]</dt><dd>@TaskManagerUi.Date(Model.CompletedDate)</dd> }
+                <pems-info-item label="@Localizer["Tm_Field_StartDate"]">@(TaskManagerUi.Date(i.StartDate) is { Length: > 0 } sd ? sd : "—")</pems-info-item>
+                <pems-info-item label="@Localizer["Tm_Field_DueDate"]" tone="@(i.IsOverdue ? "danger" : "")" value-class="@(i.IsOverdue ? "fw-semibold" : "")">@(TaskManagerUi.Date(i.DueDate) is { Length: > 0 } dd ? dd : "—")</pems-info-item>
+                <pems-info-item label="@Localizer["Tm_Created"]">@TaskManagerUi.Date(i.CreatedDate)</pems-info-item>
+                @if (Model.CompletedDate != null) { <pems-info-item label="@Localizer["Tm_Completed"]">@TaskManagerUi.Date(Model.CompletedDate)</pems-info-item> }
                 @if (!string.IsNullOrEmpty(Model.RelatedType))
                 {
-                    <dt>@Localizer["Tm_Related"]</dt>
-                    <dd>
+                    <pems-info-item label="@Localizer["Tm_Related"]">
                         @* فقط برچسب و پیوند به ماژول مالک؛ داده‌ی ماژول اینجا خوانده نمی‌شود و دسترسی همان ماژول اعمال می‌شود *@
                         @switch (Model.RelatedType)
                         {
@@ -325,10 +323,10 @@
                             case "Meeting": <a asp-controller="Meeting" asp-action="Details" asp-route-id="@Model.RelatedId">@Localizer["Tm_Related_Meeting"] #@Model.RelatedId</a> break;
                             default: <span>@Model.RelatedType #@Model.RelatedId</span> break;
                         }
-                    </dd>
+                    </pems-info-item>
                 }
-                <dt>@Localizer["Tm_Watchers"]</dt><dd>@(Model.Watchers.Any() ? string.Join(TaskManagerUi.IsFa ? "، " : ", ", Model.Watchers) : "—")</dd>
-            </dl>
+                <pems-info-item label="@Localizer["Tm_Watchers"]">@(Model.Watchers.Any() ? string.Join(TaskManagerUi.IsFa ? "، " : ", ", Model.Watchers) : "—")</pems-info-item>
+            </pems-info-grid>
         </section>
     </div>
 </div>

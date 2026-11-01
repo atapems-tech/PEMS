@@ -139,11 +139,11 @@
 
     <div class="content-card mt-3">
         <h6 class="mb-2"><i class="bi bi-shield-check" aria-hidden="true"></i> @Localizer["Po_Approval"]</h6>
-        <dl class="row small mb-2">
-            @if (a.SubmittedAt.HasValue) { <dt class="col-sm-3">@Localizer["Po_Submitted"]</dt><dd class="col-sm-9"><span dir="ltr">@a.SubmittedAt.Value.ToString("yyyy-MM-dd HH:mm")</span> @a.SubmittedBy</dd> }
-            @if (a.ApproverRole != null) { <dt class="col-sm-3">@Localizer["Po_ApproverRole"]</dt><dd class="col-sm-9"><span dir="ltr">@a.ApproverRole</span> (@Localizer["Po_Level"] @a.AuthorityRuleLevel)</dd> }
-            @if (a.ApprovedAt.HasValue) { <dt class="col-sm-3">@Localizer["Po_ApprovedBy"]</dt><dd class="col-sm-9"><span dir="ltr">@a.ApprovedAt.Value.ToString("yyyy-MM-dd HH:mm")</span> @a.ApprovedBy</dd> }
-        </dl>
+        <pems-info-grid layout="rows" class="small mb-2">
+            @if (a.SubmittedAt.HasValue) { <pems-info-item label="@Localizer["Po_Submitted"]"><span dir="ltr">@a.SubmittedAt.Value.ToString("yyyy-MM-dd HH:mm")</span> @a.SubmittedBy</pems-info-item> }
+            @if (a.ApproverRole != null) { <pems-info-item label="@Localizer["Po_ApproverRole"]"><span dir="ltr">@a.ApproverRole</span> (@Localizer["Po_Level"] @a.AuthorityRuleLevel)</pems-info-item> }
+            @if (a.ApprovedAt.HasValue) { <pems-info-item label="@Localizer["Po_ApprovedBy"]"><span dir="ltr">@a.ApprovedAt.Value.ToString("yyyy-MM-dd HH:mm")</span> @a.ApprovedBy</pems-info-item> }
+        </pems-info-grid>
         @if (a.ResponsibleNotSet)
         {
             <pems-alert tone="warning" css="py-2 px-3 small mb-2"><i class="bi bi-exclamation-triangle" aria-hidden="true"></i> @Localizer["Po_ResponsibleNotSet"]</pems-alert>
