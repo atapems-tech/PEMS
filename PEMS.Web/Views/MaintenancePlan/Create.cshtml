@@ -22,7 +22,7 @@
         }
         else
         {
-            <div class="list-group">
+            <pems-list-group>
                 @foreach (var c in Model.Choices)
                 {
                     <a asp-action="Create" asp-route-assignmentId="@c.AssignmentId" class="list-group-item list-group-item-action">
@@ -30,7 +30,7 @@
                         <span class="text-muted small">@c.EquipmentClassName</span>
                     </a>
                 }
-            </div>
+            </pems-list-group>
         }
     }
     else

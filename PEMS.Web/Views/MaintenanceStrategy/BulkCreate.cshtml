@@ -186,21 +186,15 @@ else if (matchingCount.HasValue && matchingCount.Value > maxResults)
                     </div>
                 </div>
 
-                <div style="max-height:500px; overflow-y:auto;" class="accordion" id="areaAccordion">
+                <div style="max-height:500px; overflow-y:auto;"><pems-accordion id="areaAccordion">
                     @foreach (var areaGroup in byArea)
                     {
                         var areaSafeId = "area_" + Math.Abs(areaGroup.Key.GetHashCode());
                         var byType = areaGroup.GroupBy(x => string.IsNullOrWhiteSpace(x.EquipmentType) ? "نامشخص" : x.EquipmentType).OrderBy(g => g.Key).ToList();
 
-                        <div class="accordion-item">
-                            <h2 class="accordion-header">
-                                <button class="accordion-button collapsed small" type="button" data-bs-toggle="collapse" data-bs-target="#@areaSafeId">
-                                    <i class="bi bi-geo-alt me-2"></i> @areaGroup.Key
-                                    <pems-badge tone="neutral" css="ms-2">@areaGroup.Count()</pems-badge>
-                                </button>
-                            </h2>
-                            <div id="@areaSafeId" class="accordion-collapse collapse" data-bs-parent="#areaAccordion">
-                                <div class="accordion-body p-2">
+                        <pems-accordion-item target="@areaSafeId" parent="areaAccordion" button-css="small" body-css="p-2">
+<pems-accordion-header><i class="bi bi-geo-alt me-2"></i> @areaGroup.Key
+                                    <pems-badge tone="neutral" css="ms-2">@areaGroup.Count()</pems-badge></pems-accordion-header>
                                     <pems-button tone="primary" size="small" outline="true" css="mb-2" type="button"
                                             onclick="document.querySelectorAll('.area-@areaSafeId').forEach(c => c.checked = true)">
                                         <i class="bi bi-check2-square"></i> انتخاب کل این واحد
@@ -241,12 +235,10 @@ else if (matchingCount.HasValue && matchingCount.Value > maxResults)
                                             </table>
                                         </div>
                                     }
-                                </div>
-                            </div>
-                        </div>
+                                </pems-accordion-item>
                     }
                     @if (!equipments.Any() && !noFilterApplied) { <p class="text-muted small text-center py-3">@Localizer["تجهیزی با این فیلتر پیدا نشد."]</p> }
-                </div>
+                </pems-accordion></div>
             </div>
         </div>
 

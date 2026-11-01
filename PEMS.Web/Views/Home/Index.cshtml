@@ -25,10 +25,7 @@
             <h6 class="mb-0"><i class="bi bi-rocket-takeoff"></i> @Localizer["System Setup"]</h6>
             <span class="text-muted small">@setupStatus.CompletedCount of @setupStatus.TotalCount setup areas ready</span>
         </div>
-        <div class="progress mb-3" style="height: 18px;" role="progressbar"
-             aria-valuenow="@setupStatus.PercentComplete" aria-valuemin="0" aria-valuemax="100">
-            <div class="progress-bar" style="width: @setupStatus.PercentComplete%">@setupStatus.PercentComplete%</div>
-        </div>
+        <pems-progress value="@setupStatus.PercentComplete" height="18px" css="mb-3">@setupStatus.PercentComplete%</pems-progress>
         <a asp-controller="QuickSetup" asp-action="Index" class="btn btn-sm btn-primary">@Localizer["Continue Setup"]</a>
     </div>
 }
@@ -176,7 +173,7 @@
                             {
                                 <tr>
                                     <td>@row.Discipline</td><td class="text-end">@row.Total</td><td class="text-end">@row.Approved</td><td class="text-end">@row.PendingApproval</td>
-                                    <td><div class="progress" style="height:8px;" title="@row.ApprovedPercent%"><div class="progress-bar bg-success" style="width:@row.ApprovedPercent%"></div></div></td>
+                                    <td><pems-progress value="@row.ApprovedPercent" tone="success" height="8px" title="@row.ApprovedPercent%"></pems-progress></td>
                                 </tr>
                             }
                         </tbody>

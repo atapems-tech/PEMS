@@ -105,9 +105,7 @@
             </div>
         </div>
         <div class="col-md-9">
-            <div class="progress" style="height: 12px;">
-                <div class="progress-bar bg-success" role="progressbar" style="width: @Model.EngineeringHealthScore%;" aria-valuenow="@Model.EngineeringHealthScore" aria-valuemin="0" aria-valuemax="100"></div>
-            </div>
+            <pems-progress value="@Model.EngineeringHealthScore" tone="success" height="12px"></pems-progress>
             <div class="small text-muted mt-2">
                 @if (Model.Summary.Total == 0)
                 {
@@ -309,9 +307,7 @@
                            <td>@avgRevisions.ToString("0.0")</td>
                            <td>
                                <div class="d-flex align-items-center gap-2">
-                                   <div class="progress flex-grow-1" style="height: 8px; min-width: 70px;">
-                                       <div class="progress-bar @(item.RiskScore >= 60 ? "bg-danger" : item.RiskScore >= 35 ? "bg-warning" : "bg-success")" role="progressbar" style="width: @item.RiskScore%;" aria-valuenow="@item.RiskScore" aria-valuemin="0" aria-valuemax="100"></div>
-                                   </div>
+                                   <pems-progress value="@item.RiskScore" tone="@(item.RiskScore >= 60 ? "danger" : item.RiskScore >= 35 ? "warning" : "success")" height="8px" css="flex-grow-1" style="min-width: 70px;"></pems-progress>
                                    <span class="small text-muted">@item.RiskScore</span>
                                </div>
                            </td>
