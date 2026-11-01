@@ -180,6 +180,12 @@
     "PEMS.Web/wwwroot/js/pems-part-catalogue.js": 4,
     "PEMS.Web/wwwroot/js/pems-team-details.js": 1
   },
+  "kpi-tile": {
+    "PEMS.Web/Views/Discipline/Details.cshtml": 6,
+    "PEMS.Web/Views/EngineeringDashboard/Index.cshtml": 2,
+    "PEMS.Web/Views/EngineeringDocumentIntelligence/Index.cshtml": 4,
+    "PEMS.Web/Views/OCRProcessing/Index.cshtml": 4
+  },
   "list-group": {},
   "modal": {
     "PEMS.Web/Views/Asset/Details.cshtml": 1,

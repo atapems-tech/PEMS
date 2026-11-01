@@ -35,6 +35,7 @@ public sealed class AdoptionRatchetTests
         ("spinner", new Regex(@"\bspinner-(border|grow)\b", RegexOptions.Compiled), true, false),
         ("table", new Regex(@"<table\b", RegexOptions.Compiled), true, false),
         ("info-grid", new Regex(@"\bvs-info__label\b|<dt\b", RegexOptions.Compiled), true, false),   // SCRUM-337 InfoGrid: <pems-info-grid>
+        ("kpi-tile", new Regex(@"class=""kpi-card\b", RegexOptions.Compiled), true, false),   // SCRUM-337 KpiTile: <pems-kpi-tile>
         ("confirm-call", new Regex(@"\bconfirm\(", RegexOptions.Compiled), true, true),
         ("alert-call", new Regex(@"(?<![\w.])alert\(", RegexOptions.Compiled), true, true),
         ("inline-script", new Regex(@"<script>", RegexOptions.Compiled), true, false),
@@ -90,6 +91,8 @@ public sealed class AdoptionRatchetTests
         Assert.Equal(0, Hits("js-built-markup", "el.textContent = t;"));
         Assert.Equal(2, Hits("info-grid", "<div><p class=\"vs-info__label\">A</p></div><dl><dt>B</dt><dd>b</dd></dl>"));
         Assert.Equal(0, Hits("info-grid", "<pems-info-item label=\"A\">a</pems-info-item><dd>x</dd>"));
+        Assert.Equal(2, Hits("kpi-tile", "<div class=\"kpi-card\">1</div><a class=\"kpi-card kpi-link\">2</a>"));
+        Assert.Equal(0, Hits("kpi-tile", "<pems-kpi-tile label=\"A\">1</pems-kpi-tile><div class=\"pems-kpi-tile x\">"));
     }
 
     private static int Hits(string name, string text) => Patterns.Single(p => p.Name == name).Pattern.Matches(text).Count;

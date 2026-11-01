@@ -46,12 +46,12 @@
 </div>
 
 <div class="row g-3 mb-3">
-    <div class="col-md-2 col-sm-6"><div class="kpi-card"><div class="kpi-icon bg-icon-slate"><i class="bi bi-file-earmark-text"></i></div><div><div class="kpi-value">@Model.TotalDocuments</div><div class="kpi-label">@Localizer["Total"]</div></div></div></div>
-    <div class="col-md-2 col-sm-6"><div class="kpi-card"><div class="kpi-icon bg-icon-green"><i class="bi bi-check-circle"></i></div><div><div class="kpi-value">@Model.ApprovedCount</div><div class="kpi-label">Approved/Issued</div></div></div></div>
-    <div class="col-md-2 col-sm-6"><div class="kpi-card"><div class="kpi-icon bg-icon-amber"><i class="bi bi-hourglass-split"></i></div><div><div class="kpi-value">@Model.PendingCount</div><div class="kpi-label">@Localizer["Pending"]</div></div></div></div>
-    <div class="col-md-2 col-sm-6"><div class="kpi-card"><div class="kpi-icon bg-icon-red"><i class="bi bi-x-circle"></i></div><div><div class="kpi-value">@Model.RejectedCount</div><div class="kpi-label">@Localizer["Rejected"]</div></div></div></div>
-    <div class="col-md-2 col-sm-6"><div class="kpi-card"><div class="kpi-icon bg-icon-purple"><i class="bi bi-exclamation-triangle"></i></div><div><div class="kpi-value">@Model.OverdueCount</div><div class="kpi-label">@Localizer["Overdue"]</div></div></div></div>
-    <div class="col-md-2 col-sm-6"><div class="kpi-card"><div class="kpi-icon bg-icon-teal"><i class="bi bi-stopwatch"></i></div><div><div class="kpi-value">@(Model.AvgDaysToApprove.HasValue ? Model.AvgDaysToApprove.Value.ToString("0.0") + "d" : "-")</div><div class="kpi-label">Avg. Approval Time</div></div></div></div>
+    <div class="col-md-2 col-sm-6"><pems-kpi-tile icon="bi-file-earmark-text" color="slate" label="@Localizer["Total"]">@Model.TotalDocuments</pems-kpi-tile></div>
+    <div class="col-md-2 col-sm-6"><pems-kpi-tile icon="bi-check-circle" color="green" label="Approved/Issued">@Model.ApprovedCount</pems-kpi-tile></div>
+    <div class="col-md-2 col-sm-6"><pems-kpi-tile icon="bi-hourglass-split" color="amber" label="@Localizer["Pending"]">@Model.PendingCount</pems-kpi-tile></div>
+    <div class="col-md-2 col-sm-6"><pems-kpi-tile icon="bi-x-circle" color="red" label="@Localizer["Rejected"]">@Model.RejectedCount</pems-kpi-tile></div>
+    <div class="col-md-2 col-sm-6"><pems-kpi-tile icon="bi-exclamation-triangle" color="purple" label="@Localizer["Overdue"]">@Model.OverdueCount</pems-kpi-tile></div>
+    <div class="col-md-2 col-sm-6"><pems-kpi-tile icon="bi-stopwatch" color="teal" label="Avg. Approval Time">@(Model.AvgDaysToApprove.HasValue ? Model.AvgDaysToApprove.Value.ToString("0.0") + "d" : "-")</pems-kpi-tile></div>
 </div>
 
 <div class="row g-3">

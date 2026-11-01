@@ -3,6 +3,14 @@
 All notable changes to PEMS. No system version is defined yet (plan row F_CI), so entries are grouped by date
 and theme and were reconstructed from the git history (initial import 2026-09-05). Newest first.
 
+## 2026-11-02 - KpiTile wave K1: report pages (SCRUM-337)
+
+### Added
+- `<pems-kpi-tile label="..." icon="bi-..." color="green">value</pems-kpi-tile>` in PEMS.UI: one number with its label, the same kpi-card markup as the `_KpiCard` partial. The value is the page's own text (counts, decimals, units); an empty value shows a dash; `href` makes the tile a link, `hint` its tool tip, `sub` adds a line under the label. Adoption ratchet pattern `kpi-tile` (hand-written `class="kpi-card"`).
+
+### Changed
+- The six report pages (correspondence, CMMS, engineering, operations, procurement, VDR) take their 40 tiles from the component. The look stays the same; the icons are hidden from screen readers.
+
 ## 2026-11-02 - InfoGrid wave I4: CMMS and transmittal headers (SCRUM-337)
 
 ### Changed

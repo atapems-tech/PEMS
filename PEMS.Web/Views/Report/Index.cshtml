@@ -45,12 +45,12 @@
 </div>
 
 <div class="row g-3 mb-3">
-    <div class="col-md-2 col-sm-6"><div class="kpi-card"><div class="kpi-icon bg-icon-slate"><i class="bi bi-envelope"></i></div><div><div class="kpi-value">@Model.TotalLetters</div><div class="kpi-label">@Localizer["Total"]</div></div></div></div>
-    <div class="col-md-2 col-sm-6"><div class="kpi-card"><div class="kpi-icon bg-icon-green"><i class="bi bi-envelope-arrow-down"></i></div><div><div class="kpi-value">@Model.TotalIncoming</div><div class="kpi-label">@Localizer["Incoming"]</div></div></div></div>
-    <div class="col-md-2 col-sm-6"><div class="kpi-card"><div class="kpi-icon bg-icon-blue"><i class="bi bi-envelope-arrow-up"></i></div><div><div class="kpi-value">@Model.TotalOutgoing</div><div class="kpi-label">@Localizer["Outgoing"]</div></div></div></div>
-    <div class="col-md-2 col-sm-6"><div class="kpi-card"><div class="kpi-icon bg-icon-purple"><i class="bi bi-envelope"></i></div><div><div class="kpi-value">@Model.TotalInternal</div><div class="kpi-label">@Localizer["Internal"]</div></div></div></div>
-    <div class="col-md-2 col-sm-6"><div class="kpi-card"><div class="kpi-icon bg-icon-red"><i class="bi bi-exclamation-triangle"></i></div><div><div class="kpi-value">@Model.OverdueReferrals</div><div class="kpi-label">Overdue Referrals</div></div></div></div>
-    <div class="col-md-2 col-sm-6"><div class="kpi-card"><div class="kpi-icon bg-icon-amber"><i class="bi bi-stopwatch"></i></div><div><div class="kpi-value">@(Model.AvgReferralCompletionDays.HasValue ? Model.AvgReferralCompletionDays.Value.ToString("0.0") + "d" : "-")</div><div class="kpi-label">Avg. Referral Time</div></div></div></div>
+    <div class="col-md-2 col-sm-6"><pems-kpi-tile icon="bi-envelope" color="slate" label="@Localizer["Total"]">@Model.TotalLetters</pems-kpi-tile></div>
+    <div class="col-md-2 col-sm-6"><pems-kpi-tile icon="bi-envelope-arrow-down" color="green" label="@Localizer["Incoming"]">@Model.TotalIncoming</pems-kpi-tile></div>
+    <div class="col-md-2 col-sm-6"><pems-kpi-tile icon="bi-envelope-arrow-up" color="blue" label="@Localizer["Outgoing"]">@Model.TotalOutgoing</pems-kpi-tile></div>
+    <div class="col-md-2 col-sm-6"><pems-kpi-tile icon="bi-envelope" color="purple" label="@Localizer["Internal"]">@Model.TotalInternal</pems-kpi-tile></div>
+    <div class="col-md-2 col-sm-6"><pems-kpi-tile icon="bi-exclamation-triangle" color="red" label="Overdue Referrals">@Model.OverdueReferrals</pems-kpi-tile></div>
+    <div class="col-md-2 col-sm-6"><pems-kpi-tile icon="bi-stopwatch" color="amber" label="Avg. Referral Time">@(Model.AvgReferralCompletionDays.HasValue ? Model.AvgReferralCompletionDays.Value.ToString("0.0") + "d" : "-")</pems-kpi-tile></div>
 </div>
 
 <div class="row g-3">

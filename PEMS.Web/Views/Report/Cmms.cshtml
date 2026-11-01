@@ -48,12 +48,12 @@
 </div>
 
 <div class="row g-3 mb-3">
-    <div class="col-md-2 col-sm-6"><div class="kpi-card"><div class="kpi-icon bg-icon-slate"><i class="bi bi-clipboard-check"></i></div><div><div class="kpi-value">@Model.TotalWorkOrders</div><div class="kpi-label">@Localizer["Total"]</div></div></div></div>
-    <div class="col-md-2 col-sm-6"><div class="kpi-card"><div class="kpi-icon bg-icon-red"><i class="bi bi-exclamation-circle"></i></div><div><div class="kpi-value">@Model.OpenCount</div><div class="kpi-label">@Localizer["Open"]</div></div></div></div>
-    <div class="col-md-2 col-sm-6"><div class="kpi-card"><div class="kpi-icon bg-icon-amber"><i class="bi bi-hourglass-split"></i></div><div><div class="kpi-value">@Model.InProgressCount</div><div class="kpi-label">@Localizer["In Progress"]</div></div></div></div>
-    <div class="col-md-2 col-sm-6"><div class="kpi-card"><div class="kpi-icon bg-icon-green"><i class="bi bi-check-circle"></i></div><div><div class="kpi-value">@Model.CompletedCount</div><div class="kpi-label">@Localizer["Completed"]</div></div></div></div>
-    <div class="col-md-2 col-sm-6"><div class="kpi-card"><div class="kpi-icon bg-icon-purple"><i class="bi bi-stopwatch"></i></div><div><div class="kpi-value">@(Model.AvgCompletionDays.HasValue ? Model.AvgCompletionDays.Value.ToString("0.0") + "d" : "-")</div><div class="kpi-label">Avg. Completion</div></div></div></div>
-    <div class="col-md-2 col-sm-6"><div class="kpi-card"><div class="kpi-icon bg-icon-teal"><i class="bi bi-currency-dollar"></i></div><div><div class="kpi-value">@Model.TotalSpareCost.ToString("0")</div><div class="kpi-label">Spare Parts Cost</div></div></div></div>
+    <div class="col-md-2 col-sm-6"><pems-kpi-tile icon="bi-clipboard-check" color="slate" label="@Localizer["Total"]">@Model.TotalWorkOrders</pems-kpi-tile></div>
+    <div class="col-md-2 col-sm-6"><pems-kpi-tile icon="bi-exclamation-circle" color="red" label="@Localizer["Open"]">@Model.OpenCount</pems-kpi-tile></div>
+    <div class="col-md-2 col-sm-6"><pems-kpi-tile icon="bi-hourglass-split" color="amber" label="@Localizer["In Progress"]">@Model.InProgressCount</pems-kpi-tile></div>
+    <div class="col-md-2 col-sm-6"><pems-kpi-tile icon="bi-check-circle" color="green" label="@Localizer["Completed"]">@Model.CompletedCount</pems-kpi-tile></div>
+    <div class="col-md-2 col-sm-6"><pems-kpi-tile icon="bi-stopwatch" color="purple" label="Avg. Completion">@(Model.AvgCompletionDays.HasValue ? Model.AvgCompletionDays.Value.ToString("0.0") + "d" : "-")</pems-kpi-tile></div>
+    <div class="col-md-2 col-sm-6"><pems-kpi-tile icon="bi-currency-dollar" color="teal" label="Spare Parts Cost">@Model.TotalSpareCost.ToString("0")</pems-kpi-tile></div>
 </div>
 
 <div class="row g-3">
