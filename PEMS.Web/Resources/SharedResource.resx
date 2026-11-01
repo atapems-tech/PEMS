@@ -3628,4 +3628,12 @@
   <data name="HlL_Publish" xml:space="preserve"><value>Publish</value></data>
   <data name="HlL_Unpublish" xml:space="preserve"><value>Unpublish</value></data>
   <data name="HlL_ConfirmDelete" xml:space="preserve"><value>Delete this help article permanently?</value></data>
+  <data name="JpD_Tasks" xml:space="preserve"><value>Tasks (execution steps)</value></data>
+  <data name="JpD_EstMin" xml:space="preserve"><value>Est. minutes</value></data>
+  <data name="NumL_Title" xml:space="preserve"><value>Document numbering</value></data>
+  <data name="RrL_Title" xml:space="preserve"><value>Document routing</value></data>
+  <data name="RrL_Hint" xml:space="preserve"><value>Category to target module, and automatic routing when the AI confidence is high.</value></data>
+  <data name="RrL_Empty" xml:space="preserve"><value>No routing rules configured.</value></data>
+  <data name="RrL_HighHelp" xml:space="preserve"><value>Above this value processing may be automatic. Between 0 and 1.</value></data>
+  <data name="RrL_MediumHelp" xml:space="preserve"><value>Above this value an engineering review is expected. Between 0 and 1.</value></data>
 </root>

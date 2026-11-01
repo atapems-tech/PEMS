@@ -1,87 +1,87 @@
 @model List<PEMS.Domain.Entities.ContractApprovalAuthorityRule>
 @using Microsoft.Extensions.Localization
 @using PEMS.Web.Resources
+@using PEMS.Web.Helpers
 @inject IStringLocalizer<SharedResource> Localizer
 @{
     var roles = (string[])ViewBag.Roles;
 }
 
-<div class="admin-page-shell">
-    <div class="admin-hero">
-        <div class="d-flex align-items-center gap-3">
-            <div>
-                <p>@Localizer["Contract approval authority by value range and criticality. No thresholds are pre-configured - approval uses the existing role-based gate until at least one rule is added here."]</p>
-            </div>
-        </div>
-    </div>
+@section Styles {
+    <link rel="stylesheet" href="~/css/pems-workspace.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/_content/PEMS.UI/pems-list.css" asp-append-version="true" />
+}
 
-    @if (TempData["Message"] != null) { <div class="alert alert-success">@TempData["Message"]</div> }
-    @if (TempData["Error"] != null) { <div class="alert alert-danger">@TempData["Error"]</div> }
+@* SCRUM-337 RelatedList: each rule is edited in place (pems-related-row-form / pems-related-save); the add form is under
+   the table (pems-related-add). *@
+<pems-list-page texts="@ListPageTexts.From(Localizer)">
+    @if (TempData["Message"] != null) { <pems-alert tone="success" css="py-2 px-3 small">@TempData["Message"]</pems-alert> }
+    @if (TempData["Error"] != null) { <pems-alert tone="danger" css="py-2 px-3 small">@TempData["Error"]</pems-alert> }
 
-    <div class="content-card">
-        <div class="admin-toolbar"><div><strong>@Localizer["Approval Authority Rules"]</strong></div></div>
-        <div class="table-responsive">
-            <table class="table table-enterprise">
-                <thead><tr>
-                    <th>@Localizer["Priority"]</th><th>@Localizer["Min Value"]</th><th>@Localizer["Max Value"]</th>
-                    <th>@Localizer["Criticality"]</th><th>@Localizer["Required Role"]</th><th>@Localizer["Description"]</th>
-                    <th>@Localizer["Status"]</th><th></th>
-                </tr></thead>
+    <pems-list-panel>
+        <pems-list-toolbar heading="@Localizer["Approval Authority Rules"]" heading-title="@Localizer["Contract approval authority by value range and criticality. No thresholds are pre-configured - approval uses the existing role-based gate until at least one rule is added here."]" total="@Model.Count" />
+
+        @if (Model.Count > 0)
+        {
+            <pems-related-table>
+                <thead>
+                    <tr>
+                        <th style="width:90px">@Localizer["Priority"]</th>
+                        <th style="width:130px">@Localizer["Min Value"]</th>
+                        <th style="width:130px">@Localizer["Max Value"]</th>
+                        <th style="width:100px">@Localizer["Criticality"]</th>
+                        <th style="width:190px">@Localizer["Required Role"]</th>
+                        <th>@Localizer["Ed_Description"]</th>
+                        <th style="width:100px">@Localizer["Ed_Status"]</th>
+                        <th style="width:80px"><span class="visually-hidden">@Localizer["Ed_Actions"]</span></th>
+                    </tr>
+                </thead>
                 <tbody>
                     @foreach (var r in Model)
                     {
                         var formId = $"rule_{r.ContractApprovalAuthorityRuleId}";
                         <tr class="@(r.IsActive ? "" : "text-muted")">
                             <td>
-                                <form id="@formId" asp-action="Edit" method="post" class="d-none">
+                                <pems-related-row-form id="@formId" action="@Url.Action("Edit")">
                                     <input type="hidden" name="ruleId" value="@r.ContractApprovalAuthorityRuleId" />
-                                </form>
-                                <input form="@formId" type="number" name="priority" class="form-control form-control-sm" value="@r.Priority" style="width:80px" />
+                                </pems-related-row-form>
+                                <input form="@formId" type="number" name="priority" class="form-control form-control-sm" value="@r.Priority" aria-label="@Localizer["Priority"]" />
                             </td>
-                            <td><input form="@formId" type="number" step="0.01" name="minValue" class="form-control form-control-sm" value="@r.MinValue" style="width:120px" /></td>
-                            <td><input form="@formId" type="number" step="0.01" name="maxValue" class="form-control form-control-sm" value="@r.MaxValue" style="width:120px" /></td>
-                            <td><input form="@formId" type="text" name="criticalityClass" class="form-control form-control-sm" value="@r.CriticalityClass" placeholder="@Localizer["Any"]" style="width:80px" /></td>
+                            <td><input form="@formId" type="number" step="0.01" name="minValue" class="form-control form-control-sm" value="@r.MinValue" aria-label="@Localizer["Min Value"]" /></td>
+                            <td><input form="@formId" type="number" step="0.01" name="maxValue" class="form-control form-control-sm" value="@r.MaxValue" aria-label="@Localizer["Max Value"]" /></td>
+                            <td><input form="@formId" type="text" name="criticalityClass" class="form-control form-control-sm" value="@r.CriticalityClass" placeholder="@Localizer["Any"]" aria-label="@Localizer["Criticality"]" /></td>
                             <td>
-                                <select form="@formId" name="requiredApproverRole" class="form-select form-select-sm">
+                                <select form="@formId" name="requiredApproverRole" class="form-select form-select-sm" aria-label="@Localizer["Required Role"]">
                                     @foreach (var role in roles) { <option value="@role" selected="@(role == r.RequiredApproverRole)">@role</option> }
                                 </select>
                             </td>
-                            <td><input form="@formId" type="text" name="description" class="form-control form-control-sm" value="@r.Description" /></td>
-                            <td><span class="badge @(r.IsActive ? "bg-success" : "bg-secondary")">@(r.IsActive ? Localizer["Active"] : Localizer["Inactive"])</span></td>
-                            <td class="d-flex gap-1">
-                                <button type="submit" form="@formId" class="btn btn-sm btn-outline-primary">@Localizer["Save"]</button>
-                                <form asp-action="ToggleActive" method="post" class="d-inline">
+                            <td><input form="@formId" type="text" name="description" class="form-control form-control-sm" value="@r.Description" aria-label="@Localizer["Ed_Description"]" /></td>
+                            <td><span class="vs-pill @(r.IsActive ? "vs-pill--success" : "vs-pill--neutral")">@(r.IsActive ? Localizer["Active"] : Localizer["Inactive"])</span></td>
+                            <td class="text-end text-nowrap">
+                                <pems-related-save form-id="@formId" label="@Localizer["Save"]" />
+                                <form asp-action="ToggleActive" method="post" class="lp-rel-inline">
                                     <input type="hidden" name="ruleId" value="@r.ContractApprovalAuthorityRuleId" />
                                     <input type="hidden" name="isActive" value="@(!r.IsActive)" />
-                                    <button type="submit" class="btn btn-sm btn-outline-secondary">@(r.IsActive ? Localizer["Deactivate"] : Localizer["Activate"])</button>
+                                    <button type="submit" class="lp-act lp-act--always" title="@(r.IsActive ? Localizer["Deactivate"] : Localizer["Activate"])" aria-label="@(r.IsActive ? Localizer["Deactivate"] : Localizer["Activate"])"><i class="bi @(r.IsActive ? "bi-toggle-on" : "bi-toggle-off")" aria-hidden="true"></i></button>
                                 </form>
                             </td>
                         </tr>
                     }
                 </tbody>
-            </table>
-        </div>
-        @if (Model.Count == 0)
-        {
-            <div class="admin-empty"><i class="bi bi-shield-check"></i><strong>@Localizer["No approval authority rules configured - existing role-based approval applies"]</strong></div>
+            </pems-related-table>
         }
-    </div>
+        else
+        {
+            <p class="lp-rel-empty">@Localizer["No approval authority rules configured - existing role-based approval applies"]</p>
+        }
 
-    <div class="content-card admin-form-card mt-3">
-        <div class="d-flex align-items-center gap-2 mb-3"><i class="bi bi-plus-circle text-primary"></i><h6 class="mb-0">@Localizer["Add Rule"]</h6></div>
-        <form asp-action="Create" method="post" class="row g-3 align-items-end">
-            <div class="col-md-2"><label class="form-label">@Localizer["Priority"]</label><input type="number" name="priority" class="form-control" value="0" /></div>
-            <div class="col-md-2"><label class="form-label">@Localizer["Min Value"]</label><input type="number" step="0.01" name="minValue" class="form-control" /></div>
-            <div class="col-md-2"><label class="form-label">@Localizer["Max Value"]</label><input type="number" step="0.01" name="maxValue" class="form-control" /></div>
-            <div class="col-md-2"><label class="form-label">@Localizer["Criticality"]</label><input type="text" name="criticalityClass" class="form-control" placeholder="@Localizer["Any"]" /></div>
-            <div class="col-md-2">
-                <label class="form-label">@Localizer["Required Role"]</label>
-                <select name="requiredApproverRole" class="form-select" required>
-                    @foreach (var role in roles) { <option value="@role">@role</option> }
-                </select>
-            </div>
-            <div class="col-md-2"><button type="submit" class="btn btn-pems-solid w-100">@Localizer["Add Rule"]</button></div>
-            <div class="col-12"><label class="form-label">@Localizer["Description"]</label><input type="text" name="description" class="form-control" /></div>
-        </form>
-    </div>
-</div>
+        <pems-related-add action="@Url.Action("Create")" submit-label="@Localizer["Add Rule"]">
+            <div style="flex:0 0 100px"><label class="lp-lbl" for="carPriority">@Localizer["Priority"]</label><input id="carPriority" type="number" name="priority" class="form-control form-control-sm" value="0" /></div>
+            <div><label class="lp-lbl" for="carMin">@Localizer["Min Value"]</label><input id="carMin" type="number" step="0.01" name="minValue" class="form-control form-control-sm" /></div>
+            <div><label class="lp-lbl" for="carMax">@Localizer["Max Value"]</label><input id="carMax" type="number" step="0.01" name="maxValue" class="form-control form-control-sm" /></div>
+            <div><label class="lp-lbl" for="carCrit">@Localizer["Criticality"]</label><input id="carCrit" type="text" name="criticalityClass" class="form-control form-control-sm" placeholder="@Localizer["Any"]" /></div>
+            <pems-list-filter-select id="carRole" name="requiredApproverRole" label="@Localizer["Required Role"]" items="@roles.Select(role => new SelectListItem(role, role))" />
+            <div style="flex:2 1 240px"><label class="lp-lbl" for="carDesc">@Localizer["Ed_Description"]</label><input id="carDesc" type="text" name="description" class="form-control form-control-sm" /></div>
+        </pems-related-add>
+    </pems-list-panel>
+</pems-list-page>

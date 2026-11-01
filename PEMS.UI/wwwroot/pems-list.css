@@ -172,3 +172,17 @@ body.lp-compact .lp-snippet, body.lp-compact .lp-badges { display: none; }
 .lp-menu .lp-menu-row { display: flex; align-items: center; gap: 4px; }
 .lp-menu .lp-menu-row .dropdown-item { flex: 1 1 auto; }
 .lp-checklist { max-height: 180px; overflow-y: auto; padding: 4px 8px; border: 1px solid var(--pems-surface-border); border-radius: 6px; }
+
+/* RelatedList (SCRUM-337): a child collection on a detail page */
+.lp-rel { margin-bottom: 14px; background: var(--pems-surface); border: 1px solid var(--pems-surface-border); border-radius: 10px; }
+.lp-rel-head { display: flex; align-items: center; gap: 8px; padding: 8px 12px; border-bottom: 1px solid var(--pems-surface-border); }
+.lp-rel-head h3 { margin: 0; font-size: .95rem; font-weight: 600; color: var(--pems-text); }
+.lp-rel-scroll { overflow-x: auto; }
+.lp-rel-table { margin: 0; }
+.lp-rel-table th { font-size: .78rem; font-weight: 600; color: var(--pems-text-muted, #6c757d); white-space: nowrap; }
+.lp-rel-table td { font-size: .85rem; vertical-align: middle; }
+.lp-rel-empty { margin: 0; padding: 10px 12px; color: var(--pems-text-muted, #6c757d); font-size: .85rem; }
+.lp-rel-add { display: flex; flex-wrap: wrap; align-items: flex-end; gap: 8px; padding: 10px 12px; border-top: 1px dashed var(--pems-surface-border); }
+.lp-rel-add > div { flex: 1 1 160px; min-width: 0; }
+.lp-rel-add > .lp-rel-submit { flex: 0 0 auto; }
+.lp-rel-inline { display: inline; margin: 0; }

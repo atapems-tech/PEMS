@@ -4413,4 +4413,12 @@
   <data name="HlL_Publish" xml:space="preserve"><value>انتشار</value></data>
   <data name="HlL_Unpublish" xml:space="preserve"><value>لغو انتشار</value></data>
   <data name="HlL_ConfirmDelete" xml:space="preserve"><value>این مقاله‌ی راهنما برای همیشه حذف شود؟</value></data>
+  <data name="JpD_Tasks" xml:space="preserve"><value>وظایف (مراحل اجرا)</value></data>
+  <data name="JpD_EstMin" xml:space="preserve"><value>دقیقه‌ی تخمینی</value></data>
+  <data name="NumL_Title" xml:space="preserve"><value>شماره‌گذاری اسناد</value></data>
+  <data name="RrL_Title" xml:space="preserve"><value>مسیریابی اسناد</value></data>
+  <data name="RrL_Hint" xml:space="preserve"><value>گروه سند به ماژول مقصد، و مسیریابی خودکار وقتی اطمینان هوش مصنوعی بالاست.</value></data>
+  <data name="RrL_Empty" xml:space="preserve"><value>قاعده‌ی مسیریابی تعریف نشده است.</value></data>
+  <data name="RrL_HighHelp" xml:space="preserve"><value>بالاتر از این مقدار پردازش می‌تواند خودکار باشد. بین ۰ و ۱.</value></data>
+  <data name="RrL_MediumHelp" xml:space="preserve"><value>بالاتر از این مقدار بازبینی مهندسی لازم است. بین ۰ و ۱.</value></data>
 </root>

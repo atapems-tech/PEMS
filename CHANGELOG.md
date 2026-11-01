@@ -3,6 +3,21 @@
 All notable changes to PEMS. No system version is defined yet (plan row F_CI), so entries are grouped by date
 and theme and were reconstructed from the git history (initial import 2026-09-05). Newest first.
 
+## 2026-11-01 - RelatedList: child collections of a detail page (SCRUM-337)
+
+### Added
+- **PEMS.UI RelatedList tag helpers:**
+  - `<pems-related-list>`: a section with icon, title, count and empty text.
+  - `<pems-related-table>`: the child table; it keeps the page's `id` and `data-*` hooks.
+  - `<pems-related-add>`: the add form under the table, with the parent key and the antiforgery token.
+  - `<pems-related-remove>`: the delete form of one row, with the row and parent keys and an optional confirmation.
+  - `<pems-related-row-form>` + `<pems-related-save>`: a row edited in place; the inputs point at the hidden form with `form="..."`.
+  - Styles `lp-rel-*` in `pems-list.css`.
+
+### Changed
+- JobPlan details: the task and material lists are related lists, with labelled add fields.
+- Administration: Numbering, Routing rules and Contract approval authority use the list frame. Each row is edited in place through the component. 8 texts in English and Persian.
+
 ## 2026-11-01 - Contract creation SQL tests pass again (SCRUM-498)
 
 ### Fixed
