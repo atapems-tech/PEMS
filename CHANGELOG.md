@@ -3,6 +3,14 @@
 All notable changes to PEMS. No system version is defined yet (plan row F_CI), so entries are grouped by date
 and theme and were reconstructed from the git history (initial import 2026-09-05). Newest first.
 
+## 2026-11-02 - KpiTile wave K3: detail-page tiles (SCRUM-337)
+
+### Added
+- `<pems-kpi-tile compact>`: a small tile for a detail page (tighter, 18px number, no lift on hover), and `tone="danger|success|warning"` to colour the value.
+
+### Changed
+- Asset details (status, criticality, open work orders, total cost), reliability details (MTBF, MTTR, availability, failure count), replenishment details (usable with on-hand minus reserved under it, gross demand, covered, shortage) and the production run reconciliation (input, output, loss, difference in red or green) take their 19 tiles from the component. The number now sits over its label like every other tile; empty values show a dash instead of "N/A".
+
 ## 2026-11-02 - KpiTile wave K2: the other kpi-card pages, `_KpiCard` retired (SCRUM-337)
 
 ### Changed

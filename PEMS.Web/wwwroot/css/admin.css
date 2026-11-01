@@ -472,6 +472,11 @@ body {
     margin-top: 2px;
 }
 
+/* SCRUM-337 KpiTile: small tile on a detail page (<pems-kpi-tile compact>) */
+.kpi-card--compact { padding: 10px 14px; gap: 10px; box-shadow: none; }
+.kpi-card--compact:not(.kpi-link):hover { transform: none; box-shadow: none; border-color: var(--pems-surface-border); }
+.kpi-card--compact .kpi-value { font-size: 18px; }
+
 /* آیکون‌های رنگی گرادیانت */
 .bg-icon-blue {
     background: linear-gradient(135deg,#3b82f6,#1d4ed8);

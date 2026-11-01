@@ -22,6 +22,12 @@ public sealed class PemsKpiTileTagHelper : TagHelper
     [HtmlAttributeName("href")] public string? Href { get; set; }
     [HtmlAttributeName("hint")] public string? Hint { get; set; }
 
+    /// <summary>A small tile for a detail page (tighter, smaller number, no lift on hover); usually without an icon.</summary>
+    [HtmlAttributeName("compact")] public bool Compact { get; set; }
+
+    /// <summary>Colours the value: <c>danger</c>, <c>success</c> or <c>warning</c> (anything else: the default colour).</summary>
+    [HtmlAttributeName("tone")] public string? Tone { get; set; }
+
     /// <summary>
     /// A tile built in code (a controller's or a page's list of tiles): its title, count (a dash for zero), icon, colour, link
     /// and hint fill the tile; an attribute written on the tag wins.
@@ -43,13 +49,15 @@ public sealed class PemsKpiTileTagHelper : TagHelper
             Hint ??= Model.Hint;
         }
         var link = !string.IsNullOrEmpty(Href);
-        PemsList.Become(output, link ? "a" : "div", link ? "kpi-card kpi-link text-decoration-none" : "kpi-card");
+        var css = (link ? "kpi-card kpi-link text-decoration-none" : "kpi-card") + (Compact ? " kpi-card--compact" : "");
+        PemsList.Become(output, link ? "a" : "div", css);
         if (link) output.Attributes.SetAttribute("href", Href);
         if (!string.IsNullOrEmpty(Hint)) output.Attributes.SetAttribute("title", Hint);
 
         var body = new TagBuilder("div");
         var value = new TagBuilder("div");
         value.AddCssClass("kpi-value");
+        if (Tone is "danger" or "success" or "warning") value.AddCssClass("text-" + Tone);
         var content = await output.GetChildContentAsync();
         if (content.IsEmptyOrWhiteSpace && Model != null) value.InnerHtml.Append(Model.DisplayCount);
         else if (content.IsEmptyOrWhiteSpace) value.InnerHtml.Append("-");
