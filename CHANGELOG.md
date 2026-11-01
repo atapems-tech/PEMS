@@ -3,6 +3,11 @@
 All notable changes to PEMS. No system version is defined yet (plan row F_CI), so entries are grouped by date
 and theme and were reconstructed from the git history (initial import 2026-09-05). Newest first.
 
+## 2026-11-01 - RelatedList wave R3b: permit details (SCRUM-337)
+
+### Changed
+- Permit details: its seven tables come from `<pems-related-table>`: execution gate checks, approval steps, LOTO points, isolations, SIMOPS conflicts and links, and status history. The page keeps its sections, its actions and its forms.
+
 ## 2026-11-01 - RelatedList wave R3a: part catalogue request and RCM / FMEA class (SCRUM-337)
 
 ### Changed

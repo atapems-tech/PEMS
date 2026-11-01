@@ -203,4 +203,16 @@ public class RelatedListComponentTests
             Assert.Contains("_content/PEMS.UI/pems-list.css", view);
         }
     }
+
+    [Fact]
+    public void Wave3bPermit_TakesItsSevenTablesFromTheComponent()
+    {
+        var dir = new DirectoryInfo(AppContext.BaseDirectory);
+        while (dir != null && !File.Exists(Path.Combine(dir.FullName, "PEMS.Web", "PEMS.Web.csproj"))) dir = dir.Parent;
+        Assert.NotNull(dir);
+        var permit = File.ReadAllText(Path.Combine(dir!.FullName, "PEMS.Web", "Views", "Permit", "Details.cshtml"));
+        Assert.Equal(7, System.Text.RegularExpressions.Regex.Matches(permit, "<pems-related-table>").Count);
+        Assert.DoesNotContain("<table", permit);
+        Assert.Contains("_content/PEMS.UI/pems-list.css", permit);
+    }
 }
