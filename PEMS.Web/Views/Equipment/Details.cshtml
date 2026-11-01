@@ -68,38 +68,29 @@
             <button type="button" class="vs-btn" data-bs-toggle="modal" data-bs-target="#assignFoundationModal" title="Assign Functional Location / Parent Equipment"><i class="bi bi-pencil"></i> @Localizer["Cm_AssignLocation"]</button>
         </div>
     </div>
-    <div class="vs-info">
-        <div>
-            <p class="vs-info__label">P&amp;ID</p>
-            <p class="vs-info__value vs-num">
+    <pems-info-grid>
+        <pems-info-item label="P&ID" num>
             @if (Model.PIDDocument != null)
             {
                 <a asp-controller="EngineeringDocuments" asp-action="Details" asp-route-id="@Model.PIDDocument.DocumentId">@eq.PIDNumber <i class="bi bi-box-arrow-up-right small"></i></a>
             }
             else if (!string.IsNullOrWhiteSpace(eq.PIDNumber)) { <span title="@Localizer["مدرکی با این شماره پیدا نشد"]">@eq.PIDNumber</span> }
             else { <span class="text-muted">N/A</span> }
-            </p>
-        </div>
-        <div><p class="vs-info__label">@Localizer["Cm_ManufacturerModel"]</p><p class="vs-info__value vs-num">@NA(eq.Manufacturer) / @NA(eq.Model)</p></div>
-        <div><p class="vs-info__label">@Localizer["Cm_FunctionalLocation"]</p><p class="vs-info__value">@NA(eq.FunctionalLocationBreadcrumb)</p></div>
-        <div>
-            <p class="vs-info__label">@Localizer["Cm_ParentEquipment"]</p>
-            <p class="vs-info__value vs-num">
+        </pems-info-item>
+        <pems-info-item label="@Localizer["Cm_ManufacturerModel"]" num>@NA(eq.Manufacturer) / @NA(eq.Model)</pems-info-item>
+        <pems-info-item label="@Localizer["Cm_FunctionalLocation"]">@NA(eq.FunctionalLocationBreadcrumb)</pems-info-item>
+        <pems-info-item label="@Localizer["Cm_ParentEquipment"]" num>
             @if (eq.ParentEquipmentId.HasValue) { <a asp-action="Details" asp-route-id="@eq.ParentEquipmentId">@eq.ParentEquipmentTagNumber</a> } else { <span class="text-muted">N/A</span> }
-            </p>
-        </div>
-        <div><p class="vs-info__label">@Localizer["Cm_InstallationDate"]</p><p class="vs-info__value vs-num">@(eq.InstallationDate?.ToString("yyyy-MM-dd") ?? "N/A")</p></div>
-        <div class="vs-info__wide"><p class="vs-info__label">@Localizer["Cm_Description"]</p><p class="vs-info__value">@NA(eq.Description)</p></div>
+        </pems-info-item>
+        <pems-info-item label="@Localizer["Cm_InstallationDate"]" num>@(eq.InstallationDate?.ToString("yyyy-MM-dd") ?? "N/A")</pems-info-item>
+        <pems-info-item label="@Localizer["Cm_Description"]" wide>@NA(eq.Description)</pems-info-item>
         @if (eq.ChildEquipments.Any())
         {
-            <div class="vs-info__wide">
-                <p class="vs-info__label">@Localizer["Cm_ChildEquipment"] (@eq.ChildEquipmentCount)</p>
-                <p class="vs-info__value">
+            <pems-info-item label="@Localizer["Cm_ChildEquipment"] (@eq.ChildEquipmentCount)" wide>
                 @foreach (var c in eq.ChildEquipments) { <a asp-action="Details" asp-route-id="@c.EquipmentId" class="vs-chip text-decoration-none vs-num me-1">@c.TagNumber</a> }
-                </p>
-            </div>
+            </pems-info-item>
         }
-    </div>
+    </pems-info-grid>
 </div>
 
 <div class="modal fade" id="assignFoundationModal" tabindex="-1">

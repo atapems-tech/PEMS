@@ -396,35 +396,30 @@
         <div class="col-lg-8">
         <div class="vs-section">
             <h2 class="vs-section__title"><i class="bi bi-card-list"></i> @Localizer["Ed_SecIdentification"]</h2>
-            <div class="vs-info">
-                <div><p class="vs-info__label">@Localizer["Ed_DocType"]</p><p class="vs-info__value">@Model.DocumentType</p></div>
-                <div><p class="vs-info__label">@Localizer["Ed_Project"]</p><p class="vs-info__value">@Model.ProjectName</p></div>
-                <div><p class="vs-info__label">@Localizer["Ed_Discipline"]</p><p class="vs-info__value">@Model.DisciplineName</p></div>
-                <div><p class="vs-info__label">@Localizer["Ed_Area"]</p><p class="vs-info__value">@(string.IsNullOrEmpty(Model.Area) ? "—" : Model.Area)</p></div>
-                <div><p class="vs-info__label">@Localizer["Ed_Revision"]</p><p class="vs-info__value vs-num">@Model.RevisionNo</p></div>
-                <div><p class="vs-info__label">@Localizer["Ed_CreatedDate"]</p><p class="vs-info__value vs-num">@Model.CreatedDate.ToString("yyyy-MM-dd")</p></div>
-                <div class="vs-info__wide"><p class="vs-info__label">@Localizer["Ed_Description"]</p><p class="vs-info__value">@(string.IsNullOrEmpty(Model.Description) ? "—" : Model.Description)</p></div>
-            </div>
+            <pems-info-grid>
+                <pems-info-item label="@Localizer["Ed_DocType"]">@Model.DocumentType</pems-info-item>
+                <pems-info-item label="@Localizer["Ed_Project"]">@Model.ProjectName</pems-info-item>
+                <pems-info-item label="@Localizer["Ed_Discipline"]">@Model.DisciplineName</pems-info-item>
+                <pems-info-item label="@Localizer["Ed_Area"]">@(string.IsNullOrEmpty(Model.Area) ? "—" : Model.Area)</pems-info-item>
+                <pems-info-item label="@Localizer["Ed_Revision"]" num>@Model.RevisionNo</pems-info-item>
+                <pems-info-item label="@Localizer["Ed_CreatedDate"]" num>@Model.CreatedDate.ToString("yyyy-MM-dd")</pems-info-item>
+                <pems-info-item label="@Localizer["Ed_Description"]" wide>@(string.IsNullOrEmpty(Model.Description) ? "—" : Model.Description)</pems-info-item>
+            </pems-info-grid>
         </div>
 
         <div class="vs-section">
             <h2 class="vs-section__title"><i class="bi bi-patch-check"></i> @Localizer["Ed_SecEngineering"]</h2>
-            <div class="vs-info">
-                <div><p class="vs-info__label">@Localizer["Ed_IssuePurpose"]</p><p class="vs-info__value">@(string.IsNullOrEmpty(Model.IssuePurpose) ? "—" : Model.IssuePurpose)</p></div>
-                <div>
-                    <p class="vs-info__label">@Localizer["Ed_PreparedBy"]</p>
-                    <p class="vs-info__value">
+            <pems-info-grid>
+                <pems-info-item label="@Localizer["Ed_IssuePurpose"]">@(string.IsNullOrEmpty(Model.IssuePurpose) ? "—" : Model.IssuePurpose)</pems-info-item>
+                <pems-info-item label="@Localizer["Ed_PreparedBy"]">
                         @if (string.IsNullOrEmpty(Model.PreparedBy))
                         {
                             <span class="text-muted">@Localizer["Ed_NotSet"]</span>
                             @if (canAssignSignoff) { <text> &middot; <a asp-action="Edit" asp-route-id="@Model.DocumentId">@Localizer["Ed_Assign"]</a></text> }
                         }
                         else { @Model.PreparedBy }
-                    </p>
-                </div>
-                <div>
-                    <p class="vs-info__label">@Localizer["Ed_CheckedBy"]</p>
-                    <p class="vs-info__value">
+                </pems-info-item>
+                <pems-info-item label="@Localizer["Ed_CheckedBy"]">
                         @if (string.IsNullOrEmpty(Model.CheckedBy))
                         {
                             <span class="text-muted">@Localizer["Ed_NotSet"]</span>
@@ -436,46 +431,33 @@
                         {
                             <img src="@Model.CheckedBySignaturePath" alt="Signature" style="height:32px; vertical-align:middle; margin-inline-start:8px; background:#fff; border:1px solid #eee; border-radius:3px;" />
                         }
-                    </p>
-                </div>
-                <div>
-                    <p class="vs-info__label">@Localizer["Ed_ApprovedBy"]</p>
-                    <p class="vs-info__value">
+                </pems-info-item>
+                <pems-info-item label="@Localizer["Ed_ApprovedBy"]">
                         @(string.IsNullOrEmpty(Model.ApprovedBy) ? "—" : Model.ApprovedBy) @(Model.ApprovedDate.HasValue ? $"({Model.ApprovedDate:yyyy-MM-dd})" : "")
                         @if (!string.IsNullOrEmpty(Model.ApprovedBySignaturePath))
                         {
                             <img src="@Model.ApprovedBySignaturePath" alt="Signature" style="height:32px; vertical-align:middle; margin-inline-start:8px; background:#fff; border:1px solid #eee; border-radius:3px;" />
                         }
-                    </p>
-                </div>
-                <div><p class="vs-info__label">@Localizer["Ed_CommentStatus"]</p><p class="vs-info__value">@(string.IsNullOrEmpty(Model.CommentStatus) ? "—" : Model.CommentStatus)</p></div>
+                </pems-info-item>
+                <pems-info-item label="@Localizer["Ed_CommentStatus"]">@(string.IsNullOrEmpty(Model.CommentStatus) ? "—" : Model.CommentStatus)</pems-info-item>
                 @if (!string.IsNullOrEmpty(Model.ClientApprovalStatus))
                 {
-                    <div>
-                        <p class="vs-info__label">@Localizer["Ed_ClientResponse"]</p>
-                        <p class="vs-info__value">
+                    <pems-info-item label="@Localizer["Ed_ClientResponse"]">
                             <span class="vs-pill vs-pill--icon @(Model.ClientApprovalStatus == "Approved" ? "vs-pill--success" : Model.ClientApprovalStatus == "Rejected" ? "vs-pill--danger" : "vs-pill--warning")"><i class="bi @(Model.ClientApprovalStatus == "Approved" ? "bi-check-circle" : Model.ClientApprovalStatus == "Rejected" ? "bi-x-circle" : "bi-exclamation-circle")" aria-hidden="true"></i> @Model.ClientApprovalStatus</span>
                             @if (!string.IsNullOrEmpty(Model.ClientComment)) { <span class="vs-sub">@Model.ClientComment</span> }
-                        </p>
-                    </div>
+                    </pems-info-item>
                 }
-                <div>
-                    <p class="vs-info__label">@Localizer["Ed_RelatedEquipment"]</p>
-                    <p class="vs-info__value">
+                <pems-info-item label="@Localizer["Ed_RelatedEquipment"]">
                         @if (Model.EquipmentId.HasValue)
                         { <a asp-controller="Equipment" asp-action="Details" asp-route-id="@Model.EquipmentId">@Model.EquipmentTagNumber</a> }
                         else { <span class="text-muted">—</span> }
-                    </p>
-                </div>
-                <div>
-                    <p class="vs-info__label">@Localizer["Ed_RelatedContract"]</p>
-                    <p class="vs-info__value">
+                </pems-info-item>
+                <pems-info-item label="@Localizer["Ed_RelatedContract"]">
                         @if (Model.ContractId.HasValue)
                         { <a asp-controller="Contract" asp-action="Details" asp-route-id="@Model.ContractId">@Model.ContractNo</a> }
                         else { <span class="text-muted">—</span> }
-                    </p>
-                </div>
-            </div>
+                </pems-info-item>
+            </pems-info-grid>
         </div>
         </div>
         <div class="col-lg-4">
