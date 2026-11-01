@@ -22,12 +22,12 @@
 </div>
 
 <div class="row g-3 mb-3">
-    <div class="col-md-2 col-sm-6"><div class="kpi-card"><div class="kpi-icon bg-icon-slate"><i class="bi bi-file-earmark-text"></i></div><div><div class="kpi-value">@s.DocumentsCount</div><div class="kpi-label">@Localizer["Documents"]</div></div></div></div>
-    <div class="col-md-2 col-sm-6"><div class="kpi-card"><div class="kpi-icon bg-icon-amber"><i class="bi bi-hourglass-split"></i></div><div><div class="kpi-value">@s.PendingDocumentsCount</div><div class="kpi-label">@Localizer["Pending"]</div></div></div></div>
-    <div class="col-md-2 col-sm-6"><div class="kpi-card"><div class="kpi-icon bg-icon-green"><i class="bi bi-gear"></i></div><div><div class="kpi-value">@s.EquipmentCount</div><div class="kpi-label">@Localizer["Equipment"]</div></div></div></div>
-    <div class="col-md-2 col-sm-6"><div class="kpi-card"><div class="kpi-icon bg-icon-purple"><i class="bi bi-journal-check"></i></div><div><div class="kpi-value">@s.VDRItemsCount</div><div class="kpi-label">@Localizer["VDR Items"]</div></div></div></div>
-    <div class="col-md-2 col-sm-6"><div class="kpi-card"><div class="kpi-icon bg-icon-blue"><i class="bi bi-list-task"></i></div><div><div class="kpi-value">@s.OpenTasksCount</div><div class="kpi-label">@Localizer["Open Tasks"]</div></div></div></div>
-    <div class="col-md-2 col-sm-6"><div class="kpi-card"><div class="kpi-icon bg-icon-red"><i class="bi bi-exclamation-triangle"></i></div><div><div class="kpi-value">@s.OverdueTasksCount</div><div class="kpi-label">Overdue Tasks</div></div></div></div>
+    <div class="col-md-2 col-sm-6"><pems-kpi-tile icon="bi-file-earmark-text" color="slate" label="@Localizer["Documents"]">@s.DocumentsCount</pems-kpi-tile></div>
+    <div class="col-md-2 col-sm-6"><pems-kpi-tile icon="bi-hourglass-split" color="amber" label="@Localizer["Pending"]">@s.PendingDocumentsCount</pems-kpi-tile></div>
+    <div class="col-md-2 col-sm-6"><pems-kpi-tile icon="bi-gear" color="green" label="@Localizer["Equipment"]">@s.EquipmentCount</pems-kpi-tile></div>
+    <div class="col-md-2 col-sm-6"><pems-kpi-tile icon="bi-journal-check" color="purple" label="@Localizer["VDR Items"]">@s.VDRItemsCount</pems-kpi-tile></div>
+    <div class="col-md-2 col-sm-6"><pems-kpi-tile icon="bi-list-task" color="blue" label="@Localizer["Open Tasks"]">@s.OpenTasksCount</pems-kpi-tile></div>
+    <div class="col-md-2 col-sm-6"><pems-kpi-tile icon="bi-exclamation-triangle" color="red" label="Overdue Tasks">@s.OverdueTasksCount</pems-kpi-tile></div>
 </div>
 
 <div class="content-card mb-3">

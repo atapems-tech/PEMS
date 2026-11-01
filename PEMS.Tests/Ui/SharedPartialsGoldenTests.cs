@@ -47,20 +47,7 @@ public class SharedPartialsGoldenTests
         return dir is null ? throw new DirectoryNotFoundException("PEMS.Tests/Ui/Golden") : Path.Combine(dir.FullName, "PEMS.Tests", "Ui", "Golden");
     }
 
-    [Fact]
-    public async Task KpiCard_WithLink_RendersTheSameMarkup() =>
-        AssertGolden("kpi-card-link", await RenderAsync("~/Views/Shared/_KpiCard.cshtml", new KpiCardViewModel
-        {
-            Title = "Open work orders", Count = 1234, IconClass = "bi-tools", ColorClass = "bg-icon-green",
-            Url = "/WorkOrders?status=open", Hint = "Work orders not yet closed"
-        }));
-
-    [Fact]
-    public async Task KpiCard_WithoutLinkAndZeroCount_RendersTheSameMarkup() =>
-        AssertGolden("kpi-card-plain-zero", await RenderAsync("~/Views/Shared/_KpiCard.cshtml", new KpiCardViewModel
-        {
-            Title = "Held runs", Count = 0
-        }));
+    // The _KpiCard partial is retired (SCRUM-337 KpiTile K2); its markup is now <pems-kpi-tile model="..."> (KpiTileComponentTests).
 
     [Fact]
     public async Task LoadingOverlay_RendersTheSameMarkup() =>

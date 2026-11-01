@@ -136,7 +136,7 @@ public sealed class LiteralTextGateTests
         Assert.NotEmpty(files);
 
         // Shared partials moved from PEMS.Web keep their existing text until #388 turns them into inputs.
-        var movedFromWeb = new[] { "_KpiCard.cshtml", "_PemsLoadingOverlay.cshtml" };
+        var movedFromWeb = new[] { "_PemsLoadingOverlay.cshtml" };
         var offences = files
             .Where(f => !movedFromWeb.Contains(Path.GetFileName(f)))
             .SelectMany(f => FindLiteralTexts(File.ReadAllText(f)).Select(t => $"{Path.GetRelativePath(root, f)}: {t}"))

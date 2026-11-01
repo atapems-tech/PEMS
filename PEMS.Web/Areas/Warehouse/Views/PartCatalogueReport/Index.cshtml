@@ -179,12 +179,12 @@
         {
             <div class="pc-rpt-summary">
                 <div class="row g-3 mb-3">
-                    <div class="col-xl-2 col-md-4 col-6"><partial name="_KpiCard" model="@Kpi("PcRpt_Kpi_Requests", p.Total, "bi-journal-text", "bg-icon-slate", IndexUrl("stages"), "PcRpt_Hint_Requests")" /></div>
-                    <div class="col-xl-2 col-md-4 col-6"><partial name="_KpiCard" model="@Kpi("PcRpt_Kpi_Open", p.Open, "bi-hourglass-split", "bg-icon-amber", IndexUrl("stages"), "PcRpt_Hint_Open")" /></div>
-                    <div class="col-xl-2 col-md-4 col-6"><partial name="_KpiCard" model="@Kpi("PcRpt_Kpi_Completed", p.CompletedInPeriod, "bi-check-circle", "bg-icon-green", null, "PcRpt_Hint_Completed")" /></div>
-                    <div class="col-xl-2 col-md-4 col-6"><partial name="_KpiCard" model="@Kpi("PcRpt_Kpi_Registered", p.PartNumbersRegisteredInPeriod, "bi-upc-scan", "bg-icon-blue", IndexUrl("people"), "PcRpt_Hint_Registered")" /></div>
-                    <div class="col-xl-2 col-md-4 col-6"><partial name="_KpiCard" model="@Kpi("PcRpt_Kpi_Equipment", r.Equipment.Equipment.Count, "bi-gear-wide-connected", "bg-icon-purple", IndexUrl("equipment"), "PcRpt_Hint_Equipment")" /></div>
-                    <div class="col-xl-2 col-md-4 col-6"><partial name="_KpiCard" model="@Kpi("PcRpt_Kpi_People", r.Activity.People.Count, "bi-people", "bg-icon-teal", IndexUrl("people"), "PcRpt_Hint_People")" /></div>
+                    <div class="col-xl-2 col-md-4 col-6"><pems-kpi-tile model="@Kpi("PcRpt_Kpi_Requests", p.Total, "bi-journal-text", "bg-icon-slate", IndexUrl("stages"), "PcRpt_Hint_Requests")" /></div>
+                    <div class="col-xl-2 col-md-4 col-6"><pems-kpi-tile model="@Kpi("PcRpt_Kpi_Open", p.Open, "bi-hourglass-split", "bg-icon-amber", IndexUrl("stages"), "PcRpt_Hint_Open")" /></div>
+                    <div class="col-xl-2 col-md-4 col-6"><pems-kpi-tile model="@Kpi("PcRpt_Kpi_Completed", p.CompletedInPeriod, "bi-check-circle", "bg-icon-green", null, "PcRpt_Hint_Completed")" /></div>
+                    <div class="col-xl-2 col-md-4 col-6"><pems-kpi-tile model="@Kpi("PcRpt_Kpi_Registered", p.PartNumbersRegisteredInPeriod, "bi-upc-scan", "bg-icon-blue", IndexUrl("people"), "PcRpt_Hint_Registered")" /></div>
+                    <div class="col-xl-2 col-md-4 col-6"><pems-kpi-tile model="@Kpi("PcRpt_Kpi_Equipment", r.Equipment.Equipment.Count, "bi-gear-wide-connected", "bg-icon-purple", IndexUrl("equipment"), "PcRpt_Hint_Equipment")" /></div>
+                    <div class="col-xl-2 col-md-4 col-6"><pems-kpi-tile model="@Kpi("PcRpt_Kpi_People", r.Activity.People.Count, "bi-people", "bg-icon-teal", IndexUrl("people"), "PcRpt_Hint_People")" /></div>
                 </div>
                 <div class="row g-3">
                     <div class="col-lg-8"><div class="content-card"><h6 class="mb-3">@Localizer["PcRpt_Chart_Trend"]</h6><partial name="_BkChart" model="@trendChart" /></div></div>

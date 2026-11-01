@@ -76,6 +76,52 @@ public class KpiTileComponentTests
         Assert.DoesNotContain("kpi-card", text);
     }
 
+    // ---- K2: the tile built in code (the retired _KpiCard partial's view model)
+    [Fact]
+    public async Task Model_FillsTheTile_LikeTheRetiredPartial()
+    {
+        var html = await Run(new PemsKpiTileTagHelper
+        {
+            Model = new PEMS.Web.Models.KpiCardViewModel
+            {
+                Title = "Open work orders", Count = 1234, IconClass = "bi-tools", ColorClass = "bg-icon-green",
+                Url = "/WorkOrders?status=open", Hint = "Work orders not yet closed"
+            }
+        });
+        Assert.Equal("<a class=\"kpi-card kpi-link text-decoration-none\" href=\"/WorkOrders?status=open\" title=\"Work orders not yet closed\">"
+                     + "<div class=\"kpi-icon bg-icon-green\"><i aria-hidden=\"true\" class=\"bi bi-tools\"></i></div>"
+                     + "<div><div class=\"kpi-value\">1,234</div><div class=\"kpi-label\">Open work orders</div></div></a>", html);
+    }
+
+    [Fact]
+    public async Task Model_ZeroCountShowsADash_DefaultsApply_AndTagAttributesWin()
+    {
+        var html = await Run(new PemsKpiTileTagHelper { Model = new PEMS.Web.Models.KpiCardViewModel { Title = "Held runs", Count = 0 } });
+        Assert.StartsWith("<div class=\"kpi-card\"><div class=\"kpi-icon bg-icon-blue\"><i aria-hidden=\"true\" class=\"bi bi-card-list\"></i></div>", html);
+        Assert.Contains("<div class=\"kpi-value\">-</div>", html);
+
+        var own = await Run(new PemsKpiTileTagHelper { Label = "Mine", Color = "red", Model = new PEMS.Web.Models.KpiCardViewModel { Title = "Theirs", Count = 2 } });
+        Assert.Contains("<div class=\"kpi-label\">Mine</div>", own);
+        Assert.Contains("bg-icon-red", own);
+    }
+
+    [Theory]
+    [InlineData("Views/Discipline/Details.cshtml", 6)]
+    [InlineData("Views/EngineeringDashboard/Index.cshtml", 3)]
+    [InlineData("Views/EngineeringDocumentIntelligence/Index.cshtml", 4)]
+    [InlineData("Views/OCRProcessing/Index.cshtml", 4)]
+    [InlineData("Views/Home/Index.cshtml", 1)]
+    [InlineData("Views/Production/Dashboard.cshtml", 1)]
+    [InlineData("Areas/Warehouse/Views/PartCatalogueReport/Index.cshtml", 6)]
+    public void WaveK2_TakesItsTilesFromTheComponent_AndThePartialIsGone(string view, int tags)
+    {
+        var text = File.ReadAllText(Path.Combine(RepoRoot(), "PEMS.Web", view));
+        Assert.Equal(tags, Regex.Matches(text, "<pems-kpi-tile[ >]").Count);
+        Assert.DoesNotContain("kpi-card", text);
+        Assert.DoesNotContain("_KpiCard", text);
+        Assert.False(File.Exists(Path.Combine(RepoRoot(), "PEMS.UI", "Views", "Shared", "_KpiCard.cshtml")));
+    }
+
     private static string RepoRoot()
     {
         var dir = new DirectoryInfo(AppContext.BaseDirectory);
