@@ -4421,4 +4421,20 @@
   <data name="RrL_Empty" xml:space="preserve"><value>قاعده‌ی مسیریابی تعریف نشده است.</value></data>
   <data name="RrL_HighHelp" xml:space="preserve"><value>بالاتر از این مقدار پردازش می‌تواند خودکار باشد. بین ۰ و ۱.</value></data>
   <data name="RrL_MediumHelp" xml:space="preserve"><value>بالاتر از این مقدار بازبینی مهندسی لازم است. بین ۰ و ۱.</value></data>
+  <data name="TnD_NoVendors" xml:space="preserve"><value>هنوز تأمین‌کننده‌ای دعوت نشده است.</value></data>
+  <data name="TnD_NoBids" xml:space="preserve"><value>هنوز پیشنهادی ثبت نشده است.</value></data>
+  <data name="TnD_NoClarifications" xml:space="preserve"><value>هنوز شفاف‌سازی‌ای ثبت نشده است.</value></data>
+  <data name="PkD_NoMrs" xml:space="preserve"><value>هنوز MR ای پیوند نشده است.</value></data>
+  <data name="PkD_LinkMr" xml:space="preserve"><value>پیوند MR موجود</value></data>
+  <data name="PkD_Quotations" xml:space="preserve"><value>استعلام‌های قیمت (MRQ)</value></data>
+  <data name="PkD_NoQuotations" xml:space="preserve"><value>هنوز استعلام قیمتی نیست (از صفحه‌ی MR پیوندشده اضافه کنید).</value></data>
+  <data name="PkD_Communications" xml:space="preserve"><value>مکاتبات: استعلام‌ها، شفاف‌سازی‌ها، پرسش‌ها، پاسخ‌ها</value></data>
+  <data name="PkD_NoCommunications" xml:space="preserve"><value>هنوز مکاتبه‌ای ثبت نشده است.</value></data>
+  <data name="PkD_Approvals" xml:space="preserve"><value>تاریخچه‌ی تأیید</value></data>
+  <data name="PkD_NoApprovals" xml:space="preserve"><value>هنوز تأییدی ثبت نشده است.</value></data>
+  <data name="PkD_Approver" xml:space="preserve"><value>تأییدکننده</value></data>
+  <data name="PkD_RecordDecision" xml:space="preserve"><value>ثبت تصمیم</value></data>
+  <data name="PkD_Closeout" xml:space="preserve"><value>بستن بسته‌ی خرید</value></data>
+  <data name="PkD_ConfirmCloseout" xml:space="preserve"><value>این بسته‌ی خرید بسته شود؟</value></data>
+  <data name="IrnD_ConfirmDisposition" xml:space="preserve"><value>این تفکیک ثبت و تأیید کنترل کیفیت شروع شود؟</value></data>
 </root>

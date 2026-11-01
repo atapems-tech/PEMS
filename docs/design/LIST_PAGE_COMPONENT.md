@@ -173,5 +173,5 @@ A table edited in place puts `<pems-related-row-form id="row_1" action="...">` (
 cell, `form="row_1"` on each input of the row, and `<pems-related-save form-id="row_1" label="..." />` in the action cell.
 The forms carry the antiforgery token. Rows edited in a modal keep the modal until SCRUM-482.
 
-Waves: R1 JobPlan details, Numbering, RoutingRules, ContractApprovalAuthority (done); next the heavy detail pages
-(WorkOrder, Permit, VDR, PartCatalogueRequest, Tender, ProcurementPackage, RcmFmea, IRN, ...).
+Waves: R1 JobPlan details, Numbering, RoutingRules, ContractApprovalAuthority (done); R2 Tender, ProcurementPackage and
+IrnReceipt details (done); R3 the heavy detail pages (WorkOrder, Permit, VDR, PartCatalogueRequest Edit, RcmFmea ClassDetail).

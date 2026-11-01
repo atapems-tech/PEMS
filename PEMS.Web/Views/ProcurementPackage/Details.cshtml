@@ -1,6 +1,7 @@
 ﻿@model PEMS.Application.DTOs.ProcurementPackageDetailDto
 @using Microsoft.Extensions.Localization
 @using PEMS.Web.Resources
+@using PEMS.Web.Helpers
 @inject IStringLocalizer<SharedResource> Localizer
 @{
     var s = Model.Summary;
@@ -8,6 +9,11 @@
     var unlinkedMRs = (IEnumerable<dynamic>)ViewBag.UnlinkedMRs;
     var tenders = (IEnumerable<PEMS.Domain.Entities.Tender>)(ViewBag.Tenders ?? Array.Empty<PEMS.Domain.Entities.Tender>());
     var stages = new[] { "MR", "VendorInquiry", "TechnicalClarification", "MRQ", "Response", "Approval", "Closeout" };
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/pems-workspace.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/_content/PEMS.UI/pems-list.css" asp-append-version="true" />
 }
 
 
@@ -74,58 +80,51 @@
 
 <div class="row g-3 mb-3">
     <div class="col-md-6">
-        <div class="content-card h-100">
-            <h6 class="mb-3"><i class="bi bi-cart-check"></i> Material Requisitions <pems-badge tone="neutral">@Model.MaterialRequisitions.Count</pems-badge></h6>
-            <div class="table-responsive table-scroll-area" style="max-height:65vh; overflow-y:auto;">
-            <table class="table table-enterprise">
-                <thead><tr><th>MR No</th><th>@Localizer["Description"]</th><th>@Localizer["Status"]</th></tr></thead>
+        <pems-related-list id="pkgMrs" icon="bi-cart-check" title="@Localizer["PkL_Mrs"]" count="@Model.MaterialRequisitions.Count" empty="@(!Model.MaterialRequisitions.Any())" empty-text="@Localizer["PkD_NoMrs"]">
+            @if (Model.MaterialRequisitions.Any())
+            {
+            <pems-related-table>
+                <thead><tr><th>@Localizer["MrL_No"]</th><th>@Localizer["Description"]</th><th>@Localizer["Status"]</th></tr></thead>
                 <tbody>
                     @foreach (var mr in Model.MaterialRequisitions)
                     {
                         <tr><td><a asp-controller="MaterialRequisition" asp-action="Details" asp-route-id="@mr.MRId">@mr.MRNumber</a></td>
-                            <td class="small">@mr.Description</td><td><pems-badge tone="neutral">@mr.Status</pems-badge></td></tr>
+                            <td class="small">@mr.Description</td><td><span class="vs-pill vs-pill--neutral">@VdrUi.Loc(Localizer, "MrL_St_", mr.Status)</span></td></tr>
                     }
                 </tbody>
-            </table>
-            </div>
-            @if (!Model.MaterialRequisitions.Any()) { <p class="text-muted small">No MRs linked yet.</p> }
-
+            </pems-related-table>
+            }
             @if (s.Status != "Closed")
             {
-                <form asp-action="LinkMR" method="post" class="d-flex gap-2 mt-2">
-                    <input type="hidden" name="packageId" value="@s.ProcurementPackageId" />
-                    <select name="mrId" class="form-select form-select-sm">
-                        @foreach (var mr in unlinkedMRs) { <option value="@mr.MRId">@mr.MRNumber</option> }
-                    </select>
-                    <pems-button tone="primary" size="small" outline="true">Link existing MR</pems-button>
-                </form>
+                <pems-related-add action="@Url.Action("LinkMR")" parent-name="packageId" parent-value="@s.ProcurementPackageId.ToString()" submit-label="@Localizer["PkD_LinkMr"]">
+                    <pems-list-filter-select id="pkgLinkMr" name="mrId" label="@Localizer["MrL_No"]" items="@(((IEnumerable<dynamic>)unlinkedMRs).Select(mr => new SelectListItem((string)mr.MRNumber, ((int)mr.MRId).ToString())))" />
+                </pems-related-add>
             }
-        </div>
+        </pems-related-list>
     </div>
 
     <div class="col-md-6">
-        <div class="content-card h-100">
-            <h6 class="mb-3"><i class="bi bi-file-earmark-spreadsheet"></i> Quotations (MRQ) <pems-badge tone="neutral">@Model.Quotations.Count</pems-badge></h6>
-            <div class="table-responsive table-scroll-area" style="max-height:65vh; overflow-y:auto;">
-            <table class="table table-enterprise">
+        <pems-related-list id="pkgMrqs" icon="bi-file-earmark-spreadsheet" title="@Localizer["PkD_Quotations"]" count="@Model.Quotations.Count" empty="@(!Model.Quotations.Any())" empty-text="@Localizer["PkD_NoQuotations"]">
+            @if (Model.Quotations.Any())
+            {
+            <pems-related-table>
                 <thead><tr><th>@Localizer["MRQ No"]</th><th>@Localizer["Vendor"]</th><th>@Localizer["Status"]</th></tr></thead>
                 <tbody>
                     @foreach (var q in Model.Quotations)
                     {
-                        <tr><td>@q.MRQNumber</td><td>@q.VendorName</td><td><pems-badge tone="neutral">@q.QuotationStatus</pems-badge></td></tr>
+                        <tr><td><span class="vs-num">@q.MRQNumber</span></td><td>@q.VendorName</td><td><span class="vs-pill vs-pill--neutral">@q.QuotationStatus</span></td></tr>
                     }
                 </tbody>
-            </table>
-            </div>
-            @if (!Model.Quotations.Any()) { <p class="text-muted small">No quotations yet (add via the linked MR's details page).</p> }
-        </div>
+            </pems-related-table>
+            }
+        </pems-related-list>
     </div>
 </div>
 
-<div class="content-card mb-3">
-    <h6 class="mb-3"><i class="bi bi-chat-square-text"></i> Communications &mdash; Vendor Inquiries, Clarifications, Questions, Responses</h6>
-    <div class="table-responsive table-scroll-area" style="max-height:65vh; overflow-y:auto;">
-    <table class="table table-enterprise">
+<pems-related-list id="pkgComms" icon="bi-chat-square-text" title="@Localizer["PkD_Communications"]" count="@Model.Communications.Count" empty="@(!Model.Communications.Any())" empty-text="@Localizer["PkD_NoCommunications"]">
+    @if (Model.Communications.Any())
+    {
+    <pems-related-table>
         <thead><tr><th>@Localizer["Type"]</th><th>@Localizer["Subject"]</th><th>@Localizer["Vendor"]</th><th>@Localizer["Raised By"]</th><th>@Localizer["Date"]</th><th>@Localizer["Status"]</th><th>@Localizer["Response"]</th></tr></thead>
         <tbody>
             @foreach (var c in Model.Communications)
@@ -165,13 +164,11 @@
                 </tr>
             }
         </tbody>
-    </table>
-    </div>
-    @if (!Model.Communications.Any()) { <p class="text-muted">No communications yet.</p> }
-
+    </pems-related-table>
+    }
     @if (s.Status != "Closed")
     {
-        <form asp-action="AddCommunication" method="post" class="row g-2 mt-2">
+        <form asp-action="AddCommunication" method="post" class="row g-2 m-0 px-2 py-2 lp-rel-add">
             <input type="hidden" name="packageId" value="@s.ProcurementPackageId" />
             <div class="col-md-2">
                 <select name="type" class="form-select form-select-sm">
@@ -189,16 +186,16 @@
             </div>
             <div class="col-md-3"><input name="subject" class="form-control form-control-sm" placeholder="@Localizer["Subject"]" required /></div>
             <div class="col-md-4"><input name="body" class="form-control form-control-sm" placeholder="@Localizer["Details"]" required /></div>
-            <div class="col-md-1"><pems-button tone="primary" size="small" css="w-100"><i class="bi bi-plus-lg"></i></pems-button></div>
+            <div class="col-md-1"><pems-button tone="primary" size="small" css="w-100" title="@Localizer["Add"]"><i class="bi bi-plus-lg" aria-hidden="true"></i><span class="visually-hidden">@Localizer["Add"]</span></pems-button></div>
         </form>
     }
-</div>
+</pems-related-list>
 
-<div class="content-card">
-    <h6 class="mb-3"><i class="bi bi-check-circle"></i> Approval History</h6>
-    <div class="table-responsive table-scroll-area" style="max-height:65vh; overflow-y:auto;">
-    <table class="table table-enterprise">
-        <thead><tr><th>Approver</th><th>@Localizer["Decision"]</th><th>@Localizer["Comment"]</th><th>@Localizer["Date"]</th></tr></thead>
+<pems-related-list id="pkgApprovals" icon="bi-check-circle" title="@Localizer["PkD_Approvals"]" count="@Model.Approvals.Count" empty="@(!Model.Approvals.Any())" empty-text="@Localizer["PkD_NoApprovals"]">
+    @if (Model.Approvals.Any())
+    {
+    <pems-related-table>
+        <thead><tr><th>@Localizer["PkD_Approver"]</th><th>@Localizer["Decision"]</th><th>@Localizer["Comment"]</th><th>@Localizer["Date"]</th></tr></thead>
         <tbody>
             @foreach (var a in Model.Approvals)
             {
@@ -207,13 +204,11 @@
                     <td>@a.Comment</td><td>@a.ApprovalDate.ToString("yyyy-MM-dd")</td></tr>
             }
         </tbody>
-    </table>
-    </div>
-    @if (!Model.Approvals.Any()) { <p class="text-muted small">No approvals recorded yet.</p> }
-
+    </pems-related-table>
+    }
     @if (s.Status != "Closed")
     {
-        <form asp-action="AddApproval" method="post" class="row g-2 mt-2">
+        <form asp-action="AddApproval" method="post" class="row g-2 m-0 px-2 py-2 lp-rel-add">
             <input type="hidden" name="packageId" value="@s.ProcurementPackageId" />
             <div class="col-md-3">
                 <select name="decision" class="form-select form-select-sm">
@@ -222,14 +217,14 @@
                 </select>
             </div>
             <div class="col-md-6"><input name="comment" class="form-control form-control-sm" placeholder="@Localizer["Comment (optional)"]" /></div>
-            <div class="col-md-3"><pems-button tone="primary" size="small" css="w-100">Record Decision</pems-button></div>
+            <div class="col-md-3"><pems-button tone="primary" size="small" css="w-100">@Localizer["PkD_RecordDecision"]</pems-button></div>
         </form>
 
-        <form asp-action="Closeout" method="post" class="mt-3">
+        <form asp-action="Closeout" method="post" class="px-3 pb-3" onsubmit="return confirm(this.dataset.confirm)" data-confirm="@Localizer["PkD_ConfirmCloseout"]">
             <input type="hidden" name="packageId" value="@s.ProcurementPackageId" />
-            <pems-button tone="success" size="small" outline="true" type="submit" onclick="return confirm('Close out this procurement package?')">
-                <i class="bi bi-flag"></i> Closeout Package
+            <pems-button tone="success" size="small" outline="true" type="submit">
+                <i class="bi bi-flag" aria-hidden="true"></i> @Localizer["PkD_Closeout"]
             </pems-button>
         </form>
     }
-</div>
+</pems-related-list>

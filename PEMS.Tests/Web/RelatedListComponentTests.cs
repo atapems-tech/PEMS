@@ -143,4 +143,45 @@ public class RelatedListComponentTests
         Assert.Contains("id=\"rrConfidence\"", html);
         Assert.DoesNotContain("admin-hero", html);
     }
+
+    // ---------- wave R2 ----------
+
+    [Fact]
+    public async Task Tender_VendorsBidsAndClarifications_AreRelatedSections()
+    {
+        var tender = new PEMS.Domain.Entities.Tender { TenderId = 8, TenderNumber = "TND-8", Title = "Pumps", Status = "Draft" };
+        var html = await Render<TenderController>("/Views/Tender/Details.cshtml", tender, v =>
+        {
+            v["Vendors"] = new List<dynamic> { Obj(("VendorId", 2), ("Name", "ACME")) };
+            v["Clarifications"] = new List<PEMS.Domain.Entities.ProcurementCommunication>();
+        });
+
+        Assert.Contains("id=\"tenderVendors\"", html);
+        Assert.Contains("id=\"tenderBids\"", html);
+        Assert.Contains("id=\"tenderClarifications\"", html);
+        Assert.Contains("name=\"tenderId\" type=\"hidden\" value=\"8\"", html);               // invite form posts the tender
+        Assert.Contains("value=\"2\">ACME</option>", html);
+        Assert.Equal(3, Regex.Matches(html, "class=\"lp-rel-empty\"").Count);                // no vendors, bids or clarifications yet
+    }
+
+    [Fact]
+    public void Wave2Pages_UseTheRelatedSections()
+    {
+        var dir = new DirectoryInfo(AppContext.BaseDirectory);
+        while (dir != null && !File.Exists(Path.Combine(dir.FullName, "PEMS.Web", "PEMS.Web.csproj"))) dir = dir.Parent;
+        Assert.NotNull(dir);
+        var web = Path.Combine(dir!.FullName, "PEMS.Web");
+        foreach (var (page, sections) in new[]
+        {
+            ("Views/Tender/Details.cshtml", new[] { "tenderVendors", "tenderInvitations", "tenderBids", "tenderClarifications" }),
+            ("Views/ProcurementPackage/Details.cshtml", new[] { "pkgMrs", "pkgMrqs", "pkgComms", "pkgApprovals" }),
+            ("Areas/Warehouse/Views/IrnReceipt/Details.cshtml", new[] { "irnLines", "irnDispositions", "irnHistory" }),
+        })
+        {
+            var view = File.ReadAllText(Path.Combine(web, page.Replace('/', Path.DirectorySeparatorChar)));
+            foreach (var id in sections) Assert.Contains($"<pems-related-list id=\"{id}\"", view);
+            Assert.Contains("_content/PEMS.UI/pems-list.css", view);
+            Assert.DoesNotContain("<table class=\"table", view);                                   // every table comes from the component
+        }
+    }
 }
