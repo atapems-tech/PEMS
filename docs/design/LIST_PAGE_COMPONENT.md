@@ -202,3 +202,23 @@ PreProcurement, PurchaseOrder and Task details, rows layout) (done); I3 procurem
 Tender, MaterialRequisition, MaterialItem) (done; a subtitle line such as the IRN header stays text, quantity tiles wait for KpiTile);
 I4 JobPlan, MaintenanceStrategy, Permit, WorkOrder, WorkRequest and Transmittal headers (done). All InfoGrid waves are done;
 the asset, reliability and production run quantity tiles wait for KpiTile.
+
+## KpiTile (one number with its label)
+
+A number with its label (report headers, dashboards, detail pages) is a `<pems-kpi-tile>`; the page keeps its own grid
+columns around it:
+
+```cshtml
+<div class="col-md-2 col-sm-6">
+    <pems-kpi-tile icon="bi-tools" color="amber" label="@Localizer["Open"]" href="@Url.Action(...)" hint="...">@Model.OpenCount</pems-kpi-tile>
+</div>
+```
+
+It renders the kpi-card markup (styles in `admin.css`: `.kpi-card`, `.kpi-icon`, `.kpi-value`, `.kpi-label`, `.kpi-sub`,
+`.bg-icon-*`). `color` is blue, green, amber, red, purple, slate, orange, teal ... or a full `bg-icon-*` class; no `icon` means no
+coloured square. The ratchet pattern `kpi-tile` counts hand-written `class="kpi-card"`.
+
+Waves: K1 the six report pages (done); K2 Discipline details, EngineeringDashboard, EngineeringDocumentIntelligence and OCR,
+and the four `_KpiCard` callers (the partial and its view model are then retired); K3 the detail-page tiles (Asset,
+Reliability, Replenishment, ProductionRun) with a compact look; K4 the dashboards with their own large-number tiles.
+The executive KPI dashboard (`pems-kpi-tile` CSS class with status colours) keeps its own design.

@@ -45,12 +45,12 @@
 </div>
 
 <div class="row g-3 mb-3">
-    <div class="col-md-2 col-sm-6"><div class="kpi-card"><div class="kpi-icon bg-icon-slate"><i class="bi bi-journal-check"></i></div><div><div class="kpi-value">@Model.TotalItems</div><div class="kpi-label">Total Items</div></div></div></div>
-    <div class="col-md-2 col-sm-6"><div class="kpi-card"><div class="kpi-icon bg-icon-green"><i class="bi bi-check-circle"></i></div><div><div class="kpi-value">@Model.ClosedCount</div><div class="kpi-label">@Localizer["Closed"]</div></div></div></div>
-    <div class="col-md-2 col-sm-6"><div class="kpi-card"><div class="kpi-icon bg-icon-blue"><i class="bi bi-eye"></i></div><div><div class="kpi-value">@Model.UnderReviewCount</div><div class="kpi-label">@Localizer["Under Review"]</div></div></div></div>
-    <div class="col-md-2 col-sm-6"><div class="kpi-card"><div class="kpi-icon bg-icon-amber"><i class="bi bi-arrow-repeat"></i></div><div><div class="kpi-value">@Model.PendingResubmissionCount</div><div class="kpi-label">Pending Resubmission</div></div></div></div>
-    <div class="col-md-2 col-sm-6"><div class="kpi-card"><div class="kpi-icon bg-icon-red"><i class="bi bi-exclamation-triangle"></i></div><div><div class="kpi-value">@Model.OverdueCount</div><div class="kpi-label">@Localizer["Overdue"]</div></div></div></div>
-    <div class="col-md-2 col-sm-6"><div class="kpi-card"><div class="kpi-icon bg-icon-purple"><i class="bi bi-send"></i></div><div><div class="kpi-value">@Model.TotalSubmissions</div><div class="kpi-label">Total Submissions</div></div></div></div>
+    <div class="col-md-2 col-sm-6"><pems-kpi-tile icon="bi-journal-check" color="slate" label="Total Items">@Model.TotalItems</pems-kpi-tile></div>
+    <div class="col-md-2 col-sm-6"><pems-kpi-tile icon="bi-check-circle" color="green" label="@Localizer["Closed"]">@Model.ClosedCount</pems-kpi-tile></div>
+    <div class="col-md-2 col-sm-6"><pems-kpi-tile icon="bi-eye" color="blue" label="@Localizer["Under Review"]">@Model.UnderReviewCount</pems-kpi-tile></div>
+    <div class="col-md-2 col-sm-6"><pems-kpi-tile icon="bi-arrow-repeat" color="amber" label="Pending Resubmission">@Model.PendingResubmissionCount</pems-kpi-tile></div>
+    <div class="col-md-2 col-sm-6"><pems-kpi-tile icon="bi-exclamation-triangle" color="red" label="@Localizer["Overdue"]">@Model.OverdueCount</pems-kpi-tile></div>
+    <div class="col-md-2 col-sm-6"><pems-kpi-tile icon="bi-send" color="purple" label="Total Submissions">@Model.TotalSubmissions</pems-kpi-tile></div>
 </div>
 
 <div class="row g-3">

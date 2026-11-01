@@ -46,19 +46,19 @@
 </div>
 
 <div class="row g-3 mb-3">
-    <div class="col-md-2 col-sm-6"><div class="kpi-card"><div class="kpi-icon bg-icon-slate"><i class="bi bi-folder2-open"></i></div><div><div class="kpi-value">@Model.TotalPackages</div><div class="kpi-label">Packages</div></div></div></div>
-    <div class="col-md-2 col-sm-6"><div class="kpi-card"><div class="kpi-icon bg-icon-blue"><i class="bi bi-cart-check"></i></div><div><div class="kpi-value">@Model.TotalMRs</div><div class="kpi-label">@Localizer["MRs"]</div></div></div></div>
-    <div class="col-md-2 col-sm-6"><div class="kpi-card"><div class="kpi-icon bg-icon-purple"><i class="bi bi-file-earmark-spreadsheet"></i></div><div><div class="kpi-value">@Model.TotalMRQs</div><div class="kpi-label">@Localizer["MRQs"]</div></div></div></div>
-    <div class="col-md-3 col-sm-6"><div class="kpi-card"><div class="kpi-icon bg-icon-amber"><i class="bi bi-hourglass-split"></i></div><div><div class="kpi-value">@Model.OpenCount</div><div class="kpi-label">@Localizer["Open"]</div></div></div></div>
-    <div class="col-md-3 col-sm-6"><div class="kpi-card"><div class="kpi-icon bg-icon-green"><i class="bi bi-check-circle"></i></div><div><div class="kpi-value">@Model.ClosedCount</div><div class="kpi-label">@Localizer["Closed"]</div></div></div></div>
+    <div class="col-md-2 col-sm-6"><pems-kpi-tile icon="bi-folder2-open" color="slate" label="Packages">@Model.TotalPackages</pems-kpi-tile></div>
+    <div class="col-md-2 col-sm-6"><pems-kpi-tile icon="bi-cart-check" color="blue" label="@Localizer["MRs"]">@Model.TotalMRs</pems-kpi-tile></div>
+    <div class="col-md-2 col-sm-6"><pems-kpi-tile icon="bi-file-earmark-spreadsheet" color="purple" label="@Localizer["MRQs"]">@Model.TotalMRQs</pems-kpi-tile></div>
+    <div class="col-md-3 col-sm-6"><pems-kpi-tile icon="bi-hourglass-split" color="amber" label="@Localizer["Open"]">@Model.OpenCount</pems-kpi-tile></div>
+    <div class="col-md-3 col-sm-6"><pems-kpi-tile icon="bi-check-circle" color="green" label="@Localizer["Closed"]">@Model.ClosedCount</pems-kpi-tile></div>
 </div>
 
 <div class="row g-3 mb-3">
-    <div class="col-md-2 col-sm-6"><div class="kpi-card"><div class="kpi-icon bg-icon-blue"><i class="bi bi-clipboard-check"></i></div><div><div class="kpi-value">@Model.TotalTenders</div><div class="kpi-label">@Localizer["Tenders"]</div></div></div></div>
-    <div class="col-md-2 col-sm-6"><div class="kpi-card"><div class="kpi-icon bg-icon-purple"><i class="bi bi-cash-coin"></i></div><div><div class="kpi-value">@Model.TotalBids</div><div class="kpi-label">@Localizer["Bids"]</div></div></div></div>
-    <div class="col-md-2 col-sm-6"><div class="kpi-card"><div class="kpi-icon bg-icon-slate"><i class="bi bi-file-earmark-ruled"></i></div><div><div class="kpi-value">@Model.TotalContracts</div><div class="kpi-label">Contracts</div></div></div></div>
-    <div class="col-md-2 col-sm-6"><div class="kpi-card"><div class="kpi-icon bg-icon-amber"><i class="bi bi-receipt"></i></div><div><div class="kpi-value">@Model.TotalPurchaseOrders</div><div class="kpi-label">@Localizer["Purchase Orders"]</div></div></div></div>
-    <div class="col-md-2 col-sm-6"><div class="kpi-card"><div class="kpi-icon bg-icon-green"><i class="bi bi-flag"></i></div><div><div class="kpi-value">@Model.TotalNTPsIssued</div><div class="kpi-label">@Localizer["Notice to Proceed (NTP)"]</div></div></div></div>
+    <div class="col-md-2 col-sm-6"><pems-kpi-tile icon="bi-clipboard-check" color="blue" label="@Localizer["Tenders"]">@Model.TotalTenders</pems-kpi-tile></div>
+    <div class="col-md-2 col-sm-6"><pems-kpi-tile icon="bi-cash-coin" color="purple" label="@Localizer["Bids"]">@Model.TotalBids</pems-kpi-tile></div>
+    <div class="col-md-2 col-sm-6"><pems-kpi-tile icon="bi-file-earmark-ruled" color="slate" label="Contracts">@Model.TotalContracts</pems-kpi-tile></div>
+    <div class="col-md-2 col-sm-6"><pems-kpi-tile icon="bi-receipt" color="amber" label="@Localizer["Purchase Orders"]">@Model.TotalPurchaseOrders</pems-kpi-tile></div>
+    <div class="col-md-2 col-sm-6"><pems-kpi-tile icon="bi-flag" color="green" label="@Localizer["Notice to Proceed (NTP)"]">@Model.TotalNTPsIssued</pems-kpi-tile></div>
 </div>
 
 <div class="row g-3">

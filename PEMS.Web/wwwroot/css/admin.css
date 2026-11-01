@@ -465,6 +465,13 @@ body {
     margin-top: 2px;
 }
 
+/* SCRUM-337 KpiTile: optional line under the label (<pems-kpi-tile sub="...">) */
+.kpi-sub {
+    font-size: 11.5px;
+    color: var(--pems-text-muted, var(--pems-steel));
+    margin-top: 2px;
+}
+
 /* آیکون‌های رنگی گرادیانت */
 .bg-icon-blue {
     background: linear-gradient(135deg,#3b82f6,#1d4ed8);

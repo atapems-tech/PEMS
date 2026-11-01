@@ -60,12 +60,12 @@
 </div>
 
 <div class="row g-3 mb-3">
-    <div class="col-md-2 col-sm-6"><div class="kpi-card"><div class="kpi-icon bg-icon-slate"><i class="bi bi-box-seam"></i></div><div><div class="kpi-value">@Model.TotalOutputQuantity.ToString("N3")</div><div class="kpi-label">@Localizer["Total Output"]</div></div></div></div>
-    <div class="col-md-2 col-sm-6"><div class="kpi-card"><div class="kpi-icon bg-icon-green"><i class="bi bi-check-circle"></i></div><div><div class="kpi-value">@Model.AcceptedQuantity.ToString("N3")</div><div class="kpi-label">Accepted</div></div></div></div>
-    <div class="col-md-2 col-sm-6"><div class="kpi-card"><div class="kpi-icon bg-icon-red"><i class="bi bi-x-circle"></i></div><div><div class="kpi-value">@Model.RejectedQuantity.ToString("N3")</div><div class="kpi-label">@Localizer["Rejected"]</div></div></div></div>
-    <div class="col-md-2 col-sm-6"><div class="kpi-card"><div class="kpi-icon bg-icon-amber"><i class="bi bi-hourglass-split"></i></div><div><div class="kpi-value">@Model.PendingQcQuantity.ToString("N3")</div><div class="kpi-label">Awaiting QC</div></div></div></div>
-    <div class="col-md-2 col-sm-6"><div class="kpi-card"><div class="kpi-icon bg-icon-purple"><i class="bi bi-slash-circle"></i></div><div><div class="kpi-value">@Model.BlockedQuantity.ToString("N3")</div><div class="kpi-label">Blocked</div></div></div></div>
-    <div class="col-md-2 col-sm-6"><div class="kpi-card"><div class="kpi-icon bg-icon-teal"><i class="bi bi-dash-circle"></i></div><div><div class="kpi-value">@Model.TotalLossQuantity.ToString("N3")</div><div class="kpi-label">@Localizer["Loss"]</div></div></div></div>
+    <div class="col-md-2 col-sm-6"><pems-kpi-tile icon="bi-box-seam" color="slate" label="@Localizer["Total Output"]">@Model.TotalOutputQuantity.ToString("N3")</pems-kpi-tile></div>
+    <div class="col-md-2 col-sm-6"><pems-kpi-tile icon="bi-check-circle" color="green" label="Accepted">@Model.AcceptedQuantity.ToString("N3")</pems-kpi-tile></div>
+    <div class="col-md-2 col-sm-6"><pems-kpi-tile icon="bi-x-circle" color="red" label="@Localizer["Rejected"]">@Model.RejectedQuantity.ToString("N3")</pems-kpi-tile></div>
+    <div class="col-md-2 col-sm-6"><pems-kpi-tile icon="bi-hourglass-split" color="amber" label="Awaiting QC">@Model.PendingQcQuantity.ToString("N3")</pems-kpi-tile></div>
+    <div class="col-md-2 col-sm-6"><pems-kpi-tile icon="bi-slash-circle" color="purple" label="Blocked">@Model.BlockedQuantity.ToString("N3")</pems-kpi-tile></div>
+    <div class="col-md-2 col-sm-6"><pems-kpi-tile icon="bi-dash-circle" color="teal" label="@Localizer["Loss"]">@Model.TotalLossQuantity.ToString("N3")</pems-kpi-tile></div>
 </div>
 
 <div class="content-card">
