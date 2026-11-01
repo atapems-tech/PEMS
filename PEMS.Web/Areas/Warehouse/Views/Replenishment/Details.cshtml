@@ -47,10 +47,10 @@
     }
 
     <div class="row g-3 mt-1">
-        <div class="col-6 col-md-3"><div class="small text-muted">@Localizer["Repl_Usable"]</div><div class="fs-5">@s.UsableQuantity.ToString("0.###")</div><div class="small text-muted">@Localizer["Repl_OnHand"] @Model.OnHandQuantity.ToString("0.###") − @Localizer["Repl_Reserved"] @Model.ReservedQuantity.ToString("0.###")</div></div>
-        <div class="col-6 col-md-3"><div class="small text-muted">@Localizer["Repl_GrossDemand"]</div><div class="fs-5">@Model.GrossEligibleDemand.ToString("0.###")</div></div>
-        <div class="col-6 col-md-3"><div class="small text-muted">@Localizer["Repl_Covered"]</div><div class="fs-5">@Model.CoveredByReservations.ToString("0.###")</div></div>
-        <div class="col-6 col-md-3"><div class="small text-muted">@Localizer["Repl_Shortage"]</div><div class="fs-5 fw-bold">@s.ShortageQuantity.ToString("0.###")</div></div>
+        <div class="col-6 col-md-3"><pems-kpi-tile compact label="@Localizer["Repl_Usable"]" sub="@Localizer["Repl_OnHand"] @Model.OnHandQuantity.ToString("0.###") − @Localizer["Repl_Reserved"] @Model.ReservedQuantity.ToString("0.###")">@s.UsableQuantity.ToString("0.###")</pems-kpi-tile></div>
+        <div class="col-6 col-md-3"><pems-kpi-tile compact label="@Localizer["Repl_GrossDemand"]">@Model.GrossEligibleDemand.ToString("0.###")</pems-kpi-tile></div>
+        <div class="col-6 col-md-3"><pems-kpi-tile compact label="@Localizer["Repl_Covered"]">@Model.CoveredByReservations.ToString("0.###")</pems-kpi-tile></div>
+        <div class="col-6 col-md-3"><pems-kpi-tile compact label="@Localizer["Repl_Shortage"]">@s.ShortageQuantity.ToString("0.###")</pems-kpi-tile></div>
     </div>
     <div class="small mt-2">
         <strong>@Localizer["Repl_Freshness"]</strong>:

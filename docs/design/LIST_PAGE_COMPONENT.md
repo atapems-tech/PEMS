@@ -216,11 +216,12 @@ columns around it:
 
 It renders the kpi-card markup (styles in `admin.css`: `.kpi-card`, `.kpi-icon`, `.kpi-value`, `.kpi-label`, `.kpi-sub`,
 `.bg-icon-*`). `color` is blue, green, amber, red, purple, slate, orange, teal ... or a full `bg-icon-*` class; no `icon` means no
-coloured square. A tile built in code passes a `KpiCardViewModel`: `<pems-kpi-tile model="kpi" />` (title, count with a
+coloured square. `compact` makes a small tile for a detail page; `tone` (danger, success, warning) colours the value.
+A tile built in code passes a `KpiCardViewModel`: `<pems-kpi-tile model="kpi" />` (title, count with a
 dash for zero, icon, colour, link, hint; an attribute on the tag wins). The ratchet pattern `kpi-tile` counts hand-written
 `class="kpi-card"`.
 
 Waves: K1 the six report pages (done); K2 Discipline details, EngineeringDashboard, EngineeringDocumentIntelligence and OCR,
 and the four `_KpiCard` callers (done; the partial is retired, `KpiCardViewModel` stays as the data of a tile built in code); K3 the detail-page tiles (Asset,
-Reliability, Replenishment, ProductionRun) with a compact look; K4 the dashboards with their own large-number tiles.
+Reliability, Replenishment, ProductionRun) with the compact look (done); K4 the dashboards with their own large-number tiles.
 The executive KPI dashboard (`pems-kpi-tile` CSS class with status colours) keeps its own design.

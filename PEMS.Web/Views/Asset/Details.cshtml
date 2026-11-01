@@ -26,10 +26,10 @@
 }
 
 <div class="row g-3 mb-3">
-    <div class="col-md-3"><div class="content-card text-center"><div class="text-muted small">@Localizer["Status"]</div><div class="fs-5 fw-bold">@Model.Status</div></div></div>
-    <div class="col-md-3"><div class="content-card text-center"><div class="text-muted small">@Localizer["Criticality"]</div><div class="fs-5 fw-bold">@(Model.CriticalityClass ?? "-")</div></div></div>
-    <div class="col-md-3"><div class="content-card text-center"><div class="text-muted small">Open Work Orders</div><div class="fs-5 fw-bold">@Model.WorkOrders.Count(w => w.Status != "Completed" && w.Status != "Closed")</div></div></div>
-    <div class="col-md-3"><div class="content-card text-center"><div class="text-muted small">Total Cost</div><div class="fs-5 fw-bold">@Model.TotalCost.ToString("N0")</div></div></div>
+    <div class="col-md-3"><pems-kpi-tile compact label="@Localizer["Status"]">@Model.Status</pems-kpi-tile></div>
+    <div class="col-md-3"><pems-kpi-tile compact label="@Localizer["Criticality"]">@Model.CriticalityClass</pems-kpi-tile></div>
+    <div class="col-md-3"><pems-kpi-tile compact label="Open Work Orders">@Model.WorkOrders.Count(w => w.Status != "Completed" && w.Status != "Closed")</pems-kpi-tile></div>
+    <div class="col-md-3"><pems-kpi-tile compact label="Total Cost">@Model.TotalCost.ToString("N0")</pems-kpi-tile></div>
 </div>
 
 <div class="row g-3">

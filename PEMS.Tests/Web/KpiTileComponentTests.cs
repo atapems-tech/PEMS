@@ -122,6 +122,30 @@ public class KpiTileComponentTests
         Assert.False(File.Exists(Path.Combine(RepoRoot(), "PEMS.UI", "Views", "Shared", "_KpiCard.cshtml")));
     }
 
+    // ---- K3: small tiles on detail pages
+    [Fact]
+    public async Task Compact_AddsItsClass_AndToneColoursTheValue()
+    {
+        var html = await Run(new PemsKpiTileTagHelper { Label = "Difference", Compact = true, Tone = "danger" }, "1.500");
+        Assert.StartsWith("<div class=\"kpi-card kpi-card--compact\"><div><div class=\"kpi-value text-danger\">1.500</div>", html);
+        Assert.Contains("<div class=\"kpi-value\">0</div>", await Run(new PemsKpiTileTagHelper { Label = "Difference", Tone = "" }, "0"));
+        var css = File.ReadAllText(Path.Combine(RepoRoot(), "PEMS.Web", "wwwroot", "css", "admin.css"));
+        Assert.Contains(".kpi-card--compact .kpi-value { font-size: 18px; }", css);
+    }
+
+    [Theory]
+    [InlineData("Views/Asset/Details.cshtml", 4)]
+    [InlineData("Views/Reliability/Details.cshtml", 4)]
+    [InlineData("Areas/Warehouse/Views/Replenishment/Details.cshtml", 4)]
+    [InlineData("Views/ProductionRun/Details.cshtml", 7)]
+    public void WaveK3_DetailPages_UseCompactTiles(string view, int tiles)
+    {
+        var text = File.ReadAllText(Path.Combine(RepoRoot(), "PEMS.Web", view));
+        Assert.Equal(tiles, Regex.Matches(text, "<pems-kpi-tile compact ").Count);
+        Assert.DoesNotContain("fs-5 fw-bold", text);
+        Assert.DoesNotMatch(@"<div class=""(small )?text-muted( small)?"">[^<]*</div><div class=""(fw-semibold|fs-5)", text);
+    }
+
     private static string RepoRoot()
     {
         var dir = new DirectoryInfo(AppContext.BaseDirectory);
