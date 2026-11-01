@@ -22,18 +22,18 @@
 }
 
 <div class="content-card">
-    <div class="row g-3">
-        <div class="col-md-3"><strong>@Localizer["Tender No"]:</strong> @Model.TenderNumber</div>
-        <div class="col-md-3"><strong>@Localizer["Title"]:</strong> @Model.Title</div>
-        <div class="col-md-3"><strong>@Localizer["Package"]:</strong> @Model.ProcurementPackage?.PackageNumber</div>
-        <div class="col-md-3"><strong>@Localizer["Status"]:</strong> <pems-badge tone="info">@Model.Status</pems-badge></div>
-        <div class="col-md-3"><strong>@Localizer["Deadline"]:</strong> @Model.ResponseDeadline?.ToString("yyyy-MM-dd")</div>
-        <div class="col-md-3"><strong>@Localizer["Requires Vendor Qualification"]:</strong> @(Model.RequiresVendorQualification ? Localizer["Yes"] : Localizer["No"])</div>
+    <pems-info-grid>
+        <pems-info-item label="@Localizer["Tender No"]" num>@Model.TenderNumber</pems-info-item>
+        <pems-info-item label="@Localizer["Title"]">@Model.Title</pems-info-item>
+        <pems-info-item label="@Localizer["Package"]" num>@Model.ProcurementPackage?.PackageNumber</pems-info-item>
+        <pems-info-item label="@Localizer["Status"]"><pems-badge tone="info">@Model.Status</pems-badge></pems-info-item>
+        <pems-info-item label="@Localizer["Deadline"]" num>@Model.ResponseDeadline?.ToString("yyyy-MM-dd")</pems-info-item>
+        <pems-info-item label="@Localizer["Requires Vendor Qualification"]">@(Model.RequiresVendorQualification ? Localizer["Yes"] : Localizer["No"])</pems-info-item>
         @if (Model.AwardedBid != null)
         {
-            <div class="col-12"><strong>@Localizer["Awarded To"]:</strong> @Model.AwardedBid.Vendor?.Name — @Model.AwardedBid.FinalValue?.ToString("N0") @Model.AwardedBid.Currency</div>
+            <pems-info-item label="@Localizer["Awarded To"]" wide>@Model.AwardedBid.Vendor?.Name — <span dir="ltr">@Model.AwardedBid.FinalValue?.ToString("N0") @Model.AwardedBid.Currency</span></pems-info-item>
         }
-    </div>
+    </pems-info-grid>
 
     <hr />
     <div class="d-flex gap-2 flex-wrap">

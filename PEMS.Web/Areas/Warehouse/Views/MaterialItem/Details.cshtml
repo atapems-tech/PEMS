@@ -31,16 +31,16 @@
         </div>
     </div>
     <hr />
-    <div class="row g-3">
-        <div class="col-md-3"><div class="text-muted small">@Localizer["Category"]</div><div>@(Model.CategoryName ?? "-")</div></div>
-        <div class="col-md-3"><div class="text-muted small">@Localizer["Discipline"]</div><div>@(Model.DisciplineName ?? "-")</div></div>
-        <div class="col-md-3"><div class="text-muted small">@Localizer["UOM"]</div><div>@(Model.UomCode ?? "-")</div></div>
-        <div class="col-md-3"><div class="text-muted small">@Localizer["Manufacturer"]</div><div>@(Model.Manufacturer ?? "-")</div></div>
-        <div class="col-md-3"><div class="text-muted small">@Localizer["Vendor"]</div><div>@(Model.VendorName ?? "-")</div></div>
-        <div class="col-md-3"><div class="text-muted small">@Localizer["Model"]</div><div>@(Model.Model ?? "-")</div></div>
-        <div class="col-md-3"><div class="text-muted small">@Localizer["Size"]</div><div>@(Model.Size ?? "-")</div></div>
-        <div class="col-md-3"><div class="text-muted small">@Localizer["Material Grade"]</div><div>@(Model.MaterialGrade ?? "-")</div></div>
-    </div>
+    <pems-info-grid>
+        <pems-info-item label="@Localizer["Category"]">@Model.CategoryName</pems-info-item>
+        <pems-info-item label="@Localizer["Discipline"]">@Model.DisciplineName</pems-info-item>
+        <pems-info-item label="@Localizer["UOM"]" num>@Model.UomCode</pems-info-item>
+        <pems-info-item label="@Localizer["Manufacturer"]">@Model.Manufacturer</pems-info-item>
+        <pems-info-item label="@Localizer["Vendor"]">@Model.VendorName</pems-info-item>
+        <pems-info-item label="@Localizer["Model"]">@Model.Model</pems-info-item>
+        <pems-info-item label="@Localizer["Size"]">@Model.Size</pems-info-item>
+        <pems-info-item label="@Localizer["Material Grade"]">@Model.MaterialGrade</pems-info-item>
+    </pems-info-grid>
 </div>
 
 <ul class="nav nav-tabs mb-3">

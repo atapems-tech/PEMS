@@ -43,24 +43,12 @@
 {
     <div class="content-card mb-3">
         <h6 class="text-muted small mb-2">@Localizer["Procurement Origin"]</h6>
-        <div class="row g-2">
-            <div class="col-md-3">
-                <div class="small text-muted">@Localizer["Package"]</div>
-                <a asp-controller="ProcurementPackage" asp-action="Details" asp-route-id="@originatingTender.ProcurementPackageId">@originatingTender.ProcurementPackage?.PackageNumber</a>
-            </div>
-            <div class="col-md-3">
-                <div class="small text-muted">@Localizer["Tender"]</div>
-                <a asp-controller="Tender" asp-action="Details" asp-route-id="@originatingTender.TenderId">@originatingTender.TenderNumber</a>
-            </div>
-            <div class="col-md-3">
-                <div class="small text-muted">@Localizer["Awarded Bid"]</div>
-                <span>@originatingTender.AwardedBid?.BidNumber</span>
-            </div>
-            <div class="col-md-3">
-                <div class="small text-muted">@Localizer["Awarded"]</div>
-                <span>@originatingTender.AwardedDate?.ToString("yyyy-MM-dd")</span>
-            </div>
-        </div>
+        <pems-info-grid>
+            <pems-info-item label="@Localizer["Package"]" num><a asp-controller="ProcurementPackage" asp-action="Details" asp-route-id="@originatingTender.ProcurementPackageId">@originatingTender.ProcurementPackage?.PackageNumber</a></pems-info-item>
+            <pems-info-item label="@Localizer["Tender"]" num><a asp-controller="Tender" asp-action="Details" asp-route-id="@originatingTender.TenderId">@originatingTender.TenderNumber</a></pems-info-item>
+            <pems-info-item label="@Localizer["Awarded Bid"]" num>@originatingTender.AwardedBid?.BidNumber</pems-info-item>
+            <pems-info-item label="@Localizer["Awarded"]" num>@originatingTender.AwardedDate?.ToString("yyyy-MM-dd")</pems-info-item>
+        </pems-info-grid>
     </div>
 }
 
@@ -69,22 +57,22 @@
     <div class="d-flex justify-content-end mb-2">
         <pems-button tone="neutral" size="small" outline="true" as="a" asp-controller="Relationship" asp-action="Contract" asp-route-id="@Model.ContractId"><i class="bi bi-diagram-3"></i> @Localizer["Cm_Relationships"]</pems-button>
     </div>
-    <div class="row g-3">
-        <div class="col-md-4"><strong>Contract No:</strong> @Model.ContractNo</div>
-        <div class="col-md-4"><strong>@Localizer["Project:"]</strong> @Model.ProjectName</div>
-        <div class="col-md-4"><strong>Vendor:</strong> @Model.VendorName</div>
-        <div class="col-md-4"><strong>Value:</strong> @(Model.ContractValue.HasValue ? $"{Model.ContractValue:N0} {Model.Currency}" : "-")</div>
-        <div class="col-md-4"><strong>Start / End:</strong> @Model.StartDate?.ToString("yyyy-MM-dd") &rarr; @Model.EndDate?.ToString("yyyy-MM-dd")</div>
-        <div class="col-md-4">
-            <strong>@Localizer["Status:"]</strong>
+    <pems-info-grid>
+        <pems-info-item label="@Localizer["Contract No"]" num>@Model.ContractNo</pems-info-item>
+        <pems-info-item label="@Localizer["Project"]">@Model.ProjectName</pems-info-item>
+        <pems-info-item label="@Localizer["Vendor"]">@Model.VendorName</pems-info-item>
+        <pems-info-item label="@Localizer["Value"]" num>@(Model.ContractValue.HasValue ? $"{Model.ContractValue:N0} {Model.Currency}" : "")</pems-info-item>
+        <pems-info-item label="@Localizer["Start Date"]" num>@Model.StartDate?.ToString("yyyy-MM-dd")</pems-info-item>
+        <pems-info-item label="@Localizer["End Date"]" num>@Model.EndDate?.ToString("yyyy-MM-dd")</pems-info-item>
+        <pems-info-item label="@Localizer["Status"]">
             <pems-badge tone="none" css="@statusBadge">@Model.Status</pems-badge>
             @if (Model.RequiresInspection)
             {
                 <pems-badge tone="warning">@Localizer["Requires Inspection"]</pems-badge>
             }
-        </div>
-        <div class="col-12"><strong>@Localizer["Scope:"]</strong> @Model.ScopeOfWork</div>
-    </div>
+        </pems-info-item>
+        <pems-info-item label="@Localizer["Scope of Work"]" wide>@Model.ScopeOfWork</pems-info-item>
+    </pems-info-grid>
 
     <hr />
 

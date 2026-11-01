@@ -3,6 +3,11 @@
 All notable changes to PEMS. No system version is defined yet (plan row F_CI), so entries are grouped by date
 and theme and were reconstructed from the git history (initial import 2026-09-05). Newest first.
 
+## 2026-11-01 - InfoGrid wave I3: procurement and warehouse headers (SCRUM-337)
+
+### Changed
+- Purchase order, contract (and its procurement origin), tender, material requisition and material item details take their header blocks from `<pems-info-grid>` (7 grids, 43 items): the label over the value in the same grid as the other detail pages, instead of a bold "Label:" before the value or a muted label in a Bootstrap column. Labels are localised keys without a trailing colon (the hard-coded English "Contract No:", "MR Number:", "Equipment Tag:" ... are now localised); the contract's "Start / End" becomes two items; numbers, codes and dates read left to right in Persian.
+
 ## 2026-11-01 - InfoGrid wave I2: description lists of detail pages (SCRUM-337)
 
 ### Added

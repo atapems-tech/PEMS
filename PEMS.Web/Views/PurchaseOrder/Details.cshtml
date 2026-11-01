@@ -27,19 +27,19 @@
 @if (TempData["Error"] != null) { <pems-alert tone="danger" css="py-2 px-3 small">@TempData["Error"]</pems-alert> }
 
 <div class="content-card">
-    <div class="row g-3">
-        <div class="col-md-4"><strong>@Localizer["PO Number"]:</strong> @Model.PoNumber</div>
-        <div class="col-md-4"><strong>@Localizer["Project:"]</strong> @Model.ProjectName</div>
-        <div class="col-md-4"><strong>@Localizer["Vendor"]:</strong> @Model.VendorName</div>
-        <div class="col-md-4"><strong>@Localizer["Contract No"]:</strong> @(Model.ContractNo ?? "-")</div>
-        <div class="col-md-4"><strong>@Localizer["Value"]:</strong> @Model.Value?.ToString("N0") @a?.Currency</div>
-        <div class="col-md-4"><strong>@Localizer["Status"]:</strong> <pems-badge tone="info">@Localizer["Po_Status_" + Model.Status]</pems-badge></div>
-        <div class="col-12"><strong>@Localizer["Description"]:</strong> @Model.Description</div>
+    <pems-info-grid>
+        <pems-info-item label="@Localizer["PO Number"]" num>@Model.PoNumber</pems-info-item>
+        <pems-info-item label="@Localizer["Project"]">@Model.ProjectName</pems-info-item>
+        <pems-info-item label="@Localizer["Vendor"]">@Model.VendorName</pems-info-item>
+        <pems-info-item label="@Localizer["Contract No"]" num>@Model.ContractNo</pems-info-item>
+        <pems-info-item label="@Localizer["Value"]" num>@Model.Value?.ToString("N0") @a?.Currency</pems-info-item>
+        <pems-info-item label="@Localizer["Status"]"><pems-badge tone="info">@Localizer["Po_Status_" + Model.Status]</pems-badge></pems-info-item>
         @if (a?.MaterialRequisitionId != null)
         {
-            <div class="col-md-4"><strong>MR:</strong> <a href="/MaterialRequisition/Details/@a.MaterialRequisitionId" dir="ltr">@a.MaterialRequisitionNumber</a></div>
+            <pems-info-item label="MR" num><a href="/MaterialRequisition/Details/@a.MaterialRequisitionId">@a.MaterialRequisitionNumber</a></pems-info-item>
         }
-    </div>
+        <pems-info-item label="@Localizer["Description"]" wide>@Model.Description</pems-info-item>
+    </pems-info-grid>
     @if (ViewBag.CanIssue == true)
     {
         <form asp-action="Issue" asp-route-id="@Model.PoId" method="post" class="mt-3">
