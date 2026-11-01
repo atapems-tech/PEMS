@@ -94,7 +94,7 @@ public class AdminSettingsListPagesTests
     }
 
     [Fact]
-    public void EveryWave4bPage_UsesTheComponent_AndTheInlineEditorsWait()
+    public void EveryWave4bPage_AndTheInlineEditors_UseTheComponents()
     {
         var dir = new DirectoryInfo(AppContext.BaseDirectory);
         while (dir != null && !File.Exists(Path.Combine(dir.FullName, "PEMS.Web", "PEMS.Web.csproj"))) dir = dir.Parent;
@@ -107,8 +107,14 @@ public class AdminSettingsListPagesTests
             Assert.Contains("_content/PEMS.UI/pems-list.js", view);
             Assert.DoesNotContain("class=\"btn btn-", view);                             // buttons come from the components
         }
-        // the inline editors keep their own frame until the row-form mode exists
+        // the inline editors moved with the RelatedList row-form mode (SCRUM-337): list frame, rows edited in place
         foreach (var editor in new[] { "ContractApprovalAuthority", "Numbering", "RoutingRules" })
-            Assert.DoesNotContain("<pems-list-page", File.ReadAllText(Path.Combine(views, editor, "Index.cshtml")));
+        {
+            var view = File.ReadAllText(Path.Combine(views, editor, "Index.cshtml"));
+            Assert.Contains("<pems-list-page", view);
+            Assert.Contains("<pems-related-row-form", view);
+            Assert.Contains("<pems-related-save", view);
+            Assert.DoesNotContain("class=\"btn btn-", view);
+        }
     }
 }
