@@ -174,5 +174,5 @@ cell, `form="row_1"` on each input of the row, and `<pems-related-save form-id="
 The forms carry the antiforgery token. Rows edited in a modal keep the modal until SCRUM-482.
 
 Waves: R1 JobPlan details, Numbering, RoutingRules, ContractApprovalAuthority (done); R2 Tender, ProcurementPackage and
-IrnReceipt details (done); R3a PartCatalogueRequest Edit and RcmFmea ClassDetail tables (done); R3b Permit details (done); R3c VDR and R3d WorkOrder details follow.
+IrnReceipt details (done); R3a PartCatalogueRequest Edit and RcmFmea ClassDetail tables (done); R3b Permit details (done); R3c VDR details (done); R3d WorkOrder details follows.
 A page with its own section design (form pages) keeps its sections and takes only `<pems-related-table>` / `<pems-related-remove>`.

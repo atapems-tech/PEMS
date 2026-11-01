@@ -469,7 +469,6 @@
     "PEMS.Web/Views/TaskManager/_ItemTable.cshtml": 1,
     "PEMS.Web/Views/Team/TeamDetails.cshtml": 2,
     "PEMS.Web/Views/Transmittal/Details.cshtml": 2,
-    "PEMS.Web/Views/VDR/Details.cshtml": 4,
     "PEMS.Web/Views/VDRImport/Index.cshtml": 1,
     "PEMS.Web/Views/VDRImport/Review.cshtml": 1,
     "PEMS.Web/Views/WorkOrder/Details.cshtml": 5,

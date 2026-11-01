@@ -215,4 +215,16 @@ public class RelatedListComponentTests
         Assert.DoesNotContain("<table", permit);
         Assert.Contains("_content/PEMS.UI/pems-list.css", permit);
     }
+
+    [Fact]
+    public void Wave3cVdr_TakesItsFourTablesFromTheComponent()
+    {
+        var dir = new DirectoryInfo(AppContext.BaseDirectory);
+        while (dir != null && !File.Exists(Path.Combine(dir.FullName, "PEMS.Web", "PEMS.Web.csproj"))) dir = dir.Parent;
+        Assert.NotNull(dir);
+        var vdr = File.ReadAllText(Path.Combine(dir!.FullName, "PEMS.Web", "Views", "VDR", "Details.cshtml"));
+        Assert.Equal(4, System.Text.RegularExpressions.Regex.Matches(vdr, "<pems-related-table>").Count);
+        Assert.DoesNotContain("<table", vdr);
+        Assert.Contains("_content/PEMS.UI/pems-list.css", vdr);
+    }
 }
