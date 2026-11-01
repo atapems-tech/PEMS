@@ -3,6 +3,11 @@
 All notable changes to PEMS. No system version is defined yet (plan row F_CI), so entries are grouped by date
 and theme and were reconstructed from the git history (initial import 2026-09-05). Newest first.
 
+## 2026-11-01 - RelatedList wave R3c: VDR details (SCRUM-337)
+
+### Changed
+- VDR document details: its four tables come from `<pems-related-table>`: submission history, comment management, workflow history and related correspondence. The page keeps its tabs, its actions and its forms.
+
 ## 2026-11-01 - RelatedList wave R3b: permit details (SCRUM-337)
 
 ### Changed

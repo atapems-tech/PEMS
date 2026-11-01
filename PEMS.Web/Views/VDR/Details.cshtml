@@ -70,6 +70,7 @@
 @{ ViewData["Title"] = Model.DocumentNumber; ViewData["HidePageTitle"] = true; }
 @section Styles {
     <link rel="stylesheet" href="~/css/pems-workspace.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/_content/PEMS.UI/pems-list.css" asp-append-version="true" />
 }
 
 <div class="vs-page">
@@ -198,7 +199,7 @@
 <div class="tab-pane fade" id="tab-submissions" role="tabpanel">
 <div class="content-card mb-3">
     <h6 class="mb-3">@Localizer["Vd_SubHistory"]</h6>
-    <table class="table table-enterprise">
+    <pems-related-table>
         <thead>
             <tr><th>@Localizer["Vd_Rev"]</th><th>@Localizer["Vd_VendorTransmittal"]</th><th>@Localizer["Vd_ClientTransmittal"]</th><th>@Localizer["Vd_VendorIssued"]</th><th>@Localizer["Vd_Poi"]</th><th>@Localizer["Vd_Sla"]</th><th>@Localizer["Vd_Ftp"]</th><th>@Localizer["Vd_CommentSheet"]</th><th>@Localizer["Vd_CommentDate"]</th><th>@Localizer["Vd_Category"]</th><th>@Localizer["Vd_Resubmit"]</th><th>@Localizer["Vd_CommentFile"]</th><th>@Localizer["Vd_ReplyFile"]</th></tr>
         </thead>
@@ -286,7 +287,7 @@
                 </tr>
             }
         </tbody>
-    </table>
+    </pems-related-table>
     @if (!Model.Submissions.Any()) { <p class="text-muted">@Localizer["Vd_NoSubmissions"]</p> }
 </div>
 </div>
@@ -405,7 +406,7 @@
 <div class="content-card mb-3">
     <h6 class="mb-3">@Localizer["Vd_CommentMgmt"] <span class="text-muted small">@Localizer["Vd_ActionIndependent"]</span></h6>
 
-    <table class="table table-enterprise">
+    <pems-related-table>
         <thead><tr><th>@Localizer["Vd_No"]</th><th>@Localizer["Vd_Rev"]</th><th>@Localizer["Vd_Category"]</th><th>@Localizer["Vd_SheetZone"]</th><th>@Localizer["Vd_Comment"]</th><th>@Localizer["Vd_RaisedBy"]</th><th>@Localizer["Vd_Raised"]</th><th>@Localizer["Vd_ActionStatus"]</th><th>@Localizer["Vd_Response"]</th></tr></thead>
         <tbody>
             @foreach (var c in comments)
@@ -468,7 +469,7 @@
                 </tr>
             }
         </tbody>
-    </table>
+    </pems-related-table>
     @if (!comments.Any()) { <p class="text-muted">@Localizer["Vd_NoComments"]</p> }
 
     @if (Model.Submissions.Any())
@@ -803,7 +804,7 @@ else
     <h6 class="mb-3"><i class="bi bi-clock-history"></i> @Localizer["Vd_WorkflowHistory"]</h6>
     @if (workflowHistory.Any())
     {
-        <table class="table table-enterprise mb-0">
+        <pems-related-table>
             <thead><tr><th>@Localizer["Vd_From"]</th><th>@Localizer["Vd_To"]</th><th>@Localizer["Vd_Action"]</th><th>@Localizer["Vd_Decision"]</th><th>@Localizer["Vd_Comment"]</th><th>@Localizer["Vd_Date"]</th></tr></thead>
             <tbody>
                 @foreach (var h in workflowHistory.OrderByDescending(x => x.ActionDate))
@@ -818,7 +819,7 @@ else
                     </tr>
                 }
             </tbody>
-        </table>
+        </pems-related-table>
     }
     else
     {
@@ -833,7 +834,7 @@ else
     <h6 class="mb-3"><i class="bi bi-envelope-paper"></i> @Localizer["Vd_RelatedCorr"]</h6>
     @if (relatedLetters.Any())
     {
-        <table class="table table-enterprise">
+        <pems-related-table>
             <thead><tr><th>@Localizer["Vd_Type"]</th><th>@Localizer["Vd_LetterNo"]</th><th>@Localizer["Vd_Subject"]</th><th>@Localizer["Vd_Date"]</th><th>@Localizer["Vd_Status"]</th><th></th></tr></thead>
             <tbody>
                 @foreach (var l in relatedLetters)
@@ -848,7 +849,7 @@ else
                     </tr>
                 }
             </tbody>
-        </table>
+        </pems-related-table>
     }
     else
     {
