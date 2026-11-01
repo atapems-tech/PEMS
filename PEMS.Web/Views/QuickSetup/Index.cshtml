@@ -19,12 +19,7 @@
         </pems-badge>
     </div>
 
-    <div class="progress" style="height: 22px;" role="progressbar" aria-label="Setup progress"
-         aria-valuenow="@Model.PercentComplete" aria-valuemin="0" aria-valuemax="100">
-        <div class="progress-bar @(Model.IsFullyComplete ? "bg-success" : "bg-primary")" style="width: @Model.PercentComplete%">
-            @Model.PercentComplete%
-        </div>
-    </div>
+    <pems-progress value="@Model.PercentComplete" tone="@(Model.IsFullyComplete ? "success" : "primary")" height="22px" label="Setup progress">@Model.PercentComplete%</pems-progress>
 
     @if (Model.IsFullyComplete)
     {

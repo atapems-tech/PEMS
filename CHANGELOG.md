@@ -3,6 +3,14 @@
 All notable changes to PEMS. No system version is defined yet (plan row F_CI), so entries are grouped by date
 and theme and were reconstructed from the git history (initial import 2026-09-05). Newest first.
 
+## 2026-11-01 - Card, progress, accordion, list-group and spinner components (SCRUM-53, #31)
+
+### Added
+- `PemsCard`, `PemsProgress`, `PemsAccordion`/`PemsAccordionItem`, `PemsListGroup`, `PemsSpinner` in `PEMS.UI` (options records, manifests, samples, tag helpers `pems-card`, `pems-progress`, `pems-accordion`, `pems-accordion-item`/`-header`, `pems-list-group`, `pems-spinner`) writing the Bootstrap markup the pages wrote by hand.
+
+### Changed
+- All 25 hand-written blocks in 14 views moved; ratchet baselines for card, progress, accordion, list-group and spinner are now empty (the accordion-item counter no longer matches `pems-accordion-item`). `Letter/Dashboard` `BarRow` became async because it contains a tag helper.
+
 ## 2026-11-01 - RelatedList wave R2: tender, procurement package and receipt details (SCRUM-337)
 
 ### Changed

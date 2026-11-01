@@ -29,7 +29,7 @@ public sealed class AdoptionRatchetTests
         ("breadcrumb", new Regex(@"class=""breadcrumb(?![\w-])", RegexOptions.Compiled), true, false),
         ("dropdown", new Regex(@"class=""dropdown-menu\b", RegexOptions.Compiled), true, false),
         ("progress", new Regex(@"class=""progress(?![\w-])", RegexOptions.Compiled), true, false),
-        ("accordion", new Regex(@"\baccordion-item\b", RegexOptions.Compiled), true, false),
+        ("accordion", new Regex(@"(?<![\w-])accordion-item(?![\w-])", RegexOptions.Compiled), true, false),
         ("list-group", new Regex(@"class=""list-group(?![\w-])", RegexOptions.Compiled), true, false),
         ("card", new Regex(@"class=""card(?![\w-])", RegexOptions.Compiled), true, false),
         ("spinner", new Regex(@"\bspinner-(border|grow)\b", RegexOptions.Compiled), true, false),

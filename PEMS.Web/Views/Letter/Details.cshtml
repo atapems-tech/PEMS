@@ -470,15 +470,9 @@
     </div>
 }
 
-<div class="accordion mb-3" id="letterAccordion">
-    <div class="accordion-item">
-        <h2 class="accordion-header">
-            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#accRecipients">
-                <i class="bi bi-people me-2"></i> Recipients (@Model.Recipients.Count)
-            </button>
-        </h2>
-        <div id="accRecipients" class="accordion-collapse collapse" data-bs-parent="#letterAccordion">
-            <div class="accordion-body">
+<pems-accordion id="letterAccordion" css="mb-3">
+    <pems-accordion-item target="accRecipients" parent="letterAccordion">
+<pems-accordion-header><i class="bi bi-people me-2"></i> Recipients (@Model.Recipients.Count)</pems-accordion-header>
                 @if (Model.Recipients.Any())
                 {
                     <table class="table table-sm table-enterprise mb-2">
@@ -530,18 +524,10 @@
                     </div>
                     <div class="col-md-2"><pems-button tone="primary" size="small" css="w-100"><i class="bi bi-plus-lg"></i> @Localizer["Add"]</pems-button></div>
                 </form>
-            </div>
-        </div>
-    </div>
+            </pems-accordion-item>
 
-    <div class="accordion-item">
-        <h2 class="accordion-header">
-            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#accAttachments">
-                <i class="bi bi-paperclip me-2"></i> Attachments (@Model.Attachments.Count)
-            </button>
-        </h2>
-        <div id="accAttachments" class="accordion-collapse collapse" data-bs-parent="#letterAccordion">
-            <div class="accordion-body">
+    <pems-accordion-item target="accAttachments" parent="letterAccordion">
+<pems-accordion-header><i class="bi bi-paperclip me-2"></i> Attachments (@Model.Attachments.Count)</pems-accordion-header>
                 @if (Model.Attachments.Any())
                 {
                     <ul class="list-unstyled mb-2">
@@ -559,18 +545,10 @@
                     <input type="file" name="file" class="form-control form-control-sm" required />
                     <pems-button tone="primary" size="small" outline="true"><i class="bi bi-upload"></i> @Localizer["Upload"]</pems-button>
                 </form>
-            </div>
-        </div>
-    </div>
+            </pems-accordion-item>
 
-    <div class="accordion-item">
-        <h2 class="accordion-header">
-            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#accReferrals">
-                <i class="bi bi-signpost-split me-2"></i> Referrals (@Model.Referrals.Count)
-            </button>
-        </h2>
-        <div id="accReferrals" class="accordion-collapse collapse" data-bs-parent="#letterAccordion">
-            <div class="accordion-body">
+    <pems-accordion-item target="accReferrals" parent="letterAccordion">
+<pems-accordion-header><i class="bi bi-signpost-split me-2"></i> Referrals (@Model.Referrals.Count)</pems-accordion-header>
                 @if (Model.Referrals.Any())
                 {
                     <table class="table table-sm table-enterprise mb-2">
@@ -640,18 +618,10 @@
                     <div class="col-md-2"><input name="dueDate" type="date" class="form-control form-control-sm" /></div>
                     <div class="col-md-1"><pems-button tone="primary" size="small" css="w-100"><i class="bi bi-send"></i></pems-button></div>
                 </form>
-            </div>
-        </div>
-    </div>
+            </pems-accordion-item>
 
-    <div class="accordion-item">
-        <h2 class="accordion-header">
-            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#accTimeline">
-                <i class="bi bi-diagram-3 me-2"></i> Activity Timeline
-            </button>
-        </h2>
-        <div id="accTimeline" class="accordion-collapse collapse" data-bs-parent="#letterAccordion">
-            <div class="accordion-body">
+    <pems-accordion-item target="accTimeline" parent="letterAccordion">
+<pems-accordion-header><i class="bi bi-diagram-3 me-2"></i> Activity Timeline</pems-accordion-header>
                 @* workflow-history options: order and who acted (the manager / subordinates come from the organization chart) *@
                 <form method="get" target="_self" action="@Url.Action("Details", new { id = l.LetterId })#accTimeline" class="d-flex flex-wrap align-items-center gap-2 mb-3 small">
                     @if (embed) { <input type="hidden" name="embed" value="true" /> }
@@ -690,10 +660,8 @@
                 }
                 else
                 { <p class="text-muted text-center py-2 small">No activity yet.</p> }
-            </div>
-        </div>
-    </div>
-</div>
+            </pems-accordion-item>
+</pems-accordion>
 
 @* مودال‌های Return/Reject/Sign - این‌ها Bootstrap استاندارد هستند (همون کتابخانه‌ای که Dropdown
    بالا هم استفاده می‌کند)، نه یک کتابخانه‌ی جدید *@

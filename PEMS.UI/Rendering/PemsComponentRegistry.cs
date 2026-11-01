@@ -41,6 +41,12 @@ public sealed class PemsComponentRegistry : IPemsComponentRegistry
         Register("stepper", typeof(PemsStepper));
         Register("menu", typeof(PemsMenu));
         Register("side-panel-nav", typeof(PemsSidePanelNav));
+        Register("card", typeof(PemsCard));
+        Register("progress", typeof(PemsProgress));
+        Register("accordion", typeof(PemsAccordion));
+        Register("accordion-item", typeof(PemsAccordionItem));
+        Register("list-group", typeof(PemsListGroup));
+        Register("spinner", typeof(PemsSpinner));
     }
 
     public void Register(string key, Type componentType)

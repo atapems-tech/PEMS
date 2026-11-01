@@ -4,7 +4,6 @@
 @inject IStringLocalizer<SharedResource> Localizer
 
 @{
-    string BarWidth(int count, int max) => max == 0 ? "0%" : $"{Math.Round(count * 100.0 / max, 1)}%";
 }
 
 <div class="content-card mb-3">
@@ -49,9 +48,7 @@
                 <div class="d-flex justify-content-between small mb-1">
                     <span>@item.Key</span><span>@item.Count.ToString("N0")</span>
                 </div>
-                <div class="progress mb-2" style="height:6px;">
-                    <div class="progress-bar" style="width:@BarWidth(item.Count, Model.ClassifiedCount)"></div>
-                </div>
+                <pems-progress value="@item.Count" max="@Model.ClassifiedCount" height="6px" css="mb-2"></pems-progress>
             }
             @if (!Model.ByConfidence.Any()) { <p class="text-muted small">@Localizer["داده‌ای موجود نیست."]</p> }
         </div>
@@ -64,9 +61,7 @@
                 <div class="d-flex justify-content-between small mb-1">
                     <span>@item.Key</span><span>@item.Count.ToString("N0")</span>
                 </div>
-                <div class="progress mb-2" style="height:6px;">
-                    <div class="progress-bar bg-info" style="width:@BarWidth(item.Count, Model.ClassifiedCount)"></div>
-                </div>
+                <pems-progress value="@item.Count" max="@Model.ClassifiedCount" tone="info" height="6px" css="mb-2"></pems-progress>
             }
             @if (!Model.BySource.Any()) { <p class="text-muted small">@Localizer["داده‌ای موجود نیست."]</p> }
         </div>

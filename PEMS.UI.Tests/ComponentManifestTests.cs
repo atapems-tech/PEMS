@@ -31,7 +31,7 @@ public sealed class ComponentManifestTests : IAsyncLifetime
     private static string SnapshotDir => Path.Combine(Path.GetDirectoryName(Here())!, "Manifests");
 
     public static IEnumerable<object[]> Keys() =>
-        new[] { "button", "badge", "skeleton", "field", "table", "form", "empty-state", "error-state", "loading-state", "form-section", "action-bar", "alert", "modal", "drawer", "confirm-dialog", "tabs", "breadcrumb", "stepper", "menu", "side-panel-nav" }.Select(k => new object[] { k });
+        new[] { "button", "badge", "skeleton", "field", "table", "form", "empty-state", "error-state", "loading-state", "form-section", "action-bar", "alert", "modal", "drawer", "confirm-dialog", "tabs", "breadcrumb", "stepper", "menu", "side-panel-nav", "card", "progress", "accordion", "accordion-item", "list-group", "spinner" }.Select(k => new object[] { k });
 
     [Fact]
     public void Every_registered_component_has_a_manifest_and_the_expected_keys_exist()

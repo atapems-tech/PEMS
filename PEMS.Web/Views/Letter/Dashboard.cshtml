@@ -21,13 +21,13 @@
         }
     }
 
-    void BarRow(string label, int value, string? href = null)
+    async Task BarRow(string label, int value, string? href = null)
     {
         var pct = (int)Math.Round(100.0 * value / total);
         <tr>
             <th scope="row" class="fw-normal">@if (href != null) { <a href="@href">@label</a> } else { @label }</th>
             <td style="width:45%">
-                <div class="progress" role="img" aria-label="@label: @value (@pct%)"><div class="progress-bar" style="width:@pct%"></div></div>
+                <pems-progress value="@pct" label="@label: @value (@pct%)"></pems-progress>
             </td>
             <td class="text-end"><strong>@value</strong> <span class="text-muted small">(@pct%)</span></td>
         </tr>
@@ -109,7 +109,7 @@
             <p class="text-muted small">@Localizer["Lt_Dash_AgingNote"]</p>
             <table class="table table-sm mb-0">
                 <tbody>
-                    @foreach (var b in Model.Aging) { BarRow(Localizer["Lt_Dash_Age_" + b.Key].Value, b.Count); }
+                    @foreach (var b in Model.Aging) { await BarRow(Localizer["Lt_Dash_Age_" + b.Key].Value, b.Count); }
                 </tbody>
             </table>
         </div>
@@ -119,7 +119,7 @@
         <div class="content-card h-100">
             <h2 class="vs-section__title">@Localizer["Lt_Dash_ByStatus"]</h2>
             <table class="table table-sm mb-0"><tbody>
-                @foreach (var kv in Model.ByStatus.OrderByDescending(x => x.Value)) { BarRow(kv.Key, kv.Value, Url.Action("Index", new { status = kv.Key })); }
+                @foreach (var kv in Model.ByStatus.OrderByDescending(x => x.Value)) { await BarRow(kv.Key, kv.Value, Url.Action("Index", new { status = kv.Key })); }
             </tbody></table>
         </div>
     </div>
@@ -127,7 +127,7 @@
         <div class="content-card h-100">
             <h2 class="vs-section__title">@Localizer["Lt_Dash_ByType"]</h2>
             <table class="table table-sm mb-0"><tbody>
-                @foreach (var kv in Model.ByType.OrderByDescending(x => x.Value)) { BarRow(kv.Key, kv.Value, Url.Action("Index", new { letterType = kv.Key })); }
+                @foreach (var kv in Model.ByType.OrderByDescending(x => x.Value)) { await BarRow(kv.Key, kv.Value, Url.Action("Index", new { letterType = kv.Key })); }
             </tbody></table>
         </div>
     </div>
@@ -135,7 +135,7 @@
         <div class="content-card h-100">
             <h2 class="vs-section__title">@Localizer["Lt_Dash_ByPriority"]</h2>
             <table class="table table-sm mb-0"><tbody>
-                @foreach (var kv in Model.ByPriority.OrderByDescending(x => x.Value)) { BarRow(Localizer["Lt_P_" + kv.Key].Value, kv.Value, Url.Action("Index", new { priority = kv.Key })); }
+                @foreach (var kv in Model.ByPriority.OrderByDescending(x => x.Value)) { await BarRow(Localizer["Lt_P_" + kv.Key].Value, kv.Value, Url.Action("Index", new { priority = kv.Key })); }
             </tbody></table>
         </div>
     </div>
