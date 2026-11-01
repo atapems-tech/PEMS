@@ -3,6 +3,11 @@
 All notable changes to PEMS. No system version is defined yet (plan row F_CI), so entries are grouped by date
 and theme and were reconstructed from the git history (initial import 2026-09-05). Newest first.
 
+## 2026-11-01 - RelatedList wave R3d: work order details (SCRUM-337)
+
+### Changed
+- Work order details: its five tables come from `<pems-related-table>`: workflow history, labour, spare parts used, tasks and required materials. The page keeps its tabs, its actions, its forms and the height-limited scroll areas around the labour and spare parts tables. This finishes the RelatedList waves for the heavy detail pages.
+
 ## 2026-11-01 - RelatedList wave R3c: VDR details (SCRUM-337)
 
 ### Changed

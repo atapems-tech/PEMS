@@ -431,7 +431,7 @@ else
     <div class="content-card mb-3">
         <h6 class="mb-3">@Localizer["Workflow History"]</h6>
         <div class="table-responsive">
-        <table class="table table-enterprise table-sm mb-0">
+        <pems-related-table>
             <thead><tr><th>@Localizer["Date"]</th><th>@Localizer["Action"]</th><th>@Localizer["From"]</th><th>@Localizer["To"]</th><th>@Localizer["By"]</th><th>@Localizer["Reason"]</th></tr></thead>
             <tbody>
                 @foreach (var h in wf!.HistorySummary.OrderByDescending(x => x.ActionDate))
@@ -446,7 +446,7 @@ else
                     </tr>
                 }
             </tbody>
-        </table>
+        </pems-related-table>
         </div>
     </div>
 }
@@ -651,7 +651,7 @@ else
     </p>
 
     <div class="table-responsive" style="max-height:50vh; overflow-y:auto;">
-        <table class="table table-enterprise">
+        <pems-related-table>
             <thead><tr><th>@Localizer["Employee"]</th><th>Team</th><th>@Localizer["Date"]</th><th>@Localizer["Regular Hrs"]</th><th>OT Hrs</th><th>Rate</th><th>@Localizer["OT Rate"]</th><th>@Localizer["Cost"]</th></tr></thead>
             <tbody>
                 @foreach (var l in laborEntries)
@@ -668,7 +668,7 @@ else
                     </tr>
                 }
             </tbody>
-        </table>
+        </pems-related-table>
     </div>
     @if (!laborEntries.Any()) { <p class="text-muted small">@Localizer["ساعت‌کاری هنوز ثبت نشده."]</p> }
 
@@ -721,7 +721,7 @@ else
 <div class="content-card">
     <h6 class="mb-3">@Localizer["Spare Parts Used"]</h6>
     <div class="table-responsive table-scroll-area" style="max-height:65vh; overflow-y:auto;">
-    <table class="table table-enterprise">
+    <pems-related-table>
         <thead><tr><th>@Localizer["Material Code"]</th><th>@Localizer["Description"]</th><th>@Localizer["Qty"]</th><th>Returned</th><th>@Localizer["Unit Cost"]</th><th>@Localizer["Total"]</th><th></th></tr></thead>
         <tbody>
             @foreach (var s in sparesUsed)
@@ -752,7 +752,7 @@ else
                 </tr>
             }
         </tbody>
-    </table>
+    </pems-related-table>
     </div>
     @if (!sparesUsed.Any()) { <p class="text-muted small">@Localizer["No spare parts recorded yet."]</p> }
 
@@ -797,7 +797,7 @@ else
 {
     <div class="content-card mt-3">
         <h6 class="mb-3"><i class="bi bi-list-ol"></i> Tasks (@tasks.Count(t => t.IsCompleted)/@tasks.Count completed)</h6>
-        <table class="table table-enterprise table-sm mb-0">
+        <pems-related-table>
             <thead><tr><th style="width:50px;"></th><th style="width:60px;">#</th><th>@Localizer["Title"]</th><th>@Localizer["Description"]</th><th>@Localizer["Completed"]</th></tr></thead>
             <tbody>
                 @foreach (var t in tasks)
@@ -826,7 +826,7 @@ else
                     </tr>
                 }
             </tbody>
-        </table>
+        </pems-related-table>
     </div>
 }
 
@@ -897,7 +897,7 @@ else
         var intake = ViewBag.WarehouseIntake as PEMS.Application.Interfaces.WarehouseIntakeDto;   // SCRUM-472
     }
     <h6 class="mb-3"><i class="bi bi-box-seam"></i> @Localizer["Required Materials"]</h6>
-    <table class="table table-enterprise table-sm">
+    <pems-related-table>
         <thead><tr><th>@Localizer["Material"]</th><th>@Localizer["Required Qty"]</th><th>@Localizer["Whi_SupplyCode"]</th><th>@Localizer["Whi_Sourced"]</th><th></th></tr></thead>
         <tbody>
             @foreach (var rm in requiredMaterials)
@@ -951,7 +951,7 @@ else
                 </tr>
             }
         </tbody>
-    </table>
+    </pems-related-table>
     @if (!requiredMaterials.Any()) { <p class="text-muted small">@Localizer["متریال موردنیازی ثبت نشده."]</p> }
 
     @* SCRUM-472: warehouse intake of the stock lines *@
@@ -1044,6 +1044,10 @@ else
         </form>
     }
 </div>
+
+@section Styles {
+    <link rel="stylesheet" href="~/_content/PEMS.UI/pems-list.css" asp-append-version="true" />
+}
 
 @section Scripts {
 <script>
