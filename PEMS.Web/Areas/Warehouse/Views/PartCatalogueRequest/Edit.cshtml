@@ -21,6 +21,7 @@
 @section Styles {
     <link rel="stylesheet" href="~/css/pems-workspace.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/pems-part-catalogue.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/_content/PEMS.UI/pems-list.css" asp-append-version="true" />
 }
 
 <div class="vs-page pc-page"
@@ -174,8 +175,8 @@
                 </div>
 
                 <div class="pc-table-scroll">
-                    <table class="table table-sm table-enterprise vs-dense mb-2">
-                        <thead><tr><th>@L("EquipmentId")</th><th class="text-end">@L("InstalledQuantity")</th><th></th></tr></thead>
+                    <pems-related-table>
+                        <thead><tr><th>@L("EquipmentId")</th><th class="text-end">@L("InstalledQuantity")</th><th style="width:50px"><span class="visually-hidden">@Localizer["Ed_Actions"]</span></th></tr></thead>
                         <tbody>
                         @foreach (var q in d.Equipment)
                         {
@@ -183,15 +184,13 @@
                                 <td>@q.Text</td>
                                 <td class="text-end vs-num">@q.InstalledQuantity.ToString("0.####")</td>
                                 <td class="text-end">
-                                    <form asp-action="RemoveEquipment" method="post" class="d-inline">
-                                        <input type="hidden" name="id" value="@d.Id" /><input type="hidden" name="lineId" value="@q.Id" />
-                                        <button class="vs-icon-btn" title="@Localizer["Pc_Btn_Remove"]" aria-label="@Localizer["Pc_Btn_Remove"]"><i class="bi bi-trash"></i></button>
-                                    </form>
+                                    <pems-related-remove action="@Url.Action("RemoveEquipment")" key-name="lineId" key-value="@q.Id.ToString()"
+                                                         parent-name="id" parent-value="@d.Id.ToString()" label="@Localizer["Pc_Btn_Remove"]" />
                                 </td>
                             </tr>
                         }
                         </tbody>
-                    </table>
+                    </pems-related-table>
                     @if (!d.Equipment.Any()) { <div class="vs-empty py-2">@Localizer["Pc_Empty_Equipment"]</div> }
                 </div>
                 <button type="button" class="vs-btn vs-btn--sm" data-bs-toggle="modal" data-bs-target="#pcEquipModal"><i class="bi bi-plus-lg"></i> @Localizer["Pc_Btn_AddEquipment"]</button>
@@ -212,7 +211,7 @@
 
                 <label class="form-label">@L("Attributes") <span class="pc-req" aria-hidden="true">*</span></label>
                 <div class="pc-table-scroll">
-                    <table class="table table-sm table-enterprise vs-dense mb-1" id="pcAttrTable">
+                    <pems-related-table id="pcAttrTable">
                         <thead><tr><th style="width:34%">@L("AttributeName")</th><th>@L("AttributeValue")</th><th style="width:40px"></th></tr></thead>
                         <tbody>
                             <tr>
@@ -233,7 +232,7 @@
                                 </tr>
                             }
                         </tbody>
-                    </table>
+                    </pems-related-table>
                 </div>
                 <button type="button" class="vs-btn vs-btn--sm" id="pcAddAttr" data-next-index="@(extraAttrs.Count + 1)"><i class="bi bi-plus-lg"></i> @Localizer["Pc_Btn_AddAttribute"]</button>
                 <div class="form-text">@Localizer["Pc_Hint_FreeFormat"]</div>
@@ -450,7 +449,7 @@
             <section class="vs-panel pc-card">
                 <h2 class="vs-section__title"><i class="bi bi-chat-left-text"></i> @L("Notes")</h2>
                 <div class="pc-table-scroll mb-2">
-                    <table class="table table-sm table-enterprise vs-dense mb-0">
+                    <pems-related-table>
                         <thead><tr><th>@Localizer["Pc_Col_Date"]</th><th>@Localizer["Pc_Col_Person"]</th><th>@Localizer["Pc_Col_Stage"]</th><th>@L("Text")</th></tr></thead>
                         <tbody>
                         @foreach (var n in d.Notes)
@@ -458,7 +457,7 @@
                             <tr><td class="vs-num text-nowrap">@n.CreatedDate.ToString("yyyy-MM-dd HH:mm")</td><td>@n.AuthorName</td><td>@(string.IsNullOrEmpty(n.StepKey) ? "" : Localizer["Pc_Step_" + n.StepKey].Value)</td><td>@n.Text</td></tr>
                         }
                         </tbody>
-                    </table>
+                    </pems-related-table>
                     @if (!d.Notes.Any()) { <div class="vs-empty py-2">@Localizer["Pc_Empty_Notes"]</div> }
                 </div>
                 <form asp-action="AddNote" method="post" class="d-flex gap-2">
