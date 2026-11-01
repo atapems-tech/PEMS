@@ -227,4 +227,16 @@ public class RelatedListComponentTests
         Assert.DoesNotContain("<table", vdr);
         Assert.Contains("_content/PEMS.UI/pems-list.css", vdr);
     }
+
+    [Fact]
+    public void Wave3dWorkOrder_TakesItsFiveTablesFromTheComponent()
+    {
+        var dir = new DirectoryInfo(AppContext.BaseDirectory);
+        while (dir != null && !File.Exists(Path.Combine(dir.FullName, "PEMS.Web", "PEMS.Web.csproj"))) dir = dir.Parent;
+        Assert.NotNull(dir);
+        var wo = File.ReadAllText(Path.Combine(dir!.FullName, "PEMS.Web", "Views", "WorkOrder", "Details.cshtml"));
+        Assert.Equal(5, System.Text.RegularExpressions.Regex.Matches(wo, "<pems-related-table>").Count);
+        Assert.DoesNotContain("<table", wo);
+        Assert.Contains("_content/PEMS.UI/pems-list.css", wo);
+    }
 }

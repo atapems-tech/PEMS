@@ -471,7 +471,6 @@
     "PEMS.Web/Views/Transmittal/Details.cshtml": 2,
     "PEMS.Web/Views/VDRImport/Index.cshtml": 1,
     "PEMS.Web/Views/VDRImport/Review.cshtml": 1,
-    "PEMS.Web/Views/WorkOrder/Details.cshtml": 5,
     "PEMS.Web/Views/WorkRequest/Details.cshtml": 2
   },
   "tabs": {
