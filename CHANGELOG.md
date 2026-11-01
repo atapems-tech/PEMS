@@ -3,6 +3,15 @@
 All notable changes to PEMS. No system version is defined yet (plan row F_CI), so entries are grouped by date
 and theme and were reconstructed from the git history (initial import 2026-09-05). Newest first.
 
+## 2026-11-01 - RelatedList wave R2: tender, procurement package and receipt details (SCRUM-337)
+
+### Changed
+- **Tender details:** invited vendors, invitations, bids and clarifications are related sections.
+- **Procurement package details:** MRs, quotations, communications and approvals are related sections. Its English-only headings, empty texts and buttons now read in the language.
+- **Incoming receipt (IRN) details:** lines, disposition records and status history are related sections; so are receiving from the PO and recording a disposition.
+- **Inside the sections:** add forms use `<pems-related-add>` where they are simple and keep their layout otherwise. Every table comes from the component, and the buttons are `pems-button`. Confirmations read in the language.
+- 16 texts in English and Persian. The header workflow buttons of the receipt are not changed (SCRUM-53 / SCRUM-483).
+
 ## 2026-11-01 - RelatedList: child collections of a detail page (SCRUM-337)
 
 ### Added

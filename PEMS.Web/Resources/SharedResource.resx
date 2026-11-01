@@ -3636,4 +3636,20 @@
   <data name="RrL_Empty" xml:space="preserve"><value>No routing rules configured.</value></data>
   <data name="RrL_HighHelp" xml:space="preserve"><value>Above this value processing may be automatic. Between 0 and 1.</value></data>
   <data name="RrL_MediumHelp" xml:space="preserve"><value>Above this value an engineering review is expected. Between 0 and 1.</value></data>
+  <data name="TnD_NoVendors" xml:space="preserve"><value>No vendors invited yet.</value></data>
+  <data name="TnD_NoBids" xml:space="preserve"><value>No bids yet.</value></data>
+  <data name="TnD_NoClarifications" xml:space="preserve"><value>No clarifications yet.</value></data>
+  <data name="PkD_NoMrs" xml:space="preserve"><value>No MRs linked yet.</value></data>
+  <data name="PkD_LinkMr" xml:space="preserve"><value>Link existing MR</value></data>
+  <data name="PkD_Quotations" xml:space="preserve"><value>Quotations (MRQ)</value></data>
+  <data name="PkD_NoQuotations" xml:space="preserve"><value>No quotations yet (add them on the linked MR).</value></data>
+  <data name="PkD_Communications" xml:space="preserve"><value>Communications: vendor inquiries, clarifications, questions, responses</value></data>
+  <data name="PkD_NoCommunications" xml:space="preserve"><value>No communications yet.</value></data>
+  <data name="PkD_Approvals" xml:space="preserve"><value>Approval history</value></data>
+  <data name="PkD_NoApprovals" xml:space="preserve"><value>No approvals recorded yet.</value></data>
+  <data name="PkD_Approver" xml:space="preserve"><value>Approver</value></data>
+  <data name="PkD_RecordDecision" xml:space="preserve"><value>Record decision</value></data>
+  <data name="PkD_Closeout" xml:space="preserve"><value>Close out package</value></data>
+  <data name="PkD_ConfirmCloseout" xml:space="preserve"><value>Close out this procurement package?</value></data>
+  <data name="IrnD_ConfirmDisposition" xml:space="preserve"><value>Record this disposition and start QA approval?</value></data>
 </root>

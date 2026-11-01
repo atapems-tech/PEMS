@@ -7,6 +7,11 @@
     var clarifications = (IEnumerable<PEMS.Domain.Entities.ProcurementCommunication>)(ViewBag.Clarifications ?? Array.Empty<PEMS.Domain.Entities.ProcurementCommunication>());
 }
 
+@section Styles {
+    <link rel="stylesheet" href="~/css/pems-workspace.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/_content/PEMS.UI/pems-list.css" asp-append-version="true" />
+}
+
 @if (TempData["Message"] != null)
 {
     <pems-alert tone="success">@TempData["Message"]</pems-alert>
@@ -36,7 +41,7 @@
         {
             <form asp-action="OpenForBidding" method="post" class="d-inline">
                 <input type="hidden" name="tenderId" value="@Model.TenderId" />
-                <button type="submit" class="btn btn-primary btn-sm">@Localizer["Open for Bidding"]</button>
+                <pems-button tone="primary" size="small" type="submit">@Localizer["Open for Bidding"]</pems-button>
             </form>
         }
         @if (Model.Status == "Open")
@@ -63,9 +68,8 @@
 
 @if (Model.Status == "Draft" || Model.Status == "Issued")
 {
-    <div class="content-card mt-3">
-        <h6>@Localizer["Invited Vendors"]</h6>
-        <table class="table table-sm">
+    <pems-related-list id="tenderVendors" icon="bi-people" title="@Localizer["Invited Vendors"]" count="@Model.InvitedVendors.Count" empty="@(!Model.InvitedVendors.Any())" empty-text="@Localizer["TnD_NoVendors"]">
+        <pems-related-table>
             <thead><tr><th>@Localizer["Vendor"]</th><th>@Localizer["Qualification Confirmed"]</th></tr></thead>
             <tbody>
                 @foreach (var v in Model.InvitedVendors)
@@ -73,15 +77,11 @@
                     <tr><td>@v.Vendor?.Name</td><td>@(v.QualificationConfirmed ? Localizer["Yes"] : Localizer["No"])</td></tr>
                 }
             </tbody>
-        </table>
-        <form asp-action="InviteVendor" method="post" class="d-flex gap-2">
-            <input type="hidden" name="tenderId" value="@Model.TenderId" />
-            <select name="vendorId" class="form-select form-select-sm" style="max-width:300px" required>
-                @foreach (var v in vendors) { <option value="@v.VendorId">@v.Name</option> }
-            </select>
-            <button type="submit" class="btn btn-primary btn-sm">@Localizer["Invite Vendor"]</button>
-        </form>
-    </div>
+        </pems-related-table>
+        <pems-related-add action="@Url.Action("InviteVendor")" parent-name="tenderId" parent-value="@Model.TenderId.ToString()" submit-label="@Localizer["Invite Vendor"]">
+            <pems-list-filter-select id="tenderInviteVendor" name="vendorId" label="@Localizer["Vendor"]" items="@(((IEnumerable<dynamic>)vendors).Select(v => new SelectListItem((string)v.Name, ((int)v.VendorId).ToString())))" />
+        </pems-related-add>
+    </pems-related-list>
 }
 
 @* SCRUM-429: invitations by the organisation's email and their send log *@
@@ -94,34 +94,30 @@
 }
 @if (Model.InvitedVendors.Any(v => v.IsActive) || invitationLog.Count > 0)
 {
-    <div class="content-card mt-3" id="tenderInvitations">
-        <div class="d-flex align-items-center justify-content-between flex-wrap gap-2 mb-2">
-            <h6 class="mb-0">@Localizer["Tinv_Title"]</h6>
-            @if (canSend && emailEnabled)
-            {
-                <form asp-action="SendInvitations" method="post" class="d-inline">
-                    <input type="hidden" name="tenderId" value="@Model.TenderId" />
-                    <button type="submit" class="btn btn-primary btn-sm"><i class="bi bi-envelope-paper"></i> @Localizer["Tinv_SendAll"]</button>
-                </form>
-            }
-        </div>
+    <pems-related-list id="tenderInvitations" icon="bi-envelope-paper" title="@Localizer["Tinv_Title"]" count="@invitationLog.Count">
+        @if (canSend && emailEnabled)
+        {
+            <form asp-action="SendInvitations" method="post" class="px-3 pt-2">
+                <input type="hidden" name="tenderId" value="@Model.TenderId" />
+                <pems-button tone="primary" size="small" type="submit"><i class="bi bi-envelope-paper" aria-hidden="true"></i> @Localizer["Tinv_SendAll"]</pems-button>
+            </form>
+        }
         @if (!emailEnabled)
         {
-            <pems-alert tone="secondary" css="py-2 mb-2"><i class="bi bi-info-circle"></i> @Localizer["Tinv_EmailOffHint"]</pems-alert>
+            <pems-alert tone="secondary" css="py-2 m-2"><i class="bi bi-info-circle"></i> @Localizer["Tinv_EmailOffHint"]</pems-alert>
         }
         else if (mayEditTender && !statusAllowsSend)
         {
-            <p class="small text-muted mb-2">@Localizer["Tinv_StatusHint"]</p>
+            <p class="lp-rel-empty">@Localizer["Tinv_StatusHint"]</p>
         }
         else if (canSend)
         {
-            <p class="small text-muted mb-2">@Localizer["Tinv_Hint"]</p>
+            <p class="lp-rel-empty">@Localizer["Tinv_Hint"]</p>
         }
 
         @if (invitationLog.Count > 0)
         {
-            <div class="table-responsive">
-                <table class="table table-sm align-middle mb-0">
+            <pems-related-table>
                     <thead>
                         <tr>
                             <th>@Localizer["Vendor"]</th><th>@Localizer["Tinv_To"]</th><th>@Localizer["Status"]</th><th>@Localizer["Tinv_Attempts"]</th>
@@ -158,19 +154,17 @@
                             </tr>
                         }
                     </tbody>
-                </table>
-            </div>
+            </pems-related-table>
         }
-    </div>
+    </pems-related-list>
 }
 
-<div class="content-card mt-3">
-    <h6>@Localizer["Bids"]</h6>
+<pems-related-list id="tenderBids" icon="bi-cash-stack" title="@Localizer["Bids"]" count="@Model.Bids.Count" empty="@(!Model.Bids.Any())" empty-text="@Localizer["TnD_NoBids"]">
     @foreach (var bid in Model.Bids)
     {
         var technicalPassed = bid.Evaluations.Any(e => e.EvaluationType == "Technical" && e.Decision == "Passed");
         var commercialPassed = bid.Evaluations.Any(e => e.EvaluationType == "Commercial" && e.Decision == "Passed");
-        <div class="border rounded p-2 mb-2">
+        <div class="border-bottom px-3 py-2">
             <div class="d-flex justify-content-between flex-wrap">
                 <div>
                     <strong>@bid.Vendor?.Name</strong> — @bid.BidNumber
@@ -241,7 +235,7 @@
 
     @if (Model.Status == "Open")
     {
-        <form asp-action="SubmitBid" method="post" class="row g-2 mt-2">
+        <form asp-action="SubmitBid" method="post" class="row g-2 m-0 px-2 py-2 lp-rel-add">
             <input type="hidden" name="tenderId" value="@Model.TenderId" />
             <div class="col-md-3">
                 <select name="vendorId" class="form-select form-select-sm" required>
@@ -252,16 +246,15 @@
             <div class="col-md-2"><input type="text" name="currency" class="form-control form-control-sm" value="USD" /></div>
             <div class="col-md-2"><input type="text" name="technicalSubmissionReference" class="form-control form-control-sm" placeholder="@Localizer["Technical"]" /></div>
             <div class="col-md-2"><input type="text" name="commercialSubmissionReference" class="form-control form-control-sm" placeholder="@Localizer["Commercial"]" /></div>
-            <div class="col-md-1"><button type="submit" class="btn btn-primary btn-sm">@Localizer["Submit Bid"]</button></div>
+            <div class="col-md-1"><pems-button tone="primary" size="small" type="submit">@Localizer["Submit Bid"]</pems-button></div>
         </form>
     }
-</div>
+</pems-related-list>
 
-<div class="content-card mt-3">
-    <h6>@Localizer["Clarifications"]</h6>
+<pems-related-list id="tenderClarifications" icon="bi-chat-square-text" title="@Localizer["Clarifications"]" count="@clarifications.Count()" empty="@(!clarifications.Any())" empty-text="@Localizer["TnD_NoClarifications"]">
     @foreach (var c in clarifications)
     {
-        <div class="border rounded p-2 mb-2">
+        <div class="border-bottom px-3 py-2">
             <div class="d-flex justify-content-between flex-wrap">
                 <div><pems-badge tone="neutral">@c.Type</pems-badge> <strong>@c.Subject</strong> @(c.Vendor != null ? "— " + c.Vendor.Name : "")</div>
                 <pems-badge tone="@(c.ActionStatus == "Answered" ? "success" : "warning")">@c.ActionStatus</pems-badge>
@@ -286,7 +279,7 @@
             }
         </div>
     }
-    <form asp-action="RaiseClarification" method="post" class="row g-2 mt-2">
+    <form asp-action="RaiseClarification" method="post" class="row g-2 m-0 px-2 py-2 lp-rel-add">
         <input type="hidden" name="tenderId" value="@Model.TenderId" />
         <input type="hidden" name="procurementPackageId" value="@Model.ProcurementPackageId" />
         <div class="col-md-2">
@@ -305,6 +298,6 @@
         </div>
         <div class="col-md-3"><input type="text" name="subject" class="form-control form-control-sm" placeholder="@Localizer["Subject"]" required /></div>
         <div class="col-md-3"><input type="text" name="body" class="form-control form-control-sm" placeholder="@Localizer["Question"]" required /></div>
-        <div class="col-md-1"><button type="submit" class="btn btn-primary btn-sm">@Localizer["Raise"]</button></div>
+        <div class="col-md-1"><pems-button tone="primary" size="small" type="submit">@Localizer["Raise"]</pems-button></div>
     </form>
-</div>
+</pems-related-list>
