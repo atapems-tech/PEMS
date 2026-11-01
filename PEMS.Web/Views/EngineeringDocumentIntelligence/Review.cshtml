@@ -37,7 +37,7 @@
             <form asp-action="AdvanceStage" method="post" class="d-inline">
                 <input type="hidden" name="documentId" value="@Model.DocumentId" />
                 <input type="hidden" name="newStage" value="@s" />
-                <button type="submit" class="btn btn-sm @(s == Model.AIWorkflowStage ? "btn-pems-solid" : "btn-outline-secondary")">@s</button>
+                <pems-button tone="none" size="small" css="@(s == Model.AIWorkflowStage ? "btn-pems-solid" : "btn-outline-secondary")" type="submit">@s</pems-button>
             </form>
         }
     </div>

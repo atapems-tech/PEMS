@@ -23,9 +23,9 @@
             کاملاً روی Equipment.EquipmentClassId اثر دارد و به‌صورت خودکار در Audit Log ثبت می‌شود.
         </p>
         <div class="btn-group btn-group-sm">
-            <a asp-action="ReviewQueue" asp-route-status="PENDING" class="btn @(status == "PENDING" ? "btn-pems-solid" : "btn-outline-secondary")">Pending</a>
-            <a asp-action="ReviewQueue" asp-route-status="ACCEPTED" class="btn @(status == "ACCEPTED" ? "btn-pems-solid" : "btn-outline-secondary")">Accepted</a>
-            <a asp-action="ReviewQueue" asp-route-status="REJECTED" class="btn @(status == "REJECTED" ? "btn-pems-solid" : "btn-outline-secondary")">Rejected</a>
+            <pems-button as="a" tone="none" css="@(status == "PENDING" ? "btn-pems-solid" : "btn-outline-secondary")" asp-action="ReviewQueue" asp-route-status="PENDING">Pending</pems-button>
+            <pems-button as="a" tone="none" css="@(status == "ACCEPTED" ? "btn-pems-solid" : "btn-outline-secondary")" asp-action="ReviewQueue" asp-route-status="ACCEPTED">Accepted</pems-button>
+            <pems-button as="a" tone="none" css="@(status == "REJECTED" ? "btn-pems-solid" : "btn-outline-secondary")" asp-action="ReviewQueue" asp-route-status="REJECTED">Rejected</pems-button>
         </div>
     </div>
 

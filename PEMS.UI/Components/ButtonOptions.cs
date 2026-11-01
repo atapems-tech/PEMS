@@ -10,7 +10,8 @@ public enum Size { Small, Medium, Large }
 public sealed record ButtonOptions
 {
     public required TranslatableText Label { get; init; }
-    public Tone Tone { get; init; } = Tone.Primary;
+    /// <summary>The colour family; null writes no colour class, for the few buttons whose class the page owns (btn-pems, btn-link) and passes in <see cref="CssClass"/>.</summary>
+    public Tone? Tone { get; init; } = UI.Components.Tone.Primary;
     public Size Size { get; init; } = Size.Medium;
     public bool Disabled { get; init; }
     public string Type { get; init; } = "button";

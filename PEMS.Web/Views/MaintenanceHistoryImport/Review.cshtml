@@ -62,12 +62,10 @@
     {
         <span class="pems-filter-active-count">1</span>
     }
-    <a asp-action="Review" asp-route-batchId="@Model.MaintenanceHistoryImportBatchId"
-       class="btn btn-sm @(statusFilter == null ? "btn-pems-solid" : "btn-outline-secondary")">All</a>
+    <pems-button as="a" tone="none" size="small" css="@(statusFilter == null ? "btn-pems-solid" : "btn-outline-secondary")" asp-action="Review" asp-route-batchId="@Model.MaintenanceHistoryImportBatchId">All</pems-button>
     @foreach (var s in filterOptions)
     {
-        <a asp-action="Review" asp-route-batchId="@Model.MaintenanceHistoryImportBatchId" asp-route-status="@s"
-           class="btn btn-sm @(statusFilter == s ? "btn-pems-solid" : "btn-outline-secondary")">@StatusLabel(s)</a>
+        <pems-button as="a" tone="none" size="small" css="@(statusFilter == s ? "btn-pems-solid" : "btn-outline-secondary")" asp-action="Review" asp-route-batchId="@Model.MaintenanceHistoryImportBatchId" asp-route-status="@s">@StatusLabel(s)</pems-button>
     }
     @if (!string.IsNullOrEmpty(statusFilter))
     {
@@ -101,10 +99,9 @@
                                         <input type="hidden" name="page" value="@Model.Rows.Page" />
                                         <input type="hidden" name="status" value="@statusFilter" />
                                         <input type="hidden" name="include" value="@(!r.IncludeInCommit)" />
-                                        <button type="submit" class="btn btn-sm @(r.IncludeInCommit ? "btn-success" : "btn-outline-secondary")" style="width:36px;"
-                                                title="@(r.IncludeInCommit ? "Approved - click to exclude" : "Excluded - click to approve")">
+                                        <pems-button tone="none" size="small" css="@(r.IncludeInCommit ? "btn-success" : "btn-outline-secondary")" type="submit" style="width:36px;" title="@(r.IncludeInCommit ? "Approved - click to exclude" : "Excluded - click to approve")">
                                             <i class="bi @(r.IncludeInCommit ? "bi-check-lg" : "bi-x-lg")"></i>
-                                        </button>
+                                        </pems-button>
                                     </form>
                                 }
                                 else

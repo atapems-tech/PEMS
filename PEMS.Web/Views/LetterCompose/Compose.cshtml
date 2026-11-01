@@ -367,11 +367,11 @@
             </form>
         }
         <span class="lc-spacer"></span>
-        <a class="btn btn-link" asp-controller="Letter" asp-action="Index">@Localizer["Lc_Cancel"]</a>
-        <button type="button" class="btn btn-primary" id="lcSubmitBtn">
+        <pems-button as="a" tone="none" css="btn-link" asp-controller="Letter" asp-action="Index">@Localizer["Lc_Cancel"]</pems-button>
+        <pems-button tone="none" css="btn-primary" type="button" id="lcSubmitBtn">
             <i class="bi bi-send" aria-hidden="true"></i>
             <span id="lcSubmitText" data-approval="@Localizer["Lc_SubmitForApproval"]" data-send="@Localizer["Lt_Send"]">@Localizer[isReferral ? "Ct_SendReferral" : input.ApprovalRequired || isOutgoing ? "Lc_SubmitForApproval" : "Lt_Send"]</span>
-        </button>
+        </pems-button>
     </div>
 </div>
 

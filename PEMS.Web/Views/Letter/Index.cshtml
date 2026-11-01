@@ -349,7 +349,7 @@
                                         @foreach (var (value, label) in new[] { ("", Localizer["Lt_TypeAll"].Value), ("Incoming", Localizer["Incoming"].Value), ("Outgoing", Localizer["Outgoing"].Value), ("Internal", Localizer["Internal"].Value) })
                                         {
                                             <input type="radio" class="btn-check" name="letterType" id="fpType_@(value.Length == 0 ? "all" : value)" value="@value" checked="@(currentType == value)" />
-                                            <label class="btn btn-sm btn-outline-secondary" for="fpType_@(value.Length == 0 ? "all" : value)">@label</label>
+                                            <pems-button as="label" tone="neutral" size="small" outline="true" for="fpType_@(value.Length == 0 ? "all" : value)">@label</pems-button>
                                         }
                                     </div>
                                 </fieldset>
@@ -357,11 +357,11 @@
                                     <legend class="lp-lbl">@Localizer["Lt_Priority"]</legend>
                                     <div class="lp-seg">
                                         <input type="radio" class="btn-check" name="priority" id="fpPri_all" value="" checked="@(currentPriority == "")" />
-                                        <label class="btn btn-sm btn-outline-secondary" for="fpPri_all">@Localizer["Lt_Any"]</label>
+                                        <pems-button as="label" tone="neutral" size="small" outline="true" for="fpPri_all">@Localizer["Lt_Any"]</pems-button>
                                         @foreach (var pr in new[] { "Urgent", "High", "Normal", "Low" })
                                         {
                                             <input type="radio" class="btn-check" name="priority" id="fpPri_@pr" value="@pr" checked="@(currentPriority == pr)" />
-                                            <label class="btn btn-sm btn-outline-secondary" for="fpPri_@pr">@Localizer["Lt_P_" + pr]</label>
+                                            <pems-button as="label" tone="neutral" size="small" outline="true" for="fpPri_@pr">@Localizer["Lt_P_" + pr]</pems-button>
                                         }
                                     </div>
                                 </fieldset>
@@ -404,7 +404,7 @@
                                 </div>
                             </div>
                             <div class="lp-fp-foot">
-                                <a href="@Without(filterKeys)" class="btn btn-sm btn-link">@Localizer["Reset"]</a>
+                                <pems-button as="a" tone="none" size="small" css="btn-link" href="@Without(filterKeys)">@Localizer["Reset"]</pems-button>
                                 <pems-button tone="primary" size="small" type="submit"><i class="bi bi-funnel" aria-hidden="true"></i> @Localizer["Lt_ApplyFilters"]</pems-button>
                             </div>
                         </form>
@@ -618,10 +618,10 @@
                                     <form asp-action="ToggleStar" method="post" class="d-inline">
                                         <input type="hidden" name="letterId" value="@l.LetterId" />
                                         <input type="hidden" name="returnUrl" value="@Context.Request.Path@Context.Request.QueryString" />
-                                        <button type="submit" class="btn btn-sm p-0 border-0 bg-transparent" title="@Localizer["Lt_QueueStarred"]" aria-pressed="@(l.IsStarred ? "true" : "false")">
+                                        <pems-button tone="none" size="small" css="p-0 border-0 bg-transparent" type="submit" title="@Localizer["Lt_QueueStarred"]" aria-pressed="@(l.IsStarred ? "true" : "false")">
                                             <i class="bi @(l.IsStarred ? "bi-star-fill text-warning" : "bi-star text-muted")" aria-hidden="true"></i>
                                             <span class="visually-hidden">@Localizer["Lt_QueueStarred"]</span>
-                                        </button>
+                                        </pems-button>
                                     </form>
                                 </td>
                                 <td><span class="lp-type lp-type--@l.LetterType.ToLowerInvariant()" title="@Localizer[l.LetterType]"><i class="bi @typeIcon" aria-hidden="true"></i><span class="visually-hidden">@Localizer[l.LetterType]</span></span></td>

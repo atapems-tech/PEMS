@@ -3,6 +3,11 @@
 All notable changes to PEMS. No system version is defined yet (plan row F_CI), so entries are grouped by date
 and theme and were reconstructed from the git history (initial import 2026-09-05). Newest first.
 
+## 2026-11-01 - The rest of the buttons in the views (SCRUM-53, #31)
+
+### Changed
+- `<pems-button>` takes `tone="none"` (the page passes the class), `disabled="@(cond)"` and `as="label"`/`as="span"`; `ButtonOptions.Tone` is nullable. 91 more buttons in 49 views moved; the button ratchet is down to the 4 buttons built inside JavaScript strings in `_ContextualHelpDrawer`.
+
 ## 2026-11-01 - Card, progress, accordion, list-group and spinner components (SCRUM-53, #31)
 
 ### Added

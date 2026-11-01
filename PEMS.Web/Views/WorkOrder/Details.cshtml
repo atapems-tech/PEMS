@@ -307,10 +307,9 @@ else
                         {
                             var cls = a.ActionType == "Approve" ? "btn-pems-solid" : a.ActionType is "Reject" or "Cancel" ? "btn-outline-danger" : "btn-outline-primary";
                             var needsReason = WorkflowActionRules.ActionRequiresReason(a.ActionType);
-                            <button type="submit" name="actionType" value="@a.ActionType" class="btn btn-sm @cls" disabled="@(!a.IsAllowed)" title="@(a.IsAllowed ? "" : a.DeniedReason)"
-                                    onclick="@(needsReason ? "var c=this.form.comment;if(!c.value.trim()){c.classList.add('is-invalid');c.focus();return false;}" + (a.ActionType is "Reject" or "Cancel" ? "return confirm('" + Localizer["Are you sure?"] + "');" : "") : "")">
+                            <pems-button tone="none" size="small" css="@cls" type="submit" name="actionType" value="@a.ActionType" disabled="@(!a.IsAllowed)" title="@(a.IsAllowed ? "" : a.DeniedReason)" onclick="@(needsReason ? "var c=this.form.comment;if(!c.value.trim()){c.classList.add('is-invalid');c.focus();return false;}" + (a.ActionType is "Reject" or "Cancel" ? "return confirm('" + Localizer["Are you sure?"] + "');" : "") : "")">
                                 @ActionLabel(a)@if (!string.IsNullOrWhiteSpace(a.ToStageName)) { <span class="opacity-75"> → @StageByName(a.ToStageName)</span> }
-                            </button>
+                            </pems-button>
                         }
                     </div>
                     @if (Model.Status == "InProgress")
@@ -810,9 +809,9 @@ else
                                 <form asp-action="@(t.IsCompleted ? "ReopenTask" : "CompleteTask")" method="post">
                                     <input type="hidden" name="workOrderTaskId" value="@t.WorkOrderTaskId" />
                                     <input type="hidden" name="workOrderId" value="@Model.WorkOrderId" />
-                                    <button type="submit" class="btn btn-sm p-0 border-0" title="@(t.IsCompleted ? "Reopen" : "Mark complete")">
+                                    <pems-button tone="none" size="small" css="p-0 border-0" type="submit" title="@(t.IsCompleted ? "Reopen" : "Mark complete")">
                                         <i class="bi @(t.IsCompleted ? "bi-check-square-fill text-success" : "bi-square")" style="font-size:1.1rem;"></i>
-                                    </button>
+                                    </pems-button>
                                 </form>
                             }
                             else
@@ -856,7 +855,7 @@ else
                 <form asp-action="RemoveRequiredSkill" method="post" class="d-inline">
                     <input type="hidden" name="requiredSkillId" value="@rs.RequiredSkillId" />
                     <input type="hidden" name="workOrderId" value="@Model.WorkOrderId" />
-                    <button type="submit" class="btn btn-sm p-0 border-0 text-white" style="line-height:1;" title="@Localizer["حذف"]"><i class="bi bi-x"></i></button>
+                    <pems-button tone="none" size="small" css="p-0 border-0 text-white" type="submit" style="line-height:1;" title="@Localizer["حذف"]"><i class="bi bi-x"></i></pems-button>
                 </form>
                 }
             </pems-badge>

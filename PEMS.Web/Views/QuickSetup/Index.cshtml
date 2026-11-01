@@ -74,10 +74,9 @@
                 }
                 @if (showAction)
                 {
-                    <a asp-controller="@step.ActionController" asp-action="@step.ActionAction"
-                       class="btn btn-sm @(step.Status == PEMS.Application.DTOs.SetupStepStatus.Complete ? "btn-outline-secondary" : "btn-outline-primary")">
+                    <pems-button as="a" tone="none" size="small" css="@(step.Status == PEMS.Application.DTOs.SetupStepStatus.Complete ? "btn-outline-secondary" : "btn-outline-primary")" asp-controller="@step.ActionController" asp-action="@step.ActionAction">
                         @step.ActionLabel
-                    </a>
+                    </pems-button>
                 }
                 else if (isAdminOnlyTarget)
                 {
