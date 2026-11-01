@@ -3,6 +3,11 @@
 All notable changes to PEMS. No system version is defined yet (plan row F_CI), so entries are grouped by date
 and theme and were reconstructed from the git history (initial import 2026-09-05). Newest first.
 
+## 2026-11-01 - Sprint membership is set and verified when a batch starts (SCRUM-479)
+
+### Changed
+- Guideline chapter 0 and AGENTS.md: moving an issue to In Progress does not put it in the sprint; set the sprint field (`customfield_10020`) in the same step and verify with `sprint in openSprints()`. The session sweep also lists In Progress issues with no sprint. Found when eight issues of the component batch sat outside Sprint 1.
+
 ## 2026-11-01 - The rest of the buttons in the views (SCRUM-53, #31)
 
 ### Changed
