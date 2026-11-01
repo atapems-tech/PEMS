@@ -1,70 +1,127 @@
 @model PEMS.Application.DTOs.PagedResult<PEMS.Domain.Entities.AuthorizationAuditLog>
 @using Microsoft.Extensions.Localization
 @using PEMS.Web.Resources
+@using PEMS.Web.Helpers
 @inject IStringLocalizer<SharedResource> Localizer
 @{
     var resourceNames = (List<string>)ViewBag.ResourceNames;
     var decisions = (List<string>)ViewBag.Decisions;
     var userNames = (Dictionary<int, string>)ViewBag.UserNames;
-    var qsParts = new List<string>();
-    if (ViewBag.SelectedUserId != null) qsParts.Add($"userId={ViewBag.SelectedUserId}");
-    if (!string.IsNullOrEmpty((string?)ViewBag.SelectedResourceName)) qsParts.Add($"resourceName={Uri.EscapeDataString((string)ViewBag.SelectedResourceName)}");
-    if (!string.IsNullOrEmpty((string?)ViewBag.SelectedActionName)) qsParts.Add($"actionName={Uri.EscapeDataString((string)ViewBag.SelectedActionName)}");
-    if (!string.IsNullOrEmpty((string?)ViewBag.SelectedDecision)) qsParts.Add($"decision={Uri.EscapeDataString((string)ViewBag.SelectedDecision)}");
-    if (!string.IsNullOrEmpty((string?)ViewBag.SelectedResourceId)) qsParts.Add($"resourceId={Uri.EscapeDataString((string)ViewBag.SelectedResourceId)}");
-    if (!string.IsNullOrEmpty((string?)ViewBag.SelectedFromDate)) qsParts.Add($"fromDate={ViewBag.SelectedFromDate}");
-    if (!string.IsNullOrEmpty((string?)ViewBag.SelectedToDate)) qsParts.Add($"toDate={ViewBag.SelectedToDate}");
+    var userId = ViewBag.SelectedUserId?.ToString() as string;
+    var resource = (string?)ViewBag.SelectedResourceName;
+    var actionName = (string?)ViewBag.SelectedActionName;
+    var decision = (string?)ViewBag.SelectedDecision;
+    var resourceId = (string?)ViewBag.SelectedResourceId;
+    var from = (string?)ViewBag.SelectedFromDate;
+    var to = (string?)ViewBag.SelectedToDate;
+    var filterCount = new[] { userId, resource, actionName, decision, resourceId, from, to }.Count(x => !string.IsNullOrEmpty(x));
+
+    string Query(string? skip)
+    {
+        var parts = new List<string>();
+        void Add(string key, string? value) { if (!string.IsNullOrEmpty(value) && skip != key) parts.Add($"{key}={Uri.EscapeDataString(value)}"); }
+        Add("userId", userId); Add("resourceName", resource); Add("actionName", actionName); Add("decision", decision);
+        Add("resourceId", resourceId); Add("fromDate", from); Add("toDate", to);
+        return string.Join("&", parts);
+    }
+    string Without(string key) { var s = Query(key); return Url.Action("Index") + (s.Length > 0 ? "?" + s : ""); }
+    string UserText(string id) => int.TryParse(id, out var n) && userNames.TryGetValue(n, out var name) ? name : id;
 }
 
-<div class="admin-page-shell">
-    <div class="admin-hero">
-        <div class="d-flex align-items-center gap-3"><div><p>@Localizer["Every authorization decision - who, what, why."]</p></div></div>
-    </div>
-    <div class="content-card">
-        <form method="get" class="admin-toolbar flex-wrap">
-            <div class="admin-toolbar-main flex-wrap">
-                <div><label class="form-label small mb-1">@Localizer["Resource"]</label><select name="resourceName" class="form-select form-select-sm"><option value="">@Localizer["All"]</option>@foreach(var r in resourceNames){<option value="@r" selected="@(r == (string?)ViewBag.SelectedResourceName)">@r</option>}</select></div>
-                <div><label class="form-label small mb-1">@Localizer["Action"]</label><input type="search" name="actionName" value="@ViewBag.SelectedActionName" class="form-control form-control-sm" style="width:120px" /></div>
-                <div><label class="form-label small mb-1">@Localizer["Decision"]</label><select name="decision" class="form-select form-select-sm"><option value="">@Localizer["All"]</option>@foreach(var d in decisions){<option value="@d" selected="@(d == (string?)ViewBag.SelectedDecision)">@d</option>}</select></div>
-                <div><label class="form-label small mb-1">@Localizer["Resource ID"]</label><input type="search" name="resourceId" value="@ViewBag.SelectedResourceId" class="form-control form-control-sm" style="width:100px" /></div>
-                <div><label class="form-label small mb-1">@Localizer["From"]</label><input type="date" name="fromDate" value="@ViewBag.SelectedFromDate" class="form-control form-control-sm" /></div>
-                <div><label class="form-label small mb-1">@Localizer["To"]</label><input type="date" name="toDate" value="@ViewBag.SelectedToDate" class="form-control form-control-sm" /></div>
-            </div>
-            <div class="admin-toolbar-actions">
-                <button type="submit" class="btn btn-pems-solid btn-sm"><i class="bi bi-funnel me-1"></i> @Localizer["Apply filters"]</button>
-                <a asp-action="Index" class="btn btn-outline-secondary btn-sm">@Localizer["Reset"]</a>
-            </div>
-        </form>
-        <div class="table-responsive">
-            <table class="table table-enterprise">
-                <thead><tr><th>@Localizer["Time"]</th><th>@Localizer["User"]</th><th>@Localizer["Permission"]</th><th>@Localizer["Resource ID"]</th><th>@Localizer["Decision"]</th><th>@Localizer["Reason"]</th><th>@Localizer["Scope"]</th></tr></thead>
+@section Styles {
+    <link rel="stylesheet" href="~/css/pems-workspace.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/_content/PEMS.UI/pems-list.css" asp-append-version="true" />
+}
+
+@* SCRUM-337 W4: built from the PEMS.UI list-page component; the filter row moved into the filters dropdown, every
+   active filter is a chip (a user opened from another page too) and paging keeps them. *@
+<pems-list-page texts="@ListPageTexts.From(Localizer)">
+    <pems-list-panel>
+
+        <pems-list-toolbar heading="@Localizer["AzL_Title"]" heading-title="@Localizer["Every authorization decision - who, what, why."]" total="@Model.TotalCount">
+            <pems-list-tools>
+                <pems-list-filters form-id="azFilterForm" action="@Url.Action("Index")" count="@filterCount" reset-href="@Url.Action("Index")">
+                    @if (!string.IsNullOrEmpty(userId)) { <input type="hidden" name="userId" value="@userId" /> }
+                    <pems-list-filter-select id="azFilterResource" name="resourceName" label="@Localizer["Resource"]" value="@resource"
+                                             all-text="@Localizer["Ed_All"]" items="@resourceNames.Select(r => new SelectListItem(r, r))" />
+                    <div>
+                        <label class="lp-lbl" for="azFilterAction">@Localizer["Cm_Action"]</label>
+                        <input type="search" id="azFilterAction" name="actionName" value="@actionName" class="form-control" />
+                    </div>
+                    <pems-list-filter-select id="azFilterDecision" name="decision" label="@Localizer["Decision"]" value="@decision"
+                                             all-text="@Localizer["Ed_All"]" items="@decisions.Select(d => new SelectListItem(d, d))" />
+                    <div>
+                        <label class="lp-lbl" for="azFilterResourceId">@Localizer["Resource ID"]</label>
+                        <input type="search" id="azFilterResourceId" name="resourceId" value="@resourceId" class="form-control" />
+                    </div>
+                    <div>
+                        <label class="lp-lbl" for="azFilterFrom">@Localizer["ItL_From"]</label>
+                        <input type="date" id="azFilterFrom" name="fromDate" value="@from" class="form-control" />
+                    </div>
+                    <div>
+                        <label class="lp-lbl" for="azFilterTo">@Localizer["ItL_To"]</label>
+                        <input type="date" id="azFilterTo" name="toDate" value="@to" class="form-control" />
+                    </div>
+                </pems-list-filters>
+                <pems-list-reset-columns grid-key="AuthorizationAudit" />
+            </pems-list-tools>
+        </pems-list-toolbar>
+
+        <pems-list-chips reset-href="@Url.Action("Index")">
+            @if (!string.IsNullOrEmpty(userId)) { <pems-list-chip label="@Localizer["AlL_User"]" value="@UserText(userId)" remove-href="@Without("userId")" /> }
+            @if (!string.IsNullOrEmpty(resource)) { <pems-list-chip label="@Localizer["Resource"]" value="@resource" remove-href="@Without("resourceName")" /> }
+            @if (!string.IsNullOrEmpty(actionName)) { <pems-list-chip label="@Localizer["Cm_Action"]" value="@actionName" remove-href="@Without("actionName")" /> }
+            @if (!string.IsNullOrEmpty(decision)) { <pems-list-chip label="@Localizer["Decision"]" value="@decision" remove-href="@Without("decision")" /> }
+            @if (!string.IsNullOrEmpty(resourceId)) { <pems-list-chip label="@Localizer["Resource ID"]" value="@resourceId" remove-href="@Without("resourceId")" /> }
+            @if (!string.IsNullOrEmpty(from)) { <pems-list-chip label="@Localizer["ItL_From"]" value="@from" remove-href="@Without("fromDate")" /> }
+            @if (!string.IsNullOrEmpty(to)) { <pems-list-chip label="@Localizer["ItL_To"]" value="@to" remove-href="@Without("toDate")" /> }
+        </pems-list-chips>
+
+        <pems-list-grid>
+            <pems-list-table grid-key="AuthorizationAudit" empty="@(Model.Items.Count == 0)" empty-text="@Localizer["No authorization events found"]">
+                <thead>
+                    <tr>
+                        <th data-col-key="time" data-resizable="true" data-min-width="130" data-max-width="220" style="width:160px">@Localizer["AlL_Time"]</th>
+                        <th data-col-key="user" data-resizable="true" data-min-width="90" data-max-width="200" style="width:130px">@Localizer["AlL_User"]</th>
+                        <th data-col-key="permission" data-resizable="true" data-min-width="140" data-max-width="320" style="width:200px">@Localizer["Permission"]</th>
+                        <th data-col-key="resourceId" data-resizable="true" data-min-width="80" data-max-width="180" style="width:110px" class="vs-hide-md">@Localizer["Resource ID"]</th>
+                        <th data-col-key="decision" data-resizable="true" data-min-width="80" data-max-width="140" style="width:100px">@Localizer["Decision"]</th>
+                        <th data-col-key="reason" data-resizable="true" data-min-width="140" data-max-width="520">@Localizer["ItL_Reason"]</th>
+                        <th data-col-key="scope" data-resizable="true" data-min-width="90" data-max-width="220" style="width:140px" class="vs-hide-md">@Localizer["Scope"]</th>
+                    </tr>
+                </thead>
                 <tbody>
                 @foreach (var log in Model.Items)
                 {
-                    var badge = log.Decision == "Allow" ? "active" : "locked";
-                    <tr>
-                        <td class="row-secondary">@log.Timestamp.ToString("yyyy-MM-dd HH:mm:ss")</td>
-                        <td>@(log.UserId.HasValue && userNames.TryGetValue(log.UserId.Value, out var un) ? un : (log.UserId?.ToString() ?? "—"))</td>
-                        <td><code>@($"{log.ResourceName}.{log.ActionName}")</code></td>
-                        <td class="row-secondary">@(log.ResourceId ?? "—")</td>
-                        <td><span class="admin-status @badge">@log.Decision</span></td>
-                        <td class="row-secondary" title="@log.Reason">@log.Reason</td>
-                        <td class="row-secondary">@(log.ScopeType == null ? "—" : $"{log.ScopeType}={log.ScopeValue}")</td>
+                    <tr class="lp-row">
+                        <td class="small"><span class="vs-num">@log.Timestamp.ToString("yyyy-MM-dd HH:mm:ss")</span></td>
+                        <td class="small">@(log.UserId.HasValue && userNames.TryGetValue(log.UserId.Value, out var un) ? un : (log.UserId?.ToString() ?? "—"))</td>
+                        <td class="small"><code>@($"{log.ResourceName}.{log.ActionName}")</code></td>
+                        <td class="small vs-hide-md"><span class="vs-num">@(log.ResourceId ?? "—")</span></td>
+                        <td><span class="vs-pill @(log.Decision == "Allow" ? "vs-pill--success" : "vs-pill--danger")">@log.Decision</span></td>
+                        <td class="small text-muted"><span class="vs-title-cell" title="@log.Reason">@log.Reason</span></td>
+                        <td class="small vs-hide-md">@(log.ScopeType == null ? "—" : $"{log.ScopeType}={log.ScopeValue}")</td>
                     </tr>
                 }
                 </tbody>
-            </table>
-            @if (Model.Items.Count == 0) { <div class="admin-empty"><i class="bi bi-journal-check"></i><strong>@Localizer["No authorization events found"]</strong></div> }
-        </div>
-        @await Html.PartialAsync("_Pagination", new PEMS.Web.ViewModels.PaginationViewModel
-        {
-            Page = Model.Page,
-            TotalPages = Model.TotalPages,
-            TotalCount = Model.TotalCount,
-            PageSize = Model.PageSize,
-            GridKey = "AuthorizationAudit",
-            BaseUrl = Url.Action("Index") ?? "",
-            ExistingQueryString = string.Join("&", qsParts)
-        })
-    </div>
-</div>
+            </pems-list-table>
+
+            <pems-list-footer>
+                @await Html.PartialAsync("_Pagination", new PEMS.Web.ViewModels.PaginationViewModel
+                {
+                    Page = Model.Page,
+                    TotalPages = Model.TotalPages,
+                    TotalCount = Model.TotalCount,
+                    PageSize = Model.PageSize,
+                    GridKey = "AuthorizationAudit",
+                    BaseUrl = Url.Action("Index") ?? "",
+                    ExistingQueryString = Query(null)
+                })
+            </pems-list-footer>
+        </pems-list-grid>
+    </pems-list-panel>
+</pems-list-page>
+
+@section Scripts {
+    <script src="~/_content/PEMS.UI/pems-list.js" asp-append-version="true"></script>
+}

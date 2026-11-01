@@ -9,6 +9,11 @@
     var nextTaskNumber = Model.Tasks.Any() ? ((Model.Tasks.Max(t => t.TaskNumber) / 10 + 1) * 10) : 10;
 }
 
+@section Styles {
+    <link rel="stylesheet" href="~/css/pems-workspace.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/_content/PEMS.UI/pems-list.css" asp-append-version="true" />
+}
+
 <div class="content-card mb-3">
     <div class="d-flex align-items-center gap-3 mb-2 flex-wrap">
         <div class="kpi-icon bg-icon-blue" style="width:56px;height:56px;font-size:26px;"><i class="bi bi-list-check"></i></div>
@@ -39,41 +44,36 @@
     <pems-alert tone="danger" css="py-2 px-3 small">@TempData["Error"]</pems-alert>
 }
 
-<div class="content-card mb-3">
-    <h6 class="mb-3"><i class="bi bi-list-ol"></i> Tasks (execution steps)</h6>
-    <table class="table table-enterprise table-sm">
-        <thead><tr><th style="width:70px;">#</th><th>@Localizer["Title"]</th><th>@Localizer["Description"]</th><th>Est. Min</th><th></th></tr></thead>
-        <tbody>
-            @foreach (var t in Model.Tasks)
-            {
-                <tr>
-                    <td class="small fw-bold">@t.TaskNumber</td>
-                    <td class="small">@t.Title</td>
-                    <td class="small text-muted">@t.Description</td>
-                    <td class="small">@t.EstimatedDurationMinutes</td>
-                    <td class="text-end">
-                        <form asp-action="RemoveTask" method="post" class="d-inline">
-                            <input type="hidden" name="maintenanceTaskId" value="@t.MaintenanceTaskId" />
-                            <input type="hidden" name="jobPlanId" value="@Model.JobPlanId" />
-                            <pems-button tone="danger" size="small" outline="true" type="submit" title="@Localizer["حذف"]"><i class="bi bi-x"></i></pems-button>
-                        </form>
-                    </td>
-                </tr>
-            }
-        </tbody>
-    </table>
-    @if (!Model.Tasks.Any()) { <p class="text-muted small">@Localizer["هنوز Task ای ثبت نشده."]</p> }
-
-    <form asp-action="AddTask" method="post" class="row g-2">
-        <input type="hidden" name="jobPlanId" value="@Model.JobPlanId" />
-        <div class="col-md-2"><input name="taskNumber" type="number" step="10" class="form-control form-control-sm" value="@nextTaskNumber" required /></div>
-        <div class="col-md-3"><input name="title" class="form-control form-control-sm" placeholder="Isolate equipment" required /></div>
-        <div class="col-md-4"><input name="description" class="form-control form-control-sm" placeholder="@Localizer["Description (optional)"]" /></div>
-        <div class="col-md-2"><input name="estimatedDurationMinutes" type="number" class="form-control form-control-sm" placeholder="Min" /></div>
-        <div class="col-md-1"><pems-button tone="primary" size="small" css="w-100"><i class="bi bi-plus-lg"></i></pems-button></div>
-    </form>
-</div>
-
+@* SCRUM-337 RelatedList: tasks of the job plan *@
+<pems-related-list id="jpTasks" icon="bi-list-ol" title="@Localizer["JpD_Tasks"]" count="@Model.Tasks.Count" empty="@(!Model.Tasks.Any())" empty-text="@Localizer["هنوز Task ای ثبت نشده."]">
+    @if (Model.Tasks.Any())
+    {
+        <pems-related-table>
+            <thead><tr><th style="width:70px;">#</th><th>@Localizer["Title"]</th><th>@Localizer["Description"]</th><th style="width:90px">@Localizer["JpD_EstMin"]</th><th style="width:50px"><span class="visually-hidden">@Localizer["Ed_Actions"]</span></th></tr></thead>
+            <tbody>
+                @foreach (var t in Model.Tasks)
+                {
+                    <tr>
+                        <td><span class="vs-num">@t.TaskNumber</span></td>
+                        <td>@t.Title</td>
+                        <td class="text-muted">@t.Description</td>
+                        <td><span class="vs-num">@t.EstimatedDurationMinutes</span></td>
+                        <td class="text-end">
+                            <pems-related-remove action="@Url.Action("RemoveTask")" key-name="maintenanceTaskId" key-value="@t.MaintenanceTaskId.ToString()"
+                                                 parent-name="jobPlanId" parent-value="@Model.JobPlanId.ToString()" label="@Localizer["حذف"]" />
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </pems-related-table>
+    }
+    <pems-related-add action="@Url.Action("AddTask")" parent-name="jobPlanId" parent-value="@Model.JobPlanId.ToString()" submit-label="@Localizer["Add"]">
+        <div style="flex:0 0 90px"><label class="lp-lbl" for="jpTaskNo">#</label><input id="jpTaskNo" name="taskNumber" type="number" step="10" class="form-control form-control-sm" value="@nextTaskNumber" required /></div>
+        <div><label class="lp-lbl" for="jpTaskTitle">@Localizer["Title"]</label><input id="jpTaskTitle" name="title" class="form-control form-control-sm" placeholder="Isolate equipment" required /></div>
+        <div><label class="lp-lbl" for="jpTaskDesc">@Localizer["Description"]</label><input id="jpTaskDesc" name="description" class="form-control form-control-sm" placeholder="@Localizer["Description (optional)"]" /></div>
+        <div style="flex:0 0 110px"><label class="lp-lbl" for="jpTaskMin">@Localizer["JpD_EstMin"]</label><input id="jpTaskMin" name="estimatedDurationMinutes" type="number" class="form-control form-control-sm" /></div>
+    </pems-related-add>
+</pems-related-list>
 <div class="content-card mb-3">
     <h6 class="mb-3"><i class="bi bi-mortarboard"></i> @Localizer["Required Skills"]</h6>
     <div class="d-flex flex-wrap gap-2 mb-3">
@@ -113,40 +113,32 @@
     </form>
 </div>
 
-<div class="content-card mb-3">
-    <h6 class="mb-3"><i class="bi bi-box-seam"></i> @Localizer["Required Materials"]</h6>
-    <table class="table table-enterprise table-sm">
-        <thead><tr><th>@Localizer["Material"]</th><th>@Localizer["Required Qty"]</th><th></th></tr></thead>
-        <tbody>
-            @foreach (var rm in Model.RequiredMaterials)
-            {
-                <tr>
-                    <td class="small">@rm.MaterialCode - @rm.MaterialDescription</td>
-                    <td>@rm.RequiredQuantity</td>
-                    <td class="text-end">
-                        <form asp-action="RemoveRequiredMaterial" method="post" class="d-inline">
-                            <input type="hidden" name="jobPlanRequiredMaterialId" value="@rm.JobPlanRequiredMaterialId" />
-                            <input type="hidden" name="jobPlanId" value="@Model.JobPlanId" />
-                            <pems-button tone="danger" size="small" outline="true" type="submit" title="@Localizer["حذف"]"><i class="bi bi-x"></i></pems-button>
-                        </form>
-                    </td>
-                </tr>
-            }
-        </tbody>
-    </table>
-    @if (!Model.RequiredMaterials.Any()) { <p class="text-muted small">@Localizer["متریال موردنیازی ثبت نشده."]</p> }
-
-    <form asp-action="AddRequiredMaterial" method="post" class="row g-2">
-        <input type="hidden" name="jobPlanId" value="@Model.JobPlanId" />
-        <div class="col-md-6">
-            <select name="materialItemId" class="form-select form-select-sm" required>
-                @foreach (var m in materialItems) { <option value="@m.MaterialItemId">@m.MaterialCode - @m.Description</option> }
-            </select>
-        </div>
-        <div class="col-md-3"><input name="requiredQuantity" type="number" step="0.001" class="form-control form-control-sm" placeholder="@Localizer["Quantity"]" required /></div>
-        <div class="col-md-3"><pems-button tone="primary" size="small" css="w-100"><i class="bi bi-plus-lg"></i> @Localizer["Add"]</pems-button></div>
-    </form>
-</div>
+@* SCRUM-337 RelatedList: materials the job plan needs *@
+<pems-related-list id="jpMaterials" icon="bi-box-seam" title="@Localizer["Required Materials"]" count="@Model.RequiredMaterials.Count" empty="@(!Model.RequiredMaterials.Any())" empty-text="@Localizer["متریال موردنیازی ثبت نشده."]">
+    @if (Model.RequiredMaterials.Any())
+    {
+        <pems-related-table>
+            <thead><tr><th>@Localizer["Material"]</th><th style="width:130px">@Localizer["Required Qty"]</th><th style="width:50px"><span class="visually-hidden">@Localizer["Ed_Actions"]</span></th></tr></thead>
+            <tbody>
+                @foreach (var rm in Model.RequiredMaterials)
+                {
+                    <tr>
+                        <td><span class="vs-num">@rm.MaterialCode</span> - @rm.MaterialDescription</td>
+                        <td><span class="vs-num">@rm.RequiredQuantity</span></td>
+                        <td class="text-end">
+                            <pems-related-remove action="@Url.Action("RemoveRequiredMaterial")" key-name="jobPlanRequiredMaterialId" key-value="@rm.JobPlanRequiredMaterialId.ToString()"
+                                                 parent-name="jobPlanId" parent-value="@Model.JobPlanId.ToString()" label="@Localizer["حذف"]" />
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </pems-related-table>
+    }
+    <pems-related-add action="@Url.Action("AddRequiredMaterial")" parent-name="jobPlanId" parent-value="@Model.JobPlanId.ToString()" submit-label="@Localizer["Add"]">
+        <pems-list-filter-select id="jpMaterial" name="materialItemId" label="@Localizer["Material"]" items="@materialItems.Select(m => new SelectListItem($"{m.MaterialCode} - {m.Description}", ((int)m.MaterialItemId).ToString()))" />
+        <div style="flex:0 0 160px"><label class="lp-lbl" for="jpMaterialQty">@Localizer["Quantity"]</label><input id="jpMaterialQty" name="requiredQuantity" type="number" step="0.001" class="form-control form-control-sm" required /></div>
+    </pems-related-add>
+</pems-related-list>
 
 <div class="modal fade" id="editJobPlanModal" tabindex="-1">
     <div class="modal-dialog"><div class="modal-content">

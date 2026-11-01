@@ -11,6 +11,56 @@ and theme and were reconstructed from the git history (initial import 2026-09-05
 ### Changed
 - All 25 hand-written blocks in 14 views moved; ratchet baselines for card, progress, accordion, list-group and spinner are now empty (the accordion-item counter no longer matches `pems-accordion-item`). `Letter/Dashboard` `BarRow` became async because it contains a tag helper.
 
+## 2026-11-01 - RelatedList wave R2: tender, procurement package and receipt details (SCRUM-337)
+
+### Changed
+- **Tender details:** invited vendors, invitations, bids and clarifications are related sections.
+- **Procurement package details:** MRs, quotations, communications and approvals are related sections. Its English-only headings, empty texts and buttons now read in the language.
+- **Incoming receipt (IRN) details:** lines, disposition records and status history are related sections; so are receiving from the PO and recording a disposition.
+- **Inside the sections:** add forms use `<pems-related-add>` where they are simple and keep their layout otherwise. Every table comes from the component, and the buttons are `pems-button`. Confirmations read in the language.
+- 16 texts in English and Persian. The header workflow buttons of the receipt are not changed (SCRUM-53 / SCRUM-483).
+
+## 2026-11-01 - RelatedList: child collections of a detail page (SCRUM-337)
+
+### Added
+- **PEMS.UI RelatedList tag helpers:**
+  - `<pems-related-list>`: a section with icon, title, count and empty text.
+  - `<pems-related-table>`: the child table; it keeps the page's `id` and `data-*` hooks.
+  - `<pems-related-add>`: the add form under the table, with the parent key and the antiforgery token.
+  - `<pems-related-remove>`: the delete form of one row, with the row and parent keys and an optional confirmation.
+  - `<pems-related-row-form>` + `<pems-related-save>`: a row edited in place; the inputs point at the hidden form with `form="..."`.
+  - Styles `lp-rel-*` in `pems-list.css`.
+
+### Changed
+- JobPlan details: the task and material lists are related lists, with labelled add fields.
+- Administration: Numbering, Routing rules and Contract approval authority use the list frame. Each row is edited in place through the component. 8 texts in English and Persian.
+
+## 2026-11-01 - Contract creation SQL tests pass again (SCRUM-498)
+
+### Fixed
+- `ContractCreationAtomicitySqlTests` T12 and T13 failed with Forbid: the test user had no user name, so the tender creator separation (P0-10) could not verify the approver and failed closed. The test user now has its name; the product behaviour is unchanged.
+
+## 2026-11-01 - List page component, wave 4b: Administration settings lists (SCRUM-337)
+
+### Changed
+- SoD policies, storage providers, storage routes, workflow definitions, help articles and the PO authority table are built from the list-page component; 32 texts in English and Persian (headings, notes, empty texts, provider health, confirmations, publish / unpublish).
+- The storage provider count cards are the KPI row; the help filters are chips; the PO authority rule form opens from the toolbar (`pems-list-popover`). Row actions stay.
+- Not converted: contract approval authority, numbering and routing rules edit their rows in place; they move with the RelatedList / DataTable row-form mode.
+
+## 2026-10-31 - List page component, wave 4a: users, roles and base data (SCRUM-337)
+
+### Changed
+- Users, Roles, Departments, Disciplines, Employees, the Audit Log, Security Events and the Authorization Audit are built from the list-page component; 68 texts in English and Persian (headings, notes, columns, empty texts, statuses, confirmations, audit actions, personnel types).
+- Filter rows moved into the filters dropdown, each active filter (also a user opened from another page) is a chip, and paging keeps the filters. The user confirmations read in the language. Row actions, the reset-administrator link and the create / edit modals stay.
+- The Admin area loads the PEMS.UI tag helpers from its `_ViewImports`. The adoption baseline is lower for these views. The settings tables of Administration (approval authorities, numbering, SoD, storage, routing, workflow, help) follow in wave 4b.
+
+## 2026-10-31 - List page component, wave 3: procurement and warehouse lists (SCRUM-337)
+
+### Changed
+- Purchase Orders, Tenders, Material Requisitions, Vendors, Contracts, Procurement Packages, Inventory Transactions, Store Requisitions, Incoming Receipts (IRN), Replenishment, the Material Master and Part Catalogue Requests are built from the list-page component; 145 texts in English and Persian (headings, columns, empty texts, notes, and the statuses and transaction types that were shown as stored values).
+- Filter rows, status selects and the Part Catalogue side panel moved into the filters dropdown (`<pems-list-filter-select>`), each active filter is a chip, and paging keeps the filters (the Material Master pager lost "low stock" and "critical"). A tender list opened from a package shows the package as a chip and offers New for that package.
+- The warehouse views load the PEMS.UI tag helpers from the area's `_ViewImports`. The create modals stay until SCRUM-482. The adoption baseline is lower for these views.
+
 ## 2026-10-31 - Badge completed in the views (SCRUM-53, #31)
 
 ### Changed

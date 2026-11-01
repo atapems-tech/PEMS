@@ -1,6 +1,6 @@
 # List page component (SCRUM-337)
 
-Status: 2026-10-31, waves 0, 1, 2 and 2b. The look comes from the correspondence list and the Engineering Documents list (SCRUM-408).
+Status: 2026-10-31, waves 0, 1, 2, 2b, 3, 4a and 4b. The look comes from the correspondence list and the Engineering Documents list (SCRUM-408).
 It lives in `PEMS.UI` (ADR-0007: Tag Helper facade for MVC pages). Texts are inputs (SCRUM-416).
 
 ## What the component gives every list page
@@ -138,8 +138,10 @@ Column resize needs `data-col-key` / `data-resizable` on the `th` elements; the 
 | W1 | document control: DocumentRegister, DocumentRevisions, Transmittal, TechnicalQuery, MDB, MOC, DocumentWorkflow (DCC is a desk, not a list) | done |
 | W2 | CMMS: WorkOrder, WorkRequest, Equipment, FunctionalLocation, Instrument, Tag (letter tags), MaintenancePlan, MaintenanceStrategy, JobPlan, SparePart, Permit, Inspection, Finding, Asset | done |
 | W2b | the other single-table CMMS lists: CriticalityAssessment, EquipmentCriticality, MechanicalEquipment, FailureModeCatalog, ShiftHandover, RcmFmea, EquipmentFunctionalLocationAssignment | done |
-| W3 | warehouse and procurement: Inventory, MaterialItem, MaterialRequisition, StoreRequisition, PurchaseOrder, ProcurementPackage, Tender, Contract, Vendor, IrnReceipt, ... | |
-| W4 | admin and base data: Users, Roles, Department, Discipline, Employee, AuditLog, SecurityEvents, ... | |
+| W3 | procurement and warehouse: PurchaseOrder, Tender, MaterialRequisition, Vendor, Contract, ProcurementPackage, InventoryTransaction, StoreRequisition, IrnReceipt, Replenishment, MaterialItem, PartCatalogueRequest (not lists: Inventory dashboard, InventoryMasterData and PartCatalogueAdmin admin pages, MrsImport, the PreProcurement cartable) | done |
+| W4a | users, roles and base data: Users, Roles, Department, Discipline, Employee, AuditLog, SecurityEvents, AuthorizationAudit | done |
+| W4b | Administration settings lists: SoDPolicy, StorageProviders, StorageRouting, WorkflowManagement, Help, PurchaseOrderAuthority (not lists: NavigationMenu / NavigationVisibility editors, PermissionMatrix, Organization tree, OrganizationImport, DatabaseUpdate, License, ProjectIntelligence) | done |
+| R1 | RelatedList: JobPlan details, and the inline row editors ContractApprovalAuthority, Numbering, RoutingRules | done |
 
 Not converted, because they are not record lists: dashboards, import wizards, AI tools and reports (in CMMS also
 Reliability, MaintenanceMasterData, MaintenanceCalendar, EquipmentClassification and the Crew cards). The Letter list
@@ -149,3 +151,27 @@ keeps its own richer frame (folders, preview, bulk actions) but uses the same st
 
 - `ListPageComponentTests` checks each tag on its own: texts, optional tools, badge, chips, empty state and accessibility.
 - The page tests (`EngineeringDocumentsListLookTests`, `VdrIndexLayoutTests`, `DocumentControlListPagesTests`, `CmmsListPagesTests`) render the real views.
+
+## RelatedList (child collections of a detail page)
+
+A detail page shows its child records (tasks, lines, rules) in a `<pems-related-list>` section:
+
+```cshtml
+<pems-related-list id="jpTasks" icon="bi-list-ol" title="@Localizer["..."]" count="@Model.Tasks.Count"
+                   empty="@(!Model.Tasks.Any())" empty-text="@Localizer["..."]">
+    <pems-related-table> <thead>...</thead> <tbody> ... row ...
+        <pems-related-remove action="@Url.Action("RemoveTask")" key-name="maintenanceTaskId" key-value="@t.Id.ToString()"
+                             parent-name="jobPlanId" parent-value="@Model.JobPlanId.ToString()" label="..." confirm="(optional)" />
+    </tbody> </pems-related-table>
+    <pems-related-add action="@Url.Action("AddTask")" parent-name="jobPlanId" parent-value="..." submit-label="...">
+        <div><label class="lp-lbl" for="x">...</label><input id="x" name="..." class="form-control form-control-sm" /></div>
+    </pems-related-add>
+</pems-related-list>
+```
+
+A table edited in place puts `<pems-related-row-form id="row_1" action="...">` (hidden keys as child content) in the first
+cell, `form="row_1"` on each input of the row, and `<pems-related-save form-id="row_1" label="..." />` in the action cell.
+The forms carry the antiforgery token. Rows edited in a modal keep the modal until SCRUM-482.
+
+Waves: R1 JobPlan details, Numbering, RoutingRules, ContractApprovalAuthority (done); R2 Tender, ProcurementPackage and
+IrnReceipt details (done); R3 the heavy detail pages (WorkOrder, Permit, VDR, PartCatalogueRequest Edit, RcmFmea ClassDetail).

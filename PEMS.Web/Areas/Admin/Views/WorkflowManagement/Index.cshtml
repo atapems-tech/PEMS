@@ -1,49 +1,83 @@
 @model List<PEMS.Application.DTOs.WorkflowDefinitionRow>
 @using Microsoft.Extensions.Localization
 @using PEMS.Web.Resources
+@using PEMS.Web.Helpers
 @inject IStringLocalizer<SharedResource> Localizer
 @{
     var fa = System.Globalization.CultureInfo.CurrentUICulture.TwoLetterISOLanguageName == "fa";
 }
-<div class="admin-page-shell">
-    <div class="content-card">
-        <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-2">
-            <span class="text-body-secondary small"><strong>@Model.Count</strong> @Localizer["workflow definitions"] · @Localizer["Editable"]: <strong>@Model.Count(x => x.Editable)</strong> · @Localizer["View Only"]: <strong>@Model.Count(x => !x.Editable)</strong></span>
-            <a asp-action="Bindings" class="btn btn-sm btn-outline-secondary"><i class="bi bi-link-45deg"></i> @Localizer["Bindings"]</a>
-        </div>
-        <div class="table-responsive">
-            <table class="table table-enterprise align-middle" id="wfDefinitions">
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/pems-workspace.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/_content/PEMS.UI/pems-list.css" asp-append-version="true" />
+}
+
+@* SCRUM-337 W4b: built from the PEMS.UI list-page component. The editable / view-only counts are the KPI row; the note
+   on immutable versions is the tool tip of the title; Bindings is a toolbar tool. *@
+<pems-list-page texts="@ListPageTexts.From(Localizer)">
+    @if (TempData["Message"] != null) { <pems-alert tone="success" css="py-2 px-3 small">@TempData["Message"]</pems-alert> }
+    @if (TempData["Error"] != null) { <pems-alert tone="danger" css="py-2 px-3 small">@TempData["Error"]</pems-alert> }
+
+    <pems-list-panel>
+
+        <pems-list-toolbar heading="@Localizer["WfL_Title"]" heading-title="@Localizer["Workflow versions are immutable once published. Editing a workflow means cloning a version into a draft; running instances stay on the version they started with."]" total="@Model.Count">
+            <pems-list-tools>
+                <pems-list-kpi-toggle target="wfKpis" storage-key="pems.workflowManagement.kpis" />
+                <a class="lp-icon-btn" asp-action="Bindings" title="@Localizer["Bindings"]" aria-label="@Localizer["Bindings"]"><i class="bi bi-link-45deg" aria-hidden="true"></i></a>
+            </pems-list-tools>
+        </pems-list-toolbar>
+
+        <pems-list-kpis id="wfKpis">
+            <span class="vs-chip">@Localizer["Editable"] <strong>@Model.Count(x => x.Editable)</strong></span>
+            <span class="vs-chip">@Localizer["View Only"] <strong>@Model.Count(x => !x.Editable)</strong></span>
+        </pems-list-kpis>
+
+        <pems-list-grid>
+            <pems-list-table empty="@(Model.Count == 0)" empty-text="@Localizer["WfL_Empty"]">
                 <thead>
                     <tr>
-                        <th>@Localizer["Workflow"]</th><th>@Localizer["Module"] / @Localizer["Process type"]</th><th>@Localizer["Published version"]</th><th>@Localizer["Open draft"]</th>
-                        <th>@Localizer["Binding"]</th><th>@Localizer["Access"]</th><th>@Localizer["Last modified"]</th><th>@Localizer["Last published"]</th><th>@Localizer["Created by"]</th><th></th>
+                        <th>@Localizer["Workflow"]</th>
+                        <th style="width:160px">@Localizer["Module"] / @Localizer["Process type"]</th>
+                        <th style="width:90px">@Localizer["Published version"]</th>
+                        <th style="width:150px">@Localizer["Open draft"]</th>
+                        <th style="width:180px" class="vs-hide-md">@Localizer["Binding"]</th>
+                        <th style="width:110px">@Localizer["Access"]</th>
+                        <th style="width:130px" class="vs-hide-md">@Localizer["Last modified"]</th>
+                        <th style="width:130px" class="vs-hide-md">@Localizer["Last published"]</th>
+                        <th style="width:110px" class="vs-hide-md">@Localizer["Created by"]</th>
+                        <th style="width:60px"><span class="visually-hidden">@Localizer["Ed_Actions"]</span></th>
                     </tr>
                 </thead>
                 <tbody>
                 @foreach (var r in Model)
                 {
                     var display = fa && !string.IsNullOrWhiteSpace(r.NameFa) ? r.NameFa : r.Name;
-                    <tr>
+                    <tr class="lp-row">
                         <td>
-                            <div class="row-primary">@display</div>
-                            @if (fa && string.IsNullOrWhiteSpace(r.NameFa)) { <div class="row-secondary text-muted small">@Localizer["No Persian name"]</div> }
-                            else if (!fa && !string.IsNullOrWhiteSpace(r.NameFa)) { <div class="row-secondary small" dir="rtl">@r.NameFa</div> }
-                            @if (!r.IsActive) { <span class="badge bg-secondary">@Localizer["Archived"]</span> }
+                            <a asp-action="Details" asp-route-id="@r.DefinitionId" class="lp-subject">@display</a>
+                            @if (fa && string.IsNullOrWhiteSpace(r.NameFa)) { <div class="vs-sub">@Localizer["No Persian name"]</div> }
+                            else if (!fa && !string.IsNullOrWhiteSpace(r.NameFa)) { <div class="vs-sub" dir="rtl">@r.NameFa</div> }
+                            @if (!r.IsActive) { <span class="vs-pill vs-pill--neutral">@Localizer["Archived"]</span> }
                         </td>
-                        <td>@r.Module<div class="row-secondary small">@r.Category</div></td>
-                        <td>@(r.PublishedVersion.HasValue ? "v" + r.PublishedVersion : "-")</td>
-                        <td>@if (r.OpenDraftVersion.HasValue) { <span class="badge bg-warning text-dark">v@(r.OpenDraftVersion) · @Localizer[r.OpenDraftStatus!]</span> } else { <span class="text-muted">-</span> }</td>
-                        <td>@if (r.ActiveBindings > 0) { <span class="badge bg-success">@Localizer["Bound"] @r.BindingSummary</span> } else { <span class="badge bg-light text-dark border">@Localizer["No active binding"]</span> }</td>
-                        <td><span class="badge @(r.Editable ? "bg-primary" : "bg-secondary")" title="@r.EditableReason">@Localizer[r.Editable ? "Editable" : "View Only"]</span></td>
-                        <td class="small text-nowrap">@r.LastModified?.ToString("yyyy-MM-dd HH:mm")</td>
-                        <td class="small text-nowrap">@(r.LastPublished?.ToString("yyyy-MM-dd HH:mm") ?? "-")</td>
-                        <td class="small">@(r.CreatedBy ?? "-")</td>
-                        <td class="text-end"><a asp-action="Details" asp-route-id="@r.DefinitionId" class="btn btn-sm btn-outline-primary">@Localizer["Open"]</a></td>
+                        <td class="small">@r.Module<div class="vs-sub">@r.Category</div></td>
+                        <td><span class="vs-num">@(r.PublishedVersion.HasValue ? "v" + r.PublishedVersion : "-")</span></td>
+                        <td>@if (r.OpenDraftVersion.HasValue) { <span class="vs-pill vs-pill--warning">v@(r.OpenDraftVersion) · @Localizer[r.OpenDraftStatus!]</span> } else { <span class="text-muted">-</span> }</td>
+                        <td class="vs-hide-md">@if (r.ActiveBindings > 0) { <span class="vs-pill vs-pill--success">@Localizer["Bound"] @r.BindingSummary</span> } else { <span class="vs-pill vs-pill--neutral">@Localizer["No active binding"]</span> }</td>
+                        <td><span class="vs-pill @(r.Editable ? "vs-pill--info" : "vs-pill--neutral")" title="@r.EditableReason">@Localizer[r.Editable ? "Editable" : "View Only"]</span></td>
+                        <td class="small text-nowrap vs-hide-md"><span class="vs-num">@r.LastModified?.ToString("yyyy-MM-dd HH:mm")</span></td>
+                        <td class="small text-nowrap vs-hide-md"><span class="vs-num">@(r.LastPublished?.ToString("yyyy-MM-dd HH:mm") ?? "-")</span></td>
+                        <td class="small vs-hide-md">@(r.CreatedBy ?? "-")</td>
+                        <td class="text-end">
+                            <a asp-action="Details" asp-route-id="@r.DefinitionId" class="lp-act lp-act--always" title="@Localizer["Open"]" aria-label="@Localizer["Open"] @display"><i class="bi bi-box-arrow-in-right" aria-hidden="true"></i></a>
+                        </td>
                     </tr>
                 }
                 </tbody>
-            </table>
-        </div>
-        <p class="small text-muted mb-0"><i class="bi bi-info-circle"></i> @Localizer["Workflow versions are immutable once published. Editing a workflow means cloning a version into a draft; running instances stay on the version they started with."]</p>
-    </div>
-</div>
+            </pems-list-table>
+        </pems-list-grid>
+    </pems-list-panel>
+</pems-list-page>
+
+@section Scripts {
+    <script src="~/_content/PEMS.UI/pems-list.js" asp-append-version="true"></script>
+}

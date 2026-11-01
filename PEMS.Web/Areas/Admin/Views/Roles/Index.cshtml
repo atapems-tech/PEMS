@@ -1,6 +1,7 @@
 ﻿@model List<PEMS.Web.Areas.Admin.Models.RoleListItemViewModel>
 @using Microsoft.Extensions.Localization
 @using PEMS.Web.Resources
+@using PEMS.Web.Helpers
 @inject IStringLocalizer<SharedResource> Localizer
 @{
     // نام/توضیح بومی‌سازی‌شده از کاتالوگ؛ نقش سفارشی (کلید ندارد) به DisplayName/Name برمی‌گردد
@@ -18,60 +19,92 @@
     var duplicates = (List<(string Custom, string Baseline)>?)ViewBag.PossibleDuplicates ?? new();
 }
 
-<div class="admin-page-shell">
-    <div class="admin-hero">
-        <div class="d-flex align-items-center gap-3">
-            <div><p>Define role boundaries and review how many users are assigned to each role.</p></div>
-        </div>
-        <a asp-action="Create" class="btn btn-pems-solid"><i class="bi bi-plus-lg me-1"></i> @Localizer["New Role"]</a>
-    </div>
+@section Styles {
+    <link rel="stylesheet" href="~/css/pems-workspace.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/_content/PEMS.UI/pems-list.css" asp-append-version="true" />
+}
+
+@* SCRUM-337 W4: built from the PEMS.UI list-page component. The page note is the tool tip of the title; the possible
+   duplicates warning stays above the list; delete stays for custom roles only. *@
+<pems-list-page texts="@ListPageTexts.From(Localizer)">
+    @if (TempData["Message"] != null) { <pems-alert tone="success" css="py-2 px-3 small">@TempData["Message"]</pems-alert> }
+    @if (TempData["Error"] != null) { <pems-alert tone="danger" css="py-2 px-3 small">@TempData["Error"]</pems-alert> }
     @if (duplicates.Any())
     {
-        <div class="alert alert-warning small" role="alert">
+        <pems-alert tone="warning" css="small">
             <strong>@Localizer["Role_PossibleDuplicates"]</strong>
             @foreach (var d in duplicates) { <div>@d.Custom &rarr; @d.Baseline</div> }
-        </div>
+        </pems-alert>
     }
-    <div class="content-card">
-        <div class="admin-toolbar"><div class="admin-toolbar-main"><span class="text-body-secondary small"><strong>@Model.Count</strong> roles configured</span></div></div>
-        <div class="table-responsive">
-            <table class="table table-enterprise">
-                <thead><tr><th>@Localizer["Role"]</th><th>@Localizer["Role_Domain"]</th><th>@Localizer["Role_Category"]</th><th>@Localizer["Description"]</th><th>@Localizer["Users"]</th><th>@Localizer["Authorization"]</th><th>@Localizer["Type"]</th><th class="text-end">@Localizer["Actions"]</th></tr></thead>
+
+    <pems-list-panel>
+
+        <pems-list-toolbar heading="@Localizer["RoL_Title"]" heading-title="@Localizer["RoL_Hint"]" total="@Model.Count">
+            <pems-list-tools>
+                <pems-list-reset-columns grid-key="AdminRoles" />
+                <pems-list-new href="@Url.Action("Create")" text="@Localizer["RoL_New"]" />
+            </pems-list-tools>
+        </pems-list-toolbar>
+
+        <pems-list-grid>
+            <pems-list-table grid-key="AdminRoles" empty="@(Model.Count == 0)" empty-text="@Localizer["RoL_Empty"]">
+                <thead>
+                    <tr>
+                        <th data-col-key="role" data-resizable="true" data-min-width="140" data-max-width="320" style="width:200px">@Localizer["Role"]</th>
+                        <th data-col-key="domain" data-resizable="true" data-min-width="90" data-max-width="200" style="width:120px" class="vs-hide-md">@Localizer["Role_Domain"]</th>
+                        <th data-col-key="category" data-resizable="true" data-min-width="90" data-max-width="200" style="width:120px" class="vs-hide-md">@Localizer["Role_Category"]</th>
+                        <th data-col-key="description" data-resizable="true" data-min-width="160" data-max-width="520">@Localizer["Ed_Description"]</th>
+                        <th data-col-key="users" data-resizable="true" data-min-width="70" data-max-width="120" style="width:90px" class="text-end">@Localizer["RoL_Users"]</th>
+                        <th data-col-key="authorization" data-resizable="true" data-min-width="120" data-max-width="240" style="width:170px">@Localizer["RoL_Authorization"]</th>
+                        <th data-col-key="type" data-resizable="true" data-min-width="80" data-max-width="140" style="width:100px">@Localizer["Ed_Type"]</th>
+                        <th data-col-key="actions" data-resizable="false" style="width:60px"><span class="visually-hidden">@Localizer["Ed_Actions"]</span></th>
+                    </tr>
+                </thead>
                 <tbody>
                 @foreach (var r in Model)
                 {
-                    <tr>
-                        <td><div class="row-primary">@RoleName(r)</div><div class="row-secondary">@r.Name</div></td>
-                        <td>@(string.IsNullOrEmpty(r.Domain) ? "" : Loc("RoleDomain_" + r.Domain, r.Domain))</td>
-                        <td>@(string.IsNullOrEmpty(r.Category) ? "" : Loc("RoleCategory_" + r.Category, r.Category))</td>
-                        <td>@RoleDesc(r)</td>
-                        <td><span class="admin-role-badge"><i class="bi bi-people me-1"></i>@r.UserCount</span></td>
+                    <tr class="lp-row">
+                        <td><span class="vs-cell-strong">@RoleName(r)</span><div class="vs-sub vs-mono">@r.Name</div></td>
+                        <td class="small vs-hide-md">@(string.IsNullOrEmpty(r.Domain) ? "" : Loc("RoleDomain_" + r.Domain, r.Domain))</td>
+                        <td class="small vs-hide-md">@(string.IsNullOrEmpty(r.Category) ? "" : Loc("RoleCategory_" + r.Category, r.Category))</td>
+                        <td class="small"><span class="vs-title-cell" title="@RoleDesc(r)">@RoleDesc(r)</span></td>
+                        <td class="text-end"><span class="vs-num">@r.UserCount</span></td>
                         <td>
                             @* طبق «PEMS Authorization Architecture Completion» فاز ۴ بند ۹/۱۴: وضعیت پیکربندی مجوز -
                                نه رنگ‌فقط (آیکون + متن)، و صفر به‌صراحت «پیکربندی‌نشده» است، نه یک خطا. *@
                             @if (r.PermissionCount < 0)
                             {
-                                <a href="@Url.Action("Index", "PermissionMatrix", new { area = "Admin" })" class="admin-status active" title="@Localizer["SystemAdmin bypasses the permission matrix by design"]"><i class="bi bi-infinity"></i> @Localizer["Unrestricted"]</a>
+                                <a href="@Url.Action("Index", "PermissionMatrix", new { area = "Admin" })" class="vs-pill vs-pill--icon vs-pill--success" title="@Localizer["SystemAdmin bypasses the permission matrix by design"]"><i class="bi bi-infinity" aria-hidden="true"></i> @Localizer["Unrestricted"]</a>
                             }
                             else if (r.PermissionCount == 0)
                             {
-                                <a href="@Url.Action("Index", "PermissionMatrix", new { area = "Admin" }, $"role-{r.Name}")" class="admin-status inactive" title="@Localizer["No permissions configured for this role yet - every action is denied by default"]"><i class="bi bi-exclamation-triangle"></i> @Localizer["Not configured"]</a>
+                                <a href="@Url.Action("Index", "PermissionMatrix", new { area = "Admin" }, $"role-{r.Name}")" class="vs-pill vs-pill--icon vs-pill--warning" title="@Localizer["No permissions configured for this role yet - every action is denied by default"]"><i class="bi bi-exclamation-triangle" aria-hidden="true"></i> @Localizer["Not configured"]</a>
                             }
                             else
                             {
-                                <a href="@Url.Action("Index", "PermissionMatrix", new { area = "Admin" }, $"role-{r.Name}")" class="admin-status active"><i class="bi bi-check2-circle"></i> @r.PermissionCount @Localizer["permissions"]</a>
+                                <a href="@Url.Action("Index", "PermissionMatrix", new { area = "Admin" }, $"role-{r.Name}")" class="vs-pill vs-pill--icon vs-pill--info"><i class="bi bi-check2-circle" aria-hidden="true"></i> @r.PermissionCount @Localizer["permissions"]</a>
                             }
                         </td>
-                        <td>@if(r.IsSystemRole){<span class="admin-status active"><i class="bi bi-shield-check"></i> @Localizer["System"]</span>}else{<span class="admin-status inactive">Custom</span>}</td>
-                        <td><div class="admin-actions">
-                            @if (!r.IsSystemRole){<form asp-action="Delete" asp-route-id="@r.Id" method="post" class="d-inline" onsubmit="return confirm('Delete this role?')"><button class="btn btn-sm btn-outline-danger" title="@Localizer["Delete"]"><i class="bi bi-trash"></i></button></form>}
-                        </div></td>
+                        <td>
+                            @if (r.IsSystemRole) { <span class="vs-pill vs-pill--icon vs-pill--info"><i class="bi bi-shield-check" aria-hidden="true"></i> @Localizer["System"]</span> }
+                            else { <span class="vs-pill vs-pill--neutral">@Localizer["RoL_Custom"]</span> }
+                        </td>
+                        <td class="text-end">
+                            @if (!r.IsSystemRole)
+                            {
+                                <form asp-action="Delete" asp-route-id="@r.Id" method="post" class="d-inline" onsubmit="return confirm(this.dataset.confirm)" data-confirm="@Localizer["RoL_ConfirmDelete"]">
+                                    <button type="submit" class="lp-act lp-act--always text-danger" title="@Localizer["Ed_Delete"]" aria-label="@Localizer["Ed_Delete"] @r.Name"><i class="bi bi-trash" aria-hidden="true"></i></button>
+                                </form>
+                            }
+                        </td>
                     </tr>
                 }
                 </tbody>
-            </table>
-            @if (Model.Count == 0){<div class="admin-empty"><i class="bi bi-shield"></i><strong>No roles configured</strong></div>}
-        </div>
-        <div class="admin-footer"><span></span><span>System roles are protected</span></div>
-    </div>
-</div>
+            </pems-list-table>
+        </pems-list-grid>
+    </pems-list-panel>
+</pems-list-page>
+
+@section Scripts {
+    <script src="~/_content/PEMS.UI/pems-list.js" asp-append-version="true"></script>
+}

@@ -1,70 +1,88 @@
 ﻿@model PEMS.Application.DTOs.PagedResult<PEMS.Application.DTOs.ContractDto>
 @using Microsoft.Extensions.Localization
 @using PEMS.Web.Resources
+@using PEMS.Web.Helpers
 @inject IStringLocalizer<SharedResource> Localizer
-
-
-<div class="content-card">
-    <div class="d-flex justify-content-between mb-3">
-        <pems-button tone="neutral" size="small" outline="true" type="button" onclick="PemsDataGrid.resetColumns('Contract')">
-            <i class="bi bi-arrow-counterclockwise"></i> @Localizer["Reset columns"]
-        </pems-button>
-        <pems-button tone="primary" size="small" type="button" data-bs-toggle="modal" data-bs-target="#createContractModal">
-            <i class="bi bi-plus-lg"></i> @Localizer["New Contract"]
-        </pems-button>
-    </div>
-    <div class="table-responsive table-scroll-area pems-grid-scroll" style="max-height:65vh; overflow-y:auto;">
-        <table class="table table-enterprise pems-grid-table" data-grid-key="Contract">
-            <thead>
-                <tr>
-                    <th data-col-key="contractNo" data-resizable="true" data-min-width="100" data-max-width="220" style="width:140px">@Localizer["Contract No"]</th>
-                    <th data-col-key="project" data-resizable="true" data-min-width="100" data-max-width="220" style="width:140px">@Localizer["Project"]</th>
-                    <th data-col-key="vendor" data-resizable="true" data-min-width="100" data-max-width="220" style="width:140px">@Localizer["Vendor"]</th>
-                    <th data-col-key="value" data-resizable="true" data-min-width="90" data-max-width="180" style="width:130px">@Localizer["Value"]</th>
-                    <th data-col-key="start" data-resizable="true" data-min-width="90" data-max-width="160" style="width:110px">@Localizer["Start"]</th>
-                    <th data-col-key="end" data-resizable="true" data-min-width="90" data-max-width="160" style="width:110px">@Localizer["End"]</th>
-                    <th data-col-key="status" data-resizable="true" data-min-width="90" data-max-width="180" style="width:110px">@Localizer["Status"]</th>
-                    <th data-col-key="actions" data-resizable="false" style="width:60px"></th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var c in Model.Items)
-                {
-                    <tr>
-                        <td>@c.ContractNo</td>
-                        <td>@c.ProjectName</td>
-                        <td>@c.VendorName</td>
-                        <td>@(c.ContractValue.HasValue ? $"{c.ContractValue:N0} {c.Currency}" : "-")</td>
-                        <td>@(c.StartDate?.ToString("yyyy-MM-dd"))</td>
-                        <td>@(c.EndDate?.ToString("yyyy-MM-dd"))</td>
-                        <td><pems-badge tone="neutral">@c.Status</pems-badge></td>
-                        <td><pems-button tone="neutral" size="small" outline="true" as="a" asp-action="Details" asp-route-id="@c.ContractId"><i class="bi bi-eye"></i></pems-button></td>
-                    </tr>
-                }
-            </tbody>
-        </table>
-        @if (!Model.Items.Any()) { <p class="text-muted text-center py-4">@Localizer["No contracts yet."]</p> }
-    </div>
-
-    @await Html.PartialAsync("_Pagination", new PEMS.Web.ViewModels.PaginationViewModel
+@{
+    string StatusText(string? s) => VdrUi.Loc(Localizer, "CtL_St_", s);
+    string StatusTone(string? s) => s switch
     {
-        Page = Model.Page,
-        TotalPages = Model.TotalPages,
-        TotalCount = Model.TotalCount,
-        PageSize = Model.PageSize,
-        GridKey = "Contract",
-        BaseUrl = Url.Action("Index") ?? "",
-        ExistingQueryString = ""
-    })
-</div>
-
-@section Scripts {
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            PemsDataGrid.initColumnResize('Contract');
-        });
-    </script>
+        "Signed" or "Effective" => "vs-pill--success",
+        "Completed" or "Closed" => "vs-pill--info",
+        "UnderReview" => "vs-pill--warning",
+        "Terminated" or "Cancelled" => "vs-pill--danger",
+        _ => "vs-pill--neutral"
+    };
 }
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/pems-workspace.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/_content/PEMS.UI/pems-list.css" asp-append-version="true" />
+}
+
+@* SCRUM-337 W3: built from the PEMS.UI list-page component; the page keeps its columns, paging and the create modal
+   (opened by New; it moves to PemsModal with SCRUM-482). *@
+<pems-list-page texts="@ListPageTexts.From(Localizer)">
+    @if (TempData["Message"] != null) { <pems-alert tone="success" css="py-2 px-3 small">@TempData["Message"]</pems-alert> }
+    @if (TempData["Error"] != null) { <pems-alert tone="danger" css="py-2 px-3 small">@TempData["Error"]</pems-alert> }
+
+    <pems-list-panel>
+
+        <pems-list-toolbar heading="@Localizer["CtL_Title"]" heading-title="@Localizer["CtL_Hint"]" total="@Model.TotalCount">
+            <pems-list-tools>
+                <pems-list-reset-columns grid-key="Contract" />
+                <pems-list-new modal="createContractModal" text="@Localizer["CtL_New"]" />
+            </pems-list-tools>
+        </pems-list-toolbar>
+
+        <pems-list-grid>
+            <pems-list-table grid-key="Contract" empty="@(!Model.Items.Any())" empty-text="@Localizer["CtL_Empty"]">
+                <thead>
+                    <tr>
+                        <th data-col-key="contractNo" data-resizable="true" data-min-width="100" data-max-width="220" style="width:150px">@Localizer["CtL_No"]</th>
+                        <th data-col-key="project" data-resizable="true" data-min-width="100" data-max-width="260" class="vs-hide-md">@Localizer["Ed_Project"]</th>
+                        <th data-col-key="vendor" data-resizable="true" data-min-width="100" data-max-width="260">@Localizer["CtL_Vendor"]</th>
+                        <th data-col-key="value" data-resizable="true" data-min-width="90" data-max-width="180" style="width:140px" class="text-end">@Localizer["CtL_Value"]</th>
+                        <th data-col-key="start" data-resizable="true" data-min-width="90" data-max-width="160" style="width:110px" class="vs-hide-md">@Localizer["CtL_Start"]</th>
+                        <th data-col-key="end" data-resizable="true" data-min-width="90" data-max-width="160" style="width:110px">@Localizer["CtL_End"]</th>
+                        <th data-col-key="status" data-resizable="true" data-min-width="90" data-max-width="180" style="width:120px">@Localizer["Ed_Status"]</th>
+                        <th data-col-key="actions" data-resizable="false" style="width:60px"><span class="visually-hidden">@Localizer["Ed_Actions"]</span></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var c in Model.Items)
+                    {
+                        <tr class="lp-row">
+                            <td class="lp-no"><a asp-action="Details" asp-route-id="@c.ContractId" class="lp-subject" title="@c.ContractNo">@c.ContractNo</a></td>
+                            <td class="small vs-hide-md">@c.ProjectName</td>
+                            <td class="small">@c.VendorName</td>
+                            <td class="text-end"><span class="vs-num">@(c.ContractValue.HasValue ? $"{c.ContractValue:N0} {c.Currency}" : "-")</span></td>
+                            <td class="small vs-hide-md"><span class="vs-num">@(c.StartDate?.ToString("yyyy-MM-dd") ?? "-")</span></td>
+                            <td class="small"><span class="vs-num">@(c.EndDate?.ToString("yyyy-MM-dd") ?? "-")</span></td>
+                            <td><span class="vs-pill @StatusTone(c.Status)">@StatusText(c.Status)</span></td>
+                            <td class="text-end">
+                                <a asp-action="Details" asp-route-id="@c.ContractId" class="lp-act lp-act--always" title="@Localizer["Ed_View"]" aria-label="@Localizer["Ed_View"]"><i class="bi bi-eye" aria-hidden="true"></i></a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </pems-list-table>
+
+            <pems-list-footer>
+                @await Html.PartialAsync("_Pagination", new PEMS.Web.ViewModels.PaginationViewModel
+                {
+                    Page = Model.Page,
+                    TotalPages = Model.TotalPages,
+                    TotalCount = Model.TotalCount,
+                    PageSize = Model.PageSize,
+                    GridKey = "Contract",
+                    BaseUrl = Url.Action("Index") ?? "",
+                    ExistingQueryString = ""
+                })
+            </pems-list-footer>
+        </pems-list-grid>
+    </pems-list-panel>
+</pems-list-page>
 
 <div class="modal fade" id="createContractModal" tabindex="-1">
     <div class="modal-dialog modal-lg">
@@ -100,3 +118,7 @@
         </div>
     </div>
 </div>
+
+@section Scripts {
+    <script src="~/_content/PEMS.UI/pems-list.js" asp-append-version="true"></script>
+}
