@@ -103,3 +103,8 @@
 .pems-info__value--mono { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 12px; color: var(--pems-text-muted); }
 .pems-info__value--warning { color: var(--pems-chart-warning-text, var(--pems-text)); }
 .pems-info__value--success { color: var(--pems-chart-positive-text, var(--pems-text)); }
+.pems-info--rows { grid-template-columns: fit-content(220px) 1fr; gap: 6px 12px; }
+.pems-info--rows .pems-info__item { display: contents; }
+.pems-info--rows .pems-info__label { margin: 0; font-size: inherit; font-weight: 600; letter-spacing: normal; text-transform: none; }
+.pems-info--rows .pems-info__value { font-weight: inherit; }
+@media (max-width: 575.98px) { .pems-info--rows { grid-template-columns: 1fr; gap: 2px; } .pems-info--rows .pems-info__label { margin-block-start: 6px; } }

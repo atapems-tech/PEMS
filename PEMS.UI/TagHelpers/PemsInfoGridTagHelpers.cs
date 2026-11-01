@@ -8,11 +8,18 @@ namespace PEMS.UI.TagHelpers;
 // badges, conditions); an empty value shows a dash. Styles: _content/PEMS.UI/pems-ui.css (pems-info*), loaded by the layout.
 // Usage: docs/design/LIST_PAGE_COMPONENT.md (InfoGrid).
 
-/// <summary>The grid: <c>&lt;dl class="pems-info"&gt;</c> around its <c>pems-info-item</c>s. A class or id on the tag is kept.</summary>
+/// <summary>
+/// The grid: <c>&lt;dl class="pems-info"&gt;</c> around its <c>pems-info-item</c>s, each label over its value. With
+/// <c>layout="rows"</c> each label sits beside its value (side panels, long technical lists); at phone width the label goes
+/// over the value again. A class or id on the tag is kept.
+/// </summary>
 [HtmlTargetElement("pems-info-grid")]
 public sealed class PemsInfoGridTagHelper : TagHelper
 {
-    public override void Process(TagHelperContext context, TagHelperOutput output) => PemsList.Become(output, "dl", "pems-info");
+    [HtmlAttributeName("layout")] public string? Layout { get; set; }
+
+    public override void Process(TagHelperContext context, TagHelperOutput output) =>
+        PemsList.Become(output, "dl", Layout == "rows" ? "pems-info pems-info--rows" : "pems-info");
 }
 
 /// <summary>
@@ -32,6 +39,8 @@ public sealed class PemsInfoItemTagHelper : TagHelper
     [HtmlAttributeName("tone")] public string? Tone { get; set; }
     [HtmlAttributeName("empty-text")] public string EmptyText { get; set; } = "-";
     [HtmlAttributeName("value-id")] public string? ValueId { get; set; }
+    /// <summary>The page's own class on the value (a hook such as pre-wrapped text); never a replacement for an option.</summary>
+    [HtmlAttributeName("value-class")] public string? ValueClass { get; set; }
 
     public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
     {
@@ -46,6 +55,7 @@ public sealed class PemsInfoItemTagHelper : TagHelper
         if (Mono) dd.AddCssClass("pems-info__value--mono");
         if (Tone == "danger") dd.AddCssClass("text-danger");   // the app's own danger text colour, as before
         else if (Tone is "warning" or "success") dd.AddCssClass("pems-info__value--" + Tone);
+        if (!string.IsNullOrEmpty(ValueClass)) dd.AddCssClass(ValueClass);
         if (!string.IsNullOrEmpty(ValueId)) dd.Attributes["id"] = ValueId;
 
         var content = await output.GetChildContentAsync();
