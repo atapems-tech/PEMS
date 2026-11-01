@@ -3,6 +3,14 @@
 All notable changes to PEMS. No system version is defined yet (plan row F_CI), so entries are grouped by date
 and theme and were reconstructed from the git history (initial import 2026-09-05). Newest first.
 
+## 2026-11-02 - InfoGrid wave I4: CMMS and transmittal headers (SCRUM-337)
+
+### Changed
+- Job plan, maintenance strategy, permit, work order, work request and transmittal details take their header blocks from `<pems-info-grid>` (6 grids, 56 items). Labels are localised keys without a trailing colon; 13 new keys (`Info_*`, English and Persian) replace hard-coded English labels such as "Permit Issuer:", "Started:", "From Plan:". Empty values show a dash instead of "N/A"; the permit "Validity" became valid from / valid to. On the work request the emergency, HSE and risk badges and the priority rationale sit over the grid.
+
+### Not moved, on purpose
+- Asset, reliability and production run details show quantity tiles (KpiTile, later); the letter list cards keep their one-line meta text.
+
 ## 2026-11-01 - InfoGrid wave I3: procurement and warehouse headers (SCRUM-337)
 
 ### Changed

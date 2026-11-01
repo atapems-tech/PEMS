@@ -3652,4 +3652,18 @@
   <data name="PkD_Closeout" xml:space="preserve"><value>Close out package</value></data>
   <data name="PkD_ConfirmCloseout" xml:space="preserve"><value>Close out this procurement package?</value></data>
   <data name="IrnD_ConfirmDisposition" xml:space="preserve"><value>Record this disposition and start QA approval?</value></data>
+  <!-- SCRUM-337 InfoGrid I4: labels without a trailing colon -->
+  <data name="Info_Asset" xml:space="preserve"><value>Asset</value></data>
+  <data name="Info_ReportedCondition" xml:space="preserve"><value>Reported condition</value></data>
+  <data name="Info_SuggestedDiscipline" xml:space="preserve"><value>Suggested discipline</value></data>
+  <data name="Info_ResponseDue" xml:space="preserve"><value>Response due</value></data>
+  <data name="Info_ResolutionDue" xml:space="preserve"><value>Resolution due</value></data>
+  <data name="Info_SafetyControls" xml:space="preserve"><value>Safety controls</value></data>
+  <data name="Info_PermitIssuer" xml:space="preserve"><value>Permit issuer</value></data>
+  <data name="Info_PermitReceiver" xml:space="preserve"><value>Permit receiver</value></data>
+  <data name="Info_ValidFrom" xml:space="preserve"><value>Valid from</value></data>
+  <data name="Info_ValidTo" xml:space="preserve"><value>Valid to</value></data>
+  <data name="Info_Started" xml:space="preserve"><value>Started</value></data>
+  <data name="Info_Completed" xml:space="preserve"><value>Completed</value></data>
+  <data name="Info_FromPlan" xml:space="preserve"><value>From plan</value></data>
 </root>

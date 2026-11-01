@@ -254,10 +254,9 @@ else
         </pems-alert>
     }
 
-    <div class="row g-3 mt-2">
-        <div class="col-md-3"><strong>@Localizer["Equipment:"]</strong> <a asp-controller="Equipment" asp-action="Details" asp-route-id="@Model.EquipmentId">@Model.Equipment?.TagNumber</a></div>
-        <div class="col-md-3">
-            <strong>Assigned:</strong>
+    <pems-info-grid class="mt-3">
+        <pems-info-item label="@Localizer["Equipment"]" num><a asp-controller="Equipment" asp-action="Details" asp-route-id="@Model.EquipmentId">@Model.Equipment?.TagNumber</a></pems-info-item>
+        <pems-info-item label="@Localizer["Assigned"]">
             @if (Model.AssignedTeam != null)
             {
                 <span>@Model.AssignedTeam.Name</span>
@@ -270,9 +269,8 @@ else
             {
                 <span class="text-muted">@Model.AssignedTo</span>
             }
-        </div>
-        <div class="col-md-3">
-            <strong>@Localizer["Planned"]:</strong>
+        </pems-info-item>
+        <pems-info-item label="@Localizer["Planned"]">
             @if (Model.PlannedStart.HasValue && Model.PlannedFinish.HasValue)
             {
                 <span dir="ltr">@Model.PlannedStart.Value.ToString("yyyy-MM-dd HH:mm") &rarr; @Model.PlannedFinish.Value.ToString("HH:mm")</span>
@@ -281,15 +279,15 @@ else
             {
                 <span class="text-muted">@Localizer["Unscheduled"]</span>
             }
-        </div>
-        <div class="col-md-3"><strong>Started:</strong> @(Model.StartDate?.ToString("yyyy-MM-dd"))</div>
-        <div class="col-md-3"><strong>Completed:</strong> @(Model.CompletionDate?.ToString("yyyy-MM-dd"))</div>
+        </pems-info-item>
+        <pems-info-item label="@Localizer["Info_Started"]" num>@Model.StartDate?.ToString("yyyy-MM-dd")</pems-info-item>
+        <pems-info-item label="@Localizer["Info_Completed"]" num>@Model.CompletionDate?.ToString("yyyy-MM-dd")</pems-info-item>
         @if (Model.MaintenancePlan != null)
         {
-            <div class="col-12"><strong>From Plan:</strong> @Model.MaintenancePlan.PlanNumber - @Model.MaintenancePlan.Title</div>
+            <pems-info-item label="@Localizer["Info_FromPlan"]" wide><span dir="ltr">@Model.MaintenancePlan.PlanNumber</span> - @Model.MaintenancePlan.Title</pems-info-item>
         }
-        <div class="col-12"><strong>@Localizer["Description:"]</strong><p class="mb-0">@Model.Description</p></div>
-    </div>
+        <pems-info-item label="@Localizer["Description"]" wide>@Model.Description</pems-info-item>
+    </pems-info-grid>
 </div>
 
 @if (!isLegacy)

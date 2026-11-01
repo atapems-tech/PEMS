@@ -4437,4 +4437,18 @@
   <data name="PkD_Closeout" xml:space="preserve"><value>بستن بسته‌ی خرید</value></data>
   <data name="PkD_ConfirmCloseout" xml:space="preserve"><value>این بسته‌ی خرید بسته شود؟</value></data>
   <data name="IrnD_ConfirmDisposition" xml:space="preserve"><value>این تفکیک ثبت و تأیید کنترل کیفیت شروع شود؟</value></data>
+  <!-- SCRUM-337 InfoGrid I4: labels without a trailing colon -->
+  <data name="Info_Asset" xml:space="preserve"><value>دارایی</value></data>
+  <data name="Info_ReportedCondition" xml:space="preserve"><value>شرح وضعیت گزارش‌شده</value></data>
+  <data name="Info_SuggestedDiscipline" xml:space="preserve"><value>دیسیپلین پیشنهادی</value></data>
+  <data name="Info_ResponseDue" xml:space="preserve"><value>مهلت پاسخ</value></data>
+  <data name="Info_ResolutionDue" xml:space="preserve"><value>مهلت رفع</value></data>
+  <data name="Info_SafetyControls" xml:space="preserve"><value>کنترل‌های ایمنی</value></data>
+  <data name="Info_PermitIssuer" xml:space="preserve"><value>صادرکننده‌ی مجوز</value></data>
+  <data name="Info_PermitReceiver" xml:space="preserve"><value>دریافت‌کننده‌ی مجوز</value></data>
+  <data name="Info_ValidFrom" xml:space="preserve"><value>اعتبار از</value></data>
+  <data name="Info_ValidTo" xml:space="preserve"><value>اعتبار تا</value></data>
+  <data name="Info_Started" xml:space="preserve"><value>شروع</value></data>
+  <data name="Info_Completed" xml:space="preserve"><value>تکمیل</value></data>
+  <data name="Info_FromPlan" xml:space="preserve"><value>از برنامه</value></data>
 </root>

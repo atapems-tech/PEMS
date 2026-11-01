@@ -13,14 +13,14 @@
 </div>
 
 <div class="content-card mb-3">
-    <div class="row g-3">
-        <div class="col-md-3"><strong>@Localizer["Vs_Project"]:</strong> @Model.ProjectName</div>
-        <div class="col-md-3"><strong>@Localizer["Vs_From"]:</strong> @Model.From</div>
-        <div class="col-md-3"><strong>@Localizer["Vs_To"]:</strong> @Model.To</div>
-        <div class="col-md-3"><strong>@Localizer["Vs_Purpose"]:</strong> @Model.Purpose</div>
-        <div class="col-md-3"><strong>@Localizer["Td_Created"]:</strong> @Model.TransmittalDate.ToString("yyyy-MM-dd")</div>
-        <div class="col-md-3"><strong>@Localizer["Td_Sent"]:</strong> @(Model.SentDate?.ToString("yyyy-MM-dd") ?? "-")</div>
-    </div>
+    <pems-info-grid>
+        <pems-info-item label="@Localizer["Vs_Project"]">@Model.ProjectName</pems-info-item>
+        <pems-info-item label="@Localizer["Vs_From"]">@Model.From</pems-info-item>
+        <pems-info-item label="@Localizer["Vs_To"]">@Model.To</pems-info-item>
+        <pems-info-item label="@Localizer["Vs_Purpose"]">@Model.Purpose</pems-info-item>
+        <pems-info-item label="@Localizer["Td_Created"]" num>@Model.TransmittalDate.ToString("yyyy-MM-dd")</pems-info-item>
+        <pems-info-item label="@Localizer["Td_Sent"]" num>@Model.SentDate?.ToString("yyyy-MM-dd")</pems-info-item>
+    </pems-info-grid>
 
     @if (!string.IsNullOrEmpty(Model.Description))
     {

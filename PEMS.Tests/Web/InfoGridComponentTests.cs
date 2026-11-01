@@ -139,6 +139,36 @@ public class InfoGridComponentTests
         Assert.DoesNotMatch(@"label=""@Localizer\[""[^""]*:""\]""", text);
     }
 
+    [Theory]
+    [InlineData("Views/JobPlan/Details.cshtml", 1, 4)]
+    [InlineData("Views/MaintenanceStrategy/Details.cshtml", 1, 18)]
+    [InlineData("Views/Transmittal/Details.cshtml", 1, 6)]
+    [InlineData("Views/Permit/Details.cshtml", 1, 9)]
+    [InlineData("Views/WorkOrder/Details.cshtml", 1, 7)]
+    [InlineData("Views/WorkRequest/Details.cshtml", 1, 12)]
+    public void WaveI4_CmmsAndDocumentHeaders_TakeTheirLabelsFromTheComponent(string view, int grids, int items)
+    {
+        var text = File.ReadAllText(Path.Combine(RepoRoot(), "PEMS.Web", view));
+        Assert.Equal(grids, Regex.Matches(text, "<pems-info-grid[ >]").Count);
+        Assert.Equal(items, Regex.Matches(text, "<pems-info-item ").Count);
+        Assert.DoesNotMatch(@"class=""col-[\w-]+""><strong>[^<]*:</strong>", text);
+        Assert.DoesNotMatch(@"class=""col-[\w-]+""><div class=""text-muted"">", text);
+        Assert.DoesNotMatch(@"label=""@Localizer\[""[^""]*:""\]""", text);
+    }
+
+    [Fact]
+    public void WaveI4_NewLabels_AreTranslated()
+    {
+        var en = File.ReadAllText(Path.Combine(RepoRoot(), "PEMS.Web", "Resources", "SharedResource.resx"));
+        var fa = File.ReadAllText(Path.Combine(RepoRoot(), "PEMS.Web", "Resources", "SharedResource.fa.resx"));
+        foreach (var key in new[] { "Info_Asset", "Info_ReportedCondition", "Info_SuggestedDiscipline", "Info_ResponseDue", "Info_ResolutionDue",
+                     "Info_SafetyControls", "Info_PermitIssuer", "Info_PermitReceiver", "Info_ValidFrom", "Info_ValidTo", "Info_Started", "Info_Completed", "Info_FromPlan" })
+        {
+            Assert.Contains($"<data name=\"{key}\"", en);
+            Assert.Contains($"<data name=\"{key}\"", fa);
+        }
+    }
+
     private static string RepoRoot()
     {
         var dir = new DirectoryInfo(AppContext.BaseDirectory);
