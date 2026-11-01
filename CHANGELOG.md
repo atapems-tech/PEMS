@@ -3,6 +3,15 @@
 All notable changes to PEMS. No system version is defined yet (plan row F_CI), so entries are grouped by date
 and theme and were reconstructed from the git history (initial import 2026-09-05). Newest first.
 
+## 2026-11-02 - KpiTile wave K2: the other kpi-card pages, `_KpiCard` retired (SCRUM-337)
+
+### Changed
+- Discipline details, the engineering dashboard (health score, first-pass approval), engineering document intelligence and OCR processing take their 16 tiles from `<pems-kpi-tile>`.
+- `<pems-kpi-tile model="...">` takes a `KpiCardViewModel` built in code (title, count with a dash for zero, icon, colour, link, hint; an attribute on the tag wins). The home dashboard, the engineering dashboard summary, the production dashboard (now a list in a code block) and the part catalogue reports use it.
+
+### Removed
+- The `_KpiCard` partial and its two golden-markup tests; `KpiCardViewModel` stays as the data of a tile built in code.
+
 ## 2026-11-02 - KpiTile wave K1: report pages (SCRUM-337)
 
 ### Added

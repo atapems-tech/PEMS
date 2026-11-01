@@ -80,7 +80,7 @@
         @foreach (var kpi in kpis)
         {
             <div class="col-6 col-md-2">
-                <partial name="_KpiCard" model="kpi" />
+                <pems-kpi-tile model="kpi" />
             </div>
         }
     </div>
@@ -96,13 +96,7 @@
     </p>
     <div class="row g-3 align-items-center">
         <div class="col-md-3">
-            <div class="kpi-card h-100">
-                <div class="kpi-icon bg-icon-teal"><i class="bi bi-graph-up-arrow"></i></div>
-                <div>
-                    <div class="kpi-value">@Model.EngineeringHealthScore</div>
-                    <div class="kpi-label">Health Score</div>
-                </div>
-            </div>
+            <pems-kpi-tile class="h-100" icon="bi-graph-up-arrow" color="teal" label="Health Score">@Model.EngineeringHealthScore</pems-kpi-tile>
         </div>
         <div class="col-md-9">
             <pems-progress value="@Model.EngineeringHealthScore" tone="success" height="12px"></pems-progress>
@@ -127,13 +121,7 @@
 
     <div class="row g-3 mb-3">
         <div class="col-6 col-md-3">
-            <div class="kpi-card">
-                <div class="kpi-icon bg-icon-teal"><i class="bi bi-graph-up-arrow"></i></div>
-                <div>
-                    <div class="kpi-value">@(Model.FirstPassApprovalRate.HasValue ? Model.FirstPassApprovalRate.Value.ToString("P0") : "N/A")</div>
-                    <div class="kpi-label">@Localizer["FirstPassApprovalRate"]</div>
-                </div>
-            </div>
+            <pems-kpi-tile icon="bi-graph-up-arrow" color="teal" label="@Localizer["FirstPassApprovalRate"]">@(Model.FirstPassApprovalRate.HasValue ? Model.FirstPassApprovalRate.Value.ToString("P0") : "N/A")</pems-kpi-tile>
         </div>
     </div>
     @if (!Model.FirstPassApprovalRate.HasValue)

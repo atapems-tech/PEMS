@@ -3,19 +3,20 @@
 @using PEMS.Web.Resources
 @inject IStringLocalizer<SharedResource> Localizer
 
+@{
+    var kpis = new List<PEMS.Web.Models.KpiCardViewModel>
+    {
+        new() { Title = "Active Orders", Count = Model.ActiveOrderCount, IconClass = "bi-clipboard-data", ColorClass = "bg-icon-blue", Url = Url.Action("Index", "ProductionOrder") },
+        new() { Title = "Released Orders", Count = Model.ReleasedOrderCount, IconClass = "bi-send-check", ColorClass = "bg-icon-green", Url = Url.Action("Index", "ProductionOrder", new { status = "Released" }) },
+        new() { Title = "Active Runs", Count = Model.ActiveRunCount, IconClass = "bi-play-circle", ColorClass = "bg-icon-blue" },
+        new() { Title = "Held Runs", Count = Model.HeldRunCount, IconClass = "bi-pause-circle", ColorClass = "bg-icon-orange" }
+    };
+}
 <div class="row row-cols-2 row-cols-md-4 g-3 mb-3">
-    <div class="col">
-        @await Html.PartialAsync("_KpiCard", new PEMS.Web.Models.KpiCardViewModel { Title = "Active Orders", Count = Model.ActiveOrderCount, IconClass = "bi-clipboard-data", ColorClass = "bg-icon-blue", Url = Url.Action("Index", "ProductionOrder") })
-    </div>
-    <div class="col">
-        @await Html.PartialAsync("_KpiCard", new PEMS.Web.Models.KpiCardViewModel { Title = "Released Orders", Count = Model.ReleasedOrderCount, IconClass = "bi-send-check", ColorClass = "bg-icon-green", Url = Url.Action("Index", "ProductionOrder", new { status = "Released" }) })
-    </div>
-    <div class="col">
-        @await Html.PartialAsync("_KpiCard", new PEMS.Web.Models.KpiCardViewModel { Title = "Active Runs", Count = Model.ActiveRunCount, IconClass = "bi-play-circle", ColorClass = "bg-icon-blue" })
-    </div>
-    <div class="col">
-        @await Html.PartialAsync("_KpiCard", new PEMS.Web.Models.KpiCardViewModel { Title = "Held Runs", Count = Model.HeldRunCount, IconClass = "bi-pause-circle", ColorClass = "bg-icon-orange" })
-    </div>
+    @foreach (var kpi in kpis)
+    {
+        <div class="col"><pems-kpi-tile model="kpi" /></div>
+    }
 </div>
 
 <div class="row row-cols-1 row-cols-md-2 g-3 mb-3">

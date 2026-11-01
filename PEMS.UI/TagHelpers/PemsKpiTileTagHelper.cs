@@ -4,8 +4,8 @@ using Microsoft.AspNetCore.Razor.TagHelpers;
 namespace PEMS.UI.TagHelpers;
 
 // SCRUM-337 KpiTile: one number with its label (report headers, dashboards, detail pages). Renders the kpi-card markup the
-// `_KpiCard` partial renders (styles: admin.css .kpi-card / .kpi-icon / .kpi-value / .kpi-label / .bg-icon-*), so a page looks
-// the same; the value is the page's own text (counts, decimals, %, units). Usage: docs/design/LIST_PAGE_COMPONENT.md (KpiTile).
+// retired `_KpiCard` partial rendered (styles: admin.css .kpi-card / .kpi-icon / .kpi-value / .kpi-label / .bg-icon-*), so a page
+// looks the same; the value is the page's own text (counts, decimals, %, units). Usage: docs/design/LIST_PAGE_COMPONENT.md (KpiTile).
 
 /// <summary>
 /// A KPI tile: <c>label</c>, the value as child content (a dash when empty), an <c>icon</c> (Bootstrap icon name) in a
@@ -22,12 +22,26 @@ public sealed class PemsKpiTileTagHelper : TagHelper
     [HtmlAttributeName("href")] public string? Href { get; set; }
     [HtmlAttributeName("hint")] public string? Hint { get; set; }
 
+    /// <summary>
+    /// A tile built in code (a controller's or a page's list of tiles): its title, count (a dash for zero), icon, colour, link
+    /// and hint fill the tile; an attribute written on the tag wins.
+    /// </summary>
+    [HtmlAttributeName("model")] public PEMS.Web.Models.KpiCardViewModel? Model { get; set; }
+
     /// <summary>The colour class of the icon square: <c>green</c> becomes <c>bg-icon-green</c>; a full class is kept.</summary>
     public static string ColorClass(string? color) =>
         string.IsNullOrWhiteSpace(color) ? "bg-icon-blue" : color.StartsWith("bg-icon-", StringComparison.Ordinal) ? color : "bg-icon-" + color;
 
     public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
     {
+        if (Model != null)
+        {
+            if (string.IsNullOrEmpty(Label)) Label = Model.Title;
+            Icon ??= Model.IconClass;
+            Color ??= Model.ColorClass;
+            Href ??= Model.Url;
+            Hint ??= Model.Hint;
+        }
         var link = !string.IsNullOrEmpty(Href);
         PemsList.Become(output, link ? "a" : "div", link ? "kpi-card kpi-link text-decoration-none" : "kpi-card");
         if (link) output.Attributes.SetAttribute("href", Href);
@@ -37,7 +51,8 @@ public sealed class PemsKpiTileTagHelper : TagHelper
         var value = new TagBuilder("div");
         value.AddCssClass("kpi-value");
         var content = await output.GetChildContentAsync();
-        if (content.IsEmptyOrWhiteSpace) value.InnerHtml.Append("-");
+        if (content.IsEmptyOrWhiteSpace && Model != null) value.InnerHtml.Append(Model.DisplayCount);
+        else if (content.IsEmptyOrWhiteSpace) value.InnerHtml.Append("-");
         else value.InnerHtml.AppendHtml(content);
         body.InnerHtml.AppendHtml(value);
 

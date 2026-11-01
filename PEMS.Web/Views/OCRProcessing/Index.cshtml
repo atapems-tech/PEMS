@@ -10,28 +10,16 @@
 
 <div class="row g-3 mb-3">
     <div class="col-md-3 col-sm-6">
-        <div class="kpi-card">
-            <div class="kpi-icon bg-icon-slate"><i class="bi bi-hourglass"></i></div>
-            <div><div class="kpi-value">@GetCount("Pending")</div><div class="kpi-label">@Localizer["Pending"]</div></div>
-        </div>
+        <pems-kpi-tile icon="bi-hourglass" color="slate" label="@Localizer["Pending"]">@GetCount("Pending")</pems-kpi-tile>
     </div>
     <div class="col-md-3 col-sm-6">
-        <div class="kpi-card">
-            <div class="kpi-icon bg-icon-blue"><i class="bi bi-arrow-repeat"></i></div>
-            <div><div class="kpi-value">@GetCount("Processing")</div><div class="kpi-label">Processing</div></div>
-        </div>
+        <pems-kpi-tile icon="bi-arrow-repeat" color="blue" label="Processing">@GetCount("Processing")</pems-kpi-tile>
     </div>
     <div class="col-md-3 col-sm-6">
-        <div class="kpi-card">
-            <div class="kpi-icon bg-icon-green"><i class="bi bi-check-circle"></i></div>
-            <div><div class="kpi-value">@GetCount("Completed")</div><div class="kpi-label">@Localizer["Completed"]</div></div>
-        </div>
+        <pems-kpi-tile icon="bi-check-circle" color="green" label="@Localizer["Completed"]">@GetCount("Completed")</pems-kpi-tile>
     </div>
     <div class="col-md-3 col-sm-6">
-        <div class="kpi-card">
-            <div class="kpi-icon bg-icon-red"><i class="bi bi-x-circle"></i></div>
-            <div><div class="kpi-value">@GetCount("Failed")</div><div class="kpi-label">Failed</div></div>
-        </div>
+        <pems-kpi-tile icon="bi-x-circle" color="red" label="Failed">@GetCount("Failed")</pems-kpi-tile>
     </div>
 </div>
 
