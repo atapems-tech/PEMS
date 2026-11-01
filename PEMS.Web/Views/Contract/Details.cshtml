@@ -93,7 +93,7 @@
         {
             <form asp-action="SubmitForReview" method="post" class="d-inline">
                 <input type="hidden" name="contractId" value="@Model.ContractId" />
-                <button type="submit" class="btn btn-primary btn-sm">@Localizer["Submit for Multi-Discipline Review"]</button>
+                <pems-button tone="none" size="small" css="btn-primary" type="submit">@Localizer["Submit for Multi-Discipline Review"]</pems-button>
             </form>
         }
         @if (Model.Status == "UnderReview")
@@ -200,7 +200,7 @@
         <div class="col-md-3"><input type="text" name="title" class="form-control form-control-sm" placeholder="@Localizer["Title"]" required /></div>
         <div class="col-md-2"><input type="text" name="documentType" class="form-control form-control-sm" placeholder="@Localizer["Type"]" required /></div>
         <div class="col-md-3"><input type="text" name="clauseReference" class="form-control form-control-sm" placeholder="@Localizer["Clause Reference"]" /></div>
-        <div class="col-md-2"><button type="submit" class="btn btn-primary btn-sm">@Localizer["Add Document"]</button></div>
+        <div class="col-md-2"><pems-button tone="none" size="small" css="btn-primary" type="submit">@Localizer["Add Document"]</pems-button></div>
     </form>
 </div>
 
@@ -220,7 +220,7 @@
             <div class="col-md-2"><input type="number" step="0.01" name="newValue" class="form-control form-control-sm" placeholder="@Localizer["New value"]" /></div>
             <div class="col-md-3"><input type="text" name="reason" class="form-control form-control-sm" placeholder="@Localizer["Reason"]" /></div>
             <div class="col-md-3"><input type="text" name="changeDescription" class="form-control form-control-sm" placeholder="@Localizer["Description"]" /></div>
-            <div class="col-md-1"><button type="submit" class="btn btn-primary btn-sm">@Localizer["Request"]</button></div>
+            <div class="col-md-1"><pems-button tone="none" size="small" css="btn-primary" type="submit">@Localizer["Request"]</pems-button></div>
         </form>
     </div>
 }

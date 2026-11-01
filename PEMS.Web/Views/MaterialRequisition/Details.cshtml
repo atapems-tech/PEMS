@@ -165,7 +165,7 @@
                 <select id="poVendor" name="vendorId" class="form-select form-select-sm" required><option value="">—</option>@foreach (var v in poVendors) { <option value="@v.VendorId">@v.Name</option> }</select></div>
             <div class="col-md-2"><label class="form-label" for="poCurrency">@Localizer["Po_Currency"]</label><input id="poCurrency" name="currency" class="form-control form-control-sm" dir="ltr" value="IRR" maxlength="10" required /></div>
             <div class="col-md-3"><label class="form-label" for="poNumber">@Localizer["PO Number"]</label><input id="poNumber" name="poNumber" class="form-control form-control-sm" dir="ltr" /></div>
-            <div class="col-md-auto"><button type="submit" class="btn btn-sm btn-primary"><i class="bi bi-plus" aria-hidden="true"></i> @Localizer["Po_Create"]</button></div>
+            <div class="col-md-auto"><pems-button tone="none" size="small" css="btn-primary" type="submit"><i class="bi bi-plus" aria-hidden="true"></i> @Localizer["Po_Create"]</pems-button></div>
             <div class="col-12 text-muted">@Localizer["Po_CreateHint"]</div>
         </div>
     </form>

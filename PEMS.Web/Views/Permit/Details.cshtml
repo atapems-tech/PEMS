@@ -196,8 +196,7 @@
             </form>
             <form asp-action="Close" method="post">
                 <input type="hidden" name="id" value="@Model.PermitId" />
-                <button type="button" class="btn btn-sm btn-outline-secondary" @(closeElig != null && closeElig.Result != "Eligible" ? "disabled" : "")
-                        onclick="if(confirm('این Permit بسته شود؟')) pemsSubmitWithStepUp(this)">Close</button>
+                <pems-button tone="neutral" size="small" outline="true" type="button" disabled="@(closeElig != null && closeElig.Result != "Eligible")" onclick="if(confirm('این Permit بسته شود؟')) pemsSubmitWithStepUp(this)">Close</pems-button>
             </form>
         }
         @if (Model.Status is "Draft" or "Submitted")
@@ -265,9 +264,9 @@
         <div class="d-flex gap-2 flex-wrap border-top pt-3">
             <form asp-controller="ExecutionGate" asp-action="StartWork" method="post" class="d-inline">
                 <input type="hidden" name="permitId" value="@Model.PermitId" />
-                <button type="button" class="btn btn-sm btn-pems-solid" @(executionGate.Result != "Eligible" ? "disabled" : "") onclick="pemsSubmitWithStepUp(this)">
+                <pems-button tone="primary" size="small" type="button" disabled="@(executionGate.Result != "Eligible")" onclick="pemsSubmitWithStepUp(this)">
                     <i class="bi bi-play-circle"></i> Start Work
-                </button>
+                </pems-button>
             </form>
             @if (canEmergencyOverride)
             {
@@ -374,9 +373,8 @@
             <form asp-action="RespondApproval" method="post" class="d-flex flex-wrap gap-2 align-items-center @(approveElig == null && rejectElig == null ? "border-top pt-3" : "")">
                 <input type="hidden" name="id" value="@Model.PermitId" />
                 <input type="text" name="comment" class="form-control form-control-sm flex-grow-1" style="min-width:160px;max-width:280px;" placeholder="@Localizer["Comment (optional)"]" />
-                <button type="button" class="btn btn-sm btn-success" @(approveElig != null && approveElig.Result != "Eligible" ? "disabled" : "") onclick="pemsSubmitWithStepUp(this, 'decision', 'Approve')">Approve</button>
-                <button type="button" class="btn btn-sm btn-outline-danger" @(rejectElig != null && rejectElig.Result != "Eligible" ? "disabled" : "")
-                        onclick="if(confirm('این مرحله رد شود؟ کل زنجیره‌ی تایید با نتیجه‌ی Rejected بسته می‌شود.')) pemsSubmitWithStepUp(this, 'decision', 'Reject')">Reject</button>
+                <pems-button tone="success" size="small" type="button" disabled="@(approveElig != null && approveElig.Result != "Eligible")" onclick="pemsSubmitWithStepUp(this, 'decision', 'Approve')">Approve</pems-button>
+                <pems-button tone="danger" size="small" outline="true" type="button" disabled="@(rejectElig != null && rejectElig.Result != "Eligible")" onclick="if(confirm('این مرحله رد شود؟ کل زنجیره‌ی تایید با نتیجه‌ی Rejected بسته می‌شود.')) pemsSubmitWithStepUp(this, 'decision', 'Reject')">Reject</pems-button>
             </form>
             <form asp-action="ReturnForRework" method="post" class="d-flex flex-wrap gap-2 align-items-center mt-2">
                 <input type="hidden" name="id" value="@Model.PermitId" />
@@ -479,7 +477,7 @@
                             <form asp-controller="Isolation" asp-action="Verify" method="post" class="d-inline">
                                 <input type="hidden" name="id" value="@p.IsolationPointId" />
                                 <input type="hidden" name="permitId" value="@Model.PermitId" />
-                                <button type="button" class="btn btn-sm btn-outline-success" @(lotoVerifyElig != null && lotoVerifyElig.Result != "Eligible" ? "disabled" : "") onclick="pemsSubmitWithStepUp(this)"><i class="bi bi-check-circle"></i> Verify</button>
+                                <pems-button tone="success" size="small" outline="true" type="button" disabled="@(lotoVerifyElig != null && lotoVerifyElig.Result != "Eligible")" onclick="pemsSubmitWithStepUp(this)"><i class="bi bi-check-circle"></i> Verify</pems-button>
                             </form>
                         }
                         @if (p.Status == "Verified")
@@ -690,7 +688,7 @@
                                 <form asp-controller="Simops" asp-action="Confirm" method="post" class="d-inline">
                                     <input type="hidden" name="id" value="@c.SimopsConflictId" />
                                     <input type="hidden" name="permitId" value="@Model.PermitId" />
-                                    <button type="button" class="btn btn-sm btn-outline-warning" @(simopsConfirmElig != null && simopsConfirmElig.Result != "Eligible" ? "disabled" : "") onclick="pemsSubmitWithStepUp(this)">Confirm</button>
+                                    <pems-button tone="warning" size="small" outline="true" type="button" disabled="@(simopsConfirmElig != null && simopsConfirmElig.Result != "Eligible")" onclick="pemsSubmitWithStepUp(this)">Confirm</pems-button>
                                 </form>
                             }
                             @if (c.Status is "Potential" or "Confirmed")
@@ -699,7 +697,7 @@
                                     <input type="hidden" name="id" value="@c.SimopsConflictId" />
                                     <input type="hidden" name="permitId" value="@Model.PermitId" />
                                     <input type="text" name="justification" class="form-control form-control-sm" style="min-width:110px;max-width:180px;" placeholder="Justification" required />
-                                    <button type="button" class="btn btn-sm btn-outline-secondary" @(simopsAcceptRiskElig != null && simopsAcceptRiskElig.Result != "Eligible" ? "disabled" : "") onclick="pemsSubmitWithStepUp(this)">Accept Risk</button>
+                                    <pems-button tone="neutral" size="small" outline="true" type="button" disabled="@(simopsAcceptRiskElig != null && simopsAcceptRiskElig.Result != "Eligible")" onclick="pemsSubmitWithStepUp(this)">Accept Risk</pems-button>
                                 </form>
                             }
                             @if (c.Status == "Confirmed")
@@ -708,7 +706,7 @@
                                     <input type="hidden" name="id" value="@c.SimopsConflictId" />
                                     <input type="hidden" name="permitId" value="@Model.PermitId" />
                                     <input type="text" name="resolutionNotes" class="form-control form-control-sm" style="min-width:110px;max-width:180px;" placeholder="Resolution notes" required />
-                                    <button type="button" class="btn btn-sm btn-outline-success" @(simopsResolveElig != null && simopsResolveElig.Result != "Eligible" ? "disabled" : "") onclick="pemsSubmitWithStepUp(this)">Resolve</button>
+                                    <pems-button tone="success" size="small" outline="true" type="button" disabled="@(simopsResolveElig != null && simopsResolveElig.Result != "Eligible")" onclick="pemsSubmitWithStepUp(this)">Resolve</pems-button>
                                 </form>
                             }
                         </td>

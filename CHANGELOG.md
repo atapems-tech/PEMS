@@ -9,6 +9,11 @@ and theme and were reconstructed from the git history (initial import 2026-09-05
 - Part catalogue request (edit): the equipment, attribute and note tables come from `<pems-related-table>`; removing an equipment line uses `<pems-related-remove>`. The page keeps its own sections, the sticky table headers and the attribute script (it finds the table by its `id`).
 - RCM / FMEA class detail: the functional failure, FMEA item and RCM decision tables come from `<pems-related-table>`.
 
+## 2026-11-01 - The rest of the buttons in the views (SCRUM-53, #31)
+
+### Changed
+- `<pems-button>` takes `tone="none"` (the page passes the class), `disabled="@(cond)"` and `as="label"`/`as="span"`; `ButtonOptions.Tone` is nullable. 91 more buttons in 49 views moved; the button ratchet is down to the 4 buttons built inside JavaScript strings in `_ContextualHelpDrawer`.
+
 ## 2026-11-01 - Card, progress, accordion, list-group and spinner components (SCRUM-53, #31)
 
 ### Added

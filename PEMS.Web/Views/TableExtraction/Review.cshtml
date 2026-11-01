@@ -109,7 +109,7 @@
                                         <input type="hidden" name="rowId" value="@row.TableExtractionRowId" />
                                         <input type="hidden" name="equipmentId" value="@row.MatchedEquipmentId" />
                                         <input type="hidden" name="batchId" value="@Model.TableExtractionBatchId" />
-                                        <button type="submit" class="btn btn-xs btn-pems-solid btn-sm">Confirm</button>
+                                        <pems-button tone="primary" size="small" css="btn-xs" type="submit">Confirm</pems-button>
                                     </form>
                                     <form asp-action="RejectRow" method="post" class="d-inline">
                                         <input type="hidden" name="rowId" value="@row.TableExtractionRowId" />

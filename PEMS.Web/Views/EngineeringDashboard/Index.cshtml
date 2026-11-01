@@ -214,8 +214,7 @@
             </table>
         </div>
         <div class="mt-3">
-            <a asp-controller="EngineeringDocuments" asp-action="Index" asp-route-MinRevisionCount="@(Model.SelectedMinRevisionCount ?? 1)"
-               class="btn btn-sm btn-outline-secondary"><i class="bi bi-list-ul"></i> @Localizer["ViewAllInMdr"]</a>
+            <pems-button as="a" tone="neutral" size="small" outline="true" asp-controller="EngineeringDocuments" asp-action="Index" asp-route-MinRevisionCount="@(Model.SelectedMinRevisionCount ?? 1)"><i class="bi bi-list-ul"></i> @Localizer["ViewAllInMdr"]</pems-button>
         </div>
     }
 </div>

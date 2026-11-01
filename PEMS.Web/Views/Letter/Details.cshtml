@@ -381,9 +381,9 @@
                 <pems-badge tone="light">Revision @(l.RevisionCount + 1)</pems-badge>
                 @if (latestReturnReview?.PreviousBodySnapshot != null)
                 {
-                    <button type="button" class="btn btn-sm btn-link p-0" data-bs-toggle="collapse" data-bs-target="#previousVersionPanel">
+                    <pems-button tone="none" size="small" css="btn-link p-0" type="button" data-bs-toggle="collapse" data-bs-target="#previousVersionPanel">
                         <i class="bi bi-clock-history"></i> View previous version (as reviewed)
-                    </button>
+                    </pems-button>
                 }
             </div>
             @if (latestReturnReview?.PreviousBodySnapshot != null)

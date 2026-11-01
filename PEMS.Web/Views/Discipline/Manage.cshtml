@@ -51,7 +51,7 @@
                     <td colspan="2" class="text-end">
                         <form asp-action="SetDisciplineActive" method="post" class="d-inline">
                             <input type="hidden" name="disciplineId" value="@d.DisciplineId" /><input type="hidden" name="isActive" value="@((!d.IsActive).ToString().ToLowerInvariant())" />
-                            <button class="btn btn-sm @(d.IsActive ? "btn-outline-danger" : "btn-outline-success")">@(d.IsActive ? Localizer["Deactivate"] : Localizer["Reactivate"])</button>
+                            <pems-button tone="none" size="small" css="@(d.IsActive ? "btn-outline-danger" : "btn-outline-success")">@(d.IsActive ? Localizer["Deactivate"] : Localizer["Reactivate"])</pems-button>
                         </form>
                     </td>
                 </tr>

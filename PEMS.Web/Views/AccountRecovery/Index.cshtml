@@ -34,7 +34,7 @@
         <span asp-validation-for="ConfirmPassword" class="text-danger small"></span>
     </div>
 
-    <button type="submit" class="btn btn-pems">@Localizer["Recover account"]</button>
+    <pems-button tone="none" css="btn-pems" type="submit">@Localizer["Recover account"]</pems-button>
 </form>
 
 <p class="small text-muted mt-3">@Localizer["After recovery, all sessions of the account are signed out, every administrator is notified and MFA must be enrolled again."]</p>
