@@ -156,7 +156,7 @@
         @if (isDraft && canEdit && a.Lines.Count > 0)
         {
             <form asp-action="Submit" method="post" class="d-inline"><input type="hidden" name="id" value="@Model.PoId" />
-                <button type="submit" class="btn btn-sm btn-primary"><i class="bi bi-send" aria-hidden="true"></i> @Localizer["Po_Submit"]</button></form>
+                <pems-button tone="none" size="small" css="btn-primary" type="submit"><i class="bi bi-send" aria-hidden="true"></i> @Localizer["Po_Submit"]</pems-button></form>
             <span class="small text-muted ms-2">@Localizer["Po_SubmitHint"]</span>
         }
         @if (isSubmitted && holdsRole)
@@ -168,7 +168,7 @@
             else
             {
                 <form asp-action="Approve" method="post" class="d-inline"><input type="hidden" name="id" value="@Model.PoId" />
-                    <button type="submit" class="btn btn-sm btn-primary"><i class="bi bi-check2-circle" aria-hidden="true"></i> @Localizer["Po_Approve"]</button></form>
+                    <pems-button tone="none" size="small" css="btn-primary" type="submit"><i class="bi bi-check2-circle" aria-hidden="true"></i> @Localizer["Po_Approve"]</pems-button></form>
             }
         }
         @if (isSubmitted && (holdsRole || (a.ResponsibleNotSet && canEdit)))

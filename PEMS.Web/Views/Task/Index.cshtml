@@ -13,12 +13,12 @@
 
 
 <div class="d-flex flex-wrap gap-2 mb-3">
-    <a asp-action="Index" asp-route-tab="action" class="btn btn-sm @(tab != "followup" ? "btn-pems-solid" : "btn-outline-secondary")" aria-current="@(tab != "followup" ? "page" : null)">
+    <pems-button as="a" tone="none" size="small" css="@(tab != "followup" ? "btn-pems-solid" : "btn-outline-secondary")" asp-action="Index" asp-route-tab="action" aria-current="@(tab != "followup" ? "page" : null)">
         <i class="bi bi-check2-square" aria-hidden="true"></i> @Localizer["Tm_Tab_Action"]
-    </a>
-    <a asp-action="Index" asp-route-tab="followup" class="btn btn-sm @(tab == "followup" ? "btn-pems-solid" : "btn-outline-secondary")" aria-current="@(tab == "followup" ? "page" : null)">
+    </pems-button>
+    <pems-button as="a" tone="none" size="small" css="@(tab == "followup" ? "btn-pems-solid" : "btn-outline-secondary")" asp-action="Index" asp-route-tab="followup" aria-current="@(tab == "followup" ? "page" : null)">
         <i class="bi bi-eye" aria-hidden="true"></i> @Localizer["Tm_Tab_Followup"]
-    </a>
+    </pems-button>
     <pems-button tone="neutral" size="small" outline="true" css="ms-auto" as="a" asp-controller="TaskManager" asp-action="Index">
         <i class="bi bi-kanban" aria-hidden="true"></i> @Localizer["Tm_Title"]
     </pems-button>

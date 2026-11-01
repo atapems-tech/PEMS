@@ -34,7 +34,7 @@
                 @if (!n.DismissedDate.HasValue)
                 {
                     <form asp-action="Dismiss" asp-route-id="@n.NotificationId" method="post">
-                        <button class="btn btn-sm btn-link text-muted" title="@Localizer["Notif_Dismiss"]" aria-label="@Localizer["Notif_Dismiss"]"><i class="bi bi-x-lg"></i></button>
+                        <pems-button tone="none" size="small" css="btn-link text-muted" title="@Localizer["Notif_Dismiss"]" aria-label="@Localizer["Notif_Dismiss"]"><i class="bi bi-x-lg"></i></pems-button>
                     </form>
                 }
             </li>

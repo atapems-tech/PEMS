@@ -78,7 +78,7 @@
         @if (Model.CanEdit && s.Status == "Draft")
         {
             <form asp-action="Submit" asp-route-id="@s.MaintenanceStrategyId" method="post" class="d-inline">
-                <button class="btn btn-sm btn-primary"><i class="bi bi-send"></i> @Localizer["Rcm_SubmitForReview"]</button>
+                <pems-button tone="none" size="small" css="btn-primary"><i class="bi bi-send"></i> @Localizer["Rcm_SubmitForReview"]</pems-button>
             </form>
         }
         @if (Model.CanApprove && s.Status == "InReview")

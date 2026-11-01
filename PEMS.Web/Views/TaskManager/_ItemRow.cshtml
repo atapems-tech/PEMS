@@ -39,11 +39,11 @@
         <td class="text-nowrap tm-row-actions">
             <form asp-controller="TaskManager" asp-action="Rank" method="post" class="d-inline">
                 <input type="hidden" name="id" value="@i.Id" /><input type="hidden" name="up" value="true" /><input type="hidden" name="returnUrl" value="@returnUrl" />
-                <button class="btn btn-sm btn-link p-0" title="@Localizer["Tm_MoveUp"]" aria-label="@Localizer["Tm_MoveUp"] @(i.Key)"><i class="bi bi-arrow-up" aria-hidden="true"></i></button>
+                <pems-button tone="none" size="small" css="btn-link p-0" title="@Localizer["Tm_MoveUp"]" aria-label="@Localizer["Tm_MoveUp"] @(i.Key)"><i class="bi bi-arrow-up" aria-hidden="true"></i></pems-button>
             </form>
             <form asp-controller="TaskManager" asp-action="Rank" method="post" class="d-inline">
                 <input type="hidden" name="id" value="@i.Id" /><input type="hidden" name="up" value="false" /><input type="hidden" name="returnUrl" value="@returnUrl" />
-                <button class="btn btn-sm btn-link p-0" title="@Localizer["Tm_MoveDown"]" aria-label="@Localizer["Tm_MoveDown"] @(i.Key)"><i class="bi bi-arrow-down" aria-hidden="true"></i></button>
+                <pems-button tone="none" size="small" css="btn-link p-0" title="@Localizer["Tm_MoveDown"]" aria-label="@Localizer["Tm_MoveDown"] @(i.Key)"><i class="bi bi-arrow-down" aria-hidden="true"></i></pems-button>
             </form>
             <form asp-controller="TaskManager" asp-action="SetSprint" method="post" class="d-inline">
                 <input type="hidden" name="id" value="@i.Id" /><input type="hidden" name="returnUrl" value="@returnUrl" />

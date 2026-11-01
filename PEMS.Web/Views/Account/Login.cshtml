@@ -32,9 +32,9 @@
         <label asp-for="RememberMe" class="form-check-label small">@Localizer["Login_RememberMe"]</label>
     </div>
 
-    <button type="submit" class="btn btn-pems" id="loginSubmitBtn">
+    <pems-button tone="none" css="btn-pems" type="submit" id="loginSubmitBtn">
         <span id="loginSubmitLabel">@Localizer["Login_SignIn"]</span>
-    </button>
+    </pems-button>
 
     <div class="auth-links">
         <a asp-action="ForgotPassword">@Localizer["Login_ForgotPassword"]</a>

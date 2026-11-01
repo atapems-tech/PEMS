@@ -41,13 +41,13 @@
         <div class="d-flex flex-wrap gap-2">
             <form asp-controller="TaskManager" asp-action="Watch" method="post">
                 <input type="hidden" name="id" value="@i.Id" /><input type="hidden" name="watch" value="@(Model.IsWatching ? "false" : "true")" /><input type="hidden" name="returnUrl" value="@returnUrl" />
-                <button class="btn btn-sm btn-outline-secondary" aria-pressed="@(Model.IsWatching ? "true" : "false")"><i class="bi @(Model.IsWatching ? "bi-eye-slash" : "bi-eye")" aria-hidden="true"></i> @(Model.IsWatching ? Localizer["Tm_Unwatch"] : Localizer["Tm_Watch"]) <pems-badge tone="light">@Model.Watchers.Count</pems-badge></button>
+                <pems-button tone="neutral" size="small" outline="true" aria-pressed="@(Model.IsWatching ? "true" : "false")"><i class="bi @(Model.IsWatching ? "bi-eye-slash" : "bi-eye")" aria-hidden="true"></i> @(Model.IsWatching ? Localizer["Tm_Unwatch"] : Localizer["Tm_Watch"]) <pems-badge tone="light">@Model.Watchers.Count</pems-badge></pems-button>
             </form>
             @if (Model.CanArchive)
             {
                 <form asp-controller="TaskManager" asp-action="Archive" method="post">
                     <input type="hidden" name="id" value="@i.Id" /><input type="hidden" name="archived" value="@(i.IsActive ? "true" : "false")" /><input type="hidden" name="returnUrl" value="@returnUrl" />
-                    <button class="btn btn-sm @(i.IsActive ? "btn-outline-danger" : "btn-outline-success")" data-tm-confirm="@(i.IsActive ? Localizer["Tm_ArchiveConfirm"] : Localizer["Tm_RestoreConfirm"])"><i class="bi @(i.IsActive ? "bi-archive" : "bi-arrow-counterclockwise")" aria-hidden="true"></i> @(i.IsActive ? Localizer["Tm_Archive"] : Localizer["Tm_Restore"])</button>
+                    <pems-button tone="none" size="small" css="@(i.IsActive ? "btn-outline-danger" : "btn-outline-success")" data-tm-confirm="@(i.IsActive ? Localizer["Tm_ArchiveConfirm"] : Localizer["Tm_RestoreConfirm"])"><i class="bi @(i.IsActive ? "bi-archive" : "bi-arrow-counterclockwise")" aria-hidden="true"></i> @(i.IsActive ? Localizer["Tm_Archive"] : Localizer["Tm_Restore"])</pems-button>
                 </form>
             }
         </div>
@@ -161,7 +161,7 @@
                             {
                                 <form asp-controller="TaskManager" asp-action="RemoveLink" method="post">
                                     <input type="hidden" name="linkId" value="@l.Id" /><input type="hidden" name="returnUrl" value="@returnUrl" />
-                                    <button class="btn btn-sm btn-link text-danger p-0" aria-label="@Localizer["Tm_RemoveLink"]" data-tm-confirm="@Localizer["Tm_RemoveLinkConfirm"]"><i class="bi bi-x-lg" aria-hidden="true"></i></button>
+                                    <pems-button tone="none" size="small" css="btn-link text-danger p-0" aria-label="@Localizer["Tm_RemoveLink"]" data-tm-confirm="@Localizer["Tm_RemoveLinkConfirm"]"><i class="bi bi-x-lg" aria-hidden="true"></i></pems-button>
                                 </form>
                             }
                         </li>
@@ -211,7 +211,7 @@
                         {
                             <form asp-controller="TaskManager" asp-action="DeleteComment" method="post">
                                 <input type="hidden" name="commentId" value="@c.Id" /><input type="hidden" name="returnUrl" value="@returnUrl" />
-                                <button class="btn btn-sm btn-link text-danger p-0" data-tm-confirm="@Localizer["Tm_DeleteCommentConfirm"]">@Localizer["Tm_Delete"]</button>
+                                <pems-button tone="none" size="small" css="btn-link text-danger p-0" data-tm-confirm="@Localizer["Tm_DeleteCommentConfirm"]">@Localizer["Tm_Delete"]</pems-button>
                             </form>
                         }
                     </div>

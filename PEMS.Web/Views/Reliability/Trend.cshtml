@@ -19,10 +19,7 @@
 <div class="d-flex justify-content-between align-items-center mb-3">
     <h5 class="mb-0"><i class="bi bi-graph-up"></i> @Model.VariableType — @Model.Tag</h5>
     <div class="d-flex gap-2">
-        <a asp-action="ExportTrend" asp-route-pointId="@Model.ConditionMonitoringPointId" asp-route-range="@selectedRange"
-           asp-route-from="@(selectedRange == "custom" ? Model.FromDate.ToString("yyyy-MM-dd") : null)"
-           asp-route-to="@(selectedRange == "custom" ? Model.ToDate.ToString("yyyy-MM-dd") : null)"
-           class="btn btn-outline-secondary btn-sm"><i class="bi bi-download"></i> @Localizer["Export"]</a>
+        <pems-button as="a" tone="neutral" size="small" outline="true" asp-action="ExportTrend" asp-route-pointId="@Model.ConditionMonitoringPointId" asp-route-range="@selectedRange" asp-route-from="@(selectedRange == "custom" ? Model.FromDate.ToString("yyyy-MM-dd") : null)" asp-route-to="@(selectedRange == "custom" ? Model.ToDate.ToString("yyyy-MM-dd") : null)"><i class="bi bi-download"></i> @Localizer["Export"]</pems-button>
         <pems-button tone="neutral" size="small" outline="true" as="a" asp-action="ConditionMonitoring" asp-route-equipmentId="@equipmentId">← @Localizer["Condition Monitoring"]</pems-button>
     </div>
 </div>

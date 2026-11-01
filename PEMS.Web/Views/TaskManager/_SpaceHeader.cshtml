@@ -16,8 +16,8 @@
         </h2>
         <div class="d-flex flex-wrap gap-2 align-items-center">
             <div class="btn-group btn-group-sm" role="group" aria-label="@Localizer["Tm_View"]">
-                <a class="btn @(mode == "backlog" ? "btn-pems-solid" : "btn-outline-secondary")" asp-action="Space" asp-route-key="@Model.Space.Key" asp-route-view="backlog" aria-current="@(mode == "backlog" ? "page" : null)"><i class="bi bi-list-ol" aria-hidden="true"></i> @Localizer["Tm_Backlog"]</a>
-                <a class="btn @(mode == "board" ? "btn-pems-solid" : "btn-outline-secondary")" asp-action="Space" asp-route-key="@Model.Space.Key" asp-route-view="board" aria-current="@(mode == "board" ? "page" : null)"><i class="bi bi-kanban" aria-hidden="true"></i> @Localizer["Tm_Board"]</a>
+                <pems-button as="a" tone="none" css="@(mode == "backlog" ? "btn-pems-solid" : "btn-outline-secondary")" asp-action="Space" asp-route-key="@Model.Space.Key" asp-route-view="backlog" aria-current="@(mode == "backlog" ? "page" : null)"><i class="bi bi-list-ol" aria-hidden="true"></i> @Localizer["Tm_Backlog"]</pems-button>
+                <pems-button as="a" tone="none" css="@(mode == "board" ? "btn-pems-solid" : "btn-outline-secondary")" asp-action="Space" asp-route-key="@Model.Space.Key" asp-route-view="board" aria-current="@(mode == "board" ? "page" : null)"><i class="bi bi-kanban" aria-hidden="true"></i> @Localizer["Tm_Board"]</pems-button>
             </div>
             <pems-button tone="neutral" size="small" outline="true" as="a" asp-action="AllWork" asp-route-WorkSpaceId="@Model.Space.Id" asp-route-StatusCategory="NotDone"><i class="bi bi-funnel" aria-hidden="true"></i> @Localizer["Tm_AllWork"]</pems-button>
             @if (Model.CanCreate)

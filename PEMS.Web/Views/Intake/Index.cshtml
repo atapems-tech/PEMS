@@ -14,10 +14,10 @@
         بالا خودکار به ماژول درست (MDR/VDR) هدایت می‌شود، در سطح متوسط/پایین منتظر بازبینی شما می‌ماند.
     </p>
     <div class="d-flex flex-wrap gap-2">
-        <a asp-action="Index" class="btn btn-sm @(ViewBag.SelectedStage == null ? "btn-pems-solid" : "btn-outline-secondary")">All</a>
+        <pems-button as="a" tone="none" size="small" css="@(ViewBag.SelectedStage == null ? "btn-pems-solid" : "btn-outline-secondary")" asp-action="Index">All</pems-button>
         @foreach (var s in stages)
         {
-            <a asp-action="Index" asp-route-stage="@s" class="btn btn-sm @(s == (string?)ViewBag.SelectedStage ? "btn-pems-solid" : "btn-outline-secondary")">@s</a>
+            <pems-button as="a" tone="none" size="small" css="@(s == (string?)ViewBag.SelectedStage ? "btn-pems-solid" : "btn-outline-secondary")" asp-action="Index" asp-route-stage="@s">@s</pems-button>
         }
         @if (!string.IsNullOrEmpty((string?)ViewBag.SelectedStage))
         {

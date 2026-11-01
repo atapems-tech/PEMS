@@ -94,4 +94,20 @@ public sealed class ButtonTagHelperTests
     [Fact]
     public void A_link_is_written_with_as_a()
         => Assert.Equal("<a class=\"btn btn-pems-solid\" href=\"/x\">Open</a>", Run(new PemsButtonTagHelper(null!) { As = "a" }, [new("href", "/x")], "Open"));
+
+    [Fact]
+    public void Tone_none_writes_only_the_size_and_the_classes_the_page_passes()
+        => Assert.Equal("<button class=\"btn btn-sm btn-pems p-0\" type=\"submit\">Go</button>",
+            Run(new PemsButtonTagHelper(null!) { Tone = "none", Size = "small", Css = "btn-pems p-0" }, [new("type", "submit")], "Go"));
+
+    [Fact]
+    public void A_label_can_look_like_a_button()
+        => Assert.Equal("<label class=\"btn btn-sm btn-outline-secondary\" for=\"x\">All</label>",
+            Run(new PemsButtonTagHelper(null!) { As = "label", Tone = "neutral", Size = "small", Outline = true }, [new("for", "x")], "All"));
+
+    [Theory]
+    [InlineData(true, "<button class=\"btn btn-pems-solid\" disabled=\"disabled\">Go</button>")]
+    [InlineData(false, "<button class=\"btn btn-pems-solid\">Go</button>")]
+    public void The_disabled_property_writes_the_attribute_only_when_true(bool disabled, string expected)
+        => Assert.Equal(expected, Run(new PemsButtonTagHelper(null!) { Disabled = disabled }, [], "Go"));
 }

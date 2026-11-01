@@ -82,7 +82,7 @@
                 </select>
             </div>
         }
-        <button type="submit" class="btn btn-sm btn-primary"><i class="bi bi-check2" aria-hidden="true"></i> @Localizer["Ppr_Convert"]</button>
+        <pems-button tone="none" size="small" css="btn-primary" type="submit"><i class="bi bi-check2" aria-hidden="true"></i> @Localizer["Ppr_Convert"]</pems-button>
     </form>
 }
 
@@ -91,7 +91,7 @@
     <form asp-action="Accept" method="post" class="content-card mb-3">
         <input type="hidden" name="id" value="@d.ProcurementDemandId" />
         <p class="small mb-2">@Localizer["Ppr_AcceptHint"]</p>
-        <button type="submit" class="btn btn-sm btn-primary"><i class="bi bi-check2" aria-hidden="true"></i> @Localizer["Ppr_Accept"]</button>
+        <pems-button tone="none" size="small" css="btn-primary" type="submit"><i class="bi bi-check2" aria-hidden="true"></i> @Localizer["Ppr_Accept"]</pems-button>
     </form>
 }
 

@@ -26,7 +26,7 @@
             <span class="text-muted small">@setupStatus.CompletedCount of @setupStatus.TotalCount setup areas ready</span>
         </div>
         <pems-progress value="@setupStatus.PercentComplete" height="18px" css="mb-3">@setupStatus.PercentComplete%</pems-progress>
-        <a asp-controller="QuickSetup" asp-action="Index" class="btn btn-sm btn-primary">@Localizer["Continue Setup"]</a>
+        <pems-button as="a" tone="none" size="small" css="btn-primary" asp-controller="QuickSetup" asp-action="Index">@Localizer["Continue Setup"]</pems-button>
     </div>
 }
 

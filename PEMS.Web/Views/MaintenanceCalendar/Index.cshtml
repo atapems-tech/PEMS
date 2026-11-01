@@ -46,9 +46,9 @@
             <strong class="ms-2" dir="@(view == "week" ? "ltr" : null)">@(view == "month" ? anchor.ToString("MMMM yyyy") : view == "week" ? $"{ViewBag.RangeStart:MMM d} - {((DateTime)ViewBag.RangeEnd).AddDays(-1):MMM d, yyyy}" : anchor.ToString("dddd, MMM d yyyy"))</strong>
         </div>
         <div class="btn-group btn-group-sm">
-            <a class="btn @(view == "day" ? "btn-pems-solid" : "btn-outline-secondary")" href="@NavUrl("day")">@Localizer["Day"]</a>
-            <a class="btn @(view == "week" ? "btn-pems-solid" : "btn-outline-secondary")" href="@NavUrl("week")">@Localizer["Week"]</a>
-            <a class="btn @(view == "month" ? "btn-pems-solid" : "btn-outline-secondary")" href="@NavUrl("month")">@Localizer["Month"]</a>
+            <pems-button as="a" tone="none" css="@(view == "day" ? "btn-pems-solid" : "btn-outline-secondary")" href="@NavUrl("day")">@Localizer["Day"]</pems-button>
+            <pems-button as="a" tone="none" css="@(view == "week" ? "btn-pems-solid" : "btn-outline-secondary")" href="@NavUrl("week")">@Localizer["Week"]</pems-button>
+            <pems-button as="a" tone="none" css="@(view == "month" ? "btn-pems-solid" : "btn-outline-secondary")" href="@NavUrl("month")">@Localizer["Month"]</pems-button>
         </div>
     </div>
 
