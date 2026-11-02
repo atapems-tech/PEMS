@@ -16,28 +16,16 @@
 
 <div class="row g-3 mb-3">
     <div class="col-md-3">
-        <div class="content-card text-center">
-            <div class="fs-3 fw-bold">@Model.TotalEquipmentCount</div>
-            <div class="text-muted small">@Localizer["کل تجهیزات"]</div>
-        </div>
+        <pems-kpi-tile label="@Localizer["کل تجهیزات"]">@Model.TotalEquipmentCount</pems-kpi-tile>
     </div>
     <div class="col-md-3">
-        <div class="content-card text-center">
-            <div class="fs-3 fw-bold text-success">@Model.FullyLinkedCount</div>
-            <div class="text-muted small">@Localizer["کاملاً وصل (هر ۴ نوع رابطه)"]</div>
-        </div>
+        <pems-kpi-tile tone="success" label="@Localizer["کاملاً وصل (هر ۴ نوع رابطه)"]">@Model.FullyLinkedCount</pems-kpi-tile>
     </div>
     <div class="col-md-3">
-        <div class="content-card text-center">
-            <div class="fs-3 fw-bold text-warning">@Model.PartiallyLinkedCount</div>
-            <div class="text-muted small">@Localizer["ناقص (بعضی روابط)"]</div>
-        </div>
+        <pems-kpi-tile tone="warning" label="@Localizer["ناقص (بعضی روابط)"]">@Model.PartiallyLinkedCount</pems-kpi-tile>
     </div>
     <div class="col-md-3">
-        <div class="content-card text-center">
-            <div class="fs-3 fw-bold text-danger">@Model.UnlinkedCount</div>
-            <div class="text-muted small">@Localizer["کاملاً بدون رابطه"]</div>
-        </div>
+        <pems-kpi-tile tone="danger" label="@Localizer["کاملاً بدون رابطه"]">@Model.UnlinkedCount</pems-kpi-tile>
     </div>
 </div>
 

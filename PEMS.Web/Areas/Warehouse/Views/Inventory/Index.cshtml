@@ -7,12 +7,12 @@
 }
 
 <div class="row g-3 mb-3">
-    <div class="col-md-2"><div class="content-card text-center"><div class="fs-3 fw-bold">@ViewBag.TotalMaterialItems</div><div class="text-muted small">@Localizer["Total Materials"]</div></div></div>
-    <div class="col-md-2"><div class="content-card text-center"><div class="fs-3 fw-bold">@ViewBag.StockItems</div><div class="text-muted small">Stock Items</div></div></div>
-    <div class="col-md-2"><div class="content-card text-center"><div class="fs-3 fw-bold text-warning">@ViewBag.CriticalItems</div><div class="text-muted small">@Localizer["Critical"]</div></div></div>
-    <div class="col-md-2"><div class="content-card text-center"><div class="fs-3 fw-bold text-danger">@ViewBag.OutOfStockCount</div><div class="text-muted small">Out of Stock</div></div></div>
-    <div class="col-md-2"><div class="content-card text-center"><div class="fs-3 fw-bold">@ViewBag.TotalWarehouses</div><div class="text-muted small">@Localizer["Warehouses"]</div></div></div>
-    <div class="col-md-2"><div class="content-card text-center"><div class="fs-3 fw-bold">@ViewBag.ActiveReservations</div><div class="text-muted small">Active Reservations</div></div></div>
+    <div class="col-md-2"><pems-kpi-tile label="@Localizer["Total Materials"]">@ViewBag.TotalMaterialItems</pems-kpi-tile></div>
+    <div class="col-md-2"><pems-kpi-tile label="Stock Items">@ViewBag.StockItems</pems-kpi-tile></div>
+    <div class="col-md-2"><pems-kpi-tile tone="warning" label="@Localizer["Critical"]">@ViewBag.CriticalItems</pems-kpi-tile></div>
+    <div class="col-md-2"><pems-kpi-tile tone="danger" label="Out of Stock">@ViewBag.OutOfStockCount</pems-kpi-tile></div>
+    <div class="col-md-2"><pems-kpi-tile label="@Localizer["Warehouses"]">@ViewBag.TotalWarehouses</pems-kpi-tile></div>
+    <div class="col-md-2"><pems-kpi-tile label="Active Reservations">@ViewBag.ActiveReservations</pems-kpi-tile></div>
 </div>
 
 <div class="row g-3 mb-3">
