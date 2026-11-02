@@ -3,6 +3,12 @@
 All notable changes to PEMS. No system version is defined yet (plan row F_CI), so entries are grouped by date
 and theme and were reconstructed from the git history (initial import 2026-09-05). Newest first.
 
+## 2026-11-02 - KpiTile wave K4: dashboards (SCRUM-337)
+
+### Changed
+- Inventory, AI insights (delays), DCC, equipment classification, QC and QC KPIs, the relationship gap report, the CBM dashboard, reliability data quality and the availability simulation take their 41 number tiles from `<pems-kpi-tile>` instead of a large bold number over a muted label. Coloured numbers keep their colour through `tone`; a label that had an icon in front of it (DCC, QC) shows the icon in the tile's coloured square; CBM keeps its second line as `sub`; tiles inside a card row (equipment classification, data quality) are compact.
+- The DCC "Relationship Explorer" card stays as it is: it is a link, not a number.
+
 ## 2026-11-02 - KpiTile wave K3: detail-page tiles (SCRUM-337)
 
 ### Added

@@ -64,16 +64,10 @@
 
     <div class="row g-3 mb-3">
         <div class="col-md-6">
-            <div class="text-center border rounded p-2">
-                <div class="fs-3 fw-bold">@delay.TotalDelayedDocuments</div>
-                <div class="text-muted small">@Localizer["کل مدارک با تاخیر"]</div>
-            </div>
+            <pems-kpi-tile label="@Localizer["کل مدارک با تاخیر"]">@delay.TotalDelayedDocuments</pems-kpi-tile>
         </div>
         <div class="col-md-6">
-            <div class="text-center border rounded p-2">
-                <div class="fs-3 fw-bold text-danger">@delay.AverageDelayDays</div>
-                <div class="text-muted small">@Localizer["میانگین روز تاخیر"]</div>
-            </div>
+            <pems-kpi-tile tone="danger" label="@Localizer["میانگین روز تاخیر"]">@delay.AverageDelayDays</pems-kpi-tile>
         </div>
     </div>
 

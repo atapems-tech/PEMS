@@ -24,32 +24,16 @@
 
 <div class="row g-3 mb-3">
     <div class="col-md-3">
-        <div class="content-card text-center">
-            <div class="fs-3 fw-bold">@Model.TotalActivePoints</div>
-            <div class="text-muted small">@Localizer["Monitoring Points"]</div>
-            <div class="small text-muted">@Model.PointsWithEvaluationProfile @Localizer["با پروفایل ارزیابی"] · @Model.PointsWithCbmStrategy @Localizer["با استراتژی CBM"]</div>
-        </div>
+        <pems-kpi-tile label="@Localizer["Monitoring Points"]" sub="@Model.PointsWithEvaluationProfile @Localizer["با پروفایل ارزیابی"] · @Model.PointsWithCbmStrategy @Localizer["با استراتژی CBM"]">@Model.TotalActivePoints</pems-kpi-tile>
     </div>
     <div class="col-md-3">
-        <div class="content-card text-center">
-            <div class="fs-3 fw-bold text-danger">@(Model.CriticalCount + Model.AlarmCount)</div>
-            <div class="text-muted small">@Localizer["Critical"] / @Localizer["Alarm"]</div>
-            <div class="small text-muted">@Model.WarningCount @Localizer["Warning"] · @Model.RequiresEngineeringReviewCount @Localizer["Mark for Engineering Review"]</div>
-        </div>
+        <pems-kpi-tile tone="danger" label="@Localizer["Critical"] / @Localizer["Alarm"]" sub="@Model.WarningCount @Localizer["Warning"] · @Model.RequiresEngineeringReviewCount @Localizer["Mark for Engineering Review"]">@(Model.CriticalCount + Model.AlarmCount)</pems-kpi-tile>
     </div>
     <div class="col-md-3">
-        <div class="content-card text-center">
-            <div class="fs-3 fw-bold">@Model.OpenFindingCount</div>
-            <div class="text-muted small">@Localizer["Open Findings"]</div>
-            <div class="small text-muted">@Model.LinkedFindingCount @Localizer["Linked"]</div>
-        </div>
+        <pems-kpi-tile label="@Localizer["Open Findings"]" sub="@Model.LinkedFindingCount @Localizer["Linked"]">@Model.OpenFindingCount</pems-kpi-tile>
     </div>
     <div class="col-md-3">
-        <div class="content-card text-center">
-            <div class="fs-3 fw-bold @(Model.OverdueCbmPlanCount > 0 ? "text-danger" : "")">@Model.OverdueCbmPlanCount</div>
-            <div class="text-muted small">@Localizer["Overdue"] CBM</div>
-            <div class="small text-muted">@Model.DueSoonCbmPlanCount @Localizer["Due Soon"]</div>
-        </div>
+        <pems-kpi-tile tone="@(Model.OverdueCbmPlanCount > 0 ? "danger" : "")" label="@Localizer["Overdue"] CBM" sub="@Model.DueSoonCbmPlanCount @Localizer["Due Soon"]">@Model.OverdueCbmPlanCount</pems-kpi-tile>
     </div>
 </div>
 
