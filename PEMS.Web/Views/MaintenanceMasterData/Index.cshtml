@@ -130,7 +130,7 @@
                             <td class="text-end">
                                 <form asp-action="ToggleGroupActive" method="post" class="d-inline">
                                     <input type="hidden" name="id" value="@g.MaintenanceGroupId" />
-                                    <pems-button tone="neutral" size="small" outline="true" type="submit" title="@Localizer["غیرفعال کردن"]" onclick="return confirm('این گروه غیرفعال بشه؟')"><i class="bi bi-x-circle"></i></pems-button>
+                                    <pems-button tone="neutral" size="small" outline="true" type="submit" title="@Localizer["غیرفعال کردن"]" data-pems-confirm="این گروه غیرفعال بشه؟"><i class="bi bi-x-circle"></i></pems-button>
                                 </form>
                             </td>
                         </tr>
@@ -165,7 +165,7 @@
                             <td class="text-end">
                                 <form asp-action="ToggleSkillActive" method="post" class="d-inline">
                                     <input type="hidden" name="id" value="@s.SkillId" />
-                                    <pems-button tone="neutral" size="small" outline="true" type="submit" title="@Localizer["غیرفعال کردن"]" onclick="return confirm('این مهارت غیرفعال بشه؟')"><i class="bi bi-x-circle"></i></pems-button>
+                                    <pems-button tone="neutral" size="small" outline="true" type="submit" title="@Localizer["غیرفعال کردن"]" data-pems-confirm="این مهارت غیرفعال بشه؟"><i class="bi bi-x-circle"></i></pems-button>
                                 </form>
                             </td>
                         </tr>
@@ -199,7 +199,7 @@
                             <td class="text-end">
                                 <form asp-action="ToggleQualificationActive" method="post" class="d-inline">
                                     <input type="hidden" name="id" value="@q.QualificationId" />
-                                    <pems-button tone="neutral" size="small" outline="true" type="submit" title="@Localizer["غیرفعال کردن"]" onclick="return confirm('این صلاحیت غیرفعال بشه؟')"><i class="bi bi-x-circle"></i></pems-button>
+                                    <pems-button tone="neutral" size="small" outline="true" type="submit" title="@Localizer["غیرفعال کردن"]" data-pems-confirm="این صلاحیت غیرفعال بشه؟"><i class="bi bi-x-circle"></i></pems-button>
                                 </form>
                             </td>
                         </tr>
@@ -233,7 +233,7 @@
                             <td class="text-end">
                                 <form asp-action="ToggleCertificationActive" method="post" class="d-inline">
                                     <input type="hidden" name="id" value="@c.CertificationId" />
-                                    <pems-button tone="neutral" size="small" outline="true" type="submit" title="@Localizer["غیرفعال کردن"]" onclick="return confirm('این گواهینامه غیرفعال بشه؟')"><i class="bi bi-x-circle"></i></pems-button>
+                                    <pems-button tone="neutral" size="small" outline="true" type="submit" title="@Localizer["غیرفعال کردن"]" data-pems-confirm="این گواهینامه غیرفعال بشه؟"><i class="bi bi-x-circle"></i></pems-button>
                                 </form>
                             </td>
                         </tr>
@@ -269,7 +269,7 @@
                             <td class="text-end">
                                 <form asp-action="ToggleMaintenanceTypeActive" method="post" class="d-inline">
                                     <input type="hidden" name="id" value="@t.MaintenanceTypeId" />
-                                    <pems-button tone="neutral" size="small" outline="true" type="submit" title="@Localizer["غیرفعال کردن"]" onclick="return confirm('این Maintenance Type غیرفعال بشه؟')"><i class="bi bi-x-circle"></i></pems-button>
+                                    <pems-button tone="neutral" size="small" outline="true" type="submit" title="@Localizer["غیرفعال کردن"]" data-pems-confirm="این Maintenance Type غیرفعال بشه؟"><i class="bi bi-x-circle"></i></pems-button>
                                 </form>
                             </td>
                         </tr>
@@ -305,7 +305,7 @@
                             <td class="text-end">
                                 <form asp-action="ToggleMaintenanceStrategyTypeActive" method="post" class="d-inline">
                                     <input type="hidden" name="id" value="@t.MaintenanceStrategyTypeId" />
-                                    <pems-button tone="neutral" size="small" outline="true" type="submit" title="@Localizer["غیرفعال کردن"]" onclick="return confirm('این Strategy Type غیرفعال بشه؟')"><i class="bi bi-x-circle"></i></pems-button>
+                                    <pems-button tone="neutral" size="small" outline="true" type="submit" title="@Localizer["غیرفعال کردن"]" data-pems-confirm="این Strategy Type غیرفعال بشه؟"><i class="bi bi-x-circle"></i></pems-button>
                                 </form>
                             </td>
                         </tr>
@@ -341,7 +341,7 @@
                             <td class="text-end">
                                 <form asp-action="ToggleEquipmentClassActive" method="post" class="d-inline">
                                     <input type="hidden" name="id" value="@t.EquipmentClassId" />
-                                    <pems-button tone="neutral" size="small" outline="true" type="submit" title="@Localizer["غیرفعال کردن"]" onclick="return confirm('این Equipment Class غیرفعال بشه؟')"><i class="bi bi-x-circle"></i></pems-button>
+                                    <pems-button tone="neutral" size="small" outline="true" type="submit" title="@Localizer["غیرفعال کردن"]" data-pems-confirm="این Equipment Class غیرفعال بشه؟"><i class="bi bi-x-circle"></i></pems-button>
                                 </form>
                             </td>
                         </tr>
@@ -379,7 +379,7 @@
                             <td class="text-end">
                                 <form asp-action="ToggleStandardReferenceActive" method="post" class="d-inline">
                                     <input type="hidden" name="id" value="@s.StandardReferenceId" />
-                                    <pems-button tone="neutral" size="small" outline="true" type="submit" title="@Localizer["غیرفعال کردن"]" onclick="return confirm('این Standard Reference غیرفعال بشه؟')"><i class="bi bi-x-circle"></i></pems-button>
+                                    <pems-button tone="neutral" size="small" outline="true" type="submit" title="@Localizer["غیرفعال کردن"]" data-pems-confirm="این Standard Reference غیرفعال بشه؟"><i class="bi bi-x-circle"></i></pems-button>
                                 </form>
                             </td>
                         </tr>
@@ -416,7 +416,7 @@
                             <td class="text-end">
                                 <form asp-action="ToggleMaintenanceActivityActive" method="post" class="d-inline">
                                     <input type="hidden" name="id" value="@a.MaintenanceActivityId" />
-                                    <pems-button tone="neutral" size="small" outline="true" type="submit" title="@Localizer["غیرفعال کردن"]" onclick="return confirm('این Activity غیرفعال بشه؟')"><i class="bi bi-x-circle"></i></pems-button>
+                                    <pems-button tone="neutral" size="small" outline="true" type="submit" title="@Localizer["غیرفعال کردن"]" data-pems-confirm="این Activity غیرفعال بشه؟"><i class="bi bi-x-circle"></i></pems-button>
                                 </form>
                             </td>
                         </tr>
@@ -449,7 +449,7 @@
                             <td class="text-end">
                                 <form asp-action="ToggleFailureModeActive" method="post" class="d-inline">
                                     <input type="hidden" name="id" value="@fm.FailureModeId" />
-                                    <pems-button tone="neutral" size="small" outline="true" type="submit" title="@Localizer["غیرفعال کردن"]" onclick="return confirm('این Failure Mode غیرفعال بشه؟')"><i class="bi bi-x-circle"></i></pems-button>
+                                    <pems-button tone="neutral" size="small" outline="true" type="submit" title="@Localizer["غیرفعال کردن"]" data-pems-confirm="این Failure Mode غیرفعال بشه؟"><i class="bi bi-x-circle"></i></pems-button>
                                 </form>
                             </td>
                         </tr>
@@ -482,7 +482,7 @@
                             <td class="text-end">
                                 <form asp-action="TogglePMTemplateActive" method="post" class="d-inline">
                                     <input type="hidden" name="id" value="@pt.PMTemplateId" />
-                                    <pems-button tone="neutral" size="small" outline="true" type="submit" title="@Localizer["غیرفعال کردن"]" onclick="return confirm('این PM Template غیرفعال بشه؟')"><i class="bi bi-x-circle"></i></pems-button>
+                                    <pems-button tone="neutral" size="small" outline="true" type="submit" title="@Localizer["غیرفعال کردن"]" data-pems-confirm="این PM Template غیرفعال بشه؟"><i class="bi bi-x-circle"></i></pems-button>
                                 </form>
                             </td>
                         </tr>
@@ -539,7 +539,7 @@
                                 </pems-button>
                                 <form asp-action="ToggleEvaluationProfileActive" method="post" class="d-inline">
                                     <input type="hidden" name="id" value="@p.EvaluationProfileId" />
-                                    <pems-button tone="neutral" size="small" outline="true" type="submit" title="@Localizer["غیرفعال کردن"]" onclick="return confirm('این Evaluation Profile غیرفعال بشه؟')"><i class="bi bi-x-circle"></i></pems-button>
+                                    <pems-button tone="neutral" size="small" outline="true" type="submit" title="@Localizer["غیرفعال کردن"]" data-pems-confirm="این Evaluation Profile غیرفعال بشه؟"><i class="bi bi-x-circle"></i></pems-button>
                                 </form>
                             </td>
                         </tr>
@@ -583,7 +583,7 @@
                             <td class="text-end">
                                 <form asp-action="ToggleConditionPriorityMappingActive" method="post" class="d-inline">
                                     <input type="hidden" name="id" value="@m.ConditionPriorityMappingId" />
-                                    <pems-button tone="neutral" size="small" outline="true" type="submit" title="@Localizer["غیرفعال کردن"]" onclick="return confirm('این نگاشت غیرفعال بشه؟')"><i class="bi bi-x-circle"></i></pems-button>
+                                    <pems-button tone="neutral" size="small" outline="true" type="submit" title="@Localizer["غیرفعال کردن"]" data-pems-confirm="این نگاشت غیرفعال بشه؟"><i class="bi bi-x-circle"></i></pems-button>
                                 </form>
                             </td>
                         </tr>

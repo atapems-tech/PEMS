@@ -81,7 +81,7 @@ public class AdminSettingsListPagesTests
         var routes = await Render<StorageRoutingController>("/Areas/Admin/Views/StorageRouting/Index.cshtml",
             new List<StorageRouteDto> { new() { StorageRouteId = 1, Module = "VDR", StorageProviderName = "Main", IsEnabled = true } });
         AssertBuiltFromTheComponent(routes, 1);
-        Assert.Contains("data-confirm=\"Delete this storage route?\"", routes);
+        Assert.Contains("data-pems-confirm=\"Delete this storage route?\"", routes);
 
         var help = await Render<HelpController>("/Areas/Admin/Views/Help/Index.cshtml", null, v =>
         {

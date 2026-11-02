@@ -58,7 +58,7 @@
             <pems-button tone="neutral" outline="true" css="status-filter" type="button" data-status="Rejected">@Localizer["Rejected"]</pems-button>
         </div>
         <pems-button tone="primary" size="small" css="ms-auto" type="submit" form="bulkConfirmForm" id="bulkConfirmBtn" disabled
-                onclick="return confirm('تعداد ' + document.getElementById('selectedCount').textContent + ' ردیف انتخاب‌شده به Instrument متصل شود؟');">
+                data-pems-confirm="تعداد {n} ردیف انتخاب‌شده به Instrument متصل شود؟" data-pems-confirm-count="#selectedCount">
             <i class="bi bi-link-45deg"></i> Confirm Selected (<span id="selectedCount">0</span>)
         </pems-button>
     </div>

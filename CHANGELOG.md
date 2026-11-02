@@ -3,6 +3,15 @@
 All notable changes to PEMS. No system version is defined yet (plan row F_CI), so entries are grouped by date
 and theme and were reconstructed from the git history (initial import 2026-09-05). Newest first.
 
+## 2026-11-02 - Confirm and alert dialog; the Admin and Warehouse area views adopted (SCRUM-483, SCRUM-481, SCRUM-482, SCRUM-487)
+
+### Added
+- `pems-confirm.js` (PEMS.UI): one shared native dialog for `data-pems-confirm="text"` (button, link, form; tone, title and live-count options) and `window.PemsDialog.confirm / alert` for scripts; layouts carry the texts (`Confirm_Title`, `Confirm_Ok`, `Confirm_Cancel`, fa and en). `ConfirmScriptTests` checks the contract.
+
+### Changed
+- 93 browser `confirm(` calls reduced to 4 (two are validated first by their own handler, two belong to the letter bulk form); 4 `alert(` calls in the work order view use the dialog.
+- **The 84 area views (Admin, Warehouse) were never converted and never counted by the ratchet.** Converted now: 58 alerts, 60 badges, 145 buttons, 339 controls, 237 labels, 13 modals, 11 tab strips; the ratchet scans `PEMS.Web/Areas` too (its baselines now include what is left there: tables 52, date and conditional controls, a few alerts and badges).
+
 ## 2026-11-02 - Labels, modal frames, dropdowns, tabs and breadcrumbs; library-first protocol (SCRUM-482, SCRUM-487)
 
 ### Added

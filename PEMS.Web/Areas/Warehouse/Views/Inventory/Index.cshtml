@@ -18,10 +18,10 @@
 <div class="row g-3 mb-3">
     <div class="col-md-4">
         <div class="content-card">
-            <a asp-controller="MaterialItem" asp-action="Index" class="btn btn-outline-primary btn-sm w-100 mb-2"><i class="bi bi-box-seam"></i> @Localizer["Material Master"]</a>
-            <a asp-controller="InventoryMasterData" asp-action="Index" class="btn btn-outline-secondary btn-sm w-100 mb-2"><i class="bi bi-diagram-3"></i> @Localizer["Master Data"]</a>
-            <a asp-controller="InventoryTransaction" asp-action="Index" class="btn btn-outline-secondary btn-sm w-100 mb-2"><i class="bi bi-list-ul"></i> @Localizer["Transaction Ledger"]</a>
-            <a asp-controller="StoreRequisition" asp-action="Index" class="btn btn-outline-secondary btn-sm w-100 mb-2"><i class="bi bi-clipboard-check"></i> @Localizer["Store Requisitions"]</a>
+            <pems-button as="a" tone="primary" size="small" outline="true" css="w-100 mb-2" asp-controller="MaterialItem" asp-action="Index"><i class="bi bi-box-seam"></i> @Localizer["Material Master"]</pems-button>
+            <pems-button as="a" tone="neutral" size="small" outline="true" css="w-100 mb-2" asp-controller="InventoryMasterData" asp-action="Index"><i class="bi bi-diagram-3"></i> @Localizer["Master Data"]</pems-button>
+            <pems-button as="a" tone="neutral" size="small" outline="true" css="w-100 mb-2" asp-controller="InventoryTransaction" asp-action="Index"><i class="bi bi-list-ul"></i> @Localizer["Transaction Ledger"]</pems-button>
+            <pems-button as="a" tone="neutral" size="small" outline="true" css="w-100 mb-2" asp-controller="StoreRequisition" asp-action="Index"><i class="bi bi-clipboard-check"></i> @Localizer["Store Requisitions"]</pems-button>
         </div>
     </div>
     <div class="col-md-8">
@@ -56,7 +56,7 @@
                 <tr>
                     <td class="small">@t.TransactionDate.ToString("yyyy-MM-dd HH:mm")</td>
                     <td class="small">@t.MaterialItem?.MaterialCode</td>
-                    <td><span class="badge bg-light text-dark border">@t.TransactionType</span></td>
+                    <td><pems-badge tone="light">@t.TransactionType</pems-badge></td>
                     <td>@t.Warehouse?.Code</td>
                     <td>@t.Quantity</td>
                     <td class="small">@t.ReferenceType</td>

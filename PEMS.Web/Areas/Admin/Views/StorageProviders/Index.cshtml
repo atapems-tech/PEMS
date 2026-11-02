@@ -89,7 +89,7 @@
                             </form>
                             @if (p.ActiveRouteCount == 0 && !p.IsDefault)
                             {
-                                <form asp-action="Delete" asp-route-id="@p.StorageProviderId" method="post" class="d-inline" onsubmit="return confirm(this.dataset.confirm)" data-confirm="@Localizer["StpL_ConfirmDelete"]">
+                                <form asp-action="Delete" asp-route-id="@p.StorageProviderId" method="post" class="d-inline" data-pems-confirm="@Localizer["StpL_ConfirmDelete"]">
                                     <button type="submit" class="lp-act lp-act--always text-danger" title="@Localizer["Ed_Delete"]" aria-label="@Localizer["Ed_Delete"] @p.Name"><i class="bi bi-trash" aria-hidden="true"></i></button>
                                 </form>
                             }

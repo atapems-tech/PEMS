@@ -9,36 +9,36 @@
 
     <form asp-action="Create" method="post">
         <div class="mb-3">
-            <label class="form-label">@Localizer["First permission"]</label>
-            <select asp-for="PermissionAId" class="form-select">
+            <pems-label>@Localizer["First permission"]</pems-label>
+            <pems-select asp-for="PermissionAId">
                 <option value="">@Localizer["— select —"]</option>
                 @foreach (var p in Model.AllPermissions)
                 {
                     <option value="@p.Id" selected="@(p.Id == Model.PermissionAId)">@p.Name</option>
                 }
-            </select>
+            </pems-select>
             <span asp-validation-for="PermissionAId" class="text-danger small"></span>
         </div>
 
         <div class="mb-3">
-            <label class="form-label">@Localizer["Conflicts with"]</label>
-            <select asp-for="PermissionBId" class="form-select">
+            <pems-label>@Localizer["Conflicts with"]</pems-label>
+            <pems-select asp-for="PermissionBId">
                 <option value="">@Localizer["— select —"]</option>
                 @foreach (var p in Model.AllPermissions)
                 {
                     <option value="@p.Id" selected="@(p.Id == Model.PermissionBId)">@p.Name</option>
                 }
-            </select>
+            </pems-select>
             <span asp-validation-for="PermissionBId" class="text-danger small"></span>
         </div>
 
         <div class="mb-3">
-            <label class="form-label">@Localizer["Why"]</label>
-            <textarea asp-for="Description" class="form-control" rows="2"></textarea>
+            <pems-label>@Localizer["Why"]</pems-label>
+            <pems-textarea asp-for="Description" rows="2"></pems-textarea>
         </div>
 
-        <button type="submit" class="btn btn-pems-solid">@Localizer["Save"]</button>
-        <a asp-action="Index" class="btn btn-outline-secondary">@Localizer["Cancel"]</a>
+        <pems-button tone="primary" type="submit">@Localizer["Save"]</pems-button>
+        <pems-button as="a" tone="neutral" outline="true" asp-action="Index">@Localizer["Cancel"]</pems-button>
     </form>
 </div>
 

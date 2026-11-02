@@ -220,7 +220,7 @@
             <div class="col-md-3"><pems-button tone="primary" size="small" css="w-100">@Localizer["PkD_RecordDecision"]</pems-button></div>
         </form>
 
-        <form asp-action="Closeout" method="post" class="px-3 pb-3" onsubmit="return confirm(this.dataset.confirm)" data-confirm="@Localizer["PkD_ConfirmCloseout"]">
+        <form asp-action="Closeout" method="post" class="px-3 pb-3" data-pems-confirm="@Localizer["PkD_ConfirmCloseout"]">
             <input type="hidden" name="packageId" value="@s.ProcurementPackageId" />
             <pems-button tone="success" size="small" outline="true" type="submit">
                 <i class="bi bi-flag" aria-hidden="true"></i> @Localizer["PkD_Closeout"]

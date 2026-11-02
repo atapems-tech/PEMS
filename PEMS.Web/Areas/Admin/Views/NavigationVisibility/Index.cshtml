@@ -24,14 +24,14 @@
         </div>
     </div>
     <div class="content-card">
-        <ul class="nav nav-tabs mb-3">
+        <pems-nav css="mb-3">
             <li class="nav-item"><a class="nav-link active" asp-action="Index">@Localizer["By Role"]</a></li>
             <li class="nav-item"><a class="nav-link" asp-action="EffectiveUser">@Localizer["By User"]</a></li>
-        </ul>
+        </pems-nav>
 
         @if (TempData["Success"] != null)
         {
-            <div class="alert alert-success py-2">@TempData["Success"]</div>
+            <pems-alert tone="success" css="py-2">@TempData["Success"]</pems-alert>
         }
 
         <div class="permission-intro mb-3">
@@ -47,7 +47,7 @@
                     @if (!module.HasDrillDown)
                     {
                         var visibleCount = module.RoleAccess.Count(r => r.EffectiveVisible);
-                        <span class="badge @(visibleCount > 0 ? "text-bg-success" : "text-bg-secondary") ms-2">@visibleCount / @module.RoleAccess.Count @Localizer["Roles"]</span>
+                        <pems-badge tone="none" css="@(visibleCount > 0 ? "text-bg-success" : "text-bg-secondary") ms-2">@visibleCount / @module.RoleAccess.Count @Localizer["Roles"]</pems-badge>
                     }
                 </summary>
 
@@ -98,7 +98,7 @@
                             <details class="navvis-item" id="node-@(module.ModuleKey)-@(item.ItemKey)">
                                 <summary class="navvis-item-summary">
                                     <span class="navvis-item-name">@Localizer[item.DisplayLocalizationKey]</span>
-                                    <span class="badge @(item.AnyRoleVisible ? "text-bg-success" : "text-bg-secondary")">@item.RoleAccess.Count(r => r.EffectiveVisible) / @item.RoleAccess.Count @Localizer["Roles"]</span>
+                                    <pems-badge tone="none" css="@(item.AnyRoleVisible ? "text-bg-success" : "text-bg-secondary")">@item.RoleAccess.Count(r => r.EffectiveVisible) / @item.RoleAccess.Count @Localizer["Roles"]</pems-badge>
                                     <span class="navvis-capability">@Localizer["Capability"]: @(item.Capability ?? Localizer["None - not permission-gated"].Value)</span>
                                 </summary>
                                 <div class="navvis-role-grid">
@@ -152,7 +152,7 @@
                                         <details class="navvis-item" id="node-@(module.ModuleKey)-@(item.ItemKey)">
                                             <summary class="navvis-item-summary">
                                                 <span class="navvis-item-name">@Localizer[item.DisplayLocalizationKey]</span>
-                                                <span class="badge @(item.AnyRoleVisible ? "text-bg-success" : "text-bg-secondary")">@item.RoleAccess.Count(r => r.EffectiveVisible) / @item.RoleAccess.Count @Localizer["Roles"]</span>
+                                                <pems-badge tone="none" css="@(item.AnyRoleVisible ? "text-bg-success" : "text-bg-secondary")">@item.RoleAccess.Count(r => r.EffectiveVisible) / @item.RoleAccess.Count @Localizer["Roles"]</pems-badge>
                                                 <span class="navvis-capability">@Localizer["Capability"]: @(item.Capability ?? Localizer["None - not permission-gated"].Value)</span>
                                             </summary>
                                             <div class="navvis-role-grid">

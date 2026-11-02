@@ -5,11 +5,11 @@
 
 @if (TempData["Message"] != null)
 {
-    <div class="alert alert-success py-2 px-3 small">@TempData["Message"]</div>
+    <pems-alert tone="success" css="py-2 px-3 small">@TempData["Message"]</pems-alert>
 }
 @if (TempData["Error"] != null)
 {
-    <div class="alert alert-danger py-2 px-3 small">@TempData["Error"]</div>
+    <pems-alert tone="danger" css="py-2 px-3 small">@TempData["Error"]</pems-alert>
 }
 
 <div class="content-card mb-3">
@@ -19,9 +19,9 @@
         بازبینی و تایید در صفحه‌ی Review، ردیف‌ها به کاتالوگ متریال و دفتر تراکنش تبدیل می‌شوند.
     </p>
     <form asp-action="Upload" method="post" enctype="multipart/form-data" class="row g-2">
-        <div class="col-md-6"><input type="file" name="file" class="form-control form-control-sm" accept=".xlsx,.xlsm" required /></div>
-        <div class="col-md-4"><input type="text" name="sheetName" class="form-control form-control-sm" placeholder="@Localizer["نام شیت (اختیاری - پیش‌فرض: بزرگ‌ترین شیت)"]" /></div>
-        <div class="col-md-2"><button type="submit" class="btn btn-pems-solid btn-sm w-100"><i class="bi bi-upload"></i> @Localizer["Stage"]</button></div>
+        <div class="col-md-6"><pems-input scale="small" type="file" name="file" accept=".xlsx,.xlsm" required /></div>
+        <div class="col-md-4"><pems-input scale="small" type="text" name="sheetName" placeholder="@Localizer["نام شیت (اختیاری - پیش‌فرض: بزرگ‌ترین شیت)"]" /></div>
+        <div class="col-md-2"><pems-button tone="primary" size="small" css="w-100" type="submit"><i class="bi bi-upload"></i> @Localizer["Stage"]</pems-button></div>
     </form>
 </div>
 
@@ -35,7 +35,7 @@
                 <tr>
                     <td class="small">@b.SourceFileName</td>
                     <td class="small">@b.SourceSheet</td>
-                    <td><span class="badge @badgeClass">@b.Status</span></td>
+                    <td><pems-badge tone="none" css="@badgeClass">@b.Status</pems-badge></td>
                     <td>@b.TotalRows</td>
                     <td>@b.NewCount</td>
                     <td>@b.MatchedCount</td>
@@ -43,7 +43,7 @@
                     <td class="text-danger">@b.InvalidCount</td>
                     <td class="text-success">@b.ApprovedCount</td>
                     <td class="small">@b.ImportDate.ToString("yyyy-MM-dd HH:mm")</td>
-                    <td class="text-end"><a asp-action="Review" asp-route-batchId="@b.MrsImportBatchId" class="btn btn-sm btn-outline-secondary"><i class="bi bi-card-text"></i> @Localizer["Review"]</a></td>
+                    <td class="text-end"><pems-button as="a" tone="neutral" size="small" outline="true" asp-action="Review" asp-route-batchId="@b.MrsImportBatchId"><i class="bi bi-card-text"></i> @Localizer["Review"]</pems-button></td>
                 </tr>
             }
         </tbody>

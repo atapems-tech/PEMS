@@ -118,21 +118,21 @@
             }
             @if (l.Status == "Approved" && l.LetterType == "Internal" && isAuthor)
             {
-                <form asp-controller="LetterCompose" asp-action="Send" method="post" onsubmit="return confirm('@Localizer["Lc_ConfirmSend"]');">
+                <form asp-controller="LetterCompose" asp-action="Send" method="post" data-pems-confirm="@Localizer["Lc_ConfirmSend"]">
                     <input type="hidden" name="letterId" value="@l.LetterId" />
                     <pems-button tone="primary" size="small" type="submit"><i class="bi bi-send-check" aria-hidden="true"></i> @Localizer["Lt_Send"]</pems-button>
                 </form>
             }
             @if (canArchive && (l.Status is "Sent" or "Closed" or "Issued" or "Acknowledged" or "Registered"))
             {
-                <form asp-controller="LetterCompose" asp-action="Archive" method="post" onsubmit="return confirm('@Localizer["Lc_ConfirmArchive"]');">
+                <form asp-controller="LetterCompose" asp-action="Archive" method="post" data-pems-confirm="@Localizer["Lc_ConfirmArchive"]">
                     <input type="hidden" name="letterId" value="@l.LetterId" />
                     <pems-button tone="neutral" size="small" outline="true" type="submit"><i class="bi bi-archive" aria-hidden="true"></i> @Localizer["Lc_Archive"]</pems-button>
                 </form>
             }
             @if (l.Status == "Draft" && canEditDraft)
             {
-                <form asp-action="SubmitForReview" method="post" onsubmit="return confirm('Submit this draft for review?');">
+                <form asp-action="SubmitForReview" method="post" data-pems-confirm="Submit this draft for review?">
                     <input type="hidden" name="letterId" value="@l.LetterId" />
                     <pems-button tone="primary" size="small" type="submit"><i class="bi bi-send"></i> @Localizer["Submit for Review"]</pems-button>
                 </form>
@@ -143,7 +143,7 @@
             }
             @if (l.Status == "PendingApproval" && (canReview || isCurrentApprover))
             {
-                <form asp-action="Approve" method="post" class="d-inline" onsubmit="return confirm('Approve this letter?');">
+                <form asp-action="Approve" method="post" class="d-inline" data-pems-confirm="Approve this letter?">
                     <input type="hidden" name="letterId" value="@l.LetterId" />
                     <pems-button tone="success" size="small" type="submit"><i class="bi bi-check-lg"></i> @Localizer["Approve"]</pems-button>
                 </form>
@@ -152,14 +152,14 @@
             }
             @if (l.Status == "Approved" && canReview && l.LetterType != "Internal")
             {
-                <form asp-action="Issue" method="post" onsubmit="return confirm('Issue this letter?');">
+                <form asp-action="Issue" method="post" data-pems-confirm="Issue this letter?">
                     <input type="hidden" name="letterId" value="@l.LetterId" />
                     <pems-button tone="primary" size="small" type="submit"><i class="bi bi-send-check"></i> Issue</pems-button>
                 </form>
             }
             @if (l.Status == "Issued" && canReview)
             {
-                <form asp-action="Close" method="post" onsubmit="return confirm('Close this letter?');">
+                <form asp-action="Close" method="post" data-pems-confirm="Close this letter?">
                     <input type="hidden" name="letterId" value="@l.LetterId" />
                     <pems-button tone="neutral" size="small" outline="true" type="submit"><i class="bi bi-archive"></i> Close</pems-button>
                 </form>

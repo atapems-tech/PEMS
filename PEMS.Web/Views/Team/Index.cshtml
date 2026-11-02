@@ -45,7 +45,7 @@
                                 <pems-badge tone="neutral">@m.Role?.Name</pems-badge>
                                 <form asp-action="RemoveMember" method="post" class="d-inline">
                                     <input type="hidden" name="teamMemberId" value="@m.TeamMemberId" />
-                                    <pems-button tone="danger" size="small" outline="true" css="py-0 px-1" type="submit" onclick="return confirm('این عضو از تیم خارج بشه؟')"><i class="bi bi-x"></i></pems-button>
+                                    <pems-button tone="danger" size="small" outline="true" css="py-0 px-1" type="submit" data-pems-confirm="این عضو از تیم خارج بشه؟"><i class="bi bi-x"></i></pems-button>
                                 </form>
                             </span>
                         </li>

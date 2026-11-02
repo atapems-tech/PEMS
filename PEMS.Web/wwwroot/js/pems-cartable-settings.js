@@ -111,8 +111,9 @@
                     if (tag.canEdit) {
                         li.appendChild(button(t("edit"), "btn-outline-secondary", function () { edit(tag, tags); }));
                         li.appendChild(button(t("delete"), "btn-outline-danger", function () {
-                            if (!window.confirm(t("confirmDelete"))) return;
-                            run(C.post(C.cfg.urls.tagDelete, { id: tag.tagId }), load);
+                            window.PemsDialog.confirm(t("confirmDelete")).then(function (yes) {
+                                if (yes) run(C.post(C.cfg.urls.tagDelete, { id: tag.tagId }), load);
+                            });
                         }));
                     }
                     list.appendChild(li);
@@ -225,7 +226,7 @@
                         el("div", { class: "ct-sub", text: t("ifLabel") + ": " + (cond || "—") }), el("div", { class: "ct-sub", text: t("thenLabel") + ": " + (act || "—") })]),
                         el("span", { class: "ct-sub", text: t("matches") + ": " + r.matchCount }),
                         button(t("edit"), "btn-outline-secondary", function () { form(r); }),
-                        button(t("delete"), "btn-outline-danger", function () { if (window.confirm(t("confirmDelete"))) run(C.post(C.cfg.urls.ruleDelete, { id: r.letterRoutingRuleId }), reload); })]));
+                        button(t("delete"), "btn-outline-danger", function () { window.PemsDialog.confirm(t("confirmDelete")).then(function (yes) { if (yes) run(C.post(C.cfg.urls.ruleDelete, { id: r.letterRoutingRuleId }), reload); }); })]));
                 });
                 host.appendChild(ul);
                 host.appendChild(el("div", { class: "mt-3" }, [button(t("addRule"), "btn-pems-solid", function () { form(null); })]));
@@ -290,7 +291,7 @@
                         el("span", { class: "ct-badge-rel", text: g.isPersonal ? t("personal") : t("organizational") })]);
                     if (g.canEdit) {
                         li.appendChild(button(t("edit"), "btn-outline-secondary", function () { edit(g); }));
-                        li.appendChild(button(t("delete"), "btn-outline-danger", function () { if (window.confirm(t("confirmDelete"))) run(C.post(C.cfg.urls.groupDelete, { id: g.letterContactGroupId }), load); }));
+                        li.appendChild(button(t("delete"), "btn-outline-danger", function () { window.PemsDialog.confirm(t("confirmDelete")).then(function (yes) { if (yes) run(C.post(C.cfg.urls.groupDelete, { id: g.letterContactGroupId }), load); }); }));
                     }
                     ul.appendChild(li);
                 });

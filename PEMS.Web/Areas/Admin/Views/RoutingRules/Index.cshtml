@@ -23,12 +23,12 @@
         <pems-related-add action="@Url.Action("SetConfidence")" submit-label="@Localizer["Save thresholds"]">
             <div>
                 <label class="lp-lbl" for="rrHigh">@Localizer["High threshold"]</label>
-                <input id="rrHigh" name="highThreshold" type="number" step="0.01" min="0" max="1" class="form-control form-control-sm" value="@confidence.HighThreshold" />
+                <pems-input scale="small" id="rrHigh" name="highThreshold" type="number" step="0.01" min="0" max="1" value="@confidence.HighThreshold" />
                 <div class="form-text">@Localizer["RrL_HighHelp"]</div>
             </div>
             <div>
                 <label class="lp-lbl" for="rrMedium">@Localizer["Medium threshold"]</label>
-                <input id="rrMedium" name="mediumThreshold" type="number" step="0.01" min="0" max="1" class="form-control form-control-sm" value="@confidence.MediumThreshold" />
+                <pems-input scale="small" id="rrMedium" name="mediumThreshold" type="number" step="0.01" min="0" max="1" value="@confidence.MediumThreshold" />
                 <div class="form-text">@Localizer["RrL_MediumHelp"]</div>
             </div>
         </pems-related-add>
@@ -58,12 +58,12 @@
                             </pems-related-row-form>
                         </td>
                         <td>
-                            <select form="@formId" name="targetModule" class="form-select form-select-sm" aria-label="@Localizer["Target Module"]">
+                            <pems-select scale="small" form="@formId" name="targetModule" aria-label="@Localizer["Target Module"]">
                                 @foreach (var m in modules) { <option value="@m" selected="@(m == r.TargetModule)">@m</option> }
-                            </select>
+                            </pems-select>
                         </td>
                         <td class="text-center"><input form="@formId" class="form-check-input" type="checkbox" name="allowAutoRouting" value="true" checked="@r.AllowAutoRouting" aria-label="@Localizer["Auto Route"]" /></td>
-                        <td><input form="@formId" name="description" class="form-control form-control-sm" value="@r.Description" aria-label="@Localizer["Ed_Description"]" /></td>
+                        <td><pems-input scale="small" form="@formId" name="description" value="@r.Description" aria-label="@Localizer["Ed_Description"]" /></td>
                         <td class="text-end"><pems-related-save form-id="@formId" label="@Localizer["Save"]" /></td>
                     </tr>
                 }

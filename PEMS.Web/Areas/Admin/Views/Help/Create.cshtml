@@ -10,8 +10,8 @@
         @Html.AntiForgeryToken()
         @await Html.PartialAsync("_HelpArticleForm", Model)
         <div class="mt-3 d-flex gap-2">
-            <button type="submit" class="btn btn-pems-solid">@Localizer["Create"]</button>
-            <a asp-action="Index" class="btn btn-outline-secondary">@Localizer["Cancel"]</a>
+            <pems-button tone="primary" type="submit">@Localizer["Create"]</pems-button>
+            <pems-button as="a" tone="neutral" outline="true" asp-action="Index">@Localizer["Cancel"]</pems-button>
         </div>
     </form>
 </div>

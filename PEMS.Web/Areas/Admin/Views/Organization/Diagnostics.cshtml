@@ -38,7 +38,7 @@
         <h2 class="vs-section__title"><i class="bi bi-intersect"></i> @Localizer["Org_Cons_Title"]</h2>
         <p class="small text-muted">@Localizer["Org_Cons_Note"]</p>
         <p class="small mb-1">
-            @foreach (var g in dc.GroupBy(r => r.Status).OrderBy(g => g.Key)) { <span class="badge bg-secondary me-1">@g.Key: @g.Count()</span> }
+            @foreach (var g in dc.GroupBy(r => r.Status).OrderBy(g => g.Key)) { <pems-badge tone="neutral" css="me-1">@g.Key: @g.Count()</pems-badge> }
             @if (!dc.Any()) { <span class="text-muted">@Localizer["Org_Cons_None"]</span> }
         </p>
         @if (dc.Any(r => r.Status != "CONSISTENT"))
@@ -54,13 +54,13 @@
         }
         <h3 class="h6 mt-3">@Localizer["Org_Cons_Legacy"]</h3>
         <p class="small mb-1">
-            @foreach (var g in lp.GroupBy(r => r.Status).OrderBy(g => g.Key)) { <span class="badge bg-secondary me-1">@g.Key: @g.Count()</span> }
+            @foreach (var g in lp.GroupBy(r => r.Status).OrderBy(g => g.Key)) { <pems-badge tone="neutral" css="me-1">@g.Key: @g.Count()</pems-badge> }
             @if (!lp.Any()) { <span class="text-muted">NO_CONFLICT (@Localizer["Org_Cons_LegacyNone"])</span> }
         </p>
     </section>
 
     <section class="vs-panel mb-3">
-        <h2 class="vs-section__title"><i class="bi bi-hourglass-split"></i> @Localizer["Org_Diag_Blocked"] <span class="badge bg-secondary">@blocked.Count</span></h2>
+        <h2 class="vs-section__title"><i class="bi bi-hourglass-split"></i> @Localizer["Org_Diag_Blocked"] <pems-badge tone="neutral">@blocked.Count</pems-badge></h2>
         @if (blocked.Count == 0) { <div class="vs-empty py-2">@Localizer["Org_Diag_NoBlocked"]</div> }
         else
         {
@@ -84,7 +84,7 @@
     </section>
 
     <section class="vs-panel">
-        <h2 class="vs-section__title"><i class="bi bi-heart-pulse"></i> @Localizer["Org_Diag_Issues"] <span class="badge bg-secondary">@Model.Count</span></h2>
+        <h2 class="vs-section__title"><i class="bi bi-heart-pulse"></i> @Localizer["Org_Diag_Issues"] <pems-badge tone="neutral">@Model.Count</pems-badge></h2>
         @if (Model.Count == 0) { <div class="vs-empty py-2">@Localizer["Org_Diag_NoIssues"]</div> }
         else
         {
@@ -95,7 +95,7 @@
                     @foreach (var i in Model)
                     {
                         <tr>
-                            <td><span class="badge @Sev(i.Severity)">@i.Severity</span></td>
+                            <td><pems-badge tone="none" css="@Sev(i.Severity)">@i.Severity</pems-badge></td>
                             <td><code>@i.Code</code></td>
                             <td>@i.Subject</td>
                             <td class="small">@i.Message</td>

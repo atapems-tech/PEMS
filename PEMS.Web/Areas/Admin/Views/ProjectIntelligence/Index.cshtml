@@ -16,19 +16,19 @@
             </div>
         </div>
         <form asp-action="Refresh" method="post" id="refreshForm">
-            <button type="submit" class="btn btn-pems-solid" id="refreshBtn">
+            <pems-button tone="primary" type="submit" id="refreshBtn">
                 <i class="bi bi-arrow-clockwise"></i> @Localizer["Refresh scan"]
-            </button>
+            </pems-button>
         </form>
     </div>
 
     @if (TempData["Message"] != null)
     {
-        <div class="alert alert-success py-2 px-3 small">@TempData["Message"]</div>
+        <pems-alert tone="success" css="py-2 px-3 small">@TempData["Message"]</pems-alert>
     }
     @if (TempData["Error"] != null)
     {
-        <div class="alert alert-danger py-2 px-3 small">@TempData["Error"]</div>
+        <pems-alert tone="danger" css="py-2 px-3 small">@TempData["Error"]</pems-alert>
     }
 
     @if (reportMissing)
@@ -69,7 +69,7 @@
                 <div class="admin-toolbar-main">
                     <div class="input-group admin-search">
                         <span class="input-group-text"><i class="bi bi-search"></i></span>
-                        <input type="search" id="moduleSearch" class="form-control" placeholder="Filter by module name..." autocomplete="off" />
+                        <pems-input type="search" id="moduleSearch" placeholder="Filter by module name..." autocomplete="off" />
                     </div>
                     <span class="text-body-secondary small">Sorted by evidence coverage, lowest (needs the most attention) first.</span>
                 </div>

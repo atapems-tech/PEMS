@@ -369,7 +369,7 @@
                         <form asp-action="RemoveSkill" method="post" class="d-inline">
                             <input type="hidden" name="employeeSkillId" value="@es.EmployeeSkillId" />
                             <input type="hidden" name="employeeId" value="@Model.EmployeeId" />
-                            <pems-button tone="danger" size="small" outline="true" css="py-0 px-1" type="submit" onclick="return confirm('@L("Remove this skill?", "این مهارت حذف بشه؟")')"><i class="bi bi-x"></i></pems-button>
+                            <pems-button tone="danger" size="small" outline="true" css="py-0 px-1" type="submit" data-pems-confirm="@L("Remove this skill?", "این مهارت حذف بشه؟")"><i class="bi bi-x"></i></pems-button>
                         </form>
                     </li>
                 }
@@ -399,7 +399,7 @@
                         <form asp-action="RemoveQualification" method="post" class="d-inline">
                             <input type="hidden" name="employeeQualificationId" value="@eq.EmployeeQualificationId" />
                             <input type="hidden" name="employeeId" value="@Model.EmployeeId" />
-                            <pems-button tone="danger" size="small" outline="true" css="py-0 px-1" type="submit" onclick="return confirm('@L("Remove this qualification?", "این صلاحیت حذف بشه؟")')"><i class="bi bi-x"></i></pems-button>
+                            <pems-button tone="danger" size="small" outline="true" css="py-0 px-1" type="submit" data-pems-confirm="@L("Remove this qualification?", "این صلاحیت حذف بشه؟")"><i class="bi bi-x"></i></pems-button>
                         </form>
                     </li>
                 }
@@ -429,7 +429,7 @@
                         <form asp-action="RemoveCertification" method="post" class="d-inline">
                             <input type="hidden" name="employeeCertificationId" value="@ec.EmployeeCertificationId" />
                             <input type="hidden" name="employeeId" value="@Model.EmployeeId" />
-                            <pems-button tone="danger" size="small" outline="true" css="py-0 px-1" type="submit" onclick="return confirm('@L("Remove this certification?", "این گواهینامه حذف بشه؟")')"><i class="bi bi-x"></i></pems-button>
+                            <pems-button tone="danger" size="small" outline="true" css="py-0 px-1" type="submit" data-pems-confirm="@L("Remove this certification?", "این گواهینامه حذف بشه؟")"><i class="bi bi-x"></i></pems-button>
                         </form>
                     </li>
                 }

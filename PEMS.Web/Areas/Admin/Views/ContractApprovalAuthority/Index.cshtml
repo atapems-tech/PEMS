@@ -45,17 +45,17 @@
                                 <pems-related-row-form id="@formId" action="@Url.Action("Edit")">
                                     <input type="hidden" name="ruleId" value="@r.ContractApprovalAuthorityRuleId" />
                                 </pems-related-row-form>
-                                <input form="@formId" type="number" name="priority" class="form-control form-control-sm" value="@r.Priority" aria-label="@Localizer["Priority"]" />
+                                <pems-input scale="small" form="@formId" type="number" name="priority" value="@r.Priority" aria-label="@Localizer["Priority"]" />
                             </td>
-                            <td><input form="@formId" type="number" step="0.01" name="minValue" class="form-control form-control-sm" value="@r.MinValue" aria-label="@Localizer["Min Value"]" /></td>
-                            <td><input form="@formId" type="number" step="0.01" name="maxValue" class="form-control form-control-sm" value="@r.MaxValue" aria-label="@Localizer["Max Value"]" /></td>
-                            <td><input form="@formId" type="text" name="criticalityClass" class="form-control form-control-sm" value="@r.CriticalityClass" placeholder="@Localizer["Any"]" aria-label="@Localizer["Criticality"]" /></td>
+                            <td><pems-input scale="small" form="@formId" type="number" step="0.01" name="minValue" value="@r.MinValue" aria-label="@Localizer["Min Value"]" /></td>
+                            <td><pems-input scale="small" form="@formId" type="number" step="0.01" name="maxValue" value="@r.MaxValue" aria-label="@Localizer["Max Value"]" /></td>
+                            <td><pems-input scale="small" form="@formId" type="text" name="criticalityClass" value="@r.CriticalityClass" placeholder="@Localizer["Any"]" aria-label="@Localizer["Criticality"]" /></td>
                             <td>
-                                <select form="@formId" name="requiredApproverRole" class="form-select form-select-sm" aria-label="@Localizer["Required Role"]">
+                                <pems-select scale="small" form="@formId" name="requiredApproverRole" aria-label="@Localizer["Required Role"]">
                                     @foreach (var role in roles) { <option value="@role" selected="@(role == r.RequiredApproverRole)">@role</option> }
-                                </select>
+                                </pems-select>
                             </td>
-                            <td><input form="@formId" type="text" name="description" class="form-control form-control-sm" value="@r.Description" aria-label="@Localizer["Ed_Description"]" /></td>
+                            <td><pems-input scale="small" form="@formId" type="text" name="description" value="@r.Description" aria-label="@Localizer["Ed_Description"]" /></td>
                             <td><span class="vs-pill @(r.IsActive ? "vs-pill--success" : "vs-pill--neutral")">@(r.IsActive ? Localizer["Active"] : Localizer["Inactive"])</span></td>
                             <td class="text-end text-nowrap">
                                 <pems-related-save form-id="@formId" label="@Localizer["Save"]" />
@@ -76,12 +76,12 @@
         }
 
         <pems-related-add action="@Url.Action("Create")" submit-label="@Localizer["Add Rule"]">
-            <div style="flex:0 0 100px"><label class="lp-lbl" for="carPriority">@Localizer["Priority"]</label><input id="carPriority" type="number" name="priority" class="form-control form-control-sm" value="0" /></div>
-            <div><label class="lp-lbl" for="carMin">@Localizer["Min Value"]</label><input id="carMin" type="number" step="0.01" name="minValue" class="form-control form-control-sm" /></div>
-            <div><label class="lp-lbl" for="carMax">@Localizer["Max Value"]</label><input id="carMax" type="number" step="0.01" name="maxValue" class="form-control form-control-sm" /></div>
-            <div><label class="lp-lbl" for="carCrit">@Localizer["Criticality"]</label><input id="carCrit" type="text" name="criticalityClass" class="form-control form-control-sm" placeholder="@Localizer["Any"]" /></div>
+            <div style="flex:0 0 100px"><label class="lp-lbl" for="carPriority">@Localizer["Priority"]</label><pems-input scale="small" id="carPriority" type="number" name="priority" value="0" /></div>
+            <div><label class="lp-lbl" for="carMin">@Localizer["Min Value"]</label><pems-input scale="small" id="carMin" type="number" step="0.01" name="minValue" /></div>
+            <div><label class="lp-lbl" for="carMax">@Localizer["Max Value"]</label><pems-input scale="small" id="carMax" type="number" step="0.01" name="maxValue" /></div>
+            <div><label class="lp-lbl" for="carCrit">@Localizer["Criticality"]</label><pems-input scale="small" id="carCrit" type="text" name="criticalityClass" placeholder="@Localizer["Any"]" /></div>
             <pems-list-filter-select id="carRole" name="requiredApproverRole" label="@Localizer["Required Role"]" items="@roles.Select(role => new SelectListItem(role, role))" />
-            <div style="flex:2 1 240px"><label class="lp-lbl" for="carDesc">@Localizer["Ed_Description"]</label><input id="carDesc" type="text" name="description" class="form-control form-control-sm" /></div>
+            <div style="flex:2 1 240px"><label class="lp-lbl" for="carDesc">@Localizer["Ed_Description"]</label><pems-input scale="small" id="carDesc" type="text" name="description" /></div>
         </pems-related-add>
     </pems-list-panel>
 </pems-list-page>

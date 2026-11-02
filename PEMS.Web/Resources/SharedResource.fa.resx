@@ -3400,6 +3400,9 @@
   <data name="Sel_NoResults" xml:space="preserve"><value>موردی پیدا نشد</value></data>
   <data name="Sel_Loading" xml:space="preserve"><value>در حال جستجو…</value></data>
   <data name="Sel_Placeholder" xml:space="preserve"><value>برای جستجو تایپ کنید…</value></data>
+  <data name="Confirm_Title" xml:space="preserve"><value>تأیید</value></data>
+  <data name="Confirm_Ok" xml:space="preserve"><value>تأیید</value></data>
+  <data name="Confirm_Cancel" xml:space="preserve"><value>انصراف</value></data>
   <data name="Tinv_Title" xml:space="preserve"><value>ارسال دعوت‌نامه با ایمیل</value></data>
   <data name="Tinv_SendAll" xml:space="preserve"><value>ارسال دعوت‌نامه</value></data>
   <data name="Tinv_Hint" xml:space="preserve"><value>برای هر فروشنده‌ی دعوت‌شده‌ای که هنوز با ایمیل دعوت نشده، یک ایمیل از سرور ایمیل سازمان ارسال می‌شود. فروشنده‌ای که ایمیل تماس ندارد «ردشده» ثبت می‌شود.</value></data>

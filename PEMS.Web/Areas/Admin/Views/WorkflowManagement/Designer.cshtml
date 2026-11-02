@@ -47,39 +47,39 @@
     <div class="content-card mb-3">
         <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
             <div>
-                <span class="fw-semibold">@displayName</span> · <span class="badge @StatusBadge(Model.Status)">v@(Model.VersionNumber) @Localizer[Model.Status]</span>
+                <span class="fw-semibold">@displayName</span> · <pems-badge tone="none" css="@StatusBadge(Model.Status)">v@(Model.VersionNumber) @Localizer[Model.Status]</pems-badge>
                 @if (!string.IsNullOrEmpty(Model.LastEditor) && Model.CanEditStructure) { <span class="small text-muted ms-2">@Localizer["Last editor"]: @Model.LastEditor</span> }
                 @if (Model.RunningInstances > 0) { <span class="small text-muted ms-2">@Localizer["Running instances"]: @Model.RunningInstances</span> }
             </div>
             <div class="d-flex gap-1 flex-wrap">
-                <a asp-action="Details" asp-route-id="@Model.DefinitionId" class="btn btn-sm btn-outline-secondary"><i class="bi bi-arrow-left"></i> @Localizer["Back"]</a>
+                <pems-button as="a" tone="neutral" size="small" outline="true" asp-action="Details" asp-route-id="@Model.DefinitionId"><i class="bi bi-arrow-left"></i> @Localizer["Back"]</pems-button>
                 @if (Model.CanEditStructure && perms["Validate"])
                 {
-                    <form asp-action="Validate" method="post" class="d-inline"><input type="hidden" name="versionId" value="@Model.VersionId" /><input type="hidden" name="rowVersion" value="@Model.RowVersion" /><button class="btn btn-sm btn-outline-primary"><i class="bi bi-check2-square"></i> @Localizer["Validate"]</button></form>
+                    <form asp-action="Validate" method="post" class="d-inline"><input type="hidden" name="versionId" value="@Model.VersionId" /><input type="hidden" name="rowVersion" value="@Model.RowVersion" /><pems-button tone="primary" size="small" outline="true"><i class="bi bi-check2-square"></i> @Localizer["Validate"]</pems-button></form>
                 }
                 @if (Model.CanEditStructure && perms["Publish"])
                 {
-                    <form asp-action="Publish" method="post" class="d-inline" onsubmit="return confirm('@Localizer["Publish this version? Published versions are immutable."]');">
+                    <form asp-action="Publish" method="post" class="d-inline" data-pems-confirm="@Localizer["Publish this version? Published versions are immutable."]">
                         <input type="hidden" name="versionId" value="@Model.VersionId" /><input type="hidden" name="definitionId" value="@Model.DefinitionId" /><input type="hidden" name="rowVersion" value="@Model.RowVersion" />
-                        <button class="btn btn-sm btn-pems-solid" disabled="@(Model.Status != "Validated")" title="@(Model.Status != "Validated" ? Localizer["Validate the draft first."] : "")"><i class="bi bi-rocket-takeoff"></i> @Localizer["Publish"]</button>
+                        <pems-button tone="primary" size="small" disabled="@(Model.Status != "Validated")" title="@(Model.Status != "Validated" ? Localizer["Validate the draft first."] : "")"><i class="bi bi-rocket-takeoff"></i> @Localizer["Publish"]</pems-button>
                     </form>
                 }
                 @if (Model.CanEditStructure && perms["Edit"])
                 {
-                    <form asp-action="DiscardDraft" method="post" class="d-inline" onsubmit="return confirm('@Localizer["Discard this draft? Its structure is kept for audit but it can no longer be edited."]');">
+                    <form asp-action="DiscardDraft" method="post" class="d-inline" data-pems-confirm="@Localizer["Discard this draft? Its structure is kept for audit but it can no longer be edited."]">
                         <input type="hidden" name="versionId" value="@Model.VersionId" /><input type="hidden" name="definitionId" value="@Model.DefinitionId" /><input type="hidden" name="rowVersion" value="@Model.RowVersion" />
-                        <button class="btn btn-sm btn-outline-danger"><i class="bi bi-x-octagon"></i> @Localizer["Discard draft"]</button>
+                        <pems-button tone="danger" size="small" outline="true"><i class="bi bi-x-octagon"></i> @Localizer["Discard draft"]</pems-button>
                     </form>
                 }
             </div>
         </div>
         @if (!Model.CanEditStructure)
         {
-            <div class="alert alert-secondary small mt-2 mb-0">
+            <pems-alert tone="secondary" css="small mt-2 mb-0">
                 <i class="bi bi-lock"></i>
                 @if (!Model.DefinitionEditable) { @Localizer["View only:"] <span> @Model.DefinitionEditableReason</span> }
                 else { @Localizer["This version is {0} and immutable. To change the workflow, clone a published version into a draft.", Localizer[Model.Status].Value] }
-            </div>
+            </pems-alert>
         }
         else
         {
@@ -96,7 +96,7 @@
             <ul class="list-unstyled small mb-0">
                 @foreach (var v in validation)
                 {
-                    <li class="mb-1"><span class="badge @(v.Severity == "Error" ? "bg-danger" : "bg-warning text-dark")">@v.Severity</span> <code>@v.Code</code> @v.Message
+                    <li class="mb-1"><pems-badge tone="none" css="@(v.Severity == "Error" ? "bg-danger" : "bg-warning text-dark")">@v.Severity</pems-badge> <code>@v.Code</code> @v.Message
                         @if (v.StageId.HasValue) { <a asp-action="Designer" asp-route-versionId="@Model.VersionId" asp-route-stage="@v.StageId">@Localizer["Stage"]: @SName(v.StageId)</a> }
                         @if (v.TransitionId.HasValue) { <a asp-action="Designer" asp-route-versionId="@Model.VersionId" asp-route-transition="@v.TransitionId">@Localizer["Transition"] #@v.TransitionId</a> }
                     </li>
@@ -147,7 +147,7 @@
             <div class="content-card mt-3">
                 <div class="d-flex justify-content-between align-items-center mb-1">
                     <h6 class="mb-0">@Localizer["Stages"]</h6>
-                    @if (edit) { <a asp-action="Designer" asp-route-versionId="@Model.VersionId" asp-route-addStage="true" class="btn btn-sm btn-outline-primary"><i class="bi bi-plus-lg"></i> @Localizer["Add stage"]</a> }
+                    @if (edit) { <pems-button as="a" tone="primary" size="small" outline="true" asp-action="Designer" asp-route-versionId="@Model.VersionId" asp-route-addStage="true"><i class="bi bi-plus-lg"></i> @Localizer["Add stage"]</pems-button> }
                 </div>
                 <div class="table-responsive"><table class="table table-sm align-middle mb-0">
                     <thead><tr><th>#</th><th>@Localizer["Name"]</th><th>@Localizer["Persian name"]</th><th>@Localizer["Business status"]</th><th>@Localizer["Responsible role"]</th><th>@Localizer["Responsible employee"]</th></tr></thead>
@@ -167,7 +167,7 @@
             <div class="content-card mt-3">
                 <div class="d-flex justify-content-between align-items-center mb-1">
                     <h6 class="mb-0">@Localizer["Transitions"]</h6>
-                    @if (edit) { <a asp-action="Designer" asp-route-versionId="@Model.VersionId" asp-route-addTransition="true" class="btn btn-sm btn-outline-primary"><i class="bi bi-plus-lg"></i> @Localizer["Add transition"]</a> }
+                    @if (edit) { <pems-button as="a" tone="primary" size="small" outline="true" asp-action="Designer" asp-route-versionId="@Model.VersionId" asp-route-addTransition="true"><i class="bi bi-plus-lg"></i> @Localizer["Add transition"]</pems-button> }
                 </div>
                 <div class="table-responsive"><table class="table table-sm align-middle mb-0">
                     <thead><tr><th>@Localizer["From"]</th><th>@Localizer["To"]</th><th>@Localizer["Action"]</th><th>@Localizer["Label"]</th><th>@Localizer["Required permission"]</th></tr></thead>
@@ -198,33 +198,33 @@
                     <form asp-action="SaveStage" method="post" class="row g-2">
                         <input type="hidden" name="versionId" value="@Model.VersionId" /><input type="hidden" name="rowVersion" value="@Model.RowVersion" /><input type="hidden" name="stage.StageId" value="@stageForm.StageId" />
                         <fieldset class="row g-2 m-0 p-0 border-0" disabled="@(!edit)">
-                            <div class="col-12"><label>@Localizer["Name"]</label><input name="stage.Name" class="form-control form-control-sm" value="@stageForm.Name" required maxlength="200" /></div>
-                            <div class="col-12"><label>@Localizer["Persian name"]</label><input name="stage.NameFa" class="form-control form-control-sm" dir="rtl" value="@stageForm.NameFa" maxlength="200" /></div>
-                            <div class="col-6"><label>@Localizer["Business status"]</label><input name="stage.BusinessStatus" class="form-control form-control-sm" value="@stageForm.BusinessStatus" maxlength="50" /></div>
-                            <div class="col-6"><label>@Localizer["Order"]</label><input name="stage.StageOrder" type="number" class="form-control form-control-sm" value="@stageForm.StageOrder" /></div>
+                            <div class="col-12"><label>@Localizer["Name"]</label><pems-input scale="small" name="stage.Name" value="@stageForm.Name" required maxlength="200" /></div>
+                            <div class="col-12"><label>@Localizer["Persian name"]</label><pems-input scale="small" name="stage.NameFa" dir="rtl" value="@stageForm.NameFa" maxlength="200" /></div>
+                            <div class="col-6"><label>@Localizer["Business status"]</label><pems-input scale="small" name="stage.BusinessStatus" value="@stageForm.BusinessStatus" maxlength="50" /></div>
+                            <div class="col-6"><label>@Localizer["Order"]</label><pems-input scale="small" name="stage.StageOrder" type="number" value="@stageForm.StageOrder" /></div>
                             <div class="col-12"><label>@Localizer["Responsible role"]</label>
-                                <input name="stage.ResponsibleRole" class="form-control form-control-sm" list="wfRoles" value="@stageForm.ResponsibleRole" placeholder="@Localizer["Role name or Permission:Resource.Action"]" />
+                                <pems-input scale="small" name="stage.ResponsibleRole" list="wfRoles" value="@stageForm.ResponsibleRole" placeholder="@Localizer["Role name or Permission:Resource.Action"]" />
                                 <datalist id="wfRoles">@foreach (var r in Model.Roles) { <option value="@r"></option> }@foreach (var p in Model.Permissions) { <option value="Permission:@p"></option> }</datalist></div>
                             <div class="col-12"><label>@Localizer["Responsible employee"]</label>
-                                <select name="stage.ResponsibleEmployeeId" class="form-select form-select-sm"><option value="">—</option>
+                                <pems-select scale="small" name="stage.ResponsibleEmployeeId"><option value="">—</option>
                                     @foreach (var e in Model.Employees) { <option value="@e.Id" selected="@(stageForm.ResponsibleEmployeeId == e.Id)">@e.Name</option> }
-                                </select></div>
+                                </pems-select></div>
                             <div class="col-6"><label>@Localizer["Stage type"]</label>
-                                <select name="stage.StageType" class="form-select form-select-sm">@foreach (var o in new[] { "Sequential", "Parallel" }) { <option value="@o" selected="@(stageForm.StageType == o)">@o</option> }</select></div>
+                                <pems-select scale="small" name="stage.StageType">@foreach (var o in new[] { "Sequential", "Parallel" }) { <option value="@o" selected="@(stageForm.StageType == o)">@o</option> }</pems-select></div>
                             <div class="col-6"><label>@Localizer["Approval strategy"]</label>
-                                <select name="stage.ApprovalStrategy" class="form-select form-select-sm">@foreach (var o in new[] { "AllApprovalsRequired", "MandatoryRolesOnly", "MinimumCount", "FirstResponse" }) { <option value="@o" selected="@(stageForm.ApprovalStrategy == o)">@o</option> }</select></div>
-                            <div class="col-6"><label>@Localizer["Minimum approvals"]</label><input name="stage.MinimumApprovalCount" type="number" min="1" class="form-control form-control-sm" value="@stageForm.MinimumApprovalCount" /></div>
-                            <div class="col-6"><label>@Localizer["Timeout (hours)"]</label><input name="stage.TimeoutHours" type="number" min="1" class="form-control form-control-sm" value="@stageForm.TimeoutHours" /></div>
+                                <pems-select scale="small" name="stage.ApprovalStrategy">@foreach (var o in new[] { "AllApprovalsRequired", "MandatoryRolesOnly", "MinimumCount", "FirstResponse" }) { <option value="@o" selected="@(stageForm.ApprovalStrategy == o)">@o</option> }</pems-select></div>
+                            <div class="col-6"><label>@Localizer["Minimum approvals"]</label><pems-input scale="small" name="stage.MinimumApprovalCount" type="number" min="1" value="@stageForm.MinimumApprovalCount" /></div>
+                            <div class="col-6"><label>@Localizer["Timeout (hours)"]</label><pems-input scale="small" name="stage.TimeoutHours" type="number" min="1" value="@stageForm.TimeoutHours" /></div>
                             <div class="col-12"><div class="form-check"><input type="checkbox" class="form-check-input" name="stage.IsMandatory" value="true" checked="@stageForm.IsMandatory" id="stMand" /><input type="hidden" name="stage.IsMandatory" value="false" /><label class="form-check-label" for="stMand">@Localizer["Mandatory"]</label></div></div>
-                            <div class="col-12"><label>@Localizer["Description"]</label><input name="stage.Description" class="form-control form-control-sm" value="@stageForm.Description" /></div>
+                            <div class="col-12"><label>@Localizer["Description"]</label><pems-input scale="small" name="stage.Description" value="@stageForm.Description" /></div>
                         </fieldset>
-                        @if (edit) { <div class="col-12"><button class="btn btn-sm btn-pems-solid">@Localizer["Save stage"]</button></div> }
+                        @if (edit) { <div class="col-12"><pems-button tone="primary" size="small">@Localizer["Save stage"]</pems-button></div> }
                     </form>
                     @if (edit && stageForm.StageId != 0)
                     {
-                        <form asp-action="DeleteStage" method="post" class="mt-2" onsubmit="return confirm('@Localizer["Remove this stage and its transitions?"]');">
+                        <form asp-action="DeleteStage" method="post" class="mt-2" data-pems-confirm="@Localizer["Remove this stage and its transitions?"]">
                             <input type="hidden" name="versionId" value="@Model.VersionId" /><input type="hidden" name="rowVersion" value="@Model.RowVersion" /><input type="hidden" name="stageId" value="@stageForm.StageId" />
-                            <button class="btn btn-sm btn-outline-danger">@Localizer["Remove stage"]</button>
+                            <pems-button tone="danger" size="small" outline="true">@Localizer["Remove stage"]</pems-button>
                         </form>
                     }
                 </div>
@@ -237,28 +237,28 @@
                         <input type="hidden" name="versionId" value="@Model.VersionId" /><input type="hidden" name="rowVersion" value="@Model.RowVersion" /><input type="hidden" name="transition.TransitionId" value="@trForm.TransitionId" />
                         <fieldset class="row g-2 m-0 p-0 border-0" disabled="@(!edit)">
                             <div class="col-6"><label>@Localizer["From"]</label>
-                                <select name="transition.FromStageId" class="form-select form-select-sm"><option value="">@Localizer["(start)"]</option>@foreach (var s in Model.Stages) { <option value="@s.StageId" selected="@(trForm.FromStageId == s.StageId)">@s.Name</option> }</select></div>
+                                <pems-select scale="small" name="transition.FromStageId"><option value="">@Localizer["(start)"]</option>@foreach (var s in Model.Stages) { <option value="@s.StageId" selected="@(trForm.FromStageId == s.StageId)">@s.Name</option> }</pems-select></div>
                             <div class="col-6"><label>@Localizer["To"]</label>
-                                <select name="transition.ToStageId" class="form-select form-select-sm"><option value="">@Localizer["(end)"]</option>@foreach (var s in Model.Stages) { <option value="@s.StageId" selected="@(trForm.ToStageId == s.StageId)">@s.Name</option> }</select></div>
+                                <pems-select scale="small" name="transition.ToStageId"><option value="">@Localizer["(end)"]</option>@foreach (var s in Model.Stages) { <option value="@s.StageId" selected="@(trForm.ToStageId == s.StageId)">@s.Name</option> }</pems-select></div>
                             <div class="col-6"><label>@Localizer["Action"]</label>
-                                <input name="transition.ActionType" class="form-control form-control-sm" list="wfActions" value="@trForm.ActionType" required maxlength="100" />
+                                <pems-input scale="small" name="transition.ActionType" list="wfActions" value="@trForm.ActionType" required maxlength="100" />
                                 <datalist id="wfActions">@foreach (var a in Model.ActionTypes) { <option value="@a"></option> }</datalist></div>
-                            <div class="col-6"><label>@Localizer["Priority"]</label><input name="transition.Priority" type="number" class="form-control form-control-sm" value="@trForm.Priority" /></div>
-                            <div class="col-12"><label>@Localizer["Label"]</label><input name="transition.Label" class="form-control form-control-sm" value="@trForm.Label" maxlength="100" /></div>
-                            <div class="col-12"><label>@Localizer["Persian label"]</label><input name="transition.LabelFa" class="form-control form-control-sm" dir="rtl" value="@trForm.LabelFa" maxlength="100" /></div>
+                            <div class="col-6"><label>@Localizer["Priority"]</label><pems-input scale="small" name="transition.Priority" type="number" value="@trForm.Priority" /></div>
+                            <div class="col-12"><label>@Localizer["Label"]</label><pems-input scale="small" name="transition.Label" value="@trForm.Label" maxlength="100" /></div>
+                            <div class="col-12"><label>@Localizer["Persian label"]</label><pems-input scale="small" name="transition.LabelFa" dir="rtl" value="@trForm.LabelFa" maxlength="100" /></div>
                             <div class="col-12"><label>@Localizer["Required permission"]</label>
-                                <input name="transition.RequiredPermission" class="form-control form-control-sm" list="wfPerms" value="@trForm.RequiredPermission" placeholder="Resource.Action" />
+                                <pems-input scale="small" name="transition.RequiredPermission" list="wfPerms" value="@trForm.RequiredPermission" placeholder="Resource.Action" />
                                 <datalist id="wfPerms">@foreach (var p in Model.Permissions) { <option value="@p"></option> }</datalist></div>
-                            <div class="col-12"><label>@Localizer["Condition"]</label><input name="transition.ConditionExpression" class="form-control form-control-sm" value="@trForm.ConditionExpression" /></div>
+                            <div class="col-12"><label>@Localizer["Condition"]</label><pems-input scale="small" name="transition.ConditionExpression" value="@trForm.ConditionExpression" /></div>
                             <div class="col-12"><div class="form-check"><input type="checkbox" class="form-check-input" name="transition.ForbidInitiator" value="true" checked="@trForm.ForbidInitiator" id="trForbid" /><input type="hidden" name="transition.ForbidInitiator" value="false" /><label class="form-check-label" for="trForbid">@Localizer["Initiator cannot perform this action"]</label></div></div>
                         </fieldset>
-                        @if (edit) { <div class="col-12"><button class="btn btn-sm btn-pems-solid">@Localizer["Save transition"]</button></div> }
+                        @if (edit) { <div class="col-12"><pems-button tone="primary" size="small">@Localizer["Save transition"]</pems-button></div> }
                     </form>
                     @if (edit && trForm.TransitionId != 0)
                     {
-                        <form asp-action="DeleteTransition" method="post" class="mt-2" onsubmit="return confirm('@Localizer["Remove this transition?"]');">
+                        <form asp-action="DeleteTransition" method="post" class="mt-2" data-pems-confirm="@Localizer["Remove this transition?"]">
                             <input type="hidden" name="versionId" value="@Model.VersionId" /><input type="hidden" name="rowVersion" value="@Model.RowVersion" /><input type="hidden" name="transitionId" value="@trForm.TransitionId" />
-                            <button class="btn btn-sm btn-outline-danger">@Localizer["Remove transition"]</button>
+                            <pems-button tone="danger" size="small" outline="true">@Localizer["Remove transition"]</pems-button>
                         </form>
                     }
                 </div>

@@ -9,18 +9,18 @@
     <div class="admin-hero">
         <div class="d-flex align-items-center justify-content-between gap-3 flex-wrap">
             <p class="mb-0">@Localizer["Nav_Admin_Intro"]</p>
-            <a class="btn btn-primary btn-sm" asp-action="Create"><i class="bi bi-plus-lg me-1"></i>@Localizer["Nav_Admin_AddLink"]</a>
+            <pems-button as="a" tone="none" size="small" css="btn-primary" asp-action="Create"><i class="bi bi-plus-lg me-1"></i>@Localizer["Nav_Admin_AddLink"]</pems-button>
         </div>
     </div>
 
     <div class="content-card">
         @if (TempData["Success"] != null)
         {
-            <div class="alert alert-success py-2" role="status">@TempData["Success"]</div>
+            <pems-alert tone="success" css="py-2">@TempData["Success"]</pems-alert>
         }
         @if (TempData["Error"] != null)
         {
-            <div class="alert alert-danger py-2" role="alert">@TempData["Error"]</div>
+            <pems-alert tone="danger" css="py-2">@TempData["Error"]</pems-alert>
         }
 
         <div class="permission-intro mb-3">
@@ -52,10 +52,10 @@
                                         <i class="bi @i.Icon" aria-hidden="true"></i>
                                     }
                                     <span class="@(i.Kind == NavigationMenuItemKinds.Link ? "" : "fw-semibold")">@row.Title</span>
-                                    <span class="badge text-bg-light border">@Localizer["Nav_Kind_" + i.Kind]</span>
+                                    <pems-badge tone="light">@Localizer["Nav_Kind_" + i.Kind]</pems-badge>
                                     @if (!i.IsSystem)
                                     {
-                                        <span class="badge text-bg-info">@Localizer["Nav_Custom"]</span>
+                                        <pems-badge tone="info">@Localizer["Nav_Custom"]</pems-badge>
                                     }
                                 </div>
                                 <div class="small text-body-tertiary" style="padding-inline-start:@(row.Depth * 1.5)rem" dir="ltr">@i.Key</div>
@@ -65,37 +65,37 @@
                                 <code dir="ltr">@i.VisibilityRule</code>
                                 @if (row.NoPermissionSignal)
                                 {
-                                    <div><span class="badge text-bg-warning">@Localizer["Nav_NoPermissionSignal"]</span></div>
+                                    <div><pems-badge tone="warning">@Localizer["Nav_NoPermissionSignal"]</pems-badge></div>
                                 }
                             </td>
                             <td class="small">@(badge != null ? Localizer[badge.TitleKey].Value : "")</td>
                             <td>
                                 @if (i.IsActive)
                                 {
-                                    <span class="badge text-bg-success">@Localizer["Nav_Visible"]</span>
+                                    <pems-badge tone="success">@Localizer["Nav_Visible"]</pems-badge>
                                 }
                                 else
                                 {
-                                    <span class="badge text-bg-secondary">@Localizer["Nav_Hidden"]</span>
+                                    <pems-badge tone="neutral">@Localizer["Nav_Hidden"]</pems-badge>
                                 }
                             </td>
                             <td class="text-end text-nowrap">
                                 <form method="post" asp-action="Move" class="d-inline">
                                     <input type="hidden" name="key" value="@i.Key" />
                                     <input type="hidden" name="up" value="true" />
-                                    <button type="submit" class="btn btn-outline-secondary btn-sm" disabled="@row.IsFirst" aria-label="@Localizer["Nav_MoveUp"]: @row.Title" title="@Localizer["Nav_MoveUp"]"><i class="bi bi-arrow-up"></i></button>
+                                    <pems-button tone="neutral" size="small" outline="true" type="submit" disabled="@row.IsFirst" aria-label="@Localizer["Nav_MoveUp"]: @row.Title" title="@Localizer["Nav_MoveUp"]"><i class="bi bi-arrow-up"></i></pems-button>
                                 </form>
                                 <form method="post" asp-action="Move" class="d-inline">
                                     <input type="hidden" name="key" value="@i.Key" />
                                     <input type="hidden" name="up" value="false" />
-                                    <button type="submit" class="btn btn-outline-secondary btn-sm" disabled="@row.IsLast" aria-label="@Localizer["Nav_MoveDown"]: @row.Title" title="@Localizer["Nav_MoveDown"]"><i class="bi bi-arrow-down"></i></button>
+                                    <pems-button tone="neutral" size="small" outline="true" type="submit" disabled="@row.IsLast" aria-label="@Localizer["Nav_MoveDown"]: @row.Title" title="@Localizer["Nav_MoveDown"]"><i class="bi bi-arrow-down"></i></pems-button>
                                 </form>
-                                <a class="btn btn-outline-primary btn-sm" asp-action="Edit" asp-route-key="@i.Key" aria-label="@Localizer["Edit"]: @row.Title"><i class="bi bi-pencil"></i></a>
+                                <pems-button as="a" tone="primary" size="small" outline="true" asp-action="Edit" asp-route-key="@i.Key" aria-label="@Localizer["Edit"]: @row.Title"><i class="bi bi-pencil"></i></pems-button>
                                 @if (!i.IsSystem)
                                 {
-                                    <form method="post" asp-action="Delete" class="d-inline" onsubmit="return confirm('@Localizer["Nav_ConfirmDelete"]');">
+                                    <form method="post" asp-action="Delete" class="d-inline" data-pems-confirm="@Localizer["Nav_ConfirmDelete"]">
                                         <input type="hidden" name="key" value="@i.Key" />
-                                        <button type="submit" class="btn btn-outline-danger btn-sm" aria-label="@Localizer["Delete"]: @row.Title"><i class="bi bi-trash"></i></button>
+                                        <pems-button tone="danger" size="small" outline="true" type="submit" aria-label="@Localizer["Delete"]: @row.Title"><i class="bi bi-trash"></i></pems-button>
                                     </form>
                                 }
                             </td>

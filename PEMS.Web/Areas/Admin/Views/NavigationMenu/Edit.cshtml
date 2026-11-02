@@ -21,7 +21,7 @@
             <input type="hidden" name="RowVersion" value="@input.RowVersion" />
 
             <div class="mb-3">
-                <label class="form-label" for="ParentKey">@Localizer["Nav_Field_Parent"]</label>
+                <pems-label for="ParentKey">@Localizer["Nav_Field_Parent"]</pems-label>
                 <select class="form-select" id="ParentKey" name="ParentKey" disabled="@(i.Kind == NavigationMenuItemKinds.Section)">
                     @if (i.Kind != NavigationMenuItemKinds.Subheading)
                     {
@@ -40,21 +40,21 @@
 
             <div class="row g-3 mb-3">
                 <div class="col-md-6">
-                    <label class="form-label" for="TitleFa">@Localizer["Nav_Field_TitleFa"]</label>
-                    <input class="form-control" id="TitleFa" name="TitleFa" value="@input.TitleFa" maxlength="200" dir="rtl" placeholder="@Model.DefaultTitle" aria-describedby="titleHelp" />
+                    <pems-label for="TitleFa">@Localizer["Nav_Field_TitleFa"]</pems-label>
+                    <pems-input id="TitleFa" name="TitleFa" value="@input.TitleFa" maxlength="200" dir="rtl" placeholder="@Model.DefaultTitle" aria-describedby="titleHelp" />
                 </div>
                 <div class="col-md-6">
-                    <label class="form-label" for="TitleEn">@Localizer["Nav_Field_TitleEn"]</label>
-                    <input class="form-control" id="TitleEn" name="TitleEn" value="@input.TitleEn" maxlength="200" dir="ltr" placeholder="@Model.DefaultTitle" aria-describedby="titleHelp" />
+                    <pems-label for="TitleEn">@Localizer["Nav_Field_TitleEn"]</pems-label>
+                    <pems-input id="TitleEn" name="TitleEn" value="@input.TitleEn" maxlength="200" dir="ltr" placeholder="@Model.DefaultTitle" aria-describedby="titleHelp" />
                 </div>
                 <div id="titleHelp" class="form-text">@Localizer["Nav_TitleHelp"]</div>
             </div>
 
             <div class="mb-3">
-                <label class="form-label" for="Icon">@Localizer["Nav_Field_Icon"]</label>
+                <pems-label for="Icon">@Localizer["Nav_Field_Icon"]</pems-label>
                 <div class="input-group">
                     <span class="input-group-text"><i class="bi @input.Icon" id="iconPreview" aria-hidden="true"></i></span>
-                    <input class="form-control" id="Icon" name="Icon" value="@input.Icon" maxlength="60" dir="ltr" pattern="bi-[a-z0-9-]{1,50}" aria-describedby="iconHelp" />
+                    <pems-input id="Icon" name="Icon" value="@input.Icon" maxlength="60" dir="ltr" pattern="bi-[a-z0-9-]{1,50}" aria-describedby="iconHelp" />
                 </div>
                 <div id="iconHelp" class="form-text">@Localizer["Nav_IconHelp"]</div>
             </div>
@@ -62,14 +62,14 @@
             @if (i.Kind == NavigationMenuItemKinds.Link)
             {
                 <div class="mb-3">
-                    <label class="form-label" for="BadgeKey">@Localizer["Nav_Field_Badge"]</label>
-                    <select class="form-select" id="BadgeKey" name="BadgeKey" aria-describedby="badgeHelp">
+                    <pems-label for="BadgeKey">@Localizer["Nav_Field_Badge"]</pems-label>
+                    <pems-select id="BadgeKey" name="BadgeKey" aria-describedby="badgeHelp">
                         <option value="">@Localizer["Nav_NoBadge"]</option>
                         @foreach (var b in NavigationBadges.All)
                         {
                             <option value="@b.Key" selected="@(input.BadgeKey == b.Key)">@Localizer[b.TitleKey]</option>
                         }
-                    </select>
+                    </pems-select>
                     <div id="badgeHelp" class="form-text">@Localizer["Nav_BadgeHelp"]</div>
                 </div>
             }
@@ -81,8 +81,8 @@
             </div>
 
             <div class="d-flex gap-2">
-                <button type="submit" class="btn btn-primary">@Localizer["Save"]</button>
-                <a class="btn btn-outline-secondary" asp-action="Index">@Localizer["Cancel"]</a>
+                <pems-button tone="none" css="btn-primary" type="submit">@Localizer["Save"]</pems-button>
+                <pems-button as="a" tone="neutral" outline="true" asp-action="Index">@Localizer["Cancel"]</pems-button>
             </div>
         </form>
     </div>

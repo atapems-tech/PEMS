@@ -515,28 +515,30 @@
     $('lcSubmitBtn').addEventListener('click', function () {
         var input = buildInput();
         var needApproval = input.approvalRequired;
-        if (!window.confirm(needApproval ? T.confirmSubmit : T.confirmSend)) return;
-
-        var btn = this; btn.disabled = true; state.submitting = true; setSaveState('saving', T.saving);
-        postJson(boot.urls.submit, { input: input, autoSave: false, rowVersionBase64: state.rowVersion })
-            .then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); })
-            .then(function (res) {
-                if (res.success && res.redirect) { state.dirty = false; window.location.href = res.redirect; return; }
-                if (res.rowVersion) state.rowVersion = res.rowVersion;
-                if (res.letterId) applyResult(res, false);
-                state.submitting = false; btn.disabled = false;
-                setSaveState('error', T.saveFailed);
-                renderIssues(res.errors, res.warnings);
-            })
-            .catch(function () { state.submitting = false; btn.disabled = false; setSaveState('error', T.saveFailed); });
+        var btn = this;
+        window.PemsDialog.confirm(needApproval ? T.confirmSubmit : T.confirmSend).then(function (yes) {
+            if (!yes) return;
+            btn.disabled = true; state.submitting = true; setSaveState('saving', T.saving);
+            postJson(boot.urls.submit, { input: input, autoSave: false, rowVersionBase64: state.rowVersion })
+                .then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); })
+                .then(function (res) {
+                    if (res.success && res.redirect) { state.dirty = false; window.location.href = res.redirect; return; }
+                    if (res.rowVersion) state.rowVersion = res.rowVersion;
+                    if (res.letterId) applyResult(res, false);
+                    state.submitting = false; btn.disabled = false;
+                    setSaveState('error', T.saveFailed);
+                    renderIssues(res.errors, res.warnings);
+                })
+                .catch(function () { state.submitting = false; btn.disabled = false; setSaveState('error', T.saveFailed); });
+        });
     });
 
     // ---------------------------------------------------------------- discard
     var discardForm = $('lcDiscardForm');
-    if (discardForm) discardForm.addEventListener('submit', function (e) {
-        if (!window.confirm(T.confirmDiscard)) { e.preventDefault(); return; }
-        state.dirty = false;
-    });
+    if (discardForm) {
+        discardForm.setAttribute('data-pems-confirm', T.confirmDiscard);   // asked by pems-confirm.js before this handler runs
+        discardForm.addEventListener('submit', function () { state.dirty = false; });
+    }
 
     updateRecipientSummary();
     if (state.letterId) setSaveState('idle', T.saved);

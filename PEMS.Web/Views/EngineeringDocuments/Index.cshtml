@@ -151,7 +151,7 @@
                                         <button type="button" class="lp-act lp-act--always" data-bs-toggle="dropdown" aria-expanded="false" title="@Localizer["Ed_MoreActions"]"><i class="bi bi-three-dots" aria-hidden="true"></i><span class="visually-hidden">@Localizer["Ed_MoreActions"]: @item.DocumentNo</span></button>
                                         <pems-dropdown-menu end="true">
                                             <li>
-                                                <form asp-action="Delete" asp-route-id="@item.DocumentId" method="post" onsubmit="return confirm('@Localizer["Ed_DeleteConfirm"].Value.Replace("'", "\\'")');">
+                                                <form asp-action="Delete" asp-route-id="@item.DocumentId" method="post" data-pems-confirm="@Localizer["Ed_DeleteConfirm"]">
                                                     <button type="submit" class="dropdown-item text-danger"><i class="bi bi-trash" aria-hidden="true"></i> @Localizer["Ed_Delete"]</button>
                                                 </form>
                                             </li>

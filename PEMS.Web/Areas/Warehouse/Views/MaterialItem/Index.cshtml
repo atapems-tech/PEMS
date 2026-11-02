@@ -130,63 +130,61 @@
     </pems-list-panel>
 </pems-list-page>
 
-<div class="modal fade" id="createMaterialModal" tabindex="-1">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
+<pems-modal size="large" id="createMaterialModal" tabindex="-1">
             <form asp-action="Create" method="post">
                 <div class="modal-header"><h6 class="modal-title">@Localizer["New Material"]</h6></div>
                 <div class="modal-body">
                     <div class="row g-3 mb-2">
-                        <div class="col-md-6"><label class="form-label">@Localizer["Material Code"]</label><input name="materialCode" class="form-control" required /></div>
-                        <div class="col-md-6"><label class="form-label">@Localizer["Material Type"]</label><input name="materialType" class="form-control" placeholder="Bearing, Valve, Cable..." /></div>
+                        <div class="col-md-6"><pems-label>@Localizer["Material Code"]</pems-label><pems-input name="materialCode" required /></div>
+                        <div class="col-md-6"><pems-label>@Localizer["Material Type"]</pems-label><pems-input name="materialType" placeholder="Bearing, Valve, Cable..." /></div>
                     </div>
-                    <div class="mb-2"><label class="form-label">@Localizer["Description"]</label><input name="description" class="form-control" required /></div>
-                    <div class="mb-2"><label class="form-label">@Localizer["Long Description"]</label><textarea name="longDescription" class="form-control" rows="2"></textarea></div>
+                    <div class="mb-2"><pems-label>@Localizer["Description"]</pems-label><pems-input name="description" required /></div>
+                    <div class="mb-2"><pems-label>@Localizer["Long Description"]</pems-label><pems-textarea name="longDescription" rows="2"></pems-textarea></div>
                     <div class="row g-3 mb-2">
                         <div class="col-md-4">
-                            <label class="form-label">@Localizer["Category"]</label>
-                            <select name="categoryId" class="form-select">
+                            <pems-label>@Localizer["Category"]</pems-label>
+                            <pems-select name="categoryId">
                                 <option value="">--</option>
                                 @foreach (var c in categories) { <option value="@c.MaterialCategoryId">@c.Name</option> }
-                            </select>
+                            </pems-select>
                         </div>
                         <div class="col-md-4">
-                            <label class="form-label">@Localizer["Discipline"]</label>
-                            <select name="disciplineId" class="form-select">
+                            <pems-label>@Localizer["Discipline"]</pems-label>
+                            <pems-select name="disciplineId">
                                 <option value="">--</option>
                                 @foreach (var d in disciplines) { <option value="@d.DisciplineId">@d.Name</option> }
-                            </select>
+                            </pems-select>
                         </div>
                         <div class="col-md-4">
-                            <label class="form-label">@Localizer["UOM"]</label>
-                            <select name="uomId" class="form-select">
+                            <pems-label>@Localizer["UOM"]</pems-label>
+                            <pems-select name="uomId">
                                 <option value="">--</option>
                                 @foreach (var u in uoms) { <option value="@u.MaterialUOMId">@u.Code</option> }
-                            </select>
+                            </pems-select>
                         </div>
                     </div>
                     <div class="row g-3 mb-2">
-                        <div class="col-md-6"><label class="form-label">@Localizer["Manufacturer"]</label><input name="manufacturer" class="form-control" /></div>
-                        <div class="col-md-6"><label class="form-label">@Localizer["Manufacturer Part No."]</label><input name="manufacturerPartNumber" class="form-control" /></div>
+                        <div class="col-md-6"><pems-label>@Localizer["Manufacturer"]</pems-label><pems-input name="manufacturer" /></div>
+                        <div class="col-md-6"><pems-label>@Localizer["Manufacturer Part No."]</pems-label><pems-input name="manufacturerPartNumber" /></div>
                     </div>
                     <div class="row g-3 mb-2">
                         <div class="col-md-6">
-                            <label class="form-label">Vendor (Supplier)</label>
-                            <select name="vendorId" class="form-select">
+                            <pems-label>Vendor (Supplier)</pems-label>
+                            <pems-select name="vendorId">
                                 <option value="">--</option>
                                 @foreach (var v in vendors) { <option value="@v.VendorId">@v.Name</option> }
-                            </select>
+                            </pems-select>
                         </div>
-                        <div class="col-md-6"><label class="form-label">@Localizer["Model"]</label><input name="model" class="form-control" /></div>
+                        <div class="col-md-6"><pems-label>@Localizer["Model"]</pems-label><pems-input name="model" /></div>
                     </div>
                     <div class="row g-3 mb-2">
-                        <div class="col-md-4"><label class="form-label">@Localizer["Size"]</label><input name="size" class="form-control" /></div>
-                        <div class="col-md-4"><label class="form-label">@Localizer["Material Grade"]</label><input name="materialGrade" class="form-control" /></div>
-                        <div class="col-md-4"><label class="form-label">@Localizer["Specification"]</label><input name="specification" class="form-control" /></div>
+                        <div class="col-md-4"><pems-label>@Localizer["Size"]</pems-label><pems-input name="size" /></div>
+                        <div class="col-md-4"><pems-label>@Localizer["Material Grade"]</pems-label><pems-input name="materialGrade" /></div>
+                        <div class="col-md-4"><pems-label>@Localizer["Specification"]</pems-label><pems-input name="specification" /></div>
                     </div>
                     <div class="d-flex gap-3">
-                        <div class="form-check"><input class="form-check-input" type="checkbox" name="isStockItem" value="true" checked id="isStockItem" /><label class="form-check-label" for="isStockItem">@Localizer["Stock Item"]</label></div>
-                        <div class="form-check"><input class="form-check-input" type="checkbox" name="isCritical" value="true" id="isCritical" /><label class="form-check-label" for="isCritical">@Localizer["Critical Spare"]</label></div>
+                        <div class="form-check"><pems-input kind="check" type="checkbox" name="isStockItem" value="true" checked id="isStockItem" /><label class="form-check-label" for="isStockItem">@Localizer["Stock Item"]</label></div>
+                        <div class="form-check"><pems-input kind="check" type="checkbox" name="isCritical" value="true" id="isCritical" /><label class="form-check-label" for="isCritical">@Localizer["Critical Spare"]</label></div>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -194,9 +192,7 @@
                     <pems-button tone="primary" type="submit">@Localizer["Save"]</pems-button>
                 </div>
             </form>
-        </div>
-    </div>
-</div>
+        </pems-modal>
 
 @section Scripts {
     <script src="~/_content/PEMS.UI/pems-list.js" asp-append-version="true"></script>

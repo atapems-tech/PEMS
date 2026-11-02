@@ -212,7 +212,7 @@ else
                 <form asp-action="Reject" method="post" class="d-inline ms-1">
                     <input type="hidden" name="id" value="@Model.WorkOrderId" />
                     <pems-input scale="small" css="d-inline-block" name="reason" required style="width:160px;" placeholder="@Localizer["Reason (required)"]" />
-                    <pems-button tone="danger" size="small" outline="true" type="submit" onclick="return confirm('این WorkOrder رد شود؟');">@Localizer["Reject"]</pems-button>
+                    <pems-button tone="danger" size="small" outline="true" type="submit" data-pems-confirm="این WorkOrder رد شود؟">@Localizer["Reject"]</pems-button>
                 </form>
             }
             @if (canApproveWo && Model.Status is "Open" or "Assigned" or "InProgress" or "OnHold")
@@ -220,7 +220,7 @@ else
                 <form asp-action="Cancel" method="post" class="d-inline ms-1">
                     <input type="hidden" name="id" value="@Model.WorkOrderId" />
                     <pems-input scale="small" css="d-inline-block" name="reason" required style="width:160px;" placeholder="@Localizer["Reason (required)"]" />
-                    <pems-button tone="neutral" size="small" outline="true" type="submit" data-legacy="cancel" onclick="return confirm('این WorkOrder لغو شود؟');">@Localizer["Cancel"]</pems-button>
+                    <pems-button tone="neutral" size="small" outline="true" type="submit" data-legacy="cancel" data-pems-confirm="این WorkOrder لغو شود؟">@Localizer["Cancel"]</pems-button>
                 </form>
             }
         </div>
@@ -1056,11 +1056,11 @@ else
             const data = await res.json();
 
             if (!data.success) {
-                alert('Barcode not resolved: ' + (data.errorMessage || data.errorCode));
+                window.PemsDialog.alert('Barcode not resolved: ' + (data.errorMessage || data.errorCode));
                 return;
             }
             if (data.targetType !== expectedTargetType) {
-                alert('This barcode belongs to a ' + data.targetType + ', not a ' + expectedTargetType + '.');
+                window.PemsDialog.alert('This barcode belongs to a ' + data.targetType + ', not a ' + expectedTargetType + '.');
                 return;
             }
 
@@ -1073,13 +1073,13 @@ else
                 }
             }
             if (!matched) {
-                alert('Resolved to ' + (data.label || ('Material #' + data.targetId)) + ', but it is not in this list.');
+                window.PemsDialog.alert('Resolved to ' + (data.label || ('Material #' + data.targetId)) + ', but it is not in this list.');
                 return;
             }
 
             input.value = '';
         } catch (e) {
-            alert('Could not resolve barcode.');
+            window.PemsDialog.alert('Could not resolve barcode.');
         }
     }
 

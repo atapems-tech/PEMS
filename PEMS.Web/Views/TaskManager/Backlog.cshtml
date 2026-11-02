@@ -58,7 +58,7 @@
                                 <option value="0">@Localizer["Tm_Backlog"]</option>
                                 @foreach (var f in futureSprints) { <option value="@f.Id">@f.Name</option> }
                             </pems-select>
-                            <pems-button tone="success" size="small" outline="true" data-tm-confirm="@Localizer["Tm_CompleteSprintConfirm"]"><i class="bi bi-check2-all" aria-hidden="true"></i> @Localizer["Tm_CompleteSprint"]</pems-button>
+                            <pems-button tone="success" size="small" outline="true" data-pems-confirm="@Localizer["Tm_CompleteSprintConfirm"]"><i class="bi bi-check2-all" aria-hidden="true"></i> @Localizer["Tm_CompleteSprint"]</pems-button>
                         </form>
                     }
                     <pems-button tone="neutral" size="small" outline="true" type="button" data-bs-toggle="collapse" data-bs-target="#editSprint-@sprint.Id" aria-expanded="false" aria-controls="editSprint-@sprint.Id"><i class="bi bi-pencil" aria-hidden="true"></i> @Localizer["Tm_Edit"]</pems-button>

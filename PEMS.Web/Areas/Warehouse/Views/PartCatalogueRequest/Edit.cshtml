@@ -47,21 +47,21 @@
 
     @if (Model.Errors.Any())
     {
-        <div class="alert alert-danger small" role="alert">
+        <pems-alert tone="danger" css="small">
             <strong>@Localizer["Pc_Msg_FixErrors"]</strong>
             <ul class="mb-0">
                 @foreach (var m in PcMessages.FormatAll(Localizer, Model.Errors)) { <li>@m</li> }
             </ul>
-        </div>
+        </pems-alert>
     }
     @if (Model.Warnings.Any() || !string.IsNullOrEmpty(warningTemp))
     {
-        <div class="alert alert-warning small" role="status">
+        <pems-alert tone="warning" css="small">
             <ul class="mb-0">
                 @foreach (var m in PcMessages.FormatAll(Localizer, Model.Warnings)) { <li>@m</li> }
                 @if (!string.IsNullOrEmpty(warningTemp)) { <li>@warningTemp</li> }
             </ul>
-        </div>
+        </pems-alert>
     }
 
     @* فرم اصلی خالی است؛ همه‌ی فیلدها با attribute form="pcForm" به آن وصل‌اند تا فرم‌های فرعی (تجهیز/پیوست/شماره‌دهی) تودرتو نشوند *@
@@ -84,7 +84,7 @@
             <a asp-action="Index" class="vs-btn vs-btn--sm">@Localizer["Pc_Btn_Back"]</a>
             @if (a.CanCancel)
             {
-                <form asp-action="Execute" method="post" class="d-inline" onsubmit="return confirm(this.dataset.confirm);" data-confirm="@Localizer["Pc_Confirm_Cancel"]">
+                <form asp-action="Execute" method="post" class="d-inline" data-pems-confirm="@Localizer["Pc_Confirm_Cancel"]">
                     <input type="hidden" name="id" value="@d.Id" />
                     <input type="hidden" name="action" value="Cancel" />
                     <button type="submit" class="vs-btn vs-btn--sm vs-btn--danger"><i class="bi bi-x-circle"></i> @Localizer["Pc_Btn_Cancel"]</button>
@@ -100,30 +100,30 @@
                 <h2 class="vs-section__title"><i class="bi bi-info-circle"></i> @Localizer["Pc_Sec_PartInfo"]</h2>
 
                 <div class="mb-2">
-                    <label class="form-label" for="pc_RequestNumber">@L("RequestNumber") <span class="pc-req" aria-hidden="true">*</span></label>
+                    <pems-label for="pc_RequestNumber">@L("RequestNumber") <span class="pc-req" aria-hidden="true">*</span></pems-label>
                     <div class="input-group input-group-sm">
-                        <input id="pc_RequestNumber" class="form-control" value="@d.RequestNumber" readonly />
+                        <pems-input id="pc_RequestNumber" value="@d.RequestNumber" readonly />
                         @if (a.CanGenerateNumber)
                         {
-                            <button type="submit" form="pcNumberForm" class="btn btn-outline-secondary" title="@Localizer["Pc_Btn_GenerateNumber"]"><i class="bi bi-123"></i> @Localizer["Pc_Btn_GenerateNumber"]</button>
+                            <pems-button tone="neutral" outline="true" type="submit" form="pcNumberForm" title="@Localizer["Pc_Btn_GenerateNumber"]"><i class="bi bi-123"></i> @Localizer["Pc_Btn_GenerateNumber"]</pems-button>
                         }
                     </div>
                 </div>
 
                 <div class="mb-2">
-                    <label class="form-label" for="pc_Urgent">@L("Urgent") <span class="pc-req" aria-hidden="true">*</span></label>
-                    <select id="pc_Urgent" form="pcForm" name="Urgent" class="form-select form-select-sm">
+                    <pems-label for="pc_Urgent">@L("Urgent") <span class="pc-req" aria-hidden="true">*</span></pems-label>
+                    <pems-select scale="small" id="pc_Urgent" form="pcForm" name="Urgent">
                         <option value="false" selected="@(!f.Urgent)">@Localizer["Pc_No"]</option>
                         <option value="true" selected="@f.Urgent">@Localizer["Pc_Yes"]</option>
-                    </select>
+                    </pems-select>
                 </div>
 
                 <div class="mb-2">
-                    <label class="form-label" for="pc_SectionId">@L("SectionId") <span class="pc-req" aria-hidden="true">*</span></label>
-                    <select id="pc_SectionId" form="pcForm" name="SectionId" class="form-select form-select-sm" data-pc-section>
+                    <pems-label for="pc_SectionId">@L("SectionId") <span class="pc-req" aria-hidden="true">*</span></pems-label>
+                    <pems-select scale="small" id="pc_SectionId" form="pcForm" name="SectionId" data-pc-section>
                         <option value=""></option>
                         @foreach (var s in Model.Sections) { <option value="@s.Id" selected="@(f.SectionId == s.Id)">@s.Text</option> }
-                    </select>
+                    </pems-select>
                 </div>
 
                 <div class="mb-2"><span class="form-label d-block">@L("Requester")</span><span>@d.RequesterName</span></div>
@@ -132,27 +132,27 @@
                 {
                     <div class="pc-change-block mt-3 pt-2 border-top">
                         <div class="mb-2">
-                            <label class="form-label" for="pc_IsRd">@L("IsRd")</label>
-                            <select id="pc_IsRd" form="pcForm" name="IsRd" class="form-select form-select-sm">
+                            <pems-label for="pc_IsRd">@L("IsRd")</pems-label>
+                            <pems-select scale="small" id="pc_IsRd" form="pcForm" name="IsRd">
                                 <option value="false" selected="@(!f.IsRd)">@Localizer["Pc_No"]</option>
                                 <option value="true" selected="@f.IsRd">@Localizer["Pc_Yes"]</option>
-                            </select>
+                            </pems-select>
                         </div>
                         <div class="mb-2">
-                            <label class="form-label" for="pc_ExistingPartNumber">@L("ExistingPartNumber") <span class="pc-req" aria-hidden="true">*</span></label>
+                            <pems-label for="pc_ExistingPartNumber">@L("ExistingPartNumber") <span class="pc-req" aria-hidden="true">*</span></pems-label>
                             <div class="input-group input-group-sm">
-                                <input id="pc_ExistingPartNumber" form="pcForm" name="ExistingPartNumber" value="@f.ExistingPartNumber" class="form-control" maxlength="50" />
-                                <button type="submit" form="pcForm" formaction="@Url.Action("LoadPart")" class="btn btn-outline-secondary"><i class="bi bi-box-arrow-in-down"></i> @Localizer["Pc_Btn_Load"]</button>
+                                <pems-input id="pc_ExistingPartNumber" form="pcForm" name="ExistingPartNumber" value="@f.ExistingPartNumber" maxlength="50" />
+                                <pems-button tone="neutral" outline="true" type="submit" form="pcForm" formaction="@Url.Action("LoadPart")"><i class="bi bi-box-arrow-in-down"></i> @Localizer["Pc_Btn_Load"]</pems-button>
                             </div>
                             <div class="form-text">@Localizer["Pc_Hint_Load"]</div>
                         </div>
                         <div class="mb-2">
-                            <label class="form-label" for="pc_ChangesMatchInventory">@L("ChangesMatchInventory") <span class="pc-req" aria-hidden="true">*</span></label>
-                            <select id="pc_ChangesMatchInventory" form="pcForm" name="ChangesMatchInventory" class="form-select form-select-sm">
+                            <pems-label for="pc_ChangesMatchInventory">@L("ChangesMatchInventory") <span class="pc-req" aria-hidden="true">*</span></pems-label>
+                            <pems-select scale="small" id="pc_ChangesMatchInventory" form="pcForm" name="ChangesMatchInventory">
                                 <option value=""></option>
                                 <option value="true" selected="@(f.ChangesMatchInventory == true)">@Localizer["Pc_Yes"]</option>
                                 <option value="false" selected="@(f.ChangesMatchInventory == false)">@Localizer["Pc_No"]</option>
-                            </select>
+                            </pems-select>
                             <div class="form-text">@Localizer["Pc_Hint_ChangesMatch"]</div>
                         </div>
                         @if (!string.IsNullOrEmpty(d.Form.OldManufacturerName) || !string.IsNullOrEmpty(d.Form.OldManufacturerPartNumber))
@@ -200,7 +200,7 @@
             <section class="vs-panel pc-card mt-3">
                 <h2 class="vs-section__title"><i class="bi bi-diagram-3"></i> @Localizer["Pc_Sec_ClassInfo"]</h2>
                 <div class="mb-2">
-                    <label class="form-label" for="pc_TechnicalClassId_text">@L("TechnicalClassId") <span class="pc-req" aria-hidden="true">*</span></label>
+                    <pems-label for="pc_TechnicalClassId_text">@L("TechnicalClassId") <span class="pc-req" aria-hidden="true">*</span></pems-label>
                     <div class="pc-lookup" data-url="@lookupBase/TechnicalClasses" data-detail-url="@lookupBase/TechnicalClass" data-name="TechnicalClassId" data-form="pcForm"
                          data-id="@f.TechnicalClassId" data-text="@Label("TechnicalClassId")" data-input-id="pc_TechnicalClassId_text"></div>
                     <div class="form-text pc-tc-long" id="pc_TechnicalClassLong">@d.TechnicalClassLongDescription</div>
@@ -209,7 +209,7 @@
                          data-txt-mismatch="@Localizer["Pc_Tc_Mismatch"]" data-txt-picked="@Localizer["Pc_Tc_Picked"]"></div>
                 </div>
 
-                <label class="form-label">@L("Attributes") <span class="pc-req" aria-hidden="true">*</span></label>
+                <pems-label>@L("Attributes") <span class="pc-req" aria-hidden="true">*</span></pems-label>
                 <div class="pc-table-scroll">
                     <pems-related-table id="pcAttrTable">
                         <thead><tr><th style="width:34%">@L("AttributeName")</th><th>@L("AttributeValue")</th><th style="width:40px"></th></tr></thead>
@@ -217,8 +217,7 @@
                             <tr>
                                 <td><input type="hidden" form="pcForm" name="Attributes[0].Name" value="@FftName" /><strong>@FftName</strong></td>
                                 <td>
-                                    <input type="text" form="pcForm" name="Attributes[0].Value" id="pc_FreeFormatText" class="form-control form-control-sm pc-fft"
-                                           value="@(fft?.Value ?? " ")" aria-label="@FftName" autocomplete="off" />
+                                    <pems-input scale="small" css="pc-fft" type="text" form="pcForm" name="Attributes[0].Value" id="pc_FreeFormatText" value="@(fft?.Value ?? " ")" aria-label="@FftName" autocomplete="off" />
                                 </td>
                                 <td></td>
                             </tr>
@@ -226,8 +225,8 @@
                             {
                                 var idx = i + 1;
                                 <tr class="pc-attr-row">
-                                    <td><input type="text" form="pcForm" name="Attributes[@idx].Name" value="@extraAttrs[i].Name" class="form-control form-control-sm" maxlength="100" /></td>
-                                    <td><input type="text" form="pcForm" name="Attributes[@idx].Value" value="@extraAttrs[i].Value" class="form-control form-control-sm" /></td>
+                                    <td><pems-input scale="small" type="text" form="pcForm" name="Attributes[@idx].Name" value="@extraAttrs[i].Name" maxlength="100" /></td>
+                                    <td><pems-input scale="small" type="text" form="pcForm" name="Attributes[@idx].Value" value="@extraAttrs[i].Value" /></td>
                                     <td><button type="button" class="vs-icon-btn pc-attr-remove" title="@Localizer["Pc_Btn_Remove"]" aria-label="@Localizer["Pc_Btn_Remove"]"><i class="bi bi-x-lg"></i></button></td>
                                 </tr>
                             }
@@ -245,50 +244,50 @@
                 <h2 class="vs-section__title"><i class="bi bi-tags"></i> @Localizer["Pc_Sec_Classification"]</h2>
                 <div class="row g-2">
                     <div class="col-md-6">
-                        <label class="form-label" for="pc_AssetType">@L("AssetType")</label>
-                        <select id="pc_AssetType" form="pcForm" name="AssetType" class="form-select form-select-sm">
+                        <pems-label for="pc_AssetType">@L("AssetType")</pems-label>
+                        <pems-select scale="small" id="pc_AssetType" form="pcForm" name="AssetType">
                             @foreach (var at in new[] { "None", "FixedAsset", "LowValueAsset" })
                             { <option value="@at" selected="@(f.AssetType == at)">@Localizer["Pc_Asset_" + at]</option> }
-                        </select>
+                        </pems-select>
                         <div class="form-text">@Localizer["Pc_Hint_LowValue"]</div>
                     </div>
                     <div class="col-md-6">
-                        <label class="form-label" for="pc_CommodityGroup1Id">@L("CommodityGroup1Id") <span class="pc-req" aria-hidden="true">*</span></label>
-                        <select id="pc_CommodityGroup1Id" form="pcForm" name="CommodityGroup1Id" class="form-select form-select-sm" data-pc-group1>
+                        <pems-label for="pc_CommodityGroup1Id">@L("CommodityGroup1Id") <span class="pc-req" aria-hidden="true">*</span></pems-label>
+                        <pems-select scale="small" id="pc_CommodityGroup1Id" form="pcForm" name="CommodityGroup1Id" data-pc-group1>
                             <option value=""></option>
                             @foreach (var g in Model.Group1) { <option value="@g.Id" selected="@(f.CommodityGroup1Id == g.Id)">@g.Text</option> }
-                        </select>
+                        </pems-select>
                     </div>
                     <div class="col-md-6">
-                        <label class="form-label" for="pc_CommodityGroup2Id">@L("CommodityGroup2Id") <span class="pc-req" aria-hidden="true">*</span></label>
-                        <select id="pc_CommodityGroup2Id" form="pcForm" name="CommodityGroup2Id" class="form-select form-select-sm" data-pc-group2>
+                        <pems-label for="pc_CommodityGroup2Id">@L("CommodityGroup2Id") <span class="pc-req" aria-hidden="true">*</span></pems-label>
+                        <pems-select scale="small" id="pc_CommodityGroup2Id" form="pcForm" name="CommodityGroup2Id" data-pc-group2>
                             <option value=""></option>
                             @foreach (var g in Model.Group2) { <option value="@g.Id" selected="@(f.CommodityGroup2Id == g.Id)">@g.Text</option> }
-                        </select>
+                        </pems-select>
                     </div>
                     <div class="col-md-6">
-                        <label class="form-label" for="pc_ProductFamilyId">@L("ProductFamilyId") <span class="pc-req" aria-hidden="true">*</span></label>
-                        <select id="pc_ProductFamilyId" form="pcForm" name="ProductFamilyId" class="form-select form-select-sm">
+                        <pems-label for="pc_ProductFamilyId">@L("ProductFamilyId") <span class="pc-req" aria-hidden="true">*</span></pems-label>
+                        <pems-select scale="small" id="pc_ProductFamilyId" form="pcForm" name="ProductFamilyId">
                             <option value=""></option>
                             @foreach (var p in Model.ProductFamilies) { <option value="@p.Id" selected="@(f.ProductFamilyId == p.Id)">@p.Text</option> }
-                        </select>
+                        </pems-select>
                     </div>
                     <div class="col-md-6">
-                        <label class="form-label" for="pc_UnitOfMeasureId">@L("UnitOfMeasureId") <span class="pc-req" aria-hidden="true">*</span></label>
-                        <select id="pc_UnitOfMeasureId" form="pcForm" name="UnitOfMeasureId" class="form-select form-select-sm">
+                        <pems-label for="pc_UnitOfMeasureId">@L("UnitOfMeasureId") <span class="pc-req" aria-hidden="true">*</span></pems-label>
+                        <pems-select scale="small" id="pc_UnitOfMeasureId" form="pcForm" name="UnitOfMeasureId">
                             <option value=""></option>
                             @foreach (var u in Model.Units) { <option value="@u.Id" selected="@(f.UnitOfMeasureId == u.Id)">@u.Text@(string.IsNullOrEmpty(u.Extra) ? "" : " - " + u.Extra)</option> }
-                        </select>
+                        </pems-select>
                         @if (isChange) { <div class="form-text">@Localizer["Pc_Hint_UomLocked"]</div> }
                     </div>
 
                     <div class="col-md-6">
-                        <label class="form-label" for="pc_ManufacturerId_text">@L("ManufacturerId") <span class="pc-req" aria-hidden="true">*</span></label>
+                        <pems-label for="pc_ManufacturerId_text">@L("ManufacturerId") <span class="pc-req" aria-hidden="true">*</span></pems-label>
                         <div class="pc-lookup" data-url="@lookupBase/Manufacturers" data-name="ManufacturerId" data-form="pcForm" data-id="@f.ManufacturerId"
                              data-text="@(f.IsNewManufacturer ? "" : Label("ManufacturerId"))" data-input-id="pc_ManufacturerId_text" data-pc-manufacturer></div>
                     </div>
                     <div class="col-md-6">
-                        <label class="form-label" for="pc_NewManufacturerName">@L("IsNewManufacturer")</label>
+                        <pems-label for="pc_NewManufacturerName">@L("IsNewManufacturer")</pems-label>
                         <div class="input-group input-group-sm">
                             <div class="input-group-text">
                                 <input type="checkbox" id="pc_IsNewManufacturer" form="pcForm" name="IsNewManufacturer" value="true" checked="@f.IsNewManufacturer" aria-label="@L("IsNewManufacturer")" />
@@ -300,34 +299,34 @@
                         <div class="form-text" id="pc_ManufacturerCheck"></div>
                     </div>
                     <div class="col-md-6">
-                        <label class="form-label" for="pc_ManufacturerPartNumber">@L("ManufacturerPartNumber")@if (isChange) { <span class="pc-req" aria-hidden="true"> *</span> }</label>
-                        <input id="pc_ManufacturerPartNumber" form="pcForm" name="ManufacturerPartNumber" value="@f.ManufacturerPartNumber" class="form-control form-control-sm" maxlength="100" />
+                        <pems-label for="pc_ManufacturerPartNumber">@L("ManufacturerPartNumber")@if (isChange) { <span class="pc-req" aria-hidden="true"> *</span> }</pems-label>
+                        <pems-input scale="small" id="pc_ManufacturerPartNumber" form="pcForm" name="ManufacturerPartNumber" value="@f.ManufacturerPartNumber" maxlength="100" />
                     </div>
                     <div class="col-md-6">
-                        <label class="form-label" for="pc_SupplierId_text">@L("SupplierId")</label>
+                        <pems-label for="pc_SupplierId_text">@L("SupplierId")</pems-label>
                         <div class="pc-lookup" data-url="@lookupBase/Suppliers" data-name="SupplierId" data-form="pcForm" data-id="@f.SupplierId"
                              data-text="@Label("SupplierId")" data-input-id="pc_SupplierId_text"></div>
                     </div>
                     <div class="col-md-6">
-                        <label class="form-label" for="pc_SupplierPartNumber">@L("SupplierPartNumber")</label>
-                        <input id="pc_SupplierPartNumber" form="pcForm" name="SupplierPartNumber" value="@f.SupplierPartNumber" class="form-control form-control-sm" maxlength="100" />
+                        <pems-label for="pc_SupplierPartNumber">@L("SupplierPartNumber")</pems-label>
+                        <pems-input scale="small" id="pc_SupplierPartNumber" form="pcForm" name="SupplierPartNumber" value="@f.SupplierPartNumber" maxlength="100" />
                     </div>
                     <div class="col-md-6">
-                        <label class="form-label" for="pc_PartPrice">@L("PartPrice")</label>
+                        <pems-label for="pc_PartPrice">@L("PartPrice")</pems-label>
                         <div class="input-group input-group-sm">
-                            <input id="pc_PartPrice" form="pcForm" name="PartPrice" type="number" step="0.01" min="0" value="@f.PartPrice" class="form-control" />
-                            <select form="pcForm" name="CurrencyId" class="form-select" aria-label="@L("CurrencyId")">
+                            <pems-input id="pc_PartPrice" form="pcForm" name="PartPrice" type="number" step="0.01" min="0" value="@f.PartPrice" />
+                            <pems-select form="pcForm" name="CurrencyId" aria-label="@L("CurrencyId")">
                                 <option value=""></option>
                                 @foreach (var c in Model.Currencies) { <option value="@c.Id" selected="@(f.CurrencyId == c.Id)">@c.Text@(string.IsNullOrEmpty(c.Extra) ? "" : " - " + c.Extra)</option> }
-                            </select>
+                            </pems-select>
                         </div>
                     </div>
                     <div class="col-md-6">
-                        <label class="form-label" for="pc_TypeDesignationId">@L("TypeDesignationId")</label>
-                        <select id="pc_TypeDesignationId" form="pcForm" name="TypeDesignationId" class="form-select form-select-sm" data-pc-type>
+                        <pems-label for="pc_TypeDesignationId">@L("TypeDesignationId")</pems-label>
+                        <pems-select scale="small" id="pc_TypeDesignationId" form="pcForm" name="TypeDesignationId" data-pc-type>
                             <option value=""></option>
                             @foreach (var t in Model.TypeDesignations) { <option value="@t.Id" data-flags="@t.Extra" selected="@(f.TypeDesignationId == t.Id)">@t.Text</option> }
-                        </select>
+                        </pems-select>
                     </div>
                     <div class="col-md-3">
                         <span class="form-label d-block">@L("IsCritical") <span class="pc-req" aria-hidden="true">*</span></span>
@@ -353,9 +352,9 @@
                      data-txt-error="@Localizer["Pc_Dedup_Error"]">
                 <h2 class="vs-section__title"><i class="bi bi-search"></i> @Localizer["Pc_Dedup_Title"]</h2>
                 <p class="form-text">@Localizer["Pc_Dedup_Hint"]</p>
-                <label class="form-label" for="pcDedupQuery">@Localizer["Pc_Dedup_SearchLabel"]</label>
+                <pems-label for="pcDedupQuery">@Localizer["Pc_Dedup_SearchLabel"]</pems-label>
                 <div class="input-group input-group-sm mb-2">
-                    <input id="pcDedupQuery" type="search" class="form-control" maxlength="100" autocomplete="off" />
+                    <pems-input id="pcDedupQuery" type="search" maxlength="100" autocomplete="off" />
                     <button type="button" class="vs-btn vs-btn--sm" id="pcDedupSearch">@Localizer["Pc_Dedup_Search"]</button>
                 </div>
                 <button type="button" class="vs-btn vs-btn--sm mb-2" id="pcDedupCheck">@Localizer["Pc_Dedup_Check"]</button>
@@ -364,12 +363,12 @@
 
             <section class="vs-panel pc-card">
                 <h2 class="vs-section__title"><i class="bi bi-paperclip"></i> @Localizer["Pc_Sec_OtherInfo"]</h2>
-                <div class="mb-2"><label class="form-label" for="pc_SparePartSerialNo">@L("SparePartSerialNo")</label><input id="pc_SparePartSerialNo" form="pcForm" name="SparePartSerialNo" value="@f.SparePartSerialNo" class="form-control form-control-sm" maxlength="100" /></div>
-                <div class="mb-2"><label class="form-label" for="pc_EquipmentSerialNo">@L("EquipmentSerialNo")</label><input id="pc_EquipmentSerialNo" form="pcForm" name="EquipmentSerialNo" value="@f.EquipmentSerialNo" class="form-control form-control-sm" maxlength="100" /></div>
-                <div class="mb-2"><label class="form-label" for="pc_ManufacturerDrawingNo">@L("ManufacturerDrawingNo")</label><input id="pc_ManufacturerDrawingNo" form="pcForm" name="ManufacturerDrawingNo" value="@f.ManufacturerDrawingNo" class="form-control form-control-sm" maxlength="100" /></div>
-                <div class="mb-2"><label class="form-label" for="pc_DocumentNo">@L("DocumentNo")</label><input id="pc_DocumentNo" form="pcForm" name="DocumentNo" value="@f.DocumentNo" class="form-control form-control-sm" maxlength="100" /></div>
+                <div class="mb-2"><pems-label for="pc_SparePartSerialNo">@L("SparePartSerialNo")</pems-label><pems-input scale="small" id="pc_SparePartSerialNo" form="pcForm" name="SparePartSerialNo" value="@f.SparePartSerialNo" maxlength="100" /></div>
+                <div class="mb-2"><pems-label for="pc_EquipmentSerialNo">@L("EquipmentSerialNo")</pems-label><pems-input scale="small" id="pc_EquipmentSerialNo" form="pcForm" name="EquipmentSerialNo" value="@f.EquipmentSerialNo" maxlength="100" /></div>
+                <div class="mb-2"><pems-label for="pc_ManufacturerDrawingNo">@L("ManufacturerDrawingNo")</pems-label><pems-input scale="small" id="pc_ManufacturerDrawingNo" form="pcForm" name="ManufacturerDrawingNo" value="@f.ManufacturerDrawingNo" maxlength="100" /></div>
+                <div class="mb-2"><pems-label for="pc_DocumentNo">@L("DocumentNo")</pems-label><pems-input scale="small" id="pc_DocumentNo" form="pcForm" name="DocumentNo" value="@f.DocumentNo" maxlength="100" /></div>
 
-                <label class="form-label">@L("Attachments")</label>
+                <pems-label>@L("Attachments")</pems-label>
                 <ul class="list-unstyled small mb-2">
                     @foreach (var at in d.Attachments)
                     {
@@ -395,49 +394,49 @@
                 <h2 class="vs-section__title"><i class="bi bi-box-seam"></i> @Localizer["Pc_Sec_Planning"]</h2>
                 <div class="row g-2">
                     <div class="col-md-3">
-                        <label class="form-label" for="pc_PlanningMethodId">@L("PlanningMethodId")</label>
-                        <select id="pc_PlanningMethodId" form="pcForm" name="PlanningMethodId" class="form-select form-select-sm" data-pc-planning>
+                        <pems-label for="pc_PlanningMethodId">@L("PlanningMethodId")</pems-label>
+                        <pems-select scale="small" id="pc_PlanningMethodId" form="pcForm" name="PlanningMethodId" data-pc-planning>
                             <option value=""></option>
                             @foreach (var p in Model.PlanningMethods) { <option value="@p.Id" data-code="@p.Code" selected="@(f.PlanningMethodId == p.Id)">@p.Text@(string.IsNullOrEmpty(p.Extra) ? "" : " - " + p.Extra)</option> }
-                        </select>
+                        </pems-select>
                     </div>
                     <div class="col-md-3">
-                        <label class="form-label" for="pc_MinimumStock">@L("MinimumStock") <span class="pc-req" aria-hidden="true">*</span></label>
-                        <input id="pc_MinimumStock" form="pcForm" name="MinimumStock" type="number" step="0.0001" min="0" value="@f.MinimumStock" class="form-control form-control-sm" />
+                        <pems-label for="pc_MinimumStock">@L("MinimumStock") <span class="pc-req" aria-hidden="true">*</span></pems-label>
+                        <pems-input scale="small" id="pc_MinimumStock" form="pcForm" name="MinimumStock" type="number" step="0.0001" min="0" value="@f.MinimumStock" />
                     </div>
                     <div class="col-md-3">
-                        <label class="form-label" for="pc_MaxConsumptionRate">@L("MaxConsumptionRate") <span class="pc-req" aria-hidden="true">*</span></label>
-                        <input id="pc_MaxConsumptionRate" form="pcForm" name="MaxConsumptionRate" type="number" step="0.0001" min="0" value="@f.MaxConsumptionRate" class="form-control form-control-sm" />
+                        <pems-label for="pc_MaxConsumptionRate">@L("MaxConsumptionRate") <span class="pc-req" aria-hidden="true">*</span></pems-label>
+                        <pems-input scale="small" id="pc_MaxConsumptionRate" form="pcForm" name="MaxConsumptionRate" type="number" step="0.0001" min="0" value="@f.MaxConsumptionRate" />
                     </div>
                     <div class="col-md-3">
-                        <label class="form-label" for="pc_FirstPurchaseQuantity">@L("FirstPurchaseQuantity")</label>
-                        <input id="pc_FirstPurchaseQuantity" form="pcForm" name="FirstPurchaseQuantity" type="number" step="0.0001" min="0" value="@f.FirstPurchaseQuantity" class="form-control form-control-sm" />
+                        <pems-label for="pc_FirstPurchaseQuantity">@L("FirstPurchaseQuantity")</pems-label>
+                        <pems-input scale="small" id="pc_FirstPurchaseQuantity" form="pcForm" name="FirstPurchaseQuantity" type="number" step="0.0001" min="0" value="@f.FirstPurchaseQuantity" />
                     </div>
                     <div class="col-md-3">
-                        <label class="form-label" for="pc_PrimaryIssuedRequired">@L("PrimaryIssuedRequired") <span class="pc-req" aria-hidden="true">*</span></label>
-                        <select id="pc_PrimaryIssuedRequired" form="pcForm" name="PrimaryIssuedRequired" class="form-select form-select-sm">
+                        <pems-label for="pc_PrimaryIssuedRequired">@L("PrimaryIssuedRequired") <span class="pc-req" aria-hidden="true">*</span></pems-label>
+                        <pems-select scale="small" id="pc_PrimaryIssuedRequired" form="pcForm" name="PrimaryIssuedRequired">
                             <option value="false" selected="@(!f.PrimaryIssuedRequired)">@Localizer["Pc_No"]</option>
                             <option value="true" selected="@f.PrimaryIssuedRequired">@Localizer["Pc_Yes"]</option>
-                        </select>
+                        </pems-select>
                     </div>
                     <div class="col-md-3">
-                        <label class="form-label" for="pc_IssuedQty">@L("IssuedQty")</label>
-                        <input id="pc_IssuedQty" form="pcForm" name="IssuedQty" type="number" step="0.0001" min="0" value="@f.IssuedQty" class="form-control form-control-sm" />
+                        <pems-label for="pc_IssuedQty">@L("IssuedQty")</pems-label>
+                        <pems-input scale="small" id="pc_IssuedQty" form="pcForm" name="IssuedQty" type="number" step="0.0001" min="0" value="@f.IssuedQty" />
                     </div>
                     <div class="col-md-6">
-                        <label class="form-label" for="pc_StockGradeId">@L("StockGradeId") <span class="pc-req" aria-hidden="true">*</span></label>
-                        <select id="pc_StockGradeId" form="pcForm" name="StockGradeId" class="form-select form-select-sm">
+                        <pems-label for="pc_StockGradeId">@L("StockGradeId") <span class="pc-req" aria-hidden="true">*</span></pems-label>
+                        <pems-select scale="small" id="pc_StockGradeId" form="pcForm" name="StockGradeId">
                             <option value=""></option>
                             @foreach (var g in Model.StockGrades) { <option value="@g.Id" selected="@(f.StockGradeId == g.Id)">@g.Text</option> }
-                        </select>
+                        </pems-select>
                     </div>
                     <div class="col-md-3">
-                        <label class="form-label" for="pc_WantedReceiptDate">@L("WantedReceiptDate")</label>
+                        <pems-label for="pc_WantedReceiptDate">@L("WantedReceiptDate")</pems-label>
                         <input id="pc_WantedReceiptDate" form="pcForm" name="WantedReceiptDate" type="date" value="@f.WantedReceiptDate?.ToString("yyyy-MM-dd")" class="form-control form-control-sm" />
                     </div>
                     <div class="col-md-3">
-                        <label class="form-label" for="pc_StorageVolume">@L("StorageVolume")</label>
-                        <input id="pc_StorageVolume" form="pcForm" name="StorageVolume" value="@f.StorageVolume" class="form-control form-control-sm" maxlength="100" />
+                        <pems-label for="pc_StorageVolume">@L("StorageVolume")</pems-label>
+                        <pems-input scale="small" id="pc_StorageVolume" form="pcForm" name="StorageVolume" value="@f.StorageVolume" maxlength="100" />
                     </div>
                 </div>
                 <div class="form-text">@Localizer["Pc_Hint_Planning"]</div>
@@ -462,7 +461,7 @@
                 </div>
                 <form asp-action="AddNote" method="post" class="d-flex gap-2">
                     <input type="hidden" name="id" value="@d.Id" /><input type="hidden" name="returnTo" value="edit" />
-                    <input name="text" class="form-control form-control-sm" maxlength="2000" placeholder="@Localizer["Pc_Hint_NoteReply"]" aria-label="@L("Notes")" />
+                    <pems-input scale="small" name="text" maxlength="2000" placeholder="@Localizer["Pc_Hint_NoteReply"]" aria-label="@L("Notes")" />
                     <button type="submit" class="vs-btn vs-btn--sm"><i class="bi bi-plus-lg"></i> @Localizer["Pc_Btn_AddNote"]</button>
                 </form>
             </section>
@@ -476,54 +475,46 @@
     @if (rowVersion != null) { <input type="hidden" name="rowVersion" value="@rowVersion" /> }
 </form>
 
-<div class="modal fade" id="pcEquipModal" tabindex="-1" aria-labelledby="pcEquipModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <form asp-action="AddEquipment" method="post" class="modal-content">
+<pems-modal id="pcEquipModal" tabindex="-1" aria-labelledby="pcEquipModalLabel" aria-hidden="true"><form asp-action="AddEquipment" method="post">
             <input type="hidden" name="id" value="@d.Id" />
             <div class="modal-header"><h5 class="modal-title" id="pcEquipModalLabel">@Localizer["Pc_Btn_AddEquipment"]</h5><button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="@Localizer["Pc_Btn_Close"]"></button></div>
             <div class="modal-body">
                 @if (f.IsNewEquipment)
                 {
-                    <div class="mb-2"><label class="form-label" for="pc_equipText">@L("EquipmentText")</label><input id="pc_equipText" name="equipmentText" class="form-control" maxlength="300" required /></div>
+                    <div class="mb-2"><pems-label for="pc_equipText">@L("EquipmentText")</pems-label><pems-input id="pc_equipText" name="equipmentText" maxlength="300" required /></div>
                 }
                 else
                 {
                     <div class="mb-2">
-                        <label class="form-label" for="pc_equipId_text">@L("EquipmentId")</label>
+                        <pems-label for="pc_equipId_text">@L("EquipmentId")</pems-label>
                         <div class="pc-lookup" data-url="@lookupBase/Equipment" data-name="equipmentId" data-input-id="pc_equipId_text"></div>
                     </div>
                 }
-                <div class="mb-2"><label class="form-label" for="pc_equipQty">@L("InstalledQuantity")</label><input id="pc_equipQty" name="installedQuantity" type="number" step="0.0001" min="0" value="1" class="form-control" required /></div>
+                <div class="mb-2"><pems-label for="pc_equipQty">@L("InstalledQuantity")</pems-label><pems-input id="pc_equipQty" name="installedQuantity" type="number" step="0.0001" min="0" value="1" required /></div>
                 <div class="form-text">@Localizer["Pc_Hint_NewEquipment"]</div>
             </div>
             <div class="modal-footer"><button type="button" class="vs-btn vs-btn--sm" data-bs-dismiss="modal">@Localizer["Pc_Btn_Close"]</button><button type="submit" class="vs-btn vs-btn--primary vs-btn--sm">@Localizer["Pc_Btn_Save"]</button></div>
-        </form>
-    </div>
-</div>
+        </form></pems-modal>
 
-<div class="modal fade" id="pcAttachModal" tabindex="-1" aria-labelledby="pcAttachModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <form asp-action="UploadAttachment" method="post" enctype="multipart/form-data" class="modal-content">
+<pems-modal id="pcAttachModal" tabindex="-1" aria-labelledby="pcAttachModalLabel" aria-hidden="true"><form asp-action="UploadAttachment" method="post" enctype="multipart/form-data">
             <input type="hidden" name="id" value="@d.Id" />
             <div class="modal-header"><h5 class="modal-title" id="pcAttachModalLabel">@Localizer["Pc_Btn_Upload"]</h5><button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="@Localizer["Pc_Btn_Close"]"></button></div>
             <div class="modal-body">
-                <div class="mb-2"><label class="form-label" for="pc_attFile">@L("File")</label><input id="pc_attFile" type="file" name="file" class="form-control" required /></div>
+                <div class="mb-2"><pems-label for="pc_attFile">@L("File")</pems-label><pems-input id="pc_attFile" type="file" name="file" required /></div>
                 <div class="mb-2">
-                    <label class="form-label" for="pc_attKind">@L("AttachmentKind")</label>
-                    <select id="pc_attKind" name="kind" class="form-select">
+                    <pems-label for="pc_attKind">@L("AttachmentKind")</pems-label>
+                    <pems-select id="pc_attKind" name="kind">
                         @foreach (var k in new[] { "Document", "Drawing", "Support" }) { <option value="@k">@Localizer["Pc_Kind_" + k]</option> }
-                    </select>
+                    </pems-select>
                 </div>
             </div>
             <div class="modal-footer"><button type="button" class="vs-btn vs-btn--sm" data-bs-dismiss="modal">@Localizer["Pc_Btn_Close"]</button><button type="submit" class="vs-btn vs-btn--primary vs-btn--sm">@Localizer["Pc_Btn_Upload"]</button></div>
-        </form>
-    </div>
-</div>
+        </form></pems-modal>
 
 <template id="pcAttrTemplate">
     <tr class="pc-attr-row">
-        <td><input type="text" form="pcForm" name="Attributes[__i__].Name" class="form-control form-control-sm" maxlength="100" /></td>
-        <td><input type="text" form="pcForm" name="Attributes[__i__].Value" class="form-control form-control-sm" /></td>
+        <td><pems-input scale="small" type="text" form="pcForm" name="Attributes[__i__].Name" maxlength="100" /></td>
+        <td><pems-input scale="small" type="text" form="pcForm" name="Attributes[__i__].Value" /></td>
         <td><button type="button" class="vs-icon-btn pc-attr-remove" title="@Localizer["Pc_Btn_Remove"]" aria-label="@Localizer["Pc_Btn_Remove"]"><i class="bi bi-x-lg"></i></button></td>
     </tr>
 </template>

@@ -160,7 +160,7 @@
                         <option value="Emergency">@Localizer["Emergency"]</option>
                         <option value="Predictive">@Localizer["Predictive"]</option>
                     </pems-select>
-                    <pems-button tone="success" size="small" type="submit" onclick="return confirm('@Localizer["A real WorkOrder will be created. Continue?"]');">
+                    <pems-button tone="success" size="small" type="submit" data-pems-confirm="@Localizer["A real WorkOrder will be created. Continue?"]">
                         <i class="bi bi-arrow-right-circle"></i> @Localizer["Convert to Work Order"]
                     </pems-button>
                 </form>
@@ -186,7 +186,7 @@
                 <form asp-action="Cancel" method="post" class="d-flex gap-2">
                     <input type="hidden" name="id" value="@Model.WorkRequestId" />
                     <pems-input scale="small" type="text" name="reason" required placeholder="@Localizer["Reason (required)"]" style="width:220px;" />
-                    <pems-button tone="neutral" size="small" outline="true" type="submit" onclick="return confirm('@Localizer["Are you sure?"]');">@Localizer["Cancel Request"]</pems-button>
+                    <pems-button tone="neutral" size="small" outline="true" type="submit" data-pems-confirm="@Localizer["Are you sure?"]">@Localizer["Cancel Request"]</pems-button>
                 </form>
             }
         }
@@ -211,7 +211,7 @@
                         <option value="Emergency">@Localizer["Emergency"]</option>
                         <option value="Predictive">@Localizer["Predictive"]</option>
                     </pems-select>
-                    <pems-button tone="success" size="small" type="submit" onclick="return confirm('@Localizer["A real WorkOrder will be created. Continue?"]');">
+                    <pems-button tone="success" size="small" type="submit" data-pems-confirm="@Localizer["A real WorkOrder will be created. Continue?"]">
                         <i class="bi bi-arrow-right-circle"></i> @Localizer["Convert to Work Order"]
                     </pems-button>
                 </form>
@@ -227,7 +227,7 @@
             <form asp-action="Cancel" method="post" class="d-flex gap-2">
                 <input type="hidden" name="id" value="@Model.WorkRequestId" />
                 <pems-input scale="small" type="text" name="reason" required placeholder="@Localizer["Reason (required)"]" style="width:220px;" />
-                <pems-button tone="neutral" size="small" outline="true" type="submit" onclick="return confirm('@Localizer["Are you sure?"]');">@Localizer["Cancel Request"]</pems-button>
+                <pems-button tone="neutral" size="small" outline="true" type="submit" data-pems-confirm="@Localizer["Are you sure?"]">@Localizer["Cancel Request"]</pems-button>
             </form>
         }
         else

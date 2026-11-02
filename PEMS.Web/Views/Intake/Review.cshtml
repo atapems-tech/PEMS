@@ -104,7 +104,7 @@
 
     <form asp-action="Reject" method="post" class="mt-2">
         <input type="hidden" name="attachmentId" value="@Model.AttachmentId" />
-        <pems-button tone="danger" size="small" outline="true" type="submit" onclick="return confirm('Reject this file from the intake queue?')">
+        <pems-button tone="danger" size="small" outline="true" type="submit" data-pems-confirm="Reject this file from the intake queue?">
             <i class="bi bi-x-lg"></i> @Localizer["Reject"]
         </pems-button>
     </form>

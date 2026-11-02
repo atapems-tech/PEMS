@@ -49,7 +49,7 @@ public sealed class PemsInputTagHelper(IHtmlGenerator generator) : InputTagHelpe
     public override void Process(TagHelperContext context, TagHelperOutput output)
     {
         if (For is not null) base.Process(context, output);
-        else ControlTagHelper.Restore(output, ("name", Name), ("type", InputTypeName), ("value", Value));
+        else ControlTagHelper.Restore(output, ("name", Name), ("type", InputTypeName), ("value", Value), ("form", FormName));
         output.TagName = "input";
         output.TagMode = TagMode.SelfClosing;
         var kind = Kind.Equals("check", StringComparison.OrdinalIgnoreCase) ? ControlKind.Check : ControlKind.Text;
