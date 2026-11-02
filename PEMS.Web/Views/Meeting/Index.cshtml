@@ -68,25 +68,23 @@
     </script>
 }
 
-<div class="modal fade" id="createMeetingModal" tabindex="-1">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
+<pems-modal size="large" id="createMeetingModal" tabindex="-1">
             <form asp-controller="Meeting" asp-action="Create" method="post">
                 <div class="modal-header"><h6 class="modal-title">@Localizer["Schedule Meeting"]</h6></div>
                 <div class="modal-body">
                     <div class="row g-3">
-                        <div class="col-md-6"><label class="form-label">@Localizer["Title"]</label><pems-input name="title" required /></div>
-                        <div class="col-md-6"><label class="form-label">@Localizer["Date & Time"]</label><input name="meetingDate" type="datetime-local" class="form-control" required /></div>
-                        <div class="col-md-6"><label class="form-label">@Localizer["Location"]</label><pems-input name="location" /></div>
-                        <div class="col-md-6"><label class="form-label">@Localizer["Organizer"]</label><pems-input name="organizerName" /></div>
+                        <div class="col-md-6"><pems-label>@Localizer["Title"]</pems-label><pems-input name="title" required /></div>
+                        <div class="col-md-6"><pems-label>@Localizer["Date & Time"]</pems-label><input name="meetingDate" type="datetime-local" class="form-control" required /></div>
+                        <div class="col-md-6"><pems-label>@Localizer["Location"]</pems-label><pems-input name="location" /></div>
+                        <div class="col-md-6"><pems-label>@Localizer["Organizer"]</pems-label><pems-input name="organizerName" /></div>
                         <div class="col-md-6">
-                            <label class="form-label">@Localizer["Related Project"]</label>
+                            <pems-label>@Localizer["Related Project"]</pems-label>
                             <pems-select name="projectId">
                                 <option value="">@Localizer["-- None --"]</option>
                                 @foreach (var p in (IEnumerable<dynamic>)ViewBag.Projects) { <option value="@p.ProjectId">@p.ProjectName</option> }
                             </pems-select>
                         </div>
-                        <div class="col-12"><label class="form-label">@Localizer["Agenda"]</label><pems-textarea name="agenda" rows="4"></pems-textarea></div>
+                        <div class="col-12"><pems-label>@Localizer["Agenda"]</pems-label><pems-textarea name="agenda" rows="4"></pems-textarea></div>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -94,6 +92,4 @@
                     <pems-button tone="primary" type="submit">@Localizer["Save"]</pems-button>
                 </div>
             </form>
-        </div>
-    </div>
-</div>
+        </pems-modal>

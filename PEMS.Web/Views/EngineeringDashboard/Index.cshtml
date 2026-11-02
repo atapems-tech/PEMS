@@ -33,7 +33,7 @@
 <div class="content-card mb-3">
     <form method="get" asp-action="Index" class="row g-2 align-items-end">
         <div class="col-md-3">
-            <label class="form-label small">@Localizer["Project"]</label>
+            <pems-label css="small">@Localizer["Project"]</pems-label>
             <pems-select scale="small" name="projectId">
                 <option value="">@Localizer["All"]</option>
                 @foreach (var p in projects)
@@ -41,7 +41,7 @@
             </pems-select>
         </div>
         <div class="col-md-3">
-            <label class="form-label small">@Localizer["Discipline"]</label>
+            <pems-label css="small">@Localizer["Discipline"]</pems-label>
             <pems-select scale="small" name="disciplineId">
                 <option value="">@Localizer["All"]</option>
                 @foreach (var d in disciplines)
@@ -49,7 +49,7 @@
             </pems-select>
         </div>
         <div class="col-md-3">
-            <label class="form-label small">@Localizer["MinRevisionCount"]</label>
+            <pems-label css="small">@Localizer["MinRevisionCount"]</pems-label>
             <pems-input scale="small" type="number" min="0" name="minRevisionCount" value="@Model.SelectedMinRevisionCount" placeholder="e.g. 2" />
         </div>
         <div class="col-md-3 d-flex gap-2">

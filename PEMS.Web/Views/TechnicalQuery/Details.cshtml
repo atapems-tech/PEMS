@@ -109,8 +109,7 @@
             </pems-button>
         </div>
 
-        <div class="modal fade" id="reopenModal" tabindex="-1">
-            <div class="modal-dialog"><div class="modal-content">
+        <pems-modal id="reopenModal" tabindex="-1">
                 <form asp-action="Reopen" method="post">
                     <input type="hidden" name="technicalQueryId" value="@Model.TechnicalQueryId" />
                     <div class="modal-header"><h6 class="modal-title">@Localizer["دلیل بازگشت"]</h6></div>
@@ -120,7 +119,6 @@
                         <pems-button tone="danger" size="small" type="submit">@Localizer["بازگشت به دیسیپلین"]</pems-button>
                     </div>
                 </form>
-            </div></div>
-        </div>
+            </pems-modal>
     }
 </div>

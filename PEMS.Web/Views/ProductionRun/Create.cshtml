@@ -11,7 +11,7 @@
         <input type="hidden" name="productionOrderId" value="@order.ProductionOrderId" />
         <div class="row g-3">
             <div class="col-md-6">
-                <label class="form-label">Operator (optional)</label>
+                <pems-label>Operator (optional)</pems-label>
                 <pems-select name="operatorEmployeeId">
                     <option value="">@Localizer["-- None --"]</option>
                     @foreach (var emp in ViewBag.Employees)
@@ -21,7 +21,7 @@
                 </pems-select>
             </div>
             <div class="col-md-6">
-                <label class="form-label">Shift (optional)</label>
+                <pems-label>Shift (optional)</pems-label>
                 <pems-select name="shiftDefinitionId">
                     <option value="">@Localizer["-- None --"]</option>
                     @foreach (var s in ViewBag.Shifts)
@@ -31,11 +31,11 @@
                 </pems-select>
             </div>
             <div class="col-md-6">
-                <label class="form-label">@Localizer["Equipment (optional)"]</label>
+                <pems-label>@Localizer["Equipment (optional)"]</pems-label>
                 <pems-input type="number" name="equipmentId" placeholder="@Localizer["Equipment ID"]" />
             </div>
             <div class="col-12">
-                <label class="form-label">@Localizer["Notes"]</label>
+                <pems-label>@Localizer["Notes"]</pems-label>
                 <pems-textarea name="notes" rows="2"></pems-textarea>
             </div>
         </div>

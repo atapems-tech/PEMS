@@ -14,34 +14,34 @@
                 @await Component.InvokeAsync("DocumentNumberField", new { documentType = "MaterialRequisition", name = "mrNumber", label = Localizer["MR Number"].Value })
             </div>
             <div class="col-md-6">
-                <label class="form-label">@Localizer["Project"]</label>
+                <pems-label>@Localizer["Project"]</pems-label>
                 <pems-select name="projectId" required>
                     @foreach (var p in projects) { <option value="@p.ProjectId">@p.ProjectName</option> }
                 </pems-select>
             </div>
             <div class="col-md-6">
-                <label class="form-label">@Localizer["Discipline"]</label>
+                <pems-label>@Localizer["Discipline"]</pems-label>
                 <pems-select name="disciplineId" required>
                     @foreach (var d in disciplines) { <option value="@d.DisciplineId">@d.Name</option> }
                 </pems-select>
             </div>
             <div class="col-md-6">
-                <label class="form-label">Equipment Tag (optional)</label>
+                <pems-label>Equipment Tag (optional)</pems-label>
                 <pems-input name="equipmentTagNumber" placeholder="e.g. P-101A" />
             </div>
             <div class="col-md-6">
-                <label class="form-label">@Localizer["Required Date"]</label>
+                <pems-label>@Localizer["Required Date"]</pems-label>
                 <input name="requiredDate" type="date" class="form-control" />
             </div>
             <div class="col-md-6">
-                <label class="form-label">Responsible Engineer</label>
+                <pems-label>Responsible Engineer</pems-label>
                 <pems-select name="responsibleEngineerId">
                     <option value="">@Localizer["-- None --"]</option>
                     @foreach (var e in engineers) { <option value="@e.EmployeeId">@e.Name</option> }
                 </pems-select>
             </div>
             <div class="col-12">
-                <label class="form-label">@Localizer["Description"]</label>
+                <pems-label>@Localizer["Description"]</pems-label>
                 <pems-textarea name="description" rows="2" required></pems-textarea>
             </div>
         </div>
@@ -49,7 +49,7 @@
         <hr class="my-3" />
 
         <div class="d-flex align-items-center justify-content-between">
-            <label class="form-label mb-0">@Localizer["Items"]</label>
+            <pems-label css="mb-0">@Localizer["Items"]</pems-label>
             @* SCRUM-428: a part that is not in the catalogue yet can be requested from the part catalogue *@
             <a class="small" asp-area="Warehouse" asp-controller="PartCatalogueRequest" asp-action="Index" target="_blank" rel="noopener">
                 <i class="bi bi-journal-plus"></i> @Localizer["Mr_RequestNewPart"]

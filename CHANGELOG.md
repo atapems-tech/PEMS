@@ -3,6 +3,15 @@
 All notable changes to PEMS. No system version is defined yet (plan row F_CI), so entries are grouped by date
 and theme and were reconstructed from the git history (initial import 2026-09-05). Newest first.
 
+## 2026-11-02 - Labels, modal frames, dropdowns, tabs and breadcrumbs; library-first protocol (SCRUM-482, SCRUM-487)
+
+### Added
+- `pems-label`, `pems-modal` and `pems-offcanvas` (frame mode of `PemsModal` / `PemsDrawer`: `ModalOptions.Frame`, `DrawerOptions.Frame`, `OverlaySize.ExtraLarge`), `pems-dropdown-menu`, `pems-nav`, `pems-crumb-trail` (`FrameState`) in `PEMS.UI`.
+- `GuidelineRegistryTests`: every `pems-*` tag helper and every registered component key must be listed in chapter 02 of the guideline.
+
+### Changed
+- 945 form labels, 99 modals, 3 side panels, 16 dropdown menus, 9 tab strips and 1 breadcrumb in the views moved; ratchet: form-label 946 to 1, modal 99 to 0, dropdown 16 to 0, tabs 8 to 0, breadcrumb 1 to 0, offcanvas 2 to 0. Modals whose form was the `modal-content` itself (4) now put the form inside the frame.
+- Guideline chapter 02: the library-first protocol for agents (search, modify safely, add to the library first, never hand-write), the registry table rebuilt as one table with current status; AGENTS.md rule and the PR template line strengthened.
 ## 2026-11-02 - Skeleton wave S3: no "Loading..." placeholders come back (SCRUM-337)
 
 ### Added

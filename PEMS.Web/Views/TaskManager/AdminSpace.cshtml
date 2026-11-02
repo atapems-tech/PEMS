@@ -17,10 +17,10 @@
     <form asp-action="SaveSpace" method="post" class="row g-2">
         <input type="hidden" name="Id" value="@s.Id" />
         <input type="hidden" name="Key" value="@s.Key" />
-        <div class="col-md-3"><label class="form-label small" for="sp-name">@Localizer["Tm_Field_Name"]</label><pems-input scale="small" id="sp-name" name="Name" value="@s.Name" required maxlength="150" /></div>
-        <div class="col-md-3"><label class="form-label small" for="sp-namefa">@Localizer["Tm_Field_NameFa"]</label><pems-input scale="small" id="sp-namefa" name="NameFa" value="@s.NameFa" maxlength="150" dir="rtl" /></div>
+        <div class="col-md-3"><pems-label css="small" for="sp-name">@Localizer["Tm_Field_Name"]</pems-label><pems-input scale="small" id="sp-name" name="Name" value="@s.Name" required maxlength="150" /></div>
+        <div class="col-md-3"><pems-label css="small" for="sp-namefa">@Localizer["Tm_Field_NameFa"]</pems-label><pems-input scale="small" id="sp-namefa" name="NameFa" value="@s.NameFa" maxlength="150" dir="rtl" /></div>
         <div class="col-md-3">
-            <label class="form-label small" for="sp-dept">@Localizer["Tm_Field_Department"]</label>
+            <pems-label css="small" for="sp-dept">@Localizer["Tm_Field_Department"]</pems-label>
             <pems-select scale="small" id="sp-dept" name="OwnerDepartmentId">
                 <option value="">@Localizer["Tm_NoDepartment"]</option>
                 @foreach (var d in departments) { <option value="@d.Id" selected="@(d.Id == s.OwnerDepartmentId)">@d.Name</option> }
@@ -33,7 +33,7 @@
                 <label class="form-check-label small" for="sp-active">@Localizer["Tm_Field_Active"]</label>
             </div>
         </div>
-        <div class="col-md-10"><label class="form-label small" for="sp-desc">@Localizer["Tm_Field_Description"]</label><pems-input scale="small" id="sp-desc" name="Description" value="@s.Description" maxlength="1000" /></div>
+        <div class="col-md-10"><pems-label css="small" for="sp-desc">@Localizer["Tm_Field_Description"]</pems-label><pems-input scale="small" id="sp-desc" name="Description" value="@s.Description" maxlength="1000" /></div>
         <div class="col-md-2 d-flex align-items-end"><pems-button tone="primary" size="small" css="w-100">@Localizer["Tm_Save"]</pems-button></div>
     </form>
     <p class="small text-muted mt-2 mb-0">@Localizer["Tm_KeyImmutable"]</p>
@@ -105,9 +105,9 @@
             </table>
             <form asp-action="AddType" method="post" class="row g-2">
                 <input type="hidden" name="workSpaceId" value="@s.Id" />
-                <div class="col-md-3"><label class="form-label small" for="at-name">@Localizer["Tm_Field_Name"]</label><pems-input scale="small" id="at-name" name="name" required maxlength="100" /></div>
-                <div class="col-md-3"><label class="form-label small" for="at-namefa">@Localizer["Tm_Field_NameFa"]</label><pems-input scale="small" id="at-namefa" name="nameFa" maxlength="100" dir="rtl" /></div>
-                <div class="col-md-3"><label class="form-label small" for="at-icon">@Localizer["Tm_Field_Icon"]</label><pems-input scale="small" id="at-icon" name="icon" value="bi-check2-square" required pattern="bi-[a-z0-9-]{1,40}" /></div>
+                <div class="col-md-3"><pems-label css="small" for="at-name">@Localizer["Tm_Field_Name"]</pems-label><pems-input scale="small" id="at-name" name="name" required maxlength="100" /></div>
+                <div class="col-md-3"><pems-label css="small" for="at-namefa">@Localizer["Tm_Field_NameFa"]</pems-label><pems-input scale="small" id="at-namefa" name="nameFa" maxlength="100" dir="rtl" /></div>
+                <div class="col-md-3"><pems-label css="small" for="at-icon">@Localizer["Tm_Field_Icon"]</pems-label><pems-input scale="small" id="at-icon" name="icon" value="bi-check2-square" required pattern="bi-[a-z0-9-]{1,40}" /></div>
                 <div class="col-md-3 d-flex align-items-end gap-2">
                     <div class="form-check"><pems-input kind="check" type="checkbox" id="at-sub" name="isSubtask" value="true" /><label class="form-check-label small" for="at-sub">@Localizer["Tm_Subtask"]</label></div>
                     <pems-button tone="primary" size="small">@Localizer["Tm_Add"]</pems-button>

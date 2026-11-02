@@ -156,32 +156,30 @@
     </pems-list-panel>
 </pems-list-page>
 
-<div class="modal fade" id="createEquipmentModal" tabindex="-1">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
+<pems-modal size="large" id="createEquipmentModal" tabindex="-1">
             <form asp-controller="Equipment" asp-action="Create" method="post">
                 <div class="modal-header"><h6 class="modal-title">@Localizer["Eq_NewEquipment"]</h6></div>
                 <div class="modal-body">
                     <div class="row g-3">
-                        <div class="col-md-4"><label class="form-label">@Localizer["Tag Number"]</label><pems-input name="TagNumber" required /></div>
-                        <div class="col-md-4"><label class="form-label">@Localizer["Name"]</label><pems-input name="Name" required /></div>
-                        <div class="col-md-4"><label class="form-label">@Localizer["Type"]</label><pems-input name="EquipmentType" placeholder="@Localizer["Pump, Vessel, Motor ..."]" /></div>
+                        <div class="col-md-4"><pems-label>@Localizer["Tag Number"]</pems-label><pems-input name="TagNumber" required /></div>
+                        <div class="col-md-4"><pems-label>@Localizer["Name"]</pems-label><pems-input name="Name" required /></div>
+                        <div class="col-md-4"><pems-label>@Localizer["Type"]</pems-label><pems-input name="EquipmentType" placeholder="@Localizer["Pump, Vessel, Motor ..."]" /></div>
                         <div class="col-md-6">
-                            <label class="form-label">@Localizer["Project"]</label>
+                            <pems-label>@Localizer["Project"]</pems-label>
                             <pems-select name="ProjectId" required>
                                 @foreach (var p in (IEnumerable<dynamic>)ViewBag.Projects) { <option value="@p.ProjectId">@p.ProjectName</option> }
                             </pems-select>
                         </div>
                         <div class="col-md-6">
-                            <label class="form-label">@Localizer["Discipline"]</label>
+                            <pems-label>@Localizer["Discipline"]</pems-label>
                             <pems-select name="DisciplineId" required>
                                 @foreach (var d in (IEnumerable<dynamic>)ViewBag.Disciplines) { <option value="@d.DisciplineId">@d.Name</option> }
                             </pems-select>
                         </div>
-                        <div class="col-md-4"><label class="form-label">@Localizer["Manufacturer"]</label><pems-input name="Manufacturer" /></div>
-                        <div class="col-md-4"><label class="form-label">@Localizer["Model"]</label><pems-input name="Model" /></div>
-                        <div class="col-md-4"><label class="form-label">@Localizer["Serial Number"]</label><pems-input name="SerialNumber" /></div>
-                        <div class="col-12"><label class="form-label">@Localizer["Description"]</label><pems-textarea name="Description" rows="2"></pems-textarea></div>
+                        <div class="col-md-4"><pems-label>@Localizer["Manufacturer"]</pems-label><pems-input name="Manufacturer" /></div>
+                        <div class="col-md-4"><pems-label>@Localizer["Model"]</pems-label><pems-input name="Model" /></div>
+                        <div class="col-md-4"><pems-label>@Localizer["Serial Number"]</pems-label><pems-input name="SerialNumber" /></div>
+                        <div class="col-12"><pems-label>@Localizer["Description"]</pems-label><pems-textarea name="Description" rows="2"></pems-textarea></div>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -189,9 +187,7 @@
                     <pems-button tone="primary" type="submit">@Localizer["Save"]</pems-button>
                 </div>
             </form>
-        </div>
-    </div>
-</div>
+        </pems-modal>
 
 @section Scripts {
     <script src="~/_content/PEMS.UI/pems-list.js" asp-append-version="true"></script>

@@ -1,7 +1,11 @@
 @namespace PEMS.UI.Components
 @attribute [PEMS.UI.Rendering.PemsComponent("drawer", Category = "overlays", Icon = "bi-layout-sidebar-inset-reverse")]
 @inject IPemsLocale Locale
-@if (Options.Skin == ComponentSkin.Bootstrap)
+@if (Options.Frame)
+{
+    <div id="@Options.Id" class="@FramePanelClass" @attributes="Options.Attributes">@ChildContent</div>
+}
+else if (Options.Skin == ComponentSkin.Bootstrap)
 {
     <div id="@Options.Id" class="@PanelClass" tabindex="-1" aria-labelledby="@(Options.Id)-title">
         <div class="offcanvas-header">
@@ -38,5 +42,6 @@ else
 @code {
     [Parameter, EditorRequired] public DrawerOptions Options { get; set; } = default!;
     [Parameter] public RenderFragment? ChildContent { get; set; }
+    private string FramePanelClass => string.IsNullOrWhiteSpace(Options.CssClass) ? PanelClass : PanelClass + " " + Options.CssClass.Trim();
     private string PanelClass => Options.Side == DrawerSide.Start ? "offcanvas offcanvas-start" : "offcanvas offcanvas-end";
 }

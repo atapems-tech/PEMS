@@ -122,9 +122,7 @@
     </pems-list-panel>
 </pems-list-page>
 
-<div class="modal fade" id="createInstrumentModal" tabindex="-1">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
+<pems-modal size="large" id="createInstrumentModal" tabindex="-1">
             <form asp-action="Create" method="post">
                 <div class="modal-header"><h6 class="modal-title">@Localizer["In_New"]</h6></div>
                 <div class="modal-body">
@@ -133,7 +131,7 @@
                         pick the equipment that <em>is</em> this instrument. Only instrumentation-specific passport fields are entered here.
                     </p>
                     <div class="mb-3">
-                        <label class="form-label">@Localizer["Equipment"]</label>
+                        <pems-label>@Localizer["Equipment"]</pems-label>
                         <pems-select name="equipmentId" required>
                             <option value="">@Localizer["-- select equipment --"]</option>
                             @foreach (var e in equipmentOptions)
@@ -146,56 +144,56 @@
 
                     <div class="row g-3 mb-3">
                         <div class="col-md-6">
-                            <label class="form-label">@Localizer["Instrument Type"]</label>
+                            <pems-label>@Localizer["Instrument Type"]</pems-label>
                             <pems-input name="instrumentType" placeholder="PT, LT, FT, TT, Control Valve ..." />
                         </div>
                         <div class="col-md-6">
-                            <label class="form-label">@Localizer["Loop Number"]</label>
+                            <pems-label>@Localizer["Loop Number"]</pems-label>
                             <pems-input name="loopNumber" />
                         </div>
                     </div>
 
                     <div class="row g-3 mb-3">
                         <div class="col-md-6">
-                            <label class="form-label">@Localizer["System"]</label>
+                            <pems-label>@Localizer["System"]</pems-label>
                             <pems-input name="system" placeholder="DCS, ESD, F&amp;G, PLC ..." />
                         </div>
                         <div class="col-md-6">
-                            <label class="form-label">@Localizer["Signal Class"]</label>
+                            <pems-label>@Localizer["Signal Class"]</pems-label>
                             <pems-input name="signalClass" placeholder="AI, AO, DI, DO ..." />
                         </div>
                     </div>
 
                     <div class="row g-3 mb-3">
                         <div class="col-md-3">
-                            <label class="form-label">@Localizer["Range Min"]</label>
+                            <pems-label>@Localizer["Range Min"]</pems-label>
                             <pems-input name="rangeMin" type="number" step="0.01" />
                         </div>
                         <div class="col-md-3">
-                            <label class="form-label">@Localizer["Range Max"]</label>
+                            <pems-label>@Localizer["Range Max"]</pems-label>
                             <pems-input name="rangeMax" type="number" step="0.01" />
                         </div>
                         <div class="col-md-3">
-                            <label class="form-label">@Localizer["Unit"]</label>
+                            <pems-label>@Localizer["Unit"]</pems-label>
                             <pems-input name="unit" />
                         </div>
                         <div class="col-md-3">
-                            <label class="form-label">Signal Type</label>
+                            <pems-label>Signal Type</pems-label>
                             <pems-input name="signalType" placeholder="4-20mA, HART ..." />
                         </div>
                     </div>
 
                     <div class="row g-3">
                         <div class="col-md-6">
-                            <label class="form-label">@Localizer["Process Variable"]</label>
+                            <pems-label>@Localizer["Process Variable"]</pems-label>
                             <pems-input name="processVariable" />
                         </div>
                         <div class="col-md-3">
-                            <label class="form-label">@Localizer["Accuracy"]</label>
+                            <pems-label>@Localizer["Accuracy"]</pems-label>
                             <pems-input name="accuracy" />
                         </div>
                         <div class="col-md-3">
-                            <label class="form-label">@Localizer["Calibration Interval (days)"]</label>
+                            <pems-label>@Localizer["Calibration Interval (days)"]</pems-label>
                             <pems-input name="calibrationInterval" type="number" />
                         </div>
                     </div>
@@ -205,9 +203,7 @@
                     <pems-button tone="primary" type="submit">@Localizer["Save"]</pems-button>
                 </div>
             </form>
-        </div>
-    </div>
-</div>
+        </pems-modal>
 
 @section Scripts {
     <script src="~/_content/PEMS.UI/pems-list.js" asp-append-version="true"></script>

@@ -113,22 +113,22 @@
     <h6>Record New Calibration</h6>
     <form asp-action="AddCalibration" method="post" class="row g-2 align-items-end mb-4">
         <input type="hidden" name="instrumentId" value="@Model.InstrumentId" />
-        <div class="col-md-2"><label class="form-label small">@Localizer["Date"]</label><input type="date" name="calibrationDate" class="form-control form-control-sm" value="@DateTime.Today.ToString("yyyy-MM-dd")" required /></div>
-        <div class="col-md-2"><label class="form-label small">@Localizer["Type"]</label>
+        <div class="col-md-2"><pems-label css="small">@Localizer["Date"]</pems-label><input type="date" name="calibrationDate" class="form-control form-control-sm" value="@DateTime.Today.ToString("yyyy-MM-dd")" required /></div>
+        <div class="col-md-2"><pems-label css="small">@Localizer["Type"]</pems-label>
             <pems-select scale="small" name="calibrationType">
                 <option>Routine</option><option>PostRepair</option><option>PreCommissioning</option>
             </pems-select>
         </div>
-        <div class="col-md-2"><label class="form-label small">As Found</label><pems-input scale="small" name="asFound" /></div>
-        <div class="col-md-2"><label class="form-label small">As Left</label><pems-input scale="small" name="asLeft" /></div>
-        <div class="col-md-2"><label class="form-label small">@Localizer["Result"]</label>
+        <div class="col-md-2"><pems-label css="small">As Found</pems-label><pems-input scale="small" name="asFound" /></div>
+        <div class="col-md-2"><pems-label css="small">As Left</pems-label><pems-input scale="small" name="asLeft" /></div>
+        <div class="col-md-2"><pems-label css="small">@Localizer["Result"]</pems-label>
             <pems-select scale="small" name="result">
                 <option>Pass</option><option>Fail</option><option>Adjusted</option>
             </pems-select>
         </div>
-        <div class="col-md-2"><label class="form-label small">Certificate No.</label><pems-input scale="small" name="certificateNo" /></div>
-        <div class="col-md-4"><label class="form-label small">Standard Reference</label><pems-input scale="small" name="standardReference" /></div>
-        <div class="col-md-4"><label class="form-label small">@Localizer["Remarks"]</label><pems-input scale="small" name="remarks" /></div>
+        <div class="col-md-2"><pems-label css="small">Certificate No.</pems-label><pems-input scale="small" name="certificateNo" /></div>
+        <div class="col-md-4"><pems-label css="small">Standard Reference</pems-label><pems-input scale="small" name="standardReference" /></div>
+        <div class="col-md-4"><pems-label css="small">@Localizer["Remarks"]</pems-label><pems-input scale="small" name="remarks" /></div>
         <div class="col-md-4"><pems-button tone="primary" size="small" css="w-100" type="submit"><i class="bi bi-plus-lg"></i> Record Calibration</pems-button></div>
     </form>
 
@@ -166,21 +166,21 @@
     <h6>Record New Alarm</h6>
     <form asp-action="AddAlarm" method="post" class="row g-2 align-items-end mb-3">
         <input type="hidden" name="instrumentId" value="@Model.InstrumentId" />
-        <div class="col-md-2"><label class="form-label small">Alarm Tag</label><pems-input scale="small" name="alarmTag" required /></div>
-        <div class="col-md-2"><label class="form-label small">@Localizer["Type"]</label>
+        <div class="col-md-2"><pems-label css="small">Alarm Tag</pems-label><pems-input scale="small" name="alarmTag" required /></div>
+        <div class="col-md-2"><pems-label css="small">@Localizer["Type"]</pems-label>
             <pems-select scale="small" name="alarmType">
                 <option>@Localizer["High"]</option><option>@Localizer["Low"]</option><option>HighHigh</option><option>LowLow</option>
             </pems-select>
         </div>
-        <div class="col-md-2"><label class="form-label small">@Localizer["Priority"]</label>
+        <div class="col-md-2"><pems-label css="small">@Localizer["Priority"]</pems-label>
             <pems-select scale="small" name="priority">
                 <option>@Localizer["Low"]</option><option>@Localizer["Medium"]</option><option>@Localizer["High"]</option><option>@Localizer["Critical"]</option>
             </pems-select>
         </div>
-        <div class="col-md-2"><label class="form-label small">Set Point</label><pems-input scale="small" name="setPoint" type="number" step="0.001" /></div>
-        <div class="col-md-1"><label class="form-label small">@Localizer["Unit"]</label><pems-input scale="small" name="unit" /></div>
-        <div class="col-md-3"><label class="form-label small">@Localizer["Action"]</label><pems-input scale="small" name="action" /></div>
-        <div class="col-md-6"><label class="form-label small">@Localizer["Description"]</label><pems-input scale="small" name="description" /></div>
+        <div class="col-md-2"><pems-label css="small">Set Point</pems-label><pems-input scale="small" name="setPoint" type="number" step="0.001" /></div>
+        <div class="col-md-1"><pems-label css="small">@Localizer["Unit"]</pems-label><pems-input scale="small" name="unit" /></div>
+        <div class="col-md-3"><pems-label css="small">@Localizer["Action"]</pems-label><pems-input scale="small" name="action" /></div>
+        <div class="col-md-6"><pems-label css="small">@Localizer["Description"]</pems-label><pems-input scale="small" name="description" /></div>
         <div class="col-md-3"><pems-button tone="primary" size="small" css="w-100" type="submit"><i class="bi bi-plus-lg"></i> Add Alarm</pems-button></div>
     </form>
 

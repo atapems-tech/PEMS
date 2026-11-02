@@ -30,7 +30,7 @@ else
 
             <div class="row g-2 align-items-end mb-3">
                 <div class="col-md-4">
-                    <label class="form-label small">Discipline for all selected tags</label>
+                    <pems-label css="small">Discipline for all selected tags</pems-label>
                     <pems-select scale="small" name="disciplineId" required id="scanDisciplineSelect">
                         <option value="">@Localizer["-- select --"]</option>
                         @foreach (var d in (IEnumerable<dynamic>)ViewBag.Disciplines)

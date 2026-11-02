@@ -48,14 +48,14 @@
 <div class="content-card mb-3">
     <form method="get" class="row g-2">
         <div class="col-md-4">
-            <label class="form-label small mb-0">@Localizer["Rcm_Strategy"] (@Localizer["Rcm_ApprovedOrActive"])</label>
+            <pems-label css="small mb-0">@Localizer["Rcm_Strategy"] (@Localizer["Rcm_ApprovedOrActive"])</pems-label>
             <pems-select scale="small" name="strategyId">
                 <option value="">@Localizer["Rcm_SelectPlaceholder"]</option>
                 @foreach (var s in bulk.UsableStrategies) { <option value="@s.Id" selected="@(bulk.StrategyId == s.Id)">@s.Text</option> }
             </pems-select>
         </div>
         <div class="col-md-4">
-            <label class="form-label small mb-0">@Localizer["Rcm_EquipmentClass"] (@Localizer["Rcm_IncludesSubclasses"])</label>
+            <pems-label css="small mb-0">@Localizer["Rcm_EquipmentClass"] (@Localizer["Rcm_IncludesSubclasses"])</pems-label>
             <pems-select scale="small" name="classId">
                 <option value="">@Localizer["Rcm_All"]</option>
                 @foreach (var c in classes) { <option value="@c.Id" selected="@(selectedClassId == c.Id)">@c.Text</option> }
@@ -63,31 +63,31 @@
         </div>
         <div class="col-md-4"></div>
         <div class="col-md-3">
-            <label class="form-label small mb-0">@Localizer["Discipline (چندانتخابی)"]</label>
+            <pems-label css="small mb-0">@Localizer["Discipline (چندانتخابی)"]</pems-label>
             <pems-select scale="small" name="disciplineIds" multiple size="4">
                 @foreach (var d in (IEnumerable<dynamic>)ViewBag.Disciplines) { <option value="@d.DisciplineId" selected="@selectedDisciplineIds.Contains((int)d.DisciplineId)">@d.Name</option> }
             </pems-select>
         </div>
         <div class="col-md-3">
-            <label class="form-label small mb-0">@Localizer["Equipment Type (چندانتخابی)"]</label>
+            <pems-label css="small mb-0">@Localizer["Equipment Type (چندانتخابی)"]</pems-label>
             <pems-select scale="small" name="equipmentTypes" multiple size="4">
                 @foreach (var t in (IEnumerable<string>)ViewBag.EquipmentTypes) { <option value="@t" selected="@selectedEquipmentTypes.Contains(t)">@t</option> }
             </pems-select>
         </div>
         <div class="col-md-3">
-            <label class="form-label small mb-0">
+            <pems-label css="small mb-0">
                 Functional Location (چندانتخابی)
                 @if (equipmentWithFlCount < 50)
                 {
                     <i class="bi bi-info-circle text-muted" title="فقط تعداد کمی تجهیز هنوز به Functional Location متصل شده - این فیلتر فعلاً نتیجه‌ی محدودی برمی‌گرداند."></i>
                 }
-            </label>
+            </pems-label>
             <pems-select scale="small" name="functionalLocationIds" multiple size="4">
                 @foreach (var fl in functionalLocations) { <option value="@fl.FunctionalLocationId" selected="@selectedFunctionalLocationIds.Contains(fl.FunctionalLocationId)">@fl.PathBreadcrumb</option> }
             </pems-select>
         </div>
         <div class="col-md-3">
-            <label class="form-label small mb-0">@Localizer["Tag Number (جستجوی متنی)"]</label>
+            <pems-label css="small mb-0">@Localizer["Tag Number (جستجوی متنی)"]</pems-label>
             <pems-input scale="small" type="text" name="tagSearch" value="@selectedTagSearch" placeholder="مثلاً P-101" />
         </div>
 
@@ -95,31 +95,31 @@
            Resolution»: زنجیره‌ی Plant/Area/Unit/Functional Location/Equipment/Tag - بدون
            تغییر در ساختار فرم موجود، فقط سه بُعد جدید + حالت Exact/Descendants برای FL. *@
         <div class="col-md-3">
-            <label class="form-label small mb-0">
+            <pems-label css="small mb-0">
                 Plant (چندانتخابی)
                 @if (!plants.Any()) { <i class="bi bi-info-circle text-muted" title="در حال حاضر هیچ Functional Location ای مقدار Plant ندارد."></i> }
-            </label>
+            </pems-label>
             <pems-select scale="small" name="plants" multiple size="3">
                 @foreach (var p in plants) { <option value="@p" selected="@selectedPlants.Contains(p)">@p</option> }
             </pems-select>
         </div>
         <div class="col-md-3">
-            <label class="form-label small mb-0">Area (Functional Location، چندانتخابی)</label>
+            <pems-label css="small mb-0">Area (Functional Location، چندانتخابی)</pems-label>
             <pems-select scale="small" name="areas" multiple size="3">
                 @foreach (var a in flAreas) { <option value="@a" selected="@selectedAreas.Contains(a)">@a</option> }
             </pems-select>
         </div>
         <div class="col-md-3">
-            <label class="form-label small mb-0">
+            <pems-label css="small mb-0">
                 Unit (چندانتخابی)
                 @if (!units.Any()) { <i class="bi bi-info-circle text-muted" title="در حال حاضر هیچ Functional Location ای مقدار Unit ندارد."></i> }
-            </label>
+            </pems-label>
             <pems-select scale="small" name="units" multiple size="3">
                 @foreach (var u in units) { <option value="@u" selected="@selectedUnits.Contains(u)">@u</option> }
             </pems-select>
         </div>
         <div class="col-md-3">
-            <label class="form-label small mb-0">Functional Location Mode</label>
+            <pems-label css="small mb-0">Functional Location Mode</pems-label>
             <div class="d-flex gap-3 mt-1">
                 <div class="form-check">
                     <input class="form-check-input" type="radio" name="functionalLocationMode" value="Exact" id="flModeExact" checked="@(selectedFlMode == "Exact")" />
@@ -132,10 +132,10 @@
             </div>
         </div>
         <div class="col-md-6">
-            <label class="form-label small mb-0">
+            <pems-label css="small mb-0">
                 Tag List (چند Tag دقیق - با کاما یا خط جدید جدا کنید)
                 <i class="bi bi-info-circle text-muted" title="این‌ها همیشه به نتیجه اضافه می‌شوند، صرف‌نظر از فیلترهای بالا - برای وقتی که تگ‌های مشخصی را از قبل می‌دانید."></i>
-            </label>
+            </pems-label>
             <pems-textarea scale="small" name="tagList" rows="2" placeholder="P-1001, P-1002, P-1003">@selectedTagList</pems-textarea>
             @if (requestedTagCount > 0)
             {

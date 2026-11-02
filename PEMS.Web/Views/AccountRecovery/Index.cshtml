@@ -14,22 +14,22 @@
 
 <form asp-controller="AccountRecovery" asp-action="Index" method="post" autocomplete="off">
     <div class="mb-3">
-        <label asp-for="UserName" class="form-label">@Localizer["Username"]</label>
+        <pems-label asp-for="UserName">@Localizer["Username"]</pems-label>
         <pems-input asp-for="UserName" autocomplete="username" autofocus />
         <span asp-validation-for="UserName" class="text-danger small"></span>
     </div>
     <div class="mb-3">
-        <label asp-for="Code" class="form-label">@Localizer["Recovery code"]</label>
+        <pems-label asp-for="Code">@Localizer["Recovery code"]</pems-label>
         <pems-input asp-for="Code" dir="ltr" autocomplete="one-time-code" placeholder="XXXX-XXXX-XXXX-XXXX" spellcheck="false" />
         <span asp-validation-for="Code" class="text-danger small"></span>
     </div>
     <div class="mb-3">
-        <label asp-for="NewPassword" class="form-label">@Localizer["New password"]</label>
+        <pems-label asp-for="NewPassword">@Localizer["New password"]</pems-label>
         <pems-input asp-for="NewPassword" autocomplete="new-password" />
         <span asp-validation-for="NewPassword" class="text-danger small"></span>
     </div>
     <div class="mb-3">
-        <label asp-for="ConfirmPassword" class="form-label">@Localizer["Confirm new password"]</label>
+        <pems-label asp-for="ConfirmPassword">@Localizer["Confirm new password"]</pems-label>
         <pems-input asp-for="ConfirmPassword" autocomplete="new-password" />
         <span asp-validation-for="ConfirmPassword" class="text-danger small"></span>
     </div>

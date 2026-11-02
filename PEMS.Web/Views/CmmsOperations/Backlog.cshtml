@@ -26,7 +26,7 @@
 
 <form method="get" class="row g-2 mb-3 align-items-end">
     <div class="col-auto">
-        <label class="form-label small mb-0">@Localizer["Status"]</label>
+        <pems-label css="small mb-0">@Localizer["Status"]</pems-label>
         <pems-select scale="small" name="status" onchange="this.form.submit()">
             <option value="">Open Backlog (all non-final)</option>
             <option value="Open" selected="@(status == "Open")">Open</option>
@@ -36,7 +36,7 @@
         </pems-select>
     </div>
     <div class="col-auto">
-        <label class="form-label small mb-0">@Localizer["Priority"]</label>
+        <pems-label css="small mb-0">@Localizer["Priority"]</pems-label>
         <pems-select scale="small" name="priority" onchange="this.form.submit()">
             <option value="">@Localizer["All"]</option>
             <option value="Critical" selected="@(priority == "Critical")">Critical</option>

@@ -120,8 +120,7 @@
             </pems-button>
         </div>
 
-        <div class="modal fade" id="rejectModal" tabindex="-1">
-            <div class="modal-dialog"><div class="modal-content">
+        <pems-modal id="rejectModal" tabindex="-1">
                 <form asp-action="Reject" method="post">
                     <input type="hidden" name="mocId" value="@Model.MOCId" />
                     <div class="modal-header"><h6 class="modal-title">@Localizer["دلیل رد"]</h6></div>
@@ -131,8 +130,7 @@
                         <pems-button tone="danger" size="small" type="submit">@Localizer["رد کن"]</pems-button>
                     </div>
                 </form>
-            </div></div>
-        </div>
+            </pems-modal>
     }
     else if (currentStageName == "Closure")
     {
@@ -142,7 +140,7 @@
         {
             <form asp-action="RecordImplementation" method="post" class="mb-3">
                 <input type="hidden" name="mocId" value="@Model.MOCId" />
-                <label class="form-label small">Implementation Plan / نحوه‌ی اجرا</label>
+                <pems-label css="small">Implementation Plan / نحوه‌ی اجرا</pems-label>
                 <pems-textarea scale="small" css="mb-2" name="implementationPlan" rows="2" required></pems-textarea>
                 <pems-button tone="primary" size="small" outline="true" type="submit">@Localizer["ثبت اجرا"]</pems-button>
             </form>

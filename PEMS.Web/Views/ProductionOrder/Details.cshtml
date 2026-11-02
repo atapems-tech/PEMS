@@ -87,22 +87,18 @@
     @if (!Model.Runs.Any()) { <p class="text-muted text-center py-3">No runs yet.</p> }
 </div>
 
-<div class="modal fade" id="holdOrderModal" tabindex="-1">
-    <div class="modal-dialog"><div class="modal-content">
+<pems-modal id="holdOrderModal" tabindex="-1">
         <form asp-action="Hold" asp-route-id="@Model.ProductionOrderId" method="post">
             <div class="modal-header"><h6 class="modal-title">Hold Production Order</h6><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div>
-            <div class="modal-body"><label class="form-label">@Localizer["Reason"]</label><pems-textarea name="reason" required></pems-textarea></div>
+            <div class="modal-body"><pems-label>@Localizer["Reason"]</pems-label><pems-textarea name="reason" required></pems-textarea></div>
             <div class="modal-footer"><pems-button tone="warning" type="submit">@Localizer["Hold"]</pems-button></div>
         </form>
-    </div></div>
-</div>
+    </pems-modal>
 
-<div class="modal fade" id="cancelOrderModal" tabindex="-1">
-    <div class="modal-dialog"><div class="modal-content">
+<pems-modal id="cancelOrderModal" tabindex="-1">
         <form asp-action="Cancel" asp-route-id="@Model.ProductionOrderId" method="post">
             <div class="modal-header"><h6 class="modal-title">Cancel Production Order</h6><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div>
-            <div class="modal-body"><label class="form-label">@Localizer["Reason"]</label><pems-textarea name="reason" required></pems-textarea></div>
+            <div class="modal-body"><pems-label>@Localizer["Reason"]</pems-label><pems-textarea name="reason" required></pems-textarea></div>
             <div class="modal-footer"><pems-button tone="danger" type="submit">Cancel Order</pems-button></div>
         </form>
-    </div></div>
-</div>
+    </pems-modal>

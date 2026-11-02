@@ -93,14 +93,13 @@
     </pems-info-grid>
 </div>
 
-<div class="modal fade" id="assignFoundationModal" tabindex="-1">
-    <div class="modal-dialog"><div class="modal-content">
+<pems-modal id="assignFoundationModal" tabindex="-1">
         <form asp-action="AssignFoundation" method="post">
             <input type="hidden" name="equipmentId" value="@eq.EquipmentId" />
             <div class="modal-header"><h6 class="modal-title">@Localizer["Cm_AssignTitle"]</h6></div>
             <div class="modal-body">
                 <div class="mb-2">
-                    <label class="form-label small">@Localizer["Functional Location"]</label>
+                    <pems-label css="small">@Localizer["Functional Location"]</pems-label>
                     <pems-select scale="small" name="functionalLocationId">
                         <option value="">@Localizer["-- not linked --"]</option>
                         @foreach (var fl in (List<PEMS.Application.DTOs.FunctionalLocationPickerItemDto>)ViewBag.FunctionalLocations)
@@ -121,7 +120,7 @@
                     <div class="form-text">Real link, distinct from the raw "@NA(eq.Area)" import value. <a asp-controller="FunctionalLocation" asp-action="Index" target="_blank">@Localizer["Manage list"]</a></div>
                 </div>
                 <div class="mb-2">
-                    <label class="form-label small">Parent Equipment</label>
+                    <pems-label css="small">Parent Equipment</pems-label>
                     <pems-input scale="small" type="text" placeholder="Search tag, name..." data-pems-search data-search-type="Equipment" data-search-hidden="#parentEquipmentIdHidden" autocomplete="off" />
                     <input type="hidden" name="parentEquipmentId" id="parentEquipmentIdHidden" value="@eq.ParentEquipmentId" />
                     @if (eq.ParentEquipmentId.HasValue)
@@ -130,7 +129,7 @@
                     }
                 </div>
                 <div class="mb-2">
-                    <label class="form-label small">Installation Date</label>
+                    <pems-label css="small">Installation Date</pems-label>
                     <input name="installationDate" type="date" class="form-control form-control-sm" value="@eq.InstallationDate?.ToString("yyyy-MM-dd")" />
                 </div>
             </div>
@@ -139,8 +138,7 @@
                 <pems-button tone="primary" size="small" type="submit">@Localizer["Save"]</pems-button>
             </div>
         </form>
-    </div></div>
-</div>
+    </pems-modal>
 
 @if (Model.SuggestedLinks.Any())
 {
@@ -159,7 +157,8 @@
     </div>
 }
 
-<ul class="nav nav-tabs mb-3" id="equipmentTabs" role="tablist">
+@{ var pendingSuggestion = ViewBag.PendingClassificationSuggestion as PEMS.Application.DTOs.ReviewQueueItemDto; }
+<pems-nav css="mb-3" id="equipmentTabs" role="tablist">
     <li class="nav-item" role="presentation">
         <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#tab-overview" type="button">
             <i class="bi bi-info-circle"></i> @Localizer["Cm_TabOverview"]
@@ -234,11 +233,10 @@
     <li class="nav-item" role="presentation">
         <button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-classification" type="button">
             <i class="bi bi-diagram-3-fill"></i> @Localizer["Cm_TabClassification"]
-            @{ var pendingSuggestion = ViewBag.PendingClassificationSuggestion as PEMS.Application.DTOs.ReviewQueueItemDto; }
             @if (pendingSuggestion != null) { <pems-badge tone="warning">1</pems-badge> }
         </button>
     </li>
-</ul>
+</pems-nav>
 
 <div class="tab-content">
 
@@ -428,11 +426,11 @@
                 <form asp-controller="Asset" asp-action="Create" method="post" class="row g-2 align-items-end">
                     <input type="hidden" name="equipmentId" value="@eq.EquipmentId" />
                     <div class="col-md-4">
-                        <label class="form-label small">@Localizer["Asset Number"]</label>
+                        <pems-label css="small">@Localizer["Asset Number"]</pems-label>
                         <pems-input scale="small" name="assetNumber" placeholder="AST-@eq.TagNumber" required />
                     </div>
                     <div class="col-md-3">
-                        <label class="form-label small">@Localizer["Maintenance Class"]</label>
+                        <pems-label css="small">@Localizer["Maintenance Class"]</pems-label>
                         <pems-input scale="small" name="maintenanceClass" placeholder="Rotating, Static ..." />
                     </div>
                     <div class="col-md-2">
@@ -692,35 +690,34 @@
             @if (!inspections.Any()) { <p class="text-muted mb-0 small">@Localizer["Cm_NoInspections"]</p> }
         </div>
 
-        <div class="modal fade" id="newInspectionModal" tabindex="-1">
-            <div class="modal-dialog"><div class="modal-content">
+        <pems-modal id="newInspectionModal" tabindex="-1">
                 <form asp-controller="Inspection" asp-action="Create" method="post">
                     <input type="hidden" name="equipmentId" value="@eq.EquipmentId" />
                     <div class="modal-header"><h6 class="modal-title">New Inspection</h6></div>
                     <div class="modal-body">
-                        <div class="mb-2"><label class="form-label small">Inspection Type</label>
+                        <div class="mb-2"><pems-label css="small">Inspection Type</pems-label>
                             <pems-input scale="small" name="inspectionType" placeholder="Vibration, Thickness, Visual..." required /></div>
-                        <div class="mb-2"><label class="form-label small">Inspection Date</label>
+                        <div class="mb-2"><pems-label css="small">Inspection Date</pems-label>
                             <input name="inspectionDate" type="date" class="form-control form-control-sm" value="@DateTime.Today.ToString("yyyy-MM-dd")" required /></div>
-                        <div class="mb-2"><label class="form-label small">@Localizer["Inspector"]</label>
+                        <div class="mb-2"><pems-label css="small">@Localizer["Inspector"]</pems-label>
                             <pems-input scale="small" name="inspector" /></div>
                         <div class="row g-2 mb-2">
-                            <div class="col-6"><label class="form-label small">Measurement Value</label>
+                            <div class="col-6"><pems-label css="small">Measurement Value</pems-label>
                                 <pems-input scale="small" name="measurementValue" type="number" step="0.01" /></div>
-                            <div class="col-6"><label class="form-label small">@Localizer["Unit"]</label>
+                            <div class="col-6"><pems-label css="small">@Localizer["Unit"]</pems-label>
                                 <pems-input scale="small" name="measurementUnit" placeholder="mm/s, mm, °C..." /></div>
                         </div>
                         <div class="row g-2 mb-2">
-                            <div class="col-6"><label class="form-label small">Lower Limit</label>
+                            <div class="col-6"><pems-label css="small">Lower Limit</pems-label>
                                 <pems-input scale="small" name="lowerLimit" type="number" step="0.01" /></div>
-                            <div class="col-6"><label class="form-label small">Upper Limit</label>
+                            <div class="col-6"><pems-label css="small">Upper Limit</pems-label>
                                 <pems-input scale="small" name="upperLimit" type="number" step="0.01" /></div>
                         </div>
-                        <div class="mb-2"><label class="form-label small">Next Inspection Date</label>
+                        <div class="mb-2"><pems-label css="small">Next Inspection Date</pems-label>
                             <input name="nextInspectionDate" type="date" class="form-control form-control-sm" /></div>
-                        <div class="mb-2"><label class="form-label small">Recommendation</label>
+                        <div class="mb-2"><pems-label css="small">Recommendation</pems-label>
                             <pems-textarea scale="small" name="recommendation" rows="2"></pems-textarea></div>
-                        <div class="mb-2"><label class="form-label small">@Localizer["Description"]</label>
+                        <div class="mb-2"><pems-label css="small">@Localizer["Description"]</pems-label>
                             <pems-textarea scale="small" name="description" rows="2"></pems-textarea></div>
                     </div>
                     <div class="modal-footer">
@@ -728,8 +725,7 @@
                         <pems-button tone="primary" size="small" type="submit">@Localizer["Save"]</pems-button>
                     </div>
                 </form>
-            </div></div>
-        </div>
+            </pems-modal>
     </div>
 
     @* ===================== Quality & Change ===================== *@

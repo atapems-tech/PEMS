@@ -66,17 +66,17 @@
                     <input type="hidden" name="ParentId" value="@i.ParentId" />
                     <input type="hidden" name="returnUrl" value="@returnUrl" />
                     <div class="col-12">
-                        <label class="form-label small" for="e-title">@Localizer["Tm_Field_Title"] <span class="text-danger" aria-hidden="true">*</span></label>
+                        <pems-label css="small" for="e-title">@Localizer["Tm_Field_Title"] <span class="text-danger" aria-hidden="true">*</span></pems-label>
                         <pems-input scale="small" id="e-title" name="Title" value="@i.Title" required maxlength="300" />
                     </div>
                     <div class="col-12">
-                        <label class="form-label small" for="e-desc">@Localizer["Tm_Field_Description"]</label>
+                        <pems-label css="small" for="e-desc">@Localizer["Tm_Field_Description"]</pems-label>
                         <pems-textarea scale="small" id="e-desc" name="Description" rows="6" maxlength="8000">@Model.Description</pems-textarea>
                     </div>
                     @if (!Model.IsLegacy)
                     {
                         <div class="col-md-4">
-                            <label class="form-label small" for="e-type">@Localizer["Tm_Field_Type"]</label>
+                            <pems-label css="small" for="e-type">@Localizer["Tm_Field_Type"]</pems-label>
                             <pems-select scale="small" id="e-type" name="TypeId">
                                 @foreach (var t in Model.Types.Where(t => !t.IsSubtask || i.ParentId != null || t.Id == i.TypeId))
                                 { <option value="@t.Id" selected="@(t.Id == i.TypeId)">@TaskManagerUi.Name(t.Name, t.NameFa)</option> }
@@ -84,7 +84,7 @@
                         </div>
                     }
                     <div class="col-md-4">
-                        <label class="form-label small" for="e-priority">@Localizer["Tm_Field_Priority"]</label>
+                        <pems-label css="small" for="e-priority">@Localizer["Tm_Field_Priority"]</pems-label>
                         <pems-select scale="small" id="e-priority" name="Priority">
                             @foreach (var p in PEMS.Domain.Entities.TaskItemPriorities.All) { <option value="@p" selected="@(p == i.Priority)">@TaskManagerUi.Priority(Localizer, p)</option> }
                         </pems-select>
@@ -92,16 +92,16 @@
                     @if (!Model.IsLegacy)
                     {
                         <div class="col-md-4">
-                            <label class="form-label small" for="e-points">@Localizer["Tm_Field_StoryPoints"]</label>
+                            <pems-label css="small" for="e-points">@Localizer["Tm_Field_StoryPoints"]</pems-label>
                             <pems-input scale="small" id="e-points" name="StoryPoints" type="number" min="0" max="1000" step="0.5" value="@(i.StoryPoints?.ToString(System.Globalization.CultureInfo.InvariantCulture))" />
                         </div>
                     }
                     <div class="col-md-4">
-                        <label class="form-label small" for="e-start">@Localizer["Tm_Field_StartDate"]</label>
+                        <pems-label css="small" for="e-start">@Localizer["Tm_Field_StartDate"]</pems-label>
                         <input id="e-start" name="StartDate" type="date" value="@TaskManagerUi.DateInput(i.StartDate)" class="form-control form-control-sm" />
                     </div>
                     <div class="col-md-4">
-                        <label class="form-label small" for="e-due">@Localizer["Tm_Field_DueDate"]</label>
+                        <pems-label css="small" for="e-due">@Localizer["Tm_Field_DueDate"]</pems-label>
                         <input id="e-due" name="DueDate" type="date" value="@TaskManagerUi.DateInput(i.DueDate)" class="form-control form-control-sm" />
                     </div>
                     <div class="col-md-4 d-flex align-items-end"><pems-button tone="primary" size="small" css="w-100">@Localizer["Tm_Save"]</pems-button></div>

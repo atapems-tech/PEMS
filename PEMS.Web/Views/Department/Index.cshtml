@@ -65,16 +65,14 @@
     </pems-list-panel>
 </pems-list-page>
 
-<div class="modal fade" id="createDeptModal" tabindex="-1">
-    <div class="modal-dialog">
-        <div class="modal-content">
+<pems-modal id="createDeptModal" tabindex="-1">
             <form asp-action="Create" method="post">
                 <div class="modal-header"><h6 class="modal-title">@Localizer["New Department"]</h6></div>
                 <div class="modal-body">
                     <div class="row g-3">
-                        <div class="col-md-4"><label class="form-label">@Localizer["Code"]</label><pems-input name="code" placeholder="e.g. ENG" /></div>
-                        <div class="col-md-8"><label class="form-label">@Localizer["Name"]</label><pems-input name="name" required /></div>
-                        <div class="col-12"><label class="form-label">@Localizer["Description"]</label><pems-textarea name="description" rows="2"></pems-textarea></div>
+                        <div class="col-md-4"><pems-label>@Localizer["Code"]</pems-label><pems-input name="code" placeholder="e.g. ENG" /></div>
+                        <div class="col-md-8"><pems-label>@Localizer["Name"]</pems-label><pems-input name="name" required /></div>
+                        <div class="col-12"><pems-label>@Localizer["Description"]</pems-label><pems-textarea name="description" rows="2"></pems-textarea></div>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -82,23 +80,19 @@
                     <pems-button tone="primary" type="submit">@Localizer["Save"]</pems-button>
                 </div>
             </form>
-        </div>
-    </div>
-</div>
+        </pems-modal>
 
 @foreach (var d in Model)
 {
-    <div class="modal fade" id="editDeptModal_@d.DepartmentId" tabindex="-1">
-        <div class="modal-dialog">
-            <div class="modal-content">
+    <pems-modal id="editDeptModal_@d.DepartmentId" tabindex="-1">
                 <form asp-action="Edit" method="post">
                     <input type="hidden" name="departmentId" value="@d.DepartmentId" />
                     <div class="modal-header"><h6 class="modal-title">@Localizer["Edit Department"]</h6></div>
                     <div class="modal-body">
                         <div class="row g-3">
-                            <div class="col-md-4"><label class="form-label">@Localizer["Code"]</label><pems-input name="code" value="@d.Code" /></div>
-                            <div class="col-md-8"><label class="form-label">@Localizer["Name"]</label><pems-input name="name" value="@d.Name" required /></div>
-                            <div class="col-12"><label class="form-label">@Localizer["Description"]</label><pems-textarea name="description" rows="2">@d.Description</pems-textarea></div>
+                            <div class="col-md-4"><pems-label>@Localizer["Code"]</pems-label><pems-input name="code" value="@d.Code" /></div>
+                            <div class="col-md-8"><pems-label>@Localizer["Name"]</pems-label><pems-input name="name" value="@d.Name" required /></div>
+                            <div class="col-12"><pems-label>@Localizer["Description"]</pems-label><pems-textarea name="description" rows="2">@d.Description</pems-textarea></div>
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -106,9 +100,7 @@
                         <pems-button tone="primary" type="submit">@Localizer["Save"]</pems-button>
                     </div>
                 </form>
-            </div>
-        </div>
-    </div>
+            </pems-modal>
 }
 
 @section Scripts {

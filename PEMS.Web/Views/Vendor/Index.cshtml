@@ -79,18 +79,16 @@
 </pems-list-page>
 
 @* طبق درخواست: ثبت سریع بدون خروج از صفحه‌ی اصلی - Popup به‌جای صفحه‌ی جدا *@
-<div class="modal fade" id="createVendorModal" tabindex="-1">
-    <div class="modal-dialog">
-        <div class="modal-content">
+<pems-modal id="createVendorModal" tabindex="-1">
             <form asp-controller="Vendor" asp-action="Create" method="post">
                 <div class="modal-header"><h6 class="modal-title">@Localizer["Vs_NewVendor"]</h6></div>
                 <div class="modal-body">
                     <div class="row g-3">
-                        <div class="col-12"><label class="form-label">@Localizer["Vs_Name"]</label><pems-input name="Name" required /></div>
-                        <div class="col-md-6"><label class="form-label">@Localizer["Vs_Country"]</label><pems-input name="Country" /></div>
-                        <div class="col-md-6"><label class="form-label">@Localizer["Vs_ContactName"]</label><pems-input name="ContactName" /></div>
-                        <div class="col-md-6"><label class="form-label">@Localizer["Vs_ContactEmail"]</label><pems-input name="ContactEmail" /></div>
-                        <div class="col-md-6"><label class="form-label">@Localizer["Vs_ContactPhone"]</label><pems-input name="ContactPhone" /></div>
+                        <div class="col-12"><pems-label>@Localizer["Vs_Name"]</pems-label><pems-input name="Name" required /></div>
+                        <div class="col-md-6"><pems-label>@Localizer["Vs_Country"]</pems-label><pems-input name="Country" /></div>
+                        <div class="col-md-6"><pems-label>@Localizer["Vs_ContactName"]</pems-label><pems-input name="ContactName" /></div>
+                        <div class="col-md-6"><pems-label>@Localizer["Vs_ContactEmail"]</pems-label><pems-input name="ContactEmail" /></div>
+                        <div class="col-md-6"><pems-label>@Localizer["Vs_ContactPhone"]</pems-label><pems-input name="ContactPhone" /></div>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -98,9 +96,7 @@
                     <button type="submit" class="vs-btn vs-btn--primary">@Localizer["Save"]</button>
                 </div>
             </form>
-        </div>
-    </div>
-</div>
+        </pems-modal>
 
 @section Scripts {
     <script src="~/_content/PEMS.UI/pems-list.js" asp-append-version="true"></script>

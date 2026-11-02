@@ -35,7 +35,7 @@
     <pems-alert tone="danger" css="py-2 px-3 small">@TempData["Error"]</pems-alert>
 }
 
-<ul class="nav nav-tabs mb-3" id="mmdTabs" role="tablist">
+<pems-nav css="mb-3" id="mmdTabs" role="tablist">
     <li class="nav-item" role="presentation">
         <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#tab-groups" type="button">
             <i class="bi bi-diagram-3"></i> Maintenance Groups <pems-badge tone="neutral">@Model.Count</pems-badge>
@@ -101,7 +101,7 @@
             <i class="bi bi-flag"></i> @Localizer["Priority Mapping"] <pems-badge tone="neutral">@conditionPriorityMappings.Count</pems-badge>
         </button>
     </li>
-</ul>
+</pems-nav>
 
 <div class="tab-content">
     <div class="tab-pane fade show active" id="tab-groups" role="tabpanel">
@@ -595,17 +595,16 @@
     </div>
 </div>
 
-<div class="modal fade" id="createPriorityMappingModal" tabindex="-1">
-    <div class="modal-dialog"><div class="modal-content">
+<pems-modal id="createPriorityMappingModal" tabindex="-1">
         <form asp-action="CreateConditionPriorityMapping" method="post">
             <div class="modal-header"><h6 class="modal-title">@Localizer["نگاشت جدید"]</h6></div>
             <div class="modal-body">
                 <div class="mb-2">
-                    <label class="form-label small">@Localizer["Condition"]</label>
+                    <pems-label css="small">@Localizer["Condition"]</pems-label>
                     <pems-input scale="small" name="condition" required placeholder="مثلاً RequiresEngineeringReview" />
                 </div>
                 <div class="mb-2">
-                    <label class="form-label small">@Localizer["Priority"]</label>
+                    <pems-label css="small">@Localizer["Priority"]</pems-label>
                     <pems-select scale="small" name="priority">
                         @foreach (var p in new[] { "Low", "Medium", "High", "Critical" })
                         {
@@ -619,27 +618,25 @@
                 <pems-button tone="primary" size="small" type="submit">@Localizer["ساخت"]</pems-button>
             </div>
         </form>
-    </div></div>
-</div>
+    </pems-modal>
 
-<div class="modal fade" id="createSkillModal" tabindex="-1">
-    <div class="modal-dialog"><div class="modal-content">
+<pems-modal id="createSkillModal" tabindex="-1">
         <form asp-action="CreateSkill" method="post">
             <div class="modal-header"><h6 class="modal-title">@Localizer["مهارت جدید"]</h6></div>
             <div class="modal-body">
                 <div class="mb-2">
-                    <label class="form-label small">@Localizer["نام"]</label>
+                    <pems-label css="small">@Localizer["نام"]</pems-label>
                     <pems-input scale="small" name="name" required placeholder="مثلاً Pump Alignment" />
                 </div>
                 <div class="mb-2">
-                    <label class="form-label small">@Localizer["دیسیپلین (اختیاری)"]</label>
+                    <pems-label css="small">@Localizer["دیسیپلین (اختیاری)"]</pems-label>
                     <pems-select scale="small" name="disciplineId">
                         <option value="">@Localizer["-- ندارد --"]</option>
                         @foreach (var d in disciplines) { <option value="@d.DisciplineId">@d.Name</option> }
                     </pems-select>
                 </div>
                 <div class="mb-2">
-                    <label class="form-label small">@Localizer["توضیحات (اختیاری)"]</label>
+                    <pems-label css="small">@Localizer["توضیحات (اختیاری)"]</pems-label>
                     <pems-textarea scale="small" name="description" rows="2"></pems-textarea>
                 </div>
             </div>
@@ -648,30 +645,28 @@
                 <pems-button tone="primary" size="small" type="submit">@Localizer["ساخت"]</pems-button>
             </div>
         </form>
-    </div></div>
-</div>
+    </pems-modal>
 
-<div class="modal fade" id="createGroupModal" tabindex="-1">
-    <div class="modal-dialog"><div class="modal-content">
+<pems-modal id="createGroupModal" tabindex="-1">
         <form asp-action="CreateGroup" method="post">
             <div class="modal-header"><h6 class="modal-title">@Localizer["گروه تعمیراتی جدید"]</h6></div>
             <div class="modal-body">
                 <div class="mb-2">
-                    <label class="form-label small">@Localizer["کد"]</label>
+                    <pems-label css="small">@Localizer["کد"]</pems-label>
                     <pems-input scale="small" name="code" required placeholder="مثلاً ROT-EQ" />
                 </div>
                 <div class="mb-2">
-                    <label class="form-label small">@Localizer["نام"]</label>
+                    <pems-label css="small">@Localizer["نام"]</pems-label>
                     <pems-input scale="small" name="name" required placeholder="مثلاً Rotating Equipment" />
                 </div>
                 <div class="mb-2">
-                    <label class="form-label small">@Localizer["دیسیپلین"]</label>
+                    <pems-label css="small">@Localizer["دیسیپلین"]</pems-label>
                     <pems-select scale="small" name="disciplineId" required>
                         @foreach (var d in disciplines) { <option value="@d.DisciplineId">@d.Name</option> }
                     </pems-select>
                 </div>
                 <div class="mb-2">
-                    <label class="form-label small">@Localizer["توضیحات (اختیاری)"]</label>
+                    <pems-label css="small">@Localizer["توضیحات (اختیاری)"]</pems-label>
                     <pems-textarea scale="small" name="description" rows="2"></pems-textarea>
                 </div>
             </div>
@@ -680,27 +675,25 @@
                 <pems-button tone="primary" size="small" type="submit">@Localizer["ساخت"]</pems-button>
             </div>
         </form>
-    </div></div>
-</div>
+    </pems-modal>
 
-<div class="modal fade" id="createQualificationModal" tabindex="-1">
-    <div class="modal-dialog"><div class="modal-content">
+<pems-modal id="createQualificationModal" tabindex="-1">
         <form asp-action="CreateQualification" method="post">
             <div class="modal-header"><h6 class="modal-title">@Localizer["صلاحیت جدید"]</h6></div>
             <div class="modal-body">
                 <div class="mb-2">
-                    <label class="form-label small">@Localizer["نام"]</label>
+                    <pems-label css="small">@Localizer["نام"]</pems-label>
                     <pems-input scale="small" name="name" required placeholder="مثلاً Qualified Pump Maintenance Technician" />
                 </div>
                 <div class="mb-2">
-                    <label class="form-label small">@Localizer["دیسیپلین (اختیاری)"]</label>
+                    <pems-label css="small">@Localizer["دیسیپلین (اختیاری)"]</pems-label>
                     <pems-select scale="small" name="disciplineId">
                         <option value="">@Localizer["-- ندارد --"]</option>
                         @foreach (var d in disciplines) { <option value="@d.DisciplineId">@d.Name</option> }
                     </pems-select>
                 </div>
                 <div class="mb-2">
-                    <label class="form-label small">@Localizer["توضیحات (اختیاری)"]</label>
+                    <pems-label css="small">@Localizer["توضیحات (اختیاری)"]</pems-label>
                     <pems-textarea scale="small" name="description" rows="2"></pems-textarea>
                 </div>
             </div>
@@ -709,28 +702,26 @@
                 <pems-button tone="primary" size="small" type="submit">@Localizer["ساخت"]</pems-button>
             </div>
         </form>
-    </div></div>
-</div>
+    </pems-modal>
 
-<div class="modal fade" id="createMaintenanceTypeModal" tabindex="-1">
-    <div class="modal-dialog"><div class="modal-content">
+<pems-modal id="createMaintenanceTypeModal" tabindex="-1">
         <form asp-action="CreateMaintenanceType" method="post">
             <div class="modal-header"><h6 class="modal-title">@Localizer["Maintenance Type جدید"]</h6></div>
             <div class="modal-body">
                 <div class="mb-2">
-                    <label class="form-label small">@Localizer["Code"]</label>
+                    <pems-label css="small">@Localizer["Code"]</pems-label>
                     <pems-input scale="small" name="code" required placeholder="مثلاً CUSTOM_TYPE" />
                 </div>
                 <div class="mb-2">
-                    <label class="form-label small">@Localizer["Name"]</label>
+                    <pems-label css="small">@Localizer["Name"]</pems-label>
                     <pems-input scale="small" name="name" required />
                 </div>
                 <div class="mb-2">
-                    <label class="form-label small">@Localizer["نام فارسی (اختیاری)"]</label>
+                    <pems-label css="small">@Localizer["نام فارسی (اختیاری)"]</pems-label>
                     <pems-input scale="small" name="nameFa" />
                 </div>
                 <div class="mb-2">
-                    <label class="form-label small">@Localizer["توضیحات (اختیاری)"]</label>
+                    <pems-label css="small">@Localizer["توضیحات (اختیاری)"]</pems-label>
                     <pems-textarea scale="small" name="description" rows="2"></pems-textarea>
                 </div>
             </div>
@@ -739,28 +730,26 @@
                 <pems-button tone="primary" size="small" type="submit">@Localizer["ساخت"]</pems-button>
             </div>
         </form>
-    </div></div>
-</div>
+    </pems-modal>
 
-<div class="modal fade" id="createStrategyTypeModal" tabindex="-1">
-    <div class="modal-dialog"><div class="modal-content">
+<pems-modal id="createStrategyTypeModal" tabindex="-1">
         <form asp-action="CreateMaintenanceStrategyType" method="post">
             <div class="modal-header"><h6 class="modal-title">Maintenance Strategy Type جدید</h6></div>
             <div class="modal-body">
                 <div class="mb-2">
-                    <label class="form-label small">@Localizer["Code"]</label>
+                    <pems-label css="small">@Localizer["Code"]</pems-label>
                     <pems-input scale="small" name="code" required placeholder="مثلاً CUSTOM_STRATEGY" />
                 </div>
                 <div class="mb-2">
-                    <label class="form-label small">@Localizer["Name"]</label>
+                    <pems-label css="small">@Localizer["Name"]</pems-label>
                     <pems-input scale="small" name="name" required />
                 </div>
                 <div class="mb-2">
-                    <label class="form-label small">@Localizer["نام فارسی (اختیاری)"]</label>
+                    <pems-label css="small">@Localizer["نام فارسی (اختیاری)"]</pems-label>
                     <pems-input scale="small" name="nameFa" />
                 </div>
                 <div class="mb-2">
-                    <label class="form-label small">@Localizer["توضیحات (اختیاری)"]</label>
+                    <pems-label css="small">@Localizer["توضیحات (اختیاری)"]</pems-label>
                     <pems-textarea scale="small" name="description" rows="2"></pems-textarea>
                 </div>
             </div>
@@ -769,28 +758,26 @@
                 <pems-button tone="primary" size="small" type="submit">@Localizer["ساخت"]</pems-button>
             </div>
         </form>
-    </div></div>
-</div>
+    </pems-modal>
 
-<div class="modal fade" id="createEquipmentClassModal" tabindex="-1">
-    <div class="modal-dialog"><div class="modal-content">
+<pems-modal id="createEquipmentClassModal" tabindex="-1">
         <form asp-action="CreateEquipmentClass" method="post">
             <div class="modal-header"><h6 class="modal-title">@Localizer["Equipment Class جدید"]</h6></div>
             <div class="modal-body">
                 <div class="mb-2">
-                    <label class="form-label small">@Localizer["Code"]</label>
+                    <pems-label css="small">@Localizer["Code"]</pems-label>
                     <pems-input scale="small" name="code" required placeholder="مثلاً CUSTOM_CLASS" />
                 </div>
                 <div class="mb-2">
-                    <label class="form-label small">@Localizer["Name"]</label>
+                    <pems-label css="small">@Localizer["Name"]</pems-label>
                     <pems-input scale="small" name="name" required placeholder="مثلاً Screw Compressor" />
                 </div>
                 <div class="mb-2">
-                    <label class="form-label small">@Localizer["نام فارسی (اختیاری)"]</label>
+                    <pems-label css="small">@Localizer["نام فارسی (اختیاری)"]</pems-label>
                     <pems-input scale="small" name="nameFa" />
                 </div>
                 <div class="mb-2">
-                    <label class="form-label small">@Localizer["توضیحات (اختیاری)"]</label>
+                    <pems-label css="small">@Localizer["توضیحات (اختیاری)"]</pems-label>
                     <pems-textarea scale="small" name="description" rows="2"></pems-textarea>
                 </div>
             </div>
@@ -799,37 +786,35 @@
                 <pems-button tone="primary" size="small" type="submit">@Localizer["ساخت"]</pems-button>
             </div>
         </form>
-    </div></div>
-</div>
+    </pems-modal>
 
-<div class="modal fade" id="createStandardModal" tabindex="-1">
-    <div class="modal-dialog"><div class="modal-content">
+<pems-modal id="createStandardModal" tabindex="-1">
         <form asp-action="CreateStandardReference" method="post">
             <div class="modal-header"><h6 class="modal-title">Standard Reference جدید</h6></div>
             <div class="modal-body">
                 <p class="small text-muted">فقط ابرداده - هرگز متن دارای Copyright خودِ استاندارد را این‌جا وارد نکنید.</p>
                 <div class="mb-2">
-                    <label class="form-label small">@Localizer["Code"]</label>
+                    <pems-label css="small">@Localizer["Code"]</pems-label>
                     <pems-input scale="small" name="code" required placeholder="مثلاً API-579" />
                 </div>
                 <div class="mb-2">
-                    <label class="form-label small">@Localizer["Organization"]</label>
+                    <pems-label css="small">@Localizer["Organization"]</pems-label>
                     <pems-input scale="small" name="organization" required placeholder="مثلاً API" />
                 </div>
                 <div class="mb-2">
-                    <label class="form-label small">Standard Number</label>
+                    <pems-label css="small">Standard Number</pems-label>
                     <pems-input scale="small" name="standardNumber" required placeholder="مثلاً 579" />
                 </div>
                 <div class="mb-2">
-                    <label class="form-label small">@Localizer["Title"]</label>
+                    <pems-label css="small">@Localizer["Title"]</pems-label>
                     <pems-input scale="small" name="title" required />
                 </div>
                 <div class="mb-2">
-                    <label class="form-label small">Category (اختیاری)</label>
+                    <pems-label css="small">Category (اختیاری)</pems-label>
                     <pems-input scale="small" name="category" />
                 </div>
                 <div class="mb-2">
-                    <label class="form-label small">توضیح کاربردی (اختیاری - نه متن استاندارد)</label>
+                    <pems-label css="small">توضیح کاربردی (اختیاری - نه متن استاندارد)</pems-label>
                     <pems-textarea scale="small" name="description" rows="2"></pems-textarea>
                 </div>
             </div>
@@ -838,41 +823,39 @@
                 <pems-button tone="primary" size="small" type="submit">@Localizer["ساخت"]</pems-button>
             </div>
         </form>
-    </div></div>
-</div>
+    </pems-modal>
 
-<div class="modal fade" id="createActivityModal" tabindex="-1">
-    <div class="modal-dialog"><div class="modal-content">
+<pems-modal id="createActivityModal" tabindex="-1">
         <form asp-action="CreateMaintenanceActivity" method="post">
             <div class="modal-header"><h6 class="modal-title">Maintenance Activity جدید</h6></div>
             <div class="modal-body">
                 <div class="mb-2">
-                    <label class="form-label small">@Localizer["Code"]</label>
+                    <pems-label css="small">@Localizer["Code"]</pems-label>
                     <pems-input scale="small" name="code" required placeholder="مثلاً ACT_CUSTOM" />
                 </div>
                 <div class="mb-2">
-                    <label class="form-label small">@Localizer["Name"]</label>
+                    <pems-label css="small">@Localizer["Name"]</pems-label>
                     <pems-input scale="small" name="name" required />
                 </div>
                 <div class="mb-2">
-                    <label class="form-label small">@Localizer["نام فارسی (اختیاری)"]</label>
+                    <pems-label css="small">@Localizer["نام فارسی (اختیاری)"]</pems-label>
                     <pems-input scale="small" name="nameFa" />
                 </div>
                 <div class="mb-2">
-                    <label class="form-label small">Maintenance Group</label>
+                    <pems-label css="small">Maintenance Group</pems-label>
                     <pems-select scale="small" name="maintenanceGroupId" required>
                         @foreach (var g in Model) { <option value="@g.MaintenanceGroupId">@g.Name</option> }
                     </pems-select>
                 </div>
                 <div class="mb-2">
-                    <label class="form-label small">Maintenance Type (اختیاری)</label>
+                    <pems-label css="small">Maintenance Type (اختیاری)</pems-label>
                     <pems-select scale="small" name="maintenanceTypeId">
                         <option value="">@Localizer["-- ندارد --"]</option>
                         @foreach (var t in maintenanceTypes) { <option value="@t.MaintenanceTypeId">@t.Name</option> }
                     </pems-select>
                 </div>
                 <div class="mb-2">
-                    <label class="form-label small">@Localizer["توضیحات (اختیاری)"]</label>
+                    <pems-label css="small">@Localizer["توضیحات (اختیاری)"]</pems-label>
                     <pems-textarea scale="small" name="description" rows="2"></pems-textarea>
                 </div>
             </div>
@@ -881,27 +864,25 @@
                 <pems-button tone="primary" size="small" type="submit">@Localizer["ساخت"]</pems-button>
             </div>
         </form>
-    </div></div>
-</div>
+    </pems-modal>
 
-<div class="modal fade" id="createCertificationModal" tabindex="-1">
-    <div class="modal-dialog"><div class="modal-content">
+<pems-modal id="createCertificationModal" tabindex="-1">
         <form asp-action="CreateCertification" method="post">
             <div class="modal-header"><h6 class="modal-title">@Localizer["گواهینامه جدید"]</h6></div>
             <div class="modal-body">
                 <div class="mb-2">
-                    <label class="form-label small">@Localizer["نام"]</label>
+                    <pems-label css="small">@Localizer["نام"]</pems-label>
                     <pems-input scale="small" name="name" required placeholder="مثلاً NDT Level II" />
                 </div>
                 <div class="mb-2">
-                    <label class="form-label small">@Localizer["دیسیپلین (اختیاری)"]</label>
+                    <pems-label css="small">@Localizer["دیسیپلین (اختیاری)"]</pems-label>
                     <pems-select scale="small" name="disciplineId">
                         <option value="">@Localizer["-- ندارد --"]</option>
                         @foreach (var d in disciplines) { <option value="@d.DisciplineId">@d.Name</option> }
                     </pems-select>
                 </div>
                 <div class="mb-2">
-                    <label class="form-label small">@Localizer["توضیحات (اختیاری)"]</label>
+                    <pems-label css="small">@Localizer["توضیحات (اختیاری)"]</pems-label>
                     <pems-textarea scale="small" name="description" rows="2"></pems-textarea>
                 </div>
             </div>
@@ -910,29 +891,27 @@
                 <pems-button tone="primary" size="small" type="submit">@Localizer["ساخت"]</pems-button>
             </div>
         </form>
-    </div></div>
-</div>
+    </pems-modal>
 
-<div class="modal fade" id="createEvaluationProfileModal" tabindex="-1">
-    <div class="modal-dialog"><div class="modal-content">
+<pems-modal id="createEvaluationProfileModal" tabindex="-1">
         <form asp-action="CreateEvaluationProfile" method="post">
             <div class="modal-header"><h6 class="modal-title">@Localizer["Evaluation Profile جدید"]</h6></div>
             <div class="modal-body">
                 <p class="small text-muted">@Localizer["فقط تعریف پروفایل - آستانه‌های واقعی را بعداً از دکمه‌ی «Add Limit» هر ردیف وارد کنید."]</p>
                 <div class="mb-2">
-                    <label class="form-label small">@Localizer["Code"]</label>
+                    <pems-label css="small">@Localizer["Code"]</pems-label>
                     <pems-input scale="small" name="code" required placeholder="@Localizer["مثلاً VIB-PUMP-ISO20816"]" />
                 </div>
                 <div class="mb-2">
-                    <label class="form-label small">@Localizer["Name"]</label>
+                    <pems-label css="small">@Localizer["Name"]</pems-label>
                     <pems-input scale="small" name="name" required />
                 </div>
                 <div class="mb-2">
-                    <label class="form-label small">@Localizer["نام فارسی (اختیاری)"]</label>
+                    <pems-label css="small">@Localizer["نام فارسی (اختیاری)"]</pems-label>
                     <pems-input scale="small" name="nameFa" />
                 </div>
                 <div class="mb-2">
-                    <label class="form-label small">@Localizer["Variable Type"]</label>
+                    <pems-label css="small">@Localizer["Variable Type"]</pems-label>
                     <pems-select scale="small" name="variableType" required>
                         @foreach (var vt in new[] { "Vibration", "Temperature", "Pressure", "Flow", "Current", "Voltage", "Lubrication", "OilAnalysis", "Thermography", "Acoustic", "ProcessDeviation" })
                         {
@@ -941,25 +920,25 @@
                     </pems-select>
                 </div>
                 <div class="mb-2">
-                    <label class="form-label small">@Localizer["Equipment Class (اختیاری - خالی یعنی عمومی)"]</label>
+                    <pems-label css="small">@Localizer["Equipment Class (اختیاری - خالی یعنی عمومی)"]</pems-label>
                     <pems-select scale="small" name="equipmentClassId">
                         <option value="">@Localizer["-- ندارد --"]</option>
                         @foreach (var ec in equipmentClasses) { <option value="@ec.EquipmentClassId">@ec.Name</option> }
                     </pems-select>
                 </div>
                 <div class="mb-2">
-                    <label class="form-label small">@Localizer["Standard Reference (اختیاری)"]</label>
+                    <pems-label css="small">@Localizer["Standard Reference (اختیاری)"]</pems-label>
                     <pems-select scale="small" name="standardReferenceId">
                         <option value="">@Localizer["-- ندارد --"]</option>
                         @foreach (var sr in standardReferences) { <option value="@sr.StandardReferenceId">@sr.Code — @sr.Title</option> }
                     </pems-select>
                 </div>
                 <div class="mb-2">
-                    <label class="form-label small">@Localizer["Operating Condition (اختیاری)"]</label>
+                    <pems-label css="small">@Localizer["Operating Condition (اختیاری)"]</pems-label>
                     <pems-input scale="small" name="operatingCondition" placeholder="@Localizer["مثلاً Normal Load"]" />
                 </div>
                 <div class="mb-2">
-                    <label class="form-label small">@Localizer["Effective From"]</label>
+                    <pems-label css="small">@Localizer["Effective From"]</pems-label>
                     <input type="date" name="effectiveFrom" class="form-control form-control-sm" value="@DateTime.Now.ToString("yyyy-MM-dd")" />
                 </div>
             </div>
@@ -968,18 +947,16 @@
                 <pems-button tone="primary" size="small" type="submit">@Localizer["ساخت"]</pems-button>
             </div>
         </form>
-    </div></div>
-</div>
+    </pems-modal>
 
-<div class="modal fade" id="addLimitModal" tabindex="-1">
-    <div class="modal-dialog"><div class="modal-content">
+<pems-modal id="addLimitModal" tabindex="-1">
         <form asp-action="AddEvaluationLimit" method="post">
             <div class="modal-header"><h6 class="modal-title">@Localizer["Add Limit"] — <span id="addLimitProfileLabel"></span></h6></div>
             <div class="modal-body">
                 <p class="small text-muted">@Localizer["فقط مقدار واقعی مهندسی وارد کنید - هیچ مقداری حدس زده نمی‌شود؛ خالی گذاشتن هر دو فیلد رد می‌شود."]</p>
                 <input type="hidden" name="evaluationProfileId" id="addLimitProfileId" />
                 <div class="mb-2">
-                    <label class="form-label small">@Localizer["Status"]</label>
+                    <pems-label css="small">@Localizer["Status"]</pems-label>
                     <pems-select scale="small" name="status" required>
                         @foreach (var st in new[] { "Normal", "Warning", "Alarm", "Critical" })
                         {
@@ -989,11 +966,11 @@
                 </div>
                 <div class="row">
                     <div class="col-6 mb-2">
-                        <label class="form-label small">@Localizer["Low Value (اختیاری)"]</label>
+                        <pems-label css="small">@Localizer["Low Value (اختیاری)"]</pems-label>
                         <pems-input scale="small" type="number" step="any" name="lowValue" />
                     </div>
                     <div class="col-6 mb-2">
-                        <label class="form-label small">@Localizer["High Value (اختیاری)"]</label>
+                        <pems-label css="small">@Localizer["High Value (اختیاری)"]</pems-label>
                         <pems-input scale="small" type="number" step="any" name="highValue" />
                     </div>
                 </div>
@@ -1013,8 +990,7 @@
                 <pems-button tone="primary" size="small" type="submit">@Localizer["ثبت"]</pems-button>
             </div>
         </form>
-    </div></div>
-</div>
+    </pems-modal>
 
 <script>
     document.getElementById('addLimitModal')?.addEventListener('show.bs.modal', function (event) {

@@ -167,22 +167,20 @@
                                     @if (!i.PostedToInventory)
                                     {
                                         <pems-button tone="neutral" size="small" outline="true" type="button" data-bs-toggle="modal" data-bs-target="#postInputModal-@i.ProductionInputId">Post</pems-button>
-                                        <div class="modal fade" id="postInputModal-@i.ProductionInputId" tabindex="-1">
-                                            <div class="modal-dialog"><div class="modal-content">
+                                        <pems-modal id="postInputModal-@i.ProductionInputId" tabindex="-1">
                                                 <form asp-action="PostInputToInventory" method="post">
                                                     <input type="hidden" name="productionInputId" value="@i.ProductionInputId" />
                                                     <input type="hidden" name="productionRunId" value="@Model.ProductionRunId" />
                                                     <div class="modal-header"><h6 class="modal-title">Post Consumption to Inventory</h6><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div>
                                                     <div class="modal-body">
-                                                        <label class="form-label">@Localizer["Warehouse"]</label>
+                                                        <pems-label>@Localizer["Warehouse"]</pems-label>
                                                         <pems-select css="mb-2" name="warehouseId" required>
                                                             @foreach (var w in ViewBag.Warehouses) { <option value="@w.WarehouseId">@w.Code - @w.Name</option> }
                                                         </pems-select>
                                                     </div>
                                                     <div class="modal-footer"><pems-button tone="none" css="btn-primary" type="submit">@Localizer["Post"]</pems-button></div>
                                                 </form>
-                                            </div></div>
-                                        </div>
+                                            </pems-modal>
                                     }
                                 </td>
                             </tr>
@@ -212,22 +210,20 @@
                                     @if (!o.PostedToInventory)
                                     {
                                         <pems-button tone="neutral" size="small" outline="true" type="button" data-bs-toggle="modal" data-bs-target="#postOutputModal-@o.ProductionOutputId">Post</pems-button>
-                                        <div class="modal fade" id="postOutputModal-@o.ProductionOutputId" tabindex="-1">
-                                            <div class="modal-dialog"><div class="modal-content">
+                                        <pems-modal id="postOutputModal-@o.ProductionOutputId" tabindex="-1">
                                                 <form asp-action="PostOutputToInventory" method="post">
                                                     <input type="hidden" name="productionOutputId" value="@o.ProductionOutputId" />
                                                     <input type="hidden" name="productionRunId" value="@Model.ProductionRunId" />
                                                     <div class="modal-header"><h6 class="modal-title">Post Receipt to Inventory</h6><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div>
                                                     <div class="modal-body">
-                                                        <label class="form-label">@Localizer["Warehouse"]</label>
+                                                        <pems-label>@Localizer["Warehouse"]</pems-label>
                                                         <pems-select css="mb-2" name="warehouseId" required>
                                                             @foreach (var w in ViewBag.Warehouses) { <option value="@w.WarehouseId">@w.Code - @w.Name</option> }
                                                         </pems-select>
                                                     </div>
                                                     <div class="modal-footer"><pems-button tone="none" css="btn-primary" type="submit">@Localizer["Post"]</pems-button></div>
                                                 </form>
-                                            </div></div>
-                                        </div>
+                                            </pems-modal>
                                     }
                                 </td>
                             </tr>
@@ -274,22 +270,18 @@
     </div>
 </div>
 
-<div class="modal fade" id="holdRunModal" tabindex="-1">
-    <div class="modal-dialog"><div class="modal-content">
+<pems-modal id="holdRunModal" tabindex="-1">
         <form asp-action="Hold" asp-route-id="@Model.ProductionRunId" method="post">
             <div class="modal-header"><h6 class="modal-title">Hold Production Run</h6><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div>
-            <div class="modal-body"><label class="form-label">@Localizer["Reason"]</label><pems-textarea name="reason" required></pems-textarea></div>
+            <div class="modal-body"><pems-label>@Localizer["Reason"]</pems-label><pems-textarea name="reason" required></pems-textarea></div>
             <div class="modal-footer"><pems-button tone="warning" type="submit">@Localizer["Hold"]</pems-button></div>
         </form>
-    </div></div>
-</div>
+    </pems-modal>
 
-<div class="modal fade" id="cancelRunModal" tabindex="-1">
-    <div class="modal-dialog"><div class="modal-content">
+<pems-modal id="cancelRunModal" tabindex="-1">
         <form asp-action="Cancel" asp-route-id="@Model.ProductionRunId" method="post">
             <div class="modal-header"><h6 class="modal-title">Cancel Production Run</h6><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div>
-            <div class="modal-body"><label class="form-label">@Localizer["Reason"]</label><pems-textarea name="reason" required></pems-textarea></div>
+            <div class="modal-body"><pems-label>@Localizer["Reason"]</pems-label><pems-textarea name="reason" required></pems-textarea></div>
             <div class="modal-footer"><pems-button tone="danger" type="submit">Cancel Run</pems-button></div>
         </form>
-    </div></div>
-</div>
+    </pems-modal>

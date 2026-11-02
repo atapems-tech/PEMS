@@ -30,7 +30,7 @@ else
 {
     <form asp-controller="BreakGlass" asp-action="Index" method="post" autocomplete="off">
         <div class="mb-3">
-            <label for="TargetUserId" class="form-label">@Localizer["Administrator account"]</label>
+            <pems-label for="TargetUserId">@Localizer["Administrator account"]</pems-label>
             <pems-select id="TargetUserId" name="TargetUserId" required>
                 <option value="">-</option>
                 @foreach (var a in Model.Admins)
@@ -42,7 +42,7 @@ else
         @if (!Model.Window.IsOpen)
         {
             <div class="mb-3">
-                <label for="VendorToken" class="form-label">@Localizer["Vendor recovery token"]</label>
+                <pems-label for="VendorToken">@Localizer["Vendor recovery token"]</pems-label>
                 <pems-textarea id="VendorToken" name="VendorToken" dir="ltr" rows="4" required spellcheck="false"></pems-textarea>
             </div>
         }

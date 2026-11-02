@@ -15,7 +15,7 @@
 
     <form asp-action="Generate" method="post" class="row g-2 align-items-end" autocomplete="off">
         <div class="col-sm-6">
-            <label asp-for="CurrentPassword" class="form-label small">@Localizer["Current password"]</label>
+            <pems-label css="small" asp-for="CurrentPassword">@Localizer["Current password"]</pems-label>
             <pems-input scale="small" asp-for="CurrentPassword" autocomplete="current-password" />
             <span asp-validation-for="CurrentPassword" class="text-danger small"></span>
         </div>
