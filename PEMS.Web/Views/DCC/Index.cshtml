@@ -9,16 +9,10 @@
 
 <div class="row g-3 mb-3">
     <div class="col-md-4">
-        <div class="content-card text-center">
-            <div class="fs-3 fw-bold text-primary">@ViewBag.PendingIssueCount</div>
-            <div class="text-muted small"><i class="bi bi-send-check"></i> @Localizer["مدارک آماده‌ی صدور (Approved)"]</div>
-        </div>
+        <pems-kpi-tile icon="bi-send-check" color="blue" label="@Localizer["مدارک آماده‌ی صدور (Approved)"]">@ViewBag.PendingIssueCount</pems-kpi-tile>
     </div>
     <div class="col-md-4">
-        <div class="content-card text-center">
-            <div class="fs-3 fw-bold text-warning">@ViewBag.UnlinkedIncomingCount</div>
-            <div class="text-muted small"><i class="bi bi-envelope-exclamation"></i> @Localizer["مکاتبات وارده‌ی وصل‌نشده"]</div>
-        </div>
+        <pems-kpi-tile tone="warning" icon="bi-envelope-exclamation" color="amber" label="@Localizer["مکاتبات وارده‌ی وصل‌نشده"]">@ViewBag.UnlinkedIncomingCount</pems-kpi-tile>
     </div>
     <div class="col-md-4">
         <div class="content-card text-center">

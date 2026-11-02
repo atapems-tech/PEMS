@@ -11,16 +11,10 @@
 
 <div class="row g-3 mb-3">
     <div class="col-md-6">
-        <div class="content-card text-center">
-            <div class="fs-3 fw-bold text-danger">@ViewBag.OpenNCRCount</div>
-            <div class="text-muted small"><i class="bi bi-exclamation-triangle"></i> @Localizer["NCR باز"]</div>
-        </div>
+        <pems-kpi-tile tone="danger" icon="bi-exclamation-triangle" color="red" label="@Localizer["NCR باز"]">@ViewBag.OpenNCRCount</pems-kpi-tile>
     </div>
     <div class="col-md-6">
-        <div class="content-card text-center">
-            <div class="fs-3 fw-bold text-primary">@ViewBag.ActiveITPCount</div>
-            <div class="text-muted small"><i class="bi bi-clipboard-check"></i> @Localizer["ITP فعال"]</div>
-        </div>
+        <pems-kpi-tile icon="bi-clipboard-check" color="blue" label="@Localizer["ITP فعال"]">@ViewBag.ActiveITPCount</pems-kpi-tile>
     </div>
 </div>
 

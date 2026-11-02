@@ -146,6 +146,27 @@ public class KpiTileComponentTests
         Assert.DoesNotMatch(@"<div class=""(small )?text-muted( small)?"">[^<]*</div><div class=""(fw-semibold|fs-5)", text);
     }
 
+    // ---- K4: dashboards with their own large-number tiles
+    [Theory]
+    [InlineData("Areas/Warehouse/Views/Inventory/Index.cshtml", 6)]
+    [InlineData("Views/AIInsights/Index.cshtml", 2)]
+    [InlineData("Views/DCC/Index.cshtml", 2)]
+    [InlineData("Views/EquipmentClassification/Index.cshtml", 5)]
+    [InlineData("Views/QC/Index.cshtml", 2)]
+    [InlineData("Views/QC/Kpi.cshtml", 3)]
+    [InlineData("Views/Relationship/GapReport.cshtml", 4)]
+    [InlineData("Views/Reliability/CBMDashboard.cshtml", 4)]
+    [InlineData("Views/Reliability/DataQuality.cshtml", 9)]
+    [InlineData("Views/Reliability/Simulate.cshtml", 4)]
+    public void WaveK4_Dashboards_TakeTheirTilesFromTheComponent(string view, int tiles)
+    {
+        var text = File.ReadAllText(Path.Combine(RepoRoot(), "PEMS.Web", view));
+        Assert.Equal(tiles, Regex.Matches(text, "<pems-kpi-tile ").Count);
+        // a large bold number over a muted label is a tile; the DCC navigation card (an icon, no number) is the one left
+        var left = Regex.Matches(text, @"<div class=""fs-[345] fw-bold[^""]*"">(?!<i )").Count;
+        Assert.Equal(0, left);
+    }
+
     private static string RepoRoot()
     {
         var dir = new DirectoryInfo(AppContext.BaseDirectory);
