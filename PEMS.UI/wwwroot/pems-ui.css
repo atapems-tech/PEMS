@@ -24,9 +24,21 @@
 .pems-table thead th { background: var(--pems-table-header-bg); }
 .pems-table tbody tr:hover { background: var(--pems-row-hover); }
 .pems-align-start { text-align: start; } .pems-align-center { text-align: center; } .pems-align-end { text-align: end; }
-.pems-skeleton__line { block-size: 1rem; margin-block-end: .5rem; border-radius: .25rem; background: var(--pems-row-hover); }
+.pems-skeleton__line { display: block; block-size: 1rem; margin-block-end: .5rem; border-radius: .25rem; background: var(--pems-surface-border); }
 @media (prefers-reduced-motion: no-preference) { .pems-skeleton__line { animation: pems-pulse 1.4s ease-in-out infinite; } }
 @keyframes pems-pulse { 50% { opacity: .5; } }
+/* SCRUM-337 Skeleton kinds (<pems-skeleton kind="...">, PemsSkeleton.show) */
+.pems-skeleton__line--short { inline-size: 60%; }
+.pems-skeleton__line--title { block-size: 1.25rem; inline-size: 45%; margin-block-end: .875rem; }
+.pems-skeleton--card, .pems-skeleton--kpi { padding-block: 1.1rem; padding-inline: 1.25rem; border: 1px solid var(--pems-surface-border); border-radius: .75rem; background: var(--pems-surface); }
+.pems-skeleton--kpi { display: flex; align-items: center; gap: .875rem; }
+.pems-skeleton__line--square { flex-shrink: 0; inline-size: 2.875rem; block-size: 2.875rem; margin: 0; border-radius: .625rem; }
+.pems-skeleton__stack { display: block; flex: 1; }
+.pems-skeleton__line--value { block-size: 1.375rem; inline-size: 40%; }
+.pems-skeleton__row { display: flex; gap: 1rem; padding-block: .625rem; padding-inline: .75rem; border-block-end: 1px solid var(--pems-surface-border); }
+.pems-skeleton__row .pems-skeleton__line { flex: 1; block-size: .8rem; margin: 0; }
+.pems-skeleton__line--label { block-size: .75rem; inline-size: 30%; margin-block-end: .375rem; }
+.pems-skeleton__line--field { block-size: 2rem; margin-block-end: 1rem; }
 .pems-state { display: flex; flex-direction: column; align-items: center; gap: .5rem; padding-block: 2rem; padding-inline: 1rem; text-align: center; color: var(--pems-text); }
 .pems-state__icon { font-size: 2rem; color: var(--pems-text-muted); }
 .pems-state__title { margin: 0; font-weight: 600; }

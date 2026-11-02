@@ -19,7 +19,7 @@
         <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
     </div>
     <div class="offcanvas-body" id="pemsHelpDrawerBody">
-        <p class="text-muted small text-center py-4">@L("Loading...", "در حال بارگذاری...")</p>
+        <pems-skeleton kind="card" label="@L("Loading...", "در حال بارگذاری...")" />
     </div>
 </div>
 
@@ -36,7 +36,7 @@
             if (!helpKey || helpKey === loadedForKey) return;
 
             var body = document.getElementById('pemsHelpDrawerBody');
-            body.innerHTML = '<p class="text-muted small text-center py-4">@L("Loading...", "در حال بارگذاری...")</p>';
+            PemsSkeleton.show(body, 'card');
 
             fetch('@Url.Action("Context", "Help", new { area = "" })?key=' + encodeURIComponent(helpKey))
                 .then(function (r) { return r.json(); })

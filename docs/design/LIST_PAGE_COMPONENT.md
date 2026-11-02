@@ -226,3 +226,25 @@ and the four `_KpiCard` callers (done; the partial is retired, `KpiCardViewModel
 Reliability, Replenishment, ProductionRun) with the compact look (done); K4 the dashboards with their own large-number tiles (Inventory, AIInsights, DCC,
 EquipmentClassification, QC, QC KPIs, GapReport, CBM, reliability DataQuality and Simulate) (done). All KpiTile waves are done.
 The executive KPI dashboard (`pems-kpi-tile` CSS class with status colours) keeps its own design.
+
+## Skeleton (loading placeholder)
+
+Pages are rendered on the server; the wait is in the panels a script fills after the page loads. Such a panel shows a
+skeleton until its data arrives:
+
+```cshtml
+<div id="helpBody"><pems-skeleton kind="card" label="@Localizer["Loading"]" /></div>
+```
+
+```js
+PemsSkeleton.show(panel, 'table', { rows: 3, cols: 2 });   // label: <body data-pems-skeleton-label> unless opts.label
+panel.innerHTML = PemsSkeleton.html('text', { lines: 8 });
+```
+
+Kinds: `text` (lines, the last one shorter), `title`, `card`, `kpi`, `table` (rows x cols), `form` (rows of label + field).
+One markup (`PemsSkeletonMarkup` in PEMS.UI) for the tag helper, the script and the Blazor `PemsSkeleton`; styles in
+`pems-ui.css`. A busy button keeps its spinner (`pems-spinner`, SCRUM-53).
+
+Waves: S1 the component, help drawer, global search, letter preview, position org chart (done); S2 the panels with a spinner
+or nothing (org chart, user permissions, permission matrix, cartable, task manager, maintenance calendar, notifications);
+S3 registry entry and a ratchet pattern for "Loading..." text used as a placeholder.

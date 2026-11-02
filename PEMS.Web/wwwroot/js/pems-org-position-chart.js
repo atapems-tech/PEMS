@@ -17,6 +17,8 @@
     }
     function showState(msg) { stateEl.textContent = msg; stateEl.hidden = false; canvas.hidden = true; }
     function hideState() { stateEl.hidden = true; canvas.hidden = false; }
+    // SCRUM-337: the shared skeleton while the chart data loads
+    function showLoading() { window.PemsSkeleton.show(stateEl, "card", { label: T("loading") }); stateEl.hidden = false; canvas.hidden = true; }
 
     function nodeHtml(d) {
         var n = d.data || d;
@@ -108,7 +110,7 @@
     });
     if (search) search.addEventListener("input", function () { search.classList.remove("is-invalid"); });
 
-    showState(T("loading"));
+    showLoading();
     fetch(root.getAttribute("data-url"), { credentials: "same-origin", headers: { Accept: "application/json" } })
         .then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); })
         .then(build)
