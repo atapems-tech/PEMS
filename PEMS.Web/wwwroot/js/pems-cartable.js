@@ -294,8 +294,16 @@
             Array.prototype.forEach.call(doc.querySelectorAll("tr[data-thread-for='" + id + "']"), function (n) { n.remove(); });
             if (open) { chip.setAttribute("aria-expanded", "false"); return; }
             chip.setAttribute("aria-expanded", "true");
+            var cols = table ? table.querySelectorAll("thead th").length : 14;
+            // SCRUM-337: a skeleton row while the replies load
+            var wait = doc.createElement("tr");
+            wait.setAttribute("data-thread-for", id);
+            var waitTd = doc.createElement("td"); waitTd.colSpan = cols;
+            window.PemsSkeleton.show(waitTd, "table", { rows: 2, cols: 3 });
+            wait.appendChild(waitTd);
+            tr.parentNode.insertBefore(wait, tr.nextSibling);
             api.get(cfg.urls.threadMembers + "?id=" + encodeURIComponent(id)).then(function (members) {
-                var cols = table ? table.querySelectorAll("thead th").length : 14;
+                wait.remove();
                 var anchor = tr;
                 members.forEach(function (m) {
                     var row = doc.createElement("tr");
@@ -310,7 +318,7 @@
                     anchor.parentNode.insertBefore(row, anchor.nextSibling);
                     anchor = row;
                 });
-            }).catch(function () { chip.setAttribute("aria-expanded", "false"); });
+            }).catch(function () { wait.remove(); chip.setAttribute("aria-expanded", "false"); });
         });
 
         // ---- "#" moves the cursor row to the trash (Gmail-style)

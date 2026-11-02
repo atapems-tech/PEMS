@@ -20,6 +20,8 @@
         };
 
         function clear() { while (out.firstChild) out.removeChild(out.firstChild); }
+        // SCRUM-337: a skeleton in the result panel while the search runs
+        function waiting() { window.PemsSkeleton.show(out, 'text', { lines: 3 }); }
 
         function note(message, cls) {
             var p = document.createElement('div');
@@ -65,9 +67,10 @@
             clear();
             var q = queryInput.value.trim();
             if (q.length < 2) return;
+            waiting();
             getJson(root.dataset.urlExisting + '?q=' + encodeURIComponent(q))
-                .then(render)
-                .catch(function () { note(txt.error, 'text-danger'); });
+                .then(function (hits) { clear(); render(hits); })
+                .catch(function () { clear(); note(txt.error, 'text-danger'); });
         });
 
         queryInput.addEventListener('keydown', function (e) {
@@ -83,13 +86,15 @@
             if (mfrId && mfrId.value) params.set('manufacturerId', mfrId.value);
             params.set('newManufacturerName', val('pc_NewManufacturerName'));
             if (root.dataset.requestId) params.set('excludeRequestId', root.dataset.requestId);
+            waiting();
             getJson(root.dataset.urlDuplicates + '?' + params.toString())
                 .then(function (res) {
+                    clear();
                     if (res.isAmbiguous) note(txt.ambiguous, 'text-warning');
                     render(res.candidates || []);
                     if (res.inFlightRequestsWithSameMpn > 0) note(txt.inflight + ' ' + res.inFlightRequestsWithSameMpn, 'text-warning');
                 })
-                .catch(function () { note(txt.error, 'text-danger'); });
+                .catch(function () { clear(); note(txt.error, 'text-danger'); });
         });
     }
 

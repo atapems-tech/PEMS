@@ -283,8 +283,12 @@
     function loadGroups() {
         if (groupsLoaded || !boot.urls.groups) return;
         groupsLoaded = true;
+        // SCRUM-337: a skeleton in the menu while the groups load
         text(groupMenu, '');
+        var waitLi = document.createElement('li'); waitLi.className = 'px-3 py-2'; groupMenu.appendChild(waitLi);
+        window.PemsSkeleton.show(waitLi, 'text', { lines: 3 });
         fetch(boot.urls.groups, { credentials: 'same-origin' }).then(function (r) { return r.ok ? r.json() : []; }).then(function (groups) {
+            text(groupMenu, '');
             if (!groups.length) { var empty = document.createElement('li'); var s = document.createElement('span'); s.className = 'dropdown-item-text small text-muted'; s.textContent = T.noGroups; empty.appendChild(s); groupMenu.appendChild(empty); return; }
             groups.forEach(function (g) {
                 var li = document.createElement('li'), b = document.createElement('button');

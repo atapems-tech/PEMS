@@ -245,6 +245,7 @@ Kinds: `text` (lines, the last one shorter), `title`, `card`, `kpi`, `table` (ro
 One markup (`PemsSkeletonMarkup` in PEMS.UI) for the tag helper, the script and the Blazor `PemsSkeleton`; styles in
 `pems-ui.css`. A busy button keeps its spinner (`pems-spinner`, SCRUM-53).
 
-Waves: S1 the component, help drawer, global search, letter preview, position org chart (done); S2 the panels with a spinner
-or nothing (org chart, user permissions, permission matrix, cartable, task manager, maintenance calendar, notifications);
+Waves: S1 the component, help drawer, global search, letter preview, position org chart (done); S2 the panels that load content
+(org chart, cartable thread replies, letter distribution groups, part catalogue duplicate search and technical class) (done;
+the panels that only save keep a busy spinner);
 S3 registry entry and a ratchet pattern for "Loading..." text used as a placeholder.
