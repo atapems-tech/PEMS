@@ -566,45 +566,6 @@ html[dir="rtl"][data-theme="turquoise"] .table-enterprise tbody tr[aria-selected
     text-align: center;
 }
 
-/* --- Skeleton loaders: کارت/جدول/داشبورد - طبق بند ۲۷: بدون Shimmer سایان روشن --- */
-.pems-skeleton {
-    position: relative;
-    overflow: hidden;
-    background: var(--pems-surface-border, #e4e8ee);
-    border-radius: 6px;
-}
-
-.pems-skeleton::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(90deg, transparent, rgba(255,255,255,.06), transparent);
-    animation: pems-shimmer 1.6s ease-in-out infinite;
-}
-
-@keyframes pems-shimmer {
-    0%   { transform: translateX(-100%); }
-    100% { transform: translateX(100%); }
-}
-
-.pems-skeleton-text { height: 12px; margin-bottom: 8px; width: 100%; }
-.pems-skeleton-text.w-60 { width: 60%; }
-.pems-skeleton-text.w-40 { width: 40%; }
-.pems-skeleton-title { height: 20px; width: 45%; margin-bottom: 14px; }
-
-.pems-skeleton-card {
-    padding: 18px 20px;
-    border-radius: 12px;
-    border: 1px solid var(--pems-surface-border);
-    background: var(--pems-surface);
-}
-
-.pems-skeleton-kpi { display: flex; align-items: center; gap: 14px; padding: 18px 20px; border-radius: 12px; border: 1px solid var(--pems-surface-border); background: var(--pems-surface); }
-.pems-skeleton-kpi .pems-skeleton { width: 46px; height: 46px; border-radius: 10px; flex-shrink: 0; }
-
-.pems-skeleton-row { display: flex; gap: 16px; padding: 10px 12px; border-bottom: 1px solid var(--pems-surface-border); }
-.pems-skeleton-row .pems-skeleton { height: 13px; flex: 1; }
-
 .pems-inline-progress {
     display: inline-flex;
     align-items: center;
@@ -656,7 +617,6 @@ button:focus-visible,
 @media (prefers-reduced-motion: reduce) {
     .pems-loading-emblem .pems-le-trace,
     .pems-loading-emblem .pems-le-core,
-    .pems-skeleton::after,
     .pems-inline-progress .pems-dot {
         animation: none !important;
     }

@@ -183,7 +183,8 @@
         }
 
         _renderLoading() {
-            this.panel.innerHTML = '<div class="pems-search-loading">در حال جستجو...</div>';
+            // SCRUM-337: the shared skeleton, its screen-reader label in the page language
+            this.panel.innerHTML = '<div class="pems-search-loading">' + window.PemsSkeleton.html('table', { rows: 3, cols: 2 }) + '</div>';
             this._showPanel();
         }
 

@@ -3,6 +3,17 @@
 All notable changes to PEMS. No system version is defined yet (plan row F_CI), so entries are grouped by date
 and theme and were reconstructed from the git history (initial import 2026-09-05). Newest first.
 
+## 2026-11-02 - Skeleton wave S1: one loading placeholder (SCRUM-337)
+
+### Added
+- `<pems-skeleton kind="text|title|card|kpi|table|form" />` (Razor) and `PemsSkeleton.show(element, kind)` / `PemsSkeleton.html(kind)` (`pems-skeleton.js`, loaded by both layouts): the grey placeholder a part of the page shows while its data loads. Both build the same markup as the Blazor `PemsSkeleton`, which now takes the same `Kind`, `Rows` and `Cols`. A status region (`role="status"`, `aria-busy`) with "Loading..." for screen readers in the page language (`<body data-pems-skeleton-label>`); the pulse stops when the user asks for reduced motion.
+
+### Changed
+- The help drawer, the global search, the letter preview and the position org chart show the skeleton while they load, instead of "Loading..." text. Global search no longer shows Persian text in the English interface.
+
+### Removed
+- The unused skeleton styles in `pems-glass.css`; the styles live in `pems-ui.css`.
+
 ## 2026-11-02 - KpiTile wave K4: dashboards (SCRUM-337)
 
 ### Changed

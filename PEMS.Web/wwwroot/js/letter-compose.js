@@ -498,7 +498,7 @@
 
     // ---------------------------------------------------------------- preview
     $('lcPreviewBtn').addEventListener('click', function () {
-        var body = $('lcPreviewBody'); body.textContent = T.loading;
+        var body = $('lcPreviewBody'); window.PemsSkeleton.show(body, 'text', { lines: 8, label: T.loading });
         var modalEl = $('lcPreviewModal');
         if (window.bootstrap) window.bootstrap.Modal.getOrCreateInstance(modalEl).show();
         postJson(boot.urls.preview, buildInput())
