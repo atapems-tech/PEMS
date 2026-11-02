@@ -15,40 +15,40 @@
         <div class="row g-3">
             <div class="col-md-6">
                 <label class="form-label">@Localizer["Project"]</label>
-                <select name="projectId" class="form-select" required>
+                <pems-select name="projectId" required>
                     @foreach (var p in projects)
                     {
                         <option value="@p.ProjectId">@p.ProjectName</option>
                     }
-                </select>
+                </pems-select>
             </div>
             <div class="col-md-6">
                 <label class="form-label">@Localizer["Equipment"]</label>
-                <select name="equipmentId" class="form-select" required>
+                <pems-select name="equipmentId" required>
                     @foreach (var eq in equipments)
                     {
                         <option value="@eq.EquipmentId">@eq.TagNumber</option>
                     }
-                </select>
+                </pems-select>
             </div>
             <div class="col-md-6">
                 <label class="form-label">@Localizer["Vendor"]</label>
-                <select name="vendorId" class="form-select" required>
+                <pems-select name="vendorId" required>
                     @foreach (var v in vendors)
                     {
                         <option value="@v.VendorId">@v.Name</option>
                     }
-                </select>
+                </pems-select>
             </div>
             <div class="col-md-6">
                 <label class="form-label">Purchase Order <span class="text-muted small">@Localizer["(optional)"]</span></label>
-                <select name="poId" class="form-select">
+                <pems-select name="poId">
                     <option value="">@Localizer["-- None --"]</option>
                     @foreach (var po in pos)
                     {
                         <option value="@po.PoId">@po.PoNumber</option>
                     }
-                </select>
+                </pems-select>
             </div>
             <div class="col-md-6">
                 <label class="form-label">Planned Final Issue Date <span class="text-muted small">(index due 4 weeks before)</span></label>

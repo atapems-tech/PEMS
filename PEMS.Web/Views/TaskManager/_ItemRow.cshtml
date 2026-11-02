@@ -14,7 +14,7 @@
 <tr class="tm-row @(i.IsOverdue ? "tm-row--overdue" : "") @(!i.IsActive ? "text-muted" : "")" data-tm-id="@i.Id" draggable="@(canRank ? "true" : "false")">
     @if (showBulk)
     {
-        <td class="tm-col-check"><input type="checkbox" class="form-check-input" name="ids" value="@i.Id" form="tmBulk" aria-label="@Localizer["Tm_Select"] @(i.Key ?? "#" + i.Id)" data-tm-bulk-item /></td>
+        <td class="tm-col-check"><pems-input kind="check" type="checkbox" name="ids" value="@i.Id" form="tmBulk" aria-label="@Localizer["Tm_Select"] @(i.Key ?? "#" + i.Id)" data-tm-bulk-item /></td>
     }
     <td class="text-nowrap">
         @if (!string.IsNullOrEmpty(i.TypeIcon)) { <i class="bi @i.TypeIcon me-1" title="@TaskManagerUi.Name(i.TypeName, i.TypeNameFa)" aria-hidden="true"></i><span class="visually-hidden">@TaskManagerUi.Name(i.TypeName, i.TypeNameFa)</span> }
@@ -47,10 +47,10 @@
             </form>
             <form asp-controller="TaskManager" asp-action="SetSprint" method="post" class="d-inline">
                 <input type="hidden" name="id" value="@i.Id" /><input type="hidden" name="returnUrl" value="@returnUrl" />
-                <select name="sprintId" class="form-select form-select-sm d-inline-block w-auto" aria-label="@Localizer["Tm_MoveToSprint"] @(i.Key)" onchange="this.form.submit()">
+                <pems-select scale="small" css="d-inline-block w-auto" name="sprintId" aria-label="@Localizer["Tm_MoveToSprint"] @(i.Key)" onchange="this.form.submit()">
                     <option value="0" selected="@(i.SprintId == null)">@Localizer["Tm_Backlog"]</option>
                     @foreach (var s in sprints) { <option value="@s.Id" selected="@(i.SprintId == s.Id)">@s.Name</option> }
-                </select>
+                </pems-select>
             </form>
         </td>
     }

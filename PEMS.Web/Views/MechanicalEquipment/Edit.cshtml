@@ -15,39 +15,39 @@
         <div class="row g-3 mb-4">
             <div class="col-md-4">
                 <label class="form-label">@Localizer["Equipment Type"]</label>
-                <input name="EquipmentType" value="@Model.EquipmentType" class="form-control" required />
+                <pems-input name="EquipmentType" value="@Model.EquipmentType" required />
             </div>
             <div class="col-md-4">
                 <label class="form-label">@Localizer["Manufacturer"]</label>
-                <input name="Manufacturer" value="@Model.Manufacturer" class="form-control" />
+                <pems-input name="Manufacturer" value="@Model.Manufacturer" />
             </div>
             <div class="col-md-4">
                 <label class="form-label">@Localizer["Model"]</label>
-                <input name="Model" value="@Model.Model" class="form-control" />
+                <pems-input name="Model" value="@Model.Model" />
             </div>
             <div class="col-md-3">
                 <label class="form-label">@Localizer["Material"]</label>
-                <input name="Material" value="@Model.Material" class="form-control" />
+                <pems-input name="Material" value="@Model.Material" />
             </div>
             <div class="col-md-3">
                 <label class="form-label">@Localizer["Design Pressure"]</label>
-                <input type="number" step="any" name="DesignPressure" value="@Model.DesignPressure" class="form-control" />
+                <pems-input type="number" step="any" name="DesignPressure" value="@Model.DesignPressure" />
             </div>
             <div class="col-md-3">
                 <label class="form-label">@Localizer["Design Temperature"]</label>
-                <input type="number" step="any" name="DesignTemperature" value="@Model.DesignTemperature" class="form-control" />
+                <pems-input type="number" step="any" name="DesignTemperature" value="@Model.DesignTemperature" />
             </div>
             <div class="col-md-3">
                 <label class="form-label">@Localizer["Operating Pressure"]</label>
-                <input type="number" step="any" name="OperatingPressure" value="@Model.OperatingPressure" class="form-control" />
+                <pems-input type="number" step="any" name="OperatingPressure" value="@Model.OperatingPressure" />
             </div>
             <div class="col-md-3">
                 <label class="form-label">@Localizer["Operating Temperature"]</label>
-                <input type="number" step="any" name="OperatingTemperature" value="@Model.OperatingTemperature" class="form-control" />
+                <pems-input type="number" step="any" name="OperatingTemperature" value="@Model.OperatingTemperature" />
             </div>
             <div class="col-12">
                 <label class="form-label">@Localizer["توضیحات (اختیاری)"]</label>
-                <textarea name="Description" class="form-control" rows="2">@Model.Description</textarea>
+                <pems-textarea name="Description" rows="2">@Model.Description</pems-textarea>
             </div>
         </div>
 

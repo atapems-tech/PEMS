@@ -38,15 +38,15 @@
                 <pems-list-filters form-id="fnFilterForm" action="@Url.Action("Index")" count="@filterCount" reset-href="@Url.Action("Index")">
                     <div>
                         <label class="lp-lbl" for="fnFilterEquipment">@Localizer["Fn_EquipmentId"]</label>
-                        <input type="number" id="fnFilterEquipment" name="equipmentId" value="@equipmentId" class="form-control form-control-sm" />
+                        <pems-input scale="small" type="number" id="fnFilterEquipment" name="equipmentId" value="@equipmentId" />
                     </div>
                     <div>
                         <label class="lp-lbl" for="fnFilterStatus">@Localizer["Ed_Status"]</label>
-                        <select id="fnFilterStatus" name="status" class="form-select form-select-sm">
+                        <pems-select scale="small" id="fnFilterStatus" name="status">
                             <option value="">@Localizer["Ed_All"]</option>
                             @foreach (var s in statuses)
                             { <option value="@s" selected="@(s == status)">@StatusText(s)</option> }
-                        </select>
+                        </pems-select>
                     </div>
                 </pems-list-filters>
             </pems-list-tools>

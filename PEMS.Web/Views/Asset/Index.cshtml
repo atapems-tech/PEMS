@@ -42,11 +42,11 @@
                     <input type="hidden" name="q" value="@q" />
                     <div>
                         <label class="lp-lbl" for="asFilterStatus">@Localizer["Ed_Status"]</label>
-                        <select id="asFilterStatus" name="status" class="form-select form-select-sm">
+                        <pems-select scale="small" id="asFilterStatus" name="status">
                             <option value="">@Localizer["Eq_AllStatuses"]</option>
                             @foreach (var s in statuses)
                             { <option value="@s" selected="@(s == status)">@StatusText(s)</option> }
-                        </select>
+                        </pems-select>
                     </div>
                 </pems-list-filters>
                 <pems-list-kpi-toggle target="asKpis" storage-key="pems.asset.kpis" />
@@ -125,37 +125,37 @@
                     </p>
                     <div class="mb-3">
                         <label class="form-label">@Localizer["Equipment"]</label>
-                        <select name="equipmentId" class="form-select" required>
+                        <pems-select name="equipmentId" required>
                             <option value="">@Localizer["-- select equipment --"]</option>
                             @foreach (var e in equipmentOptions)
                             {
                                 <option value="@e.EquipmentId">@e.Label</option>
                             }
-                        </select>
+                        </pems-select>
                         <div class="form-text">Equipment not listed here already has an Asset, or doesn't exist yet.</div>
                     </div>
 
                     <div class="row g-3 mb-3">
                         <div class="col-md-6">
                             <label class="form-label">@Localizer["Asset Number"]</label>
-                            <input name="assetNumber" class="form-control" placeholder="AST-P101" required />
+                            <pems-input name="assetNumber" placeholder="AST-P101" required />
                         </div>
                         <div class="col-md-6">
                             <label class="form-label">@Localizer["Maintenance Class"]</label>
-                            <input name="maintenanceClass" class="form-control" placeholder="Rotating, Static, Electrical ..." />
+                            <pems-input name="maintenanceClass" placeholder="Rotating, Static, Electrical ..." />
                         </div>
                     </div>
 
                     <div class="row g-3 mb-3">
                         <div class="col-md-6">
                             <label class="form-label">@Localizer["Functional Location"]</label>
-                            <select name="functionalLocationId" class="form-select">
+                            <pems-select name="functionalLocationId">
                                 <option value="">@Localizer["-- not linked --"]</option>
                                 @foreach (var fl in (List<PEMS.Application.DTOs.FunctionalLocationPickerItemDto>)ViewBag.FunctionalLocations)
                                 {
                                     <option value="@fl.FunctionalLocationId">@fl.PathBreadcrumb</option>
                                 }
-                            </select>
+                            </pems-select>
                             <div class="form-text">Real link to Functional Location. <a asp-controller="FunctionalLocation" asp-action="Index" target="_blank">@Localizer["Manage list"]</a></div>
                         </div>
                         <div class="col-md-6">
@@ -166,21 +166,21 @@
 
                     <div class="mb-3">
                         <label class="form-label">@Localizer["Functional Location (raw text, legacy)"]</label>
-                        <input name="functionalLocation" class="form-control" placeholder="Unit-100 / Area-A" />
+                        <pems-input name="functionalLocation" placeholder="Unit-100 / Area-A" />
                     </div>
 
                     <div class="mb-3">
                         <label class="form-label">@Localizer["Status"]</label>
-                        <select name="status" class="form-select">
+                        <pems-select name="status">
                             <option value="Active" selected>@Localizer["Active"]</option>
                             <option value="Standby">Standby</option>
                             <option value="Retired">Retired</option>
-                        </select>
+                        </pems-select>
                     </div>
 
                     <div class="mb-3">
                         <label class="form-label">@Localizer["Description"]</label>
-                        <textarea name="description" class="form-control" rows="2"></textarea>
+                        <pems-textarea name="description" rows="2"></pems-textarea>
                     </div>
                 </div>
                 <div class="modal-footer">

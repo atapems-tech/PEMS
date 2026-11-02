@@ -34,10 +34,10 @@
                     <input type="hidden" name="q" value="@q" />
                     <div>
                         <label class="lp-lbl" for="fmcFilterClass">@Localizer["Rcm_EquipmentClass"]</label>
-                        <select id="fmcFilterClass" name="classId" class="form-select form-select-sm">
+                        <pems-select scale="small" id="fmcFilterClass" name="classId">
                             <option value="">@Localizer["Rcm_All"]</option>
                             @foreach (var c in classes) { <option value="@c.Id" selected="@(classId == c.Id)">@c.Text (@c.Code)</option> }
-                        </select>
+                        </pems-select>
                     </div>
                 </pems-list-filters>
                 <a class="lp-icon-btn" asp-controller="MaintenanceStrategy" asp-action="Index" title="@Localizer["Rcm_Strategies"]" aria-label="@Localizer["Rcm_Strategies"]"><i class="bi bi-diagram-3" aria-hidden="true"></i></a>

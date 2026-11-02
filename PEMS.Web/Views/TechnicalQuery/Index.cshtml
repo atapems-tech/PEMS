@@ -34,27 +34,27 @@
                 <pems-list-filters form-id="tqFilterForm" action="@Url.Action("Index")" count="@filterCount" reset-href="@Url.Action("Index")">
                     <div>
                         <label class="lp-lbl" for="tqFilterType">@Localizer["Ed_Type"]</label>
-                        <select id="tqFilterType" name="queryType" class="form-select form-select-sm">
+                        <pems-select scale="small" id="tqFilterType" name="queryType">
                             <option value="">@Localizer["Ed_All"]</option>
                             @foreach (var t in queryTypes)
                             { <option value="@t" selected="@(t == queryType)">@t</option> }
-                        </select>
+                        </pems-select>
                     </div>
                     <div>
                         <label class="lp-lbl" for="tqFilterStatus">@Localizer["Ed_Status"]</label>
-                        <select id="tqFilterStatus" name="status" class="form-select form-select-sm">
+                        <pems-select scale="small" id="tqFilterStatus" name="status">
                             <option value="">@Localizer["Ed_All"]</option>
                             @foreach (var s in statuses)
                             { <option value="@s" selected="@(s == status)">@StatusText(s)</option> }
-                        </select>
+                        </pems-select>
                     </div>
                     <div>
                         <label class="lp-lbl" for="tqFilterProject">@Localizer["Project"]</label>
-                        <select id="tqFilterProject" name="projectId" class="form-select form-select-sm">
+                        <pems-select scale="small" id="tqFilterProject" name="projectId">
                             <option value="">@Localizer["Ed_All"]</option>
                             @foreach (var p in projects)
                             { <option value="@p.ProjectId" selected="@(p.ProjectId == projectId)">@p.ProjectName</option> }
-                        </select>
+                        </pems-select>
                     </div>
                 </pems-list-filters>
                 <pems-list-kpi-toggle target="tqKpis" storage-key="pems.tq.kpis" />

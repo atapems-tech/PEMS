@@ -127,48 +127,47 @@
                 <div class="modal-header"><h6 class="modal-title">@Localizer["EmL_New"]</h6></div>
                 <div class="modal-body">
                     <div class="row g-3">
-                        <div class="col-md-4"><label class="form-label">@Localizer["Personnel Code"]</label><input name="personnelCode" class="form-control" /></div>
-                        <div class="col-md-4"><label class="form-label">@Localizer["First Name"]</label><input name="firstName" class="form-control" required /></div>
-                        <div class="col-md-4"><label class="form-label">@Localizer["Last Name"]</label><input name="lastName" class="form-control" required /></div>
+                        <div class="col-md-4"><label class="form-label">@Localizer["Personnel Code"]</label><pems-input name="personnelCode" /></div>
+                        <div class="col-md-4"><label class="form-label">@Localizer["First Name"]</label><pems-input name="firstName" required /></div>
+                        <div class="col-md-4"><label class="form-label">@Localizer["Last Name"]</label><pems-input name="lastName" required /></div>
                         <div class="col-md-6"><partial name="_PositionSelect" model="(int?)null" /></div>
-                        <div class="col-md-6"><label class="form-label">@Localizer["Email"]</label><input name="email" type="email" class="form-control" /></div>
-                        <div class="col-md-6"><label class="form-label">@Localizer["Phone"]</label><input name="phone" class="form-control" /></div>
+                        <div class="col-md-6"><label class="form-label">@Localizer["Email"]</label><pems-input name="email" type="email" /></div>
+                        <div class="col-md-6"><label class="form-label">@Localizer["Phone"]</label><pems-input name="phone" /></div>
                         <div class="col-md-3">
                             <label class="form-label">@Localizer["Department"]</label>
-                            <select name="departmentId" class="form-select" required>
+                            <pems-select name="departmentId" required>
                                 @foreach (var d in departments) { <option value="@d.DepartmentId">@d.Name</option> }
-                            </select>
+                            </pems-select>
                         </div>
                         <div class="col-md-3">
                             <label class="form-label">@Localizer["Discipline"]</label>
-                            <select name="disciplineId" class="form-select" required>
+                            <pems-select name="disciplineId" required>
                                 @foreach (var d in disciplines) { <option value="@d.DisciplineId">@d.Name</option> }
-                            </select>
+                            </pems-select>
                         </div>
                         <div class="col-md-3">
                             <label class="form-label">@Localizer["Personnel Type"]</label>
-                            <select name="personnelType" class="form-select" onchange="document.getElementById('createVendorField').style.display = this.value === 'Internal' ? 'none' : ''">
+                            <pems-select name="personnelType" onchange="document.getElementById('createVendorField').style.display = this.value === 'Internal' ? 'none' : ''">
                                 @foreach (var t in personnelTypes) { <option value="@t">@t</option> }
-                            </select>
+                            </pems-select>
                         </div>
                         <div class="col-md-3" id="createVendorField" style="display:none;">
                             <label class="form-label">@Localizer["Vendor"]</label>
-                            <select name="vendorId" class="form-select">
+                            <pems-select name="vendorId">
                                 <option value="">@Localizer["-- انتخاب --"]</option>
                                 @foreach (var v in vendors) { <option value="@v.VendorId">@v.Name</option> }
-                            </select>
+                            </pems-select>
                         </div>
 
                         <div class="col-md-3"><label class="form-label">@Localizer["Hire Date"]</label><input name="hireDate" type="date" class="form-control" /></div>
-                        <div class="col-md-3"><label class="form-label">@Localizer["Location / Site"]</label><input name="location" class="form-control" /></div>
-                        <div class="col-md-3"><label class="form-label">@Localizer["Shift"]</label><input name="shift" class="form-control" /></div>
-                        <div class="col-md-3"><label class="form-label">@Localizer["Home Address"]</label><input name="homeAddress" class="form-control" /></div>
+                        <div class="col-md-3"><label class="form-label">@Localizer["Location / Site"]</label><pems-input name="location" /></div>
+                        <div class="col-md-3"><label class="form-label">@Localizer["Shift"]</label><pems-input name="shift" /></div>
+                        <div class="col-md-3"><label class="form-label">@Localizer["Home Address"]</label><pems-input name="homeAddress" /></div>
 
                         <div class="col-12"><hr /></div>
                         <div class="col-12">
                             <div class="form-check">
-                                <input class="form-check-input" type="checkbox" name="createUser" value="true" id="createUserCheck"
-                                       onclick="document.getElementById('createUserFields').style.display = this.checked ? '' : 'none';">
+                                <pems-input kind="check" type="checkbox" name="createUser" value="true" id="createUserCheck" onclick="document.getElementById('createUserFields').style.display = this.checked ? '' : 'none';" />
                                 <label class="form-check-label fw-bold" for="createUserCheck">
                                     <i class="bi bi-person-badge"></i> آیا نیاز است یوزر لاگین هم برای این کارمند ساخته بشه؟
                                 </label>
@@ -178,7 +177,7 @@
                             <div class="row g-3">
                                 <div class="col-md-6">
                                     <label class="form-label small">@Localizer["Username"]</label>
-                                    <input name="userName" class="form-control form-control-sm" />
+                                    <pems-input scale="small" name="userName" />
                                 </div>
                                 <div class="col-md-6">
                                     <p class="text-muted small mb-0 mt-4">یک رمز یک‌بارمصرف تصادفی ساخته و بعد از ثبت فقط یک بار نمایش داده می‌شود؛ در اولین ورود باید عوض شود.</p>
@@ -190,7 +189,7 @@
                                         {
                                             <div class="col-6 col-md-4">
                                                 <div class="form-check">
-                                                    <input class="form-check-input" type="checkbox" name="selectedRoles" value="@role" id="empRole_@role">
+                                                    <pems-input kind="check" type="checkbox" name="selectedRoles" value="@role" id="empRole_@role" />
                                                     <label class="form-check-label small" for="empRole_@role">@role</label>
                                                 </div>
                                             </div>
@@ -220,44 +219,44 @@
                     <div class="modal-header"><h6 class="modal-title">@Localizer["EmL_Edit"]</h6></div>
                     <div class="modal-body">
                         <div class="row g-3">
-                            <div class="col-md-4"><label class="form-label">@Localizer["Personnel Code"]</label><input name="personnelCode" value="@e.PersonnelCode" class="form-control" /></div>
-                            <div class="col-md-4"><label class="form-label">@Localizer["First Name"]</label><input name="firstName" value="@e.FirstName" class="form-control" required /></div>
-                            <div class="col-md-4"><label class="form-label">@Localizer["Last Name"]</label><input name="lastName" value="@e.LastName" class="form-control" required /></div>
+                            <div class="col-md-4"><label class="form-label">@Localizer["Personnel Code"]</label><pems-input name="personnelCode" value="@e.PersonnelCode" /></div>
+                            <div class="col-md-4"><label class="form-label">@Localizer["First Name"]</label><pems-input name="firstName" value="@e.FirstName" required /></div>
+                            <div class="col-md-4"><label class="form-label">@Localizer["Last Name"]</label><pems-input name="lastName" value="@e.LastName" required /></div>
                             <div class="col-md-6"><partial name="_PositionSelect" model="(int?)e.EmployeeId" /></div>
-                            <div class="col-md-6"><label class="form-label">@Localizer["Email"]</label><input name="email" value="@e.Email" type="email" class="form-control" /></div>
-                            <div class="col-md-6"><label class="form-label">@Localizer["Phone"]</label><input name="phone" value="@e.Phone" class="form-control" /></div>
+                            <div class="col-md-6"><label class="form-label">@Localizer["Email"]</label><pems-input name="email" value="@e.Email" type="email" /></div>
+                            <div class="col-md-6"><label class="form-label">@Localizer["Phone"]</label><pems-input name="phone" value="@e.Phone" /></div>
                             <div class="col-md-3">
                                 <label class="form-label">@Localizer["Department"]</label>
-                                <select name="departmentId" class="form-select" required>
+                                <pems-select name="departmentId" required>
                                     @foreach (var d in departments) { <option value="@d.DepartmentId" selected="@(d.DepartmentId == e.DepartmentId)">@d.Name</option> }
                                     @if (!((IEnumerable<dynamic>)departments).Any(x => x.DepartmentId == e.DepartmentId)) { <option value="@e.DepartmentId" selected>@e.DepartmentName (@Localizer["Org_Inactive"])</option> }
-                                </select>
+                                </pems-select>
                             </div>
                             <div class="col-md-3">
                                 <label class="form-label">@Localizer["Discipline"]</label>
-                                <select name="disciplineId" class="form-select" required>
+                                <pems-select name="disciplineId" required>
                                     @foreach (var d in disciplines) { <option value="@d.DisciplineId" selected="@(d.DisciplineId == e.DisciplineId)">@d.Name</option> }
                                     @if (!((IEnumerable<dynamic>)disciplines).Any(x => x.DisciplineId == e.DisciplineId)) { <option value="@e.DisciplineId" selected>@e.DisciplineName (@Localizer["Org_Inactive"])</option> }
-                                </select>
+                                </pems-select>
                             </div>
                             <div class="col-md-3">
                                 <label class="form-label">@Localizer["Personnel Type"]</label>
-                                <select name="personnelType" class="form-select" onchange="document.getElementById('editVendorField_@e.EmployeeId').style.display = this.value === 'Internal' ? 'none' : ''">
+                                <pems-select name="personnelType" onchange="document.getElementById('editVendorField_@e.EmployeeId').style.display = this.value === 'Internal' ? 'none' : ''">
                                     @foreach (var t in personnelTypes) { <option value="@t" selected="@(t == e.PersonnelType)">@t</option> }
-                                </select>
+                                </pems-select>
                             </div>
                             <div class="col-md-3" id="editVendorField_@e.EmployeeId" style="display:@(e.PersonnelType == "Internal" ? "none" : "")">
                                 <label class="form-label">@Localizer["Vendor"]</label>
-                                <select name="vendorId" class="form-select">
+                                <pems-select name="vendorId">
                                     <option value="">@Localizer["-- انتخاب --"]</option>
                                     @foreach (var v in vendors) { <option value="@v.VendorId" selected="@(v.VendorId == e.VendorId)">@v.Name</option> }
-                                </select>
+                                </pems-select>
                             </div>
 
                             <div class="col-md-3"><label class="form-label">@Localizer["Hire Date"]</label><input name="hireDate" type="date" value="@(e.HireDate?.ToString("yyyy-MM-dd"))" class="form-control" /></div>
-                            <div class="col-md-3"><label class="form-label">@Localizer["Location / Site"]</label><input name="location" value="@e.Location" class="form-control" /></div>
-                            <div class="col-md-3"><label class="form-label">@Localizer["Shift"]</label><input name="shift" value="@e.Shift" class="form-control" /></div>
-                            <div class="col-md-3"><label class="form-label">@Localizer["Home Address"]</label><input name="homeAddress" value="@e.HomeAddress" class="form-control" /></div>
+                            <div class="col-md-3"><label class="form-label">@Localizer["Location / Site"]</label><pems-input name="location" value="@e.Location" /></div>
+                            <div class="col-md-3"><label class="form-label">@Localizer["Shift"]</label><pems-input name="shift" value="@e.Shift" /></div>
+                            <div class="col-md-3"><label class="form-label">@Localizer["Home Address"]</label><pems-input name="homeAddress" value="@e.HomeAddress" /></div>
                         </div>
                     </div>
                     <div class="modal-footer">

@@ -54,17 +54,17 @@
 
                 <form asp-action="AddMember" method="post" class="d-flex gap-1">
                     <input type="hidden" name="teamId" value="@team.TeamId" />
-                    <select name="employeeId" class="form-select form-select-sm" required>
+                    <pems-select scale="small" name="employeeId" required>
                         <option value="">@Localizer["کارمند..."]</option>
                         @foreach (var e in (IEnumerable<dynamic>)ViewBag.Employees) { <option value="@e.EmployeeId">@e.FullName</option> }
-                    </select>
-                    <select name="roleId" class="form-select form-select-sm" required>
+                    </pems-select>
+                    <pems-select scale="small" name="roleId" required>
                         <option value="">@Localizer["نقش..."]</option>
                         @foreach (var r in ((IEnumerable<dynamic>)ViewBag.MaintenanceRoles).Where(r => r.DisciplineName == team.MaintenanceGroup?.Discipline?.Name))
                         {
                             <option value="@r.MaintenanceRoleId">@r.Name</option>
                         }
-                    </select>
+                    </pems-select>
                     <pems-button tone="primary" size="small" outline="true" css="text-nowrap" type="submit"><i class="bi bi-plus-lg"></i></pems-button>
                 </form>
             </div>
@@ -83,29 +83,29 @@
             <div class="modal-body">
                 <div class="mb-2">
                     <label class="form-label small">@Localizer["کد تیم"]</label>
-                    <input name="code" class="form-control form-control-sm" required placeholder="@Localizer["مثلاً MECH-A"]" />
+                    <pems-input scale="small" name="code" required placeholder="@Localizer["مثلاً MECH-A"]" />
                 </div>
                 <div class="mb-2">
                     <label class="form-label small">@Localizer["نام تیم"]</label>
-                    <input name="name" class="form-control form-control-sm" required placeholder="@Localizer["مثلاً Mechanical Maintenance - Shift A"]" />
+                    <pems-input scale="small" name="name" required placeholder="@Localizer["مثلاً Mechanical Maintenance - Shift A"]" />
                 </div>
                 <div class="mb-2">
                     <label class="form-label small">@Localizer["گروه تعمیراتی (Maintenance Group)"]</label>
-                    <select name="maintenanceGroupId" class="form-select form-select-sm" required>
+                    <pems-select scale="small" name="maintenanceGroupId" required>
                         @foreach (var g in (IEnumerable<dynamic>)ViewBag.MaintenanceGroups) { <option value="@g.MaintenanceGroupId">@g.Name (@g.DisciplineName)</option> }
-                    </select>
+                    </pems-select>
                     <div class="form-text">گروه‌های تعمیراتی از <a asp-controller="MaintenanceMasterData" asp-action="Index">@Localizer["Maintenance Master Data"]</a> مدیریت می‌شوند.</div>
                 </div>
                 <div class="mb-2">
                     <label class="form-label small">@Localizer["شیفت (اختیاری)"]</label>
-                    <input name="shift" class="form-control form-control-sm" />
+                    <pems-input scale="small" name="shift" />
                 </div>
                 <div class="mb-2">
                     <label class="form-label small">@Localizer["سرپرست (اختیاری)"]</label>
-                    <select name="supervisorEmployeeId" class="form-select form-select-sm">
+                    <pems-select scale="small" name="supervisorEmployeeId">
                         <option value="">@Localizer["-- ندارد --"]</option>
                         @foreach (var e in (IEnumerable<dynamic>)ViewBag.Employees) { <option value="@e.EmployeeId">@e.FullName</option> }
-                    </select>
+                    </pems-select>
                 </div>
             </div>
             <div class="modal-footer">

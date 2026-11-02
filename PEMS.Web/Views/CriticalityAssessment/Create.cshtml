@@ -22,17 +22,17 @@
             @if (preselectedEquipmentId.HasValue)
             {
                 <input type="hidden" name="equipmentId" value="@preselectedEquipmentId" />
-                <input class="form-control form-control-sm" value="@preselectedLabel" disabled />
+                <pems-input scale="small" value="@preselectedLabel" disabled />
             }
             else
             {
-                <input type="number" name="equipmentId" class="form-control form-control-sm" required placeholder="@Localizer["Equipment ID"]" />
+                <pems-input scale="small" type="number" name="equipmentId" required placeholder="@Localizer["Equipment ID"]" />
                 <div class="form-text">از صفحه‌ی جزئیات تجهیز یا Activation Backlog وارد شوید تا از قبل انتخاب شود.</div>
             }
         </div>
         <div class="mb-3">
             <label class="form-label small">Rationale (optional)</label>
-            <textarea name="rationale" class="form-control form-control-sm" rows="2"></textarea>
+            <pems-textarea scale="small" name="rationale" rows="2"></pems-textarea>
         </div>
         <pems-button tone="primary" size="small" type="submit">Create Draft</pems-button>
     </form>

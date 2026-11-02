@@ -79,6 +79,15 @@ and theme and were reconstructed from the git history (initial import 2026-09-05
 - Part catalogue request (edit): the equipment, attribute and note tables come from `<pems-related-table>`; removing an equipment line uses `<pems-related-remove>`. The page keeps its own sections, the sticky table headers and the attribute script (it finds the table by its `id`).
 - RCM / FMEA class detail: the functional failure, FMEA item and RCM decision tables come from `<pems-related-table>`.
 
+## 2026-11-02 - Bare form controls: `pems-input`, `pems-select`, `pems-textarea` (SCRUM-487, #487)
+
+### Added
+- `pems-input`, `pems-select`, `pems-textarea` tag helpers and `ControlState` in `PEMS.UI`: the Bootstrap control classes (size, `kind="check"`, `css`) with every other attribute kept; `asp-for` / `asp-items` work because they derive from the built-in helpers.
+
+### Changed
+- 1271 inputs, selects and textareas in 177 views moved; ratchet: text-input 1373 to 169, select 706 to 0, textarea 120 to 0, check-radio-switch 75 to 34 (what is left: date and time inputs, controls with a conditional attribute, `form-switch` wrappers).
+- Page tests no longer depend on attribute order (class first). `LetterPhase2ViewTests` follows the progress bar markup of the 2026-11-01 batch (it was not run then).
+
 ## 2026-11-01 - Sprint membership is set and verified when a batch starts (SCRUM-479)
 
 ### Changed

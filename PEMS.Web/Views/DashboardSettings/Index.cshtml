@@ -23,12 +23,12 @@
                             <input type="checkbox" name="widgets[@i].IsVisible" value="true" checked="@Model[i].IsVisible" />
                         </td>
                         <td>@Model[i].DisplayName</td>
-                        <td><input type="number" name="widgets[@i].DisplayOrder" value="@Model[i].DisplayOrder" class="form-control form-control-sm" style="width:80px;" /></td>
+                        <td><pems-input scale="small" type="number" name="widgets[@i].DisplayOrder" value="@Model[i].DisplayOrder" style="width:80px;" /></td>
                         <td>
-                            <select name="widgets[@i].Size" class="form-select form-select-sm" style="width:120px;">
+                            <pems-select scale="small" name="widgets[@i].Size" style="width:120px;">
                                 @foreach (var s in new[] { "Small", "Medium", "Large" })
                                 { <option value="@s" selected="@(s == Model[i].Size)">@s</option> }
-                            </select>
+                            </pems-select>
                         </td>
                     </tr>
                 }

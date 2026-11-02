@@ -56,7 +56,7 @@
             {
                 <div>
                     <label class="form-label small mb-0">@Localizer["Td_ResponseDueDays"]</label>
-                    <input name="responseDueWorkingDays" type="number" value="10" min="1" class="form-control form-control-sm" style="width:100px;" />
+                    <pems-input scale="small" name="responseDueWorkingDays" type="number" value="10" min="1" style="width:100px;" />
                 </div>
             }
             @if ((bool)(ViewBag.CanIssue ?? false))
@@ -81,7 +81,7 @@
             <form asp-action="Cancel" asp-route-id="@Model.TransmittalId" method="post" class="d-flex gap-2 align-items-end mt-2">
                 <div class="flex-grow-1">
                     <label class="form-label small mb-0">@Localizer["Td_CancelReason"]</label>
-                    <input name="reason" class="form-control form-control-sm" required />
+                    <pems-input scale="small" name="reason" required />
                 </div>
                 <pems-button tone="danger" size="small" outline="true"><i class="bi bi-x-circle"></i> @Localizer["Td_CancelBtn"]</pems-button>
             </form>
@@ -104,7 +104,7 @@
                 {
                     <form asp-action="RecordResponse" asp-route-id="@Model.TransmittalId" method="post" class="d-flex gap-2 align-items-end mt-1">
                         <div class="flex-grow-1">
-                            <input name="responseNote" class="form-control form-control-sm" placeholder="@Localizer["Td_ResponseNotePh"]" />
+                            <pems-input scale="small" name="responseNote" placeholder="@Localizer["Td_ResponseNotePh"]" />
                         </div>
                         <pems-button tone="primary" size="small" outline="true">@Localizer["Td_RecordResponse"]</pems-button>
                     </form>
@@ -144,7 +144,7 @@
                         {
                             <form asp-action="Acknowledge" asp-route-id="@Model.TransmittalId" method="post" class="d-flex gap-1 align-items-center">
                                 <input type="hidden" name="recipientId" value="@r.TransmittalRecipientId" />
-                                <input name="note" class="form-control form-control-sm" placeholder="@Localizer["Td_NotePh"]" style="min-width:140px;" />
+                                <pems-input scale="small" name="note" placeholder="@Localizer["Td_NotePh"]" style="min-width:140px;" />
                                 <pems-button tone="success" size="small" outline="true" title="@Localizer["Td_RecordAck"]"><i class="bi bi-check2"></i></pems-button>
                             </form>
                         }

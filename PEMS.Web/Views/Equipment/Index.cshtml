@@ -50,31 +50,31 @@
                     <input type="hidden" name="q" value="@q" />
                     <div>
                         <label class="lp-lbl" for="eqFilterProject">@Localizer["Ed_Project"]</label>
-                        <select id="eqFilterProject" name="projectId" class="form-select form-select-sm">
+                        <pems-select scale="small" id="eqFilterProject" name="projectId">
                             <option value="">@Localizer["Eq_AllProjects"]</option>
                             @foreach (var p in projects) { <option value="@p.ProjectId" selected="@(p.ProjectId == projectId)">@p.ProjectName</option> }
-                        </select>
+                        </pems-select>
                     </div>
                     <div>
                         <label class="lp-lbl" for="eqFilterDiscipline">@Localizer["Ed_Discipline"]</label>
-                        <select id="eqFilterDiscipline" name="disciplineId" class="form-select form-select-sm">
+                        <pems-select scale="small" id="eqFilterDiscipline" name="disciplineId">
                             <option value="">@Localizer["Eq_AllDisciplines"]</option>
                             @foreach (var d in disciplines) { <option value="@d.DisciplineId" selected="@(d.DisciplineId == disciplineId)">@d.Name</option> }
-                        </select>
+                        </pems-select>
                     </div>
                     <div>
                         <label class="lp-lbl" for="eqFilterType">@Localizer["Ed_Type"]</label>
-                        <select id="eqFilterType" name="equipmentType" class="form-select form-select-sm">
+                        <pems-select scale="small" id="eqFilterType" name="equipmentType">
                             <option value="">@Localizer["Eq_AllTypes"]</option>
                             @foreach (var t in (IEnumerable<string>)ViewBag.EquipmentTypes) { <option value="@t" selected="@(t == equipmentType)">@t</option> }
-                        </select>
+                        </pems-select>
                     </div>
                     <div>
                         <label class="lp-lbl" for="eqFilterStatus">@Localizer["Ed_Status"]</label>
-                        <select id="eqFilterStatus" name="status" class="form-select form-select-sm">
+                        <pems-select scale="small" id="eqFilterStatus" name="status">
                             <option value="">@Localizer["Eq_AllStatuses"]</option>
                             @foreach (var s in (IEnumerable<string>)ViewBag.Statuses) { <option value="@s" selected="@(s == status)">@s</option> }
-                        </select>
+                        </pems-select>
                     </div>
                 </pems-list-filters>
                 <pems-list-kpi-toggle target="eqKpis" storage-key="pems.equipment.kpis" />
@@ -163,25 +163,25 @@
                 <div class="modal-header"><h6 class="modal-title">@Localizer["Eq_NewEquipment"]</h6></div>
                 <div class="modal-body">
                     <div class="row g-3">
-                        <div class="col-md-4"><label class="form-label">@Localizer["Tag Number"]</label><input name="TagNumber" class="form-control" required /></div>
-                        <div class="col-md-4"><label class="form-label">@Localizer["Name"]</label><input name="Name" class="form-control" required /></div>
-                        <div class="col-md-4"><label class="form-label">@Localizer["Type"]</label><input name="EquipmentType" class="form-control" placeholder="@Localizer["Pump, Vessel, Motor ..."]" /></div>
+                        <div class="col-md-4"><label class="form-label">@Localizer["Tag Number"]</label><pems-input name="TagNumber" required /></div>
+                        <div class="col-md-4"><label class="form-label">@Localizer["Name"]</label><pems-input name="Name" required /></div>
+                        <div class="col-md-4"><label class="form-label">@Localizer["Type"]</label><pems-input name="EquipmentType" placeholder="@Localizer["Pump, Vessel, Motor ..."]" /></div>
                         <div class="col-md-6">
                             <label class="form-label">@Localizer["Project"]</label>
-                            <select name="ProjectId" class="form-select" required>
+                            <pems-select name="ProjectId" required>
                                 @foreach (var p in (IEnumerable<dynamic>)ViewBag.Projects) { <option value="@p.ProjectId">@p.ProjectName</option> }
-                            </select>
+                            </pems-select>
                         </div>
                         <div class="col-md-6">
                             <label class="form-label">@Localizer["Discipline"]</label>
-                            <select name="DisciplineId" class="form-select" required>
+                            <pems-select name="DisciplineId" required>
                                 @foreach (var d in (IEnumerable<dynamic>)ViewBag.Disciplines) { <option value="@d.DisciplineId">@d.Name</option> }
-                            </select>
+                            </pems-select>
                         </div>
-                        <div class="col-md-4"><label class="form-label">@Localizer["Manufacturer"]</label><input name="Manufacturer" class="form-control" /></div>
-                        <div class="col-md-4"><label class="form-label">@Localizer["Model"]</label><input name="Model" class="form-control" /></div>
-                        <div class="col-md-4"><label class="form-label">@Localizer["Serial Number"]</label><input name="SerialNumber" class="form-control" /></div>
-                        <div class="col-12"><label class="form-label">@Localizer["Description"]</label><textarea name="Description" class="form-control" rows="2"></textarea></div>
+                        <div class="col-md-4"><label class="form-label">@Localizer["Manufacturer"]</label><pems-input name="Manufacturer" /></div>
+                        <div class="col-md-4"><label class="form-label">@Localizer["Model"]</label><pems-input name="Model" /></div>
+                        <div class="col-md-4"><label class="form-label">@Localizer["Serial Number"]</label><pems-input name="SerialNumber" /></div>
+                        <div class="col-12"><label class="form-label">@Localizer["Description"]</label><pems-textarea name="Description" rows="2"></pems-textarea></div>
                     </div>
                 </div>
                 <div class="modal-footer">

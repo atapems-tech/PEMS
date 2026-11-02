@@ -31,13 +31,13 @@ else
             <div class="row g-2 align-items-end mb-3">
                 <div class="col-md-4">
                     <label class="form-label small">Discipline for all selected tags</label>
-                    <select name="disciplineId" class="form-select form-select-sm" required id="scanDisciplineSelect">
+                    <pems-select scale="small" name="disciplineId" required id="scanDisciplineSelect">
                         <option value="">@Localizer["-- select --"]</option>
                         @foreach (var d in (IEnumerable<dynamic>)ViewBag.Disciplines)
                         {
                             <option value="@d.DisciplineId">@d.Name</option>
                         }
-                    </select>
+                    </pems-select>
                 </div>
                 <div class="col-md-8 d-flex gap-2">
                     <pems-button tone="neutral" size="small" outline="true" type="button" id="selectAllTags">Select All</pems-button>

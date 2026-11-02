@@ -120,7 +120,7 @@
         {
             <form asp-action="Terminate" method="post" class="d-flex gap-1 align-items-center">
                 <input type="hidden" name="contractId" value="@Model.ContractId" />
-                <input type="text" name="reason" class="form-control form-control-sm" placeholder="@Localizer["Reason"]" style="width:160px" />
+                <pems-input scale="small" type="text" name="reason" placeholder="@Localizer["Reason"]" style="width:160px" />
                 <pems-button tone="danger" size="small" outline="true" type="submit">@Localizer["Terminate Contract"]</pems-button>
             </form>
         }
@@ -184,10 +184,10 @@
     }
     <form asp-action="AddDocument" method="post" class="row g-2">
         <input type="hidden" name="contractId" value="@Model.ContractId" />
-        <div class="col-md-2"><input type="text" name="documentNo" class="form-control form-control-sm" placeholder="@Localizer["Doc No"]" required /></div>
-        <div class="col-md-3"><input type="text" name="title" class="form-control form-control-sm" placeholder="@Localizer["Title"]" required /></div>
-        <div class="col-md-2"><input type="text" name="documentType" class="form-control form-control-sm" placeholder="@Localizer["Type"]" required /></div>
-        <div class="col-md-3"><input type="text" name="clauseReference" class="form-control form-control-sm" placeholder="@Localizer["Clause Reference"]" /></div>
+        <div class="col-md-2"><pems-input scale="small" type="text" name="documentNo" placeholder="@Localizer["Doc No"]" required /></div>
+        <div class="col-md-3"><pems-input scale="small" type="text" name="title" placeholder="@Localizer["Title"]" required /></div>
+        <div class="col-md-2"><pems-input scale="small" type="text" name="documentType" placeholder="@Localizer["Type"]" required /></div>
+        <div class="col-md-3"><pems-input scale="small" type="text" name="clauseReference" placeholder="@Localizer["Clause Reference"]" /></div>
         <div class="col-md-2"><pems-button tone="none" size="small" css="btn-primary" type="submit">@Localizer["Add Document"]</pems-button></div>
     </form>
 </div>
@@ -199,15 +199,15 @@
         <form asp-action="RequestRevision" method="post" class="row g-2">
             <input type="hidden" name="contractId" value="@Model.ContractId" />
             <div class="col-md-3">
-                <select name="changeType" class="form-select form-select-sm">
+                <pems-select scale="small" name="changeType">
                     <option value="Variation">@Localizer["Variation"]</option>
                     <option value="ChangeOrder">@Localizer["Change Order"]</option>
                     <option value="Amendment">@Localizer["Amendment"]</option>
-                </select>
+                </pems-select>
             </div>
-            <div class="col-md-2"><input type="number" step="0.01" name="newValue" class="form-control form-control-sm" placeholder="@Localizer["New value"]" /></div>
-            <div class="col-md-3"><input type="text" name="reason" class="form-control form-control-sm" placeholder="@Localizer["Reason"]" /></div>
-            <div class="col-md-3"><input type="text" name="changeDescription" class="form-control form-control-sm" placeholder="@Localizer["Description"]" /></div>
+            <div class="col-md-2"><pems-input scale="small" type="number" step="0.01" name="newValue" placeholder="@Localizer["New value"]" /></div>
+            <div class="col-md-3"><pems-input scale="small" type="text" name="reason" placeholder="@Localizer["Reason"]" /></div>
+            <div class="col-md-3"><pems-input scale="small" type="text" name="changeDescription" placeholder="@Localizer["Description"]" /></div>
             <div class="col-md-1"><pems-button tone="none" size="small" css="btn-primary" type="submit">@Localizer["Request"]</pems-button></div>
         </form>
     </div>
@@ -265,7 +265,7 @@
             {
                 <form asp-action="IssueNtp" method="post" class="d-flex gap-1">
                     <input type="hidden" name="contractId" value="@Model.ContractId" />
-                    <input type="text" name="reference" class="form-control form-control-sm" placeholder="@Localizer["Reference"]" />
+                    <pems-input scale="small" type="text" name="reference" placeholder="@Localizer["Reference"]" />
                     <pems-button tone="primary" size="small" outline="true" type="submit">@Localizer["Issue NTP"]</pems-button>
                 </form>
             }
@@ -286,7 +286,7 @@
                 <form asp-action="ScheduleKickoff" method="post" class="d-flex gap-1">
                     <input type="hidden" name="contractId" value="@Model.ContractId" />
                     <input type="date" name="meetingDate" class="form-control form-control-sm" required />
-                    <input type="text" name="location" class="form-control form-control-sm" placeholder="@Localizer["Location"]" />
+                    <pems-input scale="small" type="text" name="location" placeholder="@Localizer["Location"]" />
                     <pems-button tone="primary" size="small" outline="true" type="submit">@Localizer["Schedule"]</pems-button>
                 </form>
             }

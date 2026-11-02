@@ -13,10 +13,10 @@
     <div class="d-flex justify-content-between align-items-center">
         <h5 class="mb-0">@s.Code &mdash; @s.Name Workspace</h5>
         <form method="get" class="d-flex gap-2">
-            <select name="projectId" class="form-select form-select-sm" onchange="this.form.submit()">
+            <pems-select scale="small" name="projectId" onchange="this.form.submit()">
                 <option value="">@Localizer["All Projects"]</option>
                 @foreach (var p in projects) { <option value="@p.ProjectId" selected="@(p.ProjectId == (int?)ViewBag.SelectedProjectId)">@p.ProjectName</option> }
-            </select>
+            </pems-select>
         </form>
     </div>
 </div>
@@ -47,10 +47,10 @@
                         <form asp-action="SetTaskStatus" method="post" class="d-inline">
                             <input type="hidden" name="disciplineId" value="@s.DisciplineId" />
                             <input type="hidden" name="taskId" value="@t.DisciplineTaskId" />
-                            <select name="status" class="form-select form-select-sm" style="width:120px;" onchange="this.form.submit()">
+                            <pems-select scale="small" name="status" style="width:120px;" onchange="this.form.submit()">
                                 @foreach (var opt in new[] { "Open", "InProgress", "Completed" })
                                 { <option value="@opt" selected="@(opt == t.Status)">@opt</option> }
-                            </select>
+                            </pems-select>
                         </form>
                     </td>
                 </tr>
@@ -62,22 +62,22 @@
     <form asp-action="AddTask" method="post" class="row g-2 mt-2">
         <input type="hidden" name="disciplineId" value="@s.DisciplineId" />
         <div class="col-md-2">
-            <select name="type" class="form-select form-select-sm">
+            <pems-select scale="small" name="type">
                 <option>Task</option><option>@Localizer["Activity"]</option><option>Deliverable</option>
-            </select>
+            </pems-select>
         </div>
-        <div class="col-md-3"><input name="title" class="form-control form-control-sm" placeholder="@Localizer["Title"]" required /></div>
+        <div class="col-md-3"><pems-input scale="small" name="title" placeholder="@Localizer["Title"]" required /></div>
         <div class="col-md-2">
-            <select name="projectId" class="form-select form-select-sm">
+            <pems-select scale="small" name="projectId">
                 <option value="">-- Project --</option>
                 @foreach (var p in projects) { <option value="@p.ProjectId">@p.ProjectName</option> }
-            </select>
+            </pems-select>
         </div>
         <div class="col-md-2">
-            <select name="responsibleEmployeeId" class="form-select form-select-sm">
+            <pems-select scale="small" name="responsibleEmployeeId">
                 <option value="">-- Responsible --</option>
                 @foreach (var e in employees) { <option value="@e.EmployeeId">@e.Name</option> }
-            </select>
+            </pems-select>
         </div>
         <div class="col-md-2"><input name="dueDate" type="date" class="form-control form-control-sm" /></div>
         <div class="col-md-1"><pems-button tone="primary" size="small" css="w-100"><i class="bi bi-plus-lg"></i></pems-button></div>

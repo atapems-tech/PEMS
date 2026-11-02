@@ -47,9 +47,7 @@
                             <form asp-action="ApproveExtractedTag" method="post" class="d-flex gap-1">
                                 <input type="hidden" name="extractedTagId" value="@tag.ExtractedTagId" />
                                 <input type="hidden" name="attachmentId" value="@Model.AttachmentId" />
-                                <input type="text" class="form-control form-control-sm" style="width:160px;"
-                                       placeholder="@Localizer["جستجوی تجهیز..."]" data-pems-search data-search-type="Equipment"
-                                       data-search-hidden="#extTagEq_@tag.ExtractedTagId" autocomplete="off" />
+                                <pems-input scale="small" type="text" style="width:160px;" placeholder="@Localizer["جستجوی تجهیز..."]" data-pems-search data-search-type="Equipment" data-search-hidden="#extTagEq_@tag.ExtractedTagId" autocomplete="off" />
                                 <input type="hidden" name="equipmentId" id="extTagEq_@tag.ExtractedTagId" />
                                 <pems-button tone="success" size="small" type="submit">@Localizer["Approve"]</pems-button>
                             </form>

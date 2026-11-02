@@ -37,63 +37,63 @@
         <div class="row g-3">
             <div class="col-md-4">
                 <label class="form-label">@Localizer["Target Module"]</label>
-                <select name="targetModule" class="form-select">
+                <pems-select name="targetModule">
                     @foreach (var m in modules)
                     { <option value="@m" selected="@(m == Model.SuggestedTargetModule)">@m</option> }
-                </select>
+                </pems-select>
                 <div class="form-text">AI suggested: <strong>@Model.SuggestedTargetModule</strong></div>
             </div>
             <div class="col-md-4">
                 <label class="form-label">@Localizer["Category"]</label>
-                <input name="category" class="form-control" value="@Model.PredictedCategory" />
+                <pems-input name="category" value="@Model.PredictedCategory" />
             </div>
             <div class="col-md-4">
                 <label class="form-label">@Localizer["Document Type"]</label>
-                <input name="documentType" class="form-control" value="@Model.PredictedDocumentType" />
+                <pems-input name="documentType" value="@Model.PredictedDocumentType" />
             </div>
 
             <div class="col-md-4">
                 <label class="form-label">@Localizer["Project"]</label>
-                <select name="projectId" class="form-select">
+                <pems-select name="projectId">
                     @foreach (var p in projects)
                     { <option value="@p.ProjectId" selected="@(p.ProjectId == Model.ProjectId)">@p.ProjectName</option> }
-                </select>
+                </pems-select>
                 @if (!string.IsNullOrEmpty(Model.PredictedProjectHint))
                 { <div class="form-text">AI hint from document text: "@Model.PredictedProjectHint"</div> }
             </div>
             <div class="col-md-4">
                 <label class="form-label">@Localizer["Discipline"]</label>
-                <select name="disciplineCode" class="form-select">
+                <pems-select name="disciplineCode">
                     <option value="">@Localizer["-- None --"]</option>
                     @foreach (var d in disciplines)
                     { <option value="@d.Code" selected="@(d.Code == Model.PredictedDisciplineCode)">@d.Name (@d.Code)</option> }
-                </select>
+                </pems-select>
             </div>
             <div class="col-md-4">
                 <label class="form-label">@Localizer["Area"]</label>
-                <input name="area" class="form-control" value="@Model.PredictedArea" />
+                <pems-input name="area" value="@Model.PredictedArea" />
             </div>
 
-            <div class="col-md-3"><label class="form-label small">@Localizer["Unit"]</label><input class="form-control form-control-sm" value="@Model.PredictedUnit" disabled /></div>
-            <div class="col-md-3"><label class="form-label small">@Localizer["System"]</label><input class="form-control form-control-sm" value="@Model.PredictedSystem" disabled /></div>
-            <div class="col-md-3"><label class="form-label small">Subsystem</label><input class="form-control form-control-sm" value="@Model.PredictedSubsystem" disabled /></div>
-            <div class="col-md-3"><label class="form-label small">@Localizer["Equipment Tag"]</label><input class="form-control form-control-sm" value="@Model.PredictedEquipmentTagNumber" disabled /></div>
+            <div class="col-md-3"><label class="form-label small">@Localizer["Unit"]</label><pems-input scale="small" value="@Model.PredictedUnit" disabled /></div>
+            <div class="col-md-3"><label class="form-label small">@Localizer["System"]</label><pems-input scale="small" value="@Model.PredictedSystem" disabled /></div>
+            <div class="col-md-3"><label class="form-label small">Subsystem</label><pems-input scale="small" value="@Model.PredictedSubsystem" disabled /></div>
+            <div class="col-md-3"><label class="form-label small">@Localizer["Equipment Tag"]</label><pems-input scale="small" value="@Model.PredictedEquipmentTagNumber" disabled /></div>
 
             <div class="col-md-4">
                 <label class="form-label">@Localizer["Revision"]</label>
-                <input name="revisionNo" class="form-control" value="@Model.PredictedRevisionNo" />
+                <pems-input name="revisionNo" value="@Model.PredictedRevisionNo" />
             </div>
             <div class="col-md-4">
                 <label class="form-label">@Localizer["Issue Purpose"]</label>
-                <input name="issuePurpose" class="form-control" value="@Model.PredictedIssuePurpose" />
+                <pems-input name="issuePurpose" value="@Model.PredictedIssuePurpose" />
             </div>
             <div class="col-md-4">
                 <label class="form-label">Vendor (for VDR routing)</label>
-                <input name="vendorName" class="form-control" value="@Model.PredictedVendorName" />
+                <pems-input name="vendorName" value="@Model.PredictedVendorName" />
             </div>
             <div class="col-md-4">
                 <label class="form-label">Related MR Number</label>
-                <input name="mrNumber" class="form-control" value="@Model.PredictedMRNumber" />
+                <pems-input name="mrNumber" value="@Model.PredictedMRNumber" />
             </div>
         </div>
 

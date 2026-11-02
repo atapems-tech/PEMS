@@ -6,14 +6,14 @@
 <div class="content-card">
     <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
         <form method="get" class="d-flex gap-2">
-            <select name="status" class="form-select form-select-sm" onchange="this.form.submit()" style="width:160px">
+            <pems-select scale="small" name="status" onchange="this.form.submit()" style="width:160px">
                 <option value="">@Localizer["All statuses"]</option>
                 @foreach (var s in new[] { "Draft", "Planned", "Released", "InProgress", "OnHold", "Completed", "Closed", "Cancelled" })
                 {
                     <option value="@s" selected="@(ViewBag.StatusFilter == s)">@s</option>
                 }
-            </select>
-            <input type="text" name="search" value="@ViewBag.Search" class="form-control form-control-sm" placeholder="Order # or material..." style="width:220px" />
+            </pems-select>
+            <pems-input scale="small" type="text" name="search" value="@ViewBag.Search" placeholder="Order # or material..." style="width:220px" />
             <pems-button tone="neutral" size="small" outline="true" type="submit"><i class="bi bi-search"></i></pems-button>
         </form>
         <pems-button tone="primary" size="small" as="a" asp-action="Create"><i class="bi bi-plus-lg"></i> New Production Order</pems-button>

@@ -47,28 +47,28 @@
         <input type="hidden" name="IsActive" value="true" />
         <div class="col-md-2">
             <label class="form-label small" for="ns-key">@Localizer["Tm_Field_Key"] <span class="text-danger" aria-hidden="true">*</span></label>
-            <input id="ns-key" name="Key" class="form-control form-control-sm text-uppercase" required pattern="[A-Za-z][A-Za-z0-9]{1,9}" maxlength="10" aria-describedby="ns-key-help" />
+            <pems-input scale="small" css="text-uppercase" id="ns-key" name="Key" required pattern="[A-Za-z][A-Za-z0-9]{1,9}" maxlength="10" aria-describedby="ns-key-help" />
             <div id="ns-key-help" class="form-text">@Localizer["Tm_KeyHelp"]</div>
         </div>
         <div class="col-md-3">
             <label class="form-label small" for="ns-name">@Localizer["Tm_Field_Name"] <span class="text-danger" aria-hidden="true">*</span></label>
-            <input id="ns-name" name="Name" class="form-control form-control-sm" required maxlength="150" />
+            <pems-input scale="small" id="ns-name" name="Name" required maxlength="150" />
         </div>
         <div class="col-md-3">
             <label class="form-label small" for="ns-namefa">@Localizer["Tm_Field_NameFa"]</label>
-            <input id="ns-namefa" name="NameFa" class="form-control form-control-sm" maxlength="150" dir="rtl" />
+            <pems-input scale="small" id="ns-namefa" name="NameFa" maxlength="150" dir="rtl" />
         </div>
         <div class="col-md-4">
             <label class="form-label small" for="ns-dept">@Localizer["Tm_Field_Department"]</label>
-            <select id="ns-dept" name="OwnerDepartmentId" class="form-select form-select-sm" aria-describedby="ns-dept-help">
+            <pems-select scale="small" id="ns-dept" name="OwnerDepartmentId" aria-describedby="ns-dept-help">
                 <option value="">@Localizer["Tm_NoDepartment"]</option>
                 @foreach (var d in departments) { <option value="@d.Id">@d.Name</option> }
-            </select>
+            </pems-select>
             <div id="ns-dept-help" class="form-text">@Localizer["Tm_DepartmentHelp"]</div>
         </div>
         <div class="col-md-10">
             <label class="form-label small" for="ns-desc">@Localizer["Tm_Field_Description"]</label>
-            <input id="ns-desc" name="Description" class="form-control form-control-sm" maxlength="1000" />
+            <pems-input scale="small" id="ns-desc" name="Description" maxlength="1000" />
         </div>
         <div class="col-md-2 d-flex align-items-end"><pems-button tone="primary" size="small" css="w-100">@Localizer["Tm_Create"]</pems-button></div>
     </form>

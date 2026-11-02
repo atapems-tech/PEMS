@@ -27,16 +27,16 @@
 <div class="content-card mb-3">
     <form method="get" class="row g-2">
         <div class="col-md-3">
-            <select name="disciplineId" class="form-select form-select-sm">
+            <pems-select scale="small" name="disciplineId">
                 <option value="">@Localizer["All Disciplines"]</option>
                 @foreach (var d in disciplines) { <option value="@d.DisciplineId" selected="@(d.DisciplineId == (int?)ViewBag.SelectedDisciplineId)">@d.Name</option> }
-            </select>
+            </pems-select>
         </div>
         <div class="col-md-3">
-            <select name="projectId" class="form-select form-select-sm">
+            <pems-select scale="small" name="projectId">
                 <option value="">@Localizer["All Projects"]</option>
                 @foreach (var p in projects) { <option value="@p.ProjectId" selected="@(p.ProjectId == (int?)ViewBag.SelectedProjectId)">@p.ProjectName</option> }
-            </select>
+            </pems-select>
         </div>
         <div class="col-md-2"><input name="fromDate" type="date" value="@(((DateTime?)ViewBag.FromDate)?.ToString("yyyy-MM-dd"))" class="form-control form-control-sm" /></div>
         <div class="col-md-2"><input name="toDate" type="date" value="@(((DateTime?)ViewBag.ToDate)?.ToString("yyyy-MM-dd"))" class="form-control form-control-sm" /></div>

@@ -13,15 +13,15 @@
 @if (can)
 {
     <input type="hidden" name="positionSubmitted" value="true" />
-    <select name="positionId" class="form-select">
+    <pems-select name="positionId">
         <option value="">@Localizer["-- no position --"]</option>
         @if (current != null) { <option value="@current.Value.PositionId" selected>@current.Value.Label</option> }
         @foreach (var p in vacant) { <option value="@p.PositionId">@p.Label</option> }
-    </select>
+    </pems-select>
     <div class="form-text">@Localizer["Only vacant active positions are listed. The assignment is created through the organization structure."]</div>
 }
 else
 {
-    <input class="form-control" value="@(current?.Label ?? "—")" disabled aria-label="@Localizer["Organizational position"]" />
+    <pems-input value="@(current?.Label ?? "—")" disabled aria-label="@Localizer["Organizational position"]" />
     <div class="form-text">@Localizer["Emp_PositionAdminOnly"]</div>
 }

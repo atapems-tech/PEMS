@@ -9,7 +9,7 @@
     <div class="d-flex justify-content-between align-items-center mb-3">
         <div class="input-group" style="max-width:280px;">
             <span class="input-group-text bg-white"><i class="bi bi-search"></i></span>
-            <input type="text" id="projectSearch" class="form-control" placeholder="Search projects..." />
+            <pems-input type="text" id="projectSearch" placeholder="Search projects..." />
         </div>
 
         <pems-button tone="primary" size="small" type="button" data-bs-toggle="modal" data-bs-target="#createProjectModal">
@@ -84,17 +84,17 @@
                 <div class="modal-header"><h6 class="modal-title">@Localizer["New Project"]</h6></div>
                 <div class="modal-body">
                     <div class="row g-3">
-                        <div class="col-md-6"><label class="form-label">@Localizer["Project Code"]</label><input name="ProjectCode" class="form-control" /></div>
-                        <div class="col-md-6"><label class="form-label">@Localizer["Project Name"]</label><input name="ProjectName" class="form-control" /></div>
-                        <div class="col-md-6"><label class="form-label">@Localizer["Client"]</label><input name="ClientName" class="form-control" /></div>
-                        <div class="col-md-6"><label class="form-label">@Localizer["Location"]</label><input name="Location" class="form-control" /></div>
+                        <div class="col-md-6"><label class="form-label">@Localizer["Project Code"]</label><pems-input name="ProjectCode" /></div>
+                        <div class="col-md-6"><label class="form-label">@Localizer["Project Name"]</label><pems-input name="ProjectName" /></div>
+                        <div class="col-md-6"><label class="form-label">@Localizer["Client"]</label><pems-input name="ClientName" /></div>
+                        <div class="col-md-6"><label class="form-label">@Localizer["Location"]</label><pems-input name="Location" /></div>
                         <div class="col-md-6"><label class="form-label">@Localizer["Start Date"]</label><input name="StartDate" type="date" class="form-control" /></div>
                         <div class="col-md-6"><label class="form-label">@Localizer["End Date"]</label><input name="EndDate" type="date" class="form-control" /></div>
                         <div class="col-md-6">
                             <label class="form-label">@Localizer["Status"]</label>
-                            <select name="Status" class="form-select">
+                            <pems-select name="Status">
                                 <option>@Localizer["Planning"]</option><option>@Localizer["Active"]</option><option>@Localizer["Completed"]</option><option>@Localizer["Cancelled"]</option>
-                            </select>
+                            </pems-select>
                         </div>
                     </div>
                 </div>

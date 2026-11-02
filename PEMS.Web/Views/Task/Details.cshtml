@@ -67,33 +67,33 @@
                     <input type="hidden" name="returnUrl" value="@returnUrl" />
                     <div class="col-12">
                         <label class="form-label small" for="e-title">@Localizer["Tm_Field_Title"] <span class="text-danger" aria-hidden="true">*</span></label>
-                        <input id="e-title" name="Title" value="@i.Title" class="form-control form-control-sm" required maxlength="300" />
+                        <pems-input scale="small" id="e-title" name="Title" value="@i.Title" required maxlength="300" />
                     </div>
                     <div class="col-12">
                         <label class="form-label small" for="e-desc">@Localizer["Tm_Field_Description"]</label>
-                        <textarea id="e-desc" name="Description" class="form-control form-control-sm" rows="6" maxlength="8000">@Model.Description</textarea>
+                        <pems-textarea scale="small" id="e-desc" name="Description" rows="6" maxlength="8000">@Model.Description</pems-textarea>
                     </div>
                     @if (!Model.IsLegacy)
                     {
                         <div class="col-md-4">
                             <label class="form-label small" for="e-type">@Localizer["Tm_Field_Type"]</label>
-                            <select id="e-type" name="TypeId" class="form-select form-select-sm">
+                            <pems-select scale="small" id="e-type" name="TypeId">
                                 @foreach (var t in Model.Types.Where(t => !t.IsSubtask || i.ParentId != null || t.Id == i.TypeId))
                                 { <option value="@t.Id" selected="@(t.Id == i.TypeId)">@TaskManagerUi.Name(t.Name, t.NameFa)</option> }
-                            </select>
+                            </pems-select>
                         </div>
                     }
                     <div class="col-md-4">
                         <label class="form-label small" for="e-priority">@Localizer["Tm_Field_Priority"]</label>
-                        <select id="e-priority" name="Priority" class="form-select form-select-sm">
+                        <pems-select scale="small" id="e-priority" name="Priority">
                             @foreach (var p in PEMS.Domain.Entities.TaskItemPriorities.All) { <option value="@p" selected="@(p == i.Priority)">@TaskManagerUi.Priority(Localizer, p)</option> }
-                        </select>
+                        </pems-select>
                     </div>
                     @if (!Model.IsLegacy)
                     {
                         <div class="col-md-4">
                             <label class="form-label small" for="e-points">@Localizer["Tm_Field_StoryPoints"]</label>
-                            <input id="e-points" name="StoryPoints" type="number" min="0" max="1000" step="0.5" value="@(i.StoryPoints?.ToString(System.Globalization.CultureInfo.InvariantCulture))" class="form-control form-control-sm" />
+                            <pems-input scale="small" id="e-points" name="StoryPoints" type="number" min="0" max="1000" step="0.5" value="@(i.StoryPoints?.ToString(System.Globalization.CultureInfo.InvariantCulture))" />
                         </div>
                     }
                     <div class="col-md-4">
@@ -129,7 +129,7 @@
                         <input type="hidden" name="returnUrl" value="@returnUrl" />
                         <input type="hidden" name="createAnother" value="true" />
                         <label class="visually-hidden" for="st-title">@Localizer["Tm_NewSubtask"]</label>
-                        <input id="st-title" name="Title" class="form-control form-control-sm" placeholder="@Localizer["Tm_NewSubtask"]" required maxlength="300" />
+                        <pems-input scale="small" id="st-title" name="Title" placeholder="@Localizer["Tm_NewSubtask"]" required maxlength="300" />
                         <pems-button tone="neutral" size="small" outline="true" css="text-nowrap"><i class="bi bi-plus-lg" aria-hidden="true"></i> @Localizer["Tm_Add"]</pems-button>
                     </form>
                 }
@@ -174,13 +174,13 @@
                     <input type="hidden" name="id" value="@i.Id" /><input type="hidden" name="returnUrl" value="@returnUrl" />
                     <div class="col-md-4">
                         <label class="visually-hidden" for="lk-type">@Localizer["Tm_LinkType"]</label>
-                        <select id="lk-type" name="linkType" class="form-select form-select-sm">
+                        <pems-select scale="small" id="lk-type" name="linkType">
                             @foreach (var lt in PEMS.Domain.Entities.WorkItemLinkTypes.All) { <option value="@lt">@TaskManagerUi.LinkType(Localizer, lt, true)</option> }
-                        </select>
+                        </pems-select>
                     </div>
                     <div class="col-md-5">
                         <label class="visually-hidden" for="lk-target">@Localizer["Tm_LinkTarget"]</label>
-                        <input id="lk-target" name="target" class="form-control form-control-sm" placeholder="@Localizer["Tm_LinkTargetPlaceholder"]" required maxlength="30" />
+                        <pems-input scale="small" id="lk-target" name="target" placeholder="@Localizer["Tm_LinkTargetPlaceholder"]" required maxlength="30" />
                     </div>
                     <div class="col-md-3"><pems-button tone="neutral" size="small" outline="true" css="w-100"><i class="bi bi-link-45deg" aria-hidden="true"></i> @Localizer["Tm_AddLink"]</pems-button></div>
                 </form>
@@ -194,7 +194,7 @@
                 <form asp-controller="TaskManager" asp-action="Comment" method="post" class="mb-3" data-tm-dirty-guard data-tm-ctrl-enter>
                     <input type="hidden" name="id" value="@i.Id" /><input type="hidden" name="returnUrl" value="@returnUrl" />
                     <label class="visually-hidden" for="c-body">@Localizer["Tm_AddComment"]</label>
-                    <textarea id="c-body" name="body" class="form-control form-control-sm mb-2" rows="3" maxlength="5000" required placeholder="@Localizer["Tm_AddComment"]"></textarea>
+                    <pems-textarea scale="small" css="mb-2" id="c-body" name="body" rows="3" maxlength="5000" required placeholder="@Localizer["Tm_AddComment"]"></pems-textarea>
                     <div class="d-flex justify-content-between align-items-center">
                         <span class="small text-muted">@Localizer["Tm_CtrlEnterHint"]</span>
                         <pems-button tone="primary" size="small">@Localizer["Tm_AddComment"]</pems-button>
@@ -258,18 +258,18 @@
                     <label class="visually-hidden" for="tr-target">@Localizer["Tm_MoveTo"]</label>
                     @if (Model.IsLegacy)
                     {
-                        <select id="tr-target" name="legacyStatus" class="form-select form-select-sm">
+                        <pems-select scale="small" id="tr-target" name="legacyStatus">
                             @foreach (var o in Model.AllowedTransitions) { <option value="@o.Value">@TaskManagerUi.LegacyStatus(Localizer, o.Value)</option> }
-                        </select>
+                        </pems-select>
                     }
                     else
                     {
-                        <select id="tr-target" name="statusId" class="form-select form-select-sm">
+                        <pems-select scale="small" id="tr-target" name="statusId">
                             @foreach (var o in Model.AllowedTransitions) { <option value="@o.StatusId">@TaskManagerUi.Name(o.Name, o.NameFa)</option> }
-                        </select>
+                        </pems-select>
                     }
                     <label class="visually-hidden" for="tr-note">@Localizer["Tm_CompletionNote"]</label>
-                    <input id="tr-note" name="note" class="form-control form-control-sm" maxlength="2000" placeholder="@Localizer["Tm_CompletionNoteOptional"]" />
+                    <pems-input scale="small" id="tr-note" name="note" maxlength="2000" placeholder="@Localizer["Tm_CompletionNoteOptional"]" />
                     <pems-button tone="primary" size="small">@Localizer["Tm_ChangeStatus"]</pems-button>
                 </form>
             }
@@ -289,12 +289,12 @@
                         <form asp-controller="TaskManager" asp-action="Assign" method="post" class="d-flex gap-1">
                             <input type="hidden" name="id" value="@i.Id" /><input type="hidden" name="rowVersion" value="@i.RowVersion" /><input type="hidden" name="returnUrl" value="@returnUrl" />
                             <label class="visually-hidden" for="as-emp">@Localizer["Tm_Field_Assignee"]</label>
-                            <select id="as-emp" name="assigneeEmployeeId" class="form-select form-select-sm" aria-describedby="as-help">
+                            <pems-select scale="small" id="as-emp" name="assigneeEmployeeId" aria-describedby="as-help">
                                 <option value="">@Localizer["Tm_Unassigned"]</option>
                                 @foreach (var e in assignees.Candidates) { <option value="@e.EmployeeId" selected="@(e.EmployeeId == i.AssigneeEmployeeId)">@e.Name</option> }
                                 @if (i.AssigneeEmployeeId != null && assignees.Candidates.All(e => e.EmployeeId != i.AssigneeEmployeeId))
                                 { <option value="@i.AssigneeEmployeeId" selected>@i.AssigneeName (@Localizer["Tm_NotEligible"])</option> }
-                            </select>
+                            </pems-select>
                             <pems-button tone="neutral" size="small" outline="true">@Localizer["Tm_Save"]</pems-button>
                         </form>
                         @if (assignees.State != "RESOLVED") { <div id="as-help" class="form-text text-warning">@Localizer["Tm_Diag_" + assignees.State]</div> }

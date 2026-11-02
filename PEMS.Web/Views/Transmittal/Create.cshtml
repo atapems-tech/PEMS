@@ -16,28 +16,28 @@
         <div class="row g-3">
             <div class="col-md-6">
                 <label class="form-label">Transmittal No</label>
-                <input name="transmittalNo" class="form-control" placeholder="e.g. TR-2026-001" required />
+                <pems-input name="transmittalNo" placeholder="e.g. TR-2026-001" required />
             </div>
             <div class="col-md-6">
                 <label class="form-label">@Localizer["Project"]</label>
-                <select name="projectId" class="form-select" required>
+                <pems-select name="projectId" required>
                     @foreach (var p in projects)
                     {
                         <option value="@p.ProjectId">@p.ProjectName</option>
                     }
-                </select>
+                </pems-select>
             </div>
             <div class="col-md-6">
                 <label class="form-label">@Localizer["From"]</label>
-                <input name="from" class="form-control" placeholder="e.g. Engineering Department" required />
+                <pems-input name="from" placeholder="e.g. Engineering Department" required />
             </div>
             <div class="col-md-6">
                 <label class="form-label">To <span class="text-muted small">(free-text summary - optional if recipients added below)</span></label>
-                <input name="to" class="form-control" placeholder="e.g. Contractor XYZ" />
+                <pems-input name="to" placeholder="e.g. Contractor XYZ" />
             </div>
             <div class="col-md-6">
                 <label class="form-label">@Localizer["Purpose"]</label>
-                <select name="purpose" class="form-select">
+                <pems-select name="purpose">
                     <option value="IFA">@Localizer["IFA - Issued for Approval"]</option>
                     <option value="IFR">@Localizer["IFR - Issue for Review and Comments"]</option>
                     <option value="IFI">IFI - Issue for Information</option>
@@ -46,18 +46,18 @@
                     <option value="For Construction">@Localizer["For Construction (legacy)"]</option>
                     <option value="For Information" selected>@Localizer["For Information (legacy)"]</option>
                     <option value="For Review">For Review (legacy)</option>
-                </select>
+                </pems-select>
             </div>
             <div class="col-md-6 d-flex align-items-end">
                 <div class="form-check">
-                    <input type="checkbox" name="responseRequired" value="true" class="form-check-input" id="responseRequired" />
+                    <pems-input kind="check" type="checkbox" name="responseRequired" value="true" id="responseRequired" />
                     <label class="form-check-label" for="responseRequired">Response Required</label>
                     <input type="hidden" name="responseRequired" value="false" />
                 </div>
             </div>
             <div class="col-12">
                 <label class="form-label">@Localizer["Description"]</label>
-                <textarea name="description" class="form-control" rows="2"></textarea>
+                <pems-textarea name="description" rows="2"></pems-textarea>
             </div>
 
             <div class="col-12">
@@ -74,7 +74,7 @@
                 <p class="text-muted small mb-1">
                     Only showing documents from the selected project. Documents on Hold cannot be transmitted. Type to search by number or title.
                 </p>
-                <input type="text" id="docPickerSearch" class="form-control form-control-sm mb-2" placeholder="Search by document number or title..." />
+                <pems-input scale="small" css="mb-2" type="text" id="docPickerSearch" placeholder="Search by document number or title..." />
                 <div class="border rounded p-2" id="docPickerList" style="max-height:320px; overflow-y:auto;">
                     @foreach (var d in documents)
                     {
@@ -107,18 +107,18 @@
 
 <template id="recipientRowTemplate">
     <div class="row g-2 mb-2 recipient-row align-items-center">
-        <div class="col-md-3"><input name="recipientName" class="form-control form-control-sm" placeholder="@Localizer["Name"]" /></div>
+        <div class="col-md-3"><pems-input scale="small" name="recipientName" placeholder="@Localizer["Name"]" /></div>
         <div class="col-md-3">
-            <select name="recipientType" class="form-select form-select-sm">
+            <pems-select scale="small" name="recipientType">
                 <option value="External">External</option>
                 <option value="Internal">@Localizer["Internal"]</option>
                 <option value="Vendor">@Localizer["Vendor"]</option>
                 <option value="Client">@Localizer["Client"]</option>
-            </select>
+            </pems-select>
         </div>
-        <div class="col-md-3"><input name="recipientOrganization" class="form-control form-control-sm" placeholder="@Localizer["Organization"]" /></div>
+        <div class="col-md-3"><pems-input scale="small" name="recipientOrganization" placeholder="@Localizer["Organization"]" /></div>
         <div class="col-md-2 form-check">
-            <input type="checkbox" class="form-check-input" name="recipientResponseRequired" value="true" />
+            <pems-input kind="check" type="checkbox" name="recipientResponseRequired" value="true" />
             <label class="form-check-label small">Response req.</label>
         </div>
         <div class="col-md-1"><pems-button tone="danger" size="small" outline="true" css="remove-recipient-btn" type="button"><i class="bi bi-x-lg"></i></pems-button></div>

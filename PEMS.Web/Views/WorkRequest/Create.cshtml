@@ -9,71 +9,70 @@
 <div class="content-card" style="max-width:700px;">
     <form asp-action="Create" method="post">
         <div class="row g-3">
-            <div class="col-12"><label class="form-label">@Localizer["Title"]</label><input name="title" class="form-control" placeholder="e.g. Pump P-101 unusual vibration" required /></div>
+            <div class="col-12"><label class="form-label">@Localizer["Title"]</label><pems-input name="title" placeholder="e.g. Pump P-101 unusual vibration" required /></div>
 
             <div class="col-12">
                 <label class="form-label">@Localizer["Equipment"] <span class="text-muted small">(@Localizer["Equipment, Asset or Functional Location is required"])</span></label>
-                <input type="text" class="form-control" placeholder="@Localizer["جستجوی تگ، نام..."]"
-                       data-pems-search data-search-type="Equipment" data-search-hidden="#wrEquipmentIdHidden" autocomplete="off" value="@ViewBag.PrefillEquipmentText" />
+                <pems-input type="text" placeholder="@Localizer["جستجوی تگ، نام..."]" data-pems-search data-search-type="Equipment" data-search-hidden="#wrEquipmentIdHidden" autocomplete="off" value="@ViewBag.PrefillEquipmentText" />
                 <input type="hidden" name="equipmentId" id="wrEquipmentIdHidden" value="@ViewBag.PrefillEquipmentId" />
                 <div class="form-text small">@Localizer["At least one of Equipment or Functional Location is required. If the problem is not tied to one equipment, leave this empty and choose a Functional Location."]</div>
             </div>
 
             <div class="col-12">
                 <label class="form-label">@Localizer["Functional Location"]</label>
-                <select name="functionalLocationId" class="form-select">
+                <pems-select name="functionalLocationId">
                     <option value="">@Localizer["-- None --"]</option>
                     @foreach (var fl in functionalLocations)
                     {
                         <option value="@fl.FunctionalLocationId">@fl.PathBreadcrumb</option>
                     }
-                </select>
+                </pems-select>
             </div>
 
-            <div class="col-12"><label class="form-label">Reported Condition</label><textarea name="reportedCondition" class="form-control" rows="2" placeholder="@Localizer["آنچه واقعاً دیده/شنیده/اندازه‌گیری شده"]"></textarea></div>
+            <div class="col-12"><label class="form-label">Reported Condition</label><pems-textarea name="reportedCondition" rows="2" placeholder="@Localizer["آنچه واقعاً دیده/شنیده/اندازه‌گیری شده"]"></pems-textarea></div>
 
             <div class="col-md-6">
                 <label class="form-label">@Localizer["Priority"]</label>
-                <select name="priority" class="form-select">
+                <pems-select name="priority">
                     <option value="Low">@Localizer["Low"]</option>
                     <option value="Medium" selected>@Localizer["Medium"]</option>
                     <option value="High">@Localizer["High"]</option>
                     <option value="Critical">@Localizer["Critical"]</option>
-                </select>
+                </pems-select>
             </div>
             <div class="col-md-6">
                 <label class="form-label">Suggested Discipline (optional)</label>
-                <select name="suggestedDisciplineId" class="form-select">
+                <pems-select name="suggestedDisciplineId">
                     <option value="">@Localizer["-- None --"]</option>
                     @foreach (var d in disciplines) { <option value="@d.DisciplineId">@d.Name</option> }
-                </select>
+                </pems-select>
             </div>
 
-            <div class="col-12"><label class="form-label">@Localizer["Description"]</label><textarea name="description" class="form-control" rows="2"></textarea></div>
+            <div class="col-12"><label class="form-label">@Localizer["Description"]</label><pems-textarea name="description" rows="2"></pems-textarea></div>
 
             <div class="col-12"><hr class="my-1" /><h6 class="mb-0">@Localizer["Risk and HSE"]</h6>
                 <div class="form-text small">@Localizer["Priority is derived: the final priority is never lower than the declared priority or the risk matrix result; HSE-related requests are at least High; emergencies are always Critical."]</div></div>
             <div class="col-md-3">
                 <label class="form-label">@Localizer["Likelihood (1-5)"]</label>
-                <select name="riskLikelihood" class="form-select"><option value="">--</option>@for (var i = 1; i <= 5; i++) { <option value="@i">@i</option> }</select>
+                <pems-select name="riskLikelihood"><option value="">--</option>@for (var i = 1; i <= 5; i++) { <option value="@i">@i</option> }</pems-select>
             </div>
             <div class="col-md-3">
                 <label class="form-label">@Localizer["Severity (1-5)"]</label>
-                <select name="riskSeverity" class="form-select"><option value="">--</option>@for (var i = 1; i <= 5; i++) { <option value="@i">@i</option> }</select>
+                <pems-select name="riskSeverity"><option value="">--</option>@for (var i = 1; i <= 5; i++) { <option value="@i">@i</option> }</pems-select>
             </div>
-            <div class="col-md-3 d-flex align-items-end"><div class="form-check"><input class="form-check-input" type="checkbox" name="isHseRelated" value="true" id="wrHse" /><label class="form-check-label" for="wrHse">@Localizer["HSE related"]</label></div></div>
-            <div class="col-md-3 d-flex align-items-end"><div class="form-check"><input class="form-check-input" type="checkbox" name="isEmergency" value="true" id="wrEmergency" /><label class="form-check-label text-danger" for="wrEmergency">@Localizer["Emergency"]</label></div></div>
+            <div class="col-md-3 d-flex align-items-end"><div class="form-check"><pems-input kind="check" type="checkbox" name="isHseRelated" value="true" id="wrHse" /><label class="form-check-label" for="wrHse">@Localizer["HSE related"]</label></div></div>
+            <div class="col-md-3 d-flex align-items-end"><div class="form-check"><pems-input kind="check" type="checkbox" name="isEmergency" value="true" id="wrEmergency" /><label class="form-check-label text-danger" for="wrEmergency">@Localizer["Emergency"]</label></div></div>
 
             <div class="col-12"><hr class="my-1" /><h6 class="mb-0">@Localizer["Reported failure (ISO 14224)"]</h6></div>
             <div class="col-md-5">
                 <label class="form-label">@Localizer["Failure Mode"]</label>
-                <select name="failureModeId" class="form-select">
+                <pems-select name="failureModeId">
                     <option value="">@Localizer["-- None --"]</option>
                     @foreach (var fm in (IEnumerable<dynamic>)ViewBag.FailureModes) { <option value="@fm.FailureModeId">@fm.Label</option> }
-                </select>
+                </pems-select>
             </div>
-            <div class="col-md-5"><label class="form-label">@Localizer["Failure Effect"]</label><input name="failureEffect" maxlength="500" class="form-control" /></div>
-            <div class="col-md-2"><label class="form-label">@Localizer["Downtime Hours"]</label><input name="reportedDowntimeHours" type="number" min="0" step="0.1" class="form-control" /></div>
+            <div class="col-md-5"><label class="form-label">@Localizer["Failure Effect"]</label><pems-input name="failureEffect" maxlength="500" /></div>
+            <div class="col-md-2"><label class="form-label">@Localizer["Downtime Hours"]</label><pems-input name="reportedDowntimeHours" type="number" min="0" step="0.1" /></div>
         </div>
         <div class="mt-4">
             <pems-button tone="primary" type="submit">Submit Request</pems-button>

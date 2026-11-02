@@ -18,7 +18,7 @@ else
         <table class="table table-sm table-enterprise vs-dense mb-0 tm-table">
             <thead>
                 <tr>
-                    @if (showBulk) { <th class="tm-col-check"><input type="checkbox" class="form-check-input" data-tm-bulk-all aria-label="@Localizer["Tm_SelectAll"]" /></th> }
+                    @if (showBulk) { <th class="tm-col-check"><pems-input kind="check" type="checkbox" data-tm-bulk-all aria-label="@Localizer["Tm_SelectAll"]" /></th> }
                     <th>@Localizer["Tm_Field_Key"]</th>
                     @if (showSpace) { <th>@Localizer["Tm_Field_Space"]</th> }
                     <th>@Localizer["Tm_Field_Title"]</th>

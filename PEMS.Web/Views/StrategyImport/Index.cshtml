@@ -15,7 +15,7 @@
             <h6 class="small fw-bold">@Localizer["Rcm_ImportStrategies"]</h6>
             <form asp-action="Preview" method="post" enctype="multipart/form-data" class="d-flex gap-2">
                 <input type="hidden" name="kind" value="strategies" />
-                <input type="file" name="file" accept=".xlsx" class="form-control form-control-sm" required />
+                <pems-input scale="small" type="file" name="file" accept=".xlsx" required />
                 <pems-button tone="primary" size="small">@Localizer["Rcm_Validate"]</pems-button>
             </form>
             <a asp-action="Template" asp-route-kind="strategies" class="small">@Localizer["Rcm_DownloadTemplate"]</a>
@@ -26,7 +26,7 @@
             <h6 class="small fw-bold">@Localizer["Rcm_ImportAssignments"]</h6>
             <form asp-action="Preview" method="post" enctype="multipart/form-data" class="d-flex gap-2">
                 <input type="hidden" name="kind" value="assignments" />
-                <input type="file" name="file" accept=".xlsx" class="form-control form-control-sm" required />
+                <pems-input scale="small" type="file" name="file" accept=".xlsx" required />
                 <pems-button tone="primary" size="small">@Localizer["Rcm_Validate"]</pems-button>
             </form>
             <a asp-action="Template" asp-route-kind="assignments" class="small">@Localizer["Rcm_DownloadTemplate"]</a>

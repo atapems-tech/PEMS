@@ -155,7 +155,7 @@ public class ReferralWebTests
         }
 
         // the quick form is for departments only: no employee picker any more in the referral form
-        var referralForm = Regex.Match(sent, "<form[^>]*>\\s*<input[^>]*name=\"letterId\"[^>]*/?>\\s*<div class=\"col-md-6\">\\s*<select name=\"referredToDepartmentId\".*?</form>", RegexOptions.Singleline).Value;
+        var referralForm = Regex.Match(sent, "<form[^>]*>\\s*<input[^>]*name=\"letterId\"[^>]*/?>\\s*<div class=\"col-md-6\">\\s*<select[^>]*name=\"referredToDepartmentId\".*?</form>", RegexOptions.Singleline).Value;
         Assert.NotEmpty(referralForm);
         Assert.DoesNotContain("referredToEmployeeId", referralForm);
         Assert.Contains("Refer to a person", sent);

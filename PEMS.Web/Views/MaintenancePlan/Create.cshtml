@@ -50,20 +50,20 @@
             <div class="row g-3">
                 <div class="col-12">
                     <label class="form-label">@Localizer["Title"] <span class="text-danger">*</span></label>
-                    <input name="Title" value="@i.Title" class="form-control" minlength="5" required />
+                    <pems-input name="Title" value="@i.Title" minlength="5" required />
                     <span class="text-danger small">@Html.ValidationMessage("title")</span>
                 </div>
 
                 <div class="col-md-4">
                     <label class="form-label">@Localizer["Rcm_TriggerType"]</label>
-                    <select name="TriggerType" class="form-select" id="triggerTypeSelect">
+                    <pems-select name="TriggerType" id="triggerTypeSelect">
                         @foreach (var t in RcmCodes.Trigger.All) { <option value="@t" selected="@(i.TriggerType == t)">@Localizer.Label("Trigger", t)</option> }
-                    </select>
+                    </pems-select>
                     <span class="text-danger small">@Html.ValidationMessage("triggerType")</span>
                 </div>
                 <div class="col-md-4" id="intervalDaysWrap">
                     <label class="form-label">@Localizer["Rcm_IntervalDays"]</label>
-                    <input name="IntervalDays" type="number" min="1" value="@i.IntervalDays" class="form-control" />
+                    <pems-input name="IntervalDays" type="number" min="1" value="@i.IntervalDays" />
                     @if (ctx.SuggestedIntervalDays.HasValue) { <div class="form-text">@Localizer["Rcm_SuggestedInterval", ctx.SuggestedIntervalDays.Value, ctx.Equipment.CriticalityClass ?? "-"]</div> }
                     <span class="text-danger small">@Html.ValidationMessage("intervalDays")</span>
                 </div>
@@ -72,43 +72,43 @@
                     <input name="NextDueDate" type="date" value="@i.NextDueDate?.ToString("yyyy-MM-dd")" class="form-control" />
                     <span class="text-danger small">@Html.ValidationMessage("nextDueDate")</span>
                     <div class="form-check mt-1 small">
-                        <input class="form-check-input" type="checkbox" name="AllowPastDueDate" value="true" id="allowPast" />
+                        <pems-input kind="check" type="checkbox" name="AllowPastDueDate" value="true" id="allowPast" />
                         <label class="form-check-label" for="allowPast">@Localizer["Rcm_AllowPastDue"]</label>
                         <input type="hidden" name="AllowPastDueDate" value="false" />
                     </div>
                 </div>
                 <div class="col-md-4" id="meterTypeWrap" style="display:none;">
                     <label class="form-label">@Localizer["Rcm_MeterType"]</label>
-                    <select name="MeterType" class="form-select">
+                    <pems-select name="MeterType">
                         @foreach (var m in RcmCodes.MeterType.All) { <option value="@m" selected="@(i.MeterType == m)">@Localizer.Label("MeterType", m)</option> }
-                    </select>
+                    </pems-select>
                     <span class="text-danger small">@Html.ValidationMessage("meterType")</span>
                 </div>
                 <div class="col-md-4" id="meterIntervalWrap" style="display:none;">
                     <label class="form-label">@Localizer["Rcm_MeterInterval"]</label>
-                    <input name="MeterInterval" type="number" step="0.01" min="0.01" value="@i.MeterInterval" class="form-control" />
+                    <pems-input name="MeterInterval" type="number" step="0.01" min="0.01" value="@i.MeterInterval" />
                     <span class="text-danger small">@Html.ValidationMessage("meterInterval")</span>
                 </div>
                 <div class="col-md-4">
                     <label class="form-label">@Localizer["Rcm_ScheduleMode"]</label>
-                    <select name="ScheduleMode" class="form-select">
+                    <pems-select name="ScheduleMode">
                         <option value="Fixed" selected="@(i.ScheduleMode != "Floating")">@Localizer.Label("ScheduleMode", "Fixed")</option>
                         <option value="Floating" selected="@(i.ScheduleMode == "Floating")">@Localizer.Label("ScheduleMode", "Floating")</option>
-                    </select>
+                    </pems-select>
                     <div class="form-text">@Localizer["Rcm_ScheduleModeHint"]</div>
                 </div>
 
                 <div class="col-12">
                     <label class="form-label">@Localizer["Job Plan"] <span class="text-danger">*</span></label>
-                    <select name="JobPlanId" class="form-select" required>
+                    <pems-select name="JobPlanId" required>
                         <option value="">@Localizer["Rcm_SelectPlaceholder"]</option>
                         @foreach (var jp in Model.JobPlans) { <option value="@jp.Id" selected="@(i.JobPlanId == jp.Id)">@jp.Code &mdash; @jp.Text</option> }
-                    </select>
+                    </pems-select>
                     <div class="form-text">@Localizer["Rcm_JobPlanHint"] <a asp-controller="JobPlan" asp-action="Index" target="_blank">@Localizer["Rcm_ManageJobPlans"]</a></div>
                     <span class="text-danger small">@Html.ValidationMessage("jobPlanId")</span>
                 </div>
 
-                <div class="col-12"><label class="form-label">@Localizer["Description"]</label><textarea name="Description" class="form-control" rows="2">@i.Description</textarea></div>
+                <div class="col-12"><label class="form-label">@Localizer["Description"]</label><pems-textarea name="Description" rows="2">@i.Description</pems-textarea></div>
             </div>
             <div class="mt-4">
                 <pems-button tone="primary" type="submit">@Localizer["Rcm_CreatePlan"]</pems-button>

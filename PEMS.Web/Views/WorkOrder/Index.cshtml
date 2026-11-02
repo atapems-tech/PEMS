@@ -38,17 +38,16 @@
                 <pems-list-filters form-id="woFilterForm" action="@Url.Action("Index")" count="@filterCount" reset-href="@Url.Action("Index")">
                     <div>
                         <label class="lp-lbl" for="woEquipmentFilterSearch">@Localizer["Wo_ColEquipment"]</label>
-                        <input type="text" class="form-control form-control-sm" id="woEquipmentFilterSearch" placeholder="@Localizer["Wo_SearchEquipment"]"
-                               value="@equipmentLabel" data-pems-search data-search-type="Equipment" autocomplete="off" />
+                        <pems-input scale="small" type="text" id="woEquipmentFilterSearch" placeholder="@Localizer["Wo_SearchEquipment"]" value="@equipmentLabel" data-pems-search data-search-type="Equipment" autocomplete="off" />
                         <input type="hidden" name="equipmentId" id="woEquipmentFilterHidden" value="@equipmentId" />
                     </div>
                     <div>
                         <label class="lp-lbl" for="woFilterStatus">@Localizer["Ed_Status"]</label>
-                        <select id="woFilterStatus" name="status" class="form-select form-select-sm">
+                        <pems-select scale="small" id="woFilterStatus" name="status">
                             <option value="">@Localizer["Ed_All"]</option>
                             @foreach (var s in statuses)
                             { <option value="@s" selected="@(s == status)">@StatusText(s)</option> }
-                        </select>
+                        </pems-select>
                     </div>
                     <div class="form-check form-switch mb-0">
                         <input class="form-check-input" type="checkbox" role="switch" name="assignedToMe" value="true" id="assignedToMeCheck" checked="@assignedToMe" />

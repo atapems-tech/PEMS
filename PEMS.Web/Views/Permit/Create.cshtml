@@ -13,53 +13,51 @@
         <div class="row g-3">
             <div class="col-md-6">
                 <label class="form-label">Permit Type</label>
-                <select name="permitType" class="form-select" required>
+                <pems-select name="permitType" required>
                     @foreach (var t in permitTypes) { <option value="@t">@t</option> }
-                </select>
+                </pems-select>
             </div>
             <div class="col-md-6">
                 <label class="form-label">@Localizer["Priority"]</label>
-                <select name="priority" class="form-select">
+                <pems-select name="priority">
                     <option value="Low">@Localizer["Low"]</option>
                     <option value="Medium" selected>@Localizer["Medium"]</option>
                     <option value="High">@Localizer["High"]</option>
                     <option value="Critical">@Localizer["Critical"]</option>
-                </select>
+                </pems-select>
             </div>
 
-            <div class="col-12"><label class="form-label">@Localizer["Title"]</label><input name="title" class="form-control" placeholder="e.g. Pump P-101 seal replacement" required /></div>
-            <div class="col-12"><label class="form-label">@Localizer["Description"]</label><textarea name="description" class="form-control" rows="2"></textarea></div>
+            <div class="col-12"><label class="form-label">@Localizer["Title"]</label><pems-input name="title" placeholder="e.g. Pump P-101 seal replacement" required /></div>
+            <div class="col-12"><label class="form-label">@Localizer["Description"]</label><pems-textarea name="description" rows="2"></pems-textarea></div>
 
             <div class="col-md-6">
                 <label class="form-label">@Localizer["Equipment (optional)"]</label>
-                <input type="text" class="form-control" placeholder="@Localizer["جستجوی تگ، نام..."]"
-                       data-pems-search data-search-type="Equipment" data-search-hidden="#permitEquipmentIdHidden" autocomplete="off" />
+                <pems-input type="text" placeholder="@Localizer["جستجوی تگ، نام..."]" data-pems-search data-search-type="Equipment" data-search-hidden="#permitEquipmentIdHidden" autocomplete="off" />
                 <input type="hidden" name="equipmentId" id="permitEquipmentIdHidden" />
             </div>
             <div class="col-md-6">
                 <label class="form-label">@Localizer["Functional Location (optional)"]</label>
-                <select name="functionalLocationId" class="form-select">
+                <pems-select name="functionalLocationId">
                     <option value="">@Localizer["-- None --"]</option>
                     @foreach (var fl in functionalLocations)
                     {
                         <option value="@fl.FunctionalLocationId">@fl.PathBreadcrumb</option>
                     }
-                </select>
+                </pems-select>
             </div>
 
             <div class="col-md-6">
                 <label class="form-label">Work Order (optional)</label>
-                <input type="text" class="form-control" placeholder="@Localizer["جستجوی شماره WorkOrder..."]"
-                       data-pems-search data-search-type="WorkOrder" data-search-hidden="#permitWorkOrderIdHidden" autocomplete="off" />
+                <pems-input type="text" placeholder="@Localizer["جستجوی شماره WorkOrder..."]" data-pems-search data-search-type="WorkOrder" data-search-hidden="#permitWorkOrderIdHidden" autocomplete="off" />
                 <input type="hidden" name="workOrderId" id="permitWorkOrderIdHidden" />
                 <div class="form-text small">@Localizer["اگر Permit به یک WorkOrder مشخص وصل نیست، خالی بگذار."]</div>
             </div>
             <div class="col-md-6">
                 <label class="form-label">Permit Receiver (optional)</label>
-                <select name="permitReceiverEmployeeId" class="form-select">
+                <pems-select name="permitReceiverEmployeeId">
                     <option value="">@Localizer["-- None --"]</option>
                     @foreach (var r in receivers) { <option value="@r.EmployeeId">@r.Label</option> }
-                </select>
+                </pems-select>
                 <div class="form-text small">@Localizer["می‌تواند پرسنل Internal یا Contractor باشد."]</div>
             </div>
 

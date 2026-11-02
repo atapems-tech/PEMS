@@ -17,14 +17,13 @@
         <div class="row g-3">
             <div class="col-md-6">
                 <label class="form-label">@Localizer["Project"]</label>
-                <select name="projectId" class="form-select" required>
+                <pems-select name="projectId" required>
                     @foreach (var p in projects) { <option value="@p.ProjectId">@p.ProjectName</option> }
-                </select>
+                </pems-select>
             </div>
             <div class="col-12">
                 <label class="form-label">Files</label>
-                <input type="file" name="files" class="form-control" multiple
-                       accept=".pdf,.docx,.xlsx,.jpg,.jpeg,.png,.bmp,.tif,.tiff" required />
+                <pems-input type="file" name="files" multiple accept=".pdf,.docx,.xlsx,.jpg,.jpeg,.png,.bmp,.tif,.tiff" required />
                 <div class="form-text">Supported: PDF, Word (.docx), Excel (.xlsx), images/scans (OCR).</div>
             </div>
         </div>

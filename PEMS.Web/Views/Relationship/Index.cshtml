@@ -19,7 +19,7 @@
         </div>
     </div>
     <form asp-action="Search" method="get" class="d-flex gap-2 mt-2">
-        <input type="text" name="q" value="@ViewBag.Query" class="form-control" placeholder="e.g. P-101, or a vendor name, or a document number" />
+        <pems-input type="text" name="q" value="@ViewBag.Query" placeholder="e.g. P-101, or a vendor name, or a document number" />
         <pems-button tone="primary"><i class="bi bi-diagram-3"></i> @Localizer["Explore"]</pems-button>
     </form>
 </div>

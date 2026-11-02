@@ -106,8 +106,8 @@
             <div class="content-card mb-3">
                 <form asp-action="CreateFmeaDraft" method="post" class="row g-2">
                     <input type="hidden" name="equipmentClassId" value="@equipmentClass.EquipmentClassId" />
-                    <div class="col-md-4"><input name="title" class="form-control form-control-sm" placeholder="Analysis title" required /></div>
-                    <div class="col-md-6"><input name="description" class="form-control form-control-sm" placeholder="@Localizer["Description"]" /></div>
+                    <div class="col-md-4"><pems-input scale="small" name="title" placeholder="Analysis title" required /></div>
+                    <div class="col-md-6"><pems-input scale="small" name="description" placeholder="@Localizer["Description"]" /></div>
                     <div class="col-md-2"><pems-button tone="primary" size="small" css="w-100" type="submit">New FMEA Draft</pems-button></div>
                 </form>
             </div>
@@ -168,26 +168,26 @@
                         <input type="hidden" name="equipmentClassId" value="@equipmentClass.EquipmentClassId" />
                         <input type="hidden" name="fmeaAnalysisId" value="@fmea.FMEAAnalysisId" />
                         <div class="col-md-3">
-                            <select name="failureModeId" class="form-select form-select-sm" required>
+                            <pems-select scale="small" name="failureModeId" required>
                                 <option value="">Failure Mode...</option>
                                 @foreach (var fm in failureModes) { <option value="@fm.FailureModeId">@fm.Name</option> }
-                            </select>
+                            </pems-select>
                         </div>
                         <div class="col-md-2">
-                            <select name="functionalFailureId" class="form-select form-select-sm">
+                            <pems-select scale="small" name="functionalFailureId">
                                 <option value="">Functional Failure (optional)...</option>
                                 @foreach (var ff in functionalFailures) { <option value="@ff.FunctionalFailureId">@ff.Title</option> }
-                            </select>
+                            </pems-select>
                         </div>
-                        <div class="col-md-2"><input name="detectionMethod" class="form-control form-control-sm" placeholder="Detection method" /></div>
-                        <div class="col-md-1"><input name="severity" type="number" min="1" max="10" class="form-control form-control-sm" placeholder="S" /></div>
-                        <div class="col-md-1"><input name="occurrence" type="number" min="1" max="10" class="form-control form-control-sm" placeholder="O" /></div>
-                        <div class="col-md-1"><input name="detectability" type="number" min="1" max="10" class="form-control form-control-sm" placeholder="D" /></div>
+                        <div class="col-md-2"><pems-input scale="small" name="detectionMethod" placeholder="Detection method" /></div>
+                        <div class="col-md-1"><pems-input scale="small" name="severity" type="number" min="1" max="10" placeholder="S" /></div>
+                        <div class="col-md-1"><pems-input scale="small" name="occurrence" type="number" min="1" max="10" placeholder="O" /></div>
+                        <div class="col-md-1"><pems-input scale="small" name="detectability" type="number" min="1" max="10" placeholder="D" /></div>
                         <div class="col-md-2">
-                            <select name="maintenanceStrategyTypeId" class="form-select form-select-sm">
+                            <pems-select scale="small" name="maintenanceStrategyTypeId">
                                 <option value="">@Localizer["Strategy Type..."]</option>
                                 @foreach (var st in strategyTypes) { <option value="@st.MaintenanceStrategyTypeId">@st.Name</option> }
-                            </select>
+                            </pems-select>
                         </div>
                         <div class="col-12"><pems-button tone="neutral" size="small" outline="true" type="submit"><i class="bi bi-plus-lg"></i> Add Item</pems-button></div>
                     </form>
@@ -205,10 +205,10 @@
                 <form asp-action="CreateRcmDraft" method="post" class="row g-2">
                     <input type="hidden" name="equipmentClassId" value="@equipmentClass.EquipmentClassId" />
                     <div class="col-md-8">
-                        <select name="fmeaAnalysisId" class="form-select form-select-sm" required>
+                        <pems-select scale="small" name="fmeaAnalysisId" required>
                             <option value="">Based on approved FMEA...</option>
                             @foreach (var fmea in fmeaAnalyses.Where(x => x.Status == "APPROVED")) { <option value="@fmea.FMEAAnalysisId">@fmea.Title (Rev. @fmea.Revision)</option> }
-                        </select>
+                        </pems-select>
                     </div>
                     <div class="col-md-4"><pems-button tone="primary" size="small" css="w-100" type="submit">New RCM Draft</pems-button></div>
                 </form>
@@ -318,13 +318,13 @@
                                         @if (equipmentInClass.Any())
                                         {
                                             <label class="form-label small">@Localizer["Equipment"]</label>
-                                            <select name="equipmentId" class="form-select form-select-sm" required>
+                                            <pems-select scale="small" name="equipmentId" required>
                                                 <option value="">Select equipment...</option>
                                                 @foreach (var eq in equipmentInClass)
                                                 {
                                                     <option value="@eq.EquipmentId">@eq.TagNumber — @eq.Name</option>
                                                 }
-                                            </select>
+                                            </pems-select>
                                         }
                                         else
                                         {
@@ -350,13 +350,13 @@
                         <input type="hidden" name="equipmentClassId" value="@equipmentClass.EquipmentClassId" />
                         <input type="hidden" name="rcmAnalysisId" value="@rcm.RCMAnalysisId" />
                         <div class="col-md-3">
-                            <select name="fmeaItemId" class="form-select form-select-sm" required>
+                            <pems-select scale="small" name="fmeaItemId" required>
                                 <option value="">FMEA Item (Failure Mode)...</option>
                                 @foreach (var item in sourceFmea.Items) { <option value="@item.FMEAItemId">@item.FailureModeName</option> }
-                            </select>
+                            </pems-select>
                         </div>
                         <div class="col-md-2">
-                            <select name="decisionType" class="form-select form-select-sm" required>
+                            <pems-select scale="small" name="decisionType" required>
                                 <option value="">Decision Type...</option>
                                 <option value="CONDITION_BASED">Condition Based</option>
                                 <option value="PREDICTIVE">@Localizer["Predictive"]</option>
@@ -367,29 +367,29 @@
                                 <option value="REDESIGN">Redesign</option>
                                 <option value="NO_SCHEDULED_MAINTENANCE">No Scheduled Maintenance</option>
                                 <option value="OTHER">@Localizer["Other"]</option>
-                            </select>
+                            </pems-select>
                         </div>
                         <div class="col-md-2">
-                            <select name="maintenanceStrategyTypeId" class="form-select form-select-sm">
+                            <pems-select scale="small" name="maintenanceStrategyTypeId">
                                 <option value="">@Localizer["Strategy Type..."]</option>
                                 @foreach (var st in strategyTypes) { <option value="@st.MaintenanceStrategyTypeId">@st.Name</option> }
-                            </select>
+                            </pems-select>
                         </div>
                         <div class="col-md-2">
-                            <select name="recommendedPMTemplateId" class="form-select form-select-sm">
+                            <pems-select scale="small" name="recommendedPMTemplateId">
                                 <option value="">PM Template (optional)...</option>
                                 @foreach (var pt in pmTemplates) { <option value="@pt.PMTemplateId">@pt.Name</option> }
-                            </select>
+                            </pems-select>
                         </div>
                         <div class="col-md-2">
-                            <select name="consequenceCategory" class="form-select form-select-sm">
+                            <pems-select scale="small" name="consequenceCategory">
                                 <option value="Safety">@Localizer["Safety"]</option>
                                 <option value="Environmental">@Localizer["Environmental"]</option>
                                 <option value="Operational" selected>@Localizer["Operational"]</option>
                                 <option value="Economic">@Localizer["Economic"]</option>
-                            </select>
+                            </pems-select>
                         </div>
-                        <div class="col-md-6"><input name="rationale" class="form-control form-control-sm" placeholder="@Localizer["Rationale"]" /></div>
+                        <div class="col-md-6"><pems-input scale="small" name="rationale" placeholder="@Localizer["Rationale"]" /></div>
                         <div class="col-md-2"><pems-button tone="neutral" size="small" outline="true" css="w-100" type="submit"><i class="bi bi-plus-lg"></i> Add Decision</pems-button></div>
                     </form>
                 }
@@ -407,10 +407,10 @@
                 <input type="hidden" name="equipmentClassId" value="@equipmentClass.EquipmentClassId" />
                 <div class="modal-header"><h6 class="modal-title">@Localizer["Functional Requirement جدید"]</h6></div>
                 <div class="modal-body">
-                    <div class="mb-2"><label class="form-label small">@Localizer["Code"]</label><input name="code" class="form-control form-control-sm" required /></div>
-                    <div class="mb-2"><label class="form-label small">@Localizer["Title"]</label><input name="title" class="form-control form-control-sm" required /></div>
-                    <div class="mb-2"><label class="form-label small">@Localizer["Required Function"]</label><input name="requiredFunction" class="form-control form-control-sm" /></div>
-                    <div class="mb-2"><label class="form-label small">@Localizer["Description"]</label><textarea name="description" class="form-control form-control-sm" rows="2"></textarea></div>
+                    <div class="mb-2"><label class="form-label small">@Localizer["Code"]</label><pems-input scale="small" name="code" required /></div>
+                    <div class="mb-2"><label class="form-label small">@Localizer["Title"]</label><pems-input scale="small" name="title" required /></div>
+                    <div class="mb-2"><label class="form-label small">@Localizer["Required Function"]</label><pems-input scale="small" name="requiredFunction" /></div>
+                    <div class="mb-2"><label class="form-label small">@Localizer["Description"]</label><pems-textarea scale="small" name="description" rows="2"></pems-textarea></div>
                 </div>
                 <div class="modal-footer">
                     <pems-button tone="neutral" size="small" outline="true" type="button" data-bs-dismiss="modal">@Localizer["Cancel"]</pems-button>
@@ -427,16 +427,16 @@
                 <div class="modal-header"><h6 class="modal-title">@Localizer["Functional Failure جدید"]</h6></div>
                 <div class="modal-body">
                     <div class="mb-2"><label class="form-label small">Functional Requirement</label>
-                        <select name="functionalRequirementId" class="form-select form-select-sm" required>
+                        <pems-select scale="small" name="functionalRequirementId" required>
                             @foreach (var fr in functionalRequirements)
                             {
                                 <option value="@fr.FunctionalRequirementId">@fr.Code — @fr.Title</option>
                             }
-                        </select>
+                        </pems-select>
                     </div>
-                    <div class="mb-2"><label class="form-label small">@Localizer["Code"]</label><input name="code" class="form-control form-control-sm" required /></div>
-                    <div class="mb-2"><label class="form-label small">@Localizer["Title"]</label><input name="title" class="form-control form-control-sm" required /></div>
-                    <div class="mb-2"><label class="form-label small">Failure Definition</label><textarea name="failureDefinition" class="form-control form-control-sm" rows="2"></textarea></div>
+                    <div class="mb-2"><label class="form-label small">@Localizer["Code"]</label><pems-input scale="small" name="code" required /></div>
+                    <div class="mb-2"><label class="form-label small">@Localizer["Title"]</label><pems-input scale="small" name="title" required /></div>
+                    <div class="mb-2"><label class="form-label small">Failure Definition</label><pems-textarea scale="small" name="failureDefinition" rows="2"></pems-textarea></div>
                 </div>
                 <div class="modal-footer">
                     <pems-button tone="neutral" size="small" outline="true" type="button" data-bs-dismiss="modal">@Localizer["Cancel"]</pems-button>

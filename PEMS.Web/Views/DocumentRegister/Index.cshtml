@@ -55,11 +55,11 @@
                     <input type="hidden" name="q" value="@q" />
                     <div>
                         <label class="lp-lbl" for="drFilterProject">@Localizer["Project"]</label>
-                        <select id="drFilterProject" name="project" class="form-select form-select-sm">
+                        <pems-select scale="small" id="drFilterProject" name="project">
                             <option value="">@Localizer["Ed_All"]</option>
                             @foreach (var p in projects)
                             { <option value="@p" selected="@(p == project)">@p</option> }
-                        </select>
+                        </pems-select>
                     </div>
                     <fieldset>
                         <legend class="lp-lbl">@Localizer["Ed_Discipline"]</legend>
@@ -77,11 +77,11 @@
                     </fieldset>
                     <div>
                         <label class="lp-lbl" for="drFilterStatus">@Localizer["Ed_Status"]</label>
-                        <select id="drFilterStatus" name="status" class="form-select form-select-sm">
+                        <pems-select scale="small" id="drFilterStatus" name="status">
                             <option value="">@Localizer["Ed_All"]</option>
                             @foreach (var s in statuses)
                             { <option value="@s" selected="@(s == status)">@StatusText(s)</option> }
-                        </select>
+                        </pems-select>
                     </div>
                 </pems-list-filters>
 
@@ -136,7 +136,7 @@
                              filtered="@(filterCount > 0 || !string.IsNullOrEmpty(q))" clear-href="@Url.Action("Index")">
                 <thead>
                     <tr>
-                        <th data-col-key="select" data-resizable="false" class="lp-select"><input type="checkbox" class="form-check-input" data-lp-select-all aria-label="@Localizer["Lp_SelectAll"]" /></th>
+                        <th data-col-key="select" data-resizable="false" class="lp-select"><pems-input kind="check" type="checkbox" data-lp-select-all aria-label="@Localizer["Lp_SelectAll"]" /></th>
                         <th data-col-key="docNo" data-resizable="true" data-min-width="120" data-max-width="260" style="width:160px">@Localizer["Ed_DocNo"]</th>
                         <th data-col-key="title" data-resizable="true" data-min-width="180" data-max-width="500" style="width:300px">@Localizer["Ed_Title"]</th>
                         <th data-col-key="type" data-resizable="true" data-min-width="90" data-max-width="200" style="width:120px" class="vs-hide-md">@Localizer["Ed_Type"]</th>
@@ -155,7 +155,7 @@
                     @foreach (var d in Model.Items)
                     {
                         <tr class="lp-row">
-                            <td class="lp-select"><input type="checkbox" class="form-check-input" value="@d.DocumentId" data-lp-select aria-label="@Localizer["Lp_SelectRow"]: @d.DocumentNo" /></td>
+                            <td class="lp-select"><pems-input kind="check" type="checkbox" value="@d.DocumentId" data-lp-select aria-label="@Localizer["Lp_SelectRow"]: @d.DocumentNo" /></td>
                             <td class="lp-no"><a asp-controller="EngineeringDocuments" asp-action="Details" asp-route-id="@d.DocumentId" class="lp-subject" title="@d.DocumentNo">@d.DocumentNo</a></td>
                             <td><span class="vs-title-cell" title="@d.Title">@d.Title</span></td>
                             <td class="vs-hide-md small" title="@d.DocumentType">@d.DocumentType</td>
@@ -218,10 +218,10 @@
                 <div class="modal-header"><h6 class="modal-title" id="saveFilterTitle">@Localizer["Dr_SaveFilterTitle"]</h6></div>
                 <div class="modal-body">
                     <label class="form-label small" for="saveFilterName">@Localizer["Dr_FilterName"]</label>
-                    <input name="name" id="saveFilterName" class="form-control" required />
+                    <pems-input name="name" id="saveFilterName" required />
                     <input type="hidden" name="queryString" id="saveFilterQueryString" />
                     <div class="form-check mt-2">
-                        <input class="form-check-input" type="checkbox" name="isDefault" value="true" id="saveFilterDefault" />
+                        <pems-input kind="check" type="checkbox" name="isDefault" value="true" id="saveFilterDefault" />
                         <label class="form-check-label" for="saveFilterDefault">@Localizer["Dr_SetDefault"]</label>
                     </div>
                 </div>

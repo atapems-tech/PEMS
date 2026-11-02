@@ -153,27 +153,27 @@
                 <div class="modal-body">
                     <div class="mb-3">
                         <label class="form-label">@Localizer["Asset Number"]</label>
-                        <input name="assetNumber" class="form-control" value="@Model.AssetNumber" required />
+                        <pems-input name="assetNumber" value="@Model.AssetNumber" required />
                     </div>
                     <div class="row g-3 mb-3">
                         <div class="col-md-6">
                             <label class="form-label">@Localizer["Functional Location"]</label>
-                            <select name="functionalLocationId" class="form-select">
+                            <pems-select name="functionalLocationId">
                                 <option value="">@Localizer["-- not linked --"]</option>
                                 @foreach (var fl in (List<PEMS.Application.DTOs.FunctionalLocationPickerItemDto>)ViewBag.FunctionalLocations)
                                 {
                                     <option value="@fl.FunctionalLocationId" selected="@(fl.FunctionalLocationId == Model.FunctionalLocationId)">@fl.PathBreadcrumb</option>
                                 }
-                            </select>
+                            </pems-select>
                         </div>
                         <div class="col-md-6">
                             <label class="form-label">@Localizer["Maintenance Class"]</label>
-                            <input name="maintenanceClass" class="form-control" value="@Model.MaintenanceClass" />
+                            <pems-input name="maintenanceClass" value="@Model.MaintenanceClass" />
                         </div>
                     </div>
                     <div class="mb-3">
                         <label class="form-label">@Localizer["Functional Location (raw text, legacy)"]</label>
-                        <input name="functionalLocation" class="form-control" value="@Model.FunctionalLocation" />
+                        <pems-input name="functionalLocation" value="@Model.FunctionalLocation" />
                     </div>
                     <div class="row g-3 mb-3">
                         <div class="col-md-6">
@@ -182,17 +182,17 @@
                         </div>
                         <div class="col-md-6">
                             <label class="form-label">@Localizer["Status"]</label>
-                            <select name="status" class="form-select">
+                            <pems-select name="status">
                                 @foreach (var s in new[] { "Active", "Standby", "Retired" })
                                 {
                                     <option value="@s" selected="@(s == Model.Status)">@s</option>
                                 }
-                            </select>
+                            </pems-select>
                         </div>
                     </div>
                     <div class="mb-3">
                         <label class="form-label">@Localizer["Description"]</label>
-                        <textarea name="description" class="form-control" rows="2">@Model.Description</textarea>
+                        <pems-textarea name="description" rows="2">@Model.Description</pems-textarea>
                     </div>
                 </div>
                 <div class="modal-footer">

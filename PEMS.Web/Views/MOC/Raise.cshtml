@@ -8,27 +8,27 @@
         <div class="row g-3">
             <div class="col-md-6">
                 <label class="form-label">@Localizer["Project"]</label>
-                <select name="projectId" class="form-select" required>
+                <pems-select name="projectId" required>
                     @foreach (var p in (IEnumerable<dynamic>)ViewBag.Projects) { <option value="@p.ProjectId">@p.ProjectName</option> }
-                </select>
+                </pems-select>
             </div>
             <div class="col-md-6">
                 <label class="form-label">Requesting Discipline</label>
-                <select name="disciplineId" class="form-select" required>
+                <pems-select name="disciplineId" required>
                     @foreach (var d in (IEnumerable<dynamic>)ViewBag.Disciplines) { <option value="@d.DisciplineId">@d.Name</option> }
-                </select>
+                </pems-select>
             </div>
 
-            <div class="col-12"><label class="form-label">@Localizer["Title"]</label><input name="title" class="form-control" required /></div>
-            <div class="col-12"><label class="form-label">@Localizer["Description"]</label><textarea name="description" class="form-control" rows="3" required></textarea></div>
-            <div class="col-12"><label class="form-label">Reason / Justification</label><textarea name="reason" class="form-control" rows="2"></textarea></div>
+            <div class="col-12"><label class="form-label">@Localizer["Title"]</label><pems-input name="title" required /></div>
+            <div class="col-12"><label class="form-label">@Localizer["Description"]</label><pems-textarea name="description" rows="3" required></pems-textarea></div>
+            <div class="col-12"><label class="form-label">Reason / Justification</label><pems-textarea name="reason" rows="2"></pems-textarea></div>
 
             <div class="col-md-4">
                 <label class="form-label">Change Type</label>
-                <select name="changeType" class="form-select" id="changeTypeSelect" onchange="document.getElementById('tempExpiryWrap').style.display = this.value === 'Temporary' ? '' : 'none';">
+                <pems-select name="changeType" id="changeTypeSelect" onchange="document.getElementById('tempExpiryWrap').style.display = this.value === 'Temporary' ? '' : 'none';">
                     <option value="Permanent">Permanent</option>
                     <option value="Temporary">Temporary</option>
-                </select>
+                </pems-select>
             </div>
             <div class="col-md-4" id="tempExpiryWrap" style="display:none;">
                 <label class="form-label">Temporary Expiry Date</label>
@@ -36,30 +36,27 @@
             </div>
             <div class="col-md-4">
                 <label class="form-label">@Localizer["Risk Level"]</label>
-                <select name="riskLevel" class="form-select" required>
+                <pems-select name="riskLevel" required>
                     <option value="Low">@Localizer["Low"]</option>
                     <option value="Medium">@Localizer["Medium"]</option>
                     <option value="High">High <span>(نیاز به تایید ارشد اضافه)</span></option>
-                </select>
+                </pems-select>
             </div>
 
             <div class="col-md-6">
                 <label class="form-label"><i class="bi bi-file-earmark-text"></i> مدرک مرتبط <span class="text-muted small">@Localizer["(اختیاری)"]</span></label>
-                <input type="text" class="form-control" placeholder="@Localizer["جستجوی شماره مدرک، عنوان..."]"
-                       data-pems-search data-search-type="EngineeringDocument" data-search-hidden="#relatedDocumentIdHidden" autocomplete="off" />
+                <pems-input type="text" placeholder="@Localizer["جستجوی شماره مدرک، عنوان..."]" data-pems-search data-search-type="EngineeringDocument" data-search-hidden="#relatedDocumentIdHidden" autocomplete="off" />
                 <input type="hidden" name="relatedDocumentId" id="relatedDocumentIdHidden" />
             </div>
             <div class="col-md-6">
                 <label class="form-label"><i class="bi bi-gear"></i> تجهیز مرتبط <span class="text-muted small">@Localizer["(اختیاری)"]</span></label>
-                <input type="text" class="form-control" placeholder="@Localizer["جستجوی تگ، نام..."]"
-                       value="@ViewBag.PreselectedEquipmentLabel"
-                       data-pems-search data-search-type="Equipment" data-search-hidden="#relatedEquipmentIdHidden" autocomplete="off" />
+                <pems-input type="text" placeholder="@Localizer["جستجوی تگ، نام..."]" value="@ViewBag.PreselectedEquipmentLabel" data-pems-search data-search-type="Equipment" data-search-hidden="#relatedEquipmentIdHidden" autocomplete="off" />
                 <input type="hidden" name="relatedEquipmentId" id="relatedEquipmentIdHidden" value="@ViewBag.PreselectedEquipmentId" />
             </div>
 
             <div class="col-12">
                 <div class="form-check">
-                    <input class="form-check-input" type="checkbox" name="trainingRequired" value="true" id="trainingRequiredCheck" />
+                    <pems-input kind="check" type="checkbox" name="trainingRequired" value="true" id="trainingRequiredCheck" />
                     <label class="form-check-label" for="trainingRequiredCheck">این تغییر نیاز به آموزش دارد (قبل از بستن نهایی باید تکمیل بشه)</label>
                 </div>
             </div>

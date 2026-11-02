@@ -571,12 +571,12 @@
                             <td>
                                 <form asp-action="UpdateConditionPriorityMapping" method="post" class="d-flex gap-1 align-items-center">
                                     <input type="hidden" name="id" value="@m.ConditionPriorityMappingId" />
-                                    <select name="priority" class="form-select form-select-sm" style="max-width:140px;" onchange="this.form.submit()">
+                                    <pems-select scale="small" name="priority" style="max-width:140px;" onchange="this.form.submit()">
                                         @foreach (var p in new[] { "Low", "Medium", "High", "Critical" })
                                         {
                                             <option value="@p" selected="@(p == m.Priority)">@p</option>
                                         }
-                                    </select>
+                                    </pems-select>
                                 </form>
                             </td>
                             <td>@if (m.IsSystemDefault) { <pems-badge tone="info">@Localizer["System"]</pems-badge> }</td>
@@ -602,16 +602,16 @@
             <div class="modal-body">
                 <div class="mb-2">
                     <label class="form-label small">@Localizer["Condition"]</label>
-                    <input name="condition" class="form-control form-control-sm" required placeholder="مثلاً RequiresEngineeringReview" />
+                    <pems-input scale="small" name="condition" required placeholder="مثلاً RequiresEngineeringReview" />
                 </div>
                 <div class="mb-2">
                     <label class="form-label small">@Localizer["Priority"]</label>
-                    <select name="priority" class="form-select form-select-sm">
+                    <pems-select scale="small" name="priority">
                         @foreach (var p in new[] { "Low", "Medium", "High", "Critical" })
                         {
                             <option value="@p">@p</option>
                         }
-                    </select>
+                    </pems-select>
                 </div>
             </div>
             <div class="modal-footer">
@@ -629,18 +629,18 @@
             <div class="modal-body">
                 <div class="mb-2">
                     <label class="form-label small">@Localizer["نام"]</label>
-                    <input name="name" class="form-control form-control-sm" required placeholder="مثلاً Pump Alignment" />
+                    <pems-input scale="small" name="name" required placeholder="مثلاً Pump Alignment" />
                 </div>
                 <div class="mb-2">
                     <label class="form-label small">@Localizer["دیسیپلین (اختیاری)"]</label>
-                    <select name="disciplineId" class="form-select form-select-sm">
+                    <pems-select scale="small" name="disciplineId">
                         <option value="">@Localizer["-- ندارد --"]</option>
                         @foreach (var d in disciplines) { <option value="@d.DisciplineId">@d.Name</option> }
-                    </select>
+                    </pems-select>
                 </div>
                 <div class="mb-2">
                     <label class="form-label small">@Localizer["توضیحات (اختیاری)"]</label>
-                    <textarea name="description" class="form-control form-control-sm" rows="2"></textarea>
+                    <pems-textarea scale="small" name="description" rows="2"></pems-textarea>
                 </div>
             </div>
             <div class="modal-footer">
@@ -658,21 +658,21 @@
             <div class="modal-body">
                 <div class="mb-2">
                     <label class="form-label small">@Localizer["کد"]</label>
-                    <input name="code" class="form-control form-control-sm" required placeholder="مثلاً ROT-EQ" />
+                    <pems-input scale="small" name="code" required placeholder="مثلاً ROT-EQ" />
                 </div>
                 <div class="mb-2">
                     <label class="form-label small">@Localizer["نام"]</label>
-                    <input name="name" class="form-control form-control-sm" required placeholder="مثلاً Rotating Equipment" />
+                    <pems-input scale="small" name="name" required placeholder="مثلاً Rotating Equipment" />
                 </div>
                 <div class="mb-2">
                     <label class="form-label small">@Localizer["دیسیپلین"]</label>
-                    <select name="disciplineId" class="form-select form-select-sm" required>
+                    <pems-select scale="small" name="disciplineId" required>
                         @foreach (var d in disciplines) { <option value="@d.DisciplineId">@d.Name</option> }
-                    </select>
+                    </pems-select>
                 </div>
                 <div class="mb-2">
                     <label class="form-label small">@Localizer["توضیحات (اختیاری)"]</label>
-                    <textarea name="description" class="form-control form-control-sm" rows="2"></textarea>
+                    <pems-textarea scale="small" name="description" rows="2"></pems-textarea>
                 </div>
             </div>
             <div class="modal-footer">
@@ -690,18 +690,18 @@
             <div class="modal-body">
                 <div class="mb-2">
                     <label class="form-label small">@Localizer["نام"]</label>
-                    <input name="name" class="form-control form-control-sm" required placeholder="مثلاً Qualified Pump Maintenance Technician" />
+                    <pems-input scale="small" name="name" required placeholder="مثلاً Qualified Pump Maintenance Technician" />
                 </div>
                 <div class="mb-2">
                     <label class="form-label small">@Localizer["دیسیپلین (اختیاری)"]</label>
-                    <select name="disciplineId" class="form-select form-select-sm">
+                    <pems-select scale="small" name="disciplineId">
                         <option value="">@Localizer["-- ندارد --"]</option>
                         @foreach (var d in disciplines) { <option value="@d.DisciplineId">@d.Name</option> }
-                    </select>
+                    </pems-select>
                 </div>
                 <div class="mb-2">
                     <label class="form-label small">@Localizer["توضیحات (اختیاری)"]</label>
-                    <textarea name="description" class="form-control form-control-sm" rows="2"></textarea>
+                    <pems-textarea scale="small" name="description" rows="2"></pems-textarea>
                 </div>
             </div>
             <div class="modal-footer">
@@ -719,19 +719,19 @@
             <div class="modal-body">
                 <div class="mb-2">
                     <label class="form-label small">@Localizer["Code"]</label>
-                    <input name="code" class="form-control form-control-sm" required placeholder="مثلاً CUSTOM_TYPE" />
+                    <pems-input scale="small" name="code" required placeholder="مثلاً CUSTOM_TYPE" />
                 </div>
                 <div class="mb-2">
                     <label class="form-label small">@Localizer["Name"]</label>
-                    <input name="name" class="form-control form-control-sm" required />
+                    <pems-input scale="small" name="name" required />
                 </div>
                 <div class="mb-2">
                     <label class="form-label small">@Localizer["نام فارسی (اختیاری)"]</label>
-                    <input name="nameFa" class="form-control form-control-sm" />
+                    <pems-input scale="small" name="nameFa" />
                 </div>
                 <div class="mb-2">
                     <label class="form-label small">@Localizer["توضیحات (اختیاری)"]</label>
-                    <textarea name="description" class="form-control form-control-sm" rows="2"></textarea>
+                    <pems-textarea scale="small" name="description" rows="2"></pems-textarea>
                 </div>
             </div>
             <div class="modal-footer">
@@ -749,19 +749,19 @@
             <div class="modal-body">
                 <div class="mb-2">
                     <label class="form-label small">@Localizer["Code"]</label>
-                    <input name="code" class="form-control form-control-sm" required placeholder="مثلاً CUSTOM_STRATEGY" />
+                    <pems-input scale="small" name="code" required placeholder="مثلاً CUSTOM_STRATEGY" />
                 </div>
                 <div class="mb-2">
                     <label class="form-label small">@Localizer["Name"]</label>
-                    <input name="name" class="form-control form-control-sm" required />
+                    <pems-input scale="small" name="name" required />
                 </div>
                 <div class="mb-2">
                     <label class="form-label small">@Localizer["نام فارسی (اختیاری)"]</label>
-                    <input name="nameFa" class="form-control form-control-sm" />
+                    <pems-input scale="small" name="nameFa" />
                 </div>
                 <div class="mb-2">
                     <label class="form-label small">@Localizer["توضیحات (اختیاری)"]</label>
-                    <textarea name="description" class="form-control form-control-sm" rows="2"></textarea>
+                    <pems-textarea scale="small" name="description" rows="2"></pems-textarea>
                 </div>
             </div>
             <div class="modal-footer">
@@ -779,19 +779,19 @@
             <div class="modal-body">
                 <div class="mb-2">
                     <label class="form-label small">@Localizer["Code"]</label>
-                    <input name="code" class="form-control form-control-sm" required placeholder="مثلاً CUSTOM_CLASS" />
+                    <pems-input scale="small" name="code" required placeholder="مثلاً CUSTOM_CLASS" />
                 </div>
                 <div class="mb-2">
                     <label class="form-label small">@Localizer["Name"]</label>
-                    <input name="name" class="form-control form-control-sm" required placeholder="مثلاً Screw Compressor" />
+                    <pems-input scale="small" name="name" required placeholder="مثلاً Screw Compressor" />
                 </div>
                 <div class="mb-2">
                     <label class="form-label small">@Localizer["نام فارسی (اختیاری)"]</label>
-                    <input name="nameFa" class="form-control form-control-sm" />
+                    <pems-input scale="small" name="nameFa" />
                 </div>
                 <div class="mb-2">
                     <label class="form-label small">@Localizer["توضیحات (اختیاری)"]</label>
-                    <textarea name="description" class="form-control form-control-sm" rows="2"></textarea>
+                    <pems-textarea scale="small" name="description" rows="2"></pems-textarea>
                 </div>
             </div>
             <div class="modal-footer">
@@ -810,27 +810,27 @@
                 <p class="small text-muted">فقط ابرداده - هرگز متن دارای Copyright خودِ استاندارد را این‌جا وارد نکنید.</p>
                 <div class="mb-2">
                     <label class="form-label small">@Localizer["Code"]</label>
-                    <input name="code" class="form-control form-control-sm" required placeholder="مثلاً API-579" />
+                    <pems-input scale="small" name="code" required placeholder="مثلاً API-579" />
                 </div>
                 <div class="mb-2">
                     <label class="form-label small">@Localizer["Organization"]</label>
-                    <input name="organization" class="form-control form-control-sm" required placeholder="مثلاً API" />
+                    <pems-input scale="small" name="organization" required placeholder="مثلاً API" />
                 </div>
                 <div class="mb-2">
                     <label class="form-label small">Standard Number</label>
-                    <input name="standardNumber" class="form-control form-control-sm" required placeholder="مثلاً 579" />
+                    <pems-input scale="small" name="standardNumber" required placeholder="مثلاً 579" />
                 </div>
                 <div class="mb-2">
                     <label class="form-label small">@Localizer["Title"]</label>
-                    <input name="title" class="form-control form-control-sm" required />
+                    <pems-input scale="small" name="title" required />
                 </div>
                 <div class="mb-2">
                     <label class="form-label small">Category (اختیاری)</label>
-                    <input name="category" class="form-control form-control-sm" />
+                    <pems-input scale="small" name="category" />
                 </div>
                 <div class="mb-2">
                     <label class="form-label small">توضیح کاربردی (اختیاری - نه متن استاندارد)</label>
-                    <textarea name="description" class="form-control form-control-sm" rows="2"></textarea>
+                    <pems-textarea scale="small" name="description" rows="2"></pems-textarea>
                 </div>
             </div>
             <div class="modal-footer">
@@ -848,32 +848,32 @@
             <div class="modal-body">
                 <div class="mb-2">
                     <label class="form-label small">@Localizer["Code"]</label>
-                    <input name="code" class="form-control form-control-sm" required placeholder="مثلاً ACT_CUSTOM" />
+                    <pems-input scale="small" name="code" required placeholder="مثلاً ACT_CUSTOM" />
                 </div>
                 <div class="mb-2">
                     <label class="form-label small">@Localizer["Name"]</label>
-                    <input name="name" class="form-control form-control-sm" required />
+                    <pems-input scale="small" name="name" required />
                 </div>
                 <div class="mb-2">
                     <label class="form-label small">@Localizer["نام فارسی (اختیاری)"]</label>
-                    <input name="nameFa" class="form-control form-control-sm" />
+                    <pems-input scale="small" name="nameFa" />
                 </div>
                 <div class="mb-2">
                     <label class="form-label small">Maintenance Group</label>
-                    <select name="maintenanceGroupId" class="form-select form-select-sm" required>
+                    <pems-select scale="small" name="maintenanceGroupId" required>
                         @foreach (var g in Model) { <option value="@g.MaintenanceGroupId">@g.Name</option> }
-                    </select>
+                    </pems-select>
                 </div>
                 <div class="mb-2">
                     <label class="form-label small">Maintenance Type (اختیاری)</label>
-                    <select name="maintenanceTypeId" class="form-select form-select-sm">
+                    <pems-select scale="small" name="maintenanceTypeId">
                         <option value="">@Localizer["-- ندارد --"]</option>
                         @foreach (var t in maintenanceTypes) { <option value="@t.MaintenanceTypeId">@t.Name</option> }
-                    </select>
+                    </pems-select>
                 </div>
                 <div class="mb-2">
                     <label class="form-label small">@Localizer["توضیحات (اختیاری)"]</label>
-                    <textarea name="description" class="form-control form-control-sm" rows="2"></textarea>
+                    <pems-textarea scale="small" name="description" rows="2"></pems-textarea>
                 </div>
             </div>
             <div class="modal-footer">
@@ -891,18 +891,18 @@
             <div class="modal-body">
                 <div class="mb-2">
                     <label class="form-label small">@Localizer["نام"]</label>
-                    <input name="name" class="form-control form-control-sm" required placeholder="مثلاً NDT Level II" />
+                    <pems-input scale="small" name="name" required placeholder="مثلاً NDT Level II" />
                 </div>
                 <div class="mb-2">
                     <label class="form-label small">@Localizer["دیسیپلین (اختیاری)"]</label>
-                    <select name="disciplineId" class="form-select form-select-sm">
+                    <pems-select scale="small" name="disciplineId">
                         <option value="">@Localizer["-- ندارد --"]</option>
                         @foreach (var d in disciplines) { <option value="@d.DisciplineId">@d.Name</option> }
-                    </select>
+                    </pems-select>
                 </div>
                 <div class="mb-2">
                     <label class="form-label small">@Localizer["توضیحات (اختیاری)"]</label>
-                    <textarea name="description" class="form-control form-control-sm" rows="2"></textarea>
+                    <pems-textarea scale="small" name="description" rows="2"></pems-textarea>
                 </div>
             </div>
             <div class="modal-footer">
@@ -921,42 +921,42 @@
                 <p class="small text-muted">@Localizer["فقط تعریف پروفایل - آستانه‌های واقعی را بعداً از دکمه‌ی «Add Limit» هر ردیف وارد کنید."]</p>
                 <div class="mb-2">
                     <label class="form-label small">@Localizer["Code"]</label>
-                    <input name="code" class="form-control form-control-sm" required placeholder="@Localizer["مثلاً VIB-PUMP-ISO20816"]" />
+                    <pems-input scale="small" name="code" required placeholder="@Localizer["مثلاً VIB-PUMP-ISO20816"]" />
                 </div>
                 <div class="mb-2">
                     <label class="form-label small">@Localizer["Name"]</label>
-                    <input name="name" class="form-control form-control-sm" required />
+                    <pems-input scale="small" name="name" required />
                 </div>
                 <div class="mb-2">
                     <label class="form-label small">@Localizer["نام فارسی (اختیاری)"]</label>
-                    <input name="nameFa" class="form-control form-control-sm" />
+                    <pems-input scale="small" name="nameFa" />
                 </div>
                 <div class="mb-2">
                     <label class="form-label small">@Localizer["Variable Type"]</label>
-                    <select name="variableType" class="form-select form-select-sm" required>
+                    <pems-select scale="small" name="variableType" required>
                         @foreach (var vt in new[] { "Vibration", "Temperature", "Pressure", "Flow", "Current", "Voltage", "Lubrication", "OilAnalysis", "Thermography", "Acoustic", "ProcessDeviation" })
                         {
                             <option value="@vt">@vt</option>
                         }
-                    </select>
+                    </pems-select>
                 </div>
                 <div class="mb-2">
                     <label class="form-label small">@Localizer["Equipment Class (اختیاری - خالی یعنی عمومی)"]</label>
-                    <select name="equipmentClassId" class="form-select form-select-sm">
+                    <pems-select scale="small" name="equipmentClassId">
                         <option value="">@Localizer["-- ندارد --"]</option>
                         @foreach (var ec in equipmentClasses) { <option value="@ec.EquipmentClassId">@ec.Name</option> }
-                    </select>
+                    </pems-select>
                 </div>
                 <div class="mb-2">
                     <label class="form-label small">@Localizer["Standard Reference (اختیاری)"]</label>
-                    <select name="standardReferenceId" class="form-select form-select-sm">
+                    <pems-select scale="small" name="standardReferenceId">
                         <option value="">@Localizer["-- ندارد --"]</option>
                         @foreach (var sr in standardReferences) { <option value="@sr.StandardReferenceId">@sr.Code — @sr.Title</option> }
-                    </select>
+                    </pems-select>
                 </div>
                 <div class="mb-2">
                     <label class="form-label small">@Localizer["Operating Condition (اختیاری)"]</label>
-                    <input name="operatingCondition" class="form-control form-control-sm" placeholder="@Localizer["مثلاً Normal Load"]" />
+                    <pems-input scale="small" name="operatingCondition" placeholder="@Localizer["مثلاً Normal Load"]" />
                 </div>
                 <div class="mb-2">
                     <label class="form-label small">@Localizer["Effective From"]</label>
@@ -980,30 +980,30 @@
                 <input type="hidden" name="evaluationProfileId" id="addLimitProfileId" />
                 <div class="mb-2">
                     <label class="form-label small">@Localizer["Status"]</label>
-                    <select name="status" class="form-select form-select-sm" required>
+                    <pems-select scale="small" name="status" required>
                         @foreach (var st in new[] { "Normal", "Warning", "Alarm", "Critical" })
                         {
                             <option value="@st">@st</option>
                         }
-                    </select>
+                    </pems-select>
                 </div>
                 <div class="row">
                     <div class="col-6 mb-2">
                         <label class="form-label small">@Localizer["Low Value (اختیاری)"]</label>
-                        <input type="number" step="any" name="lowValue" class="form-control form-control-sm" />
+                        <pems-input scale="small" type="number" step="any" name="lowValue" />
                     </div>
                     <div class="col-6 mb-2">
                         <label class="form-label small">@Localizer["High Value (اختیاری)"]</label>
-                        <input type="number" step="any" name="highValue" class="form-control form-control-sm" />
+                        <pems-input scale="small" type="number" step="any" name="highValue" />
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-6 mb-2 form-check ms-1">
-                        <input type="checkbox" name="lowInclusive" value="true" class="form-check-input" id="lowInclusiveCheck" checked />
+                        <pems-input kind="check" type="checkbox" name="lowInclusive" value="true" id="lowInclusiveCheck" checked />
                         <label class="form-check-label small" for="lowInclusiveCheck">@Localizer["Low Inclusive"]</label>
                     </div>
                     <div class="col-6 mb-2 form-check ms-1">
-                        <input type="checkbox" name="highInclusive" value="true" class="form-check-input" id="highInclusiveCheck" checked />
+                        <pems-input kind="check" type="checkbox" name="highInclusive" value="true" id="highInclusiveCheck" checked />
                         <label class="form-check-label small" for="highInclusiveCheck">@Localizer["High Inclusive"]</label>
                     </div>
                 </div>

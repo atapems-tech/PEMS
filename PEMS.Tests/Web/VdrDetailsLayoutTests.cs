@@ -113,7 +113,7 @@ public class VdrDetailsLayoutTests
 
         Assert.Matches(@"<input type=""hidden"" name=""revisionNo"" value=""3"" />", html);   // latest 2 -> next 3, still posted
         Assert.DoesNotContain("name=\"revisionNo\" type=\"number\"", html);                    // no longer an editable number box
-        Assert.Matches(@"<input id=""vdrTransmittal""[^>]*\brequired\b", html);
+        Assert.Matches(@"<input\b(?=[^>]*\bid=""vdrTransmittal"")[^>]*\brequired\b", html);
     }
 
     [Fact]

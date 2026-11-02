@@ -42,11 +42,11 @@
                     <input type="hidden" name="q" value="@q" />
                     <div>
                         <label class="lp-lbl" for="meFilterSubType">@Localizer["Me_SubType"]</label>
-                        <select id="meFilterSubType" name="subType" class="form-select form-select-sm">
+                        <pems-select scale="small" id="meFilterSubType" name="subType">
                             <option value="">@Localizer["Eq_AllTypes"]</option>
                             @foreach (var s in subTypes)
                             { <option value="@s" selected="@(s == subType)">@SubTypeText(s)</option> }
-                        </select>
+                        </pems-select>
                     </div>
                 </pems-list-filters>
                 <pems-list-kpi-toggle target="meKpis" storage-key="pems.mechanicalEquipment.kpis" />
@@ -127,40 +127,40 @@
                     </p>
                     <div class="mb-3">
                         <label class="form-label">@Localizer["Equipment (اختیاری)"]</label>
-                        <select name="equipmentId" class="form-select">
+                        <pems-select name="equipmentId">
                             <option value="">@Localizer["-- ندارد --"]</option>
                             @foreach (var e in equipmentOptions)
                             {
                                 <option value="@e.EquipmentId">@e.Label</option>
                             }
-                        </select>
+                        </pems-select>
                     </div>
 
                     <div class="row g-3 mb-3">
                         <div class="col-md-6">
                             <label class="form-label">@Localizer["Tag Number"]</label>
-                            <input name="tagNumber" class="form-control" required />
+                            <pems-input name="tagNumber" required />
                         </div>
                         <div class="col-md-6">
                             <label class="form-label">@Localizer["Equipment Type"]</label>
-                            <input name="equipmentType" class="form-control" required placeholder="@Localizer["Pump, Compressor, Vessel, Tank, Heat Exchanger ..."]" />
+                            <pems-input name="equipmentType" required placeholder="@Localizer["Pump, Compressor, Vessel, Tank, Heat Exchanger ..."]" />
                         </div>
                     </div>
 
                     <div class="row g-3 mb-3">
                         <div class="col-md-6">
                             <label class="form-label">@Localizer["Manufacturer"]</label>
-                            <input name="manufacturer" class="form-control" />
+                            <pems-input name="manufacturer" />
                         </div>
                         <div class="col-md-6">
                             <label class="form-label">@Localizer["Model"]</label>
-                            <input name="model" class="form-control" />
+                            <pems-input name="model" />
                         </div>
                     </div>
 
                     <div class="mb-2">
                         <label class="form-label">@Localizer["توضیحات (اختیاری)"]</label>
-                        <textarea name="description" class="form-control" rows="2"></textarea>
+                        <pems-textarea name="description" rows="2"></pems-textarea>
                     </div>
                 </div>
                 <div class="modal-footer">

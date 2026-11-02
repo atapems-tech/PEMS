@@ -34,13 +34,13 @@
             <input type="hidden" name="letterType" value="@letterType" />
             <div>
                 <label class="form-label small mb-1" for="letterTemplate">@Localizer["LtT_UseTemplate"]</label>
-                <select name="templateId" id="letterTemplate" class="form-select form-select-sm">
+                <pems-select scale="small" name="templateId" id="letterTemplate">
                     <option value="">@Localizer["Ed_None"]</option>
                     @foreach (var tpl in templates)
                     {
                         <option value="@tpl.LetterTemplateId" selected="@(selectedTemplateId == tpl.LetterTemplateId)">@tpl.Name</option>
                     }
-                </select>
+                </pems-select>
             </div>
             <pems-button tone="neutral" size="small" outline="true" type="submit"><i class="bi bi-file-earmark-text" aria-hidden="true"></i> @Localizer["LtT_Apply"]</pems-button>
         </form>
@@ -54,15 +54,15 @@
 
             @if (letterType == "Incoming")
             {
-                <div class="col-md-6"><label class="form-label" for="letterSender">@Localizer["Lt_From"]</label><input name="sender" id="letterSender" class="form-control" placeholder="@Localizer["Lt_ExtSender"]" value="@((string?)ViewBag.PrefillSender)" required /></div>
+                <div class="col-md-6"><label class="form-label" for="letterSender">@Localizer["Lt_From"]</label><pems-input name="sender" id="letterSender" placeholder="@Localizer["Lt_ExtSender"]" value="@((string?)ViewBag.PrefillSender)" required /></div>
             }
             else
             {
-                <div class="col-md-6"><label class="form-label" for="letterReceiver">@Localizer["Lt_To"]</label><input name="receiver" id="letterReceiver" class="form-control" placeholder="@Localizer["Lt_Recipient"]" value="@((string?)ViewBag.PrefillReceiver)" required /></div>
+                <div class="col-md-6"><label class="form-label" for="letterReceiver">@Localizer["Lt_To"]</label><pems-input name="receiver" id="letterReceiver" placeholder="@Localizer["Lt_Recipient"]" value="@((string?)ViewBag.PrefillReceiver)" required /></div>
             }
 
-            <div class="col-12"><label class="form-label" for="letterSubject">@Localizer["Lt_Subject"]</label><input name="subject" id="letterSubject" class="form-control" value="@prefill?.Subject" required /></div>
-            <div class="col-12"><label class="form-label" for="letterBodyEditor" id="letterBodyLabel">@Localizer["Lt_Body"]</label><textarea name="body" id="letterBodyEditor" class="form-control" rows="8">@prefill?.Body</textarea></div>
+            <div class="col-12"><label class="form-label" for="letterSubject">@Localizer["Lt_Subject"]</label><pems-input name="subject" id="letterSubject" value="@prefill?.Subject" required /></div>
+            <div class="col-12"><label class="form-label" for="letterBodyEditor" id="letterBodyLabel">@Localizer["Lt_Body"]</label><pems-textarea name="body" id="letterBodyEditor" rows="8">@prefill?.Body</pems-textarea></div>
 
             @* پاسخ‌خواهی: «پاسخ‌داده‌شده» و «معوق» از نامه‌ی پاسخ صادرشده و تاریخ محاسبه می‌شوند، نه با تیک دستی *@
             <div class="col-12">
@@ -89,11 +89,11 @@
             <div class="row g-3">
                 <div class="col-md-4">
                     <label class="form-label" for="letterNumber">@Localizer["Lt_Number"]</label>
-                    <input name="letterNumber" id="letterNumber" class="form-control vs-num" placeholder="@Localizer["Lt_NumberHint"]" disabled="disabled" />
+                    <pems-input css="vs-num" name="letterNumber" id="letterNumber" placeholder="@Localizer["Lt_NumberHint"]" disabled="disabled" />
                     @if ((bool)(ViewBag.CanManualNumber ?? false))
                     {
                         <div class="form-check mt-1">
-                            <input class="form-check-input" type="checkbox" name="useManualNumber" value="true" id="useManualNumberCheck" />
+                            <pems-input kind="check" type="checkbox" name="useManualNumber" value="true" id="useManualNumberCheck" />
                             <label class="form-check-label small" for="useManualNumberCheck">@Localizer["Lt_EnterManually"]</label>
                         </div>
                     }
@@ -107,45 +107,45 @@
                 </div>
                 <div class="col-md-4">
                     <label class="form-label" for="letterPriority">@Localizer["Lt_Priority"]</label>
-                    <select name="priority" id="letterPriority" class="form-select">
+                    <pems-select name="priority" id="letterPriority">
                         @foreach (var pr in new[] { "Normal", "Low", "High", "Urgent" }) { <option value="@pr" selected="@(curPriority == pr)">@Localizer["Lt_P_" + pr]</option> }
-                    </select>
+                    </pems-select>
                 </div>
                 <div class="col-md-4">
                     <label class="form-label" for="letterConf">@Localizer["Lt_Confidentiality"]</label>
-                    <select name="confidentialityLevel" id="letterConf" class="form-select">
+                    <pems-select name="confidentialityLevel" id="letterConf">
                         @foreach (var cf in new[] { "Internal", "Public", "Confidential", "Restricted", "HighlyConfidential" }) { <option value="@cf" selected="@(curConf == cf)">@Localizer["Lt_C_" + cf]</option> }
-                    </select>
+                    </pems-select>
                 </div>
 
                 <div class="col-md-6">
                     <label class="form-label" for="letterProject">@Localizer["Lt_Project"] <span class="text-muted fw-normal">(@Localizer["Ed_Optional"])</span></label>
-                    <select name="projectId" id="letterProject" class="form-select">
+                    <pems-select name="projectId" id="letterProject">
                         <option value="">@Localizer["Ed_None"]</option>
                         @foreach (var p in projects) { <option value="@p.ProjectId">@p.ProjectName</option> }
-                    </select>
+                    </pems-select>
                 </div>
                 <div class="col-md-6">
                     <label class="form-label" for="letterDiscipline">@Localizer["Lt_Discipline"] <span class="text-muted fw-normal">(@Localizer["Ed_Optional"])</span></label>
-                    <select name="disciplineId" id="letterDiscipline" class="form-select">
+                    <pems-select name="disciplineId" id="letterDiscipline">
                         <option value="">@Localizer["Ed_None"]</option>
                         @foreach (var d in disciplines) { <option value="@d.DisciplineId">@d.Name</option> }
-                    </select>
+                    </pems-select>
                 </div>
 
                 <div class="col-md-6">
                     <label class="form-label" for="letterRelDoc">@Localizer["Lt_RelDoc"] <span class="text-muted fw-normal">(@Localizer["Ed_Optional"])</span></label>
-                    <select name="relatedDocumentId" id="letterRelDoc" class="form-select">
+                    <pems-select name="relatedDocumentId" id="letterRelDoc">
                         <option value="">@Localizer["Ed_None"]</option>
                         @foreach (var d in (IEnumerable<dynamic>)ViewBag.RelatedDocuments) { <option value="@d.DocumentId">@d.DocumentNo - @d.Title</option> }
-                    </select>
+                    </pems-select>
                 </div>
                 <div class="col-md-6">
                     <label class="form-label" for="letterRelMr">@Localizer["Lt_RelMr"] <span class="text-muted fw-normal">(@Localizer["Ed_Optional"])</span></label>
-                    <select name="relatedMRId" id="letterRelMr" class="form-select">
+                    <pems-select name="relatedMRId" id="letterRelMr">
                         <option value="">@Localizer["Ed_None"]</option>
                         @foreach (var m in (IEnumerable<dynamic>)ViewBag.RelatedMRs) { <option value="@m.MRId">@m.MRNumber</option> }
-                    </select>
+                    </pems-select>
                 </div>
             </div>
         </div>

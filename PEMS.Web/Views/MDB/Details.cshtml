@@ -44,7 +44,7 @@
         {
             <form asp-action="MarkHardCopyShipped" method="post" class="d-flex gap-1">
                 <input type="hidden" name="mdbId" value="@Model.MDBId" />
-                <input type="number" name="hardCopyCount" class="form-control form-control-sm" style="width:90px;" placeholder="# volumes" />
+                <pems-input scale="small" type="number" name="hardCopyCount" style="width:90px;" placeholder="# volumes" />
                 <pems-button tone="primary" size="small" outline="true">Mark Hard Copy Shipped</pems-button>
             </form>
         }
@@ -98,18 +98,18 @@
             <input type="hidden" name="mdbId" value="@Model.MDBId" />
             <input type="hidden" name="part" value="@code" />
             <div class="col-md-3">
-                <select name="documentId" class="form-select form-select-sm">
+                <pems-select scale="small" name="documentId">
                     <option value="">-- Link existing document (optional) --</option>
                     @foreach (var doc in documents)
                     {
                         <option value="@doc.DocumentId">@doc.DocumentNo - @doc.Title</option>
                     }
-                </select>
+                </pems-select>
             </div>
-            <div class="col-md-3"><input name="title" class="form-control form-control-sm" placeholder="Title (if not linking a document)" /></div>
-            <div class="col-md-2"><input name="dvdVolumeNo" type="number" class="form-control form-control-sm" placeholder="DVD Vol #" /></div>
+            <div class="col-md-3"><pems-input scale="small" name="title" placeholder="Title (if not linking a document)" /></div>
+            <div class="col-md-2"><pems-input scale="small" name="dvdVolumeNo" type="number" placeholder="DVD Vol #" /></div>
             <div class="col-md-2 form-check d-flex align-items-center">
-                <input type="checkbox" name="isNotApplicable" value="true" class="form-check-input me-1" id="na_@code" />
+                <pems-input kind="check" css="me-1" type="checkbox" name="isNotApplicable" value="true" id="na_@code" />
                 <label class="form-check-label small" for="na_@code">Not applicable</label>
             </div>
             <div class="col-md-2"><pems-button tone="primary" size="small" outline="true" css="w-100"><i class="bi bi-plus-lg"></i> @Localizer["Add"]</pems-button></div>

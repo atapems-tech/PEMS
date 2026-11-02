@@ -97,19 +97,19 @@
                         <div class="col-md-6">@await Component.InvokeAsync("DocumentNumberField", new { documentType = "ProcurementPackage", name = "packageNumber", label = Localizer["Package Number"].Value })</div>
                         <div class="col-md-6">
                             <label class="form-label">@Localizer["Project"]</label>
-                            <select name="projectId" class="form-select" required>
+                            <pems-select name="projectId" required>
                                 @foreach (var p in (IEnumerable<dynamic>)ViewBag.Projects) { <option value="@p.ProjectId">@p.ProjectName</option> }
-                            </select>
+                            </pems-select>
                         </div>
                         <div class="col-md-6">
                             <label class="form-label">@Localizer["Discipline"]</label>
-                            <select name="disciplineId" class="form-select">
+                            <pems-select name="disciplineId">
                                 <option value="">@Localizer["-- None --"]</option>
                                 @foreach (var d in (IEnumerable<dynamic>)ViewBag.Disciplines) { <option value="@d.DisciplineId">@d.Name</option> }
-                            </select>
+                            </pems-select>
                         </div>
-                        <div class="col-md-6"><label class="form-label">@Localizer["Title"]</label><input name="title" class="form-control" required /></div>
-                        <div class="col-12"><label class="form-label">@Localizer["Description"]</label><textarea name="description" class="form-control" rows="2"></textarea></div>
+                        <div class="col-md-6"><label class="form-label">@Localizer["Title"]</label><pems-input name="title" required /></div>
+                        <div class="col-12"><label class="form-label">@Localizer["Description"]</label><pems-textarea name="description" rows="2"></pems-textarea></div>
                     </div>
                 </div>
                 <div class="modal-footer">

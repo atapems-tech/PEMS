@@ -151,10 +151,8 @@
                         <tr data-kpi-target="@tg.Key">
                             <td>@Localizer["Kpi_Name_" + tg.Key] <span class="text-muted small">(@Localizer["Kpi_Section_" + tg.Section])</span></td>
                             <td>@(tg.Direction == KpiDirections.LowerIsBetter ? "≤" : "≥") <span class="text-muted small">@(tg.Unit == "currency" ? "" : tg.Unit)</span></td>
-                            <td><input form="@formId" type="number" step="any" min="0" name="target" class="form-control form-control-sm pems-kpi-input"
-                                       value="@(tg.Target?.ToString("0.####", inv))" aria-label="@Localizer["Kpi_Exec_Target"]: @Localizer["Kpi_Name_" + tg.Key]" /></td>
-                            <td><input form="@formId" type="number" step="any" min="0" name="warn" class="form-control form-control-sm pems-kpi-input"
-                                       value="@(tg.Warn?.ToString("0.####", inv))" aria-label="@Localizer["Kpi_Exec_Warn"]: @Localizer["Kpi_Name_" + tg.Key]" /></td>
+                            <td><pems-input scale="small" css="pems-kpi-input" form="@formId" type="number" step="any" min="0" name="target" value="@(tg.Target?.ToString("0.####", inv))" aria-label="@Localizer["Kpi_Exec_Target"]: @Localizer["Kpi_Name_" + tg.Key]" /></td>
+                            <td><pems-input scale="small" css="pems-kpi-input" form="@formId" type="number" step="any" min="0" name="warn" value="@(tg.Warn?.ToString("0.####", inv))" aria-label="@Localizer["Kpi_Exec_Warn"]: @Localizer["Kpi_Name_" + tg.Key]" /></td>
                             <td><span class="small text-muted">@(tg.IsCustom ? Localizer["Kpi_Exec_Custom"] : Localizer["Kpi_Exec_Default"])</span></td>
                             <td>
                                 <form id="@formId" method="post" asp-action="SaveTarget" class="d-inline">

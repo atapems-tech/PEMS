@@ -27,23 +27,23 @@
 <form method="get" class="row g-2 mb-3 align-items-end">
     <div class="col-auto">
         <label class="form-label small mb-0">@Localizer["Status"]</label>
-        <select name="status" class="form-select form-select-sm" onchange="this.form.submit()">
+        <pems-select scale="small" name="status" onchange="this.form.submit()">
             <option value="">Open Backlog (all non-final)</option>
             <option value="Open" selected="@(status == "Open")">Open</option>
             <option value="Assigned" selected="@(status == "Assigned")">Assigned</option>
             <option value="InProgress" selected="@(status == "InProgress")">In Progress</option>
             <option value="OnHold" selected="@(status == "OnHold")">On Hold</option>
-        </select>
+        </pems-select>
     </div>
     <div class="col-auto">
         <label class="form-label small mb-0">@Localizer["Priority"]</label>
-        <select name="priority" class="form-select form-select-sm" onchange="this.form.submit()">
+        <pems-select scale="small" name="priority" onchange="this.form.submit()">
             <option value="">@Localizer["All"]</option>
             <option value="Critical" selected="@(priority == "Critical")">Critical</option>
             <option value="High" selected="@(priority == "High")">High</option>
             <option value="Medium" selected="@(priority == "Medium")">Medium</option>
             <option value="Low" selected="@(priority == "Low")">Low</option>
-        </select>
+        </pems-select>
     </div>
     <div class="col-auto form-check mb-1">
         <input type="checkbox" class="form-check-input" name="overdueOnly" value="true" id="overdueOnly" @(overdueOnly ? "checked" : "") onchange="this.form.submit()" />

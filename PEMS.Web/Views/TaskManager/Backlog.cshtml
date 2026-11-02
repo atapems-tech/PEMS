@@ -54,10 +54,10 @@
                         <form asp-action="CompleteSprint" method="post" class="d-flex gap-1 align-items-center">
                             <input type="hidden" name="sprintId" value="@sprint.Id" /><input type="hidden" name="returnUrl" value="@returnUrl" />
                             <label class="small text-nowrap" for="moveTo-@sprint.Id">@Localizer["Tm_MoveUnfinishedTo"]</label>
-                            <select id="moveTo-@sprint.Id" name="moveTo" class="form-select form-select-sm w-auto">
+                            <pems-select scale="small" css="w-auto" id="moveTo-@sprint.Id" name="moveTo">
                                 <option value="0">@Localizer["Tm_Backlog"]</option>
                                 @foreach (var f in futureSprints) { <option value="@f.Id">@f.Name</option> }
-                            </select>
+                            </pems-select>
                             <pems-button tone="success" size="small" outline="true" data-tm-confirm="@Localizer["Tm_CompleteSprintConfirm"]"><i class="bi bi-check2-all" aria-hidden="true"></i> @Localizer["Tm_CompleteSprint"]</pems-button>
                         </form>
                     }
@@ -69,8 +69,8 @@
         {
             <form id="editSprint-@sprint.Id" asp-action="UpdateSprint" method="post" class="collapse row g-2 mb-2">
                 <input type="hidden" name="sprintId" value="@sprint.Id" /><input type="hidden" name="returnUrl" value="@returnUrl" />
-                <div class="col-md-3"><label class="form-label small" for="sn-@sprint.Id">@Localizer["Tm_Field_Name"]</label><input id="sn-@sprint.Id" name="name" value="@sprint.Name" class="form-control form-control-sm" required maxlength="150" /></div>
-                <div class="col-md-4"><label class="form-label small" for="sg-@sprint.Id">@Localizer["Tm_Field_Goal"]</label><input id="sg-@sprint.Id" name="goal" value="@sprint.Goal" class="form-control form-control-sm" maxlength="1000" /></div>
+                <div class="col-md-3"><label class="form-label small" for="sn-@sprint.Id">@Localizer["Tm_Field_Name"]</label><pems-input scale="small" id="sn-@sprint.Id" name="name" value="@sprint.Name" required maxlength="150" /></div>
+                <div class="col-md-4"><label class="form-label small" for="sg-@sprint.Id">@Localizer["Tm_Field_Goal"]</label><pems-input scale="small" id="sg-@sprint.Id" name="goal" value="@sprint.Goal" maxlength="1000" /></div>
                 <div class="col-md-2"><label class="form-label small" for="ss-@sprint.Id">@Localizer["Tm_Field_StartDate"]</label><input id="ss-@sprint.Id" name="startDate" type="date" value="@TaskManagerUi.DateInput(sprint.StartDate)" class="form-control form-control-sm" /></div>
                 <div class="col-md-2"><label class="form-label small" for="se-@sprint.Id">@Localizer["Tm_Field_EndDate"]</label><input id="se-@sprint.Id" name="endDate" type="date" value="@TaskManagerUi.DateInput(sprint.EndDate)" class="form-control form-control-sm" /></div>
                 <div class="col-md-1 d-flex align-items-end"><pems-button tone="primary" size="small" css="w-100">@Localizer["Tm_Save"]</pems-button></div>
@@ -93,8 +93,8 @@
     {
         <form id="newSprint" asp-action="CreateSprint" method="post" class="collapse row g-2 mb-2">
             <input type="hidden" name="workSpaceId" value="@view.Space.Id" /><input type="hidden" name="returnUrl" value="@returnUrl" />
-            <div class="col-md-3"><label class="form-label small" for="ns-name">@Localizer["Tm_Field_Name"]</label><input id="ns-name" name="name" class="form-control form-control-sm" required maxlength="150" /></div>
-            <div class="col-md-4"><label class="form-label small" for="ns-goal">@Localizer["Tm_Field_Goal"]</label><input id="ns-goal" name="goal" class="form-control form-control-sm" maxlength="1000" /></div>
+            <div class="col-md-3"><label class="form-label small" for="ns-name">@Localizer["Tm_Field_Name"]</label><pems-input scale="small" id="ns-name" name="name" required maxlength="150" /></div>
+            <div class="col-md-4"><label class="form-label small" for="ns-goal">@Localizer["Tm_Field_Goal"]</label><pems-input scale="small" id="ns-goal" name="goal" maxlength="1000" /></div>
             <div class="col-md-2"><label class="form-label small" for="ns-start">@Localizer["Tm_Field_StartDate"]</label><input id="ns-start" name="startDate" type="date" class="form-control form-control-sm" /></div>
             <div class="col-md-2"><label class="form-label small" for="ns-end">@Localizer["Tm_Field_EndDate"]</label><input id="ns-end" name="endDate" type="date" class="form-control form-control-sm" /></div>
             <div class="col-md-1 d-flex align-items-end"><pems-button tone="primary" size="small" css="w-100">@Localizer["Tm_Create"]</pems-button></div>

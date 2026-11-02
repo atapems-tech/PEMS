@@ -52,25 +52,25 @@
                     <input type="hidden" name="search" value="@search" />
                     <div>
                         <label class="lp-lbl" for="vdrFltProject">@Localizer["Vs_Project"]</label>
-                        <select id="vdrFltProject" name="projectId" class="form-select form-select-sm">
+                        <pems-select scale="small" id="vdrFltProject" name="projectId">
                             <option value="">@Localizer["All"]</option>
                             @foreach (var p in projects) { <option value="@p.ProjectId" selected="@(p.ProjectId == selectedProjectId)">@p.ProjectName</option> }
-                        </select>
+                        </pems-select>
                     </div>
                     <div>
                         <label class="lp-lbl" for="vdrFltVendor">@Localizer["Vendor"]</label>
-                        <select id="vdrFltVendor" name="vendorId" class="form-select form-select-sm">
+                        <pems-select scale="small" id="vdrFltVendor" name="vendorId">
                             <option value="">@Localizer["All"]</option>
                             @foreach (var v in vendors) { <option value="@v.VendorId" selected="@(v.VendorId == selectedVendorId)">@v.Name</option> }
-                        </select>
+                        </pems-select>
                     </div>
                     <div>
                         <label class="lp-lbl" for="vdrFltStatus">@Localizer["Status"]</label>
-                        <select id="vdrFltStatus" name="status" class="form-select form-select-sm">
+                        <pems-select scale="small" id="vdrFltStatus" name="status">
                             <option value="">@Localizer["All"]</option>
                             @foreach (var s in new[] { "Planned", "Submitted", "UnderReview", "PendingResubmission", "Closed" })
                             { <option value="@s" selected="@(s == selectedStatus)">@VdrUi.Loc(Localizer, "St_", s)</option> }
-                        </select>
+                        </pems-select>
                     </div>
                 </pems-list-filters>
                 <pems-list-kpi-toggle target="vdrKpis" storage-key="pems.vdr.kpis" />

@@ -14,19 +14,19 @@
         <div class="row g-3">
             <div class="col-md-6">
                 <label class="form-label">@Localizer["Project Code"]</label>
-                <input asp-for="ProjectCode" class="form-control" />
+                <pems-input asp-for="ProjectCode" />
             </div>
             <div class="col-md-6">
                 <label class="form-label">@Localizer["Project Name"]</label>
-                <input asp-for="ProjectName" class="form-control" />
+                <pems-input asp-for="ProjectName" />
             </div>
             <div class="col-md-6">
                 <label class="form-label">@Localizer["Client"]</label>
-                <input asp-for="ClientName" class="form-control" />
+                <pems-input asp-for="ClientName" />
             </div>
             <div class="col-md-6">
                 <label class="form-label">@Localizer["Location"]</label>
-                <input asp-for="Location" class="form-control" />
+                <pems-input asp-for="Location" />
             </div>
             <div class="col-md-6">
                 <label class="form-label">@Localizer["Start Date"]</label>
@@ -38,24 +38,24 @@
             </div>
             <div class="col-md-6">
                 <label class="form-label">@Localizer["Status"]</label>
-                <select asp-for="Status" class="form-select">
+                <pems-select asp-for="Status">
                     <option>@Localizer["Planning"]</option>
                     <option>@Localizer["Active"]</option>
                     <option>@Localizer["Completed"]</option>
                     <option>@Localizer["Cancelled"]</option>
-                </select>
+                </pems-select>
             </div>
             <div class="col-md-6">
                 <label class="form-label">Plant Code <span class="text-muted small">(e.g. J - VDR document numbering)</span></label>
-                <input asp-for="PlantCode" class="form-control" />
+                <pems-input asp-for="PlantCode" />
             </div>
             <div class="col-md-6">
                 <label class="form-label">Unit Code <span class="text-muted small">(e.g. 85 - transmittal/VDR numbering)</span></label>
-                <input asp-for="UnitCode" class="form-control" />
+                <pems-input asp-for="UnitCode" />
             </div>
             <div class="col-md-6">
                 <label class="form-label">Job Number <span class="text-muted small">(e.g. 3863 - Vendor-format VDR numbering)</span></label>
-                <input asp-for="JobNumber" class="form-control" />
+                <pems-input asp-for="JobNumber" />
             </div>
         </div>
 

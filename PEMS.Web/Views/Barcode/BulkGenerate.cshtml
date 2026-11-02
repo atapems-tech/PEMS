@@ -18,25 +18,25 @@
     <form method="get" class="row g-2">
         <div class="col-md-4">
             <label class="form-label small mb-0">@Localizer["Discipline"]</label>
-            <select name="disciplineIds" class="form-select" multiple size="4">
+            <pems-select name="disciplineIds" multiple size="4">
                 @foreach (dynamic d in disciplines)
                 {
                     <option value="@d.DisciplineId">@d.Name</option>
                 }
-            </select>
+            </pems-select>
         </div>
         <div class="col-md-4">
             <label class="form-label small mb-0">@Localizer["Equipment Type"]</label>
-            <select name="equipmentTypes" class="form-select" multiple size="4">
+            <pems-select name="equipmentTypes" multiple size="4">
                 @foreach (var t in equipmentTypes)
                 {
                     <option value="@t">@t</option>
                 }
-            </select>
+            </pems-select>
         </div>
         <div class="col-md-3">
             <label class="form-label small mb-0">Tag Number (partial search)</label>
-            <input name="tagSearch" class="form-control" dir="ltr" />
+            <pems-input name="tagSearch" dir="ltr" />
         </div>
         <div class="col-md-1 d-flex align-items-end">
             <pems-button tone="primary" css="w-100" type="submit"><i class="bi bi-funnel"></i></pems-button>
@@ -55,10 +55,10 @@ else
             <div class="d-flex justify-content-between align-items-center mb-2">
                 <span class="small text-muted">Showing @equipments.Count of @ViewBag.MatchingCount matching (capped at @maxResults)</span>
                 <div class="d-flex gap-2 align-items-center">
-                    <select name="symbology" class="form-select form-select-sm" style="width:auto;">
+                    <pems-select scale="small" name="symbology" style="width:auto;">
                         <option value="Code128">@Localizer["Code128"]</option>
                         <option value="QR">QR</option>
-                    </select>
+                    </pems-select>
                     <pems-button tone="primary" size="small" type="submit" onclick="return confirm('Generate barcodes for the selected Equipment? Equipment that already has an active barcode is skipped.')">
                         <i class="bi bi-upc-scan"></i> Generate &amp; Print Labels
                     </pems-button>

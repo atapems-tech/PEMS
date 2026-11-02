@@ -19,7 +19,7 @@
     <form asp-action="Upload" method="post" enctype="multipart/form-data" class="row g-2 align-items-end">
         <div class="col-md-8">
             <label class="form-label small">Maintenance History Excel File</label>
-            <input type="file" name="file" class="form-control" accept=".xlsx" required />
+            <pems-input type="file" name="file" accept=".xlsx" required />
         </div>
         <div class="col-md-4">
             <pems-button tone="primary" css="w-100" type="submit"><i class="bi bi-cloud-upload"></i> @Localizer["Upload"]</pems-button>

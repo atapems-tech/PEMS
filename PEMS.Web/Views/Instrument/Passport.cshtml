@@ -115,20 +115,20 @@
         <input type="hidden" name="instrumentId" value="@Model.InstrumentId" />
         <div class="col-md-2"><label class="form-label small">@Localizer["Date"]</label><input type="date" name="calibrationDate" class="form-control form-control-sm" value="@DateTime.Today.ToString("yyyy-MM-dd")" required /></div>
         <div class="col-md-2"><label class="form-label small">@Localizer["Type"]</label>
-            <select name="calibrationType" class="form-select form-select-sm">
+            <pems-select scale="small" name="calibrationType">
                 <option>Routine</option><option>PostRepair</option><option>PreCommissioning</option>
-            </select>
+            </pems-select>
         </div>
-        <div class="col-md-2"><label class="form-label small">As Found</label><input name="asFound" class="form-control form-control-sm" /></div>
-        <div class="col-md-2"><label class="form-label small">As Left</label><input name="asLeft" class="form-control form-control-sm" /></div>
+        <div class="col-md-2"><label class="form-label small">As Found</label><pems-input scale="small" name="asFound" /></div>
+        <div class="col-md-2"><label class="form-label small">As Left</label><pems-input scale="small" name="asLeft" /></div>
         <div class="col-md-2"><label class="form-label small">@Localizer["Result"]</label>
-            <select name="result" class="form-select form-select-sm">
+            <pems-select scale="small" name="result">
                 <option>Pass</option><option>Fail</option><option>Adjusted</option>
-            </select>
+            </pems-select>
         </div>
-        <div class="col-md-2"><label class="form-label small">Certificate No.</label><input name="certificateNo" class="form-control form-control-sm" /></div>
-        <div class="col-md-4"><label class="form-label small">Standard Reference</label><input name="standardReference" class="form-control form-control-sm" /></div>
-        <div class="col-md-4"><label class="form-label small">@Localizer["Remarks"]</label><input name="remarks" class="form-control form-control-sm" /></div>
+        <div class="col-md-2"><label class="form-label small">Certificate No.</label><pems-input scale="small" name="certificateNo" /></div>
+        <div class="col-md-4"><label class="form-label small">Standard Reference</label><pems-input scale="small" name="standardReference" /></div>
+        <div class="col-md-4"><label class="form-label small">@Localizer["Remarks"]</label><pems-input scale="small" name="remarks" /></div>
         <div class="col-md-4"><pems-button tone="primary" size="small" css="w-100" type="submit"><i class="bi bi-plus-lg"></i> Record Calibration</pems-button></div>
     </form>
 
@@ -166,21 +166,21 @@
     <h6>Record New Alarm</h6>
     <form asp-action="AddAlarm" method="post" class="row g-2 align-items-end mb-3">
         <input type="hidden" name="instrumentId" value="@Model.InstrumentId" />
-        <div class="col-md-2"><label class="form-label small">Alarm Tag</label><input name="alarmTag" class="form-control form-control-sm" required /></div>
+        <div class="col-md-2"><label class="form-label small">Alarm Tag</label><pems-input scale="small" name="alarmTag" required /></div>
         <div class="col-md-2"><label class="form-label small">@Localizer["Type"]</label>
-            <select name="alarmType" class="form-select form-select-sm">
+            <pems-select scale="small" name="alarmType">
                 <option>@Localizer["High"]</option><option>@Localizer["Low"]</option><option>HighHigh</option><option>LowLow</option>
-            </select>
+            </pems-select>
         </div>
         <div class="col-md-2"><label class="form-label small">@Localizer["Priority"]</label>
-            <select name="priority" class="form-select form-select-sm">
+            <pems-select scale="small" name="priority">
                 <option>@Localizer["Low"]</option><option>@Localizer["Medium"]</option><option>@Localizer["High"]</option><option>@Localizer["Critical"]</option>
-            </select>
+            </pems-select>
         </div>
-        <div class="col-md-2"><label class="form-label small">Set Point</label><input name="setPoint" type="number" step="0.001" class="form-control form-control-sm" /></div>
-        <div class="col-md-1"><label class="form-label small">@Localizer["Unit"]</label><input name="unit" class="form-control form-control-sm" /></div>
-        <div class="col-md-3"><label class="form-label small">@Localizer["Action"]</label><input name="action" class="form-control form-control-sm" /></div>
-        <div class="col-md-6"><label class="form-label small">@Localizer["Description"]</label><input name="description" class="form-control form-control-sm" /></div>
+        <div class="col-md-2"><label class="form-label small">Set Point</label><pems-input scale="small" name="setPoint" type="number" step="0.001" /></div>
+        <div class="col-md-1"><label class="form-label small">@Localizer["Unit"]</label><pems-input scale="small" name="unit" /></div>
+        <div class="col-md-3"><label class="form-label small">@Localizer["Action"]</label><pems-input scale="small" name="action" /></div>
+        <div class="col-md-6"><label class="form-label small">@Localizer["Description"]</label><pems-input scale="small" name="description" /></div>
         <div class="col-md-3"><pems-button tone="primary" size="small" css="w-100" type="submit"><i class="bi bi-plus-lg"></i> Add Alarm</pems-button></div>
     </form>
 
@@ -228,16 +228,16 @@
             <form asp-action="AddCauseEffect" method="post" class="row g-2 align-items-end d-print-none">
                 <input type="hidden" name="alarmId" value="@alarm.AlarmId" />
                 <input type="hidden" name="instrumentId" value="@Model.InstrumentId" />
-                <div class="col-md-2"><input name="cause" class="form-control form-control-sm" placeholder="@Localizer["Cause"]" required /></div>
-                <div class="col-md-2"><input name="effect" class="form-control form-control-sm" placeholder="@Localizer["Effect"]" required /></div>
+                <div class="col-md-2"><pems-input scale="small" name="cause" placeholder="@Localizer["Cause"]" required /></div>
+                <div class="col-md-2"><pems-input scale="small" name="effect" placeholder="@Localizer["Effect"]" required /></div>
                 <div class="col-md-2">
-                    <select name="actionType" class="form-select form-select-sm">
+                    <pems-select scale="small" name="actionType">
                         <option value="">Action --</option>
                         <option>Trip</option><option>Shutdown</option><option>Alarm</option><option>@Localizer["Start"]</option><option>Stop</option>
-                    </select>
+                    </pems-select>
                 </div>
-                <div class="col-md-2"><input name="tripSignal" class="form-control form-control-sm" placeholder="@Localizer["Trip Signal"]" /></div>
-                <div class="col-md-2"><input name="description" class="form-control form-control-sm" placeholder="@Localizer["Description"]" /></div>
+                <div class="col-md-2"><pems-input scale="small" name="tripSignal" placeholder="@Localizer["Trip Signal"]" /></div>
+                <div class="col-md-2"><pems-input scale="small" name="description" placeholder="@Localizer["Description"]" /></div>
                 <div class="col-md-2"><pems-button tone="primary" size="small" outline="true" css="w-100" type="submit">+ C&amp;E</pems-button></div>
             </form>
         </div>
@@ -261,16 +261,16 @@
                 <p class="text-muted small">این Instrument به هیچ Control Loop ای وصل نیست.</p>
                 <form asp-action="AssignControlLoop" method="post" class="row g-2 align-items-end d-print-none">
                     <input type="hidden" name="instrumentId" value="@Model.InstrumentId" />
-                    <div class="col-md-6"><input name="loopNumber" class="form-control form-control-sm" placeholder="@Localizer["Loop Number"]" required /></div>
+                    <div class="col-md-6"><pems-input scale="small" name="loopNumber" placeholder="@Localizer["Loop Number"]" required /></div>
                     <div class="col-md-6">
-                        <select name="controllerType" class="form-select form-select-sm">
+                        <pems-select scale="small" name="controllerType">
                             <option value="">Controller Type --</option>
                             <option>PID</option><option>ON/OFF</option><option>Cascade</option>
-                        </select>
+                        </pems-select>
                     </div>
-                    <div class="col-md-6"><input name="controllerSystem" class="form-control form-control-sm" placeholder="DCS/PLC Name" /></div>
-                    <div class="col-md-6"><input name="processArea" class="form-control form-control-sm" placeholder="Process Area" /></div>
-                    <div class="col-md-12"><input name="description" class="form-control form-control-sm" placeholder="@Localizer["Description"]" /></div>
+                    <div class="col-md-6"><pems-input scale="small" name="controllerSystem" placeholder="DCS/PLC Name" /></div>
+                    <div class="col-md-6"><pems-input scale="small" name="processArea" placeholder="Process Area" /></div>
+                    <div class="col-md-12"><pems-input scale="small" name="description" placeholder="@Localizer["Description"]" /></div>
                     <div class="col-md-12"><pems-button tone="primary" size="small" css="w-100" type="submit">Assign Loop</pems-button></div>
                 </form>
             }

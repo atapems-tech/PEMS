@@ -83,7 +83,7 @@
         @if (Model.CanApprove && s.Status == "InReview")
         {
             <form asp-action="Review" asp-route-id="@s.MaintenanceStrategyId" method="post" class="d-inline-flex gap-2">
-                <input name="comment" class="form-control form-control-sm" placeholder="@Localizer["Rcm_Comment"]" style="width:220px" />
+                <pems-input scale="small" name="comment" placeholder="@Localizer["Rcm_Comment"]" style="width:220px" />
                 <pems-button tone="success" size="small" name="approve" value="true"><i class="bi bi-check2"></i> @Localizer["Rcm_Approve"]</pems-button>
                 <pems-button tone="danger" size="small" outline="true" name="approve" value="false"><i class="bi bi-x"></i> @Localizer["Rcm_Reject"]</pems-button>
             </form>
@@ -92,7 +92,7 @@
         @if (Model.CanApprove && s.Status == "Approved")
         {
             <form asp-action="Activate" asp-route-id="@s.MaintenanceStrategyId" method="post" class="d-inline-flex gap-2 align-items-center">
-                <div class="form-check small mb-0"><input class="form-check-input" type="checkbox" name="moveAssignments" value="true" checked id="mv" /><label class="form-check-label" for="mv">@Localizer["Rcm_MoveAssignments"]</label></div>
+                <div class="form-check small mb-0"><pems-input kind="check" type="checkbox" name="moveAssignments" value="true" checked id="mv" /><label class="form-check-label" for="mv">@Localizer["Rcm_MoveAssignments"]</label></div>
                 <pems-button tone="success" size="small"><i class="bi bi-lightning"></i> @Localizer["Rcm_Activate"]</pems-button>
             </form>
         }
@@ -127,8 +127,7 @@
         {
             <div class="d-flex gap-2">
                 <form asp-action="Assign" asp-route-id="@s.MaintenanceStrategyId" method="post" class="d-flex gap-2">
-                    <input type="text" class="form-control form-control-sm" placeholder="@Localizer["Rcm_SearchEquipmentPlaceholder"]" style="width:260px"
-                           data-pems-search data-search-type="Equipment" data-search-hidden="#assignEquipmentId" autocomplete="off" required />
+                    <pems-input scale="small" type="text" placeholder="@Localizer["Rcm_SearchEquipmentPlaceholder"]" style="width:260px" data-pems-search data-search-type="Equipment" data-search-hidden="#assignEquipmentId" autocomplete="off" required />
                     <input type="hidden" name="equipmentIds" id="assignEquipmentId" />
                     <pems-button tone="primary" size="small" outline="true">@Localizer["Rcm_AssignTag"]</pems-button>
                 </form>
@@ -167,7 +166,7 @@
                             {
                                 <form asp-action="DecideOverride" method="post" class="d-flex gap-1 mt-1">
                                     <input type="hidden" name="assignmentId" value="@a.AssignmentId" /><input type="hidden" name="strategyId" value="@s.MaintenanceStrategyId" />
-                                    <input name="comment" class="form-control form-control-sm" placeholder="@Localizer["Rcm_Comment"]" />
+                                    <pems-input scale="small" name="comment" placeholder="@Localizer["Rcm_Comment"]" />
                                     <pems-button tone="success" size="small" name="approve" value="true">✓</pems-button>
                                     <pems-button tone="danger" size="small" outline="true" name="approve" value="false">✗</pems-button>
                                 </form>
@@ -240,9 +239,9 @@
                 <div class="modal-header"><h6 class="modal-title">@Localizer["Rcm_RequestOverride"] — <span id="overrideTag"></span></h6></div>
                 <div class="modal-body">
                     <p class="small text-muted">@Localizer["Rcm_OverrideHint"]</p>
-                    <div class="mb-2"><label class="form-label">@Localizer["Rcm_OverrideInterval"]</label><input name="overrideIntervalDays" type="number" min="1" class="form-control" /></div>
-                    <div class="mb-2"><label class="form-label">@Localizer["Rcm_OverrideTaskNote"]</label><textarea name="overrideTaskNote" class="form-control" rows="2" maxlength="1000"></textarea></div>
-                    <div class="mb-2"><label class="form-label">@Localizer["Rcm_Justification"] *</label><textarea name="overrideJustification" class="form-control" rows="2" minlength="20" required maxlength="1000"></textarea></div>
+                    <div class="mb-2"><label class="form-label">@Localizer["Rcm_OverrideInterval"]</label><pems-input name="overrideIntervalDays" type="number" min="1" /></div>
+                    <div class="mb-2"><label class="form-label">@Localizer["Rcm_OverrideTaskNote"]</label><pems-textarea name="overrideTaskNote" rows="2" maxlength="1000"></pems-textarea></div>
+                    <div class="mb-2"><label class="form-label">@Localizer["Rcm_Justification"] *</label><pems-textarea name="overrideJustification" rows="2" minlength="20" required maxlength="1000"></pems-textarea></div>
                 </div>
                 <div class="modal-footer">
                     <pems-button tone="neutral" outline="true" type="button" data-bs-dismiss="modal">@Localizer["Cancel"]</pems-button>

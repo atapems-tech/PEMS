@@ -28,7 +28,7 @@
 
     <form id="chatForm" class="d-flex gap-2">
         @Html.AntiForgeryToken()
-        <input type="text" id="messageInput" class="form-control" placeholder="Ask a question about the system..." autocomplete="off" />
+        <pems-input type="text" id="messageInput" placeholder="Ask a question about the system..." autocomplete="off" />
         <pems-button tone="primary" type="submit"><i class="bi bi-send"></i></pems-button>
     </form>
 </div>
