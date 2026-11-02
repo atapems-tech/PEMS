@@ -262,5 +262,5 @@ readers and without script. The page loads the bundle once with `<partial name="
 Waves: C1 the tag helper, the report pages, KPI, letter cartable report and part catalogue reports (done); C2 a `line` kind
 in the Bklit island and the reliability trend page, Chart.js retired (done; a new kind is added in
 `frontend/dashboards/src/islands` and the bundle rebuilt with `npm run build`); C3 the home donut (done; `_DonutChart`, `pems-donut.js`
-and `pems-charts.js` removed: one chart engine); C4 a ratchet
-pattern for hand-written charts.
+and `pems-charts.js` removed: one chart engine); C4 the ratchet
+pattern `chart` (baseline zero) (done). All Chart waves are done.

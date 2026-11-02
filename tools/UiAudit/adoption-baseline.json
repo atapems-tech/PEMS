@@ -38,6 +38,7 @@
     "PEMS.Web/Views/Shared/_ContextualHelpDrawer.cshtml": 4
   },
   "card": {},
+  "chart": {},
   "check-radio-switch": {
     "PEMS.Web/Areas/Admin/Views/NavigationMenu/Edit.cshtml": 2,
     "PEMS.Web/Areas/Admin/Views/Numbering/Index.cshtml": 2,
