@@ -36,11 +36,11 @@
 
         <div class="row g-3">
             <div class="col-md-8">
-                <label class="form-label" for="tplName">@Localizer["LtT_Name"]</label>
+                <pems-label for="tplName">@Localizer["LtT_Name"]</pems-label>
                 <pems-input name="Name" id="tplName" value="@Model.Name" maxlength="150" required />
             </div>
             <div class="col-md-4">
-                <label class="form-label" for="tplType">@Localizer["Type"]</label>
+                <pems-label for="tplType">@Localizer["Type"]</pems-label>
                 <pems-select name="LetterType" id="tplType">
                     <option value="" selected="@(Model.LetterType == null)">@Localizer["LtT_AllTypes"]</option>
                     @foreach (var type in new[] { "Incoming", "Outgoing", "Internal" })
@@ -50,15 +50,15 @@
                 </pems-select>
             </div>
             <div class="col-12">
-                <label class="form-label" for="tplSubject">@Localizer["Lt_Subject"]</label>
+                <pems-label for="tplSubject">@Localizer["Lt_Subject"]</pems-label>
                 <pems-input name="Subject" id="tplSubject" value="@Model.Subject" maxlength="300" required />
             </div>
             <div class="col-12">
-                <label class="form-label" for="tplBodyEditor">@Localizer["Lt_Body"]</label>
+                <pems-label for="tplBodyEditor">@Localizer["Lt_Body"]</pems-label>
                 <pems-textarea name="Body" id="tplBodyEditor" rows="8">@Model.Body</pems-textarea>
             </div>
             <div class="col-md-6">
-                <label class="form-label" for="tplPriority">@Localizer["Lt_Priority"]</label>
+                <pems-label for="tplPriority">@Localizer["Lt_Priority"]</pems-label>
                 <pems-select name="Priority" id="tplPriority">
                     @foreach (var p in new[] { "Normal", "Low", "High", "Urgent" })
                     {
@@ -67,7 +67,7 @@
                 </pems-select>
             </div>
             <div class="col-md-6">
-                <label class="form-label" for="tplConf">@Localizer["Lt_Confidentiality"]</label>
+                <pems-label for="tplConf">@Localizer["Lt_Confidentiality"]</pems-label>
                 <pems-select name="ConfidentialityLevel" id="tplConf">
                     @foreach (var c in new[] { "Internal", "Public", "Confidential", "Restricted", "HighlyConfidential" })
                     {

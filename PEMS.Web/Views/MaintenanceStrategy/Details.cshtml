@@ -230,27 +230,23 @@
     </table>
 </div>
 
-<div class="modal fade" id="overrideModal" tabindex="-1">
-    <div class="modal-dialog">
-        <div class="modal-content">
+<pems-modal id="overrideModal" tabindex="-1">
             <form asp-action="RequestOverride" method="post">
                 <input type="hidden" name="strategyId" value="@s.MaintenanceStrategyId" />
                 <input type="hidden" name="assignmentId" id="overrideAssignmentId" />
                 <div class="modal-header"><h6 class="modal-title">@Localizer["Rcm_RequestOverride"] — <span id="overrideTag"></span></h6></div>
                 <div class="modal-body">
                     <p class="small text-muted">@Localizer["Rcm_OverrideHint"]</p>
-                    <div class="mb-2"><label class="form-label">@Localizer["Rcm_OverrideInterval"]</label><pems-input name="overrideIntervalDays" type="number" min="1" /></div>
-                    <div class="mb-2"><label class="form-label">@Localizer["Rcm_OverrideTaskNote"]</label><pems-textarea name="overrideTaskNote" rows="2" maxlength="1000"></pems-textarea></div>
-                    <div class="mb-2"><label class="form-label">@Localizer["Rcm_Justification"] *</label><pems-textarea name="overrideJustification" rows="2" minlength="20" required maxlength="1000"></pems-textarea></div>
+                    <div class="mb-2"><pems-label>@Localizer["Rcm_OverrideInterval"]</pems-label><pems-input name="overrideIntervalDays" type="number" min="1" /></div>
+                    <div class="mb-2"><pems-label>@Localizer["Rcm_OverrideTaskNote"]</pems-label><pems-textarea name="overrideTaskNote" rows="2" maxlength="1000"></pems-textarea></div>
+                    <div class="mb-2"><pems-label>@Localizer["Rcm_Justification"] *</pems-label><pems-textarea name="overrideJustification" rows="2" minlength="20" required maxlength="1000"></pems-textarea></div>
                 </div>
                 <div class="modal-footer">
                     <pems-button tone="neutral" outline="true" type="button" data-bs-dismiss="modal">@Localizer["Cancel"]</pems-button>
                     <pems-button tone="primary" type="submit">@Localizer["Save"]</pems-button>
                 </div>
             </form>
-        </div>
-    </div>
-</div>
+        </pems-modal>
 
 @section Scripts {
     <script>

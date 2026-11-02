@@ -83,16 +83,14 @@
                     </td>
                 </tr>
 
-                <div class="modal fade" id="inspectModal_@li.ITPLineItemId" tabindex="-1">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
+                <pems-modal id="inspectModal_@li.ITPLineItemId" tabindex="-1">
                             <form asp-action="ItpPerformInspection" method="post">
                                 <input type="hidden" name="lineItemId" value="@li.ITPLineItemId" />
                                 <input type="hidden" name="itpId" value="@Model.InspectionTestPlanId" />
                                 <div class="modal-header"><h6 class="modal-title">Perform Inspection - @li.Activity</h6></div>
                                 <div class="modal-body">
                                     <div class="mb-2">
-                                        <label class="form-label small">@Localizer["Result"]</label>
+                                        <pems-label css="small">@Localizer["Result"]</pems-label>
                                         <pems-select scale="small" name="result" required>
                                             <option value="Acceptable">Acceptable</option>
                                             <option value="Reject">@Localizer["Reject"]</option>
@@ -100,11 +98,11 @@
                                         </pems-select>
                                     </div>
                                     <div class="mb-2">
-                                        <label class="form-label small">@Localizer["Inspector"]</label>
+                                        <pems-label css="small">@Localizer["Inspector"]</pems-label>
                                         <pems-input scale="small" name="inspector" />
                                     </div>
                                     <div class="mb-2">
-                                        <label class="form-label small">@Localizer["Notes"]</label>
+                                        <pems-label css="small">@Localizer["Notes"]</pems-label>
                                         <pems-textarea scale="small" name="description" rows="2"></pems-textarea>
                                     </div>
                                 </div>
@@ -113,9 +111,7 @@
                                     <pems-button tone="primary" size="small" type="submit">Save Result</pems-button>
                                 </div>
                             </form>
-                        </div>
-                    </div>
-                </div>
+                        </pems-modal>
             }
         </tbody>
     </table>
@@ -126,9 +122,9 @@
     <form asp-action="ItpAddLineItem" method="post">
         <input type="hidden" name="itpId" value="@Model.InspectionTestPlanId" />
         <div class="row g-3">
-            <div class="col-md-6"><label class="form-label small">@Localizer["Activity"]</label><pems-input scale="small" name="activity" required /></div>
+            <div class="col-md-6"><pems-label css="small">@Localizer["Activity"]</pems-label><pems-input scale="small" name="activity" required /></div>
             <div class="col-md-3">
-                <label class="form-label small">@Localizer["Discipline"]</label>
+                <pems-label css="small">@Localizer["Discipline"]</pems-label>
                 <pems-select scale="small" name="qcDisciplineId" required>
                     @foreach (var d in (IEnumerable<PEMS.Domain.Entities.QCDiscipline>)ViewBag.QCDisciplines)
                     {
@@ -137,7 +133,7 @@
                 </pems-select>
             </div>
             <div class="col-md-3">
-                <label class="form-label small">@Localizer["Category"]</label>
+                <pems-label css="small">@Localizer["Category"]</pems-label>
                 <pems-select scale="small" name="inspectionCategory">
                     <option value="H">H - Hold Point</option>
                     <option value="W">W - Witness Point</option>
@@ -146,10 +142,10 @@
                     <option value="M">M - Monitor</option>
                 </pems-select>
             </div>
-            <div class="col-md-6"><label class="form-label small">@Localizer["Acceptance Criteria"]</label><pems-input scale="small" name="acceptanceCriteria" /></div>
-            <div class="col-md-3"><label class="form-label small">Reference Code</label><pems-input scale="small" name="referenceCodeStandard" /></div>
+            <div class="col-md-6"><pems-label css="small">@Localizer["Acceptance Criteria"]</pems-label><pems-input scale="small" name="acceptanceCriteria" /></div>
+            <div class="col-md-3"><pems-label css="small">Reference Code</pems-label><pems-input scale="small" name="referenceCodeStandard" /></div>
             <div class="col-md-3">
-                <label class="form-label small">Responsible Party</label>
+                <pems-label css="small">Responsible Party</pems-label>
                 <pems-select scale="small" name="responsibleParty">
                     <option>Contractor</option><option>@Localizer["Client"]</option><option>ThirdParty</option>
                 </pems-select>

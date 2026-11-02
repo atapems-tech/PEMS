@@ -20,7 +20,7 @@
     <form id="registerForm" class="row g-2 align-items-end" onsubmit="return false;">
         @Html.AntiForgeryToken()
         <div class="col-md-4">
-            <label class="form-label small">@Localizer["Nickname (optional)"]</label>
+            <pems-label css="small">@Localizer["Nickname (optional)"]</pems-label>
             <pems-input scale="small" type="text" id="nickname" placeholder="e.g. My Laptop Windows Hello" />
         </div>
         <div class="col-md-2">

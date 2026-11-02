@@ -15,11 +15,11 @@
 
 <form method="get" class="d-flex gap-2 align-items-end mb-3">
     <div>
-        <label class="form-label small mb-0">@Localizer["From"]</label>
+        <pems-label css="small mb-0">@Localizer["From"]</pems-label>
         <input type="date" name="fromDate" class="form-control form-control-sm" value="@(Model.FromDate?.ToString("yyyy-MM-dd"))" />
     </div>
     <div>
-        <label class="form-label small mb-0">To</label>
+        <pems-label css="small mb-0">To</pems-label>
         <input type="date" name="toDate" class="form-control form-control-sm" value="@(Model.ToDate?.ToString("yyyy-MM-dd"))" />
     </div>
     <pems-button tone="primary" size="small" type="submit">@Localizer["Filter"]</pems-button>

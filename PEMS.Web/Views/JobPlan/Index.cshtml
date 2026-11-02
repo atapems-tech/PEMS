@@ -78,17 +78,16 @@
     </pems-list-panel>
 </pems-list-page>
 
-<div class="modal fade" id="createJobPlanModal" tabindex="-1">
-    <div class="modal-dialog"><div class="modal-content">
+<pems-modal id="createJobPlanModal" tabindex="-1">
         <form asp-action="Create" method="post">
             <div class="modal-header"><h6 class="modal-title">@Localizer["Jp_New"]</h6></div>
             <div class="modal-body">
-                <div class="mb-2"><label class="form-label small">@Localizer["Title"]</label><pems-input scale="small" name="title" required /></div>
-                <div class="mb-2"><label class="form-label small">@Localizer["Scope"]</label><pems-textarea scale="small" name="scope" rows="2"></pems-textarea></div>
-                <div class="mb-2"><label class="form-label small">@Localizer["Estimated Duration (hours)"]</label><pems-input scale="small" name="estimatedDurationHours" type="number" step="0.1" /></div>
-                <div class="mb-2"><label class="form-label small">@Localizer["Safety Requirements"]</label><pems-textarea scale="small" name="safetyRequirements" rows="2"></pems-textarea></div>
+                <div class="mb-2"><pems-label css="small">@Localizer["Title"]</pems-label><pems-input scale="small" name="title" required /></div>
+                <div class="mb-2"><pems-label css="small">@Localizer["Scope"]</pems-label><pems-textarea scale="small" name="scope" rows="2"></pems-textarea></div>
+                <div class="mb-2"><pems-label css="small">@Localizer["Estimated Duration (hours)"]</pems-label><pems-input scale="small" name="estimatedDurationHours" type="number" step="0.1" /></div>
+                <div class="mb-2"><pems-label css="small">@Localizer["Safety Requirements"]</pems-label><pems-textarea scale="small" name="safetyRequirements" rows="2"></pems-textarea></div>
                 <div class="mb-2">
-                    <label class="form-label small">@Localizer["Equipment Class"]</label>
+                    <pems-label css="small">@Localizer["Equipment Class"]</pems-label>
                     <pems-select scale="small" name="equipmentClassId">
                         <option value="">@Localizer["Not linked..."]</option>
                         @foreach (var ec in equipmentClasses)
@@ -111,8 +110,7 @@
                 <pems-button tone="primary" size="small" type="submit">@Localizer["Create"]</pems-button>
             </div>
         </form>
-    </div></div>
-</div>
+    </pems-modal>
 
 @section Scripts {
     <script src="~/_content/PEMS.UI/pems-list.js" asp-append-version="true"></script>

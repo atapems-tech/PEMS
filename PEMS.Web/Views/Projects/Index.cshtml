@@ -77,21 +77,19 @@
 
 </div>
 
-<div class="modal fade" id="createProjectModal" tabindex="-1">
-    <div class="modal-dialog">
-        <div class="modal-content">
+<pems-modal id="createProjectModal" tabindex="-1">
             <form asp-controller="Projects" asp-action="Create" method="post">
                 <div class="modal-header"><h6 class="modal-title">@Localizer["New Project"]</h6></div>
                 <div class="modal-body">
                     <div class="row g-3">
-                        <div class="col-md-6"><label class="form-label">@Localizer["Project Code"]</label><pems-input name="ProjectCode" /></div>
-                        <div class="col-md-6"><label class="form-label">@Localizer["Project Name"]</label><pems-input name="ProjectName" /></div>
-                        <div class="col-md-6"><label class="form-label">@Localizer["Client"]</label><pems-input name="ClientName" /></div>
-                        <div class="col-md-6"><label class="form-label">@Localizer["Location"]</label><pems-input name="Location" /></div>
-                        <div class="col-md-6"><label class="form-label">@Localizer["Start Date"]</label><input name="StartDate" type="date" class="form-control" /></div>
-                        <div class="col-md-6"><label class="form-label">@Localizer["End Date"]</label><input name="EndDate" type="date" class="form-control" /></div>
+                        <div class="col-md-6"><pems-label>@Localizer["Project Code"]</pems-label><pems-input name="ProjectCode" /></div>
+                        <div class="col-md-6"><pems-label>@Localizer["Project Name"]</pems-label><pems-input name="ProjectName" /></div>
+                        <div class="col-md-6"><pems-label>@Localizer["Client"]</pems-label><pems-input name="ClientName" /></div>
+                        <div class="col-md-6"><pems-label>@Localizer["Location"]</pems-label><pems-input name="Location" /></div>
+                        <div class="col-md-6"><pems-label>@Localizer["Start Date"]</pems-label><input name="StartDate" type="date" class="form-control" /></div>
+                        <div class="col-md-6"><pems-label>@Localizer["End Date"]</pems-label><input name="EndDate" type="date" class="form-control" /></div>
                         <div class="col-md-6">
-                            <label class="form-label">@Localizer["Status"]</label>
+                            <pems-label>@Localizer["Status"]</pems-label>
                             <pems-select name="Status">
                                 <option>@Localizer["Planning"]</option><option>@Localizer["Active"]</option><option>@Localizer["Completed"]</option><option>@Localizer["Cancelled"]</option>
                             </pems-select>
@@ -103,9 +101,7 @@
                     <pems-button tone="primary" type="submit">@Localizer["Save"]</pems-button>
                 </div>
             </form>
-        </div>
-    </div>
-</div>
+        </pems-modal>
 
 @section Scripts {
     <script>

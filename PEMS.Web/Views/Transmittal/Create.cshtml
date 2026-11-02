@@ -15,11 +15,11 @@
     <form asp-action="Create" method="post">
         <div class="row g-3">
             <div class="col-md-6">
-                <label class="form-label">Transmittal No</label>
+                <pems-label>Transmittal No</pems-label>
                 <pems-input name="transmittalNo" placeholder="e.g. TR-2026-001" required />
             </div>
             <div class="col-md-6">
-                <label class="form-label">@Localizer["Project"]</label>
+                <pems-label>@Localizer["Project"]</pems-label>
                 <pems-select name="projectId" required>
                     @foreach (var p in projects)
                     {
@@ -28,15 +28,15 @@
                 </pems-select>
             </div>
             <div class="col-md-6">
-                <label class="form-label">@Localizer["From"]</label>
+                <pems-label>@Localizer["From"]</pems-label>
                 <pems-input name="from" placeholder="e.g. Engineering Department" required />
             </div>
             <div class="col-md-6">
-                <label class="form-label">To <span class="text-muted small">(free-text summary - optional if recipients added below)</span></label>
+                <pems-label>To <span class="text-muted small">(free-text summary - optional if recipients added below)</span></pems-label>
                 <pems-input name="to" placeholder="e.g. Contractor XYZ" />
             </div>
             <div class="col-md-6">
-                <label class="form-label">@Localizer["Purpose"]</label>
+                <pems-label>@Localizer["Purpose"]</pems-label>
                 <pems-select name="purpose">
                     <option value="IFA">@Localizer["IFA - Issued for Approval"]</option>
                     <option value="IFR">@Localizer["IFR - Issue for Review and Comments"]</option>
@@ -56,19 +56,19 @@
                 </div>
             </div>
             <div class="col-12">
-                <label class="form-label">@Localizer["Description"]</label>
+                <pems-label>@Localizer["Description"]</pems-label>
                 <pems-textarea name="description" rows="2"></pems-textarea>
             </div>
 
             <div class="col-12">
-                <label class="form-label d-block">Recipients <span class="text-muted small">(structured - required)</span></label>
+                <pems-label css="d-block">Recipients <span class="text-muted small">(structured - required)</span></pems-label>
                 <div id="recipientRows"></div>
                 <pems-button tone="neutral" size="small" outline="true" css="mt-1" type="button" id="addRecipientBtn"><i class="bi bi-plus-lg"></i> Add Recipient</pems-button>
             </div>
 
             <div class="col-12">
                 <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
-                    <label class="form-label d-block mb-0">Documents to include</label>
+                    <pems-label css="d-block mb-0">Documents to include</pems-label>
                     <span class="small text-muted" id="docPickerCounter"></span>
                 </div>
                 <p class="text-muted small mb-1">

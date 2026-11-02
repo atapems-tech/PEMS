@@ -14,7 +14,7 @@
     <h2 class="vs-section__title"><i class="bi bi-card-heading"></i> @Localizer["Ed_FormIdentification"]</h2>
     <div class="row g-3 mb-4">
         <div class="col-md-6">
-            <label class="form-label" for="DocumentNo">@Localizer["Ed_DocNo"]</label>
+            <pems-label for="DocumentNo">@Localizer["Ed_DocNo"]</pems-label>
             <div class="input-group">
                 <span class="input-group-text" id="autoNumberBadge"><i class="bi bi-magic" aria-hidden="true"></i></span>
                 <pems-input css="vs-num" asp-for="DocumentNo" placeholder="@Localizer["Ed_AutoNumberHint"]" disabled="disabled" />
@@ -33,16 +33,16 @@
             }
         </div>
         <div class="col-md-6">
-            <label class="form-label" for="RevisionNo">@Localizer["Ed_Revision"]</label>
+            <pems-label for="RevisionNo">@Localizer["Ed_Revision"]</pems-label>
             <pems-input css="vs-num" asp-for="RevisionNo" />
         </div>
         <div class="col-12">
-            <label class="form-label" for="Title">@Localizer["Ed_Title"]</label>
+            <pems-label for="Title">@Localizer["Ed_Title"]</pems-label>
             <pems-input asp-for="Title" />
             <span asp-validation-for="Title" class="text-danger small"></span>
         </div>
         <div class="col-12">
-            <label class="form-label" for="Description">@Localizer["Ed_Description"]</label>
+            <pems-label for="Description">@Localizer["Ed_Description"]</pems-label>
             <pems-textarea asp-for="Description" rows="2"></pems-textarea>
         </div>
     </div>
@@ -50,7 +50,7 @@
     <h2 class="vs-section__title"><i class="bi bi-diagram-3"></i> @Localizer["Ed_FormClassification"]</h2>
     <div class="row g-3 mb-4">
         <div class="col-md-4">
-            <label class="form-label" for="DocumentType">@Localizer["Ed_Type"]</label>
+            <pems-label for="DocumentType">@Localizer["Ed_Type"]</pems-label>
             <pems-select asp-for="DocumentType">
                 <option value="">@Localizer["Ed_SelectType"]</option>
                 <option value="Drawing">Drawing</option>
@@ -60,23 +60,23 @@
             </pems-select>
         </div>
         <div class="col-md-4">
-            <label class="form-label" for="ProjectId">@Localizer["Ed_Project"]</label>
+            <pems-label for="ProjectId">@Localizer["Ed_Project"]</pems-label>
             <pems-select asp-for="ProjectId" asp-items="ViewBag.Projects">
                 <option value="">@Localizer["Ed_SelectProject"]</option>
             </pems-select>
         </div>
         <div class="col-md-4">
-            <label class="form-label" for="DisciplineId">@Localizer["Ed_Discipline"]</label>
+            <pems-label for="DisciplineId">@Localizer["Ed_Discipline"]</pems-label>
             <pems-select asp-for="DisciplineId" asp-items="ViewBag.Disciplines">
                 <option value="">@Localizer["Ed_SelectDiscipline"]</option>
             </pems-select>
         </div>
         <div class="col-md-4">
-            <label class="form-label" for="Area">@Localizer["Ed_Area"] <span class="text-muted fw-normal">(@Localizer["Ed_Optional"])</span></label>
+            <pems-label for="Area">@Localizer["Ed_Area"] <span class="text-muted fw-normal">(@Localizer["Ed_Optional"])</span></pems-label>
             <pems-input asp-for="Area" placeholder="ABS &amp; Common, Rubber" />
         </div>
         <div class="col-md-4">
-            <label class="form-label" for="Status">@Localizer["Ed_Status"]</label>
+            <pems-label for="Status">@Localizer["Ed_Status"]</pems-label>
             <pems-select asp-for="Status">
                 <option value="Draft">@Localizer["St_Draft"]</option>
                 <option value="Review">@Localizer["Review"]</option>
@@ -89,13 +89,13 @@
     <h2 class="vs-section__title"><i class="bi bi-link-45deg"></i> @Localizer["Ed_FormTraceability"]</h2>
     <div class="row g-3 mb-4">
         <div class="col-md-6">
-            <label class="form-label" for="EquipmentId">@Localizer["Ed_RelatedEquipment"] <span class="text-muted fw-normal">(@Localizer["Ed_Optional"])</span></label>
+            <pems-label for="EquipmentId">@Localizer["Ed_RelatedEquipment"] <span class="text-muted fw-normal">(@Localizer["Ed_Optional"])</span></pems-label>
             <pems-select asp-for="EquipmentId" asp-items="ViewBag.Equipments">
                 <option value="">@Localizer["Ed_None"]</option>
             </pems-select>
         </div>
         <div class="col-md-6">
-            <label class="form-label" for="ContractId">@Localizer["Ed_RelatedContract"] <span class="text-muted fw-normal">(@Localizer["Ed_Optional"])</span></label>
+            <pems-label for="ContractId">@Localizer["Ed_RelatedContract"] <span class="text-muted fw-normal">(@Localizer["Ed_Optional"])</span></pems-label>
             <pems-select asp-for="ContractId" asp-items="ViewBag.Contracts">
                 <option value="">@Localizer["Ed_None"]</option>
             </pems-select>

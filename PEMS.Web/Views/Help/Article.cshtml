@@ -9,11 +9,11 @@
 }
 
 <nav aria-label="breadcrumb" class="mb-2">
-    <ol class="breadcrumb mb-0 small">
+    <pems-crumb-trail css="mb-0 small">
         <li class="breadcrumb-item"><a asp-action="Index">@L("Help Center", "مرکز راهنما")</a></li>
         <li class="breadcrumb-item"><a asp-action="Category" asp-route-id="@Model.HelpCategoryId">@Model.CategoryName</a></li>
         <li class="breadcrumb-item active">@Model.Title</li>
-    </ol>
+    </pems-crumb-trail>
 </nav>
 
 <div class="row g-3">

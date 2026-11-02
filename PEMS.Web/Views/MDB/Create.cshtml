@@ -14,7 +14,7 @@
     <form asp-action="Create" method="post">
         <div class="row g-3">
             <div class="col-md-6">
-                <label class="form-label">@Localizer["Project"]</label>
+                <pems-label>@Localizer["Project"]</pems-label>
                 <pems-select name="projectId" required>
                     @foreach (var p in projects)
                     {
@@ -23,7 +23,7 @@
                 </pems-select>
             </div>
             <div class="col-md-6">
-                <label class="form-label">@Localizer["Equipment"]</label>
+                <pems-label>@Localizer["Equipment"]</pems-label>
                 <pems-select name="equipmentId" required>
                     @foreach (var eq in equipments)
                     {
@@ -32,7 +32,7 @@
                 </pems-select>
             </div>
             <div class="col-md-6">
-                <label class="form-label">@Localizer["Vendor"]</label>
+                <pems-label>@Localizer["Vendor"]</pems-label>
                 <pems-select name="vendorId" required>
                     @foreach (var v in vendors)
                     {
@@ -41,7 +41,7 @@
                 </pems-select>
             </div>
             <div class="col-md-6">
-                <label class="form-label">Purchase Order <span class="text-muted small">@Localizer["(optional)"]</span></label>
+                <pems-label>Purchase Order <span class="text-muted small">@Localizer["(optional)"]</span></pems-label>
                 <pems-select name="poId">
                     <option value="">@Localizer["-- None --"]</option>
                     @foreach (var po in pos)
@@ -51,7 +51,7 @@
                 </pems-select>
             </div>
             <div class="col-md-6">
-                <label class="form-label">Planned Final Issue Date <span class="text-muted small">(index due 4 weeks before)</span></label>
+                <pems-label>Planned Final Issue Date <span class="text-muted small">(index due 4 weeks before)</span></pems-label>
                 <input name="plannedFinalIssueDate" type="date" class="form-control" />
             </div>
         </div>

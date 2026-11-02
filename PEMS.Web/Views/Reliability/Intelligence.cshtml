@@ -44,11 +44,11 @@
 <div class="content-card mb-3">
     <form method="get" class="row g-2 align-items-end">
         <div class="col-md-3">
-            <label class="form-label small">@Localizer["From"]</label>
+            <pems-label css="small">@Localizer["From"]</pems-label>
             <input type="date" name="from" value="@(from?.ToString("yyyy-MM-dd"))" class="form-control form-control-sm" />
         </div>
         <div class="col-md-3">
-            <label class="form-label small">To</label>
+            <pems-label css="small">To</pems-label>
             <input type="date" name="to" value="@(to?.ToString("yyyy-MM-dd"))" class="form-control form-control-sm" />
         </div>
         <div class="col-md-2"><pems-button tone="primary" size="small" type="submit">@Localizer["Apply"]</pems-button></div>
@@ -93,14 +93,14 @@
     </div>
 </div>
 
-<ul class="nav nav-tabs mb-3">
+<pems-nav css="mb-3">
     <li class="nav-item"><button class="nav-link active" data-bs-toggle="tab" data-bs-target="#tab-pm">@Localizer["PM Compliance"]</button></li>
     <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-type">Maintenance Type</button></li>
     <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-repeat">Repeat Failures</button></li>
     <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-effectiveness">Effectiveness</button></li>
     <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-matrix">Criticality Matrix</button></li>
     <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-matrix2">Criticality × Maintenance/RCM</button></li>
-</ul>
+</pems-nav>
 
 <div class="tab-content">
     <div class="tab-pane fade show active" id="tab-pm">

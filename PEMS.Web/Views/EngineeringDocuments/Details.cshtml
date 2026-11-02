@@ -205,7 +205,7 @@
                 <button class="vs-btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                     @Localizer["Ed_MoreActions"]
                 </button>
-                <ul class="dropdown-menu dropdown-menu-end">
+                <pems-dropdown-menu end="true">
                     <li><a class="dropdown-item" asp-action="Edit" asp-route-id="@Model.DocumentId"><i class="bi bi-pencil"></i> @Localizer["Edit"]</a></li>
                     @if (Model.Status == "Approved" || Model.Status == "Issued")
                     {
@@ -225,7 +225,7 @@
                     {
                         <li><button type="button" class="dropdown-item" data-bs-toggle="modal" data-bs-target="#holdModal"><i class="bi bi-pause-circle"></i> @Localizer["Hold"]</button></li>
                     }
-                </ul>
+                </pems-dropdown-menu>
             </div>
         </div>
     </div>
@@ -336,7 +336,7 @@
     }
 </div>
 
-<ul class="nav nav-tabs mb-3" id="docTabs" role="tablist">
+<pems-nav css="mb-3" id="docTabs" role="tablist">
     <li class="nav-item" role="presentation">
         <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#tab-overview" type="button">
             <i class="bi bi-info-circle"></i> @Localizer["Ed_TabOverview"]
@@ -386,7 +386,7 @@
             @if (relatedLetters.Any()) { <pems-badge tone="neutral">@relatedLetters.Count</pems-badge> }
         </button>
     </li>
-</ul>
+</pems-nav>
 
 <div class="tab-content">
 
@@ -1043,9 +1043,7 @@
    مستقیم POST می‌کرد، حالا کاربر قبل از تایید نهایی، کل مسیر و اینکه هر مرحله دست کیه
    رو می‌بینه.
    ============================================================================== *@
-<div class="modal fade" id="submitWorkflowModal" tabindex="-1">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
+<pems-modal size="large" id="submitWorkflowModal" tabindex="-1">
             <form asp-action="Submit" method="post">
                 <input type="hidden" name="id" value="@Model.DocumentId" />
                 <div class="modal-header">
@@ -1058,9 +1056,9 @@
                     <hr />
 
                     <div class="mb-2">
-                        <label class="form-label small fw-bold">
+                        <pems-label css="small fw-bold">
                             <i class="bi bi-diagram-3"></i> این مدرک نیاز به بازبینی سایر دیسیپلین‌ها (IDC) داره؟
-                        </label>
+                        </pems-label>
                         <div class="text-muted small mb-2">
                             اگه دیسیپلینی رو انتخاب نکنی، مدرک بعد از Check مستقیم می‌ره مرحله‌ی تایید نهایی (بدون IDC).
                         </div>
@@ -1085,17 +1083,13 @@
                     <pems-button tone="warning" size="small" type="submit"><i class="bi bi-send"></i> @Localizer["تایید و ارسال"]</pems-button>
                 </div>
             </form>
-        </div>
-    </div>
-</div>
+        </pems-modal>
 
 @* ==============================================================================
    پاسخ IDC با کامنت (Comment) یا رد (Reject) - هر دو نیاز به توضیح دارن، برخلاف Approve
    که یک دکمه‌ی ساده‌ست
    ============================================================================== *@
-<div class="modal fade" id="idcCommentModal" tabindex="-1">
-    <div class="modal-dialog">
-        <div class="modal-content">
+<pems-modal id="idcCommentModal" tabindex="-1">
             <form asp-action="IdcRespond" method="post">
                 <input type="hidden" name="id" value="@Model.DocumentId" />
                 <input type="hidden" name="decision" value="Comment" />
@@ -1109,13 +1103,9 @@
                     <pems-button tone="warning" size="small" type="submit">@Localizer["ثبت کامنت"]</pems-button>
                 </div>
             </form>
-        </div>
-    </div>
-</div>
+        </pems-modal>
 
-<div class="modal fade" id="idcRejectModal" tabindex="-1">
-    <div class="modal-dialog">
-        <div class="modal-content">
+<pems-modal id="idcRejectModal" tabindex="-1">
             <form asp-action="IdcRespond" method="post">
                 <input type="hidden" name="id" value="@Model.DocumentId" />
                 <input type="hidden" name="decision" value="Reject" />
@@ -1129,15 +1119,11 @@
                     <pems-button tone="danger" size="small" type="submit">@Localizer["رد کن"]</pems-button>
                 </div>
             </form>
-        </div>
-    </div>
-</div>
+        </pems-modal>
 
 @* طبق Phase E-04: برخلاف Reject (رد قطعی)، این یعنی "برگردان برای اصلاح - دوباره Submit
    می‌شود" - سند به وضعیت "Revise & Resubmit" می‌رود که خودش Submit دوباره را مجاز می‌کند. *@
-<div class="modal fade" id="reviseModal" tabindex="-1">
-    <div class="modal-dialog">
-        <div class="modal-content">
+<pems-modal id="reviseModal" tabindex="-1">
             <form asp-action="ReviseAndResubmit" method="post">
                 <input type="hidden" name="id" value="@Model.DocumentId" />
                 <div class="modal-header"><h6 class="modal-title">@Localizer["برگرداندن برای اصلاح"]</h6></div>
@@ -1150,23 +1136,19 @@
                     <pems-button tone="warning" size="small" type="submit">@Localizer["برگردان برای اصلاح"]</pems-button>
                 </div>
             </form>
-        </div>
-    </div>
-</div>
+        </pems-modal>
 
 @* طبق بخش ۲۱/۳۸ ممیزی UX: قبلاً Freeze/Hold یک فرم همیشه‌مرئی روی صفحه بودند - حالا برای
    انطباق با بقیه‌ی اکشن‌ها به Modal تبدیل شدند (از منوی More باز می‌شوند). Route/Field/بررسی
    مجوز (ViewBag.CanFreeze/CanHold) کاملاً دست‌نخورده ماندند - فقط محل نمایش تغییر کرده. *@
 @if (!Model.IsFrozen && (bool)(ViewBag.CanFreeze ?? false))
 {
-    <div class="modal fade" id="freezeModal" tabindex="-1">
-        <div class="modal-dialog">
-            <div class="modal-content">
+    <pems-modal id="freezeModal" tabindex="-1">
                 <form asp-action="Freeze" asp-route-id="@Model.DocumentId" method="post">
                     <div class="modal-header"><h6 class="modal-title"><i class="bi bi-snow"></i> Freeze Document</h6></div>
                     <div class="modal-body">
                         <p class="text-muted small">این مدرک منجمد (Frozen) شود؟ پس از آن دیگر قابل ویرایش یا رویژن جدید نخواهد بود.</p>
-                        <label class="form-label small">Freeze reason (required)</label>
+                        <pems-label css="small">Freeze reason (required)</pems-label>
                         <pems-input scale="small" type="text" name="reason" required />
                     </div>
                     <div class="modal-footer">
@@ -1174,20 +1156,16 @@
                         <pems-button tone="dark" size="small" outline="true" type="submit"><i class="bi bi-snow"></i> @Localizer["Freeze"]</pems-button>
                     </div>
                 </form>
-            </div>
-        </div>
-    </div>
+            </pems-modal>
 }
 @if (!Model.IsOnHold && !Model.IsFrozen && Model.Status != "Issued" && (bool)(ViewBag.CanHold ?? false))
 {
-    <div class="modal fade" id="holdModal" tabindex="-1">
-        <div class="modal-dialog">
-            <div class="modal-content">
+    <pems-modal id="holdModal" tabindex="-1">
                 <form asp-action="Hold" asp-route-id="@Model.DocumentId" method="post">
                     <div class="modal-header"><h6 class="modal-title"><i class="bi bi-pause-circle"></i> Hold Document</h6></div>
                     <div class="modal-body">
                         <p class="text-muted small">این مدرک در وضعیت Hold قرار بگیرد؟ تا رفع Hold، قابل تأیید (Approve) یا صدور (Issue) نخواهد بود.</p>
-                        <label class="form-label small">Hold reason (required)</label>
+                        <pems-label css="small">Hold reason (required)</pems-label>
                         <pems-input scale="small" type="text" name="reason" required />
                     </div>
                     <div class="modal-footer">
@@ -1195,9 +1173,7 @@
                         <pems-button tone="dark" size="small" outline="true" type="submit"><i class="bi bi-pause-circle"></i> @Localizer["Hold"]</pems-button>
                     </div>
                 </form>
-            </div>
-        </div>
-    </div>
+            </pems-modal>
 }
 
 
@@ -1205,9 +1181,7 @@
    پاپ‌آپ Issue: انتخاب واحد تحویل. اگر بیرونی (DCC کارفرما/پیمانکار) باشد، نامه‌ی رسمی
    خروجی اجباری می‌شود؛ برای دو حالت داخلی (DCC خودمان یا واحد دیگر)، ثبت نامه اختیاری است.
    ============================================================================== *@
-<div class="modal fade" id="issueModal" tabindex="-1">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
+<pems-modal size="large" id="issueModal" tabindex="-1">
             <form asp-action="Issue" method="post" id="issueForm">
                 <input type="hidden" name="id" value="@Model.DocumentId" />
                 <div class="modal-header"><h6 class="modal-title"><i class="bi bi-send-check"></i> @Localizer["صدور مدرک - انتخاب واحد تحویل"]</h6></div>
@@ -1215,12 +1189,12 @@
                     @* طبق Phase E-04: هدف واقعی همین صدور (IFC/IFA/IFI/...) - در لحظه‌ی صدور
                        ثبت می‌شود، نه مقدار قدیمی فرم Create/Edit *@
                     <div class="mb-3">
-                        <label class="form-label small">Issue Purpose (IFC / IFA / IFI / ...)</label>
+                        <pems-label css="small">Issue Purpose (IFC / IFA / IFI / ...)</pems-label>
                         <pems-input scale="small" type="text" name="issuePurpose" value="@Model.IssuePurpose" placeholder="e.g. Issued For Construction" />
                     </div>
 
                     <div class="mb-3">
-                        <label class="form-label small fw-bold">این مدرک به کدوم واحد تحویل داده می‌شه؟</label>
+                        <pems-label css="small fw-bold">این مدرک به کدوم واحد تحویل داده می‌شه؟</pems-label>
 
                         <div class="form-check">
                             <pems-input kind="check" type="radio" name="deliveryUnitType" id="dcc_internal" value="InternalDCC" checked onclick="pemsToggleIssueFields()" />
@@ -1237,7 +1211,7 @@
                     </div>
 
                     <div class="mb-2" id="issueDeptField" style="display:none;">
-                        <label class="form-label small">@Localizer["واحد داخلی"]</label>
+                        <pems-label css="small">@Localizer["واحد داخلی"]</pems-label>
                         <pems-select scale="small" name="deliveryDepartmentId">
                             @{
                                 var allDepartmentsForIssue = (IEnumerable<PEMS.Domain.Entities.Department>)(ViewBag.AllDepartments ?? new List<PEMS.Domain.Entities.Department>());
@@ -1254,26 +1228,26 @@
                             برای تحویل بیرونی، ثبت نامه‌ی رسمی خروجی الزامی است.
                         </pems-alert>
                         <div class="mb-2">
-                            <label class="form-label small">نام گیرنده (مثلاً DCC کارفرما)</label>
+                            <pems-label css="small">نام گیرنده (مثلاً DCC کارفرما)</pems-label>
                             <pems-input scale="small" type="text" name="externalReceiverName" />
                         </div>
                     </div>
 
                     <div class="mb-2" id="issueLetterNumberField" style="display:none;">
-                        <label class="form-label small">شماره‌ی نامه (اختیاری - خالی بمونه خودکار ساخته می‌شه)</label>
+                        <pems-label css="small">شماره‌ی نامه (اختیاری - خالی بمونه خودکار ساخته می‌شه)</pems-label>
                         <pems-input scale="small" type="text" name="letterNumber" />
                     </div>
                     <div class="mb-2" id="issueSubjectField" style="display:none;">
-                        <label class="form-label small">@Localizer["موضوع نامه"]</label>
+                        <pems-label css="small">@Localizer["موضوع نامه"]</pems-label>
                         <pems-input scale="small" type="text" name="letterSubject" value="صدور مدرک @Model.DocumentNo" />
                     </div>
                     <div class="mb-2" id="issueBodyField" style="display:none;">
-                        <label class="form-label small">@Localizer["متن نامه (اختیاری)"]</label>
+                        <pems-label css="small">@Localizer["متن نامه (اختیاری)"]</pems-label>
                         <pems-textarea scale="small" name="letterBody" rows="2"></pems-textarea>
                     </div>
 
                     <div class="mb-2">
-                        <label class="form-label small">توضیح / کامنت صدور (اختیاری)</label>
+                        <pems-label css="small">توضیح / کامنت صدور (اختیاری)</pems-label>
                         <pems-textarea scale="small" name="comment" rows="2"></pems-textarea>
                     </div>
                 </div>
@@ -1282,9 +1256,7 @@
                     <pems-button tone="none" size="small" css="btn-primary" type="submit"><i class="bi bi-send-check"></i> تایید و صدور</pems-button>
                 </div>
             </form>
-        </div>
-    </div>
-</div>
+        </pems-modal>
 
 <script>
     function pemsToggleIssueFields() {
@@ -1312,15 +1284,13 @@
 </script>
 
 
-<div class="modal fade" id="newRevisionModal" tabindex="-1">
-    <div class="modal-dialog">
-        <div class="modal-content">
+<pems-modal id="newRevisionModal" tabindex="-1">
             <form asp-action="CreateRevision" method="post">
                 <input type="hidden" name="id" value="@Model.DocumentId" />
                 <div class="modal-header"><h6 class="modal-title">Create New Revision</h6></div>
                 <div class="modal-body">
                     <div class="mb-2">
-                        <label class="form-label small">@Localizer["Reason"]</label>
+                        <pems-label css="small">@Localizer["Reason"]</pems-label>
                         <pems-select scale="small" name="reason">
                             <option>Design Change</option>
                             <option>Client Comment</option>
@@ -1331,11 +1301,11 @@
                         </pems-select>
                     </div>
                     <div class="mb-2">
-                        <label class="form-label small">Change Description</label>
+                        <pems-label css="small">Change Description</pems-label>
                         <pems-textarea scale="small" name="changeDescription" rows="3" placeholder="What changed in this revision?"></pems-textarea>
                     </div>
                     <div class="mb-2">
-                        <label class="form-label small"><i class="bi bi-building"></i> Vendor Comment</label>
+                        <pems-label css="small"><i class="bi bi-building"></i> Vendor Comment</pems-label>
                         <pems-textarea scale="small" name="vendorComment" rows="3" placeholder="Paste or summarize the vendor's comment that led to this revision (if applicable)"></pems-textarea>
                     </div>
                     @{
@@ -1345,7 +1315,7 @@
                     @if (openClouded.Any())
                     {
                         <div class="mb-2">
-                            <label class="form-label small"><i class="bi bi-cloud-fill"></i> Closes Marked-for-Revision comment <span class="text-muted">@Localizer["(optional)"]</span></label>
+                            <pems-label css="small"><i class="bi bi-cloud-fill"></i> Closes Marked-for-Revision comment <span class="text-muted">@Localizer["(optional)"]</span></pems-label>
                             <pems-select scale="small" name="triggeringCommentId">
                                 <option value="">@Localizer["-- None --"]</option>
                                 @foreach (var oc in openClouded)
@@ -1360,13 +1330,9 @@
                     <pems-button tone="primary" size="small" type="submit">Create Revision</pems-button>
                 </div>
             </form>
-        </div>
-    </div>
-</div>
+        </pems-modal>
 
-<div class="modal fade" id="clientResponseModal" tabindex="-1">
-    <div class="modal-dialog">
-        <div class="modal-content">
+<pems-modal id="clientResponseModal" tabindex="-1">
             <form asp-action="RecordClientResponse" method="post">
                 <input type="hidden" name="id" value="@Model.DocumentId" />
                 <div class="modal-header"><h6 class="modal-title">Record Client Response</h6></div>
@@ -1380,7 +1346,7 @@
                         var availableIncomingLetters = (IEnumerable<PEMS.Domain.Entities.Letter>)(ViewBag.AvailableIncomingLetters ?? new List<PEMS.Domain.Entities.Letter>());
                     }
                     <div class="mb-2">
-                        <label class="form-label small"><i class="bi bi-envelope-open"></i> نامه‌ی وارده (الزامی)</label>
+                        <pems-label css="small"><i class="bi bi-envelope-open"></i> نامه‌ی وارده (الزامی)</pems-label>
                         @if (availableIncomingLetters.Any())
                         {
                             <pems-select scale="small" name="incomingLetterId" required>
@@ -1401,7 +1367,7 @@
                     </div>
 
                     <div class="mb-2">
-                        <label class="form-label small">Client Decision</label>
+                        <pems-label css="small">Client Decision</pems-label>
                         <pems-select scale="small" name="clientStatus">
                             <option value="A">A - Approved</option>
                             <option value="B">B - Approved with Comments</option>
@@ -1410,7 +1376,7 @@
                         </pems-select>
                     </div>
                     <div class="mb-2">
-                        <label class="form-label small">Client Comment (اختیاری - علاوه بر متن نامه)</label>
+                        <pems-label css="small">Client Comment (اختیاری - علاوه بر متن نامه)</pems-label>
                         <pems-textarea scale="small" name="clientComment" rows="3"></pems-textarea>
                     </div>
                 </div>
@@ -1418,14 +1384,10 @@
                     <pems-button tone="primary" size="small" type="submit" disabled="@(!(availableIncomingLetters.Any()))">Save</pems-button>
                 </div>
             </form>
-        </div>
-    </div>
-</div>
+        </pems-modal>
 
 @* طبق درخواست: چرخه‌ی کامنت/ریپلای دقیقاً مثل بخش VDR - همان سرویس مشترک، همان تجربه *@
-<div class="modal fade" id="addEngCommentModal" tabindex="-1">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
+<pems-modal size="large" id="addEngCommentModal" tabindex="-1">
             <form asp-action="AddComment" method="post" enctype="multipart/form-data">
                 <input type="hidden" name="documentId" value="@Model.DocumentId" />
                 <input type="hidden" name="pageNumber" id="engPinPageNumber" value="" />
@@ -1435,9 +1397,9 @@
                 <div class="modal-body">
                     <div id="engPinLocationLabel" class="small text-primary mb-2"></div>
                     <div class="row g-3">
-                        <div class="col-md-4"><label class="form-label small">@Localizer["Raised By"]</label><pems-input scale="small" name="raisedByName" /></div>
+                        <div class="col-md-4"><pems-label css="small">@Localizer["Raised By"]</pems-label><pems-input scale="small" name="raisedByName" /></div>
                         <div class="col-md-4">
-                            <label class="form-label small">@Localizer["Category"]</label>
+                            <pems-label css="small">@Localizer["Category"]</pems-label>
                             <pems-select scale="small" name="category">
                                 <option value="">@Localizer["-- select --"]</option>
                                 @foreach (var cat in new[] { "Technical", "Safety", "Constructability", "Documentation", "Specification", "Calculation", "Typographical", "Clarification" })
@@ -1445,20 +1407,20 @@
                             </pems-select>
                         </div>
                         <div class="col-md-4">
-                            <label class="form-label small">@Localizer["Severity"]</label>
+                            <pems-label css="small">@Localizer["Severity"]</pems-label>
                             <pems-select scale="small" name="severity">
                                 <option value="">@Localizer["-- select --"]</option>
                                 @foreach (var sev in new[] { "Low", "Medium", "High", "Critical" })
                                 { <option value="@sev">@sev</option> }
                             </pems-select>
                         </div>
-                        <div class="col-md-4"><label class="form-label small">@Localizer["Sheet"]</label><pems-input scale="small" name="sheet" /></div>
-                        <div class="col-md-4"><label class="form-label small">@Localizer["Zone"]</label><pems-input scale="small" name="zone" /></div>
-                        <div class="col-md-4"><label class="form-label small">@Localizer["Reference"]</label><pems-input scale="small" name="reference" /></div>
-                        <div class="col-12"><label class="form-label small">@Localizer["Comment"]</label><pems-textarea scale="small" name="commentText" rows="3" required></pems-textarea></div>
-                        <div class="col-md-6"><label class="form-label small">Required Action</label><pems-input scale="small" name="requiredAction" /></div>
-                        <div class="col-md-6"><label class="form-label small">@Localizer["Due Date"]</label><input name="dueDate" type="date" class="form-control form-control-sm" /></div>
-                        <div class="col-12"><label class="form-label small">Attachment <span class="text-muted">@Localizer["(optional)"]</span></label><pems-input scale="small" type="file" name="attachment" /></div>
+                        <div class="col-md-4"><pems-label css="small">@Localizer["Sheet"]</pems-label><pems-input scale="small" name="sheet" /></div>
+                        <div class="col-md-4"><pems-label css="small">@Localizer["Zone"]</pems-label><pems-input scale="small" name="zone" /></div>
+                        <div class="col-md-4"><pems-label css="small">@Localizer["Reference"]</pems-label><pems-input scale="small" name="reference" /></div>
+                        <div class="col-12"><pems-label css="small">@Localizer["Comment"]</pems-label><pems-textarea scale="small" name="commentText" rows="3" required></pems-textarea></div>
+                        <div class="col-md-6"><pems-label css="small">Required Action</pems-label><pems-input scale="small" name="requiredAction" /></div>
+                        <div class="col-md-6"><pems-label css="small">@Localizer["Due Date"]</pems-label><input name="dueDate" type="date" class="form-control form-control-sm" /></div>
+                        <div class="col-12"><pems-label css="small">Attachment <span class="text-muted">@Localizer["(optional)"]</span></pems-label><pems-input scale="small" type="file" name="attachment" /></div>
                         <div class="col-12 form-check">
                             <pems-input kind="check" type="checkbox" name="marksRevisionRequired" value="true" id="marksRevisionRequired" />
                             <label class="form-check-label" for="marksRevisionRequired">
@@ -1472,15 +1434,11 @@
                     <pems-button tone="primary" type="submit">Save Comment</pems-button>
                 </div>
             </form>
-        </div>
-    </div>
-</div>
+        </pems-modal>
 
 @foreach (var c in engComments)
 {
-    <div class="modal fade" id="engReplyModal_@c.VDRCommentId" tabindex="-1">
-        <div class="modal-dialog">
-            <div class="modal-content">
+    <pems-modal id="engReplyModal_@c.VDRCommentId" tabindex="-1">
                 <form asp-action="RecordCommentResponse" method="post" enctype="multipart/form-data">
                     <input type="hidden" name="documentId" value="@Model.DocumentId" />
                     <input type="hidden" name="commentId" value="@c.VDRCommentId" />
@@ -1488,11 +1446,11 @@
                     <div class="modal-body">
                         <p class="small text-muted">@c.CommentText</p>
                         <div class="mb-2">
-                            <label class="form-label small">Reply <span class="text-muted">(optional if attaching a file)</span></label>
+                            <pems-label css="small">Reply <span class="text-muted">(optional if attaching a file)</span></pems-label>
                             <pems-textarea scale="small" name="responseText" rows="3"></pems-textarea>
                         </div>
                         <div class="mb-2">
-                            <label class="form-label small">Or attach the Reply Sheet file</label>
+                            <pems-label css="small">Or attach the Reply Sheet file</pems-label>
                             <pems-input scale="small" type="file" name="replyAttachment" />
                         </div>
                     </div>
@@ -1501,9 +1459,7 @@
                         <pems-button tone="primary" size="small" type="submit">Save Reply</pems-button>
                     </div>
                 </form>
-            </div>
-        </div>
-    </div>
+            </pems-modal>
 }
 
 </div> @* end .vs-page *@

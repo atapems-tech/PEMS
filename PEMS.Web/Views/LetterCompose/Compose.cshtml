@@ -163,7 +163,7 @@
                     <input type="file" id="lcImportFile" accept=".csv,.txt,text/csv,text/plain" hidden />
                     <div class="dropdown d-inline-block">
                         <pems-button tone="neutral" size="small" outline="true" css="dropdown-toggle" type="button" id="lcGroupBtn" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi bi-person-lines-fill" aria-hidden="true"></i> @Localizer["Ct_AddFromGroup"]</pems-button>
-                        <ul class="dropdown-menu" id="lcGroupMenu" aria-labelledby="lcGroupBtn"></ul>
+                        <pems-dropdown-menu id="lcGroupMenu" aria-labelledby="lcGroupBtn"></pems-dropdown-menu>
                     </div>
                     <span class="lc-help align-self-center" id="lcRcptCount"></span>
                 </div>
@@ -375,9 +375,7 @@
     </div>
 </div>
 
-<div class="modal fade" id="lcPreviewModal" tabindex="-1" aria-labelledby="lcPreviewTitle" aria-hidden="true">
-    <div class="modal-dialog modal-xl modal-dialog-scrollable">
-        <div class="modal-content">
+<pems-modal size="extralarge" dialog-css="modal-dialog-scrollable" id="lcPreviewModal" tabindex="-1" aria-labelledby="lcPreviewTitle" aria-hidden="true">
             <div class="modal-header">
                 <h5 class="modal-title" id="lcPreviewTitle">@Localizer["Lc_Preview"]</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="@Localizer["Lc_Close"]"></button>
@@ -387,9 +385,7 @@
                 <pems-button tone="neutral" outline="true" type="button" onclick="window.print()"><i class="bi bi-printer" aria-hidden="true"></i> @Localizer["Lc_Print"]</pems-button>
                 <pems-button tone="neutral" type="button" data-bs-dismiss="modal">@Localizer["Lc_Close"]</pems-button>
             </div>
-        </div>
-    </div>
-</div>
+        </pems-modal>
 
 @await Html.PartialAsync("_RichTextEditorScripts", "composeBody")
 

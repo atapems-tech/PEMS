@@ -65,6 +65,21 @@
           "end",
           "start"
         ]
+      },
+      "frame": {
+        "type": "boolean"
+      },
+      "cssClass": {
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "attributes": {
+        "type": [
+          "object",
+          "null"
+        ]
       }
     },
     "required": [

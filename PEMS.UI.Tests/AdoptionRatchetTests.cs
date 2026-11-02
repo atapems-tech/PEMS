@@ -21,6 +21,7 @@ public sealed class AdoptionRatchetTests
         ("button", new Regex(@"\bbtn btn-[a-z-]+", RegexOptions.Compiled), true, false),
         ("text-input", new Regex(@"\bform-control\b", RegexOptions.Compiled), true, false),
         ("select", new Regex(@"\bform-select\b", RegexOptions.Compiled), true, false),
+        ("form-label", new Regex(@"class=""[^""]*(?<![\w-])form-label(?![\w-])", RegexOptions.Compiled), true, false),
         ("textarea", new Regex(@"<textarea\b", RegexOptions.Compiled), true, false),
         ("check-radio-switch", new Regex(@"\bform-check-input\b|\bform-switch\b", RegexOptions.Compiled), true, false),
         ("modal", new Regex(@"class=""modal(?![\w-])", RegexOptions.Compiled), true, false),

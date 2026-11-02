@@ -98,7 +98,7 @@
                             <label class="form-check-label" for="detResponseRequired">@Localizer["Lt_ResponseRequired"]</label>
                         </div>
                         <div>
-                            <label class="form-label mb-1" for="detResponseDue">@Localizer["Lt_ResponseDueDate"]</label>
+                            <pems-label css="mb-1" for="detResponseDue">@Localizer["Lt_ResponseDueDate"]</pems-label>
                             <input type="date" name="responseDueDate" id="detResponseDue" class="form-control form-control-sm"
                                    value="@(l.ResponseDueDate?.ToString("yyyy-MM-dd"))" min="@l.LetterDate.ToString("yyyy-MM-dd")" />
                         </div>
@@ -175,7 +175,7 @@
                 <pems-button tone="neutral" size="small" outline="true" type="button" data-bs-toggle="dropdown" aria-expanded="false" title="More">
                     <i class="bi bi-three-dots-vertical"></i>
                 </pems-button>
-                <ul class="dropdown-menu dropdown-menu-end">
+                <pems-dropdown-menu end="true">
                     <li><a class="dropdown-item" asp-action="Reply" asp-route-id="@l.LetterId"><i class="bi bi-reply-fill me-1"></i> Reply</a></li>
                     <li><a class="dropdown-item" asp-action="ExportPdf" asp-route-id="@l.LetterId"><i class="bi bi-file-earmark-pdf me-1"></i> Export PDF</a></li>
                     @if (canAudit)
@@ -187,7 +187,7 @@
                         <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#signModal"><i class="bi bi-pen me-1"></i> Sign / Acknowledge</a></li>
                     }
                     <li><a class="dropdown-item" href="#" data-bs-toggle="collapse" data-bs-target="#addTagCollapse"><i class="bi bi-tag me-1"></i> Manage Tags</a></li>
-                </ul>
+                </pems-dropdown-menu>
             </div>
         </div>
     </div>
@@ -401,7 +401,7 @@
             <input type="hidden" name="letterId" value="@l.LetterId" />
             <input type="hidden" name="rowVersion" value="@Convert.ToBase64String(l.RowVersion ?? Array.Empty<byte>())" id="rowVersionB64" />
             <div class="mb-2">
-                <label class="form-label small">@Localizer["Subject"]</label>
+                <pems-label css="small">@Localizer["Subject"]</pems-label>
                 <pems-input type="text" name="subject" value="@l.Subject" required />
             </div>
             <pems-textarea name="body" id="letterBodyEditEditor">@Html.Raw(Model.Body)</pems-textarea>
@@ -665,47 +665,37 @@
 
 @* مودال‌های Return/Reject/Sign - این‌ها Bootstrap استاندارد هستند (همون کتابخانه‌ای که Dropdown
    بالا هم استفاده می‌کند)، نه یک کتابخانه‌ی جدید *@
-<div class="modal fade" id="returnModal" tabindex="-1">
-    <div class="modal-dialog">
-        <form asp-action="ReturnForRevision" method="post" class="modal-content">
+<pems-modal id="returnModal" tabindex="-1"><form asp-action="ReturnForRevision" method="post">
             <input type="hidden" name="letterId" value="@l.LetterId" />
             <div class="modal-header"><h6 class="modal-title">@Localizer["Return for Revision"]</h6><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div>
             <div class="modal-body">
-                <label class="form-label small">@Localizer["Reason (required)"]</label>
+                <pems-label css="small">@Localizer["Reason (required)"]</pems-label>
                 <pems-textarea name="reason" rows="3" required></pems-textarea>
             </div>
             <div class="modal-footer">
                 <pems-button tone="neutral" size="small" outline="true" type="button" data-bs-dismiss="modal">@Localizer["Cancel"]</pems-button>
                 <pems-button tone="warning" size="small" type="submit">@Localizer["Return for Revision"]</pems-button>
             </div>
-        </form>
-    </div>
-</div>
+        </form></pems-modal>
 
-<div class="modal fade" id="rejectModal" tabindex="-1">
-    <div class="modal-dialog">
-        <form asp-action="Reject" method="post" class="modal-content">
+<pems-modal id="rejectModal" tabindex="-1"><form asp-action="Reject" method="post">
             <input type="hidden" name="letterId" value="@l.LetterId" />
             <div class="modal-header"><h6 class="modal-title">Reject Letter</h6><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div>
             <div class="modal-body">
-                <label class="form-label small">@Localizer["Reason (required)"]</label>
+                <pems-label css="small">@Localizer["Reason (required)"]</pems-label>
                 <pems-textarea name="reason" rows="3" required></pems-textarea>
             </div>
             <div class="modal-footer">
                 <pems-button tone="neutral" size="small" outline="true" type="button" data-bs-dismiss="modal">@Localizer["Cancel"]</pems-button>
                 <pems-button tone="danger" size="small" type="submit">@Localizer["Reject"]</pems-button>
             </div>
-        </form>
-    </div>
-</div>
+        </form></pems-modal>
 
-<div class="modal fade" id="signModal" tabindex="-1">
-    <div class="modal-dialog">
-        <form asp-action="Sign" method="post" class="modal-content">
+<pems-modal id="signModal" tabindex="-1"><form asp-action="Sign" method="post">
             <input type="hidden" name="letterId" value="@l.LetterId" />
             <div class="modal-header"><h6 class="modal-title">Sign / Acknowledge</h6><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div>
             <div class="modal-body">
-                <label class="form-label small">Type your full name to sign</label>
+                <pems-label css="small">Type your full name to sign</pems-label>
                 <pems-input name="signedByName" required />
                 <div class="form-text small">Lightweight electronic acknowledgment (typed name + timestamp), not a PKI digital signature.</div>
             </div>
@@ -713,9 +703,7 @@
                 <pems-button tone="neutral" size="small" outline="true" type="button" data-bs-dismiss="modal">@Localizer["Cancel"]</pems-button>
                 <pems-button tone="primary" size="small" type="submit">Sign</pems-button>
             </div>
-        </form>
-    </div>
-</div>
+        </form></pems-modal>
 
 @* طبق بند ۲۶: Employee فقط زمانی که کاربر واقعاً یکی از این دو Select را باز می‌کند، به‌صورت
    یک‌باره (نه برای هر Select جدا) از GetEmployeesForPicker بارگذاری می‌شود - نه هنگام بارگذاری صفحه *@

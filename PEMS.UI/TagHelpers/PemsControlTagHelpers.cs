@@ -90,3 +90,21 @@ public sealed class PemsTextAreaTagHelper(IHtmlGenerator generator) : TextAreaTa
         ControlTagHelper.PutClassFirst(output, ControlState.Css(ControlTagHelper.Options(ControlKind.Text, Scale, Css)));
     }
 }
+
+/// <summary>
+/// MVC facade for the form label: <c>&lt;pems-label css="small" for="qty"&gt;Quantity&lt;/pems-label&gt;</c> becomes <c>&lt;label class="form-label small" for="qty"&gt;</c>.
+/// With <c>asp-for</c> it derives from the built-in label helper, so the text comes from the model metadata when the tag has no content.
+/// </summary>
+[HtmlTargetElement("pems-label")]
+public sealed class PemsLabelTagHelper(IHtmlGenerator generator) : LabelTagHelper(generator)
+{
+    [HtmlAttributeName("css")] public string? Css { get; set; }
+
+    public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
+    {
+        if (For is not null) await base.ProcessAsync(context, output);
+        output.TagName = "label";
+        output.TagMode = TagMode.StartTagAndEndTag;
+        ControlTagHelper.PutClassFirst(output, ControlState.LabelCss(Css));
+    }
+}

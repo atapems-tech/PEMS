@@ -22,9 +22,7 @@
   "badge": {
     "PEMS.Web/Views/Shared/_Layout.cshtml": 4
   },
-  "breadcrumb": {
-    "PEMS.Web/Views/Help/Article.cshtml": 1
-  },
+  "breadcrumb": {},
   "button": {
     "PEMS.Web/Views/Shared/_ContextualHelpDrawer.cshtml": 4
   },
@@ -94,14 +92,9 @@
     "PEMS.Web/wwwroot/js/pems-task-manager.js": 1,
     "PEMS.Web/wwwroot/js/pems-user-permissions.js": 1
   },
-  "dropdown": {
-    "PEMS.Web/Views/EngineeringDocuments/Details.cshtml": 1,
-    "PEMS.Web/Views/EngineeringDocuments/Index.cshtml": 1,
-    "PEMS.Web/Views/Letter/Details.cshtml": 1,
-    "PEMS.Web/Views/Letter/Index.cshtml": 7,
-    "PEMS.Web/Views/LetterCompose/Compose.cshtml": 1,
-    "PEMS.Web/Views/Shared/_Layout.cshtml": 4,
-    "PEMS.Web/Views/Team/TeamDetails.cshtml": 1
+  "dropdown": {},
+  "form-label": {
+    "PEMS.Web/Views/VDR/Details.cshtml": 1
   },
   "info-grid": {
     "PEMS.Web/Views/Letter/Index.cshtml": 20,
@@ -163,57 +156,8 @@
   },
   "kpi-tile": {},
   "list-group": {},
-  "modal": {
-    "PEMS.Web/Views/Asset/Details.cshtml": 1,
-    "PEMS.Web/Views/Asset/Index.cshtml": 1,
-    "PEMS.Web/Views/Contract/Index.cshtml": 1,
-    "PEMS.Web/Views/Crew/Index.cshtml": 1,
-    "PEMS.Web/Views/CriticalityAssessment/Details.cshtml": 2,
-    "PEMS.Web/Views/Department/Index.cshtml": 2,
-    "PEMS.Web/Views/DocumentRegister/Index.cshtml": 1,
-    "PEMS.Web/Views/Employee/Details.cshtml": 5,
-    "PEMS.Web/Views/Employee/Index.cshtml": 2,
-    "PEMS.Web/Views/EngineeringDocuments/Details.cshtml": 11,
-    "PEMS.Web/Views/Equipment/Details.cshtml": 2,
-    "PEMS.Web/Views/Equipment/Index.cshtml": 1,
-    "PEMS.Web/Views/EquipmentCriticality/Index.cshtml": 1,
-    "PEMS.Web/Views/FunctionalLocation/Index.cshtml": 2,
-    "PEMS.Web/Views/ImportCenter/Index.cshtml": 1,
-    "PEMS.Web/Views/Instrument/Index.cshtml": 1,
-    "PEMS.Web/Views/JobPlan/Details.cshtml": 1,
-    "PEMS.Web/Views/JobPlan/Index.cshtml": 1,
-    "PEMS.Web/Views/Letter/Details.cshtml": 3,
-    "PEMS.Web/Views/Letter/Index.cshtml": 4,
-    "PEMS.Web/Views/LetterCompose/Compose.cshtml": 1,
-    "PEMS.Web/Views/MOC/Details.cshtml": 1,
-    "PEMS.Web/Views/MaintenanceMasterData/Index.cshtml": 12,
-    "PEMS.Web/Views/MaintenanceStrategy/Details.cshtml": 1,
-    "PEMS.Web/Views/MechanicalEquipment/Index.cshtml": 1,
-    "PEMS.Web/Views/MechanicalEquipment/Passport.cshtml": 2,
-    "PEMS.Web/Views/Meeting/Index.cshtml": 1,
-    "PEMS.Web/Views/ProcurementPackage/Index.cshtml": 1,
-    "PEMS.Web/Views/ProductionOrder/Details.cshtml": 2,
-    "PEMS.Web/Views/ProductionRun/BatchDetails.cshtml": 2,
-    "PEMS.Web/Views/ProductionRun/Details.cshtml": 4,
-    "PEMS.Web/Views/Projects/Index.cshtml": 1,
-    "PEMS.Web/Views/QC/ItpDetails.cshtml": 1,
-    "PEMS.Web/Views/QC/NcrDetails.cshtml": 1,
-    "PEMS.Web/Views/RcmFmea/ClassDetail.cshtml": 3,
-    "PEMS.Web/Views/Reliability/ConditionMonitoring.cshtml": 1,
-    "PEMS.Web/Views/SparePart/Index.cshtml": 2,
-    "PEMS.Web/Views/Tag/Index.cshtml": 1,
-    "PEMS.Web/Views/TaskManager/_CreateModal.cshtml": 1,
-    "PEMS.Web/Views/Team/Index.cshtml": 1,
-    "PEMS.Web/Views/Team/TeamDetails.cshtml": 6,
-    "PEMS.Web/Views/TechnicalQuery/Details.cshtml": 1,
-    "PEMS.Web/Views/VDR/Details.cshtml": 4,
-    "PEMS.Web/Views/Vendor/Index.cshtml": 1,
-    "PEMS.Web/Views/WorkOrder/Details.cshtml": 3
-  },
-  "offcanvas": {
-    "PEMS.Web/Views/Letter/Index.cshtml": 1,
-    "PEMS.Web/Views/Shared/_ContextualHelpDrawer.cshtml": 1
-  },
+  "modal": {},
+  "offcanvas": {},
   "progress": {},
   "select": {},
   "spinner": {},
@@ -327,16 +271,7 @@
     "PEMS.Web/Views/VDRImport/Review.cshtml": 1,
     "PEMS.Web/Views/WorkRequest/Details.cshtml": 2
   },
-  "tabs": {
-    "PEMS.Web/Views/CriticalityAssessment/Details.cshtml": 1,
-    "PEMS.Web/Views/EngineeringDocuments/Details.cshtml": 1,
-    "PEMS.Web/Views/Equipment/Details.cshtml": 1,
-    "PEMS.Web/Views/MaintenanceMasterData/Index.cshtml": 1,
-    "PEMS.Web/Views/RcmFmea/ClassDetail.cshtml": 1,
-    "PEMS.Web/Views/Reliability/Index.cshtml": 1,
-    "PEMS.Web/Views/Reliability/Intelligence.cshtml": 1,
-    "PEMS.Web/Views/VDR/Details.cshtml": 1
-  },
+  "tabs": {},
   "text-input": {
     "PEMS.Web/Views/Asset/Details.cshtml": 1,
     "PEMS.Web/Views/Asset/Index.cshtml": 1,

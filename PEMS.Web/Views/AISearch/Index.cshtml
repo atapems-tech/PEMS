@@ -6,11 +6,11 @@
 <div class="content-card mb-3">
     <form method="get" class="row g-2 align-items-end">
         <div class="col-md-4">
-            <label class="form-label small">@Localizer["Search Query"]</label>
+            <pems-label css="small">@Localizer["Search Query"]</pems-label>
             <pems-input type="text" name="q" value="@ViewBag.Query" placeholder="e.g. P-101, pressure vessel datasheet, piping isometric ..." />
         </div>
         <div class="col-md-2">
-            <label class="form-label small">@Localizer["Discipline"]</label>
+            <pems-label css="small">@Localizer["Discipline"]</pems-label>
             <pems-select scale="small" name="discipline">
                 <option value="">@Localizer["All"]</option>
                 @foreach (var d in (List<string>)ViewBag.Disciplines)
@@ -18,7 +18,7 @@
             </pems-select>
         </div>
         <div class="col-md-2">
-            <label class="form-label small">@Localizer["Document Type"]</label>
+            <pems-label css="small">@Localizer["Document Type"]</pems-label>
             <pems-select scale="small" name="documentType">
                 <option value="">@Localizer["All"]</option>
                 @foreach (var d in (List<string>)ViewBag.DocumentTypes)
@@ -26,7 +26,7 @@
             </pems-select>
         </div>
         <div class="col-md-2">
-            <label class="form-label small">@Localizer["Status"]</label>
+            <pems-label css="small">@Localizer["Status"]</pems-label>
             <pems-select scale="small" name="status">
                 <option value="">@Localizer["All"]</option>
                 @foreach (var s in (List<string>)ViewBag.Statuses)

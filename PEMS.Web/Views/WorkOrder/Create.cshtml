@@ -5,12 +5,12 @@
     <form asp-action="Create" method="post">
         <div class="row g-3">
             <div class="col-12">
-                <label class="form-label">@Localizer["Equipment"]</label>
+                <pems-label>@Localizer["Equipment"]</pems-label>
                 <pems-input type="text" placeholder="@Localizer["جستجوی تگ، نام یا سازنده..."]" value="@ViewBag.PreselectedEquipmentLabel" data-pems-search data-search-type="Equipment" data-search-hidden="#woEquipmentIdHidden" autocomplete="off" />
                 <input type="hidden" name="equipmentId" id="woEquipmentIdHidden" value="@ViewBag.PreselectedEquipmentId" />
             </div>
             <div class="col-md-6">
-                <label class="form-label">@Localizer["Type"]</label>
+                <pems-label>@Localizer["Type"]</pems-label>
                 <pems-select name="workOrderType" required>
                     <option value="Preventive">@Localizer["Preventive"]</option>
                     <option value="Corrective" selected>@Localizer["Corrective"]</option>
@@ -19,7 +19,7 @@
                 </pems-select>
             </div>
             <div class="col-md-6">
-                <label class="form-label">@Localizer["Priority"]</label>
+                <pems-label>@Localizer["Priority"]</pems-label>
                 <pems-select name="priority" required>
                     <option value="Low">@Localizer["Low"]</option>
                     <option value="Medium" selected>@Localizer["Medium"]</option>
@@ -27,7 +27,7 @@
                     <option value="Critical">@Localizer["Critical"]</option>
                 </pems-select>
             </div>
-            <div class="col-12"><label class="form-label">@Localizer["Description"]</label><pems-textarea name="description" rows="3" required></pems-textarea></div>
+            <div class="col-12"><pems-label>@Localizer["Description"]</pems-label><pems-textarea name="description" rows="3" required></pems-textarea></div>
             <div class="col-12">
                 <pems-alert tone="info" css="small mb-0">@Localizer["تخصیص گروه کاری / مجری پس از برنامه‌ریزی و در مرحله‌ی «تخصیص مجری» انجام می‌شود."]</pems-alert>
             </div>

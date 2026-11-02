@@ -21,11 +21,11 @@
     </form>
 
     <form asp-action="CreateDiscipline" method="post" class="row g-2 align-items-end mb-3">
-        <div class="col-md-2"><label class="form-label">@Localizer["Code"]</label><pems-input scale="small" name="code" maxlength="20" required /></div>
-        <div class="col-md-3"><label class="form-label">@Localizer["Name"]</label><pems-input scale="small" name="name" maxlength="150" required /></div>
-        <div class="col-md-3"><label class="form-label">@Localizer["Description"]</label><pems-input scale="small" name="description" /></div>
-        <div class="col-md-2"><label class="form-label">@Localizer["Import aliases"]</label><pems-input scale="small" name="importAliases" placeholder="PR, PROC" /></div>
-        <div class="col-md-1"><label class="form-label">@Localizer["Transmittal code"]</label><pems-input scale="small" name="transmittalCode" maxlength="1" /></div>
+        <div class="col-md-2"><pems-label>@Localizer["Code"]</pems-label><pems-input scale="small" name="code" maxlength="20" required /></div>
+        <div class="col-md-3"><pems-label>@Localizer["Name"]</pems-label><pems-input scale="small" name="name" maxlength="150" required /></div>
+        <div class="col-md-3"><pems-label>@Localizer["Description"]</pems-label><pems-input scale="small" name="description" /></div>
+        <div class="col-md-2"><pems-label>@Localizer["Import aliases"]</pems-label><pems-input scale="small" name="importAliases" placeholder="PR, PROC" /></div>
+        <div class="col-md-1"><pems-label>@Localizer["Transmittal code"]</pems-label><pems-input scale="small" name="transmittalCode" maxlength="1" /></div>
         <div class="col-md-1"><pems-button tone="primary" size="small" css="w-100"><i class="bi bi-plus-lg"></i></pems-button></div>
     </form>
 

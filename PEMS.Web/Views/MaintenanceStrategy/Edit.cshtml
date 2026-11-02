@@ -40,7 +40,7 @@
 
     <div class="row g-3">
         <div class="col-md-6">
-            <label class="form-label">@Localizer["Rcm_EquipmentClass"] <span class="text-danger">*</span></label>
+            <pems-label>@Localizer["Rcm_EquipmentClass"] <span class="text-danger">*</span></pems-label>
             <pems-select name="EquipmentClassId" id="classSelect" required>
                 <option value="">@Localizer["Rcm_SelectPlaceholder"]</option>
                 @foreach (var c in Model.Classes) { <option value="@c.Id" selected="@(i.EquipmentClassId == c.Id)">@c.Text (@c.Code)</option> }
@@ -48,12 +48,12 @@
             <span class="text-danger small" data-valmsg-for="EquipmentClassId">@Html.ValidationMessage("EquipmentClassId")</span>
         </div>
         <div class="col-md-6">
-            <label class="form-label">@Localizer["Rcm_Title"]</label>
+            <pems-label>@Localizer["Rcm_Title"]</pems-label>
             <pems-input name="Title" value="@i.Title" maxlength="200" />
         </div>
 
         <div class="col-md-6">
-            <label class="form-label">@Localizer["Rcm_FailureMode"] <span class="text-danger">*</span></label>
+            <pems-label>@Localizer["Rcm_FailureMode"] <span class="text-danger">*</span></pems-label>
             <pems-input scale="small" css="mb-1" type="text" id="modeSearch" placeholder="@Localizer["Rcm_SearchFailureMode"]" autocomplete="off" />
             <pems-select name="FailureModeId" id="modeSelect" size="5" required>
                 @if (i.FailureModeId.HasValue)
@@ -65,18 +65,18 @@
             <span class="text-danger small">@Html.ValidationMessage("FailureModeId")</span>
         </div>
         <div class="col-md-6">
-            <label class="form-label">@Localizer["Rcm_FailureCause"]</label>
+            <pems-label>@Localizer["Rcm_FailureCause"]</pems-label>
             <pems-select name="FailureCauseId" id="causeSelect">
                 <option value="">@Localizer["Rcm_SelectPlaceholder"]</option>
             </pems-select>
-            <label class="form-label mt-2">@Localizer["Rcm_FunctionalFailure"]</label>
+            <pems-label css="mt-2">@Localizer["Rcm_FunctionalFailure"]</pems-label>
             <pems-input name="FunctionalFailure" value="@i.FunctionalFailure" maxlength="500" />
-            <label class="form-label mt-2">@Localizer["Rcm_FailureEffect"]</label>
+            <pems-label css="mt-2">@Localizer["Rcm_FailureEffect"]</pems-label>
             <pems-input name="FailureEffect" value="@i.FailureEffect" maxlength="500" />
         </div>
 
         <div class="col-md-4">
-            <label class="form-label">@Localizer["Rcm_Consequence"] <span class="text-danger">*</span></label>
+            <pems-label>@Localizer["Rcm_Consequence"] <span class="text-danger">*</span></pems-label>
             <pems-select name="ConsequenceCategory" id="consequenceSelect" required>
                 @foreach (var c in RcmCodes.Consequence.All) { <option value="@c" selected="@(i.ConsequenceCategory == c || (i.ConsequenceCategory == null && c == "Operational"))">@Localizer.Label("Consequence", c)</option> }
             </pems-select>
@@ -87,7 +87,7 @@
             </div>
         </div>
         <div class="col-md-4">
-            <label class="form-label">@Localizer["Rcm_StrategyType"] <span class="text-danger">*</span></label>
+            <pems-label>@Localizer["Rcm_StrategyType"] <span class="text-danger">*</span></pems-label>
             <pems-select name="StrategyType" id="typeSelect" required>
                 @foreach (var t in RcmCodes.StrategyType.All) { <option value="@t" selected="@(i.StrategyType == t)">@Localizer.Label("StrategyType", t)</option> }
             </pems-select>
@@ -95,7 +95,7 @@
             <span class="text-danger small">@Html.ValidationMessage("strategyType")</span>
         </div>
         <div class="col-md-4">
-            <label class="form-label">@Localizer["Rcm_Source"]</label>
+            <pems-label>@Localizer["Rcm_Source"]</pems-label>
             <pems-select name="Source">
                 <option value="">@Localizer["Rcm_SelectPlaceholder"]</option>
                 @foreach (var s in RcmCodes.Source.All) { <option value="@s" selected="@(i.Source == s)">@Localizer.Label("Source", s)</option> }
@@ -103,21 +103,21 @@
         </div>
 
         <div class="col-md-3">
-            <label class="form-label">@Localizer["Rcm_TaskType"]</label>
+            <pems-label>@Localizer["Rcm_TaskType"]</pems-label>
             <pems-select name="TaskType">
                 <option value="">@Localizer["Rcm_SelectPlaceholder"]</option>
                 @foreach (var t in RcmCodes.TaskType.All) { <option value="@t" selected="@(i.TaskType == t)">@Localizer.Label("TaskType", t)</option> }
             </pems-select>
         </div>
         <div class="col-md-3">
-            <label class="form-label">@Localizer["Rcm_OwnerDiscipline"]</label>
+            <pems-label>@Localizer["Rcm_OwnerDiscipline"]</pems-label>
             <pems-select name="OwnerDisciplineId">
                 <option value="">@Localizer["Rcm_SelectPlaceholder"]</option>
                 @foreach (var d in Model.Disciplines) { <option value="@d.Id" selected="@(i.OwnerDisciplineId == d.Id)">@d.Text</option> }
             </pems-select>
         </div>
         <div class="col-md-3">
-            <label class="form-label">@Localizer["Rcm_Frequency"]</label>
+            <pems-label>@Localizer["Rcm_Frequency"]</pems-label>
             <pems-select name="Frequency">
                 <option value="">@Localizer["Rcm_SelectPlaceholder"]</option>
                 @foreach (var f in RcmCodes.Frequency.All) { <option value="@f" selected="@(i.Frequency == f)">@Localizer.Label("Frequency", f)</option> }
@@ -125,26 +125,26 @@
             <span class="text-danger small">@Html.ValidationMessage("frequency")</span>
         </div>
         <div class="col-md-3">
-            <label class="form-label">@Localizer["Rcm_DefaultIntervalDays"]</label>
+            <pems-label>@Localizer["Rcm_DefaultIntervalDays"]</pems-label>
             <pems-input name="DefaultIntervalDays" type="number" min="1" value="@i.DefaultIntervalDays" />
         </div>
 
         <div class="col-md-4">
-            <label class="form-label">@Localizer["Rcm_RecommendedTrigger"]</label>
+            <pems-label>@Localizer["Rcm_RecommendedTrigger"]</pems-label>
             <pems-select name="RecommendedTriggerType">
                 @foreach (var t in RcmCodes.Trigger.All) { <option value="@t" selected="@(i.RecommendedTriggerType == t)">@Localizer.Label("Trigger", t)</option> }
             </pems-select>
         </div>
         <div class="col-md-4">
-            <label class="form-label">@Localizer["Rcm_RequiredSkills"]</label>
+            <pems-label>@Localizer["Rcm_RequiredSkills"]</pems-label>
             <pems-input name="RequiredSkills" value="@i.RequiredSkills" maxlength="500" />
         </div>
         <div class="col-md-2">
-            <label class="form-label">@Localizer["Rcm_EstimatedHours"]</label>
+            <pems-label>@Localizer["Rcm_EstimatedHours"]</pems-label>
             <pems-input name="EstimatedDurationHours" type="number" step="0.25" min="0" value="@i.EstimatedDurationHours" />
         </div>
         <div class="col-md-2">
-            <label class="form-label">@Localizer["Rcm_ReviewDate"]</label>
+            <pems-label>@Localizer["Rcm_ReviewDate"]</pems-label>
             <input name="ReviewDate" type="date" value="@i.ReviewDate?.ToString("yyyy-MM-dd")" class="form-control" />
         </div>
 
@@ -153,17 +153,17 @@
                 <div class="fw-bold small mb-2"><i class="bi bi-activity"></i> @Localizer["Rcm_CbmSection"]</div>
                 <div class="row g-3">
                     <div class="col-md-4">
-                        <label class="form-label">@Localizer["Rcm_CbmParameter"]</label>
+                        <pems-label>@Localizer["Rcm_CbmParameter"]</pems-label>
                         <pems-input name="CbmParameter" value="@i.CbmParameter" maxlength="100" />
                         <span class="text-danger small">@Html.ValidationMessage("cbmParameter")</span>
                     </div>
-                    <div class="col-md-2"><label class="form-label">@Localizer["Rcm_Unit"]</label><pems-input name="ThresholdUnit" value="@i.ThresholdUnit" maxlength="30" /></div>
-                    <div class="col-md-2"><label class="form-label">@Localizer["Rcm_AlarmThreshold"]</label><pems-input name="AlarmThreshold" type="number" step="any" value="@i.AlarmThreshold" /></div>
-                    <div class="col-md-2"><label class="form-label">@Localizer["Rcm_TripThreshold"]</label><pems-input name="TripThreshold" type="number" step="any" value="@i.TripThreshold" /></div>
+                    <div class="col-md-2"><pems-label>@Localizer["Rcm_Unit"]</pems-label><pems-input name="ThresholdUnit" value="@i.ThresholdUnit" maxlength="30" /></div>
+                    <div class="col-md-2"><pems-label>@Localizer["Rcm_AlarmThreshold"]</pems-label><pems-input name="AlarmThreshold" type="number" step="any" value="@i.AlarmThreshold" /></div>
+                    <div class="col-md-2"><pems-label>@Localizer["Rcm_TripThreshold"]</pems-label><pems-input name="TripThreshold" type="number" step="any" value="@i.TripThreshold" /></div>
                     <div class="col-md-2"></div>
-                    <div class="col-md-3"><label class="form-label">@Localizer["Rcm_PfInterval"]</label><pems-input name="PfIntervalDays" type="number" min="1" value="@i.PfIntervalDays" /></div>
+                    <div class="col-md-3"><pems-label>@Localizer["Rcm_PfInterval"]</pems-label><pems-input name="PfIntervalDays" type="number" min="1" value="@i.PfIntervalDays" /></div>
                     <div class="col-md-3">
-                        <label class="form-label">@Localizer["Rcm_InspectionInterval"]</label>
+                        <pems-label>@Localizer["Rcm_InspectionInterval"]</pems-label>
                         <pems-input name="InspectionIntervalDays" type="number" min="1" value="@i.InspectionIntervalDays" />
                         <span class="text-danger small">@Html.ValidationMessage("inspectionIntervalDays")</span>
                     </div>
@@ -173,18 +173,18 @@
         </div>
 
         <div class="col-md-3">
-            <label class="form-label">@Localizer["Rcm_StartDate"]</label>
+            <pems-label>@Localizer["Rcm_StartDate"]</pems-label>
             <input name="StartDate" type="date" value="@i.StartDate?.ToString("yyyy-MM-dd")" class="form-control" />
             <span class="text-danger small">@Html.ValidationMessage("startDate")</span>
         </div>
         <div class="col-12">
-            <label class="form-label">@Localizer["Rcm_Justification"] <span class="text-danger">*</span></label>
+            <pems-label>@Localizer["Rcm_Justification"] <span class="text-danger">*</span></pems-label>
             <pems-textarea name="Justification" rows="3" minlength="20" required placeholder="@Localizer["Rcm_JustificationPlaceholder"]">@i.Justification</pems-textarea>
             <div class="form-text">@Localizer["Rcm_JustificationHint"]</div>
             <span class="text-danger small">@Html.ValidationMessage("justification")</span>
         </div>
         <div class="col-12">
-            <label class="form-label">@Localizer["Rcm_Description"]</label>
+            <pems-label>@Localizer["Rcm_Description"]</pems-label>
             <pems-textarea name="Description" rows="2">@i.Description</pems-textarea>
         </div>
     </div>

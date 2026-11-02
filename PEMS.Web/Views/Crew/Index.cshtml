@@ -79,21 +79,20 @@
     <div class="content-card"><p class="text-muted text-center py-4 mb-0">@Localizer["هنوز Crew ای ساخته نشده."]</p></div>
 }
 
-<div class="modal fade" id="createCrewModal" tabindex="-1">
-    <div class="modal-dialog"><div class="modal-content">
+<pems-modal id="createCrewModal" tabindex="-1">
         <form asp-action="CreateCrew" method="post">
             <div class="modal-header"><h6 class="modal-title">@Localizer["Crew جدید"]</h6></div>
             <div class="modal-body">
                 <div class="mb-2">
-                    <label class="form-label small">@Localizer["کد"]</label>
+                    <pems-label css="small">@Localizer["کد"]</pems-label>
                     <pems-input scale="small" name="code" required placeholder="@Localizer["مثلاً PUMP-CREW-1"]" />
                 </div>
                 <div class="mb-2">
-                    <label class="form-label small">@Localizer["نام"]</label>
+                    <pems-label css="small">@Localizer["نام"]</pems-label>
                     <pems-input scale="small" name="name" required placeholder="@Localizer["مثلاً Pump Maintenance Crew"]" />
                 </div>
                 <div class="mb-2">
-                    <label class="form-label small">@Localizer["Work Order اختصاصی (اختیاری)"]</label>
+                    <pems-label css="small">@Localizer["Work Order اختصاصی (اختیاری)"]</pems-label>
                     <pems-select scale="small" name="workOrderId">
                         <option value="">@Localizer["-- مستقل / پایدار --"]</option>
                         @foreach (var w in (IEnumerable<dynamic>)ViewBag.WorkOrders) { <option value="@w.WorkOrderId">@w.WorkOrderNumber</option> }
@@ -105,5 +104,4 @@
                 <pems-button tone="primary" size="small" type="submit">@Localizer["ساخت"]</pems-button>
             </div>
         </form>
-    </div></div>
-</div>
+    </pems-modal>

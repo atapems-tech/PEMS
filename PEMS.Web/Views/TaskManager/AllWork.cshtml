@@ -24,18 +24,18 @@
 
     <form method="get" asp-action="AllWork" class="row g-2 align-items-end" role="search">
         <div class="col-md-3">
-            <label class="form-label small" for="f-text">@Localizer["Tm_Search"]</label>
+            <pems-label css="small" for="f-text">@Localizer["Tm_Search"]</pems-label>
             <pems-input scale="small" id="f-text" name="Text" value="@q.Text" maxlength="200" placeholder="@Localizer["Tm_SearchPlaceholder"]" />
         </div>
         <div class="col-md-2">
-            <label class="form-label small" for="f-space">@Localizer["Tm_Field_Space"]</label>
+            <pems-label css="small" for="f-space">@Localizer["Tm_Field_Space"]</pems-label>
             <pems-select scale="small" id="f-space" name="WorkSpaceId">
                 <option value="">@Localizer["Tm_Any"]</option>
                 @foreach (var s in spaces) { <option value="@s.Id" selected="@(q.WorkSpaceId == s.Id)">@s.Key · @TaskManagerUi.Name(s.Name, s.NameFa)</option> }
             </pems-select>
         </div>
         <div class="col-md-2">
-            <label class="form-label small" for="f-assignee">@Localizer["Tm_Field_Assignee"]</label>
+            <pems-label css="small" for="f-assignee">@Localizer["Tm_Field_Assignee"]</pems-label>
             <pems-select scale="small" id="f-assignee" name="Assignee">
                 <option value="">@Localizer["Tm_Any"]</option>
                 <option value="me" selected="@(q.Assignee == "me")">@Localizer["Tm_Me"]</option>
@@ -47,7 +47,7 @@
             </pems-select>
         </div>
         <div class="col-md-2">
-            <label class="form-label small" for="f-status">@Localizer["Tm_Field_Status"]</label>
+            <pems-label css="small" for="f-status">@Localizer["Tm_Field_Status"]</pems-label>
             <pems-select scale="small" id="f-status" name="StatusCategory">
                 <option value="">@Localizer["Tm_Any"]</option>
                 @foreach (var c in new[] { "NotDone", "ToDo", "InProgress", "Done" })
@@ -55,7 +55,7 @@
             </pems-select>
         </div>
         <div class="col-md-1">
-            <label class="form-label small" for="f-priority">@Localizer["Tm_Field_Priority"]</label>
+            <pems-label css="small" for="f-priority">@Localizer["Tm_Field_Priority"]</pems-label>
             <pems-select scale="small" id="f-priority" name="Priority">
                 <option value="">@Localizer["Tm_Any"]</option>
                 @foreach (var p in PEMS.Domain.Entities.TaskItemPriorities.All) { <option value="@p" selected="@(q.Priority == p)">@TaskManagerUi.Priority(Localizer, p)</option> }
@@ -64,7 +64,7 @@
         @if (types != null)
         {
             <div class="col-md-2">
-                <label class="form-label small" for="f-type">@Localizer["Tm_Field_Type"]</label>
+                <pems-label css="small" for="f-type">@Localizer["Tm_Field_Type"]</pems-label>
                 <pems-select scale="small" id="f-type" name="TypeId">
                     <option value="">@Localizer["Tm_Any"]</option>
                     @foreach (var t in types) { <option value="@t.Id" selected="@(q.TypeId == t.Id)">@TaskManagerUi.Name(t.Name, t.NameFa)</option> }

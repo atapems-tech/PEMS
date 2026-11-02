@@ -10,7 +10,7 @@ public enum ComponentSkin { Bootstrap, Pems }
 
 public enum AlertTone { Info, Success, Warning, Danger, Primary, Secondary }
 
-public enum OverlaySize { Small, Medium, Large }
+public enum OverlaySize { Small, Medium, Large, ExtraLarge }
 
 public enum DrawerSide { End, Start }
 
@@ -41,6 +41,17 @@ public sealed record ModalOptions
     public required TranslatableText CloseLabel { get; init; }
     public TranslatableText? Body { get; init; }
     public OverlaySize Size { get; init; } = OverlaySize.Medium;
+    /// <summary>
+    /// Bootstrap skin only: write just the frame (<c>modal fade</c>, dialog, content) around the page's own markup (a form with header, body and footer) instead of the
+    /// title / body / footer layout. For pages whose modal is a form; <see cref="Title"/> and <see cref="CloseLabel"/> are not used then.
+    /// </summary>
+    public bool Frame { get; init; }
+    /// <summary>Frame only: extra classes on the dialog (<c>modal-dialog-scrollable</c>, <c>modal-dialog-centered</c>).</summary>
+    public string? DialogCssClass { get; init; }
+    /// <summary>Frame only: extra classes on the modal itself.</summary>
+    public string? CssClass { get; init; }
+    /// <summary>Frame only: the other attributes of the element (tabindex, aria-*, data-*), written after the class.</summary>
+    public IReadOnlyDictionary<string, object>? Attributes { get; init; }
 }
 
 /// <summary>Inputs of <see cref="PemsDrawer"/>: a side panel dialog. Same opening rule as the modal.</summary>
@@ -52,6 +63,12 @@ public sealed record DrawerOptions
     public required TranslatableText CloseLabel { get; init; }
     public TranslatableText? Body { get; init; }
     public DrawerSide Side { get; init; } = DrawerSide.End;
+    /// <summary>Bootstrap skin only: write just the <c>offcanvas</c> element around the page's own header and body markup.</summary>
+    public bool Frame { get; init; }
+    /// <summary>Frame only: extra classes on the panel.</summary>
+    public string? CssClass { get; init; }
+    /// <summary>Frame only: the other attributes of the element (tabindex, aria-*, data-*), written after the class.</summary>
+    public IReadOnlyDictionary<string, object>? Attributes { get; init; }
 }
 
 /// <summary>

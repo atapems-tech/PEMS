@@ -159,10 +159,10 @@
         <input type="hidden" name="mrId" value="@Model.MRId" />
         <h6 class="mb-2"><i class="bi bi-receipt" aria-hidden="true"></i> @Localizer["Po_CreateFromMr"]</h6>
         <div class="row g-2 align-items-end small">
-            <div class="col-md-4"><label class="form-label" for="poVendor">@Localizer["Vendor"]</label>
+            <div class="col-md-4"><pems-label for="poVendor">@Localizer["Vendor"]</pems-label>
                 <pems-select scale="small" id="poVendor" name="vendorId" required><option value="">—</option>@foreach (var v in poVendors) { <option value="@v.VendorId">@v.Name</option> }</pems-select></div>
-            <div class="col-md-2"><label class="form-label" for="poCurrency">@Localizer["Po_Currency"]</label><pems-input scale="small" id="poCurrency" name="currency" dir="ltr" value="IRR" maxlength="10" required /></div>
-            <div class="col-md-3"><label class="form-label" for="poNumber">@Localizer["PO Number"]</label><pems-input scale="small" id="poNumber" name="poNumber" dir="ltr" /></div>
+            <div class="col-md-2"><pems-label for="poCurrency">@Localizer["Po_Currency"]</pems-label><pems-input scale="small" id="poCurrency" name="currency" dir="ltr" value="IRR" maxlength="10" required /></div>
+            <div class="col-md-3"><pems-label for="poNumber">@Localizer["PO Number"]</pems-label><pems-input scale="small" id="poNumber" name="poNumber" dir="ltr" /></div>
             <div class="col-md-auto"><pems-button tone="none" size="small" css="btn-primary" type="submit"><i class="bi bi-plus" aria-hidden="true"></i> @Localizer["Po_Create"]</pems-button></div>
             <div class="col-12 text-muted">@Localizer["Po_CreateHint"]</div>
         </div>

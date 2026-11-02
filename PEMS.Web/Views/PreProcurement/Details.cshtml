@@ -61,12 +61,12 @@
             <label class="form-check-label" for="pprNew">@Localizer["Ppr_NewMr"]</label>
         </div>
         <div class="row g-2 mb-2 ms-3">
-            <div class="col-md-3"><label class="form-label small" for="pprNumber">@Localizer["Ppr_MrNumber"]</label><pems-input scale="small" id="pprNumber" name="mrNumber" dir="ltr" /></div>
-            <div class="col-md-3"><label class="form-label small" for="pprProject">@Localizer["Ppr_Project"]</label>
+            <div class="col-md-3"><pems-label css="small" for="pprNumber">@Localizer["Ppr_MrNumber"]</pems-label><pems-input scale="small" id="pprNumber" name="mrNumber" dir="ltr" /></div>
+            <div class="col-md-3"><pems-label css="small" for="pprProject">@Localizer["Ppr_Project"]</pems-label>
                 <pems-select scale="small" id="pprProject" name="projectId"><option value="">—</option>@foreach (var p in projects) { <option value="@p.ProjectId">@p.ProjectCode - @p.ProjectName</option> }</pems-select></div>
-            <div class="col-md-3"><label class="form-label small" for="pprDiscipline">@Localizer["Ppr_Discipline"]</label>
+            <div class="col-md-3"><pems-label css="small" for="pprDiscipline">@Localizer["Ppr_Discipline"]</pems-label>
                 <pems-select scale="small" id="pprDiscipline" name="disciplineId"><option value="">—</option>@foreach (var x in disciplines) { <option value="@x.DisciplineId">@x.Code - @x.Name</option> }</pems-select></div>
-            <div class="col-md-3"><label class="form-label small" for="pprRequired">@Localizer["Ppr_RequiredDate"]</label><input id="pprRequired" name="requiredDate" type="date" class="form-control form-control-sm" dir="ltr" /></div>
+            <div class="col-md-3"><pems-label css="small" for="pprRequired">@Localizer["Ppr_RequiredDate"]</pems-label><input id="pprRequired" name="requiredDate" type="date" class="form-control form-control-sm" dir="ltr" /></div>
             <div class="col-12 small text-muted">@Localizer["Ppr_MrNumberHint"]</div>
         </div>
         @if (Model.DraftRequisitions.Count > 0)
@@ -98,7 +98,7 @@
 {
     <form asp-action="Dismiss" method="post" class="content-card">
         <input type="hidden" name="id" value="@d.ProcurementDemandId" />
-        <label class="form-label small" for="pprReason">@Localizer[isMr ? "Ppr_ReturnReason" : "Ppr_DismissReason"]</label>
+        <pems-label css="small" for="pprReason">@Localizer[isMr ? "Ppr_ReturnReason" : "Ppr_DismissReason"]</pems-label>
         <pems-textarea scale="small" css="mb-2" id="pprReason" name="reason" rows="2" required></pems-textarea>
         <pems-button tone="danger" size="small" outline="true" type="submit"><i class="bi bi-x-circle" aria-hidden="true"></i> @Localizer[isMr ? "Ppr_Return" : "Ppr_Dismiss"]</pems-button>
     </form>
