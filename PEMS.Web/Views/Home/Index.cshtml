@@ -141,14 +141,10 @@
     <div class="col-lg-6">
         <div class="content-card">
             <h6 class="mb-3">@Localizer["Documents by Status"]</h6>
-            <partial name="_DonutChart" model="@(new PEMS.Web.Models.DonutChartViewModel
-            {
-                Id = "docsStatusDonut",
-                DefaultLabel = Localizer["Documents"].Value,
-                AriaLabel = Localizer["Documents by Status"].Value,
-                EmptyText = Localizer["No documents to chart yet."].Value,
-                Items = Model.DocumentsByStatus.Select(kv => new PEMS.Web.Models.DonutChartItem(kv.Key, kv.Value)).ToList()
-            })" />
+            @* SCRUM-337 C3: the shared chart host (Bklit donut with its hover-linked legend) *@
+            @{ var docsDonut = PEMS.Web.Models.BkChartSpec.Donut(Localizer["Documents by Status"].Value, Localizer["No documents to chart yet."].Value,
+                   Localizer["Documents"].Value, Model.DocumentsByStatus.Select(kv => (kv.Key, (double)kv.Value))); }
+            <pems-chart spec="@docsDonut" />
         </div>
     </div>
 
@@ -235,10 +231,9 @@ else
 
 
 @section Styles {
-    <link rel="stylesheet" href="~/css/pems-donut.css" asp-append-version="true" />
+    <partial name="_BkChartStyles" />
 }
 
 @section Scripts {
-    <script src="~/js/pems-charts.js"></script>
-    <script src="~/js/pems-donut.js" asp-append-version="true"></script>
+    <partial name="_BkChartScripts" />
 }

@@ -3,6 +3,14 @@
 All notable changes to PEMS. No system version is defined yet (plan row F_CI), so entries are grouped by date
 and theme and were reconstructed from the git history (initial import 2026-09-05). Newest first.
 
+## 2026-11-02 - Chart wave C3: the home donut; one chart engine (SCRUM-337)
+
+### Changed
+- The home dashboard's "Documents by status" donut is a `<pems-chart>` (`BkChartSpec.Donut`, the Bklit donut with its hover-linked legend and the total in the centre) instead of its own partial and script. Every chart in the product now goes through `<pems-chart>`.
+
+### Removed
+- `_DonutChart`, `DonutChartViewModel`, `pems-donut.js`, `pems-donut.css` and `pems-charts.js` (its colours are the `--pems-chart-*` tokens `BkChartSpec` already uses).
+
 ## 2026-11-02 - Chart wave C2: line charts; Chart.js retired (SCRUM-337)
 
 ### Added
