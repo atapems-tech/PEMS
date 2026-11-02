@@ -54,8 +54,8 @@
             <h2 id="slaH">@Localizer["Ct_SlaTitle"]</h2>
             <p class="small text-muted">@Localizer["Ct_SlaHint"]</p>
             <div class="row g-3 align-items-center">
-                <div class="col-sm-6"><partial name="_BkChart" model="@slaChart" /></div>
-                <div class="col-sm-6"><partial name="_BkChart" model="@gauge" /></div>
+                <div class="col-sm-6"><pems-chart spec="@slaChart" /></div>
+                <div class="col-sm-6"><pems-chart spec="@gauge" /></div>
             </div>
             <div class="ct-kpis mt-3">
                 <div class="ct-kpi"><div class="v">@Model.ResponseRequired</div><div class="l">@Localizer["Ct_SlaRequired"]</div></div>
@@ -65,11 +65,11 @@
         </section>
         <section class="ct-card" aria-labelledby="monthH">
             <h2 id="monthH">@Localizer["Ct_ByMonth"]</h2>
-            <partial name="_BkChart" model="@monthChart" />
+            <pems-chart spec="@monthChart" />
         </section>
         <section class="ct-card" aria-labelledby="discH">
             <h2 id="discH">@Localizer["Ct_ByDiscipline"]</h2>
-            <partial name="_BkChart" model="@disciplineChart" />
+            <pems-chart spec="@disciplineChart" />
         </section>
     </div>
 

@@ -61,7 +61,7 @@
     <div class="col-lg-4">
         <div class="content-card h-100">
             <h6 class="mb-2">Cost by Cost Type</h6>
-            <partial name="_BkChart" model="@costSplit" />
+            <pems-chart spec="@costSplit" />
         </div>
     </div>
     <div class="col-lg-8">
@@ -78,7 +78,7 @@
     <div class="col-lg-4">
         <div class="content-card h-100">
             <h6 class="mb-2">Top Equipment by Cost</h6>
-            <partial name="_BkChart" model="@topEquipment" />
+            <pems-chart spec="@topEquipment" />
             @if (Model.Cost.TopEquipmentByCost.Any())
             {
                 <details class="mt-2">
@@ -99,13 +99,13 @@
     <div class="col-lg-4">
         <div class="content-card h-100">
             <h6 class="mb-2">Cost by Functional Location</h6>
-            <partial name="_BkChart" model="@byLocation" />
+            <pems-chart spec="@byLocation" />
         </div>
     </div>
     <div class="col-lg-4">
         <div class="content-card h-100">
             <h6 class="mb-2">Cost by Maintenance Type</h6>
-            <partial name="_BkChart" model="@byType" />
+            <pems-chart spec="@byType" />
         </div>
     </div>
 </div>
@@ -115,21 +115,21 @@
     <div class="col-lg-3 col-sm-6">
         <div class="content-card h-100 text-center">
             <h6 class="mb-2">@Localizer["PM Compliance"]</h6>
-            <partial name="_BkChart" model="@pmGauge" />
+            <pems-chart spec="@pmGauge" />
             <div class="small text-muted mt-1">PM Overdue: @Model.Maintenance.PmOverdueCount / @Model.Maintenance.PmActivePlanCount</div>
         </div>
     </div>
     <div class="col-lg-3 col-sm-6">
         <div class="content-card h-100 text-center">
             <h6 class="mb-2">Completion Rate</h6>
-            <partial name="_BkChart" model="@completionGauge" />
+            <pems-chart spec="@completionGauge" />
             <div class="small text-muted mt-1">WO Aging (avg days): @Num(Model.Maintenance.WorkOrderAgingDays)</div>
         </div>
     </div>
     <div class="col-lg-3 col-sm-6">
         <div class="content-card h-100">
             <h6 class="mb-2">Work Mix</h6>
-            <partial name="_BkChart" model="@workMix" />
+            <pems-chart spec="@workMix" />
         </div>
     </div>
     <div class="col-lg-3 col-sm-6">
@@ -148,7 +148,7 @@
     <div class="col-lg-6">
         <div class="content-card text-center h-100">
             <h6 class="mb-2">Avg. Availability</h6>
-            <partial name="_BkChart" model="@availabilityGauge" />
+            <pems-chart spec="@availabilityGauge" />
         </div>
     </div>
 </div>
