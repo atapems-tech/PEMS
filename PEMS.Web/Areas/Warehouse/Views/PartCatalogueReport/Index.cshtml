@@ -187,10 +187,10 @@
                     <div class="col-xl-2 col-md-4 col-6"><pems-kpi-tile model="@Kpi("PcRpt_Kpi_People", r.Activity.People.Count, "bi-people", "bg-icon-teal", IndexUrl("people"), "PcRpt_Hint_People")" /></div>
                 </div>
                 <div class="row g-3">
-                    <div class="col-lg-8"><div class="content-card"><h6 class="mb-3">@Localizer["PcRpt_Chart_Trend"]</h6><partial name="_BkChart" model="@trendChart" /></div></div>
-                    <div class="col-lg-4"><div class="content-card"><h6 class="mb-3">@Localizer["PcRpt_ByStatus"]</h6><partial name="_BkChart" model="@statusChart" /></div></div>
-                    <div class="col-lg-6"><div class="content-card"><h6 class="mb-3">@Localizer["PcRpt_Chart_TopPeople"]</h6><partial name="_BkChart" model="@peopleChart" /></div></div>
-                    <div class="col-lg-6"><div class="content-card"><h6 class="mb-3">@Localizer["PcRpt_Chart_TopEquipment"]</h6><partial name="_BkChart" model="@equipmentChart" /></div></div>
+                    <div class="col-lg-8"><div class="content-card"><h6 class="mb-3">@Localizer["PcRpt_Chart_Trend"]</h6><pems-chart spec="@trendChart" /></div></div>
+                    <div class="col-lg-4"><div class="content-card"><h6 class="mb-3">@Localizer["PcRpt_ByStatus"]</h6><pems-chart spec="@statusChart" /></div></div>
+                    <div class="col-lg-6"><div class="content-card"><h6 class="mb-3">@Localizer["PcRpt_Chart_TopPeople"]</h6><pems-chart spec="@peopleChart" /></div></div>
+                    <div class="col-lg-6"><div class="content-card"><h6 class="mb-3">@Localizer["PcRpt_Chart_TopEquipment"]</h6><pems-chart spec="@equipmentChart" /></div></div>
                 </div>
             </div>
         }

@@ -1,5 +1,7 @@
 using System.Text.Json;
 
+// Moved from PEMS.Web (SCRUM-337 Chart C1) so the <pems-chart> tag helper in PEMS.UI can take it. The namespace is kept on purpose,
+// as with KpiCardViewModel, so no page or controller has to change.
 namespace PEMS.Web.Models;
 
 /// <summary>

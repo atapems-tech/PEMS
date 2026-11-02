@@ -311,7 +311,6 @@
     "PEMS.Web/Views/Reliability/Trend.cshtml": 1,
     "PEMS.Web/Views/Report/Index.cshtml": 1,
     "PEMS.Web/Views/Report/Procurement.cshtml": 1,
-    "PEMS.Web/Views/Shared/_BkChart.cshtml": 1,
     "PEMS.Web/Views/ShiftHandover/Details.cshtml": 1,
     "PEMS.Web/Views/StrategyImport/Index.cshtml": 1,
     "PEMS.Web/Views/TableExtraction/Analyze.cshtml": 1,

@@ -90,11 +90,11 @@ public class BkChartPagesTests
     }
 
     [Fact]
-    public async Task Partial_RendersTheHost_WithEncodedJson_AndAnAccessibleTable()
+    public void TagHelper_RendersTheHost_WithEncodedJson_AndAnAccessibleTable()
     {
         var spec = BkChartSpec.HBars("Docs by <b>discipline</b>", "none", new[] { "Mech & Elec", "\"Quoted\"" }, false, BkSeries.Of("Docs", new[] { 4, 2 }));
 
-        var html = await Render("~/Views/Shared/_BkChart.cshtml", spec);
+        var html = PEMS.UI.TagHelpers.PemsChartTagHelper.Markup(spec);   // SCRUM-337 C1: <pems-chart> replaces the _BkChart partial
 
         Assert.Contains("class=\"bk-scope bk-chart", html);
         Assert.DoesNotContain("<b>discipline</b>", html);
@@ -119,7 +119,8 @@ public class BkChartPagesTests
             Assert.DoesNotContain("<canvas", source);
             Assert.DoesNotContain("new Chart(", source);
             Assert.DoesNotContain("chartjs", source);
-            Assert.Contains("<partial name=\"_BkChart\"", source);
+            Assert.Contains("<pems-chart spec=", source);
+            Assert.DoesNotContain("_BkChart\"", source);
             Assert.Contains("_BkChartStyles", source);
             Assert.Contains("_BkChartScripts", source);
         }
@@ -252,7 +253,7 @@ public class BkChartPagesTests
         foreach (var kind in new[] { "bar", "hbar", "gauge", "donut" })
             Assert.Contains($"case \"{kind}\"", island);
 
-        var serverKinds = Regex.Matches(Read("PEMS.Web", "Models", "BkChartSpec.cs"), "Kind = \"([a-z]+)\"").Select(m => m.Groups[1].Value).Distinct();
+        var serverKinds = Regex.Matches(Read("PEMS.UI.Abstractions", "BkChartSpec.cs"), "Kind = \"([a-z]+)\"").Select(m => m.Groups[1].Value).Distinct();
         Assert.All(serverKinds, k => Assert.Contains($"case \"{k}\"", island));
     }
 }

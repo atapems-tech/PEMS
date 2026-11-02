@@ -3,6 +3,17 @@
 All notable changes to PEMS. No system version is defined yet (plan row F_CI), so entries are grouped by date
 and theme and were reconstructed from the git history (initial import 2026-09-05). Newest first.
 
+## 2026-11-02 - Chart wave C1: one chart host (SCRUM-337)
+
+### Added
+- `<pems-chart spec="..." />` in PEMS.UI: the host of a Bklit chart (`data-bk-chart`, drawn by `dist/dashboards/dashboards.js`) and its visually hidden table (or line, for a gauge) with the same numbers, the markup the `_BkChart` partial rendered. `BkChartSpec` / `BkSeries` moved to PEMS.UI.Abstractions (namespace kept, no page or controller changed).
+
+### Changed
+- The five report pages, the maintenance KPI page, the letter cartable report and the part catalogue reports take their 31 charts from `<pems-chart>`. They look the same.
+
+### Removed
+- The `_BkChart` partial.
+
 ## 2026-11-02 - Skeleton wave S3: no "Loading..." placeholders come back (SCRUM-337)
 
 ### Added
