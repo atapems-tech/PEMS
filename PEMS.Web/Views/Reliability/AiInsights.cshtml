@@ -32,7 +32,7 @@
             @Html.AntiForgeryToken()
             <div class="col-auto">
                 <label class="form-label small mb-0">Equipment Class ID (optional)</label>
-                <input type="number" name="equipmentClassId" class="form-control form-control-sm" style="width:160px" />
+                <pems-input scale="small" type="number" name="equipmentClassId" style="width:160px" />
             </div>
             <div class="col-auto">
                 <pems-button tone="primary" size="small" type="submit">Generate Insights (Ollama, local)</pems-button>
@@ -44,12 +44,12 @@
 <div class="content-card mb-3">
     <form method="get" class="row g-2">
         <div class="col-auto">
-            <select name="status" class="form-select form-select-sm" onchange="this.form.submit()">
+            <pems-select scale="small" name="status" onchange="this.form.submit()">
                 <option value="">@Localizer["All"]</option>
                 <option value="Draft" selected="@(statusFilter == "Draft")">Draft</option>
                 <option value="Approved" selected="@(statusFilter == "Approved")">Approved</option>
                 <option value="Rejected" selected="@(statusFilter == "Rejected")">Rejected</option>
-            </select>
+            </pems-select>
         </div>
     </form>
 </div>

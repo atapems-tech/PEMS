@@ -126,17 +126,17 @@
                 {
                     <div class="lc-field">
                         <label for="lcExternal" class="lc-req">@Localizer["Lc_ExternalReceiver"]</label>
-                        <input id="lcExternal" class="form-control" maxlength="250" value="@input.ExternalReceiver" autocomplete="off" />
+                        <pems-input id="lcExternal" maxlength="250" value="@input.ExternalReceiver" autocomplete="off" />
                         <div class="lc-error" data-error-for="externalReceiver" role="alert" hidden></div>
                     </div>
                     @if (Model.Parties.Count > 0)
                     {
                         <div class="lc-field">
                             <label for="lcParty">@Localizer["Lc_Party"]</label>
-                            <select id="lcParty" class="form-select">
+                            <pems-select id="lcParty">
                                 <option value="">—</option>
                                 @foreach (var p in Model.Parties) { <option value="@p.Id" selected="@(input.CorrespondentPartyId == p.Id)">@p.Name</option> }
-                            </select>
+                            </pems-select>
                             <div class="lc-help">@Localizer["Lc_PartyHelp"]</div>
                             <div class="lc-error" data-error-for="correspondentPartyId" role="alert" hidden></div>
                         </div>
@@ -183,7 +183,7 @@
                 <div class="lc-field">
                     <label for="composeBody" class="lc-req">@Localizer[isReferral ? "Ct_ReferralInstruction" : "Lt_Body"]</label>
                     @if (isReferral) { <div class="lc-help">@Localizer["Ct_ReferralInstructionHelp"]</div> }
-                    <textarea id="composeBody" class="form-control" rows="10">@input.Body</textarea>
+                    <pems-textarea id="composeBody" rows="10">@input.Body</pems-textarea>
                     <div class="lc-error" data-error-for="body" role="alert" hidden></div>
                 </div>
             </section>
@@ -220,13 +220,13 @@
                     <form method="get" asp-action="Compose" class="d-flex gap-2">
                         <input type="hidden" name="letterType" value="@input.LetterType" />
                         @if (Model.ParentLetterId.HasValue) { <input type="hidden" name="replyTo" value="@Model.ParentLetterId" /> }
-                        <select name="templateId" class="form-select" aria-label="@Localizer["LtT_UseTemplate"]">
+                        <pems-select name="templateId" aria-label="@Localizer["LtT_UseTemplate"]">
                             <option value="">@Localizer["Ed_None"]</option>
                             @foreach (var t in Model.Templates)
                             {
                                 <option value="@t.LetterTemplateId" selected="@((int?)ViewBag.SelectedTemplateId == t.LetterTemplateId)">@t.Name</option>
                             }
-                        </select>
+                        </pems-select>
                         <pems-button tone="neutral" outline="true" type="submit">@Localizer["LtT_Apply"]</pems-button>
                     </form>
                     <div class="lc-help">@Localizer["Lc_TemplateWarn"]</div>
@@ -238,28 +238,28 @@
 
                 <div class="lc-field" @(isReferral ? "hidden" : "")>
                     <label for="lcCategory" class="lc-req">@Localizer["Lc_Category"]</label>
-                    <select id="lcCategory" class="form-select">
+                    <pems-select id="lcCategory">
                         <option value="">@Localizer["Lc_ChooseCategory"]</option>
                         @foreach (var c in LetterComposeRules.Categories)
                         {
                             <option value="@c" selected="@(input.Category == c)">@Localizer["Lc_Cat_" + c]</option>
                         }
-                    </select>
+                    </pems-select>
                     <div class="lc-error" data-error-for="category" role="alert" hidden></div>
                 </div>
 
                 <div class="row g-2">
                     <div class="col-6 lc-field">
                         <label for="lcPriority">@Localizer["Lt_Priority"]</label>
-                        <select id="lcPriority" class="form-select">
+                        <pems-select id="lcPriority">
                             @foreach (var p in LetterComposeRules.Priorities) { <option value="@p" selected="@(input.Priority == p)">@Localizer["Lt_P_" + p]</option> }
-                        </select>
+                        </pems-select>
                     </div>
                     <div class="col-6 lc-field">
                         <label for="lcConf">@Localizer["Lt_Confidentiality"]</label>
-                        <select id="lcConf" class="form-select">
+                        <pems-select id="lcConf">
                             @foreach (var c in LetterComposeRules.Confidentialities) { <option value="@c" selected="@(input.ConfidentialityLevel == c)" disabled="@(LetterComposeRules.ConfidentialityRank(c) < Model.MinConfidentialityRank)">@Localizer["Lt_C_" + c]</option> }
-                        </select>
+                        </pems-select>
                         @if (Model.ParentLetterId.HasValue)
                         {
                             <div class="lc-help">@Localizer["Lc_ConfidentialityMin"].Value.Replace("{0}", Localizer["Lt_C_" + Model.MinConfidentiality].Value)</div>
@@ -274,39 +274,39 @@
 
                 <div class="lc-field">
                     <label for="lcRef">@Localizer["Lc_Reference"]</label>
-                    <input id="lcRef" class="form-control" maxlength="@LetterComposeRules.MaxReferenceLength" value="@input.ReferenceNumber" autocomplete="off" />
+                    <pems-input id="lcRef" maxlength="@LetterComposeRules.MaxReferenceLength" value="@input.ReferenceNumber" autocomplete="off" />
                     <div class="lc-help">@Localizer["Lc_ReferenceHelp"]</div>
                 </div>
 
                 <div class="lc-field">
                     <label for="lcRelDept">@Localizer["Lc_RelatedDepartment"]</label>
-                    <select id="lcRelDept" class="form-select">
+                    <pems-select id="lcRelDept">
                         <option value="">@Localizer["Ed_None"]</option>
                         @foreach (var d in Model.Departments) { <option value="@d.Id" selected="@(input.RelatedDepartmentId == d.Id)">@d.Name</option> }
-                    </select>
+                    </pems-select>
                 </div>
 
                 <div class="lc-field">
                     <label for="lcProject">@Localizer["Lt_Project"]</label>
-                    <select id="lcProject" class="form-select">
+                    <pems-select id="lcProject">
                         <option value="">@Localizer["Ed_None"]</option>
                         @foreach (var p in Model.Projects) { <option value="@p.Id" selected="@(input.ProjectId == p.Id)">@p.Name</option> }
-                    </select>
+                    </pems-select>
                 </div>
 
                 <div class="lc-field">
                     <label for="lcDiscipline">@Localizer["Lt_Discipline"]</label>
-                    <select id="lcDiscipline" class="form-select">
+                    <pems-select id="lcDiscipline">
                         <option value="">@Localizer["Ed_None"]</option>
                         @foreach (var d in Model.Disciplines) { <option value="@d.Id" selected="@(input.DisciplineId == d.Id)">@d.Name</option> }
-                    </select>
+                    </pems-select>
                 </div>
 
                 @if (Model.CanManualNumber)
                 {
                     <div class="lc-field">
                         <label for="lcManual">@Localizer["Lc_ManualNumber"]</label>
-                        <input id="lcManual" class="form-control" maxlength="100" autocomplete="off" />
+                        <pems-input id="lcManual" maxlength="100" autocomplete="off" />
                         <div class="lc-help">@Localizer["Lc_ManualNumberHelp"]</div>
                         <div class="lc-error" data-error-for="manualNumber" role="alert" hidden></div>
                     </div>
@@ -336,7 +336,7 @@
                 <div id="lcChainWrap" class="mt-2" @(input.ApprovalRequired || isOutgoing ? "" : "hidden")>
                     <ol class="lc-chain" id="lcChain" aria-label="@Localizer["Lc_ApprovalChain"]"></ol>
                     <div class="d-flex gap-2">
-                        <select id="lcApproverPick" class="form-select" aria-label="@Localizer["Lc_AddApprover"]">
+                        <pems-select id="lcApproverPick" aria-label="@Localizer["Lc_AddApprover"]">
                             <option value="">@Localizer["Lc_AddApprover"]</option>
                             @foreach (var grp in new[] { ("Manager", "Ct_ApproverManagers"), ("Eligible", "Ct_ApproverEligible"), ("Other", "Ct_ApproverOthers") })
                             {
@@ -346,7 +346,7 @@
                                     @foreach (var a in items) { <option value="@a.UserId">@a.FullName@(string.IsNullOrWhiteSpace(a.Position) ? "" : " — " + a.Position)@(string.IsNullOrWhiteSpace(a.Department) ? "" : " (" + a.Department + ")")</option> }
                                 </optgroup>
                             }
-                        </select>
+                        </pems-select>
                         <pems-button tone="neutral" outline="true" type="button" id="lcApproverAdd" aria-label="@Localizer["Lc_AddApprover"]"><i class="bi bi-plus-lg" aria-hidden="true"></i></pems-button>
                     </div>
                     <div class="lc-help">@Localizer["Lc_ChainHelp"]</div>

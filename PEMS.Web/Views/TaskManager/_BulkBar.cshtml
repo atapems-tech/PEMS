@@ -12,7 +12,7 @@
     <input type="hidden" name="returnUrl" value="@returnUrl" />
     <span class="small"><strong data-tm-bulk-count>0</strong> @Localizer["Tm_Selected"]</span>
     <label class="visually-hidden" for="tm-bulk-action">@Localizer["Tm_BulkAction"]</label>
-    <select id="tm-bulk-action" name="bulkAction" class="form-select form-select-sm w-auto" data-tm-bulk-action>
+    <pems-select scale="small" css="w-auto" id="tm-bulk-action" name="bulkAction" data-tm-bulk-action>
         @if (spaceView != null)
         {
             <option value="status">@Localizer["Tm_Bulk_Status"]</option>
@@ -20,25 +20,25 @@
             @if (spaceView.CanRank) { <option value="sprint">@Localizer["Tm_Bulk_Sprint"]</option> }
         }
         <option value="archive">@Localizer["Tm_Bulk_Archive"]</option>
-    </select>
+    </pems-select>
     @if (spaceView != null)
     {
-        <select name="value" class="form-select form-select-sm w-auto" data-tm-bulk-value="status" aria-label="@Localizer["Tm_Field_Status"]">
+        <pems-select scale="small" css="w-auto" name="value" data-tm-bulk-value="status" aria-label="@Localizer["Tm_Field_Status"]">
             @foreach (var s in spaceView.Statuses) { <option value="@s.Id">@TaskManagerUi.Name(s.Name, s.NameFa)</option> }
-        </select>
+        </pems-select>
         @if (assignees != null)
         {
-            <select name="value" class="form-select form-select-sm w-auto" data-tm-bulk-value="assign" aria-label="@Localizer["Tm_Field_Assignee"]" disabled hidden>
+            <pems-select scale="small" css="w-auto" name="value" data-tm-bulk-value="assign" aria-label="@Localizer["Tm_Field_Assignee"]" disabled hidden>
                 <option value="">@Localizer["Tm_Unassigned"]</option>
                 @foreach (var e in assignees.Candidates) { <option value="@e.EmployeeId">@e.Name</option> }
-            </select>
+            </pems-select>
         }
         @if (spaceView.CanRank)
         {
-            <select name="value" class="form-select form-select-sm w-auto" data-tm-bulk-value="sprint" aria-label="@Localizer["Tm_Field_Sprint"]" disabled hidden>
+            <pems-select scale="small" css="w-auto" name="value" data-tm-bulk-value="sprint" aria-label="@Localizer["Tm_Field_Sprint"]" disabled hidden>
                 <option value="0">@Localizer["Tm_Backlog"]</option>
                 @foreach (var s in spaceView.Sprints) { <option value="@s.Id">@s.Name</option> }
-            </select>
+            </pems-select>
         }
     }
     <pems-button tone="primary" size="small" type="submit" data-tm-confirm="@Localizer["Tm_BulkConfirm"]">@Localizer["Tm_Apply"]</pems-button>

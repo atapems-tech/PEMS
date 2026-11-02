@@ -71,7 +71,7 @@
     <form method="get" class="row g-2 align-items-end">
         <div class="col-auto">
             <label class="form-label small mb-0">@Localizer["Equipment ID"]</label>
-            <input type="number" name="equipmentId" value="@equipmentId" class="form-control form-control-sm" style="width:140px" />
+            <pems-input scale="small" type="number" name="equipmentId" value="@equipmentId" style="width:140px" />
         </div>
         <div class="col-auto"><pems-button tone="primary" size="small" type="submit">Load Points</pems-button></div>
     </form>
@@ -117,13 +117,13 @@
                                     @Html.AntiForgeryToken()
                                     <input type="hidden" name="equipmentId" value="@equipmentId" />
                                     <input type="hidden" name="pointId" value="@p.ConditionMonitoringPointId" />
-                                    <select name="evaluationProfileId" class="form-select form-select-sm" style="max-width:160px;">
+                                    <pems-select scale="small" name="evaluationProfileId" style="max-width:160px;">
                                         <option value="">@Localizer["-- profile --"]</option>
                                         @foreach (var ep in evaluationProfiles)
                                         {
                                             <option value="@ep.EvaluationProfileId">@ep.Code (@ep.VariableType)</option>
                                         }
-                                    </select>
+                                    </pems-select>
                                     <pems-button tone="neutral" size="small" outline="true" type="submit" title="@Localizer["Assign evaluation profile"]"><i class="bi bi-link-45deg"></i></pems-button>
                                 </form>
                             }
@@ -172,15 +172,15 @@
                     <input type="hidden" name="equipmentId" value="@equipmentId" />
                     <div class="mb-2">
                         <label class="form-label small">Variable Type</label>
-                        <select name="variableType" class="form-select form-select-sm">
+                        <pems-select scale="small" name="variableType">
                             @foreach (var vt in variableTypes) { <option value="@vt">@vt</option> }
-                        </select>
+                        </pems-select>
                     </div>
-                    <div class="mb-2"><label class="form-label small">@Localizer["Tag"]</label><input name="tag" class="form-control form-control-sm" required /></div>
-                    <div class="mb-2"><label class="form-label small">@Localizer["Unit"]</label><input name="unit" class="form-control form-control-sm" /></div>
+                    <div class="mb-2"><label class="form-label small">@Localizer["Tag"]</label><pems-input scale="small" name="tag" required /></div>
+                    <div class="mb-2"><label class="form-label small">@Localizer["Unit"]</label><pems-input scale="small" name="unit" /></div>
                     <div class="row g-2 mb-2">
-                        <div class="col"><label class="form-label small">Alarm Low</label><input type="number" step="0.01" name="alarmLow" class="form-control form-control-sm" /></div>
-                        <div class="col"><label class="form-label small">Alarm High</label><input type="number" step="0.01" name="alarmHigh" class="form-control form-control-sm" /></div>
+                        <div class="col"><label class="form-label small">Alarm Low</label><pems-input scale="small" type="number" step="0.01" name="alarmLow" /></div>
+                        <div class="col"><label class="form-label small">Alarm High</label><pems-input scale="small" type="number" step="0.01" name="alarmHigh" /></div>
                     </div>
                     <pems-button tone="primary" size="small" type="submit">Create Point</pems-button>
                 </form>
@@ -194,24 +194,24 @@
                     <input type="hidden" name="equipmentId" value="@equipmentId" />
                     <div class="mb-2">
                         <label class="form-label small">Point</label>
-                        <select name="pointId" class="form-select form-select-sm">
+                        <pems-select scale="small" name="pointId">
                             @foreach (var p in Model) { <option value="@p.ConditionMonitoringPointId">@p.VariableType — @p.Tag</option> }
-                        </select>
+                        </pems-select>
                     </div>
                     <div class="row g-2 mb-2">
                         <div class="col"><label class="form-label small">@Localizer["Date"]</label><input type="datetime-local" name="readingDate" class="form-control form-control-sm" value="@DateTime.Now.ToString("yyyy-MM-ddTHH:mm")" /></div>
-                        <div class="col"><label class="form-label small">@Localizer["Value"]</label><input type="number" step="0.01" name="value" class="form-control form-control-sm" required /></div>
+                        <div class="col"><label class="form-label small">@Localizer["Value"]</label><pems-input scale="small" type="number" step="0.01" name="value" required /></div>
                     </div>
-                    <div class="mb-2"><label class="form-label small">@Localizer["Source"]</label><input name="source" value="Manual" class="form-control form-control-sm" /></div>
+                    <div class="mb-2"><label class="form-label small">@Localizer["Source"]</label><pems-input scale="small" name="source" value="Manual" /></div>
                     @{ var equipmentInstruments = (IEnumerable<dynamic>)ViewBag.EquipmentInstruments; }
                     @if (equipmentInstruments.Any())
                     {
                         <div class="mb-2">
                             <label class="form-label small">@Localizer["Instrument (اختیاری)"]</label>
-                            <select name="instrumentId" class="form-select form-select-sm">
+                            <pems-select scale="small" name="instrumentId">
                                 <option value="">@Localizer["-- ندارد --"]</option>
                                 @foreach (var inst in equipmentInstruments) { <option value="@inst.InstrumentId">@inst.TagNumber — @inst.InstrumentType</option> }
-                            </select>
+                            </pems-select>
                         </div>
                     }
                     <pems-button tone="primary" size="small" type="submit">Record Reading</pems-button>
@@ -229,26 +229,26 @@
             <div class="modal-body">
                 <div class="mb-2">
                     <label class="form-label small">@Localizer["Description"]</label>
-                    <textarea name="description" class="form-control" rows="2" required></textarea>
+                    <pems-textarea name="description" rows="2" required></pems-textarea>
                 </div>
                 <div class="mb-2">
                     <label class="form-label small">@Localizer["Recommended Action (اختیاری)"]</label>
-                    <textarea name="recommendedAction" class="form-control" rows="2"></textarea>
+                    <pems-textarea name="recommendedAction" rows="2"></pems-textarea>
                 </div>
                 <div class="row g-2">
                     <div class="col-md-6">
                         <label class="form-label small">@Localizer["Failure Mode (ISO 14224، اختیاری)"]</label>
-                        <select name="failureModeId" class="form-select form-select-sm">
+                        <pems-select scale="small" name="failureModeId">
                             <option value="">@Localizer["-- ندارد --"]</option>
                             @foreach (var fm in failureModes) { <option value="@fm.FailureModeId">@fm.Name</option> }
-                        </select>
+                        </pems-select>
                     </div>
                     <div class="col-md-6">
                         <label class="form-label small">@Localizer["Failure Cause (اختیاری)"]</label>
-                        <select name="failureCauseId" class="form-select form-select-sm">
+                        <pems-select scale="small" name="failureCauseId">
                             <option value="">@Localizer["-- ندارد --"]</option>
                             @foreach (var fc in failureCauses) { <option value="@fc.FailureCauseId">@fc.Name</option> }
-                        </select>
+                        </pems-select>
                     </div>
                 </div>
             </div>

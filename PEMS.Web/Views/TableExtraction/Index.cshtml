@@ -42,8 +42,7 @@
                         <td>
                             <form asp-action="Analyze" method="post" id="aiForm_@attachment.AttachmentId">
                                 <input type="hidden" name="attachmentId" value="@attachment.AttachmentId" />
-                                <input type="text" name="documentHint" class="form-control form-control-sm"
-                                       placeholder="e.g. Wiring Connection Diagram for JB-12" />
+                                <pems-input scale="small" type="text" name="documentHint" placeholder="e.g. Wiring Connection Diagram for JB-12" />
                             </form>
                         </td>
                         <td>

@@ -70,8 +70,7 @@
                                     </div>
                                     <form asp-action="RecordMeterReading" method="post" class="d-flex gap-1 mt-1">
                                         <input type="hidden" name="planId" value="@p.MaintenancePlanId" />
-                                        <input type="number" step="0.01" name="currentReading" class="form-control form-control-sm" style="width:90px;"
-                                               placeholder="@Localizer["Mp_CurrentReading"]" aria-label="@Localizer["Mp_CurrentReading"]" required />
+                                        <pems-input scale="small" type="number" step="0.01" name="currentReading" style="width:90px;" placeholder="@Localizer["Mp_CurrentReading"]" aria-label="@Localizer["Mp_CurrentReading"]" required />
                                         <pems-button tone="info" size="small" outline="true" type="submit">@Localizer["Mp_Record"]</pems-button>
                                     </form>
                                 }

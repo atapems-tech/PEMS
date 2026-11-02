@@ -55,11 +55,11 @@
                 <pems-list-filters form-id="ptFilterForm" action="@Url.Action("Index")" count="@filterCount" reset-href="@Url.Action("Index")">
                     <div>
                         <label class="lp-lbl" for="ptFilterStatus">@Localizer["Ed_Status"]</label>
-                        <select id="ptFilterStatus" name="status" class="form-select form-select-sm">
+                        <pems-select scale="small" id="ptFilterStatus" name="status">
                             <option value="">@Localizer["Ed_All"]</option>
                             @foreach (var s in statuses)
                             { <option value="@s" selected="@(s == status)">@StatusText(s)</option> }
-                        </select>
+                        </pems-select>
                     </div>
                     <div class="form-check form-switch mb-0">
                         <input class="form-check-input" type="checkbox" role="switch" name="pendingMyApproval" value="true" id="ptPendingMine" checked="@pendingMyApproval" />

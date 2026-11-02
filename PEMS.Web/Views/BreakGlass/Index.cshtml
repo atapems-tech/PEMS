@@ -31,19 +31,19 @@ else
     <form asp-controller="BreakGlass" asp-action="Index" method="post" autocomplete="off">
         <div class="mb-3">
             <label for="TargetUserId" class="form-label">@Localizer["Administrator account"]</label>
-            <select id="TargetUserId" name="TargetUserId" class="form-select" required>
+            <pems-select id="TargetUserId" name="TargetUserId" required>
                 <option value="">-</option>
                 @foreach (var a in Model.Admins)
                 {
                     <option value="@a.UserId">@a.UserName @(string.IsNullOrWhiteSpace(a.FullName) ? "" : $"({a.FullName})")</option>
                 }
-            </select>
+            </pems-select>
         </div>
         @if (!Model.Window.IsOpen)
         {
             <div class="mb-3">
                 <label for="VendorToken" class="form-label">@Localizer["Vendor recovery token"]</label>
-                <textarea id="VendorToken" name="VendorToken" class="form-control" dir="ltr" rows="4" required spellcheck="false"></textarea>
+                <pems-textarea id="VendorToken" name="VendorToken" dir="ltr" rows="4" required spellcheck="false"></pems-textarea>
             </div>
         }
         <pems-button tone="danger" type="submit">@Localizer["Reset account"]</pems-button>

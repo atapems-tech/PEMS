@@ -49,19 +49,19 @@
                 <pems-list-filters form-id="caFilterForm" action="@Url.Action("Index")" count="@filterCount" reset-href="@Url.Action("Index")">
                     <div>
                         <label class="lp-lbl" for="caFilterStatus">@Localizer["Ed_Status"]</label>
-                        <select id="caFilterStatus" name="status" class="form-select form-select-sm">
+                        <pems-select scale="small" id="caFilterStatus" name="status">
                             <option value="">@Localizer["Eq_AllStatuses"]</option>
                             @foreach (var s in statuses)
                             { <option value="@s" selected="@(s == statusFilter)">@StatusText(s)</option> }
-                        </select>
+                        </pems-select>
                     </div>
                     <div>
                         <label class="lp-lbl" for="caFilterClass">@Localizer["Rcm_EquipmentClass"]</label>
-                        <select id="caFilterClass" name="equipmentClassId" class="form-select form-select-sm">
+                        <pems-select scale="small" id="caFilterClass" name="equipmentClassId">
                             <option value="">@Localizer["Rcm_AllClasses"]</option>
                             @foreach (var ec in equipmentClasses)
                             { <option value="@ec.EquipmentClassId" selected="@(equipmentClassId == (int)ec.EquipmentClassId)">@ec.Name (@ec.Code)</option> }
-                        </select>
+                        </pems-select>
                     </div>
                 </pems-list-filters>
                 <a class="lp-icon-btn" asp-action="Dashboard" title="@Localizer["Ca_Dashboard"]" aria-label="@Localizer["Ca_Dashboard"]"><i class="bi bi-speedometer2" aria-hidden="true"></i></a>

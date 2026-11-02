@@ -91,9 +91,9 @@
                                     <input type="hidden" name="taskItemId" value="@t.TaskItemId" />
                                     <input type="hidden" name="tab" value="@tab" />
                                     <label class="visually-hidden" for="st-@t.TaskItemId">@Localizer["Tm_MoveTo"]</label>
-                                    <select id="st-@t.TaskItemId" name="status" class="form-select form-select-sm" style="width:130px;">
+                                    <pems-select scale="small" id="st-@t.TaskItemId" name="status" style="width:130px;">
                                         @foreach (var s in targets) { <option value="@s">@TaskManagerUi.LegacyStatus(Localizer, s)</option> }
-                                    </select>
+                                    </pems-select>
                                     <pems-button tone="neutral" size="small" outline="true" aria-label="@Localizer["Tm_ChangeStatus"]"><i class="bi bi-check2" aria-hidden="true"></i></pems-button>
                                 </form>
                                 @if (closed && !string.IsNullOrEmpty(t.CompletionNote)) { <div class="small text-muted">@t.CompletionNote</div> }
@@ -139,14 +139,14 @@
         <form asp-action="Create" method="post" class="row g-2">
             <div class="col-md-4">
                 <label class="visually-hidden" for="nt-title">@Localizer["Title"]</label>
-                <input id="nt-title" name="title" class="form-control form-control-sm" placeholder="@Localizer["Title"]" required maxlength="300" />
+                <pems-input scale="small" id="nt-title" name="title" placeholder="@Localizer["Title"]" required maxlength="300" />
             </div>
             <div class="col-md-3">
                 <label class="visually-hidden" for="nt-assignee">@Localizer["Assigned To"]</label>
-                <select id="nt-assignee" name="assignedToEmployeeId" class="form-select form-select-sm">
+                <pems-select scale="small" id="nt-assignee" name="assignedToEmployeeId">
                     <option value="">@Localizer["-- Assign to --"]</option>
                     @foreach (var e in employees) { <option value="@e.EmployeeId">@e.Name</option> }
-                </select>
+                </pems-select>
             </div>
             <div class="col-md-2">
                 <label class="visually-hidden" for="nt-due">@Localizer["Due"]</label>
@@ -154,14 +154,14 @@
             </div>
             <div class="col-md-2">
                 <label class="visually-hidden" for="nt-priority">@Localizer["Priority"]</label>
-                <select id="nt-priority" name="priority" class="form-select form-select-sm">
+                <pems-select scale="small" id="nt-priority" name="priority">
                     @foreach (var p in TaskItemPriorities.All) { <option value="@p" selected="@(p == "Normal")">@TaskManagerUi.Priority(Localizer, p)</option> }
-                </select>
+                </pems-select>
             </div>
             <div class="col-md-1"><pems-button tone="primary" size="small" css="w-100" aria-label="@Localizer["Tm_Create"]"><i class="bi bi-plus-lg" aria-hidden="true"></i></pems-button></div>
             <div class="col-12">
                 <label class="visually-hidden" for="nt-desc">@Localizer["Description (optional)"]</label>
-                <input id="nt-desc" name="description" class="form-control form-control-sm" placeholder="@Localizer["Description (optional)"]" maxlength="8000" />
+                <pems-input scale="small" id="nt-desc" name="description" placeholder="@Localizer["Description (optional)"]" maxlength="8000" />
             </div>
         </form>
     </div>

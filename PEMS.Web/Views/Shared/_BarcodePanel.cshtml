@@ -16,10 +16,10 @@
                 <input type="hidden" name="targetId" value="@Model.TargetId" />
                 <div>
                     <label class="form-label small mb-0">@Localizer["Symbology"]</label>
-                    <select name="symbology" class="form-select form-select-sm">
+                    <pems-select scale="small" name="symbology">
                         <option value="Code128">@Localizer["Code128"]</option>
                         <option value="QR">QR</option>
-                    </select>
+                    </pems-select>
                 </div>
                 <pems-button tone="primary" size="small" type="submit"><i class="bi bi-upc-scan"></i> Generate Barcode</pems-button>
             </form>

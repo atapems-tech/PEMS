@@ -213,19 +213,19 @@
         <div class="d-flex flex-wrap gap-2">
             <form asp-action="AttachTag" method="post" class="d-flex gap-1">
                 <input type="hidden" name="letterId" value="@l.LetterId" />
-                <select name="tagId" class="form-select form-select-sm" onchange="this.form.submit()">
+                <pems-select scale="small" name="tagId" onchange="this.form.submit()">
                     <option value="">-- existing tag --</option>
                     @foreach (var t in allTags.Where(t => !l.Tags.Any(lt => lt.TagId == t.TagId)))
                     { <option value="@t.TagId">@t.Name</option> }
-                </select>
+                </pems-select>
             </form>
             <form asp-action="AttachTag" method="post" class="d-flex gap-1">
                 <input type="hidden" name="letterId" value="@l.LetterId" />
-                <input name="newTagName" class="form-control form-control-sm" placeholder="New tag..." />
-                <select name="newTagColor" class="form-select form-select-sm" style="width:90px;">
+                <pems-input scale="small" name="newTagName" placeholder="New tag..." />
+                <pems-select scale="small" name="newTagColor" style="width:90px;">
                     @foreach (var c in new[] { "secondary", "primary", "success", "danger", "warning", "info", "dark" })
                     { <option value="@c">@c</option> }
-                </select>
+                </pems-select>
                 <pems-button tone="primary" size="small">+</pems-button>
             </form>
         </div>
@@ -267,13 +267,13 @@
                             <input type="hidden" name="letterId" value="@l.LetterId" />
                             <input type="hidden" name="stepOrder" value="@step.StepOrder" />
                             <label class="visually-hidden" for="reassign@(step.StepOrder)">@Localizer["Lc_Reassign"]</label>
-                            <select name="newApproverUserId" id="reassign@(step.StepOrder)" class="form-select form-select-sm" required>
+                            <pems-select scale="small" name="newApproverUserId" id="reassign@(step.StepOrder)" required>
                                 <option value="">@Localizer["Lc_Reassign"]</option>
                                 @foreach (var opt in (IEnumerable<PEMS.Application.DTOs.ApproverOptionDto>)(ViewBag.ApproverOptions ?? new List<PEMS.Application.DTOs.ApproverOptionDto>()))
                                 {
                                     <option value="@opt.UserId">@opt.FullName</option>
                                 }
-                            </select>
+                            </pems-select>
                             <pems-button tone="neutral" size="small" outline="true" type="submit">@Localizer["Lc_Reassign"]</pems-button>
                         </form>
                     }
@@ -402,9 +402,9 @@
             <input type="hidden" name="rowVersion" value="@Convert.ToBase64String(l.RowVersion ?? Array.Empty<byte>())" id="rowVersionB64" />
             <div class="mb-2">
                 <label class="form-label small">@Localizer["Subject"]</label>
-                <input type="text" name="subject" class="form-control" value="@l.Subject" required />
+                <pems-input type="text" name="subject" value="@l.Subject" required />
             </div>
-            <textarea name="body" id="letterBodyEditEditor" class="form-control">@Html.Raw(Model.Body)</textarea>
+            <pems-textarea name="body" id="letterBodyEditEditor">@Html.Raw(Model.Body)</pems-textarea>
             <div class="mt-2 d-flex gap-2">
                 <pems-button tone="primary" size="small" type="submit">@submitLabel</pems-button>
                 @if (!showEditFormByDefault)
@@ -506,21 +506,21 @@
                 <form asp-action="AddRecipient" method="post" class="row g-2 mt-1 add-recipient-form">
                     <input type="hidden" name="letterId" value="@l.LetterId" />
                     <div class="col-md-3">
-                        <select name="recipientType" class="form-select form-select-sm">
+                        <pems-select scale="small" name="recipientType">
                             <option value="To">To</option>
                             <option value="Cc">Cc</option>
-                        </select>
+                        </pems-select>
                     </div>
                     <div class="col-md-4">
-                        <select name="employeeId" class="form-select form-select-sm employee-picker">
+                        <pems-select scale="small" css="employee-picker" name="employeeId">
                             <option value="">@Localizer["-- Employee --"]</option>
-                        </select>
+                        </pems-select>
                     </div>
                     <div class="col-md-3">
-                        <select name="departmentId" class="form-select form-select-sm">
+                        <pems-select scale="small" name="departmentId">
                             <option value="">@Localizer["-- or Department --"]</option>
                             @foreach (var d in departments) { <option value="@d.DepartmentId">@d.Name</option> }
-                        </select>
+                        </pems-select>
                     </div>
                     <div class="col-md-2"><pems-button tone="primary" size="small" css="w-100"><i class="bi bi-plus-lg"></i> @Localizer["Add"]</pems-button></div>
                 </form>
@@ -542,7 +542,7 @@
 
                 <form asp-action="UploadAttachment" method="post" enctype="multipart/form-data" class="d-flex gap-2">
                     <input type="hidden" name="letterId" value="@l.LetterId" />
-                    <input type="file" name="file" class="form-control form-control-sm" required />
+                    <pems-input scale="small" type="file" name="file" required />
                     <pems-button tone="primary" size="small" outline="true"><i class="bi bi-upload"></i> @Localizer["Upload"]</pems-button>
                 </form>
             </pems-accordion-item>
@@ -586,7 +586,7 @@
                                             <form asp-action="CompleteReferral" method="post" class="d-flex gap-1">
                                                 <input type="hidden" name="referralId" value="@r.LetterReferralId" />
                                                 <input type="hidden" name="letterId" value="@l.LetterId" />
-                                                <input name="responseNote" class="form-control form-control-sm" placeholder="@Localizer["Response"]" />
+                                                <pems-input scale="small" name="responseNote" placeholder="@Localizer["Response"]" />
                                                 <pems-button tone="success" size="small">Done</pems-button>
                                             </form>
                                         }
@@ -609,12 +609,12 @@
                 <form asp-action="Refer" method="post" class="row g-2">
                     <input type="hidden" name="letterId" value="@l.LetterId" />
                     <div class="col-md-6">
-                        <select name="referredToDepartmentId" class="form-select form-select-sm" required>
+                        <pems-select scale="small" name="referredToDepartmentId" required>
                             <option value="">@Localizer["Ct_ChooseDepartment"]</option>
                             @foreach (var d in departments) { <option value="@d.DepartmentId">@d.Name</option> }
-                        </select>
+                        </pems-select>
                     </div>
-                    <div class="col-md-3"><input name="instructions" class="form-control form-control-sm" placeholder="@Localizer["Instructions"]" /></div>
+                    <div class="col-md-3"><pems-input scale="small" name="instructions" placeholder="@Localizer["Instructions"]" /></div>
                     <div class="col-md-2"><input name="dueDate" type="date" class="form-control form-control-sm" /></div>
                     <div class="col-md-1"><pems-button tone="primary" size="small" css="w-100"><i class="bi bi-send"></i></pems-button></div>
                 </form>
@@ -626,17 +626,17 @@
                 <form method="get" target="_self" action="@Url.Action("Details", new { id = l.LetterId })#accTimeline" class="d-flex flex-wrap align-items-center gap-2 mb-3 small">
                     @if (embed) { <input type="hidden" name="embed" value="true" /> }
                     <label for="historyOrder" class="text-muted">@Localizer["Ct_HistoryOrder"]</label>
-                    <select id="historyOrder" name="historyOrder" class="form-select form-select-sm w-auto" onchange="this.form.submit()">
+                    <pems-select scale="small" css="w-auto" id="historyOrder" name="historyOrder" onchange="this.form.submit()">
                         <option value="asc" selected="@(historyOrder == "asc")">@Localizer["Ct_HistoryOldest"]</option>
                         <option value="desc" selected="@(historyOrder == "desc")">@Localizer["Ct_HistoryNewest"]</option>
-                    </select>
+                    </pems-select>
                     <label for="historyRole" class="text-muted ms-2">@Localizer["Ct_HistoryWho"]</label>
-                    <select id="historyRole" name="historyRole" class="form-select form-select-sm w-auto" onchange="this.form.submit()">
+                    <pems-select scale="small" css="w-auto" id="historyRole" name="historyRole" onchange="this.form.submit()">
                         <option value="all" selected="@(historyRole == "all")">@Localizer["Ct_HistoryAll"]</option>
                         <option value="me" selected="@(historyRole == "me")">@Localizer["Ct_HistoryMe"]</option>
                         <option value="manager" selected="@(historyRole == "manager")">@Localizer["Ct_HistoryManager"]</option>
                         <option value="subordinates" selected="@(historyRole == "subordinates")">@Localizer["Ct_HistorySubordinates"]</option>
-                    </select>
+                    </pems-select>
                 </form>
                 @if (timeline != null && timeline.Any())
                 {
@@ -672,7 +672,7 @@
             <div class="modal-header"><h6 class="modal-title">@Localizer["Return for Revision"]</h6><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div>
             <div class="modal-body">
                 <label class="form-label small">@Localizer["Reason (required)"]</label>
-                <textarea name="reason" class="form-control" rows="3" required></textarea>
+                <pems-textarea name="reason" rows="3" required></pems-textarea>
             </div>
             <div class="modal-footer">
                 <pems-button tone="neutral" size="small" outline="true" type="button" data-bs-dismiss="modal">@Localizer["Cancel"]</pems-button>
@@ -689,7 +689,7 @@
             <div class="modal-header"><h6 class="modal-title">Reject Letter</h6><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div>
             <div class="modal-body">
                 <label class="form-label small">@Localizer["Reason (required)"]</label>
-                <textarea name="reason" class="form-control" rows="3" required></textarea>
+                <pems-textarea name="reason" rows="3" required></pems-textarea>
             </div>
             <div class="modal-footer">
                 <pems-button tone="neutral" size="small" outline="true" type="button" data-bs-dismiss="modal">@Localizer["Cancel"]</pems-button>
@@ -706,7 +706,7 @@
             <div class="modal-header"><h6 class="modal-title">Sign / Acknowledge</h6><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div>
             <div class="modal-body">
                 <label class="form-label small">Type your full name to sign</label>
-                <input name="signedByName" class="form-control" required />
+                <pems-input name="signedByName" required />
                 <div class="form-text small">Lightweight electronic acknowledgment (typed name + timestamp), not a PKI digital signature.</div>
             </div>
             <div class="modal-footer">

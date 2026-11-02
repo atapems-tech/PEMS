@@ -49,33 +49,33 @@
                 <div class="row g-3">
                     <div class="col-md-6">
                         <label class="form-label">@Localizer["Document No"]</label>
-                        <input asp-for="DocumentNo" class="form-control" required />
+                        <pems-input asp-for="DocumentNo" required />
                     </div>
                     <div class="col-md-6">
                         <label class="form-label">@Localizer["Document Type"]</label>
-                        <input asp-for="DocumentType" class="form-control" required />
+                        <pems-input asp-for="DocumentType" required />
                     </div>
                     <div class="col-12">
                         <label class="form-label">@Localizer["Title"]</label>
-                        <input asp-for="Title" class="form-control" required />
+                        <pems-input asp-for="Title" required />
                     </div>
                     <div class="col-12">
                         <label class="form-label">@Localizer["Description"]</label>
-                        <textarea asp-for="Description" class="form-control" rows="3"></textarea>
+                        <pems-textarea asp-for="Description" rows="3"></pems-textarea>
                     </div>
                     <div class="col-md-6">
                         <label class="form-label">@Localizer["Project"]</label>
-                        <select asp-for="ProjectId" asp-items="ViewBag.Projects" class="form-select"></select>
+                        <pems-select asp-for="ProjectId" asp-items="ViewBag.Projects"></pems-select>
                     </div>
                     <div class="col-md-6">
                         <label class="form-label">@Localizer["Discipline"]</label>
-                        <select asp-for="DisciplineId" asp-items="ViewBag.Disciplines" class="form-select">
+                        <pems-select asp-for="DisciplineId" asp-items="ViewBag.Disciplines">
                             <option value="">-- Unassigned --</option>
-                        </select>
+                        </pems-select>
                     </div>
                     <div class="col-md-6">
                         <label class="form-label">@Localizer["Area"]</label>
-                        <input asp-for="Area" class="form-control" />
+                        <pems-input asp-for="Area" />
                     </div>
                 </div>
             </div>
@@ -90,7 +90,7 @@
                         @* طبق «VENDOR DOCUMENTATION MANAGEMENT PROCEDURE» بخش ۴.۶.۱: کدهای رسمی IFA/IFR/IFI/FI
                            به‌همراه مقادیر قدیمی این فیلد (برای سازگاری با داده‌ی موجود) - همین لیست دقیقاً در
                            VDR/Details.cshtml (فرم SubmitForReview) هم تکرار شده؛ اگر این‌جا تغییر داد آن‌جا را هم به‌روزرسانی کنید. *@
-                        <select asp-for="IssuePurpose" class="form-select">
+                        <pems-select asp-for="IssuePurpose">
                             <option value="">-- Select --</option>
                             <option value="IFA">@Localizer["IFA - Issued for Approval"]</option>
                             <option value="IFR">@Localizer["IFR - Issue for Review and Comments"]</option>
@@ -99,19 +99,19 @@
                             <option value="For Approval">@Localizer["For Approval (legacy)"]</option>
                             <option value="For Construction">@Localizer["For Construction (legacy)"]</option>
                             <option value="For Information">@Localizer["For Information (legacy)"]</option>
-                        </select>
+                        </pems-select>
                     </div>
                     <div class="col-md-4">
                         <label class="form-label">@Localizer["Prepared By"]</label>
-                        <input asp-for="PreparedBy" class="form-control" />
+                        <pems-input asp-for="PreparedBy" />
                     </div>
                     <div class="col-md-4">
                         <label class="form-label">@Localizer["Checked By"]</label>
-                        <input asp-for="CheckedBy" class="form-control" />
+                        <pems-input asp-for="CheckedBy" />
                     </div>
                     <div class="col-md-4">
                         <label class="form-label">@Localizer["Approved By"]</label>
-                        <input asp-for="ApprovedBy" class="form-control" />
+                        <pems-input asp-for="ApprovedBy" />
                     </div>
                 </div>
 
@@ -119,21 +119,21 @@
                 <div class="row g-3">
                     <div class="col-md-6">
                         <label class="form-label">Related Equipment <span class="text-muted small">@Localizer["(optional)"]</span></label>
-                        <select asp-for="EquipmentId" asp-items="ViewBag.Equipments" class="form-select">
+                        <pems-select asp-for="EquipmentId" asp-items="ViewBag.Equipments">
                             <option value="">@Localizer["-- None --"]</option>
-                        </select>
+                        </pems-select>
                     </div>
                     <div class="col-md-6">
                         <label class="form-label">Related Contract <span class="text-muted small">@Localizer["(optional)"]</span></label>
-                        <select asp-for="ContractId" asp-items="ViewBag.Contracts" class="form-select">
+                        <pems-select asp-for="ContractId" asp-items="ViewBag.Contracts">
                             <option value="">@Localizer["-- None --"]</option>
-                        </select>
+                        </pems-select>
                     </div>
                     <div class="col-md-6">
                         <label class="form-label">Related MR <span class="text-muted small">@Localizer["(optional)"]</span></label>
-                        <select asp-for="RelatedMRId" asp-items="ViewBag.MaterialRequisitions" class="form-select">
+                        <pems-select asp-for="RelatedMRId" asp-items="ViewBag.MaterialRequisitions">
                             <option value="">@Localizer["-- None --"]</option>
-                        </select>
+                        </pems-select>
                     </div>
                 </div>
             </div>

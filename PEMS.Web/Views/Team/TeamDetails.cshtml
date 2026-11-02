@@ -327,15 +327,15 @@
                 <input type="hidden" name="teamId" value="@Model.TeamId" />
                 <div class="mb-2">
                     <label class="form-label small">@Localizer["عنوان سمت"]</label>
-                    <input name="title" class="form-control form-control-sm" required placeholder="@Localizer["مثلاً سرگروه، تکنسین ارشد..."]" />
+                    <pems-input scale="small" name="title" required placeholder="@Localizer["مثلاً سرگروه، تکنسین ارشد..."]" />
                 </div>
                 <div class="mb-2">
                     <label class="form-label small">@Localizer["توضیحات (اختیاری)"]</label>
-                    <input name="description" class="form-control form-control-sm" />
+                    <pems-input scale="small" name="description" />
                 </div>
                 <div class="mb-2">
                     <label class="form-label small">@Localizer["ترتیب نمایش"]</label>
-                    <input name="sortOrder" type="number" value="0" class="form-control form-control-sm" />
+                    <pems-input scale="small" name="sortOrder" type="number" value="0" />
                 </div>
             </div>
             <div class="modal-footer">
@@ -356,15 +356,15 @@
                 <input type="hidden" name="returnTeamId" value="@Model.TeamId" />
                 <div class="mb-2">
                     <label class="form-label small">@Localizer["عنوان سمت"]</label>
-                    <input name="title" id="editPositionTitle" class="form-control form-control-sm" required />
+                    <pems-input scale="small" name="title" id="editPositionTitle" required />
                 </div>
                 <div class="mb-2">
                     <label class="form-label small">@Localizer["توضیحات (اختیاری)"]</label>
-                    <input name="description" id="editPositionDescription" class="form-control form-control-sm" />
+                    <pems-input scale="small" name="description" id="editPositionDescription" />
                 </div>
                 <div class="mb-2">
                     <label class="form-label small">@Localizer["ترتیب نمایش"]</label>
-                    <input name="sortOrder" id="editPositionSortOrder" type="number" class="form-control form-control-sm" />
+                    <pems-input scale="small" name="sortOrder" id="editPositionSortOrder" type="number" />
                 </div>
             </div>
             <div class="modal-footer">
@@ -384,29 +384,29 @@
                 <input type="hidden" name="parentTeamId" value="@Model.TeamId" />
                 <div class="mb-2">
                     <label class="form-label small">@Localizer["نوع گره"]</label>
-                    <select name="nodeKind" class="form-select form-select-sm">
+                    <pems-select scale="small" name="nodeKind">
                         <option value="SubTeam">SubTeam</option>
                         <option value="Shift">Shift</option>
                         <option value="Unit">Unit</option>
                         <option value="Team">Team</option>
-                    </select>
+                    </pems-select>
                     <div class="form-text">@Localizer["نمونه‌های رایج - می‌توانید در کد بعداً هر نام دیگری هم بسازید."]</div>
                 </div>
                 <div class="mb-2">
                     <label class="form-label small">@Localizer["کد"]</label>
-                    <input name="code" class="form-control form-control-sm" required />
+                    <pems-input scale="small" name="code" required />
                 </div>
                 <div class="mb-2">
                     <label class="form-label small">@Localizer["نام"]</label>
-                    <input name="name" class="form-control form-control-sm" required placeholder="@Localizer["مثلاً Shift A"]" />
+                    <pems-input scale="small" name="name" required placeholder="@Localizer["مثلاً Shift A"]" />
                 </div>
                 <div class="mb-2">
                     <label class="form-label small">@Localizer["سرپرست (اختیاری)"]</label>
-                    <input type="search" class="form-control form-control-sm mb-1 pems-employee-search" data-target="#childNodeSupervisorSelect" placeholder="@Localizer["جستجوی کارمند..."]" />
-                    <select name="supervisorEmployeeId" id="childNodeSupervisorSelect" class="form-select form-select-sm" size="1">
+                    <pems-input scale="small" css="mb-1 pems-employee-search" type="search" data-target="#childNodeSupervisorSelect" placeholder="@Localizer["جستجوی کارمند..."]" />
+                    <pems-select scale="small" name="supervisorEmployeeId" id="childNodeSupervisorSelect" size="1">
                         <option value="">@Localizer["-- ندارد --"]</option>
                         @foreach (var e in allEmployees) { <option value="@e.EmployeeId">@e.FullName</option> }
-                    </select>
+                    </pems-select>
                 </div>
             </div>
             <div class="modal-footer">
@@ -426,15 +426,15 @@
                 <input type="hidden" name="returnTeamId" value="@Model.TeamId" />
                 <div class="mb-2">
                     <label class="form-label small">@Localizer["کارمند"]</label>
-                    <input type="search" class="form-control form-control-sm mb-1 pems-employee-search" data-target="#assignEmployeeSelect" placeholder="@Localizer["جستجوی کارمند..."]" />
-                    <select name="employeeId" id="assignEmployeeSelect" class="form-select form-select-sm" required>
+                    <pems-input scale="small" css="mb-1 pems-employee-search" type="search" data-target="#assignEmployeeSelect" placeholder="@Localizer["جستجوی کارمند..."]" />
+                    <pems-select scale="small" name="employeeId" id="assignEmployeeSelect" required>
                         <option value="">@Localizer["کارمند..."]</option>
                         @foreach (var e in allEmployees) { <option value="@e.EmployeeId">@e.FullName</option> }
-                    </select>
+                    </pems-select>
                 </div>
                 <div class="mb-2">
                     <label class="form-label small">@Localizer["توضیحات (اختیاری)"]</label>
-                    <input name="notes" class="form-control form-control-sm" />
+                    <pems-input scale="small" name="notes" />
                 </div>
             </div>
             <div class="modal-footer">
@@ -455,14 +455,14 @@
                 <p class="small text-muted" id="moveEmployeeCurrentOccupant"></p>
                 <div class="mb-2">
                     <label class="form-label small">@Localizer["سمت مقصد (خالی)"]</label>
-                    <select name="toPositionId" class="form-select form-select-sm" required>
+                    <pems-select scale="small" name="toPositionId" required>
                         <option value="">@Localizer["سمت مقصد..."]</option>
                         @foreach (var vp in vacantPositions) { <option value="@vp.PositionId">@vp.Label</option> }
-                    </select>
+                    </pems-select>
                 </div>
                 <div class="mb-2">
                     <label class="form-label small">@Localizer["توضیحات (اختیاری)"]</label>
-                    <input name="notes" class="form-control form-control-sm" />
+                    <pems-input scale="small" name="notes" />
                 </div>
             </div>
             <div class="modal-footer">
@@ -482,9 +482,9 @@
                 <input type="hidden" name="returnTeamId" value="@Model.TeamId" />
                 <div class="mb-2">
                     <label class="form-label small">@Localizer["تیم مقصد"]</label>
-                    <select name="newTeamId" class="form-select form-select-sm" required>
+                    <pems-select scale="small" name="newTeamId" required>
                         @foreach (var t in allTeamNodes) { <option value="@t.TeamId">@t.Name (@t.NodeKind)</option> }
-                    </select>
+                    </pems-select>
                 </div>
             </div>
             <div class="modal-footer">

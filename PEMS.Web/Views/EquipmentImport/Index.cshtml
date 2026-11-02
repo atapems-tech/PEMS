@@ -16,13 +16,13 @@
     <form asp-action="Upload" method="post" enctype="multipart/form-data" class="row g-2 align-items-end">
         <div class="col-md-5">
             <label class="form-label small">@Localizer["Project"]</label>
-            <select name="projectId" class="form-select" required>
+            <pems-select name="projectId" required>
                 @foreach (var p in projects) { <option value="@p.ProjectId">@p.ProjectName</option> }
-            </select>
+            </pems-select>
         </div>
         <div class="col-md-5">
             <label class="form-label small">Equipment Excel File</label>
-            <input type="file" name="file" class="form-control" accept=".xlsx" required />
+            <pems-input type="file" name="file" accept=".xlsx" required />
         </div>
         <div class="col-md-2">
             <pems-button tone="primary" css="w-100" type="submit"><i class="bi bi-cloud-upload"></i> @Localizer["Upload"]</pems-button>
@@ -38,13 +38,13 @@
     <form asp-action="ScanPdf" method="post" enctype="multipart/form-data" class="row g-2 align-items-end">
         <div class="col-md-5">
             <label class="form-label small">@Localizer["Project"]</label>
-            <select name="projectId" class="form-select" required>
+            <pems-select name="projectId" required>
                 @foreach (var p in projects) { <option value="@p.ProjectId">@p.ProjectName</option> }
-            </select>
+            </pems-select>
         </div>
         <div class="col-md-5">
             <label class="form-label small">PDF File</label>
-            <input type="file" name="file" class="form-control" accept=".pdf" required />
+            <pems-input type="file" name="file" accept=".pdf" required />
         </div>
         <div class="col-md-2">
             <pems-button tone="primary" outline="true" css="w-100" type="submit"><i class="bi bi-file-earmark-pdf"></i> Scan PDF</pems-button>

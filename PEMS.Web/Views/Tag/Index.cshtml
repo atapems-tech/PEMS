@@ -57,14 +57,14 @@
             <div class="modal-body">
                 <div class="mb-2">
                     <label class="form-label small" for="tagName">@Localizer["Tg_Name"]</label>
-                    <input name="name" id="tagName" class="form-control form-control-sm" required />
+                    <pems-input scale="small" name="name" id="tagName" required />
                 </div>
                 <div class="mb-2">
                     <label class="form-label small" for="tagColor">@Localizer["Tg_Color"]</label>
-                    <select name="color" id="tagColor" class="form-select form-select-sm">
+                    <pems-select scale="small" name="color" id="tagColor">
                         @foreach (var c in new[] { "secondary", "primary", "success", "danger", "warning", "info", "dark" })
                         { <option value="@c">@c</option> }
-                    </select>
+                    </pems-select>
                 </div>
             </div>
             <div class="modal-footer">

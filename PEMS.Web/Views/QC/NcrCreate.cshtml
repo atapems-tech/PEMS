@@ -8,39 +8,38 @@
         <div class="row g-3">
             <div class="col-md-6">
                 <label class="form-label">NCR Number</label>
-                <input name="ncrNumber" class="form-control" required placeholder="e.g. NCR-2026-001" />
+                <pems-input name="ncrNumber" required placeholder="e.g. NCR-2026-001" />
             </div>
             <div class="col-md-6">
                 <label class="form-label">@Localizer["Project"]</label>
-                <select name="projectId" class="form-select" required>
+                <pems-select name="projectId" required>
                     @foreach (var p in (IEnumerable<dynamic>)ViewBag.Projects) { <option value="@p.ProjectId">@p.ProjectName</option> }
-                </select>
+                </pems-select>
             </div>
 
             <div class="col-md-6">
                 <label class="form-label">@Localizer["QC Discipline"]</label>
-                <select name="qcDisciplineId" class="form-select" required>
+                <pems-select name="qcDisciplineId" required>
                     @foreach (var d in (IEnumerable<PEMS.Domain.Entities.QCDiscipline>)ViewBag.QCDisciplines)
                     {
                         <option value="@d.QCDisciplineId">@d.Name</option>
                     }
-                </select>
+                </pems-select>
             </div>
             <div class="col-md-6">
                 <label class="form-label">@Localizer["Severity"]</label>
-                <select name="severity" class="form-select">
+                <pems-select name="severity">
                     <option>Minor</option><option>Major</option><option>@Localizer["Critical"]</option>
-                </select>
+                </pems-select>
             </div>
 
             <div class="col-md-6">
                 <label class="form-label">Equipment <span class="text-muted small">@Localizer["(optional)"]</span></label>
-                <input type="text" class="form-control" placeholder="@Localizer["جستجوی تگ، نام یا سازنده..."]"
-                       data-pems-search data-search-type="Equipment" data-search-hidden="#equipmentIdHidden" autocomplete="off" />
+                <pems-input type="text" placeholder="@Localizer["جستجوی تگ، نام یا سازنده..."]" data-pems-search data-search-type="Equipment" data-search-hidden="#equipmentIdHidden" autocomplete="off" />
                 <input type="hidden" name="equipmentId" id="equipmentIdHidden" />
             </div>
 
-            <div class="col-12"><label class="form-label">@Localizer["Description"]</label><textarea name="description" class="form-control" rows="4" required></textarea></div>
+            <div class="col-12"><label class="form-label">@Localizer["Description"]</label><pems-textarea name="description" rows="4" required></pems-textarea></div>
         </div>
 
         <div class="mt-4">

@@ -83,17 +83,17 @@
                 <form asp-action="RecordInput" method="post">
                     <input type="hidden" name="productionRunId" value="@Model.ProductionRunId" />
                     <div class="mb-2">
-                        <select name="materialItemId" class="form-select form-select-sm" required>
+                        <pems-select scale="small" name="materialItemId" required>
                             <option value="">-- material --</option>
                             @foreach (var m in ViewBag.MaterialItems)
                             {
                                 <option value="@m.MaterialItemId">@m.MaterialCode</option>
                             }
-                        </select>
+                        </pems-select>
                     </div>
-                    <div class="mb-2"><input type="number" step="0.001" min="0.001" name="quantity" class="form-control form-control-sm" placeholder="@Localizer["Quantity"]" required /></div>
-                    <div class="mb-2"><input type="number" name="sourceProductionBatchId" class="form-control form-control-sm" placeholder="Source batch ID (optional)" /></div>
-                    <div class="mb-2"><input type="text" name="notes" class="form-control form-control-sm" placeholder="@Localizer["Notes"]" /></div>
+                    <div class="mb-2"><pems-input scale="small" type="number" step="0.001" min="0.001" name="quantity" placeholder="@Localizer["Quantity"]" required /></div>
+                    <div class="mb-2"><pems-input scale="small" type="number" name="sourceProductionBatchId" placeholder="Source batch ID (optional)" /></div>
+                    <div class="mb-2"><pems-input scale="small" type="text" name="notes" placeholder="@Localizer["Notes"]" /></div>
                     <pems-button tone="primary" size="small" outline="true" css="w-100" type="submit">@Localizer["Record Input"]</pems-button>
                 </form>
             </div>
@@ -104,23 +104,23 @@
                 <form asp-action="RecordOutput" method="post">
                     <input type="hidden" name="productionRunId" value="@Model.ProductionRunId" />
                     <div class="mb-2">
-                        <select name="materialItemId" class="form-select form-select-sm" required>
+                        <pems-select scale="small" name="materialItemId" required>
                             <option value="">-- material/product --</option>
                             @foreach (var m in ViewBag.MaterialItems)
                             {
                                 <option value="@m.MaterialItemId">@m.MaterialCode</option>
                             }
-                        </select>
+                        </pems-select>
                     </div>
-                    <div class="mb-2"><input type="number" name="productionBatchId" class="form-control form-control-sm" placeholder="Existing batch ID (optional - else new batch)" /></div>
-                    <div class="mb-2"><input type="number" step="0.001" min="0.001" name="quantity" class="form-control form-control-sm" placeholder="@Localizer["Quantity"]" required /></div>
+                    <div class="mb-2"><pems-input scale="small" type="number" name="productionBatchId" placeholder="Existing batch ID (optional - else new batch)" /></div>
+                    <div class="mb-2"><pems-input scale="small" type="number" step="0.001" min="0.001" name="quantity" placeholder="@Localizer["Quantity"]" required /></div>
                     <div class="mb-2">
-                        <select name="outputClassification" class="form-select form-select-sm">
+                        <pems-select scale="small" name="outputClassification">
                             <option value="Primary">Primary</option>
                             <option value="ByProduct">ByProduct</option>
-                        </select>
+                        </pems-select>
                     </div>
-                    <div class="mb-2"><input type="text" name="notes" class="form-control form-control-sm" placeholder="@Localizer["Notes"]" /></div>
+                    <div class="mb-2"><pems-input scale="small" type="text" name="notes" placeholder="@Localizer["Notes"]" /></div>
                     <pems-button tone="primary" size="small" outline="true" css="w-100" type="submit">@Localizer["Record Output"]</pems-button>
                 </form>
             </div>
@@ -130,17 +130,17 @@
                 <h6 class="mb-2">@Localizer["Record Loss"]</h6>
                 <form asp-action="RecordLoss" method="post">
                     <input type="hidden" name="productionRunId" value="@Model.ProductionRunId" />
-                    <div class="mb-2"><input type="number" step="0.001" min="0.001" name="quantity" class="form-control form-control-sm" placeholder="@Localizer["Quantity"]" required /></div>
+                    <div class="mb-2"><pems-input scale="small" type="number" step="0.001" min="0.001" name="quantity" placeholder="@Localizer["Quantity"]" required /></div>
                     <div class="mb-2">
-                        <select name="lossCategory" class="form-select form-select-sm" required>
+                        <pems-select scale="small" name="lossCategory" required>
                             <option value="">-- category --</option>
                             @foreach (var c in (string[])ViewBag.LossCategories)
                             {
                                 <option value="@c">@c</option>
                             }
-                        </select>
+                        </pems-select>
                     </div>
-                    <div class="mb-2"><input type="text" name="notes" class="form-control form-control-sm" placeholder="@Localizer["Notes"]" /></div>
+                    <div class="mb-2"><pems-input scale="small" type="text" name="notes" placeholder="@Localizer["Notes"]" /></div>
                     <pems-button tone="warning" size="small" outline="true" css="w-100" type="submit">@Localizer["Record Loss"]</pems-button>
                 </form>
             </div>
@@ -175,9 +175,9 @@
                                                     <div class="modal-header"><h6 class="modal-title">Post Consumption to Inventory</h6><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div>
                                                     <div class="modal-body">
                                                         <label class="form-label">@Localizer["Warehouse"]</label>
-                                                        <select name="warehouseId" class="form-select mb-2" required>
+                                                        <pems-select css="mb-2" name="warehouseId" required>
                                                             @foreach (var w in ViewBag.Warehouses) { <option value="@w.WarehouseId">@w.Code - @w.Name</option> }
-                                                        </select>
+                                                        </pems-select>
                                                     </div>
                                                     <div class="modal-footer"><pems-button tone="none" css="btn-primary" type="submit">@Localizer["Post"]</pems-button></div>
                                                 </form>
@@ -220,9 +220,9 @@
                                                     <div class="modal-header"><h6 class="modal-title">Post Receipt to Inventory</h6><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div>
                                                     <div class="modal-body">
                                                         <label class="form-label">@Localizer["Warehouse"]</label>
-                                                        <select name="warehouseId" class="form-select mb-2" required>
+                                                        <pems-select css="mb-2" name="warehouseId" required>
                                                             @foreach (var w in ViewBag.Warehouses) { <option value="@w.WarehouseId">@w.Code - @w.Name</option> }
-                                                        </select>
+                                                        </pems-select>
                                                     </div>
                                                     <div class="modal-footer"><pems-button tone="none" css="btn-primary" type="submit">@Localizer["Post"]</pems-button></div>
                                                 </form>
@@ -278,7 +278,7 @@
     <div class="modal-dialog"><div class="modal-content">
         <form asp-action="Hold" asp-route-id="@Model.ProductionRunId" method="post">
             <div class="modal-header"><h6 class="modal-title">Hold Production Run</h6><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div>
-            <div class="modal-body"><label class="form-label">@Localizer["Reason"]</label><textarea name="reason" class="form-control" required></textarea></div>
+            <div class="modal-body"><label class="form-label">@Localizer["Reason"]</label><pems-textarea name="reason" required></pems-textarea></div>
             <div class="modal-footer"><pems-button tone="warning" type="submit">@Localizer["Hold"]</pems-button></div>
         </form>
     </div></div>
@@ -288,7 +288,7 @@
     <div class="modal-dialog"><div class="modal-content">
         <form asp-action="Cancel" asp-route-id="@Model.ProductionRunId" method="post">
             <div class="modal-header"><h6 class="modal-title">Cancel Production Run</h6><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div>
-            <div class="modal-body"><label class="form-label">@Localizer["Reason"]</label><textarea name="reason" class="form-control" required></textarea></div>
+            <div class="modal-body"><label class="form-label">@Localizer["Reason"]</label><pems-textarea name="reason" required></pems-textarea></div>
             <div class="modal-footer"><pems-button tone="danger" type="submit">Cancel Run</pems-button></div>
         </form>
     </div></div>

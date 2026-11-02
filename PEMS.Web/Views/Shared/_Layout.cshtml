@@ -95,8 +95,7 @@
 
         <div class="pems-search d-none d-md-block">
             <form class="d-flex" role="search" asp-controller="GlobalSearch" asp-action="Index" asp-area="" method="get">
-                <input type="search" name="q" class="form-control" placeholder="@Localizer["Palette_OpenHint"]"
-                       aria-label="@Localizer["Palette_OpenHint"]" aria-keyshortcuts="Control+K" data-pems-command-palette-trigger />
+                <pems-input type="search" name="q" placeholder="@Localizer["Palette_OpenHint"]" aria-label="@Localizer["Palette_OpenHint"]" aria-keyshortcuts="Control+K" data-pems-command-palette-trigger />
             </form>
         </div>
         <pems-button tone="none" css="btn-link text-secondary d-md-none px-2" type="button" data-pems-command-palette-open title="@Localizer["Palette_OpenHint"]" aria-label="@Localizer["Palette_OpenHint"]" aria-keyshortcuts="Control+K">

@@ -111,20 +111,20 @@
             <div class="modal-header"><h6 class="modal-title">@Localizer["Classify as Rotating Equipment"]</h6></div>
             <div class="modal-body">
                 <div class="row g-3 mb-3">
-                    <div class="col-md-6"><label class="form-label">@Localizer["Equipment Type"]</label><input name="equipmentType" class="form-control" required placeholder="@Localizer["Pump, Compressor, Fan, Blower ..."]" /></div>
-                    <div class="col-md-6"><label class="form-label">@Localizer["Driver Type"]</label><input name="driverType" class="form-control" placeholder="@Localizer["Motor, Turbine, Engine"]" /></div>
+                    <div class="col-md-6"><label class="form-label">@Localizer["Equipment Type"]</label><pems-input name="equipmentType" required placeholder="@Localizer["Pump, Compressor, Fan, Blower ..."]" /></div>
+                    <div class="col-md-6"><label class="form-label">@Localizer["Driver Type"]</label><pems-input name="driverType" placeholder="@Localizer["Motor, Turbine, Engine"]" /></div>
                 </div>
                 <div class="row g-3 mb-3">
-                    <div class="col-md-3"><label class="form-label">@Localizer["Flow Rate"]</label><input type="number" step="any" name="flowRate" class="form-control" /></div>
-                    <div class="col-md-3"><label class="form-label">@Localizer["Head"]</label><input type="number" step="any" name="head" class="form-control" /></div>
-                    <div class="col-md-3"><label class="form-label">@Localizer["Speed (RPM)"]</label><input type="number" name="speedRPM" class="form-control" /></div>
-                    <div class="col-md-3"><label class="form-label">@Localizer["Power (kW)"]</label><input type="number" step="any" name="powerKW" class="form-control" /></div>
+                    <div class="col-md-3"><label class="form-label">@Localizer["Flow Rate"]</label><pems-input type="number" step="any" name="flowRate" /></div>
+                    <div class="col-md-3"><label class="form-label">@Localizer["Head"]</label><pems-input type="number" step="any" name="head" /></div>
+                    <div class="col-md-3"><label class="form-label">@Localizer["Speed (RPM)"]</label><pems-input type="number" name="speedRPM" /></div>
+                    <div class="col-md-3"><label class="form-label">@Localizer["Power (kW)"]</label><pems-input type="number" step="any" name="powerKW" /></div>
                 </div>
                 <div class="row g-3 mb-3">
-                    <div class="col-md-6"><label class="form-label">@Localizer["Bearing Type"]</label><input name="bearingType" class="form-control" /></div>
-                    <div class="col-md-6"><label class="form-label">@Localizer["Lubrication Type"]</label><input name="lubricationType" class="form-control" /></div>
+                    <div class="col-md-6"><label class="form-label">@Localizer["Bearing Type"]</label><pems-input name="bearingType" /></div>
+                    <div class="col-md-6"><label class="form-label">@Localizer["Lubrication Type"]</label><pems-input name="lubricationType" /></div>
                 </div>
-                <div class="mb-2"><label class="form-label">@Localizer["توضیحات (اختیاری)"]</label><textarea name="description" class="form-control" rows="2"></textarea></div>
+                <div class="mb-2"><label class="form-label">@Localizer["توضیحات (اختیاری)"]</label><pems-textarea name="description" rows="2"></pems-textarea></div>
             </div>
             <div class="modal-footer">
                 <pems-button tone="neutral" size="small" outline="true" type="button" data-bs-dismiss="modal">@Localizer["انصراف"]</pems-button>
@@ -141,17 +141,17 @@
             <div class="modal-header"><h6 class="modal-title">@Localizer["Classify as Static Equipment"]</h6></div>
             <div class="modal-body">
                 <div class="row g-3 mb-3">
-                    <div class="col-md-6"><label class="form-label">@Localizer["Equipment Type"]</label><input name="equipmentType" class="form-control" required placeholder="@Localizer["Vessel, Tank, Column, Heat Exchanger, Filter ..."]" /></div>
-                    <div class="col-md-6"><label class="form-label">@Localizer["Orientation"]</label><input name="orientation" class="form-control" placeholder="@Localizer["Vertical, Horizontal"]" /></div>
+                    <div class="col-md-6"><label class="form-label">@Localizer["Equipment Type"]</label><pems-input name="equipmentType" required placeholder="@Localizer["Vessel, Tank, Column, Heat Exchanger, Filter ..."]" /></div>
+                    <div class="col-md-6"><label class="form-label">@Localizer["Orientation"]</label><pems-input name="orientation" placeholder="@Localizer["Vertical, Horizontal"]" /></div>
                 </div>
                 <div class="row g-3 mb-3">
-                    <div class="col-md-3"><label class="form-label">@Localizer["Volume"]</label><input type="number" step="any" name="volume" class="form-control" /></div>
-                    <div class="col-md-3"><label class="form-label">@Localizer["Design Pressure"]</label><input type="number" step="any" name="designPressure" class="form-control" /></div>
-                    <div class="col-md-3"><label class="form-label">@Localizer["Design Temperature"]</label><input type="number" step="any" name="designTemperature" class="form-control" /></div>
-                    <div class="col-md-3"><label class="form-label">@Localizer["Code Standard"]</label><input name="codeStandard" class="form-control" placeholder="@Localizer["ASME, API"]" /></div>
+                    <div class="col-md-3"><label class="form-label">@Localizer["Volume"]</label><pems-input type="number" step="any" name="volume" /></div>
+                    <div class="col-md-3"><label class="form-label">@Localizer["Design Pressure"]</label><pems-input type="number" step="any" name="designPressure" /></div>
+                    <div class="col-md-3"><label class="form-label">@Localizer["Design Temperature"]</label><pems-input type="number" step="any" name="designTemperature" /></div>
+                    <div class="col-md-3"><label class="form-label">@Localizer["Code Standard"]</label><pems-input name="codeStandard" placeholder="@Localizer["ASME, API"]" /></div>
                 </div>
-                <div class="mb-2"><label class="form-label">@Localizer["Material"]</label><input name="material" class="form-control" /></div>
-                <div class="mb-2"><label class="form-label">@Localizer["توضیحات (اختیاری)"]</label><textarea name="description" class="form-control" rows="2"></textarea></div>
+                <div class="mb-2"><label class="form-label">@Localizer["Material"]</label><pems-input name="material" /></div>
+                <div class="mb-2"><label class="form-label">@Localizer["توضیحات (اختیاری)"]</label><pems-textarea name="description" rows="2"></pems-textarea></div>
             </div>
             <div class="modal-footer">
                 <pems-button tone="neutral" size="small" outline="true" type="button" data-bs-dismiss="modal">@Localizer["انصراف"]</pems-button>

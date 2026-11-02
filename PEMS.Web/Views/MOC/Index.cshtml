@@ -37,27 +37,27 @@
                 <pems-list-filters form-id="mocFilterForm" action="@Url.Action("Index")" count="@filterCount" reset-href="@Url.Action("Index")">
                     <div>
                         <label class="lp-lbl" for="mocFilterRisk">@Localizer["Moc_Risk"]</label>
-                        <select id="mocFilterRisk" name="riskLevel" class="form-select form-select-sm">
+                        <pems-select scale="small" id="mocFilterRisk" name="riskLevel">
                             <option value="">@Localizer["Ed_All"]</option>
                             @foreach (var r in riskLevels)
                             { <option value="@r" selected="@(r == riskLevel)">@RiskText(r)</option> }
-                        </select>
+                        </pems-select>
                     </div>
                     <div>
                         <label class="lp-lbl" for="mocFilterStatus">@Localizer["Ed_Status"]</label>
-                        <select id="mocFilterStatus" name="status" class="form-select form-select-sm">
+                        <pems-select scale="small" id="mocFilterStatus" name="status">
                             <option value="">@Localizer["Ed_All"]</option>
                             @foreach (var s in statuses)
                             { <option value="@s" selected="@(s == status)">@StatusText(s)</option> }
-                        </select>
+                        </pems-select>
                     </div>
                     <div>
                         <label class="lp-lbl" for="mocFilterProject">@Localizer["Project"]</label>
-                        <select id="mocFilterProject" name="projectId" class="form-select form-select-sm">
+                        <pems-select scale="small" id="mocFilterProject" name="projectId">
                             <option value="">@Localizer["Ed_All"]</option>
                             @foreach (var p in projects)
                             { <option value="@p.ProjectId" selected="@(p.ProjectId == projectId)">@p.ProjectName</option> }
-                        </select>
+                        </pems-select>
                     </div>
                 </pems-list-filters>
                 <pems-list-kpi-toggle target="mocKpis" storage-key="pems.moc.kpis" />

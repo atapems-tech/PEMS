@@ -119,17 +119,17 @@
                 <div class="modal-header"><h6 class="modal-title">@Localizer["Sp_New"]</h6></div>
                 <div class="modal-body">
                     <div class="row g-3">
-                        <div class="col-md-6"><label class="form-label">@Localizer["Part Number"]</label><input name="partNumber" class="form-control" required /></div>
-                        <div class="col-md-6"><label class="form-label">@Localizer["Part Name"]</label><input name="partName" class="form-control" required /></div>
-                        <div class="col-md-6"><label class="form-label">@Localizer["Manufacturer"]</label><input name="manufacturer" class="form-control" /></div>
-                        <div class="col-md-6"><label class="form-label">@Localizer["Model"]</label><input name="model" class="form-control" /></div>
-                        <div class="col-md-4"><label class="form-label">@Localizer["Unit"]</label><input name="unit" class="form-control" placeholder="PCS, SET, KG..." /></div>
-                        <div class="col-md-4"><label class="form-label">@Localizer["Storage Location"]</label><input name="storageLocation" class="form-control" placeholder="Warehouse-A-Rack3" /></div>
+                        <div class="col-md-6"><label class="form-label">@Localizer["Part Number"]</label><pems-input name="partNumber" required /></div>
+                        <div class="col-md-6"><label class="form-label">@Localizer["Part Name"]</label><pems-input name="partName" required /></div>
+                        <div class="col-md-6"><label class="form-label">@Localizer["Manufacturer"]</label><pems-input name="manufacturer" /></div>
+                        <div class="col-md-6"><label class="form-label">@Localizer["Model"]</label><pems-input name="model" /></div>
+                        <div class="col-md-4"><label class="form-label">@Localizer["Unit"]</label><pems-input name="unit" placeholder="PCS, SET, KG..." /></div>
+                        <div class="col-md-4"><label class="form-label">@Localizer["Storage Location"]</label><pems-input name="storageLocation" placeholder="Warehouse-A-Rack3" /></div>
                         <div class="col-md-4"></div>
-                        <div class="col-md-4"><label class="form-label">@Localizer["Quantity On Hand"]</label><input name="quantityOnHand" type="number" step="0.01" value="0" class="form-control" required /></div>
-                        <div class="col-md-4"><label class="form-label">@Localizer["Min Stock Level"]</label><input name="minStockLevel" type="number" step="0.01" class="form-control" /></div>
-                        <div class="col-md-4"><label class="form-label">@Localizer["Reorder Point"]</label><input name="reorderPoint" type="number" step="0.01" class="form-control" /></div>
-                        <div class="col-12"><label class="form-label">@Localizer["Description"]</label><textarea name="description" class="form-control" rows="2"></textarea></div>
+                        <div class="col-md-4"><label class="form-label">@Localizer["Quantity On Hand"]</label><pems-input name="quantityOnHand" type="number" step="0.01" value="0" required /></div>
+                        <div class="col-md-4"><label class="form-label">@Localizer["Min Stock Level"]</label><pems-input name="minStockLevel" type="number" step="0.01" /></div>
+                        <div class="col-md-4"><label class="form-label">@Localizer["Reorder Point"]</label><pems-input name="reorderPoint" type="number" step="0.01" /></div>
+                        <div class="col-12"><label class="form-label">@Localizer["Description"]</label><pems-textarea name="description" rows="2"></pems-textarea></div>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -151,16 +151,16 @@
                     <div class="modal-header"><h6 class="modal-title">@Localizer["Sp_Edit"]</h6></div>
                     <div class="modal-body">
                         <div class="row g-3">
-                            <div class="col-md-6"><label class="form-label">@Localizer["Part Number"]</label><input name="partNumber" value="@p.PartNumber" class="form-control" required /></div>
-                            <div class="col-md-6"><label class="form-label">@Localizer["Part Name"]</label><input name="partName" value="@p.PartName" class="form-control" required /></div>
-                            <div class="col-md-6"><label class="form-label">@Localizer["Manufacturer"]</label><input name="manufacturer" value="@p.Manufacturer" class="form-control" /></div>
-                            <div class="col-md-6"><label class="form-label">@Localizer["Model"]</label><input name="model" value="@p.Model" class="form-control" /></div>
-                            <div class="col-md-4"><label class="form-label">@Localizer["Unit"]</label><input name="unit" value="@p.Unit" class="form-control" /></div>
-                            <div class="col-md-8"><label class="form-label">@Localizer["Storage Location"]</label><input name="storageLocation" value="@p.StorageLocation" class="form-control" /></div>
-                            <div class="col-md-4"><label class="form-label">@Localizer["Quantity On Hand"]</label><input name="quantityOnHand" type="number" step="0.01" value="@p.QuantityOnHand" class="form-control" required /></div>
-                            <div class="col-md-4"><label class="form-label">@Localizer["Min Stock Level"]</label><input name="minStockLevel" type="number" step="0.01" value="@p.MinStockLevel" class="form-control" /></div>
-                            <div class="col-md-4"><label class="form-label">@Localizer["Reorder Point"]</label><input name="reorderPoint" type="number" step="0.01" value="@p.ReorderPoint" class="form-control" /></div>
-                            <div class="col-12"><label class="form-label">@Localizer["Description"]</label><textarea name="description" class="form-control" rows="2">@p.Description</textarea></div>
+                            <div class="col-md-6"><label class="form-label">@Localizer["Part Number"]</label><pems-input name="partNumber" value="@p.PartNumber" required /></div>
+                            <div class="col-md-6"><label class="form-label">@Localizer["Part Name"]</label><pems-input name="partName" value="@p.PartName" required /></div>
+                            <div class="col-md-6"><label class="form-label">@Localizer["Manufacturer"]</label><pems-input name="manufacturer" value="@p.Manufacturer" /></div>
+                            <div class="col-md-6"><label class="form-label">@Localizer["Model"]</label><pems-input name="model" value="@p.Model" /></div>
+                            <div class="col-md-4"><label class="form-label">@Localizer["Unit"]</label><pems-input name="unit" value="@p.Unit" /></div>
+                            <div class="col-md-8"><label class="form-label">@Localizer["Storage Location"]</label><pems-input name="storageLocation" value="@p.StorageLocation" /></div>
+                            <div class="col-md-4"><label class="form-label">@Localizer["Quantity On Hand"]</label><pems-input name="quantityOnHand" type="number" step="0.01" value="@p.QuantityOnHand" required /></div>
+                            <div class="col-md-4"><label class="form-label">@Localizer["Min Stock Level"]</label><pems-input name="minStockLevel" type="number" step="0.01" value="@p.MinStockLevel" /></div>
+                            <div class="col-md-4"><label class="form-label">@Localizer["Reorder Point"]</label><pems-input name="reorderPoint" type="number" step="0.01" value="@p.ReorderPoint" /></div>
+                            <div class="col-12"><label class="form-label">@Localizer["Description"]</label><pems-textarea name="description" rows="2">@p.Description</pems-textarea></div>
                         </div>
                     </div>
                     <div class="modal-footer">

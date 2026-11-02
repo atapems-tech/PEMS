@@ -39,11 +39,11 @@
                 <pems-list-filters form-id="wrFilterForm" action="@Url.Action("Index")" count="@filterCount" reset-href="@Url.Action("Index")">
                     <div>
                         <label class="lp-lbl" for="wrFilterStatus">@Localizer["Ed_Status"]</label>
-                        <select id="wrFilterStatus" name="status" class="form-select form-select-sm">
+                        <pems-select scale="small" id="wrFilterStatus" name="status">
                             <option value="">@Localizer["Ed_All"]</option>
                             @foreach (var s in statuses)
                             { <option value="@s" selected="@(s == status)">@StatusText(s)</option> }
-                        </select>
+                        </pems-select>
                     </div>
                 </pems-list-filters>
                 <pems-list-reset-columns grid-key="WorkRequest" />

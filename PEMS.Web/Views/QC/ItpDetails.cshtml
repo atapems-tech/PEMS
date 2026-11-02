@@ -93,19 +93,19 @@
                                 <div class="modal-body">
                                     <div class="mb-2">
                                         <label class="form-label small">@Localizer["Result"]</label>
-                                        <select name="result" class="form-select form-select-sm" required>
+                                        <pems-select scale="small" name="result" required>
                                             <option value="Acceptable">Acceptable</option>
                                             <option value="Reject">@Localizer["Reject"]</option>
                                             <option value="Warning">@Localizer["Warning"]</option>
-                                        </select>
+                                        </pems-select>
                                     </div>
                                     <div class="mb-2">
                                         <label class="form-label small">@Localizer["Inspector"]</label>
-                                        <input name="inspector" class="form-control form-control-sm" />
+                                        <pems-input scale="small" name="inspector" />
                                     </div>
                                     <div class="mb-2">
                                         <label class="form-label small">@Localizer["Notes"]</label>
-                                        <textarea name="description" class="form-control form-control-sm" rows="2"></textarea>
+                                        <pems-textarea scale="small" name="description" rows="2"></pems-textarea>
                                     </div>
                                 </div>
                                 <div class="modal-footer">
@@ -126,33 +126,33 @@
     <form asp-action="ItpAddLineItem" method="post">
         <input type="hidden" name="itpId" value="@Model.InspectionTestPlanId" />
         <div class="row g-3">
-            <div class="col-md-6"><label class="form-label small">@Localizer["Activity"]</label><input name="activity" class="form-control form-control-sm" required /></div>
+            <div class="col-md-6"><label class="form-label small">@Localizer["Activity"]</label><pems-input scale="small" name="activity" required /></div>
             <div class="col-md-3">
                 <label class="form-label small">@Localizer["Discipline"]</label>
-                <select name="qcDisciplineId" class="form-select form-select-sm" required>
+                <pems-select scale="small" name="qcDisciplineId" required>
                     @foreach (var d in (IEnumerable<PEMS.Domain.Entities.QCDiscipline>)ViewBag.QCDisciplines)
                     {
                         <option value="@d.QCDisciplineId">@d.Name</option>
                     }
-                </select>
+                </pems-select>
             </div>
             <div class="col-md-3">
                 <label class="form-label small">@Localizer["Category"]</label>
-                <select name="inspectionCategory" class="form-select form-select-sm">
+                <pems-select scale="small" name="inspectionCategory">
                     <option value="H">H - Hold Point</option>
                     <option value="W">W - Witness Point</option>
                     <option value="R">R - Review Only</option>
                     <option value="S">S - Surveillance/Random</option>
                     <option value="M">M - Monitor</option>
-                </select>
+                </pems-select>
             </div>
-            <div class="col-md-6"><label class="form-label small">@Localizer["Acceptance Criteria"]</label><input name="acceptanceCriteria" class="form-control form-control-sm" /></div>
-            <div class="col-md-3"><label class="form-label small">Reference Code</label><input name="referenceCodeStandard" class="form-control form-control-sm" /></div>
+            <div class="col-md-6"><label class="form-label small">@Localizer["Acceptance Criteria"]</label><pems-input scale="small" name="acceptanceCriteria" /></div>
+            <div class="col-md-3"><label class="form-label small">Reference Code</label><pems-input scale="small" name="referenceCodeStandard" /></div>
             <div class="col-md-3">
                 <label class="form-label small">Responsible Party</label>
-                <select name="responsibleParty" class="form-select form-select-sm">
+                <pems-select scale="small" name="responsibleParty">
                     <option>Contractor</option><option>@Localizer["Client"]</option><option>ThirdParty</option>
-                </select>
+                </pems-select>
             </div>
         </div>
         <div class="mt-3">

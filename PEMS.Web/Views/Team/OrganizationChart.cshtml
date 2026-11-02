@@ -33,16 +33,14 @@
                 <i class="bi bi-arrow-return-@(System.Globalization.CultureInfo.CurrentUICulture.TextInfo.IsRightToLeft ? "right" : "left")"></i>
                 @Localizer["بازگشت به تیم‌ها"]
             </pems-button>
-            <input type="search" id="orgChartDisciplineSearch" class="form-control form-control-sm" style="width:170px"
-                   placeholder="@Localizer["جستجوی دیسیپلین..."]" aria-label="@Localizer["جستجوی دیسیپلین..."]" autocomplete="off" />
-            <select id="orgChartDisciplineFilter" class="form-select form-select-sm" style="min-width:200px"
-                    aria-label="@Localizer["دیسیپلین"]">
+            <pems-input scale="small" type="search" id="orgChartDisciplineSearch" style="width:170px" placeholder="@Localizer["جستجوی دیسیپلین..."]" aria-label="@Localizer["جستجوی دیسیپلین..."]" autocomplete="off" />
+            <pems-select scale="small" id="orgChartDisciplineFilter" style="min-width:200px" aria-label="@Localizer["دیسیپلین"]">
                 <option value="">@Localizer["همه‌ی دیسیپلین‌ها"]</option>
                 @foreach (var d in (IEnumerable<dynamic>)ViewBag.Disciplines)
                 {
                     <option value="@d.DisciplineId" selected="@(selectedDisciplineId == (int)d.DisciplineId)">@d.Name</option>
                 }
-            </select>
+            </pems-select>
         </div>
 
         <div class="d-flex align-items-center gap-1" role="toolbar" aria-label="@Localizer["ابزار نمودار سازمانی"]">

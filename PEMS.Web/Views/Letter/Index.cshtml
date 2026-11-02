@@ -367,13 +367,13 @@
                                 </fieldset>
                                 <div>
                                     <label class="lp-lbl" for="fpConf">@Localizer["Ct_Confidentiality"]</label>
-                                    <select id="fpConf" name="confidentiality" class="form-select form-select-sm">
+                                    <pems-select scale="small" id="fpConf" name="confidentiality">
                                         <option value="">@Localizer["Lt_Any"]</option>
                                         @foreach (var level in new[] { "Public", "Internal", "Confidential", "Restricted" })
                                         {
                                             <option value="@level" selected="@(currentConfidentiality == level)">@level</option>
                                         }
-                                    </select>
+                                    </pems-select>
                                 </div>
                                 <div class="row g-2">
                                     <div class="col-6"><label class="lp-lbl" for="fpFrom">@Localizer["Lp_From"]</label><input type="date" id="fpFrom" name="fromDate" class="form-control form-control-sm" value="@fromDate?.ToString("yyyy-MM-dd")" /></div>
@@ -382,17 +382,17 @@
                                 <div class="row g-2">
                                     <div class="col-6">
                                         <label class="lp-lbl" for="fpDiscipline">@Localizer["Lt_Discipline"]</label>
-                                        <select id="fpDiscipline" name="disciplineId" class="form-select form-select-sm">
+                                        <pems-select scale="small" id="fpDiscipline" name="disciplineId">
                                             <option value="">@Localizer["Lt_Any"]</option>
                                             @foreach (var d in disciplines) { <option value="@d.DisciplineId" selected="@(d.DisciplineId == disciplineId)">@d.Name</option> }
-                                        </select>
+                                        </pems-select>
                                     </div>
                                     <div class="col-6">
                                         <label class="lp-lbl" for="fpProject">@Localizer["Lt_Project"]</label>
-                                        <select id="fpProject" name="projectId" class="form-select form-select-sm">
+                                        <pems-select scale="small" id="fpProject" name="projectId">
                                             <option value="">@Localizer["All Projects"]</option>
                                             @foreach (var p in projects) { <option value="@p.ProjectId" selected="@(p.ProjectId == f.projectId)">@p.ProjectName</option> }
-                                        </select>
+                                        </pems-select>
                                     </div>
                                 </div>
                                 <div class="d-grid gap-2">
@@ -444,7 +444,7 @@
                         @foreach (var col in new[] { ("priority", "Lt_Priority", settings.HiddenColumns.Contains("priority")), ("discipline", "Lt_Discipline", settings.HiddenColumns.Contains("discipline")), ("attachments", "Lt_ColAttachments", settings.HiddenColumns.Contains("attachments")), ("responseDue", "Lt_ColResponseDue", settings.HiddenColumns.Contains("responseDue")), ("lastActivity", "Lt_ColLastActivity", settings.HiddenColumns.Contains("lastActivity")) })
                         {
                             <li class="form-check ms-3 me-3">
-                                <input class="form-check-input" type="checkbox" id="col_@col.Item1" data-col-toggle="@col.Item1" data-default-hidden="@(col.Item3 ? "true" : "false")" checked />
+                                <pems-input kind="check" type="checkbox" id="col_@col.Item1" data-col-toggle="@col.Item1" data-default-hidden="@(col.Item3 ? "true" : "false")" checked />
                                 <label class="form-check-label small" for="col_@col.Item1">@Localizer[col.Item2]</label>
                             </li>
                         }
@@ -572,7 +572,7 @@
                                 <div class="modal-body">
                                     <p class="small text-muted">@Localizer["Lt_ArchiveHelp"]</p>
                                     <label for="letterArchiveReason" class="form-label">@Localizer["Lt_ArchiveReason"]</label>
-                                    <textarea id="letterArchiveReason" name="reason" class="form-control" rows="3" maxlength="500" aria-describedby="letterArchiveReasonError"></textarea>
+                                    <pems-textarea id="letterArchiveReason" name="reason" rows="3" maxlength="500" aria-describedby="letterArchiveReasonError"></pems-textarea>
                                     <div id="letterArchiveReasonError" class="text-danger small mt-1" hidden><i class="bi bi-exclamation-circle" aria-hidden="true"></i> @Localizer["Lt_ArchiveReasonRequired"]</div>
                                 </div>
                                 <div class="modal-footer">
@@ -812,7 +812,7 @@
                 <label class="form-label small" for="ctReminderAt">@Localizer["Ct_RemindAt"]</label>
                 <input type="datetime-local" id="ctReminderAt" class="form-control form-control-sm mb-2" />
                 <label class="form-label small" for="ctReminderNote">@Localizer["Ct_Note"]</label>
-                <input type="text" id="ctReminderNote" class="form-control form-control-sm" maxlength="300" />
+                <pems-input scale="small" type="text" id="ctReminderNote" maxlength="300" />
                 <div class="ct-msg" id="ctReminderMsg" role="status"></div>
             </div>
             <div class="modal-footer">
@@ -851,20 +851,20 @@
                             <div class="row g-3">
                                 <div class="col-sm-6">
                                     <label class="form-label small" for="ctSetView">@Localizer["Ct_DefaultView"]</label>
-                                    <select id="ctSetView" class="form-select form-select-sm"><option value="flat">@Localizer["Ct_ViewFlat"]</option><option value="thread">@Localizer["Ct_ViewThread"]</option></select>
+                                    <pems-select scale="small" id="ctSetView"><option value="flat">@Localizer["Ct_ViewFlat"]</option><option value="thread">@Localizer["Ct_ViewThread"]</option></pems-select>
                                 </div>
                                 <div class="col-sm-6">
                                     <label class="form-label small" for="ctSetDensity">@Localizer["Ct_Density"]</label>
-                                    <select id="ctSetDensity" class="form-select form-select-sm"><option value="normal">@Localizer["Ct_DensityNormal"]</option><option value="dense">@Localizer["Lp_Compact"]</option></select>
+                                    <pems-select scale="small" id="ctSetDensity"><option value="normal">@Localizer["Ct_DensityNormal"]</option><option value="dense">@Localizer["Lp_Compact"]</option></pems-select>
                                 </div>
                                 <div class="col-sm-6">
                                     <label class="form-label small" for="ctSetPageSize">@Localizer["Ct_PageSize"]</label>
-                                    <select id="ctSetPageSize" class="form-select form-select-sm"><option>20</option><option>50</option><option>100</option></select>
+                                    <pems-select scale="small" id="ctSetPageSize"><option>20</option><option>50</option><option>100</option></pems-select>
                                 </div>
                                 <div class="col-12">
-                                    <div class="form-check"><input class="form-check-input" type="checkbox" id="ctSetPreview" /><label class="form-check-label" for="ctSetPreview">@Localizer["Ct_SetPreview"]</label></div>
-                                    <div class="form-check"><input class="form-check-input" type="checkbox" id="ctSetConfirmTrash" /><label class="form-check-label" for="ctSetConfirmTrash">@Localizer["Ct_SetConfirmTrash"]</label></div>
-                                    <div class="form-check"><input class="form-check-input" type="checkbox" id="ctSetMarkRead" /><label class="form-check-label" for="ctSetMarkRead">@Localizer["Ct_SetMarkRead"]</label></div>
+                                    <div class="form-check"><pems-input kind="check" type="checkbox" id="ctSetPreview" /><label class="form-check-label" for="ctSetPreview">@Localizer["Ct_SetPreview"]</label></div>
+                                    <div class="form-check"><pems-input kind="check" type="checkbox" id="ctSetConfirmTrash" /><label class="form-check-label" for="ctSetConfirmTrash">@Localizer["Ct_SetConfirmTrash"]</label></div>
+                                    <div class="form-check"><pems-input kind="check" type="checkbox" id="ctSetMarkRead" /><label class="form-check-label" for="ctSetMarkRead">@Localizer["Ct_SetMarkRead"]</label></div>
                                 </div>
                             </div>
                         </section>
@@ -874,11 +874,11 @@
                             <div class="row g-2 mb-3">
                                 @foreach (var col in new[] { ("priority", "Lt_Priority"), ("discipline", "Lt_Discipline"), ("attachments", "Lt_ColAttachments"), ("responseDue", "Lt_ColResponseDue"), ("lastActivity", "Lt_ColLastActivity"), ("letterNo", "Letter No"), ("status", "Status"), ("date", "Date") })
                                 {
-                                    <div class="col-sm-6 col-lg-4"><div class="form-check"><input class="form-check-input" type="checkbox" data-set-col="@col.Item1" id="ctSetCol_@col.Item1" /><label class="form-check-label" for="ctSetCol_@col.Item1">@Localizer[col.Item2]</label></div></div>
+                                    <div class="col-sm-6 col-lg-4"><div class="form-check"><pems-input kind="check" type="checkbox" data-set-col="@col.Item1" id="ctSetCol_@col.Item1" /><label class="form-check-label" for="ctSetCol_@col.Item1">@Localizer[col.Item2]</label></div></div>
                                 }
                             </div>
                             <label class="form-label small" for="ctSetFrozen">@Localizer["Ct_FrozenColumns"]</label>
-                            <select id="ctSetFrozen" class="form-select form-select-sm" style="max-width:220px"><option value="0">@Localizer["Ct_None"]</option><option value="1">1</option><option value="2">2</option><option value="3">3</option></select>
+                            <pems-select scale="small" id="ctSetFrozen" style="max-width:220px"><option value="0">@Localizer["Ct_None"]</option><option value="1">1</option><option value="2">2</option><option value="3">3</option></pems-select>
                         </section>
                         <section class="ct-pane" data-pane-body="tags" role="tabpanel" hidden></section>
                         <section class="ct-pane" data-pane-body="delegation" role="tabpanel" hidden></section>

@@ -16,12 +16,12 @@
 <div class="content-card mb-3">
     <form method="get" class="row g-2">
         <div class="col-md-2">
-            <select name="periodType" class="form-select form-select-sm" onchange="this.form.submit()">
+            <pems-select scale="small" name="periodType" onchange="this.form.submit()">
                 @foreach (var p in new[] { "Day", "Month", "CustomRange" })
                 {
                     <option value="@p" selected="@(p == (string)ViewBag.PeriodType)">@p</option>
                 }
-            </select>
+            </pems-select>
         </div>
         <div class="col-md-3">
             <input name="anchorOrFrom" type="date" value="@(((DateTime?)ViewBag.AnchorOrFrom)?.ToString("yyyy-MM-dd"))" class="form-control form-control-sm"
@@ -32,22 +32,22 @@
             <div class="col-md-3"><input name="toDate" type="date" value="@(((DateTime?)ViewBag.ToDate)?.ToString("yyyy-MM-dd"))" class="form-control form-control-sm" placeholder="To date" /></div>
         }
         <div class="col-md-2">
-            <select name="productionWorkCenterId" class="form-select form-select-sm">
+            <pems-select scale="small" name="productionWorkCenterId">
                 <option value="">All Work Centers</option>
                 @foreach (var w in ViewBag.WorkCenters)
                 {
                     <option value="@w.ProductionWorkCenterId" selected="@(w.ProductionWorkCenterId == (int?)ViewBag.SelectedWorkCenterId)">@w.Code</option>
                 }
-            </select>
+            </pems-select>
         </div>
         <div class="col-md-2">
-            <select name="materialItemId" class="form-select form-select-sm">
+            <pems-select scale="small" name="materialItemId">
                 <option value="">All Materials</option>
                 @foreach (var m in ViewBag.MaterialItems)
                 {
                     <option value="@m.MaterialItemId" selected="@(m.MaterialItemId == (int?)ViewBag.SelectedMaterialItemId)">@m.MaterialCode</option>
                 }
-            </select>
+            </pems-select>
         </div>
         <div class="col-12"><pems-button tone="primary" size="small"><i class="bi bi-funnel"></i> @Localizer["Apply"]</pems-button></div>
     </form>

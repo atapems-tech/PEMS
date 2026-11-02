@@ -58,23 +58,23 @@
                     <input type="hidden" name="Search" value="@filter.Search" />
                     <div>
                         <label class="lp-lbl" for="edFilterDiscipline">@Localizer["Ed_Discipline"]</label>
-                        <select id="edFilterDiscipline" name="DisciplineId" class="form-select form-select-sm">
+                        <pems-select scale="small" id="edFilterDiscipline" name="DisciplineId">
                             <option value="">@Localizer["Ed_All"]</option>
                             @foreach (var d in disciplines)
                             { <option value="@d.DisciplineId" selected="@(filter.DisciplineId == d.DisciplineId)">@d.Name</option> }
-                        </select>
+                        </pems-select>
                     </div>
                     <div>
                         <label class="lp-lbl" for="edFilterStatus">@Localizer["Ed_Status"]</label>
-                        <select id="edFilterStatus" name="Status" class="form-select form-select-sm">
+                        <pems-select scale="small" id="edFilterStatus" name="Status">
                             <option value="">@Localizer["Ed_All"]</option>
                             @foreach (var s in statusOptions)
                             { <option value="@s" selected="@(filter.Status == s)">@StatusText(s)</option> }
-                        </select>
+                        </pems-select>
                     </div>
                     <div>
                         <label class="lp-lbl" for="edFilterArea">@Localizer["Ed_Area"]</label>
-                        <input id="edFilterArea" name="Area" value="@filter.Area" type="text" class="form-control form-control-sm" />
+                        <pems-input scale="small" id="edFilterArea" name="Area" value="@filter.Area" type="text" />
                     </div>
                 </pems-list-filters>
                 <pems-list-kpi-toggle target="edKpis" storage-key="pems.engdocs.kpis" />

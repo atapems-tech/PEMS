@@ -56,33 +56,33 @@
         <input type="hidden" name="view" value="@view" />
         <input type="hidden" name="date" value="@anchor.ToString("yyyy-MM-dd")" />
         <div><label class="form-label small mb-1">@Localizer["Maintenance Team"]</label>
-            <select name="teamId" class="form-select form-select-sm" onchange="this.form.submit()">
+            <pems-select scale="small" name="teamId" onchange="this.form.submit()">
                 <option value="">@Localizer["All Teams"]</option>
                 @foreach (var t in teams) { <option value="@t.Id" selected="@(ViewBag.TeamId == t.Id)">@t.Name</option> }
-            </select></div>
+            </pems-select></div>
         <div><label class="form-label small mb-1">@Localizer["Executor"]</label>
-            <select name="employeeId" class="form-select form-select-sm" onchange="this.form.submit()">
+            <pems-select scale="small" name="employeeId" onchange="this.form.submit()">
                 <option value="">@Localizer["All"]</option>
                 @foreach (var e in employees) { <option value="@e.EmployeeId" selected="@(ViewBag.EmployeeId == (int)e.EmployeeId)">@e.FullName</option> }
-            </select></div>
+            </pems-select></div>
         <div><label class="form-label small mb-1">@Localizer["Ed_Status"]</label>
-            <select name="status" class="form-select form-select-sm" onchange="this.form.submit()">
+            <pems-select scale="small" name="status" onchange="this.form.submit()">
                 <option value="">@Localizer["Eq_AllStatuses"]</option>
                 @foreach (var s in new[] { "Open", "Assigned", "InProgress", "OnHold", "Completed", "Closed" })
                 { <option value="@s" selected="@(s == (string?)ViewBag.Status)">@s</option> }
-            </select></div>
+            </pems-select></div>
         <div><label class="form-label small mb-1">@Localizer["Work Type"]</label>
-            <select name="workOrderType" class="form-select form-select-sm" onchange="this.form.submit()">
+            <pems-select scale="small" name="workOrderType" onchange="this.form.submit()">
                 <option value="">@Localizer["All"]</option>
                 @foreach (var s in new[] { "Preventive", "Corrective", "Emergency", "Predictive" })
                 { <option value="@s" selected="@(s == (string?)ViewBag.WorkOrderType)">@s</option> }
-            </select></div>
+            </pems-select></div>
         <div><label class="form-label small mb-1">@Localizer["Cm_Priority"]</label>
-            <select name="priority" class="form-select form-select-sm" onchange="this.form.submit()">
+            <pems-select scale="small" name="priority" onchange="this.form.submit()">
                 <option value="">@Localizer["All"]</option>
                 @foreach (var s in new[] { "Low", "Medium", "High", "Critical" })
                 { <option value="@s" selected="@(s == (string?)ViewBag.Priority)">@s</option> }
-            </select></div>
+            </pems-select></div>
         <pems-button tone="neutral" size="small" outline="true" as="a" href="@Url.Action("Index", new { view })">@Localizer["Reset"]</pems-button>
     </form>
 </div>

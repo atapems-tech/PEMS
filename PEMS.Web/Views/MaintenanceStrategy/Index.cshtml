@@ -45,31 +45,29 @@
                     <input type="hidden" name="q" value="@q" />
                     <div>
                         <label class="lp-lbl" for="strategyFilterSearch">@Localizer["Rcm_FilterByEquipment"]</label>
-                        <input type="text" class="form-control form-control-sm" id="strategyFilterSearch"
-                               placeholder="@Localizer["Rcm_SearchEquipmentPlaceholder"]" value="@Model.SelectedEquipmentLabel"
-                               data-pems-search data-search-type="Equipment" autocomplete="off" />
+                        <pems-input scale="small" type="text" id="strategyFilterSearch" placeholder="@Localizer["Rcm_SearchEquipmentPlaceholder"]" value="@Model.SelectedEquipmentLabel" data-pems-search data-search-type="Equipment" autocomplete="off" />
                         <input type="hidden" name="equipmentId" id="strategyFilterEquipmentId" value="@equipmentId" />
                     </div>
                     <div>
                         <label class="lp-lbl" for="msFilterClass">@Localizer["Rcm_EquipmentClass"]</label>
-                        <select id="msFilterClass" name="classId" class="form-select form-select-sm">
+                        <pems-select scale="small" id="msFilterClass" name="classId">
                             <option value="">@Localizer["Rcm_All"]</option>
                             @foreach (var c in Model.Classes) { <option value="@c.Id" selected="@(classId == c.Id)">@c.Text</option> }
-                        </select>
+                        </pems-select>
                     </div>
                     <div>
                         <label class="lp-lbl" for="msFilterStatus">@Localizer["Rcm_Status"]</label>
-                        <select id="msFilterStatus" name="status" class="form-select form-select-sm">
+                        <pems-select scale="small" id="msFilterStatus" name="status">
                             <option value="">@Localizer["Rcm_AllLive"]</option>
                             @foreach (var s in RcmCodes.Status.All) { <option value="@s" selected="@(status == s)">@Localizer.Label("Status", s)</option> }
-                        </select>
+                        </pems-select>
                     </div>
                     <div>
                         <label class="lp-lbl" for="msFilterType">@Localizer["Rcm_StrategyType"]</label>
-                        <select id="msFilterType" name="type" class="form-select form-select-sm">
+                        <pems-select scale="small" id="msFilterType" name="type">
                             <option value="">@Localizer["Rcm_All"]</option>
                             @foreach (var t in RcmCodes.StrategyType.All) { <option value="@t" selected="@(type == t)">@Localizer.Label("StrategyType", t)</option> }
-                        </select>
+                        </pems-select>
                     </div>
                 </pems-list-filters>
                 <pems-list-menu id="msMoreBtn" icon="bi-three-dots" label="@Localizer["Lp_More"]">

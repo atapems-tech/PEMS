@@ -6,38 +6,38 @@
         <div class="row g-3">
             <div class="col-md-8">
                 <label class="form-label">Product / Material</label>
-                <select name="materialItemId" class="form-select" required onchange="fillUom(this)">
+                <pems-select name="materialItemId" required onchange="fillUom(this)">
                     <option value="">@Localizer["-- select --"]</option>
                     @foreach (var m in ViewBag.MaterialItems)
                     {
                         <option value="@m.MaterialItemId" data-uom="@m.UomId">@m.MaterialCode - @m.Description</option>
                     }
-                </select>
+                </pems-select>
             </div>
             <div class="col-md-4">
                 <label class="form-label">@Localizer["UOM"]</label>
-                <select name="uomId" id="uomSelect" class="form-select">
+                <pems-select name="uomId" id="uomSelect">
                     <option value="">@Localizer["-- None --"]</option>
                     @foreach (var u in ViewBag.Uoms)
                     {
                         <option value="@u.MaterialUOMId">@u.Code</option>
                     }
-                </select>
+                </pems-select>
             </div>
 
             <div class="col-md-6">
                 <label class="form-label">Planned Quantity</label>
-                <input type="number" step="0.001" min="0.001" name="plannedQuantity" class="form-control" required />
+                <pems-input type="number" step="0.001" min="0.001" name="plannedQuantity" required />
             </div>
             <div class="col-md-6">
                 <label class="form-label">@Localizer["Work Center"]</label>
-                <select name="productionWorkCenterId" class="form-select" required>
+                <pems-select name="productionWorkCenterId" required>
                     <option value="">@Localizer["-- select --"]</option>
                     @foreach (var w in ViewBag.WorkCenters)
                     {
                         <option value="@w.ProductionWorkCenterId">@w.Code - @w.Name</option>
                     }
-                </select>
+                </pems-select>
             </div>
 
             <div class="col-md-6">
@@ -51,28 +51,28 @@
 
             <div class="col-md-6">
                 <label class="form-label">Primary Equipment (optional)</label>
-                <select name="equipmentId" class="form-select">
+                <pems-select name="equipmentId">
                     <option value="">-- none / from work center --</option>
                     @foreach (var e in ViewBag.Equipments)
                     {
                         <option value="@e.EquipmentId">@e.TagNumber - @e.Name</option>
                     }
-                </select>
+                </pems-select>
             </div>
             <div class="col-md-6">
                 <label class="form-label">Responsible Employee (optional)</label>
-                <select name="responsibleEmployeeId" class="form-select">
+                <pems-select name="responsibleEmployeeId">
                     <option value="">@Localizer["-- None --"]</option>
                     @foreach (var emp in ViewBag.Employees)
                     {
                         <option value="@emp.EmployeeId">@emp.Name</option>
                     }
-                </select>
+                </pems-select>
             </div>
 
             <div class="col-12">
                 <label class="form-label">@Localizer["Notes"]</label>
-                <textarea name="notes" class="form-control" rows="2"></textarea>
+                <pems-textarea name="notes" rows="2"></pems-textarea>
             </div>
         </div>
 

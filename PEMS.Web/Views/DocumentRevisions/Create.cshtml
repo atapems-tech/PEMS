@@ -15,28 +15,28 @@
         <div class="row g-3">
             <div class="col-md-6">
                 <label class="form-label">New Revision No</label>
-                <input asp-for="RevisionNo" class="form-control" placeholder="e.g. 01" />
+                <pems-input asp-for="RevisionNo" placeholder="e.g. 01" />
             </div>
             <div class="col-md-6">
                 <label class="form-label">Previous Revision No</label>
-                <input asp-for="PreviousRevisionNo" class="form-control" readonly />
+                <pems-input asp-for="PreviousRevisionNo" readonly />
             </div>
             <div class="col-md-6">
                 <label class="form-label">@Localizer["Status"]</label>
-                <select asp-for="Status" class="form-select">
+                <pems-select asp-for="Status">
                     <option>@Localizer["Draft"]</option>
                     <option>@Localizer["Review"]</option>
                     <option>@Localizer["Approved"]</option>
                     <option>@Localizer["Rejected"]</option>
-                </select>
+                </pems-select>
             </div>
             <div class="col-md-6">
                 <label class="form-label">@Localizer["Issue Purpose"]</label>
-                <input asp-for="IssuePurpose" class="form-control" placeholder="For Approval / For Construction / For Information" />
+                <pems-input asp-for="IssuePurpose" placeholder="For Approval / For Construction / For Information" />
             </div>
             <div class="col-12">
                 <label class="form-label">@Localizer["Comment"]</label>
-                <textarea asp-for="Comment" class="form-control" rows="3"></textarea>
+                <pems-textarea asp-for="Comment" rows="3"></pems-textarea>
             </div>
         </div>
 

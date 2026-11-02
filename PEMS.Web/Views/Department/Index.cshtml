@@ -72,9 +72,9 @@
                 <div class="modal-header"><h6 class="modal-title">@Localizer["New Department"]</h6></div>
                 <div class="modal-body">
                     <div class="row g-3">
-                        <div class="col-md-4"><label class="form-label">@Localizer["Code"]</label><input name="code" class="form-control" placeholder="e.g. ENG" /></div>
-                        <div class="col-md-8"><label class="form-label">@Localizer["Name"]</label><input name="name" class="form-control" required /></div>
-                        <div class="col-12"><label class="form-label">@Localizer["Description"]</label><textarea name="description" class="form-control" rows="2"></textarea></div>
+                        <div class="col-md-4"><label class="form-label">@Localizer["Code"]</label><pems-input name="code" placeholder="e.g. ENG" /></div>
+                        <div class="col-md-8"><label class="form-label">@Localizer["Name"]</label><pems-input name="name" required /></div>
+                        <div class="col-12"><label class="form-label">@Localizer["Description"]</label><pems-textarea name="description" rows="2"></pems-textarea></div>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -96,9 +96,9 @@
                     <div class="modal-header"><h6 class="modal-title">@Localizer["Edit Department"]</h6></div>
                     <div class="modal-body">
                         <div class="row g-3">
-                            <div class="col-md-4"><label class="form-label">@Localizer["Code"]</label><input name="code" value="@d.Code" class="form-control" /></div>
-                            <div class="col-md-8"><label class="form-label">@Localizer["Name"]</label><input name="name" value="@d.Name" class="form-control" required /></div>
-                            <div class="col-12"><label class="form-label">@Localizer["Description"]</label><textarea name="description" class="form-control" rows="2">@d.Description</textarea></div>
+                            <div class="col-md-4"><label class="form-label">@Localizer["Code"]</label><pems-input name="code" value="@d.Code" /></div>
+                            <div class="col-md-8"><label class="form-label">@Localizer["Name"]</label><pems-input name="name" value="@d.Name" required /></div>
+                            <div class="col-12"><label class="form-label">@Localizer["Description"]</label><pems-textarea name="description" rows="2">@d.Description</pems-textarea></div>
                         </div>
                     </div>
                     <div class="modal-footer">

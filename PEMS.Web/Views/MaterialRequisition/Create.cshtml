@@ -15,19 +15,19 @@
             </div>
             <div class="col-md-6">
                 <label class="form-label">@Localizer["Project"]</label>
-                <select name="projectId" class="form-select" required>
+                <pems-select name="projectId" required>
                     @foreach (var p in projects) { <option value="@p.ProjectId">@p.ProjectName</option> }
-                </select>
+                </pems-select>
             </div>
             <div class="col-md-6">
                 <label class="form-label">@Localizer["Discipline"]</label>
-                <select name="disciplineId" class="form-select" required>
+                <pems-select name="disciplineId" required>
                     @foreach (var d in disciplines) { <option value="@d.DisciplineId">@d.Name</option> }
-                </select>
+                </pems-select>
             </div>
             <div class="col-md-6">
                 <label class="form-label">Equipment Tag (optional)</label>
-                <input name="equipmentTagNumber" class="form-control" placeholder="e.g. P-101A" />
+                <pems-input name="equipmentTagNumber" placeholder="e.g. P-101A" />
             </div>
             <div class="col-md-6">
                 <label class="form-label">@Localizer["Required Date"]</label>
@@ -35,14 +35,14 @@
             </div>
             <div class="col-md-6">
                 <label class="form-label">Responsible Engineer</label>
-                <select name="responsibleEngineerId" class="form-select">
+                <pems-select name="responsibleEngineerId">
                     <option value="">@Localizer["-- None --"]</option>
                     @foreach (var e in engineers) { <option value="@e.EmployeeId">@e.Name</option> }
-                </select>
+                </pems-select>
             </div>
             <div class="col-12">
                 <label class="form-label">@Localizer["Description"]</label>
-                <textarea name="description" class="form-control" rows="2" required></textarea>
+                <pems-textarea name="description" rows="2" required></pems-textarea>
             </div>
         </div>
 
@@ -62,15 +62,13 @@
         <template id="mrItemTemplate">
             <div class="row g-2 mb-2 item-row">
                 <div class="col-md-3">
-                    <select name="itemParts" class="form-select form-select-sm" aria-label="@Localizer["Part No"]"
-                            data-pems-select-url="@Url.Action("PartLookup")" data-pems-select-create
-                            data-create-text="@Localizer["Mr_UseTypedPart"]" data-placeholder="@Localizer["Part No"]">
+                    <pems-select scale="small" name="itemParts" aria-label="@Localizer["Part No"]" data-pems-select-url="@Url.Action("PartLookup")" data-pems-select-create data-create-text="@Localizer["Mr_UseTypedPart"]" data-placeholder="@Localizer["Part No"]">
                         <option value=""></option>
-                    </select>
+                    </pems-select>
                 </div>
-                <div class="col-md-4"><input name="itemDescriptions" class="form-control form-control-sm" placeholder="@Localizer["Description"]" aria-label="@Localizer["Description"]" /></div>
-                <div class="col-md-2"><input name="itemQty" type="number" step="0.01" class="form-control form-control-sm" value="1" aria-label="@Localizer["Qty"]" /></div>
-                <div class="col-md-2"><input name="itemUnits" class="form-control form-control-sm" placeholder="@Localizer["Unit"]" aria-label="@Localizer["Unit"]" /></div>
+                <div class="col-md-4"><pems-input scale="small" name="itemDescriptions" placeholder="@Localizer["Description"]" aria-label="@Localizer["Description"]" /></div>
+                <div class="col-md-2"><pems-input scale="small" name="itemQty" type="number" step="0.01" value="1" aria-label="@Localizer["Qty"]" /></div>
+                <div class="col-md-2"><pems-input scale="small" name="itemUnits" placeholder="@Localizer["Unit"]" aria-label="@Localizer["Unit"]" /></div>
                 <div class="col-md-1 d-flex align-items-center">
                     <span class="vs-pill vs-pill--warning" data-mr-not-catalogued hidden title="@Localizer["Mr_PartNotCataloguedHint"]">@Localizer["Mr_PartNotCatalogued"]</span>
                 </div>

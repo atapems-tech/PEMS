@@ -17,14 +17,14 @@
     <form asp-action="SaveSpace" method="post" class="row g-2">
         <input type="hidden" name="Id" value="@s.Id" />
         <input type="hidden" name="Key" value="@s.Key" />
-        <div class="col-md-3"><label class="form-label small" for="sp-name">@Localizer["Tm_Field_Name"]</label><input id="sp-name" name="Name" value="@s.Name" class="form-control form-control-sm" required maxlength="150" /></div>
-        <div class="col-md-3"><label class="form-label small" for="sp-namefa">@Localizer["Tm_Field_NameFa"]</label><input id="sp-namefa" name="NameFa" value="@s.NameFa" class="form-control form-control-sm" maxlength="150" dir="rtl" /></div>
+        <div class="col-md-3"><label class="form-label small" for="sp-name">@Localizer["Tm_Field_Name"]</label><pems-input scale="small" id="sp-name" name="Name" value="@s.Name" required maxlength="150" /></div>
+        <div class="col-md-3"><label class="form-label small" for="sp-namefa">@Localizer["Tm_Field_NameFa"]</label><pems-input scale="small" id="sp-namefa" name="NameFa" value="@s.NameFa" maxlength="150" dir="rtl" /></div>
         <div class="col-md-3">
             <label class="form-label small" for="sp-dept">@Localizer["Tm_Field_Department"]</label>
-            <select id="sp-dept" name="OwnerDepartmentId" class="form-select form-select-sm">
+            <pems-select scale="small" id="sp-dept" name="OwnerDepartmentId">
                 <option value="">@Localizer["Tm_NoDepartment"]</option>
                 @foreach (var d in departments) { <option value="@d.Id" selected="@(d.Id == s.OwnerDepartmentId)">@d.Name</option> }
-            </select>
+            </pems-select>
         </div>
         <div class="col-md-3 d-flex align-items-end">
             <div class="form-check">
@@ -33,7 +33,7 @@
                 <label class="form-check-label small" for="sp-active">@Localizer["Tm_Field_Active"]</label>
             </div>
         </div>
-        <div class="col-md-10"><label class="form-label small" for="sp-desc">@Localizer["Tm_Field_Description"]</label><input id="sp-desc" name="Description" value="@s.Description" class="form-control form-control-sm" maxlength="1000" /></div>
+        <div class="col-md-10"><label class="form-label small" for="sp-desc">@Localizer["Tm_Field_Description"]</label><pems-input scale="small" id="sp-desc" name="Description" value="@s.Description" maxlength="1000" /></div>
         <div class="col-md-2 d-flex align-items-end"><pems-button tone="primary" size="small" css="w-100">@Localizer["Tm_Save"]</pems-button></div>
     </form>
     <p class="small text-muted mt-2 mb-0">@Localizer["Tm_KeyImmutable"]</p>
@@ -57,9 +57,9 @@
                                 <td colspan="3">
                                     <form asp-action="SetMember" method="post" class="d-flex gap-2 align-items-center">
                                         <input type="hidden" name="workSpaceId" value="@s.Id" /><input type="hidden" name="memberId" value="@m.Id" />
-                                        <select name="role" class="form-select form-select-sm w-auto" aria-label="@Localizer["Tm_Field_Role"] @m.Name">
+                                        <pems-select scale="small" css="w-auto" name="role" aria-label="@Localizer["Tm_Field_Role"] @m.Name">
                                             @foreach (var r in PEMS.Domain.Entities.WorkSpaceMemberRoles.All) { <option value="@r" selected="@(r == m.Role)">@Localizer["Tm_Role_" + r]</option> }
-                                        </select>
+                                        </pems-select>
                                         <input class="form-check-input" type="checkbox" name="isActive" value="true" checked="@m.IsActive" aria-label="@Localizer["Tm_Field_Active"] @m.Name" />
                                         <input type="hidden" name="isActive" value="false" />
                                         <pems-button tone="neutral" size="small" outline="true">@Localizer["Tm_Save"]</pems-button>
@@ -73,14 +73,14 @@
             <form asp-action="AddMember" method="post" class="d-flex gap-2 flex-wrap">
                 <input type="hidden" name="workSpaceId" value="@s.Id" />
                 <label class="visually-hidden" for="am-emp">@Localizer["Tm_Employee"]</label>
-                <select id="am-emp" name="employeeId" class="form-select form-select-sm w-auto flex-grow-1" required>
+                <pems-select scale="small" css="w-auto flex-grow-1" id="am-emp" name="employeeId" required>
                     <option value="">@Localizer["Tm_SelectEmployee"]</option>
                     @foreach (var e in employees.Where(e => !memberIds.Contains(e.EmployeeId))) { <option value="@e.EmployeeId">@e.Name</option> }
-                </select>
+                </pems-select>
                 <label class="visually-hidden" for="am-role">@Localizer["Tm_Field_Role"]</label>
-                <select id="am-role" name="role" class="form-select form-select-sm w-auto">
+                <pems-select scale="small" css="w-auto" id="am-role" name="role">
                     @foreach (var r in PEMS.Domain.Entities.WorkSpaceMemberRoles.All) { <option value="@r">@Localizer["Tm_Role_" + r]</option> }
-                </select>
+                </pems-select>
                 <pems-button tone="primary" size="small">@Localizer["Tm_Add"]</pems-button>
             </form>
         </section>
@@ -105,11 +105,11 @@
             </table>
             <form asp-action="AddType" method="post" class="row g-2">
                 <input type="hidden" name="workSpaceId" value="@s.Id" />
-                <div class="col-md-3"><label class="form-label small" for="at-name">@Localizer["Tm_Field_Name"]</label><input id="at-name" name="name" class="form-control form-control-sm" required maxlength="100" /></div>
-                <div class="col-md-3"><label class="form-label small" for="at-namefa">@Localizer["Tm_Field_NameFa"]</label><input id="at-namefa" name="nameFa" class="form-control form-control-sm" maxlength="100" dir="rtl" /></div>
-                <div class="col-md-3"><label class="form-label small" for="at-icon">@Localizer["Tm_Field_Icon"]</label><input id="at-icon" name="icon" value="bi-check2-square" class="form-control form-control-sm" required pattern="bi-[a-z0-9-]{1,40}" /></div>
+                <div class="col-md-3"><label class="form-label small" for="at-name">@Localizer["Tm_Field_Name"]</label><pems-input scale="small" id="at-name" name="name" required maxlength="100" /></div>
+                <div class="col-md-3"><label class="form-label small" for="at-namefa">@Localizer["Tm_Field_NameFa"]</label><pems-input scale="small" id="at-namefa" name="nameFa" maxlength="100" dir="rtl" /></div>
+                <div class="col-md-3"><label class="form-label small" for="at-icon">@Localizer["Tm_Field_Icon"]</label><pems-input scale="small" id="at-icon" name="icon" value="bi-check2-square" required pattern="bi-[a-z0-9-]{1,40}" /></div>
                 <div class="col-md-3 d-flex align-items-end gap-2">
-                    <div class="form-check"><input class="form-check-input" type="checkbox" id="at-sub" name="isSubtask" value="true" /><label class="form-check-label small" for="at-sub">@Localizer["Tm_Subtask"]</label></div>
+                    <div class="form-check"><pems-input kind="check" type="checkbox" id="at-sub" name="isSubtask" value="true" /><label class="form-check-label small" for="at-sub">@Localizer["Tm_Subtask"]</label></div>
                     <pems-button tone="primary" size="small">@Localizer["Tm_Add"]</pems-button>
                 </div>
             </form>
@@ -124,14 +124,14 @@
             {
                 <form asp-action="EditStatus" method="post" class="row g-1 mb-1 align-items-center @(st.IsActive ? "" : "text-muted")">
                     <input type="hidden" name="workSpaceId" value="@s.Id" /><input type="hidden" name="statusId" value="@st.Id" />
-                    <div class="col-3"><input name="name" value="@st.Name" class="form-control form-control-sm" required maxlength="100" aria-label="@Localizer["Tm_Field_Name"]" /></div>
-                    <div class="col-3"><input name="nameFa" value="@st.NameFa" class="form-control form-control-sm" maxlength="100" dir="rtl" aria-label="@Localizer["Tm_Field_NameFa"]" /></div>
+                    <div class="col-3"><pems-input scale="small" name="name" value="@st.Name" required maxlength="100" aria-label="@Localizer["Tm_Field_Name"]" /></div>
+                    <div class="col-3"><pems-input scale="small" name="nameFa" value="@st.NameFa" maxlength="100" dir="rtl" aria-label="@Localizer["Tm_Field_NameFa"]" /></div>
                     <div class="col-2">
-                        <select name="category" class="form-select form-select-sm" aria-label="@Localizer["Tm_Field_Category"]">
+                        <pems-select scale="small" name="category" aria-label="@Localizer["Tm_Field_Category"]">
                             @foreach (var c in PEMS.Domain.Entities.WorkItemStatusCategories.All) { <option value="@c" selected="@(c == st.Category)">@Localizer["Tm_Category_" + c]</option> }
-                        </select>
+                        </pems-select>
                     </div>
-                    <div class="col-1"><input name="sortOrder" type="number" value="@st.SortOrder" min="0" max="999" class="form-control form-control-sm" aria-label="@Localizer["Tm_Field_Order"]" /></div>
+                    <div class="col-1"><pems-input scale="small" name="sortOrder" type="number" value="@st.SortOrder" min="0" max="999" aria-label="@Localizer["Tm_Field_Order"]" /></div>
                     <div class="col-1 text-center">
                         <input class="form-check-input" type="checkbox" name="isActive" value="true" checked="@st.IsActive" aria-label="@Localizer["Tm_Field_Active"]" />
                         <input type="hidden" name="isActive" value="false" />
@@ -141,12 +141,12 @@
             }
             <form asp-action="AddStatus" method="post" class="row g-1 mt-2">
                 <input type="hidden" name="workSpaceId" value="@s.Id" />
-                <div class="col-4"><input name="name" class="form-control form-control-sm" required maxlength="100" placeholder="@Localizer["Tm_Field_Name"]" aria-label="@Localizer["Tm_Field_Name"]" /></div>
-                <div class="col-3"><input name="nameFa" class="form-control form-control-sm" maxlength="100" dir="rtl" placeholder="@Localizer["Tm_Field_NameFa"]" aria-label="@Localizer["Tm_Field_NameFa"]" /></div>
+                <div class="col-4"><pems-input scale="small" name="name" required maxlength="100" placeholder="@Localizer["Tm_Field_Name"]" aria-label="@Localizer["Tm_Field_Name"]" /></div>
+                <div class="col-3"><pems-input scale="small" name="nameFa" maxlength="100" dir="rtl" placeholder="@Localizer["Tm_Field_NameFa"]" aria-label="@Localizer["Tm_Field_NameFa"]" /></div>
                 <div class="col-3">
-                    <select name="category" class="form-select form-select-sm" aria-label="@Localizer["Tm_Field_Category"]">
+                    <pems-select scale="small" name="category" aria-label="@Localizer["Tm_Field_Category"]">
                         @foreach (var c in PEMS.Domain.Entities.WorkItemStatusCategories.All) { <option value="@c">@Localizer["Tm_Category_" + c]</option> }
-                    </select>
+                    </pems-select>
                 </div>
                 <div class="col-2"><pems-button tone="primary" size="small" css="w-100">@Localizer["Tm_Add"]</pems-button></div>
             </form>

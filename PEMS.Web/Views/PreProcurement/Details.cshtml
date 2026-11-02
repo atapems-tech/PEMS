@@ -57,28 +57,28 @@
         <input type="hidden" name="id" value="@d.ProcurementDemandId" />
         <h6 class="mb-2"><i class="bi bi-file-earmark-plus" aria-hidden="true"></i> @Localizer["Ppr_ToMr"]</h6>
         <div class="form-check">
-            <input class="form-check-input" type="radio" name="target" id="pprNew" value="new" checked />
+            <pems-input kind="check" type="radio" name="target" id="pprNew" value="new" checked />
             <label class="form-check-label" for="pprNew">@Localizer["Ppr_NewMr"]</label>
         </div>
         <div class="row g-2 mb-2 ms-3">
-            <div class="col-md-3"><label class="form-label small" for="pprNumber">@Localizer["Ppr_MrNumber"]</label><input id="pprNumber" name="mrNumber" class="form-control form-control-sm" dir="ltr" /></div>
+            <div class="col-md-3"><label class="form-label small" for="pprNumber">@Localizer["Ppr_MrNumber"]</label><pems-input scale="small" id="pprNumber" name="mrNumber" dir="ltr" /></div>
             <div class="col-md-3"><label class="form-label small" for="pprProject">@Localizer["Ppr_Project"]</label>
-                <select id="pprProject" name="projectId" class="form-select form-select-sm"><option value="">—</option>@foreach (var p in projects) { <option value="@p.ProjectId">@p.ProjectCode - @p.ProjectName</option> }</select></div>
+                <pems-select scale="small" id="pprProject" name="projectId"><option value="">—</option>@foreach (var p in projects) { <option value="@p.ProjectId">@p.ProjectCode - @p.ProjectName</option> }</pems-select></div>
             <div class="col-md-3"><label class="form-label small" for="pprDiscipline">@Localizer["Ppr_Discipline"]</label>
-                <select id="pprDiscipline" name="disciplineId" class="form-select form-select-sm"><option value="">—</option>@foreach (var x in disciplines) { <option value="@x.DisciplineId">@x.Code - @x.Name</option> }</select></div>
+                <pems-select scale="small" id="pprDiscipline" name="disciplineId"><option value="">—</option>@foreach (var x in disciplines) { <option value="@x.DisciplineId">@x.Code - @x.Name</option> }</pems-select></div>
             <div class="col-md-3"><label class="form-label small" for="pprRequired">@Localizer["Ppr_RequiredDate"]</label><input id="pprRequired" name="requiredDate" type="date" class="form-control form-control-sm" dir="ltr" /></div>
             <div class="col-12 small text-muted">@Localizer["Ppr_MrNumberHint"]</div>
         </div>
         @if (Model.DraftRequisitions.Count > 0)
         {
             <div class="form-check">
-                <input class="form-check-input" type="radio" name="target" id="pprExisting" value="existing" />
+                <pems-input kind="check" type="radio" name="target" id="pprExisting" value="existing" />
                 <label class="form-check-label" for="pprExisting">@Localizer["Ppr_ExistingMr"]</label>
             </div>
             <div class="ms-3 mb-2 col-md-6">
-                <select name="existingMrId" class="form-select form-select-sm" aria-label="@Localizer["Ppr_ExistingMr"]">
+                <pems-select scale="small" name="existingMrId" aria-label="@Localizer["Ppr_ExistingMr"]">
                     @foreach (var m in Model.DraftRequisitions) { <option value="@m.Id">@m.Number - @m.Description</option> }
-                </select>
+                </pems-select>
             </div>
         }
         <pems-button tone="none" size="small" css="btn-primary" type="submit"><i class="bi bi-check2" aria-hidden="true"></i> @Localizer["Ppr_Convert"]</pems-button>
@@ -99,7 +99,7 @@
     <form asp-action="Dismiss" method="post" class="content-card">
         <input type="hidden" name="id" value="@d.ProcurementDemandId" />
         <label class="form-label small" for="pprReason">@Localizer[isMr ? "Ppr_ReturnReason" : "Ppr_DismissReason"]</label>
-        <textarea id="pprReason" name="reason" class="form-control form-control-sm mb-2" rows="2" required></textarea>
+        <pems-textarea scale="small" css="mb-2" id="pprReason" name="reason" rows="2" required></pems-textarea>
         <pems-button tone="danger" size="small" outline="true" type="submit"><i class="bi bi-x-circle" aria-hidden="true"></i> @Localizer[isMr ? "Ppr_Return" : "Ppr_Dismiss"]</pems-button>
     </form>
 }

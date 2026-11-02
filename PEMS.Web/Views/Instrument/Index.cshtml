@@ -42,11 +42,11 @@
                     <input type="hidden" name="q" value="@q" />
                     <div>
                         <label class="lp-lbl" for="inFilterStatus">@Localizer["In_CalStatus"]</label>
-                        <select id="inFilterStatus" name="status" class="form-select form-select-sm">
+                        <pems-select scale="small" id="inFilterStatus" name="status">
                             <option value="">@Localizer["Ed_All"]</option>
                             @foreach (var s in statuses)
                             { <option value="@s" selected="@(s == status)">@StatusText(s)</option> }
-                        </select>
+                        </pems-select>
                     </div>
                 </pems-list-filters>
                 <pems-list-kpi-toggle target="inKpis" storage-key="pems.instrument.kpis" />
@@ -134,69 +134,69 @@
                     </p>
                     <div class="mb-3">
                         <label class="form-label">@Localizer["Equipment"]</label>
-                        <select name="equipmentId" class="form-select" required>
+                        <pems-select name="equipmentId" required>
                             <option value="">@Localizer["-- select equipment --"]</option>
                             @foreach (var e in equipmentOptions)
                             {
                                 <option value="@e.EquipmentId">@e.Label</option>
                             }
-                        </select>
+                        </pems-select>
                         <div class="form-text">Equipment not listed here already has an instrument profile, or doesn't exist yet - create it under Equipment first.</div>
                     </div>
 
                     <div class="row g-3 mb-3">
                         <div class="col-md-6">
                             <label class="form-label">@Localizer["Instrument Type"]</label>
-                            <input name="instrumentType" class="form-control" placeholder="PT, LT, FT, TT, Control Valve ..." />
+                            <pems-input name="instrumentType" placeholder="PT, LT, FT, TT, Control Valve ..." />
                         </div>
                         <div class="col-md-6">
                             <label class="form-label">@Localizer["Loop Number"]</label>
-                            <input name="loopNumber" class="form-control" />
+                            <pems-input name="loopNumber" />
                         </div>
                     </div>
 
                     <div class="row g-3 mb-3">
                         <div class="col-md-6">
                             <label class="form-label">@Localizer["System"]</label>
-                            <input name="system" class="form-control" placeholder="DCS, ESD, F&amp;G, PLC ..." />
+                            <pems-input name="system" placeholder="DCS, ESD, F&amp;G, PLC ..." />
                         </div>
                         <div class="col-md-6">
                             <label class="form-label">@Localizer["Signal Class"]</label>
-                            <input name="signalClass" class="form-control" placeholder="AI, AO, DI, DO ..." />
+                            <pems-input name="signalClass" placeholder="AI, AO, DI, DO ..." />
                         </div>
                     </div>
 
                     <div class="row g-3 mb-3">
                         <div class="col-md-3">
                             <label class="form-label">@Localizer["Range Min"]</label>
-                            <input name="rangeMin" type="number" step="0.01" class="form-control" />
+                            <pems-input name="rangeMin" type="number" step="0.01" />
                         </div>
                         <div class="col-md-3">
                             <label class="form-label">@Localizer["Range Max"]</label>
-                            <input name="rangeMax" type="number" step="0.01" class="form-control" />
+                            <pems-input name="rangeMax" type="number" step="0.01" />
                         </div>
                         <div class="col-md-3">
                             <label class="form-label">@Localizer["Unit"]</label>
-                            <input name="unit" class="form-control" />
+                            <pems-input name="unit" />
                         </div>
                         <div class="col-md-3">
                             <label class="form-label">Signal Type</label>
-                            <input name="signalType" class="form-control" placeholder="4-20mA, HART ..." />
+                            <pems-input name="signalType" placeholder="4-20mA, HART ..." />
                         </div>
                     </div>
 
                     <div class="row g-3">
                         <div class="col-md-6">
                             <label class="form-label">@Localizer["Process Variable"]</label>
-                            <input name="processVariable" class="form-control" />
+                            <pems-input name="processVariable" />
                         </div>
                         <div class="col-md-3">
                             <label class="form-label">@Localizer["Accuracy"]</label>
-                            <input name="accuracy" class="form-control" />
+                            <pems-input name="accuracy" />
                         </div>
                         <div class="col-md-3">
                             <label class="form-label">@Localizer["Calibration Interval (days)"]</label>
-                            <input name="calibrationInterval" type="number" class="form-control" />
+                            <pems-input name="calibrationInterval" type="number" />
                         </div>
                     </div>
                 </div>

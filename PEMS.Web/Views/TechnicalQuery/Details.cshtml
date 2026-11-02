@@ -72,7 +72,7 @@
     }
     <form asp-action="UploadAttachment" method="post" enctype="multipart/form-data" class="d-flex gap-2">
         <input type="hidden" name="technicalQueryId" value="@Model.TechnicalQueryId" />
-        <input type="file" name="file" class="form-control form-control-sm" required />
+        <pems-input scale="small" type="file" name="file" required />
         <pems-button tone="primary" size="small" outline="true" css="text-nowrap" type="submit"><i class="bi bi-upload"></i> افزودن</pems-button>
     </form>
 </div>
@@ -91,7 +91,7 @@
         {
             <form asp-action="Respond" method="post">
                 <input type="hidden" name="technicalQueryId" value="@Model.TechnicalQueryId" />
-                <textarea name="responseText" class="form-control mb-2" rows="3" placeholder="@Localizer["متن پاسخ..."]" required></textarea>
+                <pems-textarea css="mb-2" name="responseText" rows="3" placeholder="@Localizer["متن پاسخ..."]" required></pems-textarea>
                 <pems-button tone="primary" size="small" type="submit"><i class="bi bi-reply"></i> ثبت پاسخ</pems-button>
             </form>
         }
@@ -114,7 +114,7 @@
                 <form asp-action="Reopen" method="post">
                     <input type="hidden" name="technicalQueryId" value="@Model.TechnicalQueryId" />
                     <div class="modal-header"><h6 class="modal-title">@Localizer["دلیل بازگشت"]</h6></div>
-                    <div class="modal-body"><textarea name="reason" class="form-control" rows="3" required></textarea></div>
+                    <div class="modal-body"><pems-textarea name="reason" rows="3" required></pems-textarea></div>
                     <div class="modal-footer">
                         <pems-button tone="neutral" size="small" outline="true" type="button" data-bs-dismiss="modal">@Localizer["انصراف"]</pems-button>
                         <pems-button tone="danger" size="small" type="submit">@Localizer["بازگشت به دیسیپلین"]</pems-button>

@@ -15,12 +15,12 @@
         <pems-info-item label="@Localizer["Status"]">
             <form asp-action="ChangeStatus" method="post" class="d-inline">
                 <input type="hidden" name="mrId" value="@Model.MRId" />
-                <select name="status" class="form-select form-select-sm d-inline w-auto" onchange="this.form.submit()">
+                <pems-select scale="small" css="d-inline w-auto" name="status" onchange="this.form.submit()">
                     @foreach (var s in new[] { "Draft", "Submitted", "Under Technical Review", "Approved", "Issued to Procurement", "Closed", "Cancelled" })
                     {
                         <option value="@s" selected="@(s == Model.Status)">@s</option>
                     }
-                </select>
+                </pems-select>
             </form>
         </pems-info-item>
         <pems-info-item label="@Localizer["Description"]" wide>@Model.Description</pems-info-item>
@@ -78,20 +78,20 @@
                             <input type="hidden" name="mrId" value="@Model.MRId" />
                             <input type="hidden" name="mrqId" value="@q.MRQId" />
 
-                            <select name="technical" class="form-select form-select-sm" style="width:110px;" title="Technical Evaluation">
+                            <pems-select scale="small" name="technical" style="width:110px;" title="Technical Evaluation">
                                 @foreach (var v in new[] { "Pending", "Passed", "Failed" })
                                 { <option value="@v" selected="@(v == q.TechnicalEvaluation)">@v</option> }
-                            </select>
+                            </pems-select>
 
-                            <select name="commercial" class="form-select form-select-sm" style="width:110px;" title="Commercial Evaluation">
+                            <pems-select scale="small" name="commercial" style="width:110px;" title="Commercial Evaluation">
                                 @foreach (var v in new[] { "Pending", "Passed", "Failed" })
                                 { <option value="@v" selected="@(v == q.CommercialEvaluation)">@v</option> }
-                            </select>
+                            </pems-select>
 
-                            <select name="approval" class="form-select form-select-sm" style="width:110px;" title="Approval Status">
+                            <pems-select scale="small" name="approval" style="width:110px;" title="Approval Status">
                                 @foreach (var v in new[] { "Pending", "Approved", "Rejected" })
                                 { <option value="@v" selected="@(v == q.ApprovalStatus)">@v</option> }
-                            </select>
+                            </pems-select>
 
                             <pems-button tone="primary" size="small" outline="true" type="submit">@Localizer["Save"]</pems-button>
                         </form>
@@ -112,11 +112,11 @@
     <h6 class="mb-3">Add New Quotation (MRQ)</h6>
     <form asp-action="AddQuotation" method="post" class="row g-2 align-items-end">
         <input type="hidden" name="mrId" value="@Model.MRId" />
-        <div class="col-md-2"><input name="mrqNumber" class="form-control form-control-sm" placeholder="@Localizer["MRQ No"]" required /></div>
-        <div class="col-md-3"><input name="vendorName" class="form-control form-control-sm" placeholder="Vendor Name" required /></div>
+        <div class="col-md-2"><pems-input scale="small" name="mrqNumber" placeholder="@Localizer["MRQ No"]" required /></div>
+        <div class="col-md-3"><pems-input scale="small" name="vendorName" placeholder="Vendor Name" required /></div>
         <div class="col-md-2"><input name="inquiryDate" type="date" class="form-control form-control-sm" /></div>
-        <div class="col-md-2"><input name="quotedAmount" type="number" step="0.01" class="form-control form-control-sm" placeholder="@Localizer["Amount"]" /></div>
-        <div class="col-md-1"><input name="currency" class="form-control form-control-sm" value="USD" /></div>
+        <div class="col-md-2"><pems-input scale="small" name="quotedAmount" type="number" step="0.01" placeholder="@Localizer["Amount"]" /></div>
+        <div class="col-md-1"><pems-input scale="small" name="currency" value="USD" /></div>
         <div class="col-md-2"><pems-button tone="primary" size="small" css="w-100" type="submit">@Localizer["Add"]</pems-button></div>
     </form>
 </div>
@@ -160,9 +160,9 @@
         <h6 class="mb-2"><i class="bi bi-receipt" aria-hidden="true"></i> @Localizer["Po_CreateFromMr"]</h6>
         <div class="row g-2 align-items-end small">
             <div class="col-md-4"><label class="form-label" for="poVendor">@Localizer["Vendor"]</label>
-                <select id="poVendor" name="vendorId" class="form-select form-select-sm" required><option value="">—</option>@foreach (var v in poVendors) { <option value="@v.VendorId">@v.Name</option> }</select></div>
-            <div class="col-md-2"><label class="form-label" for="poCurrency">@Localizer["Po_Currency"]</label><input id="poCurrency" name="currency" class="form-control form-control-sm" dir="ltr" value="IRR" maxlength="10" required /></div>
-            <div class="col-md-3"><label class="form-label" for="poNumber">@Localizer["PO Number"]</label><input id="poNumber" name="poNumber" class="form-control form-control-sm" dir="ltr" /></div>
+                <pems-select scale="small" id="poVendor" name="vendorId" required><option value="">—</option>@foreach (var v in poVendors) { <option value="@v.VendorId">@v.Name</option> }</pems-select></div>
+            <div class="col-md-2"><label class="form-label" for="poCurrency">@Localizer["Po_Currency"]</label><pems-input scale="small" id="poCurrency" name="currency" dir="ltr" value="IRR" maxlength="10" required /></div>
+            <div class="col-md-3"><label class="form-label" for="poNumber">@Localizer["PO Number"]</label><pems-input scale="small" id="poNumber" name="poNumber" dir="ltr" /></div>
             <div class="col-md-auto"><pems-button tone="none" size="small" css="btn-primary" type="submit"><i class="bi bi-plus" aria-hidden="true"></i> @Localizer["Po_Create"]</pems-button></div>
             <div class="col-12 text-muted">@Localizer["Po_CreateHint"]</div>
         </div>

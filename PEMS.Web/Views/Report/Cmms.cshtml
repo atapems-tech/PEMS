@@ -28,18 +28,18 @@
 <div class="content-card mb-3">
     <form method="get" class="row g-2">
         <div class="col-md-3">
-            <select name="status" class="form-select form-select-sm">
+            <pems-select scale="small" name="status">
                 <option value="">@Localizer["All statuses"]</option>
                 @foreach (var s in new[] { "Open", "Assigned", "InProgress", "Completed", "Closed" })
                 { <option value="@s" selected="@(s == (string)ViewBag.SelectedStatus)">@s</option> }
-            </select>
+            </pems-select>
         </div>
         <div class="col-md-3">
-            <select name="priority" class="form-select form-select-sm">
+            <pems-select scale="small" name="priority">
                 <option value="">All Priorities</option>
                 @foreach (var p in new[] { "Low", "Medium", "High", "Critical" })
                 { <option value="@p" selected="@(p == (string)ViewBag.SelectedPriority)">@p</option> }
-            </select>
+            </pems-select>
         </div>
         <div class="col-md-2"><input name="fromDate" type="date" value="@(((DateTime?)ViewBag.FromDate)?.ToString("yyyy-MM-dd"))" class="form-control form-control-sm" /></div>
         <div class="col-md-2"><input name="toDate" type="date" value="@(((DateTime?)ViewBag.ToDate)?.ToString("yyyy-MM-dd"))" class="form-control form-control-sm" /></div>

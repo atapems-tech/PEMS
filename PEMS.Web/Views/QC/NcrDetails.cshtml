@@ -40,17 +40,17 @@
             <div class="row g-3">
                 <div class="col-md-4">
                     <label class="form-label small">@Localizer["Disposition"]</label>
-                    <select name="disposition" class="form-select form-select-sm" required>
+                    <pems-select scale="small" name="disposition" required>
                         <option value="RepairAccept">Repair &amp; Accept</option>
                         <option value="ReworkToConform">Rework to Conform</option>
                         <option value="UseAsIs">Use As-Is</option>
                         <option value="Reject">@Localizer["Reject"]</option>
                         <option value="Scrap">Scrap</option>
-                    </select>
+                    </pems-select>
                 </div>
-                <div class="col-md-8"><label class="form-label small">@Localizer["Root Cause"]</label><input name="rootCause" class="form-control form-control-sm" /></div>
-                <div class="col-md-6"><label class="form-label small">@Localizer["Corrective Action"]</label><textarea name="correctiveAction" class="form-control form-control-sm" rows="2"></textarea></div>
-                <div class="col-md-6"><label class="form-label small">Preventive Action</label><textarea name="preventiveAction" class="form-control form-control-sm" rows="2"></textarea></div>
+                <div class="col-md-8"><label class="form-label small">@Localizer["Root Cause"]</label><pems-input scale="small" name="rootCause" /></div>
+                <div class="col-md-6"><label class="form-label small">@Localizer["Corrective Action"]</label><pems-textarea scale="small" name="correctiveAction" rows="2"></pems-textarea></div>
+                <div class="col-md-6"><label class="form-label small">Preventive Action</label><pems-textarea scale="small" name="preventiveAction" rows="2"></pems-textarea></div>
             </div>
             @if (Model.Severity == "Critical")
             {
@@ -85,7 +85,7 @@ else if (Model.Status == "PendingApproval")
                     <input type="hidden" name="decision" value="Reject" />
                     <div class="modal-header"><h6 class="modal-title">رد Disposition</h6></div>
                     <div class="modal-body">
-                        <textarea name="comment" class="form-control form-control-sm" rows="3" placeholder="@Localizer["دلیل رد"]" required></textarea>
+                        <pems-textarea scale="small" name="comment" rows="3" placeholder="@Localizer["دلیل رد"]" required></pems-textarea>
                     </div>
                     <div class="modal-footer">
                         <pems-button tone="neutral" size="small" outline="true" type="button" data-bs-dismiss="modal">@Localizer["انصراف"]</pems-button>

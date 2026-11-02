@@ -88,14 +88,14 @@
                     <div class="dcr-field dcr-span-2" data-field="party">
                         <label class="dcr-label" for="dcrParty">@L("Dcc_Party") <span class="dcr-req" aria-hidden="true">*</span></label>
                         <div class="dcr-combo">
-                            <input id="dcrParty" class="form-control" role="combobox" aria-expanded="false" aria-controls="dcrPartyList" aria-autocomplete="list" placeholder="@L("Dcc_PartyPlaceholder")" />
+                            <pems-input id="dcrParty" role="combobox" aria-expanded="false" aria-controls="dcrPartyList" aria-autocomplete="list" placeholder="@L("Dcc_PartyPlaceholder")" />
                             <ul id="dcrPartyList" class="dcr-list" role="listbox" hidden></ul>
                         </div>
                         <div class="dcr-newparty" id="dcrNewParty" hidden>
                             <label class="dcr-label" for="dcrNewPartyType">@L("Dcc_PartyType")</label>
-                            <select id="dcrNewPartyType" class="form-select form-select-sm">
+                            <pems-select scale="small" id="dcrNewPartyType">
                                 @foreach (var t in IncomingCorrespondenceRules.PartyTypes) { <option value="@t">@L("Dcc_PartyType_" + t)</option> }
-                            </select>
+                            </pems-select>
                             <span class="dcr-hint">@L("Dcc_NewPartyHint")</span>
                         </div>
                         <div class="dcr-error" data-error-for="party"></div>
@@ -103,22 +103,22 @@
 
                     <div class="dcr-field" data-field="projectId">
                         <label class="dcr-label" for="dcrProject">@L("Dcc_Project") <span class="dcr-req" aria-hidden="true">*</span></label>
-                        <select id="dcrProject" class="form-select">
+                        <pems-select id="dcrProject">
                             <option value="">@L("Dcc_Choose")</option>
                             @foreach (var p in projects) { <option value="@p.ProjectId">@p.ProjectName</option> }
-                        </select>
+                        </pems-select>
                         <div class="dcr-error" data-error-for="projectId"></div>
                     </div>
 
                     <div class="dcr-field" data-field="contractId">
                         <label class="dcr-label" for="dcrContract">@L("Dcc_Contract")</label>
-                        <select id="dcrContract" class="form-select" disabled><option value="">—</option></select>
+                        <pems-select id="dcrContract" disabled><option value="">—</option></pems-select>
                         <div class="dcr-error" data-error-for="contractId"></div>
                     </div>
 
                     <div class="dcr-field" data-field="senderReference">
                         <label class="dcr-label" for="dcrRef">@L("Dcc_SenderRef") <span class="dcr-req" id="dcrRefReq" aria-hidden="true">*</span></label>
-                        <input id="dcrRef" class="form-control dcr-ltr" maxlength="100" placeholder="@L("Dcc_SenderRefPlaceholder")" />
+                        <pems-input css="dcr-ltr" id="dcrRef" maxlength="100" placeholder="@L("Dcc_SenderRefPlaceholder")" />
                         <div class="dcr-hint" id="dcrRefHint"></div>
                         <div class="dcr-error" data-error-for="senderReference"></div>
                     </div>
@@ -141,14 +141,14 @@
                 <div class="dcr-row">
                     <div class="dcr-field dcr-span-2" data-field="subject">
                         <label class="dcr-label" for="dcrSubject">@L("Dcc_Subject") <span class="dcr-req" aria-hidden="true">*</span></label>
-                        <input id="dcrSubject" class="form-control" maxlength="300" />
+                        <pems-input id="dcrSubject" maxlength="300" />
                         <div class="dcr-error" data-error-for="subject"></div>
                     </div>
 
                     <div class="dcr-field" data-field="documentDate">
                         <label class="dcr-label" for="dcrDocDate">@L("Dcc_DocumentDate") <span class="dcr-req" aria-hidden="true">*</span></label>
                         <div class="dcr-date" data-date-name="documentDate" id="dcrDocDateWrap">
-                            <input id="dcrDocDate" class="form-control dcr-ltr" inputmode="numeric" placeholder="1405/01/01" aria-describedby="dcrDocDateIso" />
+                            <pems-input css="dcr-ltr" id="dcrDocDate" inputmode="numeric" placeholder="1405/01/01" aria-describedby="dcrDocDateIso" />
                             <button type="button" class="dcr-date-btn" aria-label="@L("Dcc_PickDate")"><i class="bi bi-calendar3" aria-hidden="true"></i></button>
                             <div class="dcr-cal" role="dialog" aria-label="@L("Dcc_PickDate")" hidden></div>
                         </div>
@@ -159,7 +159,7 @@
                     <div class="dcr-field" data-field="receivedDate">
                         <label class="dcr-label" for="dcrRecvDate">@L("Dcc_ReceivedDate") <span class="dcr-req" aria-hidden="true">*</span></label>
                         <div class="dcr-date" data-date-name="receivedDate" id="dcrRecvDateWrap">
-                            <input id="dcrRecvDate" class="form-control dcr-ltr" inputmode="numeric" placeholder="1405/01/01" aria-describedby="dcrRecvDateIso" />
+                            <pems-input css="dcr-ltr" id="dcrRecvDate" inputmode="numeric" placeholder="1405/01/01" aria-describedby="dcrRecvDateIso" />
                             <button type="button" class="dcr-date-btn" aria-label="@L("Dcc_PickDate")"><i class="bi bi-calendar3" aria-hidden="true"></i></button>
                             <div class="dcr-cal" role="dialog" aria-label="@L("Dcc_PickDate")" hidden></div>
                         </div>
@@ -169,45 +169,45 @@
 
                     <div class="dcr-field" data-field="priority">
                         <label class="dcr-label" for="dcrPriority">@L("Dcc_Priority")</label>
-                        <select id="dcrPriority" class="form-select">
+                        <pems-select id="dcrPriority">
                             @foreach (var p in LetterComposeRules.Priorities) { <option value="@p" selected="@(p == "Normal")">@L("Lt_P_" + p)</option> }
-                        </select>
+                        </pems-select>
                     </div>
 
                     <div class="dcr-field" data-field="category">
                         <label class="dcr-label" for="dcrCategory">@L("Dcc_Category")</label>
-                        <select id="dcrCategory" class="form-select">
+                        <pems-select id="dcrCategory">
                             <option value="">—</option>
                             @foreach (var c in LetterComposeRules.Categories) { <option value="@c">@L("Lc_Cat_" + c)</option> }
-                        </select>
+                        </pems-select>
                     </div>
 
                     <div class="dcr-field" data-field="confidentialityLevel">
                         <label class="dcr-label" for="dcrConf">@L("Dcc_Confidentiality")</label>
-                        <select id="dcrConf" class="form-select">
+                        <pems-select id="dcrConf">
                             @foreach (var c in LetterComposeRules.Confidentialities) { <option value="@c" selected="@(c == "Internal")">@L("Lt_C_" + c)</option> }
-                        </select>
+                        </pems-select>
                         <div class="dcr-hint">@L("Dcc_ConfidentialityHint")</div>
                     </div>
 
                     <div class="dcr-field" data-field="disciplineId">
                         <label class="dcr-label" for="dcrDiscipline">@L("Dcc_Discipline")</label>
-                        <select id="dcrDiscipline" class="form-select">
+                        <pems-select id="dcrDiscipline">
                             <option value="">—</option>
                             @foreach (var d in disciplines) { <option value="@d.DisciplineId">@d.Name</option> }
-                        </select>
+                        </pems-select>
                     </div>
 
                     <div class="dcr-field dcr-span-2" data-field="parentLetterId">
                         <label class="dcr-label" for="dcrReply">@L("Dcc_InReplyTo")</label>
-                        <select id="dcrReply" class="form-select" disabled><option value="">@L("Dcc_ReplyChooseParty")</option></select>
+                        <pems-select id="dcrReply" disabled><option value="">@L("Dcc_ReplyChooseParty")</option></pems-select>
                         <div class="dcr-hint">@L("Dcc_InReplyToHint")</div>
                         <div class="dcr-error" data-error-for="parentLetterId"></div>
                     </div>
 
                     <div class="dcr-field dcr-span-2" data-field="summary">
                         <label class="dcr-label" for="dcrSummaryText">@L("Dcc_Summary")</label>
-                        <textarea id="dcrSummaryText" class="form-control" rows="3" maxlength="4000" placeholder="@L("Dcc_SummaryPlaceholder")"></textarea>
+                        <pems-textarea id="dcrSummaryText" rows="3" maxlength="4000" placeholder="@L("Dcc_SummaryPlaceholder")"></pems-textarea>
                         <div class="dcr-error" data-error-for="summary"></div>
                     </div>
                 </div>
@@ -235,7 +235,7 @@
                                 }
                             </div>
                             <div class="dcr-date" data-date-name="responseDueDate" id="dcrDueWrap">
-                                <input id="dcrDue" class="form-control dcr-ltr" inputmode="numeric" placeholder="1405/01/01" aria-labelledby="dcrDueLabel" aria-describedby="dcrDueIso" />
+                                <pems-input css="dcr-ltr" id="dcrDue" inputmode="numeric" placeholder="1405/01/01" aria-labelledby="dcrDueLabel" aria-describedby="dcrDueIso" />
                                 <button type="button" class="dcr-date-btn" aria-label="@L("Dcc_PickDate")"><i class="bi bi-calendar3" aria-hidden="true"></i></button>
                                 <div class="dcr-cal" role="dialog" aria-label="@L("Dcc_PickDate")" hidden></div>
                             </div>
@@ -247,7 +247,7 @@
                     <div class="dcr-field" data-field="ownerEmployeeId">
                         <label class="dcr-label" for="dcrOwner">@L("Dcc_Owner") <span class="dcr-req" id="dcrOwnerReq" aria-hidden="true" hidden>*</span></label>
                         <div class="dcr-combo">
-                            <input id="dcrOwner" class="form-control" role="combobox" aria-expanded="false" aria-controls="dcrOwnerList" aria-autocomplete="list" placeholder="@L("Dcc_OwnerPlaceholder")" />
+                            <pems-input id="dcrOwner" role="combobox" aria-expanded="false" aria-controls="dcrOwnerList" aria-autocomplete="list" placeholder="@L("Dcc_OwnerPlaceholder")" />
                             <ul id="dcrOwnerList" class="dcr-list" role="listbox" hidden></ul>
                         </div>
                         <div class="dcr-error" data-error-for="ownerEmployeeId"></div>
@@ -256,7 +256,7 @@
                     <div class="dcr-field" data-field="ccEmployeeIds">
                         <label class="dcr-label" for="dcrCc">@L("Dcc_Cc")</label>
                         <div class="dcr-combo">
-                            <input id="dcrCc" class="form-control" role="combobox" aria-expanded="false" aria-controls="dcrCcList" aria-autocomplete="list" placeholder="@L("Dcc_CcPlaceholder")" />
+                            <pems-input id="dcrCc" role="combobox" aria-expanded="false" aria-controls="dcrCcList" aria-autocomplete="list" placeholder="@L("Dcc_CcPlaceholder")" />
                             <ul id="dcrCcList" class="dcr-list" role="listbox" hidden></ul>
                         </div>
                         <div class="dcr-tags" id="dcrCcTags"></div>
@@ -265,7 +265,7 @@
 
                     <div class="dcr-field dcr-span-2" data-field="instruction">
                         <label class="dcr-label" for="dcrInstruction">@L("Dcc_Instruction")</label>
-                        <textarea id="dcrInstruction" class="form-control" rows="2" maxlength="1000" placeholder="@L("Dcc_InstructionPlaceholder")"></textarea>
+                        <pems-textarea id="dcrInstruction" rows="2" maxlength="1000" placeholder="@L("Dcc_InstructionPlaceholder")"></pems-textarea>
                         <div class="dcr-error" data-error-for="instruction"></div>
                     </div>
                 </div>
@@ -291,11 +291,11 @@
                 <h2 class="dcr-card-title" id="dcrSecLinks"><span class="dcr-step">5</span> @L("Dcc_SecLinks") <span class="dcr-opt">@L("Dcc_Optional")</span></h2>
                 <div class="dcr-field" data-field="links">
                     <div class="dcr-linkbar">
-                        <select id="dcrLinkType" class="form-select form-select-sm" aria-label="@L("Dcc_LinkType")">
+                        <pems-select scale="small" id="dcrLinkType" aria-label="@L("Dcc_LinkType")">
                             @foreach (var t in IncomingCorrespondenceRules.LinkTypes) { <option value="@t">@L("Dcc_Link" + t)</option> }
-                        </select>
+                        </pems-select>
                         <div class="dcr-combo dcr-grow">
-                            <input id="dcrLinkSearch" class="form-control form-control-sm" role="combobox" aria-expanded="false" aria-controls="dcrLinkList" aria-autocomplete="list" placeholder="@L("Dcc_LinkSearch")" />
+                            <pems-input scale="small" id="dcrLinkSearch" role="combobox" aria-expanded="false" aria-controls="dcrLinkList" aria-autocomplete="list" placeholder="@L("Dcc_LinkSearch")" />
                             <ul id="dcrLinkList" class="dcr-list" role="listbox" hidden></ul>
                         </div>
                     </div>

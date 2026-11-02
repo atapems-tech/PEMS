@@ -60,13 +60,13 @@
             <input type="hidden" name="id" value="@parentLetterId" />
             <div>
                 <label class="form-label small mb-1" for="replyTemplate">@Localizer["LtT_UseTemplate"]</label>
-                <select name="templateId" id="replyTemplate" class="form-select form-select-sm">
+                <pems-select scale="small" name="templateId" id="replyTemplate">
                     <option value="">@Localizer["Ed_None"]</option>
                     @foreach (var tpl in templates)
                     {
                         <option value="@tpl.LetterTemplateId" selected="@(selectedTemplateId == tpl.LetterTemplateId)">@tpl.Name</option>
                     }
-                </select>
+                </pems-select>
             </div>
             <pems-button tone="neutral" size="small" outline="true" type="submit"><i class="bi bi-file-earmark-text" aria-hidden="true"></i> @Localizer["LtT_Apply"]</pems-button>
         </form>
@@ -78,15 +78,15 @@
         <div class="row g-3">
             <div class="col-md-6">
                 <label class="form-label">To</label>
-                <input name="receiver" class="form-control" value="@ViewBag.DefaultReceiver" />
+                <pems-input name="receiver" value="@ViewBag.DefaultReceiver" />
             </div>
             <div class="col-md-6">
                 <label class="form-label">@Localizer["Subject"]</label>
-                <input name="subject" class="form-control" value="@ViewBag.DefaultSubject" required />
+                <pems-input name="subject" value="@ViewBag.DefaultSubject" required />
             </div>
             <div class="col-12">
                 <label class="form-label">Body</label>
-                <textarea name="body" id="replyBodyEditor" class="form-control" rows="6">@prefill?.Body</textarea>
+                <pems-textarea name="body" id="replyBodyEditor" rows="6">@prefill?.Body</pems-textarea>
             </div>
         </div>
 

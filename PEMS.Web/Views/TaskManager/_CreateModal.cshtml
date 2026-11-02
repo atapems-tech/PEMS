@@ -23,25 +23,25 @@
                 <div class="row g-2">
                     <div class="col-md-8">
                         <label class="form-label small" for="tmc-title">@Localizer["Tm_Field_Title"] <span class="text-danger" aria-hidden="true">*</span></label>
-                        <input id="tmc-title" name="Title" class="form-control form-control-sm" required maxlength="300" autocomplete="off" />
+                        <pems-input scale="small" id="tmc-title" name="Title" required maxlength="300" autocomplete="off" />
                     </div>
                     <div class="col-md-4">
                         <label class="form-label small" for="tmc-type">@Localizer["Tm_Field_Type"]</label>
-                        <select id="tmc-type" name="TypeId" class="form-select form-select-sm">
+                        <pems-select scale="small" id="tmc-type" name="TypeId">
                             @foreach (var t in Model.Types.Where(t => !t.IsSubtask))
                             { <option value="@t.Id">@TaskManagerUi.Name(t.Name, t.NameFa)</option> }
-                        </select>
+                        </pems-select>
                     </div>
                     <div class="col-12">
                         <label class="form-label small" for="tmc-desc">@Localizer["Tm_Field_Description"]</label>
-                        <textarea id="tmc-desc" name="Description" class="form-control form-control-sm" rows="4" maxlength="8000"></textarea>
+                        <pems-textarea scale="small" id="tmc-desc" name="Description" rows="4" maxlength="8000"></pems-textarea>
                     </div>
                     <div class="col-md-4">
                         <label class="form-label small" for="tmc-assignee">@Localizer["Tm_Field_Assignee"]</label>
-                        <select id="tmc-assignee" name="AssigneeEmployeeId" class="form-select form-select-sm" aria-describedby="tmc-assignee-help">
+                        <pems-select scale="small" id="tmc-assignee" name="AssigneeEmployeeId" aria-describedby="tmc-assignee-help">
                             <option value="">@Localizer["Tm_Unassigned"]</option>
                             @foreach (var e in assignees.Candidates) { <option value="@e.EmployeeId">@e.Name</option> }
-                        </select>
+                        </pems-select>
                         @if (assignees.State != "RESOLVED")
                         {
                             <div id="tmc-assignee-help" class="form-text text-warning"><i class="bi bi-info-circle" aria-hidden="true"></i> @Localizer["Tm_Diag_" + assignees.State]</div>
@@ -49,17 +49,17 @@
                     </div>
                     <div class="col-md-4">
                         <label class="form-label small" for="tmc-priority">@Localizer["Tm_Field_Priority"]</label>
-                        <select id="tmc-priority" name="Priority" class="form-select form-select-sm">
+                        <pems-select scale="small" id="tmc-priority" name="Priority">
                             @foreach (var p in PEMS.Domain.Entities.TaskItemPriorities.All)
                             { <option value="@p" selected="@(p == "Normal")">@TaskManagerUi.Priority(Localizer, p)</option> }
-                        </select>
+                        </pems-select>
                     </div>
                     <div class="col-md-4">
                         <label class="form-label small" for="tmc-sprint">@Localizer["Tm_Field_Sprint"]</label>
-                        <select id="tmc-sprint" name="SprintId" class="form-select form-select-sm">
+                        <pems-select scale="small" id="tmc-sprint" name="SprintId">
                             <option value="">@Localizer["Tm_Backlog"]</option>
                             @foreach (var s in Model.Sprints) { <option value="@s.Id">@s.Name</option> }
-                        </select>
+                        </pems-select>
                     </div>
                     <div class="col-md-4">
                         <label class="form-label small" for="tmc-start">@Localizer["Tm_Field_StartDate"]</label>
@@ -71,13 +71,13 @@
                     </div>
                     <div class="col-md-4">
                         <label class="form-label small" for="tmc-points">@Localizer["Tm_Field_StoryPoints"]</label>
-                        <input id="tmc-points" name="StoryPoints" type="number" min="0" max="1000" step="0.5" class="form-control form-control-sm" />
+                        <pems-input scale="small" id="tmc-points" name="StoryPoints" type="number" min="0" max="1000" step="0.5" />
                     </div>
                 </div>
             </div>
             <div class="modal-footer justify-content-between">
                 <div class="form-check">
-                    <input class="form-check-input" type="checkbox" name="createAnother" value="true" id="tmc-another" />
+                    <pems-input kind="check" type="checkbox" name="createAnother" value="true" id="tmc-another" />
                     <label class="form-check-label small" for="tmc-another">@Localizer["Tm_CreateAnother"]</label>
                 </div>
                 <div class="d-flex gap-2 align-items-center">

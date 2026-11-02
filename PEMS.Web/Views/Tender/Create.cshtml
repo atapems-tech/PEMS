@@ -9,17 +9,17 @@
     <form asp-action="Create" method="post">
         <input type="hidden" name="procurementPackageId" value="@packageId" />
         <div class="row g-3">
-            <div class="col-12"><label class="form-label">@Localizer["Title"]</label><input name="title" class="form-control" required /></div>
+            <div class="col-12"><label class="form-label">@Localizer["Title"]</label><pems-input name="title" required /></div>
             <div class="col-md-6"><label class="form-label">@Localizer["Issue Date"]</label><input type="date" name="issueDate" class="form-control" /></div>
             <div class="col-md-6"><label class="form-label">@Localizer["Deadline"]</label><input type="date" name="responseDeadline" class="form-control" /></div>
             <div class="col-12 form-check">
-                <input type="checkbox" name="requiresVendorQualification" value="true" class="form-check-input" id="reqQual" checked />
+                <pems-input kind="check" type="checkbox" name="requiresVendorQualification" value="true" id="reqQual" checked />
                 <label class="form-check-label" for="reqQual">@Localizer["Requires Vendor Qualification"]</label>
             </div>
-            <div class="col-12"><label class="form-label">@Localizer["Technical Requirements"]</label><textarea name="technicalRequirements" class="form-control" rows="2"></textarea></div>
-            <div class="col-12"><label class="form-label">@Localizer["Commercial Requirements"]</label><textarea name="commercialRequirements" class="form-control" rows="2"></textarea></div>
-            <div class="col-12"><label class="form-label">@Localizer["Inspection Requirements"]</label><textarea name="inspectionRequirements" class="form-control" rows="2"></textarea></div>
-            <div class="col-12"><label class="form-label">@Localizer["Contractual Requirements"]</label><textarea name="contractualRequirements" class="form-control" rows="2"></textarea></div>
+            <div class="col-12"><label class="form-label">@Localizer["Technical Requirements"]</label><pems-textarea name="technicalRequirements" rows="2"></pems-textarea></div>
+            <div class="col-12"><label class="form-label">@Localizer["Commercial Requirements"]</label><pems-textarea name="commercialRequirements" rows="2"></pems-textarea></div>
+            <div class="col-12"><label class="form-label">@Localizer["Inspection Requirements"]</label><pems-textarea name="inspectionRequirements" rows="2"></pems-textarea></div>
+            <div class="col-12"><label class="form-label">@Localizer["Contractual Requirements"]</label><pems-textarea name="contractualRequirements" rows="2"></pems-textarea></div>
         </div>
         <div class="mt-4">
             <pems-button tone="primary" type="submit">@Localizer["Save"]</pems-button>

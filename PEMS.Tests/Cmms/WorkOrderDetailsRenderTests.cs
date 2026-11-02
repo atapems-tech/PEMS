@@ -74,7 +74,7 @@ public class WorkOrderDetailsRenderTests : WorkOrderGovernanceTestBase
         (WoSection.Crew, "name=\"code\""),
         (WoSection.DisciplineReview, "name=\"disciplineIds\""),
         (WoSection.ResponsibleDiscipline, "name=\"responsibleDisciplineId\""),
-        (WoSection.ExecutorAssignment, "name=\"teamId\" class=\"form-select form-select-sm\"><option value=\"\">--"),
+        (WoSection.ExecutorAssignment, "class=\"form-select form-select-sm\" name=\"teamId\"><option value=\"\">--"),
         (WoSection.Schedule, "name=\"plannedStart\""),
     };
 

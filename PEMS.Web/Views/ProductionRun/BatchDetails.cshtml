@@ -45,7 +45,7 @@
     <div class="modal-dialog"><div class="modal-content">
         <form asp-action="BlockBatch" asp-route-id="@Model.ProductionBatchId" method="post">
             <div class="modal-header"><h6 class="modal-title">Block Batch</h6><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div>
-            <div class="modal-body"><label class="form-label">@Localizer["Reason"]</label><textarea name="reason" class="form-control" required></textarea></div>
+            <div class="modal-body"><label class="form-label">@Localizer["Reason"]</label><pems-textarea name="reason" required></pems-textarea></div>
             <div class="modal-footer"><pems-button tone="warning" type="submit">Block</pems-button></div>
         </form>
     </div></div>
@@ -55,7 +55,7 @@
     <div class="modal-dialog"><div class="modal-content">
         <form asp-action="RejectBatch" asp-route-id="@Model.ProductionBatchId" method="post">
             <div class="modal-header"><h6 class="modal-title">Reject Batch</h6><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div>
-            <div class="modal-body"><label class="form-label">@Localizer["Reason"]</label><textarea name="reason" class="form-control" required></textarea></div>
+            <div class="modal-body"><label class="form-label">@Localizer["Reason"]</label><pems-textarea name="reason" required></pems-textarea></div>
             <div class="modal-footer"><pems-button tone="danger" type="submit">@Localizer["Reject"]</pems-button></div>
         </form>
     </div></div>

@@ -242,7 +242,7 @@
             @if ((bool)(ViewBag.CanUnfreeze ?? false))
             {
                 <form asp-action="Unfreeze" asp-route-id="@Model.DocumentId" method="post" class="d-flex flex-wrap gap-2 align-items-center">
-                    <input type="text" name="reason" class="form-control form-control-sm" style="max-width:240px;" placeholder="Unfreeze reason (required)" required />
+                    <pems-input scale="small" type="text" name="reason" style="max-width:240px;" placeholder="Unfreeze reason (required)" required />
                     <pems-button tone="dark" size="small" outline="true" type="submit" onclick="return confirm('انجماد این مدرک برداشته شود؟');">
                         <i class="bi bi-sun"></i> @Localizer["Unfreeze"]
                     </pems-button>
@@ -259,7 +259,7 @@
             @if ((bool)(ViewBag.CanReleaseHold ?? false))
             {
                 <form asp-action="ReleaseHold" asp-route-id="@Model.DocumentId" method="post" class="d-flex flex-wrap gap-2 align-items-center">
-                    <input type="text" name="reason" class="form-control form-control-sm" style="max-width:240px;" placeholder="Release reason (required)" required />
+                    <pems-input scale="small" type="text" name="reason" style="max-width:240px;" placeholder="Release reason (required)" required />
                     <pems-button tone="dark" size="small" outline="true" type="submit" onclick="return confirm('Hold این مدرک رفع شود؟');">
                         <i class="bi bi-play-circle"></i> @Localizer["Release Hold"]
                     </pems-button>
@@ -1005,10 +1005,10 @@
                         <form asp-action="SetCommentAction" method="post" class="d-inline">
                             <input type="hidden" name="documentId" value="@Model.DocumentId" />
                             <input type="hidden" name="commentId" value="@c.VDRCommentId" />
-                            <select name="actionStatus" class="form-select form-select-sm mt-1" style="width:170px;" onchange="this.form.submit()">
+                            <pems-select scale="small" css="mt-1" name="actionStatus" style="width:170px;" onchange="this.form.submit()">
                                 @foreach (var s in new[] { "OpenComment", "VendorResponsePending", "Verified", "Closed", "NoActionRequired" })
                                 { <option value="@s" selected="@(s == c.ActionStatus)">@s</option> }
-                            </select>
+                            </pems-select>
                         </form>
                     </td>
                     <td class="small">
@@ -1072,7 +1072,7 @@
                             {
                                 <div class="col-6 col-md-4">
                                     <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" name="idcDisciplineIds" value="@d.DisciplineId" id="idcDisc_@d.DisciplineId">
+                                        <pems-input kind="check" type="checkbox" name="idcDisciplineIds" value="@d.DisciplineId" id="idcDisc_@d.DisciplineId" />
                                         <label class="form-check-label small" for="idcDisc_@d.DisciplineId">@d.Name</label>
                                     </div>
                                 </div>
@@ -1102,7 +1102,7 @@
                 <div class="modal-header"><h6 class="modal-title">@Localizer["ثبت کامنت بازبینی IDC (دیسیپلین شما)"]</h6></div>
                 <div class="modal-body">
                     <p class="text-muted small">این نظر به‌عنوان نتیجه‌ی بازبینی دیسیپلین شما ثبت می‌شود و مستقیماً روی وضعیت رسمی مدرک اثر نمی‌گذارد. بعد از پاسخ همه‌ی دیسیپلین‌های ارجاع‌شده، سازنده/تأییدکننده‌ی مدرک با دیدن مجموع نظرات IDC تصمیم نهایی را می‌گیرد.</p>
-                    <textarea name="comment" class="form-control form-control-sm" rows="3" required></textarea>
+                    <pems-textarea scale="small" name="comment" rows="3" required></pems-textarea>
                 </div>
                 <div class="modal-footer">
                     <pems-button tone="neutral" size="small" outline="true" type="button" data-bs-dismiss="modal">@Localizer["انصراف"]</pems-button>
@@ -1122,7 +1122,7 @@
                 <div class="modal-header"><h6 class="modal-title">@Localizer["اعلام نیاز به اصلاح (دیسیپلین شما)"]</h6></div>
                 <div class="modal-body">
                     <p class="text-muted small"><strong>این اقدام، مدرک را رد نمی‌کند و آن را به سازنده برنمی‌گرداند.</strong> فقط نتیجه‌ی بازبینی دیسیپلین شما را «نیازمند اصلاح» ثبت می‌کند. بعد از پاسخ همه‌ی دیسیپلین‌های ارجاع‌شده، مدرک برای تصمیم رسمی (تایید / رد / بازگشت برای اصلاح) به سازنده/تأییدکننده می‌رسد - با دیدن نظر شما در کنار سایر نظرات.</p>
-                    <textarea name="comment" class="form-control form-control-sm" rows="3" required></textarea>
+                    <pems-textarea scale="small" name="comment" rows="3" required></pems-textarea>
                 </div>
                 <div class="modal-footer">
                     <pems-button tone="neutral" size="small" outline="true" type="button" data-bs-dismiss="modal">@Localizer["انصراف"]</pems-button>
@@ -1143,7 +1143,7 @@
                 <div class="modal-header"><h6 class="modal-title">@Localizer["برگرداندن برای اصلاح"]</h6></div>
                 <div class="modal-body">
                     <p class="text-muted small">برخلاف رد قطعی، این یعنی سازنده باید اصلاح کند و دوباره Submit کند - نه رد نهایی.</p>
-                    <textarea name="comment" class="form-control form-control-sm" rows="3" placeholder="@Localizer["توضیح اصلاحات لازم"]" required></textarea>
+                    <pems-textarea scale="small" name="comment" rows="3" placeholder="@Localizer["توضیح اصلاحات لازم"]" required></pems-textarea>
                 </div>
                 <div class="modal-footer">
                     <pems-button tone="neutral" size="small" outline="true" type="button" data-bs-dismiss="modal">@Localizer["انصراف"]</pems-button>
@@ -1167,7 +1167,7 @@
                     <div class="modal-body">
                         <p class="text-muted small">این مدرک منجمد (Frozen) شود؟ پس از آن دیگر قابل ویرایش یا رویژن جدید نخواهد بود.</p>
                         <label class="form-label small">Freeze reason (required)</label>
-                        <input type="text" name="reason" class="form-control form-control-sm" required />
+                        <pems-input scale="small" type="text" name="reason" required />
                     </div>
                     <div class="modal-footer">
                         <pems-button tone="neutral" size="small" outline="true" type="button" data-bs-dismiss="modal">@Localizer["Cancel"]</pems-button>
@@ -1188,7 +1188,7 @@
                     <div class="modal-body">
                         <p class="text-muted small">این مدرک در وضعیت Hold قرار بگیرد؟ تا رفع Hold، قابل تأیید (Approve) یا صدور (Issue) نخواهد بود.</p>
                         <label class="form-label small">Hold reason (required)</label>
-                        <input type="text" name="reason" class="form-control form-control-sm" required />
+                        <pems-input scale="small" type="text" name="reason" required />
                     </div>
                     <div class="modal-footer">
                         <pems-button tone="neutral" size="small" outline="true" type="button" data-bs-dismiss="modal">@Localizer["Cancel"]</pems-button>
@@ -1216,32 +1216,29 @@
                        ثبت می‌شود، نه مقدار قدیمی فرم Create/Edit *@
                     <div class="mb-3">
                         <label class="form-label small">Issue Purpose (IFC / IFA / IFI / ...)</label>
-                        <input type="text" name="issuePurpose" class="form-control form-control-sm" value="@Model.IssuePurpose" placeholder="e.g. Issued For Construction" />
+                        <pems-input scale="small" type="text" name="issuePurpose" value="@Model.IssuePurpose" placeholder="e.g. Issued For Construction" />
                     </div>
 
                     <div class="mb-3">
                         <label class="form-label small fw-bold">این مدرک به کدوم واحد تحویل داده می‌شه؟</label>
 
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="deliveryUnitType" id="dcc_internal" value="InternalDCC" checked
-                                   onclick="pemsToggleIssueFields()">
+                            <pems-input kind="check" type="radio" name="deliveryUnitType" id="dcc_internal" value="InternalDCC" checked onclick="pemsToggleIssueFields()" />
                             <label class="form-check-label small" for="dcc_internal">DCC داخلی (واحد کنترل مدارک خودمون)</label>
                         </div>
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="deliveryUnitType" id="dept_internal" value="InternalDepartment"
-                                   onclick="pemsToggleIssueFields()">
+                            <pems-input kind="check" type="radio" name="deliveryUnitType" id="dept_internal" value="InternalDepartment" onclick="pemsToggleIssueFields()" />
                             <label class="form-check-label small" for="dept_internal">یک واحد دیگه داخل شرکت</label>
                         </div>
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="deliveryUnitType" id="ext_unit" value="External"
-                                   onclick="pemsToggleIssueFields()">
+                            <pems-input kind="check" type="radio" name="deliveryUnitType" id="ext_unit" value="External" onclick="pemsToggleIssueFields()" />
                             <label class="form-check-label small" for="ext_unit">نهاد بیرونی (DCC کارفرما / پیمانکار)</label>
                         </div>
                     </div>
 
                     <div class="mb-2" id="issueDeptField" style="display:none;">
                         <label class="form-label small">@Localizer["واحد داخلی"]</label>
-                        <select name="deliveryDepartmentId" class="form-select form-select-sm">
+                        <pems-select scale="small" name="deliveryDepartmentId">
                             @{
                                 var allDepartmentsForIssue = (IEnumerable<PEMS.Domain.Entities.Department>)(ViewBag.AllDepartments ?? new List<PEMS.Domain.Entities.Department>());
                             }
@@ -1249,7 +1246,7 @@
                             {
                                 <option value="@dept.DepartmentId">@dept.Name</option>
                             }
-                        </select>
+                        </pems-select>
                     </div>
 
                     <div id="issueExternalFields" style="display:none;">
@@ -1258,26 +1255,26 @@
                         </pems-alert>
                         <div class="mb-2">
                             <label class="form-label small">نام گیرنده (مثلاً DCC کارفرما)</label>
-                            <input type="text" name="externalReceiverName" class="form-control form-control-sm" />
+                            <pems-input scale="small" type="text" name="externalReceiverName" />
                         </div>
                     </div>
 
                     <div class="mb-2" id="issueLetterNumberField" style="display:none;">
                         <label class="form-label small">شماره‌ی نامه (اختیاری - خالی بمونه خودکار ساخته می‌شه)</label>
-                        <input type="text" name="letterNumber" class="form-control form-control-sm" />
+                        <pems-input scale="small" type="text" name="letterNumber" />
                     </div>
                     <div class="mb-2" id="issueSubjectField" style="display:none;">
                         <label class="form-label small">@Localizer["موضوع نامه"]</label>
-                        <input type="text" name="letterSubject" class="form-control form-control-sm" value="صدور مدرک @Model.DocumentNo" />
+                        <pems-input scale="small" type="text" name="letterSubject" value="صدور مدرک @Model.DocumentNo" />
                     </div>
                     <div class="mb-2" id="issueBodyField" style="display:none;">
                         <label class="form-label small">@Localizer["متن نامه (اختیاری)"]</label>
-                        <textarea name="letterBody" class="form-control form-control-sm" rows="2"></textarea>
+                        <pems-textarea scale="small" name="letterBody" rows="2"></pems-textarea>
                     </div>
 
                     <div class="mb-2">
                         <label class="form-label small">توضیح / کامنت صدور (اختیاری)</label>
-                        <textarea name="comment" class="form-control form-control-sm" rows="2"></textarea>
+                        <pems-textarea scale="small" name="comment" rows="2"></pems-textarea>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -1324,22 +1321,22 @@
                 <div class="modal-body">
                     <div class="mb-2">
                         <label class="form-label small">@Localizer["Reason"]</label>
-                        <select name="reason" class="form-select form-select-sm">
+                        <pems-select scale="small" name="reason">
                             <option>Design Change</option>
                             <option>Client Comment</option>
                             <option>Vendor Update</option>
                             <option>Internal Review</option>
                             <option>Regulatory Requirement</option>
                             <option>@Localizer["Other"]</option>
-                        </select>
+                        </pems-select>
                     </div>
                     <div class="mb-2">
                         <label class="form-label small">Change Description</label>
-                        <textarea name="changeDescription" class="form-control form-control-sm" rows="3" placeholder="What changed in this revision?"></textarea>
+                        <pems-textarea scale="small" name="changeDescription" rows="3" placeholder="What changed in this revision?"></pems-textarea>
                     </div>
                     <div class="mb-2">
                         <label class="form-label small"><i class="bi bi-building"></i> Vendor Comment</label>
-                        <textarea name="vendorComment" class="form-control form-control-sm" rows="3" placeholder="Paste or summarize the vendor's comment that led to this revision (if applicable)"></textarea>
+                        <pems-textarea scale="small" name="vendorComment" rows="3" placeholder="Paste or summarize the vendor's comment that led to this revision (if applicable)"></pems-textarea>
                     </div>
                     @{
                         var openClouded = ((List<PEMS.Application.DTOs.VDRCommentDto>)ViewBag.Comments)
@@ -1349,13 +1346,13 @@
                     {
                         <div class="mb-2">
                             <label class="form-label small"><i class="bi bi-cloud-fill"></i> Closes Marked-for-Revision comment <span class="text-muted">@Localizer["(optional)"]</span></label>
-                            <select name="triggeringCommentId" class="form-select form-select-sm">
+                            <pems-select scale="small" name="triggeringCommentId">
                                 <option value="">@Localizer["-- None --"]</option>
                                 @foreach (var oc in openClouded)
                                 {
                                     <option value="@oc.VDRCommentId">@oc.CommentNo - @oc.CommentText</option>
                                 }
-                            </select>
+                            </pems-select>
                         </div>
                     }
                 </div>
@@ -1386,13 +1383,13 @@
                         <label class="form-label small"><i class="bi bi-envelope-open"></i> نامه‌ی وارده (الزامی)</label>
                         @if (availableIncomingLetters.Any())
                         {
-                            <select name="incomingLetterId" class="form-select form-select-sm" required>
+                            <pems-select scale="small" name="incomingLetterId" required>
                                 <option value="">@Localizer["-- انتخاب کنید --"]</option>
                                 @foreach (var l in availableIncomingLetters)
                                 {
                                     <option value="@l.LetterId">@l.LetterNumber &mdash; @l.Subject (@l.LetterDate.ToString("yyyy-MM-dd"))</option>
                                 }
-                            </select>
+                            </pems-select>
                         }
                         else
                         {
@@ -1405,16 +1402,16 @@
 
                     <div class="mb-2">
                         <label class="form-label small">Client Decision</label>
-                        <select name="clientStatus" class="form-select form-select-sm">
+                        <pems-select scale="small" name="clientStatus">
                             <option value="A">A - Approved</option>
                             <option value="B">B - Approved with Comments</option>
                             <option value="C">C - Revise &amp; Resubmit</option>
                             <option value="D">D - Rejected</option>
-                        </select>
+                        </pems-select>
                     </div>
                     <div class="mb-2">
                         <label class="form-label small">Client Comment (اختیاری - علاوه بر متن نامه)</label>
-                        <textarea name="clientComment" class="form-control form-control-sm" rows="3"></textarea>
+                        <pems-textarea scale="small" name="clientComment" rows="3"></pems-textarea>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -1438,32 +1435,32 @@
                 <div class="modal-body">
                     <div id="engPinLocationLabel" class="small text-primary mb-2"></div>
                     <div class="row g-3">
-                        <div class="col-md-4"><label class="form-label small">@Localizer["Raised By"]</label><input name="raisedByName" class="form-control form-control-sm" /></div>
+                        <div class="col-md-4"><label class="form-label small">@Localizer["Raised By"]</label><pems-input scale="small" name="raisedByName" /></div>
                         <div class="col-md-4">
                             <label class="form-label small">@Localizer["Category"]</label>
-                            <select name="category" class="form-select form-select-sm">
+                            <pems-select scale="small" name="category">
                                 <option value="">@Localizer["-- select --"]</option>
                                 @foreach (var cat in new[] { "Technical", "Safety", "Constructability", "Documentation", "Specification", "Calculation", "Typographical", "Clarification" })
                                 { <option value="@cat">@cat</option> }
-                            </select>
+                            </pems-select>
                         </div>
                         <div class="col-md-4">
                             <label class="form-label small">@Localizer["Severity"]</label>
-                            <select name="severity" class="form-select form-select-sm">
+                            <pems-select scale="small" name="severity">
                                 <option value="">@Localizer["-- select --"]</option>
                                 @foreach (var sev in new[] { "Low", "Medium", "High", "Critical" })
                                 { <option value="@sev">@sev</option> }
-                            </select>
+                            </pems-select>
                         </div>
-                        <div class="col-md-4"><label class="form-label small">@Localizer["Sheet"]</label><input name="sheet" class="form-control form-control-sm" /></div>
-                        <div class="col-md-4"><label class="form-label small">@Localizer["Zone"]</label><input name="zone" class="form-control form-control-sm" /></div>
-                        <div class="col-md-4"><label class="form-label small">@Localizer["Reference"]</label><input name="reference" class="form-control form-control-sm" /></div>
-                        <div class="col-12"><label class="form-label small">@Localizer["Comment"]</label><textarea name="commentText" class="form-control form-control-sm" rows="3" required></textarea></div>
-                        <div class="col-md-6"><label class="form-label small">Required Action</label><input name="requiredAction" class="form-control form-control-sm" /></div>
+                        <div class="col-md-4"><label class="form-label small">@Localizer["Sheet"]</label><pems-input scale="small" name="sheet" /></div>
+                        <div class="col-md-4"><label class="form-label small">@Localizer["Zone"]</label><pems-input scale="small" name="zone" /></div>
+                        <div class="col-md-4"><label class="form-label small">@Localizer["Reference"]</label><pems-input scale="small" name="reference" /></div>
+                        <div class="col-12"><label class="form-label small">@Localizer["Comment"]</label><pems-textarea scale="small" name="commentText" rows="3" required></pems-textarea></div>
+                        <div class="col-md-6"><label class="form-label small">Required Action</label><pems-input scale="small" name="requiredAction" /></div>
                         <div class="col-md-6"><label class="form-label small">@Localizer["Due Date"]</label><input name="dueDate" type="date" class="form-control form-control-sm" /></div>
-                        <div class="col-12"><label class="form-label small">Attachment <span class="text-muted">@Localizer["(optional)"]</span></label><input type="file" name="attachment" class="form-control form-control-sm" /></div>
+                        <div class="col-12"><label class="form-label small">Attachment <span class="text-muted">@Localizer["(optional)"]</span></label><pems-input scale="small" type="file" name="attachment" /></div>
                         <div class="col-12 form-check">
-                            <input type="checkbox" class="form-check-input" name="marksRevisionRequired" value="true" id="marksRevisionRequired" />
+                            <pems-input kind="check" type="checkbox" name="marksRevisionRequired" value="true" id="marksRevisionRequired" />
                             <label class="form-check-label" for="marksRevisionRequired">
                                 Marks this document as needing a new revision (Clouded / Marked-for-Revision)
                             </label>
@@ -1492,11 +1489,11 @@
                         <p class="small text-muted">@c.CommentText</p>
                         <div class="mb-2">
                             <label class="form-label small">Reply <span class="text-muted">(optional if attaching a file)</span></label>
-                            <textarea name="responseText" class="form-control form-control-sm" rows="3"></textarea>
+                            <pems-textarea scale="small" name="responseText" rows="3"></pems-textarea>
                         </div>
                         <div class="mb-2">
                             <label class="form-label small">Or attach the Reply Sheet file</label>
-                            <input type="file" name="replyAttachment" class="form-control form-control-sm" />
+                            <pems-input scale="small" type="file" name="replyAttachment" />
                         </div>
                     </div>
                     <div class="modal-footer">

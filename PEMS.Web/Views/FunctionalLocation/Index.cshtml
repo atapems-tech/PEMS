@@ -88,25 +88,25 @@
             <div class="modal-header"><h6 class="modal-title">@Localizer["Fl_New"]</h6></div>
             <div class="modal-body">
                 <div class="row g-2 mb-2">
-                    <div class="col-6"><label class="form-label small">@Localizer["Code"]</label><input name="code" class="form-control form-control-sm" placeholder="U100-CW-PUMP" required /></div>
-                    <div class="col-6"><label class="form-label small">@Localizer["Name"]</label><input name="name" class="form-control form-control-sm" required /></div>
+                    <div class="col-6"><label class="form-label small">@Localizer["Code"]</label><pems-input scale="small" name="code" placeholder="U100-CW-PUMP" required /></div>
+                    <div class="col-6"><label class="form-label small">@Localizer["Name"]</label><pems-input scale="small" name="name" required /></div>
                 </div>
                 <div class="mb-2">
                     <label class="form-label small">@Localizer["Parent"]</label>
-                    <select name="parentId" class="form-select form-select-sm">
+                    <pems-select scale="small" name="parentId">
                         <option value="">@Localizer["-- none (root) --"]</option>
                         @foreach (var p in pickerList)
                         {
                             <option value="@p.FunctionalLocationId">@p.PathBreadcrumb</option>
                         }
-                    </select>
+                    </pems-select>
                 </div>
                 <div class="row g-2 mb-2">
-                    <div class="col-4"><label class="form-label small">@Localizer["Plant"]</label><input name="plant" class="form-control form-control-sm" /></div>
-                    <div class="col-4"><label class="form-label small">@Localizer["Area"]</label><input name="area" class="form-control form-control-sm" /></div>
-                    <div class="col-4"><label class="form-label small">@Localizer["Unit"]</label><input name="unit" class="form-control form-control-sm" /></div>
+                    <div class="col-4"><label class="form-label small">@Localizer["Plant"]</label><pems-input scale="small" name="plant" /></div>
+                    <div class="col-4"><label class="form-label small">@Localizer["Area"]</label><pems-input scale="small" name="area" /></div>
+                    <div class="col-4"><label class="form-label small">@Localizer["Unit"]</label><pems-input scale="small" name="unit" /></div>
                 </div>
-                <div class="mb-2"><label class="form-label small">@Localizer["Description"]</label><textarea name="description" class="form-control form-control-sm" rows="2"></textarea></div>
+                <div class="mb-2"><label class="form-label small">@Localizer["Description"]</label><pems-textarea scale="small" name="description" rows="2"></pems-textarea></div>
             </div>
             <div class="modal-footer">
                 <pems-button tone="neutral" size="small" outline="true" type="button" data-bs-dismiss="modal">@Localizer["Cancel"]</pems-button>
@@ -123,23 +123,23 @@
             <div class="modal-header"><h6 class="modal-title">@Localizer["Fl_Edit"]</h6></div>
             <div class="modal-body">
                 <div class="row g-2 mb-2">
-                    <div class="col-6"><label class="form-label small">@Localizer["Code"]</label><input name="code" id="editFlCode" class="form-control form-control-sm" required /></div>
-                    <div class="col-6"><label class="form-label small">@Localizer["Name"]</label><input name="name" id="editFlName" class="form-control form-control-sm" required /></div>
+                    <div class="col-6"><label class="form-label small">@Localizer["Code"]</label><pems-input scale="small" name="code" id="editFlCode" required /></div>
+                    <div class="col-6"><label class="form-label small">@Localizer["Name"]</label><pems-input scale="small" name="name" id="editFlName" required /></div>
                 </div>
                 <div class="mb-2">
                     <label class="form-label small">@Localizer["Parent"]</label>
-                    <select name="parentId" id="editFlParentId" class="form-select form-select-sm">
+                    <pems-select scale="small" name="parentId" id="editFlParentId">
                         <option value="">@Localizer["-- none (root) --"]</option>
                         @foreach (var p in pickerList)
                         {
                             <option value="@p.FunctionalLocationId">@p.PathBreadcrumb</option>
                         }
-                    </select>
+                    </pems-select>
                 </div>
                 <div class="row g-2 mb-2">
-                    <div class="col-4"><label class="form-label small">@Localizer["Plant"]</label><input name="plant" id="editFlPlant" class="form-control form-control-sm" /></div>
-                    <div class="col-4"><label class="form-label small">@Localizer["Area"]</label><input name="area" id="editFlArea" class="form-control form-control-sm" /></div>
-                    <div class="col-4"><label class="form-label small">@Localizer["Unit"]</label><input name="unit" id="editFlUnit" class="form-control form-control-sm" /></div>
+                    <div class="col-4"><label class="form-label small">@Localizer["Plant"]</label><pems-input scale="small" name="plant" id="editFlPlant" /></div>
+                    <div class="col-4"><label class="form-label small">@Localizer["Area"]</label><pems-input scale="small" name="area" id="editFlArea" /></div>
+                    <div class="col-4"><label class="form-label small">@Localizer["Unit"]</label><pems-input scale="small" name="unit" id="editFlUnit" /></div>
                 </div>
             </div>
             <div class="modal-footer">

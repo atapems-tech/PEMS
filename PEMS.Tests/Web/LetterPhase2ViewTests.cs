@@ -108,8 +108,8 @@ public class LetterPhase2ViewTests
     {
         var html = await RenderDashboard(Dash(), true);
 
-        Assert.Contains("role=\"img\" aria-label=\"0-7 days: 2 (20%)\"", html);
-        Assert.Contains("role=\"img\" aria-label=\"Registered: 6 (60%)\"", html);
+        Assert.Contains("role=\"progressbar\" aria-valuenow=\"20\" aria-valuemin=\"0\" aria-valuemax=\"100\" aria-label=\"0-7 days: 2 (20%)\"", html);
+        Assert.Contains("role=\"progressbar\" aria-valuenow=\"60\" aria-valuemin=\"0\" aria-valuemax=\"100\" aria-label=\"Registered: 6 (60%)\"", html);
         Assert.Contains("Over 90 days", html);
         Assert.Contains("Urgent", html);
     }
