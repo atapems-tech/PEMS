@@ -9,7 +9,7 @@
 <div class="content-card">
     <div class="d-flex justify-content-between align-items-center mb-3">
         <h5 class="mb-0"><i class="bi bi-journal-bookmark"></i> @Localizer["Standards Matrix"]</h5>
-        <a asp-action="StandardCreate" class="btn btn-sm btn-pems-solid"><i class="bi bi-plus-lg"></i> @Localizer["Add Standard"]</a>
+        <pems-button as="a" tone="primary" size="small" asp-action="StandardCreate"><i class="bi bi-plus-lg"></i> @Localizer["Add Standard"]</pems-button>
     </div>
 
     @if (!Model.Any())
@@ -34,23 +34,23 @@
                             <td><a asp-action="StandardEdit" asp-route-id="@s.HelpStandardReferenceId">@s.TitleEn</a></td>
                             <td class="small text-muted">@s.IssuingOrganization</td>
                             <td class="small text-muted">@s.RelatedModule</td>
-                            <td><span class="badge bg-light text-dark border">@s.ApplicabilityStatus</span></td>
-                            <td><span class="badge bg-light text-dark border">@s.VerificationStatus</span></td>
+                            <td><pems-badge tone="light">@s.ApplicabilityStatus</pems-badge></td>
+                            <td><pems-badge tone="light">@s.VerificationStatus</pems-badge></td>
                             <td>
-                                <span class="badge @(s.PEMSImplementationStatus == "ComplianceEvidenceAvailable" ? "bg-success" : "bg-secondary")">
+                                <pems-badge tone="none" css="@(s.PEMSImplementationStatus == "ComplianceEvidenceAvailable" ? "bg-success" : "bg-secondary")">
                                     @s.PEMSImplementationStatus
-                                </span>
+                                </pems-badge>
                             </td>
-                            <td><span class="badge @(s.IsPublished ? "bg-success" : "bg-secondary")">@(s.IsPublished ? "Published" : "Draft")</span></td>
+                            <td><pems-badge tone="none" css="@(s.IsPublished ? "bg-success" : "bg-secondary")">@(s.IsPublished ? "Published" : "Draft")</pems-badge></td>
                             <td class="text-end">
                                 <form asp-action="StandardSetPublished" asp-route-id="@s.HelpStandardReferenceId" method="post" class="d-inline">
                                     <input type="hidden" name="isPublished" value="@(!s.IsPublished)" />
-                                    <button type="submit" class="btn btn-sm btn-outline-@(s.IsPublished ? "secondary" : "success")">
+                                    <pems-button tone="none" size="small" css="btn-outline-@(s.IsPublished ? "secondary" : "success")" type="submit">
                                         @(s.IsPublished ? "Unpublish" : "Publish")
-                                    </button>
+                                    </pems-button>
                                 </form>
-                                <form asp-action="StandardDelete" asp-route-id="@s.HelpStandardReferenceId" method="post" class="d-inline" onsubmit="return confirm('Delete this standard reference?')">
-                                    <button type="submit" class="btn btn-sm btn-outline-danger"><i class="bi bi-trash"></i></button>
+                                <form asp-action="StandardDelete" asp-route-id="@s.HelpStandardReferenceId" method="post" class="d-inline" data-pems-confirm="Delete this standard reference?">
+                                    <pems-button tone="danger" size="small" outline="true" type="submit"><i class="bi bi-trash"></i></pems-button>
                                 </form>
                             </td>
                         </tr>

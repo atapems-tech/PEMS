@@ -104,8 +104,7 @@ else
                         Advance to Completed
                     </pems-button>
 
-                    <div class="modal fade" id="completeFailureModal" tabindex="-1">
-                        <div class="modal-dialog"><div class="modal-content">
+                    <pems-modal id="completeFailureModal" tabindex="-1">
                             <form asp-action="AdvanceStatus" method="post">
                                 <input type="hidden" name="id" value="@Model.WorkOrderId" />
                                 <div class="modal-header"><h6 class="modal-title"><i class="bi bi-clipboard-data"></i> ثبت اطلاعات تکمیل</h6></div>
@@ -114,21 +113,21 @@ else
                                     {
                                         <p class="text-muted small">برای کار اصلاحی/اضطراری، ثبت این اطلاعات برای تحلیل قابلیت‌اطمینان لازمه (ISO 14224).</p>
                                         <div class="mb-2">
-                                            <label class="form-label small">حالت خرابی (Failure Mode)</label>
+                                            <pems-label css="small">حالت خرابی (Failure Mode)</pems-label>
                                             <pems-select scale="small" name="failureModeCode">
                                                 <option value="">@Localizer["-- انتخاب --"]</option>
                                                 @foreach (var fm in failureModeOptions) { <option value="@fm.Code" selected="@string.Equals(fm.Code, Model.FailureModeCode, StringComparison.OrdinalIgnoreCase)">@fm.Code - @fm.Name</option> }
                                             </pems-select>
                                         </div>
                                         <div class="mb-2">
-                                            <label class="form-label small">علت خرابی (Failure Cause)</label>
+                                            <pems-label css="small">علت خرابی (Failure Cause)</pems-label>
                                             <pems-select scale="small" name="failureCauseCode">
                                                 <option value="">@Localizer["-- انتخاب --"]</option>
                                                 @foreach (var fc in failureCauseOptions) { <option value="@fc.Code" selected="@string.Equals(fc.Code, Model.FailureCauseCode, StringComparison.OrdinalIgnoreCase)">@fc.Code - @fc.Name</option> }
                                             </pems-select>
                                         </div>
                                         <div class="mb-2">
-                                            <label class="form-label small">اثر خرابی (Failure Effect)</label>
+                                            <pems-label css="small">اثر خرابی (Failure Effect)</pems-label>
                                             <pems-select scale="small" name="failureEffect">
                                                 <option value="">@Localizer["-- انتخاب --"]</option>
                                                 <option>Unplanned Shutdown</option><option>Production Loss</option><option>Safety Impact</option>
@@ -137,29 +136,29 @@ else
                                             </pems-select>
                                         </div>
                                         <div class="mb-2">
-                                            <label class="form-label small">ریشه‌ی مشکل (Root Cause)</label>
+                                            <pems-label css="small">ریشه‌ی مشکل (Root Cause)</pems-label>
                                             <pems-textarea scale="small" name="rootCause" rows="2"></pems-textarea>
                                         </div>
                                         <div class="mb-2">
-                                            <label class="form-label small">اقدام اصلاحی (Corrective Action)</label>
+                                            <pems-label css="small">اقدام اصلاحی (Corrective Action)</pems-label>
                                             <pems-textarea scale="small" name="correctiveAction" rows="2"></pems-textarea>
                                         </div>
                                         <div class="mb-2">
-                                            <label class="form-label small">Downtime واقعی (ساعت)</label>
+                                            <pems-label css="small">Downtime واقعی (ساعت)</pems-label>
                                             <pems-input scale="small" name="downtimeHours" type="number" step="0.1" value="@Model.DowntimeHours" />
                                         </div>
                                         <hr />
                                     }
                                     <div class="mb-2">
-                                        <label class="form-label small">هزینه پیمانکار (Contractor Cost)</label>
+                                        <pems-label css="small">هزینه پیمانکار (Contractor Cost)</pems-label>
                                         <pems-input scale="small" name="contractorCost" type="number" step="0.01" />
                                     </div>
                                     <div class="mb-2">
-                                        <label class="form-label small">نام پیمانکار (Contractor Name)</label>
+                                        <pems-label css="small">نام پیمانکار (Contractor Name)</pems-label>
                                         <pems-input scale="small" name="contractorName" />
                                     </div>
                                     <div class="mb-2">
-                                        <label class="form-label small">دلیل / یادداشت این تغییر وضعیت (اختیاری)</label>
+                                        <pems-label css="small">دلیل / یادداشت این تغییر وضعیت (اختیاری)</pems-label>
                                         <pems-input scale="small" name="reason" />
                                     </div>
                                 </div>
@@ -168,8 +167,7 @@ else
                                     <pems-button tone="primary" size="small" type="submit">@Localizer["ثبت و تکمیل"]</pems-button>
                                 </div>
                             </form>
-                        </div></div>
-                    </div>
+                        </pems-modal>
                 }
                 else
                 {
@@ -214,7 +212,7 @@ else
                 <form asp-action="Reject" method="post" class="d-inline ms-1">
                     <input type="hidden" name="id" value="@Model.WorkOrderId" />
                     <pems-input scale="small" css="d-inline-block" name="reason" required style="width:160px;" placeholder="@Localizer["Reason (required)"]" />
-                    <pems-button tone="danger" size="small" outline="true" type="submit" onclick="return confirm('این WorkOrder رد شود؟');">@Localizer["Reject"]</pems-button>
+                    <pems-button tone="danger" size="small" outline="true" type="submit" data-pems-confirm="این WorkOrder رد شود؟">@Localizer["Reject"]</pems-button>
                 </form>
             }
             @if (canApproveWo && Model.Status is "Open" or "Assigned" or "InProgress" or "OnHold")
@@ -222,7 +220,7 @@ else
                 <form asp-action="Cancel" method="post" class="d-inline ms-1">
                     <input type="hidden" name="id" value="@Model.WorkOrderId" />
                     <pems-input scale="small" css="d-inline-block" name="reason" required style="width:160px;" placeholder="@Localizer["Reason (required)"]" />
-                    <pems-button tone="neutral" size="small" outline="true" type="submit" data-legacy="cancel" onclick="return confirm('این WorkOrder لغو شود؟');">@Localizer["Cancel"]</pems-button>
+                    <pems-button tone="neutral" size="small" outline="true" type="submit" data-legacy="cancel" data-pems-confirm="این WorkOrder لغو شود؟">@Localizer["Cancel"]</pems-button>
                 </form>
             }
         </div>
@@ -318,7 +316,7 @@ else
                             <div class="row g-2 mt-1">
                                 @if (Model.WorkOrderType is "Corrective" or "Emergency")
                                 {
-                                    <div class="col-md-3"><label class="form-label small">@Localizer["Failure Mode"]</label>
+                                    <div class="col-md-3"><pems-label css="small">@Localizer["Failure Mode"]</pems-label>
                                         @if (failureModeOptions.Count > 0)
                                         {
                                             <pems-select scale="small" name="failureModeCode">
@@ -328,7 +326,7 @@ else
                                         }
                                         else { <pems-input scale="small" name="failureModeCode" value="@Model.FailureModeCode" /> }
                                     </div>
-                                    <div class="col-md-3"><label class="form-label small">@Localizer["Failure Cause"]</label>
+                                    <div class="col-md-3"><pems-label css="small">@Localizer["Failure Cause"]</pems-label>
                                         @if (failureCauseOptions.Count > 0)
                                         {
                                             <pems-select scale="small" name="failureCauseCode">
@@ -338,13 +336,13 @@ else
                                         }
                                         else { <pems-input scale="small" name="failureCauseCode" value="@Model.FailureCauseCode" /> }
                                     </div>
-                                    <div class="col-md-3"><label class="form-label small">@Localizer["Root Cause"]</label><pems-input scale="small" name="rootCause" /></div>
-                                    <div class="col-md-3"><label class="form-label small">@Localizer["Downtime Hours"]</label><pems-input scale="small" name="downtimeHours" type="number" step="0.1" /></div>
-                                    <div class="col-md-6"><label class="form-label small">@Localizer["Failure Effect"]</label><pems-input scale="small" name="failureEffect" value="@Model.FailureEffect" /></div>
-                                    <div class="col-md-6"><label class="form-label small">@Localizer["Corrective Action"]</label><pems-input scale="small" name="correctiveAction" /></div>
+                                    <div class="col-md-3"><pems-label css="small">@Localizer["Root Cause"]</pems-label><pems-input scale="small" name="rootCause" /></div>
+                                    <div class="col-md-3"><pems-label css="small">@Localizer["Downtime Hours"]</pems-label><pems-input scale="small" name="downtimeHours" type="number" step="0.1" /></div>
+                                    <div class="col-md-6"><pems-label css="small">@Localizer["Failure Effect"]</pems-label><pems-input scale="small" name="failureEffect" value="@Model.FailureEffect" /></div>
+                                    <div class="col-md-6"><pems-label css="small">@Localizer["Corrective Action"]</pems-label><pems-input scale="small" name="correctiveAction" /></div>
                                 }
-                                <div class="col-md-6"><label class="form-label small">@Localizer["Contractor"]</label><pems-input scale="small" name="contractorName" /></div>
-                                <div class="col-md-6"><label class="form-label small">@Localizer["Contractor Cost"]</label><pems-input scale="small" name="contractorCost" type="number" step="0.01" /></div>
+                                <div class="col-md-6"><pems-label css="small">@Localizer["Contractor"]</pems-label><pems-input scale="small" name="contractorName" /></div>
+                                <div class="col-md-6"><pems-label css="small">@Localizer["Contractor Cost"]</pems-label><pems-input scale="small" name="contractorCost" type="number" step="0.01" /></div>
                             </div>
                         </details>
                     }
@@ -370,7 +368,7 @@ else
                 <div class="col-md-6">
                     <form asp-action="SetPlanning" method="post" class="d-flex gap-2 align-items-end flex-wrap">
                         <input type="hidden" name="id" value="@Model.WorkOrderId" />
-                        <div><label class="form-label small mb-1">@Localizer["Responsible Maintenance Discipline"]</label>
+                        <div><pems-label css="small mb-1">@Localizer["Responsible Maintenance Discipline"]</pems-label>
                             <pems-select scale="small" name="responsibleDisciplineId" required>
                                 <option value="">--</option>
                                 @foreach (var d in (IEnumerable<dynamic>)ViewBag.Disciplines) { <option value="@d.DisciplineId" selected="@(Model.ResponsibleDisciplineId == (int)d.DisciplineId)">@d.Name</option> }
@@ -393,11 +391,11 @@ else
                     <div class="col-md-6">
                         <form asp-action="AssignExecutor" method="post" class="d-flex gap-2 align-items-end flex-wrap">
                             <input type="hidden" name="id" value="@Model.WorkOrderId" />
-                            <div><label class="form-label small mb-1">@Localizer["Team"]</label>
+                            <div><pems-label css="small mb-1">@Localizer["Team"]</pems-label>
                                 <pems-select scale="small" name="teamId"><option value="">--</option>
                                     @foreach (var c in (IEnumerable<dynamic>)ViewBag.Teams) { <option value="@c.TeamId">@c.Name</option> }
                                 </pems-select></div>
-                            <div><label class="form-label small mb-1">@Localizer["Executor"]</label>
+                            <div><pems-label css="small mb-1">@Localizer["Executor"]</pems-label>
                                 <pems-select scale="small" name="employeeId"><option value="">--</option>
                                     @foreach (var e in (IEnumerable<dynamic>)ViewBag.Employees) { <option value="@e.EmployeeId">@e.FullName</option> }
                                 </pems-select></div>
@@ -412,10 +410,10 @@ else
                            تخصیص تیم/کارمند است (ترتیب الزامی نیست) - همان مرحله/مجوز، فرم جدا. *@
                         <form asp-action="SetSchedule" method="post" class="d-flex gap-2 align-items-end flex-wrap">
                             <input type="hidden" name="id" value="@Model.WorkOrderId" />
-                            <div><label class="form-label small mb-1">@Localizer["Planned Start"]</label>
+                            <div><pems-label css="small mb-1">@Localizer["Planned Start"]</pems-label>
                                 <input type="datetime-local" name="plannedStart" class="form-control form-control-sm"
                                        value="@(Model.PlannedStart?.ToString("yyyy-MM-ddTHH:mm"))" required /></div>
-                            <div><label class="form-label small mb-1">@Localizer["Planned Finish"]</label>
+                            <div><pems-label css="small mb-1">@Localizer["Planned Finish"]</pems-label>
                                 <input type="datetime-local" name="plannedFinish" class="form-control form-control-sm"
                                        value="@(Model.PlannedFinish?.ToString("yyyy-MM-ddTHH:mm"))" required /></div>
                             <pems-button tone="primary" size="small" outline="true" type="submit">@Localizer["Save Schedule"]</pems-button>
@@ -495,8 +493,7 @@ else
             <i class="bi bi-send"></i> @Localizer["درخواست بازبینی چند-دیسیپلینه"]
         </pems-button>
 
-        <div class="modal fade" id="requestReviewModal" tabindex="-1">
-            <div class="modal-dialog"><div class="modal-content">
+        <pems-modal id="requestReviewModal" tabindex="-1">
                 <form asp-action="RequestDisciplineReview" method="post">
                     <input type="hidden" name="workOrderId" value="@Model.WorkOrderId" />
                     <div class="modal-header"><h6 class="modal-title">@Localizer["انتخاب دیسیپلین‌ها"]</h6></div>
@@ -514,8 +511,7 @@ else
                         <pems-button tone="primary" size="small" type="submit">@Localizer["شروع بازبینی"]</pems-button>
                     </div>
                 </form>
-            </div></div>
-        </div>
+            </pems-modal>
     }
     else
     {
@@ -534,14 +530,13 @@ else
                 <i class="bi bi-reply"></i> ثبت نظر دیسیپلین من
             </pems-button>
 
-            <div class="modal fade" id="respondReviewModal" tabindex="-1">
-                <div class="modal-dialog"><div class="modal-content">
+            <pems-modal id="respondReviewModal" tabindex="-1">
                     <form asp-action="RespondDisciplineReview" method="post">
                         <input type="hidden" name="workOrderId" value="@Model.WorkOrderId" />
                         <div class="modal-header"><h6 class="modal-title">@Localizer["ثبت نظر / یافته"]</h6></div>
                         <div class="modal-body">
                             <div class="mb-2">
-                                <label class="form-label small">@Localizer["تصمیم"]</label>
+                                <pems-label css="small">@Localizer["تصمیم"]</pems-label>
                                 <pems-select scale="small" name="decision" required>
                                     <option value="Approve">@Localizer["تایید (بدون ایراد)"]</option>
                                     <option value="Comment">@Localizer["تایید با یادداشت"]</option>
@@ -549,11 +544,11 @@ else
                                 </pems-select>
                             </div>
                             <div class="mb-2">
-                                <label class="form-label small">@Localizer["یافته / توضیح"]</label>
+                                <pems-label css="small">@Localizer["یافته / توضیح"]</pems-label>
                                 <pems-textarea scale="small" name="findings" rows="3"></pems-textarea>
                             </div>
                             <div class="mb-2">
-                                <label class="form-label small">حالت خرابی (از دید این دیسیپلین - اختیاری)</label>
+                                <pems-label css="small">حالت خرابی (از دید این دیسیپلین - اختیاری)</pems-label>
                                 <pems-select scale="small" name="failureModeCode">
                                     <option value="">@Localizer["-- انتخاب --"]</option>
                                     <option>@Localizer["Leakage"]</option><option>@Localizer["Fracture"]</option><option>@Localizer["Vibration"]</option>
@@ -562,7 +557,7 @@ else
                                 </pems-select>
                             </div>
                             <div class="mb-2">
-                                <label class="form-label small">علت خرابی (از دید این دیسیپلین - اختیاری)</label>
+                                <pems-label css="small">علت خرابی (از دید این دیسیپلین - اختیاری)</pems-label>
                                 <pems-select scale="small" name="failureCauseCode">
                                     <option value="">@Localizer["-- انتخاب --"]</option>
                                     <option>@Localizer["Corrosion"]</option><option>@Localizer["Fatigue"]</option><option>@Localizer["Wear"]</option>
@@ -576,8 +571,7 @@ else
                             <pems-button tone="primary" size="small" type="submit">@Localizer["ثبت"]</pems-button>
                         </div>
                     </form>
-                </div></div>
-            </div>
+                </pems-modal>
         }
         else
         {
@@ -1062,11 +1056,11 @@ else
             const data = await res.json();
 
             if (!data.success) {
-                alert('Barcode not resolved: ' + (data.errorMessage || data.errorCode));
+                window.PemsDialog.alert('Barcode not resolved: ' + (data.errorMessage || data.errorCode));
                 return;
             }
             if (data.targetType !== expectedTargetType) {
-                alert('This barcode belongs to a ' + data.targetType + ', not a ' + expectedTargetType + '.');
+                window.PemsDialog.alert('This barcode belongs to a ' + data.targetType + ', not a ' + expectedTargetType + '.');
                 return;
             }
 
@@ -1079,13 +1073,13 @@ else
                 }
             }
             if (!matched) {
-                alert('Resolved to ' + (data.label || ('Material #' + data.targetId)) + ', but it is not in this list.');
+                window.PemsDialog.alert('Resolved to ' + (data.label || ('Material #' + data.targetId)) + ', but it is not in this list.');
                 return;
             }
 
             input.value = '';
         } catch (e) {
-            alert('Could not resolve barcode.');
+            window.PemsDialog.alert('Could not resolve barcode.');
         }
     }
 

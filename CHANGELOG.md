@@ -14,6 +14,24 @@ and theme and were reconstructed from the git history (initial import 2026-09-05
 ### Removed
 - The `_BkChart` partial.
 
+## 2026-11-02 - Confirm and alert dialog; the Admin and Warehouse area views adopted (SCRUM-483, SCRUM-481, SCRUM-482, SCRUM-487)
+
+### Added
+- `pems-confirm.js` (PEMS.UI): one shared native dialog for `data-pems-confirm="text"` (button, link, form; tone, title and live-count options) and `window.PemsDialog.confirm / alert` for scripts; layouts carry the texts (`Confirm_Title`, `Confirm_Ok`, `Confirm_Cancel`, fa and en). `ConfirmScriptTests` checks the contract.
+
+### Changed
+- 93 browser `confirm(` calls reduced to 4 (two are validated first by their own handler, two belong to the letter bulk form); 4 `alert(` calls in the work order view use the dialog.
+- **The 84 area views (Admin, Warehouse) were never converted and never counted by the ratchet.** Converted now: 58 alerts, 60 badges, 145 buttons, 339 controls, 237 labels, 13 modals, 11 tab strips; the ratchet scans `PEMS.Web/Areas` too (its baselines now include what is left there: tables 52, date and conditional controls, a few alerts and badges).
+
+## 2026-11-02 - Labels, modal frames, dropdowns, tabs and breadcrumbs; library-first protocol (SCRUM-482, SCRUM-487)
+
+### Added
+- `pems-label`, `pems-modal` and `pems-offcanvas` (frame mode of `PemsModal` / `PemsDrawer`: `ModalOptions.Frame`, `DrawerOptions.Frame`, `OverlaySize.ExtraLarge`), `pems-dropdown-menu`, `pems-nav`, `pems-crumb-trail` (`FrameState`) in `PEMS.UI`.
+- `GuidelineRegistryTests`: every `pems-*` tag helper and every registered component key must be listed in chapter 02 of the guideline.
+
+### Changed
+- 945 form labels, 99 modals, 3 side panels, 16 dropdown menus, 9 tab strips and 1 breadcrumb in the views moved; ratchet: form-label 946 to 1, modal 99 to 0, dropdown 16 to 0, tabs 8 to 0, breadcrumb 1 to 0, offcanvas 2 to 0. Modals whose form was the `modal-content` itself (4) now put the form inside the frame.
+- Guideline chapter 02: the library-first protocol for agents (search, modify safely, add to the library first, never hand-write), the registry table rebuilt as one table with current status; AGENTS.md rule and the PR template line strengthened.
 ## 2026-11-02 - Skeleton wave S3: no "Loading..." placeholders come back (SCRUM-337)
 
 ### Added

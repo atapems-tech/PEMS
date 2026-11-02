@@ -59,7 +59,7 @@
         <form method="get" asp-action="Reply" class="d-flex flex-wrap align-items-end gap-2 mb-3">
             <input type="hidden" name="id" value="@parentLetterId" />
             <div>
-                <label class="form-label small mb-1" for="replyTemplate">@Localizer["LtT_UseTemplate"]</label>
+                <pems-label css="small mb-1" for="replyTemplate">@Localizer["LtT_UseTemplate"]</pems-label>
                 <pems-select scale="small" name="templateId" id="replyTemplate">
                     <option value="">@Localizer["Ed_None"]</option>
                     @foreach (var tpl in templates)
@@ -77,15 +77,15 @@
 
         <div class="row g-3">
             <div class="col-md-6">
-                <label class="form-label">To</label>
+                <pems-label>To</pems-label>
                 <pems-input name="receiver" value="@ViewBag.DefaultReceiver" />
             </div>
             <div class="col-md-6">
-                <label class="form-label">@Localizer["Subject"]</label>
+                <pems-label>@Localizer["Subject"]</pems-label>
                 <pems-input name="subject" value="@ViewBag.DefaultSubject" required />
             </div>
             <div class="col-12">
-                <label class="form-label">Body</label>
+                <pems-label>Body</pems-label>
                 <pems-textarea name="body" id="replyBodyEditor" rows="6">@prefill?.Body</pems-textarea>
             </div>
         </div>

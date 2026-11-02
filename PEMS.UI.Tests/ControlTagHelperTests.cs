@@ -36,6 +36,11 @@ public sealed class ControlTagHelperTests
                 [new("required", "required"), new("placeholder", "Tag")]));
 
     [Fact]
+    public void An_input_keeps_its_form_attribute_the_built_in_helper_binds()
+        => Assert.Equal("<input class=\"form-control\" name=\"description\" form=\"rule_2\" />",
+            Run(new PemsInputTagHelper(null!) { Name = "description", FormName = "rule_2" }, "pems-input", []));
+
+    [Fact]
     public void A_check_input_gets_the_check_class()
         => Assert.Equal("<input class=\"form-check-input me-1\" name=\"on\" type=\"checkbox\" />",
             Run(new PemsInputTagHelper(null!) { Kind = "check", Css = "me-1", Name = "on", InputTypeName = "checkbox" }, "pems-input", []));
@@ -54,4 +59,53 @@ public sealed class ControlTagHelperTests
     public void A_class_the_built_in_helper_added_stays_after_the_control_classes()
         => Assert.Equal("<input class=\"form-control input-validation-error\" />",
             Run(new PemsInputTagHelper(null!), "pems-input", [new("class", "input-validation-error")]));
+
+    private static async Task<string> RunAsync(TagHelper helper, string tag, TagHelperAttributeList attributes, string inner = "")
+    {
+        var context = new TagHelperContext(tag, new TagHelperAttributeList(), new Dictionary<object, object>(), "c");
+        var output = new TagHelperOutput(tag, attributes, (_, _) => Task.FromResult<TagHelperContent>(new DefaultTagHelperContent().SetHtmlContent(inner)));
+        output.Content.SetHtmlContent(inner);
+        await helper.ProcessAsync(context, output);
+        using var writer = new StringWriter();
+        output.WriteTo(writer, HtmlEncoder.Default);
+        return writer.ToString();
+    }
+
+    [Theory]
+    [InlineData(null, "form-label")]
+    [InlineData("small", "form-label small")]
+    [InlineData("small fw-bold", "form-label small fw-bold")]
+    public async Task A_label_gets_the_form_label_class_first(string? css, string expected)
+        => Assert.Equal($"<label class=\"{expected}\" for=\"qty\">Quantity</label>",
+            await RunAsync(new PemsLabelTagHelper(null!) { Css = css }, "pems-label", [new("for", "qty")], "Quantity"));
+
+    [Theory]
+    [InlineData(true, null, "dropdown-menu dropdown-menu-end")]
+    [InlineData(false, "w-100", "dropdown-menu w-100")]
+    [InlineData(true, "p-0", "dropdown-menu dropdown-menu-end p-0")]
+    public void Dropdown_menu_classes(bool end, string? css, string expected) => Assert.Equal(expected, FrameState.DropdownMenu(end, css));
+
+    [Theory]
+    [InlineData("tabs", "mb-3", "nav nav-tabs mb-3")]
+    [InlineData(null, null, "nav nav-tabs")]
+    [InlineData("pills", null, "nav nav-pills")]
+    public void Nav_classes(string? kind, string? css, string expected) => Assert.Equal(expected, FrameState.Nav(kind, css));
+
+    [Fact]
+    public void A_dropdown_menu_keeps_its_attributes_and_items()
+        => Assert.Equal("<ul class=\"dropdown-menu dropdown-menu-end p-0\" id=\"m\" aria-labelledby=\"b\"><li>x</li></ul>",
+            Run(new PemsDropdownMenuTagHelper { End = true, Css = "p-0" }, "pems-dropdown-menu", [new("id", "m"), new("aria-labelledby", "b")], "<li>x</li>"));
+
+    [Fact]
+    public void A_dropdown_panel_can_be_a_div()
+        => Assert.StartsWith("<div class=\"dropdown-menu\"", Run(new PemsDropdownMenuTagHelper { As = "div" }, "pems-dropdown-menu", [], "x"));
+
+    [Fact]
+    public void A_tab_strip_keeps_role_and_id()
+        => Assert.Equal("<ul class=\"nav nav-tabs mb-3\" id=\"docTabs\" role=\"tablist\"><li>t</li></ul>",
+            Run(new PemsNavTagHelper { Css = "mb-3" }, "pems-nav", [new("id", "docTabs"), new("role", "tablist")], "<li>t</li>"));
+
+    [Fact]
+    public void A_breadcrumb_is_an_ol()
+        => Assert.Equal("<ol class=\"breadcrumb mb-0 small\"><li>a</li></ol>", Run(new PemsBreadcrumbTagHelper { Css = "mb-0 small" }, "pems-crumb-trail", [], "<li>a</li>"));
 }

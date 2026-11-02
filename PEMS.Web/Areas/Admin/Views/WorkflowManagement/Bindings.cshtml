@@ -6,7 +6,7 @@
     <div class="content-card">
         <div class="d-flex justify-content-between align-items-center mb-2">
             <span class="small text-muted">@Localizer["Explicit bindings resolve which published version new workflow instances use."]</span>
-            <a asp-action="Index" class="btn btn-sm btn-outline-secondary"><i class="bi bi-arrow-left"></i> @Localizer["Workflow Management"]</a>
+            <pems-button as="a" tone="neutral" size="small" outline="true" asp-action="Index"><i class="bi bi-arrow-left"></i> @Localizer["Workflow Management"]</pems-button>
         </div>
         <div class="table-responsive">
             <table class="table table-enterprise align-middle">
@@ -17,9 +17,9 @@
                     <tr>
                         <td>@b.Module</td><td>@b.EntityType</td><td>@b.Context</td><td>@b.DefinitionName</td>
                         <td>@(b.PinnedVersionNumber.HasValue ? "v" + b.PinnedVersionNumber : Localizer["latest published"].Value)</td>
-                        <td><span class="badge @(b.IsActive ? "bg-success" : "bg-secondary")">@Localizer[b.IsActive ? "Active" : "Inactive"]</span></td>
-                        <td><span class="badge @(b.Editable ? "bg-primary" : "bg-secondary")">@Localizer[b.Editable ? "Editable" : "View Only"]</span></td>
-                        <td class="text-end"><a asp-action="Details" asp-route-id="@b.DefinitionId" class="btn btn-sm btn-outline-primary">@Localizer["Open"]</a></td>
+                        <td><pems-badge tone="none" css="@(b.IsActive ? "bg-success" : "bg-secondary")">@Localizer[b.IsActive ? "Active" : "Inactive"]</pems-badge></td>
+                        <td><pems-badge tone="none" css="@(b.Editable ? "bg-primary" : "bg-secondary")">@Localizer[b.Editable ? "Editable" : "View Only"]</pems-badge></td>
+                        <td class="text-end"><pems-button as="a" tone="primary" size="small" outline="true" asp-action="Details" asp-route-id="@b.DefinitionId">@Localizer["Open"]</pems-button></td>
                     </tr>
                 }
                 </tbody>

@@ -25,4 +25,7 @@ public static class ControlState
         };
         return string.IsNullOrWhiteSpace(o.CssClass) ? css : css + " " + o.CssClass.Trim();
     }
+
+    /// <summary>The class of a form label: <c>form-label</c> plus what the page needs (<c>small</c>, <c>fw-bold</c>, <c>mb-0</c>).</summary>
+    public static string LabelCss(string? cssClass) => string.IsNullOrWhiteSpace(cssClass) ? "form-label" : "form-label " + cssClass.Trim();
 }

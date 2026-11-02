@@ -9,7 +9,7 @@
     var can = (bool)ViewBag.CanAssignPosition;
     (int PositionId, string Label)? current = Model.HasValue && primaries.TryGetValue(Model.Value, out var c) ? c : null;
 }
-<label class="form-label">@Localizer["Organizational position"]</label>
+<pems-label>@Localizer["Organizational position"]</pems-label>
 @if (can)
 {
     <input type="hidden" name="positionSubmitted" value="true" />

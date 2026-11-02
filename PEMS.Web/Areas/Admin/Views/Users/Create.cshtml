@@ -10,26 +10,26 @@
     <form asp-action="Create" method="post">
 
         <div class="mb-3">
-            <label class="form-label">@Localizer["Username"]</label>
-            <input asp-for="UserName" class="form-control" />
+            <pems-label>@Localizer["Username"]</pems-label>
+            <pems-input asp-for="UserName" />
             <span asp-validation-for="UserName" class="text-danger small"></span>
         </div>
 
         <div class="mb-3">
-            <label class="form-label">@Localizer["Full Name"]</label>
-            <input asp-for="FullName" class="form-control" />
+            <pems-label>@Localizer["Full Name"]</pems-label>
+            <pems-input asp-for="FullName" />
             <span asp-validation-for="FullName" class="text-danger small"></span>
         </div>
 
         <div class="mb-3">
-            <label class="form-label">@Localizer["Email"]</label>
-            <input asp-for="Email" class="form-control" />
+            <pems-label>@Localizer["Email"]</pems-label>
+            <pems-input asp-for="Email" />
             <span asp-validation-for="Email" class="text-danger small"></span>
         </div>
 
         <div class="mb-3">
-            <label class="form-label">@Localizer["Password"]</label>
-            <input asp-for="Password" type="password" class="form-control" />
+            <pems-label>@Localizer["Password"]</pems-label>
+            <pems-input asp-for="Password" type="password" />
             <span asp-validation-for="Password" class="text-danger small"></span>
         </div>
 
@@ -41,47 +41,47 @@
         </p>
 
         <div class="mb-3">
-            <label class="form-label">Link to existing employee <span class="text-muted small">@Localizer["(if already added)"]</span></label>
-            <select name="ExistingEmployeeId" class="form-select" id="existingEmployeeSelect">
+            <pems-label>Link to existing employee <span class="text-muted small">@Localizer["(if already added)"]</span></pems-label>
+            <pems-select name="ExistingEmployeeId" id="existingEmployeeSelect">
                 <option value="">@Localizer["-- create a new employee record instead --"]</option>
                 @foreach (var e in Model.AllEmployees)
                 {
                     <option value="@e.Id" selected="@(Model.ExistingEmployeeId == e.Id)">@e.Name</option>
                 }
-            </select>
+            </pems-select>
         </div>
 
         <div id="newEmployeeFields" class="row g-3 mb-3">
             <div class="col-md-6">
-                <label class="form-label">@Localizer["Department"]</label>
-                <select name="DepartmentId" class="form-select">
+                <pems-label>@Localizer["Department"]</pems-label>
+                <pems-select name="DepartmentId">
                     <option value="">@Localizer["-- select --"]</option>
                     @foreach (var d in Model.AllDepartments)
                     {
                         <option value="@d.Id" selected="@(Model.DepartmentId == d.Id)">@d.Name</option>
                     }
-                </select>
+                </pems-select>
                 <span asp-validation-for="DepartmentId" class="text-danger small"></span>
             </div>
             <div class="col-md-6">
-                <label class="form-label">@Localizer["Discipline"]</label>
-                <select name="DisciplineId" class="form-select">
+                <pems-label>@Localizer["Discipline"]</pems-label>
+                <pems-select name="DisciplineId">
                     <option value="">@Localizer["-- select --"]</option>
                     @foreach (var d in Model.AllDisciplines)
                     {
                         <option value="@d.Id" selected="@(Model.DisciplineId == d.Id)">@d.Name</option>
                     }
-                </select>
+                </pems-select>
             </div>
             <div class="col-12">
-                <label class="form-label">@Localizer["Organizational position"]</label>
-                <select name="PositionId" class="form-select">
+                <pems-label>@Localizer["Organizational position"]</pems-label>
+                <pems-select name="PositionId">
                     <option value="">@Localizer["-- none (assign later) --"]</option>
                     @foreach (var p in Model.AllPositions)
                     {
                         <option value="@p.Id" selected="@(Model.PositionId == p.Id)">@p.Name</option>
                     }
-                </select>
+                </pems-select>
                 <div class="form-text">@Localizer["Only vacant active positions are listed. The assignment is created through the organization structure."]</div>
             </div>
         </div>
@@ -90,12 +90,12 @@
         <partial name="_RoleSelect" model="Model" />
 
         <div class="form-check mb-4">
-            <input asp-for="IsActive" class="form-check-input" />
+            <pems-input kind="check" asp-for="IsActive" />
             <label asp-for="IsActive" class="form-check-label">@Localizer["Active"]</label>
         </div>
 
-        <button type="submit" class="btn btn-pems-solid">@Localizer["Save"]</button>
-        <a asp-action="Index" class="btn btn-outline-secondary">@Localizer["Cancel"]</a>
+        <pems-button tone="primary" type="submit">@Localizer["Save"]</pems-button>
+        <pems-button as="a" tone="neutral" outline="true" asp-action="Index">@Localizer["Cancel"]</pems-button>
 
     </form>
 

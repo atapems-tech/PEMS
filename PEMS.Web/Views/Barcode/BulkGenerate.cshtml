@@ -17,7 +17,7 @@
 <div class="content-card mb-3">
     <form method="get" class="row g-2">
         <div class="col-md-4">
-            <label class="form-label small mb-0">@Localizer["Discipline"]</label>
+            <pems-label css="small mb-0">@Localizer["Discipline"]</pems-label>
             <pems-select name="disciplineIds" multiple size="4">
                 @foreach (dynamic d in disciplines)
                 {
@@ -26,7 +26,7 @@
             </pems-select>
         </div>
         <div class="col-md-4">
-            <label class="form-label small mb-0">@Localizer["Equipment Type"]</label>
+            <pems-label css="small mb-0">@Localizer["Equipment Type"]</pems-label>
             <pems-select name="equipmentTypes" multiple size="4">
                 @foreach (var t in equipmentTypes)
                 {
@@ -35,7 +35,7 @@
             </pems-select>
         </div>
         <div class="col-md-3">
-            <label class="form-label small mb-0">Tag Number (partial search)</label>
+            <pems-label css="small mb-0">Tag Number (partial search)</pems-label>
             <pems-input name="tagSearch" dir="ltr" />
         </div>
         <div class="col-md-1 d-flex align-items-end">
@@ -59,7 +59,7 @@ else
                         <option value="Code128">@Localizer["Code128"]</option>
                         <option value="QR">QR</option>
                     </pems-select>
-                    <pems-button tone="primary" size="small" type="submit" onclick="return confirm('Generate barcodes for the selected Equipment? Equipment that already has an active barcode is skipped.')">
+                    <pems-button tone="primary" size="small" type="submit" data-pems-confirm="Generate barcodes for the selected Equipment? Equipment that already has an active barcode is skipped.">
                         <i class="bi bi-upc-scan"></i> Generate &amp; Print Labels
                     </pems-button>
                 </div>

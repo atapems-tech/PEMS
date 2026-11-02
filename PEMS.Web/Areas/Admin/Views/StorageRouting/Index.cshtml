@@ -50,7 +50,7 @@
                         <td><span class="vs-pill @(r.IsEnabled ? "vs-pill--success" : "vs-pill--neutral")">@(r.IsEnabled ? Localizer["Enabled"] : Localizer["Disabled"])</span></td>
                         <td class="text-end text-nowrap">
                             <a asp-action="Edit" asp-route-id="@r.StorageRouteId" class="lp-act lp-act--always" title="@Localizer["Ed_Edit"]" aria-label="@Localizer["Ed_Edit"]"><i class="bi bi-pencil" aria-hidden="true"></i></a>
-                            <form asp-action="Delete" asp-route-id="@r.StorageRouteId" method="post" class="d-inline" onsubmit="return confirm(this.dataset.confirm)" data-confirm="@Localizer["SrtL_ConfirmDelete"]">
+                            <form asp-action="Delete" asp-route-id="@r.StorageRouteId" method="post" class="d-inline" data-pems-confirm="@Localizer["SrtL_ConfirmDelete"]">
                                 <button type="submit" class="lp-act lp-act--always text-danger" title="@Localizer["Ed_Delete"]" aria-label="@Localizer["Ed_Delete"]"><i class="bi bi-trash" aria-hidden="true"></i></button>
                             </form>
                         </td>

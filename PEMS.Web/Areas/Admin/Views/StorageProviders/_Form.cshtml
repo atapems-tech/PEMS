@@ -11,65 +11,65 @@
 <div class="content-card admin-form-card">
     <div class="row g-3">
         <div class="col-md-6">
-            <label class="form-label">@Localizer["Name"]</label>
-            <input asp-for="Name" class="form-control" required />
+            <pems-label>@Localizer["Name"]</pems-label>
+            <pems-input asp-for="Name" required />
         </div>
         <div class="col-md-6">
-            <label class="form-label">Code <span class="text-muted small">(unique, used in routing)</span></label>
-            <input asp-for="Code" class="form-control" required />
+            <pems-label>Code <span class="text-muted small">(unique, used in routing)</span></pems-label>
+            <pems-input asp-for="Code" required />
         </div>
         <div class="col-md-6">
-            <label class="form-label">@Localizer["Provider Type"]</label>
-            <select asp-for="ProviderType" class="form-select" id="providerTypeSelect" onchange="pemsToggleStorageFields()">
+            <pems-label>@Localizer["Provider Type"]</pems-label>
+            <pems-select asp-for="ProviderType" id="providerTypeSelect" onchange="pemsToggleStorageFields()">
                 @foreach (var t in providerTypes) { <option value="@t" selected="@(t == Model.ProviderType)">@t</option> }
-            </select>
+            </pems-select>
         </div>
         <div class="col-md-6 network-field">
-            <label class="form-label">@Localizer["Host"]</label>
-            <input asp-for="Host" class="form-control" placeholder="e.g. ftp.example.com or \\SERVER01" />
+            <pems-label>@Localizer["Host"]</pems-label>
+            <pems-input asp-for="Host" placeholder="e.g. ftp.example.com or \\SERVER01" />
         </div>
         <div class="col-md-3 ftp-sftp-field">
-            <label class="form-label">@Localizer["Port"]</label>
-            <input asp-for="Port" type="number" class="form-control" />
+            <pems-label>@Localizer["Port"]</pems-label>
+            <pems-input asp-for="Port" type="number" />
         </div>
         <div class="col-md-4 network-field">
-            <label class="form-label">@Localizer["Username"]</label>
-            <input asp-for="Username" class="form-control" autocomplete="off" />
+            <pems-label>@Localizer["Username"]</pems-label>
+            <pems-input asp-for="Username" autocomplete="off" />
         </div>
         <div class="col-md-5 network-field">
-            <label class="form-label">Password @if (isEdit && hasPassword) { <span class="badge bg-secondary-subtle text-secondary">Currently set</span> }</label>
-            <input asp-for="Password" type="password" class="form-control" autocomplete="new-password" placeholder="@(isEdit ? "Leave blank to keep current password" : "")" />
+            <pems-label>Password @if (isEdit && hasPassword) { <pems-badge tone="none" css="bg-secondary-subtle text-secondary">Currently set</pems-badge> }</pems-label>
+            <pems-input asp-for="Password" type="password" autocomplete="new-password" placeholder="@(isEdit ? "Leave blank to keep current password" : "")" />
         </div>
         <div class="col-md-8">
-            <label class="form-label">Root Path <span class="text-muted small">(local folder, UNC path, or server-side root)</span></label>
-            <input asp-for="RootPath" class="form-control" required placeholder="D:\PEMS\Storage or \\SERVER01\PEMS\Documents or /remote/root" />
+            <pems-label>Root Path <span class="text-muted small">(local folder, UNC path, or server-side root)</span></pems-label>
+            <pems-input asp-for="RootPath" required placeholder="D:\PEMS\Storage or \\SERVER01\PEMS\Documents or /remote/root" />
         </div>
         <div class="col-md-4">
-            <label class="form-label">Base URL <span class="text-muted small">(optional, future direct-URL providers)</span></label>
-            <input asp-for="BaseUrl" class="form-control" />
+            <pems-label>Base URL <span class="text-muted small">(optional, future direct-URL providers)</span></pems-label>
+            <pems-input asp-for="BaseUrl" />
         </div>
         <div class="col-md-3 ftp-field">
-            <div class="form-check mt-4"><input asp-for="UseSsl" class="form-check-input" /><label class="form-check-label" asp-for="UseSsl">Use SSL/TLS</label></div>
+            <div class="form-check mt-4"><pems-input kind="check" asp-for="UseSsl" /><label class="form-check-label" asp-for="UseSsl">Use SSL/TLS</label></div>
         </div>
         <div class="col-md-3 ftp-field">
-            <div class="form-check mt-4"><input asp-for="UsePassiveMode" class="form-check-input" /><label class="form-check-label" asp-for="UsePassiveMode">@Localizer["Passive Mode"]</label></div>
+            <div class="form-check mt-4"><pems-input kind="check" asp-for="UsePassiveMode" /><label class="form-check-label" asp-for="UsePassiveMode">@Localizer["Passive Mode"]</label></div>
         </div>
         <div class="col-md-2">
-            <div class="form-check mt-4"><input asp-for="AllowRead" class="form-check-input" /><label class="form-check-label" asp-for="AllowRead">@Localizer["Allow Read"]</label></div>
+            <div class="form-check mt-4"><pems-input kind="check" asp-for="AllowRead" /><label class="form-check-label" asp-for="AllowRead">@Localizer["Allow Read"]</label></div>
         </div>
         <div class="col-md-2">
-            <div class="form-check mt-4"><input asp-for="AllowWrite" class="form-check-input" /><label class="form-check-label" asp-for="AllowWrite">Allow Write</label></div>
+            <div class="form-check mt-4"><pems-input kind="check" asp-for="AllowWrite" /><label class="form-check-label" asp-for="AllowWrite">Allow Write</label></div>
         </div>
         <div class="col-md-2">
-            <div class="form-check mt-4"><input asp-for="AllowDelete" class="form-check-input" /><label class="form-check-label" asp-for="AllowDelete">Allow Delete</label></div>
+            <div class="form-check mt-4"><pems-input kind="check" asp-for="AllowDelete" /><label class="form-check-label" asp-for="AllowDelete">Allow Delete</label></div>
         </div>
         <div class="col-md-3">
-            <div class="form-check mt-4"><input asp-for="IsEnabled" class="form-check-input" /><label class="form-check-label" asp-for="IsEnabled">@Localizer["Enabled"]</label></div>
+            <div class="form-check mt-4"><pems-input kind="check" asp-for="IsEnabled" /><label class="form-check-label" asp-for="IsEnabled">@Localizer["Enabled"]</label></div>
         </div>
     </div>
     <div class="mt-4 d-flex gap-2">
-        <button type="submit" class="btn btn-pems-solid"><i class="bi bi-check2 me-1"></i> @Localizer["Save"]</button>
-        <a asp-action="Index" class="btn btn-outline-secondary">@Localizer["Cancel"]</a>
+        <pems-button tone="primary" type="submit"><i class="bi bi-check2 me-1"></i> @Localizer["Save"]</pems-button>
+        <pems-button as="a" tone="neutral" outline="true" asp-action="Index">@Localizer["Cancel"]</pems-button>
     </div>
 </div>
 

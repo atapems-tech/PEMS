@@ -55,7 +55,7 @@
             @if (Model.ResponseRequired)
             {
                 <div>
-                    <label class="form-label small mb-0">@Localizer["Td_ResponseDueDays"]</label>
+                    <pems-label css="small mb-0">@Localizer["Td_ResponseDueDays"]</pems-label>
                     <pems-input scale="small" name="responseDueWorkingDays" type="number" value="10" min="1" style="width:100px;" />
                 </div>
             }
@@ -80,7 +80,7 @@
         {
             <form asp-action="Cancel" asp-route-id="@Model.TransmittalId" method="post" class="d-flex gap-2 align-items-end mt-2">
                 <div class="flex-grow-1">
-                    <label class="form-label small mb-0">@Localizer["Td_CancelReason"]</label>
+                    <pems-label css="small mb-0">@Localizer["Td_CancelReason"]</pems-label>
                     <pems-input scale="small" name="reason" required />
                 </div>
                 <pems-button tone="danger" size="small" outline="true"><i class="bi bi-x-circle"></i> @Localizer["Td_CancelBtn"]</pems-button>

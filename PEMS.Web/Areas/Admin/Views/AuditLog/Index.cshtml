@@ -36,7 +36,7 @@
                                              all-text="@Localizer["AlL_AllEntities"]" items="@entityNames.Select(e => new SelectListItem(e, e))" />
                     <div>
                         <label class="lp-lbl" for="alFilterUser">@Localizer["AlL_User"]</label>
-                        <input type="search" id="alFilterUser" name="userName" value="@user" class="form-control" placeholder="@Localizer["Username"]" />
+                        <pems-input type="search" id="alFilterUser" name="userName" value="@user" placeholder="@Localizer["Username"]" />
                     </div>
                 </pems-list-filters>
                 <pems-list-reset-columns grid-key="AuditLogs" />

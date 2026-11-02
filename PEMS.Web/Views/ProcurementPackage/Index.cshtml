@@ -87,29 +87,27 @@
     </pems-list-panel>
 </pems-list-page>
 
-<div class="modal fade" id="createPackageModal" tabindex="-1">
-    <div class="modal-dialog">
-        <div class="modal-content">
+<pems-modal id="createPackageModal" tabindex="-1">
             <form asp-controller="ProcurementPackage" asp-action="Create" method="post">
                 <div class="modal-header"><h6 class="modal-title">@Localizer["PkL_New"]</h6></div>
                 <div class="modal-body">
                     <div class="row g-3">
                         <div class="col-md-6">@await Component.InvokeAsync("DocumentNumberField", new { documentType = "ProcurementPackage", name = "packageNumber", label = Localizer["Package Number"].Value })</div>
                         <div class="col-md-6">
-                            <label class="form-label">@Localizer["Project"]</label>
+                            <pems-label>@Localizer["Project"]</pems-label>
                             <pems-select name="projectId" required>
                                 @foreach (var p in (IEnumerable<dynamic>)ViewBag.Projects) { <option value="@p.ProjectId">@p.ProjectName</option> }
                             </pems-select>
                         </div>
                         <div class="col-md-6">
-                            <label class="form-label">@Localizer["Discipline"]</label>
+                            <pems-label>@Localizer["Discipline"]</pems-label>
                             <pems-select name="disciplineId">
                                 <option value="">@Localizer["-- None --"]</option>
                                 @foreach (var d in (IEnumerable<dynamic>)ViewBag.Disciplines) { <option value="@d.DisciplineId">@d.Name</option> }
                             </pems-select>
                         </div>
-                        <div class="col-md-6"><label class="form-label">@Localizer["Title"]</label><pems-input name="title" required /></div>
-                        <div class="col-12"><label class="form-label">@Localizer["Description"]</label><pems-textarea name="description" rows="2"></pems-textarea></div>
+                        <div class="col-md-6"><pems-label>@Localizer["Title"]</pems-label><pems-input name="title" required /></div>
+                        <div class="col-12"><pems-label>@Localizer["Description"]</pems-label><pems-textarea name="description" rows="2"></pems-textarea></div>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -117,9 +115,7 @@
                     <pems-button tone="primary" type="submit">@Localizer["Save"]</pems-button>
                 </div>
             </form>
-        </div>
-    </div>
-</div>
+        </pems-modal>
 
 @section Scripts {
     <script src="~/_content/PEMS.UI/pems-list.js" asp-append-version="true"></script>

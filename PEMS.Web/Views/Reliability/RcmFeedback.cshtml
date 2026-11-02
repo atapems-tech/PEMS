@@ -48,7 +48,7 @@
 <div class="content-card mb-3">
     <form method="get" class="row g-2 align-items-end">
         <div class="col-md-3">
-            <label class="form-label small">@Localizer["Status"]</label>
+            <pems-label css="small">@Localizer["Status"]</pems-label>
             <pems-select scale="small" name="status" onchange="this.form.submit()">
                 <option value="" selected="@(string.IsNullOrEmpty(statusFilter))">All</option>
                 <option value="PENDING" selected="@(statusFilter == "PENDING")">Pending</option>

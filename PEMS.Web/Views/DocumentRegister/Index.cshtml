@@ -100,7 +100,7 @@
                                     @if (sf.IsDefault) { <i class="bi bi-star-fill" aria-hidden="true"></i> }
                                     @sf.Name
                                 </a>
-                                <form asp-action="DeleteFilter" method="post" onsubmit="return confirm('@Localizer["Dr_DeleteFilterConfirm"].Value.Replace("'", "\\'")');">
+                                <form asp-action="DeleteFilter" method="post" data-pems-confirm="@Localizer["Dr_DeleteFilterConfirm"]">
                                     <input type="hidden" name="id" value="@sf.SavedFilterId" />
                                     <button type="submit" class="lp-act lp-act--always" title="@Localizer["Dr_DeleteFilter"]"><i class="bi bi-x-lg" aria-hidden="true"></i><span class="visually-hidden">@Localizer["Dr_DeleteFilter"]: @sf.Name</span></button>
                                 </form>
@@ -211,13 +211,11 @@
 
 </pems-list-page>
 
-<div class="modal fade" id="saveFilterModal" tabindex="-1" aria-labelledby="saveFilterTitle" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
+<pems-modal id="saveFilterModal" tabindex="-1" aria-labelledby="saveFilterTitle" aria-hidden="true">
             <form asp-action="SaveFilter" method="post">
                 <div class="modal-header"><h6 class="modal-title" id="saveFilterTitle">@Localizer["Dr_SaveFilterTitle"]</h6></div>
                 <div class="modal-body">
-                    <label class="form-label small" for="saveFilterName">@Localizer["Dr_FilterName"]</label>
+                    <pems-label css="small" for="saveFilterName">@Localizer["Dr_FilterName"]</pems-label>
                     <pems-input name="name" id="saveFilterName" required />
                     <input type="hidden" name="queryString" id="saveFilterQueryString" />
                     <div class="form-check mt-2">
@@ -229,9 +227,7 @@
                     <pems-button tone="primary" size="small" type="submit">@Localizer["Save"]</pems-button>
                 </div>
             </form>
-        </div>
-    </div>
-</div>
+        </pems-modal>
 
 @section Scripts {
     <script src="~/_content/PEMS.UI/pems-list.js" asp-append-version="true"></script>

@@ -113,9 +113,7 @@
     </pems-list-panel>
 </pems-list-page>
 
-<div class="modal fade" id="createAssetModal" tabindex="-1">
-    <div class="modal-dialog">
-        <div class="modal-content">
+<pems-modal id="createAssetModal" tabindex="-1">
             <form asp-action="Create" method="post">
                 <div class="modal-header"><h6 class="modal-title">@Localizer["As_NewAsset"]</h6></div>
                 <div class="modal-body">
@@ -124,7 +122,7 @@
                         equipment this Asset represents the CMMS lifecycle for.
                     </p>
                     <div class="mb-3">
-                        <label class="form-label">@Localizer["Equipment"]</label>
+                        <pems-label>@Localizer["Equipment"]</pems-label>
                         <pems-select name="equipmentId" required>
                             <option value="">@Localizer["-- select equipment --"]</option>
                             @foreach (var e in equipmentOptions)
@@ -137,18 +135,18 @@
 
                     <div class="row g-3 mb-3">
                         <div class="col-md-6">
-                            <label class="form-label">@Localizer["Asset Number"]</label>
+                            <pems-label>@Localizer["Asset Number"]</pems-label>
                             <pems-input name="assetNumber" placeholder="AST-P101" required />
                         </div>
                         <div class="col-md-6">
-                            <label class="form-label">@Localizer["Maintenance Class"]</label>
+                            <pems-label>@Localizer["Maintenance Class"]</pems-label>
                             <pems-input name="maintenanceClass" placeholder="Rotating, Static, Electrical ..." />
                         </div>
                     </div>
 
                     <div class="row g-3 mb-3">
                         <div class="col-md-6">
-                            <label class="form-label">@Localizer["Functional Location"]</label>
+                            <pems-label>@Localizer["Functional Location"]</pems-label>
                             <pems-select name="functionalLocationId">
                                 <option value="">@Localizer["-- not linked --"]</option>
                                 @foreach (var fl in (List<PEMS.Application.DTOs.FunctionalLocationPickerItemDto>)ViewBag.FunctionalLocations)
@@ -159,18 +157,18 @@
                             <div class="form-text">Real link to Functional Location. <a asp-controller="FunctionalLocation" asp-action="Index" target="_blank">@Localizer["Manage list"]</a></div>
                         </div>
                         <div class="col-md-6">
-                            <label class="form-label">@Localizer["Commissioning Date"]</label>
+                            <pems-label>@Localizer["Commissioning Date"]</pems-label>
                             <input name="commissioningDate" type="date" class="form-control" />
                         </div>
                     </div>
 
                     <div class="mb-3">
-                        <label class="form-label">@Localizer["Functional Location (raw text, legacy)"]</label>
+                        <pems-label>@Localizer["Functional Location (raw text, legacy)"]</pems-label>
                         <pems-input name="functionalLocation" placeholder="Unit-100 / Area-A" />
                     </div>
 
                     <div class="mb-3">
-                        <label class="form-label">@Localizer["Status"]</label>
+                        <pems-label>@Localizer["Status"]</pems-label>
                         <pems-select name="status">
                             <option value="Active" selected>@Localizer["Active"]</option>
                             <option value="Standby">Standby</option>
@@ -179,7 +177,7 @@
                     </div>
 
                     <div class="mb-3">
-                        <label class="form-label">@Localizer["Description"]</label>
+                        <pems-label>@Localizer["Description"]</pems-label>
                         <pems-textarea name="description" rows="2"></pems-textarea>
                     </div>
                 </div>
@@ -188,9 +186,7 @@
                     <pems-button tone="primary" type="submit">@Localizer["Save"]</pems-button>
                 </div>
             </form>
-        </div>
-    </div>
-</div>
+        </pems-modal>
 
 @section Scripts {
     <script src="~/_content/PEMS.UI/pems-list.js" asp-append-version="true"></script>

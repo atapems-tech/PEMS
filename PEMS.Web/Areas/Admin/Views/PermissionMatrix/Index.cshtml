@@ -76,20 +76,20 @@
         <div class="pm-toolbar" role="search">
             <div class="pm-search">
                 <i class="bi bi-search" aria-hidden="true"></i>
-                <input type="search" id="pmRoleSearch" class="form-control form-control-sm" placeholder="@Localizer["PermMx_SearchRoles"]" aria-label="@Localizer["PermMx_SearchRoles"]" autocomplete="off" />
+                <pems-input scale="small" type="search" id="pmRoleSearch" placeholder="@Localizer["PermMx_SearchRoles"]" aria-label="@Localizer["PermMx_SearchRoles"]" autocomplete="off" />
             </div>
             <div class="pm-search">
                 <i class="bi bi-grid-3x3-gap" aria-hidden="true"></i>
-                <input type="search" id="pmModuleSearch" class="form-control form-control-sm" placeholder="@Localizer["PermMx_SearchModules"]" aria-label="@Localizer["PermMx_SearchModules"]" autocomplete="off" />
+                <pems-input scale="small" type="search" id="pmModuleSearch" placeholder="@Localizer["PermMx_SearchModules"]" aria-label="@Localizer["PermMx_SearchModules"]" autocomplete="off" />
             </div>
-            <select id="pmStatusFilter" class="form-select form-select-sm pm-filter" aria-label="@Localizer["PermMx_FilterLabel"]">
+            <pems-select scale="small" css="pm-filter" id="pmStatusFilter" aria-label="@Localizer["PermMx_FilterLabel"]">
                 <option value="all">@Localizer["PermMx_FilterAll"]</option>
                 <option value="configured">@Localizer["PermMx_FilterConfigured"]</option>
                 <option value="unconfigured">@Localizer["PermMx_FilterUnconfigured"]</option>
-            </select>
+            </pems-select>
             <div class="btn-group btn-group-sm" role="group">
-                <button type="button" class="btn btn-outline-secondary" id="pmExpandAll"><i class="bi bi-arrows-expand"></i> @Localizer["PermMx_ExpandAll"]</button>
-                <button type="button" class="btn btn-outline-secondary" id="pmCollapseAll"><i class="bi bi-arrows-collapse"></i> @Localizer["PermMx_CollapseAll"]</button>
+                <pems-button tone="neutral" outline="true" type="button" id="pmExpandAll"><i class="bi bi-arrows-expand"></i> @Localizer["PermMx_ExpandAll"]</pems-button>
+                <pems-button tone="neutral" outline="true" type="button" id="pmCollapseAll"><i class="bi bi-arrows-collapse"></i> @Localizer["PermMx_CollapseAll"]</pems-button>
             </div>
             <span class="pm-global-status small" id="pmGlobalStatus" role="status" aria-live="polite"></span>
             <span class="small text-body-secondary ms-auto" id="pmRolesShown"></span>
@@ -126,9 +126,7 @@
                                     {
                                         <th class="pm-col pm-risk-@a.Risk" data-action="@a.Key" title="@Localizer["PermMx_Tip_" + a.Key]">
                                             <span class="pm-col-label"><i class="bi @a.Icon" aria-hidden="true"></i><span>@Localizer[a.Label]</span></span>
-                                            <input type="checkbox" class="form-check-input pm-col-all" data-action="@a.Key"
-                                                   aria-label="@string.Format(Localizer["PermMx_ColToggle"].Value, Localizer[a.Label].Value)"
-                                                   title="@string.Format(Localizer["PermMx_ColToggle"].Value, Localizer[a.Label].Value)" />
+                                            <pems-input kind="check" css="pm-col-all" type="checkbox" data-action="@a.Key" aria-label="@string.Format(Localizer["PermMx_ColToggle"].Value, Localizer[a.Label].Value)" title="@string.Format(Localizer["PermMx_ColToggle"].Value, Localizer[a.Label].Value)" />
                                         </th>
                                     }
                                 </tr>
@@ -141,9 +139,7 @@
                                 <tr data-module="@module" data-configured="@(AnyFlag(existing) ? "1" : "0")">
                                     <td class="pm-module-cell">
                                         <span class="pm-module-wrap">
-                                            <input type="checkbox" class="form-check-input pm-row-all"
-                                                   aria-label="@string.Format(Localizer["PermMx_RowToggle"].Value, module)"
-                                                   title="@string.Format(Localizer["PermMx_RowToggle"].Value, module)" />
+                                            <pems-input kind="check" css="pm-row-all" type="checkbox" aria-label="@string.Format(Localizer["PermMx_RowToggle"].Value, module)" title="@string.Format(Localizer["PermMx_RowToggle"].Value, module)" />
                                             <span class="row-primary pm-module-name">@module</span>
                                         </span>
                                         <input type="hidden" name="permissions[@i].ModuleName" value="@module" />
@@ -160,7 +156,7 @@
                         </table>
                     </div>
                     <div class="text-end mt-2 pm-fallback-save">
-                        <button type="submit" class="btn btn-sm btn-pems-solid permission-save"><i class="bi bi-check2 me-1"></i> @Localizer["Save"] @role @Localizer["permissions"]</button>
+                        <pems-button tone="primary" size="small" css="permission-save" type="submit"><i class="bi bi-check2 me-1"></i> @Localizer["Save"] @role @Localizer["permissions"]</pems-button>
                     </div>
                 </form>
             </details>

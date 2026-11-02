@@ -45,7 +45,7 @@
                                 <pems-badge tone="neutral">@m.Role?.Name</pems-badge>
                                 <form asp-action="RemoveMember" method="post" class="d-inline">
                                     <input type="hidden" name="teamMemberId" value="@m.TeamMemberId" />
-                                    <pems-button tone="danger" size="small" outline="true" css="py-0 px-1" type="submit" onclick="return confirm('این عضو از تیم خارج بشه؟')"><i class="bi bi-x"></i></pems-button>
+                                    <pems-button tone="danger" size="small" outline="true" css="py-0 px-1" type="submit" data-pems-confirm="این عضو از تیم خارج بشه؟"><i class="bi bi-x"></i></pems-button>
                                 </form>
                             </span>
                         </li>
@@ -76,32 +76,31 @@
     <div class="content-card"><p class="text-muted text-center py-4 mb-0">@Localizer["هنوز تیمی ساخته نشده."]</p></div>
 }
 
-<div class="modal fade" id="createTeamModal" tabindex="-1">
-    <div class="modal-dialog"><div class="modal-content">
+<pems-modal id="createTeamModal" tabindex="-1">
         <form asp-action="CreateTeam" method="post">
             <div class="modal-header"><h6 class="modal-title">@Localizer["تیم جدید"]</h6></div>
             <div class="modal-body">
                 <div class="mb-2">
-                    <label class="form-label small">@Localizer["کد تیم"]</label>
+                    <pems-label css="small">@Localizer["کد تیم"]</pems-label>
                     <pems-input scale="small" name="code" required placeholder="@Localizer["مثلاً MECH-A"]" />
                 </div>
                 <div class="mb-2">
-                    <label class="form-label small">@Localizer["نام تیم"]</label>
+                    <pems-label css="small">@Localizer["نام تیم"]</pems-label>
                     <pems-input scale="small" name="name" required placeholder="@Localizer["مثلاً Mechanical Maintenance - Shift A"]" />
                 </div>
                 <div class="mb-2">
-                    <label class="form-label small">@Localizer["گروه تعمیراتی (Maintenance Group)"]</label>
+                    <pems-label css="small">@Localizer["گروه تعمیراتی (Maintenance Group)"]</pems-label>
                     <pems-select scale="small" name="maintenanceGroupId" required>
                         @foreach (var g in (IEnumerable<dynamic>)ViewBag.MaintenanceGroups) { <option value="@g.MaintenanceGroupId">@g.Name (@g.DisciplineName)</option> }
                     </pems-select>
                     <div class="form-text">گروه‌های تعمیراتی از <a asp-controller="MaintenanceMasterData" asp-action="Index">@Localizer["Maintenance Master Data"]</a> مدیریت می‌شوند.</div>
                 </div>
                 <div class="mb-2">
-                    <label class="form-label small">@Localizer["شیفت (اختیاری)"]</label>
+                    <pems-label css="small">@Localizer["شیفت (اختیاری)"]</pems-label>
                     <pems-input scale="small" name="shift" />
                 </div>
                 <div class="mb-2">
-                    <label class="form-label small">@Localizer["سرپرست (اختیاری)"]</label>
+                    <pems-label css="small">@Localizer["سرپرست (اختیاری)"]</pems-label>
                     <pems-select scale="small" name="supervisorEmployeeId">
                         <option value="">@Localizer["-- ندارد --"]</option>
                         @foreach (var e in (IEnumerable<dynamic>)ViewBag.Employees) { <option value="@e.EmployeeId">@e.FullName</option> }
@@ -113,8 +112,7 @@
                 <pems-button tone="primary" size="small" type="submit">@Localizer["ساخت"]</pems-button>
             </div>
         </form>
-    </div></div>
-</div>
+    </pems-modal>
 
 @section Scripts {
     <script>

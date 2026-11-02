@@ -93,26 +93,24 @@
     </pems-list-panel>
 </pems-list-page>
 
-<div class="modal fade" id="createRequisitionModal" tabindex="-1">
-    <div class="modal-dialog"><div class="modal-content">
+<pems-modal id="createRequisitionModal" tabindex="-1">
         <form asp-action="Create" method="post">
             <div class="modal-header"><h6 class="modal-title">@Localizer["Store Requisition جدید"]</h6></div>
             <div class="modal-body">
                 <div class="mb-2">
-                    <label class="form-label small">@Localizer["انبار"]</label>
-                    <select name="warehouseId" class="form-select form-select-sm" required>
+                    <pems-label css="small">@Localizer["انبار"]</pems-label>
+                    <pems-select scale="small" name="warehouseId" required>
                         @foreach (var w in warehouses) { <option value="@w.WarehouseId">@w.Code</option> }
-                    </select>
+                    </pems-select>
                 </div>
-                <div class="mb-2"><label class="form-label small">@Localizer["هدف / دلیل (اختیاری)"]</label><textarea name="purpose" class="form-control form-control-sm" rows="2"></textarea></div>
+                <div class="mb-2"><pems-label css="small">@Localizer["هدف / دلیل (اختیاری)"]</pems-label><pems-textarea scale="small" name="purpose" rows="2"></pems-textarea></div>
             </div>
             <div class="modal-footer">
                 <pems-button tone="neutral" size="small" outline="true" type="button" data-bs-dismiss="modal">@Localizer["انصراف"]</pems-button>
                 <pems-button tone="primary" size="small" type="submit">@Localizer["ساخت"]</pems-button>
             </div>
         </form>
-    </div></div>
-</div>
+    </pems-modal>
 
 @section Scripts {
     <script src="~/_content/PEMS.UI/pems-list.js" asp-append-version="true"></script>

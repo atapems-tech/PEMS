@@ -9,12 +9,12 @@ namespace PEMS.UI.Tests;
 /// <summary>SCRUM-53 / #31: card, progress, accordion, list-group and spinner write the Bootstrap markup the pages wrote by hand.</summary>
 public sealed class BlockComponentsTests
 {
-    private static async Task<string> Run(Func<IPemsComponentRenderer, TagHelper> make, string tag, string inner, TagHelperContext? context = null)
+    private static async Task<string> Run(Func<IPemsComponentRenderer, TagHelper> make, string tag, string inner, TagHelperContext? context = null, TagHelperAttributeList? attributes = null)
     {
         await using var provider = new ServiceCollection().AddPemsUi().BuildServiceProvider();
         var helper = make(provider.CreateScope().ServiceProvider.GetRequiredService<IPemsComponentRenderer>());
         context ??= new TagHelperContext(tag, new TagHelperAttributeList(), new Dictionary<object, object>(), "t");
-        var output = new TagHelperOutput(tag, new TagHelperAttributeList(),
+        var output = new TagHelperOutput(tag, attributes ?? new TagHelperAttributeList(),
             (_, _) => Task.FromResult<TagHelperContent>(new DefaultTagHelperContent().SetHtmlContent(inner)));
         await helper.ProcessAsync(context, output);
         using var writer = new StringWriter();
@@ -87,4 +87,27 @@ public sealed class BlockComponentsTests
     public async Task Spinner_writes_the_spinner_classes(string size, string? tone, bool grow, string expected)
         => Assert.Equal($"<div class=\"{expected}\" role=\"status\" aria-hidden=\"true\"></div>",
             await Run(r => new PemsSpinnerTagHelper(r) { Size = size, Tone = tone, Grow = grow }, "pems-spinner", ""));
+
+    [Fact]
+    public async Task Modal_frame_wraps_the_page_markup_and_keeps_its_attributes()
+        => Assert.Equal("<div id=\"m1\" class=\"modal fade\" tabindex=\"-1\" aria-hidden=\"true\"><div class=\"modal-dialog modal-lg modal-dialog-scrollable\"><div class=\"modal-content\"><form>x</form></div></div></div>",
+            await Run(r => new PemsModalTagHelper(r) { Size = "large", DialogCss = "modal-dialog-scrollable" }, "pems-modal", "<form>x</form>",
+                attributes: [new("id", "m1"), new("tabindex", "-1"), new("aria-hidden", "true")]));
+
+    [Fact]
+    public async Task Modal_frame_defaults_to_the_plain_dialog_and_takes_extra_classes()
+        => Assert.Equal("<div id=\"m2\" class=\"modal fade ct-settings\"><div class=\"modal-dialog\"><div class=\"modal-content\">x</div></div></div>",
+            await Run(r => new PemsModalTagHelper(r) { Css = "ct-settings" }, "pems-modal", "x", attributes: [new("id", "m2")]));
+
+    [Theory]
+    [InlineData("small", "modal-dialog modal-sm")]
+    [InlineData("extralarge", "modal-dialog modal-xl")]
+    public async Task Modal_frame_sizes(string size, string dialog)
+        => Assert.Contains($"<div class=\"{dialog}\">", await Run(r => new PemsModalTagHelper(r) { Size = size }, "pems-modal", "x", attributes: [new("id", "m")]));
+
+    [Fact]
+    public async Task Offcanvas_frame_writes_the_panel_with_the_page_markup()
+        => Assert.Equal("<div id=\"lxMenu\" class=\"offcanvas offcanvas-start\" tabindex=\"-1\" aria-labelledby=\"lxMenuTitle\"><div class=\"offcanvas-header\">h</div></div>",
+            await Run(r => new PemsOffcanvasTagHelper(r) { Side = "start" }, "pems-offcanvas", "<div class=\"offcanvas-header\">h</div>",
+                attributes: [new("id", "lxMenu"), new("tabindex", "-1"), new("aria-labelledby", "lxMenuTitle")]));
 }

@@ -116,9 +116,7 @@
     </pems-list-panel>
 </pems-list-page>
 
-<div class="modal fade" id="createMechanicalModal" tabindex="-1">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
+<pems-modal size="large" id="createMechanicalModal" tabindex="-1">
             <form asp-action="Create" method="post">
                 <div class="modal-header"><h6 class="modal-title">@Localizer["Me_New"]</h6></div>
                 <div class="modal-body">
@@ -126,7 +124,7 @@
                         @Localizer["Equipment link is optional - only fill it when this mechanical record represents an existing Equipment tag. Rotating/Static sub-type details are added afterwards from the Passport page."]
                     </p>
                     <div class="mb-3">
-                        <label class="form-label">@Localizer["Equipment (اختیاری)"]</label>
+                        <pems-label>@Localizer["Equipment (اختیاری)"]</pems-label>
                         <pems-select name="equipmentId">
                             <option value="">@Localizer["-- ندارد --"]</option>
                             @foreach (var e in equipmentOptions)
@@ -138,28 +136,28 @@
 
                     <div class="row g-3 mb-3">
                         <div class="col-md-6">
-                            <label class="form-label">@Localizer["Tag Number"]</label>
+                            <pems-label>@Localizer["Tag Number"]</pems-label>
                             <pems-input name="tagNumber" required />
                         </div>
                         <div class="col-md-6">
-                            <label class="form-label">@Localizer["Equipment Type"]</label>
+                            <pems-label>@Localizer["Equipment Type"]</pems-label>
                             <pems-input name="equipmentType" required placeholder="@Localizer["Pump, Compressor, Vessel, Tank, Heat Exchanger ..."]" />
                         </div>
                     </div>
 
                     <div class="row g-3 mb-3">
                         <div class="col-md-6">
-                            <label class="form-label">@Localizer["Manufacturer"]</label>
+                            <pems-label>@Localizer["Manufacturer"]</pems-label>
                             <pems-input name="manufacturer" />
                         </div>
                         <div class="col-md-6">
-                            <label class="form-label">@Localizer["Model"]</label>
+                            <pems-label>@Localizer["Model"]</pems-label>
                             <pems-input name="model" />
                         </div>
                     </div>
 
                     <div class="mb-2">
-                        <label class="form-label">@Localizer["توضیحات (اختیاری)"]</label>
+                        <pems-label>@Localizer["توضیحات (اختیاری)"]</pems-label>
                         <pems-textarea name="description" rows="2"></pems-textarea>
                     </div>
                 </div>
@@ -168,9 +166,7 @@
                     <pems-button tone="primary" size="small" type="submit">@Localizer["ساخت"]</pems-button>
                 </div>
             </form>
-        </div>
-    </div>
-</div>
+        </pems-modal>
 
 @section Scripts {
     <script src="~/_content/PEMS.UI/pems-list.js" asp-append-version="true"></script>

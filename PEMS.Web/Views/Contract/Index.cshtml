@@ -84,29 +84,27 @@
     </pems-list-panel>
 </pems-list-page>
 
-<div class="modal fade" id="createContractModal" tabindex="-1">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
+<pems-modal size="large" id="createContractModal" tabindex="-1">
             <form asp-controller="Contract" asp-action="Create" method="post">
                 <div class="modal-header"><h6 class="modal-title">@Localizer["New Contract"]</h6></div>
                 <div class="modal-body">
                     <div class="row g-3">
                         <div class="col-md-6">@await Component.InvokeAsync("DocumentNumberField", new { documentType = "Contract", name = "contractNo", label = Localizer["Contract No"].Value })</div>
                         <div class="col-md-6">
-                            <label class="form-label">@Localizer["Project"]</label>
+                            <pems-label>@Localizer["Project"]</pems-label>
                             <pems-select name="projectId" required>
                                 @foreach (var p in (IEnumerable<dynamic>)ViewBag.Projects) { <option value="@p.ProjectId">@p.ProjectName</option> }
                             </pems-select>
                         </div>
                         <div class="col-md-6">
-                            <label class="form-label">@Localizer["Vendor"]</label>
+                            <pems-label>@Localizer["Vendor"]</pems-label>
                             <pems-input type="text" placeholder="@Localizer["جستجوی نام وندور..."]" data-pems-search data-search-type="Vendor" data-search-hidden="#contractIdxVendorIdHidden" autocomplete="off" required />
                             <input type="hidden" name="vendorId" id="contractIdxVendorIdHidden" />
                         </div>
-                        <div class="col-md-6"><label class="form-label">@Localizer["Value"]</label><pems-input name="value" type="number" step="0.01" /></div>
-                        <div class="col-md-6"><label class="form-label">@Localizer["Start Date"]</label><input name="startDate" type="date" class="form-control" /></div>
-                        <div class="col-md-6"><label class="form-label">@Localizer["End Date"]</label><input name="endDate" type="date" class="form-control" /></div>
-                        <div class="col-12"><label class="form-label">@Localizer["Scope of Work"]</label><pems-textarea name="scope" rows="3"></pems-textarea></div>
+                        <div class="col-md-6"><pems-label>@Localizer["Value"]</pems-label><pems-input name="value" type="number" step="0.01" /></div>
+                        <div class="col-md-6"><pems-label>@Localizer["Start Date"]</pems-label><input name="startDate" type="date" class="form-control" /></div>
+                        <div class="col-md-6"><pems-label>@Localizer["End Date"]</pems-label><input name="endDate" type="date" class="form-control" /></div>
+                        <div class="col-12"><pems-label>@Localizer["Scope of Work"]</pems-label><pems-textarea name="scope" rows="3"></pems-textarea></div>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -114,9 +112,7 @@
                     <pems-button tone="primary" type="submit">@Localizer["Save"]</pems-button>
                 </div>
             </form>
-        </div>
-    </div>
-</div>
+        </pems-modal>
 
 @section Scripts {
     <script src="~/_content/PEMS.UI/pems-list.js" asp-append-version="true"></script>

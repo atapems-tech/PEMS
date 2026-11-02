@@ -34,7 +34,7 @@ Upload Document Attachment
     </div>
 
     <div class="mb-3">
-        <label class="form-label">Revision <span class="text-muted small">(optional — leave blank for a document-level attachment not tied to a specific revision)</span></label>
+        <pems-label>Revision <span class="text-muted small">(optional — leave blank for a document-level attachment not tied to a specific revision)</span></pems-label>
         <pems-select name="revisionId">
             <option value="">-- Document-level (no specific revision) --</option>
             @foreach (var rev in revisions)
@@ -45,7 +45,7 @@ Upload Document Attachment
     </div>
 
     <div class="mb-3">
-        <label class="form-label">File Role <span class="text-muted small">@Localizer["(optional)"]</span></label>
+        <pems-label>File Role <span class="text-muted small">@Localizer["(optional)"]</span></pems-label>
         <pems-select name="fileRole">
             <option value="">-- Unspecified --</option>
             <option value="Native">Native / Source File</option>

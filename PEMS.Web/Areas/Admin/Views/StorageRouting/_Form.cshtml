@@ -9,35 +9,35 @@
 <div class="content-card admin-form-card">
     <div class="row g-3">
         <div class="col-md-4">
-            <label class="form-label">Module <span class="text-muted small">e.g. EngineeringDocuments, VDR, Contracts</span></label>
-            <input asp-for="Module" class="form-control" required />
+            <pems-label>Module <span class="text-muted small">e.g. EngineeringDocuments, VDR, Contracts</span></pems-label>
+            <pems-input asp-for="Module" required />
         </div>
         <div class="col-md-4">
-            <label class="form-label">Document Type <span class="text-muted small">(optional — leave blank for module-wide default)</span></label>
-            <input asp-for="DocumentType" class="form-control" />
+            <pems-label>Document Type <span class="text-muted small">(optional — leave blank for module-wide default)</span></pems-label>
+            <pems-input asp-for="DocumentType" />
         </div>
         <div class="col-md-4">
-            <label class="form-label">@Localizer["Storage Provider"]</label>
-            <select asp-for="StorageProviderId" class="form-select" required>
+            <pems-label>@Localizer["Storage Provider"]</pems-label>
+            <pems-select asp-for="StorageProviderId" required>
                 <option value="">@Localizer["-- select --"]</option>
                 @foreach (var p in providers) { <option value="@p.StorageProviderId" selected="@(p.StorageProviderId == Model.StorageProviderId)">@p.Name (@p.ProviderType)</option> }
-            </select>
+            </pems-select>
         </div>
         <div class="col-md-6">
-            <label class="form-label">Relative Root Path <span class="text-muted small">(optional subfolder inside the provider's root)</span></label>
-            <input asp-for="RelativeRootPath" class="form-control" />
+            <pems-label>Relative Root Path <span class="text-muted small">(optional subfolder inside the provider's root)</span></pems-label>
+            <pems-input asp-for="RelativeRootPath" />
         </div>
         <div class="col-md-3">
-            <label class="form-label">Priority <span class="text-muted small">(higher wins among overlapping routes)</span></label>
-            <input asp-for="Priority" type="number" class="form-control" />
+            <pems-label>Priority <span class="text-muted small">(higher wins among overlapping routes)</span></pems-label>
+            <pems-input asp-for="Priority" type="number" />
         </div>
         <div class="col-md-3">
-            <div class="form-check mt-4"><input asp-for="IsEnabled" class="form-check-input" /><label class="form-check-label" asp-for="IsEnabled">@Localizer["Enabled"]</label></div>
-            <div class="form-check"><input asp-for="IsDefault" class="form-check-input" /><label class="form-check-label" asp-for="IsDefault">@Localizer["Module Default"]</label></div>
+            <div class="form-check mt-4"><pems-input kind="check" asp-for="IsEnabled" /><label class="form-check-label" asp-for="IsEnabled">@Localizer["Enabled"]</label></div>
+            <div class="form-check"><pems-input kind="check" asp-for="IsDefault" /><label class="form-check-label" asp-for="IsDefault">@Localizer["Module Default"]</label></div>
         </div>
     </div>
     <div class="mt-4 d-flex gap-2">
-        <button type="submit" class="btn btn-pems-solid"><i class="bi bi-check2 me-1"></i> @Localizer["Save"]</button>
-        <a asp-action="Index" class="btn btn-outline-secondary">@Localizer["Cancel"]</a>
+        <pems-button tone="primary" type="submit"><i class="bi bi-check2 me-1"></i> @Localizer["Save"]</pems-button>
+        <pems-button as="a" tone="neutral" outline="true" asp-action="Index">@Localizer["Cancel"]</pems-button>
     </div>
 </div>

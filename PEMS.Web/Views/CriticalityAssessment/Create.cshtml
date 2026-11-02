@@ -18,7 +18,7 @@
 <div class="content-card" style="max-width:600px;">
     <form asp-action="Create" method="post">
         <div class="mb-3">
-            <label class="form-label small">@Localizer["Equipment"]</label>
+            <pems-label css="small">@Localizer["Equipment"]</pems-label>
             @if (preselectedEquipmentId.HasValue)
             {
                 <input type="hidden" name="equipmentId" value="@preselectedEquipmentId" />
@@ -31,7 +31,7 @@
             }
         </div>
         <div class="mb-3">
-            <label class="form-label small">Rationale (optional)</label>
+            <pems-label css="small">Rationale (optional)</pems-label>
             <pems-textarea scale="small" name="rationale" rows="2"></pems-textarea>
         </div>
         <pems-button tone="primary" size="small" type="submit">Create Draft</pems-button>

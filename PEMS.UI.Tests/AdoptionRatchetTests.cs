@@ -21,6 +21,7 @@ public sealed class AdoptionRatchetTests
         ("button", new Regex(@"\bbtn btn-[a-z-]+", RegexOptions.Compiled), true, false),
         ("text-input", new Regex(@"\bform-control\b", RegexOptions.Compiled), true, false),
         ("select", new Regex(@"\bform-select\b", RegexOptions.Compiled), true, false),
+        ("form-label", new Regex(@"class=""[^""]*(?<![\w-])form-label(?![\w-])", RegexOptions.Compiled), true, false),
         ("textarea", new Regex(@"<textarea\b", RegexOptions.Compiled), true, false),
         ("check-radio-switch", new Regex(@"\bform-check-input\b|\bform-switch\b", RegexOptions.Compiled), true, false),
         ("modal", new Regex(@"class=""modal(?![\w-])", RegexOptions.Compiled), true, false),
@@ -38,7 +39,7 @@ public sealed class AdoptionRatchetTests
         ("kpi-tile", new Regex(@"class=""kpi-card\b", RegexOptions.Compiled), true, false),   // SCRUM-337 KpiTile: <pems-kpi-tile>
         // SCRUM-337 Skeleton: "Loading..." text as a placeholder (<pems-skeleton> / PemsSkeleton.show); the skeleton's own label="..." is not counted
         ("loading-text", new Regex(@"(?<!label=""[^>]{0,80})(Loading\.\.\.|Loading…|در حال بارگذاری|در حال جستجو)", RegexOptions.Compiled), true, true),
-        ("confirm-call", new Regex(@"\bconfirm\(", RegexOptions.Compiled), true, true),
+        ("confirm-call", new Regex(@"(?<![\w.])confirm\(|window\.confirm\(", RegexOptions.Compiled), true, true),
         ("alert-call", new Regex(@"(?<![\w.])alert\(", RegexOptions.Compiled), true, true),
         ("inline-script", new Regex(@"<script>", RegexOptions.Compiled), true, false),
         ("js-built-markup", new Regex(@"\.innerHTML\s*\+?=|insertAdjacentHTML\(", RegexOptions.Compiled), false, true),
@@ -88,6 +89,9 @@ public sealed class AdoptionRatchetTests
         Assert.Equal(1, Hits("button", "<button class=\"btn btn-primary btn-sm\">x</button>"));
         Assert.Equal(2, Hits("badge", "<span class=\"badge text-bg-success\">x</span>"));
         Assert.Equal(1, Hits("alert-call", "alert('x');"));
+        Assert.Equal(1, Hits("confirm-call", "if (!confirm('x')) return;"));
+        Assert.Equal(1, Hits("confirm-call", "if (!window.confirm('x')) return;"));
+        Assert.Equal(0, Hits("confirm-call", "window.PemsDialog.confirm('x').then(f);"));
         Assert.Equal(0, Hits("alert-call", "window.alert2(); PemsAlert(x);"));
         Assert.Equal(1, Hits("js-built-markup", "el.innerHTML = '<b>' + t + '</b>';"));
         Assert.Equal(0, Hits("js-built-markup", "el.textContent = t;"));
@@ -119,6 +123,7 @@ public sealed class AdoptionRatchetTests
         }
 
         foreach (var f in Directory.EnumerateFiles(Path.Combine(root, "PEMS.Web", "Views"), "*.cshtml", SearchOption.AllDirectories)) Scan(f, true);
+        foreach (var f in Directory.EnumerateFiles(Path.Combine(root, "PEMS.Web", "Areas"), "*.cshtml", SearchOption.AllDirectories)) Scan(f, true);
         foreach (var f in Directory.EnumerateFiles(Path.Combine(root, "PEMS.Web", "wwwroot", "js"), "*.js", SearchOption.AllDirectories)) Scan(f, false);
         return result;
     }

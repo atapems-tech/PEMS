@@ -2613,6 +2613,9 @@
   <data name="Sel_NoResults" xml:space="preserve"><value>No matching item</value></data>
   <data name="Sel_Loading" xml:space="preserve"><value>Searching…</value></data>
   <data name="Sel_Placeholder" xml:space="preserve"><value>Type to search…</value></data>
+  <data name="Confirm_Title" xml:space="preserve"><value>Please confirm</value></data>
+  <data name="Confirm_Ok" xml:space="preserve"><value>Confirm</value></data>
+  <data name="Confirm_Cancel" xml:space="preserve"><value>Cancel</value></data>
   <data name="Tinv_Title" xml:space="preserve"><value>Invitations by email</value></data>
   <data name="Tinv_SendAll" xml:space="preserve"><value>Send invitations</value></data>
   <data name="Tinv_Hint" xml:space="preserve"><value>Sends one email per invited vendor that has not been invited by email yet, from the organisation's mail server. Vendors without a contact email are listed as skipped.</value></data>

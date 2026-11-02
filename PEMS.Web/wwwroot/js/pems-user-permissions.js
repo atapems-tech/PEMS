@@ -253,10 +253,12 @@
     function batch(enable) {
         var rows = selectedRows().filter(function (tr) { return isAllowed(tr) !== enable; });
         if (!rows.length) { showAlert('warning', t('nothingSelected')); return; }
-        if (!window.confirm(t('confirmBatch', rows.length))) return;
-        save(rows, enable).then(function (data) {
-            if (data) rows.forEach(function (tr) { var cb = tr.querySelector('.perm-select'); if (cb) cb.checked = false; });
-            updateSelectionUi();
+        window.PemsDialog.confirm(t('confirmBatch', rows.length)).then(function (yes) {
+            if (!yes) return;
+            save(rows, enable).then(function (data) {
+                if (data) rows.forEach(function (tr) { var cb = tr.querySelector('.perm-select'); if (cb) cb.checked = false; });
+                updateSelectionUi();
+            });
         });
     }
 

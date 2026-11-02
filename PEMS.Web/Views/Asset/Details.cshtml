@@ -144,20 +144,18 @@
     </div>
 </div>
 
-<div class="modal fade" id="editAssetModal" tabindex="-1">
-    <div class="modal-dialog">
-        <div class="modal-content">
+<pems-modal id="editAssetModal" tabindex="-1">
             <form asp-action="Edit" method="post">
                 <input type="hidden" name="assetId" value="@Model.AssetId" />
                 <div class="modal-header"><h6 class="modal-title">Edit Asset</h6></div>
                 <div class="modal-body">
                     <div class="mb-3">
-                        <label class="form-label">@Localizer["Asset Number"]</label>
+                        <pems-label>@Localizer["Asset Number"]</pems-label>
                         <pems-input name="assetNumber" value="@Model.AssetNumber" required />
                     </div>
                     <div class="row g-3 mb-3">
                         <div class="col-md-6">
-                            <label class="form-label">@Localizer["Functional Location"]</label>
+                            <pems-label>@Localizer["Functional Location"]</pems-label>
                             <pems-select name="functionalLocationId">
                                 <option value="">@Localizer["-- not linked --"]</option>
                                 @foreach (var fl in (List<PEMS.Application.DTOs.FunctionalLocationPickerItemDto>)ViewBag.FunctionalLocations)
@@ -167,21 +165,21 @@
                             </pems-select>
                         </div>
                         <div class="col-md-6">
-                            <label class="form-label">@Localizer["Maintenance Class"]</label>
+                            <pems-label>@Localizer["Maintenance Class"]</pems-label>
                             <pems-input name="maintenanceClass" value="@Model.MaintenanceClass" />
                         </div>
                     </div>
                     <div class="mb-3">
-                        <label class="form-label">@Localizer["Functional Location (raw text, legacy)"]</label>
+                        <pems-label>@Localizer["Functional Location (raw text, legacy)"]</pems-label>
                         <pems-input name="functionalLocation" value="@Model.FunctionalLocation" />
                     </div>
                     <div class="row g-3 mb-3">
                         <div class="col-md-6">
-                            <label class="form-label">@Localizer["Commissioning Date"]</label>
+                            <pems-label>@Localizer["Commissioning Date"]</pems-label>
                             <input name="commissioningDate" type="date" class="form-control" value="@Model.CommissioningDate?.ToString("yyyy-MM-dd")" />
                         </div>
                         <div class="col-md-6">
-                            <label class="form-label">@Localizer["Status"]</label>
+                            <pems-label>@Localizer["Status"]</pems-label>
                             <pems-select name="status">
                                 @foreach (var s in new[] { "Active", "Standby", "Retired" })
                                 {
@@ -191,7 +189,7 @@
                         </div>
                     </div>
                     <div class="mb-3">
-                        <label class="form-label">@Localizer["Description"]</label>
+                        <pems-label>@Localizer["Description"]</pems-label>
                         <pems-textarea name="description" rows="2">@Model.Description</pems-textarea>
                     </div>
                 </div>
@@ -200,6 +198,4 @@
                     <pems-button tone="primary" type="submit">@Localizer["Save"]</pems-button>
                 </div>
             </form>
-        </div>
-    </div>
-</div>
+        </pems-modal>

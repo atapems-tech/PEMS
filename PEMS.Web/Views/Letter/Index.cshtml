@@ -233,12 +233,12 @@
                 <button type="button" class="ct-cta" data-bs-toggle="dropdown" aria-expanded="false" data-compose-url="@Url.Action("Compose", "LetterCompose", new { letterType = "Internal" })">
                     <i class="bi bi-pencil-square" aria-hidden="true"></i> <span>@Localizer["Lt_ComposeNew"]</span>
                 </button>
-                <ul class="dropdown-menu w-100">
+                <pems-dropdown-menu css="w-100">
                     <li><a class="dropdown-item" asp-controller="LetterCompose" asp-action="Compose" asp-route-letterType="Internal"><i class="bi bi-envelope me-1" aria-hidden="true"></i> @Localizer["Lc_TitleInternal"] <kbd class="ms-2">C</kbd></a></li>
                     <li><a class="dropdown-item" asp-controller="LetterCompose" asp-action="Compose" asp-route-letterType="Outgoing"><i class="bi bi-envelope-arrow-up me-1" aria-hidden="true"></i> @Localizer["Lc_TitleOutgoing"]</a></li>
                     <li><hr class="dropdown-divider" /></li>
                     <li><a class="dropdown-item" asp-action="Create" asp-route-letterType="Incoming"><i class="bi bi-envelope-arrow-down me-1" aria-hidden="true"></i> @Localizer["Lt_NewIncoming"]</a></li>
-                </ul>
+                </pems-dropdown-menu>
             </div>
         </div>
 
@@ -336,7 +336,7 @@
                         <i class="bi bi-funnel" aria-hidden="true"></i><span class="visually-hidden">@Localizer["Lp_Filters"]</span>
                         @if (filterCount > 0) { <span class="lp-badge">@filterCount<span class="visually-hidden"> @Localizer["Lp_ActiveFilters"]</span></span> }
                     </button>
-                    <div class="dropdown-menu dropdown-menu-end lp-filter-pop p-0">
+                    <pems-dropdown-menu as="div" end="true" css="lp-filter-pop p-0">
                         <form method="get">
                             @foreach (var kv in Preserved(popoverKeys))
                             {
@@ -408,27 +408,27 @@
                                 <pems-button tone="primary" size="small" type="submit"><i class="bi bi-funnel" aria-hidden="true"></i> @Localizer["Lt_ApplyFilters"]</pems-button>
                             </div>
                         </form>
-                    </div>
+                    </pems-dropdown-menu>
                 </div>
 
                 <div class="dropdown">
                     <button type="button" class="lp-icon-btn" data-bs-toggle="dropdown" aria-expanded="false" title="@Localizer["Ct_SortBy"]">
                         <i class="bi bi-arrow-down-up" aria-hidden="true"></i><span class="visually-hidden">@Localizer["Ct_SortBy"]</span>
                     </button>
-                    <ul class="dropdown-menu dropdown-menu-end">
+                    <pems-dropdown-menu end="true">
                         <li><h6 class="dropdown-header">@Localizer["Ct_SortBy"]</h6></li>
                         @foreach (var (key, label) in new[] { ("date", Localizer["Date"].Value), ("subject", Localizer["Subject"].Value), ("number", Localizer["Letter No"].Value), ("status", Localizer["Status"].Value), ("priority", Localizer["Lt_Priority"].Value), ("sender", Localizer["Sender / Receiver"].Value) })
                         {
                             <li><a class="dropdown-item @(SortActive(key) ? "active" : "")" href="@SortUrl(key)"><i class="bi @SortIcon(key)" aria-hidden="true"></i> @label</a></li>
                         }
-                    </ul>
+                    </pems-dropdown-menu>
                 </div>
 
                 <div class="dropdown">
                     <button type="button" class="lp-icon-btn" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false" title="@Localizer["Lp_More"]">
                         <i class="bi bi-three-dots-vertical" aria-hidden="true"></i><span class="visually-hidden">@Localizer["Lp_More"]</span>
                     </button>
-                    <ul class="dropdown-menu dropdown-menu-end lp-more">
+                    <pems-dropdown-menu end="true" css="lp-more">
                         <li><h6 class="dropdown-header">@Localizer["Lp_GoTo"]</h6></li>
                         <li><a class="dropdown-item" asp-action="Dashboard"><i class="bi bi-speedometer2" aria-hidden="true"></i> @Localizer["Lt_DashboardLink"]</a></li>
                         <li><a class="dropdown-item" asp-controller="LetterCartable" asp-action="Report"><i class="bi bi-bar-chart-line" aria-hidden="true"></i> @Localizer["Ct_ReportTitle"]</a></li>
@@ -456,7 +456,7 @@
                         <li><hr class="dropdown-divider" /></li>
                         <li><a class="dropdown-item" href="@Context.Request.Path@Context.Request.QueryString"><i class="bi bi-arrow-clockwise" aria-hidden="true"></i> @Localizer["Lp_Refresh"]</a></li>
                         <li><button type="button" class="dropdown-item" data-bs-toggle="modal" data-bs-target="#lpShortcuts"><i class="bi bi-keyboard" aria-hidden="true"></i> @Localizer["Lp_Shortcuts"] <kbd class="ms-auto">?</kbd></button></li>
-                    </ul>
+                    </pems-dropdown-menu>
                 </div>
             </div>
         </div>
@@ -514,7 +514,7 @@
                         {
                             <div class="dropdown">
                                 <pems-button tone="neutral" size="small" outline="true" css="dropdown-toggle" type="button" data-bulk-op="tag-menu" data-bs-toggle="dropdown" aria-expanded="false" disabled><i class="bi bi-tags" aria-hidden="true"></i> @Localizer["Ct_Tag"]</pems-button>
-                                <ul class="dropdown-menu ct-bulk-menu">
+                                <pems-dropdown-menu css="ct-bulk-menu">
                                     <li><h6 class="dropdown-header">@Localizer["Ct_ApplyTag"]</h6></li>
                                     @foreach (var t in tagNodes)
                                     {
@@ -526,7 +526,7 @@
                                     {
                                         <li><button type="button" class="dropdown-item" data-bulk-tag="@t.TagId" data-bulk-tag-op="untag" style="padding-inline-start:@(0.75 + (t.Depth - 1) * 0.9)rem"><i class="bi bi-x-circle" aria-hidden="true"></i> @t.Name</button></li>
                                     }
-                                </ul>
+                                </pems-dropdown-menu>
                             </div>
                         }
                         <pems-button tone="neutral" size="small" outline="true" type="submit" name="op" value="star" data-bulk-op="star" title="@Localizer["Lt_BulkStar"]" disabled><i class="bi bi-star" aria-hidden="true"></i> <span class="d-none d-xxl-inline">@Localizer["Lt_BulkStar"]</span></pems-button>
@@ -542,13 +542,13 @@
                         <pems-button tone="danger" size="small" outline="true" type="submit" name="op" value="trash" data-bulk-op="trash" data-confirm-trash="@Localizer["Ct_ConfirmTrash"]" disabled><i class="bi bi-trash3" aria-hidden="true"></i> <span class="d-none d-xxl-inline">@Localizer["Ct_MoveToTrash"]</span></pems-button>
                         <div class="dropdown">
                             <pems-button tone="neutral" size="small" outline="true" css="dropdown-toggle" type="button" data-bulk-op="more-menu" data-bs-toggle="dropdown" aria-expanded="false" disabled>@Localizer["Lp_More"]</pems-button>
-                            <ul class="dropdown-menu">
+                            <pems-dropdown-menu>
                                 <li><button type="submit" name="op" value="submit" class="dropdown-item" data-bulk-op="submit" data-confirm="@Localizer["Lt_BulkSubmitConfirm"]"><i class="bi bi-send-check" aria-hidden="true"></i> @Localizer["Lt_BulkSubmit"]</button></li>
                                 @if (canBulkArchive)
                                 {
                                     <li><button type="button" class="dropdown-item text-danger" data-bulk-op="archive-open" data-bs-toggle="modal" data-bs-target="#letterArchiveModal"><i class="bi bi-archive" aria-hidden="true"></i> @Localizer["Lt_BulkArchive"]</button></li>
                                 }
-                            </ul>
+                            </pems-dropdown-menu>
                         </div>
                     }
                     <span class="pems-bulk-spacer"></span>
@@ -562,16 +562,14 @@
 
                 @if (canBulkArchive)
                 {
-                    <div class="modal fade" id="letterArchiveModal" tabindex="-1" aria-labelledby="letterArchiveTitle" aria-hidden="true">
-                        <div class="modal-dialog">
-                            <div class="modal-content">
+                    <pems-modal id="letterArchiveModal" tabindex="-1" aria-labelledby="letterArchiveTitle" aria-hidden="true">
                                 <div class="modal-header">
                                     <h2 class="modal-title h5" id="letterArchiveTitle">@Localizer["Lt_ArchiveTitle"]</h2>
                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="@Localizer["Cancel"]"></button>
                                 </div>
                                 <div class="modal-body">
                                     <p class="small text-muted">@Localizer["Lt_ArchiveHelp"]</p>
-                                    <label for="letterArchiveReason" class="form-label">@Localizer["Lt_ArchiveReason"]</label>
+                                    <pems-label for="letterArchiveReason">@Localizer["Lt_ArchiveReason"]</pems-label>
                                     <pems-textarea id="letterArchiveReason" name="reason" rows="3" maxlength="500" aria-describedby="letterArchiveReasonError"></pems-textarea>
                                     <div id="letterArchiveReasonError" class="text-danger small mt-1" hidden><i class="bi bi-exclamation-circle" aria-hidden="true"></i> @Localizer["Lt_ArchiveReasonRequired"]</div>
                                 </div>
@@ -579,9 +577,7 @@
                                     <pems-button tone="neutral" outline="true" type="button" data-bs-dismiss="modal">@Localizer["Cancel"]</pems-button>
                                     <pems-button tone="danger" type="submit" name="op" value="archive"><i class="bi bi-archive" aria-hidden="true"></i> @Localizer["Lt_ArchiveConfirm"]</pems-button>
                                 </div>
-                            </div>
-                        </div>
-                    </div>
+                            </pems-modal>
                 }
             </form>
 
@@ -691,7 +687,7 @@
                                         <a asp-action="Details" asp-route-id="@l.LetterId" class="lp-act lp-act--always" title="@Localizer["Lt_Open"]"><i class="bi bi-eye" aria-hidden="true"></i><span class="visually-hidden">@Localizer["Lt_Open"]: @l.LetterNumber</span></a>
                                         <div class="dropdown d-inline">
                                             <button type="button" class="lp-act lp-act--always" data-bs-toggle="dropdown" aria-expanded="false" title="@Localizer["Lt_RowActions"]"><i class="bi bi-three-dots" aria-hidden="true"></i><span class="visually-hidden">@Localizer["Lt_RowActions"]: @l.LetterNumber</span></button>
-                                            <ul class="dropdown-menu dropdown-menu-end">
+                                            <pems-dropdown-menu end="true">
                                                 <li><a class="dropdown-item" asp-action="ExportPdf" asp-route-id="@l.LetterId"><i class="bi bi-file-earmark-pdf me-1" aria-hidden="true"></i> PDF</a></li>
                                                 <li><button type="button" class="dropdown-item" data-row-op="@(l.IsUnread ? "read" : "unread")" data-row-id="@l.LetterId"><i class="bi @(l.IsUnread ? "bi-envelope-open" : "bi-envelope") me-1" aria-hidden="true"></i> @Localizer[l.IsUnread ? "Ct_MarkRead" : "Ct_MarkUnread"]</button></li>
                                                 <li><button type="button" class="dropdown-item" data-reminder-letter="@l.LetterId" data-reminder-title="@l.LetterNumber"><i class="bi bi-bell me-1" aria-hidden="true"></i> @Localizer["Ct_AddReminder"]</button></li>
@@ -700,7 +696,7 @@
                                                     <li><hr class="dropdown-divider" /></li>
                                                     <li><button type="button" class="dropdown-item text-danger" data-row-archive="@l.LetterId"><i class="bi bi-archive me-1" aria-hidden="true"></i> @Localizer["Lt_BulkArchive"]</button></li>
                                                 }
-                                            </ul>
+                                            </pems-dropdown-menu>
                                         </div>
                                     }
                                 </td>
@@ -742,7 +738,7 @@
 </div>
 
 @* all folders + discipline shortcuts (the sidebar shows the personal folders and the working queues) *@
-<div class="offcanvas offcanvas-start" tabindex="-1" id="lxMenu" aria-labelledby="lxMenuTitle">
+<pems-offcanvas side="start" tabindex="-1" id="lxMenu" aria-labelledby="lxMenuTitle">
     <div class="offcanvas-header">
         <h2 class="offcanvas-title h5" id="lxMenuTitle">@Localizer["Lp_AllFolders"]</h2>
         <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="@Localizer["Cancel"]"></button>
@@ -773,11 +769,9 @@
             </div>
         }
     </div>
-</div>
+</pems-offcanvas>
 
-<div class="modal fade" id="lpShortcuts" tabindex="-1" aria-labelledby="lpShortcutsTitle" aria-hidden="true">
-    <div class="modal-dialog modal-sm">
-        <div class="modal-content">
+<pems-modal size="small" id="lpShortcuts" tabindex="-1" aria-labelledby="lpShortcutsTitle" aria-hidden="true">
             <div class="modal-header">
                 <h2 class="modal-title h5" id="lpShortcutsTitle">@Localizer["Lp_Shortcuts"]</h2>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="@Localizer["Cancel"]"></button>
@@ -796,22 +790,18 @@
                     <div><dt>@Localizer["Lp_KeyClose"]</dt><dd><kbd>Esc</kbd></dd></div>
                 </dl>
             </div>
-        </div>
-    </div>
-</div>
+        </pems-modal>
 
 @* personal reminder (one letter) *@
-<div class="modal fade" id="ctReminderModal" tabindex="-1" aria-labelledby="ctReminderTitle" aria-hidden="true">
-    <div class="modal-dialog modal-sm">
-        <div class="modal-content">
+<pems-modal size="small" id="ctReminderModal" tabindex="-1" aria-labelledby="ctReminderTitle" aria-hidden="true">
             <div class="modal-header">
                 <h2 class="modal-title h6" id="ctReminderTitle">@Localizer["Ct_AddReminder"] <span id="ctReminderLetter" class="text-muted"></span></h2>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="@Localizer["Cancel"]"></button>
             </div>
             <div class="modal-body">
-                <label class="form-label small" for="ctReminderAt">@Localizer["Ct_RemindAt"]</label>
+                <pems-label css="small" for="ctReminderAt">@Localizer["Ct_RemindAt"]</pems-label>
                 <input type="datetime-local" id="ctReminderAt" class="form-control form-control-sm mb-2" />
-                <label class="form-label small" for="ctReminderNote">@Localizer["Ct_Note"]</label>
+                <pems-label css="small" for="ctReminderNote">@Localizer["Ct_Note"]</pems-label>
                 <pems-input scale="small" type="text" id="ctReminderNote" maxlength="300" />
                 <div class="ct-msg" id="ctReminderMsg" role="status"></div>
             </div>
@@ -819,14 +809,10 @@
                 <pems-button tone="neutral" size="small" outline="true" type="button" data-bs-dismiss="modal">@Localizer["Cancel"]</pems-button>
                 <pems-button tone="primary" size="small" type="button" id="ctReminderSave">@Localizer["Save"]</pems-button>
             </div>
-        </div>
-    </div>
-</div>
+        </pems-modal>
 
 @* cartable settings: general, columns, tags, delegation, routing rules, contacts & groups, reminders, shortcuts *@
-<div class="modal fade ct-settings" id="ctSettings" tabindex="-1" aria-labelledby="ctSettingsTitle" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-scrollable modal-xl">
-        <div class="modal-content">
+<pems-modal size="extralarge" dialog-css="modal-dialog-scrollable" css="ct-settings" id="ctSettings" tabindex="-1" aria-labelledby="ctSettingsTitle" aria-hidden="true">
             @Html.AntiForgeryToken()
             <div class="modal-header">
                 <h2 class="modal-title h5" id="ctSettingsTitle"><i class="bi bi-sliders" aria-hidden="true"></i> @Localizer["Ct_Settings"]</h2>
@@ -850,15 +836,15 @@
                             <p class="ct-hint">@Localizer["Ct_SetGeneralHint"]</p>
                             <div class="row g-3">
                                 <div class="col-sm-6">
-                                    <label class="form-label small" for="ctSetView">@Localizer["Ct_DefaultView"]</label>
+                                    <pems-label css="small" for="ctSetView">@Localizer["Ct_DefaultView"]</pems-label>
                                     <pems-select scale="small" id="ctSetView"><option value="flat">@Localizer["Ct_ViewFlat"]</option><option value="thread">@Localizer["Ct_ViewThread"]</option></pems-select>
                                 </div>
                                 <div class="col-sm-6">
-                                    <label class="form-label small" for="ctSetDensity">@Localizer["Ct_Density"]</label>
+                                    <pems-label css="small" for="ctSetDensity">@Localizer["Ct_Density"]</pems-label>
                                     <pems-select scale="small" id="ctSetDensity"><option value="normal">@Localizer["Ct_DensityNormal"]</option><option value="dense">@Localizer["Lp_Compact"]</option></pems-select>
                                 </div>
                                 <div class="col-sm-6">
-                                    <label class="form-label small" for="ctSetPageSize">@Localizer["Ct_PageSize"]</label>
+                                    <pems-label css="small" for="ctSetPageSize">@Localizer["Ct_PageSize"]</pems-label>
                                     <pems-select scale="small" id="ctSetPageSize"><option>20</option><option>50</option><option>100</option></pems-select>
                                 </div>
                                 <div class="col-12">
@@ -877,7 +863,7 @@
                                     <div class="col-sm-6 col-lg-4"><div class="form-check"><pems-input kind="check" type="checkbox" data-set-col="@col.Item1" id="ctSetCol_@col.Item1" /><label class="form-check-label" for="ctSetCol_@col.Item1">@Localizer[col.Item2]</label></div></div>
                                 }
                             </div>
-                            <label class="form-label small" for="ctSetFrozen">@Localizer["Ct_FrozenColumns"]</label>
+                            <pems-label css="small" for="ctSetFrozen">@Localizer["Ct_FrozenColumns"]</pems-label>
                             <pems-select scale="small" id="ctSetFrozen" style="max-width:220px"><option value="0">@Localizer["Ct_None"]</option><option value="1">1</option><option value="2">2</option><option value="3">3</option></pems-select>
                         </section>
                         <section class="ct-pane" data-pane-body="tags" role="tabpanel" hidden></section>
@@ -908,9 +894,7 @@
                 <pems-button tone="neutral" size="small" outline="true" type="button" data-bs-dismiss="modal">@Localizer["Cancel"]</pems-button>
                 <pems-button tone="primary" size="small" type="button" id="ctSettingsSave">@Localizer["Save"]</pems-button>
             </div>
-        </div>
-    </div>
-</div>
+        </pems-modal>
 
 <script id="ctConfig" type="application/json">@Html.Raw(System.Text.Json.JsonSerializer.Serialize(new
 {

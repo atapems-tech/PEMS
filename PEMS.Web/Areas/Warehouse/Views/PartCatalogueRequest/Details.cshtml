@@ -60,7 +60,7 @@
         </div>
     </div>
 
-    @if (!string.IsNullOrEmpty(warningTemp)) { <div class="alert alert-warning small" role="status">@warningTemp</div> }
+    @if (!string.IsNullOrEmpty(warningTemp)) { <pems-alert tone="warning" css="small">@warningTemp</pems-alert> }
 
     <div class="vs-toolbar">
         <a asp-action="Index" class="vs-btn vs-btn--sm"><i class="bi bi-arrow-left"></i> @Localizer["Pc_Btn_Back"]</a>
@@ -100,7 +100,7 @@
             <h2 class="vs-section__title"><i class="bi bi-check2-square"></i> @Localizer["Pc_Det_ActionPanel"]
                 @if (!string.IsNullOrEmpty(a.ActiveStepKey)) { <span class="vs-pill vs-pill--info ms-2">@Localizer["Pc_Step_" + a.ActiveStepKey]</span> }
             </h2>
-            @if (a.IsAdminOverride) { <div class="alert alert-warning small py-1">@Localizer["Pc_Det_AdminOverride"]</div> }
+            @if (a.IsAdminOverride) { <pems-alert tone="warning" css="small py-1">@Localizer["Pc_Det_AdminOverride"]</pems-alert> }
 
             <form asp-action="Execute" method="post" class="row g-2 align-items-end">
                 <input type="hidden" name="id" value="@d.Id" />
@@ -108,27 +108,27 @@
                 @if (a.RequiresPartNumber)
                 {
                     <div class="col-md-3">
-                        <label class="form-label" for="pc_partNumber">@L("PartNumber") <span class="pc-req" aria-hidden="true">*</span></label>
-                        <input id="pc_partNumber" name="partNumber" class="form-control form-control-sm" maxlength="50" autocomplete="off" />
+                        <pems-label for="pc_partNumber">@L("PartNumber") <span class="pc-req" aria-hidden="true">*</span></pems-label>
+                        <pems-input scale="small" id="pc_partNumber" name="partNumber" maxlength="50" autocomplete="off" />
                         <div class="form-text">@Localizer["Pc_Hint_PartNumber"]</div>
                     </div>
                 }
                 <div class="col">
-                    <label class="form-label" for="pc_comment">@L("Comment")</label>
-                    <input id="pc_comment" name="comment" class="form-control form-control-sm" maxlength="2000" />
+                    <pems-label for="pc_comment">@L("Comment")</pems-label>
+                    <pems-input scale="small" id="pc_comment" name="comment" maxlength="2000" />
                     <div class="form-text">@Localizer["Pc_Hint_CommentRequired"]</div>
                 </div>
                 <div class="col-auto d-flex gap-2">
                     @if (a.CanApprove) { <button type="submit" name="action" value="Approve" class="vs-btn vs-btn--primary vs-btn--sm"><i class="bi bi-check-lg"></i> @Localizer["Pc_Btn_Approve"]</button> }
                     @if (a.CanReturn) { <button type="submit" name="action" value="Return" class="vs-btn vs-btn--sm"><i class="bi bi-arrow-return-left"></i> @Localizer["Pc_Btn_Return"]</button> }
-                    @if (a.CanCancel) { <button type="submit" name="action" value="Cancel" class="vs-btn vs-btn--sm vs-btn--danger" onclick="return confirm(this.dataset.confirm);" data-confirm="@Localizer["Pc_Confirm_Cancel"]"><i class="bi bi-x-circle"></i> @Localizer["Pc_Btn_Cancel"]</button> }
+                    @if (a.CanCancel) { <button type="submit" name="action" value="Cancel" class="vs-btn vs-btn--sm vs-btn--danger" data-pems-confirm="@Localizer["Pc_Confirm_Cancel"]"><i class="bi bi-x-circle"></i> @Localizer["Pc_Btn_Cancel"]</button> }
                 </div>
             </form>
         </section>
     }
     else if (a.CanCancel)
     {
-        <form asp-action="Execute" method="post" class="mb-3" onsubmit="return confirm(this.dataset.confirm);" data-confirm="@Localizer["Pc_Confirm_Cancel"]">
+        <form asp-action="Execute" method="post" class="mb-3" data-pems-confirm="@Localizer["Pc_Confirm_Cancel"]">
             <input type="hidden" name="id" value="@d.Id" /><input type="hidden" name="action" value="Cancel" />
             @if (rowVersion != null) { <input type="hidden" name="rowVersion" value="@rowVersion" /> }
             <button type="submit" class="vs-btn vs-btn--sm vs-btn--danger"><i class="bi bi-x-circle"></i> @Localizer["Pc_Btn_Cancel"]</button>
@@ -278,7 +278,7 @@
                 {
                     <form asp-action="AddNote" method="post" class="d-flex gap-2">
                         <input type="hidden" name="id" value="@d.Id" />
-                        <input name="text" class="form-control form-control-sm" maxlength="2000" placeholder="@Localizer["Pc_Hint_NoteReply"]" aria-label="@L("Notes")" />
+                        <pems-input scale="small" name="text" maxlength="2000" placeholder="@Localizer["Pc_Hint_NoteReply"]" aria-label="@L("Notes")" />
                         <button type="submit" class="vs-btn vs-btn--sm"><i class="bi bi-plus-lg"></i> @Localizer["Pc_Btn_AddNote"]</button>
                     </form>
                 }

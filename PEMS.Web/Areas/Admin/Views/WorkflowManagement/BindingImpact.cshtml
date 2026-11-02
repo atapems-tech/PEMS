@@ -13,11 +13,11 @@
             <tr><th>@Localizer["Target version"]</th><td><strong>v@(Model.TargetVersion)</strong></td></tr>
             <tr><th>@Localizer["Running instances (unchanged)"]</th><td>@Model.RunningInstances @if (Model.RunningByVersion.Count > 0) { <span class="text-muted small">(@string.Join(", ", Model.RunningByVersion.Select(u => u.Running + " × v" + u.VersionNumber)))</span> }</td></tr>
         </table>
-        <div class="alert alert-info small"><i class="bi bi-pin-angle"></i> @Localizer["Only new instances will use the target version. Existing running instances stay pinned to the version they started with; nothing is rewritten. The change is audited."]</div>
+        <pems-alert tone="info" css="small"><i class="bi bi-pin-angle"></i> @Localizer["Only new instances will use the target version. Existing running instances stay pinned to the version they started with; nothing is rewritten. The change is audited."]</pems-alert>
         <form asp-action="ChangeBinding" method="post" class="d-flex flex-column gap-2">
             <input type="hidden" name="bindingId" value="@Model.BindingId" /><input type="hidden" name="targetVersionId" value="@targetId" /><input type="hidden" name="definitionId" value="@Model.DefinitionId" />
-            <div class="form-check"><input type="checkbox" class="form-check-input" name="confirmed" value="true" id="cfm" /><input type="hidden" name="confirmed" value="false" /><label class="form-check-label" for="cfm">@Localizer["I understand and confirm the binding change."]</label></div>
-            <div><button class="btn btn-sm btn-pems-solid">@Localizer["Change binding"]</button> <a asp-action="Index" class="btn btn-sm btn-outline-secondary">@Localizer["Cancel"]</a></div>
+            <div class="form-check"><pems-input kind="check" type="checkbox" name="confirmed" value="true" id="cfm" /><input type="hidden" name="confirmed" value="false" /><label class="form-check-label" for="cfm">@Localizer["I understand and confirm the binding change."]</label></div>
+            <div><pems-button tone="primary" size="small">@Localizer["Change binding"]</pems-button> <pems-button as="a" tone="neutral" size="small" outline="true" asp-action="Index">@Localizer["Cancel"]</pems-button></div>
         </form>
     </div>
 </div>

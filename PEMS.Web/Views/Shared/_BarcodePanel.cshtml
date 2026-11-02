@@ -15,7 +15,7 @@
                 <input type="hidden" name="targetType" value="@Model.TargetType" />
                 <input type="hidden" name="targetId" value="@Model.TargetId" />
                 <div>
-                    <label class="form-label small mb-0">@Localizer["Symbology"]</label>
+                    <pems-label css="small mb-0">@Localizer["Symbology"]</pems-label>
                     <pems-select scale="small" name="symbology">
                         <option value="Code128">@Localizer["Code128"]</option>
                         <option value="QR">QR</option>
@@ -50,17 +50,17 @@
                         <form asp-controller="Barcode" asp-action="Disable" asp-area="" asp-route-id="@b.BarcodeIdentityId" method="post">
                             <input type="hidden" name="targetType" value="@Model.TargetType" />
                             <input type="hidden" name="targetId" value="@Model.TargetId" />
-                            <pems-button tone="neutral" size="small" outline="true" type="submit" onclick="return confirm('Disable this barcode?')">Disable</pems-button>
+                            <pems-button tone="neutral" size="small" outline="true" type="submit" data-pems-confirm="Disable this barcode?">Disable</pems-button>
                         </form>
                         <form asp-controller="Barcode" asp-action="Revoke" asp-area="" asp-route-id="@b.BarcodeIdentityId" method="post">
                             <input type="hidden" name="targetType" value="@Model.TargetType" />
                             <input type="hidden" name="targetId" value="@Model.TargetId" />
-                            <pems-button tone="danger" size="small" outline="true" type="submit" onclick="return confirm('Revoke this barcode? It can never be reactivated.')">@Localizer["Revoke"]</pems-button>
+                            <pems-button tone="danger" size="small" outline="true" type="submit" data-pems-confirm="Revoke this barcode? It can never be reactivated.">@Localizer["Revoke"]</pems-button>
                         </form>
                         <form asp-controller="Barcode" asp-action="Replace" asp-area="" asp-route-id="@b.BarcodeIdentityId" method="post">
                             <input type="hidden" name="targetType" value="@Model.TargetType" />
                             <input type="hidden" name="targetId" value="@Model.TargetId" />
-                            <pems-button tone="warning" size="small" outline="true" type="submit" onclick="return confirm('Revoke this barcode and generate a new one for the same record?')">Replace</pems-button>
+                            <pems-button tone="warning" size="small" outline="true" type="submit" data-pems-confirm="Revoke this barcode and generate a new one for the same record?">Replace</pems-button>
                         </form>
                     </div>
                 }

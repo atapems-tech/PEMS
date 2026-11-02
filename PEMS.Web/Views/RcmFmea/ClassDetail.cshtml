@@ -58,11 +58,11 @@
     }
 </div>
 
-<ul class="nav nav-tabs mb-3">
+<pems-nav css="mb-3">
     <li class="nav-item"><button class="nav-link active" data-bs-toggle="tab" data-bs-target="#tab-functional">@Localizer["Functional Requirements"]</button></li>
     <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-fmea">@Localizer["FMEA"]</button></li>
     <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-rcm">@Localizer["RCM"]</button></li>
-</ul>
+</pems-nav>
 
 <div class="tab-content">
     @* ===================== Functional Requirements ===================== *@
@@ -295,8 +295,7 @@
                 {
                     @foreach (var d in rcm.Decisions.Where(x => x.Status == "APPROVED"))
                     {
-                        <div class="modal fade" id="applyRcmModal_@d.RCMDecisionId" tabindex="-1">
-                            <div class="modal-dialog"><div class="modal-content">
+                        <pems-modal id="applyRcmModal_@d.RCMDecisionId" tabindex="-1">
                                 <form asp-action="ApplyRcmDecision" method="post">
                                     <input type="hidden" name="equipmentClassId" value="@equipmentClass.EquipmentClassId" />
                                     <input type="hidden" name="rcmDecisionId" value="@d.RCMDecisionId" />
@@ -317,7 +316,7 @@
                                         </pems-alert>
                                         @if (equipmentInClass.Any())
                                         {
-                                            <label class="form-label small">@Localizer["Equipment"]</label>
+                                            <pems-label css="small">@Localizer["Equipment"]</pems-label>
                                             <pems-select scale="small" name="equipmentId" required>
                                                 <option value="">Select equipment...</option>
                                                 @foreach (var eq in equipmentInClass)
@@ -339,8 +338,7 @@
                                         }
                                     </div>
                                 </form>
-                            </div></div>
-                        </div>
+                            </pems-modal>
                     }
                 }
 
@@ -401,32 +399,29 @@
 
 @if (canEdit)
 {
-    <div class="modal fade" id="createFrModal" tabindex="-1">
-        <div class="modal-dialog"><div class="modal-content">
+    <pems-modal id="createFrModal" tabindex="-1">
             <form asp-action="CreateFunctionalRequirement" method="post">
                 <input type="hidden" name="equipmentClassId" value="@equipmentClass.EquipmentClassId" />
                 <div class="modal-header"><h6 class="modal-title">@Localizer["Functional Requirement جدید"]</h6></div>
                 <div class="modal-body">
-                    <div class="mb-2"><label class="form-label small">@Localizer["Code"]</label><pems-input scale="small" name="code" required /></div>
-                    <div class="mb-2"><label class="form-label small">@Localizer["Title"]</label><pems-input scale="small" name="title" required /></div>
-                    <div class="mb-2"><label class="form-label small">@Localizer["Required Function"]</label><pems-input scale="small" name="requiredFunction" /></div>
-                    <div class="mb-2"><label class="form-label small">@Localizer["Description"]</label><pems-textarea scale="small" name="description" rows="2"></pems-textarea></div>
+                    <div class="mb-2"><pems-label css="small">@Localizer["Code"]</pems-label><pems-input scale="small" name="code" required /></div>
+                    <div class="mb-2"><pems-label css="small">@Localizer["Title"]</pems-label><pems-input scale="small" name="title" required /></div>
+                    <div class="mb-2"><pems-label css="small">@Localizer["Required Function"]</pems-label><pems-input scale="small" name="requiredFunction" /></div>
+                    <div class="mb-2"><pems-label css="small">@Localizer["Description"]</pems-label><pems-textarea scale="small" name="description" rows="2"></pems-textarea></div>
                 </div>
                 <div class="modal-footer">
                     <pems-button tone="neutral" size="small" outline="true" type="button" data-bs-dismiss="modal">@Localizer["Cancel"]</pems-button>
                     <pems-button tone="primary" size="small" type="submit">@Localizer["Save"]</pems-button>
                 </div>
             </form>
-        </div></div>
-    </div>
+        </pems-modal>
 
-    <div class="modal fade" id="createFfModal" tabindex="-1">
-        <div class="modal-dialog"><div class="modal-content">
+    <pems-modal id="createFfModal" tabindex="-1">
             <form asp-action="CreateFunctionalFailure" method="post">
                 <input type="hidden" name="equipmentClassId" value="@equipmentClass.EquipmentClassId" />
                 <div class="modal-header"><h6 class="modal-title">@Localizer["Functional Failure جدید"]</h6></div>
                 <div class="modal-body">
-                    <div class="mb-2"><label class="form-label small">Functional Requirement</label>
+                    <div class="mb-2"><pems-label css="small">Functional Requirement</pems-label>
                         <pems-select scale="small" name="functionalRequirementId" required>
                             @foreach (var fr in functionalRequirements)
                             {
@@ -434,15 +429,14 @@
                             }
                         </pems-select>
                     </div>
-                    <div class="mb-2"><label class="form-label small">@Localizer["Code"]</label><pems-input scale="small" name="code" required /></div>
-                    <div class="mb-2"><label class="form-label small">@Localizer["Title"]</label><pems-input scale="small" name="title" required /></div>
-                    <div class="mb-2"><label class="form-label small">Failure Definition</label><pems-textarea scale="small" name="failureDefinition" rows="2"></pems-textarea></div>
+                    <div class="mb-2"><pems-label css="small">@Localizer["Code"]</pems-label><pems-input scale="small" name="code" required /></div>
+                    <div class="mb-2"><pems-label css="small">@Localizer["Title"]</pems-label><pems-input scale="small" name="title" required /></div>
+                    <div class="mb-2"><pems-label css="small">Failure Definition</pems-label><pems-textarea scale="small" name="failureDefinition" rows="2"></pems-textarea></div>
                 </div>
                 <div class="modal-footer">
                     <pems-button tone="neutral" size="small" outline="true" type="button" data-bs-dismiss="modal">@Localizer["Cancel"]</pems-button>
                     <pems-button tone="primary" size="small" type="submit">@Localizer["Save"]</pems-button>
                 </div>
             </form>
-        </div></div>
-    </div>
+        </pems-modal>
 }

@@ -369,7 +369,7 @@
                         <form asp-action="RemoveSkill" method="post" class="d-inline">
                             <input type="hidden" name="employeeSkillId" value="@es.EmployeeSkillId" />
                             <input type="hidden" name="employeeId" value="@Model.EmployeeId" />
-                            <pems-button tone="danger" size="small" outline="true" css="py-0 px-1" type="submit" onclick="return confirm('@L("Remove this skill?", "این مهارت حذف بشه؟")')"><i class="bi bi-x"></i></pems-button>
+                            <pems-button tone="danger" size="small" outline="true" css="py-0 px-1" type="submit" data-pems-confirm="@L("Remove this skill?", "این مهارت حذف بشه؟")"><i class="bi bi-x"></i></pems-button>
                         </form>
                     </li>
                 }
@@ -399,7 +399,7 @@
                         <form asp-action="RemoveQualification" method="post" class="d-inline">
                             <input type="hidden" name="employeeQualificationId" value="@eq.EmployeeQualificationId" />
                             <input type="hidden" name="employeeId" value="@Model.EmployeeId" />
-                            <pems-button tone="danger" size="small" outline="true" css="py-0 px-1" type="submit" onclick="return confirm('@L("Remove this qualification?", "این صلاحیت حذف بشه؟")')"><i class="bi bi-x"></i></pems-button>
+                            <pems-button tone="danger" size="small" outline="true" css="py-0 px-1" type="submit" data-pems-confirm="@L("Remove this qualification?", "این صلاحیت حذف بشه؟")"><i class="bi bi-x"></i></pems-button>
                         </form>
                     </li>
                 }
@@ -429,7 +429,7 @@
                         <form asp-action="RemoveCertification" method="post" class="d-inline">
                             <input type="hidden" name="employeeCertificationId" value="@ec.EmployeeCertificationId" />
                             <input type="hidden" name="employeeId" value="@Model.EmployeeId" />
-                            <pems-button tone="danger" size="small" outline="true" css="py-0 px-1" type="submit" onclick="return confirm('@L("Remove this certification?", "این گواهینامه حذف بشه؟")')"><i class="bi bi-x"></i></pems-button>
+                            <pems-button tone="danger" size="small" outline="true" css="py-0 px-1" type="submit" data-pems-confirm="@L("Remove this certification?", "این گواهینامه حذف بشه؟")"><i class="bi bi-x"></i></pems-button>
                         </form>
                     </li>
                 }
@@ -440,50 +440,48 @@
 </div>
 
 <!-- Edit Profile Modal - posts to the same Edit action used by the Index grid -->
-<div class="modal fade" id="editProfileModal" tabindex="-1">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
+<pems-modal size="large" id="editProfileModal" tabindex="-1">
             <form asp-action="Edit" method="post">
                 <input type="hidden" name="employeeId" value="@Model.EmployeeId" />
                 <input type="hidden" name="returnToDetails" value="true" />
                 <div class="modal-header"><h6 class="modal-title">@L("Edit Profile", "ویرایش پروفایل")</h6></div>
                 <div class="modal-body">
                     <div class="row g-3">
-                        <div class="col-md-4"><label class="form-label">@L("Personnel Code", "کد پرسنلی")</label><pems-input name="personnelCode" value="@Model.PersonnelCode" /></div>
-                        <div class="col-md-4"><label class="form-label">@L("First Name", "نام")</label><pems-input name="firstName" value="@Model.FirstName" required /></div>
-                        <div class="col-md-4"><label class="form-label">@L("Last Name", "نام خانوادگی")</label><pems-input name="lastName" value="@Model.LastName" required /></div>
+                        <div class="col-md-4"><pems-label>@L("Personnel Code", "کد پرسنلی")</pems-label><pems-input name="personnelCode" value="@Model.PersonnelCode" /></div>
+                        <div class="col-md-4"><pems-label>@L("First Name", "نام")</pems-label><pems-input name="firstName" value="@Model.FirstName" required /></div>
+                        <div class="col-md-4"><pems-label>@L("Last Name", "نام خانوادگی")</pems-label><pems-input name="lastName" value="@Model.LastName" required /></div>
                         <div class="col-md-6"><partial name="_PositionSelect" model="(int?)Model.EmployeeId" /></div>
-                        <div class="col-md-6"><label class="form-label">@L("Email", "ایمیل")</label><pems-input name="email" value="@Model.Email" type="email" /></div>
-                        <div class="col-md-6"><label class="form-label">@L("Phone", "تلفن")</label><pems-input name="phone" value="@Model.Phone" /></div>
+                        <div class="col-md-6"><pems-label>@L("Email", "ایمیل")</pems-label><pems-input name="email" value="@Model.Email" type="email" /></div>
+                        <div class="col-md-6"><pems-label>@L("Phone", "تلفن")</pems-label><pems-input name="phone" value="@Model.Phone" /></div>
                         <div class="col-md-3">
-                            <label class="form-label">@L("Department", "بخش")</label>
+                            <pems-label>@L("Department", "بخش")</pems-label>
                             <pems-select name="departmentId" required>
                                 @foreach (var d in departments) { <option value="@d.DepartmentId" selected="@(d.DepartmentId == Model.DepartmentId)">@d.Name</option> }
                             </pems-select>
                         </div>
                         <div class="col-md-3">
-                            <label class="form-label">@L("Discipline", "رشته")</label>
+                            <pems-label>@L("Discipline", "رشته")</pems-label>
                             <pems-select name="disciplineId" required>
                                 @foreach (var d in disciplines) { <option value="@d.DisciplineId" selected="@(d.DisciplineId == Model.DisciplineId)">@d.Name</option> }
                             </pems-select>
                         </div>
                         <div class="col-md-3">
-                            <label class="form-label">@L("Personnel Type", "نوع پرسنل")</label>
+                            <pems-label>@L("Personnel Type", "نوع پرسنل")</pems-label>
                             <pems-select name="personnelType" onchange="document.getElementById('editProfileVendorField').style.display = this.value === 'Internal' ? 'none' : ''">
                                 @foreach (var t in personnelTypes) { <option value="@t" selected="@(t == Model.PersonnelType)">@t</option> }
                             </pems-select>
                         </div>
                         <div class="col-md-3" id="editProfileVendorField" style="display:@(Model.PersonnelType == "Internal" ? "none" : "")">
-                            <label class="form-label">@L("Vendor", "فروشنده")</label>
+                            <pems-label>@L("Vendor", "فروشنده")</pems-label>
                             <pems-select name="vendorId">
                                 <option value="">-- @L("select", "انتخاب") --</option>
                                 @foreach (var v in vendors) { <option value="@v.VendorId" selected="@(v.VendorId == Model.VendorId)">@v.Name</option> }
                             </pems-select>
                         </div>
-                        <div class="col-md-3"><label class="form-label">@L("Hire Date", "تاریخ استخدام")</label><input name="hireDate" type="date" value="@(Model.HireDate?.ToString("yyyy-MM-dd"))" class="form-control" /></div>
-                        <div class="col-md-3"><label class="form-label">@L("Location / Site", "مکان")</label><pems-input name="location" value="@Model.Location" /></div>
-                        <div class="col-md-3"><label class="form-label">@L("Shift", "شیفت")</label><pems-input name="shift" value="@Model.Shift" /></div>
-                        <div class="col-md-3"><label class="form-label">@L("Home Address", "آدرس منزل")</label><pems-input name="homeAddress" value="@Model.HomeAddress" /></div>
+                        <div class="col-md-3"><pems-label>@L("Hire Date", "تاریخ استخدام")</pems-label><input name="hireDate" type="date" value="@(Model.HireDate?.ToString("yyyy-MM-dd"))" class="form-control" /></div>
+                        <div class="col-md-3"><pems-label>@L("Location / Site", "مکان")</pems-label><pems-input name="location" value="@Model.Location" /></div>
+                        <div class="col-md-3"><pems-label>@L("Shift", "شیفت")</pems-label><pems-input name="shift" value="@Model.Shift" /></div>
+                        <div class="col-md-3"><pems-label>@L("Home Address", "آدرس منزل")</pems-label><pems-input name="homeAddress" value="@Model.HomeAddress" /></div>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -491,24 +489,21 @@
                     <pems-button tone="primary" size="small" type="submit">@L("Save", "ذخیره")</pems-button>
                 </div>
             </form>
-        </div>
-    </div>
-</div>
+        </pems-modal>
 
-<div class="modal fade" id="addSkillModal" tabindex="-1">
-    <div class="modal-dialog"><div class="modal-content">
+<pems-modal id="addSkillModal" tabindex="-1">
         <form asp-action="AddSkill" method="post">
             <input type="hidden" name="employeeId" value="@Model.EmployeeId" />
             <div class="modal-header"><h6 class="modal-title">@L("Add Skill", "افزودن مهارت")</h6></div>
             <div class="modal-body">
                 <div class="mb-2">
-                    <label class="form-label small">@L("Skill", "مهارت")</label>
+                    <pems-label css="small">@L("Skill", "مهارت")</pems-label>
                     <pems-select scale="small" name="skillId" required>
                         @foreach (var s in allSkills) { <option value="@s.SkillId">@s.Name</option> }
                     </pems-select>
                 </div>
                 <div class="mb-2">
-                    <label class="form-label small">@L("Proficiency Level", "سطح مهارت")</label>
+                    <pems-label css="small">@L("Proficiency Level", "سطح مهارت")</pems-label>
                     <pems-select scale="small" name="proficiencyLevel" required>
                         <option value="Basic">@Localizer["Basic"]</option>
                         <option value="Intermediate">@Localizer["Intermediate"]</option>
@@ -517,7 +512,7 @@
                     </pems-select>
                 </div>
                 <div class="mb-2">
-                    <label class="form-label small">@L("Certified Date (optional)", "تاریخ گواهی (اختیاری)")</label>
+                    <pems-label css="small">@L("Certified Date (optional)", "تاریخ گواهی (اختیاری)")</pems-label>
                     <input name="certifiedDate" type="date" class="form-control form-control-sm" />
                 </div>
             </div>
@@ -526,79 +521,72 @@
                 <pems-button tone="primary" size="small" type="submit">@L("Add", "افزودن")</pems-button>
             </div>
         </form>
-    </div></div>
-</div>
+    </pems-modal>
 
-<div class="modal fade" id="addQualificationModal" tabindex="-1">
-    <div class="modal-dialog"><div class="modal-content">
+<pems-modal id="addQualificationModal" tabindex="-1">
         <form asp-action="AddQualification" method="post">
             <input type="hidden" name="employeeId" value="@Model.EmployeeId" />
             <div class="modal-header"><h6 class="modal-title">@L("Add Qualification", "افزودن صلاحیت")</h6></div>
             <div class="modal-body">
                 <div class="mb-2">
-                    <label class="form-label small">@L("Qualification", "صلاحیت")</label>
+                    <pems-label css="small">@L("Qualification", "صلاحیت")</pems-label>
                     <pems-select scale="small" name="qualificationId" required>
                         @foreach (var q in allQualifications) { <option value="@q.QualificationId">@q.Name</option> }
                     </pems-select>
                 </div>
-                <div class="mb-2"><label class="form-label small">@L("Issuer (optional)", "صادرکننده (اختیاری)")</label><pems-input scale="small" name="issuer" /></div>
-                <div class="mb-2"><label class="form-label small">@L("Issue Date", "تاریخ صدور")</label><input name="issueDate" type="date" class="form-control form-control-sm" required value="@DateTime.Today.ToString("yyyy-MM-dd")" /></div>
-                <div class="mb-2"><label class="form-label small">@L("Expiry Date (optional)", "تاریخ انقضا (اختیاری)")</label><input name="expiryDate" type="date" class="form-control form-control-sm" /></div>
+                <div class="mb-2"><pems-label css="small">@L("Issuer (optional)", "صادرکننده (اختیاری)")</pems-label><pems-input scale="small" name="issuer" /></div>
+                <div class="mb-2"><pems-label css="small">@L("Issue Date", "تاریخ صدور")</pems-label><input name="issueDate" type="date" class="form-control form-control-sm" required value="@DateTime.Today.ToString("yyyy-MM-dd")" /></div>
+                <div class="mb-2"><pems-label css="small">@L("Expiry Date (optional)", "تاریخ انقضا (اختیاری)")</pems-label><input name="expiryDate" type="date" class="form-control form-control-sm" /></div>
             </div>
             <div class="modal-footer">
                 <pems-button tone="neutral" size="small" outline="true" type="button" data-bs-dismiss="modal">@L("Cancel", "انصراف")</pems-button>
                 <pems-button tone="primary" size="small" type="submit">@L("Add", "افزودن")</pems-button>
             </div>
         </form>
-    </div></div>
-</div>
+    </pems-modal>
 
-<div class="modal fade" id="addCertificationModal" tabindex="-1">
-    <div class="modal-dialog"><div class="modal-content">
+<pems-modal id="addCertificationModal" tabindex="-1">
         <form asp-action="AddCertification" method="post">
             <input type="hidden" name="employeeId" value="@Model.EmployeeId" />
             <div class="modal-header"><h6 class="modal-title">@L("Add Certification", "افزودن گواهینامه")</h6></div>
             <div class="modal-body">
                 <div class="mb-2">
-                    <label class="form-label small">@L("Certification", "گواهینامه")</label>
+                    <pems-label css="small">@L("Certification", "گواهینامه")</pems-label>
                     <pems-select scale="small" name="certificationId" required>
                         @foreach (var c in allCertifications) { <option value="@c.CertificationId">@c.Name</option> }
                     </pems-select>
                 </div>
-                <div class="mb-2"><label class="form-label small">@L("Certificate Number (optional)", "شماره گواهی (اختیاری)")</label><pems-input scale="small" name="certificateNumber" /></div>
-                <div class="mb-2"><label class="form-label small">@L("Issuer (optional)", "صادرکننده (اختیاری)")</label><pems-input scale="small" name="issuer" /></div>
-                <div class="mb-2"><label class="form-label small">@L("Issue Date", "تاریخ صدور")</label><input name="issueDate" type="date" class="form-control form-control-sm" required value="@DateTime.Today.ToString("yyyy-MM-dd")" /></div>
-                <div class="mb-2"><label class="form-label small">@L("Expiry Date (optional)", "تاریخ انقضا (اختیاری)")</label><input name="expiryDate" type="date" class="form-control form-control-sm" /></div>
+                <div class="mb-2"><pems-label css="small">@L("Certificate Number (optional)", "شماره گواهی (اختیاری)")</pems-label><pems-input scale="small" name="certificateNumber" /></div>
+                <div class="mb-2"><pems-label css="small">@L("Issuer (optional)", "صادرکننده (اختیاری)")</pems-label><pems-input scale="small" name="issuer" /></div>
+                <div class="mb-2"><pems-label css="small">@L("Issue Date", "تاریخ صدور")</pems-label><input name="issueDate" type="date" class="form-control form-control-sm" required value="@DateTime.Today.ToString("yyyy-MM-dd")" /></div>
+                <div class="mb-2"><pems-label css="small">@L("Expiry Date (optional)", "تاریخ انقضا (اختیاری)")</pems-label><input name="expiryDate" type="date" class="form-control form-control-sm" /></div>
             </div>
             <div class="modal-footer">
                 <pems-button tone="neutral" size="small" outline="true" type="button" data-bs-dismiss="modal">@L("Cancel", "انصراف")</pems-button>
                 <pems-button tone="primary" size="small" type="submit">@L("Add", "افزودن")</pems-button>
             </div>
         </form>
-    </div></div>
-</div>
+    </pems-modal>
 
-<div class="modal fade" id="setRateModal" tabindex="-1">
-    <div class="modal-dialog"><div class="modal-content">
+<pems-modal id="setRateModal" tabindex="-1">
         <form asp-action="SetLaborRate" method="post">
             <input type="hidden" name="employeeId" value="@Model.EmployeeId" />
             <div class="modal-header"><h6 class="modal-title">@L("Set New Labor Rate", "ثبت نرخ دستمزد جدید")</h6></div>
             <div class="modal-body">
                 <div class="mb-2">
-                    <label class="form-label small">@L("Type", "نوع")</label>
+                    <pems-label css="small">@L("Type", "نوع")</pems-label>
                     <pems-select scale="small" name="rateType" required>
                         <option value="Normal">@L("Normal", "عادی")</option>
                         <option value="Overtime">@L("Overtime", "اضافه‌کاری")</option>
                     </pems-select>
                 </div>
-                <div class="mb-2"><label class="form-label small">@L("Rate", "نرخ")</label><pems-input scale="small" name="rate" type="number" step="0.01" required /></div>
-                <div class="mb-2"><label class="form-label small">@L("Currency", "واحد پول")</label><pems-input scale="small" name="currency" value="IRR" required /></div>
-                <div class="mb-2"><label class="form-label small">@L("Effective From", "از تاریخ")</label><input name="effectiveFrom" type="date" class="form-control form-control-sm" required /></div>
+                <div class="mb-2"><pems-label css="small">@L("Rate", "نرخ")</pems-label><pems-input scale="small" name="rate" type="number" step="0.01" required /></div>
+                <div class="mb-2"><pems-label css="small">@L("Currency", "واحد پول")</pems-label><pems-input scale="small" name="currency" value="IRR" required /></div>
+                <div class="mb-2"><pems-label css="small">@L("Effective From", "از تاریخ")</pems-label><input name="effectiveFrom" type="date" class="form-control form-control-sm" required /></div>
             </div>
             <div class="modal-footer">
                 <pems-button tone="neutral" size="small" outline="true" type="button" data-bs-dismiss="modal">@L("Cancel", "انصراف")</pems-button>
                 <pems-button tone="primary" size="small" type="submit">@L("Save", "ثبت")</pems-button>
             </div>
         </form>
-    </div></div>
-</div>
+    </pems-modal>

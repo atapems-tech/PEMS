@@ -94,18 +94,17 @@
     </pems-list-panel>
 </pems-list-page>
 
-<div class="modal fade" id="assessModal" tabindex="-1">
-    <div class="modal-dialog"><div class="modal-content">
+<pems-modal id="assessModal" tabindex="-1">
         <form asp-action="Assess" method="post">
             <div class="modal-header"><h6 class="modal-title">@Localizer["تحلیل بحرانی‌بودن تجهیز"]</h6></div>
             <div class="modal-body">
                 <div class="mb-2">
-                    <label class="form-label small">@Localizer["تجهیز"]</label>
+                    <pems-label css="small">@Localizer["تجهیز"]</pems-label>
                     <pems-input scale="small" type="text" placeholder="@Localizer["جستجوی تگ، نام..."]" data-pems-search data-search-type="Equipment" data-search-hidden="#criticalityEquipmentIdHidden" autocomplete="off" required />
                     <input type="hidden" name="equipmentId" id="criticalityEquipmentIdHidden" />
                 </div>
                 <div class="mb-2">
-                    <label class="form-label small">@Localizer["کلاس بحرانی‌بودن"]</label>
+                    <pems-label css="small">@Localizer["کلاس بحرانی‌بودن"]</pems-label>
                     <pems-select scale="small" name="criticalityClass" required>
                         <option value="A">@Localizer["A - بحرانی"]</option>
                         <option value="B">@Localizer["B - مهم"]</option>
@@ -113,25 +112,24 @@
                     </pems-select>
                 </div>
                 <div class="mb-2">
-                    <label class="form-label small">@Localizer["سطح ریسک"]</label>
+                    <pems-label css="small">@Localizer["سطح ریسک"]</pems-label>
                     <pems-select scale="small" name="riskLevel">
                         <option value="Low">@Localizer["Low"]</option>
                         <option value="Medium">@Localizer["Medium"]</option>
                         <option value="High">@Localizer["High"]</option>
                     </pems-select>
                 </div>
-                <div class="mb-2"><label class="form-label small">@Localizer["اثر ایمنی"]</label><pems-input scale="small" name="safetyImpact" /></div>
-                <div class="mb-2"><label class="form-label small">@Localizer["اثر تولید"]</label><pems-input scale="small" name="productionImpact" /></div>
-                <div class="mb-2"><label class="form-label small">@Localizer["اثر زیست‌محیطی"]</label><pems-input scale="small" name="environmentImpact" /></div>
-                <div class="mb-2"><label class="form-label small">@Localizer["توضیحات"]</label><pems-textarea scale="small" name="description" rows="2"></pems-textarea></div>
+                <div class="mb-2"><pems-label css="small">@Localizer["اثر ایمنی"]</pems-label><pems-input scale="small" name="safetyImpact" /></div>
+                <div class="mb-2"><pems-label css="small">@Localizer["اثر تولید"]</pems-label><pems-input scale="small" name="productionImpact" /></div>
+                <div class="mb-2"><pems-label css="small">@Localizer["اثر زیست‌محیطی"]</pems-label><pems-input scale="small" name="environmentImpact" /></div>
+                <div class="mb-2"><pems-label css="small">@Localizer["توضیحات"]</pems-label><pems-textarea scale="small" name="description" rows="2"></pems-textarea></div>
             </div>
             <div class="modal-footer">
                 <pems-button tone="neutral" size="small" outline="true" type="button" data-bs-dismiss="modal">@Localizer["انصراف"]</pems-button>
                 <pems-button tone="primary" size="small" type="submit">@Localizer["ثبت"]</pems-button>
             </div>
         </form>
-    </div></div>
-</div>
+    </pems-modal>
 
 @section Scripts {
     <script src="~/_content/PEMS.UI/pems-list.js" asp-append-version="true"></script>

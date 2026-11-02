@@ -16,15 +16,15 @@
         <div class="d-flex justify-content-between align-items-start flex-wrap gap-2">
             <div>
                 <h5 class="mb-1">@display</h5>
-                <div class="small text-muted">@d.Module · @d.Category @if (!d.IsActive) { <span class="badge bg-secondary">@Localizer["Archived"]</span> }</div>
+                <div class="small text-muted">@d.Module · @d.Category @if (!d.IsActive) { <pems-badge tone="neutral">@Localizer["Archived"]</pems-badge> }</div>
                 <div class="mt-1">
-                    <span class="badge @(d.Editable ? "bg-primary" : "bg-secondary")">@Localizer[d.Editable ? "Editable" : "View Only"]</span>
+                    <pems-badge tone="none" css="@(d.Editable ? "bg-primary" : "bg-secondary")">@Localizer[d.Editable ? "Editable" : "View Only"]</pems-badge>
                     <span class="small text-muted">@d.EditableReason</span>
                 </div>
             </div>
-            <a asp-action="Index" class="btn btn-sm btn-outline-secondary"><i class="bi bi-arrow-left"></i> @Localizer["Workflow Management"]</a>
+            <pems-button as="a" tone="neutral" size="small" outline="true" asp-action="Index"><i class="bi bi-arrow-left"></i> @Localizer["Workflow Management"]</pems-button>
         </div>
-        <div class="alert alert-info small mt-3 mb-0"><i class="bi bi-pin-angle"></i> @Localizer["Editing or publishing a new workflow version does not alter existing pinned workflow instances."]</div>
+        <pems-alert tone="info" css="small mt-3 mb-0"><i class="bi bi-pin-angle"></i> @Localizer["Editing or publishing a new workflow version does not alter existing pinned workflow instances."]</pems-alert>
     </div>
 
     @if (d.Editable && perms["Edit"])
@@ -33,10 +33,10 @@
             <h6>@Localizer["Definition details"] <span class="small text-muted">(@Localizer["shared by all versions"])</span></h6>
             <form asp-action="UpdateDefinition" method="post" class="row g-2">
                 <input type="hidden" name="id" value="@d.DefinitionId" />
-                <div class="col-md-4"><label class="form-label small">@Localizer["Name"]</label><input name="name" class="form-control form-control-sm" value="@d.Name" required maxlength="200" /></div>
-                <div class="col-md-4"><label class="form-label small">@Localizer["Persian name"]</label><input name="nameFa" class="form-control form-control-sm" dir="rtl" value="@d.NameFa" maxlength="200" /></div>
-                <div class="col-md-4"><label class="form-label small">@Localizer["Description"]</label><input name="description" class="form-control form-control-sm" value="@Model.Description" /></div>
-                <div class="col-12"><button class="btn btn-sm btn-pems-solid">@Localizer["Save"]</button></div>
+                <div class="col-md-4"><pems-label css="small">@Localizer["Name"]</pems-label><pems-input scale="small" name="name" value="@d.Name" required maxlength="200" /></div>
+                <div class="col-md-4"><pems-label css="small">@Localizer["Persian name"]</pems-label><pems-input scale="small" name="nameFa" dir="rtl" value="@d.NameFa" maxlength="200" /></div>
+                <div class="col-md-4"><pems-label css="small">@Localizer["Description"]</pems-label><pems-input scale="small" name="description" value="@Model.Description" /></div>
+                <div class="col-12"><pems-button tone="primary" size="small">@Localizer["Save"]</pems-button></div>
             </form>
         </div>
     }
@@ -50,26 +50,26 @@
                 @foreach (var v in Model.Versions)
                 {
                     <tr>
-                        <td>v@(v.VersionNumber) @if (v.ClonedFromVersion.HasValue) { <span class="small text-muted">(← v@(v.ClonedFromVersion))</span> } @if (v.IsBound) { <span class="badge bg-success">@Localizer["Bound"]</span> }</td>
-                        <td><span class="badge @StatusBadge(v.Status)">@Localizer[v.Status]</span></td>
+                        <td>v@(v.VersionNumber) @if (v.ClonedFromVersion.HasValue) { <span class="small text-muted">(← v@(v.ClonedFromVersion))</span> } @if (v.IsBound) { <pems-badge tone="success">@Localizer["Bound"]</pems-badge> }</td>
+                        <td><pems-badge tone="none" css="@StatusBadge(v.Status)">@Localizer[v.Status]</pems-badge></td>
                         <td>@v.Stages</td><td>@v.Transitions</td>
                         <td class="small text-nowrap">@(v.PublishedDate?.ToString("yyyy-MM-dd HH:mm") ?? "-")</td>
                         <td>@v.RunningInstances / @v.TotalInstances</td>
                         <td class="small">@v.ChangeSummary</td>
                         <td class="text-end text-nowrap">
-                            <a asp-action="Designer" asp-route-versionId="@v.VersionId" class="btn btn-sm btn-outline-primary">@Localizer[v.Status is "Draft" or "Validated" ? "Open" : "View"]</a>
+                            <pems-button as="a" tone="primary" size="small" outline="true" asp-action="Designer" asp-route-versionId="@v.VersionId">@Localizer[v.Status is "Draft" or "Validated" ? "Open" : "View"]</pems-button>
                             @if (d.Editable && perms["Edit"] && v.Status is "Published" or "Retired" && openDraft == null)
                             {
                                 <form asp-action="CloneVersion" method="post" class="d-inline">
                                     <input type="hidden" name="versionId" value="@v.VersionId" /><input type="hidden" name="definitionId" value="@d.DefinitionId" />
-                                    <button class="btn btn-sm btn-outline-secondary" title="@Localizer["Clone into a new draft"]"><i class="bi bi-files"></i> @Localizer["Clone"]</button>
+                                    <pems-button tone="neutral" size="small" outline="true" title="@Localizer["Clone into a new draft"]"><i class="bi bi-files"></i> @Localizer["Clone"]</pems-button>
                                 </form>
                             }
                             @if (d.Editable && perms["Retire"] && v.Status == "Published" && !v.IsBound)
                             {
-                                <form asp-action="Retire" method="post" class="d-inline" onsubmit="return confirm('@Localizer["Retire this version? Running instances keep using it."]');">
+                                <form asp-action="Retire" method="post" class="d-inline" data-pems-confirm="@Localizer["Retire this version? Running instances keep using it."]">
                                     <input type="hidden" name="versionId" value="@v.VersionId" /><input type="hidden" name="definitionId" value="@d.DefinitionId" />
-                                    <button class="btn btn-sm btn-outline-danger">@Localizer["Retire"]</button>
+                                    <pems-button tone="danger" size="small" outline="true">@Localizer["Retire"]</pems-button>
                                 </form>
                             }
                         </td>
@@ -87,7 +87,7 @@
                 <h6>@Localizer["Binding"]</h6>
                 @if (Model.Bindings.Count == 0 || Model.Bindings.All(b => !b.IsActive))
                 {
-                    <p class="mb-0"><span class="badge bg-light text-dark border">@Localizer["No active binding"]</span> <span class="small text-muted">@Localizer["Valid state: legacy modules resolve this definition directly."]</span></p>
+                    <p class="mb-0"><pems-badge tone="light">@Localizer["No active binding"]</pems-badge> <span class="small text-muted">@Localizer["Valid state: legacy modules resolve this definition directly."]</span></p>
                 }
                 @foreach (var b in Model.Bindings.Where(x => x.IsActive))
                 {
@@ -97,10 +97,10 @@
                         {
                             <form asp-action="BindingImpact" method="get" class="d-flex gap-2 mt-2 align-items-center">
                                 <input type="hidden" name="bindingId" value="@b.BindingId" />
-                                <select name="targetVersionId" class="form-select form-select-sm w-auto">
+                                <pems-select scale="small" css="w-auto" name="targetVersionId">
                                     @foreach (var p in published.Where(p => p.VersionId != b.PinnedVersionId)) { <option value="@p.VersionId">v@(p.VersionNumber)</option> }
-                                </select>
-                                <button class="btn btn-sm btn-outline-primary">@Localizer["Review binding change"]</button>
+                                </pems-select>
+                                <pems-button tone="primary" size="small" outline="true">@Localizer["Review binding change"]</pems-button>
                             </form>
                         }
                     </div>

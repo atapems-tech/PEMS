@@ -12,8 +12,8 @@
         <p>@Localizer["Org_Positions_Intro"]</p>
     </div>
 
-    @if (TempData["Message"] != null) { <div class="alert alert-success" role="status">@TempData["Message"]</div> }
-    @if (TempData["Error"] != null) { <div class="alert alert-danger" role="alert">@TempData["Error"]</div> }
+    @if (TempData["Message"] != null) { <pems-alert tone="success">@TempData["Message"]</pems-alert> }
+    @if (TempData["Error"] != null) { <pems-alert tone="danger">@TempData["Error"]</pems-alert> }
 
     <div class="d-flex gap-2 mb-3 flex-wrap">
         <a class="vs-btn vs-btn--sm" asp-action="Index"><i class="bi bi-diagram-3"></i> @Localizer["Org_Title"]</a>
@@ -24,36 +24,36 @@
     <section class="vs-panel mb-3">
         <h2 class="vs-section__title"><i class="bi bi-plus-circle"></i> @Localizer["Org_Positions_New"]</h2>
         <form asp-action="CreatePosition" method="post" class="row g-2 align-items-end">
-            <div class="col-md-3"><label class="form-label" for="npTitle">@Localizer["Org_Col_Position"]</label><input id="npTitle" name="title" class="form-control form-control-sm" maxlength="150" required /></div>
-            <div class="col-md-2"><label class="form-label" for="npCode">@Localizer["Org_Col_Code"]</label><input id="npCode" name="positionCode" class="form-control form-control-sm" maxlength="50" /></div>
+            <div class="col-md-3"><pems-label for="npTitle">@Localizer["Org_Col_Position"]</pems-label><pems-input scale="small" id="npTitle" name="title" maxlength="150" required /></div>
+            <div class="col-md-2"><pems-label for="npCode">@Localizer["Org_Col_Code"]</pems-label><pems-input scale="small" id="npCode" name="positionCode" maxlength="50" /></div>
             <div class="col-md-3">
-                <label class="form-label" for="npDept">@Localizer["Org_Col_Department"]</label>
-                <select id="npDept" name="departmentId" class="form-select form-select-sm">
+                <pems-label for="npDept">@Localizer["Org_Col_Department"]</pems-label>
+                <pems-select scale="small" id="npDept" name="departmentId">
                     <option value="">@Localizer["Org_NoDepartment"]</option>
                     @foreach (var d in departments) { <option value="@d.DepartmentId">@d.Name</option> }
-                </select>
+                </pems-select>
             </div>
             <div class="col-md-3">
-                <label class="form-label" for="npParent">@Localizer["Org_Col_Parent"]</label>
-                <select id="npParent" name="parentPositionId" class="form-select form-select-sm">
+                <pems-label for="npParent">@Localizer["Org_Col_Parent"]</pems-label>
+                <pems-select scale="small" id="npParent" name="parentPositionId">
                     <option value="">@Localizer["Org_NoParent_Root"]</option>
                     @foreach (var p in Model.Where(p => p.IsActive)) { <option value="@p.PositionId">@(string.IsNullOrWhiteSpace(p.PositionCode) ? p.Title : p.Title + " [" + p.PositionCode + "]")</option> }
-                </select>
+                </pems-select>
             </div>
             <div class="col-md-1"><button class="vs-btn vs-btn--primary vs-btn--sm w-100" aria-label="@Localizer["Org_Positions_New"]"><i class="bi bi-plus-lg"></i></button></div>
-            <div class="col-12"><input name="description" class="form-control form-control-sm" maxlength="500" placeholder="@Localizer["Description"]" aria-label="@Localizer["Description"]" /></div>
+            <div class="col-12"><pems-input scale="small" name="description" maxlength="500" placeholder="@Localizer["Description"]" aria-label="@Localizer["Description"]" /></div>
         </form>
         <p class="small text-muted mt-2 mb-0">@Localizer["Org_Positions_Note"]</p>
     </section>
 
     <form method="get" class="d-flex gap-2 mb-3 flex-wrap">
-        <input name="q" value="@ViewBag.Query" class="form-control form-control-sm" style="max-width:260px" placeholder="@Localizer["Org_Positions_Search"]" aria-label="@Localizer["Org_Positions_Search"]" />
-        <select name="status" class="form-select form-select-sm" style="max-width:180px" aria-label="@Localizer["Org_Filter_Status"]">
+        <pems-input scale="small" name="q" value="@ViewBag.Query" style="max-width:260px" placeholder="@Localizer["Org_Positions_Search"]" aria-label="@Localizer["Org_Positions_Search"]" />
+        <pems-select scale="small" name="status" style="max-width:180px" aria-label="@Localizer["Org_Filter_Status"]">
             <option value="" selected="@(status == "")">@Localizer["Org_Filter_All"]</option>
             <option value="active" selected="@(status == "active")">@Localizer["Org_Filter_Active"]</option>
             <option value="vacant" selected="@(status == "vacant")">@Localizer["Org_Vacant"]</option>
             <option value="inactive" selected="@(status == "inactive")">@Localizer["Org_Inactive"]</option>
-        </select>
+        </pems-select>
         <button class="vs-btn vs-btn--sm"><i class="bi bi-funnel"></i> @Localizer["Org_Filter_Apply"]</button>
     </form>
 
@@ -67,14 +67,14 @@
                     <td colspan="3" class="p-1">
                         <form asp-action="EditPosition" method="post" class="row g-1 align-items-center">
                             <input type="hidden" name="positionId" value="@r.PositionId" />
-                            <div class="col-md-3"><input name="positionCode" value="@r.PositionCode" maxlength="50" class="form-control form-control-sm" aria-label="@Localizer["Org_Col_Code"]" /></div>
-                            <div class="col-md-5"><input name="title" value="@r.Title" maxlength="150" required class="form-control form-control-sm" aria-label="@Localizer["Org_Col_Position"]" /></div>
+                            <div class="col-md-3"><pems-input scale="small" name="positionCode" value="@r.PositionCode" maxlength="50" aria-label="@Localizer["Org_Col_Code"]" /></div>
+                            <div class="col-md-5"><pems-input scale="small" name="title" value="@r.Title" maxlength="150" required aria-label="@Localizer["Org_Col_Position"]" /></div>
                             <div class="col-md-3">
-                                <select name="departmentId" class="form-select form-select-sm" aria-label="@Localizer["Org_Col_Department"]">
+                                <pems-select scale="small" name="departmentId" aria-label="@Localizer["Org_Col_Department"]">
                                     <option value="">@Localizer["Org_NoDepartment"]</option>
                                     @foreach (var d in departments) { <option value="@d.DepartmentId" selected="@(r.DepartmentId == d.DepartmentId)">@d.Name</option> }
                                     @if (r.DepartmentId.HasValue && !departments.Any(d => d.DepartmentId == r.DepartmentId)) { <option value="@r.DepartmentId" selected>@r.DepartmentName (@Localizer["Org_Inactive"])</option> }
-                                </select>
+                                </pems-select>
                             </div>
                             <input type="hidden" name="description" value="@r.Description" />
                             <div class="col-md-1"><button class="vs-btn vs-btn--sm" title="@Localizer["Org_Btn_Save"]" aria-label="@Localizer["Org_Btn_Save"]"><i class="bi bi-save"></i></button></div>
@@ -82,11 +82,11 @@
                     </td>
                     <td class="small">@(r.ParentLabel ?? "—")</td>
                     <td class="small">@(r.IsVacant ? "—" : r.HolderName)</td>
-                    <td><span class="badge @(r.Lifecycle == "OCCUPIED" ? "bg-success" : r.Lifecycle == "VACANT" ? "bg-warning text-dark" : "bg-secondary")">@r.Lifecycle</span></td>
+                    <td><pems-badge tone="none" css="@(r.Lifecycle == "OCCUPIED" ? "bg-success" : r.Lifecycle == "VACANT" ? "bg-warning text-dark" : "bg-secondary")">@r.Lifecycle</pems-badge></td>
                     <td class="text-end">
                         <form asp-action="SetPositionActive" method="post" class="d-inline">
                             <input type="hidden" name="positionId" value="@r.PositionId" /><input type="hidden" name="isActive" value="@((!r.IsActive).ToString().ToLowerInvariant())" />
-                            <button class="btn btn-sm @(r.IsActive ? "btn-outline-danger" : "btn-outline-success")">@(r.IsActive ? Localizer["Deactivate"] : Localizer["Reactivate"])</button>
+                            <pems-button tone="none" size="small" css="@(r.IsActive ? "btn-outline-danger" : "btn-outline-success")">@(r.IsActive ? Localizer["Deactivate"] : Localizer["Reactivate"])</pems-button>
                         </form>
                     </td>
                 </tr>

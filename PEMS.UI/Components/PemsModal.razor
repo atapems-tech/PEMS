@@ -1,7 +1,15 @@
 @namespace PEMS.UI.Components
 @attribute [PEMS.UI.Rendering.PemsComponent("modal", Category = "overlays", Icon = "bi-window")]
 @inject IPemsLocale Locale
-@if (Options.Skin == ComponentSkin.Bootstrap)
+@if (Options.Frame)
+{
+    <div id="@Options.Id" class="@FrameCss" @attributes="Options.Attributes">
+        <div class="@DialogClass">
+            <div class="modal-content">@ChildContent</div>
+        </div>
+    </div>
+}
+else if (Options.Skin == ComponentSkin.Bootstrap)
 {
     <div id="@Options.Id" class="modal fade" tabindex="-1" aria-labelledby="@(Options.Id)-title" aria-hidden="true">
         <div class="@DialogClass">
@@ -51,5 +59,7 @@ else
     [Parameter, EditorRequired] public ModalOptions Options { get; set; } = default!;
     [Parameter] public RenderFragment? ChildContent { get; set; }
     [Parameter] public RenderFragment? Footer { get; set; }
-    private string DialogClass => Options.Size switch { OverlaySize.Small => "modal-dialog modal-sm", OverlaySize.Large => "modal-dialog modal-lg", _ => "modal-dialog" };
+    private string DialogClass => Options.Size switch { OverlaySize.Small => "modal-dialog modal-sm", OverlaySize.Large => "modal-dialog modal-lg", OverlaySize.ExtraLarge => "modal-dialog modal-xl", _ => "modal-dialog" }
+        + (Options.Frame && !string.IsNullOrWhiteSpace(Options.DialogCssClass) ? " " + Options.DialogCssClass.Trim() : "");
+    private string FrameCss => string.IsNullOrWhiteSpace(Options.CssClass) ? "modal fade" : "modal fade " + Options.CssClass.Trim();
 }

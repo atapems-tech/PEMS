@@ -52,14 +52,12 @@
 @* Direct imports: the dialog lives here (the only place an import is started) and posts to the EXISTING import action of the owning module. *@
 @foreach (var e in Model.Where(x => x.Mode == ImportCatalog.LaunchMode.Dialog))
 {
-    <div class="modal fade" id="icModal_@e.Key" tabindex="-1">
-        <div class="modal-dialog">
-            <div class="modal-content">
+    <pems-modal id="icModal_@e.Key" tabindex="-1">
                 <form asp-area="@e.Area" asp-controller="@e.Controller" asp-action="@e.Action" method="post" enctype="multipart/form-data">
                     <div class="modal-header"><h6 class="modal-title">@Localizer["IC_" + e.Key + "_Title"]</h6></div>
                     <div class="modal-body">
                         <p class="text-muted small">@Localizer["IC_" + e.Key + "_Hint"]</p>
-                        <label class="form-label small">@Localizer["IC_ChooseFile"]</label>
+                        <pems-label css="small">@Localizer["IC_ChooseFile"]</pems-label>
                         <pems-input type="file" name="file" accept="@e.Accept" required />
                     </div>
                     <div class="modal-footer">
@@ -67,7 +65,5 @@
                         <pems-button tone="primary" type="submit">@Localizer["IC_Import"]</pems-button>
                     </div>
                 </form>
-            </div>
-        </div>
-    </div>
+            </pems-modal>
 }

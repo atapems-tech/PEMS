@@ -94,7 +94,7 @@
     </div>
 </div>
 
-<ul class="nav nav-tabs mb-3" id="vdrTabs" role="tablist">
+<pems-nav css="mb-3" id="vdrTabs" role="tablist">
     <li class="nav-item" role="presentation">
         <button class="nav-link @(vdrDefaultTab == "overview" ? "active" : "")" data-bs-toggle="tab" data-bs-target="#tab-overview" type="button">
             <i class="bi bi-info-circle"></i> @Localizer["Vs_TabOverview"]
@@ -121,7 +121,7 @@
             @if (relatedLetters.Any()) { <pems-badge tone="neutral">@relatedLetters.Count</pems-badge> }
         </button>
     </li>
-</ul>
+</pems-nav>
 
 <div class="tab-content">
 
@@ -157,10 +157,10 @@
     <form asp-action="GenerateContractorNumber" method="post">
         <input type="hidden" name="vdrItemId" value="@Model.VDRItemId" />
         <div class="row g-3">
-            <div class="col-md-3"><label class="form-label">@Localizer["Vd_VendorCode"]</label><pems-input name="vendorCode" placeholder="e.g. FSK" /></div>
-            <div class="col-md-3"><label class="form-label">@Localizer["Vd_PlantCode"]</label><pems-input name="plantCode" placeholder="e.g. J" /></div>
-            <div class="col-md-3"><label class="form-label">@Localizer["Vd_UnitCode"]</label><pems-input name="unitCode" placeholder="e.g. 85" /></div>
-            <div class="col-md-3"><label class="form-label">@Localizer["Vd_MaterialCode"]</label><pems-input name="materialCode" value="@Model.MaterialCode" placeholder="e.g. 0611" /></div>
+            <div class="col-md-3"><pems-label>@Localizer["Vd_VendorCode"]</pems-label><pems-input name="vendorCode" placeholder="e.g. FSK" /></div>
+            <div class="col-md-3"><pems-label>@Localizer["Vd_PlantCode"]</pems-label><pems-input name="plantCode" placeholder="e.g. J" /></div>
+            <div class="col-md-3"><pems-label>@Localizer["Vd_UnitCode"]</pems-label><pems-input name="unitCode" placeholder="e.g. 85" /></div>
+            <div class="col-md-3"><pems-label>@Localizer["Vd_MaterialCode"]</pems-label><pems-input name="materialCode" value="@Model.MaterialCode" placeholder="e.g. 0611" /></div>
         </div>
         <pems-button tone="primary" size="small" outline="true" css="mt-3" type="submit">
             <i class="bi bi-hash"></i> @Localizer["Vd_GenOfficial"]
@@ -181,9 +181,9 @@
     <form asp-action="GenerateVendorNumber" method="post">
         <input type="hidden" name="vdrItemId" value="@Model.VDRItemId" />
         <div class="row g-3">
-            <div class="col-md-4"><label class="form-label">@Localizer["Vd_JobNumber"]</label><pems-input name="jobNumber" placeholder="e.g. 3863" /></div>
-            <div class="col-md-4"><label class="form-label">@Localizer["Vd_UnitCode"]</label><pems-input name="unitCode" placeholder="e.g. 85" /></div>
-            <div class="col-md-4"><label class="form-label">@Localizer["Vd_TypologyCode"]</label><pems-input name="typologyCode" value="@Model.TypologyCode" placeholder="e.g. GS, LG, IS ..." /></div>
+            <div class="col-md-4"><pems-label>@Localizer["Vd_JobNumber"]</pems-label><pems-input name="jobNumber" placeholder="e.g. 3863" /></div>
+            <div class="col-md-4"><pems-label>@Localizer["Vd_UnitCode"]</pems-label><pems-input name="unitCode" placeholder="e.g. 85" /></div>
+            <div class="col-md-4"><pems-label>@Localizer["Vd_TypologyCode"]</pems-label><pems-input name="typologyCode" value="@Model.TypologyCode" placeholder="e.g. GS, LG, IS ..." /></div>
         </div>
         <pems-button tone="primary" size="small" outline="true" css="mt-3" type="submit">
             <i class="bi bi-hash"></i> @Localizer["Vd_GenVendor"]
@@ -480,9 +480,7 @@
 @* پایان تب Comments - مدال‌های زیر مستقل از تب فعال همیشه در دسترس‌اند *@
 
 @* طبق درخواست: افزودن کامنت به‌صورت Popup تا کاربر از صفحه‌ی اصلی خارج نشود *@
-<div class="modal fade" id="addCommentModal" tabindex="-1">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
+<pems-modal size="large" id="addCommentModal" tabindex="-1">
             <form asp-action="AddComment" method="post" enctype="multipart/form-data">
                 <input type="hidden" name="vdrItemId" value="@Model.VDRItemId" />
                 <input type="hidden" name="pageNumber" id="pinPageNumber" value="" />
@@ -493,36 +491,36 @@
                     <div id="pinLocationLabel" class="small text-primary mb-2"></div>
                     <div class="row g-3">
                         <div class="col-md-4">
-                            <label class="form-label small">@Localizer["Vd_Revision"]</label>
+                            <pems-label css="small">@Localizer["Vd_Revision"]</pems-label>
                             <pems-select scale="small" name="vdrSubmissionId">
                                 @foreach (var s in Model.Submissions)
                                 { <option value="@s.VDRSubmissionId">@Localizer["Vd_Rev"] @s.RevisionNo</option> }
                             </pems-select>
                         </div>
-                        <div class="col-md-4"><label class="form-label small">@Localizer["Vd_RaisedBy"]</label><pems-input scale="small" name="raisedByName" /></div>
+                        <div class="col-md-4"><pems-label css="small">@Localizer["Vd_RaisedBy"]</pems-label><pems-input scale="small" name="raisedByName" /></div>
                         <div class="col-md-4">
-                            <label class="form-label small">@Localizer["Vd_Category"]</label>
+                            <pems-label css="small">@Localizer["Vd_Category"]</pems-label>
                             <pems-select scale="small" name="category">
                                 <option value="">@Localizer["Vd_Select"]</option>
                                 @foreach (var cat in new[] { "Technical", "Safety", "Constructability", "Documentation", "Specification", "Calculation", "Typographical", "Clarification" })
                                 { <option value="@cat">@Localizer["Vd_Cat_" + cat]</option> }
                             </pems-select>
                         </div>
-                        <div class="col-md-3"><label class="form-label small">@Localizer["Vd_Sheet"]</label><pems-input scale="small" name="sheet" placeholder="e.g. Sheet 4" /></div>
-                        <div class="col-md-3"><label class="form-label small">@Localizer["Vd_Zone"]</label><pems-input scale="small" name="zone" placeholder="e.g. Grid B3" /></div>
-                        <div class="col-md-3"><label class="form-label small">@Localizer["Vd_Reference"]</label><pems-input scale="small" name="reference" placeholder="e.g. Note 12" /></div>
+                        <div class="col-md-3"><pems-label css="small">@Localizer["Vd_Sheet"]</pems-label><pems-input scale="small" name="sheet" placeholder="e.g. Sheet 4" /></div>
+                        <div class="col-md-3"><pems-label css="small">@Localizer["Vd_Zone"]</pems-label><pems-input scale="small" name="zone" placeholder="e.g. Grid B3" /></div>
+                        <div class="col-md-3"><pems-label css="small">@Localizer["Vd_Reference"]</pems-label><pems-input scale="small" name="reference" placeholder="e.g. Note 12" /></div>
                         <div class="col-md-3">
-                            <label class="form-label small">@Localizer["Vd_Severity"]</label>
+                            <pems-label css="small">@Localizer["Vd_Severity"]</pems-label>
                             <pems-select scale="small" name="severity">
                                 <option value="">@Localizer["Vd_Select"]</option>
                                 @foreach (var sev in new[] { "Low", "Medium", "High", "Critical" })
                                 { <option value="@sev">@Localizer["Vd_Sev_" + sev]</option> }
                             </pems-select>
                         </div>
-                        <div class="col-12"><label class="form-label small">@Localizer["Vd_Comment"]</label><pems-textarea scale="small" name="commentText" rows="3" required></pems-textarea></div>
-                        <div class="col-md-6"><label class="form-label small">@Localizer["Vd_RequiredAction"]</label><pems-input scale="small" name="requiredAction" placeholder="e.g. Revise Drawing" /></div>
-                        <div class="col-md-6"><label class="form-label small">@Localizer["Vd_DueDate"]</label><input name="dueDate" type="date" class="form-control form-control-sm" /></div>
-                        <div class="col-12"><label class="form-label small">@Localizer["Vd_Attachment"] <span class="text-muted">@Localizer["Vd_Optional"]</span></label><pems-input scale="small" type="file" name="attachment" /></div>
+                        <div class="col-12"><pems-label css="small">@Localizer["Vd_Comment"]</pems-label><pems-textarea scale="small" name="commentText" rows="3" required></pems-textarea></div>
+                        <div class="col-md-6"><pems-label css="small">@Localizer["Vd_RequiredAction"]</pems-label><pems-input scale="small" name="requiredAction" placeholder="e.g. Revise Drawing" /></div>
+                        <div class="col-md-6"><pems-label css="small">@Localizer["Vd_DueDate"]</pems-label><input name="dueDate" type="date" class="form-control form-control-sm" /></div>
+                        <div class="col-12"><pems-label css="small">@Localizer["Vd_Attachment"] <span class="text-muted">@Localizer["Vd_Optional"]</span></pems-label><pems-input scale="small" type="file" name="attachment" /></div>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -530,17 +528,13 @@
                     <pems-button tone="primary" type="submit">@Localizer["Vd_SaveComment"]</pems-button>
                 </div>
             </form>
-        </div>
-    </div>
-</div>
+        </pems-modal>
 
 @* طبق درخواست: پاسخ به کامنت هم Popup است و می‌تواند خودِ فایل را پیوست کند تا کاربر همه‌چیز
    را دستی تایپ نکند *@
 @foreach (var c in comments)
 {
-    <div class="modal fade" id="replyModal_@c.VDRCommentId" tabindex="-1">
-        <div class="modal-dialog">
-            <div class="modal-content">
+    <pems-modal id="replyModal_@c.VDRCommentId" tabindex="-1">
                 <form asp-action="RecordCommentResponse" method="post" enctype="multipart/form-data">
                     <input type="hidden" name="vdrItemId" value="@Model.VDRItemId" />
                     <input type="hidden" name="commentId" value="@c.VDRCommentId" />
@@ -548,11 +542,11 @@
                     <div class="modal-body">
                         <p class="small text-muted">@c.CommentText</p>
                         <div class="mb-2">
-                            <label class="form-label small">@Localizer["Vd_VendorReply"] <span class="text-muted">@Localizer["Vd_OptionalIfFile"]</span></label>
+                            <pems-label css="small">@Localizer["Vd_VendorReply"] <span class="text-muted">@Localizer["Vd_OptionalIfFile"]</span></pems-label>
                             <pems-textarea scale="small" name="responseText" rows="3"></pems-textarea>
                         </div>
                         <div class="mb-2">
-                            <label class="form-label small">@Localizer["Vd_OrAttachReply"]</label>
+                            <pems-label css="small">@Localizer["Vd_OrAttachReply"]</pems-label>
                             <pems-input scale="small" type="file" name="replyAttachment" />
                         </div>
                     </div>
@@ -561,9 +555,7 @@
                         <pems-button tone="primary" size="small" type="submit">@Localizer["Vd_SaveReply"]</pems-button>
                     </div>
                 </form>
-            </div>
-        </div>
-    </div>
+            </pems-modal>
 }
 
 @* ===================== Workflow (اکشن‌ها + تاریخچه‌ی واقعی) ===================== *@
@@ -610,17 +602,17 @@
                         <p class="small text-muted">@Localizer["Vd_Step1Hint"]</p>
                         <div class="row g-3">
                             <div class="col-md-6">
-                                <label class="form-label" for="vdrTransmittal">@Localizer["Vd_VendorTransmittalReq"] <span class="text-danger" aria-hidden="true">*</span></label>
+                                <pems-label for="vdrTransmittal">@Localizer["Vd_VendorTransmittalReq"] <span class="text-danger" aria-hidden="true">*</span></pems-label>
                                 <pems-input id="vdrTransmittal" name="vendorTransmittalNo" required autocomplete="off" aria-describedby="vdrTransmittalHelp" />
                                 <div id="vdrTransmittalHelp" class="form-text">@Localizer["Vd_TransmittalHelp"]</div>
                             </div>
                             <div class="col-md-6">
-                                <label class="form-label" for="vdrIssuedDate">@Localizer["Vd_VendorIssuedDate"]</label>
+                                <pems-label for="vdrIssuedDate">@Localizer["Vd_VendorIssuedDate"]</pems-label>
                                 <input id="vdrIssuedDate" name="vendorActualIssuedDate" type="date" class="form-control" aria-describedby="vdrIssuedHelp" />
                                 <div id="vdrIssuedHelp" class="form-text">@Localizer["Vd_IssuedDateHelp"]</div>
                             </div>
                             <div class="col-md-6">
-                                <label class="form-label" for="vdrPoi">@Localizer["Vd_PoiFull"]</label>
+                                <pems-label for="vdrPoi">@Localizer["Vd_PoiFull"]</pems-label>
                                 <pems-select id="vdrPoi" name="purposeOfIssueCode" aria-describedby="vdrPoiHelp">
                                     <option value="">@Localizer["Vd_SelectPurpose"]</option>
                                     <option value="IFA">@Localizer["Vd_PoiOpt_IFA"]</option>
@@ -723,8 +715,7 @@ else
                 <pems-button tone="danger" size="small" type="button" data-bs-toggle="modal" data-bs-target="#vdrRejectModal">@Localizer["Vd_RejectBtn"]</pems-button>
             </div>
 
-            <div class="modal fade" id="vdrCommentModal" tabindex="-1">
-                <div class="modal-dialog"><div class="modal-content">
+            <pems-modal id="vdrCommentModal" tabindex="-1">
                     <form asp-action="DisciplineRespond" method="post">
                         <input type="hidden" name="vdrItemId" value="@Model.VDRItemId" />
                         <input type="hidden" name="decision" value="Comment" />
@@ -735,10 +726,8 @@ else
                             <pems-button tone="warning" size="small" type="submit">@Localizer["Vd_Submit"]</pems-button>
                         </div>
                     </form>
-                </div></div>
-            </div>
-            <div class="modal fade" id="vdrRejectModal" tabindex="-1">
-                <div class="modal-dialog"><div class="modal-content">
+                </pems-modal>
+            <pems-modal id="vdrRejectModal" tabindex="-1">
                     <form asp-action="DisciplineRespond" method="post">
                         <input type="hidden" name="vdrItemId" value="@Model.VDRItemId" />
                         <input type="hidden" name="decision" value="Reject" />
@@ -749,8 +738,7 @@ else
                             <pems-button tone="danger" size="small" type="submit">@Localizer["Vd_RejectBtn"]</pems-button>
                         </div>
                     </form>
-                </div></div>
-            </div>
+                </pems-modal>
         }
         else
         {
@@ -763,7 +751,7 @@ else
         <form asp-action="LeadReview" method="post" class="row g-2">
             <input type="hidden" name="vdrItemId" value="@Model.VDRItemId" />
             <div class="col-md-3">
-                <label class="form-label small">@Localizer["Vd_ReviewCategory"]</label>
+                <pems-label css="small">@Localizer["Vd_ReviewCategory"]</pems-label>
                 <pems-select scale="small" name="reviewCategory" required>
                     <option value="AP">@Localizer["Vd_Cat_AP"]</option>
                     <option value="NC">@Localizer["Vd_Cat_NC"]</option>
@@ -772,8 +760,8 @@ else
                     <option value="RE">@Localizer["Vd_Cat_RE"]</option>
                 </pems-select>
             </div>
-            <div class="col-md-3"><label class="form-label small">@Localizer["Vd_CommentSheetNo"]</label><pems-input scale="small" name="clientCommentSheetNo" /></div>
-            <div class="col-md-3"><label class="form-label small">@Localizer["Vd_CommentDate"]</label><input name="clientCommentDate" type="date" class="form-control form-control-sm" /></div>
+            <div class="col-md-3"><pems-label css="small">@Localizer["Vd_CommentSheetNo"]</pems-label><pems-input scale="small" name="clientCommentSheetNo" /></div>
+            <div class="col-md-3"><pems-label css="small">@Localizer["Vd_CommentDate"]</pems-label><input name="clientCommentDate" type="date" class="form-control form-control-sm" /></div>
             <div class="col-md-3 d-flex align-items-end">
                 <pems-button tone="primary" size="small" css="w-100" type="submit">@Localizer["Vd_RecordFinal"]</pems-button>
             </div>
@@ -785,8 +773,8 @@ else
         <p class="text-muted small">@Localizer["Vd_ReturnHint"]</p>
         <form asp-action="ReturnToVendor" method="post" class="row g-2">
             <input type="hidden" name="vdrItemId" value="@Model.VDRItemId" />
-            <div class="col-md-4"><label class="form-label small">@Localizer["Vd_ReplySheetNo"]</label><pems-input scale="small" name="replySheetNo" /></div>
-            <div class="col-md-4"><label class="form-label small">@Localizer["Vd_ClientTransmittalNo"]</label><pems-input scale="small" name="clientTransmittalNo" /></div>
+            <div class="col-md-4"><pems-label css="small">@Localizer["Vd_ReplySheetNo"]</pems-label><pems-input scale="small" name="replySheetNo" /></div>
+            <div class="col-md-4"><pems-label css="small">@Localizer["Vd_ClientTransmittalNo"]</pems-label><pems-input scale="small" name="clientTransmittalNo" /></div>
             <div class="col-md-4 d-flex align-items-end">
                 <pems-button tone="primary" size="small" css="w-100" type="submit"><i class="bi bi-send"></i> @Localizer["Vd_ReturnToVendor"]</pems-button>
             </div>

@@ -15,18 +15,18 @@
             <div asp-validation-summary="ModelOnly" class="alert alert-danger py-2 px-3 small" style="@(ViewData.ModelState.IsValid ? "display:none;" : "")"></div>
 
             <div class="col-md-6">
-                <label class="form-label">@Localizer["User"]</label>
-                <select asp-for="UserId" class="form-select">
+                <pems-label>@Localizer["User"]</pems-label>
+                <pems-select asp-for="UserId">
                     <option value="">@Localizer["— select —"]</option>
                     @foreach (var u in Model.AllUsers)
                     {
                         <option value="@u.Id" selected="@(u.Id == Model.UserId)">@u.Display</option>
                     }
-                </select>
+                </pems-select>
             </div>
             <div class="col-md-6">
-                <label class="form-label">@Localizer["Permission"]</label>
-                <input list="permNames" class="form-control" id="permPicker" />
+                <pems-label>@Localizer["Permission"]</pems-label>
+                <pems-input list="permNames" id="permPicker" />
                 <datalist id="permNames">
                     @foreach (var p in Model.AllPermissionNames)
                     {
@@ -35,19 +35,19 @@
                 </datalist>
             </div>
             <div class="col-md-6">
-                <label class="form-label">@Localizer["Resource"]</label>
-                <input asp-for="ResourceName" class="form-control" />
+                <pems-label>@Localizer["Resource"]</pems-label>
+                <pems-input asp-for="ResourceName" />
             </div>
             <div class="col-md-6">
-                <label class="form-label">@Localizer["Action"]</label>
-                <input asp-for="ActionName" class="form-control" />
+                <pems-label>@Localizer["Action"]</pems-label>
+                <pems-input asp-for="ActionName" />
             </div>
             <div class="col-md-6">
-                <label class="form-label">@Localizer["Resource ID (optional)"]</label>
-                <input asp-for="ResourceId" class="form-control" />
+                <pems-label>@Localizer["Resource ID (optional)"]</pems-label>
+                <pems-input asp-for="ResourceId" />
             </div>
             <div class="col-12">
-                <button type="submit" class="btn btn-pems-solid"><i class="bi bi-play-circle me-1"></i> @Localizer["Run"]</button>
+                <pems-button tone="primary" type="submit"><i class="bi bi-play-circle me-1"></i> @Localizer["Run"]</pems-button>
             </div>
         </form>
 

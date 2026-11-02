@@ -55,29 +55,29 @@
     <form method="get" class="d-flex flex-wrap gap-2 align-items-end mb-1">
         <input type="hidden" name="view" value="@view" />
         <input type="hidden" name="date" value="@anchor.ToString("yyyy-MM-dd")" />
-        <div><label class="form-label small mb-1">@Localizer["Maintenance Team"]</label>
+        <div><pems-label css="small mb-1">@Localizer["Maintenance Team"]</pems-label>
             <pems-select scale="small" name="teamId" onchange="this.form.submit()">
                 <option value="">@Localizer["All Teams"]</option>
                 @foreach (var t in teams) { <option value="@t.Id" selected="@(ViewBag.TeamId == t.Id)">@t.Name</option> }
             </pems-select></div>
-        <div><label class="form-label small mb-1">@Localizer["Executor"]</label>
+        <div><pems-label css="small mb-1">@Localizer["Executor"]</pems-label>
             <pems-select scale="small" name="employeeId" onchange="this.form.submit()">
                 <option value="">@Localizer["All"]</option>
                 @foreach (var e in employees) { <option value="@e.EmployeeId" selected="@(ViewBag.EmployeeId == (int)e.EmployeeId)">@e.FullName</option> }
             </pems-select></div>
-        <div><label class="form-label small mb-1">@Localizer["Ed_Status"]</label>
+        <div><pems-label css="small mb-1">@Localizer["Ed_Status"]</pems-label>
             <pems-select scale="small" name="status" onchange="this.form.submit()">
                 <option value="">@Localizer["Eq_AllStatuses"]</option>
                 @foreach (var s in new[] { "Open", "Assigned", "InProgress", "OnHold", "Completed", "Closed" })
                 { <option value="@s" selected="@(s == (string?)ViewBag.Status)">@s</option> }
             </pems-select></div>
-        <div><label class="form-label small mb-1">@Localizer["Work Type"]</label>
+        <div><pems-label css="small mb-1">@Localizer["Work Type"]</pems-label>
             <pems-select scale="small" name="workOrderType" onchange="this.form.submit()">
                 <option value="">@Localizer["All"]</option>
                 @foreach (var s in new[] { "Preventive", "Corrective", "Emergency", "Predictive" })
                 { <option value="@s" selected="@(s == (string?)ViewBag.WorkOrderType)">@s</option> }
             </pems-select></div>
-        <div><label class="form-label small mb-1">@Localizer["Cm_Priority"]</label>
+        <div><pems-label css="small mb-1">@Localizer["Cm_Priority"]</pems-label>
             <pems-select scale="small" name="priority" onchange="this.form.submit()">
                 <option value="">@Localizer["All"]</option>
                 @foreach (var s in new[] { "Low", "Medium", "High", "Critical" })
