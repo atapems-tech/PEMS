@@ -106,6 +106,31 @@ public class ChartComponentTests
         Assert.False(Directory.Exists(Path.Combine(RepoRoot(), "PEMS.Web", "wwwroot", "lib", "chartjs")));
     }
 
+    // ---- C3: the home donut, one chart engine
+    [Fact]
+    public void WaveC3_HomeDonut_UsesTheChartHost_AndTheOldDonutIsGone()
+    {
+        var home = File.ReadAllText(Path.Combine(RepoRoot(), "PEMS.Web", "Views", "Home", "Index.cshtml"));
+        Assert.Contains("BkChartSpec.Donut(", home);
+        Assert.Contains("<pems-chart spec=\"@docsDonut\" />", home);
+        Assert.Contains("_BkChartScripts", home);
+        Assert.DoesNotContain("_DonutChart", home);
+        Assert.DoesNotContain("pems-donut", home);
+        Assert.DoesNotContain("pems-charts.js", home);
+        foreach (var gone in new[] { "Views/Shared/_DonutChart.cshtml", "Models/DonutChartViewModel.cs", "wwwroot/js/pems-donut.js", "wwwroot/css/pems-donut.css", "wwwroot/js/pems-charts.js" })
+            Assert.False(File.Exists(Path.Combine(RepoRoot(), "PEMS.Web", gone)), gone);
+    }
+
+    [Fact]
+    public void Donut_WithoutPositiveValues_IsEmpty_AndKeepsItsLabels()
+    {
+        var spec = BkChartSpec.Donut("Documents by status", "No documents to chart yet.", "Documents", new[] { ("Draft", 3d), ("Approved", 0d) });
+        Assert.Equal("donut", spec.Kind);
+        Assert.Equal(new[] { "Draft", "Approved" }, spec.Labels);
+        Assert.Equal("Documents", spec.CenterLabel);
+        Assert.Contains("<th scope=\"row\">Draft</th><td>3</td>", PemsChartTagHelper.Markup(spec));
+    }
+
     private static string RepoRoot()
     {
         var dir = new DirectoryInfo(AppContext.BaseDirectory);

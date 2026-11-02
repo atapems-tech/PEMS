@@ -75,11 +75,11 @@ public class ThemeSystemTests
     }
 
     [Fact]
-    public void PemsChartsJs_ReadsSemanticTokens_NotHardCodedHex()
+    public void ChartColours_ComeFromSemanticTokens_NotHardCodedHex()
     {
-        var js = Web("wwwroot", "js", "pems-charts.js");
-        Assert.Contains("--pems-chart-primary", js);
-        Assert.Contains("PemsChartColors", js);
+        // SCRUM-337 C3: every chart is <pems-chart>; its colours are BkChartSpec's --pems-chart-* tokens (pems-charts.js is retired)
+        Assert.StartsWith("var(--pems-chart-primary", PEMS.Web.Models.BkChartSpec.Primary);
+        Assert.StartsWith("var(--pems-chart-negative", PEMS.Web.Models.BkChartSpec.Negative);
     }
 
     [Fact]
