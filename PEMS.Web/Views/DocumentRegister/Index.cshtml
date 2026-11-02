@@ -100,7 +100,7 @@
                                     @if (sf.IsDefault) { <i class="bi bi-star-fill" aria-hidden="true"></i> }
                                     @sf.Name
                                 </a>
-                                <form asp-action="DeleteFilter" method="post" onsubmit="return confirm('@Localizer["Dr_DeleteFilterConfirm"].Value.Replace("'", "\\'")');">
+                                <form asp-action="DeleteFilter" method="post" data-pems-confirm="@Localizer["Dr_DeleteFilterConfirm"]">
                                     <input type="hidden" name="id" value="@sf.SavedFilterId" />
                                     <button type="submit" class="lp-act lp-act--always" title="@Localizer["Dr_DeleteFilter"]"><i class="bi bi-x-lg" aria-hidden="true"></i><span class="visually-hidden">@Localizer["Dr_DeleteFilter"]: @sf.Name</span></button>
                                 </form>

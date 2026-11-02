@@ -11,8 +11,8 @@
     var open = stockLines.Where(l => l.UnsourcedQuantity > 0).ToList();
 }
 
-@if (TempData["Message"] != null) { <div class="alert alert-success py-2 px-3 small">@TempData["Message"]</div> }
-@if (TempData["Error"] != null) { <div class="alert alert-danger py-2 px-3 small">@TempData["Error"]</div> }
+@if (TempData["Message"] != null) { <pems-alert tone="success" css="py-2 px-3 small">@TempData["Message"]</pems-alert> }
+@if (TempData["Error"] != null) { <pems-alert tone="danger" css="py-2 px-3 small">@TempData["Error"]</pems-alert> }
 
 <div class="content-card mb-3">
     <div class="d-flex justify-content-between align-items-start flex-wrap gap-2">
@@ -64,10 +64,7 @@
                     <td class="text-end">
                         @if (canSource && l.UnsourcedQuantity > 0)
                         {
-                            <input type="number" name="quantities[@l.WorkOrderMaterialId]" class="form-control form-control-sm text-end" dir="ltr"
-                                   min="0" max="@l.UnsourcedQuantity.ToString(System.Globalization.CultureInfo.InvariantCulture)" step="any"
-                                   value="@l.UnsourcedQuantity.ToString(System.Globalization.CultureInfo.InvariantCulture)"
-                                   aria-label="@Localizer["Whi_SourceNow"] @l.MaterialCode" />
+                            <pems-input scale="small" css="text-end" type="number" name="quantities[@l.WorkOrderMaterialId]" dir="ltr" min="0" max="@l.UnsourcedQuantity.ToString(System.Globalization.CultureInfo.InvariantCulture)" step="any" value="@l.UnsourcedQuantity.ToString(System.Globalization.CultureInfo.InvariantCulture)" aria-label="@Localizer["Whi_SourceNow"] @l.MaterialCode" />
                         }
                         else { <span class="text-muted">—</span> }
                     </td>
@@ -89,14 +86,14 @@
     {
         <div class="row g-2 align-items-end">
             <div class="col-md-5">
-                <label class="form-label small" for="whiWarehouse">@Localizer["Whi_Warehouse"]</label>
-                <select id="whiWarehouse" name="warehouseId" class="form-select form-select-sm" required>
+                <pems-label css="small" for="whiWarehouse">@Localizer["Whi_Warehouse"]</pems-label>
+                <pems-select scale="small" id="whiWarehouse" name="warehouseId" required>
                     <option value="">@Localizer["Whi_PickWarehouse"]</option>
                     @foreach (var w in warehouses) { <option value="@w.WarehouseId">@w.Code - @w.Name</option> }
-                </select>
+                </pems-select>
             </div>
             <div class="col-md-auto">
-                <button type="submit" class="btn btn-sm btn-primary"><i class="bi bi-box-arrow-in-down" aria-hidden="true"></i> @Localizer["Whi_Source"]</button>
+                <pems-button tone="none" size="small" css="btn-primary" type="submit"><i class="bi bi-box-arrow-in-down" aria-hidden="true"></i> @Localizer["Whi_Source"]</pems-button>
             </div>
             <div class="col-12 small text-muted">@Localizer["Whi_SourceHint"]</div>
         </div>

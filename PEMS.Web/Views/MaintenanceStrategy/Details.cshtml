@@ -98,7 +98,7 @@
         }
         @if (Model.CanApprove && live)
         {
-            <form asp-action="Retire" asp-route-id="@s.MaintenanceStrategyId" method="post" class="d-inline" onsubmit="return confirm('@Localizer["Rcm_ConfirmRetire"]');">
+            <form asp-action="Retire" asp-route-id="@s.MaintenanceStrategyId" method="post" class="d-inline" data-pems-confirm="@Localizer["Rcm_ConfirmRetire"]">
                 <pems-button tone="danger" size="small" outline="true"><i class="bi bi-slash-circle"></i> @Localizer["Rcm_Retire"]</pems-button>
             </form>
         }
@@ -180,7 +180,7 @@
                     <td class="text-end">
                         @if (Model.CanApprove)
                         {
-                            <form asp-action="Unassign" method="post" class="d-inline" onsubmit="return confirm('@Localizer["Rcm_ConfirmUnassign"]');">
+                            <form asp-action="Unassign" method="post" class="d-inline" data-pems-confirm="@Localizer["Rcm_ConfirmUnassign"]">
                                 <input type="hidden" name="assignmentId" value="@a.AssignmentId" /><input type="hidden" name="strategyId" value="@s.MaintenanceStrategyId" />
                                 <pems-button tone="danger" size="small" outline="true" css="py-0"><i class="bi bi-x-lg"></i></pems-button>
                             </form>

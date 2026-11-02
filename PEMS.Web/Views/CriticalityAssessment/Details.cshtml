@@ -65,7 +65,7 @@
         @if (Model.Status == "UNDER_REVIEW" && canApprove)
         {
             <div class="col-auto">
-                <form asp-action="Approve" method="post" onsubmit="return confirm('تایید این ارزیابی، نتیجه را بلافاصله در EquipmentCriticality منتشر می‌کند. ادامه می‌دهید؟');">
+                <form asp-action="Approve" method="post" data-pems-confirm="تایید این ارزیابی، نتیجه را بلافاصله در EquipmentCriticality منتشر می‌کند. ادامه می‌دهید؟">
                     <input type="hidden" name="id" value="@Model.CriticalityAssessmentId" />
                     <pems-button tone="success" size="small" type="submit">Approve &amp; Publish</pems-button>
                 </form>

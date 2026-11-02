@@ -54,7 +54,7 @@
             </div>
             @if (!string.IsNullOrWhiteSpace(Model.Notes)) { <div class="small mt-1">@Model.Notes</div> }
         </div>
-        <span class="badge fs-6 @badgeClass">@Model.Status</span>
+        <pems-badge tone="none" css="fs-6 @badgeClass">@Model.Status</pems-badge>
     </div>
     <hr />
     <div class="d-flex gap-2 flex-wrap align-items-center">
@@ -62,16 +62,16 @@
         {
             <form asp-action="Submit" method="post" class="d-inline">
                 <input type="hidden" name="id" value="@Model.IrnReceiptId" />
-                <button type="submit" class="btn btn-sm btn-pems-solid" onclick="return confirm('Submit this IRN for inspection?')">
+                <pems-button tone="primary" size="small" type="submit" data-pems-confirm="Submit this IRN for inspection?">
                     <i class="bi bi-send"></i> @Localizer["Submit for Inspection"]
-                </button>
+                </pems-button>
             </form>
         }
         @if (Model.Status is "Draft" or "Submitted")
         {
             <form asp-action="Cancel" method="post" class="d-inline">
                 <input type="hidden" name="id" value="@Model.IrnReceiptId" />
-                <button type="submit" class="btn btn-sm btn-outline-secondary" onclick="return confirm('Cancel this IRN?')">@Localizer["Cancel IRN"]</button>
+                <pems-button tone="neutral" size="small" outline="true" type="submit" data-pems-confirm="Cancel this IRN?">@Localizer["Cancel IRN"]</pems-button>
             </form>
         }
         @if (Model.Status == "Submitted")
@@ -84,16 +84,16 @@
             <form asp-action="Approve" method="post" class="d-inline">
                 <input type="hidden" name="id" value="@Model.IrnReceiptId" />
                 <input type="hidden" name="decision" value="Approve" />
-                <button type="submit" class="btn btn-sm btn-pems-solid" onclick="return confirm('Approve this disposition? The accepted quantity will be posted to stock.')">
+                <pems-button tone="primary" size="small" type="submit" data-pems-confirm="Approve this disposition? The accepted quantity will be posted to stock.">
                     <i class="bi bi-check2-circle"></i> @Localizer["QA Approve"]
-                </button>
+                </pems-button>
             </form>
             <form asp-action="Approve" method="post" class="d-inline">
                 <input type="hidden" name="id" value="@Model.IrnReceiptId" />
                 <input type="hidden" name="decision" value="Reject" />
-                <button type="submit" class="btn btn-sm btn-outline-danger" onclick="return confirm('Reject this disposition? The inspector will need to re-record it.')">
+                <pems-button tone="danger" size="small" outline="true" type="submit" data-pems-confirm="Reject this disposition? The inspector will need to re-record it.">
                     <i class="bi bi-x-circle"></i> @Localizer["QA Reject"]
-                </button>
+                </pems-button>
             </form>
         }
         @if (Model.Status == "Closed")
@@ -102,9 +102,9 @@
         }
         @if (Model.Status != "Draft" && Model.Lines.Any())
         {
-            <a asp-action="Osd" asp-route-id="@Model.IrnReceiptId" target="_blank" class="btn btn-sm btn-outline-secondary ms-auto">
+            <pems-button as="a" tone="neutral" size="small" outline="true" css="ms-auto" asp-action="Osd" asp-route-id="@Model.IrnReceiptId" target="_blank">
                 <i class="bi bi-printer"></i> @Localizer["Rcv_OsdReport"]
-            </a>
+            </pems-button>
         }
     </div>
 </div>
@@ -153,12 +153,12 @@
                                     <form asp-action="DecideRejection" method="post" class="d-flex gap-1 mt-1">
                                         <input type="hidden" name="id" value="@Model.IrnReceiptId" />
                                         <input type="hidden" name="lineId" value="@l.IrnReceiptLineId" />
-                                        <select name="action" class="form-select form-select-sm">
+                                        <pems-select scale="small" name="action">
                                             @foreach (var a in PEMS.Domain.Entities.IrnRejectionActions.All)
                                             {
                                                 <option value="@a" selected="@(a == (l.RejectionAction ?? "Replace"))">@Localizer["Rcv_Action_" + a]</option>
                                             }
-                                        </select>
+                                        </pems-select>
                                         <pems-button tone="neutral" size="small" outline="true" type="submit">@Localizer["Save"]</pems-button>
                                     </form>
                                 }
@@ -176,11 +176,11 @@
                                     <input type="hidden" name="id" value="@Model.IrnReceiptId" />
                                     <input type="hidden" name="lineId" value="@l.IrnReceiptLineId" />
                                     <div class="d-flex gap-1">
-                                        <input name="accepted" type="number" step="0.001" min="0" class="form-control form-control-sm" value="@l.HoldQuantity" title="@Localizer["Accepted"]" required />
-                                        <input name="rejected" type="number" step="0.001" min="0" class="form-control form-control-sm" value="0" title="@Localizer["Rejected"]" required />
+                                        <pems-input scale="small" name="accepted" type="number" step="0.001" min="0" value="@l.HoldQuantity" title="@Localizer["Accepted"]" required />
+                                        <pems-input scale="small" name="rejected" type="number" step="0.001" min="0" value="0" title="@Localizer["Rejected"]" required />
                                     </div>
-                                    <input name="notes" class="form-control form-control-sm mt-1" placeholder="@Localizer["Notes"]" />
-                                    <pems-button tone="primary" size="small" css="mt-1" type="submit" onclick="return confirm(this.dataset.confirm)" data-confirm="@Localizer["Rcv_ConfirmHold"]">@Localizer["Rcv_ResolveHold"]</pems-button>
+                                    <pems-input scale="small" css="mt-1" name="notes" placeholder="@Localizer["Notes"]" />
+                                    <pems-button tone="primary" size="small" css="mt-1" type="submit" data-pems-confirm="@Localizer["Rcv_ConfirmHold"]">@Localizer["Rcv_ResolveHold"]</pems-button>
                                 </form>
                             }
                             else if (Model.Status == "Closed" && l.HasOpenHold)
@@ -227,7 +227,7 @@
                                 @if (p.CanReceive)
                                 {
                                     <input type="hidden" name="poLineId" value="@p.PurchaseOrderLineId" />
-                                    <input name="quantity" type="number" step="0.001" min="0" class="form-control form-control-sm" value="@p.Outstanding" />
+                                    <pems-input scale="small" name="quantity" type="number" step="0.001" min="0" value="@p.Outstanding" />
                                 }
                                 else { <span class="small text-muted">@Localizer["Rcv_NotCatalogued"]</span> }
                             </td>
@@ -243,7 +243,7 @@
     {
         <pems-related-add action="@Url.Action("AddLine")" parent-name="irnReceiptId" parent-value="@Model.IrnReceiptId.ToString()" submit-label="@Localizer["Add Line"]">
             <pems-list-filter-select id="irnAddMaterial" name="materialItemId" label="@Localizer["Material"]" items="@(((IEnumerable<dynamic>)materialItems).Select(m => new SelectListItem($"{m.MaterialCode} - {m.Description}", ((int)m.MaterialItemId).ToString())))" />
-            <div style="flex:0 0 160px"><label class="lp-lbl" for="irnAddQty">@Localizer["Quantity"]</label><input id="irnAddQty" name="receivedQuantity" type="number" step="0.001" class="form-control form-control-sm" required /></div>
+            <div style="flex:0 0 160px"><label class="lp-lbl" for="irnAddQty">@Localizer["Quantity"]</label><pems-input scale="small" id="irnAddQty" name="receivedQuantity" type="number" step="0.001" required /></div>
         </pems-related-add>
     }
 
@@ -264,16 +264,16 @@
                                 @l.ReceivedQuantity
                                 <input type="hidden" name="lineId" value="@l.IrnReceiptLineId" />
                             </td>
-                            <td><input name="accepted" type="number" step="0.001" min="0" class="form-control form-control-sm" value="@l.ReceivedQuantity" required /></td>
-                            <td><input name="rejected" type="number" step="0.001" min="0" class="form-control form-control-sm" value="0" required /></td>
-                            <td><input name="hold" type="number" step="0.001" min="0" class="form-control form-control-sm" value="0" required /></td>
+                            <td><pems-input scale="small" name="accepted" type="number" step="0.001" min="0" value="@l.ReceivedQuantity" required /></td>
+                            <td><pems-input scale="small" name="rejected" type="number" step="0.001" min="0" value="0" required /></td>
+                            <td><pems-input scale="small" name="hold" type="number" step="0.001" min="0" value="0" required /></td>
                         </tr>
                     }
                 </tbody>
             </pems-related-table>
             <div class="lp-rel-add">
-                <div><label class="lp-lbl" for="irnDispNotes">@Localizer["Notes"]</label><textarea id="irnDispNotes" name="notes" class="form-control form-control-sm" rows="2"></textarea></div>
-                <pems-button tone="primary" size="small" type="submit" onclick="return confirm(this.dataset.confirm)" data-confirm="@Localizer["IrnD_ConfirmDisposition"]">
+                <div><label class="lp-lbl" for="irnDispNotes">@Localizer["Notes"]</label><pems-textarea scale="small" id="irnDispNotes" name="notes" rows="2"></pems-textarea></div>
+                <pems-button tone="primary" size="small" type="submit" data-pems-confirm="@Localizer["IrnD_ConfirmDisposition"]">
                     <i class="bi bi-clipboard-check" aria-hidden="true"></i> @Localizer["Record Disposition"]
                 </pems-button>
             </div>

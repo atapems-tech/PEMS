@@ -75,7 +75,7 @@
         </div>
         @if (Model.IsActive)
         {
-            <form asp-action="DeactivateTeamNode" method="post" onsubmit="return confirm('@Localizer["این گره غیرفعال شود؟ زیرگروه‌ها/سمت‌ها دست‌نخورده می‌مانند."]');">
+            <form asp-action="DeactivateTeamNode" method="post" data-pems-confirm="@Localizer["این گره غیرفعال شود؟ زیرگروه‌ها/سمت‌ها دست‌نخورده می‌مانند."]">
                 <input type="hidden" name="teamId" value="@Model.TeamId" />
                 <input type="hidden" name="returnTeamId" value="@(Model.ParentTeamId?.ToString() ?? "")" />
                 <pems-button tone="danger" size="small" outline="true" type="submit"><i class="bi bi-x-circle"></i> @Localizer["غیرفعال کردن این گره"]</pems-button>
@@ -243,7 +243,7 @@
                                     {
                                         <li>
                                             <form asp-action="RemoveAssignment" method="post"
-                                                  onsubmit="return confirm('@Localizer["این عملیات فقط تخصیص کارمند به این سمت را پایان می‌دهد؛ خودِ کارمند حذف نمی‌شود و سمت خالی (Vacant) باقی می‌ماند."]');">
+                                                  data-pems-confirm="@Localizer["این عملیات فقط تخصیص کارمند به این سمت را پایان می‌دهد؛ خودِ کارمند حذف نمی‌شود و سمت خالی (Vacant) باقی می‌ماند."]">
                                                 <input type="hidden" name="positionId" value="@p.PositionId" />
                                                 <input type="hidden" name="returnTeamId" value="@Model.TeamId" />
                                                 <button type="submit" class="dropdown-item text-danger"><i class="bi bi-person-dash"></i> @Localizer["پایان تخصیص"]</button>
@@ -255,7 +255,7 @@
                                         <li><hr class="dropdown-divider" /></li>
                                         <li>
                                             <form asp-action="DeactivatePosition" method="post"
-                                                  onsubmit="return confirm('@(p.IsVacant ? Localizer["این سمت خالی غیرفعال شود؟"] : Localizer["این سمت اشغال شده است؛ غیرفعال‌کردن آن، تخصیص کارمند فعلی را هم پایان می‌دهد و سمت خالی خواهد شد. ادامه می‌دهید؟"])');">
+                                                  data-pems-confirm="@(p.IsVacant ? Localizer["این سمت خالی غیرفعال شود؟"] : Localizer["این سمت اشغال شده است؛ غیرفعال‌کردن آن، تخصیص کارمند فعلی را هم پایان می‌دهد و سمت خالی خواهد شد. ادامه می‌دهید؟"])">
                                                 <input type="hidden" name="positionId" value="@p.PositionId" />
                                                 <input type="hidden" name="returnTeamId" value="@Model.TeamId" />
                                                 <button type="submit" class="dropdown-item text-danger"><i class="bi bi-x-circle"></i> @Localizer["غیرفعال کردن"]</button>

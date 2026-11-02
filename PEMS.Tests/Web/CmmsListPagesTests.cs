@@ -145,7 +145,7 @@ public class CmmsListPagesTests
         Assert.Contains("class=\"badge bg-danger\"", html);
         Assert.Contains("4 letters", html);
         Assert.Contains("name=\"tagId\" value=\"1\"", html);
-        Assert.Contains("data-confirm=", html);
+        Assert.Contains("data-pems-confirm=", html);
     }
 
     // ---------- Inspections ----------

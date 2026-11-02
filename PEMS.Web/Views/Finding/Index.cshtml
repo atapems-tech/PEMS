@@ -101,7 +101,7 @@
                                 }
                                 @if (f.Status != "Closed")
                                 {
-                                    <form asp-action="Close" method="post" class="d-inline" data-confirm="@Localizer["Fn_CloseConfirm"]" onsubmit="return confirm(this.dataset.confirm)">
+                                    <form asp-action="Close" method="post" class="d-inline" data-pems-confirm="@Localizer["Fn_CloseConfirm"]">
                                         <input type="hidden" name="id" value="@f.FindingId" />
                                         <button type="submit" class="lp-act lp-act--always" title="@Localizer["Fn_Close"]" aria-label="@Localizer["Fn_Close"]"><i class="bi bi-check-circle" aria-hidden="true"></i></button>
                                     </form>

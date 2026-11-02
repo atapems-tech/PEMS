@@ -259,7 +259,7 @@ else if (matchingCount.HasValue && matchingCount.Value > maxResults)
                         <li>@Localizer["Rcm_HasConflict"]: <strong>@conflicts</strong> <span class="text-muted">(@Localizer["Rcm_ConflictsSkipped"])</span></li>
                     </ul>
                     <p class="small text-muted">@Localizer["Rcm_AssignAtomicNote"]</p>
-                    <pems-button tone="primary" type="submit" onclick="return confirm('@Localizer["Rcm_ConfirmBulkAssign"]');"><i class="bi bi-check2-all"></i> @Localizer["Rcm_AssignSelected"]</pems-button>
+                    <pems-button tone="primary" type="submit" data-pems-confirm="@Localizer["Rcm_ConfirmBulkAssign"]"><i class="bi bi-check2-all"></i> @Localizer["Rcm_AssignSelected"]</pems-button>
                 }
                 <div class="small text-muted mt-3">@Localizer["Rcm_NeedTemplate"] <a asp-action="Create">@Localizer["Rcm_NewStrategy"]</a></div>
             </div>

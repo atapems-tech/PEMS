@@ -102,10 +102,10 @@
                     <input type="hidden" name="Tab" value="@tab" />
                     <div>
                         <label class="lp-lbl" for="pcRptPeriod">@Localizer["PcRpt_Filter_Period"]</label>
-                        <select id="pcRptPeriod" name="Period" class="form-select form-select-sm">
+                        <pems-select scale="small" id="pcRptPeriod" name="Period">
                             @foreach (var per in PartCatalogueReportPeriods.Values)
                             { <option value="@per" selected="@(per == f.Period)">@t.PeriodName(per)</option> }
-                        </select>
+                        </pems-select>
                     </div>
                     <div class="pc-rpt-dates">
                         <div>
@@ -120,39 +120,39 @@
                     <p class="lp-hint small text-muted mb-0">@Localizer["PcRpt_Filter_CustomHint"]</p>
                     <div>
                         <label class="lp-lbl" for="pcRptSection">@Localizer["Pc_F_SectionId"]</label>
-                        <select id="pcRptSection" name="SectionId" class="form-select form-select-sm">
+                        <pems-select scale="small" id="pcRptSection" name="SectionId">
                             <option value="">@Localizer["Ed_All"]</option>
                             @foreach (var s in Model.Sections) { <option value="@s.Id" selected="@(s.Id == f.SectionId)">@s.Text</option> }
-                        </select>
+                        </pems-select>
                     </div>
                     <div>
                         <label class="lp-lbl" for="pcRptType">@Localizer["PcRpt_Col_Type"]</label>
-                        <select id="pcRptType" name="RequestType" class="form-select form-select-sm">
+                        <pems-select scale="small" id="pcRptType" name="RequestType">
                             <option value="">@Localizer["Ed_All"]</option>
                             @foreach (var ty in new[] { "Add", "Change" }) { <option value="@ty" selected="@(ty == f.RequestType)">@t.Type(ty)</option> }
-                        </select>
+                        </pems-select>
                     </div>
                     <div>
                         <label class="lp-lbl" for="pcRptStatus">@Localizer["PcRpt_Col_Status"]</label>
-                        <select id="pcRptStatus" name="Status" class="form-select form-select-sm">
+                        <pems-select scale="small" id="pcRptStatus" name="Status">
                             <option value="">@Localizer["Ed_All"]</option>
                             @foreach (var st in new[] { "Draft", "InApproval", "Returned", "OrgResolution", "Completed", "Cancelled" })
                             { <option value="@st" selected="@(st == f.Status)">@t.Status(st)</option> }
-                        </select>
+                        </pems-select>
                     </div>
                     <div>
                         <label class="lp-lbl" for="pcRptPerson">@Localizer["PcRpt_Col_Person"]</label>
-                        <select id="pcRptPerson" name="EmployeeId" class="form-select form-select-sm">
+                        <pems-select scale="small" id="pcRptPerson" name="EmployeeId">
                             <option value="">@Localizer["Ed_All"]</option>
                             @foreach (var e in r.Employees) { <option value="@e.Id" selected="@(e.Id == f.EmployeeId)">@e.Text</option> }
-                        </select>
+                        </pems-select>
                     </div>
                     <div>
                         <label class="lp-lbl" for="pcRptEquipment">@Localizer["PcRpt_Col_Tag"]</label>
-                        <select id="pcRptEquipment" name="EquipmentId" class="form-select form-select-sm">
+                        <pems-select scale="small" id="pcRptEquipment" name="EquipmentId">
                             <option value="">@Localizer["Ed_All"]</option>
                             @foreach (var e in r.EquipmentOptions) { <option value="@e.Id" selected="@(e.Id == f.EquipmentId)">@e.Text</option> }
-                        </select>
+                        </pems-select>
                     </div>
                 </pems-list-filters>
                 <pems-list-export href="@exportUrl" />

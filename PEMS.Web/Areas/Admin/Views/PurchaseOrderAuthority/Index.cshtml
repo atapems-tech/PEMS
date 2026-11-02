@@ -27,27 +27,27 @@
                     <form asp-action="Save" method="post">
                         <div>
                             <label class="lp-lbl" for="rLevel">@Localizer["Po_Level"]</label>
-                            <input id="rLevel" name="level" type="number" min="1" value="1" class="form-control" dir="ltr" required />
+                            <pems-input id="rLevel" name="level" type="number" min="1" value="1" dir="ltr" required />
                         </div>
                         <div>
                             <label class="lp-lbl" for="rCurrency">@Localizer["Po_Currency"]</label>
-                            <input id="rCurrency" name="currency" value="IRR" maxlength="10" class="form-control" dir="ltr" required />
+                            <pems-input id="rCurrency" name="currency" value="IRR" maxlength="10" dir="ltr" required />
                         </div>
                         <div>
                             <label class="lp-lbl" for="rMin">@Localizer["Po_From"]</label>
-                            <input id="rMin" name="minAmount" type="number" min="0" step="any" value="0" class="form-control" dir="ltr" required />
+                            <pems-input id="rMin" name="minAmount" type="number" min="0" step="any" value="0" dir="ltr" required />
                         </div>
                         <div>
                             <label class="lp-lbl" for="rMax">@Localizer["Po_To"]</label>
-                            <input id="rMax" name="maxAmount" type="number" min="0" step="any" class="form-control" dir="ltr" placeholder="∞" />
+                            <pems-input id="rMax" name="maxAmount" type="number" min="0" step="any" dir="ltr" placeholder="∞" />
                         </div>
                         <pems-list-filter-select id="rRole" name="approverRole" label="@Localizer["Po_ApproverRole"]" all-text="—" items="@roles.Select(r => new SelectListItem(r, r))" />
                         <div>
                             <label class="lp-lbl" for="rDesc">@Localizer["Ed_Description"]</label>
-                            <input id="rDesc" name="description" class="form-control" />
+                            <pems-input id="rDesc" name="description" />
                         </div>
                         <div class="form-check small">
-                            <input class="form-check-input" type="checkbox" name="isActive" value="true" id="rActive" checked />
+                            <pems-input kind="check" type="checkbox" name="isActive" value="true" id="rActive" checked />
                             <label class="form-check-label" for="rActive">@Localizer["Po_Active"]</label>
                         </div>
                         <div class="lp-fp-foot px-0 pb-0">

@@ -46,7 +46,7 @@
             <div class="d-flex gap-2">
                 @if (!r.Committed && !string.IsNullOrEmpty(Model.Token) && r.RowsAccepted > 0)
                 {
-                    <form asp-action="Commit" method="post" onsubmit="return confirm('@Localizer["Rcm_ConfirmImport"]');">
+                    <form asp-action="Commit" method="post" data-pems-confirm="@Localizer["Rcm_ConfirmImport"]">
                         <input type="hidden" name="token" value="@Model.Token" /><input type="hidden" name="kind" value="@Model.Kind" />
                         <pems-button tone="success" size="small"><i class="bi bi-check2-all"></i> @Localizer["Rcm_CommitValidRows"]</pems-button>
                     </form>

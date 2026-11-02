@@ -46,13 +46,13 @@
                                              all-text="@Localizer["Ed_All"]" items="@resourceNames.Select(r => new SelectListItem(r, r))" />
                     <div>
                         <label class="lp-lbl" for="azFilterAction">@Localizer["Cm_Action"]</label>
-                        <input type="search" id="azFilterAction" name="actionName" value="@actionName" class="form-control" />
+                        <pems-input type="search" id="azFilterAction" name="actionName" value="@actionName" />
                     </div>
                     <pems-list-filter-select id="azFilterDecision" name="decision" label="@Localizer["Decision"]" value="@decision"
                                              all-text="@Localizer["Ed_All"]" items="@decisions.Select(d => new SelectListItem(d, d))" />
                     <div>
                         <label class="lp-lbl" for="azFilterResourceId">@Localizer["Resource ID"]</label>
-                        <input type="search" id="azFilterResourceId" name="resourceId" value="@resourceId" class="form-control" />
+                        <pems-input type="search" id="azFilterResourceId" name="resourceId" value="@resourceId" />
                     </div>
                     <div>
                         <label class="lp-lbl" for="azFilterFrom">@Localizer["ItL_From"]</label>

@@ -14,12 +14,12 @@
 
     @if (!ViewData.ModelState.IsValid)
     {
-        <div class="alert alert-danger">
+        <pems-alert tone="danger">
             @foreach (var err in ViewData.ModelState.Values.SelectMany(v => v.Errors))
             {
                 <div>@err.ErrorMessage</div>
             }
-        </div>
+        </pems-alert>
     }
 
     <form asp-action="@(isEdit ? "VisualEdit" : "VisualCreate")" asp-route-id="@(isEdit ? Model.HelpVisualId : (int?)null)" method="post">
@@ -28,29 +28,29 @@
 
         <div class="row g-3">
             <div class="col-md-4">
-                <label class="form-label">@Localizer["Visual Type"]</label>
-                <select asp-for="VisualType" class="form-select" onchange="toggleSourceFields(this.value)">
+                <pems-label>@Localizer["Visual Type"]</pems-label>
+                <pems-select asp-for="VisualType" onchange="toggleSourceFields(this.value)">
                     @foreach (var t in visualTypes) { <option value="@t">@t</option> }
-                </select>
+                </pems-select>
             </div>
             <div class="col-md-4">
-                <label class="form-label">@Localizer["Display Order"]</label>
-                <input asp-for="DisplayOrder" type="number" class="form-control" />
+                <pems-label>@Localizer["Display Order"]</pems-label>
+                <pems-input asp-for="DisplayOrder" type="number" />
             </div>
             <div class="col-md-4">
                 <div class="form-check mt-4">
-                    <input asp-for="IsPublished" type="checkbox" class="form-check-input" />
+                    <pems-input kind="check" asp-for="IsPublished" type="checkbox" />
                     <label asp-for="IsPublished" class="form-check-label">@Localizer["Published"]</label>
                 </div>
             </div>
 
             <div class="col-12" id="workflowSourceFields">
-                <label class="form-label">Real Workflow Source (Module / Category)</label>
+                <pems-label>Real Workflow Source (Module / Category)</pems-label>
                 <p class="form-text mt-0">
                     Only actual workflows registered in the engine are listed - the diagram is generated live from
                     their real stages/transitions and can never go out of sync.
                 </p>
-                <select id="workflowSourcePicker" class="form-select mb-2" onchange="applyWorkflowSource(this.value)">
+                <pems-select css="mb-2" id="workflowSourcePicker" onchange="applyWorkflowSource(this.value)">
                     <option value="">-- select a real workflow --</option>
                     @foreach (var s in workflowSources)
                     {
@@ -58,60 +58,60 @@
                         var selected = s.Module == Model.SourceWorkflowModule && s.Category == Model.SourceWorkflowCategory;
                         <option value="@value" selected="@selected">@s.Module / @s.Category (@s.Name)</option>
                     }
-                </select>
-                <input asp-for="SourceWorkflowModule" class="form-control form-control-sm mb-1" readonly placeholder="@Localizer["Module"]" />
-                <input asp-for="SourceWorkflowCategory" class="form-control form-control-sm" readonly placeholder="@Localizer["Category"]" />
+                </pems-select>
+                <pems-input scale="small" css="mb-1" asp-for="SourceWorkflowModule" readonly placeholder="@Localizer["Module"]" />
+                <pems-input scale="small" asp-for="SourceWorkflowCategory" readonly placeholder="@Localizer["Category"]" />
             </div>
 
             <div class="col-12" id="manualDefinitionField">
-                <label class="form-label">Diagram Definition (structured text, not raw HTML/script)</label>
+                <pems-label>Diagram Definition (structured text, not raw HTML/script)</pems-label>
                 <p class="form-text mt-0">
                     One line per item. Format:<br />
                     <code>NODE|id|Label (EN)|Label (FA)|optional-bootstrap-icon-class</code><br />
                     <code>EDGE|fromId|toIdOrEmptyForEnd|Label (EN)|Label (FA)|normal|reject|decision</code>
                 </p>
-                <textarea asp-for="ManualDefinitionText" class="form-control" rows="8" style="font-family:monospace;"></textarea>
+                <pems-textarea asp-for="ManualDefinitionText" rows="8" style="font-family:monospace;"></pems-textarea>
             </div>
 
             <div class="col-12"><hr /></div>
 
             <div class="col-md-6">
-                <label class="form-label">Caption (EN) <span class="text-danger">*</span></label>
-                <input asp-for="CaptionEn" class="form-control" required />
+                <pems-label>Caption (EN) <span class="text-danger">*</span></pems-label>
+                <pems-input asp-for="CaptionEn" required />
             </div>
             <div class="col-md-6" dir="rtl">
-                <label class="form-label">عنوان کوتاه (فارسی) <span class="text-danger">*</span></label>
-                <input asp-for="CaptionFa" class="form-control" required />
+                <pems-label>عنوان کوتاه (فارسی) <span class="text-danger">*</span></pems-label>
+                <pems-input asp-for="CaptionFa" required />
             </div>
 
             <div class="col-md-6">
-                <label class="form-label">Legend (EN, optional)</label>
-                <input asp-for="LegendEn" class="form-control" />
+                <pems-label>Legend (EN, optional)</pems-label>
+                <pems-input asp-for="LegendEn" />
             </div>
             <div class="col-md-6" dir="rtl">
-                <label class="form-label">@Localizer["راهنمای علائم (فارسی، اختیاری)"]</label>
-                <input asp-for="LegendFa" class="form-control" />
+                <pems-label>@Localizer["راهنمای علائم (فارسی، اختیاری)"]</pems-label>
+                <pems-input asp-for="LegendFa" />
             </div>
 
             <div class="col-md-6">
-                <label class="form-label">Accessibility Description (EN) <span class="text-danger">*</span></label>
-                <textarea asp-for="AccessibilityDescriptionEn" class="form-control" rows="2" required></textarea>
+                <pems-label>Accessibility Description (EN) <span class="text-danger">*</span></pems-label>
+                <pems-textarea asp-for="AccessibilityDescriptionEn" rows="2" required></pems-textarea>
                 <div class="form-text">Full text description for screen readers - the only way non-visual users understand this diagram.</div>
             </div>
             <div class="col-md-6" dir="rtl">
-                <label class="form-label">توضیح دسترس‌پذیری (فارسی) <span class="text-danger">*</span></label>
-                <textarea asp-for="AccessibilityDescriptionFa" class="form-control" rows="2" required></textarea>
+                <pems-label>توضیح دسترس‌پذیری (فارسی) <span class="text-danger">*</span></pems-label>
+                <pems-textarea asp-for="AccessibilityDescriptionFa" rows="2" required></pems-textarea>
             </div>
 
             <div class="col-md-6">
-                <label class="form-label">Related Help Key (optional)</label>
-                <input asp-for="RelatedHelpKey" class="form-control" />
+                <pems-label>Related Help Key (optional)</pems-label>
+                <pems-input asp-for="RelatedHelpKey" />
             </div>
         </div>
 
         <div class="mt-3 d-flex gap-2">
-            <button type="submit" class="btn btn-pems-solid">@Localizer["Save"]</button>
-            <a asp-action="Edit" asp-route-id="@Model.HelpArticleId" class="btn btn-outline-secondary">Back to article</a>
+            <pems-button tone="primary" type="submit">@Localizer["Save"]</pems-button>
+            <pems-button as="a" tone="neutral" outline="true" asp-action="Edit" asp-route-id="@Model.HelpArticleId">Back to article</pems-button>
         </div>
     </form>
 </div>

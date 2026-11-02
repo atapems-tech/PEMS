@@ -17,8 +17,8 @@
         <p class="small text-muted mb-0">@Localizer["Org_Team_Not_Manager"]</p>
     </div>
 
-    @if (TempData["Message"] != null) { <div class="alert alert-success" role="status">@TempData["Message"]</div> }
-    @if (TempData["Error"] != null) { <div class="alert alert-danger" role="alert">@TempData["Error"]</div> }
+    @if (TempData["Message"] != null) { <pems-alert tone="success">@TempData["Message"]</pems-alert> }
+    @if (TempData["Error"] != null) { <pems-alert tone="danger">@TempData["Error"]</pems-alert> }
 
     <div class="d-flex gap-2 mb-3 flex-wrap">
         <a class="vs-btn vs-btn--sm" asp-action="Chart"><i class="bi bi-diagram-3"></i> @Localizer["Org_Chart_Title"]</a>
@@ -26,10 +26,10 @@
         <a class="vs-btn vs-btn--sm" asp-area="Admin" asp-controller="OrganizationImport" asp-action="Index"><i class="bi bi-file-earmark-arrow-up"></i> @Localizer["Org_Imp_Title"]</a>
     </div>
 
-    <ul class="nav nav-tabs mb-3" role="tablist">
-        <li class="nav-item"><button class="nav-link active" data-bs-toggle="tab" data-bs-target="#orgTabPositions" type="button" role="tab">@Localizer["Org_Tab_Positions"] <span class="badge bg-secondary">@Model.Count</span></button></li>
+    <pems-nav css="mb-3" role="tablist">
+        <li class="nav-item"><button class="nav-link active" data-bs-toggle="tab" data-bs-target="#orgTabPositions" type="button" role="tab">@Localizer["Org_Tab_Positions"] <pems-badge tone="neutral">@Model.Count</pems-badge></button></li>
         <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#orgTabTree" type="button" role="tab">@Localizer["Org_Tab_Tree"]</button></li>
-    </ul>
+    </pems-nav>
 
     <div class="tab-content">
         <div class="tab-pane fade show active" id="orgTabPositions" role="tabpanel">
@@ -50,22 +50,22 @@
                         <tr class="@(r.IsActive ? "" : "text-muted")">
                             <td>
                                 <strong>@r.Title</strong>
-                                @if (!r.IsActive) { <span class="badge bg-secondary">@Localizer["Org_Inactive"]</span> }
-                                @if (r.IsActive && r.IsVacant) { <span class="badge bg-warning text-dark">@Localizer["Org_Vacant"]</span> }
+                                @if (!r.IsActive) { <pems-badge tone="neutral">@Localizer["Org_Inactive"]</pems-badge> }
+                                @if (r.IsActive && r.IsVacant) { <pems-badge tone="warning">@Localizer["Org_Vacant"]</pems-badge> }
                                 @if (r.IssueCount > 0) { <a asp-action="Diagnostics" class="badge bg-danger text-decoration-none">@r.IssueCount</a> }
                             </td>
                             <td class="small">@r.DepartmentName</td>
                             <td style="min-width:260px">
                                 <form asp-action="SetHierarchy" method="post" class="d-flex gap-1">
                                     <input type="hidden" name="positionId" value="@r.PositionId" />
-                                    <input name="positionCode" value="@r.PositionCode" maxlength="50" class="form-control form-control-sm" style="width:90px" placeholder="@Localizer["Org_Col_Code"]" aria-label="@Localizer["Org_Col_Code"]" />
-                                    <select name="parentPositionId" class="form-select form-select-sm" aria-label="@Localizer["Org_Col_Parent"]">
+                                    <pems-input scale="small" name="positionCode" value="@r.PositionCode" maxlength="50" style="width:90px" placeholder="@Localizer["Org_Col_Code"]" aria-label="@Localizer["Org_Col_Code"]" />
+                                    <pems-select scale="small" name="parentPositionId" aria-label="@Localizer["Org_Col_Parent"]">
                                         <option value="">@Localizer["Org_NoParent_Root"]</option>
                                         @foreach (var p in Model.Where(p => p.PositionId != r.PositionId && p.IsActive))
                                         {
                                             <option value="@p.PositionId" selected="@(r.ParentPositionId == p.PositionId)">@Label(p)</option>
                                         }
-                                    </select>
+                                    </pems-select>
                                     <button class="vs-btn vs-btn--sm" title="@Localizer["Org_Btn_Save"]" aria-label="@Localizer["Org_Btn_Save"]"><i class="bi bi-save"></i></button>
                                 </form>
                             </td>
@@ -86,10 +86,10 @@
                                 {
                                     <form asp-action="Assign" method="post" class="d-flex gap-1 align-items-center flex-wrap">
                                         <input type="hidden" name="positionId" value="@r.PositionId" />
-                                        <select name="employeeId" class="form-select form-select-sm" style="width:200px" aria-label="@Localizer["Org_Col_Holder"]" required>
+                                        <pems-select scale="small" name="employeeId" style="width:200px" aria-label="@Localizer["Org_Col_Holder"]" required>
                                             <option value="">@Localizer["Org_SelectEmployee"]</option>
                                             @foreach (var e in employees) { <option value="@e.EmployeeId">@e.Label</option> }
-                                        </select>
+                                        </pems-select>
                                         <label class="small"><input type="checkbox" name="isPrimary" value="true" checked /> @Localizer["Org_Primary"]</label>
                                         <input type="hidden" name="isPrimary" value="false" />
                                         <input type="date" name="startDate" class="form-control form-control-sm" style="width:130px" aria-label="@Localizer["Org_EffectiveFrom"]" />
@@ -101,7 +101,7 @@
                             <td class="text-end">
                                 @if (r.AssignmentId.HasValue)
                                 {
-                                    <form asp-action="EndAssignment" method="post" class="d-inline" onsubmit="return confirm(this.dataset.confirm);" data-confirm="@Localizer["Org_Confirm_End"]">
+                                    <form asp-action="EndAssignment" method="post" class="d-inline" data-pems-confirm="@Localizer["Org_Confirm_End"]">
                                         <input type="hidden" name="assignmentId" value="@r.AssignmentId" />
                                         <button class="vs-icon-btn" title="@Localizer["Org_Btn_End"]" aria-label="@Localizer["Org_Btn_End"]"><i class="bi bi-person-dash"></i></button>
                                     </form>
@@ -117,17 +117,17 @@
 
         <div class="tab-pane fade" id="orgTabTree" role="tabpanel">
             @{
-                void RenderNode(PEMS.Application.Organization.OrganizationPositionRow n, int depth, HashSet<int> seen)
+                async Task RenderNode(PEMS.Application.Organization.OrganizationPositionRow n, int depth, HashSet<int> seen)
                 {
                     if (!seen.Add(n.PositionId) || depth > 30) { return; }
                     <li>
                         <span class="@(n.IsActive ? "" : "text-muted")">@Label(n)</span>
-                        @if (n.IsVacant) { <span class="badge bg-warning text-dark">@Localizer["Org_Vacant"]</span> }
+                        @if (n.IsVacant) { <pems-badge tone="warning">@Localizer["Org_Vacant"]</pems-badge> }
                         else { <span class="small text-muted"> — @n.HolderName</span> }
                         @if (byParent.TryGetValue(n.PositionId, out var kids))
                         {
                             <ul>
-                                @foreach (var k in kids) { RenderNode(k, depth + 1, seen); }
+                                @foreach (var k in kids) { await RenderNode(k, depth + 1, seen); }
                             </ul>
                         }
                     </li>
@@ -135,7 +135,7 @@
             }
             <ul class="org-tree">
                 @{ var seenNodes = new HashSet<int>(); }
-                @foreach (var root in roots) { RenderNode(root, 0, seenNodes); }
+                @foreach (var root in roots) { await RenderNode(root, 0, seenNodes); }
             </ul>
             @if (!Model.Any()) { <div class="vs-empty">@Localizer["Org_Empty"]</div> }
         </div>

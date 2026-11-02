@@ -243,7 +243,7 @@
             {
                 <form asp-action="Unfreeze" asp-route-id="@Model.DocumentId" method="post" class="d-flex flex-wrap gap-2 align-items-center">
                     <pems-input scale="small" type="text" name="reason" style="max-width:240px;" placeholder="Unfreeze reason (required)" required />
-                    <pems-button tone="dark" size="small" outline="true" type="submit" onclick="return confirm('انجماد این مدرک برداشته شود؟');">
+                    <pems-button tone="dark" size="small" outline="true" type="submit" data-pems-confirm="انجماد این مدرک برداشته شود؟">
                         <i class="bi bi-sun"></i> @Localizer["Unfreeze"]
                     </pems-button>
                 </form>
@@ -260,7 +260,7 @@
             {
                 <form asp-action="ReleaseHold" asp-route-id="@Model.DocumentId" method="post" class="d-flex flex-wrap gap-2 align-items-center">
                     <pems-input scale="small" type="text" name="reason" style="max-width:240px;" placeholder="Release reason (required)" required />
-                    <pems-button tone="dark" size="small" outline="true" type="submit" onclick="return confirm('Hold این مدرک رفع شود؟');">
+                    <pems-button tone="dark" size="small" outline="true" type="submit" data-pems-confirm="Hold این مدرک رفع شود؟">
                         <i class="bi bi-play-circle"></i> @Localizer["Release Hold"]
                     </pems-button>
                 </form>
@@ -563,7 +563,7 @@
                                         <form asp-controller="OCRProcessing" asp-action="Retry" asp-route-id="@file.AttachmentId" method="post" class="d-inline">
                                             <pems-button tone="neutral" size="small" outline="true" data-bs-toggle="tooltip" title="Re-analyze" aria-label="Re-analyze @file.FileName"><i class="bi bi-arrow-repeat"></i></pems-button>
                                         </form>
-                                        <form asp-action="DeleteAttachment" asp-route-id="@file.AttachmentId" method="post" class="d-inline" onsubmit="return confirm('Delete file?')">
+                                        <form asp-action="DeleteAttachment" asp-route-id="@file.AttachmentId" method="post" class="d-inline" data-pems-confirm="Delete file?">
                                             <pems-button tone="danger" size="small" outline="true" data-bs-toggle="tooltip" title="Delete attachment" aria-label="Delete @file.FileName"><i class="bi bi-trash"></i></pems-button>
                                         </form>
                                     </div>

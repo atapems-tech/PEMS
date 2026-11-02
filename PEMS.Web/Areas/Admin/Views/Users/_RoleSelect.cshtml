@@ -15,12 +15,8 @@
     };
 }
 <div class="mb-3">
-    <label class="form-label d-block" for="SelectedRoles">@Localizer["Roles"]</label>
-    <select id="SelectedRoles" name="SelectedRoles" multiple class="form-select" size="8"
-            data-pems-multiselect
-            data-placeholder="@Localizer["Search roles..."]"
-            data-no-results="@Localizer["No matching role"]"
-            data-remove-title="@Localizer["Remove"]">
+    <pems-label css="d-block" for="SelectedRoles">@Localizer["Roles"]</pems-label>
+    <pems-select id="SelectedRoles" name="SelectedRoles" multiple size="8" data-pems-multiselect data-placeholder="@Localizer["Search roles..."]" data-no-results="@Localizer["No matching role"]" data-remove-title="@Localizer["Remove"]">
         @foreach (var group in groups.Where(g => g.Roles.Count > 0))
         {
             <optgroup label="@group.Label">
@@ -30,6 +26,6 @@
                 }
             </optgroup>
         }
-    </select>
+    </pems-select>
     <div class="form-text">@Localizer["Type to search; select several roles. Remove a role with its ×."]</div>
 </div>

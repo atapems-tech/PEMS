@@ -42,13 +42,13 @@
         <div class="pems-command-bar">
             <form asp-action="Commit" method="post">
                 <input type="hidden" name="batchId" value="@Model.MaintenanceHistoryImportBatchId" />
-                <pems-button tone="primary" type="submit" onclick="return confirm('Commit the approved rows? New Maintenance History records will be created.')">
+                <pems-button tone="primary" type="submit" data-pems-confirm="Commit the approved rows? New Maintenance History records will be created.">
                     <i class="bi bi-check-circle"></i> Commit Approved Rows
                 </pems-button>
             </form>
             <form asp-action="Discard" method="post">
                 <input type="hidden" name="batchId" value="@Model.MaintenanceHistoryImportBatchId" />
-                <pems-button tone="danger" outline="true" type="submit" onclick="return confirm('Discard this entire import batch?')">
+                <pems-button tone="danger" outline="true" type="submit" data-pems-confirm="Discard this entire import batch?">
                     <i class="bi bi-trash"></i> Discard Batch
                 </pems-button>
             </form>

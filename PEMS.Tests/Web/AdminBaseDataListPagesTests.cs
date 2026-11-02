@@ -62,7 +62,7 @@ public class AdminBaseDataListPagesTests
         Assert.Single(Regex.Matches(Chips(html), "class=\"pems-filter-chip\""));
         Assert.Contains("vs-pill--success", html);                                       // active
         Assert.Contains("vs-pill--danger", html);                                        // locked
-        Assert.Contains("data-confirm=\"Deactivate user ali?\"", html);
+        Assert.Contains("data-pems-confirm=\"Deactivate user ali?\"", html);
         Assert.Contains("bi-key", html);                                                 // reset administrator (another admin)
         Assert.Contains("lp-compose", html);
     }

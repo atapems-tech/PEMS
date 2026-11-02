@@ -12,9 +12,9 @@
         <a class="vs-btn vs-btn--sm" asp-action="Index"><i class="bi bi-arrow-left"></i> @Localizer["Org_Imp_Title"]</a>
     </div>
 
-    @if (committed) { <div class="alert alert-success" role="status">@Localizer["Org_Imp_Committed"]</div> }
-    else if (Model.Errors.Count > 0) { <div class="alert alert-danger" role="alert">@Localizer["Org_Imp_Rejected"]</div> }
-    else { <div class="alert alert-info" role="status">@Localizer["Org_Imp_ValidOk"]</div> }
+    @if (committed) { <pems-alert tone="success">@Localizer["Org_Imp_Committed"]</pems-alert> }
+    else if (Model.Errors.Count > 0) { <pems-alert tone="danger">@Localizer["Org_Imp_Rejected"]</pems-alert> }
+    else { <pems-alert tone="info">@Localizer["Org_Imp_ValidOk"]</pems-alert> }
 
     <section class="vs-panel mb-3">
         <dl class="row mb-0">
@@ -43,7 +43,7 @@
 
     @if (!string.IsNullOrEmpty(token) && Model.Errors.Count == 0 && !committed)
     {
-        <form asp-action="Confirm" method="post" onsubmit="return confirm(this.dataset.confirm);" data-confirm="@Localizer["Org_Imp_ConfirmPrompt"]">
+        <form asp-action="Confirm" method="post" data-pems-confirm="@Localizer["Org_Imp_ConfirmPrompt"]">
             <input type="hidden" name="token" value="@token" />
             <button class="vs-btn vs-btn--primary"><i class="bi bi-check-lg"></i> @Localizer["Org_Imp_Confirm"]</button>
         </form>

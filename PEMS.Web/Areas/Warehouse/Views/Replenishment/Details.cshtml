@@ -11,11 +11,11 @@
 
 @if (TempData["Message"] != null)
 {
-    <div class="alert alert-success py-2 px-3 small">@TempData["Message"]</div>
+    <pems-alert tone="success" css="py-2 px-3 small">@TempData["Message"]</pems-alert>
 }
 @if (TempData["Error"] != null)
 {
-    <div class="alert alert-danger py-2 px-3 small">@TempData["Error"]</div>
+    <pems-alert tone="danger" css="py-2 px-3 small">@TempData["Error"]</pems-alert>
 }
 
 <div class="content-card mb-3">
@@ -28,22 +28,22 @@
             </div>
         </div>
         <div>
-            <span class="badge @badge fs-6">@s.Status</span>
-            @if (!s.IsCurrentlyDefinitive) { <span class="badge bg-danger fs-6">@Localizer["Repl_NotDefinitive"]</span> }
+            <pems-badge tone="none" css="@badge fs-6">@s.Status</pems-badge>
+            @if (!s.IsCurrentlyDefinitive) { <pems-badge tone="danger" css="fs-6">@Localizer["Repl_NotDefinitive"]</pems-badge> }
         </div>
     </div>
 
-    <div class="alert alert-info py-2 px-3 small mt-3 mb-2"><i class="bi bi-info-circle"></i> @Localizer["Repl_StockOnlyNote"]</div>
+    <pems-alert tone="info" css="py-2 px-3 small mt-3 mb-2"><i class="bi bi-info-circle"></i> @Localizer["Repl_StockOnlyNote"]</pems-alert>
 
     @if (!s.IsCurrentlyDefinitive)
     {
-        <div class="alert alert-danger py-2 px-3 small mb-2">
+        <pems-alert tone="danger" css="py-2 px-3 small mb-2">
             @Localizer["Repl_NotDefinitiveHint"]: <code>@Model.BlockingIssueCodes</code>
-        </div>
+        </pems-alert>
     }
     @if (Model.RequiresWarehouseAttribution)
     {
-        <div class="alert alert-warning py-2 px-3 small mb-2"><strong>@Localizer["Repl_RequiresAttribution"]</strong> — @Localizer["Repl_RequiresAttributionHelp"]</div>
+        <pems-alert tone="warning" css="py-2 px-3 small mb-2"><strong>@Localizer["Repl_RequiresAttribution"]</strong> — @Localizer["Repl_RequiresAttributionHelp"]</pems-alert>
     }
 
     <div class="row g-3 mt-1">
@@ -79,7 +79,7 @@
         <form action="/PreProcurement/SendRecommendation" method="post" class="mt-3">
             @Html.AntiForgeryToken()
             <input type="hidden" name="recommendationId" value="@s.Id" />
-            <button type="submit" class="btn btn-sm btn-primary"><i class="bi bi-cart-plus" aria-hidden="true"></i> @Localizer["Ppr_Send"]</button>
+            <pems-button tone="none" size="small" css="btn-primary" type="submit"><i class="bi bi-cart-plus" aria-hidden="true"></i> @Localizer["Ppr_Send"]</pems-button>
             <span class="small text-muted ms-2">@Localizer["Ppr_SendHint"]</span>
         </form>
     }
@@ -94,10 +94,10 @@
             <input type="hidden" name="id" value="@s.Id" />
             <input type="hidden" name="rowVersion" value="@version" />
             <div class="flex-grow-1" style="max-width:520px;">
-                <label class="form-label small mb-1">@Localizer["Repl_Reason"]</label>
-                <input type="text" name="reason" class="form-control form-control-sm" maxlength="500" required />
+                <pems-label css="small mb-1">@Localizer["Repl_Reason"]</pems-label>
+                <pems-input scale="small" type="text" name="reason" maxlength="500" required />
             </div>
-            <button type="submit" class="btn btn-sm btn-outline-secondary"><i class="bi bi-x-circle"></i> @Localizer["Repl_Dismiss"]</button>
+            <pems-button tone="neutral" size="small" outline="true" type="submit"><i class="bi bi-x-circle"></i> @Localizer["Repl_Dismiss"]</pems-button>
         </form>
     }
     @if (canReview && s.Status == "Dismissed")
@@ -107,10 +107,10 @@
             <input type="hidden" name="id" value="@s.Id" />
             <input type="hidden" name="rowVersion" value="@version" />
             <div class="flex-grow-1" style="max-width:520px;">
-                <label class="form-label small mb-1">@Localizer["Repl_Note"]</label>
-                <input type="text" name="note" class="form-control form-control-sm" maxlength="500" />
+                <pems-label css="small mb-1">@Localizer["Repl_Note"]</pems-label>
+                <pems-input scale="small" type="text" name="note" maxlength="500" />
             </div>
-            <button type="submit" class="btn btn-sm btn-pems-solid"><i class="bi bi-arrow-counterclockwise"></i> @Localizer["Repl_Reopen"]</button>
+            <pems-button tone="primary" size="small" type="submit"><i class="bi bi-arrow-counterclockwise"></i> @Localizer["Repl_Reopen"]</pems-button>
         </form>
     }
 </div>
@@ -160,4 +160,4 @@
     </div>
 </div>
 
-<p class="mt-3"><a asp-action="Index" class="btn btn-sm btn-outline-secondary"><i class="bi bi-arrow-left"></i> @Localizer["Repl_Back"]</a></p>
+<p class="mt-3"><pems-button as="a" tone="neutral" size="small" outline="true" asp-action="Index"><i class="bi bi-arrow-left"></i> @Localizer["Repl_Back"]</pems-button></p>

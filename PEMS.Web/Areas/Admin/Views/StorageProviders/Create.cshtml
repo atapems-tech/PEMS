@@ -2,7 +2,7 @@
 
 <div class="admin-page-shell">
     <div class="admin-hero"><div class="d-flex align-items-center gap-3"><div><p>Configure a new Local / Network Share / FTP / SFTP destination.</p></div></div></div>
-    @if (TempData["Error"] != null) { <div class="alert alert-danger">@TempData["Error"]</div> }
+    @if (TempData["Error"] != null) { <pems-alert tone="danger">@TempData["Error"]</pems-alert> }
     <form asp-action="Create" method="post">
         @await Html.PartialAsync("_Form", Model)
     </form>

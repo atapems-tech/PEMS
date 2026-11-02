@@ -8,11 +8,11 @@
 
 @if (TempData["Message"] != null)
 {
-    <div class="alert alert-success py-2 px-3 small">@TempData["Message"]</div>
+    <pems-alert tone="success" css="py-2 px-3 small">@TempData["Message"]</pems-alert>
 }
 @if (TempData["Error"] != null)
 {
-    <div class="alert alert-danger py-2 px-3 small">@TempData["Error"]</div>
+    <pems-alert tone="danger" css="py-2 px-3 small">@TempData["Error"]</pems-alert>
 }
 
 <div class="content-card mb-3">
@@ -22,11 +22,11 @@
             <div class="text-muted">@Model.Description</div>
         </div>
         <div class="d-flex gap-2">
-            <button type="button" class="btn btn-sm btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#editMaterialModal"><i class="bi bi-pencil"></i> @Localizer["Edit"]</button>
-            <button type="button" class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#receiveStockModal"><i class="bi bi-box-arrow-in-down"></i> Receive Stock</button>
+            <pems-button tone="neutral" size="small" outline="true" type="button" data-bs-toggle="modal" data-bs-target="#editMaterialModal"><i class="bi bi-pencil"></i> @Localizer["Edit"]</pems-button>
+            <pems-button tone="primary" size="small" outline="true" type="button" data-bs-toggle="modal" data-bs-target="#receiveStockModal"><i class="bi bi-box-arrow-in-down"></i> Receive Stock</pems-button>
             <form asp-action="ToggleActive" method="post" class="d-inline">
                 <input type="hidden" name="id" value="@Model.MaterialItemId" />
-                <button type="submit" class="btn btn-sm btn-outline-danger" onclick="return confirm('وضعیت این متریال تغییر کنه؟')"><i class="bi bi-slash-circle"></i></button>
+                <pems-button tone="danger" size="small" outline="true" type="submit" data-pems-confirm="وضعیت این متریال تغییر کنه؟"><i class="bi bi-slash-circle"></i></pems-button>
             </form>
         </div>
     </div>
@@ -43,15 +43,15 @@
     </pems-info-grid>
 </div>
 
-<ul class="nav nav-tabs mb-3">
-    <li class="nav-item"><button class="nav-link active" data-bs-toggle="tab" data-bs-target="#tab-stock" type="button"><i class="bi bi-boxes"></i> Stock <span class="badge bg-secondary">@Model.Stocks.Count</span></button></li>
+<pems-nav css="mb-3">
+    <li class="nav-item"><button class="nav-link active" data-bs-toggle="tab" data-bs-target="#tab-stock" type="button"><i class="bi bi-boxes"></i> Stock <pems-badge tone="neutral">@Model.Stocks.Count</pems-badge></button></li>
     <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-tx" type="button"><i class="bi bi-list-ul"></i> Recent Transactions</button></li>
     @if (Model.SourceImports.Any())
     {
-        <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-source" type="button"><i class="bi bi-file-earmark-excel"></i> Source Imports <span class="badge bg-secondary">@Model.SourceImports.Count</span></button></li>
+        <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-source" type="button"><i class="bi bi-file-earmark-excel"></i> Source Imports <pems-badge tone="neutral">@Model.SourceImports.Count</pems-badge></button></li>
     }
     <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-barcode" type="button"><i class="bi bi-upc-scan"></i> @Localizer["Barcode"]</button></li>
-</ul>
+</pems-nav>
 
 <div class="tab-content">
     <div class="tab-pane fade show active" id="tab-stock" role="tabpanel">
@@ -69,12 +69,8 @@
                             <td>@s.AvailableQuantity</td>
                             <td>@(s.ReorderPoint?.ToString() ?? "-")</td>
                             <td class="text-end">
-                                <button type="button" class="btn btn-sm btn-outline-secondary adjust-stock-btn"
-                                        data-warehouse-id="@s.WarehouseId" data-warehouse-code="@s.WarehouseCode" data-onhand="@s.OnHandQuantity"
-                                        title="Adjust"><i class="bi bi-sliders"></i></button>
-                                <button type="button" class="btn btn-sm btn-outline-secondary transfer-stock-btn"
-                                        data-warehouse-id="@s.WarehouseId" data-warehouse-code="@s.WarehouseCode" data-available="@s.AvailableQuantity"
-                                        title="Transfer"><i class="bi bi-arrow-left-right"></i></button>
+                                <pems-button tone="neutral" size="small" outline="true" css="adjust-stock-btn" type="button" data-warehouse-id="@s.WarehouseId" data-warehouse-code="@s.WarehouseCode" data-onhand="@s.OnHandQuantity" title="Adjust"><i class="bi bi-sliders"></i></pems-button>
+                                <pems-button tone="neutral" size="small" outline="true" css="transfer-stock-btn" type="button" data-warehouse-id="@s.WarehouseId" data-warehouse-code="@s.WarehouseCode" data-available="@s.AvailableQuantity" title="Transfer"><i class="bi bi-arrow-left-right"></i></pems-button>
                             </td>
                         </tr>
                     }
@@ -103,7 +99,7 @@
                                 <td class="small">@(s.RawMrsNo ?? "-")</td>
                                 <td class="small">@(s.RawSupplier ?? "-")</td>
                                 <td class="small">@(s.RawPoNo ?? "-")</td>
-                                <td class="text-end"><a asp-controller="MrsImport" asp-action="Review" asp-route-batchId="@s.MrsImportBatchId" class="btn btn-sm btn-outline-secondary">Open Batch</a></td>
+                                <td class="text-end"><pems-button as="a" tone="neutral" size="small" outline="true" asp-controller="MrsImport" asp-action="Review" asp-route-batchId="@s.MrsImportBatchId">Open Batch</pems-button></td>
                             </tr>
                         }
                     </tbody>
@@ -121,7 +117,7 @@
                     {
                         <tr>
                             <td class="small">@t.TransactionDate.ToString("yyyy-MM-dd HH:mm")</td>
-                            <td><span class="badge bg-light text-dark border">@t.TransactionType</span></td>
+                            <td><pems-badge tone="light">@t.TransactionType</pems-badge></td>
                             <td>@t.WarehouseCode</td>
                             <td>@t.Quantity</td>
                             <td class="small">@(t.ReferenceType ?? "-") @(t.ReferenceId?.ToString() ?? "")</td>
@@ -139,99 +135,92 @@
     </div>
 </div>
 
-<div class="modal fade" id="receiveStockModal" tabindex="-1">
-    <div class="modal-dialog"><div class="modal-content">
+<pems-modal id="receiveStockModal" tabindex="-1">
         <form asp-action="ReceiveStock" method="post">
             <input type="hidden" name="materialItemId" value="@Model.MaterialItemId" />
             <div class="modal-header"><h6 class="modal-title">@Localizer["دریافت کالا به انبار"]</h6></div>
             <div class="modal-body">
                 <div class="mb-2">
-                    <label class="form-label small">@Localizer["اسکن بارکد انبار (اختیاری)"]</label>
+                    <pems-label css="small">@Localizer["اسکن بارکد انبار (اختیاری)"]</pems-label>
                     <div class="input-group input-group-sm">
                         <span class="input-group-text"><i class="bi bi-upc-scan"></i></span>
-                        <input type="text" id="receiveWarehouseScanInput" class="form-control" dir="ltr" placeholder="Scan Warehouse barcode..." />
-                        <button type="button" class="btn btn-outline-secondary" id="receiveWarehouseScanBtn">@Localizer["Resolve"]</button>
+                        <pems-input type="text" id="receiveWarehouseScanInput" dir="ltr" placeholder="Scan Warehouse barcode..." />
+                        <pems-button tone="neutral" outline="true" type="button" id="receiveWarehouseScanBtn">@Localizer["Resolve"]</pems-button>
                     </div>
                 </div>
                 <div class="mb-2">
-                    <label class="form-label small">@Localizer["انبار"]</label>
-                    <select name="warehouseId" id="receiveWarehouseSelect" class="form-select form-select-sm" required>
+                    <pems-label css="small">@Localizer["انبار"]</pems-label>
+                    <pems-select scale="small" name="warehouseId" id="receiveWarehouseSelect" required>
                         @foreach (var w in warehouses) { <option value="@w.WarehouseId">@w.Code</option> }
-                    </select>
+                    </pems-select>
                 </div>
-                <div class="mb-2"><label class="form-label small">@Localizer["مقدار"]</label><input name="quantity" type="number" step="0.001" class="form-control form-control-sm" required /></div>
-                <div class="mb-2"><label class="form-label small">@Localizer["دلیل / مرجع (اختیاری)"]</label><input name="reason" class="form-control form-control-sm" /></div>
+                <div class="mb-2"><pems-label css="small">@Localizer["مقدار"]</pems-label><pems-input scale="small" name="quantity" type="number" step="0.001" required /></div>
+                <div class="mb-2"><pems-label css="small">@Localizer["دلیل / مرجع (اختیاری)"]</pems-label><pems-input scale="small" name="reason" /></div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">@Localizer["انصراف"]</button>
-                <button type="submit" class="btn btn-pems-solid btn-sm">@Localizer["ثبت"]</button>
+                <pems-button tone="neutral" size="small" outline="true" type="button" data-bs-dismiss="modal">@Localizer["انصراف"]</pems-button>
+                <pems-button tone="primary" size="small" type="submit">@Localizer["ثبت"]</pems-button>
             </div>
         </form>
-    </div></div>
-</div>
+    </pems-modal>
 
-<div class="modal fade" id="adjustStockModal" tabindex="-1">
-    <div class="modal-dialog"><div class="modal-content">
+<pems-modal id="adjustStockModal" tabindex="-1">
         <form asp-action="AdjustStock" method="post">
             <input type="hidden" name="materialItemId" value="@Model.MaterialItemId" />
             <input type="hidden" name="warehouseId" id="adjustWarehouseId" />
             <div class="modal-header"><h6 class="modal-title">اصلاح موجودی <span id="adjustWarehouseLabel" class="text-muted small"></span></h6></div>
             <div class="modal-body">
-                <div class="mb-2"><label class="form-label small">@Localizer["موجودی جدید (On Hand)"]</label><input name="newOnHandQuantity" id="adjustNewOnHand" type="number" step="0.001" class="form-control form-control-sm" required /></div>
-                <div class="mb-2"><label class="form-label small">@Localizer["دلیل"]</label><input name="reason" class="form-control form-control-sm" required /></div>
+                <div class="mb-2"><pems-label css="small">@Localizer["موجودی جدید (On Hand)"]</pems-label><pems-input scale="small" name="newOnHandQuantity" id="adjustNewOnHand" type="number" step="0.001" required /></div>
+                <div class="mb-2"><pems-label css="small">@Localizer["دلیل"]</pems-label><pems-input scale="small" name="reason" required /></div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">@Localizer["انصراف"]</button>
-                <button type="submit" class="btn btn-pems-solid btn-sm">@Localizer["ثبت"]</button>
+                <pems-button tone="neutral" size="small" outline="true" type="button" data-bs-dismiss="modal">@Localizer["انصراف"]</pems-button>
+                <pems-button tone="primary" size="small" type="submit">@Localizer["ثبت"]</pems-button>
             </div>
         </form>
-    </div></div>
-</div>
+    </pems-modal>
 
-<div class="modal fade" id="transferStockModal" tabindex="-1">
-    <div class="modal-dialog"><div class="modal-content">
+<pems-modal id="transferStockModal" tabindex="-1">
         <form asp-action="TransferStock" method="post">
             <input type="hidden" name="materialItemId" value="@Model.MaterialItemId" />
             <input type="hidden" name="fromWarehouseId" id="transferFromWarehouseId" />
             <div class="modal-header"><h6 class="modal-title">انتقال بین انبارها <span id="transferFromWarehouseLabel" class="text-muted small"></span></h6></div>
             <div class="modal-body">
                 <div class="mb-2">
-                    <label class="form-label small">@Localizer["انبار مقصد"]</label>
-                    <select name="toWarehouseId" class="form-select form-select-sm" required>
+                    <pems-label css="small">@Localizer["انبار مقصد"]</pems-label>
+                    <pems-select scale="small" name="toWarehouseId" required>
                         @foreach (var w in warehouses) { <option value="@w.WarehouseId">@w.Code</option> }
-                    </select>
+                    </pems-select>
                 </div>
-                <div class="mb-2"><label class="form-label small">مقدار (حداکثر: <span id="transferAvailable"></span>)</label><input name="quantity" type="number" step="0.001" class="form-control form-control-sm" required /></div>
-                <div class="mb-2"><label class="form-label small">@Localizer["دلیل / مرجع (اختیاری)"]</label><input name="reason" class="form-control form-control-sm" /></div>
+                <div class="mb-2"><pems-label css="small">مقدار (حداکثر: <span id="transferAvailable"></span>)</pems-label><pems-input scale="small" name="quantity" type="number" step="0.001" required /></div>
+                <div class="mb-2"><pems-label css="small">@Localizer["دلیل / مرجع (اختیاری)"]</pems-label><pems-input scale="small" name="reason" /></div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">@Localizer["انصراف"]</button>
-                <button type="submit" class="btn btn-pems-solid btn-sm">@Localizer["ثبت"]</button>
+                <pems-button tone="neutral" size="small" outline="true" type="button" data-bs-dismiss="modal">@Localizer["انصراف"]</pems-button>
+                <pems-button tone="primary" size="small" type="submit">@Localizer["ثبت"]</pems-button>
             </div>
         </form>
-    </div></div>
-</div>
+    </pems-modal>
 
-<div class="modal fade" id="editMaterialModal" tabindex="-1">
-    <div class="modal-dialog modal-lg"><div class="modal-content">
+<pems-modal size="large" id="editMaterialModal" tabindex="-1">
         <form asp-action="Edit" method="post">
             <input type="hidden" name="materialItemId" value="@Model.MaterialItemId" />
             <div class="modal-header"><h6 class="modal-title">Edit Material</h6></div>
             <div class="modal-body">
                 <div class="row g-3 mb-2">
-                    <div class="col-md-6"><label class="form-label">@Localizer["Material Code"]</label><input name="materialCode" value="@Model.MaterialCode" class="form-control" required /></div>
-                    <div class="col-md-6"><label class="form-label">@Localizer["Material Type"]</label><input name="materialType" value="@Model.MaterialType" class="form-control" /></div>
+                    <div class="col-md-6"><pems-label>@Localizer["Material Code"]</pems-label><pems-input name="materialCode" value="@Model.MaterialCode" required /></div>
+                    <div class="col-md-6"><pems-label>@Localizer["Material Type"]</pems-label><pems-input name="materialType" value="@Model.MaterialType" /></div>
                 </div>
-                <div class="mb-2"><label class="form-label">@Localizer["Description"]</label><input name="description" value="@Model.Description" class="form-control" required /></div>
-                <div class="mb-2"><label class="form-label">@Localizer["Long Description"]</label><textarea name="longDescription" class="form-control" rows="2">@Model.LongDescription</textarea></div>
+                <div class="mb-2"><pems-label>@Localizer["Description"]</pems-label><pems-input name="description" value="@Model.Description" required /></div>
+                <div class="mb-2"><pems-label>@Localizer["Long Description"]</pems-label><pems-textarea name="longDescription" rows="2">@Model.LongDescription</pems-textarea></div>
                 <div class="row g-3 mb-2">
-                    <div class="col-md-6"><label class="form-label">@Localizer["Manufacturer"]</label><input name="manufacturer" value="@Model.Manufacturer" class="form-control" /></div>
-                    <div class="col-md-6"><label class="form-label">@Localizer["Manufacturer Part No."]</label><input name="manufacturerPartNumber" value="@Model.ManufacturerPartNumber" class="form-control" /></div>
+                    <div class="col-md-6"><pems-label>@Localizer["Manufacturer"]</pems-label><pems-input name="manufacturer" value="@Model.Manufacturer" /></div>
+                    <div class="col-md-6"><pems-label>@Localizer["Manufacturer Part No."]</pems-label><pems-input name="manufacturerPartNumber" value="@Model.ManufacturerPartNumber" /></div>
                 </div>
                 <div class="row g-3 mb-2">
-                    <div class="col-md-4"><label class="form-label">@Localizer["Model"]</label><input name="model" value="@Model.Model" class="form-control" /></div>
-                    <div class="col-md-4"><label class="form-label">@Localizer["Size"]</label><input name="size" value="@Model.Size" class="form-control" /></div>
-                    <div class="col-md-4"><label class="form-label">@Localizer["Material Grade"]</label><input name="materialGrade" value="@Model.MaterialGrade" class="form-control" /></div>
+                    <div class="col-md-4"><pems-label>@Localizer["Model"]</pems-label><pems-input name="model" value="@Model.Model" /></div>
+                    <div class="col-md-4"><pems-label>@Localizer["Size"]</pems-label><pems-input name="size" value="@Model.Size" /></div>
+                    <div class="col-md-4"><pems-label>@Localizer["Material Grade"]</pems-label><pems-input name="materialGrade" value="@Model.MaterialGrade" /></div>
                 </div>
                 <div class="d-flex gap-3">
                     <div class="form-check"><input class="form-check-input" type="checkbox" name="isStockItem" value="true" checked="@Model.IsStockItem" id="editIsStockItem" /><label class="form-check-label" for="editIsStockItem">@Localizer["Stock Item"]</label></div>
@@ -239,12 +228,11 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">@Localizer["Cancel"]</button>
-                <button type="submit" class="btn btn-pems-solid">@Localizer["Save"]</button>
+                <pems-button tone="neutral" outline="true" type="button" data-bs-dismiss="modal">@Localizer["Cancel"]</pems-button>
+                <pems-button tone="primary" type="submit">@Localizer["Save"]</pems-button>
             </div>
         </form>
-    </div></div>
-</div>
+    </pems-modal>
 
 @section Scripts {
 <script>

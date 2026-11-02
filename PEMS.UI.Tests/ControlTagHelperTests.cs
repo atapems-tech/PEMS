@@ -36,6 +36,11 @@ public sealed class ControlTagHelperTests
                 [new("required", "required"), new("placeholder", "Tag")]));
 
     [Fact]
+    public void An_input_keeps_its_form_attribute_the_built_in_helper_binds()
+        => Assert.Equal("<input class=\"form-control\" name=\"description\" form=\"rule_2\" />",
+            Run(new PemsInputTagHelper(null!) { Name = "description", FormName = "rule_2" }, "pems-input", []));
+
+    [Fact]
     public void A_check_input_gets_the_check_class()
         => Assert.Equal("<input class=\"form-check-input me-1\" name=\"on\" type=\"checkbox\" />",
             Run(new PemsInputTagHelper(null!) { Kind = "check", Css = "me-1", Name = "on", InputTypeName = "checkbox" }, "pems-input", []));

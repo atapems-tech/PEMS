@@ -10,23 +10,23 @@
     <form asp-action="Create" method="post">
 
         <div class="mb-3">
-            <label class="form-label">Role Name (English, no spaces)</label>
-            <input asp-for="Name" class="form-control" placeholder="e.g. QualityInspector" />
+            <pems-label>Role Name (English, no spaces)</pems-label>
+            <pems-input asp-for="Name" placeholder="e.g. QualityInspector" />
             <span asp-validation-for="Name" class="text-danger small"></span>
         </div>
 
         <div class="mb-3">
-            <label class="form-label">@Localizer["Display Name"]</label>
-            <input asp-for="DisplayName" class="form-control" placeholder="e.g. Quality Inspector" />
+            <pems-label>@Localizer["Display Name"]</pems-label>
+            <pems-input asp-for="DisplayName" placeholder="e.g. Quality Inspector" />
         </div>
 
         <div class="mb-3">
-            <label class="form-label">@Localizer["Description"]</label>
-            <textarea asp-for="Description" class="form-control" rows="3"></textarea>
+            <pems-label>@Localizer["Description"]</pems-label>
+            <pems-textarea asp-for="Description" rows="3"></pems-textarea>
         </div>
 
-        <button type="submit" class="btn btn-pems-solid">@Localizer["Save"]</button>
-        <a asp-action="Index" class="btn btn-outline-secondary">@Localizer["Cancel"]</a>
+        <pems-button tone="primary" type="submit">@Localizer["Save"]</pems-button>
+        <pems-button as="a" tone="neutral" outline="true" asp-action="Index">@Localizer["Cancel"]</pems-button>
 
     </form>
 

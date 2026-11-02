@@ -446,9 +446,7 @@
     }
 
     /* ------------------------------------------------------------------ generate-number button lives in an independent form */
-    document.querySelectorAll('[data-pc-confirm]').forEach(function (b) {
-        b.addEventListener('click', function (e) { if (!confirm(b.dataset.pcConfirm)) e.preventDefault(); });
-    });
+    document.querySelectorAll('[data-pc-confirm]').forEach(function (b) { b.setAttribute('data-pems-confirm', b.dataset.pcConfirm); });
 
     /* ------------------------------------------------------------------ Admin: positions multi-select -> CSV (option order) */
     document.querySelectorAll('select[data-pc-pos-target]').forEach(function (sel) {

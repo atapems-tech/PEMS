@@ -16,7 +16,7 @@
 
         <pems-list-toolbar heading="@Localizer["Mp_Title"]" total="@Model.TotalCount">
             <pems-list-tools>
-                <form asp-action="GenerateDueWorkOrders" method="post" class="d-inline" data-confirm="@Localizer["Mp_GenerateDueConfirm"]" onsubmit="return confirm(this.dataset.confirm)">
+                <form asp-action="GenerateDueWorkOrders" method="post" class="d-inline" data-pems-confirm="@Localizer["Mp_GenerateDueConfirm"]">
                     <button type="submit" class="lp-icon-btn" title="@Localizer["Mp_GenerateDue"]"><i class="bi bi-lightning-charge" aria-hidden="true"></i><span class="visually-hidden">@Localizer["Mp_GenerateDue"]</span></button>
                 </form>
                 <pems-list-reset-columns grid-key="MaintenancePlan" />

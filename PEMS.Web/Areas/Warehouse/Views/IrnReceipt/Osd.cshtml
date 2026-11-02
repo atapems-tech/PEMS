@@ -6,8 +6,8 @@
 
 <div class="content-card mb-3 d-print-none">
     <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
-        <a asp-action="Details" asp-route-id="@Model.IrnReceiptId" class="btn btn-sm btn-outline-secondary"><i class="bi bi-arrow-left"></i> @Model.IrnNumber</a>
-        <button onclick="window.print()" class="btn btn-sm btn-outline-secondary"><i class="bi bi-printer"></i> @Localizer["Print"]</button>
+        <pems-button as="a" tone="neutral" size="small" outline="true" asp-action="Details" asp-route-id="@Model.IrnReceiptId"><i class="bi bi-arrow-left"></i> @Model.IrnNumber</pems-button>
+        <pems-button tone="neutral" size="small" outline="true" onclick="window.print()"><i class="bi bi-printer"></i> @Localizer["Print"]</pems-button>
     </div>
 </div>
 
@@ -27,7 +27,7 @@
 <div class="content-card mb-3">
     @if (!Model.HasDiscrepancy)
     {
-        <div class="alert alert-success py-2 px-3 small mb-3">@Localizer["Rcv_OsdClean"]</div>
+        <pems-alert tone="success" css="py-2 px-3 small mb-3">@Localizer["Rcv_OsdClean"]</pems-alert>
     }
     <table class="table table-enterprise table-sm">
         <thead>

@@ -28,11 +28,7 @@
         });
     }
 
-    // ---------------------------------------------------------------- confirm prompts
-    document.addEventListener('click', function (e) {
-        var btn = e.target.closest('[data-tm-confirm]');
-        if (btn && !window.confirm(btn.getAttribute('data-tm-confirm'))) e.preventDefault();
-    });
+    // confirm prompts: [data-pems-confirm] (PEMS.UI pems-confirm.js)
 
     // ---------------------------------------------------------------- Ctrl+Enter + dirty guard
     document.querySelectorAll('form[data-tm-ctrl-enter]').forEach(function (form) {

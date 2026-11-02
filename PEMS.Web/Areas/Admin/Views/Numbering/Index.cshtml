@@ -49,17 +49,17 @@
                                 <input type="hidden" name="RowVersion" value="@s.RowVersion" />
                             </pems-related-row-form>
                         </td>
-                        <td><input form="@formId" name="Pattern" value="@s.Pattern" class="form-control form-control-sm font-monospace" maxlength="@NumberingPattern.MaxPatternLength" required aria-label="@Localizer["Num_Pattern"]" data-num-input /></td>
-                        <td><input form="@formId" type="number" name="PadWidth" value="@s.PadWidth" min="@NumberingPattern.MinPad" max="@NumberingPattern.MaxPad" class="form-control form-control-sm" aria-label="@Localizer["Num_Pad"]" data-num-input /></td>
+                        <td><pems-input scale="small" css="font-monospace" form="@formId" name="Pattern" value="@s.Pattern" maxlength="@NumberingPattern.MaxPatternLength" required aria-label="@Localizer["Num_Pattern"]" data-num-input /></td>
+                        <td><pems-input scale="small" form="@formId" type="number" name="PadWidth" value="@s.PadWidth" min="@NumberingPattern.MinPad" max="@NumberingPattern.MaxPad" aria-label="@Localizer["Num_Pad"]" data-num-input /></td>
                         <td>
-                            <select form="@formId" name="Calendar" class="form-select form-select-sm" aria-label="@Localizer["Num_Calendar"]" data-num-input>
+                            <pems-select scale="small" form="@formId" name="Calendar" aria-label="@Localizer["Num_Calendar"]" data-num-input>
                                 @foreach (var c in NumberingCalendars.All) { <option value="@c" selected="@(c == s.Calendar)">@Localizer["Num_Cal_" + c]</option> }
-                            </select>
+                            </pems-select>
                         </td>
                         <td>
-                            <select form="@formId" name="ResetPeriod" class="form-select form-select-sm" aria-label="@Localizer["Num_Reset"]" data-num-input>
+                            <pems-select scale="small" form="@formId" name="ResetPeriod" aria-label="@Localizer["Num_Reset"]" data-num-input>
                                 @foreach (var r in NumberingResetPeriods.All) { <option value="@r" selected="@(r == s.ResetPeriod)">@Localizer["Num_Reset_" + r]</option> }
-                            </select>
+                            </pems-select>
                         </td>
                         <td><input form="@formId" type="checkbox" name="IsActive" value="true" class="form-check-input" checked="@s.IsActive" aria-label="@Localizer["Active"]" /></td>
                         <td><input form="@formId" type="checkbox" name="AllowManualEntry" value="true" class="form-check-input" checked="@s.AllowManualEntry" aria-label="@Localizer["Num_AllowManual"]" /></td>
