@@ -163,6 +163,7 @@
   },
   "kpi-tile": {},
   "list-group": {},
+  "loading-text": {},
   "modal": {
     "PEMS.Web/Views/Asset/Details.cshtml": 1,
     "PEMS.Web/Views/Asset/Index.cshtml": 1,

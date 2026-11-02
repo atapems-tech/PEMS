@@ -3,6 +3,14 @@
 All notable changes to PEMS. No system version is defined yet (plan row F_CI), so entries are grouped by date
 and theme and were reconstructed from the git history (initial import 2026-09-05). Newest first.
 
+## 2026-11-02 - Skeleton wave S3: no "Loading..." placeholders come back (SCRUM-337)
+
+### Added
+- Adoption ratchet pattern `loading-text`: "Loading...", "در حال بارگذاری" and "در حال جستجو" written as a placeholder in a view or a page script. A skeleton's own `label="..."` is not counted. The baseline is zero, so any new loading text fails the build; use `<pems-skeleton>` or `PemsSkeleton.show`.
+
+### Removed
+- The organization chart's unused `data-loading-text` attribute.
+
 ## 2026-11-02 - Skeleton wave S2: panels that load content (SCRUM-337)
 
 ### Changed
