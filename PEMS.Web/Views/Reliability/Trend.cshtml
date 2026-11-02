@@ -55,8 +55,11 @@
 
 @if (Model.Points.Any())
 {
+    @* SCRUM-337 C2: the shared chart host (Bklit line), not Chart.js *@
+    var trend = BkChartSpec.Line($"{Model.VariableType} — {Model.Tag}", Localizer["هیچ قرائتی در این بازه ثبت نشده."], Model.Points.Select(p => p.ReadingDate), 2,
+        BkSeries.Of($"{Model.VariableType} ({Model.Unit})", Model.Points.Select(p => p.Value), BkChartSpec.Primary));
     <div class="content-card mb-3">
-        <canvas id="trendChart" height="80"></canvas>
+        <pems-chart spec="@trend" />
     </div>
 }
 
@@ -77,35 +80,13 @@
     @if (!Model.Points.Any()) { <p class="text-muted text-center py-4">@Localizer["هیچ قرائتی در این بازه ثبت نشده."]</p> }
 </div>
 
-@if (Model.Points.Any())
-{
-    @section Scripts {
-        <script src="~/lib/chartjs/chart-4.4.4.umd.min.js"></script>
-        <script src="~/js/pems-charts.js"></script>
-        <script>
-            const labels = @Html.Raw(Json.Serialize(Model.Points.Select(p => p.ReadingDate.ToString("yyyy-MM-dd HH:mm"))));
-            const values = @Html.Raw(Json.Serialize(Model.Points.Select(p => p.Value)));
-            new Chart(document.getElementById('trendChart'), {
-                type: 'line',
-                data: {
-                    labels: labels,
-                    datasets: [{
-                        label: '@Model.VariableType (@Model.Unit)',
-                        data: values,
-                        borderColor: PemsChartColors.primary,
-                        backgroundColor: PemsChartColors.primary,
-                        tension: 0.2,
-                        pointRadius: 2
-                    }]
-                },
-                options: {
-                    scales: {
-                        x: { grid: { color: PemsChartColors.gridColor }, ticks: { color: PemsChartColors.textColor } },
-                        y: { grid: { color: PemsChartColors.gridColor }, ticks: { color: PemsChartColors.textColor } }
-                    },
-                    plugins: { legend: { display: true } }
-                }
-            });
-        </script>
+@section Styles {
+    <partial name="_BkChartStyles" />
+}
+
+@section Scripts {
+    @if (Model.Points.Any())
+    {
+        <partial name="_BkChartScripts" />
     }
 }

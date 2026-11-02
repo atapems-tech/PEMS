@@ -65,6 +65,47 @@ public class ChartComponentTests
         Assert.DoesNotContain("_BkChart\"", text);
     }
 
+    // ---- C2: line charts, Chart.js retired
+    [Fact]
+    public void Line_LabelsAreInvariantIsoTimes_AndCarryTheDecimals()
+    {
+        var spec = BkChartSpec.Line("Vibration", "none", new[] { new DateTime(2026, 4, 1, 8, 30, 0), new DateTime(2026, 4, 2, 9, 5, 0) }, 2,
+            BkSeries.Of("mm/s", new[] { 1.25m, 0m }));
+        Assert.Equal("line", spec.Kind);
+        Assert.Equal(new[] { "2026-04-01T08:30", "2026-04-02T09:05" }, spec.Labels);
+        Assert.Equal(2, spec.Decimals);
+        var html = PemsChartTagHelper.Markup(spec);
+        Assert.Contains("<th scope=\"row\">2026-04-01T08:30</th>", html);
+        Assert.Contains("<td>0</td>", html);   // a zero reading is a value, not a gap
+    }
+
+    [Fact]
+    public void Island_DrawsTheLineKind_AndZeroReadingsAreNotEmpty()
+    {
+        var island = File.ReadAllText(Path.Combine(RepoRoot(), "frontend", "dashboards", "src", "islands", "ChartIsland.tsx"));
+        Assert.Contains("case \"line\": return <LineView", island);
+        Assert.Contains("<LineChart", island);
+        Assert.Contains("curve={curveMonotoneX}", island);   // never overshoots between readings
+        var spec = File.ReadAllText(Path.Combine(RepoRoot(), "frontend", "dashboards", "src", "islands", "spec.ts"));
+        Assert.Contains("\"line\"", spec);
+        Assert.Contains("if (spec.kind === \"line\") return spec.labels.length === 0;", spec);
+        var bundle = File.ReadAllText(Path.Combine(RepoRoot(), "PEMS.Web", "wwwroot", "dist", "dashboards", "dashboards.js"));
+        Assert.Contains("case`line`:", bundle);   // the built (minified) bundle carries it: npm run build in frontend/dashboards
+    }
+
+    [Fact]
+    public void WaveC2_TrendPage_UsesTheChartHost_AndChartJsIsGone()
+    {
+        var trend = File.ReadAllText(Path.Combine(RepoRoot(), "PEMS.Web", "Views", "Reliability", "Trend.cshtml"));
+        Assert.Contains("BkChartSpec.Line(", trend);
+        Assert.Contains("<pems-chart spec=\"@trend\" />", trend);
+        Assert.Contains("_BkChartScripts", trend);
+        Assert.DoesNotContain("<canvas", trend);
+        Assert.DoesNotContain("new Chart(", trend);
+        Assert.DoesNotContain("chartjs", trend);
+        Assert.False(Directory.Exists(Path.Combine(RepoRoot(), "PEMS.Web", "wwwroot", "lib", "chartjs")));
+    }
+
     private static string RepoRoot()
     {
         var dir = new DirectoryInfo(AppContext.BaseDirectory);

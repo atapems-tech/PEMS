@@ -129,7 +129,6 @@
     "PEMS.Web/Views/ProductionOrder/Create.cshtml": 1,
     "PEMS.Web/Views/Projects/Index.cshtml": 1,
     "PEMS.Web/Views/Reliability/ConditionMonitoring.cshtml": 1,
-    "PEMS.Web/Views/Reliability/Trend.cshtml": 1,
     "PEMS.Web/Views/Shared/_ContextualHelpDrawer.cshtml": 1,
     "PEMS.Web/Views/Shared/_DynamicSidebarMenu.cshtml": 1,
     "PEMS.Web/Views/Shared/_Layout.cshtml": 2,
