@@ -248,4 +248,5 @@ One markup (`PemsSkeletonMarkup` in PEMS.UI) for the tag helper, the script and 
 Waves: S1 the component, help drawer, global search, letter preview, position org chart (done); S2 the panels that load content
 (org chart, cartable thread replies, letter distribution groups, part catalogue duplicate search and technical class) (done;
 the panels that only save keep a busy spinner);
-S3 registry entry and a ratchet pattern for "Loading..." text used as a placeholder.
+S3 the ratchet pattern `loading-text` ("Loading..." text as a
+placeholder; a skeleton label is not counted; baseline zero) (done). All Skeleton waves are done.

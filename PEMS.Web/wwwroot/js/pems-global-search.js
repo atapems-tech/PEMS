@@ -142,7 +142,7 @@
             const controller = new AbortController();
             this.abortController = controller;
 
-            // هیچ جستجویی نباید برای همیشه روی «در حال جستجو» بماند: پس از SEARCH_TIMEOUT_MS خطا نمایش داده می‌شود
+            // هیچ جستجویی نباید برای همیشه روی «skeleton» بماند: پس از SEARCH_TIMEOUT_MS خطا نمایش داده می‌شود
             let timedOut = false;
             const timeoutId = setTimeout(() => { timedOut = true; controller.abort(); }, SEARCH_TIMEOUT_MS);
 
