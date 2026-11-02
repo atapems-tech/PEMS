@@ -3,6 +3,17 @@
 All notable changes to PEMS. No system version is defined yet (plan row F_CI), so entries are grouped by date
 and theme and were reconstructed from the git history (initial import 2026-09-05). Newest first.
 
+## 2026-11-02 - Chart wave C2: line charts; Chart.js retired (SCRUM-337)
+
+### Added
+- A `line` kind for `<pems-chart>`: `BkChartSpec.Line(ariaLabel, emptyText, times, decimals, series...)` (labels are invariant ISO times) and a `LineView` in the Bklit island (`frontend/dashboards/src/islands/ChartIsland.tsx`, the library's `LineChart`); a zero reading is a value, only no readings is empty. The bundle `dist/dashboards/dashboards.js` is rebuilt (`npm run build`, offline).
+
+### Changed
+- The condition monitoring trend page (Reliability > Trend) draws its readings with `<pems-chart>` instead of a canvas and Chart.js; the inline chart script is gone.
+
+### Removed
+- The vendored Chart.js (`wwwroot/lib/chartjs`, versions 4.4.1 and 4.4.4): no page uses it any more. `pems-charts.js` stays until the home donut moves (C3).
+
 ## 2026-11-02 - Chart wave C1: one chart host (SCRUM-337)
 
 ### Added

@@ -19,7 +19,7 @@ public sealed class BkChartSpec
     public const string Neutral = "var(--pems-chart-neutral, #94a3b8)";
     public const string Accent = "var(--pems-chart-accent, #d98c2b)";
 
-    // bar, hbar, donut, gauge
+    // bar, hbar, donut, gauge, line
     public string Kind { get; init; } = "bar";
     public string AriaLabel { get; init; } = string.Empty;
     public string EmptyText { get; init; } = "—";
@@ -65,6 +65,11 @@ public sealed class BkChartSpec
             Colors = colors?.ToList()
         };
     }
+
+    /// <summary>SCRUM-337 C2: readings over time, one line per series; the labels are the reading times (ISO, local).</summary>
+    public static BkChartSpec Line(string ariaLabel, string emptyText, IEnumerable<DateTime> times, int decimals, params BkSeries[] series)
+        => new() { Kind = "line", AriaLabel = ariaLabel, EmptyText = emptyText, Decimals = decimals,
+                   Labels = times.Select(t => t.ToString("yyyy-MM-dd'T'HH:mm", System.Globalization.CultureInfo.InvariantCulture)).ToList(), Series = series.ToList() };
 
     public static BkChartSpec Gauge(string ariaLabel, string emptyText, string caption, double? value, string unit = "%", int decimals = 0)
         => new() { Kind = "gauge", AriaLabel = ariaLabel, EmptyText = emptyText, CenterLabel = caption, Value = value, Unit = unit, Decimals = decimals };

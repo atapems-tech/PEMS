@@ -5,7 +5,7 @@ import { initFormat, locale } from "@/format";
 import { ChartIsland } from "./ChartIsland";
 import type { ChartSpec } from "./spec";
 
-/** Hydrates every `[data-bk-chart]` element (rendered by Views/Shared/_BkChart.cshtml) with a Bklit chart. Safe to call twice. */
+/** Hydrates every `[data-bk-chart]` element (rendered by the <pems-chart> tag helper) with a Bklit chart. Safe to call twice. */
 export function mountIslands(root: ParentNode = document) {
   const targets = Array.from(root.querySelectorAll<HTMLElement>("[data-bk-chart]:not([data-bk-mounted])"));
   if (targets.length === 0) return;

@@ -1,6 +1,6 @@
-// Chart description produced by the server (PEMS.Web/Models/BkChartSpec.cs, rendered by Views/Shared/_BkChart.cshtml).
+// Chart description produced by the server (PEMS.UI.Abstractions/BkChartSpec.cs, rendered by the <pems-chart> tag helper).
 // Pages describe WHAT to draw (kind, labels, series); this folder decides HOW with Bklit components.
-export type ChartKind = "bar" | "hbar" | "donut" | "gauge";
+export type ChartKind = "bar" | "hbar" | "donut" | "gauge" | "line";
 
 export interface SeriesSpec {
   name: string;
@@ -30,7 +30,15 @@ export interface ChartSpec {
 
 export function isEmpty(spec: ChartSpec): boolean {
   if (spec.kind === "gauge") return spec.value == null;
+  // a line of readings: zero is a real value, only no readings is empty
+  if (spec.kind === "line") return spec.labels.length === 0;
   return spec.labels.length === 0 || spec.series.every(s => s.values.every(v => !v));
+}
+
+/** "2026-04-01T08:30" (a line chart's label) -> that Date, or null. */
+export function parseInstant(label: string): Date | null {
+  const d = new Date(label);
+  return Number.isNaN(d.getTime()) ? null : d;
 }
 
 /** "2026-04" -> a Date at the start of that month (local), or null when the label is not a month. */

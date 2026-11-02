@@ -1,9 +1,13 @@
 import { useMemo } from "react";
+import { curveMonotoneX } from "@visx/curve";
 import { Bar } from "@/components/charts/bar";
 import { BarChart } from "@/components/charts/bar-chart";
 import { BarXAxis } from "@/components/charts/bar-x-axis";
 import { BarYAxis } from "@/components/charts/bar-y-axis";
 import { Gauge } from "@/components/charts/gauge";
+import { Line } from "@/components/charts/line";
+import { LineChart } from "@/components/charts/line-chart";
+import { XAxis } from "@/components/charts/x-axis";
 import { Grid } from "@/components/charts/grid";
 import { YAxis } from "@/components/charts/y-axis";
 import { ChartTooltip } from "@/components/charts/tooltip";
@@ -11,7 +15,7 @@ import { C, CATEGORICAL } from "@/colors";
 import { month } from "@/format";
 import { DonutWithLegend, Swatches } from "@/sections/Charts";
 import { ChartBox, Empty } from "@/ui/primitives";
-import { type ChartSpec, type SeriesSpec, isEmpty, parseMonth } from "./spec";
+import { type ChartSpec, type SeriesSpec, isEmpty, parseInstant, parseMonth } from "./spec";
 
 const MAX_ROWS = 20;
 const seriesColor = (s: SeriesSpec, i: number) => s.color ?? CATEGORICAL[i % CATEGORICAL.length];
@@ -83,6 +87,38 @@ function Bars({ spec, horizontal, locale }: { spec: ChartSpec; horizontal: boole
   );
 }
 
+/** SCRUM-337 C2: a time series (readings over time), one line per series; labels are ISO date-times. Monotone curve: it never
+ *  overshoots between readings, so the line never shows a value that was not measured. */
+function LineView({ spec, locale }: { spec: ChartSpec; locale: string }) {
+  const rows = useMemo(() => spec.labels
+    .map((label, i) => {
+      const date = parseInstant(label);
+      if (!date) return null;
+      const row: Record<string, unknown> = { date };
+      spec.series.forEach((s, k) => { row[`s${k}`] = s.values[i] ?? 0; });
+      return row;
+    })
+    .filter((r): r is Record<string, unknown> => r !== null), [spec.labels, spec.series]);
+  const f = fmt(spec.decimals, locale);
+  const multi = spec.series.length > 1;
+  const tooltip = (p: Record<string, unknown>) => spec.series.map((s, k) => ({ color: seriesColor(s, k), label: s.name, value: f(Number(p[`s${k}`] ?? 0)) }));
+  if (rows.length < 2) return <Empty>{spec.emptyText}</Empty>;
+  return (
+    <>
+      {multi && <Swatches items={spec.series.map((s, k) => ({ color: seriesColor(s, k), label: s.name }))} />}
+      <ChartBox>
+        <LineChart data={rows} aspectRatio="16 / 5" margin={{ top: 16, right: 16, bottom: 28, left: 52 }}>
+          <Grid horizontal />
+          {spec.series.map((s, k) => <Line key={k} dataKey={`s${k}`} stroke={seriesColor(s, k)} fadeEdges={false} curve={curveMonotoneX} />)}
+          <XAxis />
+          <YAxis />
+          <ChartTooltip rows={tooltip} />
+        </LineChart>
+      </ChartBox>
+    </>
+  );
+}
+
 function GaugeView({ spec, locale }: { spec: ChartSpec; locale: string }) {
   const value = Math.max(0, Math.min(100, spec.value ?? 0));
   const color = value >= 80 ? C.approved : value >= 50 ? C.warning : C.returned;
@@ -101,6 +137,7 @@ export function ChartIsland({ spec, locale }: { spec: ChartSpec; locale: string 
     case "bar": return <Bars spec={spec} horizontal={false} locale={locale} />;
     case "hbar": return <Bars spec={spec} horizontal locale={locale} />;
     case "gauge": return <GaugeView spec={spec} locale={locale} />;
+    case "line": return <LineView spec={spec} locale={locale} />;
     case "donut": {
       const s = spec.series[0];
       const data = spec.labels.map((label, i) => ({ label, value: s.values[i] ?? 0, color: spec.colors?.[i] ?? CATEGORICAL[i % CATEGORICAL.length] }))

@@ -253,12 +253,13 @@ placeholder; a skeleton label is not counted; baseline zero) (done). All Skeleto
 
 ## Chart (one chart host)
 
-The page describes the chart with a `BkChartSpec` (`MonthlyBars`, `HBars`, `Donut`, `Gauge`; colours from the
+The page describes the chart with a `BkChartSpec` (`MonthlyBars`, `HBars`, `Donut`, `Gauge`, `Line`; colours from the
 `--pems-chart-*` tokens through `BkChartSpec.Primary` ...) and writes `<pems-chart spec="@spec" />`. The Bklit island in
 `dist/dashboards/dashboards.js` draws it; a visually hidden table (a line for a gauge) carries the same numbers for screen
 readers and without script. The page loads the bundle once with `<partial name="_BkChartStyles" />` and
 `<partial name="_BkChartScripts" />`.
 
 Waves: C1 the tag helper, the report pages, KPI, letter cartable report and part catalogue reports (done); C2 a `line` kind
-in the Bklit island and the reliability trend page, then Chart.js and `pems-charts.js` retired; C3 the home donut; C4 a ratchet
+in the Bklit island and the reliability trend page, Chart.js retired (done; a new kind is added in
+`frontend/dashboards/src/islands` and the bundle rebuilt with `npm run build`); C3 the home donut; C4 a ratchet
 pattern for hand-written charts.
