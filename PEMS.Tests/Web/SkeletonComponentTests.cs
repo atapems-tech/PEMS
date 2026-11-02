@@ -106,6 +106,23 @@ public class SkeletonComponentTests
     public void WaveS1_HelpDrawer_StartsWithTheSkeleton() =>
         Assert.Contains("<pems-skeleton kind=\"card\"", File.ReadAllText(Path.Combine(RepoRoot(), "PEMS.Web", "Views", "Shared", "_ContextualHelpDrawer.cshtml")));
 
+    [Theory]
+    [InlineData("Views/Team/OrganizationChart.cshtml", "<pems-skeleton kind=\"card\"")]
+    [InlineData("wwwroot/js/pems-cartable.js", "PemsSkeleton.show(waitTd, \"table\", { rows: 2, cols: 3 })")]
+    [InlineData("wwwroot/js/letter-compose.js", "PemsSkeleton.show(waitLi, 'text', { lines: 3 })")]
+    [InlineData("wwwroot/js/pems-part-catalogue-dedup.js", "PemsSkeleton.show(out, 'text'")]
+    [InlineData("wwwroot/js/pems-part-catalogue.js", "PemsSkeleton.show(tcLong, 'text'")]
+    public void WaveS2_PanelsThatLoadContent_ShowTheSkeleton(string file, string call) =>
+        Assert.Contains(call, File.ReadAllText(Path.Combine(RepoRoot(), "PEMS.Web", file)));
+
+    [Fact]
+    public void WaveS2_OrgChart_NoLongerUsesASpinnerAsItsPlaceholder()
+    {
+        var view = File.ReadAllText(Path.Combine(RepoRoot(), "PEMS.Web", "Views", "Team", "OrganizationChart.cshtml"));
+        var loading = view[view.IndexOf("id=\"orgChartLoading\"", StringComparison.Ordinal)..view.IndexOf("id=\"orgChartError\"", StringComparison.Ordinal)];
+        Assert.DoesNotContain("pems-spinner", loading);
+    }
+
     private static string RepoRoot()
     {
         var dir = new DirectoryInfo(AppContext.BaseDirectory);

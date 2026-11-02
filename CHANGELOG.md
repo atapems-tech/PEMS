@@ -3,6 +3,12 @@
 All notable changes to PEMS. No system version is defined yet (plan row F_CI), so entries are grouped by date
 and theme and were reconstructed from the git history (initial import 2026-09-05). Newest first.
 
+## 2026-11-02 - Skeleton wave S2: panels that load content (SCRUM-337)
+
+### Changed
+- The organization chart shows a card skeleton instead of a spinner while it loads; the correspondence cartable shows skeleton rows while a thread's replies load; the letter composer's distribution-group menu, the part catalogue duplicate search and check, and the technical class description show a skeleton while their data loads (the result panel used to stay empty).
+- The panels that only save (user permissions, permission matrix, task manager, notifications, maintenance calendar) keep their busy spinner: a skeleton stands for content that is coming, not for a save.
+
 ## 2026-11-02 - Skeleton wave S1: one loading placeholder (SCRUM-337)
 
 ### Added
