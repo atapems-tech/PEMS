@@ -39,6 +39,8 @@ public sealed class AdoptionRatchetTests
         ("kpi-tile", new Regex(@"class=""kpi-card\b", RegexOptions.Compiled), true, false),   // SCRUM-337 KpiTile: <pems-kpi-tile>
         // SCRUM-337 Skeleton: "Loading..." text as a placeholder (<pems-skeleton> / PemsSkeleton.show); the skeleton's own label="..." is not counted
         ("loading-text", new Regex(@"(?<!label=""[^>]{0,80})(Loading\.\.\.|Loading…|در حال بارگذاری|در حال جستجو)", RegexOptions.Compiled), true, true),
+        // SCRUM-337 Chart: a chart drawn by hand (Chart.js, a chart canvas, a hand-written Bklit host) instead of <pems-chart spec="...">
+        ("chart", new Regex(@"new Chart\(|data-bk-chart=|<canvas[^>]*[Cc]hart", RegexOptions.Compiled), true, true),
         ("confirm-call", new Regex(@"(?<![\w.])confirm\(|window\.confirm\(", RegexOptions.Compiled), true, true),
         ("alert-call", new Regex(@"(?<![\w.])alert\(", RegexOptions.Compiled), true, true),
         ("inline-script", new Regex(@"<script>", RegexOptions.Compiled), true, false),
@@ -101,6 +103,8 @@ public sealed class AdoptionRatchetTests
         Assert.Equal(0, Hits("kpi-tile", "<pems-kpi-tile label=\"A\">1</pems-kpi-tile><div class=\"pems-kpi-tile x\">"));
         Assert.Equal(2, Hits("loading-text", "<p class=\"text-muted\">Loading...</p> el.textContent = 'در حال بارگذاری';"));
         Assert.Equal(0, Hits("loading-text", "<pems-skeleton kind=\"card\" label=\"@L(\"Loading...\", \"در حال بارگذاری...\")\" /> @Localizer[\"Loading\"]"));
+        Assert.Equal(3, Hits("chart", "<canvas id=\"trendChart\"></canvas> new Chart(el, {}); <div data-bk-chart=\"{}\"></div>"));
+        Assert.Equal(0, Hits("chart", "<pems-chart spec=\"@trend\" /> <canvas id=\"signaturePad\"></canvas> <div class=\"bk-chart\">"));
     }
 
     private static int Hits(string name, string text) => Patterns.Single(p => p.Name == name).Pattern.Matches(text).Count;

@@ -3,6 +3,11 @@
 All notable changes to PEMS. No system version is defined yet (plan row F_CI), so entries are grouped by date
 and theme and were reconstructed from the git history (initial import 2026-09-05). Newest first.
 
+## 2026-11-02 - Chart wave C4: no hand-written charts come back (SCRUM-337)
+
+### Added
+- Adoption ratchet pattern `chart`: `new Chart(`, a hand-written `data-bk-chart=` host or a chart `<canvas>` in a view or a page script. The baseline is zero, so a new hand-written chart fails the build; use `<pems-chart spec="...">`.
+
 ## 2026-11-02 - Chart wave C3: the home donut; one chart engine (SCRUM-337)
 
 ### Changed
