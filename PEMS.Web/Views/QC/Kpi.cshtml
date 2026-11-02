@@ -7,26 +7,17 @@
 
 <div class="row g-3 mb-3">
     <div class="col-md-4">
-        <div class="content-card text-center">
-            <div class="fs-3 fw-bold">@ViewBag.TotalNCRs</div>
-            <div class="text-muted small">@Localizer["کل NCR های ثبت‌شده"]</div>
-        </div>
+        <pems-kpi-tile label="@Localizer["کل NCR های ثبت‌شده"]">@ViewBag.TotalNCRs</pems-kpi-tile>
     </div>
     <div class="col-md-4">
-        <div class="content-card text-center">
-            <div class="fs-3 fw-bold text-success">@ViewBag.ClosedOnTimeRate%</div>
-            <div class="text-muted small">@Localizer["درصد بسته‌شده در ۱۴ روز"]</div>
-        </div>
+        <pems-kpi-tile tone="success" label="@Localizer["درصد بسته‌شده در ۱۴ روز"]">@ViewBag.ClosedOnTimeRate%</pems-kpi-tile>
     </div>
     <div class="col-md-4">
-        <div class="content-card text-center">
-            @{
-                var bySeverity = (IEnumerable<dynamic>)ViewBag.BySeverity;
-                var criticalCount = bySeverity.FirstOrDefault(x => x.Severity == "Critical")?.Count ?? 0;
-            }
-            <div class="fs-3 fw-bold text-danger">@criticalCount</div>
-            <div class="text-muted small">@Localizer["NCR بحرانی (کل تاریخچه)"]</div>
-        </div>
+        @{
+            var bySeverity = (IEnumerable<dynamic>)ViewBag.BySeverity;
+            var criticalCount = bySeverity.FirstOrDefault(x => x.Severity == "Critical")?.Count ?? 0;
+        }
+        <pems-kpi-tile tone="danger" label="@Localizer["NCR بحرانی (کل تاریخچه)"]">@criticalCount</pems-kpi-tile>
     </div>
 </div>
 

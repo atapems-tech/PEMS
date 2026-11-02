@@ -3,6 +3,29 @@
 All notable changes to PEMS. No system version is defined yet (plan row F_CI), so entries are grouped by date
 and theme and were reconstructed from the git history (initial import 2026-09-05). Newest first.
 
+## 2026-11-02 - Skeleton wave S2: panels that load content (SCRUM-337)
+
+### Changed
+- The organization chart shows a card skeleton instead of a spinner while it loads; the correspondence cartable shows skeleton rows while a thread's replies load; the letter composer's distribution-group menu, the part catalogue duplicate search and check, and the technical class description show a skeleton while their data loads (the result panel used to stay empty).
+- The panels that only save (user permissions, permission matrix, task manager, notifications, maintenance calendar) keep their busy spinner: a skeleton stands for content that is coming, not for a save.
+
+## 2026-11-02 - Skeleton wave S1: one loading placeholder (SCRUM-337)
+
+### Added
+- `<pems-skeleton kind="text|title|card|kpi|table|form" />` (Razor) and `PemsSkeleton.show(element, kind)` / `PemsSkeleton.html(kind)` (`pems-skeleton.js`, loaded by both layouts): the grey placeholder a part of the page shows while its data loads. Both build the same markup as the Blazor `PemsSkeleton`, which now takes the same `Kind`, `Rows` and `Cols`. A status region (`role="status"`, `aria-busy`) with "Loading..." for screen readers in the page language (`<body data-pems-skeleton-label>`); the pulse stops when the user asks for reduced motion.
+
+### Changed
+- The help drawer, the global search, the letter preview and the position org chart show the skeleton while they load, instead of "Loading..." text. Global search no longer shows Persian text in the English interface.
+
+### Removed
+- The unused skeleton styles in `pems-glass.css`; the styles live in `pems-ui.css`.
+
+## 2026-11-02 - KpiTile wave K4: dashboards (SCRUM-337)
+
+### Changed
+- Inventory, AI insights (delays), DCC, equipment classification, QC and QC KPIs, the relationship gap report, the CBM dashboard, reliability data quality and the availability simulation take their 41 number tiles from `<pems-kpi-tile>` instead of a large bold number over a muted label. Coloured numbers keep their colour through `tone`; a label that had an icon in front of it (DCC, QC) shows the icon in the tile's coloured square; CBM keeps its second line as `sub`; tiles inside a card row (equipment classification, data quality) are compact.
+- The DCC "Relationship Explorer" card stays as it is: it is a link, not a number.
+
 ## 2026-11-02 - KpiTile wave K3: detail-page tiles (SCRUM-337)
 
 ### Added

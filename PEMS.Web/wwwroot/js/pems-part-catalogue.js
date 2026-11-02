@@ -208,10 +208,11 @@
     if (tcHidden && tcLong) {
         tcHidden.addEventListener('change', function () {
             if (!tcHidden.value) { tcLong.textContent = ''; return; }
+            window.PemsSkeleton.show(tcLong, 'text', { lines: 2 });   // SCRUM-337: while the description loads
             fetch(lookupBase + '/TechnicalClass?id=' + encodeURIComponent(tcHidden.value), { credentials: 'same-origin' })
                 .then(function (r) { return r.ok ? r.json() : null; })
                 .then(function (it) { tcLong.textContent = it && it.extra ? it.extra : ''; })
-                .catch(function () { });
+                .catch(function () { tcLong.textContent = ''; });
         });
     }
 

@@ -79,7 +79,7 @@
     @await RenderSectionAsync("Styles", required: false)
 </head>
 <body class="@(isAdminArea ? "admin-area" : "")" data-user-id="@User.FindFirst(ClaimTypes.NameIdentifier)?.Value"
-      data-pems-select-no-results="@Localizer["Sel_NoResults"]" data-pems-select-loading="@Localizer["Sel_Loading"]" data-pems-select-placeholder="@Localizer["Sel_Placeholder"]"
+      data-pems-select-no-results="@Localizer["Sel_NoResults"]" data-pems-select-loading="@Localizer["Sel_Loading"]" data-pems-select-placeholder="@Localizer["Sel_Placeholder"]" data-pems-skeleton-label="@Localizer["Loading"]"
       data-pems-rte-texts="@PEMS.Web.Helpers.RichTextEditorTexts.Json(Localizer)" data-pems-rte-lib="@Url.Content("~/lib/quill/")">
     <a class="pems-skip-link" href="#pemsMainContent">@Localizer["Shell_SkipToContent"]</a>
     <header class="pems-topbar">
@@ -231,6 +231,7 @@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/_content/PEMS.UI/pems-overlay.js" asp-append-version="true"></script>
+    <script src="~/_content/PEMS.UI/pems-skeleton.js" asp-append-version="true"></script>
     <script src="~/_content/PEMS.UI/pems-form.js" asp-append-version="true"></script>
     <script src="~/lib/tom-select/tom-select.complete.min.js" asp-append-version="true"></script>
     <script src="~/_content/PEMS.UI/pems-select.js" asp-append-version="true"></script>

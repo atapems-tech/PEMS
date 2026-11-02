@@ -9,6 +9,16 @@
   "options": {
     "type": "object",
     "properties": {
+      "cols": {
+        "type": [
+          "string",
+          "integer"
+        ],
+        "pattern": "^-?(?:0|[1-9]\\d*)$"
+      },
+      "kind": {
+        "type": "string"
+      },
       "label": {
         "oneOf": [
           {
@@ -29,11 +39,30 @@
           "integer"
         ],
         "pattern": "^-?(?:0|[1-9]\\d*)$"
+      },
+      "rows": {
+        "type": [
+          "string",
+          "integer"
+        ],
+        "pattern": "^-?(?:0|[1-9]\\d*)$"
       }
     },
     "additionalProperties": false
   },
   "parameters": [
+    {
+      "name": "cols",
+      "type": "Int32",
+      "kind": "option",
+      "required": false
+    },
+    {
+      "name": "kind",
+      "type": "String",
+      "kind": "option",
+      "required": false
+    },
     {
       "name": "label",
       "type": "TranslatableText",
@@ -42,6 +71,12 @@
     },
     {
       "name": "lines",
+      "type": "Int32",
+      "kind": "option",
+      "required": false
+    },
+    {
+      "name": "rows",
       "type": "Int32",
       "kind": "option",
       "required": false
