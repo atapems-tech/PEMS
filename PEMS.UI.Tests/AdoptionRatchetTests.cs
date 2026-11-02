@@ -37,6 +37,8 @@ public sealed class AdoptionRatchetTests
         ("table", new Regex(@"<table\b", RegexOptions.Compiled), true, false),
         ("info-grid", new Regex(@"\bvs-info__label\b|<dt\b", RegexOptions.Compiled), true, false),   // SCRUM-337 InfoGrid: <pems-info-grid>
         ("kpi-tile", new Regex(@"class=""kpi-card\b", RegexOptions.Compiled), true, false),   // SCRUM-337 KpiTile: <pems-kpi-tile>
+        // SCRUM-337 Skeleton: "Loading..." text as a placeholder (<pems-skeleton> / PemsSkeleton.show); the skeleton's own label="..." is not counted
+        ("loading-text", new Regex(@"(?<!label=""[^>]{0,80})(Loading\.\.\.|Loading…|در حال بارگذاری|در حال جستجو)", RegexOptions.Compiled), true, true),
         ("confirm-call", new Regex(@"\bconfirm\(", RegexOptions.Compiled), true, true),
         ("alert-call", new Regex(@"(?<![\w.])alert\(", RegexOptions.Compiled), true, true),
         ("inline-script", new Regex(@"<script>", RegexOptions.Compiled), true, false),
@@ -94,6 +96,8 @@ public sealed class AdoptionRatchetTests
         Assert.Equal(0, Hits("info-grid", "<pems-info-item label=\"A\">a</pems-info-item><dd>x</dd>"));
         Assert.Equal(2, Hits("kpi-tile", "<div class=\"kpi-card\">1</div><a class=\"kpi-card kpi-link\">2</a>"));
         Assert.Equal(0, Hits("kpi-tile", "<pems-kpi-tile label=\"A\">1</pems-kpi-tile><div class=\"pems-kpi-tile x\">"));
+        Assert.Equal(2, Hits("loading-text", "<p class=\"text-muted\">Loading...</p> el.textContent = 'در حال بارگذاری';"));
+        Assert.Equal(0, Hits("loading-text", "<pems-skeleton kind=\"card\" label=\"@L(\"Loading...\", \"در حال بارگذاری...\")\" /> @Localizer[\"Loading\"]"));
     }
 
     private static int Hits(string name, string text) => Patterns.Single(p => p.Name == name).Pattern.Matches(text).Count;

@@ -12,6 +12,13 @@ and theme and were reconstructed from the git history (initial import 2026-09-05
 ### Changed
 - 945 form labels, 99 modals, 3 side panels, 16 dropdown menus, 9 tab strips and 1 breadcrumb in the views moved; ratchet: form-label 946 to 1, modal 99 to 0, dropdown 16 to 0, tabs 8 to 0, breadcrumb 1 to 0, offcanvas 2 to 0. Modals whose form was the `modal-content` itself (4) now put the form inside the frame.
 - Guideline chapter 02: the library-first protocol for agents (search, modify safely, add to the library first, never hand-write), the registry table rebuilt as one table with current status; AGENTS.md rule and the PR template line strengthened.
+## 2026-11-02 - Skeleton wave S3: no "Loading..." placeholders come back (SCRUM-337)
+
+### Added
+- Adoption ratchet pattern `loading-text`: "Loading...", "در حال بارگذاری" and "در حال جستجو" written as a placeholder in a view or a page script. A skeleton's own `label="..."` is not counted. The baseline is zero, so any new loading text fails the build; use `<pems-skeleton>` or `PemsSkeleton.show`.
+
+### Removed
+- The organization chart's unused `data-loading-text` attribute.
 
 ## 2026-11-02 - Skeleton wave S2: panels that load content (SCRUM-337)
 
