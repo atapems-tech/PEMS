@@ -1,4 +1,4 @@
-using System.Dynamic;
+﻿using System.Dynamic;
 using System.Text.Json;
 using System.Text.RegularExpressions;
 using Microsoft.AspNetCore.Http;
@@ -121,13 +121,16 @@ public class CartableWebTests
     {
         var html = await Render(new RenderOptions(TagId: 2, Tags: Tags(), Cart: new CartableCountsDto { TagCounts = { [1] = 9, [2] = 4 } }));
 
+        // SCRUM-337 TreeView: the tag tree is <pems-tree> (role tree / treeitem / group, a toggle per branch)
         Assert.Contains("role=\"tree\"", html);
-        var engineering = Regex.Match(html, "<li role=\"treeitem\"[^>]*data-tag-id=\"1\">(.*?)</li>\\s*<li role=\"treeitem\"[^>]*data-tag-id=\"3\">", RegexOptions.Singleline).Groups[1].Value;
+        var engineering = Regex.Match(html, "<li class=\"pems-tree__item\" role=\"treeitem\" data-key=\"1\"[^>]*>(.*?)</li>\\s*<li class=\"pems-tree__item\" role=\"treeitem\" data-key=\"3\"", RegexOptions.Singleline).Groups[1].Value;
         Assert.Contains("role=\"group\"", engineering);                   // Electrical is nested under Engineering
         Assert.Contains("Electrical", engineering);
-        Assert.Contains("data-tag-toggle=\"1\"", html);                   // only the parent has a toggle
-        Assert.DoesNotContain("data-tag-toggle=\"2\"", html);
-        Assert.Matches(@"class=""ct-tag active""[^>]*aria-current=""page""", html);
+        Assert.Contains("pems-tree__toggle", engineering);                // the parent has a toggle
+        var electrical = Regex.Match(html, "data-key=\"2\"[^>]*>(.*?)</li>", RegexOptions.Singleline).Groups[1].Value;
+        Assert.DoesNotContain("pems-tree__toggle", electrical);           // a leaf has none
+        // the test renderer gives no URLs, so the item renders as text; in the app it is a link with the same attributes
+        Assert.Matches(@"aria-current=""page"" class=""pems-tree__(link|text) ct-tag""", html);
         Assert.Matches(@"Engineering</span>\s*<span class=""ct-count"">9</span>", html);
         Assert.Contains("class=\"bi bi-person ct-tag-personal\"", html);   // «Mine» is personal and says so
         Assert.Contains("Tag: Electrical", html);                          // active tag also shows as a removable filter chip

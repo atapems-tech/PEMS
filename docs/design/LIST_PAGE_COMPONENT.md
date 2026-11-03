@@ -264,3 +264,22 @@ in the Bklit island and the reliability trend page, Chart.js retired (done; a ne
 `frontend/dashboards/src/islands` and the bundle rebuilt with `npm run build`); C3 the home donut (done; `_DonutChart`, `pems-donut.js`
 and `pems-charts.js` removed: one chart engine); C4 the ratchet
 pattern `chart` (baseline zero) (done). All Chart waves are done.
+
+## TreeView (a hierarchy)
+
+```cshtml
+<pems-tree label="@Localizer["Ct_Tags"]" toggle-label="@Localizer["Ct_ToggleBranch"]" remember-key="pems.cartable.tagsCollapsed">
+    <pems-tree-item label="@t.Name" key="@t.TagId.ToString()" href="@Url.Action(...)" current="@(t.TagId == currentId)" link-class="ct-tag">
+        <pems-tree-label>...the page's own label markup...</pems-tree-label>   @* optional *@
+        ...nested <pems-tree-item>s...
+    </pems-tree-item>
+</pems-tree>
+```
+
+A recursive local function that writes tree items must be `async Task` (Razor rule for tag helpers). The tree is a WAI-ARIA
+tree; `pems-tree.js` (loaded by the layouts) opens and closes branches, remembers the collapsed ones under `remember-key`,
+never collapses a branch holding the `current` item, and gives the tree keyboard. Styles: `pems-ui.css` (`pems-tree*`); a page
+may set only its colours (as the cartable side panel does).
+
+Waves: T1 the component, the organization positions tree and the correspondence tag tree (done); T2 the navigation visibility
+tree and the help node tree; T3 a ratchet pattern for hand-written trees.
