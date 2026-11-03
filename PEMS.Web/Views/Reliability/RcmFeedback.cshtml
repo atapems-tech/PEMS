@@ -60,7 +60,7 @@
 </div>
 
 <div class="content-card">
-    <table class="table table-enterprise table-sm mb-0">
+    <pems-table kind="enterprise" scale="small" css="mb-0">
         <thead>
             <tr>
                 <th>@Localizer["Equipment"]</th><th>@Localizer["Strategy"]</th><th>@Localizer["Trigger"]</th><th>Evidence</th><th>@Localizer["Status"]</th>
@@ -103,6 +103,6 @@
                 </tr>
             }
         </tbody>
-    </table>
+    </pems-table>
     @if (!Model.Any()) { <p class="text-muted text-center py-4 mb-0">هیچ توصیه‌ای موجود نیست. @(canGenerate ? "برای تولید شواهد، دکمه‌ی Generate Evidence را بزنید." : "")</p> }
 </div>

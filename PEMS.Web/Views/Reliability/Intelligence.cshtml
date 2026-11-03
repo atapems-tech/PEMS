@@ -123,7 +123,7 @@
 
     <div class="tab-pane fade" id="tab-type">
         <div class="content-card">
-            <table class="table table-enterprise table-sm mb-0">
+            <pems-table kind="enterprise" scale="small" css="mb-0">
                 <thead><tr><th>@Localizer["Type"]</th><th class="text-end">@Localizer["Count"]</th><th class="text-end">%</th><th class="text-end">Hours</th><th class="text-end">@Localizer["Cost"]</th><th class="text-end">@Localizer["Downtime"]</th></tr></thead>
                 <tbody>
                     @foreach (var item in breakdown.Items)
@@ -138,7 +138,7 @@
                         </tr>
                     }
                 </tbody>
-            </table>
+            </pems-table>
             @if (!breakdown.Items.Any()) { <p class="text-muted text-center py-4 mb-0">@Localizer["داده‌ای موجود نیست."]</p> }
         </div>
     </div>
@@ -146,7 +146,7 @@
     <div class="tab-pane fade" id="tab-repeat">
         <div class="content-card">
             <p class="text-muted small">قاعده: همان تجهیز + همان حالت‌خرابی، با حداقل یک زوج خرابی متوالی در پنجره‌ی زمانی مشخص.</p>
-            <table class="table table-enterprise table-sm mb-0">
+            <pems-table kind="enterprise" scale="small" css="mb-0">
                 <thead><tr><th>@Localizer["Tag"]</th><th>@Localizer["Failure Mode"]</th><th class="text-end">Occurrences</th><th>First</th><th>Last</th><th class="text-end">Window (days)</th></tr></thead>
                 <tbody>
                     @foreach (var g in repeatFailures)
@@ -161,7 +161,7 @@
                         </tr>
                     }
                 </tbody>
-            </table>
+            </pems-table>
             @if (!repeatFailures.Any()) { <p class="text-muted text-center py-4 mb-0">No Data Available - هیچ خرابی تکراری در این بازه تشخیص داده نشد.</p> }
         </div>
     </div>
@@ -172,7 +172,7 @@
                 شواهد چندبعدی - نه یک امتیاز واحد. مقایسه‌ی @effectiveness.WindowDays روز اخیر
                 (از @effectiveness.CurrentPeriodStart.ToString("yyyy-MM-dd")) با @effectiveness.WindowDays روز پیش از آن.
             </p>
-            <table class="table table-enterprise table-sm mb-0">
+            <pems-table kind="enterprise" scale="small" css="mb-0">
                 <thead><tr><th>Dimension</th><th>Current Period</th><th>Prior Period</th><th>@Localizer["Trend"]</th></tr></thead>
                 <tbody>
                     <tr>
@@ -194,7 +194,7 @@
                         <td><pems-badge tone="@TrendBadge(effectiveness.DowntimeTrend)">@effectiveness.DowntimeTrend</pems-badge></td>
                     </tr>
                 </tbody>
-            </table>
+            </pems-table>
             <div class="row g-2 small mt-2">
                 <div class="col-md-4"><strong>PM Compliance (current period)</strong><div>@(effectiveness.PmCompliancePercent.HasValue ? $"{effectiveness.PmCompliancePercent.Value:N1}%" : "N/A") <pems-badge tone="@DataStatusBadge(effectiveness.PmComplianceDataStatus)">@effectiveness.PmComplianceDataStatus</pems-badge></div></div>
                 <div class="col-md-4"><strong>@Localizer["Repeat Failure Groups"]</strong><div>@effectiveness.RepeatFailureGroupCount</div></div>
@@ -206,7 +206,7 @@
     <div class="tab-pane fade" id="tab-matrix">
         <div class="content-card">
             <p class="text-muted small">یافته‌های هوشمندی - نه تصمیم خودکار. هر یافته با مقایسه‌ی صریح با میانگین ناوگان تولید می‌شود.</p>
-            <table class="table table-enterprise table-sm mb-0">
+            <pems-table kind="enterprise" scale="small" css="mb-0">
                 <thead><tr><th>@Localizer["Criticality"]</th><th class="text-end">@Localizer["Equipment"]</th><th class="text-end">@Localizer["With History"]</th><th class="text-end">@Localizer["Failures"]</th><th class="text-end">@Localizer["Downtime"]</th><th class="text-end">Repeat Groups</th><th class="text-end">@Localizer["PM Compliance"]</th><th>@Localizer["Findings"]</th></tr></thead>
                 <tbody>
                     @foreach (var row in criticalityMatrix)
@@ -229,7 +229,7 @@
                         </tr>
                     }
                 </tbody>
-            </table>
+            </pems-table>
             @if (!criticalityMatrix.Any()) { <p class="text-muted text-center py-4 mb-0">@Localizer["داده‌ای موجود نیست."]</p> }
         </div>
     </div>
@@ -244,7 +244,7 @@
             </p>
             @if (criticalityMaintenanceMatrix != null && criticalityMaintenanceMatrix.Any())
             {
-                <table class="table table-enterprise table-sm mb-0">
+                <pems-table kind="enterprise" scale="small" css="mb-0">
                     <thead><tr><th>@Localizer["Criticality"]</th><th class="text-end">@Localizer["Equipment"]</th><th class="text-end">@Localizer["Strategy Coverage"]</th><th class="text-end">Equipment Classes</th><th class="text-end">Classes w/ Approved RCM</th><th>Strategy Type Mix</th><th>@Localizer["Findings"]</th></tr></thead>
                     <tbody>
                         @foreach (var row in criticalityMaintenanceMatrix)
@@ -272,7 +272,7 @@
                             </tr>
                         }
                     </tbody>
-                </table>
+                </pems-table>
             }
             else
             {

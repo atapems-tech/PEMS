@@ -42,7 +42,7 @@
         {
             <div class="admin-toolbar mb-2"><div class="admin-toolbar-main"><span class="text-body-secondary small">@Model.AllowedCount / @Model.Rows.Count @Localizer["permissions allowed"] - <strong>@Model.SelectedRole</strong></span></div></div>
             <div class="table-responsive">
-                <table class="table table-enterprise">
+                <pems-table kind="enterprise">
                     <thead><tr><th>@Localizer["Resource"]</th><th>@Localizer["Action"]</th><th>@Localizer["Permission"]</th><th>@Localizer["Status"]</th><th>@Localizer["Destructive"]</th></tr></thead>
                     <tbody>
                     @foreach (var row in Model.Rows.Where(r => r.Allowed))
@@ -56,12 +56,12 @@
                         </tr>
                     }
                     </tbody>
-                </table>
+                </pems-table>
             </div>
             <details class="mt-3">
                 <summary class="text-body-secondary small">@Localizer["Show not-granted permissions"] (@(Model.Rows.Count - Model.AllowedCount))</summary>
                 <div class="table-responsive mt-2">
-                    <table class="table table-enterprise">
+                    <pems-table kind="enterprise">
                         <thead><tr><th>@Localizer["Resource"]</th><th>@Localizer["Action"]</th><th>@Localizer["Permission"]</th><th>@Localizer["Status"]</th></tr></thead>
                         <tbody>
                         @foreach (var row in Model.Rows.Where(r => !r.Allowed))
@@ -74,7 +74,7 @@
                             </tr>
                         }
                         </tbody>
-                    </table>
+                    </pems-table>
                 </div>
             </details>
         }

@@ -118,7 +118,7 @@
 <div class="content-card mb-3">
     <h6>@Localizer["Repl_Sources"]</h6>
     <div class="pems-grid-scroll">
-        <table class="table table-enterprise mb-0">
+        <pems-table kind="enterprise" css="mb-0">
             <thead><tr><th>@Localizer["Repl_SourceType"]</th><th>@Localizer["Repl_SourceNumber"]</th><th class="text-end">@Localizer["Repl_GrossDemand"]</th><th class="text-end">@Localizer["Repl_Covered"]</th><th class="text-end">@Localizer["Repl_UnreservedDemand"]</th></tr></thead>
             <tbody>
             @foreach (var src in Model.Sources)
@@ -132,7 +132,7 @@
                 </tr>
             }
             </tbody>
-        </table>
+        </pems-table>
     </div>
     @if (!Model.Sources.Any()) { <p class="text-muted text-center py-3 mb-0 small">@Localizer["Repl_NoSources"]</p> }
 </div>
@@ -140,7 +140,7 @@
 <div class="content-card">
     <h6>@Localizer["Repl_History"]</h6>
     <div class="pems-grid-scroll">
-        <table class="table table-enterprise mb-0">
+        <pems-table kind="enterprise" css="mb-0">
             <thead><tr><th>@Localizer["Date"]</th><th>@Localizer["Repl_Revision"]</th><th>@Localizer["Repl_Action"]</th><th>@Localizer["Status"]</th><th class="text-end">@Localizer["Repl_Shortage"]</th><th>@Localizer["Repl_By"]</th><th>@Localizer["Repl_Note"]</th></tr></thead>
             <tbody>
             @foreach (var h in Model.History)
@@ -156,7 +156,7 @@
                 </tr>
             }
             </tbody>
-        </table>
+        </pems-table>
     </div>
 </div>
 

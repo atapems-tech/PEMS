@@ -28,7 +28,7 @@
     else
     {
         <div class="table-responsive table-scroll-area" style="max-height:65vh; overflow-y:auto;">
-        <table class="table table-enterprise">
+        <pems-table kind="enterprise">
             <tr><th>@Localizer["Tag Number"]</th><th>@Localizer["Type"]</th><th>@Localizer["Area"]</th><th>Service</th><th>@Localizer["Description"]</th><th>@Localizer["Status"]</th><th>@Localizer["Action"]</th></tr>
             @foreach (var tag in Model.ExtractedTags)
             {
@@ -60,7 +60,7 @@
                     </td>
                 </tr>
             }
-        </table>
+        </pems-table>
         </div>
     }
 </div>
@@ -75,7 +75,7 @@
     else
     {
         <div class="table-responsive table-scroll-area" style="max-height:65vh; overflow-y:auto;">
-        <table class="table table-enterprise">
+        <pems-table kind="enterprise">
             <tr><th>Related Tag</th><th>Field</th><th>@Localizer["Value"]</th><th>@Localizer["Unit"]</th><th>@Localizer["Status"]</th><th>@Localizer["Action"]</th></tr>
             @foreach (var spec in Model.ExtractedSpecifications)
             {
@@ -104,7 +104,7 @@
                     </td>
                 </tr>
             }
-        </table>
+        </pems-table>
         </div>
     }
 </div>

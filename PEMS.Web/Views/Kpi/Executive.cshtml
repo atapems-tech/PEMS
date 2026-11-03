@@ -93,7 +93,7 @@
 
             @if (sec == KpiSections.Equipment && d.EquipmentByStatus.Count > 0)
             {
-                <table class="table table-sm table-enterprise pems-kpi-table">
+                <pems-table scale="small" css="table-enterprise pems-kpi-table">
                     <thead><tr><th>@Localizer["Kpi_Exec_Status"]</th><th class="text-end">@Localizer["Kpi_Exec_Count"]</th></tr></thead>
                     <tbody>
                     @foreach (var s in d.EquipmentByStatus)
@@ -101,12 +101,12 @@
                         <tr><td>@s.Name</td><td class="text-end">@s.Count.ToString("N0", inv)</td></tr>
                     }
                     </tbody>
-                </table>
+                </pems-table>
             }
 
             @if (sec == KpiSections.Cost && d.TopEquipmentByCost.Count > 0)
             {
-                <table class="table table-sm table-enterprise pems-kpi-table">
+                <pems-table scale="small" css="table-enterprise pems-kpi-table">
                     <thead><tr><th>@Localizer["Kpi_Exec_TopCost"]</th><th class="text-end">@Localizer["Kpi_Name_cost_total"]</th></tr></thead>
                     <tbody>
                     @foreach (var e in d.TopEquipmentByCost)
@@ -114,7 +114,7 @@
                         <tr><td>@e.TagNumber</td><td class="text-end">@e.Cost.ToString("N0", inv)</td></tr>
                     }
                     </tbody>
-                </table>
+                </pems-table>
             }
         </section>
     }
@@ -137,7 +137,7 @@
             <summary class="pems-kpi-section-title">@Localizer["Kpi_Exec_EditTargets"]</summary>
             <p class="small text-muted mt-2">@Localizer["Kpi_Exec_EditTargetsHint"]</p>
             <div class="table-responsive">
-                <table class="table table-sm table-enterprise">
+                <pems-table scale="small" css="table-enterprise">
                     <thead>
                         <tr>
                             <th>@Localizer["Kpi_Exec_Kpi"]</th><th>@Localizer["Kpi_Exec_Direction"]</th>
@@ -165,7 +165,7 @@
                         </tr>
                     }
                     </tbody>
-                </table>
+                </pems-table>
             </div>
         </details>
     }

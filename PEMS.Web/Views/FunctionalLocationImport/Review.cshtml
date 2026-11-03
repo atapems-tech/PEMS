@@ -44,7 +44,7 @@
 
 <div class="content-card">
     <div class="table-responsive table-scroll-area" style="max-height:65vh; overflow-y:auto;">
-        <table class="table table-enterprise">
+        <pems-table kind="enterprise">
             <thead>
                 <tr>
                     <th>@Localizer["Include"]</th><th>@Localizer["Src Row"]</th><th>@Localizer["Code"]</th><th>@Localizer["Name"]</th><th>Parent / Area</th><th>@Localizer["Status"]</th><th>@Localizer["Action"]</th><th>@Localizer["Note"]</th>
@@ -86,7 +86,7 @@
                     </tr>
                 }
             </tbody>
-        </table>
+        </pems-table>
     </div>
     @if (!Model.Rows.Any()) { <p class="text-muted text-center py-4">No Functional Location rows recognized in this file.</p> }
 </div>

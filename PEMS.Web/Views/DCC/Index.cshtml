@@ -86,7 +86,7 @@
     @{
         var recentIncoming = (IEnumerable<dynamic>)ViewBag.RecentIncoming;
     }
-    <table class="table table-enterprise mb-0">
+    <pems-table kind="enterprise" css="mb-0">
         <thead><tr><th>@Localizer["شماره"]</th><th>@Localizer["فرستنده"]</th><th>@Localizer["موضوع"]</th><th>@Localizer["تاریخ"]</th><th>@Localizer["لینک"]</th></tr></thead>
         <tbody>
             @foreach (var l in recentIncoming)
@@ -113,5 +113,5 @@
                 </tr>
             }
         </tbody>
-    </table>
+    </pems-table>
 </div>

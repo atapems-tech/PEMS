@@ -577,7 +577,7 @@
             </form>
 
             <div class="table-responsive pems-grid-scroll table-scroll-area lp-scroll">
-                <table class="table table-enterprise pems-grid-table pems-compact-rows mb-0 lp-table" data-grid-key="Letter">
+                <pems-table kind="enterprise" css="pems-grid-table pems-compact-rows mb-0 lp-table" data-grid-key="Letter">
                     <thead>
                         <tr>
                             <th data-col-key="select" data-resizable="false" style="width:34px;"><input type="checkbox" id="selectAllLetters" aria-label="@Localizer["Lt_SelectAll"]" /></th>
@@ -698,7 +698,7 @@
                             </tr>
                         }
                     </tbody>
-                </table>
+                </pems-table>
                 @if (!Model.Items.Any())
                 {
                     <div class="lp-empty">

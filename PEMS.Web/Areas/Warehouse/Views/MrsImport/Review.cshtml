@@ -107,7 +107,7 @@
 
 <div class="content-card">
     <div class="table-responsive table-scroll-area" style="max-height:70vh; overflow-y:auto;">
-        <table class="table table-enterprise table-sm">
+        <pems-table kind="enterprise" scale="small">
             <thead>
                 <tr>
                     <th style="width:30px;"><input type="checkbox" id="selectAllPending" /></th>
@@ -184,7 +184,7 @@
                             <td></td>
                             <td colspan="12">
                                 <div class="p-2 bg-light-subtle border rounded">
-                                    <table class="table table-sm table-borderless mb-0">
+                                    <pems-table scale="small" css="table-borderless mb-0">
                                         <thead>
                                             <tr class="text-muted small"><th>Original Excel Header</th><th>Canonical Field</th><th>@Localizer["Value"]</th></tr>
                                         </thead>
@@ -198,14 +198,14 @@
                                                 </tr>
                                             }
                                         </tbody>
-                                    </table>
+                                    </pems-table>
                                 </div>
                             </td>
                         </tr>
                     }
                 }
             </tbody>
-        </table>
+        </pems-table>
         @if (!rows.Any()) { <p class="text-muted text-center py-4">@Localizer["No rows in this batch."]</p> }
     </div>
 

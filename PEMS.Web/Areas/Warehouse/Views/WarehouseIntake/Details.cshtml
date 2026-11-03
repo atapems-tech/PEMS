@@ -35,7 +35,7 @@
 <form asp-action="Source" method="post" class="content-card">
     <input type="hidden" name="workOrderId" value="@Model.WorkOrderId" />
     <div class="table-responsive">
-        <table class="table table-enterprise table-sm align-middle">
+        <pems-table kind="enterprise" scale="small" css="align-middle">
             <thead>
                 <tr>
                     <th>@Localizer["Material"]</th>
@@ -71,7 +71,7 @@
                 </tr>
             }
             </tbody>
-        </table>
+        </pems-table>
     </div>
 
     @if (!canSource)

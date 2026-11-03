@@ -132,7 +132,7 @@
 {
     <div class="content-card mt-3">
         <h6>@Localizer["Multi-Discipline Review"]</h6>
-        <table class="table table-sm">
+        <pems-table scale="small">
             <thead><tr><th>@Localizer["Discipline"]</th><th>@Localizer["Reviewer"]</th><th>@Localizer["Decision"]</th><th>@Localizer["Comment"]</th><th>@Localizer["Date"]</th><th></th></tr></thead>
             <tbody>
                 @foreach (var r in disciplineReviews)
@@ -157,7 +157,7 @@
                     </tr>
                 }
             </tbody>
-        </table>
+        </pems-table>
     </div>
 }
 
@@ -166,7 +166,7 @@
     <h6>@Localizer["Contract Documents"]</h6>
     @if (contractDocuments.Any())
     {
-        <table class="table table-sm">
+        <pems-table scale="small">
             <thead><tr><th>@Localizer["Doc No"]</th><th>@Localizer["Title"]</th><th>@Localizer["Type"]</th><th>@Localizer["Clause Reference"]</th><th>@Localizer["Status"]</th></tr></thead>
             <tbody>
                 @foreach (var d in contractDocuments)
@@ -180,7 +180,7 @@
                     </tr>
                 }
             </tbody>
-        </table>
+        </pems-table>
     }
     <form asp-action="AddDocument" method="post" class="row g-2">
         <input type="hidden" name="contractId" value="@Model.ContractId" />
@@ -217,7 +217,7 @@
 {
     <div class="content-card mt-3">
         <h6>@Localizer["Revision History (Original value never overwritten)"]</h6>
-        <table class="table table-sm">
+        <pems-table scale="small">
             <thead><tr><th>#</th><th>@Localizer["Type"]</th><th>@Localizer["Previous"]</th><th>@Localizer["New"]</th><th>@Localizer["Reason"]</th><th>@Localizer["Status"]</th><th></th></tr></thead>
             <tbody>
                 @foreach (var r in revisions)
@@ -242,7 +242,7 @@
                     </tr>
                 }
             </tbody>
-        </table>
+        </pems-table>
     </div>
 }
 

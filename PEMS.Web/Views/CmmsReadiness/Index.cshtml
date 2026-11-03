@@ -48,14 +48,14 @@
 </div>
 
 <div class="content-card mb-3">
-    <table class="table table-enterprise table-sm mb-0">
+    <pems-table kind="enterprise" scale="small" css="mb-0">
         <tbody>
             <tr><td>Strategy Ready</td><td class="text-end">@summary.StrategyReadyEquipment.ToString("N0")</td></tr>
             <tr><td>PM Plan Ready</td><td class="text-end">@summary.PmPlanReadyEquipment.ToString("N0")</td></tr>
             <tr><td>Job Plan Ready</td><td class="text-end">@summary.JobPlanReadyEquipment.ToString("N0")</td></tr>
             <tr><td>Safety Ready</td><td class="text-end">@summary.SafetyReadyEquipment.ToString("N0")</td></tr>
         </tbody>
-    </table>
+    </pems-table>
 </div>
 
 @* ===================== Class Activation Backlog ===================== *@
@@ -66,7 +66,7 @@
         Failure Mode) دارند، بعد بر اساس جمعیت تجهیز - نه یک امتیاز مبهم.
     </p>
     <div class="table-scroll-area" style="overflow-x:auto;">
-    <table class="table table-enterprise table-sm mb-0">
+    <pems-table kind="enterprise" scale="small" css="mb-0">
         <thead>
             <tr>
                 <th>@Localizer["Class"]</th>
@@ -109,7 +109,7 @@
                 </tr>
             }
         </tbody>
-    </table>
+    </pems-table>
     </div>
     @if (!Model.Any()) { <p class="text-muted text-center py-4 mb-0">@Localizer["هیچ کلاسی با تجهیز واقعی موجود نیست."]</p> }
 </div>

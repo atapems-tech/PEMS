@@ -305,7 +305,7 @@
                     <i class="bi bi-plus-lg"></i> @L("New Rate", "ثبت نرخ جدید")
                 </pems-button>
             </div>
-            <table class="table table-sm">
+            <pems-table scale="small">
                 <thead><tr><th>@L("Type", "نوع")</th><th>@L("Rate", "نرخ")</th><th>@L("From", "از تاریخ")</th><th>@L("To", "تا تاریخ")</th></tr></thead>
                 <tbody>
                     @foreach (var r in laborRates)
@@ -318,7 +318,7 @@
                         </tr>
                     }
                 </tbody>
-            </table>
+            </pems-table>
             @if (!laborRates.Any()) { <p class="text-muted small text-center py-2">@L("No rate recorded.", "نرخی ثبت نشده.")</p> }
             <p class="text-muted small mb-0">
                 <i class="bi bi-info-circle"></i> @L(
@@ -331,7 +331,7 @@
     <div class="col-md-6">
         <div class="content-card h-100">
             <h6 class="mb-3 pb-2 border-bottom d-flex align-items-center gap-2"><i class="bi bi-diagram-3 text-warning"></i> @L("Team Membership History", "تاریخچه‌ی عضویت تیم")</h6>
-            <table class="table table-sm">
+            <pems-table scale="small">
                 <thead><tr><th>@L("Team", "تیم")</th><th>@L("Role", "نقش")</th><th>@L("From", "از")</th><th>@L("To", "تا")</th></tr></thead>
                 <tbody>
                     @foreach (var m in teamHistory)
@@ -344,7 +344,7 @@
                         </tr>
                     }
                 </tbody>
-            </table>
+            </pems-table>
             @if (!teamHistory.Any()) { <p class="text-muted small text-center py-2">@L("No membership recorded.", "عضویتی ثبت نشده.")</p> }
         </div>
     </div>

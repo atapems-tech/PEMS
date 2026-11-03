@@ -3,6 +3,14 @@
 All notable changes to PEMS. No system version is defined yet (plan row F_CI), so entries are grouped by date
 and theme and were reconstructed from the git history (initial import 2026-09-05). Newest first.
 
+## 2026-11-03 - Every hand-written table is a `<pems-table>` (SCRUM-337)
+
+### Added
+- `<pems-table kind scale css>` frame helper (`FrameState.Table`): the table element and its classes, rows stay page markup, every other attribute kept.
+
+### Changed
+- 255 tables in 134 views (the views and the Admin and Warehouse area views) moved, class order preserved; ratchet table 257 to 1 (`LetterCartable/Report`, class `ct-table`, kept). Record lists keep the pems-list family; moving cell-heavy tables to descriptor-driven PemsTable is the next step of SCRUM-337.
+
 ## 2026-11-03 - Replan of the component adoption work (SCRUM-499 to SCRUM-503)
 
 ### Added

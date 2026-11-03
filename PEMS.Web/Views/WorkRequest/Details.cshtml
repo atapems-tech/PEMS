@@ -241,7 +241,7 @@
 {
     <div class="content-card mb-3">
         <h6 class="mb-3">@Localizer["Workflow History"]</h6>
-        <table class="table table-enterprise table-sm mb-0">
+        <pems-table kind="enterprise" scale="small" css="mb-0">
             <thead><tr><th>@Localizer["Date"]</th><th>@Localizer["Action"]</th><th>@Localizer["From"]</th><th>@Localizer["To"]</th><th>@Localizer["By"]</th><th>@Localizer["Reason"]</th></tr></thead>
             <tbody>
                 @foreach (var h in wf.HistorySummary.OrderByDescending(x => x.ActionDate))
@@ -256,13 +256,13 @@
                     </tr>
                 }
             </tbody>
-        </table>
+        </pems-table>
     </div>
 }
 
 <details class="content-card" @(wf == null ? "open" : null)>
     <summary class="h6 mb-0">@Localizer["Business Audit"]</summary>
-    <table class="table table-enterprise table-sm mb-0 mt-3">
+    <pems-table kind="enterprise" scale="small" css="mb-0 mt-3">
         <thead><tr><th>@Localizer["From"]</th><th>@Localizer["To"]</th><th>@Localizer["By"]</th><th>@Localizer["Date"]</th><th>@Localizer["Reason"]</th></tr></thead>
         <tbody>
             @foreach (var h in Model.StatusHistory)
@@ -276,6 +276,6 @@
                 </tr>
             }
         </tbody>
-    </table>
+    </pems-table>
     @if (!Model.StatusHistory.Any()) { <p class="text-muted text-center py-3 mb-0">@Localizer["هنوز تغییر وضعیتی ثبت نشده."]</p> }
 </details>
