@@ -31,7 +31,7 @@
         </pems-button>
     </div>
     <div class="pems-grid-scroll">
-    <table class="table table-enterprise pems-grid-table mb-0" data-grid-key="Task">
+    <pems-table kind="enterprise" css="pems-grid-table mb-0" data-grid-key="Task">
         <thead>
             <tr>
                 <th data-col-key="title" data-resizable="true" data-min-width="160" data-max-width="400">@Localizer["Title"]</th>
@@ -106,7 +106,7 @@
                     </tr>
                 }
             </tbody>
-        </table>
+        </pems-table>
     </div>
     @if (!Model.Items.Any()) { <p class="text-muted text-center py-4 mb-0">@Localizer["Tm_EmptyList"]</p> }
 

@@ -30,7 +30,7 @@
 <div class="content-card">
     <h6 class="mb-3">@Localizer["Recent Import Batches"]</h6>
     <div class="table-responsive table-scroll-area" style="max-height:65vh; overflow-y:auto;">
-    <table class="table table-enterprise">
+    <pems-table kind="enterprise">
         <thead>
             <tr>
                 <th>@Localizer["File"]</th><th>@Localizer["Date"]</th><th>@Localizer["Imported By"]</th><th class="text-end">@Localizer["Total"]</th>
@@ -58,7 +58,7 @@
                 </tr>
             }
         </tbody>
-    </table>
+    </pems-table>
     </div>
     @if (!Model.Any()) { <p class="text-muted text-center py-4">No Maintenance History import batches yet.</p> }
 </div>

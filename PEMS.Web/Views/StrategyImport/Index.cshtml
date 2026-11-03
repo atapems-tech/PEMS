@@ -58,7 +58,7 @@
             </div>
         </div>
         <div style="max-height:420px;overflow:auto">
-        <table class="table table-sm table-enterprise">
+        <pems-table scale="small" css="table-enterprise">
             <thead><tr><th>#</th><th>@Localizer["Rcm_Reference"]</th><th>@Localizer["Rcm_Status"]</th><th>@Localizer["Rcm_Messages"]</th></tr></thead>
             <tbody>
             @foreach (var row in r.Rows)
@@ -70,7 +70,7 @@
                 </tr>
             }
             </tbody>
-        </table>
+        </pems-table>
         </div>
     </div>
 }

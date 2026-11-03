@@ -15,7 +15,7 @@
 else
 {
     <div class="table-responsive">
-        <table class="table table-sm table-enterprise vs-dense mb-0 tm-table">
+        <pems-table scale="small" css="table-enterprise vs-dense mb-0 tm-table">
             <thead>
                 <tr>
                     @if (showBulk) { <th class="tm-col-check"><pems-input kind="check" type="checkbox" data-tm-bulk-all aria-label="@Localizer["Tm_SelectAll"]" /></th> }
@@ -36,6 +36,6 @@ else
                     <partial name="~/Views/TaskManager/_ItemRow.cshtml" model="i" view-data="ViewData" />
                 }
             </tbody>
-        </table>
+        </pems-table>
     </div>
 }

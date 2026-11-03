@@ -19,7 +19,7 @@
 {
     <div class="content-card">
         <div class="table-responsive table-scroll-area" style="max-height:65vh; overflow-y:auto;">
-        <table class="table table-enterprise">
+        <pems-table kind="enterprise">
             <thead><tr><th>@Localizer["Relevance"]</th><th>@Localizer["Source"]</th><th>Content</th></tr></thead>
             <tbody>
                 @foreach (var r in Model)
@@ -31,7 +31,7 @@
                     </tr>
                 }
             </tbody>
-        </table>
+        </pems-table>
         </div>
     </div>
 }

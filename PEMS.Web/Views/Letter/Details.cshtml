@@ -475,7 +475,7 @@
 <pems-accordion-header><i class="bi bi-people me-2"></i> Recipients (@Model.Recipients.Count)</pems-accordion-header>
                 @if (Model.Recipients.Any())
                 {
-                    <table class="table table-sm table-enterprise mb-2">
+                    <pems-table scale="small" css="table-enterprise mb-2">
                         <thead><tr><th>@Localizer["Type"]</th><th>@Localizer["Name"]</th><th>@Localizer["Read"]</th></tr></thead>
                         <tbody>
                             @foreach (var r in Model.Recipients)
@@ -498,7 +498,7 @@
                                 </tr>
                             }
                         </tbody>
-                    </table>
+                    </pems-table>
                 }
                 else
                 { <p class="text-muted small">No additional recipients yet.</p> }
@@ -551,7 +551,7 @@
 <pems-accordion-header><i class="bi bi-signpost-split me-2"></i> Referrals (@Model.Referrals.Count)</pems-accordion-header>
                 @if (Model.Referrals.Any())
                 {
-                    <table class="table table-sm table-enterprise mb-2">
+                    <pems-table scale="small" css="table-enterprise mb-2">
                         <thead><tr><th>Referred To</th><th>@Localizer["Instructions"]</th><th>@Localizer["Due"]</th><th>@Localizer["Status"]</th><th>@Localizer["Read"]</th><th>By / When</th><th></th></tr></thead>
                         <tbody>
                             @foreach (var r in Model.Referrals)
@@ -596,7 +596,7 @@
                                 </tr>
                             }
                         </tbody>
-                    </table>
+                    </pems-table>
                 }
                 else
                 { <p class="text-muted small">No referrals yet.</p> }

@@ -33,7 +33,7 @@
 
 <div class="content-card">
     <h6 class="mb-3">@Localizer["Registered Passkeys"]</h6>
-    <table class="table table-enterprise table-sm mb-0">
+    <pems-table kind="enterprise" scale="small" css="mb-0">
         <thead><tr><th>@Localizer["Nickname"]</th><th>@Localizer["Registered"]</th><th>@Localizer["Last Used"]</th></tr></thead>
         <tbody>
             @foreach (var c in Model)
@@ -45,7 +45,7 @@
                 </tr>
             }
         </tbody>
-    </table>
+    </pems-table>
     @if (!Model.Any()) { <p class="text-muted text-center py-3 mb-0">@Localizer["هنوز Passkey ای ثبت نشده."]</p> }
 </div>
 

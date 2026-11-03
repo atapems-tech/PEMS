@@ -81,7 +81,7 @@
 {
     <div class="content-card mb-3">
         <h6 class="mb-2">Monitoring Points — Equipment #@equipmentId</h6>
-        <table class="table table-enterprise table-sm mb-0">
+        <pems-table kind="enterprise" scale="small" css="mb-0">
             <thead><tr><th>@Localizer["Variable"]</th><th>@Localizer["Tag"]</th><th>@Localizer["Unit"]</th><th class="text-end">@Localizer["Alarm Range"]</th><th class="text-end">@Localizer["Readings"]</th><th>@Localizer["Last Reading"]</th><th>@Localizer["Evaluation"]</th><th>@Localizer["CBM Strategy"]</th></tr></thead>
             <tbody>
                 @foreach (var p in Model)
@@ -159,7 +159,7 @@
                     </tr>
                 }
             </tbody>
-        </table>
+        </pems-table>
         @if (!Model.Any()) { <p class="text-muted text-center py-3 mb-0">@Localizer["هیچ نقطه‌ی پایشی برای این تجهیز تعریف نشده."]</p> }
     </div>
 

@@ -74,7 +74,7 @@
         <h2 class="vs-section__title"><i class="bi bi-signpost-split"></i> @Localizer["Pc_Adm_Steps"]</h2>
         <p class="small text-muted">@Localizer["Pc_Adm_StepsHint"] <a asp-area="Admin" asp-controller="WorkflowManagement" asp-action="Index">@Localizer["Pc_Adm_OpenWorkflowDesigner"]</a></p>
         <div class="pc-table-scroll">
-            <table class="table table-sm table-enterprise vs-dense mb-0">
+            <pems-table scale="small" css="table-enterprise vs-dense mb-0">
                 <thead><tr><th>@Localizer["Pc_Col_Order"]</th><th>@Localizer["Pc_Col_Step"]</th><th>@Localizer["Pc_Adm_Responsibility"]</th><th>@Localizer["Pc_Col_Condition"]</th></tr></thead>
                 <tbody>
                 @foreach (var st in ov.WorkflowStages)
@@ -87,7 +87,7 @@
                     </tr>
                 }
                 </tbody>
-            </table>
+            </pems-table>
             @if (!ov.WorkflowStages.Any()) { <div class="vs-empty py-2">@Localizer["Pc_Adm_NoWorkflow"]</div> }
         </div>
     </section>
@@ -96,7 +96,7 @@
     <section class="vs-panel pc-card mt-3">
         <h2 class="vs-section__title"><i class="bi bi-clipboard2-pulse"></i> @Localizer["Pc_Adm_DataQuality"]</h2>
         <div class="pc-table-scroll">
-            <table class="table table-sm table-enterprise vs-dense mb-0">
+            <pems-table scale="small" css="table-enterprise vs-dense mb-0">
                 <thead><tr><th>@Localizer["Pc_Adm_Severity"]</th><th>@Localizer["Pc_Adm_Responsibility"]</th><th>@Localizer["Pc_Adm_Finding"]</th></tr></thead>
                 <tbody>
                 @foreach (var f in ov.Findings.OrderBy(x => x.Severity).ThenBy(x => x.ResponsibilityKey))
@@ -108,7 +108,7 @@
                     </tr>
                 }
                 </tbody>
-            </table>
+            </pems-table>
             @if (!ov.Findings.Any()) { <div class="vs-empty py-2">@Localizer["Pc_Adm_NoFindings"]</div> }
         </div>
     </section>
@@ -212,7 +212,7 @@
             <div class="col-12"><button class="vs-btn vs-btn--sm vs-btn--primary"><i class="bi bi-plus-lg"></i> @Localizer["Pc_Btn_AddGroup"]</button></div>
         </form>
         <div class="pc-table-scroll">
-            <table class="table table-sm table-enterprise vs-dense mb-0">
+            <pems-table scale="small" css="table-enterprise vs-dense mb-0">
                 <thead><tr><th>@Localizer["Pc_Adm_Responsibility"]</th><th>@Localizer["Pc_F_CommodityGroup1Id"]</th><th>@Localizer["Pc_Adm_Position"]</th><th>@Localizer["Pc_Adm_EmployeeOverride"]</th><th></th></tr></thead>
                 <tbody>
                 @foreach (var c in ov.CommodityResponsibles.Where(x => x.IsActive))
@@ -221,7 +221,7 @@
                         <td class="text-end"><form asp-action="RemoveCommodityResponsible" method="post" class="d-inline"><input type="hidden" name="id" value="@c.Id" /><button class="vs-icon-btn" title="@Localizer["Pc_Btn_Remove"]" aria-label="@Localizer["Pc_Btn_Remove"]"><i class="bi bi-trash"></i></button></form></td></tr>
                 }
                 </tbody>
-            </table>
+            </pems-table>
             @if (!ov.CommodityResponsibles.Any(x => x.IsActive)) { <div class="vs-empty py-2">@Localizer["Pc_Adm_NoCommodityResp"]</div> }
         </div>
     </section>
@@ -269,7 +269,7 @@
         <h2 class="vs-section__title"><i class="bi bi-ui-checks-grid"></i> @Localizer["Pc_Adm_Sections"]</h2>
         <p class="small text-muted">@Localizer["Pc_Adm_SectionsHint"]</p>
         <div class="pc-table-scroll">
-            <table class="table table-sm table-enterprise vs-dense mb-0">
+            <pems-table scale="small" css="table-enterprise vs-dense mb-0">
                 <thead><tr><th>@Localizer["Pc_F_SectionId"]</th><th>@Localizer["Pc_Adm_SpareReview"]</th><th>@Localizer["Pc_Col_Active"]</th><th></th><th>@Localizer["Pc_Adm_AllowedGroups"]</th></tr></thead>
                 <tbody>
                 @foreach (var s in ov.Sections)
@@ -296,7 +296,7 @@
                     </tr>
                 }
                 </tbody>
-            </table>
+            </pems-table>
         </div>
     </section>
 
@@ -310,7 +310,7 @@
             <div class="col-md-2 pt-4"><button class="vs-btn vs-btn--sm vs-btn--primary"><i class="bi bi-plus-lg"></i> @Localizer["Pc_Btn_AddGroup"]</button></div>
         </form>
         <div class="pc-table-scroll">
-            <table class="table table-sm table-enterprise vs-dense mb-0">
+            <pems-table scale="small" css="table-enterprise vs-dense mb-0">
                 <thead><tr><th>@Localizer["Pc_F_CommodityGroup1Id"]</th><th>@Localizer["Pc_F_CommodityGroup2Id"]</th><th></th></tr></thead>
                 <tbody>
                 @foreach (var m in ov.Group2Maps)
@@ -319,7 +319,7 @@
                         <td class="text-end"><form asp-action="RemoveGroupChild" method="post" class="d-inline"><input type="hidden" name="mapId" value="@m.Id" /><button class="vs-icon-btn" title="@Localizer["Pc_Btn_Remove"]" aria-label="@Localizer["Pc_Btn_Remove"]"><i class="bi bi-trash"></i></button></form></td></tr>
                 }
                 </tbody>
-            </table>
+            </pems-table>
             @if (!ov.Group2Maps.Any()) { <div class="vs-empty py-2">@Localizer["Pc_Adm_AllGroups"]</div> }
         </div>
     </section>

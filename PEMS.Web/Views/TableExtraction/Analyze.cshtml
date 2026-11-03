@@ -83,7 +83,7 @@
 <div class="content-card">
     <h6 class="mb-2">Rows (@(table?.Rows.Count ?? 0))</h6>
     <div class="table-responsive table-scroll-area" style="max-height:65vh; overflow-y:auto;">
-        <table class="table table-enterprise table-sm">
+        <pems-table kind="enterprise" scale="small">
             <thead>
                 <tr>
                     <th>Tag No.</th><th>@Localizer["Description"]</th><th>Signal</th><th>JB / Terminal</th>
@@ -122,7 +122,7 @@
                     }
                 }
             </tbody>
-        </table>
+        </pems-table>
 
         @if (table == null || !table.Rows.Any())
         {

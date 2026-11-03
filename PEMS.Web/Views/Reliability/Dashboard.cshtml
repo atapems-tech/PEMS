@@ -89,7 +89,7 @@
 <h6 class="mt-4">@Localizer["Criticality"]</h6>
 <div class="content-card mb-3">
     <div class="table-scroll-area" style="overflow-x:auto;">
-    <table class="table table-enterprise table-sm mb-0">
+    <pems-table kind="enterprise" scale="small" css="mb-0">
         <thead><tr><th>@Localizer["Class"]</th><th class="text-end">@Localizer["Equipment"]</th><th class="text-end">@Localizer["Failures"]</th><th class="text-end">@Localizer["Repeat"]</th><th class="text-end">@Localizer["PM Compliance"]</th><th class="text-end">@Localizer["Strategy Coverage"]</th><th class="text-end">RCM Class Coverage</th></tr></thead>
         <tbody>
             @foreach (var row in criticalityMatrix)
@@ -106,7 +106,7 @@
                 </tr>
             }
         </tbody>
-    </table>
+    </pems-table>
     </div>
     <a asp-action="Intelligence" class="small">See full Criticality × Failure × Maintenance matrix with findings →</a>
 </div>
@@ -116,21 +116,21 @@
     <div class="col-md-6">
         <div class="content-card h-100">
             <h6 class="mb-2">Top Failure Modes (Pareto)</h6>
-            <table class="table table-enterprise table-sm mb-0">
+            <pems-table kind="enterprise" scale="small" css="mb-0">
                 <tbody>
                     @foreach (var p in pareto)
                     {
                         <tr><td>@p.Key</td><td class="text-end">@p.Count</td><td class="text-end small text-muted">@p.CumulativePercent.ToString("N0")%</td></tr>
                     }
                 </tbody>
-            </table>
+            </pems-table>
             @if (!pareto.Any()) { <p class="text-muted text-center py-3 mb-0">@Localizer["داده‌ای موجود نیست."]</p> }
         </div>
     </div>
     <div class="col-md-6">
         <div class="content-card h-100">
             <h6 class="mb-2">@Localizer["Bad Actors"]</h6>
-            <table class="table table-enterprise table-sm mb-0">
+            <pems-table kind="enterprise" scale="small" css="mb-0">
                 <tbody>
                     @foreach (var b in badActors)
                     {
@@ -141,7 +141,7 @@
                         </tr>
                     }
                 </tbody>
-            </table>
+            </pems-table>
             @if (!badActors.Any()) { <p class="text-muted text-center py-3 mb-0">@Localizer["داده‌ای موجود نیست."]</p> }
         </div>
     </div>

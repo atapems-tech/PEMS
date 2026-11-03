@@ -120,7 +120,7 @@
 
                         <details>
                             <summary class="small text-primary" style="cursor:pointer;">@Localizer["Evidence checklist"]</summary>
-                            <table class="table table-sm mb-0 mt-2">
+                            <pems-table scale="small" css="mb-0 mt-2">
                                 <tbody>
                                 @foreach (var kv in m.Evidence)
                                 {
@@ -128,7 +128,7 @@
                                     <tr><td class="row-secondary py-1">@kv.Key</td><td class="py-1 @valClass">@kv.Value</td></tr>
                                 }
                                 </tbody>
-                            </table>
+                            </pems-table>
                             <div class="row-secondary small mt-1">
                                 Services: @(m.InjectedServices.Count > 0 ? string.Join(", ", m.InjectedServices) : "(none detected)")<br />
                                 Views checked: <code>@m.ViewsPath</code><br />

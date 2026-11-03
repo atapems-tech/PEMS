@@ -42,7 +42,7 @@
                 <pems-button tone="neutral" size="small" outline="true" as="a" asp-controller="ProductionOrder" asp-action="Index">View all</pems-button>
             </div>
             <div class="table-scroll-area" style="max-height:50vh; overflow-y:auto;">
-                <table class="table table-enterprise">
+                <pems-table kind="enterprise">
                     <thead><tr><th>@Localizer["Order"]</th><th>@Localizer["Material"]</th><th>@Localizer["Qty"]</th><th>@Localizer["Status"]</th><th>@Localizer["Work Center"]</th></tr></thead>
                     <tbody>
                         @foreach (var o in Model.ActiveOrders)
@@ -56,7 +56,7 @@
                             </tr>
                         }
                     </tbody>
-                </table>
+                </pems-table>
                 @if (!Model.ActiveOrders.Any()) { <p class="text-muted text-center py-3">No active production orders.</p> }
             </div>
         </div>
@@ -65,7 +65,7 @@
         <div class="content-card">
             <h6 class="mb-2">Recent Batches</h6>
             <div class="table-scroll-area" style="max-height:50vh; overflow-y:auto;">
-                <table class="table table-enterprise">
+                <pems-table kind="enterprise">
                     <thead><tr><th>@Localizer["Batch"]</th><th>@Localizer["Material"]</th><th>@Localizer["Qty"]</th><th>Quality Status</th></tr></thead>
                     <tbody>
                         @foreach (var b in Model.RecentBatches)
@@ -78,7 +78,7 @@
                             </tr>
                         }
                     </tbody>
-                </table>
+                </pems-table>
                 @if (!Model.RecentBatches.Any()) { <p class="text-muted text-center py-3">No batches recorded yet.</p> }
             </div>
         </div>
@@ -88,7 +88,7 @@
 <div class="content-card mt-3">
     <h6 class="mb-2">Recent Production Losses</h6>
     <div class="table-scroll-area" style="max-height:40vh; overflow-y:auto;">
-        <table class="table table-enterprise">
+        <pems-table kind="enterprise">
             <thead><tr><th>@Localizer["Date"]</th><th>@Localizer["Qty"]</th><th>@Localizer["Category"]</th><th>@Localizer["Employee"]</th><th>@Localizer["Notes"]</th></tr></thead>
             <tbody>
                 @foreach (var l in Model.RecentLosses)
@@ -102,7 +102,7 @@
                     </tr>
                 }
             </tbody>
-        </table>
+        </pems-table>
         @if (!Model.RecentLosses.Any()) { <p class="text-muted text-center py-3">No losses recorded yet.</p> }
     </div>
 </div>

@@ -93,7 +93,7 @@
 <div class="content-card mb-3">
     <h6 class="mb-3">Classified — by Equipment Class (Top 20)</h6>
     <div class="table-responsive">
-        <table class="table table-enterprise table-sm">
+        <pems-table kind="enterprise" scale="small">
             <thead><tr><th>@Localizer["Equipment Class"]</th><th>@Localizer["Count"]</th></tr></thead>
             <tbody>
                 @foreach (var item in Model.ByEquipmentClass)
@@ -101,7 +101,7 @@
                     <tr><td>@item.Key</td><td>@item.Count.ToString("N0")</td></tr>
                 }
             </tbody>
-        </table>
+        </pems-table>
         @if (!Model.ByEquipmentClass.Any()) { <p class="text-muted small text-center py-3">@Localizer["داده‌ای موجود نیست."]</p> }
     </div>
 </div>
@@ -111,14 +111,14 @@
         <div class="content-card h-100">
             <h6 class="mb-3">Top Unclassified — EquipmentType</h6>
             <div class="table-responsive" style="max-height:400px;">
-                <table class="table table-enterprise table-sm">
+                <pems-table kind="enterprise" scale="small">
                     <tbody>
                         @foreach (var item in Model.TopUnclassifiedEquipmentTypes)
                         {
                             <tr><td class="small">@item.Key</td><td class="text-end">@item.Count.ToString("N0")</td></tr>
                         }
                     </tbody>
-                </table>
+                </pems-table>
             </div>
         </div>
     </div>
@@ -126,14 +126,14 @@
         <div class="content-card h-100">
             <h6 class="mb-3">Top Unclassified — Name</h6>
             <div class="table-responsive" style="max-height:400px;">
-                <table class="table table-enterprise table-sm">
+                <pems-table kind="enterprise" scale="small">
                     <tbody>
                         @foreach (var item in Model.TopUnclassifiedEquipmentNames)
                         {
                             <tr><td class="small">@item.Key</td><td class="text-end">@item.Count.ToString("N0")</td></tr>
                         }
                     </tbody>
-                </table>
+                </pems-table>
             </div>
         </div>
     </div>
@@ -141,14 +141,14 @@
         <div class="content-card h-100">
             <h6 class="mb-3">Top Unclassified — Tag Pattern</h6>
             <div class="table-responsive" style="max-height:400px;">
-                <table class="table table-enterprise table-sm">
+                <pems-table kind="enterprise" scale="small">
                     <tbody>
                         @foreach (var item in Model.TopUnclassifiedTagPatterns)
                         {
                             <tr><td class="small"><code>@item.Key</code></td><td class="text-end">@item.Count.ToString("N0")</td></tr>
                         }
                     </tbody>
-                </table>
+                </pems-table>
             </div>
         </div>
     </div>

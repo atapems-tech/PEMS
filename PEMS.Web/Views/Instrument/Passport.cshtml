@@ -134,7 +134,7 @@
 
     <h6>Calibration History</h6>
     <div class="table-scroll-area" style="max-height:40vh; overflow-y:auto;">
-        <table class="table table-enterprise table-sm">
+        <pems-table kind="enterprise" scale="small">
             <thead><tr><th>@Localizer["Date"]</th><th>@Localizer["Type"]</th><th>As Found / As Left</th><th>@Localizer["Result"]</th><th>@Localizer["Technician"]</th><th>Certificate</th><th>@Localizer["Next Due"]</th></tr></thead>
             <tbody>
                 @foreach (var c in (List<CalibrationHistory>)ViewBag.CalibrationHistoryList)
@@ -150,7 +150,7 @@
                     </tr>
                 }
             </tbody>
-        </table>
+        </pems-table>
     </div>
 </div>
 
@@ -204,7 +204,7 @@
             </div>
             @if (!string.IsNullOrWhiteSpace(alarm.Description)) { <div class="small text-muted">@alarm.Description</div> }
 
-            <table class="table table-enterprise table-sm mt-2 mb-2">
+            <pems-table kind="enterprise" scale="small" css="mt-2 mb-2">
                 <thead><tr><th>@Localizer["Cause"]</th><th>@Localizer["Effect"]</th><th>@Localizer["Action"]</th><th>@Localizer["Trip Signal"]</th><th></th></tr></thead>
                 <tbody>
                     @foreach (var ce in ces)
@@ -223,7 +223,7 @@
                         </tr>
                     }
                 </tbody>
-            </table>
+            </pems-table>
 
             <form asp-action="AddCauseEffect" method="post" class="row g-2 align-items-end d-print-none">
                 <input type="hidden" name="alarmId" value="@alarm.AlarmId" />
@@ -279,7 +279,7 @@
     <div class="col-md-6">
         <div class="content-card h-100">
             <h6>I/O Points</h6>
-            <table class="table table-enterprise table-sm mb-0">
+            <pems-table kind="enterprise" scale="small" css="mb-0">
                 <thead><tr><th>@Localizer["Tag"]</th><th>@Localizer["Type"]</th><th>PLC / Rack / Slot / Channel</th></tr></thead>
                 <tbody>
                     @foreach (var io in ioPoints)
@@ -291,7 +291,7 @@
                         </tr>
                     }
                 </tbody>
-            </table>
+            </pems-table>
             @if (!ioPoints.Any()) { <p class="text-muted small mb-0">هیچ I/O Point ای ثبت نشده (معمولاً از طریق AI Import پر می‌شود).</p> }
         </div>
     </div>

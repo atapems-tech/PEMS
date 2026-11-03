@@ -116,7 +116,7 @@
                 </pems-button>
             </div>
 
-            <table class="table table-enterprise">
+            <pems-table kind="enterprise">
                 <thead><tr><th>@Localizer["کد"]</th><th>@Localizer["نام"]</th><th>@Localizer["دیسیپلین"]</th><th>@Localizer["توضیحات"]</th><th>@Localizer["System Default"]</th><th></th></tr></thead>
                 <tbody>
                     @foreach (var g in Model)
@@ -136,7 +136,7 @@
                         </tr>
                     }
                 </tbody>
-            </table>
+            </pems-table>
             @if (!Model.Any()) { <p class="text-muted text-center py-4">هنوز گروه تعمیراتی‌ای ساخته نشده.</p> }
         </div>
     </div>
@@ -153,7 +153,7 @@
                 </pems-button>
             </div>
 
-            <table class="table table-enterprise">
+            <pems-table kind="enterprise">
                 <thead><tr><th>@Localizer["نام"]</th><th>@Localizer["دیسیپلین"]</th><th>@Localizer["توضیحات"]</th><th></th></tr></thead>
                 <tbody>
                     @foreach (var s in skills)
@@ -171,7 +171,7 @@
                         </tr>
                     }
                 </tbody>
-            </table>
+            </pems-table>
             @if (!skills.Any()) { <p class="text-muted text-center py-4">@Localizer["هنوز مهارتی ساخته نشده."]</p> }
         </div>
     </div>
@@ -187,7 +187,7 @@
                 </pems-button>
             </div>
 
-            <table class="table table-enterprise">
+            <pems-table kind="enterprise">
                 <thead><tr><th>@Localizer["نام"]</th><th>@Localizer["دیسیپلین"]</th><th>@Localizer["توضیحات"]</th><th></th></tr></thead>
                 <tbody>
                     @foreach (var q in qualifications)
@@ -205,7 +205,7 @@
                         </tr>
                     }
                 </tbody>
-            </table>
+            </pems-table>
             @if (!qualifications.Any()) { <p class="text-muted text-center py-4">هنوز صلاحیتی ساخته نشده.</p> }
         </div>
     </div>
@@ -221,7 +221,7 @@
                 </pems-button>
             </div>
 
-            <table class="table table-enterprise">
+            <pems-table kind="enterprise">
                 <thead><tr><th>@Localizer["نام"]</th><th>@Localizer["دیسیپلین"]</th><th>@Localizer["توضیحات"]</th><th></th></tr></thead>
                 <tbody>
                     @foreach (var c in certifications)
@@ -239,7 +239,7 @@
                         </tr>
                     }
                 </tbody>
-            </table>
+            </pems-table>
             @if (!certifications.Any()) { <p class="text-muted text-center py-4">هنوز گواهینامه‌ای ساخته نشده.</p> }
         </div>
     </div>
@@ -256,7 +256,7 @@
                 </pems-button>
             </div>
 
-            <table class="table table-enterprise">
+            <pems-table kind="enterprise">
                 <thead><tr><th>@Localizer["Code"]</th><th>@Localizer["Name"]</th><th>@Localizer["نام فارسی"]</th><th>@Localizer["System Default"]</th><th></th></tr></thead>
                 <tbody>
                     @foreach (var t in maintenanceTypes)
@@ -275,7 +275,7 @@
                         </tr>
                     }
                 </tbody>
-            </table>
+            </pems-table>
             @if (!maintenanceTypes.Any()) { <p class="text-muted text-center py-4">هنوز Maintenance Type ای ساخته نشده.</p> }
         </div>
     </div>
@@ -292,7 +292,7 @@
                 </pems-button>
             </div>
 
-            <table class="table table-enterprise">
+            <pems-table kind="enterprise">
                 <thead><tr><th>@Localizer["Code"]</th><th>@Localizer["Name"]</th><th>@Localizer["نام فارسی"]</th><th>@Localizer["System Default"]</th><th></th></tr></thead>
                 <tbody>
                     @foreach (var t in strategyTypes)
@@ -311,7 +311,7 @@
                         </tr>
                     }
                 </tbody>
-            </table>
+            </pems-table>
             @if (!strategyTypes.Any()) { <p class="text-muted text-center py-4">هنوز Strategy Type ای ساخته نشده.</p> }
         </div>
     </div>
@@ -328,7 +328,7 @@
                 </pems-button>
             </div>
 
-            <table class="table table-enterprise">
+            <pems-table kind="enterprise">
                 <thead><tr><th>@Localizer["Code"]</th><th>@Localizer["Name"]</th><th>@Localizer["نام فارسی"]</th><th>@Localizer["System Default"]</th><th></th></tr></thead>
                 <tbody>
                     @foreach (var t in equipmentClasses)
@@ -347,7 +347,7 @@
                         </tr>
                     }
                 </tbody>
-            </table>
+            </pems-table>
             @if (!equipmentClasses.Any()) { <p class="text-muted text-center py-4">هنوز Equipment Class ای ساخته نشده.</p> }
         </div>
     </div>
@@ -364,7 +364,7 @@
                 </pems-button>
             </div>
 
-            <table class="table table-enterprise">
+            <pems-table kind="enterprise">
                 <thead><tr><th>@Localizer["Code"]</th><th>@Localizer["Organization"]</th><th>@Localizer["Number"]</th><th>@Localizer["Title"]</th><th>@Localizer["Category"]</th><th>@Localizer["System Default"]</th><th></th></tr></thead>
                 <tbody>
                     @foreach (var s in standardReferences)
@@ -385,7 +385,7 @@
                         </tr>
                     }
                 </tbody>
-            </table>
+            </pems-table>
             @if (!standardReferences.Any()) { <p class="text-muted text-center py-4">هنوز Standard Reference ای ساخته نشده.</p> }
         </div>
     </div>
@@ -402,7 +402,7 @@
                 </pems-button>
             </div>
 
-            <table class="table table-enterprise">
+            <pems-table kind="enterprise">
                 <thead><tr><th>@Localizer["Code"]</th><th>@Localizer["Name"]</th><th>Group</th><th>@Localizer["Type"]</th><th>@Localizer["System Default"]</th><th></th></tr></thead>
                 <tbody>
                     @foreach (var a in maintenanceActivities)
@@ -422,7 +422,7 @@
                         </tr>
                     }
                 </tbody>
-            </table>
+            </pems-table>
             @if (!maintenanceActivities.Any()) { <p class="text-muted text-center py-4">هنوز Activity ای ساخته نشده.</p> }
         </div>
     </div>
@@ -434,7 +434,7 @@
                 این تب فقط از طریق Seed سیستمی ساخته می‌شود (نه فرم دستی) چون هر Mode به چند
                 Cause/Effect/Consequence مرتبط است.
             </p>
-            <table class="table table-enterprise">
+            <pems-table kind="enterprise">
                 <thead><tr><th>@Localizer["Code"]</th><th>@Localizer["Name"]</th><th>@Localizer["Equipment Class"]</th><th>@Localizer["Effect"]</th><th>@Localizer["Consequence"]</th><th>@Localizer["System Default"]</th><th></th></tr></thead>
                 <tbody>
                     @foreach (var fm in failureModes)
@@ -455,7 +455,7 @@
                         </tr>
                     }
                 </tbody>
-            </table>
+            </pems-table>
             @if (!failureModes.Any()) { <p class="text-muted text-center py-4">هنوز Failure Mode ای Seed نشده.</p> }
         </div>
     </div>
@@ -467,7 +467,7 @@
                 Class (نه یک تجهیز خاص) - تبدیل به یک MaintenancePlan واقعی هنوز نیازمند تأیید
                 انسانی/تخصیص JobPlan است.
             </p>
-            <table class="table table-enterprise">
+            <pems-table kind="enterprise">
                 <thead><tr><th>@Localizer["Code"]</th><th>@Localizer["Name"]</th><th>@Localizer["Equipment Class"]</th><th>@Localizer["Trigger"]</th><th>Interval</th><th>@Localizer["System Default"]</th><th></th></tr></thead>
                 <tbody>
                     @foreach (var pt in pmTemplates)
@@ -488,7 +488,7 @@
                         </tr>
                     }
                 </tbody>
-            </table>
+            </pems-table>
             @if (!pmTemplates.Any()) { <p class="text-muted text-center py-4">هنوز PM Template ای Seed نشده.</p> }
         </div>
     </div>
@@ -506,7 +506,7 @@
                 </pems-button>
             </div>
 
-            <table class="table table-enterprise">
+            <pems-table kind="enterprise">
                 <thead><tr><th>@Localizer["Code"]</th><th>@Localizer["Name"]</th><th>@Localizer["Variable Type"]</th><th>@Localizer["Equipment Class"]</th><th>@Localizer["Standard"]</th><th>@Localizer["Version"]</th><th>@Localizer["Limits"]</th><th></th></tr></thead>
                 <tbody>
                     @foreach (var p in evaluationProfiles)
@@ -545,7 +545,7 @@
                         </tr>
                     }
                 </tbody>
-            </table>
+            </pems-table>
             @if (!evaluationProfiles.Any()) { <p class="text-muted text-center py-4">@Localizer["هنوز Evaluation Profile ای ساخته نشده."]</p> }
         </div>
     </div>
@@ -561,7 +561,7 @@
                 </pems-button>
             </div>
 
-            <table class="table table-enterprise">
+            <pems-table kind="enterprise">
                 <thead><tr><th>@Localizer["Condition"]</th><th>@Localizer["Priority"]</th><th>@Localizer["System Default"]</th><th></th></tr></thead>
                 <tbody>
                     @foreach (var m in conditionPriorityMappings)
@@ -589,7 +589,7 @@
                         </tr>
                     }
                 </tbody>
-            </table>
+            </pems-table>
             @if (!conditionPriorityMappings.Any()) { <p class="text-muted text-center py-4">@Localizer["هنوز نگاشتی ساخته نشده."]</p> }
         </div>
     </div>

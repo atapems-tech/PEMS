@@ -44,7 +44,7 @@
 <div class="content-card mb-3">
     <h6 class="mb-3">@Localizer["Attendees"]</h6>
     <div class="table-responsive table-scroll-area" style="max-height:65vh; overflow-y:auto;">
-    <table class="table table-enterprise">
+    <pems-table kind="enterprise">
         <thead><tr><th>@Localizer["Name"]</th><th>Required</th><th>Attended</th></tr></thead>
         <tbody>
             @foreach (var a in Model.Attendees)
@@ -65,7 +65,7 @@
                 </tr>
             }
         </tbody>
-    </table>
+    </pems-table>
     </div>
     @if (!Model.Attendees.Any()) { <p class="text-muted small">No attendees added yet.</p> }
 
@@ -85,7 +85,7 @@
 <div class="content-card">
     <h6 class="mb-3">@Localizer["Action Items"]</h6>
     <div class="table-responsive table-scroll-area" style="max-height:65vh; overflow-y:auto;">
-    <table class="table table-enterprise">
+    <pems-table kind="enterprise">
         <thead><tr><th>@Localizer["Title"]</th><th>@Localizer["Assigned To"]</th><th>@Localizer["Due"]</th><th>@Localizer["Status"]</th></tr></thead>
         <tbody>
             @foreach (var t in Model.ActionItems)
@@ -98,7 +98,7 @@
                 </tr>
             }
         </tbody>
-    </table>
+    </pems-table>
     </div>
     @if (!Model.ActionItems.Any()) { <p class="text-muted small">No action items yet.</p> }
 

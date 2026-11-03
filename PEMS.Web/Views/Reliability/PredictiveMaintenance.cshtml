@@ -41,7 +41,7 @@
 
 <div class="content-card">
     <h6 class="mb-2">Defined Models (@readiness.ModelCount total, @readiness.ValidatedModelCount validated)</h6>
-    <table class="table table-enterprise table-sm mb-0">
+    <pems-table kind="enterprise" scale="small" css="mb-0">
         <thead><tr><th>@Localizer["Target"]</th><th>Algorithm</th><th>Training Data</th><th>@Localizer["Validation"]</th><th class="text-end">Results</th></tr></thead>
         <tbody>
             @foreach (var m in Model)
@@ -55,6 +55,6 @@
                 </tr>
             }
         </tbody>
-    </table>
+    </pems-table>
     @if (!Model.Any()) { <p class="text-muted text-center py-4 mb-0">هیچ مدل پیش‌بینانه‌ای هنوز تعریف نشده - هیچ داده‌ی جعلی برای پرکردن این صفحه درج نشده.</p> }
 </div>

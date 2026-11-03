@@ -44,7 +44,7 @@
     <div class="content-card mb-3">
         <h6>@Localizer["Versions"]</h6>
         <div class="table-responsive">
-            <table class="table table-enterprise align-middle">
+            <pems-table kind="enterprise" css="align-middle">
                 <thead><tr><th>@Localizer["Version"]</th><th>@Localizer["Status"]</th><th>@Localizer["Stages"]</th><th>@Localizer["Transitions"]</th><th>@Localizer["Published"]</th><th>@Localizer["Running instances"]</th><th>@Localizer["Change summary"]</th><th></th></tr></thead>
                 <tbody>
                 @foreach (var v in Model.Versions)
@@ -76,7 +76,7 @@
                     </tr>
                 }
                 </tbody>
-            </table>
+            </pems-table>
         </div>
         @if (openDraft != null) { <p class="small text-muted mb-0"><i class="bi bi-info-circle"></i> @Localizer["One open draft per workflow: finish or discard v{0} before cloning again.", openDraft.VersionNumber]</p> }
     </div>
@@ -113,10 +113,10 @@
                 @if (Model.TotalInstances == 0) { <p class="small text-muted mb-0">@Localizer["No instances have used this workflow."]</p> }
                 else
                 {
-                    <table class="table table-sm mb-0">
+                    <pems-table scale="small" css="mb-0">
                         <thead><tr><th>@Localizer["Version"]</th><th>@Localizer["Running"]</th><th>@Localizer["Completed"]</th><th>@Localizer["Cancelled"]</th><th>@Localizer["Rejected"]</th></tr></thead>
                         <tbody>@foreach (var u in Model.Usage) { <tr><td>v@(u.VersionNumber)</td><td>@u.Running</td><td>@u.Completed</td><td>@u.Cancelled</td><td>@u.Rejected</td></tr> }</tbody>
-                    </table>
+                    </pems-table>
                 }
             </div>
         </div>
@@ -125,7 +125,7 @@
     <div class="content-card mt-3">
         <h6>@Localizer["Configuration audit"]</h6>
         <div class="table-responsive" style="max-height:340px;overflow:auto">
-            <table class="table table-sm align-middle mb-0">
+            <pems-table scale="small" css="align-middle mb-0">
                 <thead><tr><th>@Localizer["Time"]</th><th>@Localizer["Action"]</th><th>@Localizer["Version"]</th><th>@Localizer["By"]</th><th>@Localizer["Change"]</th></tr></thead>
                 <tbody>
                 @foreach (var a in Model.Audit)
@@ -136,7 +136,7 @@
                     </tr>
                 }
                 </tbody>
-            </table>
+            </pems-table>
         </div>
     </div>
 </div>

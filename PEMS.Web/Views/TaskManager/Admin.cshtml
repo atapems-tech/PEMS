@@ -20,7 +20,7 @@
     else
     {
         <div class="table-responsive">
-            <table class="table table-sm table-enterprise vs-dense mb-0">
+            <pems-table scale="small" css="table-enterprise vs-dense mb-0">
                 <thead><tr><th>@Localizer["Tm_Field_Key"]</th><th>@Localizer["Tm_Field_Name"]</th><th>@Localizer["Tm_Field_Department"]</th><th>@Localizer["Tm_Members"]</th><th>@Localizer["Tm_OpenItems"]</th><th>@Localizer["Tm_Field_Active"]</th><th></th></tr></thead>
                 <tbody>
                     @foreach (var s in Model)
@@ -36,7 +36,7 @@
                         </tr>
                     }
                 </tbody>
-            </table>
+            </pems-table>
         </div>
     }
 </section>

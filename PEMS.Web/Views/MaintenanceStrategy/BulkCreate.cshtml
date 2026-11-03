@@ -212,7 +212,7 @@ else if (matchingCount.HasValue && matchingCount.Value > maxResults)
                                                     انتخاب این نوع
                                                 </pems-button>
                                             </div>
-                                            <table class="table table-sm mb-0">
+                                            <pems-table scale="small" css="mb-0">
                                                 <tbody>
                                                     @foreach (var eq in typeGroup)
                                                     {
@@ -232,7 +232,7 @@ else if (matchingCount.HasValue && matchingCount.Value > maxResults)
                                                         </tr>
                                                     }
                                                 </tbody>
-                                            </table>
+                                            </pems-table>
                                         </div>
                                     }
                                 </pems-accordion-item>
