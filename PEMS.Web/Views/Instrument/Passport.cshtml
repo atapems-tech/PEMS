@@ -6,7 +6,7 @@
 @{
     ViewData["Title"] = "Passport - " + Model.Equipment?.TagNumber;
     var status = (string)ViewBag.CalibrationStatus;
-    var badgeClass = status switch { "Overdue" => "bg-danger", "DueSoon" => "bg-warning text-dark", "OK" => "bg-success", _ => "bg-secondary" };
+    var badgeClass = status switch { "Overdue" => "danger", "DueSoon" => "warning", "OK" => "success", _ => "neutral" };
     var latestCal = (CalibrationHistory?)ViewBag.LatestCalibration;
     var latestMaint = (MaintenanceHistory?)ViewBag.LatestMaintenance;
     string NA(string? v) => string.IsNullOrWhiteSpace(v) ? "N/A" : v;
@@ -15,7 +15,7 @@
 <div class="content-card mb-3 d-print-none">
     <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
         <div>
-            <h4 class="mb-0">@Model.Equipment?.TagNumber <pems-badge tone="none" css="@badgeClass ms-1">@status</pems-badge></h4>
+            <h4 class="mb-0">@Model.Equipment?.TagNumber <pems-badge tone="@badgeClass" css="ms-1">@status</pems-badge></h4>
             <span class="text-muted small">@Model.InstrumentType - @Model.Equipment?.Name (@NA(Model.Equipment?.Manufacturer) / @NA(Model.Equipment?.Model))</span>
         </div>
         <div class="d-flex gap-2">
@@ -191,14 +191,14 @@
     }
     @foreach (var alarm in alarms)
     {
-        var alarmBadge = alarm.Priority switch { "Critical" => "bg-danger", "High" => "bg-warning text-dark", _ => "bg-secondary" };
+        var alarmBadge = alarm.Priority switch { "Critical" => "danger", "High" => "warning", _ => "neutral" };
         var ces = causeEffectsByAlarm.TryGetValue(alarm.AlarmId, out var list) ? list : new List<CauseEffect>();
 
         <div class="border rounded p-2 mb-3">
             <div class="d-flex justify-content-between align-items-center">
                 <div class="small">
                     <strong>@alarm.AlarmTag</strong> - @alarm.AlarmType
-                    <pems-badge tone="none" css="@alarmBadge">@alarm.Priority</pems-badge>
+                    <pems-badge tone="@alarmBadge">@alarm.Priority</pems-badge>
                     - SP: @(alarm.SetPoint?.ToString() ?? "N/A") @alarm.Unit
                 </div>
             </div>

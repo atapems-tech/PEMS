@@ -37,9 +37,9 @@
                     <td>@tag.Service</td><td>@tag.Description</td>
                     <td>
                         @{
-                            var tagBadge = tag.ReviewStatus switch { "Approved" => "bg-success", "Rejected" => "bg-danger", _ => "bg-secondary" };
+                            var tagBadge = tag.ReviewStatus switch { "Approved" => "success", "Rejected" => "danger", _ => "neutral" };
                         }
-                        <pems-badge tone="none" css="@tagBadge">@tag.ReviewStatus</pems-badge>
+                        <pems-badge tone="@tagBadge">@tag.ReviewStatus</pems-badge>
                     </td>
                     <td>
                         @if (tag.ReviewStatus == "Draft")
@@ -83,9 +83,9 @@
                     <td>@spec.RelatedTagNumber</td><td>@spec.FieldName</td><td>@spec.FieldValue</td><td>@spec.Unit</td>
                     <td>
                         @{
-                            var specBadge = spec.ReviewStatus switch { "Approved" => "bg-success", "Rejected" => "bg-danger", _ => "bg-secondary" };
+                            var specBadge = spec.ReviewStatus switch { "Approved" => "success", "Rejected" => "danger", _ => "neutral" };
                         }
-                        <pems-badge tone="none" css="@specBadge">@spec.ReviewStatus</pems-badge>
+                        <pems-badge tone="@specBadge">@spec.ReviewStatus</pems-badge>
                     </td>
                     <td>
                         @if (spec.ReviewStatus == "Draft")

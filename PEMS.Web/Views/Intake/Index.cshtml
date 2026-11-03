@@ -59,22 +59,22 @@
                         <td>@(i.AIConfidence.HasValue ? $"{i.AIConfidence:P0}" : "-")</td>
                         <td>
                             @{
-                                var ab = i.AIStatus switch { "Completed" => "bg-success", "Processing" => "bg-info text-dark", "Failed" => "bg-danger", _ => "bg-secondary" };
+                                var ab = i.AIStatus switch { "Completed" => "success", "Processing" => "info", "Failed" => "danger", _ => "neutral" };
                             }
-                            <pems-badge tone="none" css="@ab">@i.AIStatus</pems-badge>
+                            <pems-badge tone="@ab">@i.AIStatus</pems-badge>
                         </td>
                         <td>
                             @{
                                 var sb = i.IntakeStage switch
                                 {
-                                    "Routed" => "bg-success",
-                                    "PendingEngineeringReview" => "bg-warning text-dark",
-                                    "PendingManualClassification" => "bg-danger",
-                                    "Rejected" => "bg-dark",
-                                    _ => "bg-secondary"
+                                    "Routed" => "success",
+                                    "PendingEngineeringReview" => "warning",
+                                    "PendingManualClassification" => "danger",
+                                    "Rejected" => "dark",
+                                    _ => "neutral"
                                 };
                             }
-                            <pems-badge tone="none" css="@sb">@i.IntakeStage</pems-badge>
+                            <pems-badge tone="@sb">@i.IntakeStage</pems-badge>
                         </td>
                         <td>@i.RoutedModule</td>
                         <td>@i.UploadDate.ToString("yyyy-MM-dd HH:mm")</td>

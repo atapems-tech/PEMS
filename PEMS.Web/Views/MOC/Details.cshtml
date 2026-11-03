@@ -4,7 +4,7 @@
 @inject IStringLocalizer<SharedResource> Localizer
 
 @{
-    var sb = Model.Status switch { "Closed" => "bg-success", "Rejected" => "bg-dark", _ => "bg-info text-dark" };
+    var sb = Model.Status switch { "Closed" => "success", "Rejected" => "dark", _ => "info" };
     var workflowRunning = (bool)(ViewBag.WorkflowRunning ?? false);
     var currentStageName = (string?)ViewBag.CurrentStageName;
     var myDisciplineId = ViewBag.MyDisciplineId as int?;
@@ -18,7 +18,7 @@
         </div>
         <div class="d-flex align-items-center gap-2">
             <pems-badge tone="@(Model.RiskLevel == "High" ? "danger" : Model.RiskLevel == "Medium" ? "warning" : "neutral")" css="fs-6">Risk: @Model.RiskLevel</pems-badge>
-            <pems-badge tone="none" css="@sb fs-6">@Model.Status</pems-badge>
+            <pems-badge tone="@sb" css="fs-6">@Model.Status</pems-badge>
         </div>
     </div>
 </div>

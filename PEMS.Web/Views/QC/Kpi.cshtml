@@ -49,9 +49,9 @@
             <ul class="list-unstyled mb-0">
                 @foreach (var s in (IEnumerable<dynamic>)ViewBag.BySeverity)
                 {
-                    var badgeClass = s.Severity == "Critical" ? "bg-danger" : s.Severity == "Major" ? "bg-warning text-dark" : "bg-secondary";
+                    var badgeClass = s.Severity == "Critical" ? "danger" : s.Severity == "Major" ? "warning" : "neutral";
                     <li class="d-flex justify-content-between border-bottom py-1">
-                        <pems-badge tone="none" css="@badgeClass">@s.Severity</pems-badge>
+                        <pems-badge tone="@badgeClass">@s.Severity</pems-badge>
                         <strong>@s.Count</strong>
                     </li>
                 }

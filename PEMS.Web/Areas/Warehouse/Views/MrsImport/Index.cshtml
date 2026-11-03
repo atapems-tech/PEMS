@@ -31,11 +31,11 @@
         <tbody>
             @foreach (var b in Model)
             {
-                var badgeClass = b.Status switch { "Committed" => "bg-success", "InReview" => "bg-info text-dark", "Cancelled" => "bg-secondary", _ => "bg-warning text-dark" };
+                var badgeClass = b.Status switch { "Committed" => "success", "InReview" => "info", "Cancelled" => "neutral", _ => "warning" };
                 <tr>
                     <td class="small">@b.SourceFileName</td>
                     <td class="small">@b.SourceSheet</td>
-                    <td><pems-badge tone="none" css="@badgeClass">@b.Status</pems-badge></td>
+                    <td><pems-badge tone="@badgeClass">@b.Status</pems-badge></td>
                     <td>@b.TotalRows</td>
                     <td>@b.NewCount</td>
                     <td>@b.MatchedCount</td>

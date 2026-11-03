@@ -512,11 +512,11 @@
                         {
                             var badgeClass = file.AIStatus switch
                             {
-                                "Completed" => "bg-success",
-                                "Processing" => "bg-info text-dark",
-                                "Pending" => "bg-secondary",
-                                "Failed" => "bg-danger",
-                                _ => "bg-secondary"
+                                "Completed" => "success",
+                                "Processing" => "info",
+                                "Pending" => "neutral",
+                                "Failed" => "danger",
+                                _ => "neutral"
                             };
                             var fileIsCurrentRev = file.DocumentRevisionId.HasValue && file.RevisionNo == Model.RevisionNo;
                             var fileIsPreviousRev = file.DocumentRevisionId.HasValue && !fileIsCurrentRev;
@@ -550,7 +550,7 @@
                                 </td>
                                 <td>@file.FileExtension</td>
                                 <td>@(file.FileSize / 1024) KB</td>
-                                <td><pems-badge tone="none" css="@badgeClass">@file.AIStatus</pems-badge></td>
+                                <td><pems-badge tone="@badgeClass">@file.AIStatus</pems-badge></td>
                                 <td class="small text-muted">@file.UploadDate.ToString("yyyy-MM-dd")</td>
                                 <td class="text-end">
                                     <div class="d-flex gap-1 justify-content-end flex-wrap">
@@ -994,14 +994,14 @@
                         @{
                             var eab = c.ActionStatus switch
                             {
-                                "Closed" => "bg-success",
-                                "Verified" => "bg-info text-dark",
-                                "VendorResponsePending" => "bg-warning text-dark",
-                                "NoActionRequired" => "bg-secondary",
-                                _ => "bg-danger"
+                                "Closed" => "success",
+                                "Verified" => "info",
+                                "VendorResponsePending" => "warning",
+                                "NoActionRequired" => "neutral",
+                                _ => "danger"
                             };
                         }
-                        <pems-badge tone="none" css="@eab">@c.ActionStatus</pems-badge>
+                        <pems-badge tone="@eab">@c.ActionStatus</pems-badge>
                         <form asp-action="SetCommentAction" method="post" class="d-inline">
                             <input type="hidden" name="documentId" value="@Model.DocumentId" />
                             <input type="hidden" name="commentId" value="@c.VDRCommentId" />

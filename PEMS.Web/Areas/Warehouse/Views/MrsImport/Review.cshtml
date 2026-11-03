@@ -120,10 +120,10 @@
                 {
                     var badgeClass = row.MatchStatus switch
                     {
-                        "MatchedExisting" => "bg-info text-dark",
-                        "DuplicateInBatch" => "bg-warning text-dark",
-                        "Invalid" => "bg-danger",
-                        _ => "bg-primary"
+                        "MatchedExisting" => "info",
+                        "DuplicateInBatch" => "warning",
+                        "Invalid" => "danger",
+                        _ => "primary"
                     };
                     var isSelectable = row.ReviewStatus == "Pending" && row.MatchStatus != "Invalid";
                     var metaRowId = "meta-" + row.MrsImportRowId;
@@ -145,7 +145,7 @@
                         <td class="small">@(row.RawQtyReceived?.ToString() ?? "-")</td>
                         <td class="small">@(row.RawQtyIssued?.ToString() ?? "-")</td>
                         <td class="small">@(row.ResolvedWarehouseCode ?? "-")</td>
-                        <td><pems-badge tone="none" css="@badgeClass">@row.MatchStatus</pems-badge></td>
+                        <td><pems-badge tone="@badgeClass">@row.MatchStatus</pems-badge></td>
                         <td class="small">@(row.MatchedMaterialCode != null ? row.MatchedMaterialCode + " - " + row.MatchedMaterialDescription : "-")</td>
                         <td>
                             @if (row.ReviewStatus == "Approved" && !string.IsNullOrWhiteSpace(row.ErrorMessage))
