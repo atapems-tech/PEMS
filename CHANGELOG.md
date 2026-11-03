@@ -8,6 +8,11 @@ and theme and were reconstructed from the git history (initial import 2026-09-05
 ### Changed
 - The Department and SparePart edit modals (one per row, every field prefilled) became one modal each; the opening button carries the row values as `data-fill-*` (`pems-modal-fill.js`). Left on purpose: the Employee edit modal (a position partial and department, discipline and vendor options that differ per row, plus a per-row inline script) and the per-entry import modals of ImportCenter.
 
+## 2026-11-03 - Test policy for sessions written into the guideline (SCRUM-503)
+
+### Changed
+- Chapter 07 section 2b: what a session runs (build, PEMS.UI.Tests, the page tests of touched views) and what goes to the QA checklist as `not done` lines (SQL Server tests, the full suite, browser checks); only SQL-safe changes without SQL Server; a stalled command is not a failed job. Chapter 01 and chapter 05 (test recipes, recording flags, known red test) point to it; four learnings added to the log (bound attributes of derived tag helpers, boolean attributes and scope in tag helpers, ratchet scope, timeouts).
+
 ## 2026-11-03 - One shared modal per list for the row actions (SCRUM-500)
 
 ### Added
