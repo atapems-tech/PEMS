@@ -29,22 +29,22 @@
     <div class="col-md-5">
         <div class="content-card mb-3">
             <h6 class="small fw-bold">@Localizer["Rcm_ByCriticality"]</h6>
-            <table class="table table-sm table-enterprise">
+            <pems-table scale="small" css="table-enterprise">
                 <thead><tr><th>@Localizer["Rcm_Criticality"]</th><th>@Localizer["Rcm_Total"]</th><th>@Localizer["Rcm_WithStrategy"]</th><th>@Localizer["Rcm_WithoutStrategy"]</th><th>%</th></tr></thead>
                 <tbody>
                 @foreach (var r in Model.ByCriticality)
                 {
-                    <tr><td><pems-badge tone="none" css="@RcmDisplay.CriticalityBadge(r.Key)">@Localizer.Label("Criticality", r.Key)</pems-badge></td><td>@r.TotalEquipment.ToString("N0")</td><td>@r.WithApprovedStrategy.ToString("N0")</td><td>@r.WithoutStrategy.ToString("N0")</td><td>@r.CoveragePercent</td></tr>
+                    <tr><td><pems-badge tone="@RcmDisplay.CriticalityBadge(r.Key)">@Localizer.Label("Criticality", r.Key)</pems-badge></td><td>@r.TotalEquipment.ToString("N0")</td><td>@r.WithApprovedStrategy.ToString("N0")</td><td>@r.WithoutStrategy.ToString("N0")</td><td>@r.CoveragePercent</td></tr>
                 }
                 </tbody>
-            </table>
+            </pems-table>
         </div>
     </div>
     <div class="col-md-7">
         <div class="content-card mb-3">
             <h6 class="small fw-bold">@Localizer["Rcm_ByClass"]</h6>
             <div style="max-height:320px;overflow:auto">
-            <table class="table table-sm table-enterprise">
+            <pems-table scale="small" css="table-enterprise">
                 <thead><tr><th>@Localizer["Rcm_EquipmentClass"]</th><th>@Localizer["Rcm_Total"]</th><th>@Localizer["Rcm_WithStrategy"]</th><th>@Localizer["Rcm_WithoutStrategy"]</th><th>%</th></tr></thead>
                 <tbody>
                 @foreach (var r in Model.ByClass)
@@ -52,7 +52,7 @@
                     <tr><td>@(string.IsNullOrEmpty(r.Key) ? Localizer["Rcm_Unclassified"].Value : r.Key)</td><td>@r.TotalEquipment.ToString("N0")</td><td>@r.WithApprovedStrategy.ToString("N0")</td><td>@r.WithoutStrategy.ToString("N0")</td><td>@r.CoveragePercent</td></tr>
                 }
                 </tbody>
-            </table>
+            </pems-table>
             </div>
         </div>
     </div>
@@ -63,7 +63,7 @@
         <h6 class="small fw-bold mb-0">@Localizer["Rcm_CriticalWithoutStrategy"] (@Model.CriticalWithoutStrategyTotal.ToString("N0"))</h6>
         <pems-button tone="neutral" size="small" outline="true" as="a" asp-action="ExportUncovered"><i class="bi bi-download"></i> CSV</pems-button>
     </div>
-    <table class="table table-sm table-enterprise">
+    <pems-table scale="small" css="table-enterprise">
         <thead><tr><th>@Localizer["Rcm_Tag"]</th><th>@Localizer["Rcm_EquipmentName"]</th><th>@Localizer["Rcm_EquipmentClass"]</th><th>@Localizer["Rcm_AreaUnit"]</th></tr></thead>
         <tbody>
         @foreach (var r in Model.CriticalWithoutStrategy)
@@ -71,6 +71,6 @@
             <tr><td><a asp-action="Tag" asp-route-equipmentId="@r.Equipment.EquipmentId">@r.Equipment.Tag</a></td><td class="small">@r.Equipment.Name</td><td class="small">@(r.Equipment.EquipmentClassName ?? "-")</td><td class="small">@(r.Equipment.Area ?? "-")</td></tr>
         }
         </tbody>
-    </table>
+    </pems-table>
     @if (!Model.CriticalWithoutStrategy.Any()) { <p class="text-muted small text-center py-2">@Localizer["Rcm_NoUncoveredCritical"]</p> }
 </div>

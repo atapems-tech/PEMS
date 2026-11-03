@@ -51,9 +51,9 @@
         </div>
         @if (readiness.MissingDimensions.Any())
         {
-            <div class="alert alert-light border small mt-2 mb-0">
+            <pems-alert tone="light" css="border small mt-2 mb-0">
                 <strong>Missing:</strong> @string.Join(" · ", readiness.MissingDimensions)
-            </div>
+            </pems-alert>
         }
     }
 </div>
@@ -327,7 +327,7 @@
                                         }
                                         else
                                         {
-                                            <div class="alert alert-light border small mb-0">این کلاس هنوز تجهیز فعالی ندارد - چیزی برای انتخاب نیست.</div>
+                                            <pems-alert tone="light" css="border small mb-0">این کلاس هنوز تجهیز فعالی ندارد - چیزی برای انتخاب نیست.</pems-alert>
                                         }
                                     </div>
                                     <div class="modal-footer">

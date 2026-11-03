@@ -28,12 +28,12 @@
 
     var badgeClass = Model.Status switch
     {
-        "Active" => "bg-success",
-        "Closed" => "bg-secondary",
-        "Rejected" or "Cancelled" or "Revoked" => "bg-danger",
-        "Suspended" => "bg-warning text-dark",
-        "Approved" or "Issued" => "bg-info text-dark",
-        _ => "bg-primary"
+        "Active" => "success",
+        "Closed" => "neutral",
+        "Rejected" or "Cancelled" or "Revoked" => "danger",
+        "Suspended" => "warning",
+        "Approved" or "Issued" => "info",
+        _ => "primary"
     };
 
     // طبق PEMS-UI-01 (UI01-003): یک‌بار خوانده می‌شوند تا هم در بنر بالای صفحه (fallback عمومی)
@@ -78,7 +78,7 @@
     <div class="d-flex align-items-center gap-3 mb-2 flex-wrap">
         <div class="kpi-icon bg-icon-blue" style="width:56px;height:56px;font-size:26px;"><i class="bi bi-shield-check"></i></div>
         <div>
-            <h5 class="mb-0">@Model.PermitNumber &mdash; @Model.Title <pems-badge tone="none" css="@badgeClass">@Model.Status</pems-badge></h5>
+            <h5 class="mb-0">@Model.PermitNumber &mdash; @Model.Title <pems-badge tone="@badgeClass">@Model.Status</pems-badge></h5>
             <span class="text-muted small">@Model.PermitType - Requested by @Model.RequestedByName on @Model.CreatedDate.ToString("yyyy-MM-dd")</span>
         </div>
     </div>
@@ -223,11 +223,11 @@
 }
 @if (executionGate != null)
 {
-    var gateBadge = executionGate.Result == "Eligible" ? "bg-success" : "bg-danger";
+    var gateBadge = executionGate.Result == "Eligible" ? "success" : "danger";
     <div class="content-card mb-3" id="executiongate">
         <h6 class="mb-3">
             <i class="bi bi-door-open"></i> Execution Gate
-            <pems-badge tone="none" css="@gateBadge">@executionGate.Result.ToUpper()</pems-badge>
+            <pems-badge tone="@gateBadge">@executionGate.Result.ToUpper()</pems-badge>
         </h6>
         @if (errorArea == "ExecutionGate" && pageError != null && pageError.Contains(passkeyMissingMarker))
         {
@@ -438,17 +438,17 @@
             {
                 var isoBadge = p.Status switch
                 {
-                    "Verified" => "bg-success",
-                    "Deisolated" => "bg-secondary",
-                    "Cancelled" => "bg-danger",
-                    "Isolated" => "bg-warning text-dark",
-                    _ => "bg-primary"
+                    "Verified" => "success",
+                    "Deisolated" => "neutral",
+                    "Cancelled" => "danger",
+                    "Isolated" => "warning",
+                    _ => "primary"
                 };
                 <tr>
                     <td class="small">@p.EnergyType</td>
                     <td class="small">@p.Location @(p.EquipmentTagNumber != null ? $"({p.EquipmentTagNumber})" : "")</td>
                     <td class="small">@(p.LockNumber ?? "-") / @(p.TagNumber ?? "-")</td>
-                    <td><pems-badge tone="none" css="@isoBadge">@p.Status</pems-badge></td>
+                    <td><pems-badge tone="@isoBadge">@p.Status</pems-badge></td>
                     <td class="small">@(p.IsolatedByName ?? "-")</td>
                     <td class="small">@(p.VerifiedByName ?? "-")</td>
                     <td class="text-nowrap">
@@ -525,28 +525,28 @@
     {
         var gasBadge = g.Status switch
         {
-            "Passed" => g.IsExpired ? "bg-secondary" : "bg-success",
-            "Failed" => "bg-danger",
-            "Invalidated" => "bg-dark",
-            _ => "bg-primary"
+            "Passed" => g.IsExpired ? "neutral" : "success",
+            "Failed" => "danger",
+            "Invalidated" => "dark",
+            _ => "primary"
         };
         var calBadge = g.InstrumentCalibrationStatus switch
         {
-            "Overdue" => "bg-danger",
-            "DueSoon" => "bg-warning text-dark",
-            "OK" => "bg-success",
-            _ => "bg-secondary"
+            "Overdue" => "danger",
+            "DueSoon" => "warning",
+            "OK" => "success",
+            _ => "neutral"
         };
         <div class="border rounded p-2 mb-2">
             <div class="d-flex flex-wrap align-items-center gap-2 mb-2">
-                <pems-badge tone="none" css="@gasBadge">@g.Status</pems-badge>
+                <pems-badge tone="@gasBadge">@g.Status</pems-badge>
                 @if (g.IsExpired && g.Status != "Invalidated") { <pems-badge tone="neutral">Expired</pems-badge> }
                 <span class="small">@g.Location</span>
                 <span class="small text-muted">Tested by @(g.TesterName ?? "-") @g.TestedAt.ToString("yyyy-MM-dd HH:mm")</span>
                 @if (g.ValidUntil.HasValue) { <span class="small text-muted">Valid Until @g.ValidUntil.Value.ToString("yyyy-MM-dd HH:mm")</span> }
                 @if (!string.IsNullOrWhiteSpace(g.InstrumentTag))
                 {
-                    <span class="small text-muted">Instrument: @g.InstrumentTag <pems-badge tone="none" css="@calBadge">@g.InstrumentCalibrationStatus</pems-badge></span>
+                    <span class="small text-muted">Instrument: @g.InstrumentTag <pems-badge tone="@calBadge">@g.InstrumentCalibrationStatus</pems-badge></span>
                 }
             </div>
             <pems-related-table>
@@ -554,12 +554,12 @@
                 <tbody>
                     @foreach (var r in g.Readings)
                     {
-                        var resultBadge = r.Result switch { "Pass" => "bg-success", "Fail" => "bg-danger", _ => "bg-secondary" };
+                        var resultBadge = r.Result switch { "Pass" => "success", "Fail" => "danger", _ => "neutral" };
                         <tr>
                             <td class="small">@r.Parameter</td>
                             <td class="small">@r.Value</td>
                             <td class="small">@r.Unit</td>
-                            <td><pems-badge tone="none" css="@resultBadge">@r.Result</pems-badge></td>
+                            <td><pems-badge tone="@resultBadge">@r.Result</pems-badge></td>
                         </tr>
                     }
                 </tbody>
@@ -661,17 +661,17 @@
                     var otherPermitNumber = c.PermitAId == Model.PermitId ? c.PermitBNumber : c.PermitANumber;
                     var simopsBadge = c.Status switch
                     {
-                        "Resolved" => "bg-success",
-                        "AcceptedRisk" => "bg-secondary",
-                        "Confirmed" => "bg-warning text-dark",
-                        _ => "bg-danger"
+                        "Resolved" => "success",
+                        "AcceptedRisk" => "neutral",
+                        "Confirmed" => "warning",
+                        _ => "danger"
                     };
-                    var sevBadge = c.Severity switch { "High" => "bg-danger", "Medium" => "bg-warning text-dark", "Low" => "bg-info text-dark", _ => "bg-secondary" };
+                    var sevBadge = c.Severity switch { "High" => "danger", "Medium" => "warning", "Low" => "info", _ => "neutral" };
                     <tr>
                         <td class="small"><a asp-action="Details" asp-route-id="@otherPermitId">@otherPermitNumber</a></td>
                         <td class="small">@c.ConflictBasis</td>
-                        <td><pems-badge tone="none" css="@sevBadge">@c.Severity</pems-badge></td>
-                        <td><pems-badge tone="none" css="@simopsBadge">@c.Status</pems-badge></td>
+                        <td><pems-badge tone="@sevBadge">@c.Severity</pems-badge></td>
+                        <td><pems-badge tone="@simopsBadge">@c.Status</pems-badge></td>
                         <td class="small text-muted">
                             @if (c.Status == "Resolved") { <text>@c.ResolutionNotes</text> }
                             else if (c.Status == "AcceptedRisk") { <text>@c.AcceptanceJustification</text> }

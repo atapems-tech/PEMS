@@ -53,7 +53,7 @@
 
 <div class="content-card">
     <div class="table-scroll-area" style="overflow-x:auto;">
-    <table class="table table-enterprise table-sm mb-0">
+    <pems-table kind="enterprise" scale="small" css="mb-0">
         <thead>
             <tr>
                 <th>@Localizer["WO Number"]</th>
@@ -93,7 +93,7 @@
                 </tr>
             }
         </tbody>
-    </table>
+    </pems-table>
     </div>
     @if (!Model.Items.Any()) { <p class="text-muted text-center py-4 mb-0">@Localizer["هیچ WorkOrder ای در Backlog با این فیلتر نیست."]</p> }
 

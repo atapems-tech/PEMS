@@ -47,7 +47,7 @@
             @if (!Model.Members.Any()) { <div class="vs-empty py-2 small">@Localizer["Tm_NoMembers"]</div> }
             else
             {
-                <table class="table table-sm vs-dense">
+                <pems-table scale="small" css="vs-dense">
                     <thead><tr><th>@Localizer["Tm_Field_Name"]</th><th>@Localizer["Tm_Field_Role"]</th><th>@Localizer["Tm_Field_Active"]</th><th></th></tr></thead>
                     <tbody>
                         @foreach (var m in Model.Members)
@@ -68,7 +68,7 @@
                             </tr>
                         }
                     </tbody>
-                </table>
+                </pems-table>
             }
             <form asp-action="AddMember" method="post" class="d-flex gap-2 flex-wrap">
                 <input type="hidden" name="workSpaceId" value="@s.Id" />
@@ -87,7 +87,7 @@
 
         <section class="vs-panel mb-3" aria-labelledby="typeTitle">
             <h3 class="h6" id="typeTitle">@Localizer["Tm_Types"]</h3>
-            <table class="table table-sm vs-dense">
+            <pems-table scale="small" css="vs-dense">
                 <tbody>
                     @foreach (var t in Model.Types)
                     {
@@ -102,7 +102,7 @@
                         </tr>
                     }
                 </tbody>
-            </table>
+            </pems-table>
             <form asp-action="AddType" method="post" class="row g-2">
                 <input type="hidden" name="workSpaceId" value="@s.Id" />
                 <div class="col-md-3"><pems-label css="small" for="at-name">@Localizer["Tm_Field_Name"]</pems-label><pems-input scale="small" id="at-name" name="name" required maxlength="100" /></div>
@@ -156,7 +156,7 @@
             <h3 class="h6" id="trTitle">@Localizer["Tm_Transitions"]</h3>
             <p class="small text-muted">@Localizer["Tm_TransitionsHint"]</p>
             <div class="table-responsive">
-                <table class="table table-sm table-bordered vs-dense tm-matrix">
+                <pems-table scale="small" css="table-bordered vs-dense tm-matrix">
                     <thead>
                         <tr>
                             <th scope="col">@Localizer["Tm_FromTo"]</th>
@@ -187,7 +187,7 @@
                             </tr>
                         }
                     </tbody>
-                </table>
+                </pems-table>
             </div>
         </section>
     </div>

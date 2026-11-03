@@ -56,7 +56,7 @@
 
 <div class="content-card">
     <div class="table-scroll-area" style="overflow-x:auto;">
-    <table class="table table-enterprise table-sm mb-0">
+    <pems-table kind="enterprise" scale="small" css="mb-0">
         <thead><tr><th>@Localizer["Scope"]</th><th>@Localizer["Type"]</th><th>Suggestion</th><th>Source Data</th><th>@Localizer["Model"]</th><th>@Localizer["Status"]</th><th>@Localizer["Reviewed By"]</th><th></th></tr></thead>
         <tbody>
             @foreach (var insight in Model)
@@ -89,7 +89,7 @@
                 </tr>
             }
         </tbody>
-    </table>
+    </pems-table>
     </div>
     @if (!Model.Any()) { <p class="text-muted text-center py-4 mb-0">@Localizer["هیچ بینشی هنوز تولید نشده."]</p> }
 </div>

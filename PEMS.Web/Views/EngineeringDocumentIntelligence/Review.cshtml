@@ -15,12 +15,12 @@
                 @* طبق بخش ۴ سند: جدا از Stage/Status - آیا خودِ پردازش AI موفق بود یا نه *@
                 var aiBadge = Model.AIProcessingStatus switch
                 {
-                    "Completed" => "bg-success",
-                    "Failed" => "bg-danger",
-                    "Processing" => "bg-warning text-dark",
-                    _ => "bg-secondary"
+                    "Completed" => "success",
+                    "Failed" => "danger",
+                    "Processing" => "warning",
+                    _ => "neutral"
                 };
-                <pems-badge tone="none" css="@aiBadge mt-1">AI: @Model.AIProcessingStatus</pems-badge>
+                <pems-badge tone="@aiBadge" css="mt-1">AI: @Model.AIProcessingStatus</pems-badge>
             }
         </div>
         <pems-button tone="neutral" size="small" outline="true" as="a" asp-controller="EngineeringDocuments" asp-action="Details" asp-route-id="@Model.DocumentId">
@@ -52,9 +52,9 @@
             <div class="d-flex justify-content-between">
                 <strong>Confidence: @((c.ConfidenceScore).ToString("P0"))</strong>
                 @{
-                    var cb = c.ReviewStatus switch { "Approved" => "bg-success", "Rejected" => "bg-danger", _ => "bg-secondary" };
+                    var cb = c.ReviewStatus switch { "Approved" => "success", "Rejected" => "danger", _ => "neutral" };
                 }
-                <pems-badge tone="none" css="@cb">@c.ReviewStatus</pems-badge>
+                <pems-badge tone="@cb">@c.ReviewStatus</pems-badge>
             </div>
 
             @if (c.ReviewStatus == "Draft")
@@ -104,7 +104,7 @@
 <div class="content-card mb-3">
     <h6 class="mb-3"><i class="bi bi-tags"></i> Related Equipment Tags (AVEVA-style multi-tag linking)</h6>
     <div class="table-responsive table-scroll-area" style="max-height:65vh; overflow-y:auto;">
-    <table class="table table-enterprise">
+    <pems-table kind="enterprise">
         <thead><tr><th>@Localizer["Tag Number"]</th><th>@Localizer["Source"]</th><th>@Localizer["Status"]</th><th></th></tr></thead>
         <tbody>
             @foreach (var t in Model.TagLinks)
@@ -114,9 +114,9 @@
                     <td>@(t.IsAIProposed ? "AI Proposed" : "Manual")</td>
                     <td>
                         @{
-                            var tb = t.ReviewStatus switch { "Approved" => "bg-success", "Rejected" => "bg-danger", _ => "bg-secondary" };
+                            var tb = t.ReviewStatus switch { "Approved" => "success", "Rejected" => "danger", _ => "neutral" };
                         }
-                        <pems-badge tone="none" css="@tb">@t.ReviewStatus</pems-badge>
+                        <pems-badge tone="@tb">@t.ReviewStatus</pems-badge>
                     </td>
                     <td>
                         @if (t.IsAIProposed && t.ReviewStatus == "Draft")
@@ -136,7 +136,7 @@
                 </tr>
             }
         </tbody>
-    </table>
+    </pems-table>
     </div>
     @if (!Model.TagLinks.Any()) { <p class="text-muted">No equipment tags detected or linked yet.</p> }
 </div>
@@ -144,7 +144,7 @@
 <div class="content-card">
     <h6 class="mb-3"><i class="bi bi-chat-dots"></i> Comment Management</h6>
     <div class="table-responsive table-scroll-area" style="max-height:65vh; overflow-y:auto;">
-    <table class="table table-enterprise">
+    <pems-table kind="enterprise">
         <thead><tr><th>@Localizer["Comment"]</th><th>@Localizer["Raised By"]</th><th>@Localizer["Date"]</th><th>@Localizer["Action Status"]</th><th>@Localizer["Response"]</th></tr></thead>
         <tbody>
             @foreach (var c in Model.Comments)
@@ -155,9 +155,9 @@
                     <td>@c.RaisedDate.ToString("yyyy-MM-dd")</td>
                     <td>
                         @{
-                            var ab = c.ActionStatus switch { "Closed" => "bg-success", "Verified" => "bg-info text-dark", "ResponsePending" => "bg-warning text-dark", "NoActionRequired" => "bg-secondary", _ => "bg-danger" };
+                            var ab = c.ActionStatus switch { "Closed" => "success", "Verified" => "info", "ResponsePending" => "warning", "NoActionRequired" => "neutral", _ => "danger" };
                         }
-                        <pems-badge tone="none" css="@ab">@c.ActionStatus</pems-badge>
+                        <pems-badge tone="@ab">@c.ActionStatus</pems-badge>
                         <form asp-action="SetCommentAction" method="post" class="d-inline">
                             <input type="hidden" name="documentId" value="@Model.DocumentId" />
                             <input type="hidden" name="commentId" value="@c.EngineeringDocumentCommentId" />
@@ -182,7 +182,7 @@
                 </tr>
             }
         </tbody>
-    </table>
+    </pems-table>
     </div>
     @if (!Model.Comments.Any()) { <p class="text-muted">No comments yet.</p> }
 

@@ -254,11 +254,11 @@
         <ol class="list-unstyled mb-0">
             @foreach (var step in Model.ApprovalSteps.OrderBy(x => x.StepOrder))
             {
-                var stepBadge = step.Status switch { "Approved" => "bg-success", "Rejected" => "bg-danger", "Returned" => "bg-warning text-dark", _ => step.IsCurrent ? "bg-primary" : "bg-secondary" };
+                var stepBadge = step.Status switch { "Approved" => "success", "Rejected" => "danger", "Returned" => "warning", _ => step.IsCurrent ? "primary" : "neutral" };
                 <li class="d-flex flex-wrap align-items-center gap-2 py-1 @(step.IsCurrent ? "fw-semibold" : "")">
                     <pems-badge tone="light" css="rounded-pill">@step.StepOrder</pems-badge>
                     <span>@step.ApproverName</span>
-                    <pems-badge tone="none" css="@stepBadge">@(step.IsCurrent ? Localizer["Lc_StepCurrent"].Value : step.Status)</pems-badge>
+                    <pems-badge tone="@stepBadge">@(step.IsCurrent ? Localizer["Lc_StepCurrent"].Value : step.Status)</pems-badge>
                     @if (step.DecidedDate.HasValue) { <small class="text-muted">@step.DecidedDate.Value.ToString("yyyy-MM-dd HH:mm")</small> }
                     @if (!string.IsNullOrWhiteSpace(step.Comment)) { <small class="text-muted">&mdash; @step.Comment</small> }
                     @if (isAdmin && step.Status == "Pending" && l.Status == "PendingApproval")
@@ -475,7 +475,7 @@
 <pems-accordion-header><i class="bi bi-people me-2"></i> Recipients (@Model.Recipients.Count)</pems-accordion-header>
                 @if (Model.Recipients.Any())
                 {
-                    <table class="table table-sm table-enterprise mb-2">
+                    <pems-table scale="small" css="table-enterprise mb-2">
                         <thead><tr><th>@Localizer["Type"]</th><th>@Localizer["Name"]</th><th>@Localizer["Read"]</th></tr></thead>
                         <tbody>
                             @foreach (var r in Model.Recipients)
@@ -498,7 +498,7 @@
                                 </tr>
                             }
                         </tbody>
-                    </table>
+                    </pems-table>
                 }
                 else
                 { <p class="text-muted small">No additional recipients yet.</p> }
@@ -551,7 +551,7 @@
 <pems-accordion-header><i class="bi bi-signpost-split me-2"></i> Referrals (@Model.Referrals.Count)</pems-accordion-header>
                 @if (Model.Referrals.Any())
                 {
-                    <table class="table table-sm table-enterprise mb-2">
+                    <pems-table scale="small" css="table-enterprise mb-2">
                         <thead><tr><th>Referred To</th><th>@Localizer["Instructions"]</th><th>@Localizer["Due"]</th><th>@Localizer["Status"]</th><th>@Localizer["Read"]</th><th>By / When</th><th></th></tr></thead>
                         <tbody>
                             @foreach (var r in Model.Referrals)
@@ -562,9 +562,9 @@
                                     <td>@(r.DueDate?.ToString("yyyy-MM-dd"))</td>
                                     <td>
                                         @{
-                                            var sb = r.Status switch { "Completed" => "bg-success", "InProgress" => "bg-info text-dark", _ => "bg-warning text-dark" };
+                                            var sb = r.Status switch { "Completed" => "success", "InProgress" => "info", _ => "warning" };
                                         }
-                                        <pems-badge tone="none" css="@sb">@r.Status</pems-badge>
+                                        <pems-badge tone="@sb">@r.Status</pems-badge>
                                         @if (r.IsOverdue) { <pems-badge tone="danger">@Localizer["Overdue"]</pems-badge> }
                                     </td>
                                     <td>
@@ -596,7 +596,7 @@
                                 </tr>
                             }
                         </tbody>
-                    </table>
+                    </pems-table>
                 }
                 else
                 { <p class="text-muted small">No referrals yet.</p> }

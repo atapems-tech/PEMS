@@ -74,7 +74,7 @@
             else
             {
                 <div class="table-responsive">
-                    <table class="table table-enterprise mb-0">
+                    <pems-table kind="enterprise" css="mb-0">
                         <thead>
                             <tr>
                                 <th scope="col">@Localizer["Letter No"]</th>
@@ -97,7 +97,7 @@
                                 </tr>
                             }
                         </tbody>
-                    </table>
+                    </pems-table>
                 </div>
             }
         </div>
@@ -107,36 +107,36 @@
         <div class="content-card h-100">
             <h2 class="vs-section__title">@Localizer["Lt_Dash_Aging"]</h2>
             <p class="text-muted small">@Localizer["Lt_Dash_AgingNote"]</p>
-            <table class="table table-sm mb-0">
+            <pems-table scale="small" css="mb-0">
                 <tbody>
                     @foreach (var b in Model.Aging) { await BarRow(Localizer["Lt_Dash_Age_" + b.Key].Value, b.Count); }
                 </tbody>
-            </table>
+            </pems-table>
         </div>
     </div>
 
     <div class="col-lg-4">
         <div class="content-card h-100">
             <h2 class="vs-section__title">@Localizer["Lt_Dash_ByStatus"]</h2>
-            <table class="table table-sm mb-0"><tbody>
+            <pems-table scale="small" css="mb-0"><tbody>
                 @foreach (var kv in Model.ByStatus.OrderByDescending(x => x.Value)) { await BarRow(kv.Key, kv.Value, Url.Action("Index", new { status = kv.Key })); }
-            </tbody></table>
+            </tbody></pems-table>
         </div>
     </div>
     <div class="col-lg-4">
         <div class="content-card h-100">
             <h2 class="vs-section__title">@Localizer["Lt_Dash_ByType"]</h2>
-            <table class="table table-sm mb-0"><tbody>
+            <pems-table scale="small" css="mb-0"><tbody>
                 @foreach (var kv in Model.ByType.OrderByDescending(x => x.Value)) { await BarRow(kv.Key, kv.Value, Url.Action("Index", new { letterType = kv.Key })); }
-            </tbody></table>
+            </tbody></pems-table>
         </div>
     </div>
     <div class="col-lg-4">
         <div class="content-card h-100">
             <h2 class="vs-section__title">@Localizer["Lt_Dash_ByPriority"]</h2>
-            <table class="table table-sm mb-0"><tbody>
+            <pems-table scale="small" css="mb-0"><tbody>
                 @foreach (var kv in Model.ByPriority.OrderByDescending(x => x.Value)) { await BarRow(Localizer["Lt_P_" + kv.Key].Value, kv.Value, Url.Action("Index", new { priority = kv.Key })); }
-            </tbody></table>
+            </tbody></pems-table>
         </div>
     </div>
 </div>

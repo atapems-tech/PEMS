@@ -66,7 +66,7 @@
 
 <div class="content-card">
     <div class="table-responsive table-scroll-area" style="max-height:70vh; overflow-y:auto;">
-        <table class="table table-enterprise table-sm">
+        <pems-table kind="enterprise" scale="small">
             <thead>
                 <tr>
                     <th style="width:30px;"><input type="checkbox" id="selectAllMatched" title="Select all matched rows" /></th>
@@ -79,11 +79,11 @@
                 {
                     var badgeClass = row.MatchStatus switch
                     {
-                        "Confirmed" => "bg-success",
-                        "Rejected" => "bg-secondary",
-                        "MatchedHasInstrument" => "bg-info text-dark",
-                        "MatchedNoInstrument" => "bg-primary",
-                        _ => "bg-warning text-dark"
+                        "Confirmed" => "success",
+                        "Rejected" => "neutral",
+                        "MatchedHasInstrument" => "info",
+                        "MatchedNoInstrument" => "primary",
+                        _ => "warning"
                     };
                     var isSelectable = row.MatchStatus is "MatchedNoInstrument" or "MatchedHasInstrument";
 
@@ -99,7 +99,7 @@
                         <td class="small">@(row.JunctionBox ?? "-")</td>
                         <td class="small">@(row.CableNo ?? "-")</td>
                         <td class="small">@(row.DcsTagNo ?? "-")</td>
-                        <td><pems-badge tone="none" css="@badgeClass">@row.MatchStatus</pems-badge></td>
+                        <td><pems-badge tone="@badgeClass">@row.MatchStatus</pems-badge></td>
                         <td>
                             @if (row.MatchStatus is "MatchedNoInstrument" or "MatchedHasInstrument")
                             {
@@ -139,7 +139,7 @@
                     </tr>
                 }
             </tbody>
-        </table>
+        </pems-table>
 
         @if (!rows.Any())
         {

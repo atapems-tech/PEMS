@@ -47,7 +47,7 @@
     <div class="col-md-6">
         <div class="content-card">
             <h6 class="mb-2">Work Request — by Status</h6>
-            <table class="table table-enterprise table-sm mb-0">
+            <pems-table kind="enterprise" scale="small" css="mb-0">
                 <tbody>
                     <tr><td>@Localizer["Draft"]</td><td class="text-end">@Model.WorkRequestDraft.ToString("N0")</td></tr>
                     <tr><td>@Localizer["Submitted"]</td><td class="text-end">@Model.WorkRequestSubmitted.ToString("N0")</td></tr>
@@ -58,13 +58,13 @@
                     <tr><td class="text-muted">@Localizer["Rejected"]</td><td class="text-end text-muted">@Model.WorkRequestRejected.ToString("N0")</td></tr>
                     <tr><td class="text-muted">@Localizer["Cancelled"]</td><td class="text-end text-muted">@Model.WorkRequestCancelled.ToString("N0")</td></tr>
                 </tbody>
-            </table>
+            </pems-table>
         </div>
     </div>
     <div class="col-md-6">
         <div class="content-card">
             <h6 class="mb-2">Work Order — by Status</h6>
-            <table class="table table-enterprise table-sm mb-0">
+            <pems-table kind="enterprise" scale="small" css="mb-0">
                 <tbody>
                     <tr><td>@Localizer["Open"]</td><td class="text-end">@Model.WorkOrderOpen.ToString("N0")</td></tr>
                     <tr><td>@Localizer["Assigned"]</td><td class="text-end">@Model.WorkOrderAssigned.ToString("N0")</td></tr>
@@ -76,7 +76,7 @@
                     <tr><td class="text-muted">@Localizer["Rejected"]</td><td class="text-end text-muted">@Model.WorkOrderRejected.ToString("N0")</td></tr>
                     <tr><td class="fw-bold">Critical &amp; Open</td><td class="text-end fw-bold">@Model.WorkOrderCriticalOpen.ToString("N0")</td></tr>
                 </tbody>
-            </table>
+            </pems-table>
         </div>
     </div>
 </div>
@@ -97,14 +97,14 @@
                 {
                     <div class="text-muted">N/A</div>
                 }
-                <table class="table table-enterprise table-sm mb-0 mt-2">
+                <pems-table kind="enterprise" scale="small" css="mb-0 mt-2">
                     <tbody>
                         <tr><td>@Localizer["Compliant"]</td><td class="text-end">@pm.CompliantCount</td></tr>
                         <tr><td>@Localizer["Completed Late"]</td><td class="text-end">@pm.CompletedLateCount</td></tr>
                         <tr><td>@Localizer["Overdue"]</td><td class="text-end">@pm.OverdueCount</td></tr>
                         <tr><td>@Localizer["Not Yet Due"]</td><td class="text-end">@pm.NotYetDueCount</td></tr>
                     </tbody>
-                </table>
+                </pems-table>
             }
         </div>
     </div>
@@ -114,14 +114,14 @@
             @if (Model.MaintenanceTypeBreakdown is { } tb)
             {
                 <pems-badge tone="@(tb.DataStatus == "READY" ? "success" : "neutral")" css="mb-2">@tb.DataStatus</pems-badge>
-                <table class="table table-enterprise table-sm mb-0">
+                <pems-table kind="enterprise" scale="small" css="mb-0">
                     <tbody>
                         @foreach (var item in tb.Items)
                         {
                             <tr><td>@item.TypeName</td><td class="text-end">@item.Count</td></tr>
                         }
                     </tbody>
-                </table>
+                </pems-table>
                 @if (tb.EmergencyWorkRatioPercent.HasValue)
                 {
                     <p class="text-muted small mt-2 mb-0">Emergency work ratio: @tb.EmergencyWorkRatioPercent.Value.ToString("N1")%</p>

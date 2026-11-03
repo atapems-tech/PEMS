@@ -26,10 +26,10 @@
 
     var badgeClass = Model.Status switch
     {
-        "Converted" => "bg-success",
-        "Rejected" or "Cancelled" => "bg-secondary",
-        "Approved" or "Planned" => "bg-info text-dark",
-        _ => "bg-primary"
+        "Converted" => "success",
+        "Rejected" or "Cancelled" => "neutral",
+        "Approved" or "Planned" => "info",
+        _ => "primary"
     };
 
     // تایم‌لاین: هر مرحله‌ی برگشتی از Runtime رندر می‌شود؛ هیچ نام مرحله‌ای در این View ثابت نیست.
@@ -60,7 +60,7 @@
     <div class="d-flex align-items-center gap-3 mb-2 flex-wrap">
         <div class="kpi-icon bg-icon-blue" style="width:56px;height:56px;font-size:26px;"><i class="bi bi-clipboard-plus"></i></div>
         <div>
-            <h5 class="mb-0">@Model.RequestNumber &mdash; @Model.Title <pems-badge tone="none" css="@badgeClass">@Model.Status</pems-badge></h5>
+            <h5 class="mb-0">@Model.RequestNumber &mdash; @Model.Title <pems-badge tone="@badgeClass">@Model.Status</pems-badge></h5>
             <span class="text-muted small">@Localizer["Requested By"] @Model.RequestedByName @Localizer["on"] <bdi dir="ltr">@Model.RequestedDate.ToString("yyyy-MM-dd")</bdi></span>
         </div>
     </div>
@@ -241,7 +241,7 @@
 {
     <div class="content-card mb-3">
         <h6 class="mb-3">@Localizer["Workflow History"]</h6>
-        <table class="table table-enterprise table-sm mb-0">
+        <pems-table kind="enterprise" scale="small" css="mb-0">
             <thead><tr><th>@Localizer["Date"]</th><th>@Localizer["Action"]</th><th>@Localizer["From"]</th><th>@Localizer["To"]</th><th>@Localizer["By"]</th><th>@Localizer["Reason"]</th></tr></thead>
             <tbody>
                 @foreach (var h in wf.HistorySummary.OrderByDescending(x => x.ActionDate))
@@ -256,13 +256,13 @@
                     </tr>
                 }
             </tbody>
-        </table>
+        </pems-table>
     </div>
 }
 
 <details class="content-card" @(wf == null ? "open" : null)>
     <summary class="h6 mb-0">@Localizer["Business Audit"]</summary>
-    <table class="table table-enterprise table-sm mb-0 mt-3">
+    <pems-table kind="enterprise" scale="small" css="mb-0 mt-3">
         <thead><tr><th>@Localizer["From"]</th><th>@Localizer["To"]</th><th>@Localizer["By"]</th><th>@Localizer["Date"]</th><th>@Localizer["Reason"]</th></tr></thead>
         <tbody>
             @foreach (var h in Model.StatusHistory)
@@ -276,6 +276,6 @@
                 </tr>
             }
         </tbody>
-    </table>
+    </pems-table>
     @if (!Model.StatusHistory.Any()) { <p class="text-muted text-center py-3 mb-0">@Localizer["هنوز تغییر وضعیتی ثبت نشده."]</p> }
 </details>

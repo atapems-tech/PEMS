@@ -22,10 +22,10 @@
 
     var calBadgeClass = inst?.CalibrationStatus switch
     {
-        "Overdue" => "bg-danger",
-        "DueSoon" => "bg-warning text-dark",
-        "OK" => "bg-success",
-        _ => "bg-secondary"
+        "Overdue" => "danger",
+        "DueSoon" => "warning",
+        "OK" => "success",
+        _ => "neutral"
     };
 
     bool canCreateWr = ViewBag.CanCreateWorkRequest == true, canViewWr = ViewBag.CanViewWorkRequest == true, canViewWo = ViewBag.CanViewWorkOrder == true;
@@ -265,7 +265,7 @@
                     <div class="col-md-3"><strong>@Localizer["Type"]</strong><div>@NA(inst.InstrumentType)</div></div>
                     <div class="col-md-3"><strong>@Localizer["Loop No."]</strong><div>@NA(inst.LoopNumber)</div></div>
                     <div class="col-md-3"><strong>System / Signal</strong><div>@NA(inst.System) / @NA(inst.SignalClass)</div></div>
-                    <div class="col-md-3"><strong>Next Calibration</strong><div>@(inst.NextCalibrationDue?.ToString("yyyy-MM-dd") ?? "N/A") <pems-badge tone="none" css="@calBadgeClass">@inst.CalibrationStatus</pems-badge></div></div>
+                    <div class="col-md-3"><strong>Next Calibration</strong><div>@(inst.NextCalibrationDue?.ToString("yyyy-MM-dd") ?? "N/A") <pems-badge tone="@calBadgeClass">@inst.CalibrationStatus</pems-badge></div></div>
                 </div>
             </div>
         }
@@ -305,7 +305,7 @@
 
                     <div class="col-md-3"><strong>@Localizer["System Cabinet"]</strong><div>@NA(inst.SystemCabinet)</div></div>
                     <div class="col-md-3"><strong>@Localizer["Last Calibration"]</strong><div>@(inst.LastCalibrationDate?.ToString("yyyy-MM-dd") ?? "N/A")</div></div>
-                    <div class="col-md-3"><strong>Next Calibration Due</strong><div>@(inst.NextCalibrationDue?.ToString("yyyy-MM-dd") ?? "N/A") <pems-badge tone="none" css="@calBadgeClass">@inst.CalibrationStatus</pems-badge></div></div>
+                    <div class="col-md-3"><strong>Next Calibration Due</strong><div>@(inst.NextCalibrationDue?.ToString("yyyy-MM-dd") ?? "N/A") <pems-badge tone="@calBadgeClass">@inst.CalibrationStatus</pems-badge></div></div>
                     <div class="col-md-3"><strong>Next Maintenance Due</strong><div>@(inst.NextMaintenanceDue?.ToString("yyyy-MM-dd") ?? "N/A")</div></div>
                 </div>
             </div>
@@ -374,7 +374,7 @@
                     <div class="col-md-3"><strong>@Localizer["Next Due"]:</strong> @(cm.NextDueDate?.ToString("yyyy-MM-dd") ?? "N/A")</div>
                     <div class="col-md-3"><strong>@Localizer["Findings"]:</strong> @cm.OpenFindingCount</div>
                 </div>
-                <table class="table table-enterprise table-sm mb-0">
+                <pems-table kind="enterprise" scale="small" css="mb-0">
                     <thead><tr><th>@Localizer["Variable"]</th><th>@Localizer["Tag"]</th><th>@Localizer["Last Reading"]</th><th>@Localizer["Evaluation"]</th></tr></thead>
                     <tbody>
                         @foreach (var p in cm.Points)
@@ -396,7 +396,7 @@
                             </tr>
                         }
                     </tbody>
-                </table>
+                </pems-table>
             </div>
         </div>
     }
@@ -447,7 +447,7 @@
         <div class="content-card mb-3">
             <h6 class="mb-3"><i class="bi bi-file-earmark-text"></i> @Localizer["Cm_SecEngDocs"]</h6>
             <div class="table-responsive table-scroll-area" style="max-height:55vh; overflow-y:auto;">
-            <table class="table table-enterprise">
+            <pems-table kind="enterprise">
                 <thead><tr><th>@Localizer["Cm_DocNo"]</th><th>@Localizer["Cm_Title"]</th><th>@Localizer["Cm_Type"]</th><th>@Localizer["Cm_Discipline"]</th><th>@Localizer["Cm_Rev"]</th><th>@Localizer["Cm_Status"]</th><th></th></tr></thead>
                 <tbody>
                     @foreach (var d in Model.Documents)
@@ -459,7 +459,7 @@
                         </tr>
                     }
                 </tbody>
-            </table>
+            </pems-table>
             </div>
             @if (!Model.Documents.Any()) { <p class="text-muted mb-0 small">@Localizer["Cm_NoDocs"]</p> }
         </div>
@@ -467,7 +467,7 @@
         <div class="content-card">
             <h6 class="mb-3"><i class="bi bi-journal-check"></i> @Localizer["Cm_SecVdr"]</h6>
             <div class="table-responsive table-scroll-area" style="max-height:55vh; overflow-y:auto;">
-            <table class="table table-enterprise">
+            <pems-table kind="enterprise">
                 <thead><tr><th>@Localizer["Cm_DocNo"]</th><th>@Localizer["Cm_Description"]</th><th>@Localizer["Cm_Vendor"]</th><th>@Localizer["Cm_Rev"]</th><th>@Localizer["Cm_Category"]</th><th>@Localizer["Cm_Status"]</th><th></th></tr></thead>
                 <tbody>
                     @foreach (var v in Model.VDRItems)
@@ -480,7 +480,7 @@
                         </tr>
                     }
                 </tbody>
-            </table>
+            </pems-table>
             </div>
             @if (!Model.VDRItems.Any()) { <p class="text-muted mb-0 small">@Localizer["Cm_NoVdr"]</p> }
         </div>
@@ -491,7 +491,7 @@
         <div class="content-card">
             <h6 class="mb-3"><i class="bi bi-cart-check"></i> @Localizer["Cm_SecMr"]</h6>
             <div class="table-responsive table-scroll-area" style="max-height:60vh; overflow-y:auto;">
-            <table class="table table-enterprise">
+            <pems-table kind="enterprise">
                 <thead><tr><th>@Localizer["Cm_MrNumber"]</th><th>@Localizer["Cm_Project"]</th><th>@Localizer["Cm_Discipline"]</th><th>@Localizer["Cm_Description"]</th><th>@Localizer["Cm_Status"]</th><th></th></tr></thead>
                 <tbody>
                     @foreach (var m in Model.RelatedMRs)
@@ -503,7 +503,7 @@
                         </tr>
                     }
                 </tbody>
-            </table>
+            </pems-table>
             </div>
             @if (!Model.RelatedMRs.Any()) { <p class="text-muted mb-0 small">@Localizer["Cm_NoMr"]</p> }
         </div>
@@ -545,7 +545,7 @@
             else
             {
                 <div class="table-responsive">
-                <table class="table table-enterprise mb-0">
+                <pems-table kind="enterprise" css="mb-0">
                     <thead><tr><th>@Localizer["Cm_Kind"]</th><th>@Localizer["Cm_Reference"]</th><th>@Localizer["Cm_Trigger"]</th><th>@Localizer["Cm_Interval"]</th><th>@Localizer["Cm_LastDone"]</th><th>@Localizer["Cm_NextDue"]</th></tr></thead>
                     <tbody>
                         @foreach (var s in Model.Strategies)
@@ -577,7 +577,7 @@
                             </tr>
                         }
                     </tbody>
-                </table>
+                </pems-table>
                 </div>
             }
         </div>
@@ -593,7 +593,7 @@
                 }
             </div>
             <div class="table-responsive table-scroll-area" style="max-height:50vh; overflow-y:auto;">
-            <table class="table table-enterprise">
+            <pems-table kind="enterprise">
                 <thead><tr><th>@Localizer["Cm_WrNumber"]</th><th>@Localizer["Cm_Title"]</th><th>@Localizer["Cm_Priority"]</th><th>@Localizer["Cm_Status"]</th><th>@Localizer["Cm_Requested"]</th><th>@Localizer["Cm_LinkedWo"]</th></tr></thead>
                 <tbody>
                     @foreach (var r in Model.WorkRequests)
@@ -608,7 +608,7 @@
                         </tr>
                     }
                 </tbody>
-            </table>
+            </pems-table>
             </div>
             @if (!Model.WorkRequests.Any()) { <p class="text-muted mb-0 small">@Localizer["Cm_NoWorkRequests"]</p> }
         </div>
@@ -617,7 +617,7 @@
         <div class="content-card">
             <h6 class="mb-2"><i class="bi bi-tools"></i> @Localizer["Cm_ExecutedWo"]</h6>
             <div class="table-responsive table-scroll-area" style="max-height:40vh; overflow-y:auto;">
-            <table class="table table-enterprise">
+            <pems-table kind="enterprise">
                 <thead><tr><th>@Localizer["Cm_WoNumber"]</th><th>@Localizer["Cm_Description"]</th><th>@Localizer["Cm_Status"]</th><th>@Localizer["Cm_Date"]</th></tr></thead>
                 <tbody>
                     @foreach (var w in Model.WorkOrders)
@@ -630,7 +630,7 @@
                         </tr>
                     }
                 </tbody>
-            </table>
+            </pems-table>
             </div>
             @if (!Model.WorkOrders.Any()) { <p class="text-muted mb-0 small">@Localizer["Cm_NoWorkOrders"]</p> }
         </div>
@@ -645,7 +645,7 @@
                     <i class="bi bi-plus-lg"></i> @Localizer["Cm_NewInspection"]
                 </pems-button>
             </div>
-            <table class="table table-enterprise mb-0">
+            <pems-table kind="enterprise" css="mb-0">
                 <thead>
                     <tr><th>@Localizer["Cm_Type"]</th><th>@Localizer["Cm_Date"]</th><th>@Localizer["Cm_Measurement"]</th><th>@Localizer["Cm_Condition"]</th><th>@Localizer["Cm_NextDue"]</th><th>@Localizer["Cm_DueStatus"]</th><th></th></tr>
                 </thead>
@@ -686,7 +686,7 @@
                         </tr>
                     }
                 </tbody>
-            </table>
+            </pems-table>
             @if (!inspections.Any()) { <p class="text-muted mb-0 small">@Localizer["Cm_NoInspections"]</p> }
         </div>
 
@@ -797,12 +797,12 @@
                 </div>
                 @if (explanation?.MatchedRuleTier != null)
                 {
-                    <div class="alert alert-light border small mt-3 mb-0">
+                    <pems-alert tone="light" css="border small mt-3 mb-0">
                         <strong>@Localizer["چرا این طبقه‌بندی؟"]</strong>
                         Rule tier: <pems-badge tone="light">@explanation.MatchedRuleTier</pems-badge> &middot;
                         Matched on: <code>@explanation.MatchedInput</code> &middot;
                         @explanation.Reason
-                    </div>
+                    </pems-alert>
                 }
             }
             else

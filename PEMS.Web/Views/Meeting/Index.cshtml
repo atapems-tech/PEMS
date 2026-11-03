@@ -14,7 +14,7 @@
         </pems-button>
     </div>
     <div class="table-responsive table-scroll-area pems-grid-scroll" style="max-height:65vh; overflow-y:auto;">
-    <table class="table table-enterprise pems-grid-table" data-grid-key="Meeting">
+    <pems-table kind="enterprise" css="pems-grid-table" data-grid-key="Meeting">
         <thead>
             <tr>
                 <th data-col-key="title" data-resizable="true" data-min-width="120" data-max-width="320" style="width:200px">@Localizer["Title"]</th>
@@ -44,7 +44,7 @@
                 </tr>
             }
         </tbody>
-    </table>
+    </pems-table>
     </div>
     @if (!Model.Items.Any()) { <p class="text-muted text-center py-4">No meetings scheduled yet.</p> }
 

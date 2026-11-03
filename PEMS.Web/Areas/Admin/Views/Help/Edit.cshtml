@@ -38,7 +38,7 @@
     }
     else
     {
-        <table class="table table-enterprise">
+        <pems-table kind="enterprise">
             <thead><tr><th>@Localizer["Type"]</th><th>Caption (EN)</th><th>@Localizer["Source"]</th><th>@Localizer["Status"]</th><th></th></tr></thead>
             <tbody>
                 @foreach (var v in visuals)
@@ -64,6 +64,6 @@
                     </tr>
                 }
             </tbody>
-        </table>
+        </pems-table>
     }
 </div>

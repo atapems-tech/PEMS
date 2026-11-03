@@ -40,7 +40,7 @@
 
 <div class="content-card">
     <div class="table-responsive table-scroll-area" style="max-height:65vh; overflow-y:auto;">
-        <table class="table table-enterprise">
+        <pems-table kind="enterprise">
             <thead>
                 <tr>
                     <th>@Localizer["Include"]</th><th>#</th><th>Tag No</th><th>@Localizer["Name"]</th><th>@Localizer["Type"]</th>
@@ -89,7 +89,7 @@
                     </tr>
                 }
             </tbody>
-        </table>
+        </pems-table>
     </div>
     @if (!Model.Rows.Any()) { <p class="text-muted text-center py-4">No equipment rows recognized in this file.</p> }
 </div>

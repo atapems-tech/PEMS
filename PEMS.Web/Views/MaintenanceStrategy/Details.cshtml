@@ -13,7 +13,7 @@
 
 <div class="d-flex justify-content-between align-items-center mb-3">
     <h5 class="mb-0"><i class="bi bi-diagram-3"></i> @(string.IsNullOrWhiteSpace(i.Title) ? Localizer["Rcm_Strategy"].Value : i.Title)
-        <pems-badge tone="none" css="@RcmDisplay.StatusBadge(s.Status) ms-2">@Localizer.Label("Status", s.Status)</pems-badge>
+        <pems-badge tone="@RcmDisplay.StatusBadge(s.Status)" css="ms-2">@Localizer.Label("Status", s.Status)</pems-badge>
         <pems-badge tone="light">v@(s.VersionNumber)</pems-badge>
     </h5>
     <pems-button tone="neutral" size="small" outline="true" as="a" asp-action="Index">@Localizer["Rcm_Back"]</pems-button>
@@ -25,7 +25,7 @@
 {
     <div class="content-card mb-3">
         <h6 class="small fw-bold">@Localizer["Rcm_AssignReport"]</h6>
-        <table class="table table-sm table-enterprise">
+        <pems-table scale="small" css="table-enterprise">
             <thead><tr><th>@Localizer["Rcm_Tag"]</th><th>@Localizer["Rcm_SkipReason"]</th></tr></thead>
             <tbody>
             @foreach (var row in Model.AssignReport)
@@ -37,7 +37,7 @@
                 </tr>
             }
             </tbody>
-        </table>
+        </pems-table>
     </div>
 }
 
@@ -46,7 +46,7 @@
         <pems-info-item label="@Localizer["Rcm_EquipmentClass"]">@(s.EquipmentClassName)</pems-info-item>
         <pems-info-item label="@Localizer["Rcm_StrategyType"]"><pems-badge tone="neutral">@Localizer.Label("StrategyType", i.StrategyType)</pems-badge></pems-info-item>
         <pems-info-item label="@Localizer["Rcm_FailureMode"]">@RcmDisplay.Name(s.FailureModeName, s.FailureModeNameFa)</pems-info-item>
-        <pems-info-item label="@Localizer["Rcm_Consequence"]"><pems-badge tone="none" css="@RcmDisplay.ConsequenceBadge(i.ConsequenceCategory)">@Localizer.Label("Consequence", i.ConsequenceCategory)</pems-badge>@if (i.IsHiddenFailure) { <pems-badge tone="dark">@Localizer["Rcm_HiddenFailure"]</pems-badge> }</pems-info-item>
+        <pems-info-item label="@Localizer["Rcm_Consequence"]"><pems-badge tone="@RcmDisplay.ConsequenceBadge(i.ConsequenceCategory)">@Localizer.Label("Consequence", i.ConsequenceCategory)</pems-badge>@if (i.IsHiddenFailure) { <pems-badge tone="dark">@Localizer["Rcm_HiddenFailure"]</pems-badge> }</pems-info-item>
         <pems-info-item label="@Localizer["Rcm_TaskType"]">@Localizer.Label("TaskType", i.TaskType)</pems-info-item>
         <pems-info-item label="@Localizer["Rcm_OwnerDiscipline"]">@(s.OwnerDisciplineName)</pems-info-item>
         <pems-info-item label="@Localizer["Rcm_Frequency"]">@Localizer.Label("Frequency", i.Frequency) @(i.DefaultIntervalDays.HasValue ? $"({i.DefaultIntervalDays} d)" : "")</pems-info-item>
@@ -113,7 +113,7 @@
             @foreach (var v in s.Versions)
             {
                 <a asp-action="Details" asp-route-id="@v.MaintenanceStrategyId" class="text-decoration-none">
-                    <pems-badge tone="none" css="@RcmDisplay.StatusBadge(v.Status) @(v.MaintenanceStrategyId == s.MaintenanceStrategyId ? "border border-3 border-warning" : "")">v@(v.VersionNumber) · @Localizer.Label("Status", v.Status)</pems-badge>
+                    <pems-badge tone="@RcmDisplay.StatusBadge(v.Status)" css="@(v.MaintenanceStrategyId == s.MaintenanceStrategyId ? "border border-3 border-warning" : "")">v@(v.VersionNumber) · @Localizer.Label("Status", v.Status)</pems-badge>
                 </a>
             }
         </div>
@@ -137,7 +137,7 @@
     </div>
     @if (!usable) { <p class="small text-muted">@Localizer["Rcm_AssignRequiresApproval"]</p> }
     <div class="table-responsive">
-        <table class="table table-sm table-enterprise align-middle">
+        <pems-table scale="small" css="table-enterprise align-middle">
             <thead><tr>
                 <th>@Localizer["Rcm_Tag"]</th><th>@Localizer["Rcm_EquipmentName"]</th><th>@Localizer["Rcm_EquipmentClass"]</th><th>@Localizer["Rcm_AreaUnit"]</th>
                 <th>@Localizer["Rcm_Criticality"]</th><th>@Localizer["Rcm_Plans"]</th><th>@Localizer["Rcm_Override"]</th><th></th>
@@ -150,7 +150,7 @@
                     <td class="small">@a.Equipment.Name</td>
                     <td class="small">@(a.Equipment.EquipmentClassName ?? "-")</td>
                     <td class="small">@(a.Equipment.Area ?? "-")</td>
-                    <td><pems-badge tone="none" css="@RcmDisplay.CriticalityBadge(a.Equipment.CriticalityClass)">@Localizer.Label("Criticality", a.Equipment.CriticalityClass)</pems-badge></td>
+                    <td><pems-badge tone="@RcmDisplay.CriticalityBadge(a.Equipment.CriticalityClass)">@Localizer.Label("Criticality", a.Equipment.CriticalityClass)</pems-badge></td>
                     <td class="small">@a.PlanCount
                         @if (usable && a.PlanCount == 0 && i.StrategyType is not ("RunToFailure" or "Corrective" or "Redesign"))
                         {
@@ -189,14 +189,14 @@
                 </tr>
             }
             </tbody>
-        </table>
+        </pems-table>
         @if (!s.Assignments.Any()) { <p class="text-muted small text-center py-2">@Localizer["Rcm_NoAssignments"]</p> }
     </div>
 </div>
 
 <div class="content-card mb-3">
     <h6 class="small fw-bold">@Localizer["Rcm_PlansByVersion"]</h6>
-    <table class="table table-sm table-enterprise">
+    <pems-table scale="small" css="table-enterprise">
         <thead><tr><th>@Localizer["Rcm_PlanNumber"]</th><th>@Localizer["Rcm_Tag"]</th><th>@Localizer["Rcm_Title"]</th><th>@Localizer["Rcm_Version"]</th></tr></thead>
         <tbody>
         @foreach (var p in s.Plans)
@@ -207,13 +207,13 @@
             </tr>
         }
         </tbody>
-    </table>
+    </pems-table>
     @if (!s.Plans.Any()) { <p class="text-muted small text-center py-2">@Localizer["Rcm_NoPlans"]</p> }
 </div>
 
 <div class="content-card">
     <h6 class="small fw-bold">@Localizer["Rcm_History"]</h6>
-    <table class="table table-sm table-enterprise">
+    <pems-table scale="small" css="table-enterprise">
         <thead><tr><th>@Localizer["Rcm_When"]</th><th>@Localizer["Rcm_Who"]</th><th>@Localizer["Rcm_Action"]</th><th>@Localizer["Rcm_Version"]</th><th>@Localizer["Rcm_Changes"]</th></tr></thead>
         <tbody>
         @foreach (var h in s.History)
@@ -227,7 +227,7 @@
             </tr>
         }
         </tbody>
-    </table>
+    </pems-table>
 </div>
 
 <pems-modal id="overrideModal" tabindex="-1">

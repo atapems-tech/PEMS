@@ -36,7 +36,7 @@
     <div class="col-md-6">
         <div class="content-card mb-3">
             <h6 class="mb-3">Asset Info</h6>
-            <table class="table table-sm">
+            <pems-table scale="small">
                 <tr><th class="text-muted" style="width:40%;">@Localizer["Manufacturer / Model"]</th><td>@Model.Manufacturer / @Model.Model</td></tr>
                 <tr><th class="text-muted">@Localizer["Functional Location"]</th><td>@(Model.FunctionalLocationBreadcrumb ?? "not linked")</td></tr>
                 <tr><th class="text-muted">@Localizer["Functional Location (raw text, legacy)"]</th><td>@(Model.FunctionalLocation ?? "N/A")</td></tr>
@@ -44,7 +44,7 @@
                 <tr><th class="text-muted">@Localizer["Commissioning Date"]</th><td>@(Model.CommissioningDate?.ToString("yyyy-MM-dd") ?? "N/A")</td></tr>
                 <tr><th class="text-muted">@Localizer["Risk Level"]</th><td>@(Model.RiskLevel ?? "N/A")</td></tr>
                 <tr><th class="text-muted">@Localizer["Description"]</th><td>@(Model.Description ?? "N/A")</td></tr>
-            </table>
+            </pems-table>
             <pems-button tone="neutral" size="small" outline="true" type="button" data-bs-toggle="modal" data-bs-target="#editAssetModal"><i class="bi bi-pencil"></i> @Localizer["Edit"]</pems-button>
         </div>
 
@@ -52,12 +52,12 @@
             <h6 class="mb-3">@Localizer["Latest Maintenance"]</h6>
             @if (Model.LatestMaintenance != null)
             {
-                <table class="table table-sm">
+                <pems-table scale="small">
                     <tr><th class="text-muted" style="width:40%;">@Localizer["Execution Date"]</th><td>@Model.LatestMaintenance.ExecutionDate.ToString("yyyy-MM-dd")</td></tr>
                     <tr><th class="text-muted">@Localizer["Action Taken"]</th><td>@(Model.LatestMaintenance.ActionTaken ?? "N/A")</td></tr>
                     <tr><th class="text-muted">@Localizer["Technician"]</th><td>@(Model.LatestMaintenance.Technician ?? "N/A")</td></tr>
                     <tr><th class="text-muted">Duration (h)</th><td>@(Model.LatestMaintenance.DurationHours?.ToString("N1") ?? "N/A")</td></tr>
-                </table>
+                </pems-table>
             }
             else
             {
@@ -71,7 +71,7 @@
             <h6 class="mb-3">Work Orders (@Model.WorkOrders.Count)</h6>
             @if (Model.WorkOrders.Any())
             {
-                <table class="table table-sm">
+                <pems-table scale="small">
                     <thead><tr><th>No.</th><th>@Localizer["Description"]</th><th>@Localizer["Status"]</th><th>@Localizer["Created"]</th></tr></thead>
                     <tbody>
                         @foreach (var w in Model.WorkOrders.Take(10))
@@ -84,7 +84,7 @@
                             </tr>
                         }
                     </tbody>
-                </table>
+                </pems-table>
             }
             else
             {
@@ -96,7 +96,7 @@
             <h6 class="mb-3">Inspections (@Model.Inspections.Count)</h6>
             @if (Model.Inspections.Any())
             {
-                <table class="table table-sm">
+                <pems-table scale="small">
                     <thead><tr><th>@Localizer["Type"]</th><th>@Localizer["Date"]</th><th>@Localizer["Inspector"]</th><th>@Localizer["Result"]</th></tr></thead>
                     <tbody>
                         @foreach (var i in Model.Inspections.Take(10))
@@ -109,7 +109,7 @@
                             </tr>
                         }
                     </tbody>
-                </table>
+                </pems-table>
             }
             else
             {
@@ -121,7 +121,7 @@
             <h6 class="mb-3">Failures (@Model.Failures.Count)</h6>
             @if (Model.Failures.Any())
             {
-                <table class="table table-sm">
+                <pems-table scale="small">
                     <thead><tr><th>@Localizer["Date"]</th><th>@Localizer["Mode"]</th><th>@Localizer["Cause"]</th><th>Downtime (h)</th></tr></thead>
                     <tbody>
                         @foreach (var f in Model.Failures.Take(10))
@@ -134,7 +134,7 @@
                             </tr>
                         }
                     </tbody>
-                </table>
+                </pems-table>
             }
             else
             {

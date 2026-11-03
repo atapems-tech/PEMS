@@ -64,7 +64,7 @@
 }
 
 <div class="content-card">
-    <table class="table table-enterprise table-sm">
+    <pems-table kind="enterprise" scale="small">
         <thead><tr><th>@Localizer["Date"]</th><th class="text-end">@Localizer["Value"]</th><th>@Localizer["Evaluation"]</th></tr></thead>
         <tbody>
             @foreach (var pt in Model.Points.AsEnumerable().Reverse())
@@ -76,7 +76,7 @@
                 </tr>
             }
         </tbody>
-    </table>
+    </pems-table>
     @if (!Model.Points.Any()) { <p class="text-muted text-center py-4">@Localizer["هیچ قرائتی در این بازه ثبت نشده."]</p> }
 </div>
 

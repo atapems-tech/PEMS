@@ -22,29 +22,29 @@ public static class RcmDisplay
 
     public static string ConsequenceBadge(string? code) => code switch
     {
-        "Safety" => "bg-danger",
-        "Environmental" => "bg-warning text-dark",
-        "Hidden" => "bg-dark",
-        "Operational" => "bg-info text-dark",
-        _ => "bg-secondary"
+        "Safety" => "danger",
+        "Environmental" => "warning",
+        "Hidden" => "dark",
+        "Operational" => "info",
+        _ => "neutral"
     };
 
     public static string StatusBadge(string? status) => status switch
     {
-        "Active" => "bg-success",
-        "Approved" => "bg-primary",
-        "InReview" => "bg-warning text-dark",
-        "Draft" => "bg-secondary",
-        "Superseded" => "bg-light text-dark border",
-        "Retired" => "bg-dark",
-        _ => "bg-secondary"
+        "Active" => "success",
+        "Approved" => "primary",
+        "InReview" => "warning",
+        "Draft" => "neutral",
+        "Superseded" => "light",
+        "Retired" => "dark",
+        _ => "neutral"
     };
 
     public static string CriticalityBadge(string? c) => c switch
     {
-        "A" => "bg-danger",
-        "B" => "bg-warning text-dark",
-        "C" => "bg-secondary",
-        _ => "bg-light text-dark border"
+        "A" => "danger",
+        "B" => "warning",
+        "C" => "neutral",
+        _ => "light"
     };
 }

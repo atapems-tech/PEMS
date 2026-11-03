@@ -8,7 +8,7 @@ namespace PEMS.UI.Components;
 /// </summary>
 public enum ComponentSkin { Bootstrap, Pems }
 
-public enum AlertTone { Info, Success, Warning, Danger, Primary, Secondary }
+public enum AlertTone { Info, Success, Warning, Danger, Primary, Secondary, Light, None }
 
 public enum OverlaySize { Small, Medium, Large, ExtraLarge }
 
@@ -30,6 +30,8 @@ public sealed record AlertOptions
     public TranslatableText? TraceLabel { get; init; }
     public TranslatableText? CopyLabel { get; init; }
     public TranslatableText? DismissLabel { get; init; }
+    /// <summary>Bootstrap skin only: the other attributes of the element (id, role, hidden, aria-*, data-*), written after the role so a page can set its own role.</summary>
+    public IReadOnlyDictionary<string, object>? Attributes { get; init; }
 }
 
 /// <summary>Inputs of <see cref="PemsModal"/>: a native dialog opened by any element with <c>data-pems-open="#id"</c>. One modal serves many rows: the opener's <c>data-pems-row-key</c> is copied into the dialog.</summary>

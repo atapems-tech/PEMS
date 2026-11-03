@@ -50,7 +50,7 @@
     else
     {
         <div class="table-responsive table-scroll-area" style="max-height:65vh; overflow-y:auto;">
-        <table class="table table-enterprise">
+        <pems-table kind="enterprise">
             <thead><tr><th>@Localizer["Document No"]</th><th>@Localizer["Title"]</th><th>Match Reason</th><th>@Localizer["Relevance"]</th><th></th></tr></thead>
             <tbody>
                 @foreach (var r in Model)
@@ -69,7 +69,7 @@
                     </tr>
                 }
             </tbody>
-        </table>
+        </pems-table>
         </div>
     }
 </div>

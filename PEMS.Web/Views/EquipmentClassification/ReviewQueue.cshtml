@@ -30,7 +30,7 @@
     </div>
 
     <div class="table-responsive">
-        <table class="table table-enterprise">
+        <pems-table kind="enterprise">
             <thead>
                 <tr>
                     <th>@Localizer["Tag"]</th><th>@Localizer["Name"]</th><th>@Localizer["Type"]</th><th>@Localizer["Discipline"]</th>
@@ -70,7 +70,7 @@
                     </tr>
                 }
             </tbody>
-        </table>
+        </pems-table>
         @if (!Model.Items.Any()) { <p class="text-muted text-center py-4">@Localizer["موردی در این وضعیت وجود ندارد."]</p> }
     </div>
 

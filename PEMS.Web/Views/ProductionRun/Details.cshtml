@@ -153,7 +153,7 @@
         <div class="content-card">
             <h6 class="mb-2">Inputs</h6>
             <div class="table-scroll-area" style="max-height:40vh; overflow-y:auto;">
-                <table class="table table-enterprise table-sm">
+                <pems-table kind="enterprise" scale="small">
                     <thead><tr><th>@Localizer["Material"]</th><th>@Localizer["Qty"]</th><th>Source Batch</th><th>@Localizer["Inventory"]</th><th></th></tr></thead>
                     <tbody>
                         @foreach (var i in Model.Inputs)
@@ -186,7 +186,7 @@
                             </tr>
                         }
                     </tbody>
-                </table>
+                </pems-table>
             </div>
             @if (!Model.Inputs.Any()) { <p class="text-muted text-center py-2 small">No inputs recorded.</p> }
         </div>
@@ -195,7 +195,7 @@
         <div class="content-card">
             <h6 class="mb-2">Outputs</h6>
             <div class="table-scroll-area" style="max-height:40vh; overflow-y:auto;">
-                <table class="table table-enterprise table-sm">
+                <pems-table kind="enterprise" scale="small">
                     <thead><tr><th>@Localizer["Material"]</th><th>@Localizer["Batch"]</th><th>@Localizer["Qty"]</th><th>@Localizer["Class"]</th><th>@Localizer["Inventory"]</th><th></th></tr></thead>
                     <tbody>
                         @foreach (var o in Model.Outputs)
@@ -229,7 +229,7 @@
                             </tr>
                         }
                     </tbody>
-                </table>
+                </pems-table>
             </div>
             @if (!Model.Outputs.Any()) { <p class="text-muted text-center py-2 small">No outputs recorded.</p> }
         </div>
@@ -240,7 +240,7 @@
     <div class="col">
         <div class="content-card">
             <h6 class="mb-2">Losses</h6>
-            <table class="table table-enterprise table-sm">
+            <pems-table kind="enterprise" scale="small">
                 <thead><tr><th>@Localizer["Qty"]</th><th>@Localizer["Category"]</th><th>@Localizer["Notes"]</th></tr></thead>
                 <tbody>
                     @foreach (var l in Model.Losses)
@@ -248,7 +248,7 @@
                         <tr><td>@l.Quantity.ToString("N3") @l.UomCode</td><td><pems-badge tone="warning">@l.LossCategory</pems-badge></td><td class="small text-muted">@l.Notes</td></tr>
                     }
                 </tbody>
-            </table>
+            </pems-table>
             @if (!Model.Losses.Any()) { <p class="text-muted text-center py-2 small">No losses recorded.</p> }
         </div>
     </div>
@@ -256,7 +256,7 @@
         <div class="content-card">
             <h6 class="mb-2">Event History</h6>
             <div class="table-scroll-area" style="max-height:30vh; overflow-y:auto;">
-                <table class="table table-enterprise table-sm">
+                <pems-table kind="enterprise" scale="small">
                     <thead><tr><th>@Localizer["Date"]</th><th>Event</th><th>By</th><th>@Localizer["Details"]</th></tr></thead>
                     <tbody>
                         @foreach (var e in Model.Events)
@@ -264,7 +264,7 @@
                             <tr><td class="small">@e.EventDate.ToString("yyyy-MM-dd HH:mm")</td><td>@e.EventType</td><td>@e.EmployeeName</td><td class="small text-muted">@e.Details</td></tr>
                         }
                     </tbody>
-                </table>
+                </pems-table>
             </div>
         </div>
     </div>

@@ -43,14 +43,14 @@
         </p>
         @if (dc.Any(r => r.Status != "CONSISTENT"))
         {
-            <div class="table-responsive"><table class="table table-sm table-enterprise">
+            <div class="table-responsive"><pems-table scale="small" css="table-enterprise">
                 <thead><tr><th>@Localizer["Org_Col_Holder"]</th><th>@Localizer["Org_Cons_EmpDept"]</th><th>@Localizer["Org_Col_Position"]</th><th>@Localizer["Org_Cons_PosDept"]</th><th></th></tr></thead>
                 <tbody>
                 @foreach (var r in dc.Where(r => r.Status != "CONSISTENT").Take(50))
                 {
                     <tr><td>@r.EmployeeName</td><td>@(r.EmployeeDepartment ?? "—")</td><td>@r.PrimaryPositionTitle</td><td>@(r.PositionDepartment ?? "—")</td><td><code>@r.Status</code></td></tr>
                 }
-                </tbody></table></div>
+                </tbody></pems-table></div>
         }
         <h3 class="h6 mt-3">@Localizer["Org_Cons_Legacy"]</h3>
         <p class="small mb-1">
@@ -65,7 +65,7 @@
         else
         {
             <div class="table-responsive">
-                <table class="table table-sm table-enterprise">
+                <pems-table scale="small" css="table-enterprise">
                     <thead><tr><th>@Localizer["Org_Diag_Request"]</th><th>@Localizer["Org_Diag_Requester"]</th><th>@Localizer["Org_Diag_Reason"]</th><th></th></tr></thead>
                     <tbody>
                     @foreach (var b in blocked)
@@ -78,7 +78,7 @@
                         </tr>
                     }
                     </tbody>
-                </table>
+                </pems-table>
             </div>
         }
     </section>
@@ -89,7 +89,7 @@
         else
         {
             <div class="table-responsive">
-                <table class="table table-sm table-enterprise">
+                <pems-table scale="small" css="table-enterprise">
                     <thead><tr><th></th><th>@Localizer["Org_Diag_Code"]</th><th>@Localizer["Org_Diag_Subject"]</th><th>@Localizer["Org_Diag_Message"]</th></tr></thead>
                     <tbody>
                     @foreach (var i in Model)
@@ -102,7 +102,7 @@
                         </tr>
                     }
                     </tbody>
-                </table>
+                </pems-table>
             </div>
         }
     </section>

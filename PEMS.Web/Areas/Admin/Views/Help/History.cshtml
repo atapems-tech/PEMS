@@ -15,7 +15,7 @@
     }
     else
     {
-        <table class="table table-enterprise">
+        <pems-table kind="enterprise">
             <thead><tr><th>@Localizer["When"]</th><th>@Localizer["Action"]</th><th>By</th><th>@Localizer["Changed Fields"]</th></tr></thead>
             <tbody>
                 @foreach (var log in Model)
@@ -28,6 +28,6 @@
                     </tr>
                 }
             </tbody>
-        </table>
+        </pems-table>
     }
 </div>
