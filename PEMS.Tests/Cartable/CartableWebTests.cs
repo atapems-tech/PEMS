@@ -191,7 +191,7 @@ public class CartableWebTests
 
         Assert.Contains("class=\"ct-trash-bar\"", html);
         Assert.Contains("hidden only for you", html);
-        Assert.Contains("data-confirm=", Regex.Match(html, "<form[^>]*data-confirm=[^>]*>", RegexOptions.Singleline).Value);   // emptying asks first
+        Assert.Contains("data-pems-confirm=", Regex.Match(html, "<form[^>]*data-pems-confirm=[^>]*>", RegexOptions.Singleline).Value);   // emptying asks first
         Assert.Contains("data-bulk-op=\"restore\"", html);
         Assert.Contains("data-bulk-op=\"purge\"", html);
         Assert.DoesNotContain("data-bulk-op=\"trash\"", html);

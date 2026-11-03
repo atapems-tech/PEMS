@@ -127,9 +127,6 @@
                     return;
                 }
 
-                var confirmText = e.submitter && e.submitter.getAttribute("data-confirm");
-                if (confirmText && !window.confirm(confirmText)) { e.preventDefault(); return; }
-
                 idHost.textContent = "";
                 ids.forEach(function (id) {
                     var input = doc.createElement("input");

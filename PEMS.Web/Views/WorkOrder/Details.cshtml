@@ -303,7 +303,7 @@ else
                         {
                             var cls = a.ActionType == "Approve" ? "btn-pems-solid" : a.ActionType is "Reject" or "Cancel" ? "btn-outline-danger" : "btn-outline-primary";
                             var needsReason = WorkflowActionRules.ActionRequiresReason(a.ActionType);
-                            <pems-button tone="none" size="small" css="@cls" type="submit" name="actionType" value="@a.ActionType" disabled="@(!a.IsAllowed)" title="@(a.IsAllowed ? "" : a.DeniedReason)" onclick="@(needsReason ? "var c=this.form.comment;if(!c.value.trim()){c.classList.add('is-invalid');c.focus();return false;}" + (a.ActionType is "Reject" or "Cancel" ? "return confirm('" + Localizer["Are you sure?"] + "');" : "") : "")">
+                            <pems-button tone="none" size="small" css="@cls" type="submit" name="actionType" value="@a.ActionType" disabled="@(!a.IsAllowed)" title="@(a.IsAllowed ? "" : a.DeniedReason)" data-pems-require="@(needsReason ? "comment" : "")" data-pems-confirm="@(needsReason && (a.ActionType is "Reject" or "Cancel") ? Localizer["Are you sure?"].Value : "")">
                                 @ActionLabel(a)@if (!string.IsNullOrWhiteSpace(a.ToStageName)) { <span class="opacity-75"> → @StageByName(a.ToStageName)</span> }
                             </pems-button>
                         }

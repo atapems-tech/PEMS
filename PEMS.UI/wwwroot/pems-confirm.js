@@ -1,5 +1,6 @@
 // PEMS.UI confirm and alert dialog (SCRUM-483). Replaces the browser confirm() and alert(): one shared native <dialog>, built on first use. Vanilla, offline, no inline handlers.
 //   data-pems-confirm="text"          on a button, link, input or form: asks first; OK continues the click or the submit, Cancel does nothing
+//   data-pems-require="field"         on a button: the named field of its form must be filled first (else it is marked is-invalid and focused, nothing is asked or sent)
 //   data-pems-confirm-count="#id"    replaces {n} in the text by the text of that element (a live counter)
 //   data-pems-confirm-tone="danger"   colour of the OK button (primary, danger, warning...; default primary)
 //   data-pems-confirm-title="text"    heading (default: the layout's data-pems-confirm-title)
@@ -95,11 +96,27 @@
     }
 
     // Capture phase: runs before the page's own handlers, so nothing starts (loading overlay, dirty guard) until the user agrees.
+    function wants(node) { return !!(node.getAttribute('data-pems-confirm')); }
+
+    // The required field of a button is checked before anything is asked or sent.
+    function requirementMet(node) {
+        var name = node.getAttribute('data-pems-require');
+        if (!name || !node.form) return true;
+        var field = node.form.elements[name];
+        if (!field || (field.value || '').trim()) return true;
+        field.classList.add('is-invalid');
+        field.setAttribute('aria-invalid', 'true');
+        if (typeof field.focus === 'function') field.focus();
+        return false;
+    }
+
     document.addEventListener('click', function (e) {
-        var node = e.target.closest ? e.target.closest('[data-pems-confirm]') : null;
+        var node = e.target.closest ? e.target.closest('[data-pems-confirm],[data-pems-require]') : null;
         if (!node || node.tagName === 'FORM') return;
         if (bypass.has(node)) { bypass.delete(node); return; }
         if (node.disabled || node.getAttribute('aria-disabled') === 'true') return;
+        if (!requirementMet(node)) { e.preventDefault(); e.stopImmediatePropagation(); return; }
+        if (!wants(node)) return;
         e.preventDefault();
         e.stopImmediatePropagation();
         ask(message(node), options(node), false).then(function (yes) {
@@ -111,7 +128,7 @@
 
     document.addEventListener('submit', function (e) {
         var form = e.target;
-        if (!form || form.tagName !== 'FORM' || !form.hasAttribute('data-pems-confirm')) return;
+        if (!form || form.tagName !== 'FORM' || !wants(form)) return;
         if (bypass.has(form)) { bypass.delete(form); return; }
         var submitter = e.submitter || null;
         e.preventDefault();
