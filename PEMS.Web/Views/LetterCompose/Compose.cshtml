@@ -83,7 +83,7 @@
 
     @if (Model.ParentLetterId.HasValue)
     {
-        <div class="alert alert-info d-flex flex-wrap align-items-center gap-2 py-2" role="note">
+        <pems-alert tone="info" css="d-flex flex-wrap align-items-center gap-2 py-2" role="note">
             <i class="bi @(isReferral ? "bi-signpost-split" : "bi-reply")" aria-hidden="true"></i>
             <span>@Localizer[isReferral ? "Ct_ReferringTo" : "Lc_ReplyingTo"]: <strong>@Model.ParentNumber</strong> &mdash; @Model.ParentSubject</span>
             <span class="ms-auto d-inline-flex gap-3">
@@ -95,7 +95,7 @@
                 }
                 <a asp-controller="Letter" asp-action="Details" asp-route-id="@Model.ParentLetterId" target="_blank" rel="noopener">@Localizer["Lc_ViewOriginal"]</a>
             </span>
-        </div>
+        </pems-alert>
     }
 
     <div class="lc-alerts" id="lcAlerts" role="region" aria-label="@Localizer["Lc_AlertsRegion"]" aria-live="polite"></div>

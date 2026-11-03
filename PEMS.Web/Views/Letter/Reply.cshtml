@@ -47,11 +47,11 @@
     @if (parent != null && parent.ResponseRequired && parent.ResponseDueDate.HasValue)
     {
         @* پاسخ‌خواهی نامه‌ی مادر: وضعیت هم متن و آیکون دارد، نه فقط رنگ *@
-        <div class="alert @(parent.ResponseOverdue ? "alert-danger" : "alert-info") py-2" role="status">
+        <pems-alert tone="@(parent.ResponseOverdue ? "danger" : "info")" css="py-2" role="status">
             <i class="bi @(parent.ResponseOverdue ? "bi-exclamation-triangle" : "bi-reply")" aria-hidden="true"></i>
             @Localizer["Lt_ReplyParentDue"] <strong>@parent.ResponseDueDate.Value.ToString("yyyy-MM-dd")</strong>
             @if (parent.ResponseOverdue) { <span>(@Localizer["Lt_Overdue"])</span> }
-        </div>
+        </pems-alert>
     }
 
     @if (templates.Any())

@@ -13,7 +13,7 @@ namespace PEMS.UI.TagHelpers;
 [HtmlTargetElement("pems-alert")]
 public sealed class PemsAlertTagHelper(IPemsComponentRenderer renderer) : TagHelper
 {
-    /// <summary>info, success, warning, danger, primary or secondary (written in lower case in the page).</summary>
+    /// <summary>info, success, warning, danger, primary, secondary, light, or none for the bare <c>alert</c> class (lower case in the page).</summary>
     [HtmlAttributeName("tone")] public string Tone { get; set; } = "info";
     [HtmlAttributeName("css")] public string? Css { get; set; }
     [HtmlAttributeName("trace-id")] public string? TraceId { get; set; }
@@ -23,9 +23,10 @@ public sealed class PemsAlertTagHelper(IPemsComponentRenderer renderer) : TagHel
         var inner = (await output.GetChildContentAsync()).GetContent();
         var html = await renderer.RenderAsync<PemsAlert>(new Dictionary<string, object?>
         {
-            [nameof(PemsAlert.Options)] = new AlertOptions { Tone = Enum.Parse<AlertTone>(Tone, ignoreCase: true), CssClass = Css, TraceId = TraceId },
+            [nameof(PemsAlert.Options)] = new AlertOptions { Tone = Enum.Parse<AlertTone>(Tone, ignoreCase: true), CssClass = Css, TraceId = TraceId, Attributes = OverlayTagHelper.All(output) },
             [nameof(PemsAlert.ChildContent)] = (RenderFragment)(b => b.AddMarkupContent(0, inner))
         });
+        output.Attributes.Clear();
         output.TagName = null;
         output.TagMode = TagMode.StartTagAndEndTag;
         output.Content.SetHtmlContent(html);

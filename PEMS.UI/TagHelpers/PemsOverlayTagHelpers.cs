@@ -29,6 +29,16 @@ internal static class OverlayTagHelper
         return (id, rest.Count == 0 ? null : rest);
     }
 
+    /// <summary>Every attribute of the page's tag (id included), values decoded for the component.</summary>
+    public static IReadOnlyDictionary<string, object>? All(TagHelperOutput output)
+    {
+        if (output.Attributes.Count == 0) return null;
+        var all = new Dictionary<string, object>();
+        foreach (var a in output.Attributes)
+            all[a.Name] = a.Value switch { null => "", IHtmlContent html => WebUtility.HtmlDecode(ToHtml(html)), _ => a.Value.ToString() ?? "" };
+        return all;
+    }
+
     private static string ToHtml(IHtmlContent content)
     {
         using var writer = new StringWriter();

@@ -321,9 +321,9 @@
 
         @if (wfNextStep != null)
         {
-            <div class="alert alert-info py-2 mb-2 mt-2 small" role="note">
+            <pems-alert tone="info" css="py-2 mb-2 mt-2 small" role="note">
                 <i class="bi bi-signpost-split" aria-hidden="true"></i> <strong>@Localizer["Ed_NextStep"]</strong> @wfNextStep
-            </div>
+            </pems-alert>
         }
 
         @if (Model.Status == "IDC Review" && idcStatusForPage.Any())

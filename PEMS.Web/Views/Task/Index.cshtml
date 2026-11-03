@@ -59,7 +59,7 @@
                             @{
                                 var pb = TaskManagerUi.PriorityBadge(t.Priority);
                             }
-                            <pems-badge tone="none" css="@pb">@TaskManagerUi.Priority(Localizer, t.Priority)</pems-badge>
+                            <pems-badge tone="@pb">@TaskManagerUi.Priority(Localizer, t.Priority)</pems-badge>
                         </td>
                         <td>
                             @{

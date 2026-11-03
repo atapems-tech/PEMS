@@ -3,6 +3,14 @@
 All notable changes to PEMS. No system version is defined yet (plan row F_CI), so entries are grouped by date
 and theme and were reconstructed from the git history (initial import 2026-09-05). Newest first.
 
+## 2026-11-03 - Adoption leftovers: tone helpers, last alerts, validation summaries (SCRUM-502)
+
+### Added
+- `<pems-validation-summary>` (derives from the built-in helper), `<pems-alert>` keeps the other attributes of the tag and takes `tone="light"` and `tone="none"`.
+
+### Changed
+- Status helpers that only feed badges return tone names: `RcmDisplay` (consequence, status, criticality), `TaskManagerUi` (category, priority) and 43 view-local helpers; 22 alert blocks and 13 validation summaries moved; ratchet alert 22 to 0. Kept as class helpers: `LetterStatusBadge` (custom palette), 9 badges whose class is also used on another element. Still open in #502: list-group items, the Pems skin of the small blocks, the segmented progress bar, the JS-toggled spinner.
+
 ## 2026-11-03 - Replan of the component adoption work (SCRUM-499 to SCRUM-503)
 
 ### Added

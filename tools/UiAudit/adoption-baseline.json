@@ -1,28 +1,6 @@
 {
   "accordion": {},
-  "alert": {
-    "PEMS.Web/Areas/Admin/Views/Authorization/Simulate.cshtml": 1,
-    "PEMS.Web/Areas/Admin/Views/Organization/Chart.cshtml": 1,
-    "PEMS.Web/Areas/Admin/Views/PermissionMatrix/Index.cshtml": 1,
-    "PEMS.Web/Areas/Admin/Views/Roles/Create.cshtml": 1,
-    "PEMS.Web/Areas/Admin/Views/SoDPolicy/Create.cshtml": 1,
-    "PEMS.Web/Areas/Admin/Views/Users/Create.cshtml": 1,
-    "PEMS.Web/Areas/Admin/Views/Users/Details.cshtml": 1,
-    "PEMS.Web/Areas/Admin/Views/Users/Edit.cshtml": 1,
-    "PEMS.Web/Views/Account/ChangePassword.cshtml": 1,
-    "PEMS.Web/Views/Account/Login.cshtml": 1,
-    "PEMS.Web/Views/AccountRecovery/Index.cshtml": 1,
-    "PEMS.Web/Views/EngineeringDocuments/Details.cshtml": 1,
-    "PEMS.Web/Views/Equipment/Details.cshtml": 1,
-    "PEMS.Web/Views/Letter/Reply.cshtml": 1,
-    "PEMS.Web/Views/LetterCompose/Compose.cshtml": 1,
-    "PEMS.Web/Views/MDB/Create.cshtml": 1,
-    "PEMS.Web/Views/Projects/Create.cshtml": 1,
-    "PEMS.Web/Views/Projects/Edit.cshtml": 1,
-    "PEMS.Web/Views/RcmFmea/ClassDetail.cshtml": 2,
-    "PEMS.Web/Views/Transmittal/Create.cshtml": 1,
-    "PEMS.Web/Views/Vendor/Edit.cshtml": 1
-  },
+  "alert": {},
   "alert-call": {
     "PEMS.Web/Areas/Warehouse/Views/MaterialItem/Details.cshtml": 4,
     "PEMS.Web/wwwroot/js/webauthn.js": 1

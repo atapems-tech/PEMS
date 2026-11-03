@@ -797,12 +797,12 @@
                 </div>
                 @if (explanation?.MatchedRuleTier != null)
                 {
-                    <div class="alert alert-light border small mt-3 mb-0">
+                    <pems-alert tone="light" css="border small mt-3 mb-0">
                         <strong>@Localizer["چرا این طبقه‌بندی؟"]</strong>
                         Rule tier: <pems-badge tone="light">@explanation.MatchedRuleTier</pems-badge> &middot;
                         Matched on: <code>@explanation.MatchedInput</code> &middot;
                         @explanation.Reason
-                    </div>
+                    </pems-alert>
                 }
             }
             else

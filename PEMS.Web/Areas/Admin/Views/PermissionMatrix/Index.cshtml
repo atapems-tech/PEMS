@@ -102,7 +102,7 @@
                 <a href="#role-@role" class="badge text-decoration-none pm-chip @(count == 0 ? "text-bg-secondary" : "text-bg-light border")" data-role="@role">@role <span class="opacity-75 pm-chip-count">(@count/@modules.Length)</span></a>
             }
         </div>
-        <div id="pmNoRole" class="alert alert-secondary py-2 small d-none">@Localizer["PermMx_NoRoleMatch"]</div>
+        <pems-alert tone="secondary" css="py-2 small d-none" id="pmNoRole">@Localizer["PermMx_NoRoleMatch"]</pems-alert>
 
         @foreach (var role in roles)
         {
