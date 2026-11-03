@@ -71,12 +71,7 @@
     "PEMS.Web/Views/Transmittal/Create.cshtml": 1,
     "PEMS.Web/Views/WorkOrder/Index.cshtml": 2
   },
-  "confirm-call": {
-    "PEMS.Web/Views/WorkOrder/Details.cshtml": 1,
-    "PEMS.Web/Views/WorkRequest/Details.cshtml": 1,
-    "PEMS.Web/wwwroot/js/pems-cartable.js": 1,
-    "PEMS.Web/wwwroot/js/pems-letter-index.js": 1
-  },
+  "confirm-call": {},
   "dropdown": {},
   "form-label": {
     "PEMS.Web/Areas/Admin/Views/NavigationMenu/Create.cshtml": 1,

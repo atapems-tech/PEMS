@@ -3,6 +3,12 @@
 All notable changes to PEMS. No system version is defined yet (plan row F_CI), so entries are grouped by date
 and theme and were reconstructed from the git history (initial import 2026-09-05). Newest first.
 
+## 2026-11-03 - No browser confirm() is left; required fields before the question (SCRUM-499)
+
+### Changed
+- `pems-confirm.js`: `data-pems-require="field"` checks the named field of the button's form before asking (marks it `is-invalid`, focuses it), and a blank `data-pems-confirm` means no question.
+- Work order and work request buttons declare their required comment and the Reject/Cancel question as attributes instead of an inline script; the cartable and the letter bulk form use `data-pems-confirm` (the attribute set by the cartable script and the Letter index views), their own `window.confirm` handlers are gone. Ratchet confirm-call 4 to 0. Lifecycle posts keep their fields: the reasons were already collected by the pages' own comment boxes and modals, so PemsConfirmDialog with a reason stays available for new flows.
+
 ## 2026-11-03 - Replan of the component adoption work (SCRUM-499 to SCRUM-503)
 
 ### Added
