@@ -76,7 +76,7 @@
 
 <div class="content-card">
     <div class="table-responsive table-scroll-area" style="max-height:65vh; overflow-y:auto;">
-        <table class="table table-enterprise">
+        <pems-table kind="enterprise">
             <thead>
                 <tr>
                     <th>@Localizer["Approve"]</th><th>@Localizer["Src Row"]</th><th>@Localizer["Equipment Tag"]</th><th>@Localizer["Equipment"]</th>
@@ -130,7 +130,7 @@
                     </tr>
                 }
             </tbody>
-        </table>
+        </pems-table>
     </div>
     @if (!Model.Rows.Items.Any()) { <p class="text-muted text-center py-4">@Localizer["No rows match this filter."]</p> }
 

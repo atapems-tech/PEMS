@@ -162,7 +162,7 @@
             else
             {
                 <div class="table-responsive">
-                    <table class="table table-enterprise table-sm mb-0">
+                    <pems-table kind="enterprise" scale="small" css="mb-0">
                         <thead><tr><th>@Localizer["Discipline"]</th><th class="text-end">@Localizer["Documents"]</th><th class="text-end">@Localizer["Approved"]</th><th class="text-end">@Localizer["Pending Approval"]</th><th style="width:30%;">%</th></tr></thead>
                         <tbody>
                             @foreach (var row in disciplineRows)
@@ -173,7 +173,7 @@
                                 </tr>
                             }
                         </tbody>
-                    </table>
+                    </pems-table>
                 </div>
             }
         </div>

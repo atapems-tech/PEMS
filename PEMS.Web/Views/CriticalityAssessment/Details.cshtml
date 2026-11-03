@@ -94,7 +94,7 @@
                 محاسبه می‌شود - یک تجهیز با پیامد ایمنی شدید صرفاً به این دلیل که پیامد
                 تولید/محیط‌زیستی پایین است، کم‌اهمیت جلوه نمی‌کند.
             </p>
-            <table class="table table-enterprise table-sm mb-0">
+            <pems-table kind="enterprise" scale="small" css="mb-0">
                 <tbody>
                     <tr><td>@Localizer["Safety"]</td><td class="text-end">@ScoreLabel(Model.SafetyScore)</td></tr>
                     <tr><td>@Localizer["Production / Availability"]</td><td class="text-end">@ScoreLabel(Model.ProductionScore)</td></tr>
@@ -102,7 +102,7 @@
                     <tr class="table-active"><td><strong>Calculated (Max) Score</strong></td><td class="text-end"><strong>@(Model.CalculatedMaxScore?.ToString() ?? "N/A — incomplete")</strong></td></tr>
                     <tr class="table-active"><td><strong>Proposed Criticality Class</strong></td><td class="text-end"><strong>@(Model.ProposedCriticalityClass ?? "N/A")</strong></td></tr>
                 </tbody>
-            </table>
+            </pems-table>
             @if (!string.IsNullOrWhiteSpace(Model.Rationale))
             {
                 <div class="small text-muted mt-2"><strong>Rationale:</strong> @Model.Rationale</div>
@@ -112,7 +112,7 @@
 
     <div class="tab-pane fade" id="tab-evidence">
         <div class="content-card">
-            <table class="table table-enterprise table-sm mb-0">
+            <pems-table kind="enterprise" scale="small" css="mb-0">
                 <thead><tr><th>@Localizer["Source Type"]</th><th>@Localizer["Identifier"]</th><th>@Localizer["Reference"]</th><th>@Localizer["Description"]</th><th>By</th><th>@Localizer["Date"]</th></tr></thead>
                 <tbody>
                     @foreach (var e in Model.Evidence)
@@ -127,7 +127,7 @@
                         </tr>
                     }
                 </tbody>
-            </table>
+            </pems-table>
             @if (!Model.Evidence.Any()) { <p class="text-muted text-center py-4 mb-0">@Localizer["هنوز هیچ شاهدی ثبت نشده - قبل از ارسال برای بازبینی، حداقل یکی الزامی است."]</p> }
         </div>
     </div>
@@ -135,7 +135,7 @@
     <div class="tab-pane fade" id="tab-history">
         <div class="content-card">
             <p class="text-muted small">طبق بند ۱۳: نسخه‌های قبلی هرگز حذف نمی‌شوند - فقط SUPERSEDED علامت می‌خورند.</p>
-            <table class="table table-enterprise table-sm mb-0">
+            <pems-table kind="enterprise" scale="small" css="mb-0">
                 <thead><tr><th>@Localizer["Status"]</th><th>@Localizer["Proposed"]</th><th>@Localizer["Prepared By"]</th><th>@Localizer["Approved By"]</th><th>@Localizer["Created"]</th><th></th></tr></thead>
                 <tbody>
                     @foreach (var p in Model.PriorAssessments)
@@ -150,7 +150,7 @@
                         </tr>
                     }
                 </tbody>
-            </table>
+            </pems-table>
             @if (!Model.PriorAssessments.Any()) { <p class="text-muted text-center py-4 mb-0">@Localizer["این اولین ارزیابی این تجهیز است."]</p> }
         </div>
     </div>

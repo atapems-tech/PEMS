@@ -14,6 +14,9 @@ public static class FrameState
     public static string Nav(string? kind, string? extra) => With(string.Equals(kind, "pills", StringComparison.OrdinalIgnoreCase) ? "nav nav-pills" : "nav nav-tabs", extra);
 
     public static string Breadcrumb(string? extra) => With("breadcrumb", extra);
+
+    /// <summary>The table element: <c>table</c>, then <c>table-enterprise</c> and <c>table-sm</c> in that order when asked, then the page classes.</summary>
+    public static string Table(bool enterprise, bool small, string? extra) => With("table" + (enterprise ? " table-enterprise" : "") + (small ? " table-sm" : ""), extra);
 }
 
 /// <summary>
@@ -62,5 +65,27 @@ public sealed class PemsBreadcrumbTagHelper : TagHelper
         output.TagName = "ol";
         output.TagMode = TagMode.StartTagAndEndTag;
         ControlTagHelper.PutClassFirst(output, FrameState.Breadcrumb(Css));
+    }
+}
+
+/// <summary>
+/// MVC facade for the table element: <c>&lt;pems-table kind="enterprise" scale="small" css="mb-0" id="items"&gt;thead and tbody&lt;/pems-table&gt;</c> writes
+/// <c>&lt;table class="table table-enterprise table-sm mb-0"&gt;</c>. Rows stay page markup; every other attribute (id, data-*) is kept.
+/// A record list uses the pems-list family instead.
+/// </summary>
+[HtmlTargetElement("pems-table")]
+public sealed class PemsTableFrameTagHelper : TagHelper
+{
+    /// <summary>enterprise adds table-enterprise; empty for the plain Bootstrap table.</summary>
+    [HtmlAttributeName("kind")] public string? Kind { get; set; }
+    /// <summary>small adds table-sm.</summary>
+    [HtmlAttributeName("scale")] public string? Scale { get; set; }
+    [HtmlAttributeName("css")] public string? Css { get; set; }
+
+    public override void Process(TagHelperContext context, TagHelperOutput output)
+    {
+        output.TagName = "table";
+        output.TagMode = TagMode.StartTagAndEndTag;
+        ControlTagHelper.PutClassFirst(output, FrameState.Table(string.Equals(Kind, "enterprise", StringComparison.OrdinalIgnoreCase), string.Equals(Scale, "small", StringComparison.OrdinalIgnoreCase), Css));
     }
 }

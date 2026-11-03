@@ -97,7 +97,7 @@
 <div class="content-card mt-3">
     <h6 class="mb-3">@Localizer["Tender-to-Contract Pipeline"]</h6>
     <div class="table-responsive">
-        <table class="table table-enterprise table-sm">
+        <pems-table kind="enterprise" scale="small">
             <thead><tr>
                 <th>@Localizer["Package"]</th><th>@Localizer["Tender No"]</th><th>@Localizer["Status"]</th>
                 <th>@Localizer["Vendor"]</th><th>@Localizer["Technical"]</th><th>@Localizer["Commercial"]</th>
@@ -123,7 +123,7 @@
                     </tr>
                 }
             </tbody>
-        </table>
+        </pems-table>
     </div>
     @if (pipeline.Items.Count == 0)
     {

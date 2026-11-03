@@ -39,7 +39,7 @@
         Revision, Tag های پیشنهادی).
     </p>
     <div class="table-responsive table-scroll-area" style="max-height:65vh; overflow-y:auto;">
-        <table class="table table-enterprise">
+        <pems-table kind="enterprise">
             <thead><tr><th>@Localizer["Doc No"]</th><th>@Localizer["Title"]</th><th>@Localizer["Stage"]</th><th>Pending Classifications</th><th>@Localizer["Pending Tags"]</th><th></th></tr></thead>
             <tbody>
                 @foreach (var d in Model)
@@ -54,7 +54,7 @@
                     </tr>
                 }
             </tbody>
-        </table>
+        </pems-table>
         @if (!Model.Any()) { <p class="text-muted text-center py-4">No documents pending AI classification review.</p> }
     </div>
 </div>

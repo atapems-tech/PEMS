@@ -57,7 +57,7 @@
 
 <div class="content-card">
     <h6 class="mb-2">Published Criticality Distribution <span class="text-muted small">(current authoritative EquipmentCriticality — not the same as "Assessed")</span></h6>
-    <table class="table table-enterprise table-sm mb-0">
+    <pems-table kind="enterprise" scale="small" css="mb-0">
         <tbody>
             <tr><td>A (High)</td><td class="text-end">@Model.PublishedCriticalityA</td></tr>
             <tr><td>B (Medium)</td><td class="text-end">@Model.PublishedCriticalityB</td></tr>
@@ -68,5 +68,5 @@
             }
             <tr><td>Superseded (historical, excluded above)</td><td class="text-end">@Model.Superseded</td></tr>
         </tbody>
-    </table>
+    </pems-table>
 </div>

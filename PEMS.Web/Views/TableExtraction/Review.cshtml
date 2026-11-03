@@ -66,7 +66,7 @@
 
 <div class="content-card">
     <div class="table-responsive table-scroll-area" style="max-height:70vh; overflow-y:auto;">
-        <table class="table table-enterprise table-sm">
+        <pems-table kind="enterprise" scale="small">
             <thead>
                 <tr>
                     <th style="width:30px;"><input type="checkbox" id="selectAllMatched" title="Select all matched rows" /></th>
@@ -139,7 +139,7 @@
                     </tr>
                 }
             </tbody>
-        </table>
+        </pems-table>
 
         @if (!rows.Any())
         {

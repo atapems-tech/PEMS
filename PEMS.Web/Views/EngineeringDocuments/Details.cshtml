@@ -275,7 +275,7 @@
     {
         <details class="mt-2 small">
             <summary class="text-muted">Hold History (@holdHistory.Count)</summary>
-            <table class="table table-sm table-enterprise mt-1">
+            <pems-table scale="small" css="table-enterprise mt-1">
                 <thead><tr><th>@Localizer["Reason"]</th><th>Held</th><th>By</th><th>Released</th><th>By</th><th>Release Reason</th></tr></thead>
                 <tbody>
                     @foreach (var h in holdHistory)
@@ -290,7 +290,7 @@
                         </tr>
                     }
                 </tbody>
-            </table>
+            </pems-table>
         </details>
     }
 
@@ -503,7 +503,7 @@
 
             @if (Model.Attachments != null && Model.Attachments.Any())
             {
-                <table class="table table-enterprise">
+                <pems-table kind="enterprise">
                     <thead>
                         <tr><th>@Localizer["Ed_FileName"]</th><th>@Localizer["Ed_Revision"]</th><th>@Localizer["Ed_Ext"]</th><th>@Localizer["Ed_Size"]</th><th>@Localizer["Ed_AiStatus"]</th><th>@Localizer["Ed_Date"]</th><th class="text-end">@Localizer["Ed_Actions"]</th></tr>
                     </thead>
@@ -571,7 +571,7 @@
                             </tr>
                         }
                     </tbody>
-                </table>
+                </pems-table>
             }
             else
             {
@@ -601,7 +601,7 @@
                     Resubmit) همیشه توسط سازنده/تأییدکننده‌ی مدرک، با در نظر گرفتن مجموع این نظرات، گرفته می‌شود.
                 </p>
                 <pems-progress value="@idcApprovedCount" max="@idcStatusForPage.Count" tone="success" height="8px" css="mb-3"></pems-progress>
-                <table class="table table-enterprise">
+                <pems-table kind="enterprise">
                     <thead><tr><th>@Localizer["Discipline"]</th><th>@Localizer["Status"]</th><th>@Localizer["Comment"]</th><th>Responded By</th><th>Responded Date</th></tr></thead>
                     <tbody>
                         @foreach (var idc in idcStatusForPage)
@@ -622,7 +622,7 @@
                             </tr>
                         }
                     </tbody>
-                </table>
+                </pems-table>
                 @if (Model.Status == "IDC Review")
                 {
                     var myDisciplineIdForIdcTab = ViewBag.MyDisciplineId as int?;
@@ -651,7 +651,7 @@
             <h6 class="mb-3">@Localizer["Ed_SecRevisionHistory"]</h6>
             @if (Model.Revisions != null && Model.Revisions.Any())
             {
-                <table class="table table-enterprise">
+                <pems-table kind="enterprise">
                     <thead><tr><th>@Localizer["Ed_RevisionCol"]</th><th>@Localizer["Ed_Status"]</th><th>@Localizer["Ed_ClientReviewCol"]</th><th>@Localizer["Ed_Reason"]</th><th>@Localizer["Ed_CreatedBy"]</th><th>@Localizer["Ed_Reviewer"]</th><th>@Localizer["Ed_ApprovedCol"]</th>
                         <th>@Localizer["Ed_Created"]</th><th>@Localizer["Ed_IssuedCol"]</th><th>@Localizer["Ed_EffectiveCol"]</th><th>@Localizer["Ed_SupersedesCol"]</th></tr></thead>
                     <tbody>
@@ -700,7 +700,7 @@
                             }
                         }
                     </tbody>
-                </table>
+                </pems-table>
             }
             else
             {
@@ -758,7 +758,7 @@
 
                 <details class="mt-3 small">
                     <summary class="text-muted">Full audit table (@orderedWorkflow.Count)</summary>
-                    <table class="table table-enterprise mt-2">
+                    <pems-table kind="enterprise" css="mt-2">
                         <thead><tr><th>@Localizer["From"]</th><th>To</th><th>@Localizer["Action"]</th><th>@Localizer["Comment"]</th><th>@Localizer["Date"]</th><th>@Localizer["User"]</th></tr></thead>
                         <tbody>
                             @foreach (var item in orderedWorkflow)
@@ -773,7 +773,7 @@
                                 </tr>
                             }
                         </tbody>
-                    </table>
+                    </pems-table>
                 </details>
             }
             else
@@ -789,7 +789,7 @@
             <h6 class="mb-3"><i class="bi bi-envelope-paper"></i> @Localizer["Ed_SecCorrespondence"]</h6>
             @if (relatedLetters.Any())
             {
-                <table class="table table-enterprise">
+                <pems-table kind="enterprise">
                     <thead><tr><th>@Localizer["Ed_Letters_Type"]</th><th>@Localizer["Ed_LetterNo"]</th><th>@Localizer["Ed_Subject"]</th><th>@Localizer["Ed_Date"]</th><th>@Localizer["Ed_Status"]</th><th></th></tr></thead>
                     <tbody>
                         @foreach (var l in relatedLetters)
@@ -804,7 +804,7 @@
                             </tr>
                         }
                     </tbody>
-                </table>
+                </pems-table>
             }
             else
             {
@@ -822,7 +822,7 @@
             <h6 class="mb-3"><i class="bi bi-truck"></i> @Localizer["Ed_SecTransmittals"]</h6>
             @if (relatedTransmittals.Any())
             {
-                <table class="table table-enterprise">
+                <pems-table kind="enterprise">
                     <thead><tr><th>@Localizer["Ed_TransmittalNo"]</th><th>@Localizer["Ed_RevSent"]</th><th>@Localizer["Ed_Purpose"]</th><th>@Localizer["Ed_Date"]</th><th>@Localizer["Ed_Status"]</th><th></th></tr></thead>
                     <tbody>
                         @foreach (var t in relatedTransmittals)
@@ -837,7 +837,7 @@
                             </tr>
                         }
                     </tbody>
-                </table>
+                </pems-table>
             }
             else
             {
@@ -951,7 +951,7 @@
 <div class="content-card mb-3">
     <h6 class="mb-3">Comment Management <span class="text-muted small">(Action Status is tracked independently from Review Status)</span></h6>
 
-    <table class="table table-enterprise">
+    <pems-table kind="enterprise">
         <thead><tr><th>No</th><th>@Localizer["Category"]</th><th>Sheet/Zone</th><th>@Localizer["Comment"]</th><th>@Localizer["Raised By"]</th><th>@Localizer["Raised"]</th><th>@Localizer["Action Status"]</th><th>@Localizer["Response"]</th></tr></thead>
         <tbody>
             @foreach (var c in engComments)
@@ -1027,7 +1027,7 @@
                 </tr>
             }
         </tbody>
-    </table>
+    </pems-table>
     @if (!engComments.Any()) { <p class="text-muted">No comments recorded yet.</p> }
 
     <pems-button tone="primary" size="small" type="button" data-bs-toggle="modal" data-bs-target="#addEngCommentModal">

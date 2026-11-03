@@ -92,7 +92,7 @@
 <div class="content-card">
     <h6 class="mb-3">Top Senders</h6>
     <div class="table-responsive table-scroll-area" style="max-height:65vh; overflow-y:auto;">
-    <table class="table table-enterprise">
+    <pems-table kind="enterprise">
         <thead><tr><th>Sender</th><th>@Localizer["Count"]</th></tr></thead>
         <tbody>
             @foreach (var s in Model.TopSenders)
@@ -100,7 +100,7 @@
                 <tr><td>@s.Sender</td><td>@s.Count</td></tr>
             }
         </tbody>
-    </table>
+    </pems-table>
     </div>
     @if (!Model.TopSenders.Any()) { <p class="text-muted text-center py-3">@Localizer["No data."]</p> }
 </div>

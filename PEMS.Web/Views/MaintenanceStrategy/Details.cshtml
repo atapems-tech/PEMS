@@ -25,7 +25,7 @@
 {
     <div class="content-card mb-3">
         <h6 class="small fw-bold">@Localizer["Rcm_AssignReport"]</h6>
-        <table class="table table-sm table-enterprise">
+        <pems-table scale="small" css="table-enterprise">
             <thead><tr><th>@Localizer["Rcm_Tag"]</th><th>@Localizer["Rcm_SkipReason"]</th></tr></thead>
             <tbody>
             @foreach (var row in Model.AssignReport)
@@ -37,7 +37,7 @@
                 </tr>
             }
             </tbody>
-        </table>
+        </pems-table>
     </div>
 }
 
@@ -137,7 +137,7 @@
     </div>
     @if (!usable) { <p class="small text-muted">@Localizer["Rcm_AssignRequiresApproval"]</p> }
     <div class="table-responsive">
-        <table class="table table-sm table-enterprise align-middle">
+        <pems-table scale="small" css="table-enterprise align-middle">
             <thead><tr>
                 <th>@Localizer["Rcm_Tag"]</th><th>@Localizer["Rcm_EquipmentName"]</th><th>@Localizer["Rcm_EquipmentClass"]</th><th>@Localizer["Rcm_AreaUnit"]</th>
                 <th>@Localizer["Rcm_Criticality"]</th><th>@Localizer["Rcm_Plans"]</th><th>@Localizer["Rcm_Override"]</th><th></th>
@@ -189,14 +189,14 @@
                 </tr>
             }
             </tbody>
-        </table>
+        </pems-table>
         @if (!s.Assignments.Any()) { <p class="text-muted small text-center py-2">@Localizer["Rcm_NoAssignments"]</p> }
     </div>
 </div>
 
 <div class="content-card mb-3">
     <h6 class="small fw-bold">@Localizer["Rcm_PlansByVersion"]</h6>
-    <table class="table table-sm table-enterprise">
+    <pems-table scale="small" css="table-enterprise">
         <thead><tr><th>@Localizer["Rcm_PlanNumber"]</th><th>@Localizer["Rcm_Tag"]</th><th>@Localizer["Rcm_Title"]</th><th>@Localizer["Rcm_Version"]</th></tr></thead>
         <tbody>
         @foreach (var p in s.Plans)
@@ -207,13 +207,13 @@
             </tr>
         }
         </tbody>
-    </table>
+    </pems-table>
     @if (!s.Plans.Any()) { <p class="text-muted small text-center py-2">@Localizer["Rcm_NoPlans"]</p> }
 </div>
 
 <div class="content-card">
     <h6 class="small fw-bold">@Localizer["Rcm_History"]</h6>
-    <table class="table table-sm table-enterprise">
+    <pems-table scale="small" css="table-enterprise">
         <thead><tr><th>@Localizer["Rcm_When"]</th><th>@Localizer["Rcm_Who"]</th><th>@Localizer["Rcm_Action"]</th><th>@Localizer["Rcm_Version"]</th><th>@Localizer["Rcm_Changes"]</th></tr></thead>
         <tbody>
         @foreach (var h in s.History)
@@ -227,7 +227,7 @@
             </tr>
         }
         </tbody>
-    </table>
+    </pems-table>
 </div>
 
 <pems-modal id="overrideModal" tabindex="-1">

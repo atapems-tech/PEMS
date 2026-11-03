@@ -58,7 +58,7 @@
     </form>
 
     <div class="table-responsive">
-        <table class="table table-sm table-enterprise align-middle">
+        <pems-table scale="small" css="table-enterprise align-middle">
             <thead><tr><th>@Localizer["Org_Col_Code"]</th><th>@Localizer["Org_Col_Position"]</th><th>@Localizer["Org_Col_Department"]</th><th>@Localizer["Org_Col_Parent"]</th><th>@Localizer["Org_Col_Holder"]</th><th>@Localizer["Org_Col_Lifecycle"]</th><th></th></tr></thead>
             <tbody>
             @foreach (var r in Model)
@@ -92,7 +92,7 @@
                 </tr>
             }
             </tbody>
-        </table>
+        </pems-table>
         @if (!Model.Any()) { <div class="vs-empty">@Localizer["Org_Empty"]</div> }
     </div>
 </div>

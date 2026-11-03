@@ -104,7 +104,7 @@
 <div class="content-card mb-3">
     <h6 class="mb-3"><i class="bi bi-tags"></i> Related Equipment Tags (AVEVA-style multi-tag linking)</h6>
     <div class="table-responsive table-scroll-area" style="max-height:65vh; overflow-y:auto;">
-    <table class="table table-enterprise">
+    <pems-table kind="enterprise">
         <thead><tr><th>@Localizer["Tag Number"]</th><th>@Localizer["Source"]</th><th>@Localizer["Status"]</th><th></th></tr></thead>
         <tbody>
             @foreach (var t in Model.TagLinks)
@@ -136,7 +136,7 @@
                 </tr>
             }
         </tbody>
-    </table>
+    </pems-table>
     </div>
     @if (!Model.TagLinks.Any()) { <p class="text-muted">No equipment tags detected or linked yet.</p> }
 </div>
@@ -144,7 +144,7 @@
 <div class="content-card">
     <h6 class="mb-3"><i class="bi bi-chat-dots"></i> Comment Management</h6>
     <div class="table-responsive table-scroll-area" style="max-height:65vh; overflow-y:auto;">
-    <table class="table table-enterprise">
+    <pems-table kind="enterprise">
         <thead><tr><th>@Localizer["Comment"]</th><th>@Localizer["Raised By"]</th><th>@Localizer["Date"]</th><th>@Localizer["Action Status"]</th><th>@Localizer["Response"]</th></tr></thead>
         <tbody>
             @foreach (var c in Model.Comments)
@@ -182,7 +182,7 @@
                 </tr>
             }
         </tbody>
-    </table>
+    </pems-table>
     </div>
     @if (!Model.Comments.Any()) { <p class="text-muted">No comments yet.</p> }
 

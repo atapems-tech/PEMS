@@ -33,7 +33,7 @@
         </pems-button>
     </div>
     <div class="table-responsive pems-grid-scroll table-scroll-area" style="max-height:65vh; overflow-y:auto;">
-        <table class="table table-enterprise pems-grid-table" data-grid-key="Intake">
+        <pems-table kind="enterprise" css="pems-grid-table" data-grid-key="Intake">
             <thead>
                 <tr>
                     <th data-col-key="file" data-resizable="true" data-min-width="140" data-max-width="360">@Localizer["File"]</th>
@@ -87,7 +87,7 @@
                     </tr>
                 }
             </tbody>
-        </table>
+        </pems-table>
         @if (!Model.Items.Any()) { <p class="text-muted text-center py-4">Intake Queue is empty.</p> }
 
         @await Html.PartialAsync("_Pagination", new PEMS.Web.ViewModels.PaginationViewModel

@@ -83,7 +83,7 @@
             {
                 <details class="mt-2">
                     <summary class="small text-muted">@Localizer["Tag"] / @Localizer["Cost"]</summary>
-                    <table class="table table-enterprise table-sm mb-0 mt-1">
+                    <pems-table kind="enterprise" scale="small" css="mb-0 mt-1">
                         <thead><tr><th>@Localizer["Tag"]</th><th class="text-end">@Localizer["Cost"]</th></tr></thead>
                         <tbody>
                             @foreach (var e in Model.Cost.TopEquipmentByCost)
@@ -91,7 +91,7 @@
                                 <tr><td class="small"><a asp-controller="Equipment" asp-action="Details" asp-route-id="@e.EquipmentId">@e.TagNumber</a></td><td class="small text-end">@e.Cost.ToString("N0")</td></tr>
                             }
                         </tbody>
-                    </table>
+                    </pems-table>
                 </details>
             }
         </div>

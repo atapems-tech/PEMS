@@ -94,7 +94,7 @@
 
 <div class="content-card">
     <h6 class="mb-3">@Localizer["Status History"]</h6>
-    <table class="table table-enterprise table-sm mb-0">
+    <pems-table kind="enterprise" scale="small" css="mb-0">
         <thead><tr><th>@Localizer["From"]</th><th>To</th><th>By</th><th>@Localizer["Date"]</th><th>@Localizer["Reason"]</th></tr></thead>
         <tbody>
             @foreach (var h in Model.StatusHistory)
@@ -108,5 +108,5 @@
                 </tr>
             }
         </tbody>
-    </table>
+    </pems-table>
 </div>

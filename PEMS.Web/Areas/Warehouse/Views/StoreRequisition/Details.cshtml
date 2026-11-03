@@ -75,7 +75,7 @@
     <form id="srLinesForm" method="post" asp-action="@(editApproved ? "SetApprovedQuantities" : "Issue")">
         <input type="hidden" name="id" value="@Model.StoreRequisitionId" />
         <input type="hidden" name="requestKey" value="@Guid.NewGuid().ToString("N")" />
-    <table class="table table-enterprise table-sm">
+    <pems-table kind="enterprise" scale="small">
         <thead><tr><th>@Localizer["Material"]</th><th>Requested</th><th>@Localizer["Approved"]</th><th>Issued</th><th>@Localizer["SR_Remaining"]</th>@if (editApproved) { <th>@Localizer["Approved"]</th> } @if (canIssue) { <th>@Localizer["SR_IssueNow"]</th> }</tr></thead>
         <tbody>
             @foreach (var l in Model.Lines)
@@ -93,7 +93,7 @@
                 </tr>
             }
         </tbody>
-    </table>
+    </pems-table>
     @if (editApproved) { <pems-button tone="primary" size="small" type="submit">@Localizer["Save"]</pems-button> }
     @if (canIssue) { <pems-button tone="primary" size="small" type="submit">@Localizer["SR_IssuePartialOrFull"]</pems-button> <span class="small text-muted">@Localizer["SR_IssueHint"]</span> }
     </form>
@@ -116,7 +116,7 @@
 
 <div class="content-card">
     <h6 class="mb-3">@Localizer["Status History"]</h6>
-    <table class="table table-enterprise table-sm">
+    <pems-table kind="enterprise" scale="small">
         <thead><tr><th>@Localizer["From"]</th><th>To</th><th>By</th><th>@Localizer["Date"]</th><th>@Localizer["Reason"]</th></tr></thead>
         <tbody>
             @foreach (var h in statusHistory)
@@ -130,5 +130,5 @@
                 </tr>
             }
         </tbody>
-    </table>
+    </pems-table>
 </div>

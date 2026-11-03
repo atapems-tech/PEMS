@@ -108,4 +108,16 @@ public sealed class ControlTagHelperTests
     [Fact]
     public void A_breadcrumb_is_an_ol()
         => Assert.Equal("<ol class=\"breadcrumb mb-0 small\"><li>a</li></ol>", Run(new PemsBreadcrumbTagHelper { Css = "mb-0 small" }, "pems-crumb-trail", [], "<li>a</li>"));
+
+    [Theory]
+    [InlineData(false, false, null, "table")]
+    [InlineData(true, false, null, "table table-enterprise")]
+    [InlineData(true, true, "mb-0", "table table-enterprise table-sm mb-0")]
+    [InlineData(false, true, "vs-dense mb-0", "table table-sm vs-dense mb-0")]
+    public void Table_classes(bool enterprise, bool small, string? css, string expected) => Assert.Equal(expected, FrameState.Table(enterprise, small, css));
+
+    [Fact]
+    public void A_table_keeps_its_attributes_and_rows()
+        => Assert.Equal("<table class=\"table table-enterprise table-sm mb-0\" id=\"permTable\"><tbody><tr><td>x</td></tr></tbody></table>",
+            Run(new PemsTableFrameTagHelper { Kind = "enterprise", Scale = "small", Css = "mb-0" }, "pems-table", [new("id", "permTable")], "<tbody><tr><td>x</td></tr></tbody>"));
 }

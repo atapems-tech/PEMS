@@ -20,7 +20,7 @@
     </div>
 
     <div class="table-scroll-area" style="max-height:65vh; overflow-y:auto;">
-        <table class="table table-enterprise">
+        <pems-table kind="enterprise">
             <thead>
                 <tr>
                     <th>Order #</th><th>@Localizer["Material"]</th><th>Planned Qty</th><th>@Localizer["Status"]</th><th>@Localizer["Work Center"]</th>
@@ -43,7 +43,7 @@
                     </tr>
                 }
             </tbody>
-        </table>
+        </pems-table>
     </div>
     @if (!Model.Items.Any()) { <p class="text-muted text-center py-4">No production orders yet.</p> }
 

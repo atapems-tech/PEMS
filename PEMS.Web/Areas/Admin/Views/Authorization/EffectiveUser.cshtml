@@ -45,7 +45,7 @@
                 else
                 {
                     <div class="table-responsive">
-                        <table class="table table-enterprise table-sm">
+                        <pems-table kind="enterprise" scale="small">
                             <thead><tr><th>@Localizer["Role"]</th><th>@Localizer["Scope"]</th><th>@Localizer["Type"]</th><th>@Localizer["Effective"]</th></tr></thead>
                             <tbody>
                             @foreach (var a in Model.Assignments)
@@ -61,7 +61,7 @@
                                 </tr>
                             }
                             </tbody>
-                        </table>
+                        </pems-table>
                     </div>
                 }
             </div>
@@ -74,7 +74,7 @@
             {
                 <div class="admin-toolbar mb-2"><div class="admin-toolbar-main"><span class="text-body-secondary small">@Model.AllowedCount / @Model.Rows.Count @Localizer["permissions allowed, via role membership"]</span></div></div>
                 <div class="table-responsive">
-                    <table class="table table-enterprise">
+                    <pems-table kind="enterprise">
                         <thead><tr><th>@Localizer["Resource"]</th><th>@Localizer["Action"]</th><th>@Localizer["Permission"]</th><th>@Localizer["Status"]</th></tr></thead>
                         <tbody>
                         @foreach (var row in Model.Rows.Where(r => r.Allowed))
@@ -87,7 +87,7 @@
                             </tr>
                         }
                         </tbody>
-                    </table>
+                    </pems-table>
                 </div>
             }
         }

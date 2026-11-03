@@ -53,7 +53,7 @@
     else
     {
         <div class="table-responsive">
-            <table class="table table-sm table-enterprise vs-dense mb-0">
+            <pems-table scale="small" css="table-enterprise vs-dense mb-0">
                 <thead>
                     <tr>
                         <th>@Localizer["MyWork_Module"]</th>
@@ -89,7 +89,7 @@
                     </tr>
                 }
                 </tbody>
-            </table>
+            </pems-table>
         </div>
 
         var pages = (int)Math.Ceiling(Model.Page.TotalCount / (double)Model.Page.PageSize);

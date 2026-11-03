@@ -239,7 +239,7 @@
             <section class="vs-panel pc-card">
                 <h2 class="vs-section__title"><i class="bi bi-clock-history"></i> @Localizer["Pc_Det_History"]</h2>
                 <div class="pc-table-scroll">
-                    <table class="table table-sm table-enterprise vs-dense mb-0">
+                    <pems-table scale="small" css="table-enterprise vs-dense mb-0">
                         <thead><tr><th>@Localizer["Pc_Col_Date"]</th><th>@Localizer["Pc_Col_Stage"]</th><th>@Localizer["Pc_Col_Action"]</th><th>@Localizer["Pc_Col_Person"]</th><th>@L("Comment")</th></tr></thead>
                         <tbody>
                         @foreach (var h in d.Approvals)
@@ -253,7 +253,7 @@
                             </tr>
                         }
                         </tbody>
-                    </table>
+                    </pems-table>
                     @if (!d.Approvals.Any()) { <div class="vs-empty py-2">@Localizer["Pc_Empty_History"]</div> }
                 </div>
             </section>
@@ -263,7 +263,7 @@
             <section class="vs-panel pc-card">
                 <h2 class="vs-section__title"><i class="bi bi-chat-left-text"></i> @L("Notes")</h2>
                 <div class="pc-table-scroll mb-2">
-                    <table class="table table-sm table-enterprise vs-dense mb-0">
+                    <pems-table scale="small" css="table-enterprise vs-dense mb-0">
                         <thead><tr><th>@Localizer["Pc_Col_Date"]</th><th>@Localizer["Pc_Col_Person"]</th><th>@Localizer["Pc_Col_Stage"]</th><th>@L("Text")</th></tr></thead>
                         <tbody>
                         @foreach (var n in d.Notes)
@@ -271,7 +271,7 @@
                             <tr><td class="vs-num text-nowrap">@n.CreatedDate.ToString("yyyy-MM-dd HH:mm")</td><td>@n.AuthorName</td><td>@(string.IsNullOrEmpty(n.StepKey) ? "" : Localizer["Pc_Step_" + n.StepKey].Value)</td><td>@n.Text</td></tr>
                         }
                         </tbody>
-                    </table>
+                    </pems-table>
                     @if (!d.Notes.Any()) { <div class="vs-empty py-2">@Localizer["Pc_Empty_Notes"]</div> }
                 </div>
                 @if (d.Status is "InApproval" or "Draft" or "Returned")

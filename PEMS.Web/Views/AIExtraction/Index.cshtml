@@ -10,7 +10,7 @@
     </p>
 
     <div class="table-responsive table-scroll-area" style="max-height:65vh; overflow-y:auto;">
-        <table class="table table-enterprise">
+        <pems-table kind="enterprise">
             <thead>
                 <tr>
                     <th>@Localizer["File"]</th><th>@Localizer["Document"]</th><th>@Localizer["Summary"]</th>
@@ -44,7 +44,7 @@
                     </tr>
                 }
             </tbody>
-        </table>
+        </pems-table>
 
         @if (!Model.Any())
         {
