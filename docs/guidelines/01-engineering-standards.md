@@ -103,6 +103,8 @@ A task is **done** only when:
 6. Test Plan: a Done row whose Test Plan status is "Needs QA" is not trustworthy [R14] - add or update the case.
 7. After the merge and the move to In Review, the QA check in the UI passes ([chapter 07](07-qa-check-in-the-ui.md)); only then the issue is Done.
 
+What a session runs and what goes to the checklist (SQL Server, full suite, browser) is in [chapter 07 section 2b](07-qa-check-in-the-ui.md); without SQL Server only SQL-safe changes are made.
+
 ## 9. Git
 
 - One logical change per commit; message `SCRUM-123 type(scope): summary` (types: feat, fix, refactor, docs, test, chore, ci). *Note:* Instructions rule 7 still says `vX.Y.Z: description`; rule 25 (2026-10-23, issue key first) is newer and was confirmed by the owner on 2026-10-25 (chapter 06, decisions).
