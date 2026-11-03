@@ -90,7 +90,8 @@ public class AdminBaseDataListPagesTests
             v => v["EmployeeCounts"] = new Dictionary<int, int> { [3] = 12 });
         AssertBuiltFromTheComponent(dept, "Department", 1);
         Assert.Contains("id=\"createDeptModal\"", dept);
-        Assert.Contains("id=\"editDeptModal_3\"", dept);
+        Assert.Contains("id=\"editDeptModal\"", dept);                                  // one shared edit modal, SCRUM-500
+        Assert.Matches("<button[^>]*data-bs-target=\"#editDeptModal\"[^>]*data-fill-departmentid=\"3\"", dept);
         Assert.Matches("<button[^>]*data-bs-target=\"#createDeptModal\"", dept);
 
         var disc = await Render<DisciplineController>("/Views/Discipline/Index.cshtml",
