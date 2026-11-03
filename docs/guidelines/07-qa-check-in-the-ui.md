@@ -52,6 +52,16 @@ Owner decision 2026-10-26, until a CI gate exists (plan row #7): the local test 
 - **Done needs both**: line 1 green (only the known failures of README.md "Local tests" may stay red) and all other lines Pass. A red test is a defect like any other: `qa-failed`, back to To Do, fix by a new PR.
 - When CI runs the tests on every merge, line 1 becomes "CI run on the merge commit is green" and this section is removed.
 
+## 2b. Time-boxed tests in a session (owner decision 2026-11-03)
+
+An author runs what is quick and meaningful and does not wait for what is slow or impossible; the rest goes to the checklist (section 1b), never silently dropped.
+
+- **Run before the merge (minutes):** `dotnet build PEMS.Web` (Razor compiles every view), `dotnet test PEMS.UI.Tests` (components, tag helpers, golden manifests, script contracts, the adoption ratchet, the guideline registry test), and the page and render tests of the views the change touched (recipes in [chapter 05](05-environment-and-commands.md) "Test recipes"). Fix every failure that is not on the known list.
+- **Do not wait for, and list as `not done - <reason>`:** the SQL Server tests (names with Sql, LiveDb, Concurrency, Migration, Numbering, Atomicity), the full `dotnet test PEMS.Tests` run (without SQL Server it stalls for more than ten minutes: stop it, do not leave it running), the HTTP smoke tests, and every browser check (themes, fa and en, dialogs, forms posting). Each line names the exact command or the page and the expected result, so the tester runs it without asking.
+- **A failing test that needs SQL Server is not a result:** report it as `not run - no SQL Server`, and check that none of the failures is in a view, layout or component test. A failing test in markup is always fixed, never listed away.
+- **Only SQL-safe changes without SQL Server:** a session that cannot run the SQL tests changes views, components, scripts, documents and plan rows only. A change to the schema, a migration, a query, a transaction or a service that touches the database waits for a session with SQL Server, or is split into its own task whose line 1 is the SQL test run.
+- **A stalled or slow tool is not a failed job:** a command moved to the background keeps running; read its result before retrying, and check the state of a merge or push before repeating it (GitHub API timeouts can hide a command that succeeded).
+
 ## 3. "Fully in the UI"
 
 Every step is done through the browser exactly as an end user or administrator would: no SQL, no command line, no API calls, no reading of code.

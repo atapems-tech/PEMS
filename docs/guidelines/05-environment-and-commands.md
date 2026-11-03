@@ -37,6 +37,23 @@ dotnet ef migrations has-pending-model-changes --project PEMS.Migrations --start
 ```
 `dotnet test` without `--no-build` rebuilds and disturbs a test run that is already in progress: build once, then test and run `ef` with `--no-build`.
 
+### Test recipes (SCRUM-503, 2026-11-03)
+
+Quick gates a session runs (details of what goes to the checklist: [chapter 07 section 2b](07-qa-check-in-the-ui.md)):
+
+```bash
+dotnet build PEMS.Web                                   # compiles every Razor view: tag helper and async errors show here
+dotnet test PEMS.UI.Tests                               # components, tag helpers, golden manifests, script contracts, ratchet, guideline registry
+# page and render tests of the touched views (a filter, minutes, no SQL Server):
+dotnet test PEMS.Tests --filter "FullyQualifiedName~PEMS.Tests.Web|FullyQualifiedName~LayoutTests|FullyQualifiedName~ViewTests|FullyQualifiedName~RenderTests"
+```
+
+- **Recording flags:** `PEMS_RATCHET_RECORD=1 dotnet test PEMS.UI.Tests --filter AdoptionRatchet` rewrites `tools/UiAudit/adoption-baseline.json`; `PEMS_GOLDEN_RECORD=1 dotnet test PEMS.UI.Tests` rewrites every manifest snapshot: commit only the manifests that really changed and `git checkout` the line-ending noise. After merging `main` into a branch, re-record the ratchet baseline (the file conflicts or goes stale whenever two branches lower different lines); keep both sides of CHANGELOG and registry conflicts.
+- **Known red on `main` (2026-11-03):** `ShellAccessibilityTests.ProgramConfiguration_ReExecutesEmptyErrorResponsesToTheStatusPage` (reads `Program.cs` text); every test of the SQL families listed in chapter 07 section 2b fails without SQL Server.
+- **Page tests must not depend on attribute order** (the library puts `class` first and re-adds bound attributes after it): match attributes with `[^>]*` or a lookahead, not by position.
+- **The full `PEMS.Tests` run** is for a machine with SQL Server; here it is stopped when it stalls and its results are not claimed.
+
+
 ## Branch audit (run at the start of a session and once a week)
 ```bash
 git fetch --prune origin
