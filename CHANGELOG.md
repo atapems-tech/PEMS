@@ -3,6 +3,11 @@
 All notable changes to PEMS. No system version is defined yet (plan row F_CI), so entries are grouped by date
 and theme and were reconstructed from the git history (initial import 2026-09-05). Newest first.
 
+## 2026-11-03 - Replan of the component adoption work (SCRUM-499 to SCRUM-503)
+
+### Added
+- Plan rows and Jira issues for the remainders of SCRUM-53, 481, 482, 483 and 487: #499 lifecycle confirms with a required reason, #500 one shared modal per list, #501 field groups through pems-field and the date inputs, #502 adoption leftovers (tone helpers, alerts, small blocks), #503 browser QA pass for the batches. The finished parts of the original issues stay In Review for QA.
+
 ## 2026-11-03 - TreeView wave T2: the help tree (SCRUM-337)
 
 ### Changed
