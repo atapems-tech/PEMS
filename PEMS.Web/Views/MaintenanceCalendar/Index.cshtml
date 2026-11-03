@@ -140,7 +140,7 @@ else if (view == "week")
 
     <div class="content-card mb-3">
         <div class="table-responsive">
-            <table class="table table-enterprise table-sm pems-cal-week" id="pemsCalWeekTable">
+            <pems-table kind="enterprise" scale="small" css="pems-cal-week" id="pemsCalWeekTable">
                 <thead>
                     <tr>
                         <th style="min-width:160px;">@Localizer["Maintenance Team"]</th>
@@ -195,7 +195,7 @@ else if (view == "week")
                         <tr><td colspan="8" class="text-center text-muted py-4">@Localizer["No scheduled work this week."]</td></tr>
                     }
                 </tbody>
-            </table>
+            </pems-table>
         </div>
     </div>
 }

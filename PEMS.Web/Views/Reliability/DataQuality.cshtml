@@ -50,7 +50,7 @@
 </div>
 
 <div class="content-card">
-    <table class="table table-enterprise table-sm mb-0">
+    <pems-table kind="enterprise" scale="small" css="mb-0">
         <tbody>
             <tr><td>@Localizer["Total Active Equipment"]</td><td class="text-end">@Model.TotalActiveEquipment</td></tr>
             <tr><td>@Localizer["Equipment with Failure History"]</td><td class="text-end">@Model.EquipmentWithFailureHistory</td></tr>
@@ -68,5 +68,5 @@
             <tr><td>Completed/Closed Work Orders</td><td class="text-end">@Model.CompletedOrClosedWorkOrders</td></tr>
             <tr><td>Completed/Closed Work Orders Missing Completion Date</td><td class="text-end">@Model.WorkOrdersMissingCompletionDate</td></tr>
         </tbody>
-    </table>
+    </pems-table>
 </div>

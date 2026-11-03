@@ -47,7 +47,7 @@
             }
             else
             {
-                <table class="table table-sm">
+                <pems-table scale="small">
                     <thead><tr><th>@Localizer["Tag"]</th><th>@Localizer["Variable"]</th><th>@Localizer["Evaluation"]</th><th>@Localizer["Last Reading"]</th></tr></thead>
                     <tbody>
                         @foreach (var p in Model.AttentionPoints)
@@ -60,7 +60,7 @@
                             </tr>
                         }
                     </tbody>
-                </table>
+                </pems-table>
                 @if (Model.AttentionPointsTruncated)
                 {
                     <div class="small text-muted">@Localizer["فهرست به بالاترین ۵۰ مورد محدود شده است."]</div>
@@ -77,7 +77,7 @@
             }
             else
             {
-                <table class="table table-sm">
+                <pems-table scale="small">
                     <thead><tr><th>@Localizer["Tag"]</th><th>@Localizer["Variable"]</th><th>@Localizer["Next Due"]</th><th>@Localizer["Overdue"]</th></tr></thead>
                     <tbody>
                         @foreach (var o in Model.OverdueCbmPlans)
@@ -90,7 +90,7 @@
                             </tr>
                         }
                     </tbody>
-                </table>
+                </pems-table>
                 @if (Model.OverdueCbmPlansTruncated)
                 {
                     <div class="small text-muted">@Localizer["فهرست به بالاترین ۵۰ مورد محدود شده است."]</div>

@@ -44,7 +44,7 @@
                     <i class="bi bi-plus-lg"></i> @Localizer["دسته‌بندی جدید"]
                 </pems-button>
             </div>
-            <table class="table table-enterprise">
+            <pems-table kind="enterprise">
                 <thead><tr><th>@Localizer["کد"]</th><th>@Localizer["نام"]</th><th>@Localizer["والد"]</th><th>@Localizer["توضیحات"]</th><th></th></tr></thead>
                 <tbody>
                     @foreach (var c in categories)
@@ -63,7 +63,7 @@
                         </tr>
                     }
                 </tbody>
-            </table>
+            </pems-table>
         </div>
     </div>
 
@@ -75,7 +75,7 @@
                     <i class="bi bi-plus-lg"></i> @Localizer["واحد جدید"]
                 </pems-button>
             </div>
-            <table class="table table-enterprise">
+            <pems-table kind="enterprise">
                 <thead><tr><th>@Localizer["کد"]</th><th>@Localizer["نام"]</th><th>@Localizer["ضریب تبدیل"]</th><th></th></tr></thead>
                 <tbody>
                     @foreach (var u in uoms)
@@ -93,7 +93,7 @@
                         </tr>
                     }
                 </tbody>
-            </table>
+            </pems-table>
         </div>
     </div>
 
@@ -105,7 +105,7 @@
                     <i class="bi bi-plus-lg"></i> @Localizer["انبار جدید"]
                 </pems-button>
             </div>
-            <table class="table table-enterprise">
+            <pems-table kind="enterprise">
                 <thead><tr><th>@Localizer["کد"]</th><th>@Localizer["نام"]</th><th>@Localizer["محل‌های نگهداری"]</th><th></th></tr></thead>
                 <tbody>
                     @foreach (var w in Model)
@@ -129,7 +129,7 @@
                         </tr>
                     }
                 </tbody>
-            </table>
+            </pems-table>
         </div>
     </div>
 </div>

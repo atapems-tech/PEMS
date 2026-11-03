@@ -137,12 +137,12 @@
                                 else { <span class="text-danger">@Localizer["Rcm_MissingFailureMode"]</span> }
                             </td>
                             <td>
-                                <pems-badge tone="none" css="@RcmDisplay.ConsequenceBadge(s.ConsequenceCategory)">@Localizer.Label("Consequence", s.ConsequenceCategory)</pems-badge>
+                                <pems-badge tone="@RcmDisplay.ConsequenceBadge(s.ConsequenceCategory)">@Localizer.Label("Consequence", s.ConsequenceCategory)</pems-badge>
                                 @if (s.IsHiddenFailure && s.ConsequenceCategory != "Hidden") { <pems-badge tone="dark" title="@Localizer["Rcm_HiddenFailure"]">H</pems-badge> }
                             </td>
                             <td class="small">@Localizer.Label("Frequency", s.Frequency)</td>
                             <td>
-                                <pems-badge tone="none" css="@RcmDisplay.StatusBadge(s.Status)">@Localizer.Label("Status", s.Status)</pems-badge>
+                                <pems-badge tone="@RcmDisplay.StatusBadge(s.Status)">@Localizer.Label("Status", s.Status)</pems-badge>
                                 <div class="small text-muted">v@(s.VersionNumber)</div>
                                 @if (s.ReviewOverdue) { <div class="small text-danger"><i class="bi bi-clock-history" aria-hidden="true"></i> @Localizer["Rcm_ReviewOverdue"]</div> }
                             </td>

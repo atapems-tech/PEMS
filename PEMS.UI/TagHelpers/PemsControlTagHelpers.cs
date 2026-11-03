@@ -108,3 +108,21 @@ public sealed class PemsLabelTagHelper(IHtmlGenerator generator) : LabelTagHelpe
         ControlTagHelper.PutClassFirst(output, ControlState.LabelCss(Css));
     }
 }
+
+/// <summary>
+/// MVC facade for the validation summary box: <c>&lt;pems-validation-summary asp-validation-summary="All" css="py-2 px-3 small"&gt;</c> writes the
+/// <c>alert alert-danger</c> classes in front of the ones the built-in helper adds (validation-summary-errors / -valid) and keeps every other attribute.
+/// </summary>
+[HtmlTargetElement("pems-validation-summary")]
+public sealed class PemsValidationSummaryTagHelper(IHtmlGenerator generator) : ValidationSummaryTagHelper(generator)
+{
+    [HtmlAttributeName("css")] public string? Css { get; set; }
+
+    public override void Process(TagHelperContext context, TagHelperOutput output)
+    {
+        base.Process(context, output);
+        output.TagName = "div";
+        output.TagMode = TagMode.StartTagAndEndTag;
+        ControlTagHelper.PutClassFirst(output, string.IsNullOrWhiteSpace(Css) ? "alert alert-danger" : "alert alert-danger " + Css.Trim());
+    }
+}

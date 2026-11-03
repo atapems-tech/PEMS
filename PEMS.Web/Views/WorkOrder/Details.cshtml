@@ -16,10 +16,10 @@
 
     string statusClass = Model.Status switch
     {
-        "Closed" or "Completed" => "bg-success",
-        "InProgress" => "bg-warning text-dark",
-        "Assigned" => "bg-info text-dark",
-        _ => "bg-secondary"
+        "Closed" or "Completed" => "success",
+        "InProgress" => "warning",
+        "Assigned" => "info",
+        _ => "neutral"
     };
 
     var hasPendingReview = (bool)(ViewBag.HasPendingReview ?? false);
@@ -89,7 +89,7 @@ else
     <div class="d-flex justify-content-between align-items-start flex-wrap gap-2">
         <div>
             <h5 class="mb-1">@Model.WorkOrderNumber</h5>
-            <pems-badge tone="none" css="@statusClass">@Model.Status</pems-badge>
+            <pems-badge tone="@statusClass">@Model.Status</pems-badge>
             <pems-badge tone="@(Model.Priority == "Critical" ? "danger" : "neutral")">@Model.Priority</pems-badge>
             <pems-badge tone="neutral">@Model.WorkOrderType</pems-badge>
         </div>
@@ -303,7 +303,7 @@ else
                         {
                             var cls = a.ActionType == "Approve" ? "btn-pems-solid" : a.ActionType is "Reject" or "Cancel" ? "btn-outline-danger" : "btn-outline-primary";
                             var needsReason = WorkflowActionRules.ActionRequiresReason(a.ActionType);
-                            <pems-button tone="none" size="small" css="@cls" type="submit" name="actionType" value="@a.ActionType" disabled="@(!a.IsAllowed)" title="@(a.IsAllowed ? "" : a.DeniedReason)" onclick="@(needsReason ? "var c=this.form.comment;if(!c.value.trim()){c.classList.add('is-invalid');c.focus();return false;}" + (a.ActionType is "Reject" or "Cancel" ? "return confirm('" + Localizer["Are you sure?"] + "');" : "") : "")">
+                            <pems-button tone="none" size="small" css="@cls" type="submit" name="actionType" value="@a.ActionType" disabled="@(!a.IsAllowed)" title="@(a.IsAllowed ? "" : a.DeniedReason)" data-pems-require="@(needsReason ? "comment" : "")" data-pems-confirm="@(needsReason && (a.ActionType is "Reject" or "Cancel") ? Localizer["Are you sure?"].Value : "")">
                                 @ActionLabel(a)@if (!string.IsNullOrWhiteSpace(a.ToStageName)) { <span class="opacity-75"> → @StageByName(a.ToStageName)</span> }
                             </pems-button>
                         }
@@ -518,8 +518,8 @@ else
         <div class="d-flex flex-wrap gap-2 mb-3">
             @foreach (var r in reviewStatus)
             {
-                var badgeClass = r.Status switch { "Approve" => "bg-success", "Comment" => "bg-warning text-dark", "Reject" => "bg-danger", _ => "bg-secondary" };
-                <pems-badge tone="none" css="@badgeClass">@r.DisciplineName: @r.Status</pems-badge>
+                var badgeClass = r.Status switch { "Approve" => "success", "Comment" => "warning", "Reject" => "danger", _ => "neutral" };
+                <pems-badge tone="@badgeClass">@r.DisciplineName: @r.Status</pems-badge>
             }
         </div>
 

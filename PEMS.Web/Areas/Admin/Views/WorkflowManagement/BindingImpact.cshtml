@@ -8,11 +8,11 @@
 <div class="admin-page-shell">
     <div class="content-card">
         <h6>@Model.Definition</h6>
-        <table class="table table-sm w-auto">
+        <pems-table scale="small" css="w-auto">
             <tr><th>@Localizer["Current version"]</th><td>@(Model.CurrentVersion.HasValue ? "v" + Model.CurrentVersion : "—")</td></tr>
             <tr><th>@Localizer["Target version"]</th><td><strong>v@(Model.TargetVersion)</strong></td></tr>
             <tr><th>@Localizer["Running instances (unchanged)"]</th><td>@Model.RunningInstances @if (Model.RunningByVersion.Count > 0) { <span class="text-muted small">(@string.Join(", ", Model.RunningByVersion.Select(u => u.Running + " × v" + u.VersionNumber)))</span> }</td></tr>
-        </table>
+        </pems-table>
         <pems-alert tone="info" css="small"><i class="bi bi-pin-angle"></i> @Localizer["Only new instances will use the target version. Existing running instances stay pinned to the version they started with; nothing is rewritten. The change is audited."]</pems-alert>
         <form asp-action="ChangeBinding" method="post" class="d-flex flex-column gap-2">
             <input type="hidden" name="bindingId" value="@Model.BindingId" /><input type="hidden" name="targetVersionId" value="@targetId" /><input type="hidden" name="definitionId" value="@Model.DefinitionId" />

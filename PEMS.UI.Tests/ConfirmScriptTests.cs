@@ -54,6 +54,37 @@ public sealed class ConfirmScriptTests
     }
 
     [Fact]
+    public void The_script_checks_a_required_field_before_it_asks()
+    {
+        var js = Read("PEMS.UI", "wwwroot", "pems-confirm.js");
+        Assert.Contains("data-pems-require", js);
+        Assert.Contains("is-invalid", js);
+        // blank confirm text means no question (a view may pass an empty attribute)
+        Assert.Contains("function wants(node)", js);
+    }
+
+    [Fact]
+    public void No_script_of_the_web_project_uses_the_browser_confirm_dialog()
+    {
+        var offenders = Directory.EnumerateFiles(Path.Combine(Root(), "PEMS.Web", "wwwroot", "js"), "*.js", SearchOption.AllDirectories)
+            .Where(f => Regex.IsMatch(File.ReadAllText(f), @"(?<![\w.])confirm\(|window\.confirm\("))
+            .Select(f => Path.GetRelativePath(Root(), f)).ToList();
+        Assert.True(offenders.Count == 0, "Use data-pems-confirm or window.PemsDialog.confirm in: " + string.Join(", ", offenders));
+    }
+
+    [Theory]
+    [InlineData("WorkOrder")]
+    [InlineData("WorkRequest")]
+    public void The_lifecycle_buttons_declare_their_required_comment_and_question_without_inline_script(string folder)
+    {
+        var html = Read("PEMS.Web", "Views", folder, "Details.cshtml");
+        Assert.Contains("data-pems-require=", html);
+        Assert.Contains("data-pems-confirm=", html);
+        Assert.DoesNotContain("this.form.comment", html);
+        Assert.DoesNotContain("return confirm(", html);
+    }
+
+    [Fact]
     public void The_shared_modal_script_fills_the_modal_from_the_opening_button_and_resets_it_first()
     {
         var js = Read("PEMS.UI", "wwwroot", "pems-modal-fill.js");

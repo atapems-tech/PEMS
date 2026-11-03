@@ -11,6 +11,35 @@ and theme and were reconstructed from the git history (initial import 2026-09-05
 ### Changed
 - Seven per-row modals became one shared modal each: VDR and engineering document comment replies, QC inspection, production run post input and post output, RCM decision apply, warehouse storage location. Left for a follow-up in SCRUM-500: the three edit modals with many prefilled fields (Department, Employee, SparePart) and the per-entry import modals of ImportCenter (each posts to its own action).
 
+## 2026-11-03 - No browser confirm() is left; required fields before the question (SCRUM-499)
+
+### Changed
+- `pems-confirm.js`: `data-pems-require="field"` checks the named field of the button's form before asking (marks it `is-invalid`, focuses it), and a blank `data-pems-confirm` means no question.
+- Work order and work request buttons declare their required comment and the Reject/Cancel question as attributes instead of an inline script; the cartable and the letter bulk form use `data-pems-confirm` (the attribute set by the cartable script and the Letter index views), their own `window.confirm` handlers are gone. Ratchet confirm-call 4 to 0. Lifecycle posts keep their fields: the reasons were already collected by the pages' own comment boxes and modals, so PemsConfirmDialog with a reason stays available for new flows.
+
+## 2026-11-03 - Adoption leftovers: tone helpers, last alerts, validation summaries (SCRUM-502)
+
+### Added
+- `<pems-validation-summary>` (derives from the built-in helper), `<pems-alert>` keeps the other attributes of the tag and takes `tone="light"` and `tone="none"`.
+
+### Changed
+- Status helpers that only feed badges return tone names: `RcmDisplay` (consequence, status, criticality), `TaskManagerUi` (category, priority) and 43 view-local helpers; 22 alert blocks and 13 validation summaries moved; ratchet alert 22 to 0. Kept as class helpers: `LetterStatusBadge` (custom palette), 9 badges whose class is also used on another element. Still open in #502: list-group items, the Pems skin of the small blocks, the segmented progress bar, the JS-toggled spinner.
+
+## 2026-11-03 - Every hand-written table is a `<pems-table>` (SCRUM-337)
+
+### Added
+- `<pems-table kind scale css>` frame helper (`FrameState.Table`): the table element and its classes, rows stay page markup, every other attribute kept.
+
+### Changed
+- 255 tables in 134 views (the views and the Admin and Warehouse area views) moved, class order preserved; ratchet table 257 to 1 (`LetterCartable/Report`, class `ct-table`, kept). Record lists keep the pems-list family; moving cell-heavy tables to descriptor-driven PemsTable is the next step of SCRUM-337.
+
+## 2026-11-03 - Decision drafts for the owner: main host platform, module catalogue, price list structure (SCRUM-305, SCRUM-132, SCRUM-28)
+
+### Added
+- `plan/adr/0012-main-host-platform.md` (Proposed): one artifact, Windows/IIS for the shared main host, Linux with Docker Compose and Caddy as the second supported install, SQL Server per environment; says why supporting both is possible and when it is worthwhile.
+- `docs/commercial/MODULE_CATALOGUE_DRAFT.md` (draft): core parts, 12 module keys with dependencies, three editions, all marked proposed.
+- `docs/commercial/PRICE_LIST_V1.md` and `PROPOSAL_TEMPLATE.md` (Persian and English): structure with every number as a placeholder. No price, edition or platform is decided by these files.
+
 ## 2026-11-03 - Replan of the component adoption work (SCRUM-499 to SCRUM-503)
 
 ### Added

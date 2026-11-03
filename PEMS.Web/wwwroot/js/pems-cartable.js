@@ -194,9 +194,9 @@
             });
             // trash confirmation follows the user's setting; purge always confirms
             var confirmTrash = shell.getAttribute("data-confirm-trash") === "1";
-            Array.prototype.forEach.call(doc.querySelectorAll("[data-confirm-trash]"), function (b) { if (confirmTrash) b.setAttribute("data-confirm", b.getAttribute("data-confirm-trash")); });
-            Array.prototype.forEach.call(form.querySelectorAll("[data-row-submit='trash']"), function (b) { if (confirmTrash) b.setAttribute("data-confirm", api.t("confirmTrash")); });
-            Array.prototype.forEach.call(form.querySelectorAll("[data-row-submit='purge']"), function (b) { b.setAttribute("data-confirm", api.t("confirmPurge")); });
+            Array.prototype.forEach.call(doc.querySelectorAll("[data-confirm-trash]"), function (b) { if (confirmTrash) b.setAttribute("data-pems-confirm", b.getAttribute("data-confirm-trash")); });
+            Array.prototype.forEach.call(form.querySelectorAll("[data-row-submit='trash']"), function (b) { if (confirmTrash) b.setAttribute("data-pems-confirm", api.t("confirmTrash")); });
+            Array.prototype.forEach.call(form.querySelectorAll("[data-row-submit='purge']"), function (b) { b.setAttribute("data-pems-confirm", api.t("confirmPurge")); });
 
             doc.addEventListener("click", function (e) {
                 var tagBtn = e.target.closest ? e.target.closest("[data-bulk-tag]") : null;
@@ -214,12 +214,7 @@
                 }
             });
         }
-        // forms that ask first (empty trash)
-        doc.addEventListener("submit", function (e) {
-            var f = e.target;
-            var msg = f && f.getAttribute ? f.getAttribute("data-confirm") : null;
-            if (msg && f.id !== "letterBulkForm" && !window.confirm(msg)) e.preventDefault();
-        });
+        // forms and buttons that ask first: [data-pems-confirm] (PEMS.UI pems-confirm.js)
 
         // ---- side detail pane (the real Details page in an iframe; actions inside it open the full page)
         var pane = doc.getElementById("ctDetail");

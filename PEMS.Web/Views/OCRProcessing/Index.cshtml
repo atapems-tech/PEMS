@@ -40,7 +40,7 @@
         </pems-button>
     </div>
     <div class="table-responsive pems-grid-scroll table-scroll-area" style="max-height:65vh; overflow-y:auto;">
-        <table class="table table-enterprise pems-grid-table" data-grid-key="OCRProcessing">
+        <pems-table kind="enterprise" css="pems-grid-table" data-grid-key="OCRProcessing">
             <thead>
                 <tr>
                     <th data-col-key="file" data-resizable="true" data-min-width="140" data-max-width="320">@Localizer["File"]</th>
@@ -90,7 +90,7 @@
                     </tr>
                 }
             </tbody>
-        </table>
+        </pems-table>
 
         @if (!Model.Items.Any())
         {

@@ -481,7 +481,7 @@
                 <span>@Localizer["Ct_TrashHint"]</span>
                 @if (Model.TotalCount > 0)
                 {
-                    <form asp-action="EmptyTrash" method="post" class="ms-auto" data-confirm="@Localizer["Ct_ConfirmEmptyTrash"]">
+                    <form asp-action="EmptyTrash" method="post" class="ms-auto" data-pems-confirm="@Localizer["Ct_ConfirmEmptyTrash"]">
                         <pems-button tone="danger" size="small" outline="true" type="submit"><i class="bi bi-trash3" aria-hidden="true"></i> @Localizer["Ct_EmptyTrash"]</pems-button>
                     </form>
                 }
@@ -499,7 +499,7 @@
                     @if (inTrash)
                     {
                         <pems-button tone="neutral" size="small" outline="true" type="submit" name="op" value="restore" data-bulk-op="restore" disabled><i class="bi bi-arrow-counterclockwise" aria-hidden="true"></i> @Localizer["Ct_Restore"]</pems-button>
-                        <pems-button tone="danger" size="small" outline="true" type="submit" name="op" value="purge" data-bulk-op="purge" data-confirm="@Localizer["Ct_ConfirmPurge"]" disabled><i class="bi bi-x-octagon" aria-hidden="true"></i> @Localizer["Ct_PurgeForever"]</pems-button>
+                        <pems-button tone="danger" size="small" outline="true" type="submit" name="op" value="purge" data-bulk-op="purge" data-pems-confirm="@Localizer["Ct_ConfirmPurge"]" disabled><i class="bi bi-x-octagon" aria-hidden="true"></i> @Localizer["Ct_PurgeForever"]</pems-button>
                     }
                     else
                     {
@@ -538,7 +538,7 @@
                         <div class="dropdown">
                             <pems-button tone="neutral" size="small" outline="true" css="dropdown-toggle" type="button" data-bulk-op="more-menu" data-bs-toggle="dropdown" aria-expanded="false" disabled>@Localizer["Lp_More"]</pems-button>
                             <pems-dropdown-menu>
-                                <li><button type="submit" name="op" value="submit" class="dropdown-item" data-bulk-op="submit" data-confirm="@Localizer["Lt_BulkSubmitConfirm"]"><i class="bi bi-send-check" aria-hidden="true"></i> @Localizer["Lt_BulkSubmit"]</button></li>
+                                <li><button type="submit" name="op" value="submit" class="dropdown-item" data-bulk-op="submit" data-pems-confirm="@Localizer["Lt_BulkSubmitConfirm"]"><i class="bi bi-send-check" aria-hidden="true"></i> @Localizer["Lt_BulkSubmit"]</button></li>
                                 @if (canBulkArchive)
                                 {
                                     <li><button type="button" class="dropdown-item text-danger" data-bulk-op="archive-open" data-bs-toggle="modal" data-bs-target="#letterArchiveModal"><i class="bi bi-archive" aria-hidden="true"></i> @Localizer["Lt_BulkArchive"]</button></li>
@@ -577,7 +577,7 @@
             </form>
 
             <div class="table-responsive pems-grid-scroll table-scroll-area lp-scroll">
-                <table class="table table-enterprise pems-grid-table pems-compact-rows mb-0 lp-table" data-grid-key="Letter">
+                <pems-table kind="enterprise" css="pems-grid-table pems-compact-rows mb-0 lp-table" data-grid-key="Letter">
                     <thead>
                         <tr>
                             <th data-col-key="select" data-resizable="false" style="width:34px;"><input type="checkbox" id="selectAllLetters" aria-label="@Localizer["Lt_SelectAll"]" /></th>
@@ -698,7 +698,7 @@
                             </tr>
                         }
                     </tbody>
-                </table>
+                </pems-table>
                 @if (!Model.Items.Any())
                 {
                     <div class="lp-empty">

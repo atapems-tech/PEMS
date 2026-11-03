@@ -26,7 +26,7 @@
         else
         {
             <div class="table-responsive">
-                <table class="table table-sm lh-table">
+                <pems-table scale="small" css="lh-table">
                     <thead><tr><th scope="col">@Localizer["Lc_Name"]</th><th scope="col">@Localizer["Lc_FirstViewed"]</th><th scope="col">@Localizer["Lc_LastViewed"]</th><th scope="col">@Localizer["Lc_ViewCount"]</th></tr></thead>
                     <tbody>
                         @foreach (var v in Model.Views)
@@ -34,7 +34,7 @@
                             <tr><td>@v.UserName</td><td>@v.FirstViewedDate.ToString("yyyy-MM-dd HH:mm")</td><td>@v.LastViewedDate.ToString("yyyy-MM-dd HH:mm")</td><td>@v.ViewCount</td></tr>
                         }
                     </tbody>
-                </table>
+                </pems-table>
             </div>
         }
     </section>
@@ -63,7 +63,7 @@
     <section class="lc-card" aria-labelledby="lhAudit">
         <h3 id="lhAudit"><i class="bi bi-shield-check" aria-hidden="true"></i> @Localizer["Lc_AuditTrail"]</h3>
         <div class="table-responsive">
-            <table class="table table-sm lh-table">
+            <pems-table scale="small" css="lh-table">
                 <thead><tr><th scope="col">@Localizer["Lc_When"]</th><th scope="col">@Localizer["Lc_Who"]</th><th scope="col">@Localizer["Lc_Category"]</th><th scope="col">@Localizer["Lc_Event"]</th><th scope="col">@Localizer["Lc_DetailCol"]</th></tr></thead>
                 <tbody>
                     @foreach (var r in Model.Report.Rows)
@@ -71,7 +71,7 @@
                         <tr><td class="text-nowrap">@r.Timestamp.ToString("yyyy-MM-dd HH:mm")</td><td>@r.Actor</td><td>@r.Category</td><td>@r.Event</td><td>@r.Detail</td></tr>
                     }
                 </tbody>
-            </table>
+            </pems-table>
         </div>
     </section>
 </div>

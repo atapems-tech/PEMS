@@ -149,7 +149,7 @@
                     <h6 class="mb-0">@Localizer["Stages"]</h6>
                     @if (edit) { <pems-button as="a" tone="primary" size="small" outline="true" asp-action="Designer" asp-route-versionId="@Model.VersionId" asp-route-addStage="true"><i class="bi bi-plus-lg"></i> @Localizer["Add stage"]</pems-button> }
                 </div>
-                <div class="table-responsive"><table class="table table-sm align-middle mb-0">
+                <div class="table-responsive"><pems-table scale="small" css="align-middle mb-0">
                     <thead><tr><th>#</th><th>@Localizer["Name"]</th><th>@Localizer["Persian name"]</th><th>@Localizer["Business status"]</th><th>@Localizer["Responsible role"]</th><th>@Localizer["Responsible employee"]</th></tr></thead>
                     <tbody>
                     @foreach (var s in Model.Stages)
@@ -161,7 +161,7 @@
                             <td class="small">@(s.ResponsibleEmployeeId.HasValue ? (employeeMap.FirstOrDefault(e => e.Id == s.ResponsibleEmployeeId).Name ?? "#" + s.ResponsibleEmployeeId) : "")</td>
                         </tr>
                     }
-                    </tbody></table></div>
+                    </tbody></pems-table></div>
             </div>
 
             <div class="content-card mt-3">
@@ -169,7 +169,7 @@
                     <h6 class="mb-0">@Localizer["Transitions"]</h6>
                     @if (edit) { <pems-button as="a" tone="primary" size="small" outline="true" asp-action="Designer" asp-route-versionId="@Model.VersionId" asp-route-addTransition="true"><i class="bi bi-plus-lg"></i> @Localizer["Add transition"]</pems-button> }
                 </div>
-                <div class="table-responsive"><table class="table table-sm align-middle mb-0">
+                <div class="table-responsive"><pems-table scale="small" css="align-middle mb-0">
                     <thead><tr><th>@Localizer["From"]</th><th>@Localizer["To"]</th><th>@Localizer["Action"]</th><th>@Localizer["Label"]</th><th>@Localizer["Required permission"]</th></tr></thead>
                     <tbody>
                     @foreach (var t in Model.Transitions)
@@ -182,7 +182,7 @@
                             <td class="small">@t.RequiredPermission</td>
                         </tr>
                     }
-                    </tbody></table></div>
+                    </tbody></pems-table></div>
             </div>
         </div>
 

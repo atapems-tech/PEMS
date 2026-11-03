@@ -63,7 +63,7 @@
         else
         {
         <div class="table-responsive">
-            <table class="table table-enterprise table-sm align-middle">
+            <pems-table kind="enterprise" scale="small" css="align-middle">
                 <thead>
                     <tr>
                         <th>#</th><th>@Localizer["Po_Item"]</th><th class="text-end">@Localizer["Po_Quantity"]</th><th class="text-end">@Localizer["Po_UnitPrice"]</th>
@@ -122,7 +122,7 @@
                 }
                 </tbody>
                 <tfoot><tr><th colspan="4" class="text-end">@Localizer["Po_Total"]</th><th class="text-end" dir="ltr">@a.Total.ToString("N2") @a.Currency</th><th colspan="2"></th></tr></tfoot>
-            </table>
+            </pems-table>
         </div>
         }
 
@@ -186,7 +186,7 @@
         <h6 class="mb-2"><i class="bi bi-box-arrow-in-down" aria-hidden="true"></i> @Localizer["Rcv_Receiving"]</h6>
         <p class="small text-muted">@Localizer["Rcv_ReceivingHelp"]</p>
         <div class="table-responsive">
-            <table class="table table-enterprise table-sm align-middle">
+            <pems-table kind="enterprise" scale="small" css="align-middle">
                 <thead>
                     <tr>
                         <th>#</th><th>@Localizer["Po_Item"]</th><th class="text-end">@Localizer["Rcv_Ordered"]</th><th class="text-end">@Localizer["Rcv_InQc"]</th>
@@ -228,7 +228,7 @@
                     </tr>
                 }
                 </tbody>
-            </table>
+            </pems-table>
         </div>
     </div>
 }

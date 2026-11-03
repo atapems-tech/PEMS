@@ -30,7 +30,7 @@
 </div>
 
 <div class="content-card">
-    <table class="table table-enterprise mb-0">
+    <pems-table kind="enterprise" css="mb-0">
         <thead>
             <tr>
                 <th>@Localizer["Tag"]</th><th>@Localizer["Name"]</th><th>@Localizer["Area"]</th><th>@Localizer["Discipline"]</th>
@@ -54,7 +54,7 @@
                 </tr>
             }
         </tbody>
-    </table>
+    </pems-table>
     @if (!Model.Items.Any())
     {
         <p class="text-muted text-center py-4 mb-0">همه‌ی تجهیزات کاملاً وصل هستن - عالیه!</p>

@@ -102,7 +102,7 @@
                 <a href="#role-@role" class="badge text-decoration-none pm-chip @(count == 0 ? "text-bg-secondary" : "text-bg-light border")" data-role="@role">@role <span class="opacity-75 pm-chip-count">(@count/@modules.Length)</span></a>
             }
         </div>
-        <div id="pmNoRole" class="alert alert-secondary py-2 small d-none">@Localizer["PermMx_NoRoleMatch"]</div>
+        <pems-alert tone="secondary" css="py-2 small d-none" id="pmNoRole">@Localizer["PermMx_NoRoleMatch"]</pems-alert>
 
         @foreach (var role in roles)
         {
@@ -118,7 +118,7 @@
                 <form asp-action="SetRole" method="post" class="pm-form">
                     <input type="hidden" name="roleName" value="@role" />
                     <div class="permission-grid pm-grid">
-                        <table class="table table-enterprise pm-table" data-role="@role">
+                        <pems-table kind="enterprise" css="pm-table" data-role="@role">
                             <thead>
                                 <tr>
                                     <th class="pm-module-col">@Localizer["Module"]</th>
@@ -153,7 +153,7 @@
                                 </tr>
                             }
                             </tbody>
-                        </table>
+                        </pems-table>
                     </div>
                     <div class="text-end mt-2 pm-fallback-save">
                         <pems-button tone="primary" size="small" css="permission-save" type="submit"><i class="bi bi-check2 me-1"></i> @Localizer["Save"] @role @Localizer["permissions"]</pems-button>

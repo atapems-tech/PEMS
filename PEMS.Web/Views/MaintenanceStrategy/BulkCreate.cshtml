@@ -212,7 +212,7 @@ else if (matchingCount.HasValue && matchingCount.Value > maxResults)
                                                     انتخاب این نوع
                                                 </pems-button>
                                             </div>
-                                            <table class="table table-sm mb-0">
+                                            <pems-table scale="small" css="mb-0">
                                                 <tbody>
                                                     @foreach (var eq in typeGroup)
                                                     {
@@ -223,7 +223,7 @@ else if (matchingCount.HasValue && matchingCount.Value > maxResults)
                                                             </td>
                                                             <td class="small">@eq.TagNumber — @eq.Name</td>
                                                             <td>
-                                                                <pems-badge tone="none" css="@RcmDisplay.CriticalityBadge(string.IsNullOrEmpty(cls) ? "Unrated" : cls)">@Localizer.Label("Criticality", string.IsNullOrEmpty(cls) ? "Unrated" : cls)</pems-badge>
+                                                                <pems-badge tone="@RcmDisplay.CriticalityBadge(string.IsNullOrEmpty(cls) ? "Unrated" : cls)">@Localizer.Label("Criticality", string.IsNullOrEmpty(cls) ? "Unrated" : cls)</pems-badge>
                                                                 @if (bulk.Candidates.TryGetValue(eq.EquipmentId, out var cand) && !cand.WillReceive)
                                                                 {
                                                                     <pems-badge tone="warning" title="@Localizer["Rcm_Bulk_" + cand.Conflict]">@Localizer["Rcm_Bulk_" + cand.Conflict]</pems-badge>
@@ -232,7 +232,7 @@ else if (matchingCount.HasValue && matchingCount.Value > maxResults)
                                                         </tr>
                                                     }
                                                 </tbody>
-                                            </table>
+                                            </pems-table>
                                         </div>
                                     }
                                 </pems-accordion-item>

@@ -123,7 +123,7 @@
 
 <div class="content-card mb-3">
     <h6 class="mb-3">@Localizer["Td_Recipients"]</h6>
-    <table class="table table-enterprise">
+    <pems-table kind="enterprise">
         <thead><tr><th>@Localizer["Td_Name"]</th><th>@Localizer["Td_Type"]</th><th>@Localizer["Td_Organization"]</th><th>@Localizer["Td_ResponseRequired"]</th><th>@Localizer["Td_Acknowledgement"]</th></tr></thead>
         <tbody>
             @foreach (var r in Model.Recipients)
@@ -156,7 +156,7 @@
                 </tr>
             }
         </tbody>
-    </table>
+    </pems-table>
     @if (!Model.Recipients.Any())
     {
         <p class="text-muted small mb-0">@Localizer["Td_NoRecipients"]</p>
@@ -166,7 +166,7 @@
 <div class="content-card">
     <h6 class="mb-3">@Localizer["Td_IncludedDocs"]</h6>
     <div class="table-responsive table-scroll-area" style="max-height:65vh; overflow-y:auto;">
-    <table class="table table-enterprise">
+    <pems-table kind="enterprise">
         <thead>
             <tr><th>@Localizer["Td_DocNo"]</th><th>@Localizer["Td_Title"]</th><th>@Localizer["Td_RevAtSend"]</th><th>@Localizer["Td_FileAtSend"]</th><th>@Localizer["Td_Remarks"]</th></tr>
         </thead>
@@ -196,7 +196,7 @@
                 </tr>
             }
         </tbody>
-    </table>
+    </pems-table>
     </div>
 </div>
 

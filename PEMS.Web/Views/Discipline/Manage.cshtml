@@ -30,7 +30,7 @@
     </form>
 
     <div class="table-responsive">
-        <table class="table table-enterprise table-sm align-middle">
+        <pems-table kind="enterprise" scale="small" css="align-middle">
             <thead><tr><th>@Localizer["Code"]</th><th>@Localizer["Name"]</th><th>@Localizer["Description"]</th><th>@Localizer["Import aliases"]</th><th>@Localizer["Transmittal code"]</th><th>@Localizer["Employees"]</th><th>@Localizer["Documents"]</th><th>@Localizer["Active"]</th><th></th></tr></thead>
             <tbody>
             @foreach (var d in Model)
@@ -57,7 +57,7 @@
                 </tr>
             }
             </tbody>
-        </table>
+        </pems-table>
         @if (!Model.Any()) { <p class="text-muted text-center py-3">@Localizer["No disciplines configured yet."]</p> }
     </div>
 </div>

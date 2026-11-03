@@ -67,7 +67,7 @@
 {
     <div class="content-card mb-3">
         <h6 class="mb-3">@label</h6>
-        <table class="table table-enterprise">
+        <pems-table kind="enterprise">
             <thead><tr><th>@Localizer["Document No"]</th><th>@Localizer["Title"]</th><th>DVD Volume</th><th>N/A</th><th>@Localizer["Notes"]</th><th></th></tr></thead>
             <tbody>
                 @foreach (var d in docs)
@@ -88,7 +88,7 @@
                     </tr>
                 }
             </tbody>
-        </table>
+        </pems-table>
         @if (!docs.Any())
         {
             <p class="text-muted small mb-2">No documents in this part yet.</p>

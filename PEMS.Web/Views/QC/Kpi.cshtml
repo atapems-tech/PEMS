@@ -25,7 +25,7 @@
     <div class="col-md-7">
         <div class="content-card h-100">
             <h6 class="mb-3">@Localizer["نرخ NCR به تفکیک دیسیپلین"]</h6>
-            <table class="table table-enterprise mb-0">
+            <pems-table kind="enterprise" css="mb-0">
                 <thead><tr><th>@Localizer["دیسیپلین"]</th><th>@Localizer["کل"]</th><th>@Localizer["باز"]</th><th>@Localizer["بحرانی"]</th><th>@Localizer["میانگین روز تا بستن"]</th></tr></thead>
                 <tbody>
                     @foreach (var d in (IEnumerable<dynamic>)ViewBag.ByDiscipline)
@@ -39,7 +39,7 @@
                         </tr>
                     }
                 </tbody>
-            </table>
+            </pems-table>
         </div>
     </div>
 
@@ -49,9 +49,9 @@
             <ul class="list-unstyled mb-0">
                 @foreach (var s in (IEnumerable<dynamic>)ViewBag.BySeverity)
                 {
-                    var badgeClass = s.Severity == "Critical" ? "bg-danger" : s.Severity == "Major" ? "bg-warning text-dark" : "bg-secondary";
+                    var badgeClass = s.Severity == "Critical" ? "danger" : s.Severity == "Major" ? "warning" : "neutral";
                     <li class="d-flex justify-content-between border-bottom py-1">
-                        <pems-badge tone="none" css="@badgeClass">@s.Severity</pems-badge>
+                        <pems-badge tone="@badgeClass">@s.Severity</pems-badge>
                         <strong>@s.Count</strong>
                     </li>
                 }

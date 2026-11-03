@@ -55,7 +55,7 @@
 <div class="content-card">
     <h6 class="mb-3">@Localizer["Recent Import Batches"]</h6>
     <div class="table-responsive table-scroll-area" style="max-height:65vh; overflow-y:auto;">
-    <table class="table table-enterprise">
+    <pems-table kind="enterprise">
         <thead><tr><th>@Localizer["File"]</th><th>@Localizer["Project"]</th><th>@Localizer["Date"]</th><th>Rows</th><th>@Localizer["New"]</th><th>Updates</th><th>@Localizer["Status"]</th><th></th></tr></thead>
         <tbody>
             @foreach (var b in Model)
@@ -77,7 +77,7 @@
                 </tr>
             }
         </tbody>
-    </table>
+    </pems-table>
     </div>
     @if (!Model.Any()) { <p class="text-muted text-center py-4">No equipment imports yet.</p> }
 </div>
