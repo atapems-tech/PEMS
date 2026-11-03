@@ -492,6 +492,36 @@ public class CmmsListPagesTests
         Assert.Contains("2026-10-30 19:00", html);
     }
 
+    // ---------- Production orders and the procurement cartable (SCRUM-337) ----------
+
+    [Fact]
+    public async Task ProductionOrders_AreAListPage_WithStatusFilterSearchAndPagingInTheFooter()
+    {
+        var html = await Render<ProductionOrderController>("/Views/ProductionOrder/Index.cshtml", Page(
+            new ProductionOrderListDto { ProductionOrderId = 7, OrderNumber = "PO-0007", MaterialCode = "M-1", PlannedQuantity = 12.5m, UomCode = "KG", Status = "Released", WorkCenterCode = "WC1", RunCount = 2 }),
+            v => { v["StatusFilter"] = "Released"; v["Search"] = "M-1"; });
+
+        AssertBuiltFromTheComponent(html, "ProductionOrder", 1, keepsDataBadges: true);   // the status is a library badge
+        Assert.Contains("PO-0007", html);
+        Assert.Contains("name=\"status\"", html);
+        Assert.Single(Regex.Matches(Chips(html), "class=\"pems-filter-chip\""));
+    }
+
+    [Fact]
+    public async Task ProcurementCartable_IsAListPage_WithStatusAndSourceFilters()
+    {
+        var html = await Render<PreProcurementController>("/Views/PreProcurement/Index.cshtml", (IReadOnlyList<ProcurementDemandRow>)new List<ProcurementDemandRow>
+        {
+            new(3, ProcurementDemandSources.Replenishment, 9, "RP-9", "M-2", "Bearing", 4m, "pcs", "WH1", ProcurementDemandStatuses.Open, new DateTime(2026, 11, 1, 8, 30, 0), "ali", null, null),
+        }, v => { v["Status"] = ProcurementDemandStatuses.Open; v["Source"] = ProcurementDemandSources.Replenishment; });
+
+        AssertBuiltFromTheComponent(html, null, 1);
+        Assert.Contains("name=\"status\"", html);
+        Assert.Contains("name=\"source\"", html);
+        Assert.Equal(2, Regex.Matches(Chips(html), "class=\"pems-filter-chip\"").Count);
+        Assert.Contains("vs-pill--warning", html);
+    }
+
     // ---------- RCM / FMEA coverage ----------
 
     [Fact]

@@ -2,11 +2,16 @@
 @using Microsoft.Extensions.Localization
 @using PEMS.Domain.Entities
 @using PEMS.Web.Resources
+@using PEMS.Web.Helpers
+@using Microsoft.AspNetCore.Mvc.Rendering
 @inject IStringLocalizer<SharedResource> Localizer
 @{
     // SCRUM-471: the procurement cartable (pre-procurement queue)
     var status = ViewBag.Status as string;
     var source = ViewBag.Source as string;
+    var statuses = new[] { ProcurementDemandStatuses.Open, ProcurementDemandStatuses.Converted, ProcurementDemandStatuses.Accepted, ProcurementDemandStatuses.Dismissed };
+    var sources = new[] { ProcurementDemandSources.Replenishment, ProcurementDemandSources.WorkOrderDirectPurchase, ProcurementDemandSources.MaterialRequisition };
+    var filterCount = (string.IsNullOrEmpty(status) ? 0 : 1) + (string.IsNullOrEmpty(source) ? 0 : 1);
     string Pill(string s) => s switch
     {
         ProcurementDemandStatuses.Open => "vs-pill--warning",
@@ -15,56 +20,49 @@
     };
 }
 
-@if (TempData["Message"] != null) { <pems-alert tone="success" css="py-2 px-3 small">@TempData["Message"]</pems-alert> }
-@if (TempData["Error"] != null) { <pems-alert tone="danger" css="py-2 px-3 small">@TempData["Error"]</pems-alert> }
+@section Styles { <link rel="stylesheet" href="~/_content/PEMS.UI/pems-list.css" asp-append-version="true" /> }
 
-<section class="content-card">
-    <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-2">
-        <h5 class="mb-0"><i class="bi bi-cart-check" aria-hidden="true"></i> @Localizer["Ppr_Title"]</h5>
-        <form method="get" class="d-flex flex-wrap gap-2">
-            <pems-select scale="small" name="status" aria-label="@Localizer["Ppr_Status"]" data-pems-select="off">
-                <option value="" selected="@string.IsNullOrEmpty(status)">@Localizer["Ppr_AllStatuses"]</option>
-                @foreach (var s in new[] { ProcurementDemandStatuses.Open, ProcurementDemandStatuses.Converted, ProcurementDemandStatuses.Accepted, ProcurementDemandStatuses.Dismissed })
-                {
-                    <option value="@s" selected="@(status == s)">@Localizer["Ppr_Status_" + s]</option>
-                }
-            </pems-select>
-            <pems-select scale="small" name="source" aria-label="@Localizer["Ppr_Source"]" data-pems-select="off">
-                <option value="" selected="@string.IsNullOrEmpty(source)">@Localizer["Ppr_AllSources"]</option>
-                @foreach (var s in new[] { ProcurementDemandSources.Replenishment, ProcurementDemandSources.WorkOrderDirectPurchase, ProcurementDemandSources.MaterialRequisition })
-                {
-                    <option value="@s" selected="@(source == s)">@Localizer["Ppr_Source_" + s]</option>
-                }
-            </pems-select>
-            <pems-button tone="neutral" size="small" outline="true" type="submit"><i class="bi bi-funnel" aria-hidden="true"></i> @Localizer["Ppr_Filter"]</pems-button>
-        </form>
-    </div>
-    <p class="small text-muted">@Localizer["Ppr_Hint"]</p>
+@* SCRUM-337: built from the PEMS.UI list-page component; the two selects became the status and source filters, the hint the heading tooltip. *@
+<pems-list-page texts="@ListPageTexts.From(Localizer)">
+    @if (TempData["Message"] != null) { <pems-alert tone="success" css="py-2 px-3 small">@TempData["Message"]</pems-alert> }
+    @if (TempData["Error"] != null) { <pems-alert tone="danger" css="py-2 px-3 small">@TempData["Error"]</pems-alert> }
 
-    @if (Model.Count == 0)
-    {
-        <p class="text-muted small mb-0">@Localizer["Ppr_Empty"]</p>
-    }
-    else
-    {
-    <div class="table-responsive">
-        <pems-table kind="enterprise" scale="small" css="align-middle mb-0">
-            <thead>
-                <tr>
-                    <th>#</th>
-                    <th>@Localizer["Ppr_Source"]</th>
-                    <th>@Localizer["Ppr_Item"]</th>
-                    <th class="text-end">@Localizer["Ppr_Quantity"]</th>
-                    <th>@Localizer["Ppr_Warehouse"]</th>
-                    <th>@Localizer["Ppr_Status"]</th>
-                    <th>@Localizer["Ppr_Raised"]</th>
-                    <th>MR</th>
-                </tr>
-            </thead>
-            <tbody>
+    <pems-list-panel>
+        <pems-list-toolbar heading="@Localizer["Ppr_Title"]" heading-title="@Localizer["Ppr_Hint"]" total="@Model.Count">
+            <pems-list-tools>
+                <pems-list-filters form-id="pprFilter" action="@Url.Action("Index")" count="@filterCount" reset-href="@Url.Action("Index")">
+                    <pems-list-filter-select id="pprStatus" name="status" label="@Localizer["Ppr_Status"]" value="@status"
+                                             all-text="@Localizer["Ppr_AllStatuses"]" items="@statuses.Select(s => new SelectListItem(Localizer["Ppr_Status_" + s].Value, s))" />
+                    <pems-list-filter-select id="pprSource" name="source" label="@Localizer["Ppr_Source"]" value="@source"
+                                             all-text="@Localizer["Ppr_AllSources"]" items="@sources.Select(s => new SelectListItem(Localizer["Ppr_Source_" + s].Value, s))" />
+                </pems-list-filters>
+            </pems-list-tools>
+        </pems-list-toolbar>
+
+        <pems-list-chips reset-href="@Url.Action("Index")">
+            @if (!string.IsNullOrEmpty(status)) { <pems-list-chip label="@Localizer["Ppr_Status"]" value="@Localizer["Ppr_Status_" + status]" remove-href="@Url.Action("Index", new { source })" /> }
+            @if (!string.IsNullOrEmpty(source)) { <pems-list-chip label="@Localizer["Ppr_Source"]" value="@Localizer["Ppr_Source_" + source]" remove-href="@Url.Action("Index", new { status })" /> }
+        </pems-list-chips>
+
+        <pems-list-grid>
+            <pems-list-table empty="@(Model.Count == 0)" empty-text="@Localizer["Ppr_Empty"]"
+                             filtered="@(filterCount > 0)" clear-href="@Url.Action("Index")">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>@Localizer["Ppr_Source"]</th>
+                        <th>@Localizer["Ppr_Item"]</th>
+                        <th class="text-end">@Localizer["Ppr_Quantity"]</th>
+                        <th>@Localizer["Ppr_Warehouse"]</th>
+                        <th>@Localizer["Ppr_Status"]</th>
+                        <th>@Localizer["Ppr_Raised"]</th>
+                        <th>MR</th>
+                    </tr>
+                </thead>
+                <tbody>
             @foreach (var d in Model)
             {
-                <tr>
+                <tr class="lp-row">
                     <td><a href="/PreProcurement/Details/@d.ProcurementDemandId" dir="ltr">#@d.ProcurementDemandId</a></td>
                     <td class="small">@Localizer["Ppr_Source_" + d.SourceType] <span dir="ltr" class="text-muted">@d.SourceNumber</span></td>
                     <td class="small">@if (d.MaterialCode != null) { <span dir="ltr">@d.MaterialCode</span><text> - </text> }@d.Description</td>
@@ -75,8 +73,10 @@
                     <td>@if (d.MaterialRequisitionId.HasValue) { <a href="/MaterialRequisition/Details/@d.MaterialRequisitionId" dir="ltr">@d.MaterialRequisitionNumber</a> } else { <span class="text-muted">—</span> }</td>
                 </tr>
             }
-            </tbody>
-        </pems-table>
-    </div>
-    }
-</section>
+                </tbody>
+            </pems-list-table>
+        </pems-list-grid>
+    </pems-list-panel>
+</pems-list-page>
+
+@section Scripts { <script src="~/_content/PEMS.UI/pems-list.js" asp-append-version="true"></script> }
