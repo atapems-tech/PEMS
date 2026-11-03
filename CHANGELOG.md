@@ -3,6 +3,11 @@
 All notable changes to PEMS. No system version is defined yet (plan row F_CI), so entries are grouped by date
 and theme and were reconstructed from the git history (initial import 2026-09-05). Newest first.
 
+## 2026-11-03 - Department and SparePart edit modals are shared modals (SCRUM-500)
+
+### Changed
+- The Department and SparePart edit modals (one per row, every field prefilled) became one modal each; the opening button carries the row values as `data-fill-*` (`pems-modal-fill.js`). Left on purpose: the Employee edit modal (a position partial and department, discipline and vendor options that differ per row, plus a per-row inline script) and the per-entry import modals of ImportCenter.
+
 ## 2026-11-03 - Test policy for sessions written into the guideline (SCRUM-503)
 
 ### Changed
