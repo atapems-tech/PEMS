@@ -96,6 +96,45 @@ public class TreeViewComponentTests
         Assert.DoesNotContain("data-tag-toggle", cartable);
     }
 
+    // ---- T2: the help node tree
+    [Fact]
+    public async Task WaveT2_HelpTree_IsARealNestedTree_WithEdgeLabels()
+    {
+        var visual = new PEMS.Application.DTOs.HelpVisualRenderDto
+        {
+            VisualType = "DecisionTree", Caption = "Approve or return",
+            Nodes =
+            {
+                new() { Id = "a", Label = "Submitted", IconCssClass = "bi-inbox" },
+                new() { Id = "b", Label = "Approved", IconCssClass = "bi-check" },
+                new() { Id = "c", Label = "Returned", IconCssClass = "bi-arrow-left" }
+            },
+            Edges = { new() { FromNodeId = "a", ToNodeId = "b", Label = "OK" }, new() { FromNodeId = "a", ToNodeId = "c", Label = "Comments" } }
+        };
+        var controller = PEMS.Tests.TestSupport.ControllerTempDataExtensions.WithTempData(new PEMS.Web.Controllers.DCCController(null!, null!, null!, null!, null!));
+        var result = new Microsoft.AspNetCore.Mvc.ViewResult { ViewData = new Microsoft.AspNetCore.Mvc.ViewFeatures.ViewDataDictionary(controller.ViewData) { Model = visual } };
+        var html = await PEMS.Tests.TestSupport.RazorViewRenderer.RenderAsync(controller, result, "~/Views/Shared/_HelpNodeTree.cshtml");
+
+        Assert.Contains("<ul class=\"pems-tree\" role=\"tree\" aria-label=\"Approve or return\"", html);
+        var root = Regex.Match(html, "<li class=\"pems-tree__item\" role=\"treeitem\" aria-expanded=\"true\">(.*)</li>", RegexOptions.Singleline).Groups[1].Value;
+        Assert.Contains("pems-tree__toggle", root);                              // Submitted has two children
+        Assert.Contains("<ul class=\"pems-tree__group\" role=\"group\">", root);
+        Assert.Equal(3, Regex.Matches(html, "role=\"treeitem\"").Count);
+        Assert.Contains("pems-help-tree-edge-label", html);
+        Assert.Contains("Comments", html);
+        Assert.False(File.Exists(Path.Combine(RepoRoot(), "PEMS.Web", "Views", "Shared", "_HelpNodeTreeItem.cshtml")));
+    }
+
+    [Fact]
+    public void NavigationVisibility_StaysADisclosure_BecauseItsNodesHoldForms()
+    {
+        // a tree item may not hold controls (WAI-ARIA); every node of this editor holds role forms, so <details> is the right pattern
+        var view = File.ReadAllText(Path.Combine(RepoRoot(), "PEMS.Web", "Areas", "Admin", "Views", "NavigationVisibility", "Index.cshtml"));
+        Assert.Contains("<details class=\"navvis-module", view);
+        Assert.Contains("<form method=\"post\"", view);
+        Assert.DoesNotContain("role=\"tree\"", view);
+    }
+
     private static string RepoRoot()
     {
         var dir = new DirectoryInfo(AppContext.BaseDirectory);
