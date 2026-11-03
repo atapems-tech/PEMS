@@ -3,6 +3,11 @@
 All notable changes to PEMS. No system version is defined yet (plan row F_CI), so entries are grouped by date
 and theme and were reconstructed from the git history (initial import 2026-09-05). Newest first.
 
+## 2026-11-04 - Merge rule made explicit (SCRUM-503)
+
+### Changed
+- Chapter 00 now calls a delayed merge a defect: merge once the quick gates pass; unrun tests go on the In Review checklist.
+
 ## 2026-11-03 - Adoption leftovers, second part: list-group rows, toasts, stacked progress, spinner attributes (SCRUM-502)
 
 ### Added
