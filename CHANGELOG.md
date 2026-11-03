@@ -3,6 +3,15 @@
 All notable changes to PEMS. No system version is defined yet (plan row F_CI), so entries are grouped by date
 and theme and were reconstructed from the git history (initial import 2026-09-05). Newest first.
 
+## 2026-11-03 - TreeView wave T1: one tree (SCRUM-337)
+
+### Added
+- `<pems-tree label="..." toggle-label="..." remember-key="...">` with nested `<pems-tree-item label key href current count expanded link-class>` and an optional `<pems-tree-label>` (the page's own label markup), in PEMS.UI: a WAI-ARIA tree (`tree` / `treeitem` / `group`), a named toggle per branch, and `pems-tree.js` (loaded by both layouts): expand / collapse, the collapsed branches remembered per tree in the browser (a branch holding the current item is never collapsed), and the tree keyboard (one tab stop; Up / Down, Right / Left mirrored in Persian, Home / End, Enter follows the link). Styles in `pems-ui.css`.
+
+### Changed
+- The organization positions tree (Administration > Organization > Tree) opens and closes its branches and is keyboard navigable (it was a static list).
+- The correspondence tag tree is built from `<pems-tree>`; its open / close code left `pems-cartable.js` and the same storage key keeps what a user had collapsed.
+
 ## 2026-11-02 - Chart wave C4: no hand-written charts come back (SCRUM-337)
 
 ### Added

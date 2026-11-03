@@ -163,33 +163,23 @@
     var tagChildren = tagNodes.GroupBy(t => t.ParentTagId ?? 0).ToDictionary(g => g.Key, g => g.ToList());
     string TagClass(string color) => "c-" + color;
 
-    // tag tree: nested lists; branches can be collapsed (state remembered by pems-cartable.js)
-    void RenderTags(int parent)
+    // tag tree: <pems-tree> (SCRUM-337 TreeView): branches open and close, remembered in the browser, keyboard navigable
+    async Task RenderTags(int parent)
     {
         if (!tagChildren.TryGetValue(parent, out var kids)) { return; }
-        <ul role="@(parent == 0 ? "tree" : "group")">
-            @foreach (var t in kids)
-            {
-                var hasKids = tagChildren.ContainsKey(t.TagId);
-                var tagCount = cart.TagCounts.GetValueOrDefault(t.TagId);
-                <li role="treeitem" aria-expanded="@(hasKids ? "true" : null)" data-tag-id="@t.TagId">
-                    <div class="ct-tag-row">
-                        @if (hasKids)
-                        {
-                            <button type="button" class="ct-tag-toggle" aria-expanded="true" data-tag-toggle="@t.TagId" aria-label="@Localizer["Ct_ToggleBranch"]: @t.Name"><i class="bi bi-chevron-right" aria-hidden="true"></i></button>
-                        }
-                        else { <span class="ct-tag-spacer"></span> }
-                        <a class="ct-tag @(currentTagId == t.TagId ? "active" : "")" href="@Url.Action("Index", new { tagId = t.TagId })" aria-current="@(currentTagId == t.TagId ? "page" : null)">
-                            <span class="ct-tag-dot @TagClass(t.Color)" aria-hidden="true"></span>
-                            <span class="ct-label text-truncate">@t.Name</span>
-                            @if (t.IsPersonal) { <i class="bi bi-person ct-tag-personal" title="@Localizer["Ct_PersonalTag"]" aria-hidden="true"></i><span class="visually-hidden">@Localizer["Ct_PersonalTag"]</span> }
-                            @if (tagCount > 0) { <span class="ct-count">@tagCount</span> }
-                        </a>
-                    </div>
-                    @{ RenderTags(t.TagId); }
-                </li>
-            }
-        </ul>
+        foreach (var t in kids)
+        {
+            var tagCount = cart.TagCounts.GetValueOrDefault(t.TagId);
+            <pems-tree-item label="@t.Name" key="@t.TagId.ToString()" href="@Url.Action("Index", new { tagId = t.TagId })" current="@(currentTagId == t.TagId)" link-class="ct-tag">
+                <pems-tree-label>
+                    <span class="ct-tag-dot @TagClass(t.Color)" aria-hidden="true"></span>
+                    <span class="ct-label text-truncate">@t.Name</span>
+                    @if (t.IsPersonal) { <i class="bi bi-person ct-tag-personal" title="@Localizer["Ct_PersonalTag"]" aria-hidden="true"></i><span class="visually-hidden">@Localizer["Ct_PersonalTag"]</span> }
+                    @if (tagCount > 0) { <span class="ct-count">@tagCount</span> }
+                </pems-tree-label>
+                @{ await RenderTags(t.TagId); }
+            </pems-tree-item>
+        }
     }
 
     var i18n = new Dictionary<string, string>
@@ -284,7 +274,12 @@
                 {
                     <div class="px-2 small" style="color:var(--ct-side-muted)">@Localizer["Ct_NoTagsYet"]</div>
                 }
-                else { RenderTags(0); }
+                else
+                {
+                    <pems-tree label="@Localizer["Ct_Tags"]" toggle-label="@Localizer["Ct_ToggleBranch"]" remember-key="pems.cartable.tagsCollapsed">
+                        @{ await RenderTags(0); }
+                    </pems-tree>
+                }
             </div>
         </div>
 

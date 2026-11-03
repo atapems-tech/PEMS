@@ -120,23 +120,24 @@
                 async Task RenderNode(PEMS.Application.Organization.OrganizationPositionRow n, int depth, HashSet<int> seen)
                 {
                     if (!seen.Add(n.PositionId) || depth > 30) { return; }
-                    <li>
-                        <span class="@(n.IsActive ? "" : "text-muted")">@Label(n)</span>
-                        @if (n.IsVacant) { <pems-badge tone="warning">@Localizer["Org_Vacant"]</pems-badge> }
-                        else { <span class="small text-muted"> — @n.HolderName</span> }
+                    @* SCRUM-337 TreeView: a keyboard-navigable tree, branches open and close, remembered per browser *@
+                    <pems-tree-item label="@Label(n)" key="@n.PositionId.ToString()">
+                        <pems-tree-label>
+                            <span class="@(n.IsActive ? "" : "text-muted")">@Label(n)</span>
+                            @if (n.IsVacant) { <pems-badge tone="warning">@Localizer["Org_Vacant"]</pems-badge> }
+                            else { <span class="small text-muted"> — @n.HolderName</span> }
+                        </pems-tree-label>
                         @if (byParent.TryGetValue(n.PositionId, out var kids))
                         {
-                            <ul>
-                                @foreach (var k in kids) { await RenderNode(k, depth + 1, seen); }
-                            </ul>
+                            @foreach (var k in kids) { await RenderNode(k, depth + 1, seen); }
                         }
-                    </li>
+                    </pems-tree-item>
                 }
             }
-            <ul class="org-tree">
+            <pems-tree label="@Localizer["Org_Tab_Tree"]" toggle-label="@Localizer["Ct_ToggleBranch"]" remember-key="pems.admin.orgTreeCollapsed">
                 @{ var seenNodes = new HashSet<int>(); }
                 @foreach (var root in roots) { await RenderNode(root, 0, seenNodes); }
-            </ul>
+            </pems-tree>
             @if (!Model.Any()) { <div class="vs-empty">@Localizer["Org_Empty"]</div> }
         </div>
     </div>

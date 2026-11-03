@@ -8,7 +8,6 @@
     "use strict";
 
     var SIDE_KEY = "pems.cartable.sideCollapsed";
-    var TAGS_KEY = "pems.cartable.tagsCollapsed";
     var DENSITY_KEY = "pems.letter.compact";
     var COLUMNS_KEY = "pems.letter.index.hiddenColumns";
     var WIDE = 992;
@@ -142,33 +141,7 @@
         window.addEventListener("resize", applySide);
         applySide();
 
-        // ---- tag tree: collapse / expand (remembered)
-        var collapsedTags = parseIdSet(read(TAGS_KEY));
-        function setBranch(id, open) {
-            var li = doc.querySelector("#ctTags li[data-tag-id='" + id + "']");
-            if (!li) return;
-            var btn = li.querySelector(":scope > .ct-tag-row > .ct-tag-toggle");
-            var sub = li.querySelector(":scope > ul");
-            if (!btn || !sub) return;
-            btn.setAttribute("aria-expanded", open ? "true" : "false");
-            li.setAttribute("aria-expanded", open ? "true" : "false");
-            sub.hidden = !open;
-        }
-        collapsedTags.forEach(function (id) {
-            // a branch containing the active tag is never collapsed
-            var li = doc.querySelector("#ctTags li[data-tag-id='" + id + "']");
-            if (li && !li.querySelector(".ct-tag.active")) setBranch(id, false);
-        });
-        doc.addEventListener("click", function (e) {
-            var b = e.target.closest ? e.target.closest("[data-tag-toggle]") : null;
-            if (!b) return;
-            var id = b.getAttribute("data-tag-toggle");
-            var open = b.getAttribute("aria-expanded") !== "true";
-            setBranch(id, open);
-            collapsedTags = collapsedTags.filter(function (x) { return x !== id; });
-            if (!open) collapsedTags.push(id);
-            write(TAGS_KEY, JSON.stringify(collapsedTags));
-        });
+        // ---- tag tree: <pems-tree> in PEMS.UI opens, closes and remembers its branches (SCRUM-337 TreeView)
 
         // ---- frozen columns
         var table = doc.querySelector("table[data-grid-key='Letter']");

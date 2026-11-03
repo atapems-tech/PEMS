@@ -121,3 +121,19 @@
 .pems-info--rows .pems-info__label { margin: 0; font-size: inherit; font-weight: 600; letter-spacing: normal; text-transform: none; }
 .pems-info--rows .pems-info__value { font-weight: inherit; }
 @media (max-width: 575.98px) { .pems-info--rows { grid-template-columns: 1fr; gap: 2px; } .pems-info--rows .pems-info__label { margin-block-start: 6px; } }
+/* SCRUM-337 TreeView: <pems-tree> / <pems-tree-item> (pems-tree.js) */
+.pems-tree, .pems-tree__group { margin: 0; padding: 0; list-style: none; }
+.pems-tree__group { margin-inline-start: .875rem; border-inline-start: 1px dashed var(--pems-surface-border); }
+.pems-tree__group[hidden] { display: none; }
+.pems-tree__row { display: flex; align-items: center; gap: 2px; border-radius: .25rem; }
+.pems-tree__toggle { flex: none; inline-size: 1.25rem; block-size: 1.5rem; padding: 0; border: 0; background: transparent; color: inherit; opacity: .7; cursor: pointer; }
+.pems-tree__toggle .bi { display: inline-block; transition: transform .15s; }
+.pems-tree__toggle[aria-expanded="true"] .bi { transform: rotate(90deg); }
+[dir="rtl"] .pems-tree__toggle .bi { transform: scaleX(-1); }
+[dir="rtl"] .pems-tree__toggle[aria-expanded="true"] .bi { transform: scaleX(-1) rotate(90deg); }
+.pems-tree__spacer { flex: none; inline-size: 1.25rem; }
+.pems-tree__link, .pems-tree__text { flex: 1 1 auto; min-inline-size: 0; color: inherit; }
+.pems-tree__count { margin-inline-start: .5rem; color: var(--pems-text-muted); font-size: .85em; }
+.pems-tree__item:focus { outline: none; }
+.pems-tree__item:focus-visible > .pems-tree__row { outline: 2px solid var(--pems-focus); outline-offset: -2px; }
+@media (prefers-reduced-motion: reduce) { .pems-tree__toggle .bi { transition: none; } }
