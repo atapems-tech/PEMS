@@ -31,13 +31,13 @@
         <pems-list-group flush="true">
             @foreach (var a in results)
             {
-                <a asp-action="Article" asp-route-code="@a.Code" class="list-group-item list-group-item-action">
+                <pems-list-group-item action="true" asp-action="Article" asp-route-code="@a.Code">
                     <div class="d-flex justify-content-between align-items-start">
                         <span class="fw-semibold">@a.Title</span>
                         <pems-badge tone="light">@a.CategoryName</pems-badge>
                     </div>
                     <p class="text-muted small mb-0 mt-1">@a.Summary</p>
-                </a>
+                </pems-list-group-item>
             }
         </pems-list-group>
     }

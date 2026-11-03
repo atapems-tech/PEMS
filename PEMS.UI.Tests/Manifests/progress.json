@@ -73,6 +73,42 @@
           "string",
           "null"
         ]
+      },
+      "segments": {
+        "type": [
+          "array",
+          "null"
+        ],
+        "items": {
+          "type": "object",
+          "properties": {
+            "value": {
+              "type": [
+                "string",
+                "number"
+              ],
+              "pattern": "^-?(?:0|[1-9]\\d*)(?:\\.\\d+)?(?:[eE][+-]?\\d+)?$"
+            },
+            "tone": {
+              "enum": [
+                "neutral",
+                "primary",
+                "danger",
+                "success",
+                "warning",
+                "info",
+                "light",
+                "dark",
+                null
+              ]
+            }
+          },
+          "required": [
+            "value",
+            "tone"
+          ],
+          "additionalProperties": false
+        }
       }
     },
     "additionalProperties": false

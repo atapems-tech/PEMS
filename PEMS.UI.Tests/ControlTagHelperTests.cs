@@ -120,4 +120,29 @@ public sealed class ControlTagHelperTests
     public void A_table_keeps_its_attributes_and_rows()
         => Assert.Equal("<table class=\"table table-enterprise table-sm mb-0\" id=\"permTable\"><tbody><tr><td>x</td></tr></tbody></table>",
             Run(new PemsTableFrameTagHelper { Kind = "enterprise", Scale = "small", Css = "mb-0" }, "pems-table", [new("id", "permTable")], "<tbody><tr><td>x</td></tr></tbody>"));
+
+    [Theory]
+    [InlineData(true, false, null, "list-group-item list-group-item-action")]
+    [InlineData(true, true, "d-flex", "list-group-item list-group-item-action active d-flex")]
+    [InlineData(false, false, null, "list-group-item")]
+    public void List_group_item_classes(bool action, bool active, string? css, string expected) => Assert.Equal(expected, FrameState.ListGroupItem(action, active, css));
+
+    [Theory]
+    [InlineData("success", null, "toast align-items-center text-bg-success border-0 show")]
+    [InlineData("DANGER", "mb-1", "toast align-items-center text-bg-danger border-0 show mb-1")]
+    public void Toast_classes(string tone, string? css, string expected) => Assert.Equal(expected, FrameState.Toast(tone, css));
+
+    [Fact]
+    public void A_toast_keeps_its_attributes_and_body()
+        => Assert.Equal("<div class=\"toast align-items-center text-bg-success border-0 show\" role=\"alert\" data-bs-delay=\"5000\"><div class=\"toast-body\">x</div></div>",
+            Run(new PemsToastTagHelper { Tone = "success" }, "pems-toast", [new("role", "alert"), new("data-bs-delay", "5000")], "<div class=\"toast-body\">x</div>"));
+
+    [Fact]
+    public void A_list_group_item_is_a_link_by_default_and_keeps_its_attributes()
+        => Assert.Equal("<a class=\"list-group-item list-group-item-action active\" href=\"/x\">t</a>",
+            Run(new PemsListGroupItemTagHelper(null!) { IsAction = true, Active = true }, "pems-list-group-item", [new("href", "/x")], "t"));
+
+    [Fact]
+    public void A_list_group_item_can_be_a_div()
+        => Assert.StartsWith("<div class=\"list-group-item\"", Run(new PemsListGroupItemTagHelper(null!) { As = "div" }, "pems-list-group-item", [], "t"));
 }

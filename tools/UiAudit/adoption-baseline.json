@@ -9,7 +9,7 @@
     "PEMS.Web/Areas/Admin/Views/NavigationVisibility/Index.cshtml": 6,
     "PEMS.Web/Areas/Admin/Views/Organization/Index.cshtml": 1,
     "PEMS.Web/Areas/Admin/Views/PermissionMatrix/Index.cshtml": 3,
-    "PEMS.Web/Views/Shared/_Layout.cshtml": 4
+    "PEMS.Web/Views/Shared/_Layout.cshtml": 2
   },
   "breadcrumb": {},
   "button": {
@@ -131,15 +131,12 @@
   "loading-text": {},
   "modal": {},
   "offcanvas": {},
-  "progress": {
-    "PEMS.Web/Areas/Admin/Views/ProjectIntelligence/Index.cshtml": 1
-  },
+  "progress": {},
   "select": {
     "PEMS.Web/Areas/Admin/Views/NavigationMenu/Edit.cshtml": 1
   },
   "spinner": {
-    "PEMS.Web/Areas/Admin/Views/ProjectIntelligence/Index.cshtml": 2,
-    "PEMS.Web/Areas/Admin/Views/Users/Details.cshtml": 2
+    "PEMS.Web/Areas/Admin/Views/ProjectIntelligence/Index.cshtml": 2
   },
   "table": {
     "PEMS.Web/Views/LetterCartable/Report.cshtml": 1

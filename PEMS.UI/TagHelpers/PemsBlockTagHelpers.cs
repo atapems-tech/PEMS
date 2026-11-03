@@ -45,6 +45,8 @@ public sealed class PemsCardTagHelper(IPemsComponentRenderer renderer) : TagHelp
 [HtmlTargetElement("pems-progress")]
 public sealed class PemsProgressTagHelper(IPemsComponentRenderer renderer) : TagHelper
 {
+    public sealed class SegmentSlot { public List<ProgressSegment> Items { get; } = []; }
+
     [HtmlAttributeName("value")] public double Value { get; set; }
     [HtmlAttributeName("max")] public double Max { get; set; } = 100;
     /// <summary>neutral, primary, danger, success, warning, info, light, dark, or none/empty for the default bar.</summary>
@@ -57,16 +59,34 @@ public sealed class PemsProgressTagHelper(IPemsComponentRenderer renderer) : Tag
 
     public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
     {
+        var segments = new SegmentSlot();
+        context.Items[typeof(SegmentSlot)] = segments;
         var inner = (await output.GetChildContentAsync()).GetContent();
         BlockTagHelper.Replace(output, await renderer.RenderAsync<PemsProgress>(new Dictionary<string, object?>
         {
             [nameof(PemsProgress.Options)] = new ProgressOptions
             {
                 Value = Value, Max = Max, Tone = BlockTagHelper.ParseTone(Tone), Height = Height, CssClass = Css, Style = Style,
-                Label = string.IsNullOrEmpty(Label) ? default(Abstractions.TranslatableText?) : Label, Title = Title
+                Label = string.IsNullOrEmpty(Label) ? default(Abstractions.TranslatableText?) : Label, Title = Title,
+                Segments = segments.Items.Count == 0 ? null : segments.Items
             },
             [nameof(PemsProgress.ChildContent)] = BlockTagHelper.Markup(inner.Trim())
         }));
+    }
+}
+
+/// <summary>One more bar of a stacked progress: <c>&lt;pems-progress value="@a" tone="success"&gt;&lt;pems-progress-segment value="@b" tone="neutral" /&gt;&lt;/pems-progress&gt;</c>; writes nothing itself.</summary>
+[HtmlTargetElement("pems-progress-segment", ParentTag = "pems-progress")]
+public sealed class PemsProgressSegmentTagHelper : TagHelper
+{
+    [HtmlAttributeName("value")] public double Value { get; set; }
+    [HtmlAttributeName("tone")] public string? Tone { get; set; }
+
+    public override void Process(TagHelperContext context, TagHelperOutput output)
+    {
+        if (context.Items.TryGetValue(typeof(PemsProgressTagHelper.SegmentSlot), out var slot))
+            ((PemsProgressTagHelper.SegmentSlot)slot).Items.Add(new ProgressSegment(Value, BlockTagHelper.ParseTone(Tone)));
+        output.SuppressOutput();
     }
 }
 
@@ -153,12 +173,17 @@ public sealed class PemsSpinnerTagHelper(IPemsComponentRenderer renderer) : TagH
     /// <summary>small, medium or large.</summary>
     [HtmlAttributeName("size")] public string Size { get; set; } = "medium";
     [HtmlAttributeName("tone")] public string? Tone { get; set; }
+    [HtmlAttributeName("css")] public string? Css { get; set; }
 
     public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
     {
         BlockTagHelper.Replace(output, await renderer.RenderAsync<PemsSpinner>(new Dictionary<string, object?>
         {
-            [nameof(PemsSpinner.Options)] = new SpinnerOptions { Grow = Grow, Size = Enum.Parse<Size>(Size, ignoreCase: true), Tone = BlockTagHelper.ParseTone(Tone) }
+            [nameof(PemsSpinner.Options)] = new SpinnerOptions
+            {
+                Grow = Grow, Size = Enum.Parse<Size>(Size, ignoreCase: true), Tone = BlockTagHelper.ParseTone(Tone), CssClass = Css,
+                Attributes = OverlayTagHelper.All(output)
+            }
         }));
     }
 }
