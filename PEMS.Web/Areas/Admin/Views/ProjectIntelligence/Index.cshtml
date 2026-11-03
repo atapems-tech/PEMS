@@ -82,7 +82,7 @@
                 var presentPct = m.EvidenceTotal == 0 ? 0 : (int)Math.Round(100.0 * m.EvidencePresent / m.EvidenceTotal);
                 var unknownPct = m.EvidenceTotal == 0 ? 0 : (int)Math.Round(100.0 * m.EvidenceUnknown / m.EvidenceTotal);
                 var missingPct = Math.Max(0, 100 - presentPct - unknownPct);
-                var barColor = presentPct >= 75 ? "bg-success" : (presentPct >= 45 ? "bg-warning" : "bg-danger");
+                var barColor = presentPct >= 75 ? "success" : (presentPct >= 45 ? "warning" : "danger");
 
                 <div class="col-md-6 col-xl-4 module-card" data-module="@m.Module.ToLower()">
                     <div class="content-card h-100 p-3">
@@ -104,11 +104,10 @@
                             <span class="fw-bold">@m.EvidenceCoveragePct%</span>
                         </div>
 
-                        <div class="progress mb-2" style="height:8px;" title="@m.EvidencePresent present / @m.EvidenceUnknown unknown / @(m.EvidenceTotal - m.EvidencePresent - m.EvidenceUnknown) missing (of @m.EvidenceTotal signals)">
-                            <div class="progress-bar @barColor" style="width:@(presentPct)%"></div>
-                            <div class="progress-bar bg-secondary" style="width:@(unknownPct)%"></div>
-                            <div class="progress-bar bg-danger" style="width:@(missingPct)%"></div>
-                        </div>
+                        <pems-progress value="@presentPct" tone="@barColor" height="8px" css="mb-2" title="@m.EvidencePresent present / @m.EvidenceUnknown unknown / @(m.EvidenceTotal - m.EvidencePresent - m.EvidenceUnknown) missing (of @m.EvidenceTotal signals)">
+                            <pems-progress-segment value="@unknownPct" tone="neutral" />
+                            <pems-progress-segment value="@missingPct" tone="danger" />
+                        </pems-progress>
 
                         <div class="d-flex flex-wrap gap-2 small text-body-secondary mb-2">
                             <span><i class="bi bi-signpost"></i> @m.ActionCount actions</span>

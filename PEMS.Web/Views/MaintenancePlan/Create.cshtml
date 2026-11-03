@@ -25,10 +25,10 @@
             <pems-list-group>
                 @foreach (var c in Model.Choices)
                 {
-                    <a asp-action="Create" asp-route-assignmentId="@c.AssignmentId" class="list-group-item list-group-item-action">
+                    <pems-list-group-item action="true" asp-action="Create" asp-route-assignmentId="@c.AssignmentId">
                         <strong>@c.Tag</strong> · @Localizer.Label("StrategyType", c.StrategyType) · @RcmDisplay.Name(c.FailureModeName, c.FailureModeNameFa) · v@(c.StrategyVersion)
                         <span class="text-muted small">@c.EquipmentClassName</span>
-                    </a>
+                    </pems-list-group-item>
                 }
             </pems-list-group>
         }

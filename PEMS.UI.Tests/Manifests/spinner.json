@@ -31,6 +31,18 @@
           "dark",
           null
         ]
+      },
+      "cssClass": {
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "attributes": {
+        "type": [
+          "object",
+          "null"
+        ]
       }
     },
     "additionalProperties": false

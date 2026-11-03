@@ -208,21 +208,21 @@
     <div class="toast-container position-fixed bottom-0 end-0 p-3" style="z-index:1080;" aria-live="polite" aria-atomic="false">
         @if (TempData["Message"] != null)
         {
-            <div class="toast align-items-center text-bg-success border-0 show" role="alert" data-bs-delay="5000" data-bs-autohide="true">
+            <pems-toast tone="success" role="alert" data-bs-delay="5000" data-bs-autohide="true">
                 <div class="d-flex">
                     <div class="toast-body"><i class="bi bi-check-circle-fill me-1"></i> @TempData["Message"]</div>
                     <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
                 </div>
-            </div>
+            </pems-toast>
         }
         @if (TempData["Error"] != null)
         {
-            <div class="toast align-items-center text-bg-danger border-0 show" role="alert" data-bs-delay="7000" data-bs-autohide="true">
+            <pems-toast tone="danger" role="alert" data-bs-delay="7000" data-bs-autohide="true">
                 <div class="d-flex">
                     <div class="toast-body"><i class="bi bi-exclamation-triangle-fill me-1"></i> @TempData["Error"]</div>
                     <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
                 </div>
-            </div>
+            </pems-toast>
         }
         <div id="liveToastArea"></div>
     </div>

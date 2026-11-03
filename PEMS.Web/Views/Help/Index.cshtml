@@ -26,15 +26,15 @@
         <div class="content-card">
             <h6 class="mb-3">@L("Categories", "دسته‌ها")</h6>
             <pems-list-group flush="true">
-                <a asp-action="Index" class="list-group-item list-group-item-action @(selectedCategoryId == null ? "active" : "")">
+                <pems-list-group-item action="true" active="@(selectedCategoryId == null)" asp-action="Index">
                     <i class="bi bi-grid"></i> @L("All", "همه")
-                </a>
+                </pems-list-group-item>
                 @foreach (var c in categories)
                 {
-                    <a asp-action="Category" asp-route-id="@c.HelpCategoryId" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center @(selectedCategoryId == c.HelpCategoryId ? "active" : "")">
+                    <pems-list-group-item action="true" css="d-flex justify-content-between align-items-center" active="@(selectedCategoryId == c.HelpCategoryId)" asp-action="Category" asp-route-id="@c.HelpCategoryId">
                         <span><i class="bi @(c.IconCssClass ?? "bi-folder")"></i> @c.Name</span>
                         <pems-badge tone="neutral" css="rounded-pill">@c.ArticleCount</pems-badge>
-                    </a>
+                    </pems-list-group-item>
                 }
             </pems-list-group>
         </div>
@@ -71,7 +71,7 @@
                     <pems-list-group flush="true">
                         @foreach (var a in articles.OrderBy(a => a.DisplayOrder))
                         {
-                            <a asp-action="Article" asp-route-code="@a.Code" class="list-group-item list-group-item-action">
+                            <pems-list-group-item action="true" asp-action="Article" asp-route-code="@a.Code">
                                 <div class="d-flex justify-content-between align-items-start">
                                     <div>
                                         <span class="fw-semibold">@a.Title</span>
@@ -79,7 +79,7 @@
                                     </div>
                                 </div>
                                 <p class="text-muted small mb-0 mt-1">@a.Summary</p>
-                            </a>
+                            </pems-list-group-item>
                         }
                     </pems-list-group>
                 }

@@ -1,6 +1,7 @@
 using System.Text.Encodings.Web;
 using Microsoft.AspNetCore.Razor.TagHelpers;
 using Microsoft.Extensions.DependencyInjection;
+using PEMS.UI.Components;
 using PEMS.UI.Rendering;
 using PEMS.UI.TagHelpers;
 
@@ -110,4 +111,30 @@ public sealed class BlockComponentsTests
         => Assert.Equal("<div id=\"lxMenu\" class=\"offcanvas offcanvas-start\" tabindex=\"-1\" aria-labelledby=\"lxMenuTitle\"><div class=\"offcanvas-header\">h</div></div>",
             await Run(r => new PemsOffcanvasTagHelper(r) { Side = "start" }, "pems-offcanvas", "<div class=\"offcanvas-header\">h</div>",
                 attributes: [new("id", "lxMenu"), new("tabindex", "-1"), new("aria-labelledby", "lxMenuTitle")]));
+
+    [Fact]
+    public async Task Spinner_keeps_its_id_label_and_extra_classes()
+        => Assert.Equal("<div class=\"spinner-border spinner-border-sm text-secondary d-none\" role=\"status\" aria-hidden=\"true\" id=\"permBusy\" aria-label=\"Saving\"></div>",
+            await Run(r => new PemsSpinnerTagHelper(r) { Size = "small", Tone = "neutral", Css = "d-none" }, "pems-spinner", "", attributes: [new("id", "permBusy"), new("aria-label", "Saving")]));
+
+    [Fact]
+    public async Task A_stacked_progress_writes_the_extra_bars_after_the_main_one()
+    {
+        var slot = new PemsProgressTagHelper.SegmentSlot();
+        var context = new TagHelperContext("pems-progress", new TagHelperAttributeList(), new Dictionary<object, object> { [typeof(PemsProgressTagHelper.SegmentSlot)] = slot }, "p");
+        var segment = new PemsProgressSegmentTagHelper { Value = 20, Tone = "neutral" };
+        segment.Process(context, new TagHelperOutput("pems-progress-segment", new TagHelperAttributeList(), (_, _) => Task.FromResult<TagHelperContent>(new DefaultTagHelperContent())));
+        Assert.Single(slot.Items);
+        Assert.Equal(20, slot.Items[0].Value);
+
+        await using var provider = new ServiceCollection().AddPemsUi().BuildServiceProvider();
+        var renderer = provider.CreateScope().ServiceProvider.GetRequiredService<IPemsComponentRenderer>();
+        var html = await renderer.RenderAsync<PemsProgress>(new Dictionary<string, object?>
+        {
+            ["Options"] = new ProgressOptions { Value = 50, Tone = Tone.Success, Height = "8px", Segments = [new ProgressSegment(20, Tone.Neutral), new ProgressSegment(30, Tone.Danger)] }
+        });
+        Assert.Contains("progress-bar bg-success\" style=\"width:50%", html);
+        Assert.Contains("progress-bar bg-secondary\" style=\"width:20%", html);
+        Assert.Contains("progress-bar bg-danger\" style=\"width:30%", html);
+    }
 }

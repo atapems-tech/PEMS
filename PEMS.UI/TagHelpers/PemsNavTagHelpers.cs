@@ -1,3 +1,6 @@
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Mvc.TagHelpers;
+using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.AspNetCore.Razor.TagHelpers;
 using PEMS.UI.Components;
 
@@ -14,6 +17,12 @@ public static class FrameState
     public static string Nav(string? kind, string? extra) => With(string.Equals(kind, "pills", StringComparison.OrdinalIgnoreCase) ? "nav nav-pills" : "nav nav-tabs", extra);
 
     public static string Breadcrumb(string? extra) => With("breadcrumb", extra);
+
+    public static string ListGroupItem(bool action, bool active, string? extra) =>
+        With("list-group-item" + (action ? " list-group-item-action" : "") + (active ? " active" : ""), extra);
+
+    /// <summary>tone: success, danger, primary, warning, info, secondary, dark, light (the Bootstrap text-bg color of the toast).</summary>
+    public static string Toast(string tone, string? extra) => With("toast align-items-center text-bg-" + tone.ToLowerInvariant() + " border-0 show", extra);
 
     /// <summary>The table element: <c>table</c>, then <c>table-enterprise</c> and <c>table-sm</c> in that order when asked, then the page classes.</summary>
     public static string Table(bool enterprise, bool small, string? extra) => With("table" + (enterprise ? " table-enterprise" : "") + (small ? " table-sm" : ""), extra);
@@ -87,5 +96,43 @@ public sealed class PemsTableFrameTagHelper : TagHelper
         output.TagName = "table";
         output.TagMode = TagMode.StartTagAndEndTag;
         ControlTagHelper.PutClassFirst(output, FrameState.Table(string.Equals(Kind, "enterprise", StringComparison.OrdinalIgnoreCase), string.Equals(Scale, "small", StringComparison.OrdinalIgnoreCase), Css));
+    }
+}
+
+/// <summary>
+/// MVC facade for a list-group row: <c>&lt;pems-list-group-item action="true" active="@(selected)" asp-action="Index"&gt;text&lt;/pems-list-group-item&gt;</c> writes
+/// <c>&lt;a class="list-group-item list-group-item-action active"&gt;</c> (<c>as="div"</c> or <c>as="button"</c> for rows that are not links). The routing attributes of the anchor helper work.
+/// </summary>
+[HtmlTargetElement("pems-list-group-item")]
+public sealed class PemsListGroupItemTagHelper(IHtmlGenerator generator) : AnchorTagHelper(generator)
+{
+    [HtmlAttributeName("action")] public bool IsAction { get; set; }
+    [HtmlAttributeName("active")] public bool Active { get; set; }
+    [HtmlAttributeName("css")] public string? Css { get; set; }
+    /// <summary>a (default), div or button.</summary>
+    [HtmlAttributeName("as")] public string As { get; set; } = "a";
+
+    public override void Process(TagHelperContext context, TagHelperOutput output)
+    {
+        if (Action is not null || Controller is not null || Area is not null || Page is not null || PageHandler is not null || Route is not null || Host is not null || Protocol is not null || Fragment is not null)
+            base.Process(context, output);
+        output.TagName = As;
+        output.TagMode = TagMode.StartTagAndEndTag;
+        ControlTagHelper.PutClassFirst(output, FrameState.ListGroupItem(IsAction, Active, Css));
+    }
+}
+
+/// <summary>MVC facade for the toast frame: <c>&lt;pems-toast tone="success" role="alert" data-bs-delay="5000"&gt;body and close button&lt;/pems-toast&gt;</c>.</summary>
+[HtmlTargetElement("pems-toast")]
+public sealed class PemsToastTagHelper : TagHelper
+{
+    [HtmlAttributeName("tone")] public string Tone { get; set; } = "primary";
+    [HtmlAttributeName("css")] public string? Css { get; set; }
+
+    public override void Process(TagHelperContext context, TagHelperOutput output)
+    {
+        output.TagName = "div";
+        output.TagMode = TagMode.StartTagAndEndTag;
+        ControlTagHelper.PutClassFirst(output, FrameState.Toast(Tone, Css));
     }
 }

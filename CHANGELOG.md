@@ -3,6 +3,14 @@
 All notable changes to PEMS. No system version is defined yet (plan row F_CI), so entries are grouped by date
 and theme and were reconstructed from the git history (initial import 2026-09-05). Newest first.
 
+## 2026-11-03 - Adoption leftovers, second part: list-group rows, toasts, stacked progress, spinner attributes (SCRUM-502)
+
+### Added
+- `<pems-list-group-item>` (anchor routing attributes, `action`, `active`, `as`), `<pems-toast>`, `<pems-progress-segment>` (stacked bars, `ProgressOptions.Segments`), and `<pems-spinner>` now keeps `css`, `id` and aria attributes.
+
+### Changed
+- 5 list-group rows, the 2 toasts of `_Layout`, the ProjectIntelligence stacked bar and the Users permissions spinner moved. Still open in #502: the Pems skin of the small blocks (needs a design decision), the toast built in a script string (#333), `webauthn.js` `alert()` fallback (the auth layout has no dialog), the letter status helper (custom palette).
+
 ## 2026-11-03 - Department and SparePart edit modals are shared modals (SCRUM-500)
 
 ### Changed
