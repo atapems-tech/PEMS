@@ -1,10 +1,7 @@
 {
   "accordion": {},
   "alert": {},
-  "alert-call": {
-    "PEMS.Web/Areas/Warehouse/Views/MaterialItem/Details.cshtml": 4,
-    "PEMS.Web/wwwroot/js/webauthn.js": 1
-  },
+  "alert-call": {},
   "badge": {
     "PEMS.Web/Areas/Admin/Views/NavigationVisibility/Index.cshtml": 6,
     "PEMS.Web/Areas/Admin/Views/Organization/Index.cshtml": 1,

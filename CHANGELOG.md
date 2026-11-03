@@ -3,6 +3,11 @@
 All notable changes to PEMS. No system version is defined yet (plan row F_CI), so entries are grouped by date
 and theme and were reconstructed from the git history (initial import 2026-09-05). Newest first.
 
+## 2026-11-04 - Browser alert() calls replaced by the layout toast (SCRUM-502)
+
+### Changed
+- The 4 `alert()` calls of Warehouse MaterialItem/Details and the webauthn.js fallback use `showLiveToast`; the `alert-call` ratchet is now zero.
+
 ## 2026-11-04 - Merge rule made explicit (SCRUM-503)
 
 ### Changed
