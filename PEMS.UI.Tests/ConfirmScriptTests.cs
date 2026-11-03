@@ -83,4 +83,39 @@ public sealed class ConfirmScriptTests
         Assert.DoesNotContain("this.form.comment", html);
         Assert.DoesNotContain("return confirm(", html);
     }
+
+    [Fact]
+    public void The_shared_modal_script_fills_the_modal_from_the_opening_button_and_resets_it_first()
+    {
+        var js = Read("PEMS.UI", "wwwroot", "pems-modal-fill.js");
+        Assert.Contains("show.bs.modal", js);
+        Assert.Contains("relatedTarget", js);
+        Assert.Contains("data-fill-", js);
+        Assert.Contains("data-fill-text", js);
+        Assert.Contains("form.reset()", js);
+        Assert.DoesNotContain("innerHTML", js);   // values are text, never markup
+    }
+
+    [Theory]
+    [InlineData("_Layout.cshtml")]
+    [InlineData("_LayoutEmbed.cshtml")]
+    public void The_layouts_load_the_shared_modal_script_once(string layout)
+        => Assert.Equal(1, Regex.Matches(Read("PEMS.Web", "Views", "Shared", layout), Regex.Escape("_content/PEMS.UI/pems-modal-fill.js")).Count);
+
+    [Theory]
+    [InlineData("Views/VDR/Details.cshtml", "replyModal")]
+    [InlineData("Views/EngineeringDocuments/Details.cshtml", "engReplyModal")]
+    [InlineData("Views/QC/ItpDetails.cshtml", "inspectModal")]
+    [InlineData("Views/ProductionRun/Details.cshtml", "postInputModal")]
+    [InlineData("Views/ProductionRun/Details.cshtml", "postOutputModal")]
+    [InlineData("Views/RcmFmea/ClassDetail.cshtml", "applyRcmModal")]
+    [InlineData("Areas/Warehouse/Views/InventoryMasterData/Index.cshtml", "addLocationModal")]
+    public void A_list_has_one_shared_modal_and_its_openers_carry_the_row_values(string view, string modal)
+    {
+        var html = Read(new[] { "PEMS.Web" }.Concat(view.Split('/')).ToArray());
+        Assert.Equal(1, Regex.Matches(html, $"<pems-modal id=\"{modal}\"").Count);
+        Assert.DoesNotContain($"id=\"{modal}_@", html);
+        Assert.DoesNotContain($"id=\"{modal}-@", html);
+        Assert.Matches($"data-bs-target=\"#{modal}\"[^>]*data-fill-", html);
+    }
 }

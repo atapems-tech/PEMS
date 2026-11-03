@@ -458,7 +458,7 @@
                         }
                         @if (string.IsNullOrEmpty(c.ResponseText) && string.IsNullOrEmpty(c.ReplyAttachmentFilePath))
                         {
-                            <pems-button tone="primary" size="small" outline="true" css="mt-1" type="button" data-bs-toggle="modal" data-bs-target="#replyModal_@c.VDRCommentId">
+                            <pems-button tone="primary" size="small" outline="true" css="mt-1" type="button" data-bs-toggle="modal" data-bs-target="#replyModal" data-fill-commentid="@c.VDRCommentId" data-fill-commentno="@c.CommentNo" data-fill-commenttext="@c.CommentText">
                                 <i class="bi bi-reply"></i> @Localizer["Vd_Reply"]
                             </pems-button>
                         }
@@ -532,15 +532,15 @@
 
 @* طبق درخواست: پاسخ به کامنت هم Popup است و می‌تواند خودِ فایل را پیوست کند تا کاربر همه‌چیز
    را دستی تایپ نکند *@
-@foreach (var c in comments)
+@if (comments.Any())
 {
-    <pems-modal id="replyModal_@c.VDRCommentId" tabindex="-1">
+    <pems-modal id="replyModal" tabindex="-1">
                 <form asp-action="RecordCommentResponse" method="post" enctype="multipart/form-data">
                     <input type="hidden" name="vdrItemId" value="@Model.VDRItemId" />
-                    <input type="hidden" name="commentId" value="@c.VDRCommentId" />
-                    <div class="modal-header"><h6 class="modal-title">@Localizer["Vd_ReplyTo"] @c.CommentNo</h6></div>
+                    <input type="hidden" name="commentId" value="" />
+                    <div class="modal-header"><h6 class="modal-title">@Localizer["Vd_ReplyTo"] <span data-fill-text="commentno"></span></h6></div>
                     <div class="modal-body">
-                        <p class="small text-muted">@c.CommentText</p>
+                        <p class="small text-muted" data-fill-text="commenttext"></p>
                         <div class="mb-2">
                             <pems-label css="small">@Localizer["Vd_VendorReply"] <span class="text-muted">@Localizer["Vd_OptionalIfFile"]</span></pems-label>
                             <pems-textarea scale="small" name="responseText" rows="3"></pems-textarea>
