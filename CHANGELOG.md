@@ -11,6 +11,13 @@ and theme and were reconstructed from the git history (initial import 2026-09-05
 ### Changed
 - 255 tables in 134 views (the views and the Admin and Warehouse area views) moved, class order preserved; ratchet table 257 to 1 (`LetterCartable/Report`, class `ct-table`, kept). Record lists keep the pems-list family; moving cell-heavy tables to descriptor-driven PemsTable is the next step of SCRUM-337.
 
+## 2026-11-03 - Decision drafts for the owner: main host platform, module catalogue, price list structure (SCRUM-305, SCRUM-132, SCRUM-28)
+
+### Added
+- `plan/adr/0012-main-host-platform.md` (Proposed): one artifact, Windows/IIS for the shared main host, Linux with Docker Compose and Caddy as the second supported install, SQL Server per environment; says why supporting both is possible and when it is worthwhile.
+- `docs/commercial/MODULE_CATALOGUE_DRAFT.md` (draft): core parts, 12 module keys with dependencies, three editions, all marked proposed.
+- `docs/commercial/PRICE_LIST_V1.md` and `PROPOSAL_TEMPLATE.md` (Persian and English): structure with every number as a placeholder. No price, edition or platform is decided by these files.
+
 ## 2026-11-03 - Replan of the component adoption work (SCRUM-499 to SCRUM-503)
 
 ### Added
