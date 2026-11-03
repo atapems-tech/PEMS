@@ -3,6 +3,11 @@
 All notable changes to PEMS. No system version is defined yet (plan row F_CI), so entries are grouped by date
 and theme and were reconstructed from the git history (initial import 2026-09-05). Newest first.
 
+## 2026-11-04 - Production orders and the procurement cartable on the list-page component (SCRUM-337)
+
+### Changed
+- `ProductionOrder/Index` and `PreProcurement/Index` are built from `<pems-list-page>` (status and source filters, search, chips, paging in the footer). Page tests added to `CmmsListPagesTests`.
+
 ## 2026-11-04 - Browser alert() calls replaced by the layout toast (SCRUM-502)
 
 ### Changed
