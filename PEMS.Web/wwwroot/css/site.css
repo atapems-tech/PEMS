@@ -926,3 +926,6 @@ main.pems-content:focus { outline: none; }
 }
 .pems-sidebar.collapsed .pems-sb-search,
 .pems-sidebar.collapsed .pems-sb-status { display: none; }
+
+/* SCRUM-337 TreeView: the help tree (_HelpNodeTree) is a <pems-tree>; only the edge label of a decision branch is styled here */
+.pems-help-node-tree .pems-help-tree-edge-label { display: block; font-size: .78rem; color: var(--pems-text-muted, #6c757d); }

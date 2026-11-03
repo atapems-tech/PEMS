@@ -276,10 +276,11 @@ pattern `chart` (baseline zero) (done). All Chart waves are done.
 </pems-tree>
 ```
 
-A recursive local function that writes tree items must be `async Task` (Razor rule for tag helpers). The tree is a WAI-ARIA
+A recursive local function that writes tree items must be `async Task` (Razor rule for tag helpers), and the recursion
+stays in one view: a `<pems-tree-item>` in a separate partial does not run inside its parent and is not counted as its child. The tree is a WAI-ARIA
 tree; `pems-tree.js` (loaded by the layouts) opens and closes branches, remembers the collapsed ones under `remember-key`,
 never collapses a branch holding the `current` item, and gives the tree keyboard. Styles: `pems-ui.css` (`pems-tree*`); a page
 may set only its colours (as the cartable side panel does).
 
-Waves: T1 the component, the organization positions tree and the correspondence tag tree (done); T2 the navigation visibility
-tree and the help node tree; T3 a ratchet pattern for hand-written trees.
+Waves: T1 the component, the organization positions tree and the correspondence tag tree (done); T2 the help node tree (done; the
+navigation visibility editor stays a `<details>` disclosure: its nodes hold forms, which a tree item may not); T3 a ratchet pattern for hand-written trees.

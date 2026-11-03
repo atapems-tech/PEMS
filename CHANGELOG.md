@@ -3,6 +3,14 @@
 All notable changes to PEMS. No system version is defined yet (plan row F_CI), so entries are grouped by date
 and theme and were reconstructed from the git history (initial import 2026-09-05). Newest first.
 
+## 2026-11-03 - TreeView wave T2: the help tree (SCRUM-337)
+
+### Changed
+- The help tree (decision trees and entity relationships in help articles, `_HelpNodeTree`) is a `<pems-tree>`: its branches open and close and the keyboard moves through it. One recursive local function replaces the per-node partial `_HelpNodeTreeItem` (removed): a nested tree item has to run inside its parent to count as its child. The inline `<style>` block moved to `site.css` (only the edge label).
+
+### Not moved, on purpose
+- The navigation visibility editor (Administration > Navigation visibility) stays a `<details>` disclosure: every node holds role forms and buttons, and a WAI-ARIA tree item may not hold controls.
+
 ## 2026-11-03 - TreeView wave T1: one tree (SCRUM-337)
 
 ### Added
