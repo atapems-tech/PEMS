@@ -83,7 +83,7 @@
                                 { <span class="vs-pill vs-pill--success">@p.QuantityOnHand @p.Unit</span> }
                             </td>
                             <td class="lp-actions">
-                                <button type="button" class="lp-act lp-act--always" data-bs-toggle="modal" data-bs-target="#editPartModal_@p.SparePartId" title="@Localizer["Edit"]" aria-label="@Localizer["Edit"]">
+                                <button type="button" class="lp-act lp-act--always" data-bs-toggle="modal" data-bs-target="#editPartModal" data-fill-sparepartid="@p.SparePartId" data-fill-partnumber="@p.PartNumber" data-fill-partname="@p.PartName" data-fill-manufacturer="@p.Manufacturer" data-fill-model="@p.Model" data-fill-unit="@p.Unit" data-fill-storagelocation="@p.StorageLocation" data-fill-quantityonhand="@p.QuantityOnHand" data-fill-minstocklevel="@p.MinStockLevel" data-fill-reorderpoint="@p.ReorderPoint" data-fill-description="@p.Description" title="@Localizer["Edit"]" aria-label="@Localizer["Edit"]">
                                     <i class="bi bi-pencil" aria-hidden="true"></i>
                                 </button>
                                 <form asp-action="Deactivate" method="post" class="d-inline">
@@ -137,24 +137,24 @@
             </form>
         </pems-modal>
 
-@foreach (var p in Model.Items)
+@if (Model.Items.Any())
 {
-    <pems-modal id="editPartModal_@p.SparePartId" tabindex="-1">
+    <pems-modal id="editPartModal" tabindex="-1">
                 <form asp-action="Edit" method="post">
-                    <input type="hidden" name="sparePartId" value="@p.SparePartId" />
+                    <input type="hidden" name="sparePartId" value="" />
                     <div class="modal-header"><h6 class="modal-title">@Localizer["Sp_Edit"]</h6></div>
                     <div class="modal-body">
                         <div class="row g-3">
-                            <div class="col-md-6"><pems-label>@Localizer["Part Number"]</pems-label><pems-input name="partNumber" value="@p.PartNumber" required /></div>
-                            <div class="col-md-6"><pems-label>@Localizer["Part Name"]</pems-label><pems-input name="partName" value="@p.PartName" required /></div>
-                            <div class="col-md-6"><pems-label>@Localizer["Manufacturer"]</pems-label><pems-input name="manufacturer" value="@p.Manufacturer" /></div>
-                            <div class="col-md-6"><pems-label>@Localizer["Model"]</pems-label><pems-input name="model" value="@p.Model" /></div>
-                            <div class="col-md-4"><pems-label>@Localizer["Unit"]</pems-label><pems-input name="unit" value="@p.Unit" /></div>
-                            <div class="col-md-8"><pems-label>@Localizer["Storage Location"]</pems-label><pems-input name="storageLocation" value="@p.StorageLocation" /></div>
-                            <div class="col-md-4"><pems-label>@Localizer["Quantity On Hand"]</pems-label><pems-input name="quantityOnHand" type="number" step="0.01" value="@p.QuantityOnHand" required /></div>
-                            <div class="col-md-4"><pems-label>@Localizer["Min Stock Level"]</pems-label><pems-input name="minStockLevel" type="number" step="0.01" value="@p.MinStockLevel" /></div>
-                            <div class="col-md-4"><pems-label>@Localizer["Reorder Point"]</pems-label><pems-input name="reorderPoint" type="number" step="0.01" value="@p.ReorderPoint" /></div>
-                            <div class="col-12"><pems-label>@Localizer["Description"]</pems-label><pems-textarea name="description" rows="2">@p.Description</pems-textarea></div>
+                            <div class="col-md-6"><pems-label>@Localizer["Part Number"]</pems-label><pems-input name="partNumber" required /></div>
+                            <div class="col-md-6"><pems-label>@Localizer["Part Name"]</pems-label><pems-input name="partName" required /></div>
+                            <div class="col-md-6"><pems-label>@Localizer["Manufacturer"]</pems-label><pems-input name="manufacturer" /></div>
+                            <div class="col-md-6"><pems-label>@Localizer["Model"]</pems-label><pems-input name="model" /></div>
+                            <div class="col-md-4"><pems-label>@Localizer["Unit"]</pems-label><pems-input name="unit" /></div>
+                            <div class="col-md-8"><pems-label>@Localizer["Storage Location"]</pems-label><pems-input name="storageLocation" /></div>
+                            <div class="col-md-4"><pems-label>@Localizer["Quantity On Hand"]</pems-label><pems-input name="quantityOnHand" type="number" step="0.01" required /></div>
+                            <div class="col-md-4"><pems-label>@Localizer["Min Stock Level"]</pems-label><pems-input name="minStockLevel" type="number" step="0.01" /></div>
+                            <div class="col-md-4"><pems-label>@Localizer["Reorder Point"]</pems-label><pems-input name="reorderPoint" type="number" step="0.01" /></div>
+                            <div class="col-12"><pems-label>@Localizer["Description"]</pems-label><pems-textarea name="description" rows="2"></pems-textarea></div>
                         </div>
                     </div>
                     <div class="modal-footer">

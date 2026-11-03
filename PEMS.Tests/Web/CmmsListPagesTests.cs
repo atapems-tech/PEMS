@@ -357,7 +357,8 @@ public class CmmsListPagesTests
         Assert.Contains("vs-chip--danger", Kpis(html, "spKpis"));
         Assert.Contains("Low stock only", Chips(html));
         Assert.Contains("vs-pill vs-pill--icon vs-pill--danger", html);
-        Assert.Contains("id=\"editPartModal_1\"", html);
+        Assert.Contains("id=\"editPartModal\"", html);                                  // one shared edit modal, SCRUM-500
+        Assert.Matches("<button[^>]*data-bs-target=\"#editPartModal\"[^>]*data-fill-sparepartid=\"1\"", html);
         Assert.Contains("id=\"createPartModal\"", html);
     }
 
