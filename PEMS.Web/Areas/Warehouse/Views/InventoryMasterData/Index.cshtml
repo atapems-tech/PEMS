@@ -118,7 +118,7 @@
                                 {
                                     <pems-badge tone="light" css="me-1">@l.Code</pems-badge>
                                 }
-                                <pems-button tone="none" size="small" css="btn-link p-0" type="button" data-bs-toggle="modal" data-bs-target="#addLocationModal_@w.WarehouseId">+ محل</pems-button>
+                                <pems-button tone="none" size="small" css="btn-link p-0" type="button" data-bs-toggle="modal" data-bs-target="#addLocationModal" data-fill-warehouseid="@w.WarehouseId" data-fill-warehousecode="@w.Code">+ محل</pems-button>
                             </td>
                             <td class="text-end">
                                 <form asp-action="ToggleWarehouseActive" method="post" class="d-inline">
@@ -187,12 +187,12 @@
         </form>
     </pems-modal>
 
-@foreach (var w in Model)
+@if (Model.Any())
 {
-    <pems-modal id="addLocationModal_@w.WarehouseId" tabindex="-1">
+    <pems-modal id="addLocationModal" tabindex="-1">
             <form asp-action="CreateStorageLocation" method="post">
-                <input type="hidden" name="warehouseId" value="@w.WarehouseId" />
-                <div class="modal-header"><h6 class="modal-title">محل نگهداری جدید در @w.Code</h6></div>
+                <input type="hidden" name="warehouseId" value="" />
+                <div class="modal-header"><h6 class="modal-title">محل نگهداری جدید در <span data-fill-text="warehousecode"></span></h6></div>
                 <div class="modal-body">
                     <div class="mb-2"><pems-label css="small">@Localizer["کد"]</pems-label><pems-input scale="small" name="code" required placeholder="مثلاً RACK-1" /></div>
                     <div class="mb-2"><pems-label css="small">@Localizer["نام"]</pems-label><pems-input scale="small" name="name" required /></div>

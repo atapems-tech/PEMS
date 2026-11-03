@@ -3,6 +3,14 @@
 All notable changes to PEMS. No system version is defined yet (plan row F_CI), so entries are grouped by date
 and theme and were reconstructed from the git history (initial import 2026-09-05). Newest first.
 
+## 2026-11-03 - One shared modal per list for the row actions (SCRUM-500)
+
+### Added
+- `pems-modal-fill.js` (PEMS.UI): a Bootstrap modal is filled from the opening button (`data-fill-<field>` for form fields by name, `data-fill-text` for text) and its form is reset before each opening; loaded by both layouts.
+
+### Changed
+- Seven per-row modals became one shared modal each: VDR and engineering document comment replies, QC inspection, production run post input and post output, RCM decision apply, warehouse storage location. Left for a follow-up in SCRUM-500: the three edit modals with many prefilled fields (Department, Employee, SparePart) and the per-entry import modals of ImportCenter (each posts to its own action).
+
 ## 2026-11-03 - Replan of the component adoption work (SCRUM-499 to SCRUM-503)
 
 ### Added

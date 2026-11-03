@@ -275,7 +275,7 @@
                                     @* طبق «PEMS Phase 6.1»: تنها مسیر UI به پل عملیاتی - فقط برای تصمیم APPROVED و کاربر دارای Approve *@
                                     @if (d.Status == "APPROVED" && canApprove)
                                     {
-                                        <pems-button tone="primary" size="small" type="button" data-bs-toggle="modal" data-bs-target="#applyRcmModal_@d.RCMDecisionId">
+                                        <pems-button tone="primary" size="small" type="button" data-bs-toggle="modal" data-bs-target="#applyRcmModal" data-fill-rcmdecisionid="@d.RCMDecisionId" data-fill-failuremodename="@d.FailureModeName" data-fill-status="@d.Status" data-fill-decisiontype="@d.DecisionType" data-fill-strategy="@(d.MaintenanceStrategyTypeName ?? "-")" data-fill-pmtemplate="@(d.RecommendedPMTemplateName ?? "-")">
                                             <i class="bi bi-gear-fill"></i> @Localizer["Apply"]
                                         </pems-button>
                                     }
@@ -293,21 +293,21 @@
                    می‌آید - هیچ Query تازه‌ای این‌جا زده نمی‌شود. *@
                 @if (canApprove)
                 {
-                    @foreach (var d in rcm.Decisions.Where(x => x.Status == "APPROVED"))
-                    {
-                        <pems-modal id="applyRcmModal_@d.RCMDecisionId" tabindex="-1">
+                    @if (rcm.Decisions.Any(x => x.Status == "APPROVED"))
+{
+    <pems-modal id="applyRcmModal" tabindex="-1">
                                 <form asp-action="ApplyRcmDecision" method="post">
                                     <input type="hidden" name="equipmentClassId" value="@equipmentClass.EquipmentClassId" />
-                                    <input type="hidden" name="rcmDecisionId" value="@d.RCMDecisionId" />
+                                    <input type="hidden" name="rcmDecisionId" value="" />
                                     <div class="modal-header">
-                                        <h6 class="modal-title">Apply RCM Decision — @d.FailureModeName</h6>
+                                        <h6 class="modal-title">Apply RCM Decision — <span data-fill-text="failuremodename"></span></h6>
                                     </div>
                                     <div class="modal-body">
                                         <div class="row g-2 small mb-2">
-                                            <div class="col-6"><strong>@Localizer["Status"]</strong><div><pems-badge tone="@StatusBadge(d.Status)">@d.Status</pems-badge></div></div>
-                                            <div class="col-6"><strong>Decision Type</strong><div>@d.DecisionType</div></div>
-                                            <div class="col-6"><strong>Recommended Strategy</strong><div>@(d.MaintenanceStrategyTypeName ?? "-")</div></div>
-                                            <div class="col-6"><strong>Recommended PM Template</strong><div>@(d.RecommendedPMTemplateName ?? "-")</div></div>
+                                            <div class="col-6"><strong>@Localizer["Status"]</strong><div data-fill-text="status"></div></div>
+                                            <div class="col-6"><strong>Decision Type</strong><div data-fill-text="decisiontype"></div></div>
+                                            <div class="col-6"><strong>Recommended Strategy</strong><div data-fill-text="strategy"></div></div>
+                                            <div class="col-6"><strong>Recommended PM Template</strong><div data-fill-text="pmtemplate"></div></div>
                                         </div>
                                         <pems-alert tone="warning" css="small py-2 px-3">
                                             Applying this approved RCM decision will <strong>create or update the operational Maintenance Strategy</strong> for the equipment selected below
@@ -339,7 +339,7 @@
                                     </div>
                                 </form>
                             </pems-modal>
-                    }
+}
                 }
 
                 @if (rcm.Status == "DRAFT" && canEdit && sourceFmea != null)

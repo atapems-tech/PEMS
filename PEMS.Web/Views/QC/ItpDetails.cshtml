@@ -76,42 +76,13 @@
                         }
                         @if (li.Status != "Passed" && li.Status != "Failed")
                         {
-                            <pems-button tone="primary" size="small" outline="true" type="button" data-bs-toggle="modal" data-bs-target="#inspectModal_@li.ITPLineItemId">
+                            <pems-button tone="primary" size="small" outline="true" type="button" data-bs-toggle="modal" data-bs-target="#inspectModal" data-fill-lineitemid="@li.ITPLineItemId" data-fill-activity="@li.Activity">
                                 <i class="bi bi-clipboard-check"></i> Perform Inspection
                             </pems-button>
                         }
                     </td>
                 </tr>
 
-                <pems-modal id="inspectModal_@li.ITPLineItemId" tabindex="-1">
-                            <form asp-action="ItpPerformInspection" method="post">
-                                <input type="hidden" name="lineItemId" value="@li.ITPLineItemId" />
-                                <input type="hidden" name="itpId" value="@Model.InspectionTestPlanId" />
-                                <div class="modal-header"><h6 class="modal-title">Perform Inspection - @li.Activity</h6></div>
-                                <div class="modal-body">
-                                    <div class="mb-2">
-                                        <pems-label css="small">@Localizer["Result"]</pems-label>
-                                        <pems-select scale="small" name="result" required>
-                                            <option value="Acceptable">Acceptable</option>
-                                            <option value="Reject">@Localizer["Reject"]</option>
-                                            <option value="Warning">@Localizer["Warning"]</option>
-                                        </pems-select>
-                                    </div>
-                                    <div class="mb-2">
-                                        <pems-label css="small">@Localizer["Inspector"]</pems-label>
-                                        <pems-input scale="small" name="inspector" />
-                                    </div>
-                                    <div class="mb-2">
-                                        <pems-label css="small">@Localizer["Notes"]</pems-label>
-                                        <pems-textarea scale="small" name="description" rows="2"></pems-textarea>
-                                    </div>
-                                </div>
-                                <div class="modal-footer">
-                                    <pems-button tone="neutral" size="small" outline="true" type="button" data-bs-dismiss="modal">@Localizer["Cancel"]</pems-button>
-                                    <pems-button tone="primary" size="small" type="submit">Save Result</pems-button>
-                                </div>
-                            </form>
-                        </pems-modal>
             }
         </tbody>
     </table>
@@ -156,3 +127,33 @@
         </div>
     </form>
 </div>
+
+    <pems-modal id="inspectModal" tabindex="-1">
+    <form asp-action="ItpPerformInspection" method="post">
+    <input type="hidden" name="lineItemId" value="" />
+    <input type="hidden" name="itpId" value="@Model.InspectionTestPlanId" />
+    <div class="modal-header"><h6 class="modal-title">Perform Inspection - <span data-fill-text="activity"></span></h6></div>
+    <div class="modal-body">
+    <div class="mb-2">
+    <pems-label css="small">@Localizer["Result"]</pems-label>
+    <pems-select scale="small" name="result" required>
+    <option value="Acceptable">Acceptable</option>
+    <option value="Reject">@Localizer["Reject"]</option>
+    <option value="Warning">@Localizer["Warning"]</option>
+    </pems-select>
+    </div>
+    <div class="mb-2">
+    <pems-label css="small">@Localizer["Inspector"]</pems-label>
+    <pems-input scale="small" name="inspector" />
+    </div>
+    <div class="mb-2">
+    <pems-label css="small">@Localizer["Notes"]</pems-label>
+    <pems-textarea scale="small" name="description" rows="2"></pems-textarea>
+    </div>
+    </div>
+    <div class="modal-footer">
+    <pems-button tone="neutral" size="small" outline="true" type="button" data-bs-dismiss="modal">@Localizer["Cancel"]</pems-button>
+    <pems-button tone="primary" size="small" type="submit">Save Result</pems-button>
+    </div>
+    </form>
+    </pems-modal>
