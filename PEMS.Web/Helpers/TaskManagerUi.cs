@@ -15,17 +15,17 @@ public static class TaskManagerUi
 
     public static string CategoryBadge(string? category) => category switch
     {
-        WorkItemStatusCategories.Done => "bg-success",
-        WorkItemStatusCategories.InProgress => "bg-info text-dark",
-        _ => "bg-secondary"
+        WorkItemStatusCategories.Done => "success",
+        WorkItemStatusCategories.InProgress => "info",
+        _ => "neutral"
     };
 
     public static string PriorityBadge(string? priority) => priority switch
     {
-        "Urgent" => "bg-danger",
-        "High" => "bg-warning text-dark",
-        "Low" => "bg-light text-dark border",
-        _ => "bg-secondary"
+        "Urgent" => "danger",
+        "High" => "warning",
+        "Low" => "light",
+        _ => "neutral"
     };
 
     public static string PriorityIcon(string? priority) => priority switch

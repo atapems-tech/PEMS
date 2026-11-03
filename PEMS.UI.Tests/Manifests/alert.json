@@ -56,7 +56,9 @@
           "warning",
           "danger",
           "primary",
-          "secondary"
+          "secondary",
+          "light",
+          "none"
         ]
       },
       "traceId": {
@@ -105,6 +107,12 @@
               "type": "string"
             }
           }
+        ]
+      },
+      "attributes": {
+        "type": [
+          "object",
+          "null"
         ]
       }
     },

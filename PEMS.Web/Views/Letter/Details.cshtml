@@ -254,11 +254,11 @@
         <ol class="list-unstyled mb-0">
             @foreach (var step in Model.ApprovalSteps.OrderBy(x => x.StepOrder))
             {
-                var stepBadge = step.Status switch { "Approved" => "bg-success", "Rejected" => "bg-danger", "Returned" => "bg-warning text-dark", _ => step.IsCurrent ? "bg-primary" : "bg-secondary" };
+                var stepBadge = step.Status switch { "Approved" => "success", "Rejected" => "danger", "Returned" => "warning", _ => step.IsCurrent ? "primary" : "neutral" };
                 <li class="d-flex flex-wrap align-items-center gap-2 py-1 @(step.IsCurrent ? "fw-semibold" : "")">
                     <pems-badge tone="light" css="rounded-pill">@step.StepOrder</pems-badge>
                     <span>@step.ApproverName</span>
-                    <pems-badge tone="none" css="@stepBadge">@(step.IsCurrent ? Localizer["Lc_StepCurrent"].Value : step.Status)</pems-badge>
+                    <pems-badge tone="@stepBadge">@(step.IsCurrent ? Localizer["Lc_StepCurrent"].Value : step.Status)</pems-badge>
                     @if (step.DecidedDate.HasValue) { <small class="text-muted">@step.DecidedDate.Value.ToString("yyyy-MM-dd HH:mm")</small> }
                     @if (!string.IsNullOrWhiteSpace(step.Comment)) { <small class="text-muted">&mdash; @step.Comment</small> }
                     @if (isAdmin && step.Status == "Pending" && l.Status == "PendingApproval")
@@ -562,9 +562,9 @@
                                     <td>@(r.DueDate?.ToString("yyyy-MM-dd"))</td>
                                     <td>
                                         @{
-                                            var sb = r.Status switch { "Completed" => "bg-success", "InProgress" => "bg-info text-dark", _ => "bg-warning text-dark" };
+                                            var sb = r.Status switch { "Completed" => "success", "InProgress" => "info", _ => "warning" };
                                         }
-                                        <pems-badge tone="none" css="@sb">@r.Status</pems-badge>
+                                        <pems-badge tone="@sb">@r.Status</pems-badge>
                                         @if (r.IsOverdue) { <pems-badge tone="danger">@Localizer["Overdue"]</pems-badge> }
                                     </td>
                                     <td>

@@ -41,10 +41,10 @@
                             ? (Model.Nodes.FirstOrDefault(n => n.Id == e.ToNodeId)?.Label ?? e.ToNodeId)
                             : L("Process ends", "پایان فرآیند");
                         var fromLabel = Model.Nodes.FirstOrDefault(n => n.Id == e.FromNodeId)?.Label ?? e.FromNodeId;
-                        var badgeClass = e.Kind == "reject" ? "bg-danger" : (e.Kind == "terminal" ? "bg-secondary" : "bg-success");
+                        var badgeClass = e.Kind == "reject" ? "danger" : (e.Kind == "terminal" ? "neutral" : "success");
 
                         <li class="d-flex align-items-center gap-2 py-1 border-bottom">
-                            <pems-badge tone="none" css="@badgeClass" style="min-width:70px;">@e.Label</pems-badge>
+                            <pems-badge tone="@badgeClass" style="min-width:70px;">@e.Label</pems-badge>
                             <span>@fromLabel <i class="bi bi-arrow-@(isRtl ? "left" : "right")"></i> @toLabel</span>
                         </li>
                     }

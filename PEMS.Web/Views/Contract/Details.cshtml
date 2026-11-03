@@ -14,15 +14,15 @@
 
     var statusBadge = Model.Status switch
     {
-        "Draft" => "bg-secondary",
-        "UnderReview" => "bg-info text-dark",
-        "Approved" => "bg-primary",
-        "Signed" => "bg-warning text-dark",
-        "Effective" => "bg-success",
-        "Completed" => "bg-dark",
-        "Terminated" => "bg-danger",
-        "Rejected" => "bg-danger",
-        _ => "bg-secondary"
+        "Draft" => "neutral",
+        "UnderReview" => "info",
+        "Approved" => "primary",
+        "Signed" => "warning",
+        "Effective" => "success",
+        "Completed" => "dark",
+        "Terminated" => "danger",
+        "Rejected" => "danger",
+        _ => "neutral"
     };
 }
 
@@ -65,7 +65,7 @@
         <pems-info-item label="@Localizer["Start Date"]" num>@Model.StartDate?.ToString("yyyy-MM-dd")</pems-info-item>
         <pems-info-item label="@Localizer["End Date"]" num>@Model.EndDate?.ToString("yyyy-MM-dd")</pems-info-item>
         <pems-info-item label="@Localizer["Status"]">
-            <pems-badge tone="none" css="@statusBadge">@Model.Status</pems-badge>
+            <pems-badge tone="@statusBadge">@Model.Status</pems-badge>
             @if (Model.RequiresInspection)
             {
                 <pems-badge tone="warning">@Localizer["Requires Inspection"]</pems-badge>

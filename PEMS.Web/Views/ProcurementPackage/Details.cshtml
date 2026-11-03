@@ -137,9 +137,9 @@
                     <td>@c.RaisedDate.ToString("yyyy-MM-dd")</td>
                     <td>
                         @{
-                            var ab = c.ActionStatus switch { "Closed" => "bg-success", "Answered" => "bg-info text-dark", _ => "bg-danger" };
+                            var ab = c.ActionStatus switch { "Closed" => "success", "Answered" => "info", _ => "danger" };
                         }
-                        <pems-badge tone="none" css="@ab">@c.ActionStatus</pems-badge>
+                        <pems-badge tone="@ab">@c.ActionStatus</pems-badge>
                         <form asp-action="SetCommunicationStatus" method="post" class="d-inline">
                             <input type="hidden" name="packageId" value="@s.ProcurementPackageId" />
                             <input type="hidden" name="communicationId" value="@c.ProcurementCommunicationId" />

@@ -698,8 +698,8 @@ else
         <div class="d-flex flex-wrap gap-2 mb-3">
             @foreach (var r in reviewStatus)
             {
-                var badgeClass = r.Status switch { "Approve" => "bg-success", "Comment" => "bg-warning text-dark", "Reject" => "bg-danger", _ => "bg-secondary" };
-                <pems-badge tone="none" css="@badgeClass">@r.DisciplineName: @VdrUi.Loc(Localizer, "St_", r.Status)</pems-badge>
+                var badgeClass = r.Status switch { "Approve" => "success", "Comment" => "warning", "Reject" => "danger", _ => "neutral" };
+                <pems-badge tone="@badgeClass">@r.DisciplineName: @VdrUi.Loc(Localizer, "St_", r.Status)</pems-badge>
             }
         </div>
 

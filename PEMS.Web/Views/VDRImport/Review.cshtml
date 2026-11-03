@@ -78,9 +78,9 @@
                         <td><pems-badge tone="neutral">@(r.Payload?.Submissions.Count ?? 0)</pems-badge></td>
                         <td>
                             @{
-                                var vb = r.ValidationStatus switch { "Error" => "bg-danger", "Warning" => "bg-warning text-dark", _ => "bg-success" };
+                                var vb = r.ValidationStatus switch { "Error" => "danger", "Warning" => "warning", _ => "success" };
                             }
-                            <pems-badge tone="none" css="@vb">@r.ValidationStatus</pems-badge>
+                            <pems-badge tone="@vb">@r.ValidationStatus</pems-badge>
                         </td>
                         <td class="small text-muted">@r.ValidationMessage</td>
                         <td>@(r.IsDuplicate ? "Update existing" : "New")</td>

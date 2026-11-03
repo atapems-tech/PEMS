@@ -7,7 +7,7 @@
 }
 @if (Options.Skin == ComponentSkin.Bootstrap)
 {
-    <div class="@BootstrapClass(tone)" role="@role">
+    <div class="@BootstrapClass(tone)" role="@role" @attributes="Options.Attributes">
         @if (Options.Title is not null)
         {
             <strong>@Locale.Text(Options.Title)</strong>
@@ -77,5 +77,5 @@ else
     /// <summary>Page markup inside the alert (links, lists, buttons) when the text alone is not enough.</summary>
     [Parameter] public RenderFragment? ChildContent { get; set; }
     private string BootstrapClass(string tone) =>
-        "alert alert-" + tone + (Options.DismissLabel is null ? "" : " alert-dismissible fade show") + (string.IsNullOrWhiteSpace(Options.CssClass) ? "" : " " + Options.CssClass);
+        "alert" + (Options.Tone == AlertTone.None ? "" : " alert-" + tone) + (Options.DismissLabel is null ? "" : " alert-dismissible fade show") + (string.IsNullOrWhiteSpace(Options.CssClass) ? "" : " " + Options.CssClass);
 }

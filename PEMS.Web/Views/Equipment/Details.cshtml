@@ -22,10 +22,10 @@
 
     var calBadgeClass = inst?.CalibrationStatus switch
     {
-        "Overdue" => "bg-danger",
-        "DueSoon" => "bg-warning text-dark",
-        "OK" => "bg-success",
-        _ => "bg-secondary"
+        "Overdue" => "danger",
+        "DueSoon" => "warning",
+        "OK" => "success",
+        _ => "neutral"
     };
 
     bool canCreateWr = ViewBag.CanCreateWorkRequest == true, canViewWr = ViewBag.CanViewWorkRequest == true, canViewWo = ViewBag.CanViewWorkOrder == true;
@@ -265,7 +265,7 @@
                     <div class="col-md-3"><strong>@Localizer["Type"]</strong><div>@NA(inst.InstrumentType)</div></div>
                     <div class="col-md-3"><strong>@Localizer["Loop No."]</strong><div>@NA(inst.LoopNumber)</div></div>
                     <div class="col-md-3"><strong>System / Signal</strong><div>@NA(inst.System) / @NA(inst.SignalClass)</div></div>
-                    <div class="col-md-3"><strong>Next Calibration</strong><div>@(inst.NextCalibrationDue?.ToString("yyyy-MM-dd") ?? "N/A") <pems-badge tone="none" css="@calBadgeClass">@inst.CalibrationStatus</pems-badge></div></div>
+                    <div class="col-md-3"><strong>Next Calibration</strong><div>@(inst.NextCalibrationDue?.ToString("yyyy-MM-dd") ?? "N/A") <pems-badge tone="@calBadgeClass">@inst.CalibrationStatus</pems-badge></div></div>
                 </div>
             </div>
         }
@@ -305,7 +305,7 @@
 
                     <div class="col-md-3"><strong>@Localizer["System Cabinet"]</strong><div>@NA(inst.SystemCabinet)</div></div>
                     <div class="col-md-3"><strong>@Localizer["Last Calibration"]</strong><div>@(inst.LastCalibrationDate?.ToString("yyyy-MM-dd") ?? "N/A")</div></div>
-                    <div class="col-md-3"><strong>Next Calibration Due</strong><div>@(inst.NextCalibrationDue?.ToString("yyyy-MM-dd") ?? "N/A") <pems-badge tone="none" css="@calBadgeClass">@inst.CalibrationStatus</pems-badge></div></div>
+                    <div class="col-md-3"><strong>Next Calibration Due</strong><div>@(inst.NextCalibrationDue?.ToString("yyyy-MM-dd") ?? "N/A") <pems-badge tone="@calBadgeClass">@inst.CalibrationStatus</pems-badge></div></div>
                     <div class="col-md-3"><strong>Next Maintenance Due</strong><div>@(inst.NextMaintenanceDue?.ToString("yyyy-MM-dd") ?? "N/A")</div></div>
                 </div>
             </div>
@@ -797,12 +797,12 @@
                 </div>
                 @if (explanation?.MatchedRuleTier != null)
                 {
-                    <div class="alert alert-light border small mt-3 mb-0">
+                    <pems-alert tone="light" css="border small mt-3 mb-0">
                         <strong>@Localizer["چرا این طبقه‌بندی؟"]</strong>
                         Rule tier: <pems-badge tone="light">@explanation.MatchedRuleTier</pems-badge> &middot;
                         Matched on: <code>@explanation.MatchedInput</code> &middot;
                         @explanation.Reason
-                    </div>
+                    </pems-alert>
                 }
             }
             else

@@ -15,11 +15,11 @@
     var anyPoLine = Model.Lines.Any(l => l.PurchaseOrderLineId.HasValue);
     var badgeClass = Model.Status switch
     {
-        "Submitted" => "bg-warning text-dark",
-        "PendingApproval" => "bg-info text-dark",
-        "Closed" => "bg-success",
-        "Cancelled" => "bg-secondary",
-        _ => "bg-light text-dark border"
+        "Submitted" => "warning",
+        "PendingApproval" => "info",
+        "Closed" => "success",
+        "Cancelled" => "neutral",
+        _ => "light"
     };
 }
 
@@ -54,7 +54,7 @@
             </div>
             @if (!string.IsNullOrWhiteSpace(Model.Notes)) { <div class="small mt-1">@Model.Notes</div> }
         </div>
-        <pems-badge tone="none" css="fs-6 @badgeClass">@Model.Status</pems-badge>
+        <pems-badge tone="@badgeClass" css="fs-6">@Model.Status</pems-badge>
     </div>
     <hr />
     <div class="d-flex gap-2 flex-wrap align-items-center">
