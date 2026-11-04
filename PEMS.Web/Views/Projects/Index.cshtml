@@ -1,81 +1,72 @@
 ﻿@model List<PEMS.Application.DTOs.ProjectDto>
 @using Microsoft.Extensions.Localization
 @using PEMS.Web.Resources
+@using PEMS.Web.Helpers
 @inject IStringLocalizer<SharedResource> Localizer
 
+@section Styles { <link rel="stylesheet" href="~/_content/PEMS.UI/pems-list.css" asp-append-version="true" /> }
 
-<div class="content-card">
+@* SCRUM-337: built from the PEMS.UI list-page component; the whole list is on the page, so the search filters its rows live (live-filter) and "New Project" opens the existing modal. *@
+<pems-list-page texts="@ListPageTexts.From(Localizer)">
+    <pems-list-panel>
+        <pems-list-toolbar heading="@Localizer["Projects"]" total="@Model.Count">
+            <pems-list-search id="projectSearchForm" action="@Url.Action("Index")" input-id="projectSearch" name="search" placeholder="Search projects..." live-filter="true" />
+            <pems-list-tools search-for="projectSearchForm">
+                <pems-list-new modal="createProjectModal" text="@Localizer["New Project"]" />
+            </pems-list-tools>
+        </pems-list-toolbar>
 
-    <div class="d-flex justify-content-between align-items-center mb-3">
-        <div class="input-group" style="max-width:280px;">
-            <span class="input-group-text bg-white"><i class="bi bi-search"></i></span>
-            <pems-input type="text" id="projectSearch" placeholder="Search projects..." />
-        </div>
-
-        <pems-button tone="primary" size="small" type="button" data-bs-toggle="modal" data-bs-target="#createProjectModal">
-            <i class="bi bi-plus-lg"></i> @Localizer["New Project"]
-        </pems-button>
-    </div>
-
-    <div class="table-responsive table-scroll-area" style="max-height:65vh; overflow-y:auto;">
-        <pems-table kind="enterprise" id="projectsTable">
-            <thead>
-                <tr>
-                    <th>@Localizer["Code"]</th>
-                    <th>@Localizer["Project Name"]</th>
-                    <th>@Localizer["Client"]</th>
-                    <th>@Localizer["Location"]</th>
-                    <th>@Localizer["Status"]</th>
-                    <th>@Localizer["Documents"]</th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var p in Model)
-                {
+        <pems-list-grid>
+            <pems-list-table empty="@(Model.Count == 0)" empty-text="@Localizer["No projects yet."]">
+                <thead>
                     <tr>
-                        <td>@p.ProjectCode</td>
-                        <td>@p.ProjectName</td>
-                        <td>@p.ClientName</td>
-                        <td>@p.Location</td>
-                        <td>
-                            @{
-                                var badge = p.Status switch
-                                {
-                                    "Active" => "bg-success",
-                                    "Completed" => "bg-primary",
-                                    "Cancelled" => "bg-danger",
-                                    _ => "bg-secondary"
-                                };
-                            }
-                            <pems-badge tone="none" css="@badge">@p.Status</pems-badge>
-                            @if (!p.IsActive)
-                            {
-                                <pems-badge tone="dark">Inactive</pems-badge>
-                            }
-                        </td>
-                        <td>
-                            <a asp-controller="EngineeringDocuments" asp-action="Index" class="text-decoration-none">
-                                @p.DocumentsCount
-                            </a>
-                        </td>
-                        <td class="text-end">
-                            <pems-button tone="neutral" size="small" outline="true" as="a" asp-action="Edit" asp-route-id="@p.ProjectId">
-                                <i class="bi bi-pencil"></i>
-                            </pems-button>
-                            <form asp-action="ToggleActive" asp-route-id="@p.ProjectId" method="post" class="d-inline">
-                                <pems-button tone="warning" size="small" outline="true" title="Activate/Deactivate">
-                                    <i class="bi bi-power"></i>
-                                </pems-button>
-                            </form>
-                        </td>
+                        <th>@Localizer["Code"]</th>
+                        <th>@Localizer["Project Name"]</th>
+                        <th>@Localizer["Client"]</th>
+                        <th>@Localizer["Location"]</th>
+                        <th>@Localizer["Status"]</th>
+                        <th>@Localizer["Documents"]</th>
+                        <th></th>
                     </tr>
-                }
-            </tbody>
-        </pems-table>
-    </div>
-
-</div>
+                </thead>
+                <tbody>
+                    @foreach (var p in Model)
+                    {
+                        var tone = p.Status switch { "Active" => "success", "Completed" => "info", "Cancelled" => "danger", _ => "neutral" };
+                        <tr class="lp-row">
+                            <td class="lp-no">@p.ProjectCode</td>
+                            <td>@p.ProjectName</td>
+                            <td>@p.ClientName</td>
+                            <td>@p.Location</td>
+                            <td>
+                                <pems-badge tone="@tone">@p.Status</pems-badge>
+                                @if (!p.IsActive)
+                                {
+                                    <pems-badge tone="dark">Inactive</pems-badge>
+                                }
+                            </td>
+                            <td>
+                                <a asp-controller="EngineeringDocuments" asp-action="Index" class="text-decoration-none">
+                                    @p.DocumentsCount
+                                </a>
+                            </td>
+                            <td class="text-end">
+                                <pems-button tone="neutral" size="small" outline="true" as="a" asp-action="Edit" asp-route-id="@p.ProjectId">
+                                    <i class="bi bi-pencil"></i>
+                                </pems-button>
+                                <form asp-action="ToggleActive" asp-route-id="@p.ProjectId" method="post" class="d-inline">
+                                    <pems-button tone="warning" size="small" outline="true" title="Activate/Deactivate">
+                                        <i class="bi bi-power"></i>
+                                    </pems-button>
+                                </form>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </pems-list-table>
+        </pems-list-grid>
+    </pems-list-panel>
+</pems-list-page>
 
 <pems-modal id="createProjectModal" tabindex="-1">
             <form asp-controller="Projects" asp-action="Create" method="post">
@@ -103,13 +94,4 @@
             </form>
         </pems-modal>
 
-@section Scripts {
-    <script>
-        document.getElementById('projectSearch').addEventListener('input', function () {
-            var val = this.value.toLowerCase();
-            document.querySelectorAll('#projectsTable tbody tr').forEach(function (row) {
-                row.style.display = row.innerText.toLowerCase().includes(val) ? '' : 'none';
-            });
-        });
-    </script>
-}
+@section Scripts { <script src="~/_content/PEMS.UI/pems-list.js" asp-append-version="true"></script> }
