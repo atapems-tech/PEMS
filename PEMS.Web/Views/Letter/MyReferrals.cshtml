@@ -1,27 +1,34 @@
 ﻿@model List<PEMS.Application.DTOs.LetterDto>
 @using Microsoft.Extensions.Localization
 @using PEMS.Web.Resources
+@using PEMS.Web.Helpers
 @inject IStringLocalizer<SharedResource> Localizer
 
-<div class="content-card">
-    <h6 class="mb-3">Letters Referred to Me</h6>
-    <div class="table-responsive table-scroll-area" style="max-height:65vh; overflow-y:auto;">
-    <pems-table kind="enterprise">
-        <thead><tr><th>@Localizer["Type"]</th><th>@Localizer["Letter No"]</th><th>@Localizer["Subject"]</th><th>@Localizer["Date"]</th><th>@Localizer["Status"]</th><th></th></tr></thead>
-        <tbody>
-            @foreach (var l in Model)
-            {
-                <tr>
-                    <td><pems-badge tone="neutral">@l.LetterType</pems-badge></td>
-                    <td>@l.LetterNumber</td>
-                    <td>@l.Subject</td>
-                    <td>@l.LetterDate.ToString("yyyy-MM-dd")</td>
-                    <td><pems-badge tone="none" css="@PEMS.Web.Helpers.LetterStatusBadge.CssClass(l.Status)">@l.Status</pems-badge></td>
-                    <td><pems-button tone="neutral" size="small" outline="true" as="a" asp-action="Details" asp-route-id="@l.LetterId"><i class="bi bi-eye"></i></pems-button></td>
-                </tr>
-            }
-        </tbody>
-    </pems-table>
-    </div>
-    @if (!Model.Any()) { <p class="text-muted text-center py-4">No letters referred to you.</p> }
-</div>
+@section Styles { <link rel="stylesheet" href="~/_content/PEMS.UI/pems-list.css" asp-append-version="true" /> }
+
+@* SCRUM-337: built from the PEMS.UI list-page component; the status keeps the letter palette (LetterStatusBadge). *@
+<pems-list-page texts="@ListPageTexts.From(Localizer)">
+    <pems-list-panel>
+        <pems-list-toolbar heading="Letters Referred to Me" total="@Model.Count" />
+        <pems-list-grid>
+            <pems-list-table empty="@(Model.Count == 0)" empty-text="No letters referred to you.">
+                <thead><tr><th>@Localizer["Type"]</th><th>@Localizer["Letter No"]</th><th>@Localizer["Subject"]</th><th>@Localizer["Date"]</th><th>@Localizer["Status"]</th><th></th></tr></thead>
+                <tbody>
+                    @foreach (var l in Model)
+                    {
+                        <tr class="lp-row">
+                            <td><pems-badge tone="neutral">@l.LetterType</pems-badge></td>
+                            <td class="lp-no">@l.LetterNumber</td>
+                            <td>@l.Subject</td>
+                            <td>@l.LetterDate.ToString("yyyy-MM-dd")</td>
+                            <td><pems-badge tone="none" css="@LetterStatusBadge.CssClass(l.Status)">@l.Status</pems-badge></td>
+                            <td><pems-button tone="neutral" size="small" outline="true" as="a" asp-action="Details" asp-route-id="@l.LetterId"><i class="bi bi-eye"></i></pems-button></td>
+                        </tr>
+                    }
+                </tbody>
+            </pems-list-table>
+        </pems-list-grid>
+    </pems-list-panel>
+</pems-list-page>
+
+@section Scripts { <script src="~/_content/PEMS.UI/pems-list.js" asp-append-version="true"></script> }
