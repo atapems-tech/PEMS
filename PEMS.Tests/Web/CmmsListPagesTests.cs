@@ -55,7 +55,7 @@ public class CmmsListPagesTests
     {
         Assert.Contains("class=\"lp-page\"", html);
         Assert.Contains("class=\"lp-toolbar\"", html);
-        Assert.Equal(rows, Regex.Matches(html, "<tr class=\"lp-row\"").Count);
+        Assert.Equal(rows, Regex.Matches(html, "<tr class=\"lp-row[ \"]").Count);
         if (gridKey != null)
         {
             Assert.Matches($"<table class=\"[^\"]*lp-table[^\"]*\" data-grid-key=\"{gridKey}\"", html);
@@ -576,6 +576,34 @@ public class CmmsListPagesTests
         }, _ => { });
         AssertBuiltFromTheComponent(html, null, 1, keepsDataBadges: true);
         Assert.Contains("name=\"active\" value=\"false\"", html);
+    }
+
+    [Fact]
+    public async Task MaintenanceBacklog_IsAListPage_WithItsThreeFilters()
+    {
+        var html = await Render<CmmsOperationsController>("/Views/CmmsOperations/Backlog.cshtml", Page(
+            new MaintenanceBacklogItemDto { WorkOrderId = 8, WorkOrderNumber = "WO-0008", Priority = "High", Status = "Open", WorkOrderType = "Corrective", IsOverdue = true, DueDate = new DateTime(2026, 10, 1), AgeDays = 30 }),
+            v => { v["Status"] = "Open"; v["Priority"] = "High"; v["OverdueOnly"] = true; });
+
+        AssertBuiltFromTheComponent(html, "CmmsOperationsBacklog", 1, keepsDataBadges: true);
+        Assert.Contains("WO-0008", html);
+        Assert.Contains("name=\"status\"", html);
+        Assert.Contains("name=\"priority\"", html);
+        Assert.Contains("name=\"overdueOnly\"", html);
+        Assert.Equal(3, Regex.Matches(Chips(html), "class=\"pems-filter-chip\"").Count);
+    }
+
+    [Fact]
+    public async Task OcrProcessing_IsAListPage_AndKeepsItsCountTiles()
+    {
+        var html = await Render<OCRProcessingController>("/Views/OCRProcessing/Index.cshtml", Page(
+            new OCRProcessingAttachmentListDto { AttachmentId = 3, FileName = "scan.pdf", FileExtension = ".pdf", FileSize = 2048, AIStatus = "Failed", AIError = "unreadable", UploadDate = new DateTime(2026, 11, 1, 9, 0, 0) }),
+            v => { v["Counts"] = new Dictionary<string, int> { ["Failed"] = 1 }; v["SelectedStatus"] = "Failed"; });
+
+        AssertBuiltFromTheComponent(html, "OCRProcessing", 1, keepsDataBadges: true);
+        Assert.Contains("unreadable", html);
+        Assert.Equal(4, Regex.Matches(html, "class=\"kpi-card").Count);
+        Assert.Single(Regex.Matches(Chips(html), "class=\"pems-filter-chip\""));
     }
 
     [Fact]

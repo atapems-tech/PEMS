@@ -3,6 +3,11 @@
 All notable changes to PEMS. No system version is defined yet (plan row F_CI), so entries are grouped by date
 and theme and were reconstructed from the git history (initial import 2026-09-05). Newest first.
 
+## 2026-11-04 - Maintenance backlog and OCR processing are list pages (SCRUM-337)
+
+### Changed
+- The maintenance backlog (status, priority and overdue-only filters with chips) and the OCR processing list (status filter, count tiles kept above) are built from `pems-list-page`; the OCR status colours became badge tones.
+
 ## 2026-11-04 - Letter templates are a list page (SCRUM-337)
 
 ### Changed
