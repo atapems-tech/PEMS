@@ -3,6 +3,12 @@
 All notable changes to PEMS. No system version is defined yet (plan row F_CI), so entries are grouped by date
 and theme and were reconstructed from the git history (initial import 2026-09-05). Newest first.
 
+## 2026-11-04 - Client error handling: one fetch wrapper and one toast (SCRUM-467, slice 1)
+
+### Added
+- `PEMS.UI/wwwroot/pems-errors.js` and `.css`, loaded by both layouts: `PemsFetch.request/json` (antiforgery header on unsafe verbs, timeout, abort when the page is left, problem+json and `X-Trace-Id` read, retry with backoff only for GET/HEAD on a network failure or 502/503/504, one toast per failed call with the localised message and the reference with a copy button), `PemsErrors.show`, and global capture of `window.onerror` / `unhandledrejection`. Texts come from the layout (`Err_*` keys in both languages). Tests in `ConfirmScriptTests`; behaviour smoke-tested in Node (retry, no retry on POST, token and trace id).
+- Not yet in SCRUM-467: the existing 35 `fetch(` calls still use their own handling (they move onto the wrapper file by file), the report endpoint (needs the error store of SCRUM-465), the dynamic-page fallback (needs PageHost, SCRUM-438).
+
 ## 2026-11-04 - One trace id from browser to log (SCRUM-464, slice 1)
 
 ### Added

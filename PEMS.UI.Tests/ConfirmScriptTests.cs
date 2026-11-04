@@ -102,6 +102,49 @@ public sealed class ConfirmScriptTests
     public void The_layouts_load_the_shared_modal_script_once(string layout)
         => Assert.Equal(1, Regex.Matches(Read("PEMS.Web", "Views", "Shared", layout), Regex.Escape("_content/PEMS.UI/pems-modal-fill.js")).Count);
 
+    // ---- SCRUM-467: the one client error script (fetch wrapper, toast, global capture)
+    private static readonly string[] ErrorKeys = { "Generic", "Offline", "Timeout", "SignIn", "Forbidden", "NotFound", "Conflict", "Invalid", "TooMany", "Unavailable", "Server", "Reference", "Copy", "Copied", "Close" };
+
+    [Theory]
+    [InlineData("_Layout.cshtml")]
+    [InlineData("_LayoutEmbed.cshtml")]
+    public void The_layouts_load_the_error_script_and_style_once_and_carry_every_text(string layout)
+    {
+        var html = Read("PEMS.Web", "Views", "Shared", layout);
+        Assert.Equal(1, Regex.Matches(html, Regex.Escape("_content/PEMS.UI/pems-errors.js")).Count);
+        Assert.Equal(1, Regex.Matches(html, Regex.Escape("_content/PEMS.UI/pems-errors.css")).Count);
+        foreach (var key in ErrorKeys) Assert.Contains($"=\"@Localizer[\"Err_{key}\"]\"", html);
+    }
+
+    [Theory]
+    [InlineData("SharedResource.resx")]
+    [InlineData("SharedResource.fa.resx")]
+    public void The_error_texts_exist_in_both_languages(string resource)
+    {
+        var xml = Read("PEMS.Web", "Resources", resource);
+        foreach (var key in ErrorKeys) Assert.Contains($"name=\"Err_{key}\"", xml);
+    }
+
+    [Fact]
+    public void The_error_script_wraps_fetch_reads_problem_json_and_the_trace_id_and_retries_only_safe_requests()
+    {
+        var js = Read("PEMS.UI", "wwwroot", "pems-errors.js");
+        Assert.Contains("window.PemsFetch", js);
+        Assert.Contains("X-Trace-Id", js);
+        Assert.Contains("RequestVerificationToken", js);
+        Assert.Contains("AbortController", js);
+        Assert.Contains("pagehide", js);
+        Assert.Contains("unhandledrejection", js);
+        Assert.Contains("/^(GET|HEAD)$/", js);              // retry is for idempotent verbs only
+        Assert.Contains("role', 'alert'", js);               // announced to assistive technology
+        Assert.DoesNotContain("innerHTML", js);              // messages and references are text, never markup
+        Assert.DoesNotContain("alert(", js.Replace("role', 'alert'", ""));
+        Assert.DoesNotContain("onclick=", js);
+        var css = Read("PEMS.UI", "wwwroot", "pems-errors.css");
+        Assert.DoesNotContain("#", css.Replace("/* PEMS.UI client error toast (SCRUM-467)", ""));   // tokens only, no literal colours
+        Assert.DoesNotMatch(@"(^|[^-a-z])(left|right)\s*:|margin-(left|right)|padding-(left|right)", css);
+    }
+
     [Theory]
     [InlineData("Views/VDR/Details.cshtml", "replyModal")]
     [InlineData("Views/EngineeringDocuments/Details.cshtml", "engReplyModal")]
