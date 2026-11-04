@@ -4,6 +4,46 @@ Jira site: https://atapems.atlassian.net - cloudId `9290a713-17c1-44bd-99fc-f1b8
 Use the Atlassian MCP tools (or the Jira UI for humans) for every step. Never skip a status change.
 Field ownership between the plan files and Jira: [PLAN_TRACKER_WORKFLOW.md](../process/PLAN_TRACKER_WORKFLOW.md).
 
+## 0. Start of every work block (owner decision 2026-11-04)
+
+A **work block** is everything done between one go-ahead and the hand-over of its issues to In Review. **Any go-ahead opens one**: "continue", "next", "yes", "do it", "go on", a named task or a list of tasks, a session that starts with a task. A question or a request to look something up is not a go-ahead. Run the four steps below **before the first edit of the block**, and say in your first message that you did (a line per step is enough). If the same session keeps going after a finished block and the owner says "continue" again, that is a new block: repeat the steps, they are cheap when nothing changed.
+
+### 0.1 Pull `main`
+`git fetch origin`, then update `main` (an app worktree uses `sync_with_base_branch`; a checkout with local changes you did not make is left alone, you only report it). Look at what merged since your last block (`git log --oneline <last-seen>..origin/main`): other sessions change the pages and tests you are about to touch. Branch from the fresh `main`. Never plan from a stale checkout.
+
+### 0.2 Audit the whole backlog, not only the task you were pointed at
+Read every open issue of the project, not one area label: `project = SCRUM AND statusCategory != Done ORDER BY key` (Epics skipped), plus your own In Progress issues. Compare each with the **current code** and with its neighbours, with the method of section 1 step 2a (ratchet baseline, greps, registry, merged PRs, plan row; never the description alone). Give every issue one verdict, written in one line:
+
+| Verdict | Meaning | What you do |
+|---|---|---|
+| go | the description still holds | keep it in a batch |
+| modify | counts, pages or scope changed | edit the issue text and the plan row, or post the new scope as a comment, then keep it |
+| split | a part is blocked, needs a decision, or is another kind of work | a part with a different owner or blocker becomes its own issue (section 5d) or a clearly named unchecked line; the rest goes on |
+| merge | it overlaps a neighbour (rule 28) | do it inside the neighbour's batch and say so on both issues |
+| cancel | already done, superseded or no longer wanted | comment the reason and the evidence; move to **Cancelled** only with the owner's yes |
+| blocked | a dependency is not Done and is not in your block | name the blocker; if the blocker is itself a To Do issue, pull it into the block instead of waiting (step 0.3) |
+
+A thorough audit of hundreds of issues is not required at full depth every time: read all titles and labels, read in full the ones that touch the area of the go-ahead or share a dependency chain with it, and say which you only skimmed. Never skip the step.
+
+### 0.3 Group the survivors into related batches and do each batch together
+- A batch is issues that share an area, files, a pattern or a dependency chain. **A blocker travels with the issue it blocks** and is done first (a To Do blocker is not a reason to stop: it is part of the batch, unless it needs the owner's decision or an unavailable tool).
+- One branch per batch, named after the primary issue; each safe slice is its own PR and is **merged at once** (section 4); every issue of the batch is started in Jira in one step (assignee, active sprint, In Progress, plan comment: section 1 step 5) **before** its first commit, never after.
+- Do not take one issue at a time when its neighbours share the work; do not widen a batch past what one person could review (a batch is related work, not "everything open").
+- Work that needs the owner's decision, SQL Server, a browser or a production host is split off and listed (unchecked QA lines or a named follow-up); it never holds a batch back.
+
+### 0.4 State the plan, then work
+The first message of the block lists: the batches and their issues in order, what the audit modified, merged, split or proposed to cancel (with the evidence in one phrase), and what is blocked and by what. **The go-ahead that opened the block is the approval of this plan** (it satisfies the "ask and wait" of step 5); anything outside the plan needs a new yes, and every cancellation needs the owner's yes. Then work through the batches without asking again.
+
+### 0.5 Close the block
+Every issue of the block ends in In Review (conditional done, `qa-pending`, QA checklist with the unrun checks) or with a one-line reason why not (blocked, needs a decision, only part done and still In Progress). The last message says, per issue: merged PRs, tests run and not run, and what is next. Update the guideline if the block taught something durable (chapter 6).
+
+### Anti-patterns (each one happened)
+- Starting the issue the owner named without looking at its blockers or neighbours (SCRUM-467 was found blocked by SCRUM-464 and 363 only after reading it).
+- Merging work under an issue that was never moved to In Progress (SCRUM-347).
+- Planning from a stale checkout, or from an issue description that is weeks old (SCRUM-337 said "342 hand-written tables" when all of them were already components).
+- Stopping at a blocker that is a To Do issue of the same area instead of doing it first.
+- Treating "continue" as a reason to skip the audit because the last block did one.
+
 ## 1. Before you start (the "Step 0" checklist)
 
 1. **Read this guideline** (README reading map). Skim the last entries of the [learnings log](learnings-log.md).
@@ -21,7 +61,7 @@ Field ownership between the plan files and Jira: [PLAN_TRACKER_WORKFLOW.md](../p
    open, in-progress and recently Done issues that touch the same area. Read their comments and commits. Goal: no duplicated work,
    no contradicting design, and reuse of what a neighbour task already decided.
 5. **Look for similar tasks to batch.** If two or more open issues are close (same component, same files, same migration, same
-   library, same research), propose doing them together. **Ask the user and wait for approval before starting a batch.** State: which
+   library, same research), propose doing them together. **Ask the user and wait for approval before starting a batch** (a go-ahead that opens a work block, section 0, is that approval for the plan you state in your first message). State: which
    issues, why they belong together, what changes in scope, and what each issue's "Done when" will be checked against.
    Never silently widen the scope of one issue to swallow another.
    **When a batch starts** (owner decision 2026-10-29; approval alone changes nothing in Jira): in one step every issue of the batch is moved into the **current (active) sprint**

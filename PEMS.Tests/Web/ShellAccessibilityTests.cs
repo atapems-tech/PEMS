@@ -194,7 +194,9 @@ public class ShellAccessibilityTests
     [InlineData(403, "bi-shield-lock")]
     [InlineData(401, "bi-shield-lock")]
     [InlineData(500, "bi-exclamation-triangle")]
-    [InlineData(503, "bi-exclamation-triangle")]
+    [InlineData(503, "bi-cloud-slash")]
+    [InlineData(409, "bi-arrow-repeat")]
+    [InlineData(429, "bi-hourglass-split")]
     public async Task StatusPage_Renders_ADistinctMessagePerKindOfError(int code, string expectedIcon)
     {
         var host = NewHome();

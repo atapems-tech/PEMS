@@ -3,6 +3,23 @@
 All notable changes to PEMS. No system version is defined yet (plan row F_CI), so entries are grouped by date
 and theme and were reconstructed from the git history (initial import 2026-09-05). Newest first.
 
+## 2026-11-04 - Test budget for sessions (guideline)
+
+### Added
+- Guideline chapter 05 "Test budget" (measured times and the safe classes per kind of change), chapter 07 section 2b (two minutes per command, exact class names, never a word or namespace filter, the slow families listed) and the standard not-run line d2 (the broad render suite and the guard classes not run); README "Local tests" note; learnings-log entry. Cause: a whole-namespace run took 11 minutes and a word filter pulled in the SQL families, to find what a one-second guard class finds.
+
+## 2026-11-04 - Work blocks start with a pull and a whole-backlog audit (guideline)
+
+### Added
+- Guideline chapter 0, section 0 and AGENTS.md step 0: every go-ahead opens a work block: (0.1) pull `main`; (0.2) audit the whole open backlog against the current code with one verdict per issue (go, modify, split, merge, cancel with the owner's yes, blocked); (0.3) group the survivors into related batches, a blocker travels with the task it blocks, each safe slice merged at once, every issue started in Jira before its first commit; (0.4) state the plan in the first message, the go-ahead is its approval; (0.5) close the block with every issue in In Review or a stated reason. Includes the anti-patterns that happened.
+
+## 2026-11-04 - Error taxonomy and one mapping table (SCRUM-464, slices 2 to 4)
+
+### Added
+- `PemsErrorKind` and the taxonomy exceptions in `PEMS.Application.Exceptions`; `PemsErrorMapper` (kind, status, stable code, SQL numbers 2601/2627, 1205, -2, connection errors, concurrency, timeouts) used by the API controller filter, a new `PemsExceptionHandler` (/api failures outside controllers) and the error page.
+- The error page now shows the localised status page for the mapped status (404, 403, 409, 429, 503, 500) with the trace id and never the exception message; new texts for 409, 429 and 503 in both languages; 503 sends `Retry-After`. Table documented in guideline chapter 08.
+- Still open in SCRUM-464: replacing the 131 generic `throw new Exception(` and the 89 user-visible `ex.Message` controller by controller, the start-up failure report (needs SCRUM-415).
+
 ## 2026-11-04 - Client error handling: one fetch wrapper and one toast (SCRUM-467, slice 1)
 
 ### Added

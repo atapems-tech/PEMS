@@ -5,6 +5,7 @@ It is short on purpose. The rules live in [docs/guidelines/](docs/guidelines/REA
 
 ## Mandatory order for every task
 
+0. **START OF A WORK BLOCK** - on any go-ahead ("continue", "next", "yes", a task): (a) pull `main`; (b) audit the whole open backlog against the current code, one verdict per issue (go, modify, split, merge, cancel with the owner's yes, blocked); (c) group the rest into related batches, a blocker travels with the task it blocks, and do each batch together; (d) state the plan in your first message, the go-ahead is its approval ([chapter 0, section 0](docs/guidelines/00-task-lifecycle.md)).
 1. **READ** - open [docs/guidelines/README.md](docs/guidelines/README.md) and the chapters it marks as required for your kind of task.
    Then read the Jira issue (and its parent, dependencies and similar open issues). Say in your first message that you did both.
 2. **PLAN** - research best practice, look for existing code/components to reuse, check for similar tasks to batch

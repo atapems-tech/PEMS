@@ -110,6 +110,8 @@ Many tests need a real SQL Server and use the isolated database `PEMSDB_Regressi
 the LF check in `LinuxDeploymentArtifactsTests`, a SQLEXPRESS-only sidebar test and `ImportCenterNavigationTests`; any other red test is new.
 Put the counts (passed, failed, skipped) in the Jira report.
 
+**In a session (AI agent or developer without SQL Server) do not run the lines above that are slow:** `dotnet test PEMS.slnx`, the whole `PEMS.Tests`, the whole `PEMS.Tests.Web` namespace (7 to 11 minutes) and any word filter that matches the SQL families. Run `dotnet build PEMS.Web`, `dotnet test PEMS.UI.Tests` and the exact test classes of what you touched (table "Test budget" in [guideline chapter 05](docs/guidelines/05-environment-and-commands.md)), and write every run you skipped as a `not done` line of the QA checklist ([chapter 07](docs/guidelines/07-qa-check-in-the-ui.md) section 2b). The tester runs the full suite here, on a machine with SQL Server, as line 1.
+
 ### Manual checks in the UI
 
 Used by the QA check ([guideline chapter 07](docs/guidelines/07-qa-check-in-the-ui.md)); a task that adds a manual check adds it here (or to the README named in the last column), never to a new file.

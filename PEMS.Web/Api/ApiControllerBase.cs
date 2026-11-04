@@ -26,8 +26,10 @@ public sealed class ApiExceptionFilter : IExceptionFilter
     {
         if (context.ActionDescriptor is not Microsoft.AspNetCore.Mvc.Controllers.ControllerActionDescriptor d
             || !typeof(ApiControllerBase).IsAssignableFrom(d.ControllerTypeInfo)) return;
-        _log.LogError(context.Exception, "API error on {Path}", context.HttpContext.Request.Path);
-        context.Result = ApiProblem.Server();
+        var info = PEMS.Web.Diagnostics.PemsErrorMapper.Describe(context.Exception);   // SCRUM-464: the one mapping table
+        if (info.Status >= 500) _log.LogError(context.Exception, "API error {Code} on {Path}", info.Code, context.HttpContext.Request.Path);
+        else _log.LogWarning(context.Exception, "API error {Code} on {Path}", info.Code, context.HttpContext.Request.Path);
+        context.Result = PEMS.Web.Diagnostics.PemsErrorMapper.Problem(info, context.HttpContext.Response);
         context.ExceptionHandled = true;
     }
 }

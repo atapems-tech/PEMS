@@ -3689,4 +3689,10 @@
   <data name="Err_Copy" xml:space="preserve"><value>Copy</value></data>
   <data name="Err_Copied" xml:space="preserve"><value>Copied</value></data>
   <data name="Err_Close" xml:space="preserve"><value>Close</value></data>
+  <data name="Status_Conflict_Title" xml:space="preserve"><value>The record was changed</value></data>
+  <data name="Status_Conflict_Text" xml:space="preserve"><value>Someone else changed this record or the data conflicts with what is stored. Reload the page and try again.</value></data>
+  <data name="Status_TooMany_Title" xml:space="preserve"><value>Too many requests</value></data>
+  <data name="Status_TooMany_Text" xml:space="preserve"><value>Too many requests in a short time. Wait a moment and try again.</value></data>
+  <data name="Status_Unavailable_Title" xml:space="preserve"><value>Temporarily unavailable</value></data>
+  <data name="Status_Unavailable_Text" xml:space="preserve"><value>The service is busy or not reachable right now. Try again in a moment; if it keeps happening, report the request ID below.</value></data>
 </root>
