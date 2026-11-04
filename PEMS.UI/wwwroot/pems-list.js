@@ -2,6 +2,7 @@
 // Search opens over the toolbar title; an optional KPI row is hidden by default and remembered per browser; the grid keeps
 // its column widths. Markup contract:
 //   [data-lp-toolbar]  [data-lp-search-open]  form[data-lp-search] (hidden) with input + [data-lp-search-close]
+//     form[data-lp-live-filter]: typing filters the rows of table.lp-table on the page (no submit)
 //     input[data-pems-search] inside it: picking a result opens it, Enter without a pick submits the form
 //   [data-lp-kpi-toggle] (aria-controls = id of the KPI row, data-storage-key = localStorage key, data-lp-open = shown by default)
 //   table.lp-table[data-grid-key] (column resize, PemsDataGrid)   [data-lp-reset-columns="gridKey"]
@@ -16,6 +17,17 @@
         if (!openBtn || !form) return;
         var input = form.querySelector('input[type="search"], input[type="text"]');
         var closeBtn = form.querySelector('[data-lp-search-close]');
+
+        // live-filter: the rows already on the page are filtered as the user types, nothing is submitted
+        if (input && form.hasAttribute('data-lp-live-filter')) {
+            var rows = function () { return document.querySelectorAll('table.lp-table tbody tr'); };
+            var apply = function () {
+                var q = input.value.toLowerCase();
+                rows().forEach(function (r) { r.style.display = r.textContent.toLowerCase().indexOf(q) >= 0 ? '' : 'none'; });
+            };
+            input.addEventListener('input', apply);
+            form.addEventListener('submit', function (e) { e.preventDefault(); apply(); });
+        }
 
         function open() {
             form.hidden = false;

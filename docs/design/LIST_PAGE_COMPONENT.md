@@ -42,6 +42,7 @@ A tool that the page does not render does not appear.
                               placeholder="@Localizer["..."]" search-type="OptionalAutocompleteType">
                 @* hidden inputs that keep the active filters *@
             </pems-list-search>
+            @* live-filter="true": for a short list without server paging, typing filters the rows on the page and nothing is submitted *@
             <pems-list-tools search-for="xSearch">
                 <pems-list-filters form-id="xFilter" action="@Url.Action("Index")" count="@activeCount" reset-href="@Url.Action("Index", new { search })">
                     <input type="hidden" name="search" value="@search" />

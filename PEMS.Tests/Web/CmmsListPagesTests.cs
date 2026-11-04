@@ -667,6 +667,20 @@ public class CmmsListPagesTests
     }
 
     [Fact]
+    public async Task Projects_AreAListPage_WithALiveSearchAndTheirCreateModal()
+    {
+        var html = await Render<ProjectsController>("/Views/Projects/Index.cshtml", new List<ProjectDto>
+        {
+            new() { ProjectId = 3, ProjectCode = "P-03", ProjectName = "Unit 3", Status = "Active", IsActive = true, DocumentsCount = 12 },
+        }, _ => { });
+
+        AssertBuiltFromTheComponent(html, null, 1, keepsDataBadges: true);
+        Assert.Contains("data-lp-live-filter", html);
+        Assert.Contains("id=\"createProjectModal\"", html);
+        Assert.DoesNotContain("projectsTable", html);
+    }
+
+    [Fact]
     public async Task Meetings_AreAListPage_AndScheduleOpensTheirOwnModal()
     {
         var html = await Render<MeetingController>("/Views/Meeting/Index.cshtml", Page(

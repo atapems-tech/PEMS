@@ -71,6 +71,16 @@ public class ListPageComponentTests
         Assert.DoesNotContain("data-pems-search", plain);
     }
 
+    [Fact]
+    public async Task Search_filters_the_rows_on_the_page_only_when_live_filter_is_asked()
+    {
+        var live = await Run(new PemsListSearchTagHelper { Id = "f", Action = "/Projects", InputId = "q", LiveFilter = true }, "pems-list-search");
+        Assert.Contains("data-lp-live-filter", live);
+
+        var plain = await Run(new PemsListSearchTagHelper { Id = "f", Action = "/Projects", InputId = "q" }, "pems-list-search");
+        Assert.DoesNotContain("data-lp-live-filter", plain);
+    }
+
     [Theory]
     [InlineData(0, false)]
     [InlineData(2, true)]

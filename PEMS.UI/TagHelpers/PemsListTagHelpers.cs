@@ -121,6 +121,8 @@ public sealed class PemsListSearchTagHelper : TagHelper
     [HtmlAttributeName("value")] public string? Value { get; set; }
     [HtmlAttributeName("placeholder")] public string? Placeholder { get; set; }
     [HtmlAttributeName("search-type")] public string? SearchType { get; set; }
+    /// <summary>true: the search filters the rows already on the page as the user types (a short list without server paging); the form is not submitted.</summary>
+    [HtmlAttributeName("live-filter")] public bool LiveFilter { get; set; }
 
     public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
     {
@@ -131,6 +133,7 @@ public sealed class PemsListSearchTagHelper : TagHelper
         output.Attributes.SetAttribute("action", Action);
         output.Attributes.SetAttribute("role", "search");
         output.Attributes.SetAttribute("data-lp-search", "");
+        if (LiveFilter) output.Attributes.SetAttribute("data-lp-live-filter", "");
         // pems-list.js opens it on load when a search is active, so the user sees what filters the list
         output.Attributes.SetAttribute("hidden", "hidden");
 

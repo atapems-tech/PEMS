@@ -3,6 +3,14 @@
 All notable changes to PEMS. No system version is defined yet (plan row F_CI), so entries are grouped by date
 and theme and were reconstructed from the git history (initial import 2026-09-05). Newest first.
 
+## 2026-11-04 - Projects are a list page, list search can filter live (SCRUM-337)
+
+### Added
+- `pems-list-search` option `live-filter="true"`: for a short list without server paging, typing filters the rows already on the page and the form is not submitted. Default behaviour unchanged. Test in `ListPageComponentTests`.
+
+### Changed
+- The projects list is built from `pems-list-page` using it (the old inline search script is gone); "New Project" opens the existing modal; the status colours became badge tones.
+
 ## 2026-11-04 - Tasks are a list page (SCRUM-337)
 
 ### Changed
