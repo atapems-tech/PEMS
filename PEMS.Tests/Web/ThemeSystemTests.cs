@@ -55,6 +55,18 @@ public class ThemeSystemTests
     }
 
     [Fact]
+    public void Views_hold_no_style_blocks_except_the_two_stage_diagrams_that_compute_their_values()
+    {
+        // SCRUM-347 (strict Content-Security-Policy): page CSS lives in a stylesheet. The two diagram partials write Razor values into their rules.
+        var allowed = new[] { "_PemsStageDiagram.cshtml", "_WorkOrderStagesDiagram.cshtml" };
+        var offenders = Directory.EnumerateFiles(Path.Combine(Root(), "PEMS.Web"), "*.cshtml", SearchOption.AllDirectories)
+            .Where(f => !f.Contains(Path.DirectorySeparatorChar + "obj" + Path.DirectorySeparatorChar) && !f.Contains(Path.DirectorySeparatorChar + "bin" + Path.DirectorySeparatorChar))
+            .Where(f => System.Text.RegularExpressions.Regex.IsMatch(File.ReadAllText(f), "<style[ >]"))
+            .Select(Path.GetFileName).Where(n => !allowed.Contains(n)).ToList();
+        Assert.True(offenders.Count == 0, "Move the <style> block to a stylesheet in: " + string.Join(", ", offenders));
+    }
+
+    [Fact]
     public void SiteCss_DefinesTokensForAllThreeThemes()
     {
         var css = Tokens() + Web("wwwroot", "css", "site.css");
