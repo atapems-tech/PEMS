@@ -1115,6 +1115,9 @@ app.Use(async (context, next) =>
     await next();
 });
 
+// SCRUM-464: one trace id on the response (X-Trace-Id), on every log line and on the error pages; before the exception handler so the error pages carry it.
+PEMS.Web.Diagnostics.PemsTrace.UsePemsTraceId(app);
+
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");

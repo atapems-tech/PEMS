@@ -27,6 +27,10 @@ Display is not data: digits and calendars shown to a user are formatted by the p
 
 When a rule does not fit, change the ADR first (a new ADR if it reverses a decision), then this chapter, then the code.
 
+## One trace id (SCRUM-464)
+
+Every response carries `X-Trace-Id`, the W3C trace id of the request (the server request id when no trace is active), and every problem+json body carries the same value as `traceId`. The same value is the `TraceId` property of every log line of the request and the reference shown on the error pages and in client toasts, so a support request that quotes it finds the log entry. Code: `PEMS.Web.Diagnostics.PemsTrace` (`UsePemsTraceId` runs before the exception handler, `ProblemTraceIdFilter` fills the body). Never invent a second reference.
+
 ## Building an endpoint (the walking skeleton, SCRUM-435)
 
 The shared plumbing lives in `PEMS.Web/Api`; the pilot resource `DisciplinesApiController` (`/api/v1/disciplines`) is the example to copy.

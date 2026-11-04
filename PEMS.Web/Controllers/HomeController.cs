@@ -336,13 +336,13 @@ namespace PEMS.Web.Controllers
         public IActionResult StatusPage(int code = 500)
         {
             if (code < 400 || code > 599) code = 500;
-            return View(new StatusPageViewModel { Code = code, RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            return View(new StatusPageViewModel { Code = code, RequestId = PEMS.Web.Diagnostics.PemsTrace.Current(HttpContext) });
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            return View(new ErrorViewModel { RequestId = PEMS.Web.Diagnostics.PemsTrace.Current(HttpContext) });
         }
     }
 }
