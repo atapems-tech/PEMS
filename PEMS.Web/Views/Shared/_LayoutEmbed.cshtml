@@ -36,10 +36,7 @@
         <link rel="stylesheet" href="~/css/admin.rtl.css" asp-append-version="true" />
     }
     <link rel="stylesheet" href="~/PEMS.Web.styles.css" asp-append-version="true" />
-    <style>
-        body.pems-embed { margin: 0; padding: 12px; background: var(--pems-surface, #fff); }
-        body.pems-embed .pems-page-header { display: none; }
-    </style>
+    <link rel="stylesheet" href="~/css/pems-embed.css" asp-append-version="true" />
     @await RenderSectionAsync("Styles", required: false)
 </head>
 <body class="pems-embed" data-pems-skeleton-label="@Localizer["Loading"]" data-pems-confirm-title="@Localizer["Confirm_Title"]" data-pems-confirm-ok="@Localizer["Confirm_Ok"]" data-pems-confirm-cancel="@Localizer["Confirm_Cancel"]">

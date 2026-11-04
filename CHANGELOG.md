@@ -3,6 +3,12 @@
 All notable changes to PEMS. No system version is defined yet (plan row F_CI), so entries are grouped by date
 and theme and were reconstructed from the git history (initial import 2026-09-05). Newest first.
 
+## 2026-11-04 - Page style blocks move to stylesheets (SCRUM-347, part)
+
+### Changed
+- Six `<style>` blocks (navigation visibility index and effective user, admin user details, workflow designer, letter details, the embed layout) moved verbatim to stylesheets under `wwwroot/css` and are linked from the page `Styles` section; a test lists the only two allowed exceptions (the stage diagram partials, which write Razor values into their rules). The pdf.js CDN references were already gone.
+- Still open in SCRUM-347: 765 static inline `style=` attributes in 213 views, 60 inline scripts (13 with Razor values), the Content-Security-Policy itself.
+
 ## 2026-11-04 - Design tokens: other themes and literal colours move to tokens.css (SCRUM-476, part)
 
 ### Changed
