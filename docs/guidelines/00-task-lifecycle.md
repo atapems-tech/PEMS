@@ -9,6 +9,13 @@ Field ownership between the plan files and Jira: [PLAN_TRACKER_WORKFLOW.md](../p
 1. **Read this guideline** (README reading map). Skim the last entries of the [learnings log](learnings-log.md).
 2. **Read the issue** (`getJiraIssue`): *Why*, *What to do*, *Done when*, *Depends on*, Plan ID, parent, sprint, comments.
    Also read the matching backlog row `plan/rows/NNNN.md` (`python tools/plan-sync/plan_sync.py show <id>`: Evidence, Prompt, Requirement, Depends) - Jira shows a copy, the plan owns scope.
+2a. **Re-audit the scope against today's code before you start** (owner decision 2026-11-04). A task is written at one date and started at another: pages were converted, components added, other tasks merged in between. Before the first edit, measure the task's "What to do" against the current repository (counts from the ratchet `tools/UiAudit/adoption-baseline.json`, a grep of the views, the registry, open and merged PRs of the area) and decide, in the plan comment, one of:
+   - **go as written** (the numbers still hold);
+   - **modify** the scope (update the issue text and the plan row: new counts, the pages that really remain, the pages that turned out not to be of this kind, such as a dashboard in a list task);
+   - **split** it (a part needs an owner decision or another task's result: make it its own issue with a parent and labels) or **merge** it into a neighbour (rule 28, no duplicates);
+   - **cancel** it because the work is already done or no longer needed (see the cancel rule below).
+   Always work from the **current state** of each page, never from the old description of it, and never convert a page back to older markup. Then start.
+   **Cancelling an issue:** this Jira project has no "Won't Do" / "Cancelled" status. Until an admin adds one (then use it), a cancelled issue gets a comment with the reason and the evidence (PR, test, ADR), the label `wont-do`, and is moved to **Done** (the one case where Done is not a QA result) - only after the owner (or the user in chat) says yes. Never delete an issue and never leave a dead one open.
 3. **Check dependencies.** If any blocker is not Done, stop and tell the user before writing code.
 4. **Study related Jira issues.** Search the project (JQL on Plan ID, area label `area-<name>`, summary keywords, same epic/milestone):
    open, in-progress and recently Done issues that touch the same area. Read their comments and commits. Goal: no duplicated work,
