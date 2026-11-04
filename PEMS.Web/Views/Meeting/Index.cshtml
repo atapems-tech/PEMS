@@ -1,72 +1,71 @@
 ﻿@model PEMS.Application.DTOs.PagedResult<PEMS.Application.DTOs.MeetingDto>
 @using Microsoft.Extensions.Localization
 @using PEMS.Web.Resources
+@using PEMS.Web.Helpers
 @inject IStringLocalizer<SharedResource> Localizer
 
+@section Styles { <link rel="stylesheet" href="~/_content/PEMS.UI/pems-list.css" asp-append-version="true" /> }
 
-<div class="content-card">
-    <div class="d-flex justify-content-between mb-3">
-        <pems-button tone="neutral" size="small" outline="true" type="button" onclick="PemsDataGrid.resetColumns('Meeting')">
-            <i class="bi bi-arrow-counterclockwise"></i> @Localizer["Reset columns"]
-        </pems-button>
-        <pems-button tone="primary" size="small" type="button" data-bs-toggle="modal" data-bs-target="#createMeetingModal">
-            <i class="bi bi-plus-lg"></i> @Localizer["Schedule Meeting"]
-        </pems-button>
-    </div>
-    <div class="table-responsive table-scroll-area pems-grid-scroll" style="max-height:65vh; overflow-y:auto;">
-    <pems-table kind="enterprise" css="pems-grid-table" data-grid-key="Meeting">
-        <thead>
-            <tr>
-                <th data-col-key="title" data-resizable="true" data-min-width="120" data-max-width="320" style="width:200px">@Localizer["Title"]</th>
-                <th data-col-key="date" data-resizable="true" data-min-width="100" data-max-width="180" style="width:150px">@Localizer["Date"]</th>
-                <th data-col-key="location" data-resizable="true" data-min-width="80" data-max-width="200" style="width:130px">@Localizer["Location"]</th>
-                <th data-col-key="organizer" data-resizable="true" data-min-width="80" data-max-width="200" style="width:130px">@Localizer["Organizer"]</th>
-                <th data-col-key="project" data-resizable="true" data-min-width="100" data-max-width="220" style="width:140px">@Localizer["Project"]</th>
-                <th data-col-key="attendees" data-resizable="true" data-min-width="70" data-max-width="120" style="width:90px">@Localizer["Attendees"]</th>
-                <th data-col-key="actionItems" data-resizable="true" data-min-width="80" data-max-width="140" style="width:100px">@Localizer["Action Items"]</th>
-                <th data-col-key="status" data-resizable="true" data-min-width="90" data-max-width="180" style="width:110px">@Localizer["Status"]</th>
-                <th data-col-key="actions" data-resizable="false" style="width:60px"></th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var m in Model.Items)
-            {
-                <tr>
-                    <td>@m.Title</td>
-                    <td class="small">@m.MeetingDate.ToString("yyyy-MM-dd HH:mm")</td>
-                    <td class="small">@m.Location</td>
-                    <td class="small">@m.OrganizerName</td>
-                    <td class="small">@m.ProjectName</td>
-                    <td><pems-badge tone="neutral">@m.AttendeeCount</pems-badge></td>
-                    <td><pems-badge tone="info">@m.ActionItemCount</pems-badge></td>
-                    <td><pems-badge tone="@(m.Status == "Completed" ? "success" : m.Status == "Cancelled" ? "dark" : "warning")">@m.Status</pems-badge></td>
-                    <td><pems-button tone="neutral" size="small" outline="true" as="a" asp-action="Details" asp-route-id="@m.MeetingId"><i class="bi bi-eye"></i></pems-button></td>
-                </tr>
-            }
-        </tbody>
-    </pems-table>
-    </div>
-    @if (!Model.Items.Any()) { <p class="text-muted text-center py-4">No meetings scheduled yet.</p> }
+@* SCRUM-337: built from the PEMS.UI list-page component; "Schedule Meeting" opens the page's own modal. *@
+<pems-list-page texts="@ListPageTexts.From(Localizer)">
+    <pems-list-panel>
+        <pems-list-toolbar heading="@Localizer["Meetings"]" total="@Model.TotalCount">
+            <pems-list-tools>
+                <pems-list-reset-columns grid-key="Meeting" />
+                <pems-list-new modal="createMeetingModal" text="@Localizer["Schedule Meeting"]" />
+            </pems-list-tools>
+        </pems-list-toolbar>
 
-    @await Html.PartialAsync("_Pagination", new PEMS.Web.ViewModels.PaginationViewModel
-    {
-        Page = Model.Page,
-        TotalPages = Model.TotalPages,
-        TotalCount = Model.TotalCount,
-        PageSize = Model.PageSize,
-        GridKey = "Meeting",
-        BaseUrl = Url.Action("Index") ?? "",
-        ExistingQueryString = ""
-    })
-</div>
+        <pems-list-grid>
+            <pems-list-table grid-key="Meeting" empty="@(!Model.Items.Any())" empty-text="No meetings scheduled yet."
+                             filtered="@false" clear-href="@Url.Action("Index")">
+                <thead>
+                    <tr>
+                        <th data-col-key="title" data-resizable="true" data-min-width="120" data-max-width="320" style="width:200px">@Localizer["Title"]</th>
+                        <th data-col-key="date" data-resizable="true" data-min-width="100" data-max-width="180" style="width:150px">@Localizer["Date"]</th>
+                        <th data-col-key="location" data-resizable="true" data-min-width="80" data-max-width="200" style="width:130px">@Localizer["Location"]</th>
+                        <th data-col-key="organizer" data-resizable="true" data-min-width="80" data-max-width="200" style="width:130px">@Localizer["Organizer"]</th>
+                        <th data-col-key="project" data-resizable="true" data-min-width="100" data-max-width="220" style="width:140px">@Localizer["Project"]</th>
+                        <th data-col-key="attendees" data-resizable="true" data-min-width="70" data-max-width="120" style="width:90px">@Localizer["Attendees"]</th>
+                        <th data-col-key="actionItems" data-resizable="true" data-min-width="80" data-max-width="140" style="width:100px">@Localizer["Action Items"]</th>
+                        <th data-col-key="status" data-resizable="true" data-min-width="90" data-max-width="180" style="width:110px">@Localizer["Status"]</th>
+                        <th data-col-key="actions" data-resizable="false" style="width:60px"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var m in Model.Items)
+                    {
+                        <tr class="lp-row">
+                            <td class="lp-no"><a asp-action="Details" asp-route-id="@m.MeetingId" class="lp-subject">@m.Title</a></td>
+                            <td class="small">@m.MeetingDate.ToString("yyyy-MM-dd HH:mm")</td>
+                            <td class="small">@m.Location</td>
+                            <td class="small">@m.OrganizerName</td>
+                            <td class="small">@m.ProjectName</td>
+                            <td><pems-badge tone="neutral">@m.AttendeeCount</pems-badge></td>
+                            <td><pems-badge tone="info">@m.ActionItemCount</pems-badge></td>
+                            <td><pems-badge tone="@(m.Status == "Completed" ? "success" : m.Status == "Cancelled" ? "dark" : "warning")">@m.Status</pems-badge></td>
+                            <td><pems-button tone="neutral" size="small" outline="true" as="a" asp-action="Details" asp-route-id="@m.MeetingId"><i class="bi bi-eye"></i></pems-button></td>
+                        </tr>
+                    }
+                </tbody>
+            </pems-list-table>
+            <pems-list-footer>
+                @await Html.PartialAsync("_Pagination", new PEMS.Web.ViewModels.PaginationViewModel
+                {
+                    Page = Model.Page,
+                    TotalPages = Model.TotalPages,
+                    TotalCount = Model.TotalCount,
+                    PageSize = Model.PageSize,
+                    GridKey = "Meeting",
+                    BaseUrl = Url.Action("Index") ?? "",
+                    ExistingQueryString = ""
+                })
+            </pems-list-footer>
+        </pems-list-grid>
+    </pems-list-panel>
+</pems-list-page>
 
-@section Scripts {
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            PemsDataGrid.initColumnResize('Meeting');
-        });
-    </script>
-}
+@section Scripts { <script src="~/_content/PEMS.UI/pems-list.js" asp-append-version="true"></script> }
 
 <pems-modal size="large" id="createMeetingModal" tabindex="-1">
             <form asp-controller="Meeting" asp-action="Create" method="post">

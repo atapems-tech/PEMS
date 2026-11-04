@@ -522,6 +522,19 @@ public class CmmsListPagesTests
         Assert.Contains("vs-pill--warning", html);
     }
 
+    [Fact]
+    public async Task Meetings_AreAListPage_AndScheduleOpensTheirOwnModal()
+    {
+        var html = await Render<MeetingController>("/Views/Meeting/Index.cshtml", Page(
+            new MeetingDto { MeetingId = 5, Title = "Weekly review", MeetingDate = new DateTime(2026, 11, 2, 9, 0, 0), Status = "Scheduled", AttendeeCount = 3, ActionItemCount = 1 }),
+            v => v["Projects"] = new List<dynamic>());
+
+        AssertBuiltFromTheComponent(html, "Meeting", 1, keepsDataBadges: true);   // counts and status are library badges
+        Assert.Contains("Weekly review", html);
+        Assert.Contains("data-bs-target=\"#createMeetingModal\"", html);
+        Assert.Contains("id=\"createMeetingModal\"", html);
+    }
+
     // ---------- RCM / FMEA coverage ----------
 
     [Fact]
