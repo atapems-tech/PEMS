@@ -30,7 +30,7 @@ public class PremiumGlassSystemTests
     [Fact]
     public void TurquoiseTheme_BackgroundIsVeryDark_InkTealBase()
     {
-        var css = Web("wwwroot", "css", "site.css");
+        var css = Ui("wwwroot", "tokens.css");   // the turquoise block moved to tokens.css (SCRUM-476)
         // v3: انتخابگر :root[data-theme] (مشخصیت بالاتر از :root ی admin.css)؛ علت اصلی ظاهر خراب نسخه‌ی قبل
         var start = css.IndexOf(":root[data-theme=\"turquoise\"] {", StringComparison.Ordinal);
         Assert.True(start >= 0, "turquoise token block must exist");

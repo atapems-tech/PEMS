@@ -21,7 +21,7 @@
 
 :is([data-theme="light"], [data-theme="dark"]) :is(.btn-pems-solid, .vs-page .btn-pems-solid, .vs-btn--primary, .btn-pems,
         .admin-page .btn-primary, .admin-page-shell .btn-pems-solid):is(:hover, :focus) {
-    background: linear-gradient(135deg, #ffcb78, var(--pems-cta-start));
+    background: linear-gradient(135deg, var(--pems-color-ffcb78), var(--pems-cta-start));
     color: var(--pems-on-accent);
     opacity: 1;
 }
@@ -56,20 +56,20 @@
 :is([data-theme="light"], [data-theme="dark"]) :is(.form-control, .form-select).is-invalid { border-color: var(--pems-chart-danger-text); }
 
 :is([data-theme="light"], [data-theme="dark"]) .form-check-input { border-color: var(--pems-border-strong); background-color: var(--pems-input-bg); }
-:is([data-theme="light"], [data-theme="dark"]) .form-check-input:checked { background-color: #1d4ed8; border-color: #1d4ed8; }
+:is([data-theme="light"], [data-theme="dark"]) .form-check-input:checked { background-color: var(--pems-color-1d4ed8); border-color: var(--pems-color-1d4ed8); }
 :is([data-theme="light"], [data-theme="dark"]) .form-check-input:focus { border-color: var(--pems-focus); box-shadow: 0 0 0 3px color-mix(in srgb, var(--pems-focus) 28%, transparent); }
 
 /* --- «حالت فعال» کامپوننت‌ها: آبی برند با متن سفید (۶.۷:۱) به‌جای #0d6efd پیش‌فرض (۵.۲:۱ ولی رنگ خارج از پالت) --- */
 :is([data-theme="light"], [data-theme="dark"]) .list-group {
-    --bs-list-group-active-bg: #1d4ed8; --bs-list-group-active-border-color: #1d4ed8; --bs-list-group-active-color: #fff;
+    --bs-list-group-active-bg: var(--pems-color-1d4ed8); --bs-list-group-active-border-color: var(--pems-color-1d4ed8); --bs-list-group-active-color: var(--pems-color-fff);
 }
 :is([data-theme="light"], [data-theme="dark"]) .pagination {
-    --bs-pagination-active-bg: #1d4ed8; --bs-pagination-active-border-color: #1d4ed8; --bs-pagination-active-color: #fff;
+    --bs-pagination-active-bg: var(--pems-color-1d4ed8); --bs-pagination-active-border-color: var(--pems-color-1d4ed8); --bs-pagination-active-color: var(--pems-color-fff);
     --bs-pagination-color: var(--pems-link); --bs-pagination-hover-color: var(--pems-link-hover);
 }
-:is([data-theme="light"], [data-theme="dark"]) .progress { --bs-progress-bar-bg: #2563eb; }
-:is([data-theme="light"], [data-theme="dark"]) .nav-pills { --bs-nav-pills-link-active-bg: #1d4ed8; --bs-nav-pills-link-active-color: #fff; }
-:is([data-theme="light"], [data-theme="dark"]) .dropdown-menu { --bs-dropdown-link-active-bg: #1d4ed8; --bs-dropdown-link-active-color: #fff; }
+:is([data-theme="light"], [data-theme="dark"]) .progress { --bs-progress-bar-bg: var(--pems-color-2563eb); }
+:is([data-theme="light"], [data-theme="dark"]) .nav-pills { --bs-nav-pills-link-active-bg: var(--pems-color-1d4ed8); --bs-nav-pills-link-active-color: var(--pems-color-fff); }
+:is([data-theme="light"], [data-theme="dark"]) .dropdown-menu { --bs-dropdown-link-active-bg: var(--pems-color-1d4ed8); --bs-dropdown-link-active-color: var(--pems-color-fff); }
 
 /* --- ردیف انتخاب‌شده در جدول: روی سلول‌ها (پس‌زمینه‌ی سلول مات است) + لبه‌ی آبی سمت شروع، هر دو جهت --- */
 :is([data-theme="light"], [data-theme="dark"]) .table-enterprise tbody tr:is(.selected, [aria-selected="true"]) > td {
@@ -85,30 +85,30 @@ html[dir="rtl"]:is([data-theme="light"], [data-theme="dark"]) .table-enterprise 
 /* =========================================================================================
    فقط Dark
    ========================================================================================= */
-[data-theme="dark"] body { scrollbar-color: #3a4a60 transparent; scrollbar-width: thin; }
+[data-theme="dark"] body { scrollbar-color: var(--pems-color-3a4a60) transparent; scrollbar-width: thin; }
 
 /* منو/مودال بالاتر از کارت (elev-menu) با حاشیه‌ی روشن‌تر؛ بوت‌استرپ dark متن/هاور را از توکن‌ها می‌گیرد */
 [data-theme="dark"] :is(.dropdown-menu, .modal-content) {
     background: var(--pems-elev-menu);
-    border-color: #34425a;
+    border-color: var(--pems-color-34425a);
     box-shadow: 0 16px 40px rgba(0, 0, 0, .5);
     --bs-dropdown-link-color: var(--pems-text);
-    --bs-dropdown-link-hover-color: #fff;
+    --bs-dropdown-link-hover-color: var(--pems-color-fff);
     --bs-dropdown-link-hover-bg: rgba(91, 156, 248, .16);
     --bs-dropdown-header-color: var(--pems-text-muted);
-    --bs-dropdown-divider-bg: #34425a;
+    --bs-dropdown-divider-bg: var(--pems-color-34425a);
 }
-[data-theme="dark"] :is(.modal-header, .modal-footer) { border-color: #34425a; }
-[data-theme="dark"] .modal-backdrop { --bs-backdrop-bg: #04070b; --bs-backdrop-opacity: .7; }
+[data-theme="dark"] :is(.modal-header, .modal-footer) { border-color: var(--pems-color-34425a); }
+[data-theme="dark"] .modal-backdrop { --bs-backdrop-bg: var(--pems-color-04070b); --bs-backdrop-opacity: .7; }
 
 /* chip/دکمه‌ی خطر: #ba1a1a (۲.۵:۱ روی تیره) → رنگ متنی AA */
 [data-theme="dark"] .vs-chip--danger { border-color: var(--pems-chart-danger-text); color: var(--pems-chart-danger-text); }
 [data-theme="dark"] .vs-btn--danger:hover { border-color: var(--pems-chart-danger-text); color: var(--pems-chart-danger-text); }
 [data-theme="dark"] .pems-due-overdue { color: var(--pems-chart-danger-text); }
 [data-theme="dark"] .btn-outline-danger {
-    --bs-btn-color: #ff8f84; --bs-btn-border-color: rgba(255, 143, 132, .55);
-    --bs-btn-hover-bg: #b42318; --bs-btn-hover-color: #fff; --bs-btn-hover-border-color: #b42318;
-    --bs-btn-active-bg: #912018; --bs-btn-active-color: #fff; --bs-btn-active-border-color: #912018;
+    --bs-btn-color: var(--pems-color-ff8f84); --bs-btn-border-color: rgba(255, 143, 132, .55);
+    --bs-btn-hover-bg: var(--pems-color-b42318); --bs-btn-hover-color: var(--pems-color-fff); --bs-btn-hover-border-color: var(--pems-color-b42318);
+    --bs-btn-active-bg: var(--pems-color-912018); --bs-btn-active-color: var(--pems-color-fff); --bs-btn-active-border-color: var(--pems-color-912018);
 }
 
 /* آیکون‌های KPI و پیوند «فعال» منو روی تیره */
@@ -120,4 +120,4 @@ html[dir="rtl"]:is([data-theme="light"], [data-theme="dark"]) .table-enterprise 
    فقط Light
    ========================================================================================= */
 /* chip خطر در Light همان #ba1a1a (۶.۳:۱) می‌ماند؛ فقط دکمه‌ی خطر روی سفید ۴.۵:۱ مرزی بود → کمی تیره‌تر */
-[data-theme="light"] .btn-outline-danger { --bs-btn-color: #b42318; --bs-btn-border-color: #b42318; --bs-btn-hover-bg: #b42318; --bs-btn-hover-color: #fff; }
+[data-theme="light"] .btn-outline-danger { --bs-btn-color: var(--pems-color-b42318); --bs-btn-border-color: var(--pems-color-b42318); --bs-btn-hover-bg: var(--pems-color-b42318); --bs-btn-hover-color: var(--pems-color-fff); }
