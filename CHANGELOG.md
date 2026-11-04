@@ -3,6 +3,11 @@
 All notable changes to PEMS. No system version is defined yet (plan row F_CI), so entries are grouped by date
 and theme and were reconstructed from the git history (initial import 2026-09-05). Newest first.
 
+## 2026-11-04 - My Work is a list page (SCRUM-337)
+
+### Changed
+- My Work (approvals) is built from `pems-list-page`: the chip row became module, personal and overdue filters with removable chips (the counts stay as KPI chips behind the toggle), notifications and action items moved to the page menu, the page-number row became the shared pager.
+
 ## 2026-11-04 - Classification review queue and AI extraction list are list pages (SCRUM-337)
 
 ### Changed

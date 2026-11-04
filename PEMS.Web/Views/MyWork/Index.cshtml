@@ -2,6 +2,7 @@
 @using Microsoft.Extensions.Localization
 @using PEMS.Web.Resources
 @using PEMS.Web.Helpers
+@using Microsoft.AspNetCore.Mvc.Rendering
 @inject IStringLocalizer<SharedResource> Localizer
 @{
     var summary = Model.Summary;
@@ -16,44 +17,68 @@
         return l.ResourceNotFound ? t.StageName : l.Value;
     }
     string ModuleLabel(string m) { var l = Localizer["MyWork_Module_" + m]; return l.ResourceNotFound ? m : l.Value; }
+
+    var personalValue = Model.PersonalOnly ? "true" : null;
+    var overdueValue = Model.OverdueOnly ? "true" : null;
+    var filterCount = (Model.Module == null ? 0 : 1) + (Model.PersonalOnly ? 1 : 0) + (Model.OverdueOnly ? 1 : 0);
+    var pages = Model.Page.PageSize == 0 ? 1 : (int)Math.Ceiling(Model.Page.TotalCount / (double)Model.Page.PageSize);
+    var qsParts = new List<string>();
+    if (Model.Module != null) qsParts.Add($"module={Uri.EscapeDataString(Model.Module)}");
+    if (Model.OverdueOnly) qsParts.Add("overdueOnly=true");
+    if (Model.PersonalOnly) qsParts.Add("personalOnly=true");
 }
 
-<section class="vs-panel">
-    <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-2">
-        <h2 class="h5 mb-0"><i class="bi bi-list-check" aria-hidden="true"></i> @Localizer["MyWork_Approvals"]</h2>
-        <div class="d-flex flex-wrap gap-2">
-            <a class="vs-chip text-decoration-none" asp-controller="Notification" asp-action="Index"><i class="bi bi-bell" aria-hidden="true"></i> @Localizer["MyWork_Notifications"] <strong>@unread</strong></a>
-            <a class="vs-chip text-decoration-none" asp-controller="Task" asp-action="Index"><i class="bi bi-check2-square" aria-hidden="true"></i> @Localizer["MyWork_ActionItems"] <strong>@openItems</strong></a>
-        </div>
-    </div>
-    <p class="small text-muted mb-3">@Localizer["MyWork_Hint"]</p>
+@section Styles { <link rel="stylesheet" href="~/_content/PEMS.UI/pems-list.css" asp-append-version="true" /> }
 
-    <div class="d-flex flex-wrap gap-2 mb-3" role="group" aria-label="@Localizer["MyWork_Module"]">
-        <a class="vs-chip text-decoration-none @(Model.Module == null && !Model.OverdueOnly && !Model.PersonalOnly ? "vs-chip--active" : "")" asp-action="Index">@Localizer["MyWork_All"] <strong>@summary.Total</strong></a>
-        <a class="vs-chip text-decoration-none @(Model.PersonalOnly ? "vs-chip--active" : "")" asp-action="Index" asp-route-personalOnly="true">@Localizer["MyWork_Personal"] <strong>@summary.Personal</strong></a>
-        @if (summary.WithSla > 0 || Model.OverdueOnly)
-        {
-            <a class="vs-chip text-decoration-none @(Model.OverdueOnly ? "vs-chip--active" : "") @(summary.Overdue > 0 ? "vs-chip--danger" : "")" asp-action="Index" asp-route-overdueOnly="true">@Localizer["MyWork_Overdue"] <strong>@summary.Overdue</strong></a>
-        }
-        @foreach (var kv in summary.ByModule)
-        {
-            <a class="vs-chip text-decoration-none @(string.Equals(Model.Module, kv.Key, StringComparison.OrdinalIgnoreCase) ? "vs-chip--active" : "")" asp-action="Index" asp-route-module="@kv.Key">@ModuleLabel(kv.Key) <strong>@kv.Value</strong></a>
-        }
-    </div>
-
+@* SCRUM-337: built from the PEMS.UI list-page component; the chip row became the module / personal / overdue filters (the counts stay as KPI chips), the hint the heading tooltip, the page-number row the shared pager. *@
+<pems-list-page texts="@ListPageTexts.From(Localizer)">
     @if (summary.Total > 0 && summary.WithSla == 0)
     {
-        <p class="small text-muted mb-2"><i class="bi bi-info-circle" aria-hidden="true"></i> @Localizer["MyWork_NoSla"]</p>
+        <pems-alert tone="info" css="py-2 px-3 small"><i class="bi bi-info-circle" aria-hidden="true"></i> @Localizer["MyWork_NoSla"]</pems-alert>
     }
 
-    @if (!Model.Page.Items.Any())
-    {
-        <div class="vs-empty py-3"><i class="bi bi-inbox" aria-hidden="true"></i> @Localizer["MyWork_Empty"]</div>
-    }
-    else
-    {
-        <div class="table-responsive">
-            <pems-table scale="small" css="table-enterprise vs-dense mb-0">
+    <pems-list-panel>
+        <pems-list-toolbar heading="@Localizer["MyWork_Approvals"]" heading-title="@Localizer["MyWork_Hint"]" total="@Model.Page.TotalCount">
+            <pems-list-tools>
+                <pems-list-filters form-id="mwFilter" action="@Url.Action("Index")" count="@filterCount" reset-href="@Url.Action("Index")">
+                    <pems-list-filter-select id="mwModule" name="module" label="@Localizer["MyWork_Module"]" value="@Model.Module"
+                                             all-text="@Localizer["MyWork_All"]" items="@summary.ByModule.Select(kv => new SelectListItem(ModuleLabel(kv.Key), kv.Key))" />
+                    <pems-list-filter-select id="mwPersonal" name="personalOnly" label="@Localizer["MyWork_Personal"]" value="@personalValue"
+                                             all-text="@Localizer["MyWork_All"]" items="@(new[] { new SelectListItem(Localizer["MyWork_Personal"].Value, "true") })" />
+                    <pems-list-filter-select id="mwOverdue" name="overdueOnly" label="@Localizer["MyWork_Overdue"]" value="@overdueValue"
+                                             all-text="@Localizer["MyWork_All"]" items="@(new[] { new SelectListItem(Localizer["MyWork_Overdue"].Value, "true") })" />
+                </pems-list-filters>
+                <pems-list-kpi-toggle target="mwKpis" storage-key="pems.mywork.kpis" />
+                <pems-list-reset-columns grid-key="MyWork" />
+                <pems-list-menu id="mwMoreBtn" icon="bi-three-dots" label="@Localizer["Lp_More"]">
+                    <li><a class="dropdown-item" asp-controller="Notification" asp-action="Index"><i class="bi bi-bell" aria-hidden="true"></i> @Localizer["MyWork_Notifications"] (@unread)</a></li>
+                    <li><a class="dropdown-item" asp-controller="Task" asp-action="Index"><i class="bi bi-check2-square" aria-hidden="true"></i> @Localizer["MyWork_ActionItems"] (@openItems)</a></li>
+                </pems-list-menu>
+            </pems-list-tools>
+        </pems-list-toolbar>
+
+        <pems-list-kpis id="mwKpis">
+            <span class="vs-chip">@Localizer["MyWork_All"] <strong>@summary.Total</strong></span>
+            <span class="vs-chip">@Localizer["MyWork_Personal"] <strong>@summary.Personal</strong></span>
+            @if (summary.WithSla > 0 || Model.OverdueOnly)
+            {
+                <span class="vs-chip @(summary.Overdue > 0 ? "vs-chip--danger" : "")">@Localizer["MyWork_Overdue"] <strong>@summary.Overdue</strong></span>
+            }
+            @foreach (var kv in summary.ByModule)
+            {
+                <span class="vs-chip">@ModuleLabel(kv.Key) <strong>@kv.Value</strong></span>
+            }
+        </pems-list-kpis>
+
+        <pems-list-chips reset-href="@Url.Action("Index")">
+            @if (Model.Module != null) { <pems-list-chip label="@Localizer["MyWork_Module"]" value="@ModuleLabel(Model.Module)" remove-href="@Url.Action("Index", new { personalOnly = personalValue, overdueOnly = overdueValue })" /> }
+            @if (Model.PersonalOnly) { <pems-list-chip label="@Localizer["MyWork_Personal"]" value="@Localizer["MyWork_Personal"]" remove-href="@Url.Action("Index", new { module = Model.Module, overdueOnly = overdueValue })" /> }
+            @if (Model.OverdueOnly) { <pems-list-chip label="@Localizer["MyWork_Overdue"]" value="@Localizer["MyWork_Overdue"]" remove-href="@Url.Action("Index", new { module = Model.Module, personalOnly = personalValue })" /> }
+        </pems-list-chips>
+
+        <pems-list-grid>
+            <pems-list-table grid-key="MyWork" empty="@(!Model.Page.Items.Any())" empty-text="@Localizer["MyWork_Empty"]"
+                             filtered="@(filterCount > 0)" clear-href="@Url.Action("Index")">
                 <thead>
                     <tr>
                         <th>@Localizer["MyWork_Module"]</th>
@@ -67,7 +92,7 @@
                 @foreach (var t in Model.Page.Items)
                 {
                     var path = WorkflowTaskLinks.TryGetPath(t.Module, t.BusinessObjectType, t.BusinessObjectId);
-                    <tr>
+                    <tr class="lp-row">
                         <td>@ModuleLabel(t.Module)</td>
                         <td>@StageLabel(t)
                             @if (t.IsPersonal) { <span class="vs-pill vs-pill--warning ms-1">@Localizer["MyWork_Personal"]</span> }
@@ -89,22 +114,21 @@
                     </tr>
                 }
                 </tbody>
-            </pems-table>
-        </div>
+            </pems-list-table>
+            <pems-list-footer>
+                @await Html.PartialAsync("_Pagination", new PEMS.Web.ViewModels.PaginationViewModel
+                {
+                    Page = Model.Page.Page,
+                    TotalPages = pages,
+                    TotalCount = Model.Page.TotalCount,
+                    PageSize = Model.Page.PageSize,
+                    GridKey = "MyWork",
+                    BaseUrl = Url.Action("Index") ?? "",
+                    ExistingQueryString = string.Join("&", qsParts)
+                })
+            </pems-list-footer>
+        </pems-list-grid>
+    </pems-list-panel>
+</pems-list-page>
 
-        var pages = (int)Math.Ceiling(Model.Page.TotalCount / (double)Model.Page.PageSize);
-        if (pages > 1)
-        {
-            <nav class="mt-3" aria-label="pagination">
-                <ul class="pagination pagination-sm mb-0">
-                    @for (var p = Math.Max(1, Model.Page.Page - 3); p <= Math.Min(pages, Model.Page.Page + 3); p++)
-                    {
-                        <li class="page-item @(p == Model.Page.Page ? "active" : "")">
-                            <a class="page-link" asp-action="Index" asp-route-page="@p" asp-route-pageSize="@Model.Page.PageSize" asp-route-module="@Model.Module" asp-route-overdueOnly="@Model.OverdueOnly" asp-route-personalOnly="@Model.PersonalOnly">@p</a>
-                        </li>
-                    }
-                </ul>
-            </nav>
-        }
-    }
-</section>
+@section Scripts { <script src="~/_content/PEMS.UI/pems-list.js" asp-append-version="true"></script> }
