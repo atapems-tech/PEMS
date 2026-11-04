@@ -1,54 +1,43 @@
 ﻿@model List<(PEMS.Domain.Entities.DocumentAttachment Attachment, int PendingTags, int PendingSpecs)>
 @using Microsoft.Extensions.Localization
 @using PEMS.Web.Resources
+@using PEMS.Web.Helpers
 @inject IStringLocalizer<SharedResource> Localizer
 
-<div class="content-card">
-    <p class="text-muted">
-        فایل‌هایی که تحلیل هوش مصنوعی روی آن‌ها کامل شده‌اند. برای هرکدام تگ‌های تجهیز و مشخصات فنی
-        استخراج‌شده را بازبینی و تایید/رد کنید.
-    </p>
+@section Styles { <link rel="stylesheet" href="~/_content/PEMS.UI/pems-list.css" asp-append-version="true" /> }
 
-    <div class="table-responsive table-scroll-area" style="max-height:65vh; overflow-y:auto;">
-        <pems-table kind="enterprise">
-            <thead>
-                <tr>
-                    <th>@Localizer["File"]</th><th>@Localizer["Document"]</th><th>@Localizer["Summary"]</th>
-                    <th>@Localizer["Confidence"]</th><th>@Localizer["Pending Tags"]</th><th>@Localizer["Pending Specs"]</th><th></th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var item in Model)
-                {
+@* SCRUM-337: built from the PEMS.UI list-page component; the intro is the heading tooltip. *@
+<pems-list-page texts="@ListPageTexts.From(Localizer)">
+    <pems-list-panel>
+        <pems-list-toolbar heading="@Localizer["AI Extraction"]" total="@Model.Count"
+                           heading-title="فایل‌هایی که تحلیل هوش مصنوعی روی آن‌ها کامل شده‌اند. برای هرکدام تگ‌های تجهیز و مشخصات فنی استخراج‌شده را بازبینی و تایید/رد کنید." />
+        <pems-list-grid>
+            <pems-list-table empty="@(Model.Count == 0)" empty-text="No AI-analyzed documents yet. Try Document Upload or OCR Processing.">
+                <thead>
                     <tr>
-                        <td>@item.Attachment.FileName</td>
-                        <td>@item.Attachment.Document?.DocumentNo</td>
-                        <td class="small text-muted" style="max-width:300px;">@item.Attachment.AISummary</td>
-                        <td>@(item.Attachment.AIConfidence.HasValue ? $"{item.Attachment.AIConfidence:P0}" : "-")</td>
-                        <td>
-                            @if (item.PendingTags > 0)
-                            { <pems-badge tone="warning">@item.PendingTags</pems-badge> }
-                            else
-                            { <pems-badge tone="success">0</pems-badge> }
-                        </td>
-                        <td>
-                            @if (item.PendingSpecs > 0)
-                            { <pems-badge tone="warning">@item.PendingSpecs</pems-badge> }
-                            else
-                            { <pems-badge tone="success">0</pems-badge> }
-                        </td>
-                        <td>
-                            <pems-button tone="primary" size="small" as="a" asp-action="Review" asp-route-attachmentId="@item.Attachment.AttachmentId"
-                              >Review</pems-button>
-                        </td>
+                        <th>@Localizer["File"]</th><th>@Localizer["Document"]</th><th>@Localizer["Summary"]</th>
+                        <th>@Localizer["Confidence"]</th><th>@Localizer["Pending Tags"]</th><th>@Localizer["Pending Specs"]</th><th></th>
                     </tr>
-                }
-            </tbody>
-        </pems-table>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr class="lp-row">
+                            <td>@item.Attachment.FileName</td>
+                            <td>@item.Attachment.Document?.DocumentNo</td>
+                            <td class="small text-muted" style="max-width:300px;">@item.Attachment.AISummary</td>
+                            <td>@(item.Attachment.AIConfidence.HasValue ? $"{item.Attachment.AIConfidence:P0}" : "-")</td>
+                            <td><pems-badge tone="@(item.PendingTags > 0 ? "warning" : "success")">@item.PendingTags</pems-badge></td>
+                            <td><pems-badge tone="@(item.PendingSpecs > 0 ? "warning" : "success")">@item.PendingSpecs</pems-badge></td>
+                            <td>
+                                <pems-button tone="primary" size="small" as="a" asp-action="Review" asp-route-attachmentId="@item.Attachment.AttachmentId">Review</pems-button>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </pems-list-table>
+        </pems-list-grid>
+    </pems-list-panel>
+</pems-list-page>
 
-        @if (!Model.Any())
-        {
-            <p class="text-muted text-center py-4">No AI-analyzed documents yet. Try Document Upload or OCR Processing.</p>
-        }
-    </div>
-</div>
+@section Scripts { <script src="~/_content/PEMS.UI/pems-list.js" asp-append-version="true"></script> }

@@ -3,6 +3,11 @@
 All notable changes to PEMS. No system version is defined yet (plan row F_CI), so entries are grouped by date
 and theme and were reconstructed from the git history (initial import 2026-09-05). Newest first.
 
+## 2026-11-04 - Classification review queue and AI extraction list are list pages (SCRUM-337)
+
+### Changed
+- The equipment classification review queue (status filter, accept/reject forms kept, shared pager instead of the page-number row) and the AI extraction list are built from `pems-list-page`.
+
 ## 2026-11-04 - Maintenance backlog and OCR processing are list pages (SCRUM-337)
 
 ### Changed

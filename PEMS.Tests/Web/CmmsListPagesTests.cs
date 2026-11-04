@@ -607,6 +607,33 @@ public class CmmsListPagesTests
     }
 
     [Fact]
+    public async Task ClassificationReviewQueue_IsAListPage_WithItsStatusFilterAndActions()
+    {
+        var html = await Render<EquipmentClassificationController>("/Views/EquipmentClassification/ReviewQueue.cshtml", new ReviewQueuePageDto
+        {
+            Items = { new ReviewQueueItemDto { SuggestionId = 11, TagNumber = "P-101", EquipmentName = "Pump", SuggestedEquipmentClassName = "Centrifugal pump", Confidence = "MEDIUM", Source = "AI", Reason = "name match" } },
+            TotalCount = 1, Page = 1, PageSize = 50
+        }, v => { v["StatusFilter"] = "PENDING"; });
+
+        AssertBuiltFromTheComponent(html, null, 1, keepsDataBadges: true);
+        Assert.Contains("P-101", html);
+        Assert.Contains("name=\"status\"", html);
+        Assert.Contains("name=\"id\" value=\"11\"", html);   // accept and reject forms kept
+        Assert.DoesNotContain("pagination-sm", html);
+    }
+
+    [Fact]
+    public async Task AiExtraction_IsAListPage()
+    {
+        var html = await Render<AIExtractionController>("/Views/AIExtraction/Index.cshtml",
+            new List<(DocumentAttachment Attachment, int PendingTags, int PendingSpecs)> { (new DocumentAttachment { AttachmentId = 6, FileName = "datasheet.pdf", AISummary = "pump data" }, 2, 0) },
+            _ => { });
+
+        AssertBuiltFromTheComponent(html, null, 1, keepsDataBadges: true);
+        Assert.Contains("datasheet.pdf", html);
+    }
+
+    [Fact]
     public async Task Meetings_AreAListPage_AndScheduleOpensTheirOwnModal()
     {
         var html = await Render<MeetingController>("/Views/Meeting/Index.cshtml", Page(
