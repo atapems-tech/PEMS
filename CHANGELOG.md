@@ -3,6 +3,11 @@
 All notable changes to PEMS. No system version is defined yet (plan row F_CI), so entries are grouped by date
 and theme and were reconstructed from the git history (initial import 2026-09-05). Newest first.
 
+## 2026-11-04 - ImportCenter uses one shared modal (SCRUM-500)
+
+### Changed
+- The ImportCenter import dialog is one `icModal` filled from the opener (`data-fill-formaction`, `data-fill-accept`, title and hint); `pems-modal-fill.js` learned the two keys. The Employee edit modal stays one per row on purpose (its options depend on the row).
+
 ## 2026-11-04 - Meetings on the list-page component (SCRUM-337)
 
 ### Changed

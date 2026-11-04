@@ -32,7 +32,7 @@
                         <div class="small text-muted mb-3 flex-grow-1">@Localizer["IC_" + e.Key + "_Flow"]</div>
                         @if (e.Mode == ImportCatalog.LaunchMode.Dialog)
                         {
-                            <pems-button tone="primary" size="small" outline="true" css="align-self-start" type="button" data-bs-toggle="modal" data-bs-target="#icModal_@e.Key">
+                            <pems-button tone="primary" size="small" outline="true" css="align-self-start" type="button" data-bs-toggle="modal" data-bs-target="#icModal" data-fill-formaction="@Url.Action(e.Action, e.Controller, new { area = e.Area })" data-fill-accept="@e.Accept" data-fill-title="@Localizer["IC_" + e.Key + "_Title"]" data-fill-hint="@Localizer["IC_" + e.Key + "_Hint"]">
                                 <i class="bi bi-box-arrow-in-right"></i> @Localizer["IC_Import"]
                             </pems-button>
                         }
@@ -50,15 +50,15 @@
 }
 
 @* Direct imports: the dialog lives here (the only place an import is started) and posts to the EXISTING import action of the owning module. *@
-@foreach (var e in Model.Where(x => x.Mode == ImportCatalog.LaunchMode.Dialog))
+@if (Model.Any(x => x.Mode == ImportCatalog.LaunchMode.Dialog))
 {
-    <pems-modal id="icModal_@e.Key" tabindex="-1">
-                <form asp-area="@e.Area" asp-controller="@e.Controller" asp-action="@e.Action" method="post" enctype="multipart/form-data">
-                    <div class="modal-header"><h6 class="modal-title">@Localizer["IC_" + e.Key + "_Title"]</h6></div>
+    <pems-modal id="icModal" tabindex="-1">
+                <form method="post" enctype="multipart/form-data">
+                    <div class="modal-header"><h6 class="modal-title" data-fill-text="title"></h6></div>
                     <div class="modal-body">
-                        <p class="text-muted small">@Localizer["IC_" + e.Key + "_Hint"]</p>
+                        <p class="text-muted small" data-fill-text="hint"></p>
                         <pems-label css="small">@Localizer["IC_ChooseFile"]</pems-label>
-                        <pems-input type="file" name="file" accept="@e.Accept" required />
+                        <pems-input type="file" name="file" required />
                     </div>
                     <div class="modal-footer">
                         <pems-button tone="neutral" outline="true" type="button" data-bs-dismiss="modal">@Localizer["IC_Cancel"]</pems-button>

@@ -2,6 +2,7 @@
 //   <button data-bs-toggle="modal" data-bs-target="#replyModal" data-fill-commentid="12" data-fill-commentno="C-7" data-fill-commenttext="...">
 //   inside the modal:  <input name="commentId">  gets 12 (form fields are matched by name, case-insensitive; checkboxes and radios by value),
 //                      <span data-fill-text="commentno"> gets the text "C-7" (textContent, never HTML).
+//   Two keys are not fields: data-fill-formaction sets the action of the modal's form, data-fill-accept the accept list of its file input.
 // The form of the modal is reset before every opening, so a value of the previous row never stays. Vanilla, offline, no inline handlers.
 (function () {
     'use strict';
@@ -28,6 +29,9 @@
         if (!any) return;
         var form = modal.querySelector('form');
         if (form) form.reset();
+        if (form && Object.prototype.hasOwnProperty.call(values, 'formaction')) form.setAttribute('action', values.formaction);
+        var file = modal.querySelector('input[type=file]');
+        if (file && Object.prototype.hasOwnProperty.call(values, 'accept')) file.setAttribute('accept', values.accept);
         fields(modal).forEach(function (field) {
             var key = (field.getAttribute('name') || '').toLowerCase();
             if (Object.prototype.hasOwnProperty.call(values, key)) set(field, values[key]);
