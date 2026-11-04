@@ -143,7 +143,7 @@ else if (view == "week")
             <pems-table kind="enterprise" scale="small" css="pems-cal-week" id="pemsCalWeekTable">
                 <thead>
                     <tr>
-                        <th style="min-width:160px;">@Localizer["Maintenance Team"]</th>
+                        <th class="pems-s-94253f99">@Localizer["Maintenance Team"]</th>
                         @foreach (var d in days) { <th class="text-center @(d.Date == DateTime.Today ? "pems-cal-today" : "")">@d.ToString("ddd")<br /><span class="small text-muted">@d.ToString("MMM d")</span></th> }
                     </tr>
                 </thead>

@@ -55,6 +55,21 @@ public class ThemeSystemTests
     }
 
     [Fact]
+    public void Inline_style_attributes_of_the_views_only_go_down_and_the_generated_classes_are_linked()
+    {
+        // SCRUM-347 (strict Content-Security-Policy): 198 static style attributes became generated classes (pems-inline-styles.css); the rest stay until each is checked in a browser.
+        // Lower this number when you remove one; never raise it: a new style goes in a component or a stylesheet.
+        const int allowed = 587;
+        var root = Path.Combine(Root(), "PEMS.Web");
+        var count = new[] { "Views", "Areas" }.Select(d => Path.Combine(root, d)).Where(Directory.Exists)
+            .SelectMany(d => Directory.EnumerateFiles(d, "*.cshtml", SearchOption.AllDirectories))
+            .Sum(f => System.Text.RegularExpressions.Regex.Matches(File.ReadAllText(f), "\sstyle=\"").Count);
+        Assert.True(count <= allowed, $"{count} inline style attributes in the views, the limit is {allowed}: use a component, a class or a stylesheet.");
+        foreach (var layout in new[] { "_Layout.cshtml", "_LayoutEmbed.cshtml", "_AuthLayout.cshtml" })
+            Assert.Contains("~/css/pems-inline-styles.css", File.ReadAllText(Path.Combine(root, "Views", "Shared", layout)));
+    }
+
+    [Fact]
     public void Views_hold_no_style_blocks_except_the_two_stage_diagrams_that_compute_their_values()
     {
         // SCRUM-347 (strict Content-Security-Policy): page CSS lives in a stylesheet. The two diagram partials write Razor values into their rules.

@@ -25,7 +25,7 @@
                         <tr class="lp-row">
                             <td>@item.Attachment.FileName</td>
                             <td>@item.Attachment.Document?.DocumentNo</td>
-                            <td class="small text-muted" style="max-width:300px;">@item.Attachment.AISummary</td>
+                            <td class="small text-muted pems-s-aef3df2a">@item.Attachment.AISummary</td>
                             <td>@(item.Attachment.AIConfidence.HasValue ? $"{item.Attachment.AIConfidence:P0}" : "-")</td>
                             <td><pems-badge tone="@(item.PendingTags > 0 ? "warning" : "success")">@item.PendingTags</pems-badge></td>
                             <td><pems-badge tone="@(item.PendingSpecs > 0 ? "warning" : "success")">@item.PendingSpecs</pems-badge></td>

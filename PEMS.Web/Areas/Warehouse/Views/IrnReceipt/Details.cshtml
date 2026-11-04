@@ -243,7 +243,7 @@
     {
         <pems-related-add action="@Url.Action("AddLine")" parent-name="irnReceiptId" parent-value="@Model.IrnReceiptId.ToString()" submit-label="@Localizer["Add Line"]">
             <pems-list-filter-select id="irnAddMaterial" name="materialItemId" label="@Localizer["Material"]" items="@(((IEnumerable<dynamic>)materialItems).Select(m => new SelectListItem($"{m.MaterialCode} - {m.Description}", ((int)m.MaterialItemId).ToString())))" />
-            <div style="flex:0 0 160px"><label class="lp-lbl" for="irnAddQty">@Localizer["Quantity"]</label><pems-input scale="small" id="irnAddQty" name="receivedQuantity" type="number" step="0.001" required /></div>
+            <div class="pems-s-929aba04"><label class="lp-lbl" for="irnAddQty">@Localizer["Quantity"]</label><pems-input scale="small" id="irnAddQty" name="receivedQuantity" type="number" step="0.001" required /></div>
         </pems-related-add>
     }
 

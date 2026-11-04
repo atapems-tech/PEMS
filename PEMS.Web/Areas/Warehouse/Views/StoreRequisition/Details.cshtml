@@ -88,8 +88,8 @@
                     <td>@(l.ApprovedQuantity?.ToString() ?? "-")</td>
                     <td>@l.IssuedQuantity</td>
                     <td>@(remaining < 0 ? 0 : remaining)</td>
-                    @if (editApproved) { <td style="width:130px"><pems-input scale="small" name="approved[@l.StoreRequisitionLineId]" type="number" step="0.001" min="0" max="@l.RequestedQuantity" value="@approvedQty" aria-label="@Localizer["Approved"]" /></td> }
-                    @if (canIssue) { <td style="width:130px"><pems-input scale="small" name="qty[@l.StoreRequisitionLineId]" type="number" step="0.001" min="0" max="@(remaining < 0 ? 0 : remaining)" placeholder="0" aria-label="@Localizer["SR_IssueNow"]" /></td> }
+                    @if (editApproved) { <td class="pems-s-c6fffdfe"><pems-input scale="small" name="approved[@l.StoreRequisitionLineId]" type="number" step="0.001" min="0" max="@l.RequestedQuantity" value="@approvedQty" aria-label="@Localizer["Approved"]" /></td> }
+                    @if (canIssue) { <td class="pems-s-c6fffdfe"><pems-input scale="small" name="qty[@l.StoreRequisitionLineId]" type="number" step="0.001" min="0" max="@(remaining < 0 ? 0 : remaining)" placeholder="0" aria-label="@Localizer["SR_IssueNow"]" /></td> }
                 </tr>
             }
         </tbody>

@@ -45,7 +45,7 @@
 </div>
 
 <div class="content-card">
-    <div class="table-responsive table-scroll-area" style="max-height:65vh; overflow-y:auto;">
+    <div class="table-responsive table-scroll-area pems-s-8da1c6e6">
         <pems-table kind="enterprise">
             <thead>
                 <tr>
@@ -85,7 +85,7 @@
                         <td>@r.Payload?.Revisions.LastOrDefault()?.RevisionNo</td>
                         <td>@r.Payload?.Revisions.LastOrDefault()?.CommentStatus</td>
                         <td class="small text-muted">@r.Payload?.FinalStatusRaw</td>
-                        <td class="small text-muted" style="max-width:220px;">@r.Payload?.Remark</td>
+                        <td class="small text-muted pems-s-27af8985">@r.Payload?.Remark</td>
                         <td>@(r.Payload?.IsFrozen == true ? "❄" : "")</td>
                         <td>
                             @{

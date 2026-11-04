@@ -40,7 +40,7 @@
     {
         <div class="content-card mb-3">
             <h6>@Localizer["Pending migrations"] (@Model.PendingMigrations.Count)</h6>
-            <ul class="small text-muted" style="max-height:200px;overflow:auto">
+            <ul class="small text-muted pems-s-4cd5c0a7">
                 @foreach (var m in Model.PendingMigrations) { <li><code>@m</code></li> }
             </ul>
             <form asp-action="Apply" method="post" class="d-flex align-items-center gap-3 flex-wrap">

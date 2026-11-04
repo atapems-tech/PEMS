@@ -3,7 +3,7 @@
 @using PEMS.Web.Resources
 @inject IStringLocalizer<SharedResource> Localizer
 
-<div class="content-card" style="max-width:720px;">
+<div class="content-card pems-s-b12974cb">
     <div class="d-flex justify-content-between align-items-start flex-wrap gap-3">
         <div>
             <div class="d-flex align-items-center gap-2 flex-wrap">
@@ -22,7 +22,7 @@
                 <div class="small text-muted mt-1">Reason: @Model.QualityStatusReason @(Model.QualityStatusChangedByName != null ? $"({Model.QualityStatusChangedByName})" : "")</div>
             }
         </div>
-        <div class="d-flex flex-column gap-1" style="min-width:170px">
+        <div class="d-flex flex-column gap-1 pems-s-7d03ac6a">
             @if (Model.QualityStatus == "Produced")
             {
                 <form asp-action="SubmitBatchForQc" asp-route-id="@Model.ProductionBatchId" method="post"><pems-button tone="primary" size="small" outline="true" css="w-100" type="submit"><i class="bi bi-clipboard-check"></i> Submit for QC</pems-button></form>

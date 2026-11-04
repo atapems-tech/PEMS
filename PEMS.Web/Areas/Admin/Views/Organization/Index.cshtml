@@ -55,7 +55,7 @@
                                 @if (r.IssueCount > 0) { <a asp-action="Diagnostics" class="badge bg-danger text-decoration-none">@r.IssueCount</a> }
                             </td>
                             <td class="small">@r.DepartmentName</td>
-                            <td style="min-width:260px">
+                            <td class="pems-s-bec7b1d5">
                                 <form asp-action="SetHierarchy" method="post" class="d-flex gap-1">
                                     <input type="hidden" name="positionId" value="@r.PositionId" />
                                     <pems-input scale="small" name="positionCode" value="@r.PositionCode" maxlength="50" style="width:90px" placeholder="@Localizer["Org_Col_Code"]" aria-label="@Localizer["Org_Col_Code"]" />
@@ -69,7 +69,7 @@
                                     <button class="vs-btn vs-btn--sm" title="@Localizer["Org_Btn_Save"]" aria-label="@Localizer["Org_Btn_Save"]"><i class="bi bi-save"></i></button>
                                 </form>
                             </td>
-                            <td style="min-width:300px">
+                            <td class="pems-s-de413461">
                                 @if (r.AssignmentId.HasValue)
                                 {
                                     <form asp-action="UpdateAssignment" method="post" class="d-flex gap-1 align-items-center flex-wrap">

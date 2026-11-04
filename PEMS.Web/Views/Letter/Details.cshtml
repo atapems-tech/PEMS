@@ -177,7 +177,7 @@
                     <form asp-action="DetachTag" method="post" class="d-inline">
                         <input type="hidden" name="letterId" value="@l.LetterId" />
                         <input type="hidden" name="tagId" value="@tag.TagId" />
-                        <button type="submit" class="btn-close btn-close-white btn-sm" style="font-size:8px;" title="Remove tag"></button>
+                        <button type="submit" class="btn-close btn-close-white btn-sm pems-s-3494e7ef" title="Remove tag"></button>
                     </form>
                 </pems-badge>
             }
@@ -286,7 +286,7 @@
                 else
                 {
                     <details open>
-                        <summary class="cv-head" style="cursor:pointer">
+                        <summary class="cv-head pems-s-3b6a3a65">
                             <span class="cv-kind cv-kind--@kindClass"><i class="bi @(m.Kind == "Referral" ? "bi-signpost-split" : m.Kind == "Reply" ? "bi-reply" : "bi-envelope")" aria-hidden="true"></i> @Localizer["Ct_Kind_" + m.Kind]</span>
                             <span class="cv-who">@m.SenderName</span>
                             @if (!string.IsNullOrWhiteSpace(m.RecipientsSummary)) { <span class="cv-to">&rarr; @m.RecipientsSummary</span> }

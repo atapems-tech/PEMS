@@ -69,13 +69,13 @@
     }
     @if (byMonth.Any())
     {
-        <div class="d-flex align-items-end gap-2" style="height:150px;">
+        <div class="d-flex align-items-end gap-2 pems-s-a2ed4726">
             @foreach (var m in byMonth)
             {
                 var heightPct = (int)((double)((int)m.Count) / maxCount * 100);
-                <div class="d-flex flex-column align-items-center" style="flex:1;">
+                <div class="d-flex flex-column align-items-center pems-s-97445a8d">
                     <div class="bg-primary" style="width:100%; height:@(heightPct)%; min-height:4px;" title="@m.Count"></div>
-                    <div class="text-muted small mt-1" style="writing-mode:vertical-rl;">@m.Month</div>
+                    <div class="text-muted small mt-1 pems-s-3e8135c8">@m.Month</div>
                 </div>
             }
         </div>

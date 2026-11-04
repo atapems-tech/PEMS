@@ -186,7 +186,7 @@ else if (matchingCount.HasValue && matchingCount.Value > maxResults)
                     </div>
                 </div>
 
-                <div style="max-height:500px; overflow-y:auto;"><pems-accordion id="areaAccordion">
+                <div class="pems-s-31c8162e"><pems-accordion id="areaAccordion">
                     @foreach (var areaGroup in byArea)
                     {
                         var areaSafeId = "area_" + Math.Abs(areaGroup.Key.GetHashCode());
@@ -218,7 +218,7 @@ else if (matchingCount.HasValue && matchingCount.Value > maxResults)
                                                     {
                                                         var cls = criticalityByEquipment.GetValueOrDefault(eq.EquipmentId);
                                                         <tr>
-                                                            <td style="width:30px;">
+                                                            <td class="pems-s-322e3f5e">
                                                                 <input type="checkbox" class="eq-check area-@areaSafeId type-@typeSafeId" name="equipmentIds" value="@eq.EquipmentId" disabled="@(bulk.Candidates.TryGetValue(eq.EquipmentId, out var cand0) && !cand0.WillReceive)" />
                                                             </td>
                                                             <td class="small">@eq.TagNumber — @eq.Name</td>

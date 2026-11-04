@@ -71,7 +71,7 @@
                             <td>@a.FileExtension</td>
                             <td>@(a.FileSize / 1024) KB</td>
                             <td><pems-badge tone="@tone">@a.AIStatus</pems-badge></td>
-                            <td class="small text-muted" style="max-width:260px;">
+                            <td class="small text-muted pems-s-55585d51">
                                 @(a.AIStatus == "Failed" ? a.AIError : a.AISummary)
                             </td>
                             <td>@a.UploadDate.ToString("yyyy-MM-dd HH:mm")</td>
