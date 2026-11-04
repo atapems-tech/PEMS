@@ -523,6 +523,20 @@ public class CmmsListPagesTests
     }
 
     [Fact]
+    public async Task IntakeQueue_IsAListPage_WithAStageFilter()
+    {
+        var html = await Render<IntakeController>("/Views/Intake/Index.cshtml", Page(
+            new IntakeQueueItemDto { AttachmentId = 4, FileName = "pump-datasheet.pdf", AIStatus = "Completed", IntakeStage = "PendingEngineeringReview", UploadDate = new DateTime(2026, 11, 2, 9, 0, 0), AIConfidence = 0.82 }),
+            v => { v["Stages"] = new[] { "Routed", "PendingEngineeringReview" }; v["SelectedStage"] = "PendingEngineeringReview"; });
+
+        AssertBuiltFromTheComponent(html, "Intake", 1, keepsDataBadges: true);
+        Assert.Contains("pump-datasheet.pdf", html);
+        Assert.Contains("name=\"stage\"", html);
+        Assert.Single(Regex.Matches(Chips(html), "class=\"pems-filter-chip\""));
+        Assert.Contains("82%", html);
+    }
+
+    [Fact]
     public async Task Meetings_AreAListPage_AndScheduleOpensTheirOwnModal()
     {
         var html = await Render<MeetingController>("/Views/Meeting/Index.cshtml", Page(
