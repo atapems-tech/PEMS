@@ -519,7 +519,7 @@
                         </div>
                         <div class="col-12"><pems-label css="small">@Localizer["Vd_Comment"]</pems-label><pems-textarea scale="small" name="commentText" rows="3" required></pems-textarea></div>
                         <div class="col-md-6"><pems-label css="small">@Localizer["Vd_RequiredAction"]</pems-label><pems-input scale="small" name="requiredAction" placeholder="e.g. Revise Drawing" /></div>
-                        <div class="col-md-6"><pems-label css="small">@Localizer["Vd_DueDate"]</pems-label><input name="dueDate" type="date" class="form-control form-control-sm" /></div>
+                        <div class="col-md-6"><pems-label css="small">@Localizer["Vd_DueDate"]</pems-label><pems-date name="dueDate" scale="small" /></div>
                         <div class="col-12"><pems-label css="small">@Localizer["Vd_Attachment"] <span class="text-muted">@Localizer["Vd_Optional"]</span></pems-label><pems-input scale="small" type="file" name="attachment" /></div>
                     </div>
                 </div>
@@ -608,7 +608,7 @@
                             </div>
                             <div class="col-md-6">
                                 <pems-label for="vdrIssuedDate">@Localizer["Vd_VendorIssuedDate"]</pems-label>
-                                <input id="vdrIssuedDate" name="vendorActualIssuedDate" type="date" class="form-control" aria-describedby="vdrIssuedHelp" />
+                                <pems-date id="vdrIssuedDate" name="vendorActualIssuedDate" aria-describedby="vdrIssuedHelp" />
                                 <div id="vdrIssuedHelp" class="form-text">@Localizer["Vd_IssuedDateHelp"]</div>
                             </div>
                             <div class="col-md-6">
@@ -761,7 +761,7 @@ else
                 </pems-select>
             </div>
             <div class="col-md-3"><pems-label css="small">@Localizer["Vd_CommentSheetNo"]</pems-label><pems-input scale="small" name="clientCommentSheetNo" /></div>
-            <div class="col-md-3"><pems-label css="small">@Localizer["Vd_CommentDate"]</pems-label><input name="clientCommentDate" type="date" class="form-control form-control-sm" /></div>
+            <div class="col-md-3"><pems-label css="small">@Localizer["Vd_CommentDate"]</pems-label><pems-date name="clientCommentDate" scale="small" /></div>
             <div class="col-md-3 d-flex align-items-end">
                 <pems-button tone="primary" size="small" css="w-100" type="submit">@Localizer["Vd_RecordFinal"]</pems-button>
             </div>

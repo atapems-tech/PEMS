@@ -157,7 +157,7 @@
                             </pems-select>
                         </div>
 
-                        <div class="col-md-3"><pems-label>@Localizer["Hire Date"]</pems-label><input name="hireDate" type="date" class="form-control" /></div>
+                        <div class="col-md-3"><pems-label>@Localizer["Hire Date"]</pems-label><pems-date name="hireDate" /></div>
                         <div class="col-md-3"><pems-label>@Localizer["Location / Site"]</pems-label><pems-input name="location" /></div>
                         <div class="col-md-3"><pems-label>@Localizer["Shift"]</pems-label><pems-input name="shift" /></div>
                         <div class="col-md-3"><pems-label>@Localizer["Home Address"]</pems-label><pems-input name="homeAddress" /></div>
@@ -247,7 +247,7 @@
                                 </pems-select>
                             </div>
 
-                            <div class="col-md-3"><pems-label>@Localizer["Hire Date"]</pems-label><input name="hireDate" type="date" value="@(e.HireDate?.ToString("yyyy-MM-dd"))" class="form-control" /></div>
+                            <div class="col-md-3"><pems-label>@Localizer["Hire Date"]</pems-label><pems-date name="hireDate" value="@(e.HireDate?.ToString("yyyy-MM-dd"))" /></div>
                             <div class="col-md-3"><pems-label>@Localizer["Location / Site"]</pems-label><pems-input name="location" value="@e.Location" /></div>
                             <div class="col-md-3"><pems-label>@Localizer["Shift"]</pems-label><pems-input name="shift" value="@e.Shift" /></div>
                             <div class="col-md-3"><pems-label>@Localizer["Home Address"]</pems-label><pems-input name="homeAddress" value="@e.HomeAddress" /></div>

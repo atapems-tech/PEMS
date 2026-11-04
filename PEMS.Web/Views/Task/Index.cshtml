@@ -44,7 +44,7 @@
                                 @foreach (var e in employees) { <option value="@e.EmployeeId">@e.Name</option> }
                             </pems-select>
                             <label class="lp-lbl mt-2" for="nt-due">@Localizer["Due"]</label>
-                            <input id="nt-due" name="dueDate" type="date" class="form-control form-control-sm" />
+                            <pems-date id="nt-due" name="dueDate" scale="small" />
                             <label class="lp-lbl mt-2" for="nt-priority">@Localizer["Priority"]</label>
                             <pems-select scale="small" id="nt-priority" name="priority">
                                 @foreach (var p in TaskItemPriorities.All) { <option value="@p" selected="@(p == "Normal")">@TaskManagerUi.Priority(Localizer, p)</option> }

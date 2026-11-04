@@ -66,7 +66,7 @@
                 <pems-select scale="small" id="pprProject" name="projectId"><option value="">—</option>@foreach (var p in projects) { <option value="@p.ProjectId">@p.ProjectCode - @p.ProjectName</option> }</pems-select></div>
             <div class="col-md-3"><pems-label css="small" for="pprDiscipline">@Localizer["Ppr_Discipline"]</pems-label>
                 <pems-select scale="small" id="pprDiscipline" name="disciplineId"><option value="">—</option>@foreach (var x in disciplines) { <option value="@x.DisciplineId">@x.Code - @x.Name</option> }</pems-select></div>
-            <div class="col-md-3"><pems-label css="small" for="pprRequired">@Localizer["Ppr_RequiredDate"]</pems-label><input id="pprRequired" name="requiredDate" type="date" class="form-control form-control-sm" dir="ltr" /></div>
+            <div class="col-md-3"><pems-label css="small" for="pprRequired">@Localizer["Ppr_RequiredDate"]</pems-label><pems-date id="pprRequired" name="requiredDate" scale="small" dir="ltr" /></div>
             <div class="col-12 small text-muted">@Localizer["Ppr_MrNumberHint"]</div>
         </div>
         @if (Model.DraftRequisitions.Count > 0)

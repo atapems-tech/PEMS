@@ -698,7 +698,7 @@
                         <div class="mb-2"><pems-label css="small">Inspection Type</pems-label>
                             <pems-input scale="small" name="inspectionType" placeholder="Vibration, Thickness, Visual..." required /></div>
                         <div class="mb-2"><pems-label css="small">Inspection Date</pems-label>
-                            <input name="inspectionDate" type="date" class="form-control form-control-sm" value="@DateTime.Today.ToString("yyyy-MM-dd")" required /></div>
+                            <pems-date name="inspectionDate" scale="small" value="@DateTime.Today.ToString("yyyy-MM-dd")" required /></div>
                         <div class="mb-2"><pems-label css="small">@Localizer["Inspector"]</pems-label>
                             <pems-input scale="small" name="inspector" /></div>
                         <div class="row g-2 mb-2">
@@ -714,7 +714,7 @@
                                 <pems-input scale="small" name="upperLimit" type="number" step="0.01" /></div>
                         </div>
                         <div class="mb-2"><pems-label css="small">Next Inspection Date</pems-label>
-                            <input name="nextInspectionDate" type="date" class="form-control form-control-sm" /></div>
+                            <pems-date name="nextInspectionDate" scale="small" /></div>
                         <div class="mb-2"><pems-label css="small">Recommendation</pems-label>
                             <pems-textarea scale="small" name="recommendation" rows="2"></pems-textarea></div>
                         <div class="mb-2"><pems-label css="small">@Localizer["Description"]</pems-label>
