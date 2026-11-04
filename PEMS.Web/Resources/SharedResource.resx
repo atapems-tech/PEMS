@@ -3669,4 +3669,9 @@
   <data name="Info_Started" xml:space="preserve"><value>Started</value></data>
   <data name="Info_Completed" xml:space="preserve"><value>Completed</value></data>
   <data name="Info_FromPlan" xml:space="preserve"><value>From plan</value></data>
+  <data name="Inspection and Test Plans" xml:space="preserve"><value>Inspection and Test Plans</value></data>
+  <data name="Intake Queue" xml:space="preserve"><value>Intake Queue</value></data>
+  <data name="No ITPs yet." xml:space="preserve"><value>No ITPs yet.</value></data>
+  <data name="No NCRs yet." xml:space="preserve"><value>No NCRs yet.</value></data>
+  <data name="No projects yet." xml:space="preserve"><value>No projects yet.</value></data>
 </root>

@@ -4454,4 +4454,9 @@
   <data name="Info_Started" xml:space="preserve"><value>شروع</value></data>
   <data name="Info_Completed" xml:space="preserve"><value>تکمیل</value></data>
   <data name="Info_FromPlan" xml:space="preserve"><value>از برنامه</value></data>
+  <data name="Inspection and Test Plans" xml:space="preserve"><value>طرح‌های بازرسی و آزمون</value></data>
+  <data name="Intake Queue" xml:space="preserve"><value>صف دریافت</value></data>
+  <data name="No ITPs yet." xml:space="preserve"><value>هنوز طرح بازرسی و آزمونی ثبت نشده است.</value></data>
+  <data name="No NCRs yet." xml:space="preserve"><value>هنوز گزارش عدم انطباقی ثبت نشده است.</value></data>
+  <data name="No projects yet." xml:space="preserve"><value>هنوز پروژه‌ای ثبت نشده است.</value></data>
 </root>

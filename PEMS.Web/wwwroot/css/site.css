@@ -11,160 +11,8 @@
    ========================================= */
 
 
-/* مهم (علت اصلی ظاهر خراب تم): admin.css بعد از site.css بارگذاری می‌شود و یک بلوک :root با مقادیر «روشن»
-   (--pems-bg / surface / text / topbar-bg ...) دارد و برای dark/ocean/warm/midnight بلوک اختصاصی خودش را دوباره
-   اعلام می‌کند، ولی برای turquoise هیچ بلوکی نداشت. :root و [data-theme] هم‌مشخصیت‌اند و بلوک دیرتر برنده می‌شود، پس
-   توکن‌های پایه‌ی این تم (پس‌زمینه/سطح/متن/نوار بالا) با مقادیر روشن بازنویسی می‌شدند و شیشه‌ی تیره روی صفحه‌ی سفید
-   با متن تیره می‌نشست. انتخابگر :root[data-theme] مشخصیت بالاتر دارد و مستقل از ترتیب بارگذاری فایل‌ها برنده است. */
-:root[data-theme="turquoise"] {
-    /* =========================================
-       PEMS Persian Turquoise v3 - «کاشی‌کاری فیروزه‌ای»
-       هویت: سه رنگ کاشی ایرانی - فیروزه‌ی نیشابور (رنگ اصلی/فعال/پیوند)، لاجورد (رنگ ثانویه/اطلاعات)، و زر/طلایی
-       (فقط اقدام اصلی و جزئیات تزیینی). پایه‌ی تیره‌ی «جوهری-فیروزه‌ای» است (نه خاکستری خنثی): همه‌ی سطح‌ها کمی به
-       سمت فیروزه‌ای می‌روند تا فیروزه یک رنگ «بومی» تم باشد، نه یک لکه‌ی روی خاکستری. v2 مس را برای دکمه‌ی اصلی
-       انتخاب کرده بود (قهوه‌ای کدر)؛ طلایی روشن با متن تیره هم هویت ایرانی‌تری دارد و کنتراست بالاتری (۶.۵ تا ۱۱.۹).
-       تمام جفت‌رنگ‌های متن/زمینه با فرمول WCAG محاسبه و در تست (ThemeContrastTests) نگهداری می‌شوند. */
-    color-scheme: dark;
-
-    --pems-turquoise: #1bc5b3;
-    --pems-turquoise-bright: #5fe0d2;
-    --pems-turquoise-dark: #0c7f76;
-    --pems-turquoise-deep: #0a6a63;
-    --pems-lapis: #2c5fb8;
-    --pems-lapis-light: #8db6ff;
-    --pems-lapis-dark: #17305f;
-    --pems-gold: #e5b04a;
-    --pems-gold-hi: #f3cb6f;
-    --pems-gold-lo: #c98f2a;
-    --pems-on-gold: #1a1305;
-    --pems-copper: var(--pems-gold-lo);   /* نام قدیمی (auth.css و ...) - اکنون طلایی تیره */
-
-    /* Elevation scale (ui-ux-pro-max `elevation-consistent`): ۰ پایه، ۱ کارت/جدول، ۲ لایه‌ی بالاتر (هدر جدول، تب فعال)،
-       ۳ شناور (منو/مودال). همه جوهری-فیروزه‌ای، با اختلاف روشنایی کافی برای تشخیص لایه‌ها. */
-    --pems-bg: #061219;
-    --pems-elev-0: #061219;
-    --pems-elev-1: #0b1b24;
-    --pems-elev-2: #10242f;
-    --pems-elev-3: #162d3a;
-    --pems-input-bg: #08161d;
-
-    --pems-surface: var(--pems-elev-1);
-    --pems-surface-border: #1f3d4b;
-    --pems-border-strong: #4a7a8c;           /* مرز کنترل‌های فرم: ≥۳:۱ (WCAG 1.4.11) */
-    --pems-text: #e8f3f1;
-    --pems-text-muted: #97b2b6;
-    --pems-text-faint: #7a999f;              /* placeholder و راهنمای کم‌اهمیت: هنوز ≥۴.۵:۱ */
-    --pems-steel: var(--pems-text-muted);    /* برخی استایل‌های قدیمی متن را با steel می‌نویسند */
-    --pems-topbar-bg: rgba(8, 22, 30, 0.86);
-    --pems-topbar-border: rgba(27, 197, 179, 0.22);
-    --pems-table-header-bg: #0e2530;
-    --pems-row-hover: rgba(27, 197, 179, 0.07);
-
-    /* Glass فقط برای لایه‌های «بالای صفحه» (هدر چسبان، مودال/منو). کارت‌ها عمداً کدر شدند: Blur روی پس‌زمینه‌ی یکدست
-       هیچ چیزی را نشان نمی‌داد و backdrop-filter روی یک عنصر آن را «Containing Block» فرزندان fixed می‌کند؛ چون pems-ui.js
-       همه‌ی منوهای کشویی را با Popper strategy=fixed باز می‌کند، منوهای داخل کارت با فاصله‌ی غلط رندر می‌شدند. */
-    --pems-glass-bg: rgba(16, 36, 47, 0.72);
-    --pems-glass-bg-strong: rgba(11, 27, 36, 0.92);
-    --pems-glass-border: rgba(255, 255, 255, 0.08);
-    --pems-glass-border-accent: rgba(95, 224, 210, 0.30);
-    --pems-glass-blur: 14px;
-    --pems-glass-blur-strong: 20px;
-    --pems-glass-highlight: rgba(255, 255, 255, 0.04);
-
-    --pems-primary: var(--pems-turquoise);
-    --pems-primary-hover: var(--pems-turquoise-bright);
-    --pems-primary-active: var(--pems-turquoise-dark);
-    --pems-accent: var(--pems-gold);
-    --pems-accent-dark: var(--pems-gold-lo);   /* هم متن (≥۴.۵ روی تیره) هم انتهای گرادیان دکمه با متن تیره */
-    --pems-accent-hover: var(--pems-gold-hi);
-    --pems-focus: var(--pems-turquoise-bright);
-    --pems-selection: rgba(27, 197, 179, 0.22);
-    --pems-shadow: rgba(0, 0, 0, 0.55);
-
-    --pems-accent-glow: 0 0 0 1px rgba(95, 224, 210, 0.32), 0 0 16px rgba(27, 197, 179, 0.14);
-    --pems-accent-edge: 2px solid var(--pems-turquoise);
-
-    /* آواتار/نشان برند و پس‌زمینه‌های توپر با متن سفید: لاجورد (سفید روی آن ۶.۱:۱) */
-    --pems-navy: var(--pems-lapis);
-    --pems-navy-2: #3a72d6;
-    --pems-navy-dark: #061219;
-
-    --pems-chart-primary: #1bc5b3;
-    --pems-chart-secondary: #6f9cf0;
-    --pems-chart-tertiary: var(--pems-gold);
-    --pems-chart-positive: #4fd18b;
-    --pems-chart-negative: #ff7a6e;
-    --pems-chart-warning: #f2c14e;
-    --pems-chart-neutral: #7e9ca3;
-    --pems-chart-accent: var(--pems-gold);
-
-    /* Status colours for TEXT and thin UI parts (WCAG AA 4.5:1 on this theme's surface/background).
-       The --pems-chart-* tokens above stay for bars/fills/graphics, where 3:1 is enough. */
-    --pems-chart-positive-text: #7ee0a1;
-    --pems-chart-warning-text: #f2c14e;
-    --pems-chart-danger-text: #ff8f84;
-    --pems-chart-info-text: #8db6ff;
-    --pems-chart-caution-text: #ffa561;
-
-    /* Bootstrap 5.3 را به توکن‌های PEMS وصل می‌کند (همراه data-bs-theme="dark" در _Layout): هشدار، تب، لیست، صفحه‌بندی،
-       منوی کشویی و متن کم‌رنگ دیگر رنگ‌های روشن/آبی پیش‌فرض Bootstrap را نمی‌آورند. */
-    --bs-body-bg: var(--pems-bg);
-    --bs-body-bg-rgb: 6, 18, 25;
-    --bs-body-color: var(--pems-text);
-    --bs-body-color-rgb: 232, 243, 241;
-    --bs-emphasis-color: #ffffff;
-    --bs-secondary-color: var(--pems-text-muted);
-    --bs-tertiary-color: var(--pems-text-faint);
-    --bs-secondary-bg: var(--pems-elev-2);
-    --bs-tertiary-bg: var(--pems-elev-2);
-    --bs-border-color: var(--pems-surface-border);
-    --bs-border-color-translucent: rgba(255, 255, 255, 0.08);
-    --bs-heading-color: var(--pems-text);
-    --bs-link-color: var(--pems-turquoise-bright);
-    --bs-link-color-rgb: 95, 224, 210;
-    --bs-link-hover-color: #a6f0e8;
-    --bs-link-hover-color-rgb: 166, 240, 232;
-    --bs-primary: var(--pems-turquoise);
-    --bs-primary-rgb: 27, 197, 179;
-    --bs-focus-ring-color: rgba(95, 224, 210, 0.30);
-    --bs-code-color: var(--pems-gold-hi);
-    --bs-highlight-bg: rgba(229, 176, 74, 0.25);
-    --bs-form-invalid-color: #ff8f84;
-    --bs-form-invalid-border-color: #ff8f84;
-}
-
-[data-theme="ocean"] {
-    --pems-bg: #f0f9ff;
-    --pems-surface: #ffffff;
-    --pems-surface-border: #bae6fd;
-    --pems-topbar-bg: #ffffff;
-    --pems-topbar-border: #7dd3fc;
-    --pems-table-header-bg: #e0f2fe;
-    --pems-row-hover: rgba(6, 182, 212, 0.08);
-}
-
-[data-theme="warm"] {
-    --pems-bg: #fafaf9;
-    --pems-surface: #ffffff;
-    --pems-surface-border: #e7e5e4;
-    --pems-topbar-bg: #ffffff;
-    --pems-topbar-border: #d6d3d1;
-    --pems-table-header-bg: #f5f5f4;
-    --pems-row-hover: rgba(217, 119, 6, 0.08);
-}
-
-[data-theme="midnight"] {
-    --pems-bg: #0f172a;
-    --pems-surface: #1e293b;
-    --pems-surface-border: #334155;
-    --pems-text: #f1f5f9;
-    --pems-text-muted: #94a3b8;
-    --pems-topbar-bg: #1e293b;
-    --pems-topbar-border: #334155;
-    --pems-table-header-bg: #1e293b;
-    --pems-row-hover: rgba(217, 140, 43, 0.12);
-    --pems-navy-dark: #0f172a;
-}
+/* The turquoise, ocean, warm and midnight theme blocks moved to PEMS.UI/wwwroot/tokens.css (SCRUM-476), same order, appended after the
+   Light and Dark blocks; admin.css and pems-glass.css still load after and override as before. */
 
     /* Bootstrap Overrides for Dark/Midnight/Turquoise Modes */
     [data-theme="dark"] body, [data-theme="midnight"] body, [data-theme="turquoise"] body {
@@ -247,7 +95,7 @@ body {
             height: 36px;
             border-radius: 8px;
             background: linear-gradient(135deg, var(--pems-accent), var(--pems-accent-dark));
-            color: #fff;
+            color: var(--pems-color-fff);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -283,7 +131,7 @@ body {
     height: 34px;
     border-radius: 50%;
     background: var(--pems-navy);
-    color: #fff;
+    color: var(--pems-color-fff);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -516,7 +364,7 @@ body {
 .pems-sidebar {
     width: var(--sidebar-width);
     background: var(--pems-navy-dark);
-    color: #cbd6e4;
+    color: var(--pems-color-cbd6e4);
     flex-shrink: 0;
     padding: 16px 0;
     transition: width 0.25s ease-in-out, padding 0.25s ease-in-out;
@@ -577,7 +425,7 @@ html[dir="rtl"] @media (max-width: 991px) {
     text-transform: uppercase;
     font-size: 11px;
     letter-spacing: .06em;
-    color: #7a8fa6;
+    color: var(--pems-color-7a8fa6);
     padding: 16px 20px 8px;
     margin-top: 4px;
     display: flex;
@@ -588,7 +436,7 @@ html[dir="rtl"] @media (max-width: 991px) {
 }
 
     .pems-sidebar .nav-section-title:hover {
-        color: #fff;
+        color: var(--pems-color-fff);
     }
 
 .pems-sidebar .nav-section-chevron {
@@ -601,7 +449,7 @@ html[dir="rtl"] @media (max-width: 991px) {
     }
 
 .pems-sidebar .nav-link {
-    color: #a4b3c6;
+    color: var(--pems-color-a4b3c6);
     padding: 10px 20px;
     font-size: 13.5px;
     display: flex;
@@ -618,12 +466,12 @@ html[dir="rtl"] .pems-sidebar .nav-link {
 
 .pems-sidebar .nav-link:hover {
     background: rgba(255,255,255,0.06);
-    color: #fff;
+    color: var(--pems-color-fff);
 }
 
 .pems-sidebar .nav-link.active {
     background: rgba(217,140,43,0.15);
-    color: #fff;
+    color: var(--pems-color-fff);
     border-left-color: var(--pems-accent);
 }
 
@@ -699,8 +547,8 @@ html[dir="rtl"] .pems-sidebar .collapse .nav-link {
    سیستم طراحی جدید، فقط دو کلاس badge سازگار با همون قرارداد bg-* موجود
    ========================================= */
 
-.bg-orange { background-color: #fd7e14 !important; }
-.bg-purple { background-color: #6f42c1 !important; }
+.bg-orange { background-color: var(--pems-color-fd7e14) !important; }
+.bg-purple { background-color: var(--pems-color-6f42c1) !important; }
 
 /* =========================================
    Correspondence Workspace - سایدبار پوشه‌ای سبک Gmail (بند ۸) و ردیف‌های فشرده‌ی فهرست (بند ۷/۲۶):
@@ -713,7 +561,7 @@ html[dir="rtl"] .pems-sidebar .collapse .nav-link {
     gap: 8px;
     padding: 6px 10px;
     border-radius: 8px;
-    color: var(--pems-navy, #142033);
+    color: var(--pems-navy, var(--pems-color-142033));
     text-decoration: none;
     font-size: 13px;
 }
@@ -723,8 +571,8 @@ html[dir="rtl"] .pems-sidebar .collapse .nav-link {
 }
 
 .pems-folder-link.active {
-    background: var(--pems-accent, #d98c2b);
-    color: #fff;
+    background: var(--pems-accent, var(--pems-color-d98c2b));
+    color: var(--pems-color-fff);
     font-weight: 600;
 }
 
@@ -796,7 +644,7 @@ html[dir="rtl"] .pems-sidebar .collapse .nav-link {
     padding: 0 5px;
     border-radius: 999px;
     background: var(--pems-accent);
-    color: #fff;
+    color: var(--pems-color-fff);
     font-size: 11px;
     font-weight: 700;
 }
@@ -818,28 +666,28 @@ html[dir="rtl"] .pems-sidebar .collapse .nav-link {
    می‌شدند (Active/Inactive/Completed/Approved/Rejected/Draft/Pending/Submitted/Warning/Error)
    عمداً دوباره تعریف نشدند - این‌جا فقط حالت‌های صنعتی/CMMS که Bootstrap معادل مستقیم ندارد. */
 .badge-status-Released {
-    background: #0d9488;
-    color: #fff;
+    background: var(--pems-color-0d9488);
+    color: var(--pems-color-fff);
 }
 
 .badge-status-InProgress {
-    background: #2563eb;
-    color: #fff;
+    background: var(--pems-color-2563eb);
+    color: var(--pems-color-fff);
 }
 
 .badge-status-Cancelled {
-    background: #6b7280;
-    color: #fff;
+    background: var(--pems-color-6b7280);
+    color: var(--pems-color-fff);
 }
 
 .badge-status-Overdue {
-    background: #dc2626;
-    color: #fff;
+    background: var(--pems-color-dc2626);
+    color: var(--pems-color-fff);
 }
 
 .badge-status-DueSoon {
-    background: #f59e0b;
-    color: #1b2733;
+    background: var(--pems-color-f59e0b);
+    color: var(--pems-color-1b2733);
 }
 
 /* =========================================
@@ -905,17 +753,17 @@ main.pems-content:focus { outline: none; }
 
 .pems-sidebar .pems-sb-search { position: relative; padding: 0 12px 10px; }
 .pems-sidebar .pems-sb-search > i {
-    position: absolute; inset-inline-start: 22px; top: 9px; font-size: .8rem; color: #aebccd; pointer-events: none;
+    position: absolute; inset-inline-start: 22px; top: 9px; font-size: .8rem; color: var(--pems-color-aebccd); pointer-events: none;
 }
 .pems-sidebar .pems-sb-search-input {
     width: 100%; padding: 6px 10px; padding-inline-start: 30px;
     border-radius: 8px; font-size: .85rem;
-    background: rgba(255, 255, 255, 0.08); color: #e8eef6;
+    background: rgba(255, 255, 255, 0.08); color: var(--pems-color-e8eef6);
     border: 1px solid rgba(255, 255, 255, 0.22);
 }
-.pems-sidebar .pems-sb-search-input::placeholder { color: #aebccd; opacity: 1; }
+.pems-sidebar .pems-sb-search-input::placeholder { color: var(--pems-color-aebccd); opacity: 1; }
 .pems-sidebar .pems-sb-search-input:focus { outline: 2px solid var(--pems-focus); outline-offset: 1px; background: rgba(255, 255, 255, 0.12); }
-.pems-sidebar .pems-sb-status { padding: 0 16px 8px; font-size: .75rem; color: #aebccd; min-height: 0; }
+.pems-sidebar .pems-sb-status { padding: 0 16px 8px; font-size: .75rem; color: var(--pems-color-aebccd); min-height: 0; }
 .pems-sidebar .pems-sb-status:empty { display: none; }
 .pems-sidebar .pems-sb-hidden { display: none !important; }
 
@@ -928,4 +776,4 @@ main.pems-content:focus { outline: none; }
 .pems-sidebar.collapsed .pems-sb-status { display: none; }
 
 /* SCRUM-337 TreeView: the help tree (_HelpNodeTree) is a <pems-tree>; only the edge label of a decision branch is styled here */
-.pems-help-node-tree .pems-help-tree-edge-label { display: block; font-size: .78rem; color: var(--pems-text-muted, #6c757d); }
+.pems-help-node-tree .pems-help-tree-edge-label { display: block; font-size: .78rem; color: var(--pems-text-muted, var(--pems-color-6c757d)); }

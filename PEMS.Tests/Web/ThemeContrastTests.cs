@@ -155,7 +155,7 @@ public class ThemeContrastTests
     public void Turquoise_BlockWinsBySpecificity_NotByFileOrder()
     {
         // اگر کسی دوباره :root را در فایل دیرتر اضافه کند، بلوک :root[data-theme] همچنان برنده است
-        Assert.Contains(":root[data-theme=\"turquoise\"] {", Css("site.css"));
+        Assert.Contains(":root[data-theme=\"turquoise\"] {", Css("tokens.css"));   // moved from site.css (SCRUM-476)
         var adminRoot = Rule.Matches(Css("admin.css")).Cast<Match>().First(m => m.Groups["sel"].Value.Trim() == ":root");
         Assert.Contains("--pems-bg", adminRoot.Groups["body"].Value);   // the conflicting light block really exists
 

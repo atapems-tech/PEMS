@@ -3,6 +3,14 @@
 All notable changes to PEMS. No system version is defined yet (plan row F_CI), so entries are grouped by date
 and theme and were reconstructed from the git history (initial import 2026-09-05). Newest first.
 
+## 2026-11-04 - Design tokens: other themes and literal colours move to tokens.css (SCRUM-476, part)
+
+### Changed
+- The Turquoise, Ocean, Warm and Midnight theme blocks moved verbatim from `site.css` to the end of `PEMS.UI/wwwroot/tokens.css` (cascade checked: none of their properties is defined in `pems-ui.css` or later in `site.css`).
+- The 169 literal hex colours of `site.css`, `pems-workspace.css`, `pems-themes.css` and `administration-design-system.css` became raw palette tokens `--pems-color-<hex>` declared once in `tokens.css` with the same value; substituting them back reproduces the old files exactly. A test keeps literal hex out of the four files.
+- Fixed: five list-page texts added earlier today (Inspection and Test Plans, Intake Queue, No ITPs yet., No NCRs yet., No projects yet.) had no Persian entry (`LocalizationKeyCoverageTests`); added to both resource files.
+- Not done yet: the physical left/right rules (needs RTL screenshots), the theme blocks in `admin.css`, `pems-glass.css`, `auth.css`, `pems-cartable.css`, and the before/after screenshots.
+
 ## 2026-11-04 - Projects are a list page, list search can filter live (SCRUM-337)
 
 ### Added

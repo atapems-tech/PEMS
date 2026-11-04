@@ -39,6 +39,21 @@ public class ThemeSystemTests
     // Light/Dark token blocks moved from site.css to PEMS.UI/wwwroot/tokens.css (SCRUM-29)
     private static string Tokens() => File.ReadAllText(Path.Combine(Root(), "PEMS.UI", "wwwroot", "tokens.css"));
 
+    [Theory]
+    [InlineData("pems-workspace.css")]
+    [InlineData("pems-themes.css")]
+    [InlineData("site.css")]
+    [InlineData("administration-design-system.css")]
+    public void TheShared_stylesheets_hold_no_literal_hex_colours_only_palette_tokens(string file)
+    {
+        // SCRUM-476: a colour is a token (tokens.css), never a literal in these four files; comments and url(...) are not colours
+        var css = System.Text.RegularExpressions.Regex.Replace(Web("wwwroot", "css", file), @"/\*.*?\*/|url\([^)]*\)", "", System.Text.RegularExpressions.RegexOptions.Singleline);
+        var hits = System.Text.RegularExpressions.Regex.Matches(css, @"(?<![\w&%#-])#(?:[0-9a-fA-F]{8}|[0-9a-fA-F]{6}|[0-9a-fA-F]{3,4})(?![\w-])[^{;}]*[;}]").Select(m => m.Value.Trim()).ToList();
+        Assert.True(hits.Count == 0, file + " has literal hex colours: " + string.Join(" | ", hits.Take(5)));
+        foreach (var token in System.Text.RegularExpressions.Regex.Matches(css, @"var\((--pems-color-[0-9a-f]+)\)").Select(m => m.Groups[1].Value).Distinct())
+            Assert.Contains(token + ":", Tokens());
+    }
+
     [Fact]
     public void SiteCss_DefinesTokensForAllThreeThemes()
     {
