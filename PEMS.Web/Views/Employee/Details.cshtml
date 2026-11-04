@@ -478,7 +478,7 @@
                                 @foreach (var v in vendors) { <option value="@v.VendorId" selected="@(v.VendorId == Model.VendorId)">@v.Name</option> }
                             </pems-select>
                         </div>
-                        <div class="col-md-3"><pems-label>@L("Hire Date", "تاریخ استخدام")</pems-label><input name="hireDate" type="date" value="@(Model.HireDate?.ToString("yyyy-MM-dd"))" class="form-control" /></div>
+                        <div class="col-md-3"><pems-label>@L("Hire Date", "تاریخ استخدام")</pems-label><pems-date name="hireDate" value="@(Model.HireDate?.ToString("yyyy-MM-dd"))" /></div>
                         <div class="col-md-3"><pems-label>@L("Location / Site", "مکان")</pems-label><pems-input name="location" value="@Model.Location" /></div>
                         <div class="col-md-3"><pems-label>@L("Shift", "شیفت")</pems-label><pems-input name="shift" value="@Model.Shift" /></div>
                         <div class="col-md-3"><pems-label>@L("Home Address", "آدرس منزل")</pems-label><pems-input name="homeAddress" value="@Model.HomeAddress" /></div>
@@ -513,7 +513,7 @@
                 </div>
                 <div class="mb-2">
                     <pems-label css="small">@L("Certified Date (optional)", "تاریخ گواهی (اختیاری)")</pems-label>
-                    <input name="certifiedDate" type="date" class="form-control form-control-sm" />
+                    <pems-date name="certifiedDate" scale="small" />
                 </div>
             </div>
             <div class="modal-footer">
@@ -535,8 +535,8 @@
                     </pems-select>
                 </div>
                 <div class="mb-2"><pems-label css="small">@L("Issuer (optional)", "صادرکننده (اختیاری)")</pems-label><pems-input scale="small" name="issuer" /></div>
-                <div class="mb-2"><pems-label css="small">@L("Issue Date", "تاریخ صدور")</pems-label><input name="issueDate" type="date" class="form-control form-control-sm" required value="@DateTime.Today.ToString("yyyy-MM-dd")" /></div>
-                <div class="mb-2"><pems-label css="small">@L("Expiry Date (optional)", "تاریخ انقضا (اختیاری)")</pems-label><input name="expiryDate" type="date" class="form-control form-control-sm" /></div>
+                <div class="mb-2"><pems-label css="small">@L("Issue Date", "تاریخ صدور")</pems-label><pems-date name="issueDate" scale="small" required value="@DateTime.Today.ToString("yyyy-MM-dd")" /></div>
+                <div class="mb-2"><pems-label css="small">@L("Expiry Date (optional)", "تاریخ انقضا (اختیاری)")</pems-label><pems-date name="expiryDate" scale="small" /></div>
             </div>
             <div class="modal-footer">
                 <pems-button tone="neutral" size="small" outline="true" type="button" data-bs-dismiss="modal">@L("Cancel", "انصراف")</pems-button>
@@ -558,8 +558,8 @@
                 </div>
                 <div class="mb-2"><pems-label css="small">@L("Certificate Number (optional)", "شماره گواهی (اختیاری)")</pems-label><pems-input scale="small" name="certificateNumber" /></div>
                 <div class="mb-2"><pems-label css="small">@L("Issuer (optional)", "صادرکننده (اختیاری)")</pems-label><pems-input scale="small" name="issuer" /></div>
-                <div class="mb-2"><pems-label css="small">@L("Issue Date", "تاریخ صدور")</pems-label><input name="issueDate" type="date" class="form-control form-control-sm" required value="@DateTime.Today.ToString("yyyy-MM-dd")" /></div>
-                <div class="mb-2"><pems-label css="small">@L("Expiry Date (optional)", "تاریخ انقضا (اختیاری)")</pems-label><input name="expiryDate" type="date" class="form-control form-control-sm" /></div>
+                <div class="mb-2"><pems-label css="small">@L("Issue Date", "تاریخ صدور")</pems-label><pems-date name="issueDate" scale="small" required value="@DateTime.Today.ToString("yyyy-MM-dd")" /></div>
+                <div class="mb-2"><pems-label css="small">@L("Expiry Date (optional)", "تاریخ انقضا (اختیاری)")</pems-label><pems-date name="expiryDate" scale="small" /></div>
             </div>
             <div class="modal-footer">
                 <pems-button tone="neutral" size="small" outline="true" type="button" data-bs-dismiss="modal">@L("Cancel", "انصراف")</pems-button>
@@ -582,7 +582,7 @@
                 </div>
                 <div class="mb-2"><pems-label css="small">@L("Rate", "نرخ")</pems-label><pems-input scale="small" name="rate" type="number" step="0.01" required /></div>
                 <div class="mb-2"><pems-label css="small">@L("Currency", "واحد پول")</pems-label><pems-input scale="small" name="currency" value="IRR" required /></div>
-                <div class="mb-2"><pems-label css="small">@L("Effective From", "از تاریخ")</pems-label><input name="effectiveFrom" type="date" class="form-control form-control-sm" required /></div>
+                <div class="mb-2"><pems-label css="small">@L("Effective From", "از تاریخ")</pems-label><pems-date name="effectiveFrom" scale="small" required /></div>
             </div>
             <div class="modal-footer">
                 <pems-button tone="neutral" size="small" outline="true" type="button" data-bs-dismiss="modal">@L("Cancel", "انصراف")</pems-button>

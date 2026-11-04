@@ -10,8 +10,8 @@
         <input type="hidden" name="procurementPackageId" value="@packageId" />
         <div class="row g-3">
             <div class="col-12"><pems-label>@Localizer["Title"]</pems-label><pems-input name="title" required /></div>
-            <div class="col-md-6"><pems-label>@Localizer["Issue Date"]</pems-label><input type="date" name="issueDate" class="form-control" /></div>
-            <div class="col-md-6"><pems-label>@Localizer["Deadline"]</pems-label><input type="date" name="responseDeadline" class="form-control" /></div>
+            <div class="col-md-6"><pems-label>@Localizer["Issue Date"]</pems-label><pems-date name="issueDate" /></div>
+            <div class="col-md-6"><pems-label>@Localizer["Deadline"]</pems-label><pems-date name="responseDeadline" /></div>
             <div class="col-12 form-check">
                 <pems-input kind="check" type="checkbox" name="requiresVendorQualification" value="true" id="reqQual" checked />
                 <label class="form-check-label" for="reqQual">@Localizer["Requires Vendor Qualification"]</label>

@@ -4480,4 +4480,5 @@
   <data name="Status_TooMany_Text" xml:space="preserve"><value>در مدت کوتاه درخواست‌های زیادی ارسال شد. کمی صبر کنید و دوباره تلاش کنید.</value></data>
   <data name="Status_Unavailable_Title" xml:space="preserve"><value>موقتاً در دسترس نیست</value></data>
   <data name="Status_Unavailable_Text" xml:space="preserve"><value>سرویس در حال حاضر شلوغ است یا در دسترس نیست. کمی بعد دوباره تلاش کنید؛ اگر تکرار شد، شناسه‌ی درخواست زیر را گزارش دهید.</value></data>
+  <data name="Date_Invalid" xml:space="preserve"><value>این تاریخ در تقویم جلالی وجود ندارد. به‌صورت سال/ماه/روز بنویسید، مثلاً 1403/12/29.</value></data>
 </root>

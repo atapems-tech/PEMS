@@ -26,6 +26,8 @@
     <link rel="stylesheet" href="~/_content/PEMS.UI/tokens.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/_content/PEMS.UI/pems-ui.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/_content/PEMS.UI/pems-errors.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/lib/jalalidatepicker/jalalidatepicker.min.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/_content/PEMS.UI/pems-date.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/pems-inline-styles.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/pems-data-grid.css" asp-append-version="true" />
@@ -41,7 +43,7 @@
     <link rel="stylesheet" href="~/css/pems-embed.css" asp-append-version="true" />
     @await RenderSectionAsync("Styles", required: false)
 </head>
-<body class="pems-embed" data-pems-error-generic="@Localizer["Err_Generic"]" data-pems-error-offline="@Localizer["Err_Offline"]" data-pems-error-timeout="@Localizer["Err_Timeout"]" data-pems-error-signin="@Localizer["Err_SignIn"]" data-pems-error-forbidden="@Localizer["Err_Forbidden"]" data-pems-error-notfound="@Localizer["Err_NotFound"]" data-pems-error-conflict="@Localizer["Err_Conflict"]" data-pems-error-invalid="@Localizer["Err_Invalid"]" data-pems-error-toomany="@Localizer["Err_TooMany"]" data-pems-error-unavailable="@Localizer["Err_Unavailable"]" data-pems-error-server="@Localizer["Err_Server"]" data-pems-error-reference="@Localizer["Err_Reference"]" data-pems-error-copy="@Localizer["Err_Copy"]" data-pems-error-copied="@Localizer["Err_Copied"]" data-pems-error-close="@Localizer["Err_Close"]" data-pems-skeleton-label="@Localizer["Loading"]" data-pems-confirm-title="@Localizer["Confirm_Title"]" data-pems-confirm-ok="@Localizer["Confirm_Ok"]" data-pems-confirm-cancel="@Localizer["Confirm_Cancel"]">
+<body class="pems-embed" data-pems-date-invalid="@Localizer["Date_Invalid"]" data-pems-error-generic="@Localizer["Err_Generic"]" data-pems-error-offline="@Localizer["Err_Offline"]" data-pems-error-timeout="@Localizer["Err_Timeout"]" data-pems-error-signin="@Localizer["Err_SignIn"]" data-pems-error-forbidden="@Localizer["Err_Forbidden"]" data-pems-error-notfound="@Localizer["Err_NotFound"]" data-pems-error-conflict="@Localizer["Err_Conflict"]" data-pems-error-invalid="@Localizer["Err_Invalid"]" data-pems-error-toomany="@Localizer["Err_TooMany"]" data-pems-error-unavailable="@Localizer["Err_Unavailable"]" data-pems-error-server="@Localizer["Err_Server"]" data-pems-error-reference="@Localizer["Err_Reference"]" data-pems-error-copy="@Localizer["Err_Copy"]" data-pems-error-copied="@Localizer["Err_Copied"]" data-pems-error-close="@Localizer["Err_Close"]" data-pems-skeleton-label="@Localizer["Loading"]" data-pems-confirm-title="@Localizer["Confirm_Title"]" data-pems-confirm-ok="@Localizer["Confirm_Ok"]" data-pems-confirm-cancel="@Localizer["Confirm_Cancel"]">
     @RenderBody()
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
@@ -50,6 +52,8 @@
     <script src="~/_content/PEMS.UI/pems-modal-fill.js" asp-append-version="true"></script>
     <script src="~/_content/PEMS.UI/pems-confirm.js" asp-append-version="true"></script>
     <script src="~/_content/PEMS.UI/pems-errors.js" asp-append-version="true"></script>
+    <script src="~/lib/jalalidatepicker/jalalidatepicker.min.js" asp-append-version="true"></script>
+    <script src="~/_content/PEMS.UI/pems-date.js" asp-append-version="true"></script>
     <script src="~/_content/PEMS.UI/pems-skeleton.js" asp-append-version="true"></script>
     <script src="~/_content/PEMS.UI/pems-tree.js" asp-append-version="true"></script>
     <script src="~/_content/PEMS.UI/pems-form.js" asp-append-version="true"></script>

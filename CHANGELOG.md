@@ -3,6 +3,15 @@
 All notable changes to PEMS. No system version is defined yet (plan row F_CI), so entries are grouped by date
 and theme and were reconstructed from the git history (initial import 2026-09-05). Newest first.
 
+## 2026-11-04 - Jalali date picker: pems-date (SCRUM-225 / #206, SCRUM-385 / #368 slice 1)
+
+### Added
+- Library search done first (guideline 03 section 3 step 0, new): adopted `@majidh1/jalalidatepicker` 1.0.0 (MIT, vanilla, no dependencies, 26 KB js + 8 KB css), vendored unmodified under `PEMS.Web/wwwroot/lib/jalalidatepicker` with its licence; rejected persian-datepicker (jQuery, 2022), jalali-moment (moment, 2023); conversion libraries (jalaali-js, date-fns-jalali) were not needed because the browser's own Persian calendar (`Intl`) and .NET's `PersianCalendar` agree on every year start 1300 to 1500 (fixture `PEMS.Tests/TestData/jalali-year-starts.json`, `JalaliDateTests`).
+- `<pems-date>` (PEMS.UI): always posts the Gregorian ISO date; Persian pages show and pick Jalali dates, other pages keep the native date input. `pems-date.js` writes typed dates too (Persian/Arabic/Latin digits, `/ - .` separators), refuses impossible dates such as 1404/12/30, and falls back to the native input if the library does not load; `pems-date.css` maps the picker to the theme tokens (Light, Dark, Turquoise); `Date_Invalid` text in both languages.
+- Tests: `DateTagHelperTests` (13), `JalaliDateTests`, and `node tools/js-tests/pems-date.test.js` (all 73,049 valid days of the Jalali years 1300 to 1500 convert correctly, 1,351 impossible days are rejected). Checked in a browser test page: typed entry, invalid and out-of-range dates, a real click on the picker, the dark theme, the fallback without the library.
+- 84 hand-written `<input type="date">` in 47 views became `<pems-date>` (the page keeps every attribute; the same native input on English pages, the Jalali picker on Persian pages, the same ISO value posted). Skipped on purpose and still native (23 left in the ratchet): fields bound with `asp-for`, inputs a script reads by id or a data hook, inputs with handlers or Razor attribute expressions, and 15 tags the converter could not parse. Ratchet: new category `date-input` (107 at the start, 23 now); `text-input` 192 to 48 (the date inputs carried two `form-control` hits each).
+- Not in this slice: a date with a time, `asp-for` fields, ranges and relative windows, public holidays and SLA, user time zones and display presets (SCRUM-385 open parts).
+
 ## 2026-11-04 - graphify hooks removed (SCRUM-504)
 
 ### Changed

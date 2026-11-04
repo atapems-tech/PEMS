@@ -21,6 +21,7 @@ public sealed class AdoptionRatchetTests
         ("button", new Regex(@"\bbtn btn-[a-z-]+", RegexOptions.Compiled), true, false),
         ("text-input", new Regex(@"\bform-control\b", RegexOptions.Compiled), true, false),
         ("select", new Regex(@"\bform-select\b", RegexOptions.Compiled), true, false),
+        ("date-input", new Regex(@"<input\b[^>]*\btype=""date""", RegexOptions.Compiled), true, false),   // SCRUM-225: <pems-date> (Jalali or Gregorian, posts the ISO date)
         ("form-label", new Regex(@"class=""[^""]*(?<![\w-])form-label(?![\w-])", RegexOptions.Compiled), true, false),
         ("textarea", new Regex(@"<textarea\b", RegexOptions.Compiled), true, false),
         ("check-radio-switch", new Regex(@"\bform-check-input\b|\bform-switch\b", RegexOptions.Compiled), true, false),
@@ -89,6 +90,8 @@ public sealed class AdoptionRatchetTests
     {
         Assert.Equal(1, Hits("alert", "<div class=\"alert alert-danger small\">x</div>"));
         Assert.Equal(1, Hits("button", "<button class=\"btn btn-primary btn-sm\">x</button>"));
+        Assert.Equal(1, Hits("date-input", "<input name=\"due\" type=\"date\" class=\"form-control\" />"));
+        Assert.Equal(0, Hits("date-input", "<pems-date name=\"due\" /><input type=\"text\" data-type=\"date2\">"));
         Assert.Equal(2, Hits("badge", "<span class=\"badge text-bg-success\">x</span>"));
         Assert.Equal(1, Hits("alert-call", "alert('x');"));
         Assert.Equal(1, Hits("confirm-call", "if (!confirm('x')) return;"));

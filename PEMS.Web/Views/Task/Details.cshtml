@@ -98,11 +98,11 @@
                     }
                     <div class="col-md-4">
                         <pems-label css="small" for="e-start">@Localizer["Tm_Field_StartDate"]</pems-label>
-                        <input id="e-start" name="StartDate" type="date" value="@TaskManagerUi.DateInput(i.StartDate)" class="form-control form-control-sm" />
+                        <pems-date id="e-start" name="StartDate" value="@TaskManagerUi.DateInput(i.StartDate)" scale="small" />
                     </div>
                     <div class="col-md-4">
                         <pems-label css="small" for="e-due">@Localizer["Tm_Field_DueDate"]</pems-label>
-                        <input id="e-due" name="DueDate" type="date" value="@TaskManagerUi.DateInput(i.DueDate)" class="form-control form-control-sm" />
+                        <pems-date id="e-due" name="DueDate" value="@TaskManagerUi.DateInput(i.DueDate)" scale="small" />
                     </div>
                     <div class="col-md-4 d-flex align-items-end"><pems-button tone="primary" size="small" css="w-100">@Localizer["Tm_Save"]</pems-button></div>
                 </form>

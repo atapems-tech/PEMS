@@ -285,7 +285,7 @@
             {
                 <form asp-action="ScheduleKickoff" method="post" class="d-flex gap-1">
                     <input type="hidden" name="contractId" value="@Model.ContractId" />
-                    <input type="date" name="meetingDate" class="form-control form-control-sm" required />
+                    <pems-date name="meetingDate" scale="small" required />
                     <pems-input scale="small" type="text" name="location" placeholder="@Localizer["Location"]" />
                     <pems-button tone="primary" size="small" outline="true" type="submit">@Localizer["Schedule"]</pems-button>
                 </form>
