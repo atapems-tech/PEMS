@@ -3,6 +3,11 @@
 All notable changes to PEMS. No system version is defined yet (plan row F_CI), so entries are grouped by date
 and theme and were reconstructed from the git history (initial import 2026-09-05). Newest first.
 
+## 2026-11-04 - Re-audit before starting, and how to cancel (guideline)
+
+### Added
+- Guideline chapter 0, step 2a: re-audit a task against the current code before starting (go, modify, split, merge or cancel), work from each page as it is now. Cancel rule while Jira has no Won't Do status: comment with reason, label `wont-do`, Done, only with the owner's yes.
+
 ## 2026-11-04 - Intake queue is a list page (SCRUM-337)
 
 ### Changed
