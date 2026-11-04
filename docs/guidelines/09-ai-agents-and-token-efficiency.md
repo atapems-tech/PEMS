@@ -44,6 +44,10 @@ Skills are committed, so a `git pull` of `main` gives every agent the same ones.
 | `pems-jira-handover` | starting an issue, moving it to In Review, writing the QA checklist, cancelling |
 | `pems-list-page` | converting or adding a record list view to the `pems-list-*` components |
 | `pems-errors` | throwing an error, calling the server from a script, showing a failure to the user |
+| `pems-localization` | any user-visible text: English and Persian resource keys, component texts, the key coverage test |
+| `pems-plan-sync` | reading, changing or adding a plan row (`plan/rows`), keeping Jira and the plan in step |
+| `pems-shared-modal` | a list or page that opens the same modal form for many rows (`data-fill-*`) |
+| `pems-migration-guard` | before touching the schema, a query, a transaction or a database service: migration rules, drift gate, when to stop without SQL Server |
 
 Rules for skills (also for the agent that adds one): (1) a procedure that a guideline chapter already states is **linked, not copied**, so the chapter stays the single source; (2) the description is one line and says when to use it; (3) a skill that is not used for a month, or that does not serve PEMS (a generic design generator, a different CSS framework), is removed, not hidden; (4) a lesson that is a procedure becomes or updates a skill in the same pull request as the learnings-log entry (chapter 06).
 

@@ -3,6 +3,11 @@
 All notable changes to PEMS. No system version is defined yet (plan row F_CI), so entries are grouped by date
 and theme and were reconstructed from the git history (initial import 2026-09-05). Newest first.
 
+## 2026-11-04 - Four more project skills (SCRUM-504)
+
+### Added
+- `.claude/skills`: `pems-localization` (English and Persian keys, component texts, the key coverage test), `pems-plan-sync` (plan rows and Jira in step), `pems-shared-modal` (one modal for many rows, `data-fill-*`, test registration), `pems-migration-guard` (schema rules, drift gate, when a session without SQL Server stops). Listed in chapter 09 and AGENTS.md.
+
 ## 2026-11-04 - Static inline styles become generated classes (SCRUM-347, part 2)
 
 ### Changed
