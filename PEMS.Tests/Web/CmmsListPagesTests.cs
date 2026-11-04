@@ -652,6 +652,21 @@ public class CmmsListPagesTests
     }
 
     [Fact]
+    public async Task Tasks_AreAListPage_WithTheirTabFilterAndTheNewTaskForm()
+    {
+        var html = await Render<TaskController>("/Views/Task/Index.cshtml", Page(
+            new TaskItemDto { TaskItemId = 9, Title = "Call vendor", Priority = "Normal", Status = "Open", IsOverdue = true, DueDate = new DateTime(2026, 10, 20) }),
+            v => { v["Tab"] = "action"; v["CanEdit"] = true; v["CanCreate"] = true; v["Employees"] = new List<EligibleAssigneeDto> { new() { EmployeeId = 4, Name = "A. Karimi" } }; });
+
+        AssertBuiltFromTheComponent(html, "Task", 1, keepsDataBadges: true);
+        Assert.Contains("Call vendor", html);
+        Assert.Contains("name=\"tab\"", html);
+        Assert.Contains("name=\"assignedToEmployeeId\"", html);   // the new-task form moved into the toolbar popover
+        Assert.Contains("name=\"taskItemId\" value=\"9\"", html);   // status change form kept
+        Assert.DoesNotContain("pagination-sm", html);
+    }
+
+    [Fact]
     public async Task Meetings_AreAListPage_AndScheduleOpensTheirOwnModal()
     {
         var html = await Render<MeetingController>("/Views/Meeting/Index.cshtml", Page(

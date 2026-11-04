@@ -3,6 +3,11 @@
 All notable changes to PEMS. No system version is defined yet (plan row F_CI), so entries are grouped by date
 and theme and were reconstructed from the git history (initial import 2026-09-05). Newest first.
 
+## 2026-11-04 - Tasks are a list page (SCRUM-337)
+
+### Changed
+- The task list is built from `pems-list-page`: the two tab buttons became the tab filter, the "new personal task" form moved from under the list into a toolbar popover (same fields and post), the task manager link is in the page menu, the status change forms stay in the rows.
+
 ## 2026-11-04 - My Work is a list page (SCRUM-337)
 
 ### Changed
