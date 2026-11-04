@@ -3,6 +3,11 @@
 All notable changes to PEMS. No system version is defined yet (plan row F_CI), so entries are grouped by date
 and theme and were reconstructed from the git history (initial import 2026-09-05). Newest first.
 
+## 2026-11-04 - Meetings on the list-page component (SCRUM-337)
+
+### Changed
+- `Meeting/Index` is built from `<pems-list-page>`; Schedule Meeting opens the page modal; column resize and paging come from the component. Page test added.
+
 ## 2026-11-04 - Production orders and the procurement cartable on the list-page component (SCRUM-337)
 
 ### Changed
