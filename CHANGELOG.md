@@ -23,7 +23,7 @@ and theme and were reconstructed from the git history (initial import 2026-09-05
 ### Changed
 - Root `CLAUDE.md` cut from 2.3 KB to 0.9 KB (the Zaemit tool list is in the tool schemas already; the graphify block says the same in fewer lines); `AGENTS.md` points to chapter 09 and the skills.
 - The descriptions of the two skills kept (`graphify`, `ui-ux-pro-max`) are one line each (every description is loaded into every session).
-- Open: removing the third-party skills that do not serve PEMS (Tailwind/shadcn, brand, banner, slides, design generators) waits for the owner's confirmation of the list.
+- Removed (owner confirmed 2026-11-04): the third-party skills `banner-design`, `brand`, `design`, `design-system`, `slides` and `ui-styling` (generic marketing, slide and Tailwind/shadcn generators, about 960 KB, nothing in PEMS referred to them) and the stray `.claude/New Text Document.txt`; recoverable from git history. Kept: `graphify`, `ui-ux-pro-max`.
 
 ## 2026-11-04 - Test budget for sessions (guideline)
 
