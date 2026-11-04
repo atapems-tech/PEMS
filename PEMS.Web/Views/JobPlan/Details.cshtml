@@ -16,7 +16,7 @@
 
 <div class="content-card mb-3">
     <div class="d-flex align-items-center gap-3 mb-2 flex-wrap">
-        <div class="kpi-icon bg-icon-blue" style="width:56px;height:56px;font-size:26px;"><i class="bi bi-list-check"></i></div>
+        <div class="kpi-icon bg-icon-blue pems-s-792bd2d6"><i class="bi bi-list-check"></i></div>
         <div>
             <h5 class="mb-0">@Model.JobPlanNumber &mdash; @Model.Title</h5>
             <span class="text-muted small">@(Model.EstimatedDurationHours.HasValue ? Model.EstimatedDurationHours + " hours estimated" : "no duration estimate")</span>
@@ -67,10 +67,10 @@
         </pems-related-table>
     }
     <pems-related-add action="@Url.Action("AddTask")" parent-name="jobPlanId" parent-value="@Model.JobPlanId.ToString()" submit-label="@Localizer["Add"]">
-        <div style="flex:0 0 90px"><label class="lp-lbl" for="jpTaskNo">#</label><pems-input scale="small" id="jpTaskNo" name="taskNumber" type="number" step="10" value="@nextTaskNumber" required /></div>
+        <div class="pems-s-4c35a544"><label class="lp-lbl" for="jpTaskNo">#</label><pems-input scale="small" id="jpTaskNo" name="taskNumber" type="number" step="10" value="@nextTaskNumber" required /></div>
         <div><label class="lp-lbl" for="jpTaskTitle">@Localizer["Title"]</label><pems-input scale="small" id="jpTaskTitle" name="title" placeholder="Isolate equipment" required /></div>
         <div><label class="lp-lbl" for="jpTaskDesc">@Localizer["Description"]</label><pems-input scale="small" id="jpTaskDesc" name="description" placeholder="@Localizer["Description (optional)"]" /></div>
-        <div style="flex:0 0 110px"><label class="lp-lbl" for="jpTaskMin">@Localizer["JpD_EstMin"]</label><pems-input scale="small" id="jpTaskMin" name="estimatedDurationMinutes" type="number" /></div>
+        <div class="pems-s-09277c18"><label class="lp-lbl" for="jpTaskMin">@Localizer["JpD_EstMin"]</label><pems-input scale="small" id="jpTaskMin" name="estimatedDurationMinutes" type="number" /></div>
     </pems-related-add>
 </pems-related-list>
 <div class="content-card mb-3">
@@ -135,7 +135,7 @@
     }
     <pems-related-add action="@Url.Action("AddRequiredMaterial")" parent-name="jobPlanId" parent-value="@Model.JobPlanId.ToString()" submit-label="@Localizer["Add"]">
         <pems-list-filter-select id="jpMaterial" name="materialItemId" label="@Localizer["Material"]" items="@materialItems.Select(m => new SelectListItem($"{m.MaterialCode} - {m.Description}", ((int)m.MaterialItemId).ToString()))" />
-        <div style="flex:0 0 160px"><label class="lp-lbl" for="jpMaterialQty">@Localizer["Quantity"]</label><pems-input scale="small" id="jpMaterialQty" name="requiredQuantity" type="number" step="0.001" required /></div>
+        <div class="pems-s-929aba04"><label class="lp-lbl" for="jpMaterialQty">@Localizer["Quantity"]</label><pems-input scale="small" id="jpMaterialQty" name="requiredQuantity" type="number" step="0.001" required /></div>
     </pems-related-add>
 </pems-related-list>
 

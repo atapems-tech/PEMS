@@ -3,6 +3,12 @@
 All notable changes to PEMS. No system version is defined yet (plan row F_CI), so entries are grouped by date
 and theme and were reconstructed from the git history (initial import 2026-09-05). Newest first.
 
+## 2026-11-04 - Static inline styles become generated classes (SCRUM-347, part 2)
+
+### Changed
+- 198 static `style="..."` attributes in 128 views became classes of a generated stylesheet `pems-inline-styles.css` (one class per distinct declaration list, every declaration `!important` so the result equals the old inline style; linked by the three layouts). A proof script checked that each class reproduces its original declarations (198 of 198). Left inline on purpose (587 in 135 files): anything a script sets or clears (`display`, `visibility`, `transform`, `transition`, `box-shadow`, custom properties), widths and positions of table headers and of elements with an id or a data hook, component tags, Razor-driven styles, and two views that use `style.cssText`. A guard test (`ThemeSystemTests`) stops the count from rising.
+- Still open in SCRUM-347: the 587 inline styles (each needs a browser check), 60 inline scripts, the Content-Security-Policy itself.
+
 ## 2026-11-04 - AI agent efficiency: token rules, project skills, trimmed instructions (SCRUM-504)
 
 ### Added

@@ -41,7 +41,7 @@
                 <h6 class="mb-0">Active Production Orders</h6>
                 <pems-button tone="neutral" size="small" outline="true" as="a" asp-controller="ProductionOrder" asp-action="Index">View all</pems-button>
             </div>
-            <div class="table-scroll-area" style="max-height:50vh; overflow-y:auto;">
+            <div class="table-scroll-area pems-s-7bf38d03">
                 <pems-table kind="enterprise">
                     <thead><tr><th>@Localizer["Order"]</th><th>@Localizer["Material"]</th><th>@Localizer["Qty"]</th><th>@Localizer["Status"]</th><th>@Localizer["Work Center"]</th></tr></thead>
                     <tbody>
@@ -64,7 +64,7 @@
     <div class="col">
         <div class="content-card">
             <h6 class="mb-2">Recent Batches</h6>
-            <div class="table-scroll-area" style="max-height:50vh; overflow-y:auto;">
+            <div class="table-scroll-area pems-s-7bf38d03">
                 <pems-table kind="enterprise">
                     <thead><tr><th>@Localizer["Batch"]</th><th>@Localizer["Material"]</th><th>@Localizer["Qty"]</th><th>Quality Status</th></tr></thead>
                     <tbody>
@@ -87,7 +87,7 @@
 
 <div class="content-card mt-3">
     <h6 class="mb-2">Recent Production Losses</h6>
-    <div class="table-scroll-area" style="max-height:40vh; overflow-y:auto;">
+    <div class="table-scroll-area pems-s-f7dce87f">
         <pems-table kind="enterprise">
             <thead><tr><th>@Localizer["Date"]</th><th>@Localizer["Qty"]</th><th>@Localizer["Category"]</th><th>@Localizer["Employee"]</th><th>@Localizer["Notes"]</th></tr></thead>
             <tbody>

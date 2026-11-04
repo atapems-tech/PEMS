@@ -304,7 +304,7 @@
 
             <div class="tab-pane fade @(activeAccessTab == "simulator" ? "show active" : "")" id="access-simulator" role="tabpanel">
                 <div class="content-card">
-                    <form method="post" asp-action="Simulate" asp-route-id="@Model.UserId" class="row g-3" style="max-width:640px;">
+                    <form method="post" asp-action="Simulate" asp-route-id="@Model.UserId" class="row g-3 pems-s-e2b01b0d">
                         @Html.AntiForgeryToken()
                         <div class="col-md-6">
                             <pems-label>@Localizer["Resource"]</pems-label>

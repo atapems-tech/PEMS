@@ -76,12 +76,12 @@
         }
 
         <pems-related-add action="@Url.Action("Create")" submit-label="@Localizer["Add Rule"]">
-            <div style="flex:0 0 100px"><label class="lp-lbl" for="carPriority">@Localizer["Priority"]</label><pems-input scale="small" id="carPriority" type="number" name="priority" value="0" /></div>
+            <div class="pems-s-bc0bbd8e"><label class="lp-lbl" for="carPriority">@Localizer["Priority"]</label><pems-input scale="small" id="carPriority" type="number" name="priority" value="0" /></div>
             <div><label class="lp-lbl" for="carMin">@Localizer["Min Value"]</label><pems-input scale="small" id="carMin" type="number" step="0.01" name="minValue" /></div>
             <div><label class="lp-lbl" for="carMax">@Localizer["Max Value"]</label><pems-input scale="small" id="carMax" type="number" step="0.01" name="maxValue" /></div>
             <div><label class="lp-lbl" for="carCrit">@Localizer["Criticality"]</label><pems-input scale="small" id="carCrit" type="text" name="criticalityClass" placeholder="@Localizer["Any"]" /></div>
             <pems-list-filter-select id="carRole" name="requiredApproverRole" label="@Localizer["Required Role"]" items="@roles.Select(role => new SelectListItem(role, role))" />
-            <div style="flex:2 1 240px"><label class="lp-lbl" for="carDesc">@Localizer["Ed_Description"]</label><pems-input scale="small" id="carDesc" type="text" name="description" /></div>
+            <div class="pems-s-8eb047ce"><label class="lp-lbl" for="carDesc">@Localizer["Ed_Description"]</label><pems-input scale="small" id="carDesc" type="text" name="description" /></div>
         </pems-related-add>
     </pems-list-panel>
 </pems-list-page>

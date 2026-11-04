@@ -81,7 +81,7 @@
                             <td>
                                 @if (t.ItemKey != null) { <span class="tm-key me-1">@t.ItemKey</span> }
                                 <a asp-action="Details" asp-route-id="@t.TaskItemId" class="lp-subject">@t.Title</a>
-                                @if (!string.IsNullOrEmpty(t.Description)) { <div class="small text-muted text-truncate" style="max-width:380px;">@t.Description</div> }
+                                @if (!string.IsNullOrEmpty(t.Description)) { <div class="small text-muted text-truncate pems-s-b4a851bd">@t.Description</div> }
                             </td>
                             <td class="small">@t.AssignedToEmployeeName</td>
                             <td class="small">@(t.DueDate?.ToString("yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture))</td>

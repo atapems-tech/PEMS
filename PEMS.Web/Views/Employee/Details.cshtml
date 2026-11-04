@@ -63,7 +63,7 @@
         }
         else
         {
-            <div class="rounded-4 d-flex align-items-center justify-content-center bg-secondary-subtle text-secondary-emphasis flex-shrink-0" style="width:96px;height:96px;font-size:30px;font-weight:700;">
+            <div class="rounded-4 d-flex align-items-center justify-content-center bg-secondary-subtle text-secondary-emphasis flex-shrink-0 pems-s-29328aea">
                 @Initials(Model.FirstName, Model.LastName)
             </div>
         }
@@ -71,7 +71,7 @@
             <div class="d-flex align-items-center gap-2 flex-wrap mb-1">
                 <h4 class="mb-0">@Model.FirstName @Model.LastName</h4>
                 <pems-badge tone="none" css="rounded-pill @(Model.IsActive ? "bg-success-subtle text-success-emphasis" : "bg-secondary-subtle text-secondary-emphasis") d-inline-flex align-items-center gap-1">
-                    <i class="bi bi-circle-fill" style="font-size:6px;"></i>
+                    <i class="bi bi-circle-fill pems-s-dec715c2"></i>
                     @L(Model.IsActive ? "Active" : "Inactive", Model.IsActive ? "فعال" : "غیرفعال")
                 </pems-badge>
             </div>
@@ -125,7 +125,7 @@
                     @if (manager != null)
                     {
                         <div class="d-flex align-items-center gap-2">
-                            <div class="rounded-circle bg-secondary-subtle text-secondary-emphasis d-flex align-items-center justify-content-center small fw-bold" style="width:24px;height:24px;">
+                            <div class="rounded-circle bg-secondary-subtle text-secondary-emphasis d-flex align-items-center justify-content-center small fw-bold pems-s-8fd988a7">
                                 @Initials(manager.FirstName, manager.LastName)
                             </div>
                             <a asp-action="Details" asp-route-id="@manager.EmployeeId" class="fw-semibold text-decoration-none">@manager.FirstName @manager.LastName</a>
@@ -254,7 +254,7 @@
     <div class="row g-3">
         <div class="col-md-4">
             <div class="d-flex align-items-start gap-3 p-3 rounded-3 bg-body-tertiary h-100">
-                <div class="rounded-circle bg-secondary-subtle d-flex align-items-center justify-content-center flex-shrink-0" style="width:40px;height:40px;">
+                <div class="rounded-circle bg-secondary-subtle d-flex align-items-center justify-content-center flex-shrink-0 pems-s-660e4429">
                     <i class="bi bi-phone"></i>
                 </div>
                 <div>
@@ -265,7 +265,7 @@
         </div>
         <div class="col-md-4">
             <div class="d-flex align-items-start gap-3 p-3 rounded-3 bg-body-tertiary h-100">
-                <div class="rounded-circle bg-secondary-subtle d-flex align-items-center justify-content-center flex-shrink-0" style="width:40px;height:40px;">
+                <div class="rounded-circle bg-secondary-subtle d-flex align-items-center justify-content-center flex-shrink-0 pems-s-660e4429">
                     <i class="bi bi-envelope"></i>
                 </div>
                 <div class="overflow-hidden">
@@ -283,7 +283,7 @@
         </div>
         <div class="col-md-4">
             <div class="d-flex align-items-start gap-3 p-3 rounded-3 bg-body-tertiary h-100">
-                <div class="rounded-circle bg-secondary-subtle d-flex align-items-center justify-content-center flex-shrink-0" style="width:40px;height:40px;">
+                <div class="rounded-circle bg-secondary-subtle d-flex align-items-center justify-content-center flex-shrink-0 pems-s-660e4429">
                     <i class="bi bi-house"></i>
                 </div>
                 <div>

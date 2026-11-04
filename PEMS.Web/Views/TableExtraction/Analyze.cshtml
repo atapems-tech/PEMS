@@ -82,7 +82,7 @@
 
 <div class="content-card">
     <h6 class="mb-2">Rows (@(table?.Rows.Count ?? 0))</h6>
-    <div class="table-responsive table-scroll-area" style="max-height:65vh; overflow-y:auto;">
+    <div class="table-responsive table-scroll-area pems-s-8da1c6e6">
         <pems-table kind="enterprise" scale="small">
             <thead>
                 <tr>
@@ -107,7 +107,7 @@
                             <td class="small">@(row.LoopNo ?? "-")</td>
                             <td class="small">@(row.System ?? "-")</td>
                             <td class="small">@(row.SpareOrHotSpare == true ? "Yes" : "-")</td>
-                            <td class="small" style="max-width:220px;">@(row.Remarks ?? "-")</td>
+                            <td class="small pems-s-27af8985">@(row.Remarks ?? "-")</td>
                             <td class="small text-muted">
                                 @if (row.RawExtra != null && row.RawExtra.Any())
                                 {

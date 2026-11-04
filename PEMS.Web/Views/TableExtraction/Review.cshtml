@@ -45,7 +45,7 @@
 
 <div class="content-card mb-3">
     <div class="d-flex gap-2 flex-wrap align-items-center">
-        <div class="input-group admin-search" style="max-width:280px;">
+        <div class="input-group admin-search pems-s-2f3f7d77">
             <span class="input-group-text"><i class="bi bi-search"></i></span>
             <pems-input type="search" id="rowSearch" placeholder="Filter by tag..." autocomplete="off" />
         </div>
@@ -65,13 +65,13 @@
 </div>
 
 <div class="content-card">
-    <div class="table-responsive table-scroll-area" style="max-height:70vh; overflow-y:auto;">
+    <div class="table-responsive table-scroll-area pems-s-a7ef6ffc">
         <pems-table kind="enterprise" scale="small">
             <thead>
                 <tr>
                     <th style="width:30px;"><input type="checkbox" id="selectAllMatched" title="Select all matched rows" /></th>
                     <th>@Localizer["Tag"]</th><th>@Localizer["Description"]</th><th>@Localizer["Junction Box"]</th><th>@Localizer["Cable No."]</th>
-                    <th>DCS Tag</th><th>@Localizer["Status"]</th><th style="min-width:280px;">@Localizer["Action"]</th>
+                    <th>DCS Tag</th><th>@Localizer["Status"]</th><th class="pems-s-e581e86b">@Localizer["Action"]</th>
                 </tr>
             </thead>
             <tbody>
@@ -95,7 +95,7 @@
                             }
                         </td>
                         <td class="fw-semibold">@(row.TagNumber ?? "-")</td>
-                        <td class="small" style="max-width:220px;">@(row.Description ?? "-")</td>
+                        <td class="small pems-s-27af8985">@(row.Description ?? "-")</td>
                         <td class="small">@(row.JunctionBox ?? "-")</td>
                         <td class="small">@(row.CableNo ?? "-")</td>
                         <td class="small">@(row.DcsTagNo ?? "-")</td>

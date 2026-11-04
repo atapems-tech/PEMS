@@ -57,6 +57,7 @@
        را (فقط روی Turquoise + کلاس‌های Loading/Skeleton سراسری) اعمال کند. *@
     <link rel="stylesheet" href="~/css/pems-glass.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/pems-themes.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/pems-inline-styles.css" asp-append-version="true" />
 
     @if (isRtl)
     {
@@ -164,7 +165,7 @@
                     <span class="pems-user-avatar">@(string.IsNullOrEmpty(User.Identity?.Name) ? "?" : User.Identity!.Name!.Substring(0, 1).ToUpper())</span>
                     <span class="d-none d-md-flex flex-column text-start">
                         <span class="fw-semibold">@(User.FindFirst("FullName")?.Value ?? User.Identity?.Name)</span>
-                        <span class="text-muted" style="font-size:11px;">@(User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role)?.Value)</span>
+                        <span class="text-muted pems-s-11a50812">@(User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role)?.Value)</span>
                     </span>
                 </button>
                 <pems-dropdown-menu end="true">
@@ -207,7 +208,7 @@
         </main>
     </div>
 
-    <div class="toast-container position-fixed bottom-0 end-0 p-3" style="z-index:1080;" aria-live="polite" aria-atomic="false">
+    <div class="toast-container position-fixed bottom-0 end-0 p-3 pems-s-fe1fc042" aria-live="polite" aria-atomic="false">
         @if (TempData["Message"] != null)
         {
             <pems-toast tone="success" role="alert" data-bs-delay="5000" data-bs-autohide="true">

@@ -26,7 +26,7 @@
         var pct = (int)Math.Round(100.0 * value / total);
         <tr>
             <th scope="row" class="fw-normal">@if (href != null) { <a href="@href">@label</a> } else { @label }</th>
-            <td style="width:45%">
+            <td class="pems-s-a9c5e7e4">
                 <pems-progress value="@pct" label="@label: @value (@pct%)"></pems-progress>
             </td>
             <td class="text-end"><strong>@value</strong> <span class="text-muted small">(@pct%)</span></td>
