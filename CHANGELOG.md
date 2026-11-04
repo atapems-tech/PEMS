@@ -3,10 +3,22 @@
 All notable changes to PEMS. No system version is defined yet (plan row F_CI), so entries are grouped by date
 and theme and were reconstructed from the git history (initial import 2026-09-05). Newest first.
 
+## 2026-11-04 - AI agent efficiency: token rules, project skills, trimmed instructions (SCRUM-504)
+
+### Added
+- Guideline chapter 09 (`docs/guidelines/09-ai-agents-and-token-efficiency.md`): what costs tokens with measured numbers (a Jira write echoes the whole issue, about 3k tokens; a search that asks for `parent` about 10k for 15 rows), rules for reading, batching, testing, Jira and reporting, the skill rules, the recommended developer tools, what the instruction files may hold.
+- Project skills in `.claude/skills`: `pems-work-block`, `pems-test-gates`, `pems-jira-handover`, `pems-list-page`, `pems-errors` (one-line descriptions, procedures linked to the chapters). A `git pull` of `main` gives every agent the same set.
+
+### Changed
+- Root `CLAUDE.md` cut from 2.3 KB to 0.9 KB (the Zaemit tool list is in the tool schemas already; the graphify block says the same in fewer lines); `AGENTS.md` points to chapter 09 and the skills.
+- The descriptions of the two skills kept (`graphify`, `ui-ux-pro-max`) are one line each (every description is loaded into every session).
+- Open: removing the third-party skills that do not serve PEMS (Tailwind/shadcn, brand, banner, slides, design generators) waits for the owner's confirmation of the list.
+
 ## 2026-11-04 - Test budget for sessions (guideline)
 
 ### Added
-- Guideline chapter 05 "Test budget" (measured times and the safe classes per kind of change), chapter 07 section 2b (two minutes per command, exact class names, never a word or namespace filter, the slow families listed) and the standard not-run line d2 (the broad render suite and the guard classes not run); README "Local tests" note; learnings-log entry. Cause: a whole-namespace run took 11 minutes and a word filter pulled in the SQL families, to find what a one-second guard class finds.
+- `tools/test-gates/gates.py`: prints, from the changed files, the build, the UI tests, the guard classes and the exact test classes that mention the changed files (slow families never chosen), and what is left to the end-of-sprint QA.
+- Guideline chapter 05 "Test budget" (measured times and the safe classes per kind of change), chapter 07 section 2b (run every test that fits, the very large suites are left to the end-of-sprint QA, each task keeping its own line d2 (nothing is combined between tasks); two minutes per command, exact class names, never a word or namespace filter, the slow families listed) and the standard not-run line d2 (the broad render suite and the guard classes not run); README "Local tests" note; learnings-log entry. Cause: a whole-namespace run took 11 minutes and a word filter pulled in the SQL families, to find what a one-second guard class finds.
 
 ## 2026-11-04 - Work blocks start with a pull and a whole-backlog audit (guideline)
 

@@ -30,6 +30,7 @@ Every task: chapters **0, 1 (section "Definition of done"), 6**. Then add by tas
 | [06 Knowledge and guideline maintenance](06-knowledge-and-guideline-maintenance.md) | **every task, at the end** - what to record where; how to change this guideline |
 | [07 QA check in the UI](07-qa-check-in-the-ui.md) | **when a task is merged and moves to In Review**, and whenever you QA a task - the independent check in the browser before Done |
 | [08 REST API standard](08-rest-api-standard.md) | adding or changing anything under `/api` or a JSON endpoint; designing a designer or integration call |
+| [09 AI agents and token efficiency](09-ai-agents-and-token-efficiency.md) | **every agent session** - what costs tokens (Jira calls, tests, skills), how to read, search and report cheaply, the project skills `.claude/skills/pems-*`, recommended tools |
 | [Learnings log](learnings-log.md) | skim the last entries at the start; append at the end |
 
 ## 3. How this guideline reaches every task (enforcement layers)
