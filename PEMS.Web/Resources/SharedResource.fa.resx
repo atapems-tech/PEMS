@@ -4474,4 +4474,10 @@
   <data name="Err_Copy" xml:space="preserve"><value>کپی</value></data>
   <data name="Err_Copied" xml:space="preserve"><value>کپی شد</value></data>
   <data name="Err_Close" xml:space="preserve"><value>بستن</value></data>
+  <data name="Status_Conflict_Title" xml:space="preserve"><value>رکورد تغییر کرده است</value></data>
+  <data name="Status_Conflict_Text" xml:space="preserve"><value>شخص دیگری این رکورد را تغییر داده یا داده‌ها با اطلاعات ذخیره‌شده تعارض دارند. صفحه را دوباره باز کنید و تلاش کنید.</value></data>
+  <data name="Status_TooMany_Title" xml:space="preserve"><value>درخواست‌های زیاد</value></data>
+  <data name="Status_TooMany_Text" xml:space="preserve"><value>در مدت کوتاه درخواست‌های زیادی ارسال شد. کمی صبر کنید و دوباره تلاش کنید.</value></data>
+  <data name="Status_Unavailable_Title" xml:space="preserve"><value>موقتاً در دسترس نیست</value></data>
+  <data name="Status_Unavailable_Text" xml:space="preserve"><value>سرویس در حال حاضر شلوغ است یا در دسترس نیست. کمی بعد دوباره تلاش کنید؛ اگر تکرار شد، شناسه‌ی درخواست زیر را گزارش دهید.</value></data>
 </root>

@@ -8,6 +8,9 @@
     {
         404 => ("Status_NotFound_Title", "Status_NotFound_Text", "bi-compass"),
         401 or 403 => ("Status_Forbidden_Title", "Status_Forbidden_Text", "bi-shield-lock"),
+        409 => ("Status_Conflict_Title", "Status_Conflict_Text", "bi-arrow-repeat"),
+        429 => ("Status_TooMany_Title", "Status_TooMany_Text", "bi-hourglass-split"),
+        503 => ("Status_Unavailable_Title", "Status_Unavailable_Text", "bi-cloud-slash"),
         _ => ("Status_Generic_Title", "Status_Generic_Text", "bi-exclamation-triangle")
     };
     ViewData["Title"] = Localizer[titleKey].Value;

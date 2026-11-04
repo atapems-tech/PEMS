@@ -102,6 +102,7 @@ PEMS.UI.ServiceCollectionExtensions.AddPemsUi(builder.Services);   // component 
 // REST API /api/v1 (SCRUM-435, ADR-0009): permission policies, problem+json, OpenAPI 3.1, API-aware 401/403 for cookie sign-in.
 PEMS.Web.Api.ApiServiceCollectionExtensions.AddPemsApi(builder.Services);
 PEMS.Web.Api.ApiServiceCollectionExtensions.ConfigureApiAuthenticationResponses(builder.Services);
+builder.Services.AddExceptionHandler<PEMS.Web.Diagnostics.PemsExceptionHandler>();   // SCRUM-464: /api failures outside controllers, same problem+json
 builder.Services.AddSingleton<PEMS.Web.Api.ApiIdempotencyStore>();
 
 // Definition store (SCRUM-434, ADR-0010/0011): write service, cached runtime read side, the registered kinds and the limits (Definitions:* settings).

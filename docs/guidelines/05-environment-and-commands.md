@@ -44,9 +44,29 @@ Quick gates a session runs (details of what goes to the checklist: [chapter 07 s
 ```bash
 dotnet build PEMS.Web                                   # compiles every Razor view: tag helper and async errors show here
 dotnet test PEMS.UI.Tests                               # components, tag helpers, golden manifests, script contracts, ratchet, guideline registry
-# page and render tests of the touched views (a filter, minutes, no SQL Server):
-dotnet test PEMS.Tests --filter "FullyQualifiedName~PEMS.Tests.Web|FullyQualifiedName~LayoutTests|FullyQualifiedName~ViewTests|FullyQualifiedName~RenderTests"
+# the render tests of the views you touched: exact class names, see "Test budget" below
+dotnet test PEMS.Tests --filter "FullyQualifiedName~CmmsListPagesTests"
 ```
+
+### Test budget (owner decision 2026-11-04)
+
+A session runs **every test that fits** (the build, the UI tests, the guard classes and the exact classes of what it touched, each about two minutes at most) and leaves the **very large suites to the end-of-sprint QA**, where the tester runs them once for all the tasks In Review ([chapter 07](07-qa-check-in-the-ui.md) section 2b; each task still lists them as its own QA line, nothing is combined between tasks). `python tools/test-gates/gates.py` prints the commands for your changed files. Measured on 2026-11-04 (build done, `--no-build`):
+
+| Command | Tests | Time | Use |
+|---|---|---|---|
+| `dotnet build PEMS.Web` | - | 1 to 2 min | always |
+| `dotnet test PEMS.UI.Tests` | 313 | 5 to 15 s | always |
+| `PEMS.Tests` filter `~CmmsListPagesTests` (list pages) | 35+ | 8 s | when a list page changed |
+| filter `~ListPageComponentTests` | 10+ | 1 s | when `pems-list-*` changed |
+| filter `~ThemeContrastTests\|~ThemeSystemTests\|~PremiumGlassSystemTests` | 63 | 1 s | when a stylesheet, token or theme changed |
+| filter `~ShellAccessibilityTests\|~LocalizationKeyCoverageTests` | 24+ | 1 s | when a layout, a view text or a resource key changed (**always when you add a `Localizer["..."]` key: it needs a Persian entry**) |
+| filter `~TraceIdTests\|~ErrorMapperTests` | 35+ | 1 s | error handling |
+| filter `~PEMS.Tests.Api` | 87 | 15 s | when `/api` or `Program.cs` pipeline changed |
+| filter `~PEMS.Tests.Web` (the whole namespace) | 640+ | 7 to 11 min | **end-of-sprint QA**: a line of the task's checklist, not run per task |
+| a word filter such as `~Letter`, `~Migration`, `~Numbering` | many | minutes | **never**: it matches SQL families (each case waits 15 s for a connection) |
+| `dotnet test PEMS.Tests`, `dotnet test PEMS.slnx` | all | stalls without SQL Server | **end-of-sprint QA** (tester with SQL Server, CI): a line of the task's checklist, not run per task |
+
+Each `dotnet test` call also costs 8 to 16 seconds of start-up: put all the classes you need in **one** filter. Measured slow classes (do not pick them, list them as QA lines): `DynamicSidebarTests` (over 100 s), `MrRegisteredPartTests` (18 s); the script knows them (`SLOW_MEASURED`), add a class there when it measures over 10 s. Rules: (1) filter by exact class names; to find the classes of a view, `grep -l "Views/<Area>/<View>.cshtml" PEMS.Tests -r`; (2) a view, layout, resource or stylesheet change runs the matching guard classes above (they read the files and catch a missing Persian key, a hex colour, a broken theme block in a second) instead of the whole namespace; (3) run a long command in the background only when it is on the table above as acceptable, never "to see"; (4) what you did not run is a QA line ([chapter 07](07-qa-check-in-the-ui.md) section 1b, line d2).
 
 - **Recording flags:** `PEMS_RATCHET_RECORD=1 dotnet test PEMS.UI.Tests --filter AdoptionRatchet` rewrites `tools/UiAudit/adoption-baseline.json`; `PEMS_GOLDEN_RECORD=1 dotnet test PEMS.UI.Tests` rewrites every manifest snapshot: commit only the manifests that really changed and `git checkout` the line-ending noise. After merging `main` into a branch, re-record the ratchet baseline (the file conflicts or goes stale whenever two branches lower different lines); keep both sides of CHANGELOG and registry conflicts.
 - **Known red on `main` (2026-11-03):** `ShellAccessibilityTests.ProgramConfiguration_ReExecutesEmptyErrorResponsesToTheStatusPage` (reads `Program.cs` text); every test of the SQL families listed in chapter 07 section 2b fails without SQL Server.

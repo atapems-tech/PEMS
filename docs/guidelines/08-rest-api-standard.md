@@ -31,6 +31,21 @@ When a rule does not fit, change the ADR first (a new ADR if it reverses a decis
 
 Every response carries `X-Trace-Id`, the W3C trace id of the request (the server request id when no trace is active), and every problem+json body carries the same value as `traceId`. The same value is the `TraceId` property of every log line of the request and the reference shown on the error pages and in client toasts, so a support request that quotes it finds the log entry. Code: `PEMS.Web.Diagnostics.PemsTrace` (`UsePemsTraceId` runs before the exception handler, `ProblemTraceIdFilter` fills the body). Never invent a second reference.
 
+## Error taxonomy and the one mapping table (SCRUM-464)
+
+Throw the taxonomy of `PEMS.Application.Exceptions` (`NotFoundException`, `ConflictException`, `PemsValidationException`, `ForbiddenException`, `UnavailableException`; never a bare `new Exception(...)`). `PemsErrorMapper.Describe(exception)` (PEMS.Web) maps any exception to one kind, status and stable code; the API controller filter, the exception handler and the error page all use it, so they agree.
+
+| Kind | Status | Codes today | Other exceptions mapped to it |
+|---|---|---|---|
+| NotFound | 404 | `not-found` | `KeyNotFoundException` |
+| Conflict | 409 | `unique`, `concurrency`, `frozen`, `stage` (any code you pass) | SQL 2601/2627, `DbUpdateConcurrencyException`, `DocumentFrozenException` |
+| Validation | 422 | `validation` (+ field errors) | |
+| Forbidden | 403 | `forbidden` | `UnauthorizedAccessException` |
+| Unavailable | 503 + `Retry-After` | `deadlock`, `timeout`, `database-unavailable`, `storage` | SQL 1205, -2, 53/233/4060/40613 ..., `TimeoutException` |
+| Unexpected | 500 | `server-error` | everything else |
+
+The exception message is for the log only: no response, page or toast shows it (the problem title is the generic sentence of the kind, the pages show the localised text of the status plus the trace id).
+
 ## Building an endpoint (the walking skeleton, SCRUM-435)
 
 The shared plumbing lives in `PEMS.Web/Api`; the pilot resource `DisciplinesApiController` (`/api/v1/disciplines`) is the example to copy.

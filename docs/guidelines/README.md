@@ -21,7 +21,7 @@ Every task: chapters **0, 1 (section "Definition of done"), 6**. Then add by tas
 
 | Chapter | Read it when |
 |---|---|
-| [00 Task lifecycle](00-task-lifecycle.md) | **every task** - Jira workflow, research, batching, closing |
+| [00 Task lifecycle](00-task-lifecycle.md) | **every task** - Jira workflow, research, batching, closing; **section 0 on every go-ahead**: pull main, audit the whole backlog, batch related tasks, state the plan |
 | [01 Engineering standards](01-engineering-standards.md) | **every task** - architecture, code, database, settings, security, tests, done |
 | [02 UI and components](02-ui-and-components.md) | any view, page, CSS, JS, form, table, modal, dashboard |
 | [03 Libraries, tools and research](03-libraries-tools-and-research.md) | adding/changing a package, tool, script; any new capability; design decisions |
@@ -30,6 +30,7 @@ Every task: chapters **0, 1 (section "Definition of done"), 6**. Then add by tas
 | [06 Knowledge and guideline maintenance](06-knowledge-and-guideline-maintenance.md) | **every task, at the end** - what to record where; how to change this guideline |
 | [07 QA check in the UI](07-qa-check-in-the-ui.md) | **when a task is merged and moves to In Review**, and whenever you QA a task - the independent check in the browser before Done |
 | [08 REST API standard](08-rest-api-standard.md) | adding or changing anything under `/api` or a JSON endpoint; designing a designer or integration call |
+| [09 AI agents and token efficiency](09-ai-agents-and-token-efficiency.md) | **every agent session** - what costs tokens (Jira calls, tests, skills), how to read, search and report cheaply, the project skills `.claude/skills/pems-*`, recommended tools |
 | [Learnings log](learnings-log.md) | skim the last entries at the start; append at the end |
 
 ## 3. How this guideline reaches every task (enforcement layers)

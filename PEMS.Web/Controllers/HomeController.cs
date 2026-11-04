@@ -342,7 +342,13 @@ namespace PEMS.Web.Controllers
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
-            return View(new ErrorViewModel { RequestId = PEMS.Web.Diagnostics.PemsTrace.Current(HttpContext) });
+            // SCRUM-464: the exception becomes a kind and a status through the one mapping table; the page shows the localised text of that status and the
+            // trace id, never the exception message.
+            var failure = HttpContext.Features.Get<Microsoft.AspNetCore.Diagnostics.IExceptionHandlerFeature>()?.Error;
+            var info = failure is null ? new PEMS.Web.Diagnostics.PemsErrorInfo(PEMS.Application.Exceptions.PemsErrorKind.Unexpected, 500, "server-error") : PEMS.Web.Diagnostics.PemsErrorMapper.Describe(failure);
+            Response.StatusCode = info.Status;
+            if (info.RetryAfterSeconds is { } seconds) Response.Headers.RetryAfter = seconds.ToString(System.Globalization.CultureInfo.InvariantCulture);
+            return View("StatusPage", new StatusPageViewModel { Code = info.Status, RequestId = PEMS.Web.Diagnostics.PemsTrace.Current(HttpContext) });
         }
     }
 }
