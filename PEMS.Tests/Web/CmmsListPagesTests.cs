@@ -634,6 +634,24 @@ public class CmmsListPagesTests
     }
 
     [Fact]
+    public async Task MyWork_IsAListPage_WithModuleAndScopeFilters()
+    {
+        var model = new MyApprovalsPageDto
+        {
+            Page = new PagedResult<MyApprovalItemDto> { Items = { new MyApprovalItemDto { Module = "WorkOrder", StageName = "Approval", BusinessObjectType = "WorkOrder", BusinessObjectId = 5, AssignedDate = new DateTime(2026, 11, 1, 8, 0, 0), IsPersonal = true } }, Page = 1, PageSize = 25, TotalCount = 1 },
+            Summary = new MyApprovalsSummaryDto { Total = 1, Personal = 1, ByModule = { ["WorkOrder"] = 1 } },
+            Module = "WorkOrder", PersonalOnly = true
+        };
+        var html = await Render<MyWorkController>("/Views/MyWork/Index.cshtml", model, v => { v["UnreadNotifications"] = 2; v["OpenActionItems"] = 3; });
+
+        AssertBuiltFromTheComponent(html, "MyWork", 1, keepsDataBadges: true);
+        Assert.Contains("name=\"module\"", html);
+        Assert.Contains("name=\"personalOnly\"", html);
+        Assert.Equal(2, Regex.Matches(Chips(html), "class=\"pems-filter-chip\"").Count);
+        Assert.DoesNotContain("pagination-sm", html);
+    }
+
+    [Fact]
     public async Task Meetings_AreAListPage_AndScheduleOpensTheirOwnModal()
     {
         var html = await Render<MeetingController>("/Views/Meeting/Index.cshtml", Page(
