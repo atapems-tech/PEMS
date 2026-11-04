@@ -7,7 +7,7 @@ description: Choose and run the tests for a PEMS change (tools/test-gates/gates.
 
 Run every test that fits; leave the very large suites to the end-of-sprint QA. Each task keeps its own QA line, nothing is combined or "covered by" another task.
 
-1. `python tools/test-gates/gates.py` prints, from your changed files: the build, `PEMS.UI.Tests`, the guard classes (Persian keys, themes, list pages, API, error handling) and the exact test classes that mention your files. `--run` executes them and stops at the first failure.
+1. `python tools/test-gates/gates.py` prints, from your changed files: the build of the test project (`dotnet build PEMS.Tests`; the classes run with `--no-build`, so a stale test dll would hide a test that does not compile), `PEMS.UI.Tests`, the guard classes (Persian keys, themes, list pages, API, error handling) and the exact test classes that mention your files. `--run` executes them and stops at the first failure.
 2. Budget: about two minutes per command. Filters name exact classes, `FullyQualifiedName~.Class.`; never a word or a namespace (`~Letter` pulls in SQL tests, `~PEMS.Tests.Web` is 7 to 11 minutes).
 3. After a layout, view text or resource change the Persian-key test is mandatory: a missing Persian entry for a `Localizer["..."]` key fails `LocalizationKeyCoverageTests`.
 4. A failure in markup, a component or a guard is always fixed. A failure that needs SQL Server (names with Sql, LiveDb, Concurrency, Migration, Numbering, Atomicity, Retry, RealSql) is `not run - no SQL Server`; `DynamicSidebarSqlTests` is the known red on main.

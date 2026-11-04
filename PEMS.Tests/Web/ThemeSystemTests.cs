@@ -63,7 +63,7 @@ public class ThemeSystemTests
         var root = Path.Combine(Root(), "PEMS.Web");
         var count = new[] { "Views", "Areas" }.Select(d => Path.Combine(root, d)).Where(Directory.Exists)
             .SelectMany(d => Directory.EnumerateFiles(d, "*.cshtml", SearchOption.AllDirectories))
-            .Sum(f => System.Text.RegularExpressions.Regex.Matches(File.ReadAllText(f), "\sstyle=\"").Count);
+            .Sum(f => System.Text.RegularExpressions.Regex.Matches(File.ReadAllText(f), "\\sstyle=\"").Count);
         Assert.True(count <= allowed, $"{count} inline style attributes in the views, the limit is {allowed}: use a component, a class or a stylesheet.");
         foreach (var layout in new[] { "_Layout.cshtml", "_LayoutEmbed.cshtml", "_AuthLayout.cshtml" })
             Assert.Contains("~/css/pems-inline-styles.css", File.ReadAllText(Path.Combine(root, "Views", "Shared", layout)));
