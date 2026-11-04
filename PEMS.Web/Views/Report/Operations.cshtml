@@ -24,12 +24,12 @@
             </pems-select>
         </div>
         <div class="col-md-3">
-            <input name="anchorOrFrom" type="date" value="@(((DateTime?)ViewBag.AnchorOrFrom)?.ToString("yyyy-MM-dd"))" class="form-control form-control-sm"
+            <pems-date name="anchorOrFrom" value="@(((DateTime?)ViewBag.AnchorOrFrom)?.ToString("yyyy-MM-dd"))" scale="small"
                    placeholder="@(((string)ViewBag.PeriodType) == "CustomRange" ? "From date" : "Any date in period")" />
         </div>
         @if (((string)ViewBag.PeriodType) == "CustomRange")
         {
-            <div class="col-md-3"><input name="toDate" type="date" value="@(((DateTime?)ViewBag.ToDate)?.ToString("yyyy-MM-dd"))" class="form-control form-control-sm" placeholder="To date" /></div>
+            <div class="col-md-3"><pems-date name="toDate" value="@(((DateTime?)ViewBag.ToDate)?.ToString("yyyy-MM-dd"))" scale="small" placeholder="To date" /></div>
         }
         <div class="col-md-2">
             <pems-select scale="small" name="productionWorkCenterId">

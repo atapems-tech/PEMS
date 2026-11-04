@@ -110,11 +110,11 @@
                     <div class="pc-rpt-dates">
                         <div>
                             <label class="lp-lbl" for="pcRptFrom">@Localizer["PcRpt_Filter_From"]</label>
-                            <input id="pcRptFrom" name="From" type="date" class="form-control form-control-sm" value="@(f.Period == PartCatalogueReportPeriods.Custom ? f.From?.ToString("yyyy-MM-dd") : null)" />
+                            <pems-date id="pcRptFrom" name="From" scale="small" value="@(f.Period == PartCatalogueReportPeriods.Custom ? f.From?.ToString("yyyy-MM-dd") : null)" />
                         </div>
                         <div>
                             <label class="lp-lbl" for="pcRptTo">@Localizer["PcRpt_Filter_To"]</label>
-                            <input id="pcRptTo" name="To" type="date" class="form-control form-control-sm" value="@(f.Period == PartCatalogueReportPeriods.Custom ? f.To?.ToString("yyyy-MM-dd") : null)" />
+                            <pems-date id="pcRptTo" name="To" scale="small" value="@(f.Period == PartCatalogueReportPeriods.Custom ? f.To?.ToString("yyyy-MM-dd") : null)" />
                         </div>
                     </div>
                     <p class="lp-hint small text-muted mb-0">@Localizer["PcRpt_Filter_CustomHint"]</p>

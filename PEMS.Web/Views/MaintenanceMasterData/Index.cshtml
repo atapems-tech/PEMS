@@ -939,7 +939,7 @@
                 </div>
                 <div class="mb-2">
                     <pems-label css="small">@Localizer["Effective From"]</pems-label>
-                    <input type="date" name="effectiveFrom" class="form-control form-control-sm" value="@DateTime.Now.ToString("yyyy-MM-dd")" />
+                    <pems-date name="effectiveFrom" scale="small" value="@DateTime.Now.ToString("yyyy-MM-dd")" />
                 </div>
             </div>
             <div class="modal-footer">

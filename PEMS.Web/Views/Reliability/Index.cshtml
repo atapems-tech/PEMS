@@ -35,11 +35,11 @@
     <form method="get" class="row g-2 align-items-end">
         <div class="col-md-3">
             <pems-label css="small">@Localizer["From"]</pems-label>
-            <input type="date" name="from" value="@(from?.ToString("yyyy-MM-dd"))" class="form-control form-control-sm" />
+            <pems-date name="from" value="@(from?.ToString("yyyy-MM-dd"))" scale="small" />
         </div>
         <div class="col-md-3">
             <pems-label css="small">To</pems-label>
-            <input type="date" name="to" value="@(to?.ToString("yyyy-MM-dd"))" class="form-control form-control-sm" />
+            <pems-date name="to" value="@(to?.ToString("yyyy-MM-dd"))" scale="small" />
         </div>
         <div class="col-md-2"><pems-button tone="primary" size="small" type="submit">@Localizer["Apply"]</pems-button></div>
         <div class="col-md-4 text-muted small">

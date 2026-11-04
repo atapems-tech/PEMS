@@ -113,7 +113,7 @@
     <h6>Record New Calibration</h6>
     <form asp-action="AddCalibration" method="post" class="row g-2 align-items-end mb-4">
         <input type="hidden" name="instrumentId" value="@Model.InstrumentId" />
-        <div class="col-md-2"><pems-label css="small">@Localizer["Date"]</pems-label><input type="date" name="calibrationDate" class="form-control form-control-sm" value="@DateTime.Today.ToString("yyyy-MM-dd")" required /></div>
+        <div class="col-md-2"><pems-label css="small">@Localizer["Date"]</pems-label><pems-date name="calibrationDate" scale="small" value="@DateTime.Today.ToString("yyyy-MM-dd")" required /></div>
         <div class="col-md-2"><pems-label css="small">@Localizer["Type"]</pems-label>
             <pems-select scale="small" name="calibrationType">
                 <option>Routine</option><option>PostRepair</option><option>PreCommissioning</option>

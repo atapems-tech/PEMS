@@ -37,6 +37,13 @@ Reuse these before writing a new script. A new reusable tool/helper goes into `t
 
 For every non-trivial task, before design:
 
+0. **Search for an existing solution first, then decide to build** (owner decision 2026-11-04, after a date picker was designed before anyone searched). In this order, and write what you found:
+   1. **Our own code:** `PEMS.UI` (registry in chapter 02), `PEMS.Application/Common`, `PEMS.Persistence`, the shared services (section 4), the skills in `.claude/skills`.
+   2. **The platform:** .NET BCL and ASP.NET Core, the browser (`Intl`, native inputs, CSS) before any package.
+   3. **Maintained libraries:** npm (`npm view <pkg> version license time.modified deprecated dependencies`, downloads from `https://api.npmjs.org/downloads/point/last-month/<pkg>`), NuGet (`dotnet package search`), PyPI for tools. Name at least two candidates and one platform option.
+   4. **Record a one-line verdict per candidate in the plan comment:** name and version, licence, last release, downloads per month, dependencies, size, offline fit, RTL/Persian fit, and why chosen or rejected. Reject unmaintained (no release for over two years), deprecated, copyleft or online-only packages (rules above). Look inside the package of the finalist (`npm pack`, read its README, dist and licence file) before adopting it.
+   5. **Only if nothing fits, build** and say which search came up empty. Vendor an adopted front-end library unmodified under `wwwroot/lib/<name>/` with its licence file and a README line (version, source, date), and use it only through one PEMS wrapper. Do not write calendar, date, crypto, parsing or format algorithms by hand when a maintained library or the platform has them.
+
 1. **Read first-party sources**: official docs (Microsoft Learn for ASP.NET Core / EF Core / SQL Server), the library's own docs, relevant standards (ISO 14224, ISO 55000 for CMMS; WCAG for accessibility).
 2. **Compare options** (at least two) against our constraints: offline, Persian/RTL, licence, dynamic/metadata fit, maintainability. Prefer a recommendation with trade-offs over a survey.
 3. **Check our own history**: this guideline's [learnings log](learnings-log.md), the plan pages *Lessons* and *Capability Checklist* (`plan/sheets`), `docs/` specs and audits for the area, closed Jira issues.

@@ -683,7 +683,7 @@ else
                 @foreach (var t in (IEnumerable<dynamic>)ViewBag.Teams) { <option value="@t.TeamId">@t.Name</option> }
             </pems-select>
         </div>
-        <div class="col-md-2"><input name="workDate" type="date" class="form-control form-control-sm" required /></div>
+        <div class="col-md-2"><pems-date name="workDate" scale="small" required /></div>
         <div class="col-md-1"><pems-input scale="small" name="regularHours" type="number" step="0.5" min="0" placeholder="Reg" /></div>
         <div class="col-md-1"><pems-input scale="small" name="overtimeHours" type="number" step="0.5" min="0" placeholder="OT" /></div>
         <div class="col-md-2"><pems-input scale="small" name="notes" placeholder="@Localizer["Notes (optional)"]" /></div>

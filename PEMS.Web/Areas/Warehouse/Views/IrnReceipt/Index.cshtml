@@ -122,7 +122,7 @@
                 </div>
                 <div class="mb-2">
                     <pems-label css="small">@Localizer["Receiving Date"]</pems-label>
-                    <input name="receivingDate" type="date" class="form-control form-control-sm" value="@DateTime.Now.ToString("yyyy-MM-dd")" required />
+                    <pems-date name="receivingDate" scale="small" value="@DateTime.Now.ToString("yyyy-MM-dd")" required />
                 </div>
                 <div class="mb-2">
                     <pems-label css="small">@Localizer["Notes (optional)"]</pems-label>
