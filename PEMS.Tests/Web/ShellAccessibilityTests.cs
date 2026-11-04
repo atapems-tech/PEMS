@@ -152,7 +152,7 @@ public class ShellAccessibilityTests
     {
         var program = Read("PEMS.Web/Program.cs");
 
-        Assert.Contains("app.UseStatusCodePagesWithReExecute(\"/Home/StatusPage\", \"?code={0}\");", program);
+        Assert.Contains("UseStatusCodePagesWithReExecute(\"/Home/StatusPage\", \"?code={0}\")", program);   // inside the non-API branch since SCRUM-435
         // it must come after the exception handler and before routing/auth so every 4xx/5xx without a body is covered
         Assert.True(program.IndexOf("UseExceptionHandler", StringComparison.Ordinal) < program.IndexOf("UseStatusCodePagesWithReExecute", StringComparison.Ordinal));
         Assert.True(program.IndexOf("UseStatusCodePagesWithReExecute", StringComparison.Ordinal) < program.IndexOf("app.UseRouting()", StringComparison.Ordinal));

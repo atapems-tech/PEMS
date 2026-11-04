@@ -3,6 +3,12 @@
 All notable changes to PEMS. No system version is defined yet (plan row F_CI), so entries are grouped by date
 and theme and were reconstructed from the git history (initial import 2026-09-05). Newest first.
 
+## 2026-11-04 - One trace id from browser to log (SCRUM-464, slice 1)
+
+### Added
+- `X-Trace-Id` on every response (the W3C trace id, or the request id when no trace is active), the same value as the `TraceId` property of every log line of the request, as `traceId` in every problem+json body, and as the reference on the error and status pages (it was the full Activity id before). Code in `PEMS.Web/Diagnostics/PemsTrace.cs`, tests in `TraceIdTests`.
+- Next slices of SCRUM-464: exception taxonomy and mapping, IExceptionHandler, localised status pages, removing user-visible `ex.Message`.
+
 ## 2026-11-04 - Page style blocks move to stylesheets (SCRUM-347, part)
 
 ### Changed

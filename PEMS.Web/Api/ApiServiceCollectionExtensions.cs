@@ -15,6 +15,7 @@ public static class ApiServiceCollectionExtensions
     {
         services.Configure<Microsoft.AspNetCore.Antiforgery.AntiforgeryOptions>(o => o.HeaderName = ApiControllerBase.AntiforgeryHeader);
         services.AddSingleton<Microsoft.AspNetCore.Mvc.Infrastructure.ProblemDetailsFactory, ApiProblemDetailsFactory>();
+        services.Configure<MvcOptions>(o => o.Filters.Add<PEMS.Web.Diagnostics.ProblemTraceIdFilter>());   // SCRUM-464: traceId in every problem body
         services.AddSingleton<IAuthorizationPolicyProvider, PermissionPolicyProvider>();
         services.AddScoped<IAuthorizationHandler, PermissionRequirementHandler>();
 
