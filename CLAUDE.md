@@ -7,9 +7,7 @@ related issues. Follow the guideline while working; update it at the end if you 
 
 ## graphify
 
-If `graphify-out/graph.json` exists, answer codebase questions with `graphify query "<question>"` (relations: `graphify path "<A>" "<B>"`, concepts: `graphify explain "<X>"`)
-before reading files; `graphify-out/wiki/index.md` for navigation; `GRAPH_REPORT.md` only for broad architecture review. After modifying code run `graphify update .`.
-graphify is optional on a machine (guideline 09 section 4).
+For orientation questions only (where does X live, how do A and B relate) and if `graphify-out/graph.json` exists: `graphify query "<question>"`, `graphify path "<A>" "<B>"`, `graphify explain "<X>"`. For a known file or symbol, search and read the lines you need. `GRAPH_REPORT.md` only for broad architecture review. graphify is optional (guideline 09).
 
 ## Zaemit Visual Editor
 
