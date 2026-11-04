@@ -3,7 +3,6 @@
   "alert": {},
   "alert-call": {},
   "badge": {
-    "PEMS.Web/Areas/Admin/Views/NavigationVisibility/Index.cshtml": 6,
     "PEMS.Web/Areas/Admin/Views/Organization/Index.cshtml": 1,
     "PEMS.Web/Areas/Admin/Views/PermissionMatrix/Index.cshtml": 3,
     "PEMS.Web/Views/Shared/_Layout.cshtml": 2

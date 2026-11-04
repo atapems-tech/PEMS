@@ -3,6 +3,11 @@
 All notable changes to PEMS. No system version is defined yet (plan row F_CI), so entries are grouped by date
 and theme and were reconstructed from the git history (initial import 2026-09-05). Newest first.
 
+## 2026-11-04 - Badges with a real tone (SCRUM-502)
+
+### Changed
+- The role-count badges of Navigation Visibility and the notification badge of `_Layout` use `tone` (success, neutral, danger) instead of `tone="none"` with `text-bg-*` classes. Two anchor badges (Organization issue count, Permission Matrix role chip) stay until `pems-badge` can be a link.
+
 ## 2026-11-04 - ImportCenter uses one shared modal (SCRUM-500)
 
 ### Changed
