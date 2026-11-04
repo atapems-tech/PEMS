@@ -3,6 +3,11 @@
 All notable changes to PEMS. No system version is defined yet (plan row F_CI), so entries are grouped by date
 and theme and were reconstructed from the git history (initial import 2026-09-05). Newest first.
 
+## 2026-11-04 - graphify hooks removed (SCRUM-504)
+
+### Changed
+- `.claude/settings.json` no longer runs `graphify hook-guard` before every Read, Glob, Grep and search-like Bash call: it added the same 330 to 450 characters (80 to 110 tokens) each time, 25 000 to 35 000 tokens in a long session, for a tool that helps only with orientation questions (a query costs 1 600 to 3 400 tokens). Chapter 09 has the measured costs, the "orientation only" rule and the install note; the root `CLAUDE.md` says the same in two lines.
+
 ## 2026-11-04 - Four more project skills (SCRUM-504)
 
 ### Added

@@ -14,10 +14,12 @@ Every agent (Claude Code, Codex, Cursor, Copilot, ...) pays for what it reads, p
 | A word test filter such as `~Letter` | pulls in the SQL families, each case waits 15 s | exact class names, `FullyQualifiedName~.Class.` |
 | Skills and MCP tools in every session | every skill description and every tool schema is loaded each session | few skills, one-line descriptions, nothing unrelated to PEMS (section 4) |
 | Unrelated instructions in `CLAUDE.md` / `AGENTS.md` | loaded every session | only what every session needs (section 5) |
+| A hook that adds text to every tool call (the removed `graphify hook-guard`) | the same 330 to 450 characters (80 to 110 tokens) on every Read, Glob and Grep: 25 000 to 35 000 tokens in a session of a few hundred calls | no per-call hooks in `.claude/settings.json`; one rule in `CLAUDE.md` costs about 100 tokens once |
+| A `graphify query` | 1 600 to 3 400 tokens per answer (budget 2 000, never drops edges), with some noise nodes | use it for orientation only (section 2) |
 
 ## 2. Rules for any agent
 
-**Read narrowly.** Use the knowledge graph first when `graphify-out/` exists (`graphify query "..."`), else search before you read: a content search with a small `head_limit`, then read only the lines you need (offset and limit). Do not re-read a file you just edited or wrote; the tool already confirmed it. Never read `bin/`, `obj/`, `node_modules`, generated manifests or snapshots to "understand" them; read the code that makes them.
+**Read narrowly.** When you do not know where something lives or how two things relate (orientation), ask the knowledge graph once (`graphify query "..."`, `explain`, `path`; about 2 000 tokens replace 5 to 15 file reads). When you already know the file or the symbol, do not: search for it and read only the lines you need. Search before you read: a content search with a small `head_limit`, then read only the lines you need (offset and limit). Do not re-read a file you just edited or wrote; the tool already confirmed it. Never read `bin/`, `obj/`, `node_modules`, generated manifests or snapshots to "understand" them; read the code that makes them.
 
 **Batch.** Independent tool calls go in one message. A mechanical change over many files is one small script in the scratchpad (with a round-trip or a count that proves it), not fifty edits. A fix and its test are one commit.
 
@@ -62,7 +64,7 @@ Nothing here ships with the product (the offline rule is about the product); rec
 | .NET 10 SDK, Git, `gh`, Python 3, Node | build, test, PRs, plan scripts, UiAudit | required (chapter 05) |
 | `ripgrep` (`rg`) | the fastest search; agents' search tool uses it when present | recommended |
 | `jq` | trim JSON (Jira exports, OpenAPI snapshot) before reading it | recommended |
-| `graphify` | a queryable graph of the code: answers architecture questions with a few hundred tokens instead of many file reads. The hooks in `.claude/settings.json` call `graphify hook-guard`; **install it or the hook only adds a failing call to every search and read** | recommended; install per `.claude/skills/graphify` |
+| `graphify` | a queryable graph of the code for orientation questions (where does X live, how do A and B relate); a query costs 1 600 to 3 400 tokens, so it pays only when it replaces several file reads. **No hook calls it**: the per-call hook text cost more than it saved (measured 2026-11-04, section 1) and was removed from `.claude/settings.json`. Install: `pip install graphifyy` (on Windows, if pip cannot write `graphify.exe`, put a `graphify` launcher that runs `python -m graphify "$@"` in a folder on your PATH). Refresh after big changes with `graphify update .` in the background (minutes) | optional, recommended |
 | Claude Code commands | `/context` shows what fills the window, `/cost` the spend, `/compact` after a merge, `/clear` between unrelated tasks | built in |
 | `ccusage` (npm, reads the local session logs) | per-day and per-session token and cost report, to see which habit costs most | optional, check the licence first |
 | Browser DevTools, Playwright (tools/UiAudit) | the QA lines that need a browser (chapter 07) | as needed |
