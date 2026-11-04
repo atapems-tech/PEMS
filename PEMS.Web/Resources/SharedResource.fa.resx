@@ -4459,4 +4459,19 @@
   <data name="No ITPs yet." xml:space="preserve"><value>هنوز طرح بازرسی و آزمونی ثبت نشده است.</value></data>
   <data name="No NCRs yet." xml:space="preserve"><value>هنوز گزارش عدم انطباقی ثبت نشده است.</value></data>
   <data name="No projects yet." xml:space="preserve"><value>هنوز پروژه‌ای ثبت نشده است.</value></data>
+  <data name="Err_Generic" xml:space="preserve"><value>مشکلی پیش آمد. دوباره تلاش کنید.</value></data>
+  <data name="Err_Offline" xml:space="preserve"><value>ارتباط با سرور برقرار نیست.</value></data>
+  <data name="Err_Timeout" xml:space="preserve"><value>پاسخ سرور بیش از حد طول کشید.</value></data>
+  <data name="Err_SignIn" xml:space="preserve"><value>نشست شما پایان یافته است. برای ادامه دوباره وارد شوید.</value></data>
+  <data name="Err_Forbidden" xml:space="preserve"><value>شما اجازه‌ی این کار را ندارید.</value></data>
+  <data name="Err_NotFound" xml:space="preserve"><value>رکورد پیدا نشد.</value></data>
+  <data name="Err_Conflict" xml:space="preserve"><value>شخص دیگری این رکورد را تغییر داده است. صفحه را دوباره باز کنید و تلاش کنید.</value></data>
+  <data name="Err_Invalid" xml:space="preserve"><value>داده‌ها معتبر نیستند. فیلدها را بررسی کنید و دوباره تلاش کنید.</value></data>
+  <data name="Err_TooMany" xml:space="preserve"><value>درخواست‌ها زیاد است. کمی صبر کنید و دوباره تلاش کنید.</value></data>
+  <data name="Err_Unavailable" xml:space="preserve"><value>سرویس در دسترس نیست. کمی بعد دوباره تلاش کنید.</value></data>
+  <data name="Err_Server" xml:space="preserve"><value>سرور نتوانست درخواست را انجام دهد.</value></data>
+  <data name="Err_Reference" xml:space="preserve"><value>کد پیگیری</value></data>
+  <data name="Err_Copy" xml:space="preserve"><value>کپی</value></data>
+  <data name="Err_Copied" xml:space="preserve"><value>کپی شد</value></data>
+  <data name="Err_Close" xml:space="preserve"><value>بستن</value></data>
 </root>
