@@ -85,7 +85,7 @@ def filter_for(classes):
 def plan(files):
     steps, skipped, why = [], [], []
     if any(BUILD_WHEN.search(f) for f in files):
-        steps.append(('dotnet build PEMS.Web', 'compiles every Razor view and tag helper'))
+        steps.append(('dotnet build PEMS.Tests', 'compiles the views, the components AND the test project (the test classes below run with --no-build, so a stale test dll would hide a broken test)'))
     if any(UI_TESTS_WHEN.search(f) for f in files):
         steps.append(('dotnet test PEMS.UI.Tests', 'components, golden manifests, script contracts, ratchet, guideline registry'))
     chosen = {}

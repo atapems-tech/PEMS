@@ -42,7 +42,7 @@ dotnet ef migrations has-pending-model-changes --project PEMS.Migrations --start
 Quick gates a session runs (details of what goes to the checklist: [chapter 07 section 2b](07-qa-check-in-the-ui.md)):
 
 ```bash
-dotnet build PEMS.Web                                   # compiles every Razor view: tag helper and async errors show here
+dotnet build PEMS.Tests                                 # compiles every Razor view AND the tests (PEMS.Tests references PEMS.Web); `--no-build` test runs use this build, so build the test project first
 dotnet test PEMS.UI.Tests                               # components, tag helpers, golden manifests, script contracts, ratchet, guideline registry
 # the render tests of the views you touched: exact class names, see "Test budget" below
 dotnet test PEMS.Tests --filter "FullyQualifiedName~CmmsListPagesTests"
@@ -54,7 +54,7 @@ A session runs **every test that fits** (the build, the UI tests, the guard clas
 
 | Command | Tests | Time | Use |
 |---|---|---|---|
-| `dotnet build PEMS.Web` | - | 1 to 2 min | always |
+| `dotnet build PEMS.Tests` | - | 1 to 2 min | always (builds the web project too; never run `--no-build` against a build older than your last edit of a test) |
 | `dotnet test PEMS.UI.Tests` | 313 | 5 to 15 s | always |
 | `PEMS.Tests` filter `~CmmsListPagesTests` (list pages) | 35+ | 8 s | when a list page changed |
 | filter `~ListPageComponentTests` | 10+ | 1 s | when `pems-list-*` changed |
