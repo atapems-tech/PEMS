@@ -3,166 +3,154 @@
 @using PEMS.Web.Resources
 @using PEMS.Web.Helpers
 @using PEMS.Domain.Entities
+@using Microsoft.AspNetCore.Mvc.Rendering
 @inject IStringLocalizer<SharedResource> Localizer
 @{
     var employees = (IEnumerable<PEMS.Application.DTOs.EligibleAssigneeDto>)ViewBag.Employees;
     var tab = (string)ViewBag.Tab;
     var canEdit = ViewBag.CanEdit is true;
     var canCreate = ViewBag.CanCreate is true;
+    var followup = tab == "followup";
+    var tabs = new[] { new SelectListItem(Localizer["Tm_Tab_Action"].Value, "action"), new SelectListItem(Localizer["Tm_Tab_Followup"].Value, "followup") };
 }
 
-
-<div class="d-flex flex-wrap gap-2 mb-3">
-    <pems-button as="a" tone="none" size="small" css="@(tab != "followup" ? "btn-pems-solid" : "btn-outline-secondary")" asp-action="Index" asp-route-tab="action" aria-current="@(tab != "followup" ? "page" : null)">
-        <i class="bi bi-check2-square" aria-hidden="true"></i> @Localizer["Tm_Tab_Action"]
-    </pems-button>
-    <pems-button as="a" tone="none" size="small" css="@(tab == "followup" ? "btn-pems-solid" : "btn-outline-secondary")" asp-action="Index" asp-route-tab="followup" aria-current="@(tab == "followup" ? "page" : null)">
-        <i class="bi bi-eye" aria-hidden="true"></i> @Localizer["Tm_Tab_Followup"]
-    </pems-button>
-    <pems-button tone="neutral" size="small" outline="true" css="ms-auto" as="a" asp-controller="TaskManager" asp-action="Index">
-        <i class="bi bi-kanban" aria-hidden="true"></i> @Localizer["Tm_Title"]
-    </pems-button>
-</div>
-
-<div class="content-card mb-3">
-    <div class="d-flex justify-content-end mb-2">
-        <pems-button tone="neutral" size="small" outline="true" type="button" onclick="PemsDataGrid.resetColumns('Task')">
-            <i class="bi bi-arrow-counterclockwise"></i> @Localizer["Reset columns"]
-        </pems-button>
-    </div>
-    <div class="pems-grid-scroll">
-    <pems-table kind="enterprise" css="pems-grid-table mb-0" data-grid-key="Task">
-        <thead>
-            <tr>
-                <th data-col-key="title" data-resizable="true" data-min-width="160" data-max-width="400">@Localizer["Title"]</th>
-                <th data-col-key="assignedTo" data-resizable="true" data-min-width="120" data-max-width="240">@Localizer["Assigned To"]</th>
-                <th data-col-key="due" data-resizable="true" data-min-width="90" data-max-width="160">@Localizer["Due"]</th>
-                <th data-col-key="priority" data-resizable="true" data-min-width="80" data-max-width="140">@Localizer["Priority"]</th>
-                <th data-col-key="status" data-resizable="true" data-min-width="90" data-max-width="180">@Localizer["Status"]</th>
-                <th data-col-key="related" data-resizable="true" data-min-width="100" data-max-width="200">@Localizer["Tm_Related"]</th>
-                <th><span class="visually-hidden">@Localizer["Tm_Actions"]</span></th>
-            </tr>
-        </thead>
-            <tbody>
-                @foreach (var t in Model.Items)
-                {
-                    var closed = TaskItemStatuses.IsClosed(t.Status);
-                    <tr class="@(t.IsOverdue ? "table-danger" : "")">
-                        <td>
-                            @if (t.ItemKey != null) { <span class="tm-key me-1">@t.ItemKey</span> }
-                            <a asp-action="Details" asp-route-id="@t.TaskItemId" class="text-reset">@t.Title</a>
-                            @if (!string.IsNullOrEmpty(t.Description)) { <div class="small text-muted text-truncate" style="max-width:380px;">@t.Description</div> }
-                        </td>
-                        <td class="small">@t.AssignedToEmployeeName</td>
-                        <td class="small">@(t.DueDate?.ToString("yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture))</td>
-                        <td>
-                            @{
-                                var pb = TaskManagerUi.PriorityBadge(t.Priority);
-                            }
-                            <pems-badge tone="@pb">@TaskManagerUi.Priority(Localizer, t.Priority)</pems-badge>
-                        </td>
-                        <td>
-                            @{
-                                var sb = t.Status switch { "Completed" => "success", "InProgress" => "info", "Cancelled" => "dark", _ => "neutral" };
-                            }
-                            <pems-badge tone="@sb">@(t.WorkSpaceId != null ? TaskManagerUi.Name(t.StatusName, t.StatusNameFa) : TaskManagerUi.LegacyStatus(Localizer, t.Status))</pems-badge>
-                            @if (t.IsOverdue) { <pems-badge tone="danger">@Localizer["Overdue"]</pems-badge> }
-                        </td>
-                        <td class="small">
-                            @if (!string.IsNullOrEmpty(t.RelatedType))
-                            {
-                                @if (t.RelatedType == "Letter")
-                                { <a asp-controller="Letter" asp-action="Details" asp-route-id="@t.RelatedId">@Localizer["Tm_Related_Letter"] #@t.RelatedId</a> }
-                                else if (t.RelatedType == "Meeting")
-                                { <a asp-controller="Meeting" asp-action="Details" asp-route-id="@t.RelatedId">@Localizer["Tm_Related_Meeting"] #@t.RelatedId</a> }
-                                else
-                                { @($"{t.RelatedType} #{t.RelatedId}") }
-                            }
-                        </td>
-                        <td>
-                            @if (t.WorkSpaceId != null)
-                            {
-                                @* وضعیت وظیفه‌ی فضا از طرح وضعیت همان فضا تغییر می‌کند *@
-                                <pems-button tone="neutral" size="small" outline="true" as="a" asp-action="Details" asp-route-id="@t.TaskItemId">@Localizer["Tm_Open"]</pems-button>
-                            }
-                            else if (canEdit && TaskItemStatuses.Transitions.TryGetValue(t.Status, out var targets) && targets.Length > 0)
-                            {
-                                <form asp-action="UpdateStatus" method="post" class="d-flex gap-1">
-                                    <input type="hidden" name="taskItemId" value="@t.TaskItemId" />
-                                    <input type="hidden" name="tab" value="@tab" />
-                                    <label class="visually-hidden" for="st-@t.TaskItemId">@Localizer["Tm_MoveTo"]</label>
-                                    <pems-select scale="small" id="st-@t.TaskItemId" name="status" style="width:130px;">
-                                        @foreach (var s in targets) { <option value="@s">@TaskManagerUi.LegacyStatus(Localizer, s)</option> }
-                                    </pems-select>
-                                    <pems-button tone="neutral" size="small" outline="true" aria-label="@Localizer["Tm_ChangeStatus"]"><i class="bi bi-check2" aria-hidden="true"></i></pems-button>
-                                </form>
-                                @if (closed && !string.IsNullOrEmpty(t.CompletionNote)) { <div class="small text-muted">@t.CompletionNote</div> }
-                            }
-                            else
-                            {
-                                @t.CompletionNote
-                            }
-                        </td>
-                    </tr>
-                }
-            </tbody>
-        </pems-table>
-    </div>
-    @if (!Model.Items.Any()) { <p class="text-muted text-center py-4 mb-0">@Localizer["Tm_EmptyList"]</p> }
-
-    @await Html.PartialAsync("_Pagination", new PEMS.Web.ViewModels.PaginationViewModel
-    {
-        Page = Model.Page,
-        TotalPages = Model.TotalPages,
-        TotalCount = Model.TotalCount,
-        PageSize = Model.PageSize,
-        GridKey = "Task",
-        BaseUrl = Url.Action("Index") ?? "",
-        ExistingQueryString = $"tab={Uri.EscapeDataString(tab)}"
-    })
-</div>
-
-@section Styles { <link rel="stylesheet" href="~/css/pems-task-manager.css" asp-append-version="true" /> }
-
-@section Scripts {
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            PemsDataGrid.initColumnResize('Task');
-        });
-    </script>
-}
-
-@if (tab != "followup" && canCreate)
+@section Styles
 {
-    <div class="content-card">
-        <h6 class="mb-3">@Localizer["Tm_NewPersonalTask"]</h6>
-        <form asp-action="Create" method="post" class="row g-2">
-            <div class="col-md-4">
-                <label class="visually-hidden" for="nt-title">@Localizer["Title"]</label>
-                <pems-input scale="small" id="nt-title" name="title" placeholder="@Localizer["Title"]" required maxlength="300" />
-            </div>
-            <div class="col-md-3">
-                <label class="visually-hidden" for="nt-assignee">@Localizer["Assigned To"]</label>
-                <pems-select scale="small" id="nt-assignee" name="assignedToEmployeeId">
-                    <option value="">@Localizer["-- Assign to --"]</option>
-                    @foreach (var e in employees) { <option value="@e.EmployeeId">@e.Name</option> }
-                </pems-select>
-            </div>
-            <div class="col-md-2">
-                <label class="visually-hidden" for="nt-due">@Localizer["Due"]</label>
-                <input id="nt-due" name="dueDate" type="date" class="form-control form-control-sm" />
-            </div>
-            <div class="col-md-2">
-                <label class="visually-hidden" for="nt-priority">@Localizer["Priority"]</label>
-                <pems-select scale="small" id="nt-priority" name="priority">
-                    @foreach (var p in TaskItemPriorities.All) { <option value="@p" selected="@(p == "Normal")">@TaskManagerUi.Priority(Localizer, p)</option> }
-                </pems-select>
-            </div>
-            <div class="col-md-1"><pems-button tone="primary" size="small" css="w-100" aria-label="@Localizer["Tm_Create"]"><i class="bi bi-plus-lg" aria-hidden="true"></i></pems-button></div>
-            <div class="col-12">
-                <label class="visually-hidden" for="nt-desc">@Localizer["Description (optional)"]</label>
-                <pems-input scale="small" id="nt-desc" name="description" placeholder="@Localizer["Description (optional)"]" maxlength="8000" />
-            </div>
-        </form>
-    </div>
+    <link rel="stylesheet" href="~/_content/PEMS.UI/pems-list.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/pems-task-manager.css" asp-append-version="true" />
 }
+
+@* SCRUM-337: built from the PEMS.UI list-page component; the two tab buttons became the tab filter, "new personal task" opens from the toolbar (popover), the task manager link is in the page menu. *@
+<pems-list-page texts="@ListPageTexts.From(Localizer)">
+    <pems-list-panel>
+        <pems-list-toolbar heading="@Localizer[followup ? "Tm_Tab_Followup" : "Tm_Tab_Action"]" total="@Model.TotalCount">
+            <pems-list-tools>
+                <pems-list-filters form-id="taskFilter" action="@Url.Action("Index")" count="0" reset-href="@Url.Action("Index")">
+                    <pems-list-filter-select id="taskTab" name="tab" label="@Localizer["Tm_Tab_Action"]" value="@tab" items="@tabs" />
+                </pems-list-filters>
+                <pems-list-reset-columns grid-key="Task" />
+                <pems-list-menu id="taskMoreBtn" icon="bi-three-dots" label="@Localizer["Lp_More"]">
+                    <li><a class="dropdown-item" asp-controller="TaskManager" asp-action="Index"><i class="bi bi-kanban" aria-hidden="true"></i> @Localizer["Tm_Title"]</a></li>
+                </pems-list-menu>
+                @if (!followup && canCreate)
+                {
+                    <pems-list-popover id="taskNew" icon="bi-plus-lg" label="@Localizer["Tm_NewPersonalTask"]" primary="true">
+                        <form asp-action="Create" method="post">
+                            <label class="lp-lbl" for="nt-title">@Localizer["Title"]</label>
+                            <pems-input scale="small" id="nt-title" name="title" placeholder="@Localizer["Title"]" required maxlength="300" />
+                            <label class="lp-lbl mt-2" for="nt-assignee">@Localizer["Assigned To"]</label>
+                            <pems-select scale="small" id="nt-assignee" name="assignedToEmployeeId">
+                                <option value="">@Localizer["-- Assign to --"]</option>
+                                @foreach (var e in employees) { <option value="@e.EmployeeId">@e.Name</option> }
+                            </pems-select>
+                            <label class="lp-lbl mt-2" for="nt-due">@Localizer["Due"]</label>
+                            <input id="nt-due" name="dueDate" type="date" class="form-control form-control-sm" />
+                            <label class="lp-lbl mt-2" for="nt-priority">@Localizer["Priority"]</label>
+                            <pems-select scale="small" id="nt-priority" name="priority">
+                                @foreach (var p in TaskItemPriorities.All) { <option value="@p" selected="@(p == "Normal")">@TaskManagerUi.Priority(Localizer, p)</option> }
+                            </pems-select>
+                            <label class="lp-lbl mt-2" for="nt-desc">@Localizer["Description (optional)"]</label>
+                            <pems-input scale="small" id="nt-desc" name="description" placeholder="@Localizer["Description (optional)"]" maxlength="8000" />
+                            <div class="lp-fp-foot px-0 pb-0">
+                                <pems-button tone="primary" size="small" type="submit"><i class="bi bi-plus-lg" aria-hidden="true"></i> @Localizer["Tm_Create"]</pems-button>
+                            </div>
+                        </form>
+                    </pems-list-popover>
+                }
+            </pems-list-tools>
+        </pems-list-toolbar>
+
+        <pems-list-grid>
+            <pems-list-table grid-key="Task" empty="@(!Model.Items.Any())" empty-text="@Localizer["Tm_EmptyList"]">
+                <thead>
+                    <tr>
+                        <th data-col-key="title">@Localizer["Title"]</th>
+                        <th data-col-key="assignedTo">@Localizer["Assigned To"]</th>
+                        <th data-col-key="due">@Localizer["Due"]</th>
+                        <th data-col-key="priority">@Localizer["Priority"]</th>
+                        <th data-col-key="status">@Localizer["Status"]</th>
+                        <th data-col-key="related">@Localizer["Tm_Related"]</th>
+                        <th><span class="visually-hidden">@Localizer["Tm_Actions"]</span></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var t in Model.Items)
+                    {
+                        var closed = TaskItemStatuses.IsClosed(t.Status);
+                        <tr class="@(t.IsOverdue ? "lp-row table-danger" : "lp-row")">
+                            <td>
+                                @if (t.ItemKey != null) { <span class="tm-key me-1">@t.ItemKey</span> }
+                                <a asp-action="Details" asp-route-id="@t.TaskItemId" class="lp-subject">@t.Title</a>
+                                @if (!string.IsNullOrEmpty(t.Description)) { <div class="small text-muted text-truncate" style="max-width:380px;">@t.Description</div> }
+                            </td>
+                            <td class="small">@t.AssignedToEmployeeName</td>
+                            <td class="small">@(t.DueDate?.ToString("yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture))</td>
+                            <td>
+                                @{
+                                    var pb = TaskManagerUi.PriorityBadge(t.Priority);
+                                }
+                                <pems-badge tone="@pb">@TaskManagerUi.Priority(Localizer, t.Priority)</pems-badge>
+                            </td>
+                            <td>
+                                @{
+                                    var sb = t.Status switch { "Completed" => "success", "InProgress" => "info", "Cancelled" => "dark", _ => "neutral" };
+                                }
+                                <pems-badge tone="@sb">@(t.WorkSpaceId != null ? TaskManagerUi.Name(t.StatusName, t.StatusNameFa) : TaskManagerUi.LegacyStatus(Localizer, t.Status))</pems-badge>
+                                @if (t.IsOverdue) { <pems-badge tone="danger">@Localizer["Overdue"]</pems-badge> }
+                            </td>
+                            <td class="small">
+                                @if (!string.IsNullOrEmpty(t.RelatedType))
+                                {
+                                    @if (t.RelatedType == "Letter")
+                                    { <a asp-controller="Letter" asp-action="Details" asp-route-id="@t.RelatedId">@Localizer["Tm_Related_Letter"] #@t.RelatedId</a> }
+                                    else if (t.RelatedType == "Meeting")
+                                    { <a asp-controller="Meeting" asp-action="Details" asp-route-id="@t.RelatedId">@Localizer["Tm_Related_Meeting"] #@t.RelatedId</a> }
+                                    else
+                                    { @($"{t.RelatedType} #{t.RelatedId}") }
+                                }
+                            </td>
+                            <td>
+                                @if (t.WorkSpaceId != null)
+                                {
+                                    @* وضعیت وظیفه‌ی فضا از طرح وضعیت همان فضا تغییر می‌کند *@
+                                    <pems-button tone="neutral" size="small" outline="true" as="a" asp-action="Details" asp-route-id="@t.TaskItemId">@Localizer["Tm_Open"]</pems-button>
+                                }
+                                else if (canEdit && TaskItemStatuses.Transitions.TryGetValue(t.Status, out var targets) && targets.Length > 0)
+                                {
+                                    <form asp-action="UpdateStatus" method="post" class="d-flex gap-1">
+                                        <input type="hidden" name="taskItemId" value="@t.TaskItemId" />
+                                        <input type="hidden" name="tab" value="@tab" />
+                                        <label class="visually-hidden" for="st-@t.TaskItemId">@Localizer["Tm_MoveTo"]</label>
+                                        <pems-select scale="small" id="st-@t.TaskItemId" name="status" style="width:130px;">
+                                            @foreach (var s in targets) { <option value="@s">@TaskManagerUi.LegacyStatus(Localizer, s)</option> }
+                                        </pems-select>
+                                        <pems-button tone="neutral" size="small" outline="true" aria-label="@Localizer["Tm_ChangeStatus"]"><i class="bi bi-check2" aria-hidden="true"></i></pems-button>
+                                    </form>
+                                    @if (closed && !string.IsNullOrEmpty(t.CompletionNote)) { <div class="small text-muted">@t.CompletionNote</div> }
+                                }
+                                else
+                                {
+                                    @t.CompletionNote
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </pems-list-table>
+            <pems-list-footer>
+                @await Html.PartialAsync("_Pagination", new PEMS.Web.ViewModels.PaginationViewModel
+                {
+                    Page = Model.Page,
+                    TotalPages = Model.TotalPages,
+                    TotalCount = Model.TotalCount,
+                    PageSize = Model.PageSize,
+                    GridKey = "Task",
+                    BaseUrl = Url.Action("Index") ?? "",
+                    ExistingQueryString = $"tab={Uri.EscapeDataString(tab)}"
+                })
+            </pems-list-footer>
+        </pems-list-grid>
+    </pems-list-panel>
+</pems-list-page>
+
+@section Scripts { <script src="~/_content/PEMS.UI/pems-list.js" asp-append-version="true"></script> }
