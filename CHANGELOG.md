@@ -3,6 +3,11 @@
 All notable changes to PEMS. No system version is defined yet (plan row F_CI), so entries are grouped by date
 and theme and were reconstructed from the git history (initial import 2026-09-05). Newest first.
 
+## 2026-11-04 - Intake queue is a list page (SCRUM-337)
+
+### Changed
+- The Intake queue is built from the `pems-list-page` component: the stage buttons became the stage filter with a removable chip, the intro text the heading tooltip, paging sits in the footer. Page test added to `CmmsListPagesTests`. The DCC page is a dashboard, not a list, and stays as it is.
+
 ## 2026-11-04 - Badges with a real tone (SCRUM-502)
 
 ### Changed

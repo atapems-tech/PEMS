@@ -1,108 +1,94 @@
 ﻿@model PEMS.Application.DTOs.PagedResult<PEMS.Application.DTOs.IntakeQueueItemDto>
 @using Microsoft.Extensions.Localization
 @using PEMS.Web.Resources
+@using PEMS.Web.Helpers
+@using Microsoft.AspNetCore.Mvc.Rendering
 @inject IStringLocalizer<SharedResource> Localizer
 @{
     var stages = (string[])ViewBag.Stages;
-    var qs = string.IsNullOrEmpty((string?)ViewBag.SelectedStage) ? "" : $"stage={ViewBag.SelectedStage}";
+    var stage = (string?)ViewBag.SelectedStage;
+    var filterCount = string.IsNullOrEmpty(stage) ? 0 : 1;
 }
 
+@section Styles { <link rel="stylesheet" href="~/_content/PEMS.UI/pems-list.css" asp-append-version="true" /> }
 
-<div class="content-card mb-3">
-    <p class="text-muted mb-2">
-        هر فایل آپلودشده ابتدا این‌جا می‌نشیند. هوش مصنوعی نوع مدرک را تشخیص می‌دهد؛ در سطح اطمینان
-        بالا خودکار به ماژول درست (MDR/VDR) هدایت می‌شود، در سطح متوسط/پایین منتظر بازبینی شما می‌ماند.
-    </p>
-    <div class="d-flex flex-wrap gap-2">
-        <pems-button as="a" tone="none" size="small" css="@(ViewBag.SelectedStage == null ? "btn-pems-solid" : "btn-outline-secondary")" asp-action="Index">All</pems-button>
-        @foreach (var s in stages)
-        {
-            <pems-button as="a" tone="none" size="small" css="@(s == (string?)ViewBag.SelectedStage ? "btn-pems-solid" : "btn-outline-secondary")" asp-action="Index" asp-route-stage="@s">@s</pems-button>
-        }
-        @if (!string.IsNullOrEmpty((string?)ViewBag.SelectedStage))
-        {
-            <pems-button tone="danger" size="small" outline="true" as="a" asp-action="Index"><i class="bi bi-x-lg"></i> @Localizer["Reset"]</pems-button>
-        }
-    </div>
-</div>
+@* SCRUM-337: built from the PEMS.UI list-page component; the stage buttons became the stage filter, the intro the heading tooltip. *@
+<pems-list-page texts="@ListPageTexts.From(Localizer)">
+    <pems-list-panel>
+        <pems-list-toolbar heading="@Localizer["Intake Queue"]" total="@Model.TotalCount"
+                           heading-title="هر فایل آپلودشده ابتدا این‌جا می‌نشیند. هوش مصنوعی نوع مدرک را تشخیص می‌دهد؛ در سطح اطمینان بالا خودکار به ماژول درست (MDR/VDR) هدایت می‌شود، در سطح متوسط/پایین منتظر بازبینی شما می‌ماند.">
+            <pems-list-tools>
+                <pems-list-filters form-id="intakeFilter" action="@Url.Action("Index")" count="@filterCount" reset-href="@Url.Action("Index")">
+                    <pems-list-filter-select id="intakeStage" name="stage" label="@Localizer["Stage"]" value="@stage"
+                                             all-text="All" items="@stages.Select(s => new SelectListItem(s, s))" />
+                </pems-list-filters>
+                <pems-list-reset-columns grid-key="Intake" />
+            </pems-list-tools>
+        </pems-list-toolbar>
 
-<div class="content-card">
-    <div class="d-flex justify-content-end mb-2">
-        <pems-button tone="neutral" size="small" outline="true" type="button" onclick="PemsDataGrid.resetColumns('Intake')">
-            <i class="bi bi-arrow-counterclockwise"></i> @Localizer["Reset columns"]
-        </pems-button>
-    </div>
-    <div class="table-responsive pems-grid-scroll table-scroll-area" style="max-height:65vh; overflow-y:auto;">
-        <pems-table kind="enterprise" css="pems-grid-table" data-grid-key="Intake">
-            <thead>
-                <tr>
-                    <th data-col-key="file" data-resizable="true" data-min-width="140" data-max-width="360">@Localizer["File"]</th>
-                    <th data-col-key="project" data-resizable="true" data-min-width="100" data-max-width="240">@Localizer["Project"]</th>
-                    <th data-col-key="category" data-resizable="true" data-min-width="120" data-max-width="260">Predicted Category</th>
-                    <th data-col-key="module" data-resizable="true" data-min-width="100" data-max-width="200">Suggested Module</th>
-                    <th data-col-key="confidence" data-resizable="true" data-min-width="80" data-max-width="140">@Localizer["Confidence"]</th>
-                    <th data-col-key="aiStatus" data-resizable="true" data-min-width="90" data-max-width="180">@Localizer["AI Status"]</th>
-                    <th data-col-key="stage" data-resizable="true" data-min-width="100" data-max-width="220">@Localizer["Stage"]</th>
-                    <th data-col-key="routed" data-resizable="true" data-min-width="90" data-max-width="180">@Localizer["Routed"]</th>
-                    <th data-col-key="uploaded" data-resizable="true" data-min-width="120" data-max-width="200">@Localizer["Uploaded"]</th>
-                    <th data-col-key="actions" data-resizable="false" style="width:90px"></th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var i in Model.Items)
-                {
+        <pems-list-chips reset-href="@Url.Action("Index")">
+            @if (!string.IsNullOrEmpty(stage)) { <pems-list-chip label="@Localizer["Stage"]" value="@stage" remove-href="@Url.Action("Index")" /> }
+        </pems-list-chips>
+
+        <pems-list-grid>
+            <pems-list-table grid-key="Intake" empty="@(!Model.Items.Any())" empty-text="Intake Queue is empty."
+                             filtered="@(filterCount > 0)" clear-href="@Url.Action("Index")">
+                <thead>
                     <tr>
-                        <td>@i.FileName</td>
-                        <td>@i.ProjectName</td>
-                        <td>@i.PredictedCategory</td>
-                        <td>@i.SuggestedTargetModule</td>
-                        <td>@(i.AIConfidence.HasValue ? $"{i.AIConfidence:P0}" : "-")</td>
-                        <td>
-                            @{
-                                var ab = i.AIStatus switch { "Completed" => "success", "Processing" => "info", "Failed" => "danger", _ => "neutral" };
-                            }
-                            <pems-badge tone="@ab">@i.AIStatus</pems-badge>
-                        </td>
-                        <td>
-                            @{
-                                var sb = i.IntakeStage switch
-                                {
-                                    "Routed" => "success",
-                                    "PendingEngineeringReview" => "warning",
-                                    "PendingManualClassification" => "danger",
-                                    "Rejected" => "dark",
-                                    _ => "neutral"
-                                };
-                            }
-                            <pems-badge tone="@sb">@i.IntakeStage</pems-badge>
-                        </td>
-                        <td>@i.RoutedModule</td>
-                        <td>@i.UploadDate.ToString("yyyy-MM-dd HH:mm")</td>
-                        <td>
-                            @if (i.IntakeStage != "Routed" && i.IntakeStage != "Rejected")
-                            {
-                                <pems-button tone="primary" size="small" as="a" asp-action="Review" asp-route-id="@i.AttachmentId">Review</pems-button>
-                            }
-                        </td>
+                        <th data-col-key="file">@Localizer["File"]</th>
+                        <th data-col-key="project">@Localizer["Project"]</th>
+                        <th data-col-key="category">Predicted Category</th>
+                        <th data-col-key="module">Suggested Module</th>
+                        <th data-col-key="confidence">@Localizer["Confidence"]</th>
+                        <th data-col-key="aiStatus">@Localizer["AI Status"]</th>
+                        <th data-col-key="stage">@Localizer["Stage"]</th>
+                        <th data-col-key="routed">@Localizer["Routed"]</th>
+                        <th data-col-key="uploaded">@Localizer["Uploaded"]</th>
+                        <th data-col-key="actions"></th>
                     </tr>
-                }
-            </tbody>
-        </pems-table>
-        @if (!Model.Items.Any()) { <p class="text-muted text-center py-4">Intake Queue is empty.</p> }
+                </thead>
+                <tbody>
+                    @foreach (var i in Model.Items)
+                    {
+                        var ab = i.AIStatus switch { "Completed" => "success", "Processing" => "info", "Failed" => "danger", _ => "neutral" };
+                        var sb = i.IntakeStage switch
+                        {
+                            "Routed" => "success",
+                            "PendingEngineeringReview" => "warning",
+                            "PendingManualClassification" => "danger",
+                            "Rejected" => "dark",
+                            _ => "neutral"
+                        };
+                        <tr class="lp-row">
+                            <td>@i.FileName</td>
+                            <td>@i.ProjectName</td>
+                            <td>@i.PredictedCategory</td>
+                            <td>@i.SuggestedTargetModule</td>
+                            <td>@(i.AIConfidence.HasValue ? $"{i.AIConfidence:P0}" : "-")</td>
+                            <td><pems-badge tone="@ab">@i.AIStatus</pems-badge></td>
+                            <td><pems-badge tone="@sb">@i.IntakeStage</pems-badge></td>
+                            <td>@i.RoutedModule</td>
+                            <td>@i.UploadDate.ToString("yyyy-MM-dd HH:mm")</td>
+                            <td>
+                                @if (i.IntakeStage != "Routed" && i.IntakeStage != "Rejected")
+                                {
+                                    <pems-button tone="primary" size="small" as="a" asp-action="Review" asp-route-id="@i.AttachmentId">Review</pems-button>
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </pems-list-table>
+            <pems-list-footer>
+                @await Html.PartialAsync("_Pagination", new PEMS.Web.ViewModels.PaginationViewModel
+                {
+                    Page = Model.Page, TotalPages = Model.TotalPages, TotalCount = Model.TotalCount,
+                    PageSize = Model.PageSize, GridKey = "Intake",
+                    BaseUrl = Url.Action("Index") ?? "", ExistingQueryString = string.IsNullOrEmpty(stage) ? "" : $"stage={Uri.EscapeDataString(stage)}"
+                })
+            </pems-list-footer>
+        </pems-list-grid>
+    </pems-list-panel>
+</pems-list-page>
 
-        @await Html.PartialAsync("_Pagination", new PEMS.Web.ViewModels.PaginationViewModel
-        {
-            Page = Model.Page, TotalPages = Model.TotalPages, TotalCount = Model.TotalCount,
-            PageSize = Model.PageSize, GridKey = "Intake",
-            BaseUrl = Url.Action("Index"), ExistingQueryString = qs
-        })
-    </div>
-</div>
-
-@section Scripts {
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            PemsDataGrid.initColumnResize('Intake');
-        });
-    </script>
-}
+@section Scripts { <script src="~/_content/PEMS.UI/pems-list.js" asp-append-version="true"></script> }
