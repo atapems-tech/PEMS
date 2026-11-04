@@ -3,6 +3,11 @@
 All notable changes to PEMS. No system version is defined yet (plan row F_CI), so entries are grouped by date
 and theme and were reconstructed from the git history (initial import 2026-09-05). Newest first.
 
+## 2026-11-04 - NCR, ITP and referred-letter lists are list pages (SCRUM-337)
+
+### Changed
+- QC NCR list, QC ITP list and "Letters referred to me" are built from `pems-list-page`; the NCR and ITP status colours (`bg-*` classes) became badge tones. Guideline: the cancel rule now uses the new Jira status **Cancelled**.
+
 ## 2026-11-04 - Re-audit before starting, and how to cancel (guideline)
 
 ### Added

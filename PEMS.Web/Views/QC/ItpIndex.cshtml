@@ -1,29 +1,40 @@
 ﻿@model List<PEMS.Domain.Entities.InspectionTestPlan>
 @using Microsoft.Extensions.Localization
 @using PEMS.Web.Resources
+@using PEMS.Web.Helpers
 @inject IStringLocalizer<SharedResource> Localizer
 
-<div class="d-flex justify-content-end align-items-center mb-2">
-    <pems-button tone="primary" size="small" as="a" asp-action="ItpCreate"><i class="bi bi-plus-lg"></i> New ITP</pems-button>
-</div>
+@section Styles { <link rel="stylesheet" href="~/_content/PEMS.UI/pems-list.css" asp-append-version="true" /> }
 
-<div class="content-card">
-    <pems-table kind="enterprise" css="mb-0">
-        <thead>
-            <tr><th>ITP No</th><th>@Localizer["Title"]</th><th>@Localizer["Discipline"]</th><th>@Localizer["Equipment"]</th><th>@Localizer["Status"]</th><th>@Localizer["Rev"]</th></tr>
-        </thead>
-        <tbody>
-            @foreach (var i in Model)
-            {
-                <tr>
-                    <td><a asp-action="ItpDetails" asp-route-id="@i.InspectionTestPlanId">@i.ITPNumber</a></td>
-                    <td class="small">@i.Title</td>
-                    <td class="small">@i.QCDiscipline?.Name</td>
-                    <td class="small">@i.Equipment?.TagNumber</td>
-                    <td><pems-badge tone="none" css="@(i.Status == "Active" ? "bg-success" : i.Status == "Draft" ? "bg-secondary" : "bg-info")">@i.Status</pems-badge></td>
-                    <td>@i.Revision</td>
-                </tr>
-            }
-        </tbody>
-    </pems-table>
-</div>
+@* SCRUM-337: built from the PEMS.UI list-page component; the status colours became tones. *@
+<pems-list-page texts="@ListPageTexts.From(Localizer)">
+    <pems-list-panel>
+        <pems-list-toolbar heading="@Localizer["Inspection and Test Plans"]" total="@Model.Count">
+            <pems-list-tools>
+                <pems-list-new href="@Url.Action("ItpCreate")" text="New ITP" />
+            </pems-list-tools>
+        </pems-list-toolbar>
+        <pems-list-grid>
+            <pems-list-table empty="@(Model.Count == 0)" empty-text="@Localizer["No ITPs yet."]">
+                <thead>
+                    <tr><th>ITP No</th><th>@Localizer["Title"]</th><th>@Localizer["Discipline"]</th><th>@Localizer["Equipment"]</th><th>@Localizer["Status"]</th><th>@Localizer["Rev"]</th></tr>
+                </thead>
+                <tbody>
+                    @foreach (var i in Model)
+                    {
+                        <tr class="lp-row">
+                            <td class="lp-no"><a asp-action="ItpDetails" asp-route-id="@i.InspectionTestPlanId" class="lp-subject">@i.ITPNumber</a></td>
+                            <td class="small">@i.Title</td>
+                            <td class="small">@i.QCDiscipline?.Name</td>
+                            <td class="small">@i.Equipment?.TagNumber</td>
+                            <td><pems-badge tone="@(i.Status == "Active" ? "success" : i.Status == "Draft" ? "neutral" : "info")">@i.Status</pems-badge></td>
+                            <td>@i.Revision</td>
+                        </tr>
+                    }
+                </tbody>
+            </pems-list-table>
+        </pems-list-grid>
+    </pems-list-panel>
+</pems-list-page>
+
+@section Scripts { <script src="~/_content/PEMS.UI/pems-list.js" asp-append-version="true"></script> }

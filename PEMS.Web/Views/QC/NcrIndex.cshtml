@@ -1,29 +1,40 @@
 ﻿@model List<PEMS.Domain.Entities.NonConformanceReport>
 @using Microsoft.Extensions.Localization
 @using PEMS.Web.Resources
+@using PEMS.Web.Helpers
 @inject IStringLocalizer<SharedResource> Localizer
 
-<div class="d-flex justify-content-end align-items-center mb-2">
-    <pems-button tone="danger" size="small" as="a" asp-action="NcrCreate"><i class="bi bi-plus-lg"></i> @Localizer["Raise NCR"]</pems-button>
-</div>
+@section Styles { <link rel="stylesheet" href="~/_content/PEMS.UI/pems-list.css" asp-append-version="true" /> }
 
-<div class="content-card">
-    <pems-table kind="enterprise" css="mb-0">
-        <thead>
-            <tr><th>NCR No</th><th>@Localizer["Discipline"]</th><th>@Localizer["Equipment"]</th><th>@Localizer["Severity"]</th><th>@Localizer["Status"]</th><th>@Localizer["Raised"]</th></tr>
-        </thead>
-        <tbody>
-            @foreach (var n in Model)
-            {
-                <tr>
-                    <td><a asp-action="NcrDetails" asp-route-id="@n.NonConformanceReportId">@n.NCRNumber</a></td>
-                    <td class="small">@n.QCDiscipline?.Name</td>
-                    <td class="small">@n.Equipment?.TagNumber</td>
-                    <td><pems-badge tone="@(n.Severity == "Critical" ? "danger" : n.Severity == "Major" ? "warning" : "neutral")">@n.Severity</pems-badge></td>
-                    <td><pems-badge tone="none" css="@(n.Status == "Closed" ? "bg-success" : n.Status == "Dispositioned" ? "bg-info" : n.Status == "PendingApproval" ? "bg-warning text-dark" : "bg-secondary")">@n.Status</pems-badge></td>
-                    <td class="small">@n.RaisedDate.ToString("yyyy-MM-dd")</td>
-                </tr>
-            }
-        </tbody>
-    </pems-table>
-</div>
+@* SCRUM-337: built from the PEMS.UI list-page component; the status colours became tones. *@
+<pems-list-page texts="@ListPageTexts.From(Localizer)">
+    <pems-list-panel>
+        <pems-list-toolbar heading="@Localizer["Non-Conformance Reports"]" total="@Model.Count">
+            <pems-list-tools>
+                <pems-list-new href="@Url.Action("NcrCreate")" text="@Localizer["Raise NCR"]" />
+            </pems-list-tools>
+        </pems-list-toolbar>
+        <pems-list-grid>
+            <pems-list-table empty="@(Model.Count == 0)" empty-text="@Localizer["No NCRs yet."]">
+                <thead>
+                    <tr><th>NCR No</th><th>@Localizer["Discipline"]</th><th>@Localizer["Equipment"]</th><th>@Localizer["Severity"]</th><th>@Localizer["Status"]</th><th>@Localizer["Raised"]</th></tr>
+                </thead>
+                <tbody>
+                    @foreach (var n in Model)
+                    {
+                        <tr class="lp-row">
+                            <td class="lp-no"><a asp-action="NcrDetails" asp-route-id="@n.NonConformanceReportId" class="lp-subject">@n.NCRNumber</a></td>
+                            <td class="small">@n.QCDiscipline?.Name</td>
+                            <td class="small">@n.Equipment?.TagNumber</td>
+                            <td><pems-badge tone="@(n.Severity == "Critical" ? "danger" : n.Severity == "Major" ? "warning" : "neutral")">@n.Severity</pems-badge></td>
+                            <td><pems-badge tone="@(n.Status == "Closed" ? "success" : n.Status == "Dispositioned" ? "info" : n.Status == "PendingApproval" ? "warning" : "neutral")">@n.Status</pems-badge></td>
+                            <td class="small">@n.RaisedDate.ToString("yyyy-MM-dd")</td>
+                        </tr>
+                    }
+                </tbody>
+            </pems-list-table>
+        </pems-list-grid>
+    </pems-list-panel>
+</pems-list-page>
+
+@section Scripts { <script src="~/_content/PEMS.UI/pems-list.js" asp-append-version="true"></script> }
