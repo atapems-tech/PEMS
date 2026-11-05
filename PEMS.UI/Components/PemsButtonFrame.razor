@@ -1,0 +1,15 @@
+@namespace PEMS.UI.Components
+@attribute [PEMS.UI.Rendering.PemsComponent("button-frame", Category = "actions", Icon = "bi-hand-index-thumb")]
+@FrameMarkup.Element(Options.As, Css, null, Options.Attributes, ChildContent, Options.Disabled)
+@code {
+    [Parameter, EditorRequired] public ButtonFrameOptions Options { get; set; } = default!;
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    private string Css => ButtonState.From(new ButtonOptions
+    {
+        Label = "",
+        Tone = Options.Tone.Equals("none", StringComparison.OrdinalIgnoreCase) ? null : Enum.Parse<Tone>(Options.Tone, ignoreCase: true),
+        Size = Enum.Parse<Size>(Options.Size, ignoreCase: true),
+        Outline = Options.Outline,
+        CssClass = Options.Css
+    }).Css;
+}

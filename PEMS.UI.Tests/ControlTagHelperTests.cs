@@ -13,7 +13,7 @@ public sealed class ControlTagHelperTests
         var context = new TagHelperContext(tag, new TagHelperAttributeList(), new Dictionary<object, object>(), "c");
         var output = new TagHelperOutput(tag, attributes, (_, _) => Task.FromResult<TagHelperContent>(new DefaultTagHelperContent().SetHtmlContent(inner)));
         output.Content.SetHtmlContent(inner);
-        helper.Process(context, output);
+        helper.ProcessAsync(context, output).GetAwaiter().GetResult();
         using var writer = new StringWriter();
         output.WriteTo(writer, HtmlEncoder.Default);
         return writer.ToString();
@@ -94,20 +94,20 @@ public sealed class ControlTagHelperTests
     [Fact]
     public void A_dropdown_menu_keeps_its_attributes_and_items()
         => Assert.Equal("<ul class=\"dropdown-menu dropdown-menu-end p-0\" id=\"m\" aria-labelledby=\"b\"><li>x</li></ul>",
-            Run(new PemsDropdownMenuTagHelper { End = true, Css = "p-0" }, "pems-dropdown-menu", [new("id", "m"), new("aria-labelledby", "b")], "<li>x</li>"));
+            Run(new PemsDropdownMenuTagHelper(UiTestRenderer.Instance) { End = true, Css = "p-0" }, "pems-dropdown-menu", [new("id", "m"), new("aria-labelledby", "b")], "<li>x</li>"));
 
     [Fact]
     public void A_dropdown_panel_can_be_a_div()
-        => Assert.StartsWith("<div class=\"dropdown-menu\"", Run(new PemsDropdownMenuTagHelper { As = "div" }, "pems-dropdown-menu", [], "x"));
+        => Assert.StartsWith("<div class=\"dropdown-menu\"", Run(new PemsDropdownMenuTagHelper(UiTestRenderer.Instance) { As = "div" }, "pems-dropdown-menu", [], "x"));
 
     [Fact]
     public void A_tab_strip_keeps_role_and_id()
         => Assert.Equal("<ul class=\"nav nav-tabs mb-3\" id=\"docTabs\" role=\"tablist\"><li>t</li></ul>",
-            Run(new PemsNavTagHelper { Css = "mb-3" }, "pems-nav", [new("id", "docTabs"), new("role", "tablist")], "<li>t</li>"));
+            Run(new PemsNavTagHelper(UiTestRenderer.Instance) { Css = "mb-3" }, "pems-nav", [new("id", "docTabs"), new("role", "tablist")], "<li>t</li>"));
 
     [Fact]
     public void A_breadcrumb_is_an_ol()
-        => Assert.Equal("<ol class=\"breadcrumb mb-0 small\"><li>a</li></ol>", Run(new PemsBreadcrumbTagHelper { Css = "mb-0 small" }, "pems-crumb-trail", [], "<li>a</li>"));
+        => Assert.Equal("<ol class=\"breadcrumb mb-0 small\"><li>a</li></ol>", Run(new PemsBreadcrumbTagHelper(UiTestRenderer.Instance) { Css = "mb-0 small" }, "pems-crumb-trail", [], "<li>a</li>"));
 
     [Theory]
     [InlineData(false, false, null, "table")]
@@ -119,7 +119,7 @@ public sealed class ControlTagHelperTests
     [Fact]
     public void A_table_keeps_its_attributes_and_rows()
         => Assert.Equal("<table class=\"table table-enterprise table-sm mb-0\" id=\"permTable\"><tbody><tr><td>x</td></tr></tbody></table>",
-            Run(new PemsTableFrameTagHelper { Kind = "enterprise", Scale = "small", Css = "mb-0" }, "pems-table", [new("id", "permTable")], "<tbody><tr><td>x</td></tr></tbody>"));
+            Run(new PemsTableFrameTagHelper(UiTestRenderer.Instance) { Kind = "enterprise", Scale = "small", Css = "mb-0" }, "pems-table", [new("id", "permTable")], "<tbody><tr><td>x</td></tr></tbody>"));
 
     [Theory]
     [InlineData(true, false, null, "list-group-item list-group-item-action")]
@@ -135,14 +135,14 @@ public sealed class ControlTagHelperTests
     [Fact]
     public void A_toast_keeps_its_attributes_and_body()
         => Assert.Equal("<div class=\"toast align-items-center text-bg-success border-0 show\" role=\"alert\" data-bs-delay=\"5000\"><div class=\"toast-body\">x</div></div>",
-            Run(new PemsToastTagHelper { Tone = "success" }, "pems-toast", [new("role", "alert"), new("data-bs-delay", "5000")], "<div class=\"toast-body\">x</div>"));
+            Run(new PemsToastTagHelper(UiTestRenderer.Instance) { Tone = "success" }, "pems-toast", [new("role", "alert"), new("data-bs-delay", "5000")], "<div class=\"toast-body\">x</div>"));
 
     [Fact]
     public void A_list_group_item_is_a_link_by_default_and_keeps_its_attributes()
         => Assert.Equal("<a class=\"list-group-item list-group-item-action active\" href=\"/x\">t</a>",
-            Run(new PemsListGroupItemTagHelper(null!) { IsAction = true, Active = true }, "pems-list-group-item", [new("href", "/x")], "t"));
+            Run(new PemsListGroupItemTagHelper(null!, UiTestRenderer.Instance) { IsAction = true, Active = true }, "pems-list-group-item", [new("href", "/x")], "t"));
 
     [Fact]
     public void A_list_group_item_can_be_a_div()
-        => Assert.StartsWith("<div class=\"list-group-item\"", Run(new PemsListGroupItemTagHelper(null!) { As = "div" }, "pems-list-group-item", [], "t"));
+        => Assert.StartsWith("<div class=\"list-group-item\"", Run(new PemsListGroupItemTagHelper(null!, UiTestRenderer.Instance) { As = "div" }, "pems-list-group-item", [], "t"));
 }

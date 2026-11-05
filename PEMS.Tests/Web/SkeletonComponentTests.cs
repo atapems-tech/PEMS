@@ -1,6 +1,9 @@
 using System.Text.Encodings.Web;
 using System.Text.RegularExpressions;
 using Microsoft.AspNetCore.Razor.TagHelpers;
+using Microsoft.Extensions.DependencyInjection;
+using PEMS.UI;
+using PEMS.UI.Rendering;
 using PEMS.UI.TagHelpers;
 
 namespace PEMS.Tests.Web;
@@ -11,6 +14,8 @@ namespace PEMS.Tests.Web;
 /// </summary>
 public class SkeletonComponentTests
 {
+    private static readonly IPemsComponentRenderer Renderer = new ServiceCollection().AddPemsUi().BuildServiceProvider().CreateScope().ServiceProvider.GetRequiredService<IPemsComponentRenderer>();
+
     [Fact]
     public void Markup_IsABusyStatusRegion_WithTheLabelForScreenReaders()
     {
@@ -47,11 +52,11 @@ public class SkeletonComponentTests
     [Fact]
     public async Task TagHelper_WritesTheMarkup_AndKeepsItsId()
     {
-        var helper = new PemsSkeletonTagHelper { Kind = "kpi", Label = "Loading" };
+        var helper = new PemsSkeletonTagHelper(Renderer) { Kind = "kpi", Label = "Loading" };
         var attrs = new TagHelperAttributeList { { "id", "kpiWait" } };
         var context = new TagHelperContext("pems-skeleton", attrs, new Dictionary<object, object>(), "u1");
         var output = new TagHelperOutput("pems-skeleton", attrs, (_, _) => Task.FromResult<TagHelperContent>(new DefaultTagHelperContent()));
-        helper.Process(context, output);
+        helper.ProcessAsync(context, output).GetAwaiter().GetResult();
         using var w = new StringWriter();
         output.WriteTo(w, HtmlEncoder.Default);
         Assert.StartsWith("<div id=\"kpiWait\" class=\"pems-skeleton pems-skeleton--kpi\"", w.ToString());

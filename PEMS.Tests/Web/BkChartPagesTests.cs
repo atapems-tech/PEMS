@@ -1,3 +1,7 @@
+using Microsoft.Extensions.DependencyInjection;
+using PEMS.UI;
+using PEMS.UI.Components;
+using PEMS.UI.Rendering;
 using System.Text.Json;
 using System.Text.RegularExpressions;
 using System.Xml.Linq;
@@ -12,6 +16,9 @@ namespace PEMS.Tests.Web;
 /// <summary>نمودارهای Bklit در صفحه‌های گزارش و KPI نگهداری/هزینه: توصیف نمودار (BkChartSpec)، Partial میزبان، رندر واقعی صفحه‌ها و نبودِ Chart.js.</summary>
 public class BkChartPagesTests
 {
+    private static readonly IPemsComponentRenderer ChartRenderer = new ServiceCollection().AddPemsUi().BuildServiceProvider().CreateScope().ServiceProvider.GetRequiredService<IPemsComponentRenderer>();
+    private static string ChartMarkup(BkChartSpec spec) => ChartRenderer.RenderAsync<PemsChart>(new Dictionary<string, object?> { ["Options"] = new ChartOptions { Spec = spec } }).GetAwaiter().GetResult();
+
     private static string RepoRoot()
     {
         var env = Environment.GetEnvironmentVariable("PEMS_REPO_ROOT");
@@ -94,7 +101,7 @@ public class BkChartPagesTests
     {
         var spec = BkChartSpec.HBars("Docs by <b>discipline</b>", "none", new[] { "Mech & Elec", "\"Quoted\"" }, false, BkSeries.Of("Docs", new[] { 4, 2 }));
 
-        var html = PEMS.UI.TagHelpers.PemsChartTagHelper.Markup(spec);   // SCRUM-337 C1: <pems-chart> replaces the _BkChart partial
+        var html = ChartMarkup(spec);   // SCRUM-337 C1: <pems-chart> replaces the _BkChart partial
 
         Assert.Contains("class=\"bk-scope bk-chart", html);
         Assert.DoesNotContain("<b>discipline</b>", html);

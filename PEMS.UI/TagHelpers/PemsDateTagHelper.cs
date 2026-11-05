@@ -1,6 +1,5 @@
 using PEMS.UI.Rendering;
 using System.Globalization;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Razor.TagHelpers;
 using PEMS.UI.Components;
 
@@ -18,8 +17,8 @@ namespace PEMS.UI.TagHelpers;
 /// Every other attribute (id, data-*, aria-*, placeholder, required, disabled, readonly, title) goes to the visible input. Dates in <c>value</c>, <c>min</c> and <c>max</c> are ISO text.
 /// </summary>
 [HtmlTargetElement("pems-date")]
-[PemsFacade(FacadeKind.Direct)]
-public sealed class PemsDateTagHelper : TagHelper
+[PemsFacade(UiKeys.Date)]
+public sealed class PemsDateTagHelper(IPemsComponentRenderer renderer) : TagHelper
 {
     [HtmlAttributeName("name")] public string? Name { get; set; }
     /// <summary>ISO date <c>yyyy-MM-dd</c> (a time part after it is ignored); empty for no date.</summary>
@@ -59,7 +58,7 @@ public sealed class PemsDateTagHelper : TagHelper
         _ => CultureInfo.CurrentUICulture.TwoLetterISOLanguageName.Equals("fa", StringComparison.OrdinalIgnoreCase),
     };
 
-    public override void Process(TagHelperContext context, TagHelperOutput output)
+    public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
     {
         var css = ControlState.Css(ControlTagHelper.Options(ControlKind.Text, Scale, Css));
         var iso = ToIsoText(Value);
@@ -73,6 +72,7 @@ public sealed class PemsDateTagHelper : TagHelper
         {
             ControlTagHelper.PutClassFirst(output, css);
             ControlTagHelper.Restore(output, ("type", "date"), ("name", Name), ("value", iso.Length > 0 ? iso : null), ("min", ToIsoText(Min) is { Length: > 0 } min ? min : null), ("max", ToIsoText(Max) is { Length: > 0 } max ? max : null));
+            await Render(output, null);
             return;
         }
 
@@ -92,14 +92,15 @@ public sealed class PemsDateTagHelper : TagHelper
         var text = ToJalaliText(iso);
         if (text.Length > 0) output.Attributes.Add("value", text);
 
-        var hidden = new TagBuilder("input") { TagRenderMode = TagRenderMode.SelfClosing };
-        hidden.Attributes["type"] = "hidden";
-        hidden.Attributes["id"] = hiddenId;
-        if (!string.IsNullOrEmpty(Name)) hidden.Attributes["name"] = Name;
-        hidden.Attributes["value"] = iso;
-        hidden.Attributes["data-pems-date-iso"] = "";
-        if (output.Attributes.ContainsName("disabled")) hidden.Attributes["disabled"] = "disabled";
-        if (output.Attributes.TryGetAttribute("form", out var form) && form.Value is not null) hidden.Attributes["form"] = form.Value.ToString()!;
-        output.PostElement.AppendHtml(hidden);
+        var hidden = new DateHidden
+        {
+            Id = hiddenId, Name = string.IsNullOrEmpty(Name) ? null : Name, Value = iso, Disabled = output.Attributes.ContainsName("disabled"),
+            Form = output.Attributes.TryGetAttribute("form", out var form) && form.Value is not null ? form.Value.ToString() : null
+        };
+        await Render(output, hidden);
     }
+
+    /// <summary>The visible input keeps every attribute the helper resolved on the tag, in order; the component writes it and, for Jalali, the hidden input.</summary>
+    private Task Render(TagHelperOutput output, DateHidden? hidden)
+        => ListRender.Replace<PemsDate>(renderer, output, new DateOptions { Attributes = BlockTagHelper.PageAttributes(output), Hidden = hidden });
 }

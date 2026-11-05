@@ -1,6 +1,10 @@
+using PEMS.UI.Components;
 using System.Text.Encodings.Web;
 using System.Text.RegularExpressions;
 using Microsoft.AspNetCore.Razor.TagHelpers;
+using Microsoft.Extensions.DependencyInjection;
+using PEMS.UI;
+using PEMS.UI.Rendering;
 using PEMS.UI.TagHelpers;
 using PEMS.Web.Models;
 
@@ -12,12 +16,17 @@ namespace PEMS.Tests.Web;
 /// </summary>
 public class ChartComponentTests
 {
+    private static readonly IPemsComponentRenderer ChartRenderer = new ServiceCollection().AddPemsUi().BuildServiceProvider().CreateScope().ServiceProvider.GetRequiredService<IPemsComponentRenderer>();
+    private static string ChartMarkup(BkChartSpec spec) => ChartRenderer.RenderAsync<PemsChart>(new Dictionary<string, object?> { ["Options"] = new ChartOptions { Spec = spec } }).GetAwaiter().GetResult();
+
+    private static readonly IPemsComponentRenderer Renderer = new ServiceCollection().AddPemsUi().BuildServiceProvider().CreateScope().ServiceProvider.GetRequiredService<IPemsComponentRenderer>();
+
     private static string Run(BkChartSpec? spec)
     {
-        var helper = new PemsChartTagHelper { Spec = spec };
+        var helper = new PemsChartTagHelper(Renderer) { Spec = spec };
         var context = new TagHelperContext("pems-chart", new TagHelperAttributeList(), new Dictionary<object, object>(), "u1");
         var output = new TagHelperOutput("pems-chart", new TagHelperAttributeList(), (_, _) => Task.FromResult<TagHelperContent>(new DefaultTagHelperContent()));
-        helper.Process(context, output);
+        helper.ProcessAsync(context, output).GetAwaiter().GetResult();
         using var w = new StringWriter();
         output.WriteTo(w, HtmlEncoder.Default);
         return w.ToString();
@@ -74,7 +83,7 @@ public class ChartComponentTests
         Assert.Equal("line", spec.Kind);
         Assert.Equal(new[] { "2026-04-01T08:30", "2026-04-02T09:05" }, spec.Labels);
         Assert.Equal(2, spec.Decimals);
-        var html = PemsChartTagHelper.Markup(spec);
+        var html = ChartMarkup(spec);
         Assert.Contains("<th scope=\"row\">2026-04-01T08:30</th>", html);
         Assert.Contains("<td>0</td>", html);   // a zero reading is a value, not a gap
     }
@@ -128,7 +137,7 @@ public class ChartComponentTests
         Assert.Equal("donut", spec.Kind);
         Assert.Equal(new[] { "Draft", "Approved" }, spec.Labels);
         Assert.Equal("Documents", spec.CenterLabel);
-        Assert.Contains("<th scope=\"row\">Draft</th><td>3</td>", PemsChartTagHelper.Markup(spec));
+        Assert.Contains("<th scope=\"row\">Draft</th><td>3</td>", ChartMarkup(spec));
     }
 
     private static string RepoRoot()

@@ -79,7 +79,7 @@ public sealed class ButtonTagHelperTests
         var context = new TagHelperContext("pems-button", new TagHelperAttributeList(), new Dictionary<object, object>(), "c");
         var output = new TagHelperOutput("pems-button", attributes, (_, _) => Task.FromResult<TagHelperContent>(new DefaultTagHelperContent().SetHtmlContent(inner)));
         output.Content.SetHtmlContent(inner);
-        helper.Process(context, output);
+        helper.ProcessAsync(context, output).GetAwaiter().GetResult();
         using var writer = new StringWriter();
         output.WriteTo(writer, HtmlEncoder.Default);
         return writer.ToString();
@@ -88,26 +88,26 @@ public sealed class ButtonTagHelperTests
     [Fact]
     public void A_button_keeps_its_attributes_and_content_and_gets_the_classes()
         => Assert.Equal("<button class=\"btn btn-sm btn-outline-secondary w-100\" type=\"submit\" id=\"go\"><i class=\"bi bi-x\"></i> Cancel</button>",
-            Run(new PemsButtonTagHelper(null!) { Tone = "neutral", Size = "small", Outline = true, Css = "w-100" },
+            Run(new PemsButtonTagHelper(null!, UiTestRenderer.Instance) { Tone = "neutral", Size = "small", Outline = true, Css = "w-100" },
                 [new("type", "submit"), new("id", "go")], "<i class=\"bi bi-x\"></i> Cancel"));
 
     [Fact]
     public void A_link_is_written_with_as_a()
-        => Assert.Equal("<a class=\"btn btn-pems-solid\" href=\"/x\">Open</a>", Run(new PemsButtonTagHelper(null!) { As = "a" }, [new("href", "/x")], "Open"));
+        => Assert.Equal("<a class=\"btn btn-pems-solid\" href=\"/x\">Open</a>", Run(new PemsButtonTagHelper(null!, UiTestRenderer.Instance) { As = "a" }, [new("href", "/x")], "Open"));
 
     [Fact]
     public void Tone_none_writes_only_the_size_and_the_classes_the_page_passes()
         => Assert.Equal("<button class=\"btn btn-sm btn-pems p-0\" type=\"submit\">Go</button>",
-            Run(new PemsButtonTagHelper(null!) { Tone = "none", Size = "small", Css = "btn-pems p-0" }, [new("type", "submit")], "Go"));
+            Run(new PemsButtonTagHelper(null!, UiTestRenderer.Instance) { Tone = "none", Size = "small", Css = "btn-pems p-0" }, [new("type", "submit")], "Go"));
 
     [Fact]
     public void A_label_can_look_like_a_button()
         => Assert.Equal("<label class=\"btn btn-sm btn-outline-secondary\" for=\"x\">All</label>",
-            Run(new PemsButtonTagHelper(null!) { As = "label", Tone = "neutral", Size = "small", Outline = true }, [new("for", "x")], "All"));
+            Run(new PemsButtonTagHelper(null!, UiTestRenderer.Instance) { As = "label", Tone = "neutral", Size = "small", Outline = true }, [new("for", "x")], "All"));
 
     [Theory]
     [InlineData(true, "<button class=\"btn btn-pems-solid\" disabled=\"disabled\">Go</button>")]
     [InlineData(false, "<button class=\"btn btn-pems-solid\">Go</button>")]
     public void The_disabled_property_writes_the_attribute_only_when_true(bool disabled, string expected)
-        => Assert.Equal(expected, Run(new PemsButtonTagHelper(null!) { Disabled = disabled }, [], "Go"));
+        => Assert.Equal(expected, Run(new PemsButtonTagHelper(null!, UiTestRenderer.Instance) { Disabled = disabled }, [], "Go"));
 }

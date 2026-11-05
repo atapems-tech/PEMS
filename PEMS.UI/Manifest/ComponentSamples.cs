@@ -68,6 +68,15 @@ public static class ComponentSamples
         ["related-act"] = """{"icon":"bi-x-lg","label":"Remove","tone":"text-danger"}""",
         ["tree"] = """{"label":"Disciplines","rememberKey":"pems.tree"}""",
         ["tree-item"] = """{"label":"Engineering","key":"1","href":"/letters?tag=1","countText":"4"}""",
+        ["chart"] = """{"spec":{"kind":"gauge","ariaLabel":"Completion","emptyText":"-","value":72.5,"unit":"%"}}""",
+        ["date"] = """{"attributes":{"class":"form-control","type":"date","name":"due","value":"2026-11-05"}}""",
+        ["button-frame"] = """{"tone":"primary","size":"small"}""",
+        ["dropdown-menu"] = """{"end":true}""",
+        ["nav"] = """{"kind":"pills"}""",
+        ["crumb-trail"] = """{}""",
+        ["table-frame"] = """{"kind":"enterprise","scale":"small"}""",
+        ["list-group-item"] = """{"action":true,"active":true}""",
+        ["toast"] = """{"tone":"success"}""",
         ["form"] = """{"definition":{"id":"item","title":{"en":"Item","fa":"مورد"},"action":"/items","fields":[{"name":"tag","label":{"en":"Tag","fa":"تگ"}}],"submitLabel":{"en":"Save","fa":"ذخیره"}}}"""
     };
 
