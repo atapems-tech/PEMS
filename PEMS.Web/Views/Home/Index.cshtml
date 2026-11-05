@@ -10,7 +10,7 @@
 @if (ViewBag.DashboardWarning != null)
 {
     <pems-alert tone="warning" css="d-flex align-items-start gap-2">
-        <i class="bi bi-exclamation-triangle-fill mt-1"></i>
+        <pems-icon name="bi-exclamation-triangle-fill" css="mt-1" />
         <div class="small">@ViewBag.DashboardWarning</div>
     </pems-alert>
 }
@@ -22,7 +22,7 @@
 {
     <div class="content-card mb-4">
         <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-2">
-            <h6 class="mb-0"><i class="bi bi-rocket-takeoff"></i> @Localizer["System Setup"]</h6>
+            <h6 class="mb-0"><pems-icon name="bi-rocket-takeoff" /> @Localizer["System Setup"]</h6>
             <span class="text-muted small">@setupStatus.CompletedCount of @setupStatus.TotalCount setup areas ready</span>
         </div>
         <pems-progress value="@setupStatus.PercentComplete" height="18px" css="mb-3">@setupStatus.PercentComplete%</pems-progress>
@@ -36,13 +36,13 @@
 @if (myWork != null && myWork.HasAnyCategory)
 {
     <div class="content-card mb-4">
-        <h6 class="mb-1"><i class="bi bi-check2-square"></i> @Localizer["My Work"]</h6>
+        <h6 class="mb-1"><pems-icon name="bi-check2-square" /> @Localizer["My Work"]</h6>
         <p class="text-muted small mb-3">@Localizer["What requires your attention"]</p>
 
         @if (!myWork.HasAnyActionable)
         {
             <div class="text-center text-muted py-4">
-                <i class="bi bi-emoji-smile pems-s-4361a2ff"></i>
+                <pems-icon name="bi-emoji-smile" css="pems-s-4361a2ff" />
                 <p class="mb-0 mt-2">You're all caught up. No items currently require your attention.</p>
             </div>
         }
@@ -55,7 +55,7 @@
                         <a asp-controller="Permit" asp-action="Index" asp-route-pendingMyApproval="true"
                            class="d-flex align-items-center gap-3 p-2 rounded text-decoration-none"
                            aria-label="@myWork.PendingPermitApprovals Permit Approvals waiting for your approval">
-                            <div class="kpi-icon @(myWork.PendingPermitApprovals > 0 ? "bg-icon-red" : "bg-icon-slate")"><i class="bi bi-shield-check"></i></div>
+                            <div class="kpi-icon @(myWork.PendingPermitApprovals > 0 ? "bg-icon-red" : "bg-icon-slate")"><pems-icon name="bi-shield-check" /></div>
                             <div>
                                 <div class="kpi-value">@myWork.PendingPermitApprovals</div>
                                 <div class="small text-muted">Permit Approvals waiting for you</div>
@@ -69,7 +69,7 @@
                         <a asp-controller="WorkOrder" asp-action="Index" asp-route-assignedToMe="true"
                            class="d-flex align-items-center gap-3 p-2 rounded text-decoration-none"
                            aria-label="@myWork.MyWorkOrdersCount Work Orders assigned to you">
-                            <div class="kpi-icon @(myWork.MyWorkOrdersCount > 0 ? "bg-icon-orange" : "bg-icon-slate")"><i class="bi bi-clipboard-check"></i></div>
+                            <div class="kpi-icon @(myWork.MyWorkOrdersCount > 0 ? "bg-icon-orange" : "bg-icon-slate")"><pems-icon name="bi-clipboard-check" /></div>
                             <div>
                                 <div class="kpi-value">@myWork.MyWorkOrdersCount</div>
                                 <div class="small text-muted">Work Orders assigned to you</div>
@@ -83,7 +83,7 @@
                         <a asp-controller="Letter" asp-action="MyReferrals"
                            class="d-flex align-items-center gap-3 p-2 rounded text-decoration-none"
                            aria-label="@myWork.MyReferralsCount Correspondence Referrals requiring your action">
-                            <div class="kpi-icon @(myWork.MyReferralsCount > 0 ? "bg-icon-blue" : "bg-icon-slate")"><i class="bi bi-envelope-paper"></i></div>
+                            <div class="kpi-icon @(myWork.MyReferralsCount > 0 ? "bg-icon-blue" : "bg-icon-slate")"><pems-icon name="bi-envelope-paper" /></div>
                             <div>
                                 <div class="kpi-value">@myWork.MyReferralsCount</div>
                                 <div class="small text-muted">Referrals requiring your action</div>
@@ -97,7 +97,7 @@
                         <a asp-controller="MyWork" asp-action="Index"
                            class="d-flex align-items-center gap-3 p-2 rounded text-decoration-none"
                            aria-label="@myWork.OtherApprovalsCount @Localizer["MyWork_Card_Other"]">
-                            <div class="kpi-icon bg-icon-teal"><i class="bi bi-list-check"></i></div>
+                            <div class="kpi-icon bg-icon-teal"><pems-icon name="bi-list-check" /></div>
                             <div>
                                 <div class="kpi-value">@myWork.OtherApprovalsCount</div>
                                 <div class="small text-muted">@Localizer["MyWork_Card_Other"]</div>
@@ -111,7 +111,7 @@
                         <a asp-controller="EngineeringDocuments" asp-action="Index"
                            class="d-flex align-items-center gap-3 p-2 rounded text-decoration-none"
                            aria-label="@myWork.PendingDocumentReviewsCount Engineering Documents awaiting your review or approval">
-                            <div class="kpi-icon @(myWork.PendingDocumentReviewsCount > 0 ? "bg-icon-purple" : "bg-icon-slate")"><i class="bi bi-file-earmark-check"></i></div>
+                            <div class="kpi-icon @(myWork.PendingDocumentReviewsCount > 0 ? "bg-icon-purple" : "bg-icon-slate")"><pems-icon name="bi-file-earmark-check" /></div>
                             <div>
                                 <div class="kpi-value">@myWork.PendingDocumentReviewsCount</div>
                                 <div class="small text-muted">Documents awaiting your review</div>
@@ -155,7 +155,7 @@
             @if (disciplineRows.Count == 0)
             {
                 <div class="text-center text-muted py-5">
-                    <i class="bi bi-bar-chart-line pems-s-e0132535"></i>
+                    <pems-icon name="bi-bar-chart-line" css="pems-s-e0132535" />
                     <div class="small mt-2">@Localizer["No engineering documents with a discipline yet. Register documents (or import the MDR) to see per-discipline progress here."]</div>
                 </div>
             }
@@ -191,7 +191,7 @@
     <div class="d-flex justify-content-between align-items-center mt-4 mb-2">
         <h6 class="mb-0">@Localizer["My Dashboard"]</h6>
         <pems-button tone="neutral" size="small" outline="true" as="a" asp-controller="DashboardSettings" asp-action="Index">
-            <i class="bi bi-sliders"></i> @Localizer["Customize"]
+            <pems-icon name="bi-sliders" /> @Localizer["Customize"]
         </pems-button>
     </div>
 
@@ -224,7 +224,7 @@ else
 {
     <div class="text-center mt-3">
         <pems-button tone="primary" size="small" outline="true" as="a" asp-controller="DashboardSettings" asp-action="Index">
-            <i class="bi bi-sliders"></i> Customize your dashboard
+            <pems-icon name="bi-sliders" /> Customize your dashboard
         </pems-button>
     </div>
 }

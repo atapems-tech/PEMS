@@ -6,7 +6,7 @@
 <div class="content-card">
     <div class="d-flex justify-content-end mb-2">
         <pems-button tone="neutral" size="small" outline="true" type="button" onclick="PemsDataGrid.resetColumns('MaterialRequisitionQuotations')">
-            <i class="bi bi-arrow-counterclockwise"></i> @Localizer["Reset columns"]
+            <pems-icon name="bi-arrow-counterclockwise" /> @Localizer["Reset columns"]
         </pems-button>
     </div>
     <div class="pems-grid-scroll">
@@ -36,7 +36,7 @@
                     <td><pems-badge tone="@(q.TechnicalEvaluation == "Passed" ? "success" : q.TechnicalEvaluation == "Failed" ? "danger" : "neutral")">@q.TechnicalEvaluation</pems-badge></td>
                     <td><pems-badge tone="@(q.CommercialEvaluation == "Passed" ? "success" : q.CommercialEvaluation == "Failed" ? "danger" : "neutral")">@q.CommercialEvaluation</pems-badge></td>
                     <td><pems-badge tone="@(q.ApprovalStatus == "Approved" ? "success" : q.ApprovalStatus == "Rejected" ? "danger" : "neutral")">@q.ApprovalStatus</pems-badge></td>
-                    <td><pems-button tone="neutral" size="small" outline="true" as="a" asp-action="Details" asp-route-id="@q.MRId"><i class="bi bi-eye"></i></pems-button></td>
+                    <td><pems-button tone="neutral" size="small" outline="true" as="a" asp-action="Details" asp-route-id="@q.MRId"><pems-icon name="bi-eye" /></pems-button></td>
                 </tr>
             }
         </tbody>

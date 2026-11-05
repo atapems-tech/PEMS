@@ -55,7 +55,7 @@
                                 @if (!jp.PermitRequired && !jp.LOTORequired) { <span class="text-muted">-</span> }
                             </td>
                             <td class="lp-actions">
-                                <a asp-action="Details" asp-route-id="@jp.JobPlanId" class="lp-act lp-act--always" title="@Localizer["Lp_Details"]" aria-label="@Localizer["Lp_Details"]"><i class="bi bi-eye" aria-hidden="true"></i></a>
+                                <a asp-action="Details" asp-route-id="@jp.JobPlanId" class="lp-act lp-act--always" title="@Localizer["Lp_Details"]" aria-label="@Localizer["Lp_Details"]"><pems-icon name="bi-eye" aria-hidden="true" /></a>
                             </td>
                         </tr>
                     }

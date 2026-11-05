@@ -82,7 +82,7 @@
                             <form asp-action="RemoveDocument" method="post">
                                 <input type="hidden" name="mdbId" value="@Model.MDBId" />
                                 <input type="hidden" name="mdbDocumentId" value="@d.MDBDocumentId" />
-                                <pems-button tone="danger" size="small" outline="true"><i class="bi bi-trash"></i></pems-button>
+                                <pems-button tone="danger" size="small" outline="true"><pems-icon name="bi-trash" /></pems-button>
                             </form>
                         </td>
                     </tr>
@@ -112,7 +112,7 @@
                 <pems-input kind="check" css="me-1" type="checkbox" name="isNotApplicable" value="true" id="na_@code" />
                 <label class="form-check-label small" for="na_@code">Not applicable</label>
             </div>
-            <div class="col-md-2"><pems-button tone="primary" size="small" outline="true" css="w-100"><i class="bi bi-plus-lg"></i> @Localizer["Add"]</pems-button></div>
+            <div class="col-md-2"><pems-button tone="primary" size="small" outline="true" css="w-100"><pems-icon name="bi-plus-lg" /> @Localizer["Add"]</pems-button></div>
         </form>
     </div>
 }

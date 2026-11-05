@@ -107,11 +107,11 @@
                 {
                     <form asp-action="New" method="post" class="d-inline">
                         <input type="hidden" name="type" value="Change" />
-                        <button type="submit" class="vs-btn vs-btn--sm"><i class="bi bi-pencil-square" aria-hidden="true"></i> <span class="lp-compose-label">@Localizer["Pc_Btn_NewChange"]</span></button>
+                        <button type="submit" class="vs-btn vs-btn--sm"><pems-icon name="bi-pencil-square" aria-hidden="true" /> <span class="lp-compose-label">@Localizer["Pc_Btn_NewChange"]</span></button>
                     </form>
                     <form asp-action="New" method="post" class="d-inline">
                         <input type="hidden" name="type" value="Add" />
-                        <button type="submit" class="vs-btn vs-btn--primary vs-btn--sm"><i class="bi bi-plus-lg" aria-hidden="true"></i> <span class="lp-compose-label">@Localizer["Pc_Btn_NewAdd"]</span></button>
+                        <button type="submit" class="vs-btn vs-btn--primary vs-btn--sm"><pems-icon name="bi-plus-lg" aria-hidden="true" /> <span class="lp-compose-label">@Localizer["Pc_Btn_NewAdd"]</span></button>
                     </form>
                 }
             </pems-list-tools>
@@ -124,7 +124,7 @@
             <a class="vs-chip" asp-action="Index" asp-route-Status="Returned">@Localizer["Pc_Status_Returned"] <strong>@s.Returned</strong></a>
             <a class="vs-chip" asp-action="Index" asp-route-Status="Completed">@Localizer["Pc_Status_Completed"] <strong>@s.Completed</strong></a>
             <a class="vs-chip" asp-action="Index" asp-route-Status="Cancelled">@Localizer["Pc_Status_Cancelled"] <strong>@s.Cancelled</strong></a>
-            <a class="vs-chip @(s.Urgent > 0 ? "vs-chip--danger" : "")" asp-action="Index" asp-route-Urgent="true"><i class="bi bi-exclamation-triangle" aria-hidden="true"></i> @Localizer["Pc_Urgent"] <strong>@s.Urgent</strong></a>
+            <a class="vs-chip @(s.Urgent > 0 ? "vs-chip--danger" : "")" asp-action="Index" asp-route-Urgent="true"><pems-icon name="bi-exclamation-triangle" aria-hidden="true" /> @Localizer["Pc_Urgent"] <strong>@s.Urgent</strong></a>
             <a class="vs-chip @(s.AwaitingMe > 0 ? "vs-chip--danger" : "")" asp-action="Index" asp-route-View="awaiting">@Localizer["Pc_Tab_Awaiting"] <strong>@s.AwaitingMe</strong></a>
         </pems-list-kpis>
 
@@ -159,7 +159,7 @@
                         <tr class="lp-row @(r.Urgent && r.Status is "InApproval" or "Draft" or "Returned" ? "pc-urgent-row" : "")">
                             <td class="lp-no">
                                 <a asp-action="@(r.Status is "Draft" or "Returned" ? "Edit" : "Details")" asp-route-id="@r.Id" class="lp-subject">@(r.RequestNumber ?? "#" + r.Id)</a>
-                                @if (r.Urgent) { <span class="vs-pill vs-pill--danger vs-pill--icon ms-1"><i class="bi bi-exclamation-triangle" aria-hidden="true"></i> @Localizer["Pc_Urgent"]</span> }
+                                @if (r.Urgent) { <span class="vs-pill vs-pill--danger vs-pill--icon ms-1"><pems-icon name="bi-exclamation-triangle" aria-hidden="true" /> @Localizer["Pc_Urgent"]</span> }
                             </td>
                             <td class="small">@Localizer["Pc_Type_" + r.RequestType]</td>
                             <td class="small vs-hide-md">@r.SectionCode</td>
@@ -169,7 +169,7 @@
                             </td>
                             <td class="small vs-hide-md">@r.RequesterName</td>
                             <td>
-                                <span class="vs-pill vs-pill--icon @StatusPill(r.Status)"><i class="bi @StatusIcon(r.Status)" aria-hidden="true"></i> @Localizer["Pc_Status_" + r.Status]</span>
+                                <span class="vs-pill vs-pill--icon @StatusPill(r.Status)"><pems-icon css="@StatusIcon(r.Status)" aria-hidden="true" /> @Localizer["Pc_Status_" + r.Status]</span>
                                 @if (!string.IsNullOrEmpty(r.CurrentStepKey)) { <span class="vs-sub">@Localizer["Pc_Step_" + r.CurrentStepKey]</span> }
                             </td>
                             <td class="small vs-hide-md"><span class="vs-num">@r.AssignedPartNumber</span></td>

@@ -58,29 +58,29 @@
                             <td><span class="vs-title-cell" title="@d.Title">@d.Title</span></td>
                             <td class="vs-hide-md small">@d.ProjectName</td>
                             <td class="vs-hide-md small">@d.DisciplineName</td>
-                            <td><span class="vs-pill vs-pill--icon @DocumentStatusBadge.Tone(d.Status)"><i class="bi @DocumentStatusBadge.Icon(d.Status)" aria-hidden="true"></i> @StatusText(d.Status)</span></td>
+                            <td><span class="vs-pill vs-pill--icon @DocumentStatusBadge.Tone(d.Status)"><pems-icon css="@DocumentStatusBadge.Icon(d.Status)" aria-hidden="true" /> @StatusText(d.Status)</span></td>
                             <td><span class="vs-num">@d.RevisionNo</span></td>
                             <td class="text-nowrap text-end">
                                 @if (d.Status == "Submitted")
                                 {
                                     <form asp-action="Check" method="post" class="d-inline">
                                         <input type="hidden" name="documentId" value="@d.DocumentId" />
-                                        <pems-button tone="info" size="small" outline="true" type="submit"><i class="bi bi-clipboard-check" aria-hidden="true"></i> @Localizer["Dw_Check"]</pems-button>
+                                        <pems-button tone="info" size="small" outline="true" type="submit"><pems-icon name="bi-clipboard-check" aria-hidden="true" /> @Localizer["Dw_Check"]</pems-button>
                                     </form>
                                     <form asp-action="Reject" method="post" class="d-inline">
                                         <input type="hidden" name="documentId" value="@d.DocumentId" />
-                                        <pems-button tone="danger" size="small" outline="true" type="submit"><i class="bi bi-x-lg" aria-hidden="true"></i> @Localizer["Reject"]</pems-button>
+                                        <pems-button tone="danger" size="small" outline="true" type="submit"><pems-icon name="bi-x-lg" aria-hidden="true" /> @Localizer["Reject"]</pems-button>
                                     </form>
                                 }
                                 else if (d.Status == "Checked")
                                 {
                                     <form asp-action="Approve" method="post" class="d-inline">
                                         <input type="hidden" name="documentId" value="@d.DocumentId" />
-                                        <pems-button tone="success" size="small" outline="true" type="submit"><i class="bi bi-check-lg" aria-hidden="true"></i> @Localizer["Approve"]</pems-button>
+                                        <pems-button tone="success" size="small" outline="true" type="submit"><pems-icon name="bi-check-lg" aria-hidden="true" /> @Localizer["Approve"]</pems-button>
                                     </form>
                                     <form asp-action="Reject" method="post" class="d-inline">
                                         <input type="hidden" name="documentId" value="@d.DocumentId" />
-                                        <pems-button tone="danger" size="small" outline="true" type="submit"><i class="bi bi-x-lg" aria-hidden="true"></i> @Localizer["Reject"]</pems-button>
+                                        <pems-button tone="danger" size="small" outline="true" type="submit"><pems-icon name="bi-x-lg" aria-hidden="true" /> @Localizer["Reject"]</pems-button>
                                     </form>
                                 }
                             </td>

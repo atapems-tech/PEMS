@@ -6,7 +6,7 @@
 }
 
 <div class="d-flex justify-content-end align-items-center mb-2">
-    <pems-button tone="primary" size="small" as="a" asp-action="BulkGenerate"><i class="bi bi-grid-3x3-gap"></i> Bulk Generate (Equipment)</pems-button>
+    <pems-button tone="primary" size="small" as="a" asp-action="BulkGenerate"><pems-icon name="bi-grid-3x3-gap" /> Bulk Generate (Equipment)</pems-button>
 </div>
 
 <div class="content-card mb-3">
@@ -26,7 +26,7 @@
             <pems-input type="text" name="code" dir="ltr" placeholder="PEMS-BR-..." required autofocus />
         </div>
         <div class="col-md-4">
-            <pems-button tone="primary" css="w-100" type="submit"><i class="bi bi-search"></i> @Localizer["Resolve"]</pems-button>
+            <pems-button tone="primary" css="w-100" type="submit"><pems-icon name="bi-search" /> @Localizer["Resolve"]</pems-button>
         </div>
     </form>
 </div>

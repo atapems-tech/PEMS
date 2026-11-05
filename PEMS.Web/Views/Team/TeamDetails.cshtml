@@ -29,15 +29,15 @@
 <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-3">
     <div class="d-flex align-items-center gap-2 flex-wrap">
         <pems-button tone="neutral" size="small" outline="true" as="a" asp-action="OrganizationChart">
-            <i class="bi bi-diagram-3"></i> @Localizer["نمودار سازمانی"]
+            <pems-icon name="bi-diagram-3" /> @Localizer["نمودار سازمانی"]
         </pems-button>
         <pems-button tone="neutral" size="small" outline="true" as="a" asp-action="Index">
-            <i class="bi bi-people"></i> @Localizer["تیم‌های تعمیرونگهداری"]
+            <pems-icon name="bi-people" /> @Localizer["تیم‌های تعمیرونگهداری"]
         </pems-button>
         @if (Model.ParentTeamId.HasValue)
         {
             <pems-button tone="neutral" size="small" outline="true" as="a" asp-action="TeamDetails" asp-route-teamId="@Model.ParentTeamId">
-                <i class="bi bi-arrow-@(System.Globalization.CultureInfo.CurrentUICulture.TextInfo.IsRightToLeft ? "bar-right" : "bar-left")"></i>
+                <pems-icon name="bi-arrow-@(System.Globalization.CultureInfo.CurrentUICulture.TextInfo.IsRightToLeft ? "bar-right" : "bar-left")" />
                 @Localizer["تیم والد"]
             </pems-button>
         }
@@ -49,10 +49,10 @@
             <pems-badge tone="neutral">@Localizer["غیرفعال"]</pems-badge>
         }
         <pems-button tone="neutral" size="small" outline="true" type="button" data-bs-toggle="modal" data-bs-target="#addChildNodeModal">
-            <i class="bi bi-diagram-2"></i> @Localizer["افزودن زیرتیم/شیفت"]
+            <pems-icon name="bi-diagram-2" /> @Localizer["افزودن زیرتیم/شیفت"]
         </pems-button>
         <pems-button tone="primary" size="small" type="button" data-bs-toggle="modal" data-bs-target="#addPositionModal">
-            <i class="bi bi-plus-lg"></i> @Localizer["افزودن سمت"]
+            <pems-icon name="bi-plus-lg" /> @Localizer["افزودن سمت"]
         </pems-button>
     </div>
 </div>
@@ -78,7 +78,7 @@
             <form asp-action="DeactivateTeamNode" method="post" data-pems-confirm="@Localizer["این گره غیرفعال شود؟ زیرگروه‌ها/سمت‌ها دست‌نخورده می‌مانند."]">
                 <input type="hidden" name="teamId" value="@Model.TeamId" />
                 <input type="hidden" name="returnTeamId" value="@(Model.ParentTeamId?.ToString() ?? "")" />
-                <pems-button tone="danger" size="small" outline="true" type="submit"><i class="bi bi-x-circle"></i> @Localizer["غیرفعال کردن این گره"]</pems-button>
+                <pems-button tone="danger" size="small" outline="true" type="submit"><pems-icon name="bi-x-circle" /> @Localizer["غیرفعال کردن این گره"]</pems-button>
             </form>
         }
     </div>
@@ -182,21 +182,21 @@
                         <td data-label="@Localizer["کارمند"]">
                             @if (p.IsVacant)
                             {
-                                <span class="pems-vacant-badge"><i class="bi bi-person-dash"></i> @Localizer["خالی (Vacant)"]</span>
+                                <span class="pems-vacant-badge"><pems-icon name="bi-person-dash" /> @Localizer["خالی (Vacant)"]</span>
                             }
                             else
                             {
-                                <span><i class="bi bi-person-check"></i> @p.CurrentAssignment!.EmployeeName</span>
+                                <span><pems-icon name="bi-person-check" /> @p.CurrentAssignment!.EmployeeName</span>
                             }
                         </td>
                         <td data-label="@Localizer["وضعیت"]">
                             @if (p.IsActive)
                             {
-                                <pems-badge tone="success"><i class="bi bi-check-circle"></i> @Localizer["فعال"]</pems-badge>
+                                <pems-badge tone="success"><pems-icon name="bi-check-circle" /> @Localizer["فعال"]</pems-badge>
                             }
                             else
                             {
-                                <pems-badge tone="neutral"><i class="bi bi-dash-circle"></i> @Localizer["غیرفعال"]</pems-badge>
+                                <pems-badge tone="neutral"><pems-icon name="bi-dash-circle" /> @Localizer["غیرفعال"]</pems-badge>
                             }
                         </td>
                         <td class="text-end pems-actions-cell">
@@ -211,7 +211,7 @@
                                         <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#editPositionModal"
                                            data-position-id="@p.PositionId" data-position-title="@p.Title"
                                            data-position-description="@p.Description" data-position-sortorder="@p.SortOrder">
-                                            <i class="bi bi-pencil"></i> @Localizer["ویرایش"]
+                                            <pems-icon name="bi-pencil" /> @Localizer["ویرایش"]
                                         </a>
                                     </li>
                                     @if (p.IsActive && p.IsVacant)
@@ -219,7 +219,7 @@
                                         <li>
                                             <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#assignEmployeeModal"
                                                data-position-id="@p.PositionId" data-position-title="@p.Title">
-                                                <i class="bi bi-person-plus"></i> @Localizer["تخصیص کارمند"]
+                                                <pems-icon name="bi-person-plus" /> @Localizer["تخصیص کارمند"]
                                             </a>
                                         </li>
                                     }
@@ -229,14 +229,14 @@
                                             <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#moveEmployeeModal"
                                                data-position-id="@p.PositionId" data-position-title="@p.Title"
                                                data-employee-name="@p.CurrentAssignment!.EmployeeName">
-                                                <i class="bi bi-arrow-left-right"></i> @Localizer["جابه‌جایی کارمند"]
+                                                <pems-icon name="bi-arrow-left-right" /> @Localizer["جابه‌جایی کارمند"]
                                             </a>
                                         </li>
                                     }
                                     <li>
                                         <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#movePositionModal"
                                            data-position-id="@p.PositionId" data-position-title="@p.Title">
-                                            <i class="bi bi-diagram-2"></i> @Localizer["جابه‌جایی سمت"]
+                                            <pems-icon name="bi-diagram-2" /> @Localizer["جابه‌جایی سمت"]
                                         </a>
                                     </li>
                                     @if (!p.IsVacant)
@@ -246,7 +246,7 @@
                                                   data-pems-confirm="@Localizer["این عملیات فقط تخصیص کارمند به این سمت را پایان می‌دهد؛ خودِ کارمند حذف نمی‌شود و سمت خالی (Vacant) باقی می‌ماند."]">
                                                 <input type="hidden" name="positionId" value="@p.PositionId" />
                                                 <input type="hidden" name="returnTeamId" value="@Model.TeamId" />
-                                                <button type="submit" class="dropdown-item text-danger"><i class="bi bi-person-dash"></i> @Localizer["پایان تخصیص"]</button>
+                                                <button type="submit" class="dropdown-item text-danger"><pems-icon name="bi-person-dash" /> @Localizer["پایان تخصیص"]</button>
                                             </form>
                                         </li>
                                     }
@@ -258,7 +258,7 @@
                                                   data-pems-confirm="@(p.IsVacant ? Localizer["این سمت خالی غیرفعال شود؟"] : Localizer["این سمت اشغال شده است؛ غیرفعال‌کردن آن، تخصیص کارمند فعلی را هم پایان می‌دهد و سمت خالی خواهد شد. ادامه می‌دهید؟"])">
                                                 <input type="hidden" name="positionId" value="@p.PositionId" />
                                                 <input type="hidden" name="returnTeamId" value="@Model.TeamId" />
-                                                <button type="submit" class="dropdown-item text-danger"><i class="bi bi-x-circle"></i> @Localizer["غیرفعال کردن"]</button>
+                                                <button type="submit" class="dropdown-item text-danger"><pems-icon name="bi-x-circle" /> @Localizer["غیرفعال کردن"]</button>
                                             </form>
                                         </li>
                                     }
@@ -303,11 +303,11 @@
                         <td data-label="@Localizer["وضعیت"]">
                             @if (row.Assignment.IsActive)
                             {
-                                <pems-badge tone="success"><i class="bi bi-play-circle"></i> @Localizer["جاری"]</pems-badge>
+                                <pems-badge tone="success"><pems-icon name="bi-play-circle" /> @Localizer["جاری"]</pems-badge>
                             }
                             else
                             {
-                                <pems-badge tone="neutral"><i class="bi bi-check2"></i> @Localizer["پایان‌یافته"]</pems-badge>
+                                <pems-badge tone="neutral"><pems-icon name="bi-check2" /> @Localizer["پایان‌یافته"]</pems-badge>
                             }
                         </td>
                     </tr>

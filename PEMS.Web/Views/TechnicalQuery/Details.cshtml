@@ -18,7 +18,7 @@
         </div>
         <div class="d-flex align-items-center gap-2">
             <pems-badge tone="@sb" css="fs-6">@Model.Status</pems-badge>
-            @if (Model.IsOverdue) { <pems-badge tone="danger" css="fs-6"><i class="bi bi-clock-history"></i> @Localizer["Overdue"]</pems-badge> }
+            @if (Model.IsOverdue) { <pems-badge tone="danger" css="fs-6"><pems-icon name="bi-clock-history" /> @Localizer["Overdue"]</pems-badge> }
         </div>
     </div>
 </div>
@@ -50,21 +50,21 @@
 @if (!string.IsNullOrEmpty(Model.ResponseText))
 {
     <div class="content-card mb-3 border-info">
-        <h6 class="mb-2"><i class="bi bi-reply"></i> @Localizer["Response"]</h6>
+        <h6 class="mb-2"><pems-icon name="bi-reply" /> @Localizer["Response"]</h6>
         <p class="mb-1">@Model.ResponseText</p>
         <p class="text-muted small mb-0">@(Model.RespondedDate?.ToString("yyyy-MM-dd HH:mm"))</p>
     </div>
 }
 
 <div class="content-card mb-3">
-    <h6 class="mb-3"><i class="bi bi-paperclip"></i> Attachments <pems-badge tone="neutral">@Model.Attachments.Count</pems-badge></h6>
+    <h6 class="mb-3"><pems-icon name="bi-paperclip" /> Attachments <pems-badge tone="neutral">@Model.Attachments.Count</pems-badge></h6>
     @if (Model.Attachments.Any())
     {
         <ul class="list-unstyled mb-3">
             @foreach (var a in Model.Attachments.Where(x => x.IsActive))
             {
                 <li class="d-flex justify-content-between align-items-center border-bottom py-1">
-                    <a href="@Url.Action("Download", "Files", new { id = a.AttachmentId })" target="_blank"><i class="bi bi-file-earmark"></i> @a.FileName</a>
+                    <a href="@Url.Action("Download", "Files", new { id = a.AttachmentId })" target="_blank"><pems-icon name="bi-file-earmark" /> @a.FileName</a>
                     <span class="text-muted small">@a.UploadDate.ToString("yyyy-MM-dd")</span>
                 </li>
             }
@@ -73,12 +73,12 @@
     <form asp-action="UploadAttachment" method="post" enctype="multipart/form-data" class="d-flex gap-2">
         <input type="hidden" name="technicalQueryId" value="@Model.TechnicalQueryId" />
         <pems-input scale="small" type="file" name="file" required />
-        <pems-button tone="primary" size="small" outline="true" css="text-nowrap" type="submit"><i class="bi bi-upload"></i> افزودن</pems-button>
+        <pems-button tone="primary" size="small" outline="true" css="text-nowrap" type="submit"><pems-icon name="bi-upload" /> افزودن</pems-button>
     </form>
 </div>
 
 <div class="content-card">
-    <h6 class="mb-3"><i class="bi bi-signpost-split"></i> Workflow</h6>
+    <h6 class="mb-3"><pems-icon name="bi-signpost-split" /> Workflow</h6>
 
     @if (!workflowRunning)
     {
@@ -92,7 +92,7 @@
             <form asp-action="Respond" method="post">
                 <input type="hidden" name="technicalQueryId" value="@Model.TechnicalQueryId" />
                 <pems-textarea css="mb-2" name="responseText" rows="3" placeholder="@Localizer["متن پاسخ..."]" required></pems-textarea>
-                <pems-button tone="primary" size="small" type="submit"><i class="bi bi-reply"></i> ثبت پاسخ</pems-button>
+                <pems-button tone="primary" size="small" type="submit"><pems-icon name="bi-reply" /> ثبت پاسخ</pems-button>
             </form>
         }
     }
@@ -102,10 +102,10 @@
         <div class="d-flex gap-2">
             <form asp-action="Confirm" method="post">
                 <input type="hidden" name="technicalQueryId" value="@Model.TechnicalQueryId" />
-                <pems-button tone="success" size="small" type="submit"><i class="bi bi-check-lg"></i> پاسخ کافیه - ببند</pems-button>
+                <pems-button tone="success" size="small" type="submit"><pems-icon name="bi-check-lg" /> پاسخ کافیه - ببند</pems-button>
             </form>
             <pems-button tone="danger" size="small" type="button" data-bs-toggle="modal" data-bs-target="#reopenModal">
-                <i class="bi bi-arrow-repeat"></i> پاسخ کافی نیست
+                <pems-icon name="bi-arrow-repeat" /> پاسخ کافی نیست
             </pems-button>
         </div>
 

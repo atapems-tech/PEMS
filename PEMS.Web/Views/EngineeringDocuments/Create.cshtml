@@ -11,12 +11,12 @@
 <form asp-action="Create" method="post" class="content-card pems-s-0d3d737f">
     <div asp-validation-summary="ModelOnly" class="text-danger small mb-2"></div>
 
-    <h2 class="vs-section__title"><i class="bi bi-card-heading"></i> @Localizer["Ed_FormIdentification"]</h2>
+    <h2 class="vs-section__title"><pems-icon name="bi-card-heading" /> @Localizer["Ed_FormIdentification"]</h2>
     <div class="row g-3 mb-4">
         <div class="col-md-6">
             <pems-label for="DocumentNo">@Localizer["Ed_DocNo"]</pems-label>
             <div class="input-group">
-                <span class="input-group-text" id="autoNumberBadge"><i class="bi bi-magic" aria-hidden="true"></i></span>
+                <span class="input-group-text" id="autoNumberBadge"><pems-icon name="bi-magic" aria-hidden="true" /></span>
                 <pems-input css="vs-num" asp-for="DocumentNo" placeholder="@Localizer["Ed_AutoNumberHint"]" disabled />
             </div>
             @if ((bool)(ViewBag.CanManualNumber ?? false))
@@ -47,7 +47,7 @@
         </div>
     </div>
 
-    <h2 class="vs-section__title"><i class="bi bi-diagram-3"></i> @Localizer["Ed_FormClassification"]</h2>
+    <h2 class="vs-section__title"><pems-icon name="bi-diagram-3" /> @Localizer["Ed_FormClassification"]</h2>
     <div class="row g-3 mb-4">
         <div class="col-md-4">
             <pems-label for="DocumentType">@Localizer["Ed_Type"]</pems-label>
@@ -86,7 +86,7 @@
         </div>
     </div>
 
-    <h2 class="vs-section__title"><i class="bi bi-link-45deg"></i> @Localizer["Ed_FormTraceability"]</h2>
+    <h2 class="vs-section__title"><pems-icon name="bi-link-45deg" /> @Localizer["Ed_FormTraceability"]</h2>
     <div class="row g-3 mb-4">
         <div class="col-md-6">
             <pems-label for="EquipmentId">@Localizer["Ed_RelatedEquipment"] <span class="text-muted fw-normal">(@Localizer["Ed_Optional"])</span></pems-label>

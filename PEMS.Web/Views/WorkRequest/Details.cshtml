@@ -58,7 +58,7 @@
 
 <div class="content-card mb-3">
     <div class="d-flex align-items-center gap-3 mb-2 flex-wrap">
-        <div class="kpi-icon bg-icon-blue pems-s-792bd2d6"><i class="bi bi-clipboard-plus"></i></div>
+        <div class="kpi-icon bg-icon-blue pems-s-792bd2d6"><pems-icon name="bi-clipboard-plus" /></div>
         <div>
             <h5 class="mb-0">@Model.RequestNumber &mdash; @Model.Title <pems-badge tone="@badgeClass">@Model.Status</pems-badge></h5>
             <span class="text-muted small">@Localizer["Requested By"] @Model.RequestedByName @Localizer["on"] <bdi dir="ltr">@Model.RequestedDate.ToString("yyyy-MM-dd")</bdi></span>
@@ -72,7 +72,7 @@
             @if (Model.RiskScore.HasValue) { <pems-badge tone="light">@Localizer["Risk"]: @Model.RiskLikelihood×@Model.RiskSeverity = @Model.RiskScore (@Model.RiskLevel)</pems-badge> }
         </div>
     }
-    @if (!string.IsNullOrWhiteSpace(Model.PriorityRationale)) { <div class="small text-muted mt-1"><i class="bi bi-calculator" aria-hidden="true"></i> @Model.PriorityRationale</div> }
+    @if (!string.IsNullOrWhiteSpace(Model.PriorityRationale)) { <div class="small text-muted mt-1"><pems-icon name="bi-calculator" aria-hidden="true" /> @Model.PriorityRationale</div> }
     <pems-info-grid class="mt-2">
         <pems-info-item label="@Localizer["Equipment"]" num>@Model.EquipmentTagNumber</pems-info-item>
         <pems-info-item label="@Localizer["Info_Asset"]" num>@Model.AssetNumber</pems-info-item>
@@ -116,7 +116,7 @@
             <h6 class="mb-0">@Localizer["Workflow"] <span class="text-muted small">@wf.WorkflowName · @Localizer["Version"] @wf.VersionNumber · @Localizer[wf.Status]</span></h6>
             @foreach (var w in wf.Warnings)
             {
-                <span class="small text-warning"><i class="bi bi-exclamation-triangle"></i> @w</span>
+                <span class="small text-warning"><pems-icon name="bi-exclamation-triangle" /> @w</span>
             }
         </div>
         <partial name="_PemsStageDiagram" model="diagram" />
@@ -161,13 +161,13 @@
                         <option value="Predictive">@Localizer["Predictive"]</option>
                     </pems-select>
                     <pems-button tone="success" size="small" type="submit" data-pems-confirm="@Localizer["A real WorkOrder will be created. Continue?"]">
-                        <i class="bi bi-arrow-right-circle"></i> @Localizer["Convert to Work Order"]
+                        <pems-icon name="bi-arrow-right-circle" /> @Localizer["Convert to Work Order"]
                     </pems-button>
                 </form>
             }
             @foreach (var denied in actions.Where(a => !a.IsAllowed && !string.IsNullOrWhiteSpace(a.DeniedReason)))
             {
-                <div class="small text-muted w-100"><i class="bi bi-lock"></i> @ActionLabel(denied): @denied.DeniedReason</div>
+                <div class="small text-muted w-100"><pems-icon name="bi-lock" /> @ActionLabel(denied): @denied.DeniedReason</div>
             }
             @if (actions.Count == 0 && !Model.CanConvert)
             {
@@ -212,7 +212,7 @@
                         <option value="Predictive">@Localizer["Predictive"]</option>
                     </pems-select>
                     <pems-button tone="success" size="small" type="submit" data-pems-confirm="@Localizer["A real WorkOrder will be created. Continue?"]">
-                        <i class="bi bi-arrow-right-circle"></i> @Localizer["Convert to Work Order"]
+                        <pems-icon name="bi-arrow-right-circle" /> @Localizer["Convert to Work Order"]
                     </pems-button>
                 </form>
             }

@@ -55,7 +55,7 @@
                             </td>
                             <td><span class="vs-pill @VdrUi.RiskTone(v.RiskLevel)">@VdrUi.Loc(Localizer, "St_", v.RiskLevel)</span></td>
                             <td class="text-end">
-                                <a asp-action="Details" asp-route-id="@v.VendorId" class="lp-act lp-act--always" title="@Localizer["Vs_View"]" aria-label="@Localizer["Vs_View"]"><i class="bi bi-eye" aria-hidden="true"></i></a>
+                                <a asp-action="Details" asp-route-id="@v.VendorId" class="lp-act lp-act--always" title="@Localizer["Vs_View"]" aria-label="@Localizer["Vs_View"]"><pems-icon name="bi-eye" aria-hidden="true" /></a>
                             </td>
                         </tr>
                     }

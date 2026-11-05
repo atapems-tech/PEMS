@@ -58,8 +58,8 @@
 
         <pems-list-kpis id="inKpis">
             <span class="vs-chip">@Localizer["Eq_Total"] <strong>@ViewBag.TotalCount</strong></span>
-            <span class="vs-chip @(((int?)ViewBag.OverdueCount ?? 0) > 0 ? "vs-chip--danger" : "")"><i class="bi bi-clock-history" aria-hidden="true"></i> @Localizer["Overdue"] <strong>@ViewBag.OverdueCount</strong></span>
-            <span class="vs-chip"><i class="bi bi-hourglass-split" aria-hidden="true"></i> @Localizer["In_DueSoon30"] <strong>@ViewBag.DueSoonCount</strong></span>
+            <span class="vs-chip @(((int?)ViewBag.OverdueCount ?? 0) > 0 ? "vs-chip--danger" : "")"><pems-icon name="bi-clock-history" aria-hidden="true" /> @Localizer["Overdue"] <strong>@ViewBag.OverdueCount</strong></span>
+            <span class="vs-chip"><pems-icon name="bi-hourglass-split" aria-hidden="true" /> @Localizer["In_DueSoon30"] <strong>@ViewBag.DueSoonCount</strong></span>
         </pems-list-kpis>
 
         <pems-list-chips reset-href="@Url.Action("Index")">
@@ -98,8 +98,8 @@
                             <td class="small"><span class="vs-num">@(i.NextCalibrationDue?.ToString("yyyy-MM-dd") ?? "-")</span></td>
                             <td><span class="vs-pill @StatusTone(i.CalibrationStatus)">@StatusText(i.CalibrationStatus)</span></td>
                             <td class="lp-actions">
-                                <a asp-action="Passport" asp-route-id="@i.InstrumentId" class="lp-act lp-act--always" title="@Localizer["In_Passport"]" aria-label="@Localizer["In_Passport"]"><i class="bi bi-card-text" aria-hidden="true"></i></a>
-                                <a asp-action="Edit" asp-route-id="@i.InstrumentId" class="lp-act lp-act--always" title="@Localizer["Edit"]" aria-label="@Localizer["Edit"]"><i class="bi bi-pencil" aria-hidden="true"></i></a>
+                                <a asp-action="Passport" asp-route-id="@i.InstrumentId" class="lp-act lp-act--always" title="@Localizer["In_Passport"]" aria-label="@Localizer["In_Passport"]"><pems-icon name="bi-card-text" aria-hidden="true" /></a>
+                                <a asp-action="Edit" asp-route-id="@i.InstrumentId" class="lp-act lp-act--always" title="@Localizer["Edit"]" aria-label="@Localizer["Edit"]"><pems-icon name="bi-pencil" aria-hidden="true" /></a>
                             </td>
                         </tr>
                     }

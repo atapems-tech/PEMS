@@ -32,11 +32,11 @@
 
         @if (Model.SelectedRole == null)
         {
-            <div class="admin-empty"><i class="bi bi-eye"></i><strong>@Localizer["Choose a role above"]</strong></div>
+            <div class="admin-empty"><pems-icon name="bi-eye" /><strong>@Localizer["Choose a role above"]</strong></div>
         }
         else if (Model.SelectedRole == "SystemAdmin")
         {
-            <div class="permission-intro"><i class="bi bi-infinity me-1"></i> @Localizer["SystemAdmin bypasses this matrix by design."]</div>
+            <div class="permission-intro"><pems-icon name="bi-infinity" css="me-1" /> @Localizer["SystemAdmin bypasses this matrix by design."]</div>
         }
         else
         {
@@ -51,8 +51,8 @@
                             <td>@row.ResourceName</td>
                             <td>@row.ActionName</td>
                             <td><code>@row.PermissionName</code></td>
-                            <td><span class="admin-status active"><i class="bi bi-check2-circle"></i> @Localizer["Allowed"]</span></td>
-                            <td>@if (row.IsDestructive) { <span class="text-danger"><i class="bi bi-exclamation-triangle"></i> @Localizer["Yes"]</span> } else { <span class="text-body-secondary">—</span> }</td>
+                            <td><span class="admin-status active"><pems-icon name="bi-check2-circle" /> @Localizer["Allowed"]</span></td>
+                            <td>@if (row.IsDestructive) { <span class="text-danger"><pems-icon name="bi-exclamation-triangle" /> @Localizer["Yes"]</span> } else { <span class="text-body-secondary">—</span> }</td>
                         </tr>
                     }
                     </tbody>
@@ -70,7 +70,7 @@
                                 <td>@row.ResourceName</td>
                                 <td>@row.ActionName</td>
                                 <td><code>@row.PermissionName</code></td>
-                                <td><span class="admin-status inactive"><i class="bi bi-dash-circle"></i> @Localizer["Not granted"]</span></td>
+                                <td><span class="admin-status inactive"><pems-icon name="bi-dash-circle" /> @Localizer["Not granted"]</span></td>
                             </tr>
                         }
                         </tbody>

@@ -70,7 +70,7 @@
                             <td class="small"><span class="vs-title-cell" title="@r.Purpose">@(r.Purpose ?? "-")</span></td>
                             <td><span class="vs-pill @StatusTone(r.Status)">@StatusText(r.Status)</span></td>
                             <td class="text-end">
-                                <a asp-action="Details" asp-route-id="@r.StoreRequisitionId" class="lp-act lp-act--always" title="@Localizer["Ed_View"]" aria-label="@Localizer["Ed_View"]"><i class="bi bi-card-text" aria-hidden="true"></i></a>
+                                <a asp-action="Details" asp-route-id="@r.StoreRequisitionId" class="lp-act lp-act--always" title="@Localizer["Ed_View"]" aria-label="@Localizer["Ed_View"]"><pems-icon name="bi-card-text" aria-hidden="true" /></a>
                             </td>
                         </tr>
                     }

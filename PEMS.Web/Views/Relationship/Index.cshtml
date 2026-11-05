@@ -11,23 +11,23 @@
         </p>
         <div class="d-flex gap-2">
             <pems-button tone="warning" size="small" outline="true" css="text-nowrap" as="a" asp-action="BulkSuggestions">
-                <i class="bi bi-check2-all"></i> @Localizer["تایید دسته‌جمعی اتصال‌ها"]
+                <pems-icon name="bi-check2-all" /> @Localizer["تایید دسته‌جمعی اتصال‌ها"]
             </pems-button>
             <pems-button tone="neutral" size="small" outline="true" css="text-nowrap" as="a" asp-action="GapReport">
-                <i class="bi bi-clipboard-x"></i> @Localizer["گزارش تجهیزات ناقص"]
+                <pems-icon name="bi-clipboard-x" /> @Localizer["گزارش تجهیزات ناقص"]
             </pems-button>
         </div>
     </div>
     <form asp-action="Search" method="get" class="d-flex gap-2 mt-2">
         <pems-input type="text" name="q" value="@ViewBag.Query" placeholder="e.g. P-101, or a vendor name, or a document number" />
-        <pems-button tone="primary"><i class="bi bi-diagram-3"></i> @Localizer["Explore"]</pems-button>
+        <pems-button tone="primary"><pems-icon name="bi-diagram-3" /> @Localizer["Explore"]</pems-button>
     </form>
 </div>
 
 @if (TempData["Error"] != null)
 {
     <div class="content-card mb-3 border-danger">
-        <p class="text-danger mb-2"><i class="bi bi-exclamation-triangle"></i> @TempData["Error"]</p>
+        <p class="text-danger mb-2"><pems-icon name="bi-exclamation-triangle" /> @TempData["Error"]</p>
         @if (TempData["ConflictEquipmentId"] != null)
         {
             <form asp-action="ConfirmSuggestedLink" method="post" class="d-inline">
@@ -36,7 +36,7 @@
                 <input type="hidden" name="targetId" value="@TempData["ConflictTargetId"]" />
                 <input type="hidden" name="force" value="true" />
                 <pems-button tone="danger" size="small" type="submit" data-pems-confirm="مطمئنی؟ رابطه‌ی قبلی جایگزین می‌شه.">
-                    <i class="bi bi-exclamation-octagon"></i> بله، جایگزین کن (Force)
+                    <pems-icon name="bi-exclamation-octagon" /> بله، جایگزین کن (Force)
                 </pems-button>
             </form>
         }
@@ -54,11 +54,11 @@ else
 {
     <div class="content-card mb-3">
         <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
-            <h5 class="mb-0"><i class="bi bi-bullseye"></i> @Model.RootType: @Model.RootLabel</h5>
+            <h5 class="mb-0"><pems-icon name="bi-bullseye" /> @Model.RootType: @Model.RootLabel</h5>
             <div class="d-flex align-items-center gap-2">
                 @if (!string.IsNullOrWhiteSpace(Model.RootArea))
                 {
-                    <pems-badge tone="neutral"><i class="bi bi-geo-alt"></i> @Model.RootArea</pems-badge>
+                    <pems-badge tone="neutral"><pems-icon name="bi-geo-alt" /> @Model.RootArea</pems-badge>
                 }
                 @if (Model.RootType == "Equipment")
                 {
@@ -82,7 +82,7 @@ else
     @if (Model.RootType == "Equipment" && Model.SuggestedLinks.Any())
     {
         <div class="content-card mb-3 border-warning">
-            <h6 class="mb-3"><i class="bi bi-lightbulb"></i> پیشنهادهای اتصال (تاییدنشده)</h6>
+            <h6 class="mb-3"><pems-icon name="bi-lightbulb" /> پیشنهادهای اتصال (تاییدنشده)</h6>
             <p class="text-muted small">
                 این‌ها از روی شماره‌ی MRQ/PO خام ثبت‌شده روی تجهیز، با داده‌ی <strong>@Localizer["موجود"]</strong>
                 (نه ساخته‌شده) منطبق شده‌اند. تا تایید نکنی، هیچ رابطه‌ی رسمی برقرار نمی‌شه.
@@ -92,7 +92,7 @@ else
                 {
                     <li class="d-flex justify-content-between align-items-center border-bottom py-2">
                         <span>
-                            <pems-badge tone="warning"><i class="bi bi-robot"></i> @Localizer["پیشنهاد"]</pems-badge>
+                            <pems-badge tone="warning"><pems-icon name="bi-robot" /> @Localizer["پیشنهاد"]</pems-badge>
                             @suggestion.Label
                             <span class="text-muted small">@suggestion.SubLabel</span>
                         </span>
@@ -100,7 +100,7 @@ else
                             <input type="hidden" name="equipmentId" value="@Model.RootId" />
                             <input type="hidden" name="targetType" value="@suggestion.NodeType" />
                             <input type="hidden" name="targetId" value="@suggestion.NodeId" />
-                            <pems-button tone="success" size="small" type="submit"><i class="bi bi-check-lg"></i> تایید اتصال</pems-button>
+                            <pems-button tone="success" size="small" type="submit"><pems-icon name="bi-check-lg" /> تایید اتصال</pems-button>
                         </form>
                     </li>
                 }
@@ -137,7 +137,7 @@ else
         {
             <div class="col-md-6">
                 <div class="content-card h-100">
-                    <h6 class="mb-3"><i class="bi @s.Icon"></i> @s.Title <pems-badge tone="neutral">@s.Items.Count</pems-badge></h6>
+                    <h6 class="mb-3"><pems-icon css="@s.Icon" /> @s.Title <pems-badge tone="neutral">@s.Items.Count</pems-badge></h6>
                     @if (s.Items.Any())
                     {
                         <ul class="list-unstyled mb-0">
@@ -165,7 +165,7 @@ else
 
                                         @if (item.DelayDays.HasValue && item.DelayDays > 0)
                                         {
-                                            <pems-badge tone="danger" css="ms-1" title="@Localizer["روزهای تاخیر"]"><i class="bi bi-clock-history"></i> @item.DelayDays روز تاخیر</pems-badge>
+                                            <pems-badge tone="danger" css="ms-1" title="@Localizer["روزهای تاخیر"]"><pems-icon name="bi-clock-history" /> @item.DelayDays روز تاخیر</pems-badge>
                                         }
                                         else if (item.PlannedOrDueDate.HasValue)
                                         {
@@ -178,13 +178,13 @@ else
                                             @if (!item.IsConfirmed)
                                             {
                                                 <pems-badge tone="warning" title="فقط طبق تطبیق متنی - رابطه‌ی رسمی/تاییدشده نیست">
-                                                    <i class="bi bi-question-circle"></i> احتمالی
+                                                    <pems-icon name="bi-question-circle" /> احتمالی
                                                 </pems-badge>
                                             }
                                             @if (item.IsAIProposed)
                                             {
                                                 <pems-badge tone="info" title="AI-detected, not from a direct database link">
-                                                    <i class="bi bi-robot"></i> AI
+                                                    <pems-icon name="bi-robot" /> AI
                                                 </pems-badge>
                                             }
                                         </span>

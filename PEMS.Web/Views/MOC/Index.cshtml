@@ -69,7 +69,7 @@
         <pems-list-kpis id="mocKpis">
             <span class="vs-chip">@Localizer["Lp_Total"] <strong>@Model.TotalCount</strong></span>
             <span class="vs-chip">@Localizer["Moc_OpenCount"] <strong>@ViewBag.OpenCount</strong></span>
-            <span class="vs-chip @(highRiskOpen > 0 ? "vs-chip--danger" : "")"><i class="bi bi-exclamation-triangle" aria-hidden="true"></i> @Localizer["Moc_HighRiskOpen"] <strong>@highRiskOpen</strong></span>
+            <span class="vs-chip @(highRiskOpen > 0 ? "vs-chip--danger" : "")"><pems-icon name="bi-exclamation-triangle" aria-hidden="true" /> @Localizer["Moc_HighRiskOpen"] <strong>@highRiskOpen</strong></span>
         </pems-list-kpis>
 
         <pems-list-chips reset-href="@Url.Action("Index")">

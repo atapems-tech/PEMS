@@ -129,7 +129,7 @@
 @if (relatedLettersMR != null && relatedLettersMR.Any())
 {
     <div class="content-card mt-3">
-        <h6 class="mb-3"><i class="bi bi-envelope-paper"></i> Related Correspondence</h6>
+        <h6 class="mb-3"><pems-icon name="bi-envelope-paper" /> Related Correspondence</h6>
         <div class="table-responsive table-scroll-area pems-s-8da1c6e6">
         <pems-table kind="enterprise">
             <thead><tr><th>@Localizer["Type"]</th><th>@Localizer["Letter No"]</th><th>@Localizer["Subject"]</th><th>@Localizer["Date"]</th><th>@Localizer["Status"]</th><th></th></tr></thead>
@@ -142,7 +142,7 @@
                         <td>@l.Subject</td>
                         <td>@l.LetterDate.ToString("yyyy-MM-dd")</td>
                         <td><pems-badge tone="info">@l.Status</pems-badge></td>
-                        <td><pems-button tone="neutral" size="small" outline="true" as="a" asp-controller="Letter" asp-action="Details" asp-route-id="@l.LetterId"><i class="bi bi-eye"></i></pems-button></td>
+                        <td><pems-button tone="neutral" size="small" outline="true" as="a" asp-controller="Letter" asp-action="Details" asp-route-id="@l.LetterId"><pems-icon name="bi-eye" /></pems-button></td>
                     </tr>
                 }
             </tbody>
@@ -157,13 +157,13 @@
     var poVendors = (IEnumerable<dynamic>)ViewBag.Vendors;
     <form asp-controller="PurchaseOrder" asp-action="CreateFromRequisition" method="post" class="content-card mt-3">
         <input type="hidden" name="mrId" value="@Model.MRId" />
-        <h6 class="mb-2"><i class="bi bi-receipt" aria-hidden="true"></i> @Localizer["Po_CreateFromMr"]</h6>
+        <h6 class="mb-2"><pems-icon name="bi-receipt" aria-hidden="true" /> @Localizer["Po_CreateFromMr"]</h6>
         <div class="row g-2 align-items-end small">
             <div class="col-md-4"><pems-label for="poVendor">@Localizer["Vendor"]</pems-label>
                 <pems-select scale="small" id="poVendor" name="vendorId" required><option value="">—</option>@foreach (var v in poVendors) { <option value="@v.VendorId">@v.Name</option> }</pems-select></div>
             <div class="col-md-2"><pems-label for="poCurrency">@Localizer["Po_Currency"]</pems-label><pems-input scale="small" id="poCurrency" name="currency" dir="ltr" value="IRR" maxlength="10" required /></div>
             <div class="col-md-3"><pems-label for="poNumber">@Localizer["PO Number"]</pems-label><pems-input scale="small" id="poNumber" name="poNumber" dir="ltr" /></div>
-            <div class="col-md-auto"><pems-button tone="none" size="small" css="btn-primary" type="submit"><i class="bi bi-plus" aria-hidden="true"></i> @Localizer["Po_Create"]</pems-button></div>
+            <div class="col-md-auto"><pems-button tone="none" size="small" css="btn-primary" type="submit"><pems-icon name="bi-plus" aria-hidden="true" /> @Localizer["Po_Create"]</pems-button></div>
             <div class="col-12 text-muted">@Localizer["Po_CreateHint"]</div>
         </div>
     </form>

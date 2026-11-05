@@ -37,11 +37,11 @@
 <pems-list-page texts="@ListPageTexts.From(Localizer)">
     @if (TempData["Message"] != null) { <pems-alert tone="success" css="py-2 px-3 small">@TempData["Message"]</pems-alert> }
     @if (TempData["Error"] != null) { <pems-alert tone="danger" css="py-2 px-3 small">@TempData["Error"]</pems-alert> }
-    <pems-alert tone="info" css="py-2 px-3 small"><i class="bi bi-info-circle" aria-hidden="true"></i> @Localizer["Repl_StockOnlyNote"]</pems-alert>
+    <pems-alert tone="info" css="py-2 px-3 small"><pems-icon name="bi-info-circle" aria-hidden="true" /> @Localizer["Repl_StockOnlyNote"]</pems-alert>
     @if (attribution.Count > 0)
     {
         <pems-alert tone="warning" css="py-2 px-3 small">
-            <i class="bi bi-exclamation-triangle" aria-hidden="true"></i> <strong>@Localizer["Repl_RequiresAttribution"]</strong> — @Localizer["Repl_RequiresAttributionHelp"]
+            <pems-icon name="bi-exclamation-triangle" aria-hidden="true" /> <strong>@Localizer["Repl_RequiresAttribution"]</strong> — @Localizer["Repl_RequiresAttributionHelp"]
             <ul class="mb-0 mt-1">@foreach (var a in attribution) { <li>@a</li> }</ul>
         </pems-alert>
     }
@@ -68,7 +68,7 @@
                 {
                     <form asp-action="Run" method="post" class="d-inline">
                         <input type="hidden" name="requestKey" value="@ViewBag.RequestKey" />
-                        <button type="submit" class="lp-icon-btn" title="@Localizer["Repl_Run"]" aria-label="@Localizer["Repl_Run"]"><i class="bi bi-calculator" aria-hidden="true"></i></button>
+                        <button type="submit" class="lp-icon-btn" title="@Localizer["Repl_Run"]" aria-label="@Localizer["Repl_Run"]"><pems-icon name="bi-calculator" aria-hidden="true" /></button>
                     </form>
                 }
             </pems-list-tools>
@@ -125,7 +125,7 @@
                             </td>
                             <td class="small vs-hide-md"><span class="vs-num">@r.LastEvaluatedAt.ToString("yyyy-MM-dd HH:mm")</span></td>
                             <td class="text-end">
-                                <a asp-action="Details" asp-route-id="@r.Id" class="lp-act lp-act--always" title="@Localizer["Ed_View"]" aria-label="@Localizer["Ed_View"]"><i class="bi bi-card-text" aria-hidden="true"></i></a>
+                                <a asp-action="Details" asp-route-id="@r.Id" class="lp-act lp-act--always" title="@Localizer["Ed_View"]" aria-label="@Localizer["Ed_View"]"><pems-icon name="bi-card-text" aria-hidden="true" /></a>
                             </td>
                         </tr>
                     }

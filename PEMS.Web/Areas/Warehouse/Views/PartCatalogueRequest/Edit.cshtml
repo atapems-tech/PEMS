@@ -40,7 +40,7 @@
             <span class="vs-pill vs-pill--info">@Localizer["Pc_Type_" + d.RequestType]</span>
             <span class="vs-pill vs-pill--neutral">@Localizer["Pc_Status_" + d.Status]</span>
             @if (!string.IsNullOrEmpty(d.RequestNumber)) { <span class="vs-num vs-num--strong">@d.RequestNumber</span> }
-            @if (f.Urgent) { <span class="vs-pill vs-pill--danger vs-pill--icon"><i class="bi bi-exclamation-triangle" aria-hidden="true"></i> @Localizer["Pc_Urgent"]</span> }
+            @if (f.Urgent) { <span class="vs-pill vs-pill--danger vs-pill--icon"><pems-icon name="bi-exclamation-triangle" aria-hidden="true" /> @Localizer["Pc_Urgent"]</span> }
         </div>
         <div class="vs-info small text-muted mt-1">@Localizer["Pc_F_Requester"]: @d.RequesterName</div>
     </div>
@@ -71,10 +71,10 @@
     @if (rowVersion != null) { <input type="hidden" form="pcForm" name="RowVersion" value="@rowVersion" /> }
 
     <div class="vs-toolbar pc-actionbar">
-        <button type="submit" form="pcForm" class="vs-btn vs-btn--sm"><i class="bi bi-save"></i> @Localizer["Pc_Btn_Save"]</button>
+        <button type="submit" form="pcForm" class="vs-btn vs-btn--sm"><pems-icon name="bi-save" /> @Localizer["Pc_Btn_Save"]</button>
         @if (a.CanSubmit)
         {
-            <button type="submit" form="pcForm" name="submitAfterSave" value="true" class="vs-btn vs-btn--primary vs-btn--sm"><i class="bi bi-send"></i> @Localizer["Pc_Btn_SaveSubmit"]</button>
+            <button type="submit" form="pcForm" name="submitAfterSave" value="true" class="vs-btn vs-btn--primary vs-btn--sm"><pems-icon name="bi-send" /> @Localizer["Pc_Btn_SaveSubmit"]</button>
         }
         else if (a.CanGenerateNumber)
         {
@@ -87,7 +87,7 @@
                 <form asp-action="Execute" method="post" class="d-inline" data-pems-confirm="@Localizer["Pc_Confirm_Cancel"]">
                     <input type="hidden" name="id" value="@d.Id" />
                     <input type="hidden" name="action" value="Cancel" />
-                    <button type="submit" class="vs-btn vs-btn--sm vs-btn--danger"><i class="bi bi-x-circle"></i> @Localizer["Pc_Btn_Cancel"]</button>
+                    <button type="submit" class="vs-btn vs-btn--sm vs-btn--danger"><pems-icon name="bi-x-circle" /> @Localizer["Pc_Btn_Cancel"]</button>
                 </form>
             }
         </div>
@@ -97,7 +97,7 @@
         @* ------------------------------------------------ Part Info *@
         <div class="col-lg-4">
             <section class="vs-panel pc-card">
-                <h2 class="vs-section__title"><i class="bi bi-info-circle"></i> @Localizer["Pc_Sec_PartInfo"]</h2>
+                <h2 class="vs-section__title"><pems-icon name="bi-info-circle" /> @Localizer["Pc_Sec_PartInfo"]</h2>
 
                 <div class="mb-2">
                     <pems-label for="pc_RequestNumber">@L("RequestNumber") <span class="pc-req" aria-hidden="true">*</span></pems-label>
@@ -105,7 +105,7 @@
                         <pems-input id="pc_RequestNumber" value="@d.RequestNumber" readonly />
                         @if (a.CanGenerateNumber)
                         {
-                            <pems-button tone="neutral" outline="true" type="submit" form="pcNumberForm" title="@Localizer["Pc_Btn_GenerateNumber"]"><i class="bi bi-123"></i> @Localizer["Pc_Btn_GenerateNumber"]</pems-button>
+                            <pems-button tone="neutral" outline="true" type="submit" form="pcNumberForm" title="@Localizer["Pc_Btn_GenerateNumber"]"><pems-icon name="bi-123" /> @Localizer["Pc_Btn_GenerateNumber"]</pems-button>
                         }
                     </div>
                 </div>
@@ -142,7 +142,7 @@
                             <pems-label for="pc_ExistingPartNumber">@L("ExistingPartNumber") <span class="pc-req" aria-hidden="true">*</span></pems-label>
                             <div class="input-group input-group-sm">
                                 <pems-input id="pc_ExistingPartNumber" form="pcForm" name="ExistingPartNumber" value="@f.ExistingPartNumber" maxlength="50" />
-                                <pems-button tone="neutral" outline="true" type="submit" form="pcForm" formaction="@Url.Action("LoadPart")"><i class="bi bi-box-arrow-in-down"></i> @Localizer["Pc_Btn_Load"]</pems-button>
+                                <pems-button tone="neutral" outline="true" type="submit" form="pcForm" formaction="@Url.Action("LoadPart")"><pems-icon name="bi-box-arrow-in-down" /> @Localizer["Pc_Btn_Load"]</pems-button>
                             </div>
                             <div class="form-text">@Localizer["Pc_Hint_Load"]</div>
                         </div>
@@ -167,7 +167,7 @@
         @* ------------------------------------------------ Equipment/Object ID *@
         <div class="col-lg-8">
             <section class="vs-panel pc-card">
-                <h2 class="vs-section__title"><i class="bi bi-gear-wide-connected"></i> @Localizer["Pc_Sec_Equipment"]</h2>
+                <h2 class="vs-section__title"><pems-icon name="bi-gear-wide-connected" /> @Localizer["Pc_Sec_Equipment"]</h2>
                 <div class="form-check mb-2">
                     <pems-input type="checkbox" id="pc_IsNewEquipment" form="pcForm" name="IsNewEquipment" value="true" checked="@f.IsNewEquipment" kind="check" />
                     <input type="hidden" form="pcForm" name="IsNewEquipment" value="false" />
@@ -193,12 +193,12 @@
                     </pems-related-table>
                     @if (!d.Equipment.Any()) { <div class="vs-empty py-2">@Localizer["Pc_Empty_Equipment"]</div> }
                 </div>
-                <button type="button" class="vs-btn vs-btn--sm" data-bs-toggle="modal" data-bs-target="#pcEquipModal"><i class="bi bi-plus-lg"></i> @Localizer["Pc_Btn_AddEquipment"]</button>
+                <button type="button" class="vs-btn vs-btn--sm" data-bs-toggle="modal" data-bs-target="#pcEquipModal"><pems-icon name="bi-plus-lg" /> @Localizer["Pc_Btn_AddEquipment"]</button>
             </section>
 
             @* ------------------------------------------------ Class Info *@
             <section class="vs-panel pc-card mt-3">
-                <h2 class="vs-section__title"><i class="bi bi-diagram-3"></i> @Localizer["Pc_Sec_ClassInfo"]</h2>
+                <h2 class="vs-section__title"><pems-icon name="bi-diagram-3" /> @Localizer["Pc_Sec_ClassInfo"]</h2>
                 <div class="mb-2">
                     <pems-label for="pc_TechnicalClassId_text">@L("TechnicalClassId") <span class="pc-req" aria-hidden="true">*</span></pems-label>
                     <div class="pc-lookup" data-url="@lookupBase/TechnicalClasses" data-detail-url="@lookupBase/TechnicalClass" data-name="TechnicalClassId" data-form="pcForm"
@@ -227,13 +227,13 @@
                                 <tr class="pc-attr-row">
                                     <td><pems-input scale="small" type="text" form="pcForm" name="Attributes[@idx].Name" value="@extraAttrs[i].Name" maxlength="100" /></td>
                                     <td><pems-input scale="small" type="text" form="pcForm" name="Attributes[@idx].Value" value="@extraAttrs[i].Value" /></td>
-                                    <td><button type="button" class="vs-icon-btn pc-attr-remove" title="@Localizer["Pc_Btn_Remove"]" aria-label="@Localizer["Pc_Btn_Remove"]"><i class="bi bi-x-lg"></i></button></td>
+                                    <td><button type="button" class="vs-icon-btn pc-attr-remove" title="@Localizer["Pc_Btn_Remove"]" aria-label="@Localizer["Pc_Btn_Remove"]"><pems-icon name="bi-x-lg" /></button></td>
                                 </tr>
                             }
                         </tbody>
                     </pems-related-table>
                 </div>
-                <button type="button" class="vs-btn vs-btn--sm" id="pcAddAttr" data-next-index="@(extraAttrs.Count + 1)"><i class="bi bi-plus-lg"></i> @Localizer["Pc_Btn_AddAttribute"]</button>
+                <button type="button" class="vs-btn vs-btn--sm" id="pcAddAttr" data-next-index="@(extraAttrs.Count + 1)"><pems-icon name="bi-plus-lg" /> @Localizer["Pc_Btn_AddAttribute"]</button>
                 <div class="form-text">@Localizer["Pc_Hint_FreeFormat"]</div>
             </section>
         </div>
@@ -241,7 +241,7 @@
         @* ------------------------------------------------ Part Classification *@
         <div class="col-lg-8">
             <section class="vs-panel pc-card">
-                <h2 class="vs-section__title"><i class="bi bi-tags"></i> @Localizer["Pc_Sec_Classification"]</h2>
+                <h2 class="vs-section__title"><pems-icon name="bi-tags" /> @Localizer["Pc_Sec_Classification"]</h2>
                 <div class="row g-2">
                     <div class="col-md-6">
                         <pems-label for="pc_AssetType">@L("AssetType")</pems-label>
@@ -349,7 +349,7 @@
                      data-txt-ambiguous="@Localizer["Pc_Dedup_Ambiguous"]"
                      data-txt-inflight="@Localizer["Pc_Dedup_InFlight"]"
                      data-txt-error="@Localizer["Pc_Dedup_Error"]">
-                <h2 class="vs-section__title"><i class="bi bi-search"></i> @Localizer["Pc_Dedup_Title"]</h2>
+                <h2 class="vs-section__title"><pems-icon name="bi-search" /> @Localizer["Pc_Dedup_Title"]</h2>
                 <p class="form-text">@Localizer["Pc_Dedup_Hint"]</p>
                 <pems-label for="pcDedupQuery">@Localizer["Pc_Dedup_SearchLabel"]</pems-label>
                 <div class="input-group input-group-sm mb-2">
@@ -361,7 +361,7 @@
             </section>
 
             <section class="vs-panel pc-card">
-                <h2 class="vs-section__title"><i class="bi bi-paperclip"></i> @Localizer["Pc_Sec_OtherInfo"]</h2>
+                <h2 class="vs-section__title"><pems-icon name="bi-paperclip" /> @Localizer["Pc_Sec_OtherInfo"]</h2>
                 <div class="mb-2"><pems-label for="pc_SparePartSerialNo">@L("SparePartSerialNo")</pems-label><pems-input scale="small" id="pc_SparePartSerialNo" form="pcForm" name="SparePartSerialNo" value="@f.SparePartSerialNo" maxlength="100" /></div>
                 <div class="mb-2"><pems-label for="pc_EquipmentSerialNo">@L("EquipmentSerialNo")</pems-label><pems-input scale="small" id="pc_EquipmentSerialNo" form="pcForm" name="EquipmentSerialNo" value="@f.EquipmentSerialNo" maxlength="100" /></div>
                 <div class="mb-2"><pems-label for="pc_ManufacturerDrawingNo">@L("ManufacturerDrawingNo")</pems-label><pems-input scale="small" id="pc_ManufacturerDrawingNo" form="pcForm" name="ManufacturerDrawingNo" value="@f.ManufacturerDrawingNo" maxlength="100" /></div>
@@ -376,13 +376,13 @@
                             <span class="text-muted">@Localizer["Pc_Kind_" + at.Kind]</span>
                             <form asp-action="RemoveAttachment" method="post" class="d-inline">
                                 <input type="hidden" name="id" value="@d.Id" /><input type="hidden" name="attachmentId" value="@at.Id" />
-                                <button class="vs-icon-btn" title="@Localizer["Pc_Btn_Remove"]" aria-label="@Localizer["Pc_Btn_Remove"]"><i class="bi bi-trash"></i></button>
+                                <button class="vs-icon-btn" title="@Localizer["Pc_Btn_Remove"]" aria-label="@Localizer["Pc_Btn_Remove"]"><pems-icon name="bi-trash" /></button>
                             </form>
                         </li>
                     }
                 </ul>
                 @if (!d.Attachments.Any()) { <div class="text-muted small mb-2">@Localizer["Pc_Empty_Attachments"]</div> }
-                <button type="button" class="vs-btn vs-btn--sm" data-bs-toggle="modal" data-bs-target="#pcAttachModal"><i class="bi bi-upload"></i> @Localizer["Pc_Btn_Upload"]</button>
+                <button type="button" class="vs-btn vs-btn--sm" data-bs-toggle="modal" data-bs-target="#pcAttachModal"><pems-icon name="bi-upload" /> @Localizer["Pc_Btn_Upload"]</button>
                 <div class="form-text">@Localizer["Pc_Hint_PosItem"]</div>
             </section>
         </div>
@@ -390,7 +390,7 @@
         @* ------------------------------------------------ Inventory Planning *@
         <div class="col-12">
             <section class="vs-panel pc-card">
-                <h2 class="vs-section__title"><i class="bi bi-box-seam"></i> @Localizer["Pc_Sec_Planning"]</h2>
+                <h2 class="vs-section__title"><pems-icon name="bi-box-seam" /> @Localizer["Pc_Sec_Planning"]</h2>
                 <div class="row g-2">
                     <div class="col-md-3">
                         <pems-label for="pc_PlanningMethodId">@L("PlanningMethodId")</pems-label>
@@ -445,7 +445,7 @@
         @* ------------------------------------------------ Notes *@
         <div class="col-12">
             <section class="vs-panel pc-card">
-                <h2 class="vs-section__title"><i class="bi bi-chat-left-text"></i> @L("Notes")</h2>
+                <h2 class="vs-section__title"><pems-icon name="bi-chat-left-text" /> @L("Notes")</h2>
                 <div class="pc-table-scroll mb-2">
                     <pems-related-table>
                         <thead><tr><th>@Localizer["Pc_Col_Date"]</th><th>@Localizer["Pc_Col_Person"]</th><th>@Localizer["Pc_Col_Stage"]</th><th>@L("Text")</th></tr></thead>
@@ -461,7 +461,7 @@
                 <form asp-action="AddNote" method="post" class="d-flex gap-2">
                     <input type="hidden" name="id" value="@d.Id" /><input type="hidden" name="returnTo" value="edit" />
                     <pems-input scale="small" name="text" maxlength="2000" placeholder="@Localizer["Pc_Hint_NoteReply"]" aria-label="@L("Notes")" />
-                    <button type="submit" class="vs-btn vs-btn--sm"><i class="bi bi-plus-lg"></i> @Localizer["Pc_Btn_AddNote"]</button>
+                    <button type="submit" class="vs-btn vs-btn--sm"><pems-icon name="bi-plus-lg" /> @Localizer["Pc_Btn_AddNote"]</button>
                 </form>
             </section>
         </div>
@@ -514,7 +514,7 @@
     <tr class="pc-attr-row">
         <td><pems-input scale="small" type="text" form="pcForm" name="Attributes[__i__].Name" maxlength="100" /></td>
         <td><pems-input scale="small" type="text" form="pcForm" name="Attributes[__i__].Value" /></td>
-        <td><button type="button" class="vs-icon-btn pc-attr-remove" title="@Localizer["Pc_Btn_Remove"]" aria-label="@Localizer["Pc_Btn_Remove"]"><i class="bi bi-x-lg"></i></button></td>
+        <td><button type="button" class="vs-icon-btn pc-attr-remove" title="@Localizer["Pc_Btn_Remove"]" aria-label="@Localizer["Pc_Btn_Remove"]"><pems-icon name="bi-x-lg" /></button></td>
     </tr>
 </template>
 

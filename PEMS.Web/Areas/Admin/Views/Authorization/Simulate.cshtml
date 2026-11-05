@@ -47,7 +47,7 @@
                 <pems-input asp-for="ResourceId" />
             </div>
             <div class="col-12">
-                <pems-button tone="primary" type="submit"><i class="bi bi-play-circle me-1"></i> @Localizer["Run"]</pems-button>
+                <pems-button tone="primary" type="submit"><pems-icon name="bi-play-circle" css="me-1" /> @Localizer["Run"]</pems-button>
             </div>
         </form>
 
@@ -57,8 +57,8 @@
             <div class="permission-role mt-4">
                 <div class="permission-role-title">
                     <span>
-                        @if (r.Allowed) { <span class="admin-status active fs-6"><i class="bi bi-check2-circle"></i> @Localizer["ALLOW"]</span> }
-                        else { <span class="admin-status inactive fs-6"><i class="bi bi-x-circle"></i> @Localizer["DENY"]</span> }
+                        @if (r.Allowed) { <span class="admin-status active fs-6"><pems-icon name="bi-check2-circle" /> @Localizer["ALLOW"]</span> }
+                        else { <span class="admin-status inactive fs-6"><pems-icon name="bi-x-circle" /> @Localizer["DENY"]</span> }
                     </span>
                 </div>
                 <div class="p-3">
@@ -70,7 +70,7 @@
 </pems-info-grid>
                 </div>
             </div>
-            <p class="text-body-secondary small mt-2"><i class="bi bi-info-circle"></i> @Localizer["This was recorded in the Authorization Audit log."]</p>
+            <p class="text-body-secondary small mt-2"><pems-icon name="bi-info-circle" /> @Localizer["This was recorded in the Authorization Audit log."]</p>
         }
     </div>
 </div>

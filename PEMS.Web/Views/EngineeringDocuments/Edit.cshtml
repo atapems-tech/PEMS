@@ -27,10 +27,10 @@
             <h5 class="mb-1">Editing: @Model.DocumentNo</h5>
             <pems-badge tone="@statusClass">@Model.Status</pems-badge>
             <span class="text-muted small ms-2">Rev @Model.RevisionNo</span>
-            @if (Model.IsFrozen) { <pems-badge tone="info" css="ms-1"><i class="bi bi-snow"></i> Frozen</pems-badge> }
+            @if (Model.IsFrozen) { <pems-badge tone="info" css="ms-1"><pems-icon name="bi-snow" /> Frozen</pems-badge> }
         </div>
         <pems-button tone="neutral" size="small" outline="true" as="a" asp-action="Details" asp-route-id="@Model.DocumentId">
-            <i class="bi bi-arrow-return-left"></i> Back to Details
+            <pems-icon name="bi-arrow-return-left" /> Back to Details
         </pems-button>
     </div>
     <p class="text-muted small mb-0 mt-2">
@@ -141,7 +141,7 @@
     </div>
 
     <div class="content-card mt-3">
-        <pems-button tone="primary" type="submit"><i class="bi bi-check-lg"></i> Save Changes</pems-button>
+        <pems-button tone="primary" type="submit"><pems-icon name="bi-check-lg" /> Save Changes</pems-button>
         <pems-button tone="neutral" outline="true" as="a" asp-action="Details" asp-route-id="@Model.DocumentId">Cancel</pems-button>
     </div>
 </form>

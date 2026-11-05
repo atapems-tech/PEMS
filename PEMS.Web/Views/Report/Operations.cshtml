@@ -4,13 +4,13 @@
 @inject IStringLocalizer<SharedResource> Localizer
 
 <div class="d-flex flex-wrap gap-2 mb-3">
-    <pems-button tone="neutral" size="small" outline="true" as="a" asp-action="Index"><i class="bi bi-envelope-paper"></i> @Localizer["Correspondence"]</pems-button>
-    <pems-button tone="neutral" size="small" outline="true" as="a" asp-action="Engineering"><i class="bi bi-file-earmark-text"></i> @Localizer["Engineering Documents"]</pems-button>
-    <pems-button tone="neutral" size="small" outline="true" as="a" asp-action="Vdr"><i class="bi bi-journal-check"></i> @Localizer["VDR"]</pems-button>
-    <pems-button tone="neutral" size="small" outline="true" as="a" asp-action="Procurement"><i class="bi bi-cart-check"></i> @Localizer["Procurement"]</pems-button>
-    <pems-button tone="neutral" size="small" outline="true" as="a" asp-action="Cmms"><i class="bi bi-tools"></i> CMMS</pems-button>
-    <pems-button tone="primary" size="small" as="a" asp-action="Operations"><i class="bi bi-clipboard-data"></i> @Localizer["Operations"]</pems-button>
-    <pems-button tone="neutral" size="small" outline="true" as="a" asp-area="Warehouse" asp-controller="PartCatalogueReport" asp-action="Index"><i class="bi bi-journal-plus"></i> @Localizer["Pc_Menu"]</pems-button>
+    <pems-button tone="neutral" size="small" outline="true" as="a" asp-action="Index"><pems-icon name="bi-envelope-paper" /> @Localizer["Correspondence"]</pems-button>
+    <pems-button tone="neutral" size="small" outline="true" as="a" asp-action="Engineering"><pems-icon name="bi-file-earmark-text" /> @Localizer["Engineering Documents"]</pems-button>
+    <pems-button tone="neutral" size="small" outline="true" as="a" asp-action="Vdr"><pems-icon name="bi-journal-check" /> @Localizer["VDR"]</pems-button>
+    <pems-button tone="neutral" size="small" outline="true" as="a" asp-action="Procurement"><pems-icon name="bi-cart-check" /> @Localizer["Procurement"]</pems-button>
+    <pems-button tone="neutral" size="small" outline="true" as="a" asp-action="Cmms"><pems-icon name="bi-tools" /> CMMS</pems-button>
+    <pems-button tone="primary" size="small" as="a" asp-action="Operations"><pems-icon name="bi-clipboard-data" /> @Localizer["Operations"]</pems-button>
+    <pems-button tone="neutral" size="small" outline="true" as="a" asp-area="Warehouse" asp-controller="PartCatalogueReport" asp-action="Index"><pems-icon name="bi-journal-plus" /> @Localizer["Pc_Menu"]</pems-button>
 </div>
 
 <div class="content-card mb-3">
@@ -49,7 +49,7 @@
                 }
             </pems-select>
         </div>
-        <div class="col-12"><pems-button tone="primary" size="small"><i class="bi bi-funnel"></i> @Localizer["Apply"]</pems-button></div>
+        <div class="col-12"><pems-button tone="primary" size="small"><pems-icon name="bi-funnel" /> @Localizer["Apply"]</pems-button></div>
     </form>
 </div>
 

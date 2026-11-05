@@ -5,10 +5,10 @@
 
 <div class="d-flex justify-content-end align-items-center gap-2 mb-2">
     <pems-button tone="neutral" size="small" outline="true" as="a" asp-action="OrganizationChart">
-        <i class="bi bi-diagram-3"></i> @Localizer["نمودار سازمانی"]
+        <pems-icon name="bi-diagram-3" /> @Localizer["نمودار سازمانی"]
     </pems-button>
     <pems-button tone="primary" size="small" type="button" data-bs-toggle="modal" data-bs-target="#createTeamModal">
-        <i class="bi bi-plus-lg"></i> @Localizer["تیم جدید"]
+        <pems-icon name="bi-plus-lg" /> @Localizer["تیم جدید"]
     </pems-button>
 </div>
 
@@ -25,10 +25,10 @@
                     <div class="d-flex align-items-center gap-2">
                         @if (team.SupervisorEmployee != null)
                         {
-                            <pems-badge tone="primary"><i class="bi bi-star"></i> سرپرست: @team.SupervisorEmployee.FirstName @team.SupervisorEmployee.LastName</pems-badge>
+                            <pems-badge tone="primary"><pems-icon name="bi-star" /> سرپرست: @team.SupervisorEmployee.FirstName @team.SupervisorEmployee.LastName</pems-badge>
                         }
                         <pems-button tone="neutral" size="small" outline="true" as="a" asp-action="TeamDetails" asp-route-teamId="@team.TeamId">
-                            <i class="bi bi-diagram-2"></i> @Localizer["جزئیات و نیروی انسانی"]
+                            <pems-icon name="bi-diagram-2" /> @Localizer["جزئیات و نیروی انسانی"]
                         </pems-button>
                     </div>
                 </div>
@@ -45,7 +45,7 @@
                                 <pems-badge tone="neutral">@m.Role?.Name</pems-badge>
                                 <form asp-action="RemoveMember" method="post" class="d-inline">
                                     <input type="hidden" name="teamMemberId" value="@m.TeamMemberId" />
-                                    <pems-button tone="danger" size="small" outline="true" css="py-0 px-1" type="submit" data-pems-confirm="این عضو از تیم خارج بشه؟"><i class="bi bi-x"></i></pems-button>
+                                    <pems-button tone="danger" size="small" outline="true" css="py-0 px-1" type="submit" data-pems-confirm="این عضو از تیم خارج بشه؟"><pems-icon name="bi-x" /></pems-button>
                                 </form>
                             </span>
                         </li>
@@ -65,7 +65,7 @@
                             <option value="@r.MaintenanceRoleId">@r.Name</option>
                         }
                     </pems-select>
-                    <pems-button tone="primary" size="small" outline="true" css="text-nowrap" type="submit"><i class="bi bi-plus-lg"></i></pems-button>
+                    <pems-button tone="primary" size="small" outline="true" css="text-nowrap" type="submit"><pems-icon name="bi-plus-lg" /></pems-button>
                 </form>
             </div>
         </div>

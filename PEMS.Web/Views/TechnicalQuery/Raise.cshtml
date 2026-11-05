@@ -30,12 +30,12 @@
             <div class="col-12"><pems-label>@Localizer["Description"]</pems-label><pems-textarea name="description" rows="4"></pems-textarea></div>
 
             <div class="col-md-6">
-                <pems-label><i class="bi bi-file-earmark-text"></i> مدرک مرتبط <span class="text-muted small">@Localizer["(اختیاری)"]</span></pems-label>
+                <pems-label><pems-icon name="bi-file-earmark-text" /> مدرک مرتبط <span class="text-muted small">@Localizer["(اختیاری)"]</span></pems-label>
                 <pems-input type="text" placeholder="@Localizer["جستجوی شماره مدرک، عنوان..."]" data-pems-search data-search-type="EngineeringDocument" data-search-hidden="#relatedDocumentIdHidden" autocomplete="off" />
                 <input type="hidden" name="relatedDocumentId" id="relatedDocumentIdHidden" />
             </div>
             <div class="col-md-6">
-                <pems-label><i class="bi bi-gear"></i> تجهیز مرتبط <span class="text-muted small">@Localizer["(اختیاری)"]</span></pems-label>
+                <pems-label><pems-icon name="bi-gear" /> تجهیز مرتبط <span class="text-muted small">@Localizer["(اختیاری)"]</span></pems-label>
                 <pems-input type="text" placeholder="@Localizer["جستجوی تگ، نام..."]" data-pems-search data-search-type="Equipment" data-search-hidden="#relatedEquipmentIdHidden" autocomplete="off" />
                 <input type="hidden" name="relatedEquipmentId" id="relatedEquipmentIdHidden" />
             </div>

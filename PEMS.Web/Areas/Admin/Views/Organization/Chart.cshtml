@@ -18,12 +18,12 @@
     <div class="admin-hero"><p>@Localizer["Org_Chart_Intro"]</p></div>
 
     <div class="pems-opc-toolbar">
-        <a class="vs-btn vs-btn--sm" asp-action="Index"><i class="bi bi-arrow-left"></i> @Localizer["Org_Title"]</a>
-        <button type="button" class="vs-btn vs-btn--sm" id="pemsOpcFit" title="@Localizer["Org_Chart_Fit"]" aria-label="@Localizer["Org_Chart_Fit"]"><i class="bi bi-fullscreen"></i></button>
-        <button type="button" class="vs-btn vs-btn--sm" id="pemsOpcZoomIn" title="@Localizer["Org_Chart_ZoomIn"]" aria-label="@Localizer["Org_Chart_ZoomIn"]"><i class="bi bi-zoom-in"></i></button>
-        <button type="button" class="vs-btn vs-btn--sm" id="pemsOpcZoomOut" title="@Localizer["Org_Chart_ZoomOut"]" aria-label="@Localizer["Org_Chart_ZoomOut"]"><i class="bi bi-zoom-out"></i></button>
-        <button type="button" class="vs-btn vs-btn--sm" id="pemsOpcExpand"><i class="bi bi-arrows-expand"></i> @Localizer["Org_Chart_ExpandAll"]</button>
-        <button type="button" class="vs-btn vs-btn--sm" id="pemsOpcCollapse"><i class="bi bi-arrows-collapse"></i> @Localizer["Org_Chart_CollapseAll"]</button>
+        <a class="vs-btn vs-btn--sm" asp-action="Index"><pems-icon name="bi-arrow-left" /> @Localizer["Org_Title"]</a>
+        <button type="button" class="vs-btn vs-btn--sm" id="pemsOpcFit" title="@Localizer["Org_Chart_Fit"]" aria-label="@Localizer["Org_Chart_Fit"]"><pems-icon name="bi-fullscreen" /></button>
+        <button type="button" class="vs-btn vs-btn--sm" id="pemsOpcZoomIn" title="@Localizer["Org_Chart_ZoomIn"]" aria-label="@Localizer["Org_Chart_ZoomIn"]"><pems-icon name="bi-zoom-in" /></button>
+        <button type="button" class="vs-btn vs-btn--sm" id="pemsOpcZoomOut" title="@Localizer["Org_Chart_ZoomOut"]" aria-label="@Localizer["Org_Chart_ZoomOut"]"><pems-icon name="bi-zoom-out" /></button>
+        <button type="button" class="vs-btn vs-btn--sm" id="pemsOpcExpand"><pems-icon name="bi-arrows-expand" /> @Localizer["Org_Chart_ExpandAll"]</button>
+        <button type="button" class="vs-btn vs-btn--sm" id="pemsOpcCollapse"><pems-icon name="bi-arrows-collapse" /> @Localizer["Org_Chart_CollapseAll"]</button>
         <pems-input scale="small" type="search" id="pemsOpcSearch" placeholder="@Localizer["Org_Chart_Search"]" aria-label="@Localizer["Org_Chart_Search"]" />
     </div>
     <pems-alert tone="warning" css="small py-1" id="pemsOpcWarnings" role="status" hidden></pems-alert>

@@ -72,7 +72,7 @@
                 <h6 class="mb-0">@Localizer["Functional Requirements"]</h6>
                 @if (canEdit)
                 {
-                    <pems-button tone="primary" size="small" data-bs-toggle="modal" data-bs-target="#createFrModal"><i class="bi bi-plus-lg"></i> @Localizer["New"]</pems-button>
+                    <pems-button tone="primary" size="small" data-bs-toggle="modal" data-bs-target="#createFrModal"><pems-icon name="bi-plus-lg" /> @Localizer["New"]</pems-button>
                 }
             </div>
             @foreach (var fr in functionalRequirements)
@@ -94,7 +94,7 @@
             </pems-related-table>
             @if (canEdit)
             {
-                <pems-button tone="neutral" size="small" outline="true" data-bs-toggle="modal" data-bs-target="#createFfModal"><i class="bi bi-plus-lg"></i> New Functional Failure</pems-button>
+                <pems-button tone="neutral" size="small" outline="true" data-bs-toggle="modal" data-bs-target="#createFfModal"><pems-icon name="bi-plus-lg" /> New Functional Failure</pems-button>
             }
         </div>
     </div>
@@ -189,7 +189,7 @@
                                 @foreach (var st in strategyTypes) { <option value="@st.MaintenanceStrategyTypeId">@st.Name</option> }
                             </pems-select>
                         </div>
-                        <div class="col-12"><pems-button tone="neutral" size="small" outline="true" type="submit"><i class="bi bi-plus-lg"></i> Add Item</pems-button></div>
+                        <div class="col-12"><pems-button tone="neutral" size="small" outline="true" type="submit"><pems-icon name="bi-plus-lg" /> Add Item</pems-button></div>
                     </form>
                 }
             </div>
@@ -276,7 +276,7 @@
                                     @if (d.Status == "APPROVED" && canApprove)
                                     {
                                         <pems-button tone="primary" size="small" type="button" data-bs-toggle="modal" data-bs-target="#applyRcmModal" data-fill-rcmdecisionid="@d.RCMDecisionId" data-fill-failuremodename="@d.FailureModeName" data-fill-status="@d.Status" data-fill-decisiontype="@d.DecisionType" data-fill-strategy="@(d.MaintenanceStrategyTypeName ?? "-")" data-fill-pmtemplate="@(d.RecommendedPMTemplateName ?? "-")">
-                                            <i class="bi bi-gear-fill"></i> @Localizer["Apply"]
+                                            <pems-icon name="bi-gear-fill" /> @Localizer["Apply"]
                                         </pems-button>
                                     }
                                 </td>
@@ -388,7 +388,7 @@
                             </pems-select>
                         </div>
                         <div class="col-md-6"><pems-input scale="small" name="rationale" placeholder="@Localizer["Rationale"]" /></div>
-                        <div class="col-md-2"><pems-button tone="neutral" size="small" outline="true" css="w-100" type="submit"><i class="bi bi-plus-lg"></i> Add Decision</pems-button></div>
+                        <div class="col-md-2"><pems-button tone="neutral" size="small" outline="true" css="w-100" type="submit"><pems-icon name="bi-plus-lg" /> Add Decision</pems-button></div>
                     </form>
                 }
             </div>

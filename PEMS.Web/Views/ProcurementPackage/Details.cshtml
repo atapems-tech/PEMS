@@ -24,7 +24,7 @@
             <span class="text-muted small">@s.ProjectName @(s.DisciplineName != null ? " | " + s.DisciplineName : "")</span>
         </div>
         <div class="d-flex align-items-center gap-2">
-            <pems-button tone="neutral" size="small" outline="true" as="a" asp-controller="Relationship" asp-action="ProcurementPackage" asp-route-id="@s.ProcurementPackageId"><i class="bi bi-diagram-3"></i> @Localizer["Cm_Relationships"]</pems-button>
+            <pems-button tone="neutral" size="small" outline="true" as="a" asp-controller="Relationship" asp-action="ProcurementPackage" asp-route-id="@s.ProcurementPackageId"><pems-icon name="bi-diagram-3" /> @Localizer["Cm_Relationships"]</pems-button>
             <pems-badge tone="@(s.Status == "Closed" ? "success" : "warning")" css="fs-6">@s.Status</pems-badge>
         </div>
     </div>
@@ -48,7 +48,7 @@
                         @if (t.ContractId != null)
                         {
                             <pems-button tone="success" size="small" outline="true" as="a" asp-controller="Contract" asp-action="Details" asp-route-id="@t.ContractId">
-                                <i class="bi bi-arrow-right-short"></i> @Localizer["Contract"]
+                                <pems-icon name="bi-arrow-right-short" /> @Localizer["Contract"]
                             </pems-button>
                         }
                     </span>
@@ -186,7 +186,7 @@
             </div>
             <div class="col-md-3"><pems-input scale="small" name="subject" placeholder="@Localizer["Subject"]" required /></div>
             <div class="col-md-4"><pems-input scale="small" name="body" placeholder="@Localizer["Details"]" required /></div>
-            <div class="col-md-1"><pems-button tone="primary" size="small" css="w-100" title="@Localizer["Add"]"><i class="bi bi-plus-lg" aria-hidden="true"></i><span class="visually-hidden">@Localizer["Add"]</span></pems-button></div>
+            <div class="col-md-1"><pems-button tone="primary" size="small" css="w-100" title="@Localizer["Add"]"><pems-icon name="bi-plus-lg" aria-hidden="true" /><span class="visually-hidden">@Localizer["Add"]</span></pems-button></div>
         </form>
     }
 </pems-related-list>
@@ -223,7 +223,7 @@
         <form asp-action="Closeout" method="post" class="px-3 pb-3" data-pems-confirm="@Localizer["PkD_ConfirmCloseout"]">
             <input type="hidden" name="packageId" value="@s.ProcurementPackageId" />
             <pems-button tone="success" size="small" outline="true" type="submit">
-                <i class="bi bi-flag" aria-hidden="true"></i> @Localizer["PkD_Closeout"]
+                <pems-icon name="bi-flag" aria-hidden="true" /> @Localizer["PkD_Closeout"]
             </pems-button>
         </form>
     }

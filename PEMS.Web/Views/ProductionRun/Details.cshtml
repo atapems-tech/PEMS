@@ -18,26 +18,26 @@
                 @if (!string.IsNullOrEmpty(Model.OperatorEmployeeName)) { <text>&middot; Operator: @Model.OperatorEmployeeName</text> }
                 @if (!string.IsNullOrEmpty(Model.ShiftName)) { <text>&middot; Shift: @Model.ShiftName</text> }
             </div>
-            @if (Model.Status == "OnHold" && !string.IsNullOrEmpty(Model.HoldReason)) { <div class="text-warning small mt-1"><i class="bi bi-pause-circle"></i> Held: @Model.HoldReason</div> }
+            @if (Model.Status == "OnHold" && !string.IsNullOrEmpty(Model.HoldReason)) { <div class="text-warning small mt-1"><pems-icon name="bi-pause-circle" /> Held: @Model.HoldReason</div> }
         </div>
         <div class="d-flex flex-column gap-1 pems-s-94253f99">
             @if (Model.Status == "Planned")
             {
-                <form asp-action="Start" asp-route-id="@Model.ProductionRunId" method="post"><pems-button tone="primary" size="small" css="w-100" type="submit"><i class="bi bi-play-fill"></i> @Localizer["Start"]</pems-button></form>
+                <form asp-action="Start" asp-route-id="@Model.ProductionRunId" method="post"><pems-button tone="primary" size="small" css="w-100" type="submit"><pems-icon name="bi-play-fill" /> @Localizer["Start"]</pems-button></form>
             }
             @if (Model.Status == "InProgress")
             {
-                <form asp-action="Pause" asp-route-id="@Model.ProductionRunId" method="post"><pems-button tone="neutral" size="small" outline="true" css="w-100" type="submit"><i class="bi bi-pause-fill"></i> Pause</pems-button></form>
-                <pems-button tone="warning" size="small" outline="true" css="w-100" type="button" data-bs-toggle="modal" data-bs-target="#holdRunModal"><i class="bi bi-exclamation-circle"></i> @Localizer["Hold"]</pems-button>
-                <form asp-action="Complete" asp-route-id="@Model.ProductionRunId" method="post"><pems-button tone="primary" size="small" css="w-100" type="submit"><i class="bi bi-check2-circle"></i> Complete</pems-button></form>
+                <form asp-action="Pause" asp-route-id="@Model.ProductionRunId" method="post"><pems-button tone="neutral" size="small" outline="true" css="w-100" type="submit"><pems-icon name="bi-pause-fill" /> Pause</pems-button></form>
+                <pems-button tone="warning" size="small" outline="true" css="w-100" type="button" data-bs-toggle="modal" data-bs-target="#holdRunModal"><pems-icon name="bi-exclamation-circle" /> @Localizer["Hold"]</pems-button>
+                <form asp-action="Complete" asp-route-id="@Model.ProductionRunId" method="post"><pems-button tone="primary" size="small" css="w-100" type="submit"><pems-icon name="bi-check2-circle" /> Complete</pems-button></form>
             }
             @if (Model.Status is "Paused" or "OnHold")
             {
-                <form asp-action="Resume" asp-route-id="@Model.ProductionRunId" method="post"><pems-button tone="success" size="small" outline="true" css="w-100" type="submit"><i class="bi bi-play-circle"></i> Resume</pems-button></form>
+                <form asp-action="Resume" asp-route-id="@Model.ProductionRunId" method="post"><pems-button tone="success" size="small" outline="true" css="w-100" type="submit"><pems-icon name="bi-play-circle" /> Resume</pems-button></form>
             }
             @if (Model.Status is "Planned" or "Paused" or "OnHold")
             {
-                <pems-button tone="danger" size="small" outline="true" css="w-100" type="button" data-bs-toggle="modal" data-bs-target="#cancelRunModal"><i class="bi bi-x-circle"></i> @Localizer["Cancel"]</pems-button>
+                <pems-button tone="danger" size="small" outline="true" css="w-100" type="button" data-bs-toggle="modal" data-bs-target="#cancelRunModal"><pems-icon name="bi-x-circle" /> @Localizer["Cancel"]</pems-button>
             }
         </div>
     </div>
@@ -60,7 +60,7 @@
         </div>
         @if (reconciliation.Difference != 0)
         {
-            <div class="small text-danger mt-1"><i class="bi bi-exclamation-triangle"></i> Reconciliation difference detected - not auto-balanced, recorded as-is.</div>
+            <div class="small text-danger mt-1"><pems-icon name="bi-exclamation-triangle" /> Reconciliation difference detected - not auto-balanced, recorded as-is.</div>
         }
     }
     else

@@ -11,14 +11,14 @@
     @if (mismatch)
     {
         <pems-alert tone="danger">
-            <strong><i class="bi bi-exclamation-octagon-fill"></i> EQUIPMENT IDENTITY MISMATCH</strong>
+            <strong><pems-icon name="bi-exclamation-octagon-fill" /> EQUIPMENT IDENTITY MISMATCH</strong>
             <p class="mb-0 small">This barcode resolves to a different target than expected. Do not assume this label is attached to the correct physical object without further investigation.</p>
         </pems-alert>
     }
     else if (resolution?.Success == true)
     {
         <pems-alert tone="success" css="mb-0">
-            <strong><i class="bi bi-check-circle-fill"></i> Match</strong>
+            <strong><pems-icon name="bi-check-circle-fill" /> Match</strong>
             <p class="mb-0 small">Resolved to @Model?.TargetType #@Model?.TargetDisplayLabel - Status: @Model?.Status</p>
         </pems-alert>
     }

@@ -106,10 +106,10 @@
         <div class="vs-doc-identity">
             <div class="d-flex align-items-center gap-2 flex-wrap">
                 <h1 class="vs-doc-number vs-num">@Model.DocumentNo</h1>
-                <span class="vs-pill vs-pill--icon @DocumentStatusBadge.Tone(Model.Status)"><i class="bi @DocumentStatusBadge.Icon(Model.Status)" aria-hidden="true"></i> @StatusText(Model.Status)</span>
+                <span class="vs-pill vs-pill--icon @DocumentStatusBadge.Tone(Model.Status)"><pems-icon css="@DocumentStatusBadge.Icon(Model.Status)" aria-hidden="true" /> @StatusText(Model.Status)</span>
                 <span class="vs-pill vs-pill--current">@Localizer["Ed_CurrentRev"] <span class="vs-num">@Model.RevisionNo</span></span>
-                @if (Model.IsFrozen) { <span class="vs-pill vs-pill--icon vs-pill--info"><i class="bi bi-snow" aria-hidden="true"></i> @Localizer["Ed_Frozen"]</span> }
-                @if (Model.IsOnHold) { <span class="vs-pill vs-pill--icon vs-pill--warning"><i class="bi bi-pause-circle" aria-hidden="true"></i> @Localizer["Ed_OnHold"]</span> }
+                @if (Model.IsFrozen) { <span class="vs-pill vs-pill--icon vs-pill--info"><pems-icon name="bi-snow" aria-hidden="true" /> @Localizer["Ed_Frozen"]</span> }
+                @if (Model.IsOnHold) { <span class="vs-pill vs-pill--icon vs-pill--warning"><pems-icon name="bi-pause-circle" aria-hidden="true" /> @Localizer["Ed_OnHold"]</span> }
             </div>
             <div class="vs-doc-title" title="@Model.Title">@Model.Title</div>
             <div class="vs-doc-meta">@Model.ProjectName &middot; @Model.DisciplineName@(!string.IsNullOrEmpty(Model.Area) ? " · " + Model.Area : "")</div>
@@ -121,21 +121,21 @@
             @if (Model.Status == "Draft")
             {
                 <button type="button" class="vs-btn vs-btn--primary" data-bs-toggle="modal" data-bs-target="#submitWorkflowModal">
-                    <i class="bi bi-send"></i> Submit For Review
+                    <pems-icon name="bi-send" /> Submit For Review
                 </button>
             }
             else if (Model.Status == "Submitted")
             {
                 <form asp-action="Check" method="post" class="d-inline">
                     <input type="hidden" name="id" value="@Model.DocumentId" />
-                    <button class="vs-btn vs-btn--primary"><i class="bi bi-clipboard-check"></i> Check</button>
+                    <button class="vs-btn vs-btn--primary"><pems-icon name="bi-clipboard-check" /> Check</button>
                 </form>
                 <form asp-action="Reject" method="post" class="d-inline">
                     <input type="hidden" name="id" value="@Model.DocumentId" />
                     <button class="vs-btn vs-btn--dangerline">@Localizer["Reject"]</button>
                 </form>
                 <button type="button" class="vs-btn" data-bs-toggle="modal" data-bs-target="#reviseModal">
-                    <i class="bi bi-arrow-repeat"></i> Revise &amp; Resubmit
+                    <pems-icon name="bi-arrow-repeat" /> Revise &amp; Resubmit
                 </button>
             }
             else if (Model.Status == "IDC Review")
@@ -153,14 +153,14 @@
                     <form asp-action="IdcRespond" method="post" class="d-inline">
                         <input type="hidden" name="id" value="@Model.DocumentId" />
                         <input type="hidden" name="decision" value="Approve" />
-                        <button class="vs-btn vs-btn--primary"><i class="bi bi-check-lg"></i> No Comment</button>
+                        <button class="vs-btn vs-btn--primary"><pems-icon name="bi-check-lg" /> No Comment</button>
                     </form>
                     <button type="button" class="vs-btn" data-bs-toggle="modal" data-bs-target="#idcCommentModal">@Localizer["Approve with Comments"]</button>
                     <button type="button" class="vs-btn vs-btn--dangerline" data-bs-toggle="modal" data-bs-target="#idcRejectModal">@Localizer["Revision Required"]</button>
                 }
                 else
                 {
-                    <span class="vs-pill vs-pill--icon vs-pill--warning"><i class="bi bi-hourglass-split" aria-hidden="true"></i> منتظر بازبینی دیسیپلین‌های دیگر (IDC)</span>
+                    <span class="vs-pill vs-pill--icon vs-pill--warning"><pems-icon name="bi-hourglass-split" aria-hidden="true" /> منتظر بازبینی دیسیپلین‌های دیگر (IDC)</span>
                 }
             }
             else if (Model.Status == "Checked")
@@ -174,13 +174,13 @@
                     <button class="vs-btn vs-btn--dangerline">@Localizer["Reject"]</button>
                 </form>
                 <button type="button" class="vs-btn" data-bs-toggle="modal" data-bs-target="#reviseModal">
-                    <i class="bi bi-arrow-repeat"></i> Revise &amp; Resubmit
+                    <pems-icon name="bi-arrow-repeat" /> Revise &amp; Resubmit
                 </button>
             }
             else if (Model.Status == "Approved")
             {
                 <button type="button" class="vs-btn vs-btn--primary" data-bs-toggle="modal" data-bs-target="#issueModal">
-                    <i class="bi bi-send-check"></i> Issue
+                    <pems-icon name="bi-send-check" /> Issue
                 </button>
             }
             else if (Model.Status == "Issued")
@@ -188,14 +188,14 @@
                 @if (string.IsNullOrEmpty(Model.ClientApprovalStatus))
                 {
                     <button type="button" class="vs-btn vs-btn--primary" data-bs-toggle="modal" data-bs-target="#clientResponseModal">
-                        <i class="bi bi-building"></i> Record Client Response
+                        <pems-icon name="bi-building" /> Record Client Response
                     </button>
                 }
             }
             else if (Model.Status == "Rejected" || Model.Status == "Revise & Resubmit")
             {
                 <button type="button" class="vs-btn vs-btn--primary" data-bs-toggle="modal" data-bs-target="#submitWorkflowModal">
-                    <i class="bi bi-arrow-repeat"></i> Resubmit
+                    <pems-icon name="bi-arrow-repeat" /> Resubmit
                 </button>
             }
 
@@ -206,24 +206,24 @@
                     @Localizer["Ed_MoreActions"]
                 </button>
                 <pems-dropdown-menu end="true">
-                    <li><a class="dropdown-item" asp-action="Edit" asp-route-id="@Model.DocumentId"><i class="bi bi-pencil"></i> @Localizer["Edit"]</a></li>
+                    <li><a class="dropdown-item" asp-action="Edit" asp-route-id="@Model.DocumentId"><pems-icon name="bi-pencil" /> @Localizer["Edit"]</a></li>
                     @if (Model.Status == "Approved" || Model.Status == "Issued")
                     {
-                        <li><button type="button" class="dropdown-item" data-bs-toggle="modal" data-bs-target="#newRevisionModal"><i class="bi bi-file-earmark-plus"></i> Create New Revision</button></li>
+                        <li><button type="button" class="dropdown-item" data-bs-toggle="modal" data-bs-target="#newRevisionModal"><pems-icon name="bi-file-earmark-plus" /> Create New Revision</button></li>
                     }
                     <li><hr class="dropdown-divider" /></li>
                     <li>
                         <form asp-action="AnalyzeRelationships" asp-route-id="@Model.DocumentId" method="post">
-                            <button type="submit" class="dropdown-item"><i class="bi bi-stars"></i> @Localizer["تحلیل روابط (AI)"]</button>
+                            <button type="submit" class="dropdown-item"><pems-icon name="bi-stars" /> @Localizer["تحلیل روابط (AI)"]</button>
                         </form>
                     </li>
                     @if (!Model.IsFrozen && (bool)(ViewBag.CanFreeze ?? false))
                     {
-                        <li><button type="button" class="dropdown-item" data-bs-toggle="modal" data-bs-target="#freezeModal"><i class="bi bi-snow"></i> @Localizer["Freeze"]</button></li>
+                        <li><button type="button" class="dropdown-item" data-bs-toggle="modal" data-bs-target="#freezeModal"><pems-icon name="bi-snow" /> @Localizer["Freeze"]</button></li>
                     }
                     @if (!Model.IsOnHold && !Model.IsFrozen && Model.Status != "Issued" && (bool)(ViewBag.CanHold ?? false))
                     {
-                        <li><button type="button" class="dropdown-item" data-bs-toggle="modal" data-bs-target="#holdModal"><i class="bi bi-pause-circle"></i> @Localizer["Hold"]</button></li>
+                        <li><button type="button" class="dropdown-item" data-bs-toggle="modal" data-bs-target="#holdModal"><pems-icon name="bi-pause-circle" /> @Localizer["Hold"]</button></li>
                     }
                 </pems-dropdown-menu>
             </div>
@@ -236,7 +236,7 @@
     {
         <pems-alert tone="info" css="d-flex justify-content-between align-items-center flex-wrap gap-2 mt-3 mb-0 py-2">
             <div class="small">
-                <i class="bi bi-snow"></i> <strong>FROZEN</strong> — Revision @Model.RevisionNo is frozen and cannot be modified.
+                <pems-icon name="bi-snow" /> <strong>FROZEN</strong> — Revision @Model.RevisionNo is frozen and cannot be modified.
                 <div class="text-muted">Frozen by @(Model.FrozenByName ?? "-") on @(Model.FrozenDate?.ToString("yyyy-MM-dd HH:mm") ?? "-")@(!string.IsNullOrWhiteSpace(Model.FreezeReason) ? " — " + Model.FreezeReason : "")</div>
             </div>
             @if ((bool)(ViewBag.CanUnfreeze ?? false))
@@ -244,7 +244,7 @@
                 <form asp-action="Unfreeze" asp-route-id="@Model.DocumentId" method="post" class="d-flex flex-wrap gap-2 align-items-center">
                     <pems-input scale="small" type="text" name="reason" style="max-width:240px;" placeholder="Unfreeze reason (required)" required />
                     <pems-button tone="dark" size="small" outline="true" type="submit" data-pems-confirm="انجماد این مدرک برداشته شود؟">
-                        <i class="bi bi-sun"></i> @Localizer["Unfreeze"]
+                        <pems-icon name="bi-sun" /> @Localizer["Unfreeze"]
                     </pems-button>
                 </form>
             }
@@ -254,14 +254,14 @@
     {
         <pems-alert tone="warning" css="d-flex justify-content-between align-items-center flex-wrap gap-2 mt-3 mb-0 py-2">
             <div class="small">
-                <i class="bi bi-pause-circle"></i> <strong>ON HOLD</strong> — این مدرک قابل تأیید (Approve) یا صدور (Issue) نیست تا زمانی که Hold رفع شود.
+                <pems-icon name="bi-pause-circle" /> <strong>ON HOLD</strong> — این مدرک قابل تأیید (Approve) یا صدور (Issue) نیست تا زمانی که Hold رفع شود.
             </div>
             @if ((bool)(ViewBag.CanReleaseHold ?? false))
             {
                 <form asp-action="ReleaseHold" asp-route-id="@Model.DocumentId" method="post" class="d-flex flex-wrap gap-2 align-items-center">
                     <pems-input scale="small" type="text" name="reason" style="max-width:240px;" placeholder="Release reason (required)" required />
                     <pems-button tone="dark" size="small" outline="true" type="submit" data-pems-confirm="Hold این مدرک رفع شود؟">
-                        <i class="bi bi-play-circle"></i> @Localizer["Release Hold"]
+                        <pems-icon name="bi-play-circle" /> @Localizer["Release Hold"]
                     </pems-button>
                 </form>
             }
@@ -304,7 +304,7 @@
             @foreach (var e in equipmentUsingThisAsPID)
             {
                 <a asp-controller="Equipment" asp-action="Details" asp-route-id="@e.EquipmentId" class="text-decoration-none">
-                    <pems-badge tone="info"><i class="bi bi-gear"></i> @e.TagNumber</pems-badge>
+                    <pems-badge tone="info"><pems-icon name="bi-gear" /> @e.TagNumber</pems-badge>
                 </a>
             }
         </div>
@@ -322,7 +322,7 @@
         @if (wfNextStep != null)
         {
             <pems-alert tone="info" css="py-2 mb-2 mt-2 small" role="note">
-                <i class="bi bi-signpost-split" aria-hidden="true"></i> <strong>@Localizer["Ed_NextStep"]</strong> @wfNextStep
+                <pems-icon name="bi-signpost-split" aria-hidden="true" /> <strong>@Localizer["Ed_NextStep"]</strong> @wfNextStep
             </pems-alert>
         }
 
@@ -339,12 +339,12 @@
 <pems-nav css="mb-3" id="docTabs" role="tablist">
     <li class="nav-item" role="presentation">
         <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#tab-overview" type="button">
-            <i class="bi bi-info-circle"></i> @Localizer["Ed_TabOverview"]
+            <pems-icon name="bi-info-circle" /> @Localizer["Ed_TabOverview"]
         </button>
     </li>
     <li class="nav-item" role="presentation">
         <button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-attachments" type="button">
-            <i class="bi bi-paperclip"></i> @Localizer["Ed_TabFiles"] <pems-badge tone="neutral">@(Model.Attachments?.Count ?? 0)</pems-badge>
+            <pems-icon name="bi-paperclip" /> @Localizer["Ed_TabFiles"] <pems-badge tone="neutral">@(Model.Attachments?.Count ?? 0)</pems-badge>
         </button>
     </li>
     @* طبق بخش ۲۵ ممیزی UX: IDC حالا یک تب اختصاصی است، نه فقط چند Badge کوچک توی هدر -
@@ -354,35 +354,35 @@
     {
         <li class="nav-item" role="presentation">
             <button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-idc" type="button">
-                <i class="bi bi-diagram-3"></i> @Localizer["Ed_TabIdc"] <pems-badge tone="neutral">@idcApprovedCount/@idcStatusForPage.Count</pems-badge>
+                <pems-icon name="bi-diagram-3" /> @Localizer["Ed_TabIdc"] <pems-badge tone="neutral">@idcApprovedCount/@idcStatusForPage.Count</pems-badge>
             </button>
         </li>
     }
     <li class="nav-item" role="presentation">
         <button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-revisions" type="button">
-            <i class="bi bi-clock-history"></i> @Localizer["Ed_TabRevisions"] <pems-badge tone="neutral">@(Model.Revisions?.Count ?? 0)</pems-badge>
+            <pems-icon name="bi-clock-history" /> @Localizer["Ed_TabRevisions"] <pems-badge tone="neutral">@(Model.Revisions?.Count ?? 0)</pems-badge>
         </button>
     </li>
     <li class="nav-item" role="presentation">
         <button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-transmittals" type="button">
-            <i class="bi bi-truck"></i> @Localizer["Ed_TabTransmittals"]
+            <pems-icon name="bi-truck" /> @Localizer["Ed_TabTransmittals"]
             @if (relatedTransmittals.Any()) { <pems-badge tone="neutral">@relatedTransmittals.Count</pems-badge> }
         </button>
     </li>
     <li class="nav-item" role="presentation">
         <button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-comments" type="button">
-            <i class="bi bi-chat-square-text"></i> @Localizer["Ed_TabComments"]
+            <pems-icon name="bi-chat-square-text" /> @Localizer["Ed_TabComments"]
             @if (engComments.Any()) { <pems-badge tone="@(commentsOpenCount > 0 ? "danger" : "neutral")">@commentsOpenCount<span class="visually-hidden"> @Localizer["Ed_OpenComments"]</span></pems-badge> }
         </button>
     </li>
     <li class="nav-item" role="presentation">
         <button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-workflow" type="button">
-            <i class="bi bi-diagram-2"></i> @Localizer["Ed_TabWorkflow"]
+            <pems-icon name="bi-diagram-2" /> @Localizer["Ed_TabWorkflow"]
         </button>
     </li>
     <li class="nav-item" role="presentation">
         <button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-correspondence" type="button">
-            <i class="bi bi-envelope-paper"></i> @Localizer["Ed_TabDistribution"]
+            <pems-icon name="bi-envelope-paper" /> @Localizer["Ed_TabDistribution"]
             @if (relatedLetters.Any()) { <pems-badge tone="neutral">@relatedLetters.Count</pems-badge> }
         </button>
     </li>
@@ -395,7 +395,7 @@
         <div class="row g-3">
         <div class="col-lg-8">
         <div class="vs-section">
-            <h2 class="vs-section__title"><i class="bi bi-card-list"></i> @Localizer["Ed_SecIdentification"]</h2>
+            <h2 class="vs-section__title"><pems-icon name="bi-card-list" /> @Localizer["Ed_SecIdentification"]</h2>
             <pems-info-grid>
                 <pems-info-item label="@Localizer["Ed_DocType"]">@Model.DocumentType</pems-info-item>
                 <pems-info-item label="@Localizer["Ed_Project"]">@Model.ProjectName</pems-info-item>
@@ -408,7 +408,7 @@
         </div>
 
         <div class="vs-section">
-            <h2 class="vs-section__title"><i class="bi bi-patch-check"></i> @Localizer["Ed_SecEngineering"]</h2>
+            <h2 class="vs-section__title"><pems-icon name="bi-patch-check" /> @Localizer["Ed_SecEngineering"]</h2>
             <pems-info-grid>
                 <pems-info-item label="@Localizer["Ed_IssuePurpose"]">@(string.IsNullOrEmpty(Model.IssuePurpose) ? "—" : Model.IssuePurpose)</pems-info-item>
                 <pems-info-item label="@Localizer["Ed_PreparedBy"]">
@@ -443,7 +443,7 @@
                 @if (!string.IsNullOrEmpty(Model.ClientApprovalStatus))
                 {
                     <pems-info-item label="@Localizer["Ed_ClientResponse"]">
-                            <span class="vs-pill vs-pill--icon @(Model.ClientApprovalStatus == "Approved" ? "vs-pill--success" : Model.ClientApprovalStatus == "Rejected" ? "vs-pill--danger" : "vs-pill--warning")"><i class="bi @(Model.ClientApprovalStatus == "Approved" ? "bi-check-circle" : Model.ClientApprovalStatus == "Rejected" ? "bi-x-circle" : "bi-exclamation-circle")" aria-hidden="true"></i> @Model.ClientApprovalStatus</span>
+                            <span class="vs-pill vs-pill--icon @(Model.ClientApprovalStatus == "Approved" ? "vs-pill--success" : Model.ClientApprovalStatus == "Rejected" ? "vs-pill--danger" : "vs-pill--warning")"><pems-icon css="@(Model.ClientApprovalStatus == "Approved" ? "bi-check-circle" : Model.ClientApprovalStatus == "Rejected" ? "bi-x-circle" : "bi-exclamation-circle")" aria-hidden="true" /> @Model.ClientApprovalStatus</span>
                             @if (!string.IsNullOrEmpty(Model.ClientComment)) { <span class="vs-sub">@Model.ClientComment</span> }
                     </pems-info-item>
                 }
@@ -462,14 +462,14 @@
         </div>
         <div class="col-lg-4">
             <div class="vs-section">
-                <h2 class="vs-section__title"><i class="bi bi-chat-square-text"></i> @Localizer["Ed_TabComments"]</h2>
+                <h2 class="vs-section__title"><pems-icon name="bi-chat-square-text" /> @Localizer["Ed_TabComments"]</h2>
                 <p class="small text-muted mb-2">@string.Format(Localizer["Ed_OpenClosed"].Value, commentsOpenCount, commentsClosedCount)</p>
                 @if (!engComments.Any())
                 {
                     <p class="small text-muted border rounded p-2 text-center mb-2">@Localizer["Ed_NoCommentsHint"]</p>
                 }
                 <div class="d-flex flex-wrap gap-2">
-                    <pems-button tone="primary" size="small" outline="true" type="button" data-bs-toggle="modal" data-bs-target="#addEngCommentModal"><i class="bi bi-plus-lg" aria-hidden="true"></i> @Localizer["Add Comment"]</pems-button>
+                    <pems-button tone="primary" size="small" outline="true" type="button" data-bs-toggle="modal" data-bs-target="#addEngCommentModal"><pems-icon name="bi-plus-lg" aria-hidden="true" /> @Localizer["Add Comment"]</pems-button>
                     @if (engComments.Any())
                     {
                         <pems-button tone="neutral" size="small" outline="true" type="button" data-bs-toggle="tab" data-bs-target="#tab-comments">@Localizer["Ed_ViewAll"]</pems-button>
@@ -477,10 +477,10 @@
                 </div>
             </div>
             <div class="vs-section">
-                <h2 class="vs-section__title"><i class="bi bi-paperclip"></i> @Localizer["Ed_TabFiles"]</h2>
+                <h2 class="vs-section__title"><pems-icon name="bi-paperclip" /> @Localizer["Ed_TabFiles"]</h2>
                 <p class="small text-muted mb-2">@((Model.Attachments?.Count ?? 0) == 0 ? Localizer["Ed_NoFilesHint"].Value : string.Format(Localizer["Ed_FilesCount"].Value, Model.Attachments!.Count))</p>
                 <div class="d-flex flex-wrap gap-2">
-                    <pems-button tone="neutral" size="small" outline="true" as="a" asp-action="UploadAttachment" asp-route-id="@Model.DocumentId"><i class="bi bi-upload" aria-hidden="true"></i> @Localizer["Ed_Upload"]</pems-button>
+                    <pems-button tone="neutral" size="small" outline="true" as="a" asp-action="UploadAttachment" asp-route-id="@Model.DocumentId"><pems-icon name="bi-upload" aria-hidden="true" /> @Localizer["Ed_Upload"]</pems-button>
                     @if ((Model.Attachments?.Count ?? 0) > 0)
                     {
                         <pems-button tone="neutral" size="small" outline="true" type="button" data-bs-toggle="tab" data-bs-target="#tab-attachments">@Localizer["Ed_ViewAll"]</pems-button>
@@ -497,7 +497,7 @@
             <div class="d-flex justify-content-between align-items-center mb-3">
                 <h6 class="mb-0">@Localizer["Ed_SecFiles"]</h6>
                 <pems-button tone="primary" size="small" as="a" asp-action="UploadAttachment" asp-route-id="@Model.DocumentId">
-                    <i class="bi bi-upload"></i> @Localizer["Ed_Upload"]
+                    <pems-icon name="bi-upload" /> @Localizer["Ed_Upload"]
                 </pems-button>
             </div>
 
@@ -525,7 +525,7 @@
                                     @file.FileName
                                     @if (!string.IsNullOrEmpty(file.FileHash))
                                     {
-                                        <i class="bi bi-shield-check text-success ms-1" data-bs-toggle="tooltip" title="SHA-256: @file.FileHash"></i>
+                                        <pems-icon name="bi-shield-check" css="text-success ms-1" data-bs-toggle="tooltip" title="SHA-256: @file.FileHash" />
                                     }
                                 </td>
                                 <td>
@@ -554,17 +554,17 @@
                                 <td class="small text-muted">@file.UploadDate.ToString("yyyy-MM-dd")</td>
                                 <td class="text-end">
                                     <div class="d-flex gap-1 justify-content-end flex-wrap">
-                                        <pems-button tone="primary" size="small" outline="true" as="a" asp-action="DownloadAttachment" asp-route-id="@file.AttachmentId" data-bs-toggle="tooltip" title="Download attachment" aria-label="Download @file.FileName"><i class="bi bi-download"></i></pems-button>
+                                        <pems-button tone="primary" size="small" outline="true" as="a" asp-action="DownloadAttachment" asp-route-id="@file.AttachmentId" data-bs-toggle="tooltip" title="Download attachment" aria-label="Download @file.FileName"><pems-icon name="bi-download" /></pems-button>
                                         @if (file.AIStatus == "Completed")
                                         {
                                             <pems-button tone="warning" size="small" outline="true" as="a" asp-controller="AIExtraction" asp-action="Review" asp-route-attachmentId="@file.AttachmentId">AI Data</pems-button>
                                             <pems-button tone="neutral" size="small" outline="true" as="a" asp-controller="EngineeringDocumentIntelligence" asp-action="Review" asp-route-id="@Model.DocumentId">Intelligence</pems-button>
                                         }
                                         <form asp-controller="OCRProcessing" asp-action="Retry" asp-route-id="@file.AttachmentId" method="post" class="d-inline">
-                                            <pems-button tone="neutral" size="small" outline="true" data-bs-toggle="tooltip" title="Re-analyze" aria-label="Re-analyze @file.FileName"><i class="bi bi-arrow-repeat"></i></pems-button>
+                                            <pems-button tone="neutral" size="small" outline="true" data-bs-toggle="tooltip" title="Re-analyze" aria-label="Re-analyze @file.FileName"><pems-icon name="bi-arrow-repeat" /></pems-button>
                                         </form>
                                         <form asp-action="DeleteAttachment" asp-route-id="@file.AttachmentId" method="post" class="d-inline" data-pems-confirm="Delete file?">
-                                            <pems-button tone="danger" size="small" outline="true" data-bs-toggle="tooltip" title="Delete attachment" aria-label="Delete @file.FileName"><i class="bi bi-trash"></i></pems-button>
+                                            <pems-button tone="danger" size="small" outline="true" data-bs-toggle="tooltip" title="Delete attachment" aria-label="Delete @file.FileName"><pems-icon name="bi-trash" /></pems-button>
                                         </form>
                                     </div>
                                 </td>
@@ -592,11 +592,11 @@
         <div class="tab-pane fade" id="tab-idc" role="tabpanel">
             <div class="vs-section">
                 <div class="d-flex justify-content-between align-items-center mb-3">
-                    <h6 class="mb-0"><i class="bi bi-diagram-3"></i> Inter-Discipline Check (IDC) — Discipline Review Summary</h6>
+                    <h6 class="mb-0"><pems-icon name="bi-diagram-3" /> Inter-Discipline Check (IDC) — Discipline Review Summary</h6>
                     <span class="text-muted small">@idcApprovedCount / @idcStatusForPage.Count disciplines responded</span>
                 </div>
                 <p class="text-muted small">
-                    <i class="bi bi-info-circle"></i> نتایج زیر صرفاً مشورتی هستند و به‌تنهایی وضعیت رسمی مدرک را
+                    <pems-icon name="bi-info-circle" /> نتایج زیر صرفاً مشورتی هستند و به‌تنهایی وضعیت رسمی مدرک را
                     تعیین نمی‌کنند - حتی اگر یک یا چند دیسیپلین «Reject» بدهند. تصمیم نهایی (Approve/Reject/Revise &amp;
                     Resubmit) همیشه توسط سازنده/تأییدکننده‌ی مدرک، با در نظر گرفتن مجموع این نظرات، گرفته می‌شود.
                 </p>
@@ -615,7 +615,7 @@
                             };
                             <tr>
                                 <td>@idc.DisciplineName</td>
-                                <td><pems-badge tone="none" css="@idcBadge"><i class="bi @idcIcon"></i> @idcLabel</pems-badge></td>
+                                <td><pems-badge tone="none" css="@idcBadge"><pems-icon css="@idcIcon" /> @idcLabel</pems-badge></td>
                                 <td class="small">@(idc.Comment ?? "—")</td>
                                 <td class="small">@(idc.RespondedByName ?? "—")</td>
                                 <td class="small">@(idc.RespondedDate?.ToString("yyyy-MM-dd HH:mm") ?? "—")</td>
@@ -634,7 +634,7 @@
                             <form asp-action="IdcRespond" method="post" class="d-inline">
                                 <input type="hidden" name="id" value="@Model.DocumentId" />
                                 <input type="hidden" name="decision" value="Approve" />
-                                <button class="vs-btn vs-btn--primary"><i class="bi bi-check-lg"></i> No Comment</button>
+                                <button class="vs-btn vs-btn--primary"><pems-icon name="bi-check-lg" /> No Comment</button>
                             </form>
                             <button type="button" class="vs-btn" data-bs-toggle="modal" data-bs-target="#idcCommentModal">@Localizer["Approve with Comments"]</button>
                             <button type="button" class="vs-btn vs-btn--dangerline" data-bs-toggle="modal" data-bs-target="#idcRejectModal">@Localizer["Revision Required"]</button>
@@ -660,7 +660,7 @@
                             var revIsCurrent = rev.RevisionNo == Model.RevisionNo;
                             <tr class="@(revIsCurrent ? "vs-rev-current" : "vs-rev-superseded")">
                                 <td><span class="vs-num vs-num--strong">@rev.RevisionNo</span> @if (revIsCurrent) { <span class="vs-pill vs-pill--current">@Localizer["Ed_CurrentBadge"]</span> }</td>
-                                <td><span class="vs-pill vs-pill--icon @DocumentStatusBadge.Tone(rev.Status)"><i class="bi @DocumentStatusBadge.Icon(rev.Status)" aria-hidden="true"></i> @StatusText(rev.Status)</span></td>
+                                <td><span class="vs-pill vs-pill--icon @DocumentStatusBadge.Tone(rev.Status)"><pems-icon css="@DocumentStatusBadge.Icon(rev.Status)" aria-hidden="true" /> @StatusText(rev.Status)</span></td>
                                 <td class="small">
                                     @{
                                         var clientBadge = rev.ClientReviewStatus switch
@@ -693,8 +693,8 @@
                                 <tr class="table-light">
                                     <td colspan="11" class="small">
                                         @if (!string.IsNullOrEmpty(rev.ChangeDescription)) { <div><strong>Change:</strong> @rev.ChangeDescription</div> }
-                                        @if (!string.IsNullOrEmpty(rev.VendorComment)) { <div><i class="bi bi-building"></i> <strong>Vendor Comment:</strong> @rev.VendorComment</div> }
-                                        @if (!string.IsNullOrEmpty(rev.AIRevisionSummary)) { <div><i class="bi bi-robot"></i> <strong>AI Summary:</strong> @rev.AIRevisionSummary</div> }
+                                        @if (!string.IsNullOrEmpty(rev.VendorComment)) { <div><pems-icon name="bi-building" /> <strong>Vendor Comment:</strong> @rev.VendorComment</div> }
+                                        @if (!string.IsNullOrEmpty(rev.AIRevisionSummary)) { <div><pems-icon name="bi-robot" /> <strong>AI Summary:</strong> @rev.AIRevisionSummary</div> }
                                     </td>
                                 </tr>
                             }
@@ -737,7 +737,7 @@
                             _ => "bi-record-circle-fill text-secondary"
                         };
                         <div class="pems-timeline-item">
-                            <div class="pems-timeline-marker"><i class="bi @wfIcon"></i></div>
+                            <div class="pems-timeline-marker"><pems-icon css="@wfIcon" /></div>
                             <div class="pems-timeline-content">
                                 <div class="d-flex justify-content-between flex-wrap gap-2">
                                     <div>
@@ -750,7 +750,7 @@
                                 {
                                     <div class="small mt-1">"@item.Comment"</div>
                                 }
-                                <div class="small text-muted mt-1"><i class="bi bi-person"></i> @(item.ActorName ?? "System")</div>
+                                <div class="small text-muted mt-1"><pems-icon name="bi-person" /> @(item.ActorName ?? "System")</div>
                             </div>
                         </div>
                     }
@@ -786,7 +786,7 @@
     @* ===================== Correspondence ===================== *@
     <div class="tab-pane fade" id="tab-correspondence" role="tabpanel">
         <div class="vs-section">
-            <h6 class="mb-3"><i class="bi bi-envelope-paper"></i> @Localizer["Ed_SecCorrespondence"]</h6>
+            <h6 class="mb-3"><pems-icon name="bi-envelope-paper" /> @Localizer["Ed_SecCorrespondence"]</h6>
             @if (relatedLetters.Any())
             {
                 <pems-table kind="enterprise">
@@ -800,7 +800,7 @@
                                 <td>@l.Subject</td>
                                 <td class="small text-muted">@l.LetterDate.ToString("yyyy-MM-dd")</td>
                                 <td><pems-badge tone="info">@l.Status</pems-badge></td>
-                                <td><pems-button tone="neutral" size="small" outline="true" as="a" asp-controller="Letter" asp-action="Details" asp-route-id="@l.LetterId" data-bs-toggle="tooltip" title="View letter" aria-label="View letter @l.LetterNumber"><i class="bi bi-eye"></i></pems-button></td>
+                                <td><pems-button tone="neutral" size="small" outline="true" as="a" asp-controller="Letter" asp-action="Details" asp-route-id="@l.LetterId" data-bs-toggle="tooltip" title="View letter" aria-label="View letter @l.LetterNumber"><pems-icon name="bi-eye" /></pems-button></td>
                             </tr>
                         }
                     </tbody>
@@ -819,7 +819,7 @@
         @* طبق «PEMS Phase 2A — EDMS Foundation» بخش ۲: قبلاً هیچ پیوند متقابلی با Transmittal
            روی این صفحه نبود - Service/Entity موجود، فقط یک بخش خلاصه‌ی جدید *@
         <div class="vs-section">
-            <h6 class="mb-3"><i class="bi bi-truck"></i> @Localizer["Ed_SecTransmittals"]</h6>
+            <h6 class="mb-3"><pems-icon name="bi-truck" /> @Localizer["Ed_SecTransmittals"]</h6>
             @if (relatedTransmittals.Any())
             {
                 <pems-table kind="enterprise">
@@ -833,7 +833,7 @@
                                 <td>@t.Purpose</td>
                                 <td class="small text-muted">@(t.SentDate?.ToString("yyyy-MM-dd") ?? t.TransmittalDate.ToString("yyyy-MM-dd"))</td>
                                 <td><span class="vs-pill @PEMS.Web.Helpers.VdrUi.TransmittalTone(t.Status)">@VdrUi.Loc(Localizer, "St_", t.Status)</span></td>
-                                <td><pems-button tone="neutral" size="small" outline="true" as="a" asp-controller="Transmittal" asp-action="Details" asp-route-id="@t.TransmittalId" data-bs-toggle="tooltip" title="View transmittal" aria-label="View transmittal @t.TransmittalNo"><i class="bi bi-eye"></i></pems-button></td>
+                                <td><pems-button tone="neutral" size="small" outline="true" as="a" asp-controller="Transmittal" asp-action="Details" asp-route-id="@t.TransmittalId" data-bs-toggle="tooltip" title="View transmittal" aria-label="View transmittal @t.TransmittalNo"><pems-icon name="bi-eye" /></pems-button></td>
                             </tr>
                         }
                     </tbody>
@@ -852,13 +852,13 @@
 {
     <div class="content-card mb-3">
         <div class="d-flex justify-content-between align-items-center mb-2">
-            <h6 class="mb-0"><i class="bi bi-file-earmark-pdf"></i> Document Viewer <span class="text-muted small">(click anywhere on the page to pin a comment)</span></h6>
+            <h6 class="mb-0"><pems-icon name="bi-file-earmark-pdf" /> Document Viewer <span class="text-muted small">(click anywhere on the page to pin a comment)</span></h6>
             <div class="d-flex align-items-center gap-2">
-                <pems-button tone="neutral" size="small" outline="true" type="button" id="pdfPrevPage" data-bs-toggle="tooltip" title="@Localizer["Previous page"]" aria-label="@Localizer["Previous page"]"><i class="bi bi-chevron-left"></i></pems-button>
+                <pems-button tone="neutral" size="small" outline="true" type="button" id="pdfPrevPage" data-bs-toggle="tooltip" title="@Localizer["Previous page"]" aria-label="@Localizer["Previous page"]"><pems-icon name="bi-chevron-left" /></pems-button>
                 <span class="small" id="pdfPageLabel">Page - / -</span>
-                <pems-button tone="neutral" size="small" outline="true" type="button" id="pdfNextPage" data-bs-toggle="tooltip" title="@Localizer["Next page"]" aria-label="@Localizer["Next page"]"><i class="bi bi-chevron-right"></i></pems-button>
-                <pems-button tone="neutral" size="small" outline="true" type="button" id="pdfZoomOut" data-bs-toggle="tooltip" title="@Localizer["Zoom out"]" aria-label="@Localizer["Zoom out"]"><i class="bi bi-zoom-out"></i></pems-button>
-                <pems-button tone="neutral" size="small" outline="true" type="button" id="pdfZoomIn" data-bs-toggle="tooltip" title="@Localizer["Zoom in"]" aria-label="@Localizer["Zoom in"]"><i class="bi bi-zoom-in"></i></pems-button>
+                <pems-button tone="neutral" size="small" outline="true" type="button" id="pdfNextPage" data-bs-toggle="tooltip" title="@Localizer["Next page"]" aria-label="@Localizer["Next page"]"><pems-icon name="bi-chevron-right" /></pems-button>
+                <pems-button tone="neutral" size="small" outline="true" type="button" id="pdfZoomOut" data-bs-toggle="tooltip" title="@Localizer["Zoom out"]" aria-label="@Localizer["Zoom out"]"><pems-icon name="bi-zoom-out" /></pems-button>
+                <pems-button tone="neutral" size="small" outline="true" type="button" id="pdfZoomIn" data-bs-toggle="tooltip" title="@Localizer["Zoom in"]" aria-label="@Localizer["Zoom in"]"><pems-icon name="bi-zoom-in" /></pems-button>
             </div>
         </div>
         <div id="pdfCanvasWrapper" style="position:relative; border:1px solid var(--pems-surface-border,#dee2e6); overflow:auto; max-height:75vh; text-align:center; cursor:crosshair;">
@@ -967,7 +967,7 @@
                         @c.CommentText
                         @if (!string.IsNullOrEmpty(c.AttachmentFilePath))
                         {
-                            <div><a href="@Url.Action("Download", "Files", new { id = c.AttachmentId })" target="_blank"><i class="bi bi-paperclip"></i> @c.AttachmentFileName</a></div>
+                            <div><a href="@Url.Action("Download", "Files", new { id = c.AttachmentId })" target="_blank"><pems-icon name="bi-paperclip" /> @c.AttachmentFileName</a></div>
                         }
                         @if (!string.IsNullOrEmpty(c.RequiredAction))
                         {
@@ -976,7 +976,7 @@
                         @if (c.MarksRevisionRequired)
                         {
                             <div>
-                                <pems-badge tone="warning"><i class="bi bi-cloud-fill"></i> Marked for Revision</pems-badge>
+                                <pems-badge tone="warning"><pems-icon name="bi-cloud-fill" /> Marked for Revision</pems-badge>
                                 @if (c.TriggeredRevisionId.HasValue)
                                 {
                                     <pems-badge tone="success">Rev @c.TriggeredRevisionNo created</pems-badge>
@@ -1015,12 +1015,12 @@
                         @c.ResponseText
                         @if (!string.IsNullOrEmpty(c.ReplyAttachmentFilePath))
                         {
-                            <div><a href="@Url.Action("Download", "Files", new { id = c.ReplyAttachmentId })" target="_blank"><i class="bi bi-paperclip"></i> @c.ReplyAttachmentFileName</a></div>
+                            <div><a href="@Url.Action("Download", "Files", new { id = c.ReplyAttachmentId })" target="_blank"><pems-icon name="bi-paperclip" /> @c.ReplyAttachmentFileName</a></div>
                         }
                         @if (string.IsNullOrEmpty(c.ResponseText) && string.IsNullOrEmpty(c.ReplyAttachmentFilePath))
                         {
                             <pems-button tone="primary" size="small" outline="true" css="mt-1" type="button" data-bs-toggle="modal" data-bs-target="#engReplyModal" data-fill-commentid="@c.VDRCommentId" data-fill-commentno="@c.CommentNo" data-fill-commenttext="@c.CommentText">
-                                <i class="bi bi-reply"></i> Reply
+                                <pems-icon name="bi-reply" /> Reply
                             </pems-button>
                         }
                     </td>
@@ -1031,7 +1031,7 @@
     @if (!engComments.Any()) { <p class="text-muted">No comments recorded yet.</p> }
 
     <pems-button tone="primary" size="small" type="button" data-bs-toggle="modal" data-bs-target="#addEngCommentModal">
-        <i class="bi bi-plus-lg"></i> @Localizer["Add Comment"]
+        <pems-icon name="bi-plus-lg" /> @Localizer["Add Comment"]
     </pems-button>
 </div>
     </div>
@@ -1047,7 +1047,7 @@
             <form asp-action="Submit" method="post">
                 <input type="hidden" name="id" value="@Model.DocumentId" />
                 <div class="modal-header">
-                    <h6 class="modal-title"><i class="bi bi-signpost-split"></i> Engineering Document Approval Workflow</h6>
+                    <h6 class="modal-title"><pems-icon name="bi-signpost-split" /> Engineering Document Approval Workflow</h6>
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
@@ -1057,7 +1057,7 @@
 
                     <div class="mb-2">
                         <pems-label css="small fw-bold">
-                            <i class="bi bi-diagram-3"></i> این مدرک نیاز به بازبینی سایر دیسیپلین‌ها (IDC) داره؟
+                            <pems-icon name="bi-diagram-3" /> این مدرک نیاز به بازبینی سایر دیسیپلین‌ها (IDC) داره؟
                         </pems-label>
                         <div class="text-muted small mb-2">
                             اگه دیسیپلینی رو انتخاب نکنی، مدرک بعد از Check مستقیم می‌ره مرحله‌ی تایید نهایی (بدون IDC).
@@ -1080,7 +1080,7 @@
                 </div>
                 <div class="modal-footer">
                     <pems-button tone="neutral" size="small" outline="true" type="button" data-bs-dismiss="modal">@Localizer["انصراف"]</pems-button>
-                    <pems-button tone="warning" size="small" type="submit"><i class="bi bi-send"></i> @Localizer["تایید و ارسال"]</pems-button>
+                    <pems-button tone="warning" size="small" type="submit"><pems-icon name="bi-send" /> @Localizer["تایید و ارسال"]</pems-button>
                 </div>
             </form>
         </pems-modal>
@@ -1145,7 +1145,7 @@
 {
     <pems-modal id="freezeModal" tabindex="-1">
                 <form asp-action="Freeze" asp-route-id="@Model.DocumentId" method="post">
-                    <div class="modal-header"><h6 class="modal-title"><i class="bi bi-snow"></i> Freeze Document</h6></div>
+                    <div class="modal-header"><h6 class="modal-title"><pems-icon name="bi-snow" /> Freeze Document</h6></div>
                     <div class="modal-body">
                         <p class="text-muted small">این مدرک منجمد (Frozen) شود؟ پس از آن دیگر قابل ویرایش یا رویژن جدید نخواهد بود.</p>
                         <pems-label css="small">Freeze reason (required)</pems-label>
@@ -1153,7 +1153,7 @@
                     </div>
                     <div class="modal-footer">
                         <pems-button tone="neutral" size="small" outline="true" type="button" data-bs-dismiss="modal">@Localizer["Cancel"]</pems-button>
-                        <pems-button tone="dark" size="small" outline="true" type="submit"><i class="bi bi-snow"></i> @Localizer["Freeze"]</pems-button>
+                        <pems-button tone="dark" size="small" outline="true" type="submit"><pems-icon name="bi-snow" /> @Localizer["Freeze"]</pems-button>
                     </div>
                 </form>
             </pems-modal>
@@ -1162,7 +1162,7 @@
 {
     <pems-modal id="holdModal" tabindex="-1">
                 <form asp-action="Hold" asp-route-id="@Model.DocumentId" method="post">
-                    <div class="modal-header"><h6 class="modal-title"><i class="bi bi-pause-circle"></i> Hold Document</h6></div>
+                    <div class="modal-header"><h6 class="modal-title"><pems-icon name="bi-pause-circle" /> Hold Document</h6></div>
                     <div class="modal-body">
                         <p class="text-muted small">این مدرک در وضعیت Hold قرار بگیرد؟ تا رفع Hold، قابل تأیید (Approve) یا صدور (Issue) نخواهد بود.</p>
                         <pems-label css="small">Hold reason (required)</pems-label>
@@ -1170,7 +1170,7 @@
                     </div>
                     <div class="modal-footer">
                         <pems-button tone="neutral" size="small" outline="true" type="button" data-bs-dismiss="modal">@Localizer["Cancel"]</pems-button>
-                        <pems-button tone="dark" size="small" outline="true" type="submit"><i class="bi bi-pause-circle"></i> @Localizer["Hold"]</pems-button>
+                        <pems-button tone="dark" size="small" outline="true" type="submit"><pems-icon name="bi-pause-circle" /> @Localizer["Hold"]</pems-button>
                     </div>
                 </form>
             </pems-modal>
@@ -1184,7 +1184,7 @@
 <pems-modal size="large" id="issueModal" tabindex="-1">
             <form asp-action="Issue" method="post" id="issueForm">
                 <input type="hidden" name="id" value="@Model.DocumentId" />
-                <div class="modal-header"><h6 class="modal-title"><i class="bi bi-send-check"></i> @Localizer["صدور مدرک - انتخاب واحد تحویل"]</h6></div>
+                <div class="modal-header"><h6 class="modal-title"><pems-icon name="bi-send-check" /> @Localizer["صدور مدرک - انتخاب واحد تحویل"]</h6></div>
                 <div class="modal-body">
                     @* طبق Phase E-04: هدف واقعی همین صدور (IFC/IFA/IFI/...) - در لحظه‌ی صدور
                        ثبت می‌شود، نه مقدار قدیمی فرم Create/Edit *@
@@ -1253,7 +1253,7 @@
                 </div>
                 <div class="modal-footer">
                     <pems-button tone="neutral" size="small" outline="true" type="button" data-bs-dismiss="modal">@Localizer["انصراف"]</pems-button>
-                    <pems-button tone="none" size="small" css="btn-primary" type="submit"><i class="bi bi-send-check"></i> تایید و صدور</pems-button>
+                    <pems-button tone="none" size="small" css="btn-primary" type="submit"><pems-icon name="bi-send-check" /> تایید و صدور</pems-button>
                 </div>
             </form>
         </pems-modal>
@@ -1305,7 +1305,7 @@
                         <pems-textarea scale="small" name="changeDescription" rows="3" placeholder="What changed in this revision?"></pems-textarea>
                     </div>
                     <div class="mb-2">
-                        <pems-label css="small"><i class="bi bi-building"></i> Vendor Comment</pems-label>
+                        <pems-label css="small"><pems-icon name="bi-building" /> Vendor Comment</pems-label>
                         <pems-textarea scale="small" name="vendorComment" rows="3" placeholder="Paste or summarize the vendor's comment that led to this revision (if applicable)"></pems-textarea>
                     </div>
                     @{
@@ -1315,7 +1315,7 @@
                     @if (openClouded.Any())
                     {
                         <div class="mb-2">
-                            <pems-label css="small"><i class="bi bi-cloud-fill"></i> Closes Marked-for-Revision comment <span class="text-muted">@Localizer["(optional)"]</span></pems-label>
+                            <pems-label css="small"><pems-icon name="bi-cloud-fill" /> Closes Marked-for-Revision comment <span class="text-muted">@Localizer["(optional)"]</span></pems-label>
                             <pems-select scale="small" name="triggeringCommentId">
                                 <option value="">@Localizer["-- None --"]</option>
                                 @foreach (var oc in openClouded)
@@ -1346,7 +1346,7 @@
                         var availableIncomingLetters = (IEnumerable<PEMS.Domain.Entities.Letter>)(ViewBag.AvailableIncomingLetters ?? new List<PEMS.Domain.Entities.Letter>());
                     }
                     <div class="mb-2">
-                        <pems-label css="small"><i class="bi bi-envelope-open"></i> نامه‌ی وارده (الزامی)</pems-label>
+                        <pems-label css="small"><pems-icon name="bi-envelope-open" /> نامه‌ی وارده (الزامی)</pems-label>
                         @if (availableIncomingLetters.Any())
                         {
                             <pems-select scale="small" name="incomingLetterId" required>

@@ -55,7 +55,7 @@
 @* ================= CONTRACT INFORMATION ================= *@
 <div class="content-card">
     <div class="d-flex justify-content-end mb-2">
-        <pems-button tone="neutral" size="small" outline="true" as="a" asp-controller="Relationship" asp-action="Contract" asp-route-id="@Model.ContractId"><i class="bi bi-diagram-3"></i> @Localizer["Cm_Relationships"]</pems-button>
+        <pems-button tone="neutral" size="small" outline="true" as="a" asp-controller="Relationship" asp-action="Contract" asp-route-id="@Model.ContractId"><pems-icon name="bi-diagram-3" /> @Localizer["Cm_Relationships"]</pems-button>
     </div>
     <pems-info-grid>
         <pems-info-item label="@Localizer["Contract No"]" num>@Model.ContractNo</pems-info-item>

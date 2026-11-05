@@ -40,7 +40,7 @@
                         </pems-select>
                     </div>
                 </pems-list-filters>
-                <a class="lp-icon-btn" asp-controller="MaintenanceStrategy" asp-action="Index" title="@Localizer["Rcm_Strategies"]" aria-label="@Localizer["Rcm_Strategies"]"><i class="bi bi-diagram-3" aria-hidden="true"></i></a>
+                <a class="lp-icon-btn" asp-controller="MaintenanceStrategy" asp-action="Index" title="@Localizer["Rcm_Strategies"]" aria-label="@Localizer["Rcm_Strategies"]"><pems-icon name="bi-diagram-3" aria-hidden="true" /></a>
                 @if (canEdit)
                 {
                     <pems-list-new href="@Url.Action("Edit")" text="@Localizer["Rcm_NewFailureMode"]" />
@@ -78,10 +78,10 @@
                             <td class="text-end text-nowrap">
                                 @if (canEdit)
                                 {
-                                    <a asp-action="Edit" asp-route-id="@m.FailureModeId" class="lp-act lp-act--always" title="@Localizer["Rcm_Edit"]" aria-label="@Localizer["Rcm_Edit"]"><i class="bi bi-pencil" aria-hidden="true"></i></a>
+                                    <a asp-action="Edit" asp-route-id="@m.FailureModeId" class="lp-act lp-act--always" title="@Localizer["Rcm_Edit"]" aria-label="@Localizer["Rcm_Edit"]"><pems-icon name="bi-pencil" aria-hidden="true" /></a>
                                     <form asp-action="Toggle" method="post" class="d-inline">
                                         <input type="hidden" name="id" value="@m.FailureModeId" /><input type="hidden" name="active" value="false" />
-                                        <button type="submit" class="lp-act lp-act--always" title="@Localizer["Rcm_Deactivate"]" aria-label="@Localizer["Rcm_Deactivate"]"><i class="bi bi-slash-circle" aria-hidden="true"></i></button>
+                                        <button type="submit" class="lp-act lp-act--always" title="@Localizer["Rcm_Deactivate"]" aria-label="@Localizer["Rcm_Deactivate"]"><pems-icon name="bi-slash-circle" aria-hidden="true" /></button>
                                     </form>
                                 }
                             </td>

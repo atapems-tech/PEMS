@@ -86,7 +86,7 @@
             else
             { <a href="@IndexUrl(tb)">@Localizer[key]</a> }
         }
-        <a asp-controller="PartCatalogueRequest" asp-action="Index" class="pc-rpt-back"><i class="bi bi-journal-plus" aria-hidden="true"></i> @Localizer["Pc_Menu"]</a>
+        <a asp-controller="PartCatalogueRequest" asp-action="Index" class="pc-rpt-back"><pems-icon name="bi-journal-plus" aria-hidden="true" /> @Localizer["Pc_Menu"]</a>
     </nav>
 
     <pems-list-panel>
@@ -170,8 +170,8 @@
         @if (!r.SeesAll || r.Truncated)
         {
             <div class="pc-rpt-notes small text-muted">
-                @if (!r.SeesAll) { <span><i class="bi bi-eye-slash" aria-hidden="true"></i> @Localizer["PcRpt_ScopeNote"]</span> }
-                @if (r.Truncated) { <span><i class="bi bi-scissors" aria-hidden="true"></i> @Localizer["PcRpt_Truncated", PartCatalogueReportDto.MaxRows]</span> }
+                @if (!r.SeesAll) { <span><pems-icon name="bi-eye-slash" aria-hidden="true" /> @Localizer["PcRpt_ScopeNote"]</span> }
+                @if (r.Truncated) { <span><pems-icon name="bi-scissors" aria-hidden="true" /> @Localizer["PcRpt_Truncated", PartCatalogueReportDto.MaxRows]</span> }
             </div>
         }
 

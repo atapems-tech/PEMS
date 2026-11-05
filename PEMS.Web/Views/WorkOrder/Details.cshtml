@@ -68,7 +68,7 @@
     <div class="content-card mb-3">
         <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
             <h6 class="mb-0">@Localizer["Workflow"] <span class="text-muted small">@wf.WorkflowName · @Localizer["Version"] @wf.VersionNumber · @Localizer[wf.Status]</span></h6>
-            @foreach (var w in wf.Warnings) { <span class="small text-warning"><i class="bi bi-exclamation-triangle"></i> @w</span> }
+            @foreach (var w in wf.Warnings) { <span class="small text-warning"><pems-icon name="bi-exclamation-triangle" /> @w</span> }
         </div>
         <partial name="_PemsStageDiagram" model="diagram" />
     </div>
@@ -107,7 +107,7 @@ else
                     <pems-modal id="completeFailureModal" tabindex="-1">
                             <form asp-action="AdvanceStatus" method="post">
                                 <input type="hidden" name="id" value="@Model.WorkOrderId" />
-                                <div class="modal-header"><h6 class="modal-title"><i class="bi bi-clipboard-data"></i> ثبت اطلاعات تکمیل</h6></div>
+                                <div class="modal-header"><h6 class="modal-title"><pems-icon name="bi-clipboard-data" /> ثبت اطلاعات تکمیل</h6></div>
                                 <div class="modal-body">
                                     @if (Model.WorkOrderType is "Corrective" or "Emergency")
                                     {
@@ -187,7 +187,7 @@ else
             }
             else if (Model.Status != "OnHold")
             {
-                <pems-badge tone="success"><i class="bi bi-check2-circle"></i> Final Status</pems-badge>
+                <pems-badge tone="success"><pems-icon name="bi-check2-circle" /> Final Status</pems-badge>
             }
 
             @* طبق CMMS Production Baseline v1 بند ۹.۲: مسیرهای انشعابی OnHold/Cancelled/Rejected -
@@ -197,14 +197,14 @@ else
                 <form asp-action="Hold" method="post" class="d-inline ms-1">
                     <input type="hidden" name="id" value="@Model.WorkOrderId" />
                     <pems-input scale="small" css="d-inline-block" name="reason" required style="width:160px;" placeholder="@Localizer["Reason (required)"]" />
-                    <pems-button tone="warning" size="small" outline="true" type="submit" data-legacy="hold"><i class="bi bi-pause-circle"></i> @Localizer["Hold"]</pems-button>
+                    <pems-button tone="warning" size="small" outline="true" type="submit" data-legacy="hold"><pems-icon name="bi-pause-circle" /> @Localizer["Hold"]</pems-button>
                 </form>
             }
             @if (canEditWo && Model.Status == "OnHold")
             {
                 <form asp-action="Resume" method="post" class="d-inline ms-1">
                     <input type="hidden" name="id" value="@Model.WorkOrderId" />
-                    <pems-button tone="primary" size="small" type="submit"><i class="bi bi-play-circle"></i> Resume</pems-button>
+                    <pems-button tone="primary" size="small" type="submit"><pems-icon name="bi-play-circle" /> Resume</pems-button>
                 </form>
             }
             @if (canApproveWo && Model.Status == "Open")
@@ -238,14 +238,14 @@ else
     @if (Model.SourceWorkRequestId.HasValue)
     {
         <div class="small text-muted mt-1">
-            <i class="bi bi-clipboard-plus"></i> Source: <a asp-controller="WorkRequest" asp-action="Details" asp-route-id="@Model.SourceWorkRequestId">Work Request</a>
+            <pems-icon name="bi-clipboard-plus" /> Source: <a asp-controller="WorkRequest" asp-action="Details" asp-route-id="@Model.SourceWorkRequestId">Work Request</a>
         </div>
     }
 
     @if (!string.IsNullOrWhiteSpace(Model.FailureModeCode) || !string.IsNullOrWhiteSpace(Model.RootCause))
     {
         <pems-alert tone="secondary" css="small mt-2 mb-0">
-            <strong><i class="bi bi-clipboard-data"></i> Failure Analysis:</strong>
+            <strong><pems-icon name="bi-clipboard-data" /> Failure Analysis:</strong>
             @Model.FailureModeCode / @Model.FailureCauseCode
             @if (Model.DowntimeHours.HasValue) { <span> — Downtime: @Model.DowntimeHours ساعت</span> }
             @if (!string.IsNullOrWhiteSpace(Model.RootCause)) { <div>Root Cause: @Model.RootCause</div> }
@@ -349,7 +349,7 @@ else
                 </form>
                 @foreach (var denied in actions.Where(a => !a.IsAllowed && !string.IsNullOrWhiteSpace(a.DeniedReason)))
                 {
-                    <div class="small text-muted w-100"><i class="bi bi-lock"></i> @ActionLabel(denied): @denied.DeniedReason</div>
+                    <div class="small text-muted w-100"><pems-icon name="bi-lock" /> @ActionLabel(denied): @denied.DeniedReason</div>
                 }
             }
             else
@@ -383,7 +383,7 @@ else
                     {
                         <div class="col-12">
                             <pems-alert tone="info" css="small py-2 mb-0">
-                                <i class="bi bi-info-circle"></i> @Localizer["No teams exist for the responsible discipline yet; assign an individual executor or create a team first."]
+                                <pems-icon name="bi-info-circle" /> @Localizer["No teams exist for the responsible discipline yet; assign an individual executor or create a team first."]
                                 <a asp-controller="Team" asp-action="Index" class="alert-link">@Localizer["Go to Teams"]</a>
                             </pems-alert>
                         </div>
@@ -455,7 +455,7 @@ else
 @if (statusHistory.Any())
 {
     <div class="content-card mb-3">
-        <h6 class="mb-3"><i class="bi bi-clock-history"></i> @(isLegacy ? Localizer["Status History"] : Localizer["Business Audit"])</h6>
+        <h6 class="mb-3"><pems-icon name="bi-clock-history" /> @(isLegacy ? Localizer["Status History"] : Localizer["Business Audit"])</h6>
         <ul class="list-unstyled mb-0">
             @foreach (var h in statusHistory)
             {
@@ -474,7 +474,7 @@ else
 }
 
 <div class="content-card mb-3">
-    <h6 class="mb-3"><i class="bi bi-people"></i> @Localizer["بازبینی چند-دیسیپلینه"]</h6>
+    <h6 class="mb-3"><pems-icon name="bi-people" /> @Localizer["بازبینی چند-دیسیپلینه"]</h6>
     <p class="text-muted small">
         طبق رویه‌ی استاندارد هماهنگی چند-تخصصی (Multi-Craft Coordination، EN 13460): اگه این
         کار نیاز به تایید/یافته‌ی چند دیسیپلین تعمیراتی داره (مثلاً برق + مکانیک + ابزاردقیق)،
@@ -483,12 +483,12 @@ else
 
     @if (!hasPendingReview && !Ctl(WoSection.DisciplineReview))
     {
-        <p class="text-muted small mb-2"><i class="bi bi-lock"></i> @Localizer["Requesting a multi-discipline review is not available at this stage or with your permissions."]</p>
+        <p class="text-muted small mb-2"><pems-icon name="bi-lock" /> @Localizer["Requesting a multi-discipline review is not available at this stage or with your permissions."]</p>
     }
     else if (!hasPendingReview)
     {
         <pems-button tone="primary" size="small" outline="true" type="button" data-bs-toggle="modal" data-bs-target="#requestReviewModal">
-            <i class="bi bi-send"></i> @Localizer["درخواست بازبینی چند-دیسیپلینه"]
+            <pems-icon name="bi-send" /> @Localizer["درخواست بازبینی چند-دیسیپلینه"]
         </pems-button>
 
         <pems-modal id="requestReviewModal" tabindex="-1">
@@ -525,7 +525,7 @@ else
         @if (myPending != null)
         {
             <pems-button tone="primary" size="small" type="button" data-bs-toggle="modal" data-bs-target="#respondReviewModal">
-                <i class="bi bi-reply"></i> ثبت نظر دیسیپلین من
+                <pems-icon name="bi-reply" /> ثبت نظر دیسیپلین من
             </pems-button>
 
             <pems-modal id="respondReviewModal" tabindex="-1">
@@ -573,7 +573,7 @@ else
         }
         else
         {
-            <pems-badge tone="warning"><i class="bi bi-hourglass-split"></i> در انتظار پاسخ سایر دیسیپلین‌ها</pems-badge>
+            <pems-badge tone="warning"><pems-icon name="bi-hourglass-split" /> در انتظار پاسخ سایر دیسیپلین‌ها</pems-badge>
         }
     }
 
@@ -601,7 +601,7 @@ else
 @if (secPage != null && (secPage.Phase is WoPhase.Closed or WoPhase.Cancelled or WoPhase.Rejected))
 {
     <pems-alert tone="secondary" css="d-flex align-items-center gap-2 small">
-        <i class="bi bi-lock-fill"></i>
+        <pems-icon name="bi-lock-fill" />
         <span>@Localizer["This Work Order is {0} and immutable; every section is read-only.", fa ? WorkOrderSectionPolicy.PhaseNameFa(secPage.Phase) : WorkOrderSectionPolicy.PhaseNameEn(secPage.Phase)]</span>
     </pems-alert>
 }
@@ -609,28 +609,28 @@ else
 @if (secPage != null && secPage.CanReopen)
 {
     <div class="content-card mb-3 border-warning">
-        <h6 class="mb-2"><i class="bi bi-unlock"></i> @Localizer["Reopen Work Order"]</h6>
+        <h6 class="mb-2"><pems-icon name="bi-unlock" /> @Localizer["Reopen Work Order"]</h6>
         <p class="text-muted small mb-2">@Localizer["A formal reopen requires a reason and is audited; the Work Order returns to the verification stage."]</p>
         <form asp-action="ReopenWorkOrder" method="post" class="row g-2">
             <input type="hidden" name="id" value="@Model.WorkOrderId" />
             <div class="col-md-9"><pems-input scale="small" name="reason" maxlength="500" required placeholder="@Localizer["Reason for reopening (required)"]" /></div>
-            <div class="col-md-3"><pems-button tone="warning" size="small" outline="true" css="w-100" type="submit"><i class="bi bi-unlock"></i> @Localizer["Reopen"]</pems-button></div>
+            <div class="col-md-3"><pems-button tone="warning" size="small" outline="true" css="w-100" type="submit"><pems-icon name="bi-unlock" /> @Localizer["Reopen"]</pems-button></div>
         </form>
     </div>
 }
 
 @if (Acc(WoSection.Labor) == SectionAccess.Hidden)
 {
-    <div class="content-card mb-3 text-muted small"><i class="bi bi-lock"></i> @Localizer["Actual labor hours are not available until execution starts."]</div>
+    <div class="content-card mb-3 text-muted small"><pems-icon name="bi-lock" /> @Localizer["Actual labor hours are not available until execution starts."]</div>
 }
 else
 {
 <div class="content-card mb-3">
-    <h6 class="mb-3"><i class="bi bi-person-workspace"></i> @Localizer["Labor (ساعت‌کار واقعی)"]</h6>
+    <h6 class="mb-3"><pems-icon name="bi-person-workspace" /> @Localizer["Labor (ساعت‌کار واقعی)"]</h6>
     @if (TempData.Peek("LaborRateEmployeeId") is int rateEmployeeId)
     {
         <pems-alert tone="warning" css="small py-2">
-            <i class="bi bi-cash-coin"></i> @Localizer["This employee has no hourly rate defined."]
+            <pems-icon name="bi-cash-coin" /> @Localizer["This employee has no hourly rate defined."]
             <a asp-controller="Employee" asp-action="Details" asp-route-id="@rateEmployeeId" class="alert-link">@Localizer["Go to rate setup"]</a>
         </pems-alert>
     }
@@ -685,12 +685,12 @@ else
         <div class="col-md-1"><pems-input scale="small" name="regularHours" type="number" step="0.5" min="0" placeholder="Reg" /></div>
         <div class="col-md-1"><pems-input scale="small" name="overtimeHours" type="number" step="0.5" min="0" placeholder="OT" /></div>
         <div class="col-md-2"><pems-input scale="small" name="notes" placeholder="@Localizer["Notes (optional)"]" /></div>
-        <div class="col-md-1"><pems-button tone="primary" size="small" css="w-100"><i class="bi bi-plus-lg"></i></pems-button></div>
+        <div class="col-md-1"><pems-button tone="primary" size="small" css="w-100"><pems-icon name="bi-plus-lg" /></pems-button></div>
     </form>
     }
     else
     {
-        <p class="text-muted small mb-0"><i class="bi bi-lock"></i> @Localizer["This section is read-only at the current stage or with your permissions."]</p>
+        <p class="text-muted small mb-0"><pems-icon name="bi-lock" /> @Localizer["This section is read-only at the current stage or with your permissions."]</p>
     }
 
     <hr class="my-3" />
@@ -704,7 +704,7 @@ else
 
 @if (Acc(WoSection.SpareParts) == SectionAccess.Hidden)
 {
-    <div class="content-card text-muted small"><i class="bi bi-lock"></i> @Localizer["Spare parts usage is not available until execution starts."]</div>
+    <div class="content-card text-muted small"><pems-icon name="bi-lock" /> @Localizer["Spare parts usage is not available until execution starts."]</div>
 }
 else
 {
@@ -735,7 +735,7 @@ else
                                     <pems-input scale="small" name="reason" style="width:140px;" maxlength="500" required placeholder="@Localizer["Correction reason"]" />
                                 }
                                 <pems-input scale="small" type="number" name="returnQuantity" step="0.01" max="@outstanding" style="width:80px;" placeholder="@Localizer["Qty"]" required />
-                                <pems-button tone="neutral" size="small" outline="true" type="submit" title="Return"><i class="bi bi-arrow-return-left"></i></pems-button>
+                                <pems-button tone="neutral" size="small" outline="true" type="submit" title="Return"><pems-icon name="bi-arrow-return-left" /></pems-button>
                             </form>
                         }
                     </td>
@@ -748,7 +748,7 @@ else
 
     @if (!Ctl(WoSection.SpareParts))
     {
-        <p class="text-muted small mb-0"><i class="bi bi-lock"></i> @Localizer["This section is read-only at the current stage or with your permissions."]</p>
+        <p class="text-muted small mb-0"><pems-icon name="bi-lock" /> @Localizer["This section is read-only at the current stage or with your permissions."]</p>
     }
     else if (!hasMaterialItems)
     {
@@ -760,7 +760,7 @@ else
     else
     {
     <div class="input-group input-group-sm mb-2 pems-s-0fd8744d">
-        <span class="input-group-text"><i class="bi bi-upc-scan"></i></span>
+        <span class="input-group-text"><pems-icon name="bi-upc-scan" /></span>
         <pems-input type="text" id="spareUsageScanInput" dir="ltr" placeholder="@Localizer["Scan Material barcode..."]" />
         <pems-button tone="neutral" outline="true" type="button" id="spareUsageScanBtn">@Localizer["Resolve"]</pems-button>
     </div>
@@ -777,7 +777,7 @@ else
         </div>
         <div class="col-md-3"><pems-input scale="small" name="quantity" type="number" step="0.01" placeholder="@Localizer["Quantity"]" required /></div>
         <div class="col-md-3"><pems-input scale="small" name="unitCost" type="number" step="0.01" placeholder="@Localizer["Unit cost (optional)"]" /></div>
-        <div class="col-md-2"><pems-button tone="primary" size="small" css="w-100"><i class="bi bi-plus-lg"></i> @Localizer["Add"]</pems-button></div>
+        <div class="col-md-2"><pems-button tone="primary" size="small" css="w-100"><pems-icon name="bi-plus-lg" /> @Localizer["Add"]</pems-button></div>
     </form>
     }
 </div>
@@ -786,7 +786,7 @@ else
 @if (tasks.Any())
 {
     <div class="content-card mt-3">
-        <h6 class="mb-3"><i class="bi bi-list-ol"></i> Tasks (@tasks.Count(t => t.IsCompleted)/@tasks.Count completed)</h6>
+        <h6 class="mb-3"><pems-icon name="bi-list-ol" /> Tasks (@tasks.Count(t => t.IsCompleted)/@tasks.Count completed)</h6>
         <pems-related-table>
             <thead><tr><th style="width:50px;"></th><th style="width:60px;">#</th><th>@Localizer["Title"]</th><th>@Localizer["Description"]</th><th>@Localizer["Completed"]</th></tr></thead>
             <tbody>
@@ -800,13 +800,13 @@ else
                                     <input type="hidden" name="workOrderTaskId" value="@t.WorkOrderTaskId" />
                                     <input type="hidden" name="workOrderId" value="@Model.WorkOrderId" />
                                     <pems-button tone="none" size="small" css="p-0 border-0" type="submit" title="@(t.IsCompleted ? "Reopen" : "Mark complete")">
-                                        <i class="bi @(t.IsCompleted ? "bi-check-square-fill text-success" : "bi-square")" style="font-size:1.1rem;"></i>
+                                        <pems-icon css="@(t.IsCompleted ? "bi-check-square-fill text-success" : "bi-square")" style="font-size:1.1rem;" />
                                     </pems-button>
                                 </form>
                             }
                             else
                             {
-                                <i class="bi @(t.IsCompleted ? "bi-check-square-fill text-success" : "bi-square")" style="font-size:1.1rem;"></i>
+                                <pems-icon css="@(t.IsCompleted ? "bi-check-square-fill text-success" : "bi-square")" style="font-size:1.1rem;" />
                             }
                         </td>
                         <td class="small fw-bold">@t.TaskNumber</td>
@@ -826,11 +826,11 @@ else
 }
 
 <div class="content-card mt-3">
-    <h6 class="mb-3"><i class="bi bi-mortarboard"></i> @Localizer["Required Skills"]</h6>
+    <h6 class="mb-3"><pems-icon name="bi-mortarboard" /> @Localizer["Required Skills"]</h6>
     @if (totalPlannedHours > 0 || totalActualHours > 0)
     {
         <p class="small text-muted mb-2">
-            <i class="bi bi-hourglass-split"></i> Planned: <strong>@totalPlannedHours h</strong>
+            <pems-icon name="bi-hourglass-split" /> Planned: <strong>@totalPlannedHours h</strong>
             &middot; Actual: <strong>@totalActualHours h</strong>
         </p>
     }
@@ -845,7 +845,7 @@ else
                 <form asp-action="RemoveRequiredSkill" method="post" class="d-inline">
                     <input type="hidden" name="requiredSkillId" value="@rs.RequiredSkillId" />
                     <input type="hidden" name="workOrderId" value="@Model.WorkOrderId" />
-                    <pems-button tone="none" size="small" css="p-0 border-0 text-white" type="submit" style="line-height:1;" title="@Localizer["حذف"]"><i class="bi bi-x"></i></pems-button>
+                    <pems-button tone="none" size="small" css="p-0 border-0 text-white" type="submit" style="line-height:1;" title="@Localizer["حذف"]"><pems-icon name="bi-x" /></pems-button>
                 </form>
                 }
             </pems-badge>
@@ -872,12 +872,12 @@ else
             </pems-select>
         </div>
         <div class="col-md-2"><pems-input scale="small" name="plannedHours" type="number" step="0.5" placeholder="@Localizer["Planned h"]" /></div>
-        <div class="col-md-3"><pems-button tone="primary" size="small" css="w-100"><i class="bi bi-plus-lg"></i> @Localizer["Add"]</pems-button></div>
+        <div class="col-md-3"><pems-button tone="primary" size="small" css="w-100"><pems-icon name="bi-plus-lg" /> @Localizer["Add"]</pems-button></div>
     </form>
     }
     else
     {
-        <p class="text-muted small mb-0"><i class="bi bi-lock"></i> @Localizer["This section is read-only at the current stage or with your permissions."]</p>
+        <p class="text-muted small mb-0"><pems-icon name="bi-lock" /> @Localizer["This section is read-only at the current stage or with your permissions."]</p>
     }
 </div>
 
@@ -886,7 +886,7 @@ else
         var requiredMaterials = (List<PEMS.Domain.Entities.WorkOrderMaterial>)ViewBag.RequiredMaterials;
         var intake = ViewBag.WarehouseIntake as PEMS.Application.Interfaces.WarehouseIntakeDto;   // SCRUM-472
     }
-    <h6 class="mb-3"><i class="bi bi-box-seam"></i> @Localizer["Required Materials"]</h6>
+    <h6 class="mb-3"><pems-icon name="bi-box-seam" /> @Localizer["Required Materials"]</h6>
     <pems-related-table>
         <thead><tr><th>@Localizer["Material"]</th><th>@Localizer["Required Qty"]</th><th>@Localizer["Whi_SupplyCode"]</th><th>@Localizer["Whi_Sourced"]</th><th></th></tr></thead>
         <tbody>
@@ -909,7 +909,7 @@ else
                                     <option value="@code" selected="@(code == rm.SupplyCode)">@Localizer["Whi_Supply_" + code]</option>
                                 }
                             </pems-select>
-                            <pems-button tone="neutral" size="small" outline="true" type="submit" title="@Localizer["Whi_Save"]"><i class="bi bi-check2"></i></pems-button>
+                            <pems-button tone="neutral" size="small" outline="true" type="submit" title="@Localizer["Whi_Save"]"><pems-icon name="bi-check2" /></pems-button>
                         </form>
                         }
                         else
@@ -934,7 +934,7 @@ else
                         <form asp-action="RemoveRequiredMaterial" method="post" class="d-inline">
                             <input type="hidden" name="workOrderMaterialId" value="@rm.WorkOrderMaterialId" />
                             <input type="hidden" name="workOrderId" value="@Model.WorkOrderId" />
-                            <pems-button tone="danger" size="small" outline="true" type="submit" title="@Localizer["حذف"]"><i class="bi bi-x"></i></pems-button>
+                            <pems-button tone="danger" size="small" outline="true" type="submit" title="@Localizer["حذف"]"><pems-icon name="bi-x" /></pems-button>
                         </form>
                         }
                     </td>
@@ -950,7 +950,7 @@ else
         var unsourced = intake.Lines.Where(l => l.UnsourcedQuantity > 0).ToList();
         var hasDirectPurchase = intake.Lines.Any(l => l.SupplyCode == PEMS.Domain.Entities.WorkOrderMaterialSupplyCodes.DirectPurchase);   // SCRUM-471
         <div class="d-flex flex-wrap align-items-center gap-2 small mb-3">
-            <span class="fw-semibold"><i class="bi bi-inboxes" aria-hidden="true"></i> @Localizer["Whi_Title"]:</span>
+            <span class="fw-semibold"><pems-icon name="bi-inboxes" aria-hidden="true" /> @Localizer["Whi_Title"]:</span>
             @if (intake.IsOpen)
             {
                 <span class="vs-pill vs-pill--warning">@Localizer["Whi_State_Open"]</span>
@@ -967,7 +967,7 @@ else
                 {
                     <form asp-action="RequestWarehouseMaterials" method="post" class="d-inline">
                         <input type="hidden" name="workOrderId" value="@Model.WorkOrderId" />
-                        <pems-button tone="primary" size="small" outline="true" type="submit"><i class="bi bi-send" aria-hidden="true"></i> @Localizer["Whi_Request"]</pems-button>
+                        <pems-button tone="primary" size="small" outline="true" type="submit"><pems-icon name="bi-send" aria-hidden="true" /> @Localizer["Whi_Request"]</pems-button>
                     </form>
                 }
                 <span class="text-muted">@Localizer["Whi_RequestHint"]</span>
@@ -977,7 +977,7 @@ else
 
     @if (!Ctl(WoSection.RequiredMaterials))
     {
-        <p class="text-muted small mb-0"><i class="bi bi-lock"></i> @Localizer["This section is read-only at the current stage or with your permissions."]</p>
+        <p class="text-muted small mb-0"><pems-icon name="bi-lock" /> @Localizer["This section is read-only at the current stage or with your permissions."]</p>
     }
     else if (!hasMaterialItems)
     {
@@ -989,7 +989,7 @@ else
     else
     {
     <div class="input-group input-group-sm mb-2 pems-s-0fd8744d">
-        <span class="input-group-text"><i class="bi bi-upc-scan"></i></span>
+        <span class="input-group-text"><pems-icon name="bi-upc-scan" /></span>
         <pems-input type="text" id="requiredMaterialScanInput" dir="ltr" placeholder="@Localizer["Scan Material barcode..."]" />
         <pems-button tone="neutral" outline="true" type="button" id="requiredMaterialScanBtn">@Localizer["Resolve"]</pems-button>
     </div>
@@ -1001,13 +1001,13 @@ else
             </pems-select>
         </div>
         <div class="col-md-3"><pems-input scale="small" name="requiredQuantity" type="number" step="0.001" placeholder="@Localizer["Quantity"]" required /></div>
-        <div class="col-md-3"><pems-button tone="primary" size="small" css="w-100"><i class="bi bi-plus-lg"></i> @Localizer["Add"]</pems-button></div>
+        <div class="col-md-3"><pems-button tone="primary" size="small" css="w-100"><pems-icon name="bi-plus-lg" /> @Localizer["Add"]</pems-button></div>
     </form>
     }
 </div>
 
 <div class="content-card mt-3">
-    <h6 class="mb-3"><i class="bi bi-people-fill"></i> Crew</h6>
+    <h6 class="mb-3"><pems-icon name="bi-people-fill" /> Crew</h6>
     @{ var woCrews = (List<PEMS.Domain.Entities.Crew>)(ViewBag.Crews ?? new List<PEMS.Domain.Entities.Crew>()); }
     @if (woCrews.Any())
     {
@@ -1022,7 +1022,7 @@ else
     }
     else if (!Ctl(WoSection.Crew))
     {
-        <p class="text-muted small mb-0"><i class="bi bi-lock"></i> @Localizer["Creating a crew is not available at the current stage or with your permissions."]</p>
+        <p class="text-muted small mb-0"><pems-icon name="bi-lock" /> @Localizer["Creating a crew is not available at the current stage or with your permissions."]</p>
     }
     else
     {
@@ -1030,7 +1030,7 @@ else
             <input type="hidden" name="workOrderId" value="@Model.WorkOrderId" />
             <div class="col-md-4"><pems-input scale="small" name="code" placeholder="@Localizer["کد Crew"]" required /></div>
             <div class="col-md-5"><pems-input scale="small" name="name" placeholder="@Localizer["نام Crew"]" required /></div>
-            <div class="col-md-3"><pems-button tone="primary" size="small" outline="true" css="w-100"><i class="bi bi-plus-lg"></i> @Localizer["ساخت Crew برای این WorkOrder"]</pems-button></div>
+            <div class="col-md-3"><pems-button tone="primary" size="small" outline="true" css="w-100"><pems-icon name="bi-plus-lg" /> @Localizer["ساخت Crew برای این WorkOrder"]</pems-button></div>
         </form>
     }
 </div>

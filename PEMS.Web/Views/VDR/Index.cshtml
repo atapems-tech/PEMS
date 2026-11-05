@@ -89,7 +89,7 @@
             @if (dash.TopDelayedVendors.Any())
             {
                 <details class="lp-kpi-pop">
-                    <summary class="vs-chip vs-chip--danger"><i class="bi bi-shield-exclamation" aria-hidden="true"></i> @Localizer["Vs_VendorDelayRisk"] <strong>@dash.TopDelayedVendors.Count</strong></summary>
+                    <summary class="vs-chip vs-chip--danger"><pems-icon name="bi-shield-exclamation" aria-hidden="true" /> @Localizer["Vs_VendorDelayRisk"] <strong>@dash.TopDelayedVendors.Count</strong></summary>
                     <ul class="vs-list">
                         @foreach (var v in dash.TopDelayedVendors)
                         {
@@ -149,7 +149,7 @@
                                     @if (i.IsOverdue) { <span class="vs-pill vs-pill--danger">@Localizer["Vs_Overdue"]</span> }
                                 </td>
                                 <td class="text-nowrap lp-actions">
-                                    <a asp-action="Details" asp-route-id="@i.VDRItemId" class="lp-act lp-act--always" title="@Localizer["Vs_View"]"><i class="bi bi-eye" aria-hidden="true"></i><span class="visually-hidden">@Localizer["Vs_View"]: @i.DocumentNumber</span></a>
+                                    <a asp-action="Details" asp-route-id="@i.VDRItemId" class="lp-act lp-act--always" title="@Localizer["Vs_View"]"><pems-icon name="bi-eye" aria-hidden="true" /><span class="visually-hidden">@Localizer["Vs_View"]: @i.DocumentNumber</span></a>
                                 </td>
                             </tr>
                         }

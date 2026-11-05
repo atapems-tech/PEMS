@@ -7,7 +7,7 @@
 
 
 <div class="vs-stepper">
-    <div class="vs-stepper__item vs-stepper__item--done"><span class="vs-stepper__num"><i class="bi bi-check-lg"></i></span>@Localizer["Vs_StepUpload"]</div>
+    <div class="vs-stepper__item vs-stepper__item--done"><span class="vs-stepper__num"><pems-icon name="bi-check-lg" /></span>@Localizer["Vs_StepUpload"]</div>
     <div class="vs-stepper__item vs-stepper__item--active"><span class="vs-stepper__num">2</span>@Localizer["Vs_StepReview"]</div>
     <div class="vs-stepper__item "><span class="vs-stepper__num">3</span>@Localizer["Vs_StepCommit"]</div>
 </div>
@@ -27,13 +27,13 @@
             <form asp-action="Commit" method="post">
                 <input type="hidden" name="batchId" value="@Model.VDRImportBatchId" />
                 <pems-button tone="primary" type="submit" data-pems-confirm="Commit the selected rows into the live VDR register?">
-                    <i class="bi bi-check-circle"></i> Commit Selected Rows
+                    <pems-icon name="bi-check-circle" /> Commit Selected Rows
                 </pems-button>
             </form>
             <form asp-action="Discard" method="post">
                 <input type="hidden" name="batchId" value="@Model.VDRImportBatchId" />
                 <pems-button tone="danger" outline="true" type="submit" data-pems-confirm="Discard this entire import batch?">
-                    <i class="bi bi-trash"></i> Discard Batch
+                    <pems-icon name="bi-trash" /> Discard Batch
                 </pems-button>
             </form>
         </div>
@@ -61,7 +61,7 @@
                                     <input type="hidden" name="batchId" value="@Model.VDRImportBatchId" />
                                     <input type="hidden" name="include" value="@(!r.IncludeInCommit)" />
                                     <pems-button tone="none" size="small" css="@(r.IncludeInCommit ? "btn-success" : "btn-outline-secondary")" type="submit" style="width:36px;">
-                                        <i class="bi @(r.IncludeInCommit ? "bi-check-lg" : "bi-x-lg")"></i>
+                                        <pems-icon css="@(r.IncludeInCommit ? "bi-check-lg" : "bi-x-lg")" />
                                     </pems-button>
                                 </form>
                             }

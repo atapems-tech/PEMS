@@ -95,6 +95,7 @@ public sealed class PemsComponentRegistry : IPemsComponentRegistry
         Register(UiKeys.Textarea, typeof(PemsTextarea));
         Register(UiKeys.FormLabel, typeof(PemsFormLabel));
         Register(UiKeys.ValidationSummary, typeof(PemsValidationSummary));
+        Register(UiKeys.Icon, typeof(PemsIcon));
     }
 
     public void Register(string key, Type componentType)

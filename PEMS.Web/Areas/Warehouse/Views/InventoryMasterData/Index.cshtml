@@ -20,17 +20,17 @@
 <pems-nav css="mb-3" id="imdTabs" role="tablist">
     <li class="nav-item" role="presentation">
         <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#tab-categories" type="button">
-            <i class="bi bi-diagram-3"></i> Categories <pems-badge tone="neutral">@categories.Count</pems-badge>
+            <pems-icon name="bi-diagram-3" /> Categories <pems-badge tone="neutral">@categories.Count</pems-badge>
         </button>
     </li>
     <li class="nav-item" role="presentation">
         <button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-uoms" type="button">
-            <i class="bi bi-rulers"></i> Units of Measure <pems-badge tone="neutral">@uoms.Count</pems-badge>
+            <pems-icon name="bi-rulers" /> Units of Measure <pems-badge tone="neutral">@uoms.Count</pems-badge>
         </button>
     </li>
     <li class="nav-item" role="presentation">
         <button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-warehouses" type="button">
-            <i class="bi bi-building"></i> Warehouses <pems-badge tone="neutral">@Model.Count</pems-badge>
+            <pems-icon name="bi-building" /> Warehouses <pems-badge tone="neutral">@Model.Count</pems-badge>
         </button>
     </li>
 </pems-nav>
@@ -41,7 +41,7 @@
             <div class="d-flex justify-content-between align-items-center mb-3">
                 <p class="text-muted small mb-0">دسته‌بندی سلسله‌مراتبی متریال - مستقل از Discipline.</p>
                 <pems-button tone="primary" size="small" css="text-nowrap" type="button" data-bs-toggle="modal" data-bs-target="#createCategoryModal">
-                    <i class="bi bi-plus-lg"></i> @Localizer["دسته‌بندی جدید"]
+                    <pems-icon name="bi-plus-lg" /> @Localizer["دسته‌بندی جدید"]
                 </pems-button>
             </div>
             <pems-table kind="enterprise">
@@ -57,7 +57,7 @@
                             <td class="text-end">
                                 <form asp-action="ToggleCategoryActive" method="post" class="d-inline">
                                     <input type="hidden" name="id" value="@c.MaterialCategoryId" />
-                                    <pems-button tone="neutral" size="small" outline="true" type="submit" data-pems-confirm="این دسته‌بندی غیرفعال بشه؟"><i class="bi bi-x-circle"></i></pems-button>
+                                    <pems-button tone="neutral" size="small" outline="true" type="submit" data-pems-confirm="این دسته‌بندی غیرفعال بشه؟"><pems-icon name="bi-x-circle" /></pems-button>
                                 </form>
                             </td>
                         </tr>
@@ -72,7 +72,7 @@
             <div class="d-flex justify-content-between align-items-center mb-3">
                 <p class="text-muted small mb-0">واحد اندازه‌گیری پایه - مستقل نگه داشته می‌شود تا بین متریال‌های مختلف مشترک باشد.</p>
                 <pems-button tone="primary" size="small" css="text-nowrap" type="button" data-bs-toggle="modal" data-bs-target="#createUomModal">
-                    <i class="bi bi-plus-lg"></i> @Localizer["واحد جدید"]
+                    <pems-icon name="bi-plus-lg" /> @Localizer["واحد جدید"]
                 </pems-button>
             </div>
             <pems-table kind="enterprise">
@@ -87,7 +87,7 @@
                             <td class="text-end">
                                 <form asp-action="ToggleUomActive" method="post" class="d-inline">
                                     <input type="hidden" name="id" value="@u.MaterialUOMId" />
-                                    <pems-button tone="neutral" size="small" outline="true" type="submit" data-pems-confirm="این واحد غیرفعال بشه؟"><i class="bi bi-x-circle"></i></pems-button>
+                                    <pems-button tone="neutral" size="small" outline="true" type="submit" data-pems-confirm="این واحد غیرفعال بشه؟"><pems-icon name="bi-x-circle" /></pems-button>
                                 </form>
                             </td>
                         </tr>
@@ -102,7 +102,7 @@
             <div class="d-flex justify-content-between align-items-center mb-3">
                 <p class="text-muted small mb-0">انبارهای فیزیکی - طبق پیشوندهای واقعی MRS از قبل seed شده‌اند.</p>
                 <pems-button tone="primary" size="small" css="text-nowrap" type="button" data-bs-toggle="modal" data-bs-target="#createWarehouseModal">
-                    <i class="bi bi-plus-lg"></i> @Localizer["انبار جدید"]
+                    <pems-icon name="bi-plus-lg" /> @Localizer["انبار جدید"]
                 </pems-button>
             </div>
             <pems-table kind="enterprise">
@@ -123,7 +123,7 @@
                             <td class="text-end">
                                 <form asp-action="ToggleWarehouseActive" method="post" class="d-inline">
                                     <input type="hidden" name="id" value="@w.WarehouseId" />
-                                    <pems-button tone="neutral" size="small" outline="true" type="submit" data-pems-confirm="این انبار غیرفعال بشه؟"><i class="bi bi-x-circle"></i></pems-button>
+                                    <pems-button tone="neutral" size="small" outline="true" type="submit" data-pems-confirm="این انبار غیرفعال بشه؟"><pems-icon name="bi-x-circle" /></pems-button>
                                 </form>
                             </td>
                         </tr>

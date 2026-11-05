@@ -76,7 +76,7 @@
 
 <div class="content-card mb-3">
     <div class="d-flex align-items-center gap-3 mb-2 flex-wrap">
-        <div class="kpi-icon bg-icon-blue pems-s-792bd2d6"><i class="bi bi-shield-check"></i></div>
+        <div class="kpi-icon bg-icon-blue pems-s-792bd2d6"><pems-icon name="bi-shield-check" /></div>
         <div>
             <h5 class="mb-0">@Model.PermitNumber &mdash; @Model.Title <pems-badge tone="@badgeClass">@Model.Status</pems-badge></h5>
             <span class="text-muted small">@Model.PermitType - Requested by @Model.RequestedByName on @Model.CreatedDate.ToString("yyyy-MM-dd")</span>
@@ -117,7 +117,7 @@
 @if (actionItems.Any())
 {
     <div class="content-card mb-3 border-start border-4 border-warning">
-        <h6 class="mb-2"><i class="bi bi-exclamation-circle text-warning"></i> Action Required</h6>
+        <h6 class="mb-2"><pems-icon name="bi-exclamation-circle" css="text-warning" /> Action Required</h6>
         <ul class="list-unstyled mb-0">
             @foreach (var item in actionItems)
             {
@@ -179,7 +179,7 @@
         {
             <form asp-action="SubmitForApproval" method="post" class="d-flex gap-2">
                 <input type="hidden" name="id" value="@Model.PermitId" />
-                <pems-button tone="primary" size="small" type="submit"><i class="bi bi-signpost-split"></i> Submit for Approval</pems-button>
+                <pems-button tone="primary" size="small" type="submit"><pems-icon name="bi-signpost-split" /> Submit for Approval</pems-button>
             </form>
         }
         @if (Model.Status == "Active")
@@ -226,7 +226,7 @@
     var gateBadge = executionGate.Result == "Eligible" ? "success" : "danger";
     <div class="content-card mb-3" id="executiongate">
         <h6 class="mb-3">
-            <i class="bi bi-door-open"></i> Execution Gate
+            <pems-icon name="bi-door-open" /> Execution Gate
             <pems-badge tone="@gateBadge">@executionGate.Result.ToUpper()</pems-badge>
         </h6>
         @if (errorArea == "ExecutionGate" && pageError != null && pageError.Contains(passkeyMissingMarker))
@@ -252,7 +252,7 @@
             <ul class="list-unstyled mb-2">
                 @foreach (var a in executionGate.AdvisoryNotes)
                 {
-                    <li class="d-flex align-items-center gap-2 py-1"><i class="bi bi-info-circle text-warning"></i> <span class="small">@a.Name — @a.Detail</span></li>
+                    <li class="d-flex align-items-center gap-2 py-1"><pems-icon name="bi-info-circle" css="text-warning" /> <span class="small">@a.Name — @a.Detail</span></li>
                 }
             </ul>
         }
@@ -260,7 +260,7 @@
             <form asp-controller="ExecutionGate" asp-action="StartWork" method="post" class="d-inline">
                 <input type="hidden" name="permitId" value="@Model.PermitId" />
                 <pems-button tone="primary" size="small" type="button" disabled="@(executionGate.Result != "Eligible")" onclick="pemsSubmitWithStepUp(this)">
-                    <i class="bi bi-play-circle"></i> Start Work
+                    <pems-icon name="bi-play-circle" /> Start Work
                 </pems-button>
             </form>
             @if (canEmergencyOverride)
@@ -270,7 +270,7 @@
                     <pems-input scale="small" css="flex-grow-1" type="text" name="reason" style="min-width:160px;max-width:280px;" placeholder="Emergency reason (required)" required />
                     <pems-button tone="danger" size="small" outline="true" type="button"
                             data-pems-confirm="Emergency Override یک اقدام واقعاً استثنایی است. مطمئن هستید؟" onclick="pemsSubmitWithStepUp(this)">
-                        <i class="bi bi-exclamation-triangle"></i> Emergency Override
+                        <pems-icon name="bi-exclamation-triangle" /> Emergency Override
                     </pems-button>
                 </form>
             }
@@ -301,7 +301,7 @@
 @if (approvalInstance != null)
 {
     <div class="content-card mb-3" id="approval">
-        <h6 class="mb-3"><i class="bi bi-diagram-3"></i> Approval Progress <pems-badge tone="@(approvalInstance.Status == "Completed" ? "success" : approvalInstance.Status == "Rejected" ? "danger" : "primary")">@approvalInstance.Status</pems-badge></h6>
+        <h6 class="mb-3"><pems-icon name="bi-diagram-3" /> Approval Progress <pems-badge tone="@(approvalInstance.Status == "Completed" ? "success" : approvalInstance.Status == "Rejected" ? "danger" : "primary")">@approvalInstance.Status</pems-badge></h6>
         @if (errorArea == "Approval" && pageError != null && pageError.Contains(passkeyMissingMarker))
         {
             <pems-alert tone="danger" css="py-2 px-3 small">@pageError <a asp-controller="Account" asp-action="ManagePasskeys" class="alert-link">Manage Passkeys &rarr;</a></pems-alert>
@@ -328,18 +328,18 @@
                 <li class="d-flex align-items-center gap-2 py-1">
                     @if (completedEntry != null)
                     {
-                        <i class="bi bi-check-circle-fill text-success"></i>
+                        <pems-icon name="bi-check-circle-fill" css="text-success" />
                         <span>@stageName - <strong>@completedEntry.Decision</strong> @(completedEntry.Role != null ? $"({completedEntry.Role})" : "") @completedEntry.ActionDate.ToString("yyyy-MM-dd HH:mm")</span>
                     }
                     else if (isCurrent)
                     {
                         var stageWaitSince = approvalInstance.PendingStages.Any() ? approvalInstance.PendingStages.Min(p => p.AssignedDate) : (DateTime?)null;
-                        <i class="bi bi-record-circle text-primary"></i>
+                        <pems-icon name="bi-record-circle" css="text-primary" />
                         <span>@stageName - <span class="text-muted">در انتظار: @string.Join(" / ", approvalInstance.PendingStages.Select(p => p.AssignedToRole)) @(stageWaitSince.HasValue ? $"({WaitingSince(stageWaitSince.Value)})" : "")</span></span>
                     }
                     else
                     {
-                        <i class="bi bi-circle text-muted"></i>
+                        <pems-icon name="bi-circle" css="text-muted" />
                         <span class="text-muted">@stageName</span>
                     }
                 </li>
@@ -410,7 +410,7 @@
 }
 <div class="content-card mb-3" id="loto">
     <h6 class="mb-3">
-        <i class="bi bi-lock"></i> Isolation Points (LOTO)
+        <pems-icon name="bi-lock" /> Isolation Points (LOTO)
         @if (isolationPoints.Any())
         {
             <pems-badge tone="@(unverifiedCount == 0 ? "success" : "warning")">@verifiedCount / @isolationPoints.Count Verified</pems-badge>
@@ -459,7 +459,7 @@
                                 <input type="hidden" name="permitId" value="@Model.PermitId" />
                                 <pems-input scale="small" css="d-inline-block" type="text" name="lockNumber" placeholder="Lock #" style="width:90px;" />
                                 <pems-input scale="small" css="d-inline-block" type="text" name="tagNumber" placeholder="Tag #" style="width:90px;" />
-                                <pems-button tone="warning" size="small" outline="true" type="submit"><i class="bi bi-lock-fill"></i> Isolate</pems-button>
+                                <pems-button tone="warning" size="small" outline="true" type="submit"><pems-icon name="bi-lock-fill" /> Isolate</pems-button>
                             </form>
                             <form asp-controller="Isolation" asp-action="Cancel" method="post" class="d-inline">
                                 <input type="hidden" name="id" value="@p.IsolationPointId" />
@@ -472,7 +472,7 @@
                             <form asp-controller="Isolation" asp-action="Verify" method="post" class="d-inline">
                                 <input type="hidden" name="id" value="@p.IsolationPointId" />
                                 <input type="hidden" name="permitId" value="@Model.PermitId" />
-                                <pems-button tone="success" size="small" outline="true" type="button" disabled="@(lotoVerifyElig != null && lotoVerifyElig.Result != "Eligible")" onclick="pemsSubmitWithStepUp(this)"><i class="bi bi-check-circle"></i> Verify</pems-button>
+                                <pems-button tone="success" size="small" outline="true" type="button" disabled="@(lotoVerifyElig != null && lotoVerifyElig.Result != "Eligible")" onclick="pemsSubmitWithStepUp(this)"><pems-icon name="bi-check-circle" /> Verify</pems-button>
                             </form>
                         }
                         @if (p.Status == "Verified")
@@ -514,7 +514,7 @@
 }
 <div class="content-card mb-3">
     <h6 class="mb-3">
-        <i class="bi bi-clouds"></i> Gas Testing
+        <pems-icon name="bi-clouds" /> Gas Testing
         @if (gasTests.Any())
         {
             <pems-badge tone="@(passedGasTests > 0 ? "success" : "warning")">@passedGasTests / @gasTests.Count Valid</pems-badge>
@@ -612,7 +612,7 @@
 }
 <div class="content-card mb-3" id="simops">
     <h6 class="mb-3">
-        <i class="bi bi-arrows-angle-contract"></i> SIMOPS
+        <pems-icon name="bi-arrows-angle-contract" /> SIMOPS
         @if (simopsConflicts.Any())
         {
             <pems-badge tone="@(unresolvedSimopsCount == 0 ? "success" : "warning")">@unresolvedSimopsCount unresolved</pems-badge>

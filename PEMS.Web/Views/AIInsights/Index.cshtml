@@ -15,7 +15,7 @@
 </p>
 
 <div class="content-card mb-3">
-    <h6 class="mb-3"><i class="bi bi-arrow-repeat"></i> @Localizer["الگوهای تکراری NCR - پیشنهاد بررسی MOC"]</h6>
+    <h6 class="mb-3"><pems-icon name="bi-arrow-repeat" /> @Localizer["الگوهای تکراری NCR - پیشنهاد بررسی MOC"]</h6>
     <p class="text-muted small">تجهیزاتی که در ۱۸۰ روز اخیر حداقل ۳ بار NCR گرفتن.</p>
 
     @if (ncrPatterns.Any())
@@ -44,7 +44,7 @@
                             @if (!p.HasOpenMOC)
                             {
                                 <pems-button tone="primary" size="small" outline="true" as="a" asp-controller="MOC" asp-action="Raise" asp-route-relatedEquipmentId="@p.EquipmentId">
-                                    <i class="bi bi-plus-lg"></i> ثبت MOC
+                                    <pems-icon name="bi-plus-lg" /> ثبت MOC
                                 </pems-button>
                             }
                         </td>
@@ -60,7 +60,7 @@
 </div>
 
 <div class="content-card">
-    <h6 class="mb-3"><i class="bi bi-graph-down-arrow"></i> @Localizer["تحلیل ریشه‌ای تاخیر مدارک"]</h6>
+    <h6 class="mb-3"><pems-icon name="bi-graph-down-arrow" /> @Localizer["تحلیل ریشه‌ای تاخیر مدارک"]</h6>
 
     <div class="row g-3 mb-3">
         <div class="col-md-6">
@@ -74,7 +74,7 @@
     @if (!string.IsNullOrWhiteSpace(delay.NarrativeSummary))
     {
         <pems-alert tone="info" css="small">
-            <i class="bi bi-stars"></i> <strong>خلاصه‌ی هوش مصنوعی:</strong> @delay.NarrativeSummary
+            <pems-icon name="bi-stars" /> <strong>خلاصه‌ی هوش مصنوعی:</strong> @delay.NarrativeSummary
         </pems-alert>
     }
     else if (delay.TotalDelayedDocuments > 0)

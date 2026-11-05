@@ -27,7 +27,7 @@
         @if (!i.IsActive) { <pems-badge tone="light" css="ms-1">@Localizer["Tm_Archived"]</pems-badge> }
     </td>
     <td><pems-badge tone="@TaskManagerUi.CategoryBadge(i.StatusCategory)">@TaskManagerUi.StatusLabel(Localizer, i)</pems-badge></td>
-    <td class="text-nowrap"><i class="bi @TaskManagerUi.PriorityIcon(i.Priority)" aria-hidden="true"></i> <span class="small">@TaskManagerUi.Priority(Localizer, i.Priority)</span></td>
+    <td class="text-nowrap"><pems-icon css="@TaskManagerUi.PriorityIcon(i.Priority)" aria-hidden="true" /> <span class="small">@TaskManagerUi.Priority(Localizer, i.Priority)</span></td>
     <td class="small">@(i.AssigneeName ?? Localizer["Tm_Unassigned"].Value)</td>
     <td class="small text-nowrap">
         @TaskManagerUi.Date(i.DueDate)
@@ -39,11 +39,11 @@
         <td class="text-nowrap tm-row-actions">
             <form asp-controller="TaskManager" asp-action="Rank" method="post" class="d-inline">
                 <input type="hidden" name="id" value="@i.Id" /><input type="hidden" name="up" value="true" /><input type="hidden" name="returnUrl" value="@returnUrl" />
-                <pems-button tone="none" size="small" css="btn-link p-0" title="@Localizer["Tm_MoveUp"]" aria-label="@Localizer["Tm_MoveUp"] @(i.Key)"><i class="bi bi-arrow-up" aria-hidden="true"></i></pems-button>
+                <pems-button tone="none" size="small" css="btn-link p-0" title="@Localizer["Tm_MoveUp"]" aria-label="@Localizer["Tm_MoveUp"] @(i.Key)"><pems-icon name="bi-arrow-up" aria-hidden="true" /></pems-button>
             </form>
             <form asp-controller="TaskManager" asp-action="Rank" method="post" class="d-inline">
                 <input type="hidden" name="id" value="@i.Id" /><input type="hidden" name="up" value="false" /><input type="hidden" name="returnUrl" value="@returnUrl" />
-                <pems-button tone="none" size="small" css="btn-link p-0" title="@Localizer["Tm_MoveDown"]" aria-label="@Localizer["Tm_MoveDown"] @(i.Key)"><i class="bi bi-arrow-down" aria-hidden="true"></i></pems-button>
+                <pems-button tone="none" size="small" css="btn-link p-0" title="@Localizer["Tm_MoveDown"]" aria-label="@Localizer["Tm_MoveDown"] @(i.Key)"><pems-icon name="bi-arrow-down" aria-hidden="true" /></pems-button>
             </form>
             <form asp-controller="TaskManager" asp-action="SetSprint" method="post" class="d-inline">
                 <input type="hidden" name="id" value="@i.Id" /><input type="hidden" name="returnUrl" value="@returnUrl" />

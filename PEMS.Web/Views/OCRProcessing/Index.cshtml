@@ -77,11 +77,11 @@
                             <td>@a.UploadDate.ToString("yyyy-MM-dd HH:mm")</td>
                             <td>
                                 <form asp-action="Retry" asp-route-id="@a.AttachmentId" method="post" class="d-inline">
-                                    <pems-button tone="neutral" size="small" outline="true"><i class="bi bi-arrow-repeat"></i></pems-button>
+                                    <pems-button tone="neutral" size="small" outline="true"><pems-icon name="bi-arrow-repeat" /></pems-button>
                                 </form>
                                 @if (a.AIStatus == "Completed")
                                 {
-                                    <pems-button tone="warning" size="small" outline="true" as="a" asp-controller="AIExtraction" asp-action="Review" asp-route-attachmentId="@a.AttachmentId"><i class="bi bi-eye"></i></pems-button>
+                                    <pems-button tone="warning" size="small" outline="true" as="a" asp-controller="AIExtraction" asp-action="Review" asp-route-attachmentId="@a.AttachmentId"><pems-icon name="bi-eye" /></pems-button>
                                 }
                             </td>
                         </tr>

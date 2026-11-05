@@ -64,11 +64,11 @@
             <div class="pems-wo-circle">
                 @if (cssClass == "done")
                 {
-                    <i class="bi bi-check-lg"></i>
+                    <pems-icon name="bi-check-lg" />
                 }
                 else
                 {
-                    <i class="bi @stageIcons[key]"></i>
+                    <pems-icon css="@stageIcons[key]" />
                 }
             </div>
             <div class="pems-wo-label">@stageLabels[key]</div>

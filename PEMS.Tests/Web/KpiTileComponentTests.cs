@@ -168,7 +168,7 @@ public class KpiTileComponentTests
         var text = File.ReadAllText(Path.Combine(RepoRoot(), "PEMS.Web", view));
         Assert.Equal(tiles, Regex.Matches(text, "<pems-kpi-tile ").Count);
         // a large bold number over a muted label is a tile; the DCC navigation card (an icon, no number) is the one left
-        var left = Regex.Matches(text, @"<div class=""fs-[345] fw-bold[^""]*"">(?!<i )").Count;
+        var left = Regex.Matches(text, @"<div class=""fs-[345] fw-bold[^""]*"">(?!<i |<pems-icon )").Count;
         Assert.Equal(0, left);
     }
 

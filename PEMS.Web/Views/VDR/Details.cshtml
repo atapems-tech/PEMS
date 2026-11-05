@@ -90,34 +90,34 @@
         <div class="vs-doc-meta">@Localizer["Vd_VendorLabel"] <a asp-controller="Vendor" asp-action="Details" asp-route-id="@Model.VendorId">@Model.VendorName</a> &middot; @Model.ProjectName@(string.IsNullOrEmpty(Model.DisciplineCodeRaw) ? "" : " · " + Model.DisciplineCodeRaw)</div>
     </div>
     <div class="vs-doc-actions">
-        <a asp-action="Index" class="vs-btn"><i class="bi bi-arrow-left" aria-hidden="true"></i> @Localizer["Vs_Back"]</a>
+        <a asp-action="Index" class="vs-btn"><pems-icon name="bi-arrow-left" aria-hidden="true" /> @Localizer["Vs_Back"]</a>
     </div>
 </div>
 
 <pems-nav css="mb-3" id="vdrTabs" role="tablist">
     <li class="nav-item" role="presentation">
         <button class="nav-link @(vdrDefaultTab == "overview" ? "active" : "")" data-bs-toggle="tab" data-bs-target="#tab-overview" type="button">
-            <i class="bi bi-info-circle"></i> @Localizer["Vs_TabOverview"]
+            <pems-icon name="bi-info-circle" /> @Localizer["Vs_TabOverview"]
         </button>
     </li>
     <li class="nav-item" role="presentation">
         <button class="nav-link @(vdrDefaultTab == "workflow" ? "active" : "")" data-bs-toggle="tab" data-bs-target="#tab-workflow" type="button">
-            <i class="bi bi-signpost-split"></i> @Localizer["Vs_TabWorkflow"]
+            <pems-icon name="bi-signpost-split" /> @Localizer["Vs_TabWorkflow"]
         </button>
     </li>
     <li class="nav-item" role="presentation">
         <button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-submissions" type="button">
-            <i class="bi bi-clock-history"></i> @Localizer["Vs_TabSubmissions"] <pems-badge tone="neutral">@Model.Submissions.Count</pems-badge>
+            <pems-icon name="bi-clock-history" /> @Localizer["Vs_TabSubmissions"] <pems-badge tone="neutral">@Model.Submissions.Count</pems-badge>
         </button>
     </li>
     <li class="nav-item" role="presentation">
         <button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-comments" type="button">
-            <i class="bi bi-chat-square-text"></i> @Localizer["Vs_TabComments"]
+            <pems-icon name="bi-chat-square-text" /> @Localizer["Vs_TabComments"]
         </button>
     </li>
     <li class="nav-item" role="presentation">
         <button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-correspondence" type="button">
-            <i class="bi bi-envelope-paper"></i> @Localizer["Vs_TabCorrespondence"]
+            <pems-icon name="bi-envelope-paper" /> @Localizer["Vs_TabCorrespondence"]
             @if (relatedLetters.Any()) { <pems-badge tone="neutral">@relatedLetters.Count</pems-badge> }
         </button>
     </li>
@@ -163,7 +163,7 @@
             <div class="col-md-3"><pems-label>@Localizer["Vd_MaterialCode"]</pems-label><pems-input name="materialCode" value="@Model.MaterialCode" placeholder="e.g. 0611" /></div>
         </div>
         <pems-button tone="primary" size="small" outline="true" css="mt-3" type="submit">
-            <i class="bi bi-hash"></i> @Localizer["Vd_GenOfficial"]
+            <pems-icon name="bi-hash" /> @Localizer["Vd_GenOfficial"]
         </pems-button>
     </form>
 </div>
@@ -186,7 +186,7 @@
             <div class="col-md-4"><pems-label>@Localizer["Vd_TypologyCode"]</pems-label><pems-input name="typologyCode" value="@Model.TypologyCode" placeholder="e.g. GS, LG, IS ..." /></div>
         </div>
         <pems-button tone="primary" size="small" outline="true" css="mt-3" type="submit">
-            <i class="bi bi-hash"></i> @Localizer["Vd_GenVendor"]
+            <pems-icon name="bi-hash" /> @Localizer["Vd_GenVendor"]
         </pems-button>
     </form>
 </div>
@@ -235,7 +235,7 @@
                     <td>
                         @if (s.FtpUploadedDate.HasValue)
                         {
-                            <pems-badge tone="success" title="@s.FtpRemotePath"><i class="bi bi-check-circle"></i> @s.FtpUploadedDate.Value.ToString("yyyy-MM-dd")</pems-badge>
+                            <pems-badge tone="success" title="@s.FtpRemotePath"><pems-icon name="bi-check-circle" /> @s.FtpUploadedDate.Value.ToString("yyyy-MM-dd")</pems-badge>
                         }
                         else
                         {
@@ -243,7 +243,7 @@
                                 <input type="hidden" name="vdrItemId" value="@Model.VDRItemId" />
                                 <input type="hidden" name="submissionId" value="@s.VDRSubmissionId" />
                                 <pems-input scale="small" type="file" name="file" style="max-width:120px;" required />
-                                <pems-button tone="primary" size="small" outline="true" title="@Localizer["Vd_UploadFtp"]"><i class="bi bi-cloud-upload"></i></pems-button>
+                                <pems-button tone="primary" size="small" outline="true" title="@Localizer["Vd_UploadFtp"]"><pems-icon name="bi-cloud-upload" /></pems-button>
                             </form>
                         }
                     </td>
@@ -254,7 +254,7 @@
                     <td>
                         @if (!string.IsNullOrEmpty(s.CommentSheetFilePath))
                         {
-                            <pems-button tone="neutral" size="small" outline="true" as="a" href="@Url.Action("Download", "Files", new { id = s.CommentSheetAttachmentId })" target="_blank" title="@s.CommentSheetFileName"><i class="bi bi-file-earmark-text"></i></pems-button>
+                            <pems-button tone="neutral" size="small" outline="true" as="a" href="@Url.Action("Download", "Files", new { id = s.CommentSheetAttachmentId })" target="_blank" title="@s.CommentSheetFileName"><pems-icon name="bi-file-earmark-text" /></pems-button>
                         }
                         else
                         {
@@ -262,14 +262,14 @@
                                 <input type="hidden" name="vdrItemId" value="@Model.VDRItemId" />
                                 <input type="hidden" name="submissionId" value="@s.VDRSubmissionId" />
                                 <pems-input scale="small" type="file" name="file" style="max-width:120px;" required />
-                                <pems-button tone="primary" size="small" outline="true"><i class="bi bi-upload"></i></pems-button>
+                                <pems-button tone="primary" size="small" outline="true"><pems-icon name="bi-upload" /></pems-button>
                             </form>
                         }
                     </td>
                     <td>
                         @if (!string.IsNullOrEmpty(s.ReplySheetFilePath))
                         {
-                            <pems-button tone="neutral" size="small" outline="true" as="a" href="@Url.Action("Download", "Files", new { id = s.ReplySheetAttachmentId })" target="_blank" title="@s.ReplySheetFileName"><i class="bi bi-file-earmark-text"></i></pems-button>
+                            <pems-button tone="neutral" size="small" outline="true" as="a" href="@Url.Action("Download", "Files", new { id = s.ReplySheetAttachmentId })" target="_blank" title="@s.ReplySheetFileName"><pems-icon name="bi-file-earmark-text" /></pems-button>
                         }
                         else
                         {
@@ -277,7 +277,7 @@
                                 <input type="hidden" name="vdrItemId" value="@Model.VDRItemId" />
                                 <input type="hidden" name="submissionId" value="@s.VDRSubmissionId" />
                                 <pems-input scale="small" type="file" name="file" style="max-width:120px;" required />
-                                <pems-button tone="primary" size="small" outline="true"><i class="bi bi-upload"></i></pems-button>
+                                <pems-button tone="primary" size="small" outline="true"><pems-icon name="bi-upload" /></pems-button>
                             </form>
                         }
                     </td>
@@ -302,13 +302,13 @@
 {
     <div class="content-card mb-3">
         <div class="d-flex justify-content-between align-items-center mb-2">
-            <h6 class="mb-0"><i class="bi bi-file-earmark-pdf"></i> @Localizer["Vd_DocViewer"] <span class="text-muted small">@Localizer["Vd_PinHint"]</span></h6>
+            <h6 class="mb-0"><pems-icon name="bi-file-earmark-pdf" /> @Localizer["Vd_DocViewer"] <span class="text-muted small">@Localizer["Vd_PinHint"]</span></h6>
             <div class="d-flex align-items-center gap-2">
-                <pems-button tone="neutral" size="small" outline="true" type="button" id="pdfPrevPage"><i class="bi bi-chevron-left"></i></pems-button>
+                <pems-button tone="neutral" size="small" outline="true" type="button" id="pdfPrevPage"><pems-icon name="bi-chevron-left" /></pems-button>
                 <span class="small" id="pdfPageLabel">@Localizer["Vd_Page"] - / -</span>
-                <pems-button tone="neutral" size="small" outline="true" type="button" id="pdfNextPage"><i class="bi bi-chevron-right"></i></pems-button>
-                <pems-button tone="neutral" size="small" outline="true" type="button" id="pdfZoomOut"><i class="bi bi-zoom-out"></i></pems-button>
-                <pems-button tone="neutral" size="small" outline="true" type="button" id="pdfZoomIn"><i class="bi bi-zoom-in"></i></pems-button>
+                <pems-button tone="neutral" size="small" outline="true" type="button" id="pdfNextPage"><pems-icon name="bi-chevron-right" /></pems-button>
+                <pems-button tone="neutral" size="small" outline="true" type="button" id="pdfZoomOut"><pems-icon name="bi-zoom-out" /></pems-button>
+                <pems-button tone="neutral" size="small" outline="true" type="button" id="pdfZoomIn"><pems-icon name="bi-zoom-in" /></pems-button>
             </div>
         </div>
         <div id="pdfCanvasWrapper" style="position:relative; border:1px solid var(--pems-surface-border,#dee2e6); overflow:auto; max-height:75vh; text-align:center; cursor:crosshair;">
@@ -420,7 +420,7 @@
                         @c.CommentText
                         @if (!string.IsNullOrEmpty(c.AttachmentFilePath))
                         {
-                            <div><a href="@Url.Action("Download", "Files", new { id = c.AttachmentId })" target="_blank"><i class="bi bi-paperclip"></i> @c.AttachmentFileName</a></div>
+                            <div><a href="@Url.Action("Download", "Files", new { id = c.AttachmentId })" target="_blank"><pems-icon name="bi-paperclip" /> @c.AttachmentFileName</a></div>
                         }
                         @if (!string.IsNullOrEmpty(c.RequiredAction))
                         {
@@ -454,12 +454,12 @@
                         @c.ResponseText
                         @if (!string.IsNullOrEmpty(c.ReplyAttachmentFilePath))
                         {
-                            <div><a href="@Url.Action("Download", "Files", new { id = c.ReplyAttachmentId })" target="_blank"><i class="bi bi-paperclip"></i> @c.ReplyAttachmentFileName</a></div>
+                            <div><a href="@Url.Action("Download", "Files", new { id = c.ReplyAttachmentId })" target="_blank"><pems-icon name="bi-paperclip" /> @c.ReplyAttachmentFileName</a></div>
                         }
                         @if (string.IsNullOrEmpty(c.ResponseText) && string.IsNullOrEmpty(c.ReplyAttachmentFilePath))
                         {
                             <pems-button tone="primary" size="small" outline="true" css="mt-1" type="button" data-bs-toggle="modal" data-bs-target="#replyModal" data-fill-commentid="@c.VDRCommentId" data-fill-commentno="@c.CommentNo" data-fill-commenttext="@c.CommentText">
-                                <i class="bi bi-reply"></i> @Localizer["Vd_Reply"]
+                                <pems-icon name="bi-reply" /> @Localizer["Vd_Reply"]
                             </pems-button>
                         }
                     </td>
@@ -472,7 +472,7 @@
     @if (Model.Submissions.Any())
     {
         <pems-button tone="primary" size="small" type="button" data-bs-toggle="modal" data-bs-target="#addCommentModal">
-            <i class="bi bi-plus-lg"></i> @Localizer["Vd_AddComment"]
+            <pems-icon name="bi-plus-lg" /> @Localizer["Vd_AddComment"]
         </pems-button>
     }
 </div>
@@ -568,7 +568,7 @@
             {
                 var cls = st.State switch { StageItemState.Done => "vs-step--done", StageItemState.Current => "vs-step--current", StageItemState.Rejected => "vs-step--rejected", _ => "" };
                 <div class="vs-step @cls" aria-current="@(st.State == StageItemState.Current ? "step" : null)">
-                    <div class="vs-step__dot"><i class="bi @(st.State == StageItemState.Done ? "bi-check-lg" : st.IconCssClass)" aria-hidden="true"></i></div>
+                    <div class="vs-step__dot"><pems-icon css="@(st.State == StageItemState.Done ? "bi-check-lg" : st.IconCssClass)" aria-hidden="true" /></div>
                     <div class="vs-step__label">@st.Label</div>
                     <div class="vs-step__meta">@st.RoleLabel</div>
                 </div>
@@ -668,7 +668,7 @@
     <pems-info-item label="@Localizer["Vd_Reviewers"]">@Localizer["Vd_Role_Lead"], @Localizer["Vd_Role_DocControl"]</pems-info-item>
     <pems-info-item label="@Localizer["Vd_Step2Title"]">@Localizer["Vd_None"]</pems-info-item>
 </pems-info-grid>
-                        <pems-button tone="primary" css="w-100" type="submit" id="vdrStartBtn" aria-describedby="vdrWhyDisabled"><i class="bi bi-play-fill" aria-hidden="true"></i> @Localizer["Vd_StartReview"]</pems-button>
+                        <pems-button tone="primary" css="w-100" type="submit" id="vdrStartBtn" aria-describedby="vdrWhyDisabled"><pems-icon name="bi-play-fill" aria-hidden="true" /> @Localizer["Vd_StartReview"]</pems-button>
                         <p id="vdrWhyDisabled" class="small text-warning-emphasis mt-2 mb-0" hidden>@Localizer["Vd_EnterTransmittalToEnable"]</p>
                     </div>
                 </section>
@@ -679,7 +679,7 @@
 else
 {
 <div class="content-card mb-3">
-    <h6 class="mb-3"><i class="bi bi-signpost-split"></i> @Localizer["Vd_ReviewWorkflow"]</h6>
+    <h6 class="mb-3"><pems-icon name="bi-signpost-split" /> @Localizer["Vd_ReviewWorkflow"]</h6>
 
     @if (Model.Submissions.Any())
     {
@@ -740,7 +740,7 @@ else
         }
         else
         {
-            <pems-badge tone="warning"><i class="bi bi-hourglass-split"></i> @Localizer["Vd_WaitingOthers"]</pems-badge>
+            <pems-badge tone="warning"><pems-icon name="bi-hourglass-split" /> @Localizer["Vd_WaitingOthers"]</pems-badge>
         }
     }
     else if (currentStageName == "LeadReview")
@@ -774,7 +774,7 @@ else
             <div class="col-md-4"><pems-label css="small">@Localizer["Vd_ReplySheetNo"]</pems-label><pems-input scale="small" name="replySheetNo" /></div>
             <div class="col-md-4"><pems-label css="small">@Localizer["Vd_ClientTransmittalNo"]</pems-label><pems-input scale="small" name="clientTransmittalNo" /></div>
             <div class="col-md-4 d-flex align-items-end">
-                <pems-button tone="primary" size="small" css="w-100" type="submit"><i class="bi bi-send"></i> @Localizer["Vd_ReturnToVendor"]</pems-button>
+                <pems-button tone="primary" size="small" css="w-100" type="submit"><pems-icon name="bi-send" /> @Localizer["Vd_ReturnToVendor"]</pems-button>
             </div>
         </form>
     }
@@ -784,7 +784,7 @@ else
 
 @* تاریخچه‌ی واقعی گردش‌کار از موتور عمومی (نه فقط رشته‌ی خلاصه‌ی وضعیت) *@
 <div class="content-card">
-    <h6 class="mb-3"><i class="bi bi-clock-history"></i> @Localizer["Vd_WorkflowHistory"]</h6>
+    <h6 class="mb-3"><pems-icon name="bi-clock-history" /> @Localizer["Vd_WorkflowHistory"]</h6>
     @if (workflowHistory.Any())
     {
         <pems-related-table>
@@ -814,7 +814,7 @@ else
 @* ===================== Correspondence ===================== *@
 <div class="tab-pane fade" id="tab-correspondence" role="tabpanel">
 <div class="content-card">
-    <h6 class="mb-3"><i class="bi bi-envelope-paper"></i> @Localizer["Vd_RelatedCorr"]</h6>
+    <h6 class="mb-3"><pems-icon name="bi-envelope-paper" /> @Localizer["Vd_RelatedCorr"]</h6>
     @if (relatedLetters.Any())
     {
         <pems-related-table>
@@ -828,7 +828,7 @@ else
                         <td>@l.Subject</td>
                         <td class="small text-muted">@l.LetterDate.ToString("yyyy-MM-dd")</td>
                         <td><pems-badge tone="info">@l.Status</pems-badge></td>
-                        <td><pems-button tone="neutral" size="small" outline="true" as="a" asp-controller="Letter" asp-action="Details" asp-route-id="@l.LetterId"><i class="bi bi-eye"></i></pems-button></td>
+                        <td><pems-button tone="neutral" size="small" outline="true" as="a" asp-controller="Letter" asp-action="Details" asp-route-id="@l.LetterId"><pems-icon name="bi-eye" /></pems-button></td>
                     </tr>
                 }
             </tbody>

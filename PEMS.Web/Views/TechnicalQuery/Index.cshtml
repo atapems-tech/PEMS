@@ -66,7 +66,7 @@
         <pems-list-kpis id="tqKpis">
             <span class="vs-chip">@Localizer["Lp_Total"] <strong>@Model.TotalCount</strong></span>
             <span class="vs-chip">@Localizer["Tq_OpenCount"] <strong>@ViewBag.OpenCount</strong></span>
-            <span class="vs-chip @(((int?)ViewBag.OverdueCount ?? 0) > 0 ? "vs-chip--danger" : "")"><i class="bi bi-clock-history" aria-hidden="true"></i> @Localizer["Overdue"] <strong>@ViewBag.OverdueCount</strong></span>
+            <span class="vs-chip @(((int?)ViewBag.OverdueCount ?? 0) > 0 ? "vs-chip--danger" : "")"><pems-icon name="bi-clock-history" aria-hidden="true" /> @Localizer["Overdue"] <strong>@ViewBag.OverdueCount</strong></span>
         </pems-list-kpis>
 
         <pems-list-chips reset-href="@Url.Action("Index")">
@@ -103,7 +103,7 @@
                             <td><span class="vs-pill @(t.Priority is "High" or "Urgent" ? "vs-pill--danger" : "vs-pill--neutral")">@t.Priority</span></td>
                             <td class="small">
                                 @(t.RequiredResponseDate?.ToString("yyyy-MM-dd"))
-                                @if (t.IsOverdue) { <span class="vs-pill vs-pill--icon vs-pill--danger ms-1"><i class="bi bi-clock-history" aria-hidden="true"></i> @Localizer["Overdue"]</span> }
+                                @if (t.IsOverdue) { <span class="vs-pill vs-pill--icon vs-pill--danger ms-1"><pems-icon name="bi-clock-history" aria-hidden="true" /> @Localizer["Overdue"]</span> }
                             </td>
                             <td><span class="vs-pill @StatusTone(t.Status)">@StatusText(t.Status)</span></td>
                         </tr>

@@ -53,14 +53,14 @@
             <pems-input scale="small" type="number" min="0" name="minRevisionCount" value="@Model.SelectedMinRevisionCount" placeholder="e.g. 2" />
         </div>
         <div class="col-md-3 d-flex gap-2">
-            <pems-button tone="primary" size="small" css="flex-fill" type="submit"><i class="bi bi-funnel"></i> @Localizer["Filter"]</pems-button>
-            <pems-button tone="danger" size="small" outline="true" css="flex-fill" as="a" asp-action="Index" title="@Localizer["Reset"]" aria-label="@Localizer["Reset"]"><i class="bi bi-x-lg"></i></pems-button>
+            <pems-button tone="primary" size="small" css="flex-fill" type="submit"><pems-icon name="bi-funnel" /> @Localizer["Filter"]</pems-button>
+            <pems-button tone="danger" size="small" outline="true" css="flex-fill" as="a" asp-action="Index" title="@Localizer["Reset"]" aria-label="@Localizer["Reset"]"><pems-icon name="bi-x-lg" /></pems-button>
         </div>
     </form>
     @if (Model.SelectedProjectId.HasValue || Model.SelectedDisciplineId.HasValue || Model.SelectedMinRevisionCount.HasValue)
     {
         <p class="text-muted small mt-2 mb-0">
-            <i class="bi bi-funnel-fill"></i> @Localizer["ActiveFilter"]:
+            <pems-icon name="bi-funnel-fill" /> @Localizer["ActiveFilter"]:
             @(Model.SelectedProjectId.HasValue ? $"Project #{Model.SelectedProjectId} " : "")
             @(Model.SelectedDisciplineId.HasValue ? $"Discipline #{Model.SelectedDisciplineId} " : "")
             @(Model.SelectedMinRevisionCount.HasValue ? $"Revision ≥ {Model.SelectedMinRevisionCount}" : "")
@@ -72,7 +72,7 @@
 <div class="content-card mb-3">
     <div class="section-head d-flex align-items-center justify-content-between flex-wrap gap-2 mb-3">
         <div>
-            <h6 class="section-title mb-1"><i class="bi bi-speedometer2"></i> @Localizer["ExecutiveSummary"]</h6>
+            <h6 class="section-title mb-1"><pems-icon name="bi-speedometer2" /> @Localizer["ExecutiveSummary"]</h6>
             <p class="section-subtitle mb-0">Live snapshot of engineering activity</p>
         </div>
     </div>
@@ -88,7 +88,7 @@
 
 <div class="content-card mb-3">
     <div class="d-flex justify-content-between align-items-center mb-3">
-        <h6 class="mb-0"><i class="bi bi-shield-check"></i> Engineering Health</h6>
+        <h6 class="mb-0"><pems-icon name="bi-shield-check" /> Engineering Health</h6>
         <pems-badge tone="primary" css="rounded-pill fs-6">@Model.EngineeringHealthScore / 100</pems-badge>
     </div>
     <p class="text-muted small mb-3">
@@ -116,7 +116,7 @@
 
 @* ===================== Section B: Quality & Review (GetRevisionQualityAsync, E-05C) ===================== *@
 <div class="content-card mb-3">
-    <h6 class="mb-1"><i class="bi bi-award"></i> @Localizer["QualityAndReview"]</h6>
+    <h6 class="mb-1"><pems-icon name="bi-award" /> @Localizer["QualityAndReview"]</h6>
     <p class="text-muted small mb-3">@Localizer["FirstPassApprovalExplanation"]</p>
 
     <div class="row g-3 mb-3">
@@ -136,7 +136,7 @@
     @if (!topRejected.Any())
     {
         <div class="text-center text-muted py-4">
-            <i class="bi bi-emoji-smile pems-s-4361a2ff"></i>
+            <pems-icon name="bi-emoji-smile" css="pems-s-4361a2ff" />
             <p class="mb-0 mt-2">@Localizer["NoRejectedDocumentsInScope"]</p>
         </div>
     }
@@ -165,7 +165,7 @@
 
 @* ===================== Section C: Revision & Resubmission Pressure (GetRevisionQualityAsync + MinRevisionCount, E-05C ADR-5) ===================== *@
 <div class="content-card mb-3">
-    <h6 class="mb-1"><i class="bi bi-arrow-repeat"></i> @Localizer["RevisionPressure"]</h6>
+    <h6 class="mb-1"><pems-icon name="bi-arrow-repeat" /> @Localizer["RevisionPressure"]</h6>
     <p class="text-muted small mb-3">@Localizer["RevisionPressureExplanation"]</p>
 
     @{
@@ -174,7 +174,7 @@
     @if (!highRevision.Any())
     {
         <div class="text-center text-muted py-4">
-            <i class="bi bi-emoji-smile pems-s-4361a2ff"></i>
+            <pems-icon name="bi-emoji-smile" css="pems-s-4361a2ff" />
             <p class="mb-0 mt-2">@Localizer["NoRevisedDocumentsInScope"]</p>
         </div>
     }
@@ -202,17 +202,17 @@
             </pems-table>
         </div>
         <div class="mt-3">
-            <pems-button as="a" tone="neutral" size="small" outline="true" asp-controller="EngineeringDocuments" asp-action="Index" asp-route-MinRevisionCount="@(Model.SelectedMinRevisionCount ?? 1)"><i class="bi bi-list-ul"></i> @Localizer["ViewAllInMdr"]</pems-button>
+            <pems-button as="a" tone="neutral" size="small" outline="true" asp-controller="EngineeringDocuments" asp-action="Index" asp-route-MinRevisionCount="@(Model.SelectedMinRevisionCount ?? 1)"><pems-icon name="bi-list-ul" /> @Localizer["ViewAllInMdr"]</pems-button>
         </div>
     }
 </div>
 
 <div class="content-card mb-3">
-   <h6 class="mb-3"><i class="bi bi-exclamation-triangle"></i> Management Attention Queue</h6>
+   <h6 class="mb-3"><pems-icon name="bi-exclamation-triangle" /> Management Attention Queue</h6>
    @if (!attentionQueue.Any())
    {
        <div class="text-center text-muted py-4">
-           <i class="bi bi-check-circle pems-s-4361a2ff"></i>
+           <pems-icon name="bi-check-circle" css="pems-s-4361a2ff" />
            <p class="mb-0 mt-2">No high-risk documents were identified in the selected scope.</p>
        </div>
    }
@@ -262,11 +262,11 @@
 </div>
 
 <div class="content-card mb-3">
-   <h6 class="mb-3"><i class="bi bi-diagram-3"></i> Discipline Risk Overview</h6>
+   <h6 class="mb-3"><pems-icon name="bi-diagram-3" /> Discipline Risk Overview</h6>
    @if (!disciplinePerformance.Any())
    {
        <div class="text-center text-muted py-4">
-           <i class="bi bi-slash-circle pems-s-4361a2ff"></i>
+           <pems-icon name="bi-slash-circle" css="pems-s-4361a2ff" />
            <p class="mb-0 mt-2">No discipline data is available for the selected scope.</p>
        </div>
    }

@@ -52,7 +52,7 @@
 @if (!string.IsNullOrEmpty(Model.RiskAssessmentText))
 {
     <div class="content-card mb-3">
-        <h6 class="mb-2"><i class="bi bi-shield-exclamation"></i> Risk Assessment</h6>
+        <h6 class="mb-2"><pems-icon name="bi-shield-exclamation" /> Risk Assessment</h6>
         <p class="mb-0">@Model.RiskAssessmentText</p>
     </div>
 }
@@ -60,20 +60,20 @@
 @if (Model.Status == "Rejected")
 {
     <div class="content-card mb-3 border-danger">
-        <h6 class="mb-2 text-danger"><i class="bi bi-x-circle"></i> @Localizer["Rejected"]</h6>
+        <h6 class="mb-2 text-danger"><pems-icon name="bi-x-circle" /> @Localizer["Rejected"]</h6>
         <p class="mb-0">@Model.RejectionReason</p>
     </div>
 }
 
 <div class="content-card mb-3">
-    <h6 class="mb-3"><i class="bi bi-paperclip"></i> Attachments <pems-badge tone="neutral">@Model.Attachments.Count</pems-badge></h6>
+    <h6 class="mb-3"><pems-icon name="bi-paperclip" /> Attachments <pems-badge tone="neutral">@Model.Attachments.Count</pems-badge></h6>
     @if (Model.Attachments.Any())
     {
         <ul class="list-unstyled mb-3">
             @foreach (var a in Model.Attachments.Where(x => x.IsActive))
             {
                 <li class="d-flex justify-content-between align-items-center border-bottom py-1">
-                    <a href="@Url.Action("Download", "Files", new { id = a.AttachmentId })" target="_blank"><i class="bi bi-file-earmark"></i> @a.FileName</a>
+                    <a href="@Url.Action("Download", "Files", new { id = a.AttachmentId })" target="_blank"><pems-icon name="bi-file-earmark" /> @a.FileName</a>
                     <span class="text-muted small">@a.UploadDate.ToString("yyyy-MM-dd")</span>
                 </li>
             }
@@ -82,12 +82,12 @@
     <form asp-action="UploadAttachment" method="post" enctype="multipart/form-data" class="d-flex gap-2">
         <input type="hidden" name="mocId" value="@Model.MOCId" />
         <pems-input scale="small" type="file" name="file" required />
-        <pems-button tone="primary" size="small" outline="true" css="text-nowrap" type="submit"><i class="bi bi-upload"></i> افزودن</pems-button>
+        <pems-button tone="primary" size="small" outline="true" css="text-nowrap" type="submit"><pems-icon name="bi-upload" /> افزودن</pems-button>
     </form>
 </div>
 
 <div class="content-card mb-3">
-    <h6 class="mb-3"><i class="bi bi-signpost-split"></i> Workflow</h6>
+    <h6 class="mb-3"><pems-icon name="bi-signpost-split" /> Workflow</h6>
 
     @if (!workflowRunning)
     {
@@ -113,10 +113,10 @@
         <div class="d-flex gap-2">
             <form asp-action="Approve" method="post">
                 <input type="hidden" name="mocId" value="@Model.MOCId" />
-                <pems-button tone="success" size="small" type="submit"><i class="bi bi-check-lg"></i> @Localizer["Approve"]</pems-button>
+                <pems-button tone="success" size="small" type="submit"><pems-icon name="bi-check-lg" /> @Localizer["Approve"]</pems-button>
             </form>
             <pems-button tone="danger" size="small" type="button" data-bs-toggle="modal" data-bs-target="#rejectModal">
-                <i class="bi bi-x-lg"></i> @Localizer["Reject"]
+                <pems-icon name="bi-x-lg" /> @Localizer["Reject"]
             </pems-button>
         </div>
 
@@ -154,7 +154,7 @@
             <div class="col-md-6">
                 <div class="border rounded p-2">
                     <div class="d-flex justify-content-between align-items-center">
-                        <span class="small"><i class="bi bi-file-earmark-check"></i> به‌روزرسانی مدارک متاثر</span>
+                        <span class="small"><pems-icon name="bi-file-earmark-check" /> به‌روزرسانی مدارک متاثر</span>
                         @if (Model.DocumentsUpdated)
                         {
                             <pems-badge tone="success">@Localizer["تکمیل‌شده"]</pems-badge>
@@ -173,7 +173,7 @@
             <div class="col-md-6">
                 <div class="border rounded p-2">
                     <div class="d-flex justify-content-between align-items-center">
-                        <span class="small"><i class="bi bi-mortarboard"></i> آموزش @(Model.TrainingRequired ? "" : "(نیاز ندارد)")</span>
+                        <span class="small"><pems-icon name="bi-mortarboard" /> آموزش @(Model.TrainingRequired ? "" : "(نیاز ندارد)")</span>
                         @if (!Model.TrainingRequired || Model.TrainingCompleted)
                         {
                             <pems-badge tone="success">@(Model.TrainingRequired ? "تکمیل‌شده" : "نامرتبط")</pems-badge>
@@ -192,7 +192,7 @@
 
         <form asp-action="Close" method="post" class="mt-3">
             <input type="hidden" name="mocId" value="@Model.MOCId" />
-            <pems-button tone="primary" size="small" type="submit"><i class="bi bi-check-circle"></i> بستن نهایی MOC</pems-button>
+            <pems-button tone="primary" size="small" type="submit"><pems-icon name="bi-check-circle" /> بستن نهایی MOC</pems-button>
         </form>
     }
 </div>

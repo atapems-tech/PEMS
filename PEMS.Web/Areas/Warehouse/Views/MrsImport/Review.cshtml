@@ -23,12 +23,12 @@
                 @Model.Batch.SourceFileName
                 @if (!string.IsNullOrWhiteSpace(Model.Batch.SourceFileDownloadUrl))
                 {
-                    <a href="@Model.Batch.SourceFileDownloadUrl" class="small ms-2"><i class="bi bi-download"></i> Download original file</a>
+                    <a href="@Model.Batch.SourceFileDownloadUrl" class="small ms-2"><pems-icon name="bi-download" /> Download original file</a>
                 }
             </h5>
             <span class="text-muted small">Batch #@Model.Batch.MrsImportBatchId - شیت @Model.Batch.SourceSheet - @Model.Batch.TotalRows ردیف - @Model.Batch.ImportDate.ToString("yyyy-MM-dd HH:mm")</span>
         </div>
-        <pems-button as="a" tone="neutral" size="small" outline="true" asp-action="Index"><i class="bi bi-arrow-left"></i> Back</pems-button>
+        <pems-button as="a" tone="neutral" size="small" outline="true" asp-action="Index"><pems-icon name="bi-arrow-left" /> Back</pems-button>
     </div>
 </div>
 
@@ -75,7 +75,7 @@
                 <input type="hidden" name="batchId" value="@Model.Batch.MrsImportBatchId" />
                 <input type="hidden" name="matchStatusFilter" value="@matchStatusFilter" />
                 <pems-button tone="primary" size="small" type="submit" data-pems-confirm="همه‌ی ردیف‌های Pending با وضعیت «@FilterLabel(matchStatusFilter)» در کل این Batch (نه فقط این صفحه) تایید و به MaterialItem/InventoryTransaction تبدیل شوند؟">
-                    <i class="bi bi-check2-all"></i> Commit ALL "@FilterLabel(matchStatusFilter)" in entire batch
+                    <pems-icon name="bi-check2-all" /> Commit ALL "@FilterLabel(matchStatusFilter)" in entire batch
                 </pems-button>
             </form>
         }
@@ -83,7 +83,7 @@
             <input type="hidden" name="batchId" value="@Model.Batch.MrsImportBatchId" />
             <input type="hidden" name="matchStatusFilter" value="@matchStatusFilter" />
             <pems-button tone="danger" size="small" outline="true" type="submit" data-pems-confirm="همه‌ی ردیف‌های Pending با وضعیت «@FilterLabel(matchStatusFilter)» در کل این Batch رد شوند؟">
-                <i class="bi bi-x-circle"></i> Reject ALL "@FilterLabel(matchStatusFilter)" in entire batch
+                <pems-icon name="bi-x-circle" /> Reject ALL "@FilterLabel(matchStatusFilter)" in entire batch
             </pems-button>
         </form>
     }
@@ -92,15 +92,15 @@
 <div class="content-card mb-3">
     <div class="d-flex gap-2 flex-wrap align-items-center">
         <div class="input-group admin-search pems-s-2f3f7d77">
-            <span class="input-group-text"><i class="bi bi-search"></i></span>
+            <span class="input-group-text"><pems-icon name="bi-search" /></span>
             <pems-input type="search" id="rowSearch" placeholder="Filter this page by description..." autocomplete="off" />
         </div>
         <span class="text-muted small">Manual selection below applies to this page only (@rows.Count of @Model.Rows.TotalCount rows in this filter) - use the batch-wide Commit/Reject buttons above to act on every matching row.</span>
         <pems-button tone="primary" size="small" css="ms-auto" type="submit" form="bulkCommitForm" id="bulkCommitBtn" disabled="true" data-pems-confirm="تعداد {n} ردیف انتخاب‌شده (این صفحه) تایید و به MaterialItem/InventoryTransaction تبدیل شود؟" data-pems-confirm-count="#selectedCount">
-            <i class="bi bi-check2-circle"></i> Commit Selected (<span id="selectedCount">0</span>)
+            <pems-icon name="bi-check2-circle" /> Commit Selected (<span id="selectedCount">0</span>)
         </pems-button>
         <pems-button tone="danger" size="small" outline="true" type="submit" form="bulkRejectForm" id="bulkRejectBtn" disabled="true" data-pems-confirm="ردیف‌های انتخاب‌شده (این صفحه) رد شوند؟">
-            <i class="bi bi-x-circle"></i> Reject Selected
+            <pems-icon name="bi-x-circle" /> Reject Selected
         </pems-button>
     </div>
 </div>
@@ -150,15 +150,15 @@
                         <td>
                             @if (row.ReviewStatus == "Approved" && !string.IsNullOrWhiteSpace(row.ErrorMessage))
                             {
-                                <span class="small text-warning" title="@row.ErrorMessage"><i class="bi bi-exclamation-triangle"></i> Approved (@row.ErrorMessage)</span>
+                                <span class="small text-warning" title="@row.ErrorMessage"><pems-icon name="bi-exclamation-triangle" /> Approved (@row.ErrorMessage)</span>
                             }
                             else if (row.ReviewStatus == "Approved")
                             {
-                                <span class="small text-success"><i class="bi bi-check-circle"></i> @Localizer["Approved"]</span>
+                                <span class="small text-success"><pems-icon name="bi-check-circle" /> @Localizer["Approved"]</span>
                             }
                             else if (row.ReviewStatus == "Rejected")
                             {
-                                <span class="small text-muted"><i class="bi bi-x-circle"></i> @Localizer["Rejected"]</span>
+                                <span class="small text-muted"><pems-icon name="bi-x-circle" /> @Localizer["Rejected"]</span>
                             }
                             else if (row.MatchStatus == "Invalid")
                             {
@@ -173,7 +173,7 @@
                             @if (row.Metadata.Any())
                             {
                                 <pems-button tone="neutral" size="small" outline="true" css="meta-toggle" type="button" data-target="@metaRowId" title="Show all Excel columns for this row">
-                                    <i class="bi bi-list-columns-reverse"></i> @row.Metadata.Count
+                                    <pems-icon name="bi-list-columns-reverse" /> @row.Metadata.Count
                                 </pems-button>
                             }
                         </td>

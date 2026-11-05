@@ -63,7 +63,7 @@
         <div class="vs-doc-identity">
             <div class="d-flex align-items-center gap-2 flex-wrap">
                 <h2 class="vs-doc-number vs-num">@Model.FullName</h2>
-                <span class="vs-pill vs-pill--icon @statusPill.Item1"><i class="bi @statusPill.Item2" aria-hidden="true"></i> @statusPill.Item3</span>
+                <span class="vs-pill vs-pill--icon @statusPill.Item1"><pems-icon css="@statusPill.Item2" aria-hidden="true" /> @statusPill.Item3</span>
             </div>
             <div class="vs-doc-title">&#64;@Model.UserName</div>
             <div class="vs-doc-meta">
@@ -73,8 +73,8 @@
             </div>
         </div>
         <div class="vs-doc-actions">
-            <a asp-action="Edit" asp-route-id="@Model.UserId" class="vs-btn"><i class="bi bi-pencil"></i> @Localizer["Edit"]</a>
-            <a asp-action="Index" class="vs-btn"><i class="bi bi-arrow-left"></i> @Localizer["Users"]</a>
+            <a asp-action="Edit" asp-route-id="@Model.UserId" class="vs-btn"><pems-icon name="bi-pencil" /> @Localizer["Edit"]</a>
+            <a asp-action="Index" class="vs-btn"><pems-icon name="bi-arrow-left" /> @Localizer["Users"]</a>
         </div>
     </div>
     <pems-info-grid>
@@ -88,19 +88,19 @@
 
 <pems-nav css="mb-3" id="userTabs" role="tablist">
     <li class="nav-item" role="presentation">
-        <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#tab-overview" type="button"><i class="bi bi-info-circle"></i> @Localizer["Overview"]</button>
+        <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#tab-overview" type="button"><pems-icon name="bi-info-circle" /> @Localizer["Overview"]</button>
     </li>
     <li class="nav-item" role="presentation">
-        <button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-organization" type="button"><i class="bi bi-building"></i> @Localizer["Organization"]</button>
+        <button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-organization" type="button"><pems-icon name="bi-building" /> @Localizer["Organization"]</button>
     </li>
     <li class="nav-item" role="presentation">
-        <button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-roles" type="button"><i class="bi bi-people"></i> @Localizer["Roles"] <pems-badge tone="neutral">@Model.RoleNames.Count</pems-badge></button>
+        <button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-roles" type="button"><pems-icon name="bi-people" /> @Localizer["Roles"] <pems-badge tone="neutral">@Model.RoleNames.Count</pems-badge></button>
     </li>
     <li class="nav-item" role="presentation">
-        <button class="nav-link @(activeAccessTab != null ? "active" : "")" data-bs-toggle="tab" data-bs-target="#tab-access" type="button"><i class="bi bi-shield-lock"></i> @Localizer["Access & Authorization"]</button>
+        <button class="nav-link @(activeAccessTab != null ? "active" : "")" data-bs-toggle="tab" data-bs-target="#tab-access" type="button"><pems-icon name="bi-shield-lock" /> @Localizer["Access & Authorization"]</button>
     </li>
     <li class="nav-item" role="presentation">
-        <button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-audit" type="button"><i class="bi bi-clock-history"></i> @Localizer["Audit"] <pems-badge tone="neutral">@Model.RecentAuditLogs.Count</pems-badge></button>
+        <button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-audit" type="button"><pems-icon name="bi-clock-history" /> @Localizer["Audit"] <pems-badge tone="neutral">@Model.RecentAuditLogs.Count</pems-badge></button>
     </li>
 </pems-nav>
 
@@ -135,7 +135,7 @@
         <div class="content-card">
             @if (Model.RoleNames.Count == 0)
             {
-                <div class="admin-empty"><i class="bi bi-people"></i><strong>@Localizer["No roles assigned"]</strong></div>
+                <div class="admin-empty"><pems-icon name="bi-people" /><strong>@Localizer["No roles assigned"]</strong></div>
             }
             else
             {
@@ -155,28 +155,28 @@
         <pems-nav css="mb-3" id="accessTabs" role="tablist">
             <li class="nav-item" role="presentation">
                 <button class="nav-link @(activeAccessTab is null or "effective" ? "active" : "")" data-bs-toggle="tab" data-bs-target="#access-effective" type="button">
-                    <i class="bi bi-eye"></i> @Localizer["Effective"] <pems-badge tone="neutral" id="permTabBadge">@Model.AllowedCount</pems-badge>
+                    <pems-icon name="bi-eye" /> @Localizer["Effective"] <pems-badge tone="neutral" id="permTabBadge">@Model.AllowedCount</pems-badge>
                 </button>
             </li>
             <li class="nav-item" role="presentation">
                 <button class="nav-link" data-bs-toggle="tab" data-bs-target="#access-matrix" type="button">
-                    <i class="bi bi-sliders"></i> @Localizer["Matrix"] <pems-badge tone="neutral">@Model.RoleNames.Count</pems-badge>
+                    <pems-icon name="bi-sliders" /> @Localizer["Matrix"] <pems-badge tone="neutral">@Model.RoleNames.Count</pems-badge>
                 </button>
             </li>
             <li class="nav-item" role="presentation">
                 <button class="nav-link @(activeAccessTab == "simulator" ? "active" : "")" data-bs-toggle="tab" data-bs-target="#access-simulator" type="button">
-                    <i class="bi bi-play-circle"></i> @Localizer["Permission Simulator"]
+                    <pems-icon name="bi-play-circle" /> @Localizer["Permission Simulator"]
                 </button>
             </li>
             <li class="nav-item" role="presentation">
                 <button class="nav-link" data-bs-toggle="tab" data-bs-target="#access-sod" type="button">
-                    <i class="bi bi-shuffle"></i> @Localizer["Separation of Duties"]
+                    <pems-icon name="bi-shuffle" /> @Localizer["Separation of Duties"]
                     @if (Model.SoDExposureCount > 0) { <pems-badge tone="warning">@Model.SoDExposureCount</pems-badge> }
                 </button>
             </li>
             <li class="nav-item" role="presentation">
                 <button class="nav-link" data-bs-toggle="tab" data-bs-target="#access-navigation" type="button">
-                    <i class="bi bi-layout-sidebar"></i> @Localizer["Navigation Visibility"] <pems-badge tone="neutral">@Model.VisibleModuleCount</pems-badge>
+                    <pems-icon name="bi-layout-sidebar" /> @Localizer["Navigation Visibility"] <pems-badge tone="neutral">@Model.VisibleModuleCount</pems-badge>
                 </button>
             </li>
         </pems-nav>
@@ -192,14 +192,14 @@
                     @if (canEditPermissions)
                     {
                         <pems-alert tone="info" css="py-2 small mb-2">
-                            <i class="bi bi-info-circle"></i> @Localizer["PermAdmin_RoleScopeNote"]
+                            <pems-icon name="bi-info-circle" /> @Localizer["PermAdmin_RoleScopeNote"]
                             <strong>@string.Join(", ", Model.RoleUserCounts.Select(kv => string.Format(Localizer["PermAdmin_RoleUsersFormat"].Value, kv.Key, kv.Value)))</strong>
                         </pems-alert>
                     }
                     else
                     {
                         <pems-alert tone="secondary" css="py-2 small mb-2">
-                            <i class="bi bi-lock"></i> @(Model.RoleNames.Count == 0 ? Localizer["PermAdmin_Locked_NoRoles"] : Localizer["PermAdmin_Locked_SystemAdmin"])
+                            <pems-icon name="bi-lock" /> @(Model.RoleNames.Count == 0 ? Localizer["PermAdmin_Locked_NoRoles"] : Localizer["PermAdmin_Locked_SystemAdmin"])
                         </pems-alert>
                     }
 
@@ -221,12 +221,12 @@
                                     </pems-select>
                                 }
                                 <div class="btn-group btn-group-sm" role="group">
-                                    <pems-button tone="neutral" outline="true" type="button" id="permSelectAll"><i class="bi bi-check2-square"></i> @Localizer["PermAdmin_SelectAll"]</pems-button>
-                                    <pems-button tone="neutral" outline="true" type="button" id="permDeselectAll"><i class="bi bi-square"></i> @Localizer["PermAdmin_DeselectAll"]</pems-button>
+                                    <pems-button tone="neutral" outline="true" type="button" id="permSelectAll"><pems-icon name="bi-check2-square" /> @Localizer["PermAdmin_SelectAll"]</pems-button>
+                                    <pems-button tone="neutral" outline="true" type="button" id="permDeselectAll"><pems-icon name="bi-square" /> @Localizer["PermAdmin_DeselectAll"]</pems-button>
                                 </div>
                                 <div class="btn-group btn-group-sm" role="group">
-                                    <pems-button tone="success" outline="true" type="button" id="permEnableSelected" disabled="true"><i class="bi bi-toggle-on"></i> @Localizer["PermAdmin_EnableSelected"]</pems-button>
-                                    <pems-button tone="danger" outline="true" type="button" id="permDisableSelected" disabled="true"><i class="bi bi-toggle-off"></i> @Localizer["PermAdmin_DisableSelected"]</pems-button>
+                                    <pems-button tone="success" outline="true" type="button" id="permEnableSelected" disabled="true"><pems-icon name="bi-toggle-on" /> @Localizer["PermAdmin_EnableSelected"]</pems-button>
+                                    <pems-button tone="danger" outline="true" type="button" id="permDisableSelected" disabled="true"><pems-icon name="bi-toggle-off" /> @Localizer["PermAdmin_DisableSelected"]</pems-button>
                                 </div>
                                 <span class="small text-body-secondary" id="permSelectedCount" aria-live="polite"></span>
                                 <pems-spinner size="small" tone="neutral" css="d-none" id="permBusy" aria-label="@Localizer["PermAdmin_Saving"]"></pems-spinner>
@@ -274,7 +274,7 @@
                 <div class="content-card">
                     @if (Model.MatrixRows.Count == 0)
                     {
-                        <div class="admin-empty"><i class="bi bi-sliders"></i><strong>@Localizer["No matrix rows for this user's roles"]</strong></div>
+                        <div class="admin-empty"><pems-icon name="bi-sliders" /><strong>@Localizer["No matrix rows for this user's roles"]</strong></div>
                     }
                     else
                     {
@@ -334,7 +334,7 @@
                         var r = Model.Simulator.Result;
                         <div class="mt-4 permission-intro @(r.Allowed ? "border-success" : "border-danger")">
                             <span class="admin-status @(r.Allowed ? "active" : "inactive")">
-                                <i class="bi @(r.Allowed ? "bi-check2-circle" : "bi-x-circle")"></i> @(r.Allowed ? Localizer["ALLOW"] : Localizer["DENY"])
+                                <pems-icon css="@(r.Allowed ? "bi-check2-circle" : "bi-x-circle")" /> @(r.Allowed ? Localizer["ALLOW"] : Localizer["DENY"])
                             </span>
                             <p class="mb-1 mt-2"><strong>@Localizer["Reason"]:</strong> @r.Reason</p>
                             @if (!string.IsNullOrWhiteSpace(r.Detail)) { <p class="mb-1 text-body-secondary small">@r.Detail</p> }
@@ -347,10 +347,10 @@
 
             <div class="tab-pane fade" id="access-sod" role="tabpanel">
                 <div class="content-card">
-                    <div class="permission-intro mb-3"><i class="bi bi-info-circle me-1"></i> @Localizer["Separation of Duties in PEMS is checked dynamically, per record, at the moment of a real action - not as a standing status. The rows below show structural exposure only: this user's roles grant both permissions of an active policy. This is not the same as an actual violation, which can only happen on a specific record."]</div>
+                    <div class="permission-intro mb-3"><pems-icon name="bi-info-circle" css="me-1" /> @Localizer["Separation of Duties in PEMS is checked dynamically, per record, at the moment of a real action - not as a standing status. The rows below show structural exposure only: this user's roles grant both permissions of an active policy. This is not the same as an actual violation, which can only happen on a specific record."]</div>
                     @if (Model.SoDExposure.Count == 0)
                     {
-                        <div class="admin-empty"><i class="bi bi-shuffle"></i><strong>@Localizer["No active SoD policies apply to this user's permissions"]</strong></div>
+                        <div class="admin-empty"><pems-icon name="bi-shuffle" /><strong>@Localizer["No active SoD policies apply to this user's permissions"]</strong></div>
                     }
                     else
                     {
@@ -367,11 +367,11 @@
                                         <td>
                                             @if (s.UserHoldsBoth)
                                             {
-                                                <span class="admin-status inactive"><i class="bi bi-exclamation-triangle"></i> @Localizer["Potential exposure"]</span>
+                                                <span class="admin-status inactive"><pems-icon name="bi-exclamation-triangle" /> @Localizer["Potential exposure"]</span>
                                             }
                                             else
                                             {
-                                                <span class="admin-status active"><i class="bi bi-check2-circle"></i> @Localizer["Not exposed"]</span>
+                                                <span class="admin-status active"><pems-icon name="bi-check2-circle" /> @Localizer["Not exposed"]</span>
                                             }
                                         </td>
                                     </tr>
@@ -386,7 +386,7 @@
 
             <div class="tab-pane fade" id="access-navigation" role="tabpanel">
                 <div class="content-card">
-                    <div class="permission-intro mb-3"><i class="bi bi-diagram-3 me-1"></i> @Localizer["This is a visualization only - it does not sign in as this user, and hidden items may still be reachable by direct URL if the user is actually authorized (Hidden is not the same as Unauthorized)."]</div>
+                    <div class="permission-intro mb-3"><pems-icon name="bi-diagram-3" css="me-1" /> @Localizer["This is a visualization only - it does not sign in as this user, and hidden items may still be reachable by direct URL if the user is actually authorized (Hidden is not the same as Unauthorized)."]</div>
                     @foreach (var module in Model.NavigationTree)
                     {
                         <details class="navvis-module mb-2" open="@(module.Visible ? "open" : null)">
@@ -434,7 +434,7 @@
         <div class="content-card">
             @if (Model.RecentAuditLogs.Count == 0)
             {
-                <div class="admin-empty"><i class="bi bi-clock-history"></i><strong>@Localizer["No authorization decisions recorded yet"]</strong></div>
+                <div class="admin-empty"><pems-icon name="bi-clock-history" /><strong>@Localizer["No authorization decisions recorded yet"]</strong></div>
             }
             else
             {
@@ -451,11 +451,11 @@
                                 <td>
                                     @if (log.Decision == "Allow")
                                     {
-                                        <span class="admin-status active"><i class="bi bi-check2-circle"></i> @log.Decision</span>
+                                        <span class="admin-status active"><pems-icon name="bi-check2-circle" /> @log.Decision</span>
                                     }
                                     else
                                     {
-                                        <span class="admin-status inactive"><i class="bi bi-x-circle"></i> @log.Decision</span>
+                                        <span class="admin-status inactive"><pems-icon name="bi-x-circle" /> @log.Decision</span>
                                     }
                                 </td>
                                 <td class="text-body-secondary small">@(log.Reason ?? "")</td>

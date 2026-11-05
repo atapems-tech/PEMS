@@ -13,7 +13,7 @@
 }
 
 <div class="content-card mb-3">
-    <h6 class="mb-2"><i class="bi bi-file-earmark-excel"></i> Upload MRS Excel File</h6>
+    <h6 class="mb-2"><pems-icon name="bi-file-earmark-excel" /> Upload MRS Excel File</h6>
     <p class="text-muted small">
         فایل خام MRS آپلود می‌شود، بدون هیچ نوشتنی در MaterialItem/InventoryTransaction - فقط بعد از
         بازبینی و تایید در صفحه‌ی Review، ردیف‌ها به کاتالوگ متریال و دفتر تراکنش تبدیل می‌شوند.
@@ -21,7 +21,7 @@
     <form asp-action="Upload" method="post" enctype="multipart/form-data" class="row g-2">
         <div class="col-md-6"><pems-input scale="small" type="file" name="file" accept=".xlsx,.xlsm" required /></div>
         <div class="col-md-4"><pems-input scale="small" type="text" name="sheetName" placeholder="@Localizer["نام شیت (اختیاری - پیش‌فرض: بزرگ‌ترین شیت)"]" /></div>
-        <div class="col-md-2"><pems-button tone="primary" size="small" css="w-100" type="submit"><i class="bi bi-upload"></i> @Localizer["Stage"]</pems-button></div>
+        <div class="col-md-2"><pems-button tone="primary" size="small" css="w-100" type="submit"><pems-icon name="bi-upload" /> @Localizer["Stage"]</pems-button></div>
     </form>
 </div>
 
@@ -43,7 +43,7 @@
                     <td class="text-danger">@b.InvalidCount</td>
                     <td class="text-success">@b.ApprovedCount</td>
                     <td class="small">@b.ImportDate.ToString("yyyy-MM-dd HH:mm")</td>
-                    <td class="text-end"><pems-button as="a" tone="neutral" size="small" outline="true" asp-action="Review" asp-route-batchId="@b.MrsImportBatchId"><i class="bi bi-card-text"></i> @Localizer["Review"]</pems-button></td>
+                    <td class="text-end"><pems-button as="a" tone="neutral" size="small" outline="true" asp-action="Review" asp-route-batchId="@b.MrsImportBatchId"><pems-icon name="bi-card-text" /> @Localizer["Review"]</pems-button></td>
                 </tr>
             }
         </tbody>

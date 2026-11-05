@@ -26,15 +26,15 @@
                        title="@(locked ? lockedText : "")" />
             </div>
             <span class="perm-status-label admin-status @(row.Allowed ? "active" : "inactive")">
-                <i class="bi @(row.Allowed ? "bi-check2-circle" : "bi-dash-circle")"></i>
+                <pems-icon css="@(row.Allowed ? "bi-check2-circle" : "bi-dash-circle")" />
                 <span class="perm-status-text">@(row.Allowed ? Localizer["Allowed"] : Localizer["Not granted"])</span>
             </span>
             @if (locked)
             {
-                <i class="bi bi-lock text-body-secondary" title="@lockedText" aria-hidden="true"></i>
+                <pems-icon name="bi-lock" css="text-body-secondary" title="@lockedText" aria-hidden="true" />
             }
             <span class="perm-row-state small" role="status" aria-live="polite"></span>
         </div>
     </td>
-    <td class="perm-destructive-cell">@if (row.IsDestructive) { <span class="text-danger"><i class="bi bi-exclamation-triangle"></i> @Localizer["Yes"]</span> } else { <span class="text-body-secondary">&mdash;</span> }</td>
+    <td class="perm-destructive-cell">@if (row.IsDestructive) { <span class="text-danger"><pems-icon name="bi-exclamation-triangle" /> @Localizer["Yes"]</span> } else { <span class="text-body-secondary">&mdash;</span> }</td>
 </tr>

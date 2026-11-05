@@ -61,10 +61,10 @@
         </pems-list-toolbar>
 
         <pems-list-kpis id="woKpis">
-            <a class="vs-chip text-decoration-none @(((int)ViewBag.OpenCount) > 0 ? "vs-chip--danger" : "")" asp-action="Index" asp-route-status="Open"><i class="bi bi-exclamation-circle" aria-hidden="true"></i> @Localizer["Wo_Open"] <strong>@ViewBag.OpenCount</strong></a>
-            <a class="vs-chip text-decoration-none" asp-action="Index" asp-route-status="InProgress"><i class="bi bi-tools" aria-hidden="true"></i> @Localizer["Wo_InProgress"] <strong>@ViewBag.InProgressCount</strong></a>
-            <a class="vs-chip text-decoration-none" asp-action="Index" asp-route-status="Completed"><i class="bi bi-check-circle" aria-hidden="true"></i> @Localizer["Wo_Completed"] <strong>@ViewBag.CompletedCount</strong></a>
-            <span class="vs-chip @(((int)ViewBag.CriticalOpenCount) > 0 ? "vs-chip--danger" : "")"><i class="bi bi-lightning" aria-hidden="true"></i> @Localizer["Wo_CriticalOpen"] <strong>@ViewBag.CriticalOpenCount</strong></span>
+            <a class="vs-chip text-decoration-none @(((int)ViewBag.OpenCount) > 0 ? "vs-chip--danger" : "")" asp-action="Index" asp-route-status="Open"><pems-icon name="bi-exclamation-circle" aria-hidden="true" /> @Localizer["Wo_Open"] <strong>@ViewBag.OpenCount</strong></a>
+            <a class="vs-chip text-decoration-none" asp-action="Index" asp-route-status="InProgress"><pems-icon name="bi-tools" aria-hidden="true" /> @Localizer["Wo_InProgress"] <strong>@ViewBag.InProgressCount</strong></a>
+            <a class="vs-chip text-decoration-none" asp-action="Index" asp-route-status="Completed"><pems-icon name="bi-check-circle" aria-hidden="true" /> @Localizer["Wo_Completed"] <strong>@ViewBag.CompletedCount</strong></a>
+            <span class="vs-chip @(((int)ViewBag.CriticalOpenCount) > 0 ? "vs-chip--danger" : "")"><pems-icon name="bi-lightning" aria-hidden="true" /> @Localizer["Wo_CriticalOpen"] <strong>@ViewBag.CriticalOpenCount</strong></span>
         </pems-list-kpis>
 
         <pems-list-chips reset-href="@Url.Action("Index")">

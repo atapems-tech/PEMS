@@ -221,13 +221,13 @@
         <div class="ct-side-head">
             <div class="dropdown">
                 <button type="button" class="ct-cta" data-bs-toggle="dropdown" aria-expanded="false" data-compose-url="@Url.Action("Compose", "LetterCompose", new { letterType = "Internal" })">
-                    <i class="bi bi-pencil-square" aria-hidden="true"></i> <span>@Localizer["Lt_ComposeNew"]</span>
+                    <pems-icon name="bi-pencil-square" aria-hidden="true" /> <span>@Localizer["Lt_ComposeNew"]</span>
                 </button>
                 <pems-dropdown-menu css="w-100">
-                    <li><a class="dropdown-item" asp-controller="LetterCompose" asp-action="Compose" asp-route-letterType="Internal"><i class="bi bi-envelope me-1" aria-hidden="true"></i> @Localizer["Lc_TitleInternal"] <kbd class="ms-2">C</kbd></a></li>
-                    <li><a class="dropdown-item" asp-controller="LetterCompose" asp-action="Compose" asp-route-letterType="Outgoing"><i class="bi bi-envelope-arrow-up me-1" aria-hidden="true"></i> @Localizer["Lc_TitleOutgoing"]</a></li>
+                    <li><a class="dropdown-item" asp-controller="LetterCompose" asp-action="Compose" asp-route-letterType="Internal"><pems-icon name="bi-envelope" css="me-1" aria-hidden="true" /> @Localizer["Lc_TitleInternal"] <kbd class="ms-2">C</kbd></a></li>
+                    <li><a class="dropdown-item" asp-controller="LetterCompose" asp-action="Compose" asp-route-letterType="Outgoing"><pems-icon name="bi-envelope-arrow-up" css="me-1" aria-hidden="true" /> @Localizer["Lc_TitleOutgoing"]</a></li>
                     <li><hr class="dropdown-divider" /></li>
-                    <li><a class="dropdown-item" asp-action="Create" asp-route-letterType="Incoming"><i class="bi bi-envelope-arrow-down me-1" aria-hidden="true"></i> @Localizer["Lt_NewIncoming"]</a></li>
+                    <li><a class="dropdown-item" asp-action="Create" asp-route-letterType="Incoming"><pems-icon name="bi-envelope-arrow-down" css="me-1" aria-hidden="true" /> @Localizer["Lt_NewIncoming"]</a></li>
                 </pems-dropdown-menu>
             </div>
         </div>
@@ -238,7 +238,7 @@
                 {
                     var active = fo.Key.Length == 0 ? isDefaultView : currentFolder == fo.Key && !currentTagId.HasValue;
                     <a class="ct-folder @(active ? "active" : "")" href="@FolderUrl(fo.Key.Length == 0 ? null : fo.Key)" aria-current="@(active ? "page" : null)">
-                        <i class="bi @fo.Icon" aria-hidden="true"></i>
+                        <pems-icon css="@fo.Icon" aria-hidden="true" />
                         <span class="ct-label">@fo.Label</span>
                         @if (fo.Count > 0) { <span class="ct-count @fo.Hot">@fo.Count</span> }
                     </a>
@@ -248,26 +248,26 @@
             <div class="ct-sec"><span>@Localizer["Ct_Workflow"]</span></div>
             <nav aria-label="@Localizer["Ct_Workflow"]">
                 <a class="ct-folder @(currentStatus == "PendingApproval" ? "active" : "")" aria-current="@(currentStatus == "PendingApproval" ? "page" : null)" href="@Url.Action("Index", new { status = "PendingApproval" })">
-                    <i class="bi bi-hourglass-split" aria-hidden="true"></i><span class="ct-label">@Localizer["Lt_QueueReview"]</span>
+                    <pems-icon name="bi-hourglass-split" aria-hidden="true" /><span class="ct-label">@Localizer["Lt_QueueReview"]</span>
                     @if (folderCounts.PendingApproval > 0) { <span class="ct-count">@folderCounts.PendingApproval</span> }
                 </a>
                 <a class="ct-folder @(currentStatus == "ReturnedForRevision" ? "active" : "")" aria-current="@(currentStatus == "ReturnedForRevision" ? "page" : null)" href="@Url.Action("Index", new { status = "ReturnedForRevision" })">
-                    <i class="bi bi-arrow-return-left" aria-hidden="true"></i><span class="ct-label">@Localizer["Lt_QueueReturned"]</span>
+                    <pems-icon name="bi-arrow-return-left" aria-hidden="true" /><span class="ct-label">@Localizer["Lt_QueueReturned"]</span>
                     @if (folderCounts.ReturnedForRevision > 0) { <span class="ct-count ct-count--alert">@folderCounts.ReturnedForRevision</span> }
                 </a>
                 <a class="ct-folder @(currentStatus == "Approved" ? "active" : "")" aria-current="@(currentStatus == "Approved" ? "page" : null)" href="@Url.Action("Index", new { status = "Approved" })">
-                    <i class="bi bi-check2-square" aria-hidden="true"></i><span class="ct-label">@Localizer["Lt_QueueApproved"]</span>
+                    <pems-icon name="bi-check2-square" aria-hidden="true" /><span class="ct-label">@Localizer["Lt_QueueApproved"]</span>
                     @if (folderCounts.Approved > 0) { <span class="ct-count">@folderCounts.Approved</span> }
                 </a>
                 <a class="ct-folder" href="@Url.Action("MyReferrals")">
-                    <i class="bi bi-person-lines-fill" aria-hidden="true"></i><span class="ct-label">@Localizer["Lp_ReferredToMe"]</span>
+                    <pems-icon name="bi-person-lines-fill" aria-hidden="true" /><span class="ct-label">@Localizer["Lp_ReferredToMe"]</span>
                     @if (dash.MyOpenReferrals > 0) { <span class="ct-count ct-count--alert">@dash.MyOpenReferrals</span> }
                 </a>
             </nav>
 
             <div class="ct-sec">
                 <span>@Localizer["Ct_Tags"]</span>
-                <button type="button" id="ctManageTags" data-settings-pane="tags" title="@Localizer["Ct_ManageTags"]" aria-label="@Localizer["Ct_ManageTags"]"><i class="bi bi-gear" aria-hidden="true"></i></button>
+                <button type="button" id="ctManageTags" data-settings-pane="tags" title="@Localizer["Ct_ManageTags"]" aria-label="@Localizer["Ct_ManageTags"]"><pems-icon name="bi-gear" aria-hidden="true" /></button>
             </div>
             <div class="ct-tags" id="ctTags">
                 @if (tagNodes.Count == 0)
@@ -284,9 +284,9 @@
         </div>
 
         <div class="ct-side-foot">
-            <a asp-action="Dashboard"><i class="bi bi-speedometer2" aria-hidden="true"></i><span>@Localizer["Lt_DashboardLink"]</span></a>
-            <a asp-controller="LetterCartable" asp-action="Report"><i class="bi bi-bar-chart-line" aria-hidden="true"></i><span>@Localizer["Ct_ReportShort"]</span></a>
-            <button type="button" id="ctOpenSettings" data-bs-toggle="modal" data-bs-target="#ctSettings"><i class="bi bi-sliders" aria-hidden="true"></i><span>@Localizer["Ct_Settings"]</span></button>
+            <a asp-action="Dashboard"><pems-icon name="bi-speedometer2" aria-hidden="true" /><span>@Localizer["Lt_DashboardLink"]</span></a>
+            <a asp-controller="LetterCartable" asp-action="Report"><pems-icon name="bi-bar-chart-line" aria-hidden="true" /><span>@Localizer["Ct_ReportShort"]</span></a>
+            <button type="button" id="ctOpenSettings" data-bs-toggle="modal" data-bs-target="#ctSettings"><pems-icon name="bi-sliders" aria-hidden="true" /><span>@Localizer["Ct_Settings"]</span></button>
         </div>
     </aside>
 
@@ -297,13 +297,13 @@
         <div class="lp-toolbar" id="lpToolbar">
             <div class="lp-tabs ct-head">
                 <button type="button" class="ct-side-toggle" id="ctSideToggle" aria-controls="ctSide" aria-expanded="true" title="@Localizer["Ct_ToggleFolders"]">
-                    <i class="bi bi-layout-sidebar-inset-reverse" aria-hidden="true"></i><span class="visually-hidden">@Localizer["Ct_ToggleFolders"]</span>
+                    <pems-icon name="bi-layout-sidebar-inset-reverse" aria-hidden="true" /><span class="visually-hidden">@Localizer["Ct_ToggleFolders"]</span>
                 </button>
                 <h2>@viewTitle</h2>
                 <span class="ct-total" aria-label="@string.Format(Localizer["Lp_ResultCount"].Value, Model.TotalCount)">@Model.TotalCount</span>
                 <div class="ct-seg ms-2" role="group" aria-label="@Localizer["Ct_ViewMode"]">
-                    <a href="@ViewUrl("flat")" class="@(viewMode == "flat" ? "on" : "")" aria-pressed="@(viewMode == "flat" ? "true" : "false")" title="@Localizer["Ct_ViewFlat"]"><i class="bi bi-list-ul" aria-hidden="true"></i><span class="d-none d-xl-inline">@Localizer["Ct_ViewFlat"]</span></a>
-                    <a href="@ViewUrl("thread")" class="@(viewMode == "thread" ? "on" : "")" aria-pressed="@(viewMode == "thread" ? "true" : "false")" title="@Localizer["Ct_ViewThread"]"><i class="bi bi-diagram-3" aria-hidden="true"></i><span class="d-none d-xl-inline">@Localizer["Ct_ViewThread"]</span></a>
+                    <a href="@ViewUrl("flat")" class="@(viewMode == "flat" ? "on" : "")" aria-pressed="@(viewMode == "flat" ? "true" : "false")" title="@Localizer["Ct_ViewFlat"]"><pems-icon name="bi-list-ul" aria-hidden="true" /><span class="d-none d-xl-inline">@Localizer["Ct_ViewFlat"]</span></a>
+                    <a href="@ViewUrl("thread")" class="@(viewMode == "thread" ? "on" : "")" aria-pressed="@(viewMode == "thread" ? "true" : "false")" title="@Localizer["Ct_ViewThread"]"><pems-icon name="bi-diagram-3" aria-hidden="true" /><span class="d-none d-xl-inline">@Localizer["Ct_ViewThread"]</span></a>
                 </div>
                 <span class="ct-clock d-none d-xl-inline" id="ctClock" aria-hidden="true"></span>
             </div>
@@ -314,21 +314,21 @@
                 {
                     <input type="hidden" name="@kv.Key" value="@kv.Value" />
                 }
-                <i class="bi bi-search" aria-hidden="true"></i>
+                <pems-icon name="bi-search" aria-hidden="true" />
                 <input type="search" name="q" id="lpSearchInput" value="@searchQuery" placeholder="@Localizer["Lp_SearchPlaceholder"]" aria-label="@Localizer["Lp_SearchPlaceholder"]"
                        data-pems-search data-search-type="Letter" autocomplete="off" />
                 <pems-button tone="primary" size="small" type="submit">@Localizer["Search"]</pems-button>
-                <button type="button" class="lp-icon-btn" id="lpSearchClose" aria-label="@Localizer["Lp_SearchClose"]"><i class="bi bi-x-lg" aria-hidden="true"></i></button>
+                <button type="button" class="lp-icon-btn" id="lpSearchClose" aria-label="@Localizer["Lp_SearchClose"]"><pems-icon name="bi-x-lg" aria-hidden="true" /></button>
             </form>
 
             <div class="lp-tools" id="lpTools">
                 <button type="button" class="lp-icon-btn" id="lpSearchBtn" aria-controls="lpSearchForm" aria-expanded="false" title="@Localizer["Lp_SearchOpen"]">
-                    <i class="bi bi-search" aria-hidden="true"></i><span class="visually-hidden">@Localizer["Lp_SearchOpen"]</span>
+                    <pems-icon name="bi-search" aria-hidden="true" /><span class="visually-hidden">@Localizer["Lp_SearchOpen"]</span>
                 </button>
 
                 <div class="dropdown">
                     <button type="button" class="lp-icon-btn" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false" title="@Localizer["Lp_Filters"]">
-                        <i class="bi bi-funnel" aria-hidden="true"></i><span class="visually-hidden">@Localizer["Lp_Filters"]</span>
+                        <pems-icon name="bi-funnel" aria-hidden="true" /><span class="visually-hidden">@Localizer["Lp_Filters"]</span>
                         @if (filterCount > 0) { <span class="lp-badge">@filterCount<span class="visually-hidden"> @Localizer["Lp_ActiveFilters"]</span></span> }
                     </button>
                     <pems-dropdown-menu as="div" end="true" css="lp-filter-pop p-0">
@@ -400,7 +400,7 @@
                             </div>
                             <div class="lp-fp-foot">
                                 <pems-button as="a" tone="none" size="small" css="btn-link" href="@Without(filterKeys)">@Localizer["Reset"]</pems-button>
-                                <pems-button tone="primary" size="small" type="submit"><i class="bi bi-funnel" aria-hidden="true"></i> @Localizer["Lt_ApplyFilters"]</pems-button>
+                                <pems-button tone="primary" size="small" type="submit"><pems-icon name="bi-funnel" aria-hidden="true" /> @Localizer["Lt_ApplyFilters"]</pems-button>
                             </div>
                         </form>
                     </pems-dropdown-menu>
@@ -408,33 +408,33 @@
 
                 <div class="dropdown">
                     <button type="button" class="lp-icon-btn" data-bs-toggle="dropdown" aria-expanded="false" title="@Localizer["Ct_SortBy"]">
-                        <i class="bi bi-arrow-down-up" aria-hidden="true"></i><span class="visually-hidden">@Localizer["Ct_SortBy"]</span>
+                        <pems-icon name="bi-arrow-down-up" aria-hidden="true" /><span class="visually-hidden">@Localizer["Ct_SortBy"]</span>
                     </button>
                     <pems-dropdown-menu end="true">
                         <li><h6 class="dropdown-header">@Localizer["Ct_SortBy"]</h6></li>
                         @foreach (var (key, label) in new[] { ("date", Localizer["Date"].Value), ("subject", Localizer["Subject"].Value), ("number", Localizer["Letter No"].Value), ("status", Localizer["Status"].Value), ("priority", Localizer["Lt_Priority"].Value), ("sender", Localizer["Sender / Receiver"].Value) })
                         {
-                            <li><a class="dropdown-item @(SortActive(key) ? "active" : "")" href="@SortUrl(key)"><i class="bi @SortIcon(key)" aria-hidden="true"></i> @label</a></li>
+                            <li><a class="dropdown-item @(SortActive(key) ? "active" : "")" href="@SortUrl(key)"><pems-icon css="@SortIcon(key)" aria-hidden="true" /> @label</a></li>
                         }
                     </pems-dropdown-menu>
                 </div>
 
                 <div class="dropdown">
                     <button type="button" class="lp-icon-btn" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false" title="@Localizer["Lp_More"]">
-                        <i class="bi bi-three-dots-vertical" aria-hidden="true"></i><span class="visually-hidden">@Localizer["Lp_More"]</span>
+                        <pems-icon name="bi-three-dots-vertical" aria-hidden="true" /><span class="visually-hidden">@Localizer["Lp_More"]</span>
                     </button>
                     <pems-dropdown-menu end="true" css="lp-more">
                         <li><h6 class="dropdown-header">@Localizer["Lp_GoTo"]</h6></li>
-                        <li><a class="dropdown-item" asp-action="Dashboard"><i class="bi bi-speedometer2" aria-hidden="true"></i> @Localizer["Lt_DashboardLink"]</a></li>
-                        <li><a class="dropdown-item" asp-controller="LetterCartable" asp-action="Report"><i class="bi bi-bar-chart-line" aria-hidden="true"></i> @Localizer["Ct_ReportTitle"]</a></li>
+                        <li><a class="dropdown-item" asp-action="Dashboard"><pems-icon name="bi-speedometer2" aria-hidden="true" /> @Localizer["Lt_DashboardLink"]</a></li>
+                        <li><a class="dropdown-item" asp-controller="LetterCartable" asp-action="Report"><pems-icon name="bi-bar-chart-line" aria-hidden="true" /> @Localizer["Ct_ReportTitle"]</a></li>
                         @if (ViewBag.CanManageTemplates == true)
                         {
-                            <li><a class="dropdown-item" asp-controller="LetterTemplate" asp-action="Index"><i class="bi bi-file-earmark-text" aria-hidden="true"></i> @Localizer["LtT_Manage"]</a></li>
+                            <li><a class="dropdown-item" asp-controller="LetterTemplate" asp-action="Index"><pems-icon name="bi-file-earmark-text" aria-hidden="true" /> @Localizer["LtT_Manage"]</a></li>
                         }
-                        <li><button type="button" class="dropdown-item" data-bs-toggle="offcanvas" data-bs-target="#lxMenu" aria-controls="lxMenu"><i class="bi bi-folder2-open" aria-hidden="true"></i> @Localizer["Lp_AllFolders"]</button></li>
+                        <li><button type="button" class="dropdown-item" data-bs-toggle="offcanvas" data-bs-target="#lxMenu" aria-controls="lxMenu"><pems-icon name="bi-folder2-open" aria-hidden="true" /> @Localizer["Lp_AllFolders"]</button></li>
                         <li><hr class="dropdown-divider" /></li>
                         <li><h6 class="dropdown-header">@Localizer["Lp_View"]</h6></li>
-                        <li><button type="button" class="dropdown-item" id="lpDensity" role="menuitemcheckbox" aria-checked="false"><i class="bi bi-distribute-vertical" aria-hidden="true"></i> @Localizer["Lp_Compact"] <kbd class="ms-auto">D</kbd></button></li>
+                        <li><button type="button" class="dropdown-item" id="lpDensity" role="menuitemcheckbox" aria-checked="false"><pems-icon name="bi-distribute-vertical" aria-hidden="true" /> @Localizer["Lp_Compact"] <kbd class="ms-auto">D</kbd></button></li>
                         <li class="px-3 pt-1 small text-muted">@Localizer["Lt_Columns"]</li>
                         @foreach (var col in new[] { ("priority", "Lt_Priority", settings.HiddenColumns.Contains("priority")), ("discipline", "Lt_Discipline", settings.HiddenColumns.Contains("discipline")), ("attachments", "Lt_ColAttachments", settings.HiddenColumns.Contains("attachments")), ("responseDue", "Lt_ColResponseDue", settings.HiddenColumns.Contains("responseDue")), ("lastActivity", "Lt_ColLastActivity", settings.HiddenColumns.Contains("lastActivity")) })
                         {
@@ -443,14 +443,14 @@
                                 <label class="form-check-label small" for="col_@col.Item1">@Localizer[col.Item2]</label>
                             </li>
                         }
-                        <li><button type="button" id="letterColumnsReset" class="dropdown-item small"><i class="bi bi-arrow-counterclockwise" aria-hidden="true"></i> @Localizer["Reset columns"]</button></li>
+                        <li><button type="button" id="letterColumnsReset" class="dropdown-item small"><pems-icon name="bi-arrow-counterclockwise" aria-hidden="true" /> @Localizer["Reset columns"]</button></li>
                         <li><hr class="dropdown-divider" /></li>
                         <li><h6 class="dropdown-header">@Localizer["Lt_ExportMatching"]</h6></li>
-                        <li><a class="dropdown-item" href="@ExportUrl("csv")"><i class="bi bi-filetype-csv" aria-hidden="true"></i> CSV</a></li>
-                        <li><a class="dropdown-item" href="@ExportUrl("xlsx")"><i class="bi bi-file-earmark-excel" aria-hidden="true"></i> Excel</a></li>
+                        <li><a class="dropdown-item" href="@ExportUrl("csv")"><pems-icon name="bi-filetype-csv" aria-hidden="true" /> CSV</a></li>
+                        <li><a class="dropdown-item" href="@ExportUrl("xlsx")"><pems-icon name="bi-file-earmark-excel" aria-hidden="true" /> Excel</a></li>
                         <li><hr class="dropdown-divider" /></li>
-                        <li><a class="dropdown-item" href="@Context.Request.Path@Context.Request.QueryString"><i class="bi bi-arrow-clockwise" aria-hidden="true"></i> @Localizer["Lp_Refresh"]</a></li>
-                        <li><button type="button" class="dropdown-item" data-bs-toggle="modal" data-bs-target="#lpShortcuts"><i class="bi bi-keyboard" aria-hidden="true"></i> @Localizer["Lp_Shortcuts"] <kbd class="ms-auto">?</kbd></button></li>
+                        <li><a class="dropdown-item" href="@Context.Request.Path@Context.Request.QueryString"><pems-icon name="bi-arrow-clockwise" aria-hidden="true" /> @Localizer["Lp_Refresh"]</a></li>
+                        <li><button type="button" class="dropdown-item" data-bs-toggle="modal" data-bs-target="#lpShortcuts"><pems-icon name="bi-keyboard" aria-hidden="true" /> @Localizer["Lp_Shortcuts"] <kbd class="ms-auto">?</kbd></button></li>
                     </pems-dropdown-menu>
                 </div>
             </div>
@@ -465,7 +465,7 @@
                     {
                         <li class="pems-filter-chip">
                             <span>@chip.Label</span>
-                            <a href="@chip.RemoveUrl" aria-label="@Localizer["Lt_RemoveFilter"]: @chip.Label" title="@Localizer["Lt_RemoveFilter"]"><i class="bi bi-x" aria-hidden="true"></i></a>
+                            <a href="@chip.RemoveUrl" aria-label="@Localizer["Lt_RemoveFilter"]: @chip.Label" title="@Localizer["Lt_RemoveFilter"]"><pems-icon name="bi-x" aria-hidden="true" /></a>
                         </li>
                     }
                 </ul>
@@ -477,12 +477,12 @@
         @if (inTrash)
         {
             <div class="ct-trash-bar">
-                <i class="bi bi-info-circle" aria-hidden="true"></i>
+                <pems-icon name="bi-info-circle" aria-hidden="true" />
                 <span>@Localizer["Ct_TrashHint"]</span>
                 @if (Model.TotalCount > 0)
                 {
                     <form asp-action="EmptyTrash" method="post" class="ms-auto" data-pems-confirm="@Localizer["Ct_ConfirmEmptyTrash"]">
-                        <pems-button tone="danger" size="small" outline="true" type="submit"><i class="bi bi-trash3" aria-hidden="true"></i> @Localizer["Ct_EmptyTrash"]</pems-button>
+                        <pems-button tone="danger" size="small" outline="true" type="submit"><pems-icon name="bi-trash3" aria-hidden="true" /> @Localizer["Ct_EmptyTrash"]</pems-button>
                     </form>
                 }
             </div>
@@ -498,17 +498,17 @@
                     <span id="letterBulkCount" class="pems-bulk-count" role="status" aria-live="polite" data-template="@Localizer["Lt_SelectedCount"]" data-empty="@Localizer["Ct_NoSelection"]"></span>
                     @if (inTrash)
                     {
-                        <pems-button tone="neutral" size="small" outline="true" type="submit" name="op" value="restore" data-bulk-op="restore" disabled><i class="bi bi-arrow-counterclockwise" aria-hidden="true"></i> @Localizer["Ct_Restore"]</pems-button>
-                        <pems-button tone="danger" size="small" outline="true" type="submit" name="op" value="purge" data-bulk-op="purge" data-pems-confirm="@Localizer["Ct_ConfirmPurge"]" disabled><i class="bi bi-x-octagon" aria-hidden="true"></i> @Localizer["Ct_PurgeForever"]</pems-button>
+                        <pems-button tone="neutral" size="small" outline="true" type="submit" name="op" value="restore" data-bulk-op="restore" disabled><pems-icon name="bi-arrow-counterclockwise" aria-hidden="true" /> @Localizer["Ct_Restore"]</pems-button>
+                        <pems-button tone="danger" size="small" outline="true" type="submit" name="op" value="purge" data-bulk-op="purge" data-pems-confirm="@Localizer["Ct_ConfirmPurge"]" disabled><pems-icon name="bi-x-octagon" aria-hidden="true" /> @Localizer["Ct_PurgeForever"]</pems-button>
                     }
                     else
                     {
-                        <pems-button tone="neutral" size="small" outline="true" type="submit" name="op" value="read" data-bulk-op="read" title="@Localizer["Ct_MarkRead"]" disabled><i class="bi bi-envelope-open" aria-hidden="true"></i> <span class="d-none d-xxl-inline">@Localizer["Ct_MarkRead"]</span></pems-button>
-                        <pems-button tone="neutral" size="small" outline="true" type="submit" name="op" value="unread" data-bulk-op="unread" title="@Localizer["Ct_MarkUnread"]" disabled><i class="bi bi-envelope" aria-hidden="true"></i> <span class="d-none d-xxl-inline">@Localizer["Ct_MarkUnread"]</span></pems-button>
+                        <pems-button tone="neutral" size="small" outline="true" type="submit" name="op" value="read" data-bulk-op="read" title="@Localizer["Ct_MarkRead"]" disabled><pems-icon name="bi-envelope-open" aria-hidden="true" /> <span class="d-none d-xxl-inline">@Localizer["Ct_MarkRead"]</span></pems-button>
+                        <pems-button tone="neutral" size="small" outline="true" type="submit" name="op" value="unread" data-bulk-op="unread" title="@Localizer["Ct_MarkUnread"]" disabled><pems-icon name="bi-envelope" aria-hidden="true" /> <span class="d-none d-xxl-inline">@Localizer["Ct_MarkUnread"]</span></pems-button>
                         @if (tagNodes.Count > 0)
                         {
                             <div class="dropdown">
-                                <pems-button tone="neutral" size="small" outline="true" css="dropdown-toggle" type="button" data-bulk-op="tag-menu" data-bs-toggle="dropdown" aria-expanded="false" disabled><i class="bi bi-tags" aria-hidden="true"></i> @Localizer["Ct_Tag"]</pems-button>
+                                <pems-button tone="neutral" size="small" outline="true" css="dropdown-toggle" type="button" data-bulk-op="tag-menu" data-bs-toggle="dropdown" aria-expanded="false" disabled><pems-icon name="bi-tags" aria-hidden="true" /> @Localizer["Ct_Tag"]</pems-button>
                                 <pems-dropdown-menu css="ct-bulk-menu">
                                     <li><h6 class="dropdown-header">@Localizer["Ct_ApplyTag"]</h6></li>
                                     @foreach (var t in tagNodes)
@@ -519,35 +519,35 @@
                                     <li><h6 class="dropdown-header">@Localizer["Ct_RemoveTag"]</h6></li>
                                     @foreach (var t in tagNodes)
                                     {
-                                        <li><button type="button" class="dropdown-item" data-bulk-tag="@t.TagId" data-bulk-tag-op="untag" style="padding-inline-start:@(0.75 + (t.Depth - 1) * 0.9)rem"><i class="bi bi-x-circle" aria-hidden="true"></i> @t.Name</button></li>
+                                        <li><button type="button" class="dropdown-item" data-bulk-tag="@t.TagId" data-bulk-tag-op="untag" style="padding-inline-start:@(0.75 + (t.Depth - 1) * 0.9)rem"><pems-icon name="bi-x-circle" aria-hidden="true" /> @t.Name</button></li>
                                     }
                                 </pems-dropdown-menu>
                             </div>
                         }
-                        <pems-button tone="neutral" size="small" outline="true" type="submit" name="op" value="star" data-bulk-op="star" title="@Localizer["Lt_BulkStar"]" disabled><i class="bi bi-star" aria-hidden="true"></i> <span class="d-none d-xxl-inline">@Localizer["Lt_BulkStar"]</span></pems-button>
-                        <pems-button tone="neutral" size="small" outline="true" type="submit" name="op" value="unstar" data-bulk-op="unstar" title="@Localizer["Lt_BulkUnstar"]" disabled><i class="bi bi-star-half" aria-hidden="true"></i></pems-button>
+                        <pems-button tone="neutral" size="small" outline="true" type="submit" name="op" value="star" data-bulk-op="star" title="@Localizer["Lt_BulkStar"]" disabled><pems-icon name="bi-star" aria-hidden="true" /> <span class="d-none d-xxl-inline">@Localizer["Lt_BulkStar"]</span></pems-button>
+                        <pems-button tone="neutral" size="small" outline="true" type="submit" name="op" value="unstar" data-bulk-op="unstar" title="@Localizer["Lt_BulkUnstar"]" disabled><pems-icon name="bi-star-half" aria-hidden="true" /></pems-button>
                         @if (inArchive)
                         {
-                            <pems-button tone="neutral" size="small" outline="true" type="submit" name="op" value="unarchiveme" data-bulk-op="unarchiveme" disabled><i class="bi bi-box-arrow-up" aria-hidden="true"></i> @Localizer["Ct_Unarchive"]</pems-button>
+                            <pems-button tone="neutral" size="small" outline="true" type="submit" name="op" value="unarchiveme" data-bulk-op="unarchiveme" disabled><pems-icon name="bi-box-arrow-up" aria-hidden="true" /> @Localizer["Ct_Unarchive"]</pems-button>
                         }
                         else
                         {
-                            <pems-button tone="neutral" size="small" outline="true" type="submit" name="op" value="archiveme" data-bulk-op="archiveme" disabled><i class="bi bi-archive" aria-hidden="true"></i> <span class="d-none d-xxl-inline">@Localizer["Ct_ArchiveForMe"]</span></pems-button>
+                            <pems-button tone="neutral" size="small" outline="true" type="submit" name="op" value="archiveme" data-bulk-op="archiveme" disabled><pems-icon name="bi-archive" aria-hidden="true" /> <span class="d-none d-xxl-inline">@Localizer["Ct_ArchiveForMe"]</span></pems-button>
                         }
-                        <pems-button tone="danger" size="small" outline="true" type="submit" name="op" value="trash" data-bulk-op="trash" data-confirm-trash="@Localizer["Ct_ConfirmTrash"]" disabled><i class="bi bi-trash3" aria-hidden="true"></i> <span class="d-none d-xxl-inline">@Localizer["Ct_MoveToTrash"]</span></pems-button>
+                        <pems-button tone="danger" size="small" outline="true" type="submit" name="op" value="trash" data-bulk-op="trash" data-confirm-trash="@Localizer["Ct_ConfirmTrash"]" disabled><pems-icon name="bi-trash3" aria-hidden="true" /> <span class="d-none d-xxl-inline">@Localizer["Ct_MoveToTrash"]</span></pems-button>
                         <div class="dropdown">
                             <pems-button tone="neutral" size="small" outline="true" css="dropdown-toggle" type="button" data-bulk-op="more-menu" data-bs-toggle="dropdown" aria-expanded="false" disabled>@Localizer["Lp_More"]</pems-button>
                             <pems-dropdown-menu>
-                                <li><button type="submit" name="op" value="submit" class="dropdown-item" data-bulk-op="submit" data-pems-confirm="@Localizer["Lt_BulkSubmitConfirm"]"><i class="bi bi-send-check" aria-hidden="true"></i> @Localizer["Lt_BulkSubmit"]</button></li>
+                                <li><button type="submit" name="op" value="submit" class="dropdown-item" data-bulk-op="submit" data-pems-confirm="@Localizer["Lt_BulkSubmitConfirm"]"><pems-icon name="bi-send-check" aria-hidden="true" /> @Localizer["Lt_BulkSubmit"]</button></li>
                                 @if (canBulkArchive)
                                 {
-                                    <li><button type="button" class="dropdown-item text-danger" data-bulk-op="archive-open" data-bs-toggle="modal" data-bs-target="#letterArchiveModal"><i class="bi bi-archive" aria-hidden="true"></i> @Localizer["Lt_BulkArchive"]</button></li>
+                                    <li><button type="button" class="dropdown-item text-danger" data-bulk-op="archive-open" data-bs-toggle="modal" data-bs-target="#letterArchiveModal"><pems-icon name="bi-archive" aria-hidden="true" /> @Localizer["Lt_BulkArchive"]</button></li>
                                 }
                             </pems-dropdown-menu>
                         </div>
                     }
                     <span class="pems-bulk-spacer"></span>
-                    <button type="button" class="lp-icon-btn" id="lpClearSelection" aria-label="@Localizer["Lp_CancelSelection"]" title="@Localizer["Lp_CancelSelection"]"><i class="bi bi-x-lg" aria-hidden="true"></i></button>
+                    <button type="button" class="lp-icon-btn" id="lpClearSelection" aria-label="@Localizer["Lp_CancelSelection"]" title="@Localizer["Lp_CancelSelection"]"><pems-icon name="bi-x-lg" aria-hidden="true" /></button>
                 </div>
                 @* hidden submitters used by the per-row actions (a row action selects only that row, then submits one of these) *@
                 @foreach (var rowOp in new[] { "trash", "restore", "archiveme", "read", "unread" })
@@ -566,11 +566,11 @@
                                     <p class="small text-muted">@Localizer["Lt_ArchiveHelp"]</p>
                                     <pems-label for="letterArchiveReason">@Localizer["Lt_ArchiveReason"]</pems-label>
                                     <pems-textarea id="letterArchiveReason" name="reason" rows="3" maxlength="500" aria-describedby="letterArchiveReasonError"></pems-textarea>
-                                    <div id="letterArchiveReasonError" class="text-danger small mt-1" hidden><i class="bi bi-exclamation-circle" aria-hidden="true"></i> @Localizer["Lt_ArchiveReasonRequired"]</div>
+                                    <div id="letterArchiveReasonError" class="text-danger small mt-1" hidden><pems-icon name="bi-exclamation-circle" aria-hidden="true" /> @Localizer["Lt_ArchiveReasonRequired"]</div>
                                 </div>
                                 <div class="modal-footer">
                                     <pems-button tone="neutral" outline="true" type="button" data-bs-dismiss="modal">@Localizer["Cancel"]</pems-button>
-                                    <pems-button tone="danger" type="submit" name="op" value="archive"><i class="bi bi-archive" aria-hidden="true"></i> @Localizer["Lt_ArchiveConfirm"]</pems-button>
+                                    <pems-button tone="danger" type="submit" name="op" value="archive"><pems-icon name="bi-archive" aria-hidden="true" /> @Localizer["Lt_ArchiveConfirm"]</pems-button>
                                 </div>
                             </pems-modal>
                 }
@@ -591,7 +591,7 @@
                             <th data-col-key="responseDue" data-resizable="true" data-min-width="100" data-max-width="180" style="width:130px;">@Localizer["Lt_ColResponseDue"]</th>
                             <th data-col-key="date" data-resizable="true" data-min-width="90" data-max-width="160" style="width:92px;" aria-sort="@AriaSort("date")"><a class="ct-sort" href="@SortUrl("date")">@Localizer["Date"] <i class="bi @SortIcon("date")" aria-hidden="true"></i></a></th>
                             <th data-col-key="discipline" data-resizable="true" data-min-width="90" data-max-width="200" style="width:120px;">@Localizer["Lt_Discipline"]</th>
-                            <th data-col-key="attachments" data-resizable="false" style="width:70px;"><i class="bi bi-paperclip" aria-hidden="true"></i><span class="visually-hidden">@Localizer["Lt_ColAttachments"]</span></th>
+                            <th data-col-key="attachments" data-resizable="false" style="width:70px;"><pems-icon name="bi-paperclip" aria-hidden="true" /><span class="visually-hidden">@Localizer["Lt_ColAttachments"]</span></th>
                             <th data-col-key="lastActivity" data-resizable="true" data-min-width="100" data-max-width="180" style="width:110px;">@Localizer["Lt_ColLastActivity"]</th>
                             <th data-col-key="actions" data-resizable="false" style="width:112px;"></th>
                         </tr>
@@ -610,12 +610,12 @@
                                         <input type="hidden" name="letterId" value="@l.LetterId" />
                                         <input type="hidden" name="returnUrl" value="@Context.Request.Path@Context.Request.QueryString" />
                                         <pems-button tone="none" size="small" css="p-0 border-0 bg-transparent" type="submit" title="@Localizer["Lt_QueueStarred"]" aria-pressed="@(l.IsStarred ? "true" : "false")">
-                                            <i class="bi @(l.IsStarred ? "bi-star-fill text-warning" : "bi-star text-muted")" aria-hidden="true"></i>
+                                            <pems-icon css="@(l.IsStarred ? "bi-star-fill text-warning" : "bi-star text-muted")" aria-hidden="true" />
                                             <span class="visually-hidden">@Localizer["Lt_QueueStarred"]</span>
                                         </pems-button>
                                     </form>
                                 </td>
-                                <td><span class="lp-type lp-type--@l.LetterType.ToLowerInvariant()" title="@Localizer[l.LetterType]"><i class="bi @typeIcon" aria-hidden="true"></i><span class="visually-hidden">@Localizer[l.LetterType]</span></span></td>
+                                <td><span class="lp-type lp-type--@l.LetterType.ToLowerInvariant()" title="@Localizer[l.LetterType]"><pems-icon css="@typeIcon" aria-hidden="true" /><span class="visually-hidden">@Localizer[l.LetterType]</span></span></td>
                                 <td class="lp-subject-cell">
                                     <div class="lp-subject-line">
                                         @if (l.AttachmentsCount > 0) { <i class="bi bi-paperclip lp-att" aria-hidden="true" title="@Localizer["Lt_ColAttachments"]"></i> }
@@ -628,7 +628,7 @@
                                         @if (l.ThreadCount > 1)
                                         {
                                             <button type="button" class="ct-thread-chip" data-thread-toggle="@l.LetterId" aria-expanded="false" title="@Localizer["Ct_ThreadMembers"]">
-                                                <i class="bi bi-chat-left-text" aria-hidden="true"></i> @l.ThreadCount<span class="visually-hidden"> @Localizer["Ct_ThreadMessages"]</span>
+                                                <pems-icon name="bi-chat-left-text" aria-hidden="true" /> @l.ThreadCount<span class="visually-hidden"> @Localizer["Ct_ThreadMessages"]</span>
                                             </button>
                                         }
                                         @if (!string.IsNullOrEmpty(l.Snippet)) { <span class="lp-snippet">— @l.Snippet</span> }
@@ -637,14 +637,14 @@
                                         || l.Status == "ReturnedForRevision" || l.IsRevived || l.MyReminderAt.HasValue || (l.IsTrashed && !inTrash))
                                     {
                                         <div class="lp-badges d-flex flex-wrap gap-1">
-                                            @if (l.Status == "ReturnedForRevision") { <span class="ct-chip ct-chip--return"><i class="bi bi-arrow-return-left" aria-hidden="true"></i> @Localizer["Ct_ReturnedChip"]</span> }
-                                            @if (l.IsRevived) { <span class="ct-chip ct-chip--revived"><i class="bi bi-arrow-repeat" aria-hidden="true"></i> @Localizer["Ct_RevivedChip"]</span> }
-                                            @if (l.MyReminderAt.HasValue) { <span class="ct-chip ct-chip--remind" title="@l.MyReminderAt.Value.ToString("yyyy-MM-dd HH:mm")"><i class="bi bi-bell" aria-hidden="true"></i> @l.MyReminderAt.Value.ToString("MM-dd")</span> }
-                                            @if (l.IsTrashed && !inTrash) { <span class="ct-chip ct-chip--trash"><i class="bi bi-trash3" aria-hidden="true"></i> @Localizer["Ct_FolderTrash"]</span> }
-                                            @if (l.ConfidentialityLevel != "Public" && l.ConfidentialityLevel != "Internal") { <pems-badge tone="@(veryConfidential ? "ct-chip ct-chip--vconf" : "dark")"><i class="bi bi-lock-fill"></i> @l.ConfidentialityLevel</pems-badge> }
-                                            @if (!string.IsNullOrEmpty(l.RelatedDocumentNo)) { <pems-badge tone="info"><i class="bi bi-file-earmark-text"></i> @l.RelatedDocumentNo</pems-badge> }
-                                            @if (!string.IsNullOrEmpty(l.RelatedMRNumber)) { <pems-badge tone="info"><i class="bi bi-cart-check"></i> @l.RelatedMRNumber</pems-badge> }
-                                            @if (l.OpenReferralsCount > 0) { <pems-badge tone="@(l.HasOverdueReferral ? "danger" : "warning")"><i class="bi bi-signpost-split"></i> @l.OpenReferralsCount</pems-badge> }
+                                            @if (l.Status == "ReturnedForRevision") { <span class="ct-chip ct-chip--return"><pems-icon name="bi-arrow-return-left" aria-hidden="true" /> @Localizer["Ct_ReturnedChip"]</span> }
+                                            @if (l.IsRevived) { <span class="ct-chip ct-chip--revived"><pems-icon name="bi-arrow-repeat" aria-hidden="true" /> @Localizer["Ct_RevivedChip"]</span> }
+                                            @if (l.MyReminderAt.HasValue) { <span class="ct-chip ct-chip--remind" title="@l.MyReminderAt.Value.ToString("yyyy-MM-dd HH:mm")"><pems-icon name="bi-bell" aria-hidden="true" /> @l.MyReminderAt.Value.ToString("MM-dd")</span> }
+                                            @if (l.IsTrashed && !inTrash) { <span class="ct-chip ct-chip--trash"><pems-icon name="bi-trash3" aria-hidden="true" /> @Localizer["Ct_FolderTrash"]</span> }
+                                            @if (l.ConfidentialityLevel != "Public" && l.ConfidentialityLevel != "Internal") { <pems-badge tone="@(veryConfidential ? "ct-chip ct-chip--vconf" : "dark")"><pems-icon name="bi-lock-fill" /> @l.ConfidentialityLevel</pems-badge> }
+                                            @if (!string.IsNullOrEmpty(l.RelatedDocumentNo)) { <pems-badge tone="info"><pems-icon name="bi-file-earmark-text" /> @l.RelatedDocumentNo</pems-badge> }
+                                            @if (!string.IsNullOrEmpty(l.RelatedMRNumber)) { <pems-badge tone="info"><pems-icon name="bi-cart-check" /> @l.RelatedMRNumber</pems-badge> }
+                                            @if (l.OpenReferralsCount > 0) { <pems-badge tone="@(l.HasOverdueReferral ? "danger" : "warning")"><pems-icon name="bi-signpost-split" /> @l.OpenReferralsCount</pems-badge> }
                                             @foreach (var tag in l.Tags) { <pems-badge tone="none" css="bg-@tag.Color">@tag.Name</pems-badge> }
                                         </div>
                                     }
@@ -652,13 +652,13 @@
                                 <td class="lp-no">@l.LetterNumber</td>
                                 <td><div class="lp-who"><span class="lp-av lp-av-@(l.LetterId % 7)" aria-hidden="true">@Initials(who)</span><span class="lp-who-name">@who</span></div></td>
                                 <td><pems-badge tone="none" css="ct-status @PEMS.Web.Helpers.LetterStatusBadge.CssClass(l.Status)" title="@StatusLabel(l.Status)">@StatusLabel(l.Status)</pems-badge></td>
-                                <td class="small"><span class="lp-pri lp-pri--@l.Priority.ToLowerInvariant()"><i class="bi @prIcon" aria-hidden="true"></i> @Localizer["Lt_P_" + l.Priority]</span></td>
+                                <td class="small"><span class="lp-pri lp-pri--@l.Priority.ToLowerInvariant()"><pems-icon css="@prIcon" aria-hidden="true" /> @Localizer["Lt_P_" + l.Priority]</span></td>
                                 <td class="small">
                                     @if (l.NextResponseDue.HasValue)
                                     {
                                         if (l.NextResponseDue.Value.Date < today)
                                         {
-                                            <span class="pems-due-overdue" title="@l.NextResponseDue.Value.ToString("yyyy-MM-dd")"><i class="bi bi-exclamation-triangle" aria-hidden="true"></i> @DueText(l.NextResponseDue.Value)</span>
+                                            <span class="pems-due-overdue" title="@l.NextResponseDue.Value.ToString("yyyy-MM-dd")"><pems-icon name="bi-exclamation-triangle" aria-hidden="true" /> @DueText(l.NextResponseDue.Value)</span>
                                         }
                                         else { <span class="@((l.NextResponseDue.Value.Date - today).Days <= 2 ? "lp-due-soon" : "")" title="@l.NextResponseDue.Value.ToString("yyyy-MM-dd")">@DueText(l.NextResponseDue.Value)</span> }
                                     }
@@ -666,30 +666,30 @@
                                 </td>
                                 <td class="small text-muted">@l.LetterDate.ToString("yyyy-MM-dd")</td>
                                 <td class="small">@(string.IsNullOrEmpty(l.DisciplineName) ? "—" : l.DisciplineName)</td>
-                                <td class="small">@if (l.AttachmentsCount > 0) { <span title="@Localizer["Lt_ColAttachments"]"><i class="bi bi-paperclip" aria-hidden="true"></i> @l.AttachmentsCount</span> } else { <span class="text-muted">—</span> }</td>
+                                <td class="small">@if (l.AttachmentsCount > 0) { <span title="@Localizer["Lt_ColAttachments"]"><pems-icon name="bi-paperclip" aria-hidden="true" /> @l.AttachmentsCount</span> } else { <span class="text-muted">—</span> }</td>
                                 <td class="small text-muted">@l.LastActivityDate.ToString("yyyy-MM-dd")</td>
                                 <td class="text-nowrap lp-actions">
                                     @if (inTrash)
                                     {
-                                        <button type="button" class="lp-act lp-act--always" data-row-op="restore" data-row-id="@l.LetterId" title="@Localizer["Ct_Restore"]"><i class="bi bi-arrow-counterclockwise" aria-hidden="true"></i><span class="visually-hidden">@Localizer["Ct_Restore"]: @l.LetterNumber</span></button>
+                                        <button type="button" class="lp-act lp-act--always" data-row-op="restore" data-row-id="@l.LetterId" title="@Localizer["Ct_Restore"]"><pems-icon name="bi-arrow-counterclockwise" aria-hidden="true" /><span class="visually-hidden">@Localizer["Ct_Restore"]: @l.LetterNumber</span></button>
                                     }
                                     else
                                     {
-                                        <a asp-action="Reply" asp-route-id="@l.LetterId" class="lp-act" title="@Localizer["Lp_RowReply"]"><i class="bi bi-reply" aria-hidden="true"></i><span class="visually-hidden">@Localizer["Lp_RowReply"]: @l.LetterNumber</span></a>
-                                        <a asp-controller="LetterCompose" asp-action="Compose" asp-route-referTo="@l.LetterId" class="lp-act" title="@Localizer["Lp_RowRefer"]"><i class="bi bi-signpost-split" aria-hidden="true"></i><span class="visually-hidden">@Localizer["Lp_RowRefer"]: @l.LetterNumber</span></a>
-                                        <button type="button" class="lp-act" data-row-op="@(inArchive ? "unarchiveme" : "archiveme")" data-row-id="@l.LetterId" title="@Localizer[inArchive ? "Ct_Unarchive" : "Ct_ArchiveForMe"]"><i class="bi @(inArchive ? "bi-box-arrow-up" : "bi-archive")" aria-hidden="true"></i><span class="visually-hidden">@Localizer[inArchive ? "Ct_Unarchive" : "Ct_ArchiveForMe"]: @l.LetterNumber</span></button>
-                                        <button type="button" class="lp-act" data-row-op="trash" data-row-id="@l.LetterId" title="@Localizer["Ct_MoveToTrash"]"><i class="bi bi-trash3" aria-hidden="true"></i><span class="visually-hidden">@Localizer["Ct_MoveToTrash"]: @l.LetterNumber</span></button>
-                                        <a asp-action="Details" asp-route-id="@l.LetterId" class="lp-act lp-act--always" title="@Localizer["Lt_Open"]"><i class="bi bi-eye" aria-hidden="true"></i><span class="visually-hidden">@Localizer["Lt_Open"]: @l.LetterNumber</span></a>
+                                        <a asp-action="Reply" asp-route-id="@l.LetterId" class="lp-act" title="@Localizer["Lp_RowReply"]"><pems-icon name="bi-reply" aria-hidden="true" /><span class="visually-hidden">@Localizer["Lp_RowReply"]: @l.LetterNumber</span></a>
+                                        <a asp-controller="LetterCompose" asp-action="Compose" asp-route-referTo="@l.LetterId" class="lp-act" title="@Localizer["Lp_RowRefer"]"><pems-icon name="bi-signpost-split" aria-hidden="true" /><span class="visually-hidden">@Localizer["Lp_RowRefer"]: @l.LetterNumber</span></a>
+                                        <button type="button" class="lp-act" data-row-op="@(inArchive ? "unarchiveme" : "archiveme")" data-row-id="@l.LetterId" title="@Localizer[inArchive ? "Ct_Unarchive" : "Ct_ArchiveForMe"]"><pems-icon css="@(inArchive ? "bi-box-arrow-up" : "bi-archive")" aria-hidden="true" /><span class="visually-hidden">@Localizer[inArchive ? "Ct_Unarchive" : "Ct_ArchiveForMe"]: @l.LetterNumber</span></button>
+                                        <button type="button" class="lp-act" data-row-op="trash" data-row-id="@l.LetterId" title="@Localizer["Ct_MoveToTrash"]"><pems-icon name="bi-trash3" aria-hidden="true" /><span class="visually-hidden">@Localizer["Ct_MoveToTrash"]: @l.LetterNumber</span></button>
+                                        <a asp-action="Details" asp-route-id="@l.LetterId" class="lp-act lp-act--always" title="@Localizer["Lt_Open"]"><pems-icon name="bi-eye" aria-hidden="true" /><span class="visually-hidden">@Localizer["Lt_Open"]: @l.LetterNumber</span></a>
                                         <div class="dropdown d-inline">
-                                            <button type="button" class="lp-act lp-act--always" data-bs-toggle="dropdown" aria-expanded="false" title="@Localizer["Lt_RowActions"]"><i class="bi bi-three-dots" aria-hidden="true"></i><span class="visually-hidden">@Localizer["Lt_RowActions"]: @l.LetterNumber</span></button>
+                                            <button type="button" class="lp-act lp-act--always" data-bs-toggle="dropdown" aria-expanded="false" title="@Localizer["Lt_RowActions"]"><pems-icon name="bi-three-dots" aria-hidden="true" /><span class="visually-hidden">@Localizer["Lt_RowActions"]: @l.LetterNumber</span></button>
                                             <pems-dropdown-menu end="true">
-                                                <li><a class="dropdown-item" asp-action="ExportPdf" asp-route-id="@l.LetterId"><i class="bi bi-file-earmark-pdf me-1" aria-hidden="true"></i> PDF</a></li>
-                                                <li><button type="button" class="dropdown-item" data-row-op="@(l.IsUnread ? "read" : "unread")" data-row-id="@l.LetterId"><i class="bi @(l.IsUnread ? "bi-envelope-open" : "bi-envelope") me-1" aria-hidden="true"></i> @Localizer[l.IsUnread ? "Ct_MarkRead" : "Ct_MarkUnread"]</button></li>
-                                                <li><button type="button" class="dropdown-item" data-reminder-letter="@l.LetterId" data-reminder-title="@l.LetterNumber"><i class="bi bi-bell me-1" aria-hidden="true"></i> @Localizer["Ct_AddReminder"]</button></li>
+                                                <li><a class="dropdown-item" asp-action="ExportPdf" asp-route-id="@l.LetterId"><pems-icon name="bi-file-earmark-pdf" css="me-1" aria-hidden="true" /> PDF</a></li>
+                                                <li><button type="button" class="dropdown-item" data-row-op="@(l.IsUnread ? "read" : "unread")" data-row-id="@l.LetterId"><pems-icon css="@(l.IsUnread ? "bi-envelope-open" : "bi-envelope") me-1" aria-hidden="true" /> @Localizer[l.IsUnread ? "Ct_MarkRead" : "Ct_MarkUnread"]</button></li>
+                                                <li><button type="button" class="dropdown-item" data-reminder-letter="@l.LetterId" data-reminder-title="@l.LetterNumber"><pems-icon name="bi-bell" css="me-1" aria-hidden="true" /> @Localizer["Ct_AddReminder"]</button></li>
                                                 @if (canBulkArchive)
                                                 {
                                                     <li><hr class="dropdown-divider" /></li>
-                                                    <li><button type="button" class="dropdown-item text-danger" data-row-archive="@l.LetterId"><i class="bi bi-archive me-1" aria-hidden="true"></i> @Localizer["Lt_BulkArchive"]</button></li>
+                                                    <li><button type="button" class="dropdown-item text-danger" data-row-archive="@l.LetterId"><pems-icon name="bi-archive" css="me-1" aria-hidden="true" /> @Localizer["Lt_BulkArchive"]</button></li>
                                                 }
                                             </pems-dropdown-menu>
                                         </div>
@@ -702,7 +702,7 @@
                 @if (!Model.Items.Any())
                 {
                     <div class="lp-empty">
-                        <i class="bi @(inTrash ? "bi-trash3" : "bi-inbox")" aria-hidden="true"></i>
+                        <pems-icon css="@(inTrash ? "bi-trash3" : "bi-inbox")" aria-hidden="true" />
                         <strong>@Localizer[inTrash ? "Ct_TrashEmpty" : "Lp_NoResults"]</strong>
                         <span>@Localizer[inTrash ? "Ct_TrashEmptyHint" : "Lp_NoResultsHint"]</span>
                         @if (chips.Count > 0) { <pems-button tone="neutral" size="small" outline="true" css="mt-2" as="a" href="@Without(filterKeys)">@Localizer["Lt_ClearAll"]</pems-button> }
@@ -725,8 +725,8 @@
     <aside class="ct-detail" id="ctDetail" aria-label="@Localizer["Ct_DetailPane"]">
         <div class="ct-detail-head">
             <h2 class="ct-detail-title" id="ctDetailTitle"></h2>
-            <a class="lp-icon-btn" id="ctDetailOpen" href="#" title="@Localizer["Ct_OpenFull"]" aria-label="@Localizer["Ct_OpenFull"]"><i class="bi bi-box-arrow-up-right" aria-hidden="true"></i></a>
-            <button type="button" class="lp-icon-btn" id="ctDetailClose" title="@Localizer["Cancel"]" aria-label="@Localizer["Cancel"]"><i class="bi bi-x-lg" aria-hidden="true"></i></button>
+            <a class="lp-icon-btn" id="ctDetailOpen" href="#" title="@Localizer["Ct_OpenFull"]" aria-label="@Localizer["Ct_OpenFull"]"><pems-icon name="bi-box-arrow-up-right" aria-hidden="true" /></a>
+            <button type="button" class="lp-icon-btn" id="ctDetailClose" title="@Localizer["Cancel"]" aria-label="@Localizer["Cancel"]"><pems-icon name="bi-x-lg" aria-hidden="true" /></button>
         </div>
         <iframe id="ctDetailFrame" title="@Localizer["Ct_DetailPane"]" loading="lazy"></iframe>
     </aside>
@@ -740,16 +740,16 @@
     </div>
     <div class="offcanvas-body">
         <div class="d-flex flex-column gap-1">
-            <a asp-action="Index" class="pems-folder-link @(isDefaultView ? "active" : "")"><i class="bi bi-inboxes"></i> All Correspondence</a>
-            <a asp-action="Index" asp-route-status="Draft" class="pems-folder-link @(currentStatus == "Draft" ? "active" : "")"><i class="bi bi-file-earmark"></i> Drafts</a>
-            <a asp-action="Index" asp-route-status="PendingApproval" class="pems-folder-link @(currentStatus == "PendingApproval" ? "active" : "")"><i class="bi bi-hourglass-split"></i> @Localizer["Under Review"]</a>
-            <a asp-action="Index" asp-route-status="ReturnedForRevision" class="pems-folder-link @(currentStatus == "ReturnedForRevision" ? "active" : "")"><i class="bi bi-arrow-return-left"></i> Returned for Revision</a>
-            <a asp-action="Index" asp-route-status="Approved" class="pems-folder-link @(currentStatus == "Approved" ? "active" : "")"><i class="bi bi-check2-square"></i> @Localizer["Approved"]</a>
-            <a asp-action="Index" asp-route-status="Issued" class="pems-folder-link @(currentStatus == "Issued" ? "active" : "")"><i class="bi bi-send-check"></i> Issued</a>
-            <a asp-action="Index" asp-route-status="Closed" class="pems-folder-link @(currentStatus == "Closed" ? "active" : "")"><i class="bi bi-archive"></i> @Localizer["Closed"]</a>
-            <a asp-action="Index" asp-route-status="Sent" class="pems-folder-link @(currentStatus == "Sent" ? "active" : "")"><i class="bi bi-send"></i> @Localizer["Lc_FolderSent"]</a>
-            <a asp-action="Index" asp-route-status="Archived" class="pems-folder-link @(currentStatus == "Archived" ? "active" : "")"><i class="bi bi-box-seam"></i> @Localizer["Lc_FolderArchived"]</a>
-            <a asp-action="Index" asp-route-starred="true" class="pems-folder-link @(currentStarred ? "active" : "")"><i class="bi bi-star-fill text-warning"></i> Starred</a>
+            <a asp-action="Index" class="pems-folder-link @(isDefaultView ? "active" : "")"><pems-icon name="bi-inboxes" /> All Correspondence</a>
+            <a asp-action="Index" asp-route-status="Draft" class="pems-folder-link @(currentStatus == "Draft" ? "active" : "")"><pems-icon name="bi-file-earmark" /> Drafts</a>
+            <a asp-action="Index" asp-route-status="PendingApproval" class="pems-folder-link @(currentStatus == "PendingApproval" ? "active" : "")"><pems-icon name="bi-hourglass-split" /> @Localizer["Under Review"]</a>
+            <a asp-action="Index" asp-route-status="ReturnedForRevision" class="pems-folder-link @(currentStatus == "ReturnedForRevision" ? "active" : "")"><pems-icon name="bi-arrow-return-left" /> Returned for Revision</a>
+            <a asp-action="Index" asp-route-status="Approved" class="pems-folder-link @(currentStatus == "Approved" ? "active" : "")"><pems-icon name="bi-check2-square" /> @Localizer["Approved"]</a>
+            <a asp-action="Index" asp-route-status="Issued" class="pems-folder-link @(currentStatus == "Issued" ? "active" : "")"><pems-icon name="bi-send-check" /> Issued</a>
+            <a asp-action="Index" asp-route-status="Closed" class="pems-folder-link @(currentStatus == "Closed" ? "active" : "")"><pems-icon name="bi-archive" /> @Localizer["Closed"]</a>
+            <a asp-action="Index" asp-route-status="Sent" class="pems-folder-link @(currentStatus == "Sent" ? "active" : "")"><pems-icon name="bi-send" /> @Localizer["Lc_FolderSent"]</a>
+            <a asp-action="Index" asp-route-status="Archived" class="pems-folder-link @(currentStatus == "Archived" ? "active" : "")"><pems-icon name="bi-box-seam" /> @Localizer["Lc_FolderArchived"]</a>
+            <a asp-action="Index" asp-route-starred="true" class="pems-folder-link @(currentStarred ? "active" : "")"><pems-icon name="bi-star-fill" css="text-warning" /> Starred</a>
         </div>
 
         @if (disciplines.Any())
@@ -810,20 +810,20 @@
 <pems-modal size="extralarge" dialog-css="modal-dialog-scrollable" css="ct-settings" id="ctSettings" tabindex="-1" aria-labelledby="ctSettingsTitle" aria-hidden="true">
             @Html.AntiForgeryToken()
             <div class="modal-header">
-                <h2 class="modal-title h5" id="ctSettingsTitle"><i class="bi bi-sliders" aria-hidden="true"></i> @Localizer["Ct_Settings"]</h2>
+                <h2 class="modal-title h5" id="ctSettingsTitle"><pems-icon name="bi-sliders" aria-hidden="true" /> @Localizer["Ct_Settings"]</h2>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="@Localizer["Cancel"]"></button>
             </div>
             <div class="modal-body">
                 <div class="ct-settings-grid">
                     <div class="ct-settings-nav" role="tablist" aria-orientation="vertical" aria-label="@Localizer["Ct_Settings"]">
-                        <button type="button" role="tab" data-pane="general" aria-selected="true"><i class="bi bi-gear" aria-hidden="true"></i> @Localizer["Ct_SetGeneral"]</button>
-                        <button type="button" role="tab" data-pane="columns" aria-selected="false"><i class="bi bi-layout-three-columns" aria-hidden="true"></i> @Localizer["Ct_SetColumns"]</button>
-                        <button type="button" role="tab" data-pane="tags" aria-selected="false"><i class="bi bi-tags" aria-hidden="true"></i> @Localizer["Ct_Tags"]</button>
-                        <button type="button" role="tab" data-pane="delegation" aria-selected="false"><i class="bi bi-person-badge" aria-hidden="true"></i> @Localizer["Ct_SetDelegation"]</button>
-                        <button type="button" role="tab" data-pane="rules" aria-selected="false"><i class="bi bi-signpost-2" aria-hidden="true"></i> @Localizer["Ct_SetRules"]</button>
-                        <button type="button" role="tab" data-pane="contacts" aria-selected="false"><i class="bi bi-people" aria-hidden="true"></i> @Localizer["Ct_SetContacts"]</button>
-                        <button type="button" role="tab" data-pane="reminders" aria-selected="false"><i class="bi bi-bell" aria-hidden="true"></i> @Localizer["Ct_SetReminders"]</button>
-                        <button type="button" role="tab" data-pane="keys" aria-selected="false"><i class="bi bi-keyboard" aria-hidden="true"></i> @Localizer["Lp_Shortcuts"]</button>
+                        <button type="button" role="tab" data-pane="general" aria-selected="true"><pems-icon name="bi-gear" aria-hidden="true" /> @Localizer["Ct_SetGeneral"]</button>
+                        <button type="button" role="tab" data-pane="columns" aria-selected="false"><pems-icon name="bi-layout-three-columns" aria-hidden="true" /> @Localizer["Ct_SetColumns"]</button>
+                        <button type="button" role="tab" data-pane="tags" aria-selected="false"><pems-icon name="bi-tags" aria-hidden="true" /> @Localizer["Ct_Tags"]</button>
+                        <button type="button" role="tab" data-pane="delegation" aria-selected="false"><pems-icon name="bi-person-badge" aria-hidden="true" /> @Localizer["Ct_SetDelegation"]</button>
+                        <button type="button" role="tab" data-pane="rules" aria-selected="false"><pems-icon name="bi-signpost-2" aria-hidden="true" /> @Localizer["Ct_SetRules"]</button>
+                        <button type="button" role="tab" data-pane="contacts" aria-selected="false"><pems-icon name="bi-people" aria-hidden="true" /> @Localizer["Ct_SetContacts"]</button>
+                        <button type="button" role="tab" data-pane="reminders" aria-selected="false"><pems-icon name="bi-bell" aria-hidden="true" /> @Localizer["Ct_SetReminders"]</button>
+                        <button type="button" role="tab" data-pane="keys" aria-selected="false"><pems-icon name="bi-keyboard" aria-hidden="true" /> @Localizer["Lp_Shortcuts"]</button>
                     </div>
                     <div>
                         <section class="ct-pane" data-pane-body="general" role="tabpanel">

@@ -22,9 +22,9 @@
                     <span class="small text-muted">@d.EditableReason</span>
                 </div>
             </div>
-            <pems-button as="a" tone="neutral" size="small" outline="true" asp-action="Index"><i class="bi bi-arrow-left"></i> @Localizer["Workflow Management"]</pems-button>
+            <pems-button as="a" tone="neutral" size="small" outline="true" asp-action="Index"><pems-icon name="bi-arrow-left" /> @Localizer["Workflow Management"]</pems-button>
         </div>
-        <pems-alert tone="info" css="small mt-3 mb-0"><i class="bi bi-pin-angle"></i> @Localizer["Editing or publishing a new workflow version does not alter existing pinned workflow instances."]</pems-alert>
+        <pems-alert tone="info" css="small mt-3 mb-0"><pems-icon name="bi-pin-angle" /> @Localizer["Editing or publishing a new workflow version does not alter existing pinned workflow instances."]</pems-alert>
     </div>
 
     @if (d.Editable && perms["Edit"])
@@ -62,7 +62,7 @@
                             {
                                 <form asp-action="CloneVersion" method="post" class="d-inline">
                                     <input type="hidden" name="versionId" value="@v.VersionId" /><input type="hidden" name="definitionId" value="@d.DefinitionId" />
-                                    <pems-button tone="neutral" size="small" outline="true" title="@Localizer["Clone into a new draft"]"><i class="bi bi-files"></i> @Localizer["Clone"]</pems-button>
+                                    <pems-button tone="neutral" size="small" outline="true" title="@Localizer["Clone into a new draft"]"><pems-icon name="bi-files" /> @Localizer["Clone"]</pems-button>
                                 </form>
                             }
                             @if (d.Editable && perms["Retire"] && v.Status == "Published" && !v.IsBound)
@@ -78,7 +78,7 @@
                 </tbody>
             </pems-table>
         </div>
-        @if (openDraft != null) { <p class="small text-muted mb-0"><i class="bi bi-info-circle"></i> @Localizer["One open draft per workflow: finish or discard v{0} before cloning again.", openDraft.VersionNumber]</p> }
+        @if (openDraft != null) { <p class="small text-muted mb-0"><pems-icon name="bi-info-circle" /> @Localizer["One open draft per workflow: finish or discard v{0} before cloning again.", openDraft.VersionNumber]</p> }
     </div>
 
     <div class="row g-3">

@@ -42,7 +42,7 @@
             <a class="vs-chip vs-chip--danger" href="@Url.Action("Index", new { criticalityClass = "A" })">@ClassText("A") <strong>@ViewBag.ClassACount</strong></a>
             <a class="vs-chip" href="@Url.Action("Index", new { criticalityClass = "B" })">@ClassText("B") <strong>@ViewBag.ClassBCount</strong></a>
             <a class="vs-chip" href="@Url.Action("Index", new { criticalityClass = "C" })">@ClassText("C") <strong>@ViewBag.ClassCCount</strong></a>
-            <span class="vs-chip"><i class="bi bi-question-circle" aria-hidden="true"></i> @Localizer["Ec_Unassessed"] <strong>@ViewBag.UnassessedCount</strong></span>
+            <span class="vs-chip"><pems-icon name="bi-question-circle" aria-hidden="true" /> @Localizer["Ec_Unassessed"] <strong>@ViewBag.UnassessedCount</strong></span>
         </pems-list-kpis>
 
         <pems-list-chips reset-href="@Url.Action("Index")">

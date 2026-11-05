@@ -5,7 +5,7 @@
 
 <div class="d-flex justify-content-end align-items-center mb-2">
     <pems-button tone="primary" size="small" type="button" data-bs-toggle="modal" data-bs-target="#createCrewModal">
-        <i class="bi bi-plus-lg"></i> @Localizer["Crew جدید"]
+        <pems-icon name="bi-plus-lg" /> @Localizer["Crew جدید"]
     </pems-button>
 </div>
 
@@ -29,7 +29,7 @@
                         @if (crew.WorkOrder != null)
                         {
                             <pems-badge tone="info">
-                                <i class="bi bi-clipboard-check"></i> اختصاصی <a asp-controller="WorkOrder" asp-action="Details" asp-route-id="@crew.WorkOrder.WorkOrderId" class="text-dark">@crew.WorkOrder.WorkOrderNumber</a>
+                                <pems-icon name="bi-clipboard-check" /> اختصاصی <a asp-controller="WorkOrder" asp-action="Details" asp-route-id="@crew.WorkOrder.WorkOrderId" class="text-dark">@crew.WorkOrder.WorkOrderNumber</a>
                             </pems-badge>
                         }
                         else
@@ -51,7 +51,7 @@
                                 <pems-badge tone="neutral">@m.Role?.Name</pems-badge>
                                 <form asp-action="RemoveMember" method="post" class="d-inline">
                                     <input type="hidden" name="crewMemberId" value="@m.CrewMemberId" />
-                                    <pems-button tone="danger" size="small" outline="true" css="py-0 px-1" type="submit" data-pems-confirm="این عضو از Crew خارج بشه؟"><i class="bi bi-x"></i></pems-button>
+                                    <pems-button tone="danger" size="small" outline="true" css="py-0 px-1" type="submit" data-pems-confirm="این عضو از Crew خارج بشه؟"><pems-icon name="bi-x" /></pems-button>
                                 </form>
                             </span>
                         </li>
@@ -68,7 +68,7 @@
                         <option value="">@Localizer["نقش..."]</option>
                         @foreach (var r in (IEnumerable<dynamic>)ViewBag.MaintenanceRoles) { <option value="@r.MaintenanceRoleId">@r.Name</option> }
                     </pems-select>
-                    <pems-button tone="primary" size="small" outline="true" css="text-nowrap" type="submit"><i class="bi bi-plus-lg"></i></pems-button>
+                    <pems-button tone="primary" size="small" outline="true" css="text-nowrap" type="submit"><pems-icon name="bi-plus-lg" /></pems-button>
                 </form>
             </div>
         </div>

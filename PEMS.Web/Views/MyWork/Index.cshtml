@@ -34,7 +34,7 @@
 <pems-list-page texts="@ListPageTexts.From(Localizer)">
     @if (summary.Total > 0 && summary.WithSla == 0)
     {
-        <pems-alert tone="info" css="py-2 px-3 small"><i class="bi bi-info-circle" aria-hidden="true"></i> @Localizer["MyWork_NoSla"]</pems-alert>
+        <pems-alert tone="info" css="py-2 px-3 small"><pems-icon name="bi-info-circle" aria-hidden="true" /> @Localizer["MyWork_NoSla"]</pems-alert>
     }
 
     <pems-list-panel>
@@ -51,8 +51,8 @@
                 <pems-list-kpi-toggle target="mwKpis" storage-key="pems.mywork.kpis" />
                 <pems-list-reset-columns grid-key="MyWork" />
                 <pems-list-menu id="mwMoreBtn" icon="bi-three-dots" label="@Localizer["Lp_More"]">
-                    <li><a class="dropdown-item" asp-controller="Notification" asp-action="Index"><i class="bi bi-bell" aria-hidden="true"></i> @Localizer["MyWork_Notifications"] (@unread)</a></li>
-                    <li><a class="dropdown-item" asp-controller="Task" asp-action="Index"><i class="bi bi-check2-square" aria-hidden="true"></i> @Localizer["MyWork_ActionItems"] (@openItems)</a></li>
+                    <li><a class="dropdown-item" asp-controller="Notification" asp-action="Index"><pems-icon name="bi-bell" aria-hidden="true" /> @Localizer["MyWork_Notifications"] (@unread)</a></li>
+                    <li><a class="dropdown-item" asp-controller="Task" asp-action="Index"><pems-icon name="bi-check2-square" aria-hidden="true" /> @Localizer["MyWork_ActionItems"] (@openItems)</a></li>
                 </pems-list-menu>
             </pems-list-tools>
         </pems-list-toolbar>

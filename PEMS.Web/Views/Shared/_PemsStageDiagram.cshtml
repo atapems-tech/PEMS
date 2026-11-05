@@ -57,15 +57,15 @@
             <div class="pems-wf-circle">
                 @if (item.State == PEMS.Web.Models.StageItemState.Done)
                 {
-                    <i class="bi bi-check-lg"></i>
+                    <pems-icon name="bi-check-lg" />
                 }
                 else if (item.State == PEMS.Web.Models.StageItemState.Rejected)
                 {
-                    <i class="bi bi-x-lg"></i>
+                    <pems-icon name="bi-x-lg" />
                 }
                 else
                 {
-                    <i class="bi @item.IconCssClass"></i>
+                    <pems-icon css="@item.IconCssClass" />
                 }
             </div>
             <div class="pems-wf-label">@item.Label</div>

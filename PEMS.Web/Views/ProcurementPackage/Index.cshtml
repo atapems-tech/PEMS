@@ -24,8 +24,8 @@
 
         <pems-list-toolbar heading="@Localizer["PkL_Title"]" heading-title="@Localizer["PkL_Hint"]" total="@Model.TotalCount">
             <pems-list-tools>
-                <a class="lp-icon-btn" asp-controller="MaterialRequisition" asp-action="Index" title="@Localizer["PkL_AllMrs"]" aria-label="@Localizer["PkL_AllMrs"]"><i class="bi bi-cart-check" aria-hidden="true"></i></a>
-                <a class="lp-icon-btn" asp-controller="MaterialRequisition" asp-action="Quotations" title="@Localizer["PkL_AllMrqs"]" aria-label="@Localizer["PkL_AllMrqs"]"><i class="bi bi-file-earmark-spreadsheet" aria-hidden="true"></i></a>
+                <a class="lp-icon-btn" asp-controller="MaterialRequisition" asp-action="Index" title="@Localizer["PkL_AllMrs"]" aria-label="@Localizer["PkL_AllMrs"]"><pems-icon name="bi-cart-check" aria-hidden="true" /></a>
+                <a class="lp-icon-btn" asp-controller="MaterialRequisition" asp-action="Quotations" title="@Localizer["PkL_AllMrqs"]" aria-label="@Localizer["PkL_AllMrqs"]"><pems-icon name="bi-file-earmark-spreadsheet" aria-hidden="true" /></a>
                 <pems-list-reset-columns grid-key="ProcurementPackage" />
                 <pems-list-new modal="createPackageModal" text="@Localizer["PkL_New"]" />
             </pems-list-tools>
@@ -64,7 +64,7 @@
                                 else { <span class="vs-num">0</span> }
                             </td>
                             <td class="text-end">
-                                <a asp-action="Details" asp-route-id="@p.ProcurementPackageId" class="lp-act lp-act--always" title="@Localizer["Ed_View"]" aria-label="@Localizer["Ed_View"]"><i class="bi bi-eye" aria-hidden="true"></i></a>
+                                <a asp-action="Details" asp-route-id="@p.ProcurementPackageId" class="lp-act lp-act--always" title="@Localizer["Ed_View"]" aria-label="@Localizer["Ed_View"]"><pems-icon name="bi-eye" aria-hidden="true" /></a>
                             </td>
                         </tr>
                     }

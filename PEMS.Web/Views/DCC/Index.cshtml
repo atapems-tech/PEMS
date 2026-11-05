@@ -3,7 +3,7 @@
 @inject IStringLocalizer<SharedResource> Localizer
 <div class="d-flex justify-content-end align-items-center mb-2">
     <pems-button tone="primary" size="small" as="a" asp-action="RegisterIncoming">
-        <i class="bi bi-envelope-plus"></i> @Localizer["ثبت مکاتبه‌ی وارده"]
+        <pems-icon name="bi-envelope-plus" /> @Localizer["ثبت مکاتبه‌ی وارده"]
     </pems-button>
 </div>
 
@@ -17,7 +17,7 @@
     <div class="col-md-4">
         <div class="content-card text-center">
             <a asp-controller="Relationship" asp-action="Index" class="text-decoration-none">
-                <div class="fs-3 fw-bold text-info"><i class="bi bi-diagram-3"></i></div>
+                <div class="fs-3 fw-bold text-info"><pems-icon name="bi-diagram-3" /></div>
                 <div class="text-muted small">@Localizer["Relationship Explorer"]</div>
             </a>
         </div>
@@ -27,7 +27,7 @@
 <div class="row g-3">
     <div class="col-md-6">
         <div class="content-card h-100">
-            <h6 class="mb-3"><i class="bi bi-send-check"></i> @Localizer["مدارک منتظر صدور"]</h6>
+            <h6 class="mb-3"><pems-icon name="bi-send-check" /> @Localizer["مدارک منتظر صدور"]</h6>
             @{
                 var pendingIssueDocs = (IEnumerable<dynamic>)ViewBag.PendingIssueDocs;
             }
@@ -54,7 +54,7 @@
 
     <div class="col-md-6">
         <div class="content-card h-100 border-warning">
-            <h6 class="mb-3"><i class="bi bi-envelope-exclamation"></i> @Localizer["مکاتبات وارده‌ی وصل‌نشده"]</h6>
+            <h6 class="mb-3"><pems-icon name="bi-envelope-exclamation" /> @Localizer["مکاتبات وارده‌ی وصل‌نشده"]</h6>
             @{
                 var unlinked = (IEnumerable<dynamic>)ViewBag.UnlinkedIncoming;
             }
@@ -82,7 +82,7 @@
 </div>
 
 <div class="content-card mt-3">
-    <h6 class="mb-3"><i class="bi bi-clock-history"></i> @Localizer["آخرین مکاتبات وارده"]</h6>
+    <h6 class="mb-3"><pems-icon name="bi-clock-history" /> @Localizer["آخرین مکاتبات وارده"]</h6>
     @{
         var recentIncoming = (IEnumerable<dynamic>)ViewBag.RecentIncoming;
     }

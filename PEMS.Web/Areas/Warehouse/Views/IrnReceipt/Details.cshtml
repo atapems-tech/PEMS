@@ -38,7 +38,7 @@
 }
 @if (TempData["Warning"] != null)
 {
-    <pems-alert tone="warning" css="py-2 px-3 small"><i class="bi bi-exclamation-triangle" aria-hidden="true"></i> @TempData["Warning"]</pems-alert>
+    <pems-alert tone="warning" css="py-2 px-3 small"><pems-icon name="bi-exclamation-triangle" aria-hidden="true" /> @TempData["Warning"]</pems-alert>
 }
 
 <div class="content-card mb-3">
@@ -63,7 +63,7 @@
             <form asp-action="Submit" method="post" class="d-inline">
                 <input type="hidden" name="id" value="@Model.IrnReceiptId" />
                 <pems-button tone="primary" size="small" type="submit" data-pems-confirm="Submit this IRN for inspection?">
-                    <i class="bi bi-send"></i> @Localizer["Submit for Inspection"]
+                    <pems-icon name="bi-send" /> @Localizer["Submit for Inspection"]
                 </pems-button>
             </form>
         }
@@ -85,14 +85,14 @@
                 <input type="hidden" name="id" value="@Model.IrnReceiptId" />
                 <input type="hidden" name="decision" value="Approve" />
                 <pems-button tone="primary" size="small" type="submit" data-pems-confirm="Approve this disposition? The accepted quantity will be posted to stock.">
-                    <i class="bi bi-check2-circle"></i> @Localizer["QA Approve"]
+                    <pems-icon name="bi-check2-circle" /> @Localizer["QA Approve"]
                 </pems-button>
             </form>
             <form asp-action="Approve" method="post" class="d-inline">
                 <input type="hidden" name="id" value="@Model.IrnReceiptId" />
                 <input type="hidden" name="decision" value="Reject" />
                 <pems-button tone="danger" size="small" outline="true" type="submit" data-pems-confirm="Reject this disposition? The inspector will need to re-record it.">
-                    <i class="bi bi-x-circle"></i> @Localizer["QA Reject"]
+                    <pems-icon name="bi-x-circle" /> @Localizer["QA Reject"]
                 </pems-button>
             </form>
         }
@@ -103,7 +103,7 @@
         @if (Model.Status != "Draft" && Model.Lines.Any())
         {
             <pems-button as="a" tone="neutral" size="small" outline="true" css="ms-auto" asp-action="Osd" asp-route-id="@Model.IrnReceiptId" target="_blank">
-                <i class="bi bi-printer"></i> @Localizer["Rcv_OsdReport"]
+                <pems-icon name="bi-printer" /> @Localizer["Rcv_OsdReport"]
             </pems-button>
         }
     </div>
@@ -235,7 +235,7 @@
                     }
                 </tbody>
             </pems-related-table>
-            <div class="lp-rel-add"><pems-button tone="primary" size="small" type="submit"><i class="bi bi-box-arrow-in-down" aria-hidden="true"></i> @Localizer["Rcv_AddPoLines"]</pems-button></div>
+            <div class="lp-rel-add"><pems-button tone="primary" size="small" type="submit"><pems-icon name="bi-box-arrow-in-down" aria-hidden="true" /> @Localizer["Rcv_AddPoLines"]</pems-button></div>
         </form>
     }
 
@@ -274,7 +274,7 @@
             <div class="lp-rel-add">
                 <div><label class="lp-lbl" for="irnDispNotes">@Localizer["Notes"]</label><pems-textarea scale="small" id="irnDispNotes" name="notes" rows="2"></pems-textarea></div>
                 <pems-button tone="primary" size="small" type="submit" data-pems-confirm="@Localizer["IrnD_ConfirmDisposition"]">
-                    <i class="bi bi-clipboard-check" aria-hidden="true"></i> @Localizer["Record Disposition"]
+                    <pems-icon name="bi-clipboard-check" aria-hidden="true" /> @Localizer["Record Disposition"]
                 </pems-button>
             </div>
         </form>

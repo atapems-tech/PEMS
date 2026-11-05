@@ -24,7 +24,7 @@
             }
         </div>
         <pems-button tone="neutral" size="small" outline="true" as="a" asp-controller="EngineeringDocuments" asp-action="Details" asp-route-id="@Model.DocumentId">
-            <i class="bi bi-file-earmark-text"></i> Open Document
+            <pems-icon name="bi-file-earmark-text" /> Open Document
         </pems-button>
     </div>
 
@@ -44,7 +44,7 @@
 </div>
 
 <div class="content-card mb-3">
-    <h6 class="mb-3"><i class="bi bi-robot"></i> AI Classification Suggestions</h6>
+    <h6 class="mb-3"><pems-icon name="bi-robot" /> AI Classification Suggestions</h6>
 
     @foreach (var c in Model.Classifications)
     {
@@ -86,7 +86,7 @@
                     <div class="col-md-6"><span class="text-muted small">Document Type: <strong>@c.PredictedDocumentType</strong> (always applied)</span></div>
 
                     <div class="col-12 mt-2">
-                        <pems-button tone="success" size="small" type="submit"><i class="bi bi-check-lg"></i> Approve &amp; Apply</pems-button>
+                        <pems-button tone="success" size="small" type="submit"><pems-icon name="bi-check-lg" /> Approve &amp; Apply</pems-button>
                     </div>
                 </form>
 
@@ -102,7 +102,7 @@
 </div>
 
 <div class="content-card mb-3">
-    <h6 class="mb-3"><i class="bi bi-tags"></i> Related Equipment Tags (AVEVA-style multi-tag linking)</h6>
+    <h6 class="mb-3"><pems-icon name="bi-tags" /> Related Equipment Tags (AVEVA-style multi-tag linking)</h6>
     <div class="table-responsive table-scroll-area pems-s-8da1c6e6">
     <pems-table kind="enterprise">
         <thead><tr><th>@Localizer["Tag Number"]</th><th>@Localizer["Source"]</th><th>@Localizer["Status"]</th><th></th></tr></thead>
@@ -142,7 +142,7 @@
 </div>
 
 <div class="content-card">
-    <h6 class="mb-3"><i class="bi bi-chat-dots"></i> Comment Management</h6>
+    <h6 class="mb-3"><pems-icon name="bi-chat-dots" /> Comment Management</h6>
     <div class="table-responsive table-scroll-area pems-s-8da1c6e6">
     <pems-table kind="enterprise">
         <thead><tr><th>@Localizer["Comment"]</th><th>@Localizer["Raised By"]</th><th>@Localizer["Date"]</th><th>@Localizer["Action Status"]</th><th>@Localizer["Response"]</th></tr></thead>

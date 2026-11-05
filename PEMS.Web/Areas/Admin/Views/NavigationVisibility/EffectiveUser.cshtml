@@ -36,12 +36,12 @@
 
         @if (Model.SelectedUserId == null)
         {
-            <div class="admin-empty"><i class="bi bi-person-badge"></i><strong>@Localizer["Choose a user above"]</strong></div>
+            <div class="admin-empty"><pems-icon name="bi-person-badge" /><strong>@Localizer["Choose a user above"]</strong></div>
         }
         else
         {
             <div class="permission-intro mb-3">
-                <i class="bi bi-info-circle me-1"></i>
+                <pems-icon name="bi-info-circle" css="me-1" />
                 @Localizer["Roles"]: <strong>@string.Join(", ", Model.RoleNames)</strong>
                 <div class="text-body-secondary small mt-1">@Localizer["This is a visualization only - it does not sign in as this user, and hidden items may still be reachable by direct URL if the user is actually authorized (Hidden is not the same as Unauthorized)."]</div>
             </div>
@@ -52,11 +52,11 @@
                     <summary class="navvis-module-summary">
                         @if (module.Visible)
                         {
-                            <i class="bi bi-check-lg text-success"></i>
+                            <pems-icon name="bi-check-lg" css="text-success" />
                         }
                         else
                         {
-                            <i class="bi bi-dash text-body-tertiary"></i>
+                            <pems-icon name="bi-dash" css="text-body-tertiary" />
                         }
                         <span class="navvis-title">@Localizer[module.DisplayLocalizationKey]</span>
                     </summary>
@@ -69,11 +69,11 @@
                                 <div class="navvis-item navvis-item-flat">
                                     @if (item.Visible)
                                     {
-                                        <i class="bi bi-check-lg text-success"></i>
+                                        <pems-icon name="bi-check-lg" css="text-success" />
                                     }
                                     else
                                     {
-                                        <i class="bi bi-dash text-body-tertiary"></i>
+                                        <pems-icon name="bi-dash" css="text-body-tertiary" />
                                     }
                                     <span class="navvis-item-name">@Localizer[item.DisplayLocalizationKey]</span>
                                     <span class="navvis-capability">@Localizer["Capability"]: @(item.Capability ?? Localizer["None - not permission-gated"].Value)</span>
@@ -89,11 +89,11 @@
                                             <div class="navvis-item navvis-item-flat">
                                                 @if (item.Visible)
                                                 {
-                                                    <i class="bi bi-check-lg text-success"></i>
+                                                    <pems-icon name="bi-check-lg" css="text-success" />
                                                 }
                                                 else
                                                 {
-                                                    <i class="bi bi-dash text-body-tertiary"></i>
+                                                    <pems-icon name="bi-dash" css="text-body-tertiary" />
                                                 }
                                                 <span class="navvis-item-name">@Localizer[item.DisplayLocalizationKey]</span>
                                                 <span class="navvis-capability">@Localizer["Capability"]: @(item.Capability ?? Localizer["None - not permission-gated"].Value)</span>

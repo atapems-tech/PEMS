@@ -41,13 +41,13 @@
         <div class="d-flex flex-wrap gap-2">
             <form asp-controller="TaskManager" asp-action="Watch" method="post">
                 <input type="hidden" name="id" value="@i.Id" /><input type="hidden" name="watch" value="@(Model.IsWatching ? "false" : "true")" /><input type="hidden" name="returnUrl" value="@returnUrl" />
-                <pems-button tone="neutral" size="small" outline="true" aria-pressed="@(Model.IsWatching ? "true" : "false")"><i class="bi @(Model.IsWatching ? "bi-eye-slash" : "bi-eye")" aria-hidden="true"></i> @(Model.IsWatching ? Localizer["Tm_Unwatch"] : Localizer["Tm_Watch"]) <pems-badge tone="light">@Model.Watchers.Count</pems-badge></pems-button>
+                <pems-button tone="neutral" size="small" outline="true" aria-pressed="@(Model.IsWatching ? "true" : "false")"><pems-icon css="@(Model.IsWatching ? "bi-eye-slash" : "bi-eye")" aria-hidden="true" /> @(Model.IsWatching ? Localizer["Tm_Unwatch"] : Localizer["Tm_Watch"]) <pems-badge tone="light">@Model.Watchers.Count</pems-badge></pems-button>
             </form>
             @if (Model.CanArchive)
             {
                 <form asp-controller="TaskManager" asp-action="Archive" method="post">
                     <input type="hidden" name="id" value="@i.Id" /><input type="hidden" name="archived" value="@(i.IsActive ? "true" : "false")" /><input type="hidden" name="returnUrl" value="@returnUrl" />
-                    <pems-button tone="none" size="small" css="@(i.IsActive ? "btn-outline-danger" : "btn-outline-success")" data-pems-confirm="@(i.IsActive ? Localizer["Tm_ArchiveConfirm"] : Localizer["Tm_RestoreConfirm"])"><i class="bi @(i.IsActive ? "bi-archive" : "bi-arrow-counterclockwise")" aria-hidden="true"></i> @(i.IsActive ? Localizer["Tm_Archive"] : Localizer["Tm_Restore"])</pems-button>
+                    <pems-button tone="none" size="small" css="@(i.IsActive ? "btn-outline-danger" : "btn-outline-success")" data-pems-confirm="@(i.IsActive ? Localizer["Tm_ArchiveConfirm"] : Localizer["Tm_RestoreConfirm"])"><pems-icon css="@(i.IsActive ? "bi-archive" : "bi-arrow-counterclockwise")" aria-hidden="true" /> @(i.IsActive ? Localizer["Tm_Archive"] : Localizer["Tm_Restore"])</pems-button>
                 </form>
             }
         </div>
@@ -130,7 +130,7 @@
                         <input type="hidden" name="createAnother" value="true" />
                         <label class="visually-hidden" for="st-title">@Localizer["Tm_NewSubtask"]</label>
                         <pems-input scale="small" id="st-title" name="Title" placeholder="@Localizer["Tm_NewSubtask"]" required maxlength="300" />
-                        <pems-button tone="neutral" size="small" outline="true" css="text-nowrap"><i class="bi bi-plus-lg" aria-hidden="true"></i> @Localizer["Tm_Add"]</pems-button>
+                        <pems-button tone="neutral" size="small" outline="true" css="text-nowrap"><pems-icon name="bi-plus-lg" aria-hidden="true" /> @Localizer["Tm_Add"]</pems-button>
                     </form>
                 }
             </section>
@@ -154,14 +154,14 @@
                                 }
                                 else
                                 {
-                                    <span class="ms-1 text-muted fst-italic"><i class="bi bi-lock" aria-hidden="true"></i> @Localizer["Tm_RestrictedItem"]</span>
+                                    <span class="ms-1 text-muted fst-italic"><pems-icon name="bi-lock" aria-hidden="true" /> @Localizer["Tm_RestrictedItem"]</span>
                                 }
                             </span>
                             @if (l.CanRemove)
                             {
                                 <form asp-controller="TaskManager" asp-action="RemoveLink" method="post">
                                     <input type="hidden" name="linkId" value="@l.Id" /><input type="hidden" name="returnUrl" value="@returnUrl" />
-                                    <pems-button tone="none" size="small" css="btn-link text-danger p-0" aria-label="@Localizer["Tm_RemoveLink"]" data-pems-confirm="@Localizer["Tm_RemoveLinkConfirm"]"><i class="bi bi-x-lg" aria-hidden="true"></i></pems-button>
+                                    <pems-button tone="none" size="small" css="btn-link text-danger p-0" aria-label="@Localizer["Tm_RemoveLink"]" data-pems-confirm="@Localizer["Tm_RemoveLinkConfirm"]"><pems-icon name="bi-x-lg" aria-hidden="true" /></pems-button>
                                 </form>
                             }
                         </li>
@@ -182,7 +182,7 @@
                         <label class="visually-hidden" for="lk-target">@Localizer["Tm_LinkTarget"]</label>
                         <pems-input scale="small" id="lk-target" name="target" placeholder="@Localizer["Tm_LinkTargetPlaceholder"]" required maxlength="30" />
                     </div>
-                    <div class="col-md-3"><pems-button tone="neutral" size="small" outline="true" css="w-100"><i class="bi bi-link-45deg" aria-hidden="true"></i> @Localizer["Tm_AddLink"]</pems-button></div>
+                    <div class="col-md-3"><pems-button tone="neutral" size="small" outline="true" css="w-100"><pems-icon name="bi-link-45deg" aria-hidden="true" /> @Localizer["Tm_AddLink"]</pems-button></div>
                 </form>
             }
         </section>
@@ -303,7 +303,7 @@
                 </pems-info-item>
                 <pems-info-item label="@Localizer["Tm_Reporter"]">@(i.ReporterName ?? "—")</pems-info-item>
                 @if (Model.AssignedByName != null && Model.AssignedByName != i.ReporterName) { <pems-info-item label="@Localizer["Tm_AssignedBy"]">@Model.AssignedByName</pems-info-item> }
-                <pems-info-item label="@Localizer["Tm_Field_Priority"]"><i class="bi @TaskManagerUi.PriorityIcon(i.Priority)" aria-hidden="true"></i> @TaskManagerUi.Priority(Localizer, i.Priority)</pems-info-item>
+                <pems-info-item label="@Localizer["Tm_Field_Priority"]"><pems-icon css="@TaskManagerUi.PriorityIcon(i.Priority)" aria-hidden="true" /> @TaskManagerUi.Priority(Localizer, i.Priority)</pems-info-item>
                 @if (!Model.IsLegacy)
                 {
                     <pems-info-item label="@Localizer["Tm_Field_Sprint"]">@(Model.SprintName ?? Localizer["Tm_Backlog"].Value)</pems-info-item>

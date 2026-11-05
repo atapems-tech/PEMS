@@ -25,17 +25,17 @@
         <div class="d-flex flex-column gap-1 pems-s-7d03ac6a">
             @if (Model.QualityStatus == "Produced")
             {
-                <form asp-action="SubmitBatchForQc" asp-route-id="@Model.ProductionBatchId" method="post"><pems-button tone="primary" size="small" outline="true" css="w-100" type="submit"><i class="bi bi-clipboard-check"></i> Submit for QC</pems-button></form>
+                <form asp-action="SubmitBatchForQc" asp-route-id="@Model.ProductionBatchId" method="post"><pems-button tone="primary" size="small" outline="true" css="w-100" type="submit"><pems-icon name="bi-clipboard-check" /> Submit for QC</pems-button></form>
             }
             @if (Model.QualityStatus == "AwaitingQC")
             {
-                <form asp-action="ReleaseBatch" asp-route-id="@Model.ProductionBatchId" method="post"><pems-button tone="primary" size="small" css="w-100" type="submit"><i class="bi bi-check2-circle"></i> Release</pems-button></form>
-                <pems-button tone="warning" size="small" outline="true" css="w-100" type="button" data-bs-toggle="modal" data-bs-target="#blockModal"><i class="bi bi-slash-circle"></i> Block</pems-button>
-                <pems-button tone="danger" size="small" outline="true" css="w-100" type="button" data-bs-toggle="modal" data-bs-target="#rejectModal"><i class="bi bi-x-circle"></i> @Localizer["Reject"]</pems-button>
+                <form asp-action="ReleaseBatch" asp-route-id="@Model.ProductionBatchId" method="post"><pems-button tone="primary" size="small" css="w-100" type="submit"><pems-icon name="bi-check2-circle" /> Release</pems-button></form>
+                <pems-button tone="warning" size="small" outline="true" css="w-100" type="button" data-bs-toggle="modal" data-bs-target="#blockModal"><pems-icon name="bi-slash-circle" /> Block</pems-button>
+                <pems-button tone="danger" size="small" outline="true" css="w-100" type="button" data-bs-toggle="modal" data-bs-target="#rejectModal"><pems-icon name="bi-x-circle" /> @Localizer["Reject"]</pems-button>
             }
             @if (Model.QualityStatus == "Blocked")
             {
-                <form asp-action="UnblockBatch" asp-route-id="@Model.ProductionBatchId" method="post"><pems-button tone="success" size="small" outline="true" css="w-100" type="submit"><i class="bi bi-arrow-counterclockwise"></i> Back to QC</pems-button></form>
+                <form asp-action="UnblockBatch" asp-route-id="@Model.ProductionBatchId" method="post"><pems-button tone="success" size="small" outline="true" css="w-100" type="submit"><pems-icon name="bi-arrow-counterclockwise" /> Back to QC</pems-button></form>
             }
         </div>
     </div>

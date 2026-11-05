@@ -9,7 +9,7 @@
 <div class="content-card mb-4">
     <div class="d-flex justify-content-between align-items-start flex-wrap gap-2 mb-2">
         <div>
-            <h5 class="mb-1"><i class="bi bi-rocket-takeoff"></i> @Localizer["System Setup"]</h5>
+            <h5 class="mb-1"><pems-icon name="bi-rocket-takeoff" /> @Localizer["System Setup"]</h5>
             <p class="text-muted small mb-0">
                 How ready is PEMS for operational use? This page reads real data - nothing here is estimated.
             </p>
@@ -24,7 +24,7 @@
     @if (Model.IsFullyComplete)
     {
         <pems-alert tone="success" css="mt-3 mb-0 d-flex align-items-center gap-2">
-            <i class="bi bi-check-circle-fill fs-4"></i>
+            <pems-icon name="bi-check-circle-fill" css="fs-4" />
             <div>
                 <strong>PEMS Setup Complete.</strong> Your system is ready for operational use.
                 You can revisit this page any time - Quick Setup never locks.
@@ -47,14 +47,14 @@
             <div class="content-card h-100">
                 <div class="d-flex justify-content-between align-items-start mb-2">
                     <h6 class="mb-0">@step.Title</h6>
-                    <pems-badge tone="@badgeClass"><i class="bi @icon"></i> @statusText</pems-badge>
+                    <pems-badge tone="@badgeClass"><pems-icon css="@icon" /> @statusText</pems-badge>
                 </div>
                 <p class="text-muted small mb-2">@step.Description</p>
 
                 @if (step.Status == PEMS.Application.DTOs.SetupStepStatus.Blocked)
                 {
                     <pems-alert tone="warning" css="small py-2 mb-2">
-                        <div class="fw-semibold mb-1"><i class="bi bi-exclamation-triangle"></i> Cannot complete yet. Missing:</div>
+                        <div class="fw-semibold mb-1"><pems-icon name="bi-exclamation-triangle" /> Cannot complete yet. Missing:</div>
                         <ul class="mb-0 ps-3">
                             @foreach (var missing in step.MissingDependencies)
                             {
@@ -80,7 +80,7 @@
                 }
                 else if (isAdminOnlyTarget)
                 {
-                    <span class="text-muted small"><i class="bi bi-lock"></i> Requires SystemAdmin</span>
+                    <span class="text-muted small"><pems-icon name="bi-lock" /> Requires SystemAdmin</span>
                 }
             </div>
         </div>
@@ -91,7 +91,7 @@
 {
     <div class="content-card d-flex justify-content-between align-items-center flex-wrap gap-2">
         <div>
-            <h6 class="mb-1"><i class="bi bi-cloud-arrow-up"></i> @Localizer["IC_Title"]</h6>
+            <h6 class="mb-1"><pems-icon name="bi-cloud-arrow-up" /> @Localizer["IC_Title"]</h6>
             <p class="text-muted small mb-0">@Localizer["IC_QuickSetupPointer"]</p>
         </div>
         <pems-button tone="primary" size="small" as="a" asp-controller="ImportCenter" asp-action="Index">@Localizer["IC_Open"]</pems-button>

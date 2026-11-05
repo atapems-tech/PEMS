@@ -10,7 +10,7 @@
     @if (TempData["Error"] != null) { <pems-alert tone="danger">@TempData["Error"]</pems-alert> }
 
     <section class="vs-panel mb-3">
-        <h2 class="vs-section__title"><i class="bi bi-file-earmark-arrow-up"></i> @Localizer["Org_Imp_Title"]</h2>
+        <h2 class="vs-section__title"><pems-icon name="bi-file-earmark-arrow-up" /> @Localizer["Org_Imp_Title"]</h2>
         <p class="small text-muted">@Localizer["Org_Imp_Columns"]</p>
         <p class="small"><code>Department, Position, PositionCode, PositionTitle, ParentPositionCode, EmployeePersonnelCode, IsPrimary, AssignmentType, EffectiveFrom, EffectiveTo</code></p>
         <form asp-action="Validate" method="post" enctype="multipart/form-data" class="row g-2 align-items-end">
@@ -18,8 +18,8 @@
                 <pems-label for="orgImpFile">@Localizer["IC_ChooseFile"]</pems-label>
                 <pems-input scale="small" id="orgImpFile" type="file" name="file" accept=".xlsx" required />
             </div>
-            <div class="col-auto"><button class="vs-btn vs-btn--primary vs-btn--sm"><i class="bi bi-check2-circle"></i> @Localizer["Org_Imp_Validate"]</button></div>
-            <div class="col-auto"><a class="vs-btn vs-btn--sm" asp-action="Template"><i class="bi bi-download"></i> @Localizer["Org_Imp_Template"]</a></div>
+            <div class="col-auto"><button class="vs-btn vs-btn--primary vs-btn--sm"><pems-icon name="bi-check2-circle" /> @Localizer["Org_Imp_Validate"]</button></div>
+            <div class="col-auto"><a class="vs-btn vs-btn--sm" asp-action="Template"><pems-icon name="bi-download" /> @Localizer["Org_Imp_Template"]</a></div>
         </form>
         <p class="small text-muted mt-2 mb-0">@Localizer["Org_Imp_Rules"]</p>
     </section>

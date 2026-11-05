@@ -71,7 +71,7 @@
             <div class="d-flex align-items-center gap-2 flex-wrap mb-1">
                 <h4 class="mb-0">@Model.FirstName @Model.LastName</h4>
                 <pems-badge tone="none" css="rounded-pill @(Model.IsActive ? "bg-success-subtle text-success-emphasis" : "bg-secondary-subtle text-secondary-emphasis") d-inline-flex align-items-center gap-1">
-                    <i class="bi bi-circle-fill pems-s-dec715c2"></i>
+                    <pems-icon name="bi-circle-fill" css="pems-s-dec715c2" />
                     @L(Model.IsActive ? "Active" : "Inactive", Model.IsActive ? "فعال" : "غیرفعال")
                 </pems-badge>
             </div>
@@ -85,10 +85,10 @@
             }
             <div class="d-flex gap-2 flex-wrap mt-2">
                 <pems-button tone="primary" size="small" type="button" data-bs-toggle="modal" data-bs-target="#editProfileModal">
-                    <i class="bi bi-pencil"></i> @L("Edit Profile", "ویرایش پروفایل")
+                    <pems-icon name="bi-pencil" /> @L("Edit Profile", "ویرایش پروفایل")
                 </pems-button>
                 <pems-button tone="neutral" size="small" outline="true" as="a" asp-action="Index">
-                    <i class="bi bi-arrow-@(isRtl ? "right" : "left")"></i> @L("Back to list", "بازگشت به فهرست")
+                    <pems-icon name="bi-arrow-@(isRtl ? "right" : "left")" /> @L("Back to list", "بازگشت به فهرست")
                 </pems-button>
             </div>
         </div>
@@ -100,7 +100,7 @@
     <div class="col-lg-8">
         <div class="content-card h-100">
             <h6 class="d-flex align-items-center gap-2 pb-2 mb-3 border-bottom">
-                <i class="bi bi-briefcase text-warning"></i>
+                <pems-icon name="bi-briefcase" css="text-warning" />
                 <span>@L("Employment Details", "جزئیات استخدام")</span>
             </h6>
             <div class="row g-3">
@@ -166,11 +166,11 @@
                     </p>
                 </div>
                 <div class="col-sm-6">
-                    <p class="text-uppercase text-muted small mb-1"><i class="bi bi-geo-alt"></i> @L("Location", "مکان")</p>
+                    <p class="text-uppercase text-muted small mb-1"><pems-icon name="bi-geo-alt" /> @L("Location", "مکان")</p>
                     <p class="mb-0 fw-semibold">@Dash(Model.Location)</p>
                 </div>
                 <div class="col-sm-6">
-                    <p class="text-uppercase text-muted small mb-1"><i class="bi bi-clock"></i> @L("Shift", "شیفت")</p>
+                    <p class="text-uppercase text-muted small mb-1"><pems-icon name="bi-clock" /> @L("Shift", "شیفت")</p>
                     <p class="mb-0 fw-semibold">@Dash(Model.Shift)</p>
                 </div>
             </div>
@@ -180,7 +180,7 @@
     <div class="col-lg-4">
         <div class="content-card h-100">
             <h6 class="d-flex align-items-center gap-2 pb-2 mb-3 border-bottom">
-                <i class="bi bi-people text-warning"></i>
+                <pems-icon name="bi-people" css="text-warning" />
                 <span>@L("Current Team", "تیم فعلی")</span>
             </h6>
             @if (currentMembership != null)
@@ -205,7 +205,7 @@
     <div class="col-12">
         <div class="content-card">
             <h6 class="d-flex align-items-center gap-2 pb-2 mb-3 border-bottom">
-                <i class="bi bi-shield-lock text-warning"></i>
+                <pems-icon name="bi-shield-lock" css="text-warning" />
                 <span>@L("System Account & Authorization", "حساب کاربری و دسترسی")</span>
             </h6>
             @if (linkedUser == null)
@@ -237,7 +237,7 @@
                 @if (User.IsInRole(PEMS.Persistence.Identity.SystemRoles.SystemAdmin))
                 {
                     <div class="mt-3">
-                        <pems-button tone="neutral" size="small" outline="true" as="a" asp-area="Admin" asp-controller="Users" asp-action="Edit" asp-route-id="@linkedUser.Id"><i class="bi bi-person-gear"></i> @L("Manage Access", "مدیریت دسترسی")</pems-button>
+                        <pems-button tone="neutral" size="small" outline="true" as="a" asp-area="Admin" asp-controller="Users" asp-action="Edit" asp-route-id="@linkedUser.Id"><pems-icon name="bi-person-gear" /> @L("Manage Access", "مدیریت دسترسی")</pems-button>
                     </div>
                 }
             }
@@ -248,14 +248,14 @@
 <!-- Row 2: Contact Information (full width, 3 tiles) -->
 <div class="content-card mb-3">
     <h6 class="d-flex align-items-center gap-2 pb-2 mb-3 border-bottom">
-        <i class="bi bi-person-vcard text-warning"></i>
+        <pems-icon name="bi-person-vcard" css="text-warning" />
         <span>@L("Contact Information", "اطلاعات تماس")</span>
     </h6>
     <div class="row g-3">
         <div class="col-md-4">
             <div class="d-flex align-items-start gap-3 p-3 rounded-3 bg-body-tertiary h-100">
                 <div class="rounded-circle bg-secondary-subtle d-flex align-items-center justify-content-center flex-shrink-0 pems-s-660e4429">
-                    <i class="bi bi-phone"></i>
+                    <pems-icon name="bi-phone" />
                 </div>
                 <div>
                     <p class="text-uppercase text-muted small mb-1">@L("Mobile Phone", "تلفن همراه")</p>
@@ -266,7 +266,7 @@
         <div class="col-md-4">
             <div class="d-flex align-items-start gap-3 p-3 rounded-3 bg-body-tertiary h-100">
                 <div class="rounded-circle bg-secondary-subtle d-flex align-items-center justify-content-center flex-shrink-0 pems-s-660e4429">
-                    <i class="bi bi-envelope"></i>
+                    <pems-icon name="bi-envelope" />
                 </div>
                 <div class="overflow-hidden">
                     <p class="text-uppercase text-muted small mb-1">@L("Work Email", "ایمیل کاری")</p>
@@ -284,7 +284,7 @@
         <div class="col-md-4">
             <div class="d-flex align-items-start gap-3 p-3 rounded-3 bg-body-tertiary h-100">
                 <div class="rounded-circle bg-secondary-subtle d-flex align-items-center justify-content-center flex-shrink-0 pems-s-660e4429">
-                    <i class="bi bi-house"></i>
+                    <pems-icon name="bi-house" />
                 </div>
                 <div>
                     <p class="text-uppercase text-muted small mb-1">@L("Home Address", "آدرس منزل")</p>
@@ -300,9 +300,9 @@
     <div class="col-md-6">
         <div class="content-card h-100">
             <div class="d-flex justify-content-between align-items-center mb-3 pb-2 border-bottom">
-                <h6 class="mb-0 d-flex align-items-center gap-2"><i class="bi bi-cash-coin text-warning"></i> @L("Labor Rate", "نرخ دستمزد")</h6>
+                <h6 class="mb-0 d-flex align-items-center gap-2"><pems-icon name="bi-cash-coin" css="text-warning" /> @L("Labor Rate", "نرخ دستمزد")</h6>
                 <pems-button tone="primary" size="small" outline="true" type="button" data-bs-toggle="modal" data-bs-target="#setRateModal">
-                    <i class="bi bi-plus-lg"></i> @L("New Rate", "ثبت نرخ جدید")
+                    <pems-icon name="bi-plus-lg" /> @L("New Rate", "ثبت نرخ جدید")
                 </pems-button>
             </div>
             <pems-table scale="small">
@@ -321,7 +321,7 @@
             </pems-table>
             @if (!laborRates.Any()) { <p class="text-muted small text-center py-2">@L("No rate recorded.", "نرخی ثبت نشده.")</p> }
             <p class="text-muted small mb-0">
-                <i class="bi bi-info-circle"></i> @L(
+                <pems-icon name="bi-info-circle" /> @L(
                     "A new rate does not overwrite the previous one - it only closes it (EffectiveTo), preserving history. Past work order costs remain unchanged since the rate is snapshotted at time of use.",
                     "نرخ جدید، نرخ قبلی رو Overwrite نمی‌کنه - فقط می‌بندتش (EffectiveTo) و تاریخچه حفظ می‌شه. هزینه‌ی WorkOrderهای قدیمی هم تغییر نمی‌کنه چون نرخ موقع ثبت Snapshot می‌شه.")
             </p>
@@ -330,7 +330,7 @@
 
     <div class="col-md-6">
         <div class="content-card h-100">
-            <h6 class="mb-3 pb-2 border-bottom d-flex align-items-center gap-2"><i class="bi bi-diagram-3 text-warning"></i> @L("Team Membership History", "تاریخچه‌ی عضویت تیم")</h6>
+            <h6 class="mb-3 pb-2 border-bottom d-flex align-items-center gap-2"><pems-icon name="bi-diagram-3" css="text-warning" /> @L("Team Membership History", "تاریخچه‌ی عضویت تیم")</h6>
             <pems-table scale="small">
                 <thead><tr><th>@L("Team", "تیم")</th><th>@L("Role", "نقش")</th><th>@L("From", "از")</th><th>@L("To", "تا")</th></tr></thead>
                 <tbody>
@@ -352,9 +352,9 @@
     <div class="col-md-6">
         <div class="content-card h-100">
             <div class="d-flex justify-content-between align-items-center mb-3 pb-2 border-bottom">
-                <h6 class="mb-0 d-flex align-items-center gap-2"><i class="bi bi-mortarboard text-warning"></i> @L("Skills", "مهارت‌ها")</h6>
+                <h6 class="mb-0 d-flex align-items-center gap-2"><pems-icon name="bi-mortarboard" css="text-warning" /> @L("Skills", "مهارت‌ها")</h6>
                 <pems-button tone="primary" size="small" outline="true" type="button" data-bs-toggle="modal" data-bs-target="#addSkillModal">
-                    <i class="bi bi-plus-lg"></i> @L("Add", "افزودن")
+                    <pems-icon name="bi-plus-lg" /> @L("Add", "افزودن")
                 </pems-button>
             </div>
             <ul class="list-unstyled mb-0">
@@ -369,7 +369,7 @@
                         <form asp-action="RemoveSkill" method="post" class="d-inline">
                             <input type="hidden" name="employeeSkillId" value="@es.EmployeeSkillId" />
                             <input type="hidden" name="employeeId" value="@Model.EmployeeId" />
-                            <pems-button tone="danger" size="small" outline="true" css="py-0 px-1" type="submit" data-pems-confirm="@L("Remove this skill?", "این مهارت حذف بشه؟")"><i class="bi bi-x"></i></pems-button>
+                            <pems-button tone="danger" size="small" outline="true" css="py-0 px-1" type="submit" data-pems-confirm="@L("Remove this skill?", "این مهارت حذف بشه؟")"><pems-icon name="bi-x" /></pems-button>
                         </form>
                     </li>
                 }
@@ -381,9 +381,9 @@
     <div class="col-md-6">
         <div class="content-card h-100">
             <div class="d-flex justify-content-between align-items-center mb-3 pb-2 border-bottom">
-                <h6 class="mb-0 d-flex align-items-center gap-2"><i class="bi bi-patch-check text-warning"></i> @L("Qualifications", "صلاحیت‌ها")</h6>
+                <h6 class="mb-0 d-flex align-items-center gap-2"><pems-icon name="bi-patch-check" css="text-warning" /> @L("Qualifications", "صلاحیت‌ها")</h6>
                 <pems-button tone="primary" size="small" outline="true" type="button" data-bs-toggle="modal" data-bs-target="#addQualificationModal">
-                    <i class="bi bi-plus-lg"></i> @L("Add", "افزودن")
+                    <pems-icon name="bi-plus-lg" /> @L("Add", "افزودن")
                 </pems-button>
             </div>
             <ul class="list-unstyled mb-0">
@@ -399,7 +399,7 @@
                         <form asp-action="RemoveQualification" method="post" class="d-inline">
                             <input type="hidden" name="employeeQualificationId" value="@eq.EmployeeQualificationId" />
                             <input type="hidden" name="employeeId" value="@Model.EmployeeId" />
-                            <pems-button tone="danger" size="small" outline="true" css="py-0 px-1" type="submit" data-pems-confirm="@L("Remove this qualification?", "این صلاحیت حذف بشه؟")"><i class="bi bi-x"></i></pems-button>
+                            <pems-button tone="danger" size="small" outline="true" css="py-0 px-1" type="submit" data-pems-confirm="@L("Remove this qualification?", "این صلاحیت حذف بشه؟")"><pems-icon name="bi-x" /></pems-button>
                         </form>
                     </li>
                 }
@@ -411,9 +411,9 @@
     <div class="col-md-6">
         <div class="content-card h-100">
             <div class="d-flex justify-content-between align-items-center mb-3 pb-2 border-bottom">
-                <h6 class="mb-0 d-flex align-items-center gap-2"><i class="bi bi-award text-warning"></i> @L("Certifications", "گواهینامه‌ها")</h6>
+                <h6 class="mb-0 d-flex align-items-center gap-2"><pems-icon name="bi-award" css="text-warning" /> @L("Certifications", "گواهینامه‌ها")</h6>
                 <pems-button tone="primary" size="small" outline="true" type="button" data-bs-toggle="modal" data-bs-target="#addCertificationModal">
-                    <i class="bi bi-plus-lg"></i> @L("Add", "افزودن")
+                    <pems-icon name="bi-plus-lg" /> @L("Add", "افزودن")
                 </pems-button>
             </div>
             <ul class="list-unstyled mb-0">
@@ -429,7 +429,7 @@
                         <form asp-action="RemoveCertification" method="post" class="d-inline">
                             <input type="hidden" name="employeeCertificationId" value="@ec.EmployeeCertificationId" />
                             <input type="hidden" name="employeeId" value="@Model.EmployeeId" />
-                            <pems-button tone="danger" size="small" outline="true" css="py-0 px-1" type="submit" data-pems-confirm="@L("Remove this certification?", "این گواهینامه حذف بشه؟")"><i class="bi bi-x"></i></pems-button>
+                            <pems-button tone="danger" size="small" outline="true" css="py-0 px-1" type="submit" data-pems-confirm="@L("Remove this certification?", "این گواهینامه حذف بشه؟")"><pems-icon name="bi-x" /></pems-button>
                         </form>
                     </li>
                 }

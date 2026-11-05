@@ -18,7 +18,7 @@
             <pems-list-tools>
                 @if (ViewBag.CanManageMaster == true)
                 {
-                    <a class="lp-icon-btn" asp-action="Manage" title="@Localizer["Manage disciplines"]" aria-label="@Localizer["Manage disciplines"]"><i class="bi bi-sliders" aria-hidden="true"></i></a>
+                    <a class="lp-icon-btn" asp-action="Manage" title="@Localizer["Manage disciplines"]" aria-label="@Localizer["Manage disciplines"]"><pems-icon name="bi-sliders" aria-hidden="true" /></a>
                 }
                 <pems-list-reset-columns grid-key="Discipline" />
             </pems-list-tools>
@@ -52,7 +52,7 @@
                             <td class="text-end"><span class="vs-num">@d.OpenTasksCount</span></td>
                             <td class="text-end">@if (d.OverdueTasksCount > 0) { <span class="vs-pill vs-pill--danger">@d.OverdueTasksCount</span> } else { <span class="vs-num">0</span> }</td>
                             <td class="text-end">
-                                <a asp-action="Details" asp-route-id="@d.DisciplineId" class="lp-act lp-act--always" title="@Localizer["DsL_OpenWorkspace"]" aria-label="@Localizer["DsL_OpenWorkspace"] @d.Name"><i class="bi bi-box-arrow-in-right" aria-hidden="true"></i></a>
+                                <a asp-action="Details" asp-route-id="@d.DisciplineId" class="lp-act lp-act--always" title="@Localizer["DsL_OpenWorkspace"]" aria-label="@Localizer["DsL_OpenWorkspace"] @d.Name"><pems-icon name="bi-box-arrow-in-right" aria-hidden="true" /></a>
                             </td>
                         </tr>
                     }

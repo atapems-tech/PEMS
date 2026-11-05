@@ -18,7 +18,7 @@
 
         <pems-list-toolbar heading="@Localizer["SrtL_Title"]" heading-title="@Localizer["SrtL_Hint"]" total="@Model.Count">
             <pems-list-tools>
-                <a class="lp-icon-btn" asp-controller="StorageProviders" asp-action="Index" title="@Localizer["StpL_Title"]" aria-label="@Localizer["StpL_Title"]"><i class="bi bi-hdd-network" aria-hidden="true"></i></a>
+                <a class="lp-icon-btn" asp-controller="StorageProviders" asp-action="Index" title="@Localizer["StpL_Title"]" aria-label="@Localizer["StpL_Title"]"><pems-icon name="bi-hdd-network" aria-hidden="true" /></a>
                 <pems-list-new href="@Url.Action("Create")" text="@Localizer["SrtL_New"]" />
             </pems-list-tools>
         </pems-list-toolbar>
@@ -49,9 +49,9 @@
                         <td>@if (r.IsDefault) { <i class="bi bi-star-fill text-warning" title="@Localizer["Default"]" aria-label="@Localizer["Default"]"></i> }</td>
                         <td><span class="vs-pill @(r.IsEnabled ? "vs-pill--success" : "vs-pill--neutral")">@(r.IsEnabled ? Localizer["Enabled"] : Localizer["Disabled"])</span></td>
                         <td class="text-end text-nowrap">
-                            <a asp-action="Edit" asp-route-id="@r.StorageRouteId" class="lp-act lp-act--always" title="@Localizer["Ed_Edit"]" aria-label="@Localizer["Ed_Edit"]"><i class="bi bi-pencil" aria-hidden="true"></i></a>
+                            <a asp-action="Edit" asp-route-id="@r.StorageRouteId" class="lp-act lp-act--always" title="@Localizer["Ed_Edit"]" aria-label="@Localizer["Ed_Edit"]"><pems-icon name="bi-pencil" aria-hidden="true" /></a>
                             <form asp-action="Delete" asp-route-id="@r.StorageRouteId" method="post" class="d-inline" data-pems-confirm="@Localizer["SrtL_ConfirmDelete"]">
-                                <button type="submit" class="lp-act lp-act--always text-danger" title="@Localizer["Ed_Delete"]" aria-label="@Localizer["Ed_Delete"]"><i class="bi bi-trash" aria-hidden="true"></i></button>
+                                <button type="submit" class="lp-act lp-act--always text-danger" title="@Localizer["Ed_Delete"]" aria-label="@Localizer["Ed_Delete"]"><pems-icon name="bi-trash" aria-hidden="true" /></button>
                             </form>
                         </td>
                     </tr>
