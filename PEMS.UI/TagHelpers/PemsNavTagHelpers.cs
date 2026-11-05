@@ -34,50 +34,47 @@ public static class FrameState
 /// (<c>as="div"</c> for a panel of free markup). Every other attribute and the content stay as the page wrote them.
 /// </summary>
 [HtmlTargetElement("pems-dropdown-menu")]
-[PemsFacade(FacadeKind.Direct)]
-public sealed class PemsDropdownMenuTagHelper : TagHelper
+[PemsFacade(UiKeys.DropdownMenu)]
+public sealed class PemsDropdownMenuTagHelper(IPemsComponentRenderer renderer) : TagHelper
 {
     [HtmlAttributeName("end")] public bool End { get; set; }
     [HtmlAttributeName("css")] public string? Css { get; set; }
     /// <summary>ul (default) or div.</summary>
     [HtmlAttributeName("as")] public string As { get; set; } = "ul";
 
-    public override void Process(TagHelperContext context, TagHelperOutput output)
+    public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
     {
-        output.TagName = As;
-        output.TagMode = TagMode.StartTagAndEndTag;
-        ControlTagHelper.PutClassFirst(output, FrameState.DropdownMenu(End, Css));
+        var (css, attrs) = ListRender.Page(output);
+        await ListRender.Replace<PemsDropdownMenu>(renderer, output, new DropdownMenuOptions { End = End, Css = Css, As = As, PageClass = css, Attributes = attrs }, await ListRender.Inner(output));
     }
 }
 
 /// <summary>MVC facade for the tab strip: <c>&lt;pems-nav kind="tabs" css="mb-3" id="docTabs" role="tablist"&gt;&lt;li class="nav-item"&gt;...&lt;/pems-nav&gt;</c>; kind is tabs (default) or pills.</summary>
 [HtmlTargetElement("pems-nav")]
-[PemsFacade(FacadeKind.Direct)]
-public sealed class PemsNavTagHelper : TagHelper
+[PemsFacade(UiKeys.Nav)]
+public sealed class PemsNavTagHelper(IPemsComponentRenderer renderer) : TagHelper
 {
     [HtmlAttributeName("kind")] public string Kind { get; set; } = "tabs";
     [HtmlAttributeName("css")] public string? Css { get; set; }
 
-    public override void Process(TagHelperContext context, TagHelperOutput output)
+    public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
     {
-        output.TagName = "ul";
-        output.TagMode = TagMode.StartTagAndEndTag;
-        ControlTagHelper.PutClassFirst(output, FrameState.Nav(Kind, Css));
+        var (css, attrs) = ListRender.Page(output);
+        await ListRender.Replace<PemsNav>(renderer, output, new NavOptions { Kind = Kind, Css = Css, PageClass = css, Attributes = attrs }, await ListRender.Inner(output));
     }
 }
 
 /// <summary>MVC facade for the breadcrumb trail frame: <c>&lt;pems-crumb-trail css="mb-0 small"&gt;&lt;li class="breadcrumb-item"&gt;...&lt;/pems-crumb-trail&gt;</c> writes an <c>ol.breadcrumb</c>.</summary>
 [HtmlTargetElement("pems-crumb-trail")]
-[PemsFacade(FacadeKind.Direct)]
-public sealed class PemsBreadcrumbTagHelper : TagHelper
+[PemsFacade(UiKeys.CrumbTrail)]
+public sealed class PemsBreadcrumbTagHelper(IPemsComponentRenderer renderer) : TagHelper
 {
     [HtmlAttributeName("css")] public string? Css { get; set; }
 
-    public override void Process(TagHelperContext context, TagHelperOutput output)
+    public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
     {
-        output.TagName = "ol";
-        output.TagMode = TagMode.StartTagAndEndTag;
-        ControlTagHelper.PutClassFirst(output, FrameState.Breadcrumb(Css));
+        var (css, attrs) = ListRender.Page(output);
+        await ListRender.Replace<PemsCrumbTrail>(renderer, output, new CrumbTrailOptions { Css = Css, PageClass = css, Attributes = attrs }, await ListRender.Inner(output));
     }
 }
 
@@ -87,8 +84,8 @@ public sealed class PemsBreadcrumbTagHelper : TagHelper
 /// A record list uses the pems-list family instead.
 /// </summary>
 [HtmlTargetElement("pems-table")]
-[PemsFacade(FacadeKind.Direct)]
-public sealed class PemsTableFrameTagHelper : TagHelper
+[PemsFacade(UiKeys.TableFrame)]
+public sealed class PemsTableFrameTagHelper(IPemsComponentRenderer renderer) : TagHelper
 {
     /// <summary>enterprise adds table-enterprise; empty for the plain Bootstrap table.</summary>
     [HtmlAttributeName("kind")] public string? Kind { get; set; }
@@ -96,21 +93,21 @@ public sealed class PemsTableFrameTagHelper : TagHelper
     [HtmlAttributeName("scale")] public string? Scale { get; set; }
     [HtmlAttributeName("css")] public string? Css { get; set; }
 
-    public override void Process(TagHelperContext context, TagHelperOutput output)
+    public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
     {
-        output.TagName = "table";
-        output.TagMode = TagMode.StartTagAndEndTag;
-        ControlTagHelper.PutClassFirst(output, FrameState.Table(string.Equals(Kind, "enterprise", StringComparison.OrdinalIgnoreCase), string.Equals(Scale, "small", StringComparison.OrdinalIgnoreCase), Css));
+        var (css, attrs) = ListRender.Page(output);
+        await ListRender.Replace<PemsTableFrame>(renderer, output, new TableFrameOptions { Kind = Kind, Scale = Scale, Css = Css, PageClass = css, Attributes = attrs }, await ListRender.Inner(output));
     }
 }
 
 /// <summary>
 /// MVC facade for a list-group row: <c>&lt;pems-list-group-item action="true" active="@(selected)" asp-action="Index"&gt;text&lt;/pems-list-group-item&gt;</c> writes
-/// <c>&lt;a class="list-group-item list-group-item-action active"&gt;</c> (<c>as="div"</c> or <c>as="button"</c> for rows that are not links). The routing attributes of the anchor helper work.
+/// <c>&lt;a class="list-group-item list-group-item-action active"&gt;</c> (<c>as="div"</c> or <c>as="button"</c> for rows that are not links). The routing attributes of the anchor helper work:
+/// the built-in helper computes the link, the component writes the row.
 /// </summary>
 [HtmlTargetElement("pems-list-group-item")]
-[PemsFacade(FacadeKind.Direct)]
-public sealed class PemsListGroupItemTagHelper(IHtmlGenerator generator) : AnchorTagHelper(generator)
+[PemsFacade(UiKeys.ListGroupItem)]
+public sealed class PemsListGroupItemTagHelper(IHtmlGenerator generator, IPemsComponentRenderer renderer) : AnchorTagHelper(generator)
 {
     [HtmlAttributeName("action")] public bool IsAction { get; set; }
     [HtmlAttributeName("active")] public bool Active { get; set; }
@@ -118,28 +115,26 @@ public sealed class PemsListGroupItemTagHelper(IHtmlGenerator generator) : Ancho
     /// <summary>a (default), div or button.</summary>
     [HtmlAttributeName("as")] public string As { get; set; } = "a";
 
-    public override void Process(TagHelperContext context, TagHelperOutput output)
+    public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
     {
         if (Action is not null || Controller is not null || Area is not null || Page is not null || PageHandler is not null || Route is not null || Host is not null || Protocol is not null || Fragment is not null)
             base.Process(context, output);
-        output.TagName = As;
-        output.TagMode = TagMode.StartTagAndEndTag;
-        ControlTagHelper.PutClassFirst(output, FrameState.ListGroupItem(IsAction, Active, Css));
+        var (css, attrs) = ListRender.Page(output);
+        await ListRender.Replace<PemsListGroupItem>(renderer, output, new ListGroupItemOptions { Action = IsAction, Active = Active, Css = Css, As = As, PageClass = css, Attributes = attrs }, await ListRender.Inner(output));
     }
 }
 
 /// <summary>MVC facade for the toast frame: <c>&lt;pems-toast tone="success" role="alert" data-bs-delay="5000"&gt;body and close button&lt;/pems-toast&gt;</c>.</summary>
 [HtmlTargetElement("pems-toast")]
-[PemsFacade(FacadeKind.Direct)]
-public sealed class PemsToastTagHelper : TagHelper
+[PemsFacade(UiKeys.Toast)]
+public sealed class PemsToastTagHelper(IPemsComponentRenderer renderer) : TagHelper
 {
     [HtmlAttributeName("tone")] public string Tone { get; set; } = "primary";
     [HtmlAttributeName("css")] public string? Css { get; set; }
 
-    public override void Process(TagHelperContext context, TagHelperOutput output)
+    public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
     {
-        output.TagName = "div";
-        output.TagMode = TagMode.StartTagAndEndTag;
-        ControlTagHelper.PutClassFirst(output, FrameState.Toast(Tone, Css));
+        var (css, attrs) = ListRender.Page(output);
+        await ListRender.Replace<PemsToast>(renderer, output, new ToastOptions { Tone = Tone, Css = Css, PageClass = css, Attributes = attrs }, await ListRender.Inner(output));
     }
 }

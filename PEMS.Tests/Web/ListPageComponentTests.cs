@@ -95,6 +95,8 @@ public class ListPageComponentTests
             "pems-list-filters", "<select name=\"Status\"></select>");
 
         Assert.Equal(badge, html.Contains("lp-badge"));
+        Assert.Equal(badge, html.Contains("<span class=\"visually-hidden\"> active filters</span>"));    // the leading space of the spoken text is kept
+        Assert.Contains("<i aria-hidden=\"true\" class=\"bi bi-funnel\"></i> Apply</button>", html);
         Assert.Contains("id=\"fltBtn\"", html);
         Assert.Contains("lp-filter-pop", html);
         Assert.Matches("<form action=\"/Docs\" id=\"flt\" method=\"get\">", html);

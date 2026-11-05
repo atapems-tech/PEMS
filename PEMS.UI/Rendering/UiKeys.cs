@@ -65,4 +65,13 @@ public static class UiKeys
     public const string RelatedAct = "related-act";
     public const string Tree = "tree";
     public const string TreeItem = "tree-item";
+    public const string Chart = "chart";
+    public const string Date = "date";
+    public const string ButtonFrame = "button-frame";
+    public const string DropdownMenu = "dropdown-menu";
+    public const string Nav = "nav";
+    public const string CrumbTrail = "crumb-trail";
+    public const string TableFrame = "table-frame";
+    public const string ListGroupItem = "list-group-item";
+    public const string Toast = "toast";
 }

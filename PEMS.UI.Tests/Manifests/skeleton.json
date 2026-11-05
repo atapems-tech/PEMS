@@ -16,6 +16,9 @@
         ],
         "pattern": "^-?(?:0|[1-9]\\d*)$"
       },
+      "id": {
+        "type": "string"
+      },
       "kind": {
         "type": "string"
       },
@@ -54,6 +57,12 @@
     {
       "name": "cols",
       "type": "Int32",
+      "kind": "option",
+      "required": false
+    },
+    {
+      "name": "id",
+      "type": "String",
       "kind": "option",
       "required": false
     },

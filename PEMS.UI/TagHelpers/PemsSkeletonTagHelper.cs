@@ -2,6 +2,7 @@ using PEMS.UI.Rendering;
 using System.Net;
 using System.Text;
 using Microsoft.AspNetCore.Razor.TagHelpers;
+using PEMS.UI.Components;
 
 namespace PEMS.UI.TagHelpers;
 
@@ -21,12 +22,12 @@ public static class PemsSkeletonMarkup
     /// lines in a card), kpi (icon square and two bars in a tile), table (<paramref name="rows"/> rows of
     /// <paramref name="cols"/> cells), form (<paramref name="rows"/> label + field pairs). An unknown kind is text.
     /// </summary>
-    public static string Build(string? kind, int lines = 3, int rows = 5, int cols = 4, string? label = null)
+    public static string Build(string? kind, int lines = 3, int rows = 5, int cols = 4, string? label = null, string? id = null)
     {
         var k = Array.IndexOf(Kinds, kind) >= 0 ? kind! : "text";
         lines = Math.Clamp(lines, 1, 20); rows = Math.Clamp(rows, 1, 30); cols = Math.Clamp(cols, 1, 12);
         var sb = new StringBuilder();
-        sb.Append("<div class=\"pems-skeleton pems-skeleton--").Append(k).Append("\" role=\"status\" aria-busy=\"true\" aria-live=\"polite\">");
+        sb.Append(id is null ? "<div class=\"pems-skeleton pems-skeleton--" : "<div id=\"" + WebUtility.HtmlEncode(id) + "\" class=\"pems-skeleton pems-skeleton--").Append(k).Append("\" role=\"status\" aria-busy=\"true\" aria-live=\"polite\">");
         if (!string.IsNullOrWhiteSpace(label)) sb.Append("<span class=\"visually-hidden\">").Append(WebUtility.HtmlEncode(label)).Append("</span>");
         static string Bar(string extra = "") => "<span class=\"pems-skeleton__line" + extra + "\" aria-hidden=\"true\"></span>";
         switch (k)
@@ -66,8 +67,8 @@ public static class PemsSkeletonMarkup
 /// renders where content arrives later (a script replaces it). Kinds: text, title, card, kpi, table, form.
 /// </summary>
 [HtmlTargetElement("pems-skeleton", TagStructure = TagStructure.WithoutEndTag)]
-[PemsFacade(FacadeKind.Direct)]
-public sealed class PemsSkeletonTagHelper : TagHelper
+[PemsFacade(UiKeys.Skeleton)]
+public sealed class PemsSkeletonTagHelper(IPemsComponentRenderer renderer) : TagHelper
 {
     [HtmlAttributeName("kind")] public string? Kind { get; set; }
     [HtmlAttributeName("lines")] public int Lines { get; set; } = 3;
@@ -75,11 +76,15 @@ public sealed class PemsSkeletonTagHelper : TagHelper
     [HtmlAttributeName("cols")] public int Cols { get; set; } = 4;
     [HtmlAttributeName("label")] public string? Label { get; set; }
 
-    public override void Process(TagHelperContext context, TagHelperOutput output)
+    public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
     {
         var id = output.Attributes.TryGetAttribute("id", out var a) ? a.Value?.ToString() : null;
-        output.TagName = null;
-        output.Content.SetHtmlContent(PemsSkeletonMarkup.Build(Kind, Lines, Rows, Cols, Label)
-            .Replace("<div class=\"pems-skeleton ", id is null ? "<div class=\"pems-skeleton " : "<div id=\"" + WebUtility.HtmlEncode(id) + "\" class=\"pems-skeleton ", StringComparison.Ordinal));
+        var parameters = new Dictionary<string, object?>
+        {
+            [nameof(PemsSkeleton.Kind)] = Kind ?? "text", [nameof(PemsSkeleton.Lines)] = Lines, [nameof(PemsSkeleton.Rows)] = Rows,
+            [nameof(PemsSkeleton.Cols)] = Cols, [nameof(PemsSkeleton.Id)] = id
+        };
+        if (!string.IsNullOrWhiteSpace(Label)) parameters[nameof(PemsSkeleton.Label)] = PEMS.UI.Abstractions.TranslatableText.Literal(Label);
+        BlockTagHelper.Replace(output, await renderer.RenderAsync<PemsSkeleton>(parameters));
     }
 }
