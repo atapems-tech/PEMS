@@ -1,6 +1,9 @@
 using System.Text.Encodings.Web;
 using System.Text.RegularExpressions;
 using Microsoft.AspNetCore.Razor.TagHelpers;
+using Microsoft.Extensions.DependencyInjection;
+using PEMS.UI;
+using PEMS.UI.Rendering;
 using PEMS.UI.TagHelpers;
 
 namespace PEMS.Tests.Web;
@@ -11,6 +14,8 @@ namespace PEMS.Tests.Web;
 /// </summary>
 public class TreeViewComponentTests
 {
+    private static readonly IPemsComponentRenderer Renderer = new ServiceCollection().AddPemsUi().BuildServiceProvider().CreateScope().ServiceProvider.GetRequiredService<IPemsComponentRenderer>();
+
     private static async Task<string> RunItem(PemsTreeItemTagHelper helper, bool withChild, string? labelHtml = null, string toggleLabel = "Expand or collapse")
     {
         // the enclosing tree's context, as <pems-tree> puts it in Items before its children run
@@ -34,7 +39,7 @@ public class TreeViewComponentTests
     [Fact]
     public async Task Leaf_IsATreeItemWithALink_AndNoToggle()
     {
-        var html = await RunItem(new PemsTreeItemTagHelper { Label = "Electrical", Key = "2", Href = "/Letter?tagId=2", Current = true, Count = 4 }, withChild: false);
+        var html = await RunItem(new PemsTreeItemTagHelper(Renderer) { Label = "Electrical", Key = "2", Href = "/Letter?tagId=2", Current = true, Count = 4 }, withChild: false);
         Assert.StartsWith("<li class=\"pems-tree__item\" role=\"treeitem\" data-key=\"2\" data-current=\"\">", html);
         Assert.DoesNotContain("aria-expanded", html);
         Assert.DoesNotContain("pems-tree__toggle", html);
@@ -45,7 +50,7 @@ public class TreeViewComponentTests
     [Fact]
     public async Task Branch_HasANamedToggle_AndAGroup_OpenByDefault()
     {
-        var html = await RunItem(new PemsTreeItemTagHelper { Label = "Engineering", Key = "1" }, withChild: true);
+        var html = await RunItem(new PemsTreeItemTagHelper(Renderer) { Label = "Engineering", Key = "1" }, withChild: true);
         Assert.Contains("role=\"treeitem\" data-key=\"1\" aria-expanded=\"true\"", html);
         Assert.Contains("<button aria-expanded=\"true\" aria-label=\"Expand or collapse: Engineering\" class=\"pems-tree__toggle\" title=\"Expand or collapse: Engineering\" type=\"button\">", html);
         Assert.Contains("<ul class=\"pems-tree__group\" role=\"group\"><li>child</li></ul>", html);
@@ -55,7 +60,7 @@ public class TreeViewComponentTests
     [Fact]
     public async Task Branch_ClosedOnTheServer_HidesItsGroup()
     {
-        var html = await RunItem(new PemsTreeItemTagHelper { Label = "Old", Expanded = false }, withChild: true);
+        var html = await RunItem(new PemsTreeItemTagHelper(Renderer) { Label = "Old", Expanded = false }, withChild: true);
         Assert.Contains("aria-expanded=\"false\"", html);
         Assert.Contains("<ul class=\"pems-tree__group\" hidden=\"hidden\" role=\"group\">", html);
     }
@@ -63,7 +68,7 @@ public class TreeViewComponentTests
     [Fact]
     public async Task Label_ReplacesTheText_AndThePagesLinkClassIsKept()
     {
-        var html = await RunItem(new PemsTreeItemTagHelper { Label = "Mine", Href = "/x", LinkClass = "ct-tag" }, withChild: false, labelHtml: "<span class=\"dot\"></span>Mine");
+        var html = await RunItem(new PemsTreeItemTagHelper(Renderer) { Label = "Mine", Href = "/x", LinkClass = "ct-tag" }, withChild: false, labelHtml: "<span class=\"dot\"></span>Mine");
         Assert.Contains("<a class=\"pems-tree__link ct-tag\" href=\"/x\"><span class=\"dot\"></span>Mine</a>", html);
     }
 

@@ -59,6 +59,15 @@ public static class ComponentSamples
         ["list-chip"] = """{"label":"Status","value":"Open","removeHref":"/docs","removeText":"Remove filter"}""",
         ["list-table"] = """{"gridKey":"docs","empty":true,"emptyText":"Nothing here"}""",
         ["list-menu"] = """{"id":"views","label":"Views"}""",
+        ["related-list"] = """{"headingId":"relTitle","title":"Tasks","count":3}""",
+        ["related-table"] = """{"id":"tasks"}""",
+        ["related-add"] = """{"action":"/jobplan/add","parentName":"jobPlanId","parentValue":"7","submitLabel":"Add"}""",
+        ["related-remove"] = """{"action":"/jobplan/remove","keyName":"taskId","keyValue":"5","label":"Remove","confirm":"Sure?"}""",
+        ["related-row-form"] = """{"id":"row1","action":"/save"}""",
+        ["related-save"] = """{"formId":"row1","label":"Save"}""",
+        ["related-act"] = """{"icon":"bi-x-lg","label":"Remove","tone":"text-danger"}""",
+        ["tree"] = """{"label":"Disciplines","rememberKey":"pems.tree"}""",
+        ["tree-item"] = """{"label":"Engineering","key":"1","href":"/letters?tag=1","countText":"4"}""",
         ["form"] = """{"definition":{"id":"item","title":{"en":"Item","fa":"مورد"},"action":"/items","fields":[{"name":"tag","label":{"en":"Tag","fa":"تگ"}}],"submitLabel":{"en":"Save","fa":"ذخیره"}}}"""
     };
 

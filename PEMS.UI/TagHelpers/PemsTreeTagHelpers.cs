@@ -1,5 +1,6 @@
 using PEMS.UI.Rendering;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using PEMS.UI.Components;
 using Microsoft.AspNetCore.Razor.TagHelpers;
 
 namespace PEMS.UI.TagHelpers;
@@ -28,8 +29,8 @@ public sealed class PemsTreeItemContext
 /// Child content: <c>pems-tree-item</c>s. A class or id on the tag is kept.
 /// </summary>
 [HtmlTargetElement("pems-tree")]
-[PemsFacade(FacadeKind.Direct)]
-public sealed class PemsTreeTagHelper : TagHelper
+[PemsFacade(UiKeys.Tree)]
+public sealed class PemsTreeTagHelper(IPemsComponentRenderer renderer) : TagHelper
 {
     [HtmlAttributeName("label")] public string Label { get; set; } = "";
     [HtmlAttributeName("toggle-label")] public string ToggleLabel { get; set; } = "";
@@ -38,12 +39,8 @@ public sealed class PemsTreeTagHelper : TagHelper
     public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
     {
         context.Items[typeof(PemsTreeContext)] = new PemsTreeContext { ToggleLabel = ToggleLabel };
-        PemsList.Become(output, "ul", "pems-tree");
-        output.Attributes.SetAttribute("role", "tree");
-        if (!string.IsNullOrEmpty(Label)) output.Attributes.SetAttribute("aria-label", Label);
-        output.Attributes.SetAttribute("data-pems-tree", "");
-        if (!string.IsNullOrEmpty(RememberKey)) output.Attributes.SetAttribute("data-pems-tree-remember", RememberKey);
-        output.Content.SetHtmlContent(await output.GetChildContentAsync());
+        var (css, attrs) = ListRender.Page(output);
+        await ListRender.Replace<PemsTree>(renderer, output, new TreeOptions { Label = Label, RememberKey = RememberKey, CssClass = css, Attributes = attrs }, await ListRender.Inner(output));
     }
 }
 
@@ -54,8 +51,8 @@ public sealed class PemsTreeTagHelper : TagHelper
 /// with the page's own markup; nested <c>pems-tree-item</c>s are its children.
 /// </summary>
 [HtmlTargetElement("pems-tree-item")]
-[PemsFacade(FacadeKind.Direct)]
-public sealed class PemsTreeItemTagHelper : TagHelper
+[PemsFacade(UiKeys.TreeItem)]
+public sealed class PemsTreeItemTagHelper(IPemsComponentRenderer renderer) : TagHelper
 {
     [HtmlAttributeName("label")] public string Label { get; set; } = "";
     [HtmlAttributeName("key")] public string? Key { get; set; }
@@ -72,71 +69,25 @@ public sealed class PemsTreeItemTagHelper : TagHelper
         var tree = context.Items.TryGetValue(typeof(PemsTreeContext), out var t) ? t as PemsTreeContext : null;
         var mine = new PemsTreeItemContext();
         context.Items[typeof(PemsTreeItemContext)] = mine;
-        var children = await output.GetChildContentAsync();
+        var children = (await output.GetChildContentAsync()).GetContent();
 
-        output.TagName = "li";
-        output.TagMode = TagMode.StartTagAndEndTag;
-        var own = output.Attributes.TryGetAttribute("class", out var c) ? " " + c.Value : "";
-        output.Attributes.SetAttribute("class", "pems-tree__item" + own);
-        output.Attributes.SetAttribute("role", "treeitem");
-        if (!string.IsNullOrEmpty(Key)) output.Attributes.SetAttribute("data-key", Key);
-        if (Current) output.Attributes.SetAttribute("data-current", "");
-        if (mine.HasChildren) output.Attributes.SetAttribute("aria-expanded", Expanded ? "true" : "false");
-
-        var row = new TagBuilder("div");
-        row.AddCssClass("pems-tree__row");
-        if (mine.HasChildren)
+        var (css, attrs) = ListRender.Page(output);
+        var options = new TreeItemOptions
         {
-            var toggle = new TagBuilder("button");
-            toggle.Attributes["type"] = "button";
-            toggle.AddCssClass("pems-tree__toggle");
-            toggle.Attributes["aria-expanded"] = Expanded ? "true" : "false";
-            var name = string.IsNullOrEmpty(tree?.ToggleLabel) ? Label : tree!.ToggleLabel + ": " + Label;
-            toggle.Attributes["aria-label"] = name;
-            toggle.Attributes["title"] = name;
-            toggle.InnerHtml.AppendHtml(PemsList.Icon("bi-chevron-right"));
-            row.InnerHtml.AppendHtml(toggle);
-        }
-        else
-        {
-            var spacer = new TagBuilder("span");
-            spacer.AddCssClass("pems-tree__spacer");
-            spacer.Attributes["aria-hidden"] = "true";
-            row.InnerHtml.AppendHtml(spacer);
-        }
-
-        var link = new TagBuilder(string.IsNullOrEmpty(Href) ? "span" : "a");
-        link.AddCssClass(string.IsNullOrEmpty(Href) ? "pems-tree__text" : "pems-tree__link");
-        if (!string.IsNullOrEmpty(LinkClass)) link.AddCssClass(LinkClass);
-        if (!string.IsNullOrEmpty(Href)) link.Attributes["href"] = Href;
-        if (Current) link.Attributes["aria-current"] = "page";
-        if (mine.LabelHtml != null) link.InnerHtml.AppendHtml(mine.LabelHtml);
-        else link.InnerHtml.Append(Label);
-        if (Count.HasValue)
-        {
-            var count = new TagBuilder("span");
-            count.AddCssClass("pems-tree__count");
-            count.InnerHtml.Append(Count.Value.ToString(System.Globalization.CultureInfo.CurrentCulture));
-            link.InnerHtml.AppendHtml(count);
-        }
-        row.InnerHtml.AppendHtml(link);
-
-        output.Content.SetHtmlContent(row);
-        if (mine.HasChildren)
-        {
-            var group = new TagBuilder("ul");
-            group.AddCssClass("pems-tree__group");
-            group.Attributes["role"] = "group";
-            if (!Expanded) group.Attributes["hidden"] = "hidden";
-            group.InnerHtml.AppendHtml(children);
-            output.Content.AppendHtml(group);
-        }
+            Label = Label, Key = Key, Href = Href, Current = Current, CountText = Count?.ToString(System.Globalization.CultureInfo.CurrentCulture), Expanded = Expanded,
+            HasChildren = mine.HasChildren, LinkClass = LinkClass, ToggleName = string.IsNullOrEmpty(tree?.ToggleLabel) ? Label : tree!.ToggleLabel + ": " + Label,
+            CssClass = css, Attributes = attrs
+        };
+        var parameters = new Dictionary<string, object?> { ["Options"] = options };
+        if (mine.HasChildren) parameters["ChildContent"] = BlockTagHelper.Markup(children);
+        if (mine.LabelHtml != null) parameters["LabelContent"] = BlockTagHelper.Markup(mine.LabelHtml);
+        BlockTagHelper.Replace(output, await renderer.RenderAsync<PemsTreeItem>(parameters));
     }
 }
 
-/// <summary>The page's own markup for the label of the enclosing <c>pems-tree-item</c> (a colour dot, an icon, a badge).</summary>
+/// <summary>The page's own markup for the label of the enclosing <c>pems-tree-item</c> (a colour dot, an icon, a badge). It writes no markup of its own: the item's component renders it.</summary>
 [HtmlTargetElement("pems-tree-label", ParentTag = "pems-tree-item")]
-[PemsFacade(FacadeKind.Direct)]
+[PemsFacade(FacadeKind.Part)]
 public sealed class PemsTreeLabelTagHelper : TagHelper
 {
     public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)

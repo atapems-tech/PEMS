@@ -259,6 +259,7 @@ public class ListPageComponentTests
         // W2: CMMS pages create in a modal of their own
         var link = await Run(new PemsListNewTagHelper(Renderer) { Href = "/Docs/Create", Text = "New document" }, "pems-list-new");
         Assert.StartsWith("<a ", link);
+        Assert.Contains("<i aria-hidden=\"true\" class=\"bi bi-plus-lg\"></i> <span class=\"lp-compose-label\">New document</span>", link);    // the space between icon and label is kept
         Assert.Contains("href=\"/Docs/Create\"", link);
 
         var modal = await Run(new PemsListNewTagHelper(Renderer) { Modal = "createPartModal", Text = "New part" }, "pems-list-new");
