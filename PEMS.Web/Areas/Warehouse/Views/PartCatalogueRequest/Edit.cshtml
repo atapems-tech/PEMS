@@ -169,7 +169,7 @@
             <section class="vs-panel pc-card">
                 <h2 class="vs-section__title"><i class="bi bi-gear-wide-connected"></i> @Localizer["Pc_Sec_Equipment"]</h2>
                 <div class="form-check mb-2">
-                    <input class="form-check-input" type="checkbox" id="pc_IsNewEquipment" form="pcForm" name="IsNewEquipment" value="true" checked="@f.IsNewEquipment" />
+                    <pems-input type="checkbox" id="pc_IsNewEquipment" form="pcForm" name="IsNewEquipment" value="true" checked="@f.IsNewEquipment" kind="check" />
                     <input type="hidden" form="pcForm" name="IsNewEquipment" value="false" />
                     <label class="form-check-label" for="pc_IsNewEquipment">@L("IsNewEquipment")</label>
                 </div>
@@ -293,8 +293,7 @@
                                 <input type="checkbox" id="pc_IsNewManufacturer" form="pcForm" name="IsNewManufacturer" value="true" checked="@f.IsNewManufacturer" aria-label="@L("IsNewManufacturer")" />
                                 <input type="hidden" form="pcForm" name="IsNewManufacturer" value="false" />
                             </div>
-                            <input id="pc_NewManufacturerName" form="pcForm" name="NewManufacturerName" value="@f.NewManufacturerName" class="form-control text-uppercase" maxlength="200"
-                                   placeholder="@Localizer["Pc_Hint_NewManufacturer"]" disabled="@(!f.IsNewManufacturer)" />
+                            <pems-input id="pc_NewManufacturerName" form="pcForm" name="NewManufacturerName" value="@f.NewManufacturerName" maxlength="200" placeholder="@Localizer["Pc_Hint_NewManufacturer"]" disabled="@(!f.IsNewManufacturer)" css="text-uppercase" />
                         </div>
                         <div class="form-text" id="pc_ManufacturerCheck"></div>
                     </div>

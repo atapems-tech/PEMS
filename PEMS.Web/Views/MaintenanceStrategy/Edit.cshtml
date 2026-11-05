@@ -81,7 +81,7 @@
                 @foreach (var c in RcmCodes.Consequence.All) { <option value="@c" selected="@(i.ConsequenceCategory == c || (i.ConsequenceCategory == null && c == "Operational"))">@Localizer.Label("Consequence", c)</option> }
             </pems-select>
             <div class="form-check mt-2">
-                <input class="form-check-input" type="checkbox" name="IsHiddenFailure" value="true" id="hiddenChk" checked="@i.IsHiddenFailure" />
+                <pems-input type="checkbox" name="IsHiddenFailure" value="true" id="hiddenChk" checked="@i.IsHiddenFailure" kind="check" />
                 <label class="form-check-label small" for="hiddenChk">@Localizer["Rcm_HiddenFailure"]</label>
                 <input type="hidden" name="IsHiddenFailure" value="false" />
             </div>

@@ -53,11 +53,11 @@
                     <pems-list-filter-select id="miFilterCategory" name="categoryId" label="@Localizer["MiL_Category"]" value="@categoryId?.ToString()"
                                              all-text="@Localizer["MiL_AllCategories"]" items="@categories.Select(c => new SelectListItem((string)c.Name, ((int)c.MaterialCategoryId).ToString()))" />
                     <div class="form-check small mb-0">
-                        <input class="form-check-input" type="checkbox" name="lowStockOnly" value="true" id="lowStockOnly" checked="@lowStockOnly" />
+                        <pems-input type="checkbox" name="lowStockOnly" value="true" id="lowStockOnly" checked="@lowStockOnly" kind="check" />
                         <label class="form-check-label" for="lowStockOnly">@Localizer["MiL_LowStockOnly"]</label>
                     </div>
                     <div class="form-check small mb-0">
-                        <input class="form-check-input" type="checkbox" name="criticalOnly" value="true" id="criticalOnly" checked="@criticalOnly" />
+                        <pems-input type="checkbox" name="criticalOnly" value="true" id="criticalOnly" checked="@criticalOnly" kind="check" />
                         <label class="form-check-label" for="criticalOnly">@Localizer["MiL_CriticalOnly"]</label>
                     </div>
                 </pems-list-filters>

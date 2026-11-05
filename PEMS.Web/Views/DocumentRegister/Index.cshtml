@@ -67,8 +67,7 @@
                             @for (var i = 0; i < disciplines.Count; i++)
                             {
                                 <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" value="@disciplines[i]" id="drDisc@(i)" data-dr-discipline
-                                           checked="@selectedDisciplines.Contains(disciplines[i])" />
+                                    <pems-input type="checkbox" value="@disciplines[i]" id="drDisc@(i)" data-dr-discipline checked="@selectedDisciplines.Contains(disciplines[i])" kind="check" />
                                     <label class="form-check-label" for="drDisc@(i)">@disciplines[i]</label>
                                 </div>
                             }

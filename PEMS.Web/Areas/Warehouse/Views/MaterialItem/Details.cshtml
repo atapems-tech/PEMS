@@ -223,8 +223,8 @@
                     <div class="col-md-4"><pems-label>@Localizer["Material Grade"]</pems-label><pems-input name="materialGrade" value="@Model.MaterialGrade" /></div>
                 </div>
                 <div class="d-flex gap-3">
-                    <div class="form-check"><input class="form-check-input" type="checkbox" name="isStockItem" value="true" checked="@Model.IsStockItem" id="editIsStockItem" /><label class="form-check-label" for="editIsStockItem">@Localizer["Stock Item"]</label></div>
-                    <div class="form-check"><input class="form-check-input" type="checkbox" name="isCritical" value="true" checked="@Model.IsCritical" id="editIsCritical" /><label class="form-check-label" for="editIsCritical">@Localizer["Critical Spare"]</label></div>
+                    <div class="form-check"><pems-input type="checkbox" name="isStockItem" value="true" checked="@Model.IsStockItem" id="editIsStockItem" kind="check" /><label class="form-check-label" for="editIsStockItem">@Localizer["Stock Item"]</label></div>
+                    <div class="form-check"><pems-input type="checkbox" name="isCritical" value="true" checked="@Model.IsCritical" id="editIsCritical" kind="check" /><label class="form-check-label" for="editIsCritical">@Localizer["Critical Spare"]</label></div>
                 </div>
             </div>
             <div class="modal-footer">

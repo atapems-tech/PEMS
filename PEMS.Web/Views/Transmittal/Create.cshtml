@@ -79,7 +79,7 @@
                     @foreach (var d in documents)
                     {
                         <div class="form-check doc-picker-row" data-project-id="@d.ProjectId" data-search="@($"{d.DocumentNo} {d.Title}".ToLower())">
-                            <input class="form-check-input doc-picker-checkbox" type="checkbox" name="documentIds" value="@d.DocumentId" id="doc_@d.DocumentId" disabled="@((bool)d.IsOnHold)" />
+                            <pems-input type="checkbox" name="documentIds" value="@d.DocumentId" id="doc_@d.DocumentId" disabled="@((bool)d.IsOnHold)" kind="check" css="doc-picker-checkbox" />
                             <label class="form-check-label" for="doc_@d.DocumentId">
                                 @d.DocumentNo - @d.Title
                                 <span class="text-muted small">(Rev @d.RevisionNo &middot; @d.DisciplineName &middot; @d.Status)</span>

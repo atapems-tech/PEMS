@@ -175,7 +175,7 @@
                 <h3 id="lcContentTitle"><i class="bi bi-pencil-square" aria-hidden="true"></i> @Localizer["Lc_Content"]</h3>
                 <div class="lc-field">
                     <label for="lcSubject" class="lc-req">@Localizer["Lt_Subject"]</label>
-                    <input id="lcSubject" class="form-control" maxlength="@(isReferral ? 500 : 200)" value="@input.Subject" autocomplete="off" aria-describedby="lcSubjectCount" readonly="@isReferral" />
+                    <pems-input id="lcSubject" maxlength="@(isReferral ? 500 : 200)" value="@input.Subject" autocomplete="off" aria-describedby="lcSubjectCount" readonly="@isReferral" />
                     @if (isReferral) { <div class="lc-help" id="lcSubjectCount"><i class="bi bi-lock" aria-hidden="true"></i> @Localizer["Ct_SubjectLocked"]</div> }
                     else { <div class="lc-counter" id="lcSubjectCount" aria-live="off"><span id="lcSubjectLen">0</span>/@LetterComposeRules.MaxSubjectLength</div> }
                     <div class="lc-error" data-error-for="subject" role="alert" hidden></div>
@@ -316,7 +316,7 @@
             <section class="lc-card" aria-labelledby="lcRespTitle">
                 <h3 id="lcRespTitle"><i class="bi bi-reply" aria-hidden="true"></i> @Localizer[isReferral ? "Ct_ReferralDeadline" : "Lc_Response"]</h3>
                 <div class="form-check">
-                    <input class="form-check-input" type="checkbox" id="lcRespReq" checked="@input.ResponseRequired" />
+                    <pems-input type="checkbox" id="lcRespReq" checked="@input.ResponseRequired" kind="check" />
                     <label class="form-check-label" for="lcRespReq">@Localizer[isReferral ? "Ct_ReferralDeadlineSet" : "Lt_ResponseRequired"]</label>
                 </div>
                 <div class="lc-field mt-2" id="lcRespWrap" @(input.ResponseRequired ? "" : "hidden")>
@@ -329,7 +329,7 @@
             <section class="lc-card" aria-labelledby="lcApprTitle" @(isReferral ? "hidden" : "")>
                 <h3 id="lcApprTitle"><i class="bi bi-diagram-3" aria-hidden="true"></i> @Localizer["Lc_Approval"]</h3>
                 <div class="form-check">
-                    <input class="form-check-input" type="checkbox" id="lcApprReq" checked="@input.ApprovalRequired" disabled="@isOutgoing" />
+                    <pems-input type="checkbox" id="lcApprReq" checked="@input.ApprovalRequired" disabled="@isOutgoing" kind="check" />
                     <label class="form-check-label" for="lcApprReq">@Localizer["Lc_ApprovalRequired"]</label>
                 </div>
                 @if (isOutgoing) { <div class="lc-help">@Localizer["Lc_OutgoingNeedsApproval"]</div> }

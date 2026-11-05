@@ -122,11 +122,11 @@
             <pems-label css="small mb-0">Functional Location Mode</pems-label>
             <div class="d-flex gap-3 mt-1">
                 <div class="form-check">
-                    <input class="form-check-input" type="radio" name="functionalLocationMode" value="Exact" id="flModeExact" checked="@(selectedFlMode == "Exact")" />
+                    <pems-input type="radio" name="functionalLocationMode" value="Exact" id="flModeExact" checked="@(selectedFlMode == "Exact")" kind="check" />
                     <label class="form-check-label small" for="flModeExact" title="فقط خودِ Functional Location(های) انتخاب‌شده">@Localizer["Exact"]</label>
                 </div>
                 <div class="form-check">
-                    <input class="form-check-input" type="radio" name="functionalLocationMode" value="Descendants" id="flModeDescendants" checked="@(selectedFlMode == "Descendants")" />
+                    <pems-input type="radio" name="functionalLocationMode" value="Descendants" id="flModeDescendants" checked="@(selectedFlMode == "Descendants")" kind="check" />
                     <label class="form-check-label small" for="flModeDescendants" title="Functional Location(های) انتخاب‌شده + همه‌ی زیرشاخه‌های واقعی آن‌ها">Descendants</label>
                 </div>
             </div>

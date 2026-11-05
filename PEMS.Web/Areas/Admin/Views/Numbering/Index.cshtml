@@ -61,8 +61,8 @@
                                 @foreach (var r in NumberingResetPeriods.All) { <option value="@r" selected="@(r == s.ResetPeriod)">@Localizer["Num_Reset_" + r]</option> }
                             </pems-select>
                         </td>
-                        <td><input form="@formId" type="checkbox" name="IsActive" value="true" class="form-check-input" checked="@s.IsActive" aria-label="@Localizer["Active"]" /></td>
-                        <td><input form="@formId" type="checkbox" name="AllowManualEntry" value="true" class="form-check-input" checked="@s.AllowManualEntry" aria-label="@Localizer["Num_AllowManual"]" /></td>
+                        <td><pems-input form="@formId" type="checkbox" name="IsActive" value="true" checked="@s.IsActive" aria-label="@Localizer["Active"]" kind="check" /></td>
+                        <td><pems-input form="@formId" type="checkbox" name="AllowManualEntry" value="true" checked="@s.AllowManualEntry" aria-label="@Localizer["Num_AllowManual"]" kind="check" /></td>
                         <td><code data-num-preview aria-live="polite">@s.Preview</code><div class="small text-danger" data-num-error></div></td>
                         <td>
                             <span class="vs-num">@(s.Version == 0 ? "-" : s.Version.ToString())</span>

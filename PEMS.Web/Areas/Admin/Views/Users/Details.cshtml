@@ -239,7 +239,7 @@
                     <div class="table-responsive">
                         <pems-table kind="enterprise" id="permTableAllowed">
                             <thead><tr>
-                                <th class="perm-select-cell"><input type="checkbox" class="form-check-input perm-select-all" @(canEditPermissions ? "" : "disabled") aria-label="@Localizer["PermAdmin_SelectAllInTable"]" /></th>
+                                <th class="perm-select-cell"><pems-input type="checkbox" kind="check" css="perm-select-all" disabled="@(!canEditPermissions)" aria-label="@Localizer["PermAdmin_SelectAllInTable"]" /></th>
                                 <th>@Localizer["Resource"]</th><th>@Localizer["Action"]</th><th>@Localizer["Permission"]</th><th>@Localizer["Status"]</th><th>@Localizer["Destructive"]</th>
                             </tr></thead>
                             <tbody>
@@ -255,7 +255,7 @@
                         <div class="table-responsive mt-2">
                             <pems-table kind="enterprise" id="permTableDenied">
                                 <thead><tr>
-                                    <th class="perm-select-cell"><input type="checkbox" class="form-check-input perm-select-all" @(canEditPermissions ? "" : "disabled") aria-label="@Localizer["PermAdmin_SelectAllInTable"]" /></th>
+                                    <th class="perm-select-cell"><pems-input type="checkbox" kind="check" css="perm-select-all" disabled="@(!canEditPermissions)" aria-label="@Localizer["PermAdmin_SelectAllInTable"]" /></th>
                                     <th>@Localizer["Resource"]</th><th>@Localizer["Action"]</th><th>@Localizer["Permission"]</th><th>@Localizer["Status"]</th><th>@Localizer["Destructive"]</th>
                                 </tr></thead>
                                 <tbody>
