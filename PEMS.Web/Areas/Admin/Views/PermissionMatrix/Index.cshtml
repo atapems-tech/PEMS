@@ -147,7 +147,7 @@
                                     @foreach (var a in actions)
                                     {
                                         <td class="pm-cell pm-risk-@a.Risk">
-                                            <input class="form-check-input pm-box" type="checkbox" name="permissions[@i].@a.Prop" value="true" data-action="@a.Key" checked="@Flag(existing, a.Key)" aria-label="@Localizer[a.Label] @module" /><input type="hidden" name="permissions[@i].@a.Prop" value="false" />
+                                            <pems-input type="checkbox" name="permissions[@i].@a.Prop" value="true" data-action="@a.Key" checked="@Flag(existing, a.Key)" aria-label="@Localizer[a.Label] @module" kind="check" css="pm-box" /><input type="hidden" name="permissions[@i].@a.Prop" value="false" />
                                         </td>
                                     }
                                 </tr>

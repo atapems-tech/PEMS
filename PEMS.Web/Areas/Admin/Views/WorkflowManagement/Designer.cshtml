@@ -196,7 +196,7 @@
                                 <pems-select scale="small" name="stage.ApprovalStrategy">@foreach (var o in new[] { "AllApprovalsRequired", "MandatoryRolesOnly", "MinimumCount", "FirstResponse" }) { <option value="@o" selected="@(stageForm.ApprovalStrategy == o)">@o</option> }</pems-select></div>
                             <div class="col-6"><label>@Localizer["Minimum approvals"]</label><pems-input scale="small" name="stage.MinimumApprovalCount" type="number" min="1" value="@stageForm.MinimumApprovalCount" /></div>
                             <div class="col-6"><label>@Localizer["Timeout (hours)"]</label><pems-input scale="small" name="stage.TimeoutHours" type="number" min="1" value="@stageForm.TimeoutHours" /></div>
-                            <div class="col-12"><div class="form-check"><input type="checkbox" class="form-check-input" name="stage.IsMandatory" value="true" checked="@stageForm.IsMandatory" id="stMand" /><input type="hidden" name="stage.IsMandatory" value="false" /><label class="form-check-label" for="stMand">@Localizer["Mandatory"]</label></div></div>
+                            <div class="col-12"><div class="form-check"><pems-input type="checkbox" name="stage.IsMandatory" value="true" checked="@stageForm.IsMandatory" id="stMand" kind="check" /><input type="hidden" name="stage.IsMandatory" value="false" /><label class="form-check-label" for="stMand">@Localizer["Mandatory"]</label></div></div>
                             <div class="col-12"><label>@Localizer["Description"]</label><pems-input scale="small" name="stage.Description" value="@stageForm.Description" /></div>
                         </fieldset>
                         @if (edit) { <div class="col-12"><pems-button tone="primary" size="small">@Localizer["Save stage"]</pems-button></div> }
@@ -231,7 +231,7 @@
                                 <pems-input scale="small" name="transition.RequiredPermission" list="wfPerms" value="@trForm.RequiredPermission" placeholder="Resource.Action" />
                                 <datalist id="wfPerms">@foreach (var p in Model.Permissions) { <option value="@p"></option> }</datalist></div>
                             <div class="col-12"><label>@Localizer["Condition"]</label><pems-input scale="small" name="transition.ConditionExpression" value="@trForm.ConditionExpression" /></div>
-                            <div class="col-12"><div class="form-check"><input type="checkbox" class="form-check-input" name="transition.ForbidInitiator" value="true" checked="@trForm.ForbidInitiator" id="trForbid" /><input type="hidden" name="transition.ForbidInitiator" value="false" /><label class="form-check-label" for="trForbid">@Localizer["Initiator cannot perform this action"]</label></div></div>
+                            <div class="col-12"><div class="form-check"><pems-input type="checkbox" name="transition.ForbidInitiator" value="true" checked="@trForm.ForbidInitiator" id="trForbid" kind="check" /><input type="hidden" name="transition.ForbidInitiator" value="false" /><label class="form-check-label" for="trForbid">@Localizer["Initiator cannot perform this action"]</label></div></div>
                         </fieldset>
                         @if (edit) { <div class="col-12"><pems-button tone="primary" size="small">@Localizer["Save transition"]</pems-button></div> }
                     </form>

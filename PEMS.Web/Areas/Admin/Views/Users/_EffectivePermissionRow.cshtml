@@ -12,7 +12,7 @@
 <tr data-permission="@row.PermissionName" data-resource="@row.ResourceName" data-action="@row.ActionName"
     data-allowed="@(row.Allowed ? "1" : "0")" data-locked="@(locked ? "1" : "0")" class="@(row.Allowed ? "" : "text-body-secondary")">
     <td class="perm-select-cell">
-        <input type="checkbox" class="form-check-input perm-select" @(locked ? "disabled" : "")
+        <pems-input type="checkbox" kind="check" css="perm-select" disabled="@locked"
                aria-label="@string.Format(Localizer["PermAdmin_SelectRow"].Value, row.PermissionName)" />
     </td>
     <td>@row.ResourceName</td>
@@ -21,7 +21,7 @@
     <td class="perm-status-cell">
         <div class="d-inline-flex align-items-center gap-2">
             <div class="form-check form-switch m-0">
-                <input type="checkbox" role="switch" class="form-check-input perm-toggle" @(row.Allowed ? "checked" : "") @(locked ? "disabled" : "")
+                <pems-input type="checkbox" role="switch" kind="check" css="perm-toggle" checked="@row.Allowed" disabled="@locked"
                        aria-label="@string.Format(Localizer["PermAdmin_ToggleRow"].Value, row.PermissionName)"
                        title="@(locked ? lockedText : "")" />
             </div>

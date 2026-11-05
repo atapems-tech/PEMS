@@ -67,7 +67,7 @@
             @* پاسخ‌خواهی: «پاسخ‌داده‌شده» و «معوق» از نامه‌ی پاسخ صادرشده و تاریخ محاسبه می‌شوند، نه با تیک دستی *@
             <div class="col-12">
                 <div class="form-check">
-                    <input class="form-check-input" type="checkbox" name="responseRequired" value="true" id="responseRequired" checked="@respRequired" />
+                    <pems-input type="checkbox" name="responseRequired" value="true" id="responseRequired" checked="@respRequired" kind="check" />
                     <label class="form-check-label" for="responseRequired">@Localizer["Lt_ResponseRequired"]</label>
                 </div>
                 <div class="mt-2" id="responseDueWrap" style="max-width:260px;">
@@ -89,7 +89,7 @@
             <div class="row g-3">
                 <div class="col-md-4">
                     <pems-label for="letterNumber">@Localizer["Lt_Number"]</pems-label>
-                    <pems-input css="vs-num" name="letterNumber" id="letterNumber" placeholder="@Localizer["Lt_NumberHint"]" disabled="disabled" />
+                    <pems-input css="vs-num" name="letterNumber" id="letterNumber" placeholder="@Localizer["Lt_NumberHint"]" disabled />
                     @if ((bool)(ViewBag.CanManualNumber ?? false))
                     {
                         <div class="form-check mt-1">

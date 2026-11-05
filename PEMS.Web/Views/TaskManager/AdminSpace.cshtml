@@ -28,7 +28,7 @@
         </div>
         <div class="col-md-3 d-flex align-items-end">
             <div class="form-check">
-                <input class="form-check-input" type="checkbox" id="sp-active" name="IsActive" value="true" checked="@s.IsActive" />
+                <pems-input type="checkbox" id="sp-active" name="IsActive" value="true" checked="@s.IsActive" kind="check" />
                 <input type="hidden" name="IsActive" value="false" />
                 <label class="form-check-label small" for="sp-active">@Localizer["Tm_Field_Active"]</label>
             </div>
@@ -60,7 +60,7 @@
                                         <pems-select scale="small" css="w-auto" name="role" aria-label="@Localizer["Tm_Field_Role"] @m.Name">
                                             @foreach (var r in PEMS.Domain.Entities.WorkSpaceMemberRoles.All) { <option value="@r" selected="@(r == m.Role)">@Localizer["Tm_Role_" + r]</option> }
                                         </pems-select>
-                                        <input class="form-check-input" type="checkbox" name="isActive" value="true" checked="@m.IsActive" aria-label="@Localizer["Tm_Field_Active"] @m.Name" />
+                                        <pems-input type="checkbox" name="isActive" value="true" checked="@m.IsActive" aria-label="@Localizer["Tm_Field_Active"] @m.Name" kind="check" />
                                         <input type="hidden" name="isActive" value="false" />
                                         <pems-button tone="neutral" size="small" outline="true">@Localizer["Tm_Save"]</pems-button>
                                     </form>
@@ -133,7 +133,7 @@
                     </div>
                     <div class="col-1"><pems-input scale="small" name="sortOrder" type="number" value="@st.SortOrder" min="0" max="999" aria-label="@Localizer["Tm_Field_Order"]" /></div>
                     <div class="col-1 text-center">
-                        <input class="form-check-input" type="checkbox" name="isActive" value="true" checked="@st.IsActive" aria-label="@Localizer["Tm_Field_Active"]" />
+                        <pems-input type="checkbox" name="isActive" value="true" checked="@st.IsActive" aria-label="@Localizer["Tm_Field_Active"]" kind="check" />
                         <input type="hidden" name="isActive" value="false" />
                     </div>
                     <div class="col-2"><pems-button tone="neutral" size="small" outline="true" css="w-100">@Localizer["Tm_Save"]</pems-button></div>

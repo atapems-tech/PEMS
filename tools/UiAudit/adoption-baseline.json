@@ -14,35 +14,11 @@
   "card": {},
   "chart": {},
   "check-radio-switch": {
-    "PEMS.Web/Areas/Admin/Views/NavigationMenu/Edit.cshtml": 2,
-    "PEMS.Web/Areas/Admin/Views/Numbering/Index.cshtml": 2,
-    "PEMS.Web/Areas/Admin/Views/PermissionMatrix/Index.cshtml": 1,
-    "PEMS.Web/Areas/Admin/Views/RoutingRules/Index.cshtml": 1,
-    "PEMS.Web/Areas/Admin/Views/Users/Details.cshtml": 2,
-    "PEMS.Web/Areas/Admin/Views/Users/_EffectivePermissionRow.cshtml": 3,
-    "PEMS.Web/Areas/Admin/Views/WorkflowManagement/Designer.cshtml": 2,
-    "PEMS.Web/Areas/Warehouse/Views/MaterialItem/Details.cshtml": 2,
-    "PEMS.Web/Areas/Warehouse/Views/MaterialItem/Index.cshtml": 2,
-    "PEMS.Web/Areas/Warehouse/Views/PartCatalogueRequest/Edit.cshtml": 1,
-    "PEMS.Web/Areas/Warehouse/Views/Replenishment/Index.cshtml": 1,
-    "PEMS.Web/Views/DocumentRegister/Index.cshtml": 1,
-    "PEMS.Web/Views/EngineeringDocumentIntelligence/Review.cshtml": 4,
-    "PEMS.Web/Views/EquipmentImport/ScanResult.cshtml": 1,
-    "PEMS.Web/Views/FailureModeCatalog/Edit.cshtml": 1,
-    "PEMS.Web/Views/JobPlan/Details.cshtml": 2,
-    "PEMS.Web/Views/Letter/Create.cshtml": 1,
-    "PEMS.Web/Views/Letter/Details.cshtml": 1,
-    "PEMS.Web/Views/Letter/Index.cshtml": 5,
-    "PEMS.Web/Views/LetterCompose/Compose.cshtml": 2,
-    "PEMS.Web/Views/MaintenanceStrategy/BulkCreate.cshtml": 2,
-    "PEMS.Web/Views/MaintenanceStrategy/Edit.cshtml": 1,
-    "PEMS.Web/Views/Permit/Index.cshtml": 2,
-    "PEMS.Web/Views/PurchaseOrder/Details.cshtml": 1,
-    "PEMS.Web/Views/SparePart/Index.cshtml": 2,
-    "PEMS.Web/Views/TaskManager/AdminSpace.cshtml": 3,
-    "PEMS.Web/Views/TaskManager/AllWork.cshtml": 1,
-    "PEMS.Web/Views/Transmittal/Create.cshtml": 1,
-    "PEMS.Web/Views/WorkOrder/Index.cshtml": 2
+    "PEMS.Web/Areas/Admin/Views/NavigationMenu/Edit.cshtml": 1,
+    "PEMS.Web/Areas/Admin/Views/Users/_EffectivePermissionRow.cshtml": 1,
+    "PEMS.Web/Views/Permit/Index.cshtml": 1,
+    "PEMS.Web/Views/SparePart/Index.cshtml": 1,
+    "PEMS.Web/Views/WorkOrder/Index.cshtml": 1
   },
   "confirm-call": {},
   "date-input": {
@@ -138,9 +114,7 @@
   "modal": {},
   "offcanvas": {},
   "progress": {},
-  "select": {
-    "PEMS.Web/Areas/Admin/Views/NavigationMenu/Edit.cshtml": 1
-  },
+  "select": {},
   "spinner": {
     "PEMS.Web/Areas/Admin/Views/ProjectIntelligence/Index.cshtml": 2
   },
@@ -151,26 +125,20 @@
   "text-input": {
     "PEMS.Web/Areas/Admin/Views/Organization/Index.cshtml": 4,
     "PEMS.Web/Areas/Warehouse/Views/InventoryTransaction/Index.cshtml": 2,
-    "PEMS.Web/Areas/Warehouse/Views/PartCatalogueRequest/Edit.cshtml": 3,
+    "PEMS.Web/Areas/Warehouse/Views/PartCatalogueRequest/Edit.cshtml": 2,
     "PEMS.Web/Areas/Warehouse/Views/PartCatalogueRequest/Index.cshtml": 2,
     "PEMS.Web/Views/Asset/Details.cshtml": 1,
     "PEMS.Web/Views/Equipment/Details.cshtml": 2,
     "PEMS.Web/Views/Letter/Create.cshtml": 2,
-    "PEMS.Web/Views/Letter/Index.cshtml": 6,
-    "PEMS.Web/Views/LetterCompose/Compose.cshtml": 3,
+    "PEMS.Web/Views/Letter/Index.cshtml": 4,
+    "PEMS.Web/Views/LetterCompose/Compose.cshtml": 2,
     "PEMS.Web/Views/MaintenancePlan/Create.cshtml": 1,
     "PEMS.Web/Views/MaintenanceStrategy/Edit.cshtml": 2,
-    "PEMS.Web/Views/Meeting/Create.cshtml": 1,
-    "PEMS.Web/Views/Meeting/Index.cshtml": 1,
-    "PEMS.Web/Views/Permit/Details.cshtml": 2,
     "PEMS.Web/Views/Projects/Create.cshtml": 2,
     "PEMS.Web/Views/Projects/Edit.cshtml": 2,
     "PEMS.Web/Views/PurchaseOrder/Details.cshtml": 2,
-    "PEMS.Web/Views/Reliability/ConditionMonitoring.cshtml": 2,
-    "PEMS.Web/Views/ShiftHandover/Create.cshtml": 1,
     "PEMS.Web/Views/Tender/Details.cshtml": 2,
-    "PEMS.Web/Views/VDR/Details.cshtml": 1,
-    "PEMS.Web/Views/WorkOrder/Details.cshtml": 4
+    "PEMS.Web/Views/VDR/Details.cshtml": 1
   },
   "textarea": {}
 }

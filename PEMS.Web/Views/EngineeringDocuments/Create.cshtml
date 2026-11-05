@@ -17,7 +17,7 @@
             <pems-label for="DocumentNo">@Localizer["Ed_DocNo"]</pems-label>
             <div class="input-group">
                 <span class="input-group-text" id="autoNumberBadge"><i class="bi bi-magic" aria-hidden="true"></i></span>
-                <pems-input css="vs-num" asp-for="DocumentNo" placeholder="@Localizer["Ed_AutoNumberHint"]" disabled="disabled" />
+                <pems-input css="vs-num" asp-for="DocumentNo" placeholder="@Localizer["Ed_AutoNumberHint"]" disabled />
             </div>
             @if ((bool)(ViewBag.CanManualNumber ?? false))
             {

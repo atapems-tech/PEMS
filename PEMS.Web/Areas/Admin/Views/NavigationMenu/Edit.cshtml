@@ -22,7 +22,7 @@
 
             <div class="mb-3">
                 <pems-label for="ParentKey">@Localizer["Nav_Field_Parent"]</pems-label>
-                <select class="form-select" id="ParentKey" name="ParentKey" disabled="@(i.Kind == NavigationMenuItemKinds.Section)">
+                <pems-select id="ParentKey" name="ParentKey" disabled="@(i.Kind == NavigationMenuItemKinds.Section)">
                     @if (i.Kind != NavigationMenuItemKinds.Subheading)
                     {
                         <option value="" selected="@(input.ParentKey == null)">@Localizer["Nav_TopLevel"]</option>
@@ -31,7 +31,7 @@
                     {
                         <option value="@key" selected="@(input.ParentKey == key)">@title</option>
                     }
-                </select>
+                </pems-select>
                 @if (i.Kind == NavigationMenuItemKinds.Section)
                 {
                     <div class="form-text">@Localizer["Nav_SectionTopLevelOnly"]</div>
@@ -75,7 +75,7 @@
             }
 
             <div class="form-check form-switch mb-4">
-                <input class="form-check-input" type="checkbox" id="IsActive" name="IsActive" value="true" checked="@input.IsActive" />
+                <pems-input type="checkbox" id="IsActive" name="IsActive" value="true" checked="@input.IsActive" kind="check" />
                 <input type="hidden" name="IsActive" value="false" />
                 <label class="form-check-label" for="IsActive">@Localizer["Nav_Field_Visible"]</label>
             </div>

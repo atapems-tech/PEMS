@@ -68,19 +68,19 @@
                         <label class="form-check-label" for="d_@c.AIDocumentClassificationId">Discipline: <strong>@c.PredictedDisciplineCode</strong></label>
                     </div>
                     <div class="col-md-6 form-check">
-                        <input class="form-check-input" type="checkbox" name="applyVendor" value="true" checked="@(!string.IsNullOrEmpty(c.PredictedVendorName))" id="v_@c.AIDocumentClassificationId" />
+                        <pems-input type="checkbox" name="applyVendor" value="true" checked="@(!string.IsNullOrEmpty(c.PredictedVendorName))" id="v_@c.AIDocumentClassificationId" kind="check" />
                         <label class="form-check-label" for="v_@c.AIDocumentClassificationId">Vendor: <strong>@(c.PredictedVendorName ?? "-")</strong></label>
                     </div>
                     <div class="col-md-6 form-check">
-                        <input class="form-check-input" type="checkbox" name="applyMR" value="true" checked="@(!string.IsNullOrEmpty(c.PredictedMRNumber))" id="mr_@c.AIDocumentClassificationId" />
+                        <pems-input type="checkbox" name="applyMR" value="true" checked="@(!string.IsNullOrEmpty(c.PredictedMRNumber))" id="mr_@c.AIDocumentClassificationId" kind="check" />
                         <label class="form-check-label" for="mr_@c.AIDocumentClassificationId">Related MR: <strong>@(c.PredictedMRNumber ?? "-")</strong></label>
                     </div>
                     <div class="col-md-6 form-check">
-                        <input class="form-check-input" type="checkbox" name="applyRevision" value="true" checked="@(!string.IsNullOrEmpty(c.PredictedRevisionNo))" id="r_@c.AIDocumentClassificationId" />
+                        <pems-input type="checkbox" name="applyRevision" value="true" checked="@(!string.IsNullOrEmpty(c.PredictedRevisionNo))" id="r_@c.AIDocumentClassificationId" kind="check" />
                         <label class="form-check-label" for="r_@c.AIDocumentClassificationId">Revision: <strong>@(c.PredictedRevisionNo ?? "-")</strong></label>
                     </div>
                     <div class="col-md-6 form-check">
-                        <input class="form-check-input" type="checkbox" name="applyIssuePurpose" value="true" checked="@(!string.IsNullOrEmpty(c.PredictedIssuePurpose))" id="ip_@c.AIDocumentClassificationId" />
+                        <pems-input type="checkbox" name="applyIssuePurpose" value="true" checked="@(!string.IsNullOrEmpty(c.PredictedIssuePurpose))" id="ip_@c.AIDocumentClassificationId" kind="check" />
                         <label class="form-check-label" for="ip_@c.AIDocumentClassificationId">Issue Purpose: <strong>@(c.PredictedIssuePurpose ?? "-")</strong></label>
                     </div>
                     <div class="col-md-6"><span class="text-muted small">Document Type: <strong>@c.PredictedDocumentType</strong> (always applied)</span></div>

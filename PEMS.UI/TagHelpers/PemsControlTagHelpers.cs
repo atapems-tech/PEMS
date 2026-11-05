@@ -48,11 +48,20 @@ public sealed class PemsInputTagHelper(IHtmlGenerator generator, IPemsComponentR
     /// <summary>small or large; empty for the default size.</summary>
     [HtmlAttributeName("scale")] public string? Scale { get; set; }
     [HtmlAttributeName("css")] public string? Css { get; set; }
+    /// <summary>The state attributes a page decides with a condition (<c>checked="@x"</c>): written as the attribute when true, left out when false (a plain bool attribute value would print checked="False").</summary>
+    [HtmlAttributeName("checked")] public bool Checked { get; set; }
+    [HtmlAttributeName("disabled")] public bool Disabled { get; set; }
+    [HtmlAttributeName("readonly")] public bool ReadOnly { get; set; }
+    [HtmlAttributeName("required")] public bool Required { get; set; }
 
     public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
     {
         if (For is not null) base.Process(context, output);
         else ControlTagHelper.Restore(output, ("name", Name), ("type", InputTypeName), ("value", Value), ("form", FormName));
+        if (Checked) output.Attributes.SetAttribute("checked", "checked");
+        if (Disabled) output.Attributes.SetAttribute("disabled", "disabled");
+        if (ReadOnly) output.Attributes.SetAttribute("readonly", "readonly");
+        if (Required) output.Attributes.SetAttribute("required", "required");
         var (css, attrs) = ListRender.Page(output);
         await ListRender.Replace<PemsInput>(renderer, output, new InputOptions { Kind = Kind, Scale = Scale, Css = Css, PageClass = css, Attributes = attrs });
     }
@@ -65,11 +74,14 @@ public sealed class PemsSelectTagHelper(IHtmlGenerator generator, IPemsComponent
 {
     [HtmlAttributeName("scale")] public string? Scale { get; set; }
     [HtmlAttributeName("css")] public string? Css { get; set; }
+    /// <summary>Written as the attribute when true, left out when false (a plain bool attribute value would print disabled="False").</summary>
+    [HtmlAttributeName("disabled")] public bool Disabled { get; set; }
 
     public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
     {
         if (For is not null) base.Process(context, output);
         else ControlTagHelper.Restore(output, ("name", Name));
+        if (Disabled) output.Attributes.SetAttribute("disabled", "disabled");
         var (css, attrs) = ListRender.Page(output);
         await ListRender.Replace<PemsSelect>(renderer, output, new SelectOptions { Scale = Scale, Css = Css, PageClass = css, Attributes = attrs }, await ListRender.InnerAfterFramework(output));
     }

@@ -391,11 +391,11 @@
                                     </div>
                                 </div>
                                 <div class="d-grid gap-2">
-                                    <div class="form-check"><input class="form-check-input" type="checkbox" name="unread" value="true" id="fpUnread" checked="@unreadOnly" /><label class="form-check-label" for="fpUnread">@Localizer["Lp_UnreadOnly"]</label></div>
-                                    <div class="form-check"><input class="form-check-input" type="checkbox" name="overdueResponse" value="true" id="fltOverdueResponse" checked="@overdueResp" /><label class="form-check-label" for="fltOverdueResponse">@Localizer["Lt_OverdueResponseOnly"]</label></div>
-                                    <div class="form-check"><input class="form-check-input" type="checkbox" name="overdueReferral" value="true" id="fltOverdueReferral" checked="@overdueRef" /><label class="form-check-label" for="fltOverdueReferral">@Localizer["Lt_OverdueReferralOnly"]</label></div>
-                                    <div class="form-check"><input class="form-check-input" type="checkbox" name="hasAttachments" value="true" id="fpAtt" checked="@(hasAtt == true)" /><label class="form-check-label" for="fpAtt">@Localizer["Lt_HasAttachments"]</label></div>
-                                    <div class="form-check"><input class="form-check-input" type="checkbox" name="hasReferrals" value="true" id="fpRef" checked="@(hasRef == true)" /><label class="form-check-label" for="fpRef">@Localizer["Lt_HasReferrals"]</label></div>
+                                    <div class="form-check"><pems-input type="checkbox" name="unread" value="true" id="fpUnread" checked="@unreadOnly" kind="check" /><label class="form-check-label" for="fpUnread">@Localizer["Lp_UnreadOnly"]</label></div>
+                                    <div class="form-check"><pems-input type="checkbox" name="overdueResponse" value="true" id="fltOverdueResponse" checked="@overdueResp" kind="check" /><label class="form-check-label" for="fltOverdueResponse">@Localizer["Lt_OverdueResponseOnly"]</label></div>
+                                    <div class="form-check"><pems-input type="checkbox" name="overdueReferral" value="true" id="fltOverdueReferral" checked="@overdueRef" kind="check" /><label class="form-check-label" for="fltOverdueReferral">@Localizer["Lt_OverdueReferralOnly"]</label></div>
+                                    <div class="form-check"><pems-input type="checkbox" name="hasAttachments" value="true" id="fpAtt" checked="@(hasAtt == true)" kind="check" /><label class="form-check-label" for="fpAtt">@Localizer["Lt_HasAttachments"]</label></div>
+                                    <div class="form-check"><pems-input type="checkbox" name="hasReferrals" value="true" id="fpRef" checked="@(hasRef == true)" kind="check" /><label class="form-check-label" for="fpRef">@Localizer["Lt_HasReferrals"]</label></div>
                                 </div>
                             </div>
                             <div class="lp-fp-foot">
@@ -795,7 +795,7 @@
             </div>
             <div class="modal-body">
                 <pems-label css="small" for="ctReminderAt">@Localizer["Ct_RemindAt"]</pems-label>
-                <input type="datetime-local" id="ctReminderAt" class="form-control form-control-sm mb-2" />
+                <pems-input type="datetime-local" id="ctReminderAt" scale="small" css="mb-2" />
                 <pems-label css="small" for="ctReminderNote">@Localizer["Ct_Note"]</pems-label>
                 <pems-input scale="small" type="text" id="ctReminderNote" maxlength="300" />
                 <div class="ct-msg" id="ctReminderMsg" role="status"></div>

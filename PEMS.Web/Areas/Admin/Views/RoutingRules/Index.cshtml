@@ -62,7 +62,7 @@
                                 @foreach (var m in modules) { <option value="@m" selected="@(m == r.TargetModule)">@m</option> }
                             </pems-select>
                         </td>
-                        <td class="text-center"><input form="@formId" class="form-check-input" type="checkbox" name="allowAutoRouting" value="true" checked="@r.AllowAutoRouting" aria-label="@Localizer["Auto Route"]" /></td>
+                        <td class="text-center"><pems-input form="@formId" type="checkbox" name="allowAutoRouting" value="true" checked="@r.AllowAutoRouting" aria-label="@Localizer["Auto Route"]" kind="check" /></td>
                         <td><pems-input scale="small" form="@formId" name="description" value="@r.Description" aria-label="@Localizer["Ed_Description"]" /></td>
                         <td class="text-end"><pems-related-save form-id="@formId" label="@Localizer["Save"]" /></td>
                     </tr>

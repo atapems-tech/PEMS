@@ -53,8 +53,7 @@ else
                         var alreadyExists = existingTags.Contains(tag.ToUpper());
                         <div class="col-md-3 col-sm-4 col-6">
                             <div class="form-check">
-                                <input class="form-check-input scan-tag-checkbox" type="checkbox" name="tags" value="@tag"
-                                       id="tag_@tag" checked="@(!alreadyExists)" disabled="@alreadyExists" />
+                                <pems-input type="checkbox" name="tags" value="@tag" id="tag_@tag" checked="@(!alreadyExists)" disabled="@alreadyExists" kind="check" css="scan-tag-checkbox" />
                                 <label class="form-check-label small" for="tag_@tag">
                                     @tag
                                     @if (alreadyExists) { <span class="text-muted">(exists)</span> }
