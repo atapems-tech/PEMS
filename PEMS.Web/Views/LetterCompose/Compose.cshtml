@@ -105,13 +105,13 @@
             @* ۱) فرستنده - فقط‌خواندنی، از اطلاعات کارمند پر می‌شود *@
             <section class="lc-card" aria-labelledby="lcSenderTitle">
                 <h3 id="lcSenderTitle"><i class="bi bi-person-badge" aria-hidden="true"></i> @Localizer["Lc_Sender"]</h3>
-                <dl class="lc-sender mb-0">
-                    <div><dt>@Localizer["Lc_Name"]</dt><dd>@(string.IsNullOrWhiteSpace(Model.Sender.FullName) ? "—" : Model.Sender.FullName)</dd></div>
-                    <div><dt>@Localizer["Lc_JobTitle"]</dt><dd>@(Model.Sender.Title ?? "—")</dd></div>
-                    <div><dt>@Localizer["Lc_Department"]</dt><dd>@(Model.Sender.DepartmentName ?? "—")</dd></div>
-                    <div><dt>@Localizer["Lc_Email"]</dt><dd>@(Model.Sender.Email ?? "—")</dd></div>
-                    <div><dt>@Localizer["Lc_Phone"]</dt><dd>@(Model.Sender.Phone ?? "—")</dd></div>
-                </dl>
+                <pems-info-grid class="lc-sender mb-0">
+    <pems-info-item label="@Localizer["Lc_Name"]">@(string.IsNullOrWhiteSpace(Model.Sender.FullName) ? "—" : Model.Sender.FullName)</pems-info-item>
+    <pems-info-item label="@Localizer["Lc_JobTitle"]">@(Model.Sender.Title ?? "—")</pems-info-item>
+    <pems-info-item label="@Localizer["Lc_Department"]">@(Model.Sender.DepartmentName ?? "—")</pems-info-item>
+    <pems-info-item label="@Localizer["Lc_Email"]">@(Model.Sender.Email ?? "—")</pems-info-item>
+    <pems-info-item label="@Localizer["Lc_Phone"]">@(Model.Sender.Phone ?? "—")</pems-info-item>
+</pems-info-grid>
                 @if (!Model.Sender.EmployeeId.HasValue)
                 {
                     <div class="lc-help text-warning-emphasis mt-2"><i class="bi bi-exclamation-triangle" aria-hidden="true"></i> @Localizer["Lc_NoEmployeeLink"]</div>
@@ -269,7 +269,7 @@
 
                 <div class="lc-field">
                     <label for="lcDate">@Localizer["Lt_Date"]</label>
-                    <input id="lcDate" type="date" class="form-control" value="@inputDate" />
+                    <pems-date id="lcDate" value="@inputDate" />
                 </div>
 
                 <div class="lc-field">
@@ -321,7 +321,7 @@
                 </div>
                 <div class="lc-field mt-2" id="lcRespWrap" @(input.ResponseRequired ? "" : "hidden")>
                     <label for="lcRespDue" class="lc-req">@Localizer["Lt_ResponseDueDate"]</label>
-                    <input id="lcRespDue" type="date" class="form-control" value="@dueDate" />
+                    <pems-date id="lcRespDue" value="@dueDate" />
                     <div class="lc-error" data-error-for="responseDueDate" role="alert" hidden></div>
                 </div>
             </section>

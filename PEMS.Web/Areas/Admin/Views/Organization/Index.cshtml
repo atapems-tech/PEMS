@@ -77,8 +77,8 @@
                                         <span class="small me-1">@r.HolderName</span>
                                         <label class="small"><input type="checkbox" name="isPrimary" value="true" checked="@r.HolderIsPrimary" /> @Localizer["Org_Primary"]</label>
                                         <input type="hidden" name="isPrimary" value="false" />
-                                        <input type="date" name="startDate" value="@r.StartDate?.ToString("yyyy-MM-dd")" class="form-control form-control-sm" style="width:130px" aria-label="@Localizer["Org_EffectiveFrom"]" required />
-                                        <input type="date" name="endDate" value="@r.EndDate?.ToString("yyyy-MM-dd")" class="form-control form-control-sm" style="width:130px" aria-label="@Localizer["Org_EffectiveTo"]" />
+                                        <pems-date name="startDate" value="@r.StartDate?.ToString("yyyy-MM-dd")" style="width:130px" aria-label="@Localizer["Org_EffectiveFrom"]" required scale="small" />
+                                        <pems-date name="endDate" value="@r.EndDate?.ToString("yyyy-MM-dd")" style="width:130px" aria-label="@Localizer["Org_EffectiveTo"]" scale="small" />
                                         <button class="vs-btn vs-btn--sm" title="@Localizer["Org_Btn_Save"]" aria-label="@Localizer["Org_Btn_Save"]"><i class="bi bi-save"></i></button>
                                     </form>
                                 }

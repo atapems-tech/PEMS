@@ -45,11 +45,11 @@
                                              all-text="@Localizer["ItL_AllTypes"]" items="@types.Select(t => new SelectListItem(TypeText(t), t))" />
                     <div>
                         <label class="lp-lbl" for="itFilterFrom">@Localizer["ItL_From"]</label>
-                        <input type="date" id="itFilterFrom" name="fromDate" value="@from?.ToString("yyyy-MM-dd")" class="form-control" />
+                        <pems-date id="itFilterFrom" name="fromDate" value="@from?.ToString("yyyy-MM-dd")" />
                     </div>
                     <div>
                         <label class="lp-lbl" for="itFilterTo">@Localizer["ItL_To"]</label>
-                        <input type="date" id="itFilterTo" name="toDate" value="@to?.ToString("yyyy-MM-dd")" class="form-control" />
+                        <pems-date id="itFilterTo" name="toDate" value="@to?.ToString("yyyy-MM-dd")" />
                     </div>
                 </pems-list-filters>
                 <pems-list-reset-columns grid-key="InventoryTransaction" />

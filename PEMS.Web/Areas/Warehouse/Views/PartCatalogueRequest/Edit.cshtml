@@ -431,7 +431,7 @@
                     </div>
                     <div class="col-md-3">
                         <pems-label for="pc_WantedReceiptDate">@L("WantedReceiptDate")</pems-label>
-                        <input id="pc_WantedReceiptDate" form="pcForm" name="WantedReceiptDate" type="date" value="@f.WantedReceiptDate?.ToString("yyyy-MM-dd")" class="form-control form-control-sm" />
+                        <pems-date id="pc_WantedReceiptDate" form="pcForm" name="WantedReceiptDate" value="@f.WantedReceiptDate?.ToString("yyyy-MM-dd")" scale="small" />
                     </div>
                     <div class="col-md-3">
                         <pems-label for="pc_StorageVolume">@L("StorageVolume")</pems-label>

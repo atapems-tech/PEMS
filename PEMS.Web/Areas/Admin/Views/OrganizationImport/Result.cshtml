@@ -17,13 +17,13 @@
     else { <pems-alert tone="info">@Localizer["Org_Imp_ValidOk"]</pems-alert> }
 
     <section class="vs-panel mb-3">
-        <dl class="row mb-0">
-            <dt class="col-sm-3">@Localizer["Org_Imp_PosCreated"]</dt><dd class="col-sm-9">@Model.PositionsCreated</dd>
-            <dt class="col-sm-3">@Localizer["Org_Imp_PosUpdated"]</dt><dd class="col-sm-9">@Model.PositionsUpdated</dd>
-            <dt class="col-sm-3">@Localizer["Org_Imp_AsgCreated"]</dt><dd class="col-sm-9">@Model.AssignmentsCreated</dd>
-            <dt class="col-sm-3">@Localizer["Org_Imp_AsgUpdated"]</dt><dd class="col-sm-9">@Model.AssignmentsUpdated</dd>
-            <dt class="col-sm-3">@Localizer["Org_Imp_Unchanged"]</dt><dd class="col-sm-9">@Model.Unchanged</dd>
-        </dl>
+        <pems-info-grid layout="rows" class="mb-0">
+    <pems-info-item label="@Localizer["Org_Imp_PosCreated"]">@Model.PositionsCreated</pems-info-item>
+    <pems-info-item label="@Localizer["Org_Imp_PosUpdated"]">@Model.PositionsUpdated</pems-info-item>
+    <pems-info-item label="@Localizer["Org_Imp_AsgCreated"]">@Model.AssignmentsCreated</pems-info-item>
+    <pems-info-item label="@Localizer["Org_Imp_AsgUpdated"]">@Model.AssignmentsUpdated</pems-info-item>
+    <pems-info-item label="@Localizer["Org_Imp_Unchanged"]">@Model.Unchanged</pems-info-item>
+</pems-info-grid>
     </section>
 
     @if (Model.Errors.Count > 0)

@@ -104,12 +104,12 @@ public class InfoGridComponentTests
     [InlineData("Areas/Admin/Views/Users/Details.cshtml", 3, 12)]
     [InlineData("Views/EngineeringDocuments/Details.cshtml", 2, 15)]
     [InlineData("Views/Equipment/Details.cshtml", 1, 7)]
-    [InlineData("Views/VDR/Details.cshtml", 1, 7)]
+    [InlineData("Views/VDR/Details.cshtml", 2, 9)]
     [InlineData("Views/Vendor/Details.cshtml", 1, 8)]
     public void WaveI1_TakesItsLabelValueBlocksFromTheComponent(string view, int grids, int items)
     {
         var text = File.ReadAllText(Path.Combine(RepoRoot(), "PEMS.Web", view));
-        Assert.Equal(grids, Regex.Matches(text, "<pems-info-grid>").Count);
+        Assert.Equal(grids, Regex.Matches(text, "<pems-info-grid[ >]").Count);
         Assert.Equal(items, Regex.Matches(text, "<pems-info-item ").Count);
         Assert.DoesNotContain("vs-info", text);
     }

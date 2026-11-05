@@ -664,12 +664,10 @@
                 <section class="vs-panel" aria-labelledby="vdrSummaryTitle">
                     <div class="vs-panel__body">
                         <h2 id="vdrSummaryTitle" class="vs-section__title">@Localizer["Vd_ReviewSummary"]</h2>
-                        <dl class="small mb-3">
-                            <dt class="text-muted fw-normal">@Localizer["Vd_Reviewers"]</dt>
-                            <dd class="mb-2">@Localizer["Vd_Role_Lead"], @Localizer["Vd_Role_DocControl"]</dd>
-                            <dt class="text-muted fw-normal">@Localizer["Vd_Step2Title"]</dt>
-                            <dd class="mb-0" id="vdrSummaryDisc" data-none="@Localizer["Vd_None"]">@Localizer["Vd_None"]</dd>
-                        </dl>
+                        <pems-info-grid class="small mb-3">
+    <pems-info-item label="@Localizer["Vd_Reviewers"]">@Localizer["Vd_Role_Lead"], @Localizer["Vd_Role_DocControl"]</pems-info-item>
+    <pems-info-item label="@Localizer["Vd_Step2Title"]">@Localizer["Vd_None"]</pems-info-item>
+</pems-info-grid>
                         <pems-button tone="primary" css="w-100" type="submit" id="vdrStartBtn" aria-describedby="vdrWhyDisabled"><i class="bi bi-play-fill" aria-hidden="true"></i> @Localizer["Vd_StartReview"]</pems-button>
                         <p id="vdrWhyDisabled" class="small text-warning-emphasis mt-2 mb-0" hidden>@Localizer["Vd_EnterTransmittalToEnable"]</p>
                     </div>
