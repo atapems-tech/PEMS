@@ -72,6 +72,22 @@ internal static class ListRender
         => (BlockTagHelper.PageClass(output), BlockTagHelper.PageAttributes(output, "class"));
 
     public static async Task<string> Inner(TagHelperOutput output) => (await output.GetChildContentAsync()).GetContent();
+
+    /// <summary>
+    /// The inner markup of a tag a built-in ASP.NET Core helper has already processed: what it put before the content, the content (its own, or the page's
+    /// when it set none) and what it put after. The pieces are taken out of the output so the component can write them inside its element.
+    /// </summary>
+    public static async Task<string> InnerAfterFramework(TagHelperOutput output)
+    {
+        using var writer = new StringWriter();
+        output.PreContent.WriteTo(writer, System.Text.Encodings.Web.HtmlEncoder.Default);
+        if (output.Content.IsModified) output.Content.WriteTo(writer, System.Text.Encodings.Web.HtmlEncoder.Default);
+        else (await output.GetChildContentAsync()).WriteTo(writer, System.Text.Encodings.Web.HtmlEncoder.Default);
+        output.PostContent.WriteTo(writer, System.Text.Encodings.Web.HtmlEncoder.Default);
+        output.PreContent.Clear();
+        output.PostContent.Clear();
+        return writer.ToString();
+    }
 }
 
 /// <summary>Frame of the whole page: fills the window, the table scrolls inside. Sets the texts for every child tag.</summary>

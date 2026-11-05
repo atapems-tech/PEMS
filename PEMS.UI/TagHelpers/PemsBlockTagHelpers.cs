@@ -18,12 +18,14 @@ internal static class BlockTagHelper
     {
         var rest = output.Attributes.Where(a => !except.Contains(a.Name, StringComparer.OrdinalIgnoreCase)).ToList();
         if (rest.Count == 0) return null;
-        return rest.ToDictionary(a => a.Name, a => (object)System.Net.WebUtility.HtmlDecode(a.Value switch
+        var map = new Dictionary<string, object>(StringComparer.Ordinal);
+        foreach (var a in rest) map[a.Name] = (object)System.Net.WebUtility.HtmlDecode(a.Value switch
         {
             null => "",
             Microsoft.AspNetCore.Html.IHtmlContent html => ToHtml(html),
             _ => a.Value.ToString() ?? ""
-        }));
+        });
+        return map;
     }
 
     /// <summary>The class the page wrote on the tag (kept after the component's classes), or null.</summary>

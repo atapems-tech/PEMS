@@ -74,4 +74,9 @@ public static class UiKeys
     public const string TableFrame = "table-frame";
     public const string ListGroupItem = "list-group-item";
     public const string Toast = "toast";
+    public const string Input = "input";
+    public const string Select = "select";
+    public const string Textarea = "textarea";
+    public const string FormLabel = "form-label";
+    public const string ValidationSummary = "validation-summary";
 }

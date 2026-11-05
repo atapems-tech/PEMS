@@ -32,33 +32,33 @@ public sealed class ControlTagHelperTests
     [Fact]
     public void An_input_keeps_its_attributes_and_gets_the_classes_first()
         => Assert.Equal("<input class=\"form-control form-control-sm\" required=\"required\" placeholder=\"Tag\" name=\"tag\" type=\"number\" value=\"3\" />",
-            Run(new PemsInputTagHelper(null!) { Scale = "small", Name = "tag", InputTypeName = "number", Value = "3" }, "pems-input",
+            Run(new PemsInputTagHelper(null!, UiTestRenderer.Instance) { Scale = "small", Name = "tag", InputTypeName = "number", Value = "3" }, "pems-input",
                 [new("required", "required"), new("placeholder", "Tag")]));
 
     [Fact]
     public void An_input_keeps_its_form_attribute_the_built_in_helper_binds()
         => Assert.Equal("<input class=\"form-control\" name=\"description\" form=\"rule_2\" />",
-            Run(new PemsInputTagHelper(null!) { Name = "description", FormName = "rule_2" }, "pems-input", []));
+            Run(new PemsInputTagHelper(null!, UiTestRenderer.Instance) { Name = "description", FormName = "rule_2" }, "pems-input", []));
 
     [Fact]
     public void A_check_input_gets_the_check_class()
         => Assert.Equal("<input class=\"form-check-input me-1\" name=\"on\" type=\"checkbox\" />",
-            Run(new PemsInputTagHelper(null!) { Kind = "check", Css = "me-1", Name = "on", InputTypeName = "checkbox" }, "pems-input", []));
+            Run(new PemsInputTagHelper(null!, UiTestRenderer.Instance) { Kind = "check", Css = "me-1", Name = "on", InputTypeName = "checkbox" }, "pems-input", []));
 
     [Fact]
     public void A_select_keeps_its_options_and_attributes()
         => Assert.Equal("<select class=\"form-select form-select-sm\" multiple=\"multiple\" name=\"s\"><option>a</option></select>",
-            Run(new PemsSelectTagHelper(null!) { Scale = "small", Name = "s" }, "pems-select", [new("multiple", "multiple")], "<option>a</option>"));
+            Run(new PemsSelectTagHelper(null!, UiTestRenderer.Instance) { Scale = "small", Name = "s" }, "pems-select", [new("multiple", "multiple")], "<option>a</option>"));
 
     [Fact]
     public void A_textarea_keeps_its_text_and_attributes()
         => Assert.Equal("<textarea class=\"form-control\" rows=\"3\" name=\"n\">hello</textarea>",
-            Run(new PemsTextAreaTagHelper(null!) { Name = "n" }, "pems-textarea", [new("rows", "3")], "hello"));
+            Run(new PemsTextAreaTagHelper(null!, UiTestRenderer.Instance) { Name = "n" }, "pems-textarea", [new("rows", "3")], "hello"));
 
     [Fact]
     public void A_class_the_built_in_helper_added_stays_after_the_control_classes()
         => Assert.Equal("<input class=\"form-control input-validation-error\" />",
-            Run(new PemsInputTagHelper(null!), "pems-input", [new("class", "input-validation-error")]));
+            Run(new PemsInputTagHelper(null!, UiTestRenderer.Instance), "pems-input", [new("class", "input-validation-error")]));
 
     private static async Task<string> RunAsync(TagHelper helper, string tag, TagHelperAttributeList attributes, string inner = "")
     {
@@ -77,7 +77,7 @@ public sealed class ControlTagHelperTests
     [InlineData("small fw-bold", "form-label small fw-bold")]
     public async Task A_label_gets_the_form_label_class_first(string? css, string expected)
         => Assert.Equal($"<label class=\"{expected}\" for=\"qty\">Quantity</label>",
-            await RunAsync(new PemsLabelTagHelper(null!) { Css = css }, "pems-label", [new("for", "qty")], "Quantity"));
+            await RunAsync(new PemsLabelTagHelper(null!, UiTestRenderer.Instance) { Css = css }, "pems-label", [new("for", "qty")], "Quantity"));
 
     [Theory]
     [InlineData(true, null, "dropdown-menu dropdown-menu-end")]

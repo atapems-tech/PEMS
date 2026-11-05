@@ -77,6 +77,11 @@ public static class ComponentSamples
         ["table-frame"] = """{"kind":"enterprise","scale":"small"}""",
         ["list-group-item"] = """{"action":true,"active":true}""",
         ["toast"] = """{"tone":"success"}""",
+        ["input"] = """{"scale":"small"}""",
+        ["select"] = """{"scale":"small"}""",
+        ["textarea"] = """{}""",
+        ["form-label"] = """{"css":"small"}""",
+        ["validation-summary"] = """{"css":"py-2 px-3 small"}""",
         ["form"] = """{"definition":{"id":"item","title":{"en":"Item","fa":"مورد"},"action":"/items","fields":[{"name":"tag","label":{"en":"Tag","fa":"تگ"}}],"submitLabel":{"en":"Save","fa":"ذخیره"}}}"""
     };
 

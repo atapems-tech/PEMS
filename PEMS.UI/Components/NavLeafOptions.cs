@@ -115,3 +115,42 @@ internal static class FrameMarkup
         b.CloseElement();
     };
 }
+
+// SCRUM-507: the bare form controls (input, select, textarea, label, validation summary). The built-in ASP.NET Core helper still computes the
+// model-bound values (name, id, value, validation attributes, option list, message list); the component writes the element.
+
+/// <summary>Inputs of <see cref="PemsInput"/>: a text-like input or a check box / radio / switch input.</summary>
+public sealed record InputOptions : FrameOptions
+{
+    /// <summary>text (default) or check.</summary>
+    public string Kind { get; init; } = "text";
+    /// <summary>small or large; empty for the default size.</summary>
+    public string? Scale { get; init; }
+    public string? Css { get; init; }
+}
+
+/// <summary>Inputs of <see cref="PemsSelect"/>: the select element; the option list (from the page or from asp-items) is the child content.</summary>
+public sealed record SelectOptions : FrameOptions
+{
+    public string? Scale { get; init; }
+    public string? Css { get; init; }
+}
+
+/// <summary>Inputs of <see cref="PemsTextarea"/>: the textarea element; its text is the child content.</summary>
+public sealed record TextareaOptions : FrameOptions
+{
+    public string? Scale { get; init; }
+    public string? Css { get; init; }
+}
+
+/// <summary>Inputs of <see cref="PemsFormLabel"/>: the form label; its text is the child content (from the page or from the model metadata).</summary>
+public sealed record FormLabelOptions : FrameOptions
+{
+    public string? Css { get; init; }
+}
+
+/// <summary>Inputs of <see cref="PemsValidationSummary"/>: the validation summary box (alert alert-danger); the message list is the child content.</summary>
+public sealed record ValidationSummaryOptions : FrameOptions
+{
+    public string? Css { get; init; }
+}

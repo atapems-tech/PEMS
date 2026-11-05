@@ -89,6 +89,11 @@ public sealed class PemsComponentRegistry : IPemsComponentRegistry
         Register(UiKeys.TableFrame, typeof(PemsTableFrame));
         Register(UiKeys.ListGroupItem, typeof(PemsListGroupItem));
         Register(UiKeys.Toast, typeof(PemsToast));
+        Register(UiKeys.Input, typeof(PemsInput));
+        Register(UiKeys.Select, typeof(PemsSelect));
+        Register(UiKeys.Textarea, typeof(PemsTextarea));
+        Register(UiKeys.FormLabel, typeof(PemsFormLabel));
+        Register(UiKeys.ValidationSummary, typeof(PemsValidationSummary));
     }
 
     public void Register(string key, Type componentType)
