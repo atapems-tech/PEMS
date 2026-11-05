@@ -1,5 +1,6 @@
 using System.Globalization;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Routing;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.Extensions.Logging;
 
@@ -32,6 +33,7 @@ public sealed class PemsComponentRenderer(
         if (culture is not null) CultureInfo.CurrentUICulture = culture;
         try
         {
+            EnsureNavigation();
             await using var renderer = new HtmlRenderer(services, loggerFactory);
             return await renderer.Dispatcher.InvokeAsync(async () =>
             {
@@ -40,5 +42,16 @@ public sealed class PemsComponentRenderer(
             });
         }
         finally { CultureInfo.CurrentUICulture = previous; }
+    }
+
+    /// <summary>
+    /// A form without an action (a page whose URL helper returned nothing) makes the static renderer ask the navigation manager for the
+    /// current address; outside a Blazor request it was never given one, so it gets a neutral address here instead of throwing.
+    /// </summary>
+    private void EnsureNavigation()
+    {
+        if (services.GetService(typeof(NavigationManager)) is not NavigationManager nav || nav is not IHostEnvironmentNavigationManager host) return;
+        try { _ = nav.Uri; }
+        catch (InvalidOperationException) { host.Initialize("http://localhost/", "http://localhost/"); }
     }
 }
