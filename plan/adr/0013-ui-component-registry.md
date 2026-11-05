@@ -45,3 +45,4 @@ The owner asked for a "dispatcher-like" library and left the name open. The esta
 ## Amendments
 
 - 2026-11-05 (owner): no exempt facade kind. Form-control tag helpers and button also render registered components; `DirectFacadeBaseline` goes to 0; each batch creates its components first, then converts the code. Guideline 02 section 7 items 2, 4, 7.
+- 2026-11-06: SCRUM-507 finished. `FacadeKind.Direct` is removed from the code (60 of 60 tag helpers render a registered component or are a part of one); the drift test pins the kinds to Component and Part.

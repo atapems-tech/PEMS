@@ -7,8 +7,6 @@ public enum FacadeKind
     Component,
     /// <summary>A child tag of another facade (a segment, a header); it has no component of its own.</summary>
     Part,
-    /// <summary>Writes its markup itself, no registered component yet. A debt: the count may only go down (the baseline in the UI tests).</summary>
-    Direct,
 }
 
 /// <summary>Links a tag helper to the registry key it renders, so the code graph and the drift tests see which component each tag stands for.</summary>

@@ -36,11 +36,12 @@ internal static class ControlTagHelper
 /// <summary>
 /// MVC facade for the bare input classes: <c>&lt;pems-input name="qty" type="number" scale="small" css="w-auto" /&gt;</c> becomes an <c>input</c> with
 /// <c>form-control form-control-sm w-auto</c> (<c>kind="check"</c>: <c>form-check-input</c>). It keeps every other attribute the page wrote.
-/// With <c>asp-for</c> it derives from the built-in input helper, so model binding, ids, values and validation attributes are the same as before.
+/// With <c>asp-for</c> it derives from the built-in input helper, so model binding, ids, values and validation attributes are the same as before;
+/// the registered <c>input</c> component writes the element.
 /// </summary>
 [HtmlTargetElement("pems-input")]
-[PemsFacade(FacadeKind.Direct)]
-public sealed class PemsInputTagHelper(IHtmlGenerator generator) : InputTagHelper(generator)
+[PemsFacade(UiKeys.Input)]
+public sealed class PemsInputTagHelper(IHtmlGenerator generator, IPemsComponentRenderer renderer) : InputTagHelper(generator)
 {
     /// <summary>text (default) or check.</summary>
     [HtmlAttributeName("kind")] public string Kind { get; set; } = "text";
@@ -48,50 +49,46 @@ public sealed class PemsInputTagHelper(IHtmlGenerator generator) : InputTagHelpe
     [HtmlAttributeName("scale")] public string? Scale { get; set; }
     [HtmlAttributeName("css")] public string? Css { get; set; }
 
-    public override void Process(TagHelperContext context, TagHelperOutput output)
+    public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
     {
         if (For is not null) base.Process(context, output);
         else ControlTagHelper.Restore(output, ("name", Name), ("type", InputTypeName), ("value", Value), ("form", FormName));
-        output.TagName = "input";
-        output.TagMode = TagMode.SelfClosing;
-        var kind = Kind.Equals("check", StringComparison.OrdinalIgnoreCase) ? ControlKind.Check : ControlKind.Text;
-        ControlTagHelper.PutClassFirst(output, ControlState.Css(ControlTagHelper.Options(kind, Scale, Css)));
+        var (css, attrs) = ListRender.Page(output);
+        await ListRender.Replace<PemsInput>(renderer, output, new InputOptions { Kind = Kind, Scale = Scale, Css = Css, PageClass = css, Attributes = attrs });
     }
 }
 
 /// <summary>MVC facade for the bare select classes: <c>&lt;pems-select name="status" scale="small"&gt;options&lt;/pems-select&gt;</c>; <c>asp-for</c> and <c>asp-items</c> work as on a select.</summary>
 [HtmlTargetElement("pems-select")]
-[PemsFacade(FacadeKind.Direct)]
-public sealed class PemsSelectTagHelper(IHtmlGenerator generator) : SelectTagHelper(generator)
+[PemsFacade(UiKeys.Select)]
+public sealed class PemsSelectTagHelper(IHtmlGenerator generator, IPemsComponentRenderer renderer) : SelectTagHelper(generator)
 {
     [HtmlAttributeName("scale")] public string? Scale { get; set; }
     [HtmlAttributeName("css")] public string? Css { get; set; }
 
-    public override void Process(TagHelperContext context, TagHelperOutput output)
+    public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
     {
         if (For is not null) base.Process(context, output);
         else ControlTagHelper.Restore(output, ("name", Name));
-        output.TagName = "select";
-        output.TagMode = TagMode.StartTagAndEndTag;
-        ControlTagHelper.PutClassFirst(output, ControlState.Css(ControlTagHelper.Options(ControlKind.Select, Scale, Css)));
+        var (css, attrs) = ListRender.Page(output);
+        await ListRender.Replace<PemsSelect>(renderer, output, new SelectOptions { Scale = Scale, Css = Css, PageClass = css, Attributes = attrs }, await ListRender.InnerAfterFramework(output));
     }
 }
 
 /// <summary>MVC facade for the bare textarea classes: <c>&lt;pems-textarea name="note" rows="3"&gt;text&lt;/pems-textarea&gt;</c>.</summary>
 [HtmlTargetElement("pems-textarea")]
-[PemsFacade(FacadeKind.Direct)]
-public sealed class PemsTextAreaTagHelper(IHtmlGenerator generator) : TextAreaTagHelper(generator)
+[PemsFacade(UiKeys.Textarea)]
+public sealed class PemsTextAreaTagHelper(IHtmlGenerator generator, IPemsComponentRenderer renderer) : TextAreaTagHelper(generator)
 {
     [HtmlAttributeName("scale")] public string? Scale { get; set; }
     [HtmlAttributeName("css")] public string? Css { get; set; }
 
-    public override void Process(TagHelperContext context, TagHelperOutput output)
+    public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
     {
         if (For is not null) base.Process(context, output);
         else ControlTagHelper.Restore(output, ("name", Name));
-        output.TagName = "textarea";
-        output.TagMode = TagMode.StartTagAndEndTag;
-        ControlTagHelper.PutClassFirst(output, ControlState.Css(ControlTagHelper.Options(ControlKind.Text, Scale, Css)));
+        var (css, attrs) = ListRender.Page(output);
+        await ListRender.Replace<PemsTextarea>(renderer, output, new TextareaOptions { Scale = Scale, Css = Css, PageClass = css, Attributes = attrs }, await ListRender.InnerAfterFramework(output));
     }
 }
 
@@ -100,17 +97,16 @@ public sealed class PemsTextAreaTagHelper(IHtmlGenerator generator) : TextAreaTa
 /// With <c>asp-for</c> it derives from the built-in label helper, so the text comes from the model metadata when the tag has no content.
 /// </summary>
 [HtmlTargetElement("pems-label")]
-[PemsFacade(FacadeKind.Direct)]
-public sealed class PemsLabelTagHelper(IHtmlGenerator generator) : LabelTagHelper(generator)
+[PemsFacade(UiKeys.FormLabel)]
+public sealed class PemsLabelTagHelper(IHtmlGenerator generator, IPemsComponentRenderer renderer) : LabelTagHelper(generator)
 {
     [HtmlAttributeName("css")] public string? Css { get; set; }
 
     public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
     {
         if (For is not null) await base.ProcessAsync(context, output);
-        output.TagName = "label";
-        output.TagMode = TagMode.StartTagAndEndTag;
-        ControlTagHelper.PutClassFirst(output, ControlState.LabelCss(Css));
+        var (css, attrs) = ListRender.Page(output);
+        await ListRender.Replace<PemsFormLabel>(renderer, output, new FormLabelOptions { Css = Css, PageClass = css, Attributes = attrs }, await ListRender.InnerAfterFramework(output));
     }
 }
 
@@ -119,16 +115,15 @@ public sealed class PemsLabelTagHelper(IHtmlGenerator generator) : LabelTagHelpe
 /// <c>alert alert-danger</c> classes in front of the ones the built-in helper adds (validation-summary-errors / -valid) and keeps every other attribute.
 /// </summary>
 [HtmlTargetElement("pems-validation-summary")]
-[PemsFacade(FacadeKind.Direct)]
-public sealed class PemsValidationSummaryTagHelper(IHtmlGenerator generator) : ValidationSummaryTagHelper(generator)
+[PemsFacade(UiKeys.ValidationSummary)]
+public sealed class PemsValidationSummaryTagHelper(IHtmlGenerator generator, IPemsComponentRenderer renderer) : ValidationSummaryTagHelper(generator)
 {
     [HtmlAttributeName("css")] public string? Css { get; set; }
 
-    public override void Process(TagHelperContext context, TagHelperOutput output)
+    public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
     {
         base.Process(context, output);
-        output.TagName = "div";
-        output.TagMode = TagMode.StartTagAndEndTag;
-        ControlTagHelper.PutClassFirst(output, string.IsNullOrWhiteSpace(Css) ? "alert alert-danger" : "alert alert-danger " + Css.Trim());
+        var (css, attrs) = ListRender.Page(output);
+        await ListRender.Replace<PemsValidationSummary>(renderer, output, new ValidationSummaryOptions { Css = Css, PageClass = css, Attributes = attrs }, await ListRender.InnerAfterFramework(output));
     }
 }
