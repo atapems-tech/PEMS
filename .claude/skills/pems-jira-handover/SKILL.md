@@ -18,6 +18,6 @@ Every Jira write echoes the whole issue (about 3k tokens): one call per issue pe
 
 **Cancel** (owner's yes first): `transitionJiraIssue` `transitionName: "Cancelled"` with a comment giving the reason and the evidence (PR, test, ADR, the issue that replaces it). Cancelled sits in the Done category with resolution Done; do not count it as delivery.
 
-**Create** (after searching for an existing issue, rule 28): `createJiraIssue` uses `issueType` (not `issueTypeName`) and `parent` (the milestone epic); then one `editJiraIssue` for the title `[#<key number>] ...`, labels `area-*`, `doer-*`, `effort-*`, `plan-<key number>`, assignee and sprint; then `plan_sync.py new <key number> ...` and `check`.
+**Create** (first the standard way, guideline 00 section 1, 5e: JQL search for the same or a neighbouring issue and modify it if one fits, web research with sources written in the description or plan comment): `createJiraIssue` uses `issueType` (not `issueTypeName`) and `parent` (the milestone epic); then one `editJiraIssue` for the title `[#<key number>] ...`, labels `area-*`, `doer-*`, `effort-*`, `plan-<key number>`, assignee and sprint; then `plan_sync.py new <key number> ...` and `check`.
 
 **Read cheaply:** lists with `fields: ["summary","status","labels"]`, never `parent`/`description`/`comment`; scope from `python tools/plan-sync/plan_sync.py show <id>`. Never `text ~` searches.
