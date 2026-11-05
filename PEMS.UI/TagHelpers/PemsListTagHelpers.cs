@@ -1,5 +1,6 @@
 using PEMS.UI.Rendering;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using PEMS.UI.Components;
 using Microsoft.AspNetCore.Razor.TagHelpers;
 
 namespace PEMS.UI.TagHelpers;
@@ -56,30 +57,55 @@ internal static class PemsList
     }
 }
 
+/// <summary>What the list tag helpers share: render the component for a tag and replace the tag with it.</summary>
+internal static class ListRender
+{
+    public static async Task Replace<TComponent>(IPemsComponentRenderer renderer, TagHelperOutput output, object options, string? inner = null) where TComponent : Microsoft.AspNetCore.Components.IComponent
+    {
+        var parameters = new Dictionary<string, object?> { ["Options"] = options };
+        if (inner is not null) parameters["ChildContent"] = BlockTagHelper.Markup(inner);
+        BlockTagHelper.Replace(output, await renderer.RenderAsync<TComponent>(parameters));
+    }
+
+    /// <summary>The class and the other attributes the page wrote on the tag, kept on the component's element.</summary>
+    public static (string? Css, IReadOnlyDictionary<string, object>? Attributes) Page(TagHelperOutput output)
+        => (BlockTagHelper.PageClass(output), BlockTagHelper.PageAttributes(output, "class"));
+
+    public static async Task<string> Inner(TagHelperOutput output) => (await output.GetChildContentAsync()).GetContent();
+}
+
 /// <summary>Frame of the whole page: fills the window, the table scrolls inside. Sets the texts for every child tag.</summary>
 [HtmlTargetElement("pems-list-page")]
-[PemsFacade(FacadeKind.Direct)]
-public sealed class PemsListPageTagHelper : TagHelper
+[PemsFacade(UiKeys.ListPage)]
+public sealed class PemsListPageTagHelper(IPemsComponentRenderer renderer) : TagHelper
 {
     [HtmlAttributeName("texts")] public PemsListTexts Texts { get; set; } = default!;
 
     public override void Init(TagHelperContext context) => context.Items[PemsList.TextsKey] = Texts;
 
-    public override void Process(TagHelperContext context, TagHelperOutput output) => PemsList.Become(output, "div", "lp-page");
+    public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
+    {
+        var (css, attrs) = ListRender.Page(output);
+        await ListRender.Replace<PemsListPage>(renderer, output, new ListFrameOptions { CssClass = css, Attributes = attrs }, await ListRender.Inner(output));
+    }
 }
 
 /// <summary>The card that holds toolbar, KPI row, chips and grid.</summary>
 [HtmlTargetElement("pems-list-panel", ParentTag = "pems-list-page")]
-[PemsFacade(FacadeKind.Direct)]
-public sealed class PemsListPanelTagHelper : TagHelper
+[PemsFacade(UiKeys.ListPanel)]
+public sealed class PemsListPanelTagHelper(IPemsComponentRenderer renderer) : TagHelper
 {
-    public override void Process(TagHelperContext context, TagHelperOutput output) => PemsList.Become(output, "div", "lp-panel");
+    public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
+    {
+        var (css, attrs) = ListRender.Page(output);
+        await ListRender.Replace<PemsListPanel>(renderer, output, new ListFrameOptions { CssClass = css, Attributes = attrs }, await ListRender.Inner(output));
+    }
 }
 
 /// <summary>The one toolbar: title and count, then the page's search form and tools (child content).</summary>
 [HtmlTargetElement("pems-list-toolbar")]
-[PemsFacade(FacadeKind.Direct)]
-public sealed class PemsListToolbarTagHelper : TagHelper
+[PemsFacade(UiKeys.ListToolbar)]
+public sealed class PemsListToolbarTagHelper(IPemsComponentRenderer renderer) : TagHelper
 {
     [HtmlAttributeName("heading")] public string Heading { get; set; } = "";
     [HtmlAttributeName("heading-title")] public string? HeadingTitle { get; set; }
@@ -88,26 +114,10 @@ public sealed class PemsListToolbarTagHelper : TagHelper
     public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
     {
         var texts = PemsList.Texts(context);
-        PemsList.Become(output, "div", "lp-toolbar");
-        output.Attributes.SetAttribute("data-lp-toolbar", "");
-
-        var head = new TagBuilder("div");
-        head.AddCssClass("lp-tabs lp-head");
-        var h2 = new TagBuilder("h2");
-        if (!string.IsNullOrEmpty(HeadingTitle)) h2.Attributes["title"] = HeadingTitle;
-        h2.InnerHtml.Append(Heading);
-        head.InnerHtml.AppendHtml(h2);
-        if (Total.HasValue)
-        {
-            var total = new TagBuilder("span");
-            total.AddCssClass("lp-total");
-            total.Attributes["aria-label"] = $"{texts.Total}: {Total}";
-            total.InnerHtml.Append(Total.Value.ToString(System.Globalization.CultureInfo.InvariantCulture));
-            head.InnerHtml.AppendHtml(total);
-        }
-
-        output.PreContent.AppendHtml(head);
-        output.Content.AppendHtml(await output.GetChildContentAsync());
+        var (css, attrs) = ListRender.Page(output);
+        await ListRender.Replace<PemsListToolbar>(renderer, output,
+            new ListToolbarOptions { Heading = Heading, HeadingTitle = HeadingTitle, Total = Total, TotalLabel = texts.Total, CssClass = css, Attributes = attrs },
+            await ListRender.Inner(output));
     }
 }
 
@@ -116,8 +126,8 @@ public sealed class PemsListToolbarTagHelper : TagHelper
 /// With <c>search-type</c> the input is the shared autocomplete; picking a result opens it, Enter submits the form.
 /// </summary>
 [HtmlTargetElement("pems-list-search")]
-[PemsFacade(FacadeKind.Direct)]
-public sealed class PemsListSearchTagHelper : TagHelper
+[PemsFacade(UiKeys.ListSearch)]
+public sealed class PemsListSearchTagHelper(IPemsComponentRenderer renderer) : TagHelper
 {
     [HtmlAttributeName("id")] public string Id { get; set; } = "";
     [HtmlAttributeName("action")] public string Action { get; set; } = "";
@@ -132,67 +142,28 @@ public sealed class PemsListSearchTagHelper : TagHelper
     public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
     {
         var texts = PemsList.Texts(context);
-        PemsList.Become(output, "form", "lp-search");
-        output.Attributes.SetAttribute("id", Id);
-        output.Attributes.SetAttribute("method", "get");
-        output.Attributes.SetAttribute("action", Action);
-        output.Attributes.SetAttribute("role", "search");
-        output.Attributes.SetAttribute("data-lp-search", "");
-        if (LiveFilter) output.Attributes.SetAttribute("data-lp-live-filter", "");
-        // pems-list.js opens it on load when a search is active, so the user sees what filters the list
-        output.Attributes.SetAttribute("hidden", "hidden");
-
-        var input = new TagBuilder("input");
-        input.TagRenderMode = TagRenderMode.SelfClosing;
-        input.Attributes["type"] = "search";
-        input.Attributes["id"] = InputId;
-        input.Attributes["name"] = Name;
-        input.Attributes["value"] = Value ?? "";
-        input.Attributes["placeholder"] = Placeholder ?? "";
-        input.Attributes["aria-label"] = texts.Search;
-        input.Attributes["autocomplete"] = "off";
-        if (!string.IsNullOrEmpty(SearchType))
+        var (css, attrs) = ListRender.Page(output);
+        await ListRender.Replace<PemsListSearch>(renderer, output, new ListSearchOptions
         {
-            input.Attributes["data-pems-search"] = "";
-            input.Attributes["data-search-type"] = SearchType;
-        }
-
-        var submit = new TagBuilder("button");
-        submit.Attributes["type"] = "submit";
-        submit.AddCssClass("btn btn-sm btn-pems-solid");
-        submit.InnerHtml.Append(texts.Search);
-
-        var close = PemsList.IconTool("button", "bi-x-lg", texts.SearchClose);
-        close.Attributes["data-lp-search-close"] = "";
-
-        output.Content.AppendHtml(PemsList.Icon("bi-search"));
-        output.Content.AppendHtml(input);
-        output.Content.AppendHtml(await output.GetChildContentAsync());
-        output.Content.AppendHtml(submit);
-        output.Content.AppendHtml(close);
+            Id = Id, Action = Action, InputId = InputId, Name = Name, Value = Value, Placeholder = Placeholder, SearchType = SearchType, LiveFilter = LiveFilter,
+            SearchText = texts.Search, SearchCloseText = texts.SearchClose, CssClass = css, Attributes = attrs
+        }, await ListRender.Inner(output));
     }
 }
 
 /// <summary>Row of icon tools at the end of the toolbar. <c>search-for</c> adds the button that opens the search form.</summary>
 [HtmlTargetElement("pems-list-tools")]
-[PemsFacade(FacadeKind.Direct)]
-public sealed class PemsListToolsTagHelper : TagHelper
+[PemsFacade(UiKeys.ListTools)]
+public sealed class PemsListToolsTagHelper(IPemsComponentRenderer renderer) : TagHelper
 {
     [HtmlAttributeName("search-for")] public string? SearchFor { get; set; }
 
     public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
     {
         var texts = PemsList.Texts(context);
-        PemsList.Become(output, "div", "lp-tools");
-        if (!string.IsNullOrEmpty(SearchFor))
-        {
-            var open = PemsList.IconTool("button", "bi-search", texts.SearchOpen);
-            open.Attributes["data-lp-search-open"] = "";
-            open.Attributes["aria-controls"] = SearchFor;
-            open.Attributes["aria-expanded"] = "false";
-            output.PreContent.AppendHtml(open);
-        }
-        output.Content.AppendHtml(await output.GetChildContentAsync());
+        var (css, attrs) = ListRender.Page(output);
+        await ListRender.Replace<PemsListTools>(renderer, output,
+            new ListToolsOptions { SearchFor = SearchFor, SearchOpenText = texts.SearchOpen, CssClass = css, Attributes = attrs }, await ListRender.Inner(output));
     }
 }
 
@@ -201,8 +172,8 @@ public sealed class PemsListToolsTagHelper : TagHelper
 /// with Reset and Apply. The page decides which filters exist and what "active" means (<c>count</c>).
 /// </summary>
 [HtmlTargetElement("pems-list-filters")]
-[PemsFacade(FacadeKind.Direct)]
-public sealed class PemsListFiltersTagHelper : TagHelper
+[PemsFacade(UiKeys.ListFilters)]
+public sealed class PemsListFiltersTagHelper(IPemsComponentRenderer renderer) : TagHelper
 {
     [HtmlAttributeName("form-id")] public string FormId { get; set; } = "";
     [HtmlAttributeName("action")] public string Action { get; set; } = "";
@@ -212,53 +183,12 @@ public sealed class PemsListFiltersTagHelper : TagHelper
     public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
     {
         var texts = PemsList.Texts(context);
-        PemsList.Become(output, "div", "dropdown");
-
-        var button = PemsList.IconTool("button", "bi-funnel", texts.Filters);
-        button.Attributes["id"] = FormId + "Btn";
-        button.Attributes["data-bs-toggle"] = "dropdown";
-        button.Attributes["data-bs-auto-close"] = "outside";
-        button.Attributes["aria-expanded"] = "false";
-        if (Count > 0)
+        var (css, attrs) = ListRender.Page(output);
+        await ListRender.Replace<PemsListFilters>(renderer, output, new ListFiltersOptions
         {
-            var badge = new TagBuilder("span");
-            badge.AddCssClass("lp-badge");
-            badge.InnerHtml.Append(Count.ToString(System.Globalization.CultureInfo.InvariantCulture));
-            badge.InnerHtml.AppendHtml(PemsList.Hidden(" " + texts.ActiveFilters));
-            button.InnerHtml.AppendHtml(badge);
-        }
-
-        var body = new TagBuilder("div");
-        body.AddCssClass("lp-fp-body");
-        body.InnerHtml.AppendHtml(await output.GetChildContentAsync());
-
-        var foot = new TagBuilder("div");
-        foot.AddCssClass("lp-fp-foot");
-        var reset = new TagBuilder("a");
-        reset.Attributes["href"] = ResetHref ?? Action;            // without a reset target: the list without these filters
-        reset.AddCssClass("btn btn-sm btn-link");
-        reset.InnerHtml.Append(texts.ResetFilters);
-        foot.InnerHtml.AppendHtml(reset);
-        var apply = new TagBuilder("button");
-        apply.Attributes["type"] = "submit";
-        apply.AddCssClass("btn btn-sm btn-pems-solid");
-        apply.InnerHtml.AppendHtml(PemsList.Icon("bi-funnel"));
-        apply.InnerHtml.Append(" " + texts.ApplyFilters);
-        foot.InnerHtml.AppendHtml(apply);
-
-        var form = new TagBuilder("form");
-        form.Attributes["method"] = "get";
-        form.Attributes["action"] = Action;
-        form.Attributes["id"] = FormId;
-        form.InnerHtml.AppendHtml(body);
-        form.InnerHtml.AppendHtml(foot);
-
-        var menu = new TagBuilder("div");
-        menu.AddCssClass("dropdown-menu dropdown-menu-end lp-filter-pop p-0");
-        menu.InnerHtml.AppendHtml(form);
-
-        output.Content.AppendHtml(button);
-        output.Content.AppendHtml(menu);
+            FormId = FormId, Action = Action, Count = Count, ResetHref = ResetHref, FiltersText = texts.Filters, ActiveFiltersText = texts.ActiveFilters,
+            ResetFiltersText = texts.ResetFilters, ApplyFiltersText = texts.ApplyFilters, CssClass = css, Attributes = attrs
+        }, await ListRender.Inner(output));
     }
 }
 
@@ -267,8 +197,8 @@ public sealed class PemsListFiltersTagHelper : TagHelper
 /// then <c>items</c>; the item whose value equals <c>value</c> is selected. The page owns the values and their texts.
 /// </summary>
 [HtmlTargetElement("pems-list-filter-select", TagStructure = TagStructure.WithoutEndTag)]
-[PemsFacade(FacadeKind.Direct)]
-public sealed class PemsListFilterSelectTagHelper : TagHelper
+[PemsFacade(UiKeys.ListFilterSelect)]
+public sealed class PemsListFilterSelectTagHelper(IPemsComponentRenderer renderer) : TagHelper
 {
     [HtmlAttributeName("id")] public string Id { get; set; } = "";
     [HtmlAttributeName("name")] public string Name { get; set; } = "";
@@ -277,36 +207,13 @@ public sealed class PemsListFilterSelectTagHelper : TagHelper
     [HtmlAttributeName("all-text")] public string? AllText { get; set; }
     [HtmlAttributeName("items")] public IEnumerable<SelectListItem> Items { get; set; } = Array.Empty<SelectListItem>();
 
-    public override void Process(TagHelperContext context, TagHelperOutput output)
-    {
-        output.TagName = "div";
-        output.TagMode = TagMode.StartTagAndEndTag;
-
-        var label = new TagBuilder("label");
-        label.AddCssClass("lp-lbl");
-        label.Attributes["for"] = Id;
-        label.InnerHtml.Append(Label);
-
-        var select = new TagBuilder("select");
-        select.Attributes["id"] = Id;
-        select.Attributes["name"] = Name;
-        select.AddCssClass("form-select form-select-sm");
-        if (AllText != null) select.InnerHtml.AppendHtml(Option("", AllText, string.IsNullOrEmpty(Value)));
-        foreach (var item in Items)
-            select.InnerHtml.AppendHtml(Option(item.Value ?? "", item.Text ?? "", !string.IsNullOrEmpty(Value) && string.Equals(item.Value, Value, StringComparison.Ordinal)));
-
-        output.Content.AppendHtml(label);
-        output.Content.AppendHtml(select);
-    }
-
-    private static TagBuilder Option(string value, string text, bool selected)
-    {
-        var o = new TagBuilder("option");
-        o.Attributes["value"] = value;
-        if (selected) o.Attributes["selected"] = "selected";
-        o.InnerHtml.Append(text);
-        return o;
-    }
+    public override Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
+        => ListRender.Replace<PemsListFilterSelect>(renderer, output, new ListFilterSelectOptions
+        {
+            Id = Id, Name = Name, Label = Label, Value = Value, AllText = AllText,
+            Items = Items.Select(i => new ListFilterOption(i.Value ?? "", i.Text ?? "")).ToList(),
+            Attributes = BlockTagHelper.PageAttributes(output)
+        });
 }
 
 /// <summary>
@@ -314,8 +221,8 @@ public sealed class PemsListFilterSelectTagHelper : TagHelper
 /// (for example an upload) without a modal. <c>primary</c> shows the label next to the icon, like the New button.
 /// </summary>
 [HtmlTargetElement("pems-list-popover")]
-[PemsFacade(FacadeKind.Direct)]
-public sealed class PemsListPopoverTagHelper : TagHelper
+[PemsFacade(UiKeys.ListPopover)]
+public sealed class PemsListPopoverTagHelper(IPemsComponentRenderer renderer) : TagHelper
 {
     [HtmlAttributeName("id")] public string Id { get; set; } = "";
     [HtmlAttributeName("icon")] public string Icon { get; set; } = "bi-three-dots";
@@ -324,227 +231,122 @@ public sealed class PemsListPopoverTagHelper : TagHelper
 
     public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
     {
-        PemsList.Become(output, "div", "dropdown");
-
-        TagBuilder button;
-        if (Primary)
-        {
-            button = new TagBuilder("button");
-            button.Attributes["type"] = "button";
-            button.AddCssClass("btn btn-sm btn-pems-solid lp-compose");     // same look as <pems-list-new>
-            button.InnerHtml.AppendHtml(PemsList.Icon(Icon));
-            button.InnerHtml.Append(" ");
-            var text = new TagBuilder("span");
-            text.AddCssClass("lp-compose-label");
-            text.InnerHtml.Append(Label);
-            button.InnerHtml.AppendHtml(text);
-        }
-        else button = PemsList.IconTool("button", Icon, Label);
-        button.Attributes["id"] = Id + "Btn";
-        button.Attributes["data-bs-toggle"] = "dropdown";
-        button.Attributes["data-bs-auto-close"] = "outside";
-        button.Attributes["aria-expanded"] = "false";
-        button.Attributes["aria-controls"] = Id;
-
-        var body = new TagBuilder("div");
-        body.AddCssClass("lp-fp-body");
-        body.InnerHtml.AppendHtml(await output.GetChildContentAsync());
-
-        var menu = new TagBuilder("div");
-        menu.Attributes["id"] = Id;
-        menu.Attributes["aria-labelledby"] = Id + "Btn";
-        menu.AddCssClass("dropdown-menu dropdown-menu-end lp-filter-pop p-0");
-        menu.InnerHtml.AppendHtml(body);
-
-        output.Content.AppendHtml(button);
-        output.Content.AppendHtml(menu);
+        var (css, attrs) = ListRender.Page(output);
+        await ListRender.Replace<PemsListPopover>(renderer, output,
+            new ListPopoverOptions { Id = Id, Icon = Icon, Label = Label, Primary = Primary, CssClass = css, Attributes = attrs }, await ListRender.Inner(output));
     }
 }
 
 /// <summary>Button that shows/hides the KPI row (<c>target</c> = its id); the choice is kept per browser under <c>storage-key</c>.
 /// <c>open</c> (W2b) shows the row until the viewer hides it, for pages whose counts are the point (give the row <c>open</c> too).</summary>
 [HtmlTargetElement("pems-list-kpi-toggle", TagStructure = TagStructure.WithoutEndTag)]
-[PemsFacade(FacadeKind.Direct)]
-public sealed class PemsListKpiToggleTagHelper : TagHelper
+[PemsFacade(UiKeys.ListKpiToggle)]
+public sealed class PemsListKpiToggleTagHelper(IPemsComponentRenderer renderer) : TagHelper
 {
     [HtmlAttributeName("target")] public string Target { get; set; } = "";
     [HtmlAttributeName("storage-key")] public string StorageKey { get; set; } = "";
     [HtmlAttributeName("open")] public bool Open { get; set; }
 
-    public override void Process(TagHelperContext context, TagHelperOutput output)
-    {
-        var b = PemsList.IconTool("button", "bi-bar-chart-line", PemsList.Texts(context).Kpis);
-        b.Attributes["data-lp-kpi-toggle"] = "";
-        b.Attributes["aria-controls"] = Target;
-        b.Attributes["aria-expanded"] = Open ? "true" : "false";
-        b.Attributes["data-storage-key"] = StorageKey;
-        if (Open) b.Attributes["data-lp-open"] = "1";
-        output.TagName = null;
-        output.TagMode = TagMode.StartTagAndEndTag;
-        output.Content.SetHtmlContent(b);
-    }
+    public override Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
+        => ListRender.Replace<PemsListKpiToggle>(renderer, output, new ListKpiToggleOptions { Target = Target, StorageKey = StorageKey, Open = Open, Label = PemsList.Texts(context).Kpis });
 }
 
 /// <summary>Excel export of the filtered list (the page builds the link with its filters). <c>label</c> (W2) replaces the
 /// default text when the export is not the filtered list (for example an export of every row).</summary>
 [HtmlTargetElement("pems-list-export", TagStructure = TagStructure.WithoutEndTag)]
-[PemsFacade(FacadeKind.Direct)]
-public sealed class PemsListExportTagHelper : TagHelper
+[PemsFacade(UiKeys.ListExport)]
+public sealed class PemsListExportTagHelper(IPemsComponentRenderer renderer) : TagHelper
 {
     [HtmlAttributeName("href")] public string Href { get; set; } = "";
     [HtmlAttributeName("label")] public string? Label { get; set; }
 
-    public override void Process(TagHelperContext context, TagHelperOutput output)
-    {
-        var text = PemsList.Texts(context).Export;
-        var a = PemsList.IconTool("a", "bi-file-earmark-excel", string.IsNullOrEmpty(Label) ? text : Label);
-        a.Attributes["href"] = Href;
-        output.TagName = null;
-        output.TagMode = TagMode.StartTagAndEndTag;
-        output.Content.SetHtmlContent(a);
-    }
+    public override Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
+        => ListRender.Replace<PemsListExport>(renderer, output, new ListExportOptions { Href = Href, Label = string.IsNullOrEmpty(Label) ? PemsList.Texts(context).Export : Label });
 }
 
 /// <summary>Resets the stored column widths of the grid (hidden on phones, where columns are not resized).</summary>
 [HtmlTargetElement("pems-list-reset-columns", TagStructure = TagStructure.WithoutEndTag)]
-[PemsFacade(FacadeKind.Direct)]
-public sealed class PemsListResetColumnsTagHelper : TagHelper
+[PemsFacade(UiKeys.ListResetColumns)]
+public sealed class PemsListResetColumnsTagHelper(IPemsComponentRenderer renderer) : TagHelper
 {
     [HtmlAttributeName("grid-key")] public string GridKey { get; set; } = "";
 
-    public override void Process(TagHelperContext context, TagHelperOutput output)
-    {
-        var b = PemsList.IconTool("button", "bi-arrow-counterclockwise", PemsList.Texts(context).ResetColumns);
-        b.AddCssClass("lp-hide-xs");
-        b.Attributes["data-lp-reset-columns"] = GridKey;
-        output.TagName = null;
-        output.TagMode = TagMode.StartTagAndEndTag;
-        output.Content.SetHtmlContent(b);
-    }
+    public override Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
+        => ListRender.Replace<PemsListResetColumns>(renderer, output, new ListResetColumnsOptions { GridKey = GridKey, Label = PemsList.Texts(context).ResetColumns });
 }
 
 /// <summary>The primary "New ..." action; the label collapses to the icon on phones. <c>href</c> opens a page;
 /// <c>modal</c> (an element id, W2) opens the page's own Bootstrap modal instead.</summary>
 [HtmlTargetElement("pems-list-new", TagStructure = TagStructure.WithoutEndTag)]
-[PemsFacade(FacadeKind.Direct)]
-public sealed class PemsListNewTagHelper : TagHelper
+[PemsFacade(UiKeys.ListNew)]
+public sealed class PemsListNewTagHelper(IPemsComponentRenderer renderer) : TagHelper
 {
     [HtmlAttributeName("href")] public string Href { get; set; } = "";
     [HtmlAttributeName("modal")] public string? Modal { get; set; }
     [HtmlAttributeName("text")] public string Text { get; set; } = "";
 
-    public override void Process(TagHelperContext context, TagHelperOutput output)
-    {
-        TagBuilder a;
-        if (!string.IsNullOrEmpty(Modal))
-        {
-            a = new TagBuilder("button");
-            a.Attributes["type"] = "button";
-            a.Attributes["data-bs-toggle"] = "modal";
-            a.Attributes["data-bs-target"] = "#" + Modal;
-        }
-        else
-        {
-            a = new TagBuilder("a");
-            a.Attributes["href"] = Href;
-        }
-        a.AddCssClass("btn btn-sm btn-pems-solid lp-compose");
-        a.InnerHtml.AppendHtml(PemsList.Icon("bi-plus-lg"));
-        a.InnerHtml.Append(" ");
-        var label = new TagBuilder("span");
-        label.AddCssClass("lp-compose-label");
-        label.InnerHtml.Append(Text);
-        a.InnerHtml.AppendHtml(label);
-        output.TagName = null;
-        output.TagMode = TagMode.StartTagAndEndTag;
-        output.Content.SetHtmlContent(a);
-    }
+    public override Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
+        => ListRender.Replace<PemsListNew>(renderer, output, new ListNewOptions { Href = Href, Modal = Modal, Text = Text });
 }
 
 /// <summary>The KPI row; hidden until the KPI toggle shows it, or shown first when <c>open</c> (W2b). Child content = the page's KPI chips.</summary>
 [HtmlTargetElement("pems-list-kpis")]
-[PemsFacade(FacadeKind.Direct)]
-public sealed class PemsListKpisTagHelper : TagHelper
+[PemsFacade(UiKeys.ListKpis)]
+public sealed class PemsListKpisTagHelper(IPemsComponentRenderer renderer) : TagHelper
 {
     [HtmlAttributeName("id")] public string Id { get; set; } = "";
     [HtmlAttributeName("open")] public bool Open { get; set; }
 
-    public override void Process(TagHelperContext context, TagHelperOutput output)
+    public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
     {
-        PemsList.Become(output, "div", "lp-kpis");
-        output.Attributes.SetAttribute("id", Id);
-        if (!Open) output.Attributes.SetAttribute("hidden", "hidden");
+        var (css, attrs) = ListRender.Page(output);
+        await ListRender.Replace<PemsListKpis>(renderer, output, new ListKpisOptions { Id = Id, Open = Open, CssClass = css, Attributes = attrs }, await ListRender.Inner(output));
     }
 }
 
 /// <summary>Active-filter chips; renders nothing when there is no chip. <c>reset-href</c> adds "reset all" from two chips on.</summary>
 [HtmlTargetElement("pems-list-chips")]
-[PemsFacade(FacadeKind.Direct)]
-public sealed class PemsListChipsTagHelper : TagHelper
+[PemsFacade(UiKeys.ListChips)]
+public sealed class PemsListChipsTagHelper(IPemsComponentRenderer renderer) : TagHelper
 {
     [HtmlAttributeName("reset-href")] public string? ResetHref { get; set; }
 
     public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
     {
         var texts = PemsList.Texts(context);
-        var chips = await output.GetChildContentAsync();
-        var html = chips.GetContent();
+        var html = await ListRender.Inner(output);
         if (string.IsNullOrWhiteSpace(html)) { output.SuppressOutput(); return; }
 
-        PemsList.Become(output, "div", "lp-chips");
-        var ul = new TagBuilder("ul");
-        ul.AddCssClass("pems-filter-chips list-unstyled mb-0");
-        ul.Attributes["aria-label"] = texts.ActiveFilters;
-        ul.InnerHtml.AppendHtml(chips);
-        output.Content.SetHtmlContent(ul);
-
+        var (css, attrs) = ListRender.Page(output);
         var count = System.Text.RegularExpressions.Regex.Matches(html, "class=\"pems-filter-chip\"").Count;
-        if (!string.IsNullOrEmpty(ResetHref) && count > 1)
-        {
-            var reset = new TagBuilder("a");
-            reset.Attributes["href"] = ResetHref;
-            reset.AddCssClass("small");
-            reset.InnerHtml.Append(texts.ResetAll);
-            output.Content.AppendHtml(reset);
-        }
+        await ListRender.Replace<PemsListChips>(renderer, output,
+            new ListChipsOptions { ResetHref = ResetHref, Count = count, ActiveFiltersText = texts.ActiveFilters, ResetAllText = texts.ResetAll, CssClass = css, Attributes = attrs }, html);
     }
 }
 
 /// <summary>One active filter: "label: value" with a link that removes it.</summary>
 [HtmlTargetElement("pems-list-chip", TagStructure = TagStructure.WithoutEndTag)]
-[PemsFacade(FacadeKind.Direct)]
-public sealed class PemsListChipTagHelper : TagHelper
+[PemsFacade(UiKeys.ListChip)]
+public sealed class PemsListChipTagHelper(IPemsComponentRenderer renderer) : TagHelper
 {
     [HtmlAttributeName("label")] public string Label { get; set; } = "";
     [HtmlAttributeName("value")] public string? Value { get; set; }
     [HtmlAttributeName("remove-href")] public string RemoveHref { get; set; } = "";
 
-    public override void Process(TagHelperContext context, TagHelperOutput output)
-    {
-        var texts = PemsList.Texts(context);
-        var li = new TagBuilder("li");
-        li.AddCssClass("pems-filter-chip");
-        var span = new TagBuilder("span");
-        span.InnerHtml.Append(string.IsNullOrEmpty(Value) ? Label : $"{Label}: {Value}");
-        var a = new TagBuilder("a");
-        a.Attributes["href"] = RemoveHref;
-        a.Attributes["title"] = texts.RemoveFilter;
-        a.Attributes["aria-label"] = $"{texts.RemoveFilter}: {Label}";
-        a.InnerHtml.AppendHtml(PemsList.Icon("bi-x"));
-        li.InnerHtml.AppendHtml(span);
-        li.InnerHtml.AppendHtml(a);
-        output.TagName = null;
-        output.TagMode = TagMode.StartTagAndEndTag;
-        output.Content.SetHtmlContent(li);
-    }
+    public override Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
+        => ListRender.Replace<PemsListChip>(renderer, output, new ListChipOptions { Label = Label, Value = Value, RemoveHref = RemoveHref, RemoveText = PemsList.Texts(context).RemoveFilter });
 }
 
 /// <summary>Holds the scrolling table and the footer.</summary>
 [HtmlTargetElement("pems-list-grid")]
-[PemsFacade(FacadeKind.Direct)]
-public sealed class PemsListGridTagHelper : TagHelper
+[PemsFacade(UiKeys.ListGrid)]
+public sealed class PemsListGridTagHelper(IPemsComponentRenderer renderer) : TagHelper
 {
-    public override void Process(TagHelperContext context, TagHelperOutput output) => PemsList.Become(output, "div", "lp-tablewrap");
+    public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
+    {
+        var (css, attrs) = ListRender.Page(output);
+        await ListRender.Replace<PemsListGrid>(renderer, output, new ListFrameOptions { CssClass = css, Attributes = attrs }, await ListRender.Inner(output));
+    }
 }
 
 /// <summary>
@@ -553,8 +355,8 @@ public sealed class PemsListGridTagHelper : TagHelper
 /// says so and offers "clear all" (<c>clear-href</c>, the unfiltered list).
 /// </summary>
 [HtmlTargetElement("pems-list-table")]
-[PemsFacade(FacadeKind.Direct)]
-public sealed class PemsListTableTagHelper : TagHelper
+[PemsFacade(UiKeys.ListTable)]
+public sealed class PemsListTableTagHelper(IPemsComponentRenderer renderer) : TagHelper
 {
     [HtmlAttributeName("grid-key")] public string? GridKey { get; set; }
     [HtmlAttributeName("empty")] public bool Empty { get; set; }
@@ -565,42 +367,25 @@ public sealed class PemsListTableTagHelper : TagHelper
     public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
     {
         var texts = PemsList.Texts(context);
-        PemsList.Become(output, "div", "table-responsive pems-grid-scroll table-scroll-area lp-scroll");
-
-        var table = new TagBuilder("table");
-        table.AddCssClass("table table-enterprise pems-grid-table pems-compact-rows mb-0 lp-table");
-        if (!string.IsNullOrEmpty(GridKey)) table.Attributes["data-grid-key"] = GridKey;
-        table.InnerHtml.AppendHtml(await output.GetChildContentAsync());
-        output.Content.SetHtmlContent(table);
-
-        if (!Empty) return;
-        var empty = new TagBuilder("div");
-        empty.AddCssClass("lp-empty");
-        empty.InnerHtml.AppendHtml(PemsList.Icon("bi-inbox"));
-        var strong = new TagBuilder("strong");
-        strong.InnerHtml.Append(EmptyText ?? "");
-        empty.InnerHtml.AppendHtml(strong);
-        if (Filtered)
+        var (css, attrs) = ListRender.Page(output);
+        await ListRender.Replace<PemsListTable>(renderer, output, new ListTableOptions
         {
-            var hint = new TagBuilder("span");
-            hint.InnerHtml.Append(texts.NoResultsHint);
-            var clear = new TagBuilder("a");
-            clear.Attributes["href"] = ClearHref ?? "";
-            clear.AddCssClass("btn btn-sm btn-outline-secondary mt-2");
-            clear.InnerHtml.Append(texts.ClearAll);
-            empty.InnerHtml.AppendHtml(hint);
-            empty.InnerHtml.AppendHtml(clear);
-        }
-        output.Content.AppendHtml(empty);
+            GridKey = GridKey, Empty = Empty, EmptyText = EmptyText, Filtered = Filtered, ClearHref = ClearHref,
+            NoResultsHint = texts.NoResultsHint, ClearAllText = texts.ClearAll, CssClass = css, Attributes = attrs
+        }, await ListRender.Inner(output));
     }
 }
 
 /// <summary>Footer under the table (the pager).</summary>
 [HtmlTargetElement("pems-list-footer")]
-[PemsFacade(FacadeKind.Direct)]
-public sealed class PemsListFooterTagHelper : TagHelper
+[PemsFacade(UiKeys.ListFooter)]
+public sealed class PemsListFooterTagHelper(IPemsComponentRenderer renderer) : TagHelper
 {
-    public override void Process(TagHelperContext context, TagHelperOutput output) => PemsList.Become(output, "div", "lp-footer");
+    public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
+    {
+        var (css, attrs) = ListRender.Page(output);
+        await ListRender.Replace<PemsListFooter>(renderer, output, new ListFrameOptions { CssClass = css, Attributes = attrs }, await ListRender.Inner(output));
+    }
 }
 
 /// <summary>
@@ -609,23 +394,16 @@ public sealed class PemsListFooterTagHelper : TagHelper
 /// ticked ids as hidden inputs named <c>name</c> when it is submitted. <c>count-text</c> is the localised count, "{0}" = number ticked.
 /// </summary>
 [HtmlTargetElement("pems-list-bulk")]
-[PemsFacade(FacadeKind.Direct)]
-public sealed class PemsListBulkTagHelper : TagHelper
+[PemsFacade(UiKeys.ListBulk)]
+public sealed class PemsListBulkTagHelper(IPemsComponentRenderer renderer) : TagHelper
 {
     [HtmlAttributeName("count-text")] public string CountText { get; set; } = "{0}";
     [HtmlAttributeName("name")] public string Name { get; set; } = "ids";
 
-    public override void Process(TagHelperContext context, TagHelperOutput output)
+    public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
     {
-        PemsList.Become(output, "div", "lp-bulk");
-        output.Attributes.SetAttribute("data-lp-bulk", Name);
-        output.Attributes.SetAttribute("data-count-text", CountText);
-        output.Attributes.SetAttribute("hidden", "hidden");
-        var count = new TagBuilder("span");
-        count.AddCssClass("lp-bulk-count");
-        count.Attributes["data-lp-bulk-count"] = "";
-        count.Attributes["aria-live"] = "polite";
-        output.PreContent.AppendHtml(count);
+        var (css, attrs) = ListRender.Page(output);
+        await ListRender.Replace<PemsListBulk>(renderer, output, new ListBulkOptions { CountText = CountText, Name = Name, CssClass = css, Attributes = attrs }, await ListRender.Inner(output));
     }
 }
 
@@ -635,8 +413,8 @@ public sealed class PemsListBulkTagHelper : TagHelper
 /// <c>label</c> the localised tool tip and accessible name.
 /// </summary>
 [HtmlTargetElement("pems-list-menu")]
-[PemsFacade(FacadeKind.Direct)]
-public sealed class PemsListMenuTagHelper : TagHelper
+[PemsFacade(UiKeys.ListMenu)]
+public sealed class PemsListMenuTagHelper(IPemsComponentRenderer renderer) : TagHelper
 {
     [HtmlAttributeName("id")] public string Id { get; set; } = "";
     [HtmlAttributeName("icon")] public string Icon { get; set; } = "bi-three-dots";
@@ -644,19 +422,7 @@ public sealed class PemsListMenuTagHelper : TagHelper
 
     public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
     {
-        PemsList.Become(output, "div", "dropdown");
-        output.Attributes.RemoveAll("id");
-        var button = PemsList.IconTool("button", Icon, Label);
-        if (!string.IsNullOrEmpty(Id)) button.Attributes["id"] = Id;
-        button.Attributes["data-bs-toggle"] = "dropdown";
-        button.Attributes["aria-expanded"] = "false";
-
-        var menu = new TagBuilder("ul");
-        menu.AddCssClass("dropdown-menu dropdown-menu-end lp-menu");
-        if (!string.IsNullOrEmpty(Id)) menu.Attributes["aria-labelledby"] = Id;
-        menu.InnerHtml.AppendHtml(await output.GetChildContentAsync());
-
-        output.Content.AppendHtml(button);
-        output.Content.AppendHtml(menu);
+        var (css, attrs) = ListRender.Page(output);
+        await ListRender.Replace<PemsListMenu>(renderer, output, new ListMenuOptions { Id = Id, Icon = Icon, Label = Label, CssClass = css, Attributes = attrs }, await ListRender.Inner(output));
     }
 }

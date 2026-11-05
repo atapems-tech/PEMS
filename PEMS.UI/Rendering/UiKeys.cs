@@ -35,4 +35,25 @@ public static class UiKeys
     public const string InfoGrid = "info-grid";
     public const string InfoItem = "info-item";
     public const string KpiTile = "kpi-tile";
+    public const string ListPage = "list-page";
+    public const string ListPanel = "list-panel";
+    public const string ListToolbar = "list-toolbar";
+    public const string ListIconTool = "list-icon-tool";
+    public const string ListSearch = "list-search";
+    public const string ListTools = "list-tools";
+    public const string ListFilters = "list-filters";
+    public const string ListFilterSelect = "list-filter-select";
+    public const string ListPopover = "list-popover";
+    public const string ListKpiToggle = "list-kpi-toggle";
+    public const string ListExport = "list-export";
+    public const string ListResetColumns = "list-reset-columns";
+    public const string ListNew = "list-new";
+    public const string ListKpis = "list-kpis";
+    public const string ListChips = "list-chips";
+    public const string ListChip = "list-chip";
+    public const string ListGrid = "list-grid";
+    public const string ListTable = "list-table";
+    public const string ListFooter = "list-footer";
+    public const string ListBulk = "list-bulk";
+    public const string ListMenu = "list-menu";
 }

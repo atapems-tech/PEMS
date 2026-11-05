@@ -50,6 +50,27 @@ public sealed class PemsComponentRegistry : IPemsComponentRegistry
         Register(UiKeys.InfoGrid, typeof(PemsInfoGrid));
         Register(UiKeys.InfoItem, typeof(PemsInfoItem));
         Register(UiKeys.KpiTile, typeof(PemsKpiTile));
+        Register(UiKeys.ListPage, typeof(PemsListPage));
+        Register(UiKeys.ListPanel, typeof(PemsListPanel));
+        Register(UiKeys.ListToolbar, typeof(PemsListToolbar));
+        Register(UiKeys.ListIconTool, typeof(PemsListIconTool));
+        Register(UiKeys.ListSearch, typeof(PemsListSearch));
+        Register(UiKeys.ListTools, typeof(PemsListTools));
+        Register(UiKeys.ListFilters, typeof(PemsListFilters));
+        Register(UiKeys.ListFilterSelect, typeof(PemsListFilterSelect));
+        Register(UiKeys.ListPopover, typeof(PemsListPopover));
+        Register(UiKeys.ListKpiToggle, typeof(PemsListKpiToggle));
+        Register(UiKeys.ListExport, typeof(PemsListExport));
+        Register(UiKeys.ListResetColumns, typeof(PemsListResetColumns));
+        Register(UiKeys.ListNew, typeof(PemsListNew));
+        Register(UiKeys.ListKpis, typeof(PemsListKpis));
+        Register(UiKeys.ListChips, typeof(PemsListChips));
+        Register(UiKeys.ListChip, typeof(PemsListChip));
+        Register(UiKeys.ListGrid, typeof(PemsListGrid));
+        Register(UiKeys.ListTable, typeof(PemsListTable));
+        Register(UiKeys.ListFooter, typeof(PemsListFooter));
+        Register(UiKeys.ListBulk, typeof(PemsListBulk));
+        Register(UiKeys.ListMenu, typeof(PemsListMenu));
     }
 
     public void Register(string key, Type componentType)

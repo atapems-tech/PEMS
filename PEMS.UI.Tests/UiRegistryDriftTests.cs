@@ -14,7 +14,7 @@ namespace PEMS.UI.Tests;
 public sealed class UiRegistryDriftTests
 {
     /// <summary>Lower this number when a Direct facade moves to a registered component; never raise it (new tags get a component first, guideline 02).</summary>
-    private const int DirectFacadeBaseline = 44;
+    private const int DirectFacadeBaseline = 24;
 
     private static string Here([CallerFilePath] string p = "") => p;
     private static string Root() => Path.GetFullPath(Path.Combine(Path.GetDirectoryName(Here())!, ".."));
@@ -45,10 +45,10 @@ public sealed class UiRegistryDriftTests
             var a = t.GetCustomAttribute<PemsFacadeAttribute>();
             if (a is not { Kind: FacadeKind.Component }) continue;
             Assert.Contains(a.Key!, registered);
-            // the facade must really render the component the key stands for (a typed RenderAsync<TComponent> call in its file)
+            // the facade must really render the component the key stands for (a typed RenderAsync<TComponent> call, or the list family's ListRender.Replace<TComponent>, in its file)
             var source = Directory.EnumerateFiles(Path.Combine(Root(), "PEMS.UI", "TagHelpers"), "*.cs").Select(File.ReadAllText).First(s => s.Contains("class " + t.Name));
             var component = registry.Resolve(a.Key!).Name;
-            Assert.True(source.Contains($"RenderAsync<{component}>"), $"{t.Name} declares key '{a.Key}' but does not render {component}.");
+            Assert.True((source.Contains($"RenderAsync<{component}>") || source.Contains($"ListRender.Replace<{component}>")), $"{t.Name} declares key '{a.Key}' but does not render {component}.");
         }
     }
 
@@ -62,6 +62,10 @@ public sealed class UiRegistryDriftTests
     [Fact]
     public void The_registry_registers_with_the_constants_never_with_a_string()
         => Assert.DoesNotMatch(new Regex(@"Register\(""", RegexOptions.None), File.ReadAllText(Path.Combine(Root(), "PEMS.UI", "Rendering", "PemsComponentRegistry.cs")));
+
+    [Fact]
+    public void There_is_no_exempt_facade_kind()
+        => Assert.Equal(new[] { "Component", "Direct", "Part" }, Enum.GetNames<FacadeKind>().OrderBy(n => n, StringComparer.Ordinal));    // owner decision 2026-11-05: no Native kind; Direct is conversion debt only
 
     [Fact]
     public void Direct_facades_never_grow_beyond_the_baseline()
