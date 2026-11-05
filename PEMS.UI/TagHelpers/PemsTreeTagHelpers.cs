@@ -1,3 +1,4 @@
+using PEMS.UI.Rendering;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Razor.TagHelpers;
 
@@ -27,6 +28,7 @@ public sealed class PemsTreeItemContext
 /// Child content: <c>pems-tree-item</c>s. A class or id on the tag is kept.
 /// </summary>
 [HtmlTargetElement("pems-tree")]
+[PemsFacade(FacadeKind.Direct)]
 public sealed class PemsTreeTagHelper : TagHelper
 {
     [HtmlAttributeName("label")] public string Label { get; set; } = "";
@@ -52,6 +54,7 @@ public sealed class PemsTreeTagHelper : TagHelper
 /// with the page's own markup; nested <c>pems-tree-item</c>s are its children.
 /// </summary>
 [HtmlTargetElement("pems-tree-item")]
+[PemsFacade(FacadeKind.Direct)]
 public sealed class PemsTreeItemTagHelper : TagHelper
 {
     [HtmlAttributeName("label")] public string Label { get; set; } = "";
@@ -133,6 +136,7 @@ public sealed class PemsTreeItemTagHelper : TagHelper
 
 /// <summary>The page's own markup for the label of the enclosing <c>pems-tree-item</c> (a colour dot, an icon, a badge).</summary>
 [HtmlTargetElement("pems-tree-label", ParentTag = "pems-tree-item")]
+[PemsFacade(FacadeKind.Direct)]
 public sealed class PemsTreeLabelTagHelper : TagHelper
 {
     public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)

@@ -1,3 +1,4 @@
+using PEMS.UI.Rendering;
 using Microsoft.AspNetCore.Antiforgery;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
@@ -60,6 +61,7 @@ internal static class PemsRelated
 /// <c>empty</c>, the empty text. <c>id</c> lets other parts of the page link to it.
 /// </summary>
 [HtmlTargetElement("pems-related-list")]
+[PemsFacade(FacadeKind.Direct)]
 public sealed class PemsRelatedListTagHelper : TagHelper
 {
     [HtmlAttributeName("id")] public string? Id { get; set; }
@@ -105,6 +107,7 @@ public sealed class PemsRelatedListTagHelper : TagHelper
 
 /// <summary>The child table (thead and tbody are the page's child content), scrolling sideways on narrow screens.</summary>
 [HtmlTargetElement("pems-related-table")]
+[PemsFacade(FacadeKind.Direct)]
 public sealed class PemsRelatedTableTagHelper : TagHelper
 {
     [HtmlAttributeName("id")] public string? Id { get; set; }
@@ -132,6 +135,7 @@ public sealed class PemsRelatedTableTagHelper : TagHelper
 /// a submit button (<c>submit-label</c>; icon only when <c>icon-only</c>).
 /// </summary>
 [HtmlTargetElement("pems-related-add")]
+[PemsFacade(FacadeKind.Direct)]
 public sealed class PemsRelatedAddTagHelper : TagHelper
 {
     [ViewContext, HtmlAttributeNotBound] public ViewContext? ViewContext { get; set; }
@@ -164,6 +168,7 @@ public sealed class PemsRelatedAddTagHelper : TagHelper
 /// icon button whose label is its tool tip; <c>confirm</c> asks first.
 /// </summary>
 [HtmlTargetElement("pems-related-remove", TagStructure = TagStructure.WithoutEndTag)]
+[PemsFacade(FacadeKind.Direct)]
 public sealed class PemsRelatedRemoveTagHelper : TagHelper
 {
     [ViewContext, HtmlAttributeNotBound] public ViewContext? ViewContext { get; set; }
@@ -199,6 +204,7 @@ public sealed class PemsRelatedRemoveTagHelper : TagHelper
 /// row's cells carry <c>form="id"</c>, and <c>&lt;pems-related-save form-id="id"&gt;</c> submits it.
 /// </summary>
 [HtmlTargetElement("pems-related-row-form")]
+[PemsFacade(FacadeKind.Direct)]
 public sealed class PemsRelatedRowFormTagHelper : TagHelper
 {
     [ViewContext, HtmlAttributeNotBound] public ViewContext? ViewContext { get; set; }
@@ -218,6 +224,7 @@ public sealed class PemsRelatedRowFormTagHelper : TagHelper
 
 /// <summary>The save button of a row edited in place (submits the row's form named by <c>form-id</c>).</summary>
 [HtmlTargetElement("pems-related-save", TagStructure = TagStructure.WithoutEndTag)]
+[PemsFacade(FacadeKind.Direct)]
 public sealed class PemsRelatedSaveTagHelper : TagHelper
 {
     [HtmlAttributeName("form-id")] public string FormId { get; set; } = "";

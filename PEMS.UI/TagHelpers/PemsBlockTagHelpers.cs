@@ -23,6 +23,7 @@ internal static class BlockTagHelper
 
 /// <summary>MVC facade for <see cref="PemsCard"/>: <c>&lt;pems-card css="shadow-sm border-0 h-100"&gt;card-body markup&lt;/pems-card&gt;</c>.</summary>
 [HtmlTargetElement("pems-card")]
+[PemsFacade(UiKeys.Card)]
 public sealed class PemsCardTagHelper(IPemsComponentRenderer renderer) : TagHelper
 {
     [HtmlAttributeName("css")] public string? Css { get; set; }
@@ -43,6 +44,7 @@ public sealed class PemsCardTagHelper(IPemsComponentRenderer renderer) : TagHelp
 /// The component writes the track, the bar width and the progressbar attributes.
 /// </summary>
 [HtmlTargetElement("pems-progress")]
+[PemsFacade(UiKeys.Progress)]
 public sealed class PemsProgressTagHelper(IPemsComponentRenderer renderer) : TagHelper
 {
     public sealed class SegmentSlot { public List<ProgressSegment> Items { get; } = []; }
@@ -77,6 +79,7 @@ public sealed class PemsProgressTagHelper(IPemsComponentRenderer renderer) : Tag
 
 /// <summary>One more bar of a stacked progress: <c>&lt;pems-progress value="@a" tone="success"&gt;&lt;pems-progress-segment value="@b" tone="neutral" /&gt;&lt;/pems-progress&gt;</c>; writes nothing itself.</summary>
 [HtmlTargetElement("pems-progress-segment", ParentTag = "pems-progress")]
+[PemsFacade(FacadeKind.Part)]
 public sealed class PemsProgressSegmentTagHelper : TagHelper
 {
     [HtmlAttributeName("value")] public double Value { get; set; }
@@ -92,6 +95,7 @@ public sealed class PemsProgressSegmentTagHelper : TagHelper
 
 /// <summary>MVC facade for <see cref="PemsAccordion"/>: <c>&lt;pems-accordion id="a" css="mb-3"&gt;&lt;pems-accordion-item ...&gt;</c>.</summary>
 [HtmlTargetElement("pems-accordion")]
+[PemsFacade(UiKeys.Accordion)]
 public sealed class PemsAccordionTagHelper(IPemsComponentRenderer renderer) : TagHelper
 {
     [HtmlAttributeName("id")] public string Id { get; set; } = "";
@@ -112,6 +116,7 @@ public sealed class PemsAccordionTagHelper(IPemsComponentRenderer renderer) : Ta
 /// One accordion item: <c>&lt;pems-accordion-item target="accA" parent="a"&gt;&lt;pems-accordion-header&gt;button content&lt;/pems-accordion-header&gt; body markup&lt;/pems-accordion-item&gt;</c>.
 /// </summary>
 [HtmlTargetElement("pems-accordion-item")]
+[PemsFacade(UiKeys.AccordionItem)]
 public sealed class PemsAccordionItemTagHelper(IPemsComponentRenderer renderer) : TagHelper
 {
     public sealed class HeaderSlot { public string Html { get; set; } = ""; }
@@ -137,6 +142,7 @@ public sealed class PemsAccordionItemTagHelper(IPemsComponentRenderer renderer) 
 
 /// <summary>The button content of a <see cref="PemsAccordionItemTagHelper"/>; writes nothing itself.</summary>
 [HtmlTargetElement("pems-accordion-header", ParentTag = "pems-accordion-item")]
+[PemsFacade(FacadeKind.Part)]
 public sealed class PemsAccordionHeaderTagHelper : TagHelper
 {
     public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
@@ -149,6 +155,7 @@ public sealed class PemsAccordionHeaderTagHelper : TagHelper
 
 /// <summary>MVC facade for <see cref="PemsListGroup"/>: <c>&lt;pems-list-group flush="true"&gt;&lt;a class="list-group-item ..."&gt;...&lt;/pems-list-group&gt;</c>.</summary>
 [HtmlTargetElement("pems-list-group")]
+[PemsFacade(UiKeys.ListGroup)]
 public sealed class PemsListGroupTagHelper(IPemsComponentRenderer renderer) : TagHelper
 {
     [HtmlAttributeName("flush")] public bool Flush { get; set; }
@@ -167,6 +174,7 @@ public sealed class PemsListGroupTagHelper(IPemsComponentRenderer renderer) : Ta
 
 /// <summary>MVC facade for <see cref="PemsSpinner"/>: <c>&lt;pems-spinner size="small" tone="neutral"&gt;&lt;/pems-spinner&gt;</c>.</summary>
 [HtmlTargetElement("pems-spinner")]
+[PemsFacade(UiKeys.Spinner)]
 public sealed class PemsSpinnerTagHelper(IPemsComponentRenderer renderer) : TagHelper
 {
     [HtmlAttributeName("grow")] public bool Grow { get; set; }

@@ -52,6 +52,7 @@ internal static class OverlayTagHelper
 /// <c>modal fade</c>, the dialog (<c>modal-dialog modal-lg</c>) and <c>modal-content</c> around the page's own markup; id, tabindex, aria-* and data-* stay on the modal.
 /// </summary>
 [HtmlTargetElement("pems-modal")]
+[PemsFacade(UiKeys.Modal)]
 public sealed class PemsModalTagHelper(IPemsComponentRenderer renderer) : TagHelper
 {
     /// <summary>small, medium (default), large or extralarge.</summary>
@@ -78,6 +79,7 @@ public sealed class PemsModalTagHelper(IPemsComponentRenderer renderer) : TagHel
 
 /// <summary>MVC facade for the side panel frame: <c>&lt;pems-offcanvas id="menu" side="start" tabindex="-1"&gt;header and body markup&lt;/pems-offcanvas&gt;</c>.</summary>
 [HtmlTargetElement("pems-offcanvas")]
+[PemsFacade(UiKeys.Drawer)]
 public sealed class PemsOffcanvasTagHelper(IPemsComponentRenderer renderer) : TagHelper
 {
     /// <summary>end (default) or start.</summary>

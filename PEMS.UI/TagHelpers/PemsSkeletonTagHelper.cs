@@ -1,3 +1,4 @@
+using PEMS.UI.Rendering;
 using System.Net;
 using System.Text;
 using Microsoft.AspNetCore.Razor.TagHelpers;
@@ -65,6 +66,7 @@ public static class PemsSkeletonMarkup
 /// renders where content arrives later (a script replaces it). Kinds: text, title, card, kpi, table, form.
 /// </summary>
 [HtmlTargetElement("pems-skeleton", TagStructure = TagStructure.WithoutEndTag)]
+[PemsFacade(FacadeKind.Direct)]
 public sealed class PemsSkeletonTagHelper : TagHelper
 {
     [HtmlAttributeName("kind")] public string? Kind { get; set; }

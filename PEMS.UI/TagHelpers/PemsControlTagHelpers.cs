@@ -1,3 +1,4 @@
+using PEMS.UI.Rendering;
 using Microsoft.AspNetCore.Mvc.TagHelpers;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.AspNetCore.Razor.TagHelpers;
@@ -38,6 +39,7 @@ internal static class ControlTagHelper
 /// With <c>asp-for</c> it derives from the built-in input helper, so model binding, ids, values and validation attributes are the same as before.
 /// </summary>
 [HtmlTargetElement("pems-input")]
+[PemsFacade(FacadeKind.Direct)]
 public sealed class PemsInputTagHelper(IHtmlGenerator generator) : InputTagHelper(generator)
 {
     /// <summary>text (default) or check.</summary>
@@ -59,6 +61,7 @@ public sealed class PemsInputTagHelper(IHtmlGenerator generator) : InputTagHelpe
 
 /// <summary>MVC facade for the bare select classes: <c>&lt;pems-select name="status" scale="small"&gt;options&lt;/pems-select&gt;</c>; <c>asp-for</c> and <c>asp-items</c> work as on a select.</summary>
 [HtmlTargetElement("pems-select")]
+[PemsFacade(FacadeKind.Direct)]
 public sealed class PemsSelectTagHelper(IHtmlGenerator generator) : SelectTagHelper(generator)
 {
     [HtmlAttributeName("scale")] public string? Scale { get; set; }
@@ -76,6 +79,7 @@ public sealed class PemsSelectTagHelper(IHtmlGenerator generator) : SelectTagHel
 
 /// <summary>MVC facade for the bare textarea classes: <c>&lt;pems-textarea name="note" rows="3"&gt;text&lt;/pems-textarea&gt;</c>.</summary>
 [HtmlTargetElement("pems-textarea")]
+[PemsFacade(FacadeKind.Direct)]
 public sealed class PemsTextAreaTagHelper(IHtmlGenerator generator) : TextAreaTagHelper(generator)
 {
     [HtmlAttributeName("scale")] public string? Scale { get; set; }
@@ -96,6 +100,7 @@ public sealed class PemsTextAreaTagHelper(IHtmlGenerator generator) : TextAreaTa
 /// With <c>asp-for</c> it derives from the built-in label helper, so the text comes from the model metadata when the tag has no content.
 /// </summary>
 [HtmlTargetElement("pems-label")]
+[PemsFacade(FacadeKind.Direct)]
 public sealed class PemsLabelTagHelper(IHtmlGenerator generator) : LabelTagHelper(generator)
 {
     [HtmlAttributeName("css")] public string? Css { get; set; }
@@ -114,6 +119,7 @@ public sealed class PemsLabelTagHelper(IHtmlGenerator generator) : LabelTagHelpe
 /// <c>alert alert-danger</c> classes in front of the ones the built-in helper adds (validation-summary-errors / -valid) and keeps every other attribute.
 /// </summary>
 [HtmlTargetElement("pems-validation-summary")]
+[PemsFacade(FacadeKind.Direct)]
 public sealed class PemsValidationSummaryTagHelper(IHtmlGenerator generator) : ValidationSummaryTagHelper(generator)
 {
     [HtmlAttributeName("css")] public string? Css { get; set; }

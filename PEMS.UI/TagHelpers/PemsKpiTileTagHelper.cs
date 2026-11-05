@@ -1,3 +1,4 @@
+using PEMS.UI.Rendering;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Razor.TagHelpers;
 
@@ -13,6 +14,7 @@ namespace PEMS.UI.TagHelpers;
 /// an optional <c>sub</c> line under the label, <c>href</c> to make the whole tile a link, and <c>hint</c> as its tool tip.
 /// </summary>
 [HtmlTargetElement("pems-kpi-tile")]
+[PemsFacade(FacadeKind.Direct)]
 public sealed class PemsKpiTileTagHelper : TagHelper
 {
     [HtmlAttributeName("label")] public string Label { get; set; } = "";

@@ -1,3 +1,4 @@
+using PEMS.UI.Rendering;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Razor.TagHelpers;
 
@@ -14,6 +15,7 @@ namespace PEMS.UI.TagHelpers;
 /// over the value again. A class or id on the tag is kept.
 /// </summary>
 [HtmlTargetElement("pems-info-grid")]
+[PemsFacade(FacadeKind.Direct)]
 public sealed class PemsInfoGridTagHelper : TagHelper
 {
     [HtmlAttributeName("layout")] public string? Layout { get; set; }
@@ -29,6 +31,7 @@ public sealed class PemsInfoGridTagHelper : TagHelper
 /// (a dash by default).
 /// </summary>
 [HtmlTargetElement("pems-info-item", ParentTag = "pems-info-grid")]
+[PemsFacade(FacadeKind.Direct)]
 public sealed class PemsInfoItemTagHelper : TagHelper
 {
     [HtmlAttributeName("label")] public string Label { get; set; } = "";

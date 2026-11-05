@@ -1,3 +1,4 @@
+using PEMS.UI.Rendering;
 using System.Globalization;
 using System.Net;
 using System.Text;
@@ -13,6 +14,7 @@ namespace PEMS.UI.TagHelpers;
 
 /// <summary><c>&lt;pems-chart spec="@Model.VolumeChart" /&gt;</c>: the chart host and its accessible table.</summary>
 [HtmlTargetElement("pems-chart", TagStructure = TagStructure.WithoutEndTag)]
+[PemsFacade(FacadeKind.Direct)]
 public sealed class PemsChartTagHelper : TagHelper
 {
     [HtmlAttributeName("spec")] public BkChartSpec? Spec { get; set; }
