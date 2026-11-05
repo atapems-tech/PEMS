@@ -1,9 +1,9 @@
 // DCC "Register incoming correspondence" page. The server owns every rule (PEMS.Application IncomingCorrespondenceRules + IIncomingCorrespondenceService);
 // this file only collects the form, shows the scan preview / party thread, and renders the server's field errors next to the fields.
 (function (root, factory) {
-    if (typeof module === "object" && module.exports) module.exports = factory(require("./pems-jalali.js"));
-    else root.PemsDccRegister = factory(root.PemsJalali);
-})(typeof self !== "undefined" ? self : this, function (Jalali) {
+    if (typeof module === "object" && module.exports) module.exports = factory(require("./pems-jalali.js"), require("./pems-template.js"));
+    else root.PemsDccRegister = factory(root.PemsJalali, root.PemsTemplate);
+})(typeof self !== "undefined" ? self : this, function (Jalali, Tpl) {
     "use strict";
 
     var MONTHS = ["فروردین", "اردیبهشت", "خرداد", "تیر", "مرداد", "شهریور", "مهر", "آبان", "آذر", "دی", "بهمن", "اسفند"];
@@ -19,10 +19,6 @@
         if (n < 1024) return n + " B";
         if (n < 1024 * 1024) return (n / 1024).toFixed(0) + " KB";
         return (n / 1024 / 1024).toFixed(1) + " MB";
-    }
-
-    function esc(s) {
-        return String(s == null ? "" : s).replace(/[&<>"']/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]; });
     }
 
     function fileKind(name) {
@@ -62,6 +58,12 @@
             uid: 0
         };
 
+        // markup comes from the page's registered templates (script-templates component), never from a string in this file
+        function tpl(name, values) { return Tpl.fill(Tpl.clone(name, doc), values || {}); }
+        function emptyNote(icon, text, name) {
+            return tpl("dcc-empty", { icon: icon ? { addClass: icon } : null, text: text, name: name === undefined ? null : name });
+        }
+
         function getJson(url, params) {
             var q = Object.keys(params || {}).filter(function (k) { return params[k] !== undefined && params[k] !== null && params[k] !== ""; })
                 .map(function (k) { return encodeURIComponent(k) + "=" + encodeURIComponent(params[k]); }).join("&");
@@ -84,18 +86,18 @@
                 nodes[active].scrollIntoView({ block: "nearest" });
             }
             function render(extra) {
-                list.innerHTML = "";
+                list.replaceChildren();
                 items.forEach(function (it, i) {
                     var li = doc.createElement("li");
                     li.id = list.id + "-o" + i; li.setAttribute("role", "option"); li.setAttribute("aria-selected", "false");
-                    li.innerHTML = opts.render(it);
+                    li.appendChild(opts.render(it));
                     li.addEventListener("mousedown", function (e) { e.preventDefault(); choose(i); });
                     list.appendChild(li);
                 });
                 if (extra) {
                     var li2 = doc.createElement("li");
                     li2.id = list.id + "-new"; li2.setAttribute("role", "option"); li2.setAttribute("aria-selected", "false"); li2.className = "dcr-opt-create";
-                    li2.innerHTML = extra.html;
+                    li2.appendChild(extra.content);
                     li2.addEventListener("mousedown", function (e) { e.preventDefault(); extra.onChoose(); close(); });
                     list.appendChild(li2);
                 }
@@ -164,18 +166,19 @@
             function drawCal() {
                 var first = Jalali.weekdayIndex(view.y, view.m, 1), count = Jalali.daysInMonth(view.y, view.m);
                 var sel = Jalali.isoToJalali(iso), today = Jalali.isoToJalali(Jalali.todayIso());
-                var html = '<div class="dcr-cal-head"><button type="button" data-nav="-1" aria-label="' + esc(T("Dcc_PrevMonth")) + '"><i class="bi bi-chevron-right"></i></button>'
-                    + '<strong>' + MONTHS[view.m - 1] + " " + view.y + '</strong>'
-                    + '<button type="button" data-nav="1" aria-label="' + esc(T("Dcc_NextMonth")) + '"><i class="bi bi-chevron-left"></i></button></div><div class="dcr-cal-grid" role="grid">';
-                WEEKDAYS.forEach(function (w) { html += '<span class="dcr-cal-wd" aria-hidden="true">' + w + "</span>"; });
-                for (var b = 0; b < first; b++) html += "<span></span>";
+                var head = Tpl.clone("dcc-cal-head", doc);
+                Tpl.fill(head, { title: MONTHS[view.m - 1] + " " + view.y, prev: { attrs: { "aria-label": T("Dcc_PrevMonth") } }, next: { attrs: { "aria-label": T("Dcc_NextMonth") } } });
+                var grid = Tpl.clone("dcc-cal-grid", doc);
+                WEEKDAYS.forEach(function (w) { grid.appendChild(Tpl.fill(Tpl.clone("dcc-cal-weekday", doc), { text: w })); });
+                for (var b = 0; b < first; b++) grid.appendChild(Tpl.clone("dcc-cal-blank", doc));
                 for (var d = 1; d <= count; d++) {
-                    var cls = "dcr-cal-day" + (sel && sel.y === view.y && sel.m === view.m && sel.d === d ? " is-selected" : "")
-                        + (today && today.y === view.y && today.m === view.m && today.d === d ? " is-today" : "");
-                    html += '<button type="button" class="' + cls + '" data-day="' + d + '">' + d + "</button>";
+                    var day = Tpl.fill(Tpl.clone("dcc-cal-day", doc), { day: d });
+                    day.dataset.day = String(d);
+                    if (sel && sel.y === view.y && sel.m === view.m && sel.d === d) day.classList.add("is-selected");
+                    if (today && today.y === view.y && today.m === view.m && today.d === d) day.classList.add("is-today");
+                    grid.appendChild(day);
                 }
-                html += '</div><div class="dcr-cal-foot"><button type="button" data-today="1">' + esc(T("Dcc_Today")) + "</button></div>";
-                cal.innerHTML = html;
+                cal.replaceChildren(head, grid, Tpl.fill(Tpl.clone("dcc-cal-foot", doc), { today: T("Dcc_Today") }));
             }
             function openCal() {
                 var j = Jalali.isoToJalali(iso) || Jalali.isoToJalali(Jalali.todayIso());
@@ -213,7 +216,7 @@
             $("dcrSummary").hidden = true; $("dcrDuplicate").hidden = true;
         }
         function showErrors(errors) {
-            var list = $("dcrSummaryList"); list.innerHTML = "";
+            var list = $("dcrSummaryList"); list.replaceChildren();
             errors.forEach(function (er) {
                 var field = form.querySelector('[data-field="' + er.field + '"]');
                 var msg = er.message || T("Dcc_Err_" + er.code);
@@ -273,21 +276,23 @@
             fillContracts();
             checkDuplicate();
             if (p) { loadThread(p.id); loadReplyOptions(p.id, replyId); }
-            else { $("dcrThread").innerHTML = '<div class="dcr-empty"><i class="bi bi-chat-left-text"></i><span>' + esc(T("Dcc_ThreadPickParty") || "") + "</span></div>"; resetReply(); }
+            else { $("dcrThread").replaceChildren(emptyNote("bi-chat-left-text", T("Dcc_ThreadPickParty") || "")); resetReply(); }
         }
 
         combobox({
             input: partyInput, list: $("dcrPartyList"),
             fetch: function (q) { return getJson(ds.urlParties, { q: q, projectId: $("dcrProject").value }); },
             render: function (p) {
-                return '<span class="dcr-opt-main">' + esc(p.name) + (p.isProvisional ? ' <span class="dcr-badge">' + esc(T("Dcc_Provisional")) + "</span>" : "") + "</span>"
-                    + '<span class="dcr-opt-sub">' + esc(p.partyType) + (p.code ? " · " + esc(p.code) : "") + "</span>";
+                return Tpl.fill(Tpl.fragment("dcc-opt-party", doc), {
+                    name: p.name, badge: p.isProvisional ? T("Dcc_Provisional") : null,
+                    sub: p.partyType + (p.code ? " · " + p.code : "")
+                });
             },
             extra: function (q, found) {
                 var name = (q || "").trim();
                 if (!name || found.some(function (p) { return p.name.toLowerCase() === name.toLowerCase(); })) return null;
                 return {
-                    html: '<i class="bi bi-plus-circle"></i> ' + esc(T("Dcc_AddNewParty").replace("{0}", name)),
+                    content: Tpl.fill(Tpl.fragment("dcc-opt-create", doc), { text: T("Dcc_AddNewParty").replace("{0}", name) }),
                     onChoose: function () { state.party = null; state.newPartyName = name; $("dcrNewParty").hidden = false; fillContracts(); resetReply(); }
                 };
             },
@@ -302,15 +307,13 @@
         function fillContracts() {
             var sel = $("dcrContract"), contracts = (state.party && state.party.contracts) || [];
             var keep = sel.value;
-            sel.innerHTML = "";
             if (!contracts.length) {
                 sel.disabled = true;
-                sel.innerHTML = '<option value="">' + esc(state.party ? T("Dcc_NoContracts") : "—") + "</option>";
+                Tpl.options(sel, [{ value: "", text: state.party ? T("Dcc_NoContracts") : "—" }]);
                 return;
             }
             sel.disabled = false;
-            sel.innerHTML = '<option value="">' + esc(T("Dcc_ChooseContract")) + "</option>"
-                + contracts.map(function (c) { return '<option value="' + c.contractId + '">' + esc(c.contractNo) + "</option>"; }).join("");
+            Tpl.options(sel, [{ value: "", text: T("Dcc_ChooseContract") }].concat(contracts.map(function (c) { return { value: String(c.contractId), text: c.contractNo }; })));
             if (contracts.length === 1) sel.value = String(contracts[0].contractId);
             else if (keep) sel.value = keep;
         }
@@ -326,16 +329,15 @@
 
         // ------------------------------------------------------------ in-reply-to
         function resetReply() {
-            var s = $("dcrReply"); s.innerHTML = '<option value="">' + esc(T("Dcc_ReplyChooseParty")) + "</option>"; s.disabled = true;
+            var s = $("dcrReply"); Tpl.options(s, [{ value: "", text: T("Dcc_ReplyChooseParty") }]); s.disabled = true;
         }
         function loadReplyOptions(partyId, presetId) {
             getJson(ds.urlOutgoing, { partyId: partyId }).then(function (list) {
                 var s = $("dcrReply");
                 s.disabled = false;
-                s.innerHTML = '<option value="">' + esc(list.length ? T("Dcc_ReplyChoose") : T("Dcc_ReplyNone")) + "</option>"
-                    + list.map(function (l) {
-                        return '<option value="' + l.letterId + '">' + (l.awaitingReply ? "● " : "") + esc(l.letterNumber) + " — " + esc(l.subject) + "</option>";
-                    }).join("");
+                Tpl.options(s, [{ value: "", text: list.length ? T("Dcc_ReplyChoose") : T("Dcc_ReplyNone") }].concat(list.map(function (l) {
+                    return { value: String(l.letterId), text: (l.awaitingReply ? "● " : "") + l.letterNumber + " — " + l.subject };
+                })));
                 if (presetId) s.value = String(presetId);
             }).catch(function () { });
         }
@@ -345,29 +347,38 @@
             var el = $("dcrThread");
             var count = $("dcrThreadCount");
             count.textContent = t.total; count.hidden = !t.total;
-            var kpis = '<div class="dcr-kpis">'
-                + '<div class="dcr-kpi' + (t.awaitingUs ? " is-hot" : "") + '"><strong>' + t.awaitingUs + "</strong><span>" + esc(T("Dcc_ThreadAwaitingUs")) + "</span></div>"
-                + '<div class="dcr-kpi"><strong>' + t.awaitingThem + "</strong><span>" + esc(T("Dcc_ThreadAwaitingThem")) + "</span></div>"
-                + '<div class="dcr-kpi"><strong class="dcr-ltr">' + (t.lastContact ? Jalali.formatJalali(Jalali.isoToJalali(t.lastContact)) : "—") + "</strong><span>" + esc(T("Dcc_ThreadLast")) + "</span></div></div>";
-            if (!t.items.length) { el.innerHTML = kpis + '<div class="dcr-empty"><i class="bi bi-chat-left-text"></i><span>' + esc(T("Dcc_ThreadEmpty")) + "</span></div>"; return; }
-            el.innerHTML = kpis + '<ol class="dcr-thread">' + t.items.map(function (i) {
+            var kpis = tpl("dcc-thread-kpis", {
+                usValue: t.awaitingUs, usLabel: T("Dcc_ThreadAwaitingUs"),
+                themValue: t.awaitingThem, themLabel: T("Dcc_ThreadAwaitingThem"),
+                lastValue: t.lastContact ? Jalali.formatJalali(Jalali.isoToJalali(t.lastContact)) : "—", lastLabel: T("Dcc_ThreadLast")
+            });
+            if (t.awaitingUs) kpis.querySelector("[data-slot=us]").classList.add("is-hot");
+            if (!t.items.length) { el.replaceChildren(kpis, emptyNote("bi-chat-left-text", T("Dcc_ThreadEmpty"))); return; }
+            var ol = tpl("dcc-thread-list");
+            t.items.forEach(function (i) {
                 var incoming = i.direction === "Incoming";
                 var j = Jalali.isoToJalali(i.date);
                 var url = ds.urlLetter.replace("__ID__", i.letterId);
-                var flags = (i.overdue ? '<span class="dcr-flag dcr-flag--bad">' + esc(T("Dcc_Overdue")) + "</span>" : "")
-                    + (i.responseRequired && i.answered ? '<span class="dcr-flag dcr-flag--ok">' + esc(T("Dcc_Answered")) + "</span>" : "")
-                    + (i.responseRequired && !i.answered && !i.overdue && i.responseDueDate ? '<span class="dcr-flag">' + esc(T("Dcc_DueOn")) + " " + Jalali.formatJalali(Jalali.isoToJalali(i.responseDueDate)) + "</span>" : "");
-                return '<li class="dcr-thread-item ' + (incoming ? "is-in" : "is-out") + '">'
-                    + '<i class="bi ' + (incoming ? "bi-box-arrow-in-down" : "bi-box-arrow-up") + '" aria-hidden="true" title="' + esc(incoming ? T("Dcc_Incoming") : T("Dcc_Outgoing")) + '"></i>'
-                    + '<div><a class="dcr-link dcr-ltr" href="' + url + '" target="_blank" rel="noopener">' + esc(i.letterNumber) + "</a> "
-                    + '<span class="dcr-sub-date dcr-ltr">' + (j ? Jalali.formatJalali(j) : "") + "</span> " + flags
-                    + '<div class="dcr-thread-subject">' + esc(i.subject) + "</div></div></li>";
-            }).join("") + "</ol>";
+                var li = tpl("dcc-thread-item", {
+                    icon: { addClass: incoming ? "bi-box-arrow-in-down" : "bi-box-arrow-up", attrs: { title: incoming ? T("Dcc_Incoming") : T("Dcc_Outgoing") } },
+                    number: { text: i.letterNumber, attrs: { href: url } },
+                    date: j ? Jalali.formatJalali(j) : "",
+                    subject: i.subject
+                });
+                li.classList.add(incoming ? "is-in" : "is-out");
+                var subject = li.querySelector("[data-slot=subject]");
+                function flag(text, tone) { var f = tpl("dcc-flag", { text: text }); if (tone) f.classList.add("dcr-flag--" + tone); subject.before(f); }
+                if (i.overdue) flag(T("Dcc_Overdue"), "bad");
+                if (i.responseRequired && i.answered) flag(T("Dcc_Answered"), "ok");
+                if (i.responseRequired && !i.answered && !i.overdue && i.responseDueDate) flag(T("Dcc_DueOn") + " " + Jalali.formatJalali(Jalali.isoToJalali(i.responseDueDate)));
+                ol.appendChild(li);
+            });
+            el.replaceChildren(kpis, ol);
         }
         function loadThread(partyId) {
-            $("dcrThread").innerHTML = '<div class="dcr-empty"><span>' + esc(T("Dcc_Searching")) + "</span></div>";
+            $("dcrThread").replaceChildren(emptyNote(null, T("Dcc_Searching")));
             getJson(ds.urlThread, { partyId: partyId }).then(function (t) { if (state.party && state.party.id === partyId) renderThread(t); })
-                .catch(function () { $("dcrThread").innerHTML = '<div class="dcr-empty"><span>' + esc(T("Dcc_NetworkError")) + "</span></div>"; });
+                .catch(function () { $("dcrThread").replaceChildren(emptyNote(null, T("Dcc_NetworkError"))); });
         }
 
         // ------------------------------------------------------------ duplicate hint (live) and sender-reference requirement
@@ -397,7 +408,7 @@
         }
         $("dcrRespReq").addEventListener("change", refreshResponse);
 
-        function personRender(p) { return '<span class="dcr-opt-main">' + esc(p.name) + '</span><span class="dcr-opt-sub">' + esc([p.position, p.department].filter(Boolean).join(" · ")) + "</span>"; }
+        function personRender(p) { return Tpl.fill(Tpl.fragment("dcc-opt-person", doc), { main: p.name, sub: [p.position, p.department].filter(Boolean).join(" · ") }); }
         combobox({
             input: $("dcrOwner"), list: $("dcrOwnerList"), render: personRender,
             fetch: function (q) { return getJson(ds.urlPeople, { q: q }); },
@@ -413,10 +424,9 @@
             }
         });
         function renderCc() {
-            var el = $("dcrCcTags"); el.innerHTML = "";
+            var el = $("dcrCcTags"); el.replaceChildren();
             state.cc.forEach(function (c, i) {
-                var tag = doc.createElement("span"); tag.className = "dcr-tag";
-                tag.innerHTML = esc(c.name) + ' <button type="button" aria-label="' + esc(T("Dcc_Remove")) + " " + esc(c.name) + '"><i class="bi bi-x"></i></button>';
+                var tag = tpl("dcc-cc-tag", { name: c.name, remove: { attrs: { "aria-label": T("Dcc_Remove") + " " + c.name } } });
                 tag.querySelector("button").addEventListener("click", function () { state.cc.splice(i, 1); renderCc(); });
                 el.appendChild(tag);
             });
@@ -443,15 +453,17 @@
         drop.addEventListener("drop", function (e) { if (e.dataTransfer && e.dataTransfer.files.length) addFiles(e.dataTransfer.files); });
 
         function renderFiles() {
-            var ul = $("dcrFiles"); ul.innerHTML = "";
-            var pv = $("dcrPreviewList"); pv.innerHTML = "";
+            var ul = $("dcrFiles"); ul.replaceChildren();
+            var pv = $("dcrPreviewList"); pv.replaceChildren();
             state.files.forEach(function (f) {
-                var li = doc.createElement("li"); li.className = "dcr-file";
-                li.innerHTML = '<i class="bi ' + (fileKind(f.file.name) === "pdf" ? "bi-file-earmark-pdf" : fileKind(f.file.name) === "image" ? "bi-file-earmark-image" : "bi-file-earmark") + '" aria-hidden="true"></i>'
-                    + '<div class="dcr-file-name"><span>' + esc(f.file.name) + '</span><small class="dcr-ltr">' + formatBytes(f.file.size) + "</small></div>"
-                    + '<select class="form-select form-select-sm" aria-label="' + esc(f.file.name) + '">'
-                    + ["Original", "Attachment", "EmailCopy"].map(function (r) { return '<option value="' + r + '"' + (f.role === r ? " selected" : "") + ">" + esc(T("Dcc_Role" + r)) + "</option>"; }).join("")
-                    + '</select><button type="button" class="dcr-icon" aria-label="' + esc(T("Dcc_RemoveFile")) + " " + esc(f.file.name) + '"><i class="bi bi-trash3"></i></button>';
+                var kind = fileKind(f.file.name);
+                var li = tpl("dcc-file-row", {
+                    icon: { addClass: kind === "pdf" ? "bi-file-earmark-pdf" : kind === "image" ? "bi-file-earmark-image" : "bi-file-earmark" },
+                    name: f.file.name, size: formatBytes(f.file.size),
+                    role: { attrs: { "aria-label": f.file.name } },
+                    remove: { attrs: { "aria-label": T("Dcc_RemoveFile") + " " + f.file.name } }
+                });
+                Tpl.options(li.querySelector("select"), ["Original", "Attachment", "EmailCopy"].map(function (r) { return { value: r, text: T("Dcc_Role" + r), selected: f.role === r }; }));
                 li.querySelector("select").addEventListener("change", function (e) { f.role = e.target.value; });
                 li.querySelector("button").addEventListener("click", function () { state.files = state.files.filter(function (x) { return x !== f; }); renderFiles(); if (!state.files.length) resetPreview(); });
                 ul.appendChild(li);
@@ -464,16 +476,16 @@
         }
         function resetPreview() {
             if (previewUrl) { URL.revokeObjectURL(previewUrl); previewUrl = null; }
-            $("dcrPreview").innerHTML = '<div class="dcr-empty"><i class="bi bi-file-earmark-text"></i><span>' + esc(doc.querySelector("#dcrPreview").dataset.empty || "") + "</span></div>";
+            $("dcrPreview").replaceChildren(emptyNote("bi-file-earmark-text", doc.querySelector("#dcrPreview").dataset.empty || ""));
         }
         function preview(f) {
             if (!f) return;
             if (previewUrl) URL.revokeObjectURL(previewUrl);
             previewUrl = URL.createObjectURL(f.file);
             var kind = fileKind(f.file.name), box = $("dcrPreview");
-            if (kind === "pdf") box.innerHTML = '<iframe title="' + esc(f.file.name) + '" src="' + previewUrl + '"></iframe>';
-            else if (kind === "image") box.innerHTML = '<img alt="' + esc(f.file.name) + '" src="' + previewUrl + '" />';
-            else box.innerHTML = '<div class="dcr-empty"><i class="bi bi-file-earmark"></i><span>' + esc(T("Dcc_NoFilePreview")) + "</span><strong>" + esc(f.file.name) + "</strong></div>";
+            if (kind === "pdf") box.replaceChildren(tpl("dcc-preview-pdf", { frame: { attrs: { title: f.file.name, src: previewUrl } } }));
+            else if (kind === "image") box.replaceChildren(tpl("dcc-preview-image", { image: { attrs: { alt: f.file.name, src: previewUrl } } }));
+            else box.replaceChildren(emptyNote("bi-file-earmark", T("Dcc_NoFilePreview"), f.file.name));
             showTab("docs");
         }
 
@@ -482,7 +494,7 @@
         combobox({
             input: $("dcrLinkSearch"), list: $("dcrLinkList"),
             fetch: function (q) { return getJson(ds.urlLinks, { type: $("dcrLinkType").value, q: q, projectId: $("dcrProject").value }); },
-            render: function (l) { return '<span class="dcr-opt-main dcr-ltr">' + esc(l.number) + '</span><span class="dcr-opt-sub">' + esc(l.title || "") + "</span>"; },
+            render: function (l) { return Tpl.fill(Tpl.fragment("dcc-opt-link", doc), { main: l.number, sub: l.title || "" }); },
             onSelect: function (l) {
                 if (!state.links.some(function (x) { return x.linkType === l.linkType && x.targetId === l.targetId; })) state.links.push(l);
                 $("dcrLinkSearch").value = ""; renderLinks(); markDirty();
@@ -490,11 +502,12 @@
         });
         $("dcrLinkType").addEventListener("change", function () { $("dcrLinkSearch").value = ""; });
         function renderLinks() {
-            var ul = $("dcrLinks"); ul.innerHTML = "";
+            var ul = $("dcrLinks"); ul.replaceChildren();
             state.links.forEach(function (l, i) {
-                var li = doc.createElement("li"); li.className = "dcr-linkitem";
-                li.innerHTML = '<span class="dcr-badge">' + esc(T("Dcc_Link" + l.linkType)) + '</span><bdi class="dcr-ltr">' + esc(l.number) + "</bdi><span>" + esc(l.title || "") + "</span>"
-                    + '<button type="button" class="dcr-icon" aria-label="' + esc(T("Dcc_Remove")) + " " + esc(l.number) + '"><i class="bi bi-x-lg"></i></button>';
+                var li = tpl("dcc-link-item", {
+                    type: T("Dcc_Link" + l.linkType), number: l.number, title: l.title || "",
+                    remove: { attrs: { "aria-label": T("Dcc_Remove") + " " + l.number } }
+                });
                 li.querySelector("button").addEventListener("click", function () { state.links.splice(i, 1); renderLinks(); });
                 ul.appendChild(li);
             });
@@ -568,10 +581,11 @@
             var btn = $(mode === "next" ? "dcrSubmitNext" : "dcrSubmit");
             [$("dcrSubmit"), $("dcrSubmitNext")].forEach(function (b) { b.disabled = on; });
             if (on) {
-                labels[btn.id] = btn.innerHTML;
-                btn.innerHTML = '<span class="spinner-border spinner-border-sm" aria-hidden="true"></span> ' + esc(T("Dcc_Registering"));
+                labels[btn.id] = Array.prototype.slice.call(btn.childNodes);
+                btn.replaceChildren(Tpl.fragment("dcc-busy", doc));
+                Tpl.fill(btn, { text: T("Dcc_Registering") });
             } else if (labels[btn.id]) {
-                btn.innerHTML = labels[btn.id];
+                btn.replaceChildren.apply(btn, labels[btn.id]);
             }
         }
 
@@ -641,7 +655,7 @@
                 if (keepParty) { setParty(keepParty); if (keepContract) $("dcrContract").value = keepContract; }
                 else if (newPartyName) { partyInput.value = newPartyName; state.newPartyName = newPartyName; $("dcrNewParty").hidden = false; }
             } else {
-                $("dcrThread").innerHTML = "";
+                $("dcrThread").replaceChildren();
             }
             refreshNumber();
 

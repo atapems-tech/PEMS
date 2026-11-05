@@ -123,7 +123,7 @@
         }
 
         function render() {
-            list.innerHTML = '';
+            list.replaceChildren();
             if (!items.length) {
                 var empty = document.createElement('li');
                 empty.className = 'pc-lookup-empty';
@@ -223,7 +223,7 @@
 
     function fillSelect(sel, items, keep) {
         var current = keep ? sel.value : '';
-        sel.innerHTML = '<option value=""></option>';
+        sel.replaceChildren(new Option('', ''));
         items.forEach(function (it) {
             var o = document.createElement('option');
             o.value = it.id; o.textContent = it.text;
@@ -435,8 +435,14 @@
     if (addAttr && attrTpl && attrTable) {
         addAttr.addEventListener('click', function () {
             var idx = parseInt(addAttr.dataset.nextIndex || '1', 10);
-            var html = attrTpl.innerHTML.replace(/__i__/g, String(idx));
-            attrTable.tBodies[0].insertAdjacentHTML('beforeend', html);
+            // the row is the page's own <template> (pcAttrTemplate): cloned, its __i__ placeholders replaced in the attributes
+            var row = attrTpl.content.cloneNode(true);
+            row.querySelectorAll('*').forEach(function (el) {
+                Array.prototype.forEach.call(el.attributes, function (a) {
+                    if (a.value.indexOf('__i__') >= 0) el.setAttribute(a.name, a.value.replace(/__i__/g, String(idx)));
+                });
+            });
+            attrTable.tBodies[0].appendChild(row);
             addAttr.dataset.nextIndex = String(idx + 1);
         });
         attrTable.addEventListener('click', function (e) {
@@ -470,7 +476,7 @@
                 + (grp && grp.value ? '&commodityGroupId=' + encodeURIComponent(grp.value) : '');
             fetch(url, { credentials: 'same-origin' })
                 .then(function (r) { return r.ok ? r.text() : ''; })
-                .then(function (html) { prevOut.innerHTML = html; });   // HTML comes from our own server-encoded partial
+                .then(function (html) { window.PemsTemplate.html(prevOut, html); });   // HTML comes from our own server-encoded partial
         };
         document.querySelectorAll('[data-pc-preview]').forEach(function (b) {
             b.addEventListener('click', function () { runPreview(b.dataset.pcPreview); });

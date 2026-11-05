@@ -9,6 +9,14 @@
     var boot = JSON.parse(bootEl.textContent);
     var T = boot.t;
     var $ = function (id) { return document.getElementById(id); };
+    // markup comes from the page's registered templates (script-templates component, pems-template.js), never from a string in this file
+    var Tpl = window.PemsTemplate;
+    function tpl(name, values) { return Tpl.fill(Tpl.clone(name), values || {}); }
+    function iconButton(icon, className, label) {
+        var b = tpl('lc-icon-button', { icon: { addClass: icon } });
+        b.className = className; b.setAttribute('aria-label', label);
+        return b;
+    }
 
     var state = {
         letterId: boot.letterId,
@@ -86,7 +94,7 @@
     // ---------------------------------------------------------------- alerts / field errors
     var alertsEl = $('lcAlerts');
     function clearIssues() {
-        alertsEl.innerHTML = '';
+        alertsEl.replaceChildren();
         root.querySelectorAll('[data-error-for]').forEach(function (e) { e.hidden = true; e.textContent = ''; });
         root.querySelectorAll('[aria-invalid="true"]').forEach(function (e) { e.removeAttribute('aria-invalid'); });
     }
@@ -96,16 +104,12 @@
         errors = errors || []; warnings = warnings || [];
         function block(kind, title, items, icon) {
             if (!items.length) return;
-            var div = document.createElement('div');
-            div.className = 'alert alert-' + kind;
-            div.setAttribute('role', kind === 'danger' ? 'alert' : 'status');
-            var h = document.createElement('strong');
-            h.innerHTML = '<i class="bi ' + icon + '" aria-hidden="true"></i> ';
-            h.appendChild(document.createTextNode(title));
-            div.appendChild(h);
-            var ul = document.createElement('ul');
+            var div = tpl('lc-alert', {
+                root: { addClass: 'alert-' + kind, attrs: { role: kind === 'danger' ? 'alert' : 'status' } },
+                icon: { addClass: icon }, title: title
+            });
+            var ul = div.querySelector('[data-slot=items]');
             items.forEach(function (i) { var li = document.createElement('li'); li.textContent = i.message; ul.appendChild(li); });
-            div.appendChild(ul);
             alertsEl.appendChild(div);
         }
         block('danger', T.errorsTitle, errors, 'bi-x-octagon');
@@ -160,10 +164,8 @@
             var label = document.createElement('span');
             label.textContent = r.name + (r.isExternal ? ' · ' + T.external : '');
             if (r.position) label.title = r.position;
-            var rm = document.createElement('button');
-            rm.type = 'button';
-            rm.setAttribute('aria-label', T.remove + ' ' + r.name);
-            rm.innerHTML = '<i class="bi bi-x" aria-hidden="true"></i>';
+            var rm = iconButton('bi-x', '', T.remove + ' ' + r.name);
+            rm.removeAttribute('class');
             rm.addEventListener('click', function () {
                 state.recipients[field].splice(idx, 1);
                 renderChips(field); markDirty(); input.focus();
@@ -208,7 +210,7 @@
             addRecipient(field, it); input.value = ''; close(); input.focus();
         }
         function render() {
-            list.innerHTML = '';
+            list.replaceChildren();
             if (!items.length) {
                 var empty = document.createElement('li'); empty.className = 'lc-empty'; empty.textContent = T.noResults; list.appendChild(empty);
             }
@@ -313,14 +315,13 @@
 
     // ---------------------------------------------------------------- approval chain
     function renderChain() {
-        var ol = $('lcChain'); ol.innerHTML = '';
+        var ol = $('lcChain'); ol.replaceChildren();
         state.approvers.forEach(function (a, i) {
             var li = document.createElement('li');
             var name = document.createElement('span'); name.textContent = a.name; li.appendChild(name);
             function btn(label, icon, fn, disabled) {
-                var b = document.createElement('button'); b.type = 'button'; b.className = 'btn btn-sm btn-outline-secondary';
-                b.setAttribute('aria-label', label + ' ' + a.name); b.disabled = !!disabled;
-                b.innerHTML = '<i class="bi ' + icon + '" aria-hidden="true"></i>'; b.addEventListener('click', fn); li.appendChild(b);
+                var b = iconButton(icon, 'btn btn-sm btn-outline-secondary', label + ' ' + a.name); b.disabled = !!disabled;
+                b.addEventListener('click', fn); li.appendChild(b);
             }
             btn(T.moveUp, 'bi-arrow-up', function () { swap(i, i - 1); }, i === 0);
             btn(T.moveDown, 'bi-arrow-down', function () { swap(i, i + 1); }, i === state.approvers.length - 1);
@@ -442,12 +443,9 @@
     }
 
     function addFileRow(info) {
-        var li = document.createElement('li'); li.setAttribute('data-id', info.id);
-        li.innerHTML = '<i class="bi bi-file-earmark" aria-hidden="true"></i>';
-        var n = document.createElement('span'); n.textContent = info.name; li.appendChild(n);
-        var s = document.createElement('small'); s.className = 'text-muted'; s.textContent = Math.max(1, Math.round(info.size / 1024)) + ' KB'; li.appendChild(s);
-        var b = document.createElement('button'); b.type = 'button'; b.className = 'btn btn-sm btn-outline-danger';
-        b.setAttribute('aria-label', T.remove + ' ' + info.name); b.innerHTML = '<i class="bi bi-x-lg" aria-hidden="true"></i>';
+        var li = tpl('lc-file-row', { name: info.name, size: Math.max(1, Math.round(info.size / 1024)) + ' KB' });
+        li.setAttribute('data-id', info.id);
+        var b = iconButton('bi-x-lg', 'btn btn-sm btn-outline-danger', T.remove + ' ' + info.name);
         b.addEventListener('click', function () { removeAttachment(info.id, li); });
         li.appendChild(b); fileList.appendChild(li);
     }
@@ -465,8 +463,7 @@
     function uploadOne(file) {
         var problem = humanOk(file);
         if (problem) { renderIssues([{ message: file.name + ': ' + problem }], []); return Promise.resolve(); }
-        var li = document.createElement('li'); li.innerHTML = '<span></span><progress max="100" value="0"></progress>';
-        li.firstChild.textContent = file.name; fileList.appendChild(li);
+        var li = tpl('lc-upload-row', { name: file.name }); fileList.appendChild(li);
         return new Promise(function (resolve) {
             var xhr = new XMLHttpRequest(); var fd = new FormData();
             fd.append('letterId', state.letterId); fd.append('file', file); fd.append('__RequestVerificationToken', token());
@@ -507,7 +504,7 @@
         if (window.bootstrap) window.bootstrap.Modal.getOrCreateInstance(modalEl).show();
         postJson(boot.urls.preview, buildInput())
             .then(function (r) { if (!r.ok) throw new Error(r.status); return r.text(); })
-            .then(function (html) { body.innerHTML = html; })
+            .then(function (html) { Tpl.html(body, html); })     // the server-encoded preview partial
             .catch(function () { body.textContent = T.previewFailed; });
     });
 
