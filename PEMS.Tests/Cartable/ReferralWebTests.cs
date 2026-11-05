@@ -59,7 +59,7 @@ public class ReferralWebTests
     {
         var html = await RenderCompose(referral: true);
 
-        Assert.Matches(@"<input id=""lcSubject""[^>]*readonly", html);
+        Assert.Matches(@"<input(?=[^>]*id=""lcSubject"")[^>]*readonly", html);   // pems-input writes class before id (SCRUM-508)
         Assert.Contains("cannot be changed", html);                       // the explanation of the fixed subject
         Assert.Matches(@"<section class=""lc-card"" aria-labelledby=""lcApprTitle"" hidden", html);
         Assert.Matches(@"<div class=""lc-field"" hidden>\s*<label for=""lcCategory""", html);
