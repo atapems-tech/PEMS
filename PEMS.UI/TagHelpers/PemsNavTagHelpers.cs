@@ -1,3 +1,4 @@
+using PEMS.UI.Rendering;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc.TagHelpers;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
@@ -33,6 +34,7 @@ public static class FrameState
 /// (<c>as="div"</c> for a panel of free markup). Every other attribute and the content stay as the page wrote them.
 /// </summary>
 [HtmlTargetElement("pems-dropdown-menu")]
+[PemsFacade(FacadeKind.Direct)]
 public sealed class PemsDropdownMenuTagHelper : TagHelper
 {
     [HtmlAttributeName("end")] public bool End { get; set; }
@@ -50,6 +52,7 @@ public sealed class PemsDropdownMenuTagHelper : TagHelper
 
 /// <summary>MVC facade for the tab strip: <c>&lt;pems-nav kind="tabs" css="mb-3" id="docTabs" role="tablist"&gt;&lt;li class="nav-item"&gt;...&lt;/pems-nav&gt;</c>; kind is tabs (default) or pills.</summary>
 [HtmlTargetElement("pems-nav")]
+[PemsFacade(FacadeKind.Direct)]
 public sealed class PemsNavTagHelper : TagHelper
 {
     [HtmlAttributeName("kind")] public string Kind { get; set; } = "tabs";
@@ -65,6 +68,7 @@ public sealed class PemsNavTagHelper : TagHelper
 
 /// <summary>MVC facade for the breadcrumb trail frame: <c>&lt;pems-crumb-trail css="mb-0 small"&gt;&lt;li class="breadcrumb-item"&gt;...&lt;/pems-crumb-trail&gt;</c> writes an <c>ol.breadcrumb</c>.</summary>
 [HtmlTargetElement("pems-crumb-trail")]
+[PemsFacade(FacadeKind.Direct)]
 public sealed class PemsBreadcrumbTagHelper : TagHelper
 {
     [HtmlAttributeName("css")] public string? Css { get; set; }
@@ -83,6 +87,7 @@ public sealed class PemsBreadcrumbTagHelper : TagHelper
 /// A record list uses the pems-list family instead.
 /// </summary>
 [HtmlTargetElement("pems-table")]
+[PemsFacade(FacadeKind.Direct)]
 public sealed class PemsTableFrameTagHelper : TagHelper
 {
     /// <summary>enterprise adds table-enterprise; empty for the plain Bootstrap table.</summary>
@@ -104,6 +109,7 @@ public sealed class PemsTableFrameTagHelper : TagHelper
 /// <c>&lt;a class="list-group-item list-group-item-action active"&gt;</c> (<c>as="div"</c> or <c>as="button"</c> for rows that are not links). The routing attributes of the anchor helper work.
 /// </summary>
 [HtmlTargetElement("pems-list-group-item")]
+[PemsFacade(FacadeKind.Direct)]
 public sealed class PemsListGroupItemTagHelper(IHtmlGenerator generator) : AnchorTagHelper(generator)
 {
     [HtmlAttributeName("action")] public bool IsAction { get; set; }
@@ -124,6 +130,7 @@ public sealed class PemsListGroupItemTagHelper(IHtmlGenerator generator) : Ancho
 
 /// <summary>MVC facade for the toast frame: <c>&lt;pems-toast tone="success" role="alert" data-bs-delay="5000"&gt;body and close button&lt;/pems-toast&gt;</c>.</summary>
 [HtmlTargetElement("pems-toast")]
+[PemsFacade(FacadeKind.Direct)]
 public sealed class PemsToastTagHelper : TagHelper
 {
     [HtmlAttributeName("tone")] public string Tone { get; set; } = "primary";

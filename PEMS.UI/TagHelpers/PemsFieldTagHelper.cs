@@ -12,6 +12,7 @@ namespace PEMS.UI.TagHelpers;
 /// the first error from ModelState, so existing views migrate with a one-line change and keep model binding and validation.
 /// </summary>
 [HtmlTargetElement("pems-field", Attributes = "asp-for", TagStructure = TagStructure.WithoutEndTag)]
+[PemsFacade(UiKeys.Field)]
 public sealed class PemsFieldTagHelper(IPemsComponentRenderer renderer) : TagHelper
 {
     [HtmlAttributeName("asp-for")] public ModelExpression For { get; set; } = default!;

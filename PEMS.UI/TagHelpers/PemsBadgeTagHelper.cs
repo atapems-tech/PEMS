@@ -13,6 +13,7 @@ namespace PEMS.UI.TagHelpers;
 /// The text between the tags stays in the page (it is a status name or a count the page computed); the component supplies the element and its colour classes.
 /// </summary>
 [HtmlTargetElement("pems-badge")]
+[PemsFacade(UiKeys.Badge)]
 public sealed class PemsBadgeTagHelper(IPemsComponentRenderer renderer) : TagHelper
 {
     /// <summary>neutral, primary, danger, success, warning, info, light or dark (lower case in the page); "none" when the page passes the colour classes in <c>css</c>.</summary>

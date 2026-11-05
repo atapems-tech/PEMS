@@ -153,3 +153,13 @@ Run the app, open the page in a browser, exercise the golden path and one edge c
 ## 6. Dynamic builders (forward look)
 
 Form/module/workflow designers are embedded JavaScript components inside Razor pages [D1]. Anything the designers produce renders through the **same** components as hand-built pages. Therefore: any component you build today should accept data-driven configuration, not just compile-time Razor parameters.
+
+## 7. The UI dispatcher: one door, the registry key (ADR-0013, SCRUM-506)
+
+Views and descriptors reach a component the same way: by its key (`UiKeys`, registered in `PemsComponentRegistry`, rendered by `IPemsComponentRenderer`). Rules that keep this from drifting:
+
+1. **Keys are constants.** Use `UiKeys.X`; never write a key as a string literal in code (the registry itself registers with the constants).
+2. **Every `pems-*` tag helper declares `[PemsFacade(...)]`**: `UiKeys.X` when it renders that registered component through the renderer, `FacadeKind.Part` for a child tag, `FacadeKind.Direct` only for an existing tag that still writes its own markup. A **new** tag helper is `UiKeys.X`, never `Direct`: add the component first (section 4).
+3. **Adding a component is one step**: the component, a `UiKeys` constant and its registry row, the facade, the row in section 1 of this chapter, a test. `UiDispatcherDriftTests` fails if any of them is missing or if `UiKeys` and the registry differ.
+4. **Converting a Direct facade** (moving its markup into a registered component, default output unchanged) lowers `DirectFacadeBaseline` in `UiDispatcherDriftTests`; the number only goes down.
+5. **Graph**: `python tools/graphify/update.py` adds one node per key with edges key -> component, key -> facade and view -> key, so `graphify query "who uses badge"` works.

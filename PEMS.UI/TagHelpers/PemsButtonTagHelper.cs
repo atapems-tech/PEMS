@@ -1,3 +1,4 @@
+using PEMS.UI.Rendering;
 using Microsoft.AspNetCore.Mvc.Routing;
 using Microsoft.AspNetCore.Mvc.TagHelpers;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
@@ -13,6 +14,7 @@ namespace PEMS.UI.TagHelpers;
 /// A link can carry <c>asp-controller</c>, <c>asp-action</c>, <c>asp-route-*</c> and the other routing attributes of the built-in anchor helper (this class derives from it).
 /// </summary>
 [HtmlTargetElement("pems-button")]
+[PemsFacade(FacadeKind.Direct)]
 public sealed class PemsButtonTagHelper(IHtmlGenerator generator) : AnchorTagHelper(generator)
 {
     /// <summary>neutral, primary, danger, success, warning, info, light or dark (lower case in the page); "none" when the page passes the colour class in <c>css</c> (btn-pems, btn-link).</summary>

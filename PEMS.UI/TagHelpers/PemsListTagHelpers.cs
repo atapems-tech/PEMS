@@ -1,3 +1,4 @@
+using PEMS.UI.Rendering;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Razor.TagHelpers;
 
@@ -57,6 +58,7 @@ internal static class PemsList
 
 /// <summary>Frame of the whole page: fills the window, the table scrolls inside. Sets the texts for every child tag.</summary>
 [HtmlTargetElement("pems-list-page")]
+[PemsFacade(FacadeKind.Direct)]
 public sealed class PemsListPageTagHelper : TagHelper
 {
     [HtmlAttributeName("texts")] public PemsListTexts Texts { get; set; } = default!;
@@ -68,6 +70,7 @@ public sealed class PemsListPageTagHelper : TagHelper
 
 /// <summary>The card that holds toolbar, KPI row, chips and grid.</summary>
 [HtmlTargetElement("pems-list-panel", ParentTag = "pems-list-page")]
+[PemsFacade(FacadeKind.Direct)]
 public sealed class PemsListPanelTagHelper : TagHelper
 {
     public override void Process(TagHelperContext context, TagHelperOutput output) => PemsList.Become(output, "div", "lp-panel");
@@ -75,6 +78,7 @@ public sealed class PemsListPanelTagHelper : TagHelper
 
 /// <summary>The one toolbar: title and count, then the page's search form and tools (child content).</summary>
 [HtmlTargetElement("pems-list-toolbar")]
+[PemsFacade(FacadeKind.Direct)]
 public sealed class PemsListToolbarTagHelper : TagHelper
 {
     [HtmlAttributeName("heading")] public string Heading { get; set; } = "";
@@ -112,6 +116,7 @@ public sealed class PemsListToolbarTagHelper : TagHelper
 /// With <c>search-type</c> the input is the shared autocomplete; picking a result opens it, Enter submits the form.
 /// </summary>
 [HtmlTargetElement("pems-list-search")]
+[PemsFacade(FacadeKind.Direct)]
 public sealed class PemsListSearchTagHelper : TagHelper
 {
     [HtmlAttributeName("id")] public string Id { get; set; } = "";
@@ -170,6 +175,7 @@ public sealed class PemsListSearchTagHelper : TagHelper
 
 /// <summary>Row of icon tools at the end of the toolbar. <c>search-for</c> adds the button that opens the search form.</summary>
 [HtmlTargetElement("pems-list-tools")]
+[PemsFacade(FacadeKind.Direct)]
 public sealed class PemsListToolsTagHelper : TagHelper
 {
     [HtmlAttributeName("search-for")] public string? SearchFor { get; set; }
@@ -195,6 +201,7 @@ public sealed class PemsListToolsTagHelper : TagHelper
 /// with Reset and Apply. The page decides which filters exist and what "active" means (<c>count</c>).
 /// </summary>
 [HtmlTargetElement("pems-list-filters")]
+[PemsFacade(FacadeKind.Direct)]
 public sealed class PemsListFiltersTagHelper : TagHelper
 {
     [HtmlAttributeName("form-id")] public string FormId { get; set; } = "";
@@ -260,6 +267,7 @@ public sealed class PemsListFiltersTagHelper : TagHelper
 /// then <c>items</c>; the item whose value equals <c>value</c> is selected. The page owns the values and their texts.
 /// </summary>
 [HtmlTargetElement("pems-list-filter-select", TagStructure = TagStructure.WithoutEndTag)]
+[PemsFacade(FacadeKind.Direct)]
 public sealed class PemsListFilterSelectTagHelper : TagHelper
 {
     [HtmlAttributeName("id")] public string Id { get; set; } = "";
@@ -306,6 +314,7 @@ public sealed class PemsListFilterSelectTagHelper : TagHelper
 /// (for example an upload) without a modal. <c>primary</c> shows the label next to the icon, like the New button.
 /// </summary>
 [HtmlTargetElement("pems-list-popover")]
+[PemsFacade(FacadeKind.Direct)]
 public sealed class PemsListPopoverTagHelper : TagHelper
 {
     [HtmlAttributeName("id")] public string Id { get; set; } = "";
@@ -355,6 +364,7 @@ public sealed class PemsListPopoverTagHelper : TagHelper
 /// <summary>Button that shows/hides the KPI row (<c>target</c> = its id); the choice is kept per browser under <c>storage-key</c>.
 /// <c>open</c> (W2b) shows the row until the viewer hides it, for pages whose counts are the point (give the row <c>open</c> too).</summary>
 [HtmlTargetElement("pems-list-kpi-toggle", TagStructure = TagStructure.WithoutEndTag)]
+[PemsFacade(FacadeKind.Direct)]
 public sealed class PemsListKpiToggleTagHelper : TagHelper
 {
     [HtmlAttributeName("target")] public string Target { get; set; } = "";
@@ -378,6 +388,7 @@ public sealed class PemsListKpiToggleTagHelper : TagHelper
 /// <summary>Excel export of the filtered list (the page builds the link with its filters). <c>label</c> (W2) replaces the
 /// default text when the export is not the filtered list (for example an export of every row).</summary>
 [HtmlTargetElement("pems-list-export", TagStructure = TagStructure.WithoutEndTag)]
+[PemsFacade(FacadeKind.Direct)]
 public sealed class PemsListExportTagHelper : TagHelper
 {
     [HtmlAttributeName("href")] public string Href { get; set; } = "";
@@ -396,6 +407,7 @@ public sealed class PemsListExportTagHelper : TagHelper
 
 /// <summary>Resets the stored column widths of the grid (hidden on phones, where columns are not resized).</summary>
 [HtmlTargetElement("pems-list-reset-columns", TagStructure = TagStructure.WithoutEndTag)]
+[PemsFacade(FacadeKind.Direct)]
 public sealed class PemsListResetColumnsTagHelper : TagHelper
 {
     [HtmlAttributeName("grid-key")] public string GridKey { get; set; } = "";
@@ -414,6 +426,7 @@ public sealed class PemsListResetColumnsTagHelper : TagHelper
 /// <summary>The primary "New ..." action; the label collapses to the icon on phones. <c>href</c> opens a page;
 /// <c>modal</c> (an element id, W2) opens the page's own Bootstrap modal instead.</summary>
 [HtmlTargetElement("pems-list-new", TagStructure = TagStructure.WithoutEndTag)]
+[PemsFacade(FacadeKind.Direct)]
 public sealed class PemsListNewTagHelper : TagHelper
 {
     [HtmlAttributeName("href")] public string Href { get; set; } = "";
@@ -450,6 +463,7 @@ public sealed class PemsListNewTagHelper : TagHelper
 
 /// <summary>The KPI row; hidden until the KPI toggle shows it, or shown first when <c>open</c> (W2b). Child content = the page's KPI chips.</summary>
 [HtmlTargetElement("pems-list-kpis")]
+[PemsFacade(FacadeKind.Direct)]
 public sealed class PemsListKpisTagHelper : TagHelper
 {
     [HtmlAttributeName("id")] public string Id { get; set; } = "";
@@ -465,6 +479,7 @@ public sealed class PemsListKpisTagHelper : TagHelper
 
 /// <summary>Active-filter chips; renders nothing when there is no chip. <c>reset-href</c> adds "reset all" from two chips on.</summary>
 [HtmlTargetElement("pems-list-chips")]
+[PemsFacade(FacadeKind.Direct)]
 public sealed class PemsListChipsTagHelper : TagHelper
 {
     [HtmlAttributeName("reset-href")] public string? ResetHref { get; set; }
@@ -497,6 +512,7 @@ public sealed class PemsListChipsTagHelper : TagHelper
 
 /// <summary>One active filter: "label: value" with a link that removes it.</summary>
 [HtmlTargetElement("pems-list-chip", TagStructure = TagStructure.WithoutEndTag)]
+[PemsFacade(FacadeKind.Direct)]
 public sealed class PemsListChipTagHelper : TagHelper
 {
     [HtmlAttributeName("label")] public string Label { get; set; } = "";
@@ -525,6 +541,7 @@ public sealed class PemsListChipTagHelper : TagHelper
 
 /// <summary>Holds the scrolling table and the footer.</summary>
 [HtmlTargetElement("pems-list-grid")]
+[PemsFacade(FacadeKind.Direct)]
 public sealed class PemsListGridTagHelper : TagHelper
 {
     public override void Process(TagHelperContext context, TagHelperOutput output) => PemsList.Become(output, "div", "lp-tablewrap");
@@ -536,6 +553,7 @@ public sealed class PemsListGridTagHelper : TagHelper
 /// says so and offers "clear all" (<c>clear-href</c>, the unfiltered list).
 /// </summary>
 [HtmlTargetElement("pems-list-table")]
+[PemsFacade(FacadeKind.Direct)]
 public sealed class PemsListTableTagHelper : TagHelper
 {
     [HtmlAttributeName("grid-key")] public string? GridKey { get; set; }
@@ -579,6 +597,7 @@ public sealed class PemsListTableTagHelper : TagHelper
 
 /// <summary>Footer under the table (the pager).</summary>
 [HtmlTargetElement("pems-list-footer")]
+[PemsFacade(FacadeKind.Direct)]
 public sealed class PemsListFooterTagHelper : TagHelper
 {
     public override void Process(TagHelperContext context, TagHelperOutput output) => PemsList.Become(output, "div", "lp-footer");
@@ -590,6 +609,7 @@ public sealed class PemsListFooterTagHelper : TagHelper
 /// ticked ids as hidden inputs named <c>name</c> when it is submitted. <c>count-text</c> is the localised count, "{0}" = number ticked.
 /// </summary>
 [HtmlTargetElement("pems-list-bulk")]
+[PemsFacade(FacadeKind.Direct)]
 public sealed class PemsListBulkTagHelper : TagHelper
 {
     [HtmlAttributeName("count-text")] public string CountText { get; set; } = "{0}";
@@ -615,6 +635,7 @@ public sealed class PemsListBulkTagHelper : TagHelper
 /// <c>label</c> the localised tool tip and accessible name.
 /// </summary>
 [HtmlTargetElement("pems-list-menu")]
+[PemsFacade(FacadeKind.Direct)]
 public sealed class PemsListMenuTagHelper : TagHelper
 {
     [HtmlAttributeName("id")] public string Id { get; set; } = "";

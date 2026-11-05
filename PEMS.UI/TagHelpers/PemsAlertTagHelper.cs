@@ -11,6 +11,7 @@ namespace PEMS.UI.TagHelpers;
 /// element, its tone class and its role, so no view writes <c>class="alert alert-*"</c> by hand.
 /// </summary>
 [HtmlTargetElement("pems-alert")]
+[PemsFacade(UiKeys.Alert)]
 public sealed class PemsAlertTagHelper(IPemsComponentRenderer renderer) : TagHelper
 {
     /// <summary>info, success, warning, danger, primary, secondary, light, or none for the bare <c>alert</c> class (lower case in the page).</summary>

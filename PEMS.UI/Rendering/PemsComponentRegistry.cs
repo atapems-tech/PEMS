@@ -21,32 +21,32 @@ public sealed class PemsComponentRegistry : IPemsComponentRegistry
 
     public PemsComponentRegistry()
     {
-        Register("button", typeof(PemsButton));
-        Register("badge", typeof(PemsBadge));
-        Register("skeleton", typeof(PemsSkeleton));
-        Register("empty-state", typeof(PemsEmptyState));
-        Register("error-state", typeof(PemsErrorState));
-        Register("loading-state", typeof(PemsLoadingState));
-        Register("field", typeof(PemsField));
-        Register("table", typeof(PemsTable));
-        Register("form", typeof(PemsForm));
-        Register("form-section", typeof(PemsFormSection));
-        Register("action-bar", typeof(PemsActionBar));
-        Register("alert", typeof(PemsAlert));
-        Register("modal", typeof(PemsModal));
-        Register("drawer", typeof(PemsDrawer));
-        Register("confirm-dialog", typeof(PemsConfirmDialog));
-        Register("tabs", typeof(PemsTabs));
-        Register("breadcrumb", typeof(PemsBreadcrumb));
-        Register("stepper", typeof(PemsStepper));
-        Register("menu", typeof(PemsMenu));
-        Register("side-panel-nav", typeof(PemsSidePanelNav));
-        Register("card", typeof(PemsCard));
-        Register("progress", typeof(PemsProgress));
-        Register("accordion", typeof(PemsAccordion));
-        Register("accordion-item", typeof(PemsAccordionItem));
-        Register("list-group", typeof(PemsListGroup));
-        Register("spinner", typeof(PemsSpinner));
+        Register(UiKeys.Button, typeof(PemsButton));
+        Register(UiKeys.Badge, typeof(PemsBadge));
+        Register(UiKeys.Skeleton, typeof(PemsSkeleton));
+        Register(UiKeys.EmptyState, typeof(PemsEmptyState));
+        Register(UiKeys.ErrorState, typeof(PemsErrorState));
+        Register(UiKeys.LoadingState, typeof(PemsLoadingState));
+        Register(UiKeys.Field, typeof(PemsField));
+        Register(UiKeys.Table, typeof(PemsTable));
+        Register(UiKeys.Form, typeof(PemsForm));
+        Register(UiKeys.FormSection, typeof(PemsFormSection));
+        Register(UiKeys.ActionBar, typeof(PemsActionBar));
+        Register(UiKeys.Alert, typeof(PemsAlert));
+        Register(UiKeys.Modal, typeof(PemsModal));
+        Register(UiKeys.Drawer, typeof(PemsDrawer));
+        Register(UiKeys.ConfirmDialog, typeof(PemsConfirmDialog));
+        Register(UiKeys.Tabs, typeof(PemsTabs));
+        Register(UiKeys.Breadcrumb, typeof(PemsBreadcrumb));
+        Register(UiKeys.Stepper, typeof(PemsStepper));
+        Register(UiKeys.Menu, typeof(PemsMenu));
+        Register(UiKeys.SidePanelNav, typeof(PemsSidePanelNav));
+        Register(UiKeys.Card, typeof(PemsCard));
+        Register(UiKeys.Progress, typeof(PemsProgress));
+        Register(UiKeys.Accordion, typeof(PemsAccordion));
+        Register(UiKeys.AccordionItem, typeof(PemsAccordionItem));
+        Register(UiKeys.ListGroup, typeof(PemsListGroup));
+        Register(UiKeys.Spinner, typeof(PemsSpinner));
     }
 
     public void Register(string key, Type componentType)

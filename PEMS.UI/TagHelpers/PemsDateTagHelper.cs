@@ -1,3 +1,4 @@
+using PEMS.UI.Rendering;
 using System.Globalization;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Razor.TagHelpers;
@@ -17,6 +18,7 @@ namespace PEMS.UI.TagHelpers;
 /// Every other attribute (id, data-*, aria-*, placeholder, required, disabled, readonly, title) goes to the visible input. Dates in <c>value</c>, <c>min</c> and <c>max</c> are ISO text.
 /// </summary>
 [HtmlTargetElement("pems-date")]
+[PemsFacade(FacadeKind.Direct)]
 public sealed class PemsDateTagHelper : TagHelper
 {
     [HtmlAttributeName("name")] public string? Name { get; set; }
