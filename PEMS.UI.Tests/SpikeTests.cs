@@ -159,7 +159,7 @@ public sealed class SpikeTests(SpikeHost host, ITestOutputHelper output) : IClas
             var services = new ServiceCollection().AddPemsUi();
             services.AddSingleton<IPemsComponentRegistry>(registry);
             await using var provider = services.BuildServiceProvider();
-            var html = await provider.GetRequiredService<IPemsComponentRenderer>().RenderAsync("kpi-tile",
+            var html = await provider.GetRequiredService<IPemsComponentRenderer>().RenderAsync("sample-kpi",
                 new Dictionary<string, object?> { ["Value"] = "42", ["Label"] = "Open work orders" });
             Assert.Contains("pems-kpi__value\">42<", html);
         }

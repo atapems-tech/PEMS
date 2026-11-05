@@ -1,6 +1,9 @@
 using System.Text.Encodings.Web;
 using System.Text.RegularExpressions;
 using Microsoft.AspNetCore.Razor.TagHelpers;
+using Microsoft.Extensions.DependencyInjection;
+using PEMS.UI;
+using PEMS.UI.Rendering;
 using PEMS.UI.TagHelpers;
 
 namespace PEMS.Tests.Web;
@@ -11,6 +14,8 @@ namespace PEMS.Tests.Web;
 /// </summary>
 public class InfoGridComponentTests
 {
+    private static readonly IPemsComponentRenderer Renderer = new ServiceCollection().AddPemsUi().BuildServiceProvider().CreateScope().ServiceProvider.GetRequiredService<IPemsComponentRenderer>();
+
     private static async Task<string> Run(TagHelper helper, string tag, string childHtml = "", TagHelperAttributeList? attributes = null)
     {
         var context = new TagHelperContext(tag, attributes ?? new TagHelperAttributeList(), new Dictionary<object, object>(), "u1");
@@ -26,7 +31,7 @@ public class InfoGridComponentTests
     [Fact]
     public async Task Grid_IsADescriptionList_AndKeepsThePagesClass()
     {
-        var html = await Run(new PemsInfoGridTagHelper(), "pems-info-grid", "<div>x</div>", new TagHelperAttributeList { { "class", "mt-2" } });
+        var html = await Run(new PemsInfoGridTagHelper(Renderer), "pems-info-grid", "<div>x</div>", new TagHelperAttributeList { { "class", "mt-2" } });
         Assert.StartsWith("<dl class=\"pems-info mt-2\">", html);
         Assert.EndsWith("</dl>", html);
     }
@@ -34,39 +39,39 @@ public class InfoGridComponentTests
     [Fact]
     public async Task Item_PairsTheLabelWithItsValue()
     {
-        var html = await Run(new PemsInfoItemTagHelper { Label = "Vendor code" }, "pems-info-item", "<a href=\"/v/1\">V-1</a>");
+        var html = await Run(new PemsInfoItemTagHelper(Renderer) { Label = "Vendor code" }, "pems-info-item", "<a href=\"/v/1\">V-1</a>");
         Assert.Equal("<div class=\"pems-info__item\"><dt class=\"pems-info__label\">Vendor code</dt><dd class=\"pems-info__value\"><a href=\"/v/1\">V-1</a></dd></div>", html);
     }
 
     [Fact]
     public async Task Item_ShowsADash_WhenTheValueIsEmpty()
     {
-        Assert.Contains("<dd class=\"pems-info__value\">-</dd>", await Run(new PemsInfoItemTagHelper { Label = "Country" }, "pems-info-item", "  "));
-        Assert.Contains("<dd class=\"pems-info__value\">N/A</dd>", await Run(new PemsInfoItemTagHelper { Label = "Country", EmptyText = "N/A" }, "pems-info-item"));
+        Assert.Contains("<dd class=\"pems-info__value\">-</dd>", await Run(new PemsInfoItemTagHelper(Renderer) { Label = "Country" }, "pems-info-item", "  "));
+        Assert.Contains("<dd class=\"pems-info__value\">N/A</dd>", await Run(new PemsInfoItemTagHelper(Renderer) { Label = "Country", EmptyText = "N/A" }, "pems-info-item"));
     }
 
     [Fact]
     public async Task Item_Options_Wide_Num_Mono_Ltr_Tone()
     {
-        var wide = await Run(new PemsInfoItemTagHelper { Label = "Description", Wide = true }, "pems-info-item", "text");
+        var wide = await Run(new PemsInfoItemTagHelper(Renderer) { Label = "Description", Wide = true }, "pems-info-item", "text");
         Assert.StartsWith("<div class=\"pems-info__item pems-info__item--wide\">", wide);
 
         // numbers and phone numbers run left to right inside the value, so the value stays at the start edge of a Persian page
-        var num = await Run(new PemsInfoItemTagHelper { Label = "Revision", Num = true }, "pems-info-item", "B2");
+        var num = await Run(new PemsInfoItemTagHelper(Renderer) { Label = "Revision", Num = true }, "pems-info-item", "B2");
         Assert.Contains("<dd class=\"pems-info__value\"><span class=\"pems-info__num\" dir=\"ltr\">B2</span></dd>", num);
-        var ltr = await Run(new PemsInfoItemTagHelper { Label = "Phone", Ltr = true }, "pems-info-item", "+98 21 1234");
+        var ltr = await Run(new PemsInfoItemTagHelper(Renderer) { Label = "Phone", Ltr = true }, "pems-info-item", "+98 21 1234");
         Assert.Contains("<dd class=\"pems-info__value\"><span dir=\"ltr\">+98 21 1234</span></dd>", ltr);
 
-        Assert.Contains("class=\"pems-info__value pems-info__value--mono\"", await Run(new PemsInfoItemTagHelper { Label = "Code", Mono = true }, "pems-info-item", "C"));
-        Assert.Contains("class=\"pems-info__value text-danger\"", await Run(new PemsInfoItemTagHelper { Label = "Overdue", Tone = "danger" }, "pems-info-item", "3"));
-        Assert.Contains("<dd class=\"pems-info__value\">0</dd>", await Run(new PemsInfoItemTagHelper { Label = "Overdue", Tone = "" }, "pems-info-item", "0"));
-        Assert.Contains("<dd class=\"pems-info__value\" id=\"permInfo\">", await Run(new PemsInfoItemTagHelper { Label = "P", ValueId = "permInfo" }, "pems-info-item", "1"));
+        Assert.Contains("class=\"pems-info__value pems-info__value--mono\"", await Run(new PemsInfoItemTagHelper(Renderer) { Label = "Code", Mono = true }, "pems-info-item", "C"));
+        Assert.Contains("class=\"pems-info__value text-danger\"", await Run(new PemsInfoItemTagHelper(Renderer) { Label = "Overdue", Tone = "danger" }, "pems-info-item", "3"));
+        Assert.Contains("<dd class=\"pems-info__value\">0</dd>", await Run(new PemsInfoItemTagHelper(Renderer) { Label = "Overdue", Tone = "" }, "pems-info-item", "0"));
+        Assert.Contains("<dd class=\"pems-info__value\" id=\"permInfo\">", await Run(new PemsInfoItemTagHelper(Renderer) { Label = "P", ValueId = "permInfo" }, "pems-info-item", "1"));
     }
 
     [Fact]
     public async Task Grid_RowsLayout_PutsEachLabelBesideItsValue()
     {
-        var html = await Run(new PemsInfoGridTagHelper { Layout = "rows" }, "pems-info-grid", "", new TagHelperAttributeList { { "class", "small" } });
+        var html = await Run(new PemsInfoGridTagHelper(Renderer) { Layout = "rows" }, "pems-info-grid", "", new TagHelperAttributeList { { "class", "small" } });
         Assert.StartsWith("<dl class=\"pems-info pems-info--rows small\">", html);
         var css = File.ReadAllText(Path.Combine(RepoRoot(), "PEMS.UI", "wwwroot", "pems-ui.css"));
         Assert.Contains(".pems-info--rows .pems-info__item { display: contents; }", css);
@@ -75,14 +80,14 @@ public class InfoGridComponentTests
     [Fact]
     public async Task Item_KeepsThePagesValueClass()
     {
-        var html = await Run(new PemsInfoItemTagHelper { Label = "Full text", ValueClass = "pc-fft-view" }, "pems-info-item", "a\nb");
+        var html = await Run(new PemsInfoItemTagHelper(Renderer) { Label = "Full text", ValueClass = "pc-fft-view" }, "pems-info-item", "a\nb");
         Assert.Contains("<dd class=\"pems-info__value pc-fft-view\">", html);
     }
 
     [Fact]
     public async Task Item_EncodesItsLabel()
     {
-        var html = await Run(new PemsInfoItemTagHelper { Label = "P&ID <x>" }, "pems-info-item", "1");
+        var html = await Run(new PemsInfoItemTagHelper(Renderer) { Label = "P&ID <x>" }, "pems-info-item", "1");
         Assert.Contains("<dt class=\"pems-info__label\">P&amp;ID &lt;x&gt;</dt>", html);
     }
 

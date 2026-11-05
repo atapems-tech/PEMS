@@ -47,6 +47,9 @@ public sealed class PemsComponentRegistry : IPemsComponentRegistry
         Register(UiKeys.AccordionItem, typeof(PemsAccordionItem));
         Register(UiKeys.ListGroup, typeof(PemsListGroup));
         Register(UiKeys.Spinner, typeof(PemsSpinner));
+        Register(UiKeys.InfoGrid, typeof(PemsInfoGrid));
+        Register(UiKeys.InfoItem, typeof(PemsInfoItem));
+        Register(UiKeys.KpiTile, typeof(PemsKpiTile));
     }
 
     public void Register(string key, Type componentType)

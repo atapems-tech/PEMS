@@ -1,0 +1,108 @@
+{
+  "key": "kpi-tile",
+  "component": "PEMS.UI.Components.PemsKpiTile",
+  "category": "display",
+  "icon": "bi-speedometer2",
+  "nameKey": "component.kpi-tile",
+  "optionsParameter": null,
+  "manifestVersion": 1,
+  "options": {
+    "type": "object",
+    "properties": {
+      "empty": {
+        "type": "boolean"
+      },
+      "options": {
+        "type": "object",
+        "properties": {
+          "label": {
+            "type": "string"
+          },
+          "icon": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "iconClass": {
+            "type": "string"
+          },
+          "sub": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "href": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "hint": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "compact": {
+            "type": "boolean"
+          },
+          "tone": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "cssClass": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "attributes": {
+            "type": [
+              "object",
+              "null"
+            ]
+          }
+        },
+        "required": [
+          "label"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "additionalProperties": false,
+    "required": [
+      "options"
+    ]
+  },
+  "parameters": [
+    {
+      "name": "childContent",
+      "type": "RenderFragment",
+      "kind": "slot",
+      "required": false
+    },
+    {
+      "name": "empty",
+      "type": "Boolean",
+      "kind": "option",
+      "required": false
+    },
+    {
+      "name": "options",
+      "type": "KpiTileOptions",
+      "kind": "option",
+      "required": true
+    }
+  ],
+  "sample": {
+    "options": {
+      "label": "Open",
+      "icon": "bi-tools",
+      "iconClass": "bg-icon-green"
+    }
+  }
+}

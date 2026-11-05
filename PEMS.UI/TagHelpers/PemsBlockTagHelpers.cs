@@ -13,6 +13,29 @@ internal static class BlockTagHelper
 
     public static RenderFragment Markup(string html) => b => b.AddMarkupContent(0, html);
 
+    /// <summary>The attributes the page wrote on the tag except <paramref name="except"/> (the facade handles those), values decoded because the component encodes them again.</summary>
+    public static IReadOnlyDictionary<string, object>? PageAttributes(TagHelperOutput output, params string[] except)
+    {
+        var rest = output.Attributes.Where(a => !except.Contains(a.Name, StringComparer.OrdinalIgnoreCase)).ToList();
+        if (rest.Count == 0) return null;
+        return rest.ToDictionary(a => a.Name, a => (object)System.Net.WebUtility.HtmlDecode(a.Value switch
+        {
+            null => "",
+            Microsoft.AspNetCore.Html.IHtmlContent html => ToHtml(html),
+            _ => a.Value.ToString() ?? ""
+        }));
+    }
+
+    /// <summary>The class the page wrote on the tag (kept after the component's classes), or null.</summary>
+    public static string? PageClass(TagHelperOutput output) => output.Attributes.TryGetAttribute("class", out var c) ? c.Value?.ToString() : null;
+
+    private static string ToHtml(Microsoft.AspNetCore.Html.IHtmlContent content)
+    {
+        using var writer = new StringWriter();
+        content.WriteTo(writer, System.Text.Encodings.Web.HtmlEncoder.Default);
+        return writer.ToString();
+    }
+
     public static void Replace(TagHelperOutput output, string html)
     {
         output.TagName = null;
