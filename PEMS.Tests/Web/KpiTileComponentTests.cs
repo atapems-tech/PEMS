@@ -1,6 +1,9 @@
 using System.Text.Encodings.Web;
 using System.Text.RegularExpressions;
 using Microsoft.AspNetCore.Razor.TagHelpers;
+using Microsoft.Extensions.DependencyInjection;
+using PEMS.UI;
+using PEMS.UI.Rendering;
 using PEMS.UI.TagHelpers;
 
 namespace PEMS.Tests.Web;
@@ -11,6 +14,8 @@ namespace PEMS.Tests.Web;
 /// </summary>
 public class KpiTileComponentTests
 {
+    private static readonly IPemsComponentRenderer Renderer = new ServiceCollection().AddPemsUi().BuildServiceProvider().CreateScope().ServiceProvider.GetRequiredService<IPemsComponentRenderer>();
+
     private static async Task<string> Run(PemsKpiTileTagHelper helper, string childHtml = "")
     {
         var context = new TagHelperContext("pems-kpi-tile", new TagHelperAttributeList(), new Dictionary<object, object>(), "u1");
@@ -26,7 +31,7 @@ public class KpiTileComponentTests
     [Fact]
     public async Task Tile_RendersTheKpiCardMarkup()
     {
-        var html = await Run(new PemsKpiTileTagHelper { Label = "Open", Icon = "bi-tools", Color = "green" }, "12");
+        var html = await Run(new PemsKpiTileTagHelper(Renderer) { Label = "Open", Icon = "bi-tools", Color = "green" }, "12");
         Assert.Equal("<div class=\"kpi-card\"><div class=\"kpi-icon bg-icon-green\"><i aria-hidden=\"true\" class=\"bi bi-tools\"></i></div>"
                      + "<div><div class=\"kpi-value\">12</div><div class=\"kpi-label\">Open</div></div></div>", html);
     }
@@ -34,7 +39,7 @@ public class KpiTileComponentTests
     [Fact]
     public async Task Tile_WithHref_IsALinkWithItsHint()
     {
-        var html = await Run(new PemsKpiTileTagHelper { Label = "Open", Icon = "bi-tools", Href = "/WorkOrder?status=open", Hint = "Not yet closed" }, "3");
+        var html = await Run(new PemsKpiTileTagHelper(Renderer) { Label = "Open", Icon = "bi-tools", Href = "/WorkOrder?status=open", Hint = "Not yet closed" }, "3");
         Assert.StartsWith("<a class=\"kpi-card kpi-link text-decoration-none\" href=\"/WorkOrder?status=open\" title=\"Not yet closed\">", html);
         Assert.EndsWith("</a>", html);
     }
@@ -42,7 +47,7 @@ public class KpiTileComponentTests
     [Fact]
     public async Task Tile_EmptyValueShowsADash_NoIconNoSquare_AndASubLine()
     {
-        var html = await Run(new PemsKpiTileTagHelper { Label = "Held runs", Sub = "since Monday" });
+        var html = await Run(new PemsKpiTileTagHelper(Renderer) { Label = "Held runs", Sub = "since Monday" });
         Assert.Contains("<div class=\"kpi-value\">-</div>", html);
         Assert.DoesNotContain("kpi-icon", html);
         Assert.Contains("<div class=\"kpi-sub\">since Monday</div>", html);
@@ -57,7 +62,7 @@ public class KpiTileComponentTests
     [Fact]
     public async Task Tile_EncodesItsLabel_AndKeepsTheValueMarkup()
     {
-        var html = await Run(new PemsKpiTileTagHelper { Label = "R&D <x>" }, "42 <small>%</small>");
+        var html = await Run(new PemsKpiTileTagHelper(Renderer) { Label = "R&D <x>" }, "42 <small>%</small>");
         Assert.Contains("<div class=\"kpi-label\">R&amp;D &lt;x&gt;</div>", html);
         Assert.Contains("<div class=\"kpi-value\">42 <small>%</small></div>", html);
     }
@@ -80,7 +85,7 @@ public class KpiTileComponentTests
     [Fact]
     public async Task Model_FillsTheTile_LikeTheRetiredPartial()
     {
-        var html = await Run(new PemsKpiTileTagHelper
+        var html = await Run(new PemsKpiTileTagHelper(Renderer)
         {
             Model = new PEMS.Web.Models.KpiCardViewModel
             {
@@ -96,11 +101,11 @@ public class KpiTileComponentTests
     [Fact]
     public async Task Model_ZeroCountShowsADash_DefaultsApply_AndTagAttributesWin()
     {
-        var html = await Run(new PemsKpiTileTagHelper { Model = new PEMS.Web.Models.KpiCardViewModel { Title = "Held runs", Count = 0 } });
+        var html = await Run(new PemsKpiTileTagHelper(Renderer) { Model = new PEMS.Web.Models.KpiCardViewModel { Title = "Held runs", Count = 0 } });
         Assert.StartsWith("<div class=\"kpi-card\"><div class=\"kpi-icon bg-icon-blue\"><i aria-hidden=\"true\" class=\"bi bi-card-list\"></i></div>", html);
         Assert.Contains("<div class=\"kpi-value\">-</div>", html);
 
-        var own = await Run(new PemsKpiTileTagHelper { Label = "Mine", Color = "red", Model = new PEMS.Web.Models.KpiCardViewModel { Title = "Theirs", Count = 2 } });
+        var own = await Run(new PemsKpiTileTagHelper(Renderer) { Label = "Mine", Color = "red", Model = new PEMS.Web.Models.KpiCardViewModel { Title = "Theirs", Count = 2 } });
         Assert.Contains("<div class=\"kpi-label\">Mine</div>", own);
         Assert.Contains("bg-icon-red", own);
     }
@@ -126,9 +131,9 @@ public class KpiTileComponentTests
     [Fact]
     public async Task Compact_AddsItsClass_AndToneColoursTheValue()
     {
-        var html = await Run(new PemsKpiTileTagHelper { Label = "Difference", Compact = true, Tone = "danger" }, "1.500");
+        var html = await Run(new PemsKpiTileTagHelper(Renderer) { Label = "Difference", Compact = true, Tone = "danger" }, "1.500");
         Assert.StartsWith("<div class=\"kpi-card kpi-card--compact\"><div><div class=\"kpi-value text-danger\">1.500</div>", html);
-        Assert.Contains("<div class=\"kpi-value\">0</div>", await Run(new PemsKpiTileTagHelper { Label = "Difference", Tone = "" }, "0"));
+        Assert.Contains("<div class=\"kpi-value\">0</div>", await Run(new PemsKpiTileTagHelper(Renderer) { Label = "Difference", Tone = "" }, "0"));
         var css = File.ReadAllText(Path.Combine(RepoRoot(), "PEMS.Web", "wwwroot", "css", "admin.css"));
         Assert.Contains(".kpi-card--compact .kpi-value { font-size: 18px; }", css);
     }

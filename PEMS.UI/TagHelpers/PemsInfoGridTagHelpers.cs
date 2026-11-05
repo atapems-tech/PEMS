@@ -1,3 +1,4 @@
+using PEMS.UI.Components;
 using PEMS.UI.Rendering;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Razor.TagHelpers;
@@ -15,13 +16,22 @@ namespace PEMS.UI.TagHelpers;
 /// over the value again. A class or id on the tag is kept.
 /// </summary>
 [HtmlTargetElement("pems-info-grid")]
-[PemsFacade(FacadeKind.Direct)]
-public sealed class PemsInfoGridTagHelper : TagHelper
+[PemsFacade(UiKeys.InfoGrid)]
+public sealed class PemsInfoGridTagHelper(IPemsComponentRenderer renderer) : TagHelper
 {
     [HtmlAttributeName("layout")] public string? Layout { get; set; }
 
-    public override void Process(TagHelperContext context, TagHelperOutput output) =>
-        PemsList.Become(output, "dl", Layout == "rows" ? "pems-info pems-info--rows" : "pems-info");
+    public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
+    {
+        var inner = (await output.GetChildContentAsync()).GetContent();
+        var options = new InfoGridOptions { Layout = Layout, CssClass = BlockTagHelper.PageClass(output), Attributes = BlockTagHelper.PageAttributes(output, "class") };
+        output.Attributes.Clear();
+        BlockTagHelper.Replace(output, await renderer.RenderAsync<PemsInfoGrid>(new Dictionary<string, object?>
+        {
+            [nameof(PemsInfoGrid.Options)] = options,
+            [nameof(PemsInfoGrid.ChildContent)] = BlockTagHelper.Markup(inner)
+        }));
+    }
 }
 
 /// <summary>
@@ -31,8 +41,8 @@ public sealed class PemsInfoGridTagHelper : TagHelper
 /// (a dash by default).
 /// </summary>
 [HtmlTargetElement("pems-info-item", ParentTag = "pems-info-grid")]
-[PemsFacade(FacadeKind.Direct)]
-public sealed class PemsInfoItemTagHelper : TagHelper
+[PemsFacade(UiKeys.InfoItem)]
+public sealed class PemsInfoItemTagHelper(IPemsComponentRenderer renderer) : TagHelper
 {
     [HtmlAttributeName("label")] public string Label { get; set; } = "";
     [HtmlAttributeName("wide")] public bool Wide { get; set; }
@@ -47,34 +57,18 @@ public sealed class PemsInfoItemTagHelper : TagHelper
 
     public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
     {
-        PemsList.Become(output, "div", Wide ? "pems-info__item pems-info__item--wide" : "pems-info__item");
-
-        var dt = new TagBuilder("dt");
-        dt.AddCssClass("pems-info__label");
-        dt.InnerHtml.Append(Label);
-
-        var dd = new TagBuilder("dd");
-        dd.AddCssClass("pems-info__value");
-        if (Mono) dd.AddCssClass("pems-info__value--mono");
-        if (Tone == "danger") dd.AddCssClass("text-danger");   // the app's own danger text colour, as before
-        else if (Tone is "warning" or "success") dd.AddCssClass("pems-info__value--" + Tone);
-        if (!string.IsNullOrEmpty(ValueClass)) dd.AddCssClass(ValueClass);
-        if (!string.IsNullOrEmpty(ValueId)) dd.Attributes["id"] = ValueId;
-
         var content = await output.GetChildContentAsync();
-        if (content.IsEmptyOrWhiteSpace) dd.InnerHtml.Append(EmptyText);
-        else if (Num || Ltr)
+        var options = new InfoItemOptions
         {
-            // an inline left-to-right run: the value stays at the start edge of a Persian page, its digits keep their order
-            var run = new TagBuilder("span");
-            run.Attributes["dir"] = "ltr";
-            if (Num) run.AddCssClass("pems-info__num");
-            run.InnerHtml.AppendHtml(content);
-            dd.InnerHtml.AppendHtml(run);
-        }
-        else dd.InnerHtml.AppendHtml(content);
-
-        output.Content.SetHtmlContent(dt);
-        output.Content.AppendHtml(dd);
+            Label = Label, Wide = Wide, Num = Num, Mono = Mono, Ltr = Ltr, Tone = Tone, EmptyText = EmptyText, ValueId = ValueId, ValueClass = ValueClass,
+            Attributes = BlockTagHelper.PageAttributes(output, "class")
+        };
+        output.Attributes.Clear();
+        BlockTagHelper.Replace(output, await renderer.RenderAsync<PemsInfoItem>(new Dictionary<string, object?>
+        {
+            [nameof(PemsInfoItem.Options)] = options,
+            [nameof(PemsInfoItem.Empty)] = content.IsEmptyOrWhiteSpace,
+            [nameof(PemsInfoItem.ChildContent)] = BlockTagHelper.Markup(content.GetContent())
+        }));
     }
 }

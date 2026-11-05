@@ -64,3 +64,48 @@ public sealed record SpinnerOptions
     /// <summary>The other attributes of the element (id, role, aria-label), written after the class; a page role replaces the default.</summary>
     public IReadOnlyDictionary<string, object>? Attributes { get; init; }
 }
+
+/// <summary>Inputs of <see cref="PemsInfoGrid"/>: the label / value description list; the items are <see cref="PemsInfoItem"/>s in its child content.</summary>
+public sealed record InfoGridOptions
+{
+    /// <summary>"rows" puts each label beside its value; anything else stacks the label over the value.</summary>
+    public string? Layout { get; init; }
+    /// <summary>The page's own classes, kept after the component's.</summary>
+    public string? CssClass { get; init; }
+    /// <summary>Other attributes the page wrote on the tag (id, data-*).</summary>
+    public IReadOnlyDictionary<string, object>? Attributes { get; init; }
+}
+
+/// <summary>Inputs of <see cref="PemsInfoItem"/>: one label and its value (child content; empty shows <see cref="EmptyText"/>).</summary>
+public sealed record InfoItemOptions
+{
+    public required string Label { get; init; }
+    public bool Wide { get; init; }
+    public bool Num { get; init; }
+    public bool Mono { get; init; }
+    public bool Ltr { get; init; }
+    /// <summary>danger, warning or success colours the value.</summary>
+    public string? Tone { get; init; }
+    public string EmptyText { get; init; } = "-";
+    public string? ValueId { get; init; }
+    public string? ValueClass { get; init; }
+    public IReadOnlyDictionary<string, object>? Attributes { get; init; }
+}
+
+/// <summary>Inputs of <see cref="PemsKpiTile"/>: one number (child content, a dash when empty) with its label, an optional icon square, sub line, link and hint.</summary>
+public sealed record KpiTileOptions
+{
+    public required string Label { get; init; }
+    /// <summary>Bootstrap icon class, e.g. bi-tools; null shows no icon square.</summary>
+    public string? Icon { get; init; }
+    /// <summary>The icon square colour class, already resolved (bg-icon-green).</summary>
+    public string IconClass { get; init; } = "bg-icon-blue";
+    public string? Sub { get; init; }
+    public string? Href { get; init; }
+    public string? Hint { get; init; }
+    public bool Compact { get; init; }
+    /// <summary>danger, success or warning colours the value.</summary>
+    public string? Tone { get; init; }
+    public string? CssClass { get; init; }
+    public IReadOnlyDictionary<string, object>? Attributes { get; init; }
+}

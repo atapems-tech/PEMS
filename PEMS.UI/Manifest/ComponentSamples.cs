@@ -35,6 +35,9 @@ public static class ComponentSamples
         ["accordion-item"] = """{"target":"a1-item","parentId":"a1"}""",
         ["list-group"] = """{"flush":true}""",
         ["spinner"] = """{"size":"small","tone":"neutral"}""",
+        ["info-grid"] = """{"layout":"rows"}""",
+        ["info-item"] = """{"options":{"label":"Vendor code"}}""",
+        ["kpi-tile"] = """{"options":{"label":"Open","icon":"bi-tools","iconClass":"bg-icon-green"}}""",
         ["form"] = """{"definition":{"id":"item","title":{"en":"Item","fa":"مورد"},"action":"/items","fields":[{"name":"tag","label":{"en":"Tag","fa":"تگ"}}],"submitLabel":{"en":"Save","fa":"ذخیره"}}}"""
     };
 

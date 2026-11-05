@@ -1,5 +1,5 @@
 using PEMS.UI.Rendering;
-using Microsoft.AspNetCore.Mvc.Rendering;
+using PEMS.UI.Components;
 using Microsoft.AspNetCore.Razor.TagHelpers;
 
 namespace PEMS.UI.TagHelpers;
@@ -14,8 +14,8 @@ namespace PEMS.UI.TagHelpers;
 /// an optional <c>sub</c> line under the label, <c>href</c> to make the whole tile a link, and <c>hint</c> as its tool tip.
 /// </summary>
 [HtmlTargetElement("pems-kpi-tile")]
-[PemsFacade(FacadeKind.Direct)]
-public sealed class PemsKpiTileTagHelper : TagHelper
+[PemsFacade(UiKeys.KpiTile)]
+public sealed class PemsKpiTileTagHelper(IPemsComponentRenderer renderer) : TagHelper
 {
     [HtmlAttributeName("label")] public string Label { get; set; } = "";
     [HtmlAttributeName("icon")] public string? Icon { get; set; }
@@ -50,42 +50,20 @@ public sealed class PemsKpiTileTagHelper : TagHelper
             Href ??= Model.Url;
             Hint ??= Model.Hint;
         }
-        var link = !string.IsNullOrEmpty(Href);
-        var css = (link ? "kpi-card kpi-link text-decoration-none" : "kpi-card") + (Compact ? " kpi-card--compact" : "");
-        PemsList.Become(output, link ? "a" : "div", css);
-        if (link) output.Attributes.SetAttribute("href", Href);
-        if (!string.IsNullOrEmpty(Hint)) output.Attributes.SetAttribute("title", Hint);
-
-        var body = new TagBuilder("div");
-        var value = new TagBuilder("div");
-        value.AddCssClass("kpi-value");
-        if (Tone is "danger" or "success" or "warning") value.AddCssClass("text-" + Tone);
         var content = await output.GetChildContentAsync();
-        if (content.IsEmptyOrWhiteSpace && Model != null) value.InnerHtml.Append(Model.DisplayCount);
-        else if (content.IsEmptyOrWhiteSpace) value.InnerHtml.Append("-");
-        else value.InnerHtml.AppendHtml(content);
-        body.InnerHtml.AppendHtml(value);
-
-        var label = new TagBuilder("div");
-        label.AddCssClass("kpi-label");
-        label.InnerHtml.Append(Label);
-        body.InnerHtml.AppendHtml(label);
-        if (!string.IsNullOrEmpty(Sub))
+        var empty = content.IsEmptyOrWhiteSpace;
+        var value = empty && Model != null ? System.Net.WebUtility.HtmlEncode(Model.DisplayCount) : content.GetContent();
+        var options = new KpiTileOptions
         {
-            var sub = new TagBuilder("div");
-            sub.AddCssClass("kpi-sub");
-            sub.InnerHtml.Append(Sub);
-            body.InnerHtml.AppendHtml(sub);
-        }
-
-        output.Content.Clear();
-        if (!string.IsNullOrEmpty(Icon))
+            Label = Label, Icon = string.IsNullOrEmpty(Icon) ? null : Icon, IconClass = ColorClass(Color), Sub = Sub, Href = Href, Hint = Hint, Compact = Compact, Tone = Tone,
+            CssClass = BlockTagHelper.PageClass(output), Attributes = BlockTagHelper.PageAttributes(output, "class", string.IsNullOrEmpty(Href) ? "" : "href", string.IsNullOrEmpty(Hint) ? "" : "title")
+        };
+        output.Attributes.Clear();
+        BlockTagHelper.Replace(output, await renderer.RenderAsync<PemsKpiTile>(new Dictionary<string, object?>
         {
-            var square = new TagBuilder("div");
-            square.AddCssClass("kpi-icon " + ColorClass(Color));
-            square.InnerHtml.AppendHtml(PemsList.Icon(Icon));
-            output.Content.AppendHtml(square);
-        }
-        output.Content.AppendHtml(body);
+            [nameof(PemsKpiTile.Options)] = options,
+            [nameof(PemsKpiTile.Empty)] = empty && Model == null,
+            [nameof(PemsKpiTile.ChildContent)] = BlockTagHelper.Markup(value)
+        }));
     }
 }

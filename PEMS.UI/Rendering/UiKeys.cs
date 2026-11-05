@@ -32,4 +32,7 @@ public static class UiKeys
     public const string AccordionItem = "accordion-item";
     public const string ListGroup = "list-group";
     public const string Spinner = "spinner";
+    public const string InfoGrid = "info-grid";
+    public const string InfoItem = "info-item";
+    public const string KpiTile = "kpi-tile";
 }
