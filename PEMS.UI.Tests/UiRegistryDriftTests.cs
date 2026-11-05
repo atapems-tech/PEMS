@@ -14,7 +14,7 @@ namespace PEMS.UI.Tests;
 public sealed class UiRegistryDriftTests
 {
     /// <summary>Lower this number when a Direct facade moves to a registered component; never raise it (new tags get a component first, guideline 02).</summary>
-    private const int DirectFacadeBaseline = 24;
+    private const int DirectFacadeBaseline = 15;
 
     private static string Here([CallerFilePath] string p = "") => p;
     private static string Root() => Path.GetFullPath(Path.Combine(Path.GetDirectoryName(Here())!, ".."));

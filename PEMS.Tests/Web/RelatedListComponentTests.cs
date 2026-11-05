@@ -8,6 +8,9 @@ using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.AspNetCore.Razor.TagHelpers;
 using PEMS.Application.DTOs;
 using PEMS.Tests.TestSupport;
+using Microsoft.Extensions.DependencyInjection;
+using PEMS.UI;
+using PEMS.UI.Rendering;
 using PEMS.UI.TagHelpers;
 using PEMS.Web.Areas.Admin.Controllers;
 using PEMS.Web.Controllers;
@@ -21,6 +24,8 @@ namespace PEMS.Tests.Web;
 /// </summary>
 public class RelatedListComponentTests
 {
+    private static readonly IPemsComponentRenderer Renderer = new ServiceCollection().AddPemsUi().BuildServiceProvider().CreateScope().ServiceProvider.GetRequiredService<IPemsComponentRenderer>();
+
     private static async Task<string> Run(TagHelper helper, string tag, string childHtml = "")
     {
         var items = new Dictionary<object, object>();
@@ -37,7 +42,7 @@ public class RelatedListComponentTests
     [Fact]
     public async Task Section_HasATitledHeadingWithCount_AndTheEmptyTextOnlyWhenEmpty()
     {
-        var html = await Run(new PemsRelatedListTagHelper { Id = "tasks", Icon = "bi-list-ol", Title = "Tasks", Count = 3, EmptyText = "None yet" }, "pems-related-list", "<p>rows</p>");
+        var html = await Run(new PemsRelatedListTagHelper(Renderer) { Id = "tasks", Icon = "bi-list-ol", Title = "Tasks", Count = 3, EmptyText = "None yet" }, "pems-related-list", "<p>rows</p>");
         Assert.StartsWith("<section", html);
         Assert.Contains("aria-labelledby=\"tasksTitle\"", html);
         Assert.Contains("<h3 id=\"tasksTitle\">", html);
@@ -45,14 +50,14 @@ public class RelatedListComponentTests
         Assert.Contains("<p>rows</p>", html);
         Assert.DoesNotContain("None yet", html);
 
-        var empty = await Run(new PemsRelatedListTagHelper { Title = "Tasks", Empty = true, EmptyText = "None yet" }, "pems-related-list");
+        var empty = await Run(new PemsRelatedListTagHelper(Renderer) { Title = "Tasks", Empty = true, EmptyText = "None yet" }, "pems-related-list");
         Assert.Contains("<p class=\"lp-rel-empty\">None yet</p>", empty);
     }
 
     [Fact]
     public async Task AddForm_PostsTheParentKey_AndTheFields()
     {
-        var html = await Run(new PemsRelatedAddTagHelper { Action = "/JobPlan/AddTask", ParentName = "jobPlanId", ParentValue = "7", SubmitLabel = "Add" },
+        var html = await Run(new PemsRelatedAddTagHelper(Renderer) { Action = "/JobPlan/AddTask", ParentName = "jobPlanId", ParentValue = "7", SubmitLabel = "Add" },
             "pems-related-add", "<div><input name=\"title\" /></div>");
         Assert.Matches("<form action=\"/JobPlan/AddTask\" class=\"lp-rel-add\" method=\"post\">", html);
         Assert.Contains("<input name=\"jobPlanId\" type=\"hidden\" value=\"7\" />", html);
@@ -63,7 +68,7 @@ public class RelatedListComponentTests
     [Fact]
     public async Task Remove_PostsTheRowAndParentKeys_WithALabelledButton_AndAsksOnlyWhenTold()
     {
-        var html = await Run(new PemsRelatedRemoveTagHelper { Action = "/JobPlan/RemoveTask", KeyName = "maintenanceTaskId", KeyValue = "5", ParentName = "jobPlanId", ParentValue = "7", Label = "Remove" },
+        var html = await Run(new PemsRelatedRemoveTagHelper(Renderer) { Action = "/JobPlan/RemoveTask", KeyName = "maintenanceTaskId", KeyValue = "5", ParentName = "jobPlanId", ParentValue = "7", Label = "Remove" },
             "pems-related-remove");
         Assert.Contains("name=\"maintenanceTaskId\" type=\"hidden\" value=\"5\"", html);
         Assert.Contains("name=\"jobPlanId\" type=\"hidden\" value=\"7\"", html);
@@ -71,7 +76,7 @@ public class RelatedListComponentTests
         Assert.Contains("<span class=\"visually-hidden\">Remove</span>", html);
         Assert.DoesNotContain("confirm(", html);
 
-        var asked = await Run(new PemsRelatedRemoveTagHelper { Action = "/x", KeyName = "id", KeyValue = "1", Label = "Remove", Confirm = "Sure?" }, "pems-related-remove");
+        var asked = await Run(new PemsRelatedRemoveTagHelper(Renderer) { Action = "/x", KeyName = "id", KeyValue = "1", Label = "Remove", Confirm = "Sure?" }, "pems-related-remove");
         Assert.Contains("data-confirm=\"Sure?\"", asked);
         Assert.Contains("onsubmit=\"return confirm(this.dataset.confirm)\"", asked);
     }
@@ -79,11 +84,11 @@ public class RelatedListComponentTests
     [Fact]
     public async Task RowForm_IsHiddenAndNamed_AndSaveSubmitsIt()
     {
-        var form = await Run(new PemsRelatedRowFormTagHelper { Id = "num_PO", Action = "/Admin/Numbering/Save" }, "pems-related-row-form", "<input type=\"hidden\" name=\"DocumentType\" value=\"PO\" />");
+        var form = await Run(new PemsRelatedRowFormTagHelper(Renderer) { Id = "num_PO", Action = "/Admin/Numbering/Save" }, "pems-related-row-form", "<input type=\"hidden\" name=\"DocumentType\" value=\"PO\" />");
         Assert.Matches("<form action=\"/Admin/Numbering/Save\" hidden=\"hidden\" id=\"num_PO\" method=\"post\">", form);
         Assert.Contains("name=\"DocumentType\"", form);
 
-        var save = await Run(new PemsRelatedSaveTagHelper { FormId = "num_PO", Label = "Save" }, "pems-related-save");
+        var save = await Run(new PemsRelatedSaveTagHelper(Renderer) { FormId = "num_PO", Label = "Save" }, "pems-related-save");
         Assert.Contains("form=\"num_PO\"", save);
         Assert.Contains("type=\"submit\"", save);
         Assert.Contains("title=\"Save\"", save);

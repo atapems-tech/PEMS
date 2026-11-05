@@ -56,4 +56,13 @@ public static class UiKeys
     public const string ListFooter = "list-footer";
     public const string ListBulk = "list-bulk";
     public const string ListMenu = "list-menu";
+    public const string RelatedList = "related-list";
+    public const string RelatedTable = "related-table";
+    public const string RelatedAdd = "related-add";
+    public const string RelatedRemove = "related-remove";
+    public const string RelatedRowForm = "related-row-form";
+    public const string RelatedSave = "related-save";
+    public const string RelatedAct = "related-act";
+    public const string Tree = "tree";
+    public const string TreeItem = "tree-item";
 }

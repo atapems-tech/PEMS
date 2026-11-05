@@ -2,7 +2,8 @@
 import subprocess, sys, pathlib
 
 root = pathlib.Path(__file__).resolve().parents[2]
-code = subprocess.call(["graphify", "update", "."], cwd=root)
+# "graphify" is an extensionless launcher script that Windows cannot start from Python; the module runs the same code with this interpreter
+code = subprocess.call([sys.executable, "-m", "graphify", "update", "."], cwd=root)
 if code != 0:
     sys.exit(code)
 graph = str(root / "graphify-out" / "graph.json")

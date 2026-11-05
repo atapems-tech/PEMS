@@ -71,6 +71,15 @@ public sealed class PemsComponentRegistry : IPemsComponentRegistry
         Register(UiKeys.ListFooter, typeof(PemsListFooter));
         Register(UiKeys.ListBulk, typeof(PemsListBulk));
         Register(UiKeys.ListMenu, typeof(PemsListMenu));
+        Register(UiKeys.RelatedList, typeof(PemsRelatedList));
+        Register(UiKeys.RelatedTable, typeof(PemsRelatedTable));
+        Register(UiKeys.RelatedAdd, typeof(PemsRelatedAdd));
+        Register(UiKeys.RelatedRemove, typeof(PemsRelatedRemove));
+        Register(UiKeys.RelatedRowForm, typeof(PemsRelatedRowForm));
+        Register(UiKeys.RelatedSave, typeof(PemsRelatedSave));
+        Register(UiKeys.RelatedAct, typeof(PemsRelatedAct));
+        Register(UiKeys.Tree, typeof(PemsTree));
+        Register(UiKeys.TreeItem, typeof(PemsTreeItem));
     }
 
     public void Register(string key, Type componentType)
