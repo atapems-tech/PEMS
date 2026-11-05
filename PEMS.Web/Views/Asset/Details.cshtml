@@ -176,7 +176,7 @@
                     <div class="row g-3 mb-3">
                         <div class="col-md-6">
                             <pems-label>@Localizer["Commissioning Date"]</pems-label>
-                            <input name="commissioningDate" type="date" class="form-control" value="@Model.CommissioningDate?.ToString("yyyy-MM-dd")" />
+                            <pems-date name="commissioningDate" value="@Model.CommissioningDate?.ToString("yyyy-MM-dd")" />
                         </div>
                         <div class="col-md-6">
                             <pems-label>@Localizer["Status"]</pems-label>

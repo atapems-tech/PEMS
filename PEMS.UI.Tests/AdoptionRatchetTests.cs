@@ -44,6 +44,13 @@ public sealed class AdoptionRatchetTests
         ("chart", new Regex(@"new Chart\(|data-bk-chart=|<canvas[^>]*[Cc]hart", RegexOptions.Compiled), true, true),
         ("confirm-call", new Regex(@"(?<![\w.])confirm\(|window\.confirm\(", RegexOptions.Compiled), true, true),
         ("alert-call", new Regex(@"(?<![\w.])alert\(", RegexOptions.Compiled), true, true),
+        // SCRUM-508 (owner decision 2026-11-05: every piece of the UI is a component): the patterns that had no counter yet. A hand-written block of these is UI
+        // that is not a registered component; the baseline starts at today's size and only goes down.
+        ("inline-style", new Regex(@"\sstyle=""", RegexOptions.Compiled), true, false),
+        ("icon", new Regex(@"<i\b[^>]*\bclass=""[^""]*(?<![\w-])bi(?![\w-])", RegexOptions.Compiled), true, false),
+        ("layout-grid", new Regex(@"class=""[^""]*(?<![\w-])(row|col(-[a-z]+)?(-\d+)?)(?![\w-])", RegexOptions.Compiled), true, false),
+        ("pagination", new Regex(@"class=""[^""]*(?<![\w-])(pagination|page-link)(?![\w-])", RegexOptions.Compiled), true, false),
+        ("bare-button", new Regex(@"class=""btn(?![\w-])", RegexOptions.Compiled), true, false),
         ("inline-script", new Regex(@"<script>", RegexOptions.Compiled), true, false),
         ("js-built-markup", new Regex(@"\.innerHTML\s*\+?=|insertAdjacentHTML\(", RegexOptions.Compiled), false, true),
     ];
@@ -89,6 +96,12 @@ public sealed class AdoptionRatchetTests
     public void The_counter_sees_the_patterns_it_is_meant_to_count()
     {
         Assert.Equal(1, Hits("alert", "<div class=\"alert alert-danger small\">x</div>"));
+        Assert.Equal(1, Hits("inline-style", "<div style=\"width:130px\">x</div>"));
+        Assert.Equal(1, Hits("icon", "<i class=\"bi bi-x\" aria-hidden=\"true\"></i>"));
+        Assert.Equal(0, Hits("icon", "<i class=\"fab fa-x\"></i><i class=\"bidi\"></i>"));
+        Assert.Equal(2, Hits("layout-grid", "<div class=\"row g-2\"><div class=\"col-md-6\">x</div></div><div class=\"rowing\">"));
+        Assert.Equal(1, Hits("pagination", "<ul class=\"pagination\"><li class=\"page-item\">x</li></ul>"));
+        Assert.Equal(1, Hits("bare-button", "<a class=\"btn\">x</a><a class=\"btn-link\">y</a>"));
         Assert.Equal(1, Hits("button", "<button class=\"btn btn-primary btn-sm\">x</button>"));
         Assert.Equal(1, Hits("date-input", "<input name=\"due\" type=\"date\" class=\"form-control\" />"));
         Assert.Equal(0, Hits("date-input", "<pems-date name=\"due\" /><input type=\"text\" data-type=\"date2\">"));

@@ -6,12 +6,12 @@
 <div class="content-card pems-s-3f7efa5f">
     <p class="text-muted small"><i class="bi bi-info-circle" aria-hidden="true"></i> @Localizer["LtT_PreviewNote"]</p>
 
-    <dl class="row small mb-3">
-        <dt class="col-sm-3">@Localizer["LtT_Name"]</dt><dd class="col-sm-9">@Model.Name</dd>
-        <dt class="col-sm-3">@Localizer["Type"]</dt><dd class="col-sm-9">@(Model.LetterType ?? Localizer["LtT_AllTypes"].Value)</dd>
-        <dt class="col-sm-3">@Localizer["Lt_Priority"]</dt><dd class="col-sm-9">@Localizer["Lt_P_" + Model.Priority]</dd>
-        <dt class="col-sm-3">@Localizer["Lt_Confidentiality"]</dt><dd class="col-sm-9">@Model.ConfidentialityLevel</dd>
-    </dl>
+    <pems-info-grid layout="rows" class="small mb-3">
+    <pems-info-item label="@Localizer["LtT_Name"]">@Model.Name</pems-info-item>
+    <pems-info-item label="@Localizer["Type"]">@(Model.LetterType ?? Localizer["LtT_AllTypes"].Value)</pems-info-item>
+    <pems-info-item label="@Localizer["Lt_Priority"]">@Localizer["Lt_P_" + Model.Priority]</pems-info-item>
+    <pems-info-item label="@Localizer["Lt_Confidentiality"]">@Model.ConfidentialityLevel</pems-info-item>
+</pems-info-grid>
 
     <h2 class="vs-section__title">@Localizer["Lt_Subject"]</h2>
     <p class="fw-semibold">@ViewBag.Subject</p>

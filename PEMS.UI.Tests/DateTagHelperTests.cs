@@ -35,20 +35,20 @@ public sealed class DateTagHelperTests
     [Fact]
     public void The_gregorian_field_is_the_native_date_input_the_pages_wrote()
         => Assert.Equal("<input class=\"form-control form-control-sm\" required=\"required\" type=\"date\" name=\"due\" value=\"2025-03-20\" min=\"2024-03-20\" max=\"2026-03-19\" />",
-            Run(new PemsDateTagHelper(UiTestRenderer.Instance) { Calendar = "gregorian", Scale = "small", Name = "due", Value = "2025-03-20", Min = "2024-03-20", Max = "2026-03-19" }, new TagHelperAttribute("required", "required")));
+            Run(new PemsDateTagHelper(null!, UiTestRenderer.Instance) { Calendar = "gregorian", Scale = "small", Name = "due", Value = "2025-03-20", Min = "2024-03-20", Max = "2026-03-19" }, new TagHelperAttribute("required", "required")));
 
     [Fact]
     public void A_time_part_or_an_empty_value_is_handled_and_nothing_else_is_written()
     {
-        Assert.Contains("value=\"2025-03-20\"", Run(new PemsDateTagHelper(UiTestRenderer.Instance) { Calendar = "gregorian", Name = "d", Value = "2025-03-20T10:30:00" }));
-        Assert.DoesNotContain("value=", Run(new PemsDateTagHelper(UiTestRenderer.Instance) { Calendar = "gregorian", Name = "d", Value = "" }));
-        Assert.DoesNotContain("value=", Run(new PemsDateTagHelper(UiTestRenderer.Instance) { Calendar = "gregorian", Name = "d", Value = "not a date" }));
+        Assert.Contains("value=\"2025-03-20\"", Run(new PemsDateTagHelper(null!, UiTestRenderer.Instance) { Calendar = "gregorian", Name = "d", Value = "2025-03-20T10:30:00" }));
+        Assert.DoesNotContain("value=", Run(new PemsDateTagHelper(null!, UiTestRenderer.Instance) { Calendar = "gregorian", Name = "d", Value = "" }));
+        Assert.DoesNotContain("value=", Run(new PemsDateTagHelper(null!, UiTestRenderer.Instance) { Calendar = "gregorian", Name = "d", Value = "not a date" }));
     }
 
     [Fact]
     public void The_jalali_field_shows_the_jalali_date_and_posts_the_iso_date_from_a_hidden_input()
     {
-        var html = Run(new PemsDateTagHelper(UiTestRenderer.Instance) { Calendar = "jalali", Name = "due", Value = "2025-03-20", Min = "2024-03-20", Max = "2026-03-20" }, new TagHelperAttribute("id", "due"), new TagHelperAttribute("required", "required"));
+        var html = Run(new PemsDateTagHelper(null!, UiTestRenderer.Instance) { Calendar = "jalali", Name = "due", Value = "2025-03-20", Min = "2024-03-20", Max = "2026-03-20" }, new TagHelperAttribute("id", "due"), new TagHelperAttribute("required", "required"));
 
         Assert.Contains("type=\"text\"", html);
         Assert.Contains("value=\"1403/12/30\"", html);                       // the last day of the leap year 1403
@@ -78,7 +78,7 @@ public sealed class DateTagHelperTests
     [Fact]
     public void Without_a_value_the_jalali_field_is_empty_and_has_a_placeholder_and_a_generated_id()
     {
-        var html = Run(new PemsDateTagHelper(UiTestRenderer.Instance) { Calendar = "jalali", Name = "due" });
+        var html = Run(new PemsDateTagHelper(null!, UiTestRenderer.Instance) { Calendar = "jalali", Name = "due" });
         Assert.DoesNotContain("value=\"1", html);
         Assert.Contains("placeholder=\"1403/01/01\"", html);
         Assert.Matches("data-jdp-target-value-input=\"#pdt[0-9a-f]{8}-iso\"", html);
@@ -88,8 +88,8 @@ public sealed class DateTagHelperTests
     [Fact]
     public void Auto_follows_the_page_culture()
     {
-        Assert.Contains("type=\"date\"", WithCulture("en", () => Run(new PemsDateTagHelper(UiTestRenderer.Instance) { Name = "d", Value = "2025-03-20" })));
-        var fa = WithCulture("fa", () => Run(new PemsDateTagHelper(UiTestRenderer.Instance) { Name = "d", Value = "2025-03-20" }));
+        Assert.Contains("type=\"date\"", WithCulture("en", () => Run(new PemsDateTagHelper(null!, UiTestRenderer.Instance) { Name = "d", Value = "2025-03-20" })));
+        var fa = WithCulture("fa", () => Run(new PemsDateTagHelper(null!, UiTestRenderer.Instance) { Name = "d", Value = "2025-03-20" }));
         Assert.Contains("data-jdp", fa);
         Assert.Contains("1403/12/30", fa);
     }
@@ -97,7 +97,7 @@ public sealed class DateTagHelperTests
     [Fact]
     public void A_name_with_markup_is_encoded()
     {
-        var html = Run(new PemsDateTagHelper(UiTestRenderer.Instance) { Calendar = "jalali", Name = "a\"><script>x</script>", Value = "2025-03-20" });
+        var html = Run(new PemsDateTagHelper(null!, UiTestRenderer.Instance) { Calendar = "jalali", Name = "a\"><script>x</script>", Value = "2025-03-20" });
         Assert.DoesNotContain("<script>", html);
     }
 
