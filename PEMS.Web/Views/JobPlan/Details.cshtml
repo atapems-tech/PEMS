@@ -16,12 +16,12 @@
 
 <div class="content-card mb-3">
     <div class="d-flex align-items-center gap-3 mb-2 flex-wrap">
-        <div class="kpi-icon bg-icon-blue pems-s-792bd2d6"><i class="bi bi-list-check"></i></div>
+        <div class="kpi-icon bg-icon-blue pems-s-792bd2d6"><pems-icon name="bi-list-check" /></div>
         <div>
             <h5 class="mb-0">@Model.JobPlanNumber &mdash; @Model.Title</h5>
             <span class="text-muted small">@(Model.EstimatedDurationHours.HasValue ? Model.EstimatedDurationHours + " hours estimated" : "no duration estimate")</span>
         </div>
-        <pems-button tone="neutral" size="small" outline="true" css="ms-auto" type="button" data-bs-toggle="modal" data-bs-target="#editJobPlanModal"><i class="bi bi-pencil"></i> @Localizer["Edit"]</pems-button>
+        <pems-button tone="neutral" size="small" outline="true" css="ms-auto" type="button" data-bs-toggle="modal" data-bs-target="#editJobPlanModal"><pems-icon name="bi-pencil" /> @Localizer["Edit"]</pems-button>
     </div>
     <pems-info-grid class="mt-2">
         <pems-info-item label="@Localizer["Scope"]">@Model.Scope</pems-info-item>
@@ -74,7 +74,7 @@
     </pems-related-add>
 </pems-related-list>
 <div class="content-card mb-3">
-    <h6 class="mb-3"><i class="bi bi-mortarboard"></i> @Localizer["Required Skills"]</h6>
+    <h6 class="mb-3"><pems-icon name="bi-mortarboard" /> @Localizer["Required Skills"]</h6>
     <div class="d-flex flex-wrap gap-2 mb-3">
         @foreach (var rs in Model.RequiredSkills)
         {
@@ -84,7 +84,7 @@
                 <form asp-action="RemoveRequiredSkill" method="post" class="d-inline">
                     <input type="hidden" name="jobPlanRequiredSkillId" value="@rs.JobPlanRequiredSkillId" />
                     <input type="hidden" name="jobPlanId" value="@Model.JobPlanId" />
-                    <pems-button tone="none" size="small" css="p-0 border-0 text-white" type="submit" style="line-height:1;" title="@Localizer["حذف"]"><i class="bi bi-x"></i></pems-button>
+                    <pems-button tone="none" size="small" css="p-0 border-0 text-white" type="submit" style="line-height:1;" title="@Localizer["حذف"]"><pems-icon name="bi-x" /></pems-button>
                 </form>
             </pems-badge>
         }
@@ -108,7 +108,7 @@
             </pems-select>
         </div>
         <div class="col-md-2"><pems-input scale="small" name="plannedHours" type="number" step="0.5" placeholder="@Localizer["Planned h"]" /></div>
-        <div class="col-md-3"><pems-button tone="primary" size="small" css="w-100"><i class="bi bi-plus-lg"></i> @Localizer["Add"]</pems-button></div>
+        <div class="col-md-3"><pems-button tone="primary" size="small" css="w-100"><pems-icon name="bi-plus-lg" /> @Localizer["Add"]</pems-button></div>
     </form>
 </div>
 

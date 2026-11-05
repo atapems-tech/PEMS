@@ -21,9 +21,9 @@
     @if (TempData["Error"] != null) { <pems-alert tone="danger">@TempData["Error"]</pems-alert> }
 
     <div class="d-flex gap-2 mb-3 flex-wrap">
-        <a class="vs-btn vs-btn--sm" asp-action="Chart"><i class="bi bi-diagram-3"></i> @Localizer["Org_Chart_Title"]</a>
-        <a class="vs-btn vs-btn--sm" asp-action="Diagnostics"><i class="bi bi-heart-pulse"></i> @Localizer["Org_Diag_Title"]</a>
-        <a class="vs-btn vs-btn--sm" asp-area="Admin" asp-controller="OrganizationImport" asp-action="Index"><i class="bi bi-file-earmark-arrow-up"></i> @Localizer["Org_Imp_Title"]</a>
+        <a class="vs-btn vs-btn--sm" asp-action="Chart"><pems-icon name="bi-diagram-3" /> @Localizer["Org_Chart_Title"]</a>
+        <a class="vs-btn vs-btn--sm" asp-action="Diagnostics"><pems-icon name="bi-heart-pulse" /> @Localizer["Org_Diag_Title"]</a>
+        <a class="vs-btn vs-btn--sm" asp-area="Admin" asp-controller="OrganizationImport" asp-action="Index"><pems-icon name="bi-file-earmark-arrow-up" /> @Localizer["Org_Imp_Title"]</a>
     </div>
 
     <pems-nav css="mb-3" role="tablist">
@@ -66,7 +66,7 @@
                                             <option value="@p.PositionId" selected="@(r.ParentPositionId == p.PositionId)">@Label(p)</option>
                                         }
                                     </pems-select>
-                                    <button class="vs-btn vs-btn--sm" title="@Localizer["Org_Btn_Save"]" aria-label="@Localizer["Org_Btn_Save"]"><i class="bi bi-save"></i></button>
+                                    <button class="vs-btn vs-btn--sm" title="@Localizer["Org_Btn_Save"]" aria-label="@Localizer["Org_Btn_Save"]"><pems-icon name="bi-save" /></button>
                                 </form>
                             </td>
                             <td class="pems-s-de413461">
@@ -79,7 +79,7 @@
                                         <input type="hidden" name="isPrimary" value="false" />
                                         <pems-date name="startDate" value="@r.StartDate?.ToString("yyyy-MM-dd")" style="width:130px" aria-label="@Localizer["Org_EffectiveFrom"]" required scale="small" />
                                         <pems-date name="endDate" value="@r.EndDate?.ToString("yyyy-MM-dd")" style="width:130px" aria-label="@Localizer["Org_EffectiveTo"]" scale="small" />
-                                        <button class="vs-btn vs-btn--sm" title="@Localizer["Org_Btn_Save"]" aria-label="@Localizer["Org_Btn_Save"]"><i class="bi bi-save"></i></button>
+                                        <button class="vs-btn vs-btn--sm" title="@Localizer["Org_Btn_Save"]" aria-label="@Localizer["Org_Btn_Save"]"><pems-icon name="bi-save" /></button>
                                     </form>
                                 }
                                 else if (r.IsActive)
@@ -94,7 +94,7 @@
                                         <input type="hidden" name="isPrimary" value="false" />
                                         <pems-date name="startDate" scale="small" style="width:130px" aria-label="@Localizer["Org_EffectiveFrom"]" />
                                         <pems-date name="endDate" scale="small" style="width:130px" aria-label="@Localizer["Org_EffectiveTo"]" />
-                                        <button class="vs-btn vs-btn--sm vs-btn--primary" title="@Localizer["Org_Btn_Assign"]" aria-label="@Localizer["Org_Btn_Assign"]"><i class="bi bi-person-plus"></i></button>
+                                        <button class="vs-btn vs-btn--sm vs-btn--primary" title="@Localizer["Org_Btn_Assign"]" aria-label="@Localizer["Org_Btn_Assign"]"><pems-icon name="bi-person-plus" /></button>
                                     </form>
                                 }
                             </td>
@@ -103,7 +103,7 @@
                                 {
                                     <form asp-action="EndAssignment" method="post" class="d-inline" data-pems-confirm="@Localizer["Org_Confirm_End"]">
                                         <input type="hidden" name="assignmentId" value="@r.AssignmentId" />
-                                        <button class="vs-icon-btn" title="@Localizer["Org_Btn_End"]" aria-label="@Localizer["Org_Btn_End"]"><i class="bi bi-person-dash"></i></button>
+                                        <button class="vs-icon-btn" title="@Localizer["Org_Btn_End"]" aria-label="@Localizer["Org_Btn_End"]"><pems-icon name="bi-person-dash" /></button>
                                     </form>
                                 }
                             </td>

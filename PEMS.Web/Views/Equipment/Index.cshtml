@@ -85,8 +85,8 @@
 
         <pems-list-kpis id="eqKpis">
             <span class="vs-chip">@Localizer["Eq_Total"] <strong>@dash.TotalCount</strong></span>
-            <span class="vs-chip"><i class="bi bi-check-circle" aria-hidden="true"></i> @Localizer["Eq_Active"] <strong>@dash.ActiveCount</strong></span>
-            <span class="vs-chip"><i class="bi bi-dash-circle" aria-hidden="true"></i> @Localizer["Eq_Inactive"] <strong>@dash.InactiveCount</strong></span>
+            <span class="vs-chip"><pems-icon name="bi-check-circle" aria-hidden="true" /> @Localizer["Eq_Active"] <strong>@dash.ActiveCount</strong></span>
+            <span class="vs-chip"><pems-icon name="bi-dash-circle" aria-hidden="true" /> @Localizer["Eq_Inactive"] <strong>@dash.InactiveCount</strong></span>
             @foreach (var d in dash.ByDiscipline.Take(4))
             {
                 <span class="vs-chip">@d.Discipline <strong>@d.Count</strong></span>

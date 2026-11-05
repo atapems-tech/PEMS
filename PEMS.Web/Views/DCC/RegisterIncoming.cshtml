@@ -49,9 +49,9 @@
     <header class="dcr-head">
         <div>
             <nav class="dcr-crumbs" aria-label="breadcrumb">
-                <a asp-action="Index">@L("Dcc_Crumb")</a><i class="bi bi-chevron-right" aria-hidden="true"></i><span>@L("Dcc_PageTitle")</span>
+                <a asp-action="Index">@L("Dcc_Crumb")</a><pems-icon name="bi-chevron-right" aria-hidden="true" /><span>@L("Dcc_PageTitle")</span>
             </nav>
-            <h1 class="dcr-title"><i class="bi bi-envelope-arrow-down" aria-hidden="true"></i> @L("Dcc_PageTitle")</h1>
+            <h1 class="dcr-title"><pems-icon name="bi-envelope-arrow-down" aria-hidden="true" /> @L("Dcc_PageTitle")</h1>
             <p class="dcr-sub">@L("Dcc_PageSubtitle")</p>
         </div>
         <div class="dcr-numchip" title="@L("Dcc_NumberHint")">
@@ -61,18 +61,18 @@
     </header>
 
     <div class="dcr-banner dcr-banner--ok" id="dcrSaved" role="status" hidden>
-        <i class="bi bi-check-circle-fill" aria-hidden="true"></i>
+        <pems-icon name="bi-check-circle-fill" aria-hidden="true" />
         <span id="dcrSavedText"></span>
         <a id="dcrSavedLink" href="#" class="dcr-link">@L("Dcc_OpenLetter")</a>
     </div>
 
     <div class="dcr-banner dcr-banner--err" id="dcrSummary" role="alert" tabindex="-1" hidden>
-        <i class="bi bi-exclamation-octagon-fill" aria-hidden="true"></i>
+        <pems-icon name="bi-exclamation-octagon-fill" aria-hidden="true" />
         <div><strong id="dcrSummaryTitle">@L("Dcc_FixErrors")</strong><ul id="dcrSummaryList"></ul></div>
     </div>
 
     <div class="dcr-banner dcr-banner--warn" id="dcrDuplicate" role="alert" hidden>
-        <i class="bi bi-exclamation-triangle-fill" aria-hidden="true"></i>
+        <pems-icon name="bi-exclamation-triangle-fill" aria-hidden="true" />
         <div class="dcr-grow"><span id="dcrDuplicateText"></span> <a id="dcrDuplicateLink" href="#" target="_blank" rel="noopener" class="dcr-link">@L("Dcc_OpenLetter")</a></div>
         <pems-button tone="warning" size="small" outline="true" type="button" id="dcrDuplicateConfirm">@L("Dcc_RegisterAnyway")</pems-button>
     </div>
@@ -149,7 +149,7 @@
                         <label class="dcr-label" for="dcrDocDate">@L("Dcc_DocumentDate") <span class="dcr-req" aria-hidden="true">*</span></label>
                         <div class="dcr-date" data-date-name="documentDate" id="dcrDocDateWrap">
                             <pems-input css="dcr-ltr" id="dcrDocDate" inputmode="numeric" placeholder="1405/01/01" aria-describedby="dcrDocDateIso" />
-                            <button type="button" class="dcr-date-btn" aria-label="@L("Dcc_PickDate")"><i class="bi bi-calendar3" aria-hidden="true"></i></button>
+                            <button type="button" class="dcr-date-btn" aria-label="@L("Dcc_PickDate")"><pems-icon name="bi-calendar3" aria-hidden="true" /></button>
                             <div class="dcr-cal" role="dialog" aria-label="@L("Dcc_PickDate")" hidden></div>
                         </div>
                         <div class="dcr-hint dcr-ltr" id="dcrDocDateIso"></div>
@@ -160,7 +160,7 @@
                         <label class="dcr-label" for="dcrRecvDate">@L("Dcc_ReceivedDate") <span class="dcr-req" aria-hidden="true">*</span></label>
                         <div class="dcr-date" data-date-name="receivedDate" id="dcrRecvDateWrap">
                             <pems-input css="dcr-ltr" id="dcrRecvDate" inputmode="numeric" placeholder="1405/01/01" aria-describedby="dcrRecvDateIso" />
-                            <button type="button" class="dcr-date-btn" aria-label="@L("Dcc_PickDate")"><i class="bi bi-calendar3" aria-hidden="true"></i></button>
+                            <button type="button" class="dcr-date-btn" aria-label="@L("Dcc_PickDate")"><pems-icon name="bi-calendar3" aria-hidden="true" /></button>
                             <div class="dcr-cal" role="dialog" aria-label="@L("Dcc_PickDate")" hidden></div>
                         </div>
                         <div class="dcr-hint dcr-ltr" id="dcrRecvDateIso"></div>
@@ -236,7 +236,7 @@
                             </div>
                             <div class="dcr-date" data-date-name="responseDueDate" id="dcrDueWrap">
                                 <pems-input css="dcr-ltr" id="dcrDue" inputmode="numeric" placeholder="1405/01/01" aria-labelledby="dcrDueLabel" aria-describedby="dcrDueIso" />
-                                <button type="button" class="dcr-date-btn" aria-label="@L("Dcc_PickDate")"><i class="bi bi-calendar3" aria-hidden="true"></i></button>
+                                <button type="button" class="dcr-date-btn" aria-label="@L("Dcc_PickDate")"><pems-icon name="bi-calendar3" aria-hidden="true" /></button>
                                 <div class="dcr-cal" role="dialog" aria-label="@L("Dcc_PickDate")" hidden></div>
                             </div>
                         </div>
@@ -276,7 +276,7 @@
                 <h2 class="dcr-card-title" id="dcrSecFiles"><span class="dcr-step">4</span> @L("Dcc_SecFiles")</h2>
                 <div class="dcr-field" data-field="files">
                     <div class="dcr-drop" id="dcrDrop" tabindex="0" role="button" aria-describedby="dcrDropHint">
-                        <i class="bi bi-cloud-arrow-up" aria-hidden="true"></i>
+                        <pems-icon name="bi-cloud-arrow-up" aria-hidden="true" />
                         <strong>@L("Dcc_DropTitle")</strong>
                         <span id="dcrDropHint" class="dcr-hint">@L("Dcc_DropHint")</span>
                         <input type="file" id="dcrFileInput" multiple hidden accept="@string.Join(",", IncomingCorrespondenceRules.AllowedExtensions)" />
@@ -314,13 +314,13 @@
 
             <div class="dcr-pane" id="dcrPaneDocs" role="tabpanel" aria-labelledby="dcrTabDocs">
                 <div class="dcr-preview" id="dcrPreview" data-empty="@L("Dcc_PreviewEmpty")">
-                    <div class="dcr-empty"><i class="bi bi-file-earmark-text" aria-hidden="true"></i><span>@L("Dcc_PreviewEmpty")</span></div>
+                    <div class="dcr-empty"><pems-icon name="bi-file-earmark-text" aria-hidden="true" /><span>@L("Dcc_PreviewEmpty")</span></div>
                 </div>
                 <ul class="dcr-previewlist" id="dcrPreviewList"></ul>
             </div>
 
             <div class="dcr-pane" id="dcrPaneThread" role="tabpanel" aria-labelledby="dcrTabThread" hidden>
-                <div id="dcrThread"><div class="dcr-empty"><i class="bi bi-chat-left-text" aria-hidden="true"></i><span>@L("Dcc_ThreadPickParty")</span></div></div>
+                <div id="dcrThread"><div class="dcr-empty"><pems-icon name="bi-chat-left-text" aria-hidden="true" /><span>@L("Dcc_ThreadPickParty")</span></div></div>
             </div>
         </aside>
 
@@ -333,8 +333,8 @@
             <span class="dcr-foot-hint">@L("Dcc_ShortcutHint")</span>
             <div class="dcr-foot-actions">
                 <pems-button tone="neutral" outline="true" as="a" asp-action="Index">@L("Dcc_Cancel")</pems-button>
-                <pems-button tone="primary" outline="true" type="submit" id="dcrSubmitNext" data-mode="next"><i class="bi bi-arrow-repeat" aria-hidden="true"></i> @L("Dcc_RegisterNext")</pems-button>
-                <pems-button tone="primary" type="submit" id="dcrSubmit" data-mode="open"><i class="bi bi-check2-circle" aria-hidden="true"></i> @L("Dcc_Register")</pems-button>
+                <pems-button tone="primary" outline="true" type="submit" id="dcrSubmitNext" data-mode="next"><pems-icon name="bi-arrow-repeat" aria-hidden="true" /> @L("Dcc_RegisterNext")</pems-button>
+                <pems-button tone="primary" type="submit" id="dcrSubmit" data-mode="open"><pems-icon name="bi-check2-circle" aria-hidden="true" /> @L("Dcc_Register")</pems-button>
             </div>
         </footer>
     </form>

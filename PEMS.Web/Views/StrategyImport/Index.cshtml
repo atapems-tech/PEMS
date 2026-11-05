@@ -4,7 +4,7 @@
 @inject IStringLocalizer<SharedResource> Localizer
 
 <div class="d-flex justify-content-between align-items-center mb-3">
-    <h5 class="mb-0"><i class="bi bi-file-earmark-excel"></i> @Localizer["Rcm_Import"]</h5>
+    <h5 class="mb-0"><pems-icon name="bi-file-earmark-excel" /> @Localizer["Rcm_Import"]</h5>
     <pems-button tone="neutral" size="small" outline="true" as="a" asp-controller="MaintenanceStrategy" asp-action="Index">@Localizer["Rcm_Back"]</pems-button>
 </div>
 <p class="text-muted small">@Localizer["Rcm_ImportHint"]</p>
@@ -48,12 +48,12 @@
                 {
                     <form asp-action="Commit" method="post" data-pems-confirm="@Localizer["Rcm_ConfirmImport"]">
                         <input type="hidden" name="token" value="@Model.Token" /><input type="hidden" name="kind" value="@Model.Kind" />
-                        <pems-button tone="success" size="small"><i class="bi bi-check2-all"></i> @Localizer["Rcm_CommitValidRows"]</pems-button>
+                        <pems-button tone="success" size="small"><pems-icon name="bi-check2-all" /> @Localizer["Rcm_CommitValidRows"]</pems-button>
                     </form>
                 }
                 @if (r.RowsRejected > 0 && !string.IsNullOrEmpty(Model.Token))
                 {
-                    <pems-button tone="neutral" size="small" outline="true" as="a" asp-action="Errors" asp-route-token="@Model.Token" asp-route-kind="@Model.Kind"><i class="bi bi-download"></i> @Localizer["Rcm_ErrorReport"]</pems-button>
+                    <pems-button tone="neutral" size="small" outline="true" as="a" asp-action="Errors" asp-route-token="@Model.Token" asp-route-kind="@Model.Kind"><pems-icon name="bi-download" /> @Localizer["Rcm_ErrorReport"]</pems-button>
                 }
             </div>
         </div>

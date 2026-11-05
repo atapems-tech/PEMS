@@ -76,7 +76,7 @@
                             <td class="lp-no">@r.DocumentNo</td>
                             <td><span class="vs-pill vs-pill--neutral vs-num">@r.RevisionNo</span></td>
                             <td class="small"><span class="vs-num">@OrDash(r.PreviousRevisionNo)</span></td>
-                            <td><span class="vs-pill vs-pill--icon @DocumentStatusBadge.Tone(r.Status)"><i class="bi @DocumentStatusBadge.Icon(r.Status)" aria-hidden="true"></i> @StatusText(r.Status)</span></td>
+                            <td><span class="vs-pill vs-pill--icon @DocumentStatusBadge.Tone(r.Status)"><pems-icon css="@DocumentStatusBadge.Icon(r.Status)" aria-hidden="true" /> @StatusText(r.Status)</span></td>
                             <td class="small">@r.IssuePurpose</td>
                             <td class="vs-hide-md small">@OrDash(r.PreparedBy)</td>
                             <td class="vs-hide-md small">@OrDash(r.CheckedBy)</td>

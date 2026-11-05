@@ -33,23 +33,23 @@
                 @if (Model.RunningInstances > 0) { <span class="small text-muted ms-2">@Localizer["Running instances"]: @Model.RunningInstances</span> }
             </div>
             <div class="d-flex gap-1 flex-wrap">
-                <pems-button as="a" tone="neutral" size="small" outline="true" asp-action="Details" asp-route-id="@Model.DefinitionId"><i class="bi bi-arrow-left"></i> @Localizer["Back"]</pems-button>
+                <pems-button as="a" tone="neutral" size="small" outline="true" asp-action="Details" asp-route-id="@Model.DefinitionId"><pems-icon name="bi-arrow-left" /> @Localizer["Back"]</pems-button>
                 @if (Model.CanEditStructure && perms["Validate"])
                 {
-                    <form asp-action="Validate" method="post" class="d-inline"><input type="hidden" name="versionId" value="@Model.VersionId" /><input type="hidden" name="rowVersion" value="@Model.RowVersion" /><pems-button tone="primary" size="small" outline="true"><i class="bi bi-check2-square"></i> @Localizer["Validate"]</pems-button></form>
+                    <form asp-action="Validate" method="post" class="d-inline"><input type="hidden" name="versionId" value="@Model.VersionId" /><input type="hidden" name="rowVersion" value="@Model.RowVersion" /><pems-button tone="primary" size="small" outline="true"><pems-icon name="bi-check2-square" /> @Localizer["Validate"]</pems-button></form>
                 }
                 @if (Model.CanEditStructure && perms["Publish"])
                 {
                     <form asp-action="Publish" method="post" class="d-inline" data-pems-confirm="@Localizer["Publish this version? Published versions are immutable."]">
                         <input type="hidden" name="versionId" value="@Model.VersionId" /><input type="hidden" name="definitionId" value="@Model.DefinitionId" /><input type="hidden" name="rowVersion" value="@Model.RowVersion" />
-                        <pems-button tone="primary" size="small" disabled="@(Model.Status != "Validated")" title="@(Model.Status != "Validated" ? Localizer["Validate the draft first."] : "")"><i class="bi bi-rocket-takeoff"></i> @Localizer["Publish"]</pems-button>
+                        <pems-button tone="primary" size="small" disabled="@(Model.Status != "Validated")" title="@(Model.Status != "Validated" ? Localizer["Validate the draft first."] : "")"><pems-icon name="bi-rocket-takeoff" /> @Localizer["Publish"]</pems-button>
                     </form>
                 }
                 @if (Model.CanEditStructure && perms["Edit"])
                 {
                     <form asp-action="DiscardDraft" method="post" class="d-inline" data-pems-confirm="@Localizer["Discard this draft? Its structure is kept for audit but it can no longer be edited."]">
                         <input type="hidden" name="versionId" value="@Model.VersionId" /><input type="hidden" name="definitionId" value="@Model.DefinitionId" /><input type="hidden" name="rowVersion" value="@Model.RowVersion" />
-                        <pems-button tone="danger" size="small" outline="true"><i class="bi bi-x-octagon"></i> @Localizer["Discard draft"]</pems-button>
+                        <pems-button tone="danger" size="small" outline="true"><pems-icon name="bi-x-octagon" /> @Localizer["Discard draft"]</pems-button>
                     </form>
                 }
             </div>
@@ -57,16 +57,16 @@
         @if (!Model.CanEditStructure)
         {
             <pems-alert tone="secondary" css="small mt-2 mb-0">
-                <i class="bi bi-lock"></i>
+                <pems-icon name="bi-lock" />
                 @if (!Model.DefinitionEditable) { @Localizer["View only:"] <span> @Model.DefinitionEditableReason</span> }
                 else { @Localizer["This version is {0} and immutable. To change the workflow, clone a published version into a draft.", Localizer[Model.Status].Value] }
             </pems-alert>
         }
         else
         {
-            <div class="small text-muted mt-2"><i class="bi bi-people"></i> @Localizer["Four-eyes control: the last editor of this draft cannot publish it."]</div>
+            <div class="small text-muted mt-2"><pems-icon name="bi-people" /> @Localizer["Four-eyes control: the last editor of this draft cannot publish it."]</div>
             @* SCRUM-103: what the module code needs from this definition (checked on Validate/Publish) *@
-            <div class="small text-muted mt-1" data-contract-summary><i class="bi bi-shield-lock"></i> @Model.DefinitionEditableReason</div>
+            <div class="small text-muted mt-1" data-contract-summary><pems-icon name="bi-shield-lock" /> @Model.DefinitionEditableReason</div>
         }
     </div>
 
@@ -128,7 +128,7 @@
             <div class="content-card mt-3">
                 <div class="d-flex justify-content-between align-items-center mb-1">
                     <h6 class="mb-0">@Localizer["Stages"]</h6>
-                    @if (edit) { <pems-button as="a" tone="primary" size="small" outline="true" asp-action="Designer" asp-route-versionId="@Model.VersionId" asp-route-addStage="true"><i class="bi bi-plus-lg"></i> @Localizer["Add stage"]</pems-button> }
+                    @if (edit) { <pems-button as="a" tone="primary" size="small" outline="true" asp-action="Designer" asp-route-versionId="@Model.VersionId" asp-route-addStage="true"><pems-icon name="bi-plus-lg" /> @Localizer["Add stage"]</pems-button> }
                 </div>
                 <div class="table-responsive"><pems-table scale="small" css="align-middle mb-0">
                     <thead><tr><th>#</th><th>@Localizer["Name"]</th><th>@Localizer["Persian name"]</th><th>@Localizer["Business status"]</th><th>@Localizer["Responsible role"]</th><th>@Localizer["Responsible employee"]</th></tr></thead>
@@ -148,7 +148,7 @@
             <div class="content-card mt-3">
                 <div class="d-flex justify-content-between align-items-center mb-1">
                     <h6 class="mb-0">@Localizer["Transitions"]</h6>
-                    @if (edit) { <pems-button as="a" tone="primary" size="small" outline="true" asp-action="Designer" asp-route-versionId="@Model.VersionId" asp-route-addTransition="true"><i class="bi bi-plus-lg"></i> @Localizer["Add transition"]</pems-button> }
+                    @if (edit) { <pems-button as="a" tone="primary" size="small" outline="true" asp-action="Designer" asp-route-versionId="@Model.VersionId" asp-route-addTransition="true"><pems-icon name="bi-plus-lg" /> @Localizer["Add transition"]</pems-button> }
                 </div>
                 <div class="table-responsive"><pems-table scale="small" css="align-middle mb-0">
                     <thead><tr><th>@Localizer["From"]</th><th>@Localizer["To"]</th><th>@Localizer["Action"]</th><th>@Localizer["Label"]</th><th>@Localizer["Required permission"]</th></tr></thead>
@@ -247,7 +247,7 @@
             else
             {
                 <div class="content-card">
-                    <p class="small text-muted mb-0"><i class="bi bi-cursor"></i> @Localizer["Select a stage or a transition in the graph or the tables to inspect or edit it."]</p>
+                    <p class="small text-muted mb-0"><pems-icon name="bi-cursor" /> @Localizer["Select a stage or a transition in the graph or the tables to inspect or edit it."]</p>
                 </div>
             }
             <div class="content-card mt-3">

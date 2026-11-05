@@ -59,12 +59,12 @@
                                 <span class="vs-pill @VdrUi.TransmittalTone(t.Status)">@VdrUi.Loc(Localizer, "St_", t.Status)</span>
                                 @if (t.IsResponseOverdue)
                                 {
-                                    <span class="vs-pill vs-pill--icon vs-pill--danger"><i class="bi bi-clock-history" aria-hidden="true"></i> @Localizer["Vs_ResponseOverdue"]</span>
+                                    <span class="vs-pill vs-pill--icon vs-pill--danger"><pems-icon name="bi-clock-history" aria-hidden="true" /> @Localizer["Vs_ResponseOverdue"]</span>
                                 }
                             </td>
                             <td class="small text-muted">@t.TransmittalDate.ToString("yyyy-MM-dd")</td>
                             <td class="text-nowrap lp-actions">
-                                <a asp-action="Details" asp-route-id="@t.TransmittalId" class="lp-act lp-act--always" title="@Localizer["Vs_View"]"><i class="bi bi-eye" aria-hidden="true"></i><span class="visually-hidden">@Localizer["Vs_View"]: @t.TransmittalNo</span></a>
+                                <a asp-action="Details" asp-route-id="@t.TransmittalId" class="lp-act lp-act--always" title="@Localizer["Vs_View"]"><pems-icon name="bi-eye" aria-hidden="true" /><span class="visually-hidden">@Localizer["Vs_View"]: @t.TransmittalNo</span></a>
                             </td>
                         </tr>
                     }

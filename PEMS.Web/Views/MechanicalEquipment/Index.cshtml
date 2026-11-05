@@ -92,8 +92,8 @@
                             <td class="small">@m.EquipmentType</td>
                             <td><span class="vs-pill @SubTypeTone(m.SubType)">@SubTypeText(m.SubType)</span></td>
                             <td class="text-end text-nowrap">
-                                <a asp-action="Passport" asp-route-id="@m.MechanicalEquipmentId" class="lp-act lp-act--always" title="@Localizer["Me_Passport"]" aria-label="@Localizer["Me_Passport"]"><i class="bi bi-card-text" aria-hidden="true"></i></a>
-                                <a asp-action="Edit" asp-route-id="@m.MechanicalEquipmentId" class="lp-act lp-act--always" title="@Localizer["Rcm_Edit"]" aria-label="@Localizer["Rcm_Edit"]"><i class="bi bi-pencil" aria-hidden="true"></i></a>
+                                <a asp-action="Passport" asp-route-id="@m.MechanicalEquipmentId" class="lp-act lp-act--always" title="@Localizer["Me_Passport"]" aria-label="@Localizer["Me_Passport"]"><pems-icon name="bi-card-text" aria-hidden="true" /></a>
+                                <a asp-action="Edit" asp-route-id="@m.MechanicalEquipmentId" class="lp-act lp-act--always" title="@Localizer["Rcm_Edit"]" aria-label="@Localizer["Rcm_Edit"]"><pems-icon name="bi-pencil" aria-hidden="true" /></a>
                             </td>
                         </tr>
                     }

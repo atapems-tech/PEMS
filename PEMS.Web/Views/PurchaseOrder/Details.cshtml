@@ -43,7 +43,7 @@
     @if (ViewBag.CanIssue == true)
     {
         <form asp-action="Issue" asp-route-id="@Model.PoId" method="post" class="mt-3">
-            <pems-button tone="primary" size="small" type="submit"><i class="bi bi-send-check"></i> @Localizer["Issue Purchase Order"]</pems-button>
+            <pems-button tone="primary" size="small" type="submit"><pems-icon name="bi-send-check" /> @Localizer["Issue Purchase Order"]</pems-button>
         </form>
     }
 </div>
@@ -51,7 +51,7 @@
 @if (a != null)
 {
     <div class="content-card mt-3">
-        <h6 class="mb-2"><i class="bi bi-list-ol" aria-hidden="true"></i> @Localizer["Po_Lines"]</h6>
+        <h6 class="mb-2"><pems-icon name="bi-list-ol" aria-hidden="true" /> @Localizer["Po_Lines"]</h6>
         @if (!string.IsNullOrEmpty(a.RejectionReason) && isDraft)
         {
             <pems-alert tone="warning" css="py-2 px-3 small"><strong>@Localizer["Po_RejectedBecause"]:</strong> @a.RejectionReason</pems-alert>
@@ -90,7 +90,7 @@
                             <td class="text-end text-nowrap">
                                 <form asp-action="RemoveLine" method="post" class="d-inline">
                                     <input type="hidden" name="id" value="@Model.PoId" /><input type="hidden" name="lineId" value="@l.PurchaseOrderLineId" />
-                                    <pems-button tone="danger" size="small" outline="true" type="submit" title="@Localizer["Po_RemoveLine"]"><i class="bi bi-x" aria-hidden="true"></i></pems-button>
+                                    <pems-button tone="danger" size="small" outline="true" type="submit" title="@Localizer["Po_RemoveLine"]"><pems-icon name="bi-x" aria-hidden="true" /></pems-button>
                                 </form>
                             </td>
                         }
@@ -114,7 +114,7 @@
                                             <pems-select scale="small" name="commodityGroupId"><option value="">—</option>@foreach (var g in groups ?? Array.Empty<(int, string, string)>()) { <option value="@g.Id" selected="@(g.Id == l.CommodityGroupId)">@g.Code - @g.Description</option> }</pems-select></div>
                                         <div class="col-md-2"><pems-label>@Localizer["Po_FreeTextReason"]</pems-label><pems-input scale="small" name="freeTextReason" value="@l.FreeTextReason" /></div>
                                     }
-                                    <div class="col-md-auto"><pems-button tone="neutral" size="small" outline="true" type="submit"><i class="bi bi-check2" aria-hidden="true"></i> @Localizer["Po_SaveLine"]</pems-button></div>
+                                    <div class="col-md-auto"><pems-button tone="neutral" size="small" outline="true" type="submit"><pems-icon name="bi-check2" aria-hidden="true" /> @Localizer["Po_SaveLine"]</pems-button></div>
                                 </form>
                             </td>
                         </tr>
@@ -132,13 +132,13 @@
                 <input type="hidden" name="id" value="@Model.PoId" />
                 <div><pems-label for="poAddMr">@Localizer["Po_AddFromMr"]</pems-label>
                     <pems-select scale="small" id="poAddMr" name="mrId">@foreach (var m in requisitions.Where(m => m.ProjectId == Model.ProjectId)) { <option value="@m.Id">@m.Number - @m.Description</option> }</pems-select></div>
-                <pems-button tone="primary" size="small" outline="true" type="submit"><i class="bi bi-plus" aria-hidden="true"></i> @Localizer["Po_AddLines"]</pems-button>
+                <pems-button tone="primary" size="small" outline="true" type="submit"><pems-icon name="bi-plus" aria-hidden="true" /> @Localizer["Po_AddLines"]</pems-button>
             </form>
         }
     </div>
 
     <div class="content-card mt-3">
-        <h6 class="mb-2"><i class="bi bi-shield-check" aria-hidden="true"></i> @Localizer["Po_Approval"]</h6>
+        <h6 class="mb-2"><pems-icon name="bi-shield-check" aria-hidden="true" /> @Localizer["Po_Approval"]</h6>
         <pems-info-grid layout="rows" class="small mb-2">
             @if (a.SubmittedAt.HasValue) { <pems-info-item label="@Localizer["Po_Submitted"]"><span dir="ltr">@a.SubmittedAt.Value.ToString("yyyy-MM-dd HH:mm")</span> @a.SubmittedBy</pems-info-item> }
             @if (a.ApproverRole != null) { <pems-info-item label="@Localizer["Po_ApproverRole"]"><span dir="ltr">@a.ApproverRole</span> (@Localizer["Po_Level"] @a.AuthorityRuleLevel)</pems-info-item> }
@@ -146,36 +146,36 @@
         </pems-info-grid>
         @if (a.ResponsibleNotSet)
         {
-            <pems-alert tone="warning" css="py-2 px-3 small mb-2"><i class="bi bi-exclamation-triangle" aria-hidden="true"></i> @Localizer["Po_ResponsibleNotSet"]</pems-alert>
+            <pems-alert tone="warning" css="py-2 px-3 small mb-2"><pems-icon name="bi-exclamation-triangle" aria-hidden="true" /> @Localizer["Po_ResponsibleNotSet"]</pems-alert>
             @if (canEdit)
             {
                 <form asp-action="RouteAgain" method="post" class="d-inline"><input type="hidden" name="id" value="@Model.PoId" />
-                    <pems-button tone="primary" size="small" outline="true" type="submit"><i class="bi bi-arrow-repeat" aria-hidden="true"></i> @Localizer["Po_RouteAgain"]</pems-button></form>
+                    <pems-button tone="primary" size="small" outline="true" type="submit"><pems-icon name="bi-arrow-repeat" aria-hidden="true" /> @Localizer["Po_RouteAgain"]</pems-button></form>
             }
         }
         @if (isDraft && canEdit && a.Lines.Count > 0)
         {
             <form asp-action="Submit" method="post" class="d-inline"><input type="hidden" name="id" value="@Model.PoId" />
-                <pems-button tone="none" size="small" css="btn-primary" type="submit"><i class="bi bi-send" aria-hidden="true"></i> @Localizer["Po_Submit"]</pems-button></form>
+                <pems-button tone="none" size="small" css="btn-primary" type="submit"><pems-icon name="bi-send" aria-hidden="true" /> @Localizer["Po_Submit"]</pems-button></form>
             <span class="small text-muted ms-2">@Localizer["Po_SubmitHint"]</span>
         }
         @if (isSubmitted && holdsRole)
         {
             @if (isOwnPo)
             {
-                <p class="small text-muted mb-0"><i class="bi bi-lock" aria-hidden="true"></i> @Localizer["Po_Err_SoD"]</p>
+                <p class="small text-muted mb-0"><pems-icon name="bi-lock" aria-hidden="true" /> @Localizer["Po_Err_SoD"]</p>
             }
             else
             {
                 <form asp-action="Approve" method="post" class="d-inline"><input type="hidden" name="id" value="@Model.PoId" />
-                    <pems-button tone="none" size="small" css="btn-primary" type="submit"><i class="bi bi-check2-circle" aria-hidden="true"></i> @Localizer["Po_Approve"]</pems-button></form>
+                    <pems-button tone="none" size="small" css="btn-primary" type="submit"><pems-icon name="bi-check2-circle" aria-hidden="true" /> @Localizer["Po_Approve"]</pems-button></form>
             }
         }
         @if (isSubmitted && (holdsRole || (a.ResponsibleNotSet && canEdit)))
         {
             <form asp-action="Reject" method="post" class="mt-2 d-flex flex-wrap gap-2 align-items-end"><input type="hidden" name="id" value="@Model.PoId" />
                 <div class="flex-grow-1"><pems-label css="small" for="poReject">@Localizer["Po_RejectReason"]</pems-label><pems-input scale="small" id="poReject" name="reason" required /></div>
-                <pems-button tone="danger" size="small" outline="true" type="submit"><i class="bi bi-arrow-counterclockwise" aria-hidden="true"></i> @Localizer["Po_Reject"]</pems-button></form>
+                <pems-button tone="danger" size="small" outline="true" type="submit"><pems-icon name="bi-arrow-counterclockwise" aria-hidden="true" /> @Localizer["Po_Reject"]</pems-button></form>
         }
     </div>
 }
@@ -183,7 +183,7 @@
 @if (receivingLines?.Count > 0 && isIssued)
 {
     <div class="content-card mt-3">
-        <h6 class="mb-2"><i class="bi bi-box-arrow-in-down" aria-hidden="true"></i> @Localizer["Rcv_Receiving"]</h6>
+        <h6 class="mb-2"><pems-icon name="bi-box-arrow-in-down" aria-hidden="true" /> @Localizer["Rcv_Receiving"]</h6>
         <p class="small text-muted">@Localizer["Rcv_ReceivingHelp"]</p>
         <div class="table-responsive">
             <pems-table kind="enterprise" scale="small" css="align-middle">

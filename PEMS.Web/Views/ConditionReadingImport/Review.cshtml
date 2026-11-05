@@ -43,13 +43,13 @@
             <form asp-action="Commit" method="post">
                 <input type="hidden" name="batchId" value="@Model.ConditionReadingImportBatchId" />
                 <pems-button tone="primary" type="submit" data-pems-confirm="Commit the approved rows? New Condition Reading records will be created.">
-                    <i class="bi bi-check-circle"></i> @Localizer["Commit Approved Rows"]
+                    <pems-icon name="bi-check-circle" /> @Localizer["Commit Approved Rows"]
                 </pems-button>
             </form>
             <form asp-action="Discard" method="post">
                 <input type="hidden" name="batchId" value="@Model.ConditionReadingImportBatchId" />
                 <pems-button tone="danger" outline="true" type="submit" data-pems-confirm="Discard this entire import batch?">
-                    <i class="bi bi-trash"></i> @Localizer["Discard Batch"]
+                    <pems-icon name="bi-trash" /> @Localizer["Discard Batch"]
                 </pems-button>
             </form>
         </div>
@@ -100,7 +100,7 @@
                                         <input type="hidden" name="status" value="@statusFilter" />
                                         <input type="hidden" name="include" value="@(!r.IncludeInCommit)" />
                                         <pems-button tone="none" size="small" css="@(r.IncludeInCommit ? "btn-success" : "btn-outline-secondary")" type="submit" style="width:36px;" title="@(r.IncludeInCommit ? Localizer["Approved - click to exclude"] : Localizer["Excluded - click to approve"])">
-                                            <i class="bi @(r.IncludeInCommit ? "bi-check-lg" : "bi-x-lg")"></i>
+                                            <pems-icon css="@(r.IncludeInCommit ? "bi-check-lg" : "bi-x-lg")" />
                                         </pems-button>
                                     </form>
                                 }

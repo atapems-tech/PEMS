@@ -61,7 +61,7 @@
                             <td class="small"><span class="vs-num">@(c.EndDate?.ToString("yyyy-MM-dd") ?? "-")</span></td>
                             <td><span class="vs-pill @StatusTone(c.Status)">@StatusText(c.Status)</span></td>
                             <td class="text-end">
-                                <a asp-action="Details" asp-route-id="@c.ContractId" class="lp-act lp-act--always" title="@Localizer["Ed_View"]" aria-label="@Localizer["Ed_View"]"><i class="bi bi-eye" aria-hidden="true"></i></a>
+                                <a asp-action="Details" asp-route-id="@c.ContractId" class="lp-act lp-act--always" title="@Localizer["Ed_View"]" aria-label="@Localizer["Ed_View"]"><pems-icon name="bi-eye" aria-hidden="true" /></a>
                             </td>
                         </tr>
                     }

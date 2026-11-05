@@ -20,11 +20,11 @@
                 <form asp-action="StageForReview" method="post" class="d-inline">
                     <input type="hidden" name="attachmentId" value="@attachment.AttachmentId" />
                     <pems-button tone="primary" size="small" type="submit">
-                        <i class="bi bi-link-45deg"></i> Stage for Review (link to Equipment)
+                        <pems-icon name="bi-link-45deg" /> Stage for Review (link to Equipment)
                     </pems-button>
                 </form>
             }
-            <pems-button tone="neutral" size="small" outline="true" as="a" asp-action="Index"><i class="bi bi-arrow-left"></i> Back</pems-button>
+            <pems-button tone="neutral" size="small" outline="true" as="a" asp-action="Index"><pems-icon name="bi-arrow-left" /> Back</pems-button>
         </div>
     </div>
 </div>

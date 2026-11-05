@@ -32,7 +32,7 @@
 }
 
 <div class="d-flex justify-content-end align-items-center gap-2 mb-2">
-    <pems-button tone="danger" size="small" outline="true" as="a" asp-controller="Finding" asp-action="Index" asp-route-equipmentId="@equipmentId"><i class="bi bi-flag"></i> @Localizer["Findings"]</pems-button>
+    <pems-button tone="danger" size="small" outline="true" as="a" asp-controller="Finding" asp-action="Index" asp-route-equipmentId="@equipmentId"><pems-icon name="bi-flag" /> @Localizer["Findings"]</pems-button>
     <pems-button tone="neutral" size="small" outline="true" as="a" asp-action="Index">@Localizer["← Reliability"]</pems-button>
 </div>
 <p class="text-muted small">
@@ -95,7 +95,7 @@
                             @p.ReadingCount
                             @if (p.ReadingCount > 0)
                             {
-                                <pems-button tone="neutral" size="small" outline="true" css="ms-1" as="a" asp-action="Trend" asp-route-pointId="@p.ConditionMonitoringPointId" title="@Localizer["Trend"]"><i class="bi bi-graph-up"></i></pems-button>
+                                <pems-button tone="neutral" size="small" outline="true" css="ms-1" as="a" asp-action="Trend" asp-route-pointId="@p.ConditionMonitoringPointId" title="@Localizer["Trend"]"><pems-icon name="bi-graph-up" /></pems-button>
                             }
                         </td>
                         <td class="small">@(p.LastReadingDate.HasValue ? $"{p.LastValue} @ {p.LastReadingDate.Value:yyyy-MM-dd}" : "No readings yet")</td>
@@ -107,7 +107,7 @@
                                 @if (p.LastReadingId.HasValue && (p.LastReadingEvaluationStatus == "Warning" || p.LastReadingEvaluationStatus == "Alarm" || p.LastReadingEvaluationStatus == "Critical"))
                                 {
                                     <pems-button tone="danger" size="small" outline="true" css="mt-1" type="button" data-bs-toggle="modal" data-bs-target="#raiseFindingModal" data-reading-id="@p.LastReadingId" data-point-label="@p.VariableType — @p.Tag">
-                                        <i class="bi bi-flag"></i> @Localizer["Raise Finding"]
+                                        <pems-icon name="bi-flag" /> @Localizer["Raise Finding"]
                                     </pems-button>
                                 }
                             }
@@ -124,7 +124,7 @@
                                             <option value="@ep.EvaluationProfileId">@ep.Code (@ep.VariableType)</option>
                                         }
                                     </pems-select>
-                                    <pems-button tone="neutral" size="small" outline="true" type="submit" title="@Localizer["Assign evaluation profile"]"><i class="bi bi-link-45deg"></i></pems-button>
+                                    <pems-button tone="neutral" size="small" outline="true" type="submit" title="@Localizer["Assign evaluation profile"]"><pems-icon name="bi-link-45deg" /></pems-button>
                                 </form>
                             }
                             @if (p.LastReadingId.HasValue && p.LastReadingEvaluationStatus != "RequiresEngineeringReview")
@@ -134,7 +134,7 @@
                                     <input type="hidden" name="equipmentId" value="@equipmentId" />
                                     <input type="hidden" name="readingId" value="@p.LastReadingId" />
                                     <pems-button tone="info" size="small" outline="true" css="mt-1" type="submit" title="@Localizer["Mark for Engineering Review"]">
-                                        <i class="bi bi-person-check"></i>
+                                        <pems-icon name="bi-person-check" />
                                     </pems-button>
                                 </form>
                             }
@@ -151,7 +151,7 @@
                                     <input type="hidden" name="equipmentId" value="@equipmentId" />
                                     <input type="hidden" name="conditionMonitoringPointId" value="@p.ConditionMonitoringPointId" />
                                     <pems-button tone="primary" size="small" outline="true" type="submit" title="@Localizer["ساخت استراتژی CBM برای این نقطه‌ی پایش"]">
-                                        <i class="bi bi-plus-lg"></i> @Localizer["CBM"]
+                                        <pems-icon name="bi-plus-lg" /> @Localizer["CBM"]
                                     </pems-button>
                                 </form>
                             }

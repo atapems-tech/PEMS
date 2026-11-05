@@ -38,8 +38,8 @@
 
 <div class="pems-kpi-page">
     <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-2">
-        <h5 class="mb-0"><i class="bi bi-bar-chart-line"></i> @Localizer["Kpi_Exec_Title"]</h5>
-        <pems-button tone="neutral" size="small" outline="true" as="a" asp-action="Index"><i class="bi bi-speedometer2"></i> @Localizer["Kpi_Exec_ClassicLink"]</pems-button>
+        <h5 class="mb-0"><pems-icon name="bi-bar-chart-line" /> @Localizer["Kpi_Exec_Title"]</h5>
+        <pems-button tone="neutral" size="small" outline="true" as="a" asp-action="Index"><pems-icon name="bi-speedometer2" /> @Localizer["Kpi_Exec_ClassicLink"]</pems-button>
     </div>
     <p class="text-muted small mb-3">@Localizer["Kpi_Exec_Intro"]</p>
 
@@ -62,10 +62,10 @@
     @* خلاصه‌ی وضعیت نسبت به هدف: فقط شمارش شاخص‌هایی که هدف و مقدار دارند؛ «امتیاز کلی سلامت» جعلی ساخته نمی‌شود *@
     <div class="pems-kpi-overview" aria-label="@Localizer["Kpi_Exec_Overview"]">
         <span class="pems-kpi-overview-title">@Localizer["Kpi_Exec_Overview"]</span>
-        <span class="pems-kpi-chip pems-kpi-status-met"><i class="bi bi-check-circle"></i> @Localizer["Kpi_Status_Met"]: @withTarget.Count(t => t.Status == KpiStatuses.Met)</span>
-        <span class="pems-kpi-chip pems-kpi-status-near"><i class="bi bi-exclamation-circle"></i> @Localizer["Kpi_Status_Near"]: @withTarget.Count(t => t.Status == KpiStatuses.Near)</span>
-        <span class="pems-kpi-chip pems-kpi-status-missed"><i class="bi bi-x-circle"></i> @Localizer["Kpi_Status_Missed"]: @withTarget.Count(t => t.Status == KpiStatuses.Missed)</span>
-        <span class="pems-kpi-chip pems-kpi-status-nodata"><i class="bi bi-question-circle"></i> @Localizer["Kpi_Status_NoData"]: @d.Tiles.Count(t => t.Status == KpiStatuses.NoData)</span>
+        <span class="pems-kpi-chip pems-kpi-status-met"><pems-icon name="bi-check-circle" /> @Localizer["Kpi_Status_Met"]: @withTarget.Count(t => t.Status == KpiStatuses.Met)</span>
+        <span class="pems-kpi-chip pems-kpi-status-near"><pems-icon name="bi-exclamation-circle" /> @Localizer["Kpi_Status_Near"]: @withTarget.Count(t => t.Status == KpiStatuses.Near)</span>
+        <span class="pems-kpi-chip pems-kpi-status-missed"><pems-icon name="bi-x-circle" /> @Localizer["Kpi_Status_Missed"]: @withTarget.Count(t => t.Status == KpiStatuses.Missed)</span>
+        <span class="pems-kpi-chip pems-kpi-status-nodata"><pems-icon name="bi-question-circle" /> @Localizer["Kpi_Status_NoData"]: @d.Tiles.Count(t => t.Status == KpiStatuses.NoData)</span>
     </div>
 
     @foreach (var sec in KpiSections.Ordered)
@@ -82,7 +82,7 @@
                         <div class="pems-kpi-name">@Localizer["Kpi_Name_" + t.Key]</div>
                         <div class="pems-kpi-value">@Format(t)</div>
                         <div class="pems-kpi-meta">
-                            <span class="pems-kpi-chip pems-kpi-status-@look.Css"><i class="bi @look.Icon"></i> @Localizer["Kpi_Status_" + t.Status]</span>
+                            <span class="pems-kpi-chip pems-kpi-status-@look.Css"><pems-icon css="@look.Icon" /> @Localizer["Kpi_Status_" + t.Status]</span>
                             @if (t.Target is not null) { <span class="pems-kpi-target" title="@Localizer["Kpi_Exec_Target"]">@Localizer["Kpi_Exec_Target"] @TargetText(t)</span> }
                         </div>
                         @if (t.Status == KpiStatuses.NoData) { <div class="pems-kpi-detail">@Localizer["Kpi_Exec_NoDataHint"]</div> }
@@ -121,7 +121,7 @@
 
     @* بخش‌هایی از سند KPI که در PEMS داده‌ی منبع ندارند؛ عمداً بدون عدد *@
     <section class="pems-kpi-section pems-kpi-nottracked" id="kpi-nottracked">
-        <h6 class="pems-kpi-section-title"><i class="bi bi-hourglass-split"></i> @Localizer["Kpi_Exec_NotTracked"]</h6>
+        <h6 class="pems-kpi-section-title"><pems-icon name="bi-hourglass-split" /> @Localizer["Kpi_Exec_NotTracked"]</h6>
         <p class="small text-muted">@Localizer["Kpi_Exec_NotTrackedHint"]</p>
         <ul class="pems-kpi-nt-list">
             @foreach (var key in KpiCatalog.NotTracked)

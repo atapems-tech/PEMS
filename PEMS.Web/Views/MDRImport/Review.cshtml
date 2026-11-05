@@ -15,7 +15,7 @@
     @if (Model.HeaderWarnings.Any())
     {
         <pems-alert tone="warning" css="mt-3 mb-0 small">
-            <strong><i class="bi bi-exclamation-triangle"></i> ستون‌های شناسایی‌نشده در فایل اکسل:</strong>
+            <strong><pems-icon name="bi-exclamation-triangle" /> ستون‌های شناسایی‌نشده در فایل اکسل:</strong>
             <ul class="mb-0 mt-1">
                 @foreach (var w in Model.HeaderWarnings)
                 {
@@ -31,13 +31,13 @@
             <form asp-action="Commit" method="post">
                 <input type="hidden" name="batchId" value="@Model.MDRImportBatchId" />
                 <pems-button tone="primary" type="submit" data-pems-confirm="Commit the selected rows into the live Engineering Documents register?">
-                    <i class="bi bi-check-circle"></i> Commit Selected Rows
+                    <pems-icon name="bi-check-circle" /> Commit Selected Rows
                 </pems-button>
             </form>
             <form asp-action="Discard" method="post">
                 <input type="hidden" name="batchId" value="@Model.MDRImportBatchId" />
                 <pems-button tone="danger" outline="true" type="submit" data-pems-confirm="Discard this entire import batch?">
-                    <i class="bi bi-trash"></i> Discard Batch
+                    <pems-icon name="bi-trash" /> Discard Batch
                 </pems-button>
             </form>
         </div>
@@ -66,7 +66,7 @@
                                     <input type="hidden" name="batchId" value="@Model.MDRImportBatchId" />
                                     <input type="hidden" name="include" value="@(!r.IncludeInCommit)" />
                                     <pems-button tone="none" size="small" css="@(r.IncludeInCommit ? "btn-success" : "btn-outline-secondary")" type="submit" style="width:36px;">
-                                        <i class="bi @(r.IncludeInCommit ? "bi-check-lg" : "bi-x-lg")"></i>
+                                        <pems-icon css="@(r.IncludeInCommit ? "bi-check-lg" : "bi-x-lg")" />
                                     </pems-button>
                                 </form>
                             }

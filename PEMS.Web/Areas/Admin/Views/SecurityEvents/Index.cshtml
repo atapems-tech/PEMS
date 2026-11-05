@@ -78,8 +78,8 @@
                             <td class="small" dir="ltr"><span class="vs-num">@e.OccurredAtUtc.ToString("yyyy-MM-dd HH:mm:ss")</span></td>
                             <td class="small" title="@e.Method">@MethodLabel(e.Method)</td>
                             <td>
-                                @if (e.Result == RecoveryResults.Success) { <span class="vs-pill vs-pill--icon vs-pill--success"><i class="bi bi-check-circle-fill" aria-hidden="true"></i> @Localizer["Success"]</span> }
-                                else { <span class="vs-pill vs-pill--icon vs-pill--danger" title="@e.FailureReason"><i class="bi bi-x-circle-fill" aria-hidden="true"></i> @Localizer["Failure"]</span> @if (!string.IsNullOrEmpty(e.FailureReason)) { <span class="vs-sub">@e.FailureReason</span> } }
+                                @if (e.Result == RecoveryResults.Success) { <span class="vs-pill vs-pill--icon vs-pill--success"><pems-icon name="bi-check-circle-fill" aria-hidden="true" /> @Localizer["Success"]</span> }
+                                else { <span class="vs-pill vs-pill--icon vs-pill--danger" title="@e.FailureReason"><pems-icon name="bi-x-circle-fill" aria-hidden="true" /> @Localizer["Failure"]</span> @if (!string.IsNullOrEmpty(e.FailureReason)) { <span class="vs-sub">@e.FailureReason</span> } }
                             </td>
                             <td class="small"><span class="vs-cell-strong">@(e.ActorUserName ?? "—")</span></td>
                             <td class="small"><span class="vs-cell-strong">@(e.TargetUserName ?? "—")</span></td>

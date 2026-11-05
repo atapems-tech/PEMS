@@ -22,7 +22,7 @@
                 <div class="text-muted">@n.Message</div>
                 <div class="text-muted pems-s-11a50812">@n.CreatedDate.ToString("yyyy-MM-dd HH:mm")</div>
             </a>
-            <pems-button tone="none" size="small" css="btn-link text-muted px-2 py-2" type="button" data-notif-action="dismiss" data-notif-id="@n.NotificationId" title="@Localizer["Notif_Dismiss"]" aria-label="@Localizer["Notif_Dismiss"]"><i class="bi bi-x-lg"></i></pems-button>
+            <pems-button tone="none" size="small" css="btn-link text-muted px-2 py-2" type="button" data-notif-action="dismiss" data-notif-id="@n.NotificationId" title="@Localizer["Notif_Dismiss"]" aria-label="@Localizer["Notif_Dismiss"]"><pems-icon name="bi-x-lg" /></pems-button>
         </div>
     }
 }

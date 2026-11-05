@@ -50,22 +50,22 @@
         <div class="vs-doc-identity">
             <div class="d-flex align-items-center gap-2 flex-wrap">
                 <h2 class="vs-doc-number vs-num">@eq.TagNumber</h2>
-                <span class="vs-pill vs-pill--icon vs-pill--success"><i class="bi bi-check-circle" aria-hidden="true"></i> @eq.Status</span>
+                <span class="vs-pill vs-pill--icon vs-pill--success"><pems-icon name="bi-check-circle" aria-hidden="true" /> @eq.Status</span>
                 @if (!string.IsNullOrWhiteSpace(eq.CriticalityClass))
                 {
-                    <span class="vs-pill vs-pill--icon @(eq.CriticalityClass == "A" ? "vs-pill--danger" : eq.CriticalityClass == "B" ? "vs-pill--warning" : "vs-pill--neutral")" title="Criticality Class"><i class="bi bi-exclamation-diamond" aria-hidden="true"></i> @Localizer["Cm_Criticality"] @eq.CriticalityClass</span>
+                    <span class="vs-pill vs-pill--icon @(eq.CriticalityClass == "A" ? "vs-pill--danger" : eq.CriticalityClass == "B" ? "vs-pill--warning" : "vs-pill--neutral")" title="Criticality Class"><pems-icon name="bi-exclamation-diamond" aria-hidden="true" /> @Localizer["Cm_Criticality"] @eq.CriticalityClass</span>
                 }
                 @if (inst != null)
                 {
-                    <span class="vs-pill vs-pill--icon @(inst.CalibrationStatus == "Overdue" ? "vs-pill--danger" : inst.CalibrationStatus == "DueSoon" ? "vs-pill--warning" : inst.CalibrationStatus == "OK" ? "vs-pill--success" : "vs-pill--neutral")" title="Calibration status"><i class="bi bi-speedometer2" aria-hidden="true"></i> @Localizer["Cm_Cal"]: @inst.CalibrationStatus</span>
+                    <span class="vs-pill vs-pill--icon @(inst.CalibrationStatus == "Overdue" ? "vs-pill--danger" : inst.CalibrationStatus == "DueSoon" ? "vs-pill--warning" : inst.CalibrationStatus == "OK" ? "vs-pill--success" : "vs-pill--neutral")" title="Calibration status"><pems-icon name="bi-speedometer2" aria-hidden="true" /> @Localizer["Cm_Cal"]: @inst.CalibrationStatus</span>
                 }
             </div>
             <div class="vs-doc-title">@eq.Name</div>
             <div class="vs-doc-meta">@eq.EquipmentType &middot; @eq.ProjectName &middot; @eq.DisciplineName @(string.IsNullOrWhiteSpace(eq.Area) ? "" : "· " + eq.Area)</div>
         </div>
         <div class="vs-doc-actions">
-            <a asp-controller="Relationship" asp-action="Equipment" asp-route-id="@eq.EquipmentId" class="vs-btn"><i class="bi bi-diagram-3"></i> @Localizer["Cm_Relationships"]</a>
-            <button type="button" class="vs-btn" data-bs-toggle="modal" data-bs-target="#assignFoundationModal" title="Assign Functional Location / Parent Equipment"><i class="bi bi-pencil"></i> @Localizer["Cm_AssignLocation"]</button>
+            <a asp-controller="Relationship" asp-action="Equipment" asp-route-id="@eq.EquipmentId" class="vs-btn"><pems-icon name="bi-diagram-3" /> @Localizer["Cm_Relationships"]</a>
+            <button type="button" class="vs-btn" data-bs-toggle="modal" data-bs-target="#assignFoundationModal" title="Assign Functional Location / Parent Equipment"><pems-icon name="bi-pencil" /> @Localizer["Cm_AssignLocation"]</button>
         </div>
     </div>
     <pems-info-grid>
@@ -143,7 +143,7 @@
 @if (Model.SuggestedLinks.Any())
 {
     <div class="content-card mb-3 border-warning">
-        <h6 class="mb-3"><i class="bi bi-lightbulb"></i> پیشنهادهای اتصال (تاییدنشده)</h6>
+        <h6 class="mb-3"><pems-icon name="bi-lightbulb" /> پیشنهادهای اتصال (تاییدنشده)</h6>
         <p class="text-muted small">
             این‌ها از روی شماره‌ی MRQ/PO خام ثبت‌شده روی تجهیز، با داده‌ی موجود منطبق شده‌اند.
             برای تایید و برقراری رسمی رابطه، به <a asp-controller="Relationship" asp-action="Equipment" asp-route-id="@eq.EquipmentId">Relationship Explorer</a> برو.
@@ -151,7 +151,7 @@
         <div class="d-flex flex-wrap gap-2">
             @foreach (var s in Model.SuggestedLinks)
             {
-                <pems-badge tone="warning"><i class="bi bi-robot"></i> @s.Label <span class="small">(@s.SubLabel)</span></pems-badge>
+                <pems-badge tone="warning"><pems-icon name="bi-robot" /> @s.Label <span class="small">(@s.SubLabel)</span></pems-badge>
             }
         </div>
     </div>
@@ -161,14 +161,14 @@
 <pems-nav css="mb-3" id="equipmentTabs" role="tablist">
     <li class="nav-item" role="presentation">
         <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#tab-overview" type="button">
-            <i class="bi bi-info-circle"></i> @Localizer["Cm_TabOverview"]
+            <pems-icon name="bi-info-circle" /> @Localizer["Cm_TabOverview"]
         </button>
     </li>
     @if (inst != null)
     {
         <li class="nav-item" role="presentation">
             <button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-instrument" type="button">
-                <i class="bi bi-card-text"></i> @Localizer["Cm_InstrumentPassport"]
+                <pems-icon name="bi-card-text" /> @Localizer["Cm_InstrumentPassport"]
             </button>
         </li>
     }
@@ -176,7 +176,7 @@
     {
         <li class="nav-item" role="presentation">
             <button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-mechanical" type="button">
-                <i class="bi bi-gear-wide-connected"></i> @Localizer["Mechanical Passport"]
+                <pems-icon name="bi-gear-wide-connected" /> @Localizer["Mechanical Passport"]
             </button>
         </li>
     }
@@ -184,55 +184,55 @@
     {
         <li class="nav-item" role="presentation">
             <button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-cm" type="button">
-                <i class="bi bi-activity"></i> @Localizer["Condition Monitoring"]
+                <pems-icon name="bi-activity" /> @Localizer["Condition Monitoring"]
                 @if (cm.OpenFindingCount > 0) { <pems-badge tone="danger">@cm.OpenFindingCount</pems-badge> }
             </button>
         </li>
     }
     <li class="nav-item" role="presentation">
         <button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-barcode" type="button">
-            <i class="bi bi-upc-scan"></i> @Localizer["Cm_TabBarcode"]
+            <pems-icon name="bi-upc-scan" /> @Localizer["Cm_TabBarcode"]
         </button>
     </li>
     <li class="nav-item" role="presentation">
         <button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-asset" type="button">
-            <i class="bi bi-diagram-2"></i> @Localizer["Cm_TabAsset"]
+            <pems-icon name="bi-diagram-2" /> @Localizer["Cm_TabAsset"]
             @if (asset != null) { <pems-badge tone="neutral">@asset.Status</pems-badge> }
         </button>
     </li>
     <li class="nav-item" role="presentation">
         <button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-documents" type="button">
-            <i class="bi bi-file-earmark-text"></i> @Localizer["Cm_EngDocs"]
+            <pems-icon name="bi-file-earmark-text" /> @Localizer["Cm_EngDocs"]
             <pems-badge tone="neutral">@(Model.Documents.Count + Model.VDRItems.Count)</pems-badge>
         </button>
     </li>
     <li class="nav-item" role="presentation">
         <button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-procurement" type="button">
-            <i class="bi bi-cart-check"></i> @Localizer["Cm_TabProcurement"] <pems-badge tone="neutral">@Model.RelatedMRs.Count</pems-badge>
+            <pems-icon name="bi-cart-check" /> @Localizer["Cm_TabProcurement"] <pems-badge tone="neutral">@Model.RelatedMRs.Count</pems-badge>
         </button>
     </li>
     <li class="nav-item" role="presentation">
         <button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-maintenance" type="button">
-            <i class="bi bi-tools"></i> @Localizer["Cm_TabMaintenance"] <pems-badge tone="neutral">@Model.WorkRequests.Count</pems-badge>
+            <pems-icon name="bi-tools" /> @Localizer["Cm_TabMaintenance"] <pems-badge tone="neutral">@Model.WorkRequests.Count</pems-badge>
         </button>
     </li>
     <li class="nav-item" role="presentation">
         <button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-inspection" type="button">
-            <i class="bi bi-clipboard-pulse"></i> @Localizer["Cm_TabInspections"]
+            <pems-icon name="bi-clipboard-pulse" /> @Localizer["Cm_TabInspections"]
             @if (inspections.Any()) { <pems-badge tone="neutral">@inspections.Count</pems-badge> }
             @if (inspections.Any(x => x.ConditionStatus == "Alert")) { <pems-badge tone="danger">@Localizer["Alert"]</pems-badge> }
         </button>
     </li>
     <li class="nav-item" role="presentation">
         <button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-quality" type="button">
-            <i class="bi bi-shield-exclamation"></i> @Localizer["Cm_TabQuality"]
+            <pems-icon name="bi-shield-exclamation" /> @Localizer["Cm_TabQuality"]
             @{ var qcCount = Model.NonConformanceReports.Count + Model.MOCs.Count + Model.TechnicalQueries.Count; }
             @if (qcCount > 0) { <pems-badge tone="neutral">@qcCount</pems-badge> }
         </button>
     </li>
     <li class="nav-item" role="presentation">
         <button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-classification" type="button">
-            <i class="bi bi-diagram-3-fill"></i> @Localizer["Cm_TabClassification"]
+            <pems-icon name="bi-diagram-3-fill" /> @Localizer["Cm_TabClassification"]
             @if (pendingSuggestion != null) { <pems-badge tone="warning">1</pems-badge> }
         </button>
     </li>
@@ -244,11 +244,11 @@
     <div class="tab-pane fade show active" id="tab-overview" role="tabpanel">
         @{ var pendingWr = Model.WorkRequests.Count(w => w.Status is "Draft" or "Submitted" or "UnderReview" or "Approved" or "Planned"); }
         <div class="vs-chips">
-            <button type="button" class="vs-chip" data-goto-tab="#tab-documents"><i class="bi bi-file-earmark-text"></i> @Localizer["Cm_EngDocs"] <strong>@Model.Documents.Count</strong></button>
-            <button type="button" class="vs-chip" data-goto-tab="#tab-documents"><i class="bi bi-journal-check"></i> VDR <strong>@Model.VDRItems.Count</strong></button>
-            <button type="button" class="vs-chip" data-goto-tab="#tab-procurement"><i class="bi bi-cart-check"></i> MR <strong>@Model.RelatedMRs.Count</strong></button>
-            <button type="button" class="vs-chip @(pendingWr > 0 ? "vs-chip--danger" : "")" data-goto-tab="#tab-maintenance"><i class="bi bi-clipboard-plus"></i> @Localizer["Cm_WorkRequests"] <strong>@Model.WorkRequests.Count</strong></button>
-            <button type="button" class="vs-chip" data-goto-tab="#tab-maintenance"><i class="bi bi-tools"></i> @Localizer["Cm_WorkOrders"] <strong>@Model.WorkOrders.Count</strong></button>
+            <button type="button" class="vs-chip" data-goto-tab="#tab-documents"><pems-icon name="bi-file-earmark-text" /> @Localizer["Cm_EngDocs"] <strong>@Model.Documents.Count</strong></button>
+            <button type="button" class="vs-chip" data-goto-tab="#tab-documents"><pems-icon name="bi-journal-check" /> VDR <strong>@Model.VDRItems.Count</strong></button>
+            <button type="button" class="vs-chip" data-goto-tab="#tab-procurement"><pems-icon name="bi-cart-check" /> MR <strong>@Model.RelatedMRs.Count</strong></button>
+            <button type="button" class="vs-chip @(pendingWr > 0 ? "vs-chip--danger" : "")" data-goto-tab="#tab-maintenance"><pems-icon name="bi-clipboard-plus" /> @Localizer["Cm_WorkRequests"] <strong>@Model.WorkRequests.Count</strong></button>
+            <button type="button" class="vs-chip" data-goto-tab="#tab-maintenance"><pems-icon name="bi-tools" /> @Localizer["Cm_WorkOrders"] <strong>@Model.WorkOrders.Count</strong></button>
             <button type="button" class="vs-chip" data-goto-tab="#tab-quality">NCR <strong>@Model.NonConformanceReports.Count</strong></button>
             <button type="button" class="vs-chip" data-goto-tab="#tab-quality">MOC <strong>@Model.MOCs.Count</strong></button>
             <button type="button" class="vs-chip" data-goto-tab="#tab-quality">TQ / TSR / RFI <strong>@Model.TechnicalQueries.Count</strong></button>
@@ -258,7 +258,7 @@
         {
             <div class="content-card mt-3">
                 <div class="d-flex justify-content-between align-items-center">
-                    <h6 class="mb-0"><i class="bi bi-card-text"></i> @Localizer["Cm_InstrumentPassport"]</h6>
+                    <h6 class="mb-0"><pems-icon name="bi-card-text" /> @Localizer["Cm_InstrumentPassport"]</h6>
                     <span class="small text-muted">See the "Instrument Passport" tab for full details, calibration history and print.</span>
                 </div>
                 <div class="row g-2 small mt-2">
@@ -279,7 +279,7 @@
                 <div class="d-flex justify-content-between align-items-center mb-3">
                     <h6 class="mb-0">@Localizer["Cm_InstrumentPassport"]</h6>
                     <pems-button tone="primary" size="small" as="a" asp-controller="Instrument" asp-action="Passport" asp-route-id="@inst.InstrumentId">
-                        <i class="bi bi-card-text"></i> @Localizer["Cm_FullPassport"]
+                        <pems-icon name="bi-card-text" /> @Localizer["Cm_FullPassport"]
                     </pems-button>
                 </div>
                 <div class="row g-2 small">
@@ -320,7 +320,7 @@
                 <div class="d-flex justify-content-between align-items-center mb-3">
                     <h6 class="mb-0">@Localizer["Mechanical Passport"]</h6>
                     <pems-button tone="primary" size="small" as="a" asp-controller="MechanicalEquipment" asp-action="Passport" asp-route-id="@mech.MechanicalEquipmentId">
-                        <i class="bi bi-gear-wide-connected"></i> @Localizer["Full Mechanical Passport"]
+                        <pems-icon name="bi-gear-wide-connected" /> @Localizer["Full Mechanical Passport"]
                     </pems-button>
                 </div>
                 <div class="row g-2 small">
@@ -361,10 +361,10 @@
                     <h6 class="mb-0">@Localizer["Condition Monitoring"]</h6>
                     <div class="d-flex gap-2">
                         <pems-button tone="danger" size="small" outline="true" as="a" asp-controller="Finding" asp-action="Index" asp-route-equipmentId="@eq.EquipmentId">
-                            <i class="bi bi-flag"></i> @Localizer["Findings"] @(cm.OpenFindingCount > 0 ? $"({cm.OpenFindingCount})" : "")
+                            <pems-icon name="bi-flag" /> @Localizer["Findings"] @(cm.OpenFindingCount > 0 ? $"({cm.OpenFindingCount})" : "")
                         </pems-button>
                         <pems-button tone="primary" size="small" as="a" asp-controller="Reliability" asp-action="ConditionMonitoring" asp-route-equipmentId="@eq.EquipmentId">
-                            <i class="bi bi-activity"></i> @Localizer["Full Condition Monitoring"]
+                            <pems-icon name="bi-activity" /> @Localizer["Full Condition Monitoring"]
                         </pems-button>
                     </div>
                 </div>
@@ -409,7 +409,7 @@
                 <div class="d-flex justify-content-between align-items-center mb-3">
                     <h6 class="mb-0">Asset - @asset.AssetNumber</h6>
                     <pems-button tone="primary" size="small" as="a" asp-controller="Asset" asp-action="Details" asp-route-id="@asset.AssetId">
-                        <i class="bi bi-diagram-2"></i> @Localizer["Cm_FullAsset"]
+                        <pems-icon name="bi-diagram-2" /> @Localizer["Cm_FullAsset"]
                     </pems-button>
                 </div>
                 <div class="row g-2 small">
@@ -435,7 +435,7 @@
                     </div>
                     <div class="col-md-2">
                         <input type="hidden" name="status" value="Active" />
-                        <pems-button tone="primary" size="small" type="submit"><i class="bi bi-plus-lg"></i> @Localizer["Cm_CreateAsset"]</pems-button>
+                        <pems-button tone="primary" size="small" type="submit"><pems-icon name="bi-plus-lg" /> @Localizer["Cm_CreateAsset"]</pems-button>
                     </div>
                 </form>
             }
@@ -445,7 +445,7 @@
     @* ===================== Documents ===================== *@
     <div class="tab-pane fade" id="tab-documents" role="tabpanel">
         <div class="content-card mb-3">
-            <h6 class="mb-3"><i class="bi bi-file-earmark-text"></i> @Localizer["Cm_SecEngDocs"]</h6>
+            <h6 class="mb-3"><pems-icon name="bi-file-earmark-text" /> @Localizer["Cm_SecEngDocs"]</h6>
             <div class="table-responsive table-scroll-area pems-s-b4b96c72">
             <pems-table kind="enterprise">
                 <thead><tr><th>@Localizer["Cm_DocNo"]</th><th>@Localizer["Cm_Title"]</th><th>@Localizer["Cm_Type"]</th><th>@Localizer["Cm_Discipline"]</th><th>@Localizer["Cm_Rev"]</th><th>@Localizer["Cm_Status"]</th><th></th></tr></thead>
@@ -455,7 +455,7 @@
                         <tr>
                             <td>@d.DocumentNo</td><td>@d.Title</td><td>@d.DocumentType</td><td>@d.DisciplineName</td>
                             <td>@d.RevisionNo</td><td><pems-badge tone="none" css="badge-status-@d.Status">@d.Status</pems-badge></td>
-                            <td><pems-button tone="neutral" size="small" outline="true" as="a" asp-controller="EngineeringDocuments" asp-action="Details" asp-route-id="@d.DocumentId"><i class="bi bi-eye"></i></pems-button></td>
+                            <td><pems-button tone="neutral" size="small" outline="true" as="a" asp-controller="EngineeringDocuments" asp-action="Details" asp-route-id="@d.DocumentId"><pems-icon name="bi-eye" /></pems-button></td>
                         </tr>
                     }
                 </tbody>
@@ -465,7 +465,7 @@
         </div>
 
         <div class="content-card">
-            <h6 class="mb-3"><i class="bi bi-journal-check"></i> @Localizer["Cm_SecVdr"]</h6>
+            <h6 class="mb-3"><pems-icon name="bi-journal-check" /> @Localizer["Cm_SecVdr"]</h6>
             <div class="table-responsive table-scroll-area pems-s-b4b96c72">
             <pems-table kind="enterprise">
                 <thead><tr><th>@Localizer["Cm_DocNo"]</th><th>@Localizer["Cm_Description"]</th><th>@Localizer["Cm_Vendor"]</th><th>@Localizer["Cm_Rev"]</th><th>@Localizer["Cm_Category"]</th><th>@Localizer["Cm_Status"]</th><th></th></tr></thead>
@@ -476,7 +476,7 @@
                             <td>@v.DocumentNumber</td><td>@v.DocumentDescription</td><td>@v.VendorName</td>
                             <td>@v.LatestRevisionNo</td><td>@v.LatestReviewCategory</td>
                             <td><pems-badge tone="neutral">@v.WorkflowStatus</pems-badge></td>
-                            <td><pems-button tone="neutral" size="small" outline="true" as="a" asp-controller="VDR" asp-action="Details" asp-route-id="@v.VDRItemId"><i class="bi bi-eye"></i></pems-button></td>
+                            <td><pems-button tone="neutral" size="small" outline="true" as="a" asp-controller="VDR" asp-action="Details" asp-route-id="@v.VDRItemId"><pems-icon name="bi-eye" /></pems-button></td>
                         </tr>
                     }
                 </tbody>
@@ -489,7 +489,7 @@
     @* ===================== Procurement ===================== *@
     <div class="tab-pane fade" id="tab-procurement" role="tabpanel">
         <div class="content-card">
-            <h6 class="mb-3"><i class="bi bi-cart-check"></i> @Localizer["Cm_SecMr"]</h6>
+            <h6 class="mb-3"><pems-icon name="bi-cart-check" /> @Localizer["Cm_SecMr"]</h6>
             <div class="table-responsive table-scroll-area pems-s-a3f95238">
             <pems-table kind="enterprise">
                 <thead><tr><th>@Localizer["Cm_MrNumber"]</th><th>@Localizer["Cm_Project"]</th><th>@Localizer["Cm_Discipline"]</th><th>@Localizer["Cm_Description"]</th><th>@Localizer["Cm_Status"]</th><th></th></tr></thead>
@@ -499,7 +499,7 @@
                         <tr>
                             <td>@m.MRNumber</td><td>@m.ProjectName</td><td>@m.DisciplineName</td><td>@m.Description</td>
                             <td><pems-badge tone="neutral">@m.Status</pems-badge></td>
-                            <td><pems-button tone="neutral" size="small" outline="true" as="a" asp-controller="MaterialRequisition" asp-action="Details" asp-route-id="@m.MRId"><i class="bi bi-eye"></i></pems-button></td>
+                            <td><pems-button tone="neutral" size="small" outline="true" as="a" asp-controller="MaterialRequisition" asp-action="Details" asp-route-id="@m.MRId"><pems-icon name="bi-eye" /></pems-button></td>
                         </tr>
                     }
                 </tbody>
@@ -516,9 +516,9 @@
         {
             <div class="content-card mb-3">
                 <div class="d-flex justify-content-between align-items-center mb-2">
-                    <h6 class="mb-0"><i class="bi bi-graph-up-arrow"></i> @Localizer["Cm_Reliability"]</h6>
+                    <h6 class="mb-0"><pems-icon name="bi-graph-up-arrow" /> @Localizer["Cm_Reliability"]</h6>
                     <pems-button tone="neutral" size="small" outline="true" as="a" asp-controller="Reliability" asp-action="Details" asp-route-id="@eq.EquipmentId">
-                        <i class="bi bi-clock-history"></i> @Localizer["Cm_FailureHistory"]
+                        <pems-icon name="bi-clock-history" /> @Localizer["Cm_FailureHistory"]
                     </pems-button>
                 </div>
                 <div class="row g-2 text-center">
@@ -532,7 +532,7 @@
         @* استراتژی و PM (فقط خواندنی) - از روابط موجود MaintenanceStrategy/MaintenancePlan.EquipmentId *@
         <div class="content-card mb-3">
             <div class="d-flex justify-content-between align-items-center mb-2">
-                <h6 class="mb-0"><i class="bi bi-diagram-2"></i> @Localizer["Cm_StrategyPm"]</h6>
+                <h6 class="mb-0"><pems-icon name="bi-diagram-2" /> @Localizer["Cm_StrategyPm"]</h6>
                 <span class="d-flex gap-2">
                     @if (ViewBag.CanViewStrategy == true) { <a asp-controller="MaintenanceStrategy" asp-action="Index" asp-route-equipmentId="@eq.EquipmentId" class="vs-btn vs-btn--sm">@Localizer["Cm_Strategies"]</a> }
                     @if (ViewBag.CanViewPlan == true) { <a asp-controller="MaintenancePlan" asp-action="Index" class="vs-btn vs-btn--sm">@Localizer["Cm_PmPlans"]</a> }
@@ -570,7 +570,7 @@
                                     @if (p.NextDueDate.HasValue)
                                     {
                                         var overdue = p.NextDueDate.Value.Date < DateTime.Today;
-                                        <span class="vs-pill vs-pill--icon @(overdue ? "vs-pill--danger" : "vs-pill--neutral")"><i class="bi @(overdue ? "bi-exclamation-triangle" : "bi-calendar-event")" aria-hidden="true"></i> @p.NextDueDate.Value.ToString("yyyy-MM-dd")</span>
+                                        <span class="vs-pill vs-pill--icon @(overdue ? "vs-pill--danger" : "vs-pill--neutral")"><pems-icon css="@(overdue ? "bi-exclamation-triangle" : "bi-calendar-event")" aria-hidden="true" /> @p.NextDueDate.Value.ToString("yyyy-MM-dd")</span>
                                     }
                                     else { <span>—</span> }
                                 </td>
@@ -584,11 +584,11 @@
 
         <div class="content-card mb-3">
             <div class="d-flex justify-content-between align-items-center mb-2">
-                <h6 class="mb-0"><i class="bi bi-clipboard-plus"></i> @Localizer["Cm_MaintHistoryWr"]</h6>
+                <h6 class="mb-0"><pems-icon name="bi-clipboard-plus" /> @Localizer["Cm_MaintHistoryWr"]</h6>
                 @if (canCreateWr)
                 {
                     <a asp-controller="WorkRequest" asp-action="Create" asp-route-equipmentId="@eq.EquipmentId" class="vs-btn vs-btn--primary vs-btn--sm">
-                        <i class="bi bi-plus-lg"></i> @Localizer["Cm_NewWorkRequest"]
+                        <pems-icon name="bi-plus-lg" /> @Localizer["Cm_NewWorkRequest"]
                     </a>
                 }
             </div>
@@ -602,7 +602,7 @@
                             <td class="vs-num">@if (canViewWr) { <a asp-controller="WorkRequest" asp-action="Details" asp-route-id="@r.WorkRequestId">@r.RequestNumber</a> } else { @r.RequestNumber }</td>
                             <td>@r.Title</td>
                             <td><span class="vs-pill @PrioTone(r.Priority)">@r.Priority</span></td>
-                            <td><span class="vs-pill vs-pill--icon @WrTone(r.Status)"><i class="bi @WrIcon(r.Status)" aria-hidden="true"></i> @r.Status</span></td>
+                            <td><span class="vs-pill vs-pill--icon @WrTone(r.Status)"><pems-icon css="@WrIcon(r.Status)" aria-hidden="true" /> @r.Status</span></td>
                             <td class="vs-num">@r.RequestedDate.ToString("yyyy-MM-dd")</td>
                             <td class="vs-num">@if (r.LinkedWorkOrderId.HasValue) { if (canViewWo) { <a asp-controller="WorkOrder" asp-action="Details" asp-route-id="@r.LinkedWorkOrderId">@r.LinkedWorkOrderNo</a> } else { @r.LinkedWorkOrderNo } } else { <span class="text-muted">—</span> }</td>
                         </tr>
@@ -615,7 +615,7 @@
 
         @* Work Orderهای اجراشده: فقط خواندنی - ساخت Work Order از این بخش مجاز نیست؛ فقط از Work Request تاییدشده *@
         <div class="content-card">
-            <h6 class="mb-2"><i class="bi bi-tools"></i> @Localizer["Cm_ExecutedWo"]</h6>
+            <h6 class="mb-2"><pems-icon name="bi-tools" /> @Localizer["Cm_ExecutedWo"]</h6>
             <div class="table-responsive table-scroll-area pems-s-f7dce87f">
             <pems-table kind="enterprise">
                 <thead><tr><th>@Localizer["Cm_WoNumber"]</th><th>@Localizer["Cm_Description"]</th><th>@Localizer["Cm_Status"]</th><th>@Localizer["Cm_Date"]</th></tr></thead>
@@ -640,9 +640,9 @@
     <div class="tab-pane fade" id="tab-inspection" role="tabpanel">
         <div class="content-card">
             <div class="d-flex justify-content-between align-items-center mb-3">
-                <h6 class="mb-0"><i class="bi bi-clipboard-pulse"></i> @Localizer["Cm_SecInspections"]</h6>
+                <h6 class="mb-0"><pems-icon name="bi-clipboard-pulse" /> @Localizer["Cm_SecInspections"]</h6>
                 <pems-button tone="primary" size="small" outline="true" type="button" data-bs-toggle="modal" data-bs-target="#newInspectionModal">
-                    <i class="bi bi-plus-lg"></i> @Localizer["Cm_NewInspection"]
+                    <pems-icon name="bi-plus-lg" /> @Localizer["Cm_NewInspection"]
                 </pems-button>
             </div>
             <pems-table kind="enterprise" css="mb-0">
@@ -679,7 +679,7 @@
                                 {
                                     <form asp-controller="Inspection" asp-action="RaiseWorkRequest" method="post" class="d-inline">
                                         <input type="hidden" name="inspectionRecordId" value="@i.InspectionRecordId" />
-                                        <pems-button tone="danger" size="small" outline="true" type="submit"><i class="bi bi-exclamation-triangle"></i> @Localizer["Cm_RaiseWr"]</pems-button>
+                                        <pems-button tone="danger" size="small" outline="true" type="submit"><pems-icon name="bi-exclamation-triangle" /> @Localizer["Cm_RaiseWr"]</pems-button>
                                     </form>
                                 }
                             </td>
@@ -733,7 +733,7 @@
         <div class="row g-3">
             <div class="col-md-4">
                 <div class="content-card h-100">
-                    <h6 class="mb-3"><i class="bi bi-exclamation-triangle"></i> NCR <pems-badge tone="neutral">@Model.NonConformanceReports.Count</pems-badge></h6>
+                    <h6 class="mb-3"><pems-icon name="bi-exclamation-triangle" /> NCR <pems-badge tone="neutral">@Model.NonConformanceReports.Count</pems-badge></h6>
                     <ul class="list-unstyled mb-0">
                         @foreach (var n in Model.NonConformanceReports)
                         {
@@ -748,7 +748,7 @@
             </div>
             <div class="col-md-4">
                 <div class="content-card h-100">
-                    <h6 class="mb-3"><i class="bi bi-arrow-repeat"></i> MOC <pems-badge tone="neutral">@Model.MOCs.Count</pems-badge></h6>
+                    <h6 class="mb-3"><pems-icon name="bi-arrow-repeat" /> MOC <pems-badge tone="neutral">@Model.MOCs.Count</pems-badge></h6>
                     <ul class="list-unstyled mb-0">
                         @foreach (var m in Model.MOCs)
                         {
@@ -763,7 +763,7 @@
             </div>
             <div class="col-md-4">
                 <div class="content-card h-100">
-                    <h6 class="mb-3"><i class="bi bi-question-circle"></i> TQ / TSR / RFI <pems-badge tone="neutral">@Model.TechnicalQueries.Count</pems-badge></h6>
+                    <h6 class="mb-3"><pems-icon name="bi-question-circle" /> TQ / TSR / RFI <pems-badge tone="neutral">@Model.TechnicalQueries.Count</pems-badge></h6>
                     <ul class="list-unstyled mb-0">
                         @foreach (var t in Model.TechnicalQueries)
                         {
@@ -786,7 +786,7 @@
             var explanation = ViewBag.ClassificationExplanation as PEMS.Application.DTOs.ClassificationExplanationDto;
         }
         <div class="content-card mb-3">
-            <h6 class="mb-3"><i class="bi bi-diagram-3-fill"></i> @Localizer["Cm_SecClassification"]</h6>
+            <h6 class="mb-3"><pems-icon name="bi-diagram-3-fill" /> @Localizer["Cm_SecClassification"]</h6>
             @if (intel?.EquipmentClassId != null)
             {
                 <div class="row g-2 small">

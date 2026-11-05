@@ -11,7 +11,7 @@
 }
 
 <div class="d-flex justify-content-between align-items-center mb-3">
-    <h5 class="mb-0"><i class="bi bi-diagram-3"></i>
+    <h5 class="mb-0"><pems-icon name="bi-diagram-3" />
         @(isEdit ? Localizer["Rcm_EditStrategy"] : Localizer["Rcm_NewStrategy"])
         @if (isEdit) { <pems-badge tone="@RcmDisplay.StatusBadge(Model.Status)" css="ms-2">@Localizer.Label("Status", Model.Status) · v@(Model.VersionNumber)</pems-badge> }
     </h5>
@@ -22,7 +22,7 @@
 
 @if (Model.WillCreateNewVersion)
 {
-    <pems-alert tone="info" css="small"><i class="bi bi-info-circle"></i> @Localizer["Rcm_NewVersionNotice"]</pems-alert>
+    <pems-alert tone="info" css="small"><pems-icon name="bi-info-circle" /> @Localizer["Rcm_NewVersionNotice"]</pems-alert>
 }
 <p class="text-muted small">@Localizer["Rcm_FormHint"]</p>
 
@@ -150,7 +150,7 @@
 
         <div class="col-12" id="cbmSection">
             <div class="border rounded p-3">
-                <div class="fw-bold small mb-2"><i class="bi bi-activity"></i> @Localizer["Rcm_CbmSection"]</div>
+                <div class="fw-bold small mb-2"><pems-icon name="bi-activity" /> @Localizer["Rcm_CbmSection"]</div>
                 <div class="row g-3">
                     <div class="col-md-4">
                         <pems-label>@Localizer["Rcm_CbmParameter"]</pems-label>

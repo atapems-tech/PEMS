@@ -66,7 +66,7 @@
                 <pems-label for="reason">@Localizer["Lic_Reason"]</pems-label>
                 <pems-input id="reason" name="reason" maxlength="500" />
             </div>
-            <div class="col-12"><pems-button tone="primary" type="submit"><i class="bi bi-download me-1"></i> @Localizer["Lic_DownloadRequest"]</pems-button></div>
+            <div class="col-12"><pems-button tone="primary" type="submit"><pems-icon name="bi-download" css="me-1" /> @Localizer["Lic_DownloadRequest"]</pems-button></div>
         </form>
     </div>
 
@@ -76,7 +76,7 @@
         <form asp-action="Upload" method="post" enctype="multipart/form-data" class="d-flex align-items-center gap-3 flex-wrap">
             @Html.AntiForgeryToken()
             <pems-input css="w-auto" type="file" name="file" accept=".pemslic,.zip" required aria-label="@Localizer["Lic_UploadTitle"]" />
-            <pems-button tone="primary" type="submit"><i class="bi bi-upload me-1"></i> @Localizer["Lic_Upload"]</pems-button>
+            <pems-button tone="primary" type="submit"><pems-icon name="bi-upload" css="me-1" /> @Localizer["Lic_Upload"]</pems-button>
         </form>
     </div>
 </div>

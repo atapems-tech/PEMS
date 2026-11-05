@@ -14,7 +14,7 @@ else
     <div class="row g-3">
         <div class="col-md-4">
             <div class="content-card text-center">
-                <h6 class="mb-3"><i class="bi bi-person-circle"></i> @Localizer["عکس پروفایل"]</h6>
+                <h6 class="mb-3"><pems-icon name="bi-person-circle" /> @Localizer["عکس پروفایل"]</h6>
 
                 @if (!string.IsNullOrEmpty(Model.PhotoPath))
                 {
@@ -23,7 +23,7 @@ else
                 else
                 {
                     <div class="rounded-circle mb-3 mx-auto d-flex align-items-center justify-content-center bg-light pems-s-9bcde244">
-                        <i class="bi bi-person text-muted pems-s-2fe17263"></i>
+                        <pems-icon name="bi-person" css="text-muted pems-s-2fe17263" />
                     </div>
                 }
 
@@ -32,14 +32,14 @@ else
 
                 <form asp-action="UploadPhoto" method="post" enctype="multipart/form-data" class="mt-3">
                     <pems-input scale="small" css="mb-2" type="file" name="file" accept=".jpg,.jpeg,.png,.webp" required />
-                    <pems-button tone="primary" size="small" css="w-100" type="submit"><i class="bi bi-upload"></i> @Localizer["ذخیره عکس"]</pems-button>
+                    <pems-button tone="primary" size="small" css="w-100" type="submit"><pems-icon name="bi-upload" /> @Localizer["ذخیره عکس"]</pems-button>
                 </form>
             </div>
         </div>
 
         <div class="col-md-8">
             <div class="content-card">
-                <h6 class="mb-3"><i class="bi bi-pen"></i> @Localizer["امضای دیجیتال (ترسیمی)"]</h6>
+                <h6 class="mb-3"><pems-icon name="bi-pen" /> @Localizer["امضای دیجیتال (ترسیمی)"]</h6>
                 <p class="text-muted small">
                     با موس یا انگشت روی کادر زیر امضا کن. این امضا در جاهایی از سیستم که نیاز به
                     نمایش امضای تاییدکننده دارند (مثلاً تاییدهای گردش‌کار) استفاده می‌شه.
@@ -58,8 +58,8 @@ else
                 </div>
 
                 <div class="d-flex gap-2 mt-2">
-                    <pems-button tone="neutral" size="small" outline="true" type="button" id="clearSignatureBtn"><i class="bi bi-eraser"></i> @Localizer["پاک کردن"]</pems-button>
-                    <pems-button tone="primary" size="small" type="button" id="saveSignatureBtn"><i class="bi bi-check-lg"></i> @Localizer["ذخیره امضا"]</pems-button>
+                    <pems-button tone="neutral" size="small" outline="true" type="button" id="clearSignatureBtn"><pems-icon name="bi-eraser" /> @Localizer["پاک کردن"]</pems-button>
+                    <pems-button tone="primary" size="small" type="button" id="saveSignatureBtn"><pems-icon name="bi-check-lg" /> @Localizer["ذخیره امضا"]</pems-button>
                 </div>
 
                 <form asp-action="SaveSignature" method="post" id="signatureForm" class="d-none">

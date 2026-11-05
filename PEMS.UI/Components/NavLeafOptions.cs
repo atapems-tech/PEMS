@@ -154,3 +154,14 @@ public sealed record ValidationSummaryOptions : FrameOptions
 {
     public string? Css { get; init; }
 }
+
+// SCRUM-508: the Bootstrap icon as a registered component.
+
+/// <summary>Inputs of <see cref="PemsIcon"/>: a Bootstrap icon (<c>&lt;i class="bi bi-gear"&gt;</c>); the page's own attributes (aria-hidden, title, data-*) are kept.</summary>
+public sealed record IconOptions : FrameOptions
+{
+    /// <summary>The icon class, e.g. <c>bi-gear</c>.</summary>
+    public string? Name { get; init; }
+    /// <summary>Other classes the page needs (spacing, colour).</summary>
+    public string? Css { get; init; }
+}

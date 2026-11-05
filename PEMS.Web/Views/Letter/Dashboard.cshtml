@@ -40,10 +40,10 @@
         @if (ViewBag.CanRunReminders == true)
         {
             <form asp-action="SendReminders" method="post" data-pems-confirm="@Localizer["Lt_RemindersConfirm"]">
-                <pems-button tone="neutral" size="small" outline="true" type="submit"><i class="bi bi-bell" aria-hidden="true"></i> @Localizer["Lt_RemindersRun"]</pems-button>
+                <pems-button tone="neutral" size="small" outline="true" type="submit"><pems-icon name="bi-bell" aria-hidden="true" /> @Localizer["Lt_RemindersRun"]</pems-button>
             </form>
         }
-        <pems-button tone="neutral" size="small" outline="true" as="a" asp-action="Index"><i class="bi bi-arrow-left-short" aria-hidden="true"></i> @Localizer["Correspondence"]</pems-button>
+        <pems-button tone="neutral" size="small" outline="true" as="a" asp-action="Index"><pems-icon name="bi-arrow-left-short" aria-hidden="true" /> @Localizer["Correspondence"]</pems-button>
     </div>
 </div>
 
@@ -69,7 +69,7 @@
             <h2 class="vs-section__title">@Localizer["Lt_Dash_NeedsAttention"]</h2>
             @if (!Model.NeedsAttention.Any())
             {
-                <p class="text-muted mb-0"><i class="bi bi-check-circle" aria-hidden="true"></i> @Localizer["Lt_Dash_NothingOverdue"]</p>
+                <p class="text-muted mb-0"><pems-icon name="bi-check-circle" aria-hidden="true" /> @Localizer["Lt_Dash_NothingOverdue"]</p>
             }
             else
             {
@@ -90,10 +90,10 @@
                                     <td class="small">@item.LetterNumber</td>
                                     <td><a asp-action="Details" asp-route-id="@item.LetterId">@item.Subject</a></td>
                                     <td class="small">
-                                        <i class="bi @(item.Reason == "OverdueReferral" ? "bi-signpost-split" : "bi-reply")" aria-hidden="true"></i>
+                                        <pems-icon css="@(item.Reason == "OverdueReferral" ? "bi-signpost-split" : "bi-reply")" aria-hidden="true" />
                                         @Localizer[item.Reason == "OverdueReferral" ? "Lt_Dash_ReasonReferral" : "Lt_Dash_ReasonResponse"]
                                     </td>
-                                    <td class="small pems-due-overdue"><i class="bi bi-exclamation-triangle" aria-hidden="true"></i> @item.DaysOverdue <span class="text-muted fw-normal">(@item.DueDate.ToString("yyyy-MM-dd"))</span></td>
+                                    <td class="small pems-due-overdue"><pems-icon name="bi-exclamation-triangle" aria-hidden="true" /> @item.DaysOverdue <span class="text-muted fw-normal">(@item.DueDate.ToString("yyyy-MM-dd"))</span></td>
                                 </tr>
                             }
                         </tbody>

@@ -36,9 +36,9 @@
         {
             var id = SectionId(node.Key);
             <div class="nav-section-title" data-bs-toggle="collapse" data-bs-target="#@id" role="button" tabindex="0" aria-expanded="@node.IsActive.ToString().ToLower()" data-nav-key="@node.Key">
-                <i class="bi @node.Icon nav-section-icon"></i>
+                <pems-icon css="@node.Icon nav-section-icon" />
                 <span>@node.Title</span>
-                <i class="bi bi-chevron-down nav-section-chevron@(node.IsActive ? " rotated" : "")"></i>
+                <pems-icon name="bi-chevron-down" css="nav-section-chevron@(node.IsActive ? " rotated" : "")" />
             </div>
             <div class="collapse@(node.IsActive ? " show" : "")" id="@id">
                 @foreach (var child in node.Children)
@@ -49,14 +49,14 @@
                         foreach (var sub in child.Children)
                         {
                             <a class="nav-link nav-subitem @(sub.IsActive ? "active" : "")" href="@sub.Href" data-nav-key="@sub.Key" @(sub.OpenInNewTab ? "target=_blank rel=noopener" : "")>
-                                <i class="bi @sub.Icon"></i><span class="nav-label">@sub.Title</span>@Badge(sub)
+                                <pems-icon css="@sub.Icon" /><span class="nav-label">@sub.Title</span>@Badge(sub)
                             </a>
                         }
                     }
                     else
                     {
                         <a class="nav-link @(child.IsActive ? "active" : "")" href="@child.Href" data-nav-key="@child.Key" @(child.OpenInNewTab ? "target=_blank rel=noopener" : "")>
-                            <i class="bi @child.Icon"></i><span class="nav-label">@child.Title</span>@Badge(child)
+                            <pems-icon css="@child.Icon" /><span class="nav-label">@child.Title</span>@Badge(child)
                         </a>
                     }
                 }
@@ -65,7 +65,7 @@
         else if (!node.IsSubheading)
         {
             <a class="nav-link @(node.IsActive ? "active" : "")" href="@node.Href" data-nav-key="@node.Key" @(node.OpenInNewTab ? "target=_blank rel=noopener" : "")>
-                <i class="bi @node.Icon"></i><span class="nav-label">@node.Title</span>@Badge(node)
+                <pems-icon css="@node.Icon" /><span class="nav-label">@node.Title</span>@Badge(node)
             </a>
         }
     }

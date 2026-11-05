@@ -74,26 +74,26 @@
                                نه رنگ‌فقط (آیکون + متن)، و صفر به‌صراحت «پیکربندی‌نشده» است، نه یک خطا. *@
                             @if (r.PermissionCount < 0)
                             {
-                                <a href="@Url.Action("Index", "PermissionMatrix", new { area = "Admin" })" class="vs-pill vs-pill--icon vs-pill--success" title="@Localizer["SystemAdmin bypasses the permission matrix by design"]"><i class="bi bi-infinity" aria-hidden="true"></i> @Localizer["Unrestricted"]</a>
+                                <a href="@Url.Action("Index", "PermissionMatrix", new { area = "Admin" })" class="vs-pill vs-pill--icon vs-pill--success" title="@Localizer["SystemAdmin bypasses the permission matrix by design"]"><pems-icon name="bi-infinity" aria-hidden="true" /> @Localizer["Unrestricted"]</a>
                             }
                             else if (r.PermissionCount == 0)
                             {
-                                <a href="@Url.Action("Index", "PermissionMatrix", new { area = "Admin" }, $"role-{r.Name}")" class="vs-pill vs-pill--icon vs-pill--warning" title="@Localizer["No permissions configured for this role yet - every action is denied by default"]"><i class="bi bi-exclamation-triangle" aria-hidden="true"></i> @Localizer["Not configured"]</a>
+                                <a href="@Url.Action("Index", "PermissionMatrix", new { area = "Admin" }, $"role-{r.Name}")" class="vs-pill vs-pill--icon vs-pill--warning" title="@Localizer["No permissions configured for this role yet - every action is denied by default"]"><pems-icon name="bi-exclamation-triangle" aria-hidden="true" /> @Localizer["Not configured"]</a>
                             }
                             else
                             {
-                                <a href="@Url.Action("Index", "PermissionMatrix", new { area = "Admin" }, $"role-{r.Name}")" class="vs-pill vs-pill--icon vs-pill--info"><i class="bi bi-check2-circle" aria-hidden="true"></i> @r.PermissionCount @Localizer["permissions"]</a>
+                                <a href="@Url.Action("Index", "PermissionMatrix", new { area = "Admin" }, $"role-{r.Name}")" class="vs-pill vs-pill--icon vs-pill--info"><pems-icon name="bi-check2-circle" aria-hidden="true" /> @r.PermissionCount @Localizer["permissions"]</a>
                             }
                         </td>
                         <td>
-                            @if (r.IsSystemRole) { <span class="vs-pill vs-pill--icon vs-pill--info"><i class="bi bi-shield-check" aria-hidden="true"></i> @Localizer["System"]</span> }
+                            @if (r.IsSystemRole) { <span class="vs-pill vs-pill--icon vs-pill--info"><pems-icon name="bi-shield-check" aria-hidden="true" /> @Localizer["System"]</span> }
                             else { <span class="vs-pill vs-pill--neutral">@Localizer["RoL_Custom"]</span> }
                         </td>
                         <td class="text-end">
                             @if (!r.IsSystemRole)
                             {
                                 <form asp-action="Delete" asp-route-id="@r.Id" method="post" class="d-inline" data-pems-confirm="@Localizer["RoL_ConfirmDelete"]">
-                                    <button type="submit" class="lp-act lp-act--always text-danger" title="@Localizer["Ed_Delete"]" aria-label="@Localizer["Ed_Delete"] @r.Name"><i class="bi bi-trash" aria-hidden="true"></i></button>
+                                    <button type="submit" class="lp-act lp-act--always text-danger" title="@Localizer["Ed_Delete"]" aria-label="@Localizer["Ed_Delete"] @r.Name"><pems-icon name="bi-trash" aria-hidden="true" /></button>
                                 </form>
                             }
                         </td>

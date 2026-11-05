@@ -29,7 +29,7 @@
     <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-3">
         <div class="d-flex align-items-center gap-2 flex-wrap">
             <pems-button tone="neutral" size="small" outline="true" as="a" asp-action="Index">
-                <i class="bi bi-arrow-return-@(System.Globalization.CultureInfo.CurrentUICulture.TextInfo.IsRightToLeft ? "right" : "left")"></i>
+                <pems-icon name="bi-arrow-return-@(System.Globalization.CultureInfo.CurrentUICulture.TextInfo.IsRightToLeft ? "right" : "left")" />
                 @Localizer["بازگشت به تیم‌ها"]
             </pems-button>
             <pems-input scale="small" type="search" id="orgChartDisciplineSearch" style="width:170px" placeholder="@Localizer["جستجوی دیسیپلین..."]" aria-label="@Localizer["جستجوی دیسیپلین..."]" autocomplete="off" />
@@ -44,20 +44,20 @@
 
         <div class="d-flex align-items-center gap-1" role="toolbar" aria-label="@Localizer["ابزار نمودار سازمانی"]">
             <pems-button tone="neutral" size="small" outline="true" type="button" id="orgChartExpandAll" title="@Localizer["باز کردن همه"]">
-                <i class="bi bi-arrows-expand"></i>
+                <pems-icon name="bi-arrows-expand" />
             </pems-button>
             <pems-button tone="neutral" size="small" outline="true" type="button" id="orgChartCollapseAll" title="@Localizer["بستن همه"]">
-                <i class="bi bi-arrows-collapse"></i>
+                <pems-icon name="bi-arrows-collapse" />
             </pems-button>
             <div class="vr mx-1"></div>
             <pems-button tone="neutral" size="small" outline="true" type="button" id="orgChartZoomOut" title="@Localizer["کوچک‌نمایی"]">
-                <i class="bi bi-zoom-out"></i>
+                <pems-icon name="bi-zoom-out" />
             </pems-button>
             <pems-button tone="neutral" size="small" outline="true" type="button" id="orgChartZoomIn" title="@Localizer["بزرگ‌نمایی"]">
-                <i class="bi bi-zoom-in"></i>
+                <pems-icon name="bi-zoom-in" />
             </pems-button>
             <pems-button tone="neutral" size="small" outline="true" type="button" id="orgChartFit" title="@Localizer["تناسب با صفحه"]">
-                <i class="bi bi-aspect-ratio"></i>
+                <pems-icon name="bi-aspect-ratio" />
             </pems-button>
         </div>
     </div>
@@ -75,8 +75,8 @@
                 </div>
                 <div class="pems-org-stats">
                     <div class="pems-org-stat"><span class="pems-org-stat-value" id="orgChartStatTotal">0</span><span class="pems-org-stat-label">@Localizer["کل سمت‌ها"]</span></div>
-                    <div class="pems-org-stat pems-org-stat-filled"><span class="pems-org-stat-value" id="orgChartStatFilled">0</span><span class="pems-org-stat-label"><i class="bi bi-person-check"></i> @Localizer["تکمیل‌شده"]</span></div>
-                    <div class="pems-org-stat pems-org-stat-vacant"><span class="pems-org-stat-value" id="orgChartStatVacant">0</span><span class="pems-org-stat-label"><i class="bi bi-person-dash"></i> @Localizer["خالی"]</span></div>
+                    <div class="pems-org-stat pems-org-stat-filled"><span class="pems-org-stat-value" id="orgChartStatFilled">0</span><span class="pems-org-stat-label"><pems-icon name="bi-person-check" /> @Localizer["تکمیل‌شده"]</span></div>
+                    <div class="pems-org-stat pems-org-stat-vacant"><span class="pems-org-stat-value" id="orgChartStatVacant">0</span><span class="pems-org-stat-label"><pems-icon name="bi-person-dash" /> @Localizer["خالی"]</span></div>
                     <div class="pems-org-stat"><span class="pems-org-stat-value" id="orgChartStatOccupancy">0%</span><span class="pems-org-stat-label">@Localizer["نرخ اشغال"]</span></div>
                 </div>
                 <div class="pems-org-progress" role="img" id="orgChartProgress" aria-label="@Localizer["نرخ اشغال"]">
@@ -91,12 +91,12 @@
                     <pems-skeleton kind="card" label="@Localizer["در حال بارگذاری نمودار سازمانی..."]" />
                 </div>
                 <div id="orgChartError" class="pems-orgchart-state text-danger" hidden>
-                    <i class="bi bi-exclamation-triangle"></i>
+                    <pems-icon name="bi-exclamation-triangle" />
                     <span id="orgChartErrorText"></span>
                     <pems-button tone="danger" size="small" outline="true" css="ms-2" type="button" id="orgChartRetry">@Localizer["تلاش دوباره"]</pems-button>
                 </div>
                 <div id="orgChartEmpty" class="pems-orgchart-state" hidden>
-                    <i class="bi bi-diagram-3"></i>
+                    <pems-icon name="bi-diagram-3" />
                     <span id="orgChartEmptyText"></span>
                 </div>
 
@@ -119,7 +119,7 @@
         <div class="col-12 col-xl-3">
             <div class="content-card pems-orgchart-detail" id="orgChartDetailPanel">
                 <div class="pems-orgchart-state" id="orgChartNoSelection">
-                    <i class="bi bi-cursor"></i>
+                    <pems-icon name="bi-cursor" />
                     <span>@Localizer["روی یک گره کلیک کنید تا جزئیاتش را ببینید."]</span>
                 </div>
                 <div id="orgChartDetailContent" hidden></div>

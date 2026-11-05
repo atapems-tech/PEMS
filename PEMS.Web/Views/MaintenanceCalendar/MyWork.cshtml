@@ -18,8 +18,8 @@
     <div class="d-flex flex-wrap gap-2 align-items-center justify-content-between mb-3">
         <div class="d-flex gap-2 align-items-center">
             <pems-button tone="neutral" size="small" outline="true" as="a" asp-action="MyWork" asp-route-date="@DateTime.Today.ToString("yyyy-MM-dd")">@Localizer["Today"]</pems-button>
-            <pems-button tone="neutral" size="small" outline="true" as="a" asp-action="MyWork" asp-route-date="@day.AddDays(-1).ToString("yyyy-MM-dd")"><i class="bi bi-chevron-left"></i></pems-button>
-            <pems-button tone="neutral" size="small" outline="true" as="a" asp-action="MyWork" asp-route-date="@day.AddDays(1).ToString("yyyy-MM-dd")"><i class="bi bi-chevron-right"></i></pems-button>
+            <pems-button tone="neutral" size="small" outline="true" as="a" asp-action="MyWork" asp-route-date="@day.AddDays(-1).ToString("yyyy-MM-dd")"><pems-icon name="bi-chevron-left" /></pems-button>
+            <pems-button tone="neutral" size="small" outline="true" as="a" asp-action="MyWork" asp-route-date="@day.AddDays(1).ToString("yyyy-MM-dd")"><pems-icon name="bi-chevron-right" /></pems-button>
         </div>
         <h6 class="mb-0">@Localizer["My Work"] &mdash; @day.ToString("dddd, MMM d")</h6>
     </div>
@@ -40,7 +40,7 @@
                     <div class="small">
                         <pems-badge tone="none" css="@TypeBadgeClass(it.WorkOrderType)">@it.WorkOrderType</pems-badge>
                         <pems-badge tone="neutral">@it.Status</pems-badge>
-                        @if (it.HasEmployeeConflict) { <pems-badge tone="danger"><i class="bi bi-exclamation-triangle"></i> @Localizer["Conflict"]</pems-badge> }
+                        @if (it.HasEmployeeConflict) { <pems-badge tone="danger"><pems-icon name="bi-exclamation-triangle" /> @Localizer["Conflict"]</pems-badge> }
                     </div>
                     <div class="small text-muted">@it.AssignedTeamName</div>
                 </div>

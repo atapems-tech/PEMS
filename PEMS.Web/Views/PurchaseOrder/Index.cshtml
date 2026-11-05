@@ -59,7 +59,7 @@
                             <td class="text-end"><span class="vs-num">@po.Value?.ToString("N0")</span></td>
                             <td><span class="vs-pill @StatusTone(po.Status)">@StatusText(po.Status)</span></td>
                             <td class="text-end">
-                                <a asp-action="Details" asp-route-id="@po.PoId" class="lp-act lp-act--always" title="@Localizer["Ed_View"]" aria-label="@Localizer["Ed_View"]"><i class="bi bi-eye" aria-hidden="true"></i></a>
+                                <a asp-action="Details" asp-route-id="@po.PoId" class="lp-act lp-act--always" title="@Localizer["Ed_View"]" aria-label="@Localizer["Ed_View"]"><pems-icon name="bi-eye" aria-hidden="true" /></a>
                             </td>
                         </tr>
                     }

@@ -17,7 +17,7 @@
         </div>
         <form asp-action="Refresh" method="post" id="refreshForm">
             <pems-button tone="primary" type="submit" id="refreshBtn">
-                <i class="bi bi-arrow-clockwise"></i> @Localizer["Refresh scan"]
+                <pems-icon name="bi-arrow-clockwise" /> @Localizer["Refresh scan"]
             </pems-button>
         </form>
     </div>
@@ -35,7 +35,7 @@
     {
         <div class="content-card">
             <div class="admin-empty">
-                <i class="bi bi-clipboard-x"></i>
+                <pems-icon name="bi-clipboard-x" />
                 <strong>No report found yet</strong>
                 <div class="mt-2">
                     @if (parseError)
@@ -68,7 +68,7 @@
             <div class="admin-toolbar">
                 <div class="admin-toolbar-main">
                     <div class="input-group admin-search">
-                        <span class="input-group-text"><i class="bi bi-search"></i></span>
+                        <span class="input-group-text"><pems-icon name="bi-search" /></span>
                         <pems-input type="search" id="moduleSearch" placeholder="Filter by module name..." autocomplete="off" />
                     </div>
                     <span class="text-body-secondary small">Sorted by evidence coverage, lowest (needs the most attention) first.</span>
@@ -110,8 +110,8 @@
                         </pems-progress>
 
                         <div class="d-flex flex-wrap gap-2 small text-body-secondary mb-2">
-                            <span><i class="bi bi-signpost"></i> @m.ActionCount actions</span>
-                            <span><i class="bi bi-file-earmark-richtext"></i> @m.ViewCount views</span>
+                            <span><pems-icon name="bi-signpost" /> @m.ActionCount actions</span>
+                            <span><pems-icon name="bi-file-earmark-richtext" /> @m.ViewCount views</span>
                             <span><i class="@(m.InSidebarNav ? "bi bi-list-check text-success" : "bi bi-list text-danger")"></i> nav</span>
                             <span><i class="@(m.InTests ? "bi bi-check2-square text-success" : "bi bi-square text-danger")"></i> tests</span>
                             <span><i class="@(m.InDocs ? "bi bi-book text-success" : "bi bi-book text-danger")"></i> docs</span>

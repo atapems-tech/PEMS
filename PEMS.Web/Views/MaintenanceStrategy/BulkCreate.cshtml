@@ -40,7 +40,7 @@
 }
 
 <div class="d-flex justify-content-between align-items-center mb-3">
-    <h5 class="mb-0"><i class="bi bi-collection"></i> @Localizer["Rcm_BulkAssign"]</h5>
+    <h5 class="mb-0"><pems-icon name="bi-collection" /> @Localizer["Rcm_BulkAssign"]</h5>
     <pems-button tone="neutral" size="small" outline="true" as="a" asp-action="Index">@Localizer["بازگشت"]</pems-button>
 </div>
 <p class="text-muted small">@Localizer["Rcm_BulkHint"]</p>
@@ -79,7 +79,7 @@
                 Functional Location (چندانتخابی)
                 @if (equipmentWithFlCount < 50)
                 {
-                    <i class="bi bi-info-circle text-muted" title="فقط تعداد کمی تجهیز هنوز به Functional Location متصل شده - این فیلتر فعلاً نتیجه‌ی محدودی برمی‌گرداند."></i>
+                    <pems-icon name="bi-info-circle" css="text-muted" title="فقط تعداد کمی تجهیز هنوز به Functional Location متصل شده - این فیلتر فعلاً نتیجه‌ی محدودی برمی‌گرداند." />
                 }
             </pems-label>
             <pems-select scale="small" name="functionalLocationIds" multiple size="4">
@@ -134,7 +134,7 @@
         <div class="col-md-6">
             <pems-label css="small mb-0">
                 Tag List (چند Tag دقیق - با کاما یا خط جدید جدا کنید)
-                <i class="bi bi-info-circle text-muted" title="این‌ها همیشه به نتیجه اضافه می‌شوند، صرف‌نظر از فیلترهای بالا - برای وقتی که تگ‌های مشخصی را از قبل می‌دانید."></i>
+                <pems-icon name="bi-info-circle" css="text-muted" title="این‌ها همیشه به نتیجه اضافه می‌شوند، صرف‌نظر از فیلترهای بالا - برای وقتی که تگ‌های مشخصی را از قبل می‌دانید." />
             </pems-label>
             <pems-textarea scale="small" name="tagList" rows="2" placeholder="P-1001, P-1002, P-1003">@selectedTagList</pems-textarea>
             @if (requestedTagCount > 0)
@@ -143,14 +143,14 @@
             }
         </div>
         <div class="col-md-6 d-flex align-items-end">
-            <pems-button tone="primary" size="small" css="w-100"><i class="bi bi-funnel"></i> @Localizer["فیلتر تجهیزات"]</pems-button>
+            <pems-button tone="primary" size="small" css="w-100"><pems-icon name="bi-funnel" /> @Localizer["فیلتر تجهیزات"]</pems-button>
         </div>
 
         @if (equipmentWithFlCount < 50)
         {
             <div class="col-12">
                 <p class="text-muted small mb-0">
-                    <i class="bi bi-info-circle"></i> در حال حاضر فقط @equipmentWithFlCount تجهیز به Functional Location متصل شده -
+                    <pems-icon name="bi-info-circle" /> در حال حاضر فقط @equipmentWithFlCount تجهیز به Functional Location متصل شده -
                     فیلترهای Functional Location/Plant/Area/Unit آماده‌اند اما تا زمانی که تخصیص بیشتری از طریق
                     «Equipment ↔ FL Assignment» انجام نشود، نتیجه‌ی محدودی برمی‌گردانند. این یک محدودیت داده است، نه نقص این فرم.
                 </p>
@@ -193,11 +193,11 @@ else if (matchingCount.HasValue && matchingCount.Value > maxResults)
                         var byType = areaGroup.GroupBy(x => string.IsNullOrWhiteSpace(x.EquipmentType) ? "نامشخص" : x.EquipmentType).OrderBy(g => g.Key).ToList();
 
                         <pems-accordion-item target="@areaSafeId" parent="areaAccordion" button-css="small" body-css="p-2">
-<pems-accordion-header><i class="bi bi-geo-alt me-2"></i> @areaGroup.Key
+<pems-accordion-header><pems-icon name="bi-geo-alt" css="me-2" /> @areaGroup.Key
                                     <pems-badge tone="neutral" css="ms-2">@areaGroup.Count()</pems-badge></pems-accordion-header>
                                     <pems-button tone="primary" size="small" outline="true" css="mb-2" type="button"
                                             onclick="document.querySelectorAll('.area-@areaSafeId').forEach(c => c.checked = true)">
-                                        <i class="bi bi-check2-square"></i> انتخاب کل این واحد
+                                        <pems-icon name="bi-check2-square" /> انتخاب کل این واحد
                                     </pems-button>
 
                                     @foreach (var typeGroup in byType)
@@ -206,7 +206,7 @@ else if (matchingCount.HasValue && matchingCount.Value > maxResults)
 
                                         <div class="border rounded p-2 mb-2">
                                             <div class="d-flex justify-content-between align-items-center mb-1">
-                                                <span class="small fw-bold"><i class="bi bi-gear"></i> @typeGroup.Key <pems-badge tone="none" css="bg-light text-dark">@typeGroup.Count()</pems-badge></span>
+                                                <span class="small fw-bold"><pems-icon name="bi-gear" /> @typeGroup.Key <pems-badge tone="none" css="bg-light text-dark">@typeGroup.Count()</pems-badge></span>
                                                 <pems-button tone="neutral" size="small" outline="true" css="py-0" type="button"
                                                         onclick="document.querySelectorAll('.type-@typeSafeId').forEach(c => c.checked = true)">
                                                     انتخاب این نوع
@@ -259,7 +259,7 @@ else if (matchingCount.HasValue && matchingCount.Value > maxResults)
                         <li>@Localizer["Rcm_HasConflict"]: <strong>@conflicts</strong> <span class="text-muted">(@Localizer["Rcm_ConflictsSkipped"])</span></li>
                     </ul>
                     <p class="small text-muted">@Localizer["Rcm_AssignAtomicNote"]</p>
-                    <pems-button tone="primary" type="submit" data-pems-confirm="@Localizer["Rcm_ConfirmBulkAssign"]"><i class="bi bi-check2-all"></i> @Localizer["Rcm_AssignSelected"]</pems-button>
+                    <pems-button tone="primary" type="submit" data-pems-confirm="@Localizer["Rcm_ConfirmBulkAssign"]"><pems-icon name="bi-check2-all" /> @Localizer["Rcm_AssignSelected"]</pems-button>
                 }
                 <div class="small text-muted mt-3">@Localizer["Rcm_NeedTemplate"] <a asp-action="Create">@Localizer["Rcm_NewStrategy"]</a></div>
             </div>

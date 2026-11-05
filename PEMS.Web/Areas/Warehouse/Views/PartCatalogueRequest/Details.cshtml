@@ -51,7 +51,7 @@
             <h2 class="pems-page-title mb-0">@(string.IsNullOrEmpty(d.RequestNumber) ? "#" + d.Id : d.RequestNumber)</h2>
             <span class="vs-pill vs-pill--info">@Localizer["Pc_Type_" + d.RequestType]</span>
             <span class="vs-pill vs-pill--icon @StatusPill(d.Status)">@Localizer["Pc_Status_" + d.Status]</span>
-            @if (f.Urgent) { <span class="vs-pill vs-pill--danger vs-pill--icon"><i class="bi bi-exclamation-triangle" aria-hidden="true"></i> @Localizer["Pc_Urgent"]</span> }
+            @if (f.Urgent) { <span class="vs-pill vs-pill--danger vs-pill--icon"><pems-icon name="bi-exclamation-triangle" aria-hidden="true" /> @Localizer["Pc_Urgent"]</span> }
             @if (!string.IsNullOrEmpty(d.AssignedPartNumber)) { <span class="vs-pill vs-pill--success">@Localizer["Pc_Col_PartNo"]: @d.AssignedPartNumber</span> }
         </div>
         <div class="small text-muted mt-1">
@@ -63,11 +63,11 @@
     @if (!string.IsNullOrEmpty(warningTemp)) { <pems-alert tone="warning" css="small">@warningTemp</pems-alert> }
 
     <div class="vs-toolbar">
-        <a asp-action="Index" class="vs-btn vs-btn--sm"><i class="bi bi-arrow-left"></i> @Localizer["Pc_Btn_Back"]</a>
-        @if (a.CanEdit) { <a asp-action="Edit" asp-route-id="@d.Id" class="vs-btn vs-btn--primary vs-btn--sm"><i class="bi bi-pencil"></i> @Localizer["Pc_Btn_Edit"]</a> }
+        <a asp-action="Index" class="vs-btn vs-btn--sm"><pems-icon name="bi-arrow-left" /> @Localizer["Pc_Btn_Back"]</a>
+        @if (a.CanEdit) { <a asp-action="Edit" asp-route-id="@d.Id" class="vs-btn vs-btn--primary vs-btn--sm"><pems-icon name="bi-pencil" /> @Localizer["Pc_Btn_Edit"]</a> }
         <div class="vs-toolbar__end">
-            <a asp-action="ExportXlsx" asp-route-id="@d.Id" class="vs-btn vs-btn--sm"><i class="bi bi-file-earmark-excel"></i> @Localizer["Pc_Btn_Export_Xlsx"]</a>
-            <a asp-action="ExportPdf" asp-route-id="@d.Id" class="vs-btn vs-btn--sm"><i class="bi bi-file-earmark-pdf"></i> @Localizer["Pc_Btn_Export_Pdf"]</a>
+            <a asp-action="ExportXlsx" asp-route-id="@d.Id" class="vs-btn vs-btn--sm"><pems-icon name="bi-file-earmark-excel" /> @Localizer["Pc_Btn_Export_Xlsx"]</a>
+            <a asp-action="ExportPdf" asp-route-id="@d.Id" class="vs-btn vs-btn--sm"><pems-icon name="bi-file-earmark-pdf" /> @Localizer["Pc_Btn_Export_Pdf"]</a>
         </div>
     </div>
 
@@ -75,7 +75,7 @@
     @if (a.IsOrganizationBlocked)
     {
         <section class="vs-panel pc-card border-warning" role="alert">
-            <h2 class="vs-section__title"><i class="bi bi-diagram-3"></i> @Localizer["Pc_Org_Blocked_Title"]</h2>
+            <h2 class="vs-section__title"><pems-icon name="bi-diagram-3" /> @Localizer["Pc_Org_Blocked_Title"]</h2>
             <p class="mb-1">@Localizer["Pc_Org_Blocked_Body"]</p>
             @if (!string.IsNullOrEmpty(a.OrganizationBlockReason))
             {
@@ -86,7 +86,7 @@
                 <form asp-action="RetryRouting" method="post" class="d-inline">
                     <input type="hidden" name="id" value="@d.Id" />
                     @if (rowVersion != null) { <input type="hidden" name="rowVersion" value="@rowVersion" /> }
-                    <button type="submit" class="vs-btn vs-btn--primary vs-btn--sm"><i class="bi bi-arrow-repeat"></i> @Localizer["Pc_Btn_RetryRouting"]</button>
+                    <button type="submit" class="vs-btn vs-btn--primary vs-btn--sm"><pems-icon name="bi-arrow-repeat" /> @Localizer["Pc_Btn_RetryRouting"]</button>
                 </form>
             }
             <div class="form-text">@Localizer["Pc_Org_Blocked_Hint"]</div>
@@ -97,7 +97,7 @@
     @if (a.CanApprove || a.CanReturn || a.CanCancel && d.Status == "InApproval")
     {
         <section class="vs-panel pc-card pc-action-panel">
-            <h2 class="vs-section__title"><i class="bi bi-check2-square"></i> @Localizer["Pc_Det_ActionPanel"]
+            <h2 class="vs-section__title"><pems-icon name="bi-check2-square" /> @Localizer["Pc_Det_ActionPanel"]
                 @if (!string.IsNullOrEmpty(a.ActiveStepKey)) { <span class="vs-pill vs-pill--info ms-2">@Localizer["Pc_Step_" + a.ActiveStepKey]</span> }
             </h2>
             @if (a.IsAdminOverride) { <pems-alert tone="warning" css="small py-1">@Localizer["Pc_Det_AdminOverride"]</pems-alert> }
@@ -119,9 +119,9 @@
                     <div class="form-text">@Localizer["Pc_Hint_CommentRequired"]</div>
                 </div>
                 <div class="col-auto d-flex gap-2">
-                    @if (a.CanApprove) { <button type="submit" name="action" value="Approve" class="vs-btn vs-btn--primary vs-btn--sm"><i class="bi bi-check-lg"></i> @Localizer["Pc_Btn_Approve"]</button> }
-                    @if (a.CanReturn) { <button type="submit" name="action" value="Return" class="vs-btn vs-btn--sm"><i class="bi bi-arrow-return-left"></i> @Localizer["Pc_Btn_Return"]</button> }
-                    @if (a.CanCancel) { <button type="submit" name="action" value="Cancel" class="vs-btn vs-btn--sm vs-btn--danger" data-pems-confirm="@Localizer["Pc_Confirm_Cancel"]"><i class="bi bi-x-circle"></i> @Localizer["Pc_Btn_Cancel"]</button> }
+                    @if (a.CanApprove) { <button type="submit" name="action" value="Approve" class="vs-btn vs-btn--primary vs-btn--sm"><pems-icon name="bi-check-lg" /> @Localizer["Pc_Btn_Approve"]</button> }
+                    @if (a.CanReturn) { <button type="submit" name="action" value="Return" class="vs-btn vs-btn--sm"><pems-icon name="bi-arrow-return-left" /> @Localizer["Pc_Btn_Return"]</button> }
+                    @if (a.CanCancel) { <button type="submit" name="action" value="Cancel" class="vs-btn vs-btn--sm vs-btn--danger" data-pems-confirm="@Localizer["Pc_Confirm_Cancel"]"><pems-icon name="bi-x-circle" /> @Localizer["Pc_Btn_Cancel"]</button> }
                 </div>
             </form>
         </section>
@@ -131,14 +131,14 @@
         <form asp-action="Execute" method="post" class="mb-3" data-pems-confirm="@Localizer["Pc_Confirm_Cancel"]">
             <input type="hidden" name="id" value="@d.Id" /><input type="hidden" name="action" value="Cancel" />
             @if (rowVersion != null) { <input type="hidden" name="rowVersion" value="@rowVersion" /> }
-            <button type="submit" class="vs-btn vs-btn--sm vs-btn--danger"><i class="bi bi-x-circle"></i> @Localizer["Pc_Btn_Cancel"]</button>
+            <button type="submit" class="vs-btn vs-btn--sm vs-btn--danger"><pems-icon name="bi-x-circle" /> @Localizer["Pc_Btn_Cancel"]</button>
         </form>
     }
 
     <div class="row g-3">
         <div class="col-lg-8">
             <section class="vs-panel pc-card">
-                <h2 class="vs-section__title"><i class="bi bi-card-checklist"></i> @Localizer["Pc_Sec_PartInfo"]</h2>
+                <h2 class="vs-section__title"><pems-icon name="bi-card-checklist" /> @Localizer["Pc_Sec_PartInfo"]</h2>
                 <pems-info-grid layout="rows">
                     <pems-info-item label="@L("SectionId")">@Label("SectionId")</pems-info-item>
                     <pems-info-item label="@L("TechnicalClassId")">@Label("TechnicalClassId")</pems-info-item>
@@ -170,7 +170,7 @@
             </section>
 
             <section class="vs-panel pc-card mt-3">
-                <h2 class="vs-section__title"><i class="bi bi-box-seam"></i> @Localizer["Pc_Sec_Planning"]</h2>
+                <h2 class="vs-section__title"><pems-icon name="bi-box-seam" /> @Localizer["Pc_Sec_Planning"]</h2>
                 <pems-info-grid layout="rows">
                     <pems-info-item label="@L("PlanningMethodId")">@Label("PlanningMethodId")</pems-info-item>
                     <pems-info-item label="@L("MinimumStock")">@f.MinimumStock</pems-info-item>
@@ -185,7 +185,7 @@
             </section>
 
             <section class="vs-panel pc-card mt-3">
-                <h2 class="vs-section__title"><i class="bi bi-diagram-3"></i> @L("Attributes")</h2>
+                <h2 class="vs-section__title"><pems-icon name="bi-diagram-3" /> @L("Attributes")</h2>
                 <pems-info-grid layout="rows">
                     <pems-info-item label="@FftName" value-class="pc-fft-view">@fft</pems-info-item>
                     @foreach (var at in f.Attributes.Where(x => !string.Equals(x.Name, FftName, StringComparison.OrdinalIgnoreCase)))
@@ -196,7 +196,7 @@
 
         <div class="col-lg-4">
             <section class="vs-panel pc-card">
-                <h2 class="vs-section__title"><i class="bi bi-signpost-split"></i> @Localizer["Pc_Det_Route"]</h2>
+                <h2 class="vs-section__title"><pems-icon name="bi-signpost-split" /> @Localizer["Pc_Det_Route"]</h2>
                 @if (!d.Steps.Any()) { <div class="text-muted small">@Localizer["Pc_Det_NoRoute"]</div> }
                 <ol class="pc-route list-unstyled mb-0">
                     @foreach (var st in d.Steps)
@@ -213,7 +213,7 @@
             </section>
 
             <section class="vs-panel pc-card mt-3">
-                <h2 class="vs-section__title"><i class="bi bi-gear-wide-connected"></i> @Localizer["Pc_Sec_Equipment"]</h2>
+                <h2 class="vs-section__title"><pems-icon name="bi-gear-wide-connected" /> @Localizer["Pc_Sec_Equipment"]</h2>
                 @if (!d.Equipment.Any()) { <div class="text-muted small">@Localizer["Pc_Empty_Equipment"]</div> }
                 <ul class="list-unstyled small mb-0">
                     @foreach (var q in d.Equipment) { <li>@q.Text <span class="text-muted">× @q.InstalledQuantity.ToString("0.####")</span></li> }
@@ -221,7 +221,7 @@
             </section>
 
             <section class="vs-panel pc-card mt-3">
-                <h2 class="vs-section__title"><i class="bi bi-paperclip"></i> @L("Attachments")</h2>
+                <h2 class="vs-section__title"><pems-icon name="bi-paperclip" /> @L("Attachments")</h2>
                 @if (!d.Attachments.Any()) { <div class="text-muted small">@Localizer["Pc_Empty_Attachments"]</div> }
                 <ul class="list-unstyled small mb-0">
                     @foreach (var at in d.Attachments)
@@ -237,7 +237,7 @@
 
         <div class="col-12">
             <section class="vs-panel pc-card">
-                <h2 class="vs-section__title"><i class="bi bi-clock-history"></i> @Localizer["Pc_Det_History"]</h2>
+                <h2 class="vs-section__title"><pems-icon name="bi-clock-history" /> @Localizer["Pc_Det_History"]</h2>
                 <div class="pc-table-scroll">
                     <pems-table scale="small" css="table-enterprise vs-dense mb-0">
                         <thead><tr><th>@Localizer["Pc_Col_Date"]</th><th>@Localizer["Pc_Col_Stage"]</th><th>@Localizer["Pc_Col_Action"]</th><th>@Localizer["Pc_Col_Person"]</th><th>@L("Comment")</th></tr></thead>
@@ -261,7 +261,7 @@
 
         <div class="col-12">
             <section class="vs-panel pc-card">
-                <h2 class="vs-section__title"><i class="bi bi-chat-left-text"></i> @L("Notes")</h2>
+                <h2 class="vs-section__title"><pems-icon name="bi-chat-left-text" /> @L("Notes")</h2>
                 <div class="pc-table-scroll mb-2">
                     <pems-table scale="small" css="table-enterprise vs-dense mb-0">
                         <thead><tr><th>@Localizer["Pc_Col_Date"]</th><th>@Localizer["Pc_Col_Person"]</th><th>@Localizer["Pc_Col_Stage"]</th><th>@L("Text")</th></tr></thead>
@@ -279,7 +279,7 @@
                     <form asp-action="AddNote" method="post" class="d-flex gap-2">
                         <input type="hidden" name="id" value="@d.Id" />
                         <pems-input scale="small" name="text" maxlength="2000" placeholder="@Localizer["Pc_Hint_NoteReply"]" aria-label="@L("Notes")" />
-                        <button type="submit" class="vs-btn vs-btn--sm"><i class="bi bi-plus-lg"></i> @Localizer["Pc_Btn_AddNote"]</button>
+                        <button type="submit" class="vs-btn vs-btn--sm"><pems-icon name="bi-plus-lg" /> @Localizer["Pc_Btn_AddNote"]</button>
                     </form>
                 }
             </section>

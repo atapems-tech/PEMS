@@ -78,7 +78,7 @@
                             <td><span class="vs-title-cell" title="@wr.Title">@wr.Title</span></td>
                             <td class="small"><span class="vs-num">@(wr.EquipmentTagNumber ?? "-")</span></td>
                             <td><span class="vs-pill @PriorityTone(wr.Priority)">@VdrUi.Loc(Localizer, "Pri_", wr.Priority)</span></td>
-                            <td><span class="vs-pill vs-pill--icon @StatusTone(wr.Status)"><i class="bi @StatusIcon(wr.Status)" aria-hidden="true"></i> @StatusText(wr.Status)</span></td>
+                            <td><span class="vs-pill vs-pill--icon @StatusTone(wr.Status)"><pems-icon css="@StatusIcon(wr.Status)" aria-hidden="true" /> @StatusText(wr.Status)</span></td>
                             <td class="small vs-hide-md">@wr.RequestedByName</td>
                             <td class="small"><span class="vs-num">@wr.RequestedDate.ToString("yyyy-MM-dd")</span></td>
                         </tr>

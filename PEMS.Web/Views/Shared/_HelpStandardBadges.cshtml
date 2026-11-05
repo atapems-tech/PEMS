@@ -31,7 +31,7 @@
     @if (Model.PEMSImplementationStatus != "ComplianceEvidenceAvailable")
     {
         <p class="small text-muted mb-1">
-            <i class="bi bi-info-circle"></i>
+            <pems-icon name="bi-info-circle" />
             @L("This is not a formal compliance claim - it only describes how this PEMS feature relates to the standard's subject area.",
                 "این یک ادعای انطباق رسمی نیست - فقط توضیح می‌دهد این قابلیت PEMS چه ارتباطی با موضوع استاندارد دارد.")
         </p>
@@ -45,7 +45,7 @@
     @if (!string.IsNullOrWhiteSpace(Model.OfficialReferenceUrl))
     {
         <pems-button tone="neutral" size="small" outline="true" as="a" href="@Model.OfficialReferenceUrl" target="_blank" rel="noopener noreferrer">
-            <i class="bi bi-box-arrow-up-right"></i> @L("Official source", "منبع رسمی")
+            <pems-icon name="bi-box-arrow-up-right" /> @L("Official source", "منبع رسمی")
         </pems-button>
     }
 </div>

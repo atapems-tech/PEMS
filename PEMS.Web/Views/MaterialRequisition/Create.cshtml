@@ -52,7 +52,7 @@
             <pems-label css="mb-0">@Localizer["Items"]</pems-label>
             @* SCRUM-428: a part that is not in the catalogue yet can be requested from the part catalogue *@
             <a class="small" asp-area="Warehouse" asp-controller="PartCatalogueRequest" asp-action="Index" target="_blank" rel="noopener">
-                <i class="bi bi-journal-plus"></i> @Localizer["Mr_RequestNewPart"]
+                <pems-icon name="bi-journal-plus" /> @Localizer["Mr_RequestNewPart"]
             </a>
         </div>
         <div class="form-text mb-2">@Localizer["Mr_PartLookupHint"]</div>
@@ -74,7 +74,7 @@
                 </div>
             </div>
         </template>
-        <pems-button tone="neutral" size="small" outline="true" type="button" id="addItemBtn"><i class="bi bi-plus"></i> @Localizer["Mr_AddItem"]</pems-button>
+        <pems-button tone="neutral" size="small" outline="true" type="button" id="addItemBtn"><pems-icon name="bi-plus" /> @Localizer["Mr_AddItem"]</pems-button>
 
         <div class="mt-4">
             <pems-button tone="primary" type="submit">Save MR</pems-button>

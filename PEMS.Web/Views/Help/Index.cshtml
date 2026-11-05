@@ -11,13 +11,13 @@
 
 <div class="content-card mb-3">
     <div class="d-flex align-items-center gap-2 mb-1">
-        <i class="bi bi-life-preserver fs-4 text-warning"></i>
+        <pems-icon name="bi-life-preserver" css="fs-4 text-warning" />
         <h4 class="mb-0">@L("Help Center", "مرکز راهنما")</h4>
     </div>
     <p class="text-muted mb-3">@L("Browse Help by module, or search across all articles in English and Persian.", "راهنما را بر اساس ماژول مرور کنید، یا در همه‌ی مقالات به انگلیسی و فارسی جستجو کنید.")</p>
     <form asp-action="Search" method="get" class="d-flex gap-2 pems-s-04391f08">
         <pems-input type="search" name="q" placeholder="@L("Search Help... (e.g. \"work order\", \"IDC\", \"مجوز کار\")", "جستجو در راهنما... (مثلاً «دستور کار»، «IDC»، work order)")" />
-        <pems-button tone="primary" type="submit"><i class="bi bi-search"></i> @L("Search", "جستجو")</pems-button>
+        <pems-button tone="primary" type="submit"><pems-icon name="bi-search" /> @L("Search", "جستجو")</pems-button>
     </form>
 </div>
 
@@ -27,12 +27,12 @@
             <h6 class="mb-3">@L("Categories", "دسته‌ها")</h6>
             <pems-list-group flush="true">
                 <pems-list-group-item action="true" active="@(selectedCategoryId == null)" asp-action="Index">
-                    <i class="bi bi-grid"></i> @L("All", "همه")
+                    <pems-icon name="bi-grid" /> @L("All", "همه")
                 </pems-list-group-item>
                 @foreach (var c in categories)
                 {
                     <pems-list-group-item action="true" css="d-flex justify-content-between align-items-center" active="@(selectedCategoryId == c.HelpCategoryId)" asp-action="Category" asp-route-id="@c.HelpCategoryId">
-                        <span><i class="bi @(c.IconCssClass ?? "bi-folder")"></i> @c.Name</span>
+                        <span><pems-icon css="@(c.IconCssClass ?? "bi-folder")" /> @c.Name</span>
                         <pems-badge tone="neutral" css="rounded-pill">@c.ArticleCount</pems-badge>
                     </pems-list-group-item>
                 }
@@ -49,7 +49,7 @@
                     <div class="col-md-4">
                         <a asp-action="Category" asp-route-id="@c.HelpCategoryId" class="text-decoration-none">
                             <div class="content-card h-100">
-                                <i class="bi @(c.IconCssClass ?? "bi-folder") fs-3 text-warning"></i>
+                                <pems-icon css="@(c.IconCssClass ?? "bi-folder") fs-3 text-warning" />
                                 <h6 class="mt-2 mb-1 text-body">@c.Name</h6>
                                 <p class="text-muted small mb-0">@c.ArticleCount @L("articles", "مقاله")</p>
                             </div>

@@ -32,7 +32,7 @@
 
         @if (Model.SelectedUserId == null)
         {
-            <div class="admin-empty"><i class="bi bi-eye"></i><strong>@Localizer["Choose a user above"]</strong></div>
+            <div class="admin-empty"><pems-icon name="bi-eye" /><strong>@Localizer["Choose a user above"]</strong></div>
         }
         else
         {
@@ -40,7 +40,7 @@
                 <div class="text-body-secondary small mb-1">@Localizer["Roles and scope"]</div>
                 @if (Model.Assignments.Count == 0)
                 {
-                    <span class="admin-status inactive"><i class="bi bi-exclamation-triangle"></i> @Localizer["No roles assigned"]</span>
+                    <span class="admin-status inactive"><pems-icon name="bi-exclamation-triangle" /> @Localizer["No roles assigned"]</span>
                 }
                 else
                 {
@@ -68,7 +68,7 @@
 
             @if (Model.RoleNames.Contains("SystemAdmin"))
             {
-                <div class="permission-intro"><i class="bi bi-infinity me-1"></i> @Localizer["This user holds SystemAdmin and bypasses the permission matrix by design."]</div>
+                <div class="permission-intro"><pems-icon name="bi-infinity" css="me-1" /> @Localizer["This user holds SystemAdmin and bypasses the permission matrix by design."]</div>
             }
             else
             {
@@ -83,7 +83,7 @@
                                 <td>@row.ResourceName</td>
                                 <td>@row.ActionName</td>
                                 <td><code>@row.PermissionName</code></td>
-                                <td><span class="admin-status active"><i class="bi bi-check2-circle"></i> @Localizer["Allowed"]</span></td>
+                                <td><span class="admin-status active"><pems-icon name="bi-check2-circle" /> @Localizer["Allowed"]</span></td>
                             </tr>
                         }
                         </tbody>

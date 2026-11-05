@@ -18,9 +18,9 @@
             <span class="vs-pill @VdrUi.RiskTone(Model.RiskLevel)">@Localizer["Vs_Risk"]: @VdrUi.Loc(Localizer, "St_", Model.RiskLevel)@(Model.RiskScore.HasValue ? " (" + Model.RiskScore.Value.ToString("P0") + ")" : "")</span>
         </div>
         <div class="vs-actions">
-            <a asp-controller="VDR" asp-action="Index" asp-route-vendorId="@Model.VendorId" class="vs-btn vs-btn--sm"><i class="bi bi-list"></i> @Localizer["Vs_ViewVdrItems"]</a>
-            <a asp-controller="Relationship" asp-action="Vendor" asp-route-id="@Model.VendorId" class="vs-btn vs-btn--sm"><i class="bi bi-diagram-3"></i> @Localizer["Vs_ExploreRelationships"]</a>
-            <a asp-action="Edit" asp-route-id="@Model.VendorId" class="vs-btn vs-btn--primary vs-btn--sm"><i class="bi bi-pencil"></i> @Localizer["Vs_EditVendor"]</a>
+            <a asp-controller="VDR" asp-action="Index" asp-route-vendorId="@Model.VendorId" class="vs-btn vs-btn--sm"><pems-icon name="bi-list" /> @Localizer["Vs_ViewVdrItems"]</a>
+            <a asp-controller="Relationship" asp-action="Vendor" asp-route-id="@Model.VendorId" class="vs-btn vs-btn--sm"><pems-icon name="bi-diagram-3" /> @Localizer["Vs_ExploreRelationships"]</a>
+            <a asp-action="Edit" asp-route-id="@Model.VendorId" class="vs-btn vs-btn--primary vs-btn--sm"><pems-icon name="bi-pencil" /> @Localizer["Vs_EditVendor"]</a>
         </div>
     </div>
 
@@ -36,7 +36,7 @@
                 <pems-info-item label="@Localizer["Vs_ContactPhone"]" ltr>@(string.IsNullOrEmpty(Model.ContactPhone) ? "-" : Model.ContactPhone)</pems-info-item>
             </pems-info-grid>
             <form asp-action="RecalculateRisk" asp-route-id="@Model.VendorId" method="post" class="mt-3">
-                <button class="vs-btn vs-btn--sm"><i class="bi bi-arrow-repeat"></i> @Localizer["Vs_RecalcRisk"]</button>
+                <button class="vs-btn vs-btn--sm"><pems-icon name="bi-arrow-repeat" /> @Localizer["Vs_RecalcRisk"]</button>
             </form>
         </div></div>
 </div>

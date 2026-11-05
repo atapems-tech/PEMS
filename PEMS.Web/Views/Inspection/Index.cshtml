@@ -50,7 +50,7 @@
                             <td>
                                 @switch (i.ConditionStatus)
                                 {
-                                    case "Alert": <span class="vs-pill vs-pill--icon vs-pill--danger"><i class="bi bi-exclamation-triangle" aria-hidden="true"></i> @Localizer["Ins_Alert"]</span> break;
+                                    case "Alert": <span class="vs-pill vs-pill--icon vs-pill--danger"><pems-icon name="bi-exclamation-triangle" aria-hidden="true" /> @Localizer["Ins_Alert"]</span> break;
                                     case "Normal": <span class="vs-pill vs-pill--success">@Localizer["Ins_Normal"]</span> break;
                                     default: <span class="text-muted small">@Localizer["Ins_NotApplicable"]</span> break;
                                 }
@@ -59,7 +59,7 @@
                             <td>
                                 @switch (i.DueStatus)
                                 {
-                                    case "Overdue": <span class="vs-pill vs-pill--icon vs-pill--danger"><i class="bi bi-clock-history" aria-hidden="true"></i> @Localizer["Overdue"]</span> break;
+                                    case "Overdue": <span class="vs-pill vs-pill--icon vs-pill--danger"><pems-icon name="bi-clock-history" aria-hidden="true" /> @Localizer["Overdue"]</span> break;
                                     case "DueSoon": <span class="vs-pill vs-pill--warning">@Localizer["Ins_DueSoon"]</span> break;
                                     case "OK": <span class="vs-pill vs-pill--success">@Localizer["Ins_Ok"]</span> break;
                                     default: <span class="text-muted small">@Localizer["Ins_NotApplicable"]</span> break;
@@ -70,7 +70,7 @@
                                 {
                                     <form asp-action="RaiseWorkRequest" method="post" class="d-inline">
                                         <input type="hidden" name="inspectionRecordId" value="@i.InspectionRecordId" />
-                                        <pems-button tone="danger" size="small" outline="true" type="submit"><i class="bi bi-exclamation-triangle" aria-hidden="true"></i> @Localizer["Cm_RaiseWr"]</pems-button>
+                                        <pems-button tone="danger" size="small" outline="true" type="submit"><pems-icon name="bi-exclamation-triangle" aria-hidden="true" /> @Localizer["Cm_RaiseWr"]</pems-button>
                                     </form>
                                 }
                             </td>

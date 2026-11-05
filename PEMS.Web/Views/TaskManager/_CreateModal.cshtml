@@ -42,7 +42,7 @@
                         </pems-select>
                         @if (assignees.State != "RESOLVED")
                         {
-                            <div id="tmc-assignee-help" class="form-text text-warning"><i class="bi bi-info-circle" aria-hidden="true"></i> @Localizer["Tm_Diag_" + assignees.State]</div>
+                            <div id="tmc-assignee-help" class="form-text text-warning"><pems-icon name="bi-info-circle" aria-hidden="true" /> @Localizer["Tm_Diag_" + assignees.State]</div>
                         }
                     </div>
                     <div class="col-md-4">

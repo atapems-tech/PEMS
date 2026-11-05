@@ -9,7 +9,7 @@
     </div>
 
     <div class="content-card">
-        <h2 class="h5 mb-3"><i class="bi bi-shield-exclamation me-1"></i> @Localizer["Reset administrator account"]: <strong>@Model.UserName</strong> @(string.IsNullOrWhiteSpace(Model.FullName) ? "" : $"({Model.FullName})")</h2>
+        <h2 class="h5 mb-3"><pems-icon name="bi-shield-exclamation" css="me-1" /> @Localizer["Reset administrator account"]: <strong>@Model.UserName</strong> @(string.IsNullOrWhiteSpace(Model.FullName) ? "" : $"({Model.FullName})")</h2>
 
         <p class="mb-2">@Localizer["Confirming will:"]</p>
         <ul>
@@ -23,7 +23,7 @@
 
         <form asp-action="ResetAdmin" asp-route-id="@Model.Id" method="post" class="d-flex gap-2 mt-3">
             <input type="hidden" name="confirm" value="true" />
-            <pems-button tone="danger" type="submit"><i class="bi bi-key me-1"></i> @Localizer["Reset account"]</pems-button>
+            <pems-button tone="danger" type="submit"><pems-icon name="bi-key" css="me-1" /> @Localizer["Reset account"]</pems-button>
             <pems-button as="a" tone="neutral" outline="true" asp-action="Index">@Localizer["Cancel"]</pems-button>
         </form>
     </div>

@@ -2,7 +2,7 @@
 @using PEMS.Web.Resources
 @inject IStringLocalizer<SharedResource> Localizer
 <div class="content-card pems-s-3f7efa5f">
-    <h6 class="mb-3"><i class="bi bi-arrow-repeat"></i> New MOC (Management of Change)</h6>
+    <h6 class="mb-3"><pems-icon name="bi-arrow-repeat" /> New MOC (Management of Change)</h6>
 
     <form asp-action="Raise" method="post">
         <div class="row g-3">
@@ -44,12 +44,12 @@
             </div>
 
             <div class="col-md-6">
-                <pems-label><i class="bi bi-file-earmark-text"></i> مدرک مرتبط <span class="text-muted small">@Localizer["(اختیاری)"]</span></pems-label>
+                <pems-label><pems-icon name="bi-file-earmark-text" /> مدرک مرتبط <span class="text-muted small">@Localizer["(اختیاری)"]</span></pems-label>
                 <pems-input type="text" placeholder="@Localizer["جستجوی شماره مدرک، عنوان..."]" data-pems-search data-search-type="EngineeringDocument" data-search-hidden="#relatedDocumentIdHidden" autocomplete="off" />
                 <input type="hidden" name="relatedDocumentId" id="relatedDocumentIdHidden" />
             </div>
             <div class="col-md-6">
-                <pems-label><i class="bi bi-gear"></i> تجهیز مرتبط <span class="text-muted small">@Localizer["(اختیاری)"]</span></pems-label>
+                <pems-label><pems-icon name="bi-gear" /> تجهیز مرتبط <span class="text-muted small">@Localizer["(اختیاری)"]</span></pems-label>
                 <pems-input type="text" placeholder="@Localizer["جستجوی تگ، نام..."]" value="@ViewBag.PreselectedEquipmentLabel" data-pems-search data-search-type="Equipment" data-search-hidden="#relatedEquipmentIdHidden" autocomplete="off" />
                 <input type="hidden" name="relatedEquipmentId" id="relatedEquipmentIdHidden" value="@ViewBag.PreselectedEquipmentId" />
             </div>

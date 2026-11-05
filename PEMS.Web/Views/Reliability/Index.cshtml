@@ -15,13 +15,13 @@
 
 <div class="d-flex justify-content-end align-items-center mb-2">
     <div>
-        <pems-button tone="primary" size="small" outline="true" as="a" asp-action="Dashboard"><i class="bi bi-speedometer"></i> Enterprise Dashboard</pems-button>
-        <pems-button tone="neutral" size="small" outline="true" as="a" asp-action="Intelligence"><i class="bi bi-clipboard-data-fill"></i> @Localizer["Maintenance Intelligence"]</pems-button>
-        <pems-button tone="neutral" size="small" outline="true" as="a" asp-action="RcmFeedback"><i class="bi bi-arrow-repeat"></i> @Localizer["RCM Feedback"]</pems-button>
-        <pems-button tone="neutral" size="small" outline="true" as="a" asp-action="DataQuality"><i class="bi bi-clipboard-data"></i> Data Quality</pems-button>
-        <pems-button tone="neutral" size="small" outline="true" as="a" asp-action="PredictiveMaintenance"><i class="bi bi-cpu"></i> @Localizer["Predictive"]</pems-button>
-        <pems-button tone="neutral" size="small" outline="true" as="a" asp-action="ConditionMonitoring"><i class="bi bi-activity"></i> @Localizer["Condition Monitoring"]</pems-button>
-        <pems-button tone="neutral" size="small" outline="true" as="a" asp-action="AiInsights"><i class="bi bi-stars"></i> @Localizer["AI Insights"]</pems-button>
+        <pems-button tone="primary" size="small" outline="true" as="a" asp-action="Dashboard"><pems-icon name="bi-speedometer" /> Enterprise Dashboard</pems-button>
+        <pems-button tone="neutral" size="small" outline="true" as="a" asp-action="Intelligence"><pems-icon name="bi-clipboard-data-fill" /> @Localizer["Maintenance Intelligence"]</pems-button>
+        <pems-button tone="neutral" size="small" outline="true" as="a" asp-action="RcmFeedback"><pems-icon name="bi-arrow-repeat" /> @Localizer["RCM Feedback"]</pems-button>
+        <pems-button tone="neutral" size="small" outline="true" as="a" asp-action="DataQuality"><pems-icon name="bi-clipboard-data" /> Data Quality</pems-button>
+        <pems-button tone="neutral" size="small" outline="true" as="a" asp-action="PredictiveMaintenance"><pems-icon name="bi-cpu" /> @Localizer["Predictive"]</pems-button>
+        <pems-button tone="neutral" size="small" outline="true" as="a" asp-action="ConditionMonitoring"><pems-icon name="bi-activity" /> @Localizer["Condition Monitoring"]</pems-button>
+        <pems-button tone="neutral" size="small" outline="true" as="a" asp-action="AiInsights"><pems-icon name="bi-stars" /> @Localizer["AI Insights"]</pems-button>
     </div>
 </div>
 <p class="text-muted small">
@@ -86,7 +86,7 @@
                             </td>
                             <td class="small">@r.TotalDowntimeHours.ToString("N1") h</td>
                             <td class="small">@(r.LastFailureDate?.ToString("yyyy-MM-dd") ?? "-")</td>
-                            <td><pems-button tone="neutral" size="small" outline="true" as="a" asp-action="Details" asp-route-id="@r.EquipmentId"><i class="bi bi-eye"></i></pems-button></td>
+                            <td><pems-button tone="neutral" size="small" outline="true" as="a" asp-action="Details" asp-route-id="@r.EquipmentId"><pems-icon name="bi-eye" /></pems-button></td>
                         </tr>
                     }
                 </tbody>

@@ -16,7 +16,7 @@
             <h5 class="mb-0">@Model.SourceFileName</h5>
             <span class="text-muted small">Batch #@Model.TableExtractionBatchId - @Model.ExtractionMethod - @Model.TotalRows rows - @Model.CreatedDate.ToString("yyyy-MM-dd HH:mm")</span>
         </div>
-        <pems-button tone="neutral" size="small" outline="true" as="a" asp-action="Index"><i class="bi bi-arrow-left"></i> Back</pems-button>
+        <pems-button tone="neutral" size="small" outline="true" as="a" asp-action="Index"><pems-icon name="bi-arrow-left" /> Back</pems-button>
     </div>
 </div>
 
@@ -46,7 +46,7 @@
 <div class="content-card mb-3">
     <div class="d-flex gap-2 flex-wrap align-items-center">
         <div class="input-group admin-search pems-s-2f3f7d77">
-            <span class="input-group-text"><i class="bi bi-search"></i></span>
+            <span class="input-group-text"><pems-icon name="bi-search" /></span>
             <pems-input type="search" id="rowSearch" placeholder="Filter by tag..." autocomplete="off" />
         </div>
         <div class="btn-group btn-group-sm" role="group">
@@ -59,7 +59,7 @@
         </div>
         <pems-button tone="primary" size="small" css="ms-auto" type="submit" form="bulkConfirmForm" id="bulkConfirmBtn" disabled
                 data-pems-confirm="تعداد {n} ردیف انتخاب‌شده به Instrument متصل شود؟" data-pems-confirm-count="#selectedCount">
-            <i class="bi bi-link-45deg"></i> Confirm Selected (<span id="selectedCount">0</span>)
+            <pems-icon name="bi-link-45deg" /> Confirm Selected (<span id="selectedCount">0</span>)
         </pems-button>
     </div>
 </div>
@@ -129,7 +129,7 @@
                             }
                             else if (row.MatchStatus == "Confirmed")
                             {
-                                <span class="small text-success"><i class="bi bi-check-circle"></i> Instrument #@row.ResultInstrumentId</span>
+                                <span class="small text-success"><pems-icon name="bi-check-circle" /> Instrument #@row.ResultInstrumentId</span>
                             }
                             else
                             {

@@ -15,11 +15,11 @@
         <p>@Localizer["Org_Diag_Intro"]</p>
     </div>
     <div class="d-flex gap-2 mb-3">
-        <a class="vs-btn vs-btn--sm" asp-action="Index"><i class="bi bi-arrow-left"></i> @Localizer["Org_Title"]</a>
+        <a class="vs-btn vs-btn--sm" asp-action="Index"><pems-icon name="bi-arrow-left" /> @Localizer["Org_Title"]</a>
     </div>
 
     <section class="vs-panel mb-3">
-        <h2 class="vs-section__title"><i class="bi bi-clipboard-data"></i> @Localizer["Org_Ready_Title"]</h2>
+        <h2 class="vs-section__title"><pems-icon name="bi-clipboard-data" /> @Localizer["Org_Ready_Title"]</h2>
         <p class="small text-muted">@Localizer["Org_Ready_Note"]</p>
         <pems-info-grid layout="rows" class="mb-0 small">
     <pems-info-item label="@Localizer["Org_Ready_ActivePositions"]">@rd.ActivePositions</pems-info-item>
@@ -35,7 +35,7 @@
     </section>
 
     <section class="vs-panel mb-3">
-        <h2 class="vs-section__title"><i class="bi bi-intersect"></i> @Localizer["Org_Cons_Title"]</h2>
+        <h2 class="vs-section__title"><pems-icon name="bi-intersect" /> @Localizer["Org_Cons_Title"]</h2>
         <p class="small text-muted">@Localizer["Org_Cons_Note"]</p>
         <p class="small mb-1">
             @foreach (var g in dc.GroupBy(r => r.Status).OrderBy(g => g.Key)) { <pems-badge tone="neutral" css="me-1">@g.Key: @g.Count()</pems-badge> }
@@ -60,7 +60,7 @@
     </section>
 
     <section class="vs-panel mb-3">
-        <h2 class="vs-section__title"><i class="bi bi-hourglass-split"></i> @Localizer["Org_Diag_Blocked"] <pems-badge tone="neutral">@blocked.Count</pems-badge></h2>
+        <h2 class="vs-section__title"><pems-icon name="bi-hourglass-split" /> @Localizer["Org_Diag_Blocked"] <pems-badge tone="neutral">@blocked.Count</pems-badge></h2>
         @if (blocked.Count == 0) { <div class="vs-empty py-2">@Localizer["Org_Diag_NoBlocked"]</div> }
         else
         {
@@ -84,7 +84,7 @@
     </section>
 
     <section class="vs-panel">
-        <h2 class="vs-section__title"><i class="bi bi-heart-pulse"></i> @Localizer["Org_Diag_Issues"] <pems-badge tone="neutral">@Model.Count</pems-badge></h2>
+        <h2 class="vs-section__title"><pems-icon name="bi-heart-pulse" /> @Localizer["Org_Diag_Issues"] <pems-badge tone="neutral">@Model.Count</pems-badge></h2>
         @if (Model.Count == 0) { <div class="vs-empty py-2">@Localizer["Org_Diag_NoIssues"]</div> }
         else
         {

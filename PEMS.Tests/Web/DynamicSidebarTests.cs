@@ -53,7 +53,7 @@ public class DynamicSidebarTests
         var src = File.ReadAllText(Path.Combine(Root(), "PEMS.Web", "Views", "Shared", "_SidebarMenu.cshtml"));
         var nav = src[src.IndexOf("<nav class=\"pems-sidebar\"", StringComparison.Ordinal)..src.IndexOf("</nav>", StringComparison.Ordinal)];
         var links = new List<LegacyLink>();
-        foreach (Match m in Regex.Matches(nav, @"<a\s(?<tag>[^>]*)>\s*<i class=""bi (?<icon>bi-[a-z0-9-]+)""></i>\s*@Localizer\[""(?<title>[^""]+)""\]", RegexOptions.Singleline))
+        foreach (Match m in Regex.Matches(nav, @"<a\s(?<tag>[^>]*)>\s*(?:<i class=""bi (?<icon>bi-[a-z0-9-]+)""></i>|<pems-icon name=""(?<icon>bi-[a-z0-9-]+)"" />)\s*@Localizer\[""(?<title>[^""]+)""\]", RegexOptions.Singleline))
         {
             var tag = m.Groups["tag"].Value;
             string target;

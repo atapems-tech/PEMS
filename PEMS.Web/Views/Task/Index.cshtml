@@ -30,7 +30,7 @@
                 </pems-list-filters>
                 <pems-list-reset-columns grid-key="Task" />
                 <pems-list-menu id="taskMoreBtn" icon="bi-three-dots" label="@Localizer["Lp_More"]">
-                    <li><a class="dropdown-item" asp-controller="TaskManager" asp-action="Index"><i class="bi bi-kanban" aria-hidden="true"></i> @Localizer["Tm_Title"]</a></li>
+                    <li><a class="dropdown-item" asp-controller="TaskManager" asp-action="Index"><pems-icon name="bi-kanban" aria-hidden="true" /> @Localizer["Tm_Title"]</a></li>
                 </pems-list-menu>
                 @if (!followup && canCreate)
                 {
@@ -52,7 +52,7 @@
                             <label class="lp-lbl mt-2" for="nt-desc">@Localizer["Description (optional)"]</label>
                             <pems-input scale="small" id="nt-desc" name="description" placeholder="@Localizer["Description (optional)"]" maxlength="8000" />
                             <div class="lp-fp-foot px-0 pb-0">
-                                <pems-button tone="primary" size="small" type="submit"><i class="bi bi-plus-lg" aria-hidden="true"></i> @Localizer["Tm_Create"]</pems-button>
+                                <pems-button tone="primary" size="small" type="submit"><pems-icon name="bi-plus-lg" aria-hidden="true" /> @Localizer["Tm_Create"]</pems-button>
                             </div>
                         </form>
                     </pems-list-popover>
@@ -124,7 +124,7 @@
                                         <pems-select scale="small" id="st-@t.TaskItemId" name="status" style="width:130px;">
                                             @foreach (var s in targets) { <option value="@s">@TaskManagerUi.LegacyStatus(Localizer, s)</option> }
                                         </pems-select>
-                                        <pems-button tone="neutral" size="small" outline="true" aria-label="@Localizer["Tm_ChangeStatus"]"><i class="bi bi-check2" aria-hidden="true"></i></pems-button>
+                                        <pems-button tone="neutral" size="small" outline="true" aria-label="@Localizer["Tm_ChangeStatus"]"><pems-icon name="bi-check2" aria-hidden="true" /></pems-button>
                                     </form>
                                     @if (closed && !string.IsNullOrEmpty(t.CompletionNote)) { <div class="small text-muted">@t.CompletionNote</div> }
                                 }

@@ -49,7 +49,7 @@
                 {
                     @* SCRUM-280: the service takes the backup itself and refuses to update without it *@
                     <input type="hidden" name="backupConfirmed" value="true" />
-                    <span class="small text-muted" data-auto-backup><i class="bi bi-shield-check me-1"></i>@Localizer["A backup is taken automatically before the update; the update stops if it fails."]</span>
+                    <span class="small text-muted" data-auto-backup><pems-icon name="bi-shield-check" css="me-1" />@Localizer["A backup is taken automatically before the update; the update stops if it fails."]</span>
                 }
                 else
                 {
@@ -58,7 +58,7 @@
                         <label class="form-check-label" for="backupConfirmed">@Localizer["A database backup has been taken"]</label>
                     </div>
                 }
-                <pems-button tone="primary" type="submit"><i class="bi bi-database-up me-1"></i> @Localizer[applyText]</pems-button>
+                <pems-button tone="primary" type="submit"><pems-icon name="bi-database-up" css="me-1" /> @Localizer[applyText]</pems-button>
             </form>
         </div>
     }

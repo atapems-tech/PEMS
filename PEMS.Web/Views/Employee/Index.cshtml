@@ -93,10 +93,10 @@
                             <td class="small vs-hide-md">@e.Email</td>
                             <td><span class="vs-pill @(e.IsActive ? "vs-pill--success" : "vs-pill--neutral")">@(e.IsActive ? Localizer["UsL_Active"] : Localizer["UsL_Inactive"])</span></td>
                             <td class="text-end text-nowrap">
-                                <button type="button" class="lp-act lp-act--always" data-bs-toggle="modal" data-bs-target="#editEmpModal_@e.EmployeeId" title="@Localizer["Ed_Edit"]" aria-label="@Localizer["Ed_Edit"] @e.FirstName @e.LastName"><i class="bi bi-pencil" aria-hidden="true"></i></button>
+                                <button type="button" class="lp-act lp-act--always" data-bs-toggle="modal" data-bs-target="#editEmpModal_@e.EmployeeId" title="@Localizer["Ed_Edit"]" aria-label="@Localizer["Ed_Edit"] @e.FirstName @e.LastName"><pems-icon name="bi-pencil" aria-hidden="true" /></button>
                                 <form asp-action="ToggleActive" method="post" class="d-inline">
                                     <input type="hidden" name="employeeId" value="@e.EmployeeId" />
-                                    <button type="submit" class="lp-act lp-act--always @(e.IsActive ? "text-danger" : "text-success")" title="@(e.IsActive ? Localizer["DpL_Deactivate"] : Localizer["DpL_Activate"])" aria-label="@(e.IsActive ? Localizer["DpL_Deactivate"] : Localizer["DpL_Activate"]) @e.FirstName @e.LastName"><i class="bi @(e.IsActive ? "bi-slash-circle" : "bi-check-circle")" aria-hidden="true"></i></button>
+                                    <button type="submit" class="lp-act lp-act--always @(e.IsActive ? "text-danger" : "text-success")" title="@(e.IsActive ? Localizer["DpL_Deactivate"] : Localizer["DpL_Activate"])" aria-label="@(e.IsActive ? Localizer["DpL_Deactivate"] : Localizer["DpL_Activate"]) @e.FirstName @e.LastName"><pems-icon css="@(e.IsActive ? "bi-slash-circle" : "bi-check-circle")" aria-hidden="true" /></button>
                                 </form>
                             </td>
                         </tr>
@@ -167,7 +167,7 @@
                             <div class="form-check">
                                 <pems-input kind="check" type="checkbox" name="createUser" value="true" id="createUserCheck" onclick="document.getElementById('createUserFields').style.display = this.checked ? '' : 'none';" />
                                 <label class="form-check-label fw-bold" for="createUserCheck">
-                                    <i class="bi bi-person-badge"></i> آیا نیاز است یوزر لاگین هم برای این کارمند ساخته بشه؟
+                                    <pems-icon name="bi-person-badge" /> آیا نیاز است یوزر لاگین هم برای این کارمند ساخته بشه؟
                                 </label>
                             </div>
                         </div>

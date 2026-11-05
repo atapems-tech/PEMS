@@ -28,7 +28,7 @@
         <pems-list-toolbar heading="@Localizer["StpL_Title"]" heading-title="@Localizer["StpL_Hint"]" total="@Model.Count">
             <pems-list-tools>
                 <pems-list-kpi-toggle target="stpKpis" storage-key="pems.storageProviders.kpis" open="true" />
-                <a class="lp-icon-btn" asp-controller="StorageRouting" asp-action="Index" title="@Localizer["SrtL_Title"]" aria-label="@Localizer["SrtL_Title"]"><i class="bi bi-signpost-2" aria-hidden="true"></i></a>
+                <a class="lp-icon-btn" asp-controller="StorageRouting" asp-action="Index" title="@Localizer["SrtL_Title"]" aria-label="@Localizer["SrtL_Title"]"><pems-icon name="bi-signpost-2" aria-hidden="true" /></a>
                 <pems-list-new href="@Url.Action("Create")" text="@Localizer["StpL_New"]" />
             </pems-list-tools>
         </pems-list-toolbar>
@@ -73,24 +73,24 @@
                         <td><span class="vs-pill @(p.IsEnabled ? "vs-pill--success" : "vs-pill--neutral")">@(p.IsEnabled ? Localizer["Enabled"] : Localizer["Disabled"])</span></td>
                         <td>@if (p.IsDefault) { <i class="bi bi-star-fill text-warning" title="@Localizer["Default"]" aria-label="@Localizer["Default"]"></i> }</td>
                         <td class="text-end text-nowrap">
-                            <a asp-action="Edit" asp-route-id="@p.StorageProviderId" class="lp-act lp-act--always" title="@Localizer["Ed_Edit"]" aria-label="@Localizer["Ed_Edit"] @p.Name"><i class="bi bi-pencil" aria-hidden="true"></i></a>
+                            <a asp-action="Edit" asp-route-id="@p.StorageProviderId" class="lp-act lp-act--always" title="@Localizer["Ed_Edit"]" aria-label="@Localizer["Ed_Edit"] @p.Name"><pems-icon name="bi-pencil" aria-hidden="true" /></a>
                             <form asp-action="TestConnection" asp-route-id="@p.StorageProviderId" method="post" class="d-inline">
-                                <button type="submit" class="lp-act lp-act--always" title="@Localizer["StpL_Test"]" aria-label="@Localizer["StpL_Test"] @p.Name"><i class="bi bi-broadcast" aria-hidden="true"></i></button>
+                                <button type="submit" class="lp-act lp-act--always" title="@Localizer["StpL_Test"]" aria-label="@Localizer["StpL_Test"] @p.Name"><pems-icon name="bi-broadcast" aria-hidden="true" /></button>
                             </form>
                             @if (!p.IsDefault)
                             {
                                 <form asp-action="SetDefault" asp-route-id="@p.StorageProviderId" method="post" class="d-inline">
-                                    <button type="submit" class="lp-act lp-act--always" title="@Localizer["StpL_SetDefault"]" aria-label="@Localizer["StpL_SetDefault"] @p.Name"><i class="bi bi-star" aria-hidden="true"></i></button>
+                                    <button type="submit" class="lp-act lp-act--always" title="@Localizer["StpL_SetDefault"]" aria-label="@Localizer["StpL_SetDefault"] @p.Name"><pems-icon name="bi-star" aria-hidden="true" /></button>
                                 </form>
                             }
                             <form asp-action="SetEnabled" asp-route-id="@p.StorageProviderId" method="post" class="d-inline">
                                 <input type="hidden" name="enabled" value="@(!p.IsEnabled)" />
-                                <button type="submit" class="lp-act lp-act--always" title="@(p.IsEnabled ? Localizer["Disable"] : Localizer["Enable"])" aria-label="@(p.IsEnabled ? Localizer["Disable"] : Localizer["Enable"]) @p.Name"><i class="bi @(p.IsEnabled ? "bi-toggle-on" : "bi-toggle-off")" aria-hidden="true"></i></button>
+                                <button type="submit" class="lp-act lp-act--always" title="@(p.IsEnabled ? Localizer["Disable"] : Localizer["Enable"])" aria-label="@(p.IsEnabled ? Localizer["Disable"] : Localizer["Enable"]) @p.Name"><pems-icon css="@(p.IsEnabled ? "bi-toggle-on" : "bi-toggle-off")" aria-hidden="true" /></button>
                             </form>
                             @if (p.ActiveRouteCount == 0 && !p.IsDefault)
                             {
                                 <form asp-action="Delete" asp-route-id="@p.StorageProviderId" method="post" class="d-inline" data-pems-confirm="@Localizer["StpL_ConfirmDelete"]">
-                                    <button type="submit" class="lp-act lp-act--always text-danger" title="@Localizer["Ed_Delete"]" aria-label="@Localizer["Ed_Delete"] @p.Name"><i class="bi bi-trash" aria-hidden="true"></i></button>
+                                    <button type="submit" class="lp-act lp-act--always text-danger" title="@Localizer["Ed_Delete"]" aria-label="@Localizer["Ed_Delete"] @p.Name"><pems-icon name="bi-trash" aria-hidden="true" /></button>
                                 </form>
                             }
                         </td>

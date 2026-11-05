@@ -55,7 +55,7 @@
         @if (!string.IsNullOrWhiteSpace(Model.SourceWorkflowModule))
         {
             <p class="text-muted small mt-2 mb-0">
-                <i class="bi bi-database-check"></i>
+                <pems-icon name="bi-database-check" />
                 @L("Generated live from the actual workflow configuration", "به‌صورت زنده از پیکربندی واقعی گردش‌کار ساخته شده")
                 (@Model.SourceWorkflowModule / @Model.SourceWorkflowCategory@(Model.SourceWorkflowVersion.HasValue ? $", v{Model.SourceWorkflowVersion}" : "")) -
                 @L("always matches the live system, never a stale copy.", "همیشه با سیستم واقعی منطبق است، هرگز یک نسخه‌ی کهنه نیست.")
@@ -74,7 +74,7 @@
                 <li>
                     @if (!string.IsNullOrEmpty(n.IconCssClass))
                     {
-                        <i class="bi @n.IconCssClass me-1"></i>
+                        <pems-icon css="@n.IconCssClass me-1" />
                     }
                     @n.Label
                 </li>
@@ -88,7 +88,7 @@
     }
     @if (!string.IsNullOrWhiteSpace(Model.Legend))
     {
-        <p class="text-muted small mb-0"><i class="bi bi-info-circle"></i> @Model.Legend</p>
+        <p class="text-muted small mb-0"><pems-icon name="bi-info-circle" /> @Model.Legend</p>
     }
 
     @* طبق بخش ۱۲ سند (Accessibility): معادل متنیِ کامل - همیشه در DOM هست، فقط بصری مخفی

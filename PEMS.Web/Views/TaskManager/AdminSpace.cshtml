@@ -92,7 +92,7 @@
                     @foreach (var t in Model.Types)
                     {
                         <tr class="@(t.IsActive ? "" : "text-muted")">
-                            <td><i class="bi @t.Icon" aria-hidden="true"></i> @TaskManagerUi.Name(t.Name, t.NameFa) @if (t.IsSubtask) { <pems-badge tone="light">@Localizer["Tm_Subtask"]</pems-badge> }</td>
+                            <td><pems-icon css="@t.Icon" aria-hidden="true" /> @TaskManagerUi.Name(t.Name, t.NameFa) @if (t.IsSubtask) { <pems-badge tone="light">@Localizer["Tm_Subtask"]</pems-badge> }</td>
                             <td class="text-end">
                                 <form asp-action="SetTypeActive" method="post">
                                     <input type="hidden" name="workSpaceId" value="@s.Id" /><input type="hidden" name="typeId" value="@t.Id" /><input type="hidden" name="isActive" value="@(t.IsActive ? "false" : "true")" />
@@ -177,7 +177,7 @@
                                             <form asp-action="SetTransition" method="post">
                                                 <input type="hidden" name="workSpaceId" value="@s.Id" /><input type="hidden" name="fromStatusId" value="@from.Id" /><input type="hidden" name="toStatusId" value="@to.Id" /><input type="hidden" name="allowed" value="@(allowed ? "false" : "true")" />
                                                 <pems-button tone="none" size="small" css="btn-link p-0 @(allowed ? "text-success" : "text-muted")" aria-pressed="@(allowed ? "true" : "false")" aria-label="@TaskManagerUi.Name(from.Name, from.NameFa) → @TaskManagerUi.Name(to.Name, to.NameFa): @(allowed ? Localizer["Tm_Allowed"] : Localizer["Tm_NotAllowed"])">
-                                                    <i class="bi @(allowed ? "bi-check-circle-fill" : "bi-circle")" aria-hidden="true"></i>
+                                                    <pems-icon css="@(allowed ? "bi-check-circle-fill" : "bi-circle")" aria-hidden="true" />
                                                 </pems-button>
                                             </form>
                                         }

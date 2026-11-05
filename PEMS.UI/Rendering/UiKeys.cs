@@ -80,4 +80,5 @@ public static class UiKeys
     public const string Textarea = "textarea";
     public const string FormLabel = "form-label";
     public const string ValidationSummary = "validation-summary";
+    public const string Icon = "icon";
 }

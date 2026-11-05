@@ -18,15 +18,15 @@
 <div class="row g-3 mb-3">
     <div class="col-md-4">
         <div class="content-card">
-            <pems-button as="a" tone="primary" size="small" outline="true" css="w-100 mb-2" asp-controller="MaterialItem" asp-action="Index"><i class="bi bi-box-seam"></i> @Localizer["Material Master"]</pems-button>
-            <pems-button as="a" tone="neutral" size="small" outline="true" css="w-100 mb-2" asp-controller="InventoryMasterData" asp-action="Index"><i class="bi bi-diagram-3"></i> @Localizer["Master Data"]</pems-button>
-            <pems-button as="a" tone="neutral" size="small" outline="true" css="w-100 mb-2" asp-controller="InventoryTransaction" asp-action="Index"><i class="bi bi-list-ul"></i> @Localizer["Transaction Ledger"]</pems-button>
-            <pems-button as="a" tone="neutral" size="small" outline="true" css="w-100 mb-2" asp-controller="StoreRequisition" asp-action="Index"><i class="bi bi-clipboard-check"></i> @Localizer["Store Requisitions"]</pems-button>
+            <pems-button as="a" tone="primary" size="small" outline="true" css="w-100 mb-2" asp-controller="MaterialItem" asp-action="Index"><pems-icon name="bi-box-seam" /> @Localizer["Material Master"]</pems-button>
+            <pems-button as="a" tone="neutral" size="small" outline="true" css="w-100 mb-2" asp-controller="InventoryMasterData" asp-action="Index"><pems-icon name="bi-diagram-3" /> @Localizer["Master Data"]</pems-button>
+            <pems-button as="a" tone="neutral" size="small" outline="true" css="w-100 mb-2" asp-controller="InventoryTransaction" asp-action="Index"><pems-icon name="bi-list-ul" /> @Localizer["Transaction Ledger"]</pems-button>
+            <pems-button as="a" tone="neutral" size="small" outline="true" css="w-100 mb-2" asp-controller="StoreRequisition" asp-action="Index"><pems-icon name="bi-clipboard-check" /> @Localizer["Store Requisitions"]</pems-button>
         </div>
     </div>
     <div class="col-md-8">
         <div class="content-card">
-            <h6 class="mb-3"><i class="bi bi-exclamation-triangle text-danger"></i> Low Stock</h6>
+            <h6 class="mb-3"><pems-icon name="bi-exclamation-triangle" css="text-danger" /> Low Stock</h6>
             <pems-table kind="enterprise" scale="small">
                 <thead><tr><th>@Localizer["Warehouse"]</th><th>@Localizer["On Hand"]</th><th>@Localizer["Available"]</th><th>@Localizer["Reorder Point"]</th></tr></thead>
                 <tbody>

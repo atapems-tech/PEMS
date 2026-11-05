@@ -19,11 +19,11 @@
             <span class="text-muted small">@Model.InstrumentType - @Model.Equipment?.Name (@NA(Model.Equipment?.Manufacturer) / @NA(Model.Equipment?.Model))</span>
         </div>
         <div class="d-flex gap-2">
-            <pems-button tone="neutral" size="small" outline="true" as="a" asp-action="Edit" asp-route-id="@Model.InstrumentId"><i class="bi bi-pencil"></i> @Localizer["Edit"]</pems-button>
-            <pems-button tone="neutral" size="small" outline="true" onclick="window.print()"><i class="bi bi-printer"></i> Print</pems-button>
+            <pems-button tone="neutral" size="small" outline="true" as="a" asp-action="Edit" asp-route-id="@Model.InstrumentId"><pems-icon name="bi-pencil" /> @Localizer["Edit"]</pems-button>
+            <pems-button tone="neutral" size="small" outline="true" onclick="window.print()"><pems-icon name="bi-printer" /> Print</pems-button>
             <form asp-action="GenerateCalibrationWorkOrder" method="post" class="d-inline">
                 <input type="hidden" name="instrumentId" value="@Model.InstrumentId" />
-                <pems-button tone="primary" size="small" outline="true" type="submit"><i class="bi bi-clipboard-plus"></i> Generate WO</pems-button>
+                <pems-button tone="primary" size="small" outline="true" type="submit"><pems-icon name="bi-clipboard-plus" /> Generate WO</pems-button>
             </form>
         </div>
     </div>
@@ -129,7 +129,7 @@
         <div class="col-md-2"><pems-label css="small">Certificate No.</pems-label><pems-input scale="small" name="certificateNo" /></div>
         <div class="col-md-4"><pems-label css="small">Standard Reference</pems-label><pems-input scale="small" name="standardReference" /></div>
         <div class="col-md-4"><pems-label css="small">@Localizer["Remarks"]</pems-label><pems-input scale="small" name="remarks" /></div>
-        <div class="col-md-4"><pems-button tone="primary" size="small" css="w-100" type="submit"><i class="bi bi-plus-lg"></i> Record Calibration</pems-button></div>
+        <div class="col-md-4"><pems-button tone="primary" size="small" css="w-100" type="submit"><pems-icon name="bi-plus-lg" /> Record Calibration</pems-button></div>
     </form>
 
     <h6>Calibration History</h6>
@@ -181,7 +181,7 @@
         <div class="col-md-1"><pems-label css="small">@Localizer["Unit"]</pems-label><pems-input scale="small" name="unit" /></div>
         <div class="col-md-3"><pems-label css="small">@Localizer["Action"]</pems-label><pems-input scale="small" name="action" /></div>
         <div class="col-md-6"><pems-label css="small">@Localizer["Description"]</pems-label><pems-input scale="small" name="description" /></div>
-        <div class="col-md-3"><pems-button tone="primary" size="small" css="w-100" type="submit"><i class="bi bi-plus-lg"></i> Add Alarm</pems-button></div>
+        <div class="col-md-3"><pems-button tone="primary" size="small" css="w-100" type="submit"><pems-icon name="bi-plus-lg" /> Add Alarm</pems-button></div>
     </form>
 
     <h6>Alarms &amp; Cause / Effect</h6>
@@ -217,7 +217,7 @@
                             <td>
                                 <form asp-action="RaiseWorkRequestFromCauseEffect" method="post" class="d-inline">
                                     <input type="hidden" name="causeEffectId" value="@ce.CauseEffectId" />
-                                    <pems-button tone="danger" size="small" outline="true" type="submit"><i class="bi bi-exclamation-triangle"></i> Raise Work Request</pems-button>
+                                    <pems-button tone="danger" size="small" outline="true" type="submit"><pems-icon name="bi-exclamation-triangle" /> Raise Work Request</pems-button>
                                 </form>
                             </td>
                         </tr>

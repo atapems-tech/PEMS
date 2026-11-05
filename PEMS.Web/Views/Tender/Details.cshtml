@@ -99,12 +99,12 @@
         {
             <form asp-action="SendInvitations" method="post" class="px-3 pt-2">
                 <input type="hidden" name="tenderId" value="@Model.TenderId" />
-                <pems-button tone="primary" size="small" type="submit"><i class="bi bi-envelope-paper" aria-hidden="true"></i> @Localizer["Tinv_SendAll"]</pems-button>
+                <pems-button tone="primary" size="small" type="submit"><pems-icon name="bi-envelope-paper" aria-hidden="true" /> @Localizer["Tinv_SendAll"]</pems-button>
             </form>
         }
         @if (!emailEnabled)
         {
-            <pems-alert tone="secondary" css="py-2 m-2"><i class="bi bi-info-circle"></i> @Localizer["Tinv_EmailOffHint"]</pems-alert>
+            <pems-alert tone="secondary" css="py-2 m-2"><pems-icon name="bi-info-circle" /> @Localizer["Tinv_EmailOffHint"]</pems-alert>
         }
         else if (mayEditTender && !statusAllowsSend)
         {

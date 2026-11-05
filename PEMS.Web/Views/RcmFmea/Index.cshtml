@@ -34,9 +34,9 @@
 
         <pems-list-kpis id="rfKpis" open="true">
             <span class="vs-chip">@Localizer["Rf_ClassesWithEquipment"] <strong>@Model.ClassesWithEquipment</strong></span>
-            <span class="vs-chip"><i class="bi bi-check-circle" aria-hidden="true"></i> @Localizer["Rf_FmeaReady"] <strong>@Model.ClassesFmeaReady</strong></span>
+            <span class="vs-chip"><pems-icon name="bi-check-circle" aria-hidden="true" /> @Localizer["Rf_FmeaReady"] <strong>@Model.ClassesFmeaReady</strong></span>
             <span class="vs-chip">@Localizer["Rf_FmeaPartial"] <strong>@Model.ClassesFmeaPartiallyReady</strong></span>
-            <span class="vs-chip"><i class="bi bi-check-circle" aria-hidden="true"></i> @Localizer["Rf_RcmReady"] <strong>@Model.ClassesRcmReady</strong></span>
+            <span class="vs-chip"><pems-icon name="bi-check-circle" aria-hidden="true" /> @Localizer["Rf_RcmReady"] <strong>@Model.ClassesRcmReady</strong></span>
             <span class="vs-chip">@Localizer["Rf_RcmPartial"] <strong>@Model.ClassesRcmPartiallyReady</strong></span>
             <span class="vs-chip">@Localizer["Rf_Approved"] <strong>@Model.TotalApprovedFMEAs / @Model.TotalApprovedRCMs</strong></span>
         </pems-list-kpis>
@@ -73,7 +73,7 @@
                             <td><span class="vs-pill @ReadinessTone(c.FMEAReadiness)">@ReadinessText(c.FMEAReadiness)</span> <span class="small text-muted">@string.Format(Localizer["Rf_ApprovedCount"].Value, c.ApprovedFMEACount)</span></td>
                             <td><span class="vs-pill @ReadinessTone(c.RCMReadiness)">@ReadinessText(c.RCMReadiness)</span> <span class="small text-muted">@string.Format(Localizer["Rf_ApprovedCount"].Value, c.ApprovedRCMCount)</span></td>
                             <td class="text-end">
-                                <a asp-action="ClassDetail" asp-route-id="@c.EquipmentClassId" class="lp-act lp-act--always" title="@Localizer["Lp_Details"]" aria-label="@Localizer["Lp_Details"]"><i class="bi bi-box-arrow-up-right" aria-hidden="true"></i></a>
+                                <a asp-action="ClassDetail" asp-route-id="@c.EquipmentClassId" class="lp-act lp-act--always" title="@Localizer["Lp_Details"]" aria-label="@Localizer["Lp_Details"]"><pems-icon name="bi-box-arrow-up-right" aria-hidden="true" /></a>
                             </td>
                         </tr>
                     }

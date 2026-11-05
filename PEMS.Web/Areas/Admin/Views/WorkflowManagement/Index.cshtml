@@ -23,7 +23,7 @@
         <pems-list-toolbar heading="@Localizer["WfL_Title"]" heading-title="@Localizer["Workflow versions are immutable once published. Editing a workflow means cloning a version into a draft; running instances stay on the version they started with."]" total="@Model.Count">
             <pems-list-tools>
                 <pems-list-kpi-toggle target="wfKpis" storage-key="pems.workflowManagement.kpis" />
-                <a class="lp-icon-btn" asp-action="Bindings" title="@Localizer["Bindings"]" aria-label="@Localizer["Bindings"]"><i class="bi bi-link-45deg" aria-hidden="true"></i></a>
+                <a class="lp-icon-btn" asp-action="Bindings" title="@Localizer["Bindings"]" aria-label="@Localizer["Bindings"]"><pems-icon name="bi-link-45deg" aria-hidden="true" /></a>
             </pems-list-tools>
         </pems-list-toolbar>
 
@@ -68,7 +68,7 @@
                         <td class="small text-nowrap vs-hide-md"><span class="vs-num">@(r.LastPublished?.ToString("yyyy-MM-dd HH:mm") ?? "-")</span></td>
                         <td class="small vs-hide-md">@(r.CreatedBy ?? "-")</td>
                         <td class="text-end">
-                            <a asp-action="Details" asp-route-id="@r.DefinitionId" class="lp-act lp-act--always" title="@Localizer["Open"]" aria-label="@Localizer["Open"] @display"><i class="bi bi-box-arrow-in-right" aria-hidden="true"></i></a>
+                            <a asp-action="Details" asp-route-id="@r.DefinitionId" class="lp-act lp-act--always" title="@Localizer["Open"]" aria-label="@Localizer["Open"] @display"><pems-icon name="bi-box-arrow-in-right" aria-hidden="true" /></a>
                         </td>
                     </tr>
                 }

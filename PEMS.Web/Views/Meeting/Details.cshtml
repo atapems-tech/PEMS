@@ -58,7 +58,7 @@
                             <input type="hidden" name="meetingId" value="@m.MeetingId" />
                             <input type="hidden" name="attended" value="@(!a.Attended)" />
                             <pems-button tone="none" size="small" css="@(a.Attended ? "btn-success" : "btn-outline-secondary")" type="submit">
-                                <i class="bi @(a.Attended ? "bi-check-lg" : "bi-x")"></i>
+                                <pems-icon css="@(a.Attended ? "bi-check-lg" : "bi-x")" />
                             </pems-button>
                         </form>
                     </td>
@@ -78,7 +78,7 @@
             </pems-select>
         </div>
         <div class="col-md-4"><pems-input scale="small" name="externalName" placeholder="or external name" /></div>
-        <div class="col-md-3"><pems-button tone="primary" size="small" css="w-100"><i class="bi bi-plus-lg"></i> @Localizer["Add"]</pems-button></div>
+        <div class="col-md-3"><pems-button tone="primary" size="small" css="w-100"><pems-icon name="bi-plus-lg" /> @Localizer["Add"]</pems-button></div>
     </form>
 </div>
 
@@ -112,6 +112,6 @@
             </pems-select>
         </div>
         <div class="col-md-2"><pems-date name="dueDate" scale="small" /></div>
-        <div class="col-md-1"><pems-button tone="primary" size="small" css="w-100"><i class="bi bi-plus-lg"></i></pems-button></div>
+        <div class="col-md-1"><pems-button tone="primary" size="small" css="w-100"><pems-icon name="bi-plus-lg" /></pems-button></div>
     </form>
 </div>

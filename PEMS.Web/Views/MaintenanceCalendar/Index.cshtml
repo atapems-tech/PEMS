@@ -41,8 +41,8 @@
     <div class="d-flex flex-wrap gap-2 align-items-center justify-content-between mb-3">
         <div class="d-flex gap-2 align-items-center">
             <pems-button tone="neutral" size="small" outline="true" as="a" href="@NavUrl(d: DateTime.Today)">@Localizer["Today"]</pems-button>
-            <pems-button tone="neutral" size="small" outline="true" as="a" href="@NavUrl(d: StepPrev())"><i class="bi bi-chevron-left"></i></pems-button>
-            <pems-button tone="neutral" size="small" outline="true" as="a" href="@NavUrl(d: StepNext())"><i class="bi bi-chevron-right"></i></pems-button>
+            <pems-button tone="neutral" size="small" outline="true" as="a" href="@NavUrl(d: StepPrev())"><pems-icon name="bi-chevron-left" /></pems-button>
+            <pems-button tone="neutral" size="small" outline="true" as="a" href="@NavUrl(d: StepNext())"><pems-icon name="bi-chevron-right" /></pems-button>
             <strong class="ms-2" dir="@(view == "week" ? "ltr" : null)">@(view == "month" ? anchor.ToString("MMMM yyyy") : view == "week" ? $"{ViewBag.RangeStart:MMM d} - {((DateTime)ViewBag.RangeEnd).AddDays(-1):MMM d, yyyy}" : anchor.ToString("dddd, MMM d yyyy"))</strong>
         </div>
         <div class="btn-group btn-group-sm">
@@ -164,7 +164,7 @@ else if (view == "week")
                                             <div class="small fw-bold">@it.WorkOrderNumber</div>
                                             <div class="small">@it.EquipmentTagNumber</div>
                                             <div class="small" dir="ltr">@it.PlannedStart.ToString("HH:mm")-@it.PlannedFinish.ToString("HH:mm")</div>
-                                            @if (it.HasEmployeeConflict) { <div class="small text-danger"><i class="bi bi-exclamation-triangle"></i> @Localizer["Conflict"]</div> }
+                                            @if (it.HasEmployeeConflict) { <div class="small text-danger"><pems-icon name="bi-exclamation-triangle" /> @Localizer["Conflict"]</div> }
                                         </a>
                                     }
                                 </td>
@@ -220,7 +220,7 @@ else
                             <pems-badge tone="none" css="@PriorityBadgeClass(it.Priority)">@it.Priority</pems-badge>
                             <pems-badge tone="neutral">@it.Status</pems-badge>
                             @if (it.IsOverdue) { <pems-badge tone="dark">@Localizer["Overdue"]</pems-badge> }
-                            @if (it.HasEmployeeConflict) { <pems-badge tone="danger"><i class="bi bi-exclamation-triangle"></i> @Localizer["Conflict"]</pems-badge> }
+                            @if (it.HasEmployeeConflict) { <pems-badge tone="danger"><pems-icon name="bi-exclamation-triangle" /> @Localizer["Conflict"]</pems-badge> }
                         </div>
                         <div class="small text-muted">@it.AssignedTeamName @(it.AssignedEmployeeName != null ? "· " + it.AssignedEmployeeName : "")</div>
                     </div>
