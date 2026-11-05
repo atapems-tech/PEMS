@@ -17,19 +17,19 @@
 
     <hr class="my-2" />
 
-    <div class="row g-3">
-        <div class="col-md-3"><strong>Planned Final Issue:</strong> @(Model.PlannedFinalIssueDate?.ToString("yyyy-MM-dd") ?? "-")</div>
-        <div class="col-md-3">
+    <pems-row gap="3">
+        <pems-col md="3"><strong>Planned Final Issue:</strong> @(Model.PlannedFinalIssueDate?.ToString("yyyy-MM-dd") ?? "-")</pems-col>
+        <pems-col md="3">
             <strong>Index of Contents Due:</strong> @(Model.IndexOfContentsDueDate?.ToString("yyyy-MM-dd") ?? "-")
             @if (Model.IsIndexOverdue)
             {
                 <pems-badge tone="danger">@Localizer["Overdue"]</pems-badge>
             }
-        </div>
-        <div class="col-md-3"><strong>Index Submitted:</strong> @(Model.IndexOfContentsSubmittedDate?.ToString("yyyy-MM-dd") ?? "-")</div>
-        <div class="col-md-3"><strong>Hard Copy:</strong> @(Model.HardCopyShippedDate.HasValue ? $"Shipped {Model.HardCopyShippedDate:yyyy-MM-dd} ({Model.HardCopyCount} vol)" : "Not shipped")</div>
-        <div class="col-md-3"><strong>Soft Copy:</strong> @(Model.SoftCopyDeliveredDate.HasValue ? $"Delivered {Model.SoftCopyDeliveredDate:yyyy-MM-dd}" : "Not delivered")</div>
-    </div>
+        </pems-col>
+        <pems-col md="3"><strong>Index Submitted:</strong> @(Model.IndexOfContentsSubmittedDate?.ToString("yyyy-MM-dd") ?? "-")</pems-col>
+        <pems-col md="3"><strong>Hard Copy:</strong> @(Model.HardCopyShippedDate.HasValue ? $"Shipped {Model.HardCopyShippedDate:yyyy-MM-dd} ({Model.HardCopyCount} vol)" : "Not shipped")</pems-col>
+        <pems-col md="3"><strong>Soft Copy:</strong> @(Model.SoftCopyDeliveredDate.HasValue ? $"Delivered {Model.SoftCopyDeliveredDate:yyyy-MM-dd}" : "Not delivered")</pems-col>
+    </pems-row>
 
     <div class="d-flex flex-wrap gap-2 mt-3">
         @if (Model.IndexOfContentsSubmittedDate == null)
@@ -97,7 +97,7 @@
         <form asp-action="AddDocument" method="post" class="row g-2 mt-2">
             <input type="hidden" name="mdbId" value="@Model.MDBId" />
             <input type="hidden" name="part" value="@code" />
-            <div class="col-md-3">
+            <pems-col md="3">
                 <pems-select scale="small" name="documentId">
                     <option value="">-- Link existing document (optional) --</option>
                     @foreach (var doc in documents)
@@ -105,14 +105,14 @@
                         <option value="@doc.DocumentId">@doc.DocumentNo - @doc.Title</option>
                     }
                 </pems-select>
-            </div>
-            <div class="col-md-3"><pems-input scale="small" name="title" placeholder="Title (if not linking a document)" /></div>
-            <div class="col-md-2"><pems-input scale="small" name="dvdVolumeNo" type="number" placeholder="DVD Vol #" /></div>
-            <div class="col-md-2 form-check d-flex align-items-center">
+            </pems-col>
+            <pems-col md="3"><pems-input scale="small" name="title" placeholder="Title (if not linking a document)" /></pems-col>
+            <pems-col md="2"><pems-input scale="small" name="dvdVolumeNo" type="number" placeholder="DVD Vol #" /></pems-col>
+            <pems-col md="2" css="form-check d-flex align-items-center">
                 <pems-input kind="check" css="me-1" type="checkbox" name="isNotApplicable" value="true" id="na_@code" />
                 <label class="form-check-label small" for="na_@code">Not applicable</label>
-            </div>
-            <div class="col-md-2"><pems-button tone="primary" size="small" outline="true" css="w-100"><pems-icon name="bi-plus-lg" /> @Localizer["Add"]</pems-button></div>
+            </pems-col>
+            <pems-col md="2"><pems-button tone="primary" size="small" outline="true" css="w-100"><pems-icon name="bi-plus-lg" /> @Localizer["Add"]</pems-button></pems-col>
         </form>
     </div>
 }

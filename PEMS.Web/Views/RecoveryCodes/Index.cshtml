@@ -14,14 +14,14 @@
     }
 
     <form asp-action="Generate" method="post" class="row g-2 align-items-end" autocomplete="off">
-        <div class="col-sm-6">
+        <pems-col sm="6">
             <pems-label css="small" asp-for="CurrentPassword">@Localizer["Current password"]</pems-label>
             <pems-input scale="small" asp-for="CurrentPassword" autocomplete="current-password" />
             <span asp-validation-for="CurrentPassword" class="text-danger small"></span>
-        </div>
-        <div class="col-sm-6">
+        </pems-col>
+        <pems-col sm="6">
             <pems-button tone="primary" size="small" type="submit"><pems-icon name="bi-arrow-repeat" css="me-1" /> @Localizer["Generate new codes"]</pems-button>
-        </div>
+        </pems-col>
     </form>
     <p class="text-body-secondary small mt-2">@Localizer["Generating a new set invalidates every code you have not used yet."]</p>
 </div>

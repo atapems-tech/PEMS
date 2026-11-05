@@ -27,55 +27,55 @@
 
 <div class="content-card mb-3">
     <form method="get" class="row g-2">
-        <div class="col-md-3">
+        <pems-col md="3">
             <pems-select scale="small" name="status">
                 <option value="">@Localizer["All statuses"]</option>
                 @foreach (var s in new[] { "Open", "Assigned", "InProgress", "Completed", "Closed" })
                 { <option value="@s" selected="@(s == (string)ViewBag.SelectedStatus)">@s</option> }
             </pems-select>
-        </div>
-        <div class="col-md-3">
+        </pems-col>
+        <pems-col md="3">
             <pems-select scale="small" name="priority">
                 <option value="">All Priorities</option>
                 @foreach (var p in new[] { "Low", "Medium", "High", "Critical" })
                 { <option value="@p" selected="@(p == (string)ViewBag.SelectedPriority)">@p</option> }
             </pems-select>
-        </div>
-        <div class="col-md-2"><pems-date name="fromDate" value="@(((DateTime?)ViewBag.FromDate)?.ToString("yyyy-MM-dd"))" scale="small" /></div>
-        <div class="col-md-2"><pems-date name="toDate" value="@(((DateTime?)ViewBag.ToDate)?.ToString("yyyy-MM-dd"))" scale="small" /></div>
-        <div class="col-md-2"><pems-button tone="primary" size="small" css="w-100"><pems-icon name="bi-funnel" /> @Localizer["Apply"]</pems-button></div>
+        </pems-col>
+        <pems-col md="2"><pems-date name="fromDate" value="@(((DateTime?)ViewBag.FromDate)?.ToString("yyyy-MM-dd"))" scale="small" /></pems-col>
+        <pems-col md="2"><pems-date name="toDate" value="@(((DateTime?)ViewBag.ToDate)?.ToString("yyyy-MM-dd"))" scale="small" /></pems-col>
+        <pems-col md="2"><pems-button tone="primary" size="small" css="w-100"><pems-icon name="bi-funnel" /> @Localizer["Apply"]</pems-button></pems-col>
     </form>
 </div>
 
-<div class="row g-3 mb-3">
-    <div class="col-md-2 col-sm-6"><pems-kpi-tile icon="bi-clipboard-check" color="slate" label="@Localizer["Total"]">@Model.TotalWorkOrders</pems-kpi-tile></div>
-    <div class="col-md-2 col-sm-6"><pems-kpi-tile icon="bi-exclamation-circle" color="red" label="@Localizer["Open"]">@Model.OpenCount</pems-kpi-tile></div>
-    <div class="col-md-2 col-sm-6"><pems-kpi-tile icon="bi-hourglass-split" color="amber" label="@Localizer["In Progress"]">@Model.InProgressCount</pems-kpi-tile></div>
-    <div class="col-md-2 col-sm-6"><pems-kpi-tile icon="bi-check-circle" color="green" label="@Localizer["Completed"]">@Model.CompletedCount</pems-kpi-tile></div>
-    <div class="col-md-2 col-sm-6"><pems-kpi-tile icon="bi-stopwatch" color="purple" label="Avg. Completion">@(Model.AvgCompletionDays.HasValue ? Model.AvgCompletionDays.Value.ToString("0.0") + "d" : "-")</pems-kpi-tile></div>
-    <div class="col-md-2 col-sm-6"><pems-kpi-tile icon="bi-currency-dollar" color="teal" label="Spare Parts Cost">@Model.TotalSpareCost.ToString("0")</pems-kpi-tile></div>
-</div>
+<pems-row gap="3" css="mb-3">
+    <pems-col md="2" sm="6"><pems-kpi-tile icon="bi-clipboard-check" color="slate" label="@Localizer["Total"]">@Model.TotalWorkOrders</pems-kpi-tile></pems-col>
+    <pems-col md="2" sm="6"><pems-kpi-tile icon="bi-exclamation-circle" color="red" label="@Localizer["Open"]">@Model.OpenCount</pems-kpi-tile></pems-col>
+    <pems-col md="2" sm="6"><pems-kpi-tile icon="bi-hourglass-split" color="amber" label="@Localizer["In Progress"]">@Model.InProgressCount</pems-kpi-tile></pems-col>
+    <pems-col md="2" sm="6"><pems-kpi-tile icon="bi-check-circle" color="green" label="@Localizer["Completed"]">@Model.CompletedCount</pems-kpi-tile></pems-col>
+    <pems-col md="2" sm="6"><pems-kpi-tile icon="bi-stopwatch" color="purple" label="Avg. Completion">@(Model.AvgCompletionDays.HasValue ? Model.AvgCompletionDays.Value.ToString("0.0") + "d" : "-")</pems-kpi-tile></pems-col>
+    <pems-col md="2" sm="6"><pems-kpi-tile icon="bi-currency-dollar" color="teal" label="Spare Parts Cost">@Model.TotalSpareCost.ToString("0")</pems-kpi-tile></pems-col>
+</pems-row>
 
-<div class="row g-3">
-    <div class="col-lg-8">
+<pems-row gap="3">
+    <pems-col lg="8">
         <div class="content-card mb-3">
             <h6 class="mb-3">Work Orders (last 12 months)</h6>
             <pems-chart spec="@volumeChart" />
         </div>
-    </div>
-    <div class="col-lg-4">
+    </pems-col>
+    <pems-col lg="4">
         <div class="content-card mb-3">
             <h6 class="mb-3">By Priority</h6>
             <pems-chart spec="@priorityChart" />
         </div>
-    </div>
-    <div class="col-lg-6">
+    </pems-col>
+    <pems-col lg="6">
         <div class="content-card mb-3">
             <h6 class="mb-3">By Type</h6>
             <pems-chart spec="@typeChart" />
         </div>
-    </div>
-    <div class="col-lg-6">
+    </pems-col>
+    <pems-col lg="6">
         <div class="content-card mb-3">
             <h6 class="mb-3">Top Equipment (by Work Order count)</h6>
             <ul class="list-unstyled mb-0">
@@ -86,8 +86,8 @@
             </ul>
             @if (!Model.TopEquipment.Any()) { <p class="text-muted small">@Localizer["No data."]</p> }
         </div>
-    </div>
-</div>
+    </pems-col>
+</pems-row>
 
 @section Styles {
     <partial name="_BkChartStyles" />

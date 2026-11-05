@@ -5,24 +5,24 @@
     <pems-button tone="neutral" size="small" outline="true" as="a" asp-action="Index">@Localizer["Back to Dashboard"]</pems-button>
 </div>
 
-<div class="row g-3 mb-3">
-    <div class="col-md-4">
+<pems-row gap="3" css="mb-3">
+    <pems-col md="4">
         <pems-kpi-tile label="@Localizer["کل NCR های ثبت‌شده"]">@ViewBag.TotalNCRs</pems-kpi-tile>
-    </div>
-    <div class="col-md-4">
+    </pems-col>
+    <pems-col md="4">
         <pems-kpi-tile tone="success" label="@Localizer["درصد بسته‌شده در ۱۴ روز"]">@ViewBag.ClosedOnTimeRate%</pems-kpi-tile>
-    </div>
-    <div class="col-md-4">
+    </pems-col>
+    <pems-col md="4">
         @{
             var bySeverity = (IEnumerable<dynamic>)ViewBag.BySeverity;
             var criticalCount = bySeverity.FirstOrDefault(x => x.Severity == "Critical")?.Count ?? 0;
         }
         <pems-kpi-tile tone="danger" label="@Localizer["NCR بحرانی (کل تاریخچه)"]">@criticalCount</pems-kpi-tile>
-    </div>
-</div>
+    </pems-col>
+</pems-row>
 
-<div class="row g-3">
-    <div class="col-md-7">
+<pems-row gap="3">
+    <pems-col md="7">
         <div class="content-card h-100">
             <h6 class="mb-3">@Localizer["نرخ NCR به تفکیک دیسیپلین"]</h6>
             <pems-table kind="enterprise" css="mb-0">
@@ -41,9 +41,9 @@
                 </tbody>
             </pems-table>
         </div>
-    </div>
+    </pems-col>
 
-    <div class="col-md-5">
+    <pems-col md="5">
         <div class="content-card h-100">
             <h6 class="mb-3">@Localizer["نرخ NCR به تفکیک شدت"]</h6>
             <ul class="list-unstyled mb-0">
@@ -57,8 +57,8 @@
                 }
             </ul>
         </div>
-    </div>
-</div>
+    </pems-col>
+</pems-row>
 
 <div class="content-card mt-3">
     <h6 class="mb-3">@Localizer["روند ماهانه NCR (۱۲ ماه اخیر)"]</h6>

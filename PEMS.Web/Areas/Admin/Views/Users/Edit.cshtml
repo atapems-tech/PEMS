@@ -53,8 +53,8 @@
             </pems-select>
         </div>
 
-        <div id="newEmployeeFields" class="row g-3 mb-3">
-            <div class="col-md-6">
+        <pems-row gap="3" css="mb-3" id="newEmployeeFields">
+            <pems-col md="6">
                 <pems-label>@Localizer["Department"]</pems-label>
                 <pems-select name="DepartmentId">
                     <option value="">@Localizer["-- select --"]</option>
@@ -63,8 +63,8 @@
                         <option value="@d.Id" selected="@(Model.DepartmentId == d.Id)">@d.Name</option>
                     }
                 </pems-select>
-            </div>
-            <div class="col-md-6">
+            </pems-col>
+            <pems-col md="6">
                 <pems-label>@Localizer["Discipline"]</pems-label>
                 <pems-select name="DisciplineId">
                     <option value="">@Localizer["-- select --"]</option>
@@ -73,8 +73,8 @@
                         <option value="@d.Id" selected="@(Model.DisciplineId == d.Id)">@d.Name</option>
                     }
                 </pems-select>
-            </div>
-            <div class="col-12">
+            </pems-col>
+            <pems-col span="12">
                 <pems-label>@Localizer["Organizational position"]</pems-label>
                 <pems-select name="PositionId">
                     <option value="">@Localizer["-- none (assign later) --"]</option>
@@ -84,8 +84,8 @@
                     }
                 </pems-select>
                 <div class="form-text">@Localizer["Only vacant active positions are listed. The assignment is created through the organization structure."]</div>
-            </div>
-        </div>
+            </pems-col>
+        </pems-row>
 
         <hr />
         <partial name="_RoleSelect" model="Model" />

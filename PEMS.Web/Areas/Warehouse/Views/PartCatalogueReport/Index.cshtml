@@ -178,20 +178,20 @@
         @if (tab == "summary")
         {
             <div class="pc-rpt-summary">
-                <div class="row g-3 mb-3">
-                    <div class="col-xl-2 col-md-4 col-6"><pems-kpi-tile model="@Kpi("PcRpt_Kpi_Requests", p.Total, "bi-journal-text", "bg-icon-slate", IndexUrl("stages"), "PcRpt_Hint_Requests")" /></div>
-                    <div class="col-xl-2 col-md-4 col-6"><pems-kpi-tile model="@Kpi("PcRpt_Kpi_Open", p.Open, "bi-hourglass-split", "bg-icon-amber", IndexUrl("stages"), "PcRpt_Hint_Open")" /></div>
-                    <div class="col-xl-2 col-md-4 col-6"><pems-kpi-tile model="@Kpi("PcRpt_Kpi_Completed", p.CompletedInPeriod, "bi-check-circle", "bg-icon-green", null, "PcRpt_Hint_Completed")" /></div>
-                    <div class="col-xl-2 col-md-4 col-6"><pems-kpi-tile model="@Kpi("PcRpt_Kpi_Registered", p.PartNumbersRegisteredInPeriod, "bi-upc-scan", "bg-icon-blue", IndexUrl("people"), "PcRpt_Hint_Registered")" /></div>
-                    <div class="col-xl-2 col-md-4 col-6"><pems-kpi-tile model="@Kpi("PcRpt_Kpi_Equipment", r.Equipment.Equipment.Count, "bi-gear-wide-connected", "bg-icon-purple", IndexUrl("equipment"), "PcRpt_Hint_Equipment")" /></div>
-                    <div class="col-xl-2 col-md-4 col-6"><pems-kpi-tile model="@Kpi("PcRpt_Kpi_People", r.Activity.People.Count, "bi-people", "bg-icon-teal", IndexUrl("people"), "PcRpt_Hint_People")" /></div>
-                </div>
-                <div class="row g-3">
-                    <div class="col-lg-8"><div class="content-card"><h6 class="mb-3">@Localizer["PcRpt_Chart_Trend"]</h6><pems-chart spec="@trendChart" /></div></div>
-                    <div class="col-lg-4"><div class="content-card"><h6 class="mb-3">@Localizer["PcRpt_ByStatus"]</h6><pems-chart spec="@statusChart" /></div></div>
-                    <div class="col-lg-6"><div class="content-card"><h6 class="mb-3">@Localizer["PcRpt_Chart_TopPeople"]</h6><pems-chart spec="@peopleChart" /></div></div>
-                    <div class="col-lg-6"><div class="content-card"><h6 class="mb-3">@Localizer["PcRpt_Chart_TopEquipment"]</h6><pems-chart spec="@equipmentChart" /></div></div>
-                </div>
+                <pems-row gap="3" css="mb-3">
+                    <pems-col xl="2" md="4" span="6"><pems-kpi-tile model="@Kpi("PcRpt_Kpi_Requests", p.Total, "bi-journal-text", "bg-icon-slate", IndexUrl("stages"), "PcRpt_Hint_Requests")" /></pems-col>
+                    <pems-col xl="2" md="4" span="6"><pems-kpi-tile model="@Kpi("PcRpt_Kpi_Open", p.Open, "bi-hourglass-split", "bg-icon-amber", IndexUrl("stages"), "PcRpt_Hint_Open")" /></pems-col>
+                    <pems-col xl="2" md="4" span="6"><pems-kpi-tile model="@Kpi("PcRpt_Kpi_Completed", p.CompletedInPeriod, "bi-check-circle", "bg-icon-green", null, "PcRpt_Hint_Completed")" /></pems-col>
+                    <pems-col xl="2" md="4" span="6"><pems-kpi-tile model="@Kpi("PcRpt_Kpi_Registered", p.PartNumbersRegisteredInPeriod, "bi-upc-scan", "bg-icon-blue", IndexUrl("people"), "PcRpt_Hint_Registered")" /></pems-col>
+                    <pems-col xl="2" md="4" span="6"><pems-kpi-tile model="@Kpi("PcRpt_Kpi_Equipment", r.Equipment.Equipment.Count, "bi-gear-wide-connected", "bg-icon-purple", IndexUrl("equipment"), "PcRpt_Hint_Equipment")" /></pems-col>
+                    <pems-col xl="2" md="4" span="6"><pems-kpi-tile model="@Kpi("PcRpt_Kpi_People", r.Activity.People.Count, "bi-people", "bg-icon-teal", IndexUrl("people"), "PcRpt_Hint_People")" /></pems-col>
+                </pems-row>
+                <pems-row gap="3">
+                    <pems-col lg="8"><div class="content-card"><h6 class="mb-3">@Localizer["PcRpt_Chart_Trend"]</h6><pems-chart spec="@trendChart" /></div></pems-col>
+                    <pems-col lg="4"><div class="content-card"><h6 class="mb-3">@Localizer["PcRpt_ByStatus"]</h6><pems-chart spec="@statusChart" /></div></pems-col>
+                    <pems-col lg="6"><div class="content-card"><h6 class="mb-3">@Localizer["PcRpt_Chart_TopPeople"]</h6><pems-chart spec="@peopleChart" /></div></pems-col>
+                    <pems-col lg="6"><div class="content-card"><h6 class="mb-3">@Localizer["PcRpt_Chart_TopEquipment"]</h6><pems-chart spec="@equipmentChart" /></div></pems-col>
+                </pems-row>
             </div>
         }
         else

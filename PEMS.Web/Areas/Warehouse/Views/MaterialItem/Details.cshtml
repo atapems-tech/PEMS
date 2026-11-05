@@ -207,21 +207,21 @@
             <input type="hidden" name="materialItemId" value="@Model.MaterialItemId" />
             <div class="modal-header"><h6 class="modal-title">Edit Material</h6></div>
             <div class="modal-body">
-                <div class="row g-3 mb-2">
-                    <div class="col-md-6"><pems-label>@Localizer["Material Code"]</pems-label><pems-input name="materialCode" value="@Model.MaterialCode" required /></div>
-                    <div class="col-md-6"><pems-label>@Localizer["Material Type"]</pems-label><pems-input name="materialType" value="@Model.MaterialType" /></div>
-                </div>
+                <pems-row gap="3" css="mb-2">
+                    <pems-col md="6"><pems-label>@Localizer["Material Code"]</pems-label><pems-input name="materialCode" value="@Model.MaterialCode" required /></pems-col>
+                    <pems-col md="6"><pems-label>@Localizer["Material Type"]</pems-label><pems-input name="materialType" value="@Model.MaterialType" /></pems-col>
+                </pems-row>
                 <div class="mb-2"><pems-label>@Localizer["Description"]</pems-label><pems-input name="description" value="@Model.Description" required /></div>
                 <div class="mb-2"><pems-label>@Localizer["Long Description"]</pems-label><pems-textarea name="longDescription" rows="2">@Model.LongDescription</pems-textarea></div>
-                <div class="row g-3 mb-2">
-                    <div class="col-md-6"><pems-label>@Localizer["Manufacturer"]</pems-label><pems-input name="manufacturer" value="@Model.Manufacturer" /></div>
-                    <div class="col-md-6"><pems-label>@Localizer["Manufacturer Part No."]</pems-label><pems-input name="manufacturerPartNumber" value="@Model.ManufacturerPartNumber" /></div>
-                </div>
-                <div class="row g-3 mb-2">
-                    <div class="col-md-4"><pems-label>@Localizer["Model"]</pems-label><pems-input name="model" value="@Model.Model" /></div>
-                    <div class="col-md-4"><pems-label>@Localizer["Size"]</pems-label><pems-input name="size" value="@Model.Size" /></div>
-                    <div class="col-md-4"><pems-label>@Localizer["Material Grade"]</pems-label><pems-input name="materialGrade" value="@Model.MaterialGrade" /></div>
-                </div>
+                <pems-row gap="3" css="mb-2">
+                    <pems-col md="6"><pems-label>@Localizer["Manufacturer"]</pems-label><pems-input name="manufacturer" value="@Model.Manufacturer" /></pems-col>
+                    <pems-col md="6"><pems-label>@Localizer["Manufacturer Part No."]</pems-label><pems-input name="manufacturerPartNumber" value="@Model.ManufacturerPartNumber" /></pems-col>
+                </pems-row>
+                <pems-row gap="3" css="mb-2">
+                    <pems-col md="4"><pems-label>@Localizer["Model"]</pems-label><pems-input name="model" value="@Model.Model" /></pems-col>
+                    <pems-col md="4"><pems-label>@Localizer["Size"]</pems-label><pems-input name="size" value="@Model.Size" /></pems-col>
+                    <pems-col md="4"><pems-label>@Localizer["Material Grade"]</pems-label><pems-input name="materialGrade" value="@Model.MaterialGrade" /></pems-col>
+                </pems-row>
                 <div class="d-flex gap-3">
                     <div class="form-check"><pems-input type="checkbox" name="isStockItem" value="true" checked="@Model.IsStockItem" id="editIsStockItem" kind="check" /><label class="form-check-label" for="editIsStockItem">@Localizer["Stock Item"]</label></div>
                     <div class="form-check"><pems-input type="checkbox" name="isCritical" value="true" checked="@Model.IsCritical" id="editIsCritical" kind="check" /><label class="form-check-label" for="editIsCritical">@Localizer["Critical Spare"]</label></div>

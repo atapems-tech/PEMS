@@ -7,35 +7,35 @@
 }
 
 <div class="content-card mb-3">
-    <div class="row g-3">
-        <div class="col-md-2">
+    <pems-row gap="3">
+        <pems-col md="2">
             <pems-kpi-tile compact label="@Localizer["Total Active Equipment"]">@Model.TotalActiveEquipment.ToString("N0")</pems-kpi-tile>
-        </div>
-        <div class="col-md-2">
+        </pems-col>
+        <pems-col md="2">
             <pems-kpi-tile compact tone="success" label="Classified">@Model.ClassifiedCount.ToString("N0")</pems-kpi-tile>
-        </div>
-        <div class="col-md-2">
+        </pems-col>
+        <pems-col md="2">
             <pems-kpi-tile compact label="Unclassified">@Model.UnclassifiedCount.ToString("N0")</pems-kpi-tile>
-        </div>
-        <div class="col-md-2">
+        </pems-col>
+        <pems-col md="2">
             <pems-kpi-tile compact label="Coverage">@Model.CoveragePercent.ToString("0.0")%</pems-kpi-tile>
-        </div>
-        <div class="col-md-2">
+        </pems-col>
+        <pems-col md="2">
             <pems-kpi-tile compact tone="warning" label="@Localizer["Pending Review"]">@Model.PendingReviewCount.ToString("N0")</pems-kpi-tile>
-        </div>
-        <div class="col-md-2">
+        </pems-col>
+        <pems-col md="2">
             <pems-button tone="primary" size="small" css="mt-2" as="a" asp-action="ReviewQueue">
                 <pems-icon name="bi-list-check" /> Review Queue
             </pems-button>
             <pems-button tone="neutral" size="small" outline="true" css="mt-2" as="a" asp-action="Coverage">
                 <pems-icon name="bi-grid-3x3-gap" /> Coverage Matrix
             </pems-button>
-        </div>
-    </div>
+        </pems-col>
+    </pems-row>
 </div>
 
-<div class="row g-3 mb-3">
-    <div class="col-md-6">
+<pems-row gap="3" css="mb-3">
+    <pems-col md="6">
         <div class="content-card h-100">
             <h6 class="mb-3">Classified — by Confidence</h6>
             @foreach (var item in Model.ByConfidence)
@@ -47,8 +47,8 @@
             }
             @if (!Model.ByConfidence.Any()) { <p class="text-muted small">@Localizer["داده‌ای موجود نیست."]</p> }
         </div>
-    </div>
-    <div class="col-md-6">
+    </pems-col>
+    <pems-col md="6">
         <div class="content-card h-100">
             <h6 class="mb-3">Classified — by Source</h6>
             @foreach (var item in Model.BySource)
@@ -60,11 +60,11 @@
             }
             @if (!Model.BySource.Any()) { <p class="text-muted small">@Localizer["داده‌ای موجود نیست."]</p> }
         </div>
-    </div>
-</div>
+    </pems-col>
+</pems-row>
 
-<div class="row g-3 mb-3">
-    <div class="col-md-6">
+<pems-row gap="3" css="mb-3">
+    <pems-col md="6">
         <div class="content-card h-100">
             <h6 class="mb-3">Pending Suggestions — by Confidence</h6>
             @foreach (var item in Model.PendingSuggestionsByConfidence)
@@ -75,8 +75,8 @@
             }
             @if (!Model.PendingSuggestionsByConfidence.Any()) { <p class="text-muted small">@Localizer["هیچ پیشنهادی در انتظار بازبینی نیست."]</p> }
         </div>
-    </div>
-    <div class="col-md-6">
+    </pems-col>
+    <pems-col md="6">
         <div class="content-card h-100">
             <h6 class="mb-3">Unclassified — by Discipline</h6>
             @foreach (var item in Model.UnclassifiedByDiscipline)
@@ -87,8 +87,8 @@
             }
             @if (!Model.UnclassifiedByDiscipline.Any()) { <p class="text-muted small">@Localizer["داده‌ای موجود نیست."]</p> }
         </div>
-    </div>
-</div>
+    </pems-col>
+</pems-row>
 
 <div class="content-card mb-3">
     <h6 class="mb-3">Classified — by Equipment Class (Top 20)</h6>
@@ -106,8 +106,8 @@
     </div>
 </div>
 
-<div class="row g-3">
-    <div class="col-md-4">
+<pems-row gap="3">
+    <pems-col md="4">
         <div class="content-card h-100">
             <h6 class="mb-3">Top Unclassified — EquipmentType</h6>
             <div class="table-responsive pems-s-f0787633">
@@ -121,8 +121,8 @@
                 </pems-table>
             </div>
         </div>
-    </div>
-    <div class="col-md-4">
+    </pems-col>
+    <pems-col md="4">
         <div class="content-card h-100">
             <h6 class="mb-3">Top Unclassified — Name</h6>
             <div class="table-responsive pems-s-f0787633">
@@ -136,8 +136,8 @@
                 </pems-table>
             </div>
         </div>
-    </div>
-    <div class="col-md-4">
+    </pems-col>
+    <pems-col md="4">
         <div class="content-card h-100">
             <h6 class="mb-3">Top Unclassified — Tag Pattern</h6>
             <div class="table-responsive pems-s-f0787633">
@@ -151,5 +151,5 @@
                 </pems-table>
             </div>
         </div>
-    </div>
-</div>
+    </pems-col>
+</pems-row>

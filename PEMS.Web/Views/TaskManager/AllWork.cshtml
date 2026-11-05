@@ -23,18 +23,18 @@
     <h2 class="h5 mb-3"><pems-icon name="bi-collection" aria-hidden="true" /> @ViewData["Title"]</h2>
 
     <form method="get" asp-action="AllWork" class="row g-2 align-items-end" role="search">
-        <div class="col-md-3">
+        <pems-col md="3">
             <pems-label css="small" for="f-text">@Localizer["Tm_Search"]</pems-label>
             <pems-input scale="small" id="f-text" name="Text" value="@q.Text" maxlength="200" placeholder="@Localizer["Tm_SearchPlaceholder"]" />
-        </div>
-        <div class="col-md-2">
+        </pems-col>
+        <pems-col md="2">
             <pems-label css="small" for="f-space">@Localizer["Tm_Field_Space"]</pems-label>
             <pems-select scale="small" id="f-space" name="WorkSpaceId">
                 <option value="">@Localizer["Tm_Any"]</option>
                 @foreach (var s in spaces) { <option value="@s.Id" selected="@(q.WorkSpaceId == s.Id)">@s.Key · @TaskManagerUi.Name(s.Name, s.NameFa)</option> }
             </pems-select>
-        </div>
-        <div class="col-md-2">
+        </pems-col>
+        <pems-col md="2">
             <pems-label css="small" for="f-assignee">@Localizer["Tm_Field_Assignee"]</pems-label>
             <pems-select scale="small" id="f-assignee" name="Assignee">
                 <option value="">@Localizer["Tm_Any"]</option>
@@ -45,44 +45,44 @@
                     foreach (var e in assignees.Candidates) { <option value="@e.EmployeeId" selected="@(q.Assignee == e.EmployeeId.ToString())">@e.Name</option> }
                 }
             </pems-select>
-        </div>
-        <div class="col-md-2">
+        </pems-col>
+        <pems-col md="2">
             <pems-label css="small" for="f-status">@Localizer["Tm_Field_Status"]</pems-label>
             <pems-select scale="small" id="f-status" name="StatusCategory">
                 <option value="">@Localizer["Tm_Any"]</option>
                 @foreach (var c in new[] { "NotDone", "ToDo", "InProgress", "Done" })
                 { <option value="@c" selected="@(q.StatusCategory == c)">@Localizer["Tm_Category_" + c]</option> }
             </pems-select>
-        </div>
-        <div class="col-md-1">
+        </pems-col>
+        <pems-col md="1">
             <pems-label css="small" for="f-priority">@Localizer["Tm_Field_Priority"]</pems-label>
             <pems-select scale="small" id="f-priority" name="Priority">
                 <option value="">@Localizer["Tm_Any"]</option>
                 @foreach (var p in PEMS.Domain.Entities.TaskItemPriorities.All) { <option value="@p" selected="@(q.Priority == p)">@TaskManagerUi.Priority(Localizer, p)</option> }
             </pems-select>
-        </div>
+        </pems-col>
         @if (types != null)
         {
-            <div class="col-md-2">
+            <pems-col md="2">
                 <pems-label css="small" for="f-type">@Localizer["Tm_Field_Type"]</pems-label>
                 <pems-select scale="small" id="f-type" name="TypeId">
                     <option value="">@Localizer["Tm_Any"]</option>
                     @foreach (var t in types) { <option value="@t.Id" selected="@(q.TypeId == t.Id)">@TaskManagerUi.Name(t.Name, t.NameFa)</option> }
                 </pems-select>
-            </div>
+            </pems-col>
         }
-        <div class="col-md-2">
+        <pems-col md="2">
             <div class="form-check">
                 <pems-input type="checkbox" id="f-archived" name="IncludeArchived" value="true" checked="@q.IncludeArchived" kind="check" />
                 <label class="form-check-label small" for="f-archived">@Localizer["Tm_IncludeArchived"]</label>
             </div>
-        </div>
+        </pems-col>
         <input type="hidden" name="Sort" value="@q.Sort" />
         <input type="hidden" name="Descending" value="@(q.Descending ? "true" : "false")" />
-        <div class="col-auto d-flex gap-2">
+        <pems-col span="auto" css="d-flex gap-2">
             <pems-button tone="primary" size="small"><pems-icon name="bi-funnel" aria-hidden="true" /> @Localizer["Tm_Filter"]</pems-button>
             <pems-button tone="neutral" size="small" outline="true" as="a" asp-action="AllWork">@Localizer["Tm_Reset"]</pems-button>
-        </div>
+        </pems-col>
     </form>
     <div class="small text-muted mt-2">
         @Localizer["Tm_SortBy"]:

@@ -26,53 +26,53 @@
 </div>
 <div class="content-card mb-3">
     <form method="get" class="row g-2">
-        <div class="col-md-3">
+        <pems-col md="3">
             <pems-select scale="small" name="disciplineId">
                 <option value="">@Localizer["All Disciplines"]</option>
                 @foreach (var d in disciplines) { <option value="@d.DisciplineId" selected="@(d.DisciplineId == (int?)ViewBag.SelectedDisciplineId)">@d.Name</option> }
             </pems-select>
-        </div>
-        <div class="col-md-3">
+        </pems-col>
+        <pems-col md="3">
             <pems-select scale="small" name="projectId">
                 <option value="">@Localizer["All Projects"]</option>
                 @foreach (var p in projects) { <option value="@p.ProjectId" selected="@(p.ProjectId == (int?)ViewBag.SelectedProjectId)">@p.ProjectName</option> }
             </pems-select>
-        </div>
-        <div class="col-md-2"><pems-date name="fromDate" value="@(((DateTime?)ViewBag.FromDate)?.ToString("yyyy-MM-dd"))" scale="small" /></div>
-        <div class="col-md-2"><pems-date name="toDate" value="@(((DateTime?)ViewBag.ToDate)?.ToString("yyyy-MM-dd"))" scale="small" /></div>
-        <div class="col-md-2"><pems-button tone="primary" size="small" css="w-100"><pems-icon name="bi-funnel" /> @Localizer["Apply"]</pems-button></div>
+        </pems-col>
+        <pems-col md="2"><pems-date name="fromDate" value="@(((DateTime?)ViewBag.FromDate)?.ToString("yyyy-MM-dd"))" scale="small" /></pems-col>
+        <pems-col md="2"><pems-date name="toDate" value="@(((DateTime?)ViewBag.ToDate)?.ToString("yyyy-MM-dd"))" scale="small" /></pems-col>
+        <pems-col md="2"><pems-button tone="primary" size="small" css="w-100"><pems-icon name="bi-funnel" /> @Localizer["Apply"]</pems-button></pems-col>
     </form>
 </div>
 
-<div class="row g-3 mb-3">
-    <div class="col-md-2 col-sm-6"><pems-kpi-tile icon="bi-envelope" color="slate" label="@Localizer["Total"]">@Model.TotalLetters</pems-kpi-tile></div>
-    <div class="col-md-2 col-sm-6"><pems-kpi-tile icon="bi-envelope-arrow-down" color="green" label="@Localizer["Incoming"]">@Model.TotalIncoming</pems-kpi-tile></div>
-    <div class="col-md-2 col-sm-6"><pems-kpi-tile icon="bi-envelope-arrow-up" color="blue" label="@Localizer["Outgoing"]">@Model.TotalOutgoing</pems-kpi-tile></div>
-    <div class="col-md-2 col-sm-6"><pems-kpi-tile icon="bi-envelope" color="purple" label="@Localizer["Internal"]">@Model.TotalInternal</pems-kpi-tile></div>
-    <div class="col-md-2 col-sm-6"><pems-kpi-tile icon="bi-exclamation-triangle" color="red" label="Overdue Referrals">@Model.OverdueReferrals</pems-kpi-tile></div>
-    <div class="col-md-2 col-sm-6"><pems-kpi-tile icon="bi-stopwatch" color="amber" label="Avg. Referral Time">@(Model.AvgReferralCompletionDays.HasValue ? Model.AvgReferralCompletionDays.Value.ToString("0.0") + "d" : "-")</pems-kpi-tile></div>
-</div>
+<pems-row gap="3" css="mb-3">
+    <pems-col md="2" sm="6"><pems-kpi-tile icon="bi-envelope" color="slate" label="@Localizer["Total"]">@Model.TotalLetters</pems-kpi-tile></pems-col>
+    <pems-col md="2" sm="6"><pems-kpi-tile icon="bi-envelope-arrow-down" color="green" label="@Localizer["Incoming"]">@Model.TotalIncoming</pems-kpi-tile></pems-col>
+    <pems-col md="2" sm="6"><pems-kpi-tile icon="bi-envelope-arrow-up" color="blue" label="@Localizer["Outgoing"]">@Model.TotalOutgoing</pems-kpi-tile></pems-col>
+    <pems-col md="2" sm="6"><pems-kpi-tile icon="bi-envelope" color="purple" label="@Localizer["Internal"]">@Model.TotalInternal</pems-kpi-tile></pems-col>
+    <pems-col md="2" sm="6"><pems-kpi-tile icon="bi-exclamation-triangle" color="red" label="Overdue Referrals">@Model.OverdueReferrals</pems-kpi-tile></pems-col>
+    <pems-col md="2" sm="6"><pems-kpi-tile icon="bi-stopwatch" color="amber" label="Avg. Referral Time">@(Model.AvgReferralCompletionDays.HasValue ? Model.AvgReferralCompletionDays.Value.ToString("0.0") + "d" : "-")</pems-kpi-tile></pems-col>
+</pems-row>
 
-<div class="row g-3">
-    <div class="col-lg-8">
+<pems-row gap="3">
+    <pems-col lg="8">
         <div class="content-card mb-3">
             <h6 class="mb-3">Correspondence Volume (last 12 months)</h6>
             <pems-chart spec="@volumeChart" />
         </div>
-    </div>
-    <div class="col-lg-4">
+    </pems-col>
+    <pems-col lg="4">
         <div class="content-card mb-3">
             <h6 class="mb-3">@Localizer["By Status"]</h6>
             <pems-chart spec="@statusChart" />
         </div>
-    </div>
-    <div class="col-lg-6">
+    </pems-col>
+    <pems-col lg="6">
         <div class="content-card mb-3">
             <h6 class="mb-3">@Localizer["By Discipline"]</h6>
             <pems-chart spec="@disciplineChart" />
         </div>
-    </div>
-    <div class="col-lg-6">
+    </pems-col>
+    <pems-col lg="6">
         <div class="content-card mb-3">
             <h6 class="mb-3">Top Tags</h6>
             <ul class="list-unstyled mb-0">
@@ -86,8 +86,8 @@
             </ul>
             @if (!Model.TopTags.Any()) { <p class="text-muted small">No tags used yet.</p> }
         </div>
-    </div>
-</div>
+    </pems-col>
+</pems-row>
 
 <div class="content-card">
     <h6 class="mb-3">Top Senders</h6>

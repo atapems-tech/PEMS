@@ -9,8 +9,8 @@
 </div>
 <p class="text-muted small">@Localizer["Rcm_ImportHint"]</p>
 
-<div class="row g-3 mb-3">
-    <div class="col-md-6">
+<pems-row gap="3" css="mb-3">
+    <pems-col md="6">
         <div class="content-card">
             <h6 class="small fw-bold">@Localizer["Rcm_ImportStrategies"]</h6>
             <form asp-action="Preview" method="post" enctype="multipart/form-data" class="d-flex gap-2">
@@ -20,8 +20,8 @@
             </form>
             <a asp-action="Template" asp-route-kind="strategies" class="small">@Localizer["Rcm_DownloadTemplate"]</a>
         </div>
-    </div>
-    <div class="col-md-6">
+    </pems-col>
+    <pems-col md="6">
         <div class="content-card">
             <h6 class="small fw-bold">@Localizer["Rcm_ImportAssignments"]</h6>
             <form asp-action="Preview" method="post" enctype="multipart/form-data" class="d-flex gap-2">
@@ -31,8 +31,8 @@
             </form>
             <a asp-action="Template" asp-route-kind="assignments" class="small">@Localizer["Rcm_DownloadTemplate"]</a>
         </div>
-    </div>
-</div>
+    </pems-col>
+</pems-row>
 
 @if (Model.Result != null)
 {

@@ -75,20 +75,20 @@
     <form asp-action="Reply" method="post">
         <input type="hidden" name="parentLetterId" value="@parentLetterId" />
 
-        <div class="row g-3">
-            <div class="col-md-6">
+        <pems-row gap="3">
+            <pems-col md="6">
                 <pems-label>To</pems-label>
                 <pems-input name="receiver" value="@ViewBag.DefaultReceiver" />
-            </div>
-            <div class="col-md-6">
+            </pems-col>
+            <pems-col md="6">
                 <pems-label>@Localizer["Subject"]</pems-label>
                 <pems-input name="subject" value="@ViewBag.DefaultSubject" required />
-            </div>
-            <div class="col-12">
+            </pems-col>
+            <pems-col span="12">
                 <pems-label>Body</pems-label>
                 <pems-textarea name="body" id="replyBodyEditor" rows="6">@prefill?.Body</pems-textarea>
-            </div>
-        </div>
+            </pems-col>
+        </pems-row>
 
         <div class="mt-4">
             <pems-button tone="primary" type="submit"><pems-icon name="bi-reply-fill" /> Send Reply</pems-button>

@@ -81,4 +81,6 @@ public static class UiKeys
     public const string FormLabel = "form-label";
     public const string ValidationSummary = "validation-summary";
     public const string Icon = "icon";
+    public const string Row = "row";
+    public const string Col = "col";
 }

@@ -248,14 +248,14 @@
                     <div class="lc-error" data-error-for="category" role="alert" hidden></div>
                 </div>
 
-                <div class="row g-2">
-                    <div class="col-6 lc-field">
+                <pems-row gap="2">
+                    <pems-col span="6" css="lc-field">
                         <label for="lcPriority">@Localizer["Lt_Priority"]</label>
                         <pems-select id="lcPriority">
                             @foreach (var p in LetterComposeRules.Priorities) { <option value="@p" selected="@(input.Priority == p)">@Localizer["Lt_P_" + p]</option> }
                         </pems-select>
-                    </div>
-                    <div class="col-6 lc-field">
+                    </pems-col>
+                    <pems-col span="6" css="lc-field">
                         <label for="lcConf">@Localizer["Lt_Confidentiality"]</label>
                         <pems-select id="lcConf">
                             @foreach (var c in LetterComposeRules.Confidentialities) { <option value="@c" selected="@(input.ConfidentialityLevel == c)" disabled="@(LetterComposeRules.ConfidentialityRank(c) < Model.MinConfidentialityRank)">@Localizer["Lt_C_" + c]</option> }
@@ -264,8 +264,8 @@
                         {
                             <div class="lc-help">@Localizer["Lc_ConfidentialityMin"].Value.Replace("{0}", Localizer["Lt_C_" + Model.MinConfidentiality].Value)</div>
                         }
-                    </div>
-                </div>
+                    </pems-col>
+                </pems-row>
 
                 <div class="lc-field">
                     <label for="lcDate">@Localizer["Lt_Date"]</label>

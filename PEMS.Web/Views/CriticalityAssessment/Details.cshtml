@@ -33,51 +33,51 @@
         <pems-badge tone="@StatusBadge(Model.Status)" css="ms-auto" style="font-size:1rem;">@Model.Status</pems-badge>
     </div>
 
-    <div class="row g-2 small mt-2">
-        <div class="col-md-3"><strong>@Localizer["Prepared By"]</strong><div>@(Model.PreparedBy ?? "-")</div></div>
-        <div class="col-md-3"><strong>@Localizer["Reviewed By"]</strong><div>@(Model.ReviewedBy ?? "-")</div></div>
-        <div class="col-md-3"><strong>@Localizer["Approved By"]</strong><div>@(Model.ApprovedBy ?? "-")</div></div>
-        <div class="col-md-3"><strong>Approved At</strong><div>@(Model.ApprovedAt?.ToString("yyyy-MM-dd HH:mm") ?? "-")</div></div>
-    </div>
+    <pems-row gap="2" css="small mt-2">
+        <pems-col md="3"><strong>@Localizer["Prepared By"]</strong><div>@(Model.PreparedBy ?? "-")</div></pems-col>
+        <pems-col md="3"><strong>@Localizer["Reviewed By"]</strong><div>@(Model.ReviewedBy ?? "-")</div></pems-col>
+        <pems-col md="3"><strong>@Localizer["Approved By"]</strong><div>@(Model.ApprovedBy ?? "-")</div></pems-col>
+        <pems-col md="3"><strong>Approved At</strong><div>@(Model.ApprovedAt?.ToString("yyyy-MM-dd HH:mm") ?? "-")</div></pems-col>
+    </pems-row>
 
-    <div class="row g-2 mt-3">
+    <pems-row gap="2" css="mt-3">
         @if (Model.Status == "DRAFT" && canEdit)
         {
-            <div class="col-auto">
+            <pems-col span="auto">
                 <pems-button tone="primary" size="small" outline="true" type="button" data-bs-toggle="modal" data-bs-target="#scoresModal">@Localizer["Set Dimension Scores"]</pems-button>
-            </div>
+            </pems-col>
         }
         @if (Model.Status != "APPROVED" && Model.Status != "SUPERSEDED" && canEdit)
         {
-            <div class="col-auto">
+            <pems-col span="auto">
                 <pems-button tone="primary" size="small" outline="true" type="button" data-bs-toggle="modal" data-bs-target="#evidenceModal">@Localizer["Add Evidence"]</pems-button>
-            </div>
+            </pems-col>
         }
         @if (Model.Status == "DRAFT" && canEdit)
         {
-            <div class="col-auto">
+            <pems-col span="auto">
                 <form asp-action="SubmitForReview" method="post">
                     <input type="hidden" name="id" value="@Model.CriticalityAssessmentId" />
                     <pems-button tone="warning" size="small" outline="true" type="submit">@Localizer["Submit for Review"]</pems-button>
                 </form>
-            </div>
+            </pems-col>
         }
         @if (Model.Status == "UNDER_REVIEW" && canApprove)
         {
-            <div class="col-auto">
+            <pems-col span="auto">
                 <form asp-action="Approve" method="post" data-pems-confirm="تایید این ارزیابی، نتیجه را بلافاصله در EquipmentCriticality منتشر می‌کند. ادامه می‌دهید؟">
                     <input type="hidden" name="id" value="@Model.CriticalityAssessmentId" />
                     <pems-button tone="success" size="small" type="submit">Approve &amp; Publish</pems-button>
                 </form>
-            </div>
-            <div class="col-auto">
+            </pems-col>
+            <pems-col span="auto">
                 <form asp-action="Reject" method="post">
                     <input type="hidden" name="id" value="@Model.CriticalityAssessmentId" />
                     <pems-button tone="danger" size="small" outline="true" type="submit">@Localizer["Reject → Draft"]</pems-button>
                 </form>
-            </div>
+            </pems-col>
         }
-    </div>
+    </pems-row>
 </div>
 
 <pems-nav css="mb-3">

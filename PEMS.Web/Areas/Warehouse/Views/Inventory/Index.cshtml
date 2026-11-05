@@ -6,25 +6,25 @@
     var recentTransactions = (List<PEMS.Domain.Entities.InventoryTransaction>)ViewBag.RecentTransactions;
 }
 
-<div class="row g-3 mb-3">
-    <div class="col-md-2"><pems-kpi-tile label="@Localizer["Total Materials"]">@ViewBag.TotalMaterialItems</pems-kpi-tile></div>
-    <div class="col-md-2"><pems-kpi-tile label="Stock Items">@ViewBag.StockItems</pems-kpi-tile></div>
-    <div class="col-md-2"><pems-kpi-tile tone="warning" label="@Localizer["Critical"]">@ViewBag.CriticalItems</pems-kpi-tile></div>
-    <div class="col-md-2"><pems-kpi-tile tone="danger" label="Out of Stock">@ViewBag.OutOfStockCount</pems-kpi-tile></div>
-    <div class="col-md-2"><pems-kpi-tile label="@Localizer["Warehouses"]">@ViewBag.TotalWarehouses</pems-kpi-tile></div>
-    <div class="col-md-2"><pems-kpi-tile label="Active Reservations">@ViewBag.ActiveReservations</pems-kpi-tile></div>
-</div>
+<pems-row gap="3" css="mb-3">
+    <pems-col md="2"><pems-kpi-tile label="@Localizer["Total Materials"]">@ViewBag.TotalMaterialItems</pems-kpi-tile></pems-col>
+    <pems-col md="2"><pems-kpi-tile label="Stock Items">@ViewBag.StockItems</pems-kpi-tile></pems-col>
+    <pems-col md="2"><pems-kpi-tile tone="warning" label="@Localizer["Critical"]">@ViewBag.CriticalItems</pems-kpi-tile></pems-col>
+    <pems-col md="2"><pems-kpi-tile tone="danger" label="Out of Stock">@ViewBag.OutOfStockCount</pems-kpi-tile></pems-col>
+    <pems-col md="2"><pems-kpi-tile label="@Localizer["Warehouses"]">@ViewBag.TotalWarehouses</pems-kpi-tile></pems-col>
+    <pems-col md="2"><pems-kpi-tile label="Active Reservations">@ViewBag.ActiveReservations</pems-kpi-tile></pems-col>
+</pems-row>
 
-<div class="row g-3 mb-3">
-    <div class="col-md-4">
+<pems-row gap="3" css="mb-3">
+    <pems-col md="4">
         <div class="content-card">
             <pems-button as="a" tone="primary" size="small" outline="true" css="w-100 mb-2" asp-controller="MaterialItem" asp-action="Index"><pems-icon name="bi-box-seam" /> @Localizer["Material Master"]</pems-button>
             <pems-button as="a" tone="neutral" size="small" outline="true" css="w-100 mb-2" asp-controller="InventoryMasterData" asp-action="Index"><pems-icon name="bi-diagram-3" /> @Localizer["Master Data"]</pems-button>
             <pems-button as="a" tone="neutral" size="small" outline="true" css="w-100 mb-2" asp-controller="InventoryTransaction" asp-action="Index"><pems-icon name="bi-list-ul" /> @Localizer["Transaction Ledger"]</pems-button>
             <pems-button as="a" tone="neutral" size="small" outline="true" css="w-100 mb-2" asp-controller="StoreRequisition" asp-action="Index"><pems-icon name="bi-clipboard-check" /> @Localizer["Store Requisitions"]</pems-button>
         </div>
-    </div>
-    <div class="col-md-8">
+    </pems-col>
+    <pems-col md="8">
         <div class="content-card">
             <h6 class="mb-3"><pems-icon name="bi-exclamation-triangle" css="text-danger" /> Low Stock</h6>
             <pems-table kind="enterprise" scale="small">
@@ -43,8 +43,8 @@
             </pems-table>
             @if (!lowStockItems.Any()) { <p class="text-muted text-center py-3">@Localizer["فعلاً موجودی کمی ثبت نشده."]</p> }
         </div>
-    </div>
-</div>
+    </pems-col>
+</pems-row>
 
 <div class="content-card">
     <h6 class="mb-3">Recent Transactions</h6>

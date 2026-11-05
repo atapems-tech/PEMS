@@ -14,20 +14,20 @@
     برنامه‌ریزی و پیگیری شکاف‌های داده.
 </p>
 
-<div class="row g-3 mb-3">
-    <div class="col-md-3">
+<pems-row gap="3" css="mb-3">
+    <pems-col md="3">
         <pems-kpi-tile label="@Localizer["کل تجهیزات"]">@Model.TotalEquipmentCount</pems-kpi-tile>
-    </div>
-    <div class="col-md-3">
+    </pems-col>
+    <pems-col md="3">
         <pems-kpi-tile tone="success" label="@Localizer["کاملاً وصل (هر ۴ نوع رابطه)"]">@Model.FullyLinkedCount</pems-kpi-tile>
-    </div>
-    <div class="col-md-3">
+    </pems-col>
+    <pems-col md="3">
         <pems-kpi-tile tone="warning" label="@Localizer["ناقص (بعضی روابط)"]">@Model.PartiallyLinkedCount</pems-kpi-tile>
-    </div>
-    <div class="col-md-3">
+    </pems-col>
+    <pems-col md="3">
         <pems-kpi-tile tone="danger" label="@Localizer["کاملاً بدون رابطه"]">@Model.UnlinkedCount</pems-kpi-tile>
-    </div>
-</div>
+    </pems-col>
+</pems-row>
 
 <div class="content-card">
     <pems-table kind="enterprise" css="mb-0">

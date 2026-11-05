@@ -12,44 +12,44 @@
         <input type="hidden" name="mechanicalEquipmentId" value="@Model.MechanicalEquipmentId" />
 
         <h6 class="text-muted mb-2">@Localizer["General"]</h6>
-        <div class="row g-3 mb-4">
-            <div class="col-md-4">
+        <pems-row gap="3" css="mb-4">
+            <pems-col md="4">
                 <pems-label>@Localizer["Equipment Type"]</pems-label>
                 <pems-input name="EquipmentType" value="@Model.EquipmentType" required />
-            </div>
-            <div class="col-md-4">
+            </pems-col>
+            <pems-col md="4">
                 <pems-label>@Localizer["Manufacturer"]</pems-label>
                 <pems-input name="Manufacturer" value="@Model.Manufacturer" />
-            </div>
-            <div class="col-md-4">
+            </pems-col>
+            <pems-col md="4">
                 <pems-label>@Localizer["Model"]</pems-label>
                 <pems-input name="Model" value="@Model.Model" />
-            </div>
-            <div class="col-md-3">
+            </pems-col>
+            <pems-col md="3">
                 <pems-label>@Localizer["Material"]</pems-label>
                 <pems-input name="Material" value="@Model.Material" />
-            </div>
-            <div class="col-md-3">
+            </pems-col>
+            <pems-col md="3">
                 <pems-label>@Localizer["Design Pressure"]</pems-label>
                 <pems-input type="number" step="any" name="DesignPressure" value="@Model.DesignPressure" />
-            </div>
-            <div class="col-md-3">
+            </pems-col>
+            <pems-col md="3">
                 <pems-label>@Localizer["Design Temperature"]</pems-label>
                 <pems-input type="number" step="any" name="DesignTemperature" value="@Model.DesignTemperature" />
-            </div>
-            <div class="col-md-3">
+            </pems-col>
+            <pems-col md="3">
                 <pems-label>@Localizer["Operating Pressure"]</pems-label>
                 <pems-input type="number" step="any" name="OperatingPressure" value="@Model.OperatingPressure" />
-            </div>
-            <div class="col-md-3">
+            </pems-col>
+            <pems-col md="3">
                 <pems-label>@Localizer["Operating Temperature"]</pems-label>
                 <pems-input type="number" step="any" name="OperatingTemperature" value="@Model.OperatingTemperature" />
-            </div>
-            <div class="col-12">
+            </pems-col>
+            <pems-col span="12">
                 <pems-label>@Localizer["توضیحات (اختیاری)"]</pems-label>
                 <pems-textarea name="Description" rows="2">@Model.Description</pems-textarea>
-            </div>
-        </div>
+            </pems-col>
+        </pems-row>
 
         <div class="d-flex gap-2">
             <pems-button tone="primary" type="submit"><pems-icon name="bi-save" /> @Localizer["ذخیره"]</pems-button>

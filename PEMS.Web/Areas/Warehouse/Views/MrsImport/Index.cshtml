@@ -19,9 +19,9 @@
         بازبینی و تایید در صفحه‌ی Review، ردیف‌ها به کاتالوگ متریال و دفتر تراکنش تبدیل می‌شوند.
     </p>
     <form asp-action="Upload" method="post" enctype="multipart/form-data" class="row g-2">
-        <div class="col-md-6"><pems-input scale="small" type="file" name="file" accept=".xlsx,.xlsm" required /></div>
-        <div class="col-md-4"><pems-input scale="small" type="text" name="sheetName" placeholder="@Localizer["نام شیت (اختیاری - پیش‌فرض: بزرگ‌ترین شیت)"]" /></div>
-        <div class="col-md-2"><pems-button tone="primary" size="small" css="w-100" type="submit"><pems-icon name="bi-upload" /> @Localizer["Stage"]</pems-button></div>
+        <pems-col md="6"><pems-input scale="small" type="file" name="file" accept=".xlsx,.xlsm" required /></pems-col>
+        <pems-col md="4"><pems-input scale="small" type="text" name="sheetName" placeholder="@Localizer["نام شیت (اختیاری - پیش‌فرض: بزرگ‌ترین شیت)"]" /></pems-col>
+        <pems-col md="2"><pems-button tone="primary" size="small" css="w-100" type="submit"><pems-icon name="bi-upload" /> @Localizer["Stage"]</pems-button></pems-col>
     </form>
 </div>
 

@@ -27,60 +27,60 @@
 
 <div class="content-card mb-3">
     <form method="get" class="row g-2">
-        <div class="col-md-3">
+        <pems-col md="3">
             <pems-select scale="small" name="projectId">
                 <option value="">@Localizer["All Projects"]</option>
                 @foreach (var p in projects) { <option value="@p.ProjectId" selected="@(p.ProjectId == (int?)ViewBag.SelectedProjectId)">@p.ProjectName</option> }
             </pems-select>
-        </div>
-        <div class="col-md-3">
+        </pems-col>
+        <pems-col md="3">
             <pems-select scale="small" name="disciplineId">
                 <option value="">@Localizer["All Disciplines"]</option>
                 @foreach (var d in disciplines) { <option value="@d.DisciplineId" selected="@(d.DisciplineId == (int?)ViewBag.SelectedDisciplineId)">@d.Name</option> }
             </pems-select>
-        </div>
-        <div class="col-md-2"><pems-date name="fromDate" value="@(((DateTime?)ViewBag.FromDate)?.ToString("yyyy-MM-dd"))" scale="small" /></div>
-        <div class="col-md-2"><pems-date name="toDate" value="@(((DateTime?)ViewBag.ToDate)?.ToString("yyyy-MM-dd"))" scale="small" /></div>
-        <div class="col-md-2"><pems-button tone="primary" size="small" css="w-100"><pems-icon name="bi-funnel" /> @Localizer["Apply"]</pems-button></div>
+        </pems-col>
+        <pems-col md="2"><pems-date name="fromDate" value="@(((DateTime?)ViewBag.FromDate)?.ToString("yyyy-MM-dd"))" scale="small" /></pems-col>
+        <pems-col md="2"><pems-date name="toDate" value="@(((DateTime?)ViewBag.ToDate)?.ToString("yyyy-MM-dd"))" scale="small" /></pems-col>
+        <pems-col md="2"><pems-button tone="primary" size="small" css="w-100"><pems-icon name="bi-funnel" /> @Localizer["Apply"]</pems-button></pems-col>
     </form>
 </div>
 
-<div class="row g-3 mb-3">
-    <div class="col-md-2 col-sm-6"><pems-kpi-tile icon="bi-folder2-open" color="slate" label="Packages">@Model.TotalPackages</pems-kpi-tile></div>
-    <div class="col-md-2 col-sm-6"><pems-kpi-tile icon="bi-cart-check" color="blue" label="@Localizer["MRs"]">@Model.TotalMRs</pems-kpi-tile></div>
-    <div class="col-md-2 col-sm-6"><pems-kpi-tile icon="bi-file-earmark-spreadsheet" color="purple" label="@Localizer["MRQs"]">@Model.TotalMRQs</pems-kpi-tile></div>
-    <div class="col-md-3 col-sm-6"><pems-kpi-tile icon="bi-hourglass-split" color="amber" label="@Localizer["Open"]">@Model.OpenCount</pems-kpi-tile></div>
-    <div class="col-md-3 col-sm-6"><pems-kpi-tile icon="bi-check-circle" color="green" label="@Localizer["Closed"]">@Model.ClosedCount</pems-kpi-tile></div>
-</div>
+<pems-row gap="3" css="mb-3">
+    <pems-col md="2" sm="6"><pems-kpi-tile icon="bi-folder2-open" color="slate" label="Packages">@Model.TotalPackages</pems-kpi-tile></pems-col>
+    <pems-col md="2" sm="6"><pems-kpi-tile icon="bi-cart-check" color="blue" label="@Localizer["MRs"]">@Model.TotalMRs</pems-kpi-tile></pems-col>
+    <pems-col md="2" sm="6"><pems-kpi-tile icon="bi-file-earmark-spreadsheet" color="purple" label="@Localizer["MRQs"]">@Model.TotalMRQs</pems-kpi-tile></pems-col>
+    <pems-col md="3" sm="6"><pems-kpi-tile icon="bi-hourglass-split" color="amber" label="@Localizer["Open"]">@Model.OpenCount</pems-kpi-tile></pems-col>
+    <pems-col md="3" sm="6"><pems-kpi-tile icon="bi-check-circle" color="green" label="@Localizer["Closed"]">@Model.ClosedCount</pems-kpi-tile></pems-col>
+</pems-row>
 
-<div class="row g-3 mb-3">
-    <div class="col-md-2 col-sm-6"><pems-kpi-tile icon="bi-clipboard-check" color="blue" label="@Localizer["Tenders"]">@Model.TotalTenders</pems-kpi-tile></div>
-    <div class="col-md-2 col-sm-6"><pems-kpi-tile icon="bi-cash-coin" color="purple" label="@Localizer["Bids"]">@Model.TotalBids</pems-kpi-tile></div>
-    <div class="col-md-2 col-sm-6"><pems-kpi-tile icon="bi-file-earmark-ruled" color="slate" label="Contracts">@Model.TotalContracts</pems-kpi-tile></div>
-    <div class="col-md-2 col-sm-6"><pems-kpi-tile icon="bi-receipt" color="amber" label="@Localizer["Purchase Orders"]">@Model.TotalPurchaseOrders</pems-kpi-tile></div>
-    <div class="col-md-2 col-sm-6"><pems-kpi-tile icon="bi-flag" color="green" label="@Localizer["Notice to Proceed (NTP)"]">@Model.TotalNTPsIssued</pems-kpi-tile></div>
-</div>
+<pems-row gap="3" css="mb-3">
+    <pems-col md="2" sm="6"><pems-kpi-tile icon="bi-clipboard-check" color="blue" label="@Localizer["Tenders"]">@Model.TotalTenders</pems-kpi-tile></pems-col>
+    <pems-col md="2" sm="6"><pems-kpi-tile icon="bi-cash-coin" color="purple" label="@Localizer["Bids"]">@Model.TotalBids</pems-kpi-tile></pems-col>
+    <pems-col md="2" sm="6"><pems-kpi-tile icon="bi-file-earmark-ruled" color="slate" label="Contracts">@Model.TotalContracts</pems-kpi-tile></pems-col>
+    <pems-col md="2" sm="6"><pems-kpi-tile icon="bi-receipt" color="amber" label="@Localizer["Purchase Orders"]">@Model.TotalPurchaseOrders</pems-kpi-tile></pems-col>
+    <pems-col md="2" sm="6"><pems-kpi-tile icon="bi-flag" color="green" label="@Localizer["Notice to Proceed (NTP)"]">@Model.TotalNTPsIssued</pems-kpi-tile></pems-col>
+</pems-row>
 
-<div class="row g-3">
-    <div class="col-lg-8">
+<pems-row gap="3">
+    <pems-col lg="8">
         <div class="content-card mb-3">
             <h6 class="mb-3">Packages (last 12 months)</h6>
             <pems-chart spec="@volumeChart" />
         </div>
-    </div>
-    <div class="col-lg-4">
+    </pems-col>
+    <pems-col lg="4">
         <div class="content-card mb-3">
             <h6 class="mb-3">@Localizer["By Status"]</h6>
             <pems-chart spec="@statusChart" />
         </div>
-    </div>
-    <div class="col-lg-6">
+    </pems-col>
+    <pems-col lg="6">
         <div class="content-card mb-3">
             <h6 class="mb-3">@Localizer["By Discipline"]</h6>
             <pems-chart spec="@disciplineChart" />
         </div>
-    </div>
-    <div class="col-lg-6">
+    </pems-col>
+    <pems-col lg="6">
         <div class="content-card mb-3">
             <h6 class="mb-3">Top Vendors (by MRQ count)</h6>
             <ul class="list-unstyled mb-0">
@@ -91,8 +91,8 @@
             </ul>
             @if (!Model.ByVendor.Any()) { <p class="text-muted small">@Localizer["No data."]</p> }
         </div>
-    </div>
-</div>
+    </pems-col>
+</pems-row>
 
 <div class="content-card mt-3">
     <h6 class="mb-3">@Localizer["Tender-to-Contract Pipeline"]</h6>

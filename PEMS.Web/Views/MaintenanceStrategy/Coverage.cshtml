@@ -13,20 +13,20 @@
 </div>
 <p class="text-muted small">@Localizer["Rcm_CoverageHint"]</p>
 
-<div class="row g-3 mb-3">
-    <div class="col-md-3"><div class="content-card"><div class="text-muted small">@Localizer["Rcm_TotalEquipment"]</div><div class="h4 mb-0">@Model.TotalEquipment.ToString("N0")</div></div></div>
-    <div class="col-md-3"><div class="content-card"><div class="text-muted small">@Localizer["Rcm_CoveredEquipment"]</div><div class="h4 mb-0">@Model.CoveredEquipment.ToString("N0") <small class="text-muted">(@pct%)</small></div></div></div>
-    <div class="col-md-3"><div class="content-card"><div class="text-muted small">@Localizer["Rcm_Unrated"]</div><div class="h4 mb-0 @(Model.UnratedEquipment > 0 ? "text-warning" : "")">@Model.UnratedEquipment.ToString("N0")</div></div></div>
-    <div class="col-md-3"><div class="content-card"><div class="text-muted small">@Localizer["Rcm_Unclassified"]</div><div class="h4 mb-0 @(Model.UnclassifiedEquipment > 0 ? "text-warning" : "")">@Model.UnclassifiedEquipment.ToString("N0")</div></div></div>
-</div>
+<pems-row gap="3" css="mb-3">
+    <pems-col md="3"><div class="content-card"><div class="text-muted small">@Localizer["Rcm_TotalEquipment"]</div><div class="h4 mb-0">@Model.TotalEquipment.ToString("N0")</div></div></pems-col>
+    <pems-col md="3"><div class="content-card"><div class="text-muted small">@Localizer["Rcm_CoveredEquipment"]</div><div class="h4 mb-0">@Model.CoveredEquipment.ToString("N0") <small class="text-muted">(@pct%)</small></div></div></pems-col>
+    <pems-col md="3"><div class="content-card"><div class="text-muted small">@Localizer["Rcm_Unrated"]</div><div class="h4 mb-0 @(Model.UnratedEquipment > 0 ? "text-warning" : "")">@Model.UnratedEquipment.ToString("N0")</div></div></pems-col>
+    <pems-col md="3"><div class="content-card"><div class="text-muted small">@Localizer["Rcm_Unclassified"]</div><div class="h4 mb-0 @(Model.UnclassifiedEquipment > 0 ? "text-warning" : "")">@Model.UnclassifiedEquipment.ToString("N0")</div></div></pems-col>
+</pems-row>
 
 @if (Model.UnratedEquipment == Model.TotalEquipment && Model.TotalEquipment > 0)
 {
     <pems-alert tone="warning" css="small"><pems-icon name="bi-exclamation-triangle" /> @Localizer["Rcm_NoCriticalityData"]</pems-alert>
 }
 
-<div class="row">
-    <div class="col-md-5">
+<pems-row>
+    <pems-col md="5">
         <div class="content-card mb-3">
             <h6 class="small fw-bold">@Localizer["Rcm_ByCriticality"]</h6>
             <pems-table scale="small" css="table-enterprise">
@@ -39,8 +39,8 @@
                 </tbody>
             </pems-table>
         </div>
-    </div>
-    <div class="col-md-7">
+    </pems-col>
+    <pems-col md="7">
         <div class="content-card mb-3">
             <h6 class="small fw-bold">@Localizer["Rcm_ByClass"]</h6>
             <div class="pems-s-5f8400ad">
@@ -55,8 +55,8 @@
             </pems-table>
             </div>
         </div>
-    </div>
-</div>
+    </pems-col>
+</pems-row>
 
 <div class="content-card">
     <div class="d-flex justify-content-between align-items-center mb-2">

@@ -134,54 +134,54 @@
             <form asp-action="Create" method="post">
                 <div class="modal-header"><h6 class="modal-title">@Localizer["New Material"]</h6></div>
                 <div class="modal-body">
-                    <div class="row g-3 mb-2">
-                        <div class="col-md-6"><pems-label>@Localizer["Material Code"]</pems-label><pems-input name="materialCode" required /></div>
-                        <div class="col-md-6"><pems-label>@Localizer["Material Type"]</pems-label><pems-input name="materialType" placeholder="Bearing, Valve, Cable..." /></div>
-                    </div>
+                    <pems-row gap="3" css="mb-2">
+                        <pems-col md="6"><pems-label>@Localizer["Material Code"]</pems-label><pems-input name="materialCode" required /></pems-col>
+                        <pems-col md="6"><pems-label>@Localizer["Material Type"]</pems-label><pems-input name="materialType" placeholder="Bearing, Valve, Cable..." /></pems-col>
+                    </pems-row>
                     <div class="mb-2"><pems-label>@Localizer["Description"]</pems-label><pems-input name="description" required /></div>
                     <div class="mb-2"><pems-label>@Localizer["Long Description"]</pems-label><pems-textarea name="longDescription" rows="2"></pems-textarea></div>
-                    <div class="row g-3 mb-2">
-                        <div class="col-md-4">
+                    <pems-row gap="3" css="mb-2">
+                        <pems-col md="4">
                             <pems-label>@Localizer["Category"]</pems-label>
                             <pems-select name="categoryId">
                                 <option value="">--</option>
                                 @foreach (var c in categories) { <option value="@c.MaterialCategoryId">@c.Name</option> }
                             </pems-select>
-                        </div>
-                        <div class="col-md-4">
+                        </pems-col>
+                        <pems-col md="4">
                             <pems-label>@Localizer["Discipline"]</pems-label>
                             <pems-select name="disciplineId">
                                 <option value="">--</option>
                                 @foreach (var d in disciplines) { <option value="@d.DisciplineId">@d.Name</option> }
                             </pems-select>
-                        </div>
-                        <div class="col-md-4">
+                        </pems-col>
+                        <pems-col md="4">
                             <pems-label>@Localizer["UOM"]</pems-label>
                             <pems-select name="uomId">
                                 <option value="">--</option>
                                 @foreach (var u in uoms) { <option value="@u.MaterialUOMId">@u.Code</option> }
                             </pems-select>
-                        </div>
-                    </div>
-                    <div class="row g-3 mb-2">
-                        <div class="col-md-6"><pems-label>@Localizer["Manufacturer"]</pems-label><pems-input name="manufacturer" /></div>
-                        <div class="col-md-6"><pems-label>@Localizer["Manufacturer Part No."]</pems-label><pems-input name="manufacturerPartNumber" /></div>
-                    </div>
-                    <div class="row g-3 mb-2">
-                        <div class="col-md-6">
+                        </pems-col>
+                    </pems-row>
+                    <pems-row gap="3" css="mb-2">
+                        <pems-col md="6"><pems-label>@Localizer["Manufacturer"]</pems-label><pems-input name="manufacturer" /></pems-col>
+                        <pems-col md="6"><pems-label>@Localizer["Manufacturer Part No."]</pems-label><pems-input name="manufacturerPartNumber" /></pems-col>
+                    </pems-row>
+                    <pems-row gap="3" css="mb-2">
+                        <pems-col md="6">
                             <pems-label>Vendor (Supplier)</pems-label>
                             <pems-select name="vendorId">
                                 <option value="">--</option>
                                 @foreach (var v in vendors) { <option value="@v.VendorId">@v.Name</option> }
                             </pems-select>
-                        </div>
-                        <div class="col-md-6"><pems-label>@Localizer["Model"]</pems-label><pems-input name="model" /></div>
-                    </div>
-                    <div class="row g-3 mb-2">
-                        <div class="col-md-4"><pems-label>@Localizer["Size"]</pems-label><pems-input name="size" /></div>
-                        <div class="col-md-4"><pems-label>@Localizer["Material Grade"]</pems-label><pems-input name="materialGrade" /></div>
-                        <div class="col-md-4"><pems-label>@Localizer["Specification"]</pems-label><pems-input name="specification" /></div>
-                    </div>
+                        </pems-col>
+                        <pems-col md="6"><pems-label>@Localizer["Model"]</pems-label><pems-input name="model" /></pems-col>
+                    </pems-row>
+                    <pems-row gap="3" css="mb-2">
+                        <pems-col md="4"><pems-label>@Localizer["Size"]</pems-label><pems-input name="size" /></pems-col>
+                        <pems-col md="4"><pems-label>@Localizer["Material Grade"]</pems-label><pems-input name="materialGrade" /></pems-col>
+                        <pems-col md="4"><pems-label>@Localizer["Specification"]</pems-label><pems-input name="specification" /></pems-col>
+                    </pems-row>
                     <div class="d-flex gap-3">
                         <div class="form-check"><pems-input kind="check" type="checkbox" name="isStockItem" value="true" checked id="isStockItem" /><label class="form-check-label" for="isStockItem">@Localizer["Stock Item"]</label></div>
                         <div class="form-check"><pems-input kind="check" type="checkbox" name="isCritical" value="true" id="isCritical" /><label class="form-check-label" for="isCritical">@Localizer["Critical Spare"]</label></div>

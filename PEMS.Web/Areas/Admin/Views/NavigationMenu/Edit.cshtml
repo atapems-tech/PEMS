@@ -38,17 +38,17 @@
                 }
             </div>
 
-            <div class="row g-3 mb-3">
-                <div class="col-md-6">
+            <pems-row gap="3" css="mb-3">
+                <pems-col md="6">
                     <pems-label for="TitleFa">@Localizer["Nav_Field_TitleFa"]</pems-label>
                     <pems-input id="TitleFa" name="TitleFa" value="@input.TitleFa" maxlength="200" dir="rtl" placeholder="@Model.DefaultTitle" aria-describedby="titleHelp" />
-                </div>
-                <div class="col-md-6">
+                </pems-col>
+                <pems-col md="6">
                     <pems-label for="TitleEn">@Localizer["Nav_Field_TitleEn"]</pems-label>
                     <pems-input id="TitleEn" name="TitleEn" value="@input.TitleEn" maxlength="200" dir="ltr" placeholder="@Model.DefaultTitle" aria-describedby="titleHelp" />
-                </div>
+                </pems-col>
                 <div id="titleHelp" class="form-text">@Localizer["Nav_TitleHelp"]</div>
-            </div>
+            </pems-row>
 
             <div class="mb-3">
                 <pems-label for="Icon">@Localizer["Nav_Field_Icon"]</pems-label>

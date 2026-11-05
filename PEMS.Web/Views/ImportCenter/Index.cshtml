@@ -21,10 +21,10 @@
 
     <div class="content-card mb-3">
         <h6 class="mb-3">@Localizer["IC_Cat_" + category]</h6>
-        <div class="row g-3">
+        <pems-row gap="3">
             @foreach (var e in items)
             {
-                <div class="col-md-6 col-xl-4">
+                <pems-col md="6" xl="4">
                     <div class="border rounded p-3 h-100 d-flex flex-column">
                         <div class="fw-semibold mb-1"><pems-icon css="@e.Icon" /> @Localizer["IC_" + e.Key + "_Title"]</div>
                         <p class="text-muted small mb-2">@Localizer["IC_" + e.Key + "_Desc"]</p>
@@ -43,9 +43,9 @@
                             </pems-button>
                         }
                     </div>
-                </div>
+                </pems-col>
             }
-        </div>
+        </pems-row>
     </div>
 }
 

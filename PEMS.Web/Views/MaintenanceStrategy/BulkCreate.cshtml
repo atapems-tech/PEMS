@@ -47,34 +47,34 @@
 
 <div class="content-card mb-3">
     <form method="get" class="row g-2">
-        <div class="col-md-4">
+        <pems-col md="4">
             <pems-label css="small mb-0">@Localizer["Rcm_Strategy"] (@Localizer["Rcm_ApprovedOrActive"])</pems-label>
             <pems-select scale="small" name="strategyId">
                 <option value="">@Localizer["Rcm_SelectPlaceholder"]</option>
                 @foreach (var s in bulk.UsableStrategies) { <option value="@s.Id" selected="@(bulk.StrategyId == s.Id)">@s.Text</option> }
             </pems-select>
-        </div>
-        <div class="col-md-4">
+        </pems-col>
+        <pems-col md="4">
             <pems-label css="small mb-0">@Localizer["Rcm_EquipmentClass"] (@Localizer["Rcm_IncludesSubclasses"])</pems-label>
             <pems-select scale="small" name="classId">
                 <option value="">@Localizer["Rcm_All"]</option>
                 @foreach (var c in classes) { <option value="@c.Id" selected="@(selectedClassId == c.Id)">@c.Text</option> }
             </pems-select>
-        </div>
-        <div class="col-md-4"></div>
-        <div class="col-md-3">
+        </pems-col>
+        <pems-col md="4"></pems-col>
+        <pems-col md="3">
             <pems-label css="small mb-0">@Localizer["Discipline (چندانتخابی)"]</pems-label>
             <pems-select scale="small" name="disciplineIds" multiple size="4">
                 @foreach (var d in (IEnumerable<dynamic>)ViewBag.Disciplines) { <option value="@d.DisciplineId" selected="@selectedDisciplineIds.Contains((int)d.DisciplineId)">@d.Name</option> }
             </pems-select>
-        </div>
-        <div class="col-md-3">
+        </pems-col>
+        <pems-col md="3">
             <pems-label css="small mb-0">@Localizer["Equipment Type (چندانتخابی)"]</pems-label>
             <pems-select scale="small" name="equipmentTypes" multiple size="4">
                 @foreach (var t in (IEnumerable<string>)ViewBag.EquipmentTypes) { <option value="@t" selected="@selectedEquipmentTypes.Contains(t)">@t</option> }
             </pems-select>
-        </div>
-        <div class="col-md-3">
+        </pems-col>
+        <pems-col md="3">
             <pems-label css="small mb-0">
                 Functional Location (چندانتخابی)
                 @if (equipmentWithFlCount < 50)
@@ -85,16 +85,16 @@
             <pems-select scale="small" name="functionalLocationIds" multiple size="4">
                 @foreach (var fl in functionalLocations) { <option value="@fl.FunctionalLocationId" selected="@selectedFunctionalLocationIds.Contains(fl.FunctionalLocationId)">@fl.PathBreadcrumb</option> }
             </pems-select>
-        </div>
-        <div class="col-md-3">
+        </pems-col>
+        <pems-col md="3">
             <pems-label css="small mb-0">@Localizer["Tag Number (جستجوی متنی)"]</pems-label>
             <pems-input scale="small" type="text" name="tagSearch" value="@selectedTagSearch" placeholder="مثلاً P-101" />
-        </div>
+        </pems-col>
 
         @* طبق «PEMS CMMS — Bulk Define Maintenance Strategy Scope & Location/Equipment
            Resolution»: زنجیره‌ی Plant/Area/Unit/Functional Location/Equipment/Tag - بدون
            تغییر در ساختار فرم موجود، فقط سه بُعد جدید + حالت Exact/Descendants برای FL. *@
-        <div class="col-md-3">
+        <pems-col md="3">
             <pems-label css="small mb-0">
                 Plant (چندانتخابی)
                 @if (!plants.Any()) { <i class="bi bi-info-circle text-muted" title="در حال حاضر هیچ Functional Location ای مقدار Plant ندارد."></i> }
@@ -102,14 +102,14 @@
             <pems-select scale="small" name="plants" multiple size="3">
                 @foreach (var p in plants) { <option value="@p" selected="@selectedPlants.Contains(p)">@p</option> }
             </pems-select>
-        </div>
-        <div class="col-md-3">
+        </pems-col>
+        <pems-col md="3">
             <pems-label css="small mb-0">Area (Functional Location، چندانتخابی)</pems-label>
             <pems-select scale="small" name="areas" multiple size="3">
                 @foreach (var a in flAreas) { <option value="@a" selected="@selectedAreas.Contains(a)">@a</option> }
             </pems-select>
-        </div>
-        <div class="col-md-3">
+        </pems-col>
+        <pems-col md="3">
             <pems-label css="small mb-0">
                 Unit (چندانتخابی)
                 @if (!units.Any()) { <i class="bi bi-info-circle text-muted" title="در حال حاضر هیچ Functional Location ای مقدار Unit ندارد."></i> }
@@ -117,8 +117,8 @@
             <pems-select scale="small" name="units" multiple size="3">
                 @foreach (var u in units) { <option value="@u" selected="@selectedUnits.Contains(u)">@u</option> }
             </pems-select>
-        </div>
-        <div class="col-md-3">
+        </pems-col>
+        <pems-col md="3">
             <pems-label css="small mb-0">Functional Location Mode</pems-label>
             <div class="d-flex gap-3 mt-1">
                 <div class="form-check">
@@ -130,8 +130,8 @@
                     <label class="form-check-label small" for="flModeDescendants" title="Functional Location(های) انتخاب‌شده + همه‌ی زیرشاخه‌های واقعی آن‌ها">Descendants</label>
                 </div>
             </div>
-        </div>
-        <div class="col-md-6">
+        </pems-col>
+        <pems-col md="6">
             <pems-label css="small mb-0">
                 Tag List (چند Tag دقیق - با کاما یا خط جدید جدا کنید)
                 <pems-icon name="bi-info-circle" css="text-muted" title="این‌ها همیشه به نتیجه اضافه می‌شوند، صرف‌نظر از فیلترهای بالا - برای وقتی که تگ‌های مشخصی را از قبل می‌دانید." />
@@ -141,20 +141,20 @@
             {
                 <div class="form-text">@matchedTagCount از @requestedTagCount Tag درخواست‌شده پیدا شد.</div>
             }
-        </div>
-        <div class="col-md-6 d-flex align-items-end">
+        </pems-col>
+        <pems-col md="6" css="d-flex align-items-end">
             <pems-button tone="primary" size="small" css="w-100"><pems-icon name="bi-funnel" /> @Localizer["فیلتر تجهیزات"]</pems-button>
-        </div>
+        </pems-col>
 
         @if (equipmentWithFlCount < 50)
         {
-            <div class="col-12">
+            <pems-col span="12">
                 <p class="text-muted small mb-0">
                     <pems-icon name="bi-info-circle" /> در حال حاضر فقط @equipmentWithFlCount تجهیز به Functional Location متصل شده -
                     فیلترهای Functional Location/Plant/Area/Unit آماده‌اند اما تا زمانی که تخصیص بیشتری از طریق
                     «Equipment ↔ FL Assignment» انجام نشود، نتیجه‌ی محدودی برمی‌گردانند. این یک محدودیت داده است، نه نقص این فرم.
                 </p>
-            </div>
+            </pems-col>
         }
     </form>
 </div>
@@ -175,8 +175,8 @@ else if (matchingCount.HasValue && matchingCount.Value > maxResults)
 }
 
 <form asp-action="BulkCreate" method="post">
-    <div class="row">
-        <div class="col-md-5">
+    <pems-row>
+        <pems-col md="5">
             <div class="content-card">
                 <div class="d-flex justify-content-between align-items-center mb-2">
                     <h6 class="mb-0 small fw-bold">انتخاب تجهیزات (@equipments.Count)</h6>
@@ -240,9 +240,9 @@ else if (matchingCount.HasValue && matchingCount.Value > maxResults)
                     @if (!equipments.Any() && !noFilterApplied) { <p class="text-muted small text-center py-3">@Localizer["تجهیزی با این فیلتر پیدا نشد."]</p> }
                 </pems-accordion></div>
             </div>
-        </div>
+        </pems-col>
 
-        <div class="col-md-7">
+        <pems-col md="7">
             <div class="content-card">
                 <h6 class="small fw-bold mb-3">@Localizer["Rcm_AssignSummary"]</h6>
                 @if (!bulk.StrategyId.HasValue)
@@ -263,6 +263,6 @@ else if (matchingCount.HasValue && matchingCount.Value > maxResults)
                 }
                 <div class="small text-muted mt-3">@Localizer["Rcm_NeedTemplate"] <a asp-action="Create">@Localizer["Rcm_NewStrategy"]</a></div>
             </div>
-        </div>
-    </div>
+        </pems-col>
+    </pems-row>
 </form>

@@ -63,8 +63,8 @@
     }
 </section>
 
-<div class="row g-3">
-    <div class="col-lg-6">
+<pems-row gap="3">
+    <pems-col lg="6">
         <div class="content-card h-100">
             <h2 class="vs-section__title">@Localizer["Lt_Dash_NeedsAttention"]</h2>
             @if (!Model.NeedsAttention.Any())
@@ -101,9 +101,9 @@
                 </div>
             }
         </div>
-    </div>
+    </pems-col>
 
-    <div class="col-lg-6">
+    <pems-col lg="6">
         <div class="content-card h-100">
             <h2 class="vs-section__title">@Localizer["Lt_Dash_Aging"]</h2>
             <p class="text-muted small">@Localizer["Lt_Dash_AgingNote"]</p>
@@ -113,33 +113,33 @@
                 </tbody>
             </pems-table>
         </div>
-    </div>
+    </pems-col>
 
-    <div class="col-lg-4">
+    <pems-col lg="4">
         <div class="content-card h-100">
             <h2 class="vs-section__title">@Localizer["Lt_Dash_ByStatus"]</h2>
             <pems-table scale="small" css="mb-0"><tbody>
                 @foreach (var kv in Model.ByStatus.OrderByDescending(x => x.Value)) { await BarRow(kv.Key, kv.Value, Url.Action("Index", new { status = kv.Key })); }
             </tbody></pems-table>
         </div>
-    </div>
-    <div class="col-lg-4">
+    </pems-col>
+    <pems-col lg="4">
         <div class="content-card h-100">
             <h2 class="vs-section__title">@Localizer["Lt_Dash_ByType"]</h2>
             <pems-table scale="small" css="mb-0"><tbody>
                 @foreach (var kv in Model.ByType.OrderByDescending(x => x.Value)) { await BarRow(kv.Key, kv.Value, Url.Action("Index", new { letterType = kv.Key })); }
             </tbody></pems-table>
         </div>
-    </div>
-    <div class="col-lg-4">
+    </pems-col>
+    <pems-col lg="4">
         <div class="content-card h-100">
             <h2 class="vs-section__title">@Localizer["Lt_Dash_ByPriority"]</h2>
             <pems-table scale="small" css="mb-0"><tbody>
                 @foreach (var kv in Model.ByPriority.OrderByDescending(x => x.Value)) { await BarRow(Localizer["Lt_P_" + kv.Key].Value, kv.Value, Url.Action("Index", new { priority = kv.Key })); }
             </tbody></pems-table>
         </div>
-    </div>
-</div>
+    </pems-col>
+</pems-row>
 
 @section Styles {
     <link rel="stylesheet" href="~/_content/PEMS.UI/pems-list.css" asp-append-version="true" />

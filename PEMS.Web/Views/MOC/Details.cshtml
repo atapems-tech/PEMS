@@ -24,29 +24,29 @@
 </div>
 
 <div class="content-card mb-3">
-    <div class="row g-3">
-        <div class="col-12"><strong>Title:</strong> @Model.Title</div>
-        <div class="col-12"><strong>@Localizer["Description:"]</strong> @Model.Description</div>
-        <div class="col-12"><strong>Reason:</strong> @Model.Reason</div>
+    <pems-row gap="3">
+        <pems-col span="12"><strong>Title:</strong> @Model.Title</pems-col>
+        <pems-col span="12"><strong>@Localizer["Description:"]</strong> @Model.Description</pems-col>
+        <pems-col span="12"><strong>Reason:</strong> @Model.Reason</pems-col>
         @if (Model.RelatedDocument != null)
         {
-            <div class="col-md-6">
+            <pems-col md="6">
                 <strong>@Localizer["Related Document:"]</strong>
                 <a asp-controller="EngineeringDocuments" asp-action="Details" asp-route-id="@Model.RelatedDocumentId">@Model.RelatedDocument.DocumentNo</a>
-            </div>
+            </pems-col>
         }
         @if (Model.RelatedEquipment != null)
         {
-            <div class="col-md-6">
+            <pems-col md="6">
                 <strong>@Localizer["Related Equipment:"]</strong>
                 <a asp-controller="Equipment" asp-action="Details" asp-route-id="@Model.RelatedEquipmentId">@Model.RelatedEquipment.TagNumber</a>
-            </div>
+            </pems-col>
         }
         @if (Model.ChangeType == "Temporary")
         {
-            <div class="col-md-6"><strong>Temporary Expiry:</strong> @(Model.TemporaryExpiryDate?.ToString("yyyy-MM-dd"))</div>
+            <pems-col md="6"><strong>Temporary Expiry:</strong> @(Model.TemporaryExpiryDate?.ToString("yyyy-MM-dd"))</pems-col>
         }
-    </div>
+    </pems-row>
 </div>
 
 @if (!string.IsNullOrEmpty(Model.RiskAssessmentText))
@@ -150,8 +150,8 @@
             <p class="small"><strong>Implementation:</strong> @Model.ImplementationPlan</p>
         }
 
-        <div class="row g-3">
-            <div class="col-md-6">
+        <pems-row gap="3">
+            <pems-col md="6">
                 <div class="border rounded p-2">
                     <div class="d-flex justify-content-between align-items-center">
                         <span class="small"><pems-icon name="bi-file-earmark-check" /> به‌روزرسانی مدارک متاثر</span>
@@ -169,8 +169,8 @@
                         }
                     </div>
                 </div>
-            </div>
-            <div class="col-md-6">
+            </pems-col>
+            <pems-col md="6">
                 <div class="border rounded p-2">
                     <div class="d-flex justify-content-between align-items-center">
                         <span class="small"><pems-icon name="bi-mortarboard" /> آموزش @(Model.TrainingRequired ? "" : "(نیاز ندارد)")</span>
@@ -187,8 +187,8 @@
                         }
                     </div>
                 </div>
-            </div>
-        </div>
+            </pems-col>
+        </pems-row>
 
         <form asp-action="Close" method="post" class="mt-3">
             <input type="hidden" name="mocId" value="@Model.MOCId" />

@@ -27,21 +27,21 @@
         <p class="small text-muted">@Localizer["Pc_Adm_PartNoHint"]</p>
         <form asp-action="SaveSettings" method="post" class="row g-3 align-items-start">
             @if (Model.Settings.RowVersion != null) { <input type="hidden" name="rowVersion" value="@Convert.ToBase64String(Model.Settings.RowVersion)" /> }
-            <div class="col-md-4">
+            <pems-col md="4">
                 <pems-label for="pc_partNoMethod">@Localizer["Pc_Adm_PartNoMethod"]</pems-label>
                 <pems-select scale="small" id="pc_partNoMethod" name="partNoGenerationMethod">
                     <option value="MANUAL" selected="@(Model.Settings.PartNoGenerationMethod == "MANUAL")">@Localizer["Pc_Adm_PartNoManual"]</option>
                     <option value="API" selected="@(Model.Settings.PartNoGenerationMethod == "API")">@Localizer["Pc_Adm_PartNoApi"]</option>
                 </pems-select>
-            </div>
-            <div class="col-md-4">
+            </pems-col>
+            <pems-col md="4">
                 <pems-label for="pc_partNoFormat">@Localizer["Pc_Adm_PartNoFormat"]</pems-label>
                 <pems-input scale="small" id="pc_partNoFormat" name="partNoFormat" maxlength="50" autocomplete="off" value="@Model.Settings.PartNoFormat" placeholder="PCR-YYYY-NNNN" />
                 <div class="form-text">@Localizer["Pc_Adm_PartNoFormatHelp"]</div>
-            </div>
-            <div class="col-auto pt-md-4">
+            </pems-col>
+            <pems-col span="auto" css="pt-md-4">
                 <button type="submit" class="vs-btn vs-btn--sm vs-btn--primary mt-md-1"><pems-icon name="bi-check2" /> @Localizer["Save"]</button>
-            </div>
+            </pems-col>
         </form>
         <pems-alert tone="info" css="small py-2 mt-3 mb-0"><pems-icon name="bi-info-circle" /> @Localizer["Pc_Adm_PartNoNote"]</pems-alert>
         @if (Model.Settings.IsPersisted && Model.Settings.ModifiedDate.HasValue)
@@ -54,19 +54,19 @@
     <section class="vs-panel pc-card">
         <h2 class="vs-section__title"><pems-icon name="bi-cloud-arrow-up" /> @Localizer["Pc_Adm_Import"]</h2>
         <p class="small text-muted">@Localizer["Pc_Adm_ImportHint"]</p>
-        <div class="row g-3">
+        <pems-row gap="3">
             @foreach (var kind in new[] { "TechnicalClass", "CommodityGroup", "ProductFamily", "Manufacturer", "Supplier" })
             {
-                <div class="col-md-6 col-xl-4">
+                <pems-col md="6" xl="4">
                     <form asp-action="Import" method="post" enctype="multipart/form-data" class="border rounded p-2 h-100">
                         <input type="hidden" name="kind" value="@kind" />
                         <div class="d-flex justify-content-between"><strong>@Localizer["Pc_Imp_" + kind]</strong><span class="vs-pill vs-pill--neutral">@(ov.Counts.TryGetValue(kind, out var c) ? c : 0)</span></div>
                         <pems-input scale="small" css="my-2" type="file" name="file" accept=".xlsx" required aria-label="@Localizer["Pc_Imp_" + kind]" />
                         <button type="submit" class="vs-btn vs-btn--sm vs-btn--primary"><pems-icon name="bi-upload" /> @Localizer["Pc_Adm_ImportBtn"]</button>
                     </form>
-                </div>
+                </pems-col>
             }
-        </div>
+        </pems-row>
     </section>
 
     @* ---------------------------------------------------- Workflow (PEMS.WorkflowPlatform) *@
@@ -117,40 +117,40 @@
     <section class="vs-panel pc-card mt-3">
         <h2 class="vs-section__title"><pems-icon name="bi-person-badge" /> @Localizer["Pc_Adm_Responsibilities"]</h2>
         <p class="small text-muted">@Localizer["Pc_Adm_ResponsibilitiesHint"]</p>
-        <div class="row g-3">
+        <pems-row gap="3">
         @foreach (var r in ov.Responsibilities)
         {
             var fid = "respForm" + r.Id;
-            <div class="col-xl-6">
+            <pems-col xl="6">
                 <form id="@fid" asp-action="SaveResponsibility" method="post" class="border rounded p-2 h-100">
                     <input type="hidden" name="Id" value="@r.Id" />
                     <div class="d-flex justify-content-between align-items-center mb-2">
                         <strong>@Localizer["Pc_Step_" + r.Key] <code class="ms-1">@r.Key</code></strong>
                         <label class="small"><input type="checkbox" name="IsActive" value="true" checked="@r.IsActive" /> @Localizer["Pc_Col_Active"]<input type="hidden" name="IsActive" value="false" /></label>
                     </div>
-                    <div class="row g-2">
-                        <div class="col-md-6">
+                    <pems-row gap="2">
+                        <pems-col md="6">
                             <pems-label css="small mb-0" for="@(fid)_kind">@Localizer["Pc_Adm_Kind"]</pems-label>
                             <pems-select scale="small" id="@(fid)_kind" name="Kind">
                                 @foreach (var k in new[] { "AssignmentPool", "PositionScope", "RequesterManager", "CommodityPosition" }) { <option value="@k" selected="@(r.Kind == k)">@Localizer["Pc_ResKind_" + k]</option> }
                             </pems-select>
-                        </div>
-                        <div class="col-md-6">
+                        </pems-col>
+                        <pems-col md="6">
                             <pems-label css="small mb-0" for="@(fid)_act">@Localizer["Pc_Adm_RequiredAction"]</pems-label>
                             <pems-select scale="small" id="@(fid)_act" name="RequiredAction">
                                 <option value="" selected="@string.IsNullOrEmpty(r.RequiredAction)"></option>
                                 @foreach (var a in new[] { "Review", "Approve" }) { <option value="@a" selected="@(r.RequiredAction == a)">@a</option> }
                             </pems-select>
-                        </div>
-                        <div class="col-md-6">
+                        </pems-col>
+                        <pems-col md="6">
                             <pems-label css="small mb-0" for="@(fid)_pos">@Localizer["Pc_Adm_Positions"]</pems-label>
                             <pems-select scale="small" id="@(fid)_pos" multiple size="4" data-pc-pos-target="@(fid)_posIds">
                                 @foreach (var p in ov.Positions) { <option value="@p.Id" selected="@(r.Positions.Any(x => x.PositionId == p.Id))">@p.Text</option> }
                             </pems-select>
                             <input type="hidden" name="PositionIds" id="@(fid)_posIds" value="@string.Join(",", r.Positions.Select(x => x.PositionId))" />
                             <div class="form-text">@Localizer["Pc_Adm_PositionsHint"]</div>
-                        </div>
-                        <div class="col-md-6">
+                        </pems-col>
+                        <pems-col md="6">
                             <pems-label css="small mb-0" for="@(fid)_role">@Localizer["Pc_Adm_Role"]</pems-label>
                             <pems-select scale="small" id="@(fid)_role" name="RoleName">
                                 <option value="" selected="@string.IsNullOrEmpty(r.RoleName)"></option>
@@ -161,40 +161,40 @@
                                 <option value=""></option>
                                 <option value="1" selected="@(r.ManagerLevel == 1)">1</option><option value="2" selected="@(r.ManagerLevel == 2)">2</option>
                             </pems-select>
-                        </div>
-                        <div class="col-md-4">
+                        </pems-col>
+                        <pems-col md="4">
                             <pems-label css="small mb-0" for="@(fid)_st">@Localizer["Pc_Adm_ScopeType"]</pems-label>
                             <pems-select scale="small" id="@(fid)_st" name="ScopeType">
                                 @foreach (var st in new[] { "None", "Department", "Discipline", "MaintenanceGroup", "Team" }) { <option value="@st" selected="@(r.ScopeType == st)">@Localizer["Pc_Scope_" + st]</option> }
                             </pems-select>
-                        </div>
-                        <div class="col-md-4">
+                        </pems-col>
+                        <pems-col md="4">
                             <pems-label css="small mb-0" for="@(fid)_sv">@Localizer["Pc_Adm_ScopeValue"]</pems-label>
                             <pems-input scale="small" id="@(fid)_sv" name="ScopeValue" value="@r.ScopeValue" placeholder="@Localizer["Pc_Adm_ScopeValueHint"]" />
-                        </div>
-                        <div class="col-md-4">
+                        </pems-col>
+                        <pems-col md="4">
                             <pems-label css="small mb-0" for="@(fid)_sel">@Localizer["Pc_Adm_Strategy"]</pems-label>
                             <pems-select scale="small" id="@(fid)_sel" name="SelectionStrategy">
                                 @foreach (var st in new[] { "Queue", "SingleActor" }) { <option value="@st" selected="@(r.Strategy == st)">@Localizer["Pc_Strategy_" + st]</option> }
                             </pems-select>
-                        </div>
-                    </div>
+                        </pems-col>
+                    </pems-row>
                     <div class="d-flex gap-2 mt-2">
                         <button type="submit" class="vs-btn vs-btn--sm vs-btn--primary"><pems-icon name="bi-save" /> @Localizer["Pc_Btn_Save"]</button>
                         <button type="button" class="vs-btn vs-btn--sm" data-pc-preview="@r.Key"><pems-icon name="bi-search" /> @Localizer["Pc_Adm_Diagnose"]</button>
                     </div>
                 </form>
-            </div>
+            </pems-col>
         }
-        </div>
+        </pems-row>
 
         <h3 class="h6 mt-3">@Localizer["Pc_Adm_Diagnose"]</h3>
-        <div class="row g-2 align-items-start">
-            <div class="col-md-4"><pems-label css="small mb-0" for="pcPrevKey">@Localizer["Pc_Adm_Responsibility"]</pems-label>
-                <pems-select scale="small" id="pcPrevKey">@foreach (var r in ov.Responsibilities) { <option value="@r.Key">@Localizer["Pc_Step_" + r.Key]</option> }</pems-select></div>
-            <div class="col-md-4"><pems-label css="small mb-0" for="pcPrevReq_text">@Localizer["Pc_F_Requester"]</pems-label><div class="pc-lookup" data-url="@empUrl" data-name="requesterEmployeeId" data-input-id="pcPrevReq_text" data-form="pcNoForm" id="pcPrevReqHost"></div></div>
-            <div class="col-md-4"><pems-label css="small mb-0" for="pcPrevGrp_text">@Localizer["Pc_F_CommodityGroup1Id"]</pems-label><div class="pc-lookup" data-url="/Warehouse/PartCatalogueAdmin/CommodityGroups" data-name="commodityGroupId" data-input-id="pcPrevGrp_text" data-form="pcNoForm" id="pcPrevGrpHost"></div></div>
-        </div>
+        <pems-row gap="2" css="align-items-start">
+            <pems-col md="4"><pems-label css="small mb-0" for="pcPrevKey">@Localizer["Pc_Adm_Responsibility"]</pems-label>
+                <pems-select scale="small" id="pcPrevKey">@foreach (var r in ov.Responsibilities) { <option value="@r.Key">@Localizer["Pc_Step_" + r.Key]</option> }</pems-select></pems-col>
+            <pems-col md="4"><pems-label css="small mb-0" for="pcPrevReq_text">@Localizer["Pc_F_Requester"]</pems-label><div class="pc-lookup" data-url="@empUrl" data-name="requesterEmployeeId" data-input-id="pcPrevReq_text" data-form="pcNoForm" id="pcPrevReqHost"></div></pems-col>
+            <pems-col md="4"><pems-label css="small mb-0" for="pcPrevGrp_text">@Localizer["Pc_F_CommodityGroup1Id"]</pems-label><div class="pc-lookup" data-url="/Warehouse/PartCatalogueAdmin/CommodityGroups" data-name="commodityGroupId" data-input-id="pcPrevGrp_text" data-form="pcNoForm" id="pcPrevGrpHost"></div></pems-col>
+        </pems-row>
         <div id="pcPreviewOut" class="mt-2" aria-live="polite"></div>
     </section>
 
@@ -203,13 +203,13 @@
         <h2 class="vs-section__title"><pems-icon name="bi-boxes" /> @Localizer["Pc_Adm_CommodityResp"]</h2>
         <p class="small text-muted">@Localizer["Pc_Adm_CommodityRespHint"]</p>
         <form asp-action="AddCommodityResponsible" method="post" class="row g-2 align-items-start mb-2">
-            <div class="col-md-3"><pems-label css="small mb-0" for="cr_key">@Localizer["Pc_Adm_Responsibility"]</pems-label>
-                <pems-select scale="small" id="cr_key" name="responsibilityKey">@foreach (var r in ov.Responsibilities.Where(x => x.Kind == "CommodityPosition")) { <option value="@r.Key">@Localizer["Pc_Step_" + r.Key]</option> }</pems-select></div>
-            <div class="col-md-3"><pems-label css="small mb-0" for="cr_grp_text">@Localizer["Pc_F_CommodityGroup1Id"]</pems-label><div class="pc-lookup" data-url="/Warehouse/PartCatalogueAdmin/CommodityGroups" data-name="commodityGroupId" data-input-id="cr_grp_text"></div></div>
-            <div class="col-md-3"><pems-label css="small mb-0" for="cr_pos">@Localizer["Pc_Adm_Position"]</pems-label>
-                <pems-select scale="small" id="cr_pos" name="positionId"><option value=""></option>@foreach (var p in ov.Positions) { <option value="@p.Id">@p.Text</option> }</pems-select></div>
-            <div class="col-md-3"><pems-label css="small mb-0" for="cr_emp_text">@Localizer["Pc_Adm_EmployeeOverride"]</pems-label><div class="pc-lookup" data-url="@empUrl" data-name="employeeId" data-input-id="cr_emp_text"></div></div>
-            <div class="col-12"><button class="vs-btn vs-btn--sm vs-btn--primary"><pems-icon name="bi-plus-lg" /> @Localizer["Pc_Btn_AddGroup"]</button></div>
+            <pems-col md="3"><pems-label css="small mb-0" for="cr_key">@Localizer["Pc_Adm_Responsibility"]</pems-label>
+                <pems-select scale="small" id="cr_key" name="responsibilityKey">@foreach (var r in ov.Responsibilities.Where(x => x.Kind == "CommodityPosition")) { <option value="@r.Key">@Localizer["Pc_Step_" + r.Key]</option> }</pems-select></pems-col>
+            <pems-col md="3"><pems-label css="small mb-0" for="cr_grp_text">@Localizer["Pc_F_CommodityGroup1Id"]</pems-label><div class="pc-lookup" data-url="/Warehouse/PartCatalogueAdmin/CommodityGroups" data-name="commodityGroupId" data-input-id="cr_grp_text"></div></pems-col>
+            <pems-col md="3"><pems-label css="small mb-0" for="cr_pos">@Localizer["Pc_Adm_Position"]</pems-label>
+                <pems-select scale="small" id="cr_pos" name="positionId"><option value=""></option>@foreach (var p in ov.Positions) { <option value="@p.Id">@p.Text</option> }</pems-select></pems-col>
+            <pems-col md="3"><pems-label css="small mb-0" for="cr_emp_text">@Localizer["Pc_Adm_EmployeeOverride"]</pems-label><div class="pc-lookup" data-url="@empUrl" data-name="employeeId" data-input-id="cr_emp_text"></div></pems-col>
+            <pems-col span="12"><button class="vs-btn vs-btn--sm vs-btn--primary"><pems-icon name="bi-plus-lg" /> @Localizer["Pc_Btn_AddGroup"]</button></pems-col>
         </form>
         <div class="pc-table-scroll">
             <pems-table scale="small" css="table-enterprise vs-dense mb-0">
@@ -230,10 +230,10 @@
     <section class="vs-panel pc-card mt-3">
         <h2 class="vs-section__title"><pems-icon name="bi-people" /> @Localizer["Pc_Adm_Approvers"] <span class="vs-pill vs-pill--neutral">@Localizer["Pc_Adm_Legacy"]</span></h2>
         <p class="small text-muted">@Localizer["Pc_Adm_ApproversHint"]</p>
-        <div class="row g-3">
+        <pems-row gap="3">
             @foreach (var st in poolSteps)
             {
-                <div class="col-md-6 col-xl-4">
+                <pems-col md="6" xl="4">
                     <div class="border rounded p-2 h-100">
                         <strong>@Localizer["Pc_Step_" + st.StepKey]</strong>
                         <ul class="list-unstyled small my-2">
@@ -251,9 +251,9 @@
                             <button class="vs-btn vs-btn--sm"><pems-icon name="bi-plus-lg" /></button>
                         </form>
                     </div>
-                </div>
+                </pems-col>
             }
-        </div>
+        </pems-row>
     </section>
 
     @* ---------------------------------------------------- Direct Manager = Organization hierarchy (not module-local) *@
@@ -305,9 +305,9 @@
         <h2 class="vs-section__title"><pems-icon name="bi-diagram-3" /> @Localizer["Pc_Adm_Group2Maps"]</h2>
         <p class="small text-muted">@Localizer["Pc_Adm_Group2Hint"]</p>
         <form asp-action="AddGroupChild" method="post" class="row g-2 align-items-start mb-2">
-            <div class="col-md-5"><pems-label for="g2_parent_text">@Localizer["Pc_F_CommodityGroup1Id"]</pems-label><div class="pc-lookup" data-url="/Warehouse/PartCatalogueAdmin/CommodityGroups" data-name="parentGroupId" data-input-id="g2_parent_text"></div></div>
-            <div class="col-md-5"><pems-label for="g2_child_text">@Localizer["Pc_F_CommodityGroup2Id"]</pems-label><div class="pc-lookup" data-url="/Warehouse/PartCatalogueAdmin/CommodityGroups" data-name="childGroupId" data-input-id="g2_child_text"></div></div>
-            <div class="col-md-2 pt-4"><button class="vs-btn vs-btn--sm vs-btn--primary"><pems-icon name="bi-plus-lg" /> @Localizer["Pc_Btn_AddGroup"]</button></div>
+            <pems-col md="5"><pems-label for="g2_parent_text">@Localizer["Pc_F_CommodityGroup1Id"]</pems-label><div class="pc-lookup" data-url="/Warehouse/PartCatalogueAdmin/CommodityGroups" data-name="parentGroupId" data-input-id="g2_parent_text"></div></pems-col>
+            <pems-col md="5"><pems-label for="g2_child_text">@Localizer["Pc_F_CommodityGroup2Id"]</pems-label><div class="pc-lookup" data-url="/Warehouse/PartCatalogueAdmin/CommodityGroups" data-name="childGroupId" data-input-id="g2_child_text"></div></pems-col>
+            <pems-col md="2" css="pt-4"><button class="vs-btn vs-btn--sm vs-btn--primary"><pems-icon name="bi-plus-lg" /> @Localizer["Pc_Btn_AddGroup"]</button></pems-col>
         </form>
         <div class="pc-table-scroll">
             <pems-table scale="small" css="table-enterprise vs-dense mb-0">

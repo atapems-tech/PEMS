@@ -78,8 +78,8 @@
     </div>
 </div>
 
-<div class="row g-3 mb-3">
-    <div class="col-md-6">
+<pems-row gap="3" css="mb-3">
+    <pems-col md="6">
         <pems-related-list id="pkgMrs" icon="bi-cart-check" title="@Localizer["PkL_Mrs"]" count="@Model.MaterialRequisitions.Count" empty="@(!Model.MaterialRequisitions.Any())" empty-text="@Localizer["PkD_NoMrs"]">
             @if (Model.MaterialRequisitions.Any())
             {
@@ -101,9 +101,9 @@
                 </pems-related-add>
             }
         </pems-related-list>
-    </div>
+    </pems-col>
 
-    <div class="col-md-6">
+    <pems-col md="6">
         <pems-related-list id="pkgMrqs" icon="bi-file-earmark-spreadsheet" title="@Localizer["PkD_Quotations"]" count="@Model.Quotations.Count" empty="@(!Model.Quotations.Any())" empty-text="@Localizer["PkD_NoQuotations"]">
             @if (Model.Quotations.Any())
             {
@@ -118,8 +118,8 @@
             </pems-related-table>
             }
         </pems-related-list>
-    </div>
-</div>
+    </pems-col>
+</pems-row>
 
 <pems-related-list id="pkgComms" icon="bi-chat-square-text" title="@Localizer["PkD_Communications"]" count="@Model.Communications.Count" empty="@(!Model.Communications.Any())" empty-text="@Localizer["PkD_NoCommunications"]">
     @if (Model.Communications.Any())
@@ -170,23 +170,23 @@
     {
         <form asp-action="AddCommunication" method="post" class="row g-2 m-0 px-2 py-2 lp-rel-add">
             <input type="hidden" name="packageId" value="@s.ProcurementPackageId" />
-            <div class="col-md-2">
+            <pems-col md="2">
                 <pems-select scale="small" name="type">
                     <option value="VendorInquiry">Vendor Inquiry</option>
                     <option value="TechnicalClarification">Technical Clarification</option>
                     <option value="EngineeringQuestion">Engineering Question</option>
                     <option value="Response">@Localizer["Response"]</option>
                 </pems-select>
-            </div>
-            <div class="col-md-2">
+            </pems-col>
+            <pems-col md="2">
                 <pems-select scale="small" name="vendorId">
                     <option value="">-- Vendor --</option>
                     @foreach (var v in vendors) { <option value="@v.VendorId">@v.Name</option> }
                 </pems-select>
-            </div>
-            <div class="col-md-3"><pems-input scale="small" name="subject" placeholder="@Localizer["Subject"]" required /></div>
-            <div class="col-md-4"><pems-input scale="small" name="body" placeholder="@Localizer["Details"]" required /></div>
-            <div class="col-md-1"><pems-button tone="primary" size="small" css="w-100" title="@Localizer["Add"]"><pems-icon name="bi-plus-lg" aria-hidden="true" /><span class="visually-hidden">@Localizer["Add"]</span></pems-button></div>
+            </pems-col>
+            <pems-col md="3"><pems-input scale="small" name="subject" placeholder="@Localizer["Subject"]" required /></pems-col>
+            <pems-col md="4"><pems-input scale="small" name="body" placeholder="@Localizer["Details"]" required /></pems-col>
+            <pems-col md="1"><pems-button tone="primary" size="small" css="w-100" title="@Localizer["Add"]"><pems-icon name="bi-plus-lg" aria-hidden="true" /><span class="visually-hidden">@Localizer["Add"]</span></pems-button></pems-col>
         </form>
     }
 </pems-related-list>
@@ -210,14 +210,14 @@
     {
         <form asp-action="AddApproval" method="post" class="row g-2 m-0 px-2 py-2 lp-rel-add">
             <input type="hidden" name="packageId" value="@s.ProcurementPackageId" />
-            <div class="col-md-3">
+            <pems-col md="3">
                 <pems-select scale="small" name="decision">
                     <option value="Approved">@Localizer["Approved"]</option>
                     <option value="Rejected">@Localizer["Rejected"]</option>
                 </pems-select>
-            </div>
-            <div class="col-md-6"><pems-input scale="small" name="comment" placeholder="@Localizer["Comment (optional)"]" /></div>
-            <div class="col-md-3"><pems-button tone="primary" size="small" css="w-100">@Localizer["PkD_RecordDecision"]</pems-button></div>
+            </pems-col>
+            <pems-col md="6"><pems-input scale="small" name="comment" placeholder="@Localizer["Comment (optional)"]" /></pems-col>
+            <pems-col md="3"><pems-button tone="primary" size="small" css="w-100">@Localizer["PkD_RecordDecision"]</pems-button></pems-col>
         </form>
 
         <form asp-action="Closeout" method="post" class="px-3 pb-3" data-pems-confirm="@Localizer["PkD_ConfirmCloseout"]">

@@ -62,14 +62,14 @@
 <div class="content-card">
     <h6 class="mb-3"><pems-icon name="bi-graph-down-arrow" /> @Localizer["تحلیل ریشه‌ای تاخیر مدارک"]</h6>
 
-    <div class="row g-3 mb-3">
-        <div class="col-md-6">
+    <pems-row gap="3" css="mb-3">
+        <pems-col md="6">
             <pems-kpi-tile label="@Localizer["کل مدارک با تاخیر"]">@delay.TotalDelayedDocuments</pems-kpi-tile>
-        </div>
-        <div class="col-md-6">
+        </pems-col>
+        <pems-col md="6">
             <pems-kpi-tile tone="danger" label="@Localizer["میانگین روز تاخیر"]">@delay.AverageDelayDays</pems-kpi-tile>
-        </div>
-    </div>
+        </pems-col>
+    </pems-row>
 
     @if (!string.IsNullOrWhiteSpace(delay.NarrativeSummary))
     {
@@ -84,8 +84,8 @@
 
     @if (delay.TotalDelayedDocuments > 0)
     {
-        <div class="row g-3">
-            <div class="col-md-4">
+        <pems-row gap="3">
+            <pems-col md="4">
                 <h6 class="small fw-bold">@Localizer["به تفکیک دیسیپلین"]</h6>
                 <pems-table scale="small">
                     <thead><tr><th>@Localizer["دیسیپلین"]</th><th>@Localizer["تعداد"]</th><th>@Localizer["میانگین"]</th></tr></thead>
@@ -96,8 +96,8 @@
                         }
                     </tbody>
                 </pems-table>
-            </div>
-            <div class="col-md-4">
+            </pems-col>
+            <pems-col md="4">
                 <h6 class="small fw-bold">@Localizer["به تفکیک وضعیت"]</h6>
                 <pems-table scale="small">
                     <thead><tr><th>@Localizer["وضعیت"]</th><th>@Localizer["تعداد"]</th><th>@Localizer["میانگین"]</th></tr></thead>
@@ -108,8 +108,8 @@
                         }
                     </tbody>
                 </pems-table>
-            </div>
-            <div class="col-md-4">
+            </pems-col>
+            <pems-col md="4">
                 <h6 class="small fw-bold">به تفکیک وندور (VDR)</h6>
                 @if (delay.ByVendor.Any())
                 {
@@ -127,7 +127,7 @@
                 {
                     <p class="text-muted small">@Localizer["موردی نیست."]</p>
                 }
-            </div>
-        </div>
+            </pems-col>
+        </pems-row>
     }
 </div>

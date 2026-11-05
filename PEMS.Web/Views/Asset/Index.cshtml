@@ -133,19 +133,19 @@
                         <div class="form-text">Equipment not listed here already has an Asset, or doesn't exist yet.</div>
                     </div>
 
-                    <div class="row g-3 mb-3">
-                        <div class="col-md-6">
+                    <pems-row gap="3" css="mb-3">
+                        <pems-col md="6">
                             <pems-label>@Localizer["Asset Number"]</pems-label>
                             <pems-input name="assetNumber" placeholder="AST-P101" required />
-                        </div>
-                        <div class="col-md-6">
+                        </pems-col>
+                        <pems-col md="6">
                             <pems-label>@Localizer["Maintenance Class"]</pems-label>
                             <pems-input name="maintenanceClass" placeholder="Rotating, Static, Electrical ..." />
-                        </div>
-                    </div>
+                        </pems-col>
+                    </pems-row>
 
-                    <div class="row g-3 mb-3">
-                        <div class="col-md-6">
+                    <pems-row gap="3" css="mb-3">
+                        <pems-col md="6">
                             <pems-label>@Localizer["Functional Location"]</pems-label>
                             <pems-select name="functionalLocationId">
                                 <option value="">@Localizer["-- not linked --"]</option>
@@ -155,12 +155,12 @@
                                 }
                             </pems-select>
                             <div class="form-text">Real link to Functional Location. <a asp-controller="FunctionalLocation" asp-action="Index" target="_blank">@Localizer["Manage list"]</a></div>
-                        </div>
-                        <div class="col-md-6">
+                        </pems-col>
+                        <pems-col md="6">
                             <pems-label>@Localizer["Commissioning Date"]</pems-label>
                             <pems-date name="commissioningDate" />
-                        </div>
-                    </div>
+                        </pems-col>
+                    </pems-row>
 
                     <div class="mb-3">
                         <pems-label>@Localizer["Functional Location (raw text, legacy)"]</pems-label>

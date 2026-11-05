@@ -3,13 +3,13 @@
 @inject IStringLocalizer<SharedResource> Localizer
 <div class="content-card pems-s-bcaa1805">
     <form asp-action="Create" method="post">
-        <div class="row g-3">
-            <div class="col-12">
+        <pems-row gap="3">
+            <pems-col span="12">
                 <pems-label>@Localizer["Equipment"]</pems-label>
                 <pems-input type="text" placeholder="@Localizer["جستجوی تگ، نام یا سازنده..."]" value="@ViewBag.PreselectedEquipmentLabel" data-pems-search data-search-type="Equipment" data-search-hidden="#woEquipmentIdHidden" autocomplete="off" />
                 <input type="hidden" name="equipmentId" id="woEquipmentIdHidden" value="@ViewBag.PreselectedEquipmentId" />
-            </div>
-            <div class="col-md-6">
+            </pems-col>
+            <pems-col md="6">
                 <pems-label>@Localizer["Type"]</pems-label>
                 <pems-select name="workOrderType" required>
                     <option value="Preventive">@Localizer["Preventive"]</option>
@@ -17,8 +17,8 @@
                     <option value="Emergency">@Localizer["Emergency"]</option>
                     <option value="Predictive">@Localizer["Predictive"]</option>
                 </pems-select>
-            </div>
-            <div class="col-md-6">
+            </pems-col>
+            <pems-col md="6">
                 <pems-label>@Localizer["Priority"]</pems-label>
                 <pems-select name="priority" required>
                     <option value="Low">@Localizer["Low"]</option>
@@ -26,12 +26,12 @@
                     <option value="High">@Localizer["High"]</option>
                     <option value="Critical">@Localizer["Critical"]</option>
                 </pems-select>
-            </div>
-            <div class="col-12"><pems-label>@Localizer["Description"]</pems-label><pems-textarea name="description" rows="3" required></pems-textarea></div>
-            <div class="col-12">
+            </pems-col>
+            <pems-col span="12"><pems-label>@Localizer["Description"]</pems-label><pems-textarea name="description" rows="3" required></pems-textarea></pems-col>
+            <pems-col span="12">
                 <pems-alert tone="info" css="small mb-0">@Localizer["تخصیص گروه کاری / مجری پس از برنامه‌ریزی و در مرحله‌ی «تخصیص مجری» انجام می‌شود."]</pems-alert>
-            </div>
-        </div>
+            </pems-col>
+        </pems-row>
         <div class="mt-4">
             <pems-button tone="primary" type="submit">Create Work Order</pems-button>
             <pems-button tone="neutral" outline="true" as="a" asp-action="Index">@Localizer["Cancel"]</pems-button>

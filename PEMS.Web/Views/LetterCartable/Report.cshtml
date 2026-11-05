@@ -53,10 +53,10 @@
         <section class="ct-card" aria-labelledby="slaH">
             <h2 id="slaH">@Localizer["Ct_SlaTitle"]</h2>
             <p class="small text-muted">@Localizer["Ct_SlaHint"]</p>
-            <div class="row g-3 align-items-center">
-                <div class="col-sm-6"><pems-chart spec="@slaChart" /></div>
-                <div class="col-sm-6"><pems-chart spec="@gauge" /></div>
-            </div>
+            <pems-row gap="3" css="align-items-center">
+                <pems-col sm="6"><pems-chart spec="@slaChart" /></pems-col>
+                <pems-col sm="6"><pems-chart spec="@gauge" /></pems-col>
+            </pems-row>
             <div class="ct-kpis mt-3">
                 <div class="ct-kpi"><div class="v">@Model.ResponseRequired</div><div class="l">@Localizer["Ct_SlaRequired"]</div></div>
                 <div class="ct-kpi"><div class="v">@Days(Model.AvgResponseDays)</div><div class="l">@Localizer["Ct_AvgResponseDays"]</div></div>

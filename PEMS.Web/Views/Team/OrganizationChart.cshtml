@@ -62,8 +62,8 @@
         </div>
     </div>
 
-    <div class="row g-3">
-        <div class="col-12 col-xl-9">
+    <pems-row gap="3">
+        <pems-col span="12" xl="9">
             <div class="content-card pems-org-summary mb-3" id="orgChartSummary" hidden>
                 <div class="pems-org-summary-head">
                     <strong>@Localizer["خلاصه‌ی اشغال سمت‌ها"]</strong>
@@ -114,9 +114,9 @@
                 <span class="pems-org-legend-item"><span class="pems-org-swatch" data-kind="Position-Occupied"></span>@Localizer["سمت تکمیل‌شده"]</span>
                 <span class="pems-org-legend-item"><span class="pems-org-swatch" data-kind="Position-Vacant"></span>@Localizer["سمت خالی"]</span>
             </div>
-        </div>
+        </pems-col>
 
-        <div class="col-12 col-xl-3">
+        <pems-col span="12" xl="3">
             <div class="content-card pems-orgchart-detail" id="orgChartDetailPanel">
                 <div class="pems-orgchart-state" id="orgChartNoSelection">
                     <pems-icon name="bi-cursor" />
@@ -124,8 +124,8 @@
                 </div>
                 <div id="orgChartDetailContent" hidden></div>
             </div>
-        </div>
-    </div>
+        </pems-col>
+    </pems-row>
 </div>
 
 @section Scripts {

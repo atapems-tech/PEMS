@@ -33,7 +33,7 @@
     }
 </div>
 
-<div class="row g-3 mb-4">
+<pems-row gap="3" css="mb-4">
     @foreach (var step in Model.Steps)
     {
         var (badgeClass, icon, statusText) = step.Status switch
@@ -43,7 +43,7 @@
             _ => ("neutral", "bi-circle", "Not started")
         };
 
-        <div class="col-md-6 col-lg-4">
+        <pems-col md="6" lg="4">
             <div class="content-card h-100">
                 <div class="d-flex justify-content-between align-items-start mb-2">
                     <h6 class="mb-0">@step.Title</h6>
@@ -83,9 +83,9 @@
                     <span class="text-muted small"><pems-icon name="bi-lock" /> Requires SystemAdmin</span>
                 }
             </div>
-        </div>
+        </pems-col>
     }
-</div>
+</pems-row>
 
 @if ((bool)ViewBag.CanImportEquipment || (bool)ViewBag.CanImportMrs || (bool)ViewBag.CanImportMdr || (bool)ViewBag.CanImportVdr)
 {

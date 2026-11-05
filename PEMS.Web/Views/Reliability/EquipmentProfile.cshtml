@@ -27,24 +27,24 @@
     موجود را کنار هم می‌گذارد. هر معیار در دسترس‌نبود، دلیل صریح دارد.
 </p>
 
-<div class="row g-3 mb-3">
-    <div class="col-md-3">
+<pems-row gap="3" css="mb-3">
+    <pems-col md="3">
         <div class="content-card h-100">
             <div class="small text-muted">Class / Discipline</div>
             <div class="fw-bold">@(Model.EquipmentClassName ?? "Unclassified")</div>
             <div class="small">@(Model.DisciplineName ?? "—")</div>
             @if (Model.ParentEquipmentTagNumber != null) { <div class="small text-muted">Parent: @Model.ParentEquipmentTagNumber</div> }
         </div>
-    </div>
-    <div class="col-md-3">
+    </pems-col>
+    <pems-col md="3">
         <div class="content-card h-100">
             <div class="small text-muted">@Localizer["Criticality"]</div>
             <div class="fw-bold fs-5">@(Model.CurrentCriticalityClass ?? "N/A")</div>
             <div class="small">Risk: @(Model.CurrentRiskLevel ?? "N/A")</div>
             <div class="small text-muted">Latest Assessment: @(Model.LatestAssessmentStatus ?? "None") (@Model.LatestAssessmentEvidenceCount evidence)</div>
         </div>
-    </div>
-    <div class="col-md-3">
+    </pems-col>
+    <pems-col md="3">
         <div class="content-card h-100">
             <div class="small text-muted">@Localizer["Reliability"]</div>
             <pems-badge tone="@StatusBadge(Model.ReliabilityDataStatus)">@Model.ReliabilityDataStatus</pems-badge>
@@ -52,8 +52,8 @@
             <div class="small">MTTR: @(Model.MTTRHours.HasValue ? $"{Model.MTTRHours.Value:N1}h" : "N/A")</div>
             <div class="small">Availability: @(Model.AvailabilityPercent.HasValue ? $"{Model.AvailabilityPercent.Value:N1}%" : "N/A")</div>
         </div>
-    </div>
-    <div class="col-md-3">
+    </pems-col>
+    <pems-col md="3">
         <div class="content-card h-100">
             <div class="small text-muted">Intelligence Signals</div>
             <div class="small">Bad Actor: <pems-badge tone="@(Model.IsBadActor ? "danger" : "neutral")">@(Model.IsBadActor ? "Yes" : "No")</pems-badge></div>
@@ -61,11 +61,11 @@
             <div class="small">Predictive: <pems-badge tone="@StatusBadge(Model.PredictiveStatus)">@Model.PredictiveStatus</pems-badge></div>
             <div class="small">Condition Monitoring: <pems-badge tone="@StatusBadge(Model.ConditionMonitoringStatus)">@Model.ConditionMonitoringStatus</pems-badge></div>
         </div>
-    </div>
-</div>
+    </pems-col>
+</pems-row>
 
-<div class="row g-3 mb-3">
-    <div class="col-md-6">
+<pems-row gap="3" css="mb-3">
+    <pems-col md="6">
         <div class="content-card h-100">
             <h6 class="mb-2">Maintenance</h6>
             <pems-table kind="enterprise" scale="small" css="mb-0">
@@ -79,8 +79,8 @@
                 </tbody>
             </pems-table>
         </div>
-    </div>
-    <div class="col-md-6">
+    </pems-col>
+    <pems-col md="6">
         <div class="content-card h-100">
             <h6 class="mb-2">Failure Intelligence &amp; Safety</h6>
             <div class="small text-muted mb-1">Top Failure Modes</div>
@@ -98,8 +98,8 @@
             <div class="small mt-1">Permit Required: @(Model.AnyLinkedJobPlanRequiresPermit ? "Yes" : "No / Unknown")</div>
             <div class="small">LOTO Required: @(Model.AnyLinkedJobPlanRequiresLOTO ? "Yes" : "No / Unknown")</div>
         </div>
-    </div>
-</div>
+    </pems-col>
+</pems-row>
 
 @if (Model.UnavailableMetricReasons.Any())
 {

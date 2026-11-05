@@ -7,20 +7,20 @@
 
 <div class="content-card pems-s-bcaa1805">
     <form asp-action="Create" method="post">
-        <div class="row g-3">
-            <div class="col-md-6"><pems-label>@Localizer["Title"]</pems-label><pems-input name="title" required /></div>
-            <div class="col-md-6"><pems-label>@Localizer["Date & Time"]</pems-label><pems-input name="meetingDate" type="datetime-local" required /></div>
-            <div class="col-md-6"><pems-label>@Localizer["Location"]</pems-label><pems-input name="location" /></div>
-            <div class="col-md-6"><pems-label>@Localizer["Organizer"]</pems-label><pems-input name="organizerName" /></div>
-            <div class="col-md-6">
+        <pems-row gap="3">
+            <pems-col md="6"><pems-label>@Localizer["Title"]</pems-label><pems-input name="title" required /></pems-col>
+            <pems-col md="6"><pems-label>@Localizer["Date & Time"]</pems-label><pems-input name="meetingDate" type="datetime-local" required /></pems-col>
+            <pems-col md="6"><pems-label>@Localizer["Location"]</pems-label><pems-input name="location" /></pems-col>
+            <pems-col md="6"><pems-label>@Localizer["Organizer"]</pems-label><pems-input name="organizerName" /></pems-col>
+            <pems-col md="6">
                 <pems-label>@Localizer["Related Project"]</pems-label>
                 <pems-select name="projectId">
                     <option value="">@Localizer["-- None --"]</option>
                     @foreach (var p in projects) { <option value="@p.ProjectId">@p.ProjectName</option> }
                 </pems-select>
-            </div>
-            <div class="col-12"><pems-label>@Localizer["Agenda"]</pems-label><pems-textarea name="agenda" rows="4"></pems-textarea></div>
-        </div>
+            </pems-col>
+            <pems-col span="12"><pems-label>@Localizer["Agenda"]</pems-label><pems-textarea name="agenda" rows="4"></pems-textarea></pems-col>
+        </pems-row>
         <div class="mt-4">
             <pems-button tone="primary" type="submit">@Localizer["Save"]</pems-button>
             <pems-button tone="neutral" outline="true" as="a" asp-action="Index">@Localizer["Cancel"]</pems-button>

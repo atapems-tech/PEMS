@@ -16,10 +16,10 @@
             <span class="text-muted small ms-2">@m.MeetingDate.ToString("yyyy-MM-dd HH:mm") &middot; @m.Location</span>
         </div>
     </div>
-    <div class="row g-3 mt-2">
-        <div class="col-md-4"><strong>Organizer:</strong> @m.OrganizerName</div>
-        <div class="col-md-4"><strong>@Localizer["Project:"]</strong> @m.ProjectName</div>
-    </div>
+    <pems-row gap="3" css="mt-2">
+        <pems-col md="4"><strong>Organizer:</strong> @m.OrganizerName</pems-col>
+        <pems-col md="4"><strong>@Localizer["Project:"]</strong> @m.ProjectName</pems-col>
+    </pems-row>
     @if (!string.IsNullOrEmpty(Model.Agenda))
     {
         <div class="mt-2"><strong>Agenda:</strong><p class="mb-0">@Model.Agenda</p></div>
@@ -71,14 +71,14 @@
 
     <form asp-action="AddAttendee" method="post" class="row g-2 mt-2">
         <input type="hidden" name="meetingId" value="@m.MeetingId" />
-        <div class="col-md-5">
+        <pems-col md="5">
             <pems-select scale="small" name="employeeId">
                 <option value="">@Localizer["-- Employee --"]</option>
                 @foreach (var e in employees) { <option value="@e.EmployeeId">@e.Name</option> }
             </pems-select>
-        </div>
-        <div class="col-md-4"><pems-input scale="small" name="externalName" placeholder="or external name" /></div>
-        <div class="col-md-3"><pems-button tone="primary" size="small" css="w-100"><pems-icon name="bi-plus-lg" /> @Localizer["Add"]</pems-button></div>
+        </pems-col>
+        <pems-col md="4"><pems-input scale="small" name="externalName" placeholder="or external name" /></pems-col>
+        <pems-col md="3"><pems-button tone="primary" size="small" css="w-100"><pems-icon name="bi-plus-lg" /> @Localizer["Add"]</pems-button></pems-col>
     </form>
 </div>
 
@@ -104,14 +104,14 @@
 
     <form asp-action="AddActionItem" method="post" class="row g-2 mt-2">
         <input type="hidden" name="meetingId" value="@m.MeetingId" />
-        <div class="col-md-5"><pems-input scale="small" name="title" placeholder="Action item" required /></div>
-        <div class="col-md-4">
+        <pems-col md="5"><pems-input scale="small" name="title" placeholder="Action item" required /></pems-col>
+        <pems-col md="4">
             <pems-select scale="small" name="assignedToEmployeeId">
                 <option value="">@Localizer["-- Assign to --"]</option>
                 @foreach (var e in employees) { <option value="@e.EmployeeId">@e.Name</option> }
             </pems-select>
-        </div>
-        <div class="col-md-2"><pems-date name="dueDate" scale="small" /></div>
-        <div class="col-md-1"><pems-button tone="primary" size="small" css="w-100"><pems-icon name="bi-plus-lg" /></pems-button></div>
+        </pems-col>
+        <pems-col md="2"><pems-date name="dueDate" scale="small" /></pems-col>
+        <pems-col md="1"><pems-button tone="primary" size="small" css="w-100"><pems-icon name="bi-plus-lg" /></pems-button></pems-col>
     </form>
 </div>

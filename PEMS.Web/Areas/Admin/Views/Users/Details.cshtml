@@ -306,21 +306,21 @@
                 <div class="content-card">
                     <form method="post" asp-action="Simulate" asp-route-id="@Model.UserId" class="row g-3 pems-s-e2b01b0d">
                         @Html.AntiForgeryToken()
-                        <div class="col-md-6">
+                        <pems-col md="6">
                             <pems-label>@Localizer["Resource"]</pems-label>
                             <pems-input type="text" name="resourceName" value="@Model.Simulator.ResourceName" list="permissionResourceList" required />
-                        </div>
-                        <div class="col-md-6">
+                        </pems-col>
+                        <pems-col md="6">
                             <pems-label>@Localizer["Action"]</pems-label>
                             <pems-input type="text" name="actionName" value="@Model.Simulator.ActionName" required />
-                        </div>
-                        <div class="col-md-6">
+                        </pems-col>
+                        <pems-col md="6">
                             <pems-label>@Localizer["Resource ID (optional)"]</pems-label>
                             <pems-input type="text" name="resourceId" value="@Model.Simulator.ResourceId" />
-                        </div>
-                        <div class="col-12">
+                        </pems-col>
+                        <pems-col span="12">
                             <pems-button tone="primary" type="submit">@Localizer["Run"]</pems-button>
-                        </div>
+                        </pems-col>
                     </form>
                     <datalist id="permissionResourceList">
                         @foreach (var name in Model.Simulator.AllPermissionNames)

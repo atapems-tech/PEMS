@@ -31,8 +31,8 @@
     @if (!Model.Assignments.Any()) { <p class="text-muted small text-center py-2">@Localizer["Rcm_NoAssignments"]</p> }
 </div>
 
-<div class="row">
-    <div class="col-md-6">
+<pems-row>
+    <pems-col md="6">
         <div class="content-card mb-3">
             <h6 class="small fw-bold">@Localizer["Rcm_Plans"]</h6>
             <pems-table scale="small" css="table-enterprise">
@@ -45,8 +45,8 @@
             </pems-table>
             @if (!Model.Plans.Any()) { <p class="text-muted small text-center">@Localizer["Rcm_NoPlans"]</p> }
         </div>
-    </div>
-    <div class="col-md-6">
+    </pems-col>
+    <pems-col md="6">
         <div class="content-card mb-3">
             <h6 class="small fw-bold">@Localizer["Rcm_OpenWorkOrders"]</h6>
             <pems-table scale="small" css="table-enterprise">
@@ -59,5 +59,5 @@
             </pems-table>
             @if (!Model.OpenWorkOrders.Any()) { <p class="text-muted small text-center">@Localizer["Rcm_NoOpenWorkOrders"]</p> }
         </div>
-    </div>
-</div>
+    </pems-col>
+</pems-row>

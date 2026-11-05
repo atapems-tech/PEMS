@@ -165,3 +165,31 @@ public sealed record IconOptions : FrameOptions
     /// <summary>Other classes the page needs (spacing, colour).</summary>
     public string? Css { get; init; }
 }
+
+// SCRUM-508: the page grid (Bootstrap row and column) as registered components. They write today's classes; the page says "6 columns from md up",
+// not "col-md-6". Extra classes the page needs stay in Css.
+
+/// <summary>Inputs of <see cref="PemsRow"/>: a grid row; the columns are the child content.</summary>
+public sealed record RowOptions : FrameOptions
+{
+    /// <summary>Gutter on both axes (g-N), 0 to 5.</summary>
+    public string? Gap { get; init; }
+    /// <summary>Horizontal gutter (gx-N).</summary>
+    public string? GapX { get; init; }
+    /// <summary>Vertical gutter (gy-N).</summary>
+    public string? GapY { get; init; }
+    public string? Css { get; init; }
+}
+
+/// <summary>Inputs of <see cref="PemsCol"/>: a grid column. Each breakpoint takes a width 1 to 12, "auto", or "" (equal width).</summary>
+public sealed record ColOptions : FrameOptions
+{
+    /// <summary>The width on the smallest screens (col, col-6, col-auto).</summary>
+    public string? Span { get; init; }
+    public string? Sm { get; init; }
+    public string? Md { get; init; }
+    public string? Lg { get; init; }
+    public string? Xl { get; init; }
+    public string? Xxl { get; init; }
+    public string? Css { get; init; }
+}

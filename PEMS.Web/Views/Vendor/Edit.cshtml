@@ -21,14 +21,14 @@
             <input type="hidden" asp-for="IsActive" />
             <input type="hidden" asp-for="CreatedDate" />
 
-            <div class="row g-3">
-                <div class="col-12"><pems-label>@Localizer["Vs_Name"]</pems-label><pems-input asp-for="Name" required /></div>
-                <div class="col-md-6"><pems-label>@Localizer["Vs_VendorCode"] <span class="text-muted small">@Localizer["Vs_VendorCodeHint"]</span></pems-label><pems-input asp-for="VendorCode" /></div>
-                <div class="col-md-6"><pems-label>@Localizer["Vs_Country"]</pems-label><pems-input asp-for="Country" /></div>
-                <div class="col-md-6"><pems-label>@Localizer["Vs_ContactName"]</pems-label><pems-input asp-for="ContactName" /></div>
-                <div class="col-md-6"><pems-label>@Localizer["Vs_ContactEmail"]</pems-label><pems-input asp-for="ContactEmail" /></div>
-                <div class="col-md-6"><pems-label>@Localizer["Vs_ContactPhone"]</pems-label><pems-input asp-for="ContactPhone" /></div>
-            </div>
+            <pems-row gap="3">
+                <pems-col span="12"><pems-label>@Localizer["Vs_Name"]</pems-label><pems-input asp-for="Name" required /></pems-col>
+                <pems-col md="6"><pems-label>@Localizer["Vs_VendorCode"] <span class="text-muted small">@Localizer["Vs_VendorCodeHint"]</span></pems-label><pems-input asp-for="VendorCode" /></pems-col>
+                <pems-col md="6"><pems-label>@Localizer["Vs_Country"]</pems-label><pems-input asp-for="Country" /></pems-col>
+                <pems-col md="6"><pems-label>@Localizer["Vs_ContactName"]</pems-label><pems-input asp-for="ContactName" /></pems-col>
+                <pems-col md="6"><pems-label>@Localizer["Vs_ContactEmail"]</pems-label><pems-input asp-for="ContactEmail" /></pems-col>
+                <pems-col md="6"><pems-label>@Localizer["Vs_ContactPhone"]</pems-label><pems-input asp-for="ContactPhone" /></pems-col>
+            </pems-row>
             <div class="mt-4 d-flex gap-2">
                 <button type="submit" class="vs-btn vs-btn--primary">@Localizer["Save"]</button>
                 <a asp-action="Details" asp-route-id="@Model.VendorId" class="vs-btn">@Localizer["Cancel"]</a>

@@ -46,19 +46,19 @@
         را نادیده می‌گیرد. هیچ داده‌ای تا تایید شما در صفحه‌ی بعد وارد جداول اصلی نمی‌شود.
     </p>
     <form asp-action="Upload" method="post" enctype="multipart/form-data" class="row g-2 align-items-end">
-        <div class="col-md-5">
+        <pems-col md="5">
             <pems-label css="small">@Localizer["Project"]</pems-label>
             <pems-select name="projectId" required>
                 @foreach (var p in projects) { <option value="@p.ProjectId">@p.ProjectName</option> }
             </pems-select>
-        </div>
-        <div class="col-md-5">
+        </pems-col>
+        <pems-col md="5">
             <pems-label css="small">MDR Excel File</pems-label>
             <pems-input type="file" name="file" accept=".xlsx" required />
-        </div>
-        <div class="col-md-2">
+        </pems-col>
+        <pems-col md="2">
             <pems-button tone="primary" css="w-100" type="submit"><pems-icon name="bi-cloud-upload" /> @Localizer["Upload"]</pems-button>
-        </div>
+        </pems-col>
     </form>
 </div>
 

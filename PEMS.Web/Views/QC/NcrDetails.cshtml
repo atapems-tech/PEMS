@@ -12,11 +12,11 @@
 </div>
 
 <div class="content-card mb-3">
-    <div class="row g-2">
-        <div class="col-md-4"><strong>Severity:</strong> @Model.Severity</div>
-        <div class="col-md-4"><strong>@Localizer["Raised:"]</strong> @Model.RaisedDate.ToString("yyyy-MM-dd")</div>
-        <div class="col-md-4"><strong>Disposition:</strong> @(Model.Disposition ?? "-")</div>
-    </div>
+    <pems-row gap="2">
+        <pems-col md="4"><strong>Severity:</strong> @Model.Severity</pems-col>
+        <pems-col md="4"><strong>@Localizer["Raised:"]</strong> @Model.RaisedDate.ToString("yyyy-MM-dd")</pems-col>
+        <pems-col md="4"><strong>Disposition:</strong> @(Model.Disposition ?? "-")</pems-col>
+    </pems-row>
     <hr />
     <p class="mb-0">@Model.Description</p>
 </div>
@@ -37,8 +37,8 @@
         <h6 class="mb-3">@Localizer["Disposition"]</h6>
         <form asp-action="NcrDisposition" method="post">
             <input type="hidden" name="id" value="@Model.NonConformanceReportId" />
-            <div class="row g-3">
-                <div class="col-md-4">
+            <pems-row gap="3">
+                <pems-col md="4">
                     <pems-label css="small">@Localizer["Disposition"]</pems-label>
                     <pems-select scale="small" name="disposition" required>
                         <option value="RepairAccept">Repair &amp; Accept</option>
@@ -47,11 +47,11 @@
                         <option value="Reject">@Localizer["Reject"]</option>
                         <option value="Scrap">Scrap</option>
                     </pems-select>
-                </div>
-                <div class="col-md-8"><pems-label css="small">@Localizer["Root Cause"]</pems-label><pems-input scale="small" name="rootCause" /></div>
-                <div class="col-md-6"><pems-label css="small">@Localizer["Corrective Action"]</pems-label><pems-textarea scale="small" name="correctiveAction" rows="2"></pems-textarea></div>
-                <div class="col-md-6"><pems-label css="small">Preventive Action</pems-label><pems-textarea scale="small" name="preventiveAction" rows="2"></pems-textarea></div>
-            </div>
+                </pems-col>
+                <pems-col md="8"><pems-label css="small">@Localizer["Root Cause"]</pems-label><pems-input scale="small" name="rootCause" /></pems-col>
+                <pems-col md="6"><pems-label css="small">@Localizer["Corrective Action"]</pems-label><pems-textarea scale="small" name="correctiveAction" rows="2"></pems-textarea></pems-col>
+                <pems-col md="6"><pems-label css="small">Preventive Action</pems-label><pems-textarea scale="small" name="preventiveAction" rows="2"></pems-textarea></pems-col>
+            </pems-row>
             @if (Model.Severity == "Critical")
             {
                 <p class="text-muted small mt-2 mb-0"><pems-icon name="bi-info-circle" /> چون این NCR بحرانه، بعد از ثبت Disposition، برای تایید نهایی به مدیر QA ارجاع می‌شه.</p>

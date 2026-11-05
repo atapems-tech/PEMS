@@ -21,8 +21,8 @@
     </form>
 </div>
 
-<div class="row g-3">
-    <div class="col-md-3">
+<pems-row gap="3">
+    <pems-col md="3">
         <div class="content-card">
             <h6 class="mb-3">@L("Categories", "دسته‌ها")</h6>
             <pems-list-group flush="true">
@@ -38,15 +38,15 @@
                 }
             </pems-list-group>
         </div>
-    </div>
+    </pems-col>
 
-    <div class="col-md-9">
+    <pems-col md="9">
         @if (selectedCategoryId == null)
         {
-            <div class="row g-3">
+            <pems-row gap="3">
                 @foreach (var c in categories)
                 {
-                    <div class="col-md-4">
+                    <pems-col md="4">
                         <a asp-action="Category" asp-route-id="@c.HelpCategoryId" class="text-decoration-none">
                             <div class="content-card h-100">
                                 <pems-icon css="@(c.IconCssClass ?? "bi-folder") fs-3 text-warning" />
@@ -54,9 +54,9 @@
                                 <p class="text-muted small mb-0">@c.ArticleCount @L("articles", "مقاله")</p>
                             </div>
                         </a>
-                    </div>
+                    </pems-col>
                 }
-            </div>
+            </pems-row>
         }
         else if (articles != null)
         {
@@ -85,5 +85,5 @@
                 }
             </div>
         }
-    </div>
-</div>
+    </pems-col>
+</pems-row>

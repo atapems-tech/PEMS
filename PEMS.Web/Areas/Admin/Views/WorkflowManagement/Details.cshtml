@@ -33,10 +33,10 @@
             <h6>@Localizer["Definition details"] <span class="small text-muted">(@Localizer["shared by all versions"])</span></h6>
             <form asp-action="UpdateDefinition" method="post" class="row g-2">
                 <input type="hidden" name="id" value="@d.DefinitionId" />
-                <div class="col-md-4"><pems-label css="small">@Localizer["Name"]</pems-label><pems-input scale="small" name="name" value="@d.Name" required maxlength="200" /></div>
-                <div class="col-md-4"><pems-label css="small">@Localizer["Persian name"]</pems-label><pems-input scale="small" name="nameFa" dir="rtl" value="@d.NameFa" maxlength="200" /></div>
-                <div class="col-md-4"><pems-label css="small">@Localizer["Description"]</pems-label><pems-input scale="small" name="description" value="@Model.Description" /></div>
-                <div class="col-12"><pems-button tone="primary" size="small">@Localizer["Save"]</pems-button></div>
+                <pems-col md="4"><pems-label css="small">@Localizer["Name"]</pems-label><pems-input scale="small" name="name" value="@d.Name" required maxlength="200" /></pems-col>
+                <pems-col md="4"><pems-label css="small">@Localizer["Persian name"]</pems-label><pems-input scale="small" name="nameFa" dir="rtl" value="@d.NameFa" maxlength="200" /></pems-col>
+                <pems-col md="4"><pems-label css="small">@Localizer["Description"]</pems-label><pems-input scale="small" name="description" value="@Model.Description" /></pems-col>
+                <pems-col span="12"><pems-button tone="primary" size="small">@Localizer["Save"]</pems-button></pems-col>
             </form>
         </div>
     }
@@ -81,8 +81,8 @@
         @if (openDraft != null) { <p class="small text-muted mb-0"><pems-icon name="bi-info-circle" /> @Localizer["One open draft per workflow: finish or discard v{0} before cloning again.", openDraft.VersionNumber]</p> }
     </div>
 
-    <div class="row g-3">
-        <div class="col-lg-6">
+    <pems-row gap="3">
+        <pems-col lg="6">
             <div class="content-card h-100">
                 <h6>@Localizer["Binding"]</h6>
                 @if (Model.Bindings.Count == 0 || Model.Bindings.All(b => !b.IsActive))
@@ -106,8 +106,8 @@
                     </div>
                 }
             </div>
-        </div>
-        <div class="col-lg-6">
+        </pems-col>
+        <pems-col lg="6">
             <div class="content-card h-100">
                 <h6>@Localizer["Usage"]</h6>
                 @if (Model.TotalInstances == 0) { <p class="small text-muted mb-0">@Localizer["No instances have used this workflow."]</p> }
@@ -119,8 +119,8 @@
                     </pems-table>
                 }
             </div>
-        </div>
-    </div>
+        </pems-col>
+    </pems-row>
 
     <div class="content-card mt-3">
         <h6>@Localizer["Configuration audit"]</h6>

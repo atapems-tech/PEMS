@@ -54,8 +54,8 @@
     </div>
 </section>
 
-<div class="row g-3">
-    <div class="col-lg-8">
+<pems-row gap="3">
+    <pems-col lg="8">
         <section class="vs-panel mb-3" aria-labelledby="descTitle">
             <h3 class="h6" id="descTitle">@Localizer["Tm_Field_Description"]</h3>
             @if (Model.CanEdit)
@@ -65,46 +65,46 @@
                     <input type="hidden" name="RowVersion" value="@i.RowVersion" />
                     <input type="hidden" name="ParentId" value="@i.ParentId" />
                     <input type="hidden" name="returnUrl" value="@returnUrl" />
-                    <div class="col-12">
+                    <pems-col span="12">
                         <pems-label css="small" for="e-title">@Localizer["Tm_Field_Title"] <span class="text-danger" aria-hidden="true">*</span></pems-label>
                         <pems-input scale="small" id="e-title" name="Title" value="@i.Title" required maxlength="300" />
-                    </div>
-                    <div class="col-12">
+                    </pems-col>
+                    <pems-col span="12">
                         <pems-label css="small" for="e-desc">@Localizer["Tm_Field_Description"]</pems-label>
                         <pems-textarea scale="small" id="e-desc" name="Description" rows="6" maxlength="8000">@Model.Description</pems-textarea>
-                    </div>
+                    </pems-col>
                     @if (!Model.IsLegacy)
                     {
-                        <div class="col-md-4">
+                        <pems-col md="4">
                             <pems-label css="small" for="e-type">@Localizer["Tm_Field_Type"]</pems-label>
                             <pems-select scale="small" id="e-type" name="TypeId">
                                 @foreach (var t in Model.Types.Where(t => !t.IsSubtask || i.ParentId != null || t.Id == i.TypeId))
                                 { <option value="@t.Id" selected="@(t.Id == i.TypeId)">@TaskManagerUi.Name(t.Name, t.NameFa)</option> }
                             </pems-select>
-                        </div>
+                        </pems-col>
                     }
-                    <div class="col-md-4">
+                    <pems-col md="4">
                         <pems-label css="small" for="e-priority">@Localizer["Tm_Field_Priority"]</pems-label>
                         <pems-select scale="small" id="e-priority" name="Priority">
                             @foreach (var p in PEMS.Domain.Entities.TaskItemPriorities.All) { <option value="@p" selected="@(p == i.Priority)">@TaskManagerUi.Priority(Localizer, p)</option> }
                         </pems-select>
-                    </div>
+                    </pems-col>
                     @if (!Model.IsLegacy)
                     {
-                        <div class="col-md-4">
+                        <pems-col md="4">
                             <pems-label css="small" for="e-points">@Localizer["Tm_Field_StoryPoints"]</pems-label>
                             <pems-input scale="small" id="e-points" name="StoryPoints" type="number" min="0" max="1000" step="0.5" value="@(i.StoryPoints?.ToString(System.Globalization.CultureInfo.InvariantCulture))" />
-                        </div>
+                        </pems-col>
                     }
-                    <div class="col-md-4">
+                    <pems-col md="4">
                         <pems-label css="small" for="e-start">@Localizer["Tm_Field_StartDate"]</pems-label>
                         <pems-date id="e-start" name="StartDate" value="@TaskManagerUi.DateInput(i.StartDate)" scale="small" />
-                    </div>
-                    <div class="col-md-4">
+                    </pems-col>
+                    <pems-col md="4">
                         <pems-label css="small" for="e-due">@Localizer["Tm_Field_DueDate"]</pems-label>
                         <pems-date id="e-due" name="DueDate" value="@TaskManagerUi.DateInput(i.DueDate)" scale="small" />
-                    </div>
-                    <div class="col-md-4 d-flex align-items-end"><pems-button tone="primary" size="small" css="w-100">@Localizer["Tm_Save"]</pems-button></div>
+                    </pems-col>
+                    <pems-col md="4" css="d-flex align-items-end"><pems-button tone="primary" size="small" css="w-100">@Localizer["Tm_Save"]</pems-button></pems-col>
                 </form>
             }
             else
@@ -172,17 +172,17 @@
             {
                 <form asp-controller="TaskManager" asp-action="AddLink" method="post" class="row g-2">
                     <input type="hidden" name="id" value="@i.Id" /><input type="hidden" name="returnUrl" value="@returnUrl" />
-                    <div class="col-md-4">
+                    <pems-col md="4">
                         <label class="visually-hidden" for="lk-type">@Localizer["Tm_LinkType"]</label>
                         <pems-select scale="small" id="lk-type" name="linkType">
                             @foreach (var lt in PEMS.Domain.Entities.WorkItemLinkTypes.All) { <option value="@lt">@TaskManagerUi.LinkType(Localizer, lt, true)</option> }
                         </pems-select>
-                    </div>
-                    <div class="col-md-5">
+                    </pems-col>
+                    <pems-col md="5">
                         <label class="visually-hidden" for="lk-target">@Localizer["Tm_LinkTarget"]</label>
                         <pems-input scale="small" id="lk-target" name="target" placeholder="@Localizer["Tm_LinkTargetPlaceholder"]" required maxlength="30" />
-                    </div>
-                    <div class="col-md-3"><pems-button tone="neutral" size="small" outline="true" css="w-100"><pems-icon name="bi-link-45deg" aria-hidden="true" /> @Localizer["Tm_AddLink"]</pems-button></div>
+                    </pems-col>
+                    <pems-col md="3"><pems-button tone="neutral" size="small" outline="true" css="w-100"><pems-icon name="bi-link-45deg" aria-hidden="true" /> @Localizer["Tm_AddLink"]</pems-button></pems-col>
                 </form>
             }
         </section>
@@ -244,9 +244,9 @@
                 </div>
             }
         </section>
-    </div>
+    </pems-col>
 
-    <div class="col-lg-4">
+    <pems-col lg="4">
         <section class="vs-panel mb-3" aria-labelledby="statusTitle">
             <h3 class="h6" id="statusTitle">@Localizer["Tm_Field_Status"]</h3>
             @if (Model.CanTransition && Model.AllowedTransitions.Any())
@@ -328,7 +328,7 @@
                 <pems-info-item label="@Localizer["Tm_Watchers"]">@(Model.Watchers.Any() ? string.Join(TaskManagerUi.IsFa ? "، " : ", ", Model.Watchers) : "—")</pems-info-item>
             </pems-info-grid>
         </section>
-    </div>
-</div>
+    </pems-col>
+</pems-row>
 
 @section Scripts { <script src="~/js/pems-task-manager.js" asp-append-version="true"></script> }

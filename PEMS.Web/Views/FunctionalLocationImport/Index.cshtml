@@ -16,13 +16,13 @@
         you review the parsed rows and click Commit.
     </p>
     <form asp-action="Upload" method="post" enctype="multipart/form-data" class="row g-2 align-items-end">
-        <div class="col-md-8">
+        <pems-col md="8">
             <pems-label css="small">Functional Location Excel File</pems-label>
             <pems-input type="file" name="file" accept=".xlsx" required />
-        </div>
-        <div class="col-md-4">
+        </pems-col>
+        <pems-col md="4">
             <pems-button tone="primary" css="w-100" type="submit"><pems-icon name="bi-cloud-upload" /> @Localizer["Upload"]</pems-button>
-        </div>
+        </pems-col>
     </form>
 </div>
 

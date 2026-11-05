@@ -67,16 +67,16 @@
     var info = table.DocumentInfo;
     <div class="content-card mb-3">
         <h6 class="mb-2">Document Info</h6>
-        <div class="row g-2 small">
-            <div class="col-md-3"><strong>Document No.</strong><div>@(info.DocumentNo ?? "N/A")</div></div>
-            <div class="col-md-3"><strong>@Localizer["Title"]</strong><div>@(info.Title ?? "N/A")</div></div>
-            <div class="col-md-3"><strong>@Localizer["Type"]</strong><div>@(info.DocumentType ?? "N/A")</div></div>
-            <div class="col-md-3"><strong>@Localizer["Discipline"]</strong><div>@(info.Discipline ?? "N/A")</div></div>
-            <div class="col-md-3"><strong>@Localizer["Revision"]</strong><div>@(info.RevisionNo ?? "N/A")</div></div>
-            <div class="col-md-3"><strong>@Localizer["Vendor"]</strong><div>@(info.VendorName ?? "N/A")</div></div>
-            <div class="col-md-3"><strong>Area / Unit</strong><div>@(info.Area ?? "N/A") / @(info.Unit ?? "N/A")</div></div>
-            <div class="col-md-3"><strong>@Localizer["System"]</strong><div>@(info.System ?? "N/A")</div></div>
-        </div>
+        <pems-row gap="2" css="small">
+            <pems-col md="3"><strong>Document No.</strong><div>@(info.DocumentNo ?? "N/A")</div></pems-col>
+            <pems-col md="3"><strong>@Localizer["Title"]</strong><div>@(info.Title ?? "N/A")</div></pems-col>
+            <pems-col md="3"><strong>@Localizer["Type"]</strong><div>@(info.DocumentType ?? "N/A")</div></pems-col>
+            <pems-col md="3"><strong>@Localizer["Discipline"]</strong><div>@(info.Discipline ?? "N/A")</div></pems-col>
+            <pems-col md="3"><strong>@Localizer["Revision"]</strong><div>@(info.RevisionNo ?? "N/A")</div></pems-col>
+            <pems-col md="3"><strong>@Localizer["Vendor"]</strong><div>@(info.VendorName ?? "N/A")</div></pems-col>
+            <pems-col md="3"><strong>Area / Unit</strong><div>@(info.Area ?? "N/A") / @(info.Unit ?? "N/A")</div></pems-col>
+            <pems-col md="3"><strong>@Localizer["System"]</strong><div>@(info.System ?? "N/A")</div></pems-col>
+        </pems-row>
     </div>
 }
 

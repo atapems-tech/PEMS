@@ -43,12 +43,12 @@
     </div>
     @if (readiness != null)
     {
-        <div class="row g-2 small mt-2">
-            <div class="col-md-3"><strong>@Localizer["Equipment"]</strong><div>@readiness.EquipmentCount.ToString("N0")</div></div>
-            <div class="col-md-3"><strong>FMEA Readiness</strong><div><pems-badge tone="@(readiness.FMEAReadiness == "READY" ? "success" : readiness.FMEAReadiness == "PARTIALLY_READY" ? "warning" : "neutral")">@readiness.FMEAReadiness</pems-badge></div></div>
-            <div class="col-md-3"><strong>RCM Readiness</strong><div><pems-badge tone="@(readiness.RCMReadiness == "READY" ? "success" : readiness.RCMReadiness == "PARTIALLY_READY" ? "warning" : "neutral")">@readiness.RCMReadiness</pems-badge></div></div>
-            <div class="col-md-3"><strong>Strategy Types Available</strong><div>@readiness.StrategyTypeCount</div></div>
-        </div>
+        <pems-row gap="2" css="small mt-2">
+            <pems-col md="3"><strong>@Localizer["Equipment"]</strong><div>@readiness.EquipmentCount.ToString("N0")</div></pems-col>
+            <pems-col md="3"><strong>FMEA Readiness</strong><div><pems-badge tone="@(readiness.FMEAReadiness == "READY" ? "success" : readiness.FMEAReadiness == "PARTIALLY_READY" ? "warning" : "neutral")">@readiness.FMEAReadiness</pems-badge></div></pems-col>
+            <pems-col md="3"><strong>RCM Readiness</strong><div><pems-badge tone="@(readiness.RCMReadiness == "READY" ? "success" : readiness.RCMReadiness == "PARTIALLY_READY" ? "warning" : "neutral")">@readiness.RCMReadiness</pems-badge></div></pems-col>
+            <pems-col md="3"><strong>Strategy Types Available</strong><div>@readiness.StrategyTypeCount</div></pems-col>
+        </pems-row>
         @if (readiness.MissingDimensions.Any())
         {
             <pems-alert tone="light" css="border small mt-2 mb-0">
@@ -106,9 +106,9 @@
             <div class="content-card mb-3">
                 <form asp-action="CreateFmeaDraft" method="post" class="row g-2">
                     <input type="hidden" name="equipmentClassId" value="@equipmentClass.EquipmentClassId" />
-                    <div class="col-md-4"><pems-input scale="small" name="title" placeholder="Analysis title" required /></div>
-                    <div class="col-md-6"><pems-input scale="small" name="description" placeholder="@Localizer["Description"]" /></div>
-                    <div class="col-md-2"><pems-button tone="primary" size="small" css="w-100" type="submit">New FMEA Draft</pems-button></div>
+                    <pems-col md="4"><pems-input scale="small" name="title" placeholder="Analysis title" required /></pems-col>
+                    <pems-col md="6"><pems-input scale="small" name="description" placeholder="@Localizer["Description"]" /></pems-col>
+                    <pems-col md="2"><pems-button tone="primary" size="small" css="w-100" type="submit">New FMEA Draft</pems-button></pems-col>
                 </form>
             </div>
         }
@@ -167,29 +167,29 @@
                     <form asp-action="AddFmeaItem" method="post" class="row g-2 mt-1">
                         <input type="hidden" name="equipmentClassId" value="@equipmentClass.EquipmentClassId" />
                         <input type="hidden" name="fmeaAnalysisId" value="@fmea.FMEAAnalysisId" />
-                        <div class="col-md-3">
+                        <pems-col md="3">
                             <pems-select scale="small" name="failureModeId" required>
                                 <option value="">Failure Mode...</option>
                                 @foreach (var fm in failureModes) { <option value="@fm.FailureModeId">@fm.Name</option> }
                             </pems-select>
-                        </div>
-                        <div class="col-md-2">
+                        </pems-col>
+                        <pems-col md="2">
                             <pems-select scale="small" name="functionalFailureId">
                                 <option value="">Functional Failure (optional)...</option>
                                 @foreach (var ff in functionalFailures) { <option value="@ff.FunctionalFailureId">@ff.Title</option> }
                             </pems-select>
-                        </div>
-                        <div class="col-md-2"><pems-input scale="small" name="detectionMethod" placeholder="Detection method" /></div>
-                        <div class="col-md-1"><pems-input scale="small" name="severity" type="number" min="1" max="10" placeholder="S" /></div>
-                        <div class="col-md-1"><pems-input scale="small" name="occurrence" type="number" min="1" max="10" placeholder="O" /></div>
-                        <div class="col-md-1"><pems-input scale="small" name="detectability" type="number" min="1" max="10" placeholder="D" /></div>
-                        <div class="col-md-2">
+                        </pems-col>
+                        <pems-col md="2"><pems-input scale="small" name="detectionMethod" placeholder="Detection method" /></pems-col>
+                        <pems-col md="1"><pems-input scale="small" name="severity" type="number" min="1" max="10" placeholder="S" /></pems-col>
+                        <pems-col md="1"><pems-input scale="small" name="occurrence" type="number" min="1" max="10" placeholder="O" /></pems-col>
+                        <pems-col md="1"><pems-input scale="small" name="detectability" type="number" min="1" max="10" placeholder="D" /></pems-col>
+                        <pems-col md="2">
                             <pems-select scale="small" name="maintenanceStrategyTypeId">
                                 <option value="">@Localizer["Strategy Type..."]</option>
                                 @foreach (var st in strategyTypes) { <option value="@st.MaintenanceStrategyTypeId">@st.Name</option> }
                             </pems-select>
-                        </div>
-                        <div class="col-12"><pems-button tone="neutral" size="small" outline="true" type="submit"><pems-icon name="bi-plus-lg" /> Add Item</pems-button></div>
+                        </pems-col>
+                        <pems-col span="12"><pems-button tone="neutral" size="small" outline="true" type="submit"><pems-icon name="bi-plus-lg" /> Add Item</pems-button></pems-col>
                     </form>
                 }
             </div>
@@ -204,13 +204,13 @@
             <div class="content-card mb-3">
                 <form asp-action="CreateRcmDraft" method="post" class="row g-2">
                     <input type="hidden" name="equipmentClassId" value="@equipmentClass.EquipmentClassId" />
-                    <div class="col-md-8">
+                    <pems-col md="8">
                         <pems-select scale="small" name="fmeaAnalysisId" required>
                             <option value="">Based on approved FMEA...</option>
                             @foreach (var fmea in fmeaAnalyses.Where(x => x.Status == "APPROVED")) { <option value="@fmea.FMEAAnalysisId">@fmea.Title (Rev. @fmea.Revision)</option> }
                         </pems-select>
-                    </div>
-                    <div class="col-md-4"><pems-button tone="primary" size="small" css="w-100" type="submit">New RCM Draft</pems-button></div>
+                    </pems-col>
+                    <pems-col md="4"><pems-button tone="primary" size="small" css="w-100" type="submit">New RCM Draft</pems-button></pems-col>
                 </form>
             </div>
         }
@@ -303,12 +303,12 @@
                                         <h6 class="modal-title">Apply RCM Decision — <span data-fill-text="failuremodename"></span></h6>
                                     </div>
                                     <div class="modal-body">
-                                        <div class="row g-2 small mb-2">
-                                            <div class="col-6"><strong>@Localizer["Status"]</strong><div data-fill-text="status"></div></div>
-                                            <div class="col-6"><strong>Decision Type</strong><div data-fill-text="decisiontype"></div></div>
-                                            <div class="col-6"><strong>Recommended Strategy</strong><div data-fill-text="strategy"></div></div>
-                                            <div class="col-6"><strong>Recommended PM Template</strong><div data-fill-text="pmtemplate"></div></div>
-                                        </div>
+                                        <pems-row gap="2" css="small mb-2">
+                                            <pems-col span="6"><strong>@Localizer["Status"]</strong><div data-fill-text="status"></div></pems-col>
+                                            <pems-col span="6"><strong>Decision Type</strong><div data-fill-text="decisiontype"></div></pems-col>
+                                            <pems-col span="6"><strong>Recommended Strategy</strong><div data-fill-text="strategy"></div></pems-col>
+                                            <pems-col span="6"><strong>Recommended PM Template</strong><div data-fill-text="pmtemplate"></div></pems-col>
+                                        </pems-row>
                                         <pems-alert tone="warning" css="small py-2 px-3">
                                             Applying this approved RCM decision will <strong>create or update the operational Maintenance Strategy</strong> for the equipment selected below
                                             (and its Maintenance Plan, if a PM Template was recommended). This is not a preview — it changes real operational configuration.
@@ -347,13 +347,13 @@
                     <form asp-action="AddRcmDecision" method="post" class="row g-2 mt-1">
                         <input type="hidden" name="equipmentClassId" value="@equipmentClass.EquipmentClassId" />
                         <input type="hidden" name="rcmAnalysisId" value="@rcm.RCMAnalysisId" />
-                        <div class="col-md-3">
+                        <pems-col md="3">
                             <pems-select scale="small" name="fmeaItemId" required>
                                 <option value="">FMEA Item (Failure Mode)...</option>
                                 @foreach (var item in sourceFmea.Items) { <option value="@item.FMEAItemId">@item.FailureModeName</option> }
                             </pems-select>
-                        </div>
-                        <div class="col-md-2">
+                        </pems-col>
+                        <pems-col md="2">
                             <pems-select scale="small" name="decisionType" required>
                                 <option value="">Decision Type...</option>
                                 <option value="CONDITION_BASED">Condition Based</option>
@@ -366,29 +366,29 @@
                                 <option value="NO_SCHEDULED_MAINTENANCE">No Scheduled Maintenance</option>
                                 <option value="OTHER">@Localizer["Other"]</option>
                             </pems-select>
-                        </div>
-                        <div class="col-md-2">
+                        </pems-col>
+                        <pems-col md="2">
                             <pems-select scale="small" name="maintenanceStrategyTypeId">
                                 <option value="">@Localizer["Strategy Type..."]</option>
                                 @foreach (var st in strategyTypes) { <option value="@st.MaintenanceStrategyTypeId">@st.Name</option> }
                             </pems-select>
-                        </div>
-                        <div class="col-md-2">
+                        </pems-col>
+                        <pems-col md="2">
                             <pems-select scale="small" name="recommendedPMTemplateId">
                                 <option value="">PM Template (optional)...</option>
                                 @foreach (var pt in pmTemplates) { <option value="@pt.PMTemplateId">@pt.Name</option> }
                             </pems-select>
-                        </div>
-                        <div class="col-md-2">
+                        </pems-col>
+                        <pems-col md="2">
                             <pems-select scale="small" name="consequenceCategory">
                                 <option value="Safety">@Localizer["Safety"]</option>
                                 <option value="Environmental">@Localizer["Environmental"]</option>
                                 <option value="Operational" selected>@Localizer["Operational"]</option>
                                 <option value="Economic">@Localizer["Economic"]</option>
                             </pems-select>
-                        </div>
-                        <div class="col-md-6"><pems-input scale="small" name="rationale" placeholder="@Localizer["Rationale"]" /></div>
-                        <div class="col-md-2"><pems-button tone="neutral" size="small" outline="true" css="w-100" type="submit"><pems-icon name="bi-plus-lg" /> Add Decision</pems-button></div>
+                        </pems-col>
+                        <pems-col md="6"><pems-input scale="small" name="rationale" placeholder="@Localizer["Rationale"]" /></pems-col>
+                        <pems-col md="2"><pems-button tone="neutral" size="small" outline="true" css="w-100" type="submit"><pems-icon name="bi-plus-lg" /> Add Decision</pems-button></pems-col>
                     </form>
                 }
             </div>

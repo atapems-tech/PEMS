@@ -12,30 +12,30 @@
         new() { Title = "Held Runs", Count = Model.HeldRunCount, IconClass = "bi-pause-circle", ColorClass = "bg-icon-orange" }
     };
 }
-<div class="row row-cols-2 row-cols-md-4 g-3 mb-3">
+<pems-row gap="3" css="row-cols-2 row-cols-md-4 mb-3">
     @foreach (var kpi in kpis)
     {
-        <div class="col"><pems-kpi-tile model="kpi" /></div>
+        <pems-col span=""><pems-kpi-tile model="kpi" /></pems-col>
     }
-</div>
+</pems-row>
 
-<div class="row row-cols-1 row-cols-md-2 g-3 mb-3">
-    <div class="col">
+<pems-row gap="3" css="row-cols-1 row-cols-md-2 mb-3">
+    <pems-col span="">
         <div class="content-card h-100">
             <div class="text-muted small">Today's Output Quantity</div>
             <div class="fs-3 fw-semibold">@Model.TodaysOutputQuantity.ToString("N3")</div>
         </div>
-    </div>
-    <div class="col">
+    </pems-col>
+    <pems-col span="">
         <div class="content-card h-100">
             <div class="text-muted small">Today's Loss Quantity</div>
             <div class="fs-3 fw-semibold text-danger">@Model.TodaysLossQuantity.ToString("N3")</div>
         </div>
-    </div>
-</div>
+    </pems-col>
+</pems-row>
 
-<div class="row row-cols-1 row-cols-lg-2 g-3">
-    <div class="col">
+<pems-row gap="3" css="row-cols-1 row-cols-lg-2">
+    <pems-col span="">
         <div class="content-card">
             <div class="d-flex justify-content-between align-items-center mb-2">
                 <h6 class="mb-0">Active Production Orders</h6>
@@ -60,8 +60,8 @@
                 @if (!Model.ActiveOrders.Any()) { <p class="text-muted text-center py-3">No active production orders.</p> }
             </div>
         </div>
-    </div>
-    <div class="col">
+    </pems-col>
+    <pems-col span="">
         <div class="content-card">
             <h6 class="mb-2">Recent Batches</h6>
             <div class="table-scroll-area pems-s-7bf38d03">
@@ -82,8 +82,8 @@
                 @if (!Model.RecentBatches.Any()) { <p class="text-muted text-center py-3">No batches recorded yet.</p> }
             </div>
         </div>
-    </div>
-</div>
+    </pems-col>
+</pems-row>
 
 <div class="content-card mt-3">
     <h6 class="mb-2">Recent Production Losses</h6>

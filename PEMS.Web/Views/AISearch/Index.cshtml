@@ -5,37 +5,37 @@
 
 <div class="content-card mb-3">
     <form method="get" class="row g-2 align-items-end">
-        <div class="col-md-4">
+        <pems-col md="4">
             <pems-label css="small">@Localizer["Search Query"]</pems-label>
             <pems-input type="text" name="q" value="@ViewBag.Query" placeholder="e.g. P-101, pressure vessel datasheet, piping isometric ..." />
-        </div>
-        <div class="col-md-2">
+        </pems-col>
+        <pems-col md="2">
             <pems-label css="small">@Localizer["Discipline"]</pems-label>
             <pems-select scale="small" name="discipline">
                 <option value="">@Localizer["All"]</option>
                 @foreach (var d in (List<string>)ViewBag.Disciplines)
                 { <option value="@d" selected="@(d == (string?)ViewBag.SelectedDiscipline)">@d</option> }
             </pems-select>
-        </div>
-        <div class="col-md-2">
+        </pems-col>
+        <pems-col md="2">
             <pems-label css="small">@Localizer["Document Type"]</pems-label>
             <pems-select scale="small" name="documentType">
                 <option value="">@Localizer["All"]</option>
                 @foreach (var d in (List<string>)ViewBag.DocumentTypes)
                 { <option value="@d" selected="@(d == (string?)ViewBag.SelectedDocumentType)">@d</option> }
             </pems-select>
-        </div>
-        <div class="col-md-2">
+        </pems-col>
+        <pems-col md="2">
             <pems-label css="small">@Localizer["Status"]</pems-label>
             <pems-select scale="small" name="status">
                 <option value="">@Localizer["All"]</option>
                 @foreach (var s in (List<string>)ViewBag.Statuses)
                 { <option value="@s" selected="@(s == (string?)ViewBag.SelectedStatus)">@s</option> }
             </pems-select>
-        </div>
-        <div class="col-md-2">
+        </pems-col>
+        <pems-col md="2">
             <pems-button tone="primary" size="small" css="w-100" type="submit"><pems-icon name="bi-search" /> @Localizer["Search"]</pems-button>
-        </div>
+        </pems-col>
     </form>
 </div>
 
