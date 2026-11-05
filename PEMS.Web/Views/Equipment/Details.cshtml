@@ -130,7 +130,7 @@
                 </div>
                 <div class="mb-2">
                     <pems-label css="small">Installation Date</pems-label>
-                    <input name="installationDate" type="date" class="form-control form-control-sm" value="@eq.InstallationDate?.ToString("yyyy-MM-dd")" />
+                    <pems-date name="installationDate" value="@eq.InstallationDate?.ToString("yyyy-MM-dd")" scale="small" />
                 </div>
             </div>
             <div class="modal-footer">

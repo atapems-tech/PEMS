@@ -50,7 +50,7 @@
         <input type="hidden" name="letterType" value="@letterType" />
 
         <div class="row g-3">
-            <div class="col-md-6"><pems-label for="letterDate">@Localizer["Lt_Date"]</pems-label><input name="letterDate" id="letterDate" type="date" class="form-control" value="@prefillDate" required /></div>
+            <div class="col-md-6"><pems-label for="letterDate">@Localizer["Lt_Date"]</pems-label><pems-date name="letterDate" id="letterDate" value="@prefillDate" required /></div>
 
             @if (letterType == "Incoming")
             {
@@ -72,8 +72,7 @@
                 </div>
                 <div class="mt-2" id="responseDueWrap" style="max-width:260px;">
                     <pems-label css="small" for="responseDueDate">@Localizer["Lt_ResponseDueDate"]</pems-label>
-                    <input type="date" name="responseDueDate" id="responseDueDate" class="form-control" value="@respDue"
-                           aria-describedby="responseDueError" aria-invalid="@(respError != null ? "true" : "false")" />
+                    <pems-date name="responseDueDate" id="responseDueDate" value="@respDue" aria-describedby="responseDueError" aria-invalid="@(respError != null ? "true" : "false")" />
                     <div id="responseDueError" class="text-danger small mt-1" role="alert" @(respError == null ? "hidden" : "")>
                         <i class="bi bi-exclamation-circle" aria-hidden="true"></i> @respError
                     </div>

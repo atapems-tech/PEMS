@@ -69,7 +69,7 @@
                 </div>
                 <div class="col-md-4" id="nextDueDateWrap">
                     <pems-label>@Localizer["Rcm_NextDueDate"]</pems-label>
-                    <input name="NextDueDate" type="date" value="@i.NextDueDate?.ToString("yyyy-MM-dd")" class="form-control" />
+                    <pems-date name="NextDueDate" value="@i.NextDueDate?.ToString("yyyy-MM-dd")" />
                     <span class="text-danger small">@Html.ValidationMessage("nextDueDate")</span>
                     <div class="form-check mt-1 small">
                         <pems-input kind="check" type="checkbox" name="AllowPastDueDate" value="true" id="allowPast" />

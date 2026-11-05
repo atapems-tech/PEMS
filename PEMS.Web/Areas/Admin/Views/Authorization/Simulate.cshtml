@@ -62,12 +62,12 @@
                     </span>
                 </div>
                 <div class="p-3">
-                    <dl class="row mb-0">
-                        <dt class="col-sm-3">@Localizer["Reason"]</dt><dd class="col-sm-9"><code>@r.Reason</code></dd>
-                        <dt class="col-sm-3">@Localizer["Detail"]</dt><dd class="col-sm-9">@(string.IsNullOrWhiteSpace(r.Detail) ? "—" : r.Detail)</dd>
-                        <dt class="col-sm-3">@Localizer["Matched Role"]</dt><dd class="col-sm-9">@(r.MatchedRoleName ?? "—")</dd>
-                        <dt class="col-sm-3">@Localizer["Matched Scope"]</dt><dd class="col-sm-9">@(r.MatchedScopeType == null ? "—" : $"{r.MatchedScopeType} = {r.MatchedScopeValue}")</dd>
-                    </dl>
+                    <pems-info-grid layout="rows" class="mb-0">
+    <pems-info-item label="@Localizer["Reason"]"><code>@r.Reason</code></pems-info-item>
+    <pems-info-item label="@Localizer["Detail"]">@(string.IsNullOrWhiteSpace(r.Detail) ? "—" : r.Detail)</pems-info-item>
+    <pems-info-item label="@Localizer["Matched Role"]">@(r.MatchedRoleName ?? "—")</pems-info-item>
+    <pems-info-item label="@Localizer["Matched Scope"]">@(r.MatchedScopeType == null ? "—" : $"{r.MatchedScopeType} = {r.MatchedScopeValue}")</pems-info-item>
+</pems-info-grid>
                 </div>
             </div>
             <p class="text-body-secondary small mt-2"><i class="bi bi-info-circle"></i> @Localizer["This was recorded in the Authorization Audit log."]</p>

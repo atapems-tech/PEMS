@@ -371,8 +371,8 @@
                                     </pems-select>
                                 </div>
                                 <div class="row g-2">
-                                    <div class="col-6"><label class="lp-lbl" for="fpFrom">@Localizer["Lp_From"]</label><input type="date" id="fpFrom" name="fromDate" class="form-control form-control-sm" value="@fromDate?.ToString("yyyy-MM-dd")" /></div>
-                                    <div class="col-6"><label class="lp-lbl" for="fpTo">@Localizer["Lp_To"]</label><input type="date" id="fpTo" name="toDate" class="form-control form-control-sm" value="@toDate?.ToString("yyyy-MM-dd")" /></div>
+                                    <div class="col-6"><label class="lp-lbl" for="fpFrom">@Localizer["Lp_From"]</label><pems-date id="fpFrom" name="fromDate" value="@fromDate?.ToString("yyyy-MM-dd")" scale="small" /></div>
+                                    <div class="col-6"><label class="lp-lbl" for="fpTo">@Localizer["Lp_To"]</label><pems-date id="fpTo" name="toDate" value="@toDate?.ToString("yyyy-MM-dd")" scale="small" /></div>
                                 </div>
                                 <div class="row g-2">
                                     <div class="col-6">
@@ -772,18 +772,18 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="@Localizer["Cancel"]"></button>
             </div>
             <div class="modal-body">
-                <dl class="lp-keys mb-0">
-                    <div><dt>@Localizer["Lp_KeySearch"]</dt><dd><kbd>/</kbd></dd></div>
-                    <div><dt>@Localizer["Lp_KeyCompose"]</dt><dd><kbd>C</kbd></dd></div>
-                    <div><dt>@Localizer["Lp_KeyMove"]</dt><dd><kbd>J</kbd> <kbd>K</kbd></dd></div>
-                    <div><dt>@Localizer["Lp_KeySelect"]</dt><dd><kbd>X</kbd></dd></div>
-                    <div><dt>@Localizer["Lp_KeyStar"]</dt><dd><kbd>S</kbd></dd></div>
-                    <div><dt>@Localizer["Lp_KeyOpen"]</dt><dd><kbd>Enter</kbd></dd></div>
-                    <div><dt>@Localizer["Lp_KeyArchive"]</dt><dd><kbd>E</kbd></dd></div>
-                    <div><dt>@Localizer["Ct_KeyTrash"]</dt><dd><kbd>#</kbd></dd></div>
-                    <div><dt>@Localizer["Lp_KeyDensity"]</dt><dd><kbd>D</kbd></dd></div>
-                    <div><dt>@Localizer["Lp_KeyClose"]</dt><dd><kbd>Esc</kbd></dd></div>
-                </dl>
+                <pems-info-grid class="lp-keys mb-0">
+    <pems-info-item label="@Localizer["Lp_KeySearch"]"><kbd>/</kbd></pems-info-item>
+    <pems-info-item label="@Localizer["Lp_KeyCompose"]"><kbd>C</kbd></pems-info-item>
+    <pems-info-item label="@Localizer["Lp_KeyMove"]"><kbd>J</kbd> <kbd>K</kbd></pems-info-item>
+    <pems-info-item label="@Localizer["Lp_KeySelect"]"><kbd>X</kbd></pems-info-item>
+    <pems-info-item label="@Localizer["Lp_KeyStar"]"><kbd>S</kbd></pems-info-item>
+    <pems-info-item label="@Localizer["Lp_KeyOpen"]"><kbd>Enter</kbd></pems-info-item>
+    <pems-info-item label="@Localizer["Lp_KeyArchive"]"><kbd>E</kbd></pems-info-item>
+    <pems-info-item label="@Localizer["Ct_KeyTrash"]"><kbd>#</kbd></pems-info-item>
+    <pems-info-item label="@Localizer["Lp_KeyDensity"]"><kbd>D</kbd></pems-info-item>
+    <pems-info-item label="@Localizer["Lp_KeyClose"]"><kbd>Esc</kbd></pems-info-item>
+</pems-info-grid>
             </div>
         </pems-modal>
 
@@ -868,18 +868,18 @@
                         <section class="ct-pane" data-pane-body="reminders" role="tabpanel" hidden></section>
                         <section class="ct-pane" data-pane-body="keys" role="tabpanel" hidden>
                             <h3>@Localizer["Lp_Shortcuts"]</h3>
-                            <dl class="lp-keys mb-0">
-                                <div><dt>@Localizer["Lp_KeySearch"]</dt><dd><kbd>/</kbd></dd></div>
-                                <div><dt>@Localizer["Lp_KeyCompose"]</dt><dd><kbd>C</kbd></dd></div>
-                                <div><dt>@Localizer["Lp_KeyMove"]</dt><dd><kbd>J</kbd> <kbd>K</kbd></dd></div>
-                                <div><dt>@Localizer["Lp_KeySelect"]</dt><dd><kbd>X</kbd></dd></div>
-                                <div><dt>@Localizer["Lp_KeyStar"]</dt><dd><kbd>S</kbd></dd></div>
-                                <div><dt>@Localizer["Lp_KeyOpen"]</dt><dd><kbd>Enter</kbd></dd></div>
-                                <div><dt>@Localizer["Lp_KeyArchive"]</dt><dd><kbd>E</kbd></dd></div>
-                                <div><dt>@Localizer["Ct_KeyTrash"]</dt><dd><kbd>#</kbd></dd></div>
-                                <div><dt>@Localizer["Lp_KeyDensity"]</dt><dd><kbd>D</kbd></dd></div>
-                                <div><dt>@Localizer["Lp_KeyClose"]</dt><dd><kbd>Esc</kbd></dd></div>
-                            </dl>
+                            <pems-info-grid class="lp-keys mb-0">
+    <pems-info-item label="@Localizer["Lp_KeySearch"]"><kbd>/</kbd></pems-info-item>
+    <pems-info-item label="@Localizer["Lp_KeyCompose"]"><kbd>C</kbd></pems-info-item>
+    <pems-info-item label="@Localizer["Lp_KeyMove"]"><kbd>J</kbd> <kbd>K</kbd></pems-info-item>
+    <pems-info-item label="@Localizer["Lp_KeySelect"]"><kbd>X</kbd></pems-info-item>
+    <pems-info-item label="@Localizer["Lp_KeyStar"]"><kbd>S</kbd></pems-info-item>
+    <pems-info-item label="@Localizer["Lp_KeyOpen"]"><kbd>Enter</kbd></pems-info-item>
+    <pems-info-item label="@Localizer["Lp_KeyArchive"]"><kbd>E</kbd></pems-info-item>
+    <pems-info-item label="@Localizer["Ct_KeyTrash"]"><kbd>#</kbd></pems-info-item>
+    <pems-info-item label="@Localizer["Lp_KeyDensity"]"><kbd>D</kbd></pems-info-item>
+    <pems-info-item label="@Localizer["Lp_KeyClose"]"><kbd>Esc</kbd></pems-info-item>
+</pems-info-grid>
                         </section>
                     </div>
                 </div>

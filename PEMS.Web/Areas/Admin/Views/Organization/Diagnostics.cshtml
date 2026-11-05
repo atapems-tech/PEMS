@@ -21,17 +21,17 @@
     <section class="vs-panel mb-3">
         <h2 class="vs-section__title"><i class="bi bi-clipboard-data"></i> @Localizer["Org_Ready_Title"]</h2>
         <p class="small text-muted">@Localizer["Org_Ready_Note"]</p>
-        <dl class="row mb-0 small">
-            <dt class="col-sm-5">@Localizer["Org_Ready_ActivePositions"]</dt><dd class="col-sm-7">@rd.ActivePositions</dd>
-            <dt class="col-sm-5">@Localizer["Org_Ready_WithParent"]</dt><dd class="col-sm-7">@rd.PositionsWithParent</dd>
-            <dt class="col-sm-5">@Localizer["Org_Ready_Roots"]</dt><dd class="col-sm-7">@rd.RootPositions</dd>
-            <dt class="col-sm-5">@Localizer["Org_Ready_Vacant"]</dt><dd class="col-sm-7">@rd.VacantPositions</dd>
-            <dt class="col-sm-5">@Localizer["Org_Ready_NoDept"]</dt><dd class="col-sm-7">@rd.ActivePositionsWithoutDepartment</dd>
-            <dt class="col-sm-5">@Localizer["Org_Ready_ActiveEmployees"]</dt><dd class="col-sm-7">@rd.ActiveEmployees</dd>
-            <dt class="col-sm-5">@Localizer["Org_Ready_WithPrimary"]</dt><dd class="col-sm-7">@rd.ActiveEmployeesWithPrimaryPosition</dd>
-            <dt class="col-sm-5">@Localizer["Org_Ready_NoPersonnelCode"]</dt><dd class="col-sm-7">@rd.ActiveEmployeesWithoutPersonnelCode</dd>
-            <dt class="col-sm-5">@Localizer["Org_Ready_UsersNoPrimary"]</dt><dd class="col-sm-7">@rd.ActiveUsersWithoutPrimaryPosition</dd>
-        </dl>
+        <pems-info-grid layout="rows" class="mb-0 small">
+    <pems-info-item label="@Localizer["Org_Ready_ActivePositions"]">@rd.ActivePositions</pems-info-item>
+    <pems-info-item label="@Localizer["Org_Ready_WithParent"]">@rd.PositionsWithParent</pems-info-item>
+    <pems-info-item label="@Localizer["Org_Ready_Roots"]">@rd.RootPositions</pems-info-item>
+    <pems-info-item label="@Localizer["Org_Ready_Vacant"]">@rd.VacantPositions</pems-info-item>
+    <pems-info-item label="@Localizer["Org_Ready_NoDept"]">@rd.ActivePositionsWithoutDepartment</pems-info-item>
+    <pems-info-item label="@Localizer["Org_Ready_ActiveEmployees"]">@rd.ActiveEmployees</pems-info-item>
+    <pems-info-item label="@Localizer["Org_Ready_WithPrimary"]">@rd.ActiveEmployeesWithPrimaryPosition</pems-info-item>
+    <pems-info-item label="@Localizer["Org_Ready_NoPersonnelCode"]">@rd.ActiveEmployeesWithoutPersonnelCode</pems-info-item>
+    <pems-info-item label="@Localizer["Org_Ready_UsersNoPrimary"]">@rd.ActiveUsersWithoutPrimaryPosition</pems-info-item>
+</pems-info-grid>
     </section>
 
     <section class="vs-panel mb-3">

@@ -1,5 +1,7 @@
 using PEMS.UI.Rendering;
 using System.Globalization;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.AspNetCore.Razor.TagHelpers;
 using PEMS.UI.Components;
 
@@ -18,7 +20,7 @@ namespace PEMS.UI.TagHelpers;
 /// </summary>
 [HtmlTargetElement("pems-date")]
 [PemsFacade(UiKeys.Date)]
-public sealed class PemsDateTagHelper(IPemsComponentRenderer renderer) : TagHelper
+public sealed class PemsDateTagHelper(IHtmlGenerator generator, IPemsComponentRenderer renderer) : TagHelper
 {
     [HtmlAttributeName("name")] public string? Name { get; set; }
     /// <summary>ISO date <c>yyyy-MM-dd</c> (a time part after it is ignored); empty for no date.</summary>
@@ -30,6 +32,13 @@ public sealed class PemsDateTagHelper(IPemsComponentRenderer renderer) : TagHelp
     [HtmlAttributeName("css")] public string? Css { get; set; }
     /// <summary>auto (default: Jalali on a Persian page), jalali or gregorian.</summary>
     [HtmlAttributeName("calendar")] public string Calendar { get; set; } = "auto";
+    /// <summary>A model property (<c>asp-for="StartDate"</c>): name, id, the ISO value and the validation attributes come from the built-in generator, as for any input.</summary>
+    [HtmlAttributeName("asp-for")] public ModelExpression? For { get; set; }
+    [ViewContext, HtmlAttributeNotBound] public ViewContext? ViewContext { get; set; }
+    /// <summary>The state attributes a page decides with a condition: written as the attribute when true, left out when false (a plain bool attribute value would print required="False").</summary>
+    [HtmlAttributeName("required")] public bool Required { get; set; }
+    [HtmlAttributeName("disabled")] public bool Disabled { get; set; }
+    [HtmlAttributeName("readonly")] public bool ReadOnly { get; set; }
 
     private static readonly PersianCalendar Persian = new();
 
@@ -60,6 +69,18 @@ public sealed class PemsDateTagHelper(IPemsComponentRenderer renderer) : TagHelp
 
     public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
     {
+        if (For is not null && ViewContext is not null)
+        {
+            var box = generator.GenerateTextBox(ViewContext, For.ModelExplorer, For.Name, null, "{0:yyyy-MM-dd}", null);
+            Name ??= box.Attributes.GetValueOrDefault("name");
+            Value ??= box.Attributes.GetValueOrDefault("value");
+            foreach (var attribute in box.Attributes)
+                if (attribute.Key is not ("name" or "value" or "type" or "class") && !output.Attributes.ContainsName(attribute.Key))
+                    output.Attributes.Add(attribute.Key, attribute.Value);
+        }
+        if (Required) output.Attributes.SetAttribute("required", "required");
+        if (Disabled) output.Attributes.SetAttribute("disabled", "disabled");
+        if (ReadOnly) output.Attributes.SetAttribute("readonly", "readonly");
         var css = ControlState.Css(ControlTagHelper.Options(ControlKind.Text, Scale, Css));
         var iso = ToIsoText(Value);
         var jalali = UseJalali();

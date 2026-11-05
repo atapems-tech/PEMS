@@ -94,11 +94,11 @@
                                              all-text="@Localizer["Pc_Filter_All"]" items="@Model.Sections.Select(sec => new SelectListItem(sec.Text, sec.Id.ToString()))" />
                     <div>
                         <label class="lp-lbl" for="pcFFrom">@Localizer["Pc_Filter_From"]</label>
-                        <input id="pcFFrom" type="date" name="FromDate" value="@f.FromDate?.ToString("yyyy-MM-dd")" class="form-control" />
+                        <pems-date id="pcFFrom" name="FromDate" value="@f.FromDate?.ToString("yyyy-MM-dd")" />
                     </div>
                     <div>
                         <label class="lp-lbl" for="pcFTo">@Localizer["Pc_Filter_To"]</label>
-                        <input id="pcFTo" type="date" name="ToDate" value="@f.ToDate?.ToString("yyyy-MM-dd")" class="form-control" />
+                        <pems-date id="pcFTo" name="ToDate" value="@f.ToDate?.ToString("yyyy-MM-dd")" />
                     </div>
                 </pems-list-filters>
                 <pems-list-kpi-toggle target="pcKpis" storage-key="pems.partCatalogue.kpis" open="true" />
