@@ -1,4 +1,4 @@
-"""Add the UI dispatcher to the code graph (ADR-0013): a node per UiKeys key, edges key -> component, key -> facade (tag helper) and view -> key.
+"""Add the UI component registry to the code graph (ADR-0013): a node per UiKeys key, edges key -> component, key -> facade (tag helper) and view -> key.
 Run after prune.py (tools/graphify/update.py does). Idempotent: its own nodes carry source 'ui_links'."""
 import json, re, sys, pathlib
 
@@ -26,7 +26,7 @@ for n in g["nodes"]:
 
 def node(nid, label, source=None):
     if nid not in ids:
-        n = {"id": nid, "label": label, "file_type": "code", "norm_label": label.lower(), "origin": "ui_links", "community_name": "UI dispatcher"}
+        n = {"id": nid, "label": label, "file_type": "code", "norm_label": label.lower(), "origin": "ui_links", "community_name": "UI component registry"}
         if source: n["source_file"] = source
         g["nodes"].append(n); ids[nid] = n
     return nid
