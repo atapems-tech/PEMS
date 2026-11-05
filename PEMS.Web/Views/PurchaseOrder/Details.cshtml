@@ -102,19 +102,19 @@
                             <td colspan="6">
                                 <form asp-action="UpdateLine" method="post" class="row g-2 align-items-end small">
                                     <input type="hidden" name="id" value="@Model.PoId" /><input type="hidden" name="lineId" value="@l.PurchaseOrderLineId" />
-                                    <div class="col-md-2"><pems-label>@Localizer["Po_Quantity"]</pems-label><pems-input scale="small" name="quantity" type="number" step="any" min="0" dir="ltr" value="@l.Quantity.ToString(System.Globalization.CultureInfo.InvariantCulture)" /></div>
-                                    <div class="col-md-2"><pems-label>@Localizer["Po_UnitPrice"]</pems-label><pems-input scale="small" name="unitPrice" type="number" step="any" min="0" dir="ltr" value="@l.UnitPrice.ToString(System.Globalization.CultureInfo.InvariantCulture)" /></div>
-                                    <div class="col-md-2"><pems-label>@Localizer["Po_RequiredDate"]</pems-label><pems-date name="requiredDate" dir="ltr" value="@l.RequiredDate?.ToString("yyyy-MM-dd")" scale="small" /></div>
-                                    <div class="col-md-2"><div class="form-check mt-4"><pems-input type="checkbox" name="isStockLine" value="true" id="stock_@l.PurchaseOrderLineId" checked="@l.IsStockLine" kind="check" /><label class="form-check-label" for="stock_@l.PurchaseOrderLineId">@Localizer["Po_StockLine"]</label></div></div>
-                                    <div class="col-md-2"><pems-label>@Localizer["Rcv_DeliveryWarehouse"]</pems-label>
-                                        <pems-select scale="small" name="warehouseId"><option value="">—</option>@foreach (var w in warehouses) { <option value="@w.WarehouseId" selected="@(w.WarehouseId == l.WarehouseId)">@w.Code</option> }</pems-select></div>
+                                    <pems-col md="2"><pems-label>@Localizer["Po_Quantity"]</pems-label><pems-input scale="small" name="quantity" type="number" step="any" min="0" dir="ltr" value="@l.Quantity.ToString(System.Globalization.CultureInfo.InvariantCulture)" /></pems-col>
+                                    <pems-col md="2"><pems-label>@Localizer["Po_UnitPrice"]</pems-label><pems-input scale="small" name="unitPrice" type="number" step="any" min="0" dir="ltr" value="@l.UnitPrice.ToString(System.Globalization.CultureInfo.InvariantCulture)" /></pems-col>
+                                    <pems-col md="2"><pems-label>@Localizer["Po_RequiredDate"]</pems-label><pems-date name="requiredDate" dir="ltr" value="@l.RequiredDate?.ToString("yyyy-MM-dd")" scale="small" /></pems-col>
+                                    <pems-col md="2"><div class="form-check mt-4"><pems-input type="checkbox" name="isStockLine" value="true" id="stock_@l.PurchaseOrderLineId" checked="@l.IsStockLine" kind="check" /><label class="form-check-label" for="stock_@l.PurchaseOrderLineId">@Localizer["Po_StockLine"]</label></div></pems-col>
+                                    <pems-col md="2"><pems-label>@Localizer["Rcv_DeliveryWarehouse"]</pems-label>
+                                        <pems-select scale="small" name="warehouseId"><option value="">—</option>@foreach (var w in warehouses) { <option value="@w.WarehouseId" selected="@(w.WarehouseId == l.WarehouseId)">@w.Code</option> }</pems-select></pems-col>
                                     @if (!l.IsCatalogued)
                                     {
-                                        <div class="col-md-2"><pems-label>@Localizer["Po_CommodityGroup"]</pems-label>
-                                            <pems-select scale="small" name="commodityGroupId"><option value="">—</option>@foreach (var g in groups ?? Array.Empty<(int, string, string)>()) { <option value="@g.Id" selected="@(g.Id == l.CommodityGroupId)">@g.Code - @g.Description</option> }</pems-select></div>
-                                        <div class="col-md-2"><pems-label>@Localizer["Po_FreeTextReason"]</pems-label><pems-input scale="small" name="freeTextReason" value="@l.FreeTextReason" /></div>
+                                        <pems-col md="2"><pems-label>@Localizer["Po_CommodityGroup"]</pems-label>
+                                            <pems-select scale="small" name="commodityGroupId"><option value="">—</option>@foreach (var g in groups ?? Array.Empty<(int, string, string)>()) { <option value="@g.Id" selected="@(g.Id == l.CommodityGroupId)">@g.Code - @g.Description</option> }</pems-select></pems-col>
+                                        <pems-col md="2"><pems-label>@Localizer["Po_FreeTextReason"]</pems-label><pems-input scale="small" name="freeTextReason" value="@l.FreeTextReason" /></pems-col>
                                     }
-                                    <div class="col-md-auto"><pems-button tone="neutral" size="small" outline="true" type="submit"><pems-icon name="bi-check2" aria-hidden="true" /> @Localizer["Po_SaveLine"]</pems-button></div>
+                                    <pems-col md="auto"><pems-button tone="neutral" size="small" outline="true" type="submit"><pems-icon name="bi-check2" aria-hidden="true" /> @Localizer["Po_SaveLine"]</pems-button></pems-col>
                                 </form>
                             </td>
                         </tr>

@@ -21,19 +21,19 @@
 </div>
 
 <div class="content-card mb-3">
-    <div class="row">
-        <div class="col-md-4"><strong>Reference:</strong> @Model.ReferenceCodeStandard</div>
-        <div class="col-md-4"><strong>Revision:</strong> @Model.Revision</div>
-        <div class="col-md-4"><strong>Approved:</strong> @(Model.ApprovedDate?.ToString("yyyy-MM-dd") ?? "-")</div>
+    <pems-row>
+        <pems-col md="4"><strong>Reference:</strong> @Model.ReferenceCodeStandard</pems-col>
+        <pems-col md="4"><strong>Revision:</strong> @Model.Revision</pems-col>
+        <pems-col md="4"><strong>Approved:</strong> @(Model.ApprovedDate?.ToString("yyyy-MM-dd") ?? "-")</pems-col>
         @if (Model.ProcurementPackage != null)
         {
-            <div class="col-md-4 mt-2"><strong>@Localizer["Package"]:</strong> <a asp-controller="ProcurementPackage" asp-action="Details" asp-route-id="@Model.ProcurementPackageId">@Model.ProcurementPackage.PackageNumber</a></div>
+            <pems-col md="4" css="mt-2"><strong>@Localizer["Package"]:</strong> <a asp-controller="ProcurementPackage" asp-action="Details" asp-route-id="@Model.ProcurementPackageId">@Model.ProcurementPackage.PackageNumber</a></pems-col>
         }
         @if (Model.Contract != null)
         {
-            <div class="col-md-4 mt-2"><strong>@Localizer["Contract"]:</strong> <a asp-controller="Contract" asp-action="Details" asp-route-id="@Model.ContractId">@Model.Contract.ContractNo</a></div>
+            <pems-col md="4" css="mt-2"><strong>@Localizer["Contract"]:</strong> <a asp-controller="Contract" asp-action="Details" asp-route-id="@Model.ContractId">@Model.Contract.ContractNo</a></pems-col>
         }
-    </div>
+    </pems-row>
     @if (!string.IsNullOrWhiteSpace(Model.Description))
     {
         <p class="mt-2 mb-0 text-muted small">@Model.Description</p>
@@ -92,9 +92,9 @@
     <h6 class="mb-3"><pems-icon name="bi-plus-lg" /> Add Line Item</h6>
     <form asp-action="ItpAddLineItem" method="post">
         <input type="hidden" name="itpId" value="@Model.InspectionTestPlanId" />
-        <div class="row g-3">
-            <div class="col-md-6"><pems-label css="small">@Localizer["Activity"]</pems-label><pems-input scale="small" name="activity" required /></div>
-            <div class="col-md-3">
+        <pems-row gap="3">
+            <pems-col md="6"><pems-label css="small">@Localizer["Activity"]</pems-label><pems-input scale="small" name="activity" required /></pems-col>
+            <pems-col md="3">
                 <pems-label css="small">@Localizer["Discipline"]</pems-label>
                 <pems-select scale="small" name="qcDisciplineId" required>
                     @foreach (var d in (IEnumerable<PEMS.Domain.Entities.QCDiscipline>)ViewBag.QCDisciplines)
@@ -102,8 +102,8 @@
                         <option value="@d.QCDisciplineId">@d.Name</option>
                     }
                 </pems-select>
-            </div>
-            <div class="col-md-3">
+            </pems-col>
+            <pems-col md="3">
                 <pems-label css="small">@Localizer["Category"]</pems-label>
                 <pems-select scale="small" name="inspectionCategory">
                     <option value="H">H - Hold Point</option>
@@ -112,16 +112,16 @@
                     <option value="S">S - Surveillance/Random</option>
                     <option value="M">M - Monitor</option>
                 </pems-select>
-            </div>
-            <div class="col-md-6"><pems-label css="small">@Localizer["Acceptance Criteria"]</pems-label><pems-input scale="small" name="acceptanceCriteria" /></div>
-            <div class="col-md-3"><pems-label css="small">Reference Code</pems-label><pems-input scale="small" name="referenceCodeStandard" /></div>
-            <div class="col-md-3">
+            </pems-col>
+            <pems-col md="6"><pems-label css="small">@Localizer["Acceptance Criteria"]</pems-label><pems-input scale="small" name="acceptanceCriteria" /></pems-col>
+            <pems-col md="3"><pems-label css="small">Reference Code</pems-label><pems-input scale="small" name="referenceCodeStandard" /></pems-col>
+            <pems-col md="3">
                 <pems-label css="small">Responsible Party</pems-label>
                 <pems-select scale="small" name="responsibleParty">
                     <option>Contractor</option><option>@Localizer["Client"]</option><option>ThirdParty</option>
                 </pems-select>
-            </div>
-        </div>
+            </pems-col>
+        </pems-row>
         <div class="mt-3">
             <pems-button tone="primary" size="small" type="submit">@Localizer["Add"]</pems-button>
         </div>

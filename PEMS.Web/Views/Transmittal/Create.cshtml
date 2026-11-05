@@ -13,12 +13,12 @@
     <pems-alert tone="danger" css="py-2 px-3 small" asp-validation-summary="All" style="@(ViewData.ModelState.IsValid ? "display:none;" : "")"></pems-alert>
 
     <form asp-action="Create" method="post">
-        <div class="row g-3">
-            <div class="col-md-6">
+        <pems-row gap="3">
+            <pems-col md="6">
                 <pems-label>Transmittal No</pems-label>
                 <pems-input name="transmittalNo" placeholder="e.g. TR-2026-001" required />
-            </div>
-            <div class="col-md-6">
+            </pems-col>
+            <pems-col md="6">
                 <pems-label>@Localizer["Project"]</pems-label>
                 <pems-select name="projectId" required>
                     @foreach (var p in projects)
@@ -26,16 +26,16 @@
                         <option value="@p.ProjectId">@p.ProjectName</option>
                     }
                 </pems-select>
-            </div>
-            <div class="col-md-6">
+            </pems-col>
+            <pems-col md="6">
                 <pems-label>@Localizer["From"]</pems-label>
                 <pems-input name="from" placeholder="e.g. Engineering Department" required />
-            </div>
-            <div class="col-md-6">
+            </pems-col>
+            <pems-col md="6">
                 <pems-label>To <span class="text-muted small">(free-text summary - optional if recipients added below)</span></pems-label>
                 <pems-input name="to" placeholder="e.g. Contractor XYZ" />
-            </div>
-            <div class="col-md-6">
+            </pems-col>
+            <pems-col md="6">
                 <pems-label>@Localizer["Purpose"]</pems-label>
                 <pems-select name="purpose">
                     <option value="IFA">@Localizer["IFA - Issued for Approval"]</option>
@@ -47,26 +47,26 @@
                     <option value="For Information" selected>@Localizer["For Information (legacy)"]</option>
                     <option value="For Review">For Review (legacy)</option>
                 </pems-select>
-            </div>
-            <div class="col-md-6 d-flex align-items-end">
+            </pems-col>
+            <pems-col md="6" css="d-flex align-items-end">
                 <div class="form-check">
                     <pems-input kind="check" type="checkbox" name="responseRequired" value="true" id="responseRequired" />
                     <label class="form-check-label" for="responseRequired">Response Required</label>
                     <input type="hidden" name="responseRequired" value="false" />
                 </div>
-            </div>
-            <div class="col-12">
+            </pems-col>
+            <pems-col span="12">
                 <pems-label>@Localizer["Description"]</pems-label>
                 <pems-textarea name="description" rows="2"></pems-textarea>
-            </div>
+            </pems-col>
 
-            <div class="col-12">
+            <pems-col span="12">
                 <pems-label css="d-block">Recipients <span class="text-muted small">(structured - required)</span></pems-label>
                 <div id="recipientRows"></div>
                 <pems-button tone="neutral" size="small" outline="true" css="mt-1" type="button" id="addRecipientBtn"><pems-icon name="bi-plus-lg" /> Add Recipient</pems-button>
-            </div>
+            </pems-col>
 
-            <div class="col-12">
+            <pems-col span="12">
                 <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
                     <pems-label css="d-block mb-0">Documents to include</pems-label>
                     <span class="small text-muted" id="docPickerCounter"></span>
@@ -95,8 +95,8 @@
                 {
                     <p class="text-muted small mb-0">No documents available.</p>
                 }
-            </div>
-        </div>
+            </pems-col>
+        </pems-row>
 
         <div class="mt-4">
             <pems-button tone="primary" type="submit">Create Transmittal</pems-button>
@@ -106,23 +106,23 @@
 </div>
 
 <template id="recipientRowTemplate">
-    <div class="row g-2 mb-2 recipient-row align-items-center">
-        <div class="col-md-3"><pems-input scale="small" name="recipientName" placeholder="@Localizer["Name"]" /></div>
-        <div class="col-md-3">
+    <pems-row gap="2" css="mb-2 recipient-row align-items-center">
+        <pems-col md="3"><pems-input scale="small" name="recipientName" placeholder="@Localizer["Name"]" /></pems-col>
+        <pems-col md="3">
             <pems-select scale="small" name="recipientType">
                 <option value="External">External</option>
                 <option value="Internal">@Localizer["Internal"]</option>
                 <option value="Vendor">@Localizer["Vendor"]</option>
                 <option value="Client">@Localizer["Client"]</option>
             </pems-select>
-        </div>
-        <div class="col-md-3"><pems-input scale="small" name="recipientOrganization" placeholder="@Localizer["Organization"]" /></div>
-        <div class="col-md-2 form-check">
+        </pems-col>
+        <pems-col md="3"><pems-input scale="small" name="recipientOrganization" placeholder="@Localizer["Organization"]" /></pems-col>
+        <pems-col md="2" css="form-check">
             <pems-input kind="check" type="checkbox" name="recipientResponseRequired" value="true" />
             <label class="form-check-label small">Response req.</label>
-        </div>
-        <div class="col-md-1"><pems-button tone="danger" size="small" outline="true" css="remove-recipient-btn" type="button"><pems-icon name="bi-x-lg" /></pems-button></div>
-    </div>
+        </pems-col>
+        <pems-col md="1"><pems-button tone="danger" size="small" outline="true" css="remove-recipient-btn" type="button"><pems-icon name="bi-x-lg" /></pems-button></pems-col>
+    </pems-row>
 </template>
 
 @section Scripts {

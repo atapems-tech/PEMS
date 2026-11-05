@@ -16,35 +16,35 @@
 
 <div class="content-card">
     <form asp-action="Create" method="post" class="row g-3">
-        <div class="col-md-4">
+        <pems-col md="4">
             <pems-label css="small">Outgoing Employee</pems-label>
             <pems-select name="outgoingEmployeeId" required>
                 <option value="">@Localizer["-- select --"]</option>
                 @foreach (var e in employees) { <option value="@e.EmployeeId">@e.Label</option> }
             </pems-select>
-        </div>
-        <div class="col-md-4">
+        </pems-col>
+        <pems-col md="4">
             <pems-label css="small">Incoming Employee</pems-label>
             <pems-select name="incomingEmployeeId" required>
                 <option value="">@Localizer["-- select --"]</option>
                 @foreach (var e in employees) { <option value="@e.EmployeeId">@e.Label</option> }
             </pems-select>
-        </div>
-        <div class="col-md-4">
+        </pems-col>
+        <pems-col md="4">
             <pems-label css="small">@Localizer["Handover Date"]</pems-label>
             <pems-input type="datetime-local" name="handoverDate" value="@DateTime.Now.ToString("yyyy-MM-ddTHH:mm")" required />
-        </div>
-        <div class="col-md-6">
+        </pems-col>
+        <pems-col md="6">
             <pems-label css="small">Shift Label</pems-label>
             <pems-input type="text" name="shiftLabel" placeholder="e.g. Day Shift 06:00-18:00" />
-        </div>
-        <div class="col-12">
+        </pems-col>
+        <pems-col span="12">
             <pems-label css="small">Notes (one outstanding action per line)</pems-label>
             <pems-textarea name="notes" rows="4"></pems-textarea>
-        </div>
-        <div class="col-12">
+        </pems-col>
+        <pems-col span="12">
             <pems-button tone="primary" type="submit">@Localizer["Create"]</pems-button>
             <pems-button tone="neutral" outline="true" as="a" asp-action="Index">@Localizer["Cancel"]</pems-button>
-        </div>
+        </pems-col>
     </form>
 </div>

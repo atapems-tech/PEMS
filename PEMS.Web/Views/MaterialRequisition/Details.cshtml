@@ -112,12 +112,12 @@
     <h6 class="mb-3">Add New Quotation (MRQ)</h6>
     <form asp-action="AddQuotation" method="post" class="row g-2 align-items-end">
         <input type="hidden" name="mrId" value="@Model.MRId" />
-        <div class="col-md-2"><pems-input scale="small" name="mrqNumber" placeholder="@Localizer["MRQ No"]" required /></div>
-        <div class="col-md-3"><pems-input scale="small" name="vendorName" placeholder="Vendor Name" required /></div>
-        <div class="col-md-2"><pems-date name="inquiryDate" scale="small" /></div>
-        <div class="col-md-2"><pems-input scale="small" name="quotedAmount" type="number" step="0.01" placeholder="@Localizer["Amount"]" /></div>
-        <div class="col-md-1"><pems-input scale="small" name="currency" value="USD" /></div>
-        <div class="col-md-2"><pems-button tone="primary" size="small" css="w-100" type="submit">@Localizer["Add"]</pems-button></div>
+        <pems-col md="2"><pems-input scale="small" name="mrqNumber" placeholder="@Localizer["MRQ No"]" required /></pems-col>
+        <pems-col md="3"><pems-input scale="small" name="vendorName" placeholder="Vendor Name" required /></pems-col>
+        <pems-col md="2"><pems-date name="inquiryDate" scale="small" /></pems-col>
+        <pems-col md="2"><pems-input scale="small" name="quotedAmount" type="number" step="0.01" placeholder="@Localizer["Amount"]" /></pems-col>
+        <pems-col md="1"><pems-input scale="small" name="currency" value="USD" /></pems-col>
+        <pems-col md="2"><pems-button tone="primary" size="small" css="w-100" type="submit">@Localizer["Add"]</pems-button></pems-col>
     </form>
 </div>
 
@@ -158,13 +158,13 @@
     <form asp-controller="PurchaseOrder" asp-action="CreateFromRequisition" method="post" class="content-card mt-3">
         <input type="hidden" name="mrId" value="@Model.MRId" />
         <h6 class="mb-2"><pems-icon name="bi-receipt" aria-hidden="true" /> @Localizer["Po_CreateFromMr"]</h6>
-        <div class="row g-2 align-items-end small">
-            <div class="col-md-4"><pems-label for="poVendor">@Localizer["Vendor"]</pems-label>
-                <pems-select scale="small" id="poVendor" name="vendorId" required><option value="">—</option>@foreach (var v in poVendors) { <option value="@v.VendorId">@v.Name</option> }</pems-select></div>
-            <div class="col-md-2"><pems-label for="poCurrency">@Localizer["Po_Currency"]</pems-label><pems-input scale="small" id="poCurrency" name="currency" dir="ltr" value="IRR" maxlength="10" required /></div>
-            <div class="col-md-3"><pems-label for="poNumber">@Localizer["PO Number"]</pems-label><pems-input scale="small" id="poNumber" name="poNumber" dir="ltr" /></div>
-            <div class="col-md-auto"><pems-button tone="none" size="small" css="btn-primary" type="submit"><pems-icon name="bi-plus" aria-hidden="true" /> @Localizer["Po_Create"]</pems-button></div>
-            <div class="col-12 text-muted">@Localizer["Po_CreateHint"]</div>
-        </div>
+        <pems-row gap="2" css="align-items-end small">
+            <pems-col md="4"><pems-label for="poVendor">@Localizer["Vendor"]</pems-label>
+                <pems-select scale="small" id="poVendor" name="vendorId" required><option value="">—</option>@foreach (var v in poVendors) { <option value="@v.VendorId">@v.Name</option> }</pems-select></pems-col>
+            <pems-col md="2"><pems-label for="poCurrency">@Localizer["Po_Currency"]</pems-label><pems-input scale="small" id="poCurrency" name="currency" dir="ltr" value="IRR" maxlength="10" required /></pems-col>
+            <pems-col md="3"><pems-label for="poNumber">@Localizer["PO Number"]</pems-label><pems-input scale="small" id="poNumber" name="poNumber" dir="ltr" /></pems-col>
+            <pems-col md="auto"><pems-button tone="none" size="small" css="btn-primary" type="submit"><pems-icon name="bi-plus" aria-hidden="true" /> @Localizer["Po_Create"]</pems-button></pems-col>
+            <pems-col span="12" css="text-muted">@Localizer["Po_CreateHint"]</pems-col>
+        </pems-row>
     </form>
 }

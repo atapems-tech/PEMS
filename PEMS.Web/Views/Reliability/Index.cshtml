@@ -33,18 +33,18 @@
 
 <div class="content-card mb-3">
     <form method="get" class="row g-2 align-items-end">
-        <div class="col-md-3">
+        <pems-col md="3">
             <pems-label css="small">@Localizer["From"]</pems-label>
             <pems-date name="from" value="@(from?.ToString("yyyy-MM-dd"))" scale="small" />
-        </div>
-        <div class="col-md-3">
+        </pems-col>
+        <pems-col md="3">
             <pems-label css="small">To</pems-label>
             <pems-date name="to" value="@(to?.ToString("yyyy-MM-dd"))" scale="small" />
-        </div>
-        <div class="col-md-2"><pems-button tone="primary" size="small" type="submit">@Localizer["Apply"]</pems-button></div>
-        <div class="col-md-4 text-muted small">
+        </pems-col>
+        <pems-col md="2"><pems-button tone="primary" size="small" type="submit">@Localizer["Apply"]</pems-button></pems-col>
+        <pems-col md="4" css="text-muted small">
             Period: @(from?.ToString("yyyy-MM-dd") ?? "all history") → @(to?.ToString("yyyy-MM-dd") ?? "now")
-        </div>
+        </pems-col>
     </form>
 </div>
 
@@ -125,8 +125,8 @@
     </div>
 
     <div class="tab-pane fade" id="tab-pareto">
-        <div class="row g-3">
-            <div class="col-md-6">
+        <pems-row gap="3">
+            <pems-col md="6">
                 <div class="content-card h-100">
                     <h6 class="mb-3">Failure Mode Pareto</h6>
                     <pems-table kind="enterprise" scale="small" css="mb-0">
@@ -140,8 +140,8 @@
                     </pems-table>
                     @if (!failureModePareto.Any()) { <p class="text-muted small text-center py-3 mb-0">@Localizer["داده‌ای موجود نیست."]</p> }
                 </div>
-            </div>
-            <div class="col-md-6">
+            </pems-col>
+            <pems-col md="6">
                 <div class="content-card h-100">
                     <h6 class="mb-3">Failure Cause Pareto</h6>
                     <pems-table kind="enterprise" scale="small" css="mb-0">
@@ -155,8 +155,8 @@
                     </pems-table>
                     @if (!failureCausePareto.Any()) { <p class="text-muted small text-center py-3 mb-0">@Localizer["داده‌ای موجود نیست."]</p> }
                 </div>
-            </div>
-        </div>
+            </pems-col>
+        </pems-row>
     </div>
 
     <div class="tab-pane fade" id="tab-badactors">

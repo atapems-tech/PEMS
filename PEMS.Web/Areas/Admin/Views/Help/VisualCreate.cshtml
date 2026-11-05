@@ -26,25 +26,25 @@
         @Html.AntiForgeryToken()
         <input type="hidden" asp-for="HelpArticleId" />
 
-        <div class="row g-3">
-            <div class="col-md-4">
+        <pems-row gap="3">
+            <pems-col md="4">
                 <pems-label>@Localizer["Visual Type"]</pems-label>
                 <pems-select asp-for="VisualType" onchange="toggleSourceFields(this.value)">
                     @foreach (var t in visualTypes) { <option value="@t">@t</option> }
                 </pems-select>
-            </div>
-            <div class="col-md-4">
+            </pems-col>
+            <pems-col md="4">
                 <pems-label>@Localizer["Display Order"]</pems-label>
                 <pems-input asp-for="DisplayOrder" type="number" />
-            </div>
-            <div class="col-md-4">
+            </pems-col>
+            <pems-col md="4">
                 <div class="form-check mt-4">
                     <pems-input kind="check" asp-for="IsPublished" type="checkbox" />
                     <label asp-for="IsPublished" class="form-check-label">@Localizer["Published"]</label>
                 </div>
-            </div>
+            </pems-col>
 
-            <div class="col-12" id="workflowSourceFields">
+            <pems-col span="12" id="workflowSourceFields">
                 <pems-label>Real Workflow Source (Module / Category)</pems-label>
                 <p class="form-text mt-0">
                     Only actual workflows registered in the engine are listed - the diagram is generated live from
@@ -61,9 +61,9 @@
                 </pems-select>
                 <pems-input scale="small" css="mb-1" asp-for="SourceWorkflowModule" readonly placeholder="@Localizer["Module"]" />
                 <pems-input scale="small" asp-for="SourceWorkflowCategory" readonly placeholder="@Localizer["Category"]" />
-            </div>
+            </pems-col>
 
-            <div class="col-12" id="manualDefinitionField">
+            <pems-col span="12" id="manualDefinitionField">
                 <pems-label>Diagram Definition (structured text, not raw HTML/script)</pems-label>
                 <p class="form-text mt-0">
                     One line per item. Format:<br />
@@ -71,43 +71,43 @@
                     <code>EDGE|fromId|toIdOrEmptyForEnd|Label (EN)|Label (FA)|normal|reject|decision</code>
                 </p>
                 <pems-textarea asp-for="ManualDefinitionText" rows="8" style="font-family:monospace;"></pems-textarea>
-            </div>
+            </pems-col>
 
-            <div class="col-12"><hr /></div>
+            <pems-col span="12"><hr /></pems-col>
 
-            <div class="col-md-6">
+            <pems-col md="6">
                 <pems-label>Caption (EN) <span class="text-danger">*</span></pems-label>
                 <pems-input asp-for="CaptionEn" required />
-            </div>
-            <div class="col-md-6" dir="rtl">
+            </pems-col>
+            <pems-col md="6" dir="rtl">
                 <pems-label>عنوان کوتاه (فارسی) <span class="text-danger">*</span></pems-label>
                 <pems-input asp-for="CaptionFa" required />
-            </div>
+            </pems-col>
 
-            <div class="col-md-6">
+            <pems-col md="6">
                 <pems-label>Legend (EN, optional)</pems-label>
                 <pems-input asp-for="LegendEn" />
-            </div>
-            <div class="col-md-6" dir="rtl">
+            </pems-col>
+            <pems-col md="6" dir="rtl">
                 <pems-label>@Localizer["راهنمای علائم (فارسی، اختیاری)"]</pems-label>
                 <pems-input asp-for="LegendFa" />
-            </div>
+            </pems-col>
 
-            <div class="col-md-6">
+            <pems-col md="6">
                 <pems-label>Accessibility Description (EN) <span class="text-danger">*</span></pems-label>
                 <pems-textarea asp-for="AccessibilityDescriptionEn" rows="2" required></pems-textarea>
                 <div class="form-text">Full text description for screen readers - the only way non-visual users understand this diagram.</div>
-            </div>
-            <div class="col-md-6" dir="rtl">
+            </pems-col>
+            <pems-col md="6" dir="rtl">
                 <pems-label>توضیح دسترس‌پذیری (فارسی) <span class="text-danger">*</span></pems-label>
                 <pems-textarea asp-for="AccessibilityDescriptionFa" rows="2" required></pems-textarea>
-            </div>
+            </pems-col>
 
-            <div class="col-md-6">
+            <pems-col md="6">
                 <pems-label>Related Help Key (optional)</pems-label>
                 <pems-input asp-for="RelatedHelpKey" />
-            </div>
-        </div>
+            </pems-col>
+        </pems-row>
 
         <div class="mt-3 d-flex gap-2">
             <pems-button tone="primary" type="submit">@Localizer["Save"]</pems-button>

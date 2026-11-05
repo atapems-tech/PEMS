@@ -19,15 +19,15 @@
     <h6 class="mb-3">@Localizer["Register New Passkey"]</h6>
     <form id="registerForm" class="row g-2 align-items-end" onsubmit="return false;">
         @Html.AntiForgeryToken()
-        <div class="col-md-4">
+        <pems-col md="4">
             <pems-label css="small">@Localizer["Nickname (optional)"]</pems-label>
             <pems-input scale="small" type="text" id="nickname" placeholder="e.g. My Laptop Windows Hello" />
-        </div>
-        <div class="col-md-2">
+        </pems-col>
+        <pems-col md="2">
             <pems-button tone="primary" size="small" type="button" onclick="registerNow()">
                 <pems-icon name="bi-fingerprint" /> @Localizer["Register Passkey"]
             </pems-button>
-        </div>
+        </pems-col>
     </form>
 </div>
 

@@ -84,6 +84,8 @@ public static class ComponentSamples
         ["form-label"] = """{"css":"small"}""",
         ["validation-summary"] = """{"css":"py-2 px-3 small"}""",
         ["icon"] = """{"name":"bi-gear","css":"me-1"}""",
+        ["row"] = """{"gap":"2"}""",
+        ["col"] = """{"span":"12","md":"6"}""",
         ["form"] = """{"definition":{"id":"item","title":{"en":"Item","fa":"مورد"},"action":"/items","fields":[{"name":"tag","label":{"en":"Tag","fa":"تگ"}}],"submitLabel":{"en":"Save","fa":"ذخیره"}}}"""
     };
 

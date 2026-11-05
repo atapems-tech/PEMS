@@ -964,26 +964,26 @@
                         }
                     </pems-select>
                 </div>
-                <div class="row">
-                    <div class="col-6 mb-2">
+                <pems-row>
+                    <pems-col span="6" css="mb-2">
                         <pems-label css="small">@Localizer["Low Value (اختیاری)"]</pems-label>
                         <pems-input scale="small" type="number" step="any" name="lowValue" />
-                    </div>
-                    <div class="col-6 mb-2">
+                    </pems-col>
+                    <pems-col span="6" css="mb-2">
                         <pems-label css="small">@Localizer["High Value (اختیاری)"]</pems-label>
                         <pems-input scale="small" type="number" step="any" name="highValue" />
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-6 mb-2 form-check ms-1">
+                    </pems-col>
+                </pems-row>
+                <pems-row>
+                    <pems-col span="6" css="mb-2 form-check ms-1">
                         <pems-input kind="check" type="checkbox" name="lowInclusive" value="true" id="lowInclusiveCheck" checked />
                         <label class="form-check-label small" for="lowInclusiveCheck">@Localizer["Low Inclusive"]</label>
-                    </div>
-                    <div class="col-6 mb-2 form-check ms-1">
+                    </pems-col>
+                    <pems-col span="6" css="mb-2 form-check ms-1">
                         <pems-input kind="check" type="checkbox" name="highInclusive" value="true" id="highInclusiveCheck" checked />
                         <label class="form-check-label small" for="highInclusiveCheck">@Localizer["High Inclusive"]</label>
-                    </div>
-                </div>
+                    </pems-col>
+                </pems-row>
             </div>
             <div class="modal-footer">
                 <pems-button tone="neutral" size="small" outline="true" type="button" data-bs-dismiss="modal">@Localizer["انصراف"]</pems-button>

@@ -12,16 +12,16 @@
     <form asp-action="Create" method="post">
         <input type="hidden" asp-for="DocumentId" />
 
-        <div class="row g-3">
-            <div class="col-md-6">
+        <pems-row gap="3">
+            <pems-col md="6">
                 <pems-label>New Revision No</pems-label>
                 <pems-input asp-for="RevisionNo" placeholder="e.g. 01" />
-            </div>
-            <div class="col-md-6">
+            </pems-col>
+            <pems-col md="6">
                 <pems-label>Previous Revision No</pems-label>
                 <pems-input asp-for="PreviousRevisionNo" readonly />
-            </div>
-            <div class="col-md-6">
+            </pems-col>
+            <pems-col md="6">
                 <pems-label>@Localizer["Status"]</pems-label>
                 <pems-select asp-for="Status">
                     <option>@Localizer["Draft"]</option>
@@ -29,16 +29,16 @@
                     <option>@Localizer["Approved"]</option>
                     <option>@Localizer["Rejected"]</option>
                 </pems-select>
-            </div>
-            <div class="col-md-6">
+            </pems-col>
+            <pems-col md="6">
                 <pems-label>@Localizer["Issue Purpose"]</pems-label>
                 <pems-input asp-for="IssuePurpose" placeholder="For Approval / For Construction / For Information" />
-            </div>
-            <div class="col-12">
+            </pems-col>
+            <pems-col span="12">
                 <pems-label>@Localizer["Comment"]</pems-label>
                 <pems-textarea asp-for="Comment" rows="3"></pems-textarea>
-            </div>
-        </div>
+            </pems-col>
+        </pems-row>
 
         <div class="mt-4">
             <pems-button tone="primary" type="submit">Save Revision</pems-button>

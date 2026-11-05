@@ -5,19 +5,19 @@
     <h6 class="mb-3"><pems-icon name="bi-exclamation-triangle" /> Raise New NCR</h6>
 
     <form asp-action="NcrCreate" method="post">
-        <div class="row g-3">
-            <div class="col-md-6">
+        <pems-row gap="3">
+            <pems-col md="6">
                 <pems-label>NCR Number</pems-label>
                 <pems-input name="ncrNumber" required placeholder="e.g. NCR-2026-001" />
-            </div>
-            <div class="col-md-6">
+            </pems-col>
+            <pems-col md="6">
                 <pems-label>@Localizer["Project"]</pems-label>
                 <pems-select name="projectId" required>
                     @foreach (var p in (IEnumerable<dynamic>)ViewBag.Projects) { <option value="@p.ProjectId">@p.ProjectName</option> }
                 </pems-select>
-            </div>
+            </pems-col>
 
-            <div class="col-md-6">
+            <pems-col md="6">
                 <pems-label>@Localizer["QC Discipline"]</pems-label>
                 <pems-select name="qcDisciplineId" required>
                     @foreach (var d in (IEnumerable<PEMS.Domain.Entities.QCDiscipline>)ViewBag.QCDisciplines)
@@ -25,22 +25,22 @@
                         <option value="@d.QCDisciplineId">@d.Name</option>
                     }
                 </pems-select>
-            </div>
-            <div class="col-md-6">
+            </pems-col>
+            <pems-col md="6">
                 <pems-label>@Localizer["Severity"]</pems-label>
                 <pems-select name="severity">
                     <option>Minor</option><option>Major</option><option>@Localizer["Critical"]</option>
                 </pems-select>
-            </div>
+            </pems-col>
 
-            <div class="col-md-6">
+            <pems-col md="6">
                 <pems-label>Equipment <span class="text-muted small">@Localizer["(optional)"]</span></pems-label>
                 <pems-input type="text" placeholder="@Localizer["جستجوی تگ، نام یا سازنده..."]" data-pems-search data-search-type="Equipment" data-search-hidden="#equipmentIdHidden" autocomplete="off" />
                 <input type="hidden" name="equipmentId" id="equipmentIdHidden" />
-            </div>
+            </pems-col>
 
-            <div class="col-12"><pems-label>@Localizer["Description"]</pems-label><pems-textarea name="description" rows="4" required></pems-textarea></div>
-        </div>
+            <pems-col span="12"><pems-label>@Localizer["Description"]</pems-label><pems-textarea name="description" rows="4" required></pems-textarea></pems-col>
+        </pems-row>
 
         <div class="mt-4">
             <pems-button tone="danger" type="submit">@Localizer["Raise NCR"]</pems-button>

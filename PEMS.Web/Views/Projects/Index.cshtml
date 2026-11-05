@@ -72,20 +72,20 @@
             <form asp-controller="Projects" asp-action="Create" method="post">
                 <div class="modal-header"><h6 class="modal-title">@Localizer["New Project"]</h6></div>
                 <div class="modal-body">
-                    <div class="row g-3">
-                        <div class="col-md-6"><pems-label>@Localizer["Project Code"]</pems-label><pems-input name="ProjectCode" /></div>
-                        <div class="col-md-6"><pems-label>@Localizer["Project Name"]</pems-label><pems-input name="ProjectName" /></div>
-                        <div class="col-md-6"><pems-label>@Localizer["Client"]</pems-label><pems-input name="ClientName" /></div>
-                        <div class="col-md-6"><pems-label>@Localizer["Location"]</pems-label><pems-input name="Location" /></div>
-                        <div class="col-md-6"><pems-label>@Localizer["Start Date"]</pems-label><pems-date name="StartDate" /></div>
-                        <div class="col-md-6"><pems-label>@Localizer["End Date"]</pems-label><pems-date name="EndDate" /></div>
-                        <div class="col-md-6">
+                    <pems-row gap="3">
+                        <pems-col md="6"><pems-label>@Localizer["Project Code"]</pems-label><pems-input name="ProjectCode" /></pems-col>
+                        <pems-col md="6"><pems-label>@Localizer["Project Name"]</pems-label><pems-input name="ProjectName" /></pems-col>
+                        <pems-col md="6"><pems-label>@Localizer["Client"]</pems-label><pems-input name="ClientName" /></pems-col>
+                        <pems-col md="6"><pems-label>@Localizer["Location"]</pems-label><pems-input name="Location" /></pems-col>
+                        <pems-col md="6"><pems-label>@Localizer["Start Date"]</pems-label><pems-date name="StartDate" /></pems-col>
+                        <pems-col md="6"><pems-label>@Localizer["End Date"]</pems-label><pems-date name="EndDate" /></pems-col>
+                        <pems-col md="6">
                             <pems-label>@Localizer["Status"]</pems-label>
                             <pems-select name="Status">
                                 <option>@Localizer["Planning"]</option><option>@Localizer["Active"]</option><option>@Localizer["Completed"]</option><option>@Localizer["Cancelled"]</option>
                             </pems-select>
-                        </div>
-                    </div>
+                        </pems-col>
+                    </pems-row>
                 </div>
                 <div class="modal-footer">
                     <pems-button tone="neutral" outline="true" type="button" data-bs-dismiss="modal">@Localizer["Cancel"]</pems-button>

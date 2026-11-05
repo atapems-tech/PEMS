@@ -48,10 +48,10 @@
         }
         else
         {
-            <div class="row g-3">
+            <pems-row gap="3">
                 @if (myWork.ShowPermitApprovals)
                 {
-                    <div class="col-md-4">
+                    <pems-col md="4">
                         <a asp-controller="Permit" asp-action="Index" asp-route-pendingMyApproval="true"
                            class="d-flex align-items-center gap-3 p-2 rounded text-decoration-none"
                            aria-label="@myWork.PendingPermitApprovals Permit Approvals waiting for your approval">
@@ -61,11 +61,11 @@
                                 <div class="small text-muted">Permit Approvals waiting for you</div>
                             </div>
                         </a>
-                    </div>
+                    </pems-col>
                 }
                 @if (myWork.ShowWorkOrders)
                 {
-                    <div class="col-md-4">
+                    <pems-col md="4">
                         <a asp-controller="WorkOrder" asp-action="Index" asp-route-assignedToMe="true"
                            class="d-flex align-items-center gap-3 p-2 rounded text-decoration-none"
                            aria-label="@myWork.MyWorkOrdersCount Work Orders assigned to you">
@@ -75,11 +75,11 @@
                                 <div class="small text-muted">Work Orders assigned to you</div>
                             </div>
                         </a>
-                    </div>
+                    </pems-col>
                 }
                 @if (myWork.ShowReferrals)
                 {
-                    <div class="col-md-4">
+                    <pems-col md="4">
                         <a asp-controller="Letter" asp-action="MyReferrals"
                            class="d-flex align-items-center gap-3 p-2 rounded text-decoration-none"
                            aria-label="@myWork.MyReferralsCount Correspondence Referrals requiring your action">
@@ -89,11 +89,11 @@
                                 <div class="small text-muted">Referrals requiring your action</div>
                             </div>
                         </a>
-                    </div>
+                    </pems-col>
                 }
                 @if (myWork.ShowOtherApprovals)
                 {
-                    <div class="col-md-4">
+                    <pems-col md="4">
                         <a asp-controller="MyWork" asp-action="Index"
                            class="d-flex align-items-center gap-3 p-2 rounded text-decoration-none"
                            aria-label="@myWork.OtherApprovalsCount @Localizer["MyWork_Card_Other"]">
@@ -103,11 +103,11 @@
                                 <div class="small text-muted">@Localizer["MyWork_Card_Other"]</div>
                             </div>
                         </a>
-                    </div>
+                    </pems-col>
                 }
                 @if (myWork.ShowDocumentReviews)
                 {
-                    <div class="col-md-4">
+                    <pems-col md="4">
                         <a asp-controller="EngineeringDocuments" asp-action="Index"
                            class="d-flex align-items-center gap-3 p-2 rounded text-decoration-none"
                            aria-label="@myWork.PendingDocumentReviewsCount Engineering Documents awaiting your review or approval">
@@ -117,28 +117,28 @@
                                 <div class="small text-muted">Documents awaiting your review</div>
                             </div>
                         </a>
-                    </div>
+                    </pems-col>
                 }
-            </div>
+            </pems-row>
         }
     </div>
 }
 
 
 <!-- بخش کارت‌های KPI (بهینه‌سازی شده با Partial View) -->
-<div class="row g-3 mb-4">
+<pems-row gap="3" css="mb-4">
     @foreach (var kpi in Model.KpiCards)
     {
-        <div class="col-md-3 col-sm-6">
+        <pems-col md="3" sm="6">
             <pems-kpi-tile model="kpi" />
-        </div>
+        </pems-col>
     }
-</div>
+</pems-row>
 
 
-<div class="row g-3">
+<pems-row gap="3">
 
-    <div class="col-lg-6">
+    <pems-col lg="6">
         <div class="content-card">
             <h6 class="mb-3">@Localizer["Documents by Status"]</h6>
             @* SCRUM-337 C3: the shared chart host (Bklit donut with its hover-linked legend) *@
@@ -146,9 +146,9 @@
                    Localizer["Documents"].Value, Model.DocumentsByStatus.Select(kv => (kv.Key, (double)kv.Value))); }
             <pems-chart spec="@docsDonut" />
         </div>
-    </div>
+    </pems-col>
 
-    <div class="col-lg-6">
+    <pems-col lg="6">
         <div class="content-card h-100">
             <h6 class="mb-3">@Localizer["Discipline Performance"]</h6>
             @{ var disciplineRows = (List<PEMS.Web.Models.DisciplinePerformanceRow>)(ViewBag.DisciplinePerformance ?? new List<PEMS.Web.Models.DisciplinePerformanceRow>()); }
@@ -177,9 +177,9 @@
                 </div>
             }
         </div>
-    </div>
+    </pems-col>
 
-</div>
+</pems-row>
 
 @{
     var widgetLayout = (List<PEMS.Application.DTOs.UserDashboardWidgetDto>)ViewBag.WidgetLayout;
@@ -195,7 +195,7 @@
         </pems-button>
     </div>
 
-    <div class="row g-3">
+    <pems-row gap="3">
         @foreach (var w in widgetLayout)
         {
             var colClass = w.Size switch { "Small" => "col-md-3", "Large" => "col-md-8", _ => "col-md-4" };
@@ -218,7 +218,7 @@
                 </div>
             </div>
         }
-    </div>
+    </pems-row>
 }
 else
 {

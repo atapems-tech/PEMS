@@ -11,32 +11,32 @@
         <input type="hidden" asp-for="CreatedDate" />
         <input type="hidden" asp-for="IsActive" />
 
-        <div class="row g-3">
-            <div class="col-md-6">
+        <pems-row gap="3">
+            <pems-col md="6">
                 <pems-label>@Localizer["Project Code"]</pems-label>
                 <pems-input asp-for="ProjectCode" />
-            </div>
-            <div class="col-md-6">
+            </pems-col>
+            <pems-col md="6">
                 <pems-label>@Localizer["Project Name"]</pems-label>
                 <pems-input asp-for="ProjectName" />
-            </div>
-            <div class="col-md-6">
+            </pems-col>
+            <pems-col md="6">
                 <pems-label>@Localizer["Client"]</pems-label>
                 <pems-input asp-for="ClientName" />
-            </div>
-            <div class="col-md-6">
+            </pems-col>
+            <pems-col md="6">
                 <pems-label>@Localizer["Location"]</pems-label>
                 <pems-input asp-for="Location" />
-            </div>
-            <div class="col-md-6">
+            </pems-col>
+            <pems-col md="6">
                 <pems-label>@Localizer["Start Date"]</pems-label>
                 <pems-date asp-for="StartDate" />
-            </div>
-            <div class="col-md-6">
+            </pems-col>
+            <pems-col md="6">
                 <pems-label>@Localizer["End Date"]</pems-label>
                 <pems-date asp-for="EndDate" />
-            </div>
-            <div class="col-md-6">
+            </pems-col>
+            <pems-col md="6">
                 <pems-label>@Localizer["Status"]</pems-label>
                 <pems-select asp-for="Status">
                     <option>@Localizer["Planning"]</option>
@@ -44,20 +44,20 @@
                     <option>@Localizer["Completed"]</option>
                     <option>@Localizer["Cancelled"]</option>
                 </pems-select>
-            </div>
-            <div class="col-md-6">
+            </pems-col>
+            <pems-col md="6">
                 <pems-label>Plant Code <span class="text-muted small">(e.g. J - VDR document numbering)</span></pems-label>
                 <pems-input asp-for="PlantCode" />
-            </div>
-            <div class="col-md-6">
+            </pems-col>
+            <pems-col md="6">
                 <pems-label>Unit Code <span class="text-muted small">(e.g. 85 - transmittal/VDR numbering)</span></pems-label>
                 <pems-input asp-for="UnitCode" />
-            </div>
-            <div class="col-md-6">
+            </pems-col>
+            <pems-col md="6">
                 <pems-label>Job Number <span class="text-muted small">(e.g. 3863 - Vendor-format VDR numbering)</span></pems-label>
                 <pems-input asp-for="JobNumber" />
-            </div>
-        </div>
+            </pems-col>
+        </pems-row>
 
         <div class="mt-4">
             <pems-button tone="primary" type="submit">@Localizer["Save"]</pems-button>

@@ -63,31 +63,31 @@
                     <input type="hidden" name="documentId" value="@Model.DocumentId" />
                     <input type="hidden" name="classificationId" value="@c.AIDocumentClassificationId" />
 
-                    <div class="col-md-6 form-check">
+                    <pems-col md="6" css="form-check">
                         <pems-input kind="check" type="checkbox" name="applyDiscipline" value="true" checked id="d_@c.AIDocumentClassificationId" />
                         <label class="form-check-label" for="d_@c.AIDocumentClassificationId">Discipline: <strong>@c.PredictedDisciplineCode</strong></label>
-                    </div>
-                    <div class="col-md-6 form-check">
+                    </pems-col>
+                    <pems-col md="6" css="form-check">
                         <pems-input type="checkbox" name="applyVendor" value="true" checked="@(!string.IsNullOrEmpty(c.PredictedVendorName))" id="v_@c.AIDocumentClassificationId" kind="check" />
                         <label class="form-check-label" for="v_@c.AIDocumentClassificationId">Vendor: <strong>@(c.PredictedVendorName ?? "-")</strong></label>
-                    </div>
-                    <div class="col-md-6 form-check">
+                    </pems-col>
+                    <pems-col md="6" css="form-check">
                         <pems-input type="checkbox" name="applyMR" value="true" checked="@(!string.IsNullOrEmpty(c.PredictedMRNumber))" id="mr_@c.AIDocumentClassificationId" kind="check" />
                         <label class="form-check-label" for="mr_@c.AIDocumentClassificationId">Related MR: <strong>@(c.PredictedMRNumber ?? "-")</strong></label>
-                    </div>
-                    <div class="col-md-6 form-check">
+                    </pems-col>
+                    <pems-col md="6" css="form-check">
                         <pems-input type="checkbox" name="applyRevision" value="true" checked="@(!string.IsNullOrEmpty(c.PredictedRevisionNo))" id="r_@c.AIDocumentClassificationId" kind="check" />
                         <label class="form-check-label" for="r_@c.AIDocumentClassificationId">Revision: <strong>@(c.PredictedRevisionNo ?? "-")</strong></label>
-                    </div>
-                    <div class="col-md-6 form-check">
+                    </pems-col>
+                    <pems-col md="6" css="form-check">
                         <pems-input type="checkbox" name="applyIssuePurpose" value="true" checked="@(!string.IsNullOrEmpty(c.PredictedIssuePurpose))" id="ip_@c.AIDocumentClassificationId" kind="check" />
                         <label class="form-check-label" for="ip_@c.AIDocumentClassificationId">Issue Purpose: <strong>@(c.PredictedIssuePurpose ?? "-")</strong></label>
-                    </div>
-                    <div class="col-md-6"><span class="text-muted small">Document Type: <strong>@c.PredictedDocumentType</strong> (always applied)</span></div>
+                    </pems-col>
+                    <pems-col md="6"><span class="text-muted small">Document Type: <strong>@c.PredictedDocumentType</strong> (always applied)</span></pems-col>
 
-                    <div class="col-12 mt-2">
+                    <pems-col span="12" css="mt-2">
                         <pems-button tone="success" size="small" type="submit"><pems-icon name="bi-check-lg" /> Approve &amp; Apply</pems-button>
-                    </div>
+                    </pems-col>
                 </form>
 
                 <form asp-action="RejectClassification" method="post" class="mt-1">
@@ -188,7 +188,7 @@
 
     <form asp-action="AddComment" method="post" class="row g-2 mt-2">
         <input type="hidden" name="documentId" value="@Model.DocumentId" />
-        <div class="col-md-9"><pems-input scale="small" name="commentText" placeholder="New comment..." required /></div>
-        <div class="col-md-3"><pems-button tone="primary" size="small" css="w-100">@Localizer["Add Comment"]</pems-button></div>
+        <pems-col md="9"><pems-input scale="small" name="commentText" placeholder="New comment..." required /></pems-col>
+        <pems-col md="3"><pems-button tone="primary" size="small" css="w-100">@Localizer["Add Comment"]</pems-button></pems-col>
     </form>
 </div>

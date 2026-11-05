@@ -107,22 +107,22 @@
                 @if (rowVersion != null) { <input type="hidden" name="rowVersion" value="@rowVersion" /> }
                 @if (a.RequiresPartNumber)
                 {
-                    <div class="col-md-3">
+                    <pems-col md="3">
                         <pems-label for="pc_partNumber">@L("PartNumber") <span class="pc-req" aria-hidden="true">*</span></pems-label>
                         <pems-input scale="small" id="pc_partNumber" name="partNumber" maxlength="50" autocomplete="off" />
                         <div class="form-text">@Localizer["Pc_Hint_PartNumber"]</div>
-                    </div>
+                    </pems-col>
                 }
-                <div class="col">
+                <pems-col span="">
                     <pems-label for="pc_comment">@L("Comment")</pems-label>
                     <pems-input scale="small" id="pc_comment" name="comment" maxlength="2000" />
                     <div class="form-text">@Localizer["Pc_Hint_CommentRequired"]</div>
-                </div>
-                <div class="col-auto d-flex gap-2">
+                </pems-col>
+                <pems-col span="auto" css="d-flex gap-2">
                     @if (a.CanApprove) { <button type="submit" name="action" value="Approve" class="vs-btn vs-btn--primary vs-btn--sm"><pems-icon name="bi-check-lg" /> @Localizer["Pc_Btn_Approve"]</button> }
                     @if (a.CanReturn) { <button type="submit" name="action" value="Return" class="vs-btn vs-btn--sm"><pems-icon name="bi-arrow-return-left" /> @Localizer["Pc_Btn_Return"]</button> }
                     @if (a.CanCancel) { <button type="submit" name="action" value="Cancel" class="vs-btn vs-btn--sm vs-btn--danger" data-pems-confirm="@Localizer["Pc_Confirm_Cancel"]"><pems-icon name="bi-x-circle" /> @Localizer["Pc_Btn_Cancel"]</button> }
-                </div>
+                </pems-col>
             </form>
         </section>
     }
@@ -135,8 +135,8 @@
         </form>
     }
 
-    <div class="row g-3">
-        <div class="col-lg-8">
+    <pems-row gap="3">
+        <pems-col lg="8">
             <section class="vs-panel pc-card">
                 <h2 class="vs-section__title"><pems-icon name="bi-card-checklist" /> @Localizer["Pc_Sec_PartInfo"]</h2>
                 <pems-info-grid layout="rows">
@@ -192,9 +192,9 @@
                     { <pems-info-item label="@at.Name">@at.Value</pems-info-item> }
                 </pems-info-grid>
             </section>
-        </div>
+        </pems-col>
 
-        <div class="col-lg-4">
+        <pems-col lg="4">
             <section class="vs-panel pc-card">
                 <h2 class="vs-section__title"><pems-icon name="bi-signpost-split" /> @Localizer["Pc_Det_Route"]</h2>
                 @if (!d.Steps.Any()) { <div class="text-muted small">@Localizer["Pc_Det_NoRoute"]</div> }
@@ -233,9 +233,9 @@
                     }
                 </ul>
             </section>
-        </div>
+        </pems-col>
 
-        <div class="col-12">
+        <pems-col span="12">
             <section class="vs-panel pc-card">
                 <h2 class="vs-section__title"><pems-icon name="bi-clock-history" /> @Localizer["Pc_Det_History"]</h2>
                 <div class="pc-table-scroll">
@@ -257,9 +257,9 @@
                     @if (!d.Approvals.Any()) { <div class="vs-empty py-2">@Localizer["Pc_Empty_History"]</div> }
                 </div>
             </section>
-        </div>
+        </pems-col>
 
-        <div class="col-12">
+        <pems-col span="12">
             <section class="vs-panel pc-card">
                 <h2 class="vs-section__title"><pems-icon name="bi-chat-left-text" /> @L("Notes")</h2>
                 <div class="pc-table-scroll mb-2">
@@ -283,6 +283,6 @@
                     </form>
                 }
             </section>
-        </div>
-    </div>
+        </pems-col>
+    </pems-row>
 </div>

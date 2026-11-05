@@ -25,15 +25,15 @@
     <pems-alert tone="danger" css="py-2 px-3 small">@TempData["Error"]</pems-alert>
 }
 
-<div class="row g-3 mb-3">
-    <div class="col-md-3"><pems-kpi-tile compact label="@Localizer["Status"]">@Model.Status</pems-kpi-tile></div>
-    <div class="col-md-3"><pems-kpi-tile compact label="@Localizer["Criticality"]">@Model.CriticalityClass</pems-kpi-tile></div>
-    <div class="col-md-3"><pems-kpi-tile compact label="Open Work Orders">@Model.WorkOrders.Count(w => w.Status != "Completed" && w.Status != "Closed")</pems-kpi-tile></div>
-    <div class="col-md-3"><pems-kpi-tile compact label="Total Cost">@Model.TotalCost.ToString("N0")</pems-kpi-tile></div>
-</div>
+<pems-row gap="3" css="mb-3">
+    <pems-col md="3"><pems-kpi-tile compact label="@Localizer["Status"]">@Model.Status</pems-kpi-tile></pems-col>
+    <pems-col md="3"><pems-kpi-tile compact label="@Localizer["Criticality"]">@Model.CriticalityClass</pems-kpi-tile></pems-col>
+    <pems-col md="3"><pems-kpi-tile compact label="Open Work Orders">@Model.WorkOrders.Count(w => w.Status != "Completed" && w.Status != "Closed")</pems-kpi-tile></pems-col>
+    <pems-col md="3"><pems-kpi-tile compact label="Total Cost">@Model.TotalCost.ToString("N0")</pems-kpi-tile></pems-col>
+</pems-row>
 
-<div class="row g-3">
-    <div class="col-md-6">
+<pems-row gap="3">
+    <pems-col md="6">
         <div class="content-card mb-3">
             <h6 class="mb-3">Asset Info</h6>
             <pems-table scale="small">
@@ -64,9 +64,9 @@
                 <p class="text-muted small mb-0">No completed maintenance recorded yet - populated automatically when a Work Order on this equipment is marked Completed.</p>
             }
         </div>
-    </div>
+    </pems-col>
 
-    <div class="col-md-6">
+    <pems-col md="6">
         <div class="content-card mb-3">
             <h6 class="mb-3">Work Orders (@Model.WorkOrders.Count)</h6>
             @if (Model.WorkOrders.Any())
@@ -141,8 +141,8 @@
                 <p class="text-muted small mb-0">No failures recorded yet - populated automatically when a Corrective/Emergency Work Order on this equipment is marked Completed.</p>
             }
         </div>
-    </div>
-</div>
+    </pems-col>
+</pems-row>
 
 <pems-modal id="editAssetModal" tabindex="-1">
             <form asp-action="Edit" method="post">
@@ -153,8 +153,8 @@
                         <pems-label>@Localizer["Asset Number"]</pems-label>
                         <pems-input name="assetNumber" value="@Model.AssetNumber" required />
                     </div>
-                    <div class="row g-3 mb-3">
-                        <div class="col-md-6">
+                    <pems-row gap="3" css="mb-3">
+                        <pems-col md="6">
                             <pems-label>@Localizer["Functional Location"]</pems-label>
                             <pems-select name="functionalLocationId">
                                 <option value="">@Localizer["-- not linked --"]</option>
@@ -163,22 +163,22 @@
                                     <option value="@fl.FunctionalLocationId" selected="@(fl.FunctionalLocationId == Model.FunctionalLocationId)">@fl.PathBreadcrumb</option>
                                 }
                             </pems-select>
-                        </div>
-                        <div class="col-md-6">
+                        </pems-col>
+                        <pems-col md="6">
                             <pems-label>@Localizer["Maintenance Class"]</pems-label>
                             <pems-input name="maintenanceClass" value="@Model.MaintenanceClass" />
-                        </div>
-                    </div>
+                        </pems-col>
+                    </pems-row>
                     <div class="mb-3">
                         <pems-label>@Localizer["Functional Location (raw text, legacy)"]</pems-label>
                         <pems-input name="functionalLocation" value="@Model.FunctionalLocation" />
                     </div>
-                    <div class="row g-3 mb-3">
-                        <div class="col-md-6">
+                    <pems-row gap="3" css="mb-3">
+                        <pems-col md="6">
                             <pems-label>@Localizer["Commissioning Date"]</pems-label>
                             <pems-date name="commissioningDate" value="@Model.CommissioningDate?.ToString("yyyy-MM-dd")" />
-                        </div>
-                        <div class="col-md-6">
+                        </pems-col>
+                        <pems-col md="6">
                             <pems-label>@Localizer["Status"]</pems-label>
                             <pems-select name="status">
                                 @foreach (var s in new[] { "Active", "Standby", "Retired" })
@@ -186,8 +186,8 @@
                                     <option value="@s" selected="@(s == Model.Status)">@s</option>
                                 }
                             </pems-select>
-                        </div>
-                    </div>
+                        </pems-col>
+                    </pems-row>
                     <div class="mb-3">
                         <pems-label>@Localizer["Description"]</pems-label>
                         <pems-textarea name="description" rows="2">@Model.Description</pems-textarea>

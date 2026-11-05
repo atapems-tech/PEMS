@@ -76,7 +76,7 @@
             </div>
         </div>
 
-        <div class="row g-3" id="moduleGrid">
+        <pems-row gap="3" id="moduleGrid">
             @foreach (var m in sorted)
             {
                 var presentPct = m.EvidenceTotal == 0 ? 0 : (int)Math.Round(100.0 * m.EvidencePresent / m.EvidenceTotal);
@@ -84,7 +84,7 @@
                 var missingPct = Math.Max(0, 100 - presentPct - unknownPct);
                 var barColor = presentPct >= 75 ? "success" : (presentPct >= 45 ? "warning" : "danger");
 
-                <div class="col-md-6 col-xl-4 module-card" data-module="@m.Module.ToLower()">
+                <pems-col md="6" xl="4" css="module-card" data-module="@m.Module.ToLower()">
                     <div class="content-card h-100 p-3">
                         <div class="d-flex justify-content-between align-items-start mb-2">
                             <div>
@@ -136,9 +136,9 @@
                             </div>
                         </details>
                     </div>
-                </div>
+                </pems-col>
             }
-        </div>
+        </pems-row>
     }
 </div>
 

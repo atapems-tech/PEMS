@@ -16,7 +16,7 @@
 
 <div class="content-card mb-3">
     <form method="get" class="row g-2">
-        <div class="col-md-4">
+        <pems-col md="4">
             <pems-label css="small mb-0">@Localizer["Discipline"]</pems-label>
             <pems-select name="disciplineIds" multiple size="4">
                 @foreach (dynamic d in disciplines)
@@ -24,8 +24,8 @@
                     <option value="@d.DisciplineId">@d.Name</option>
                 }
             </pems-select>
-        </div>
-        <div class="col-md-4">
+        </pems-col>
+        <pems-col md="4">
             <pems-label css="small mb-0">@Localizer["Equipment Type"]</pems-label>
             <pems-select name="equipmentTypes" multiple size="4">
                 @foreach (var t in equipmentTypes)
@@ -33,14 +33,14 @@
                     <option value="@t">@t</option>
                 }
             </pems-select>
-        </div>
-        <div class="col-md-3">
+        </pems-col>
+        <pems-col md="3">
             <pems-label css="small mb-0">Tag Number (partial search)</pems-label>
             <pems-input name="tagSearch" dir="ltr" />
-        </div>
-        <div class="col-md-1 d-flex align-items-end">
+        </pems-col>
+        <pems-col md="1" css="d-flex align-items-end">
             <pems-button tone="primary" css="w-100" type="submit"><pems-icon name="bi-funnel" /></pems-button>
-        </div>
+        </pems-col>
     </form>
 </div>
 

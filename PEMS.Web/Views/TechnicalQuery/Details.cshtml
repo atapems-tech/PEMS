@@ -24,27 +24,27 @@
 </div>
 
 <div class="content-card mb-3">
-    <div class="row g-3">
-        <div class="col-md-4"><strong>@Localizer["Priority:"]</strong> @Model.Priority</div>
-        <div class="col-md-4"><strong>@Localizer["Raised:"]</strong> @Model.RaisedDate.ToString("yyyy-MM-dd")</div>
-        <div class="col-md-4"><strong>Due:</strong> @(Model.RequiredResponseDate?.ToString("yyyy-MM-dd") ?? "-")</div>
+    <pems-row gap="3">
+        <pems-col md="4"><strong>@Localizer["Priority:"]</strong> @Model.Priority</pems-col>
+        <pems-col md="4"><strong>@Localizer["Raised:"]</strong> @Model.RaisedDate.ToString("yyyy-MM-dd")</pems-col>
+        <pems-col md="4"><strong>Due:</strong> @(Model.RequiredResponseDate?.ToString("yyyy-MM-dd") ?? "-")</pems-col>
         @if (Model.RelatedDocument != null)
         {
-            <div class="col-md-6">
+            <pems-col md="6">
                 <strong>@Localizer["Related Document:"]</strong>
                 <a asp-controller="EngineeringDocuments" asp-action="Details" asp-route-id="@Model.RelatedDocumentId">@Model.RelatedDocument.DocumentNo</a>
-            </div>
+            </pems-col>
         }
         @if (Model.RelatedEquipment != null)
         {
-            <div class="col-md-6">
+            <pems-col md="6">
                 <strong>@Localizer["Related Equipment:"]</strong>
                 <a asp-controller="Equipment" asp-action="Details" asp-route-id="@Model.RelatedEquipmentId">@Model.RelatedEquipment.TagNumber</a>
-            </div>
+            </pems-col>
         }
-        <div class="col-12"><strong>Subject:</strong> @Model.Subject</div>
-        <div class="col-12"><strong>@Localizer["Description:"]</strong> @Model.Description</div>
-    </div>
+        <pems-col span="12"><strong>Subject:</strong> @Model.Subject</pems-col>
+        <pems-col span="12"><strong>@Localizer["Description:"]</strong> @Model.Description</pems-col>
+    </pems-row>
 </div>
 
 @if (!string.IsNullOrEmpty(Model.ResponseText))

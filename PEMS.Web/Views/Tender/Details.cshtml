@@ -237,16 +237,16 @@
     {
         <form asp-action="SubmitBid" method="post" class="row g-2 m-0 px-2 py-2 lp-rel-add">
             <input type="hidden" name="tenderId" value="@Model.TenderId" />
-            <div class="col-md-3">
+            <pems-col md="3">
                 <pems-select scale="small" name="vendorId" required>
                     @foreach (var v in Model.InvitedVendors) { <option value="@v.VendorId">@v.Vendor?.Name</option> }
                 </pems-select>
-            </div>
-            <div class="col-md-2"><pems-input scale="small" type="number" step="0.01" name="originalValue" placeholder="@Localizer["Value"]" required /></div>
-            <div class="col-md-2"><pems-input scale="small" type="text" name="currency" value="USD" /></div>
-            <div class="col-md-2"><pems-input scale="small" type="text" name="technicalSubmissionReference" placeholder="@Localizer["Technical"]" /></div>
-            <div class="col-md-2"><pems-input scale="small" type="text" name="commercialSubmissionReference" placeholder="@Localizer["Commercial"]" /></div>
-            <div class="col-md-1"><pems-button tone="primary" size="small" type="submit">@Localizer["Submit Bid"]</pems-button></div>
+            </pems-col>
+            <pems-col md="2"><pems-input scale="small" type="number" step="0.01" name="originalValue" placeholder="@Localizer["Value"]" required /></pems-col>
+            <pems-col md="2"><pems-input scale="small" type="text" name="currency" value="USD" /></pems-col>
+            <pems-col md="2"><pems-input scale="small" type="text" name="technicalSubmissionReference" placeholder="@Localizer["Technical"]" /></pems-col>
+            <pems-col md="2"><pems-input scale="small" type="text" name="commercialSubmissionReference" placeholder="@Localizer["Commercial"]" /></pems-col>
+            <pems-col md="1"><pems-button tone="primary" size="small" type="submit">@Localizer["Submit Bid"]</pems-button></pems-col>
         </form>
     }
 </pems-related-list>
@@ -282,22 +282,22 @@
     <form asp-action="RaiseClarification" method="post" class="row g-2 m-0 px-2 py-2 lp-rel-add">
         <input type="hidden" name="tenderId" value="@Model.TenderId" />
         <input type="hidden" name="procurementPackageId" value="@Model.ProcurementPackageId" />
-        <div class="col-md-2">
+        <pems-col md="2">
             <pems-select scale="small" name="type">
                 <option value="TechnicalClarification">@Localizer["Technical"]</option>
                 <option value="CommercialClarification">@Localizer["Commercial"]</option>
                 <option value="ContractualClarification">@Localizer["Contractual"]</option>
                 <option value="VendorInquiry">@Localizer["General"]</option>
             </pems-select>
-        </div>
-        <div class="col-md-3">
+        </pems-col>
+        <pems-col md="3">
             <pems-select scale="small" name="vendorId">
                 <option value="">@Localizer["-- None --"]</option>
                 @foreach (var v in Model.InvitedVendors) { <option value="@v.VendorId">@v.Vendor?.Name</option> }
             </pems-select>
-        </div>
-        <div class="col-md-3"><pems-input scale="small" type="text" name="subject" placeholder="@Localizer["Subject"]" required /></div>
-        <div class="col-md-3"><pems-input scale="small" type="text" name="body" placeholder="@Localizer["Question"]" required /></div>
-        <div class="col-md-1"><pems-button tone="primary" size="small" type="submit">@Localizer["Raise"]</pems-button></div>
+        </pems-col>
+        <pems-col md="3"><pems-input scale="small" type="text" name="subject" placeholder="@Localizer["Subject"]" required /></pems-col>
+        <pems-col md="3"><pems-input scale="small" type="text" name="body" placeholder="@Localizer["Question"]" required /></pems-col>
+        <pems-col md="1"><pems-button tone="primary" size="small" type="submit">@Localizer["Raise"]</pems-button></pems-col>
     </form>
 </pems-related-list>

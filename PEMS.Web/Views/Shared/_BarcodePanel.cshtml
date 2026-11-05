@@ -28,18 +28,18 @@
     else
     {
         var b = Model.ActiveBarcode;
-        <div class="row g-3 align-items-center">
-            <div class="col-md-3 text-center">
+        <pems-row gap="3" css="align-items-center">
+            <pems-col md="3" css="text-center">
                 <img src="@Url.Action("Svg", "Barcode", new { area = "", id = b.BarcodeIdentityId })" alt="barcode" style="max-width:100%;" />
                 <div class="small mt-1" dir="ltr"><code>@b.Code</code></div>
-            </div>
-            <div class="col-md-9">
-                <div class="row g-2 small mb-2">
-                    <div class="col-md-3"><strong>@Localizer["Symbology"]</strong><div>@b.Symbology</div></div>
-                    <div class="col-md-3"><strong>@Localizer["Status"]</strong><div><pems-badge tone="@(b.Status == "Active" ? "success" : "neutral")">@b.Status</pems-badge></div></div>
-                    <div class="col-md-3"><strong>@Localizer["Prints"]</strong><div>@b.PrintCount</div></div>
-                    <div class="col-md-3"><strong>@Localizer["Created"]</strong><div>@b.CreatedDate.ToString("yyyy-MM-dd")</div></div>
-                </div>
+            </pems-col>
+            <pems-col md="9">
+                <pems-row gap="2" css="small mb-2">
+                    <pems-col md="3"><strong>@Localizer["Symbology"]</strong><div>@b.Symbology</div></pems-col>
+                    <pems-col md="3"><strong>@Localizer["Status"]</strong><div><pems-badge tone="@(b.Status == "Active" ? "success" : "neutral")">@b.Status</pems-badge></div></pems-col>
+                    <pems-col md="3"><strong>@Localizer["Prints"]</strong><div>@b.PrintCount</div></pems-col>
+                    <pems-col md="3"><strong>@Localizer["Created"]</strong><div>@b.CreatedDate.ToString("yyyy-MM-dd")</div></pems-col>
+                </pems-row>
 
                 @if (Model.CanManage)
                 {
@@ -64,7 +64,7 @@
                         </form>
                     </div>
                 }
-            </div>
-        </div>
+            </pems-col>
+        </pems-row>
     }
 </div>

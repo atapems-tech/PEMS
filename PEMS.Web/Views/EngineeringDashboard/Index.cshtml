@@ -32,30 +32,30 @@
 
 <div class="content-card mb-3">
     <form method="get" asp-action="Index" class="row g-2 align-items-end">
-        <div class="col-md-3">
+        <pems-col md="3">
             <pems-label css="small">@Localizer["Project"]</pems-label>
             <pems-select scale="small" name="projectId">
                 <option value="">@Localizer["All"]</option>
                 @foreach (var p in projects)
                 { <option value="@p.ProjectId" selected="@(Model.SelectedProjectId == (int)p.ProjectId)">@p.ProjectName</option> }
             </pems-select>
-        </div>
-        <div class="col-md-3">
+        </pems-col>
+        <pems-col md="3">
             <pems-label css="small">@Localizer["Discipline"]</pems-label>
             <pems-select scale="small" name="disciplineId">
                 <option value="">@Localizer["All"]</option>
                 @foreach (var d in disciplines)
                 { <option value="@d.DisciplineId" selected="@(Model.SelectedDisciplineId == (int)d.DisciplineId)">@d.Name</option> }
             </pems-select>
-        </div>
-        <div class="col-md-3">
+        </pems-col>
+        <pems-col md="3">
             <pems-label css="small">@Localizer["MinRevisionCount"]</pems-label>
             <pems-input scale="small" type="number" min="0" name="minRevisionCount" value="@Model.SelectedMinRevisionCount" placeholder="e.g. 2" />
-        </div>
-        <div class="col-md-3 d-flex gap-2">
+        </pems-col>
+        <pems-col md="3" css="d-flex gap-2">
             <pems-button tone="primary" size="small" css="flex-fill" type="submit"><pems-icon name="bi-funnel" /> @Localizer["Filter"]</pems-button>
             <pems-button tone="danger" size="small" outline="true" css="flex-fill" as="a" asp-action="Index" title="@Localizer["Reset"]" aria-label="@Localizer["Reset"]"><pems-icon name="bi-x-lg" /></pems-button>
-        </div>
+        </pems-col>
     </form>
     @if (Model.SelectedProjectId.HasValue || Model.SelectedDisciplineId.HasValue || Model.SelectedMinRevisionCount.HasValue)
     {
@@ -76,14 +76,14 @@
             <p class="section-subtitle mb-0">Live snapshot of engineering activity</p>
         </div>
     </div>
-    <div class="row g-3">
+    <pems-row gap="3">
         @foreach (var kpi in kpis)
         {
-            <div class="col-6 col-md-2">
+            <pems-col span="6" md="2">
                 <pems-kpi-tile model="kpi" />
-            </div>
+            </pems-col>
         }
-    </div>
+    </pems-row>
 </div>
 
 <div class="content-card mb-3">
@@ -94,11 +94,11 @@
     <p class="text-muted small mb-3">
         Deterministic health score = weighted quality + backlog + overdue + risk. Values are computed from actual summary and revision data in the selected scope.
     </p>
-    <div class="row g-3 align-items-center">
-        <div class="col-md-3">
+    <pems-row gap="3" css="align-items-center">
+        <pems-col md="3">
             <pems-kpi-tile class="h-100" icon="bi-graph-up-arrow" color="teal" label="Health Score">@Model.EngineeringHealthScore</pems-kpi-tile>
-        </div>
-        <div class="col-md-9">
+        </pems-col>
+        <pems-col md="9">
             <pems-progress value="@Model.EngineeringHealthScore" tone="success" height="12px"></pems-progress>
             <div class="small text-muted mt-2">
                 @if (Model.Summary.Total == 0)
@@ -110,8 +110,8 @@
                     <span>Approved rate: @(Math.Round(((double)Model.Summary.Approved / Math.Max(Model.Summary.Total, 1)) * 100, 1))%, backlog: @Model.Summary.Pending, overdue: @Model.Summary.Overdue.</span>
                 }
             </div>
-        </div>
-    </div>
+        </pems-col>
+    </pems-row>
 </div>
 
 @* ===================== Section B: Quality & Review (GetRevisionQualityAsync, E-05C) ===================== *@
@@ -119,11 +119,11 @@
     <h6 class="mb-1"><pems-icon name="bi-award" /> @Localizer["QualityAndReview"]</h6>
     <p class="text-muted small mb-3">@Localizer["FirstPassApprovalExplanation"]</p>
 
-    <div class="row g-3 mb-3">
-        <div class="col-6 col-md-3">
+    <pems-row gap="3" css="mb-3">
+        <pems-col span="6" md="3">
             <pems-kpi-tile icon="bi-graph-up-arrow" color="teal" label="@Localizer["FirstPassApprovalRate"]">@(Model.FirstPassApprovalRate.HasValue ? Model.FirstPassApprovalRate.Value.ToString("P0") : "N/A")</pems-kpi-tile>
-        </div>
-    </div>
+        </pems-col>
+    </pems-row>
     @if (!Model.FirstPassApprovalRate.HasValue)
     {
         <p class="text-muted small">@Localizer["NoCompletedCyclesYet"]</p>

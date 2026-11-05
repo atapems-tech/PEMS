@@ -14,14 +14,14 @@
 <div class="content-card mb-3">
     <h5 class="mb-1">@Localizer["Rcv_OsdTitle"]</h5>
     <div class="small text-muted mb-3">@Localizer["Rcv_OsdSubtitle"]</div>
-    <div class="row small g-2">
-        <div class="col-6 col-md-3"><strong>@Localizer["IRN"]:</strong> @Model.IrnNumber (@Model.IrnStatus)</div>
-        <div class="col-6 col-md-3"><strong>@Localizer["Date"]:</strong> @Model.ReceivingDate.ToString("yyyy-MM-dd")</div>
-        <div class="col-6 col-md-3"><strong>@Localizer["Vendor"]:</strong> @Model.VendorName</div>
-        <div class="col-6 col-md-3"><strong>@Localizer["PO"]:</strong> @(Model.PoNumber ?? "-")</div>
-        <div class="col-6 col-md-3"><strong>@Localizer["Warehouse"]:</strong> @Model.WarehouseCode</div>
-        <div class="col-6 col-md-3"><strong>@Localizer["Received By"]:</strong> @(Model.ReceivedBy ?? "-")</div>
-    </div>
+    <pems-row gap="2" css="small">
+        <pems-col span="6" md="3"><strong>@Localizer["IRN"]:</strong> @Model.IrnNumber (@Model.IrnStatus)</pems-col>
+        <pems-col span="6" md="3"><strong>@Localizer["Date"]:</strong> @Model.ReceivingDate.ToString("yyyy-MM-dd")</pems-col>
+        <pems-col span="6" md="3"><strong>@Localizer["Vendor"]:</strong> @Model.VendorName</pems-col>
+        <pems-col span="6" md="3"><strong>@Localizer["PO"]:</strong> @(Model.PoNumber ?? "-")</pems-col>
+        <pems-col span="6" md="3"><strong>@Localizer["Warehouse"]:</strong> @Model.WarehouseCode</pems-col>
+        <pems-col span="6" md="3"><strong>@Localizer["Received By"]:</strong> @(Model.ReceivedBy ?? "-")</pems-col>
+    </pems-row>
 </div>
 
 <div class="content-card mb-3">

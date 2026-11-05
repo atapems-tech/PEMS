@@ -142,61 +142,61 @@
                         <div class="form-text">Equipment not listed here already has an instrument profile, or doesn't exist yet - create it under Equipment first.</div>
                     </div>
 
-                    <div class="row g-3 mb-3">
-                        <div class="col-md-6">
+                    <pems-row gap="3" css="mb-3">
+                        <pems-col md="6">
                             <pems-label>@Localizer["Instrument Type"]</pems-label>
                             <pems-input name="instrumentType" placeholder="PT, LT, FT, TT, Control Valve ..." />
-                        </div>
-                        <div class="col-md-6">
+                        </pems-col>
+                        <pems-col md="6">
                             <pems-label>@Localizer["Loop Number"]</pems-label>
                             <pems-input name="loopNumber" />
-                        </div>
-                    </div>
+                        </pems-col>
+                    </pems-row>
 
-                    <div class="row g-3 mb-3">
-                        <div class="col-md-6">
+                    <pems-row gap="3" css="mb-3">
+                        <pems-col md="6">
                             <pems-label>@Localizer["System"]</pems-label>
                             <pems-input name="system" placeholder="DCS, ESD, F&amp;G, PLC ..." />
-                        </div>
-                        <div class="col-md-6">
+                        </pems-col>
+                        <pems-col md="6">
                             <pems-label>@Localizer["Signal Class"]</pems-label>
                             <pems-input name="signalClass" placeholder="AI, AO, DI, DO ..." />
-                        </div>
-                    </div>
+                        </pems-col>
+                    </pems-row>
 
-                    <div class="row g-3 mb-3">
-                        <div class="col-md-3">
+                    <pems-row gap="3" css="mb-3">
+                        <pems-col md="3">
                             <pems-label>@Localizer["Range Min"]</pems-label>
                             <pems-input name="rangeMin" type="number" step="0.01" />
-                        </div>
-                        <div class="col-md-3">
+                        </pems-col>
+                        <pems-col md="3">
                             <pems-label>@Localizer["Range Max"]</pems-label>
                             <pems-input name="rangeMax" type="number" step="0.01" />
-                        </div>
-                        <div class="col-md-3">
+                        </pems-col>
+                        <pems-col md="3">
                             <pems-label>@Localizer["Unit"]</pems-label>
                             <pems-input name="unit" />
-                        </div>
-                        <div class="col-md-3">
+                        </pems-col>
+                        <pems-col md="3">
                             <pems-label>Signal Type</pems-label>
                             <pems-input name="signalType" placeholder="4-20mA, HART ..." />
-                        </div>
-                    </div>
+                        </pems-col>
+                    </pems-row>
 
-                    <div class="row g-3">
-                        <div class="col-md-6">
+                    <pems-row gap="3">
+                        <pems-col md="6">
                             <pems-label>@Localizer["Process Variable"]</pems-label>
                             <pems-input name="processVariable" />
-                        </div>
-                        <div class="col-md-3">
+                        </pems-col>
+                        <pems-col md="3">
                             <pems-label>@Localizer["Accuracy"]</pems-label>
                             <pems-input name="accuracy" />
-                        </div>
-                        <div class="col-md-3">
+                        </pems-col>
+                        <pems-col md="3">
                             <pems-label>@Localizer["Calibration Interval (days)"]</pems-label>
                             <pems-input name="calibrationInterval" type="number" />
-                        </div>
-                    </div>
+                        </pems-col>
+                    </pems-row>
                 </div>
                 <div class="modal-footer">
                     <pems-button tone="neutral" outline="true" type="button" data-bs-dismiss="modal">@Localizer["Cancel"]</pems-button>

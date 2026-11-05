@@ -16,20 +16,20 @@
 
 @* SCRUM-337: built from the PEMS.UI list-page component; the status select became the status filter. The four count tiles stay above the list. *@
 <pems-list-page texts="@ListPageTexts.From(Localizer)">
-    <div class="row g-3 mb-3">
-        <div class="col-md-3 col-sm-6">
+    <pems-row gap="3" css="mb-3">
+        <pems-col md="3" sm="6">
             <pems-kpi-tile icon="bi-hourglass" color="slate" label="@Localizer["Pending"]">@GetCount("Pending")</pems-kpi-tile>
-        </div>
-        <div class="col-md-3 col-sm-6">
+        </pems-col>
+        <pems-col md="3" sm="6">
             <pems-kpi-tile icon="bi-arrow-repeat" color="blue" label="Processing">@GetCount("Processing")</pems-kpi-tile>
-        </div>
-        <div class="col-md-3 col-sm-6">
+        </pems-col>
+        <pems-col md="3" sm="6">
             <pems-kpi-tile icon="bi-check-circle" color="green" label="@Localizer["Completed"]">@GetCount("Completed")</pems-kpi-tile>
-        </div>
-        <div class="col-md-3 col-sm-6">
+        </pems-col>
+        <pems-col md="3" sm="6">
             <pems-kpi-tile icon="bi-x-circle" color="red" label="Failed">@GetCount("Failed")</pems-kpi-tile>
-        </div>
-    </div>
+        </pems-col>
+    </pems-row>
 
     <pems-list-panel>
         <pems-list-toolbar heading="@Localizer["OCR Processing"]" total="@Model.TotalCount">

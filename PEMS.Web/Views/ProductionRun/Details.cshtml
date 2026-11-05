@@ -52,12 +52,12 @@
     <h6 class="mb-2">Reconciliation</h6>
     @if (reconciliation.IsComparable)
     {
-        <div class="row row-cols-2 row-cols-md-4 g-2">
-            <div class="col"><pems-kpi-tile compact label="Input">@reconciliation.TotalInputQuantity.ToString("N3")</pems-kpi-tile></div>
-            <div class="col"><pems-kpi-tile compact label="Output">@reconciliation.TotalOutputQuantity.ToString("N3")</pems-kpi-tile></div>
-            <div class="col"><pems-kpi-tile compact label="@Localizer["Loss"]">@reconciliation.TotalLossQuantity.ToString("N3")</pems-kpi-tile></div>
-            <div class="col"><pems-kpi-tile compact label="Difference" tone="@(reconciliation.Difference != 0 ? "danger" : "success")">@reconciliation.Difference?.ToString("N3")</pems-kpi-tile></div>
-        </div>
+        <pems-row gap="2" css="row-cols-2 row-cols-md-4">
+            <pems-col span=""><pems-kpi-tile compact label="Input">@reconciliation.TotalInputQuantity.ToString("N3")</pems-kpi-tile></pems-col>
+            <pems-col span=""><pems-kpi-tile compact label="Output">@reconciliation.TotalOutputQuantity.ToString("N3")</pems-kpi-tile></pems-col>
+            <pems-col span=""><pems-kpi-tile compact label="@Localizer["Loss"]">@reconciliation.TotalLossQuantity.ToString("N3")</pems-kpi-tile></pems-col>
+            <pems-col span=""><pems-kpi-tile compact label="Difference" tone="@(reconciliation.Difference != 0 ? "danger" : "success")">@reconciliation.Difference?.ToString("N3")</pems-kpi-tile></pems-col>
+        </pems-row>
         @if (reconciliation.Difference != 0)
         {
             <div class="small text-danger mt-1"><pems-icon name="bi-exclamation-triangle" /> Reconciliation difference detected - not auto-balanced, recorded as-is.</div>
@@ -66,18 +66,18 @@
     else
     {
         <div class="text-muted small">@reconciliation.Note</div>
-        <div class="row row-cols-2 row-cols-md-3 g-2 mt-1">
-            <div class="col"><pems-kpi-tile compact label="Total Input">@reconciliation.TotalInputQuantity.ToString("N3")</pems-kpi-tile></div>
-            <div class="col"><pems-kpi-tile compact label="@Localizer["Total Output"]">@reconciliation.TotalOutputQuantity.ToString("N3")</pems-kpi-tile></div>
-            <div class="col"><pems-kpi-tile compact label="Total Loss">@reconciliation.TotalLossQuantity.ToString("N3")</pems-kpi-tile></div>
-        </div>
+        <pems-row gap="2" css="row-cols-2 row-cols-md-3 mt-1">
+            <pems-col span=""><pems-kpi-tile compact label="Total Input">@reconciliation.TotalInputQuantity.ToString("N3")</pems-kpi-tile></pems-col>
+            <pems-col span=""><pems-kpi-tile compact label="@Localizer["Total Output"]">@reconciliation.TotalOutputQuantity.ToString("N3")</pems-kpi-tile></pems-col>
+            <pems-col span=""><pems-kpi-tile compact label="Total Loss">@reconciliation.TotalLossQuantity.ToString("N3")</pems-kpi-tile></pems-col>
+        </pems-row>
     }
 </div>
 
 @if (isInProgress)
 {
-    <div class="row row-cols-1 row-cols-lg-3 g-3 mb-3">
-        <div class="col">
+    <pems-row gap="3" css="row-cols-1 row-cols-lg-3 mb-3">
+        <pems-col span="">
             <div class="content-card h-100">
                 <h6 class="mb-2">@Localizer["Record Input"]</h6>
                 <form asp-action="RecordInput" method="post">
@@ -97,8 +97,8 @@
                     <pems-button tone="primary" size="small" outline="true" css="w-100" type="submit">@Localizer["Record Input"]</pems-button>
                 </form>
             </div>
-        </div>
-        <div class="col">
+        </pems-col>
+        <pems-col span="">
             <div class="content-card h-100">
                 <h6 class="mb-2">@Localizer["Record Output"]</h6>
                 <form asp-action="RecordOutput" method="post">
@@ -124,8 +124,8 @@
                     <pems-button tone="primary" size="small" outline="true" css="w-100" type="submit">@Localizer["Record Output"]</pems-button>
                 </form>
             </div>
-        </div>
-        <div class="col">
+        </pems-col>
+        <pems-col span="">
             <div class="content-card h-100">
                 <h6 class="mb-2">@Localizer["Record Loss"]</h6>
                 <form asp-action="RecordLoss" method="post">
@@ -144,12 +144,12 @@
                     <pems-button tone="warning" size="small" outline="true" css="w-100" type="submit">@Localizer["Record Loss"]</pems-button>
                 </form>
             </div>
-        </div>
-    </div>
+        </pems-col>
+    </pems-row>
 }
 
-<div class="row row-cols-1 row-cols-lg-2 g-3">
-    <div class="col">
+<pems-row gap="3" css="row-cols-1 row-cols-lg-2">
+    <pems-col span="">
         <div class="content-card">
             <h6 class="mb-2">Inputs</h6>
             <div class="table-scroll-area pems-s-f7dce87f">
@@ -176,8 +176,8 @@
             </div>
             @if (!Model.Inputs.Any()) { <p class="text-muted text-center py-2 small">No inputs recorded.</p> }
         </div>
-    </div>
-    <div class="col">
+    </pems-col>
+    <pems-col span="">
         <div class="content-card">
             <h6 class="mb-2">Outputs</h6>
             <div class="table-scroll-area pems-s-f7dce87f">
@@ -205,11 +205,11 @@
             </div>
             @if (!Model.Outputs.Any()) { <p class="text-muted text-center py-2 small">No outputs recorded.</p> }
         </div>
-    </div>
-</div>
+    </pems-col>
+</pems-row>
 
-<div class="row row-cols-1 row-cols-lg-2 g-3 mt-1">
-    <div class="col">
+<pems-row gap="3" css="row-cols-1 row-cols-lg-2 mt-1">
+    <pems-col span="">
         <div class="content-card">
             <h6 class="mb-2">Losses</h6>
             <pems-table kind="enterprise" scale="small">
@@ -223,8 +223,8 @@
             </pems-table>
             @if (!Model.Losses.Any()) { <p class="text-muted text-center py-2 small">No losses recorded.</p> }
         </div>
-    </div>
-    <div class="col">
+    </pems-col>
+    <pems-col span="">
         <div class="content-card">
             <h6 class="mb-2">Event History</h6>
             <div class="table-scroll-area pems-s-89e84480">
@@ -239,8 +239,8 @@
                 </pems-table>
             </div>
         </div>
-    </div>
-</div>
+    </pems-col>
+</pems-row>
 
 <pems-modal id="holdRunModal" tabindex="-1">
         <form asp-action="Hold" asp-route-id="@Model.ProductionRunId" method="post">

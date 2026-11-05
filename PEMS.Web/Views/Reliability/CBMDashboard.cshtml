@@ -22,23 +22,23 @@
     (Aggregation) روی داده‌ی واقعی موجود است - هیچ KPI جعلی/شبیه‌سازی‌شده این‌جا نمایش داده نمی‌شود.
 </p>
 
-<div class="row g-3 mb-3">
-    <div class="col-md-3">
+<pems-row gap="3" css="mb-3">
+    <pems-col md="3">
         <pems-kpi-tile label="@Localizer["Monitoring Points"]" sub="@Model.PointsWithEvaluationProfile @Localizer["با پروفایل ارزیابی"] · @Model.PointsWithCbmStrategy @Localizer["با استراتژی CBM"]">@Model.TotalActivePoints</pems-kpi-tile>
-    </div>
-    <div class="col-md-3">
+    </pems-col>
+    <pems-col md="3">
         <pems-kpi-tile tone="danger" label="@Localizer["Critical"] / @Localizer["Alarm"]" sub="@Model.WarningCount @Localizer["Warning"] · @Model.RequiresEngineeringReviewCount @Localizer["Mark for Engineering Review"]">@(Model.CriticalCount + Model.AlarmCount)</pems-kpi-tile>
-    </div>
-    <div class="col-md-3">
+    </pems-col>
+    <pems-col md="3">
         <pems-kpi-tile label="@Localizer["Open Findings"]" sub="@Model.LinkedFindingCount @Localizer["Linked"]">@Model.OpenFindingCount</pems-kpi-tile>
-    </div>
-    <div class="col-md-3">
+    </pems-col>
+    <pems-col md="3">
         <pems-kpi-tile tone="@(Model.OverdueCbmPlanCount > 0 ? "danger" : "")" label="@Localizer["Overdue"] CBM" sub="@Model.DueSoonCbmPlanCount @Localizer["Due Soon"]">@Model.OverdueCbmPlanCount</pems-kpi-tile>
-    </div>
-</div>
+    </pems-col>
+</pems-row>
 
-<div class="row g-3">
-    <div class="col-md-6">
+<pems-row gap="3">
+    <pems-col md="6">
         <div class="content-card">
             <h6 class="mb-2">@Localizer["Needs Attention"]</h6>
             @if (Model.AttentionPoints.Count == 0)
@@ -67,8 +67,8 @@
                 }
             }
         </div>
-    </div>
-    <div class="col-md-6">
+    </pems-col>
+    <pems-col md="6">
         <div class="content-card">
             <h6 class="mb-2">@Localizer["Overdue CBM Plans"]</h6>
             @if (Model.OverdueCbmPlans.Count == 0)
@@ -97,5 +97,5 @@
                 }
             }
         </div>
-    </div>
-</div>
+    </pems-col>
+</pems-row>

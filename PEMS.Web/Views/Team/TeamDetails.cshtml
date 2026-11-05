@@ -116,10 +116,10 @@
     }
     else
     {
-        <div class="row g-2">
+        <pems-row gap="2">
             @foreach (var child in Model.Children.OrderBy(c => c.Name))
             {
-                <div class="col-md-4 col-lg-3">
+                <pems-col md="4" lg="3">
                     <div class="pems-unit-card" data-inactive="@(!child.IsActive ? "true" : "false")">
                         <div class="pems-unit-kind">@child.NodeKind</div>
                         <div class="fw-semibold">@child.Name</div>
@@ -134,9 +134,9 @@
                             @Localizer["مشاهده‌ی جزئیات تیم"]
                         </pems-button>
                     </div>
-                </div>
+                </pems-col>
             }
-        </div>
+        </pems-row>
     }
 </div>
 

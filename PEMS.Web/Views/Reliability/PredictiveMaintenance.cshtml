@@ -23,20 +23,20 @@
     زیرساخت نرم‌افزاری از الان آماده است تا وقتی داده‌ی کافی جمع شود، بدون بازطراحی معماری.
 </p>
 
-<div class="row g-3 mb-3">
-    <div class="col-md-6">
+<pems-row gap="3" css="mb-3">
+    <pems-col md="6">
         <div class="content-card h-100 text-center">
             <div class="text-muted small">Engine (software/architecture)</div>
             <pems-badge tone="@StatusBadge(readiness.EngineStatus)" css="fs-6">@readiness.EngineStatus</pems-badge>
         </div>
-    </div>
-    <div class="col-md-6">
+    </pems-col>
+    <pems-col md="6">
         <div class="content-card h-100 text-center">
             <div class="text-muted small">Production Model (validated on real data)</div>
             <pems-badge tone="@StatusBadge(readiness.ProductionModelStatus)" css="fs-6">@readiness.ProductionModelStatus</pems-badge>
         </div>
-    </div>
-</div>
+    </pems-col>
+</pems-row>
 <p class="text-muted small">@readiness.Reason</p>
 
 <div class="content-card">

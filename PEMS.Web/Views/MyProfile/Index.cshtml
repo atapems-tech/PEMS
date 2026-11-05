@@ -11,8 +11,8 @@
 }
 else
 {
-    <div class="row g-3">
-        <div class="col-md-4">
+    <pems-row gap="3">
+        <pems-col md="4">
             <div class="content-card text-center">
                 <h6 class="mb-3"><pems-icon name="bi-person-circle" /> @Localizer["عکس پروفایل"]</h6>
 
@@ -35,9 +35,9 @@ else
                     <pems-button tone="primary" size="small" css="w-100" type="submit"><pems-icon name="bi-upload" /> @Localizer["ذخیره عکس"]</pems-button>
                 </form>
             </div>
-        </div>
+        </pems-col>
 
-        <div class="col-md-8">
+        <pems-col md="8">
             <div class="content-card">
                 <h6 class="mb-3"><pems-icon name="bi-pen" /> @Localizer["امضای دیجیتال (ترسیمی)"]</h6>
                 <p class="text-muted small">
@@ -66,8 +66,8 @@ else
                     <input type="hidden" name="signatureDataUrl" id="signatureDataUrl" />
                 </form>
             </div>
-        </div>
-    </div>
+        </pems-col>
+    </pems-row>
 
     <script>
         (function () {

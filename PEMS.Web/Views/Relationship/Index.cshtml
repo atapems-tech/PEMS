@@ -108,7 +108,7 @@ else
         </div>
     }
 
-    <div class="row g-3">
+    <pems-row gap="3">
         @{
             var sections = new (string Title, string Icon, List<PEMS.Application.DTOs.RelationshipNodeDto> Items, string? Controller, string? Action)[]
             {
@@ -135,7 +135,7 @@ else
 
         @foreach (var s in sections)
         {
-            <div class="col-md-6">
+            <pems-col md="6">
                 <div class="content-card h-100">
                     <h6 class="mb-3"><pems-icon css="@s.Icon" /> @s.Title <pems-badge tone="neutral">@s.Items.Count</pems-badge></h6>
                     @if (s.Items.Any())
@@ -198,7 +198,7 @@ else
                         <p class="text-muted small mb-0">@Localizer["None found."]</p>
                     }
                 </div>
-            </div>
+            </pems-col>
         }
-    </div>
+    </pems-row>
 }

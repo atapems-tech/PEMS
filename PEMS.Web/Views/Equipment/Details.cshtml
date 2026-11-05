@@ -261,12 +261,12 @@
                     <h6 class="mb-0"><pems-icon name="bi-card-text" /> @Localizer["Cm_InstrumentPassport"]</h6>
                     <span class="small text-muted">See the "Instrument Passport" tab for full details, calibration history and print.</span>
                 </div>
-                <div class="row g-2 small mt-2">
-                    <div class="col-md-3"><strong>@Localizer["Type"]</strong><div>@NA(inst.InstrumentType)</div></div>
-                    <div class="col-md-3"><strong>@Localizer["Loop No."]</strong><div>@NA(inst.LoopNumber)</div></div>
-                    <div class="col-md-3"><strong>System / Signal</strong><div>@NA(inst.System) / @NA(inst.SignalClass)</div></div>
-                    <div class="col-md-3"><strong>Next Calibration</strong><div>@(inst.NextCalibrationDue?.ToString("yyyy-MM-dd") ?? "N/A") <pems-badge tone="@calBadgeClass">@inst.CalibrationStatus</pems-badge></div></div>
-                </div>
+                <pems-row gap="2" css="small mt-2">
+                    <pems-col md="3"><strong>@Localizer["Type"]</strong><div>@NA(inst.InstrumentType)</div></pems-col>
+                    <pems-col md="3"><strong>@Localizer["Loop No."]</strong><div>@NA(inst.LoopNumber)</div></pems-col>
+                    <pems-col md="3"><strong>System / Signal</strong><div>@NA(inst.System) / @NA(inst.SignalClass)</div></pems-col>
+                    <pems-col md="3"><strong>Next Calibration</strong><div>@(inst.NextCalibrationDue?.ToString("yyyy-MM-dd") ?? "N/A") <pems-badge tone="@calBadgeClass">@inst.CalibrationStatus</pems-badge></div></pems-col>
+                </pems-row>
             </div>
         }
     </div>
@@ -282,32 +282,32 @@
                         <pems-icon name="bi-card-text" /> @Localizer["Cm_FullPassport"]
                     </pems-button>
                 </div>
-                <div class="row g-2 small">
-                    <div class="col-md-3"><strong>@Localizer["Instrument Type"]</strong><div>@NA(inst.InstrumentType)</div></div>
-                    <div class="col-md-3"><strong>@Localizer["Loop No."]</strong><div>@NA(inst.LoopNumber)</div></div>
-                    <div class="col-md-3"><strong>@Localizer["System"]</strong><div>@NA(inst.System)</div></div>
-                    <div class="col-md-3"><strong>@Localizer["Signal Class"]</strong><div>@NA(inst.SignalClass)</div></div>
+                <pems-row gap="2" css="small">
+                    <pems-col md="3"><strong>@Localizer["Instrument Type"]</strong><div>@NA(inst.InstrumentType)</div></pems-col>
+                    <pems-col md="3"><strong>@Localizer["Loop No."]</strong><div>@NA(inst.LoopNumber)</div></pems-col>
+                    <pems-col md="3"><strong>@Localizer["System"]</strong><div>@NA(inst.System)</div></pems-col>
+                    <pems-col md="3"><strong>@Localizer["Signal Class"]</strong><div>@NA(inst.SignalClass)</div></pems-col>
 
-                    <div class="col-md-3"><strong>@Localizer["Process Variable"]</strong><div>@NA(inst.ProcessVariable)</div></div>
-                    <div class="col-md-3"><strong>@Localizer["Range"]</strong><div>@(inst.RangeMin?.ToString() ?? "N/A") - @(inst.RangeMax?.ToString() ?? "N/A") @inst.Unit</div></div>
-                    <div class="col-md-3"><strong>@Localizer["Output Signal"]</strong><div>@NA(inst.OutputSignal)</div></div>
-                    <div class="col-md-3"><strong>@Localizer["Current Status"]</strong><div>@NA(inst.CurrentStatus)</div></div>
+                    <pems-col md="3"><strong>@Localizer["Process Variable"]</strong><div>@NA(inst.ProcessVariable)</div></pems-col>
+                    <pems-col md="3"><strong>@Localizer["Range"]</strong><div>@(inst.RangeMin?.ToString() ?? "N/A") - @(inst.RangeMax?.ToString() ?? "N/A") @inst.Unit</div></pems-col>
+                    <pems-col md="3"><strong>@Localizer["Output Signal"]</strong><div>@NA(inst.OutputSignal)</div></pems-col>
+                    <pems-col md="3"><strong>@Localizer["Current Status"]</strong><div>@NA(inst.CurrentStatus)</div></pems-col>
 
-                    <div class="col-md-3"><strong>@Localizer["Hazardous Area"]</strong><div>@NA(inst.HazardousArea)</div></div>
-                    <div class="col-md-3"><strong>@Localizer["Ex Protection"]</strong><div>@NA(inst.ExProtection)</div></div>
-                    <div class="col-md-3"><strong>@Localizer["SIL"]</strong><div>@NA(inst.SIL)</div></div>
-                    <div class="col-md-3"><strong>@Localizer["Calibration Interval"]</strong><div>@(inst.CalibrationInterval.HasValue ? inst.CalibrationInterval + " days" : "N/A")</div></div>
+                    <pems-col md="3"><strong>@Localizer["Hazardous Area"]</strong><div>@NA(inst.HazardousArea)</div></pems-col>
+                    <pems-col md="3"><strong>@Localizer["Ex Protection"]</strong><div>@NA(inst.ExProtection)</div></pems-col>
+                    <pems-col md="3"><strong>@Localizer["SIL"]</strong><div>@NA(inst.SIL)</div></pems-col>
+                    <pems-col md="3"><strong>@Localizer["Calibration Interval"]</strong><div>@(inst.CalibrationInterval.HasValue ? inst.CalibrationInterval + " days" : "N/A")</div></pems-col>
 
-                    <div class="col-md-3"><strong>@Localizer["Junction Box"]</strong><div>@NA(inst.JunctionBox)</div></div>
-                    <div class="col-md-3"><strong>@Localizer["Marshalling Cabinet"]</strong><div>@NA(inst.MarshallingCabinet)</div></div>
-                    <div class="col-md-3"><strong>@Localizer["Cable No."]</strong><div>@NA(inst.CableNumber)</div></div>
-                    <div class="col-md-3"><strong>@Localizer["I/O Card / Channel"]</strong><div>@NA(inst.IOCardChannel)</div></div>
+                    <pems-col md="3"><strong>@Localizer["Junction Box"]</strong><div>@NA(inst.JunctionBox)</div></pems-col>
+                    <pems-col md="3"><strong>@Localizer["Marshalling Cabinet"]</strong><div>@NA(inst.MarshallingCabinet)</div></pems-col>
+                    <pems-col md="3"><strong>@Localizer["Cable No."]</strong><div>@NA(inst.CableNumber)</div></pems-col>
+                    <pems-col md="3"><strong>@Localizer["I/O Card / Channel"]</strong><div>@NA(inst.IOCardChannel)</div></pems-col>
 
-                    <div class="col-md-3"><strong>@Localizer["System Cabinet"]</strong><div>@NA(inst.SystemCabinet)</div></div>
-                    <div class="col-md-3"><strong>@Localizer["Last Calibration"]</strong><div>@(inst.LastCalibrationDate?.ToString("yyyy-MM-dd") ?? "N/A")</div></div>
-                    <div class="col-md-3"><strong>Next Calibration Due</strong><div>@(inst.NextCalibrationDue?.ToString("yyyy-MM-dd") ?? "N/A") <pems-badge tone="@calBadgeClass">@inst.CalibrationStatus</pems-badge></div></div>
-                    <div class="col-md-3"><strong>Next Maintenance Due</strong><div>@(inst.NextMaintenanceDue?.ToString("yyyy-MM-dd") ?? "N/A")</div></div>
-                </div>
+                    <pems-col md="3"><strong>@Localizer["System Cabinet"]</strong><div>@NA(inst.SystemCabinet)</div></pems-col>
+                    <pems-col md="3"><strong>@Localizer["Last Calibration"]</strong><div>@(inst.LastCalibrationDate?.ToString("yyyy-MM-dd") ?? "N/A")</div></pems-col>
+                    <pems-col md="3"><strong>Next Calibration Due</strong><div>@(inst.NextCalibrationDue?.ToString("yyyy-MM-dd") ?? "N/A") <pems-badge tone="@calBadgeClass">@inst.CalibrationStatus</pems-badge></div></pems-col>
+                    <pems-col md="3"><strong>Next Maintenance Due</strong><div>@(inst.NextMaintenanceDue?.ToString("yyyy-MM-dd") ?? "N/A")</div></pems-col>
+                </pems-row>
             </div>
         </div>
     }
@@ -323,31 +323,31 @@
                         <pems-icon name="bi-gear-wide-connected" /> @Localizer["Full Mechanical Passport"]
                     </pems-button>
                 </div>
-                <div class="row g-2 small">
-                    <div class="col-md-3"><strong>@Localizer["Equipment Type"]</strong><div>@NA(mech.EquipmentType)</div></div>
-                    <div class="col-md-3"><strong>@Localizer["Sub-Type"]</strong><div><pems-badge tone="neutral">@mech.SubType</pems-badge></div></div>
-                    <div class="col-md-3"><strong>@Localizer["Manufacturer"]</strong><div>@NA(mech.Manufacturer)</div></div>
-                    <div class="col-md-3"><strong>@Localizer["Model"]</strong><div>@NA(mech.Model)</div></div>
+                <pems-row gap="2" css="small">
+                    <pems-col md="3"><strong>@Localizer["Equipment Type"]</strong><div>@NA(mech.EquipmentType)</div></pems-col>
+                    <pems-col md="3"><strong>@Localizer["Sub-Type"]</strong><div><pems-badge tone="neutral">@mech.SubType</pems-badge></div></pems-col>
+                    <pems-col md="3"><strong>@Localizer["Manufacturer"]</strong><div>@NA(mech.Manufacturer)</div></pems-col>
+                    <pems-col md="3"><strong>@Localizer["Model"]</strong><div>@NA(mech.Model)</div></pems-col>
 
-                    <div class="col-md-3"><strong>@Localizer["Design Pressure"]</strong><div>@(mech.DesignPressure?.ToString() ?? "N/A")</div></div>
-                    <div class="col-md-3"><strong>@Localizer["Design Temperature"]</strong><div>@(mech.DesignTemperature?.ToString() ?? "N/A")</div></div>
-                    <div class="col-md-3"><strong>@Localizer["Operating Pressure"]</strong><div>@(mech.OperatingPressure?.ToString() ?? "N/A")</div></div>
-                    <div class="col-md-3"><strong>@Localizer["Operating Temperature"]</strong><div>@(mech.OperatingTemperature?.ToString() ?? "N/A")</div></div>
+                    <pems-col md="3"><strong>@Localizer["Design Pressure"]</strong><div>@(mech.DesignPressure?.ToString() ?? "N/A")</div></pems-col>
+                    <pems-col md="3"><strong>@Localizer["Design Temperature"]</strong><div>@(mech.DesignTemperature?.ToString() ?? "N/A")</div></pems-col>
+                    <pems-col md="3"><strong>@Localizer["Operating Pressure"]</strong><div>@(mech.OperatingPressure?.ToString() ?? "N/A")</div></pems-col>
+                    <pems-col md="3"><strong>@Localizer["Operating Temperature"]</strong><div>@(mech.OperatingTemperature?.ToString() ?? "N/A")</div></pems-col>
 
                     @if (mech.SubType == "Rotating")
                     {
-                        <div class="col-md-3"><strong>@Localizer["Flow Rate"]</strong><div>@(mech.FlowRate?.ToString() ?? "N/A")</div></div>
-                        <div class="col-md-3"><strong>@Localizer["Speed (RPM)"]</strong><div>@(mech.SpeedRPM?.ToString() ?? "N/A")</div></div>
-                        <div class="col-md-3"><strong>@Localizer["Power (kW)"]</strong><div>@(mech.RotatingPowerKW?.ToString() ?? "N/A")</div></div>
-                        <div class="col-md-3"><strong>@Localizer["Driver Type"]</strong><div>@NA(mech.DriverType)</div></div>
+                        <pems-col md="3"><strong>@Localizer["Flow Rate"]</strong><div>@(mech.FlowRate?.ToString() ?? "N/A")</div></pems-col>
+                        <pems-col md="3"><strong>@Localizer["Speed (RPM)"]</strong><div>@(mech.SpeedRPM?.ToString() ?? "N/A")</div></pems-col>
+                        <pems-col md="3"><strong>@Localizer["Power (kW)"]</strong><div>@(mech.RotatingPowerKW?.ToString() ?? "N/A")</div></pems-col>
+                        <pems-col md="3"><strong>@Localizer["Driver Type"]</strong><div>@NA(mech.DriverType)</div></pems-col>
                     }
                     else if (mech.SubType == "Static")
                     {
-                        <div class="col-md-3"><strong>@Localizer["Volume"]</strong><div>@(mech.Volume?.ToString() ?? "N/A")</div></div>
-                        <div class="col-md-3"><strong>@Localizer["Orientation"]</strong><div>@NA(mech.Orientation)</div></div>
-                        <div class="col-md-3"><strong>@Localizer["Code Standard"]</strong><div>@NA(mech.CodeStandard)</div></div>
+                        <pems-col md="3"><strong>@Localizer["Volume"]</strong><div>@(mech.Volume?.ToString() ?? "N/A")</div></pems-col>
+                        <pems-col md="3"><strong>@Localizer["Orientation"]</strong><div>@NA(mech.Orientation)</div></pems-col>
+                        <pems-col md="3"><strong>@Localizer["Code Standard"]</strong><div>@NA(mech.CodeStandard)</div></pems-col>
                     }
-                </div>
+                </pems-row>
             </div>
         </div>
     }
@@ -368,12 +368,12 @@
                         </pems-button>
                     </div>
                 </div>
-                <div class="row g-2 small mb-3">
-                    <div class="col-md-3"><strong>@Localizer["Monitoring Points"]:</strong> @cm.PointCount</div>
-                    <div class="col-md-3"><strong>@Localizer["CBM Strategy"]:</strong> @(cm.HasCbmStrategy ? Localizer["Linked"] : Localizer["No"])</div>
-                    <div class="col-md-3"><strong>@Localizer["Next Due"]:</strong> @(cm.NextDueDate?.ToString("yyyy-MM-dd") ?? "N/A")</div>
-                    <div class="col-md-3"><strong>@Localizer["Findings"]:</strong> @cm.OpenFindingCount</div>
-                </div>
+                <pems-row gap="2" css="small mb-3">
+                    <pems-col md="3"><strong>@Localizer["Monitoring Points"]:</strong> @cm.PointCount</pems-col>
+                    <pems-col md="3"><strong>@Localizer["CBM Strategy"]:</strong> @(cm.HasCbmStrategy ? Localizer["Linked"] : Localizer["No"])</pems-col>
+                    <pems-col md="3"><strong>@Localizer["Next Due"]:</strong> @(cm.NextDueDate?.ToString("yyyy-MM-dd") ?? "N/A")</pems-col>
+                    <pems-col md="3"><strong>@Localizer["Findings"]:</strong> @cm.OpenFindingCount</pems-col>
+                </pems-row>
                 <pems-table kind="enterprise" scale="small" css="mb-0">
                     <thead><tr><th>@Localizer["Variable"]</th><th>@Localizer["Tag"]</th><th>@Localizer["Last Reading"]</th><th>@Localizer["Evaluation"]</th></tr></thead>
                     <tbody>
@@ -412,31 +412,31 @@
                         <pems-icon name="bi-diagram-2" /> @Localizer["Cm_FullAsset"]
                     </pems-button>
                 </div>
-                <div class="row g-2 small">
-                    <div class="col-md-3"><strong>@Localizer["Status"]</strong><div>@NA(asset.Status)</div></div>
-                    <div class="col-md-3"><strong>@Localizer["Criticality"]</strong><div>@NA(asset.CriticalityClass)</div></div>
-                    <div class="col-md-3"><strong>@Localizer["Maintenance Class"]</strong><div>@NA(asset.MaintenanceClass)</div></div>
-                    <div class="col-md-3"><strong>@Localizer["Functional Location"]</strong><div>@NA(asset.FunctionalLocation)</div></div>
-                    <div class="col-md-3"><strong>@Localizer["Commissioning Date"]</strong><div>@(asset.CommissioningDate?.ToString("yyyy-MM-dd") ?? "N/A")</div></div>
-                </div>
+                <pems-row gap="2" css="small">
+                    <pems-col md="3"><strong>@Localizer["Status"]</strong><div>@NA(asset.Status)</div></pems-col>
+                    <pems-col md="3"><strong>@Localizer["Criticality"]</strong><div>@NA(asset.CriticalityClass)</div></pems-col>
+                    <pems-col md="3"><strong>@Localizer["Maintenance Class"]</strong><div>@NA(asset.MaintenanceClass)</div></pems-col>
+                    <pems-col md="3"><strong>@Localizer["Functional Location"]</strong><div>@NA(asset.FunctionalLocation)</div></pems-col>
+                    <pems-col md="3"><strong>@Localizer["Commissioning Date"]</strong><div>@(asset.CommissioningDate?.ToString("yyyy-MM-dd") ?? "N/A")</div></pems-col>
+                </pems-row>
             }
             else
             {
                 <p class="text-muted small">@Localizer["Cm_NoAsset"]</p>
                 <form asp-controller="Asset" asp-action="Create" method="post" class="row g-2 align-items-end">
                     <input type="hidden" name="equipmentId" value="@eq.EquipmentId" />
-                    <div class="col-md-4">
+                    <pems-col md="4">
                         <pems-label css="small">@Localizer["Asset Number"]</pems-label>
                         <pems-input scale="small" name="assetNumber" placeholder="AST-@eq.TagNumber" required />
-                    </div>
-                    <div class="col-md-3">
+                    </pems-col>
+                    <pems-col md="3">
                         <pems-label css="small">@Localizer["Maintenance Class"]</pems-label>
                         <pems-input scale="small" name="maintenanceClass" placeholder="Rotating, Static ..." />
-                    </div>
-                    <div class="col-md-2">
+                    </pems-col>
+                    <pems-col md="2">
                         <input type="hidden" name="status" value="Active" />
                         <pems-button tone="primary" size="small" type="submit"><pems-icon name="bi-plus-lg" /> @Localizer["Cm_CreateAsset"]</pems-button>
-                    </div>
+                    </pems-col>
                 </form>
             }
         </div>
@@ -521,12 +521,12 @@
                         <pems-icon name="bi-clock-history" /> @Localizer["Cm_FailureHistory"]
                     </pems-button>
                 </div>
-                <div class="row g-2 text-center">
-                    <div class="col-md-3"><div class="small text-muted">@Localizer["MTBF"]</div><div class="fw-bold">@(reliability.MTBFHours.HasValue ? $"{reliability.MTBFHours.Value:N1} h" : "N/A")</div></div>
-                    <div class="col-md-3"><div class="small text-muted">@Localizer["MTTR"]</div><div class="fw-bold">@(reliability.MTTRHours.HasValue ? $"{reliability.MTTRHours.Value:N1} h" : "N/A")</div></div>
-                    <div class="col-md-3"><div class="small text-muted">@Localizer["Availability"]</div><div class="fw-bold">@(reliability.AvailabilityPercent.HasValue ? $"{reliability.AvailabilityPercent.Value:N1}%" : "N/A")</div></div>
-                    <div class="col-md-3"><div class="small text-muted">@Localizer["Failure Count"]</div><div class="fw-bold">@reliability.FailureCount</div></div>
-                </div>
+                <pems-row gap="2" css="text-center">
+                    <pems-col md="3"><div class="small text-muted">@Localizer["MTBF"]</div><div class="fw-bold">@(reliability.MTBFHours.HasValue ? $"{reliability.MTBFHours.Value:N1} h" : "N/A")</div></pems-col>
+                    <pems-col md="3"><div class="small text-muted">@Localizer["MTTR"]</div><div class="fw-bold">@(reliability.MTTRHours.HasValue ? $"{reliability.MTTRHours.Value:N1} h" : "N/A")</div></pems-col>
+                    <pems-col md="3"><div class="small text-muted">@Localizer["Availability"]</div><div class="fw-bold">@(reliability.AvailabilityPercent.HasValue ? $"{reliability.AvailabilityPercent.Value:N1}%" : "N/A")</div></pems-col>
+                    <pems-col md="3"><div class="small text-muted">@Localizer["Failure Count"]</div><div class="fw-bold">@reliability.FailureCount</div></pems-col>
+                </pems-row>
             </div>
         }
         @* استراتژی و PM (فقط خواندنی) - از روابط موجود MaintenanceStrategy/MaintenancePlan.EquipmentId *@
@@ -701,18 +701,18 @@
                             <pems-date name="inspectionDate" scale="small" value="@DateTime.Today.ToString("yyyy-MM-dd")" required /></div>
                         <div class="mb-2"><pems-label css="small">@Localizer["Inspector"]</pems-label>
                             <pems-input scale="small" name="inspector" /></div>
-                        <div class="row g-2 mb-2">
-                            <div class="col-6"><pems-label css="small">Measurement Value</pems-label>
-                                <pems-input scale="small" name="measurementValue" type="number" step="0.01" /></div>
-                            <div class="col-6"><pems-label css="small">@Localizer["Unit"]</pems-label>
-                                <pems-input scale="small" name="measurementUnit" placeholder="mm/s, mm, °C..." /></div>
-                        </div>
-                        <div class="row g-2 mb-2">
-                            <div class="col-6"><pems-label css="small">Lower Limit</pems-label>
-                                <pems-input scale="small" name="lowerLimit" type="number" step="0.01" /></div>
-                            <div class="col-6"><pems-label css="small">Upper Limit</pems-label>
-                                <pems-input scale="small" name="upperLimit" type="number" step="0.01" /></div>
-                        </div>
+                        <pems-row gap="2" css="mb-2">
+                            <pems-col span="6"><pems-label css="small">Measurement Value</pems-label>
+                                <pems-input scale="small" name="measurementValue" type="number" step="0.01" /></pems-col>
+                            <pems-col span="6"><pems-label css="small">@Localizer["Unit"]</pems-label>
+                                <pems-input scale="small" name="measurementUnit" placeholder="mm/s, mm, °C..." /></pems-col>
+                        </pems-row>
+                        <pems-row gap="2" css="mb-2">
+                            <pems-col span="6"><pems-label css="small">Lower Limit</pems-label>
+                                <pems-input scale="small" name="lowerLimit" type="number" step="0.01" /></pems-col>
+                            <pems-col span="6"><pems-label css="small">Upper Limit</pems-label>
+                                <pems-input scale="small" name="upperLimit" type="number" step="0.01" /></pems-col>
+                        </pems-row>
                         <div class="mb-2"><pems-label css="small">Next Inspection Date</pems-label>
                             <pems-date name="nextInspectionDate" scale="small" /></div>
                         <div class="mb-2"><pems-label css="small">Recommendation</pems-label>
@@ -730,8 +730,8 @@
 
     @* ===================== Quality & Change ===================== *@
     <div class="tab-pane fade" id="tab-quality" role="tabpanel">
-        <div class="row g-3">
-            <div class="col-md-4">
+        <pems-row gap="3">
+            <pems-col md="4">
                 <div class="content-card h-100">
                     <h6 class="mb-3"><pems-icon name="bi-exclamation-triangle" /> NCR <pems-badge tone="neutral">@Model.NonConformanceReports.Count</pems-badge></h6>
                     <ul class="list-unstyled mb-0">
@@ -745,8 +745,8 @@
                     </ul>
                     @if (!Model.NonConformanceReports.Any()) { <p class="text-muted small mb-0">@Localizer["Cm_NoneRecorded"]</p> }
                 </div>
-            </div>
-            <div class="col-md-4">
+            </pems-col>
+            <pems-col md="4">
                 <div class="content-card h-100">
                     <h6 class="mb-3"><pems-icon name="bi-arrow-repeat" /> MOC <pems-badge tone="neutral">@Model.MOCs.Count</pems-badge></h6>
                     <ul class="list-unstyled mb-0">
@@ -760,8 +760,8 @@
                     </ul>
                     @if (!Model.MOCs.Any()) { <p class="text-muted small mb-0">@Localizer["Cm_NoneRecorded"]</p> }
                 </div>
-            </div>
-            <div class="col-md-4">
+            </pems-col>
+            <pems-col md="4">
                 <div class="content-card h-100">
                     <h6 class="mb-3"><pems-icon name="bi-question-circle" /> TQ / TSR / RFI <pems-badge tone="neutral">@Model.TechnicalQueries.Count</pems-badge></h6>
                     <ul class="list-unstyled mb-0">
@@ -775,8 +775,8 @@
                     </ul>
                     @if (!Model.TechnicalQueries.Any()) { <p class="text-muted small mb-0">@Localizer["Cm_NoneRecorded"]</p> }
                 </div>
-            </div>
-        </div>
+            </pems-col>
+        </pems-row>
     </div>
 
     @* ===================== Classification & Maintenance Intelligence ===================== *@
@@ -789,12 +789,12 @@
             <h6 class="mb-3"><pems-icon name="bi-diagram-3-fill" /> @Localizer["Cm_SecClassification"]</h6>
             @if (intel?.EquipmentClassId != null)
             {
-                <div class="row g-2 small">
-                    <div class="col-md-3"><strong>@Localizer["Equipment Class"]</strong><div>@intel.EquipmentClassName <code>@intel.EquipmentClassCode</code></div></div>
-                    <div class="col-md-3"><strong>Class Hierarchy</strong><div>@string.Join(" ← ", intel.ResolvedClassHierarchy)</div></div>
-                    <div class="col-md-3"><strong>@Localizer["Confidence"]</strong><div><pems-badge tone="info">@intel.ClassificationConfidence</pems-badge></div></div>
-                    <div class="col-md-3"><strong>@Localizer["Source"]</strong><div><pems-badge tone="neutral">@intel.ClassificationSource</pems-badge></div></div>
-                </div>
+                <pems-row gap="2" css="small">
+                    <pems-col md="3"><strong>@Localizer["Equipment Class"]</strong><div>@intel.EquipmentClassName <code>@intel.EquipmentClassCode</code></div></pems-col>
+                    <pems-col md="3"><strong>Class Hierarchy</strong><div>@string.Join(" ← ", intel.ResolvedClassHierarchy)</div></pems-col>
+                    <pems-col md="3"><strong>@Localizer["Confidence"]</strong><div><pems-badge tone="info">@intel.ClassificationConfidence</pems-badge></div></pems-col>
+                    <pems-col md="3"><strong>@Localizer["Source"]</strong><div><pems-badge tone="neutral">@intel.ClassificationSource</pems-badge></div></pems-col>
+                </pems-row>
                 @if (explanation?.MatchedRuleTier != null)
                 {
                     <pems-alert tone="light" css="border small mt-3 mb-0">
@@ -822,8 +822,8 @@
 
         @if (intel?.EquipmentClassId != null)
         {
-            <div class="row g-3">
-                <div class="col-md-6">
+            <pems-row gap="3">
+                <pems-col md="6">
                     <div class="content-card h-100">
                         <h6 class="mb-3">@Localizer["Cm_ApplicableActivities"] <pems-badge tone="neutral">@intel.ApplicableActivities.Count</pems-badge></h6>
                         <ul class="list-unstyled mb-0 small">
@@ -837,8 +837,8 @@
                         </ul>
                         @if (!intel.ApplicableActivities.Any()) { <p class="text-muted small mb-0">@Localizer["Cm_NoneDefined"]</p> }
                     </div>
-                </div>
-                <div class="col-md-6">
+                </pems-col>
+                <pems-col md="6">
                     <div class="content-card h-100">
                         <h6 class="mb-3">@Localizer["Cm_PmTemplates"] <pems-badge tone="neutral">@intel.CandidatePMTemplates.Count</pems-badge></h6>
                         <ul class="list-unstyled mb-0 small">
@@ -852,8 +852,8 @@
                         </ul>
                         @if (!intel.CandidatePMTemplates.Any()) { <p class="text-muted small mb-0">@Localizer["Cm_NoneDefined"]</p> }
                     </div>
-                </div>
-                <div class="col-md-6">
+                </pems-col>
+                <pems-col md="6">
                     <div class="content-card h-100">
                         <h6 class="mb-3">@Localizer["Cm_FailureModes"] <pems-badge tone="neutral">@intel.ApplicableFailureModes.Count</pems-badge></h6>
                         <ul class="list-unstyled mb-0 small">
@@ -867,8 +867,8 @@
                         </ul>
                         @if (!intel.ApplicableFailureModes.Any()) { <p class="text-muted small mb-0">@Localizer["Cm_NoneDefined"]</p> }
                     </div>
-                </div>
-                <div class="col-md-6">
+                </pems-col>
+                <pems-col md="6">
                     <div class="content-card h-100">
                         <h6 class="mb-3">@Localizer["Cm_StdRefs"] <pems-badge tone="neutral">@intel.ApplicableStandardReferences.Count</pems-badge></h6>
                         <ul class="list-unstyled mb-0 small">
@@ -882,8 +882,8 @@
                         </ul>
                         @if (!intel.ApplicableStandardReferences.Any()) { <p class="text-muted small mb-0">@Localizer["Cm_NoneDefined"]</p> }
                     </div>
-                </div>
-            </div>
+                </pems-col>
+            </pems-row>
         }
     </div>
 

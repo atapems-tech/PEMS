@@ -24,19 +24,19 @@
 
 @if (Model.DataStatus == "READY")
 {
-    <div class="row g-3 mt-1">
-        <div class="col-md-3">
+    <pems-row gap="3" css="mt-1">
+        <pems-col md="3">
             <pems-kpi-tile label="Mean Availability">@Model.MeanAvailabilityPercent?.ToString("N2")%</pems-kpi-tile>
-        </div>
-        <div class="col-md-3">
+        </pems-col>
+        <pems-col md="3">
             <pems-kpi-tile label="P10 – P90 Range">@Model.P10AvailabilityPercent?.ToString("N2")% – @Model.P90AvailabilityPercent?.ToString("N2")%</pems-kpi-tile>
-        </div>
-        <div class="col-md-3">
+        </pems-col>
+        <pems-col md="3">
             <pems-kpi-tile label="Mean Downtime / @Model.SimulatedHorizonHours.ToString("N0")h">@Model.MeanDowntimeHours?.ToString("N1")h</pems-kpi-tile>
-        </div>
-        <div class="col-md-3">
+        </pems-col>
+        <pems-col md="3">
             <pems-kpi-tile label="Mean Failure Count">@Model.MeanFailureCount?.ToString("N1")</pems-kpi-tile>
-        </div>
-    </div>
+        </pems-col>
+    </pems-row>
     <p class="text-muted small mt-3">Inputs: β=@Model.InputBeta?.ToString("N3"), η=@Model.InputEta?.ToString("N1")h, MTTR=@Model.InputMTTRHours?.ToString("N1")h — @Model.Iterations iterations.</p>
 }

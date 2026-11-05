@@ -12,41 +12,41 @@
 </p>
 
 <div class="content-card mb-3">
-    <div class="row g-3">
-        <div class="col-md-3">
+    <pems-row gap="3">
+        <pems-col md="3">
             <pems-kpi-tile compact label="Equipment Reliability Coverage">@Model.EquipmentReliabilityCoveragePercent.ToString("N1")%</pems-kpi-tile>
-        </div>
-        <div class="col-md-3">
+        </pems-col>
+        <pems-col md="3">
             <pems-kpi-tile compact label="@Localizer["Failure Taxonomy Coverage"]">@Model.FailureTaxonomyCoveragePercent.ToString("N1")%</pems-kpi-tile>
-        </div>
-        <div class="col-md-3">
+        </pems-col>
+        <pems-col md="3">
             <pems-kpi-tile compact label="Repair Data Coverage">@Model.RepairDataCoveragePercent.ToString("N1")%</pems-kpi-tile>
-        </div>
-        <div class="col-md-3">
+        </pems-col>
+        <pems-col md="3">
             <pems-kpi-tile compact label="Total Failure Records">@Model.TotalFailureRecords</pems-kpi-tile>
-        </div>
-    </div>
+        </pems-col>
+    </pems-row>
 </div>
 
 <div class="content-card mb-3">
     <h6 class="mb-2">Maintenance Chain Coverage <pems-badge tone="light">Phase 7</pems-badge></h6>
-    <div class="row g-3">
-        <div class="col-md-2">
+    <pems-row gap="3">
+        <pems-col md="2">
             <pems-kpi-tile compact label="Maintenance Type Completeness">@Model.MaintenanceTypeCompletenessPercent.ToString("N1")%</pems-kpi-tile>
-        </div>
-        <div class="col-md-2">
+        </pems-col>
+        <pems-col md="2">
             <pems-kpi-tile compact label="Work Order Completion Coverage">@Model.WorkOrderCompletionCoveragePercent.ToString("N1")%</pems-kpi-tile>
-        </div>
-        <div class="col-md-2">
+        </pems-col>
+        <pems-col md="2">
             <pems-kpi-tile compact label="Criticality Coverage">@Model.CriticalityCoveragePercent.ToString("N1")%</pems-kpi-tile>
-        </div>
-        <div class="col-md-2">
+        </pems-col>
+        <pems-col md="2">
             <pems-kpi-tile compact label="Maintenance Strategy Coverage">@Model.MaintenanceStrategyCoveragePercent.ToString("N1")%</pems-kpi-tile>
-        </div>
-        <div class="col-md-2">
+        </pems-col>
+        <pems-col md="2">
             <pems-kpi-tile compact label="Maintenance Plan Coverage">@Model.MaintenancePlanCoveragePercent.ToString("N1")%</pems-kpi-tile>
-        </div>
-    </div>
+        </pems-col>
+    </pems-row>
 </div>
 
 <div class="content-card">

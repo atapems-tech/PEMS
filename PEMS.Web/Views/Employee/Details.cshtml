@@ -96,31 +96,31 @@
 </div>
 
 <!-- Row 1: Employment Details (large) + Current Team (compact) -->
-<div class="row g-3 mb-3 align-items-stretch">
-    <div class="col-lg-8">
+<pems-row gap="3" css="mb-3 align-items-stretch">
+    <pems-col lg="8">
         <div class="content-card h-100">
             <h6 class="d-flex align-items-center gap-2 pb-2 mb-3 border-bottom">
                 <pems-icon name="bi-briefcase" css="text-warning" />
                 <span>@L("Employment Details", "جزئیات استخدام")</span>
             </h6>
-            <div class="row g-3">
-                <div class="col-sm-6">
+            <pems-row gap="3">
+                <pems-col sm="6">
                     <p class="text-uppercase text-muted small mb-1">@L("Organizational Position", "سمت سازمانی")</p>
                     <p class="mb-0 fw-semibold">@Dash(orgCtx?.PrimaryPositionTitle)</p>
                     @if (!string.IsNullOrWhiteSpace(Model.Position) && Model.Position != orgCtx?.PrimaryPositionTitle)
                     {
                         <p class="small text-muted mb-0">@L("Title on file", "عنوان ثبت‌شده"): @Model.Position</p>
                     }
-                </div>
-                <div class="col-sm-6">
+                </pems-col>
+                <pems-col sm="6">
                     <p class="text-uppercase text-muted small mb-1">@L("Department", "بخش")</p>
                     <p class="mb-0 fw-semibold">@Dash(Model.Department?.Name)</p>
-                </div>
-                <div class="col-sm-6">
+                </pems-col>
+                <pems-col sm="6">
                     <p class="text-uppercase text-muted small mb-1">@L("Discipline", "رشته")</p>
                     <p class="mb-0 fw-semibold">@Dash(Model.Discipline?.Name)</p>
-                </div>
-                <div class="col-sm-6">
+                </pems-col>
+                <pems-col sm="6">
                     <p class="text-uppercase text-muted small mb-1">@L("Team Supervisor", "سرپرست تیم")</p>
                     @if (manager != null)
                     {
@@ -135,8 +135,8 @@
                     {
                         <p class="mb-0 fw-semibold">—</p>
                     }
-                </div>
-                <div class="col-sm-6">
+                </pems-col>
+                <pems-col sm="6">
                     <p class="text-uppercase text-muted small mb-1">@L("Direct Manager", "مدیر مستقیم")</p>
                     @if (directManager.IssueCode == null && directManager.Managers.Count > 0)
                     {
@@ -150,12 +150,12 @@
                         <p class="mb-0 fw-semibold">—</p>
                         <p class="small text-muted mb-0" title="@directManager.IssueCode">@(directManager.IssueCode == null ? "" : Localizer["Org_Issue_" + directManager.IssueCode].Value)</p>
                     }
-                </div>
-                <div class="col-sm-6">
+                </pems-col>
+                <pems-col sm="6">
                     <p class="text-uppercase text-muted small mb-1">@L("Hire Date", "تاریخ استخدام")</p>
                     <p class="mb-0 fw-semibold">@(Model.HireDate.HasValue ? Model.HireDate.Value.ToString("yyyy-MM-dd") : "—")</p>
-                </div>
-                <div class="col-sm-6">
+                </pems-col>
+                <pems-col sm="6">
                     <p class="text-uppercase text-muted small mb-1">@L("Personnel Type", "نوع پرسنل")</p>
                     <p class="mb-0 fw-semibold">
                         @Model.PersonnelType
@@ -164,20 +164,20 @@
                             <span class="text-muted fw-normal">(@Model.VendorRef.Name)</span>
                         }
                     </p>
-                </div>
-                <div class="col-sm-6">
+                </pems-col>
+                <pems-col sm="6">
                     <p class="text-uppercase text-muted small mb-1"><pems-icon name="bi-geo-alt" /> @L("Location", "مکان")</p>
                     <p class="mb-0 fw-semibold">@Dash(Model.Location)</p>
-                </div>
-                <div class="col-sm-6">
+                </pems-col>
+                <pems-col sm="6">
                     <p class="text-uppercase text-muted small mb-1"><pems-icon name="bi-clock" /> @L("Shift", "شیفت")</p>
                     <p class="mb-0 fw-semibold">@Dash(Model.Shift)</p>
-                </div>
-            </div>
+                </pems-col>
+            </pems-row>
         </div>
-    </div>
+    </pems-col>
 
-    <div class="col-lg-4">
+    <pems-col lg="4">
         <div class="content-card h-100">
             <h6 class="d-flex align-items-center gap-2 pb-2 mb-3 border-bottom">
                 <pems-icon name="bi-people" css="text-warning" />
@@ -197,12 +197,12 @@
                 <p class="text-muted small text-center py-3 mb-0">@L("No active team membership.", "عضویت فعالی در تیمی ثبت نشده.")</p>
             }
         </div>
-    </div>
-</div>
+    </pems-col>
+</pems-row>
 
 <!-- System Account & Authorization (roles belong to the user account; managed in Administration -> Users) -->
-<div class="row g-3 mb-3">
-    <div class="col-12">
+<pems-row gap="3" css="mb-3">
+    <pems-col span="12">
         <div class="content-card">
             <h6 class="d-flex align-items-center gap-2 pb-2 mb-3 border-bottom">
                 <pems-icon name="bi-shield-lock" css="text-warning" />
@@ -214,16 +214,16 @@
             }
             else
             {
-                <div class="row g-3">
-                    <div class="col-sm-4">
+                <pems-row gap="3">
+                    <pems-col sm="4">
                         <p class="text-uppercase text-muted small mb-1">@L("Username", "نام کاربری")</p>
                         <p class="mb-0 fw-semibold">@linkedUser.UserName</p>
-                    </div>
-                    <div class="col-sm-2">
+                    </pems-col>
+                    <pems-col sm="2">
                         <p class="text-uppercase text-muted small mb-1">@L("Status", "وضعیت")</p>
                         <p class="mb-0"><pems-badge tone="@(linkedUser.IsActive ? "success" : "neutral")">@(linkedUser.IsActive ? L("Active", "فعال") : L("Inactive", "غیرفعال"))</pems-badge></p>
-                    </div>
-                    <div class="col-sm-6">
+                    </pems-col>
+                    <pems-col sm="6">
                         <p class="text-uppercase text-muted small mb-1">@L("Roles", "نقش‌ها")</p>
                         <p class="mb-0">
                             @if (((IEnumerable<string>)linkedUser.Roles).Any())
@@ -232,8 +232,8 @@
                             }
                             else { <span class="text-muted">—</span> }
                         </p>
-                    </div>
-                </div>
+                    </pems-col>
+                </pems-row>
                 @if (User.IsInRole(PEMS.Persistence.Identity.SystemRoles.SystemAdmin))
                 {
                     <div class="mt-3">
@@ -242,8 +242,8 @@
                 }
             }
         </div>
-    </div>
-</div>
+    </pems-col>
+</pems-row>
 
 <!-- Row 2: Contact Information (full width, 3 tiles) -->
 <div class="content-card mb-3">
@@ -251,8 +251,8 @@
         <pems-icon name="bi-person-vcard" css="text-warning" />
         <span>@L("Contact Information", "اطلاعات تماس")</span>
     </h6>
-    <div class="row g-3">
-        <div class="col-md-4">
+    <pems-row gap="3">
+        <pems-col md="4">
             <div class="d-flex align-items-start gap-3 p-3 rounded-3 bg-body-tertiary h-100">
                 <div class="rounded-circle bg-secondary-subtle d-flex align-items-center justify-content-center flex-shrink-0 pems-s-660e4429">
                     <pems-icon name="bi-phone" />
@@ -262,8 +262,8 @@
                     <p class="fw-semibold mb-0 font-monospace">@Dash(Model.Phone)</p>
                 </div>
             </div>
-        </div>
-        <div class="col-md-4">
+        </pems-col>
+        <pems-col md="4">
             <div class="d-flex align-items-start gap-3 p-3 rounded-3 bg-body-tertiary h-100">
                 <div class="rounded-circle bg-secondary-subtle d-flex align-items-center justify-content-center flex-shrink-0 pems-s-660e4429">
                     <pems-icon name="bi-envelope" />
@@ -280,8 +280,8 @@
                     }
                 </div>
             </div>
-        </div>
-        <div class="col-md-4">
+        </pems-col>
+        <pems-col md="4">
             <div class="d-flex align-items-start gap-3 p-3 rounded-3 bg-body-tertiary h-100">
                 <div class="rounded-circle bg-secondary-subtle d-flex align-items-center justify-content-center flex-shrink-0 pems-s-660e4429">
                     <pems-icon name="bi-house" />
@@ -291,13 +291,13 @@
                     <p class="fw-semibold mb-0">@Dash(Model.HomeAddress)</p>
                 </div>
             </div>
-        </div>
-    </div>
+        </pems-col>
+    </pems-row>
 </div>
 
 <!-- Row 3+: existing functionality (Labor Rate, Team History, Skills, Qualifications, Certifications) - preserved, restyled -->
-<div class="row g-3">
-    <div class="col-md-6">
+<pems-row gap="3">
+    <pems-col md="6">
         <div class="content-card h-100">
             <div class="d-flex justify-content-between align-items-center mb-3 pb-2 border-bottom">
                 <h6 class="mb-0 d-flex align-items-center gap-2"><pems-icon name="bi-cash-coin" css="text-warning" /> @L("Labor Rate", "نرخ دستمزد")</h6>
@@ -326,9 +326,9 @@
                     "نرخ جدید، نرخ قبلی رو Overwrite نمی‌کنه - فقط می‌بندتش (EffectiveTo) و تاریخچه حفظ می‌شه. هزینه‌ی WorkOrderهای قدیمی هم تغییر نمی‌کنه چون نرخ موقع ثبت Snapshot می‌شه.")
             </p>
         </div>
-    </div>
+    </pems-col>
 
-    <div class="col-md-6">
+    <pems-col md="6">
         <div class="content-card h-100">
             <h6 class="mb-3 pb-2 border-bottom d-flex align-items-center gap-2"><pems-icon name="bi-diagram-3" css="text-warning" /> @L("Team Membership History", "تاریخچه‌ی عضویت تیم")</h6>
             <pems-table scale="small">
@@ -347,9 +347,9 @@
             </pems-table>
             @if (!teamHistory.Any()) { <p class="text-muted small text-center py-2">@L("No membership recorded.", "عضویتی ثبت نشده.")</p> }
         </div>
-    </div>
+    </pems-col>
 
-    <div class="col-md-6">
+    <pems-col md="6">
         <div class="content-card h-100">
             <div class="d-flex justify-content-between align-items-center mb-3 pb-2 border-bottom">
                 <h6 class="mb-0 d-flex align-items-center gap-2"><pems-icon name="bi-mortarboard" css="text-warning" /> @L("Skills", "مهارت‌ها")</h6>
@@ -376,9 +376,9 @@
             </ul>
             @if (!employeeSkills.Any()) { <p class="text-muted small text-center py-2 mb-0">@L("No skills recorded.", "مهارتی ثبت نشده.")</p> }
         </div>
-    </div>
+    </pems-col>
 
-    <div class="col-md-6">
+    <pems-col md="6">
         <div class="content-card h-100">
             <div class="d-flex justify-content-between align-items-center mb-3 pb-2 border-bottom">
                 <h6 class="mb-0 d-flex align-items-center gap-2"><pems-icon name="bi-patch-check" css="text-warning" /> @L("Qualifications", "صلاحیت‌ها")</h6>
@@ -406,9 +406,9 @@
             </ul>
             @if (!employeeQualifications.Any()) { <p class="text-muted small text-center py-2 mb-0">@L("No qualifications recorded.", "صلاحیتی ثبت نشده.")</p> }
         </div>
-    </div>
+    </pems-col>
 
-    <div class="col-md-6">
+    <pems-col md="6">
         <div class="content-card h-100">
             <div class="d-flex justify-content-between align-items-center mb-3 pb-2 border-bottom">
                 <h6 class="mb-0 d-flex align-items-center gap-2"><pems-icon name="bi-award" css="text-warning" /> @L("Certifications", "گواهینامه‌ها")</h6>
@@ -436,8 +436,8 @@
             </ul>
             @if (!employeeCertifications.Any()) { <p class="text-muted small text-center py-2 mb-0">@L("No certifications recorded.", "گواهینامه‌ای ثبت نشده.")</p> }
         </div>
-    </div>
-</div>
+    </pems-col>
+</pems-row>
 
 <!-- Edit Profile Modal - posts to the same Edit action used by the Index grid -->
 <pems-modal size="large" id="editProfileModal" tabindex="-1">
@@ -446,43 +446,43 @@
                 <input type="hidden" name="returnToDetails" value="true" />
                 <div class="modal-header"><h6 class="modal-title">@L("Edit Profile", "ویرایش پروفایل")</h6></div>
                 <div class="modal-body">
-                    <div class="row g-3">
-                        <div class="col-md-4"><pems-label>@L("Personnel Code", "کد پرسنلی")</pems-label><pems-input name="personnelCode" value="@Model.PersonnelCode" /></div>
-                        <div class="col-md-4"><pems-label>@L("First Name", "نام")</pems-label><pems-input name="firstName" value="@Model.FirstName" required /></div>
-                        <div class="col-md-4"><pems-label>@L("Last Name", "نام خانوادگی")</pems-label><pems-input name="lastName" value="@Model.LastName" required /></div>
-                        <div class="col-md-6"><partial name="_PositionSelect" model="(int?)Model.EmployeeId" /></div>
-                        <div class="col-md-6"><pems-label>@L("Email", "ایمیل")</pems-label><pems-input name="email" value="@Model.Email" type="email" /></div>
-                        <div class="col-md-6"><pems-label>@L("Phone", "تلفن")</pems-label><pems-input name="phone" value="@Model.Phone" /></div>
-                        <div class="col-md-3">
+                    <pems-row gap="3">
+                        <pems-col md="4"><pems-label>@L("Personnel Code", "کد پرسنلی")</pems-label><pems-input name="personnelCode" value="@Model.PersonnelCode" /></pems-col>
+                        <pems-col md="4"><pems-label>@L("First Name", "نام")</pems-label><pems-input name="firstName" value="@Model.FirstName" required /></pems-col>
+                        <pems-col md="4"><pems-label>@L("Last Name", "نام خانوادگی")</pems-label><pems-input name="lastName" value="@Model.LastName" required /></pems-col>
+                        <pems-col md="6"><partial name="_PositionSelect" model="(int?)Model.EmployeeId" /></pems-col>
+                        <pems-col md="6"><pems-label>@L("Email", "ایمیل")</pems-label><pems-input name="email" value="@Model.Email" type="email" /></pems-col>
+                        <pems-col md="6"><pems-label>@L("Phone", "تلفن")</pems-label><pems-input name="phone" value="@Model.Phone" /></pems-col>
+                        <pems-col md="3">
                             <pems-label>@L("Department", "بخش")</pems-label>
                             <pems-select name="departmentId" required>
                                 @foreach (var d in departments) { <option value="@d.DepartmentId" selected="@(d.DepartmentId == Model.DepartmentId)">@d.Name</option> }
                             </pems-select>
-                        </div>
-                        <div class="col-md-3">
+                        </pems-col>
+                        <pems-col md="3">
                             <pems-label>@L("Discipline", "رشته")</pems-label>
                             <pems-select name="disciplineId" required>
                                 @foreach (var d in disciplines) { <option value="@d.DisciplineId" selected="@(d.DisciplineId == Model.DisciplineId)">@d.Name</option> }
                             </pems-select>
-                        </div>
-                        <div class="col-md-3">
+                        </pems-col>
+                        <pems-col md="3">
                             <pems-label>@L("Personnel Type", "نوع پرسنل")</pems-label>
                             <pems-select name="personnelType" onchange="document.getElementById('editProfileVendorField').style.display = this.value === 'Internal' ? 'none' : ''">
                                 @foreach (var t in personnelTypes) { <option value="@t" selected="@(t == Model.PersonnelType)">@t</option> }
                             </pems-select>
-                        </div>
-                        <div class="col-md-3" id="editProfileVendorField" style="display:@(Model.PersonnelType == "Internal" ? "none" : "")">
+                        </pems-col>
+                        <pems-col md="3" id="editProfileVendorField" style="display:@(Model.PersonnelType == "Internal" ? "none" : "")">
                             <pems-label>@L("Vendor", "فروشنده")</pems-label>
                             <pems-select name="vendorId">
                                 <option value="">-- @L("select", "انتخاب") --</option>
                                 @foreach (var v in vendors) { <option value="@v.VendorId" selected="@(v.VendorId == Model.VendorId)">@v.Name</option> }
                             </pems-select>
-                        </div>
-                        <div class="col-md-3"><pems-label>@L("Hire Date", "تاریخ استخدام")</pems-label><pems-date name="hireDate" value="@(Model.HireDate?.ToString("yyyy-MM-dd"))" /></div>
-                        <div class="col-md-3"><pems-label>@L("Location / Site", "مکان")</pems-label><pems-input name="location" value="@Model.Location" /></div>
-                        <div class="col-md-3"><pems-label>@L("Shift", "شیفت")</pems-label><pems-input name="shift" value="@Model.Shift" /></div>
-                        <div class="col-md-3"><pems-label>@L("Home Address", "آدرس منزل")</pems-label><pems-input name="homeAddress" value="@Model.HomeAddress" /></div>
-                    </div>
+                        </pems-col>
+                        <pems-col md="3"><pems-label>@L("Hire Date", "تاریخ استخدام")</pems-label><pems-date name="hireDate" value="@(Model.HireDate?.ToString("yyyy-MM-dd"))" /></pems-col>
+                        <pems-col md="3"><pems-label>@L("Location / Site", "مکان")</pems-label><pems-input name="location" value="@Model.Location" /></pems-col>
+                        <pems-col md="3"><pems-label>@L("Shift", "شیفت")</pems-label><pems-input name="shift" value="@Model.Shift" /></pems-col>
+                        <pems-col md="3"><pems-label>@L("Home Address", "آدرس منزل")</pems-label><pems-input name="homeAddress" value="@Model.HomeAddress" /></pems-col>
+                    </pems-row>
                 </div>
                 <div class="modal-footer">
                     <pems-button tone="neutral" size="small" outline="true" type="button" data-bs-dismiss="modal">@L("Cancel", "انصراف")</pems-button>

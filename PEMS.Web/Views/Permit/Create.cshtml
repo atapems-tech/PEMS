@@ -10,14 +10,14 @@
 
 <div class="content-card pems-s-b93afc9b">
     <form asp-action="Create" method="post">
-        <div class="row g-3">
-            <div class="col-md-6">
+        <pems-row gap="3">
+            <pems-col md="6">
                 <pems-label>Permit Type</pems-label>
                 <pems-select name="permitType" required>
                     @foreach (var t in permitTypes) { <option value="@t">@t</option> }
                 </pems-select>
-            </div>
-            <div class="col-md-6">
+            </pems-col>
+            <pems-col md="6">
                 <pems-label>@Localizer["Priority"]</pems-label>
                 <pems-select name="priority">
                     <option value="Low">@Localizer["Low"]</option>
@@ -25,17 +25,17 @@
                     <option value="High">@Localizer["High"]</option>
                     <option value="Critical">@Localizer["Critical"]</option>
                 </pems-select>
-            </div>
+            </pems-col>
 
-            <div class="col-12"><pems-label>@Localizer["Title"]</pems-label><pems-input name="title" placeholder="e.g. Pump P-101 seal replacement" required /></div>
-            <div class="col-12"><pems-label>@Localizer["Description"]</pems-label><pems-textarea name="description" rows="2"></pems-textarea></div>
+            <pems-col span="12"><pems-label>@Localizer["Title"]</pems-label><pems-input name="title" placeholder="e.g. Pump P-101 seal replacement" required /></pems-col>
+            <pems-col span="12"><pems-label>@Localizer["Description"]</pems-label><pems-textarea name="description" rows="2"></pems-textarea></pems-col>
 
-            <div class="col-md-6">
+            <pems-col md="6">
                 <pems-label>@Localizer["Equipment (optional)"]</pems-label>
                 <pems-input type="text" placeholder="@Localizer["جستجوی تگ، نام..."]" data-pems-search data-search-type="Equipment" data-search-hidden="#permitEquipmentIdHidden" autocomplete="off" />
                 <input type="hidden" name="equipmentId" id="permitEquipmentIdHidden" />
-            </div>
-            <div class="col-md-6">
+            </pems-col>
+            <pems-col md="6">
                 <pems-label>@Localizer["Functional Location (optional)"]</pems-label>
                 <pems-select name="functionalLocationId">
                     <option value="">@Localizer["-- None --"]</option>
@@ -44,26 +44,26 @@
                         <option value="@fl.FunctionalLocationId">@fl.PathBreadcrumb</option>
                     }
                 </pems-select>
-            </div>
+            </pems-col>
 
-            <div class="col-md-6">
+            <pems-col md="6">
                 <pems-label>Work Order (optional)</pems-label>
                 <pems-input type="text" placeholder="@Localizer["جستجوی شماره WorkOrder..."]" data-pems-search data-search-type="WorkOrder" data-search-hidden="#permitWorkOrderIdHidden" autocomplete="off" />
                 <input type="hidden" name="workOrderId" id="permitWorkOrderIdHidden" />
                 <div class="form-text small">@Localizer["اگر Permit به یک WorkOrder مشخص وصل نیست، خالی بگذار."]</div>
-            </div>
-            <div class="col-md-6">
+            </pems-col>
+            <pems-col md="6">
                 <pems-label>Permit Receiver (optional)</pems-label>
                 <pems-select name="permitReceiverEmployeeId">
                     <option value="">@Localizer["-- None --"]</option>
                     @foreach (var r in receivers) { <option value="@r.EmployeeId">@r.Label</option> }
                 </pems-select>
                 <div class="form-text small">@Localizer["می‌تواند پرسنل Internal یا Contractor باشد."]</div>
-            </div>
+            </pems-col>
 
-            <div class="col-md-6"><pems-label>Valid From (optional)</pems-label><pems-date name="validFrom" /></div>
-            <div class="col-md-6"><pems-label>Valid To (optional)</pems-label><pems-date name="validTo" /></div>
-        </div>
+            <pems-col md="6"><pems-label>Valid From (optional)</pems-label><pems-date name="validFrom" /></pems-col>
+            <pems-col md="6"><pems-label>Valid To (optional)</pems-label><pems-date name="validTo" /></pems-col>
+        </pems-row>
         <div class="mt-4">
             <pems-button tone="primary" type="submit">Create Permit</pems-button>
             <pems-button tone="neutral" outline="true" as="a" asp-action="Index">@Localizer["Cancel"]</pems-button>

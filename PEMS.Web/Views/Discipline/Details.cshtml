@@ -21,14 +21,14 @@
     </div>
 </div>
 
-<div class="row g-3 mb-3">
-    <div class="col-md-2 col-sm-6"><pems-kpi-tile icon="bi-file-earmark-text" color="slate" label="@Localizer["Documents"]">@s.DocumentsCount</pems-kpi-tile></div>
-    <div class="col-md-2 col-sm-6"><pems-kpi-tile icon="bi-hourglass-split" color="amber" label="@Localizer["Pending"]">@s.PendingDocumentsCount</pems-kpi-tile></div>
-    <div class="col-md-2 col-sm-6"><pems-kpi-tile icon="bi-gear" color="green" label="@Localizer["Equipment"]">@s.EquipmentCount</pems-kpi-tile></div>
-    <div class="col-md-2 col-sm-6"><pems-kpi-tile icon="bi-journal-check" color="purple" label="@Localizer["VDR Items"]">@s.VDRItemsCount</pems-kpi-tile></div>
-    <div class="col-md-2 col-sm-6"><pems-kpi-tile icon="bi-list-task" color="blue" label="@Localizer["Open Tasks"]">@s.OpenTasksCount</pems-kpi-tile></div>
-    <div class="col-md-2 col-sm-6"><pems-kpi-tile icon="bi-exclamation-triangle" color="red" label="Overdue Tasks">@s.OverdueTasksCount</pems-kpi-tile></div>
-</div>
+<pems-row gap="3" css="mb-3">
+    <pems-col md="2" sm="6"><pems-kpi-tile icon="bi-file-earmark-text" color="slate" label="@Localizer["Documents"]">@s.DocumentsCount</pems-kpi-tile></pems-col>
+    <pems-col md="2" sm="6"><pems-kpi-tile icon="bi-hourglass-split" color="amber" label="@Localizer["Pending"]">@s.PendingDocumentsCount</pems-kpi-tile></pems-col>
+    <pems-col md="2" sm="6"><pems-kpi-tile icon="bi-gear" color="green" label="@Localizer["Equipment"]">@s.EquipmentCount</pems-kpi-tile></pems-col>
+    <pems-col md="2" sm="6"><pems-kpi-tile icon="bi-journal-check" color="purple" label="@Localizer["VDR Items"]">@s.VDRItemsCount</pems-kpi-tile></pems-col>
+    <pems-col md="2" sm="6"><pems-kpi-tile icon="bi-list-task" color="blue" label="@Localizer["Open Tasks"]">@s.OpenTasksCount</pems-kpi-tile></pems-col>
+    <pems-col md="2" sm="6"><pems-kpi-tile icon="bi-exclamation-triangle" color="red" label="Overdue Tasks">@s.OverdueTasksCount</pems-kpi-tile></pems-col>
+</pems-row>
 
 <div class="content-card mb-3">
     <h6 class="mb-3">Tasks / Activities / Deliverables</h6>
@@ -61,31 +61,31 @@
 
     <form asp-action="AddTask" method="post" class="row g-2 mt-2">
         <input type="hidden" name="disciplineId" value="@s.DisciplineId" />
-        <div class="col-md-2">
+        <pems-col md="2">
             <pems-select scale="small" name="type">
                 <option>Task</option><option>@Localizer["Activity"]</option><option>Deliverable</option>
             </pems-select>
-        </div>
-        <div class="col-md-3"><pems-input scale="small" name="title" placeholder="@Localizer["Title"]" required /></div>
-        <div class="col-md-2">
+        </pems-col>
+        <pems-col md="3"><pems-input scale="small" name="title" placeholder="@Localizer["Title"]" required /></pems-col>
+        <pems-col md="2">
             <pems-select scale="small" name="projectId">
                 <option value="">-- Project --</option>
                 @foreach (var p in projects) { <option value="@p.ProjectId">@p.ProjectName</option> }
             </pems-select>
-        </div>
-        <div class="col-md-2">
+        </pems-col>
+        <pems-col md="2">
             <pems-select scale="small" name="responsibleEmployeeId">
                 <option value="">-- Responsible --</option>
                 @foreach (var e in employees) { <option value="@e.EmployeeId">@e.Name</option> }
             </pems-select>
-        </div>
-        <div class="col-md-2"><pems-date name="dueDate" scale="small" /></div>
-        <div class="col-md-1"><pems-button tone="primary" size="small" css="w-100"><pems-icon name="bi-plus-lg" /></pems-button></div>
+        </pems-col>
+        <pems-col md="2"><pems-date name="dueDate" scale="small" /></pems-col>
+        <pems-col md="1"><pems-button tone="primary" size="small" css="w-100"><pems-icon name="bi-plus-lg" /></pems-button></pems-col>
     </form>
 </div>
 
-<div class="row g-3">
-    <div class="col-lg-6">
+<pems-row gap="3">
+    <pems-col lg="6">
         <div class="content-card mb-3">
             <h6 class="mb-3">@Localizer["Documents"]</h6>
             <div class="table-scroll-area pems-s-3a95d6b3">
@@ -117,9 +117,9 @@
             </div>
             @if (!Model.Equipment.Any()) { <p class="text-muted small">No equipment.</p> }
         </div>
-    </div>
+    </pems-col>
 
-    <div class="col-lg-6">
+    <pems-col lg="6">
         <div class="content-card mb-3">
             <h6 class="mb-3">@Localizer["VDR Items"]</h6>
             <div class="table-scroll-area pems-s-3a95d6b3">
@@ -149,5 +149,5 @@
             </pems-table>
             @if (!Model.MRs.Any()) { <p class="text-muted small">No MR/MRQ.</p> }
         </div>
-    </div>
-</div>
+    </pems-col>
+</pems-row>

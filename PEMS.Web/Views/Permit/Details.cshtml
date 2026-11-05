@@ -494,17 +494,17 @@
     {
         <form asp-controller="Isolation" asp-action="Create" method="post" class="row g-2 align-items-end border-top pt-3">
             <input type="hidden" name="permitId" value="@Model.PermitId" />
-            <div class="col-md-2">
+            <pems-col md="2">
                 <pems-label css="small">@Localizer["Energy Type"]</pems-label>
                 <pems-select scale="small" name="energyType" required>
                     @foreach (var t in isolationEnergyTypes) { <option value="@t">@t</option> }
                 </pems-select>
-            </div>
-            <div class="col-md-3"><pems-label css="small">@Localizer["Location"]</pems-label><pems-input scale="small" name="location" required /></div>
-            <div class="col-md-2"><pems-label css="small">Normal State</pems-label><pems-input scale="small" name="normalState" /></div>
-            <div class="col-md-2"><pems-label css="small">Required Isolation State</pems-label><pems-input scale="small" name="requiredIsolationState" /></div>
-            <div class="col-md-2"><pems-label css="small">Method</pems-label><pems-input scale="small" name="isolationMethod" /></div>
-            <div class="col-md-1"><pems-button tone="primary" size="small" css="w-100" type="submit">@Localizer["Add"]</pems-button></div>
+            </pems-col>
+            <pems-col md="3"><pems-label css="small">@Localizer["Location"]</pems-label><pems-input scale="small" name="location" required /></pems-col>
+            <pems-col md="2"><pems-label css="small">Normal State</pems-label><pems-input scale="small" name="normalState" /></pems-col>
+            <pems-col md="2"><pems-label css="small">Required Isolation State</pems-label><pems-input scale="small" name="requiredIsolationState" /></pems-col>
+            <pems-col md="2"><pems-label css="small">Method</pems-label><pems-input scale="small" name="isolationMethod" /></pems-col>
+            <pems-col md="1"><pems-button tone="primary" size="small" css="w-100" type="submit">@Localizer["Add"]</pems-button></pems-col>
         </form>
     }
 </div>
@@ -586,22 +586,22 @@
     {
         <form asp-controller="GasTest" asp-action="Create" method="post" class="row g-2 align-items-end border-top pt-3">
             <input type="hidden" name="permitId" value="@Model.PermitId" />
-            <div class="col-md-3"><pems-label css="small">@Localizer["Location"]</pems-label><pems-input scale="small" name="location" required /></div>
-            <div class="col-md-2"><pems-label css="small">Tested At</pems-label><pems-input type="datetime-local" name="testedAt" value="@DateTime.Now.ToString("yyyy-MM-ddTHH:mm")" required scale="small" /></div>
-            <div class="col-md-2"><pems-label css="small">Instrument Tag</pems-label><pems-input scale="small" name="instrumentTag" /></div>
-            <div class="col-md-2"><pems-label css="small">Instrument Cal. Due</pems-label><pems-date name="instrumentCalibrationDueDate" scale="small" /></div>
+            <pems-col md="3"><pems-label css="small">@Localizer["Location"]</pems-label><pems-input scale="small" name="location" required /></pems-col>
+            <pems-col md="2"><pems-label css="small">Tested At</pems-label><pems-input type="datetime-local" name="testedAt" value="@DateTime.Now.ToString("yyyy-MM-ddTHH:mm")" required scale="small" /></pems-col>
+            <pems-col md="2"><pems-label css="small">Instrument Tag</pems-label><pems-input scale="small" name="instrumentTag" /></pems-col>
+            <pems-col md="2"><pems-label css="small">Instrument Cal. Due</pems-label><pems-date name="instrumentCalibrationDueDate" scale="small" /></pems-col>
             @foreach (var p in gasRequiredParameters)
             {
                 <input type="hidden" name="parameter" value="@p" />
-                <div class="col-md-1">
+                <pems-col md="1">
                     <pems-label css="small">@p</pems-label>
                     <pems-input scale="small" type="number" step="0.01" name="value" required />
-                </div>
+                </pems-col>
                 <input type="hidden" name="unit" value="@(p == "O2" ? "%VOL" : p == "LEL" ? "%LEL" : "PPM")" />
             }
-            <div class="col-md-1"><pems-label css="small">@Localizer["Other"]</pems-label><pems-input scale="small" type="number" step="0.01" name="otherValue" /></div>
-            <div class="col-md-1"><pems-label css="small">@Localizer["Unit"]</pems-label><pems-input scale="small" type="text" name="otherUnit" placeholder="e.g. PPM" /></div>
-            <div class="col-md-1"><pems-button tone="primary" size="small" css="w-100" type="submit">Record</pems-button></div>
+            <pems-col md="1"><pems-label css="small">@Localizer["Other"]</pems-label><pems-input scale="small" type="number" step="0.01" name="otherValue" /></pems-col>
+            <pems-col md="1"><pems-label css="small">@Localizer["Unit"]</pems-label><pems-input scale="small" type="text" name="otherUnit" placeholder="e.g. PPM" /></pems-col>
+            <pems-col md="1"><pems-button tone="primary" size="small" css="w-100" type="submit">Record</pems-button></pems-col>
         </form>
     }
 </div>

@@ -34,25 +34,25 @@
     <form asp-action="Route" method="post">
         <input type="hidden" name="attachmentId" value="@Model.AttachmentId" />
 
-        <div class="row g-3">
-            <div class="col-md-4">
+        <pems-row gap="3">
+            <pems-col md="4">
                 <pems-label>@Localizer["Target Module"]</pems-label>
                 <pems-select name="targetModule">
                     @foreach (var m in modules)
                     { <option value="@m" selected="@(m == Model.SuggestedTargetModule)">@m</option> }
                 </pems-select>
                 <div class="form-text">AI suggested: <strong>@Model.SuggestedTargetModule</strong></div>
-            </div>
-            <div class="col-md-4">
+            </pems-col>
+            <pems-col md="4">
                 <pems-label>@Localizer["Category"]</pems-label>
                 <pems-input name="category" value="@Model.PredictedCategory" />
-            </div>
-            <div class="col-md-4">
+            </pems-col>
+            <pems-col md="4">
                 <pems-label>@Localizer["Document Type"]</pems-label>
                 <pems-input name="documentType" value="@Model.PredictedDocumentType" />
-            </div>
+            </pems-col>
 
-            <div class="col-md-4">
+            <pems-col md="4">
                 <pems-label>@Localizer["Project"]</pems-label>
                 <pems-select name="projectId">
                     @foreach (var p in projects)
@@ -60,42 +60,42 @@
                 </pems-select>
                 @if (!string.IsNullOrEmpty(Model.PredictedProjectHint))
                 { <div class="form-text">AI hint from document text: "@Model.PredictedProjectHint"</div> }
-            </div>
-            <div class="col-md-4">
+            </pems-col>
+            <pems-col md="4">
                 <pems-label>@Localizer["Discipline"]</pems-label>
                 <pems-select name="disciplineCode">
                     <option value="">@Localizer["-- None --"]</option>
                     @foreach (var d in disciplines)
                     { <option value="@d.Code" selected="@(d.Code == Model.PredictedDisciplineCode)">@d.Name (@d.Code)</option> }
                 </pems-select>
-            </div>
-            <div class="col-md-4">
+            </pems-col>
+            <pems-col md="4">
                 <pems-label>@Localizer["Area"]</pems-label>
                 <pems-input name="area" value="@Model.PredictedArea" />
-            </div>
+            </pems-col>
 
-            <div class="col-md-3"><pems-label css="small">@Localizer["Unit"]</pems-label><pems-input scale="small" value="@Model.PredictedUnit" disabled /></div>
-            <div class="col-md-3"><pems-label css="small">@Localizer["System"]</pems-label><pems-input scale="small" value="@Model.PredictedSystem" disabled /></div>
-            <div class="col-md-3"><pems-label css="small">Subsystem</pems-label><pems-input scale="small" value="@Model.PredictedSubsystem" disabled /></div>
-            <div class="col-md-3"><pems-label css="small">@Localizer["Equipment Tag"]</pems-label><pems-input scale="small" value="@Model.PredictedEquipmentTagNumber" disabled /></div>
+            <pems-col md="3"><pems-label css="small">@Localizer["Unit"]</pems-label><pems-input scale="small" value="@Model.PredictedUnit" disabled /></pems-col>
+            <pems-col md="3"><pems-label css="small">@Localizer["System"]</pems-label><pems-input scale="small" value="@Model.PredictedSystem" disabled /></pems-col>
+            <pems-col md="3"><pems-label css="small">Subsystem</pems-label><pems-input scale="small" value="@Model.PredictedSubsystem" disabled /></pems-col>
+            <pems-col md="3"><pems-label css="small">@Localizer["Equipment Tag"]</pems-label><pems-input scale="small" value="@Model.PredictedEquipmentTagNumber" disabled /></pems-col>
 
-            <div class="col-md-4">
+            <pems-col md="4">
                 <pems-label>@Localizer["Revision"]</pems-label>
                 <pems-input name="revisionNo" value="@Model.PredictedRevisionNo" />
-            </div>
-            <div class="col-md-4">
+            </pems-col>
+            <pems-col md="4">
                 <pems-label>@Localizer["Issue Purpose"]</pems-label>
                 <pems-input name="issuePurpose" value="@Model.PredictedIssuePurpose" />
-            </div>
-            <div class="col-md-4">
+            </pems-col>
+            <pems-col md="4">
                 <pems-label>Vendor (for VDR routing)</pems-label>
                 <pems-input name="vendorName" value="@Model.PredictedVendorName" />
-            </div>
-            <div class="col-md-4">
+            </pems-col>
+            <pems-col md="4">
                 <pems-label>Related MR Number</pems-label>
                 <pems-input name="mrNumber" value="@Model.PredictedMRNumber" />
-            </div>
-        </div>
+            </pems-col>
+        </pems-row>
 
         <div class="mt-4 d-flex gap-2">
             <pems-button tone="primary" type="submit"><pems-icon name="bi-signpost-split" /> Confirm &amp; Route</pems-button>

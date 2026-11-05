@@ -83,13 +83,13 @@
             <form asp-controller="Vendor" asp-action="Create" method="post">
                 <div class="modal-header"><h6 class="modal-title">@Localizer["Vs_NewVendor"]</h6></div>
                 <div class="modal-body">
-                    <div class="row g-3">
-                        <div class="col-12"><pems-label>@Localizer["Vs_Name"]</pems-label><pems-input name="Name" required /></div>
-                        <div class="col-md-6"><pems-label>@Localizer["Vs_Country"]</pems-label><pems-input name="Country" /></div>
-                        <div class="col-md-6"><pems-label>@Localizer["Vs_ContactName"]</pems-label><pems-input name="ContactName" /></div>
-                        <div class="col-md-6"><pems-label>@Localizer["Vs_ContactEmail"]</pems-label><pems-input name="ContactEmail" /></div>
-                        <div class="col-md-6"><pems-label>@Localizer["Vs_ContactPhone"]</pems-label><pems-input name="ContactPhone" /></div>
-                    </div>
+                    <pems-row gap="3">
+                        <pems-col span="12"><pems-label>@Localizer["Vs_Name"]</pems-label><pems-input name="Name" required /></pems-col>
+                        <pems-col md="6"><pems-label>@Localizer["Vs_Country"]</pems-label><pems-input name="Country" /></pems-col>
+                        <pems-col md="6"><pems-label>@Localizer["Vs_ContactName"]</pems-label><pems-input name="ContactName" /></pems-col>
+                        <pems-col md="6"><pems-label>@Localizer["Vs_ContactEmail"]</pems-label><pems-input name="ContactEmail" /></pems-col>
+                        <pems-col md="6"><pems-label>@Localizer["Vs_ContactPhone"]</pems-label><pems-input name="ContactPhone" /></pems-col>
+                    </pems-row>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="vs-btn" data-bs-dismiss="modal">@Localizer["Cancel"]</button>

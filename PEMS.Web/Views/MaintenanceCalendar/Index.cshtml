@@ -234,10 +234,10 @@ else
 {
     <div class="content-card mb-3">
         <h6 class="mb-3">@Localizer["Unscheduled Work"] <pems-badge tone="neutral">@Model.Unscheduled.Count</pems-badge></h6>
-        <div class="row g-2">
+        <pems-row gap="2">
             @foreach (var u in Model.Unscheduled)
             {
-                <div class="col-md-4 col-lg-3">
+                <pems-col md="4" lg="3">
                     <a class="pems-cal-unscheduled-card text-decoration-none d-block" href="@Url.Action("Details", "WorkOrder", new { id = u.WorkOrderId })">
                         <div class="fw-bold small">@u.WorkOrderNumber</div>
                         <div class="small">@u.EquipmentTagNumber &middot; @u.EquipmentDescription</div>
@@ -247,9 +247,9 @@ else
                         </div>
                         <div class="small text-muted">@(u.AssignedTeamName ?? Localizer["No team"])</div>
                     </a>
-                </div>
+                </pems-col>
             }
-        </div>
+        </pems-row>
     </div>
 }
 

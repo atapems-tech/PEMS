@@ -26,8 +26,8 @@
     از فاصله‌های واقعی بین خرابی برازش می‌شوند - @weibull.MethodologyVersion
 </p>
 
-<div class="row g-3 mb-3">
-    <div class="col-md-4">
+<pems-row gap="3" css="mb-3">
+    <pems-col md="4">
         <div class="content-card h-100">
             <h6>@Localizer["Reliability"]</h6>
             <pems-badge tone="@StatusBadge(Model.ReliabilityDataStatus)">@Model.ReliabilityDataStatus</pems-badge>
@@ -35,15 +35,15 @@
             <div class="small">Failure Rate (λ): @(Model.FailureRateLambdaPerHour.HasValue ? Model.FailureRateLambdaPerHour.Value.ToString("E3") + "/h" : "N/A")</div>
             <div class="small">Sample Size: @Model.FailureSampleSize</div>
         </div>
-    </div>
-    <div class="col-md-4">
+    </pems-col>
+    <pems-col md="4">
         <div class="content-card h-100">
             <h6>Maintainability</h6>
             <pems-badge tone="@StatusBadge(Model.MaintainabilityDataStatus)">@Model.MaintainabilityDataStatus</pems-badge>
             <div class="small mt-2">MTTR: @(Model.MTTRHours.HasValue ? $"{Model.MTTRHours.Value:N1} h" : "N/A")</div>
         </div>
-    </div>
-    <div class="col-md-4">
+    </pems-col>
+    <pems-col md="4">
         <div class="content-card h-100">
             <h6>@Localizer["Availability"]</h6>
             <div class="small">Inherent: <pems-badge tone="@StatusBadge(Model.InherentAvailabilityDataStatus)">@Model.InherentAvailabilityDataStatus</pems-badge> @(Model.InherentAvailabilityPercent.HasValue ? $"{Model.InherentAvailabilityPercent.Value:N2}%" : "")</div>
@@ -53,8 +53,8 @@
                 <div class="small text-muted">Window: @Model.CalendarWindowHoursConsidered.Value.ToString("N0")h, Downtime: @Model.TotalDowntimeHoursConsidered?.ToString("N1")h</div>
             }
         </div>
-    </div>
-</div>
+    </pems-col>
+</pems-row>
 
 <div class="content-card mb-3">
     <h6 class="mb-2">Weibull Analysis (2-parameter)</h6>
@@ -64,12 +64,12 @@
 
     @if (weibull.Beta.HasValue)
     {
-        <div class="row g-2 mt-2 small">
-            <div class="col-md-3"><strong>β (shape)</strong><div>@weibull.Beta.Value.ToString("N3")</div></div>
-            <div class="col-md-3"><strong>η (scale, hours)</strong><div>@weibull.Eta?.ToString("N1")</div></div>
-            <div class="col-md-3"><strong>R²</strong><div>@weibull.RSquared?.ToString("N3")</div></div>
-            <div class="col-md-3"><strong>Interpretation</strong><div>@weibull.BetaInterpretation</div></div>
-        </div>
+        <pems-row gap="2" css="mt-2 small">
+            <pems-col md="3"><strong>β (shape)</strong><div>@weibull.Beta.Value.ToString("N3")</div></pems-col>
+            <pems-col md="3"><strong>η (scale, hours)</strong><div>@weibull.Eta?.ToString("N1")</div></pems-col>
+            <pems-col md="3"><strong>R²</strong><div>@weibull.RSquared?.ToString("N3")</div></pems-col>
+            <pems-col md="3"><strong>Interpretation</strong><div>@weibull.BetaInterpretation</div></pems-col>
+        </pems-row>
     }
 </div>
 
@@ -80,18 +80,18 @@
     </p>
     <form method="post" asp-action="Simulate" asp-route-id="@equipmentId">
         @Html.AntiForgeryToken()
-        <div class="row g-2 align-items-end">
-            <div class="col-auto">
+        <pems-row gap="2" css="align-items-end">
+            <pems-col span="auto">
                 <pems-label css="small mb-0">Iterations</pems-label>
                 <pems-input scale="small" type="number" name="iterations" value="1000" style="width:120px" />
-            </div>
-            <div class="col-auto">
+            </pems-col>
+            <pems-col span="auto">
                 <pems-label css="small mb-0">Horizon (hours)</pems-label>
                 <pems-input scale="small" type="number" name="horizonHours" value="8760" style="width:140px" />
-            </div>
-            <div class="col-auto">
+            </pems-col>
+            <pems-col span="auto">
                 <pems-button tone="primary" size="small" type="submit">Run Simulation</pems-button>
-            </div>
-        </div>
+            </pems-col>
+        </pems-row>
     </form>
 </div>

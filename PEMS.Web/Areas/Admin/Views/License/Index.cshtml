@@ -34,13 +34,13 @@
             <pems-badge tone="none" css="fs-6 @badge">@Localizer["Lic_State_" + s.State]</pems-badge>
             @foreach (var r in s.Reasons) { <pems-badge tone="light">@Localizer["Lic_Reason_" + r]</pems-badge> }
         </div>
-        <div class="row g-3 mt-2">
-            <div class="col-md-4 col-12"><div class="small fw-bold"><code>@(s.InstallId ?? "-")</code></div><div class="text-muted small">@Localizer["Lic_InstallId"]</div></div>
-            <div class="col-md-2 col-6"><div class="small fw-bold"><code>@(s.FingerprintShort ?? "-")</code></div><div class="text-muted small">@Localizer["Lic_Fingerprint"]</div></div>
-            <div class="col-md-2 col-6"><div class="small fw-bold">@(s.LicenceType ?? "-")</div><div class="text-muted small">@Localizer["Lic_Type"]</div></div>
-            <div class="col-md-2 col-6"><div class="small fw-bold">@(s.ExpiresUtc is null ? Localizer["Lic_NoExpiry"].Value : LicenseDates.ToJalaliString(s.ExpiresUtc.Value.AddSeconds(-1)))</div><div class="text-muted small">@Localizer["Lic_ValidUntil"]</div></div>
-            <div class="col-md-2 col-6"><div class="small fw-bold">@(s.UpdatesUntil is null ? "-" : LicenseDates.ToJalaliString(s.UpdatesUntil.Value.AddSeconds(-1)))</div><div class="text-muted small">@Localizer["Lic_UpdatesUntil"]</div></div>
-        </div>
+        <pems-row gap="3" css="mt-2">
+            <pems-col md="4" span="12"><div class="small fw-bold"><code>@(s.InstallId ?? "-")</code></div><div class="text-muted small">@Localizer["Lic_InstallId"]</div></pems-col>
+            <pems-col md="2" span="6"><div class="small fw-bold"><code>@(s.FingerprintShort ?? "-")</code></div><div class="text-muted small">@Localizer["Lic_Fingerprint"]</div></pems-col>
+            <pems-col md="2" span="6"><div class="small fw-bold">@(s.LicenceType ?? "-")</div><div class="text-muted small">@Localizer["Lic_Type"]</div></pems-col>
+            <pems-col md="2" span="6"><div class="small fw-bold">@(s.ExpiresUtc is null ? Localizer["Lic_NoExpiry"].Value : LicenseDates.ToJalaliString(s.ExpiresUtc.Value.AddSeconds(-1)))</div><div class="text-muted small">@Localizer["Lic_ValidUntil"]</div></pems-col>
+            <pems-col md="2" span="6"><div class="small fw-bold">@(s.UpdatesUntil is null ? "-" : LicenseDates.ToJalaliString(s.UpdatesUntil.Value.AddSeconds(-1)))</div><div class="text-muted small">@Localizer["Lic_UpdatesUntil"]</div></pems-col>
+        </pems-row>
     </div>
 
     <div class="content-card mb-3">
@@ -48,25 +48,25 @@
         <p class="text-muted small">@Localizer["Lic_RequestHelp"]</p>
         <form asp-action="Request" method="post" class="row g-2 align-items-end">
             @Html.AntiForgeryToken()
-            <div class="col-md-3 col-12">
+            <pems-col md="3" span="12">
                 <pems-label for="requestType">@Localizer["Lic_RequestType"]</pems-label>
                 <pems-select id="requestType" name="requestType">
                     @foreach (var t in RequestTypes.All) { <option value="@t">@Localizer["Lic_Req_" + t]</option> }
                 </pems-select>
-            </div>
-            <div class="col-md-3 col-6">
+            </pems-col>
+            <pems-col md="3" span="6">
                 <pems-label for="customerRef">@Localizer["Lic_CustomerRef"]</pems-label>
                 <pems-input id="customerRef" name="customerRef" maxlength="64" required />
-            </div>
-            <div class="col-md-3 col-6">
+            </pems-col>
+            <pems-col md="3" span="6">
                 <pems-label for="orderRef">@Localizer["Lic_OrderRef"]</pems-label>
                 <pems-input id="orderRef" name="orderRef" maxlength="64" />
-            </div>
-            <div class="col-md-3 col-12">
+            </pems-col>
+            <pems-col md="3" span="12">
                 <pems-label for="reason">@Localizer["Lic_Reason"]</pems-label>
                 <pems-input id="reason" name="reason" maxlength="500" />
-            </div>
-            <div class="col-12"><pems-button tone="primary" type="submit"><pems-icon name="bi-download" css="me-1" /> @Localizer["Lic_DownloadRequest"]</pems-button></div>
+            </pems-col>
+            <pems-col span="12"><pems-button tone="primary" type="submit"><pems-icon name="bi-download" css="me-1" /> @Localizer["Lic_DownloadRequest"]</pems-button></pems-col>
         </form>
     </div>
 

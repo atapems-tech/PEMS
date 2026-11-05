@@ -7,20 +7,20 @@
 }
 
 
-<div class="row g-3 mb-3">
-    <div class="col-md-3 col-sm-6">
+<pems-row gap="3" css="mb-3">
+    <pems-col md="3" sm="6">
         <pems-kpi-tile icon="bi-file-earmark-text" color="slate" label="Total Documents">@dash.TotalDocuments</pems-kpi-tile>
-    </div>
-    <div class="col-md-3 col-sm-6">
+    </pems-col>
+    <pems-col md="3" sm="6">
         <pems-kpi-tile icon="bi-robot" color="amber" label="Pending AI Classification Review">@dash.PendingClassificationReview</pems-kpi-tile>
-    </div>
-    <div class="col-md-3 col-sm-6">
+    </pems-col>
+    <pems-col md="3" sm="6">
         <pems-kpi-tile icon="bi-tags" color="purple" label="Pending Tag Links">@dash.PendingTagLinkReview</pems-kpi-tile>
-    </div>
-    <div class="col-md-3 col-sm-6">
+    </pems-col>
+    <pems-col md="3" sm="6">
         <pems-kpi-tile icon="bi-chat-dots" color="red" label="Open Comments">@dash.OpenComments</pems-kpi-tile>
-    </div>
-</div>
+    </pems-col>
+</pems-row>
 
 <div class="content-card mb-3">
     <h6 class="mb-3">Documents by Workflow Stage</h6>

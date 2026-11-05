@@ -14,7 +14,7 @@
         <form asp-action="Simulate" method="post" class="row g-3 pems-s-b12974cb">
             <pems-alert tone="danger" css="py-2 px-3 small" asp-validation-summary="ModelOnly" style="@(ViewData.ModelState.IsValid ? "display:none;" : "")"></pems-alert>
 
-            <div class="col-md-6">
+            <pems-col md="6">
                 <pems-label>@Localizer["User"]</pems-label>
                 <pems-select asp-for="UserId">
                     <option value="">@Localizer["— select —"]</option>
@@ -23,8 +23,8 @@
                         <option value="@u.Id" selected="@(u.Id == Model.UserId)">@u.Display</option>
                     }
                 </pems-select>
-            </div>
-            <div class="col-md-6">
+            </pems-col>
+            <pems-col md="6">
                 <pems-label>@Localizer["Permission"]</pems-label>
                 <pems-input list="permNames" id="permPicker" />
                 <datalist id="permNames">
@@ -33,22 +33,22 @@
                         <option value="@p"></option>
                     }
                 </datalist>
-            </div>
-            <div class="col-md-6">
+            </pems-col>
+            <pems-col md="6">
                 <pems-label>@Localizer["Resource"]</pems-label>
                 <pems-input asp-for="ResourceName" />
-            </div>
-            <div class="col-md-6">
+            </pems-col>
+            <pems-col md="6">
                 <pems-label>@Localizer["Action"]</pems-label>
                 <pems-input asp-for="ActionName" />
-            </div>
-            <div class="col-md-6">
+            </pems-col>
+            <pems-col md="6">
                 <pems-label>@Localizer["Resource ID (optional)"]</pems-label>
                 <pems-input asp-for="ResourceId" />
-            </div>
-            <div class="col-12">
+            </pems-col>
+            <pems-col span="12">
                 <pems-button tone="primary" type="submit"><pems-icon name="bi-play-circle" css="me-1" /> @Localizer["Run"]</pems-button>
-            </div>
+            </pems-col>
         </form>
 
         @if (Model.Result != null)

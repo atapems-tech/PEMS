@@ -24,33 +24,33 @@
                 </pems-select>
             </div>
 
-            <div class="row g-3 mb-3">
-                <div class="col-md-6">
+            <pems-row gap="3" css="mb-3">
+                <pems-col md="6">
                     <pems-label for="TitleFa">@Localizer["Nav_Field_TitleFa"] <span class="text-danger" aria-hidden="true">*</span></pems-label>
                     <pems-input id="TitleFa" name="TitleFa" value="@input.TitleFa" maxlength="200" dir="rtl" required />
-                </div>
-                <div class="col-md-6">
+                </pems-col>
+                <pems-col md="6">
                     <pems-label for="TitleEn">@Localizer["Nav_Field_TitleEn"] <span class="text-danger" aria-hidden="true">*</span></pems-label>
                     <pems-input id="TitleEn" name="TitleEn" value="@input.TitleEn" maxlength="200" dir="ltr" required />
-                </div>
-            </div>
+                </pems-col>
+            </pems-row>
 
             <fieldset class="mb-3">
                 <legend class="form-label fs-6">@Localizer["Nav_Field_Route"] <span class="text-danger" aria-hidden="true">*</span></legend>
-                <div class="row g-2" dir="ltr">
-                    <div class="col-md-4">
+                <pems-row gap="2" dir="ltr">
+                    <pems-col md="4">
                         <pems-label css="small" for="Area">@Localizer["Nav_Field_Area"]</pems-label>
                         <pems-input id="Area" name="Area" value="@input.Area" maxlength="100" />
-                    </div>
-                    <div class="col-md-4">
+                    </pems-col>
+                    <pems-col md="4">
                         <pems-label css="small" for="Controller">@Localizer["Nav_Field_Controller"]</pems-label>
                         <pems-input id="Controller" name="Controller" value="@input.Controller" maxlength="100" required />
-                    </div>
-                    <div class="col-md-4">
+                    </pems-col>
+                    <pems-col md="4">
                         <pems-label css="small" for="Action">@Localizer["Nav_Field_Action"]</pems-label>
                         <pems-input id="Action" name="Action" value="@input.Action" maxlength="100" required />
-                    </div>
-                </div>
+                    </pems-col>
+                </pems-row>
                 <div class="form-text">@Localizer["Nav_RouteHelp"]</div>
             </fieldset>
 

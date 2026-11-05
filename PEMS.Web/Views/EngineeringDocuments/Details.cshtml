@@ -392,8 +392,8 @@
 
     @* ===================== Overview ===================== *@
     <div class="tab-pane fade show active" id="tab-overview" role="tabpanel">
-        <div class="row g-3">
-        <div class="col-lg-8">
+        <pems-row gap="3">
+        <pems-col lg="8">
         <div class="vs-section">
             <h2 class="vs-section__title"><pems-icon name="bi-card-list" /> @Localizer["Ed_SecIdentification"]</h2>
             <pems-info-grid>
@@ -459,8 +459,8 @@
                 </pems-info-item>
             </pems-info-grid>
         </div>
-        </div>
-        <div class="col-lg-4">
+        </pems-col>
+        <pems-col lg="4">
             <div class="vs-section">
                 <h2 class="vs-section__title"><pems-icon name="bi-chat-square-text" /> @Localizer["Ed_TabComments"]</h2>
                 <p class="small text-muted mb-2">@string.Format(Localizer["Ed_OpenClosed"].Value, commentsOpenCount, commentsClosedCount)</p>
@@ -487,8 +487,8 @@
                     }
                 </div>
             </div>
-        </div>
-        </div>
+        </pems-col>
+        </pems-row>
     </div>
 
     @* ===================== Attachments & AI ===================== *@
@@ -1062,20 +1062,20 @@
                         <div class="text-muted small mb-2">
                             اگه دیسیپلینی رو انتخاب نکنی، مدرک بعد از Check مستقیم می‌ره مرحله‌ی تایید نهایی (بدون IDC).
                         </div>
-                        <div class="row">
+                        <pems-row>
                             @{
                                 var allDisciplinesForSubmit = (IEnumerable<PEMS.Domain.Entities.Discipline>)(ViewBag.AllDisciplines ?? new List<PEMS.Domain.Entities.Discipline>());
                             }
                             @foreach (var d in allDisciplinesForSubmit.Where(x => x.DisciplineId != Model.DisciplineId))
                             {
-                                <div class="col-6 col-md-4">
+                                <pems-col span="6" md="4">
                                     <div class="form-check">
                                         <pems-input kind="check" type="checkbox" name="idcDisciplineIds" value="@d.DisciplineId" id="idcDisc_@d.DisciplineId" />
                                         <label class="form-check-label small" for="idcDisc_@d.DisciplineId">@d.Name</label>
                                     </div>
-                                </div>
+                                </pems-col>
                             }
-                        </div>
+                        </pems-row>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -1396,38 +1396,38 @@
                 <div class="modal-header"><h6 class="modal-title">@Localizer["Add Comment"]</h6></div>
                 <div class="modal-body">
                     <div id="engPinLocationLabel" class="small text-primary mb-2"></div>
-                    <div class="row g-3">
-                        <div class="col-md-4"><pems-label css="small">@Localizer["Raised By"]</pems-label><pems-input scale="small" name="raisedByName" /></div>
-                        <div class="col-md-4">
+                    <pems-row gap="3">
+                        <pems-col md="4"><pems-label css="small">@Localizer["Raised By"]</pems-label><pems-input scale="small" name="raisedByName" /></pems-col>
+                        <pems-col md="4">
                             <pems-label css="small">@Localizer["Category"]</pems-label>
                             <pems-select scale="small" name="category">
                                 <option value="">@Localizer["-- select --"]</option>
                                 @foreach (var cat in new[] { "Technical", "Safety", "Constructability", "Documentation", "Specification", "Calculation", "Typographical", "Clarification" })
                                 { <option value="@cat">@cat</option> }
                             </pems-select>
-                        </div>
-                        <div class="col-md-4">
+                        </pems-col>
+                        <pems-col md="4">
                             <pems-label css="small">@Localizer["Severity"]</pems-label>
                             <pems-select scale="small" name="severity">
                                 <option value="">@Localizer["-- select --"]</option>
                                 @foreach (var sev in new[] { "Low", "Medium", "High", "Critical" })
                                 { <option value="@sev">@sev</option> }
                             </pems-select>
-                        </div>
-                        <div class="col-md-4"><pems-label css="small">@Localizer["Sheet"]</pems-label><pems-input scale="small" name="sheet" /></div>
-                        <div class="col-md-4"><pems-label css="small">@Localizer["Zone"]</pems-label><pems-input scale="small" name="zone" /></div>
-                        <div class="col-md-4"><pems-label css="small">@Localizer["Reference"]</pems-label><pems-input scale="small" name="reference" /></div>
-                        <div class="col-12"><pems-label css="small">@Localizer["Comment"]</pems-label><pems-textarea scale="small" name="commentText" rows="3" required></pems-textarea></div>
-                        <div class="col-md-6"><pems-label css="small">Required Action</pems-label><pems-input scale="small" name="requiredAction" /></div>
-                        <div class="col-md-6"><pems-label css="small">@Localizer["Due Date"]</pems-label><pems-date name="dueDate" scale="small" /></div>
-                        <div class="col-12"><pems-label css="small">Attachment <span class="text-muted">@Localizer["(optional)"]</span></pems-label><pems-input scale="small" type="file" name="attachment" /></div>
-                        <div class="col-12 form-check">
+                        </pems-col>
+                        <pems-col md="4"><pems-label css="small">@Localizer["Sheet"]</pems-label><pems-input scale="small" name="sheet" /></pems-col>
+                        <pems-col md="4"><pems-label css="small">@Localizer["Zone"]</pems-label><pems-input scale="small" name="zone" /></pems-col>
+                        <pems-col md="4"><pems-label css="small">@Localizer["Reference"]</pems-label><pems-input scale="small" name="reference" /></pems-col>
+                        <pems-col span="12"><pems-label css="small">@Localizer["Comment"]</pems-label><pems-textarea scale="small" name="commentText" rows="3" required></pems-textarea></pems-col>
+                        <pems-col md="6"><pems-label css="small">Required Action</pems-label><pems-input scale="small" name="requiredAction" /></pems-col>
+                        <pems-col md="6"><pems-label css="small">@Localizer["Due Date"]</pems-label><pems-date name="dueDate" scale="small" /></pems-col>
+                        <pems-col span="12"><pems-label css="small">Attachment <span class="text-muted">@Localizer["(optional)"]</span></pems-label><pems-input scale="small" type="file" name="attachment" /></pems-col>
+                        <pems-col span="12" css="form-check">
                             <pems-input kind="check" type="checkbox" name="marksRevisionRequired" value="true" id="marksRevisionRequired" />
                             <label class="form-check-label" for="marksRevisionRequired">
                                 Marks this document as needing a new revision (Clouded / Marked-for-Revision)
                             </label>
-                        </div>
-                    </div>
+                        </pems-col>
+                    </pems-row>
                 </div>
                 <div class="modal-footer">
                     <pems-button tone="neutral" outline="true" type="button" data-bs-dismiss="modal">@Localizer["Cancel"]</pems-button>
