@@ -8,10 +8,10 @@ using PEMS.UI.Rendering;
 namespace PEMS.UI.Tests;
 
 /// <summary>
-/// ADR-0013 (the UI dispatcher): every <c>pems-*</c> tag helper declares how it relates to the component registry, and the keys, the registry and the facades cannot drift apart.
+/// ADR-0013 (the UI component registry): every <c>pems-*</c> tag helper declares how it relates to the component registry, and the keys, the registry and the facades cannot drift apart.
 /// A facade that still writes its own markup (<see cref="FacadeKind.Direct"/>) is a debt counted below; the count may only go down.
 /// </summary>
-public sealed class UiDispatcherDriftTests
+public sealed class UiRegistryDriftTests
 {
     /// <summary>Lower this number when a Direct facade moves to a registered component; never raise it (new tags get a component first, guideline 02).</summary>
     private const int DirectFacadeBaseline = 47;
