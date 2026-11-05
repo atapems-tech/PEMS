@@ -1,0 +1,65 @@
+@namespace PEMS.UI.Components
+@attribute [PEMS.UI.Rendering.PemsComponent("script-templates", Category = "display", Icon = "bi-file-earmark-code")]
+@* The markup a page script clones (SCRUM-508 item 6, pems-template.js): inert <template>s, no text of their own (scripts fill the slots). *@
+@switch (Options.Set)
+{
+    case ScriptTemplateSet.DccRegister:
+        <template data-pems-template="dcc-empty"><div class="dcr-empty"><i class="bi" aria-hidden="true" data-slot="icon"></i><span data-slot="text"></span><strong data-slot="name"></strong></div></template>
+        <template data-pems-template="dcc-opt-person"><span class="dcr-opt-main" data-slot="main"></span><span class="dcr-opt-sub" data-slot="sub"></span></template>
+        <template data-pems-template="dcc-opt-party"><span class="dcr-opt-main"><span data-slot="name"></span> <span class="dcr-badge" data-slot="badge"></span></span><span class="dcr-opt-sub" data-slot="sub"></span></template>
+        <template data-pems-template="dcc-opt-link"><span class="dcr-opt-main dcr-ltr" data-slot="main"></span><span class="dcr-opt-sub" data-slot="sub"></span></template>
+        <template data-pems-template="dcc-opt-create"><i class="bi bi-plus-circle" aria-hidden="true"></i> <span data-slot="text"></span></template>
+        <template data-pems-template="dcc-cal-head"><div class="dcr-cal-head"><button type="button" data-nav="-1" data-slot="prev"><i class="bi bi-chevron-right"></i></button><strong data-slot="title"></strong><button type="button" data-nav="1" data-slot="next"><i class="bi bi-chevron-left"></i></button></div></template>
+        <template data-pems-template="dcc-cal-grid"><div class="dcr-cal-grid" role="grid"></div></template>
+        <template data-pems-template="dcc-cal-weekday"><span class="dcr-cal-wd" aria-hidden="true" data-slot="text"></span></template>
+        <template data-pems-template="dcc-cal-blank"><span></span></template>
+        <template data-pems-template="dcc-cal-day"><button type="button" class="dcr-cal-day" data-slot="day"></button></template>
+        <template data-pems-template="dcc-cal-foot"><div class="dcr-cal-foot"><button type="button" data-today="1" data-slot="today"></button></div></template>
+        <template data-pems-template="dcc-thread-kpis"><div class="dcr-kpis"><div class="dcr-kpi" data-slot="us"><strong data-slot="usValue"></strong><span data-slot="usLabel"></span></div><div class="dcr-kpi"><strong data-slot="themValue"></strong><span data-slot="themLabel"></span></div><div class="dcr-kpi"><strong class="dcr-ltr" data-slot="lastValue"></strong><span data-slot="lastLabel"></span></div></div></template>
+        <template data-pems-template="dcc-thread-list"><ol class="dcr-thread"></ol></template>
+        <template data-pems-template="dcc-thread-item"><li class="dcr-thread-item"><i class="bi" aria-hidden="true" data-slot="icon"></i><div><a class="dcr-link dcr-ltr" target="_blank" rel="noopener" data-slot="number"></a> <span class="dcr-sub-date dcr-ltr" data-slot="date"></span> <div class="dcr-thread-subject" data-slot="subject"></div></div></li></template>
+        <template data-pems-template="dcc-flag"><span class="dcr-flag" data-slot="text"></span></template>
+        <template data-pems-template="dcc-cc-tag"><span class="dcr-tag"><span data-slot="name"></span> <button type="button" data-slot="remove"><i class="bi bi-x"></i></button></span></template>
+        <template data-pems-template="dcc-file-row"><li class="dcr-file"><i class="bi" data-slot="icon" aria-hidden="true"></i><div class="dcr-file-name"><span data-slot="name"></span><small class="dcr-ltr" data-slot="size"></small></div><select class="form-select form-select-sm" data-slot="role"></select><button type="button" class="dcr-icon" data-slot="remove"><i class="bi bi-trash3"></i></button></li></template>
+        <template data-pems-template="dcc-preview-pdf"><iframe data-slot="frame"></iframe></template>
+        <template data-pems-template="dcc-preview-image"><img data-slot="image" /></template>
+        <template data-pems-template="dcc-link-item"><li class="dcr-linkitem"><span class="dcr-badge" data-slot="type"></span><bdi class="dcr-ltr" data-slot="number"></bdi><span data-slot="title"></span><button type="button" class="dcr-icon" data-slot="remove"><i class="bi bi-x-lg"></i></button></li></template>
+        <template data-pems-template="dcc-busy"><PemsSpinner Options="@(new SpinnerOptions { Size = Size.Small })" /> <span data-slot="text"></span></template>
+        break;
+    case ScriptTemplateSet.LetterCompose:
+        <template data-pems-template="lc-alert"><div class="alert" data-slot="root"><strong><i class="bi" aria-hidden="true" data-slot="icon"></i> <span data-slot="title"></span></strong><ul data-slot="items"></ul></div></template>
+        <template data-pems-template="lc-icon-button"><button type="button" data-slot="root"><i class="bi" aria-hidden="true" data-slot="icon"></i></button></template>
+        <template data-pems-template="lc-file-row"><li><i class="bi bi-file-earmark" aria-hidden="true"></i><span data-slot="name"></span><small class="text-muted" data-slot="size"></small></li></template>
+        <template data-pems-template="lc-upload-row"><li><span data-slot="name"></span><progress max="100" value="0"></progress></li></template>
+        break;
+    case ScriptTemplateSet.GlobalSearch:
+        <template data-pems-template="search-loading"><div class="pems-search-loading"></div></template>
+        <template data-pems-template="search-error"><div class="pems-search-error" data-slot="text"></div></template>
+        <template data-pems-template="search-empty"><div class="pems-search-empty" data-slot="text"></div></template>
+        <template data-pems-template="search-loadmore"><div class="pems-search-loadmore" data-slot="text"></div></template>
+        <template data-pems-template="search-item"><div class="pems-search-item" data-slot="root"><div class="pems-search-item-label" data-slot="label"></div><div class="pems-search-item-sub" data-slot="sub"></div></div></template>
+        break;
+    case ScriptTemplateSet.OrgChart:
+        <template data-pems-template="org-node"><div class="pems-org-node" tabindex="-1" role="treeitem" data-slot="root"><span class="pems-org-node-kind"><i class="bi" data-slot="icon"></i><span data-slot="kind"></span></span><span class="pems-org-node-name" data-slot="name"></span><span class="pems-org-node-meta" data-slot="meta"></span></div></template>
+        <template data-pems-template="org-meta-text"><span data-slot="text"></span></template>
+        <template data-pems-template="org-badge-vacant"><span class="pems-org-badge-vacant"><i class="bi" data-slot="icon"></i> <span data-slot="text"></span></span></template>
+        <template data-pems-template="org-occupant"><span><i class="bi bi-person-check"></i> <span data-slot="name"></span></span></template>
+        <template data-pems-template="org-toggle"><span class="pems-org-toggle"><i class="bi bi-dash"></i></span></template>
+        <template data-pems-template="org-detail"><h6 class="mb-1" data-slot="title"></h6><div class="text-muted small mb-2" data-slot="sub"></div><dl></dl></template>
+        <template data-pems-template="org-detail-row"><dt data-slot="term"></dt><dd data-slot="value"></dd></template>
+        <template data-pems-template="org-detail-link"><a class="btn btn-pems-solid btn-sm w-100 mt-2" data-slot="link"><i class="bi bi-box-arrow-up-right"></i> <span data-slot="label"></span></a></template>
+        break;
+    case ScriptTemplateSet.OrgPositionChart:
+        <template data-pems-template="opc-node-container"><div class="pems-opc-node kind-container" data-slot="text"></div></template>
+        <template data-pems-template="opc-node"><div class="pems-opc-node" role="button" tabindex="0" data-slot="root"><div><div class="pems-opc-label"><span data-slot="label"></span><span class="pems-opc-badge" data-slot="badge"></span></div><div class="pems-opc-title" data-slot="title"></div></div><div class="pems-opc-vacant" data-slot="vacant"></div><div class="pems-opc-emp" data-slot="emp"></div><div class="pems-opc-unit" data-slot="unit"></div></div></template>
+        <template data-pems-template="opc-button"><div class="pems-opc-btn" data-slot="text"></div></template>
+        <template data-pems-template="opc-hint"><p class="text-muted small mb-0" data-slot="text"></p></template>
+        <template data-pems-template="opc-detail"><h2 class="h6 mb-2"><span data-slot="title"></span> <small class="text-muted" data-slot="code"></small></h2><dl></dl><div class="mt-3"><a class="btn btn-outline-secondary btn-sm" data-slot="manage"></a></div></template>
+        <template data-pems-template="opc-detail-row"><dt data-slot="term"></dt><dd data-slot="value"></dd></template>
+        <template data-pems-template="opc-note"><span class="text-muted" data-slot="text"></span></template>
+        <template data-pems-template="opc-reports"><ul></ul></template>
+        break;
+}
+@code {
+    [Parameter, EditorRequired] public ScriptTemplatesOptions Options { get; set; } = default!;
+}

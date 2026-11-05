@@ -34,6 +34,7 @@ public static class ComponentSamples
         ["accordion"] = """{"id":"a1"}""",
         ["accordion-item"] = """{"target":"a1-item","parentId":"a1"}""",
         ["list-group"] = """{"flush":true}""",
+        ["script-templates"] = """{"set":"dccRegister"}""",
         ["spinner"] = """{"size":"small","tone":"neutral"}""",
         ["info-grid"] = """{"layout":"rows"}""",
         ["info-item"] = """{"options":{"label":"Vendor code"}}""",

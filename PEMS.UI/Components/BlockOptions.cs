@@ -109,3 +109,19 @@ public sealed record KpiTileOptions
     public string? CssClass { get; init; }
     public IReadOnlyDictionary<string, object>? Attributes { get; init; }
 }
+
+/// <summary>The page scripts whose markup <see cref="PemsScriptTemplates"/> serves as inert templates (SCRUM-508 item 6).</summary>
+public enum ScriptTemplateSet
+{
+    DccRegister,
+    LetterCompose,
+    GlobalSearch,
+    OrgChart,
+    OrgPositionChart,
+}
+
+/// <summary>Inputs of <see cref="PemsScriptTemplates"/>: which script's templates to render into the page.</summary>
+public sealed record ScriptTemplatesOptions
+{
+    public ScriptTemplateSet Set { get; init; }
+}

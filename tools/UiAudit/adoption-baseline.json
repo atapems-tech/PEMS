@@ -99,15 +99,7 @@
     "PEMS.Web/Views/WorkOrder/Details.cshtml": 1,
     "PEMS.Web/Views/WorkOrder/Index.cshtml": 1
   },
-  "js-built-markup": {
-    "PEMS.Web/wwwroot/js/dcc-register.js": 29,
-    "PEMS.Web/wwwroot/js/letter-compose.js": 10,
-    "PEMS.Web/wwwroot/js/pems-global-search.js": 4,
-    "PEMS.Web/wwwroot/js/pems-org-chart.js": 8,
-    "PEMS.Web/wwwroot/js/pems-org-position-chart.js": 3,
-    "PEMS.Web/wwwroot/js/pems-part-catalogue.js": 4,
-    "PEMS.Web/wwwroot/js/pems-team-details.js": 1
-  },
+  "js-built-markup": {},
   "kpi-tile": {},
   "list-group": {},
   "loading-text": {},
