@@ -22,19 +22,19 @@ Rule of thumb: data says *what*, code says *how*. Code defines the vocabulary; d
 
 | # | Area | Where it is today | Size (measured) | Box | Target | Covered by | Verdict |
 |---|---|---|---|---|---|---|---|
-| 1 | Sidebar and menu | `NavigationMenuDefaults.cs` (code catalog, 119 entries) synced into the table `NavigationMenuItems`; Admin edits order, parent, icon, titles, visibility | 119 entries, 209 lines | Definitions | kind `menu`, shipped as System definitions | #451 (menu kind), #448 (shipped delivery) | Mostly done, own table. Move onto the definition store later |
-| 2 | Forms (screens and their fields) | hand-written Razor: 240 view files contain a `<form>`; 365 `.cshtml` in total | 240 files | Definitions | kind `form` (exists, stored forms are used only by the definitions API today, not by modules) | #438, #439, #49, #458 | Biggest gap; migrate module by module |
-| 3 | Form steps and field layout | inside those views | same | Definitions | kind `form` (steps) and `layout` | #451 (layout), form designer issues | Same gap as 2 |
-| 4 | List pages: columns, filters | 202 views use `pems-list-*` tag helpers; columns are written in the markup | 202 files | Definitions | kind `view` | #451 (view), #57 | Large gap; value high |
-| 5 | Validations | DataAnnotations: 31 `[Required]`, 50 `[MaxLength]`, 2 `[EmailAddress]` (26 files); 47 `ModelState.AddModelError`; 7 thrown validation-style exceptions in Application/Infrastructure | about 140 spots | Registry (validator types) plus Definitions (which rule on which field) | form field constraints in the `form` kind; named code validators for complex rules | #355, #356, #365, #380 | Small today, grows with every module; do with the form kind |
-| 6 | Workflows | engine and tables exist (`PEMS.WorkflowPlatform`, versioned definitions, Admin > Workflow Management); the **content** of about 20 workflows is created by seeder classes in C# | 20 `*Workflow*Seeder` classes | Definitions | shipped workflow definitions | #448 (delivery), workflow platform issues | Engine done; shipped-content delivery and the "customised workflow survives an update" rule are open |
-| 7 | Reference lists and lookups | 61 seeder classes, 8,163 lines in `PEMS.Persistence/Seed` (departments, disciplines, failure codes, UOM, categories, strategy types, numbering schemes, letter templates, help content, roles) | 61 classes | Definitions (reference data) | a `lookup` kind or shipped rows with the same "customer data wins" rule | **none** | Gap: no rule says what an update may do to a lookup the customer edited |
+| 1 | Sidebar and menu | `NavigationMenuDefaults.cs` (code catalog, 119 entries) synced into the table `NavigationMenuItems`; Admin edits order, parent, icon, titles, visibility | 119 entries, 209 lines | Definitions | kind `menu`, shipped as System definitions | #20 (generated from the user's authority), #451, #448 | Owner 2026-11-06: generate from what each user may open; admin-owned fields kept |
+| 2 | Forms (screens and their fields) | hand-written Razor: 240 view files contain a `<form>`; 365 `.cshtml` in total | 240 files | Definitions | kind `form` (exists, stored forms are used only by the definitions API today, not by modules) | #518 (adoption, all forms, safely), #438, #439, #49, #458 | Biggest gap; all forms, per-form switch with fallback |
+| 3 | Form steps and field layout | inside those views | same | Definitions | kind `form` (steps) and `layout` | #518, #451 (layout) | Same as 2 |
+| 4 | List pages: columns, filters | 202 views use `pems-list-*` tag helpers; columns are written in the markup | 202 files | Definitions | kind `view` | #519 (adoption, all lists, safely), #451 (view), #57 | Large gap; value high |
+| 5 | Validations | DataAnnotations: 31 `[Required]`, 50 `[MaxLength]`, 2 `[EmailAddress]` (26 files); 47 `ModelState.AddModelError`; 7 thrown validation-style exceptions in Application/Infrastructure | about 140 spots | Registry (validator types) plus Definitions (which rule on which field) | form field constraints in the `form` kind; named code validators for complex rules | #355, #356, #365, #380, #518 | Small today; moves with the forms in #518 |
+| 6 | Workflows | engine and tables exist (`PEMS.WorkflowPlatform`, versioned definitions, Admin > Workflow Management); the **content** of about 20 workflows is created by seeder classes in C# | 20 `*Workflow*Seeder` classes | Definitions | shipped workflow definitions | #517 (shipped workflow content), #448 | Engine done; shipped-content delivery and the "customised workflow survives an update" rule are open |
+| 7 | Reference lists and lookups | 61 seeder classes, 8,163 lines in `PEMS.Persistence/Seed` (departments, disciplines, failure codes, UOM, categories, strategy types, numbering schemes, letter templates, help content, roles) | 61 classes | Definitions (reference data) | a `lookup` kind or shipped rows with the same "customer data wins" rule | #516 (new) | Owner 2026-11-06: either side may own a list or row, so the rule supports both |
 | 8 | Page elements and layouts | 111 components in `PEMS.UI`; manifests exist (#433) | 111 components | Registry | stays in code; pages built from them are Definitions | #433 done, #438, #439 | Registry side is done; page host open |
 | 9 | Permissions | catalog in code (`PEMS.Web/Security`, `RoleCatalogSeeder`, `AccessControlSeeder`); roles and grants are data | 12 constants plus seeders | Registry (permission names) plus Definitions (roles, grants) | permission names stay code; per-kind definition permissions | #456, #440 | Mostly right |
-| 10 | Command palette actions | `CommandPaletteActions.cs` | 36 lines | Registry | code, or derived from the menu definitions | none | Small; follow the menu |
+| 10 | Command palette actions | `CommandPaletteActions.cs` | 36 lines | Registry | code, or derived from the menu definitions | #20 | Generated from the same source as the menu |
 | 11 | Texts | `SharedResource.resx` 3,690 keys (fa 3,980); no Persian literal found in `.cshtml` | 3,690 keys | Definitions (texts of stored definitions are `TranslatableText`, ADR-0008) | unchanged | #386, #387 | Fine |
 | 12 | Settings and paths | 83 non-comment lines in `env/local.env`; hard-coded: file store `filestore` and `wwwroot` fallbacks in `Program.cs`, break-glass folder | few | Settings | env files | #396 | Fine; one open issue |
-| 13 | Numbering, letter and PM templates | `NumberingScheme`, `LetterTemplate`, `PMTemplate` entities, seeded in code | seeders | Definitions (reference data) | same as 7 | none | Same gap as 7 |
+| 13 | Numbering, letter and PM templates | `NumberingScheme`, `LetterTemplate`, `PMTemplate` entities, seeded in code | seeders | Definitions (reference data) | same as 7 | #516 | Same as 7 |
 
 ## 4. What already works and should be copied
 
@@ -54,17 +54,16 @@ Ordered by value for the "dynamic BPMS" goal divided by effort.
 5. **List pages (row 4)**: 202 files, large but mechanical once the `view` kind exists.
 6. Leave alone: Registry items (rows 8, 9, 10), texts (11), settings (12).
 
-## 6. Proposed new issues (not created; the owner decides)
+## 6. Issues created or changed from this audit (owner answers 2026-11-06)
 
-1. **Reference-data update rule** (rows 7, 13): what an update may do to a lookup, template or numbering scheme the customer changed; shipped rows marked as platform-owned, customer rows untouched, conflicts stop the update. Depends on #515 and #448.
-2. **Pilot: one real form as a stored definition end to end** (rows 2, 3, 5): pick one small module form, render it from the stored `form` definition, keep today's behaviour, prove validation and steps. Depends on #438 and #515.
-3. **Shipped workflow content** (row 6): move the workflow seeders to shipped workflow definitions with versions, so a customised workflow survives an update. Depends on #448.
-4. **Menu migration to the definition store** (row 1): fold into #451 and #448 instead of a new issue unless the owner prefers a separate one.
+Created: #515 field ownership (platform / application fields, update rule), #516 reference-data ownership and update rule (lookups, templates, numbering; either side may own a list or row), #517 shipped workflow content, #518 existing forms become stored form definitions (all modules, safely, no pilot), #519 existing list pages become stored view definitions (all modules, safely, no pilot).
 
-Modified instead of created (rule 28): #448 (basic rule; menu defaults are shipped definitions; refined by #515), #440 (policy table), plan rows 0440, 0448.
+Changed instead of created (rule 28): #448 (basic whole-definition rule, refined by #515; menu defaults become shipped), #440 (actor x target policy table), #20 (the sidebar is generated from the definitions each user may open; the command palette uses the same source).
 
-## 7. Questions for the owner
+Left as they are: Registry items (rows 8, 9, 10), texts (11), settings (12, covered by #396).
 
-1. Reference data (rows 7, 13): is a lookup the customer edited always theirs, or do some lookups belong to us (for example failure codes from a standard)? This decides the platform/application split for lookups.
-2. Which module should be the pilot form (row 2)?
-3. Should the sidebar table move into the definition store, or stay a separate table with the same rules?
+## 7. Owner answers (2026-11-06)
+
+1. Reference data: "maybe both, I don't know": ownership is set per list and per row (#516), with a default per list for the owner to confirm.
+2. Pilot form: none; each task is done for all forms and lists, but safely (a switch per form or list, fallback to today's view, a parity test; #518, #519).
+3. Sidebar: generated from the authority of each user over the forms, lists and pages (#20), not a hand-kept table.
