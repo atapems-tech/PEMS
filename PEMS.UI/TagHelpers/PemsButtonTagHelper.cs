@@ -32,8 +32,14 @@ public sealed class PemsButtonTagHelper(IHtmlGenerator generator, IPemsComponent
 
     public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
     {
+        // SCRUM-528: the routing attributes bind to this class, so the anchor helper must build the href here (it never runs on its own for pems-button).
+        if (HasRouting) base.Process(context, output);
         var (css, attrs) = ListRender.Page(output);
         await ListRender.Replace<PemsButtonFrame>(renderer, output,
             new ButtonFrameOptions { Tone = Tone, Size = Size, Outline = Outline, Css = Css, Disabled = Disabled, As = As, Plain = Plain, PageClass = css, Attributes = attrs }, await ListRender.Inner(output));
     }
+
+    private bool HasRouting =>
+        Action != null || Controller != null || Area != null || Page != null || PageHandler != null || Route != null
+        || Protocol != null || Host != null || Fragment != null || RouteValues.Count > 0;
 }

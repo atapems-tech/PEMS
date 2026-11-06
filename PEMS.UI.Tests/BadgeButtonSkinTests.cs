@@ -95,6 +95,34 @@ public sealed class ButtonTagHelperTests
     public void A_link_is_written_with_as_a()
         => Assert.Equal("<a class=\"btn btn-pems-solid\" href=\"/x\">Open</a>", Run(new PemsButtonTagHelper(null!, UiTestRenderer.Instance) { As = "a" }, [new("href", "/x")], "Open"));
 
+    // SCRUM-528: asp-action / asp-route-* bind to this helper, so it must build the href itself (Cancel and Open links went nowhere).
+    [Fact]
+    public void A_routed_link_gets_its_href_from_the_anchor_helper()
+    {
+        var helper = new PemsButtonTagHelper(LinkGenerator.Create(), UiTestRenderer.Instance) { As = "a", Tone = "neutral", Outline = true, Action = "Details" };
+        helper.RouteValues["id"] = "7";
+        Assert.Equal("<a class=\"btn btn-outline-secondary\" href=\"/Details?id=7\">Cancel</a>", Run(helper, [], "Cancel"));
+    }
+
+    [Fact]
+    public void A_link_without_routing_does_not_call_the_generator()
+        => Assert.Equal("<a class=\"btn btn-pems-solid\" href=\"/x\">Open</a>", Run(new PemsButtonTagHelper(LinkGenerator.Create(), UiTestRenderer.Instance) { As = "a" }, [new("href", "/x")], "Open"));
+
+    /// <summary>Fake generator: only GenerateActionLink is used by the anchor helper for an action link.</summary>
+    public class LinkGenerator : System.Reflection.DispatchProxy
+    {
+        public static Microsoft.AspNetCore.Mvc.ViewFeatures.IHtmlGenerator Create() => Create<Microsoft.AspNetCore.Mvc.ViewFeatures.IHtmlGenerator, LinkGenerator>();
+
+        protected override object? Invoke(System.Reflection.MethodInfo? method, object?[]? args)
+        {
+            if (method?.Name != "GenerateActionLink") throw new NotSupportedException(method?.Name);
+            var values = args!.OfType<Microsoft.AspNetCore.Routing.RouteValueDictionary>().FirstOrDefault();
+            var tag = new Microsoft.AspNetCore.Mvc.Rendering.TagBuilder("a");
+            tag.MergeAttribute("href", "/" + args![2] + (values is { Count: > 0 } ? "?" + string.Join("&", values.Select(v => v.Key + "=" + v.Value)) : ""));
+            return tag;
+        }
+    }
+
     [Fact]
     public void Tone_none_writes_only_the_size_and_the_classes_the_page_passes()
         => Assert.Equal("<button class=\"btn btn-sm btn-pems p-0\" type=\"submit\">Go</button>",

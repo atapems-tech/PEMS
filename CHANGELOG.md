@@ -3,6 +3,13 @@
 All notable changes to PEMS. No system version is defined yet (plan row F_CI), so entries are grouped by date
 and theme and were reconstructed from the git history (initial import 2026-09-05). Newest first.
 
+## 2026-11-06 - Sprint 1 review fixes: lost layout lines and link buttons (SCRUM-526, 527, 528)
+
+### Fixed
+- SCRUM-526: the stage diagrams (Engineering Documents, VDR, WorkOrder) showed every stage on its own line. The merge 97e11c85 had dropped `pems-stage-diagram.css` from `_Layout.cshtml`; it is back.
+- SCRUM-527: the notification bell stayed on "Loading..." and every `data-pems-click/change/submit` action did nothing on main-layout pages (call, back, print, check-all, toggles). The same merge had dropped `pems-actions.js` and `<pems-script-templates set="shell">` (confirm dialog and error toast templates); both are back. `MainLayoutAssetsTests` keeps these lines in the three layouts.
+- SCRUM-528: Cancel, Open, Back and the other link buttons went nowhere. `<pems-button as="a" asp-action asp-route-*>` rendered no `href` since SCRUM-53, because the routing attributes bind to `PemsButtonTagHelper` (derived from the built-in anchor helper) and it never called `base.Process`. It does now when any routing attribute is set, which fixes 326 links. Tests: `ButtonTagHelperTests`.
+
 ## 2026-11-04 - Jalali date picker: pems-date (SCRUM-225 / #206, SCRUM-385 / #368 slice 1)
 
 ### Added
