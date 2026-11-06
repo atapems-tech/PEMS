@@ -76,10 +76,10 @@
                             <pems-table-cell class="text-end text-nowrap">
                                 <pems-form asp-action="SetPublished" asp-route-id="@a.HelpArticleId" method="post" class="d-inline">
                                     <input type="hidden" name="isPublished" value="@(!a.IsPublished)" />
-                                    <button type="submit" class="lp-act lp-act--always @(a.IsPublished ? "" : "text-success")" title="@(a.IsPublished ? Localizer["HlL_Unpublish"] : Localizer["HlL_Publish"])" aria-label="@(a.IsPublished ? Localizer["HlL_Unpublish"] : Localizer["HlL_Publish"])"><pems-icon css="@(a.IsPublished ? "bi-eye-slash" : "bi-send-check")" aria-hidden="true" /></button>
+                                    <pems-button plain="true" type="submit" css="lp-act lp-act--always @(a.IsPublished ? "" : "text-success")" title="@(a.IsPublished ? Localizer["HlL_Unpublish"] : Localizer["HlL_Publish"])" aria-label="@(a.IsPublished ? Localizer["HlL_Unpublish"] : Localizer["HlL_Publish"])"><pems-icon css="@(a.IsPublished ? "bi-eye-slash" : "bi-send-check")" aria-hidden="true" /></pems-button>
                                 </pems-form>
                                 <pems-form asp-action="Delete" asp-route-id="@a.HelpArticleId" method="post" class="d-inline" data-pems-confirm="@Localizer["HlL_ConfirmDelete"]">
-                                    <button type="submit" class="lp-act lp-act--always text-danger" title="@Localizer["Ed_Delete"]" aria-label="@Localizer["Ed_Delete"]"><pems-icon name="bi-trash" aria-hidden="true" /></button>
+                                    <pems-button plain="true" type="submit" css="lp-act lp-act--always text-danger" title="@Localizer["Ed_Delete"]" aria-label="@Localizer["Ed_Delete"]"><pems-icon name="bi-trash" aria-hidden="true" /></pems-button>
                                 </pems-form>
                             </pems-table-cell>
                         </pems-table-row>

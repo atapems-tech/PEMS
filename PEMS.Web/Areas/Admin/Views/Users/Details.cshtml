@@ -89,19 +89,19 @@
 
 <pems-nav css="mb-3" id="userTabs" role="tablist">
     <li class="nav-item" role="presentation">
-        <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#tab-overview" type="button"><pems-icon name="bi-info-circle" /> @Localizer["Overview"]</button>
+        <pems-button plain="true" css="nav-link active" data-bs-toggle="tab" data-bs-target="#tab-overview" type="button"><pems-icon name="bi-info-circle" /> @Localizer["Overview"]</pems-button>
     </li>
     <li class="nav-item" role="presentation">
-        <button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-organization" type="button"><pems-icon name="bi-building" /> @Localizer["Organization"]</button>
+        <pems-button plain="true" css="nav-link" data-bs-toggle="tab" data-bs-target="#tab-organization" type="button"><pems-icon name="bi-building" /> @Localizer["Organization"]</pems-button>
     </li>
     <li class="nav-item" role="presentation">
-        <button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-roles" type="button"><pems-icon name="bi-people" /> @Localizer["Roles"] <pems-badge tone="neutral">@Model.RoleNames.Count</pems-badge></button>
+        <pems-button plain="true" css="nav-link" data-bs-toggle="tab" data-bs-target="#tab-roles" type="button"><pems-icon name="bi-people" /> @Localizer["Roles"] <pems-badge tone="neutral">@Model.RoleNames.Count</pems-badge></pems-button>
     </li>
     <li class="nav-item" role="presentation">
-        <button class="nav-link @(activeAccessTab != null ? "active" : "")" data-bs-toggle="tab" data-bs-target="#tab-access" type="button"><pems-icon name="bi-shield-lock" /> @Localizer["Access & Authorization"]</button>
+        <pems-button plain="true" css="nav-link @(activeAccessTab != null ? "active" : "")" data-bs-toggle="tab" data-bs-target="#tab-access" type="button"><pems-icon name="bi-shield-lock" /> @Localizer["Access & Authorization"]</pems-button>
     </li>
     <li class="nav-item" role="presentation">
-        <button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-audit" type="button"><pems-icon name="bi-clock-history" /> @Localizer["Audit"] <pems-badge tone="neutral">@Model.RecentAuditLogs.Count</pems-badge></button>
+        <pems-button plain="true" css="nav-link" data-bs-toggle="tab" data-bs-target="#tab-audit" type="button"><pems-icon name="bi-clock-history" /> @Localizer["Audit"] <pems-badge tone="neutral">@Model.RecentAuditLogs.Count</pems-badge></pems-button>
     </li>
 </pems-nav>
 
@@ -155,30 +155,30 @@
 
         <pems-nav css="mb-3" id="accessTabs" role="tablist">
             <li class="nav-item" role="presentation">
-                <button class="nav-link @(activeAccessTab is null or "effective" ? "active" : "")" data-bs-toggle="tab" data-bs-target="#access-effective" type="button">
+                <pems-button plain="true" css="nav-link @(activeAccessTab is null or "effective" ? "active" : "")" data-bs-toggle="tab" data-bs-target="#access-effective" type="button">
                     <pems-icon name="bi-eye" /> @Localizer["Effective"] <pems-badge tone="neutral" id="permTabBadge">@Model.AllowedCount</pems-badge>
-                </button>
+                </pems-button>
             </li>
             <li class="nav-item" role="presentation">
-                <button class="nav-link" data-bs-toggle="tab" data-bs-target="#access-matrix" type="button">
+                <pems-button plain="true" css="nav-link" data-bs-toggle="tab" data-bs-target="#access-matrix" type="button">
                     <pems-icon name="bi-sliders" /> @Localizer["Matrix"] <pems-badge tone="neutral">@Model.RoleNames.Count</pems-badge>
-                </button>
+                </pems-button>
             </li>
             <li class="nav-item" role="presentation">
-                <button class="nav-link @(activeAccessTab == "simulator" ? "active" : "")" data-bs-toggle="tab" data-bs-target="#access-simulator" type="button">
+                <pems-button plain="true" css="nav-link @(activeAccessTab == "simulator" ? "active" : "")" data-bs-toggle="tab" data-bs-target="#access-simulator" type="button">
                     <pems-icon name="bi-play-circle" /> @Localizer["Permission Simulator"]
-                </button>
+                </pems-button>
             </li>
             <li class="nav-item" role="presentation">
-                <button class="nav-link" data-bs-toggle="tab" data-bs-target="#access-sod" type="button">
+                <pems-button plain="true" css="nav-link" data-bs-toggle="tab" data-bs-target="#access-sod" type="button">
                     <pems-icon name="bi-shuffle" /> @Localizer["Separation of Duties"]
                     @if (Model.SoDExposureCount > 0) { <pems-badge tone="warning">@Model.SoDExposureCount</pems-badge> }
-                </button>
+                </pems-button>
             </li>
             <li class="nav-item" role="presentation">
-                <button class="nav-link" data-bs-toggle="tab" data-bs-target="#access-navigation" type="button">
+                <pems-button plain="true" css="nav-link" data-bs-toggle="tab" data-bs-target="#access-navigation" type="button">
                     <pems-icon name="bi-layout-sidebar" /> @Localizer["Navigation Visibility"] <pems-badge tone="neutral">@Model.VisibleModuleCount</pems-badge>
-                </button>
+                </pems-button>
             </li>
         </pems-nav>
 

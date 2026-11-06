@@ -133,4 +133,19 @@ public sealed class CheckRowPagerTests
         var plain = await UiTestRenderer.Instance.RenderAsync<PemsFormFrame>(new Dictionary<string, object?> { [nameof(PemsFormFrame.Options)] = new FormFrameOptions() });
         Assert.DoesNotContain("class=", plain);
     }
+
+    [Fact]
+    public async Task A_plain_button_writes_only_the_page_classes_and_attributes()
+    {
+        var tab = await UiTestRenderer.Instance.RenderAsync<PemsButtonFrame>(new Dictionary<string, object?>
+        {
+            [nameof(PemsButtonFrame.Options)] = new ButtonFrameOptions { Plain = true, Css = "nav-link active", Attributes = new Dictionary<string, object> { ["type"] = "button", ["data-bs-toggle"] = "tab" } },
+            [nameof(PemsButtonFrame.ChildContent)] = (Microsoft.AspNetCore.Components.RenderFragment)(b => b.AddContent(0, "Info"))
+        });
+        Assert.Contains("<button class=\"nav-link active\" type=\"button\" data-bs-toggle=\"tab\">Info</button>", tab);
+        Assert.DoesNotContain("btn", tab);
+        var bare = await UiTestRenderer.Instance.RenderAsync<PemsButtonFrame>(new Dictionary<string, object?> { [nameof(PemsButtonFrame.Options)] = new ButtonFrameOptions { Plain = true, Disabled = true } });
+        Assert.DoesNotContain("class=", bare);
+        Assert.Contains("disabled", bare);
+    }
 }

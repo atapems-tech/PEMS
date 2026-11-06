@@ -93,10 +93,10 @@
                             <pems-table-cell class="small vs-hide-md">@e.Email</pems-table-cell>
                             <pems-table-cell><span class="vs-pill @(e.IsActive ? "vs-pill--success" : "vs-pill--neutral")">@(e.IsActive ? Localizer["UsL_Active"] : Localizer["UsL_Inactive"])</span></pems-table-cell>
                             <pems-table-cell class="text-end text-nowrap">
-                                <button type="button" class="lp-act lp-act--always" data-bs-toggle="modal" data-bs-target="#editEmpModal_@e.EmployeeId" title="@Localizer["Ed_Edit"]" aria-label="@Localizer["Ed_Edit"] @e.FirstName @e.LastName"><pems-icon name="bi-pencil" aria-hidden="true" /></button>
+                                <pems-button plain="true" type="button" css="lp-act lp-act--always" data-bs-toggle="modal" data-bs-target="#editEmpModal_@e.EmployeeId" title="@Localizer["Ed_Edit"]" aria-label="@Localizer["Ed_Edit"] @e.FirstName @e.LastName"><pems-icon name="bi-pencil" aria-hidden="true" /></pems-button>
                                 <pems-form asp-action="ToggleActive" method="post" class="d-inline">
                                     <input type="hidden" name="employeeId" value="@e.EmployeeId" />
-                                    <button type="submit" class="lp-act lp-act--always @(e.IsActive ? "text-danger" : "text-success")" title="@(e.IsActive ? Localizer["DpL_Deactivate"] : Localizer["DpL_Activate"])" aria-label="@(e.IsActive ? Localizer["DpL_Deactivate"] : Localizer["DpL_Activate"]) @e.FirstName @e.LastName"><pems-icon css="@(e.IsActive ? "bi-slash-circle" : "bi-check-circle")" aria-hidden="true" /></button>
+                                    <pems-button plain="true" type="submit" css="lp-act lp-act--always @(e.IsActive ? "text-danger" : "text-success")" title="@(e.IsActive ? Localizer["DpL_Deactivate"] : Localizer["DpL_Activate"])" aria-label="@(e.IsActive ? Localizer["DpL_Deactivate"] : Localizer["DpL_Activate"]) @e.FirstName @e.LastName"><pems-icon css="@(e.IsActive ? "bi-slash-circle" : "bi-check-circle")" aria-hidden="true" /></pems-button>
                                 </pems-form>
                             </pems-table-cell>
                         </pems-table-row>

@@ -96,30 +96,30 @@
 
 <pems-nav css="mb-3" id="vdrTabs" role="tablist">
     <li class="nav-item" role="presentation">
-        <button class="nav-link @(vdrDefaultTab == "overview" ? "active" : "")" data-bs-toggle="tab" data-bs-target="#tab-overview" type="button">
+        <pems-button plain="true" css="nav-link @(vdrDefaultTab == "overview" ? "active" : "")" data-bs-toggle="tab" data-bs-target="#tab-overview" type="button">
             <pems-icon name="bi-info-circle" /> @Localizer["Vs_TabOverview"]
-        </button>
+        </pems-button>
     </li>
     <li class="nav-item" role="presentation">
-        <button class="nav-link @(vdrDefaultTab == "workflow" ? "active" : "")" data-bs-toggle="tab" data-bs-target="#tab-workflow" type="button">
+        <pems-button plain="true" css="nav-link @(vdrDefaultTab == "workflow" ? "active" : "")" data-bs-toggle="tab" data-bs-target="#tab-workflow" type="button">
             <pems-icon name="bi-signpost-split" /> @Localizer["Vs_TabWorkflow"]
-        </button>
+        </pems-button>
     </li>
     <li class="nav-item" role="presentation">
-        <button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-submissions" type="button">
+        <pems-button plain="true" css="nav-link" data-bs-toggle="tab" data-bs-target="#tab-submissions" type="button">
             <pems-icon name="bi-clock-history" /> @Localizer["Vs_TabSubmissions"] <pems-badge tone="neutral">@Model.Submissions.Count</pems-badge>
-        </button>
+        </pems-button>
     </li>
     <li class="nav-item" role="presentation">
-        <button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-comments" type="button">
+        <pems-button plain="true" css="nav-link" data-bs-toggle="tab" data-bs-target="#tab-comments" type="button">
             <pems-icon name="bi-chat-square-text" /> @Localizer["Vs_TabComments"]
-        </button>
+        </pems-button>
     </li>
     <li class="nav-item" role="presentation">
-        <button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-correspondence" type="button">
+        <pems-button plain="true" css="nav-link" data-bs-toggle="tab" data-bs-target="#tab-correspondence" type="button">
             <pems-icon name="bi-envelope-paper" /> @Localizer["Vs_TabCorrespondence"]
             @if (relatedLetters.Any()) { <pems-badge tone="neutral">@relatedLetters.Count</pems-badge> }
-        </button>
+        </pems-button>
     </li>
 </pems-nav>
 

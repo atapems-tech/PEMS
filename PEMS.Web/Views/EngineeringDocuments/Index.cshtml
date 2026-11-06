@@ -148,11 +148,11 @@
                                     <a asp-action="Edit" asp-route-id="@item.DocumentId" class="lp-act" title="@Localizer["Ed_Edit"]"><pems-icon name="bi-pencil" aria-hidden="true" /><span class="visually-hidden">@Localizer["Ed_Edit"]: @item.DocumentNo</span></a>
                                     <a asp-action="Details" asp-route-id="@item.DocumentId" class="lp-act lp-act--always" title="@Localizer["Ed_View"]"><pems-icon name="bi-eye" aria-hidden="true" /><span class="visually-hidden">@Localizer["Ed_View"]: @item.DocumentNo</span></a>
                                     <div class="dropdown d-inline">
-                                        <button type="button" class="lp-act lp-act--always" data-bs-toggle="dropdown" aria-expanded="false" title="@Localizer["Ed_MoreActions"]"><pems-icon name="bi-three-dots" aria-hidden="true" /><span class="visually-hidden">@Localizer["Ed_MoreActions"]: @item.DocumentNo</span></button>
+                                        <pems-button plain="true" type="button" css="lp-act lp-act--always" data-bs-toggle="dropdown" aria-expanded="false" title="@Localizer["Ed_MoreActions"]"><pems-icon name="bi-three-dots" aria-hidden="true" /><span class="visually-hidden">@Localizer["Ed_MoreActions"]: @item.DocumentNo</span></pems-button>
                                         <pems-dropdown-menu end="true">
                                             <li>
                                                 <pems-form asp-action="Delete" asp-route-id="@item.DocumentId" method="post" data-pems-confirm="@Localizer["Ed_DeleteConfirm"]">
-                                                    <button type="submit" class="dropdown-item text-danger"><pems-icon name="bi-trash" aria-hidden="true" /> @Localizer["Ed_Delete"]</button>
+                                                    <pems-button plain="true" type="submit" css="dropdown-item text-danger"><pems-icon name="bi-trash" aria-hidden="true" /> @Localizer["Ed_Delete"]</pems-button>
                                                 </pems-form>
                                             </li>
                                         </pems-dropdown-menu>

@@ -38,7 +38,7 @@
                             <pems-table-cell class="lp-actions">
                                 <pems-form asp-action="Delete" method="post" class="d-inline" data-pems-confirm="@Localizer["Tg_DeleteConfirm"]">
                                     <input type="hidden" name="tagId" value="@t.TagId" />
-                                    <button type="submit" class="lp-act lp-act--always" title="@Localizer["Delete"]" aria-label="@Localizer["Delete"]"><pems-icon name="bi-trash" aria-hidden="true" /></button>
+                                    <pems-button plain="true" type="submit" css="lp-act lp-act--always" title="@Localizer["Delete"]" aria-label="@Localizer["Delete"]"><pems-icon name="bi-trash" aria-hidden="true" /></pems-button>
                                 </pems-form>
                             </pems-table-cell>
                         </pems-table-row>
