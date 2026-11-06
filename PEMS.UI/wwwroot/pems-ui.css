@@ -196,3 +196,4 @@
 .pems-w-90{width:90px}
 .pems-w-92{width:92px}
 .pems-w-96{width:96px}
+.pems-pre-line { white-space: pre-line; }   /* a server text with line breaks, shown as text (script templates, SCRUM-508) */

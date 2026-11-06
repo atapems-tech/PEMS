@@ -59,6 +59,29 @@
         <template data-pems-template="opc-note"><span class="text-muted" data-slot="text"></span></template>
         <template data-pems-template="opc-reports"><ul></ul></template>
         break;
+    case ScriptTemplateSet.AccountLogin:
+        <template data-pems-template="login-busy"><span class="pems-inline-progress" style="color:#fff"><span class="pems-dot"></span><span class="pems-dot"></span><span class="pems-dot"></span></span></template>
+        break;
+    case ScriptTemplateSet.ManagePasskeys:
+        <template data-pems-template="passkey-error"><div class="alert alert-danger py-2 px-3 small" role="alert" data-slot="text"></div></template>
+        break;
+    case ScriptTemplateSet.ProjectIntelligence:
+        <template data-pems-template="scan-busy"><PemsSpinner Options="@(new SpinnerOptions { Size = Size.Small })" /> <span data-slot="text"></span></template>
+        break;
+    case ScriptTemplateSet.HelpArticle:
+        <template data-pems-template="help-thinking"><span class="text-muted" data-slot="text"></span></template>
+        <template data-pems-template="help-answer"><div class="p-2 rounded bg-body-tertiary pems-pre-line" data-slot="text"></div></template>
+        <template data-pems-template="help-error"><span class="text-danger" data-slot="text"></span></template>
+        break;
+    case ScriptTemplateSet.HelpDrawer:
+        <template data-pems-template="help-nocontent"><p class="text-muted small text-center py-4" data-slot="text"></p><a class="btn btn-sm btn-outline-secondary w-100" data-slot="link"></a></template>
+        <template data-pems-template="help-load-error"><p class="text-danger small text-center py-4" data-slot="text"></p></template>
+        <template data-pems-template="help-article"><h6 data-slot="title"></h6><p class="text-muted small" data-slot="summary"></p><a class="btn btn-sm btn-outline-primary w-100 mb-2" data-slot="diagram"><i class="bi bi-diagram-3"></i> <span data-slot="diagramText"></span></a><div class="pems-help-article-body small" data-slot="content"></div><div data-slot="relatedBox"><hr /><p class="small text-muted mb-1" data-slot="relatedLabel"></p><div data-slot="related"></div></div><hr /><a class="btn btn-sm btn-pems-solid w-100" data-slot="open"><i class="bi bi-box-arrow-up-right"></i> <span data-slot="openText"></span></a></template>
+        <template data-pems-template="help-related-link"><a class="btn btn-sm btn-outline-secondary me-1 mb-1" data-slot="link"></a></template>
+        break;
+    case ScriptTemplateSet.Layout:
+        <template data-pems-template="toast-notif"><div class="toast align-items-center border-0" role="alert" data-slot="root"><div class="d-flex"><div class="toast-body"><i class="bi bi-bell-fill me-1"></i> <span class="toast-msg" data-slot="message"></span></div><button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button></div></div></template>
+        break;
 }
 @code {
     [Parameter, EditorRequired] public ScriptTemplatesOptions Options { get; set; } = default!;

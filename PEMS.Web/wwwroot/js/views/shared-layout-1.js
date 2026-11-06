@@ -1,16 +1,12 @@
         async function loadNotifDropdown() {
             const res = await fetch('/Notification/Dropdown', { cache: 'no-store' });
-            document.getElementById('notifDropdownBody').innerHTML = await res.text();
+            PemsTemplate.html(document.getElementById('notifDropdownBody'), await res.text());
         }
 
         function showLiveToast(message, isError) {
             const area = document.getElementById('liveToastArea');
-            const el = document.createElement('div');
-            el.className = 'toast align-items-center border-0 ' + (isError ? 'text-bg-danger' : 'text-bg-primary');
-            el.setAttribute('role', 'alert');
-            // message شامل متن کاربر (مثلاً عنوان وظیفه) است - فقط textContent، نه innerHTML (جلوگیری از XSS)
-            el.innerHTML = '<div class="d-flex"><div class="toast-body"><i class="bi bi-bell-fill me-1"></i> <span class="toast-msg"></span></div><button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button></div>';
-            el.querySelector('.toast-msg').textContent = message;
+            const el = PemsTemplate.fill(PemsTemplate.clone('toast-notif'), { message: message });
+            el.classList.add(isError ? 'text-bg-danger' : 'text-bg-primary');
             area.appendChild(el);
             new bootstrap.Toast(el, { delay: 6000 }).show();
         }

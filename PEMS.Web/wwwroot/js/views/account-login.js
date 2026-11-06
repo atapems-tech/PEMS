@@ -10,7 +10,7 @@
     form.addEventListener('submit', function () {
         if (!form.checkValidity || form.checkValidity()) {
             btn.disabled = true;
-            label.innerHTML = '<span class="pems-inline-progress" style="color:#fff"><span class="pems-dot"></span><span class="pems-dot"></span><span class="pems-dot"></span></span> ' + label.dataset.signingIn;
+            label.replaceChildren(PemsTemplate.clone('login-busy'), document.createTextNode(' ' + label.dataset.signingIn));
         }
     });
 })();
