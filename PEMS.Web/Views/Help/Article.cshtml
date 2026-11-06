@@ -70,7 +70,7 @@
             <h6 class="mb-3"><pems-icon name="bi-robot" /> @L("Ask PEMS AI", "پرسش از هوش مصنوعی PEMS")</h6>
             <p class="text-muted small">@L("Ask a question about this article - the answer is based only on its content.", "درباره‌ی همین مقاله سوال بپرسید - پاسخ فقط بر اساس محتوای همین مقاله است.")</p>
             <pems-textarea scale="small" css="mb-2" id="helpAiQuestion" rows="3" placeholder="@L("e.g. What happens if I don't respond to IDC?", "مثلاً اگر به IDC پاسخ ندهم چه می‌شود؟")"></pems-textarea>
-            <pems-button tone="primary" size="small" css="w-100" type="button" id="helpAiAskBtn">
+            <pems-button tone="primary" size="small" css="w-100" type="button" id="helpAiAskBtn" data-code="@Model.Code" data-url="@Url.Action("AskAi", "Help")" data-thinking="@L("Thinking...", "در حال فکر کردن...")" data-error="@L("Could not reach the AI assistant.", "ارتباط با دستیار هوش مصنوعی برقرار نشد.")">
                 <pems-icon name="bi-send" /> @L("Ask", "پرسیدن")
             </pems-button>
             <div id="helpAiAnswer" class="small mt-2" hidden></div>
@@ -82,26 +82,5 @@
 <form id="helpAiTokenForm" style="display:none">@Html.AntiForgeryToken()</form>
 
 @section Scripts {
-    <script>
-        document.getElementById('helpAiAskBtn').addEventListener('click', async function () {
-            var question = document.getElementById('helpAiQuestion').value.trim();
-            if (!question) return;
-            var answerBox = document.getElementById('helpAiAnswer');
-            answerBox.hidden = false;
-            answerBox.innerHTML = '<span class="text-muted">@L("Thinking...", "در حال فکر کردن...")</span>';
-
-            var form = new FormData();
-            form.append('articleCode', '@Model.Code');
-            form.append('question', question);
-            form.append('__RequestVerificationToken', document.querySelector('input[name="__RequestVerificationToken"]')?.value || '');
-
-            try {
-                var res = await fetch('@Url.Action("AskAi", "Help")', { method: 'POST', body: form });
-                var data = await res.json();
-                answerBox.innerHTML = '<div class="p-2 rounded bg-body-tertiary">' + (data.answer || '').replace(/\n/g, '<br/>') + '</div>';
-            } catch (e) {
-                answerBox.innerHTML = '<span class="text-danger">@L("Could not reach the AI assistant.", "ارتباط با دستیار هوش مصنوعی برقرار نشد.")</span>';
-            }
-        });
-    </script>
+    <script src="~/js/views/help-article.js" asp-append-version="true"></script>
 }

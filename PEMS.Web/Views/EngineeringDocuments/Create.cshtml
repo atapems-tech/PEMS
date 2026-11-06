@@ -109,15 +109,6 @@
 </form>
 
 @section Scripts {
-    <script>
-        var manualCheck = document.getElementById('useManualNumberCheck');
-        var docNoInput = document.querySelector('[name="DocumentNo"]');
-        if (manualCheck) {
-            manualCheck.addEventListener('change', function () {
-                docNoInput.disabled = !this.checked;
-                if (this.checked) docNoInput.focus();
-            });
-        }
-    </script>
+    <script src="~/js/views/engineeringdocuments-create.js" asp-append-version="true"></script>
     <partial name="_ValidationScriptsPartial" />
 }

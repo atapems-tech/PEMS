@@ -95,7 +95,7 @@ public class SkeletonComponentTests
     }
 
     [Theory]
-    [InlineData("Views/Shared/_ContextualHelpDrawer.cshtml", "PemsSkeleton.show(body, 'card')")]
+    [InlineData("wwwroot/js/views/shared-contextualhelpdrawer.js", "PemsSkeleton.show(body, 'card')")]
     [InlineData("wwwroot/js/pems-global-search.js", "PemsSkeleton.show(loading, 'table'")]
     [InlineData("wwwroot/js/letter-compose.js", "PemsSkeleton.show(body, 'text'")]
     [InlineData("wwwroot/js/pems-org-position-chart.js", "PemsSkeleton.show(stateEl, \"card\"")]

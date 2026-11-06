@@ -124,10 +124,5 @@
 
 @section Scripts {
     <script src="~/_content/PEMS.UI/pems-list.js" asp-append-version="true"></script>
-    <script>
-        // picking an equipment from the suggestions fills the hidden filter field
-        document.getElementById('woEquipmentFilterSearch').addEventListener('pems:search-select', function (e) {
-            if (e.detail) document.getElementById('woEquipmentFilterHidden').value = e.detail.id;
-        });
-    </script>
+    <script src="~/js/views/workorder-index.js" asp-append-version="true"></script>
 }
