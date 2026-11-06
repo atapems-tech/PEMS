@@ -5,7 +5,7 @@
 
 <pems-content-card>
     <pems-flex justify="end" css="mb-2">
-        <pems-button tone="neutral" size="small" outline="true" type="button" onclick="PemsDataGrid.resetColumns('MaterialRequisitionQuotations')">
+        <pems-button tone="neutral" size="small" outline="true" type="button" data-pems-click="call" data-pems-fn="PemsDataGrid.resetColumns" data-pems-arg="none" data-pems-args='["MaterialRequisitionQuotations"]'>
             <pems-icon name="bi-arrow-counterclockwise" /> @Localizer["Reset columns"]
         </pems-button>
     </pems-flex>

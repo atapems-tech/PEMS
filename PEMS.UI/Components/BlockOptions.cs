@@ -127,6 +127,9 @@ public enum ScriptTemplateSet
     CartableSettings,
     PermissionMatrix,
     UserPermissions,
+    Shell,
+    MaintenanceCalendar,
+    ChatAssistant,
     PartCatalogue,
 }
 

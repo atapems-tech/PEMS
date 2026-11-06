@@ -143,7 +143,7 @@
                         <pems-form asp-action="SetCommunicationStatus" method="post" class="d-inline">
                             <input type="hidden" name="packageId" value="@s.ProcurementPackageId" />
                             <input type="hidden" name="communicationId" value="@c.ProcurementCommunicationId" />
-                            <pems-select class="pems-w-110" scale="small" css="mt-1" name="actionStatus" onchange="this.form.submit()">
+                            <pems-select class="pems-w-110" scale="small" css="mt-1" name="actionStatus" data-pems-change="submit-form">
                                 @foreach (var opt in new[] { "Open", "Answered", "Closed" })
                                 { <option value="@opt" selected="@(opt == c.ActionStatus)">@opt</option> }
                             </pems-select>

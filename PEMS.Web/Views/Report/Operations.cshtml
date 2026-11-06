@@ -16,7 +16,7 @@
 <pems-content-card css="mb-3">
     <pems-form method="get"><pems-row gap="2">
         <pems-col md="2">
-            <pems-select scale="small" name="periodType" onchange="this.form.submit()">
+            <pems-select scale="small" name="periodType" data-pems-change="submit-form">
                 @foreach (var p in new[] { "Day", "Month", "CustomRange" })
                 {
                     <option value="@p" selected="@(p == (string)ViewBag.PeriodType)">@p</option>

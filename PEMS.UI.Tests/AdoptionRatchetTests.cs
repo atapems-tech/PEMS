@@ -75,7 +75,8 @@ public sealed class AdoptionRatchetTests
         ("on-handler", new Regex(@"\son(click|change|submit|input|keyup|keydown|focus|blur|load|mouseover)=""", RegexOptions.Compiled), true, false),   // SCRUM-347 / #333: data-action handled by pems-ui.js
         ("style-block", new Regex(@"<style\b", RegexOptions.Compiled), true, false),   // #333: named classes in pems-ui.css
         ("raw-input", new Regex(@"<input\b(?![^>]*\btype=""hidden"")", RegexOptions.Compiled), true, false),   // pems-input / pems-check / pems-date (hidden inputs are data, not counted)
-        ("dom-builder", new Regex(@"\bcreateElement\(", RegexOptions.Compiled), false, true),   // SCRUM-512: script-templates (pems-template.js)
+        // createElement of a visual element; not counted: script/link (loading a resource), option (new Option), input (a hidden data field or a file picker), a (a download trigger)
+        ("dom-builder", new Regex(@"\bcreateElement\((?!['""](?:script|link|option|input|a)['""])", RegexOptions.Compiled), false, true),   // SCRUM-512: script-templates (pems-template.js)
     ];
 
     [Fact]
@@ -143,6 +144,7 @@ public sealed class AdoptionRatchetTests
         Assert.Equal(1, Hits("style-block", "<style>.a{}</style><pems-style>"));
         Assert.Equal(2, Hits("raw-input", "<input type=\"text\" /><input name=\"q\" /><input type=\"hidden\" name=\"id\" /><pems-input name=\"z\" />"));
         Assert.Equal(1, Hits("dom-builder", "var li = document.createElement('li'); var t = tpl('x');"));
+        Assert.Equal(0, Hits("dom-builder", "document.createElement('option'); document.createElement(\"input\"); document.createElement('script'); doc.createElement('a');"));
         Assert.Equal(2, Hits("info-grid", "<div><p class=\"vs-info__label\">A</p></div><dl><dt>B</dt><dd>b</dd></dl>"));
         Assert.Equal(0, Hits("info-grid", "<pems-info-item label=\"A\">a</pems-info-item><dd>x</dd>"));
         Assert.Equal(2, Hits("kpi-tile", "<div class=\"kpi-card\">1</div><a class=\"kpi-card kpi-link\">2</a>"));
@@ -160,13 +162,14 @@ public sealed class AdoptionRatchetTests
         var result = new SortedDictionary<string, SortedDictionary<string, int>>(StringComparer.Ordinal);
         foreach (var p in Patterns) result[p.Name] = new SortedDictionary<string, int>(StringComparer.Ordinal);
 
-        void Scan(string file, bool isView)
+        void Scan(string file, bool isView, bool library = false)
         {
             var text = File.ReadAllText(file);
             var key = Path.GetRelativePath(root, file).Replace('\\', '/');
             foreach (var p in Patterns)
             {
                 if (isView ? !p.Views : !p.Scripts) continue;
+                if (library && p.Name is not ("js-built-markup" or "dom-builder")) continue;   // library scripts name Bootstrap classes as selectors; only markup writers count
                 var n = p.Pattern.Matches(text).Count;
                 if (n > 0) result[p.Name][key] = n;
             }
@@ -175,7 +178,7 @@ public sealed class AdoptionRatchetTests
         foreach (var f in Directory.EnumerateFiles(Path.Combine(root, "PEMS.Web", "Views"), "*.cshtml", SearchOption.AllDirectories)) Scan(f, true);
         foreach (var f in Directory.EnumerateFiles(Path.Combine(root, "PEMS.Web", "Areas"), "*.cshtml", SearchOption.AllDirectories)) Scan(f, true);
         foreach (var f in Directory.EnumerateFiles(Path.Combine(root, "PEMS.Web", "wwwroot", "js"), "*.js", SearchOption.AllDirectories)) Scan(f, false);
-        foreach (var f in Directory.EnumerateFiles(Path.Combine(root, "PEMS.UI", "wwwroot"), "*.js", SearchOption.TopDirectoryOnly)) Scan(f, false);   // SCRUM-509: the library scripts count too
+        foreach (var f in Directory.EnumerateFiles(Path.Combine(root, "PEMS.UI", "wwwroot"), "*.js", SearchOption.TopDirectoryOnly)) Scan(f, false, library: true);   // SCRUM-509: the library scripts count too
         return result;
     }
 

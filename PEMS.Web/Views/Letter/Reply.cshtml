@@ -14,7 +14,7 @@
    فرم پاسخ نمایش داده می‌شوند - دقیقاً همان "مشاهده پیام‌های قبلی". *@
 
 <pems-content-card css="mb-3">
-    <pems-flex justify="between" align="center" css="mb-2 pems-s-3b6a3a65" onclick="document.getElementById('threadBody').classList.toggle('d-none')">
+    <pems-flex justify="between" align="center" css="mb-2 pems-s-3b6a3a65" data-pems-click="toggle-class" data-pems-target="#threadBody" data-pems-cls="d-none">
         <h6 class="mb-0"><pems-icon name="bi-clock-history" /> مشاهده پیام‌های قبلی (@thread.Count)</h6>
         <pems-icon name="bi-chevron-down" />
     </pems-flex>

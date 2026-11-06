@@ -136,7 +136,7 @@ public sealed class ConfirmScriptTests
         Assert.Contains("pagehide", js);
         Assert.Contains("unhandledrejection", js);
         Assert.Contains("/^(GET|HEAD)$/", js);              // retry is for idempotent verbs only
-        Assert.Contains("role', 'alert'", js);               // announced to assistive technology
+        Assert.Contains("role=\"alert\"", Read("PEMS.UI", "Components", "PemsScriptTemplates.razor"));   // the toast template is announced to assistive technology (SCRUM-512)
         Assert.DoesNotContain("innerHTML", js);              // messages and references are text, never markup
         Assert.DoesNotContain("alert(", js.Replace("role', 'alert'", ""));
         Assert.DoesNotContain("onclick=", js);

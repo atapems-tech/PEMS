@@ -114,7 +114,7 @@
             }
             @if (l.Status == "ReturnedForRevision" && canEditReturned)
             {
-                <pems-button tone="primary" size="small" type="button" onclick="toggleBodyEdit()"><pems-icon name="bi-pencil-square" /> Edit &amp; Resubmit</pems-button>
+                <pems-button tone="primary" size="small" type="button" data-pems-click="call" data-pems-fn="toggleBodyEdit" data-pems-arg="none"><pems-icon name="bi-pencil-square" /> Edit &amp; Resubmit</pems-button>
             }
             @if (l.Status == "PendingApproval" && (canReview || isCurrentApprover))
             {
@@ -188,7 +188,7 @@
         <pems-flex wrap="true" gap="2">
             <pems-form asp-action="AttachTag" method="post"><pems-flex gap="1">
                 <input type="hidden" name="letterId" value="@l.LetterId" />
-                <pems-select scale="small" name="tagId" onchange="this.form.submit()">
+                <pems-select scale="small" name="tagId" data-pems-change="submit-form">
                     <option value="">-- existing tag --</option>
                     @foreach (var t in allTags.Where(t => !l.Tags.Any(lt => lt.TagId == t.TagId)))
                     { <option value="@t.TagId">@t.Name</option> }
@@ -384,7 +384,7 @@
                 <pems-button tone="primary" size="small" type="submit">@submitLabel</pems-button>
                 @if (!showEditFormByDefault)
                 {
-                    <pems-button tone="neutral" size="small" outline="true" type="button" onclick="toggleBodyEdit()">@Localizer["Cancel"]</pems-button>
+                    <pems-button tone="neutral" size="small" outline="true" type="button" data-pems-click="call" data-pems-fn="toggleBodyEdit" data-pems-arg="none">@Localizer["Cancel"]</pems-button>
                 }
             </pems-flex>
         </pems-form>
@@ -596,12 +596,12 @@
                 <pems-form class="mb-3 small" method="get" target="_self" action="@Url.Action("Details", new { id = l.LetterId })#accTimeline"><pems-flex wrap="true" align="center" gap="2">
                     @if (embed) { <input type="hidden" name="embed" value="true" /> }
                     <label for="historyOrder" class="text-muted">@Localizer["Ct_HistoryOrder"]</label>
-                    <pems-select scale="small" css="w-auto" id="historyOrder" name="historyOrder" onchange="this.form.submit()">
+                    <pems-select scale="small" css="w-auto" id="historyOrder" name="historyOrder" data-pems-change="submit-form">
                         <option value="asc" selected="@(historyOrder == "asc")">@Localizer["Ct_HistoryOldest"]</option>
                         <option value="desc" selected="@(historyOrder == "desc")">@Localizer["Ct_HistoryNewest"]</option>
                     </pems-select>
                     <label for="historyRole" class="text-muted ms-2">@Localizer["Ct_HistoryWho"]</label>
-                    <pems-select scale="small" css="w-auto" id="historyRole" name="historyRole" onchange="this.form.submit()">
+                    <pems-select scale="small" css="w-auto" id="historyRole" name="historyRole" data-pems-change="submit-form">
                         <option value="all" selected="@(historyRole == "all")">@Localizer["Ct_HistoryAll"]</option>
                         <option value="me" selected="@(historyRole == "me")">@Localizer["Ct_HistoryMe"]</option>
                         <option value="manager" selected="@(historyRole == "manager")">@Localizer["Ct_HistoryManager"]</option>

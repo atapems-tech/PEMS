@@ -25,7 +25,7 @@
         </div>
         <pems-flex gap="2" css="d-print-none">
             <pems-button tone="neutral" size="small" outline="true" as="a" asp-action="Edit" asp-route-id="@Model.MechanicalEquipmentId"><pems-icon name="bi-pencil" /> @Localizer["Edit"]</pems-button>
-            <pems-button tone="neutral" size="small" outline="true" type="button" onclick="window.print()"><pems-icon name="bi-printer" /> @Localizer["Print"]</pems-button>
+            <pems-button tone="neutral" size="small" outline="true" type="button" data-pems-click="print"><pems-icon name="bi-printer" /> @Localizer["Print"]</pems-button>
             @if (Model.EquipmentId.HasValue)
             {
                 <pems-button tone="neutral" size="small" outline="true" as="a" asp-controller="Equipment" asp-action="Details" asp-route-id="@Model.EquipmentId"><pems-icon name="bi-box-seam" /> @Localizer["Equipment"]</pems-button>

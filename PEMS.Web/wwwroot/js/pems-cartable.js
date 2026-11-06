@@ -74,19 +74,6 @@
                 return r.json();
             });
         },
-        el: function (tag, attrs, children) {
-            var node = document.createElement(tag);
-            Object.keys(attrs || {}).forEach(function (k) {
-                var v = attrs[k];
-                if (v === null || v === undefined || v === false) return;
-                if (k === "text") node.textContent = v;
-                else if (k === "class") node.className = v;
-                else if (k.slice(0, 2) === "on" && typeof v === "function") node.addEventListener(k.slice(2), v);
-                else node.setAttribute(k, v === true ? "" : v);
-            });
-            (children || []).forEach(function (c) { if (c) node.appendChild(typeof c === "string" ? document.createTextNode(c) : c); });
-            return node;
-        },
         clearLocalViewState: function () { remove(DENSITY_KEY); remove(COLUMNS_KEY); }
     };
 
@@ -117,9 +104,7 @@
             if (!clock) return;
             var c = clockText(new Date(), shell.getAttribute("data-lang"));
             clock.textContent = "";
-            var d = doc.createElement("span"); d.textContent = c.date + "  ";
-            var s = doc.createElement("strong"); s.textContent = c.time;
-            clock.appendChild(d); clock.appendChild(s);
+            clock.appendChild(window.PemsTemplate.fill(window.PemsTemplate.fragment("ct-clock", doc), { date: c.date + "  ", time: c.time }));
         }
         tick();
         if (clock) setInterval(tick, 30000);
@@ -188,8 +173,8 @@
         if (form) {
             // synthetic submitters for tag / untag (the tag id travels in the hidden #ctBulkTagId input)
             ["tag", "untag"].forEach(function (op) {
-                var b = doc.createElement("button");
-                b.type = "submit"; b.name = "op"; b.value = op; b.hidden = true; b.tabIndex = -1; b.setAttribute("data-synth-submit", op);
+                var b = window.PemsTemplate.clone("ct-synth-submit", doc);
+                b.value = op; b.setAttribute("data-synth-submit", op);
                 form.appendChild(b);
             });
             // trash confirmation follows the user's setting; purge always confirms
@@ -264,25 +249,22 @@
             chip.setAttribute("aria-expanded", "true");
             var cols = table ? table.querySelectorAll("thead th").length : 14;
             // SCRUM-337: a skeleton row while the replies load
-            var wait = doc.createElement("tr");
+            var wait = window.PemsTemplate.clone("ct-thread-wait", doc);
             wait.setAttribute("data-thread-for", id);
-            var waitTd = doc.createElement("td"); waitTd.colSpan = cols;
+            var waitTd = wait.firstElementChild; waitTd.colSpan = cols;
             window.PemsSkeleton.show(waitTd, "table", { rows: 2, cols: 3 });
-            wait.appendChild(waitTd);
             tr.parentNode.insertBefore(wait, tr.nextSibling);
             api.get(cfg.urls.threadMembers + "?id=" + encodeURIComponent(id)).then(function (members) {
                 wait.remove();
                 var anchor = tr;
                 members.forEach(function (m) {
-                    var row = doc.createElement("tr");
-                    row.className = "lp-row ct-reply-row";
+                    var row = window.PemsTemplate.fill(window.PemsTemplate.clone("ct-reply-row", doc), {
+                        subject: { text: m.subject, attrs: { href: m.url }, addClass: m.isCurrent ? "fw-bold" : "" },
+                        meta: " — " + m.letterNumber + " · " + (m.senderName || "") + " · " + m.date + " · " + m.status
+                    });
                     row.setAttribute("data-thread-for", id);
                     row.style.setProperty("--depth", String(m.depth + 1));
-                    var td = doc.createElement("td"); td.colSpan = cols;
-                    var line = doc.createElement("div"); line.className = "lp-subject-line";
-                    var a = doc.createElement("a"); a.href = m.url; a.className = m.isCurrent ? "lp-subject fw-bold" : "lp-subject"; a.textContent = m.subject;
-                    var meta = doc.createElement("span"); meta.className = "lp-snippet"; meta.textContent = " — " + m.letterNumber + " · " + (m.senderName || "") + " · " + m.date + " · " + m.status;
-                    line.appendChild(a); line.appendChild(meta); td.appendChild(line); row.appendChild(td);
+                    row.firstElementChild.colSpan = cols;
                     anchor.parentNode.insertBefore(row, anchor.nextSibling);
                     anchor = row;
                 });

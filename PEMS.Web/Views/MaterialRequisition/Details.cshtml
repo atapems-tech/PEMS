@@ -15,7 +15,7 @@
         <pems-info-item label="@Localizer["Status"]">
             <pems-form asp-action="ChangeStatus" method="post" class="d-inline">
                 <input type="hidden" name="mrId" value="@Model.MRId" />
-                <pems-select scale="small" css="d-inline w-auto" name="status" onchange="this.form.submit()">
+                <pems-select scale="small" css="d-inline w-auto" name="status" data-pems-change="submit-form">
                     @foreach (var s in new[] { "Draft", "Submitted", "Under Technical Review", "Approved", "Issued to Procurement", "Closed", "Cancelled" })
                     {
                         <option value="@s" selected="@(s == Model.Status)">@s</option>

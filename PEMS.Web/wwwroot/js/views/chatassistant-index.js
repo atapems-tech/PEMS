@@ -3,13 +3,12 @@
         const input = document.getElementById('messageInput');
 
         function addBubble(text, isUser) {
-            const wrap = document.createElement('div');
-            wrap.className = 'mb-3 d-flex ' + (isUser ? 'justify-content-end' : 'justify-content-start');
-            const bubble = document.createElement('div');
-            bubble.className = 'p-2 rounded ' + (isUser ? 'bg-primary text-white' : 'bg-white border');
+            const wrap = window.PemsTemplate.clone('chat-bubble');
+            wrap.classList.add(isUser ? 'justify-content-end' : 'justify-content-start');
+            const bubble = wrap.querySelector('[data-slot=bubble]');
+            ('p-2 rounded ' + (isUser ? 'bg-primary text-white' : 'bg-white border')).split(' ').forEach(function (c) { bubble.classList.add(c); });
             bubble.style.maxWidth = '75%';
             bubble.innerText = text;
-            wrap.appendChild(bubble);
             chatWindow.appendChild(wrap);
             chatWindow.scrollTop = chatWindow.scrollHeight;
         }

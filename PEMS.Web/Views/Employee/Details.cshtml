@@ -467,7 +467,7 @@
                         </pems-col>
                         <pems-col md="3">
                             <pems-label>@L("Personnel Type", "نوع پرسنل")</pems-label>
-                            <pems-select name="personnelType" onchange="document.getElementById('editProfileVendorField').hidden = this.value === 'Internal'">
+                            <pems-select name="personnelType" data-pems-change="toggle-hidden" data-pems-target="#editProfileVendorField" data-pems-hide-when="value:Internal">
                                 @foreach (var t in personnelTypes) { <option value="@t" selected="@(t == Model.PersonnelType)">@t</option> }
                             </pems-select>
                         </pems-col>

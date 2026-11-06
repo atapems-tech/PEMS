@@ -161,7 +161,7 @@
                         <pems-form asp-action="SetCommentAction" method="post" class="d-inline">
                             <input type="hidden" name="documentId" value="@Model.DocumentId" />
                             <input type="hidden" name="commentId" value="@c.EngineeringDocumentCommentId" />
-                            <pems-select class="pems-w-160" scale="small" css="mt-1" name="actionStatus" onchange="this.form.submit()">
+                            <pems-select class="pems-w-160" scale="small" css="mt-1" name="actionStatus" data-pems-change="submit-form">
                                 @foreach (var s in new[] { "OpenComment", "ResponsePending", "Verified", "Closed", "NoActionRequired" })
                                 { <option value="@s" selected="@(s == c.ActionStatus)">@s</option> }
                             </pems-select>

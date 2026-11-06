@@ -28,8 +28,7 @@
     // متن کنترل داشته باشد، نه فقط ظرف بیرونی‌اش.
     document.querySelectorAll('.pems-sidebar .nav-link').forEach(function (link) {
         if (link.querySelector('.nav-label')) return; // قبلاً Wrap شده - از اجرای دوباره جلوگیری می‌کند
-        var label = document.createElement('span');
-        label.className = 'nav-label';
+        var label = window.PemsTemplate.clone('nav-label');
         Array.from(link.childNodes).forEach(function (node) {
             if (node.nodeType === 1 && node.tagName === 'I') return; // آیکون در جای خودش می‌ماند
             label.appendChild(node);

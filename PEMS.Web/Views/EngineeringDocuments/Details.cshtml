@@ -975,7 +975,7 @@
                         <pems-form asp-action="SetCommentAction" method="post" class="d-inline">
                             <input type="hidden" name="documentId" value="@Model.DocumentId" />
                             <input type="hidden" name="commentId" value="@c.VDRCommentId" />
-                            <pems-select class="pems-w-170" scale="small" css="mt-1" name="actionStatus" onchange="this.form.submit()">
+                            <pems-select class="pems-w-170" scale="small" css="mt-1" name="actionStatus" data-pems-change="submit-form">
                                 @foreach (var s in new[] { "OpenComment", "VendorResponsePending", "Verified", "Closed", "NoActionRequired" })
                                 { <option value="@s" selected="@(s == c.ActionStatus)">@s</option> }
                             </pems-select>
@@ -1164,15 +1164,15 @@
                         <pems-label css="small fw-bold">این مدرک به کدوم واحد تحویل داده می‌شه؟</pems-label>
 
                         <pems-check-row>
-                            <pems-input kind="check" type="radio" name="deliveryUnitType" id="dcc_internal" value="InternalDCC" checked onclick="pemsToggleIssueFields()" />
+                            <pems-input kind="check" type="radio" name="deliveryUnitType" id="dcc_internal" value="InternalDCC" checked data-pems-click="call" data-pems-fn="pemsToggleIssueFields" data-pems-arg="none" />
                             <label class="form-check-label small" for="dcc_internal">DCC داخلی (واحد کنترل مدارک خودمون)</label>
                         </pems-check-row>
                         <pems-check-row>
-                            <pems-input kind="check" type="radio" name="deliveryUnitType" id="dept_internal" value="InternalDepartment" onclick="pemsToggleIssueFields()" />
+                            <pems-input kind="check" type="radio" name="deliveryUnitType" id="dept_internal" value="InternalDepartment" data-pems-click="call" data-pems-fn="pemsToggleIssueFields" data-pems-arg="none" />
                             <label class="form-check-label small" for="dept_internal">یک واحد دیگه داخل شرکت</label>
                         </pems-check-row>
                         <pems-check-row>
-                            <pems-input kind="check" type="radio" name="deliveryUnitType" id="ext_unit" value="External" onclick="pemsToggleIssueFields()" />
+                            <pems-input kind="check" type="radio" name="deliveryUnitType" id="ext_unit" value="External" data-pems-click="call" data-pems-fn="pemsToggleIssueFields" data-pems-arg="none" />
                             <label class="form-check-label small" for="ext_unit">نهاد بیرونی (DCC کارفرما / پیمانکار)</label>
                         </pems-check-row>
                     </div>

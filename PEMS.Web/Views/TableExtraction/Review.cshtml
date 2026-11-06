@@ -69,7 +69,7 @@
         <pems-table kind="enterprise" scale="small">
             <pems-table-head>
                 <pems-table-row>
-                    <pems-table-header class="pems-w-30"><input type="checkbox" id="selectAllMatched" title="Select all matched rows" /></pems-table-header>
+                    <pems-table-header class="pems-w-30"><pems-input kind="bare" type="checkbox" id="selectAllMatched" title="Select all matched rows" /></pems-table-header>
                     <pems-table-header>@Localizer["Tag"]</pems-table-header><pems-table-header>@Localizer["Description"]</pems-table-header><pems-table-header>@Localizer["Junction Box"]</pems-table-header><pems-table-header>@Localizer["Cable No."]</pems-table-header>
                     <pems-table-header>DCS Tag</pems-table-header><pems-table-header>@Localizer["Status"]</pems-table-header><pems-table-header class="pems-s-e581e86b">@Localizer["Action"]</pems-table-header>
                 </pems-table-row>
@@ -91,7 +91,7 @@
                         <pems-table-cell>
                             @if (isSelectable)
                             {
-                                <input type="checkbox" class="row-select" form="bulkConfirmForm" name="selectedRowIds" value="@row.TableExtractionRowId" />
+                                <pems-input kind="bare" type="checkbox" class="row-select" form="bulkConfirmForm" name="selectedRowIds" value="@row.TableExtractionRowId" />
                             }
                         </pems-table-cell>
                         <pems-table-cell class="fw-semibold">@(row.TagNumber ?? "-")</pems-table-cell>

@@ -47,7 +47,7 @@
             </pems-form>
             <pems-form asp-controller="TaskManager" asp-action="SetSprint" method="post" class="d-inline">
                 <input type="hidden" name="id" value="@i.Id" /><input type="hidden" name="returnUrl" value="@returnUrl" />
-                <pems-select scale="small" css="d-inline-block w-auto" name="sprintId" aria-label="@Localizer["Tm_MoveToSprint"] @(i.Key)" onchange="this.form.submit()">
+                <pems-select scale="small" css="d-inline-block w-auto" name="sprintId" aria-label="@Localizer["Tm_MoveToSprint"] @(i.Key)" data-pems-change="submit-form">
                     <option value="0" selected="@(i.SprintId == null)">@Localizer["Tm_Backlog"]</option>
                     @foreach (var s in sprints) { <option value="@s.Id" selected="@(i.SprintId == s.Id)">@s.Name</option> }
                 </pems-select>

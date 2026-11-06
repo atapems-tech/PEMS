@@ -571,7 +571,7 @@
                             <pems-table-cell>
                                 <pems-form asp-action="UpdateConditionPriorityMapping" method="post"><pems-flex gap="1" align="center">
                                     <input type="hidden" name="id" value="@m.ConditionPriorityMappingId" />
-                                    <pems-select class="pems-maxw-140" scale="small" name="priority" onchange="this.form.submit()">
+                                    <pems-select class="pems-maxw-140" scale="small" name="priority" data-pems-change="submit-form">
                                         @foreach (var p in new[] { "Low", "Medium", "High", "Critical" })
                                         {
                                             <option value="@p" selected="@(p == m.Priority)">@p</option>

@@ -6,7 +6,7 @@
         <pems-row gap="3">
             <pems-col md="8">
                 <pems-label>Product / Material</pems-label>
-                <pems-select name="materialItemId" required onchange="fillUom(this)">
+                <pems-select name="materialItemId" required data-pems-change="call" data-pems-fn="fillUom" data-pems-arg="this">
                     <option value="">@Localizer["-- select --"]</option>
                     @foreach (var m in ViewBag.MaterialItems)
                     {

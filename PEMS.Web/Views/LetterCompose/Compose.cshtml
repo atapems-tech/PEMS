@@ -149,7 +149,7 @@
                     <div class="lc-field lc-rcpt" data-field="@f.Item1" @(hidden ? "hidden" : "")>
                         <label for="lcIn_@f.Item1" class="@(f.Item3 && !isOutgoing ? "lc-req" : "")">@Localizer[f.Item2]</label>
                         <div class="lc-chipbox" data-chipbox="@f.Item1">
-                            <input id="lcIn_@f.Item1" type="text" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="lcList_@f.Item1"
+                            <pems-input kind="bare" id="lcIn_@f.Item1" type="text" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="lcList_@f.Item1"
                                    placeholder="@Localizer["Lc_SearchPeople"]" autocomplete="off" />
                         </div>
                         <ul class="lc-list" id="lcList_@f.Item1" role="listbox" hidden></ul>
@@ -160,7 +160,7 @@
                 <div class="lc-rcpt-tools">
                     <pems-button tone="neutral" size="small" outline="true" type="button" id="lcToggleBcc"><pems-icon name="bi-eye-slash" aria-hidden="true" /> @Localizer["Lc_AddBcc"]</pems-button>
                     <pems-button tone="neutral" size="small" outline="true" type="button" id="lcImportBtn"><pems-icon name="bi-file-earmark-spreadsheet" aria-hidden="true" /> @Localizer["Lc_ImportList"]</pems-button>
-                    <input type="file" id="lcImportFile" accept=".csv,.txt,text/csv,text/plain" hidden />
+                    <pems-input kind="bare" type="file" id="lcImportFile" accept=".csv,.txt,text/csv,text/plain" hidden />
                     <div class="dropdown d-inline-block">
                         <pems-button tone="neutral" size="small" outline="true" css="dropdown-toggle" type="button" id="lcGroupBtn" data-bs-toggle="dropdown" aria-expanded="false"><pems-icon name="bi-person-lines-fill" aria-hidden="true" /> @Localizer["Ct_AddFromGroup"]</pems-button>
                         <pems-dropdown-menu id="lcGroupMenu" aria-labelledby="lcGroupBtn"></pems-dropdown-menu>
@@ -196,7 +196,7 @@
                     <div>@Localizer["Lc_DropHere"]</div>
                     <div class="lc-help" id="lcDropHelp">@Localizer["Lc_AttachmentRules"]</div>
                 </div>
-                <input type="file" id="lcFile" multiple hidden />
+                <pems-input kind="bare" type="file" id="lcFile" multiple hidden />
                 <ul class="lc-files" id="lcFiles">
                     @foreach (var a in Model.Attachments)
                     {
@@ -379,7 +379,7 @@
             <pems-modal-header level="5" title-id="lcPreviewTitle" close="true" close-label="@Localizer["Lc_Close"]">@Localizer["Lc_Preview"]</pems-modal-header>
             <pems-modal-body id="lcPreviewBody"></pems-modal-body>
             <pems-modal-footer>
-                <pems-button tone="neutral" outline="true" type="button" onclick="window.print()"><pems-icon name="bi-printer" aria-hidden="true" /> @Localizer["Lc_Print"]</pems-button>
+                <pems-button tone="neutral" outline="true" type="button" data-pems-click="print"><pems-icon name="bi-printer" aria-hidden="true" /> @Localizer["Lc_Print"]</pems-button>
                 <pems-button tone="neutral" type="button" data-bs-dismiss="modal">@Localizer["Lc_Close"]</pems-button>
             </pems-modal-footer>
         </pems-modal>

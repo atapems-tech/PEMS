@@ -29,7 +29,7 @@
         <pems-row gap="3">
             <pems-col md="4">
                 <pems-label>@Localizer["Visual Type"]</pems-label>
-                <pems-select asp-for="VisualType" onchange="toggleSourceFields(this.value)">
+                <pems-select asp-for="VisualType" data-pems-change="call" data-pems-fn="toggleSourceFields" data-pems-arg="value">
                     @foreach (var t in visualTypes) { <option value="@t">@t</option> }
                 </pems-select>
             </pems-col>
@@ -50,7 +50,7 @@
                     Only actual workflows registered in the engine are listed - the diagram is generated live from
                     their real stages/transitions and can never go out of sync.
                 </pems-help-text>
-                <pems-select css="mb-2" id="workflowSourcePicker" onchange="applyWorkflowSource(this.value)">
+                <pems-select css="mb-2" id="workflowSourcePicker" data-pems-change="call" data-pems-fn="applyWorkflowSource" data-pems-arg="value">
                     <option value="">-- select a real workflow --</option>
                     @foreach (var s in workflowSources)
                     {

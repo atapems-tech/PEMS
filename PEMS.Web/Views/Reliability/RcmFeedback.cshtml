@@ -49,7 +49,7 @@
     <pems-form method="get"><pems-row gap="2" css="align-items-end">
         <pems-col md="3">
             <pems-label css="small">@Localizer["Status"]</pems-label>
-            <pems-select scale="small" name="status" onchange="this.form.submit()">
+            <pems-select scale="small" name="status" data-pems-change="submit-form">
                 <option value="" selected="@(string.IsNullOrEmpty(statusFilter))">All</option>
                 <option value="PENDING" selected="@(statusFilter == "PENDING")">Pending</option>
                 <option value="ACCEPTED" selected="@(statusFilter == "ACCEPTED")">Accepted</option>

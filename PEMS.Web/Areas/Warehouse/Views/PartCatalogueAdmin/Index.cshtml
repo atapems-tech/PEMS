@@ -113,7 +113,7 @@
                     <input type="hidden" name="Id" value="@r.Id" />
                     <pems-flex justify="between" align="center" css="mb-2">
                         <strong>@Localizer["Pc_Step_" + r.Key] <code class="ms-1">@r.Key</code></strong>
-                        <label class="small"><input type="checkbox" name="IsActive" value="true" checked="@r.IsActive" /> @Localizer["Pc_Col_Active"]<input type="hidden" name="IsActive" value="false" /></label>
+                        <label class="small"><pems-input kind="bare" type="checkbox" name="IsActive" value="true" checked="@r.IsActive" /> @Localizer["Pc_Col_Active"]<input type="hidden" name="IsActive" value="false" /></label>
                     </pems-flex>
                     <pems-row gap="2">
                         <pems-col md="6">
@@ -264,8 +264,8 @@
                     var fid = "secForm" + s.SectionId;
                     <pems-table-row>
                         <pems-table-cell>@s.Code @if (!string.IsNullOrEmpty(s.NameFa)) { <span class="text-muted small">(@s.NameFa)</span> } @if (s.RoutingNeedsConfirmation) { <span class="vs-pill vs-pill--warning" title="@Localizer["Pc_Adm_NeedsConfirmation"]">@Localizer["Pc_Adm_NeedsConfirmationShort"]</span> }</pems-table-cell>
-                        <pems-table-cell><input form="@fid" type="checkbox" name="requiresSparePartsReview" value="true" checked="@s.RequiresSparePartsReview" aria-label="@Localizer["Pc_Adm_SpareReview"]" /><input form="@fid" type="hidden" name="requiresSparePartsReview" value="false" /></pems-table-cell>
-                        <pems-table-cell><input form="@fid" type="checkbox" name="isActive" value="true" checked="@s.IsActive" aria-label="@Localizer["Pc_Col_Active"]" /><input form="@fid" type="hidden" name="isActive" value="false" /></pems-table-cell>
+                        <pems-table-cell><pems-input kind="bare" form="@fid" type="checkbox" name="requiresSparePartsReview" value="true" checked="@s.RequiresSparePartsReview" aria-label="@Localizer["Pc_Adm_SpareReview"]" /><input form="@fid" type="hidden" name="requiresSparePartsReview" value="false" /></pems-table-cell>
+                        <pems-table-cell><pems-input kind="bare" form="@fid" type="checkbox" name="isActive" value="true" checked="@s.IsActive" aria-label="@Localizer["Pc_Col_Active"]" /><input form="@fid" type="hidden" name="isActive" value="false" /></pems-table-cell>
                         <pems-table-cell><pems-form id="@fid" asp-action="SetSection" method="post"><input type="hidden" name="sectionId" value="@s.SectionId" /><pems-button plain="true" css="vs-btn vs-btn--sm"><pems-icon name="bi-save" /></pems-button></pems-form></pems-table-cell>
                         <pems-table-cell>
                             @foreach (var g in s.Groups)
@@ -312,7 +312,7 @@
     </section>
 </pems-page-shell>
 
-<pems-form id="pcNoForm" onsubmit="return false"></pems-form>
+<pems-form id="pcNoForm" data-pems-submit="prevent"></pems-form>
 
 @section Scripts {
     <pems-script-templates set="part-catalogue"></pems-script-templates>

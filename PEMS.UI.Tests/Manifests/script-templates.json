@@ -25,6 +25,9 @@
           "cartableSettings",
           "permissionMatrix",
           "userPermissions",
+          "shell",
+          "maintenanceCalendar",
+          "chatAssistant",
           "partCatalogue"
         ]
       }

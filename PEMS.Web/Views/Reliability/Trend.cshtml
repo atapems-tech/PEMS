@@ -29,7 +29,7 @@
         <input type="hidden" name="pointId" value="@Model.ConditionMonitoringPointId" />
         <div>
             <pems-label css="small mb-0">@Localizer["Range"]</pems-label>
-            <pems-select scale="small" name="range" onchange="this.form.submit()">
+            <pems-select scale="small" name="range" data-pems-change="submit-form">
                 @foreach (var r in new[] { "7", "30", "90", "365" })
                 {
                     <option value="@r" selected="@(r == selectedRange)">@Localizer["Last"] @r @Localizer["days"]</option>

@@ -37,25 +37,13 @@
         var nav = doc.getElementById("pemsSidebar");
         if (!nav || nav.querySelector(".pems-sb-search")) return null;
 
-        var wrap = doc.createElement("div");
-        wrap.className = "pems-sb-search";
-        var icon = doc.createElement("i");
-        icon.className = "bi bi-search";
-        icon.setAttribute("aria-hidden", "true");
-        var input = doc.createElement("input");
-        input.type = "search";
-        input.className = "pems-sb-search-input";
+        // markup: the page's registered templates (script-templates, set shell)
+        var wrap = window.PemsTemplate.clone("sb-search", doc);
+        var input = wrap.querySelector("input");
         input.placeholder = cfg.placeholder || "";
         input.setAttribute("aria-label", cfg.placeholder || "Search menu");
-        input.setAttribute("autocomplete", "off");
-        input.setAttribute("aria-controls", "pemsSidebar");
-        wrap.appendChild(icon);
-        wrap.appendChild(input);
 
-        var status = doc.createElement("div");
-        status.className = "pems-sb-status";
-        status.setAttribute("role", "status");
-        status.setAttribute("aria-live", "polite");
+        var status = window.PemsTemplate.clone("sb-status", doc);
 
         nav.insertBefore(wrap, nav.firstChild);
         nav.insertBefore(status, wrap.nextElementSibling);

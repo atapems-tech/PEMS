@@ -70,13 +70,7 @@
     function toast(kind, message, retry) {
         var host = byId('pmToasts');
         if (!host) return;
-        var el = document.createElement('div');
-        el.className = 'pm-toast is-' + kind;
-        el.setAttribute('role', kind === 'error' ? 'alert' : 'status');
-        var msg = document.createElement('span');
-        msg.className = 'pm-toast-msg';
-        msg.textContent = message;
-        el.appendChild(msg);
+        var el = PemsTemplate.fill(PemsTemplate.clone('pm-toast'), { root: { addClass: 'is-' + kind, attrs: { role: kind === 'error' ? 'alert' : 'status' } }, msg: message });
         var close = function () { if (el.parentNode) el.parentNode.removeChild(el); };
         if (retry) {
             var rb = PemsTemplate.clone('pm-retry-button');
@@ -84,9 +78,7 @@
             rb.addEventListener('click', function () { close(); retry(); });
             el.appendChild(rb);
         }
-        var xb = document.createElement('button');
-        xb.type = 'button';
-        xb.className = 'btn-close';
+        var xb = PemsTemplate.clone('pm-close');
         xb.setAttribute('aria-label', t('dismiss'));
         xb.addEventListener('click', close);
         el.appendChild(xb);
@@ -232,9 +224,7 @@
         var idx = query ? text.toLowerCase().indexOf(query) : -1;
         if (idx < 0) { span.appendChild(document.createTextNode(text)); return; }
         span.appendChild(document.createTextNode(text.slice(0, idx)));
-        var mark = document.createElement('mark');
-        mark.className = 'pm-hit';
-        mark.textContent = text.slice(idx, idx + query.length);
+        var mark = PemsTemplate.fill(PemsTemplate.clone('pm-hit'), { text: text.slice(idx, idx + query.length) });
         span.appendChild(mark);
         span.appendChild(document.createTextNode(text.slice(idx + query.length)));
     }

@@ -44,7 +44,7 @@
 <pems-content-card css="mb-3">
     <pems-form method="get"><pems-row gap="2">
         <pems-col span="auto">
-            <pems-select scale="small" name="status" onchange="this.form.submit()">
+            <pems-select scale="small" name="status" data-pems-change="submit-form">
                 <option value="">@Localizer["All"]</option>
                 <option value="Draft" selected="@(statusFilter == "Draft")">Draft</option>
                 <option value="Approved" selected="@(statusFilter == "Approved")">Approved</option>

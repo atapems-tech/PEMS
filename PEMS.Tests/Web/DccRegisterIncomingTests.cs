@@ -357,7 +357,7 @@ public class DccRegisterIncomingTests
         foreach (var p in LetterComposeRules.Priorities) Assert.Contains($"<option value=\"{p}\"", html);
         foreach (var c in LetterComposeRules.Categories) Assert.Contains($"<option value=\"{c}\"", html);
         foreach (var l in LetterComposeRules.Confidentialities) Assert.Contains($"<option value=\"{l}\"", html);
-        foreach (var ch in IncomingCorrespondenceRules.Channels) Assert.Contains($"name=\"receiptChannel\" value=\"{ch}\"", html);
+        foreach (var ch in IncomingCorrespondenceRules.Channels) Assert.Matches($"name=\"receiptChannel\"[^>]*value=\"{ch}\"", html);   // the input component writes name, type, value in that order
         foreach (var t in IncomingCorrespondenceRules.PartyTypes) Assert.Contains($"<option value=\"{t}\"", html);
         foreach (var t in IncomingCorrespondenceRules.LinkTypes) Assert.Contains($"<option value=\"{t}\"", html);
         Assert.Contains("<option value=\"1\">JPC Plant</option>", html);

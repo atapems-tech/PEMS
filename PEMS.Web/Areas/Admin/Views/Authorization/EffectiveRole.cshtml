@@ -19,7 +19,7 @@
         <pems-form class="mb-3 pems-s-0fd8744d" method="get"><pems-flex gap="2" align="end">
             <div class="flex-grow-1">
                 <pems-label>@Localizer["Role"]</pems-label>
-                <pems-select name="roleName" onchange="this.form.submit()">
+                <pems-select name="roleName" data-pems-change="submit-form">
                     <option value="">@Localizer["— select a role —"]</option>
                     @foreach (var r in Model.AllRoles)
                     {

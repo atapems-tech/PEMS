@@ -172,11 +172,8 @@
 
         var upload = source.getAttribute('data-pems-rte-upload');
         var readOnly = textarea.readOnly || textarea.disabled;
-        var holder = document.createElement('div');
-        holder.className = 'pems-rte-box';
-        var area = document.createElement('div');
-        area.className = 'pems-rte-box__area';
-        holder.appendChild(area);
+        var holder = window.PemsTemplate.clone('rte-box');
+        var area = holder.firstElementChild;
         // the editor sits directly under its textarea, inside the field's own column
         textarea.parentNode.insertBefore(holder, textarea.nextSibling);
         textarea.hidden = true;

@@ -145,7 +145,7 @@
                         </pems-col>
                         <pems-col md="3">
                             <pems-label>@Localizer["Personnel Type"]</pems-label>
-                            <pems-select name="personnelType" onchange="document.getElementById('createVendorField').hidden = this.value === 'Internal'">
+                            <pems-select name="personnelType" data-pems-change="toggle-hidden" data-pems-target="#createVendorField" data-pems-hide-when="value:Internal">
                                 @foreach (var t in personnelTypes) { <option value="@t">@t</option> }
                             </pems-select>
                         </pems-col>
@@ -165,7 +165,7 @@
                         <pems-col span="12"><hr /></pems-col>
                         <pems-col span="12">
                             <pems-check-row>
-                                <pems-input kind="check" type="checkbox" name="createUser" value="true" id="createUserCheck" onclick="document.getElementById('createUserFields').hidden = !(this.checked);" />
+                                <pems-input kind="check" type="checkbox" name="createUser" value="true" id="createUserCheck" data-pems-click="toggle-hidden" data-pems-target="#createUserFields" data-pems-hide-when="unchecked" />
                                 <label class="form-check-label fw-bold" for="createUserCheck">
                                     <pems-icon name="bi-person-badge" /> آیا نیاز است یوزر لاگین هم برای این کارمند ساخته بشه؟
                                 </label>
@@ -235,7 +235,7 @@
                             </pems-col>
                             <pems-col md="3">
                                 <pems-label>@Localizer["Personnel Type"]</pems-label>
-                                <pems-select name="personnelType" onchange="document.getElementById('editVendorField_@e.EmployeeId').hidden = this.value === 'Internal'">
+                                <pems-select name="personnelType" data-pems-change="toggle-hidden" data-pems-target="#editVendorField_@e.EmployeeId" data-pems-hide-when="value:Internal">
                                     @foreach (var t in personnelTypes) { <option value="@t" selected="@(t == e.PersonnelType)">@t</option> }
                                 </pems-select>
                             </pems-col>

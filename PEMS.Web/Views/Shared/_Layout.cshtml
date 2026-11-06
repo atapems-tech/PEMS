@@ -153,7 +153,7 @@
             </a>
 
             <div class="dropdown">
-                <a href="#" class="text-secondary position-relative dropdown-toggle" data-bs-toggle="dropdown" id="notifBell" title="@Localizer["Notifications"]" onclick="loadNotifDropdown()">
+                <a href="#" class="text-secondary position-relative dropdown-toggle" data-bs-toggle="dropdown" id="notifBell" title="@Localizer["Notifications"]" data-pems-click="call" data-pems-fn="loadNotifDropdown" data-pems-arg="none">
                     <pems-icon name="bi-bell" css="fs-5" />
                     <pems-badge tone="danger" css="rounded-pill position-absolute top-0 start-100 translate-middle @(unreadCount > 0 ? "" : "d-none")" id="notifBadge">@(unreadCount > 0 ? unreadCount.ToString() : "")</pems-badge>
                 </a>
