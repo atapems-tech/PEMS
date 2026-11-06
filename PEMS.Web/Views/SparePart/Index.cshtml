@@ -83,12 +83,12 @@
                                 { <span class="vs-pill vs-pill--success">@p.QuantityOnHand @p.Unit</span> }
                             </pems-table-cell>
                             <pems-table-cell class="lp-actions">
-                                <button type="button" class="lp-act lp-act--always" data-bs-toggle="modal" data-bs-target="#editPartModal" data-fill-sparepartid="@p.SparePartId" data-fill-partnumber="@p.PartNumber" data-fill-partname="@p.PartName" data-fill-manufacturer="@p.Manufacturer" data-fill-model="@p.Model" data-fill-unit="@p.Unit" data-fill-storagelocation="@p.StorageLocation" data-fill-quantityonhand="@p.QuantityOnHand" data-fill-minstocklevel="@p.MinStockLevel" data-fill-reorderpoint="@p.ReorderPoint" data-fill-description="@p.Description" title="@Localizer["Edit"]" aria-label="@Localizer["Edit"]">
+                                <pems-button plain="true" type="button" css="lp-act lp-act--always" data-bs-toggle="modal" data-bs-target="#editPartModal" data-fill-sparepartid="@p.SparePartId" data-fill-partnumber="@p.PartNumber" data-fill-partname="@p.PartName" data-fill-manufacturer="@p.Manufacturer" data-fill-model="@p.Model" data-fill-unit="@p.Unit" data-fill-storagelocation="@p.StorageLocation" data-fill-quantityonhand="@p.QuantityOnHand" data-fill-minstocklevel="@p.MinStockLevel" data-fill-reorderpoint="@p.ReorderPoint" data-fill-description="@p.Description" title="@Localizer["Edit"]" aria-label="@Localizer["Edit"]">
                                     <pems-icon name="bi-pencil" aria-hidden="true" />
-                                </button>
+                                </pems-button>
                                 <pems-form asp-action="Deactivate" method="post" class="d-inline">
                                     <input type="hidden" name="sparePartId" value="@p.SparePartId" />
-                                    <button type="submit" class="lp-act lp-act--always" title="@Localizer["Sp_Deactivate"]" aria-label="@Localizer["Sp_Deactivate"]"><pems-icon name="bi-slash-circle" aria-hidden="true" /></button>
+                                    <pems-button plain="true" type="submit" css="lp-act lp-act--always" title="@Localizer["Sp_Deactivate"]" aria-label="@Localizer["Sp_Deactivate"]"><pems-icon name="bi-slash-circle" aria-hidden="true" /></pems-button>
                                 </pems-form>
                             </pems-table-cell>
                         </pems-table-row>

@@ -76,6 +76,8 @@ public sealed record ButtonFrameOptions : FrameOptions
     public bool Disabled { get; init; }
     /// <summary>button (default), a, label or span.</summary>
     public string As { get; init; } = "button";
+    /// <summary>A button with no Bootstrap button classes: only the page's own classes are written (tab links, icon buttons, menu items ...); tone, size and outline are ignored. No class attribute when there is none.</summary>
+    public bool Plain { get; init; }
 }
 
 /// <summary>Inputs of <see cref="PemsChart"/>: the chart host (drawn by the Bklit island from <c>data-bk-chart</c>) and its accessible copy of the numbers.</summary>

@@ -63,10 +63,10 @@
     @if (rowVersion != null) { <input type="hidden" form="pcForm" name="RowVersion" value="@rowVersion" /> }
 
     <div class="vs-toolbar pc-actionbar">
-        <button type="submit" form="pcForm" class="vs-btn vs-btn--sm"><pems-icon name="bi-save" /> @Localizer["Pc_Btn_Save"]</button>
+        <pems-button plain="true" type="submit" form="pcForm" css="vs-btn vs-btn--sm"><pems-icon name="bi-save" /> @Localizer["Pc_Btn_Save"]</pems-button>
         @if (a.CanSubmit)
         {
-            <button type="submit" form="pcForm" name="submitAfterSave" value="true" class="vs-btn vs-btn--primary vs-btn--sm"><pems-icon name="bi-send" /> @Localizer["Pc_Btn_SaveSubmit"]</button>
+            <pems-button plain="true" type="submit" form="pcForm" name="submitAfterSave" value="true" css="vs-btn vs-btn--primary vs-btn--sm"><pems-icon name="bi-send" /> @Localizer["Pc_Btn_SaveSubmit"]</pems-button>
         }
         else if (a.CanGenerateNumber)
         {
@@ -79,7 +79,7 @@
                 <pems-form asp-action="Execute" method="post" class="d-inline" data-pems-confirm="@Localizer["Pc_Confirm_Cancel"]">
                     <input type="hidden" name="id" value="@d.Id" />
                     <input type="hidden" name="action" value="Cancel" />
-                    <button type="submit" class="vs-btn vs-btn--sm vs-btn--danger"><pems-icon name="bi-x-circle" /> @Localizer["Pc_Btn_Cancel"]</button>
+                    <pems-button plain="true" type="submit" css="vs-btn vs-btn--sm vs-btn--danger"><pems-icon name="bi-x-circle" /> @Localizer["Pc_Btn_Cancel"]</pems-button>
                 </pems-form>
             }
         </div>
@@ -185,7 +185,7 @@
                     </pems-related-table>
                     @if (!d.Equipment.Any()) { <div class="vs-empty py-2">@Localizer["Pc_Empty_Equipment"]</div> }
                 </div>
-                <button type="button" class="vs-btn vs-btn--sm" data-bs-toggle="modal" data-bs-target="#pcEquipModal"><pems-icon name="bi-plus-lg" /> @Localizer["Pc_Btn_AddEquipment"]</button>
+                <pems-button plain="true" type="button" css="vs-btn vs-btn--sm" data-bs-toggle="modal" data-bs-target="#pcEquipModal"><pems-icon name="bi-plus-lg" /> @Localizer["Pc_Btn_AddEquipment"]</pems-button>
             </section>
 
             @* ------------------------------------------------ Class Info *@
@@ -217,13 +217,13 @@
                                 <pems-table-row class="pc-attr-row">
                                     <pems-table-cell><pems-input scale="small" type="text" form="pcForm" name="Attributes[@idx].Name" value="@extraAttrs[i].Name" maxlength="100" /></pems-table-cell>
                                     <pems-table-cell><pems-input scale="small" type="text" form="pcForm" name="Attributes[@idx].Value" value="@extraAttrs[i].Value" /></pems-table-cell>
-                                    <pems-table-cell><button type="button" class="vs-icon-btn pc-attr-remove" title="@Localizer["Pc_Btn_Remove"]" aria-label="@Localizer["Pc_Btn_Remove"]"><pems-icon name="bi-x-lg" /></button></pems-table-cell>
+                                    <pems-table-cell><pems-button plain="true" type="button" css="vs-icon-btn pc-attr-remove" title="@Localizer["Pc_Btn_Remove"]" aria-label="@Localizer["Pc_Btn_Remove"]"><pems-icon name="bi-x-lg" /></pems-button></pems-table-cell>
                                 </pems-table-row>
                             }
                         </pems-table-body>
                     </pems-related-table>
                 </div>
-                <button type="button" class="vs-btn vs-btn--sm" id="pcAddAttr" data-next-index="@(extraAttrs.Count + 1)"><pems-icon name="bi-plus-lg" /> @Localizer["Pc_Btn_AddAttribute"]</button>
+                <pems-button plain="true" type="button" css="vs-btn vs-btn--sm" id="pcAddAttr" data-next-index="@(extraAttrs.Count + 1)"><pems-icon name="bi-plus-lg" /> @Localizer["Pc_Btn_AddAttribute"]</pems-button>
                 <pems-help-text>@Localizer["Pc_Hint_FreeFormat"]</pems-help-text>
             </section>
         </pems-col>
@@ -344,9 +344,9 @@
                 <pems-label for="pcDedupQuery">@Localizer["Pc_Dedup_SearchLabel"]</pems-label>
                 <div class="input-group input-group-sm mb-2">
                     <pems-input id="pcDedupQuery" type="search" maxlength="100" autocomplete="off" />
-                    <button type="button" class="vs-btn vs-btn--sm" id="pcDedupSearch">@Localizer["Pc_Dedup_Search"]</button>
+                    <pems-button plain="true" type="button" css="vs-btn vs-btn--sm" id="pcDedupSearch">@Localizer["Pc_Dedup_Search"]</pems-button>
                 </div>
-                <button type="button" class="vs-btn vs-btn--sm mb-2" id="pcDedupCheck">@Localizer["Pc_Dedup_Check"]</button>
+                <pems-button plain="true" type="button" css="vs-btn vs-btn--sm mb-2" id="pcDedupCheck">@Localizer["Pc_Dedup_Check"]</pems-button>
                 <div id="pcDedupResult" role="status" aria-live="polite" class="small"></div>
             </section>
 
@@ -366,13 +366,13 @@
                             <span class="text-muted">@Localizer["Pc_Kind_" + at.Kind]</span>
                             <pems-form asp-action="RemoveAttachment" method="post" class="d-inline">
                                 <input type="hidden" name="id" value="@d.Id" /><input type="hidden" name="attachmentId" value="@at.Id" />
-                                <button class="vs-icon-btn" title="@Localizer["Pc_Btn_Remove"]" aria-label="@Localizer["Pc_Btn_Remove"]"><pems-icon name="bi-trash" /></button>
+                                <pems-button plain="true" css="vs-icon-btn" title="@Localizer["Pc_Btn_Remove"]" aria-label="@Localizer["Pc_Btn_Remove"]"><pems-icon name="bi-trash" /></pems-button>
                             </pems-form>
                         </pems-flex>
                     }
                 </ul>
                 @if (!d.Attachments.Any()) { <div class="text-muted small mb-2">@Localizer["Pc_Empty_Attachments"]</div> }
-                <button type="button" class="vs-btn vs-btn--sm" data-bs-toggle="modal" data-bs-target="#pcAttachModal"><pems-icon name="bi-upload" /> @Localizer["Pc_Btn_Upload"]</button>
+                <pems-button plain="true" type="button" css="vs-btn vs-btn--sm" data-bs-toggle="modal" data-bs-target="#pcAttachModal"><pems-icon name="bi-upload" /> @Localizer["Pc_Btn_Upload"]</pems-button>
                 <pems-help-text>@Localizer["Pc_Hint_PosItem"]</pems-help-text>
             </section>
         </pems-col>
@@ -451,7 +451,7 @@
                 <pems-form asp-action="AddNote" method="post"><pems-flex gap="2">
                     <input type="hidden" name="id" value="@d.Id" /><input type="hidden" name="returnTo" value="edit" />
                     <pems-input scale="small" name="text" maxlength="2000" placeholder="@Localizer["Pc_Hint_NoteReply"]" aria-label="@L("Notes")" />
-                    <button type="submit" class="vs-btn vs-btn--sm"><pems-icon name="bi-plus-lg" /> @Localizer["Pc_Btn_AddNote"]</button>
+                    <pems-button plain="true" type="submit" css="vs-btn vs-btn--sm"><pems-icon name="bi-plus-lg" /> @Localizer["Pc_Btn_AddNote"]</pems-button>
                 </pems-flex></pems-form>
             </section>
         </pems-col>
@@ -482,7 +482,7 @@
                 <div class="mb-2"><pems-label for="pc_equipQty">@L("InstalledQuantity")</pems-label><pems-input id="pc_equipQty" name="installedQuantity" type="number" step="0.0001" min="0" value="1" required /></div>
                 <pems-help-text>@Localizer["Pc_Hint_NewEquipment"]</pems-help-text>
             </pems-modal-body>
-            <pems-modal-footer><button type="button" class="vs-btn vs-btn--sm" data-bs-dismiss="modal">@Localizer["Pc_Btn_Close"]</button><button type="submit" class="vs-btn vs-btn--primary vs-btn--sm">@Localizer["Pc_Btn_Save"]</button></pems-modal-footer>
+            <pems-modal-footer><pems-button plain="true" type="button" css="vs-btn vs-btn--sm" data-bs-dismiss="modal">@Localizer["Pc_Btn_Close"]</pems-button><pems-button plain="true" type="submit" css="vs-btn vs-btn--primary vs-btn--sm">@Localizer["Pc_Btn_Save"]</pems-button></pems-modal-footer>
         </pems-form></pems-modal>
 
 <pems-modal id="pcAttachModal" tabindex="-1" aria-labelledby="pcAttachModalLabel" aria-hidden="true"><pems-form asp-action="UploadAttachment" method="post" enctype="multipart/form-data">
@@ -497,14 +497,14 @@
                     </pems-select>
                 </div>
             </pems-modal-body>
-            <pems-modal-footer><button type="button" class="vs-btn vs-btn--sm" data-bs-dismiss="modal">@Localizer["Pc_Btn_Close"]</button><button type="submit" class="vs-btn vs-btn--primary vs-btn--sm">@Localizer["Pc_Btn_Upload"]</button></pems-modal-footer>
+            <pems-modal-footer><pems-button plain="true" type="button" css="vs-btn vs-btn--sm" data-bs-dismiss="modal">@Localizer["Pc_Btn_Close"]</pems-button><pems-button plain="true" type="submit" css="vs-btn vs-btn--primary vs-btn--sm">@Localizer["Pc_Btn_Upload"]</pems-button></pems-modal-footer>
         </pems-form></pems-modal>
 
 <template id="pcAttrTemplate">
     <pems-table-row class="pc-attr-row">
         <pems-table-cell><pems-input scale="small" type="text" form="pcForm" name="Attributes[__i__].Name" maxlength="100" /></pems-table-cell>
         <pems-table-cell><pems-input scale="small" type="text" form="pcForm" name="Attributes[__i__].Value" /></pems-table-cell>
-        <pems-table-cell><button type="button" class="vs-icon-btn pc-attr-remove" title="@Localizer["Pc_Btn_Remove"]" aria-label="@Localizer["Pc_Btn_Remove"]"><pems-icon name="bi-x-lg" /></button></pems-table-cell>
+        <pems-table-cell><pems-button plain="true" type="button" css="vs-icon-btn pc-attr-remove" title="@Localizer["Pc_Btn_Remove"]" aria-label="@Localizer["Pc_Btn_Remove"]"><pems-icon name="bi-x-lg" /></pems-button></pems-table-cell>
     </pems-table-row>
 </template>
 

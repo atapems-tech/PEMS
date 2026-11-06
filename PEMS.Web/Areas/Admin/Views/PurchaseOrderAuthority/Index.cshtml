@@ -90,7 +90,7 @@
                                 <input type="hidden" name="maxAmount" value="@r.MaxAmount?.ToString(System.Globalization.CultureInfo.InvariantCulture)" />
                                 <input type="hidden" name="currency" value="@r.Currency" /><input type="hidden" name="approverRole" value="@r.ApproverRole" />
                                 <input type="hidden" name="description" value="@r.Description" /><input type="hidden" name="isActive" value="@((!r.IsActive).ToString().ToLowerInvariant())" />
-                                <button type="submit" class="lp-act lp-act--always" title="@Localizer[r.IsActive ? "Po_Deactivate" : "Po_Activate"]" aria-label="@Localizer[r.IsActive ? "Po_Deactivate" : "Po_Activate"]"><pems-icon css="@(r.IsActive ? "bi-toggle-on" : "bi-toggle-off")" aria-hidden="true" /></button>
+                                <pems-button plain="true" type="submit" css="lp-act lp-act--always" title="@Localizer[r.IsActive ? "Po_Deactivate" : "Po_Activate"]" aria-label="@Localizer[r.IsActive ? "Po_Deactivate" : "Po_Activate"]"><pems-icon css="@(r.IsActive ? "bi-toggle-on" : "bi-toggle-off")" aria-hidden="true" /></pems-button>
                             </pems-form>
                         </pems-table-cell>
                     </pems-table-row>

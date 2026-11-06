@@ -90,9 +90,9 @@
     <a class="pems-skip-link" href="#pemsMainContent">@Localizer["Shell_SkipToContent"]</a>
     <header class="pems-topbar">
         <pems-flex align="center" gap="2">
-            <button class="sidebar-toggle-btn" id="sidebarToggleBtn" type="button" aria-label="@Localizer["Shell_ToggleMenu"]">
+            <pems-button plain="true" css="sidebar-toggle-btn" id="sidebarToggleBtn" type="button" aria-label="@Localizer["Shell_ToggleMenu"]">
                 <pems-icon name="bi-list" />
-            </button>
+            </pems-button>
             <a class="brand text-decoration-none" asp-controller="Home" asp-action="Index" asp-area="">
                 <span class="brand-icon"><pems-icon name="bi-diagram-3-fill" /></span>
                 <span class="d-none d-sm-inline">@Localizer["PEMS"]</span>
@@ -163,13 +163,13 @@
             </div>
 
             <div class="dropdown pems-user-menu">
-                <button class="dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                <pems-button plain="true" css="dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                     <span class="pems-user-avatar">@(string.IsNullOrEmpty(User.Identity?.Name) ? "?" : User.Identity!.Name!.Substring(0, 1).ToUpper())</span>
                     <span class="d-none d-md-flex flex-column text-start">
                         <span class="fw-semibold">@(User.FindFirst("FullName")?.Value ?? User.Identity?.Name)</span>
                         <span class="text-muted pems-s-11a50812">@(User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role)?.Value)</span>
                     </span>
-                </button>
+                </pems-button>
                 <pems-dropdown-menu end="true">
                     <li><h6 class="dropdown-header">@User.Identity?.Name</h6></li>
                     <li><a class="dropdown-item" asp-controller="MyProfile" asp-action="Index" asp-area=""><pems-icon name="bi-person-badge" /> @Localizer["Shell_MyProfile"]</a></li>
@@ -181,7 +181,7 @@
                     <li><hr class="dropdown-divider" /></li>
                     <li>
                         <pems-form asp-controller="Account" asp-action="Logout" asp-area="" method="post">
-                            <button type="submit" class="dropdown-item"><pems-icon name="bi-box-arrow-right" /> @Localizer["Logout"]</button>
+                            <pems-button plain="true" type="submit" css="dropdown-item"><pems-icon name="bi-box-arrow-right" /> @Localizer["Logout"]</pems-button>
                         </pems-form>
                     </li>
                 </pems-dropdown-menu>
@@ -216,7 +216,7 @@
             <pems-toast tone="success" role="alert" data-bs-delay="5000" data-bs-autohide="true">
                 <pems-flex>
                     <div class="toast-body"><pems-icon name="bi-check-circle-fill" css="me-1" /> @TempData["Message"]</div>
-                    <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
+                    <pems-button plain="true" type="button" css="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></pems-button>
                 </pems-flex>
             </pems-toast>
         }
@@ -225,7 +225,7 @@
             <pems-toast tone="danger" role="alert" data-bs-delay="7000" data-bs-autohide="true">
                 <pems-flex>
                     <div class="toast-body"><pems-icon name="bi-exclamation-triangle-fill" css="me-1" /> @TempData["Error"]</div>
-                    <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
+                    <pems-button plain="true" type="button" css="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></pems-button>
                 </pems-flex>
             </pems-toast>
         }

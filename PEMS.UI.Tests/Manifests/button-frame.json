@@ -30,6 +30,9 @@
       "as": {
         "type": "string"
       },
+      "plain": {
+        "type": "boolean"
+      },
       "pageClass": {
         "type": [
           "string",

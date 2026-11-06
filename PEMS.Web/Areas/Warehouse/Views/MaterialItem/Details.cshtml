@@ -44,13 +44,13 @@
 </pems-content-card>
 
 <pems-nav css="mb-3">
-    <li class="nav-item"><button class="nav-link active" data-bs-toggle="tab" data-bs-target="#tab-stock" type="button"><pems-icon name="bi-boxes" /> Stock <pems-badge tone="neutral">@Model.Stocks.Count</pems-badge></button></li>
-    <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-tx" type="button"><pems-icon name="bi-list-ul" /> Recent Transactions</button></li>
+    <li class="nav-item"><pems-button plain="true" css="nav-link active" data-bs-toggle="tab" data-bs-target="#tab-stock" type="button"><pems-icon name="bi-boxes" /> Stock <pems-badge tone="neutral">@Model.Stocks.Count</pems-badge></pems-button></li>
+    <li class="nav-item"><pems-button plain="true" css="nav-link" data-bs-toggle="tab" data-bs-target="#tab-tx" type="button"><pems-icon name="bi-list-ul" /> Recent Transactions</pems-button></li>
     @if (Model.SourceImports.Any())
     {
-        <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-source" type="button"><pems-icon name="bi-file-earmark-excel" /> Source Imports <pems-badge tone="neutral">@Model.SourceImports.Count</pems-badge></button></li>
+        <li class="nav-item"><pems-button plain="true" css="nav-link" data-bs-toggle="tab" data-bs-target="#tab-source" type="button"><pems-icon name="bi-file-earmark-excel" /> Source Imports <pems-badge tone="neutral">@Model.SourceImports.Count</pems-badge></pems-button></li>
     }
-    <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-barcode" type="button"><pems-icon name="bi-upc-scan" /> @Localizer["Barcode"]</button></li>
+    <li class="nav-item"><pems-button plain="true" css="nav-link" data-bs-toggle="tab" data-bs-target="#tab-barcode" type="button"><pems-icon name="bi-upc-scan" /> @Localizer["Barcode"]</pems-button></li>
 </pems-nav>
 
 <pems-tab-content>

@@ -62,7 +62,7 @@
                                 <pems-form asp-action="ToggleActive" method="post" class="lp-rel-inline">
                                     <input type="hidden" name="ruleId" value="@r.ContractApprovalAuthorityRuleId" />
                                     <input type="hidden" name="isActive" value="@(!r.IsActive)" />
-                                    <button type="submit" class="lp-act lp-act--always" title="@(r.IsActive ? Localizer["Deactivate"] : Localizer["Activate"])" aria-label="@(r.IsActive ? Localizer["Deactivate"] : Localizer["Activate"])"><pems-icon css="@(r.IsActive ? "bi-toggle-on" : "bi-toggle-off")" aria-hidden="true" /></button>
+                                    <pems-button plain="true" type="submit" css="lp-act lp-act--always" title="@(r.IsActive ? Localizer["Deactivate"] : Localizer["Activate"])" aria-label="@(r.IsActive ? Localizer["Deactivate"] : Localizer["Activate"])"><pems-icon css="@(r.IsActive ? "bi-toggle-on" : "bi-toggle-off")" aria-hidden="true" /></pems-button>
                                 </pems-form>
                             </pems-table-cell>
                         </pems-table-row>

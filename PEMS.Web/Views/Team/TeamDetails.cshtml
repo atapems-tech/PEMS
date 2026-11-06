@@ -246,7 +246,7 @@
                                                   data-pems-confirm="@Localizer["این عملیات فقط تخصیص کارمند به این سمت را پایان می‌دهد؛ خودِ کارمند حذف نمی‌شود و سمت خالی (Vacant) باقی می‌ماند."]">
                                                 <input type="hidden" name="positionId" value="@p.PositionId" />
                                                 <input type="hidden" name="returnTeamId" value="@Model.TeamId" />
-                                                <button type="submit" class="dropdown-item text-danger"><pems-icon name="bi-person-dash" /> @Localizer["پایان تخصیص"]</button>
+                                                <pems-button plain="true" type="submit" css="dropdown-item text-danger"><pems-icon name="bi-person-dash" /> @Localizer["پایان تخصیص"]</pems-button>
                                             </pems-form>
                                         </li>
                                     }
@@ -258,7 +258,7 @@
                                                   data-pems-confirm="@(p.IsVacant ? Localizer["این سمت خالی غیرفعال شود؟"] : Localizer["این سمت اشغال شده است؛ غیرفعال‌کردن آن، تخصیص کارمند فعلی را هم پایان می‌دهد و سمت خالی خواهد شد. ادامه می‌دهید؟"])">
                                                 <input type="hidden" name="positionId" value="@p.PositionId" />
                                                 <input type="hidden" name="returnTeamId" value="@Model.TeamId" />
-                                                <button type="submit" class="dropdown-item text-danger"><pems-icon name="bi-x-circle" /> @Localizer["غیرفعال کردن"]</button>
+                                                <pems-button plain="true" type="submit" css="dropdown-item text-danger"><pems-icon name="bi-x-circle" /> @Localizer["غیرفعال کردن"]</pems-button>
                                             </pems-form>
                                         </li>
                                     }
