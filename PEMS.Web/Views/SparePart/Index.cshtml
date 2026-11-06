@@ -33,10 +33,10 @@
             <pems-list-tools search-for="spSearchForm">
                 <pems-list-filters form-id="spFilterForm" action="@Url.Action("Index")" count="@filterCount" reset-href="@Url.Action("Index", new { q })">
                     <input type="hidden" name="q" value="@q" />
-                    <div class="form-check form-switch mb-0">
+                    <pems-check-row switch css="mb-0">
                         <pems-input type="checkbox" role="switch" name="lowStockOnly" value="true" id="lowStockOnly" checked="@lowStockOnly" kind="check" />
                         <label class="form-check-label small" for="lowStockOnly">@Localizer["Sp_LowStockOnly"]</label>
-                    </div>
+                    </pems-check-row>
                 </pems-list-filters>
                 <pems-list-kpi-toggle target="spKpis" storage-key="pems.sparepart.kpis" />
                 <pems-list-reset-columns grid-key="SparePart" />

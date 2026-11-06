@@ -35,7 +35,7 @@
             if (b.dataset.pemsIcon) continue;
             b.dataset.pemsIcon = '1';
             if (b.querySelector('i.bi, svg')) continue;
-            if (b.closest('.nav-tabs, .nav-link, .pems-sidebar, .btn, .dropdown-item, .kpi-card')) continue;
+            if (b.closest('[role="tablist"], .nav-link, .pems-sidebar, .btn, .dropdown-item, .kpi-card')) continue;
             if (b.classList.contains('position-absolute')) continue;
             var text = (b.textContent || '').trim();
             if (!text || text.length > 28 || /^[\d.,%+\-/]+$/.test(text)) continue;

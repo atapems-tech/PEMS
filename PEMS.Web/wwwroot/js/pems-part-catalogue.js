@@ -43,10 +43,9 @@
         var inputId = host.dataset.inputId || ('pcl_' + Math.random().toString(36).slice(2));
         var listId = inputId + '_list';
 
-        var input = document.createElement('input');
+        var input = PemsTemplate.clone('pc-combobox-input');
         input.type = 'text';
         input.id = inputId;
-        input.className = 'form-control form-control-sm';
         input.autocomplete = 'off';
         input.setAttribute('role', 'combobox');
         input.setAttribute('aria-autocomplete', 'list');

@@ -52,7 +52,7 @@
                                 <strong>@r.Title</strong>
                                 @if (!r.IsActive) { <pems-badge tone="neutral">@Localizer["Org_Inactive"]</pems-badge> }
                                 @if (r.IsActive && r.IsVacant) { <pems-badge tone="warning">@Localizer["Org_Vacant"]</pems-badge> }
-                                @if (r.IssueCount > 0) { <a asp-action="Diagnostics" class="badge bg-danger text-decoration-none">@r.IssueCount</a> }
+                                @if (r.IssueCount > 0) { <a asp-action="Diagnostics" class="text-decoration-none"><pems-badge tone="danger">@r.IssueCount</pems-badge></a> }
                             </td>
                             <td class="small">@r.DepartmentName</td>
                             <td class="pems-s-bec7b1d5">

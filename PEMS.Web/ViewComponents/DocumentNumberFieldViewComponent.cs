@@ -4,7 +4,7 @@ using PEMS.Application.Interfaces;
 namespace PEMS.Web.ViewComponents;
 
 /// <summary>What the document-number field needs to render.</summary>
-public sealed record DocumentNumberFieldModel(string Name, string Label, string InputCss, bool Compact, DocumentNumberField Field);
+public sealed record DocumentNumberFieldModel(string Name, string Label, string? Scale, string? Css, bool Compact, DocumentNumberField Field);
 
 /// <summary>
 /// SCRUM-40: the number field of a create form. When the administrator's numbering scheme is active the number is assigned on save:
@@ -19,6 +19,6 @@ public class DocumentNumberFieldViewComponent : ViewComponent
     public DocumentNumberFieldViewComponent(INumberingSchemeService schemes) => _schemes = schemes;
 
     /// <param name="compact">inline forms: the label is for screen readers only and the hint is a tool tip</param>
-    public async Task<IViewComponentResult> InvokeAsync(string documentType, string name, string label, string inputCss = "form-control", bool compact = false)
-        => View(new DocumentNumberFieldModel(name, label, inputCss, compact, await _schemes.GetFieldAsync(documentType)));
+    public async Task<IViewComponentResult> InvokeAsync(string documentType, string name, string label, string? scale = null, string? css = null, bool compact = false)
+        => View(new DocumentNumberFieldModel(name, label, scale, css, compact, await _schemes.GetFieldAsync(documentType)));
 }

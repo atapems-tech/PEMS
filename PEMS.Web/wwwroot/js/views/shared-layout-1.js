@@ -5,8 +5,7 @@
 
         function showLiveToast(message, isError) {
             const area = document.getElementById('liveToastArea');
-            const el = PemsTemplate.fill(PemsTemplate.clone('toast-notif'), { message: message });
-            el.classList.add(isError ? 'text-bg-danger' : 'text-bg-primary');
+            const el = PemsTemplate.fill(PemsTemplate.clone(isError ? 'toast-notif-error' : 'toast-notif'), { message: message });
             area.appendChild(el);
             new bootstrap.Toast(el, { delay: 6000 }).show();
         }

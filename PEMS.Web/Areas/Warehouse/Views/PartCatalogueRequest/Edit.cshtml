@@ -126,7 +126,7 @@
                     </pems-select>
                 </div>
 
-                <div class="mb-2"><span class="form-label d-block">@L("Requester")</span><span>@d.RequesterName</span></div>
+                <div class="mb-2"><pems-label as="span" css="d-block">@L("Requester")</pems-label><span>@d.RequesterName</span></div>
 
                 @if (isChange)
                 {
@@ -328,11 +328,11 @@
                         </pems-select>
                     </pems-col>
                     <pems-col md="3">
-                        <span class="form-label d-block">@L("IsCritical") <span class="pc-req" aria-hidden="true">*</span></span>
+                        <pems-label as="span" css="d-block">@L("IsCritical") <span class="pc-req" aria-hidden="true">*</span></pems-label>
                         <span class="vs-pill vs-pill--neutral" id="pcIsCritical">@(d.IsCritical ? Localizer["Pc_Yes"] : Localizer["Pc_No"])</span>
                     </pems-col>
                     <pems-col md="3">
-                        <span class="form-label d-block">@L("IsCapital")</span>
+                        <pems-label as="span" css="d-block">@L("IsCapital")</pems-label>
                         <span class="vs-pill vs-pill--neutral" id="pcIsCapital">@(d.IsCapital ? Localizer["Pc_Yes"] : Localizer["Pc_No"])</span>
                     </pems-col>
                 </pems-row>
@@ -519,6 +519,7 @@
 </template>
 
 @section Scripts {
+    <pems-script-templates set="part-catalogue"></pems-script-templates>
     <script src="~/js/pems-part-catalogue.js" asp-append-version="true"></script>
     <script src="~/js/pems-part-catalogue-dedup.js" asp-append-version="true"></script>
 }

@@ -49,10 +49,10 @@
                             { <option value="@s" selected="@(s == status)">@StatusText(s)</option> }
                         </pems-select>
                     </div>
-                    <div class="form-check form-switch mb-0">
+                    <pems-check-row switch css="mb-0">
                         <pems-input type="checkbox" role="switch" name="assignedToMe" value="true" id="assignedToMeCheck" checked="@assignedToMe" kind="check" />
                         <label class="form-check-label small" for="assignedToMeCheck">@Localizer["Wo_AssignedToMe"]</label>
-                    </div>
+                    </pems-check-row>
                 </pems-list-filters>
                 <pems-list-kpi-toggle target="woKpis" storage-key="pems.wo.kpis" />
                 <pems-list-reset-columns grid-key="WorkOrder" />

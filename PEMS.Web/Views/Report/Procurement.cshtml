@@ -132,14 +132,7 @@
     @if (pipeline.TotalCount > pipeline.PageSize)
     {
         var totalPages = (int)Math.Ceiling(pipeline.TotalCount / (double)pipeline.PageSize);
-        <nav class="mt-2"><ul class="pagination pagination-sm mb-0">
-            @for (var p = 1; p <= totalPages; p++)
-            {
-                <li class="page-item @(p == pipeline.Page ? "active" : "")">
-                    <a class="page-link" asp-action="Procurement" asp-route-projectId="@ViewBag.SelectedProjectId" asp-route-disciplineId="@ViewBag.SelectedDisciplineId" asp-route-fromDate="@ViewBag.FromDate" asp-route-toDate="@ViewBag.ToDate" asp-route-page="@p">@p</a>
-                </li>
-            }
-        </ul></nav>
+        <pems-pager class="mt-2" scale="small" css="mb-0" current="@pipeline.Page" total="@totalPages" href="@(Url.Action("Procurement", new { projectId = ViewBag.SelectedProjectId, disciplineId = ViewBag.SelectedDisciplineId, fromDate = ViewBag.FromDate, toDate = ViewBag.ToDate, page = "__page__" })!.Replace("__page__", "{page}"))" />
     }
 </div>
 

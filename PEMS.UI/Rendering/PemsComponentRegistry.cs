@@ -98,6 +98,8 @@ public sealed class PemsComponentRegistry : IPemsComponentRegistry
         Register(UiKeys.Icon, typeof(PemsIcon));
         Register(UiKeys.Row, typeof(PemsRow));
         Register(UiKeys.Col, typeof(PemsCol));
+        Register(UiKeys.CheckRow, typeof(PemsCheckRow));
+        Register(UiKeys.Pager, typeof(PemsPager));
     }
 
     public void Register(string key, Type componentType)

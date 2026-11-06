@@ -21,7 +21,11 @@
           "projectIntelligence",
           "helpArticle",
           "helpDrawer",
-          "layout"
+          "layout",
+          "cartableSettings",
+          "permissionMatrix",
+          "userPermissions",
+          "partCatalogue"
         ]
       }
     },

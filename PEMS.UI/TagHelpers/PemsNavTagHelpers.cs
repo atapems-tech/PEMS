@@ -26,7 +26,7 @@ public static class FrameState
     public static string Toast(string tone, string? extra) => With("toast align-items-center text-bg-" + tone.ToLowerInvariant() + " border-0 show", extra);
 
     /// <summary>The table element: <c>table</c>, then <c>table-enterprise</c> and <c>table-sm</c> in that order when asked, then the page classes.</summary>
-    public static string Table(bool enterprise, bool small, string? extra) => With("table" + (enterprise ? " table-enterprise" : "") + (small ? " table-sm" : ""), extra);
+    public static string Table(bool enterprise, bool small, string? extra, bool plain = false) => plain ? (extra ?? "").Trim() : With("table" + (enterprise ? " table-enterprise" : "") + (small ? " table-sm" : ""), extra);
 }
 
 /// <summary>
@@ -87,7 +87,7 @@ public sealed class PemsBreadcrumbTagHelper(IPemsComponentRenderer renderer) : T
 [PemsFacade(UiKeys.TableFrame)]
 public sealed class PemsTableFrameTagHelper(IPemsComponentRenderer renderer) : TagHelper
 {
-    /// <summary>enterprise adds table-enterprise; empty for the plain Bootstrap table.</summary>
+    /// <summary>enterprise adds table-enterprise; plain writes no Bootstrap table class (the page's own table style); empty for the Bootstrap table.</summary>
     [HtmlAttributeName("kind")] public string? Kind { get; set; }
     /// <summary>small adds table-sm.</summary>
     [HtmlAttributeName("scale")] public string? Scale { get; set; }

@@ -146,6 +146,8 @@ public sealed record TextareaOptions : FrameOptions
 /// <summary>Inputs of <see cref="PemsFormLabel"/>: the form label; its text is the child content (from the page or from the model metadata).</summary>
 public sealed record FormLabelOptions : FrameOptions
 {
+    /// <summary>The element: label (default), or span / legend for a caption that labels no single control.</summary>
+    public string As { get; init; } = "label";
     public string? Css { get; init; }
 }
 
@@ -191,5 +193,28 @@ public sealed record ColOptions : FrameOptions
     public string? Lg { get; init; }
     public string? Xl { get; init; }
     public string? Xxl { get; init; }
+    public string? Css { get; init; }
+}
+
+// SCRUM-508: the check / switch row and the page-number pager.
+
+/// <summary>Inputs of <see cref="PemsCheckRow"/>: the wrapper of a check box, radio or switch and its label (<c>form-check</c>, <c>form-switch</c>); the input and label are the child content.</summary>
+public sealed record CheckRowOptions : FrameOptions
+{
+    /// <summary>A switch (<c>form-check form-switch</c>) instead of a plain check box.</summary>
+    public bool Switch { get; init; }
+    /// <summary>Checks side by side (<c>form-check-inline</c>).</summary>
+    public bool Inline { get; init; }
+    public string? Css { get; init; }
+}
+
+/// <summary>Inputs of <see cref="PemsPager"/>: page-number links (<c>pagination</c>); <c>Href</c> holds <c>{page}</c> where the page number goes.</summary>
+public sealed record PagerOptions : FrameOptions
+{
+    public int Current { get; init; } = 1;
+    public int Total { get; init; } = 1;
+    public string Href { get; init; } = "?page={page}";
+    /// <summary>small or large; empty for the default size.</summary>
+    public string? Scale { get; init; }
     public string? Css { get; init; }
 }
