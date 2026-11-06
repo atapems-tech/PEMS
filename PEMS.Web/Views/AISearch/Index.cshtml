@@ -4,7 +4,7 @@
 @inject IStringLocalizer<SharedResource> Localizer
 
 <div class="content-card mb-3">
-    <form method="get" class="row g-2 align-items-end">
+    <form method="get"><pems-row gap="2" css="align-items-end">
         <pems-col md="4">
             <pems-label css="small">@Localizer["Search Query"]</pems-label>
             <pems-input type="text" name="q" value="@ViewBag.Query" placeholder="e.g. P-101, pressure vessel datasheet, piping isometric ..." />
@@ -36,7 +36,7 @@
         <pems-col md="2">
             <pems-button tone="primary" size="small" css="w-100" type="submit"><pems-icon name="bi-search" /> @Localizer["Search"]</pems-button>
         </pems-col>
-    </form>
+    </pems-row></form>
 </div>
 
 <div class="content-card">

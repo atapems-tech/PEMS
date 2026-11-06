@@ -17,7 +17,7 @@
 
 <div class="content-card mb-3">
     <h6 class="mb-3">@Localizer["Register New Passkey"]</h6>
-    <form id="registerForm" class="row g-2 align-items-end" onsubmit="return false;">
+    <form id="registerForm" onsubmit="return false;"><pems-row gap="2" css="align-items-end">
         @Html.AntiForgeryToken()
         <pems-col md="4">
             <pems-label css="small">@Localizer["Nickname (optional)"]</pems-label>
@@ -28,7 +28,7 @@
                 <pems-icon name="bi-fingerprint" /> @Localizer["Register Passkey"]
             </pems-button>
         </pems-col>
-    </form>
+    </pems-row></form>
 </div>
 
 <div class="content-card">

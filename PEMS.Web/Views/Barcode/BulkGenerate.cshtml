@@ -15,7 +15,7 @@
 </div>
 
 <div class="content-card mb-3">
-    <form method="get" class="row g-2">
+    <form method="get"><pems-row gap="2">
         <pems-col md="4">
             <pems-label css="small mb-0">@Localizer["Discipline"]</pems-label>
             <pems-select name="disciplineIds" multiple size="4">
@@ -41,7 +41,7 @@
         <pems-col md="1" css="d-flex align-items-end">
             <pems-button tone="primary" css="w-100" type="submit"><pems-icon name="bi-funnel" /></pems-button>
         </pems-col>
-    </form>
+    </pems-row></form>
 </div>
 
 @if (noFilterApplied)

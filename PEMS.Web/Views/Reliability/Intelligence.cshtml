@@ -42,7 +42,7 @@
 </p>
 
 <div class="content-card mb-3">
-    <form method="get" class="row g-2 align-items-end">
+    <form method="get"><pems-row gap="2" css="align-items-end">
         <pems-col md="3">
             <pems-label css="small">@Localizer["From"]</pems-label>
             <pems-date name="from" value="@(from?.ToString("yyyy-MM-dd"))" scale="small" />
@@ -55,7 +55,7 @@
         <pems-col md="4" css="text-muted small">
             Period: @(from?.ToString("yyyy-MM-dd") ?? "all history") → @(to?.ToString("yyyy-MM-dd") ?? "now")
         </pems-col>
-    </form>
+    </pems-row></form>
 </div>
 
 @* ===================== Executive KPI Row ===================== *@

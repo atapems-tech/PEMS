@@ -59,7 +59,7 @@
     </pems-table>
     @if (!Model.Tasks.Any()) { <p class="text-muted">No tasks yet.</p> }
 
-    <form asp-action="AddTask" method="post" class="row g-2 mt-2">
+    <form asp-action="AddTask" method="post"><pems-row gap="2" css="mt-2">
         <input type="hidden" name="disciplineId" value="@s.DisciplineId" />
         <pems-col md="2">
             <pems-select scale="small" name="type">
@@ -81,7 +81,7 @@
         </pems-col>
         <pems-col md="2"><pems-date name="dueDate" scale="small" /></pems-col>
         <pems-col md="1"><pems-button tone="primary" size="small" css="w-100"><pems-icon name="bi-plus-lg" /></pems-button></pems-col>
-    </form>
+    </pems-row></form>
 </div>
 
 <pems-row gap="3">

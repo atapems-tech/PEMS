@@ -611,11 +611,11 @@ else
     <div class="content-card mb-3 border-warning">
         <h6 class="mb-2"><pems-icon name="bi-unlock" /> @Localizer["Reopen Work Order"]</h6>
         <p class="text-muted small mb-2">@Localizer["A formal reopen requires a reason and is audited; the Work Order returns to the verification stage."]</p>
-        <form asp-action="ReopenWorkOrder" method="post" class="row g-2">
+        <form asp-action="ReopenWorkOrder" method="post"><pems-row gap="2">
             <input type="hidden" name="id" value="@Model.WorkOrderId" />
             <pems-col md="9"><pems-input scale="small" name="reason" maxlength="500" required placeholder="@Localizer["Reason for reopening (required)"]" /></pems-col>
             <pems-col md="3"><pems-button tone="warning" size="small" outline="true" css="w-100" type="submit"><pems-icon name="bi-unlock" /> @Localizer["Reopen"]</pems-button></pems-col>
-        </form>
+        </pems-row></form>
     </div>
 }
 
@@ -664,7 +664,7 @@ else
 
     @if (Ctl(WoSection.Labor))
     {
-    <form asp-action="AddLaborEntry" method="post" class="row g-2 mt-2">
+    <form asp-action="AddLaborEntry" method="post"><pems-row gap="2" css="mt-2">
         <input type="hidden" name="workOrderId" value="@Model.WorkOrderId" />
         @if (Acc(WoSection.Labor) == SectionAccess.Correctable)
         {
@@ -686,7 +686,7 @@ else
         <pems-col md="1"><pems-input scale="small" name="overtimeHours" type="number" step="0.5" min="0" placeholder="OT" /></pems-col>
         <pems-col md="2"><pems-input scale="small" name="notes" placeholder="@Localizer["Notes (optional)"]" /></pems-col>
         <pems-col md="1"><pems-button tone="primary" size="small" css="w-100"><pems-icon name="bi-plus-lg" /></pems-button></pems-col>
-    </form>
+    </pems-row></form>
     }
     else
     {
@@ -764,7 +764,7 @@ else
         <pems-input type="text" id="spareUsageScanInput" dir="ltr" placeholder="@Localizer["Scan Material barcode..."]" />
         <pems-button tone="neutral" outline="true" type="button" id="spareUsageScanBtn">@Localizer["Resolve"]</pems-button>
     </div>
-    <form asp-action="AddSpareUsage" method="post" class="row g-2 mt-2">
+    <form asp-action="AddSpareUsage" method="post"><pems-row gap="2" css="mt-2">
         <input type="hidden" name="workOrderId" value="@Model.WorkOrderId" />
         @if (Acc(WoSection.SpareParts) == SectionAccess.Correctable)
         {
@@ -778,7 +778,7 @@ else
         <pems-col md="3"><pems-input scale="small" name="quantity" type="number" step="0.01" placeholder="@Localizer["Quantity"]" required /></pems-col>
         <pems-col md="3"><pems-input scale="small" name="unitCost" type="number" step="0.01" placeholder="@Localizer["Unit cost (optional)"]" /></pems-col>
         <pems-col md="2"><pems-button tone="primary" size="small" css="w-100"><pems-icon name="bi-plus-lg" /> @Localizer["Add"]</pems-button></pems-col>
-    </form>
+    </pems-row></form>
     }
 </div>
 }
@@ -855,7 +855,7 @@ else
 
     @if (Ctl(WoSection.RequiredSkills))
     {
-    <form asp-action="AddRequiredSkill" method="post" class="row g-2">
+    <form asp-action="AddRequiredSkill" method="post"><pems-row gap="2">
         <input type="hidden" name="workOrderId" value="@Model.WorkOrderId" />
         <pems-col md="4">
             <pems-select scale="small" name="skillId" required>
@@ -873,7 +873,7 @@ else
         </pems-col>
         <pems-col md="2"><pems-input scale="small" name="plannedHours" type="number" step="0.5" placeholder="@Localizer["Planned h"]" /></pems-col>
         <pems-col md="3"><pems-button tone="primary" size="small" css="w-100"><pems-icon name="bi-plus-lg" /> @Localizer["Add"]</pems-button></pems-col>
-    </form>
+    </pems-row></form>
     }
     else
     {
@@ -993,7 +993,7 @@ else
         <pems-input type="text" id="requiredMaterialScanInput" dir="ltr" placeholder="@Localizer["Scan Material barcode..."]" />
         <pems-button tone="neutral" outline="true" type="button" id="requiredMaterialScanBtn">@Localizer["Resolve"]</pems-button>
     </div>
-    <form asp-action="AddRequiredMaterial" method="post" class="row g-2">
+    <form asp-action="AddRequiredMaterial" method="post"><pems-row gap="2">
         <input type="hidden" name="workOrderId" value="@Model.WorkOrderId" />
         <pems-col md="6">
             <pems-select scale="small" name="materialItemId" id="requiredMaterialSelect" required>
@@ -1002,7 +1002,7 @@ else
         </pems-col>
         <pems-col md="3"><pems-input scale="small" name="requiredQuantity" type="number" step="0.001" placeholder="@Localizer["Quantity"]" required /></pems-col>
         <pems-col md="3"><pems-button tone="primary" size="small" css="w-100"><pems-icon name="bi-plus-lg" /> @Localizer["Add"]</pems-button></pems-col>
-    </form>
+    </pems-row></form>
     }
 </div>
 
@@ -1026,12 +1026,12 @@ else
     }
     else
     {
-        <form asp-action="CreateCrewForWorkOrder" method="post" class="row g-2">
+        <form asp-action="CreateCrewForWorkOrder" method="post"><pems-row gap="2">
             <input type="hidden" name="workOrderId" value="@Model.WorkOrderId" />
             <pems-col md="4"><pems-input scale="small" name="code" placeholder="@Localizer["کد Crew"]" required /></pems-col>
             <pems-col md="5"><pems-input scale="small" name="name" placeholder="@Localizer["نام Crew"]" required /></pems-col>
             <pems-col md="3"><pems-button tone="primary" size="small" outline="true" css="w-100"><pems-icon name="bi-plus-lg" /> @Localizer["ساخت Crew برای این WorkOrder"]</pems-button></pems-col>
-        </form>
+        </pems-row></form>
     }
 </div>
 

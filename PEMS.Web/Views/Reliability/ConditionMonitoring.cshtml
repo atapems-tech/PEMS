@@ -68,13 +68,13 @@
 </pems-row>
 
 <div class="content-card mb-3">
-    <form method="get" class="row g-2 align-items-end">
+    <form method="get"><pems-row gap="2" css="align-items-end">
         <pems-col span="auto">
             <pems-label css="small mb-0">@Localizer["Equipment ID"]</pems-label>
             <pems-input class="pems-w-140" scale="small" type="number" name="equipmentId" value="@equipmentId" />
         </pems-col>
         <pems-col span="auto"><pems-button tone="primary" size="small" type="submit">Load Points</pems-button></pems-col>
-    </form>
+    </pems-row></form>
 </div>
 
 @if (equipmentId.HasValue)

@@ -11,7 +11,7 @@
     <p class="text-muted small">
         @Localizer["Upload an Excel file with Equipment Tag / Point Tag / Reading Date / Value columns (optional Source, Notes). Records are append-only - nothing is written to the live Condition Readings table until you review the staged rows and click Commit. A row whose monitoring point/reading-date combination already matches an existing reading is flagged as a duplicate and is never committed twice."]
     </p>
-    <form asp-action="Upload" method="post" enctype="multipart/form-data" class="row g-2 align-items-end">
+    <form asp-action="Upload" method="post" enctype="multipart/form-data"><pems-row gap="2" css="align-items-end">
         <pems-col md="8">
             <pems-label css="small">@Localizer["Condition Reading Excel File"]</pems-label>
             <pems-input type="file" name="file" accept=".xlsx" required />
@@ -19,7 +19,7 @@
         <pems-col md="4">
             <pems-button tone="primary" css="w-100" type="submit"><pems-icon name="bi-cloud-upload" /> @Localizer["Upload"]</pems-button>
         </pems-col>
-    </form>
+    </pems-row></form>
 </div>
 
 <div class="content-card">

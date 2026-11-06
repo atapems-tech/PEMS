@@ -14,7 +14,7 @@
 <section class="vs-panel mb-3">
     <nav aria-label="breadcrumb" class="small mb-1"><a asp-action="Admin">@Localizer["Tm_Admin_Title"]</a> / <span class="tm-key">@s.Key</span></nav>
     <h2 class="h5 mb-3">@TaskManagerUi.Name(s.Name, s.NameFa)</h2>
-    <form asp-action="SaveSpace" method="post" class="row g-2">
+    <form asp-action="SaveSpace" method="post"><pems-row gap="2">
         <input type="hidden" name="Id" value="@s.Id" />
         <input type="hidden" name="Key" value="@s.Key" />
         <pems-col md="3"><pems-label css="small" for="sp-name">@Localizer["Tm_Field_Name"]</pems-label><pems-input scale="small" id="sp-name" name="Name" value="@s.Name" required maxlength="150" /></pems-col>
@@ -35,7 +35,7 @@
         </pems-col>
         <pems-col md="10"><pems-label css="small" for="sp-desc">@Localizer["Tm_Field_Description"]</pems-label><pems-input scale="small" id="sp-desc" name="Description" value="@s.Description" maxlength="1000" /></pems-col>
         <pems-col md="2" css="d-flex align-items-end"><pems-button tone="primary" size="small" css="w-100">@Localizer["Tm_Save"]</pems-button></pems-col>
-    </form>
+    </pems-row></form>
     <p class="small text-muted mt-2 mb-0">@Localizer["Tm_KeyImmutable"]</p>
 </section>
 
@@ -103,7 +103,7 @@
                     }
                 </tbody>
             </pems-table>
-            <form asp-action="AddType" method="post" class="row g-2">
+            <form asp-action="AddType" method="post"><pems-row gap="2">
                 <input type="hidden" name="workSpaceId" value="@s.Id" />
                 <pems-col md="3"><pems-label css="small" for="at-name">@Localizer["Tm_Field_Name"]</pems-label><pems-input scale="small" id="at-name" name="name" required maxlength="100" /></pems-col>
                 <pems-col md="3"><pems-label css="small" for="at-namefa">@Localizer["Tm_Field_NameFa"]</pems-label><pems-input scale="small" id="at-namefa" name="nameFa" maxlength="100" dir="rtl" /></pems-col>
@@ -112,7 +112,7 @@
                     <div class="form-check"><pems-input kind="check" type="checkbox" id="at-sub" name="isSubtask" value="true" /><label class="form-check-label small" for="at-sub">@Localizer["Tm_Subtask"]</label></div>
                     <pems-button tone="primary" size="small">@Localizer["Tm_Add"]</pems-button>
                 </pems-col>
-            </form>
+            </pems-row></form>
         </section>
     </pems-col>
 
@@ -122,7 +122,7 @@
             <p class="small text-muted">@Localizer["Tm_StatusesHint"]</p>
             @foreach (var st in Model.Statuses)
             {
-                <form asp-action="EditStatus" method="post" class="row g-1 mb-1 align-items-center @(st.IsActive ? "" : "text-muted")">
+                <form asp-action="EditStatus" method="post"><pems-row gap="1" css="mb-1 align-items-center @(st.IsActive ? "" : "text-muted")">
                     <input type="hidden" name="workSpaceId" value="@s.Id" /><input type="hidden" name="statusId" value="@st.Id" />
                     <pems-col span="3"><pems-input scale="small" name="name" value="@st.Name" required maxlength="100" aria-label="@Localizer["Tm_Field_Name"]" /></pems-col>
                     <pems-col span="3"><pems-input scale="small" name="nameFa" value="@st.NameFa" maxlength="100" dir="rtl" aria-label="@Localizer["Tm_Field_NameFa"]" /></pems-col>
@@ -137,9 +137,9 @@
                         <input type="hidden" name="isActive" value="false" />
                     </pems-col>
                     <pems-col span="2"><pems-button tone="neutral" size="small" outline="true" css="w-100">@Localizer["Tm_Save"]</pems-button></pems-col>
-                </form>
+                </pems-row></form>
             }
-            <form asp-action="AddStatus" method="post" class="row g-1 mt-2">
+            <form asp-action="AddStatus" method="post"><pems-row gap="1" css="mt-2">
                 <input type="hidden" name="workSpaceId" value="@s.Id" />
                 <pems-col span="4"><pems-input scale="small" name="name" required maxlength="100" placeholder="@Localizer["Tm_Field_Name"]" aria-label="@Localizer["Tm_Field_Name"]" /></pems-col>
                 <pems-col span="3"><pems-input scale="small" name="nameFa" maxlength="100" dir="rtl" placeholder="@Localizer["Tm_Field_NameFa"]" aria-label="@Localizer["Tm_Field_NameFa"]" /></pems-col>
@@ -149,7 +149,7 @@
                     </pems-select>
                 </pems-col>
                 <pems-col span="2"><pems-button tone="primary" size="small" css="w-100">@Localizer["Tm_Add"]</pems-button></pems-col>
-            </form>
+            </pems-row></form>
         </section>
 
         <section class="vs-panel mb-3" aria-labelledby="trTitle">

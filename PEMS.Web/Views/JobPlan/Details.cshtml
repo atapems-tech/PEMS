@@ -91,7 +91,7 @@
     </div>
     @if (!Model.RequiredSkills.Any()) { <p class="text-muted small">@Localizer["مهارت موردنیازی ثبت نشده."]</p> }
 
-    <form asp-action="AddRequiredSkill" method="post" class="row g-2">
+    <form asp-action="AddRequiredSkill" method="post"><pems-row gap="2">
         <input type="hidden" name="jobPlanId" value="@Model.JobPlanId" />
         <pems-col md="4">
             <pems-select scale="small" name="skillId" required>
@@ -109,7 +109,7 @@
         </pems-col>
         <pems-col md="2"><pems-input scale="small" name="plannedHours" type="number" step="0.5" placeholder="@Localizer["Planned h"]" /></pems-col>
         <pems-col md="3"><pems-button tone="primary" size="small" css="w-100"><pems-icon name="bi-plus-lg" /> @Localizer["Add"]</pems-button></pems-col>
-    </form>
+    </pems-row></form>
 </div>
 
 @* SCRUM-337 RelatedList: materials the job plan needs *@

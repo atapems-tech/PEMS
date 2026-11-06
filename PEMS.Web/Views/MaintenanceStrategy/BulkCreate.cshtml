@@ -46,7 +46,7 @@
 <p class="text-muted small">@Localizer["Rcm_BulkHint"]</p>
 
 <div class="content-card mb-3">
-    <form method="get" class="row g-2">
+    <form method="get"><pems-row gap="2">
         <pems-col md="4">
             <pems-label css="small mb-0">@Localizer["Rcm_Strategy"] (@Localizer["Rcm_ApprovedOrActive"])</pems-label>
             <pems-select scale="small" name="strategyId">
@@ -156,7 +156,7 @@
                 </p>
             </pems-col>
         }
-    </form>
+    </pems-row></form>
 </div>
 
 @if (noFilterApplied)

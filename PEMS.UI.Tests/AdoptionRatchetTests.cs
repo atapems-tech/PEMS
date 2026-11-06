@@ -48,7 +48,7 @@ public sealed class AdoptionRatchetTests
         // that is not a registered component; the baseline starts at today's size and only goes down.
         ("inline-style", new Regex(@"\sstyle=""", RegexOptions.Compiled), true, false),
         ("icon", new Regex(@"<i\b[^>]*\bclass=""[^""]*(?<![\w-])bi(?![\w-])", RegexOptions.Compiled), true, true),
-        ("layout-grid", new Regex(@"class=""[^""]*(?<![\w-])(row|col(-[a-z]+)?(-\d+)?)(?![\w-])", RegexOptions.Compiled), true, false),
+        ("layout-grid", new Regex(@"class=""[^""]*(?<![\w@(.-])(row|col(-[a-z]+)?(-\d+)?)(?![\w.-])", RegexOptions.Compiled), true, false),   // not a Razor variable called row (row.Allowed, @row)
         ("pagination", new Regex(@"class=""[^""]*(?<![\w-])(pagination|page-link)(?![\w-])", RegexOptions.Compiled), true, true),
         ("bare-button", new Regex(@"class=""btn(?![\w-])", RegexOptions.Compiled), true, true),
         ("inline-script", new Regex(@"<script>", RegexOptions.Compiled), true, false),

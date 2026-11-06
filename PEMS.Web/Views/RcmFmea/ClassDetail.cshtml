@@ -104,12 +104,12 @@
         @if (canEdit)
         {
             <div class="content-card mb-3">
-                <form asp-action="CreateFmeaDraft" method="post" class="row g-2">
+                <form asp-action="CreateFmeaDraft" method="post"><pems-row gap="2">
                     <input type="hidden" name="equipmentClassId" value="@equipmentClass.EquipmentClassId" />
                     <pems-col md="4"><pems-input scale="small" name="title" placeholder="Analysis title" required /></pems-col>
                     <pems-col md="6"><pems-input scale="small" name="description" placeholder="@Localizer["Description"]" /></pems-col>
                     <pems-col md="2"><pems-button tone="primary" size="small" css="w-100" type="submit">New FMEA Draft</pems-button></pems-col>
-                </form>
+                </pems-row></form>
             </div>
         }
 
@@ -164,7 +164,7 @@
 
                 @if (fmea.Status == "DRAFT" && canEdit)
                 {
-                    <form asp-action="AddFmeaItem" method="post" class="row g-2 mt-1">
+                    <form asp-action="AddFmeaItem" method="post"><pems-row gap="2" css="mt-1">
                         <input type="hidden" name="equipmentClassId" value="@equipmentClass.EquipmentClassId" />
                         <input type="hidden" name="fmeaAnalysisId" value="@fmea.FMEAAnalysisId" />
                         <pems-col md="3">
@@ -190,7 +190,7 @@
                             </pems-select>
                         </pems-col>
                         <pems-col span="12"><pems-button tone="neutral" size="small" outline="true" type="submit"><pems-icon name="bi-plus-lg" /> Add Item</pems-button></pems-col>
-                    </form>
+                    </pems-row></form>
                 }
             </div>
         }
@@ -202,7 +202,7 @@
         @if (canEdit && fmeaAnalyses.Any(x => x.Status == "APPROVED"))
         {
             <div class="content-card mb-3">
-                <form asp-action="CreateRcmDraft" method="post" class="row g-2">
+                <form asp-action="CreateRcmDraft" method="post"><pems-row gap="2">
                     <input type="hidden" name="equipmentClassId" value="@equipmentClass.EquipmentClassId" />
                     <pems-col md="8">
                         <pems-select scale="small" name="fmeaAnalysisId" required>
@@ -211,7 +211,7 @@
                         </pems-select>
                     </pems-col>
                     <pems-col md="4"><pems-button tone="primary" size="small" css="w-100" type="submit">New RCM Draft</pems-button></pems-col>
-                </form>
+                </pems-row></form>
             </div>
         }
         else if (canEdit)
@@ -344,7 +344,7 @@
 
                 @if (rcm.Status == "DRAFT" && canEdit && sourceFmea != null)
                 {
-                    <form asp-action="AddRcmDecision" method="post" class="row g-2 mt-1">
+                    <form asp-action="AddRcmDecision" method="post"><pems-row gap="2" css="mt-1">
                         <input type="hidden" name="equipmentClassId" value="@equipmentClass.EquipmentClassId" />
                         <input type="hidden" name="rcmAnalysisId" value="@rcm.RCMAnalysisId" />
                         <pems-col md="3">
@@ -389,7 +389,7 @@
                         </pems-col>
                         <pems-col md="6"><pems-input scale="small" name="rationale" placeholder="@Localizer["Rationale"]" /></pems-col>
                         <pems-col md="2"><pems-button tone="neutral" size="small" outline="true" css="w-100" type="submit"><pems-icon name="bi-plus-lg" /> Add Decision</pems-button></pems-col>
-                    </form>
+                    </pems-row></form>
                 }
             </div>
         }

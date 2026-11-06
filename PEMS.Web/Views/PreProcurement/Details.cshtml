@@ -60,26 +60,26 @@
             <pems-input kind="check" type="radio" name="target" id="pprNew" value="new" checked />
             <label class="form-check-label" for="pprNew">@Localizer["Ppr_NewMr"]</label>
         </div>
-        <div class="row g-2 mb-2 ms-3">
-            <div class="col-md-3"><pems-label css="small" for="pprNumber">@Localizer["Ppr_MrNumber"]</pems-label><pems-input scale="small" id="pprNumber" name="mrNumber" dir="ltr" /></div>
-            <div class="col-md-3"><pems-label css="small" for="pprProject">@Localizer["Ppr_Project"]</pems-label>
-                <pems-select scale="small" id="pprProject" name="projectId"><option value="">—</option>@foreach (var p in projects) { <option value="@p.ProjectId">@p.ProjectCode - @p.ProjectName</option> }</pems-select></div>
-            <div class="col-md-3"><pems-label css="small" for="pprDiscipline">@Localizer["Ppr_Discipline"]</pems-label>
-                <pems-select scale="small" id="pprDiscipline" name="disciplineId"><option value="">—</option>@foreach (var x in disciplines) { <option value="@x.DisciplineId">@x.Code - @x.Name</option> }</pems-select></div>
-            <div class="col-md-3"><pems-label css="small" for="pprRequired">@Localizer["Ppr_RequiredDate"]</pems-label><pems-date id="pprRequired" name="requiredDate" scale="small" dir="ltr" /></div>
-            <div class="col-12 small text-muted">@Localizer["Ppr_MrNumberHint"]</div>
-        </div>
+        <pems-row gap="2" css="mb-2 ms-3">
+            <pems-col md="3"><pems-label css="small" for="pprNumber">@Localizer["Ppr_MrNumber"]</pems-label><pems-input scale="small" id="pprNumber" name="mrNumber" dir="ltr" /></pems-col>
+            <pems-col md="3"><pems-label css="small" for="pprProject">@Localizer["Ppr_Project"]</pems-label>
+                <pems-select scale="small" id="pprProject" name="projectId"><option value="">—</option>@foreach (var p in projects) { <option value="@p.ProjectId">@p.ProjectCode - @p.ProjectName</option> }</pems-select></pems-col>
+            <pems-col md="3"><pems-label css="small" for="pprDiscipline">@Localizer["Ppr_Discipline"]</pems-label>
+                <pems-select scale="small" id="pprDiscipline" name="disciplineId"><option value="">—</option>@foreach (var x in disciplines) { <option value="@x.DisciplineId">@x.Code - @x.Name</option> }</pems-select></pems-col>
+            <pems-col md="3"><pems-label css="small" for="pprRequired">@Localizer["Ppr_RequiredDate"]</pems-label><pems-date id="pprRequired" name="requiredDate" scale="small" dir="ltr" /></pems-col>
+            <pems-col span="12" css="small text-muted">@Localizer["Ppr_MrNumberHint"]</pems-col>
+        </pems-row>
         @if (Model.DraftRequisitions.Count > 0)
         {
             <div class="form-check">
                 <pems-input kind="check" type="radio" name="target" id="pprExisting" value="existing" />
                 <label class="form-check-label" for="pprExisting">@Localizer["Ppr_ExistingMr"]</label>
             </div>
-            <div class="ms-3 mb-2 col-md-6">
+            <pems-col md="6" css="ms-3 mb-2">
                 <pems-select scale="small" name="existingMrId" aria-label="@Localizer["Ppr_ExistingMr"]">
                     @foreach (var m in Model.DraftRequisitions) { <option value="@m.Id">@m.Number - @m.Description</option> }
                 </pems-select>
-            </div>
+            </pems-col>
         }
         <pems-button tone="none" size="small" css="btn-primary" type="submit"><i class="bi bi-check2" aria-hidden="true"></i> @Localizer["Ppr_Convert"]</pems-button>
     </form>

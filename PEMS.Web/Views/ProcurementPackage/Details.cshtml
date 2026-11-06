@@ -168,7 +168,7 @@
     }
     @if (s.Status != "Closed")
     {
-        <form asp-action="AddCommunication" method="post" class="row g-2 m-0 px-2 py-2 lp-rel-add">
+        <form asp-action="AddCommunication" method="post"><pems-row gap="2" css="m-0 px-2 py-2 lp-rel-add">
             <input type="hidden" name="packageId" value="@s.ProcurementPackageId" />
             <pems-col md="2">
                 <pems-select scale="small" name="type">
@@ -187,7 +187,7 @@
             <pems-col md="3"><pems-input scale="small" name="subject" placeholder="@Localizer["Subject"]" required /></pems-col>
             <pems-col md="4"><pems-input scale="small" name="body" placeholder="@Localizer["Details"]" required /></pems-col>
             <pems-col md="1"><pems-button tone="primary" size="small" css="w-100" title="@Localizer["Add"]"><pems-icon name="bi-plus-lg" aria-hidden="true" /><span class="visually-hidden">@Localizer["Add"]</span></pems-button></pems-col>
-        </form>
+        </pems-row></form>
     }
 </pems-related-list>
 
@@ -208,7 +208,7 @@
     }
     @if (s.Status != "Closed")
     {
-        <form asp-action="AddApproval" method="post" class="row g-2 m-0 px-2 py-2 lp-rel-add">
+        <form asp-action="AddApproval" method="post"><pems-row gap="2" css="m-0 px-2 py-2 lp-rel-add">
             <input type="hidden" name="packageId" value="@s.ProcurementPackageId" />
             <pems-col md="3">
                 <pems-select scale="small" name="decision">
@@ -218,7 +218,7 @@
             </pems-col>
             <pems-col md="6"><pems-input scale="small" name="comment" placeholder="@Localizer["Comment (optional)"]" /></pems-col>
             <pems-col md="3"><pems-button tone="primary" size="small" css="w-100">@Localizer["PkD_RecordDecision"]</pems-button></pems-col>
-        </form>
+        </pems-row></form>
 
         <form asp-action="Closeout" method="post" class="px-3 pb-3" data-pems-confirm="@Localizer["PkD_ConfirmCloseout"]">
             <input type="hidden" name="packageId" value="@s.ProcurementPackageId" />

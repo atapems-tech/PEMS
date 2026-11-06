@@ -31,13 +31,13 @@
     {
         <div class="content-card mb-3">
             <h6>@Localizer["Definition details"] <span class="small text-muted">(@Localizer["shared by all versions"])</span></h6>
-            <form asp-action="UpdateDefinition" method="post" class="row g-2">
+            <form asp-action="UpdateDefinition" method="post"><pems-row gap="2">
                 <input type="hidden" name="id" value="@d.DefinitionId" />
                 <pems-col md="4"><pems-label css="small">@Localizer["Name"]</pems-label><pems-input scale="small" name="name" value="@d.Name" required maxlength="200" /></pems-col>
                 <pems-col md="4"><pems-label css="small">@Localizer["Persian name"]</pems-label><pems-input scale="small" name="nameFa" dir="rtl" value="@d.NameFa" maxlength="200" /></pems-col>
                 <pems-col md="4"><pems-label css="small">@Localizer["Description"]</pems-label><pems-input scale="small" name="description" value="@Model.Description" /></pems-col>
                 <pems-col span="12"><pems-button tone="primary" size="small">@Localizer["Save"]</pems-button></pems-col>
-            </form>
+            </pems-row></form>
         </div>
     }
 

@@ -20,7 +20,7 @@
 </div>
 
 <div class="content-card mb-3">
-    <form asp-action="Resolve" method="get" class="row g-2 align-items-end">
+    <form asp-action="Resolve" method="get"><pems-row gap="2" css="align-items-end">
         <pems-col md="8">
             <pems-label css="small">Scan or type a barcode code</pems-label>
             <pems-input type="text" name="code" dir="ltr" placeholder="PEMS-BR-..." required autofocus />
@@ -28,7 +28,7 @@
         <pems-col md="4">
             <pems-button tone="primary" css="w-100" type="submit"><pems-icon name="bi-search" /> @Localizer["Resolve"]</pems-button>
         </pems-col>
-    </form>
+    </pems-row></form>
 </div>
 
 <div class="content-card">

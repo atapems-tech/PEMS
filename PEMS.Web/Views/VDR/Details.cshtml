@@ -746,7 +746,7 @@ else
     else if (currentStageName == "LeadReview")
     {
         <h6 class="small fw-bold">@Localizer["Vd_FinalDecision"]</h6>
-        <form asp-action="LeadReview" method="post" class="row g-2">
+        <form asp-action="LeadReview" method="post"><pems-row gap="2">
             <input type="hidden" name="vdrItemId" value="@Model.VDRItemId" />
             <pems-col md="3">
                 <pems-label css="small">@Localizer["Vd_ReviewCategory"]</pems-label>
@@ -763,20 +763,20 @@ else
             <pems-col md="3" css="d-flex align-items-end">
                 <pems-button tone="primary" size="small" css="w-100" type="submit">@Localizer["Vd_RecordFinal"]</pems-button>
             </pems-col>
-        </form>
+        </pems-row></form>
     }
     else if (currentStageName == "ReturnToVendor")
     {
         <h6 class="small fw-bold">@Localizer["Vd_FormalReturn"]</h6>
         <p class="text-muted small">@Localizer["Vd_ReturnHint"]</p>
-        <form asp-action="ReturnToVendor" method="post" class="row g-2">
+        <form asp-action="ReturnToVendor" method="post"><pems-row gap="2">
             <input type="hidden" name="vdrItemId" value="@Model.VDRItemId" />
             <pems-col md="4"><pems-label css="small">@Localizer["Vd_ReplySheetNo"]</pems-label><pems-input scale="small" name="replySheetNo" /></pems-col>
             <pems-col md="4"><pems-label css="small">@Localizer["Vd_ClientTransmittalNo"]</pems-label><pems-input scale="small" name="clientTransmittalNo" /></pems-col>
             <pems-col md="4" css="d-flex align-items-end">
                 <pems-button tone="primary" size="small" css="w-100" type="submit"><pems-icon name="bi-send" /> @Localizer["Vd_ReturnToVendor"]</pems-button>
             </pems-col>
-        </form>
+        </pems-row></form>
     }
 </div>
 }
