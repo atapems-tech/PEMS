@@ -1,6 +1,8 @@
 /* PEMS Part Catalogue - client behaviour (progressive enhancement; every rule is re-validated on the server). */
 (function () {
     'use strict';
+    // markup comes from the page's registered templates (script-templates component, pems-template.js), never from a string in this file
+    function tpl(name, values) { return window.PemsTemplate.fill(window.PemsTemplate.clone(name), values || {}); }
 
     var page = document.querySelector('.pc-page');
     if (!page) return;
@@ -54,18 +56,14 @@
         input.placeholder = txt.search;
         input.value = host.dataset.text || '';
 
-        var hidden = document.createElement('input');
-        hidden.type = 'hidden';
+        var hidden = tpl('pc-hidden');
         hidden.name = host.dataset.name;
         if (host.dataset.form) hidden.setAttribute('form', host.dataset.form);
         var initial = host.dataset.id;
         hidden.value = (initial && initial !== '0') ? initial : '';
 
-        var list = document.createElement('ul');
+        var list = tpl('pc-lookup-list');
         list.id = listId;
-        list.className = 'pc-lookup-list pc-lookup-portal list-unstyled';
-        list.setAttribute('role', 'listbox');
-        list.hidden = true;
 
         host.appendChild(input);
         host.appendChild(hidden);
@@ -124,17 +122,11 @@
         function render() {
             list.replaceChildren();
             if (!items.length) {
-                var empty = document.createElement('li');
-                empty.className = 'pc-lookup-empty';
-                empty.textContent = txt.noResults;
-                list.appendChild(empty);
+                list.appendChild(tpl('pc-lookup-empty', { text: txt.noResults }));
             }
             items.forEach(function (it, i) {
-                var li = document.createElement('li');
+                var li = tpl('pc-lookup-item', { text: it.text });
                 li.id = listId + '_o' + i;
-                li.setAttribute('role', 'option');
-                li.className = 'pc-lookup-item';
-                li.textContent = it.text;
                 li.addEventListener('mousedown', function (e) { e.preventDefault(); pick(it, 'manual'); });
                 li.addEventListener('mousemove', function () { if (active !== i) highlight(i, false); });
                 list.appendChild(li);
@@ -224,8 +216,7 @@
         var current = keep ? sel.value : '';
         sel.replaceChildren(new Option('', ''));
         items.forEach(function (it) {
-            var o = document.createElement('option');
-            o.value = it.id; o.textContent = it.text;
+            var o = new Option(it.text, it.id);
             if (String(it.id) === String(current)) o.selected = true;
             sel.appendChild(o);
         });
@@ -385,8 +376,7 @@
             var isAuto = function () { return tcHidden.dataset.source === 'auto'; };
             var showCandidates = function (cands) {
                 cands.forEach(function (c) {
-                    var b = document.createElement('button');
-                    b.type = 'button'; b.className = 'pc-tc-cand'; b.textContent = c.text;
+                    var b = tpl('pc-tc-cand', { text: c.text });
                     b.addEventListener('click', function () { tcHost.pcSetValue(c, 'manual'); say('ok', tcStatus.dataset.txtPicked || ''); });
                     tcStatus.appendChild(b);
                 });

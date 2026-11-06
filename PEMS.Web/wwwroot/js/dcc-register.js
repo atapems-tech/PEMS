@@ -88,23 +88,21 @@
             function render(extra) {
                 list.replaceChildren();
                 items.forEach(function (it, i) {
-                    var li = doc.createElement("li");
-                    li.id = list.id + "-o" + i; li.setAttribute("role", "option"); li.setAttribute("aria-selected", "false");
+                    var li = tpl("dcc-combo-option");
+                    li.id = list.id + "-o" + i;
                     li.appendChild(opts.render(it));
                     li.addEventListener("mousedown", function (e) { e.preventDefault(); choose(i); });
                     list.appendChild(li);
                 });
                 if (extra) {
-                    var li2 = doc.createElement("li");
-                    li2.id = list.id + "-new"; li2.setAttribute("role", "option"); li2.setAttribute("aria-selected", "false"); li2.className = "dcr-opt-create";
+                    var li2 = tpl("dcc-combo-create");
+                    li2.id = list.id + "-new";
                     li2.appendChild(extra.content);
                     li2.addEventListener("mousedown", function (e) { e.preventDefault(); extra.onChoose(); close(); });
                     list.appendChild(li2);
                 }
                 if (!items.length && !extra) {
-                    var empty = doc.createElement("li");
-                    empty.className = "dcr-opt-empty"; empty.textContent = T("Dcc_NoResults");
-                    list.appendChild(empty);
+                    list.appendChild(tpl("dcc-combo-empty", { text: T("Dcc_NoResults") }));
                 }
                 open();
                 if (list.querySelector("[role=option]")) setActive(0);
@@ -227,13 +225,12 @@
                     var ctl = field.querySelector("input:not([type=radio]):not([type=hidden]), select, textarea, .dcr-drop");
                     if (ctl) ctl.setAttribute("aria-invalid", "true");
                 }
-                var li = doc.createElement("li"), a = doc.createElement("button");
-                a.type = "button"; a.className = "dcr-link"; a.textContent = msg;
+                var li = tpl("dcc-summary-item", { button: msg }), a = li.querySelector("button");
                 a.addEventListener("click", function () {
                     var c = field && field.querySelector("input:not([type=radio]):not([type=hidden]), select, textarea, .dcr-drop");
                     if (c) { c.scrollIntoView({ block: "center" }); c.focus(); }
                 });
-                li.appendChild(a); list.appendChild(li);
+                list.appendChild(li);
             });
             if (errors.length) {
                 var box = $("dcrSummary"); box.hidden = false; box.focus(); box.scrollIntoView({ block: "nearest" });
@@ -468,10 +465,9 @@
                 li.querySelector("button").addEventListener("click", function () { state.files = state.files.filter(function (x) { return x !== f; }); renderFiles(); if (!state.files.length) resetPreview(); });
                 ul.appendChild(li);
 
-                var pli = doc.createElement("li");
-                var pb = doc.createElement("button"); pb.type = "button"; pb.textContent = f.file.name;
-                pb.addEventListener("click", function () { preview(f); });
-                pli.appendChild(pb); pv.appendChild(pli);
+                var pli = tpl("dcc-preview-item", { button: f.file.name });
+                pli.querySelector("button").addEventListener("click", function () { preview(f); });
+                pv.appendChild(pli);
             });
         }
         function resetPreview() {

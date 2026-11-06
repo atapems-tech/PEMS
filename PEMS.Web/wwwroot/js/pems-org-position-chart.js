@@ -62,7 +62,7 @@
         var ul = null;
         if (reports.length) {
             ul = tpl("opc-reports");
-            reports.forEach(function (r) { var item = document.createElement("li"); item.textContent = r.positionTitle + " — " + (r.isVacant ? T("vacant") : r.employeeName); ul.appendChild(item); });
+            reports.forEach(function (r) { ul.appendChild(tpl("opc-report-item", { text: r.positionTitle + " — " + (r.isVacant ? T("vacant") : r.employeeName) })); });
         }
         row(T("reports") + " (" + reports.length + ")", ul || "—");
         if (n.issueCodes && n.issueCodes.length) row(T("issues"), n.issueCodes.join(", "));

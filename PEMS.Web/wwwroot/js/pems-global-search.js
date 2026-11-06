@@ -51,13 +51,11 @@
         }
 
         _buildPanel() {
-            this.panel = document.createElement('div');
-            this.panel.className = 'pems-search-panel';
+            this.panel = tpl('search-panel');
             this.panel.style.display = 'none';
 
             // موقعیت‌دهی نسبی به Input - Input باید داخل یک والد position:relative باشد
-            const wrapper = document.createElement('div');
-            wrapper.className = 'pems-search-wrapper';
+            const wrapper = tpl('search-wrapper');
             wrapper.style.position = 'relative';
             this.input.parentNode.insertBefore(wrapper, this.input);
             wrapper.appendChild(this.input);
