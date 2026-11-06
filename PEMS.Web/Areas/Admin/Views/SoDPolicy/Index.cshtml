@@ -24,36 +24,36 @@
 
         <pems-list-grid>
             <pems-list-table empty="@(Model.Count == 0)" empty-text="@Localizer["No SoD policies configured"]">
-                <thead>
-                    <tr>
-                        <th class="pems-w-240">@Localizer["Cannot follow"]</th>
-                        <th class="pems-w-40"><span class="visually-hidden">→</span></th>
-                        <th class="pems-w-240">@Localizer["With"]</th>
-                        <th>@Localizer["Why"]</th>
-                        <th class="pems-w-120">@Localizer["Ed_Status"]</th>
-                        <th class="pems-w-110"><span class="visually-hidden">@Localizer["Ed_Actions"]</span></th>
-                    </tr>
-                </thead>
-                <tbody>
+                <pems-table-head>
+                    <pems-table-row>
+                        <pems-table-header class="pems-w-240">@Localizer["Cannot follow"]</pems-table-header>
+                        <pems-table-header class="pems-w-40"><span class="visually-hidden">→</span></pems-table-header>
+                        <pems-table-header class="pems-w-240">@Localizer["With"]</pems-table-header>
+                        <pems-table-header>@Localizer["Why"]</pems-table-header>
+                        <pems-table-header class="pems-w-120">@Localizer["Ed_Status"]</pems-table-header>
+                        <pems-table-header class="pems-w-110"><span class="visually-hidden">@Localizer["Ed_Actions"]</span></pems-table-header>
+                    </pems-table-row>
+                </pems-table-head>
+                <pems-table-body>
                 @foreach (var p in Model)
                 {
-                    <tr class="lp-row">
-                        <td><code>@p.PermissionA</code></td>
-                        <td class="text-body-secondary"><pems-icon name="bi-arrow-right" aria-hidden="true" /></td>
-                        <td><code>@p.PermissionB</code></td>
-                        <td class="small"><span class="vs-title-cell" title="@p.Description">@p.Description</span></td>
-                        <td>
+                    <pems-table-row class="lp-row">
+                        <pems-table-cell><code>@p.PermissionA</code></pems-table-cell>
+                        <pems-table-cell class="text-body-secondary"><pems-icon name="bi-arrow-right" aria-hidden="true" /></pems-table-cell>
+                        <pems-table-cell><code>@p.PermissionB</code></pems-table-cell>
+                        <pems-table-cell class="small"><span class="vs-title-cell" title="@p.Description">@p.Description</span></pems-table-cell>
+                        <pems-table-cell>
                             @if (p.IsActive) { <span class="vs-pill vs-pill--icon vs-pill--success"><pems-icon name="bi-check2-circle" aria-hidden="true" /> @Localizer["UsL_Active"]</span> }
                             else { <span class="vs-pill vs-pill--icon vs-pill--neutral"><pems-icon name="bi-pause-circle" aria-hidden="true" /> @Localizer["Disabled"]</span> }
-                        </td>
-                        <td class="text-end">
+                        </pems-table-cell>
+                        <pems-table-cell class="text-end">
                             <form asp-action="ToggleActive" asp-route-id="@p.Id" method="post" class="d-inline">
                                 <button type="submit" class="lp-act lp-act--always" title="@(p.IsActive ? Localizer["Disable"] : Localizer["Enable"])" aria-label="@(p.IsActive ? Localizer["Disable"] : Localizer["Enable"])"><pems-icon css="@(p.IsActive ? "bi-pause-circle" : "bi-play-circle")" aria-hidden="true" /></button>
                             </form>
-                        </td>
-                    </tr>
+                        </pems-table-cell>
+                    </pems-table-row>
                 }
-                </tbody>
+                </pems-table-body>
             </pems-list-table>
         </pems-list-grid>
     </pems-list-panel>

@@ -154,24 +154,24 @@
             <h6 class="mb-2">Inputs</h6>
             <div class="table-scroll-area pems-s-f7dce87f">
                 <pems-table kind="enterprise" scale="small">
-                    <thead><tr><th>@Localizer["Material"]</th><th>@Localizer["Qty"]</th><th>Source Batch</th><th>@Localizer["Inventory"]</th><th></th></tr></thead>
-                    <tbody>
+                    <pems-table-head><pems-table-row><pems-table-header>@Localizer["Material"]</pems-table-header><pems-table-header>@Localizer["Qty"]</pems-table-header><pems-table-header>Source Batch</pems-table-header><pems-table-header>@Localizer["Inventory"]</pems-table-header><pems-table-header></pems-table-header></pems-table-row></pems-table-head>
+                    <pems-table-body>
                         @foreach (var i in Model.Inputs)
                         {
-                            <tr>
-                                <td>@i.MaterialCode</td>
-                                <td>@i.Quantity.ToString("N3") @i.UomCode</td>
-                                <td>@i.SourceBatchNumber</td>
-                                <td>@(i.PostedToInventory ? "Posted" : "-")</td>
-                                <td>
+                            <pems-table-row>
+                                <pems-table-cell>@i.MaterialCode</pems-table-cell>
+                                <pems-table-cell>@i.Quantity.ToString("N3") @i.UomCode</pems-table-cell>
+                                <pems-table-cell>@i.SourceBatchNumber</pems-table-cell>
+                                <pems-table-cell>@(i.PostedToInventory ? "Posted" : "-")</pems-table-cell>
+                                <pems-table-cell>
                                     @if (!i.PostedToInventory)
                                     {
                                         <pems-button tone="neutral" size="small" outline="true" type="button" data-bs-toggle="modal" data-bs-target="#postInputModal" data-fill-productioninputid="@i.ProductionInputId">Post</pems-button>
                                     }
-                                </td>
-                            </tr>
+                                </pems-table-cell>
+                            </pems-table-row>
                         }
-                    </tbody>
+                    </pems-table-body>
                 </pems-table>
             </div>
             @if (!Model.Inputs.Any()) { <p class="text-muted text-center py-2 small">No inputs recorded.</p> }
@@ -182,25 +182,25 @@
             <h6 class="mb-2">Outputs</h6>
             <div class="table-scroll-area pems-s-f7dce87f">
                 <pems-table kind="enterprise" scale="small">
-                    <thead><tr><th>@Localizer["Material"]</th><th>@Localizer["Batch"]</th><th>@Localizer["Qty"]</th><th>@Localizer["Class"]</th><th>@Localizer["Inventory"]</th><th></th></tr></thead>
-                    <tbody>
+                    <pems-table-head><pems-table-row><pems-table-header>@Localizer["Material"]</pems-table-header><pems-table-header>@Localizer["Batch"]</pems-table-header><pems-table-header>@Localizer["Qty"]</pems-table-header><pems-table-header>@Localizer["Class"]</pems-table-header><pems-table-header>@Localizer["Inventory"]</pems-table-header><pems-table-header></pems-table-header></pems-table-row></pems-table-head>
+                    <pems-table-body>
                         @foreach (var o in Model.Outputs)
                         {
-                            <tr>
-                                <td>@o.MaterialCode</td>
-                                <td><a asp-action="BatchDetails" asp-route-id="@o.ProductionBatchId">@o.BatchNumber</a></td>
-                                <td>@o.Quantity.ToString("N3") @o.UomCode</td>
-                                <td>@o.OutputClassification</td>
-                                <td>@(o.PostedToInventory ? "Posted" : "-")</td>
-                                <td>
+                            <pems-table-row>
+                                <pems-table-cell>@o.MaterialCode</pems-table-cell>
+                                <pems-table-cell><a asp-action="BatchDetails" asp-route-id="@o.ProductionBatchId">@o.BatchNumber</a></pems-table-cell>
+                                <pems-table-cell>@o.Quantity.ToString("N3") @o.UomCode</pems-table-cell>
+                                <pems-table-cell>@o.OutputClassification</pems-table-cell>
+                                <pems-table-cell>@(o.PostedToInventory ? "Posted" : "-")</pems-table-cell>
+                                <pems-table-cell>
                                     @if (!o.PostedToInventory)
                                     {
                                         <pems-button tone="neutral" size="small" outline="true" type="button" data-bs-toggle="modal" data-bs-target="#postOutputModal" data-fill-productionoutputid="@o.ProductionOutputId">Post</pems-button>
                                     }
-                                </td>
-                            </tr>
+                                </pems-table-cell>
+                            </pems-table-row>
                         }
-                    </tbody>
+                    </pems-table-body>
                 </pems-table>
             </div>
             @if (!Model.Outputs.Any()) { <p class="text-muted text-center py-2 small">No outputs recorded.</p> }

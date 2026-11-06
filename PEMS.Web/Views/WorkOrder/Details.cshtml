@@ -426,20 +426,20 @@ else
         <h6 class="mb-3">@Localizer["Workflow History"]</h6>
         <pems-table-scroll>
         <pems-related-table>
-            <thead><tr><th>@Localizer["Date"]</th><th>@Localizer["Action"]</th><th>@Localizer["From"]</th><th>@Localizer["To"]</th><th>@Localizer["By"]</th><th>@Localizer["Reason"]</th></tr></thead>
-            <tbody>
+            <pems-table-head><pems-table-row><pems-table-header>@Localizer["Date"]</pems-table-header><pems-table-header>@Localizer["Action"]</pems-table-header><pems-table-header>@Localizer["From"]</pems-table-header><pems-table-header>@Localizer["To"]</pems-table-header><pems-table-header>@Localizer["By"]</pems-table-header><pems-table-header>@Localizer["Reason"]</pems-table-header></pems-table-row></pems-table-head>
+            <pems-table-body>
                 @foreach (var h in wf!.HistorySummary.OrderByDescending(x => x.ActionDate))
                 {
-                    <tr>
-                        <td class="small"><bdi dir="ltr">@h.ActionDate.ToString("yyyy-MM-dd HH:mm")</bdi></td>
-                        <td class="small">@ActionText(h.ActionType)</td>
-                        <td class="small">@StageByName(h.FromStageName)</td>
-                        <td class="small">@StageByName(h.ToStageName)</td>
-                        <td class="small">@Who(h.UserId)</td>
-                        <td class="small text-muted">@h.Comment</td>
-                    </tr>
+                    <pems-table-row>
+                        <pems-table-cell class="small"><bdi dir="ltr">@h.ActionDate.ToString("yyyy-MM-dd HH:mm")</bdi></pems-table-cell>
+                        <pems-table-cell class="small">@ActionText(h.ActionType)</pems-table-cell>
+                        <pems-table-cell class="small">@StageByName(h.FromStageName)</pems-table-cell>
+                        <pems-table-cell class="small">@StageByName(h.ToStageName)</pems-table-cell>
+                        <pems-table-cell class="small">@Who(h.UserId)</pems-table-cell>
+                        <pems-table-cell class="small text-muted">@h.Comment</pems-table-cell>
+                    </pems-table-row>
                 }
-            </tbody>
+            </pems-table-body>
         </pems-related-table>
         </pems-table-scroll>
     </pems-content-card>
@@ -642,22 +642,22 @@ else
 
     <pems-table-scroll css="pems-s-7bf38d03">
         <pems-related-table>
-            <thead><tr><th>@Localizer["Employee"]</th><th>Team</th><th>@Localizer["Date"]</th><th>@Localizer["Regular Hrs"]</th><th>OT Hrs</th><th>Rate</th><th>@Localizer["OT Rate"]</th><th>@Localizer["Cost"]</th></tr></thead>
-            <tbody>
+            <pems-table-head><pems-table-row><pems-table-header>@Localizer["Employee"]</pems-table-header><pems-table-header>Team</pems-table-header><pems-table-header>@Localizer["Date"]</pems-table-header><pems-table-header>@Localizer["Regular Hrs"]</pems-table-header><pems-table-header>OT Hrs</pems-table-header><pems-table-header>Rate</pems-table-header><pems-table-header>@Localizer["OT Rate"]</pems-table-header><pems-table-header>@Localizer["Cost"]</pems-table-header></pems-table-row></pems-table-head>
+            <pems-table-body>
                 @foreach (var l in laborEntries)
                 {
-                    <tr>
-                        <td>@l.Employee?.FirstName @l.Employee?.LastName</td>
-                        <td class="small">@l.Team?.Name</td>
-                        <td class="small">@l.WorkDate.ToString("yyyy-MM-dd")</td>
-                        <td>@l.RegularHours</td>
-                        <td>@l.OvertimeHours</td>
-                        <td class="small">@l.Rate.ToString("N0")</td>
-                        <td class="small">@l.OvertimeRate.ToString("N0")</td>
-                        <td class="fw-bold">@l.LaborCost.ToString("N0")</td>
-                    </tr>
+                    <pems-table-row>
+                        <pems-table-cell>@l.Employee?.FirstName @l.Employee?.LastName</pems-table-cell>
+                        <pems-table-cell class="small">@l.Team?.Name</pems-table-cell>
+                        <pems-table-cell class="small">@l.WorkDate.ToString("yyyy-MM-dd")</pems-table-cell>
+                        <pems-table-cell>@l.RegularHours</pems-table-cell>
+                        <pems-table-cell>@l.OvertimeHours</pems-table-cell>
+                        <pems-table-cell class="small">@l.Rate.ToString("N0")</pems-table-cell>
+                        <pems-table-cell class="small">@l.OvertimeRate.ToString("N0")</pems-table-cell>
+                        <pems-table-cell class="fw-bold">@l.LaborCost.ToString("N0")</pems-table-cell>
+                    </pems-table-row>
                 }
-            </tbody>
+            </pems-table-body>
         </pems-related-table>
     </pems-table-scroll>
     @if (!laborEntries.Any()) { <p class="text-muted small">@Localizer["ساعت‌کاری هنوز ثبت نشده."]</p> }
@@ -712,19 +712,19 @@ else
     <h6 class="mb-3">@Localizer["Spare Parts Used"]</h6>
     <pems-table-scroll css="table-scroll-area pems-s-8da1c6e6">
     <pems-related-table>
-        <thead><tr><th>@Localizer["Material Code"]</th><th>@Localizer["Description"]</th><th>@Localizer["Qty"]</th><th>Returned</th><th>@Localizer["Unit Cost"]</th><th>@Localizer["Total"]</th><th></th></tr></thead>
-        <tbody>
+        <pems-table-head><pems-table-row><pems-table-header>@Localizer["Material Code"]</pems-table-header><pems-table-header>@Localizer["Description"]</pems-table-header><pems-table-header>@Localizer["Qty"]</pems-table-header><pems-table-header>Returned</pems-table-header><pems-table-header>@Localizer["Unit Cost"]</pems-table-header><pems-table-header>@Localizer["Total"]</pems-table-header><pems-table-header></pems-table-header></pems-table-row></pems-table-head>
+        <pems-table-body>
             @foreach (var s in sparesUsed)
             {
                 var outstanding = s.Quantity - (s.ReturnedQuantity ?? 0);
-                <tr>
-                    <td>@s.MaterialItem?.MaterialCode</td>
-                    <td>@s.MaterialItem?.Description</td>
-                    <td>@s.Quantity</td>
-                    <td>@(s.ReturnedQuantity ?? 0)</td>
-                    <td>@s.UnitCost</td>
-                    <td>@s.TotalCost</td>
-                    <td>
+                <pems-table-row>
+                    <pems-table-cell>@s.MaterialItem?.MaterialCode</pems-table-cell>
+                    <pems-table-cell>@s.MaterialItem?.Description</pems-table-cell>
+                    <pems-table-cell>@s.Quantity</pems-table-cell>
+                    <pems-table-cell>@(s.ReturnedQuantity ?? 0)</pems-table-cell>
+                    <pems-table-cell>@s.UnitCost</pems-table-cell>
+                    <pems-table-cell>@s.TotalCost</pems-table-cell>
+                    <pems-table-cell>
                         @if (outstanding > 0 && Ctl(WoSection.SpareParts))
                         {
                             <form asp-action="ReturnSpareUsage" method="post"><pems-flex gap="1">
@@ -738,10 +738,10 @@ else
                                 <pems-button tone="neutral" size="small" outline="true" type="submit" title="Return"><pems-icon name="bi-arrow-return-left" /></pems-button>
                             </pems-flex></form>
                         }
-                    </td>
-                </tr>
+                    </pems-table-cell>
+                </pems-table-row>
             }
-        </tbody>
+        </pems-table-body>
     </pems-related-table>
     </pems-table-scroll>
     @if (!sparesUsed.Any()) { <p class="text-muted small">@Localizer["No spare parts recorded yet."]</p> }
@@ -788,12 +788,12 @@ else
     <pems-content-card css="mt-3">
         <h6 class="mb-3"><pems-icon name="bi-list-ol" /> Tasks (@tasks.Count(t => t.IsCompleted)/@tasks.Count completed)</h6>
         <pems-related-table>
-            <thead><tr><th class="pems-w-50"></th><th class="pems-w-60">#</th><th>@Localizer["Title"]</th><th>@Localizer["Description"]</th><th>@Localizer["Completed"]</th></tr></thead>
-            <tbody>
+            <pems-table-head><pems-table-row><pems-table-header class="pems-w-50"></pems-table-header><pems-table-header class="pems-w-60">#</pems-table-header><pems-table-header>@Localizer["Title"]</pems-table-header><pems-table-header>@Localizer["Description"]</pems-table-header><pems-table-header>@Localizer["Completed"]</pems-table-header></pems-table-row></pems-table-head>
+            <pems-table-body>
                 @foreach (var t in tasks)
                 {
-                    <tr class="@(t.IsCompleted ? "text-muted" : "")">
-                        <td>
+                    <pems-table-row class="@(t.IsCompleted ? "text-muted" : "")">
+                        <pems-table-cell>
                             @if (Ctl(WoSection.JobPlanTasks))
                             {
                                 <form asp-action="@(t.IsCompleted ? "ReopenTask" : "CompleteTask")" method="post">
@@ -808,14 +808,14 @@ else
                             {
                                 <pems-icon class="pems-fs-11rem" css="@(t.IsCompleted ? "bi-check-square-fill text-success" : "bi-square")" />
                             }
-                        </td>
-                        <td class="small fw-bold">@t.TaskNumber</td>
-                        <td class="small @(t.IsCompleted ? "text-decoration-line-through" : "")">@t.Title</td>
-                        <td class="small text-muted">@t.Description</td>
-                        <td class="small">@(t.IsCompleted ? $"{t.CompletedBy} @ {t.CompletedDate:yyyy-MM-dd HH:mm}" : "-")</td>
-                    </tr>
+                        </pems-table-cell>
+                        <pems-table-cell class="small fw-bold">@t.TaskNumber</pems-table-cell>
+                        <pems-table-cell class="small @(t.IsCompleted ? "text-decoration-line-through" : "")">@t.Title</pems-table-cell>
+                        <pems-table-cell class="small text-muted">@t.Description</pems-table-cell>
+                        <pems-table-cell class="small">@(t.IsCompleted ? $"{t.CompletedBy} @ {t.CompletedDate:yyyy-MM-dd HH:mm}" : "-")</pems-table-cell>
+                    </pems-table-row>
                 }
-            </tbody>
+            </pems-table-body>
         </pems-related-table>
     </pems-content-card>
 }
@@ -888,16 +888,16 @@ else
     }
     <h6 class="mb-3"><pems-icon name="bi-box-seam" /> @Localizer["Required Materials"]</h6>
     <pems-related-table>
-        <thead><tr><th>@Localizer["Material"]</th><th>@Localizer["Required Qty"]</th><th>@Localizer["Whi_SupplyCode"]</th><th>@Localizer["Whi_Sourced"]</th><th></th></tr></thead>
-        <tbody>
+        <pems-table-head><pems-table-row><pems-table-header>@Localizer["Material"]</pems-table-header><pems-table-header>@Localizer["Required Qty"]</pems-table-header><pems-table-header>@Localizer["Whi_SupplyCode"]</pems-table-header><pems-table-header>@Localizer["Whi_Sourced"]</pems-table-header><pems-table-header></pems-table-header></pems-table-row></pems-table-head>
+        <pems-table-body>
             @foreach (var rm in requiredMaterials)
             {
                 var il = intake?.Lines.FirstOrDefault(l => l.WorkOrderMaterialId == rm.WorkOrderMaterialId);
                 var sourcedAlready = il != null && il.Requisitions.Count > 0;
-                <tr>
-                    <td class="small">@rm.MaterialItem?.MaterialCode - @rm.MaterialItem?.Description</td>
-                    <td>@rm.RequiredQuantity</td>
-                    <td class="small">
+                <pems-table-row>
+                    <pems-table-cell class="small">@rm.MaterialItem?.MaterialCode - @rm.MaterialItem?.Description</pems-table-cell>
+                    <pems-table-cell>@rm.RequiredQuantity</pems-table-cell>
+                    <pems-table-cell class="small">
                         @if (Ctl(WoSection.RequiredMaterials) && !sourcedAlready)
                         {
                         <form asp-action="SetMaterialSupplyCode" method="post"><pems-flex gap="1">
@@ -916,8 +916,8 @@ else
                         {
                             <span class="vs-pill @(rm.SupplyCode == PEMS.Domain.Entities.WorkOrderMaterialSupplyCodes.DirectPurchase ? "vs-pill--warning" : "vs-pill--neutral")">@Localizer["Whi_Supply_" + rm.SupplyCode]</span>
                         }
-                    </td>
-                    <td class="small">
+                    </pems-table-cell>
+                    <pems-table-cell class="small">
                         @if (il != null && rm.SupplyCode == PEMS.Domain.Entities.WorkOrderMaterialSupplyCodes.Stock)
                         {
                             <span dir="ltr">@il.SourcedQuantity.ToString("0.###") / @il.RequiredQuantity.ToString("0.###")</span>
@@ -927,8 +927,8 @@ else
                             }
                         }
                         else { <span class="text-muted">—</span> }
-                    </td>
-                    <td class="text-end">
+                    </pems-table-cell>
+                    <pems-table-cell class="text-end">
                         @if (Ctl(WoSection.RequiredMaterials))
                         {
                         <form asp-action="RemoveRequiredMaterial" method="post" class="d-inline">
@@ -937,10 +937,10 @@ else
                             <pems-button tone="danger" size="small" outline="true" type="submit" title="@Localizer["حذف"]"><pems-icon name="bi-x" /></pems-button>
                         </form>
                         }
-                    </td>
-                </tr>
+                    </pems-table-cell>
+                </pems-table-row>
             }
-        </tbody>
+        </pems-table-body>
     </pems-related-table>
     @if (!requiredMaterials.Any()) { <p class="text-muted small">@Localizer["متریال موردنیازی ثبت نشده."]</p> }
 

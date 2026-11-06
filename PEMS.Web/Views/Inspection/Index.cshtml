@@ -25,38 +25,38 @@
 
         <pems-list-grid>
             <pems-list-table grid-key="Inspection" empty="@(!Model.Items.Any())" empty-text="@Localizer["Ins_Empty"]">
-                <thead>
-                    <tr>
-                        <th class="pems-w-140" data-col-key="tag" data-resizable="true" data-min-width="100" data-max-width="200">@Localizer["Ins_Tag"]</th>
-                        <th class="pems-w-130" data-col-key="type" data-resizable="true" data-min-width="90" data-max-width="180">@Localizer["Cm_Type"]</th>
-                        <th class="pems-w-110" data-col-key="date" data-resizable="true" data-min-width="90" data-max-width="160">@Localizer["Cm_Date"]</th>
-                        <th class="pems-w-130" data-col-key="measurement" data-resizable="true" data-min-width="100" data-max-width="200">@Localizer["Cm_Measurement"]</th>
-                        <th data-col-key="limits" data-resizable="true" data-min-width="100" data-max-width="200" class="vs-hide-md pems-w-130">@Localizer["Ins_Limits"]</th>
-                        <th class="pems-w-110" data-col-key="condition" data-resizable="true" data-min-width="80" data-max-width="140">@Localizer["Cm_Condition"]</th>
-                        <th class="pems-w-110" data-col-key="nextDue" data-resizable="true" data-min-width="90" data-max-width="160">@Localizer["Cm_NextDue"]</th>
-                        <th class="pems-w-120" data-col-key="dueStatus" data-resizable="true" data-min-width="90" data-max-width="160">@Localizer["Cm_DueStatus"]</th>
-                        <th class="pems-w-190" data-col-key="actions" data-resizable="false"><span class="visually-hidden">@Localizer["Ed_Actions"]</span></th>
-                    </tr>
-                </thead>
-                <tbody>
+                <pems-table-head>
+                    <pems-table-row>
+                        <pems-table-header class="pems-w-140" data-col-key="tag" data-resizable="true" data-min-width="100" data-max-width="200">@Localizer["Ins_Tag"]</pems-table-header>
+                        <pems-table-header class="pems-w-130" data-col-key="type" data-resizable="true" data-min-width="90" data-max-width="180">@Localizer["Cm_Type"]</pems-table-header>
+                        <pems-table-header class="pems-w-110" data-col-key="date" data-resizable="true" data-min-width="90" data-max-width="160">@Localizer["Cm_Date"]</pems-table-header>
+                        <pems-table-header class="pems-w-130" data-col-key="measurement" data-resizable="true" data-min-width="100" data-max-width="200">@Localizer["Cm_Measurement"]</pems-table-header>
+                        <pems-table-header data-col-key="limits" data-resizable="true" data-min-width="100" data-max-width="200" class="vs-hide-md pems-w-130">@Localizer["Ins_Limits"]</pems-table-header>
+                        <pems-table-header class="pems-w-110" data-col-key="condition" data-resizable="true" data-min-width="80" data-max-width="140">@Localizer["Cm_Condition"]</pems-table-header>
+                        <pems-table-header class="pems-w-110" data-col-key="nextDue" data-resizable="true" data-min-width="90" data-max-width="160">@Localizer["Cm_NextDue"]</pems-table-header>
+                        <pems-table-header class="pems-w-120" data-col-key="dueStatus" data-resizable="true" data-min-width="90" data-max-width="160">@Localizer["Cm_DueStatus"]</pems-table-header>
+                        <pems-table-header class="pems-w-190" data-col-key="actions" data-resizable="false"><span class="visually-hidden">@Localizer["Ed_Actions"]</span></pems-table-header>
+                    </pems-table-row>
+                </pems-table-head>
+                <pems-table-body>
                     @foreach (var i in Model.Items)
                     {
-                        <tr class="lp-row">
-                            <td class="lp-no"><a asp-controller="Equipment" asp-action="Details" asp-route-id="@i.EquipmentId" class="lp-subject" title="@i.TagNumber">@i.TagNumber</a></td>
-                            <td class="small">@i.InspectionType</td>
-                            <td class="small"><span class="vs-num">@i.InspectionDate.ToString("yyyy-MM-dd")</span></td>
-                            <td class="small"><span class="vs-num">@(i.MeasurementValue.HasValue ? $"{i.MeasurementValue.Value:N2} {i.MeasurementUnit}" : "-")</span></td>
-                            <td class="small vs-hide-md"><span class="vs-num">@(i.LowerLimit.HasValue || i.UpperLimit.HasValue ? $"{i.LowerLimit:N2} - {i.UpperLimit:N2}" : "-")</span></td>
-                            <td>
+                        <pems-table-row class="lp-row">
+                            <pems-table-cell class="lp-no"><a asp-controller="Equipment" asp-action="Details" asp-route-id="@i.EquipmentId" class="lp-subject" title="@i.TagNumber">@i.TagNumber</a></pems-table-cell>
+                            <pems-table-cell class="small">@i.InspectionType</pems-table-cell>
+                            <pems-table-cell class="small"><span class="vs-num">@i.InspectionDate.ToString("yyyy-MM-dd")</span></pems-table-cell>
+                            <pems-table-cell class="small"><span class="vs-num">@(i.MeasurementValue.HasValue ? $"{i.MeasurementValue.Value:N2} {i.MeasurementUnit}" : "-")</span></pems-table-cell>
+                            <pems-table-cell class="small vs-hide-md"><span class="vs-num">@(i.LowerLimit.HasValue || i.UpperLimit.HasValue ? $"{i.LowerLimit:N2} - {i.UpperLimit:N2}" : "-")</span></pems-table-cell>
+                            <pems-table-cell>
                                 @switch (i.ConditionStatus)
                                 {
                                     case "Alert": <span class="vs-pill vs-pill--icon vs-pill--danger"><pems-icon name="bi-exclamation-triangle" aria-hidden="true" /> @Localizer["Ins_Alert"]</span> break;
                                     case "Normal": <span class="vs-pill vs-pill--success">@Localizer["Ins_Normal"]</span> break;
                                     default: <span class="text-muted small">@Localizer["Ins_NotApplicable"]</span> break;
                                 }
-                            </td>
-                            <td class="small"><span class="vs-num">@(i.NextInspectionDate?.ToString("yyyy-MM-dd") ?? "-")</span></td>
-                            <td>
+                            </pems-table-cell>
+                            <pems-table-cell class="small"><span class="vs-num">@(i.NextInspectionDate?.ToString("yyyy-MM-dd") ?? "-")</span></pems-table-cell>
+                            <pems-table-cell>
                                 @switch (i.DueStatus)
                                 {
                                     case "Overdue": <span class="vs-pill vs-pill--icon vs-pill--danger"><pems-icon name="bi-clock-history" aria-hidden="true" /> @Localizer["Overdue"]</span> break;
@@ -64,8 +64,8 @@
                                     case "OK": <span class="vs-pill vs-pill--success">@Localizer["Ins_Ok"]</span> break;
                                     default: <span class="text-muted small">@Localizer["Ins_NotApplicable"]</span> break;
                                 }
-                            </td>
-                            <td class="text-nowrap text-end">
+                            </pems-table-cell>
+                            <pems-table-cell class="text-nowrap text-end">
                                 @if (i.ConditionStatus == "Alert")
                                 {
                                     <form asp-action="RaiseWorkRequest" method="post" class="d-inline">
@@ -73,10 +73,10 @@
                                         <pems-button tone="danger" size="small" outline="true" type="submit"><pems-icon name="bi-exclamation-triangle" aria-hidden="true" /> @Localizer["Cm_RaiseWr"]</pems-button>
                                     </form>
                                 }
-                            </td>
-                        </tr>
+                            </pems-table-cell>
+                        </pems-table-row>
                     }
-                </tbody>
+                </pems-table-body>
             </pems-list-table>
 
             <pems-list-footer>

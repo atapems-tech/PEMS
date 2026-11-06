@@ -31,12 +31,12 @@
 
     <pems-table-scroll>
         <pems-table kind="enterprise" scale="small" css="align-middle">
-            <thead><tr><th>@Localizer["Code"]</th><th>@Localizer["Name"]</th><th>@Localizer["Description"]</th><th>@Localizer["Import aliases"]</th><th>@Localizer["Transmittal code"]</th><th>@Localizer["Employees"]</th><th>@Localizer["Documents"]</th><th>@Localizer["Active"]</th><th></th></tr></thead>
-            <tbody>
+            <pems-table-head><pems-table-row><pems-table-header>@Localizer["Code"]</pems-table-header><pems-table-header>@Localizer["Name"]</pems-table-header><pems-table-header>@Localizer["Description"]</pems-table-header><pems-table-header>@Localizer["Import aliases"]</pems-table-header><pems-table-header>@Localizer["Transmittal code"]</pems-table-header><pems-table-header>@Localizer["Employees"]</pems-table-header><pems-table-header>@Localizer["Documents"]</pems-table-header><pems-table-header>@Localizer["Active"]</pems-table-header><pems-table-header></pems-table-header></pems-table-row></pems-table-head>
+            <pems-table-body>
             @foreach (var d in Model)
             {
-                <tr class="@(d.IsActive ? "" : "text-muted")">
-                    <td colspan="7" class="p-1">
+                <pems-table-row class="@(d.IsActive ? "" : "text-muted")">
+                    <pems-table-cell colspan="7" class="p-1">
                         <form asp-action="EditDiscipline" method="post"><pems-row gap="1" css="align-items-center">
                             <input type="hidden" name="disciplineId" value="@d.DisciplineId" />
                             <pems-col md="1"><pems-input scale="small" name="code" value="@d.Code" maxlength="20" required aria-label="@Localizer["Code"]" /></pems-col>
@@ -47,16 +47,16 @@
                             <pems-col md="1"><pems-badge tone="neutral">@d.EmployeeCount</pems-badge> <pems-badge tone="neutral">@d.DocumentCount</pems-badge></pems-col>
                             <pems-col md="1"><pems-button tone="neutral" size="small" outline="true" title="@Localizer["Save"]" aria-label="@Localizer["Save"]"><pems-icon name="bi-save" /></pems-button></pems-col>
                         </pems-row></form>
-                    </td>
-                    <td colspan="2" class="text-end">
+                    </pems-table-cell>
+                    <pems-table-cell colspan="2" class="text-end">
                         <form asp-action="SetDisciplineActive" method="post" class="d-inline">
                             <input type="hidden" name="disciplineId" value="@d.DisciplineId" /><input type="hidden" name="isActive" value="@((!d.IsActive).ToString().ToLowerInvariant())" />
                             <pems-button tone="none" size="small" css="@(d.IsActive ? "btn-outline-danger" : "btn-outline-success")">@(d.IsActive ? Localizer["Deactivate"] : Localizer["Reactivate"])</pems-button>
                         </form>
-                    </td>
-                </tr>
+                    </pems-table-cell>
+                </pems-table-row>
             }
-            </tbody>
+            </pems-table-body>
         </pems-table>
         @if (!Model.Any()) { <p class="text-muted text-center py-3">@Localizer["No disciplines configured yet."]</p> }
     </pems-table-scroll>

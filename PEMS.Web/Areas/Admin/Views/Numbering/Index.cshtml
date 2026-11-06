@@ -23,55 +23,55 @@
         <div class="small text-muted px-3 py-2">@Localizer["Num_Tokens"] @foreach (var t in NumberingPattern.Tokens) { <code class="me-1">@t</code> }</div>
 
         <pems-related-table id="numberingTable" data-preview-url="@Url.Action("Preview")" data-err-network="@Localizer["Num_Err_Network"]">
-            <thead>
-                <tr>
-                    <th>@Localizer["Num_DocumentType"]</th>
-                    <th>@Localizer["Num_Pattern"]</th>
-                    <th class="pems-w-90">@Localizer["Num_Pad"]</th>
-                    <th class="pems-w-130">@Localizer["Num_Calendar"]</th>
-                    <th class="pems-w-130">@Localizer["Num_Reset"]</th>
-                    <th class="pems-w-70">@Localizer["Active"]</th>
-                    <th class="pems-w-90">@Localizer["Num_AllowManual"]</th>
-                    <th>@Localizer["Num_Preview"]</th>
-                    <th class="pems-w-90">@Localizer["Num_Version"]</th>
-                    <th class="pems-w-50"><span class="visually-hidden">@Localizer["Ed_Actions"]</span></th>
-                </tr>
-            </thead>
-            <tbody>
+            <pems-table-head>
+                <pems-table-row>
+                    <pems-table-header>@Localizer["Num_DocumentType"]</pems-table-header>
+                    <pems-table-header>@Localizer["Num_Pattern"]</pems-table-header>
+                    <pems-table-header class="pems-w-90">@Localizer["Num_Pad"]</pems-table-header>
+                    <pems-table-header class="pems-w-130">@Localizer["Num_Calendar"]</pems-table-header>
+                    <pems-table-header class="pems-w-130">@Localizer["Num_Reset"]</pems-table-header>
+                    <pems-table-header class="pems-w-70">@Localizer["Active"]</pems-table-header>
+                    <pems-table-header class="pems-w-90">@Localizer["Num_AllowManual"]</pems-table-header>
+                    <pems-table-header>@Localizer["Num_Preview"]</pems-table-header>
+                    <pems-table-header class="pems-w-90">@Localizer["Num_Version"]</pems-table-header>
+                    <pems-table-header class="pems-w-50"><span class="visually-hidden">@Localizer["Ed_Actions"]</span></pems-table-header>
+                </pems-table-row>
+            </pems-table-head>
+            <pems-table-body>
                 @foreach (var s in Model)
                 {
                     var formId = "num_" + s.DocumentType;
-                    <tr data-numbering-row>
-                        <td>
+                    <pems-table-row data-numbering-row>
+                        <pems-table-cell>
                             <strong>@Localizer["Num_Doc_" + s.DocumentType]</strong>
                             <pems-related-row-form id="@formId" action="@Url.Action("Save")">
                                 <input type="hidden" name="DocumentType" value="@s.DocumentType" />
                                 <input type="hidden" name="RowVersion" value="@s.RowVersion" />
                             </pems-related-row-form>
-                        </td>
-                        <td><pems-input scale="small" css="font-monospace" form="@formId" name="Pattern" value="@s.Pattern" maxlength="@NumberingPattern.MaxPatternLength" required aria-label="@Localizer["Num_Pattern"]" data-num-input /></td>
-                        <td><pems-input scale="small" form="@formId" type="number" name="PadWidth" value="@s.PadWidth" min="@NumberingPattern.MinPad" max="@NumberingPattern.MaxPad" aria-label="@Localizer["Num_Pad"]" data-num-input /></td>
-                        <td>
+                        </pems-table-cell>
+                        <pems-table-cell><pems-input scale="small" css="font-monospace" form="@formId" name="Pattern" value="@s.Pattern" maxlength="@NumberingPattern.MaxPatternLength" required aria-label="@Localizer["Num_Pattern"]" data-num-input /></pems-table-cell>
+                        <pems-table-cell><pems-input scale="small" form="@formId" type="number" name="PadWidth" value="@s.PadWidth" min="@NumberingPattern.MinPad" max="@NumberingPattern.MaxPad" aria-label="@Localizer["Num_Pad"]" data-num-input /></pems-table-cell>
+                        <pems-table-cell>
                             <pems-select scale="small" form="@formId" name="Calendar" aria-label="@Localizer["Num_Calendar"]" data-num-input>
                                 @foreach (var c in NumberingCalendars.All) { <option value="@c" selected="@(c == s.Calendar)">@Localizer["Num_Cal_" + c]</option> }
                             </pems-select>
-                        </td>
-                        <td>
+                        </pems-table-cell>
+                        <pems-table-cell>
                             <pems-select scale="small" form="@formId" name="ResetPeriod" aria-label="@Localizer["Num_Reset"]" data-num-input>
                                 @foreach (var r in NumberingResetPeriods.All) { <option value="@r" selected="@(r == s.ResetPeriod)">@Localizer["Num_Reset_" + r]</option> }
                             </pems-select>
-                        </td>
-                        <td><pems-input form="@formId" type="checkbox" name="IsActive" value="true" checked="@s.IsActive" aria-label="@Localizer["Active"]" kind="check" /></td>
-                        <td><pems-input form="@formId" type="checkbox" name="AllowManualEntry" value="true" checked="@s.AllowManualEntry" aria-label="@Localizer["Num_AllowManual"]" kind="check" /></td>
-                        <td><code data-num-preview aria-live="polite">@s.Preview</code><div class="small text-danger" data-num-error></div></td>
-                        <td>
+                        </pems-table-cell>
+                        <pems-table-cell><pems-input form="@formId" type="checkbox" name="IsActive" value="true" checked="@s.IsActive" aria-label="@Localizer["Active"]" kind="check" /></pems-table-cell>
+                        <pems-table-cell><pems-input form="@formId" type="checkbox" name="AllowManualEntry" value="true" checked="@s.AllowManualEntry" aria-label="@Localizer["Num_AllowManual"]" kind="check" /></pems-table-cell>
+                        <pems-table-cell><code data-num-preview aria-live="polite">@s.Preview</code><div class="small text-danger" data-num-error></div></pems-table-cell>
+                        <pems-table-cell>
                             <span class="vs-num">@(s.Version == 0 ? "-" : s.Version.ToString())</span>
                             @if (s.ModifiedBy != null) { <div class="vs-sub">@s.ModifiedBy</div> }
-                        </td>
-                        <td class="text-end"><pems-related-save form-id="@formId" label="@Localizer["Save"]" /></td>
-                    </tr>
+                        </pems-table-cell>
+                        <pems-table-cell class="text-end"><pems-related-save form-id="@formId" label="@Localizer["Save"]" /></pems-table-cell>
+                    </pems-table-row>
                 }
-            </tbody>
+            </pems-table-body>
         </pems-related-table>
         <p class="small text-muted px-3 py-2 mb-0">@Localizer["Num_Footnote"]</p>
     </pems-list-panel>

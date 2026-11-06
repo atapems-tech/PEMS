@@ -49,31 +49,31 @@
         <pems-list-grid>
             <pems-list-table empty="@(!Model.Any())" empty-text="@Localizer["Sh_Empty"]"
                              filtered="@(filterCount > 0)" clear-href="@Url.Action("Index")">
-                <thead>
-                    <tr>
-                        <th class="pems-w-90">#</th>
-                        <th>@Localizer["Sh_Outgoing"]</th>
-                        <th>@Localizer["Sh_Incoming"]</th>
-                        <th class="vs-hide-md">@Localizer["Sh_Shift"]</th>
-                        <th class="pems-w-150">@Localizer["Sh_Date"]</th>
-                        <th class="pems-w-130">@Localizer["Ed_Status"]</th>
-                        <th class="pems-w-90">@Localizer["Sh_Items"]</th>
-                    </tr>
-                </thead>
-                <tbody>
+                <pems-table-head>
+                    <pems-table-row>
+                        <pems-table-header class="pems-w-90">#</pems-table-header>
+                        <pems-table-header>@Localizer["Sh_Outgoing"]</pems-table-header>
+                        <pems-table-header>@Localizer["Sh_Incoming"]</pems-table-header>
+                        <pems-table-header class="vs-hide-md">@Localizer["Sh_Shift"]</pems-table-header>
+                        <pems-table-header class="pems-w-150">@Localizer["Sh_Date"]</pems-table-header>
+                        <pems-table-header class="pems-w-130">@Localizer["Ed_Status"]</pems-table-header>
+                        <pems-table-header class="pems-w-90">@Localizer["Sh_Items"]</pems-table-header>
+                    </pems-table-row>
+                </pems-table-head>
+                <pems-table-body>
                     @foreach (var h in Model)
                     {
-                        <tr class="lp-row">
-                            <td class="lp-no"><a asp-action="Details" asp-route-id="@h.ShiftHandoverId" class="lp-subject"><span class="vs-num">#@h.ShiftHandoverId</span></a></td>
-                            <td class="small">@(h.OutgoingName ?? "-")</td>
-                            <td class="small">@(h.IncomingName ?? "-")</td>
-                            <td class="small vs-hide-md">@(h.ShiftLabel ?? "-")</td>
-                            <td class="small"><span class="vs-num">@h.HandoverDate.ToString("yyyy-MM-dd HH:mm")</span></td>
-                            <td><span class="vs-pill @StatusTone(h.Status)">@StatusText(h.Status)</span></td>
-                            <td><span class="vs-num">@h.ItemCount</span></td>
-                        </tr>
+                        <pems-table-row class="lp-row">
+                            <pems-table-cell class="lp-no"><a asp-action="Details" asp-route-id="@h.ShiftHandoverId" class="lp-subject"><span class="vs-num">#@h.ShiftHandoverId</span></a></pems-table-cell>
+                            <pems-table-cell class="small">@(h.OutgoingName ?? "-")</pems-table-cell>
+                            <pems-table-cell class="small">@(h.IncomingName ?? "-")</pems-table-cell>
+                            <pems-table-cell class="small vs-hide-md">@(h.ShiftLabel ?? "-")</pems-table-cell>
+                            <pems-table-cell class="small"><span class="vs-num">@h.HandoverDate.ToString("yyyy-MM-dd HH:mm")</span></pems-table-cell>
+                            <pems-table-cell><span class="vs-pill @StatusTone(h.Status)">@StatusText(h.Status)</span></pems-table-cell>
+                            <pems-table-cell><span class="vs-num">@h.ItemCount</span></pems-table-cell>
+                        </pems-table-row>
                     }
-                </tbody>
+                </pems-table-body>
             </pems-list-table>
         </pems-list-grid>
     </pems-list-panel>

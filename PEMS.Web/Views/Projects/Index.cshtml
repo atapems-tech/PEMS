@@ -18,39 +18,39 @@
 
         <pems-list-grid>
             <pems-list-table empty="@(Model.Count == 0)" empty-text="@Localizer["No projects yet."]">
-                <thead>
-                    <tr>
-                        <th>@Localizer["Code"]</th>
-                        <th>@Localizer["Project Name"]</th>
-                        <th>@Localizer["Client"]</th>
-                        <th>@Localizer["Location"]</th>
-                        <th>@Localizer["Status"]</th>
-                        <th>@Localizer["Documents"]</th>
-                        <th></th>
-                    </tr>
-                </thead>
-                <tbody>
+                <pems-table-head>
+                    <pems-table-row>
+                        <pems-table-header>@Localizer["Code"]</pems-table-header>
+                        <pems-table-header>@Localizer["Project Name"]</pems-table-header>
+                        <pems-table-header>@Localizer["Client"]</pems-table-header>
+                        <pems-table-header>@Localizer["Location"]</pems-table-header>
+                        <pems-table-header>@Localizer["Status"]</pems-table-header>
+                        <pems-table-header>@Localizer["Documents"]</pems-table-header>
+                        <pems-table-header></pems-table-header>
+                    </pems-table-row>
+                </pems-table-head>
+                <pems-table-body>
                     @foreach (var p in Model)
                     {
                         var tone = p.Status switch { "Active" => "success", "Completed" => "info", "Cancelled" => "danger", _ => "neutral" };
-                        <tr class="lp-row">
-                            <td class="lp-no">@p.ProjectCode</td>
-                            <td>@p.ProjectName</td>
-                            <td>@p.ClientName</td>
-                            <td>@p.Location</td>
-                            <td>
+                        <pems-table-row class="lp-row">
+                            <pems-table-cell class="lp-no">@p.ProjectCode</pems-table-cell>
+                            <pems-table-cell>@p.ProjectName</pems-table-cell>
+                            <pems-table-cell>@p.ClientName</pems-table-cell>
+                            <pems-table-cell>@p.Location</pems-table-cell>
+                            <pems-table-cell>
                                 <pems-badge tone="@tone">@p.Status</pems-badge>
                                 @if (!p.IsActive)
                                 {
                                     <pems-badge tone="dark">Inactive</pems-badge>
                                 }
-                            </td>
-                            <td>
+                            </pems-table-cell>
+                            <pems-table-cell>
                                 <a asp-controller="EngineeringDocuments" asp-action="Index" class="text-decoration-none">
                                     @p.DocumentsCount
                                 </a>
-                            </td>
-                            <td class="text-end">
+                            </pems-table-cell>
+                            <pems-table-cell class="text-end">
                                 <pems-button tone="neutral" size="small" outline="true" as="a" asp-action="Edit" asp-route-id="@p.ProjectId">
                                     <pems-icon name="bi-pencil" />
                                 </pems-button>
@@ -59,10 +59,10 @@
                                         <pems-icon name="bi-power" />
                                     </pems-button>
                                 </form>
-                            </td>
-                        </tr>
+                            </pems-table-cell>
+                        </pems-table-row>
                     }
-                </tbody>
+                </pems-table-body>
             </pems-list-table>
         </pems-list-grid>
     </pems-list-panel>

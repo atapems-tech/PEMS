@@ -113,37 +113,37 @@
     @if (Model.Lines.Any())
     {
     <pems-related-table>
-        <thead>
-            <tr>
-                @if (anyPoLine) { <th>@Localizer["Rcv_PoLine"]</th> }
-                <th>@Localizer["Material"]</th>
-                <th>@Localizer["Received Qty"]</th>
+        <pems-table-head>
+            <pems-table-row>
+                @if (anyPoLine) { <pems-table-header>@Localizer["Rcv_PoLine"]</pems-table-header> }
+                <pems-table-header>@Localizer["Material"]</pems-table-header>
+                <pems-table-header>@Localizer["Received Qty"]</pems-table-header>
                 @if (Model.Status is "PendingApproval" or "Closed")
                 {
-                    <th>@Localizer["Accepted"]</th>
-                    <th>@Localizer["Rejected"]</th>
-                    <th>@Localizer["Hold"]</th>
+                    <pems-table-header>@Localizer["Accepted"]</pems-table-header>
+                    <pems-table-header>@Localizer["Rejected"]</pems-table-header>
+                    <pems-table-header>@Localizer["Hold"]</pems-table-header>
                 }
-            </tr>
-        </thead>
-        <tbody>
+            </pems-table-row>
+        </pems-table-head>
+        <pems-table-body>
             @foreach (var l in Model.Lines)
             {
                 var rejectedTotal = (l.RejectedQuantity ?? 0) + (l.HoldRejectedQuantity ?? 0);
-                <tr>
+                <pems-table-row>
                     @if (anyPoLine)
                     {
-                        <td class="small">@(l.PurchaseOrderLineId.HasValue && poLineNo.TryGetValue(l.PurchaseOrderLineId.Value, out var no) ? no.ToString() : "-")</td>
+                        <pems-table-cell class="small">@(l.PurchaseOrderLineId.HasValue && poLineNo.TryGetValue(l.PurchaseOrderLineId.Value, out var no) ? no.ToString() : "-")</pems-table-cell>
                     }
-                    <td class="small">@l.MaterialItem?.MaterialCode - @l.MaterialItem?.Description</td>
-                    <td>@l.ReceivedQuantity</td>
+                    <pems-table-cell class="small">@l.MaterialItem?.MaterialCode - @l.MaterialItem?.Description</pems-table-cell>
+                    <pems-table-cell>@l.ReceivedQuantity</pems-table-cell>
                     @if (Model.Status is "PendingApproval" or "Closed")
                     {
-                        <td class="text-success">
+                        <pems-table-cell class="text-success">
                             @(l.AcceptedQuantity ?? 0)
                             @if ((l.HoldAcceptedQuantity ?? 0) > 0) { <span class="small text-muted">+ @l.HoldAcceptedQuantity (@Localizer["Rcv_FromHold"])</span> }
-                        </td>
-                        <td class="text-danger">
+                        </pems-table-cell>
+                        <pems-table-cell class="text-danger">
                             @rejectedTotal
                             @if (Model.Status == "Closed" && rejectedTotal > 0 && l.PurchaseOrderLineId.HasValue)
                             {
@@ -163,8 +163,8 @@
                                     </pems-flex></form>
                                 }
                             }
-                        </td>
-                        <td class="text-warning">
+                        </pems-table-cell>
+                        <pems-table-cell class="text-warning">
                             @(l.HoldQuantity ?? 0)
                             @if (l.HoldResolvedAt != null)
                             {
@@ -187,11 +187,11 @@
                             {
                                 <div class="small text-muted">@Localizer["Rcv_HoldWaits"]</div>
                             }
-                        </td>
+                        </pems-table-cell>
                     }
-                </tr>
+                </pems-table-row>
             }
-        </tbody>
+        </pems-table-body>
     </pems-related-table>
     }
 
@@ -202,38 +202,38 @@
         <form asp-action="ReceiveFromPo" method="post">
             <input type="hidden" name="id" value="@Model.IrnReceiptId" />
             <pems-related-table>
-                <thead>
-                    <tr>
-                        <th>#</th><th>@Localizer["Material"]</th><th>@Localizer["Rcv_DeliveryWarehouse"]</th><th>@Localizer["Rcv_Ordered"]</th>
-                        <th>@Localizer["Rcv_ReceivedSoFar"]</th><th>@Localizer["Rcv_Open"]</th><th>@Localizer["Rcv_Inspection"]</th><th>@Localizer["Rcv_ReceiveNow"]</th>
-                    </tr>
-                </thead>
-                <tbody>
+                <pems-table-head>
+                    <pems-table-row>
+                        <pems-table-header>#</pems-table-header><pems-table-header>@Localizer["Material"]</pems-table-header><pems-table-header>@Localizer["Rcv_DeliveryWarehouse"]</pems-table-header><pems-table-header>@Localizer["Rcv_Ordered"]</pems-table-header>
+                        <pems-table-header>@Localizer["Rcv_ReceivedSoFar"]</pems-table-header><pems-table-header>@Localizer["Rcv_Open"]</pems-table-header><pems-table-header>@Localizer["Rcv_Inspection"]</pems-table-header><pems-table-header>@Localizer["Rcv_ReceiveNow"]</pems-table-header>
+                    </pems-table-row>
+                </pems-table-head>
+                <pems-table-body>
                     @foreach (var p in poLines)
                     {
-                        <tr>
-                            <td>@p.LineNo</td>
-                            <td class="small">@(p.MaterialCode ?? "-") - @p.Description</td>
-                            <td class="small">@(p.WarehouseCode ?? "-")</td>
-                            <td>@p.Ordered @p.Unit</td>
-                            <td>@p.Received</td>
-                            <td>@p.Outstanding</td>
-                            <td class="small">
+                        <pems-table-row>
+                            <pems-table-cell>@p.LineNo</pems-table-cell>
+                            <pems-table-cell class="small">@(p.MaterialCode ?? "-") - @p.Description</pems-table-cell>
+                            <pems-table-cell class="small">@(p.WarehouseCode ?? "-")</pems-table-cell>
+                            <pems-table-cell>@p.Ordered @p.Unit</pems-table-cell>
+                            <pems-table-cell>@p.Received</pems-table-cell>
+                            <pems-table-cell>@p.Outstanding</pems-table-cell>
+                            <pems-table-cell class="small">
                                 @if (!p.InspectionRequired) { <span class="text-muted">-</span> }
                                 else if (p.InspectionReleasedAt != null) { <span class="text-success">@Localizer["Rcv_Released"]</span> }
                                 else { <span class="text-warning">@Localizer["Rcv_NotReleased"]</span> }
-                            </td>
-                            <td>
+                            </pems-table-cell>
+                            <pems-table-cell>
                                 @if (p.CanReceive)
                                 {
                                     <input type="hidden" name="poLineId" value="@p.PurchaseOrderLineId" />
                                     <pems-input scale="small" name="quantity" type="number" step="0.001" min="0" value="@p.Outstanding" />
                                 }
                                 else { <span class="small text-muted">@Localizer["Rcv_NotCatalogued"]</span> }
-                            </td>
-                        </tr>
+                            </pems-table-cell>
+                        </pems-table-row>
                     }
-                </tbody>
+                </pems-table-body>
             </pems-related-table>
             <div class="lp-rel-add"><pems-button tone="primary" size="small" type="submit"><pems-icon name="bi-box-arrow-in-down" aria-hidden="true" /> @Localizer["Rcv_AddPoLines"]</pems-button></div>
         </form>
@@ -254,22 +254,22 @@
         <form asp-action="Disposition" method="post">
             <input type="hidden" name="id" value="@Model.IrnReceiptId" />
             <pems-related-table>
-                <thead><tr><th>@Localizer["Material"]</th><th>@Localizer["Received"]</th><th>@Localizer["Accepted"]</th><th>@Localizer["Rejected"]</th><th>@Localizer["Hold"]</th></tr></thead>
-                <tbody>
+                <pems-table-head><pems-table-row><pems-table-header>@Localizer["Material"]</pems-table-header><pems-table-header>@Localizer["Received"]</pems-table-header><pems-table-header>@Localizer["Accepted"]</pems-table-header><pems-table-header>@Localizer["Rejected"]</pems-table-header><pems-table-header>@Localizer["Hold"]</pems-table-header></pems-table-row></pems-table-head>
+                <pems-table-body>
                     @foreach (var l in Model.Lines)
                     {
-                        <tr>
-                            <td class="small">@l.MaterialItem?.MaterialCode</td>
-                            <td>
+                        <pems-table-row>
+                            <pems-table-cell class="small">@l.MaterialItem?.MaterialCode</pems-table-cell>
+                            <pems-table-cell>
                                 @l.ReceivedQuantity
                                 <input type="hidden" name="lineId" value="@l.IrnReceiptLineId" />
-                            </td>
-                            <td><pems-input scale="small" name="accepted" type="number" step="0.001" min="0" value="@l.ReceivedQuantity" required /></td>
-                            <td><pems-input scale="small" name="rejected" type="number" step="0.001" min="0" value="0" required /></td>
-                            <td><pems-input scale="small" name="hold" type="number" step="0.001" min="0" value="0" required /></td>
-                        </tr>
+                            </pems-table-cell>
+                            <pems-table-cell><pems-input scale="small" name="accepted" type="number" step="0.001" min="0" value="@l.ReceivedQuantity" required /></pems-table-cell>
+                            <pems-table-cell><pems-input scale="small" name="rejected" type="number" step="0.001" min="0" value="0" required /></pems-table-cell>
+                            <pems-table-cell><pems-input scale="small" name="hold" type="number" step="0.001" min="0" value="0" required /></pems-table-cell>
+                        </pems-table-row>
                     }
-                </tbody>
+                </pems-table-body>
             </pems-related-table>
             <div class="lp-rel-add">
                 <div><label class="lp-lbl" for="irnDispNotes">@Localizer["Notes"]</label><pems-textarea scale="small" id="irnDispNotes" name="notes" rows="2"></pems-textarea></div>
@@ -285,19 +285,19 @@
 {
     <pems-related-list id="irnDispositions" icon="bi-clipboard-check" title="@Localizer["Disposition Records"]" count="@dispositionRecords.Count">
         <pems-related-table>
-            <thead><tr><th>@Localizer["Result"]</th><th>@Localizer["By"]</th><th>@Localizer["Date"]</th><th>@Localizer["Outcome"]</th><th>@Localizer["Notes"]</th></tr></thead>
-            <tbody>
+            <pems-table-head><pems-table-row><pems-table-header>@Localizer["Result"]</pems-table-header><pems-table-header>@Localizer["By"]</pems-table-header><pems-table-header>@Localizer["Date"]</pems-table-header><pems-table-header>@Localizer["Outcome"]</pems-table-header><pems-table-header>@Localizer["Notes"]</pems-table-header></pems-table-row></pems-table-head>
+            <pems-table-body>
                 @foreach (var d in dispositionRecords)
                 {
-                    <tr>
-                        <td>@d.OverallResult</td>
-                        <td class="small">@(d.DispositionedBy != null ? d.DispositionedBy.FirstName + " " + d.DispositionedBy.LastName : "-")</td>
-                        <td class="small">@d.DispositionedDate.ToString("yyyy-MM-dd HH:mm")</td>
-                        <td class="small">@d.WorkflowOutcome</td>
-                        <td class="small text-muted">@(d.Notes ?? "-")</td>
-                    </tr>
+                    <pems-table-row>
+                        <pems-table-cell>@d.OverallResult</pems-table-cell>
+                        <pems-table-cell class="small">@(d.DispositionedBy != null ? d.DispositionedBy.FirstName + " " + d.DispositionedBy.LastName : "-")</pems-table-cell>
+                        <pems-table-cell class="small">@d.DispositionedDate.ToString("yyyy-MM-dd HH:mm")</pems-table-cell>
+                        <pems-table-cell class="small">@d.WorkflowOutcome</pems-table-cell>
+                        <pems-table-cell class="small text-muted">@(d.Notes ?? "-")</pems-table-cell>
+                    </pems-table-row>
                 }
-            </tbody>
+            </pems-table-body>
         </pems-related-table>
     </pems-related-list>
 }
@@ -306,19 +306,19 @@
     @if (statusHistory.Any())
     {
     <pems-related-table>
-        <thead><tr><th>@Localizer["From"]</th><th>@Localizer["To"]</th><th>@Localizer["By"]</th><th>@Localizer["Date"]</th><th>@Localizer["Reason"]</th></tr></thead>
-        <tbody>
+        <pems-table-head><pems-table-row><pems-table-header>@Localizer["From"]</pems-table-header><pems-table-header>@Localizer["To"]</pems-table-header><pems-table-header>@Localizer["By"]</pems-table-header><pems-table-header>@Localizer["Date"]</pems-table-header><pems-table-header>@Localizer["Reason"]</pems-table-header></pems-table-row></pems-table-head>
+        <pems-table-body>
             @foreach (var h in statusHistory)
             {
-                <tr>
-                    <td>@h.FromStatus</td>
-                    <td>@h.ToStatus</td>
-                    <td class="small">@(h.ChangedBy != null ? h.ChangedBy.FirstName + " " + h.ChangedBy.LastName : "-")</td>
-                    <td class="small">@h.ChangedDate.ToString("yyyy-MM-dd HH:mm")</td>
-                    <td class="small text-muted">@(h.Reason ?? "-")</td>
-                </tr>
+                <pems-table-row>
+                    <pems-table-cell>@h.FromStatus</pems-table-cell>
+                    <pems-table-cell>@h.ToStatus</pems-table-cell>
+                    <pems-table-cell class="small">@(h.ChangedBy != null ? h.ChangedBy.FirstName + " " + h.ChangedBy.LastName : "-")</pems-table-cell>
+                    <pems-table-cell class="small">@h.ChangedDate.ToString("yyyy-MM-dd HH:mm")</pems-table-cell>
+                    <pems-table-cell class="small text-muted">@(h.Reason ?? "-")</pems-table-cell>
+                </pems-table-row>
             }
-        </tbody>
+        </pems-table-body>
     </pems-related-table>
     }
 </pems-related-list>

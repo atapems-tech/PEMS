@@ -19,31 +19,31 @@
         </pems-list-toolbar>
         <pems-list-grid>
             <pems-list-table empty="@(!Model.Any())" empty-text="@Localizer["LtT_Empty"]">
-                <thead>
-                    <tr>
-                        <th scope="col">@Localizer["LtT_Name"]</th>
-                        <th scope="col">@Localizer["Type"]</th>
-                        <th scope="col">@Localizer["Lt_Subject"]</th>
-                        <th scope="col">@Localizer["Lt_Priority"]</th>
-                        <th scope="col">@Localizer["Lt_Confidentiality"]</th>
-                        <th scope="col">@Localizer["Status"]</th>
-                        <th scope="col"><span class="visually-hidden">@Localizer["Actions"]</span></th>
-                    </tr>
-                </thead>
-                <tbody>
+                <pems-table-head>
+                    <pems-table-row>
+                        <pems-table-header scope="col">@Localizer["LtT_Name"]</pems-table-header>
+                        <pems-table-header scope="col">@Localizer["Type"]</pems-table-header>
+                        <pems-table-header scope="col">@Localizer["Lt_Subject"]</pems-table-header>
+                        <pems-table-header scope="col">@Localizer["Lt_Priority"]</pems-table-header>
+                        <pems-table-header scope="col">@Localizer["Lt_Confidentiality"]</pems-table-header>
+                        <pems-table-header scope="col">@Localizer["Status"]</pems-table-header>
+                        <pems-table-header scope="col"><span class="visually-hidden">@Localizer["Actions"]</span></pems-table-header>
+                    </pems-table-row>
+                </pems-table-head>
+                <pems-table-body>
                     @foreach (var t in Model)
                     {
-                        <tr class="@(t.IsActive ? "lp-row" : "lp-row text-muted")">
-                            <td class="fw-semibold">@t.Name</td>
-                            <td>@(t.LetterType ?? Localizer["LtT_AllTypes"].Value)</td>
-                            <td>@t.Subject</td>
-                            <td>@Localizer["Lt_P_" + t.Priority]</td>
-                            <td>@t.ConfidentialityLevel</td>
-                            <td>
+                        <pems-table-row class="@(t.IsActive ? "lp-row" : "lp-row text-muted")">
+                            <pems-table-cell class="fw-semibold">@t.Name</pems-table-cell>
+                            <pems-table-cell>@(t.LetterType ?? Localizer["LtT_AllTypes"].Value)</pems-table-cell>
+                            <pems-table-cell>@t.Subject</pems-table-cell>
+                            <pems-table-cell>@Localizer["Lt_P_" + t.Priority]</pems-table-cell>
+                            <pems-table-cell>@t.ConfidentialityLevel</pems-table-cell>
+                            <pems-table-cell>
                                 @if (t.IsActive) { <pems-badge tone="success"><pems-icon name="bi-check-circle" aria-hidden="true" /> @Localizer["LtT_Active"]</pems-badge> }
                                 else { <pems-badge tone="neutral"><pems-icon name="bi-slash-circle" aria-hidden="true" /> @Localizer["LtT_Inactive"]</pems-badge> }
-                            </td>
-                            <td class="text-nowrap">
+                            </pems-table-cell>
+                            <pems-table-cell class="text-nowrap">
                                 <pems-button tone="neutral" size="small" outline="true" as="a" asp-action="Preview" asp-route-id="@t.LetterTemplateId"><pems-icon name="bi-eye" aria-hidden="true" /> @Localizer["LtT_Preview"]</pems-button>
                                 <pems-button tone="neutral" size="small" outline="true" as="a" asp-action="Edit" asp-route-id="@t.LetterTemplateId"><pems-icon name="bi-pencil" aria-hidden="true" /> @Localizer["Edit"]</pems-button>
                                 <form asp-action="SetActive" method="post" class="d-inline">
@@ -51,10 +51,10 @@
                                     <input type="hidden" name="active" value="@(t.IsActive ? "false" : "true")" />
                                     <pems-button tone="neutral" size="small" outline="true" type="submit">@Localizer[t.IsActive ? "LtT_Deactivate" : "LtT_Activate"]</pems-button>
                                 </form>
-                            </td>
-                        </tr>
+                            </pems-table-cell>
+                        </pems-table-row>
                     }
-                </tbody>
+                </pems-table-body>
             </pems-list-table>
         </pems-list-grid>
     </pems-list-panel>

@@ -46,21 +46,21 @@
                 {
                     <pems-table-scroll>
                         <pems-table kind="enterprise" scale="small">
-                            <thead><tr><th>@Localizer["Role"]</th><th>@Localizer["Scope"]</th><th>@Localizer["Type"]</th><th>@Localizer["Effective"]</th></tr></thead>
-                            <tbody>
+                            <pems-table-head><pems-table-row><pems-table-header>@Localizer["Role"]</pems-table-header><pems-table-header>@Localizer["Scope"]</pems-table-header><pems-table-header>@Localizer["Type"]</pems-table-header><pems-table-header>@Localizer["Effective"]</pems-table-header></pems-table-row></pems-table-head>
+                            <pems-table-body>
                             @foreach (var a in Model.Assignments)
                             {
-                                <tr>
-                                    <td>@a.RoleName</td>
-                                    <td>@a.ScopeType@(string.IsNullOrEmpty(a.ScopeValue) ? "" : $" = {a.ScopeValue}")</td>
-                                    <td>@a.AssignmentType</td>
-                                    <td>
+                                <pems-table-row>
+                                    <pems-table-cell>@a.RoleName</pems-table-cell>
+                                    <pems-table-cell>@a.ScopeType@(string.IsNullOrEmpty(a.ScopeValue) ? "" : $" = {a.ScopeValue}")</pems-table-cell>
+                                    <pems-table-cell>@a.AssignmentType</pems-table-cell>
+                                    <pems-table-cell>
                                         @if (a.EffectiveFrom == null && a.EffectiveTo == null) { <span class="text-body-secondary">@Localizer["Always"]</span> }
                                         else { <span>@a.EffectiveFrom?.ToString("yyyy-MM-dd") &ndash; @(a.EffectiveTo?.ToString("yyyy-MM-dd") ?? Localizer["Open"])</span> }
-                                    </td>
-                                </tr>
+                                    </pems-table-cell>
+                                </pems-table-row>
                             }
-                            </tbody>
+                            </pems-table-body>
                         </pems-table>
                     </pems-table-scroll>
                 }
@@ -75,18 +75,18 @@
                 <div class="admin-toolbar mb-2"><div class="admin-toolbar-main"><span class="text-body-secondary small">@Model.AllowedCount / @Model.Rows.Count @Localizer["permissions allowed, via role membership"]</span></div></div>
                 <pems-table-scroll>
                     <pems-table kind="enterprise">
-                        <thead><tr><th>@Localizer["Resource"]</th><th>@Localizer["Action"]</th><th>@Localizer["Permission"]</th><th>@Localizer["Status"]</th></tr></thead>
-                        <tbody>
+                        <pems-table-head><pems-table-row><pems-table-header>@Localizer["Resource"]</pems-table-header><pems-table-header>@Localizer["Action"]</pems-table-header><pems-table-header>@Localizer["Permission"]</pems-table-header><pems-table-header>@Localizer["Status"]</pems-table-header></pems-table-row></pems-table-head>
+                        <pems-table-body>
                         @foreach (var row in Model.Rows.Where(r => r.Allowed))
                         {
-                            <tr>
-                                <td>@row.ResourceName</td>
-                                <td>@row.ActionName</td>
-                                <td><code>@row.PermissionName</code></td>
-                                <td><span class="admin-status active"><pems-icon name="bi-check2-circle" /> @Localizer["Allowed"]</span></td>
-                            </tr>
+                            <pems-table-row>
+                                <pems-table-cell>@row.ResourceName</pems-table-cell>
+                                <pems-table-cell>@row.ActionName</pems-table-cell>
+                                <pems-table-cell><code>@row.PermissionName</code></pems-table-cell>
+                                <pems-table-cell><span class="admin-status active"><pems-icon name="bi-check2-circle" /> @Localizer["Allowed"]</span></pems-table-cell>
+                            </pems-table-row>
                         }
-                        </tbody>
+                        </pems-table-body>
                     </pems-table>
                 </pems-table-scroll>
             }

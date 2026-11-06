@@ -37,33 +37,33 @@
 
         <pems-list-grid>
             <pems-list-table grid-key="AdminUsers" empty="@(Model.Items.Count == 0)" empty-text="@Localizer["UsL_Empty"]">
-                <thead>
-                    <tr>
-                        <th data-col-key="account" data-resizable="true" data-min-width="140" data-max-width="320">@Localizer["UsL_Account"]</th>
-                        <th data-col-key="contact" data-resizable="true" data-min-width="140" data-max-width="320" class="vs-hide-md">@Localizer["UsL_Contact"]</th>
-                        <th data-col-key="roles" data-resizable="true" data-min-width="120" data-max-width="360">@Localizer["UsL_Roles"]</th>
-                        <th class="pems-w-150" data-col-key="status" data-resizable="true" data-min-width="100" data-max-width="220">@Localizer["Ed_Status"]</th>
-                        <th data-col-key="lastLogin" data-resizable="true" data-min-width="120" data-max-width="220" class="vs-hide-md pems-w-140">@Localizer["UsL_LastLogin"]</th>
-                        <th class="pems-w-150" data-col-key="actions" data-resizable="false"><span class="visually-hidden">@Localizer["Ed_Actions"]</span></th>
-                    </tr>
-                </thead>
-                <tbody>
+                <pems-table-head>
+                    <pems-table-row>
+                        <pems-table-header data-col-key="account" data-resizable="true" data-min-width="140" data-max-width="320">@Localizer["UsL_Account"]</pems-table-header>
+                        <pems-table-header data-col-key="contact" data-resizable="true" data-min-width="140" data-max-width="320" class="vs-hide-md">@Localizer["UsL_Contact"]</pems-table-header>
+                        <pems-table-header data-col-key="roles" data-resizable="true" data-min-width="120" data-max-width="360">@Localizer["UsL_Roles"]</pems-table-header>
+                        <pems-table-header class="pems-w-150" data-col-key="status" data-resizable="true" data-min-width="100" data-max-width="220">@Localizer["Ed_Status"]</pems-table-header>
+                        <pems-table-header data-col-key="lastLogin" data-resizable="true" data-min-width="120" data-max-width="220" class="vs-hide-md pems-w-140">@Localizer["UsL_LastLogin"]</pems-table-header>
+                        <pems-table-header class="pems-w-150" data-col-key="actions" data-resizable="false"><span class="visually-hidden">@Localizer["Ed_Actions"]</span></pems-table-header>
+                    </pems-table-row>
+                </pems-table-head>
+                <pems-table-body>
                 @foreach (var u in Model.Items)
                 {
-                    <tr class="lp-row">
-                        <td>
+                    <pems-table-row class="lp-row">
+                        <pems-table-cell>
                             <a asp-action="Details" asp-route-id="@u.Id" class="lp-subject" title="@u.UserName">@u.UserName</a>
                             <div class="vs-sub">@u.FullName</div>
-                        </td>
-                        <td class="small vs-hide-md">@u.Email</td>
-                        <td>@foreach (var r in u.Roles) { <span class="admin-role-badge">@r</span> }</td>
-                        <td>
+                        </pems-table-cell>
+                        <pems-table-cell class="small vs-hide-md">@u.Email</pems-table-cell>
+                        <pems-table-cell>@foreach (var r in u.Roles) { <span class="admin-role-badge">@r</span> }</pems-table-cell>
+                        <pems-table-cell>
                             @if (u.IsActive) { <span class="vs-pill vs-pill--icon vs-pill--success"><pems-icon name="bi-check-circle-fill" aria-hidden="true" /> @Localizer["UsL_Active"]</span> }
                             else { <span class="vs-pill vs-pill--icon vs-pill--neutral"><pems-icon name="bi-dash-circle-fill" aria-hidden="true" /> @Localizer["UsL_Inactive"]</span> }
                             @if (u.LockedOut) { <span class="vs-pill vs-pill--icon vs-pill--danger ms-1"><pems-icon name="bi-lock-fill" aria-hidden="true" /> @Localizer["UsL_Locked"]</span> }
-                        </td>
-                        <td class="small vs-hide-md"><span class="vs-num">@(u.LastLoginDate?.ToString("yyyy-MM-dd HH:mm") ?? Localizer["UsL_Never"].Value)</span></td>
-                        <td class="text-end text-nowrap">
+                        </pems-table-cell>
+                        <pems-table-cell class="small vs-hide-md"><span class="vs-num">@(u.LastLoginDate?.ToString("yyyy-MM-dd HH:mm") ?? Localizer["UsL_Never"].Value)</span></pems-table-cell>
+                        <pems-table-cell class="text-end text-nowrap">
                             <a asp-action="Details" asp-route-id="@u.Id" class="lp-act lp-act--always" title="@Localizer["Access & Authorization"]" aria-label="@Localizer["Access & Authorization"] @u.UserName"><pems-icon name="bi-shield-lock" aria-hidden="true" /></a>
                             <a asp-action="Edit" asp-route-id="@u.Id" class="lp-act lp-act--always" title="@Localizer["Ed_Edit"]" aria-label="@Localizer["Ed_Edit"] @u.UserName"><pems-icon name="bi-pencil" aria-hidden="true" /></a>
                             @if (u.Roles.Contains("SystemAdmin") && u.Id != currentUserId)
@@ -73,10 +73,10 @@
                             <form asp-action="ToggleActive" asp-route-id="@u.Id" method="post" class="d-inline" data-pems-confirm="@Localizer[u.IsActive ? "UsL_ConfirmDeactivate" : "UsL_ConfirmActivate", u.UserName]">
                                 <button type="submit" class="lp-act lp-act--always" title="@Localizer["UsL_ToggleActive"]" aria-label="@Localizer["UsL_ToggleActive"] @u.UserName"><pems-icon name="bi-power" aria-hidden="true" /></button>
                             </form>
-                        </td>
-                    </tr>
+                        </pems-table-cell>
+                    </pems-table-row>
                 }
-                </tbody>
+                </pems-table-body>
             </pems-list-table>
 
             <pems-list-footer>

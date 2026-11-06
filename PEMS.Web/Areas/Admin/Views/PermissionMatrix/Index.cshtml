@@ -120,40 +120,40 @@
                     <input type="hidden" name="roleName" value="@role" />
                     <div class="permission-grid pm-grid">
                         <pems-table kind="enterprise" css="pm-table" data-role="@role">
-                            <thead>
-                                <tr>
-                                    <th class="pm-module-col">@Localizer["Module"]</th>
+                            <pems-table-head>
+                                <pems-table-row>
+                                    <pems-table-header class="pm-module-col">@Localizer["Module"]</pems-table-header>
                                     @foreach (var a in actions)
                                     {
-                                        <th class="pm-col pm-risk-@a.Risk" data-action="@a.Key" title="@Localizer["PermMx_Tip_" + a.Key]">
+                                        <pems-table-header class="pm-col pm-risk-@a.Risk" data-action="@a.Key" title="@Localizer["PermMx_Tip_" + a.Key]">
                                             <span class="pm-col-label"><pems-icon css="@a.Icon" aria-hidden="true" /><span>@Localizer[a.Label]</span></span>
                                             <pems-input kind="check" css="pm-col-all" type="checkbox" data-action="@a.Key" aria-label="@string.Format(Localizer["PermMx_ColToggle"].Value, Localizer[a.Label].Value)" title="@string.Format(Localizer["PermMx_ColToggle"].Value, Localizer[a.Label].Value)" />
-                                        </th>
+                                        </pems-table-header>
                                     }
-                                </tr>
-                            </thead>
-                            <tbody>
+                                </pems-table-row>
+                            </pems-table-head>
+                            <pems-table-body>
                             @for (int i = 0; i < modules.Length; i++)
                             {
                                 var module = modules[i];
                                 var existing = RowFor(role, module);
-                                <tr data-module="@module" data-configured="@(AnyFlag(existing) ? "1" : "0")">
-                                    <td class="pm-module-cell">
+                                <pems-table-row data-module="@module" data-configured="@(AnyFlag(existing) ? "1" : "0")">
+                                    <pems-table-cell class="pm-module-cell">
                                         <span class="pm-module-wrap">
                                             <pems-input kind="check" css="pm-row-all" type="checkbox" aria-label="@string.Format(Localizer["PermMx_RowToggle"].Value, module)" title="@string.Format(Localizer["PermMx_RowToggle"].Value, module)" />
                                             <span class="row-primary pm-module-name">@module</span>
                                         </span>
                                         <input type="hidden" name="permissions[@i].ModuleName" value="@module" />
-                                    </td>
+                                    </pems-table-cell>
                                     @foreach (var a in actions)
                                     {
-                                        <td class="pm-cell pm-risk-@a.Risk">
+                                        <pems-table-cell class="pm-cell pm-risk-@a.Risk">
                                             <pems-input type="checkbox" name="permissions[@i].@a.Prop" value="true" data-action="@a.Key" checked="@Flag(existing, a.Key)" aria-label="@Localizer[a.Label] @module" kind="check" css="pm-box" /><input type="hidden" name="permissions[@i].@a.Prop" value="false" />
-                                        </td>
+                                        </pems-table-cell>
                                     }
-                                </tr>
+                                </pems-table-row>
                             }
-                            </tbody>
+                            </pems-table-body>
                         </pems-table>
                     </div>
                     <div class="text-end mt-2 pm-fallback-save">

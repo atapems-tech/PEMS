@@ -37,33 +37,33 @@
 
         <pems-list-grid>
             <pems-list-table grid-key="PurchaseOrder" empty="@(!rows.Any())" empty-text="@Localizer["PoL_Empty"]">
-                <thead>
-                    <tr>
-                        <th class="pems-w-150" data-col-key="no" data-resizable="true" data-min-width="100" data-max-width="220">@Localizer["PoL_No"]</th>
-                        <th data-col-key="project" data-resizable="true" data-min-width="100" data-max-width="300" class="vs-hide-md">@Localizer["PoL_Project"]</th>
-                        <th data-col-key="vendor" data-resizable="true" data-min-width="100" data-max-width="300">@Localizer["PoL_Vendor"]</th>
-                        <th data-col-key="contract" data-resizable="true" data-min-width="90" data-max-width="200" class="vs-hide-md pems-w-140">@Localizer["PoL_Contract"]</th>
-                        <th data-col-key="value" data-resizable="true" data-min-width="90" data-max-width="180" class="text-end pems-w-130">@Localizer["PoL_Value"]</th>
-                        <th class="pems-w-120" data-col-key="status" data-resizable="true" data-min-width="90" data-max-width="160">@Localizer["Ed_Status"]</th>
-                        <th class="pems-w-60" data-col-key="actions" data-resizable="false"><span class="visually-hidden">@Localizer["Ed_Actions"]</span></th>
-                    </tr>
-                </thead>
-                <tbody>
+                <pems-table-head>
+                    <pems-table-row>
+                        <pems-table-header class="pems-w-150" data-col-key="no" data-resizable="true" data-min-width="100" data-max-width="220">@Localizer["PoL_No"]</pems-table-header>
+                        <pems-table-header data-col-key="project" data-resizable="true" data-min-width="100" data-max-width="300" class="vs-hide-md">@Localizer["PoL_Project"]</pems-table-header>
+                        <pems-table-header data-col-key="vendor" data-resizable="true" data-min-width="100" data-max-width="300">@Localizer["PoL_Vendor"]</pems-table-header>
+                        <pems-table-header data-col-key="contract" data-resizable="true" data-min-width="90" data-max-width="200" class="vs-hide-md pems-w-140">@Localizer["PoL_Contract"]</pems-table-header>
+                        <pems-table-header data-col-key="value" data-resizable="true" data-min-width="90" data-max-width="180" class="text-end pems-w-130">@Localizer["PoL_Value"]</pems-table-header>
+                        <pems-table-header class="pems-w-120" data-col-key="status" data-resizable="true" data-min-width="90" data-max-width="160">@Localizer["Ed_Status"]</pems-table-header>
+                        <pems-table-header class="pems-w-60" data-col-key="actions" data-resizable="false"><span class="visually-hidden">@Localizer["Ed_Actions"]</span></pems-table-header>
+                    </pems-table-row>
+                </pems-table-head>
+                <pems-table-body>
                     @foreach (var po in rows)
                     {
-                        <tr class="lp-row">
-                            <td class="lp-no"><a asp-action="Details" asp-route-id="@po.PoId" class="lp-subject" title="@po.PoNumber">@po.PoNumber</a></td>
-                            <td class="small vs-hide-md">@po.ProjectName</td>
-                            <td class="small">@po.VendorName</td>
-                            <td class="small vs-hide-md"><span class="vs-num">@po.ContractNo</span></td>
-                            <td class="text-end"><span class="vs-num">@po.Value?.ToString("N0")</span></td>
-                            <td><span class="vs-pill @StatusTone(po.Status)">@StatusText(po.Status)</span></td>
-                            <td class="text-end">
+                        <pems-table-row class="lp-row">
+                            <pems-table-cell class="lp-no"><a asp-action="Details" asp-route-id="@po.PoId" class="lp-subject" title="@po.PoNumber">@po.PoNumber</a></pems-table-cell>
+                            <pems-table-cell class="small vs-hide-md">@po.ProjectName</pems-table-cell>
+                            <pems-table-cell class="small">@po.VendorName</pems-table-cell>
+                            <pems-table-cell class="small vs-hide-md"><span class="vs-num">@po.ContractNo</span></pems-table-cell>
+                            <pems-table-cell class="text-end"><span class="vs-num">@po.Value?.ToString("N0")</span></pems-table-cell>
+                            <pems-table-cell><span class="vs-pill @StatusTone(po.Status)">@StatusText(po.Status)</span></pems-table-cell>
+                            <pems-table-cell class="text-end">
                                 <a asp-action="Details" asp-route-id="@po.PoId" class="lp-act lp-act--always" title="@Localizer["Ed_View"]" aria-label="@Localizer["Ed_View"]"><pems-icon name="bi-eye" aria-hidden="true" /></a>
-                            </td>
-                        </tr>
+                            </pems-table-cell>
+                        </pems-table-row>
                     }
-                </tbody>
+                </pems-table-body>
             </pems-list-table>
         </pems-list-grid>
     </pems-list-panel>

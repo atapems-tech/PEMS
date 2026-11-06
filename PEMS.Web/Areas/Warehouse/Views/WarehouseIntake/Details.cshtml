@@ -36,41 +36,41 @@
     <input type="hidden" name="workOrderId" value="@Model.WorkOrderId" />
     <pems-table-scroll>
         <pems-table kind="enterprise" scale="small" css="align-middle">
-            <thead>
-                <tr>
-                    <th>@Localizer["Material"]</th>
-                    <th>@Localizer["Whi_SupplyCode"]</th>
-                    <th class="text-end">@Localizer["Required Qty"]</th>
-                    <th class="text-end">@Localizer["Whi_Sourced"]</th>
-                    <th>@Localizer["Whi_Requisitions"]</th>
-                    <th class="text-end">@Localizer["Whi_SourceNow"]</th>
-                </tr>
-            </thead>
-            <tbody>
+            <pems-table-head>
+                <pems-table-row>
+                    <pems-table-header>@Localizer["Material"]</pems-table-header>
+                    <pems-table-header>@Localizer["Whi_SupplyCode"]</pems-table-header>
+                    <pems-table-header class="text-end">@Localizer["Required Qty"]</pems-table-header>
+                    <pems-table-header class="text-end">@Localizer["Whi_Sourced"]</pems-table-header>
+                    <pems-table-header>@Localizer["Whi_Requisitions"]</pems-table-header>
+                    <pems-table-header class="text-end">@Localizer["Whi_SourceNow"]</pems-table-header>
+                </pems-table-row>
+            </pems-table-head>
+            <pems-table-body>
             @foreach (var l in Model.Lines)
             {
-                <tr>
-                    <td class="small"><span dir="ltr">@l.MaterialCode</span> - @l.MaterialDescription</td>
-                    <td><span class="vs-pill @(l.SupplyCode == WorkOrderMaterialSupplyCodes.DirectPurchase ? "vs-pill--warning" : "vs-pill--neutral")">@Localizer["Whi_Supply_" + l.SupplyCode]</span></td>
-                    <td class="text-end" dir="ltr">@l.RequiredQuantity.ToString("0.###") @l.UnitName</td>
-                    <td class="text-end" dir="ltr">@(l.SupplyCode == WorkOrderMaterialSupplyCodes.Stock ? l.SourcedQuantity.ToString("0.###") : "—")</td>
-                    <td class="small">
+                <pems-table-row>
+                    <pems-table-cell class="small"><span dir="ltr">@l.MaterialCode</span> - @l.MaterialDescription</pems-table-cell>
+                    <pems-table-cell><span class="vs-pill @(l.SupplyCode == WorkOrderMaterialSupplyCodes.DirectPurchase ? "vs-pill--warning" : "vs-pill--neutral")">@Localizer["Whi_Supply_" + l.SupplyCode]</span></pems-table-cell>
+                    <pems-table-cell class="text-end" dir="ltr">@l.RequiredQuantity.ToString("0.###") @l.UnitName</pems-table-cell>
+                    <pems-table-cell class="text-end" dir="ltr">@(l.SupplyCode == WorkOrderMaterialSupplyCodes.Stock ? l.SourcedQuantity.ToString("0.###") : "—")</pems-table-cell>
+                    <pems-table-cell class="small">
                         @foreach (var r in l.Requisitions)
                         {
                             <div><a href="/Warehouse/StoreRequisition/Details/@r.StoreRequisitionId" dir="ltr">@r.RequisitionNumber</a> · @r.WarehouseCode · @r.Status · <span dir="ltr">@r.Quantity.ToString("0.###")</span></div>
                         }
                         @if (l.SupplyCode == WorkOrderMaterialSupplyCodes.DirectPurchase) { <span class="text-muted">@Localizer["Whi_DirectPurchaseNote"]</span> }
-                    </td>
-                    <td class="text-end">
+                    </pems-table-cell>
+                    <pems-table-cell class="text-end">
                         @if (canSource && l.UnsourcedQuantity > 0)
                         {
                             <pems-input scale="small" css="text-end" type="number" name="quantities[@l.WorkOrderMaterialId]" dir="ltr" min="0" max="@l.UnsourcedQuantity.ToString(System.Globalization.CultureInfo.InvariantCulture)" step="any" value="@l.UnsourcedQuantity.ToString(System.Globalization.CultureInfo.InvariantCulture)" aria-label="@Localizer["Whi_SourceNow"] @l.MaterialCode" />
                         }
                         else { <span class="text-muted">—</span> }
-                    </td>
-                </tr>
+                    </pems-table-cell>
+                </pems-table-row>
             }
-            </tbody>
+            </pems-table-body>
         </pems-table>
     </pems-table-scroll>
 

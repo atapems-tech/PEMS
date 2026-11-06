@@ -25,38 +25,38 @@
 
         <pems-list-grid>
             <pems-list-table empty="@(Model.Count == 0)" empty-text="@Localizer["SrtL_Empty"]">
-                <thead>
-                    <tr>
-                        <th class="pems-w-150">@Localizer["Module"]</th>
-                        <th class="pems-w-150">@Localizer["Document Type"]</th>
-                        <th class="pems-w-180">@Localizer["Storage Provider"]</th>
-                        <th class="vs-hide-md">@Localizer["Relative Root"]</th>
-                        <th class="text-end pems-w-80">@Localizer["Priority"]</th>
-                        <th class="pems-w-80">@Localizer["Default"]</th>
-                        <th class="pems-w-110">@Localizer["Ed_Status"]</th>
-                        <th class="pems-w-90"><span class="visually-hidden">@Localizer["Ed_Actions"]</span></th>
-                    </tr>
-                </thead>
-                <tbody>
+                <pems-table-head>
+                    <pems-table-row>
+                        <pems-table-header class="pems-w-150">@Localizer["Module"]</pems-table-header>
+                        <pems-table-header class="pems-w-150">@Localizer["Document Type"]</pems-table-header>
+                        <pems-table-header class="pems-w-180">@Localizer["Storage Provider"]</pems-table-header>
+                        <pems-table-header class="vs-hide-md">@Localizer["Relative Root"]</pems-table-header>
+                        <pems-table-header class="text-end pems-w-80">@Localizer["Priority"]</pems-table-header>
+                        <pems-table-header class="pems-w-80">@Localizer["Default"]</pems-table-header>
+                        <pems-table-header class="pems-w-110">@Localizer["Ed_Status"]</pems-table-header>
+                        <pems-table-header class="pems-w-90"><span class="visually-hidden">@Localizer["Ed_Actions"]</span></pems-table-header>
+                    </pems-table-row>
+                </pems-table-head>
+                <pems-table-body>
                 @foreach (var r in Model)
                 {
-                    <tr class="lp-row">
-                        <td><a asp-action="Edit" asp-route-id="@r.StorageRouteId" class="lp-subject">@r.Module</a></td>
-                        <td class="small">@(r.DocumentType ?? Localizer["SrtL_Any"].Value)</td>
-                        <td class="small">@r.StorageProviderName</td>
-                        <td class="small text-muted vs-hide-md"><span class="vs-num">@r.RelativeRootPath</span></td>
-                        <td class="text-end"><span class="vs-num">@r.Priority</span></td>
-                        <td>@if (r.IsDefault) { <pems-icon name="bi-star-fill" css="text-warning" title="@Localizer["Default"]" aria-label="@Localizer["Default"]" /> }</td>
-                        <td><span class="vs-pill @(r.IsEnabled ? "vs-pill--success" : "vs-pill--neutral")">@(r.IsEnabled ? Localizer["Enabled"] : Localizer["Disabled"])</span></td>
-                        <td class="text-end text-nowrap">
+                    <pems-table-row class="lp-row">
+                        <pems-table-cell><a asp-action="Edit" asp-route-id="@r.StorageRouteId" class="lp-subject">@r.Module</a></pems-table-cell>
+                        <pems-table-cell class="small">@(r.DocumentType ?? Localizer["SrtL_Any"].Value)</pems-table-cell>
+                        <pems-table-cell class="small">@r.StorageProviderName</pems-table-cell>
+                        <pems-table-cell class="small text-muted vs-hide-md"><span class="vs-num">@r.RelativeRootPath</span></pems-table-cell>
+                        <pems-table-cell class="text-end"><span class="vs-num">@r.Priority</span></pems-table-cell>
+                        <pems-table-cell>@if (r.IsDefault) { <pems-icon name="bi-star-fill" css="text-warning" title="@Localizer["Default"]" aria-label="@Localizer["Default"]" /> }</pems-table-cell>
+                        <pems-table-cell><span class="vs-pill @(r.IsEnabled ? "vs-pill--success" : "vs-pill--neutral")">@(r.IsEnabled ? Localizer["Enabled"] : Localizer["Disabled"])</span></pems-table-cell>
+                        <pems-table-cell class="text-end text-nowrap">
                             <a asp-action="Edit" asp-route-id="@r.StorageRouteId" class="lp-act lp-act--always" title="@Localizer["Ed_Edit"]" aria-label="@Localizer["Ed_Edit"]"><pems-icon name="bi-pencil" aria-hidden="true" /></a>
                             <form asp-action="Delete" asp-route-id="@r.StorageRouteId" method="post" class="d-inline" data-pems-confirm="@Localizer["SrtL_ConfirmDelete"]">
                                 <button type="submit" class="lp-act lp-act--always text-danger" title="@Localizer["Ed_Delete"]" aria-label="@Localizer["Ed_Delete"]"><pems-icon name="bi-trash" aria-hidden="true" /></button>
                             </form>
-                        </td>
-                    </tr>
+                        </pems-table-cell>
+                    </pems-table-row>
                 }
-                </tbody>
+                </pems-table-body>
             </pems-list-table>
         </pems-list-grid>
     </pems-list-panel>

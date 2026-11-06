@@ -16,18 +16,18 @@
     else
     {
         <pems-table kind="enterprise">
-            <thead><tr><th>@Localizer["When"]</th><th>@Localizer["Action"]</th><th>By</th><th>@Localizer["Changed Fields"]</th></tr></thead>
-            <tbody>
+            <pems-table-head><pems-table-row><pems-table-header>@Localizer["When"]</pems-table-header><pems-table-header>@Localizer["Action"]</pems-table-header><pems-table-header>By</pems-table-header><pems-table-header>@Localizer["Changed Fields"]</pems-table-header></pems-table-row></pems-table-head>
+            <pems-table-body>
                 @foreach (var log in Model)
                 {
-                    <tr>
-                        <td class="small text-muted">@log.Timestamp.ToString("yyyy-MM-dd HH:mm")</td>
-                        <td><pems-badge tone="light">@log.Action</pems-badge></td>
-                        <td class="small">@(log.UserName ?? "—")</td>
-                        <td class="small"><pre class="mb-0 small">@log.ChangedFieldsSummary</pre></td>
-                    </tr>
+                    <pems-table-row>
+                        <pems-table-cell class="small text-muted">@log.Timestamp.ToString("yyyy-MM-dd HH:mm")</pems-table-cell>
+                        <pems-table-cell><pems-badge tone="light">@log.Action</pems-badge></pems-table-cell>
+                        <pems-table-cell class="small">@(log.UserName ?? "—")</pems-table-cell>
+                        <pems-table-cell class="small"><pre class="mb-0 small">@log.ChangedFieldsSummary</pre></pems-table-cell>
+                    </pems-table-row>
                 }
-            </tbody>
+            </pems-table-body>
         </pems-table>
     }
 </pems-content-card>

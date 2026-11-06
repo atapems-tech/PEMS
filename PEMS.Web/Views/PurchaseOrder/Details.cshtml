@@ -64,42 +64,42 @@
         {
         <pems-table-scroll>
             <pems-table kind="enterprise" scale="small" css="align-middle">
-                <thead>
-                    <tr>
-                        <th>#</th><th>@Localizer["Po_Item"]</th><th class="text-end">@Localizer["Po_Quantity"]</th><th class="text-end">@Localizer["Po_UnitPrice"]</th>
-                        <th class="text-end">@Localizer["Po_Amount"]</th><th>@Localizer["Po_Supply"]</th>@if (isDraft && canEdit) { <th></th> }
-                    </tr>
-                </thead>
-                <tbody>
+                <pems-table-head>
+                    <pems-table-row>
+                        <pems-table-header>#</pems-table-header><pems-table-header>@Localizer["Po_Item"]</pems-table-header><pems-table-header class="text-end">@Localizer["Po_Quantity"]</pems-table-header><pems-table-header class="text-end">@Localizer["Po_UnitPrice"]</pems-table-header>
+                        <pems-table-header class="text-end">@Localizer["Po_Amount"]</pems-table-header><pems-table-header>@Localizer["Po_Supply"]</pems-table-header>@if (isDraft && canEdit) { <pems-table-header></pems-table-header> }
+                    </pems-table-row>
+                </pems-table-head>
+                <pems-table-body>
                 @foreach (var l in a.Lines)
                 {
-                    <tr>
-                        <td dir="ltr">@l.LineNo</td>
-                        <td class="small">
+                    <pems-table-row>
+                        <pems-table-cell dir="ltr">@l.LineNo</pems-table-cell>
+                        <pems-table-cell class="small">
                             @if (l.PartNumber != null) { <span dir="ltr">@l.PartNumber</span><text> - </text> }@l.Description
                             <span class="vs-pill @(l.IsCatalogued ? "vs-pill--success" : "vs-pill--warning") ms-1">@Localizer[l.IsCatalogued ? "Mr_PartCatalogued" : "Mr_PartNotCatalogued"]</span>
                             @if (l.TenderId.HasValue) { <a class="ms-1 small" href="/Tender/Details/@l.TenderId">@Localizer["Po_FromAward"]</a> }
                             @if (!l.IsCatalogued && l.CommodityGroup != null) { <div class="text-muted">@l.CommodityGroup — @l.FreeTextReason</div> }
-                        </td>
-                        <td class="text-end" dir="ltr">@l.Quantity.ToString("0.###") @l.Unit</td>
-                        <td class="text-end" dir="ltr">@l.UnitPrice.ToString("N2")</td>
-                        <td class="text-end" dir="ltr">@l.LineAmount.ToString("N2")</td>
-                        <td class="small">@Localizer[l.IsStockLine ? "Po_StockLine" : "Po_DirectLine"]@if (l.WarehouseCode != null) { <div class="text-muted" dir="ltr">@l.WarehouseCode</div> }</td>
+                        </pems-table-cell>
+                        <pems-table-cell class="text-end" dir="ltr">@l.Quantity.ToString("0.###") @l.Unit</pems-table-cell>
+                        <pems-table-cell class="text-end" dir="ltr">@l.UnitPrice.ToString("N2")</pems-table-cell>
+                        <pems-table-cell class="text-end" dir="ltr">@l.LineAmount.ToString("N2")</pems-table-cell>
+                        <pems-table-cell class="small">@Localizer[l.IsStockLine ? "Po_StockLine" : "Po_DirectLine"]@if (l.WarehouseCode != null) { <div class="text-muted" dir="ltr">@l.WarehouseCode</div> }</pems-table-cell>
                         @if (isDraft && canEdit)
                         {
-                            <td class="text-end text-nowrap">
+                            <pems-table-cell class="text-end text-nowrap">
                                 <form asp-action="RemoveLine" method="post" class="d-inline">
                                     <input type="hidden" name="id" value="@Model.PoId" /><input type="hidden" name="lineId" value="@l.PurchaseOrderLineId" />
                                     <pems-button tone="danger" size="small" outline="true" type="submit" title="@Localizer["Po_RemoveLine"]"><pems-icon name="bi-x" aria-hidden="true" /></pems-button>
                                 </form>
-                            </td>
+                            </pems-table-cell>
                         }
-                    </tr>
+                    </pems-table-row>
                     @if (isDraft && canEdit)
                     {
-                        <tr>
-                            <td></td>
-                            <td colspan="6">
+                        <pems-table-row>
+                            <pems-table-cell></pems-table-cell>
+                            <pems-table-cell colspan="6">
                                 <form asp-action="UpdateLine" method="post"><pems-row gap="2" css="align-items-end small">
                                     <input type="hidden" name="id" value="@Model.PoId" /><input type="hidden" name="lineId" value="@l.PurchaseOrderLineId" />
                                     <pems-col md="2"><pems-label>@Localizer["Po_Quantity"]</pems-label><pems-input scale="small" name="quantity" type="number" step="any" min="0" dir="ltr" value="@l.Quantity.ToString(System.Globalization.CultureInfo.InvariantCulture)" /></pems-col>
@@ -116,12 +116,12 @@
                                     }
                                     <pems-col md="auto"><pems-button tone="neutral" size="small" outline="true" type="submit"><pems-icon name="bi-check2" aria-hidden="true" /> @Localizer["Po_SaveLine"]</pems-button></pems-col>
                                 </pems-row></form>
-                            </td>
-                        </tr>
+                            </pems-table-cell>
+                        </pems-table-row>
                     }
                 }
-                </tbody>
-                <tfoot><tr><th colspan="4" class="text-end">@Localizer["Po_Total"]</th><th class="text-end" dir="ltr">@a.Total.ToString("N2") @a.Currency</th><th colspan="2"></th></tr></tfoot>
+                </pems-table-body>
+                <pems-table-foot><pems-table-row><pems-table-header colspan="4" class="text-end">@Localizer["Po_Total"]</pems-table-header><pems-table-header class="text-end" dir="ltr">@a.Total.ToString("N2") @a.Currency</pems-table-header><pems-table-header colspan="2"></pems-table-header></pems-table-row></pems-table-foot>
             </pems-table>
         </pems-table-scroll>
         }
@@ -187,26 +187,26 @@
         <p class="small text-muted">@Localizer["Rcv_ReceivingHelp"]</p>
         <pems-table-scroll>
             <pems-table kind="enterprise" scale="small" css="align-middle">
-                <thead>
-                    <tr>
-                        <th>#</th><th>@Localizer["Po_Item"]</th><th class="text-end">@Localizer["Rcv_Ordered"]</th><th class="text-end">@Localizer["Rcv_InQc"]</th>
-                        <th class="text-end">@Localizer["Accepted"]</th><th class="text-end">@Localizer["Hold"]</th><th class="text-end">@Localizer["Rejected"]</th>
-                        <th class="text-end">@Localizer["Rcv_Open"]</th><th>@Localizer["Rcv_Inspection"]</th>
-                    </tr>
-                </thead>
-                <tbody>
+                <pems-table-head>
+                    <pems-table-row>
+                        <pems-table-header>#</pems-table-header><pems-table-header>@Localizer["Po_Item"]</pems-table-header><pems-table-header class="text-end">@Localizer["Rcv_Ordered"]</pems-table-header><pems-table-header class="text-end">@Localizer["Rcv_InQc"]</pems-table-header>
+                        <pems-table-header class="text-end">@Localizer["Accepted"]</pems-table-header><pems-table-header class="text-end">@Localizer["Hold"]</pems-table-header><pems-table-header class="text-end">@Localizer["Rejected"]</pems-table-header>
+                        <pems-table-header class="text-end">@Localizer["Rcv_Open"]</pems-table-header><pems-table-header>@Localizer["Rcv_Inspection"]</pems-table-header>
+                    </pems-table-row>
+                </pems-table-head>
+                <pems-table-body>
                 @foreach (var r in receivingLines)
                 {
-                    <tr>
-                        <td dir="ltr">@r.LineNo</td>
-                        <td class="small">@(r.MaterialCode ?? "-") - @r.Description @if (r.WarehouseCode != null) { <span class="text-muted" dir="ltr">(@r.WarehouseCode)</span> }</td>
-                        <td class="text-end" dir="ltr">@r.Ordered.ToString("0.###") @r.Unit</td>
-                        <td class="text-end" dir="ltr">@r.InQc.ToString("0.###")</td>
-                        <td class="text-end" dir="ltr">@r.Accepted.ToString("0.###")</td>
-                        <td class="text-end" dir="ltr">@r.OnHold.ToString("0.###")</td>
-                        <td class="text-end" dir="ltr">@((r.RejectedReplaced + r.RejectedClosedShort).ToString("0.###"))@if (r.RejectedClosedShort > 0) { <div class="small text-muted">@Localizer["Rcv_Action_CloseShort"]: @r.RejectedClosedShort.ToString("0.###")</div> }</td>
-                        <td class="text-end" dir="ltr">@r.Outstanding.ToString("0.###")@if (r.OverReceived > 0) { <div class="small text-danger">@Localizer["Rcv_Over"]: @r.OverReceived.ToString("0.###")</div> }</td>
-                        <td class="small">
+                    <pems-table-row>
+                        <pems-table-cell dir="ltr">@r.LineNo</pems-table-cell>
+                        <pems-table-cell class="small">@(r.MaterialCode ?? "-") - @r.Description @if (r.WarehouseCode != null) { <span class="text-muted" dir="ltr">(@r.WarehouseCode)</span> }</pems-table-cell>
+                        <pems-table-cell class="text-end" dir="ltr">@r.Ordered.ToString("0.###") @r.Unit</pems-table-cell>
+                        <pems-table-cell class="text-end" dir="ltr">@r.InQc.ToString("0.###")</pems-table-cell>
+                        <pems-table-cell class="text-end" dir="ltr">@r.Accepted.ToString("0.###")</pems-table-cell>
+                        <pems-table-cell class="text-end" dir="ltr">@r.OnHold.ToString("0.###")</pems-table-cell>
+                        <pems-table-cell class="text-end" dir="ltr">@((r.RejectedReplaced + r.RejectedClosedShort).ToString("0.###"))@if (r.RejectedClosedShort > 0) { <div class="small text-muted">@Localizer["Rcv_Action_CloseShort"]: @r.RejectedClosedShort.ToString("0.###")</div> }</pems-table-cell>
+                        <pems-table-cell class="text-end" dir="ltr">@r.Outstanding.ToString("0.###")@if (r.OverReceived > 0) { <div class="small text-danger">@Localizer["Rcv_Over"]: @r.OverReceived.ToString("0.###")</div> }</pems-table-cell>
+                        <pems-table-cell class="small">
                             @if (r.InspectionReleasedAt != null)
                             {
                                 <span class="text-success">@Localizer["Rcv_Released"]</span> <span class="text-muted">@r.InspectionReleasedBy @r.InspectionReleasedAt?.ToString("yyyy-MM-dd") @r.InspectionTestPlanNumber</span>
@@ -224,10 +224,10 @@
                             {
                                 <span class="@(r.InspectionRequired ? "text-warning" : "text-muted")">@(r.InspectionRequired ? Localizer["Rcv_NotReleased"].Value : "-")</span>
                             }
-                        </td>
-                    </tr>
+                        </pems-table-cell>
+                    </pems-table-row>
                 }
-                </tbody>
+                </pems-table-body>
             </pems-table>
         </pems-table-scroll>
     </pems-content-card>

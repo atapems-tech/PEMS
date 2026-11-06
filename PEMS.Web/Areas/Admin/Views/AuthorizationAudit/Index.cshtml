@@ -79,31 +79,31 @@
 
         <pems-list-grid>
             <pems-list-table grid-key="AuthorizationAudit" empty="@(Model.Items.Count == 0)" empty-text="@Localizer["No authorization events found"]">
-                <thead>
-                    <tr>
-                        <th class="pems-w-160" data-col-key="time" data-resizable="true" data-min-width="130" data-max-width="220">@Localizer["AlL_Time"]</th>
-                        <th class="pems-w-130" data-col-key="user" data-resizable="true" data-min-width="90" data-max-width="200">@Localizer["AlL_User"]</th>
-                        <th class="pems-w-200" data-col-key="permission" data-resizable="true" data-min-width="140" data-max-width="320">@Localizer["Permission"]</th>
-                        <th data-col-key="resourceId" data-resizable="true" data-min-width="80" data-max-width="180" class="vs-hide-md pems-w-110">@Localizer["Resource ID"]</th>
-                        <th class="pems-w-100" data-col-key="decision" data-resizable="true" data-min-width="80" data-max-width="140">@Localizer["Decision"]</th>
-                        <th data-col-key="reason" data-resizable="true" data-min-width="140" data-max-width="520">@Localizer["ItL_Reason"]</th>
-                        <th data-col-key="scope" data-resizable="true" data-min-width="90" data-max-width="220" class="vs-hide-md pems-w-140">@Localizer["Scope"]</th>
-                    </tr>
-                </thead>
-                <tbody>
+                <pems-table-head>
+                    <pems-table-row>
+                        <pems-table-header class="pems-w-160" data-col-key="time" data-resizable="true" data-min-width="130" data-max-width="220">@Localizer["AlL_Time"]</pems-table-header>
+                        <pems-table-header class="pems-w-130" data-col-key="user" data-resizable="true" data-min-width="90" data-max-width="200">@Localizer["AlL_User"]</pems-table-header>
+                        <pems-table-header class="pems-w-200" data-col-key="permission" data-resizable="true" data-min-width="140" data-max-width="320">@Localizer["Permission"]</pems-table-header>
+                        <pems-table-header data-col-key="resourceId" data-resizable="true" data-min-width="80" data-max-width="180" class="vs-hide-md pems-w-110">@Localizer["Resource ID"]</pems-table-header>
+                        <pems-table-header class="pems-w-100" data-col-key="decision" data-resizable="true" data-min-width="80" data-max-width="140">@Localizer["Decision"]</pems-table-header>
+                        <pems-table-header data-col-key="reason" data-resizable="true" data-min-width="140" data-max-width="520">@Localizer["ItL_Reason"]</pems-table-header>
+                        <pems-table-header data-col-key="scope" data-resizable="true" data-min-width="90" data-max-width="220" class="vs-hide-md pems-w-140">@Localizer["Scope"]</pems-table-header>
+                    </pems-table-row>
+                </pems-table-head>
+                <pems-table-body>
                 @foreach (var log in Model.Items)
                 {
-                    <tr class="lp-row">
-                        <td class="small"><span class="vs-num">@log.Timestamp.ToString("yyyy-MM-dd HH:mm:ss")</span></td>
-                        <td class="small">@(log.UserId.HasValue && userNames.TryGetValue(log.UserId.Value, out var un) ? un : (log.UserId?.ToString() ?? "—"))</td>
-                        <td class="small"><code>@($"{log.ResourceName}.{log.ActionName}")</code></td>
-                        <td class="small vs-hide-md"><span class="vs-num">@(log.ResourceId ?? "—")</span></td>
-                        <td><span class="vs-pill @(log.Decision == "Allow" ? "vs-pill--success" : "vs-pill--danger")">@log.Decision</span></td>
-                        <td class="small text-muted"><span class="vs-title-cell" title="@log.Reason">@log.Reason</span></td>
-                        <td class="small vs-hide-md">@(log.ScopeType == null ? "—" : $"{log.ScopeType}={log.ScopeValue}")</td>
-                    </tr>
+                    <pems-table-row class="lp-row">
+                        <pems-table-cell class="small"><span class="vs-num">@log.Timestamp.ToString("yyyy-MM-dd HH:mm:ss")</span></pems-table-cell>
+                        <pems-table-cell class="small">@(log.UserId.HasValue && userNames.TryGetValue(log.UserId.Value, out var un) ? un : (log.UserId?.ToString() ?? "—"))</pems-table-cell>
+                        <pems-table-cell class="small"><code>@($"{log.ResourceName}.{log.ActionName}")</code></pems-table-cell>
+                        <pems-table-cell class="small vs-hide-md"><span class="vs-num">@(log.ResourceId ?? "—")</span></pems-table-cell>
+                        <pems-table-cell><span class="vs-pill @(log.Decision == "Allow" ? "vs-pill--success" : "vs-pill--danger")">@log.Decision</span></pems-table-cell>
+                        <pems-table-cell class="small text-muted"><span class="vs-title-cell" title="@log.Reason">@log.Reason</span></pems-table-cell>
+                        <pems-table-cell class="small vs-hide-md">@(log.ScopeType == null ? "—" : $"{log.ScopeType}={log.ScopeValue}")</pems-table-cell>
+                    </pems-table-row>
                 }
-                </tbody>
+                </pems-table-body>
             </pems-list-table>
 
             <pems-list-footer>

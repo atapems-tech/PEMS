@@ -141,21 +141,21 @@ else if (view == "week")
     <pems-content-card css="mb-3">
         <pems-table-scroll>
             <pems-table kind="enterprise" scale="small" css="pems-cal-week" id="pemsCalWeekTable">
-                <thead>
-                    <tr>
-                        <th class="pems-s-94253f99">@Localizer["Maintenance Team"]</th>
-                        @foreach (var d in days) { <th class="text-center @(d.Date == DateTime.Today ? "pems-cal-today" : "")">@d.ToString("ddd")<br /><span class="small text-muted">@d.ToString("MMM d")</span></th> }
-                    </tr>
-                </thead>
-                <tbody>
+                <pems-table-head>
+                    <pems-table-row>
+                        <pems-table-header class="pems-s-94253f99">@Localizer["Maintenance Team"]</pems-table-header>
+                        @foreach (var d in days) { <pems-table-header class="text-center @(d.Date == DateTime.Today ? "pems-cal-today" : "")">@d.ToString("ddd")<br /><span class="small text-muted">@d.ToString("MMM d")</span></pems-table-header> }
+                    </pems-table-row>
+                </pems-table-head>
+                <pems-table-body>
                     @foreach (var (teamId, teamName) in teamRows)
                     {
-                        <tr>
-                            <td class="fw-bold">@teamName</td>
+                        <pems-table-row>
+                            <pems-table-cell class="fw-bold">@teamName</pems-table-cell>
                             @foreach (var d in days)
                             {
                                 var cellItems = Model.Items.Where(x => x.AssignedTeamId == teamId && x.PlannedStart.Date == d.Date).ToList();
-                                <td class="pems-cal-week-cell" data-date="@d.ToString("yyyy-MM-dd")" data-team="@teamId">
+                                <pems-table-cell class="pems-cal-week-cell" data-date="@d.ToString("yyyy-MM-dd")" data-team="@teamId">
                                     @foreach (var it in cellItems)
                                     {
                                         <a class="pems-cal-card @TypeBadgeClass(it.WorkOrderType) @(it.HasEmployeeConflict ? "pems-cal-conflict" : "")" draggable="true"
@@ -167,18 +167,18 @@ else if (view == "week")
                                             @if (it.HasEmployeeConflict) { <div class="small text-danger"><pems-icon name="bi-exclamation-triangle" /> @Localizer["Conflict"]</div> }
                                         </a>
                                     }
-                                </td>
+                                </pems-table-cell>
                             }
-                        </tr>
+                        </pems-table-row>
                     }
                     @if (noTeamItems.Count > 0)
                     {
-                        <tr>
-                            <td class="fw-bold text-muted">@Localizer["Unassigned Team"]</td>
+                        <pems-table-row>
+                            <pems-table-cell class="fw-bold text-muted">@Localizer["Unassigned Team"]</pems-table-cell>
                             @foreach (var d in days)
                             {
                                 var cellItems = noTeamItems.Where(x => x.PlannedStart.Date == d.Date).ToList();
-                                <td class="pems-cal-week-cell">
+                                <pems-table-cell class="pems-cal-week-cell">
                                     @foreach (var it in cellItems)
                                     {
                                         <a class="pems-cal-card @TypeBadgeClass(it.WorkOrderType)" href="@Url.Action("Details", "WorkOrder", new { id = it.WorkOrderId })">
@@ -186,15 +186,15 @@ else if (view == "week")
                                             <div class="small" dir="ltr">@it.PlannedStart.ToString("HH:mm")-@it.PlannedFinish.ToString("HH:mm")</div>
                                         </a>
                                     }
-                                </td>
+                                </pems-table-cell>
                             }
-                        </tr>
+                        </pems-table-row>
                     }
                     @if (teamRows.Count == 0 && noTeamItems.Count == 0)
                     {
-                        <tr><td colspan="8" class="text-center text-muted py-4">@Localizer["No scheduled work this week."]</td></tr>
+                        <pems-table-row><pems-table-cell colspan="8" class="text-center text-muted py-4">@Localizer["No scheduled work this week."]</pems-table-cell></pems-table-row>
                     }
-                </tbody>
+                </pems-table-body>
             </pems-table>
         </pems-table-scroll>
     </pems-content-card>

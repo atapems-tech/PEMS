@@ -141,42 +141,42 @@
 
         <pems-list-grid>
             <pems-list-table grid-key="PartCatalogueRequests" empty="@(!Model.Page.Items.Any())" empty-text="@Localizer["Pc_Empty"]">
-                <thead>
-                    <tr>
-                        <th class="pems-w-170" data-col-key="number" data-resizable="true" data-min-width="110" data-max-width="240">@Localizer["Pc_Col_Number"]</th>
-                        <th class="pems-w-90" data-col-key="type" data-resizable="true" data-min-width="70" data-max-width="140">@Localizer["Pc_Col_Type"]</th>
-                        <th data-col-key="section" data-resizable="true" data-min-width="70" data-max-width="160" class="vs-hide-md pems-w-100">@Localizer["Pc_F_SectionId"]</th>
-                        <th data-col-key="class" data-resizable="true" data-min-width="140" data-max-width="420">@Localizer["Pc_F_TechnicalClassId"]</th>
-                        <th data-col-key="requester" data-resizable="true" data-min-width="100" data-max-width="240" class="vs-hide-md pems-w-150">@Localizer["Pc_Col_Requester"]</th>
-                        <th class="pems-w-180" data-col-key="status" data-resizable="true" data-min-width="120" data-max-width="260">@Localizer["Pc_Col_Status"]</th>
-                        <th data-col-key="partNo" data-resizable="true" data-min-width="90" data-max-width="200" class="vs-hide-md pems-w-130">@Localizer["Pc_Col_PartNo"]</th>
-                        <th data-col-key="created" data-resizable="true" data-min-width="90" data-max-width="160" class="vs-hide-md pems-w-110">@Localizer["Pc_Col_Created"]</th>
-                    </tr>
-                </thead>
-                <tbody>
+                <pems-table-head>
+                    <pems-table-row>
+                        <pems-table-header class="pems-w-170" data-col-key="number" data-resizable="true" data-min-width="110" data-max-width="240">@Localizer["Pc_Col_Number"]</pems-table-header>
+                        <pems-table-header class="pems-w-90" data-col-key="type" data-resizable="true" data-min-width="70" data-max-width="140">@Localizer["Pc_Col_Type"]</pems-table-header>
+                        <pems-table-header data-col-key="section" data-resizable="true" data-min-width="70" data-max-width="160" class="vs-hide-md pems-w-100">@Localizer["Pc_F_SectionId"]</pems-table-header>
+                        <pems-table-header data-col-key="class" data-resizable="true" data-min-width="140" data-max-width="420">@Localizer["Pc_F_TechnicalClassId"]</pems-table-header>
+                        <pems-table-header data-col-key="requester" data-resizable="true" data-min-width="100" data-max-width="240" class="vs-hide-md pems-w-150">@Localizer["Pc_Col_Requester"]</pems-table-header>
+                        <pems-table-header class="pems-w-180" data-col-key="status" data-resizable="true" data-min-width="120" data-max-width="260">@Localizer["Pc_Col_Status"]</pems-table-header>
+                        <pems-table-header data-col-key="partNo" data-resizable="true" data-min-width="90" data-max-width="200" class="vs-hide-md pems-w-130">@Localizer["Pc_Col_PartNo"]</pems-table-header>
+                        <pems-table-header data-col-key="created" data-resizable="true" data-min-width="90" data-max-width="160" class="vs-hide-md pems-w-110">@Localizer["Pc_Col_Created"]</pems-table-header>
+                    </pems-table-row>
+                </pems-table-head>
+                <pems-table-body>
                     @foreach (var r in Model.Page.Items)
                     {
-                        <tr class="lp-row @(r.Urgent && r.Status is "InApproval" or "Draft" or "Returned" ? "pc-urgent-row" : "")">
-                            <td class="lp-no">
+                        <pems-table-row class="lp-row @(r.Urgent && r.Status is "InApproval" or "Draft" or "Returned" ? "pc-urgent-row" : "")">
+                            <pems-table-cell class="lp-no">
                                 <a asp-action="@(r.Status is "Draft" or "Returned" ? "Edit" : "Details")" asp-route-id="@r.Id" class="lp-subject">@(r.RequestNumber ?? "#" + r.Id)</a>
                                 @if (r.Urgent) { <span class="vs-pill vs-pill--danger vs-pill--icon ms-1"><pems-icon name="bi-exclamation-triangle" aria-hidden="true" /> @Localizer["Pc_Urgent"]</span> }
-                            </td>
-                            <td class="small">@Localizer["Pc_Type_" + r.RequestType]</td>
-                            <td class="small vs-hide-md">@r.SectionCode</td>
-                            <td>
+                            </pems-table-cell>
+                            <pems-table-cell class="small">@Localizer["Pc_Type_" + r.RequestType]</pems-table-cell>
+                            <pems-table-cell class="small vs-hide-md">@r.SectionCode</pems-table-cell>
+                            <pems-table-cell>
                                 <span class="vs-title-cell" title="@r.TechnicalClassDescription">@r.TechnicalClassCode</span>
                                 <span class="vs-sub">@r.TechnicalClassDescription</span>
-                            </td>
-                            <td class="small vs-hide-md">@r.RequesterName</td>
-                            <td>
+                            </pems-table-cell>
+                            <pems-table-cell class="small vs-hide-md">@r.RequesterName</pems-table-cell>
+                            <pems-table-cell>
                                 <span class="vs-pill vs-pill--icon @StatusPill(r.Status)"><pems-icon css="@StatusIcon(r.Status)" aria-hidden="true" /> @Localizer["Pc_Status_" + r.Status]</span>
                                 @if (!string.IsNullOrEmpty(r.CurrentStepKey)) { <span class="vs-sub">@Localizer["Pc_Step_" + r.CurrentStepKey]</span> }
-                            </td>
-                            <td class="small vs-hide-md"><span class="vs-num">@r.AssignedPartNumber</span></td>
-                            <td class="small vs-hide-md text-muted"><span class="vs-num">@r.CreatedDate.ToString("yyyy-MM-dd")</span></td>
-                        </tr>
+                            </pems-table-cell>
+                            <pems-table-cell class="small vs-hide-md"><span class="vs-num">@r.AssignedPartNumber</span></pems-table-cell>
+                            <pems-table-cell class="small vs-hide-md text-muted"><span class="vs-num">@r.CreatedDate.ToString("yyyy-MM-dd")</span></pems-table-cell>
+                        </pems-table-row>
                     }
-                </tbody>
+                </pems-table-body>
             </pems-list-table>
 
             <pems-list-footer>

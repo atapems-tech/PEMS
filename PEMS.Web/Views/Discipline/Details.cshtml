@@ -33,17 +33,17 @@
 <pems-content-card css="mb-3">
     <h6 class="mb-3">Tasks / Activities / Deliverables</h6>
     <pems-table kind="enterprise">
-        <thead><tr><th>@Localizer["Type"]</th><th>@Localizer["Title"]</th><th>@Localizer["Project"]</th><th>@Localizer["Responsible"]</th><th>@Localizer["Due"]</th><th>@Localizer["Status"]</th><th></th></tr></thead>
-        <tbody>
+        <pems-table-head><pems-table-row><pems-table-header>@Localizer["Type"]</pems-table-header><pems-table-header>@Localizer["Title"]</pems-table-header><pems-table-header>@Localizer["Project"]</pems-table-header><pems-table-header>@Localizer["Responsible"]</pems-table-header><pems-table-header>@Localizer["Due"]</pems-table-header><pems-table-header>@Localizer["Status"]</pems-table-header><pems-table-header></pems-table-header></pems-table-row></pems-table-head>
+        <pems-table-body>
             @foreach (var t in Model.Tasks)
             {
-                <tr class="@(t.IsOverdue ? "table-danger" : "")">
-                    <td><pems-badge tone="neutral">@t.Type</pems-badge></td>
-                    <td>@t.Title</td>
-                    <td>@t.ProjectName</td>
-                    <td>@t.ResponsibleName</td>
-                    <td>@(t.DueDate?.ToString("yyyy-MM-dd"))</td>
-                    <td>
+                <pems-table-row class="@(t.IsOverdue ? "table-danger" : "")">
+                    <pems-table-cell><pems-badge tone="neutral">@t.Type</pems-badge></pems-table-cell>
+                    <pems-table-cell>@t.Title</pems-table-cell>
+                    <pems-table-cell>@t.ProjectName</pems-table-cell>
+                    <pems-table-cell>@t.ResponsibleName</pems-table-cell>
+                    <pems-table-cell>@(t.DueDate?.ToString("yyyy-MM-dd"))</pems-table-cell>
+                    <pems-table-cell>
                         <form asp-action="SetTaskStatus" method="post" class="d-inline">
                             <input type="hidden" name="disciplineId" value="@s.DisciplineId" />
                             <input type="hidden" name="taskId" value="@t.DisciplineTaskId" />
@@ -52,10 +52,10 @@
                                 { <option value="@opt" selected="@(opt == t.Status)">@opt</option> }
                             </pems-select>
                         </form>
-                    </td>
-                </tr>
+                    </pems-table-cell>
+                </pems-table-row>
             }
-        </tbody>
+        </pems-table-body>
     </pems-table>
     @if (!Model.Tasks.Any()) { <p class="text-muted">No tasks yet.</p> }
 
@@ -90,13 +90,13 @@
             <h6 class="mb-3">@Localizer["Documents"]</h6>
             <div class="table-scroll-area pems-s-3a95d6b3">
                 <pems-table kind="enterprise">
-                    <thead><tr><th>@Localizer["Doc No"]</th><th>@Localizer["Title"]</th><th>@Localizer["Status"]</th></tr></thead>
-                    <tbody>
+                    <pems-table-head><pems-table-row><pems-table-header>@Localizer["Doc No"]</pems-table-header><pems-table-header>@Localizer["Title"]</pems-table-header><pems-table-header>@Localizer["Status"]</pems-table-header></pems-table-row></pems-table-head>
+                    <pems-table-body>
                         @foreach (var d in Model.Documents)
                         {
-                            <tr><td><a asp-controller="EngineeringDocuments" asp-action="Details" asp-route-id="@d.DocumentId">@d.DocumentNo</a></td><td>@d.Title</td><td><pems-badge tone="none" css="badge-status-@d.Status">@d.Status</pems-badge></td></tr>
+                            <pems-table-row><pems-table-cell><a asp-controller="EngineeringDocuments" asp-action="Details" asp-route-id="@d.DocumentId">@d.DocumentNo</a></pems-table-cell><pems-table-cell>@d.Title</pems-table-cell><pems-table-cell><pems-badge tone="none" css="badge-status-@d.Status">@d.Status</pems-badge></pems-table-cell></pems-table-row>
                         }
-                    </tbody>
+                    </pems-table-body>
                 </pems-table>
             </div>
             @if (!Model.Documents.Any()) { <p class="text-muted small">No documents.</p> }
@@ -106,13 +106,13 @@
             <h6 class="mb-3">@Localizer["Equipment"]</h6>
             <div class="table-scroll-area pems-s-3a95d6b3">
                 <pems-table kind="enterprise">
-                    <thead><tr><th>@Localizer["Tag"]</th><th>@Localizer["Name"]</th></tr></thead>
-                    <tbody>
+                    <pems-table-head><pems-table-row><pems-table-header>@Localizer["Tag"]</pems-table-header><pems-table-header>@Localizer["Name"]</pems-table-header></pems-table-row></pems-table-head>
+                    <pems-table-body>
                         @foreach (var e in Model.Equipment)
                         {
-                            <tr><td><a asp-controller="Equipment" asp-action="Details" asp-route-id="@e.EquipmentId">@e.TagNumber</a></td><td>@e.Name</td></tr>
+                            <pems-table-row><pems-table-cell><a asp-controller="Equipment" asp-action="Details" asp-route-id="@e.EquipmentId">@e.TagNumber</a></pems-table-cell><pems-table-cell>@e.Name</pems-table-cell></pems-table-row>
                         }
-                    </tbody>
+                    </pems-table-body>
                 </pems-table>
             </div>
             @if (!Model.Equipment.Any()) { <p class="text-muted small">No equipment.</p> }
@@ -124,13 +124,13 @@
             <h6 class="mb-3">@Localizer["VDR Items"]</h6>
             <div class="table-scroll-area pems-s-3a95d6b3">
                 <pems-table kind="enterprise">
-                    <thead><tr><th>@Localizer["Doc No"]</th><th>@Localizer["Vendor"]</th><th>@Localizer["Status"]</th></tr></thead>
-                    <tbody>
+                    <pems-table-head><pems-table-row><pems-table-header>@Localizer["Doc No"]</pems-table-header><pems-table-header>@Localizer["Vendor"]</pems-table-header><pems-table-header>@Localizer["Status"]</pems-table-header></pems-table-row></pems-table-head>
+                    <pems-table-body>
                         @foreach (var v in Model.VDRItems)
                         {
-                            <tr><td><a asp-controller="VDR" asp-action="Details" asp-route-id="@v.VDRItemId">@v.DocumentNumber</a></td><td>@v.VendorName</td><td><pems-badge tone="neutral">@v.WorkflowStatus</pems-badge></td></tr>
+                            <pems-table-row><pems-table-cell><a asp-controller="VDR" asp-action="Details" asp-route-id="@v.VDRItemId">@v.DocumentNumber</a></pems-table-cell><pems-table-cell>@v.VendorName</pems-table-cell><pems-table-cell><pems-badge tone="neutral">@v.WorkflowStatus</pems-badge></pems-table-cell></pems-table-row>
                         }
-                    </tbody>
+                    </pems-table-body>
                 </pems-table>
             </div>
             @if (!Model.VDRItems.Any()) { <p class="text-muted small">No VDR items.</p> }

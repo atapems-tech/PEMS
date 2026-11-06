@@ -9,16 +9,16 @@
     var locked = Model.LockedReason != null;
     var lockedText = locked ? (string)Localizer["PermAdmin_Locked_" + Model.LockedReason] : null;
 }
-<tr data-permission="@row.PermissionName" data-resource="@row.ResourceName" data-action="@row.ActionName"
+<pems-table-row data-permission="@row.PermissionName" data-resource="@row.ResourceName" data-action="@row.ActionName"
     data-allowed="@(row.Allowed ? "1" : "0")" data-locked="@(locked ? "1" : "0")" class="@(row.Allowed ? "" : "text-body-secondary")">
-    <td class="perm-select-cell">
+    <pems-table-cell class="perm-select-cell">
         <pems-input type="checkbox" kind="check" css="perm-select" disabled="@locked"
                aria-label="@string.Format(Localizer["PermAdmin_SelectRow"].Value, row.PermissionName)" />
-    </td>
-    <td>@row.ResourceName</td>
-    <td>@row.ActionName</td>
-    <td><code>@row.PermissionName</code></td>
-    <td class="perm-status-cell">
+    </pems-table-cell>
+    <pems-table-cell>@row.ResourceName</pems-table-cell>
+    <pems-table-cell>@row.ActionName</pems-table-cell>
+    <pems-table-cell><code>@row.PermissionName</code></pems-table-cell>
+    <pems-table-cell class="perm-status-cell">
         <pems-flex inline="true" align="center" gap="2">
             <pems-check-row switch css="m-0">
                 <pems-input type="checkbox" role="switch" kind="check" css="perm-toggle" checked="@row.Allowed" disabled="@locked"
@@ -35,6 +35,6 @@
             }
             <span class="perm-row-state small" role="status" aria-live="polite"></span>
         </pems-flex>
-    </td>
-    <td class="perm-destructive-cell">@if (row.IsDestructive) { <span class="text-danger"><pems-icon name="bi-exclamation-triangle" /> @Localizer["Yes"]</span> } else { <span class="text-body-secondary">&mdash;</span> }</td>
-</tr>
+    </pems-table-cell>
+    <pems-table-cell class="perm-destructive-cell">@if (row.IsDestructive) { <span class="text-danger"><pems-icon name="bi-exclamation-triangle" /> @Localizer["Yes"]</span> } else { <span class="text-body-secondary">&mdash;</span> }</pems-table-cell>
+</pems-table-row>

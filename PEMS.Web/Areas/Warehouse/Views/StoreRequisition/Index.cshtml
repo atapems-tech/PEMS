@@ -48,33 +48,33 @@
 
         <pems-list-grid>
             <pems-list-table grid-key="StoreRequisition" empty="@(!Model.Items.Any())" empty-text="@Localizer["SrL_Empty"]">
-                <thead>
-                    <tr>
-                        <th class="pems-w-140" data-col-key="number" data-resizable="true" data-min-width="100" data-max-width="200">@Localizer["SrL_No"]</th>
-                        <th class="pems-w-110" data-col-key="warehouse" data-resizable="true" data-min-width="90" data-max-width="160">@Localizer["ItL_Warehouse"]</th>
-                        <th data-col-key="requestedBy" data-resizable="true" data-min-width="120" data-max-width="240" class="vs-hide-md pems-w-160">@Localizer["SrL_RequestedBy"]</th>
-                        <th class="pems-w-110" data-col-key="date" data-resizable="true" data-min-width="90" data-max-width="160">@Localizer["Cm_Date"]</th>
-                        <th data-col-key="purpose" data-resizable="true" data-min-width="140" data-max-width="420">@Localizer["SrL_Purpose"]</th>
-                        <th class="pems-w-130" data-col-key="status" data-resizable="true" data-min-width="90" data-max-width="160">@Localizer["Ed_Status"]</th>
-                        <th class="pems-w-60" data-col-key="actions" data-resizable="false"><span class="visually-hidden">@Localizer["Ed_Actions"]</span></th>
-                    </tr>
-                </thead>
-                <tbody>
+                <pems-table-head>
+                    <pems-table-row>
+                        <pems-table-header class="pems-w-140" data-col-key="number" data-resizable="true" data-min-width="100" data-max-width="200">@Localizer["SrL_No"]</pems-table-header>
+                        <pems-table-header class="pems-w-110" data-col-key="warehouse" data-resizable="true" data-min-width="90" data-max-width="160">@Localizer["ItL_Warehouse"]</pems-table-header>
+                        <pems-table-header data-col-key="requestedBy" data-resizable="true" data-min-width="120" data-max-width="240" class="vs-hide-md pems-w-160">@Localizer["SrL_RequestedBy"]</pems-table-header>
+                        <pems-table-header class="pems-w-110" data-col-key="date" data-resizable="true" data-min-width="90" data-max-width="160">@Localizer["Cm_Date"]</pems-table-header>
+                        <pems-table-header data-col-key="purpose" data-resizable="true" data-min-width="140" data-max-width="420">@Localizer["SrL_Purpose"]</pems-table-header>
+                        <pems-table-header class="pems-w-130" data-col-key="status" data-resizable="true" data-min-width="90" data-max-width="160">@Localizer["Ed_Status"]</pems-table-header>
+                        <pems-table-header class="pems-w-60" data-col-key="actions" data-resizable="false"><span class="visually-hidden">@Localizer["Ed_Actions"]</span></pems-table-header>
+                    </pems-table-row>
+                </pems-table-head>
+                <pems-table-body>
                     @foreach (var r in Model.Items)
                     {
-                        <tr class="lp-row">
-                            <td class="lp-no"><a asp-action="Details" asp-route-id="@r.StoreRequisitionId" class="lp-subject" title="@r.RequisitionNumber">@r.RequisitionNumber</a></td>
-                            <td class="small"><span class="vs-num">@r.WarehouseCode</span></td>
-                            <td class="small vs-hide-md">@r.RequestedByName</td>
-                            <td class="small"><span class="vs-num">@r.RequestedDate.ToString("yyyy-MM-dd")</span></td>
-                            <td class="small"><span class="vs-title-cell" title="@r.Purpose">@(r.Purpose ?? "-")</span></td>
-                            <td><span class="vs-pill @StatusTone(r.Status)">@StatusText(r.Status)</span></td>
-                            <td class="text-end">
+                        <pems-table-row class="lp-row">
+                            <pems-table-cell class="lp-no"><a asp-action="Details" asp-route-id="@r.StoreRequisitionId" class="lp-subject" title="@r.RequisitionNumber">@r.RequisitionNumber</a></pems-table-cell>
+                            <pems-table-cell class="small"><span class="vs-num">@r.WarehouseCode</span></pems-table-cell>
+                            <pems-table-cell class="small vs-hide-md">@r.RequestedByName</pems-table-cell>
+                            <pems-table-cell class="small"><span class="vs-num">@r.RequestedDate.ToString("yyyy-MM-dd")</span></pems-table-cell>
+                            <pems-table-cell class="small"><span class="vs-title-cell" title="@r.Purpose">@(r.Purpose ?? "-")</span></pems-table-cell>
+                            <pems-table-cell><span class="vs-pill @StatusTone(r.Status)">@StatusText(r.Status)</span></pems-table-cell>
+                            <pems-table-cell class="text-end">
                                 <a asp-action="Details" asp-route-id="@r.StoreRequisitionId" class="lp-act lp-act--always" title="@Localizer["Ed_View"]" aria-label="@Localizer["Ed_View"]"><pems-icon name="bi-card-text" aria-hidden="true" /></a>
-                            </td>
-                        </tr>
+                            </pems-table-cell>
+                        </pems-table-row>
                     }
-                </tbody>
+                </pems-table-body>
             </pems-list-table>
 
             <pems-list-footer>

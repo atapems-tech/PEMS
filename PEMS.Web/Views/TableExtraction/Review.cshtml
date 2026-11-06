@@ -67,14 +67,14 @@
 <pems-content-card>
     <pems-table-scroll css="table-scroll-area pems-s-a7ef6ffc">
         <pems-table kind="enterprise" scale="small">
-            <thead>
-                <tr>
-                    <th class="pems-w-30"><input type="checkbox" id="selectAllMatched" title="Select all matched rows" /></th>
-                    <th>@Localizer["Tag"]</th><th>@Localizer["Description"]</th><th>@Localizer["Junction Box"]</th><th>@Localizer["Cable No."]</th>
-                    <th>DCS Tag</th><th>@Localizer["Status"]</th><th class="pems-s-e581e86b">@Localizer["Action"]</th>
-                </tr>
-            </thead>
-            <tbody>
+            <pems-table-head>
+                <pems-table-row>
+                    <pems-table-header class="pems-w-30"><input type="checkbox" id="selectAllMatched" title="Select all matched rows" /></pems-table-header>
+                    <pems-table-header>@Localizer["Tag"]</pems-table-header><pems-table-header>@Localizer["Description"]</pems-table-header><pems-table-header>@Localizer["Junction Box"]</pems-table-header><pems-table-header>@Localizer["Cable No."]</pems-table-header>
+                    <pems-table-header>DCS Tag</pems-table-header><pems-table-header>@Localizer["Status"]</pems-table-header><pems-table-header class="pems-s-e581e86b">@Localizer["Action"]</pems-table-header>
+                </pems-table-row>
+            </pems-table-head>
+            <pems-table-body>
                 @foreach (var row in rows)
                 {
                     var badgeClass = row.MatchStatus switch
@@ -87,20 +87,20 @@
                     };
                     var isSelectable = row.MatchStatus is "MatchedNoInstrument" or "MatchedHasInstrument";
 
-                    <tr class="row-item" data-status="@row.MatchStatus" data-tag="@(row.TagNumber ?? "").ToLower()">
-                        <td>
+                    <pems-table-row class="row-item" data-status="@row.MatchStatus" data-tag="@(row.TagNumber ?? "").ToLower()">
+                        <pems-table-cell>
                             @if (isSelectable)
                             {
                                 <input type="checkbox" class="row-select" form="bulkConfirmForm" name="selectedRowIds" value="@row.TableExtractionRowId" />
                             }
-                        </td>
-                        <td class="fw-semibold">@(row.TagNumber ?? "-")</td>
-                        <td class="small pems-s-27af8985">@(row.Description ?? "-")</td>
-                        <td class="small">@(row.JunctionBox ?? "-")</td>
-                        <td class="small">@(row.CableNo ?? "-")</td>
-                        <td class="small">@(row.DcsTagNo ?? "-")</td>
-                        <td><pems-badge tone="@badgeClass">@row.MatchStatus</pems-badge></td>
-                        <td>
+                        </pems-table-cell>
+                        <pems-table-cell class="fw-semibold">@(row.TagNumber ?? "-")</pems-table-cell>
+                        <pems-table-cell class="small pems-s-27af8985">@(row.Description ?? "-")</pems-table-cell>
+                        <pems-table-cell class="small">@(row.JunctionBox ?? "-")</pems-table-cell>
+                        <pems-table-cell class="small">@(row.CableNo ?? "-")</pems-table-cell>
+                        <pems-table-cell class="small">@(row.DcsTagNo ?? "-")</pems-table-cell>
+                        <pems-table-cell><pems-badge tone="@badgeClass">@row.MatchStatus</pems-badge></pems-table-cell>
+                        <pems-table-cell>
                             @if (row.MatchStatus is "MatchedNoInstrument" or "MatchedHasInstrument")
                             {
                                 <pems-flex align="center" gap="2">
@@ -135,10 +135,10 @@
                             {
                                 <span class="small text-muted">-</span>
                             }
-                        </td>
-                    </tr>
+                        </pems-table-cell>
+                    </pems-table-row>
                 }
-            </tbody>
+            </pems-table-body>
         </pems-table>
 
         @if (!rows.Any())

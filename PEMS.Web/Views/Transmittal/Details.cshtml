@@ -124,16 +124,16 @@
 <pems-content-card css="mb-3">
     <h6 class="mb-3">@Localizer["Td_Recipients"]</h6>
     <pems-table kind="enterprise">
-        <thead><tr><th>@Localizer["Td_Name"]</th><th>@Localizer["Td_Type"]</th><th>@Localizer["Td_Organization"]</th><th>@Localizer["Td_ResponseRequired"]</th><th>@Localizer["Td_Acknowledgement"]</th></tr></thead>
-        <tbody>
+        <pems-table-head><pems-table-row><pems-table-header>@Localizer["Td_Name"]</pems-table-header><pems-table-header>@Localizer["Td_Type"]</pems-table-header><pems-table-header>@Localizer["Td_Organization"]</pems-table-header><pems-table-header>@Localizer["Td_ResponseRequired"]</pems-table-header><pems-table-header>@Localizer["Td_Acknowledgement"]</pems-table-header></pems-table-row></pems-table-head>
+        <pems-table-body>
             @foreach (var r in Model.Recipients)
             {
-                <tr>
-                    <td>@r.Name</td>
-                    <td>@r.RecipientType</td>
-                    <td>@r.Organization</td>
-                    <td>@(r.ResponseRequired ? Localizer["Td_Yes"].Value : "")</td>
-                    <td>
+                <pems-table-row>
+                    <pems-table-cell>@r.Name</pems-table-cell>
+                    <pems-table-cell>@r.RecipientType</pems-table-cell>
+                    <pems-table-cell>@r.Organization</pems-table-cell>
+                    <pems-table-cell>@(r.ResponseRequired ? Localizer["Td_Yes"].Value : "")</pems-table-cell>
+                    <pems-table-cell>
                         @if (r.AcknowledgedAt.HasValue)
                         {
                             <pems-badge tone="success">@Localizer["Td_Acknowledged"] @r.AcknowledgedAt.Value.ToString("yyyy-MM-dd")</pems-badge>
@@ -152,10 +152,10 @@
                         {
                             <span class="text-muted small">@Localizer["Td_Pending"]</span>
                         }
-                    </td>
-                </tr>
+                    </pems-table-cell>
+                </pems-table-row>
             }
-        </tbody>
+        </pems-table-body>
     </pems-table>
     @if (!Model.Recipients.Any())
     {
@@ -167,17 +167,17 @@
     <h6 class="mb-3">@Localizer["Td_IncludedDocs"]</h6>
     <pems-table-scroll css="table-scroll-area pems-s-8da1c6e6">
     <pems-table kind="enterprise">
-        <thead>
-            <tr><th>@Localizer["Td_DocNo"]</th><th>@Localizer["Td_Title"]</th><th>@Localizer["Td_RevAtSend"]</th><th>@Localizer["Td_FileAtSend"]</th><th>@Localizer["Td_Remarks"]</th></tr>
-        </thead>
-        <tbody>
+        <pems-table-head>
+            <pems-table-row><pems-table-header>@Localizer["Td_DocNo"]</pems-table-header><pems-table-header>@Localizer["Td_Title"]</pems-table-header><pems-table-header>@Localizer["Td_RevAtSend"]</pems-table-header><pems-table-header>@Localizer["Td_FileAtSend"]</pems-table-header><pems-table-header>@Localizer["Td_Remarks"]</pems-table-header></pems-table-row>
+        </pems-table-head>
+        <pems-table-body>
             @foreach (var item in Model.Items)
             {
-                <tr>
-                    <td>@item.DocumentNo</td>
-                    <td>@item.DocumentTitle</td>
-                    <td><pems-badge tone="neutral">@item.RevisionNo</pems-badge></td>
-                    <td class="small">
+                <pems-table-row>
+                    <pems-table-cell>@item.DocumentNo</pems-table-cell>
+                    <pems-table-cell>@item.DocumentTitle</pems-table-cell>
+                    <pems-table-cell><pems-badge tone="neutral">@item.RevisionNo</pems-badge></pems-table-cell>
+                    <pems-table-cell class="small">
                         @if (!string.IsNullOrEmpty(item.SnapshotFileName))
                         {
                             <pems-icon name="bi-file-earmark-lock" css="text-muted" title="@Localizer["Td_Snapshot"]" />
@@ -191,11 +191,11 @@
                         {
                             <span class="text-muted">@Localizer["Td_NoFile"]</span>
                         }
-                    </td>
-                    <td>@item.Remarks</td>
-                </tr>
+                    </pems-table-cell>
+                    <pems-table-cell>@item.Remarks</pems-table-cell>
+                </pems-table-row>
             }
-        </tbody>
+        </pems-table-body>
     </pems-table>
     </pems-table-scroll>
 </pems-content-card>

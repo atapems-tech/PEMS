@@ -66,20 +66,20 @@ else
             </pems-flex>
             <pems-table-scroll css="table-scroll-area pems-s-b4b96c72">
                 <pems-table kind="enterprise">
-                    <thead><tr><th></th><th>@Localizer["Tag"]</th><th>@Localizer["Name"]</th><th>@Localizer["Type"]</th><th>@Localizer["Barcode"]</th></tr></thead>
-                    <tbody>
+                    <pems-table-head><pems-table-row><pems-table-header></pems-table-header><pems-table-header>@Localizer["Tag"]</pems-table-header><pems-table-header>@Localizer["Name"]</pems-table-header><pems-table-header>@Localizer["Type"]</pems-table-header><pems-table-header>@Localizer["Barcode"]</pems-table-header></pems-table-row></pems-table-head>
+                    <pems-table-body>
                         @foreach (var eq in equipments)
                         {
                             var already = alreadyBarcodedIds.Contains(eq.EquipmentId);
-                            <tr>
-                                <td><input type="checkbox" name="equipmentIds" value="@eq.EquipmentId" checked="@(!already)" /></td>
-                                <td dir="ltr"><strong>@eq.TagNumber</strong></td>
-                                <td class="small">@eq.Name</td>
-                                <td class="small">@eq.EquipmentType</td>
-                                <td>@if (already) { <pems-badge tone="neutral">Already has barcode</pems-badge> }</td>
-                            </tr>
+                            <pems-table-row>
+                                <pems-table-cell><input type="checkbox" name="equipmentIds" value="@eq.EquipmentId" checked="@(!already)" /></pems-table-cell>
+                                <pems-table-cell dir="ltr"><strong>@eq.TagNumber</strong></pems-table-cell>
+                                <pems-table-cell class="small">@eq.Name</pems-table-cell>
+                                <pems-table-cell class="small">@eq.EquipmentType</pems-table-cell>
+                                <pems-table-cell>@if (already) { <pems-badge tone="neutral">Already has barcode</pems-badge> }</pems-table-cell>
+                            </pems-table-row>
                         }
-                    </tbody>
+                    </pems-table-body>
                 </pems-table>
             </pems-table-scroll>
             @if (!equipments.Any()) { <p class="text-muted text-center py-4">No Equipment matches this filter.</p> }

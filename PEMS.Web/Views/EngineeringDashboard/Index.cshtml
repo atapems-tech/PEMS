@@ -144,20 +144,20 @@
     {
         <div class="table-scroll-area">
             <pems-table kind="enterprise" scale="small" css="mb-0">
-                <thead><tr><th>@Localizer["Document"]</th><th>@Localizer["Discipline"]</th><th>@Localizer["Vendor"]</th><th>@Localizer["Status"]</th><th>@Localizer["Rejections"]</th><th>@Localizer["Revisions"]</th></tr></thead>
-                <tbody>
+                <pems-table-head><pems-table-row><pems-table-header>@Localizer["Document"]</pems-table-header><pems-table-header>@Localizer["Discipline"]</pems-table-header><pems-table-header>@Localizer["Vendor"]</pems-table-header><pems-table-header>@Localizer["Status"]</pems-table-header><pems-table-header>@Localizer["Rejections"]</pems-table-header><pems-table-header>@Localizer["Revisions"]</pems-table-header></pems-table-row></pems-table-head>
+                <pems-table-body>
                     @foreach (var q in topRejected)
                     {
-                        <tr>
-                            <td><a asp-controller="EngineeringDocuments" asp-action="Details" asp-route-id="@q.DocumentId">@q.DocumentNo</a></td>
-                            <td class="small">@(q.DisciplineName ?? "-")</td>
-                            <td class="small">@(q.VendorName ?? "-")</td>
-                            <td><pems-badge tone="none" css="badge-status-@q.Status">@q.Status</pems-badge></td>
-                            <td><pems-badge tone="danger">@q.RejectionCount</pems-badge></td>
-                            <td class="small">@q.RevisionCount</td>
-                        </tr>
+                        <pems-table-row>
+                            <pems-table-cell><a asp-controller="EngineeringDocuments" asp-action="Details" asp-route-id="@q.DocumentId">@q.DocumentNo</a></pems-table-cell>
+                            <pems-table-cell class="small">@(q.DisciplineName ?? "-")</pems-table-cell>
+                            <pems-table-cell class="small">@(q.VendorName ?? "-")</pems-table-cell>
+                            <pems-table-cell><pems-badge tone="none" css="badge-status-@q.Status">@q.Status</pems-badge></pems-table-cell>
+                            <pems-table-cell><pems-badge tone="danger">@q.RejectionCount</pems-badge></pems-table-cell>
+                            <pems-table-cell class="small">@q.RevisionCount</pems-table-cell>
+                        </pems-table-row>
                     }
-                </tbody>
+                </pems-table-body>
             </pems-table>
         </div>
     }
@@ -182,23 +182,23 @@
     {
         <div class="table-scroll-area">
             <pems-table kind="enterprise" scale="small" css="mb-0">
-                <thead><tr><th>@Localizer["Document"]</th><th>@Localizer["Discipline"]</th><th>@Localizer["Status"]</th><th>@Localizer["Revisions"]</th><th>@Localizer["FirstPass"]</th></tr></thead>
-                <tbody>
+                <pems-table-head><pems-table-row><pems-table-header>@Localizer["Document"]</pems-table-header><pems-table-header>@Localizer["Discipline"]</pems-table-header><pems-table-header>@Localizer["Status"]</pems-table-header><pems-table-header>@Localizer["Revisions"]</pems-table-header><pems-table-header>@Localizer["FirstPass"]</pems-table-header></pems-table-row></pems-table-head>
+                <pems-table-body>
                     @foreach (var q in highRevision)
                     {
-                        <tr>
-                            <td><a asp-controller="EngineeringDocuments" asp-action="Details" asp-route-id="@q.DocumentId">@q.DocumentNo</a></td>
-                            <td class="small">@(q.DisciplineName ?? "-")</td>
-                            <td><pems-badge tone="none" css="badge-status-@q.Status">@q.Status</pems-badge></td>
-                            <td><pems-badge tone="warning">@q.RevisionCount</pems-badge></td>
-                            <td class="small">
+                        <pems-table-row>
+                            <pems-table-cell><a asp-controller="EngineeringDocuments" asp-action="Details" asp-route-id="@q.DocumentId">@q.DocumentNo</a></pems-table-cell>
+                            <pems-table-cell class="small">@(q.DisciplineName ?? "-")</pems-table-cell>
+                            <pems-table-cell><pems-badge tone="none" css="badge-status-@q.Status">@q.Status</pems-badge></pems-table-cell>
+                            <pems-table-cell><pems-badge tone="warning">@q.RevisionCount</pems-badge></pems-table-cell>
+                            <pems-table-cell class="small">
                                 @if (q.FirstPassApproved == true) { <pems-icon name="bi-check-circle" css="text-success" title="@Localizer["FirstPass"]" aria-label="@Localizer["FirstPass"]" /> }
                                 else if (q.FirstPassApproved == false) { <pems-icon name="bi-x-circle" css="text-danger" title="@Localizer["NotFirstPass"]" aria-label="@Localizer["NotFirstPass"]" /> }
                                 else { <span class="text-muted">-</span> }
-                            </td>
-                        </tr>
+                            </pems-table-cell>
+                        </pems-table-row>
                     }
-                </tbody>
+                </pems-table-body>
             </pems-table>
         </div>
         <div class="mt-3">
@@ -220,24 +220,24 @@
    {
        <div class="table-scroll-area">
            <pems-table kind="enterprise" scale="small" css="mb-0">
-               <thead>
-                   <tr>
-                       <th>@Localizer["Document"]</th>
-                       <th>@Localizer["Discipline"]</th>
-                       <th>@Localizer["Reason"]</th>
-                       <th>@Localizer["Severity"]</th>
-                       <th>@Localizer["Revisions"]</th>
-                       <th>@Localizer["Rejections"]</th>
-                   </tr>
-               </thead>
-               <tbody>
+               <pems-table-head>
+                   <pems-table-row>
+                       <pems-table-header>@Localizer["Document"]</pems-table-header>
+                       <pems-table-header>@Localizer["Discipline"]</pems-table-header>
+                       <pems-table-header>@Localizer["Reason"]</pems-table-header>
+                       <pems-table-header>@Localizer["Severity"]</pems-table-header>
+                       <pems-table-header>@Localizer["Revisions"]</pems-table-header>
+                       <pems-table-header>@Localizer["Rejections"]</pems-table-header>
+                   </pems-table-row>
+               </pems-table-head>
+               <pems-table-body>
                    @foreach (var item in attentionQueue)
                    {
-                       <tr>
-                           <td><a asp-controller="EngineeringDocuments" asp-action="Details" asp-route-id="@item.DocumentId">@item.DocumentNo</a></td>
-                           <td class="small">@item.DisciplineName</td>
-                           <td class="small">@item.Reason</td>
-                           <td>
+                       <pems-table-row>
+                           <pems-table-cell><a asp-controller="EngineeringDocuments" asp-action="Details" asp-route-id="@item.DocumentId">@item.DocumentNo</a></pems-table-cell>
+                           <pems-table-cell class="small">@item.DisciplineName</pems-table-cell>
+                           <pems-table-cell class="small">@item.Reason</pems-table-cell>
+                           <pems-table-cell>
                                @if (item.Severity == "Critical")
                                {
                                    <pems-badge tone="danger">@item.Severity</pems-badge>
@@ -250,12 +250,12 @@
                                {
                                    <pems-badge tone="neutral">@item.Severity</pems-badge>
                                }
-                           </td>
-                           <td><pems-badge tone="info">@item.RevisionCount</pems-badge></td>
-                           <td><pems-badge tone="danger">@item.RejectionCount</pems-badge></td>
-                       </tr>
+                           </pems-table-cell>
+                           <pems-table-cell><pems-badge tone="info">@item.RevisionCount</pems-badge></pems-table-cell>
+                           <pems-table-cell><pems-badge tone="danger">@item.RejectionCount</pems-badge></pems-table-cell>
+                       </pems-table-row>
                    }
-               </tbody>
+               </pems-table-body>
            </pems-table>
        </div>
    }
@@ -274,33 +274,33 @@
    {
        <div class="table-scroll-area">
            <pems-table kind="enterprise" scale="small" css="mb-0">
-               <thead>
-                   <tr>
-                       <th>@Localizer["Discipline"]</th>
-                       <th>@Localizer["Documents"]</th>
-                       <th>@Localizer["Rejections"]</th>
-                       <th>Avg Revisions</th>
-                       <th>@Localizer["Risk"]</th>
-                   </tr>
-               </thead>
-               <tbody>
+               <pems-table-head>
+                   <pems-table-row>
+                       <pems-table-header>@Localizer["Discipline"]</pems-table-header>
+                       <pems-table-header>@Localizer["Documents"]</pems-table-header>
+                       <pems-table-header>@Localizer["Rejections"]</pems-table-header>
+                       <pems-table-header>Avg Revisions</pems-table-header>
+                       <pems-table-header>@Localizer["Risk"]</pems-table-header>
+                   </pems-table-row>
+               </pems-table-head>
+               <pems-table-body>
                    @foreach (var item in disciplinePerformance)
                    {
                        var avgRevisions = item.DocumentCount > 0 ? (double)item.RevisionCount / item.DocumentCount : 0d;
-                       <tr>
-                           <td class="fw-semibold">@item.DisciplineName</td>
-                           <td>@item.DocumentCount</td>
-                           <td>@item.RejectionCount</td>
-                           <td>@avgRevisions.ToString("0.0")</td>
-                           <td>
+                       <pems-table-row>
+                           <pems-table-cell class="fw-semibold">@item.DisciplineName</pems-table-cell>
+                           <pems-table-cell>@item.DocumentCount</pems-table-cell>
+                           <pems-table-cell>@item.RejectionCount</pems-table-cell>
+                           <pems-table-cell>@avgRevisions.ToString("0.0")</pems-table-cell>
+                           <pems-table-cell>
                                <pems-flex align="center" gap="2">
                                    <pems-progress class="pems-minw-70" value="@item.RiskScore" tone="@(item.RiskScore >= 60 ? "danger" : item.RiskScore >= 35 ? "warning" : "success")" height="8px" css="flex-grow-1"></pems-progress>
                                    <span class="small text-muted">@item.RiskScore</span>
                                </pems-flex>
-                           </td>
-                       </tr>
+                           </pems-table-cell>
+                       </pems-table-row>
                    }
-               </tbody>
+               </pems-table-body>
            </pems-table>
        </div>
    }

@@ -61,31 +61,31 @@
 
 <pems-content-card>
     <pems-table kind="enterprise" scale="small" css="mb-0">
-        <thead>
-            <tr>
-                <th>@Localizer["Equipment"]</th><th>@Localizer["Strategy"]</th><th>@Localizer["Trigger"]</th><th>Evidence</th><th>@Localizer["Status"]</th>
-                <th>Generated</th><th>Reviewed</th><th></th>
-            </tr>
-        </thead>
-        <tbody>
+        <pems-table-head>
+            <pems-table-row>
+                <pems-table-header>@Localizer["Equipment"]</pems-table-header><pems-table-header>@Localizer["Strategy"]</pems-table-header><pems-table-header>@Localizer["Trigger"]</pems-table-header><pems-table-header>Evidence</pems-table-header><pems-table-header>@Localizer["Status"]</pems-table-header>
+                <pems-table-header>Generated</pems-table-header><pems-table-header>Reviewed</pems-table-header><pems-table-header></pems-table-header>
+            </pems-table-row>
+        </pems-table-head>
+        <pems-table-body>
             @foreach (var r in Model)
             {
-                <tr>
-                    <td class="fw-bold">@r.EquipmentTagNumber</td>
-                    <td class="small text-muted">@(r.MaintenanceStrategyType ?? "-") @(r.FailureModeCode != null ? $"({r.FailureModeCode})" : "")</td>
-                    <td><pems-badge tone="info">@TriggerLabel(r.TriggerReason)</pems-badge></td>
-                    <td class="small">@r.Evidence</td>
-                    <td><pems-badge tone="@StatusBadge(r.Status)">@r.Status</pems-badge></td>
-                    <td class="small">@r.GeneratedDate.ToString("yyyy-MM-dd")</td>
-                    <td class="small text-muted">
+                <pems-table-row>
+                    <pems-table-cell class="fw-bold">@r.EquipmentTagNumber</pems-table-cell>
+                    <pems-table-cell class="small text-muted">@(r.MaintenanceStrategyType ?? "-") @(r.FailureModeCode != null ? $"({r.FailureModeCode})" : "")</pems-table-cell>
+                    <pems-table-cell><pems-badge tone="info">@TriggerLabel(r.TriggerReason)</pems-badge></pems-table-cell>
+                    <pems-table-cell class="small">@r.Evidence</pems-table-cell>
+                    <pems-table-cell><pems-badge tone="@StatusBadge(r.Status)">@r.Status</pems-badge></pems-table-cell>
+                    <pems-table-cell class="small">@r.GeneratedDate.ToString("yyyy-MM-dd")</pems-table-cell>
+                    <pems-table-cell class="small text-muted">
                         @if (r.ReviewedBy != null)
                         {
                             @($"{r.ReviewedBy} · {r.ReviewedAt:yyyy-MM-dd}")
                             @if (r.ReviewNotes != null) { <div>@r.ReviewNotes</div> }
                         }
                         else { <span>-</span> }
-                    </td>
-                    <td>
+                    </pems-table-cell>
+                    <pems-table-cell>
                         @if (r.Status == "PENDING" && canReview)
                         {
                             <form asp-action="ReviewRcmRecommendation" method="post" class="d-inline">
@@ -99,10 +99,10 @@
                                 <pems-button tone="danger" size="small" outline="true" type="submit"><pems-icon name="bi-x-lg" /></pems-button>
                             </form>
                         }
-                    </td>
-                </tr>
+                    </pems-table-cell>
+                </pems-table-row>
             }
-        </tbody>
+        </pems-table-body>
     </pems-table>
     @if (!Model.Any()) { <p class="text-muted text-center py-4 mb-0">هیچ توصیه‌ای موجود نیست. @(canGenerate ? "برای تولید شواهد، دکمه‌ی Generate Evidence را بزنید." : "")</p> }
 </pems-content-card>

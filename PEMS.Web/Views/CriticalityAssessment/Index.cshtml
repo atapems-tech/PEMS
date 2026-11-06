@@ -83,37 +83,37 @@
         <pems-list-grid>
             <pems-list-table grid-key="CriticalityAssessmentQueue" empty="@(!Model.Items.Any())" empty-text="@Localizer["Ca_Empty"]"
                              filtered="@(filterCount > 0)" clear-href="@Url.Action("Index")">
-                <thead>
-                    <tr>
-                        <th class="pems-w-140" data-col-key="equipment" data-resizable="true" data-min-width="100" data-max-width="220">@Localizer["Equipment"]</th>
-                        <th class="pems-w-160" data-col-key="class" data-resizable="true" data-min-width="100" data-max-width="240">@Localizer["Rcm_EquipmentClass"]</th>
-                        <th data-col-key="framework" data-resizable="true" data-min-width="80" data-max-width="160" class="vs-hide-md pems-w-100">@Localizer["Ca_Framework"]</th>
-                        <th class="pems-w-120" data-col-key="status" data-resizable="true" data-min-width="90" data-max-width="160">@Localizer["Ed_Status"]</th>
-                        <th class="pems-w-100" data-col-key="proposed" data-resizable="true" data-min-width="80" data-max-width="140">@Localizer["Ca_Proposed"]</th>
-                        <th data-col-key="preparedBy" data-resizable="true" data-min-width="100" data-max-width="220" class="vs-hide-md pems-w-140">@Localizer["Ca_PreparedBy"]</th>
-                        <th data-col-key="approvedBy" data-resizable="true" data-min-width="100" data-max-width="220" class="vs-hide-md pems-w-140">@Localizer["Ca_ApprovedBy"]</th>
-                        <th class="pems-w-110" data-col-key="created" data-resizable="true" data-min-width="90" data-max-width="160">@Localizer["Ca_Created"]</th>
-                        <th class="pems-w-60" data-col-key="actions" data-resizable="false"><span class="visually-hidden">@Localizer["Ed_Actions"]</span></th>
-                    </tr>
-                </thead>
-                <tbody>
+                <pems-table-head>
+                    <pems-table-row>
+                        <pems-table-header class="pems-w-140" data-col-key="equipment" data-resizable="true" data-min-width="100" data-max-width="220">@Localizer["Equipment"]</pems-table-header>
+                        <pems-table-header class="pems-w-160" data-col-key="class" data-resizable="true" data-min-width="100" data-max-width="240">@Localizer["Rcm_EquipmentClass"]</pems-table-header>
+                        <pems-table-header data-col-key="framework" data-resizable="true" data-min-width="80" data-max-width="160" class="vs-hide-md pems-w-100">@Localizer["Ca_Framework"]</pems-table-header>
+                        <pems-table-header class="pems-w-120" data-col-key="status" data-resizable="true" data-min-width="90" data-max-width="160">@Localizer["Ed_Status"]</pems-table-header>
+                        <pems-table-header class="pems-w-100" data-col-key="proposed" data-resizable="true" data-min-width="80" data-max-width="140">@Localizer["Ca_Proposed"]</pems-table-header>
+                        <pems-table-header data-col-key="preparedBy" data-resizable="true" data-min-width="100" data-max-width="220" class="vs-hide-md pems-w-140">@Localizer["Ca_PreparedBy"]</pems-table-header>
+                        <pems-table-header data-col-key="approvedBy" data-resizable="true" data-min-width="100" data-max-width="220" class="vs-hide-md pems-w-140">@Localizer["Ca_ApprovedBy"]</pems-table-header>
+                        <pems-table-header class="pems-w-110" data-col-key="created" data-resizable="true" data-min-width="90" data-max-width="160">@Localizer["Ca_Created"]</pems-table-header>
+                        <pems-table-header class="pems-w-60" data-col-key="actions" data-resizable="false"><span class="visually-hidden">@Localizer["Ed_Actions"]</span></pems-table-header>
+                    </pems-table-row>
+                </pems-table-head>
+                <pems-table-body>
                     @foreach (var a in Model.Items)
                     {
-                        <tr class="lp-row">
-                            <td class="lp-no"><a asp-action="Details" asp-route-id="@a.CriticalityAssessmentId" class="lp-subject"><span class="vs-num">@a.EquipmentTagNumber</span></a></td>
-                            <td class="small">@(a.EquipmentClassName ?? "-")</td>
-                            <td class="small vs-hide-md text-muted">@a.FrameworkVersion</td>
-                            <td><span class="vs-pill @StatusTone(a.Status)">@StatusText(a.Status)</span></td>
-                            <td>@(a.ProposedCriticalityClass ?? "-")</td>
-                            <td class="small vs-hide-md">@(a.PreparedBy ?? "-")</td>
-                            <td class="small vs-hide-md">@(a.ApprovedBy ?? "-")</td>
-                            <td class="small"><span class="vs-num">@a.CreatedDate.ToString("yyyy-MM-dd")</span></td>
-                            <td class="text-end">
+                        <pems-table-row class="lp-row">
+                            <pems-table-cell class="lp-no"><a asp-action="Details" asp-route-id="@a.CriticalityAssessmentId" class="lp-subject"><span class="vs-num">@a.EquipmentTagNumber</span></a></pems-table-cell>
+                            <pems-table-cell class="small">@(a.EquipmentClassName ?? "-")</pems-table-cell>
+                            <pems-table-cell class="small vs-hide-md text-muted">@a.FrameworkVersion</pems-table-cell>
+                            <pems-table-cell><span class="vs-pill @StatusTone(a.Status)">@StatusText(a.Status)</span></pems-table-cell>
+                            <pems-table-cell>@(a.ProposedCriticalityClass ?? "-")</pems-table-cell>
+                            <pems-table-cell class="small vs-hide-md">@(a.PreparedBy ?? "-")</pems-table-cell>
+                            <pems-table-cell class="small vs-hide-md">@(a.ApprovedBy ?? "-")</pems-table-cell>
+                            <pems-table-cell class="small"><span class="vs-num">@a.CreatedDate.ToString("yyyy-MM-dd")</span></pems-table-cell>
+                            <pems-table-cell class="text-end">
                                 <a asp-action="Details" asp-route-id="@a.CriticalityAssessmentId" class="lp-act lp-act--always" title="@Localizer["Lp_Details"]" aria-label="@Localizer["Lp_Details"]"><pems-icon name="bi-eye" aria-hidden="true" /></a>
-                            </td>
-                        </tr>
+                            </pems-table-cell>
+                        </pems-table-row>
                     }
-                </tbody>
+                </pems-table-body>
             </pems-list-table>
 
             <pems-list-footer>

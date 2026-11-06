@@ -34,45 +34,45 @@
 
         <pems-list-grid>
             <pems-list-table empty="@(Model.Count == 0)" empty-text="@Localizer["WfL_Empty"]">
-                <thead>
-                    <tr>
-                        <th>@Localizer["Workflow"]</th>
-                        <th class="pems-w-160">@Localizer["Module"] / @Localizer["Process type"]</th>
-                        <th class="pems-w-90">@Localizer["Published version"]</th>
-                        <th class="pems-w-150">@Localizer["Open draft"]</th>
-                        <th class="vs-hide-md pems-w-180">@Localizer["Binding"]</th>
-                        <th class="pems-w-110">@Localizer["Access"]</th>
-                        <th class="vs-hide-md pems-w-130">@Localizer["Last modified"]</th>
-                        <th class="vs-hide-md pems-w-130">@Localizer["Last published"]</th>
-                        <th class="vs-hide-md pems-w-110">@Localizer["Created by"]</th>
-                        <th class="pems-w-60"><span class="visually-hidden">@Localizer["Ed_Actions"]</span></th>
-                    </tr>
-                </thead>
-                <tbody>
+                <pems-table-head>
+                    <pems-table-row>
+                        <pems-table-header>@Localizer["Workflow"]</pems-table-header>
+                        <pems-table-header class="pems-w-160">@Localizer["Module"] / @Localizer["Process type"]</pems-table-header>
+                        <pems-table-header class="pems-w-90">@Localizer["Published version"]</pems-table-header>
+                        <pems-table-header class="pems-w-150">@Localizer["Open draft"]</pems-table-header>
+                        <pems-table-header class="vs-hide-md pems-w-180">@Localizer["Binding"]</pems-table-header>
+                        <pems-table-header class="pems-w-110">@Localizer["Access"]</pems-table-header>
+                        <pems-table-header class="vs-hide-md pems-w-130">@Localizer["Last modified"]</pems-table-header>
+                        <pems-table-header class="vs-hide-md pems-w-130">@Localizer["Last published"]</pems-table-header>
+                        <pems-table-header class="vs-hide-md pems-w-110">@Localizer["Created by"]</pems-table-header>
+                        <pems-table-header class="pems-w-60"><span class="visually-hidden">@Localizer["Ed_Actions"]</span></pems-table-header>
+                    </pems-table-row>
+                </pems-table-head>
+                <pems-table-body>
                 @foreach (var r in Model)
                 {
                     var display = fa && !string.IsNullOrWhiteSpace(r.NameFa) ? r.NameFa : r.Name;
-                    <tr class="lp-row">
-                        <td>
+                    <pems-table-row class="lp-row">
+                        <pems-table-cell>
                             <a asp-action="Details" asp-route-id="@r.DefinitionId" class="lp-subject">@display</a>
                             @if (fa && string.IsNullOrWhiteSpace(r.NameFa)) { <div class="vs-sub">@Localizer["No Persian name"]</div> }
                             else if (!fa && !string.IsNullOrWhiteSpace(r.NameFa)) { <div class="vs-sub" dir="rtl">@r.NameFa</div> }
                             @if (!r.IsActive) { <span class="vs-pill vs-pill--neutral">@Localizer["Archived"]</span> }
-                        </td>
-                        <td class="small">@r.Module<div class="vs-sub">@r.Category</div></td>
-                        <td><span class="vs-num">@(r.PublishedVersion.HasValue ? "v" + r.PublishedVersion : "-")</span></td>
-                        <td>@if (r.OpenDraftVersion.HasValue) { <span class="vs-pill vs-pill--warning">v@(r.OpenDraftVersion) · @Localizer[r.OpenDraftStatus!]</span> } else { <span class="text-muted">-</span> }</td>
-                        <td class="vs-hide-md">@if (r.ActiveBindings > 0) { <span class="vs-pill vs-pill--success">@Localizer["Bound"] @r.BindingSummary</span> } else { <span class="vs-pill vs-pill--neutral">@Localizer["No active binding"]</span> }</td>
-                        <td><span class="vs-pill @(r.Editable ? "vs-pill--info" : "vs-pill--neutral")" title="@r.EditableReason">@Localizer[r.Editable ? "Editable" : "View Only"]</span></td>
-                        <td class="small text-nowrap vs-hide-md"><span class="vs-num">@r.LastModified?.ToString("yyyy-MM-dd HH:mm")</span></td>
-                        <td class="small text-nowrap vs-hide-md"><span class="vs-num">@(r.LastPublished?.ToString("yyyy-MM-dd HH:mm") ?? "-")</span></td>
-                        <td class="small vs-hide-md">@(r.CreatedBy ?? "-")</td>
-                        <td class="text-end">
+                        </pems-table-cell>
+                        <pems-table-cell class="small">@r.Module<div class="vs-sub">@r.Category</div></pems-table-cell>
+                        <pems-table-cell><span class="vs-num">@(r.PublishedVersion.HasValue ? "v" + r.PublishedVersion : "-")</span></pems-table-cell>
+                        <pems-table-cell>@if (r.OpenDraftVersion.HasValue) { <span class="vs-pill vs-pill--warning">v@(r.OpenDraftVersion) · @Localizer[r.OpenDraftStatus!]</span> } else { <span class="text-muted">-</span> }</pems-table-cell>
+                        <pems-table-cell class="vs-hide-md">@if (r.ActiveBindings > 0) { <span class="vs-pill vs-pill--success">@Localizer["Bound"] @r.BindingSummary</span> } else { <span class="vs-pill vs-pill--neutral">@Localizer["No active binding"]</span> }</pems-table-cell>
+                        <pems-table-cell><span class="vs-pill @(r.Editable ? "vs-pill--info" : "vs-pill--neutral")" title="@r.EditableReason">@Localizer[r.Editable ? "Editable" : "View Only"]</span></pems-table-cell>
+                        <pems-table-cell class="small text-nowrap vs-hide-md"><span class="vs-num">@r.LastModified?.ToString("yyyy-MM-dd HH:mm")</span></pems-table-cell>
+                        <pems-table-cell class="small text-nowrap vs-hide-md"><span class="vs-num">@(r.LastPublished?.ToString("yyyy-MM-dd HH:mm") ?? "-")</span></pems-table-cell>
+                        <pems-table-cell class="small vs-hide-md">@(r.CreatedBy ?? "-")</pems-table-cell>
+                        <pems-table-cell class="text-end">
                             <a asp-action="Details" asp-route-id="@r.DefinitionId" class="lp-act lp-act--always" title="@Localizer["Open"]" aria-label="@Localizer["Open"] @display"><pems-icon name="bi-box-arrow-in-right" aria-hidden="true" /></a>
-                        </td>
-                    </tr>
+                        </pems-table-cell>
+                    </pems-table-row>
                 }
-                </tbody>
+                </pems-table-body>
             </pems-list-table>
         </pems-list-grid>
     </pems-list-panel>

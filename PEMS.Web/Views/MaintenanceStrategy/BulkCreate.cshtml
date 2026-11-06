@@ -213,25 +213,25 @@ else if (matchingCount.HasValue && matchingCount.Value > maxResults)
                                                 </pems-button>
                                             </pems-flex>
                                             <pems-table scale="small" css="mb-0">
-                                                <tbody>
+                                                <pems-table-body>
                                                     @foreach (var eq in typeGroup)
                                                     {
                                                         var cls = criticalityByEquipment.GetValueOrDefault(eq.EquipmentId);
-                                                        <tr>
-                                                            <td class="pems-s-322e3f5e">
+                                                        <pems-table-row>
+                                                            <pems-table-cell class="pems-s-322e3f5e">
                                                                 <input type="checkbox" class="eq-check area-@areaSafeId type-@typeSafeId" name="equipmentIds" value="@eq.EquipmentId" disabled="@(bulk.Candidates.TryGetValue(eq.EquipmentId, out var cand0) && !cand0.WillReceive)" />
-                                                            </td>
-                                                            <td class="small">@eq.TagNumber — @eq.Name</td>
-                                                            <td>
+                                                            </pems-table-cell>
+                                                            <pems-table-cell class="small">@eq.TagNumber — @eq.Name</pems-table-cell>
+                                                            <pems-table-cell>
                                                                 <pems-badge tone="@RcmDisplay.CriticalityBadge(string.IsNullOrEmpty(cls) ? "Unrated" : cls)">@Localizer.Label("Criticality", string.IsNullOrEmpty(cls) ? "Unrated" : cls)</pems-badge>
                                                                 @if (bulk.Candidates.TryGetValue(eq.EquipmentId, out var cand) && !cand.WillReceive)
                                                                 {
                                                                     <pems-badge tone="warning" title="@Localizer["Rcm_Bulk_" + cand.Conflict]">@Localizer["Rcm_Bulk_" + cand.Conflict]</pems-badge>
                                                                 }
-                                                            </td>
-                                                        </tr>
+                                                            </pems-table-cell>
+                                                        </pems-table-row>
                                                     }
-                                                </tbody>
+                                                </pems-table-body>
                                             </pems-table>
                                         </div>
                                     }

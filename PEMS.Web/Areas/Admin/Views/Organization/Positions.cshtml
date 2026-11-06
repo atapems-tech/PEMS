@@ -59,12 +59,12 @@
 
     <pems-table-scroll>
         <pems-table scale="small" css="table-enterprise align-middle">
-            <thead><tr><th>@Localizer["Org_Col_Code"]</th><th>@Localizer["Org_Col_Position"]</th><th>@Localizer["Org_Col_Department"]</th><th>@Localizer["Org_Col_Parent"]</th><th>@Localizer["Org_Col_Holder"]</th><th>@Localizer["Org_Col_Lifecycle"]</th><th></th></tr></thead>
-            <tbody>
+            <pems-table-head><pems-table-row><pems-table-header>@Localizer["Org_Col_Code"]</pems-table-header><pems-table-header>@Localizer["Org_Col_Position"]</pems-table-header><pems-table-header>@Localizer["Org_Col_Department"]</pems-table-header><pems-table-header>@Localizer["Org_Col_Parent"]</pems-table-header><pems-table-header>@Localizer["Org_Col_Holder"]</pems-table-header><pems-table-header>@Localizer["Org_Col_Lifecycle"]</pems-table-header><pems-table-header></pems-table-header></pems-table-row></pems-table-head>
+            <pems-table-body>
             @foreach (var r in Model)
             {
-                <tr class="@(r.IsActive ? "" : "text-muted")">
-                    <td colspan="3" class="p-1">
+                <pems-table-row class="@(r.IsActive ? "" : "text-muted")">
+                    <pems-table-cell colspan="3" class="p-1">
                         <form asp-action="EditPosition" method="post"><pems-row gap="1" css="align-items-center">
                             <input type="hidden" name="positionId" value="@r.PositionId" />
                             <pems-col md="3"><pems-input scale="small" name="positionCode" value="@r.PositionCode" maxlength="50" aria-label="@Localizer["Org_Col_Code"]" /></pems-col>
@@ -79,19 +79,19 @@
                             <input type="hidden" name="description" value="@r.Description" />
                             <pems-col md="1"><button class="vs-btn vs-btn--sm" title="@Localizer["Org_Btn_Save"]" aria-label="@Localizer["Org_Btn_Save"]"><pems-icon name="bi-save" /></button></pems-col>
                         </pems-row></form>
-                    </td>
-                    <td class="small">@(r.ParentLabel ?? "—")</td>
-                    <td class="small">@(r.IsVacant ? "—" : r.HolderName)</td>
-                    <td><pems-badge tone="none" css="@(r.Lifecycle == "OCCUPIED" ? "bg-success" : r.Lifecycle == "VACANT" ? "bg-warning text-dark" : "bg-secondary")">@r.Lifecycle</pems-badge></td>
-                    <td class="text-end">
+                    </pems-table-cell>
+                    <pems-table-cell class="small">@(r.ParentLabel ?? "—")</pems-table-cell>
+                    <pems-table-cell class="small">@(r.IsVacant ? "—" : r.HolderName)</pems-table-cell>
+                    <pems-table-cell><pems-badge tone="none" css="@(r.Lifecycle == "OCCUPIED" ? "bg-success" : r.Lifecycle == "VACANT" ? "bg-warning text-dark" : "bg-secondary")">@r.Lifecycle</pems-badge></pems-table-cell>
+                    <pems-table-cell class="text-end">
                         <form asp-action="SetPositionActive" method="post" class="d-inline">
                             <input type="hidden" name="positionId" value="@r.PositionId" /><input type="hidden" name="isActive" value="@((!r.IsActive).ToString().ToLowerInvariant())" />
                             <pems-button tone="none" size="small" css="@(r.IsActive ? "btn-outline-danger" : "btn-outline-success")">@(r.IsActive ? Localizer["Deactivate"] : Localizer["Reactivate"])</pems-button>
                         </form>
-                    </td>
-                </tr>
+                    </pems-table-cell>
+                </pems-table-row>
             }
-            </tbody>
+            </pems-table-body>
         </pems-table>
         @if (!Model.Any()) { <div class="vs-empty">@Localizer["Org_Empty"]</div> }
     </pems-table-scroll>

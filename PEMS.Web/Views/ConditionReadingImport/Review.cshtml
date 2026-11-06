@@ -77,17 +77,17 @@
 <pems-content-card>
     <pems-table-scroll css="table-scroll-area pems-s-8da1c6e6">
         <pems-table kind="enterprise">
-            <thead>
-                <tr>
-                    <th>@Localizer["Approve"]</th><th>@Localizer["Src Row"]</th><th>@Localizer["Equipment Tag"]</th><th>@Localizer["Point Tag"]</th>
-                    <th>@Localizer["Variable"]</th><th>@Localizer["Reading Date"]</th><th>@Localizer["Value"]</th><th>@Localizer["Match Result"]</th><th>@Localizer["Note"]</th>
-                </tr>
-            </thead>
-            <tbody>
+            <pems-table-head>
+                <pems-table-row>
+                    <pems-table-header>@Localizer["Approve"]</pems-table-header><pems-table-header>@Localizer["Src Row"]</pems-table-header><pems-table-header>@Localizer["Equipment Tag"]</pems-table-header><pems-table-header>@Localizer["Point Tag"]</pems-table-header>
+                    <pems-table-header>@Localizer["Variable"]</pems-table-header><pems-table-header>@Localizer["Reading Date"]</pems-table-header><pems-table-header>@Localizer["Value"]</pems-table-header><pems-table-header>@Localizer["Match Result"]</pems-table-header><pems-table-header>@Localizer["Note"]</pems-table-header>
+                </pems-table-row>
+            </pems-table-head>
+            <pems-table-body>
                 @foreach (var r in Model.Rows.Items)
                 {
-                    <tr>
-                        <td>
+                    <pems-table-row>
+                        <pems-table-cell>
                             @if (Model.Status == "Staging")
                             {
                                 var canToggle = r.Status is "New" or "Duplicate";
@@ -113,23 +113,23 @@
                             {
                                 @(r.CommittedConditionReadingId.HasValue ? Localizer["Reading Created"] : (r.IncludeInCommit ? Localizer["Approved"] : Localizer["No"]))
                             }
-                        </td>
-                        <td>@r.SourceRowNumber</td>
-                        <td><strong dir="ltr">@r.EquipmentTag</strong></td>
-                        <td class="small" dir="ltr">@r.PointTag</td>
-                        <td class="small">@(r.VariableType ?? "-")</td>
-                        <td class="small" dir="ltr">@(r.ReadingDate?.ToString("yyyy-MM-dd HH:mm") ?? "-")</td>
-                        <td class="small text-end" dir="ltr">@(r.Value?.ToString() ?? "-")</td>
-                        <td><pems-badge tone="none" css="@StatusBadge(r.Status)">@StatusLabel(r.Status)</pems-badge></td>
-                        <td class="small">
+                        </pems-table-cell>
+                        <pems-table-cell>@r.SourceRowNumber</pems-table-cell>
+                        <pems-table-cell><strong dir="ltr">@r.EquipmentTag</strong></pems-table-cell>
+                        <pems-table-cell class="small" dir="ltr">@r.PointTag</pems-table-cell>
+                        <pems-table-cell class="small">@(r.VariableType ?? "-")</pems-table-cell>
+                        <pems-table-cell class="small" dir="ltr">@(r.ReadingDate?.ToString("yyyy-MM-dd HH:mm") ?? "-")</pems-table-cell>
+                        <pems-table-cell class="small text-end" dir="ltr">@(r.Value?.ToString() ?? "-")</pems-table-cell>
+                        <pems-table-cell><pems-badge tone="none" css="@StatusBadge(r.Status)">@StatusLabel(r.Status)</pems-badge></pems-table-cell>
+                        <pems-table-cell class="small">
                             @if (r.ValidationMessage != null)
                             {
                                 <span class="text-muted pems-s-f8f979be">@r.ValidationMessage</span>
                             }
-                        </td>
-                    </tr>
+                        </pems-table-cell>
+                    </pems-table-row>
                 }
-            </tbody>
+            </pems-table-body>
         </pems-table>
     </pems-table-scroll>
     @if (!Model.Rows.Items.Any()) { <p class="text-muted text-center py-4">@Localizer["No rows match this filter."]</p> }

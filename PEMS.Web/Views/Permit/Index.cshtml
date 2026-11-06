@@ -81,60 +81,60 @@
         <pems-list-grid>
             <pems-list-table grid-key="Permit" empty="@(!Model.Items.Any())" empty-text="@(pendingMyApproval ? Localizer["Pt_EmptyPending"] : Localizer["Pt_Empty"])"
                              filtered="@(filterCount > 0)" clear-href="@Url.Action("Index")">
-                <thead>
-                    <tr>
-                        <th class="pems-w-140" data-col-key="number" data-resizable="true" data-min-width="100" data-max-width="200">@Localizer["Pt_Number"]</th>
-                        <th class="pems-w-110" data-col-key="type" data-resizable="true" data-min-width="90" data-max-width="160">@Localizer["Cm_Type"]</th>
-                        <th class="pems-w-220" data-col-key="title" data-resizable="true" data-min-width="140" data-max-width="360">@Localizer["Cm_Title"]</th>
-                        <th class="pems-w-130" data-col-key="equipment" data-resizable="true" data-min-width="100" data-max-width="200">@Localizer["Equipment"]</th>
-                        <th data-col-key="workOrder" data-resizable="true" data-min-width="100" data-max-width="200" class="vs-hide-md pems-w-130">@Localizer["Cm_LinkedWo"]</th>
-                        <th class="pems-w-100" data-col-key="priority" data-resizable="true" data-min-width="80" data-max-width="140">@Localizer["Cm_Priority"]</th>
-                        <th class="pems-w-120" data-col-key="status" data-resizable="true" data-min-width="90" data-max-width="160">@Localizer["Ed_Status"]</th>
+                <pems-table-head>
+                    <pems-table-row>
+                        <pems-table-header class="pems-w-140" data-col-key="number" data-resizable="true" data-min-width="100" data-max-width="200">@Localizer["Pt_Number"]</pems-table-header>
+                        <pems-table-header class="pems-w-110" data-col-key="type" data-resizable="true" data-min-width="90" data-max-width="160">@Localizer["Cm_Type"]</pems-table-header>
+                        <pems-table-header class="pems-w-220" data-col-key="title" data-resizable="true" data-min-width="140" data-max-width="360">@Localizer["Cm_Title"]</pems-table-header>
+                        <pems-table-header class="pems-w-130" data-col-key="equipment" data-resizable="true" data-min-width="100" data-max-width="200">@Localizer["Equipment"]</pems-table-header>
+                        <pems-table-header data-col-key="workOrder" data-resizable="true" data-min-width="100" data-max-width="200" class="vs-hide-md pems-w-130">@Localizer["Cm_LinkedWo"]</pems-table-header>
+                        <pems-table-header class="pems-w-100" data-col-key="priority" data-resizable="true" data-min-width="80" data-max-width="140">@Localizer["Cm_Priority"]</pems-table-header>
+                        <pems-table-header class="pems-w-120" data-col-key="status" data-resizable="true" data-min-width="90" data-max-width="160">@Localizer["Ed_Status"]</pems-table-header>
                         @if (pendingMyApproval)
                         {
-                            <th class="pems-w-150" data-col-key="stage" data-resizable="true" data-min-width="100" data-max-width="220">@Localizer["Pt_CurrentStage"]</th>
-                            <th class="pems-w-200" data-col-key="waitingSince" data-resizable="true" data-min-width="140" data-max-width="260">@Localizer["Pt_WaitingSince"]</th>
+                            <pems-table-header class="pems-w-150" data-col-key="stage" data-resizable="true" data-min-width="100" data-max-width="220">@Localizer["Pt_CurrentStage"]</pems-table-header>
+                            <pems-table-header class="pems-w-200" data-col-key="waitingSince" data-resizable="true" data-min-width="140" data-max-width="260">@Localizer["Pt_WaitingSince"]</pems-table-header>
                         }
                         else
                         {
-                            <th data-col-key="issuer" data-resizable="true" data-min-width="100" data-max-width="220" class="vs-hide-md pems-w-140">@Localizer["Pt_Issuer"]</th>
-                            <th data-col-key="receiver" data-resizable="true" data-min-width="100" data-max-width="220" class="vs-hide-md pems-w-140">@Localizer["Pt_Receiver"]</th>
-                            <th class="pems-w-190" data-col-key="valid" data-resizable="true" data-min-width="140" data-max-width="260">@Localizer["Pt_Valid"]</th>
+                            <pems-table-header data-col-key="issuer" data-resizable="true" data-min-width="100" data-max-width="220" class="vs-hide-md pems-w-140">@Localizer["Pt_Issuer"]</pems-table-header>
+                            <pems-table-header data-col-key="receiver" data-resizable="true" data-min-width="100" data-max-width="220" class="vs-hide-md pems-w-140">@Localizer["Pt_Receiver"]</pems-table-header>
+                            <pems-table-header class="pems-w-190" data-col-key="valid" data-resizable="true" data-min-width="140" data-max-width="260">@Localizer["Pt_Valid"]</pems-table-header>
                         }
-                    </tr>
-                </thead>
-                <tbody>
+                    </pems-table-row>
+                </pems-table-head>
+                <pems-table-body>
                     @foreach (var p in Model.Items)
                     {
-                        <tr class="lp-row">
-                            <td class="lp-no"><a asp-action="Details" asp-route-id="@p.PermitId" class="lp-subject" title="@p.PermitNumber">@p.PermitNumber</a></td>
-                            <td class="small">@p.PermitType</td>
-                            <td><span class="vs-title-cell" title="@p.Title">@p.Title</span></td>
-                            <td class="small"><span class="vs-num">@(p.EquipmentTagNumber ?? "-")</span></td>
-                            <td class="small vs-hide-md"><span class="vs-num">@(p.WorkOrderNumber ?? "-")</span></td>
-                            <td class="small">@VdrUi.Loc(Localizer, "Pri_", p.Priority)</td>
-                            <td><span class="vs-pill @StatusTone(p.Status)">@StatusText(p.Status)</span></td>
+                        <pems-table-row class="lp-row">
+                            <pems-table-cell class="lp-no"><a asp-action="Details" asp-route-id="@p.PermitId" class="lp-subject" title="@p.PermitNumber">@p.PermitNumber</a></pems-table-cell>
+                            <pems-table-cell class="small">@p.PermitType</pems-table-cell>
+                            <pems-table-cell><span class="vs-title-cell" title="@p.Title">@p.Title</span></pems-table-cell>
+                            <pems-table-cell class="small"><span class="vs-num">@(p.EquipmentTagNumber ?? "-")</span></pems-table-cell>
+                            <pems-table-cell class="small vs-hide-md"><span class="vs-num">@(p.WorkOrderNumber ?? "-")</span></pems-table-cell>
+                            <pems-table-cell class="small">@VdrUi.Loc(Localizer, "Pri_", p.Priority)</pems-table-cell>
+                            <pems-table-cell><span class="vs-pill @StatusTone(p.Status)">@StatusText(p.Status)</span></pems-table-cell>
                             @if (pendingMyApproval)
                             {
                                 var task = pendingTasksByPermitId != null && pendingTasksByPermitId.TryGetValue(p.PermitId, out var t) ? t : null;
-                                <td class="small">@(task?.StageName ?? "-")</td>
-                                <td class="small">
+                                <pems-table-cell class="small">@(task?.StageName ?? "-")</pems-table-cell>
+                                <pems-table-cell class="small">
                                     @if (task != null)
                                     {
                                         <span class="vs-num">@task.AssignedDate.ToString("yyyy-MM-dd HH:mm")</span> <span class="text-muted">(@WaitingSince(task.AssignedDate))</span>
                                     }
                                     else { <text>-</text> }
-                                </td>
+                                </pems-table-cell>
                             }
                             else
                             {
-                                <td class="small vs-hide-md">@(p.IssuerName ?? "-")</td>
-                                <td class="small vs-hide-md">@(p.ReceiverName ?? "-")</td>
-                                <td class="small"><span class="vs-num">@(p.ValidFrom?.ToString("yyyy-MM-dd") ?? "-") / @(p.ValidTo?.ToString("yyyy-MM-dd") ?? "-")</span></td>
+                                <pems-table-cell class="small vs-hide-md">@(p.IssuerName ?? "-")</pems-table-cell>
+                                <pems-table-cell class="small vs-hide-md">@(p.ReceiverName ?? "-")</pems-table-cell>
+                                <pems-table-cell class="small"><span class="vs-num">@(p.ValidFrom?.ToString("yyyy-MM-dd") ?? "-") / @(p.ValidTo?.ToString("yyyy-MM-dd") ?? "-")</span></pems-table-cell>
                             }
-                        </tr>
+                        </pems-table-row>
                     }
-                </tbody>
+                </pems-table-body>
             </pems-list-table>
 
             <pems-list-footer>

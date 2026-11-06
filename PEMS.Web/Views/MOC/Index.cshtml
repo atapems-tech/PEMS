@@ -84,29 +84,29 @@
         <pems-list-grid>
             <pems-list-table grid-key="MOC" empty="@(!Model.Items.Any())" empty-text="@Localizer["Moc_Empty"]"
                              filtered="@(filterCount > 0)" clear-href="@Url.Action("Index")">
-                <thead>
-                    <tr>
-                        <th class="pems-w-140" data-col-key="number" data-resizable="true" data-min-width="100" data-max-width="200">@Localizer["Moc_Number"]</th>
-                        <th class="pems-w-320" data-col-key="title" data-resizable="true" data-min-width="180" data-max-width="500">@Localizer["Ed_Title"]</th>
-                        <th data-col-key="discipline" data-resizable="true" data-min-width="100" data-max-width="220" class="vs-hide-md pems-w-150">@Localizer["Ed_Discipline"]</th>
-                        <th data-col-key="type" data-resizable="true" data-min-width="90" data-max-width="200" class="vs-hide-md pems-w-130">@Localizer["Ed_Type"]</th>
-                        <th class="pems-w-100" data-col-key="risk" data-resizable="true" data-min-width="70" data-max-width="140">@Localizer["Moc_Risk"]</th>
-                        <th class="pems-w-170" data-col-key="status" data-resizable="true" data-min-width="110" data-max-width="240">@Localizer["Ed_Status"]</th>
-                    </tr>
-                </thead>
-                <tbody>
+                <pems-table-head>
+                    <pems-table-row>
+                        <pems-table-header class="pems-w-140" data-col-key="number" data-resizable="true" data-min-width="100" data-max-width="200">@Localizer["Moc_Number"]</pems-table-header>
+                        <pems-table-header class="pems-w-320" data-col-key="title" data-resizable="true" data-min-width="180" data-max-width="500">@Localizer["Ed_Title"]</pems-table-header>
+                        <pems-table-header data-col-key="discipline" data-resizable="true" data-min-width="100" data-max-width="220" class="vs-hide-md pems-w-150">@Localizer["Ed_Discipline"]</pems-table-header>
+                        <pems-table-header data-col-key="type" data-resizable="true" data-min-width="90" data-max-width="200" class="vs-hide-md pems-w-130">@Localizer["Ed_Type"]</pems-table-header>
+                        <pems-table-header class="pems-w-100" data-col-key="risk" data-resizable="true" data-min-width="70" data-max-width="140">@Localizer["Moc_Risk"]</pems-table-header>
+                        <pems-table-header class="pems-w-170" data-col-key="status" data-resizable="true" data-min-width="110" data-max-width="240">@Localizer["Ed_Status"]</pems-table-header>
+                    </pems-table-row>
+                </pems-table-head>
+                <pems-table-body>
                     @foreach (var m in Model.Items)
                     {
-                        <tr class="lp-row">
-                            <td class="lp-no"><a asp-action="Details" asp-route-id="@m.MOCId" class="lp-subject" title="@m.MOCNumber">@m.MOCNumber</a></td>
-                            <td><span class="vs-title-cell" title="@m.Title">@m.Title</span></td>
-                            <td class="vs-hide-md small" title="@m.DisciplineName">@m.DisciplineName</td>
-                            <td class="vs-hide-md small">@m.ChangeType</td>
-                            <td><span class="vs-pill @RiskTone(m.RiskLevel)">@RiskText(m.RiskLevel)</span></td>
-                            <td><span class="vs-pill @StatusTone(m.Status)">@StatusText(m.Status)</span></td>
-                        </tr>
+                        <pems-table-row class="lp-row">
+                            <pems-table-cell class="lp-no"><a asp-action="Details" asp-route-id="@m.MOCId" class="lp-subject" title="@m.MOCNumber">@m.MOCNumber</a></pems-table-cell>
+                            <pems-table-cell><span class="vs-title-cell" title="@m.Title">@m.Title</span></pems-table-cell>
+                            <pems-table-cell class="vs-hide-md small" title="@m.DisciplineName">@m.DisciplineName</pems-table-cell>
+                            <pems-table-cell class="vs-hide-md small">@m.ChangeType</pems-table-cell>
+                            <pems-table-cell><span class="vs-pill @RiskTone(m.RiskLevel)">@RiskText(m.RiskLevel)</span></pems-table-cell>
+                            <pems-table-cell><span class="vs-pill @StatusTone(m.Status)">@StatusText(m.Status)</span></pems-table-cell>
+                        </pems-table-row>
                     }
-                </tbody>
+                </pems-table-body>
             </pems-list-table>
 
             <pems-list-footer>

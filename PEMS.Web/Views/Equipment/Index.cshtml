@@ -109,35 +109,35 @@
         <pems-list-grid>
             <pems-list-table grid-key="Equipment" empty="@(!Model.Items.Any())" empty-text="@Localizer["Eq_Empty"]"
                              filtered="@(filterCount > 0 || !string.IsNullOrEmpty(q))" clear-href="@Url.Action("Index")">
-                <thead>
-                    <tr>
-                        <th class="pems-w-140" data-col-key="tag" data-resizable="true" data-min-width="100" data-max-width="220">@Localizer["Ins_Tag"]</th>
-                        <th class="pems-w-200" data-col-key="name" data-resizable="true" data-min-width="140" data-max-width="320">@Localizer["Eq_Name"]</th>
-                        <th class="pems-w-120" data-col-key="type" data-resizable="true" data-min-width="90" data-max-width="180">@Localizer["Ed_Type"]</th>
-                        <th data-col-key="project" data-resizable="true" data-min-width="100" data-max-width="220" class="vs-hide-md pems-w-140">@Localizer["Ed_Project"]</th>
-                        <th data-col-key="discipline" data-resizable="true" data-min-width="100" data-max-width="220" class="vs-hide-md pems-w-140">@Localizer["Ed_Discipline"]</th>
-                        <th class="pems-w-80" data-col-key="docs" data-resizable="true" data-min-width="70" data-max-width="120">@Localizer["Eq_Docs"]</th>
-                        <th class="pems-w-80" data-col-key="vdr" data-resizable="true" data-min-width="70" data-max-width="120">@Localizer["VDR"]</th>
-                        <th class="pems-w-100" data-col-key="wo" data-resizable="true" data-min-width="80" data-max-width="140">@Localizer["Cm_WorkOrders"]</th>
-                        <th class="pems-w-110" data-col-key="status" data-resizable="true" data-min-width="90" data-max-width="160">@Localizer["Ed_Status"]</th>
-                    </tr>
-                </thead>
-                <tbody>
+                <pems-table-head>
+                    <pems-table-row>
+                        <pems-table-header class="pems-w-140" data-col-key="tag" data-resizable="true" data-min-width="100" data-max-width="220">@Localizer["Ins_Tag"]</pems-table-header>
+                        <pems-table-header class="pems-w-200" data-col-key="name" data-resizable="true" data-min-width="140" data-max-width="320">@Localizer["Eq_Name"]</pems-table-header>
+                        <pems-table-header class="pems-w-120" data-col-key="type" data-resizable="true" data-min-width="90" data-max-width="180">@Localizer["Ed_Type"]</pems-table-header>
+                        <pems-table-header data-col-key="project" data-resizable="true" data-min-width="100" data-max-width="220" class="vs-hide-md pems-w-140">@Localizer["Ed_Project"]</pems-table-header>
+                        <pems-table-header data-col-key="discipline" data-resizable="true" data-min-width="100" data-max-width="220" class="vs-hide-md pems-w-140">@Localizer["Ed_Discipline"]</pems-table-header>
+                        <pems-table-header class="pems-w-80" data-col-key="docs" data-resizable="true" data-min-width="70" data-max-width="120">@Localizer["Eq_Docs"]</pems-table-header>
+                        <pems-table-header class="pems-w-80" data-col-key="vdr" data-resizable="true" data-min-width="70" data-max-width="120">@Localizer["VDR"]</pems-table-header>
+                        <pems-table-header class="pems-w-100" data-col-key="wo" data-resizable="true" data-min-width="80" data-max-width="140">@Localizer["Cm_WorkOrders"]</pems-table-header>
+                        <pems-table-header class="pems-w-110" data-col-key="status" data-resizable="true" data-min-width="90" data-max-width="160">@Localizer["Ed_Status"]</pems-table-header>
+                    </pems-table-row>
+                </pems-table-head>
+                <pems-table-body>
                     @foreach (var e in Model.Items)
                     {
-                        <tr class="lp-row">
-                            <td class="lp-no"><a asp-action="Details" asp-route-id="@e.EquipmentId" class="lp-subject" title="@e.TagNumber">@e.TagNumber</a></td>
-                            <td><span class="vs-title-cell" title="@e.Name">@e.Name</span></td>
-                            <td class="small">@e.EquipmentType</td>
-                            <td class="small vs-hide-md">@e.ProjectName</td>
-                            <td class="small vs-hide-md">@e.DisciplineName</td>
-                            <td><span class="vs-num">@e.DocumentsCount</span></td>
-                            <td><span class="vs-num">@e.VDRItemsCount</span></td>
-                            <td><span class="vs-num">@e.WorkOrdersCount</span></td>
-                            <td><span class="vs-pill @(e.Status == "Active" ? "vs-pill--success" : "vs-pill--neutral")">@e.Status</span></td>
-                        </tr>
+                        <pems-table-row class="lp-row">
+                            <pems-table-cell class="lp-no"><a asp-action="Details" asp-route-id="@e.EquipmentId" class="lp-subject" title="@e.TagNumber">@e.TagNumber</a></pems-table-cell>
+                            <pems-table-cell><span class="vs-title-cell" title="@e.Name">@e.Name</span></pems-table-cell>
+                            <pems-table-cell class="small">@e.EquipmentType</pems-table-cell>
+                            <pems-table-cell class="small vs-hide-md">@e.ProjectName</pems-table-cell>
+                            <pems-table-cell class="small vs-hide-md">@e.DisciplineName</pems-table-cell>
+                            <pems-table-cell><span class="vs-num">@e.DocumentsCount</span></pems-table-cell>
+                            <pems-table-cell><span class="vs-num">@e.VDRItemsCount</span></pems-table-cell>
+                            <pems-table-cell><span class="vs-num">@e.WorkOrdersCount</span></pems-table-cell>
+                            <pems-table-cell><span class="vs-pill @(e.Status == "Active" ? "vs-pill--success" : "vs-pill--neutral")">@e.Status</span></pems-table-cell>
+                        </pems-table-row>
                     }
-                </tbody>
+                </pems-table-body>
             </pems-list-table>
 
             <pems-list-footer>

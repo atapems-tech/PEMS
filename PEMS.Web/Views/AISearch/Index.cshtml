@@ -51,24 +51,24 @@
     {
         <pems-table-scroll css="table-scroll-area pems-s-8da1c6e6">
         <pems-table kind="enterprise">
-            <thead><tr><th>@Localizer["Document No"]</th><th>@Localizer["Title"]</th><th>Match Reason</th><th>@Localizer["Relevance"]</th><th></th></tr></thead>
-            <tbody>
+            <pems-table-head><pems-table-row><pems-table-header>@Localizer["Document No"]</pems-table-header><pems-table-header>@Localizer["Title"]</pems-table-header><pems-table-header>Match Reason</pems-table-header><pems-table-header>@Localizer["Relevance"]</pems-table-header><pems-table-header></pems-table-header></pems-table-row></pems-table-head>
+            <pems-table-body>
                 @foreach (var r in Model)
                 {
-                    <tr>
-                        <td>@r.DocumentNumber</td>
-                        <td>@r.Title</td>
-                        <td class="small text-muted">@r.Reason</td>
-                        <td>
+                    <pems-table-row>
+                        <pems-table-cell>@r.DocumentNumber</pems-table-cell>
+                        <pems-table-cell>@r.Title</pems-table-cell>
+                        <pems-table-cell class="small text-muted">@r.Reason</pems-table-cell>
+                        <pems-table-cell>
                             <pems-progress class="pems-w-100" value="@((int)(r.SimilarityScore * 100))" tone="success" height="8px"></pems-progress>
-                        </td>
-                        <td>
+                        </pems-table-cell>
+                        <pems-table-cell>
                             <pems-button tone="neutral" size="small" outline="true" as="a" asp-controller="EngineeringDocuments" asp-action="Details" asp-route-id="@r.DocumentId"
                               ><pems-icon name="bi-eye" /></pems-button>
-                        </td>
-                    </tr>
+                        </pems-table-cell>
+                    </pems-table-row>
                 }
-            </tbody>
+            </pems-table-body>
         </pems-table>
         </pems-table-scroll>
     }

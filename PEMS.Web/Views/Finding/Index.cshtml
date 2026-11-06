@@ -61,37 +61,37 @@
 
         <pems-list-grid>
             <pems-list-table empty="@(!Model.Any())" empty-text="@Localizer["Fn_Empty"]" filtered="@(filterCount > 0)" clear-href="@Url.Action("Index")">
-                <thead>
-                    <tr>
-                        <th>@Localizer["Equipment"]</th>
-                        <th>@Localizer["Fn_Source"]</th>
-                        <th>@Localizer["Cm_Condition"]</th>
-                        <th>@Localizer["Cm_Description"]</th>
-                        <th class="vs-hide-md">@Localizer["Fn_FailureModeCause"]</th>
-                        <th>@Localizer["Ed_Status"]</th>
-                        <th>@Localizer["Fn_Observed"]</th>
-                        <th><span class="visually-hidden">@Localizer["Ed_Actions"]</span></th>
-                    </tr>
-                </thead>
-                <tbody>
+                <pems-table-head>
+                    <pems-table-row>
+                        <pems-table-header>@Localizer["Equipment"]</pems-table-header>
+                        <pems-table-header>@Localizer["Fn_Source"]</pems-table-header>
+                        <pems-table-header>@Localizer["Cm_Condition"]</pems-table-header>
+                        <pems-table-header>@Localizer["Cm_Description"]</pems-table-header>
+                        <pems-table-header class="vs-hide-md">@Localizer["Fn_FailureModeCause"]</pems-table-header>
+                        <pems-table-header>@Localizer["Ed_Status"]</pems-table-header>
+                        <pems-table-header>@Localizer["Fn_Observed"]</pems-table-header>
+                        <pems-table-header><span class="visually-hidden">@Localizer["Ed_Actions"]</span></pems-table-header>
+                    </pems-table-row>
+                </pems-table-head>
+                <pems-table-body>
                     @foreach (var f in Model)
                     {
-                        <tr class="lp-row">
-                            <td class="lp-no"><span class="vs-num">@(f.Equipment?.TagNumber ?? f.EquipmentId.ToString())</span></td>
-                            <td class="small">
+                        <pems-table-row class="lp-row">
+                            <pems-table-cell class="lp-no"><span class="vs-num">@(f.Equipment?.TagNumber ?? f.EquipmentId.ToString())</span></pems-table-cell>
+                            <pems-table-cell class="small">
                                 @if (f.ConditionReadingId.HasValue) { <span class="vs-pill vs-pill--neutral">@Localizer["Fn_CmReading"]</span> }
                                 else if (f.InspectionRecordId.HasValue) { <span class="vs-pill vs-pill--neutral">@Localizer["Fn_Inspection"]</span> }
-                            </td>
-                            <td><span class="vs-pill @ConditionTone(f.Condition)">@f.Condition</span></td>
-                            <td><span class="vs-title-cell" title="@f.Description">@f.Description</span></td>
-                            <td class="small text-muted vs-hide-md">@(f.FailureMode?.Name) @(f.FailureCause != null ? $"/ {f.FailureCause.Name}" : "")</td>
-                            <td>
+                            </pems-table-cell>
+                            <pems-table-cell><span class="vs-pill @ConditionTone(f.Condition)">@f.Condition</span></pems-table-cell>
+                            <pems-table-cell><span class="vs-title-cell" title="@f.Description">@f.Description</span></pems-table-cell>
+                            <pems-table-cell class="small text-muted vs-hide-md">@(f.FailureMode?.Name) @(f.FailureCause != null ? $"/ {f.FailureCause.Name}" : "")</pems-table-cell>
+                            <pems-table-cell>
                                 <span class="vs-pill @StatusTone(f.Status)">@StatusText(f.Status)</span>
                                 @if (f.WorkRequest != null)
                                 { <div class="small text-muted">@Localizer["Fn_WorkRequest"]: <span class="vs-num">@f.WorkRequest.RequestNumber</span></div> }
-                            </td>
-                            <td class="small"><span class="vs-num">@f.ObservedAt.ToString("yyyy-MM-dd")</span></td>
-                            <td class="lp-actions text-nowrap">
+                            </pems-table-cell>
+                            <pems-table-cell class="small"><span class="vs-num">@f.ObservedAt.ToString("yyyy-MM-dd")</span></pems-table-cell>
+                            <pems-table-cell class="lp-actions text-nowrap">
                                 @if (f.Status == "Open")
                                 {
                                     <form asp-action="RaiseWorkRequest" method="post" class="d-inline">
@@ -106,10 +106,10 @@
                                         <button type="submit" class="lp-act lp-act--always" title="@Localizer["Fn_Close"]" aria-label="@Localizer["Fn_Close"]"><pems-icon name="bi-check-circle" aria-hidden="true" /></button>
                                     </form>
                                 }
-                            </td>
-                        </tr>
+                            </pems-table-cell>
+                        </pems-table-row>
                     }
-                </tbody>
+                </pems-table-body>
             </pems-list-table>
         </pems-list-grid>
     </pems-list-panel>

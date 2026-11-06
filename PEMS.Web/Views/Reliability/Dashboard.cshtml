@@ -90,22 +90,22 @@
 <pems-content-card css="mb-3">
     <div class="table-scroll-area pems-s-0ddf068b">
     <pems-table kind="enterprise" scale="small" css="mb-0">
-        <thead><tr><th>@Localizer["Class"]</th><th class="text-end">@Localizer["Equipment"]</th><th class="text-end">@Localizer["Failures"]</th><th class="text-end">@Localizer["Repeat"]</th><th class="text-end">@Localizer["PM Compliance"]</th><th class="text-end">@Localizer["Strategy Coverage"]</th><th class="text-end">RCM Class Coverage</th></tr></thead>
-        <tbody>
+        <pems-table-head><pems-table-row><pems-table-header>@Localizer["Class"]</pems-table-header><pems-table-header class="text-end">@Localizer["Equipment"]</pems-table-header><pems-table-header class="text-end">@Localizer["Failures"]</pems-table-header><pems-table-header class="text-end">@Localizer["Repeat"]</pems-table-header><pems-table-header class="text-end">@Localizer["PM Compliance"]</pems-table-header><pems-table-header class="text-end">@Localizer["Strategy Coverage"]</pems-table-header><pems-table-header class="text-end">RCM Class Coverage</pems-table-header></pems-table-row></pems-table-head>
+        <pems-table-body>
             @foreach (var row in criticalityMatrix)
             {
                 var m2 = criticalityMaintenanceMatrix.FirstOrDefault(x => x.CriticalityClass == row.CriticalityClass);
-                <tr>
-                    <td class="fw-bold">@row.CriticalityClass</td>
-                    <td class="text-end">@row.EquipmentCount</td>
-                    <td class="text-end">@row.FailureCount</td>
-                    <td class="text-end">@row.RepeatFailureGroupCount</td>
-                    <td class="text-end">@(row.PmCompliancePercent.HasValue ? $"{row.PmCompliancePercent.Value:N1}%" : "N/A")</td>
-                    <td class="text-end">@(m2 != null ? $"{m2.StrategyCoveragePercent:N0}%" : "N/A")</td>
-                    <td class="text-end">@(m2?.RcmClassCoveragePercent.HasValue == true ? $"{m2.RcmClassCoveragePercent.Value:N0}%" : "N/A")</td>
-                </tr>
+                <pems-table-row>
+                    <pems-table-cell class="fw-bold">@row.CriticalityClass</pems-table-cell>
+                    <pems-table-cell class="text-end">@row.EquipmentCount</pems-table-cell>
+                    <pems-table-cell class="text-end">@row.FailureCount</pems-table-cell>
+                    <pems-table-cell class="text-end">@row.RepeatFailureGroupCount</pems-table-cell>
+                    <pems-table-cell class="text-end">@(row.PmCompliancePercent.HasValue ? $"{row.PmCompliancePercent.Value:N1}%" : "N/A")</pems-table-cell>
+                    <pems-table-cell class="text-end">@(m2 != null ? $"{m2.StrategyCoveragePercent:N0}%" : "N/A")</pems-table-cell>
+                    <pems-table-cell class="text-end">@(m2?.RcmClassCoveragePercent.HasValue == true ? $"{m2.RcmClassCoveragePercent.Value:N0}%" : "N/A")</pems-table-cell>
+                </pems-table-row>
             }
-        </tbody>
+        </pems-table-body>
     </pems-table>
     </div>
     <a asp-action="Intelligence" class="small">See full Criticality × Failure × Maintenance matrix with findings →</a>
@@ -117,12 +117,12 @@
         <pems-content-card css="h-100">
             <h6 class="mb-2">Top Failure Modes (Pareto)</h6>
             <pems-table kind="enterprise" scale="small" css="mb-0">
-                <tbody>
+                <pems-table-body>
                     @foreach (var p in pareto)
                     {
-                        <tr><td>@p.Key</td><td class="text-end">@p.Count</td><td class="text-end small text-muted">@p.CumulativePercent.ToString("N0")%</td></tr>
+                        <pems-table-row><pems-table-cell>@p.Key</pems-table-cell><pems-table-cell class="text-end">@p.Count</pems-table-cell><pems-table-cell class="text-end small text-muted">@p.CumulativePercent.ToString("N0")%</pems-table-cell></pems-table-row>
                     }
-                </tbody>
+                </pems-table-body>
             </pems-table>
             @if (!pareto.Any()) { <p class="text-muted text-center py-3 mb-0">@Localizer["داده‌ای موجود نیست."]</p> }
         </pems-content-card>
@@ -131,16 +131,16 @@
         <pems-content-card css="h-100">
             <h6 class="mb-2">@Localizer["Bad Actors"]</h6>
             <pems-table kind="enterprise" scale="small" css="mb-0">
-                <tbody>
+                <pems-table-body>
                     @foreach (var b in badActors)
                     {
-                        <tr>
-                            <td><a asp-action="EquipmentProfile" asp-route-id="@b.EquipmentId">@b.TagNumber</a></td>
-                            <td class="text-end">@b.FailureCount failures</td>
-                            <td class="text-end small text-muted">@b.TotalDowntimeHours.ToString("N0")h</td>
-                        </tr>
+                        <pems-table-row>
+                            <pems-table-cell><a asp-action="EquipmentProfile" asp-route-id="@b.EquipmentId">@b.TagNumber</a></pems-table-cell>
+                            <pems-table-cell class="text-end">@b.FailureCount failures</pems-table-cell>
+                            <pems-table-cell class="text-end small text-muted">@b.TotalDowntimeHours.ToString("N0")h</pems-table-cell>
+                        </pems-table-row>
                     }
-                </tbody>
+                </pems-table-body>
             </pems-table>
             @if (!badActors.Any()) { <p class="text-muted text-center py-3 mb-0">@Localizer["داده‌ای موجود نیست."]</p> }
         </pems-content-card>

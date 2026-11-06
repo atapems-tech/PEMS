@@ -104,12 +104,12 @@
             <h6 class="mb-3">Top Unclassified — EquipmentType</h6>
             <pems-table-scroll css="pems-s-f0787633">
                 <pems-table kind="enterprise" scale="small">
-                    <tbody>
+                    <pems-table-body>
                         @foreach (var item in Model.TopUnclassifiedEquipmentTypes)
                         {
-                            <tr><td class="small">@item.Key</td><td class="text-end">@item.Count.ToString("N0")</td></tr>
+                            <pems-table-row><pems-table-cell class="small">@item.Key</pems-table-cell><pems-table-cell class="text-end">@item.Count.ToString("N0")</pems-table-cell></pems-table-row>
                         }
-                    </tbody>
+                    </pems-table-body>
                 </pems-table>
             </pems-table-scroll>
         </pems-content-card>
@@ -119,12 +119,12 @@
             <h6 class="mb-3">Top Unclassified — Name</h6>
             <pems-table-scroll css="pems-s-f0787633">
                 <pems-table kind="enterprise" scale="small">
-                    <tbody>
+                    <pems-table-body>
                         @foreach (var item in Model.TopUnclassifiedEquipmentNames)
                         {
-                            <tr><td class="small">@item.Key</td><td class="text-end">@item.Count.ToString("N0")</td></tr>
+                            <pems-table-row><pems-table-cell class="small">@item.Key</pems-table-cell><pems-table-cell class="text-end">@item.Count.ToString("N0")</pems-table-cell></pems-table-row>
                         }
-                    </tbody>
+                    </pems-table-body>
                 </pems-table>
             </pems-table-scroll>
         </pems-content-card>
@@ -134,12 +134,12 @@
             <h6 class="mb-3">Top Unclassified — Tag Pattern</h6>
             <pems-table-scroll css="pems-s-f0787633">
                 <pems-table kind="enterprise" scale="small">
-                    <tbody>
+                    <pems-table-body>
                         @foreach (var item in Model.TopUnclassifiedTagPatterns)
                         {
-                            <tr><td class="small"><code>@item.Key</code></td><td class="text-end">@item.Count.ToString("N0")</td></tr>
+                            <pems-table-row><pems-table-cell class="small"><code>@item.Key</code></pems-table-cell><pems-table-cell class="text-end">@item.Count.ToString("N0")</pems-table-cell></pems-table-row>
                         }
-                    </tbody>
+                    </pems-table-body>
                 </pems-table>
             </pems-table-scroll>
         </pems-content-card>

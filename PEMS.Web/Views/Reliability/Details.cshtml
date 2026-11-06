@@ -22,28 +22,28 @@
 <pems-content-card>
     <h6 class="mb-2"><pems-icon name="bi-clock-history" /> Failure History</h6>
     <pems-table kind="enterprise" css="mb-0">
-        <thead>
-            <tr><th>@Localizer["Date"]</th><th>@Localizer["Mode"]</th><th>@Localizer["Cause"]</th><th>@Localizer["Effect"]</th><th>@Localizer["Root Cause"]</th><th>@Localizer["Corrective Action"]</th><th>@Localizer["Downtime"]</th><th>@Localizer["Work Order"]</th></tr>
-        </thead>
-        <tbody>
+        <pems-table-head>
+            <pems-table-row><pems-table-header>@Localizer["Date"]</pems-table-header><pems-table-header>@Localizer["Mode"]</pems-table-header><pems-table-header>@Localizer["Cause"]</pems-table-header><pems-table-header>@Localizer["Effect"]</pems-table-header><pems-table-header>@Localizer["Root Cause"]</pems-table-header><pems-table-header>@Localizer["Corrective Action"]</pems-table-header><pems-table-header>@Localizer["Downtime"]</pems-table-header><pems-table-header>@Localizer["Work Order"]</pems-table-header></pems-table-row>
+        </pems-table-head>
+        <pems-table-body>
             @foreach (var f in Model.FailureHistory.OrderByDescending(x => x.FailureDate))
             {
-                <tr>
-                    <td class="small">@f.FailureDate.ToString("yyyy-MM-dd")</td>
-                    <td class="small">@f.FailureMode</td>
-                    <td class="small">@f.FailureCause</td>
-                    <td class="small">@f.FailureEffect</td>
-                    <td class="small">@f.RootCause</td>
-                    <td class="small">@f.CorrectiveAction</td>
-                    <td class="small">@(f.DowntimeHours.HasValue ? $"{f.DowntimeHours.Value:N1} h" : "-")</td>
-                    <td class="small">
+                <pems-table-row>
+                    <pems-table-cell class="small">@f.FailureDate.ToString("yyyy-MM-dd")</pems-table-cell>
+                    <pems-table-cell class="small">@f.FailureMode</pems-table-cell>
+                    <pems-table-cell class="small">@f.FailureCause</pems-table-cell>
+                    <pems-table-cell class="small">@f.FailureEffect</pems-table-cell>
+                    <pems-table-cell class="small">@f.RootCause</pems-table-cell>
+                    <pems-table-cell class="small">@f.CorrectiveAction</pems-table-cell>
+                    <pems-table-cell class="small">@(f.DowntimeHours.HasValue ? $"{f.DowntimeHours.Value:N1} h" : "-")</pems-table-cell>
+                    <pems-table-cell class="small">
                         @if (f.WorkOrderId.HasValue)
                         {
                             <a asp-controller="WorkOrder" asp-action="Details" asp-route-id="@f.WorkOrderId">@f.WorkOrderNumber</a>
                         }
-                    </td>
-                </tr>
+                    </pems-table-cell>
+                </pems-table-row>
             }
-        </tbody>
+        </pems-table-body>
     </pems-table>
 </pems-content-card>

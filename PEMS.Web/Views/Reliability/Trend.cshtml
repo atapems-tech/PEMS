@@ -65,17 +65,17 @@
 
 <pems-content-card>
     <pems-table kind="enterprise" scale="small">
-        <thead><tr><th>@Localizer["Date"]</th><th class="text-end">@Localizer["Value"]</th><th>@Localizer["Evaluation"]</th></tr></thead>
-        <tbody>
+        <pems-table-head><pems-table-row><pems-table-header>@Localizer["Date"]</pems-table-header><pems-table-header class="text-end">@Localizer["Value"]</pems-table-header><pems-table-header>@Localizer["Evaluation"]</pems-table-header></pems-table-row></pems-table-head>
+        <pems-table-body>
             @foreach (var pt in Model.Points.AsEnumerable().Reverse())
             {
-                <tr class="@(pt.IsAlarm ? "table-danger" : "")">
-                    <td class="small">@pt.ReadingDate.ToString("yyyy-MM-dd HH:mm")</td>
-                    <td class="text-end">@pt.Value @Model.Unit</td>
-                    <td><pems-badge tone="none" css="@EvalBadge(pt.EvaluationStatus)">@pt.EvaluationStatus</pems-badge></td>
-                </tr>
+                <pems-table-row class="@(pt.IsAlarm ? "table-danger" : "")">
+                    <pems-table-cell class="small">@pt.ReadingDate.ToString("yyyy-MM-dd HH:mm")</pems-table-cell>
+                    <pems-table-cell class="text-end">@pt.Value @Model.Unit</pems-table-cell>
+                    <pems-table-cell><pems-badge tone="none" css="@EvalBadge(pt.EvaluationStatus)">@pt.EvaluationStatus</pems-badge></pems-table-cell>
+                </pems-table-row>
             }
-        </tbody>
+        </pems-table-body>
     </pems-table>
     @if (!Model.Points.Any()) { <p class="text-muted text-center py-4">@Localizer["هیچ قرائتی در این بازه ثبت نشده."]</p> }
 </pems-content-card>

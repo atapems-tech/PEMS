@@ -143,27 +143,27 @@
                 (از @effectiveness.CurrentPeriodStart.ToString("yyyy-MM-dd")) با @effectiveness.WindowDays روز پیش از آن.
             </p>
             <pems-table kind="enterprise" scale="small" css="mb-0">
-                <thead><tr><th>Dimension</th><th>Current Period</th><th>Prior Period</th><th>@Localizer["Trend"]</th></tr></thead>
-                <tbody>
-                    <tr>
-                        <td>@Localizer["Failure Count"]</td>
-                        <td>@effectiveness.CurrentPeriodFailureCount</td>
-                        <td>@effectiveness.PriorPeriodFailureCount</td>
-                        <td><pems-badge tone="@TrendBadge(effectiveness.FailureFrequencyTrend)">@effectiveness.FailureFrequencyTrend</pems-badge></td>
-                    </tr>
-                    <tr>
-                        <td>Average MTTR</td>
-                        <td>@(effectiveness.CurrentPeriodAverageMTTRHours.HasValue ? $"{effectiveness.CurrentPeriodAverageMTTRHours.Value:N1}h" : "N/A")</td>
-                        <td>@(effectiveness.PriorPeriodAverageMTTRHours.HasValue ? $"{effectiveness.PriorPeriodAverageMTTRHours.Value:N1}h" : "N/A")</td>
-                        <td><pems-badge tone="@TrendBadge(effectiveness.MttrTrend)">@effectiveness.MttrTrend</pems-badge></td>
-                    </tr>
-                    <tr>
-                        <td>@Localizer["Downtime"]</td>
-                        <td>@effectiveness.CurrentPeriodDowntimeHours.ToString("N1")h</td>
-                        <td>@effectiveness.PriorPeriodDowntimeHours.ToString("N1")h</td>
-                        <td><pems-badge tone="@TrendBadge(effectiveness.DowntimeTrend)">@effectiveness.DowntimeTrend</pems-badge></td>
-                    </tr>
-                </tbody>
+                <pems-table-head><pems-table-row><pems-table-header>Dimension</pems-table-header><pems-table-header>Current Period</pems-table-header><pems-table-header>Prior Period</pems-table-header><pems-table-header>@Localizer["Trend"]</pems-table-header></pems-table-row></pems-table-head>
+                <pems-table-body>
+                    <pems-table-row>
+                        <pems-table-cell>@Localizer["Failure Count"]</pems-table-cell>
+                        <pems-table-cell>@effectiveness.CurrentPeriodFailureCount</pems-table-cell>
+                        <pems-table-cell>@effectiveness.PriorPeriodFailureCount</pems-table-cell>
+                        <pems-table-cell><pems-badge tone="@TrendBadge(effectiveness.FailureFrequencyTrend)">@effectiveness.FailureFrequencyTrend</pems-badge></pems-table-cell>
+                    </pems-table-row>
+                    <pems-table-row>
+                        <pems-table-cell>Average MTTR</pems-table-cell>
+                        <pems-table-cell>@(effectiveness.CurrentPeriodAverageMTTRHours.HasValue ? $"{effectiveness.CurrentPeriodAverageMTTRHours.Value:N1}h" : "N/A")</pems-table-cell>
+                        <pems-table-cell>@(effectiveness.PriorPeriodAverageMTTRHours.HasValue ? $"{effectiveness.PriorPeriodAverageMTTRHours.Value:N1}h" : "N/A")</pems-table-cell>
+                        <pems-table-cell><pems-badge tone="@TrendBadge(effectiveness.MttrTrend)">@effectiveness.MttrTrend</pems-badge></pems-table-cell>
+                    </pems-table-row>
+                    <pems-table-row>
+                        <pems-table-cell>@Localizer["Downtime"]</pems-table-cell>
+                        <pems-table-cell>@effectiveness.CurrentPeriodDowntimeHours.ToString("N1")h</pems-table-cell>
+                        <pems-table-cell>@effectiveness.PriorPeriodDowntimeHours.ToString("N1")h</pems-table-cell>
+                        <pems-table-cell><pems-badge tone="@TrendBadge(effectiveness.DowntimeTrend)">@effectiveness.DowntimeTrend</pems-badge></pems-table-cell>
+                    </pems-table-row>
+                </pems-table-body>
             </pems-table>
             <pems-row gap="2" css="small mt-2">
                 <pems-col md="4"><strong>PM Compliance (current period)</strong><div>@(effectiveness.PmCompliancePercent.HasValue ? $"{effectiveness.PmCompliancePercent.Value:N1}%" : "N/A") <pems-badge tone="@DataStatusBadge(effectiveness.PmComplianceDataStatus)">@effectiveness.PmComplianceDataStatus</pems-badge></div></pems-col>
@@ -177,28 +177,28 @@
         <pems-content-card>
             <p class="text-muted small">یافته‌های هوشمندی - نه تصمیم خودکار. هر یافته با مقایسه‌ی صریح با میانگین ناوگان تولید می‌شود.</p>
             <pems-table kind="enterprise" scale="small" css="mb-0">
-                <thead><tr><th>@Localizer["Criticality"]</th><th class="text-end">@Localizer["Equipment"]</th><th class="text-end">@Localizer["With History"]</th><th class="text-end">@Localizer["Failures"]</th><th class="text-end">@Localizer["Downtime"]</th><th class="text-end">Repeat Groups</th><th class="text-end">@Localizer["PM Compliance"]</th><th>@Localizer["Findings"]</th></tr></thead>
-                <tbody>
+                <pems-table-head><pems-table-row><pems-table-header>@Localizer["Criticality"]</pems-table-header><pems-table-header class="text-end">@Localizer["Equipment"]</pems-table-header><pems-table-header class="text-end">@Localizer["With History"]</pems-table-header><pems-table-header class="text-end">@Localizer["Failures"]</pems-table-header><pems-table-header class="text-end">@Localizer["Downtime"]</pems-table-header><pems-table-header class="text-end">Repeat Groups</pems-table-header><pems-table-header class="text-end">@Localizer["PM Compliance"]</pems-table-header><pems-table-header>@Localizer["Findings"]</pems-table-header></pems-table-row></pems-table-head>
+                <pems-table-body>
                     @foreach (var row in criticalityMatrix)
                     {
-                        <tr>
-                            <td class="fw-bold">@row.CriticalityClass</td>
-                            <td class="text-end">@row.EquipmentCount</td>
-                            <td class="text-end">@row.EquipmentWithFailureHistoryCount</td>
-                            <td class="text-end">@row.FailureCount</td>
-                            <td class="text-end">@row.TotalDowntimeHours.ToString("N1")h</td>
-                            <td class="text-end">@row.RepeatFailureGroupCount</td>
-                            <td class="text-end">@(row.PmCompliancePercent.HasValue ? $"{row.PmCompliancePercent.Value:N1}%" : "N/A")</td>
-                            <td class="small">
+                        <pems-table-row>
+                            <pems-table-cell class="fw-bold">@row.CriticalityClass</pems-table-cell>
+                            <pems-table-cell class="text-end">@row.EquipmentCount</pems-table-cell>
+                            <pems-table-cell class="text-end">@row.EquipmentWithFailureHistoryCount</pems-table-cell>
+                            <pems-table-cell class="text-end">@row.FailureCount</pems-table-cell>
+                            <pems-table-cell class="text-end">@row.TotalDowntimeHours.ToString("N1")h</pems-table-cell>
+                            <pems-table-cell class="text-end">@row.RepeatFailureGroupCount</pems-table-cell>
+                            <pems-table-cell class="text-end">@(row.PmCompliancePercent.HasValue ? $"{row.PmCompliancePercent.Value:N1}%" : "N/A")</pems-table-cell>
+                            <pems-table-cell class="small">
                                 @if (row.Findings.Any())
                                 {
                                     @foreach (var f in row.Findings) { <div class="text-warning">⚠ @f</div> }
                                 }
                                 else { <span class="text-muted">-</span> }
-                            </td>
-                        </tr>
+                            </pems-table-cell>
+                        </pems-table-row>
                     }
-                </tbody>
+                </pems-table-body>
             </pems-table>
             @if (!criticalityMatrix.Any()) { <p class="text-muted text-center py-4 mb-0">@Localizer["داده‌ای موجود نیست."]</p> }
         </pems-content-card>
@@ -215,33 +215,33 @@
             @if (criticalityMaintenanceMatrix != null && criticalityMaintenanceMatrix.Any())
             {
                 <pems-table kind="enterprise" scale="small" css="mb-0">
-                    <thead><tr><th>@Localizer["Criticality"]</th><th class="text-end">@Localizer["Equipment"]</th><th class="text-end">@Localizer["Strategy Coverage"]</th><th class="text-end">Equipment Classes</th><th class="text-end">Classes w/ Approved RCM</th><th>Strategy Type Mix</th><th>@Localizer["Findings"]</th></tr></thead>
-                    <tbody>
+                    <pems-table-head><pems-table-row><pems-table-header>@Localizer["Criticality"]</pems-table-header><pems-table-header class="text-end">@Localizer["Equipment"]</pems-table-header><pems-table-header class="text-end">@Localizer["Strategy Coverage"]</pems-table-header><pems-table-header class="text-end">Equipment Classes</pems-table-header><pems-table-header class="text-end">Classes w/ Approved RCM</pems-table-header><pems-table-header>Strategy Type Mix</pems-table-header><pems-table-header>@Localizer["Findings"]</pems-table-header></pems-table-row></pems-table-head>
+                    <pems-table-body>
                         @foreach (var row in criticalityMaintenanceMatrix)
                         {
-                            <tr>
-                                <td class="fw-bold">@row.CriticalityClass</td>
-                                <td class="text-end">@row.EquipmentCount</td>
-                                <td class="text-end">@row.StrategyCoveredEquipmentCount / @row.EquipmentCount (@row.StrategyCoveragePercent.ToString("N0")%)</td>
-                                <td class="text-end">@row.DistinctEquipmentClassCount</td>
-                                <td class="text-end">@row.EquipmentClassesWithApprovedRcmCount (@(row.RcmClassCoveragePercent.HasValue ? $"{row.RcmClassCoveragePercent.Value:N0}%" : "N/A"))</td>
-                                <td class="small">
+                            <pems-table-row>
+                                <pems-table-cell class="fw-bold">@row.CriticalityClass</pems-table-cell>
+                                <pems-table-cell class="text-end">@row.EquipmentCount</pems-table-cell>
+                                <pems-table-cell class="text-end">@row.StrategyCoveredEquipmentCount / @row.EquipmentCount (@row.StrategyCoveragePercent.ToString("N0")%)</pems-table-cell>
+                                <pems-table-cell class="text-end">@row.DistinctEquipmentClassCount</pems-table-cell>
+                                <pems-table-cell class="text-end">@row.EquipmentClassesWithApprovedRcmCount (@(row.RcmClassCoveragePercent.HasValue ? $"{row.RcmClassCoveragePercent.Value:N0}%" : "N/A"))</pems-table-cell>
+                                <pems-table-cell class="small">
                                     @if (row.StrategyTypeMix.Any())
                                     {
                                         @string.Join(", ", row.StrategyTypeMix.Select(kv => $"{kv.Key}={kv.Value}"))
                                     }
                                     else { <span class="text-muted">-</span> }
-                                </td>
-                                <td class="small">
+                                </pems-table-cell>
+                                <pems-table-cell class="small">
                                     @if (row.Findings.Any())
                                     {
                                         @foreach (var f in row.Findings) { <div class="text-warning">⚠ @f</div> }
                                     }
                                     else { <span class="text-muted">-</span> }
-                                </td>
-                            </tr>
+                                </pems-table-cell>
+                            </pems-table-row>
                         }
-                    </tbody>
+                    </pems-table-body>
                 </pems-table>
             }
             else

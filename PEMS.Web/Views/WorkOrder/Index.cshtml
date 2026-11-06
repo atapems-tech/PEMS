@@ -79,31 +79,31 @@
         <pems-list-grid>
             <pems-list-table grid-key="WorkOrder" empty="@(!Model.Items.Any())" empty-text="@Localizer["Wo_Empty"]"
                              filtered="@(filterCount > 0)" clear-href="@Url.Action("Index")">
-                <thead>
-                    <tr>
-                        <th class="pems-w-140" data-col-key="woNo" data-resizable="true" data-min-width="100" data-max-width="200">@Localizer["Wo_ColNo"]</th>
-                        <th class="pems-w-150" data-col-key="equipment" data-resizable="true" data-min-width="100" data-max-width="220">@Localizer["Wo_ColEquipment"]</th>
-                        <th class="pems-w-120" data-col-key="type" data-resizable="true" data-min-width="90" data-max-width="180">@Localizer["Ed_Type"]</th>
-                        <th class="pems-w-100" data-col-key="priority" data-resizable="true" data-min-width="80" data-max-width="140">@Localizer["Cm_Priority"]</th>
-                        <th data-col-key="assignedTo" data-resizable="true" data-min-width="120" data-max-width="260" class="vs-hide-md pems-w-180">@Localizer["Wo_ColAssigned"]</th>
-                        <th class="pems-w-130" data-col-key="status" data-resizable="true" data-min-width="90" data-max-width="180">@Localizer["Ed_Status"]</th>
-                        <th class="pems-w-110" data-col-key="created" data-resizable="true" data-min-width="90" data-max-width="160">@Localizer["Ed_Created"]</th>
-                    </tr>
-                </thead>
-                <tbody>
+                <pems-table-head>
+                    <pems-table-row>
+                        <pems-table-header class="pems-w-140" data-col-key="woNo" data-resizable="true" data-min-width="100" data-max-width="200">@Localizer["Wo_ColNo"]</pems-table-header>
+                        <pems-table-header class="pems-w-150" data-col-key="equipment" data-resizable="true" data-min-width="100" data-max-width="220">@Localizer["Wo_ColEquipment"]</pems-table-header>
+                        <pems-table-header class="pems-w-120" data-col-key="type" data-resizable="true" data-min-width="90" data-max-width="180">@Localizer["Ed_Type"]</pems-table-header>
+                        <pems-table-header class="pems-w-100" data-col-key="priority" data-resizable="true" data-min-width="80" data-max-width="140">@Localizer["Cm_Priority"]</pems-table-header>
+                        <pems-table-header data-col-key="assignedTo" data-resizable="true" data-min-width="120" data-max-width="260" class="vs-hide-md pems-w-180">@Localizer["Wo_ColAssigned"]</pems-table-header>
+                        <pems-table-header class="pems-w-130" data-col-key="status" data-resizable="true" data-min-width="90" data-max-width="180">@Localizer["Ed_Status"]</pems-table-header>
+                        <pems-table-header class="pems-w-110" data-col-key="created" data-resizable="true" data-min-width="90" data-max-width="160">@Localizer["Ed_Created"]</pems-table-header>
+                    </pems-table-row>
+                </pems-table-head>
+                <pems-table-body>
                     @foreach (var w in Model.Items)
                     {
-                        <tr class="lp-row">
-                            <td class="lp-no"><a asp-action="Details" asp-route-id="@w.WorkOrderId" class="lp-subject" title="@w.WorkOrderNumber">@w.WorkOrderNumber</a></td>
-                            <td class="small"><span class="vs-num">@w.EquipmentTagNumber</span></td>
-                            <td><span class="vs-pill vs-pill--neutral">@w.WorkOrderType</span></td>
-                            <td><span class="vs-pill @PriorityTone(w.Priority)">@VdrUi.Loc(Localizer, "Pri_", w.Priority)</span></td>
-                            <td class="small vs-hide-md">@(w.AssignedTeamName ?? w.AssignedEmployeeName ?? w.AssignedTo ?? "-")</td>
-                            <td><span class="vs-pill @StatusTone(w.Status)">@StatusText(w.Status)</span></td>
-                            <td class="small text-muted"><span class="vs-num">@w.CreatedDate.ToString("yyyy-MM-dd")</span></td>
-                        </tr>
+                        <pems-table-row class="lp-row">
+                            <pems-table-cell class="lp-no"><a asp-action="Details" asp-route-id="@w.WorkOrderId" class="lp-subject" title="@w.WorkOrderNumber">@w.WorkOrderNumber</a></pems-table-cell>
+                            <pems-table-cell class="small"><span class="vs-num">@w.EquipmentTagNumber</span></pems-table-cell>
+                            <pems-table-cell><span class="vs-pill vs-pill--neutral">@w.WorkOrderType</span></pems-table-cell>
+                            <pems-table-cell><span class="vs-pill @PriorityTone(w.Priority)">@VdrUi.Loc(Localizer, "Pri_", w.Priority)</span></pems-table-cell>
+                            <pems-table-cell class="small vs-hide-md">@(w.AssignedTeamName ?? w.AssignedEmployeeName ?? w.AssignedTo ?? "-")</pems-table-cell>
+                            <pems-table-cell><span class="vs-pill @StatusTone(w.Status)">@StatusText(w.Status)</span></pems-table-cell>
+                            <pems-table-cell class="small text-muted"><span class="vs-num">@w.CreatedDate.ToString("yyyy-MM-dd")</span></pems-table-cell>
+                        </pems-table-row>
                     }
-                </tbody>
+                </pems-table-body>
             </pems-list-table>
 
             <pems-list-footer>

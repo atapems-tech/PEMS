@@ -102,24 +102,24 @@
         <pems-list-grid>
             <pems-list-table grid-key="MaintenanceStrategy" empty="@(!Model.Page.Items.Any())" empty-text="@Localizer["Rcm_NoStrategies"]"
                              filtered="@(filterCount > 0 || !string.IsNullOrEmpty(q))" clear-href="@Url.Action("Index")">
-                <thead>
-                    <tr>
-                        <th class="pems-w-170" data-col-key="class" data-resizable="true" data-min-width="110" data-max-width="240">@Localizer["Rcm_EquipmentClass"]</th>
-                        <th class="pems-w-120" data-col-key="type" data-resizable="true" data-min-width="90" data-max-width="180">@Localizer["Rcm_StrategyType"]</th>
-                        <th class="pems-w-180" data-col-key="failureMode" data-resizable="true" data-min-width="120" data-max-width="260">@Localizer["Rcm_FailureMode"]</th>
-                        <th class="pems-w-120" data-col-key="consequence" data-resizable="true" data-min-width="90" data-max-width="180">@Localizer["Rcm_Consequence"]</th>
-                        <th class="pems-w-100" data-col-key="frequency" data-resizable="true" data-min-width="80" data-max-width="160">@Localizer["Rcm_Frequency"]</th>
-                        <th class="pems-w-120" data-col-key="status" data-resizable="true" data-min-width="90" data-max-width="160">@Localizer["Rcm_Status"]</th>
-                        <th class="pems-w-80" data-col-key="tags" data-resizable="true" data-min-width="70" data-max-width="120">@Localizer["Rcm_Tags"]</th>
-                        <th data-col-key="justification" data-resizable="true" data-min-width="160" data-max-width="400" class="vs-hide-md pems-w-260">@Localizer["Rcm_Justification"]</th>
-                        <th class="pems-w-90" data-col-key="actions" data-resizable="false"><span class="visually-hidden">@Localizer["Ed_Actions"]</span></th>
-                    </tr>
-                </thead>
-                <tbody>
+                <pems-table-head>
+                    <pems-table-row>
+                        <pems-table-header class="pems-w-170" data-col-key="class" data-resizable="true" data-min-width="110" data-max-width="240">@Localizer["Rcm_EquipmentClass"]</pems-table-header>
+                        <pems-table-header class="pems-w-120" data-col-key="type" data-resizable="true" data-min-width="90" data-max-width="180">@Localizer["Rcm_StrategyType"]</pems-table-header>
+                        <pems-table-header class="pems-w-180" data-col-key="failureMode" data-resizable="true" data-min-width="120" data-max-width="260">@Localizer["Rcm_FailureMode"]</pems-table-header>
+                        <pems-table-header class="pems-w-120" data-col-key="consequence" data-resizable="true" data-min-width="90" data-max-width="180">@Localizer["Rcm_Consequence"]</pems-table-header>
+                        <pems-table-header class="pems-w-100" data-col-key="frequency" data-resizable="true" data-min-width="80" data-max-width="160">@Localizer["Rcm_Frequency"]</pems-table-header>
+                        <pems-table-header class="pems-w-120" data-col-key="status" data-resizable="true" data-min-width="90" data-max-width="160">@Localizer["Rcm_Status"]</pems-table-header>
+                        <pems-table-header class="pems-w-80" data-col-key="tags" data-resizable="true" data-min-width="70" data-max-width="120">@Localizer["Rcm_Tags"]</pems-table-header>
+                        <pems-table-header data-col-key="justification" data-resizable="true" data-min-width="160" data-max-width="400" class="vs-hide-md pems-w-260">@Localizer["Rcm_Justification"]</pems-table-header>
+                        <pems-table-header class="pems-w-90" data-col-key="actions" data-resizable="false"><span class="visually-hidden">@Localizer["Ed_Actions"]</span></pems-table-header>
+                    </pems-table-row>
+                </pems-table-head>
+                <pems-table-body>
                     @foreach (var s in Model.Page.Items)
                     {
-                        <tr class="lp-row">
-                            <td class="small">
+                        <pems-table-row class="lp-row">
+                            <pems-table-cell class="small">
                                 @if (!string.IsNullOrEmpty(s.EquipmentClassName))
                                 {
                                     <div>@s.EquipmentClassName</div>
@@ -129,35 +129,35 @@
                                     <div class="text-muted"><a asp-controller="MaintenanceStrategy" asp-action="Tag" asp-route-equipmentId="@s.EquipmentId">@s.EquipmentTagNumber</a></div>
                                 }
                                 @if (string.IsNullOrEmpty(s.EquipmentClassName) && string.IsNullOrEmpty(s.EquipmentTagNumber)) { <span class="text-muted">-</span> }
-                            </td>
-                            <td><span class="vs-pill vs-pill--neutral">@Localizer.Label("StrategyType", s.StrategyType)</span></td>
-                            <td class="small">
+                            </pems-table-cell>
+                            <pems-table-cell><span class="vs-pill vs-pill--neutral">@Localizer.Label("StrategyType", s.StrategyType)</span></pems-table-cell>
+                            <pems-table-cell class="small">
                                 @if (!string.IsNullOrEmpty(s.FailureModeName)) { @RcmDisplay.Name(s.FailureModeName, s.FailureModeNameFa) }
                                 else if (!string.IsNullOrEmpty(s.FailureModeCode)) { <span class="text-warning" title="@Localizer["Rcm_NotInCatalog"]">@s.FailureModeCode <pems-icon name="bi-exclamation-triangle" aria-hidden="true" /></span> }
                                 else { <span class="text-danger">@Localizer["Rcm_MissingFailureMode"]</span> }
-                            </td>
-                            <td>
+                            </pems-table-cell>
+                            <pems-table-cell>
                                 <pems-badge tone="@RcmDisplay.ConsequenceBadge(s.ConsequenceCategory)">@Localizer.Label("Consequence", s.ConsequenceCategory)</pems-badge>
                                 @if (s.IsHiddenFailure && s.ConsequenceCategory != "Hidden") { <pems-badge tone="dark" title="@Localizer["Rcm_HiddenFailure"]">H</pems-badge> }
-                            </td>
-                            <td class="small">@Localizer.Label("Frequency", s.Frequency)</td>
-                            <td>
+                            </pems-table-cell>
+                            <pems-table-cell class="small">@Localizer.Label("Frequency", s.Frequency)</pems-table-cell>
+                            <pems-table-cell>
                                 <pems-badge tone="@RcmDisplay.StatusBadge(s.Status)">@Localizer.Label("Status", s.Status)</pems-badge>
                                 <div class="small text-muted">v@(s.VersionNumber)</div>
                                 @if (s.ReviewOverdue) { <div class="small text-danger"><pems-icon name="bi-clock-history" aria-hidden="true" /> @Localizer["Rcm_ReviewOverdue"]</div> }
-                            </td>
-                            <td><span class="vs-num">@s.AssignedTagCount</span></td>
-                            <td class="small text-muted vs-hide-md">@(string.IsNullOrWhiteSpace(s.Justification) ? "-" : (s.Justification!.Length > 140 ? s.Justification[..140] + "…" : s.Justification))</td>
-                            <td class="lp-actions">
+                            </pems-table-cell>
+                            <pems-table-cell><span class="vs-num">@s.AssignedTagCount</span></pems-table-cell>
+                            <pems-table-cell class="small text-muted vs-hide-md">@(string.IsNullOrWhiteSpace(s.Justification) ? "-" : (s.Justification!.Length > 140 ? s.Justification[..140] + "…" : s.Justification))</pems-table-cell>
+                            <pems-table-cell class="lp-actions">
                                 <a asp-action="Details" asp-route-id="@s.MaintenanceStrategyId" class="lp-act lp-act--always" title="@Localizer["Lp_Details"]" aria-label="@Localizer["Lp_Details"]"><pems-icon name="bi-eye" aria-hidden="true" /></a>
                                 @if (Model.CanEdit && s.Status != "Retired" && s.Status != "Superseded")
                                 {
                                     <a asp-action="Edit" asp-route-id="@s.MaintenanceStrategyId" class="lp-act lp-act--always" title="@Localizer["Rcm_Edit"]" aria-label="@Localizer["Rcm_Edit"]"><pems-icon name="bi-pencil" aria-hidden="true" /></a>
                                 }
-                            </td>
-                        </tr>
+                            </pems-table-cell>
+                        </pems-table-row>
                     }
-                </tbody>
+                </pems-table-body>
             </pems-list-table>
 
             <pems-list-footer>

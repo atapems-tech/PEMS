@@ -489,10 +489,10 @@
             @if (Model.Attachments != null && Model.Attachments.Any())
             {
                 <pems-table kind="enterprise">
-                    <thead>
-                        <tr><th>@Localizer["Ed_FileName"]</th><th>@Localizer["Ed_Revision"]</th><th>@Localizer["Ed_Ext"]</th><th>@Localizer["Ed_Size"]</th><th>@Localizer["Ed_AiStatus"]</th><th>@Localizer["Ed_Date"]</th><th class="text-end">@Localizer["Ed_Actions"]</th></tr>
-                    </thead>
-                    <tbody>
+                    <pems-table-head>
+                        <pems-table-row><pems-table-header>@Localizer["Ed_FileName"]</pems-table-header><pems-table-header>@Localizer["Ed_Revision"]</pems-table-header><pems-table-header>@Localizer["Ed_Ext"]</pems-table-header><pems-table-header>@Localizer["Ed_Size"]</pems-table-header><pems-table-header>@Localizer["Ed_AiStatus"]</pems-table-header><pems-table-header>@Localizer["Ed_Date"]</pems-table-header><pems-table-header class="text-end">@Localizer["Ed_Actions"]</pems-table-header></pems-table-row>
+                    </pems-table-head>
+                    <pems-table-body>
                         @foreach (var file in Model.Attachments)
                         {
                             var badgeClass = file.AIStatus switch
@@ -505,15 +505,15 @@
                             };
                             var fileIsCurrentRev = file.DocumentRevisionId.HasValue && file.RevisionNo == Model.RevisionNo;
                             var fileIsPreviousRev = file.DocumentRevisionId.HasValue && !fileIsCurrentRev;
-                            <tr class="@(fileIsPreviousRev ? "vs-rev-superseded" : "")">
-                                <td>
+                            <pems-table-row class="@(fileIsPreviousRev ? "vs-rev-superseded" : "")">
+                                <pems-table-cell>
                                     @file.FileName
                                     @if (!string.IsNullOrEmpty(file.FileHash))
                                     {
                                         <pems-icon name="bi-shield-check" css="text-success ms-1" data-bs-toggle="tooltip" title="SHA-256: @file.FileHash" />
                                     }
-                                </td>
-                                <td>
+                                </pems-table-cell>
+                                <pems-table-cell>
                                     @if (file.DocumentRevisionId.HasValue)
                                     {
                                         <pems-badge tone="neutral">@Localizer["Ed_CurrentRev"] @file.RevisionNo</pems-badge>
@@ -532,12 +532,12 @@
                                     {
                                         <span class="text-muted small">@Localizer["Ed_DocLevelFile"]</span>
                                     }
-                                </td>
-                                <td>@file.FileExtension</td>
-                                <td>@(file.FileSize / 1024) KB</td>
-                                <td><pems-badge tone="@badgeClass">@file.AIStatus</pems-badge></td>
-                                <td class="small text-muted">@file.UploadDate.ToString("yyyy-MM-dd")</td>
-                                <td class="text-end">
+                                </pems-table-cell>
+                                <pems-table-cell>@file.FileExtension</pems-table-cell>
+                                <pems-table-cell>@(file.FileSize / 1024) KB</pems-table-cell>
+                                <pems-table-cell><pems-badge tone="@badgeClass">@file.AIStatus</pems-badge></pems-table-cell>
+                                <pems-table-cell class="small text-muted">@file.UploadDate.ToString("yyyy-MM-dd")</pems-table-cell>
+                                <pems-table-cell class="text-end">
                                     <pems-flex gap="1" justify="end" wrap="true">
                                         <pems-button tone="primary" size="small" outline="true" as="a" asp-action="DownloadAttachment" asp-route-id="@file.AttachmentId" data-bs-toggle="tooltip" title="Download attachment" aria-label="Download @file.FileName"><pems-icon name="bi-download" /></pems-button>
                                         @if (file.AIStatus == "Completed")
@@ -552,10 +552,10 @@
                                             <pems-button tone="danger" size="small" outline="true" data-bs-toggle="tooltip" title="Delete attachment" aria-label="Delete @file.FileName"><pems-icon name="bi-trash" /></pems-button>
                                         </form>
                                     </pems-flex>
-                                </td>
-                            </tr>
+                                </pems-table-cell>
+                            </pems-table-row>
                         }
-                    </tbody>
+                    </pems-table-body>
                 </pems-table>
             }
             else
@@ -587,8 +587,8 @@
                 </p>
                 <pems-progress value="@idcApprovedCount" max="@idcStatusForPage.Count" tone="success" height="8px" css="mb-3"></pems-progress>
                 <pems-table kind="enterprise">
-                    <thead><tr><th>@Localizer["Discipline"]</th><th>@Localizer["Status"]</th><th>@Localizer["Comment"]</th><th>Responded By</th><th>Responded Date</th></tr></thead>
-                    <tbody>
+                    <pems-table-head><pems-table-row><pems-table-header>@Localizer["Discipline"]</pems-table-header><pems-table-header>@Localizer["Status"]</pems-table-header><pems-table-header>@Localizer["Comment"]</pems-table-header><pems-table-header>Responded By</pems-table-header><pems-table-header>Responded Date</pems-table-header></pems-table-row></pems-table-head>
+                    <pems-table-body>
                         @foreach (var idc in idcStatusForPage)
                         {
                             var (idcIcon, idcBadge, idcLabel) = idc.Status switch
@@ -598,15 +598,15 @@
                                 "Reject" => ("bi-x-circle-fill", "bg-danger", "Revision Required"),
                                 _ => ("bi-hourglass-split", "bg-secondary", "Pending")
                             };
-                            <tr>
-                                <td>@idc.DisciplineName</td>
-                                <td><pems-badge tone="none" css="@idcBadge"><pems-icon css="@idcIcon" /> @idcLabel</pems-badge></td>
-                                <td class="small">@(idc.Comment ?? "—")</td>
-                                <td class="small">@(idc.RespondedByName ?? "—")</td>
-                                <td class="small">@(idc.RespondedDate?.ToString("yyyy-MM-dd HH:mm") ?? "—")</td>
-                            </tr>
+                            <pems-table-row>
+                                <pems-table-cell>@idc.DisciplineName</pems-table-cell>
+                                <pems-table-cell><pems-badge tone="none" css="@idcBadge"><pems-icon css="@idcIcon" /> @idcLabel</pems-badge></pems-table-cell>
+                                <pems-table-cell class="small">@(idc.Comment ?? "—")</pems-table-cell>
+                                <pems-table-cell class="small">@(idc.RespondedByName ?? "—")</pems-table-cell>
+                                <pems-table-cell class="small">@(idc.RespondedDate?.ToString("yyyy-MM-dd HH:mm") ?? "—")</pems-table-cell>
+                            </pems-table-row>
                         }
-                    </tbody>
+                    </pems-table-body>
                 </pems-table>
                 @if (Model.Status == "IDC Review")
                 {
@@ -637,16 +637,16 @@
             @if (Model.Revisions != null && Model.Revisions.Any())
             {
                 <pems-table kind="enterprise">
-                    <thead><tr><th>@Localizer["Ed_RevisionCol"]</th><th>@Localizer["Ed_Status"]</th><th>@Localizer["Ed_ClientReviewCol"]</th><th>@Localizer["Ed_Reason"]</th><th>@Localizer["Ed_CreatedBy"]</th><th>@Localizer["Ed_Reviewer"]</th><th>@Localizer["Ed_ApprovedCol"]</th>
-                        <th>@Localizer["Ed_Created"]</th><th>@Localizer["Ed_IssuedCol"]</th><th>@Localizer["Ed_EffectiveCol"]</th><th>@Localizer["Ed_SupersedesCol"]</th></tr></thead>
-                    <tbody>
+                    <pems-table-head><pems-table-row><pems-table-header>@Localizer["Ed_RevisionCol"]</pems-table-header><pems-table-header>@Localizer["Ed_Status"]</pems-table-header><pems-table-header>@Localizer["Ed_ClientReviewCol"]</pems-table-header><pems-table-header>@Localizer["Ed_Reason"]</pems-table-header><pems-table-header>@Localizer["Ed_CreatedBy"]</pems-table-header><pems-table-header>@Localizer["Ed_Reviewer"]</pems-table-header><pems-table-header>@Localizer["Ed_ApprovedCol"]</pems-table-header>
+                        <pems-table-header>@Localizer["Ed_Created"]</pems-table-header><pems-table-header>@Localizer["Ed_IssuedCol"]</pems-table-header><pems-table-header>@Localizer["Ed_EffectiveCol"]</pems-table-header><pems-table-header>@Localizer["Ed_SupersedesCol"]</pems-table-header></pems-table-row></pems-table-head>
+                    <pems-table-body>
                         @foreach (var rev in Model.Revisions)
                         {
                             var revIsCurrent = rev.RevisionNo == Model.RevisionNo;
-                            <tr class="@(revIsCurrent ? "vs-rev-current" : "vs-rev-superseded")">
-                                <td><span class="vs-num vs-num--strong">@rev.RevisionNo</span> @if (revIsCurrent) { <span class="vs-pill vs-pill--current">@Localizer["Ed_CurrentBadge"]</span> }</td>
-                                <td><span class="vs-pill vs-pill--icon @DocumentStatusBadge.Tone(rev.Status)"><pems-icon css="@DocumentStatusBadge.Icon(rev.Status)" aria-hidden="true" /> @StatusText(rev.Status)</span></td>
-                                <td class="small">
+                            <pems-table-row class="@(revIsCurrent ? "vs-rev-current" : "vs-rev-superseded")">
+                                <pems-table-cell><span class="vs-num vs-num--strong">@rev.RevisionNo</span> @if (revIsCurrent) { <span class="vs-pill vs-pill--current">@Localizer["Ed_CurrentBadge"]</span> }</pems-table-cell>
+                                <pems-table-cell><span class="vs-pill vs-pill--icon @DocumentStatusBadge.Tone(rev.Status)"><pems-icon css="@DocumentStatusBadge.Icon(rev.Status)" aria-hidden="true" /> @StatusText(rev.Status)</span></pems-table-cell>
+                                <pems-table-cell class="small">
                                     @{
                                         var clientBadge = rev.ClientReviewStatus switch
                                         {
@@ -663,28 +663,28 @@
                                     {
                                         <span class="text-muted">@Localizer["Ed_NotSubmittedToClient"]</span>
                                     }
-                                </td>
-                                <td class="small">@rev.Reason</td>
-                                <td class="small">@(rev.CreatedByName ?? "—")</td>
-                                <td>@rev.ReviewerName</td>
-                                <td>@rev.ApprovedBy</td>
-                                <td class="small text-muted">@rev.CreatedDate.ToString("yyyy-MM-dd")</td>
-                                <td class="small text-muted">@(rev.IssuedDate?.ToString("yyyy-MM-dd"))</td>
-                                <td class="small text-muted">@(rev.EffectiveDate?.ToString("yyyy-MM-dd"))</td>
-                                <td class="small">@rev.SupersededRevisionNo</td>
-                            </tr>
+                                </pems-table-cell>
+                                <pems-table-cell class="small">@rev.Reason</pems-table-cell>
+                                <pems-table-cell class="small">@(rev.CreatedByName ?? "—")</pems-table-cell>
+                                <pems-table-cell>@rev.ReviewerName</pems-table-cell>
+                                <pems-table-cell>@rev.ApprovedBy</pems-table-cell>
+                                <pems-table-cell class="small text-muted">@rev.CreatedDate.ToString("yyyy-MM-dd")</pems-table-cell>
+                                <pems-table-cell class="small text-muted">@(rev.IssuedDate?.ToString("yyyy-MM-dd"))</pems-table-cell>
+                                <pems-table-cell class="small text-muted">@(rev.EffectiveDate?.ToString("yyyy-MM-dd"))</pems-table-cell>
+                                <pems-table-cell class="small">@rev.SupersededRevisionNo</pems-table-cell>
+                            </pems-table-row>
                             @if (!string.IsNullOrEmpty(rev.ChangeDescription) || !string.IsNullOrEmpty(rev.AIRevisionSummary) || !string.IsNullOrEmpty(rev.VendorComment))
                             {
-                                <tr class="table-light">
-                                    <td colspan="11" class="small">
+                                <pems-table-row class="table-light">
+                                    <pems-table-cell colspan="11" class="small">
                                         @if (!string.IsNullOrEmpty(rev.ChangeDescription)) { <div><strong>Change:</strong> @rev.ChangeDescription</div> }
                                         @if (!string.IsNullOrEmpty(rev.VendorComment)) { <div><pems-icon name="bi-building" /> <strong>Vendor Comment:</strong> @rev.VendorComment</div> }
                                         @if (!string.IsNullOrEmpty(rev.AIRevisionSummary)) { <div><pems-icon name="bi-robot" /> <strong>AI Summary:</strong> @rev.AIRevisionSummary</div> }
-                                    </td>
-                                </tr>
+                                    </pems-table-cell>
+                                </pems-table-row>
                             }
                         }
-                    </tbody>
+                    </pems-table-body>
                 </pems-table>
             }
             else
@@ -760,20 +760,20 @@
             @if (relatedLetters.Any())
             {
                 <pems-table kind="enterprise">
-                    <thead><tr><th>@Localizer["Ed_Letters_Type"]</th><th>@Localizer["Ed_LetterNo"]</th><th>@Localizer["Ed_Subject"]</th><th>@Localizer["Ed_Date"]</th><th>@Localizer["Ed_Status"]</th><th></th></tr></thead>
-                    <tbody>
+                    <pems-table-head><pems-table-row><pems-table-header>@Localizer["Ed_Letters_Type"]</pems-table-header><pems-table-header>@Localizer["Ed_LetterNo"]</pems-table-header><pems-table-header>@Localizer["Ed_Subject"]</pems-table-header><pems-table-header>@Localizer["Ed_Date"]</pems-table-header><pems-table-header>@Localizer["Ed_Status"]</pems-table-header><pems-table-header></pems-table-header></pems-table-row></pems-table-head>
+                    <pems-table-body>
                         @foreach (var l in relatedLetters)
                         {
-                            <tr>
-                                <td><pems-badge tone="neutral">@l.LetterType</pems-badge></td>
-                                <td>@l.LetterNumber</td>
-                                <td>@l.Subject</td>
-                                <td class="small text-muted">@l.LetterDate.ToString("yyyy-MM-dd")</td>
-                                <td><pems-badge tone="info">@l.Status</pems-badge></td>
-                                <td><pems-button tone="neutral" size="small" outline="true" as="a" asp-controller="Letter" asp-action="Details" asp-route-id="@l.LetterId" data-bs-toggle="tooltip" title="View letter" aria-label="View letter @l.LetterNumber"><pems-icon name="bi-eye" /></pems-button></td>
-                            </tr>
+                            <pems-table-row>
+                                <pems-table-cell><pems-badge tone="neutral">@l.LetterType</pems-badge></pems-table-cell>
+                                <pems-table-cell>@l.LetterNumber</pems-table-cell>
+                                <pems-table-cell>@l.Subject</pems-table-cell>
+                                <pems-table-cell class="small text-muted">@l.LetterDate.ToString("yyyy-MM-dd")</pems-table-cell>
+                                <pems-table-cell><pems-badge tone="info">@l.Status</pems-badge></pems-table-cell>
+                                <pems-table-cell><pems-button tone="neutral" size="small" outline="true" as="a" asp-controller="Letter" asp-action="Details" asp-route-id="@l.LetterId" data-bs-toggle="tooltip" title="View letter" aria-label="View letter @l.LetterNumber"><pems-icon name="bi-eye" /></pems-button></pems-table-cell>
+                            </pems-table-row>
                         }
-                    </tbody>
+                    </pems-table-body>
                 </pems-table>
             }
             else
@@ -793,20 +793,20 @@
             @if (relatedTransmittals.Any())
             {
                 <pems-table kind="enterprise">
-                    <thead><tr><th>@Localizer["Ed_TransmittalNo"]</th><th>@Localizer["Ed_RevSent"]</th><th>@Localizer["Ed_Purpose"]</th><th>@Localizer["Ed_Date"]</th><th>@Localizer["Ed_Status"]</th><th></th></tr></thead>
-                    <tbody>
+                    <pems-table-head><pems-table-row><pems-table-header>@Localizer["Ed_TransmittalNo"]</pems-table-header><pems-table-header>@Localizer["Ed_RevSent"]</pems-table-header><pems-table-header>@Localizer["Ed_Purpose"]</pems-table-header><pems-table-header>@Localizer["Ed_Date"]</pems-table-header><pems-table-header>@Localizer["Ed_Status"]</pems-table-header><pems-table-header></pems-table-header></pems-table-row></pems-table-head>
+                    <pems-table-body>
                         @foreach (var t in relatedTransmittals)
                         {
-                            <tr>
-                                <td>@t.TransmittalNo</td>
-                                <td class="small text-muted">@Localizer["Ed_CurrentRev"] <span class="vs-num">@t.RevisionNoAtTransmittal</span></td>
-                                <td>@t.Purpose</td>
-                                <td class="small text-muted">@(t.SentDate?.ToString("yyyy-MM-dd") ?? t.TransmittalDate.ToString("yyyy-MM-dd"))</td>
-                                <td><span class="vs-pill @PEMS.Web.Helpers.VdrUi.TransmittalTone(t.Status)">@VdrUi.Loc(Localizer, "St_", t.Status)</span></td>
-                                <td><pems-button tone="neutral" size="small" outline="true" as="a" asp-controller="Transmittal" asp-action="Details" asp-route-id="@t.TransmittalId" data-bs-toggle="tooltip" title="View transmittal" aria-label="View transmittal @t.TransmittalNo"><pems-icon name="bi-eye" /></pems-button></td>
-                            </tr>
+                            <pems-table-row>
+                                <pems-table-cell>@t.TransmittalNo</pems-table-cell>
+                                <pems-table-cell class="small text-muted">@Localizer["Ed_CurrentRev"] <span class="vs-num">@t.RevisionNoAtTransmittal</span></pems-table-cell>
+                                <pems-table-cell>@t.Purpose</pems-table-cell>
+                                <pems-table-cell class="small text-muted">@(t.SentDate?.ToString("yyyy-MM-dd") ?? t.TransmittalDate.ToString("yyyy-MM-dd"))</pems-table-cell>
+                                <pems-table-cell><span class="vs-pill @PEMS.Web.Helpers.VdrUi.TransmittalTone(t.Status)">@VdrUi.Loc(Localizer, "St_", t.Status)</span></pems-table-cell>
+                                <pems-table-cell><pems-button tone="neutral" size="small" outline="true" as="a" asp-controller="Transmittal" asp-action="Details" asp-route-id="@t.TransmittalId" data-bs-toggle="tooltip" title="View transmittal" aria-label="View transmittal @t.TransmittalNo"><pems-icon name="bi-eye" /></pems-button></pems-table-cell>
+                            </pems-table-row>
                         }
-                    </tbody>
+                    </pems-table-body>
                 </pems-table>
             }
             else
@@ -922,18 +922,18 @@
     <h6 class="mb-3">Comment Management <span class="text-muted small">(Action Status is tracked independently from Review Status)</span></h6>
 
     <pems-table kind="enterprise">
-        <thead><tr><th>No</th><th>@Localizer["Category"]</th><th>Sheet/Zone</th><th>@Localizer["Comment"]</th><th>@Localizer["Raised By"]</th><th>@Localizer["Raised"]</th><th>@Localizer["Action Status"]</th><th>@Localizer["Response"]</th></tr></thead>
-        <tbody>
+        <pems-table-head><pems-table-row><pems-table-header>No</pems-table-header><pems-table-header>@Localizer["Category"]</pems-table-header><pems-table-header>Sheet/Zone</pems-table-header><pems-table-header>@Localizer["Comment"]</pems-table-header><pems-table-header>@Localizer["Raised By"]</pems-table-header><pems-table-header>@Localizer["Raised"]</pems-table-header><pems-table-header>@Localizer["Action Status"]</pems-table-header><pems-table-header>@Localizer["Response"]</pems-table-header></pems-table-row></pems-table-head>
+        <pems-table-body>
             @foreach (var c in engComments)
             {
-                <tr>
-                    <td><strong>@c.CommentNo</strong></td>
-                    <td>
+                <pems-table-row>
+                    <pems-table-cell><strong>@c.CommentNo</strong></pems-table-cell>
+                    <pems-table-cell>
                         @if (!string.IsNullOrEmpty(c.Category)) { <pems-badge tone="neutral">@c.Category</pems-badge> }
                         @if (!string.IsNullOrEmpty(c.Severity)) { <pems-badge tone="dark">@c.Severity</pems-badge> }
-                    </td>
-                    <td class="small">@c.Sheet @c.Zone</td>
-                    <td class="small">
+                    </pems-table-cell>
+                    <pems-table-cell class="small">@c.Sheet @c.Zone</pems-table-cell>
+                    <pems-table-cell class="small">
                         @c.CommentText
                         @if (!string.IsNullOrEmpty(c.AttachmentFilePath))
                         {
@@ -957,10 +957,10 @@
                                 }
                             </div>
                         }
-                    </td>
-                    <td>@c.RaisedByName</td>
-                    <td>@c.RaisedDate.ToString("yyyy-MM-dd")</td>
-                    <td>
+                    </pems-table-cell>
+                    <pems-table-cell>@c.RaisedByName</pems-table-cell>
+                    <pems-table-cell>@c.RaisedDate.ToString("yyyy-MM-dd")</pems-table-cell>
+                    <pems-table-cell>
                         @{
                             var eab = c.ActionStatus switch
                             {
@@ -980,8 +980,8 @@
                                 { <option value="@s" selected="@(s == c.ActionStatus)">@s</option> }
                             </pems-select>
                         </form>
-                    </td>
-                    <td class="small">
+                    </pems-table-cell>
+                    <pems-table-cell class="small">
                         @c.ResponseText
                         @if (!string.IsNullOrEmpty(c.ReplyAttachmentFilePath))
                         {
@@ -993,10 +993,10 @@
                                 <pems-icon name="bi-reply" /> Reply
                             </pems-button>
                         }
-                    </td>
-                </tr>
+                    </pems-table-cell>
+                </pems-table-row>
             }
-        </tbody>
+        </pems-table-body>
     </pems-table>
     @if (!engComments.Any()) { <p class="text-muted">No comments recorded yet.</p> }
 

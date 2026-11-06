@@ -57,24 +57,24 @@
     <pems-tab-pane fade="true" active="true" id="tab-stock" role="tabpanel">
         <pems-content-card>
             <pems-table kind="enterprise">
-                <thead><tr><th>@Localizer["Warehouse"]</th><th>@Localizer["Location"]</th><th>@Localizer["On Hand"]</th><th>Reserved</th><th>@Localizer["Available"]</th><th>@Localizer["Reorder Point"]</th><th></th></tr></thead>
-                <tbody>
+                <pems-table-head><pems-table-row><pems-table-header>@Localizer["Warehouse"]</pems-table-header><pems-table-header>@Localizer["Location"]</pems-table-header><pems-table-header>@Localizer["On Hand"]</pems-table-header><pems-table-header>Reserved</pems-table-header><pems-table-header>@Localizer["Available"]</pems-table-header><pems-table-header>@Localizer["Reorder Point"]</pems-table-header><pems-table-header></pems-table-header></pems-table-row></pems-table-head>
+                <pems-table-body>
                     @foreach (var s in Model.Stocks)
                     {
-                        <tr class="@(s.IsOutOfStock ? "table-danger" : s.IsLowStock ? "table-warning" : "")">
-                            <td>@s.WarehouseCode</td>
-                            <td class="small">@(s.StorageLocationCode ?? "-")</td>
-                            <td>@s.OnHandQuantity</td>
-                            <td>@s.ReservedQuantity</td>
-                            <td>@s.AvailableQuantity</td>
-                            <td>@(s.ReorderPoint?.ToString() ?? "-")</td>
-                            <td class="text-end">
+                        <pems-table-row class="@(s.IsOutOfStock ? "table-danger" : s.IsLowStock ? "table-warning" : "")">
+                            <pems-table-cell>@s.WarehouseCode</pems-table-cell>
+                            <pems-table-cell class="small">@(s.StorageLocationCode ?? "-")</pems-table-cell>
+                            <pems-table-cell>@s.OnHandQuantity</pems-table-cell>
+                            <pems-table-cell>@s.ReservedQuantity</pems-table-cell>
+                            <pems-table-cell>@s.AvailableQuantity</pems-table-cell>
+                            <pems-table-cell>@(s.ReorderPoint?.ToString() ?? "-")</pems-table-cell>
+                            <pems-table-cell class="text-end">
                                 <pems-button tone="neutral" size="small" outline="true" css="adjust-stock-btn" type="button" data-warehouse-id="@s.WarehouseId" data-warehouse-code="@s.WarehouseCode" data-onhand="@s.OnHandQuantity" title="Adjust"><pems-icon name="bi-sliders" /></pems-button>
                                 <pems-button tone="neutral" size="small" outline="true" css="transfer-stock-btn" type="button" data-warehouse-id="@s.WarehouseId" data-warehouse-code="@s.WarehouseCode" data-available="@s.AvailableQuantity" title="Transfer"><pems-icon name="bi-arrow-left-right" /></pems-button>
-                            </td>
-                        </tr>
+                            </pems-table-cell>
+                        </pems-table-row>
                     }
-                </tbody>
+                </pems-table-body>
             </pems-table>
             @if (!Model.Stocks.Any()) { <p class="text-muted text-center py-4">هنوز موجودی‌ای در هیچ انباری ثبت نشده.</p> }
         </pems-content-card>
@@ -89,20 +89,20 @@
                     جداگانه می‌ماند (رونویسی نمی‌شود).
                 </p>
                 <pems-table kind="enterprise">
-                    <thead><tr><th>Source File</th><th>Import Date</th><th>@Localizer["MRS No"]</th><th>@Localizer["Vendor"]</th><th>PO No</th><th></th></tr></thead>
-                    <tbody>
+                    <pems-table-head><pems-table-row><pems-table-header>Source File</pems-table-header><pems-table-header>Import Date</pems-table-header><pems-table-header>@Localizer["MRS No"]</pems-table-header><pems-table-header>@Localizer["Vendor"]</pems-table-header><pems-table-header>PO No</pems-table-header><pems-table-header></pems-table-header></pems-table-row></pems-table-head>
+                    <pems-table-body>
                         @foreach (var s in Model.SourceImports)
                         {
-                            <tr>
-                                <td class="small">@s.SourceFileName</td>
-                                <td class="small">@s.ImportDate.ToString("yyyy-MM-dd HH:mm")</td>
-                                <td class="small">@(s.RawMrsNo ?? "-")</td>
-                                <td class="small">@(s.RawSupplier ?? "-")</td>
-                                <td class="small">@(s.RawPoNo ?? "-")</td>
-                                <td class="text-end"><pems-button as="a" tone="neutral" size="small" outline="true" asp-controller="MrsImport" asp-action="Review" asp-route-batchId="@s.MrsImportBatchId">Open Batch</pems-button></td>
-                            </tr>
+                            <pems-table-row>
+                                <pems-table-cell class="small">@s.SourceFileName</pems-table-cell>
+                                <pems-table-cell class="small">@s.ImportDate.ToString("yyyy-MM-dd HH:mm")</pems-table-cell>
+                                <pems-table-cell class="small">@(s.RawMrsNo ?? "-")</pems-table-cell>
+                                <pems-table-cell class="small">@(s.RawSupplier ?? "-")</pems-table-cell>
+                                <pems-table-cell class="small">@(s.RawPoNo ?? "-")</pems-table-cell>
+                                <pems-table-cell class="text-end"><pems-button as="a" tone="neutral" size="small" outline="true" asp-controller="MrsImport" asp-action="Review" asp-route-batchId="@s.MrsImportBatchId">Open Batch</pems-button></pems-table-cell>
+                            </pems-table-row>
                         }
-                    </tbody>
+                    </pems-table-body>
                 </pems-table>
             </pems-content-card>
         </pems-tab-pane>

@@ -133,17 +133,17 @@
     <pems-content-card css="mt-3">
         <h6>@Localizer["Multi-Discipline Review"]</h6>
         <pems-table scale="small">
-            <thead><tr><th>@Localizer["Discipline"]</th><th>@Localizer["Reviewer"]</th><th>@Localizer["Decision"]</th><th>@Localizer["Comment"]</th><th>@Localizer["Date"]</th><th></th></tr></thead>
-            <tbody>
+            <pems-table-head><pems-table-row><pems-table-header>@Localizer["Discipline"]</pems-table-header><pems-table-header>@Localizer["Reviewer"]</pems-table-header><pems-table-header>@Localizer["Decision"]</pems-table-header><pems-table-header>@Localizer["Comment"]</pems-table-header><pems-table-header>@Localizer["Date"]</pems-table-header><pems-table-header></pems-table-header></pems-table-row></pems-table-head>
+            <pems-table-body>
                 @foreach (var r in disciplineReviews)
                 {
-                    <tr>
-                        <td>@r.DisciplineRole</td>
-                        <td>@(r.Reviewer != null ? r.Reviewer.FirstName + " " + r.Reviewer.LastName : "-")</td>
-                        <td><pems-badge tone="@(r.Decision == "Approved" ? "success" : r.Decision == "Rejected" ? "danger" : "neutral")">@r.Decision</pems-badge></td>
-                        <td>@r.Comment</td>
-                        <td>@r.ReviewDate?.ToString("yyyy-MM-dd")</td>
-                        <td>
+                    <pems-table-row>
+                        <pems-table-cell>@r.DisciplineRole</pems-table-cell>
+                        <pems-table-cell>@(r.Reviewer != null ? r.Reviewer.FirstName + " " + r.Reviewer.LastName : "-")</pems-table-cell>
+                        <pems-table-cell><pems-badge tone="@(r.Decision == "Approved" ? "success" : r.Decision == "Rejected" ? "danger" : "neutral")">@r.Decision</pems-badge></pems-table-cell>
+                        <pems-table-cell>@r.Comment</pems-table-cell>
+                        <pems-table-cell>@r.ReviewDate?.ToString("yyyy-MM-dd")</pems-table-cell>
+                        <pems-table-cell>
                             @if (r.Decision == "Pending")
                             {
                                 <form asp-action="RecordDisciplineReview" method="post"><pems-flex gap="1">
@@ -153,10 +153,10 @@
                                     <pems-button tone="danger" size="small" type="submit" name="decision" value="Reject">@Localizer["Reject"]</pems-button>
                                 </pems-flex></form>
                             }
-                        </td>
-                    </tr>
+                        </pems-table-cell>
+                    </pems-table-row>
                 }
-            </tbody>
+            </pems-table-body>
         </pems-table>
     </pems-content-card>
 }
@@ -204,18 +204,18 @@
     <pems-content-card css="mt-3">
         <h6>@Localizer["Revision History (Original value never overwritten)"]</h6>
         <pems-table scale="small">
-            <thead><tr><th>#</th><th>@Localizer["Type"]</th><th>@Localizer["Previous"]</th><th>@Localizer["New"]</th><th>@Localizer["Reason"]</th><th>@Localizer["Status"]</th><th></th></tr></thead>
-            <tbody>
+            <pems-table-head><pems-table-row><pems-table-header>#</pems-table-header><pems-table-header>@Localizer["Type"]</pems-table-header><pems-table-header>@Localizer["Previous"]</pems-table-header><pems-table-header>@Localizer["New"]</pems-table-header><pems-table-header>@Localizer["Reason"]</pems-table-header><pems-table-header>@Localizer["Status"]</pems-table-header><pems-table-header></pems-table-header></pems-table-row></pems-table-head>
+            <pems-table-body>
                 @foreach (var r in revisions)
                 {
-                    <tr>
-                        <td>@r.RevisionNo</td>
-                        <td>@r.ChangeType</td>
-                        <td>@r.PreviousValue?.ToString("N0")</td>
-                        <td>@r.NewValue?.ToString("N0")</td>
-                        <td>@r.Reason</td>
-                        <td><pems-badge tone="@(r.Status == "Approved" ? "success" : "neutral")">@r.Status</pems-badge></td>
-                        <td>
+                    <pems-table-row>
+                        <pems-table-cell>@r.RevisionNo</pems-table-cell>
+                        <pems-table-cell>@r.ChangeType</pems-table-cell>
+                        <pems-table-cell>@r.PreviousValue?.ToString("N0")</pems-table-cell>
+                        <pems-table-cell>@r.NewValue?.ToString("N0")</pems-table-cell>
+                        <pems-table-cell>@r.Reason</pems-table-cell>
+                        <pems-table-cell><pems-badge tone="@(r.Status == "Approved" ? "success" : "neutral")">@r.Status</pems-badge></pems-table-cell>
+                        <pems-table-cell>
                             @if (r.Status == "Pending")
                             {
                                 <form asp-action="ApproveRevision" method="post" class="d-inline">
@@ -224,10 +224,10 @@
                                     <pems-button tone="success" size="small" type="submit">@Localizer["Approve"]</pems-button>
                                 </form>
                             }
-                        </td>
-                    </tr>
+                        </pems-table-cell>
+                    </pems-table-row>
                 }
-            </tbody>
+            </pems-table-body>
         </pems-table>
     </pems-content-card>
 }

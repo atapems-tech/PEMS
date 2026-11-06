@@ -10,19 +10,19 @@
         </pems-flex>
         <pems-table-scroll>
             <pems-table kind="enterprise" css="align-middle">
-                <thead><tr><th>@Localizer["Module"]</th><th>@Localizer["Process type"]</th><th>@Localizer["Context"]</th><th>@Localizer["Workflow"]</th><th>@Localizer["Bound version"]</th><th>@Localizer["Status"]</th><th>@Localizer["Access"]</th><th></th></tr></thead>
-                <tbody>
+                <pems-table-head><pems-table-row><pems-table-header>@Localizer["Module"]</pems-table-header><pems-table-header>@Localizer["Process type"]</pems-table-header><pems-table-header>@Localizer["Context"]</pems-table-header><pems-table-header>@Localizer["Workflow"]</pems-table-header><pems-table-header>@Localizer["Bound version"]</pems-table-header><pems-table-header>@Localizer["Status"]</pems-table-header><pems-table-header>@Localizer["Access"]</pems-table-header><pems-table-header></pems-table-header></pems-table-row></pems-table-head>
+                <pems-table-body>
                 @foreach (var b in Model)
                 {
-                    <tr>
-                        <td>@b.Module</td><td>@b.EntityType</td><td>@b.Context</td><td>@b.DefinitionName</td>
-                        <td>@(b.PinnedVersionNumber.HasValue ? "v" + b.PinnedVersionNumber : Localizer["latest published"].Value)</td>
-                        <td><pems-badge tone="none" css="@(b.IsActive ? "bg-success" : "bg-secondary")">@Localizer[b.IsActive ? "Active" : "Inactive"]</pems-badge></td>
-                        <td><pems-badge tone="none" css="@(b.Editable ? "bg-primary" : "bg-secondary")">@Localizer[b.Editable ? "Editable" : "View Only"]</pems-badge></td>
-                        <td class="text-end"><pems-button as="a" tone="primary" size="small" outline="true" asp-action="Details" asp-route-id="@b.DefinitionId">@Localizer["Open"]</pems-button></td>
-                    </tr>
+                    <pems-table-row>
+                        <pems-table-cell>@b.Module</pems-table-cell><pems-table-cell>@b.EntityType</pems-table-cell><pems-table-cell>@b.Context</pems-table-cell><pems-table-cell>@b.DefinitionName</pems-table-cell>
+                        <pems-table-cell>@(b.PinnedVersionNumber.HasValue ? "v" + b.PinnedVersionNumber : Localizer["latest published"].Value)</pems-table-cell>
+                        <pems-table-cell><pems-badge tone="none" css="@(b.IsActive ? "bg-success" : "bg-secondary")">@Localizer[b.IsActive ? "Active" : "Inactive"]</pems-badge></pems-table-cell>
+                        <pems-table-cell><pems-badge tone="none" css="@(b.Editable ? "bg-primary" : "bg-secondary")">@Localizer[b.Editable ? "Editable" : "View Only"]</pems-badge></pems-table-cell>
+                        <pems-table-cell class="text-end"><pems-button as="a" tone="primary" size="small" outline="true" asp-action="Details" asp-route-id="@b.DefinitionId">@Localizer["Open"]</pems-button></pems-table-cell>
+                    </pems-table-row>
                 }
-                </tbody>
+                </pems-table-body>
             </pems-table>
         </pems-table-scroll>
     </pems-content-card>

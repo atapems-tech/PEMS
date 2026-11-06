@@ -44,35 +44,35 @@
 
         <pems-list-grid>
             <pems-list-table empty="@(Model.Count == 0)" empty-text="@Localizer["StpL_Empty"]">
-                <thead>
-                    <tr>
-                        <th class="pems-w-180">@Localizer["DpL_Name"]</th>
-                        <th class="pems-w-110">@Localizer["MiL_Code"]</th>
-                        <th class="pems-w-110">@Localizer["Ed_Type"]</th>
-                        <th class="vs-hide-md">@Localizer["Host / Root"]</th>
-                        <th class="text-end pems-w-80">@Localizer["StpL_Routes"]</th>
-                        <th class="pems-w-150">@Localizer["StpL_Health"]</th>
-                        <th class="pems-w-110">@Localizer["Ed_Status"]</th>
-                        <th class="pems-w-70">@Localizer["Default"]</th>
-                        <th class="pems-w-170"><span class="visually-hidden">@Localizer["Ed_Actions"]</span></th>
-                    </tr>
-                </thead>
-                <tbody>
+                <pems-table-head>
+                    <pems-table-row>
+                        <pems-table-header class="pems-w-180">@Localizer["DpL_Name"]</pems-table-header>
+                        <pems-table-header class="pems-w-110">@Localizer["MiL_Code"]</pems-table-header>
+                        <pems-table-header class="pems-w-110">@Localizer["Ed_Type"]</pems-table-header>
+                        <pems-table-header class="vs-hide-md">@Localizer["Host / Root"]</pems-table-header>
+                        <pems-table-header class="text-end pems-w-80">@Localizer["StpL_Routes"]</pems-table-header>
+                        <pems-table-header class="pems-w-150">@Localizer["StpL_Health"]</pems-table-header>
+                        <pems-table-header class="pems-w-110">@Localizer["Ed_Status"]</pems-table-header>
+                        <pems-table-header class="pems-w-70">@Localizer["Default"]</pems-table-header>
+                        <pems-table-header class="pems-w-170"><span class="visually-hidden">@Localizer["Ed_Actions"]</span></pems-table-header>
+                    </pems-table-row>
+                </pems-table-head>
+                <pems-table-body>
                 @foreach (var p in Model)
                 {
-                    <tr class="lp-row">
-                        <td><a asp-action="Edit" asp-route-id="@p.StorageProviderId" class="lp-subject">@p.Name</a></td>
-                        <td><code>@p.Code</code></td>
-                        <td><span class="vs-pill vs-pill--neutral">@p.ProviderType</span></td>
-                        <td class="small text-muted vs-hide-md"><span class="vs-num">@(string.IsNullOrEmpty(p.Host) ? p.RootPath : $"{p.Host}:{p.Port} → {p.RootPath}")</span></td>
-                        <td class="text-end"><span class="vs-num">@p.ActiveRouteCount</span></td>
-                        <td>
+                    <pems-table-row class="lp-row">
+                        <pems-table-cell><a asp-action="Edit" asp-route-id="@p.StorageProviderId" class="lp-subject">@p.Name</a></pems-table-cell>
+                        <pems-table-cell><code>@p.Code</code></pems-table-cell>
+                        <pems-table-cell><span class="vs-pill vs-pill--neutral">@p.ProviderType</span></pems-table-cell>
+                        <pems-table-cell class="small text-muted vs-hide-md"><span class="vs-num">@(string.IsNullOrEmpty(p.Host) ? p.RootPath : $"{p.Host}:{p.Port} → {p.RootPath}")</span></pems-table-cell>
+                        <pems-table-cell class="text-end"><span class="vs-num">@p.ActiveRouteCount</span></pems-table-cell>
+                        <pems-table-cell>
                             <span class="vs-pill @HealthTone(p.LastHealthStatus)">@HealthText(p.LastHealthStatus)</span>
                             @if (p.LastHealthCheckAt.HasValue) { <div class="vs-sub"><span class="vs-num">@p.LastHealthCheckAt.Value.ToString("yyyy-MM-dd HH:mm")</span></div> }
-                        </td>
-                        <td><span class="vs-pill @(p.IsEnabled ? "vs-pill--success" : "vs-pill--neutral")">@(p.IsEnabled ? Localizer["Enabled"] : Localizer["Disabled"])</span></td>
-                        <td>@if (p.IsDefault) { <pems-icon name="bi-star-fill" css="text-warning" title="@Localizer["Default"]" aria-label="@Localizer["Default"]" /> }</td>
-                        <td class="text-end text-nowrap">
+                        </pems-table-cell>
+                        <pems-table-cell><span class="vs-pill @(p.IsEnabled ? "vs-pill--success" : "vs-pill--neutral")">@(p.IsEnabled ? Localizer["Enabled"] : Localizer["Disabled"])</span></pems-table-cell>
+                        <pems-table-cell>@if (p.IsDefault) { <pems-icon name="bi-star-fill" css="text-warning" title="@Localizer["Default"]" aria-label="@Localizer["Default"]" /> }</pems-table-cell>
+                        <pems-table-cell class="text-end text-nowrap">
                             <a asp-action="Edit" asp-route-id="@p.StorageProviderId" class="lp-act lp-act--always" title="@Localizer["Ed_Edit"]" aria-label="@Localizer["Ed_Edit"] @p.Name"><pems-icon name="bi-pencil" aria-hidden="true" /></a>
                             <form asp-action="TestConnection" asp-route-id="@p.StorageProviderId" method="post" class="d-inline">
                                 <button type="submit" class="lp-act lp-act--always" title="@Localizer["StpL_Test"]" aria-label="@Localizer["StpL_Test"] @p.Name"><pems-icon name="bi-broadcast" aria-hidden="true" /></button>
@@ -93,10 +93,10 @@
                                     <button type="submit" class="lp-act lp-act--always text-danger" title="@Localizer["Ed_Delete"]" aria-label="@Localizer["Ed_Delete"] @p.Name"><pems-icon name="bi-trash" aria-hidden="true" /></button>
                                 </form>
                             }
-                        </td>
-                    </tr>
+                        </pems-table-cell>
+                    </pems-table-row>
                 }
-                </tbody>
+                </pems-table-body>
             </pems-list-table>
         </pems-list-grid>
     </pems-list-panel>

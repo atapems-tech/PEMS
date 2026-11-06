@@ -31,36 +31,36 @@
 <pems-content-card>
     <div class="table-scroll-area pems-s-0ddf068b">
     <pems-table kind="enterprise" scale="small" css="mb-0">
-        <thead>
-            <tr>
-                <th>@Localizer["Tag"]</th>
-                <th>@Localizer["Classification"]</th>
-                <th>@Localizer["Criticality"]</th>
-                <th>@Localizer["Strategy"]</th>
-                <th>@Localizer["PM Plan"]</th>
-                <th>@Localizer["Job Plan"]</th>
-                <th>@Localizer["Safety"]</th>
-                <th>@Localizer["Execution"]</th>
-            </tr>
-        </thead>
-        <tbody>
+        <pems-table-head>
+            <pems-table-row>
+                <pems-table-header>@Localizer["Tag"]</pems-table-header>
+                <pems-table-header>@Localizer["Classification"]</pems-table-header>
+                <pems-table-header>@Localizer["Criticality"]</pems-table-header>
+                <pems-table-header>@Localizer["Strategy"]</pems-table-header>
+                <pems-table-header>@Localizer["PM Plan"]</pems-table-header>
+                <pems-table-header>@Localizer["Job Plan"]</pems-table-header>
+                <pems-table-header>@Localizer["Safety"]</pems-table-header>
+                <pems-table-header>@Localizer["Execution"]</pems-table-header>
+            </pems-table-row>
+        </pems-table-head>
+        <pems-table-body>
             @foreach (var r in Model.Items)
             {
-                <tr class="@(r.ExecutionReady ? "table-success" : "")">
-                    <td class="fw-bold small">@r.TagNumber</td>
-                    <td><pems-badge tone="@StateBadge(r.Classification)">@r.Classification</pems-badge></td>
-                    <td>
+                <pems-table-row class="@(r.ExecutionReady ? "table-success" : "")">
+                    <pems-table-cell class="fw-bold small">@r.TagNumber</pems-table-cell>
+                    <pems-table-cell><pems-badge tone="@StateBadge(r.Classification)">@r.Classification</pems-badge></pems-table-cell>
+                    <pems-table-cell>
                         <pems-badge tone="@StateBadge(r.Criticality)">@r.Criticality</pems-badge>
                         @if (r.Criticality == "NOT_READY")
                         {
                             <a asp-controller="CriticalityAssessment" asp-action="Create" asp-route-equipmentId="@r.EquipmentId" class="small d-block">Assess →</a>
                         }
-                    </td>
-                    <td><pems-badge tone="@StateBadge(r.Strategy)">@r.Strategy</pems-badge></td>
-                    <td><pems-badge tone="@StateBadge(r.PmPlan)">@r.PmPlan</pems-badge></td>
-                    <td><pems-badge tone="@StateBadge(r.JobPlan)">@r.JobPlan</pems-badge></td>
-                    <td><pems-badge tone="@StateBadge(r.Safety)">@r.Safety</pems-badge></td>
-                    <td>
+                    </pems-table-cell>
+                    <pems-table-cell><pems-badge tone="@StateBadge(r.Strategy)">@r.Strategy</pems-badge></pems-table-cell>
+                    <pems-table-cell><pems-badge tone="@StateBadge(r.PmPlan)">@r.PmPlan</pems-badge></pems-table-cell>
+                    <pems-table-cell><pems-badge tone="@StateBadge(r.JobPlan)">@r.JobPlan</pems-badge></pems-table-cell>
+                    <pems-table-cell><pems-badge tone="@StateBadge(r.Safety)">@r.Safety</pems-badge></pems-table-cell>
+                    <pems-table-cell>
                         @if (r.ExecutionReady)
                         {
                             <pems-badge tone="success"><pems-icon name="bi-check-lg" /> @Localizer["Ready"]</pems-badge>
@@ -69,10 +69,10 @@
                         {
                             <span class="text-muted small">Not Ready</span>
                         }
-                    </td>
-                </tr>
+                    </pems-table-cell>
+                </pems-table-row>
             }
-        </tbody>
+        </pems-table-body>
     </pems-table>
     </div>
     @if (!Model.Items.Any()) { <p class="text-muted text-center py-4 mb-0">@Localizer["هیچ تجهیزی در این کلاس نیست."]</p> }

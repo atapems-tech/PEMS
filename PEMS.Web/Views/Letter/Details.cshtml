@@ -446,14 +446,14 @@
                 @if (Model.Recipients.Any())
                 {
                     <pems-table scale="small" css="table-enterprise mb-2">
-                        <thead><tr><th>@Localizer["Type"]</th><th>@Localizer["Name"]</th><th>@Localizer["Read"]</th></tr></thead>
-                        <tbody>
+                        <pems-table-head><pems-table-row><pems-table-header>@Localizer["Type"]</pems-table-header><pems-table-header>@Localizer["Name"]</pems-table-header><pems-table-header>@Localizer["Read"]</pems-table-header></pems-table-row></pems-table-head>
+                        <pems-table-body>
                             @foreach (var r in Model.Recipients)
                             {
-                                <tr>
-                                    <td><pems-badge tone="@(r.RecipientType == "To" ? "primary" : "neutral")">@(r.RecipientType == "To" ? "To" : "Cc")</pems-badge></td>
-                                    <td>@r.DisplayName</td>
-                                    <td>
+                                <pems-table-row>
+                                    <pems-table-cell><pems-badge tone="@(r.RecipientType == "To" ? "primary" : "neutral")">@(r.RecipientType == "To" ? "To" : "Cc")</pems-badge></pems-table-cell>
+                                    <pems-table-cell>@r.DisplayName</pems-table-cell>
+                                    <pems-table-cell>
                                         @if (r.IsRead)
                                         { <span class="text-success small"><pems-icon name="bi-check2-all" /> @r.ReadDate?.ToString("yyyy-MM-dd")</span> }
                                         else
@@ -464,10 +464,10 @@
                                                 <pems-button tone="neutral" size="small" outline="true">@Localizer["Mark Read"]</pems-button>
                                             </form>
                                         }
-                                    </td>
-                                </tr>
+                                    </pems-table-cell>
+                                </pems-table-row>
                             }
-                        </tbody>
+                        </pems-table-body>
                     </pems-table>
                 }
                 else
@@ -522,22 +522,22 @@
                 @if (Model.Referrals.Any())
                 {
                     <pems-table scale="small" css="table-enterprise mb-2">
-                        <thead><tr><th>Referred To</th><th>@Localizer["Instructions"]</th><th>@Localizer["Due"]</th><th>@Localizer["Status"]</th><th>@Localizer["Read"]</th><th>By / When</th><th></th></tr></thead>
-                        <tbody>
+                        <pems-table-head><pems-table-row><pems-table-header>Referred To</pems-table-header><pems-table-header>@Localizer["Instructions"]</pems-table-header><pems-table-header>@Localizer["Due"]</pems-table-header><pems-table-header>@Localizer["Status"]</pems-table-header><pems-table-header>@Localizer["Read"]</pems-table-header><pems-table-header>By / When</pems-table-header><pems-table-header></pems-table-header></pems-table-row></pems-table-head>
+                        <pems-table-body>
                             @foreach (var r in Model.Referrals)
                             {
-                                <tr class="@(r.IsOverdue ? "table-danger" : "")">
-                                    <td>@(r.ReferredToEmployeeName ?? r.ReferredToDepartmentName)</td>
-                                    <td class="small">@r.Instructions</td>
-                                    <td>@(r.DueDate?.ToString("yyyy-MM-dd"))</td>
-                                    <td>
+                                <pems-table-row class="@(r.IsOverdue ? "table-danger" : "")">
+                                    <pems-table-cell>@(r.ReferredToEmployeeName ?? r.ReferredToDepartmentName)</pems-table-cell>
+                                    <pems-table-cell class="small">@r.Instructions</pems-table-cell>
+                                    <pems-table-cell>@(r.DueDate?.ToString("yyyy-MM-dd"))</pems-table-cell>
+                                    <pems-table-cell>
                                         @{
                                             var sb = r.Status switch { "Completed" => "success", "InProgress" => "info", _ => "warning" };
                                         }
                                         <pems-badge tone="@sb">@r.Status</pems-badge>
                                         @if (r.IsOverdue) { <pems-badge tone="danger">@Localizer["Overdue"]</pems-badge> }
-                                    </td>
-                                    <td>
+                                    </pems-table-cell>
+                                    <pems-table-cell>
                                         @if (r.IsRead)
                                         { <span class="text-success"><pems-icon name="bi-check2-all" /> @Localizer["Read"]</span> }
                                         else
@@ -548,9 +548,9 @@
                                                 <pems-button tone="neutral" size="small" outline="true">@Localizer["Mark Read"]</pems-button>
                                             </form>
                                         }
-                                    </td>
-                                    <td class="small text-muted">@r.ReferredByName<br />@r.ReferredDate.ToString("yyyy-MM-dd")</td>
-                                    <td>
+                                    </pems-table-cell>
+                                    <pems-table-cell class="small text-muted">@r.ReferredByName<br />@r.ReferredDate.ToString("yyyy-MM-dd")</pems-table-cell>
+                                    <pems-table-cell>
                                         @if (r.Status != "Completed")
                                         {
                                             <form asp-action="CompleteReferral" method="post"><pems-flex gap="1">
@@ -562,10 +562,10 @@
                                         }
                                         else
                                         { @r.ResponseNote }
-                                    </td>
-                                </tr>
+                                    </pems-table-cell>
+                                </pems-table-row>
                             }
-                        </tbody>
+                        </pems-table-body>
                     </pems-table>
                 }
                 else

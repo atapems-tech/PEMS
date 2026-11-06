@@ -43,19 +43,19 @@
             </pems-flex>
             <div class="table-scroll-area pems-s-7bf38d03">
                 <pems-table kind="enterprise">
-                    <thead><tr><th>@Localizer["Order"]</th><th>@Localizer["Material"]</th><th>@Localizer["Qty"]</th><th>@Localizer["Status"]</th><th>@Localizer["Work Center"]</th></tr></thead>
-                    <tbody>
+                    <pems-table-head><pems-table-row><pems-table-header>@Localizer["Order"]</pems-table-header><pems-table-header>@Localizer["Material"]</pems-table-header><pems-table-header>@Localizer["Qty"]</pems-table-header><pems-table-header>@Localizer["Status"]</pems-table-header><pems-table-header>@Localizer["Work Center"]</pems-table-header></pems-table-row></pems-table-head>
+                    <pems-table-body>
                         @foreach (var o in Model.ActiveOrders)
                         {
-                            <tr>
-                                <td><a asp-controller="ProductionOrder" asp-action="Details" asp-route-id="@o.ProductionOrderId">@o.OrderNumber</a></td>
-                                <td>@o.MaterialCode</td>
-                                <td>@o.PlannedQuantity.ToString("N3") @o.UomCode</td>
-                                <td><pems-badge tone="neutral">@o.Status</pems-badge></td>
-                                <td>@o.WorkCenterCode</td>
-                            </tr>
+                            <pems-table-row>
+                                <pems-table-cell><a asp-controller="ProductionOrder" asp-action="Details" asp-route-id="@o.ProductionOrderId">@o.OrderNumber</a></pems-table-cell>
+                                <pems-table-cell>@o.MaterialCode</pems-table-cell>
+                                <pems-table-cell>@o.PlannedQuantity.ToString("N3") @o.UomCode</pems-table-cell>
+                                <pems-table-cell><pems-badge tone="neutral">@o.Status</pems-badge></pems-table-cell>
+                                <pems-table-cell>@o.WorkCenterCode</pems-table-cell>
+                            </pems-table-row>
                         }
-                    </tbody>
+                    </pems-table-body>
                 </pems-table>
                 @if (!Model.ActiveOrders.Any()) { <p class="text-muted text-center py-3">No active production orders.</p> }
             </div>
@@ -66,18 +66,18 @@
             <h6 class="mb-2">Recent Batches</h6>
             <div class="table-scroll-area pems-s-7bf38d03">
                 <pems-table kind="enterprise">
-                    <thead><tr><th>@Localizer["Batch"]</th><th>@Localizer["Material"]</th><th>@Localizer["Qty"]</th><th>Quality Status</th></tr></thead>
-                    <tbody>
+                    <pems-table-head><pems-table-row><pems-table-header>@Localizer["Batch"]</pems-table-header><pems-table-header>@Localizer["Material"]</pems-table-header><pems-table-header>@Localizer["Qty"]</pems-table-header><pems-table-header>Quality Status</pems-table-header></pems-table-row></pems-table-head>
+                    <pems-table-body>
                         @foreach (var b in Model.RecentBatches)
                         {
-                            <tr>
-                                <td><a asp-controller="ProductionRun" asp-action="BatchDetails" asp-route-id="@b.ProductionBatchId">@b.BatchNumber</a></td>
-                                <td>@b.MaterialCode</td>
-                                <td>@b.Quantity.ToString("N3") @b.UomCode</td>
-                                <td><pems-badge tone="info">@b.QualityStatus</pems-badge></td>
-                            </tr>
+                            <pems-table-row>
+                                <pems-table-cell><a asp-controller="ProductionRun" asp-action="BatchDetails" asp-route-id="@b.ProductionBatchId">@b.BatchNumber</a></pems-table-cell>
+                                <pems-table-cell>@b.MaterialCode</pems-table-cell>
+                                <pems-table-cell>@b.Quantity.ToString("N3") @b.UomCode</pems-table-cell>
+                                <pems-table-cell><pems-badge tone="info">@b.QualityStatus</pems-badge></pems-table-cell>
+                            </pems-table-row>
                         }
-                    </tbody>
+                    </pems-table-body>
                 </pems-table>
                 @if (!Model.RecentBatches.Any()) { <p class="text-muted text-center py-3">No batches recorded yet.</p> }
             </div>

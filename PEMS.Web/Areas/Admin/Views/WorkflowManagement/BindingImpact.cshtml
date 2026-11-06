@@ -9,9 +9,9 @@
     <pems-content-card>
         <h6>@Model.Definition</h6>
         <pems-table scale="small" css="w-auto">
-            <tr><th>@Localizer["Current version"]</th><td>@(Model.CurrentVersion.HasValue ? "v" + Model.CurrentVersion : "—")</td></tr>
-            <tr><th>@Localizer["Target version"]</th><td><strong>v@(Model.TargetVersion)</strong></td></tr>
-            <tr><th>@Localizer["Running instances (unchanged)"]</th><td>@Model.RunningInstances @if (Model.RunningByVersion.Count > 0) { <span class="text-muted small">(@string.Join(", ", Model.RunningByVersion.Select(u => u.Running + " × v" + u.VersionNumber)))</span> }</td></tr>
+            <pems-table-row><pems-table-header>@Localizer["Current version"]</pems-table-header><pems-table-cell>@(Model.CurrentVersion.HasValue ? "v" + Model.CurrentVersion : "—")</pems-table-cell></pems-table-row>
+            <pems-table-row><pems-table-header>@Localizer["Target version"]</pems-table-header><pems-table-cell><strong>v@(Model.TargetVersion)</strong></pems-table-cell></pems-table-row>
+            <pems-table-row><pems-table-header>@Localizer["Running instances (unchanged)"]</pems-table-header><pems-table-cell>@Model.RunningInstances @if (Model.RunningByVersion.Count > 0) { <span class="text-muted small">(@string.Join(", ", Model.RunningByVersion.Select(u => u.Running + " × v" + u.VersionNumber)))</span> }</pems-table-cell></pems-table-row>
         </pems-table>
         <pems-alert tone="info" css="small"><pems-icon name="bi-pin-angle" /> @Localizer["Only new instances will use the target version. Existing running instances stay pinned to the version they started with; nothing is rewritten. The change is audited."]</pems-alert>
         <form asp-action="ChangeBinding" method="post"><pems-flex dir="column" gap="2">

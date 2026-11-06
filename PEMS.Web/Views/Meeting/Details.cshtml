@@ -45,14 +45,14 @@
     <h6 class="mb-3">@Localizer["Attendees"]</h6>
     <pems-table-scroll css="table-scroll-area pems-s-8da1c6e6">
     <pems-table kind="enterprise">
-        <thead><tr><th>@Localizer["Name"]</th><th>Required</th><th>Attended</th></tr></thead>
-        <tbody>
+        <pems-table-head><pems-table-row><pems-table-header>@Localizer["Name"]</pems-table-header><pems-table-header>Required</pems-table-header><pems-table-header>Attended</pems-table-header></pems-table-row></pems-table-head>
+        <pems-table-body>
             @foreach (var a in Model.Attendees)
             {
-                <tr>
-                    <td>@a.DisplayName</td>
-                    <td>@(a.IsRequired ? "Yes" : "Optional")</td>
-                    <td>
+                <pems-table-row>
+                    <pems-table-cell>@a.DisplayName</pems-table-cell>
+                    <pems-table-cell>@(a.IsRequired ? "Yes" : "Optional")</pems-table-cell>
+                    <pems-table-cell>
                         <form asp-action="MarkAttended" method="post">
                             <input type="hidden" name="meetingAttendeeId" value="@a.MeetingAttendeeId" />
                             <input type="hidden" name="meetingId" value="@m.MeetingId" />
@@ -61,10 +61,10 @@
                                 <pems-icon css="@(a.Attended ? "bi-check-lg" : "bi-x")" />
                             </pems-button>
                         </form>
-                    </td>
-                </tr>
+                    </pems-table-cell>
+                </pems-table-row>
             }
-        </tbody>
+        </pems-table-body>
     </pems-table>
     </pems-table-scroll>
     @if (!Model.Attendees.Any()) { <p class="text-muted small">No attendees added yet.</p> }

@@ -29,19 +29,19 @@
     {
         <pems-table-scroll css="table-scroll-area pems-s-8da1c6e6">
         <pems-table kind="enterprise">
-            <tr><th>@Localizer["Tag Number"]</th><th>@Localizer["Type"]</th><th>@Localizer["Area"]</th><th>Service</th><th>@Localizer["Description"]</th><th>@Localizer["Status"]</th><th>@Localizer["Action"]</th></tr>
+            <pems-table-row><pems-table-header>@Localizer["Tag Number"]</pems-table-header><pems-table-header>@Localizer["Type"]</pems-table-header><pems-table-header>@Localizer["Area"]</pems-table-header><pems-table-header>Service</pems-table-header><pems-table-header>@Localizer["Description"]</pems-table-header><pems-table-header>@Localizer["Status"]</pems-table-header><pems-table-header>@Localizer["Action"]</pems-table-header></pems-table-row>
             @foreach (var tag in Model.ExtractedTags)
             {
-                <tr>
-                    <td>@tag.TagNumber</td><td>@tag.TagType</td><td>@tag.Area</td>
-                    <td>@tag.Service</td><td>@tag.Description</td>
-                    <td>
+                <pems-table-row>
+                    <pems-table-cell>@tag.TagNumber</pems-table-cell><pems-table-cell>@tag.TagType</pems-table-cell><pems-table-cell>@tag.Area</pems-table-cell>
+                    <pems-table-cell>@tag.Service</pems-table-cell><pems-table-cell>@tag.Description</pems-table-cell>
+                    <pems-table-cell>
                         @{
                             var tagBadge = tag.ReviewStatus switch { "Approved" => "success", "Rejected" => "danger", _ => "neutral" };
                         }
                         <pems-badge tone="@tagBadge">@tag.ReviewStatus</pems-badge>
-                    </td>
-                    <td>
+                    </pems-table-cell>
+                    <pems-table-cell>
                         @if (tag.ReviewStatus == "Draft")
                         {
                             <form asp-action="ApproveExtractedTag" method="post"><pems-flex gap="1">
@@ -57,8 +57,8 @@
                                 <pems-button tone="danger" size="small" outline="true" type="submit">@Localizer["Reject"]</pems-button>
                             </form>
                         }
-                    </td>
-                </tr>
+                    </pems-table-cell>
+                </pems-table-row>
             }
         </pems-table>
         </pems-table-scroll>
@@ -76,18 +76,18 @@
     {
         <pems-table-scroll css="table-scroll-area pems-s-8da1c6e6">
         <pems-table kind="enterprise">
-            <tr><th>Related Tag</th><th>Field</th><th>@Localizer["Value"]</th><th>@Localizer["Unit"]</th><th>@Localizer["Status"]</th><th>@Localizer["Action"]</th></tr>
+            <pems-table-row><pems-table-header>Related Tag</pems-table-header><pems-table-header>Field</pems-table-header><pems-table-header>@Localizer["Value"]</pems-table-header><pems-table-header>@Localizer["Unit"]</pems-table-header><pems-table-header>@Localizer["Status"]</pems-table-header><pems-table-header>@Localizer["Action"]</pems-table-header></pems-table-row>
             @foreach (var spec in Model.ExtractedSpecifications)
             {
-                <tr>
-                    <td>@spec.RelatedTagNumber</td><td>@spec.FieldName</td><td>@spec.FieldValue</td><td>@spec.Unit</td>
-                    <td>
+                <pems-table-row>
+                    <pems-table-cell>@spec.RelatedTagNumber</pems-table-cell><pems-table-cell>@spec.FieldName</pems-table-cell><pems-table-cell>@spec.FieldValue</pems-table-cell><pems-table-cell>@spec.Unit</pems-table-cell>
+                    <pems-table-cell>
                         @{
                             var specBadge = spec.ReviewStatus switch { "Approved" => "success", "Rejected" => "danger", _ => "neutral" };
                         }
                         <pems-badge tone="@specBadge">@spec.ReviewStatus</pems-badge>
-                    </td>
-                    <td>
+                    </pems-table-cell>
+                    <pems-table-cell>
                         @if (spec.ReviewStatus == "Draft")
                         {
                             <form asp-action="ApproveExtractedSpecification" method="post" class="d-inline">
@@ -101,8 +101,8 @@
                                 <pems-button tone="danger" size="small" outline="true" type="submit">@Localizer["Reject"]</pems-button>
                             </form>
                         }
-                    </td>
-                </tr>
+                    </pems-table-cell>
+                </pems-table-row>
             }
         </pems-table>
         </pems-table-scroll>

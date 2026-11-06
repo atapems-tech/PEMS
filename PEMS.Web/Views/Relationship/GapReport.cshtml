@@ -31,29 +31,29 @@
 
 <pems-content-card>
     <pems-table kind="enterprise" css="mb-0">
-        <thead>
-            <tr>
-                <th>@Localizer["Tag"]</th><th>@Localizer["Name"]</th><th>@Localizer["Area"]</th><th>@Localizer["Discipline"]</th>
-                <th class="text-center">@Localizer["مدارک"]</th><th class="text-center">@Localizer["VDR"]</th>
-                <th class="text-center">MR</th><th class="text-center">WorkOrder</th><th></th>
-            </tr>
-        </thead>
-        <tbody>
+        <pems-table-head>
+            <pems-table-row>
+                <pems-table-header>@Localizer["Tag"]</pems-table-header><pems-table-header>@Localizer["Name"]</pems-table-header><pems-table-header>@Localizer["Area"]</pems-table-header><pems-table-header>@Localizer["Discipline"]</pems-table-header>
+                <pems-table-header class="text-center">@Localizer["مدارک"]</pems-table-header><pems-table-header class="text-center">@Localizer["VDR"]</pems-table-header>
+                <pems-table-header class="text-center">MR</pems-table-header><pems-table-header class="text-center">WorkOrder</pems-table-header><pems-table-header></pems-table-header>
+            </pems-table-row>
+        </pems-table-head>
+        <pems-table-body>
             @foreach (var item in Model.Items)
             {
-                <tr>
-                    <td><strong>@item.TagNumber</strong></td>
-                    <td class="small">@item.Name</td>
-                    <td class="small">@item.Area</td>
-                    <td class="small">@item.DisciplineName</td>
-                    <td class="text-center">@(item.HasDocuments ? "✅" : "❌")</td>
-                    <td class="text-center">@(item.HasVdrItems ? "✅" : "❌")</td>
-                    <td class="text-center">@(item.HasMR ? "✅" : "❌")</td>
-                    <td class="text-center">@(item.HasWorkOrders ? "✅" : "❌")</td>
-                    <td><pems-button tone="primary" size="small" outline="true" as="a" asp-action="Equipment" asp-route-id="@item.EquipmentId"><pems-icon name="bi-diagram-3" /></pems-button></td>
-                </tr>
+                <pems-table-row>
+                    <pems-table-cell><strong>@item.TagNumber</strong></pems-table-cell>
+                    <pems-table-cell class="small">@item.Name</pems-table-cell>
+                    <pems-table-cell class="small">@item.Area</pems-table-cell>
+                    <pems-table-cell class="small">@item.DisciplineName</pems-table-cell>
+                    <pems-table-cell class="text-center">@(item.HasDocuments ? "✅" : "❌")</pems-table-cell>
+                    <pems-table-cell class="text-center">@(item.HasVdrItems ? "✅" : "❌")</pems-table-cell>
+                    <pems-table-cell class="text-center">@(item.HasMR ? "✅" : "❌")</pems-table-cell>
+                    <pems-table-cell class="text-center">@(item.HasWorkOrders ? "✅" : "❌")</pems-table-cell>
+                    <pems-table-cell><pems-button tone="primary" size="small" outline="true" as="a" asp-action="Equipment" asp-route-id="@item.EquipmentId"><pems-icon name="bi-diagram-3" /></pems-button></pems-table-cell>
+                </pems-table-row>
             }
-        </tbody>
+        </pems-table-body>
     </pems-table>
     @if (!Model.Items.Any())
     {

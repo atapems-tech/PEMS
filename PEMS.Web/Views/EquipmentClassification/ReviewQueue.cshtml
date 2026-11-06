@@ -36,28 +36,28 @@
 
         <pems-list-grid>
             <pems-list-table empty="@(!Model.Items.Any())" empty-text="@Localizer["موردی در این وضعیت وجود ندارد."]">
-                <thead>
-                    <tr>
-                        <th>@Localizer["Tag"]</th><th>@Localizer["Name"]</th><th>@Localizer["Type"]</th><th>@Localizer["Discipline"]</th>
-                        <th>Suggested Class</th><th>@Localizer["Confidence"]</th><th>@Localizer["Source"]</th><th>@Localizer["Reason"]</th>
-                        @if (status == "PENDING") { <th></th> }
-                    </tr>
-                </thead>
-                <tbody>
+                <pems-table-head>
+                    <pems-table-row>
+                        <pems-table-header>@Localizer["Tag"]</pems-table-header><pems-table-header>@Localizer["Name"]</pems-table-header><pems-table-header>@Localizer["Type"]</pems-table-header><pems-table-header>@Localizer["Discipline"]</pems-table-header>
+                        <pems-table-header>Suggested Class</pems-table-header><pems-table-header>@Localizer["Confidence"]</pems-table-header><pems-table-header>@Localizer["Source"]</pems-table-header><pems-table-header>@Localizer["Reason"]</pems-table-header>
+                        @if (status == "PENDING") { <pems-table-header></pems-table-header> }
+                    </pems-table-row>
+                </pems-table-head>
+                <pems-table-body>
                     @foreach (var item in Model.Items)
                     {
-                        <tr class="lp-row">
-                            <td class="lp-no"><code>@item.TagNumber</code></td>
-                            <td class="small">@item.EquipmentName</td>
-                            <td class="small text-muted">@item.EquipmentType</td>
-                            <td class="small text-muted">@(item.DisciplineName ?? "-")</td>
-                            <td class="small"><pems-badge tone="light">@item.SuggestedEquipmentClassName</pems-badge></td>
-                            <td><pems-badge tone="warning">@item.Confidence</pems-badge></td>
-                            <td class="small text-muted">@item.Source</td>
-                            <td class="small text-muted">@item.Reason</td>
+                        <pems-table-row class="lp-row">
+                            <pems-table-cell class="lp-no"><code>@item.TagNumber</code></pems-table-cell>
+                            <pems-table-cell class="small">@item.EquipmentName</pems-table-cell>
+                            <pems-table-cell class="small text-muted">@item.EquipmentType</pems-table-cell>
+                            <pems-table-cell class="small text-muted">@(item.DisciplineName ?? "-")</pems-table-cell>
+                            <pems-table-cell class="small"><pems-badge tone="light">@item.SuggestedEquipmentClassName</pems-badge></pems-table-cell>
+                            <pems-table-cell><pems-badge tone="warning">@item.Confidence</pems-badge></pems-table-cell>
+                            <pems-table-cell class="small text-muted">@item.Source</pems-table-cell>
+                            <pems-table-cell class="small text-muted">@item.Reason</pems-table-cell>
                             @if (status == "PENDING")
                             {
-                                <td class="text-end text-nowrap">
+                                <pems-table-cell class="text-end text-nowrap">
                                     <form asp-action="Accept" method="post" class="d-inline">
                                         <input type="hidden" name="id" value="@item.SuggestionId" />
                                         <input type="hidden" name="status" value="@status" />
@@ -70,11 +70,11 @@
                                         <input type="hidden" name="page" value="@Model.Page" />
                                         <pems-button tone="danger" size="small" outline="true" type="submit" title="رد"><pems-icon name="bi-x-lg" /></pems-button>
                                     </form>
-                                </td>
+                                </pems-table-cell>
                             }
-                        </tr>
+                        </pems-table-row>
                     }
-                </tbody>
+                </pems-table-body>
             </pems-list-table>
             <pems-list-footer>
                 @await Html.PartialAsync("_Pagination", new PEMS.Web.ViewModels.PaginationViewModel

@@ -63,43 +63,43 @@
         <pems-list-grid>
             <pems-list-table grid-key="MDB" empty="@(!Model.Items.Any())" empty-text="@Localizer["Mdb_Empty"]"
                              filtered="@(filterCount > 0)" clear-href="@Url.Action("Index")">
-                <thead>
-                    <tr>
-                        <th class="pems-w-140" data-col-key="equipment" data-resizable="true" data-min-width="100" data-max-width="220">@Localizer["Equipment"]</th>
-                        <th class="pems-w-140" data-col-key="vendor" data-resizable="true" data-min-width="100" data-max-width="220">@Localizer["Vendor"]</th>
-                        <th class="pems-w-110" data-col-key="po" data-resizable="true" data-min-width="80" data-max-width="160">@Localizer["Mdb_Po"]</th>
-                        <th data-col-key="project" data-resizable="true" data-min-width="100" data-max-width="220" class="vs-hide-md pems-w-140">@Localizer["Project"]</th>
-                        <th data-col-key="plannedIssue" data-resizable="true" data-min-width="100" data-max-width="180" class="vs-hide-md pems-w-140">@Localizer["Mdb_PlannedIssue"]</th>
-                        <th class="pems-w-170" data-col-key="indexDue" data-resizable="true" data-min-width="100" data-max-width="240">@Localizer["Mdb_IndexDue"]</th>
-                        <th class="pems-w-110" data-col-key="status" data-resizable="true" data-min-width="90" data-max-width="180">@Localizer["Ed_Status"]</th>
-                        <th class="pems-w-100" data-col-key="hardCopy" data-resizable="true" data-min-width="80" data-max-width="140">@Localizer["Mdb_HardCopy"]</th>
-                        <th class="pems-w-100" data-col-key="softCopy" data-resizable="true" data-min-width="80" data-max-width="140">@Localizer["Mdb_SoftCopy"]</th>
-                    </tr>
-                </thead>
-                <tbody>
+                <pems-table-head>
+                    <pems-table-row>
+                        <pems-table-header class="pems-w-140" data-col-key="equipment" data-resizable="true" data-min-width="100" data-max-width="220">@Localizer["Equipment"]</pems-table-header>
+                        <pems-table-header class="pems-w-140" data-col-key="vendor" data-resizable="true" data-min-width="100" data-max-width="220">@Localizer["Vendor"]</pems-table-header>
+                        <pems-table-header class="pems-w-110" data-col-key="po" data-resizable="true" data-min-width="80" data-max-width="160">@Localizer["Mdb_Po"]</pems-table-header>
+                        <pems-table-header data-col-key="project" data-resizable="true" data-min-width="100" data-max-width="220" class="vs-hide-md pems-w-140">@Localizer["Project"]</pems-table-header>
+                        <pems-table-header data-col-key="plannedIssue" data-resizable="true" data-min-width="100" data-max-width="180" class="vs-hide-md pems-w-140">@Localizer["Mdb_PlannedIssue"]</pems-table-header>
+                        <pems-table-header class="pems-w-170" data-col-key="indexDue" data-resizable="true" data-min-width="100" data-max-width="240">@Localizer["Mdb_IndexDue"]</pems-table-header>
+                        <pems-table-header class="pems-w-110" data-col-key="status" data-resizable="true" data-min-width="90" data-max-width="180">@Localizer["Ed_Status"]</pems-table-header>
+                        <pems-table-header class="pems-w-100" data-col-key="hardCopy" data-resizable="true" data-min-width="80" data-max-width="140">@Localizer["Mdb_HardCopy"]</pems-table-header>
+                        <pems-table-header class="pems-w-100" data-col-key="softCopy" data-resizable="true" data-min-width="80" data-max-width="140">@Localizer["Mdb_SoftCopy"]</pems-table-header>
+                    </pems-table-row>
+                </pems-table-head>
+                <pems-table-body>
                     @foreach (var m in Model.Items)
                     {
-                        <tr class="lp-row">
-                            <td class="lp-no"><a asp-action="Details" asp-route-id="@m.MDBId" class="lp-subject" title="@m.EquipmentTagNumber">@m.EquipmentTagNumber</a></td>
-                            <td class="small">@m.VendorName</td>
-                            <td class="small"><span class="vs-num">@m.PoNumber</span></td>
-                            <td class="vs-hide-md small">@m.ProjectName</td>
-                            <td class="vs-hide-md small">@(m.PlannedFinalIssueDate?.ToString("yyyy-MM-dd"))</td>
-                            <td class="small">
+                        <pems-table-row class="lp-row">
+                            <pems-table-cell class="lp-no"><a asp-action="Details" asp-route-id="@m.MDBId" class="lp-subject" title="@m.EquipmentTagNumber">@m.EquipmentTagNumber</a></pems-table-cell>
+                            <pems-table-cell class="small">@m.VendorName</pems-table-cell>
+                            <pems-table-cell class="small"><span class="vs-num">@m.PoNumber</span></pems-table-cell>
+                            <pems-table-cell class="vs-hide-md small">@m.ProjectName</pems-table-cell>
+                            <pems-table-cell class="vs-hide-md small">@(m.PlannedFinalIssueDate?.ToString("yyyy-MM-dd"))</pems-table-cell>
+                            <pems-table-cell class="small">
                                 @(m.IndexOfContentsDueDate?.ToString("yyyy-MM-dd"))
                                 @if (m.IsIndexOverdue)
                                 { <span class="vs-pill vs-pill--icon vs-pill--danger ms-1"><pems-icon name="bi-clock-history" aria-hidden="true" /> @Localizer["Overdue"]</span> }
-                            </td>
-                            <td><span class="vs-pill vs-pill--neutral">@m.Status</span></td>
-                            <td class="small">
+                            </pems-table-cell>
+                            <pems-table-cell><span class="vs-pill vs-pill--neutral">@m.Status</span></pems-table-cell>
+                            <pems-table-cell class="small">
                                 @if (m.HardCopyShippedDate.HasValue) { <span class="vs-pill vs-pill--success">@Localizer["Mdb_Shipped"]</span> } else { <span class="text-muted">&mdash;</span> }
-                            </td>
-                            <td class="small">
+                            </pems-table-cell>
+                            <pems-table-cell class="small">
                                 @if (m.SoftCopyDeliveredDate.HasValue) { <span class="vs-pill vs-pill--success">@Localizer["Mdb_Delivered"]</span> } else { <span class="text-muted">&mdash;</span> }
-                            </td>
-                        </tr>
+                            </pems-table-cell>
+                        </pems-table-row>
                     }
-                </tbody>
+                </pems-table-body>
             </pems-list-table>
 
             <pems-list-footer>

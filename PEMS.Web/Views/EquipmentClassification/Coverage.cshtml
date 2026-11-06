@@ -40,42 +40,42 @@
 <pems-content-card>
     <pems-table-scroll>
         <pems-table kind="enterprise" scale="small">
-            <thead>
-                <tr>
-                    <th>@Localizer["Equipment Class"]</th>
-                    <th>@Localizer["Parent"]</th>
-                    <th class="text-end">@Localizer["Equipment"]</th>
-                    <th class="text-end">Activities<br /><span class="small text-muted">@Localizer["Direct / Inherited"]</span></th>
-                    <th class="text-end">@Localizer["Strategy Types"]</th>
-                    <th class="text-end">Standards<br /><span class="small text-muted">@Localizer["Direct / Inherited"]</span></th>
-                    <th class="text-end">PM Templates<br /><span class="small text-muted">@Localizer["Direct / Inherited"]</span></th>
-                    <th class="text-end">Job Plans<br /><span class="small text-muted">@Localizer["Direct / Inherited"]</span></th>
-                    <th class="text-end">Failure Modes<br /><span class="small text-muted">@Localizer["Direct / Inherited"]</span></th>
-                    <th>Gap</th>
-                </tr>
-            </thead>
-            <tbody>
+            <pems-table-head>
+                <pems-table-row>
+                    <pems-table-header>@Localizer["Equipment Class"]</pems-table-header>
+                    <pems-table-header>@Localizer["Parent"]</pems-table-header>
+                    <pems-table-header class="text-end">@Localizer["Equipment"]</pems-table-header>
+                    <pems-table-header class="text-end">Activities<br /><span class="small text-muted">@Localizer["Direct / Inherited"]</span></pems-table-header>
+                    <pems-table-header class="text-end">@Localizer["Strategy Types"]</pems-table-header>
+                    <pems-table-header class="text-end">Standards<br /><span class="small text-muted">@Localizer["Direct / Inherited"]</span></pems-table-header>
+                    <pems-table-header class="text-end">PM Templates<br /><span class="small text-muted">@Localizer["Direct / Inherited"]</span></pems-table-header>
+                    <pems-table-header class="text-end">Job Plans<br /><span class="small text-muted">@Localizer["Direct / Inherited"]</span></pems-table-header>
+                    <pems-table-header class="text-end">Failure Modes<br /><span class="small text-muted">@Localizer["Direct / Inherited"]</span></pems-table-header>
+                    <pems-table-header>Gap</pems-table-header>
+                </pems-table-row>
+            </pems-table-head>
+            <pems-table-body>
                 @foreach (var c in Model.Classes)
                 {
-                    <tr class="@(c.EquipmentCount > 0 && c.GapReasons.Any(g => !g.StartsWith("Intentional")) ? "table-warning" : "")">
-                        <td><strong>@c.Name</strong> <code class="small">@c.Code</code></td>
-                        <td class="small text-muted">@(c.ParentClassName ?? "-")</td>
-                        <td class="text-end">@c.EquipmentCount.ToString("N0")</td>
-                        <td class="text-end">@c.DirectActivityCount / @c.InheritedActivityCount</td>
-                        <td class="text-end">@c.StrategyTypeCount</td>
-                        <td class="text-end">@c.DirectStandardReferenceCount / @c.InheritedStandardReferenceCount</td>
-                        <td class="text-end">@c.DirectPMTemplateCount / @c.InheritedPMTemplateCount</td>
-                        <td class="text-end">@c.DirectJobPlanCount / @c.InheritedJobPlanCount</td>
-                        <td class="text-end">@c.DirectFailureModeCount / @c.InheritedFailureModeCount</td>
-                        <td class="small">
+                    <pems-table-row class="@(c.EquipmentCount > 0 && c.GapReasons.Any(g => !g.StartsWith("Intentional")) ? "table-warning" : "")">
+                        <pems-table-cell><strong>@c.Name</strong> <code class="small">@c.Code</code></pems-table-cell>
+                        <pems-table-cell class="small text-muted">@(c.ParentClassName ?? "-")</pems-table-cell>
+                        <pems-table-cell class="text-end">@c.EquipmentCount.ToString("N0")</pems-table-cell>
+                        <pems-table-cell class="text-end">@c.DirectActivityCount / @c.InheritedActivityCount</pems-table-cell>
+                        <pems-table-cell class="text-end">@c.StrategyTypeCount</pems-table-cell>
+                        <pems-table-cell class="text-end">@c.DirectStandardReferenceCount / @c.InheritedStandardReferenceCount</pems-table-cell>
+                        <pems-table-cell class="text-end">@c.DirectPMTemplateCount / @c.InheritedPMTemplateCount</pems-table-cell>
+                        <pems-table-cell class="text-end">@c.DirectJobPlanCount / @c.InheritedJobPlanCount</pems-table-cell>
+                        <pems-table-cell class="text-end">@c.DirectFailureModeCount / @c.InheritedFailureModeCount</pems-table-cell>
+                        <pems-table-cell class="small">
                             @foreach (var g in c.GapReasons)
                             {
                                 <div class="text-muted">@g</div>
                             }
-                        </td>
-                    </tr>
+                        </pems-table-cell>
+                    </pems-table-row>
                 }
-            </tbody>
+            </pems-table-body>
         </pems-table>
     </pems-table-scroll>
 </pems-content-card>

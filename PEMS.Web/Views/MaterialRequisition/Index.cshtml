@@ -35,37 +35,37 @@
 
         <pems-list-grid>
             <pems-list-table grid-key="MaterialRequisition" empty="@(!Model.Items.Any())" empty-text="@Localizer["MrL_Empty"]">
-                <thead>
-                    <tr>
-                        <th class="pems-w-140" data-col-key="mrNumber" data-resizable="true" data-min-width="100" data-max-width="200">@Localizer["MrL_No"]</th>
-                        <th data-col-key="project" data-resizable="true" data-min-width="120" data-max-width="240" class="vs-hide-md">@Localizer["Ed_Project"]</th>
-                        <th data-col-key="discipline" data-resizable="true" data-min-width="100" data-max-width="200" class="vs-hide-md">@Localizer["Ed_Discipline"]</th>
-                        <th class="pems-w-140" data-col-key="equipmentTag" data-resizable="true" data-min-width="100" data-max-width="200">@Localizer["MrL_Tag"]</th>
-                        <th class="pems-w-120" data-col-key="requiredDate" data-resizable="true" data-min-width="100" data-max-width="160">@Localizer["MrL_Required"]</th>
-                        <th data-col-key="responsible" data-resizable="true" data-min-width="120" data-max-width="240" class="vs-hide-md">@Localizer["MrL_Responsible"]</th>
-                        <th class="pems-w-120" data-col-key="status" data-resizable="true" data-min-width="90" data-max-width="160">@Localizer["Ed_Status"]</th>
-                        <th data-col-key="mrqs" data-resizable="true" data-min-width="60" data-max-width="100" class="text-end pems-w-80">@Localizer["MrL_Mrqs"]</th>
-                        <th class="pems-w-60" data-col-key="actions" data-resizable="false"><span class="visually-hidden">@Localizer["Ed_Actions"]</span></th>
-                    </tr>
-                </thead>
-                <tbody>
+                <pems-table-head>
+                    <pems-table-row>
+                        <pems-table-header class="pems-w-140" data-col-key="mrNumber" data-resizable="true" data-min-width="100" data-max-width="200">@Localizer["MrL_No"]</pems-table-header>
+                        <pems-table-header data-col-key="project" data-resizable="true" data-min-width="120" data-max-width="240" class="vs-hide-md">@Localizer["Ed_Project"]</pems-table-header>
+                        <pems-table-header data-col-key="discipline" data-resizable="true" data-min-width="100" data-max-width="200" class="vs-hide-md">@Localizer["Ed_Discipline"]</pems-table-header>
+                        <pems-table-header class="pems-w-140" data-col-key="equipmentTag" data-resizable="true" data-min-width="100" data-max-width="200">@Localizer["MrL_Tag"]</pems-table-header>
+                        <pems-table-header class="pems-w-120" data-col-key="requiredDate" data-resizable="true" data-min-width="100" data-max-width="160">@Localizer["MrL_Required"]</pems-table-header>
+                        <pems-table-header data-col-key="responsible" data-resizable="true" data-min-width="120" data-max-width="240" class="vs-hide-md">@Localizer["MrL_Responsible"]</pems-table-header>
+                        <pems-table-header class="pems-w-120" data-col-key="status" data-resizable="true" data-min-width="90" data-max-width="160">@Localizer["Ed_Status"]</pems-table-header>
+                        <pems-table-header data-col-key="mrqs" data-resizable="true" data-min-width="60" data-max-width="100" class="text-end pems-w-80">@Localizer["MrL_Mrqs"]</pems-table-header>
+                        <pems-table-header class="pems-w-60" data-col-key="actions" data-resizable="false"><span class="visually-hidden">@Localizer["Ed_Actions"]</span></pems-table-header>
+                    </pems-table-row>
+                </pems-table-head>
+                <pems-table-body>
                     @foreach (var m in Model.Items)
                     {
-                        <tr class="lp-row">
-                            <td class="lp-no"><a asp-action="Details" asp-route-id="@m.MRId" class="lp-subject" title="@m.MRNumber">@m.MRNumber</a></td>
-                            <td class="small vs-hide-md">@m.ProjectName</td>
-                            <td class="small vs-hide-md">@m.DisciplineName</td>
-                            <td class="small"><span class="vs-num">@m.EquipmentTagNumber</span></td>
-                            <td class="small"><span class="vs-num">@(m.RequiredDate?.ToString("yyyy-MM-dd") ?? "-")</span></td>
-                            <td class="small vs-hide-md">@m.ResponsibleEngineerName</td>
-                            <td><span class="vs-pill @StatusTone(m.Status)">@StatusText(m.Status)</span></td>
-                            <td class="text-end"><span class="vs-num">@m.QuotationsCount</span></td>
-                            <td class="text-end">
+                        <pems-table-row class="lp-row">
+                            <pems-table-cell class="lp-no"><a asp-action="Details" asp-route-id="@m.MRId" class="lp-subject" title="@m.MRNumber">@m.MRNumber</a></pems-table-cell>
+                            <pems-table-cell class="small vs-hide-md">@m.ProjectName</pems-table-cell>
+                            <pems-table-cell class="small vs-hide-md">@m.DisciplineName</pems-table-cell>
+                            <pems-table-cell class="small"><span class="vs-num">@m.EquipmentTagNumber</span></pems-table-cell>
+                            <pems-table-cell class="small"><span class="vs-num">@(m.RequiredDate?.ToString("yyyy-MM-dd") ?? "-")</span></pems-table-cell>
+                            <pems-table-cell class="small vs-hide-md">@m.ResponsibleEngineerName</pems-table-cell>
+                            <pems-table-cell><span class="vs-pill @StatusTone(m.Status)">@StatusText(m.Status)</span></pems-table-cell>
+                            <pems-table-cell class="text-end"><span class="vs-num">@m.QuotationsCount</span></pems-table-cell>
+                            <pems-table-cell class="text-end">
                                 <a asp-action="Details" asp-route-id="@m.MRId" class="lp-act lp-act--always" title="@Localizer["Ed_View"]" aria-label="@Localizer["Ed_View"]"><pems-icon name="bi-eye" aria-hidden="true" /></a>
-                            </td>
-                        </tr>
+                            </pems-table-cell>
+                        </pems-table-row>
                     }
-                </tbody>
+                </pems-table-body>
             </pems-list-table>
 
             <pems-list-footer>

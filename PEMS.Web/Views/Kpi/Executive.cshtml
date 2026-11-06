@@ -122,33 +122,33 @@
             <p class="small text-muted mt-2">@Localizer["Kpi_Exec_EditTargetsHint"]</p>
             <pems-table-scroll>
                 <pems-table scale="small" css="table-enterprise">
-                    <thead>
-                        <tr>
-                            <th>@Localizer["Kpi_Exec_Kpi"]</th><th>@Localizer["Kpi_Exec_Direction"]</th>
-                            <th>@Localizer["Kpi_Exec_Target"]</th><th>@Localizer["Kpi_Exec_Warn"]</th><th>@Localizer["Kpi_Exec_Source"]</th><th></th>
-                        </tr>
-                    </thead>
-                    <tbody>
+                    <pems-table-head>
+                        <pems-table-row>
+                            <pems-table-header>@Localizer["Kpi_Exec_Kpi"]</pems-table-header><pems-table-header>@Localizer["Kpi_Exec_Direction"]</pems-table-header>
+                            <pems-table-header>@Localizer["Kpi_Exec_Target"]</pems-table-header><pems-table-header>@Localizer["Kpi_Exec_Warn"]</pems-table-header><pems-table-header>@Localizer["Kpi_Exec_Source"]</pems-table-header><pems-table-header></pems-table-header>
+                        </pems-table-row>
+                    </pems-table-head>
+                    <pems-table-body>
                     @foreach (var tg in Model.Targets)
                     {
                         var formId = "kpiTargetForm_" + tg.Key;
-                        <tr data-kpi-target="@tg.Key">
-                            <td>@Localizer["Kpi_Name_" + tg.Key] <span class="text-muted small">(@Localizer["Kpi_Section_" + tg.Section])</span></td>
-                            <td>@(tg.Direction == KpiDirections.LowerIsBetter ? "≤" : "≥") <span class="text-muted small">@(tg.Unit == "currency" ? "" : tg.Unit)</span></td>
-                            <td><pems-input scale="small" css="pems-kpi-input" form="@formId" type="number" step="any" min="0" name="target" value="@(tg.Target?.ToString("0.####", inv))" aria-label="@Localizer["Kpi_Exec_Target"]: @Localizer["Kpi_Name_" + tg.Key]" /></td>
-                            <td><pems-input scale="small" css="pems-kpi-input" form="@formId" type="number" step="any" min="0" name="warn" value="@(tg.Warn?.ToString("0.####", inv))" aria-label="@Localizer["Kpi_Exec_Warn"]: @Localizer["Kpi_Name_" + tg.Key]" /></td>
-                            <td><span class="small text-muted">@(tg.IsCustom ? Localizer["Kpi_Exec_Custom"] : Localizer["Kpi_Exec_Default"])</span></td>
-                            <td>
+                        <pems-table-row data-kpi-target="@tg.Key">
+                            <pems-table-cell>@Localizer["Kpi_Name_" + tg.Key] <span class="text-muted small">(@Localizer["Kpi_Section_" + tg.Section])</span></pems-table-cell>
+                            <pems-table-cell>@(tg.Direction == KpiDirections.LowerIsBetter ? "≤" : "≥") <span class="text-muted small">@(tg.Unit == "currency" ? "" : tg.Unit)</span></pems-table-cell>
+                            <pems-table-cell><pems-input scale="small" css="pems-kpi-input" form="@formId" type="number" step="any" min="0" name="target" value="@(tg.Target?.ToString("0.####", inv))" aria-label="@Localizer["Kpi_Exec_Target"]: @Localizer["Kpi_Name_" + tg.Key]" /></pems-table-cell>
+                            <pems-table-cell><pems-input scale="small" css="pems-kpi-input" form="@formId" type="number" step="any" min="0" name="warn" value="@(tg.Warn?.ToString("0.####", inv))" aria-label="@Localizer["Kpi_Exec_Warn"]: @Localizer["Kpi_Name_" + tg.Key]" /></pems-table-cell>
+                            <pems-table-cell><span class="small text-muted">@(tg.IsCustom ? Localizer["Kpi_Exec_Custom"] : Localizer["Kpi_Exec_Default"])</span></pems-table-cell>
+                            <pems-table-cell>
                                 <form id="@formId" method="post" asp-action="SaveTarget" class="d-inline">
                                     <input type="hidden" name="key" value="@tg.Key" />
                                     <input type="hidden" name="fromDate" value="@Model.From.ToString("yyyy-MM-dd")" />
                                     <input type="hidden" name="toDate" value="@Model.To.ToString("yyyy-MM-dd")" />
                                     <pems-button tone="primary" size="small" outline="true" type="submit">@Localizer["Save"]</pems-button>
                                 </form>
-                            </td>
-                        </tr>
+                            </pems-table-cell>
+                        </pems-table-row>
                     }
-                    </tbody>
+                    </pems-table-body>
                 </pems-table>
             </pems-table-scroll>
         </details>

@@ -21,21 +21,21 @@
     {
         <pems-table-scroll>
             <pems-table scale="small" css="table-enterprise vs-dense mb-0">
-                <thead><tr><th>@Localizer["Tm_Field_Key"]</th><th>@Localizer["Tm_Field_Name"]</th><th>@Localizer["Tm_Field_Department"]</th><th>@Localizer["Tm_Members"]</th><th>@Localizer["Tm_OpenItems"]</th><th>@Localizer["Tm_Field_Active"]</th><th></th></tr></thead>
-                <tbody>
+                <pems-table-head><pems-table-row><pems-table-header>@Localizer["Tm_Field_Key"]</pems-table-header><pems-table-header>@Localizer["Tm_Field_Name"]</pems-table-header><pems-table-header>@Localizer["Tm_Field_Department"]</pems-table-header><pems-table-header>@Localizer["Tm_Members"]</pems-table-header><pems-table-header>@Localizer["Tm_OpenItems"]</pems-table-header><pems-table-header>@Localizer["Tm_Field_Active"]</pems-table-header><pems-table-header></pems-table-header></pems-table-row></pems-table-head>
+                <pems-table-body>
                     @foreach (var s in Model)
                     {
-                        <tr class="@(s.IsActive ? "" : "text-muted")">
-                            <td class="tm-key">@s.Key</td>
-                            <td>@TaskManagerUi.Name(s.Name, s.NameFa)</td>
-                            <td class="small">@(s.OwnerDepartmentName ?? "—")</td>
-                            <td>@s.MemberCount</td>
-                            <td>@s.OpenItemCount</td>
-                            <td>@(s.IsActive ? Localizer["Tm_Yes"] : Localizer["Tm_No"])</td>
-                            <td><pems-button tone="neutral" size="small" outline="true" as="a" asp-action="AdminSpace" asp-route-id="@s.Id">@Localizer["Tm_Configure"]</pems-button></td>
-                        </tr>
+                        <pems-table-row class="@(s.IsActive ? "" : "text-muted")">
+                            <pems-table-cell class="tm-key">@s.Key</pems-table-cell>
+                            <pems-table-cell>@TaskManagerUi.Name(s.Name, s.NameFa)</pems-table-cell>
+                            <pems-table-cell class="small">@(s.OwnerDepartmentName ?? "—")</pems-table-cell>
+                            <pems-table-cell>@s.MemberCount</pems-table-cell>
+                            <pems-table-cell>@s.OpenItemCount</pems-table-cell>
+                            <pems-table-cell>@(s.IsActive ? Localizer["Tm_Yes"] : Localizer["Tm_No"])</pems-table-cell>
+                            <pems-table-cell><pems-button tone="neutral" size="small" outline="true" as="a" asp-action="AdminSpace" asp-route-id="@s.Id">@Localizer["Tm_Configure"]</pems-button></pems-table-cell>
+                        </pems-table-row>
                     }
-                </tbody>
+                </pems-table-body>
             </pems-table>
         </pems-table-scroll>
     }

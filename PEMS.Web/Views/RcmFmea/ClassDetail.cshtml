@@ -80,17 +80,17 @@
                 <div class="small text-muted">@fr.Code — @fr.Title</div>
             }
             <pems-related-table>
-                <thead><tr><th>@Localizer["Code"]</th><th>@Localizer["Title"]</th><th>@Localizer["Required Function"]</th></tr></thead>
-                <tbody>
+                <pems-table-head><pems-table-row><pems-table-header>@Localizer["Code"]</pems-table-header><pems-table-header>@Localizer["Title"]</pems-table-header><pems-table-header>@Localizer["Required Function"]</pems-table-header></pems-table-row></pems-table-head>
+                <pems-table-body>
                     @foreach (var ff in functionalFailures)
                     {
-                        <tr>
-                            <td><code>@ff.Code</code></td>
-                            <td>@ff.Title <span class="text-muted small">(@ff.FunctionalRequirementId)</span></td>
-                            <td class="small text-muted">@ff.FailureDefinition</td>
-                        </tr>
+                        <pems-table-row>
+                            <pems-table-cell><code>@ff.Code</code></pems-table-cell>
+                            <pems-table-cell>@ff.Title <span class="text-muted small">(@ff.FunctionalRequirementId)</span></pems-table-cell>
+                            <pems-table-cell class="small text-muted">@ff.FailureDefinition</pems-table-cell>
+                        </pems-table-row>
                     }
-                </tbody>
+                </pems-table-body>
             </pems-related-table>
             @if (canEdit)
             {
@@ -145,21 +145,21 @@
                 <div class="small text-muted">Prepared by @fmea.PreparedBy @(fmea.ApprovedBy != null ? $"· Approved by {fmea.ApprovedBy} on {fmea.ApprovedAt:yyyy-MM-dd}" : "")</div>
 
                 <pems-related-table>
-                    <thead><tr><th>@Localizer["Failure Mode"]</th><th>@Localizer["Cause"]</th><th>@Localizer["Effect"]</th><th>@Localizer["Consequence"]</th><th>S/O/D</th><th>RPN</th><th>@Localizer["Strategy"]</th></tr></thead>
-                    <tbody>
+                    <pems-table-head><pems-table-row><pems-table-header>@Localizer["Failure Mode"]</pems-table-header><pems-table-header>@Localizer["Cause"]</pems-table-header><pems-table-header>@Localizer["Effect"]</pems-table-header><pems-table-header>@Localizer["Consequence"]</pems-table-header><pems-table-header>S/O/D</pems-table-header><pems-table-header>RPN</pems-table-header><pems-table-header>@Localizer["Strategy"]</pems-table-header></pems-table-row></pems-table-head>
+                    <pems-table-body>
                         @foreach (var item in fmea.Items)
                         {
-                            <tr>
-                                <td>@item.FailureModeName</td>
-                                <td class="small text-muted">@(item.FailureCauseName ?? "-")</td>
-                                <td class="small text-muted">@(item.FailureEffectName ?? "-")</td>
-                                <td class="small text-muted">@(item.FailureConsequenceName ?? "-")</td>
-                                <td class="small">@(item.Severity?.ToString() ?? "-")/@(item.Occurrence?.ToString() ?? "-")/@(item.Detectability?.ToString() ?? "-")</td>
-                                <td>@(item.RiskPriorityNumber?.ToString() ?? "-")</td>
-                                <td class="small text-muted">@(item.MaintenanceStrategyTypeName ?? "-")</td>
-                            </tr>
+                            <pems-table-row>
+                                <pems-table-cell>@item.FailureModeName</pems-table-cell>
+                                <pems-table-cell class="small text-muted">@(item.FailureCauseName ?? "-")</pems-table-cell>
+                                <pems-table-cell class="small text-muted">@(item.FailureEffectName ?? "-")</pems-table-cell>
+                                <pems-table-cell class="small text-muted">@(item.FailureConsequenceName ?? "-")</pems-table-cell>
+                                <pems-table-cell class="small">@(item.Severity?.ToString() ?? "-")/@(item.Occurrence?.ToString() ?? "-")/@(item.Detectability?.ToString() ?? "-")</pems-table-cell>
+                                <pems-table-cell>@(item.RiskPriorityNumber?.ToString() ?? "-")</pems-table-cell>
+                                <pems-table-cell class="small text-muted">@(item.MaintenanceStrategyTypeName ?? "-")</pems-table-cell>
+                            </pems-table-row>
                         }
-                    </tbody>
+                    </pems-table-body>
                 </pems-related-table>
 
                 @if (fmea.Status == "DRAFT" && canEdit)
@@ -252,18 +252,18 @@
                 </pems-flex>
 
                 <pems-related-table>
-                    <thead><tr><th>@Localizer["Failure Mode"]</th><th>@Localizer["Decision"]</th><th>@Localizer["Strategy Type"]</th><th>PM Template</th><th>@Localizer["Consequence"]</th><th>@Localizer["Status"]</th><th></th></tr></thead>
-                    <tbody>
+                    <pems-table-head><pems-table-row><pems-table-header>@Localizer["Failure Mode"]</pems-table-header><pems-table-header>@Localizer["Decision"]</pems-table-header><pems-table-header>@Localizer["Strategy Type"]</pems-table-header><pems-table-header>PM Template</pems-table-header><pems-table-header>@Localizer["Consequence"]</pems-table-header><pems-table-header>@Localizer["Status"]</pems-table-header><pems-table-header></pems-table-header></pems-table-row></pems-table-head>
+                    <pems-table-body>
                         @foreach (var d in rcm.Decisions)
                         {
-                            <tr>
-                                <td>@d.FailureModeName</td>
-                                <td>@d.DecisionType</td>
-                                <td class="small text-muted">@(d.MaintenanceStrategyTypeName ?? "-")</td>
-                                <td class="small text-muted">@(d.RecommendedPMTemplateName ?? "-")</td>
-                                <td class="small text-muted">@d.ConsequenceCategory</td>
-                                <td><pems-badge tone="@StatusBadge(d.Status)">@d.Status</pems-badge></td>
-                                <td>
+                            <pems-table-row>
+                                <pems-table-cell>@d.FailureModeName</pems-table-cell>
+                                <pems-table-cell>@d.DecisionType</pems-table-cell>
+                                <pems-table-cell class="small text-muted">@(d.MaintenanceStrategyTypeName ?? "-")</pems-table-cell>
+                                <pems-table-cell class="small text-muted">@(d.RecommendedPMTemplateName ?? "-")</pems-table-cell>
+                                <pems-table-cell class="small text-muted">@d.ConsequenceCategory</pems-table-cell>
+                                <pems-table-cell><pems-badge tone="@StatusBadge(d.Status)">@d.Status</pems-badge></pems-table-cell>
+                                <pems-table-cell>
                                     @if (d.Status == "DRAFT" && canApprove)
                                     {
                                         <form asp-action="ApproveRcmDecision" method="post" class="d-inline">
@@ -279,10 +279,10 @@
                                             <pems-icon name="bi-gear-fill" /> @Localizer["Apply"]
                                         </pems-button>
                                     }
-                                </td>
-                            </tr>
+                                </pems-table-cell>
+                            </pems-table-row>
                         }
-                    </tbody>
+                    </pems-table-body>
                 </pems-related-table>
 
                 @* ==================== Apply RCM Decision → Operational Bridge ====================

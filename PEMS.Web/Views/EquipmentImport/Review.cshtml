@@ -41,17 +41,17 @@
 <pems-content-card>
     <pems-table-scroll css="table-scroll-area pems-s-8da1c6e6">
         <pems-table kind="enterprise">
-            <thead>
-                <tr>
-                    <th>@Localizer["Include"]</th><th>#</th><th>Tag No</th><th>@Localizer["Name"]</th><th>@Localizer["Type"]</th>
-                    <th>@Localizer["Discipline"]</th><th>@Localizer["Area"]</th><th>P&amp;ID</th><th>MR No</th><th>PO No</th><th>Existing?</th>
-                </tr>
-            </thead>
-            <tbody>
+            <pems-table-head>
+                <pems-table-row>
+                    <pems-table-header>@Localizer["Include"]</pems-table-header><pems-table-header>#</pems-table-header><pems-table-header>Tag No</pems-table-header><pems-table-header>@Localizer["Name"]</pems-table-header><pems-table-header>@Localizer["Type"]</pems-table-header>
+                    <pems-table-header>@Localizer["Discipline"]</pems-table-header><pems-table-header>@Localizer["Area"]</pems-table-header><pems-table-header>P&amp;ID</pems-table-header><pems-table-header>MR No</pems-table-header><pems-table-header>PO No</pems-table-header><pems-table-header>Existing?</pems-table-header>
+                </pems-table-row>
+            </pems-table-head>
+            <pems-table-body>
                 @foreach (var r in Model.Rows)
                 {
-                    <tr>
-                        <td>
+                    <pems-table-row>
+                        <pems-table-cell>
                             @if (Model.Status == "Staging")
                             {
                                 <form asp-action="ToggleRow" method="post">
@@ -67,9 +67,9 @@
                             {
                                 @(r.IncludeInCommit ? "Yes" : "No")
                             }
-                        </td>
-                        <td>@r.RowNumber</td>
-                        <td>
+                        </pems-table-cell>
+                        <pems-table-cell>@r.RowNumber</pems-table-cell>
+                        <pems-table-cell>
                             <strong>@r.TagNumber</strong>
                             @if (r.ValidationStatus == "Warning")
                             {
@@ -77,18 +77,18 @@
                                     <pems-icon name="bi-exclamation-triangle" /> @r.ValidationMessage
                                 </pems-badge>
                             }
-                        </td>
-                        <td class="small">@r.Name</td>
-                        <td class="small">@r.Payload?.EquipmentTypeCode</td>
-                        <td class="small">@r.DisciplineCodeRaw</td>
-                        <td class="small">@r.Payload?.Area</td>
-                        <td class="small">@r.Payload?.PIDNumber</td>
-                        <td class="small">@r.Payload?.MRNumber</td>
-                        <td class="small">@r.Payload?.PONumber</td>
-                        <td>@(r.IsUpdate ? "Update existing" : "New")</td>
-                    </tr>
+                        </pems-table-cell>
+                        <pems-table-cell class="small">@r.Name</pems-table-cell>
+                        <pems-table-cell class="small">@r.Payload?.EquipmentTypeCode</pems-table-cell>
+                        <pems-table-cell class="small">@r.DisciplineCodeRaw</pems-table-cell>
+                        <pems-table-cell class="small">@r.Payload?.Area</pems-table-cell>
+                        <pems-table-cell class="small">@r.Payload?.PIDNumber</pems-table-cell>
+                        <pems-table-cell class="small">@r.Payload?.MRNumber</pems-table-cell>
+                        <pems-table-cell class="small">@r.Payload?.PONumber</pems-table-cell>
+                        <pems-table-cell>@(r.IsUpdate ? "Update existing" : "New")</pems-table-cell>
+                    </pems-table-row>
                 }
-            </tbody>
+            </pems-table-body>
         </pems-table>
     </pems-table-scroll>
     @if (!Model.Rows.Any()) { <p class="text-muted text-center py-4">No equipment rows recognized in this file.</p> }

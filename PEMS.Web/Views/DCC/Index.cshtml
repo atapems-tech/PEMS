@@ -87,16 +87,16 @@
         var recentIncoming = (IEnumerable<dynamic>)ViewBag.RecentIncoming;
     }
     <pems-table kind="enterprise" css="mb-0">
-        <thead><tr><th>@Localizer["شماره"]</th><th>@Localizer["فرستنده"]</th><th>@Localizer["موضوع"]</th><th>@Localizer["تاریخ"]</th><th>@Localizer["لینک"]</th></tr></thead>
-        <tbody>
+        <pems-table-head><pems-table-row><pems-table-header>@Localizer["شماره"]</pems-table-header><pems-table-header>@Localizer["فرستنده"]</pems-table-header><pems-table-header>@Localizer["موضوع"]</pems-table-header><pems-table-header>@Localizer["تاریخ"]</pems-table-header><pems-table-header>@Localizer["لینک"]</pems-table-header></pems-table-row></pems-table-head>
+        <pems-table-body>
             @foreach (var l in recentIncoming)
             {
-                <tr>
-                    <td><a asp-controller="Letter" asp-action="Details" asp-route-id="@l.LetterId">@l.LetterNumber</a></td>
-                    <td class="small">@l.Sender</td>
-                    <td class="small">@l.Subject</td>
-                    <td class="small">@(((DateTime)l.LetterDate).ToString("yyyy-MM-dd"))</td>
-                    <td>
+                <pems-table-row>
+                    <pems-table-cell><a asp-controller="Letter" asp-action="Details" asp-route-id="@l.LetterId">@l.LetterNumber</a></pems-table-cell>
+                    <pems-table-cell class="small">@l.Sender</pems-table-cell>
+                    <pems-table-cell class="small">@l.Subject</pems-table-cell>
+                    <pems-table-cell class="small">@(((DateTime)l.LetterDate).ToString("yyyy-MM-dd"))</pems-table-cell>
+                    <pems-table-cell>
                         @if (l.RelatedDocumentId != null)
                         {
                             <pems-badge tone="success">@Localizer["مدرک"]</pems-badge>
@@ -109,9 +109,9 @@
                         {
                             <pems-badge tone="warning">@Localizer["وصل‌نشده"]</pems-badge>
                         }
-                    </td>
-                </tr>
+                    </pems-table-cell>
+                </pems-table-row>
             }
-        </tbody>
+        </pems-table-body>
     </pems-table>
 </pems-content-card>

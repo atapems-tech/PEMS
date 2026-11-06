@@ -35,27 +35,27 @@
         <pems-tab-pane fade="true" active="true" id="orgTabPositions" role="tabpanel">
             <pems-table-scroll>
                 <pems-table scale="small" css="table-enterprise align-middle">
-                    <thead>
-                        <tr>
-                            <th>@Localizer["Org_Col_Position"]</th>
-                            <th>@Localizer["Org_Col_Department"]</th>
-                            <th>@Localizer["Org_Col_Code"] / @Localizer["Org_Col_Parent"]</th>
-                            <th>@Localizer["Org_Col_Holder"]</th>
-                            <th></th>
-                        </tr>
-                    </thead>
-                    <tbody>
+                    <pems-table-head>
+                        <pems-table-row>
+                            <pems-table-header>@Localizer["Org_Col_Position"]</pems-table-header>
+                            <pems-table-header>@Localizer["Org_Col_Department"]</pems-table-header>
+                            <pems-table-header>@Localizer["Org_Col_Code"] / @Localizer["Org_Col_Parent"]</pems-table-header>
+                            <pems-table-header>@Localizer["Org_Col_Holder"]</pems-table-header>
+                            <pems-table-header></pems-table-header>
+                        </pems-table-row>
+                    </pems-table-head>
+                    <pems-table-body>
                     @foreach (var r in Model)
                     {
-                        <tr class="@(r.IsActive ? "" : "text-muted")">
-                            <td>
+                        <pems-table-row class="@(r.IsActive ? "" : "text-muted")">
+                            <pems-table-cell>
                                 <strong>@r.Title</strong>
                                 @if (!r.IsActive) { <pems-badge tone="neutral">@Localizer["Org_Inactive"]</pems-badge> }
                                 @if (r.IsActive && r.IsVacant) { <pems-badge tone="warning">@Localizer["Org_Vacant"]</pems-badge> }
                                 @if (r.IssueCount > 0) { <a asp-action="Diagnostics" class="text-decoration-none"><pems-badge tone="danger">@r.IssueCount</pems-badge></a> }
-                            </td>
-                            <td class="small">@r.DepartmentName</td>
-                            <td class="pems-s-bec7b1d5">
+                            </pems-table-cell>
+                            <pems-table-cell class="small">@r.DepartmentName</pems-table-cell>
+                            <pems-table-cell class="pems-s-bec7b1d5">
                                 <form asp-action="SetHierarchy" method="post"><pems-flex gap="1">
                                     <input type="hidden" name="positionId" value="@r.PositionId" />
                                     <pems-input class="pems-w-90" scale="small" name="positionCode" value="@r.PositionCode" maxlength="50" placeholder="@Localizer["Org_Col_Code"]" aria-label="@Localizer["Org_Col_Code"]" />
@@ -68,8 +68,8 @@
                                     </pems-select>
                                     <button class="vs-btn vs-btn--sm" title="@Localizer["Org_Btn_Save"]" aria-label="@Localizer["Org_Btn_Save"]"><pems-icon name="bi-save" /></button>
                                 </pems-flex></form>
-                            </td>
-                            <td class="pems-s-de413461">
+                            </pems-table-cell>
+                            <pems-table-cell class="pems-s-de413461">
                                 @if (r.AssignmentId.HasValue)
                                 {
                                     <form asp-action="UpdateAssignment" method="post"><pems-flex gap="1" align="center" wrap="true">
@@ -97,8 +97,8 @@
                                         <button class="vs-btn vs-btn--sm vs-btn--primary" title="@Localizer["Org_Btn_Assign"]" aria-label="@Localizer["Org_Btn_Assign"]"><pems-icon name="bi-person-plus" /></button>
                                     </pems-flex></form>
                                 }
-                            </td>
-                            <td class="text-end">
+                            </pems-table-cell>
+                            <pems-table-cell class="text-end">
                                 @if (r.AssignmentId.HasValue)
                                 {
                                     <form asp-action="EndAssignment" method="post" class="d-inline" data-pems-confirm="@Localizer["Org_Confirm_End"]">
@@ -106,10 +106,10 @@
                                         <button class="vs-icon-btn" title="@Localizer["Org_Btn_End"]" aria-label="@Localizer["Org_Btn_End"]"><pems-icon name="bi-person-dash" /></button>
                                     </form>
                                 }
-                            </td>
-                        </tr>
+                            </pems-table-cell>
+                        </pems-table-row>
                     }
-                    </tbody>
+                    </pems-table-body>
                 </pems-table>
             </pems-table-scroll>
             @if (!Model.Any()) { <div class="vs-empty">@Localizer["Org_Empty"]</div> }

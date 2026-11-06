@@ -58,31 +58,31 @@
         <pems-list-grid>
             <pems-list-table grid-key="SparePart" empty="@(!Model.Items.Any())" empty-text="@Localizer["Sp_Empty"]"
                              filtered="@(filterCount > 0 || !string.IsNullOrEmpty(q))" clear-href="@Url.Action("Index")">
-                <thead>
-                    <tr>
-                        <th class="pems-w-140" data-col-key="partNo" data-resizable="true" data-min-width="100" data-max-width="220">@Localizer["Sp_PartNo"]</th>
-                        <th class="pems-w-220" data-col-key="name" data-resizable="true" data-min-width="140" data-max-width="320">@Localizer["Eq_Name"]</th>
-                        <th data-col-key="mfr" data-resizable="true" data-min-width="100" data-max-width="220" class="vs-hide-md pems-w-140">@Localizer["Sp_Manufacturer"]</th>
-                        <th data-col-key="location" data-resizable="true" data-min-width="100" data-max-width="220" class="vs-hide-md pems-w-140">@Localizer["Sp_Location"]</th>
-                        <th class="pems-w-130" data-col-key="qty" data-resizable="true" data-min-width="100" data-max-width="200">@Localizer["Sp_Stock"]</th>
-                        <th class="pems-w-90" data-col-key="actions" data-resizable="false"><span class="visually-hidden">@Localizer["Ed_Actions"]</span></th>
-                    </tr>
-                </thead>
-                <tbody>
+                <pems-table-head>
+                    <pems-table-row>
+                        <pems-table-header class="pems-w-140" data-col-key="partNo" data-resizable="true" data-min-width="100" data-max-width="220">@Localizer["Sp_PartNo"]</pems-table-header>
+                        <pems-table-header class="pems-w-220" data-col-key="name" data-resizable="true" data-min-width="140" data-max-width="320">@Localizer["Eq_Name"]</pems-table-header>
+                        <pems-table-header data-col-key="mfr" data-resizable="true" data-min-width="100" data-max-width="220" class="vs-hide-md pems-w-140">@Localizer["Sp_Manufacturer"]</pems-table-header>
+                        <pems-table-header data-col-key="location" data-resizable="true" data-min-width="100" data-max-width="220" class="vs-hide-md pems-w-140">@Localizer["Sp_Location"]</pems-table-header>
+                        <pems-table-header class="pems-w-130" data-col-key="qty" data-resizable="true" data-min-width="100" data-max-width="200">@Localizer["Sp_Stock"]</pems-table-header>
+                        <pems-table-header class="pems-w-90" data-col-key="actions" data-resizable="false"><span class="visually-hidden">@Localizer["Ed_Actions"]</span></pems-table-header>
+                    </pems-table-row>
+                </pems-table-head>
+                <pems-table-body>
                     @foreach (var p in Model.Items)
                     {
-                        <tr class="lp-row">
-                            <td class="lp-no"><span class="vs-num">@p.PartNumber</span></td>
-                            <td><span class="vs-title-cell" title="@p.PartName">@p.PartName</span></td>
-                            <td class="small vs-hide-md">@p.Manufacturer</td>
-                            <td class="small vs-hide-md">@p.StorageLocation</td>
-                            <td>
+                        <pems-table-row class="lp-row">
+                            <pems-table-cell class="lp-no"><span class="vs-num">@p.PartNumber</span></pems-table-cell>
+                            <pems-table-cell><span class="vs-title-cell" title="@p.PartName">@p.PartName</span></pems-table-cell>
+                            <pems-table-cell class="small vs-hide-md">@p.Manufacturer</pems-table-cell>
+                            <pems-table-cell class="small vs-hide-md">@p.StorageLocation</pems-table-cell>
+                            <pems-table-cell>
                                 @if (p.IsLowStock)
                                 { <span class="vs-pill vs-pill--icon vs-pill--danger" title="@Localizer["Sp_BelowReorder"]"><pems-icon name="bi-exclamation-triangle" aria-hidden="true" /> @p.QuantityOnHand @p.Unit</span> }
                                 else
                                 { <span class="vs-pill vs-pill--success">@p.QuantityOnHand @p.Unit</span> }
-                            </td>
-                            <td class="lp-actions">
+                            </pems-table-cell>
+                            <pems-table-cell class="lp-actions">
                                 <button type="button" class="lp-act lp-act--always" data-bs-toggle="modal" data-bs-target="#editPartModal" data-fill-sparepartid="@p.SparePartId" data-fill-partnumber="@p.PartNumber" data-fill-partname="@p.PartName" data-fill-manufacturer="@p.Manufacturer" data-fill-model="@p.Model" data-fill-unit="@p.Unit" data-fill-storagelocation="@p.StorageLocation" data-fill-quantityonhand="@p.QuantityOnHand" data-fill-minstocklevel="@p.MinStockLevel" data-fill-reorderpoint="@p.ReorderPoint" data-fill-description="@p.Description" title="@Localizer["Edit"]" aria-label="@Localizer["Edit"]">
                                     <pems-icon name="bi-pencil" aria-hidden="true" />
                                 </button>
@@ -90,10 +90,10 @@
                                     <input type="hidden" name="sparePartId" value="@p.SparePartId" />
                                     <button type="submit" class="lp-act lp-act--always" title="@Localizer["Sp_Deactivate"]" aria-label="@Localizer["Sp_Deactivate"]"><pems-icon name="bi-slash-circle" aria-hidden="true" /></button>
                                 </form>
-                            </td>
-                        </tr>
+                            </pems-table-cell>
+                        </pems-table-row>
                     }
-                </tbody>
+                </pems-table-body>
             </pems-list-table>
 
             <pems-list-footer>

@@ -33,22 +33,22 @@ else
 
         <pems-content-card>
             <pems-table kind="enterprise" css="mb-0">
-                <thead>
-                    <tr><th></th><th>@Localizer["Equipment Tag"]</th><th>@Localizer["نوع"]</th><th>@Localizer["مقصد"]</th><th>@Localizer["طبق شماره‌ی خام"]</th></tr>
-                </thead>
-                <tbody>
+                <pems-table-head>
+                    <pems-table-row><pems-table-header></pems-table-header><pems-table-header>@Localizer["Equipment Tag"]</pems-table-header><pems-table-header>@Localizer["نوع"]</pems-table-header><pems-table-header>@Localizer["مقصد"]</pems-table-header><pems-table-header>@Localizer["طبق شماره‌ی خام"]</pems-table-header></pems-table-row>
+                </pems-table-head>
+                <pems-table-body>
                     @foreach (var item in Model)
                     {
                         var value = $"{item.EquipmentId}|{item.TargetType}|{item.TargetId}";
-                        <tr>
-                            <td><input type="checkbox" class="item-check" name="selectedItems" value="@value" /></td>
-                            <td><a asp-action="Equipment" asp-route-id="@item.EquipmentId">@item.EquipmentTagNumber</a></td>
-                            <td><pems-badge tone="neutral">@item.TargetType</pems-badge></td>
-                            <td>@item.TargetLabel</td>
-                            <td class="text-muted small">@item.MatchedOnRawValue</td>
-                        </tr>
+                        <pems-table-row>
+                            <pems-table-cell><input type="checkbox" class="item-check" name="selectedItems" value="@value" /></pems-table-cell>
+                            <pems-table-cell><a asp-action="Equipment" asp-route-id="@item.EquipmentId">@item.EquipmentTagNumber</a></pems-table-cell>
+                            <pems-table-cell><pems-badge tone="neutral">@item.TargetType</pems-badge></pems-table-cell>
+                            <pems-table-cell>@item.TargetLabel</pems-table-cell>
+                            <pems-table-cell class="text-muted small">@item.MatchedOnRawValue</pems-table-cell>
+                        </pems-table-row>
                     }
-                </tbody>
+                </pems-table-body>
             </pems-table>
         </pems-content-card>
     </form>

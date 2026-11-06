@@ -105,20 +105,20 @@
     <h6 class="mb-3"><pems-icon name="bi-tags" /> Related Equipment Tags (AVEVA-style multi-tag linking)</h6>
     <pems-table-scroll css="table-scroll-area pems-s-8da1c6e6">
     <pems-table kind="enterprise">
-        <thead><tr><th>@Localizer["Tag Number"]</th><th>@Localizer["Source"]</th><th>@Localizer["Status"]</th><th></th></tr></thead>
-        <tbody>
+        <pems-table-head><pems-table-row><pems-table-header>@Localizer["Tag Number"]</pems-table-header><pems-table-header>@Localizer["Source"]</pems-table-header><pems-table-header>@Localizer["Status"]</pems-table-header><pems-table-header></pems-table-header></pems-table-row></pems-table-head>
+        <pems-table-body>
             @foreach (var t in Model.TagLinks)
             {
-                <tr>
-                    <td>@t.TagNumber</td>
-                    <td>@(t.IsAIProposed ? "AI Proposed" : "Manual")</td>
-                    <td>
+                <pems-table-row>
+                    <pems-table-cell>@t.TagNumber</pems-table-cell>
+                    <pems-table-cell>@(t.IsAIProposed ? "AI Proposed" : "Manual")</pems-table-cell>
+                    <pems-table-cell>
                         @{
                             var tb = t.ReviewStatus switch { "Approved" => "success", "Rejected" => "danger", _ => "neutral" };
                         }
                         <pems-badge tone="@tb">@t.ReviewStatus</pems-badge>
-                    </td>
-                    <td>
+                    </pems-table-cell>
+                    <pems-table-cell>
                         @if (t.IsAIProposed && t.ReviewStatus == "Draft")
                         {
                             <form asp-action="ApproveTagLink" method="post" class="d-inline">
@@ -132,10 +132,10 @@
                                 <pems-button tone="danger" size="small" outline="true">@Localizer["Reject"]</pems-button>
                             </form>
                         }
-                    </td>
-                </tr>
+                    </pems-table-cell>
+                </pems-table-row>
             }
-        </tbody>
+        </pems-table-body>
     </pems-table>
     </pems-table-scroll>
     @if (!Model.TagLinks.Any()) { <p class="text-muted">No equipment tags detected or linked yet.</p> }
@@ -145,15 +145,15 @@
     <h6 class="mb-3"><pems-icon name="bi-chat-dots" /> Comment Management</h6>
     <pems-table-scroll css="table-scroll-area pems-s-8da1c6e6">
     <pems-table kind="enterprise">
-        <thead><tr><th>@Localizer["Comment"]</th><th>@Localizer["Raised By"]</th><th>@Localizer["Date"]</th><th>@Localizer["Action Status"]</th><th>@Localizer["Response"]</th></tr></thead>
-        <tbody>
+        <pems-table-head><pems-table-row><pems-table-header>@Localizer["Comment"]</pems-table-header><pems-table-header>@Localizer["Raised By"]</pems-table-header><pems-table-header>@Localizer["Date"]</pems-table-header><pems-table-header>@Localizer["Action Status"]</pems-table-header><pems-table-header>@Localizer["Response"]</pems-table-header></pems-table-row></pems-table-head>
+        <pems-table-body>
             @foreach (var c in Model.Comments)
             {
-                <tr>
-                    <td>@c.CommentText</td>
-                    <td>@c.RaisedByName</td>
-                    <td>@c.RaisedDate.ToString("yyyy-MM-dd")</td>
-                    <td>
+                <pems-table-row>
+                    <pems-table-cell>@c.CommentText</pems-table-cell>
+                    <pems-table-cell>@c.RaisedByName</pems-table-cell>
+                    <pems-table-cell>@c.RaisedDate.ToString("yyyy-MM-dd")</pems-table-cell>
+                    <pems-table-cell>
                         @{
                             var ab = c.ActionStatus switch { "Closed" => "success", "Verified" => "info", "ResponsePending" => "warning", "NoActionRequired" => "neutral", _ => "danger" };
                         }
@@ -166,8 +166,8 @@
                                 { <option value="@s" selected="@(s == c.ActionStatus)">@s</option> }
                             </pems-select>
                         </form>
-                    </td>
-                    <td class="small">
+                    </pems-table-cell>
+                    <pems-table-cell class="small">
                         @c.ResponseText
                         @if (string.IsNullOrEmpty(c.ResponseText))
                         {
@@ -178,10 +178,10 @@
                                 <pems-button tone="primary" size="small" outline="true">@Localizer["Save"]</pems-button>
                             </pems-flex></form>
                         }
-                    </td>
-                </tr>
+                    </pems-table-cell>
+                </pems-table-row>
             }
-        </tbody>
+        </pems-table-body>
     </pems-table>
     </pems-table-scroll>
     @if (!Model.Comments.Any()) { <p class="text-muted">No comments yet.</p> }

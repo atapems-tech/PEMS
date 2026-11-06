@@ -203,16 +203,16 @@
 <pems-content-card css="mb-3">
     <h6 class="mb-3">@Localizer["Vd_SubHistory"]</h6>
     <pems-related-table>
-        <thead>
-            <tr><th>@Localizer["Vd_Rev"]</th><th>@Localizer["Vd_VendorTransmittal"]</th><th>@Localizer["Vd_ClientTransmittal"]</th><th>@Localizer["Vd_VendorIssued"]</th><th>@Localizer["Vd_Poi"]</th><th>@Localizer["Vd_Sla"]</th><th>@Localizer["Vd_Ftp"]</th><th>@Localizer["Vd_CommentSheet"]</th><th>@Localizer["Vd_CommentDate"]</th><th>@Localizer["Vd_Category"]</th><th>@Localizer["Vd_Resubmit"]</th><th>@Localizer["Vd_CommentFile"]</th><th>@Localizer["Vd_ReplyFile"]</th></tr>
-        </thead>
-        <tbody>
+        <pems-table-head>
+            <pems-table-row><pems-table-header>@Localizer["Vd_Rev"]</pems-table-header><pems-table-header>@Localizer["Vd_VendorTransmittal"]</pems-table-header><pems-table-header>@Localizer["Vd_ClientTransmittal"]</pems-table-header><pems-table-header>@Localizer["Vd_VendorIssued"]</pems-table-header><pems-table-header>@Localizer["Vd_Poi"]</pems-table-header><pems-table-header>@Localizer["Vd_Sla"]</pems-table-header><pems-table-header>@Localizer["Vd_Ftp"]</pems-table-header><pems-table-header>@Localizer["Vd_CommentSheet"]</pems-table-header><pems-table-header>@Localizer["Vd_CommentDate"]</pems-table-header><pems-table-header>@Localizer["Vd_Category"]</pems-table-header><pems-table-header>@Localizer["Vd_Resubmit"]</pems-table-header><pems-table-header>@Localizer["Vd_CommentFile"]</pems-table-header><pems-table-header>@Localizer["Vd_ReplyFile"]</pems-table-header></pems-table-row>
+        </pems-table-head>
+        <pems-table-body>
             @foreach (var s in Model.Submissions)
             {
-                <tr>
-                    <td>@s.RevisionNo</td>
-                    <td>@s.VendorTransmittalNo</td>
-                    <td>
+                <pems-table-row>
+                    <pems-table-cell>@s.RevisionNo</pems-table-cell>
+                    <pems-table-cell>@s.VendorTransmittalNo</pems-table-cell>
+                    <pems-table-cell>
                         @if (s.ClientTransmittalId.HasValue)
                         {
                             <a asp-controller="Transmittal" asp-action="Details" asp-route-id="@s.ClientTransmittalId">@s.ClientTransmittalNo</a>
@@ -221,10 +221,10 @@
                         {
                             @s.ClientTransmittalNo
                         }
-                    </td>
-                    <td>@(s.VendorActualIssuedDate?.ToString("yyyy-MM-dd"))</td>
-                    <td>@s.PurposeOfIssueCode</td>
-                    <td>
+                    </pems-table-cell>
+                    <pems-table-cell>@(s.VendorActualIssuedDate?.ToString("yyyy-MM-dd"))</pems-table-cell>
+                    <pems-table-cell>@s.PurposeOfIssueCode</pems-table-cell>
+                    <pems-table-cell>
                         @if (s.ClientCommentDate == null && s.ContractorCommentDueDate.HasValue)
                         {
                             <pems-badge tone="@(s.IsContractorCommentOverdue ? "danger" : "info")">
@@ -237,8 +237,8 @@
                                 @Localizer["Vd_ReturnDue"] @s.VendorReturnDueDate.Value.ToString("yyyy-MM-dd")@(s.IsVendorReturnOverdue ? " " + Localizer["Vd_OverdueParen"].Value : "")
                             </pems-badge>
                         }
-                    </td>
-                    <td>
+                    </pems-table-cell>
+                    <pems-table-cell>
                         @if (s.FtpUploadedDate.HasValue)
                         {
                             <pems-badge tone="success" title="@s.FtpRemotePath"><pems-icon name="bi-check-circle" /> @s.FtpUploadedDate.Value.ToString("yyyy-MM-dd")</pems-badge>
@@ -252,12 +252,12 @@
                                 <pems-button tone="primary" size="small" outline="true" title="@Localizer["Vd_UploadFtp"]"><pems-icon name="bi-cloud-upload" /></pems-button>
                             </pems-flex></form>
                         }
-                    </td>
-                    <td>@s.ClientCommentSheetNo</td>
-                    <td>@(s.ClientCommentDate?.ToString("yyyy-MM-dd"))</td>
-                    <td><pems-badge tone="neutral">@s.ReviewCategory</pems-badge></td>
-                    <td>@(s.RequiresResubmission ? Localizer["Vd_Yes"].Value : "")</td>
-                    <td>
+                    </pems-table-cell>
+                    <pems-table-cell>@s.ClientCommentSheetNo</pems-table-cell>
+                    <pems-table-cell>@(s.ClientCommentDate?.ToString("yyyy-MM-dd"))</pems-table-cell>
+                    <pems-table-cell><pems-badge tone="neutral">@s.ReviewCategory</pems-badge></pems-table-cell>
+                    <pems-table-cell>@(s.RequiresResubmission ? Localizer["Vd_Yes"].Value : "")</pems-table-cell>
+                    <pems-table-cell>
                         @if (!string.IsNullOrEmpty(s.CommentSheetFilePath))
                         {
                             <pems-button tone="neutral" size="small" outline="true" as="a" href="@Url.Action("Download", "Files", new { id = s.CommentSheetAttachmentId })" target="_blank" title="@s.CommentSheetFileName"><pems-icon name="bi-file-earmark-text" /></pems-button>
@@ -271,8 +271,8 @@
                                 <pems-button tone="primary" size="small" outline="true"><pems-icon name="bi-upload" /></pems-button>
                             </pems-flex></form>
                         }
-                    </td>
-                    <td>
+                    </pems-table-cell>
+                    <pems-table-cell>
                         @if (!string.IsNullOrEmpty(s.ReplySheetFilePath))
                         {
                             <pems-button tone="neutral" size="small" outline="true" as="a" href="@Url.Action("Download", "Files", new { id = s.ReplySheetAttachmentId })" target="_blank" title="@s.ReplySheetFileName"><pems-icon name="bi-file-earmark-text" /></pems-button>
@@ -286,10 +286,10 @@
                                 <pems-button tone="primary" size="small" outline="true"><pems-icon name="bi-upload" /></pems-button>
                             </pems-flex></form>
                         }
-                    </td>
-                </tr>
+                    </pems-table-cell>
+                </pems-table-row>
             }
-        </tbody>
+        </pems-table-body>
     </pems-related-table>
     @if (!Model.Submissions.Any()) { <p class="text-muted">@Localizer["Vd_NoSubmissions"]</p> }
 </pems-content-card>
@@ -406,19 +406,19 @@
     <h6 class="mb-3">@Localizer["Vd_CommentMgmt"] <span class="text-muted small">@Localizer["Vd_ActionIndependent"]</span></h6>
 
     <pems-related-table>
-        <thead><tr><th>@Localizer["Vd_No"]</th><th>@Localizer["Vd_Rev"]</th><th>@Localizer["Vd_Category"]</th><th>@Localizer["Vd_SheetZone"]</th><th>@Localizer["Vd_Comment"]</th><th>@Localizer["Vd_RaisedBy"]</th><th>@Localizer["Vd_Raised"]</th><th>@Localizer["Vd_ActionStatus"]</th><th>@Localizer["Vd_Response"]</th></tr></thead>
-        <tbody>
+        <pems-table-head><pems-table-row><pems-table-header>@Localizer["Vd_No"]</pems-table-header><pems-table-header>@Localizer["Vd_Rev"]</pems-table-header><pems-table-header>@Localizer["Vd_Category"]</pems-table-header><pems-table-header>@Localizer["Vd_SheetZone"]</pems-table-header><pems-table-header>@Localizer["Vd_Comment"]</pems-table-header><pems-table-header>@Localizer["Vd_RaisedBy"]</pems-table-header><pems-table-header>@Localizer["Vd_Raised"]</pems-table-header><pems-table-header>@Localizer["Vd_ActionStatus"]</pems-table-header><pems-table-header>@Localizer["Vd_Response"]</pems-table-header></pems-table-row></pems-table-head>
+        <pems-table-body>
             @foreach (var c in comments)
             {
-                <tr>
-                    <td><strong>@c.CommentNo</strong></td>
-                    <td>@c.RevisionNo</td>
-                    <td>
+                <pems-table-row>
+                    <pems-table-cell><strong>@c.CommentNo</strong></pems-table-cell>
+                    <pems-table-cell>@c.RevisionNo</pems-table-cell>
+                    <pems-table-cell>
                         @if (!string.IsNullOrEmpty(c.Category)) { <pems-badge tone="neutral">@VdrUi.Loc(Localizer, "Vd_Cat_", c.Category)</pems-badge> }
                         @if (!string.IsNullOrEmpty(c.Severity)) { <pems-badge tone="dark">@VdrUi.Loc(Localizer, "Vd_Sev_", c.Severity)</pems-badge> }
-                    </td>
-                    <td class="small">@c.Sheet @c.Zone</td>
-                    <td class="small">
+                    </pems-table-cell>
+                    <pems-table-cell class="small">@c.Sheet @c.Zone</pems-table-cell>
+                    <pems-table-cell class="small">
                         @c.CommentText
                         @if (!string.IsNullOrEmpty(c.AttachmentFilePath))
                         {
@@ -428,10 +428,10 @@
                         {
                             <div class="text-muted">@Localizer["Vd_Required"] @c.RequiredAction</div>
                         }
-                    </td>
-                    <td>@c.RaisedByName</td>
-                    <td>@c.RaisedDate.ToString("yyyy-MM-dd")</td>
-                    <td>
+                    </pems-table-cell>
+                    <pems-table-cell>@c.RaisedByName</pems-table-cell>
+                    <pems-table-cell>@c.RaisedDate.ToString("yyyy-MM-dd")</pems-table-cell>
+                    <pems-table-cell>
                         @{
                             var ab = c.ActionStatus switch
                             {
@@ -451,8 +451,8 @@
                                 { <option value="@s" selected="@(s == c.ActionStatus)">@VdrUi.Loc(Localizer, "St_", s)</option> }
                             </pems-select>
                         </form>
-                    </td>
-                    <td class="small">
+                    </pems-table-cell>
+                    <pems-table-cell class="small">
                         @c.ResponseText
                         @if (!string.IsNullOrEmpty(c.ReplyAttachmentFilePath))
                         {
@@ -464,10 +464,10 @@
                                 <pems-icon name="bi-reply" /> @Localizer["Vd_Reply"]
                             </pems-button>
                         }
-                    </td>
-                </tr>
+                    </pems-table-cell>
+                </pems-table-row>
             }
-        </tbody>
+        </pems-table-body>
     </pems-related-table>
     @if (!comments.Any()) { <p class="text-muted">@Localizer["Vd_NoComments"]</p> }
 
@@ -790,20 +790,20 @@ else
     @if (workflowHistory.Any())
     {
         <pems-related-table>
-            <thead><tr><th>@Localizer["Vd_From"]</th><th>@Localizer["Vd_To"]</th><th>@Localizer["Vd_Action"]</th><th>@Localizer["Vd_Decision"]</th><th>@Localizer["Vd_Comment"]</th><th>@Localizer["Vd_Date"]</th></tr></thead>
-            <tbody>
+            <pems-table-head><pems-table-row><pems-table-header>@Localizer["Vd_From"]</pems-table-header><pems-table-header>@Localizer["Vd_To"]</pems-table-header><pems-table-header>@Localizer["Vd_Action"]</pems-table-header><pems-table-header>@Localizer["Vd_Decision"]</pems-table-header><pems-table-header>@Localizer["Vd_Comment"]</pems-table-header><pems-table-header>@Localizer["Vd_Date"]</pems-table-header></pems-table-row></pems-table-head>
+            <pems-table-body>
                 @foreach (var h in workflowHistory.OrderByDescending(x => x.ActionDate))
                 {
-                    <tr>
-                        <td class="small">@VdrUi.Loc(Localizer, "Vd_Stage_", h.FromStageName)</td>
-                        <td class="small">@VdrUi.Loc(Localizer, "Vd_Stage_", h.ToStageName)</td>
-                        <td><pems-badge tone="neutral">@h.ActionType</pems-badge></td>
-                        <td class="small">@h.Decision</td>
-                        <td class="small">@h.Comment</td>
-                        <td class="small text-muted">@h.ActionDate.ToString("yyyy-MM-dd HH:mm")</td>
-                    </tr>
+                    <pems-table-row>
+                        <pems-table-cell class="small">@VdrUi.Loc(Localizer, "Vd_Stage_", h.FromStageName)</pems-table-cell>
+                        <pems-table-cell class="small">@VdrUi.Loc(Localizer, "Vd_Stage_", h.ToStageName)</pems-table-cell>
+                        <pems-table-cell><pems-badge tone="neutral">@h.ActionType</pems-badge></pems-table-cell>
+                        <pems-table-cell class="small">@h.Decision</pems-table-cell>
+                        <pems-table-cell class="small">@h.Comment</pems-table-cell>
+                        <pems-table-cell class="small text-muted">@h.ActionDate.ToString("yyyy-MM-dd HH:mm")</pems-table-cell>
+                    </pems-table-row>
                 }
-            </tbody>
+            </pems-table-body>
         </pems-related-table>
     }
     else
@@ -820,20 +820,20 @@ else
     @if (relatedLetters.Any())
     {
         <pems-related-table>
-            <thead><tr><th>@Localizer["Vd_Type"]</th><th>@Localizer["Vd_LetterNo"]</th><th>@Localizer["Vd_Subject"]</th><th>@Localizer["Vd_Date"]</th><th>@Localizer["Vd_Status"]</th><th></th></tr></thead>
-            <tbody>
+            <pems-table-head><pems-table-row><pems-table-header>@Localizer["Vd_Type"]</pems-table-header><pems-table-header>@Localizer["Vd_LetterNo"]</pems-table-header><pems-table-header>@Localizer["Vd_Subject"]</pems-table-header><pems-table-header>@Localizer["Vd_Date"]</pems-table-header><pems-table-header>@Localizer["Vd_Status"]</pems-table-header><pems-table-header></pems-table-header></pems-table-row></pems-table-head>
+            <pems-table-body>
                 @foreach (var l in relatedLetters)
                 {
-                    <tr>
-                        <td><pems-badge tone="neutral">@l.LetterType</pems-badge></td>
-                        <td>@l.LetterNumber</td>
-                        <td>@l.Subject</td>
-                        <td class="small text-muted">@l.LetterDate.ToString("yyyy-MM-dd")</td>
-                        <td><pems-badge tone="info">@l.Status</pems-badge></td>
-                        <td><pems-button tone="neutral" size="small" outline="true" as="a" asp-controller="Letter" asp-action="Details" asp-route-id="@l.LetterId"><pems-icon name="bi-eye" /></pems-button></td>
-                    </tr>
+                    <pems-table-row>
+                        <pems-table-cell><pems-badge tone="neutral">@l.LetterType</pems-badge></pems-table-cell>
+                        <pems-table-cell>@l.LetterNumber</pems-table-cell>
+                        <pems-table-cell>@l.Subject</pems-table-cell>
+                        <pems-table-cell class="small text-muted">@l.LetterDate.ToString("yyyy-MM-dd")</pems-table-cell>
+                        <pems-table-cell><pems-badge tone="info">@l.Status</pems-badge></pems-table-cell>
+                        <pems-table-cell><pems-button tone="neutral" size="small" outline="true" as="a" asp-controller="Letter" asp-action="Details" asp-route-id="@l.LetterId"><pems-icon name="bi-eye" /></pems-button></pems-table-cell>
+                    </pems-table-row>
                 }
-            </tbody>
+            </pems-table-body>
         </pems-related-table>
     }
     else

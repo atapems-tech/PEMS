@@ -21,15 +21,15 @@
     @if (ncrPatterns.Any())
     {
         <pems-table kind="enterprise" css="mb-0">
-            <thead><tr><th>@Localizer["Equipment"]</th><th>@Localizer["تعداد NCR"]</th><th>@Localizer["دیسیپلین غالب"]</th><th>@Localizer["وضعیت MOC"]</th><th>@Localizer["پیشنهاد"]</th><th></th></tr></thead>
-            <tbody>
+            <pems-table-head><pems-table-row><pems-table-header>@Localizer["Equipment"]</pems-table-header><pems-table-header>@Localizer["تعداد NCR"]</pems-table-header><pems-table-header>@Localizer["دیسیپلین غالب"]</pems-table-header><pems-table-header>@Localizer["وضعیت MOC"]</pems-table-header><pems-table-header>@Localizer["پیشنهاد"]</pems-table-header><pems-table-header></pems-table-header></pems-table-row></pems-table-head>
+            <pems-table-body>
                 @foreach (var p in ncrPatterns)
                 {
-                    <tr>
-                        <td><a asp-controller="Equipment" asp-action="Details" asp-route-id="@p.EquipmentId">@p.EquipmentTagNumber</a></td>
-                        <td><pems-badge tone="danger">@p.NcrCount</pems-badge></td>
-                        <td class="small">@p.DominantQCDiscipline</td>
-                        <td>
+                    <pems-table-row>
+                        <pems-table-cell><a asp-controller="Equipment" asp-action="Details" asp-route-id="@p.EquipmentId">@p.EquipmentTagNumber</a></pems-table-cell>
+                        <pems-table-cell><pems-badge tone="danger">@p.NcrCount</pems-badge></pems-table-cell>
+                        <pems-table-cell class="small">@p.DominantQCDiscipline</pems-table-cell>
+                        <pems-table-cell>
                             @if (p.HasOpenMOC)
                             {
                                 <pems-badge tone="info">@Localizer["MOC باز دارد"]</pems-badge>
@@ -38,19 +38,19 @@
                             {
                                 <pems-badge tone="warning">@Localizer["بدون MOC"]</pems-badge>
                             }
-                        </td>
-                        <td class="small">@p.Suggestion</td>
-                        <td>
+                        </pems-table-cell>
+                        <pems-table-cell class="small">@p.Suggestion</pems-table-cell>
+                        <pems-table-cell>
                             @if (!p.HasOpenMOC)
                             {
                                 <pems-button tone="primary" size="small" outline="true" as="a" asp-controller="MOC" asp-action="Raise" asp-route-relatedEquipmentId="@p.EquipmentId">
                                     <pems-icon name="bi-plus-lg" /> ثبت MOC
                                 </pems-button>
                             }
-                        </td>
-                    </tr>
+                        </pems-table-cell>
+                    </pems-table-row>
                 }
-            </tbody>
+            </pems-table-body>
         </pems-table>
     }
     else
