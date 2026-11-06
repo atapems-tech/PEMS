@@ -48,7 +48,7 @@
                             <span title="@TaskManagerUi.Priority(Localizer, i.Priority)"><pems-icon css="@TaskManagerUi.PriorityIcon(i.Priority)" aria-hidden="true" /><span class="visually-hidden">@TaskManagerUi.Priority(Localizer, i.Priority)</span></span>
                         </div>
                         <div class="tm-card__title">
-                            @if (!string.IsNullOrEmpty(i.TypeIcon)) { <i class="bi @i.TypeIcon me-1" aria-hidden="true"></i> }
+                            @if (!string.IsNullOrEmpty(i.TypeIcon)) { <pems-icon css="@i.TypeIcon me-1" aria-hidden="true" /> }
                             @i.Title
                         </div>
                         <div class="d-flex justify-content-between align-items-center small text-muted mt-1">

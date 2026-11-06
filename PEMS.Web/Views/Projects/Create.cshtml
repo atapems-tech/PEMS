@@ -4,7 +4,7 @@
 @inject IStringLocalizer<SharedResource> Localizer
 
 <div class="content-card pems-s-e2b01b0d">
-    <pems-alert tone="danger" css="py-2 px-3 small" asp-validation-summary="All" style="@(ViewData.ModelState.IsValid ? "display:none;" : "")"></pems-alert>
+    <pems-alert tone="danger" css="py-2 px-3 small" asp-validation-summary="All" hidden="@(ViewData.ModelState.IsValid)"></pems-alert>
 
     <form asp-action="Create" method="post">
         <pems-row gap="3">

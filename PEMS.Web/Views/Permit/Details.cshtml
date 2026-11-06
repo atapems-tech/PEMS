@@ -241,7 +241,7 @@
             @foreach (var c in executionGate.Checks)
             {
                 <li class="d-flex align-items-center gap-2 py-1">
-                    @if (c.Passed) { <i class="bi bi-check-circle-fill text-success"></i> } else { <i class="bi bi-x-circle-fill text-danger"></i> }
+                    @if (c.Passed) { <pems-icon name="bi-check-circle-fill" css="text-success" /> } else { <pems-icon name="bi-x-circle-fill" css="text-danger" /> }
                     <span class="small"><strong>[@c.Category]</strong> @c.Name — @c.Detail</span>
                 </li>
             }

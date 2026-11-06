@@ -96,7 +96,7 @@
                         {
                             <li class="lp-menu-row">
                                 <a class="dropdown-item" href="@(Url.Action("Index") + "?" + sf.QueryString)">
-                                    @if (sf.IsDefault) { <i class="bi bi-star-fill" aria-hidden="true"></i> }
+                                    @if (sf.IsDefault) { <pems-icon name="bi-star-fill" aria-hidden="true" /> }
                                     @sf.Name
                                 </a>
                                 <form asp-action="DeleteFilter" method="post" data-pems-confirm="@Localizer["Dr_DeleteFilterConfirm"]">
@@ -168,7 +168,7 @@
                             <td><span class="vs-num">@d.RevisionNo</span></td>
                             <td>
                                 <span class="vs-pill vs-pill--icon @DocumentStatusBadge.Tone(d.Status)"><pems-icon css="@DocumentStatusBadge.Icon(d.Status)" aria-hidden="true" /> @StatusText(d.Status)</span>
-                                @if (d.IsFrozen) { <i class="bi bi-snow text-info ms-1" title="@Localizer["Ed_Frozen"]" aria-label="@Localizer["Ed_Frozen"]"></i> }
+                                @if (d.IsFrozen) { <pems-icon name="bi-snow" css="text-info ms-1" title="@Localizer["Ed_Frozen"]" aria-label="@Localizer["Ed_Frozen"]" /> }
                             </td>
                             <td class="vs-hide-md small" title="@d.CommentStatus">@d.CommentStatus</td>
                             <td class="small">

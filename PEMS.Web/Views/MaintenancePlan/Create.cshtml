@@ -77,14 +77,14 @@
                         <input type="hidden" name="AllowPastDueDate" value="false" />
                     </div>
                 </pems-col>
-                <pems-col md="4" id="meterTypeWrap" style="display:none;">
+                <pems-col md="4" id="meterTypeWrap" hidden>
                     <pems-label>@Localizer["Rcm_MeterType"]</pems-label>
                     <pems-select name="MeterType">
                         @foreach (var m in RcmCodes.MeterType.All) { <option value="@m" selected="@(i.MeterType == m)">@Localizer.Label("MeterType", m)</option> }
                     </pems-select>
                     <span class="text-danger small">@Html.ValidationMessage("meterType")</span>
                 </pems-col>
-                <pems-col md="4" id="meterIntervalWrap" style="display:none;">
+                <pems-col md="4" id="meterIntervalWrap" hidden>
                     <pems-label>@Localizer["Rcm_MeterInterval"]</pems-label>
                     <pems-input name="MeterInterval" type="number" step="0.01" min="0.01" value="@i.MeterInterval" />
                     <span class="text-danger small">@Html.ValidationMessage("meterInterval")</span>

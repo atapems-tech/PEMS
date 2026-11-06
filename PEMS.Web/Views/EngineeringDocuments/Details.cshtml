@@ -429,14 +429,14 @@
                         @(Model.CheckedDate.HasValue ? $"({Model.CheckedDate:yyyy-MM-dd})" : "")
                         @if (!string.IsNullOrEmpty(Model.CheckedBySignaturePath))
                         {
-                            <img src="@Model.CheckedBySignaturePath" alt="Signature" style="height:32px; vertical-align:middle; margin-inline-start:8px; background:#fff; border:1px solid #eee; border-radius:3px;" />
+                            <img class="pems-signature-small" src="@Model.CheckedBySignaturePath" alt="Signature" />
                         }
                 </pems-info-item>
                 <pems-info-item label="@Localizer["Ed_ApprovedBy"]">
                         @(string.IsNullOrEmpty(Model.ApprovedBy) ? "—" : Model.ApprovedBy) @(Model.ApprovedDate.HasValue ? $"({Model.ApprovedDate:yyyy-MM-dd})" : "")
                         @if (!string.IsNullOrEmpty(Model.ApprovedBySignaturePath))
                         {
-                            <img src="@Model.ApprovedBySignaturePath" alt="Signature" style="height:32px; vertical-align:middle; margin-inline-start:8px; background:#fff; border:1px solid #eee; border-radius:3px;" />
+                            <img class="pems-signature-small" src="@Model.ApprovedBySignaturePath" alt="Signature" />
                         }
                 </pems-info-item>
                 <pems-info-item label="@Localizer["Ed_CommentStatus"]">@(string.IsNullOrEmpty(Model.CommentStatus) ? "—" : Model.CommentStatus)</pems-info-item>
@@ -861,7 +861,7 @@
                 <pems-button tone="neutral" size="small" outline="true" type="button" id="pdfZoomIn" data-bs-toggle="tooltip" title="@Localizer["Zoom in"]" aria-label="@Localizer["Zoom in"]"><pems-icon name="bi-zoom-in" /></pems-button>
             </div>
         </div>
-        <div id="pdfCanvasWrapper" style="position:relative; border:1px solid var(--pems-surface-border,#dee2e6); overflow:auto; max-height:75vh; text-align:center; cursor:crosshair;">
+        <div class="pems-pdf-canvas" id="pdfCanvasWrapper">
             <canvas id="pdfCanvas"></canvas>
         </div>
     </div>
@@ -1210,7 +1210,7 @@
                         </div>
                     </div>
 
-                    <div class="mb-2" id="issueDeptField" style="display:none;">
+                    <div class="mb-2" id="issueDeptField" hidden>
                         <pems-label css="small">@Localizer["واحد داخلی"]</pems-label>
                         <pems-select scale="small" name="deliveryDepartmentId">
                             @{
@@ -1223,7 +1223,7 @@
                         </pems-select>
                     </div>
 
-                    <div id="issueExternalFields" style="display:none;">
+                    <div id="issueExternalFields" hidden>
                         <pems-alert tone="warning" css="py-2 px-3 small">
                             برای تحویل بیرونی، ثبت نامه‌ی رسمی خروجی الزامی است.
                         </pems-alert>
@@ -1233,15 +1233,15 @@
                         </div>
                     </div>
 
-                    <div class="mb-2" id="issueLetterNumberField" style="display:none;">
+                    <div class="mb-2" id="issueLetterNumberField" hidden>
                         <pems-label css="small">شماره‌ی نامه (اختیاری - خالی بمونه خودکار ساخته می‌شه)</pems-label>
                         <pems-input scale="small" type="text" name="letterNumber" />
                     </div>
-                    <div class="mb-2" id="issueSubjectField" style="display:none;">
+                    <div class="mb-2" id="issueSubjectField" hidden>
                         <pems-label css="small">@Localizer["موضوع نامه"]</pems-label>
                         <pems-input scale="small" type="text" name="letterSubject" value="صدور مدرک @Model.DocumentNo" />
                     </div>
-                    <div class="mb-2" id="issueBodyField" style="display:none;">
+                    <div class="mb-2" id="issueBodyField" hidden>
                         <pems-label css="small">@Localizer["متن نامه (اختیاری)"]</pems-label>
                         <pems-textarea scale="small" name="letterBody" rows="2"></pems-textarea>
                     </div>

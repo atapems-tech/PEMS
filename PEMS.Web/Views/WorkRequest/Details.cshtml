@@ -154,7 +154,7 @@
                         <pems-input class="pems-w-240" scale="small" type="text" placeholder="@Localizer["Select the equipment for the Work Order"]" data-pems-search data-search-type="Equipment" data-search-hidden="#wrConvertEquipmentId" autocomplete="off" required />
                         <input type="hidden" name="equipmentId" id="wrConvertEquipmentId" />
                     }
-                    <pems-select scale="small" name="workOrderType" style="width:auto;">
+                    <pems-select class="w-auto" scale="small" name="workOrderType">
                         <option value="Corrective">@Localizer["Corrective"]</option>
                         <option value="Preventive">@Localizer["Preventive"]</option>
                         <option value="Emergency">@Localizer["Emergency"]</option>
@@ -205,7 +205,7 @@
             {
                 <form asp-action="ConvertToWorkOrder" method="post" class="d-flex gap-2 align-items-center">
                     <input type="hidden" name="id" value="@Model.WorkRequestId" />
-                    <pems-select scale="small" name="workOrderType" style="width:auto;">
+                    <pems-select class="w-auto" scale="small" name="workOrderType">
                         <option value="Corrective">@Localizer["Corrective"]</option>
                         <option value="Preventive">@Localizer["Preventive"]</option>
                         <option value="Emergency">@Localizer["Emergency"]</option>

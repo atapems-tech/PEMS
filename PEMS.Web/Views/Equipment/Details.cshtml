@@ -72,7 +72,7 @@
         <pems-info-item label="P&ID" num>
             @if (Model.PIDDocument != null)
             {
-                <a asp-controller="EngineeringDocuments" asp-action="Details" asp-route-id="@Model.PIDDocument.DocumentId">@eq.PIDNumber <i class="bi bi-box-arrow-up-right small"></i></a>
+                <a asp-controller="EngineeringDocuments" asp-action="Details" asp-route-id="@Model.PIDDocument.DocumentId">@eq.PIDNumber <pems-icon name="bi-box-arrow-up-right" css="small" /></a>
             }
             else if (!string.IsNullOrWhiteSpace(eq.PIDNumber)) { <span title="@Localizer["مدرکی با این شماره پیدا نشد"]">@eq.PIDNumber</span> }
             else { <span class="text-muted">N/A</span> }

@@ -73,7 +73,7 @@
                             <strong>@r.TagNumber</strong>
                             @if (r.ValidationStatus == "Warning")
                             {
-                                <pems-badge tone="warning" css="d-block mt-1" style="white-space:normal; text-align:right;">
+                                <pems-badge class="pems-wrap-start" tone="warning" css="d-block mt-1">
                                     <pems-icon name="bi-exclamation-triangle" /> @r.ValidationMessage
                                 </pems-badge>
                             }

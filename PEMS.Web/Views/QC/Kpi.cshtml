@@ -74,7 +74,7 @@
             {
                 var heightPct = (int)((double)((int)m.Count) / maxCount * 100);
                 <div class="d-flex flex-column align-items-center pems-s-97445a8d">
-                    <div class="bg-primary" style="width:100%; height:@(heightPct)%; min-height:4px;" title="@m.Count"></div>
+                    <div class="bg-primary pems-bar pems-h-pct-@Math.Clamp(heightPct, 0, 100)" title="@m.Count"></div>
                     <div class="text-muted small mt-1 pems-s-3e8135c8">@m.Month</div>
                 </div>
             }

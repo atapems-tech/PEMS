@@ -25,12 +25,12 @@
 
             <pems-col md="4">
                 <pems-label>Change Type</pems-label>
-                <pems-select name="changeType" id="changeTypeSelect" onchange="document.getElementById('tempExpiryWrap').style.display = this.value === 'Temporary' ? '' : 'none';">
+                <pems-select name="changeType" id="changeTypeSelect" onchange="document.getElementById('tempExpiryWrap').hidden = !(this.value === 'Temporary');">
                     <option value="Permanent">Permanent</option>
                     <option value="Temporary">Temporary</option>
                 </pems-select>
             </pems-col>
-            <pems-col md="4" id="tempExpiryWrap" style="display:none;">
+            <pems-col md="4" id="tempExpiryWrap" hidden>
                 <pems-label>Temporary Expiry Date</pems-label>
                 <pems-date name="temporaryExpiryDate" />
             </pems-col>

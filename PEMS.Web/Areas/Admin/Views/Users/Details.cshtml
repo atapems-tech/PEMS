@@ -392,7 +392,7 @@
                     {
                         <details class="navvis-module mb-2" open="@(module.Visible ? "open" : null)">
                             <summary class="navvis-module-summary">
-                                @if (module.Visible) { <i class="bi bi-check-lg text-success"></i> } else { <i class="bi bi-dash text-body-tertiary"></i> }
+                                @if (module.Visible) { <pems-icon name="bi-check-lg" css="text-success" /> } else { <pems-icon name="bi-dash" css="text-body-tertiary" /> }
                                 <span class="navvis-title">@Localizer[module.DisplayLocalizationKey]</span>
                             </summary>
                             @if (module.Visible && module.HasDrillDown)
@@ -401,7 +401,7 @@
                                     @foreach (var item in module.Items)
                                     {
                                         <div class="navvis-item navvis-item-flat">
-                                            @if (item.Visible) { <i class="bi bi-check-lg text-success"></i> } else { <i class="bi bi-dash text-body-tertiary"></i> }
+                                            @if (item.Visible) { <pems-icon name="bi-check-lg" css="text-success" /> } else { <pems-icon name="bi-dash" css="text-body-tertiary" /> }
                                             <span class="navvis-item-name">@Localizer[item.DisplayLocalizationKey]</span>
                                         </div>
                                     }
@@ -413,7 +413,7 @@
                                                 @foreach (var item in subgroup.Items)
                                                 {
                                                     <div class="navvis-item navvis-item-flat">
-                                                        @if (item.Visible) { <i class="bi bi-check-lg text-success"></i> } else { <i class="bi bi-dash text-body-tertiary"></i> }
+                                                        @if (item.Visible) { <pems-icon name="bi-check-lg" css="text-success" /> } else { <pems-icon name="bi-dash" css="text-body-tertiary" /> }
                                                         <span class="navvis-item-name">@Localizer[item.DisplayLocalizationKey]</span>
                                                     </div>
                                                 }

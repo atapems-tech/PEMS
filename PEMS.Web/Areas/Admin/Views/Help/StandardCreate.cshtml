@@ -69,7 +69,7 @@
                 <pems-select asp-for="PEMSImplementationStatus" id="implStatus">
                     @foreach (var s in implementationStatuses) { <option value="@s">@s</option> }
                 </pems-select>
-                <div class="form-text text-danger" id="complianceWarning" style="display:none">
+                <div class="form-text text-danger" id="complianceWarning" hidden>
                     "ComplianceEvidenceAvailable" requires a real Evidence Path below - it must never be used without one.
                 </div>
             </pems-col>

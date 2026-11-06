@@ -135,7 +135,7 @@
                                 <td><span class="vs-num">@item.RevisionNo</span></td>
                                 <td>
                                     <span class="vs-pill vs-pill--icon @DocumentStatusBadge.Tone(item.Status)"><pems-icon css="@DocumentStatusBadge.Icon(item.Status)" aria-hidden="true" /> @StatusText(item.Status)</span>
-                                    @if (item.IsFrozen) { <i class="bi bi-snow text-info ms-1" title="@Localizer["Ed_Frozen"]" aria-label="@Localizer["Ed_Frozen"]"></i> }
+                                    @if (item.IsFrozen) { <pems-icon name="bi-snow" css="text-info ms-1" title="@Localizer["Ed_Frozen"]" aria-label="@Localizer["Ed_Frozen"]" /> }
                                 </td>
                                 <td class="small">
                                     @if (item.DelayDays.HasValue && item.DelayDays > 0)

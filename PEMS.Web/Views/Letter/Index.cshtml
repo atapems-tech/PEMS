@@ -174,7 +174,7 @@
                 <pems-tree-label>
                     <span class="ct-tag-dot @TagClass(t.Color)" aria-hidden="true"></span>
                     <span class="ct-label text-truncate">@t.Name</span>
-                    @if (t.IsPersonal) { <i class="bi bi-person ct-tag-personal" title="@Localizer["Ct_PersonalTag"]" aria-hidden="true"></i><span class="visually-hidden">@Localizer["Ct_PersonalTag"]</span> }
+                    @if (t.IsPersonal) { <pems-icon name="bi-person" css="ct-tag-personal" title="@Localizer["Ct_PersonalTag"]" aria-hidden="true" /><span class="visually-hidden">@Localizer["Ct_PersonalTag"]</span> }
                     @if (tagCount > 0) { <span class="ct-count">@tagCount</span> }
                 </pems-tree-label>
                 @{ await RenderTags(t.TagId); }
@@ -513,13 +513,13 @@
                                     <li><h6 class="dropdown-header">@Localizer["Ct_ApplyTag"]</h6></li>
                                     @foreach (var t in tagNodes)
                                     {
-                                        <li><button type="button" class="dropdown-item" data-bulk-tag="@t.TagId" data-bulk-tag-op="tag" style="padding-inline-start:@(0.75 + (t.Depth - 1) * 0.9)rem"><span class="ct-tag-dot @TagClass(t.Color)" style="display:inline-block;width:9px;height:9px;border-radius:50%"></span> @t.Name</button></li>
+                                        <li><button type="button" class="dropdown-item pems-tag-indent-@Math.Clamp(t.Depth - 1, 0, 8)" data-bulk-tag="@t.TagId" data-bulk-tag-op="tag"><span class="ct-tag-dot d-inline-block @TagClass(t.Color)"></span> @t.Name</button></li>
                                     }
                                     <li><hr class="dropdown-divider" /></li>
                                     <li><h6 class="dropdown-header">@Localizer["Ct_RemoveTag"]</h6></li>
                                     @foreach (var t in tagNodes)
                                     {
-                                        <li><button type="button" class="dropdown-item" data-bulk-tag="@t.TagId" data-bulk-tag-op="untag" style="padding-inline-start:@(0.75 + (t.Depth - 1) * 0.9)rem"><pems-icon name="bi-x-circle" aria-hidden="true" /> @t.Name</button></li>
+                                        <li><button type="button" class="dropdown-item pems-tag-indent-@Math.Clamp(t.Depth - 1, 0, 8)" data-bulk-tag="@t.TagId" data-bulk-tag-op="untag"><pems-icon name="bi-x-circle" aria-hidden="true" /> @t.Name</button></li>
                                     }
                                 </pems-dropdown-menu>
                             </div>
@@ -583,13 +583,13 @@
                             <th class="pems-w-34" data-col-key="select" data-resizable="false"><input type="checkbox" id="selectAllLetters" aria-label="@Localizer["Lt_SelectAll"]" /></th>
                             <th class="pems-w-30" data-col-key="star" data-resizable="false"><span class="visually-hidden">@Localizer["Lt_QueueStarred"]</span></th>
                             <th class="pems-w-38" data-col-key="type" data-resizable="false"><span class="visually-hidden">@Localizer["Type"]</span></th>
-                            <th data-col-key="subject" data-resizable="true" data-min-width="200" data-max-width="700" aria-sort="@AriaSort("subject")"><a class="ct-sort" href="@SortUrl("subject")">@Localizer["Subject"] <i class="bi @SortIcon("subject")" aria-hidden="true"></i></a></th>
-                            <th class="pems-w-118" data-col-key="letterNo" data-resizable="true" data-min-width="90" data-max-width="200" aria-sort="@AriaSort("number")"><a class="ct-sort" href="@SortUrl("number")">@Localizer["Letter No"] <i class="bi @SortIcon("number")" aria-hidden="true"></i></a></th>
-                            <th class="pems-w-150" data-col-key="senderReceiver" data-resizable="true" data-min-width="120" data-max-width="260" aria-sort="@AriaSort("sender")"><a class="ct-sort" href="@SortUrl("sender")">@Localizer["Sender / Receiver"] <i class="bi @SortIcon("sender")" aria-hidden="true"></i></a></th>
-                            <th class="pems-w-104" data-col-key="status" data-resizable="true" data-min-width="90" data-max-width="180" aria-sort="@AriaSort("status")"><a class="ct-sort" href="@SortUrl("status")">@Localizer["Status"] <i class="bi @SortIcon("status")" aria-hidden="true"></i></a></th>
-                            <th class="pems-w-88" data-col-key="priority" data-resizable="true" data-min-width="80" data-max-width="140" aria-sort="@AriaSort("priority")"><a class="ct-sort" href="@SortUrl("priority")">@Localizer["Lt_Priority"] <i class="bi @SortIcon("priority")" aria-hidden="true"></i></a></th>
+                            <th data-col-key="subject" data-resizable="true" data-min-width="200" data-max-width="700" aria-sort="@AriaSort("subject")"><a class="ct-sort" href="@SortUrl("subject")">@Localizer["Subject"] <pems-icon css="@SortIcon("subject")" aria-hidden="true" /></a></th>
+                            <th class="pems-w-118" data-col-key="letterNo" data-resizable="true" data-min-width="90" data-max-width="200" aria-sort="@AriaSort("number")"><a class="ct-sort" href="@SortUrl("number")">@Localizer["Letter No"] <pems-icon css="@SortIcon("number")" aria-hidden="true" /></a></th>
+                            <th class="pems-w-150" data-col-key="senderReceiver" data-resizable="true" data-min-width="120" data-max-width="260" aria-sort="@AriaSort("sender")"><a class="ct-sort" href="@SortUrl("sender")">@Localizer["Sender / Receiver"] <pems-icon css="@SortIcon("sender")" aria-hidden="true" /></a></th>
+                            <th class="pems-w-104" data-col-key="status" data-resizable="true" data-min-width="90" data-max-width="180" aria-sort="@AriaSort("status")"><a class="ct-sort" href="@SortUrl("status")">@Localizer["Status"] <pems-icon css="@SortIcon("status")" aria-hidden="true" /></a></th>
+                            <th class="pems-w-88" data-col-key="priority" data-resizable="true" data-min-width="80" data-max-width="140" aria-sort="@AriaSort("priority")"><a class="ct-sort" href="@SortUrl("priority")">@Localizer["Lt_Priority"] <pems-icon css="@SortIcon("priority")" aria-hidden="true" /></a></th>
                             <th class="pems-w-130" data-col-key="responseDue" data-resizable="true" data-min-width="100" data-max-width="180">@Localizer["Lt_ColResponseDue"]</th>
-                            <th class="pems-w-92" data-col-key="date" data-resizable="true" data-min-width="90" data-max-width="160" aria-sort="@AriaSort("date")"><a class="ct-sort" href="@SortUrl("date")">@Localizer["Date"] <i class="bi @SortIcon("date")" aria-hidden="true"></i></a></th>
+                            <th class="pems-w-92" data-col-key="date" data-resizable="true" data-min-width="90" data-max-width="160" aria-sort="@AriaSort("date")"><a class="ct-sort" href="@SortUrl("date")">@Localizer["Date"] <pems-icon css="@SortIcon("date")" aria-hidden="true" /></a></th>
                             <th class="pems-w-120" data-col-key="discipline" data-resizable="true" data-min-width="90" data-max-width="200">@Localizer["Lt_Discipline"]</th>
                             <th class="pems-w-70" data-col-key="attachments" data-resizable="false"><pems-icon name="bi-paperclip" aria-hidden="true" /><span class="visually-hidden">@Localizer["Lt_ColAttachments"]</span></th>
                             <th class="pems-w-110" data-col-key="lastActivity" data-resizable="true" data-min-width="100" data-max-width="180">@Localizer["Lt_ColLastActivity"]</th>
@@ -618,7 +618,7 @@
                                 <td><span class="lp-type lp-type--@l.LetterType.ToLowerInvariant()" title="@Localizer[l.LetterType]"><pems-icon css="@typeIcon" aria-hidden="true" /><span class="visually-hidden">@Localizer[l.LetterType]</span></span></td>
                                 <td class="lp-subject-cell">
                                     <div class="lp-subject-line">
-                                        @if (l.AttachmentsCount > 0) { <i class="bi bi-paperclip lp-att" aria-hidden="true" title="@Localizer["Lt_ColAttachments"]"></i> }
+                                        @if (l.AttachmentsCount > 0) { <pems-icon name="bi-paperclip" css="lp-att" aria-hidden="true" title="@Localizer["Lt_ColAttachments"]" /> }
                                         @if (l.IsUnread) { <span class="visually-hidden">@Localizer["Lp_Unread"]</span> }
                                         @if (!string.IsNullOrEmpty(l.MyRecipientType))
                                         {

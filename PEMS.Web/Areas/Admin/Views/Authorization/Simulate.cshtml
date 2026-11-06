@@ -12,7 +12,7 @@
     </div>
     <div class="content-card">
         <form class="pems-s-b12974cb" asp-action="Simulate" method="post"><pems-row gap="3">
-            <pems-alert tone="danger" css="py-2 px-3 small" asp-validation-summary="ModelOnly" style="@(ViewData.ModelState.IsValid ? "display:none;" : "")"></pems-alert>
+            <pems-alert tone="danger" css="py-2 px-3 small" asp-validation-summary="ModelOnly" hidden="@(ViewData.ModelState.IsValid)"></pems-alert>
 
             <pems-col md="6">
                 <pems-label>@Localizer["User"]</pems-label>

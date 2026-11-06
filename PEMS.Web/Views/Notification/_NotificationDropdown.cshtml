@@ -17,7 +17,7 @@
     {
         <div class="d-flex align-items-start border-bottom @(n.IsRead ? "" : "bg-light")" data-notif-id="@n.NotificationId">
             <a href="@Url.Action("Open", "Notification", new { id = n.NotificationId })" class="dropdown-item small py-2 flex-grow-1 text-wrap">
-                @if (!n.IsRead) { <i class="bi bi-circle-fill text-primary me-1 pems-s-3494e7ef" aria-hidden="true"></i> }
+                @if (!n.IsRead) { <pems-icon name="bi-circle-fill" css="text-primary me-1 pems-s-3494e7ef" aria-hidden="true" /> }
                 <strong>@n.Title</strong>
                 <div class="text-muted">@n.Message</div>
                 <div class="text-muted pems-s-11a50812">@n.CreatedDate.ToString("yyyy-MM-dd HH:mm")</div>

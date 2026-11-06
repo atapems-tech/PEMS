@@ -91,7 +91,7 @@
             <pems-select name="StrategyType" id="typeSelect" required>
                 @foreach (var t in RcmCodes.StrategyType.All) { <option value="@t" selected="@(i.StrategyType == t)">@Localizer.Label("StrategyType", t)</option> }
             </pems-select>
-            <div class="form-text text-warning" id="rtfWarning" style="display:none;">@Localizer["Rcm_RtfWarning"]</div>
+            <div class="form-text text-warning" id="rtfWarning" hidden>@Localizer["Rcm_RtfWarning"]</div>
             <span class="text-danger small">@Html.ValidationMessage("strategyType")</span>
         </pems-col>
         <pems-col md="4">

@@ -192,8 +192,8 @@
                             <td><pems-badge tone="none" css="badge-status-@q.Status">@q.Status</pems-badge></td>
                             <td><pems-badge tone="warning">@q.RevisionCount</pems-badge></td>
                             <td class="small">
-                                @if (q.FirstPassApproved == true) { <i class="bi bi-check-circle text-success" title="@Localizer["FirstPass"]" aria-label="@Localizer["FirstPass"]"></i> }
-                                else if (q.FirstPassApproved == false) { <i class="bi bi-x-circle text-danger" title="@Localizer["NotFirstPass"]" aria-label="@Localizer["NotFirstPass"]"></i> }
+                                @if (q.FirstPassApproved == true) { <pems-icon name="bi-check-circle" css="text-success" title="@Localizer["FirstPass"]" aria-label="@Localizer["FirstPass"]" /> }
+                                else if (q.FirstPassApproved == false) { <pems-icon name="bi-x-circle" css="text-danger" title="@Localizer["NotFirstPass"]" aria-label="@Localizer["NotFirstPass"]" /> }
                                 else { <span class="text-muted">-</span> }
                             </td>
                         </tr>
