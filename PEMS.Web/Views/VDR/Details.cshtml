@@ -273,6 +273,46 @@
 
 @* ===================== Files (SCRUM-530) ===================== *@
 <pems-tab-pane fade="true" css="@(vdrDefaultTab == "files" ? "show active" : "")" id="tab-files" role="tabpanel">
+    @* SCRUM-531: upload a file to a submission; it is stored in PEMS and listed below (Upload to FTP keeps no copy in PEMS) *@
+    <pems-content-card css="mb-3">
+        <h6 class="mb-2"><pems-icon name="bi-upload" /> @Localizer["Vd_UploadTitle"]</h6>
+        @if (Model.Submissions.Count == 0)
+        {
+            <p class="text-muted small mb-0">@Localizer["Vd_UploadNeedsSubmission"]</p>
+        }
+        else
+        {
+            <p class="text-muted small mb-3">@Localizer["Vd_UploadHint"]</p>
+            <pems-form asp-action="UploadSubmissionFile" method="post" enctype="multipart/form-data" id="vdrFileUpload">
+                <input type="hidden" name="vdrItemId" value="@Model.VDRItemId" />
+                <pems-row gap="2" css="align-items-end">
+                    <pems-col md="3">
+                        <pems-label for="vdrUploadSubmission">@Localizer["Vd_UploadRevision"]</pems-label>
+                        <pems-select id="vdrUploadSubmission" name="submissionId" required>
+                            @foreach (var s in Model.Submissions.OrderByDescending(x => x.RevisionNo))
+                            {
+                                <option value="@s.VDRSubmissionId">@Localizer["Vs_Rev"] @s.RevisionNo@(string.IsNullOrEmpty(s.VendorTransmittalNo) ? "" : " - " + s.VendorTransmittalNo)</option>
+                            }
+                        </pems-select>
+                    </pems-col>
+                    <pems-col md="3">
+                        <pems-label for="vdrUploadKind">@Localizer["Vd_FileKind"]</pems-label>
+                        <pems-select id="vdrUploadKind" name="kind" required>
+                            @foreach (var k in VdrFiles.Kinds) { <option value="@k">@Localizer["Vd_FileKind_" + k]</option> }
+                        </pems-select>
+                    </pems-col>
+                    <pems-col md="4">
+                        <pems-label for="vdrUploadFile">@Localizer["Vd_FileName"]</pems-label>
+                        <pems-input id="vdrUploadFile" type="file" name="file" required />
+                    </pems-col>
+                    <pems-col md="2">
+                        <pems-button tone="primary" type="submit" css="w-100"><pems-icon name="bi-upload" /> @Localizer["Vd_Upload"]</pems-button>
+                    </pems-col>
+                </pems-row>
+            </pems-form>
+        }
+    </pems-content-card>
+
     @if (vdrFiles.Count == 0)
     {
         <p class="text-muted text-center py-4">@Localizer["Vd_NoFiles"]</p>

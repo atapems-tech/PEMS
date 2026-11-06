@@ -3,6 +3,11 @@
 All notable changes to PEMS. No system version is defined yet (plan row F_CI), so entries are grouped by date
 and theme and were reconstructed from the git history (initial import 2026-09-05). Newest first.
 
+## 2026-11-06 - VDR Files tab: upload (SCRUM-531)
+
+### Added
+- The VDR Files tab has an upload form: revision, kind (document, comment sheet, reply sheet) and file. New action `VDRController.UploadSubmissionFile` with the same rules as the other VDR uploads (upload policy, VDR Edit permission), and the submission must belong to the item. The file is stored in PEMS (`vdr/documents`, `vdr/comment-sheets`, `vdr/reply-sheets`), linked to the submission (a new file replaces the link of that kind; the old file stays stored), and the page opens on the Files tab with it in the preview. This is the first way to attach the main document of a VDR submission on the VDR page; before, it only came from AI Intake or the import. "Upload to FTP" keeps no copy in PEMS, which is why files sent that way never showed. Tests in `VdrNumberingAndFilesTests`.
+
 ## 2026-11-06 - VDR: number generation in Admin > Document numbering, Files tab with preview (SCRUM-529, 530)
 
 ### Changed
