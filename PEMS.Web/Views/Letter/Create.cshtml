@@ -70,7 +70,7 @@
                     <pems-input type="checkbox" name="responseRequired" value="true" id="responseRequired" checked="@respRequired" kind="check" />
                     <label class="form-check-label" for="responseRequired">@Localizer["Lt_ResponseRequired"]</label>
                 </div>
-                <div class="mt-2" id="responseDueWrap" style="max-width:260px;">
+                <div class="mt-2 pems-maxw-260" id="responseDueWrap">
                     <pems-label css="small" for="responseDueDate">@Localizer["Lt_ResponseDueDate"]</pems-label>
                     <pems-date name="responseDueDate" id="responseDueDate" value="@respDue" aria-describedby="responseDueError" aria-invalid="@(respError != null ? "true" : "false")" />
                     <div id="responseDueError" class="text-danger small mt-1" role="alert" @(respError == null ? "hidden" : "")>

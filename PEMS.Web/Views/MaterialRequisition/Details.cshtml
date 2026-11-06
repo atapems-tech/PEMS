@@ -78,17 +78,17 @@
                             <input type="hidden" name="mrId" value="@Model.MRId" />
                             <input type="hidden" name="mrqId" value="@q.MRQId" />
 
-                            <pems-select scale="small" name="technical" style="width:110px;" title="Technical Evaluation">
+                            <pems-select class="pems-w-110" scale="small" name="technical" title="Technical Evaluation">
                                 @foreach (var v in new[] { "Pending", "Passed", "Failed" })
                                 { <option value="@v" selected="@(v == q.TechnicalEvaluation)">@v</option> }
                             </pems-select>
 
-                            <pems-select scale="small" name="commercial" style="width:110px;" title="Commercial Evaluation">
+                            <pems-select class="pems-w-110" scale="small" name="commercial" title="Commercial Evaluation">
                                 @foreach (var v in new[] { "Pending", "Passed", "Failed" })
                                 { <option value="@v" selected="@(v == q.CommercialEvaluation)">@v</option> }
                             </pems-select>
 
-                            <pems-select scale="small" name="approval" style="width:110px;" title="Approval Status">
+                            <pems-select class="pems-w-110" scale="small" name="approval" title="Approval Status">
                                 @foreach (var v in new[] { "Pending", "Approved", "Rejected" })
                                 { <option value="@v" selected="@(v == q.ApprovalStatus)">@v</option> }
                             </pems-select>

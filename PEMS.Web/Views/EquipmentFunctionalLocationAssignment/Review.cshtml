@@ -103,7 +103,7 @@
                                         <input type="hidden" name="page" value="@Model.Rows.Page" />
                                         <input type="hidden" name="status" value="@statusFilter" />
                                         <input type="hidden" name="include" value="@(!r.IncludeInCommit)" />
-                                        <pems-button tone="none" size="small" css="@(r.IncludeInCommit ? "btn-success" : "btn-outline-secondary")" type="submit" style="width:36px;" title="@(r.IncludeInCommit ? "Approved - click to exclude" : "Excluded - click to approve")">
+                                        <pems-button class="pems-w-36" tone="none" size="small" css="@(r.IncludeInCommit ? "btn-success" : "btn-outline-secondary")" type="submit" title="@(r.IncludeInCommit ? "Approved - click to exclude" : "Excluded - click to approve")">
                                             <pems-icon css="@(r.IncludeInCommit ? "bi-check-lg" : "bi-x-lg")" />
                                         </pems-button>
                                     </form>

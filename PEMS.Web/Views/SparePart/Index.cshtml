@@ -60,12 +60,12 @@
                              filtered="@(filterCount > 0 || !string.IsNullOrEmpty(q))" clear-href="@Url.Action("Index")">
                 <thead>
                     <tr>
-                        <th data-col-key="partNo" data-resizable="true" data-min-width="100" data-max-width="220" style="width:140px">@Localizer["Sp_PartNo"]</th>
-                        <th data-col-key="name" data-resizable="true" data-min-width="140" data-max-width="320" style="width:220px">@Localizer["Eq_Name"]</th>
-                        <th data-col-key="mfr" data-resizable="true" data-min-width="100" data-max-width="220" style="width:140px" class="vs-hide-md">@Localizer["Sp_Manufacturer"]</th>
-                        <th data-col-key="location" data-resizable="true" data-min-width="100" data-max-width="220" style="width:140px" class="vs-hide-md">@Localizer["Sp_Location"]</th>
-                        <th data-col-key="qty" data-resizable="true" data-min-width="100" data-max-width="200" style="width:130px">@Localizer["Sp_Stock"]</th>
-                        <th data-col-key="actions" data-resizable="false" style="width:90px"><span class="visually-hidden">@Localizer["Ed_Actions"]</span></th>
+                        <th class="pems-w-140" data-col-key="partNo" data-resizable="true" data-min-width="100" data-max-width="220">@Localizer["Sp_PartNo"]</th>
+                        <th class="pems-w-220" data-col-key="name" data-resizable="true" data-min-width="140" data-max-width="320">@Localizer["Eq_Name"]</th>
+                        <th data-col-key="mfr" data-resizable="true" data-min-width="100" data-max-width="220" class="vs-hide-md pems-w-140">@Localizer["Sp_Manufacturer"]</th>
+                        <th data-col-key="location" data-resizable="true" data-min-width="100" data-max-width="220" class="vs-hide-md pems-w-140">@Localizer["Sp_Location"]</th>
+                        <th class="pems-w-130" data-col-key="qty" data-resizable="true" data-min-width="100" data-max-width="200">@Localizer["Sp_Stock"]</th>
+                        <th class="pems-w-90" data-col-key="actions" data-resizable="false"><span class="visually-hidden">@Localizer["Ed_Actions"]</span></th>
                     </tr>
                 </thead>
                 <tbody>

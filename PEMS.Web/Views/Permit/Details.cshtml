@@ -186,7 +186,7 @@
         {
             <form asp-action="Suspend" method="post" class="d-flex flex-wrap gap-2">
                 <input type="hidden" name="id" value="@Model.PermitId" />
-                <pems-input scale="small" css="flex-grow-1" type="text" name="reason" style="min-width:160px;max-width:280px;" placeholder="Suspend reason" />
+                <pems-input class="pems-minw-160 pems-maxw-280" scale="small" css="flex-grow-1" type="text" name="reason" placeholder="Suspend reason" />
                 <pems-button tone="warning" size="small" outline="true" type="submit">Suspend</pems-button>
             </form>
             <form asp-action="Close" method="post">
@@ -205,7 +205,7 @@
         {
             <form asp-action="Revoke" method="post" class="d-flex flex-wrap gap-2">
                 <input type="hidden" name="id" value="@Model.PermitId" />
-                <pems-input scale="small" css="flex-grow-1" type="text" name="reason" style="min-width:160px;max-width:280px;" placeholder="Revocation reason" />
+                <pems-input class="pems-minw-160 pems-maxw-280" scale="small" css="flex-grow-1" type="text" name="reason" placeholder="Revocation reason" />
                 <pems-button tone="danger" size="small" outline="true" type="submit" data-pems-confirm="این Permit ابطال شود؟">@Localizer["Revoke"]</pems-button>
             </form>
         }
@@ -267,7 +267,7 @@
             {
                 <form asp-controller="ExecutionGate" asp-action="EmergencyOverride" method="post" class="d-flex flex-wrap gap-2">
                     <input type="hidden" name="permitId" value="@Model.PermitId" />
-                    <pems-input scale="small" css="flex-grow-1" type="text" name="reason" style="min-width:160px;max-width:280px;" placeholder="Emergency reason (required)" required />
+                    <pems-input class="pems-minw-160 pems-maxw-280" scale="small" css="flex-grow-1" type="text" name="reason" placeholder="Emergency reason (required)" required />
                     <pems-button tone="danger" size="small" outline="true" type="button"
                             data-pems-confirm="Emergency Override یک اقدام واقعاً استثنایی است. مطمئن هستید؟" onclick="pemsSubmitWithStepUp(this)">
                         <pems-icon name="bi-exclamation-triangle" /> Emergency Override
@@ -367,13 +367,13 @@
             }
             <form asp-action="RespondApproval" method="post" class="d-flex flex-wrap gap-2 align-items-center @(approveElig == null && rejectElig == null ? "border-top pt-3" : "")">
                 <input type="hidden" name="id" value="@Model.PermitId" />
-                <pems-input scale="small" css="flex-grow-1" type="text" name="comment" style="min-width:160px;max-width:280px;" placeholder="@Localizer["Comment (optional)"]" />
+                <pems-input class="pems-minw-160 pems-maxw-280" scale="small" css="flex-grow-1" type="text" name="comment" placeholder="@Localizer["Comment (optional)"]" />
                 <pems-button tone="success" size="small" type="button" disabled="@(approveElig != null && approveElig.Result != "Eligible")" onclick="pemsSubmitWithStepUp(this, 'decision', 'Approve')">Approve</pems-button>
                 <pems-button tone="danger" size="small" outline="true" type="button" disabled="@(rejectElig != null && rejectElig.Result != "Eligible")" data-pems-confirm="این مرحله رد شود؟ کل زنجیره‌ی تایید با نتیجه‌ی Rejected بسته می‌شود." onclick="pemsSubmitWithStepUp(this, 'decision', 'Reject')">Reject</pems-button>
             </form>
             <form asp-action="ReturnForRework" method="post" class="d-flex flex-wrap gap-2 align-items-center mt-2">
                 <input type="hidden" name="id" value="@Model.PermitId" />
-                <pems-input scale="small" css="flex-grow-1" type="text" name="comment" style="min-width:160px;max-width:280px;" placeholder="Rework instructions" />
+                <pems-input class="pems-minw-160 pems-maxw-280" scale="small" css="flex-grow-1" type="text" name="comment" placeholder="Rework instructions" />
                 <pems-button tone="warning" size="small" outline="true" type="submit" data-pems-confirm="Permit برای اصلاح به Draft برگردد؟">Return for Rework</pems-button>
             </form>
         }
@@ -457,8 +457,8 @@
                             <form asp-controller="Isolation" asp-action="MarkIsolated" method="post" class="d-inline">
                                 <input type="hidden" name="id" value="@p.IsolationPointId" />
                                 <input type="hidden" name="permitId" value="@Model.PermitId" />
-                                <pems-input scale="small" css="d-inline-block" type="text" name="lockNumber" placeholder="Lock #" style="width:90px;" />
-                                <pems-input scale="small" css="d-inline-block" type="text" name="tagNumber" placeholder="Tag #" style="width:90px;" />
+                                <pems-input class="pems-w-90" scale="small" css="d-inline-block" type="text" name="lockNumber" placeholder="Lock #" />
+                                <pems-input class="pems-w-90" scale="small" css="d-inline-block" type="text" name="tagNumber" placeholder="Tag #" />
                                 <pems-button tone="warning" size="small" outline="true" type="submit"><pems-icon name="bi-lock-fill" /> Isolate</pems-button>
                             </form>
                             <form asp-controller="Isolation" asp-action="Cancel" method="post" class="d-inline">
@@ -570,7 +570,7 @@
                 <form asp-controller="GasTest" asp-action="Invalidate" method="post" class="d-flex gap-2 align-items-center">
                     <input type="hidden" name="id" value="@g.GasTestId" />
                     <input type="hidden" name="permitId" value="@Model.PermitId" />
-                    <pems-input scale="small" type="text" name="reason" placeholder="Invalidation reason" style="max-width:260px;" required />
+                    <pems-input class="pems-maxw-260" scale="small" type="text" name="reason" placeholder="Invalidation reason" required />
                     <pems-button tone="danger" size="small" outline="true" type="submit" data-pems-confirm="این تست گاز باطل شود؟">Invalidate</pems-button>
                 </form>
             }
@@ -691,7 +691,7 @@
                                 <form asp-controller="Simops" asp-action="AcceptRisk" method="post" class="d-inline-flex flex-wrap gap-1 align-items-center">
                                     <input type="hidden" name="id" value="@c.SimopsConflictId" />
                                     <input type="hidden" name="permitId" value="@Model.PermitId" />
-                                    <pems-input scale="small" type="text" name="justification" style="min-width:110px;max-width:180px;" placeholder="Justification" required />
+                                    <pems-input class="pems-minw-110 pems-maxw-180" scale="small" type="text" name="justification" placeholder="Justification" required />
                                     <pems-button tone="neutral" size="small" outline="true" type="button" disabled="@(simopsAcceptRiskElig != null && simopsAcceptRiskElig.Result != "Eligible")" onclick="pemsSubmitWithStepUp(this)">Accept Risk</pems-button>
                                 </form>
                             }
@@ -700,7 +700,7 @@
                                 <form asp-controller="Simops" asp-action="Resolve" method="post" class="d-inline-flex flex-wrap gap-1 align-items-center">
                                     <input type="hidden" name="id" value="@c.SimopsConflictId" />
                                     <input type="hidden" name="permitId" value="@Model.PermitId" />
-                                    <pems-input scale="small" type="text" name="resolutionNotes" style="min-width:110px;max-width:180px;" placeholder="Resolution notes" required />
+                                    <pems-input class="pems-minw-110 pems-maxw-180" scale="small" type="text" name="resolutionNotes" placeholder="Resolution notes" required />
                                     <pems-button tone="success" size="small" outline="true" type="button" disabled="@(simopsResolveElig != null && simopsResolveElig.Result != "Eligible")" onclick="pemsSubmitWithStepUp(this)">Resolve</pems-button>
                                 </form>
                             }

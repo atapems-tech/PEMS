@@ -34,15 +34,15 @@
             <pems-list-table grid-key="Transmittal" empty="@(!Model.Items.Any())" empty-text="@Localizer["Vs_NoTransmittals"]">
                 <thead>
                     <tr>
-                        <th data-col-key="no" data-resizable="true" data-min-width="100" data-max-width="220" style="width:140px">@Localizer["Vs_TransmittalNo"]</th>
-                        <th data-col-key="project" data-resizable="true" data-min-width="100" data-max-width="220" style="width:140px">@Localizer["Vs_Project"]</th>
-                        <th data-col-key="from" data-resizable="true" data-min-width="80" data-max-width="180" style="width:110px">@Localizer["Vs_From"]</th>
-                        <th data-col-key="to" data-resizable="true" data-min-width="80" data-max-width="220" style="width:140px">@Localizer["Vs_To"]</th>
-                        <th data-col-key="purpose" data-resizable="true" data-min-width="100" data-max-width="220" style="width:140px" class="vs-hide-md">@Localizer["Vs_Purpose"]</th>
-                        <th data-col-key="items" data-resizable="true" data-min-width="60" data-max-width="120" style="width:80px">@Localizer["Vs_Items"]</th>
-                        <th data-col-key="status" data-resizable="true" data-min-width="100" data-max-width="240" style="width:170px">@Localizer["Status"]</th>
-                        <th data-col-key="date" data-resizable="true" data-min-width="100" data-max-width="160" style="width:120px">@Localizer["Vs_Date"]</th>
-                        <th data-col-key="actions" data-resizable="false" style="width:60px"><span class="visually-hidden">@Localizer["Ed_Actions"]</span></th>
+                        <th class="pems-w-140" data-col-key="no" data-resizable="true" data-min-width="100" data-max-width="220">@Localizer["Vs_TransmittalNo"]</th>
+                        <th class="pems-w-140" data-col-key="project" data-resizable="true" data-min-width="100" data-max-width="220">@Localizer["Vs_Project"]</th>
+                        <th class="pems-w-110" data-col-key="from" data-resizable="true" data-min-width="80" data-max-width="180">@Localizer["Vs_From"]</th>
+                        <th class="pems-w-140" data-col-key="to" data-resizable="true" data-min-width="80" data-max-width="220">@Localizer["Vs_To"]</th>
+                        <th data-col-key="purpose" data-resizable="true" data-min-width="100" data-max-width="220" class="vs-hide-md pems-w-140">@Localizer["Vs_Purpose"]</th>
+                        <th class="pems-w-80" data-col-key="items" data-resizable="true" data-min-width="60" data-max-width="120">@Localizer["Vs_Items"]</th>
+                        <th class="pems-w-170" data-col-key="status" data-resizable="true" data-min-width="100" data-max-width="240">@Localizer["Status"]</th>
+                        <th class="pems-w-120" data-col-key="date" data-resizable="true" data-min-width="100" data-max-width="160">@Localizer["Vs_Date"]</th>
+                        <th class="pems-w-60" data-col-key="actions" data-resizable="false"><span class="visually-hidden">@Localizer["Ed_Actions"]</span></th>
                     </tr>
                 </thead>
                 <tbody>

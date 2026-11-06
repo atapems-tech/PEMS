@@ -242,7 +242,7 @@
             @if ((bool)(ViewBag.CanUnfreeze ?? false))
             {
                 <form asp-action="Unfreeze" asp-route-id="@Model.DocumentId" method="post" class="d-flex flex-wrap gap-2 align-items-center">
-                    <pems-input scale="small" type="text" name="reason" style="max-width:240px;" placeholder="Unfreeze reason (required)" required />
+                    <pems-input class="pems-maxw-240" scale="small" type="text" name="reason" placeholder="Unfreeze reason (required)" required />
                     <pems-button tone="dark" size="small" outline="true" type="submit" data-pems-confirm="انجماد این مدرک برداشته شود؟">
                         <pems-icon name="bi-sun" /> @Localizer["Unfreeze"]
                     </pems-button>
@@ -259,7 +259,7 @@
             @if ((bool)(ViewBag.CanReleaseHold ?? false))
             {
                 <form asp-action="ReleaseHold" asp-route-id="@Model.DocumentId" method="post" class="d-flex flex-wrap gap-2 align-items-center">
-                    <pems-input scale="small" type="text" name="reason" style="max-width:240px;" placeholder="Release reason (required)" required />
+                    <pems-input class="pems-maxw-240" scale="small" type="text" name="reason" placeholder="Release reason (required)" required />
                     <pems-button tone="dark" size="small" outline="true" type="submit" data-pems-confirm="Hold این مدرک رفع شود؟">
                         <pems-icon name="bi-play-circle" /> @Localizer["Release Hold"]
                     </pems-button>
@@ -1005,7 +1005,7 @@
                         <form asp-action="SetCommentAction" method="post" class="d-inline">
                             <input type="hidden" name="documentId" value="@Model.DocumentId" />
                             <input type="hidden" name="commentId" value="@c.VDRCommentId" />
-                            <pems-select scale="small" css="mt-1" name="actionStatus" style="width:170px;" onchange="this.form.submit()">
+                            <pems-select class="pems-w-170" scale="small" css="mt-1" name="actionStatus" onchange="this.form.submit()">
                                 @foreach (var s in new[] { "OpenComment", "VendorResponsePending", "Verified", "Closed", "NoActionRequired" })
                                 { <option value="@s" selected="@(s == c.ActionStatus)">@s</option> }
                             </pems-select>

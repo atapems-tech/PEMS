@@ -3,7 +3,7 @@
 @using PEMS.Web.Resources
 @inject IStringLocalizer<SharedResource> Localizer
 
-<div class="content-card" style="max-width:720px;" data-pems-secret-reveal>
+<div class="content-card pems-maxw-720" data-pems-secret-reveal>
     <h2 class="h5 mb-3"><pems-icon name="bi-check-circle-fill" css="text-success me-1" /> @Localizer["New recovery codes"]: <strong>@Model.UserName</strong></h2>
 
     <pems-alert tone="warning">

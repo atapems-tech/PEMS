@@ -120,7 +120,7 @@
         {
             <form asp-action="Terminate" method="post" class="d-flex gap-1 align-items-center">
                 <input type="hidden" name="contractId" value="@Model.ContractId" />
-                <pems-input scale="small" type="text" name="reason" placeholder="@Localizer["Reason"]" style="width:160px" />
+                <pems-input class="pems-w-160" scale="small" type="text" name="reason" placeholder="@Localizer["Reason"]" />
                 <pems-button tone="danger" size="small" outline="true" type="submit">@Localizer["Terminate Contract"]</pems-button>
             </form>
         }

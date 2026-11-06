@@ -11,8 +11,8 @@
     <pems-button tone="neutral" size="small" outline="true" css="mb-3" as="a" asp-action="Index"><pems-icon name="bi-arrow-left" /> @Localizer["Discipline Workspaces"]</pems-button>
 
     <form method="get" class="d-flex gap-2 mb-3 flex-wrap">
-        <pems-input scale="small" name="q" value="@ViewBag.Query" style="max-width:260px" placeholder="@Localizer["Org_Positions_Search"]" aria-label="@Localizer["Org_Positions_Search"]" />
-        <pems-select scale="small" name="status" style="max-width:180px" aria-label="@Localizer["Org_Filter_Status"]">
+        <pems-input class="pems-maxw-260" scale="small" name="q" value="@ViewBag.Query" placeholder="@Localizer["Org_Positions_Search"]" aria-label="@Localizer["Org_Positions_Search"]" />
+        <pems-select class="pems-maxw-180" scale="small" name="status" aria-label="@Localizer["Org_Filter_Status"]">
             <option value="" selected="@((string)ViewBag.Status == "")">@Localizer["Org_Filter_All"]</option>
             <option value="active" selected="@((string)ViewBag.Status == "active")">@Localizer["Org_Filter_Active"]</option>
             <option value="inactive" selected="@((string)ViewBag.Status == "inactive")">@Localizer["Org_Inactive"]</option>

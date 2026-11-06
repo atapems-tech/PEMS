@@ -44,7 +44,7 @@
         {
             <form asp-action="MarkHardCopyShipped" method="post" class="d-flex gap-1">
                 <input type="hidden" name="mdbId" value="@Model.MDBId" />
-                <pems-input scale="small" type="number" name="hardCopyCount" style="width:90px;" placeholder="# volumes" />
+                <pems-input class="pems-w-90" scale="small" type="number" name="hardCopyCount" placeholder="# volumes" />
                 <pems-button tone="primary" size="small" outline="true">Mark Hard Copy Shipped</pems-button>
             </form>
         }

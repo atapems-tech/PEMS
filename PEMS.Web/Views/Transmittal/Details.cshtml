@@ -56,7 +56,7 @@
             {
                 <div>
                     <pems-label css="small mb-0">@Localizer["Td_ResponseDueDays"]</pems-label>
-                    <pems-input scale="small" name="responseDueWorkingDays" type="number" value="10" min="1" style="width:100px;" />
+                    <pems-input class="pems-w-100" scale="small" name="responseDueWorkingDays" type="number" value="10" min="1" />
                 </div>
             }
             @if ((bool)(ViewBag.CanIssue ?? false))
@@ -144,7 +144,7 @@
                         {
                             <form asp-action="Acknowledge" asp-route-id="@Model.TransmittalId" method="post" class="d-flex gap-1 align-items-center">
                                 <input type="hidden" name="recipientId" value="@r.TransmittalRecipientId" />
-                                <pems-input scale="small" name="note" placeholder="@Localizer["Td_NotePh"]" style="min-width:140px;" />
+                                <pems-input class="pems-minw-140" scale="small" name="note" placeholder="@Localizer["Td_NotePh"]" />
                                 <pems-button tone="success" size="small" outline="true" title="@Localizer["Td_RecordAck"]"><pems-icon name="bi-check2" /></pems-button>
                             </form>
                         }

@@ -242,7 +242,7 @@
                             <form asp-action="UploadToFtp" method="post" enctype="multipart/form-data" class="d-flex gap-1">
                                 <input type="hidden" name="vdrItemId" value="@Model.VDRItemId" />
                                 <input type="hidden" name="submissionId" value="@s.VDRSubmissionId" />
-                                <pems-input scale="small" type="file" name="file" style="max-width:120px;" required />
+                                <pems-input class="pems-maxw-120" scale="small" type="file" name="file" required />
                                 <pems-button tone="primary" size="small" outline="true" title="@Localizer["Vd_UploadFtp"]"><pems-icon name="bi-cloud-upload" /></pems-button>
                             </form>
                         }
@@ -261,7 +261,7 @@
                             <form asp-action="UploadCommentSheet" method="post" enctype="multipart/form-data" class="d-flex gap-1">
                                 <input type="hidden" name="vdrItemId" value="@Model.VDRItemId" />
                                 <input type="hidden" name="submissionId" value="@s.VDRSubmissionId" />
-                                <pems-input scale="small" type="file" name="file" style="max-width:120px;" required />
+                                <pems-input class="pems-maxw-120" scale="small" type="file" name="file" required />
                                 <pems-button tone="primary" size="small" outline="true"><pems-icon name="bi-upload" /></pems-button>
                             </form>
                         }
@@ -276,7 +276,7 @@
                             <form asp-action="UploadReplySheet" method="post" enctype="multipart/form-data" class="d-flex gap-1">
                                 <input type="hidden" name="vdrItemId" value="@Model.VDRItemId" />
                                 <input type="hidden" name="submissionId" value="@s.VDRSubmissionId" />
-                                <pems-input scale="small" type="file" name="file" style="max-width:120px;" required />
+                                <pems-input class="pems-maxw-120" scale="small" type="file" name="file" required />
                                 <pems-button tone="primary" size="small" outline="true"><pems-icon name="bi-upload" /></pems-button>
                             </form>
                         }
@@ -444,7 +444,7 @@
                         <form asp-action="SetCommentAction" method="post" class="d-inline">
                             <input type="hidden" name="vdrItemId" value="@Model.VDRItemId" />
                             <input type="hidden" name="commentId" value="@c.VDRCommentId" />
-                            <pems-select scale="small" css="mt-1" name="actionStatus" style="width:170px;" onchange="this.form.submit()">
+                            <pems-select class="pems-w-170" scale="small" css="mt-1" name="actionStatus" onchange="this.form.submit()">
                                 @foreach (var s in new[] { "OpenComment", "VendorResponsePending", "Verified", "Closed", "NoActionRequired" })
                                 { <option value="@s" selected="@(s == c.ActionStatus)">@VdrUi.Loc(Localizer, "St_", s)</option> }
                             </pems-select>

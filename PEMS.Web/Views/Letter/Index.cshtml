@@ -580,20 +580,20 @@
                 <pems-table kind="enterprise" css="pems-grid-table pems-compact-rows mb-0 lp-table" data-grid-key="Letter">
                     <thead>
                         <tr>
-                            <th data-col-key="select" data-resizable="false" style="width:34px;"><input type="checkbox" id="selectAllLetters" aria-label="@Localizer["Lt_SelectAll"]" /></th>
-                            <th data-col-key="star" data-resizable="false" style="width:30px;"><span class="visually-hidden">@Localizer["Lt_QueueStarred"]</span></th>
-                            <th data-col-key="type" data-resizable="false" style="width:38px;"><span class="visually-hidden">@Localizer["Type"]</span></th>
+                            <th class="pems-w-34" data-col-key="select" data-resizable="false"><input type="checkbox" id="selectAllLetters" aria-label="@Localizer["Lt_SelectAll"]" /></th>
+                            <th class="pems-w-30" data-col-key="star" data-resizable="false"><span class="visually-hidden">@Localizer["Lt_QueueStarred"]</span></th>
+                            <th class="pems-w-38" data-col-key="type" data-resizable="false"><span class="visually-hidden">@Localizer["Type"]</span></th>
                             <th data-col-key="subject" data-resizable="true" data-min-width="200" data-max-width="700" aria-sort="@AriaSort("subject")"><a class="ct-sort" href="@SortUrl("subject")">@Localizer["Subject"] <i class="bi @SortIcon("subject")" aria-hidden="true"></i></a></th>
-                            <th data-col-key="letterNo" data-resizable="true" data-min-width="90" data-max-width="200" style="width:118px;" aria-sort="@AriaSort("number")"><a class="ct-sort" href="@SortUrl("number")">@Localizer["Letter No"] <i class="bi @SortIcon("number")" aria-hidden="true"></i></a></th>
-                            <th data-col-key="senderReceiver" data-resizable="true" data-min-width="120" data-max-width="260" style="width:150px;" aria-sort="@AriaSort("sender")"><a class="ct-sort" href="@SortUrl("sender")">@Localizer["Sender / Receiver"] <i class="bi @SortIcon("sender")" aria-hidden="true"></i></a></th>
-                            <th data-col-key="status" data-resizable="true" data-min-width="90" data-max-width="180" style="width:104px;" aria-sort="@AriaSort("status")"><a class="ct-sort" href="@SortUrl("status")">@Localizer["Status"] <i class="bi @SortIcon("status")" aria-hidden="true"></i></a></th>
-                            <th data-col-key="priority" data-resizable="true" data-min-width="80" data-max-width="140" style="width:88px;" aria-sort="@AriaSort("priority")"><a class="ct-sort" href="@SortUrl("priority")">@Localizer["Lt_Priority"] <i class="bi @SortIcon("priority")" aria-hidden="true"></i></a></th>
-                            <th data-col-key="responseDue" data-resizable="true" data-min-width="100" data-max-width="180" style="width:130px;">@Localizer["Lt_ColResponseDue"]</th>
-                            <th data-col-key="date" data-resizable="true" data-min-width="90" data-max-width="160" style="width:92px;" aria-sort="@AriaSort("date")"><a class="ct-sort" href="@SortUrl("date")">@Localizer["Date"] <i class="bi @SortIcon("date")" aria-hidden="true"></i></a></th>
-                            <th data-col-key="discipline" data-resizable="true" data-min-width="90" data-max-width="200" style="width:120px;">@Localizer["Lt_Discipline"]</th>
-                            <th data-col-key="attachments" data-resizable="false" style="width:70px;"><pems-icon name="bi-paperclip" aria-hidden="true" /><span class="visually-hidden">@Localizer["Lt_ColAttachments"]</span></th>
-                            <th data-col-key="lastActivity" data-resizable="true" data-min-width="100" data-max-width="180" style="width:110px;">@Localizer["Lt_ColLastActivity"]</th>
-                            <th data-col-key="actions" data-resizable="false" style="width:112px;"></th>
+                            <th class="pems-w-118" data-col-key="letterNo" data-resizable="true" data-min-width="90" data-max-width="200" aria-sort="@AriaSort("number")"><a class="ct-sort" href="@SortUrl("number")">@Localizer["Letter No"] <i class="bi @SortIcon("number")" aria-hidden="true"></i></a></th>
+                            <th class="pems-w-150" data-col-key="senderReceiver" data-resizable="true" data-min-width="120" data-max-width="260" aria-sort="@AriaSort("sender")"><a class="ct-sort" href="@SortUrl("sender")">@Localizer["Sender / Receiver"] <i class="bi @SortIcon("sender")" aria-hidden="true"></i></a></th>
+                            <th class="pems-w-104" data-col-key="status" data-resizable="true" data-min-width="90" data-max-width="180" aria-sort="@AriaSort("status")"><a class="ct-sort" href="@SortUrl("status")">@Localizer["Status"] <i class="bi @SortIcon("status")" aria-hidden="true"></i></a></th>
+                            <th class="pems-w-88" data-col-key="priority" data-resizable="true" data-min-width="80" data-max-width="140" aria-sort="@AriaSort("priority")"><a class="ct-sort" href="@SortUrl("priority")">@Localizer["Lt_Priority"] <i class="bi @SortIcon("priority")" aria-hidden="true"></i></a></th>
+                            <th class="pems-w-130" data-col-key="responseDue" data-resizable="true" data-min-width="100" data-max-width="180">@Localizer["Lt_ColResponseDue"]</th>
+                            <th class="pems-w-92" data-col-key="date" data-resizable="true" data-min-width="90" data-max-width="160" aria-sort="@AriaSort("date")"><a class="ct-sort" href="@SortUrl("date")">@Localizer["Date"] <i class="bi @SortIcon("date")" aria-hidden="true"></i></a></th>
+                            <th class="pems-w-120" data-col-key="discipline" data-resizable="true" data-min-width="90" data-max-width="200">@Localizer["Lt_Discipline"]</th>
+                            <th class="pems-w-70" data-col-key="attachments" data-resizable="false"><pems-icon name="bi-paperclip" aria-hidden="true" /><span class="visually-hidden">@Localizer["Lt_ColAttachments"]</span></th>
+                            <th class="pems-w-110" data-col-key="lastActivity" data-resizable="true" data-min-width="100" data-max-width="180">@Localizer["Lt_ColLastActivity"]</th>
+                            <th class="pems-w-112" data-col-key="actions" data-resizable="false"></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -859,7 +859,7 @@
                                 }
                             </pems-row>
                             <pems-label css="small" for="ctSetFrozen">@Localizer["Ct_FrozenColumns"]</pems-label>
-                            <pems-select scale="small" id="ctSetFrozen" style="max-width:220px"><option value="0">@Localizer["Ct_None"]</option><option value="1">1</option><option value="2">2</option><option value="3">3</option></pems-select>
+                            <pems-select class="pems-maxw-220" scale="small" id="ctSetFrozen"><option value="0">@Localizer["Ct_None"]</option><option value="1">1</option><option value="2">2</option><option value="3">3</option></pems-select>
                         </section>
                         <section class="ct-pane" data-pane-body="tags" role="tabpanel" hidden></section>
                         <section class="ct-pane" data-pane-body="delegation" role="tabpanel" hidden></section>

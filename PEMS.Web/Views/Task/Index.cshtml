@@ -121,7 +121,7 @@
                                         <input type="hidden" name="taskItemId" value="@t.TaskItemId" />
                                         <input type="hidden" name="tab" value="@tab" />
                                         <label class="visually-hidden" for="st-@t.TaskItemId">@Localizer["Tm_MoveTo"]</label>
-                                        <pems-select scale="small" id="st-@t.TaskItemId" name="status" style="width:130px;">
+                                        <pems-select class="pems-w-130" scale="small" id="st-@t.TaskItemId" name="status">
                                             @foreach (var s in targets) { <option value="@s">@TaskManagerUi.LegacyStatus(Localizer, s)</option> }
                                         </pems-select>
                                         <pems-button tone="neutral" size="small" outline="true" aria-label="@Localizer["Tm_ChangeStatus"]"><pems-icon name="bi-check2" aria-hidden="true" /></pems-button>

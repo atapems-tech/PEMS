@@ -60,7 +60,7 @@
                                     <input type="hidden" name="rowId" value="@r.VDRImportRowId" />
                                     <input type="hidden" name="batchId" value="@Model.VDRImportBatchId" />
                                     <input type="hidden" name="include" value="@(!r.IncludeInCommit)" />
-                                    <pems-button tone="none" size="small" css="@(r.IncludeInCommit ? "btn-success" : "btn-outline-secondary")" type="submit" style="width:36px;">
+                                    <pems-button class="pems-w-36" tone="none" size="small" css="@(r.IncludeInCommit ? "btn-success" : "btn-outline-secondary")" type="submit">
                                         <pems-icon css="@(r.IncludeInCommit ? "bi-check-lg" : "bi-x-lg")" />
                                     </pems-button>
                                 </form>

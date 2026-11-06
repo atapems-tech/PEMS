@@ -81,13 +81,13 @@
             <pems-list-table grid-key="AuthorizationAudit" empty="@(Model.Items.Count == 0)" empty-text="@Localizer["No authorization events found"]">
                 <thead>
                     <tr>
-                        <th data-col-key="time" data-resizable="true" data-min-width="130" data-max-width="220" style="width:160px">@Localizer["AlL_Time"]</th>
-                        <th data-col-key="user" data-resizable="true" data-min-width="90" data-max-width="200" style="width:130px">@Localizer["AlL_User"]</th>
-                        <th data-col-key="permission" data-resizable="true" data-min-width="140" data-max-width="320" style="width:200px">@Localizer["Permission"]</th>
-                        <th data-col-key="resourceId" data-resizable="true" data-min-width="80" data-max-width="180" style="width:110px" class="vs-hide-md">@Localizer["Resource ID"]</th>
-                        <th data-col-key="decision" data-resizable="true" data-min-width="80" data-max-width="140" style="width:100px">@Localizer["Decision"]</th>
+                        <th class="pems-w-160" data-col-key="time" data-resizable="true" data-min-width="130" data-max-width="220">@Localizer["AlL_Time"]</th>
+                        <th class="pems-w-130" data-col-key="user" data-resizable="true" data-min-width="90" data-max-width="200">@Localizer["AlL_User"]</th>
+                        <th class="pems-w-200" data-col-key="permission" data-resizable="true" data-min-width="140" data-max-width="320">@Localizer["Permission"]</th>
+                        <th data-col-key="resourceId" data-resizable="true" data-min-width="80" data-max-width="180" class="vs-hide-md pems-w-110">@Localizer["Resource ID"]</th>
+                        <th class="pems-w-100" data-col-key="decision" data-resizable="true" data-min-width="80" data-max-width="140">@Localizer["Decision"]</th>
                         <th data-col-key="reason" data-resizable="true" data-min-width="140" data-max-width="520">@Localizer["ItL_Reason"]</th>
-                        <th data-col-key="scope" data-resizable="true" data-min-width="90" data-max-width="220" style="width:140px" class="vs-hide-md">@Localizer["Scope"]</th>
+                        <th data-col-key="scope" data-resizable="true" data-min-width="90" data-max-width="220" class="vs-hide-md pems-w-140">@Localizer["Scope"]</th>
                     </tr>
                 </thead>
                 <tbody>

@@ -47,7 +47,7 @@
                         <form asp-action="SetTaskStatus" method="post" class="d-inline">
                             <input type="hidden" name="disciplineId" value="@s.DisciplineId" />
                             <input type="hidden" name="taskId" value="@t.DisciplineTaskId" />
-                            <pems-select scale="small" name="status" style="width:120px;" onchange="this.form.submit()">
+                            <pems-select class="pems-w-120" scale="small" name="status" onchange="this.form.submit()">
                                 @foreach (var opt in new[] { "Open", "InProgress", "Completed" })
                                 { <option value="@opt" selected="@(opt == t.Status)">@opt</option> }
                             </pems-select>

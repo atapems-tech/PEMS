@@ -48,7 +48,7 @@
     @if (Model.Tasks.Any())
     {
         <pems-related-table>
-            <thead><tr><th style="width:70px;">#</th><th>@Localizer["Title"]</th><th>@Localizer["Description"]</th><th style="width:90px">@Localizer["JpD_EstMin"]</th><th style="width:50px"><span class="visually-hidden">@Localizer["Ed_Actions"]</span></th></tr></thead>
+            <thead><tr><th class="pems-w-70">#</th><th>@Localizer["Title"]</th><th>@Localizer["Description"]</th><th class="pems-w-90">@Localizer["JpD_EstMin"]</th><th class="pems-w-50"><span class="visually-hidden">@Localizer["Ed_Actions"]</span></th></tr></thead>
             <tbody>
                 @foreach (var t in Model.Tasks)
                 {
@@ -117,7 +117,7 @@
     @if (Model.RequiredMaterials.Any())
     {
         <pems-related-table>
-            <thead><tr><th>@Localizer["Material"]</th><th style="width:130px">@Localizer["Required Qty"]</th><th style="width:50px"><span class="visually-hidden">@Localizer["Ed_Actions"]</span></th></tr></thead>
+            <thead><tr><th>@Localizer["Material"]</th><th class="pems-w-130">@Localizer["Required Qty"]</th><th class="pems-w-50"><span class="visually-hidden">@Localizer["Ed_Actions"]</span></th></tr></thead>
             <tbody>
                 @foreach (var rm in Model.RequiredMaterials)
                 {

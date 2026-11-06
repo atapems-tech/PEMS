@@ -175,12 +175,12 @@ else
                         <input type="hidden" name="id" value="@Model.WorkOrderId" />
                         @if (nextStatus == "Assigned")
                         {
-                            <pems-select scale="small" css="d-inline-block" name="assignedTeamId" style="width:200px;" required>
+                            <pems-select class="pems-w-200" scale="small" css="d-inline-block" name="assignedTeamId" required>
                                 <option value="">گروه کاری...</option>
                                 @foreach (var c in (IEnumerable<dynamic>)ViewBag.Teams) { <option value="@c.TeamId">@c.Name</option> }
                             </pems-select>
                         }
-                        <pems-input scale="small" css="d-inline-block" name="reason" style="width:180px;" placeholder="@Localizer["دلیل (اختیاری)"]" />
+                        <pems-input class="pems-w-180" scale="small" css="d-inline-block" name="reason" placeholder="@Localizer["دلیل (اختیاری)"]" />
                         <pems-button tone="primary" size="small" type="submit">Advance to @nextStatus</pems-button>
                     </form>
                 }
@@ -196,7 +196,7 @@ else
             {
                 <form asp-action="Hold" method="post" class="d-inline ms-1">
                     <input type="hidden" name="id" value="@Model.WorkOrderId" />
-                    <pems-input scale="small" css="d-inline-block" name="reason" required style="width:160px;" placeholder="@Localizer["Reason (required)"]" />
+                    <pems-input class="pems-w-160" scale="small" css="d-inline-block" name="reason" required placeholder="@Localizer["Reason (required)"]" />
                     <pems-button tone="warning" size="small" outline="true" type="submit" data-legacy="hold"><pems-icon name="bi-pause-circle" /> @Localizer["Hold"]</pems-button>
                 </form>
             }
@@ -211,7 +211,7 @@ else
             {
                 <form asp-action="Reject" method="post" class="d-inline ms-1">
                     <input type="hidden" name="id" value="@Model.WorkOrderId" />
-                    <pems-input scale="small" css="d-inline-block" name="reason" required style="width:160px;" placeholder="@Localizer["Reason (required)"]" />
+                    <pems-input class="pems-w-160" scale="small" css="d-inline-block" name="reason" required placeholder="@Localizer["Reason (required)"]" />
                     <pems-button tone="danger" size="small" outline="true" type="submit" data-pems-confirm="این WorkOrder رد شود؟">@Localizer["Reject"]</pems-button>
                 </form>
             }
@@ -219,7 +219,7 @@ else
             {
                 <form asp-action="Cancel" method="post" class="d-inline ms-1">
                     <input type="hidden" name="id" value="@Model.WorkOrderId" />
-                    <pems-input scale="small" css="d-inline-block" name="reason" required style="width:160px;" placeholder="@Localizer["Reason (required)"]" />
+                    <pems-input class="pems-w-160" scale="small" css="d-inline-block" name="reason" required placeholder="@Localizer["Reason (required)"]" />
                     <pems-button tone="neutral" size="small" outline="true" type="submit" data-legacy="cancel" data-pems-confirm="این WorkOrder لغو شود؟">@Localizer["Cancel"]</pems-button>
                 </form>
             }
@@ -298,7 +298,7 @@ else
                 <form asp-action="WorkflowAction" method="post" class="d-flex flex-column gap-2 w-100">
                     <input type="hidden" name="id" value="@Model.WorkOrderId" />
                     <div class="d-flex flex-wrap gap-2 align-items-center">
-                        <pems-input scale="small" type="text" name="comment" placeholder="@Localizer["Comment (required for Reject / Cancel / Hold / Return)"]" style="width:300px;" />
+                        <pems-input class="pems-w-300" scale="small" type="text" name="comment" placeholder="@Localizer["Comment (required for Reject / Cancel / Hold / Return)"]" />
                         @foreach (var a in actions)
                         {
                             var cls = a.ActionType == "Approve" ? "btn-pems-solid" : a.ActionType is "Reject" or "Cancel" ? "btn-outline-danger" : "btn-outline-primary";
@@ -732,9 +732,9 @@ else
                                 <input type="hidden" name="workOrderId" value="@Model.WorkOrderId" />
                                 @if (Acc(WoSection.SpareParts) == SectionAccess.Correctable)
                                 {
-                                    <pems-input scale="small" name="reason" style="width:140px;" maxlength="500" required placeholder="@Localizer["Correction reason"]" />
+                                    <pems-input class="pems-w-140" scale="small" name="reason" maxlength="500" required placeholder="@Localizer["Correction reason"]" />
                                 }
-                                <pems-input scale="small" type="number" name="returnQuantity" step="0.01" max="@outstanding" style="width:80px;" placeholder="@Localizer["Qty"]" required />
+                                <pems-input class="pems-w-80" scale="small" type="number" name="returnQuantity" step="0.01" max="@outstanding" placeholder="@Localizer["Qty"]" required />
                                 <pems-button tone="neutral" size="small" outline="true" type="submit" title="Return"><pems-icon name="bi-arrow-return-left" /></pems-button>
                             </form>
                         }
@@ -788,7 +788,7 @@ else
     <div class="content-card mt-3">
         <h6 class="mb-3"><pems-icon name="bi-list-ol" /> Tasks (@tasks.Count(t => t.IsCompleted)/@tasks.Count completed)</h6>
         <pems-related-table>
-            <thead><tr><th style="width:50px;"></th><th style="width:60px;">#</th><th>@Localizer["Title"]</th><th>@Localizer["Description"]</th><th>@Localizer["Completed"]</th></tr></thead>
+            <thead><tr><th class="pems-w-50"></th><th class="pems-w-60">#</th><th>@Localizer["Title"]</th><th>@Localizer["Description"]</th><th>@Localizer["Completed"]</th></tr></thead>
             <tbody>
                 @foreach (var t in tasks)
                 {

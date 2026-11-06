@@ -71,7 +71,7 @@
     <form method="get" class="row g-2 align-items-end">
         <pems-col span="auto">
             <pems-label css="small mb-0">@Localizer["Equipment ID"]</pems-label>
-            <pems-input scale="small" type="number" name="equipmentId" value="@equipmentId" style="width:140px" />
+            <pems-input class="pems-w-140" scale="small" type="number" name="equipmentId" value="@equipmentId" />
         </pems-col>
         <pems-col span="auto"><pems-button tone="primary" size="small" type="submit">Load Points</pems-button></pems-col>
     </form>
@@ -117,7 +117,7 @@
                                     @Html.AntiForgeryToken()
                                     <input type="hidden" name="equipmentId" value="@equipmentId" />
                                     <input type="hidden" name="pointId" value="@p.ConditionMonitoringPointId" />
-                                    <pems-select scale="small" name="evaluationProfileId" style="max-width:160px;">
+                                    <pems-select class="pems-maxw-160" scale="small" name="evaluationProfileId">
                                         <option value="">@Localizer["-- profile --"]</option>
                                         @foreach (var ep in evaluationProfiles)
                                         {

@@ -58,7 +58,7 @@
                             <td class="pems-s-bec7b1d5">
                                 <form asp-action="SetHierarchy" method="post" class="d-flex gap-1">
                                     <input type="hidden" name="positionId" value="@r.PositionId" />
-                                    <pems-input scale="small" name="positionCode" value="@r.PositionCode" maxlength="50" style="width:90px" placeholder="@Localizer["Org_Col_Code"]" aria-label="@Localizer["Org_Col_Code"]" />
+                                    <pems-input class="pems-w-90" scale="small" name="positionCode" value="@r.PositionCode" maxlength="50" placeholder="@Localizer["Org_Col_Code"]" aria-label="@Localizer["Org_Col_Code"]" />
                                     <pems-select scale="small" name="parentPositionId" aria-label="@Localizer["Org_Col_Parent"]">
                                         <option value="">@Localizer["Org_NoParent_Root"]</option>
                                         @foreach (var p in Model.Where(p => p.PositionId != r.PositionId && p.IsActive))
@@ -77,8 +77,8 @@
                                         <span class="small me-1">@r.HolderName</span>
                                         <label class="small"><input type="checkbox" name="isPrimary" value="true" checked="@r.HolderIsPrimary" /> @Localizer["Org_Primary"]</label>
                                         <input type="hidden" name="isPrimary" value="false" />
-                                        <pems-date name="startDate" value="@r.StartDate?.ToString("yyyy-MM-dd")" style="width:130px" aria-label="@Localizer["Org_EffectiveFrom"]" required scale="small" />
-                                        <pems-date name="endDate" value="@r.EndDate?.ToString("yyyy-MM-dd")" style="width:130px" aria-label="@Localizer["Org_EffectiveTo"]" scale="small" />
+                                        <pems-date class="pems-w-130" name="startDate" value="@r.StartDate?.ToString("yyyy-MM-dd")" aria-label="@Localizer["Org_EffectiveFrom"]" required scale="small" />
+                                        <pems-date class="pems-w-130" name="endDate" value="@r.EndDate?.ToString("yyyy-MM-dd")" aria-label="@Localizer["Org_EffectiveTo"]" scale="small" />
                                         <button class="vs-btn vs-btn--sm" title="@Localizer["Org_Btn_Save"]" aria-label="@Localizer["Org_Btn_Save"]"><pems-icon name="bi-save" /></button>
                                     </form>
                                 }
@@ -86,14 +86,14 @@
                                 {
                                     <form asp-action="Assign" method="post" class="d-flex gap-1 align-items-center flex-wrap">
                                         <input type="hidden" name="positionId" value="@r.PositionId" />
-                                        <pems-select scale="small" name="employeeId" style="width:200px" aria-label="@Localizer["Org_Col_Holder"]" required>
+                                        <pems-select class="pems-w-200" scale="small" name="employeeId" aria-label="@Localizer["Org_Col_Holder"]" required>
                                             <option value="">@Localizer["Org_SelectEmployee"]</option>
                                             @foreach (var e in employees) { <option value="@e.EmployeeId">@e.Label</option> }
                                         </pems-select>
                                         <label class="small"><input type="checkbox" name="isPrimary" value="true" checked /> @Localizer["Org_Primary"]</label>
                                         <input type="hidden" name="isPrimary" value="false" />
-                                        <pems-date name="startDate" scale="small" style="width:130px" aria-label="@Localizer["Org_EffectiveFrom"]" />
-                                        <pems-date name="endDate" scale="small" style="width:130px" aria-label="@Localizer["Org_EffectiveTo"]" />
+                                        <pems-date class="pems-w-130" name="startDate" scale="small" aria-label="@Localizer["Org_EffectiveFrom"]" />
+                                        <pems-date class="pems-w-130" name="endDate" scale="small" aria-label="@Localizer["Org_EffectiveTo"]" />
                                         <button class="vs-btn vs-btn--sm vs-btn--primary" title="@Localizer["Org_Btn_Assign"]" aria-label="@Localizer["Org_Btn_Assign"]"><pems-icon name="bi-person-plus" /></button>
                                     </form>
                                 }

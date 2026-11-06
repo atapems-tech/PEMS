@@ -52,11 +52,11 @@
             <pems-list-table grid-key="AuditLogs" empty="@(Model.Items.Count == 0)" empty-text="@Localizer["AlL_Empty"]">
                 <thead>
                     <tr>
-                        <th data-col-key="time" data-resizable="true" data-min-width="130" data-max-width="220" style="width:160px">@Localizer["AlL_Time"]</th>
-                        <th data-col-key="user" data-resizable="true" data-min-width="90" data-max-width="200" style="width:130px">@Localizer["AlL_User"]</th>
-                        <th data-col-key="entity" data-resizable="true" data-min-width="100" data-max-width="220" style="width:150px">@Localizer["AlL_Entity"]</th>
-                        <th data-col-key="key" data-resizable="true" data-min-width="80" data-max-width="200" style="width:110px" class="vs-hide-md">@Localizer["AlL_Key"]</th>
-                        <th data-col-key="action" data-resizable="true" data-min-width="90" data-max-width="160" style="width:110px">@Localizer["Cm_Action"]</th>
+                        <th class="pems-w-160" data-col-key="time" data-resizable="true" data-min-width="130" data-max-width="220">@Localizer["AlL_Time"]</th>
+                        <th class="pems-w-130" data-col-key="user" data-resizable="true" data-min-width="90" data-max-width="200">@Localizer["AlL_User"]</th>
+                        <th class="pems-w-150" data-col-key="entity" data-resizable="true" data-min-width="100" data-max-width="220">@Localizer["AlL_Entity"]</th>
+                        <th data-col-key="key" data-resizable="true" data-min-width="80" data-max-width="200" class="vs-hide-md pems-w-110">@Localizer["AlL_Key"]</th>
+                        <th class="pems-w-110" data-col-key="action" data-resizable="true" data-min-width="90" data-max-width="160">@Localizer["Cm_Action"]</th>
                         <th data-col-key="changedFields" data-resizable="true" data-min-width="180" data-max-width="600">@Localizer["AlL_ChangedFields"]</th>
                     </tr>
                 </thead>

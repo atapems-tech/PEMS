@@ -133,7 +133,7 @@
             {
                 <form asp-action="WorkflowAction" method="post" class="d-flex flex-wrap gap-2 align-items-center">
                     <input type="hidden" name="id" value="@Model.WorkRequestId" />
-                    <pems-input scale="small" type="text" name="comment" placeholder="@Localizer["Comment (required for Reject / Cancel / Hold / Return)"]" style="width:300px;" />
+                    <pems-input class="pems-w-300" scale="small" type="text" name="comment" placeholder="@Localizer["Comment (required for Reject / Cancel / Hold / Return)"]" />
                     @foreach (var a in actions)
                     {
                         var cls = a.ActionType == "Approve" ? "btn-pems-solid" : a.ActionType is "Reject" or "Cancel" ? "btn-outline-danger" : "btn-outline-primary";
@@ -151,7 +151,7 @@
                     <input type="hidden" name="id" value="@Model.WorkRequestId" />
                     @if (!Model.EquipmentId.HasValue)
                     {
-                        <pems-input scale="small" type="text" style="width:240px;" placeholder="@Localizer["Select the equipment for the Work Order"]" data-pems-search data-search-type="Equipment" data-search-hidden="#wrConvertEquipmentId" autocomplete="off" required />
+                        <pems-input class="pems-w-240" scale="small" type="text" placeholder="@Localizer["Select the equipment for the Work Order"]" data-pems-search data-search-type="Equipment" data-search-hidden="#wrConvertEquipmentId" autocomplete="off" required />
                         <input type="hidden" name="equipmentId" id="wrConvertEquipmentId" />
                     }
                     <pems-select scale="small" name="workOrderType" style="width:auto;">
@@ -185,7 +185,7 @@
                 </form>
                 <form asp-action="Cancel" method="post" class="d-flex gap-2">
                     <input type="hidden" name="id" value="@Model.WorkRequestId" />
-                    <pems-input scale="small" type="text" name="reason" required placeholder="@Localizer["Reason (required)"]" style="width:220px;" />
+                    <pems-input class="pems-w-220" scale="small" type="text" name="reason" required placeholder="@Localizer["Reason (required)"]" />
                     <pems-button tone="neutral" size="small" outline="true" type="submit" data-pems-confirm="@Localizer["Are you sure?"]">@Localizer["Cancel Request"]</pems-button>
                 </form>
             }
@@ -220,13 +220,13 @@
             {
                 <form asp-action="Reject" method="post" class="d-flex gap-2">
                     <input type="hidden" name="id" value="@Model.WorkRequestId" />
-                    <pems-input scale="small" type="text" name="reason" required placeholder="@Localizer["Rejection reason (required)"]" style="width:220px;" />
+                    <pems-input class="pems-w-220" scale="small" type="text" name="reason" required placeholder="@Localizer["Rejection reason (required)"]" />
                     <pems-button tone="danger" size="small" outline="true" type="submit">@Localizer["Reject"]</pems-button>
                 </form>
             }
             <form asp-action="Cancel" method="post" class="d-flex gap-2">
                 <input type="hidden" name="id" value="@Model.WorkRequestId" />
-                <pems-input scale="small" type="text" name="reason" required placeholder="@Localizer["Reason (required)"]" style="width:220px;" />
+                <pems-input class="pems-w-220" scale="small" type="text" name="reason" required placeholder="@Localizer["Reason (required)"]" />
                 <pems-button tone="neutral" size="small" outline="true" type="submit" data-pems-confirm="@Localizer["Are you sure?"]">@Localizer["Cancel Request"]</pems-button>
             </form>
         }

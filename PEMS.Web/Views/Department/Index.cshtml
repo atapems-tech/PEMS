@@ -32,12 +32,12 @@
             <pems-list-table grid-key="Department" empty="@(!Model.Any())" empty-text="@Localizer["DpL_Empty"]">
                 <thead>
                     <tr>
-                        <th data-col-key="code" data-resizable="true" data-min-width="70" data-max-width="160" style="width:100px">@Localizer["MiL_Code"]</th>
-                        <th data-col-key="name" data-resizable="true" data-min-width="120" data-max-width="320" style="width:220px">@Localizer["DpL_Name"]</th>
+                        <th class="pems-w-100" data-col-key="code" data-resizable="true" data-min-width="70" data-max-width="160">@Localizer["MiL_Code"]</th>
+                        <th class="pems-w-220" data-col-key="name" data-resizable="true" data-min-width="120" data-max-width="320">@Localizer["DpL_Name"]</th>
                         <th data-col-key="description" data-resizable="true" data-min-width="160" data-max-width="520" class="vs-hide-md">@Localizer["Ed_Description"]</th>
-                        <th data-col-key="employees" data-resizable="true" data-min-width="80" data-max-width="140" style="width:100px" class="text-end">@Localizer["DpL_Employees"]</th>
-                        <th data-col-key="status" data-resizable="true" data-min-width="80" data-max-width="140" style="width:110px">@Localizer["Ed_Status"]</th>
-                        <th data-col-key="actions" data-resizable="false" style="width:100px"><span class="visually-hidden">@Localizer["Ed_Actions"]</span></th>
+                        <th data-col-key="employees" data-resizable="true" data-min-width="80" data-max-width="140" class="text-end pems-w-100">@Localizer["DpL_Employees"]</th>
+                        <th class="pems-w-110" data-col-key="status" data-resizable="true" data-min-width="80" data-max-width="140">@Localizer["Ed_Status"]</th>
+                        <th class="pems-w-100" data-col-key="actions" data-resizable="false"><span class="visually-hidden">@Localizer["Ed_Actions"]</span></th>
                     </tr>
                 </thead>
                 <tbody>
