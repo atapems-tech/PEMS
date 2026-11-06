@@ -46,7 +46,7 @@
     <pems-content-card css="mb-3">
         <h6>@Localizer["Lic_RequestTitle"]</h6>
         <p class="text-muted small">@Localizer["Lic_RequestHelp"]</p>
-        <form asp-action="Request" method="post"><pems-row gap="2" css="align-items-end">
+        <pems-form asp-action="Request" method="post"><pems-row gap="2" css="align-items-end">
             @Html.AntiForgeryToken()
             <pems-col md="3" span="12">
                 <pems-label for="requestType">@Localizer["Lic_RequestType"]</pems-label>
@@ -67,16 +67,16 @@
                 <pems-input id="reason" name="reason" maxlength="500" />
             </pems-col>
             <pems-col span="12"><pems-button tone="primary" type="submit"><pems-icon name="bi-download" css="me-1" /> @Localizer["Lic_DownloadRequest"]</pems-button></pems-col>
-        </pems-row></form>
+        </pems-row></pems-form>
     </pems-content-card>
 
     <pems-content-card>
         <h6>@Localizer["Lic_UploadTitle"]</h6>
         <p class="text-muted small">@Localizer["Lic_UploadHelp"]</p>
-        <form asp-action="Upload" method="post" enctype="multipart/form-data"><pems-flex align="center" gap="3" wrap="true">
+        <pems-form asp-action="Upload" method="post" enctype="multipart/form-data"><pems-flex align="center" gap="3" wrap="true">
             @Html.AntiForgeryToken()
             <pems-input css="w-auto" type="file" name="file" accept=".pemslic,.zip" required aria-label="@Localizer["Lic_UploadTitle"]" />
             <pems-button tone="primary" type="submit"><pems-icon name="bi-upload" css="me-1" /> @Localizer["Lic_Upload"]</pems-button>
-        </pems-flex></form>
+        </pems-flex></pems-form>
     </pems-content-card>
 </pems-page-shell>

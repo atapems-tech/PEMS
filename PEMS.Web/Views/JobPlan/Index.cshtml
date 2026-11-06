@@ -79,7 +79,7 @@
 </pems-list-page>
 
 <pems-modal id="createJobPlanModal" tabindex="-1">
-        <form asp-action="Create" method="post">
+        <pems-form asp-action="Create" method="post">
             <pems-modal-header>@Localizer["Jp_New"]</pems-modal-header>
             <pems-modal-body>
                 <div class="mb-2"><pems-label css="small">@Localizer["Title"]</pems-label><pems-input scale="small" name="title" required /></div>
@@ -109,7 +109,7 @@
                 <pems-button tone="neutral" size="small" outline="true" type="button" data-bs-dismiss="modal">@Localizer["Cancel"]</pems-button>
                 <pems-button tone="primary" size="small" type="submit">@Localizer["Create"]</pems-button>
             </pems-modal-footer>
-        </form>
+        </pems-form>
     </pems-modal>
 
 @section Scripts {

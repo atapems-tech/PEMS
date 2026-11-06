@@ -76,9 +76,9 @@
                             </pems-table-cell>
                             <pems-table-cell>@a.UploadDate.ToString("yyyy-MM-dd HH:mm")</pems-table-cell>
                             <pems-table-cell>
-                                <form asp-action="Retry" asp-route-id="@a.AttachmentId" method="post" class="d-inline">
+                                <pems-form asp-action="Retry" asp-route-id="@a.AttachmentId" method="post" class="d-inline">
                                     <pems-button tone="neutral" size="small" outline="true"><pems-icon name="bi-arrow-repeat" /></pems-button>
-                                </form>
+                                </pems-form>
                                 @if (a.AIStatus == "Completed")
                                 {
                                     <pems-button tone="warning" size="small" outline="true" as="a" asp-controller="AIExtraction" asp-action="Review" asp-route-attachmentId="@a.AttachmentId"><pems-icon name="bi-eye" /></pems-button>

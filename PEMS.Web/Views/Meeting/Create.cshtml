@@ -6,7 +6,7 @@
 }
 
 <pems-content-card css="pems-s-bcaa1805">
-    <form asp-action="Create" method="post">
+    <pems-form asp-action="Create" method="post">
         <pems-row gap="3">
             <pems-col md="6"><pems-label>@Localizer["Title"]</pems-label><pems-input name="title" required /></pems-col>
             <pems-col md="6"><pems-label>@Localizer["Date & Time"]</pems-label><pems-input name="meetingDate" type="datetime-local" required /></pems-col>
@@ -25,5 +25,5 @@
             <pems-button tone="primary" type="submit">@Localizer["Save"]</pems-button>
             <pems-button tone="neutral" outline="true" as="a" asp-action="Index">@Localizer["Cancel"]</pems-button>
         </div>
-    </form>
+    </pems-form>
 </pems-content-card>

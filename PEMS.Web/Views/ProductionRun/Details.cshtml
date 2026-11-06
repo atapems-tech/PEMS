@@ -23,17 +23,17 @@
         <pems-flex dir="column" gap="1" css="pems-s-94253f99">
             @if (Model.Status == "Planned")
             {
-                <form asp-action="Start" asp-route-id="@Model.ProductionRunId" method="post"><pems-button tone="primary" size="small" css="w-100" type="submit"><pems-icon name="bi-play-fill" /> @Localizer["Start"]</pems-button></form>
+                <pems-form asp-action="Start" asp-route-id="@Model.ProductionRunId" method="post"><pems-button tone="primary" size="small" css="w-100" type="submit"><pems-icon name="bi-play-fill" /> @Localizer["Start"]</pems-button></pems-form>
             }
             @if (Model.Status == "InProgress")
             {
-                <form asp-action="Pause" asp-route-id="@Model.ProductionRunId" method="post"><pems-button tone="neutral" size="small" outline="true" css="w-100" type="submit"><pems-icon name="bi-pause-fill" /> Pause</pems-button></form>
+                <pems-form asp-action="Pause" asp-route-id="@Model.ProductionRunId" method="post"><pems-button tone="neutral" size="small" outline="true" css="w-100" type="submit"><pems-icon name="bi-pause-fill" /> Pause</pems-button></pems-form>
                 <pems-button tone="warning" size="small" outline="true" css="w-100" type="button" data-bs-toggle="modal" data-bs-target="#holdRunModal"><pems-icon name="bi-exclamation-circle" /> @Localizer["Hold"]</pems-button>
-                <form asp-action="Complete" asp-route-id="@Model.ProductionRunId" method="post"><pems-button tone="primary" size="small" css="w-100" type="submit"><pems-icon name="bi-check2-circle" /> Complete</pems-button></form>
+                <pems-form asp-action="Complete" asp-route-id="@Model.ProductionRunId" method="post"><pems-button tone="primary" size="small" css="w-100" type="submit"><pems-icon name="bi-check2-circle" /> Complete</pems-button></pems-form>
             }
             @if (Model.Status is "Paused" or "OnHold")
             {
-                <form asp-action="Resume" asp-route-id="@Model.ProductionRunId" method="post"><pems-button tone="success" size="small" outline="true" css="w-100" type="submit"><pems-icon name="bi-play-circle" /> Resume</pems-button></form>
+                <pems-form asp-action="Resume" asp-route-id="@Model.ProductionRunId" method="post"><pems-button tone="success" size="small" outline="true" css="w-100" type="submit"><pems-icon name="bi-play-circle" /> Resume</pems-button></pems-form>
             }
             @if (Model.Status is "Planned" or "Paused" or "OnHold")
             {
@@ -80,7 +80,7 @@
         <pems-col span="">
             <pems-content-card css="h-100">
                 <h6 class="mb-2">@Localizer["Record Input"]</h6>
-                <form asp-action="RecordInput" method="post">
+                <pems-form asp-action="RecordInput" method="post">
                     <input type="hidden" name="productionRunId" value="@Model.ProductionRunId" />
                     <div class="mb-2">
                         <pems-select scale="small" name="materialItemId" required>
@@ -95,13 +95,13 @@
                     <div class="mb-2"><pems-input scale="small" type="number" name="sourceProductionBatchId" placeholder="Source batch ID (optional)" /></div>
                     <div class="mb-2"><pems-input scale="small" type="text" name="notes" placeholder="@Localizer["Notes"]" /></div>
                     <pems-button tone="primary" size="small" outline="true" css="w-100" type="submit">@Localizer["Record Input"]</pems-button>
-                </form>
+                </pems-form>
             </pems-content-card>
         </pems-col>
         <pems-col span="">
             <pems-content-card css="h-100">
                 <h6 class="mb-2">@Localizer["Record Output"]</h6>
-                <form asp-action="RecordOutput" method="post">
+                <pems-form asp-action="RecordOutput" method="post">
                     <input type="hidden" name="productionRunId" value="@Model.ProductionRunId" />
                     <div class="mb-2">
                         <pems-select scale="small" name="materialItemId" required>
@@ -122,13 +122,13 @@
                     </div>
                     <div class="mb-2"><pems-input scale="small" type="text" name="notes" placeholder="@Localizer["Notes"]" /></div>
                     <pems-button tone="primary" size="small" outline="true" css="w-100" type="submit">@Localizer["Record Output"]</pems-button>
-                </form>
+                </pems-form>
             </pems-content-card>
         </pems-col>
         <pems-col span="">
             <pems-content-card css="h-100">
                 <h6 class="mb-2">@Localizer["Record Loss"]</h6>
-                <form asp-action="RecordLoss" method="post">
+                <pems-form asp-action="RecordLoss" method="post">
                     <input type="hidden" name="productionRunId" value="@Model.ProductionRunId" />
                     <div class="mb-2"><pems-input scale="small" type="number" step="0.001" min="0.001" name="quantity" placeholder="@Localizer["Quantity"]" required /></div>
                     <div class="mb-2">
@@ -142,7 +142,7 @@
                     </div>
                     <div class="mb-2"><pems-input scale="small" type="text" name="notes" placeholder="@Localizer["Notes"]" /></div>
                     <pems-button tone="warning" size="small" outline="true" css="w-100" type="submit">@Localizer["Record Loss"]</pems-button>
-                </form>
+                </pems-form>
             </pems-content-card>
         </pems-col>
     </pems-row>
@@ -227,23 +227,23 @@
 </pems-row>
 
 <pems-modal id="holdRunModal" tabindex="-1">
-        <form asp-action="Hold" asp-route-id="@Model.ProductionRunId" method="post">
+        <pems-form asp-action="Hold" asp-route-id="@Model.ProductionRunId" method="post">
             <pems-modal-header close="true">Hold Production Run</pems-modal-header>
             <pems-modal-body><pems-label>@Localizer["Reason"]</pems-label><pems-textarea name="reason" required></pems-textarea></pems-modal-body>
             <pems-modal-footer><pems-button tone="warning" type="submit">@Localizer["Hold"]</pems-button></pems-modal-footer>
-        </form>
+        </pems-form>
     </pems-modal>
 
 <pems-modal id="cancelRunModal" tabindex="-1">
-        <form asp-action="Cancel" asp-route-id="@Model.ProductionRunId" method="post">
+        <pems-form asp-action="Cancel" asp-route-id="@Model.ProductionRunId" method="post">
             <pems-modal-header close="true">Cancel Production Run</pems-modal-header>
             <pems-modal-body><pems-label>@Localizer["Reason"]</pems-label><pems-textarea name="reason" required></pems-textarea></pems-modal-body>
             <pems-modal-footer><pems-button tone="danger" type="submit">Cancel Run</pems-button></pems-modal-footer>
-        </form>
+        </pems-form>
     </pems-modal>
 
     <pems-modal id="postInputModal" tabindex="-1">
-    <form asp-action="PostInputToInventory" method="post">
+    <pems-form asp-action="PostInputToInventory" method="post">
     <input type="hidden" name="productionInputId" value="" />
     <input type="hidden" name="productionRunId" value="@Model.ProductionRunId" />
     <pems-modal-header close="true">Post Consumption to Inventory</pems-modal-header>
@@ -254,11 +254,11 @@
     </pems-select>
     </pems-modal-body>
     <pems-modal-footer><pems-button tone="none" css="btn-primary" type="submit">@Localizer["Post"]</pems-button></pems-modal-footer>
-    </form>
+    </pems-form>
     </pems-modal>
 
     <pems-modal id="postOutputModal" tabindex="-1">
-    <form asp-action="PostOutputToInventory" method="post">
+    <pems-form asp-action="PostOutputToInventory" method="post">
     <input type="hidden" name="productionOutputId" value="" />
     <input type="hidden" name="productionRunId" value="@Model.ProductionRunId" />
     <pems-modal-header close="true">Post Receipt to Inventory</pems-modal-header>
@@ -269,5 +269,5 @@
     </pems-select>
     </pems-modal-body>
     <pems-modal-footer><pems-button tone="none" css="btn-primary" type="submit">@Localizer["Post"]</pems-button></pems-modal-footer>
-    </form>
+    </pems-form>
     </pems-modal>

@@ -61,7 +61,7 @@
                         @if (i.CanTransition && targets.Count > 0)
                         {
                             @* جایگزین صفحه‌کلید/بدون JS برای کشیدن‌ورها کردن (WCAG 2.5.7) *@
-                            <form class="mt-2 tm-card__move" asp-action="Transition" method="post"><pems-flex gap="1">
+                            <pems-form class="mt-2 tm-card__move" asp-action="Transition" method="post"><pems-flex gap="1">
                                 <input type="hidden" name="id" value="@i.Id" />
                                 <input type="hidden" name="rowVersion" value="@i.RowVersion" />
                                 <input type="hidden" name="returnUrl" value="@returnUrl" />
@@ -70,7 +70,7 @@
                                     { <option value="@s.Id">@TaskManagerUi.Name(s.Name, s.NameFa)</option> }
                                 </pems-select>
                                 <pems-button tone="neutral" size="small" outline="true" aria-label="@Localizer["Tm_Move"] @i.Key"><pems-icon name="bi-arrow-right-short" aria-hidden="true" /></pems-button>
-                            </pems-flex></form>
+                            </pems-flex></pems-form>
                         }
                     </article>
                 }

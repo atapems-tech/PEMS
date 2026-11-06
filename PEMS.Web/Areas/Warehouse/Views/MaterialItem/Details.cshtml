@@ -24,10 +24,10 @@
         <pems-flex gap="2">
             <pems-button tone="neutral" size="small" outline="true" type="button" data-bs-toggle="modal" data-bs-target="#editMaterialModal"><pems-icon name="bi-pencil" /> @Localizer["Edit"]</pems-button>
             <pems-button tone="primary" size="small" outline="true" type="button" data-bs-toggle="modal" data-bs-target="#receiveStockModal"><pems-icon name="bi-box-arrow-in-down" /> Receive Stock</pems-button>
-            <form asp-action="ToggleActive" method="post" class="d-inline">
+            <pems-form asp-action="ToggleActive" method="post" class="d-inline">
                 <input type="hidden" name="id" value="@Model.MaterialItemId" />
                 <pems-button tone="danger" size="small" outline="true" type="submit" data-pems-confirm="وضعیت این متریال تغییر کنه؟"><pems-icon name="bi-slash-circle" /></pems-button>
-            </form>
+            </pems-form>
         </pems-flex>
     </pems-flex>
     <hr />
@@ -44,13 +44,13 @@
 </pems-content-card>
 
 <pems-nav css="mb-3">
-    <li class="nav-item"><button class="nav-link active" data-bs-toggle="tab" data-bs-target="#tab-stock" type="button"><pems-icon name="bi-boxes" /> Stock <pems-badge tone="neutral">@Model.Stocks.Count</pems-badge></button></li>
-    <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-tx" type="button"><pems-icon name="bi-list-ul" /> Recent Transactions</button></li>
+    <li class="nav-item"><pems-button tone="bare" css="nav-link active" data-bs-toggle="tab" data-bs-target="#tab-stock" type="button"><pems-icon name="bi-boxes" /> Stock <pems-badge tone="neutral">@Model.Stocks.Count</pems-badge></pems-button></li>
+    <li class="nav-item"><pems-button tone="bare" css="nav-link" data-bs-toggle="tab" data-bs-target="#tab-tx" type="button"><pems-icon name="bi-list-ul" /> Recent Transactions</pems-button></li>
     @if (Model.SourceImports.Any())
     {
-        <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-source" type="button"><pems-icon name="bi-file-earmark-excel" /> Source Imports <pems-badge tone="neutral">@Model.SourceImports.Count</pems-badge></button></li>
+        <li class="nav-item"><pems-button tone="bare" css="nav-link" data-bs-toggle="tab" data-bs-target="#tab-source" type="button"><pems-icon name="bi-file-earmark-excel" /> Source Imports <pems-badge tone="neutral">@Model.SourceImports.Count</pems-badge></pems-button></li>
     }
-    <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-barcode" type="button"><pems-icon name="bi-upc-scan" /> @Localizer["Barcode"]</button></li>
+    <li class="nav-item"><pems-button tone="bare" css="nav-link" data-bs-toggle="tab" data-bs-target="#tab-barcode" type="button"><pems-icon name="bi-upc-scan" /> @Localizer["Barcode"]</pems-button></li>
 </pems-nav>
 
 <pems-tab-content>
@@ -121,7 +121,7 @@
 </pems-tab-content>
 
 <pems-modal id="receiveStockModal" tabindex="-1">
-        <form asp-action="ReceiveStock" method="post">
+        <pems-form asp-action="ReceiveStock" method="post">
             <input type="hidden" name="materialItemId" value="@Model.MaterialItemId" />
             <pems-modal-header>@Localizer["دریافت کالا به انبار"]</pems-modal-header>
             <pems-modal-body>
@@ -146,11 +146,11 @@
                 <pems-button tone="neutral" size="small" outline="true" type="button" data-bs-dismiss="modal">@Localizer["انصراف"]</pems-button>
                 <pems-button tone="primary" size="small" type="submit">@Localizer["ثبت"]</pems-button>
             </pems-modal-footer>
-        </form>
+        </pems-form>
     </pems-modal>
 
 <pems-modal id="adjustStockModal" tabindex="-1">
-        <form asp-action="AdjustStock" method="post">
+        <pems-form asp-action="AdjustStock" method="post">
             <input type="hidden" name="materialItemId" value="@Model.MaterialItemId" />
             <input type="hidden" name="warehouseId" id="adjustWarehouseId" />
             <pems-modal-header>اصلاح موجودی <span id="adjustWarehouseLabel" class="text-muted small"></span></pems-modal-header>
@@ -162,11 +162,11 @@
                 <pems-button tone="neutral" size="small" outline="true" type="button" data-bs-dismiss="modal">@Localizer["انصراف"]</pems-button>
                 <pems-button tone="primary" size="small" type="submit">@Localizer["ثبت"]</pems-button>
             </pems-modal-footer>
-        </form>
+        </pems-form>
     </pems-modal>
 
 <pems-modal id="transferStockModal" tabindex="-1">
-        <form asp-action="TransferStock" method="post">
+        <pems-form asp-action="TransferStock" method="post">
             <input type="hidden" name="materialItemId" value="@Model.MaterialItemId" />
             <input type="hidden" name="fromWarehouseId" id="transferFromWarehouseId" />
             <pems-modal-header>انتقال بین انبارها <span id="transferFromWarehouseLabel" class="text-muted small"></span></pems-modal-header>
@@ -184,11 +184,11 @@
                 <pems-button tone="neutral" size="small" outline="true" type="button" data-bs-dismiss="modal">@Localizer["انصراف"]</pems-button>
                 <pems-button tone="primary" size="small" type="submit">@Localizer["ثبت"]</pems-button>
             </pems-modal-footer>
-        </form>
+        </pems-form>
     </pems-modal>
 
 <pems-modal size="large" id="editMaterialModal" tabindex="-1">
-        <form asp-action="Edit" method="post">
+        <pems-form asp-action="Edit" method="post">
             <input type="hidden" name="materialItemId" value="@Model.MaterialItemId" />
             <pems-modal-header>Edit Material</pems-modal-header>
             <pems-modal-body>
@@ -216,7 +216,7 @@
                 <pems-button tone="neutral" outline="true" type="button" data-bs-dismiss="modal">@Localizer["Cancel"]</pems-button>
                 <pems-button tone="primary" type="submit">@Localizer["Save"]</pems-button>
             </pems-modal-footer>
-        </form>
+        </pems-form>
     </pems-modal>
 
 @section Scripts {

@@ -39,9 +39,9 @@
     </pems-stat-grid>
 </pems-content-card>
 
-<form id="bulkConfirmForm" asp-action="BulkConfirm" method="post">
+<pems-form id="bulkConfirmForm" asp-action="BulkConfirm" method="post">
     <input type="hidden" name="batchId" value="@Model.TableExtractionBatchId" />
-</form>
+</pems-form>
 
 <pems-content-card css="mb-3">
     <pems-flex gap="2" wrap="true" align="center">
@@ -69,7 +69,7 @@
         <pems-table kind="enterprise" scale="small">
             <pems-table-head>
                 <pems-table-row>
-                    <pems-table-header class="pems-w-30"><input type="checkbox" id="selectAllMatched" title="Select all matched rows" /></pems-table-header>
+                    <pems-table-header class="pems-w-30"><pems-input kind="bare" type="checkbox" id="selectAllMatched" title="Select all matched rows" /></pems-table-header>
                     <pems-table-header>@Localizer["Tag"]</pems-table-header><pems-table-header>@Localizer["Description"]</pems-table-header><pems-table-header>@Localizer["Junction Box"]</pems-table-header><pems-table-header>@Localizer["Cable No."]</pems-table-header>
                     <pems-table-header>DCS Tag</pems-table-header><pems-table-header>@Localizer["Status"]</pems-table-header><pems-table-header class="pems-s-e581e86b">@Localizer["Action"]</pems-table-header>
                 </pems-table-row>
@@ -91,7 +91,7 @@
                         <pems-table-cell>
                             @if (isSelectable)
                             {
-                                <input type="checkbox" class="row-select" form="bulkConfirmForm" name="selectedRowIds" value="@row.TableExtractionRowId" />
+                                <pems-input kind="bare" type="checkbox" class="row-select" form="bulkConfirmForm" name="selectedRowIds" value="@row.TableExtractionRowId" />
                             }
                         </pems-table-cell>
                         <pems-table-cell class="fw-semibold">@(row.TagNumber ?? "-")</pems-table-cell>
@@ -105,27 +105,27 @@
                             {
                                 <pems-flex align="center" gap="2">
                                     <span class="small text-muted">→ @row.MatchedEquipment?.TagNumber</span>
-                                    <form asp-action="ConfirmRow" method="post" class="d-inline">
+                                    <pems-form asp-action="ConfirmRow" method="post" class="d-inline">
                                         <input type="hidden" name="rowId" value="@row.TableExtractionRowId" />
                                         <input type="hidden" name="equipmentId" value="@row.MatchedEquipmentId" />
                                         <input type="hidden" name="batchId" value="@Model.TableExtractionBatchId" />
                                         <pems-button tone="primary" size="small" css="btn-xs" type="submit">Confirm</pems-button>
-                                    </form>
-                                    <form asp-action="RejectRow" method="post" class="d-inline">
+                                    </pems-form>
+                                    <pems-form asp-action="RejectRow" method="post" class="d-inline">
                                         <input type="hidden" name="rowId" value="@row.TableExtractionRowId" />
                                         <input type="hidden" name="batchId" value="@Model.TableExtractionBatchId" />
                                         <pems-button tone="neutral" size="small" outline="true" type="submit">@Localizer["Reject"]</pems-button>
-                                    </form>
+                                    </pems-form>
                                 </pems-flex>
                             }
                             else if (row.MatchStatus == "Unmatched")
                             {
-                                <form asp-action="ConfirmRowManual" method="post"><pems-flex gap="2">
+                                <pems-form asp-action="ConfirmRowManual" method="post"><pems-flex gap="2">
                                     <input type="hidden" name="rowId" value="@row.TableExtractionRowId" />
                                     <input type="hidden" name="batchId" value="@Model.TableExtractionBatchId" />
                                     <pems-input class="pems-maxw-160" scale="small" type="text" name="equipmentTagNumber" placeholder="Equipment tag..." />
                                     <pems-button tone="primary" size="small" type="submit">Link</pems-button>
-                                </pems-flex></form>
+                                </pems-flex></pems-form>
                             }
                             else if (row.MatchStatus == "Confirmed")
                             {

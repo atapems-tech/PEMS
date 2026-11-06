@@ -28,7 +28,7 @@
 @if (canGenerate)
 {
     <pems-content-card css="mb-3">
-        <form method="post" asp-action="GenerateAiInsights"><pems-row gap="2" css="align-items-end">
+        <pems-form method="post" asp-action="GenerateAiInsights"><pems-row gap="2" css="align-items-end">
             @Html.AntiForgeryToken()
             <pems-col span="auto">
                 <pems-label css="small mb-0">Equipment Class ID (optional)</pems-label>
@@ -37,21 +37,21 @@
             <pems-col span="auto">
                 <pems-button tone="primary" size="small" type="submit">Generate Insights (Ollama, local)</pems-button>
             </pems-col>
-        </pems-row></form>
+        </pems-row></pems-form>
     </pems-content-card>
 }
 
 <pems-content-card css="mb-3">
-    <form method="get"><pems-row gap="2">
+    <pems-form method="get"><pems-row gap="2">
         <pems-col span="auto">
-            <pems-select scale="small" name="status" onchange="this.form.submit()">
+            <pems-select scale="small" name="status" data-pems-change="submit-form">
                 <option value="">@Localizer["All"]</option>
                 <option value="Draft" selected="@(statusFilter == "Draft")">Draft</option>
                 <option value="Approved" selected="@(statusFilter == "Approved")">Approved</option>
                 <option value="Rejected" selected="@(statusFilter == "Rejected")">Rejected</option>
             </pems-select>
         </pems-col>
-    </pems-row></form>
+    </pems-row></pems-form>
 </pems-content-card>
 
 <pems-content-card>
@@ -72,18 +72,18 @@
                     <pems-table-cell>
                         @if (canReview && insight.ReviewStatus == "Draft")
                         {
-                            <form method="post" asp-action="ReviewAiInsight" class="d-inline">
+                            <pems-form method="post" asp-action="ReviewAiInsight" class="d-inline">
                                 @Html.AntiForgeryToken()
                                 <input type="hidden" name="insightId" value="@insight.AIReliabilityInsightId" />
                                 <input type="hidden" name="approve" value="true" />
                                 <pems-button tone="success" size="small" outline="true" type="submit">@Localizer["Approve"]</pems-button>
-                            </form>
-                            <form method="post" asp-action="ReviewAiInsight" class="d-inline">
+                            </pems-form>
+                            <pems-form method="post" asp-action="ReviewAiInsight" class="d-inline">
                                 @Html.AntiForgeryToken()
                                 <input type="hidden" name="insightId" value="@insight.AIReliabilityInsightId" />
                                 <input type="hidden" name="approve" value="false" />
                                 <pems-button tone="danger" size="small" outline="true" type="submit">@Localizer["Reject"]</pems-button>
-                            </form>
+                            </pems-form>
                         }
                     </pems-table-cell>
                 </pems-table-row>

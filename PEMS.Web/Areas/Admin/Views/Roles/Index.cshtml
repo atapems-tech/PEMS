@@ -92,9 +92,9 @@
                         <pems-table-cell class="text-end">
                             @if (!r.IsSystemRole)
                             {
-                                <form asp-action="Delete" asp-route-id="@r.Id" method="post" class="d-inline" data-pems-confirm="@Localizer["RoL_ConfirmDelete"]">
-                                    <button type="submit" class="lp-act lp-act--always text-danger" title="@Localizer["Ed_Delete"]" aria-label="@Localizer["Ed_Delete"] @r.Name"><pems-icon name="bi-trash" aria-hidden="true" /></button>
-                                </form>
+                                <pems-form asp-action="Delete" asp-route-id="@r.Id" method="post" class="d-inline" data-pems-confirm="@Localizer["RoL_ConfirmDelete"]">
+                                    <pems-button tone="bare" type="submit" css="lp-act lp-act--always text-danger" title="@Localizer["Ed_Delete"]" aria-label="@Localizer["Ed_Delete"] @r.Name"><pems-icon name="bi-trash" aria-hidden="true" /></pems-button>
+                                </pems-form>
                             }
                         </pems-table-cell>
                     </pems-table-row>

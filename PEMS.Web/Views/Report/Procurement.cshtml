@@ -26,7 +26,7 @@
 </pems-flex>
 
 <pems-content-card css="mb-3">
-    <form method="get"><pems-row gap="2">
+    <pems-form method="get"><pems-row gap="2">
         <pems-col md="3">
             <pems-select scale="small" name="projectId">
                 <option value="">@Localizer["All Projects"]</option>
@@ -42,7 +42,7 @@
         <pems-col md="2"><pems-date name="fromDate" value="@(((DateTime?)ViewBag.FromDate)?.ToString("yyyy-MM-dd"))" scale="small" /></pems-col>
         <pems-col md="2"><pems-date name="toDate" value="@(((DateTime?)ViewBag.ToDate)?.ToString("yyyy-MM-dd"))" scale="small" /></pems-col>
         <pems-col md="2"><pems-button tone="primary" size="small" css="w-100"><pems-icon name="bi-funnel" /> @Localizer["Apply"]</pems-button></pems-col>
-    </pems-row></form>
+    </pems-row></pems-form>
 </pems-content-card>
 
 <pems-row gap="3" css="mb-3">

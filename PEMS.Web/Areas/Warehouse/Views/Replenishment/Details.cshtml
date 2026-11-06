@@ -76,12 +76,12 @@
     @* SCRUM-471: hand the shortage to the pre-procurement queue (the recommendation becomes Converted) *@
     @if (canReview && s.Status == "Open" && s.IsCurrentlyDefinitive)
     {
-        <form action="/PreProcurement/SendRecommendation" method="post" class="mt-3">
+        <pems-form action="/PreProcurement/SendRecommendation" method="post" class="mt-3">
             @Html.AntiForgeryToken()
             <input type="hidden" name="recommendationId" value="@s.Id" />
             <pems-button tone="none" size="small" css="btn-primary" type="submit"><pems-icon name="bi-cart-plus" aria-hidden="true" /> @Localizer["Ppr_Send"]</pems-button>
             <span class="small text-muted ms-2">@Localizer["Ppr_SendHint"]</span>
-        </form>
+        </pems-form>
     }
     @if (s.Status == "Converted")
     {
@@ -89,7 +89,7 @@
     }
     @if (canReview && s.Status == "Open")
     {
-        <form class="mt-3" asp-action="Dismiss" method="post"><pems-flex gap="2" wrap="true" align="end">
+        <pems-form class="mt-3" asp-action="Dismiss" method="post"><pems-flex gap="2" wrap="true" align="end">
             @Html.AntiForgeryToken()
             <input type="hidden" name="id" value="@s.Id" />
             <input type="hidden" name="rowVersion" value="@version" />
@@ -98,11 +98,11 @@
                 <pems-input scale="small" type="text" name="reason" maxlength="500" required />
             </div>
             <pems-button tone="neutral" size="small" outline="true" type="submit"><pems-icon name="bi-x-circle" /> @Localizer["Repl_Dismiss"]</pems-button>
-        </pems-flex></form>
+        </pems-flex></pems-form>
     }
     @if (canReview && s.Status == "Dismissed")
     {
-        <form class="mt-3" asp-action="Reopen" method="post"><pems-flex gap="2" wrap="true" align="end">
+        <pems-form class="mt-3" asp-action="Reopen" method="post"><pems-flex gap="2" wrap="true" align="end">
             @Html.AntiForgeryToken()
             <input type="hidden" name="id" value="@s.Id" />
             <input type="hidden" name="rowVersion" value="@version" />
@@ -111,7 +111,7 @@
                 <pems-input scale="small" type="text" name="note" maxlength="500" />
             </div>
             <pems-button tone="primary" size="small" type="submit"><pems-icon name="bi-arrow-counterclockwise" /> @Localizer["Repl_Reopen"]</pems-button>
-        </pems-flex></form>
+        </pems-flex></pems-form>
     }
 </pems-content-card>
 

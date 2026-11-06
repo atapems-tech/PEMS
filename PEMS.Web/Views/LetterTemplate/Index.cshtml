@@ -46,11 +46,11 @@
                             <pems-table-cell class="text-nowrap">
                                 <pems-button tone="neutral" size="small" outline="true" as="a" asp-action="Preview" asp-route-id="@t.LetterTemplateId"><pems-icon name="bi-eye" aria-hidden="true" /> @Localizer["LtT_Preview"]</pems-button>
                                 <pems-button tone="neutral" size="small" outline="true" as="a" asp-action="Edit" asp-route-id="@t.LetterTemplateId"><pems-icon name="bi-pencil" aria-hidden="true" /> @Localizer["Edit"]</pems-button>
-                                <form asp-action="SetActive" method="post" class="d-inline">
+                                <pems-form asp-action="SetActive" method="post" class="d-inline">
                                     <input type="hidden" name="id" value="@t.LetterTemplateId" />
                                     <input type="hidden" name="active" value="@(t.IsActive ? "false" : "true")" />
                                     <pems-button tone="neutral" size="small" outline="true" type="submit">@Localizer[t.IsActive ? "LtT_Deactivate" : "LtT_Activate"]</pems-button>
-                                </form>
+                                </pems-form>
                             </pems-table-cell>
                         </pems-table-row>
                     }

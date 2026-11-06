@@ -94,17 +94,17 @@
                             <pems-table-cell class="lp-actions text-nowrap">
                                 @if (f.Status == "Open")
                                 {
-                                    <form asp-action="RaiseWorkRequest" method="post" class="d-inline">
+                                    <pems-form asp-action="RaiseWorkRequest" method="post" class="d-inline">
                                         <input type="hidden" name="findingId" value="@f.FindingId" />
-                                        <button type="submit" class="lp-act lp-act--always" title="@Localizer["Cm_RaiseWr"]" aria-label="@Localizer["Cm_RaiseWr"]"><pems-icon name="bi-clipboard-plus" aria-hidden="true" /></button>
-                                    </form>
+                                        <pems-button tone="bare" type="submit" css="lp-act lp-act--always" title="@Localizer["Cm_RaiseWr"]" aria-label="@Localizer["Cm_RaiseWr"]"><pems-icon name="bi-clipboard-plus" aria-hidden="true" /></pems-button>
+                                    </pems-form>
                                 }
                                 @if (f.Status != "Closed")
                                 {
-                                    <form asp-action="Close" method="post" class="d-inline" data-pems-confirm="@Localizer["Fn_CloseConfirm"]">
+                                    <pems-form asp-action="Close" method="post" class="d-inline" data-pems-confirm="@Localizer["Fn_CloseConfirm"]">
                                         <input type="hidden" name="id" value="@f.FindingId" />
-                                        <button type="submit" class="lp-act lp-act--always" title="@Localizer["Fn_Close"]" aria-label="@Localizer["Fn_Close"]"><pems-icon name="bi-check-circle" aria-hidden="true" /></button>
-                                    </form>
+                                        <pems-button tone="bare" type="submit" css="lp-act lp-act--always" title="@Localizer["Fn_Close"]" aria-label="@Localizer["Fn_Close"]"><pems-icon name="bi-check-circle" aria-hidden="true" /></pems-button>
+                                    </pems-form>
                                 }
                             </pems-table-cell>
                         </pems-table-row>

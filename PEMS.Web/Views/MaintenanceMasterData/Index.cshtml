@@ -37,69 +37,69 @@
 
 <pems-nav css="mb-3" id="mmdTabs" role="tablist">
     <li class="nav-item" role="presentation">
-        <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#tab-groups" type="button">
+        <pems-button tone="bare" css="nav-link active" data-bs-toggle="tab" data-bs-target="#tab-groups" type="button">
             <pems-icon name="bi-diagram-3" /> Maintenance Groups <pems-badge tone="neutral">@Model.Count</pems-badge>
-        </button>
+        </pems-button>
     </li>
     <li class="nav-item" role="presentation">
-        <button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-skills" type="button">
+        <pems-button tone="bare" css="nav-link" data-bs-toggle="tab" data-bs-target="#tab-skills" type="button">
             <pems-icon name="bi-mortarboard" /> Skills <pems-badge tone="neutral">@skills.Count</pems-badge>
-        </button>
+        </pems-button>
     </li>
     <li class="nav-item" role="presentation">
-        <button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-qualifications" type="button">
+        <pems-button tone="bare" css="nav-link" data-bs-toggle="tab" data-bs-target="#tab-qualifications" type="button">
             <pems-icon name="bi-patch-check" /> Qualifications <pems-badge tone="neutral">@qualifications.Count</pems-badge>
-        </button>
+        </pems-button>
     </li>
     <li class="nav-item" role="presentation">
-        <button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-certifications" type="button">
+        <pems-button tone="bare" css="nav-link" data-bs-toggle="tab" data-bs-target="#tab-certifications" type="button">
             <pems-icon name="bi-award" /> Certifications <pems-badge tone="neutral">@certifications.Count</pems-badge>
-        </button>
+        </pems-button>
     </li>
     <li class="nav-item" role="presentation">
-        <button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-maintenance-types" type="button">
+        <pems-button tone="bare" css="nav-link" data-bs-toggle="tab" data-bs-target="#tab-maintenance-types" type="button">
             <pems-icon name="bi-tags" /> Maintenance Types <pems-badge tone="neutral">@maintenanceTypes.Count</pems-badge>
-        </button>
+        </pems-button>
     </li>
     <li class="nav-item" role="presentation">
-        <button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-strategy-types" type="button">
+        <pems-button tone="bare" css="nav-link" data-bs-toggle="tab" data-bs-target="#tab-strategy-types" type="button">
             <pems-icon name="bi-diagram-2" /> Strategy Types <pems-badge tone="neutral">@strategyTypes.Count</pems-badge>
-        </button>
+        </pems-button>
     </li>
     <li class="nav-item" role="presentation">
-        <button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-equipment-classes" type="button">
+        <pems-button tone="bare" css="nav-link" data-bs-toggle="tab" data-bs-target="#tab-equipment-classes" type="button">
             <pems-icon name="bi-gear" /> Equipment Classes <pems-badge tone="neutral">@equipmentClasses.Count</pems-badge>
-        </button>
+        </pems-button>
     </li>
     <li class="nav-item" role="presentation">
-        <button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-standards" type="button">
+        <pems-button tone="bare" css="nav-link" data-bs-toggle="tab" data-bs-target="#tab-standards" type="button">
             <pems-icon name="bi-journal-check" /> Standard References <pems-badge tone="neutral">@standardReferences.Count</pems-badge>
-        </button>
+        </pems-button>
     </li>
     <li class="nav-item" role="presentation">
-        <button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-activities" type="button">
+        <pems-button tone="bare" css="nav-link" data-bs-toggle="tab" data-bs-target="#tab-activities" type="button">
             <pems-icon name="bi-list-task" /> Activities <pems-badge tone="neutral">@maintenanceActivities.Count</pems-badge>
-        </button>
+        </pems-button>
     </li>
     <li class="nav-item" role="presentation">
-        <button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-failure-modes" type="button">
+        <pems-button tone="bare" css="nav-link" data-bs-toggle="tab" data-bs-target="#tab-failure-modes" type="button">
             <pems-icon name="bi-exclamation-triangle" /> Failure Modes <pems-badge tone="neutral">@failureModes.Count</pems-badge>
-        </button>
+        </pems-button>
     </li>
     <li class="nav-item" role="presentation">
-        <button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-pm-templates" type="button">
+        <pems-button tone="bare" css="nav-link" data-bs-toggle="tab" data-bs-target="#tab-pm-templates" type="button">
             <pems-icon name="bi-calendar-check" /> PM Templates <pems-badge tone="neutral">@pmTemplates.Count</pems-badge>
-        </button>
+        </pems-button>
     </li>
     <li class="nav-item" role="presentation">
-        <button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-evaluation-profiles" type="button">
+        <pems-button tone="bare" css="nav-link" data-bs-toggle="tab" data-bs-target="#tab-evaluation-profiles" type="button">
             <pems-icon name="bi-sliders" /> Evaluation Profiles <pems-badge tone="neutral">@evaluationProfiles.Count</pems-badge>
-        </button>
+        </pems-button>
     </li>
     <li class="nav-item" role="presentation">
-        <button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-priority-mappings" type="button">
+        <pems-button tone="bare" css="nav-link" data-bs-toggle="tab" data-bs-target="#tab-priority-mappings" type="button">
             <pems-icon name="bi-flag" /> @Localizer["Priority Mapping"] <pems-badge tone="neutral">@conditionPriorityMappings.Count</pems-badge>
-        </button>
+        </pems-button>
     </li>
 </pems-nav>
 
@@ -128,10 +128,10 @@
                             <pems-table-cell class="small text-muted">@(g.Description ?? "-")</pems-table-cell>
                             <pems-table-cell>@if (g.IsSystemDefault) { <pems-badge tone="info">@Localizer["System"]</pems-badge> }</pems-table-cell>
                             <pems-table-cell class="text-end">
-                                <form asp-action="ToggleGroupActive" method="post" class="d-inline">
+                                <pems-form asp-action="ToggleGroupActive" method="post" class="d-inline">
                                     <input type="hidden" name="id" value="@g.MaintenanceGroupId" />
                                     <pems-button tone="neutral" size="small" outline="true" type="submit" title="@Localizer["غیرفعال کردن"]" data-pems-confirm="این گروه غیرفعال بشه؟"><pems-icon name="bi-x-circle" /></pems-button>
-                                </form>
+                                </pems-form>
                             </pems-table-cell>
                         </pems-table-row>
                     }
@@ -163,10 +163,10 @@
                             <pems-table-cell>@(s.Discipline?.Name ?? "-")</pems-table-cell>
                             <pems-table-cell class="small text-muted">@(s.Description ?? "-")</pems-table-cell>
                             <pems-table-cell class="text-end">
-                                <form asp-action="ToggleSkillActive" method="post" class="d-inline">
+                                <pems-form asp-action="ToggleSkillActive" method="post" class="d-inline">
                                     <input type="hidden" name="id" value="@s.SkillId" />
                                     <pems-button tone="neutral" size="small" outline="true" type="submit" title="@Localizer["غیرفعال کردن"]" data-pems-confirm="این مهارت غیرفعال بشه؟"><pems-icon name="bi-x-circle" /></pems-button>
-                                </form>
+                                </pems-form>
                             </pems-table-cell>
                         </pems-table-row>
                     }
@@ -197,10 +197,10 @@
                             <pems-table-cell>@(q.Discipline?.Name ?? "-")</pems-table-cell>
                             <pems-table-cell class="small text-muted">@(q.Description ?? "-")</pems-table-cell>
                             <pems-table-cell class="text-end">
-                                <form asp-action="ToggleQualificationActive" method="post" class="d-inline">
+                                <pems-form asp-action="ToggleQualificationActive" method="post" class="d-inline">
                                     <input type="hidden" name="id" value="@q.QualificationId" />
                                     <pems-button tone="neutral" size="small" outline="true" type="submit" title="@Localizer["غیرفعال کردن"]" data-pems-confirm="این صلاحیت غیرفعال بشه؟"><pems-icon name="bi-x-circle" /></pems-button>
-                                </form>
+                                </pems-form>
                             </pems-table-cell>
                         </pems-table-row>
                     }
@@ -231,10 +231,10 @@
                             <pems-table-cell>@(c.Discipline?.Name ?? "-")</pems-table-cell>
                             <pems-table-cell class="small text-muted">@(c.Description ?? "-")</pems-table-cell>
                             <pems-table-cell class="text-end">
-                                <form asp-action="ToggleCertificationActive" method="post" class="d-inline">
+                                <pems-form asp-action="ToggleCertificationActive" method="post" class="d-inline">
                                     <input type="hidden" name="id" value="@c.CertificationId" />
                                     <pems-button tone="neutral" size="small" outline="true" type="submit" title="@Localizer["غیرفعال کردن"]" data-pems-confirm="این گواهینامه غیرفعال بشه؟"><pems-icon name="bi-x-circle" /></pems-button>
-                                </form>
+                                </pems-form>
                             </pems-table-cell>
                         </pems-table-row>
                     }
@@ -267,10 +267,10 @@
                             <pems-table-cell>@(t.NameFa ?? "-")</pems-table-cell>
                             <pems-table-cell>@if (t.IsSystemDefault) { <pems-badge tone="info">@Localizer["System"]</pems-badge> }</pems-table-cell>
                             <pems-table-cell class="text-end">
-                                <form asp-action="ToggleMaintenanceTypeActive" method="post" class="d-inline">
+                                <pems-form asp-action="ToggleMaintenanceTypeActive" method="post" class="d-inline">
                                     <input type="hidden" name="id" value="@t.MaintenanceTypeId" />
                                     <pems-button tone="neutral" size="small" outline="true" type="submit" title="@Localizer["غیرفعال کردن"]" data-pems-confirm="این Maintenance Type غیرفعال بشه؟"><pems-icon name="bi-x-circle" /></pems-button>
-                                </form>
+                                </pems-form>
                             </pems-table-cell>
                         </pems-table-row>
                     }
@@ -303,10 +303,10 @@
                             <pems-table-cell>@(t.NameFa ?? "-")</pems-table-cell>
                             <pems-table-cell>@if (t.IsSystemDefault) { <pems-badge tone="info">@Localizer["System"]</pems-badge> }</pems-table-cell>
                             <pems-table-cell class="text-end">
-                                <form asp-action="ToggleMaintenanceStrategyTypeActive" method="post" class="d-inline">
+                                <pems-form asp-action="ToggleMaintenanceStrategyTypeActive" method="post" class="d-inline">
                                     <input type="hidden" name="id" value="@t.MaintenanceStrategyTypeId" />
                                     <pems-button tone="neutral" size="small" outline="true" type="submit" title="@Localizer["غیرفعال کردن"]" data-pems-confirm="این Strategy Type غیرفعال بشه؟"><pems-icon name="bi-x-circle" /></pems-button>
-                                </form>
+                                </pems-form>
                             </pems-table-cell>
                         </pems-table-row>
                     }
@@ -339,10 +339,10 @@
                             <pems-table-cell>@(t.NameFa ?? "-")</pems-table-cell>
                             <pems-table-cell>@if (t.IsSystemDefault) { <pems-badge tone="info">@Localizer["System"]</pems-badge> }</pems-table-cell>
                             <pems-table-cell class="text-end">
-                                <form asp-action="ToggleEquipmentClassActive" method="post" class="d-inline">
+                                <pems-form asp-action="ToggleEquipmentClassActive" method="post" class="d-inline">
                                     <input type="hidden" name="id" value="@t.EquipmentClassId" />
                                     <pems-button tone="neutral" size="small" outline="true" type="submit" title="@Localizer["غیرفعال کردن"]" data-pems-confirm="این Equipment Class غیرفعال بشه؟"><pems-icon name="bi-x-circle" /></pems-button>
-                                </form>
+                                </pems-form>
                             </pems-table-cell>
                         </pems-table-row>
                     }
@@ -377,10 +377,10 @@
                             <pems-table-cell class="small text-muted">@(s.Category ?? "-")</pems-table-cell>
                             <pems-table-cell>@if (s.IsSystemDefault) { <pems-badge tone="info">@Localizer["System"]</pems-badge> }</pems-table-cell>
                             <pems-table-cell class="text-end">
-                                <form asp-action="ToggleStandardReferenceActive" method="post" class="d-inline">
+                                <pems-form asp-action="ToggleStandardReferenceActive" method="post" class="d-inline">
                                     <input type="hidden" name="id" value="@s.StandardReferenceId" />
                                     <pems-button tone="neutral" size="small" outline="true" type="submit" title="@Localizer["غیرفعال کردن"]" data-pems-confirm="این Standard Reference غیرفعال بشه؟"><pems-icon name="bi-x-circle" /></pems-button>
-                                </form>
+                                </pems-form>
                             </pems-table-cell>
                         </pems-table-row>
                     }
@@ -414,10 +414,10 @@
                             <pems-table-cell class="small text-muted">@(a.MaintenanceType?.Name ?? "-")</pems-table-cell>
                             <pems-table-cell>@if (a.IsSystemDefault) { <pems-badge tone="info">@Localizer["System"]</pems-badge> }</pems-table-cell>
                             <pems-table-cell class="text-end">
-                                <form asp-action="ToggleMaintenanceActivityActive" method="post" class="d-inline">
+                                <pems-form asp-action="ToggleMaintenanceActivityActive" method="post" class="d-inline">
                                     <input type="hidden" name="id" value="@a.MaintenanceActivityId" />
                                     <pems-button tone="neutral" size="small" outline="true" type="submit" title="@Localizer["غیرفعال کردن"]" data-pems-confirm="این Activity غیرفعال بشه؟"><pems-icon name="bi-x-circle" /></pems-button>
-                                </form>
+                                </pems-form>
                             </pems-table-cell>
                         </pems-table-row>
                     }
@@ -447,10 +447,10 @@
                             <pems-table-cell class="small text-muted">@(fm.FailureConsequence?.Name ?? "-")</pems-table-cell>
                             <pems-table-cell>@if (fm.IsSystemDefault) { <pems-badge tone="info">@Localizer["System"]</pems-badge> }</pems-table-cell>
                             <pems-table-cell class="text-end">
-                                <form asp-action="ToggleFailureModeActive" method="post" class="d-inline">
+                                <pems-form asp-action="ToggleFailureModeActive" method="post" class="d-inline">
                                     <input type="hidden" name="id" value="@fm.FailureModeId" />
                                     <pems-button tone="neutral" size="small" outline="true" type="submit" title="@Localizer["غیرفعال کردن"]" data-pems-confirm="این Failure Mode غیرفعال بشه؟"><pems-icon name="bi-x-circle" /></pems-button>
-                                </form>
+                                </pems-form>
                             </pems-table-cell>
                         </pems-table-row>
                     }
@@ -480,10 +480,10 @@
                             <pems-table-cell class="small text-muted">@(pt.IntervalDays.HasValue ? $"{pt.IntervalDays} روز" : (pt.MeterInterval.HasValue ? $"{pt.MeterInterval} {pt.MeterType}" : "-"))</pems-table-cell>
                             <pems-table-cell>@if (pt.IsSystemDefault) { <pems-badge tone="info">@Localizer["System"]</pems-badge> }</pems-table-cell>
                             <pems-table-cell class="text-end">
-                                <form asp-action="TogglePMTemplateActive" method="post" class="d-inline">
+                                <pems-form asp-action="TogglePMTemplateActive" method="post" class="d-inline">
                                     <input type="hidden" name="id" value="@pt.PMTemplateId" />
                                     <pems-button tone="neutral" size="small" outline="true" type="submit" title="@Localizer["غیرفعال کردن"]" data-pems-confirm="این PM Template غیرفعال بشه؟"><pems-icon name="bi-x-circle" /></pems-button>
-                                </form>
+                                </pems-form>
                             </pems-table-cell>
                         </pems-table-row>
                     }
@@ -537,10 +537,10 @@
                                 <pems-button tone="primary" size="small" outline="true" type="button" data-bs-toggle="modal" data-bs-target="#addLimitModal" data-profile-id="@p.EvaluationProfileId" data-profile-code="@p.Code" title="@Localizer["Add Limit"]">
                                     <pems-icon name="bi-plus-circle" />
                                 </pems-button>
-                                <form asp-action="ToggleEvaluationProfileActive" method="post" class="d-inline">
+                                <pems-form asp-action="ToggleEvaluationProfileActive" method="post" class="d-inline">
                                     <input type="hidden" name="id" value="@p.EvaluationProfileId" />
                                     <pems-button tone="neutral" size="small" outline="true" type="submit" title="@Localizer["غیرفعال کردن"]" data-pems-confirm="این Evaluation Profile غیرفعال بشه؟"><pems-icon name="bi-x-circle" /></pems-button>
-                                </form>
+                                </pems-form>
                             </pems-table-cell>
                         </pems-table-row>
                     }
@@ -569,22 +569,22 @@
                         <pems-table-row>
                             <pems-table-cell><code>@m.Condition</code></pems-table-cell>
                             <pems-table-cell>
-                                <form asp-action="UpdateConditionPriorityMapping" method="post"><pems-flex gap="1" align="center">
+                                <pems-form asp-action="UpdateConditionPriorityMapping" method="post"><pems-flex gap="1" align="center">
                                     <input type="hidden" name="id" value="@m.ConditionPriorityMappingId" />
-                                    <pems-select class="pems-maxw-140" scale="small" name="priority" onchange="this.form.submit()">
+                                    <pems-select class="pems-maxw-140" scale="small" name="priority" data-pems-change="submit-form">
                                         @foreach (var p in new[] { "Low", "Medium", "High", "Critical" })
                                         {
                                             <option value="@p" selected="@(p == m.Priority)">@p</option>
                                         }
                                     </pems-select>
-                                </pems-flex></form>
+                                </pems-flex></pems-form>
                             </pems-table-cell>
                             <pems-table-cell>@if (m.IsSystemDefault) { <pems-badge tone="info">@Localizer["System"]</pems-badge> }</pems-table-cell>
                             <pems-table-cell class="text-end">
-                                <form asp-action="ToggleConditionPriorityMappingActive" method="post" class="d-inline">
+                                <pems-form asp-action="ToggleConditionPriorityMappingActive" method="post" class="d-inline">
                                     <input type="hidden" name="id" value="@m.ConditionPriorityMappingId" />
                                     <pems-button tone="neutral" size="small" outline="true" type="submit" title="@Localizer["غیرفعال کردن"]" data-pems-confirm="این نگاشت غیرفعال بشه؟"><pems-icon name="bi-x-circle" /></pems-button>
-                                </form>
+                                </pems-form>
                             </pems-table-cell>
                         </pems-table-row>
                     }
@@ -596,7 +596,7 @@
 </pems-tab-content>
 
 <pems-modal id="createPriorityMappingModal" tabindex="-1">
-        <form asp-action="CreateConditionPriorityMapping" method="post">
+        <pems-form asp-action="CreateConditionPriorityMapping" method="post">
             <pems-modal-header>@Localizer["نگاشت جدید"]</pems-modal-header>
             <pems-modal-body>
                 <div class="mb-2">
@@ -617,11 +617,11 @@
                 <pems-button tone="neutral" size="small" outline="true" type="button" data-bs-dismiss="modal">@Localizer["انصراف"]</pems-button>
                 <pems-button tone="primary" size="small" type="submit">@Localizer["ساخت"]</pems-button>
             </pems-modal-footer>
-        </form>
+        </pems-form>
     </pems-modal>
 
 <pems-modal id="createSkillModal" tabindex="-1">
-        <form asp-action="CreateSkill" method="post">
+        <pems-form asp-action="CreateSkill" method="post">
             <pems-modal-header>@Localizer["مهارت جدید"]</pems-modal-header>
             <pems-modal-body>
                 <div class="mb-2">
@@ -644,11 +644,11 @@
                 <pems-button tone="neutral" size="small" outline="true" type="button" data-bs-dismiss="modal">@Localizer["انصراف"]</pems-button>
                 <pems-button tone="primary" size="small" type="submit">@Localizer["ساخت"]</pems-button>
             </pems-modal-footer>
-        </form>
+        </pems-form>
     </pems-modal>
 
 <pems-modal id="createGroupModal" tabindex="-1">
-        <form asp-action="CreateGroup" method="post">
+        <pems-form asp-action="CreateGroup" method="post">
             <pems-modal-header>@Localizer["گروه تعمیراتی جدید"]</pems-modal-header>
             <pems-modal-body>
                 <div class="mb-2">
@@ -674,11 +674,11 @@
                 <pems-button tone="neutral" size="small" outline="true" type="button" data-bs-dismiss="modal">@Localizer["انصراف"]</pems-button>
                 <pems-button tone="primary" size="small" type="submit">@Localizer["ساخت"]</pems-button>
             </pems-modal-footer>
-        </form>
+        </pems-form>
     </pems-modal>
 
 <pems-modal id="createQualificationModal" tabindex="-1">
-        <form asp-action="CreateQualification" method="post">
+        <pems-form asp-action="CreateQualification" method="post">
             <pems-modal-header>@Localizer["صلاحیت جدید"]</pems-modal-header>
             <pems-modal-body>
                 <div class="mb-2">
@@ -701,11 +701,11 @@
                 <pems-button tone="neutral" size="small" outline="true" type="button" data-bs-dismiss="modal">@Localizer["انصراف"]</pems-button>
                 <pems-button tone="primary" size="small" type="submit">@Localizer["ساخت"]</pems-button>
             </pems-modal-footer>
-        </form>
+        </pems-form>
     </pems-modal>
 
 <pems-modal id="createMaintenanceTypeModal" tabindex="-1">
-        <form asp-action="CreateMaintenanceType" method="post">
+        <pems-form asp-action="CreateMaintenanceType" method="post">
             <pems-modal-header>@Localizer["Maintenance Type جدید"]</pems-modal-header>
             <pems-modal-body>
                 <div class="mb-2">
@@ -729,11 +729,11 @@
                 <pems-button tone="neutral" size="small" outline="true" type="button" data-bs-dismiss="modal">@Localizer["انصراف"]</pems-button>
                 <pems-button tone="primary" size="small" type="submit">@Localizer["ساخت"]</pems-button>
             </pems-modal-footer>
-        </form>
+        </pems-form>
     </pems-modal>
 
 <pems-modal id="createStrategyTypeModal" tabindex="-1">
-        <form asp-action="CreateMaintenanceStrategyType" method="post">
+        <pems-form asp-action="CreateMaintenanceStrategyType" method="post">
             <pems-modal-header>Maintenance Strategy Type جدید</pems-modal-header>
             <pems-modal-body>
                 <div class="mb-2">
@@ -757,11 +757,11 @@
                 <pems-button tone="neutral" size="small" outline="true" type="button" data-bs-dismiss="modal">@Localizer["انصراف"]</pems-button>
                 <pems-button tone="primary" size="small" type="submit">@Localizer["ساخت"]</pems-button>
             </pems-modal-footer>
-        </form>
+        </pems-form>
     </pems-modal>
 
 <pems-modal id="createEquipmentClassModal" tabindex="-1">
-        <form asp-action="CreateEquipmentClass" method="post">
+        <pems-form asp-action="CreateEquipmentClass" method="post">
             <pems-modal-header>@Localizer["Equipment Class جدید"]</pems-modal-header>
             <pems-modal-body>
                 <div class="mb-2">
@@ -785,11 +785,11 @@
                 <pems-button tone="neutral" size="small" outline="true" type="button" data-bs-dismiss="modal">@Localizer["انصراف"]</pems-button>
                 <pems-button tone="primary" size="small" type="submit">@Localizer["ساخت"]</pems-button>
             </pems-modal-footer>
-        </form>
+        </pems-form>
     </pems-modal>
 
 <pems-modal id="createStandardModal" tabindex="-1">
-        <form asp-action="CreateStandardReference" method="post">
+        <pems-form asp-action="CreateStandardReference" method="post">
             <pems-modal-header>Standard Reference جدید</pems-modal-header>
             <pems-modal-body>
                 <p class="small text-muted">فقط ابرداده - هرگز متن دارای Copyright خودِ استاندارد را این‌جا وارد نکنید.</p>
@@ -822,11 +822,11 @@
                 <pems-button tone="neutral" size="small" outline="true" type="button" data-bs-dismiss="modal">@Localizer["انصراف"]</pems-button>
                 <pems-button tone="primary" size="small" type="submit">@Localizer["ساخت"]</pems-button>
             </pems-modal-footer>
-        </form>
+        </pems-form>
     </pems-modal>
 
 <pems-modal id="createActivityModal" tabindex="-1">
-        <form asp-action="CreateMaintenanceActivity" method="post">
+        <pems-form asp-action="CreateMaintenanceActivity" method="post">
             <pems-modal-header>Maintenance Activity جدید</pems-modal-header>
             <pems-modal-body>
                 <div class="mb-2">
@@ -863,11 +863,11 @@
                 <pems-button tone="neutral" size="small" outline="true" type="button" data-bs-dismiss="modal">@Localizer["انصراف"]</pems-button>
                 <pems-button tone="primary" size="small" type="submit">@Localizer["ساخت"]</pems-button>
             </pems-modal-footer>
-        </form>
+        </pems-form>
     </pems-modal>
 
 <pems-modal id="createCertificationModal" tabindex="-1">
-        <form asp-action="CreateCertification" method="post">
+        <pems-form asp-action="CreateCertification" method="post">
             <pems-modal-header>@Localizer["گواهینامه جدید"]</pems-modal-header>
             <pems-modal-body>
                 <div class="mb-2">
@@ -890,11 +890,11 @@
                 <pems-button tone="neutral" size="small" outline="true" type="button" data-bs-dismiss="modal">@Localizer["انصراف"]</pems-button>
                 <pems-button tone="primary" size="small" type="submit">@Localizer["ساخت"]</pems-button>
             </pems-modal-footer>
-        </form>
+        </pems-form>
     </pems-modal>
 
 <pems-modal id="createEvaluationProfileModal" tabindex="-1">
-        <form asp-action="CreateEvaluationProfile" method="post">
+        <pems-form asp-action="CreateEvaluationProfile" method="post">
             <pems-modal-header>@Localizer["Evaluation Profile جدید"]</pems-modal-header>
             <pems-modal-body>
                 <p class="small text-muted">@Localizer["فقط تعریف پروفایل - آستانه‌های واقعی را بعداً از دکمه‌ی «Add Limit» هر ردیف وارد کنید."]</p>
@@ -946,11 +946,11 @@
                 <pems-button tone="neutral" size="small" outline="true" type="button" data-bs-dismiss="modal">@Localizer["انصراف"]</pems-button>
                 <pems-button tone="primary" size="small" type="submit">@Localizer["ساخت"]</pems-button>
             </pems-modal-footer>
-        </form>
+        </pems-form>
     </pems-modal>
 
 <pems-modal id="addLimitModal" tabindex="-1">
-        <form asp-action="AddEvaluationLimit" method="post">
+        <pems-form asp-action="AddEvaluationLimit" method="post">
             <pems-modal-header>@Localizer["Add Limit"] — <span id="addLimitProfileLabel"></span></pems-modal-header>
             <pems-modal-body>
                 <p class="small text-muted">@Localizer["فقط مقدار واقعی مهندسی وارد کنید - هیچ مقداری حدس زده نمی‌شود؛ خالی گذاشتن هر دو فیلد رد می‌شود."]</p>
@@ -989,7 +989,7 @@
                 <pems-button tone="neutral" size="small" outline="true" type="button" data-bs-dismiss="modal">@Localizer["انصراف"]</pems-button>
                 <pems-button tone="primary" size="small" type="submit">@Localizer["ثبت"]</pems-button>
             </pems-modal-footer>
-        </form>
+        </pems-form>
     </pems-modal>
 
 <script src="~/js/views/maintenancemasterdata-index.js" asp-append-version="true"></script>

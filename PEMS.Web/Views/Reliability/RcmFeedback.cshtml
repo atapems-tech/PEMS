@@ -33,9 +33,9 @@
         <pems-button tone="neutral" size="small" outline="true" as="a" asp-action="Intelligence"><pems-icon name="bi-clipboard-data-fill" /> @Localizer["Maintenance Intelligence"]</pems-button>
         @if (canGenerate)
         {
-            <form asp-action="GenerateRcmEvidence" method="post" class="d-inline">
+            <pems-form asp-action="GenerateRcmEvidence" method="post" class="d-inline">
                 <pems-button tone="primary" size="small" type="submit"><pems-icon name="bi-search" /> Generate Evidence</pems-button>
-            </form>
+            </pems-form>
         }
     </div>
 </pems-flex>
@@ -46,17 +46,17 @@
 </p>
 
 <pems-content-card css="mb-3">
-    <form method="get"><pems-row gap="2" css="align-items-end">
+    <pems-form method="get"><pems-row gap="2" css="align-items-end">
         <pems-col md="3">
             <pems-label css="small">@Localizer["Status"]</pems-label>
-            <pems-select scale="small" name="status" onchange="this.form.submit()">
+            <pems-select scale="small" name="status" data-pems-change="submit-form">
                 <option value="" selected="@(string.IsNullOrEmpty(statusFilter))">All</option>
                 <option value="PENDING" selected="@(statusFilter == "PENDING")">Pending</option>
                 <option value="ACCEPTED" selected="@(statusFilter == "ACCEPTED")">Accepted</option>
                 <option value="REJECTED" selected="@(statusFilter == "REJECTED")">Rejected</option>
             </pems-select>
         </pems-col>
-    </pems-row></form>
+    </pems-row></pems-form>
 </pems-content-card>
 
 <pems-content-card>
@@ -88,16 +88,16 @@
                     <pems-table-cell>
                         @if (r.Status == "PENDING" && canReview)
                         {
-                            <form asp-action="ReviewRcmRecommendation" method="post" class="d-inline">
+                            <pems-form asp-action="ReviewRcmRecommendation" method="post" class="d-inline">
                                 <input type="hidden" name="recommendationId" value="@r.RcmReviewRecommendationId" />
                                 <input type="hidden" name="accept" value="true" />
                                 <pems-button tone="success" size="small" outline="true" type="submit"><pems-icon name="bi-check-lg" /></pems-button>
-                            </form>
-                            <form asp-action="ReviewRcmRecommendation" method="post" class="d-inline">
+                            </pems-form>
+                            <pems-form asp-action="ReviewRcmRecommendation" method="post" class="d-inline">
                                 <input type="hidden" name="recommendationId" value="@r.RcmReviewRecommendationId" />
                                 <input type="hidden" name="accept" value="false" />
                                 <pems-button tone="danger" size="small" outline="true" type="submit"><pems-icon name="bi-x-lg" /></pems-button>
-                            </form>
+                            </pems-form>
                         }
                     </pems-table-cell>
                 </pems-table-row>

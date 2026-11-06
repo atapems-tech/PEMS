@@ -46,7 +46,7 @@
     @if (!string.IsNullOrEmpty(message)) { <pems-alert tone="success" css="py-2 small">@Localizer[message]</pems-alert> }
     @if (!string.IsNullOrEmpty(error)) { <pems-alert tone="danger" css="py-2 small">@Localizer[error]</pems-alert> }
 
-    <form class="mb-3" method="get"><pems-flex gap="2" align="end" wrap="true">
+    <pems-form class="mb-3" method="get"><pems-flex gap="2" align="end" wrap="true">
         <div>
             <pems-label css="small mb-0" for="kpiFrom">@Localizer["From"]</pems-label>
             <pems-date id="kpiFrom" name="fromDate" scale="small" value="@Model.From.ToString("yyyy-MM-dd")" />
@@ -57,7 +57,7 @@
         </div>
         <pems-button tone="primary" size="small" type="submit">@Localizer["Filter"]</pems-button>
         <span class="small text-muted ms-auto">@Localizer["Kpi_Exec_Generated"]: @d.GeneratedAt.ToString("yyyy-MM-dd HH:mm")</span>
-    </pems-flex></form>
+    </pems-flex></pems-form>
 
     @* خلاصه‌ی وضعیت نسبت به هدف: فقط شمارش شاخص‌هایی که هدف و مقدار دارند؛ «امتیاز کلی سلامت» جعلی ساخته نمی‌شود *@
     <div class="pems-kpi-overview" aria-label="@Localizer["Kpi_Exec_Overview"]">
@@ -139,12 +139,12 @@
                             <pems-table-cell><pems-input scale="small" css="pems-kpi-input" form="@formId" type="number" step="any" min="0" name="warn" value="@(tg.Warn?.ToString("0.####", inv))" aria-label="@Localizer["Kpi_Exec_Warn"]: @Localizer["Kpi_Name_" + tg.Key]" /></pems-table-cell>
                             <pems-table-cell><span class="small text-muted">@(tg.IsCustom ? Localizer["Kpi_Exec_Custom"] : Localizer["Kpi_Exec_Default"])</span></pems-table-cell>
                             <pems-table-cell>
-                                <form id="@formId" method="post" asp-action="SaveTarget" class="d-inline">
+                                <pems-form id="@formId" method="post" asp-action="SaveTarget" class="d-inline">
                                     <input type="hidden" name="key" value="@tg.Key" />
                                     <input type="hidden" name="fromDate" value="@Model.From.ToString("yyyy-MM-dd")" />
                                     <input type="hidden" name="toDate" value="@Model.To.ToString("yyyy-MM-dd")" />
                                     <pems-button tone="primary" size="small" outline="true" type="submit">@Localizer["Save"]</pems-button>
-                                </form>
+                                </pems-form>
                             </pems-table-cell>
                         </pems-table-row>
                     }

@@ -15,7 +15,7 @@
 }
 
 <pems-content-card>
-    <form asp-action="Create" method="post"><pems-row gap="3">
+    <pems-form asp-action="Create" method="post"><pems-row gap="3">
         <pems-col md="4">
             <pems-label css="small">Outgoing Employee</pems-label>
             <pems-select name="outgoingEmployeeId" required>
@@ -46,5 +46,5 @@
             <pems-button tone="primary" type="submit">@Localizer["Create"]</pems-button>
             <pems-button tone="neutral" outline="true" as="a" asp-action="Index">@Localizer["Cancel"]</pems-button>
         </pems-col>
-    </pems-row></form>
+    </pems-row></pems-form>
 </pems-content-card>

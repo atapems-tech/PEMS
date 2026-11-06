@@ -12,12 +12,12 @@
 <pems-content-card css="mb-3">
     <pems-flex justify="between" align="center">
         <h5 class="mb-0">@s.Code &mdash; @s.Name Workspace</h5>
-        <form method="get"><pems-flex gap="2">
-            <pems-select scale="small" name="projectId" onchange="this.form.submit()">
+        <pems-form method="get"><pems-flex gap="2">
+            <pems-select scale="small" name="projectId" data-pems-change="submit-form">
                 <option value="">@Localizer["All Projects"]</option>
                 @foreach (var p in projects) { <option value="@p.ProjectId" selected="@(p.ProjectId == (int?)ViewBag.SelectedProjectId)">@p.ProjectName</option> }
             </pems-select>
-        </pems-flex></form>
+        </pems-flex></pems-form>
     </pems-flex>
 </pems-content-card>
 
@@ -44,14 +44,14 @@
                     <pems-table-cell>@t.ResponsibleName</pems-table-cell>
                     <pems-table-cell>@(t.DueDate?.ToString("yyyy-MM-dd"))</pems-table-cell>
                     <pems-table-cell>
-                        <form asp-action="SetTaskStatus" method="post" class="d-inline">
+                        <pems-form asp-action="SetTaskStatus" method="post" class="d-inline">
                             <input type="hidden" name="disciplineId" value="@s.DisciplineId" />
                             <input type="hidden" name="taskId" value="@t.DisciplineTaskId" />
-                            <pems-select class="pems-w-120" scale="small" name="status" onchange="this.form.submit()">
+                            <pems-select class="pems-w-120" scale="small" name="status" data-pems-change="submit-form">
                                 @foreach (var opt in new[] { "Open", "InProgress", "Completed" })
                                 { <option value="@opt" selected="@(opt == t.Status)">@opt</option> }
                             </pems-select>
-                        </form>
+                        </pems-form>
                     </pems-table-cell>
                 </pems-table-row>
             }
@@ -59,7 +59,7 @@
     </pems-table>
     @if (!Model.Tasks.Any()) { <p class="text-muted">No tasks yet.</p> }
 
-    <form asp-action="AddTask" method="post"><pems-row gap="2" css="mt-2">
+    <pems-form asp-action="AddTask" method="post"><pems-row gap="2" css="mt-2">
         <input type="hidden" name="disciplineId" value="@s.DisciplineId" />
         <pems-col md="2">
             <pems-select scale="small" name="type">
@@ -81,7 +81,7 @@
         </pems-col>
         <pems-col md="2"><pems-date name="dueDate" scale="small" /></pems-col>
         <pems-col md="1"><pems-button tone="primary" size="small" css="w-100"><pems-icon name="bi-plus-lg" /></pems-button></pems-col>
-    </pems-row></form>
+    </pems-row></pems-form>
 </pems-content-card>
 
 <pems-row gap="3">

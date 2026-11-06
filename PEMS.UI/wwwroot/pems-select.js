@@ -31,11 +31,9 @@
     // attached to <body>, and a click in it would count as "outside" and close the panel
     function inlineHost(select) { return select.closest('.modal, .dropdown-menu, [data-pems-select-inline]'); }
 
-    function messageDiv(cls, msg) {
-        var div = document.createElement('div');
-        div.className = cls;
-        div.textContent = msg;
-        return div;
+    function messageDiv(kind, msg) {
+        var t = window.PemsTemplate;
+        return t.fill(t.clone(kind === 'no-results' ? 'sel-no-results' : 'sel-loading'), { text: msg });
     }
 
     function isRemote(select) {

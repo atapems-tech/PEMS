@@ -16,8 +16,8 @@
             }
         </pems-nav>
         <pems-flex gap="2">
-            <form asp-action="MarkAllRead" method="post"><pems-button tone="neutral" size="small" outline="true">@Localizer["Notif_MarkAllRead"]</pems-button></form>
-            <form asp-action="DismissAll" method="post"><pems-button tone="neutral" size="small" outline="true">@Localizer["Notif_DismissAll"]</pems-button></form>
+            <pems-form asp-action="MarkAllRead" method="post"><pems-button tone="neutral" size="small" outline="true">@Localizer["Notif_MarkAllRead"]</pems-button></pems-form>
+            <pems-form asp-action="DismissAll" method="post"><pems-button tone="neutral" size="small" outline="true">@Localizer["Notif_DismissAll"]</pems-button></pems-form>
         </pems-flex>
     </pems-flex>
 
@@ -33,9 +33,9 @@
                 </a>
                 @if (!n.DismissedDate.HasValue)
                 {
-                    <form asp-action="Dismiss" asp-route-id="@n.NotificationId" method="post">
+                    <pems-form asp-action="Dismiss" asp-route-id="@n.NotificationId" method="post">
                         <pems-button tone="none" size="small" css="btn-link text-muted" title="@Localizer["Notif_Dismiss"]" aria-label="@Localizer["Notif_Dismiss"]"><pems-icon name="bi-x-lg" /></pems-button>
-                    </form>
+                    </pems-form>
                 }
             </pems-flex>
         }

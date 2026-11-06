@@ -52,12 +52,12 @@
     <p class="text-muted small mt-2 mb-0">فایل کامل را آپلود کنید - PEMS فایل‌های بزرگ را داخلی و خودکار پردازش می‌کند. این صفحه برای بازبینی، صفحه‌بندی شده است (@Model.Rows.TotalCount ردیف در این فیلتر)؛ همه‌ی ردیف‌ها - نه فقط صفحه‌ی جاری - از طریق فیلتر Match Status زیر و دکمه‌ی «Commit/Reject سراسر Batch» قابل‌دسترسی و قابل‌عمل‌اند.</p>
 </pems-content-card>
 
-<form id="bulkCommitForm" asp-action="BulkCommit" method="post">
+<pems-form id="bulkCommitForm" asp-action="BulkCommit" method="post">
     <input type="hidden" name="batchId" value="@Model.Batch.MrsImportBatchId" />
-</form>
-<form id="bulkRejectForm" asp-action="BulkReject" method="post">
+</pems-form>
+<pems-form id="bulkRejectForm" asp-action="BulkReject" method="post">
     <input type="hidden" name="batchId" value="@Model.Batch.MrsImportBatchId" />
-</form>
+</pems-form>
 
 <pems-content-card css="pems-filter-bar mb-3">
     <span class="pems-filter-label">@Localizer["Filter"]</span>
@@ -71,21 +71,21 @@
         <span class="pems-command-bar-spacer"></span>
         @if (matchStatusFilter != "Invalid")
         {
-            <form asp-action="CommitByStatus" method="post" class="d-inline">
+            <pems-form asp-action="CommitByStatus" method="post" class="d-inline">
                 <input type="hidden" name="batchId" value="@Model.Batch.MrsImportBatchId" />
                 <input type="hidden" name="matchStatusFilter" value="@matchStatusFilter" />
                 <pems-button tone="primary" size="small" type="submit" data-pems-confirm="همه‌ی ردیف‌های Pending با وضعیت «@FilterLabel(matchStatusFilter)» در کل این Batch (نه فقط این صفحه) تایید و به MaterialItem/InventoryTransaction تبدیل شوند؟">
                     <pems-icon name="bi-check2-all" /> Commit ALL "@FilterLabel(matchStatusFilter)" in entire batch
                 </pems-button>
-            </form>
+            </pems-form>
         }
-        <form asp-action="RejectByStatus" method="post" class="d-inline">
+        <pems-form asp-action="RejectByStatus" method="post" class="d-inline">
             <input type="hidden" name="batchId" value="@Model.Batch.MrsImportBatchId" />
             <input type="hidden" name="matchStatusFilter" value="@matchStatusFilter" />
             <pems-button tone="danger" size="small" outline="true" type="submit" data-pems-confirm="همه‌ی ردیف‌های Pending با وضعیت «@FilterLabel(matchStatusFilter)» در کل این Batch رد شوند؟">
                 <pems-icon name="bi-x-circle" /> Reject ALL "@FilterLabel(matchStatusFilter)" in entire batch
             </pems-button>
-        </form>
+        </pems-form>
     }
 </pems-content-card>
 
@@ -110,7 +110,7 @@
         <pems-table kind="enterprise" scale="small">
             <pems-table-head>
                 <pems-table-row>
-                    <pems-table-header class="pems-w-30"><input type="checkbox" id="selectAllPending" /></pems-table-header>
+                    <pems-table-header class="pems-w-30"><pems-input kind="bare" type="checkbox" id="selectAllPending" /></pems-table-header>
                     <pems-table-header>@Localizer["MRS No"]</pems-table-header><pems-table-header>Item Code</pems-table-header><pems-table-header>@Localizer["Description"]</pems-table-header><pems-table-header>@Localizer["UOM"]</pems-table-header><pems-table-header>@Localizer["Vendor"]</pems-table-header><pems-table-header>PO No</pems-table-header><pems-table-header>Qty Recv</pems-table-header><pems-table-header>Qty Issued</pems-table-header>
                     <pems-table-header>@Localizer["Warehouse"]</pems-table-header><pems-table-header>Match Status</pems-table-header><pems-table-header>Matched Material</pems-table-header><pems-table-header>@Localizer["Review"]</pems-table-header><pems-table-header class="pems-w-40"></pems-table-header>
                 </pems-table-row>
@@ -132,8 +132,8 @@
                         <pems-table-cell>
                             @if (isSelectable)
                             {
-                                <input type="checkbox" class="row-select" form="bulkCommitForm" name="selectedRowIds" value="@row.MrsImportRowId" />
-                                <input type="checkbox" class="row-select-reject d-none" form="bulkRejectForm" name="selectedRowIds" value="@row.MrsImportRowId" />
+                                <pems-input kind="bare" type="checkbox" class="row-select" form="bulkCommitForm" name="selectedRowIds" value="@row.MrsImportRowId" />
+                                <pems-input kind="bare" type="checkbox" class="row-select-reject d-none" form="bulkRejectForm" name="selectedRowIds" value="@row.MrsImportRowId" />
                             }
                         </pems-table-cell>
                         <pems-table-cell class="small">@(row.RawMrsNo ?? "-")</pems-table-cell>

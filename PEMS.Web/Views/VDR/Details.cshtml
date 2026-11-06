@@ -96,30 +96,30 @@
 
 <pems-nav css="mb-3" id="vdrTabs" role="tablist">
     <li class="nav-item" role="presentation">
-        <button class="nav-link @(vdrDefaultTab == "overview" ? "active" : "")" data-bs-toggle="tab" data-bs-target="#tab-overview" type="button">
+        <pems-button tone="bare" css="nav-link @(vdrDefaultTab == "overview" ? "active" : "")" data-bs-toggle="tab" data-bs-target="#tab-overview" type="button">
             <pems-icon name="bi-info-circle" /> @Localizer["Vs_TabOverview"]
-        </button>
+        </pems-button>
     </li>
     <li class="nav-item" role="presentation">
-        <button class="nav-link @(vdrDefaultTab == "workflow" ? "active" : "")" data-bs-toggle="tab" data-bs-target="#tab-workflow" type="button">
+        <pems-button tone="bare" css="nav-link @(vdrDefaultTab == "workflow" ? "active" : "")" data-bs-toggle="tab" data-bs-target="#tab-workflow" type="button">
             <pems-icon name="bi-signpost-split" /> @Localizer["Vs_TabWorkflow"]
-        </button>
+        </pems-button>
     </li>
     <li class="nav-item" role="presentation">
-        <button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-submissions" type="button">
+        <pems-button tone="bare" css="nav-link" data-bs-toggle="tab" data-bs-target="#tab-submissions" type="button">
             <pems-icon name="bi-clock-history" /> @Localizer["Vs_TabSubmissions"] <pems-badge tone="neutral">@Model.Submissions.Count</pems-badge>
-        </button>
+        </pems-button>
     </li>
     <li class="nav-item" role="presentation">
-        <button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-comments" type="button">
+        <pems-button tone="bare" css="nav-link" data-bs-toggle="tab" data-bs-target="#tab-comments" type="button">
             <pems-icon name="bi-chat-square-text" /> @Localizer["Vs_TabComments"]
-        </button>
+        </pems-button>
     </li>
     <li class="nav-item" role="presentation">
-        <button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-correspondence" type="button">
+        <pems-button tone="bare" css="nav-link" data-bs-toggle="tab" data-bs-target="#tab-correspondence" type="button">
             <pems-icon name="bi-envelope-paper" /> @Localizer["Vs_TabCorrespondence"]
             @if (relatedLetters.Any()) { <pems-badge tone="neutral">@relatedLetters.Count</pems-badge> }
-        </button>
+        </pems-button>
     </li>
 </pems-nav>
 
@@ -160,7 +160,7 @@
     <p class="text-muted small mb-3">
         @Localizer["Vd_OfficialNoHint"]
     </p>
-    <form asp-action="GenerateContractorNumber" method="post">
+    <pems-form asp-action="GenerateContractorNumber" method="post">
         <input type="hidden" name="vdrItemId" value="@Model.VDRItemId" />
         <pems-row gap="3">
             <pems-col md="3"><pems-label>@Localizer["Vd_VendorCode"]</pems-label><pems-input name="vendorCode" placeholder="e.g. FSK" /></pems-col>
@@ -171,7 +171,7 @@
         <pems-button tone="primary" size="small" outline="true" css="mt-3" type="submit">
             <pems-icon name="bi-hash" /> @Localizer["Vd_GenOfficial"]
         </pems-button>
-    </form>
+    </pems-form>
 </pems-content-card>
 
 @* طبق بخش ۴.۳.۲ همان سند: شماره‌ی موازی به فرمت SUB-CONTRACTOR/Vendor *@
@@ -184,7 +184,7 @@
             <span>@Localizer["Vd_Current"] <strong>@Model.VendorFormatDocumentNumber</strong></span>
         }
     </p>
-    <form asp-action="GenerateVendorNumber" method="post">
+    <pems-form asp-action="GenerateVendorNumber" method="post">
         <input type="hidden" name="vdrItemId" value="@Model.VDRItemId" />
         <pems-row gap="3">
             <pems-col md="4"><pems-label>@Localizer["Vd_JobNumber"]</pems-label><pems-input name="jobNumber" placeholder="e.g. 3863" /></pems-col>
@@ -194,7 +194,7 @@
         <pems-button tone="primary" size="small" outline="true" css="mt-3" type="submit">
             <pems-icon name="bi-hash" /> @Localizer["Vd_GenVendor"]
         </pems-button>
-    </form>
+    </pems-form>
 </pems-content-card>
 </pems-tab-pane>
 
@@ -245,12 +245,12 @@
                         }
                         else
                         {
-                            <form asp-action="UploadToFtp" method="post" enctype="multipart/form-data"><pems-flex gap="1">
+                            <pems-form asp-action="UploadToFtp" method="post" enctype="multipart/form-data"><pems-flex gap="1">
                                 <input type="hidden" name="vdrItemId" value="@Model.VDRItemId" />
                                 <input type="hidden" name="submissionId" value="@s.VDRSubmissionId" />
                                 <pems-input class="pems-maxw-120" scale="small" type="file" name="file" required />
                                 <pems-button tone="primary" size="small" outline="true" title="@Localizer["Vd_UploadFtp"]"><pems-icon name="bi-cloud-upload" /></pems-button>
-                            </pems-flex></form>
+                            </pems-flex></pems-form>
                         }
                     </pems-table-cell>
                     <pems-table-cell>@s.ClientCommentSheetNo</pems-table-cell>
@@ -264,12 +264,12 @@
                         }
                         else
                         {
-                            <form asp-action="UploadCommentSheet" method="post" enctype="multipart/form-data"><pems-flex gap="1">
+                            <pems-form asp-action="UploadCommentSheet" method="post" enctype="multipart/form-data"><pems-flex gap="1">
                                 <input type="hidden" name="vdrItemId" value="@Model.VDRItemId" />
                                 <input type="hidden" name="submissionId" value="@s.VDRSubmissionId" />
                                 <pems-input class="pems-maxw-120" scale="small" type="file" name="file" required />
                                 <pems-button tone="primary" size="small" outline="true"><pems-icon name="bi-upload" /></pems-button>
-                            </pems-flex></form>
+                            </pems-flex></pems-form>
                         }
                     </pems-table-cell>
                     <pems-table-cell>
@@ -279,12 +279,12 @@
                         }
                         else
                         {
-                            <form asp-action="UploadReplySheet" method="post" enctype="multipart/form-data"><pems-flex gap="1">
+                            <pems-form asp-action="UploadReplySheet" method="post" enctype="multipart/form-data"><pems-flex gap="1">
                                 <input type="hidden" name="vdrItemId" value="@Model.VDRItemId" />
                                 <input type="hidden" name="submissionId" value="@s.VDRSubmissionId" />
                                 <pems-input class="pems-maxw-120" scale="small" type="file" name="file" required />
                                 <pems-button tone="primary" size="small" outline="true"><pems-icon name="bi-upload" /></pems-button>
-                            </pems-flex></form>
+                            </pems-flex></pems-form>
                         }
                     </pems-table-cell>
                 </pems-table-row>
@@ -443,14 +443,14 @@
                             };
                         }
                         <span class="vs-pill @VdrUi.CommentActionTone(c.ActionStatus)">@VdrUi.Loc(Localizer, "St_", c.ActionStatus)</span>
-                        <form asp-action="SetCommentAction" method="post" class="d-inline">
+                        <pems-form asp-action="SetCommentAction" method="post" class="d-inline">
                             <input type="hidden" name="vdrItemId" value="@Model.VDRItemId" />
                             <input type="hidden" name="commentId" value="@c.VDRCommentId" />
-                            <pems-select class="pems-w-170" scale="small" css="mt-1" name="actionStatus" onchange="this.form.submit()">
+                            <pems-select class="pems-w-170" scale="small" css="mt-1" name="actionStatus" data-pems-change="submit-form">
                                 @foreach (var s in new[] { "OpenComment", "VendorResponsePending", "Verified", "Closed", "NoActionRequired" })
                                 { <option value="@s" selected="@(s == c.ActionStatus)">@VdrUi.Loc(Localizer, "St_", s)</option> }
                             </pems-select>
-                        </form>
+                        </pems-form>
                     </pems-table-cell>
                     <pems-table-cell class="small">
                         @c.ResponseText
@@ -483,7 +483,7 @@
 
 @* طبق درخواست: افزودن کامنت به‌صورت Popup تا کاربر از صفحه‌ی اصلی خارج نشود *@
 <pems-modal size="large" id="addCommentModal" tabindex="-1">
-            <form asp-action="AddComment" method="post" enctype="multipart/form-data">
+            <pems-form asp-action="AddComment" method="post" enctype="multipart/form-data">
                 <input type="hidden" name="vdrItemId" value="@Model.VDRItemId" />
                 <input type="hidden" name="pageNumber" id="pinPageNumber" value="" />
                 <input type="hidden" name="pinX" id="pinX" value="" />
@@ -529,7 +529,7 @@
                     <pems-button tone="neutral" outline="true" type="button" data-bs-dismiss="modal">@Localizer["Vd_Cancel"]</pems-button>
                     <pems-button tone="primary" type="submit">@Localizer["Vd_SaveComment"]</pems-button>
                 </pems-modal-footer>
-            </form>
+            </pems-form>
         </pems-modal>
 
 @* طبق درخواست: پاسخ به کامنت هم Popup است و می‌تواند خودِ فایل را پیوست کند تا کاربر همه‌چیز
@@ -537,7 +537,7 @@
 @if (comments.Any())
 {
     <pems-modal id="replyModal" tabindex="-1">
-                <form asp-action="RecordCommentResponse" method="post" enctype="multipart/form-data">
+                <pems-form asp-action="RecordCommentResponse" method="post" enctype="multipart/form-data">
                     <input type="hidden" name="vdrItemId" value="@Model.VDRItemId" />
                     <input type="hidden" name="commentId" value="" />
                     <pems-modal-header>@Localizer["Vd_ReplyTo"] <span data-fill-text="commentno"></span></pems-modal-header>
@@ -556,7 +556,7 @@
                         <pems-button tone="neutral" outline="true" type="button" data-bs-dismiss="modal">@Localizer["Vd_Cancel"]</pems-button>
                         <pems-button tone="primary" size="small" type="submit">@Localizer["Vd_SaveReply"]</pems-button>
                     </pems-modal-footer>
-                </form>
+                </pems-form>
             </pems-modal>
 }
 
@@ -590,7 +590,7 @@
     var allDisciplinesForStart = ((IEnumerable<PEMS.Domain.Entities.Discipline>)ViewBag.AllDisciplines).ToList();
 
     @* طبق «VENDOR DOCUMENTATION MANAGEMENT PROCEDURE» بخش ۴.۶.۱ - همین لیست POI در EngineeringDocuments/Edit.cshtml (فیلد IssuePurpose) هم تکرار شده؛ اگر این‌جا تغییر کرد آن‌جا را هم به‌روزرسانی کنید. *@
-    <form asp-action="SubmitForReview" method="post" id="vdrStartForm">
+    <pems-form asp-action="SubmitForReview" method="post" id="vdrStartForm">
         <input type="hidden" name="vdrItemId" value="@Model.VDRItemId" />
         <input type="hidden" name="revisionNo" value="@nextRevisionNo" />
         <pems-row gap="3" css="align-items-start">
@@ -676,7 +676,7 @@
                 </section>
             </pems-col>
         </pems-row>
-    </form>
+    </pems-form>
 }
 else
 {
@@ -706,17 +706,17 @@ else
         @if (myPending != null)
         {
             <pems-flex gap="2">
-                <form asp-action="DisciplineRespond" method="post" class="d-inline">
+                <pems-form asp-action="DisciplineRespond" method="post" class="d-inline">
                     <input type="hidden" name="vdrItemId" value="@Model.VDRItemId" />
                     <input type="hidden" name="decision" value="Approve" />
                     <pems-button tone="success" size="small">@Localizer["Vd_Approve"]</pems-button>
-                </form>
+                </pems-form>
                 <pems-button tone="warning" size="small" type="button" data-bs-toggle="modal" data-bs-target="#vdrCommentModal">@Localizer["Vd_CommentBtn"]</pems-button>
                 <pems-button tone="danger" size="small" type="button" data-bs-toggle="modal" data-bs-target="#vdrRejectModal">@Localizer["Vd_RejectBtn"]</pems-button>
             </pems-flex>
 
             <pems-modal id="vdrCommentModal" tabindex="-1">
-                    <form asp-action="DisciplineRespond" method="post">
+                    <pems-form asp-action="DisciplineRespond" method="post">
                         <input type="hidden" name="vdrItemId" value="@Model.VDRItemId" />
                         <input type="hidden" name="decision" value="Comment" />
                         <pems-modal-header>@Localizer["Vd_RecordComment"]</pems-modal-header>
@@ -725,10 +725,10 @@ else
                             <pems-button tone="neutral" size="small" outline="true" type="button" data-bs-dismiss="modal">@Localizer["Vd_Cancel"]</pems-button>
                             <pems-button tone="warning" size="small" type="submit">@Localizer["Vd_Submit"]</pems-button>
                         </pems-modal-footer>
-                    </form>
+                    </pems-form>
                 </pems-modal>
             <pems-modal id="vdrRejectModal" tabindex="-1">
-                    <form asp-action="DisciplineRespond" method="post">
+                    <pems-form asp-action="DisciplineRespond" method="post">
                         <input type="hidden" name="vdrItemId" value="@Model.VDRItemId" />
                         <input type="hidden" name="decision" value="Reject" />
                         <pems-modal-header>@Localizer["Vd_RejectTitle"]</pems-modal-header>
@@ -737,7 +737,7 @@ else
                             <pems-button tone="neutral" size="small" outline="true" type="button" data-bs-dismiss="modal">@Localizer["Vd_Cancel"]</pems-button>
                             <pems-button tone="danger" size="small" type="submit">@Localizer["Vd_RejectBtn"]</pems-button>
                         </pems-modal-footer>
-                    </form>
+                    </pems-form>
                 </pems-modal>
         }
         else
@@ -748,7 +748,7 @@ else
     else if (currentStageName == "LeadReview")
     {
         <h6 class="small fw-bold">@Localizer["Vd_FinalDecision"]</h6>
-        <form asp-action="LeadReview" method="post"><pems-row gap="2">
+        <pems-form asp-action="LeadReview" method="post"><pems-row gap="2">
             <input type="hidden" name="vdrItemId" value="@Model.VDRItemId" />
             <pems-col md="3">
                 <pems-label css="small">@Localizer["Vd_ReviewCategory"]</pems-label>
@@ -765,20 +765,20 @@ else
             <pems-col md="3" css="d-flex align-items-end">
                 <pems-button tone="primary" size="small" css="w-100" type="submit">@Localizer["Vd_RecordFinal"]</pems-button>
             </pems-col>
-        </pems-row></form>
+        </pems-row></pems-form>
     }
     else if (currentStageName == "ReturnToVendor")
     {
         <h6 class="small fw-bold">@Localizer["Vd_FormalReturn"]</h6>
         <p class="text-muted small">@Localizer["Vd_ReturnHint"]</p>
-        <form asp-action="ReturnToVendor" method="post"><pems-row gap="2">
+        <pems-form asp-action="ReturnToVendor" method="post"><pems-row gap="2">
             <input type="hidden" name="vdrItemId" value="@Model.VDRItemId" />
             <pems-col md="4"><pems-label css="small">@Localizer["Vd_ReplySheetNo"]</pems-label><pems-input scale="small" name="replySheetNo" /></pems-col>
             <pems-col md="4"><pems-label css="small">@Localizer["Vd_ClientTransmittalNo"]</pems-label><pems-input scale="small" name="clientTransmittalNo" /></pems-col>
             <pems-col md="4" css="d-flex align-items-end">
                 <pems-button tone="primary" size="small" css="w-100" type="submit"><pems-icon name="bi-send" /> @Localizer["Vd_ReturnToVendor"]</pems-button>
             </pems-col>
-        </pems-row></form>
+        </pems-row></pems-form>
     }
 </pems-content-card>
 }

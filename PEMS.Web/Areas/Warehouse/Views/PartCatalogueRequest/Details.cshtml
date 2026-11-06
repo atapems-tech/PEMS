@@ -83,11 +83,11 @@
             }
             @if (a.CanRetryRouting)
             {
-                <form asp-action="RetryRouting" method="post" class="d-inline">
+                <pems-form asp-action="RetryRouting" method="post" class="d-inline">
                     <input type="hidden" name="id" value="@d.Id" />
                     @if (rowVersion != null) { <input type="hidden" name="rowVersion" value="@rowVersion" /> }
-                    <button type="submit" class="vs-btn vs-btn--primary vs-btn--sm"><pems-icon name="bi-arrow-repeat" /> @Localizer["Pc_Btn_RetryRouting"]</button>
-                </form>
+                    <pems-button tone="bare" type="submit" css="vs-btn vs-btn--primary vs-btn--sm"><pems-icon name="bi-arrow-repeat" /> @Localizer["Pc_Btn_RetryRouting"]</pems-button>
+                </pems-form>
             }
             <pems-help-text>@Localizer["Pc_Org_Blocked_Hint"]</pems-help-text>
         </section>
@@ -102,7 +102,7 @@
             </h2>
             @if (a.IsAdminOverride) { <pems-alert tone="warning" css="small py-1">@Localizer["Pc_Det_AdminOverride"]</pems-alert> }
 
-            <form asp-action="Execute" method="post"><pems-row gap="2" css="align-items-end">
+            <pems-form asp-action="Execute" method="post"><pems-row gap="2" css="align-items-end">
                 <input type="hidden" name="id" value="@d.Id" />
                 @if (rowVersion != null) { <input type="hidden" name="rowVersion" value="@rowVersion" /> }
                 @if (a.RequiresPartNumber)
@@ -119,20 +119,20 @@
                     <pems-help-text>@Localizer["Pc_Hint_CommentRequired"]</pems-help-text>
                 </pems-col>
                 <pems-col span="auto" css="d-flex gap-2">
-                    @if (a.CanApprove) { <button type="submit" name="action" value="Approve" class="vs-btn vs-btn--primary vs-btn--sm"><pems-icon name="bi-check-lg" /> @Localizer["Pc_Btn_Approve"]</button> }
-                    @if (a.CanReturn) { <button type="submit" name="action" value="Return" class="vs-btn vs-btn--sm"><pems-icon name="bi-arrow-return-left" /> @Localizer["Pc_Btn_Return"]</button> }
-                    @if (a.CanCancel) { <button type="submit" name="action" value="Cancel" class="vs-btn vs-btn--sm vs-btn--danger" data-pems-confirm="@Localizer["Pc_Confirm_Cancel"]"><pems-icon name="bi-x-circle" /> @Localizer["Pc_Btn_Cancel"]</button> }
+                    @if (a.CanApprove) { <pems-button tone="bare" type="submit" name="action" value="Approve" css="vs-btn vs-btn--primary vs-btn--sm"><pems-icon name="bi-check-lg" /> @Localizer["Pc_Btn_Approve"]</pems-button> }
+                    @if (a.CanReturn) { <pems-button tone="bare" type="submit" name="action" value="Return" css="vs-btn vs-btn--sm"><pems-icon name="bi-arrow-return-left" /> @Localizer["Pc_Btn_Return"]</pems-button> }
+                    @if (a.CanCancel) { <pems-button tone="bare" type="submit" name="action" value="Cancel" css="vs-btn vs-btn--sm vs-btn--danger" data-pems-confirm="@Localizer["Pc_Confirm_Cancel"]"><pems-icon name="bi-x-circle" /> @Localizer["Pc_Btn_Cancel"]</pems-button> }
                 </pems-col>
-            </pems-row></form>
+            </pems-row></pems-form>
         </section>
     }
     else if (a.CanCancel)
     {
-        <form asp-action="Execute" method="post" class="mb-3" data-pems-confirm="@Localizer["Pc_Confirm_Cancel"]">
+        <pems-form asp-action="Execute" method="post" class="mb-3" data-pems-confirm="@Localizer["Pc_Confirm_Cancel"]">
             <input type="hidden" name="id" value="@d.Id" /><input type="hidden" name="action" value="Cancel" />
             @if (rowVersion != null) { <input type="hidden" name="rowVersion" value="@rowVersion" /> }
-            <button type="submit" class="vs-btn vs-btn--sm vs-btn--danger"><pems-icon name="bi-x-circle" /> @Localizer["Pc_Btn_Cancel"]</button>
-        </form>
+            <pems-button tone="bare" type="submit" css="vs-btn vs-btn--sm vs-btn--danger"><pems-icon name="bi-x-circle" /> @Localizer["Pc_Btn_Cancel"]</pems-button>
+        </pems-form>
     }
 
     <pems-row gap="3">
@@ -254,11 +254,11 @@
                 </div>
                 @if (d.Status is "InApproval" or "Draft" or "Returned")
                 {
-                    <form asp-action="AddNote" method="post"><pems-flex gap="2">
+                    <pems-form asp-action="AddNote" method="post"><pems-flex gap="2">
                         <input type="hidden" name="id" value="@d.Id" />
                         <pems-input scale="small" name="text" maxlength="2000" placeholder="@Localizer["Pc_Hint_NoteReply"]" aria-label="@L("Notes")" />
-                        <button type="submit" class="vs-btn vs-btn--sm"><pems-icon name="bi-plus-lg" /> @Localizer["Pc_Btn_AddNote"]</button>
-                    </pems-flex></form>
+                        <pems-button tone="bare" type="submit" css="vs-btn vs-btn--sm"><pems-icon name="bi-plus-lg" /> @Localizer["Pc_Btn_AddNote"]</pems-button>
+                    </pems-flex></pems-form>
                 }
             </section>
         </pems-col>

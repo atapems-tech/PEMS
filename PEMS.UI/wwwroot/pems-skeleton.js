@@ -11,52 +11,60 @@
     var KINDS = ['text', 'title', 'card', 'kpi', 'table', 'form'];
 
     function clamp(n, lo, hi, d) { n = parseInt(n, 10); if (isNaN(n)) n = d; return Math.max(lo, Math.min(hi, n)); }
-    function esc(s) { return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); }
-    function bar(extra) { return '<span class="pems-skeleton__line' + (extra || '') + '" aria-hidden="true"></span>'; }
+    // the pieces are the page's registered templates (script-templates, set shell); no markup string lives here
+    function tpl(name) { return window.PemsTemplate.clone(name); }
+    function bar(extra) { var b = tpl('skel-bar'); if (extra) extra.trim().split(' ').forEach(function (c) { b.classList.add(c); }); return b; }
 
     function defaultLabel() {
         var b = document.body;
         return b ? (b.getAttribute('data-pems-skeleton-label') || '') : '';
     }
 
-    function html(kind, opts) {
+    function build(kind, opts) {
         opts = opts || {};
         var k = KINDS.indexOf(kind) >= 0 ? kind : 'text';
         var lines = clamp(opts.lines, 1, 20, 3), rows = clamp(opts.rows, 1, 30, 5), cols = clamp(opts.cols, 1, 12, 4);
         var label = opts.label != null ? opts.label : defaultLabel();
-        var out = '<div class="pems-skeleton pems-skeleton--' + k + '" role="status" aria-busy="true" aria-live="polite">';
-        if (label) out += '<span class="visually-hidden">' + esc(label) + '</span>';
-        var i, r, c;
+        var out = tpl('skel-root');
+        out.classList.add('pems-skeleton--' + k);
+        if (label) out.appendChild(window.PemsTemplate.fill(tpl('skel-label'), { text: label }));
+        var i, r, c, stack, row;
         switch (k) {
             case 'title':
-                out += bar(' pems-skeleton__line--title');
+                out.appendChild(bar(' pems-skeleton__line--title'));
                 break;
             case 'card':
-                out += bar(' pems-skeleton__line--title');
-                for (i = 0; i < 3; i++) out += bar(i === 2 ? ' pems-skeleton__line--short' : '');
+                out.appendChild(bar(' pems-skeleton__line--title'));
+                for (i = 0; i < 3; i++) out.appendChild(bar(i === 2 ? ' pems-skeleton__line--short' : ''));
                 break;
             case 'kpi':
-                out += bar(' pems-skeleton__line--square') + '<span class="pems-skeleton__stack">' + bar(' pems-skeleton__line--value') + bar(' pems-skeleton__line--short') + '</span>';
+                out.appendChild(bar(' pems-skeleton__line--square'));
+                stack = tpl('skel-stack');
+                stack.appendChild(bar(' pems-skeleton__line--value'));
+                stack.appendChild(bar(' pems-skeleton__line--short'));
+                out.appendChild(stack);
                 break;
             case 'table':
                 for (r = 0; r < rows; r++) {
-                    out += '<span class="pems-skeleton__row">';
-                    for (c = 0; c < cols; c++) out += bar();
-                    out += '</span>';
+                    row = tpl('skel-row');
+                    for (c = 0; c < cols; c++) row.appendChild(bar());
+                    out.appendChild(row);
                 }
                 break;
             case 'form':
-                for (r = 0; r < rows; r++) out += bar(' pems-skeleton__line--label') + bar(' pems-skeleton__line--field');
+                for (r = 0; r < rows; r++) { out.appendChild(bar(' pems-skeleton__line--label')); out.appendChild(bar(' pems-skeleton__line--field')); }
                 break;
             default:
-                for (i = 0; i < lines; i++) out += bar(i === lines - 1 && lines > 1 ? ' pems-skeleton__line--short' : '');
+                for (i = 0; i < lines; i++) out.appendChild(bar(i === lines - 1 && lines > 1 ? ' pems-skeleton__line--short' : ''));
         }
-        return out + '</div>';
+        return out;
     }
+
+    function html(kind, opts) { return build(kind, opts).outerHTML; }
 
     function show(element, kind, opts) {
         if (!element) return;
-        element.innerHTML = html(kind, opts);
+        element.replaceChildren(build(kind, opts));
     }
 
     window.PemsSkeleton = { html: html, show: show, kinds: KINDS.slice() };

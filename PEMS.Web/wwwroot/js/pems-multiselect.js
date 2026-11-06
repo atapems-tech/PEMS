@@ -23,10 +23,7 @@
             searchField: ['text', 'value'],
             render: {
                 no_results: function () {
-                    var div = document.createElement('div');
-                    div.className = 'no-results';
-                    div.textContent = noResults;
-                    return div;
+                    return window.PemsTemplate.fill(window.PemsTemplate.clone('sel-no-results'), { text: noResults });
                 }
             }
         });

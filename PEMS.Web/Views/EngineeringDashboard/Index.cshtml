@@ -31,7 +31,7 @@
 }
 
 <pems-content-card css="mb-3">
-    <form method="get" asp-action="Index"><pems-row gap="2" css="align-items-end">
+    <pems-form method="get" asp-action="Index"><pems-row gap="2" css="align-items-end">
         <pems-col md="3">
             <pems-label css="small">@Localizer["Project"]</pems-label>
             <pems-select scale="small" name="projectId">
@@ -56,7 +56,7 @@
             <pems-button tone="primary" size="small" css="flex-fill" type="submit"><pems-icon name="bi-funnel" /> @Localizer["Filter"]</pems-button>
             <pems-button tone="danger" size="small" outline="true" css="flex-fill" as="a" asp-action="Index" title="@Localizer["Reset"]" aria-label="@Localizer["Reset"]"><pems-icon name="bi-x-lg" /></pems-button>
         </pems-col>
-    </pems-row></form>
+    </pems-row></pems-form>
     @if (Model.SelectedProjectId.HasValue || Model.SelectedDisciplineId.HasValue || Model.SelectedMinRevisionCount.HasValue)
     {
         <p class="text-muted small mt-2 mb-0">

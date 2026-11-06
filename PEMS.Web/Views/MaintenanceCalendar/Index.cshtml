@@ -52,39 +52,39 @@
         </div>
     </pems-flex>
 
-    <form class="mb-1" method="get"><pems-flex wrap="true" gap="2" align="end">
+    <pems-form class="mb-1" method="get"><pems-flex wrap="true" gap="2" align="end">
         <input type="hidden" name="view" value="@view" />
         <input type="hidden" name="date" value="@anchor.ToString("yyyy-MM-dd")" />
         <div><pems-label css="small mb-1">@Localizer["Maintenance Team"]</pems-label>
-            <pems-select scale="small" name="teamId" onchange="this.form.submit()">
+            <pems-select scale="small" name="teamId" data-pems-change="submit-form">
                 <option value="">@Localizer["All Teams"]</option>
                 @foreach (var t in teams) { <option value="@t.Id" selected="@(ViewBag.TeamId == t.Id)">@t.Name</option> }
             </pems-select></div>
         <div><pems-label css="small mb-1">@Localizer["Executor"]</pems-label>
-            <pems-select scale="small" name="employeeId" onchange="this.form.submit()">
+            <pems-select scale="small" name="employeeId" data-pems-change="submit-form">
                 <option value="">@Localizer["All"]</option>
                 @foreach (var e in employees) { <option value="@e.EmployeeId" selected="@(ViewBag.EmployeeId == (int)e.EmployeeId)">@e.FullName</option> }
             </pems-select></div>
         <div><pems-label css="small mb-1">@Localizer["Ed_Status"]</pems-label>
-            <pems-select scale="small" name="status" onchange="this.form.submit()">
+            <pems-select scale="small" name="status" data-pems-change="submit-form">
                 <option value="">@Localizer["Eq_AllStatuses"]</option>
                 @foreach (var s in new[] { "Open", "Assigned", "InProgress", "OnHold", "Completed", "Closed" })
                 { <option value="@s" selected="@(s == (string?)ViewBag.Status)">@s</option> }
             </pems-select></div>
         <div><pems-label css="small mb-1">@Localizer["Work Type"]</pems-label>
-            <pems-select scale="small" name="workOrderType" onchange="this.form.submit()">
+            <pems-select scale="small" name="workOrderType" data-pems-change="submit-form">
                 <option value="">@Localizer["All"]</option>
                 @foreach (var s in new[] { "Preventive", "Corrective", "Emergency", "Predictive" })
                 { <option value="@s" selected="@(s == (string?)ViewBag.WorkOrderType)">@s</option> }
             </pems-select></div>
         <div><pems-label css="small mb-1">@Localizer["Cm_Priority"]</pems-label>
-            <pems-select scale="small" name="priority" onchange="this.form.submit()">
+            <pems-select scale="small" name="priority" data-pems-change="submit-form">
                 <option value="">@Localizer["All"]</option>
                 @foreach (var s in new[] { "Low", "Medium", "High", "Critical" })
                 { <option value="@s" selected="@(s == (string?)ViewBag.Priority)">@s</option> }
             </pems-select></div>
         <pems-button tone="neutral" size="small" outline="true" as="a" href="@Url.Action("Index", new { view })">@Localizer["Reset"]</pems-button>
-    </pems-flex></form>
+    </pems-flex></pems-form>
 </pems-content-card>
 
 @if (view == "month")
@@ -258,5 +258,6 @@ else
 }
 
 @section Scripts {
+    <pems-script-templates set="maintenance-calendar"></pems-script-templates>
     <script src="~/js/pems-maintenance-calendar.js" asp-append-version="true"></script>
 }

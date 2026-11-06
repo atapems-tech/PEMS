@@ -4,7 +4,8 @@
 @code {
     [Parameter, EditorRequired] public ButtonFrameOptions Options { get; set; } = default!;
     [Parameter] public RenderFragment? ChildContent { get; set; }
-    private string Css => ButtonState.From(new ButtonOptions
+    // "bare": the page's own classes only (nav-link tabs, vs-btn, dropdown-item ...), no btn classes; the element still comes from the registry (SCRUM-511)
+    private string Css => Options.Tone.Equals("bare", StringComparison.OrdinalIgnoreCase) ? (Options.Css ?? "").Trim() : ButtonState.From(new ButtonOptions
     {
         Label = "",
         Tone = Options.Tone.Equals("none", StringComparison.OrdinalIgnoreCase) ? null : Enum.Parse<Tone>(Options.Tone, ignoreCase: true),

@@ -64,11 +64,11 @@
     <pems-flex wrap="true" gap="2" css="mt-3">
         @foreach (var st in stages.Where(x => x != "Closeout"))
         {
-            <form asp-action="AdvanceStage" method="post" class="d-inline">
+            <pems-form asp-action="AdvanceStage" method="post" class="d-inline">
                 <input type="hidden" name="packageId" value="@s.ProcurementPackageId" />
                 <input type="hidden" name="newStage" value="@st" />
                 <pems-button tone="none" size="small" css="@(st == s.Stage ? "btn-pems-solid" : "btn-outline-secondary")" type="submit" disabled="@(s.Status == "Closed" || s.Status == "Cancelled")">@st</pems-button>
-            </form>
+            </pems-form>
         }
         @* Closeout فقط از فرم اختصاصی «Closeout Package» (Approve + گیت بازرسی) انجام می‌شود، نه تغییر مرحله‌ی عمومی *@
         @if (s.Stage == "Closeout")
@@ -140,25 +140,25 @@
                             var ab = c.ActionStatus switch { "Closed" => "success", "Answered" => "info", _ => "danger" };
                         }
                         <pems-badge tone="@ab">@c.ActionStatus</pems-badge>
-                        <form asp-action="SetCommunicationStatus" method="post" class="d-inline">
+                        <pems-form asp-action="SetCommunicationStatus" method="post" class="d-inline">
                             <input type="hidden" name="packageId" value="@s.ProcurementPackageId" />
                             <input type="hidden" name="communicationId" value="@c.ProcurementCommunicationId" />
-                            <pems-select class="pems-w-110" scale="small" css="mt-1" name="actionStatus" onchange="this.form.submit()">
+                            <pems-select class="pems-w-110" scale="small" css="mt-1" name="actionStatus" data-pems-change="submit-form">
                                 @foreach (var opt in new[] { "Open", "Answered", "Closed" })
                                 { <option value="@opt" selected="@(opt == c.ActionStatus)">@opt</option> }
                             </pems-select>
-                        </form>
+                        </pems-form>
                     </pems-table-cell>
                     <pems-table-cell class="small">
                         @c.ResponseText
                         @if (string.IsNullOrEmpty(c.ResponseText))
                         {
-                            <form class="mt-1" asp-action="RespondCommunication" method="post"><pems-flex gap="1">
+                            <pems-form class="mt-1" asp-action="RespondCommunication" method="post"><pems-flex gap="1">
                                 <input type="hidden" name="packageId" value="@s.ProcurementPackageId" />
                                 <input type="hidden" name="communicationId" value="@c.ProcurementCommunicationId" />
                                 <pems-input scale="small" name="responseText" placeholder="@Localizer["Response..."]" />
                                 <pems-button tone="primary" size="small" outline="true">@Localizer["Save"]</pems-button>
-                            </pems-flex></form>
+                            </pems-flex></pems-form>
                         }
                     </pems-table-cell>
                 </pems-table-row>
@@ -168,7 +168,7 @@
     }
     @if (s.Status != "Closed")
     {
-        <form asp-action="AddCommunication" method="post"><pems-row gap="2" css="m-0 px-2 py-2 lp-rel-add">
+        <pems-form asp-action="AddCommunication" method="post"><pems-row gap="2" css="m-0 px-2 py-2 lp-rel-add">
             <input type="hidden" name="packageId" value="@s.ProcurementPackageId" />
             <pems-col md="2">
                 <pems-select scale="small" name="type">
@@ -187,7 +187,7 @@
             <pems-col md="3"><pems-input scale="small" name="subject" placeholder="@Localizer["Subject"]" required /></pems-col>
             <pems-col md="4"><pems-input scale="small" name="body" placeholder="@Localizer["Details"]" required /></pems-col>
             <pems-col md="1"><pems-button tone="primary" size="small" css="w-100" title="@Localizer["Add"]"><pems-icon name="bi-plus-lg" aria-hidden="true" /><span class="visually-hidden">@Localizer["Add"]</span></pems-button></pems-col>
-        </pems-row></form>
+        </pems-row></pems-form>
     }
 </pems-related-list>
 
@@ -208,7 +208,7 @@
     }
     @if (s.Status != "Closed")
     {
-        <form asp-action="AddApproval" method="post"><pems-row gap="2" css="m-0 px-2 py-2 lp-rel-add">
+        <pems-form asp-action="AddApproval" method="post"><pems-row gap="2" css="m-0 px-2 py-2 lp-rel-add">
             <input type="hidden" name="packageId" value="@s.ProcurementPackageId" />
             <pems-col md="3">
                 <pems-select scale="small" name="decision">
@@ -218,13 +218,13 @@
             </pems-col>
             <pems-col md="6"><pems-input scale="small" name="comment" placeholder="@Localizer["Comment (optional)"]" /></pems-col>
             <pems-col md="3"><pems-button tone="primary" size="small" css="w-100">@Localizer["PkD_RecordDecision"]</pems-button></pems-col>
-        </pems-row></form>
+        </pems-row></pems-form>
 
-        <form asp-action="Closeout" method="post" class="px-3 pb-3" data-pems-confirm="@Localizer["PkD_ConfirmCloseout"]">
+        <pems-form asp-action="Closeout" method="post" class="px-3 pb-3" data-pems-confirm="@Localizer["PkD_ConfirmCloseout"]">
             <input type="hidden" name="packageId" value="@s.ProcurementPackageId" />
             <pems-button tone="success" size="small" outline="true" type="submit">
                 <pems-icon name="bi-flag" aria-hidden="true" /> @Localizer["PkD_Closeout"]
             </pems-button>
-        </form>
+        </pems-form>
     }
 </pems-related-list>

@@ -108,7 +108,8 @@ internal static class FrameMarkup
     public static RenderFragment Element(string tag, string css, string? pageClass, IReadOnlyDictionary<string, object>? attributes, RenderFragment? content, bool disabled = false) => b =>
     {
         b.OpenElement(0, tag);
-        b.AddAttribute(1, "class", string.IsNullOrWhiteSpace(pageClass) ? css : css + " " + pageClass.Trim());
+        var all = string.IsNullOrWhiteSpace(pageClass) ? css : string.IsNullOrWhiteSpace(css) ? pageClass.Trim() : css + " " + pageClass.Trim();
+        if (!string.IsNullOrWhiteSpace(all)) b.AddAttribute(1, "class", all);   // a bare element with no class writes none
         if (attributes is not null) b.AddMultipleAttributes(2, attributes);
         if (disabled) b.AddAttribute(3, "disabled", "disabled");
         if (content is not null) b.AddContent(4, content);
@@ -118,6 +119,9 @@ internal static class FrameMarkup
 
 // SCRUM-507: the bare form controls (input, select, textarea, label, validation summary). The built-in ASP.NET Core helper still computes the
 // model-bound values (name, id, value, validation attributes, option list, message list); the component writes the element.
+
+/// <summary>Inputs of <see cref="PemsFormFrame"/>: the form element; fields and the antiforgery field are the child content.</summary>
+public sealed record FormFrameOptions : FrameOptions;
 
 /// <summary>Inputs of <see cref="PemsInput"/>: a text-like input or a check box / radio / switch input.</summary>
 public sealed record InputOptions : FrameOptions

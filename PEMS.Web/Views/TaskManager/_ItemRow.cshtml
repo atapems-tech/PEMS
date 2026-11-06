@@ -37,21 +37,21 @@
     @if (canRank)
     {
         <pems-table-cell class="text-nowrap tm-row-actions">
-            <form asp-controller="TaskManager" asp-action="Rank" method="post" class="d-inline">
+            <pems-form asp-controller="TaskManager" asp-action="Rank" method="post" class="d-inline">
                 <input type="hidden" name="id" value="@i.Id" /><input type="hidden" name="up" value="true" /><input type="hidden" name="returnUrl" value="@returnUrl" />
                 <pems-button tone="none" size="small" css="btn-link p-0" title="@Localizer["Tm_MoveUp"]" aria-label="@Localizer["Tm_MoveUp"] @(i.Key)"><pems-icon name="bi-arrow-up" aria-hidden="true" /></pems-button>
-            </form>
-            <form asp-controller="TaskManager" asp-action="Rank" method="post" class="d-inline">
+            </pems-form>
+            <pems-form asp-controller="TaskManager" asp-action="Rank" method="post" class="d-inline">
                 <input type="hidden" name="id" value="@i.Id" /><input type="hidden" name="up" value="false" /><input type="hidden" name="returnUrl" value="@returnUrl" />
                 <pems-button tone="none" size="small" css="btn-link p-0" title="@Localizer["Tm_MoveDown"]" aria-label="@Localizer["Tm_MoveDown"] @(i.Key)"><pems-icon name="bi-arrow-down" aria-hidden="true" /></pems-button>
-            </form>
-            <form asp-controller="TaskManager" asp-action="SetSprint" method="post" class="d-inline">
+            </pems-form>
+            <pems-form asp-controller="TaskManager" asp-action="SetSprint" method="post" class="d-inline">
                 <input type="hidden" name="id" value="@i.Id" /><input type="hidden" name="returnUrl" value="@returnUrl" />
-                <pems-select scale="small" css="d-inline-block w-auto" name="sprintId" aria-label="@Localizer["Tm_MoveToSprint"] @(i.Key)" onchange="this.form.submit()">
+                <pems-select scale="small" css="d-inline-block w-auto" name="sprintId" aria-label="@Localizer["Tm_MoveToSprint"] @(i.Key)" data-pems-change="submit-form">
                     <option value="0" selected="@(i.SprintId == null)">@Localizer["Tm_Backlog"]</option>
                     @foreach (var s in sprints) { <option value="@s.Id" selected="@(i.SprintId == s.Id)">@s.Name</option> }
                 </pems-select>
-            </form>
+            </pems-form>
         </pems-table-cell>
     }
 </pems-table-row>

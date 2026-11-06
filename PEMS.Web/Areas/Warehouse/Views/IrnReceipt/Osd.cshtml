@@ -7,7 +7,7 @@
 <pems-content-card css="mb-3 d-print-none">
     <pems-flex justify="between" align="center" wrap="true" gap="2">
         <pems-button as="a" tone="neutral" size="small" outline="true" asp-action="Details" asp-route-id="@Model.IrnReceiptId"><pems-icon name="bi-arrow-left" /> @Model.IrnNumber</pems-button>
-        <pems-button tone="neutral" size="small" outline="true" onclick="window.print()"><pems-icon name="bi-printer" /> @Localizer["Print"]</pems-button>
+        <pems-button tone="neutral" size="small" outline="true" data-pems-click="print"><pems-icon name="bi-printer" /> @Localizer["Print"]</pems-button>
     </pems-flex>
 </pems-content-card>
 

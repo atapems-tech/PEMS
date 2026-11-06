@@ -158,7 +158,7 @@ public class LetterWorkspaceIndexTests
     {
         var html = await Render(NoFilters(), new[] { Row(1) }, query: "pump");
 
-        Assert.Matches(@"<form method=""get"" class=""lp-search"" id=""lpSearchForm"" role=""search"" hidden>", html);
+        Assert.Matches(@"<form(?=[^>]*method=""get"")(?=[^>]*class=""lp-search"")(?=[^>]*id=""lpSearchForm"")(?=[^>]*role=""search"")[^>]*hidden>", html);   // the form component writes class first (SCRUM-510)
         Assert.Matches(@"<input type=""search"" name=""q"" id=""lpSearchInput"" value=""pump""[^>]*data-pems-search data-search-type=""Letter""", html);
         Assert.Matches(@"id=""lpSearchBtn""[^>]*aria-expanded=""false""", html);
     }

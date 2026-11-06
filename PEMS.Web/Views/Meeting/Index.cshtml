@@ -68,7 +68,7 @@
 @section Scripts { <script src="~/_content/PEMS.UI/pems-list.js" asp-append-version="true"></script> }
 
 <pems-modal size="large" id="createMeetingModal" tabindex="-1">
-            <form asp-controller="Meeting" asp-action="Create" method="post">
+            <pems-form asp-controller="Meeting" asp-action="Create" method="post">
                 <pems-modal-header>@Localizer["Schedule Meeting"]</pems-modal-header>
                 <pems-modal-body>
                     <pems-row gap="3">
@@ -90,5 +90,5 @@
                     <pems-button tone="neutral" outline="true" type="button" data-bs-dismiss="modal">@Localizer["Cancel"]</pems-button>
                     <pems-button tone="primary" type="submit">@Localizer["Save"]</pems-button>
                 </pems-modal-footer>
-            </form>
+            </pems-form>
         </pems-modal>

@@ -45,7 +45,7 @@
             · <pems-badge tone="@RcmDisplay.ConsequenceBadge(ctx.ConsequenceCategory)">@Localizer.Label("Consequence", ctx.ConsequenceCategory)</pems-badge>
         </div>
 
-        <form asp-action="Create" method="post">
+        <pems-form asp-action="Create" method="post">
             <input type="hidden" name="MaintenanceStrategyAssignmentId" value="@ctx.AssignmentId" />
             <pems-row gap="3">
                 <pems-col span="12">
@@ -114,7 +114,7 @@
                 <pems-button tone="primary" type="submit">@Localizer["Rcm_CreatePlan"]</pems-button>
                 <pems-button tone="neutral" outline="true" as="a" asp-action="Index">@Localizer["Cancel"]</pems-button>
             </div>
-        </form>
+        </pems-form>
 
         <script src="~/js/views/maintenanceplan-create.js" asp-append-version="true"></script>
     }

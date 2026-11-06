@@ -13,7 +13,7 @@
 
 <pems-content-card>
     <pems-flex justify="end" css="mb-2">
-        <pems-button tone="neutral" size="small" outline="true" type="button" onclick="PemsDataGrid.resetColumns('TableExtraction')">
+        <pems-button tone="neutral" size="small" outline="true" type="button" data-pems-click="call" data-pems-fn="PemsDataGrid.resetColumns" data-pems-arg="none" data-pems-args='["TableExtraction"]'>
             <pems-icon name="bi-arrow-counterclockwise" /> @Localizer["Reset columns"]
         </pems-button>
     </pems-flex>
@@ -40,22 +40,22 @@
                             <pems-badge tone="neutral">@attachment.AIStatus</pems-badge>
                         </pems-table-cell>
                         <pems-table-cell>
-                            <form asp-action="Analyze" method="post" id="aiForm_@attachment.AttachmentId">
+                            <pems-form asp-action="Analyze" method="post" id="aiForm_@attachment.AttachmentId">
                                 <input type="hidden" name="attachmentId" value="@attachment.AttachmentId" />
                                 <pems-input scale="small" type="text" name="documentHint" placeholder="e.g. Wiring Connection Diagram for JB-12" />
-                            </form>
+                            </pems-form>
                         </pems-table-cell>
                         <pems-table-cell>
                             <pems-flex gap="2">
                                 <pems-button tone="primary" size="small" css="text-nowrap" type="submit" form="aiForm_@attachment.AttachmentId">
                                     <pems-icon name="bi-stars" /> With AI
                                 </pems-button>
-                                <form asp-action="AnalyzeDeterministic" method="post" class="d-inline">
+                                <pems-form asp-action="AnalyzeDeterministic" method="post" class="d-inline">
                                     <input type="hidden" name="attachmentId" value="@attachment.AttachmentId" />
                                     <pems-button tone="neutral" size="small" outline="true" css="text-nowrap" type="submit" title="PDF native text only, no LLM call - faster and more precise for real tables">
                                         <pems-icon name="bi-grid-3x3" /> No AI (PDF)
                                     </pems-button>
-                                </form>
+                                </pems-form>
                             </pems-flex>
                         </pems-table-cell>
                     </pems-table-row>

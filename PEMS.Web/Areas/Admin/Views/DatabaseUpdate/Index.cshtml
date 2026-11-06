@@ -43,7 +43,7 @@
             <ul class="small text-muted pems-s-4cd5c0a7">
                 @foreach (var m in Model.PendingMigrations) { <li><code>@m</code></li> }
             </ul>
-            <form asp-action="Apply" method="post"><pems-flex align="center" gap="3" wrap="true">
+            <pems-form asp-action="Apply" method="post"><pems-flex align="center" gap="3" wrap="true">
                 @Html.AntiForgeryToken()
                 @if (Model.BackupBeforeUpdate && Model.State == DatabaseSetupState.UpdateAvailable)
                 {
@@ -59,7 +59,7 @@
                     </pems-check-row>
                 }
                 <pems-button tone="primary" type="submit"><pems-icon name="bi-database-up" css="me-1" /> @Localizer[applyText]</pems-button>
-            </pems-flex></form>
+            </pems-flex></pems-form>
         </pems-content-card>
     }
 

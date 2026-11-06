@@ -36,10 +36,10 @@
                             <pems-table-cell><pems-badge tone="none" css="bg-@t.Color">@t.Name</pems-badge></pems-table-cell>
                             <pems-table-cell class="small">@string.Format(Localizer["Tg_LetterCount"].Value, t.LetterCount)</pems-table-cell>
                             <pems-table-cell class="lp-actions">
-                                <form asp-action="Delete" method="post" class="d-inline" data-pems-confirm="@Localizer["Tg_DeleteConfirm"]">
+                                <pems-form asp-action="Delete" method="post" class="d-inline" data-pems-confirm="@Localizer["Tg_DeleteConfirm"]">
                                     <input type="hidden" name="tagId" value="@t.TagId" />
-                                    <button type="submit" class="lp-act lp-act--always" title="@Localizer["Delete"]" aria-label="@Localizer["Delete"]"><pems-icon name="bi-trash" aria-hidden="true" /></button>
-                                </form>
+                                    <pems-button tone="bare" type="submit" css="lp-act lp-act--always" title="@Localizer["Delete"]" aria-label="@Localizer["Delete"]"><pems-icon name="bi-trash" aria-hidden="true" /></pems-button>
+                                </pems-form>
                             </pems-table-cell>
                         </pems-table-row>
                     }
@@ -50,7 +50,7 @@
 </pems-list-page>
 
 <pems-modal id="createTagModal" tabindex="-1" aria-labelledby="createTagTitle">
-        <form asp-action="Create" method="post">
+        <pems-form asp-action="Create" method="post">
             <input type="hidden" name="returnUrl" value="/Tag" />
             <pems-modal-header title-id="createTagTitle">@Localizer["Tg_New"]</pems-modal-header>
             <pems-modal-body>
@@ -70,7 +70,7 @@
                 <pems-button tone="neutral" size="small" outline="true" type="button" data-bs-dismiss="modal">@Localizer["Cancel"]</pems-button>
                 <pems-button tone="primary" size="small" type="submit">@Localizer["Create"]</pems-button>
             </pems-modal-footer>
-        </form>
+        </pems-form>
     </pems-modal>
 
 @section Scripts {

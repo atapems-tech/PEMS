@@ -44,18 +44,18 @@
     @if (Model.Status == "Staging")
     {
         <div class="pems-command-bar">
-            <form asp-action="Commit" method="post">
+            <pems-form asp-action="Commit" method="post">
                 <input type="hidden" name="batchId" value="@Model.EquipmentFunctionalLocationAssignmentBatchId" />
                 <pems-button tone="primary" type="submit" data-pems-confirm="Commit the approved rows? Equipment Functional Location assignments will be updated.">
                     <pems-icon name="bi-check-circle" /> Commit Approved Rows
                 </pems-button>
-            </form>
-            <form asp-action="Discard" method="post">
+            </pems-form>
+            <pems-form asp-action="Discard" method="post">
                 <input type="hidden" name="batchId" value="@Model.EquipmentFunctionalLocationAssignmentBatchId" />
                 <pems-button tone="danger" outline="true" type="submit" data-pems-confirm="Discard this entire assignment batch?">
                     <pems-icon name="bi-trash" /> Discard Batch
                 </pems-button>
-            </form>
+            </pems-form>
         </div>
     }
 </pems-content-card>
@@ -97,7 +97,7 @@
                                 var canToggle = r.Status is "Exact" or "AlreadyAssigned";
                                 if (canToggle)
                                 {
-                                    <form asp-action="ToggleRow" method="post">
+                                    <pems-form asp-action="ToggleRow" method="post">
                                         <input type="hidden" name="rowId" value="@r.EquipmentFunctionalLocationAssignmentRowId" />
                                         <input type="hidden" name="batchId" value="@Model.EquipmentFunctionalLocationAssignmentBatchId" />
                                         <input type="hidden" name="page" value="@Model.Rows.Page" />
@@ -106,7 +106,7 @@
                                         <pems-button class="pems-w-36" tone="none" size="small" css="@(r.IncludeInCommit ? "btn-success" : "btn-outline-secondary")" type="submit" title="@(r.IncludeInCommit ? "Approved - click to exclude" : "Excluded - click to approve")">
                                             <pems-icon css="@(r.IncludeInCommit ? "bi-check-lg" : "bi-x-lg")" />
                                         </pems-button>
-                                    </form>
+                                    </pems-form>
                                 }
                                 else
                                 {
@@ -115,7 +115,7 @@
 
                                 @if (r.Status == "AlreadyAssigned")
                                 {
-                                    <form asp-action="ReplaceExisting" method="post" class="mt-1">
+                                    <pems-form asp-action="ReplaceExisting" method="post" class="mt-1">
                                         <input type="hidden" name="rowId" value="@r.EquipmentFunctionalLocationAssignmentRowId" />
                                         <input type="hidden" name="batchId" value="@Model.EquipmentFunctionalLocationAssignmentBatchId" />
                                         <input type="hidden" name="page" value="@Model.Rows.Page" />
@@ -124,7 +124,7 @@
                                         <pems-button tone="none" size="small" css="@(r.ReplaceExistingAssignment ? "btn-warning" : "btn-outline-warning")" type="submit" data-pems-confirm="Replace the existing Functional Location assignment for this equipment?">
                                             @(r.ReplaceExistingAssignment ? "Replace: Yes" : "Replace existing?")
                                         </pems-button>
-                                    </form>
+                                    </pems-form>
                                 }
                             }
                             else

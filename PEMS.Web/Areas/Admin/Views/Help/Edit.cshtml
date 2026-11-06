@@ -11,14 +11,14 @@
             <pems-icon name="bi-clock-history" /> @Localizer["Change History"]
         </pems-button>
     </pems-flex>
-    <form asp-action="Edit" asp-route-id="@Model.HelpArticleId" method="post">
+    <pems-form asp-action="Edit" asp-route-id="@Model.HelpArticleId" method="post">
         @Html.AntiForgeryToken()
         @await Html.PartialAsync("_HelpArticleForm", Model)
         <pems-flex gap="2" css="mt-3">
             <pems-button tone="primary" type="submit">@Localizer["Save"]</pems-button>
             <pems-button as="a" tone="neutral" outline="true" asp-action="Index">Back to list</pems-button>
         </pems-flex>
-    </form>
+    </pems-form>
 </pems-content-card>
 
 @{
@@ -51,15 +51,15 @@
                         </pems-table-cell>
                         <pems-table-cell><pems-badge tone="none" css="@(v.IsPublished ? "bg-success" : "bg-secondary")">@(v.IsPublished ? "Published" : "Draft")</pems-badge></pems-table-cell>
                         <pems-table-cell class="text-end">
-                            <form asp-action="VisualSetPublished" asp-route-id="@v.HelpVisualId" asp-route-articleId="@Model.HelpArticleId" method="post" class="d-inline">
+                            <pems-form asp-action="VisualSetPublished" asp-route-id="@v.HelpVisualId" asp-route-articleId="@Model.HelpArticleId" method="post" class="d-inline">
                                 <input type="hidden" name="isPublished" value="@(!v.IsPublished)" />
                                 <pems-button tone="none" size="small" css="btn-outline-@(v.IsPublished ? "secondary" : "success")" type="submit">
                                     @(v.IsPublished ? "Unpublish" : "Publish")
                                 </pems-button>
-                            </form>
-                            <form asp-action="VisualDelete" asp-route-id="@v.HelpVisualId" asp-route-articleId="@Model.HelpArticleId" method="post" class="d-inline" data-pems-confirm="Delete this visual?">
+                            </pems-form>
+                            <pems-form asp-action="VisualDelete" asp-route-id="@v.HelpVisualId" asp-route-articleId="@Model.HelpArticleId" method="post" class="d-inline" data-pems-confirm="Delete this visual?">
                                 <pems-button tone="danger" size="small" outline="true" type="submit"><pems-icon name="bi-trash" /></pems-button>
-                            </form>
+                            </pems-form>
                         </pems-table-cell>
                     </pems-table-row>
                 }

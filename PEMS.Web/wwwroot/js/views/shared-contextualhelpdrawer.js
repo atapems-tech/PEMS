@@ -25,8 +25,7 @@
                     }
                     // the title, summary and content come from the Help service as finished HTML: parsed inertly, never concatenated
                     var article = PemsTemplate.fragment('help-article');
-                    var root = document.createElement('div');
-                    root.appendChild(article);
+                    var root = article;
                     PemsTemplate.html(root.querySelector('[data-slot="title"]'), data.title);
                     PemsTemplate.html(root.querySelector('[data-slot="summary"]'), data.summary);
                     PemsTemplate.html(root.querySelector('[data-slot="content"]'), data.content);

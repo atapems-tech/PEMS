@@ -42,7 +42,7 @@
 </p>
 
 <pems-content-card css="mb-3">
-    <form method="get"><pems-row gap="2" css="align-items-end">
+    <pems-form method="get"><pems-row gap="2" css="align-items-end">
         <pems-col md="3">
             <pems-label css="small">@Localizer["From"]</pems-label>
             <pems-date name="from" value="@(from?.ToString("yyyy-MM-dd"))" scale="small" />
@@ -55,7 +55,7 @@
         <pems-col md="4" css="text-muted small">
             Period: @(from?.ToString("yyyy-MM-dd") ?? "all history") → @(to?.ToString("yyyy-MM-dd") ?? "now")
         </pems-col>
-    </pems-row></form>
+    </pems-row></pems-form>
 </pems-content-card>
 
 @* ===================== Executive KPI Row ===================== *@
@@ -94,12 +94,12 @@
 </pems-row>
 
 <pems-nav css="mb-3">
-    <li class="nav-item"><button class="nav-link active" data-bs-toggle="tab" data-bs-target="#tab-pm">@Localizer["PM Compliance"]</button></li>
-    <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-type">Maintenance Type</button></li>
-    <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-repeat">Repeat Failures</button></li>
-    <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-effectiveness">Effectiveness</button></li>
-    <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-matrix">Criticality Matrix</button></li>
-    <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-matrix2">Criticality × Maintenance/RCM</button></li>
+    <li class="nav-item"><pems-button tone="bare" css="nav-link active" data-bs-toggle="tab" data-bs-target="#tab-pm">@Localizer["PM Compliance"]</pems-button></li>
+    <li class="nav-item"><pems-button tone="bare" css="nav-link" data-bs-toggle="tab" data-bs-target="#tab-type">Maintenance Type</pems-button></li>
+    <li class="nav-item"><pems-button tone="bare" css="nav-link" data-bs-toggle="tab" data-bs-target="#tab-repeat">Repeat Failures</pems-button></li>
+    <li class="nav-item"><pems-button tone="bare" css="nav-link" data-bs-toggle="tab" data-bs-target="#tab-effectiveness">Effectiveness</pems-button></li>
+    <li class="nav-item"><pems-button tone="bare" css="nav-link" data-bs-toggle="tab" data-bs-target="#tab-matrix">Criticality Matrix</pems-button></li>
+    <li class="nav-item"><pems-button tone="bare" css="nav-link" data-bs-toggle="tab" data-bs-target="#tab-matrix2">Criticality × Maintenance/RCM</pems-button></li>
 </pems-nav>
 
 <pems-tab-content>

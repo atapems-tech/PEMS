@@ -16,9 +16,9 @@
 
         <pems-list-toolbar heading="@Localizer["Mp_Title"]" total="@Model.TotalCount">
             <pems-list-tools>
-                <form asp-action="GenerateDueWorkOrders" method="post" class="d-inline" data-pems-confirm="@Localizer["Mp_GenerateDueConfirm"]">
-                    <button type="submit" class="lp-icon-btn" title="@Localizer["Mp_GenerateDue"]"><pems-icon name="bi-lightning-charge" aria-hidden="true" /><span class="visually-hidden">@Localizer["Mp_GenerateDue"]</span></button>
-                </form>
+                <pems-form asp-action="GenerateDueWorkOrders" method="post" class="d-inline" data-pems-confirm="@Localizer["Mp_GenerateDueConfirm"]">
+                    <pems-button tone="bare" type="submit" css="lp-icon-btn" title="@Localizer["Mp_GenerateDue"]"><pems-icon name="bi-lightning-charge" aria-hidden="true" /><span class="visually-hidden">@Localizer["Mp_GenerateDue"]</span></pems-button>
+                </pems-form>
                 <pems-list-reset-columns grid-key="MaintenancePlan" />
                 <pems-list-new href="@Url.Action("Create")" text="@Localizer["Rcm_NewPlan"]" />
             </pems-list-tools>
@@ -68,11 +68,11 @@
                                         <span class="vs-pill vs-pill--info">@string.Format(Localizer["Mp_MeterEvery"].Value, p.MeterType, p.MeterInterval)</span>
                                         @if (p.NextDueMeterReading.HasValue) { <span class="text-muted">@string.Format(Localizer["Mp_DueAtReading"].Value, p.NextDueMeterReading)</span> }
                                     </div>
-                                    <form class="mt-1" asp-action="RecordMeterReading" method="post"><pems-flex gap="1">
+                                    <pems-form class="mt-1" asp-action="RecordMeterReading" method="post"><pems-flex gap="1">
                                         <input type="hidden" name="planId" value="@p.MaintenancePlanId" />
                                         <pems-input class="pems-w-90" scale="small" type="number" step="0.01" name="currentReading" placeholder="@Localizer["Mp_CurrentReading"]" aria-label="@Localizer["Mp_CurrentReading"]" required />
                                         <pems-button tone="info" size="small" outline="true" type="submit">@Localizer["Mp_Record"]</pems-button>
-                                    </pems-flex></form>
+                                    </pems-flex></pems-form>
                                 }
                             </pems-table-cell>
                             <pems-table-cell class="small vs-hide-md"><span class="vs-num">@(p.LastExecutionDate?.ToString("yyyy-MM-dd"))</span></pems-table-cell>
@@ -81,14 +81,14 @@
                                 @if (p.IsOverdue) { <div><span class="vs-pill vs-pill--icon vs-pill--danger"><pems-icon name="bi-clock-history" aria-hidden="true" /> @Localizer["Overdue"]</span></div> }
                             </pems-table-cell>
                             <pems-table-cell class="text-nowrap text-end">
-                                <form asp-action="GenerateWorkOrder" method="post" class="d-inline">
+                                <pems-form asp-action="GenerateWorkOrder" method="post" class="d-inline">
                                     <input type="hidden" name="planId" value="@p.MaintenancePlanId" />
                                     <pems-button tone="primary" size="small" outline="true" type="submit"><pems-icon name="bi-clipboard-plus" aria-hidden="true" /> @Localizer["Mp_GenerateWo"]</pems-button>
-                                </form>
-                                <form asp-action="Deactivate" method="post" class="d-inline">
+                                </pems-form>
+                                <pems-form asp-action="Deactivate" method="post" class="d-inline">
                                     <input type="hidden" name="planId" value="@p.MaintenancePlanId" />
-                                    <button type="submit" class="lp-act lp-act--always" title="@Localizer["Mp_Deactivate"]" aria-label="@Localizer["Mp_Deactivate"]"><pems-icon name="bi-slash-circle" aria-hidden="true" /></button>
-                                </form>
+                                    <pems-button tone="bare" type="submit" css="lp-act lp-act--always" title="@Localizer["Mp_Deactivate"]" aria-label="@Localizer["Mp_Deactivate"]"><pems-icon name="bi-slash-circle" aria-hidden="true" /></pems-button>
+                                </pems-form>
                             </pems-table-cell>
                         </pems-table-row>
                     }

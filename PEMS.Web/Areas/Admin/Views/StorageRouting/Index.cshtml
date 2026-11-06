@@ -50,9 +50,9 @@
                         <pems-table-cell><span class="vs-pill @(r.IsEnabled ? "vs-pill--success" : "vs-pill--neutral")">@(r.IsEnabled ? Localizer["Enabled"] : Localizer["Disabled"])</span></pems-table-cell>
                         <pems-table-cell class="text-end text-nowrap">
                             <a asp-action="Edit" asp-route-id="@r.StorageRouteId" class="lp-act lp-act--always" title="@Localizer["Ed_Edit"]" aria-label="@Localizer["Ed_Edit"]"><pems-icon name="bi-pencil" aria-hidden="true" /></a>
-                            <form asp-action="Delete" asp-route-id="@r.StorageRouteId" method="post" class="d-inline" data-pems-confirm="@Localizer["SrtL_ConfirmDelete"]">
-                                <button type="submit" class="lp-act lp-act--always text-danger" title="@Localizer["Ed_Delete"]" aria-label="@Localizer["Ed_Delete"]"><pems-icon name="bi-trash" aria-hidden="true" /></button>
-                            </form>
+                            <pems-form asp-action="Delete" asp-route-id="@r.StorageRouteId" method="post" class="d-inline" data-pems-confirm="@Localizer["SrtL_ConfirmDelete"]">
+                                <pems-button tone="bare" type="submit" css="lp-act lp-act--always text-danger" title="@Localizer["Ed_Delete"]" aria-label="@Localizer["Ed_Delete"]"><pems-icon name="bi-trash" aria-hidden="true" /></pems-button>
+                            </pems-form>
                         </pems-table-cell>
                     </pems-table-row>
                 }

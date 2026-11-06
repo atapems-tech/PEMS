@@ -14,10 +14,10 @@
             <pems-table-row><pems-table-header>@Localizer["Running instances (unchanged)"]</pems-table-header><pems-table-cell>@Model.RunningInstances @if (Model.RunningByVersion.Count > 0) { <span class="text-muted small">(@string.Join(", ", Model.RunningByVersion.Select(u => u.Running + " × v" + u.VersionNumber)))</span> }</pems-table-cell></pems-table-row>
         </pems-table>
         <pems-alert tone="info" css="small"><pems-icon name="bi-pin-angle" /> @Localizer["Only new instances will use the target version. Existing running instances stay pinned to the version they started with; nothing is rewritten. The change is audited."]</pems-alert>
-        <form asp-action="ChangeBinding" method="post"><pems-flex dir="column" gap="2">
+        <pems-form asp-action="ChangeBinding" method="post"><pems-flex dir="column" gap="2">
             <input type="hidden" name="bindingId" value="@Model.BindingId" /><input type="hidden" name="targetVersionId" value="@targetId" /><input type="hidden" name="definitionId" value="@Model.DefinitionId" />
             <pems-check-row><pems-input kind="check" type="checkbox" name="confirmed" value="true" id="cfm" /><input type="hidden" name="confirmed" value="false" /><label class="form-check-label" for="cfm">@Localizer["I understand and confirm the binding change."]</label></pems-check-row>
             <div><pems-button tone="primary" size="small">@Localizer["Change binding"]</pems-button> <pems-button as="a" tone="neutral" size="small" outline="true" asp-action="Index">@Localizer["Cancel"]</pems-button></div>
-        </pems-flex></form>
+        </pems-flex></pems-form>
     </pems-content-card>
 </pems-page-shell>

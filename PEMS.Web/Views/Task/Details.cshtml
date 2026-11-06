@@ -39,16 +39,16 @@
             @if (!i.IsActive) { <pems-badge tone="light">@Localizer["Tm_Archived"]</pems-badge> }
         </div>
         <pems-flex wrap="true" gap="2">
-            <form asp-controller="TaskManager" asp-action="Watch" method="post">
+            <pems-form asp-controller="TaskManager" asp-action="Watch" method="post">
                 <input type="hidden" name="id" value="@i.Id" /><input type="hidden" name="watch" value="@(Model.IsWatching ? "false" : "true")" /><input type="hidden" name="returnUrl" value="@returnUrl" />
                 <pems-button tone="neutral" size="small" outline="true" aria-pressed="@(Model.IsWatching ? "true" : "false")"><pems-icon css="@(Model.IsWatching ? "bi-eye-slash" : "bi-eye")" aria-hidden="true" /> @(Model.IsWatching ? Localizer["Tm_Unwatch"] : Localizer["Tm_Watch"]) <pems-badge tone="light">@Model.Watchers.Count</pems-badge></pems-button>
-            </form>
+            </pems-form>
             @if (Model.CanArchive)
             {
-                <form asp-controller="TaskManager" asp-action="Archive" method="post">
+                <pems-form asp-controller="TaskManager" asp-action="Archive" method="post">
                     <input type="hidden" name="id" value="@i.Id" /><input type="hidden" name="archived" value="@(i.IsActive ? "true" : "false")" /><input type="hidden" name="returnUrl" value="@returnUrl" />
                     <pems-button tone="none" size="small" css="@(i.IsActive ? "btn-outline-danger" : "btn-outline-success")" data-pems-confirm="@(i.IsActive ? Localizer["Tm_ArchiveConfirm"] : Localizer["Tm_RestoreConfirm"])"><pems-icon css="@(i.IsActive ? "bi-archive" : "bi-arrow-counterclockwise")" aria-hidden="true" /> @(i.IsActive ? Localizer["Tm_Archive"] : Localizer["Tm_Restore"])</pems-button>
-                </form>
+                </pems-form>
             }
         </pems-flex>
     </pems-flex>
@@ -60,7 +60,7 @@
             <h3 class="h6" id="descTitle">@Localizer["Tm_Field_Description"]</h3>
             @if (Model.CanEdit)
             {
-                <form asp-controller="TaskManager" asp-action="Update" method="post" data-tm-dirty-guard data-tm-ctrl-enter><pems-row gap="2">
+                <pems-form asp-controller="TaskManager" asp-action="Update" method="post" data-tm-dirty-guard data-tm-ctrl-enter><pems-row gap="2">
                     <input type="hidden" name="Id" value="@i.Id" />
                     <input type="hidden" name="RowVersion" value="@i.RowVersion" />
                     <input type="hidden" name="ParentId" value="@i.ParentId" />
@@ -105,7 +105,7 @@
                         <pems-date id="e-due" name="DueDate" value="@TaskManagerUi.DateInput(i.DueDate)" scale="small" />
                     </pems-col>
                     <pems-col md="4" css="d-flex align-items-end"><pems-button tone="primary" size="small" css="w-100">@Localizer["Tm_Save"]</pems-button></pems-col>
-                </pems-row></form>
+                </pems-row></pems-form>
             }
             else
             {
@@ -121,7 +121,7 @@
                 <partial name="~/Views/TaskManager/_ItemTable.cshtml" model="Model.Subtasks" view-data='new ViewDataDictionary(ViewData) { ["ShowBulk"] = false, ["CanRank"] = false }' />
                 @if (Model.CanEdit && subtaskType != null && i.ParentId == null)
                 {
-                    <form class="mt-2" asp-controller="TaskManager" asp-action="Create" method="post"><pems-flex gap="2">
+                    <pems-form class="mt-2" asp-controller="TaskManager" asp-action="Create" method="post"><pems-flex gap="2">
                         <input type="hidden" name="WorkSpaceId" value="@i.WorkSpaceId" />
                         <input type="hidden" name="ParentId" value="@i.Id" />
                         <input type="hidden" name="TypeId" value="@subtaskType.Id" />
@@ -131,7 +131,7 @@
                         <label class="visually-hidden" for="st-title">@Localizer["Tm_NewSubtask"]</label>
                         <pems-input scale="small" id="st-title" name="Title" placeholder="@Localizer["Tm_NewSubtask"]" required maxlength="300" />
                         <pems-button tone="neutral" size="small" outline="true" css="text-nowrap"><pems-icon name="bi-plus-lg" aria-hidden="true" /> @Localizer["Tm_Add"]</pems-button>
-                    </pems-flex></form>
+                    </pems-flex></pems-form>
                 }
             </section>
         }
@@ -159,10 +159,10 @@
                             </span>
                             @if (l.CanRemove)
                             {
-                                <form asp-controller="TaskManager" asp-action="RemoveLink" method="post">
+                                <pems-form asp-controller="TaskManager" asp-action="RemoveLink" method="post">
                                     <input type="hidden" name="linkId" value="@l.Id" /><input type="hidden" name="returnUrl" value="@returnUrl" />
                                     <pems-button tone="none" size="small" css="btn-link text-danger p-0" aria-label="@Localizer["Tm_RemoveLink"]" data-pems-confirm="@Localizer["Tm_RemoveLinkConfirm"]"><pems-icon name="bi-x-lg" aria-hidden="true" /></pems-button>
-                                </form>
+                                </pems-form>
                             }
                         </pems-flex>
                     }
@@ -170,7 +170,7 @@
             }
             @if (Model.CanLink)
             {
-                <form asp-controller="TaskManager" asp-action="AddLink" method="post"><pems-row gap="2">
+                <pems-form asp-controller="TaskManager" asp-action="AddLink" method="post"><pems-row gap="2">
                     <input type="hidden" name="id" value="@i.Id" /><input type="hidden" name="returnUrl" value="@returnUrl" />
                     <pems-col md="4">
                         <label class="visually-hidden" for="lk-type">@Localizer["Tm_LinkType"]</label>
@@ -183,7 +183,7 @@
                         <pems-input scale="small" id="lk-target" name="target" placeholder="@Localizer["Tm_LinkTargetPlaceholder"]" required maxlength="30" />
                     </pems-col>
                     <pems-col md="3"><pems-button tone="neutral" size="small" outline="true" css="w-100"><pems-icon name="bi-link-45deg" aria-hidden="true" /> @Localizer["Tm_AddLink"]</pems-button></pems-col>
-                </pems-row></form>
+                </pems-row></pems-form>
             }
         </section>
 
@@ -191,7 +191,7 @@
             <h3 class="h6" id="commentTitle">@Localizer["Tm_Comments"] <pems-badge tone="light">@Model.Comments.Count(c => !c.IsDeleted)</pems-badge></h3>
             @if (Model.CanComment)
             {
-                <form asp-controller="TaskManager" asp-action="Comment" method="post" class="mb-3" data-tm-dirty-guard data-tm-ctrl-enter>
+                <pems-form asp-controller="TaskManager" asp-action="Comment" method="post" class="mb-3" data-tm-dirty-guard data-tm-ctrl-enter>
                     <input type="hidden" name="id" value="@i.Id" /><input type="hidden" name="returnUrl" value="@returnUrl" />
                     <label class="visually-hidden" for="c-body">@Localizer["Tm_AddComment"]</label>
                     <pems-textarea scale="small" css="mb-2" id="c-body" name="body" rows="3" maxlength="5000" required placeholder="@Localizer["Tm_AddComment"]"></pems-textarea>
@@ -199,7 +199,7 @@
                         <span class="small text-muted">@Localizer["Tm_CtrlEnterHint"]</span>
                         <pems-button tone="primary" size="small">@Localizer["Tm_AddComment"]</pems-button>
                     </pems-flex>
-                </form>
+                </pems-form>
             }
             @if (!Model.Comments.Any()) { <p class="small text-muted mb-0">@Localizer["Tm_NoComments"]</p> }
             @foreach (var c in Model.Comments)
@@ -209,10 +209,10 @@
                         <span><strong class="text-body">@c.AuthorName</strong> · @c.CreatedDate.ToString("yyyy-MM-dd HH:mm", System.Globalization.CultureInfo.InvariantCulture)</span>
                         @if (c.CanDelete)
                         {
-                            <form asp-controller="TaskManager" asp-action="DeleteComment" method="post">
+                            <pems-form asp-controller="TaskManager" asp-action="DeleteComment" method="post">
                                 <input type="hidden" name="commentId" value="@c.Id" /><input type="hidden" name="returnUrl" value="@returnUrl" />
                                 <pems-button tone="none" size="small" css="btn-link text-danger p-0" data-pems-confirm="@Localizer["Tm_DeleteCommentConfirm"]">@Localizer["Tm_Delete"]</pems-button>
-                            </form>
+                            </pems-form>
                         }
                     </pems-flex>
                     @if (c.IsDeleted) { <div class="small fst-italic text-muted">@Localizer["Tm_CommentDeleted"]</div> }
@@ -238,7 +238,7 @@
             <h3 class="h6" id="statusTitle">@Localizer["Tm_Field_Status"]</h3>
             @if (Model.CanTransition && Model.AllowedTransitions.Any())
             {
-                <form asp-controller="TaskManager" asp-action="Transition" method="post"><pems-flex dir="column" gap="2">
+                <pems-form asp-controller="TaskManager" asp-action="Transition" method="post"><pems-flex dir="column" gap="2">
                     <input type="hidden" name="id" value="@i.Id" />
                     <input type="hidden" name="rowVersion" value="@i.RowVersion" />
                     <input type="hidden" name="returnUrl" value="@returnUrl" />
@@ -258,7 +258,7 @@
                     <label class="visually-hidden" for="tr-note">@Localizer["Tm_CompletionNote"]</label>
                     <pems-input scale="small" id="tr-note" name="note" maxlength="2000" placeholder="@Localizer["Tm_CompletionNoteOptional"]" />
                     <pems-button tone="primary" size="small">@Localizer["Tm_ChangeStatus"]</pems-button>
-                </pems-flex></form>
+                </pems-flex></pems-form>
             }
             else
             {
@@ -273,7 +273,7 @@
                 <pems-info-item label="@Localizer["Tm_Field_Assignee"]">
                     @if (Model.CanAssign)
                     {
-                        <form asp-controller="TaskManager" asp-action="Assign" method="post"><pems-flex gap="1">
+                        <pems-form asp-controller="TaskManager" asp-action="Assign" method="post"><pems-flex gap="1">
                             <input type="hidden" name="id" value="@i.Id" /><input type="hidden" name="rowVersion" value="@i.RowVersion" /><input type="hidden" name="returnUrl" value="@returnUrl" />
                             <label class="visually-hidden" for="as-emp">@Localizer["Tm_Field_Assignee"]</label>
                             <pems-select scale="small" id="as-emp" name="assigneeEmployeeId" aria-describedby="as-help">
@@ -283,7 +283,7 @@
                                 { <option value="@i.AssigneeEmployeeId" selected>@i.AssigneeName (@Localizer["Tm_NotEligible"])</option> }
                             </pems-select>
                             <pems-button tone="neutral" size="small" outline="true">@Localizer["Tm_Save"]</pems-button>
-                        </pems-flex></form>
+                        </pems-flex></pems-form>
                         @if (assignees.State != "RESOLVED") { <pems-help-text css="text-warning" id="as-help">@Localizer["Tm_Diag_" + assignees.State]</pems-help-text> }
                     }
                     else { @(i.AssigneeName ?? Localizer["Tm_Unassigned"].Value) }

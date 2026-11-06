@@ -43,16 +43,16 @@
                             <span class="small">@m.Employee?.FirstName @m.Employee?.LastName</span>
                             <pems-flex as="span" align="center" gap="2">
                                 <pems-badge tone="neutral">@m.Role?.Name</pems-badge>
-                                <form asp-action="RemoveMember" method="post" class="d-inline">
+                                <pems-form asp-action="RemoveMember" method="post" class="d-inline">
                                     <input type="hidden" name="teamMemberId" value="@m.TeamMemberId" />
                                     <pems-button tone="danger" size="small" outline="true" css="py-0 px-1" type="submit" data-pems-confirm="این عضو از تیم خارج بشه؟"><pems-icon name="bi-x" /></pems-button>
-                                </form>
+                                </pems-form>
                             </pems-flex>
                         </pems-flex>
                     }
                 </ul>
 
-                <form asp-action="AddMember" method="post"><pems-flex gap="1">
+                <pems-form asp-action="AddMember" method="post"><pems-flex gap="1">
                     <input type="hidden" name="teamId" value="@team.TeamId" />
                     <pems-select scale="small" name="employeeId" required>
                         <option value="">@Localizer["کارمند..."]</option>
@@ -66,7 +66,7 @@
                         }
                     </pems-select>
                     <pems-button tone="primary" size="small" outline="true" css="text-nowrap" type="submit"><pems-icon name="bi-plus-lg" /></pems-button>
-                </pems-flex></form>
+                </pems-flex></pems-form>
             </pems-content-card>
         </pems-col>
     }
@@ -77,7 +77,7 @@
 }
 
 <pems-modal id="createTeamModal" tabindex="-1">
-        <form asp-action="CreateTeam" method="post">
+        <pems-form asp-action="CreateTeam" method="post">
             <pems-modal-header>@Localizer["تیم جدید"]</pems-modal-header>
             <pems-modal-body>
                 <div class="mb-2">
@@ -111,7 +111,7 @@
                 <pems-button tone="neutral" size="small" outline="true" type="button" data-bs-dismiss="modal">@Localizer["انصراف"]</pems-button>
                 <pems-button tone="primary" size="small" type="submit">@Localizer["ساخت"]</pems-button>
             </pems-modal-footer>
-        </form>
+        </pems-form>
     </pems-modal>
 
 @section Scripts {

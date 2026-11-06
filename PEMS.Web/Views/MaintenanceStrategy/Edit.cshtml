@@ -26,7 +26,7 @@
 }
 <p class="text-muted small">@Localizer["Rcm_FormHint"]</p>
 
-<form method="post" asp-action="@(isEdit ? "Edit" : "Create")" asp-route-id="@Model.MaintenanceStrategyId" id="strategyForm"><pems-content-card>
+<pems-form method="post" asp-action="@(isEdit ? "Edit" : "Create")" asp-route-id="@Model.MaintenanceStrategyId" id="strategyForm"><pems-content-card>
     @if (i.RowVersion != null)
     {
         <input type="hidden" name="RowVersion" value="@Convert.ToBase64String(i.RowVersion)" />
@@ -193,7 +193,7 @@
         <pems-button tone="primary" type="submit">@(Model.WillCreateNewVersion ? Localizer["Rcm_SaveNewVersion"] : Localizer["Save"])</pems-button>
         <pems-button as="a" tone="neutral" outline="true" asp-action="@(isEdit ? "Details" : "Index")" asp-route-id="@Model.MaintenanceStrategyId">@Localizer["Cancel"]</pems-button>
     </pems-flex>
-</pems-content-card></form>
+</pems-content-card></pems-form>
 
 @section Scripts {
     <script src="~/js/views/maintenancestrategy-edit.js" asp-append-version="true"></script>

@@ -15,7 +15,7 @@
         Area-level parent node. Nothing is written to the live Functional Locations table until
         you review the parsed rows and click Commit.
     </p>
-    <form asp-action="Upload" method="post" enctype="multipart/form-data"><pems-row gap="2" css="align-items-end">
+    <pems-form asp-action="Upload" method="post" enctype="multipart/form-data"><pems-row gap="2" css="align-items-end">
         <pems-col md="8">
             <pems-label css="small">Functional Location Excel File</pems-label>
             <pems-input type="file" name="file" accept=".xlsx" required />
@@ -23,7 +23,7 @@
         <pems-col md="4">
             <pems-button tone="primary" css="w-100" type="submit"><pems-icon name="bi-cloud-upload" /> @Localizer["Upload"]</pems-button>
         </pems-col>
-    </pems-row></form>
+    </pems-row></pems-form>
 </pems-content-card>
 
 <pems-content-card>

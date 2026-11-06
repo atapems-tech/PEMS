@@ -17,7 +17,7 @@
 
 <pems-content-card css="mb-3 pems-s-bcaa1805">
     <p class="text-muted small">@Localizer["Vs_ImportSub"]</p>
-    <form asp-action="Upload" method="post" enctype="multipart/form-data"><pems-row gap="2" css="align-items-end">
+    <pems-form asp-action="Upload" method="post" enctype="multipart/form-data"><pems-row gap="2" css="align-items-end">
         <pems-col md="5">
             <pems-label css="small">@Localizer["Vs_Project"]</pems-label>
             <pems-select name="projectId" required>
@@ -31,7 +31,7 @@
         <pems-col md="2">
             <pems-button tone="primary" css="w-100" type="submit"><pems-icon name="bi-cloud-upload" /> @Localizer["Vs_Upload"]</pems-button>
         </pems-col>
-    </pems-row></form>
+    </pems-row></pems-form>
 </pems-content-card>
 
 <pems-content-card>

@@ -55,10 +55,7 @@
         el.className = 'perm-row-state small';
         el.textContent = '';
         var icon = function (cls) {
-            var i = document.createElement('span');
-            i.className = cls;
-            i.setAttribute('aria-hidden', 'true');
-            el.appendChild(i);
+            el.appendChild(PemsTemplate.fill(PemsTemplate.clone('up-icon'), { icon: { addClass: cls } }));
             el.appendChild(document.createTextNode(' '));
         };
         if (kind === 'saving') {

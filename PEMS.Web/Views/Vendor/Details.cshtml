@@ -35,8 +35,8 @@
                 <pems-info-item label="@Localizer["Vs_ContactEmail"]">@if (!string.IsNullOrEmpty(Model.ContactEmail)) { <a href="mailto:@Model.ContactEmail">@Model.ContactEmail</a> } else { <span>-</span> }</pems-info-item>
                 <pems-info-item label="@Localizer["Vs_ContactPhone"]" ltr>@(string.IsNullOrEmpty(Model.ContactPhone) ? "-" : Model.ContactPhone)</pems-info-item>
             </pems-info-grid>
-            <form asp-action="RecalculateRisk" asp-route-id="@Model.VendorId" method="post" class="mt-3">
-                <button class="vs-btn vs-btn--sm"><pems-icon name="bi-arrow-repeat" /> @Localizer["Vs_RecalcRisk"]</button>
-            </form>
+            <pems-form asp-action="RecalculateRisk" asp-route-id="@Model.VendorId" method="post" class="mt-3">
+                <pems-button tone="bare" css="vs-btn vs-btn--sm"><pems-icon name="bi-arrow-repeat" /> @Localizer["Vs_RecalcRisk"]</pems-button>
+            </pems-form>
         </div></div>
 </pems-page-shell>

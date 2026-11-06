@@ -43,7 +43,7 @@
 
 <section class="vs-panel" aria-labelledby="newSpaceTitle">
     <h3 class="h6" id="newSpaceTitle">@Localizer["Tm_Admin_CreateSpace"]</h3>
-    <form asp-action="SaveSpace" method="post"><pems-row gap="2">
+    <pems-form asp-action="SaveSpace" method="post"><pems-row gap="2">
         <input type="hidden" name="IsActive" value="true" />
         <pems-col md="2">
             <pems-label css="small" for="ns-key">@Localizer["Tm_Field_Key"] <span class="text-danger" aria-hidden="true">*</span></pems-label>
@@ -71,5 +71,5 @@
             <pems-input scale="small" id="ns-desc" name="Description" maxlength="1000" />
         </pems-col>
         <pems-col md="2" css="d-flex align-items-end"><pems-button tone="primary" size="small" css="w-100">@Localizer["Tm_Create"]</pems-button></pems-col>
-    </pems-row></form>
+    </pems-row></pems-form>
 </section>

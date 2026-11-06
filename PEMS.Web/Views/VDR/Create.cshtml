@@ -11,7 +11,7 @@
 
 
 <pems-content-card css="pems-s-3f7efa5f">
-    <form asp-action="Create" method="post">
+    <pems-form asp-action="Create" method="post">
         <pems-row gap="3">
             <pems-col md="3"><pems-label>@Localizer["Vc_SeqNo"]</pems-label><pems-input name="SequenceNo" type="number" value="1" /></pems-col>
             <pems-col md="3">
@@ -48,7 +48,7 @@
             <pems-button tone="primary" type="submit">@Localizer["Save"]</pems-button>
             <pems-button tone="neutral" outline="true" as="a" asp-action="Index">@Localizer["Cancel"]</pems-button>
         </div>
-    </form>
+    </pems-form>
 </pems-content-card>
 
 </pems-page-shell>

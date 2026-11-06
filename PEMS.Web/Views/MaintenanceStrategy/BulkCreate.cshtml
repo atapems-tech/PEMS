@@ -46,7 +46,7 @@
 <p class="text-muted small">@Localizer["Rcm_BulkHint"]</p>
 
 <pems-content-card css="mb-3">
-    <form method="get"><pems-row gap="2">
+    <pems-form method="get"><pems-row gap="2">
         <pems-col md="4">
             <pems-label css="small mb-0">@Localizer["Rcm_Strategy"] (@Localizer["Rcm_ApprovedOrActive"])</pems-label>
             <pems-select scale="small" name="strategyId">
@@ -156,7 +156,7 @@
                 </p>
             </pems-col>
         }
-    </pems-row></form>
+    </pems-row></pems-form>
 </pems-content-card>
 
 @if (noFilterApplied)
@@ -174,15 +174,15 @@ else if (matchingCount.HasValue && matchingCount.Value > maxResults)
     </pems-alert>
 }
 
-<form asp-action="BulkCreate" method="post">
+<pems-form asp-action="BulkCreate" method="post">
     <pems-row>
         <pems-col md="5">
             <pems-content-card>
                 <pems-flex justify="between" align="center" css="mb-2">
                     <h6 class="mb-0 small fw-bold">انتخاب تجهیزات (@equipments.Count)</h6>
                     <div>
-                        <pems-button tone="neutral" size="small" outline="true" type="button" onclick="document.querySelectorAll('.eq-check').forEach(c => c.checked = true)">همه</pems-button>
-                        <pems-button tone="neutral" size="small" outline="true" type="button" onclick="document.querySelectorAll('.eq-check').forEach(c => c.checked = false)">هیچ‌کدام</pems-button>
+                        <pems-button tone="neutral" size="small" outline="true" type="button" data-pems-click="check-all" data-pems-target=".eq-check" data-pems-check="true">همه</pems-button>
+                        <pems-button tone="neutral" size="small" outline="true" type="button" data-pems-click="check-all" data-pems-target=".eq-check" data-pems-check="false">هیچ‌کدام</pems-button>
                     </div>
                 </pems-flex>
 
@@ -196,7 +196,7 @@ else if (matchingCount.HasValue && matchingCount.Value > maxResults)
 <pems-accordion-header><pems-icon name="bi-geo-alt" css="me-2" /> @areaGroup.Key
                                     <pems-badge tone="neutral" css="ms-2">@areaGroup.Count()</pems-badge></pems-accordion-header>
                                     <pems-button tone="primary" size="small" outline="true" css="mb-2" type="button"
-                                            onclick="document.querySelectorAll('.area-@areaSafeId').forEach(c => c.checked = true)">
+                                            data-pems-click="check-all" data-pems-target=".area-@areaSafeId" data-pems-check="true">
                                         <pems-icon name="bi-check2-square" /> انتخاب کل این واحد
                                     </pems-button>
 
@@ -208,7 +208,7 @@ else if (matchingCount.HasValue && matchingCount.Value > maxResults)
                                             <pems-flex justify="between" align="center" css="mb-1">
                                                 <span class="small fw-bold"><pems-icon name="bi-gear" /> @typeGroup.Key <pems-badge tone="none" css="bg-light text-dark">@typeGroup.Count()</pems-badge></span>
                                                 <pems-button tone="neutral" size="small" outline="true" css="py-0" type="button"
-                                                        onclick="document.querySelectorAll('.type-@typeSafeId').forEach(c => c.checked = true)">
+                                                        data-pems-click="check-all" data-pems-target=".type-@typeSafeId" data-pems-check="true">
                                                     انتخاب این نوع
                                                 </pems-button>
                                             </pems-flex>
@@ -219,7 +219,7 @@ else if (matchingCount.HasValue && matchingCount.Value > maxResults)
                                                         var cls = criticalityByEquipment.GetValueOrDefault(eq.EquipmentId);
                                                         <pems-table-row>
                                                             <pems-table-cell class="pems-s-322e3f5e">
-                                                                <input type="checkbox" class="eq-check area-@areaSafeId type-@typeSafeId" name="equipmentIds" value="@eq.EquipmentId" disabled="@(bulk.Candidates.TryGetValue(eq.EquipmentId, out var cand0) && !cand0.WillReceive)" />
+                                                                <pems-input kind="bare" type="checkbox" class="eq-check area-@areaSafeId type-@typeSafeId" name="equipmentIds" value="@eq.EquipmentId" disabled="@(bulk.Candidates.TryGetValue(eq.EquipmentId, out var cand0) && !cand0.WillReceive)" />
                                                             </pems-table-cell>
                                                             <pems-table-cell class="small">@eq.TagNumber — @eq.Name</pems-table-cell>
                                                             <pems-table-cell>
@@ -265,4 +265,4 @@ else if (matchingCount.HasValue && matchingCount.Value > maxResults)
             </pems-content-card>
         </pems-col>
     </pems-row>
-</form>
+</pems-form>

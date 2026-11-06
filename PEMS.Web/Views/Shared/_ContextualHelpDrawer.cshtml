@@ -16,7 +16,7 @@
 <pems-offcanvas side="@(isRtl ? "start" : "end")" tabindex="-1" id="pemsHelpDrawer" aria-labelledby="pemsHelpDrawerLabel" data-context-url="@Url.Action("Context", "Help", new { area = "" })" data-help-index-url="@Url.Action("Index", "Help", new { area = "" })" data-text-no-content="@L("No Help content yet for this page.", "هنوز محتوای راهنمایی برای این صفحه ثبت نشده.")" data-text-browse="@L("Browse Help Center", "مرور مرکز راهنما")" data-text-diagram="@L("View diagram in full article", "مشاهده‌ی نمودار در مقاله‌ی کامل")" data-text-related="@L("Related", "مرتبط")" data-text-open="@L("Open full article", "باز کردن مقاله‌ی کامل")" data-text-error="@L("Could not load Help content.", "بارگذاری محتوای راهنما ممکن نشد.")">
     <div class="offcanvas-header border-bottom">
         <h6 class="offcanvas-title" id="pemsHelpDrawerLabel"><pems-icon name="bi-life-preserver" /> @L("Help", "راهنما")</h6>
-        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        <pems-button tone="bare" type="button" css="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></pems-button>
     </div>
     <div class="offcanvas-body" id="pemsHelpDrawerBody">
         <pems-skeleton kind="card" label="@L("Loading...", "در حال بارگذاری...")" />

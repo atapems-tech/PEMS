@@ -63,28 +63,28 @@
                                 {
                                     <span class="text-body-tertiary" title="@Localizer["Manual override"]"><pems-icon name="bi-pencil-fill" css="pems-s-0d5be05f" /></span>
                                 }
-                                <form method="post" action="@setOverrideUrl">
+                                <pems-form method="post" action="@setOverrideUrl">
                                     @Html.AntiForgeryToken()
                                     <input type="hidden" name="roleId" value="@r.RoleId" />
                                     <input type="hidden" name="moduleKey" value="@module.ModuleKey" />
                                     <input type="hidden" name="isVisible" value="true" />
-                                    <button type="submit" title="@Localizer["Force visible for this role"]"><pems-icon name="bi-eye" /></button>
-                                </form>
-                                <form method="post" action="@setOverrideUrl">
+                                    <pems-button tone="bare" type="submit" title="@Localizer["Force visible for this role"]"><pems-icon name="bi-eye" /></pems-button>
+                                </pems-form>
+                                <pems-form method="post" action="@setOverrideUrl">
                                     @Html.AntiForgeryToken()
                                     <input type="hidden" name="roleId" value="@r.RoleId" />
                                     <input type="hidden" name="moduleKey" value="@module.ModuleKey" />
                                     <input type="hidden" name="isVisible" value="false" />
-                                    <button type="submit" title="@Localizer["Force hidden for this role"]"><pems-icon name="bi-eye-slash" /></button>
-                                </form>
+                                    <pems-button tone="bare" type="submit" title="@Localizer["Force hidden for this role"]"><pems-icon name="bi-eye-slash" /></pems-button>
+                                </pems-form>
                                 @if (r.HasOverride)
                                 {
-                                    <form method="post" action="@clearOverrideUrl">
+                                    <pems-form method="post" action="@clearOverrideUrl">
                                         @Html.AntiForgeryToken()
                                         <input type="hidden" name="roleId" value="@r.RoleId" />
                                         <input type="hidden" name="moduleKey" value="@module.ModuleKey" />
-                                        <button type="submit" title="@Localizer["Clear override - back to default"]"><pems-icon name="bi-arrow-counterclockwise" /></button>
-                                    </form>
+                                        <pems-button tone="bare" type="submit" title="@Localizer["Clear override - back to default"]"><pems-icon name="bi-arrow-counterclockwise" /></pems-button>
+                                    </pems-form>
                                 }
                             </div>
                         }
@@ -111,31 +111,31 @@
                                             {
                                                 <span class="text-body-tertiary" title="@Localizer["Manual override"]"><pems-icon name="bi-pencil-fill" css="pems-s-0d5be05f" /></span>
                                             }
-                                            <form method="post" action="@setOverrideUrl">
+                                            <pems-form method="post" action="@setOverrideUrl">
                                                 @Html.AntiForgeryToken()
                                                 <input type="hidden" name="roleId" value="@r.RoleId" />
                                                 <input type="hidden" name="moduleKey" value="@module.ModuleKey" />
                                                 <input type="hidden" name="itemKey" value="@item.ItemKey" />
                                                 <input type="hidden" name="isVisible" value="true" />
-                                                <button type="submit" title="@Localizer["Force visible for this role"]"><pems-icon name="bi-eye" /></button>
-                                            </form>
-                                            <form method="post" action="@setOverrideUrl">
+                                                <pems-button tone="bare" type="submit" title="@Localizer["Force visible for this role"]"><pems-icon name="bi-eye" /></pems-button>
+                                            </pems-form>
+                                            <pems-form method="post" action="@setOverrideUrl">
                                                 @Html.AntiForgeryToken()
                                                 <input type="hidden" name="roleId" value="@r.RoleId" />
                                                 <input type="hidden" name="moduleKey" value="@module.ModuleKey" />
                                                 <input type="hidden" name="itemKey" value="@item.ItemKey" />
                                                 <input type="hidden" name="isVisible" value="false" />
-                                                <button type="submit" title="@Localizer["Force hidden for this role"]"><pems-icon name="bi-eye-slash" /></button>
-                                            </form>
+                                                <pems-button tone="bare" type="submit" title="@Localizer["Force hidden for this role"]"><pems-icon name="bi-eye-slash" /></pems-button>
+                                            </pems-form>
                                             @if (r.HasOverride)
                                             {
-                                                <form method="post" action="@clearOverrideUrl">
+                                                <pems-form method="post" action="@clearOverrideUrl">
                                                     @Html.AntiForgeryToken()
                                                     <input type="hidden" name="roleId" value="@r.RoleId" />
                                                     <input type="hidden" name="moduleKey" value="@module.ModuleKey" />
                                                     <input type="hidden" name="itemKey" value="@item.ItemKey" />
-                                                    <button type="submit" title="@Localizer["Clear override - back to default"]"><pems-icon name="bi-arrow-counterclockwise" /></button>
-                                                </form>
+                                                    <pems-button tone="bare" type="submit" title="@Localizer["Clear override - back to default"]"><pems-icon name="bi-arrow-counterclockwise" /></pems-button>
+                                                </pems-form>
                                             }
                                         </div>
                                     }
@@ -165,31 +165,31 @@
                                                         {
                                                             <span class="text-body-tertiary" title="@Localizer["Manual override"]"><pems-icon name="bi-pencil-fill" css="pems-s-0d5be05f" /></span>
                                                         }
-                                                        <form method="post" action="@setOverrideUrl">
+                                                        <pems-form method="post" action="@setOverrideUrl">
                                                             @Html.AntiForgeryToken()
                                                             <input type="hidden" name="roleId" value="@r.RoleId" />
                                                             <input type="hidden" name="moduleKey" value="@module.ModuleKey" />
                                                             <input type="hidden" name="itemKey" value="@item.ItemKey" />
                                                             <input type="hidden" name="isVisible" value="true" />
-                                                            <button type="submit" title="@Localizer["Force visible for this role"]"><pems-icon name="bi-eye" /></button>
-                                                        </form>
-                                                        <form method="post" action="@setOverrideUrl">
+                                                            <pems-button tone="bare" type="submit" title="@Localizer["Force visible for this role"]"><pems-icon name="bi-eye" /></pems-button>
+                                                        </pems-form>
+                                                        <pems-form method="post" action="@setOverrideUrl">
                                                             @Html.AntiForgeryToken()
                                                             <input type="hidden" name="roleId" value="@r.RoleId" />
                                                             <input type="hidden" name="moduleKey" value="@module.ModuleKey" />
                                                             <input type="hidden" name="itemKey" value="@item.ItemKey" />
                                                             <input type="hidden" name="isVisible" value="false" />
-                                                            <button type="submit" title="@Localizer["Force hidden for this role"]"><pems-icon name="bi-eye-slash" /></button>
-                                                        </form>
+                                                            <pems-button tone="bare" type="submit" title="@Localizer["Force hidden for this role"]"><pems-icon name="bi-eye-slash" /></pems-button>
+                                                        </pems-form>
                                                         @if (r.HasOverride)
                                                         {
-                                                            <form method="post" action="@clearOverrideUrl">
+                                                            <pems-form method="post" action="@clearOverrideUrl">
                                                                 @Html.AntiForgeryToken()
                                                                 <input type="hidden" name="roleId" value="@r.RoleId" />
                                                                 <input type="hidden" name="moduleKey" value="@module.ModuleKey" />
                                                                 <input type="hidden" name="itemKey" value="@item.ItemKey" />
-                                                                <button type="submit" title="@Localizer["Clear override - back to default"]"><pems-icon name="bi-arrow-counterclockwise" /></button>
-                                                            </form>
+                                                                <pems-button tone="bare" type="submit" title="@Localizer["Clear override - back to default"]"><pems-icon name="bi-arrow-counterclockwise" /></pems-button>
+                                                            </pems-form>
                                                         }
                                                     </div>
                                                 }

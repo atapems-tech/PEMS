@@ -39,7 +39,7 @@
     </p>
 </pems-content-card>
 
-<form asp-action="Edit" method="post">
+<pems-form asp-action="Edit" method="post">
     <input type="hidden" asp-for="DocumentId" />
 
     <pems-row gap="3">
@@ -144,4 +144,4 @@
         <pems-button tone="primary" type="submit"><pems-icon name="bi-check-lg" /> Save Changes</pems-button>
         <pems-button tone="neutral" outline="true" as="a" asp-action="Details" asp-route-id="@Model.DocumentId">Cancel</pems-button>
     </pems-content-card>
-</form>
+</pems-form>

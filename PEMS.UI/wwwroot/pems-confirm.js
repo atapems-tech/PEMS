@@ -17,40 +17,12 @@
         return (body && body.getAttribute('data-pems-confirm-' + name)) || '';
     }
 
-    function el(tag, className, content) {
-        var node = document.createElement(tag);
-        if (className) node.className = className;
-        if (content) node.textContent = content;
-        return node;
-    }
-
     function build() {
         if (dialog) return dialog;
-        dialog = el('dialog', 'pems-modal pems-modal--small pems-confirm');
-        dialog.setAttribute('aria-labelledby', 'pems-confirm-title');
-        dialog.setAttribute('aria-describedby', 'pems-confirm-message');
-        var panel = el('div', 'pems-modal__panel');
-        var header = el('header', 'pems-modal__header');
-        var title = el('h2', 'pems-modal__title');
-        title.id = 'pems-confirm-title';
-        header.appendChild(title);
-        var body = el('div', 'pems-modal__body');
-        var message = el('p', 'pems-confirm__message');
-        message.id = 'pems-confirm-message';
-        body.appendChild(message);
-        var footer = el('footer', 'pems-modal__footer');
-        var cancel = el('button', 'pems-btn pems-btn--neutral pems-btn--medium');
-        cancel.type = 'button';
-        cancel.setAttribute('data-pems-confirm-cancel', '');
-        var ok = el('button', 'pems-btn pems-btn--primary pems-btn--medium');
-        ok.type = 'button';
-        ok.setAttribute('data-pems-confirm-ok', '');
-        footer.appendChild(cancel);
-        footer.appendChild(ok);
-        panel.appendChild(header);
-        panel.appendChild(body);
-        panel.appendChild(footer);
-        dialog.appendChild(panel);
+        // the dialog markup is the page's template (script-templates, set shell), never a string or a createElement chain here
+        dialog = window.PemsTemplate.clone('pems-confirm-dialog');
+        var cancel = dialog.querySelector('[data-pems-confirm-cancel]');
+        var ok = dialog.querySelector('[data-pems-confirm-ok]');
         dialog.addEventListener('click', function (e) { if (e.target === dialog) dialog.close('cancel'); });
         cancel.addEventListener('click', function () { dialog.close('cancel'); });
         ok.addEventListener('click', function () { dialog.close('ok'); });

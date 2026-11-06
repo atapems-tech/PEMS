@@ -119,7 +119,7 @@
 </pems-row>
 
 <pems-modal id="editAssetModal" tabindex="-1">
-            <form asp-action="Edit" method="post">
+            <pems-form asp-action="Edit" method="post">
                 <input type="hidden" name="assetId" value="@Model.AssetId" />
                 <pems-modal-header>Edit Asset</pems-modal-header>
                 <pems-modal-body>
@@ -171,5 +171,5 @@
                     <pems-button tone="neutral" outline="true" type="button" data-bs-dismiss="modal">@Localizer["Cancel"]</pems-button>
                     <pems-button tone="primary" type="submit">@Localizer["Save"]</pems-button>
                 </pems-modal-footer>
-            </form>
+            </pems-form>
         </pems-modal>

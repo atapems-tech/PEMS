@@ -67,7 +67,8 @@ public class SkeletonComponentTests
     public void Script_BuildsTheSameClassesAsTheTagHelper()
     {
         var js = File.ReadAllText(Path.Combine(RepoRoot(), "PEMS.UI", "wwwroot", "pems-skeleton.js"));
-        foreach (var cls in new[] { "pems-skeleton pems-skeleton--", "pems-skeleton__line--title", "pems-skeleton__line--short", "pems-skeleton__line--square",
+        js += File.ReadAllText(Path.Combine(RepoRoot(), "PEMS.UI", "Components", "PemsScriptTemplates.razor"));   // SCRUM-512: the base markup is the script template
+        foreach (var cls in new[] { "pems-skeleton\" role", "pems-skeleton--", "pems-skeleton__line--title", "pems-skeleton__line--short", "pems-skeleton__line--square",
                      "pems-skeleton__stack", "pems-skeleton__line--value", "pems-skeleton__row", "pems-skeleton__line--label", "pems-skeleton__line--field",
                      "role=\"status\" aria-busy=\"true\" aria-live=\"polite\"", "visually-hidden", "data-pems-skeleton-label" })
             Assert.Contains(cls, js);

@@ -136,7 +136,7 @@ public class TreeViewComponentTests
         // a tree item may not hold controls (WAI-ARIA); every node of this editor holds role forms, so <details> is the right pattern
         var view = File.ReadAllText(Path.Combine(RepoRoot(), "PEMS.Web", "Areas", "Admin", "Views", "NavigationVisibility", "Index.cshtml"));
         Assert.Contains("<details class=\"navvis-module", view);
-        Assert.Contains("<form method=\"post\"", view);
+        Assert.Contains("<pems-form method=\"post\"", view);
         Assert.DoesNotContain("role=\"tree\"", view);
     }
 

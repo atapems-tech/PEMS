@@ -25,7 +25,7 @@
     <section class="vs-panel pc-card" id="pc-partno-settings">
         <h2 class="vs-section__title"><pems-icon name="bi-hash" /> @Localizer["Pc_Adm_PartNoTitle"]</h2>
         <p class="small text-muted">@Localizer["Pc_Adm_PartNoHint"]</p>
-        <form asp-action="SaveSettings" method="post"><pems-row gap="3" css="align-items-start">
+        <pems-form asp-action="SaveSettings" method="post"><pems-row gap="3" css="align-items-start">
             @if (Model.Settings.RowVersion != null) { <input type="hidden" name="rowVersion" value="@Convert.ToBase64String(Model.Settings.RowVersion)" /> }
             <pems-col md="4">
                 <pems-label for="pc_partNoMethod">@Localizer["Pc_Adm_PartNoMethod"]</pems-label>
@@ -40,9 +40,9 @@
                 <pems-help-text>@Localizer["Pc_Adm_PartNoFormatHelp"]</pems-help-text>
             </pems-col>
             <pems-col span="auto" css="pt-md-4">
-                <button type="submit" class="vs-btn vs-btn--sm vs-btn--primary mt-md-1"><pems-icon name="bi-check2" /> @Localizer["Save"]</button>
+                <pems-button tone="bare" type="submit" css="vs-btn vs-btn--sm vs-btn--primary mt-md-1"><pems-icon name="bi-check2" /> @Localizer["Save"]</pems-button>
             </pems-col>
-        </pems-row></form>
+        </pems-row></pems-form>
         <pems-alert tone="info" css="small py-2 mt-3 mb-0"><pems-icon name="bi-info-circle" /> @Localizer["Pc_Adm_PartNoNote"]</pems-alert>
         @if (Model.Settings.IsPersisted && Model.Settings.ModifiedDate.HasValue)
         {
@@ -58,12 +58,12 @@
             @foreach (var kind in new[] { "TechnicalClass", "CommodityGroup", "ProductFamily", "Manufacturer", "Supplier" })
             {
                 <pems-col md="6" xl="4">
-                    <form asp-action="Import" method="post" enctype="multipart/form-data" class="border rounded p-2 h-100">
+                    <pems-form asp-action="Import" method="post" enctype="multipart/form-data" class="border rounded p-2 h-100">
                         <input type="hidden" name="kind" value="@kind" />
                         <pems-flex justify="between"><strong>@Localizer["Pc_Imp_" + kind]</strong><span class="vs-pill vs-pill--neutral">@(ov.Counts.TryGetValue(kind, out var c) ? c : 0)</span></pems-flex>
                         <pems-input scale="small" css="my-2" type="file" name="file" accept=".xlsx" required aria-label="@Localizer["Pc_Imp_" + kind]" />
-                        <button type="submit" class="vs-btn vs-btn--sm vs-btn--primary"><pems-icon name="bi-upload" /> @Localizer["Pc_Adm_ImportBtn"]</button>
-                    </form>
+                        <pems-button tone="bare" type="submit" css="vs-btn vs-btn--sm vs-btn--primary"><pems-icon name="bi-upload" /> @Localizer["Pc_Adm_ImportBtn"]</pems-button>
+                    </pems-form>
                 </pems-col>
             }
         </pems-row>
@@ -109,11 +109,11 @@
         {
             var fid = "respForm" + r.Id;
             <pems-col xl="6">
-                <form id="@fid" asp-action="SaveResponsibility" method="post" class="border rounded p-2 h-100">
+                <pems-form id="@fid" asp-action="SaveResponsibility" method="post" class="border rounded p-2 h-100">
                     <input type="hidden" name="Id" value="@r.Id" />
                     <pems-flex justify="between" align="center" css="mb-2">
                         <strong>@Localizer["Pc_Step_" + r.Key] <code class="ms-1">@r.Key</code></strong>
-                        <label class="small"><input type="checkbox" name="IsActive" value="true" checked="@r.IsActive" /> @Localizer["Pc_Col_Active"]<input type="hidden" name="IsActive" value="false" /></label>
+                        <label class="small"><pems-input kind="bare" type="checkbox" name="IsActive" value="true" checked="@r.IsActive" /> @Localizer["Pc_Col_Active"]<input type="hidden" name="IsActive" value="false" /></label>
                     </pems-flex>
                     <pems-row gap="2">
                         <pems-col md="6">
@@ -167,10 +167,10 @@
                         </pems-col>
                     </pems-row>
                     <pems-flex gap="2" css="mt-2">
-                        <button type="submit" class="vs-btn vs-btn--sm vs-btn--primary"><pems-icon name="bi-save" /> @Localizer["Pc_Btn_Save"]</button>
-                        <button type="button" class="vs-btn vs-btn--sm" data-pc-preview="@r.Key"><pems-icon name="bi-search" /> @Localizer["Pc_Adm_Diagnose"]</button>
+                        <pems-button tone="bare" type="submit" css="vs-btn vs-btn--sm vs-btn--primary"><pems-icon name="bi-save" /> @Localizer["Pc_Btn_Save"]</pems-button>
+                        <pems-button tone="bare" type="button" css="vs-btn vs-btn--sm" data-pc-preview="@r.Key"><pems-icon name="bi-search" /> @Localizer["Pc_Adm_Diagnose"]</pems-button>
                     </pems-flex>
-                </form>
+                </pems-form>
             </pems-col>
         }
         </pems-row>
@@ -189,15 +189,15 @@
     <section class="vs-panel pc-card mt-3">
         <h2 class="vs-section__title"><pems-icon name="bi-boxes" /> @Localizer["Pc_Adm_CommodityResp"]</h2>
         <p class="small text-muted">@Localizer["Pc_Adm_CommodityRespHint"]</p>
-        <form asp-action="AddCommodityResponsible" method="post"><pems-row gap="2" css="align-items-start mb-2">
+        <pems-form asp-action="AddCommodityResponsible" method="post"><pems-row gap="2" css="align-items-start mb-2">
             <pems-col md="3"><pems-label css="small mb-0" for="cr_key">@Localizer["Pc_Adm_Responsibility"]</pems-label>
                 <pems-select scale="small" id="cr_key" name="responsibilityKey">@foreach (var r in ov.Responsibilities.Where(x => x.Kind == "CommodityPosition")) { <option value="@r.Key">@Localizer["Pc_Step_" + r.Key]</option> }</pems-select></pems-col>
             <pems-col md="3"><pems-label css="small mb-0" for="cr_grp_text">@Localizer["Pc_F_CommodityGroup1Id"]</pems-label><div class="pc-lookup" data-url="/Warehouse/PartCatalogueAdmin/CommodityGroups" data-name="commodityGroupId" data-input-id="cr_grp_text"></div></pems-col>
             <pems-col md="3"><pems-label css="small mb-0" for="cr_pos">@Localizer["Pc_Adm_Position"]</pems-label>
                 <pems-select scale="small" id="cr_pos" name="positionId"><option value=""></option>@foreach (var p in ov.Positions) { <option value="@p.Id">@p.Text</option> }</pems-select></pems-col>
             <pems-col md="3"><pems-label css="small mb-0" for="cr_emp_text">@Localizer["Pc_Adm_EmployeeOverride"]</pems-label><div class="pc-lookup" data-url="@empUrl" data-name="employeeId" data-input-id="cr_emp_text"></div></pems-col>
-            <pems-col span="12"><button class="vs-btn vs-btn--sm vs-btn--primary"><pems-icon name="bi-plus-lg" /> @Localizer["Pc_Btn_AddGroup"]</button></pems-col>
-        </pems-row></form>
+            <pems-col span="12"><pems-button tone="bare" css="vs-btn vs-btn--sm vs-btn--primary"><pems-icon name="bi-plus-lg" /> @Localizer["Pc_Btn_AddGroup"]</pems-button></pems-col>
+        </pems-row></pems-form>
         <div class="pc-table-scroll">
             <pems-table scale="small" css="table-enterprise vs-dense mb-0">
                 <pems-table-head><pems-table-row><pems-table-header>@Localizer["Pc_Adm_Responsibility"]</pems-table-header><pems-table-header>@Localizer["Pc_F_CommodityGroup1Id"]</pems-table-header><pems-table-header>@Localizer["Pc_Adm_Position"]</pems-table-header><pems-table-header>@Localizer["Pc_Adm_EmployeeOverride"]</pems-table-header><pems-table-header></pems-table-header></pems-table-row></pems-table-head>
@@ -205,7 +205,7 @@
                 @foreach (var c in ov.CommodityResponsibles.Where(x => x.IsActive))
                 {
                     <pems-table-row><pems-table-cell><code>@c.ResponsibilityKey</code></pems-table-cell><pems-table-cell>@c.GroupText</pems-table-cell><pems-table-cell>@c.PositionTitle</pems-table-cell><pems-table-cell>@c.EmployeeName</pems-table-cell>
-                        <pems-table-cell class="text-end"><form asp-action="RemoveCommodityResponsible" method="post" class="d-inline"><input type="hidden" name="id" value="@c.Id" /><button class="vs-icon-btn" title="@Localizer["Pc_Btn_Remove"]" aria-label="@Localizer["Pc_Btn_Remove"]"><pems-icon name="bi-trash" /></button></form></pems-table-cell></pems-table-row>
+                        <pems-table-cell class="text-end"><pems-form asp-action="RemoveCommodityResponsible" method="post" class="d-inline"><input type="hidden" name="id" value="@c.Id" /><pems-button tone="bare" css="vs-icon-btn" title="@Localizer["Pc_Btn_Remove"]" aria-label="@Localizer["Pc_Btn_Remove"]"><pems-icon name="bi-trash" /></pems-button></pems-form></pems-table-cell></pems-table-row>
                 }
                 </pems-table-body>
             </pems-table>
@@ -227,16 +227,16 @@
                             @foreach (var ap in st.Approvers)
                             {
                                 <pems-flex as="li" justify="between" align="center">@ap.EmployeeName
-                                    <form asp-action="RemoveApprover" method="post" class="d-inline"><input type="hidden" name="assignmentId" value="@ap.Id" /><button class="vs-icon-btn" title="@Localizer["Pc_Btn_Remove"]" aria-label="@Localizer["Pc_Btn_Remove"]"><pems-icon name="bi-x-lg" /></button></form>
+                                    <pems-form asp-action="RemoveApprover" method="post" class="d-inline"><input type="hidden" name="assignmentId" value="@ap.Id" /><pems-button tone="bare" css="vs-icon-btn" title="@Localizer["Pc_Btn_Remove"]" aria-label="@Localizer["Pc_Btn_Remove"]"><pems-icon name="bi-x-lg" /></pems-button></pems-form>
                                 </pems-flex>
                             }
                             @if (!st.Approvers.Any()) { <li class="text-danger">@Localizer["Pc_Adm_NoApprovers"]</li> }
                         </ul>
-                        <form asp-action="AddApprover" method="post"><pems-flex gap="2" align="start">
+                        <pems-form asp-action="AddApprover" method="post"><pems-flex gap="2" align="start">
                             <input type="hidden" name="stepKey" value="@st.StepKey" />
                             <div class="pc-lookup flex-grow-1" data-url="@empUrl" data-name="employeeId" data-input-id="@("emp_" + st.StepKey)"></div>
-                            <button class="vs-btn vs-btn--sm"><pems-icon name="bi-plus-lg" /></button>
-                        </pems-flex></form>
+                            <pems-button tone="bare" css="vs-btn vs-btn--sm"><pems-icon name="bi-plus-lg" /></pems-button>
+                        </pems-flex></pems-form>
                     </div>
                 </pems-col>
             }
@@ -264,21 +264,21 @@
                     var fid = "secForm" + s.SectionId;
                     <pems-table-row>
                         <pems-table-cell>@s.Code @if (!string.IsNullOrEmpty(s.NameFa)) { <span class="text-muted small">(@s.NameFa)</span> } @if (s.RoutingNeedsConfirmation) { <span class="vs-pill vs-pill--warning" title="@Localizer["Pc_Adm_NeedsConfirmation"]">@Localizer["Pc_Adm_NeedsConfirmationShort"]</span> }</pems-table-cell>
-                        <pems-table-cell><input form="@fid" type="checkbox" name="requiresSparePartsReview" value="true" checked="@s.RequiresSparePartsReview" aria-label="@Localizer["Pc_Adm_SpareReview"]" /><input form="@fid" type="hidden" name="requiresSparePartsReview" value="false" /></pems-table-cell>
-                        <pems-table-cell><input form="@fid" type="checkbox" name="isActive" value="true" checked="@s.IsActive" aria-label="@Localizer["Pc_Col_Active"]" /><input form="@fid" type="hidden" name="isActive" value="false" /></pems-table-cell>
-                        <pems-table-cell><form id="@fid" asp-action="SetSection" method="post"><input type="hidden" name="sectionId" value="@s.SectionId" /><button class="vs-btn vs-btn--sm"><pems-icon name="bi-save" /></button></form></pems-table-cell>
+                        <pems-table-cell><pems-input kind="bare" form="@fid" type="checkbox" name="requiresSparePartsReview" value="true" checked="@s.RequiresSparePartsReview" aria-label="@Localizer["Pc_Adm_SpareReview"]" /><input form="@fid" type="hidden" name="requiresSparePartsReview" value="false" /></pems-table-cell>
+                        <pems-table-cell><pems-input kind="bare" form="@fid" type="checkbox" name="isActive" value="true" checked="@s.IsActive" aria-label="@Localizer["Pc_Col_Active"]" /><input form="@fid" type="hidden" name="isActive" value="false" /></pems-table-cell>
+                        <pems-table-cell><pems-form id="@fid" asp-action="SetSection" method="post"><input type="hidden" name="sectionId" value="@s.SectionId" /><pems-button tone="bare" css="vs-btn vs-btn--sm"><pems-icon name="bi-save" /></pems-button></pems-form></pems-table-cell>
                         <pems-table-cell>
                             @foreach (var g in s.Groups)
                             {
-                                <form asp-action="RemoveSectionGroup" method="post" class="d-inline"><input type="hidden" name="mapId" value="@g.MapId" />
-                                    <button class="vs-pill vs-pill--neutral border-0" title="@Localizer["Pc_Btn_Remove"]">@g.GroupText @if (g.NeedsConfirmation) { <pems-icon name="bi-question-circle" aria-hidden="true" /> } <pems-icon name="bi-x" aria-hidden="true" /></button></form>
+                                <pems-form asp-action="RemoveSectionGroup" method="post" class="d-inline"><input type="hidden" name="mapId" value="@g.MapId" />
+                                    <pems-button tone="bare" css="vs-pill vs-pill--neutral border-0" title="@Localizer["Pc_Btn_Remove"]">@g.GroupText @if (g.NeedsConfirmation) { <pems-icon name="bi-question-circle" aria-hidden="true" /> } <pems-icon name="bi-x" aria-hidden="true" /></pems-button></pems-form>
                             }
                             @if (!s.Groups.Any()) { <span class="text-muted small">@Localizer["Pc_Adm_AllGroups"]</span> }
-                            <form class="ms-2" asp-action="AddSectionGroup" method="post"><pems-flex inline="true" gap="1" align="start">
+                            <pems-form class="ms-2" asp-action="AddSectionGroup" method="post"><pems-flex inline="true" gap="1" align="start">
                                 <input type="hidden" name="sectionId" value="@s.SectionId" />
                                 <div class="pc-lookup pc-lookup-sm" data-url="/Warehouse/PartCatalogueAdmin/CommodityGroups" data-name="commodityGroupId" data-input-id="@("grp_" + s.SectionId)"></div>
-                                <button class="vs-icon-btn" title="@Localizer["Pc_Btn_AddGroup"]" aria-label="@Localizer["Pc_Btn_AddGroup"]"><pems-icon name="bi-plus-lg" /></button>
-                            </pems-flex></form>
+                                <pems-button tone="bare" css="vs-icon-btn" title="@Localizer["Pc_Btn_AddGroup"]" aria-label="@Localizer["Pc_Btn_AddGroup"]"><pems-icon name="bi-plus-lg" /></pems-button>
+                            </pems-flex></pems-form>
                         </pems-table-cell>
                     </pems-table-row>
                 }
@@ -291,11 +291,11 @@
     <section class="vs-panel pc-card mt-3 mb-4">
         <h2 class="vs-section__title"><pems-icon name="bi-diagram-3" /> @Localizer["Pc_Adm_Group2Maps"]</h2>
         <p class="small text-muted">@Localizer["Pc_Adm_Group2Hint"]</p>
-        <form asp-action="AddGroupChild" method="post"><pems-row gap="2" css="align-items-start mb-2">
+        <pems-form asp-action="AddGroupChild" method="post"><pems-row gap="2" css="align-items-start mb-2">
             <pems-col md="5"><pems-label for="g2_parent_text">@Localizer["Pc_F_CommodityGroup1Id"]</pems-label><div class="pc-lookup" data-url="/Warehouse/PartCatalogueAdmin/CommodityGroups" data-name="parentGroupId" data-input-id="g2_parent_text"></div></pems-col>
             <pems-col md="5"><pems-label for="g2_child_text">@Localizer["Pc_F_CommodityGroup2Id"]</pems-label><div class="pc-lookup" data-url="/Warehouse/PartCatalogueAdmin/CommodityGroups" data-name="childGroupId" data-input-id="g2_child_text"></div></pems-col>
-            <pems-col md="2" css="pt-4"><button class="vs-btn vs-btn--sm vs-btn--primary"><pems-icon name="bi-plus-lg" /> @Localizer["Pc_Btn_AddGroup"]</button></pems-col>
-        </pems-row></form>
+            <pems-col md="2" css="pt-4"><pems-button tone="bare" css="vs-btn vs-btn--sm vs-btn--primary"><pems-icon name="bi-plus-lg" /> @Localizer["Pc_Btn_AddGroup"]</pems-button></pems-col>
+        </pems-row></pems-form>
         <div class="pc-table-scroll">
             <pems-table scale="small" css="table-enterprise vs-dense mb-0">
                 <pems-table-head><pems-table-row><pems-table-header>@Localizer["Pc_F_CommodityGroup1Id"]</pems-table-header><pems-table-header>@Localizer["Pc_F_CommodityGroup2Id"]</pems-table-header><pems-table-header></pems-table-header></pems-table-row></pems-table-head>
@@ -303,7 +303,7 @@
                 @foreach (var m in ov.Group2Maps)
                 {
                     <pems-table-row><pems-table-cell>@m.Parent</pems-table-cell><pems-table-cell>@m.Child</pems-table-cell>
-                        <pems-table-cell class="text-end"><form asp-action="RemoveGroupChild" method="post" class="d-inline"><input type="hidden" name="mapId" value="@m.Id" /><button class="vs-icon-btn" title="@Localizer["Pc_Btn_Remove"]" aria-label="@Localizer["Pc_Btn_Remove"]"><pems-icon name="bi-trash" /></button></form></pems-table-cell></pems-table-row>
+                        <pems-table-cell class="text-end"><pems-form asp-action="RemoveGroupChild" method="post" class="d-inline"><input type="hidden" name="mapId" value="@m.Id" /><pems-button tone="bare" css="vs-icon-btn" title="@Localizer["Pc_Btn_Remove"]" aria-label="@Localizer["Pc_Btn_Remove"]"><pems-icon name="bi-trash" /></pems-button></pems-form></pems-table-cell></pems-table-row>
                 }
                 </pems-table-body>
             </pems-table>
@@ -312,7 +312,7 @@
     </section>
 </pems-page-shell>
 
-<form id="pcNoForm" onsubmit="return false"></form>
+<pems-form id="pcNoForm" data-pems-submit="prevent"></pems-form>
 
 @section Scripts {
     <pems-script-templates set="part-catalogue"></pems-script-templates>

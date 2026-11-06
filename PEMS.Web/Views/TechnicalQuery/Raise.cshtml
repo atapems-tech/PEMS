@@ -3,7 +3,7 @@
 @inject IStringLocalizer<SharedResource> Localizer
 <pems-content-card css="pems-s-3f7efa5f">
 
-    <form asp-action="Raise" method="post">
+    <pems-form asp-action="Raise" method="post">
         <pems-row gap="3">
             <pems-col md="4">
                 <pems-label>@Localizer["Type"]</pems-label>
@@ -56,5 +56,5 @@
             <pems-button tone="primary" type="submit">@Localizer["Submit"]</pems-button>
             <pems-button tone="neutral" outline="true" as="a" asp-action="Index">@Localizer["Cancel"]</pems-button>
         </div>
-    </form>
+    </pems-form>
 </pems-content-card>

@@ -78,7 +78,7 @@
     <p class="text-muted small mb-2">
         فقط وقتی Weibull و MTTR هر دو واقعاً آماده باشند اجرا می‌شود - Provenance همیشه SIMULATED است.
     </p>
-    <form method="post" asp-action="Simulate" asp-route-id="@equipmentId">
+    <pems-form method="post" asp-action="Simulate" asp-route-id="@equipmentId">
         @Html.AntiForgeryToken()
         <pems-row gap="2" css="align-items-end">
             <pems-col span="auto">
@@ -93,5 +93,5 @@
                 <pems-button tone="primary" size="small" type="submit">Run Simulation</pems-button>
             </pems-col>
         </pems-row>
-    </form>
+    </pems-form>
 </pems-content-card>

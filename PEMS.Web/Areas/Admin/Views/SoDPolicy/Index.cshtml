@@ -47,9 +47,9 @@
                             else { <span class="vs-pill vs-pill--icon vs-pill--neutral"><pems-icon name="bi-pause-circle" aria-hidden="true" /> @Localizer["Disabled"]</span> }
                         </pems-table-cell>
                         <pems-table-cell class="text-end">
-                            <form asp-action="ToggleActive" asp-route-id="@p.Id" method="post" class="d-inline">
-                                <button type="submit" class="lp-act lp-act--always" title="@(p.IsActive ? Localizer["Disable"] : Localizer["Enable"])" aria-label="@(p.IsActive ? Localizer["Disable"] : Localizer["Enable"])"><pems-icon css="@(p.IsActive ? "bi-pause-circle" : "bi-play-circle")" aria-hidden="true" /></button>
-                            </form>
+                            <pems-form asp-action="ToggleActive" asp-route-id="@p.Id" method="post" class="d-inline">
+                                <pems-button tone="bare" type="submit" css="lp-act lp-act--always" title="@(p.IsActive ? Localizer["Disable"] : Localizer["Enable"])" aria-label="@(p.IsActive ? Localizer["Disable"] : Localizer["Enable"])"><pems-icon css="@(p.IsActive ? "bi-pause-circle" : "bi-play-circle")" aria-hidden="true" /></pems-button>
+                            </pems-form>
                         </pems-table-cell>
                     </pems-table-row>
                 }

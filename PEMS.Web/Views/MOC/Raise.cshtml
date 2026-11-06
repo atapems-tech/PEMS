@@ -4,7 +4,7 @@
 <pems-content-card css="pems-s-3f7efa5f">
     <h6 class="mb-3"><pems-icon name="bi-arrow-repeat" /> New MOC (Management of Change)</h6>
 
-    <form asp-action="Raise" method="post">
+    <pems-form asp-action="Raise" method="post">
         <pems-row gap="3">
             <pems-col md="6">
                 <pems-label>@Localizer["Project"]</pems-label>
@@ -25,7 +25,7 @@
 
             <pems-col md="4">
                 <pems-label>Change Type</pems-label>
-                <pems-select name="changeType" id="changeTypeSelect" onchange="document.getElementById('tempExpiryWrap').hidden = !(this.value === 'Temporary');">
+                <pems-select name="changeType" id="changeTypeSelect" data-pems-change="toggle-hidden" data-pems-target="#tempExpiryWrap" data-pems-hide-when="value-not:Temporary">
                     <option value="Permanent">Permanent</option>
                     <option value="Temporary">Temporary</option>
                 </pems-select>
@@ -66,5 +66,5 @@
             <pems-button tone="primary" type="submit">@Localizer["Submit"]</pems-button>
             <pems-button tone="neutral" outline="true" as="a" asp-action="Index">@Localizer["Cancel"]</pems-button>
         </div>
-    </form>
+    </pems-form>
 </pems-content-card>

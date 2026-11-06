@@ -24,14 +24,14 @@
             <pems-list-tools>
                 <a class="lp-icon-btn" asp-controller="Equipment" asp-action="Index" title="@Localizer["Fla_Equipment"]" aria-label="@Localizer["Fla_Equipment"]"><pems-icon name="bi-gear-wide-connected" aria-hidden="true" /></a>
                 <pems-list-popover id="flaUpload" icon="bi-cloud-upload" label="@Localizer["Fla_Upload"]" primary="true">
-                    <form asp-action="Upload" method="post" enctype="multipart/form-data">
+                    <pems-form asp-action="Upload" method="post" enctype="multipart/form-data">
                         <p class="text-muted small mb-2">@Localizer["Fla_UploadRules"]</p>
                         <label class="lp-lbl" for="assignmentFile">@Localizer["Fla_FileLabel"]</label>
                         <pems-input type="file" id="assignmentFile" name="file" accept=".xlsx" required />
                         <div class="lp-fp-foot px-0 pb-0">
                             <pems-button tone="primary" size="small" type="submit"><pems-icon name="bi-cloud-upload" aria-hidden="true" /> @Localizer["Upload"]</pems-button>
                         </div>
-                    </form>
+                    </pems-form>
                 </pems-list-popover>
             </pems-list-tools>
         </pems-list-toolbar>

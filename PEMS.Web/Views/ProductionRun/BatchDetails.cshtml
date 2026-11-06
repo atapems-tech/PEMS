@@ -25,34 +25,34 @@
         <pems-flex dir="column" gap="1" css="pems-s-7d03ac6a">
             @if (Model.QualityStatus == "Produced")
             {
-                <form asp-action="SubmitBatchForQc" asp-route-id="@Model.ProductionBatchId" method="post"><pems-button tone="primary" size="small" outline="true" css="w-100" type="submit"><pems-icon name="bi-clipboard-check" /> Submit for QC</pems-button></form>
+                <pems-form asp-action="SubmitBatchForQc" asp-route-id="@Model.ProductionBatchId" method="post"><pems-button tone="primary" size="small" outline="true" css="w-100" type="submit"><pems-icon name="bi-clipboard-check" /> Submit for QC</pems-button></pems-form>
             }
             @if (Model.QualityStatus == "AwaitingQC")
             {
-                <form asp-action="ReleaseBatch" asp-route-id="@Model.ProductionBatchId" method="post"><pems-button tone="primary" size="small" css="w-100" type="submit"><pems-icon name="bi-check2-circle" /> Release</pems-button></form>
+                <pems-form asp-action="ReleaseBatch" asp-route-id="@Model.ProductionBatchId" method="post"><pems-button tone="primary" size="small" css="w-100" type="submit"><pems-icon name="bi-check2-circle" /> Release</pems-button></pems-form>
                 <pems-button tone="warning" size="small" outline="true" css="w-100" type="button" data-bs-toggle="modal" data-bs-target="#blockModal"><pems-icon name="bi-slash-circle" /> Block</pems-button>
                 <pems-button tone="danger" size="small" outline="true" css="w-100" type="button" data-bs-toggle="modal" data-bs-target="#rejectModal"><pems-icon name="bi-x-circle" /> @Localizer["Reject"]</pems-button>
             }
             @if (Model.QualityStatus == "Blocked")
             {
-                <form asp-action="UnblockBatch" asp-route-id="@Model.ProductionBatchId" method="post"><pems-button tone="success" size="small" outline="true" css="w-100" type="submit"><pems-icon name="bi-arrow-counterclockwise" /> Back to QC</pems-button></form>
+                <pems-form asp-action="UnblockBatch" asp-route-id="@Model.ProductionBatchId" method="post"><pems-button tone="success" size="small" outline="true" css="w-100" type="submit"><pems-icon name="bi-arrow-counterclockwise" /> Back to QC</pems-button></pems-form>
             }
         </pems-flex>
     </pems-flex>
 </pems-content-card>
 
 <pems-modal id="blockModal" tabindex="-1">
-        <form asp-action="BlockBatch" asp-route-id="@Model.ProductionBatchId" method="post">
+        <pems-form asp-action="BlockBatch" asp-route-id="@Model.ProductionBatchId" method="post">
             <pems-modal-header close="true">Block Batch</pems-modal-header>
             <pems-modal-body><pems-label>@Localizer["Reason"]</pems-label><pems-textarea name="reason" required></pems-textarea></pems-modal-body>
             <pems-modal-footer><pems-button tone="warning" type="submit">Block</pems-button></pems-modal-footer>
-        </form>
+        </pems-form>
     </pems-modal>
 
 <pems-modal id="rejectModal" tabindex="-1">
-        <form asp-action="RejectBatch" asp-route-id="@Model.ProductionBatchId" method="post">
+        <pems-form asp-action="RejectBatch" asp-route-id="@Model.ProductionBatchId" method="post">
             <pems-modal-header close="true">Reject Batch</pems-modal-header>
             <pems-modal-body><pems-label>@Localizer["Reason"]</pems-label><pems-textarea name="reason" required></pems-textarea></pems-modal-body>
             <pems-modal-footer><pems-button tone="danger" type="submit">@Localizer["Reject"]</pems-button></pems-modal-footer>
-        </form>
+        </pems-form>
     </pems-modal>

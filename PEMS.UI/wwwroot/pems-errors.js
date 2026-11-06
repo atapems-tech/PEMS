@@ -48,18 +48,9 @@
         }
     }
 
-    function el(tag, className, content) {
-        var node = document.createElement(tag);
-        if (className) node.className = className;
-        if (content) node.textContent = content;
-        return node;
-    }
-
     function area() {
         if (areaNode && document.body.contains(areaNode)) return areaNode;
-        areaNode = el('div', 'pems-error-toasts');
-        areaNode.setAttribute('role', 'region');
-        areaNode.setAttribute('aria-live', 'assertive');
+        areaNode = window.PemsTemplate.clone('pems-error-toasts');
         document.body.appendChild(areaNode);
         return areaNode;
     }
@@ -68,7 +59,7 @@
         function done() { button.textContent = text('copied', 'Copied'); }
         if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(value).then(done, function () { });
         else {
-            var tmp = el('textarea'); tmp.value = value; document.body.appendChild(tmp); tmp.select();
+            var tmp = window.PemsTemplate.clone('pems-copy-buffer'); tmp.value = value; document.body.appendChild(tmp); tmp.select();
             try { document.execCommand('copy'); done(); } catch (e) { /* not copied */ }
             document.body.removeChild(tmp);
         }
@@ -81,27 +72,17 @@
         if (recent[key] && now - recent[key] < 2000) return;          // the same failure twice in a row is one toast
         recent[key] = now;
 
-        var toast = el('div', 'pems-error-toast');
-        toast.setAttribute('role', 'alert');
-        toast.appendChild(el('div', 'pems-error-toast__message', message));
-        if (traceId) {
-            var ref = el('div', 'pems-error-toast__ref');
-            ref.appendChild(document.createTextNode(text('reference', 'Reference') + ': '));
-            var code = el('code', 'pems-error-toast__code', traceId);
-            code.setAttribute('dir', 'ltr');
-            ref.appendChild(code);
-            var copyBtn = el('button', 'pems-error-toast__copy', text('copy', 'Copy'));
-            copyBtn.type = 'button';
-            copyBtn.addEventListener('click', function () { copy(traceId, copyBtn); });
-            ref.appendChild(copyBtn);
-            toast.appendChild(ref);
-        }
-        var close = el('button', 'pems-error-toast__close');
-        close.type = 'button';
-        close.setAttribute('aria-label', text('close', 'Close'));
-        close.textContent = '×';
-        close.addEventListener('click', function () { toast.remove(); });
-        toast.appendChild(close);
+        var toast = window.PemsTemplate.fill(window.PemsTemplate.clone('pems-error-toast'), {
+            message: message,
+            ref: traceId ? {} : null,
+            label: text('reference', 'Reference') + ': ',
+            code: traceId || '',
+            copy: text('copy', 'Copy'),
+            close: { text: '×', attrs: { 'aria-label': text('close', 'Close') } }
+        });
+        var copyBtn = toast.querySelector('[data-slot=copy]');
+        if (copyBtn) copyBtn.addEventListener('click', function () { copy(traceId, copyBtn); });
+        toast.querySelector('[data-slot=close]').addEventListener('click', function () { toast.remove(); });
         area().appendChild(toast);
         setTimeout(function () { toast.remove(); }, 12000);
     }

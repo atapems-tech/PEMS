@@ -20,10 +20,10 @@
             <li class="nav-item"><a class="nav-link active" asp-action="EffectiveUser">@Localizer["By User"]</a></li>
         </pems-nav>
 
-        <form class="mb-3 pems-s-0fd8744d" method="get"><pems-flex gap="2" align="end">
+        <pems-form class="mb-3 pems-s-0fd8744d" method="get"><pems-flex gap="2" align="end">
             <div class="flex-grow-1">
                 <pems-label>@Localizer["User"]</pems-label>
-                <pems-select name="userId" onchange="this.form.submit()">
+                <pems-select name="userId" data-pems-change="submit-form">
                     <option value="">@Localizer["— select a user —"]</option>
                     @foreach (var u in Model.AllUsers)
                     {
@@ -32,7 +32,7 @@
                 </pems-select>
             </div>
             <pems-button tone="primary" type="submit">@Localizer["Preview"]</pems-button>
-        </pems-flex></form>
+        </pems-flex></pems-form>
 
         @if (Model.SelectedUserId == null)
         {

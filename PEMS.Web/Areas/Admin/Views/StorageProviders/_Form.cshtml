@@ -20,7 +20,7 @@
         </pems-col>
         <pems-col md="6">
             <pems-label>@Localizer["Provider Type"]</pems-label>
-            <pems-select asp-for="ProviderType" id="providerTypeSelect" onchange="pemsToggleStorageFields()">
+            <pems-select asp-for="ProviderType" id="providerTypeSelect" data-pems-change="call" data-pems-fn="pemsToggleStorageFields" data-pems-arg="none">
                 @foreach (var t in providerTypes) { <option value="@t" selected="@(t == Model.ProviderType)">@t</option> }
             </pems-select>
         </pems-col>

@@ -45,12 +45,8 @@
 
     function format(template, value) { return String(template || "").split("{0}").join(String(value)); }
 
-    function el(doc, tag, cls, text) {
-        var e = doc.createElement(tag);
-        if (cls) e.className = cls;
-        if (text != null) e.textContent = text;
-        return e;
-    }
+    // the markup is the page's registered template (script-templates, set shell); this file only fills it
+    function tpl(doc, name, values) { return window.PemsTemplate.fill(window.PemsTemplate.clone(name, doc), values || {}); }
 
     // Menu links of the sidebar the server rendered for this user (hidden-by-filter items included, real links only).
     function readMenus(doc) {
@@ -81,49 +77,17 @@
         var uid = "pems-cp-" + Math.random().toString(36).slice(2, 8);
 
         // ---- markup (built once, hidden until opened) ----
-        var backdrop = el(doc, "div", "pems-cp-backdrop");
-        backdrop.hidden = true;
-        var dialog = el(doc, "div", "pems-cp");
-        dialog.setAttribute("role", "dialog");
-        dialog.setAttribute("aria-modal", "true");
+        var backdrop = tpl(doc, "cp-palette", { esc: "Esc", keys: t.keys || "" });
+        var dialog = backdrop.querySelector(".pems-cp");
         dialog.setAttribute("aria-label", t.title || "Command palette");
-
-        var head = el(doc, "div", "pems-cp-head");
-        var searchIcon = el(doc, "i", "bi bi-search pems-cp-search-icon");
-        searchIcon.setAttribute("aria-hidden", "true");
-        var input = el(doc, "input", "pems-cp-input");
-        input.type = "text";
+        var input = backdrop.querySelector(".pems-cp-input");
         input.placeholder = t.placeholder || "";
         input.setAttribute("aria-label", t.placeholder || t.title || "Search");
-        input.setAttribute("role", "combobox");
-        input.setAttribute("aria-expanded", "true");
-        input.setAttribute("aria-autocomplete", "list");
         input.setAttribute("aria-controls", uid + "-list");
-        input.setAttribute("autocomplete", "off");
-        input.setAttribute("spellcheck", "false");
-        var esc = el(doc, "kbd", "pems-cp-kbd", "Esc");
-        esc.setAttribute("aria-hidden", "true");
-        head.appendChild(searchIcon);
-        head.appendChild(input);
-        head.appendChild(esc);
-
-        var list = el(doc, "div", "pems-cp-list");
+        var list = backdrop.querySelector(".pems-cp-list");
         list.id = uid + "-list";
-        list.setAttribute("role", "listbox");
         list.setAttribute("aria-label", t.title || "Results");
-
-        var foot = el(doc, "div", "pems-cp-foot");
-        var keys = el(doc, "span", "pems-cp-keys", t.keys || "");
-        var status = el(doc, "span", "pems-cp-status");
-        status.setAttribute("role", "status");
-        status.setAttribute("aria-live", "polite");
-        foot.appendChild(keys);
-        foot.appendChild(status);
-
-        dialog.appendChild(head);
-        dialog.appendChild(list);
-        dialog.appendChild(foot);
-        backdrop.appendChild(dialog);
+        var status = backdrop.querySelector(".pems-cp-status");
         doc.body.appendChild(backdrop);
 
         // ---- state ----
@@ -166,29 +130,18 @@
         function addGroup(title, items, kind) {
             if (!items.length) return;
             var gid = uid + "-g" + list.children.length;
-            var group = el(doc, "div", "pems-cp-group");
-            group.setAttribute("role", "group");
+            var group = tpl(doc, "cp-group", { title: title ? title : null });
             if (title) {
-                var h = el(doc, "div", "pems-cp-group-title", title);
+                var h = group.querySelector(".pems-cp-group-title");
                 h.id = gid;
-                h.setAttribute("role", "presentation");
                 group.setAttribute("aria-labelledby", gid);
-                group.appendChild(h);
             }
             items.forEach(function (it) {
-                var a = el(doc, "a", "pems-cp-option pems-cp-" + kind);
-                a.href = it.url;
+                var a = tpl(doc, "cp-option", {
+                    root: { addClass: "pems-cp-" + kind, attrs: { href: it.url } },
+                    icon: { addClass: it.icon || "bi-arrow-right-short" }, label: it.label, sub: it.sub ? it.sub : null
+                });
                 a.id = uid + "-o" + options.length;
-                a.setAttribute("role", "option");
-                a.setAttribute("tabindex", "-1");
-                a.setAttribute("aria-selected", "false");
-                var i = el(doc, "i", "bi " + (it.icon || "bi-arrow-right-short") + " pems-cp-icon");
-                i.setAttribute("aria-hidden", "true");
-                var text = el(doc, "span", "pems-cp-text");
-                text.appendChild(el(doc, "span", "pems-cp-label", it.label));
-                if (it.sub) text.appendChild(el(doc, "span", "pems-cp-sub", it.sub));
-                a.appendChild(i);
-                a.appendChild(text);
                 a.addEventListener("mousemove", function () { moved = true; setActive(options.indexOf(a), false); });
                 options.push(a);
                 group.appendChild(a);
