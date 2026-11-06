@@ -158,8 +158,8 @@
 
 <pems-modal size="large" id="createEquipmentModal" tabindex="-1">
             <form asp-controller="Equipment" asp-action="Create" method="post">
-                <div class="modal-header"><h6 class="modal-title">@Localizer["Eq_NewEquipment"]</h6></div>
-                <div class="modal-body">
+                <pems-modal-header>@Localizer["Eq_NewEquipment"]</pems-modal-header>
+                <pems-modal-body>
                     <pems-row gap="3">
                         <pems-col md="4"><pems-label>@Localizer["Tag Number"]</pems-label><pems-input name="TagNumber" required /></pems-col>
                         <pems-col md="4"><pems-label>@Localizer["Name"]</pems-label><pems-input name="Name" required /></pems-col>
@@ -181,11 +181,11 @@
                         <pems-col md="4"><pems-label>@Localizer["Serial Number"]</pems-label><pems-input name="SerialNumber" /></pems-col>
                         <pems-col span="12"><pems-label>@Localizer["Description"]</pems-label><pems-textarea name="Description" rows="2"></pems-textarea></pems-col>
                     </pems-row>
-                </div>
-                <div class="modal-footer">
+                </pems-modal-body>
+                <pems-modal-footer>
                     <pems-button tone="neutral" outline="true" type="button" data-bs-dismiss="modal">@Localizer["Cancel"]</pems-button>
                     <pems-button tone="primary" type="submit">@Localizer["Save"]</pems-button>
-                </div>
+                </pems-modal-footer>
             </form>
         </pems-modal>
 

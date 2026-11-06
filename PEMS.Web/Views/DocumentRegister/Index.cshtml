@@ -212,8 +212,8 @@
 
 <pems-modal id="saveFilterModal" tabindex="-1" aria-labelledby="saveFilterTitle" aria-hidden="true">
             <form asp-action="SaveFilter" method="post">
-                <div class="modal-header"><h6 class="modal-title" id="saveFilterTitle">@Localizer["Dr_SaveFilterTitle"]</h6></div>
-                <div class="modal-body">
+                <pems-modal-header title-id="saveFilterTitle">@Localizer["Dr_SaveFilterTitle"]</pems-modal-header>
+                <pems-modal-body>
                     <pems-label css="small" for="saveFilterName">@Localizer["Dr_FilterName"]</pems-label>
                     <pems-input name="name" id="saveFilterName" required />
                     <input type="hidden" name="queryString" id="saveFilterQueryString" />
@@ -221,10 +221,10 @@
                         <pems-input kind="check" type="checkbox" name="isDefault" value="true" id="saveFilterDefault" />
                         <label class="form-check-label" for="saveFilterDefault">@Localizer["Dr_SetDefault"]</label>
                     </pems-check-row>
-                </div>
-                <div class="modal-footer">
+                </pems-modal-body>
+                <pems-modal-footer>
                     <pems-button tone="primary" size="small" type="submit">@Localizer["Save"]</pems-button>
-                </div>
+                </pems-modal-footer>
             </form>
         </pems-modal>
 

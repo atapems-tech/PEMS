@@ -81,14 +81,14 @@ else if (Model.Status == "PendingApproval")
                 <form asp-action="NcrApprove" method="post">
                     <input type="hidden" name="id" value="@Model.NonConformanceReportId" />
                     <input type="hidden" name="decision" value="Reject" />
-                    <div class="modal-header"><h6 class="modal-title">رد Disposition</h6></div>
-                    <div class="modal-body">
+                    <pems-modal-header>رد Disposition</pems-modal-header>
+                    <pems-modal-body>
                         <pems-textarea scale="small" name="comment" rows="3" placeholder="@Localizer["دلیل رد"]" required></pems-textarea>
-                    </div>
-                    <div class="modal-footer">
+                    </pems-modal-body>
+                    <pems-modal-footer>
                         <pems-button tone="neutral" size="small" outline="true" type="button" data-bs-dismiss="modal">@Localizer["انصراف"]</pems-button>
                         <pems-button tone="danger" size="small" type="submit">@Localizer["رد کن"]</pems-button>
-                    </div>
+                    </pems-modal-footer>
                 </form>
             </pems-modal>
 }

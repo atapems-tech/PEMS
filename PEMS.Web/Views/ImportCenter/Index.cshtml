@@ -54,16 +54,16 @@
 {
     <pems-modal id="icModal" tabindex="-1">
                 <form method="post" enctype="multipart/form-data">
-                    <div class="modal-header"><h6 class="modal-title" data-fill-text="title"></h6></div>
-                    <div class="modal-body">
+                    <pems-modal-header><span data-fill-text="title"></span></pems-modal-header>
+                    <pems-modal-body>
                         <p class="text-muted small" data-fill-text="hint"></p>
                         <pems-label css="small">@Localizer["IC_ChooseFile"]</pems-label>
                         <pems-input type="file" name="file" required />
-                    </div>
-                    <div class="modal-footer">
+                    </pems-modal-body>
+                    <pems-modal-footer>
                         <pems-button tone="neutral" outline="true" type="button" data-bs-dismiss="modal">@Localizer["IC_Cancel"]</pems-button>
                         <pems-button tone="primary" type="submit">@Localizer["IC_Import"]</pems-button>
-                    </div>
+                    </pems-modal-footer>
                 </form>
             </pems-modal>
 }

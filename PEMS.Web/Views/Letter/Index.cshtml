@@ -558,20 +558,17 @@
                 @if (canBulkArchive)
                 {
                     <pems-modal id="letterArchiveModal" tabindex="-1" aria-labelledby="letterArchiveTitle" aria-hidden="true">
-                                <div class="modal-header">
-                                    <h2 class="modal-title h5" id="letterArchiveTitle">@Localizer["Lt_ArchiveTitle"]</h2>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="@Localizer["Cancel"]"></button>
-                                </div>
-                                <div class="modal-body">
+                                <pems-modal-header level="2" title-css="h5" title-id="letterArchiveTitle" close="true" close-label="@Localizer["Cancel"]">@Localizer["Lt_ArchiveTitle"]</pems-modal-header>
+                                <pems-modal-body>
                                     <p class="small text-muted">@Localizer["Lt_ArchiveHelp"]</p>
                                     <pems-label for="letterArchiveReason">@Localizer["Lt_ArchiveReason"]</pems-label>
                                     <pems-textarea id="letterArchiveReason" name="reason" rows="3" maxlength="500" aria-describedby="letterArchiveReasonError"></pems-textarea>
                                     <div id="letterArchiveReasonError" class="text-danger small mt-1" hidden><pems-icon name="bi-exclamation-circle" aria-hidden="true" /> @Localizer["Lt_ArchiveReasonRequired"]</div>
-                                </div>
-                                <div class="modal-footer">
+                                </pems-modal-body>
+                                <pems-modal-footer>
                                     <pems-button tone="neutral" outline="true" type="button" data-bs-dismiss="modal">@Localizer["Cancel"]</pems-button>
                                     <pems-button tone="danger" type="submit" name="op" value="archive"><pems-icon name="bi-archive" aria-hidden="true" /> @Localizer["Lt_ArchiveConfirm"]</pems-button>
-                                </div>
+                                </pems-modal-footer>
                             </pems-modal>
                 }
             </form>
@@ -767,11 +764,8 @@
 </pems-offcanvas>
 
 <pems-modal size="small" id="lpShortcuts" tabindex="-1" aria-labelledby="lpShortcutsTitle" aria-hidden="true">
-            <div class="modal-header">
-                <h2 class="modal-title h5" id="lpShortcutsTitle">@Localizer["Lp_Shortcuts"]</h2>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="@Localizer["Cancel"]"></button>
-            </div>
-            <div class="modal-body">
+            <pems-modal-header level="2" title-css="h5" title-id="lpShortcutsTitle" close="true" close-label="@Localizer["Cancel"]">@Localizer["Lp_Shortcuts"]</pems-modal-header>
+            <pems-modal-body>
                 <pems-info-grid class="lp-keys mb-0">
     <pems-info-item label="@Localizer["Lp_KeySearch"]"><kbd>/</kbd></pems-info-item>
     <pems-info-item label="@Localizer["Lp_KeyCompose"]"><kbd>C</kbd></pems-info-item>
@@ -784,36 +778,30 @@
     <pems-info-item label="@Localizer["Lp_KeyDensity"]"><kbd>D</kbd></pems-info-item>
     <pems-info-item label="@Localizer["Lp_KeyClose"]"><kbd>Esc</kbd></pems-info-item>
 </pems-info-grid>
-            </div>
+            </pems-modal-body>
         </pems-modal>
 
 @* personal reminder (one letter) *@
 <pems-modal size="small" id="ctReminderModal" tabindex="-1" aria-labelledby="ctReminderTitle" aria-hidden="true">
-            <div class="modal-header">
-                <h2 class="modal-title h6" id="ctReminderTitle">@Localizer["Ct_AddReminder"] <span id="ctReminderLetter" class="text-muted"></span></h2>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="@Localizer["Cancel"]"></button>
-            </div>
-            <div class="modal-body">
+            <pems-modal-header level="2" title-css="h6" title-id="ctReminderTitle" close="true" close-label="@Localizer["Cancel"]">@Localizer["Ct_AddReminder"] <span id="ctReminderLetter" class="text-muted"></span></pems-modal-header>
+            <pems-modal-body>
                 <pems-label css="small" for="ctReminderAt">@Localizer["Ct_RemindAt"]</pems-label>
                 <pems-input type="datetime-local" id="ctReminderAt" scale="small" css="mb-2" />
                 <pems-label css="small" for="ctReminderNote">@Localizer["Ct_Note"]</pems-label>
                 <pems-input scale="small" type="text" id="ctReminderNote" maxlength="300" />
                 <div class="ct-msg" id="ctReminderMsg" role="status"></div>
-            </div>
-            <div class="modal-footer">
+            </pems-modal-body>
+            <pems-modal-footer>
                 <pems-button tone="neutral" size="small" outline="true" type="button" data-bs-dismiss="modal">@Localizer["Cancel"]</pems-button>
                 <pems-button tone="primary" size="small" type="button" id="ctReminderSave">@Localizer["Save"]</pems-button>
-            </div>
+            </pems-modal-footer>
         </pems-modal>
 
 @* cartable settings: general, columns, tags, delegation, routing rules, contacts & groups, reminders, shortcuts *@
 <pems-modal size="extralarge" dialog-css="modal-dialog-scrollable" css="ct-settings" id="ctSettings" tabindex="-1" aria-labelledby="ctSettingsTitle" aria-hidden="true">
             @Html.AntiForgeryToken()
-            <div class="modal-header">
-                <h2 class="modal-title h5" id="ctSettingsTitle"><pems-icon name="bi-sliders" aria-hidden="true" /> @Localizer["Ct_Settings"]</h2>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="@Localizer["Cancel"]"></button>
-            </div>
-            <div class="modal-body">
+            <pems-modal-header level="2" title-css="h5" title-id="ctSettingsTitle" close="true" close-label="@Localizer["Cancel"]"><pems-icon name="bi-sliders" aria-hidden="true" /> @Localizer["Ct_Settings"]</pems-modal-header>
+            <pems-modal-body>
                 <div class="ct-settings-grid">
                     <div class="ct-settings-nav" role="tablist" aria-orientation="vertical" aria-label="@Localizer["Ct_Settings"]">
                         <button type="button" role="tab" data-pane="general" aria-selected="true"><pems-icon name="bi-gear" aria-hidden="true" /> @Localizer["Ct_SetGeneral"]</button>
@@ -883,12 +871,12 @@
                         </section>
                     </div>
                 </div>
-            </div>
-            <div class="modal-footer">
+            </pems-modal-body>
+            <pems-modal-footer>
                 <span class="ct-msg me-auto" id="ctSettingsMsg" role="status"></span>
                 <pems-button tone="neutral" size="small" outline="true" type="button" data-bs-dismiss="modal">@Localizer["Cancel"]</pems-button>
                 <pems-button tone="primary" size="small" type="button" id="ctSettingsSave">@Localizer["Save"]</pems-button>
-            </div>
+            </pems-modal-footer>
         </pems-modal>
 
 <script id="ctConfig" type="application/json">@Html.Raw(System.Text.Json.JsonSerializer.Serialize(new

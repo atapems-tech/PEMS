@@ -89,8 +89,8 @@
 
 <pems-modal id="createPackageModal" tabindex="-1">
             <form asp-controller="ProcurementPackage" asp-action="Create" method="post">
-                <div class="modal-header"><h6 class="modal-title">@Localizer["PkL_New"]</h6></div>
-                <div class="modal-body">
+                <pems-modal-header>@Localizer["PkL_New"]</pems-modal-header>
+                <pems-modal-body>
                     <pems-row gap="3">
                         <pems-col md="6">@await Component.InvokeAsync("DocumentNumberField", new { documentType = "ProcurementPackage", name = "packageNumber", label = Localizer["Package Number"].Value })</pems-col>
                         <pems-col md="6">
@@ -109,11 +109,11 @@
                         <pems-col md="6"><pems-label>@Localizer["Title"]</pems-label><pems-input name="title" required /></pems-col>
                         <pems-col span="12"><pems-label>@Localizer["Description"]</pems-label><pems-textarea name="description" rows="2"></pems-textarea></pems-col>
                     </pems-row>
-                </div>
-                <div class="modal-footer">
+                </pems-modal-body>
+                <pems-modal-footer>
                     <pems-button tone="neutral" outline="true" type="button" data-bs-dismiss="modal">@Localizer["Cancel"]</pems-button>
                     <pems-button tone="primary" type="submit">@Localizer["Save"]</pems-button>
-                </div>
+                </pems-modal-footer>
             </form>
         </pems-modal>
 

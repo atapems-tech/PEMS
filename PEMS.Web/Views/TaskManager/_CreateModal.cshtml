@@ -11,11 +11,8 @@
 @if (Model.CanCreate)
 {
 <pems-modal size="large" id="tmCreateModal" tabindex="-1" aria-labelledby="tmCreateTitle" aria-hidden="true" data-tm-autoopen="@(Context.Request.Query["create"].ToString() == "1" ? "1" : "0")"><form asp-controller="TaskManager" asp-action="Create" method="post" data-tm-dirty-guard data-tm-ctrl-enter>
-            <div class="modal-header">
-                <h3 class="modal-title h6" id="tmCreateTitle">@Localizer["Tm_Create"] · <span class="tm-key">@Model.Space.Key</span></h3>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="@Localizer["Tm_Close"]"></button>
-            </div>
-            <div class="modal-body">
+            <pems-modal-header level="3" title-css="h6" title-id="tmCreateTitle" close="true" close-label="@Localizer["Tm_Close"]">@Localizer["Tm_Create"] · <span class="tm-key">@Model.Space.Key</span></pems-modal-header>
+            <pems-modal-body>
                 <input type="hidden" name="WorkSpaceId" value="@Model.Space.Id" />
                 <input type="hidden" name="returnUrl" value="@cleanReturn" />
                 <pems-row gap="2">
@@ -72,8 +69,8 @@
                         <pems-input scale="small" id="tmc-points" name="StoryPoints" type="number" min="0" max="1000" step="0.5" />
                     </pems-col>
                 </pems-row>
-            </div>
-            <div class="modal-footer justify-content-between">
+            </pems-modal-body>
+            <pems-modal-footer css="justify-content-between">
                 <pems-check-row>
                     <pems-input kind="check" type="checkbox" name="createAnother" value="true" id="tmc-another" />
                     <label class="form-check-label small" for="tmc-another">@Localizer["Tm_CreateAnother"]</label>
@@ -83,6 +80,6 @@
                     <pems-button tone="neutral" size="small" outline="true" type="button" data-bs-dismiss="modal">@Localizer["Tm_Cancel"]</pems-button>
                     <pems-button tone="primary" size="small" type="submit">@Localizer["Tm_Create"]</pems-button>
                 </pems-flex>
-            </div>
+            </pems-modal-footer>
         </form></pems-modal>
 }

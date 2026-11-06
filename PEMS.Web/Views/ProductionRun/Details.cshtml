@@ -244,17 +244,17 @@
 
 <pems-modal id="holdRunModal" tabindex="-1">
         <form asp-action="Hold" asp-route-id="@Model.ProductionRunId" method="post">
-            <div class="modal-header"><h6 class="modal-title">Hold Production Run</h6><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div>
-            <div class="modal-body"><pems-label>@Localizer["Reason"]</pems-label><pems-textarea name="reason" required></pems-textarea></div>
-            <div class="modal-footer"><pems-button tone="warning" type="submit">@Localizer["Hold"]</pems-button></div>
+            <pems-modal-header close="true">Hold Production Run</pems-modal-header>
+            <pems-modal-body><pems-label>@Localizer["Reason"]</pems-label><pems-textarea name="reason" required></pems-textarea></pems-modal-body>
+            <pems-modal-footer><pems-button tone="warning" type="submit">@Localizer["Hold"]</pems-button></pems-modal-footer>
         </form>
     </pems-modal>
 
 <pems-modal id="cancelRunModal" tabindex="-1">
         <form asp-action="Cancel" asp-route-id="@Model.ProductionRunId" method="post">
-            <div class="modal-header"><h6 class="modal-title">Cancel Production Run</h6><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div>
-            <div class="modal-body"><pems-label>@Localizer["Reason"]</pems-label><pems-textarea name="reason" required></pems-textarea></div>
-            <div class="modal-footer"><pems-button tone="danger" type="submit">Cancel Run</pems-button></div>
+            <pems-modal-header close="true">Cancel Production Run</pems-modal-header>
+            <pems-modal-body><pems-label>@Localizer["Reason"]</pems-label><pems-textarea name="reason" required></pems-textarea></pems-modal-body>
+            <pems-modal-footer><pems-button tone="danger" type="submit">Cancel Run</pems-button></pems-modal-footer>
         </form>
     </pems-modal>
 
@@ -262,14 +262,14 @@
     <form asp-action="PostInputToInventory" method="post">
     <input type="hidden" name="productionInputId" value="" />
     <input type="hidden" name="productionRunId" value="@Model.ProductionRunId" />
-    <div class="modal-header"><h6 class="modal-title">Post Consumption to Inventory</h6><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div>
-    <div class="modal-body">
+    <pems-modal-header close="true">Post Consumption to Inventory</pems-modal-header>
+    <pems-modal-body>
     <pems-label>@Localizer["Warehouse"]</pems-label>
     <pems-select css="mb-2" name="warehouseId" required>
     @foreach (var w in ViewBag.Warehouses) { <option value="@w.WarehouseId">@w.Code - @w.Name</option> }
     </pems-select>
-    </div>
-    <div class="modal-footer"><pems-button tone="none" css="btn-primary" type="submit">@Localizer["Post"]</pems-button></div>
+    </pems-modal-body>
+    <pems-modal-footer><pems-button tone="none" css="btn-primary" type="submit">@Localizer["Post"]</pems-button></pems-modal-footer>
     </form>
     </pems-modal>
 
@@ -277,13 +277,13 @@
     <form asp-action="PostOutputToInventory" method="post">
     <input type="hidden" name="productionOutputId" value="" />
     <input type="hidden" name="productionRunId" value="@Model.ProductionRunId" />
-    <div class="modal-header"><h6 class="modal-title">Post Receipt to Inventory</h6><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div>
-    <div class="modal-body">
+    <pems-modal-header close="true">Post Receipt to Inventory</pems-modal-header>
+    <pems-modal-body>
     <pems-label>@Localizer["Warehouse"]</pems-label>
     <pems-select css="mb-2" name="warehouseId" required>
     @foreach (var w in ViewBag.Warehouses) { <option value="@w.WarehouseId">@w.Code - @w.Name</option> }
     </pems-select>
-    </div>
-    <div class="modal-footer"><pems-button tone="none" css="btn-primary" type="submit">@Localizer["Post"]</pems-button></div>
+    </pems-modal-body>
+    <pems-modal-footer><pems-button tone="none" css="btn-primary" type="submit">@Localizer["Post"]</pems-button></pems-modal-footer>
     </form>
     </pems-modal>

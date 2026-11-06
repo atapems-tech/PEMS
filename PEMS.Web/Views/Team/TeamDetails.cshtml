@@ -321,8 +321,8 @@
 
 <pems-modal id="addPositionModal" tabindex="-1">
         <form asp-action="CreatePosition" method="post">
-            <div class="modal-header"><h6 class="modal-title">@Localizer["افزودن سمت"]</h6></div>
-            <div class="modal-body">
+            <pems-modal-header>@Localizer["افزودن سمت"]</pems-modal-header>
+            <pems-modal-body>
                 <input type="hidden" name="teamId" value="@Model.TeamId" />
                 <div class="mb-2">
                     <pems-label css="small">@Localizer["عنوان سمت"]</pems-label>
@@ -336,19 +336,19 @@
                     <pems-label css="small">@Localizer["ترتیب نمایش"]</pems-label>
                     <pems-input scale="small" name="sortOrder" type="number" value="0" />
                 </div>
-            </div>
-            <div class="modal-footer">
+            </pems-modal-body>
+            <pems-modal-footer>
                 <pems-button tone="neutral" size="small" outline="true" type="button" data-bs-dismiss="modal">@Localizer["انصراف"]</pems-button>
                 <pems-button tone="primary" size="small" type="submit">@Localizer["ساخت"]</pems-button>
-            </div>
+            </pems-modal-footer>
         </form>
     </pems-modal>
 
 @* طبق بند ۷ سند (Edit Position): ویرایش افزایشی همان فیلدهای پشتیبانی‌شده - عنوان/توضیحات/ترتیب. *@
 <pems-modal id="editPositionModal" tabindex="-1">
         <form asp-action="UpdatePosition" method="post">
-            <div class="modal-header"><h6 class="modal-title">@Localizer["ویرایش سمت"]</h6></div>
-            <div class="modal-body">
+            <pems-modal-header>@Localizer["ویرایش سمت"]</pems-modal-header>
+            <pems-modal-body>
                 <input type="hidden" name="positionId" id="editPositionId" />
                 <input type="hidden" name="returnTeamId" value="@Model.TeamId" />
                 <div class="mb-2">
@@ -363,18 +363,18 @@
                     <pems-label css="small">@Localizer["ترتیب نمایش"]</pems-label>
                     <pems-input scale="small" name="sortOrder" id="editPositionSortOrder" type="number" />
                 </div>
-            </div>
-            <div class="modal-footer">
+            </pems-modal-body>
+            <pems-modal-footer>
                 <pems-button tone="neutral" size="small" outline="true" type="button" data-bs-dismiss="modal">@Localizer["انصراف"]</pems-button>
                 <pems-button tone="primary" size="small" type="submit">@Localizer["ذخیره"]</pems-button>
-            </div>
+            </pems-modal-footer>
         </form>
     </pems-modal>
 
 <pems-modal id="addChildNodeModal" tabindex="-1">
         <form asp-action="CreateSubTeam" method="post">
-            <div class="modal-header"><h6 class="modal-title">@Localizer["افزودن زیرتیم/شیفت"]</h6></div>
-            <div class="modal-body">
+            <pems-modal-header>@Localizer["افزودن زیرتیم/شیفت"]</pems-modal-header>
+            <pems-modal-body>
                 <input type="hidden" name="maintenanceGroupId" value="@Model.MaintenanceGroupId" />
                 <input type="hidden" name="parentTeamId" value="@Model.TeamId" />
                 <div class="mb-2">
@@ -403,18 +403,18 @@
                         @foreach (var e in allEmployees) { <option value="@e.EmployeeId">@e.FullName</option> }
                     </pems-select>
                 </div>
-            </div>
-            <div class="modal-footer">
+            </pems-modal-body>
+            <pems-modal-footer>
                 <pems-button tone="neutral" size="small" outline="true" type="button" data-bs-dismiss="modal">@Localizer["انصراف"]</pems-button>
                 <pems-button tone="primary" size="small" type="submit">@Localizer["ساخت"]</pems-button>
-            </div>
+            </pems-modal-footer>
         </form>
     </pems-modal>
 
 <pems-modal id="assignEmployeeModal" tabindex="-1">
         <form asp-action="AssignEmployeeToPosition" method="post">
-            <div class="modal-header"><h6 class="modal-title">@Localizer["تخصیص کارمند"] — <span id="assignPositionTitle"></span></h6></div>
-            <div class="modal-body">
+            <pems-modal-header>@Localizer["تخصیص کارمند"] — <span id="assignPositionTitle"></span></pems-modal-header>
+            <pems-modal-body>
                 <input type="hidden" name="positionId" id="assignPositionId" />
                 <input type="hidden" name="returnTeamId" value="@Model.TeamId" />
                 <div class="mb-2">
@@ -429,18 +429,18 @@
                     <pems-label css="small">@Localizer["توضیحات (اختیاری)"]</pems-label>
                     <pems-input scale="small" name="notes" />
                 </div>
-            </div>
-            <div class="modal-footer">
+            </pems-modal-body>
+            <pems-modal-footer>
                 <pems-button tone="neutral" size="small" outline="true" type="button" data-bs-dismiss="modal">@Localizer["انصراف"]</pems-button>
                 <pems-button tone="primary" size="small" type="submit">@Localizer["تخصیص"]</pems-button>
-            </div>
+            </pems-modal-footer>
         </form>
     </pems-modal>
 
 <pems-modal id="moveEmployeeModal" tabindex="-1">
         <form asp-action="MoveEmployeeBetweenPositions" method="post">
-            <div class="modal-header"><h6 class="modal-title">@Localizer["جابه‌جایی کارمند"] — <span id="moveEmployeeFromTitle"></span></h6></div>
-            <div class="modal-body">
+            <pems-modal-header>@Localizer["جابه‌جایی کارمند"] — <span id="moveEmployeeFromTitle"></span></pems-modal-header>
+            <pems-modal-body>
                 <input type="hidden" name="fromPositionId" id="moveEmployeeFromPositionId" />
                 <input type="hidden" name="returnTeamId" value="@Model.TeamId" />
                 <p class="small text-muted" id="moveEmployeeCurrentOccupant"></p>
@@ -455,18 +455,18 @@
                     <pems-label css="small">@Localizer["توضیحات (اختیاری)"]</pems-label>
                     <pems-input scale="small" name="notes" />
                 </div>
-            </div>
-            <div class="modal-footer">
+            </pems-modal-body>
+            <pems-modal-footer>
                 <pems-button tone="neutral" size="small" outline="true" type="button" data-bs-dismiss="modal">@Localizer["انصراف"]</pems-button>
                 <pems-button tone="primary" size="small" type="submit">@Localizer["جابه‌جایی"]</pems-button>
-            </div>
+            </pems-modal-footer>
         </form>
     </pems-modal>
 
 <pems-modal id="movePositionModal" tabindex="-1">
         <form asp-action="MovePosition" method="post">
-            <div class="modal-header"><h6 class="modal-title">@Localizer["جابه‌جایی سمت"] — <span id="movePositionTitle"></span></h6></div>
-            <div class="modal-body">
+            <pems-modal-header>@Localizer["جابه‌جایی سمت"] — <span id="movePositionTitle"></span></pems-modal-header>
+            <pems-modal-body>
                 <input type="hidden" name="positionId" id="movePositionPositionId" />
                 <input type="hidden" name="returnTeamId" value="@Model.TeamId" />
                 <div class="mb-2">
@@ -475,11 +475,11 @@
                         @foreach (var t in allTeamNodes) { <option value="@t.TeamId">@t.Name (@t.NodeKind)</option> }
                     </pems-select>
                 </div>
-            </div>
-            <div class="modal-footer">
+            </pems-modal-body>
+            <pems-modal-footer>
                 <pems-button tone="neutral" size="small" outline="true" type="button" data-bs-dismiss="modal">@Localizer["انصراف"]</pems-button>
                 <pems-button tone="primary" size="small" type="submit">@Localizer["جابه‌جایی"]</pems-button>
-            </div>
+            </pems-modal-footer>
         </form>
     </pems-modal>
 

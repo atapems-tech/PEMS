@@ -136,8 +136,8 @@
 
 <pems-modal id="createCategoryModal" tabindex="-1">
         <form asp-action="CreateCategory" method="post">
-            <div class="modal-header"><h6 class="modal-title">@Localizer["دسته‌بندی جدید"]</h6></div>
-            <div class="modal-body">
+            <pems-modal-header>@Localizer["دسته‌بندی جدید"]</pems-modal-header>
+            <pems-modal-body>
                 <div class="mb-2"><pems-label css="small">@Localizer["کد"]</pems-label><pems-input scale="small" name="code" required /></div>
                 <div class="mb-2"><pems-label css="small">@Localizer["نام"]</pems-label><pems-input scale="small" name="name" required /></div>
                 <div class="mb-2">
@@ -148,42 +148,42 @@
                     </pems-select>
                 </div>
                 <div class="mb-2"><pems-label css="small">@Localizer["توضیحات"]</pems-label><pems-textarea scale="small" name="description" rows="2"></pems-textarea></div>
-            </div>
-            <div class="modal-footer">
+            </pems-modal-body>
+            <pems-modal-footer>
                 <pems-button tone="neutral" size="small" outline="true" type="button" data-bs-dismiss="modal">@Localizer["انصراف"]</pems-button>
                 <pems-button tone="primary" size="small" type="submit">@Localizer["ساخت"]</pems-button>
-            </div>
+            </pems-modal-footer>
         </form>
     </pems-modal>
 
 <pems-modal id="createUomModal" tabindex="-1">
         <form asp-action="CreateUom" method="post">
-            <div class="modal-header"><h6 class="modal-title">@Localizer["واحد اندازه‌گیری جدید"]</h6></div>
-            <div class="modal-body">
+            <pems-modal-header>@Localizer["واحد اندازه‌گیری جدید"]</pems-modal-header>
+            <pems-modal-body>
                 <div class="mb-2"><pems-label css="small">@Localizer["کد"]</pems-label><pems-input scale="small" name="code" required placeholder="@Localizer["مثلاً KG"]" /></div>
                 <div class="mb-2"><pems-label css="small">@Localizer["نام"]</pems-label><pems-input scale="small" name="name" required /></div>
                 <div class="mb-2"><pems-label css="small">@Localizer["ضریب تبدیل (اختیاری)"]</pems-label><pems-input scale="small" name="conversionFactor" type="number" step="0.000001" /></div>
                 <div class="mb-2"><pems-label css="small">@Localizer["توضیحات"]</pems-label><pems-textarea scale="small" name="description" rows="2"></pems-textarea></div>
-            </div>
-            <div class="modal-footer">
+            </pems-modal-body>
+            <pems-modal-footer>
                 <pems-button tone="neutral" size="small" outline="true" type="button" data-bs-dismiss="modal">@Localizer["انصراف"]</pems-button>
                 <pems-button tone="primary" size="small" type="submit">@Localizer["ساخت"]</pems-button>
-            </div>
+            </pems-modal-footer>
         </form>
     </pems-modal>
 
 <pems-modal id="createWarehouseModal" tabindex="-1">
         <form asp-action="CreateWarehouse" method="post">
-            <div class="modal-header"><h6 class="modal-title">@Localizer["انبار جدید"]</h6></div>
-            <div class="modal-body">
+            <pems-modal-header>@Localizer["انبار جدید"]</pems-modal-header>
+            <pems-modal-body>
                 <div class="mb-2"><pems-label css="small">@Localizer["کد"]</pems-label><pems-input scale="small" name="code" required placeholder="مثلاً WH-EL" /></div>
                 <div class="mb-2"><pems-label css="small">@Localizer["نام"]</pems-label><pems-input scale="small" name="name" required /></div>
                 <div class="mb-2"><pems-label css="small">@Localizer["توضیحات"]</pems-label><pems-textarea scale="small" name="description" rows="2"></pems-textarea></div>
-            </div>
-            <div class="modal-footer">
+            </pems-modal-body>
+            <pems-modal-footer>
                 <pems-button tone="neutral" size="small" outline="true" type="button" data-bs-dismiss="modal">@Localizer["انصراف"]</pems-button>
                 <pems-button tone="primary" size="small" type="submit">@Localizer["ساخت"]</pems-button>
-            </div>
+            </pems-modal-footer>
         </form>
     </pems-modal>
 
@@ -192,15 +192,15 @@
     <pems-modal id="addLocationModal" tabindex="-1">
             <form asp-action="CreateStorageLocation" method="post">
                 <input type="hidden" name="warehouseId" value="" />
-                <div class="modal-header"><h6 class="modal-title">محل نگهداری جدید در <span data-fill-text="warehousecode"></span></h6></div>
-                <div class="modal-body">
+                <pems-modal-header>محل نگهداری جدید در <span data-fill-text="warehousecode"></span></pems-modal-header>
+                <pems-modal-body>
                     <div class="mb-2"><pems-label css="small">@Localizer["کد"]</pems-label><pems-input scale="small" name="code" required placeholder="مثلاً RACK-1" /></div>
                     <div class="mb-2"><pems-label css="small">@Localizer["نام"]</pems-label><pems-input scale="small" name="name" required /></div>
-                </div>
-                <div class="modal-footer">
+                </pems-modal-body>
+                <pems-modal-footer>
                     <pems-button tone="neutral" size="small" outline="true" type="button" data-bs-dismiss="modal">@Localizer["انصراف"]</pems-button>
                     <pems-button tone="primary" size="small" type="submit">@Localizer["ساخت"]</pems-button>
-                </div>
+                </pems-modal-footer>
             </form>
         </pems-modal>
 }

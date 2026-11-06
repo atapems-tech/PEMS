@@ -637,42 +637,42 @@
    بالا هم استفاده می‌کند)، نه یک کتابخانه‌ی جدید *@
 <pems-modal id="returnModal" tabindex="-1"><form asp-action="ReturnForRevision" method="post">
             <input type="hidden" name="letterId" value="@l.LetterId" />
-            <div class="modal-header"><h6 class="modal-title">@Localizer["Return for Revision"]</h6><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div>
-            <div class="modal-body">
+            <pems-modal-header close="true">@Localizer["Return for Revision"]</pems-modal-header>
+            <pems-modal-body>
                 <pems-label css="small">@Localizer["Reason (required)"]</pems-label>
                 <pems-textarea name="reason" rows="3" required></pems-textarea>
-            </div>
-            <div class="modal-footer">
+            </pems-modal-body>
+            <pems-modal-footer>
                 <pems-button tone="neutral" size="small" outline="true" type="button" data-bs-dismiss="modal">@Localizer["Cancel"]</pems-button>
                 <pems-button tone="warning" size="small" type="submit">@Localizer["Return for Revision"]</pems-button>
-            </div>
+            </pems-modal-footer>
         </form></pems-modal>
 
 <pems-modal id="rejectModal" tabindex="-1"><form asp-action="Reject" method="post">
             <input type="hidden" name="letterId" value="@l.LetterId" />
-            <div class="modal-header"><h6 class="modal-title">Reject Letter</h6><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div>
-            <div class="modal-body">
+            <pems-modal-header close="true">Reject Letter</pems-modal-header>
+            <pems-modal-body>
                 <pems-label css="small">@Localizer["Reason (required)"]</pems-label>
                 <pems-textarea name="reason" rows="3" required></pems-textarea>
-            </div>
-            <div class="modal-footer">
+            </pems-modal-body>
+            <pems-modal-footer>
                 <pems-button tone="neutral" size="small" outline="true" type="button" data-bs-dismiss="modal">@Localizer["Cancel"]</pems-button>
                 <pems-button tone="danger" size="small" type="submit">@Localizer["Reject"]</pems-button>
-            </div>
+            </pems-modal-footer>
         </form></pems-modal>
 
 <pems-modal id="signModal" tabindex="-1"><form asp-action="Sign" method="post">
             <input type="hidden" name="letterId" value="@l.LetterId" />
-            <div class="modal-header"><h6 class="modal-title">Sign / Acknowledge</h6><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div>
-            <div class="modal-body">
+            <pems-modal-header close="true">Sign / Acknowledge</pems-modal-header>
+            <pems-modal-body>
                 <pems-label css="small">Type your full name to sign</pems-label>
                 <pems-input name="signedByName" required />
                 <pems-help-text css="small">Lightweight electronic acknowledgment (typed name + timestamp), not a PKI digital signature.</pems-help-text>
-            </div>
-            <div class="modal-footer">
+            </pems-modal-body>
+            <pems-modal-footer>
                 <pems-button tone="neutral" size="small" outline="true" type="button" data-bs-dismiss="modal">@Localizer["Cancel"]</pems-button>
                 <pems-button tone="primary" size="small" type="submit">Sign</pems-button>
-            </div>
+            </pems-modal-footer>
         </form></pems-modal>
 
 @* طبق بند ۲۶: Employee فقط زمانی که کاربر واقعاً یکی از این دو Select را باز می‌کند، به‌صورت

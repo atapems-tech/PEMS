@@ -444,8 +444,8 @@
             <form asp-action="Edit" method="post">
                 <input type="hidden" name="employeeId" value="@Model.EmployeeId" />
                 <input type="hidden" name="returnToDetails" value="true" />
-                <div class="modal-header"><h6 class="modal-title">@L("Edit Profile", "ویرایش پروفایل")</h6></div>
-                <div class="modal-body">
+                <pems-modal-header>@L("Edit Profile", "ویرایش پروفایل")</pems-modal-header>
+                <pems-modal-body>
                     <pems-row gap="3">
                         <pems-col md="4"><pems-label>@L("Personnel Code", "کد پرسنلی")</pems-label><pems-input name="personnelCode" value="@Model.PersonnelCode" /></pems-col>
                         <pems-col md="4"><pems-label>@L("First Name", "نام")</pems-label><pems-input name="firstName" value="@Model.FirstName" required /></pems-col>
@@ -483,19 +483,19 @@
                         <pems-col md="3"><pems-label>@L("Shift", "شیفت")</pems-label><pems-input name="shift" value="@Model.Shift" /></pems-col>
                         <pems-col md="3"><pems-label>@L("Home Address", "آدرس منزل")</pems-label><pems-input name="homeAddress" value="@Model.HomeAddress" /></pems-col>
                     </pems-row>
-                </div>
-                <div class="modal-footer">
+                </pems-modal-body>
+                <pems-modal-footer>
                     <pems-button tone="neutral" size="small" outline="true" type="button" data-bs-dismiss="modal">@L("Cancel", "انصراف")</pems-button>
                     <pems-button tone="primary" size="small" type="submit">@L("Save", "ذخیره")</pems-button>
-                </div>
+                </pems-modal-footer>
             </form>
         </pems-modal>
 
 <pems-modal id="addSkillModal" tabindex="-1">
         <form asp-action="AddSkill" method="post">
             <input type="hidden" name="employeeId" value="@Model.EmployeeId" />
-            <div class="modal-header"><h6 class="modal-title">@L("Add Skill", "افزودن مهارت")</h6></div>
-            <div class="modal-body">
+            <pems-modal-header>@L("Add Skill", "افزودن مهارت")</pems-modal-header>
+            <pems-modal-body>
                 <div class="mb-2">
                     <pems-label css="small">@L("Skill", "مهارت")</pems-label>
                     <pems-select scale="small" name="skillId" required>
@@ -515,19 +515,19 @@
                     <pems-label css="small">@L("Certified Date (optional)", "تاریخ گواهی (اختیاری)")</pems-label>
                     <pems-date name="certifiedDate" scale="small" />
                 </div>
-            </div>
-            <div class="modal-footer">
+            </pems-modal-body>
+            <pems-modal-footer>
                 <pems-button tone="neutral" size="small" outline="true" type="button" data-bs-dismiss="modal">@L("Cancel", "انصراف")</pems-button>
                 <pems-button tone="primary" size="small" type="submit">@L("Add", "افزودن")</pems-button>
-            </div>
+            </pems-modal-footer>
         </form>
     </pems-modal>
 
 <pems-modal id="addQualificationModal" tabindex="-1">
         <form asp-action="AddQualification" method="post">
             <input type="hidden" name="employeeId" value="@Model.EmployeeId" />
-            <div class="modal-header"><h6 class="modal-title">@L("Add Qualification", "افزودن صلاحیت")</h6></div>
-            <div class="modal-body">
+            <pems-modal-header>@L("Add Qualification", "افزودن صلاحیت")</pems-modal-header>
+            <pems-modal-body>
                 <div class="mb-2">
                     <pems-label css="small">@L("Qualification", "صلاحیت")</pems-label>
                     <pems-select scale="small" name="qualificationId" required>
@@ -537,19 +537,19 @@
                 <div class="mb-2"><pems-label css="small">@L("Issuer (optional)", "صادرکننده (اختیاری)")</pems-label><pems-input scale="small" name="issuer" /></div>
                 <div class="mb-2"><pems-label css="small">@L("Issue Date", "تاریخ صدور")</pems-label><pems-date name="issueDate" scale="small" required value="@DateTime.Today.ToString("yyyy-MM-dd")" /></div>
                 <div class="mb-2"><pems-label css="small">@L("Expiry Date (optional)", "تاریخ انقضا (اختیاری)")</pems-label><pems-date name="expiryDate" scale="small" /></div>
-            </div>
-            <div class="modal-footer">
+            </pems-modal-body>
+            <pems-modal-footer>
                 <pems-button tone="neutral" size="small" outline="true" type="button" data-bs-dismiss="modal">@L("Cancel", "انصراف")</pems-button>
                 <pems-button tone="primary" size="small" type="submit">@L("Add", "افزودن")</pems-button>
-            </div>
+            </pems-modal-footer>
         </form>
     </pems-modal>
 
 <pems-modal id="addCertificationModal" tabindex="-1">
         <form asp-action="AddCertification" method="post">
             <input type="hidden" name="employeeId" value="@Model.EmployeeId" />
-            <div class="modal-header"><h6 class="modal-title">@L("Add Certification", "افزودن گواهینامه")</h6></div>
-            <div class="modal-body">
+            <pems-modal-header>@L("Add Certification", "افزودن گواهینامه")</pems-modal-header>
+            <pems-modal-body>
                 <div class="mb-2">
                     <pems-label css="small">@L("Certification", "گواهینامه")</pems-label>
                     <pems-select scale="small" name="certificationId" required>
@@ -560,19 +560,19 @@
                 <div class="mb-2"><pems-label css="small">@L("Issuer (optional)", "صادرکننده (اختیاری)")</pems-label><pems-input scale="small" name="issuer" /></div>
                 <div class="mb-2"><pems-label css="small">@L("Issue Date", "تاریخ صدور")</pems-label><pems-date name="issueDate" scale="small" required value="@DateTime.Today.ToString("yyyy-MM-dd")" /></div>
                 <div class="mb-2"><pems-label css="small">@L("Expiry Date (optional)", "تاریخ انقضا (اختیاری)")</pems-label><pems-date name="expiryDate" scale="small" /></div>
-            </div>
-            <div class="modal-footer">
+            </pems-modal-body>
+            <pems-modal-footer>
                 <pems-button tone="neutral" size="small" outline="true" type="button" data-bs-dismiss="modal">@L("Cancel", "انصراف")</pems-button>
                 <pems-button tone="primary" size="small" type="submit">@L("Add", "افزودن")</pems-button>
-            </div>
+            </pems-modal-footer>
         </form>
     </pems-modal>
 
 <pems-modal id="setRateModal" tabindex="-1">
         <form asp-action="SetLaborRate" method="post">
             <input type="hidden" name="employeeId" value="@Model.EmployeeId" />
-            <div class="modal-header"><h6 class="modal-title">@L("Set New Labor Rate", "ثبت نرخ دستمزد جدید")</h6></div>
-            <div class="modal-body">
+            <pems-modal-header>@L("Set New Labor Rate", "ثبت نرخ دستمزد جدید")</pems-modal-header>
+            <pems-modal-body>
                 <div class="mb-2">
                     <pems-label css="small">@L("Type", "نوع")</pems-label>
                     <pems-select scale="small" name="rateType" required>
@@ -583,10 +583,10 @@
                 <div class="mb-2"><pems-label css="small">@L("Rate", "نرخ")</pems-label><pems-input scale="small" name="rate" type="number" step="0.01" required /></div>
                 <div class="mb-2"><pems-label css="small">@L("Currency", "واحد پول")</pems-label><pems-input scale="small" name="currency" value="IRR" required /></div>
                 <div class="mb-2"><pems-label css="small">@L("Effective From", "از تاریخ")</pems-label><pems-date name="effectiveFrom" scale="small" required /></div>
-            </div>
-            <div class="modal-footer">
+            </pems-modal-body>
+            <pems-modal-footer>
                 <pems-button tone="neutral" size="small" outline="true" type="button" data-bs-dismiss="modal">@L("Cancel", "انصراف")</pems-button>
                 <pems-button tone="primary" size="small" type="submit">@L("Save", "ثبت")</pems-button>
-            </div>
+            </pems-modal-footer>
         </form>
     </pems-modal>

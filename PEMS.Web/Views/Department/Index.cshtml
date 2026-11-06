@@ -67,18 +67,18 @@
 
 <pems-modal id="createDeptModal" tabindex="-1">
             <form asp-action="Create" method="post">
-                <div class="modal-header"><h6 class="modal-title">@Localizer["New Department"]</h6></div>
-                <div class="modal-body">
+                <pems-modal-header>@Localizer["New Department"]</pems-modal-header>
+                <pems-modal-body>
                     <pems-row gap="3">
                         <pems-col md="4"><pems-label>@Localizer["Code"]</pems-label><pems-input name="code" placeholder="e.g. ENG" /></pems-col>
                         <pems-col md="8"><pems-label>@Localizer["Name"]</pems-label><pems-input name="name" required /></pems-col>
                         <pems-col span="12"><pems-label>@Localizer["Description"]</pems-label><pems-textarea name="description" rows="2"></pems-textarea></pems-col>
                     </pems-row>
-                </div>
-                <div class="modal-footer">
+                </pems-modal-body>
+                <pems-modal-footer>
                     <pems-button tone="neutral" outline="true" type="button" data-bs-dismiss="modal">@Localizer["Cancel"]</pems-button>
                     <pems-button tone="primary" type="submit">@Localizer["Save"]</pems-button>
-                </div>
+                </pems-modal-footer>
             </form>
         </pems-modal>
 
@@ -87,18 +87,18 @@
     <pems-modal id="editDeptModal" tabindex="-1">
                 <form asp-action="Edit" method="post">
                     <input type="hidden" name="departmentId" value="" />
-                    <div class="modal-header"><h6 class="modal-title">@Localizer["Edit Department"]</h6></div>
-                    <div class="modal-body">
+                    <pems-modal-header>@Localizer["Edit Department"]</pems-modal-header>
+                    <pems-modal-body>
                         <pems-row gap="3">
                             <pems-col md="4"><pems-label>@Localizer["Code"]</pems-label><pems-input name="code" /></pems-col>
                             <pems-col md="8"><pems-label>@Localizer["Name"]</pems-label><pems-input name="name" required /></pems-col>
                             <pems-col span="12"><pems-label>@Localizer["Description"]</pems-label><pems-textarea name="description" rows="2"></pems-textarea></pems-col>
                         </pems-row>
-                    </div>
-                    <div class="modal-footer">
+                    </pems-modal-body>
+                    <pems-modal-footer>
                         <pems-button tone="neutral" outline="true" type="button" data-bs-dismiss="modal">@Localizer["Cancel"]</pems-button>
                         <pems-button tone="primary" type="submit">@Localizer["Save"]</pems-button>
-                    </div>
+                    </pems-modal-footer>
                 </form>
             </pems-modal>
 }

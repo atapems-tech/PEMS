@@ -70,8 +70,8 @@
 
 <pems-modal id="createProjectModal" tabindex="-1">
             <form asp-controller="Projects" asp-action="Create" method="post">
-                <div class="modal-header"><h6 class="modal-title">@Localizer["New Project"]</h6></div>
-                <div class="modal-body">
+                <pems-modal-header>@Localizer["New Project"]</pems-modal-header>
+                <pems-modal-body>
                     <pems-row gap="3">
                         <pems-col md="6"><pems-label>@Localizer["Project Code"]</pems-label><pems-input name="ProjectCode" /></pems-col>
                         <pems-col md="6"><pems-label>@Localizer["Project Name"]</pems-label><pems-input name="ProjectName" /></pems-col>
@@ -86,11 +86,11 @@
                             </pems-select>
                         </pems-col>
                     </pems-row>
-                </div>
-                <div class="modal-footer">
+                </pems-modal-body>
+                <pems-modal-footer>
                     <pems-button tone="neutral" outline="true" type="button" data-bs-dismiss="modal">@Localizer["Cancel"]</pems-button>
                     <pems-button tone="primary" type="submit">@Localizer["Save"]</pems-button>
-                </div>
+                </pems-modal-footer>
             </form>
         </pems-modal>
 

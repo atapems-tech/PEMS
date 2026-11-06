@@ -95,4 +95,15 @@ public sealed class CheckRowPagerTests
         Assert.Equal("<div class=\"tab-pane active\">x</div>", Run(new PemsTabPaneTagHelper(UiTestRenderer.Instance) { Active = true }, "pems-tab-pane", [], "x"));
         Assert.Equal("<div class=\"tab-pane fade\">x</div>", Run(new PemsTabPaneTagHelper(UiTestRenderer.Instance) { Fade = true }, "pems-tab-pane", [], "x"));
     }
+
+    [Fact]
+    public void Modal_parts_write_the_bootstrap_modal_markup()
+    {
+        Assert.Equal("<div class=\"modal-header py-2\"><h6 class=\"modal-title\">T</h6><button type=\"button\" class=\"btn-close\" data-bs-dismiss=\"modal\" aria-label=\"Close\"></button></div>",
+            Run(new PemsModalHeaderTagHelper(UiTestRenderer.Instance) { Close = true, CloseLabel = "Close", Css = "py-2" }, "pems-modal-header", [], "T"));
+        Assert.Equal("<div class=\"modal-header\"><h5 class=\"modal-title fw-bold\" id=\"t\">T</h5></div>",
+            Run(new PemsModalHeaderTagHelper(UiTestRenderer.Instance) { Level = 5, TitleCss = "fw-bold", TitleId = "t" }, "pems-modal-header", [], "T"));
+        Assert.Equal("<div class=\"modal-body pb-0\">x</div>", Run(new PemsModalBodyTagHelper(UiTestRenderer.Instance) { Css = "pb-0" }, "pems-modal-body", [], "x"));
+        Assert.Equal("<div class=\"modal-footer justify-content-between\">x</div>", Run(new PemsModalFooterTagHelper(UiTestRenderer.Instance) { Css = "justify-content-between" }, "pems-modal-footer", [], "x"));
+    }
 }

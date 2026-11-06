@@ -132,8 +132,8 @@
 
 <pems-modal size="large" id="createMaterialModal" tabindex="-1">
             <form asp-action="Create" method="post">
-                <div class="modal-header"><h6 class="modal-title">@Localizer["New Material"]</h6></div>
-                <div class="modal-body">
+                <pems-modal-header>@Localizer["New Material"]</pems-modal-header>
+                <pems-modal-body>
                     <pems-row gap="3" css="mb-2">
                         <pems-col md="6"><pems-label>@Localizer["Material Code"]</pems-label><pems-input name="materialCode" required /></pems-col>
                         <pems-col md="6"><pems-label>@Localizer["Material Type"]</pems-label><pems-input name="materialType" placeholder="Bearing, Valve, Cable..." /></pems-col>
@@ -186,11 +186,11 @@
                         <pems-check-row><pems-input kind="check" type="checkbox" name="isStockItem" value="true" checked id="isStockItem" /><label class="form-check-label" for="isStockItem">@Localizer["Stock Item"]</label></pems-check-row>
                         <pems-check-row><pems-input kind="check" type="checkbox" name="isCritical" value="true" id="isCritical" /><label class="form-check-label" for="isCritical">@Localizer["Critical Spare"]</label></pems-check-row>
                     </pems-flex>
-                </div>
-                <div class="modal-footer">
+                </pems-modal-body>
+                <pems-modal-footer>
                     <pems-button tone="neutral" outline="true" type="button" data-bs-dismiss="modal">@Localizer["Cancel"]</pems-button>
                     <pems-button tone="primary" type="submit">@Localizer["Save"]</pems-button>
-                </div>
+                </pems-modal-footer>
             </form>
         </pems-modal>
 

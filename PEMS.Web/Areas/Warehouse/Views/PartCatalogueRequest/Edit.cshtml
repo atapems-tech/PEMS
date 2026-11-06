@@ -466,8 +466,8 @@
 
 <pems-modal id="pcEquipModal" tabindex="-1" aria-labelledby="pcEquipModalLabel" aria-hidden="true"><form asp-action="AddEquipment" method="post">
             <input type="hidden" name="id" value="@d.Id" />
-            <div class="modal-header"><h5 class="modal-title" id="pcEquipModalLabel">@Localizer["Pc_Btn_AddEquipment"]</h5><button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="@Localizer["Pc_Btn_Close"]"></button></div>
-            <div class="modal-body">
+            <pems-modal-header level="5" title-id="pcEquipModalLabel" close="true" close-label="@Localizer["Pc_Btn_Close"]">@Localizer["Pc_Btn_AddEquipment"]</pems-modal-header>
+            <pems-modal-body>
                 @if (f.IsNewEquipment)
                 {
                     <div class="mb-2"><pems-label for="pc_equipText">@L("EquipmentText")</pems-label><pems-input id="pc_equipText" name="equipmentText" maxlength="300" required /></div>
@@ -481,14 +481,14 @@
                 }
                 <div class="mb-2"><pems-label for="pc_equipQty">@L("InstalledQuantity")</pems-label><pems-input id="pc_equipQty" name="installedQuantity" type="number" step="0.0001" min="0" value="1" required /></div>
                 <pems-help-text>@Localizer["Pc_Hint_NewEquipment"]</pems-help-text>
-            </div>
-            <div class="modal-footer"><button type="button" class="vs-btn vs-btn--sm" data-bs-dismiss="modal">@Localizer["Pc_Btn_Close"]</button><button type="submit" class="vs-btn vs-btn--primary vs-btn--sm">@Localizer["Pc_Btn_Save"]</button></div>
+            </pems-modal-body>
+            <pems-modal-footer><button type="button" class="vs-btn vs-btn--sm" data-bs-dismiss="modal">@Localizer["Pc_Btn_Close"]</button><button type="submit" class="vs-btn vs-btn--primary vs-btn--sm">@Localizer["Pc_Btn_Save"]</button></pems-modal-footer>
         </form></pems-modal>
 
 <pems-modal id="pcAttachModal" tabindex="-1" aria-labelledby="pcAttachModalLabel" aria-hidden="true"><form asp-action="UploadAttachment" method="post" enctype="multipart/form-data">
             <input type="hidden" name="id" value="@d.Id" />
-            <div class="modal-header"><h5 class="modal-title" id="pcAttachModalLabel">@Localizer["Pc_Btn_Upload"]</h5><button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="@Localizer["Pc_Btn_Close"]"></button></div>
-            <div class="modal-body">
+            <pems-modal-header level="5" title-id="pcAttachModalLabel" close="true" close-label="@Localizer["Pc_Btn_Close"]">@Localizer["Pc_Btn_Upload"]</pems-modal-header>
+            <pems-modal-body>
                 <div class="mb-2"><pems-label for="pc_attFile">@L("File")</pems-label><pems-input id="pc_attFile" type="file" name="file" required /></div>
                 <div class="mb-2">
                     <pems-label for="pc_attKind">@L("AttachmentKind")</pems-label>
@@ -496,8 +496,8 @@
                         @foreach (var k in new[] { "Document", "Drawing", "Support" }) { <option value="@k">@Localizer["Pc_Kind_" + k]</option> }
                     </pems-select>
                 </div>
-            </div>
-            <div class="modal-footer"><button type="button" class="vs-btn vs-btn--sm" data-bs-dismiss="modal">@Localizer["Pc_Btn_Close"]</button><button type="submit" class="vs-btn vs-btn--primary vs-btn--sm">@Localizer["Pc_Btn_Upload"]</button></div>
+            </pems-modal-body>
+            <pems-modal-footer><button type="button" class="vs-btn vs-btn--sm" data-bs-dismiss="modal">@Localizer["Pc_Btn_Close"]</button><button type="submit" class="vs-btn vs-btn--primary vs-btn--sm">@Localizer["Pc_Btn_Upload"]</button></pems-modal-footer>
         </form></pems-modal>
 
 <template id="pcAttrTemplate">

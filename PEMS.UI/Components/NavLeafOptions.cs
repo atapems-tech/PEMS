@@ -288,3 +288,32 @@ public sealed record TabPaneOptions : FrameOptions
     public bool Active { get; init; }
     public string? Css { get; init; }
 }
+
+// SCRUM-339 (slice 4): the parts inside a modal frame (<pems-modal> writes modal, modal-dialog and modal-content).
+
+/// <summary>Inputs of <see cref="PemsModalHeader"/>: the modal header (<c>modal-header</c>) with the title (<c>modal-title</c> in a heading of the given level, the child content) and, when asked, the close button.</summary>
+public sealed record ModalHeaderOptions : FrameOptions
+{
+    /// <summary>Heading level of the title, 1 to 6 (default 6).</summary>
+    public int Level { get; init; } = 6;
+    public string? TitleCss { get; init; }
+    public string? TitleId { get; init; }
+    /// <summary>Write the close button (<c>btn-close</c>, <c>data-bs-dismiss="modal"</c>).</summary>
+    public bool Close { get; init; }
+    /// <summary>The close button's accessible name (already localized).</summary>
+    public string? CloseLabel { get; init; }
+    public string? CloseCss { get; init; }
+    public string? Css { get; init; }
+}
+
+/// <summary>Inputs of <see cref="PemsModalBody"/>: the modal body (<c>modal-body</c>).</summary>
+public sealed record ModalBodyOptions : FrameOptions
+{
+    public string? Css { get; init; }
+}
+
+/// <summary>Inputs of <see cref="PemsModalFooter"/>: the modal footer (<c>modal-footer</c>); the buttons are the child content.</summary>
+public sealed record ModalFooterOptions : FrameOptions
+{
+    public string? Css { get; init; }
+}

@@ -107,6 +107,9 @@ public sealed class PemsComponentRegistry : IPemsComponentRegistry
         Register(UiKeys.TableScroll, typeof(PemsTableScroll));
         Register(UiKeys.TabContent, typeof(PemsTabContent));
         Register(UiKeys.TabPane, typeof(PemsTabPane));
+        Register(UiKeys.ModalHeader, typeof(PemsModalHeader));
+        Register(UiKeys.ModalBody, typeof(PemsModalBody));
+        Register(UiKeys.ModalFooter, typeof(PemsModalFooter));
     }
 
     public void Register(string key, Type componentType)

@@ -147,8 +147,8 @@
 <pems-modal id="editAssetModal" tabindex="-1">
             <form asp-action="Edit" method="post">
                 <input type="hidden" name="assetId" value="@Model.AssetId" />
-                <div class="modal-header"><h6 class="modal-title">Edit Asset</h6></div>
-                <div class="modal-body">
+                <pems-modal-header>Edit Asset</pems-modal-header>
+                <pems-modal-body>
                     <div class="mb-3">
                         <pems-label>@Localizer["Asset Number"]</pems-label>
                         <pems-input name="assetNumber" value="@Model.AssetNumber" required />
@@ -192,10 +192,10 @@
                         <pems-label>@Localizer["Description"]</pems-label>
                         <pems-textarea name="description" rows="2">@Model.Description</pems-textarea>
                     </div>
-                </div>
-                <div class="modal-footer">
+                </pems-modal-body>
+                <pems-modal-footer>
                     <pems-button tone="neutral" outline="true" type="button" data-bs-dismiss="modal">@Localizer["Cancel"]</pems-button>
                     <pems-button tone="primary" type="submit">@Localizer["Save"]</pems-button>
-                </div>
+                </pems-modal-footer>
             </form>
         </pems-modal>

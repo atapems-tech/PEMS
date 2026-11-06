@@ -115,8 +115,8 @@
 
 <pems-modal id="createAssetModal" tabindex="-1">
             <form asp-action="Create" method="post">
-                <div class="modal-header"><h6 class="modal-title">@Localizer["As_NewAsset"]</h6></div>
-                <div class="modal-body">
+                <pems-modal-header>@Localizer["As_NewAsset"]</pems-modal-header>
+                <pems-modal-body>
                     <p class="text-muted small">
                         Tag number, manufacturer and model come from the Equipment record itself - pick the
                         equipment this Asset represents the CMMS lifecycle for.
@@ -180,11 +180,11 @@
                         <pems-label>@Localizer["Description"]</pems-label>
                         <pems-textarea name="description" rows="2"></pems-textarea>
                     </div>
-                </div>
-                <div class="modal-footer">
+                </pems-modal-body>
+                <pems-modal-footer>
                     <pems-button tone="neutral" outline="true" type="button" data-bs-dismiss="modal">@Localizer["Cancel"]</pems-button>
                     <pems-button tone="primary" type="submit">@Localizer["Save"]</pems-button>
-                </div>
+                </pems-modal-footer>
             </form>
         </pems-modal>
 

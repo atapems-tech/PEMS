@@ -99,8 +99,8 @@
 
 <pems-modal id="createIrnModal" tabindex="-1">
         <form asp-action="Create" method="post">
-            <div class="modal-header"><h6 class="modal-title">@Localizer["New Incoming Receipt (IRN)"]</h6></div>
-            <div class="modal-body">
+            <pems-modal-header>@Localizer["New Incoming Receipt (IRN)"]</pems-modal-header>
+            <pems-modal-body>
                 <div class="mb-2">
                     <pems-label css="small">@Localizer["Vendor"]</pems-label>
                     <pems-select scale="small" name="vendorId" required>
@@ -128,11 +128,11 @@
                     <pems-label css="small">@Localizer["Notes (optional)"]</pems-label>
                     <pems-textarea scale="small" name="notes" rows="2"></pems-textarea>
                 </div>
-            </div>
-            <div class="modal-footer">
+            </pems-modal-body>
+            <pems-modal-footer>
                 <pems-button tone="neutral" size="small" outline="true" type="button" data-bs-dismiss="modal">@Localizer["Cancel"]</pems-button>
                 <pems-button tone="primary" size="small" type="submit">@Localizer["Create"]</pems-button>
-            </div>
+            </pems-modal-footer>
         </form>
     </pems-modal>
 

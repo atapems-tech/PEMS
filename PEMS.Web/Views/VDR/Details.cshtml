@@ -488,8 +488,8 @@
                 <input type="hidden" name="pageNumber" id="pinPageNumber" value="" />
                 <input type="hidden" name="pinX" id="pinX" value="" />
                 <input type="hidden" name="pinY" id="pinY" value="" />
-                <div class="modal-header"><h6 class="modal-title">@Localizer["Vd_AddComment"]</h6></div>
-                <div class="modal-body">
+                <pems-modal-header>@Localizer["Vd_AddComment"]</pems-modal-header>
+                <pems-modal-body>
                     <div id="pinLocationLabel" class="small text-primary mb-2"></div>
                     <pems-row gap="3">
                         <pems-col md="4">
@@ -524,11 +524,11 @@
                         <pems-col md="6"><pems-label css="small">@Localizer["Vd_DueDate"]</pems-label><pems-date name="dueDate" scale="small" /></pems-col>
                         <pems-col span="12"><pems-label css="small">@Localizer["Vd_Attachment"] <span class="text-muted">@Localizer["Vd_Optional"]</span></pems-label><pems-input scale="small" type="file" name="attachment" /></pems-col>
                     </pems-row>
-                </div>
-                <div class="modal-footer">
+                </pems-modal-body>
+                <pems-modal-footer>
                     <pems-button tone="neutral" outline="true" type="button" data-bs-dismiss="modal">@Localizer["Vd_Cancel"]</pems-button>
                     <pems-button tone="primary" type="submit">@Localizer["Vd_SaveComment"]</pems-button>
-                </div>
+                </pems-modal-footer>
             </form>
         </pems-modal>
 
@@ -540,8 +540,8 @@
                 <form asp-action="RecordCommentResponse" method="post" enctype="multipart/form-data">
                     <input type="hidden" name="vdrItemId" value="@Model.VDRItemId" />
                     <input type="hidden" name="commentId" value="" />
-                    <div class="modal-header"><h6 class="modal-title">@Localizer["Vd_ReplyTo"] <span data-fill-text="commentno"></span></h6></div>
-                    <div class="modal-body">
+                    <pems-modal-header>@Localizer["Vd_ReplyTo"] <span data-fill-text="commentno"></span></pems-modal-header>
+                    <pems-modal-body>
                         <p class="small text-muted" data-fill-text="commenttext"></p>
                         <div class="mb-2">
                             <pems-label css="small">@Localizer["Vd_VendorReply"] <span class="text-muted">@Localizer["Vd_OptionalIfFile"]</span></pems-label>
@@ -551,11 +551,11 @@
                             <pems-label css="small">@Localizer["Vd_OrAttachReply"]</pems-label>
                             <pems-input scale="small" type="file" name="replyAttachment" />
                         </div>
-                    </div>
-                    <div class="modal-footer">
+                    </pems-modal-body>
+                    <pems-modal-footer>
                         <pems-button tone="neutral" outline="true" type="button" data-bs-dismiss="modal">@Localizer["Vd_Cancel"]</pems-button>
                         <pems-button tone="primary" size="small" type="submit">@Localizer["Vd_SaveReply"]</pems-button>
-                    </div>
+                    </pems-modal-footer>
                 </form>
             </pems-modal>
 }
@@ -719,24 +719,24 @@ else
                     <form asp-action="DisciplineRespond" method="post">
                         <input type="hidden" name="vdrItemId" value="@Model.VDRItemId" />
                         <input type="hidden" name="decision" value="Comment" />
-                        <div class="modal-header"><h6 class="modal-title">@Localizer["Vd_RecordComment"]</h6></div>
-                        <div class="modal-body"><pems-textarea scale="small" name="comment" rows="3" required></pems-textarea></div>
-                        <div class="modal-footer">
+                        <pems-modal-header>@Localizer["Vd_RecordComment"]</pems-modal-header>
+                        <pems-modal-body><pems-textarea scale="small" name="comment" rows="3" required></pems-textarea></pems-modal-body>
+                        <pems-modal-footer>
                             <pems-button tone="neutral" size="small" outline="true" type="button" data-bs-dismiss="modal">@Localizer["Vd_Cancel"]</pems-button>
                             <pems-button tone="warning" size="small" type="submit">@Localizer["Vd_Submit"]</pems-button>
-                        </div>
+                        </pems-modal-footer>
                     </form>
                 </pems-modal>
             <pems-modal id="vdrRejectModal" tabindex="-1">
                     <form asp-action="DisciplineRespond" method="post">
                         <input type="hidden" name="vdrItemId" value="@Model.VDRItemId" />
                         <input type="hidden" name="decision" value="Reject" />
-                        <div class="modal-header"><h6 class="modal-title">@Localizer["Vd_RejectTitle"]</h6></div>
-                        <div class="modal-body"><pems-textarea scale="small" name="comment" rows="3" required></pems-textarea></div>
-                        <div class="modal-footer">
+                        <pems-modal-header>@Localizer["Vd_RejectTitle"]</pems-modal-header>
+                        <pems-modal-body><pems-textarea scale="small" name="comment" rows="3" required></pems-textarea></pems-modal-body>
+                        <pems-modal-footer>
                             <pems-button tone="neutral" size="small" outline="true" type="button" data-bs-dismiss="modal">@Localizer["Vd_Cancel"]</pems-button>
                             <pems-button tone="danger" size="small" type="submit">@Localizer["Vd_RejectBtn"]</pems-button>
-                        </div>
+                        </pems-modal-footer>
                     </form>
                 </pems-modal>
         }
