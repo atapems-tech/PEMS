@@ -120,16 +120,16 @@
                              filtered="@(activeFilters > 0 || !string.IsNullOrEmpty(search))" clear-href="@Url.Action("Index")">
                     <thead>
                         <tr>
-                            <th data-col-key="docNo" data-resizable="true" data-min-width="110" data-max-width="260" style="width:170px">@Localizer["Vs_DocNo"]</th>
-                            <th data-col-key="description" data-resizable="true" data-min-width="180" data-max-width="500" style="width:280px">@Localizer["Vs_Description"]</th>
-                            <th data-col-key="type" data-resizable="true" data-min-width="70" data-max-width="180" style="width:100px" class="vs-hide-md">@Localizer["Type"]</th>
-                            <th data-col-key="vendor" data-resizable="true" data-min-width="100" data-max-width="240" style="width:160px">@Localizer["Vendor"]</th>
-                            <th data-col-key="project" data-resizable="true" data-min-width="100" data-max-width="260" style="width:170px">@Localizer["Vs_Project"]</th>
-                            <th data-col-key="discipline" data-resizable="true" data-min-width="90" data-max-width="200" style="width:130px">@Localizer["Vs_Discipline"]</th>
-                            <th data-col-key="rev" data-resizable="true" data-min-width="56" data-max-width="110" style="width:70px">@Localizer["Vs_Rev"]</th>
-                            <th data-col-key="latestCategory" data-resizable="true" data-min-width="90" data-max-width="180" style="width:120px" class="vs-hide-md">@Localizer["Vs_LatestCategory"]</th>
-                            <th data-col-key="status" data-resizable="true" data-min-width="110" data-max-width="220" style="width:160px">@Localizer["Status"]</th>
-                            <th data-col-key="actions" data-resizable="false" style="width:80px"><span class="visually-hidden">@Localizer["Vs_View"]</span></th>
+                            <th class="pems-w-170" data-col-key="docNo" data-resizable="true" data-min-width="110" data-max-width="260">@Localizer["Vs_DocNo"]</th>
+                            <th class="pems-w-280" data-col-key="description" data-resizable="true" data-min-width="180" data-max-width="500">@Localizer["Vs_Description"]</th>
+                            <th data-col-key="type" data-resizable="true" data-min-width="70" data-max-width="180" class="vs-hide-md pems-w-100">@Localizer["Type"]</th>
+                            <th class="pems-w-160" data-col-key="vendor" data-resizable="true" data-min-width="100" data-max-width="240">@Localizer["Vendor"]</th>
+                            <th class="pems-w-170" data-col-key="project" data-resizable="true" data-min-width="100" data-max-width="260">@Localizer["Vs_Project"]</th>
+                            <th class="pems-w-130" data-col-key="discipline" data-resizable="true" data-min-width="90" data-max-width="200">@Localizer["Vs_Discipline"]</th>
+                            <th class="pems-w-70" data-col-key="rev" data-resizable="true" data-min-width="56" data-max-width="110">@Localizer["Vs_Rev"]</th>
+                            <th data-col-key="latestCategory" data-resizable="true" data-min-width="90" data-max-width="180" class="vs-hide-md pems-w-120">@Localizer["Vs_LatestCategory"]</th>
+                            <th class="pems-w-160" data-col-key="status" data-resizable="true" data-min-width="110" data-max-width="220">@Localizer["Status"]</th>
+                            <th class="pems-w-80" data-col-key="actions" data-resizable="false"><span class="visually-hidden">@Localizer["Vs_View"]</span></th>
                         </tr>
                     </thead>
                     <tbody>

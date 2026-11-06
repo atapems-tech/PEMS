@@ -32,7 +32,7 @@
         <input type="hidden" name="meetingId" value="@m.MeetingId" />
         <pems-textarea name="minutesNotes" rows="5">@Model.MinutesNotes</pems-textarea>
         <div class="d-flex gap-2 mt-2">
-            <pems-select name="status" style="width:160px;">
+            <pems-select class="pems-w-160" name="status">
                 @foreach (var s in new[] { "Scheduled", "Completed", "Cancelled" })
                 { <option value="@s" selected="@(s == m.Status)">@s</option> }
             </pems-select>

@@ -28,14 +28,14 @@
             <pems-list-table grid-key="MaintenancePlan" empty="@(!Model.Items.Any())" empty-text="@Localizer["Mp_Empty"]">
                 <thead>
                     <tr>
-                        <th data-col-key="planNo" data-resizable="true" data-min-width="100" data-max-width="220" style="width:140px">@Localizer["Mp_PlanNo"]</th>
-                        <th data-col-key="equipment" data-resizable="true" data-min-width="100" data-max-width="220" style="width:160px">@Localizer["Equipment"]</th>
-                        <th data-col-key="title" data-resizable="true" data-min-width="140" data-max-width="320" style="width:200px">@Localizer["Cm_Title"]</th>
-                        <th data-col-key="strategy" data-resizable="true" data-min-width="100" data-max-width="220" style="width:150px">@Localizer["Cm_Strategy"]</th>
-                        <th data-col-key="trigger" data-resizable="true" data-min-width="140" data-max-width="320" style="width:220px">@Localizer["Cm_Trigger"]</th>
-                        <th data-col-key="lastDone" data-resizable="true" data-min-width="100" data-max-width="180" style="width:120px" class="vs-hide-md">@Localizer["Cm_LastDone"]</th>
-                        <th data-col-key="nextDue" data-resizable="true" data-min-width="100" data-max-width="200" style="width:150px">@Localizer["Cm_NextDue"]</th>
-                        <th data-col-key="actions" data-resizable="false" style="width:170px"><span class="visually-hidden">@Localizer["Ed_Actions"]</span></th>
+                        <th class="pems-w-140" data-col-key="planNo" data-resizable="true" data-min-width="100" data-max-width="220">@Localizer["Mp_PlanNo"]</th>
+                        <th class="pems-w-160" data-col-key="equipment" data-resizable="true" data-min-width="100" data-max-width="220">@Localizer["Equipment"]</th>
+                        <th class="pems-w-200" data-col-key="title" data-resizable="true" data-min-width="140" data-max-width="320">@Localizer["Cm_Title"]</th>
+                        <th class="pems-w-150" data-col-key="strategy" data-resizable="true" data-min-width="100" data-max-width="220">@Localizer["Cm_Strategy"]</th>
+                        <th class="pems-w-220" data-col-key="trigger" data-resizable="true" data-min-width="140" data-max-width="320">@Localizer["Cm_Trigger"]</th>
+                        <th data-col-key="lastDone" data-resizable="true" data-min-width="100" data-max-width="180" class="vs-hide-md pems-w-120">@Localizer["Cm_LastDone"]</th>
+                        <th class="pems-w-150" data-col-key="nextDue" data-resizable="true" data-min-width="100" data-max-width="200">@Localizer["Cm_NextDue"]</th>
+                        <th class="pems-w-170" data-col-key="actions" data-resizable="false"><span class="visually-hidden">@Localizer["Ed_Actions"]</span></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -70,7 +70,7 @@
                                     </div>
                                     <form asp-action="RecordMeterReading" method="post" class="d-flex gap-1 mt-1">
                                         <input type="hidden" name="planId" value="@p.MaintenancePlanId" />
-                                        <pems-input scale="small" type="number" step="0.01" name="currentReading" style="width:90px;" placeholder="@Localizer["Mp_CurrentReading"]" aria-label="@Localizer["Mp_CurrentReading"]" required />
+                                        <pems-input class="pems-w-90" scale="small" type="number" step="0.01" name="currentReading" placeholder="@Localizer["Mp_CurrentReading"]" aria-label="@Localizer["Mp_CurrentReading"]" required />
                                         <pems-button tone="info" size="small" outline="true" type="submit">@Localizer["Mp_Record"]</pems-button>
                                     </form>
                                 }

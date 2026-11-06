@@ -67,13 +67,13 @@
             <pems-list-table grid-key="InventoryTransaction" empty="@(!Model.Items.Any())" empty-text="@Localizer["ItL_Empty"]">
                 <thead>
                     <tr>
-                        <th data-col-key="date" data-resizable="true" data-min-width="120" data-max-width="200" style="width:140px">@Localizer["Cm_Date"]</th>
+                        <th class="pems-w-140" data-col-key="date" data-resizable="true" data-min-width="120" data-max-width="200">@Localizer["Cm_Date"]</th>
                         <th data-col-key="material" data-resizable="true" data-min-width="160" data-max-width="420">@Localizer["ItL_Material"]</th>
-                        <th data-col-key="type" data-resizable="true" data-min-width="90" data-max-width="180" style="width:120px">@Localizer["Cm_Type"]</th>
-                        <th data-col-key="warehouse" data-resizable="true" data-min-width="80" data-max-width="160" style="width:100px">@Localizer["ItL_Warehouse"]</th>
-                        <th data-col-key="qty" data-resizable="true" data-min-width="70" data-max-width="120" style="width:90px" class="text-end">@Localizer["ItL_Qty"]</th>
-                        <th data-col-key="reference" data-resizable="true" data-min-width="100" data-max-width="220" style="width:140px" class="vs-hide-md">@Localizer["ItL_Reference"]</th>
-                        <th data-col-key="by" data-resizable="true" data-min-width="100" data-max-width="220" style="width:140px" class="vs-hide-md">@Localizer["ItL_By"]</th>
+                        <th class="pems-w-120" data-col-key="type" data-resizable="true" data-min-width="90" data-max-width="180">@Localizer["Cm_Type"]</th>
+                        <th class="pems-w-100" data-col-key="warehouse" data-resizable="true" data-min-width="80" data-max-width="160">@Localizer["ItL_Warehouse"]</th>
+                        <th data-col-key="qty" data-resizable="true" data-min-width="70" data-max-width="120" class="text-end pems-w-90">@Localizer["ItL_Qty"]</th>
+                        <th data-col-key="reference" data-resizable="true" data-min-width="100" data-max-width="220" class="vs-hide-md pems-w-140">@Localizer["ItL_Reference"]</th>
+                        <th data-col-key="by" data-resizable="true" data-min-width="100" data-max-width="220" class="vs-hide-md pems-w-140">@Localizer["ItL_By"]</th>
                         <th data-col-key="reason" data-resizable="true" data-min-width="120" data-max-width="320" class="vs-hide-md">@Localizer["ItL_Reason"]</th>
                     </tr>
                 </thead>

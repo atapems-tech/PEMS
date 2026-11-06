@@ -32,8 +32,8 @@
                 <pems-icon name="bi-arrow-return-@(System.Globalization.CultureInfo.CurrentUICulture.TextInfo.IsRightToLeft ? "right" : "left")" />
                 @Localizer["بازگشت به تیم‌ها"]
             </pems-button>
-            <pems-input scale="small" type="search" id="orgChartDisciplineSearch" style="width:170px" placeholder="@Localizer["جستجوی دیسیپلین..."]" aria-label="@Localizer["جستجوی دیسیپلین..."]" autocomplete="off" />
-            <pems-select scale="small" id="orgChartDisciplineFilter" style="min-width:200px" aria-label="@Localizer["دیسیپلین"]">
+            <pems-input class="pems-w-170" scale="small" type="search" id="orgChartDisciplineSearch" placeholder="@Localizer["جستجوی دیسیپلین..."]" aria-label="@Localizer["جستجوی دیسیپلین..."]" autocomplete="off" />
+            <pems-select class="pems-minw-200" scale="small" id="orgChartDisciplineFilter" aria-label="@Localizer["دیسیپلین"]">
                 <option value="">@Localizer["همه‌ی دیسیپلین‌ها"]</option>
                 @foreach (var d in (IEnumerable<dynamic>)ViewBag.Disciplines)
                 {

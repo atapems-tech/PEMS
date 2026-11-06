@@ -83,7 +83,7 @@
         @if (Model.CanApprove && s.Status == "InReview")
         {
             <form asp-action="Review" asp-route-id="@s.MaintenanceStrategyId" method="post" class="d-inline-flex gap-2">
-                <pems-input scale="small" name="comment" placeholder="@Localizer["Rcm_Comment"]" style="width:220px" />
+                <pems-input class="pems-w-220" scale="small" name="comment" placeholder="@Localizer["Rcm_Comment"]" />
                 <pems-button tone="success" size="small" name="approve" value="true"><pems-icon name="bi-check2" /> @Localizer["Rcm_Approve"]</pems-button>
                 <pems-button tone="danger" size="small" outline="true" name="approve" value="false"><pems-icon name="bi-x" /> @Localizer["Rcm_Reject"]</pems-button>
             </form>
@@ -127,7 +127,7 @@
         {
             <div class="d-flex gap-2">
                 <form asp-action="Assign" asp-route-id="@s.MaintenanceStrategyId" method="post" class="d-flex gap-2">
-                    <pems-input scale="small" type="text" placeholder="@Localizer["Rcm_SearchEquipmentPlaceholder"]" style="width:260px" data-pems-search data-search-type="Equipment" data-search-hidden="#assignEquipmentId" autocomplete="off" required />
+                    <pems-input class="pems-w-260" scale="small" type="text" placeholder="@Localizer["Rcm_SearchEquipmentPlaceholder"]" data-pems-search data-search-type="Equipment" data-search-hidden="#assignEquipmentId" autocomplete="off" required />
                     <input type="hidden" name="equipmentIds" id="assignEquipmentId" />
                     <pems-button tone="primary" size="small" outline="true">@Localizer["Rcm_AssignTag"]</pems-button>
                 </form>

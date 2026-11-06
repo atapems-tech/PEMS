@@ -143,14 +143,14 @@
             <pems-list-table grid-key="PartCatalogueRequests" empty="@(!Model.Page.Items.Any())" empty-text="@Localizer["Pc_Empty"]">
                 <thead>
                     <tr>
-                        <th data-col-key="number" data-resizable="true" data-min-width="110" data-max-width="240" style="width:170px">@Localizer["Pc_Col_Number"]</th>
-                        <th data-col-key="type" data-resizable="true" data-min-width="70" data-max-width="140" style="width:90px">@Localizer["Pc_Col_Type"]</th>
-                        <th data-col-key="section" data-resizable="true" data-min-width="70" data-max-width="160" style="width:100px" class="vs-hide-md">@Localizer["Pc_F_SectionId"]</th>
+                        <th class="pems-w-170" data-col-key="number" data-resizable="true" data-min-width="110" data-max-width="240">@Localizer["Pc_Col_Number"]</th>
+                        <th class="pems-w-90" data-col-key="type" data-resizable="true" data-min-width="70" data-max-width="140">@Localizer["Pc_Col_Type"]</th>
+                        <th data-col-key="section" data-resizable="true" data-min-width="70" data-max-width="160" class="vs-hide-md pems-w-100">@Localizer["Pc_F_SectionId"]</th>
                         <th data-col-key="class" data-resizable="true" data-min-width="140" data-max-width="420">@Localizer["Pc_F_TechnicalClassId"]</th>
-                        <th data-col-key="requester" data-resizable="true" data-min-width="100" data-max-width="240" style="width:150px" class="vs-hide-md">@Localizer["Pc_Col_Requester"]</th>
-                        <th data-col-key="status" data-resizable="true" data-min-width="120" data-max-width="260" style="width:180px">@Localizer["Pc_Col_Status"]</th>
-                        <th data-col-key="partNo" data-resizable="true" data-min-width="90" data-max-width="200" style="width:130px" class="vs-hide-md">@Localizer["Pc_Col_PartNo"]</th>
-                        <th data-col-key="created" data-resizable="true" data-min-width="90" data-max-width="160" style="width:110px" class="vs-hide-md">@Localizer["Pc_Col_Created"]</th>
+                        <th data-col-key="requester" data-resizable="true" data-min-width="100" data-max-width="240" class="vs-hide-md pems-w-150">@Localizer["Pc_Col_Requester"]</th>
+                        <th class="pems-w-180" data-col-key="status" data-resizable="true" data-min-width="120" data-max-width="260">@Localizer["Pc_Col_Status"]</th>
+                        <th data-col-key="partNo" data-resizable="true" data-min-width="90" data-max-width="200" class="vs-hide-md pems-w-130">@Localizer["Pc_Col_PartNo"]</th>
+                        <th data-col-key="created" data-resizable="true" data-min-width="90" data-max-width="160" class="vs-hide-md pems-w-110">@Localizer["Pc_Col_Created"]</th>
                     </tr>
                 </thead>
                 <tbody>

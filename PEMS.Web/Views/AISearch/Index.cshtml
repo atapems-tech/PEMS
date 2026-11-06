@@ -60,7 +60,7 @@
                         <td>@r.Title</td>
                         <td class="small text-muted">@r.Reason</td>
                         <td>
-                            <pems-progress value="@((int)(r.SimilarityScore * 100))" tone="success" height="8px" style="width:100px;"></pems-progress>
+                            <pems-progress class="pems-w-100" value="@((int)(r.SimilarityScore * 100))" tone="success" height="8px"></pems-progress>
                         </td>
                         <td>
                             <pems-button tone="neutral" size="small" outline="true" as="a" asp-controller="EngineeringDocuments" asp-action="Details" asp-route-id="@r.DocumentId"

@@ -30,7 +30,7 @@
         var b = Model.ActiveBarcode;
         <pems-row gap="3" css="align-items-center">
             <pems-col md="3" css="text-center">
-                <img src="@Url.Action("Svg", "Barcode", new { area = "", id = b.BarcodeIdentityId })" alt="barcode" style="max-width:100%;" />
+                <img class="pems-maxw-100pct" src="@Url.Action("Svg", "Barcode", new { area = "", id = b.BarcodeIdentityId })" alt="barcode" />
                 <div class="small mt-1" dir="ltr"><code>@b.Code</code></div>
             </pems-col>
             <pems-col md="9">

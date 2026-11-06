@@ -294,7 +294,7 @@
                            <td>@avgRevisions.ToString("0.0")</td>
                            <td>
                                <div class="d-flex align-items-center gap-2">
-                                   <pems-progress value="@item.RiskScore" tone="@(item.RiskScore >= 60 ? "danger" : item.RiskScore >= 35 ? "warning" : "success")" height="8px" css="flex-grow-1" style="min-width: 70px;"></pems-progress>
+                                   <pems-progress class="pems-minw-70" value="@item.RiskScore" tone="@(item.RiskScore >= 60 ? "danger" : item.RiskScore >= 35 ? "warning" : "success")" height="8px" css="flex-grow-1"></pems-progress>
                                    <span class="small text-muted">@item.RiskScore</span>
                                </div>
                            </td>

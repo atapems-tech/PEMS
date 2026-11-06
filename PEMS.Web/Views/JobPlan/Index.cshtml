@@ -31,13 +31,13 @@
             <pems-list-table grid-key="JobPlan" empty="@(!Model.Items.Any())" empty-text="@Localizer["Jp_Empty"]">
                 <thead>
                     <tr>
-                        <th data-col-key="number" data-resizable="true" data-min-width="100" data-max-width="200" style="width:140px">@Localizer["Jp_Number"]</th>
-                        <th data-col-key="title" data-resizable="true" data-min-width="160" data-max-width="400" style="width:280px">@Localizer["Cm_Title"]</th>
-                        <th data-col-key="duration" data-resizable="true" data-min-width="100" data-max-width="160" style="width:120px">@Localizer["Jp_Duration"]</th>
-                        <th data-col-key="tasks" data-resizable="true" data-min-width="70" data-max-width="120" style="width:90px">@Localizer["Jp_Tasks"]</th>
-                        <th data-col-key="usage" data-resizable="true" data-min-width="90" data-max-width="150" style="width:120px" class="vs-hide-md">@Localizer["Jp_UsedByPlans"]</th>
-                        <th data-col-key="safety" data-resizable="true" data-min-width="100" data-max-width="180" style="width:140px">@Localizer["Jp_Safety"]</th>
-                        <th data-col-key="actions" data-resizable="false" style="width:60px"><span class="visually-hidden">@Localizer["Ed_Actions"]</span></th>
+                        <th class="pems-w-140" data-col-key="number" data-resizable="true" data-min-width="100" data-max-width="200">@Localizer["Jp_Number"]</th>
+                        <th class="pems-w-280" data-col-key="title" data-resizable="true" data-min-width="160" data-max-width="400">@Localizer["Cm_Title"]</th>
+                        <th class="pems-w-120" data-col-key="duration" data-resizable="true" data-min-width="100" data-max-width="160">@Localizer["Jp_Duration"]</th>
+                        <th class="pems-w-90" data-col-key="tasks" data-resizable="true" data-min-width="70" data-max-width="120">@Localizer["Jp_Tasks"]</th>
+                        <th data-col-key="usage" data-resizable="true" data-min-width="90" data-max-width="150" class="vs-hide-md pems-w-120">@Localizer["Jp_UsedByPlans"]</th>
+                        <th class="pems-w-140" data-col-key="safety" data-resizable="true" data-min-width="100" data-max-width="180">@Localizer["Jp_Safety"]</th>
+                        <th class="pems-w-60" data-col-key="actions" data-resizable="false"><span class="visually-hidden">@Localizer["Ed_Actions"]</span></th>
                     </tr>
                 </thead>
                 <tbody>

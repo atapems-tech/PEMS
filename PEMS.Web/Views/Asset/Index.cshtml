@@ -72,13 +72,13 @@
                              filtered="@(filterCount > 0 || !string.IsNullOrEmpty(q))" clear-href="@Url.Action("Index")">
                 <thead>
                     <tr>
-                        <th data-col-key="assetNo" data-resizable="true" data-min-width="100" data-max-width="220" style="width:140px">@Localizer["As_ColNo"]</th>
-                        <th data-col-key="equipment" data-resizable="true" data-min-width="140" data-max-width="320" style="width:220px">@Localizer["Wo_ColEquipment"]</th>
-                        <th data-col-key="maintClass" data-resizable="true" data-min-width="100" data-max-width="220" style="width:150px" class="vs-hide-md">@Localizer["As_ColMaint"]</th>
-                        <th data-col-key="criticality" data-resizable="true" data-min-width="90" data-max-width="160" style="width:110px">@Localizer["Cm_Criticality"]</th>
-                        <th data-col-key="commissioning" data-resizable="true" data-min-width="100" data-max-width="180" style="width:130px" class="vs-hide-md">@Localizer["As_ColCommissioning"]</th>
-                        <th data-col-key="openWos" data-resizable="true" data-min-width="80" data-max-width="140" style="width:100px">@Localizer["As_ColOpenWos"]</th>
-                        <th data-col-key="status" data-resizable="true" data-min-width="90" data-max-width="160" style="width:110px">@Localizer["Ed_Status"]</th>
+                        <th class="pems-w-140" data-col-key="assetNo" data-resizable="true" data-min-width="100" data-max-width="220">@Localizer["As_ColNo"]</th>
+                        <th class="pems-w-220" data-col-key="equipment" data-resizable="true" data-min-width="140" data-max-width="320">@Localizer["Wo_ColEquipment"]</th>
+                        <th data-col-key="maintClass" data-resizable="true" data-min-width="100" data-max-width="220" class="vs-hide-md pems-w-150">@Localizer["As_ColMaint"]</th>
+                        <th class="pems-w-110" data-col-key="criticality" data-resizable="true" data-min-width="90" data-max-width="160">@Localizer["Cm_Criticality"]</th>
+                        <th data-col-key="commissioning" data-resizable="true" data-min-width="100" data-max-width="180" class="vs-hide-md pems-w-130">@Localizer["As_ColCommissioning"]</th>
+                        <th class="pems-w-100" data-col-key="openWos" data-resizable="true" data-min-width="80" data-max-width="140">@Localizer["As_ColOpenWos"]</th>
+                        <th class="pems-w-110" data-col-key="status" data-resizable="true" data-min-width="90" data-max-width="160">@Localizer["Ed_Status"]</th>
                     </tr>
                 </thead>
                 <tbody>

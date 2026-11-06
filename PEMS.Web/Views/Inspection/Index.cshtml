@@ -27,15 +27,15 @@
             <pems-list-table grid-key="Inspection" empty="@(!Model.Items.Any())" empty-text="@Localizer["Ins_Empty"]">
                 <thead>
                     <tr>
-                        <th data-col-key="tag" data-resizable="true" data-min-width="100" data-max-width="200" style="width:140px">@Localizer["Ins_Tag"]</th>
-                        <th data-col-key="type" data-resizable="true" data-min-width="90" data-max-width="180" style="width:130px">@Localizer["Cm_Type"]</th>
-                        <th data-col-key="date" data-resizable="true" data-min-width="90" data-max-width="160" style="width:110px">@Localizer["Cm_Date"]</th>
-                        <th data-col-key="measurement" data-resizable="true" data-min-width="100" data-max-width="200" style="width:130px">@Localizer["Cm_Measurement"]</th>
-                        <th data-col-key="limits" data-resizable="true" data-min-width="100" data-max-width="200" style="width:130px" class="vs-hide-md">@Localizer["Ins_Limits"]</th>
-                        <th data-col-key="condition" data-resizable="true" data-min-width="80" data-max-width="140" style="width:110px">@Localizer["Cm_Condition"]</th>
-                        <th data-col-key="nextDue" data-resizable="true" data-min-width="90" data-max-width="160" style="width:110px">@Localizer["Cm_NextDue"]</th>
-                        <th data-col-key="dueStatus" data-resizable="true" data-min-width="90" data-max-width="160" style="width:120px">@Localizer["Cm_DueStatus"]</th>
-                        <th data-col-key="actions" data-resizable="false" style="width:190px"><span class="visually-hidden">@Localizer["Ed_Actions"]</span></th>
+                        <th class="pems-w-140" data-col-key="tag" data-resizable="true" data-min-width="100" data-max-width="200">@Localizer["Ins_Tag"]</th>
+                        <th class="pems-w-130" data-col-key="type" data-resizable="true" data-min-width="90" data-max-width="180">@Localizer["Cm_Type"]</th>
+                        <th class="pems-w-110" data-col-key="date" data-resizable="true" data-min-width="90" data-max-width="160">@Localizer["Cm_Date"]</th>
+                        <th class="pems-w-130" data-col-key="measurement" data-resizable="true" data-min-width="100" data-max-width="200">@Localizer["Cm_Measurement"]</th>
+                        <th data-col-key="limits" data-resizable="true" data-min-width="100" data-max-width="200" class="vs-hide-md pems-w-130">@Localizer["Ins_Limits"]</th>
+                        <th class="pems-w-110" data-col-key="condition" data-resizable="true" data-min-width="80" data-max-width="140">@Localizer["Cm_Condition"]</th>
+                        <th class="pems-w-110" data-col-key="nextDue" data-resizable="true" data-min-width="90" data-max-width="160">@Localizer["Cm_NextDue"]</th>
+                        <th class="pems-w-120" data-col-key="dueStatus" data-resizable="true" data-min-width="90" data-max-width="160">@Localizer["Cm_DueStatus"]</th>
+                        <th class="pems-w-190" data-col-key="actions" data-resizable="false"><span class="visually-hidden">@Localizer["Ed_Actions"]</span></th>
                     </tr>
                 </thead>
                 <tbody>

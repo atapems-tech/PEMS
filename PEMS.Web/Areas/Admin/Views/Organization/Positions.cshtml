@@ -47,8 +47,8 @@
     </section>
 
     <form method="get" class="d-flex gap-2 mb-3 flex-wrap">
-        <pems-input scale="small" name="q" value="@ViewBag.Query" style="max-width:260px" placeholder="@Localizer["Org_Positions_Search"]" aria-label="@Localizer["Org_Positions_Search"]" />
-        <pems-select scale="small" name="status" style="max-width:180px" aria-label="@Localizer["Org_Filter_Status"]">
+        <pems-input class="pems-maxw-260" scale="small" name="q" value="@ViewBag.Query" placeholder="@Localizer["Org_Positions_Search"]" aria-label="@Localizer["Org_Positions_Search"]" />
+        <pems-select class="pems-maxw-180" scale="small" name="status" aria-label="@Localizer["Org_Filter_Status"]">
             <option value="" selected="@(status == "")">@Localizer["Org_Filter_All"]</option>
             <option value="active" selected="@(status == "active")">@Localizer["Org_Filter_Active"]</option>
             <option value="vacant" selected="@(status == "vacant")">@Localizer["Org_Vacant"]</option>

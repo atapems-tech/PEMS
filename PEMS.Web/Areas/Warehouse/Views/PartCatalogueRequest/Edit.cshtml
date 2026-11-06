@@ -176,7 +176,7 @@
 
                 <div class="pc-table-scroll">
                     <pems-related-table>
-                        <thead><tr><th>@L("EquipmentId")</th><th class="text-end">@L("InstalledQuantity")</th><th style="width:50px"><span class="visually-hidden">@Localizer["Ed_Actions"]</span></th></tr></thead>
+                        <thead><tr><th>@L("EquipmentId")</th><th class="text-end">@L("InstalledQuantity")</th><th class="pems-w-50"><span class="visually-hidden">@Localizer["Ed_Actions"]</span></th></tr></thead>
                         <tbody>
                         @foreach (var q in d.Equipment)
                         {
@@ -212,7 +212,7 @@
                 <pems-label>@L("Attributes") <span class="pc-req" aria-hidden="true">*</span></pems-label>
                 <div class="pc-table-scroll">
                     <pems-related-table id="pcAttrTable">
-                        <thead><tr><th style="width:34%">@L("AttributeName")</th><th>@L("AttributeValue")</th><th style="width:40px"></th></tr></thead>
+                        <thead><tr><th class="pems-w-34pct">@L("AttributeName")</th><th>@L("AttributeValue")</th><th class="pems-w-40"></th></tr></thead>
                         <tbody>
                             <tr>
                                 <td><input type="hidden" form="pcForm" name="Attributes[0].Name" value="@FftName" /><strong>@FftName</strong></td>

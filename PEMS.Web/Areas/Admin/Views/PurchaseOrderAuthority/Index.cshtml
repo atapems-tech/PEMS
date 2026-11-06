@@ -62,14 +62,14 @@
             <pems-list-table empty="@(Model.Count == 0)" empty-text="@Localizer["Po_NoRules"]">
                 <thead>
                     <tr>
-                        <th style="width:70px">@Localizer["Po_Level"]</th>
-                        <th style="width:90px">@Localizer["Po_Currency"]</th>
-                        <th style="width:140px" class="text-end">@Localizer["Po_From"]</th>
-                        <th style="width:140px" class="text-end">@Localizer["Po_To"]</th>
-                        <th style="width:170px">@Localizer["Po_ApproverRole"]</th>
+                        <th class="pems-w-70">@Localizer["Po_Level"]</th>
+                        <th class="pems-w-90">@Localizer["Po_Currency"]</th>
+                        <th class="text-end pems-w-140">@Localizer["Po_From"]</th>
+                        <th class="text-end pems-w-140">@Localizer["Po_To"]</th>
+                        <th class="pems-w-170">@Localizer["Po_ApproverRole"]</th>
                         <th>@Localizer["Ed_Description"]</th>
-                        <th style="width:110px">@Localizer["Ed_Status"]</th>
-                        <th style="width:60px"><span class="visually-hidden">@Localizer["Ed_Actions"]</span></th>
+                        <th class="pems-w-110">@Localizer["Ed_Status"]</th>
+                        <th class="pems-w-60"><span class="visually-hidden">@Localizer["Ed_Actions"]</span></th>
                     </tr>
                 </thead>
                 <tbody>

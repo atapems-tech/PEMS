@@ -163,7 +163,7 @@
                         {
                             <form asp-action="MarkDocumentsUpdated" method="post" class="d-flex gap-1">
                                 <input type="hidden" name="mocId" value="@Model.MOCId" />
-                                <pems-input scale="small" type="text" name="note" placeholder="@Localizer["یادداشت (اختیاری)"]" style="max-width:150px;" />
+                                <pems-input class="pems-maxw-150" scale="small" type="text" name="note" placeholder="@Localizer["یادداشت (اختیاری)"]" />
                                 <pems-button tone="success" size="small" outline="true" type="submit">@Localizer["تکمیل شد"]</pems-button>
                             </form>
                         }

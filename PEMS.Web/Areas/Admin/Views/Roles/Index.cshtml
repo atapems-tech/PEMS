@@ -50,14 +50,14 @@
             <pems-list-table grid-key="AdminRoles" empty="@(Model.Count == 0)" empty-text="@Localizer["RoL_Empty"]">
                 <thead>
                     <tr>
-                        <th data-col-key="role" data-resizable="true" data-min-width="140" data-max-width="320" style="width:200px">@Localizer["Role"]</th>
-                        <th data-col-key="domain" data-resizable="true" data-min-width="90" data-max-width="200" style="width:120px" class="vs-hide-md">@Localizer["Role_Domain"]</th>
-                        <th data-col-key="category" data-resizable="true" data-min-width="90" data-max-width="200" style="width:120px" class="vs-hide-md">@Localizer["Role_Category"]</th>
+                        <th class="pems-w-200" data-col-key="role" data-resizable="true" data-min-width="140" data-max-width="320">@Localizer["Role"]</th>
+                        <th data-col-key="domain" data-resizable="true" data-min-width="90" data-max-width="200" class="vs-hide-md pems-w-120">@Localizer["Role_Domain"]</th>
+                        <th data-col-key="category" data-resizable="true" data-min-width="90" data-max-width="200" class="vs-hide-md pems-w-120">@Localizer["Role_Category"]</th>
                         <th data-col-key="description" data-resizable="true" data-min-width="160" data-max-width="520">@Localizer["Ed_Description"]</th>
-                        <th data-col-key="users" data-resizable="true" data-min-width="70" data-max-width="120" style="width:90px" class="text-end">@Localizer["RoL_Users"]</th>
-                        <th data-col-key="authorization" data-resizable="true" data-min-width="120" data-max-width="240" style="width:170px">@Localizer["RoL_Authorization"]</th>
-                        <th data-col-key="type" data-resizable="true" data-min-width="80" data-max-width="140" style="width:100px">@Localizer["Ed_Type"]</th>
-                        <th data-col-key="actions" data-resizable="false" style="width:60px"><span class="visually-hidden">@Localizer["Ed_Actions"]</span></th>
+                        <th data-col-key="users" data-resizable="true" data-min-width="70" data-max-width="120" class="text-end pems-w-90">@Localizer["RoL_Users"]</th>
+                        <th class="pems-w-170" data-col-key="authorization" data-resizable="true" data-min-width="120" data-max-width="240">@Localizer["RoL_Authorization"]</th>
+                        <th class="pems-w-100" data-col-key="type" data-resizable="true" data-min-width="80" data-max-width="140">@Localizer["Ed_Type"]</th>
+                        <th class="pems-w-60" data-col-key="actions" data-resizable="false"><span class="visually-hidden">@Localizer["Ed_Actions"]</span></th>
                     </tr>
                 </thead>
                 <tbody>
