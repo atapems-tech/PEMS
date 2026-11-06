@@ -36,7 +36,7 @@
 
 <pems-content-card>
     <h6 class="mb-3">@Localizer["Vs_RecentImports"]</h6>
-    <div class="table-responsive table-scroll-area pems-s-8da1c6e6">
+    <pems-table-scroll css="table-scroll-area pems-s-8da1c6e6">
     <pems-table kind="enterprise">
         <thead><tr><th>@Localizer["Vs_File"]</th><th>@Localizer["Vs_Project"]</th><th>@Localizer["Vs_Date"]</th><th>@Localizer["Total"]</th><th>@Localizer["Vs_Valid"]</th><th>@Localizer["Vs_Warning"]</th><th>@Localizer["Vs_Error"]</th><th>@Localizer["Vs_Duplicate"]</th><th>@Localizer["Status"]</th><th></th></tr></thead>
         <tbody>
@@ -62,7 +62,7 @@
             }
         </tbody>
     </pems-table>
-    </div>
+    </pems-table-scroll>
     @if (!Model.Any()) { <p class="text-muted text-center py-4">@Localizer["Vs_NoImports"]</p> }
 </pems-content-card>
 

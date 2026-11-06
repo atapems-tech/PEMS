@@ -75,7 +75,7 @@
 </div>
 
 <pems-content-card>
-    <div class="table-responsive table-scroll-area pems-s-8da1c6e6">
+    <pems-table-scroll css="table-scroll-area pems-s-8da1c6e6">
         <pems-table kind="enterprise">
             <thead>
                 <tr>
@@ -131,7 +131,7 @@
                 }
             </tbody>
         </pems-table>
-    </div>
+    </pems-table-scroll>
     @if (!Model.Rows.Items.Any()) { <p class="text-muted text-center py-4">@Localizer["No rows match this filter."]</p> }
 
     @{

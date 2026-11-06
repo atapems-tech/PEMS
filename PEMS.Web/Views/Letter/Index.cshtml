@@ -391,11 +391,11 @@
                                     </pems-col>
                                 </pems-row>
                                 <div class="d-grid gap-2">
-                                    <div class="form-check"><pems-input type="checkbox" name="unread" value="true" id="fpUnread" checked="@unreadOnly" kind="check" /><label class="form-check-label" for="fpUnread">@Localizer["Lp_UnreadOnly"]</label></div>
-                                    <div class="form-check"><pems-input type="checkbox" name="overdueResponse" value="true" id="fltOverdueResponse" checked="@overdueResp" kind="check" /><label class="form-check-label" for="fltOverdueResponse">@Localizer["Lt_OverdueResponseOnly"]</label></div>
-                                    <div class="form-check"><pems-input type="checkbox" name="overdueReferral" value="true" id="fltOverdueReferral" checked="@overdueRef" kind="check" /><label class="form-check-label" for="fltOverdueReferral">@Localizer["Lt_OverdueReferralOnly"]</label></div>
-                                    <div class="form-check"><pems-input type="checkbox" name="hasAttachments" value="true" id="fpAtt" checked="@(hasAtt == true)" kind="check" /><label class="form-check-label" for="fpAtt">@Localizer["Lt_HasAttachments"]</label></div>
-                                    <div class="form-check"><pems-input type="checkbox" name="hasReferrals" value="true" id="fpRef" checked="@(hasRef == true)" kind="check" /><label class="form-check-label" for="fpRef">@Localizer["Lt_HasReferrals"]</label></div>
+                                    <pems-check-row><pems-input type="checkbox" name="unread" value="true" id="fpUnread" checked="@unreadOnly" kind="check" /><label class="form-check-label" for="fpUnread">@Localizer["Lp_UnreadOnly"]</label></pems-check-row>
+                                    <pems-check-row><pems-input type="checkbox" name="overdueResponse" value="true" id="fltOverdueResponse" checked="@overdueResp" kind="check" /><label class="form-check-label" for="fltOverdueResponse">@Localizer["Lt_OverdueResponseOnly"]</label></pems-check-row>
+                                    <pems-check-row><pems-input type="checkbox" name="overdueReferral" value="true" id="fltOverdueReferral" checked="@overdueRef" kind="check" /><label class="form-check-label" for="fltOverdueReferral">@Localizer["Lt_OverdueReferralOnly"]</label></pems-check-row>
+                                    <pems-check-row><pems-input type="checkbox" name="hasAttachments" value="true" id="fpAtt" checked="@(hasAtt == true)" kind="check" /><label class="form-check-label" for="fpAtt">@Localizer["Lt_HasAttachments"]</label></pems-check-row>
+                                    <pems-check-row><pems-input type="checkbox" name="hasReferrals" value="true" id="fpRef" checked="@(hasRef == true)" kind="check" /><label class="form-check-label" for="fpRef">@Localizer["Lt_HasReferrals"]</label></pems-check-row>
                                 </div>
                             </div>
                             <div class="lp-fp-foot">
@@ -438,10 +438,10 @@
                         <li class="px-3 pt-1 small text-muted">@Localizer["Lt_Columns"]</li>
                         @foreach (var col in new[] { ("priority", "Lt_Priority", settings.HiddenColumns.Contains("priority")), ("discipline", "Lt_Discipline", settings.HiddenColumns.Contains("discipline")), ("attachments", "Lt_ColAttachments", settings.HiddenColumns.Contains("attachments")), ("responseDue", "Lt_ColResponseDue", settings.HiddenColumns.Contains("responseDue")), ("lastActivity", "Lt_ColLastActivity", settings.HiddenColumns.Contains("lastActivity")) })
                         {
-                            <li class="form-check ms-3 me-3">
+                            <li><pems-check-row css="ms-3 me-3">
                                 <pems-input kind="check" type="checkbox" id="col_@col.Item1" data-col-toggle="@col.Item1" data-default-hidden="@(col.Item3 ? "true" : "false")" checked />
                                 <label class="form-check-label small" for="col_@col.Item1">@Localizer[col.Item2]</label>
-                            </li>
+                            </pems-check-row></li>
                         }
                         <li><button type="button" id="letterColumnsReset" class="dropdown-item small"><pems-icon name="bi-arrow-counterclockwise" aria-hidden="true" /> @Localizer["Reset columns"]</button></li>
                         <li><hr class="dropdown-divider" /></li>
@@ -576,7 +576,7 @@
                 }
             </form>
 
-            <div class="table-responsive pems-grid-scroll table-scroll-area lp-scroll">
+            <pems-table-scroll css="pems-grid-scroll table-scroll-area lp-scroll">
                 <pems-table kind="enterprise" css="pems-grid-table pems-compact-rows mb-0 lp-table" data-grid-key="Letter">
                     <thead>
                         <tr>
@@ -708,7 +708,7 @@
                         @if (chips.Count > 0) { <pems-button tone="neutral" size="small" outline="true" css="mt-2" as="a" href="@Without(filterKeys)">@Localizer["Lt_ClearAll"]</pems-button> }
                     </div>
                 }
-            </div>
+            </pems-table-scroll>
 
             <div class="lp-footer">
                 @await Html.PartialAsync("_Pagination", new PEMS.Web.ViewModels.PaginationViewModel
@@ -843,9 +843,9 @@
                                     <pems-select scale="small" id="ctSetPageSize"><option>20</option><option>50</option><option>100</option></pems-select>
                                 </pems-col>
                                 <pems-col span="12">
-                                    <div class="form-check"><pems-input kind="check" type="checkbox" id="ctSetPreview" /><label class="form-check-label" for="ctSetPreview">@Localizer["Ct_SetPreview"]</label></div>
-                                    <div class="form-check"><pems-input kind="check" type="checkbox" id="ctSetConfirmTrash" /><label class="form-check-label" for="ctSetConfirmTrash">@Localizer["Ct_SetConfirmTrash"]</label></div>
-                                    <div class="form-check"><pems-input kind="check" type="checkbox" id="ctSetMarkRead" /><label class="form-check-label" for="ctSetMarkRead">@Localizer["Ct_SetMarkRead"]</label></div>
+                                    <pems-check-row><pems-input kind="check" type="checkbox" id="ctSetPreview" /><label class="form-check-label" for="ctSetPreview">@Localizer["Ct_SetPreview"]</label></pems-check-row>
+                                    <pems-check-row><pems-input kind="check" type="checkbox" id="ctSetConfirmTrash" /><label class="form-check-label" for="ctSetConfirmTrash">@Localizer["Ct_SetConfirmTrash"]</label></pems-check-row>
+                                    <pems-check-row><pems-input kind="check" type="checkbox" id="ctSetMarkRead" /><label class="form-check-label" for="ctSetMarkRead">@Localizer["Ct_SetMarkRead"]</label></pems-check-row>
                                 </pems-col>
                             </pems-row>
                         </section>
@@ -855,7 +855,7 @@
                             <pems-row gap="2" css="mb-3">
                                 @foreach (var col in new[] { ("priority", "Lt_Priority"), ("discipline", "Lt_Discipline"), ("attachments", "Lt_ColAttachments"), ("responseDue", "Lt_ColResponseDue"), ("lastActivity", "Lt_ColLastActivity"), ("letterNo", "Letter No"), ("status", "Status"), ("date", "Date") })
                                 {
-                                    <pems-col sm="6" lg="4"><div class="form-check"><pems-input kind="check" type="checkbox" data-set-col="@col.Item1" id="ctSetCol_@col.Item1" /><label class="form-check-label" for="ctSetCol_@col.Item1">@Localizer[col.Item2]</label></div></pems-col>
+                                    <pems-col sm="6" lg="4"><pems-check-row><pems-input kind="check" type="checkbox" data-set-col="@col.Item1" id="ctSetCol_@col.Item1" /><label class="form-check-label" for="ctSetCol_@col.Item1">@Localizer[col.Item2]</label></pems-check-row></pems-col>
                                 }
                             </pems-row>
                             <pems-label css="small" for="ctSetFrozen">@Localizer["Ct_FrozenColumns"]</pems-label>

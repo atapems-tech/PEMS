@@ -72,10 +72,10 @@
             </pems-col>
         }
         <pems-col md="2">
-            <div class="form-check">
+            <pems-check-row>
                 <pems-input type="checkbox" id="f-archived" name="IncludeArchived" value="true" checked="@q.IncludeArchived" kind="check" />
                 <label class="form-check-label small" for="f-archived">@Localizer["Tm_IncludeArchived"]</label>
-            </div>
+            </pems-check-row>
         </pems-col>
         <input type="hidden" name="Sort" value="@q.Sort" />
         <input type="hidden" name="Descending" value="@(q.Descending ? "true" : "false")" />

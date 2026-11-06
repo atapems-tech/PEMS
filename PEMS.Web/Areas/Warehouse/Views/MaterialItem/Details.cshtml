@@ -53,8 +53,8 @@
     <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-barcode" type="button"><pems-icon name="bi-upc-scan" /> @Localizer["Barcode"]</button></li>
 </pems-nav>
 
-<div class="tab-content">
-    <div class="tab-pane fade show active" id="tab-stock" role="tabpanel">
+<pems-tab-content>
+    <pems-tab-pane fade="true" active="true" id="tab-stock" role="tabpanel">
         <pems-content-card>
             <pems-table kind="enterprise">
                 <thead><tr><th>@Localizer["Warehouse"]</th><th>@Localizer["Location"]</th><th>@Localizer["On Hand"]</th><th>Reserved</th><th>@Localizer["Available"]</th><th>@Localizer["Reorder Point"]</th><th></th></tr></thead>
@@ -78,11 +78,11 @@
             </pems-table>
             @if (!Model.Stocks.Any()) { <p class="text-muted text-center py-4">هنوز موجودی‌ای در هیچ انباری ثبت نشده.</p> }
         </pems-content-card>
-    </div>
+    </pems-tab-pane>
 
     @if (Model.SourceImports.Any())
     {
-        <div class="tab-pane fade" id="tab-source" role="tabpanel">
+        <pems-tab-pane fade="true" id="tab-source" role="tabpanel">
             <pems-content-card>
                 <p class="text-muted small">
                     این متریال از این ردیف(های) Excel ساخته/به‌روزرسانی شده - طبق پایه‌ی Metadata، هر بار Import یک رکورد
@@ -105,10 +105,10 @@
                     </tbody>
                 </pems-table>
             </pems-content-card>
-        </div>
+        </pems-tab-pane>
     }
 
-    <div class="tab-pane fade" id="tab-tx" role="tabpanel">
+    <pems-tab-pane fade="true" id="tab-tx" role="tabpanel">
         <pems-content-card>
             <pems-table kind="enterprise">
                 <thead><tr><th>@Localizer["Date"]</th><th>@Localizer["Type"]</th><th>@Localizer["Warehouse"]</th><th>@Localizer["Qty"]</th><th>@Localizer["Reference"]</th><th>By</th></tr></thead>
@@ -128,12 +128,12 @@
             </pems-table>
             @if (!Model.RecentTransactions.Any()) { <p class="text-muted text-center py-4">@Localizer["هنوز تراکنشی ثبت نشده."]</p> }
         </pems-content-card>
-    </div>
+    </pems-tab-pane>
 
-    <div class="tab-pane fade" id="tab-barcode" role="tabpanel">
+    <pems-tab-pane fade="true" id="tab-barcode" role="tabpanel">
         <partial name="_BarcodePanel" model="(PEMS.Web.Models.BarcodePanelViewModel)ViewBag.BarcodePanel" />
-    </div>
-</div>
+    </pems-tab-pane>
+</pems-tab-content>
 
 <pems-modal id="receiveStockModal" tabindex="-1">
         <form asp-action="ReceiveStock" method="post">
@@ -223,8 +223,8 @@
                     <pems-col md="4"><pems-label>@Localizer["Material Grade"]</pems-label><pems-input name="materialGrade" value="@Model.MaterialGrade" /></pems-col>
                 </pems-row>
                 <pems-flex gap="3">
-                    <div class="form-check"><pems-input type="checkbox" name="isStockItem" value="true" checked="@Model.IsStockItem" id="editIsStockItem" kind="check" /><label class="form-check-label" for="editIsStockItem">@Localizer["Stock Item"]</label></div>
-                    <div class="form-check"><pems-input type="checkbox" name="isCritical" value="true" checked="@Model.IsCritical" id="editIsCritical" kind="check" /><label class="form-check-label" for="editIsCritical">@Localizer["Critical Spare"]</label></div>
+                    <pems-check-row><pems-input type="checkbox" name="isStockItem" value="true" checked="@Model.IsStockItem" id="editIsStockItem" kind="check" /><label class="form-check-label" for="editIsStockItem">@Localizer["Stock Item"]</label></pems-check-row>
+                    <pems-check-row><pems-input type="checkbox" name="isCritical" value="true" checked="@Model.IsCritical" id="editIsCritical" kind="check" /><label class="form-check-label" for="editIsCritical">@Localizer["Critical Spare"]</label></pems-check-row>
                 </pems-flex>
             </div>
             <div class="modal-footer">

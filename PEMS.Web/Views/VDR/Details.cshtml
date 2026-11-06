@@ -123,10 +123,16 @@
     </li>
 </pems-nav>
 
-<div class="tab-content">
+@{
+    var comments = (List<PEMS.Application.DTOs.VDRCommentDto>)ViewBag.Comments;
+    var latestSubmissionWithFile = Model.Submissions.OrderByDescending(s => s.RevisionNo)
+        .FirstOrDefault(s => !string.IsNullOrEmpty(s.MainFilePath) && s.MainFilePath.EndsWith(".pdf", StringComparison.OrdinalIgnoreCase));
+}
+
+<pems-tab-content>
 
 @* ===================== Overview ===================== *@
-<div class="tab-pane fade @(vdrDefaultTab == "overview" ? "show active" : "")" id="tab-overview" role="tabpanel">
+<pems-tab-pane fade="true" css="@(vdrDefaultTab == "overview" ? "show active" : "")" id="tab-overview" role="tabpanel">
 <div class="vs-panel">
     <div class="vs-panel__body">
         <pems-info-grid>
@@ -190,10 +196,10 @@
         </pems-button>
     </form>
 </pems-content-card>
-</div>
+</pems-tab-pane>
 
 @* ===================== Submissions ===================== *@
-<div class="tab-pane fade" id="tab-submissions" role="tabpanel">
+<pems-tab-pane fade="true" id="tab-submissions" role="tabpanel">
 <pems-content-card css="mb-3">
     <h6 class="mb-3">@Localizer["Vd_SubHistory"]</h6>
     <pems-related-table>
@@ -287,16 +293,12 @@
     </pems-related-table>
     @if (!Model.Submissions.Any()) { <p class="text-muted">@Localizer["Vd_NoSubmissions"]</p> }
 </pems-content-card>
-</div>
+</pems-tab-pane>
 
 @* ===================== Comments (شامل PDF Viewer) ===================== *@
-<div class="tab-pane fade" id="tab-comments" role="tabpanel">
+<pems-tab-pane fade="true" id="tab-comments" role="tabpanel">
 
-@{
-    var comments = (List<PEMS.Application.DTOs.VDRCommentDto>)ViewBag.Comments;
-    var latestSubmissionWithFile = Model.Submissions.OrderByDescending(s => s.RevisionNo)
-        .FirstOrDefault(s => !string.IsNullOrEmpty(s.MainFilePath) && s.MainFilePath.EndsWith(".pdf", StringComparison.OrdinalIgnoreCase));
-}
+
 
 @if (latestSubmissionWithFile != null)
 {
@@ -476,7 +478,7 @@
         </pems-button>
     }
 </pems-content-card>
-</div>
+</pems-tab-pane>
 @* پایان تب Comments - مدال‌های زیر مستقل از تب فعال همیشه در دسترس‌اند *@
 
 @* طبق درخواست: افزودن کامنت به‌صورت Popup تا کاربر از صفحه‌ی اصلی خارج نشود *@
@@ -559,7 +561,7 @@
 }
 
 @* ===================== Workflow (اکشن‌ها + تاریخچه‌ی واقعی) ===================== *@
-<div class="tab-pane fade @(vdrDefaultTab == "workflow" ? "show active" : "")" id="tab-workflow" role="tabpanel">
+<pems-tab-pane fade="true" css="@(vdrDefaultTab == "workflow" ? "show active" : "")" id="tab-workflow" role="tabpanel">
 <section class="vs-panel mb-3" aria-labelledby="vdrStagesTitle">
     <div class="vs-panel__body">
         <h2 id="vdrStagesTitle" class="vs-section__title">@Localizer["Vd_ReviewStages"]</h2>
@@ -604,12 +606,12 @@
                             <pems-col md="6">
                                 <pems-label for="vdrTransmittal">@Localizer["Vd_VendorTransmittalReq"] <span class="text-danger" aria-hidden="true">*</span></pems-label>
                                 <pems-input id="vdrTransmittal" name="vendorTransmittalNo" required autocomplete="off" aria-describedby="vdrTransmittalHelp" />
-                                <div id="vdrTransmittalHelp" class="form-text">@Localizer["Vd_TransmittalHelp"]</div>
+                                <pems-help-text id="vdrTransmittalHelp">@Localizer["Vd_TransmittalHelp"]</pems-help-text>
                             </pems-col>
                             <pems-col md="6">
                                 <pems-label for="vdrIssuedDate">@Localizer["Vd_VendorIssuedDate"]</pems-label>
                                 <pems-date id="vdrIssuedDate" name="vendorActualIssuedDate" aria-describedby="vdrIssuedHelp" />
-                                <div id="vdrIssuedHelp" class="form-text">@Localizer["Vd_IssuedDateHelp"]</div>
+                                <pems-help-text id="vdrIssuedHelp">@Localizer["Vd_IssuedDateHelp"]</pems-help-text>
                             </pems-col>
                             <pems-col md="6">
                                 <pems-label for="vdrPoi">@Localizer["Vd_PoiFull"]</pems-label>
@@ -622,12 +624,12 @@
                                     <option value="AB">AB @Localizer["Vd_LegacyTag"]</option>
                                     <option value="AFD">AFD @Localizer["Vd_LegacyTag"]</option>
                                 </pems-select>
-                                <div id="vdrPoiHelp" class="form-text">@Localizer["Vd_PoiHelp"]</div>
+                                <pems-help-text id="vdrPoiHelp">@Localizer["Vd_PoiHelp"]</pems-help-text>
                             </pems-col>
                             <pems-col md="6">
                                 <pems-label as="span" css="d-block" id="vdrRevLabel">@Localizer["Vd_Rev"]</pems-label>
                                 <div class="pems-readonly-field" aria-labelledby="vdrRevLabel" aria-describedby="vdrRevHelp">@nextRevisionNo</div>
-                                <div id="vdrRevHelp" class="form-text">@Localizer["Vd_SystemSetRev"]</div>
+                                <pems-help-text id="vdrRevHelp">@Localizer["Vd_SystemSetRev"]</pems-help-text>
                             </pems-col>
                         </pems-row>
                     </div>
@@ -648,10 +650,10 @@
                                 @foreach (var d in allDisciplinesForStart)
                                 {
                                     <pems-col span="6" md="4">
-                                        <div class="form-check">
+                                        <pems-check-row>
                                             <pems-input kind="check" type="checkbox" name="disciplineIds" value="@d.DisciplineId" id="vdrDisc_@d.DisciplineId" data-name="@d.Name" />
                                             <label class="form-check-label small" for="vdrDisc_@d.DisciplineId">@d.Name</label>
-                                        </div>
+                                        </pems-check-row>
                                     </pems-col>
                                 }
                             </pems-row>
@@ -809,10 +811,10 @@ else
         <p class="text-muted text-center py-4 mb-0">@Localizer["Vd_NoWorkflowYet"]</p>
     }
 </pems-content-card>
-</div>
+</pems-tab-pane>
 
 @* ===================== Correspondence ===================== *@
-<div class="tab-pane fade" id="tab-correspondence" role="tabpanel">
+<pems-tab-pane fade="true" id="tab-correspondence" role="tabpanel">
 <pems-content-card>
     <h6 class="mb-3"><pems-icon name="bi-envelope-paper" /> @Localizer["Vd_RelatedCorr"]</h6>
     @if (relatedLetters.Any())
@@ -839,9 +841,9 @@ else
         <p class="text-muted text-center py-4 mb-0">@Localizer["Vd_NoCorr"]</p>
     }
 </pems-content-card>
-</div>
+</pems-tab-pane>
 
-</div>
+</pems-tab-content>
 @* پایان tab-content *@
 
 </pems-page-shell>

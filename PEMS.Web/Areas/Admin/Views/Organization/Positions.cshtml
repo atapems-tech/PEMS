@@ -57,7 +57,7 @@
         <button class="vs-btn vs-btn--sm"><pems-icon name="bi-funnel" /> @Localizer["Org_Filter_Apply"]</button>
     </pems-flex></form>
 
-    <div class="table-responsive">
+    <pems-table-scroll>
         <pems-table scale="small" css="table-enterprise align-middle">
             <thead><tr><th>@Localizer["Org_Col_Code"]</th><th>@Localizer["Org_Col_Position"]</th><th>@Localizer["Org_Col_Department"]</th><th>@Localizer["Org_Col_Parent"]</th><th>@Localizer["Org_Col_Holder"]</th><th>@Localizer["Org_Col_Lifecycle"]</th><th></th></tr></thead>
             <tbody>
@@ -94,5 +94,5 @@
             </tbody>
         </pems-table>
         @if (!Model.Any()) { <div class="vs-empty">@Localizer["Org_Empty"]</div> }
-    </div>
+    </pems-table-scroll>
 </pems-page-shell>

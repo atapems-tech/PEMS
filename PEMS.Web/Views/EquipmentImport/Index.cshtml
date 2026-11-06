@@ -54,7 +54,7 @@
 
 <pems-content-card>
     <h6 class="mb-3">@Localizer["Recent Import Batches"]</h6>
-    <div class="table-responsive table-scroll-area pems-s-8da1c6e6">
+    <pems-table-scroll css="table-scroll-area pems-s-8da1c6e6">
     <pems-table kind="enterprise">
         <thead><tr><th>@Localizer["File"]</th><th>@Localizer["Project"]</th><th>@Localizer["Date"]</th><th>Rows</th><th>@Localizer["New"]</th><th>Updates</th><th>@Localizer["Status"]</th><th></th></tr></thead>
         <tbody>
@@ -78,6 +78,6 @@
             }
         </tbody>
     </pems-table>
-    </div>
+    </pems-table-scroll>
     @if (!Model.Any()) { <p class="text-muted text-center py-4">No equipment imports yet.</p> }
 </pems-content-card>

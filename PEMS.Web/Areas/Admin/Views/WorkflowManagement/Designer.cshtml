@@ -130,7 +130,7 @@
                     <h6 class="mb-0">@Localizer["Stages"]</h6>
                     @if (edit) { <pems-button as="a" tone="primary" size="small" outline="true" asp-action="Designer" asp-route-versionId="@Model.VersionId" asp-route-addStage="true"><pems-icon name="bi-plus-lg" /> @Localizer["Add stage"]</pems-button> }
                 </pems-flex>
-                <div class="table-responsive"><pems-table scale="small" css="align-middle mb-0">
+                <pems-table-scroll><pems-table scale="small" css="align-middle mb-0">
                     <thead><tr><th>#</th><th>@Localizer["Name"]</th><th>@Localizer["Persian name"]</th><th>@Localizer["Business status"]</th><th>@Localizer["Responsible role"]</th><th>@Localizer["Responsible employee"]</th></tr></thead>
                     <tbody>
                     @foreach (var s in Model.Stages)
@@ -142,7 +142,7 @@
                             <td class="small">@(s.ResponsibleEmployeeId.HasValue ? (employeeMap.FirstOrDefault(e => e.Id == s.ResponsibleEmployeeId).Name ?? "#" + s.ResponsibleEmployeeId) : "")</td>
                         </tr>
                     }
-                    </tbody></pems-table></div>
+                    </tbody></pems-table></pems-table-scroll>
             </pems-content-card>
 
             <pems-content-card css="mt-3">
@@ -150,7 +150,7 @@
                     <h6 class="mb-0">@Localizer["Transitions"]</h6>
                     @if (edit) { <pems-button as="a" tone="primary" size="small" outline="true" asp-action="Designer" asp-route-versionId="@Model.VersionId" asp-route-addTransition="true"><pems-icon name="bi-plus-lg" /> @Localizer["Add transition"]</pems-button> }
                 </pems-flex>
-                <div class="table-responsive"><pems-table scale="small" css="align-middle mb-0">
+                <pems-table-scroll><pems-table scale="small" css="align-middle mb-0">
                     <thead><tr><th>@Localizer["From"]</th><th>@Localizer["To"]</th><th>@Localizer["Action"]</th><th>@Localizer["Label"]</th><th>@Localizer["Required permission"]</th></tr></thead>
                     <tbody>
                     @foreach (var t in Model.Transitions)
@@ -163,7 +163,7 @@
                             <td class="small">@t.RequiredPermission</td>
                         </tr>
                     }
-                    </tbody></pems-table></div>
+                    </tbody></pems-table></pems-table-scroll>
             </pems-content-card>
         </pems-col>
 
@@ -196,7 +196,7 @@
                                 <pems-select scale="small" name="stage.ApprovalStrategy">@foreach (var o in new[] { "AllApprovalsRequired", "MandatoryRolesOnly", "MinimumCount", "FirstResponse" }) { <option value="@o" selected="@(stageForm.ApprovalStrategy == o)">@o</option> }</pems-select></pems-col>
                             <pems-col span="6"><label>@Localizer["Minimum approvals"]</label><pems-input scale="small" name="stage.MinimumApprovalCount" type="number" min="1" value="@stageForm.MinimumApprovalCount" /></pems-col>
                             <pems-col span="6"><label>@Localizer["Timeout (hours)"]</label><pems-input scale="small" name="stage.TimeoutHours" type="number" min="1" value="@stageForm.TimeoutHours" /></pems-col>
-                            <pems-col span="12"><div class="form-check"><pems-input type="checkbox" name="stage.IsMandatory" value="true" checked="@stageForm.IsMandatory" id="stMand" kind="check" /><input type="hidden" name="stage.IsMandatory" value="false" /><label class="form-check-label" for="stMand">@Localizer["Mandatory"]</label></div></pems-col>
+                            <pems-col span="12"><pems-check-row><pems-input type="checkbox" name="stage.IsMandatory" value="true" checked="@stageForm.IsMandatory" id="stMand" kind="check" /><input type="hidden" name="stage.IsMandatory" value="false" /><label class="form-check-label" for="stMand">@Localizer["Mandatory"]</label></pems-check-row></pems-col>
                             <pems-col span="12"><label>@Localizer["Description"]</label><pems-input scale="small" name="stage.Description" value="@stageForm.Description" /></pems-col>
                         </pems-row></fieldset>
                         @if (edit) { <pems-col span="12"><pems-button tone="primary" size="small">@Localizer["Save stage"]</pems-button></pems-col> }
@@ -231,7 +231,7 @@
                                 <pems-input scale="small" name="transition.RequiredPermission" list="wfPerms" value="@trForm.RequiredPermission" placeholder="Resource.Action" />
                                 <datalist id="wfPerms">@foreach (var p in Model.Permissions) { <option value="@p"></option> }</datalist></pems-col>
                             <pems-col span="12"><label>@Localizer["Condition"]</label><pems-input scale="small" name="transition.ConditionExpression" value="@trForm.ConditionExpression" /></pems-col>
-                            <pems-col span="12"><div class="form-check"><pems-input type="checkbox" name="transition.ForbidInitiator" value="true" checked="@trForm.ForbidInitiator" id="trForbid" kind="check" /><input type="hidden" name="transition.ForbidInitiator" value="false" /><label class="form-check-label" for="trForbid">@Localizer["Initiator cannot perform this action"]</label></div></pems-col>
+                            <pems-col span="12"><pems-check-row><pems-input type="checkbox" name="transition.ForbidInitiator" value="true" checked="@trForm.ForbidInitiator" id="trForbid" kind="check" /><input type="hidden" name="transition.ForbidInitiator" value="false" /><label class="form-check-label" for="trForbid">@Localizer["Initiator cannot perform this action"]</label></pems-check-row></pems-col>
                         </pems-row></fieldset>
                         @if (edit) { <pems-col span="12"><pems-button tone="primary" size="small">@Localizer["Save transition"]</pems-button></pems-col> }
                     </pems-row></form>

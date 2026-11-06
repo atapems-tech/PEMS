@@ -62,7 +62,7 @@
         }
         else
         {
-        <div class="table-responsive">
+        <pems-table-scroll>
             <pems-table kind="enterprise" scale="small" css="align-middle">
                 <thead>
                     <tr>
@@ -105,7 +105,7 @@
                                     <pems-col md="2"><pems-label>@Localizer["Po_Quantity"]</pems-label><pems-input scale="small" name="quantity" type="number" step="any" min="0" dir="ltr" value="@l.Quantity.ToString(System.Globalization.CultureInfo.InvariantCulture)" /></pems-col>
                                     <pems-col md="2"><pems-label>@Localizer["Po_UnitPrice"]</pems-label><pems-input scale="small" name="unitPrice" type="number" step="any" min="0" dir="ltr" value="@l.UnitPrice.ToString(System.Globalization.CultureInfo.InvariantCulture)" /></pems-col>
                                     <pems-col md="2"><pems-label>@Localizer["Po_RequiredDate"]</pems-label><pems-date name="requiredDate" dir="ltr" value="@l.RequiredDate?.ToString("yyyy-MM-dd")" scale="small" /></pems-col>
-                                    <pems-col md="2"><div class="form-check mt-4"><pems-input type="checkbox" name="isStockLine" value="true" id="stock_@l.PurchaseOrderLineId" checked="@l.IsStockLine" kind="check" /><label class="form-check-label" for="stock_@l.PurchaseOrderLineId">@Localizer["Po_StockLine"]</label></div></pems-col>
+                                    <pems-col md="2"><pems-check-row css="mt-4"><pems-input type="checkbox" name="isStockLine" value="true" id="stock_@l.PurchaseOrderLineId" checked="@l.IsStockLine" kind="check" /><label class="form-check-label" for="stock_@l.PurchaseOrderLineId">@Localizer["Po_StockLine"]</label></pems-check-row></pems-col>
                                     <pems-col md="2"><pems-label>@Localizer["Rcv_DeliveryWarehouse"]</pems-label>
                                         <pems-select scale="small" name="warehouseId"><option value="">—</option>@foreach (var w in warehouses) { <option value="@w.WarehouseId" selected="@(w.WarehouseId == l.WarehouseId)">@w.Code</option> }</pems-select></pems-col>
                                     @if (!l.IsCatalogued)
@@ -123,7 +123,7 @@
                 </tbody>
                 <tfoot><tr><th colspan="4" class="text-end">@Localizer["Po_Total"]</th><th class="text-end" dir="ltr">@a.Total.ToString("N2") @a.Currency</th><th colspan="2"></th></tr></tfoot>
             </pems-table>
-        </div>
+        </pems-table-scroll>
         }
 
         @if (isDraft && canEdit && requisitions?.Count > 0)
@@ -185,7 +185,7 @@
     <pems-content-card css="mt-3">
         <h6 class="mb-2"><pems-icon name="bi-box-arrow-in-down" aria-hidden="true" /> @Localizer["Rcv_Receiving"]</h6>
         <p class="small text-muted">@Localizer["Rcv_ReceivingHelp"]</p>
-        <div class="table-responsive">
+        <pems-table-scroll>
             <pems-table kind="enterprise" scale="small" css="align-middle">
                 <thead>
                     <tr>
@@ -229,6 +229,6 @@
                 }
                 </tbody>
             </pems-table>
-        </div>
+        </pems-table-scroll>
     </pems-content-card>
 }

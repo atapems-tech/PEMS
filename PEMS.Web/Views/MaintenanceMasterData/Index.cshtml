@@ -103,8 +103,8 @@
     </li>
 </pems-nav>
 
-<div class="tab-content">
-    <div class="tab-pane fade show active" id="tab-groups" role="tabpanel">
+<pems-tab-content>
+    <pems-tab-pane fade="true" active="true" id="tab-groups" role="tabpanel">
         <pems-content-card>
             <pems-flex justify="between" align="center" css="mb-3">
                 <p class="text-muted small mb-0">
@@ -139,9 +139,9 @@
             </pems-table>
             @if (!Model.Any()) { <p class="text-muted text-center py-4">هنوز گروه تعمیراتی‌ای ساخته نشده.</p> }
         </pems-content-card>
-    </div>
+    </pems-tab-pane>
 
-    <div class="tab-pane fade" id="tab-skills" role="tabpanel">
+    <pems-tab-pane fade="true" id="tab-skills" role="tabpanel">
         <pems-content-card>
             <pems-flex justify="between" align="center" css="mb-3">
                 <p class="text-muted small mb-0">
@@ -174,9 +174,9 @@
             </pems-table>
             @if (!skills.Any()) { <p class="text-muted text-center py-4">@Localizer["هنوز مهارتی ساخته نشده."]</p> }
         </pems-content-card>
-    </div>
+    </pems-tab-pane>
 
-    <div class="tab-pane fade" id="tab-qualifications" role="tabpanel">
+    <pems-tab-pane fade="true" id="tab-qualifications" role="tabpanel">
         <pems-content-card>
             <pems-flex justify="between" align="center" css="mb-3">
                 <p class="text-muted small mb-0">
@@ -208,9 +208,9 @@
             </pems-table>
             @if (!qualifications.Any()) { <p class="text-muted text-center py-4">هنوز صلاحیتی ساخته نشده.</p> }
         </pems-content-card>
-    </div>
+    </pems-tab-pane>
 
-    <div class="tab-pane fade" id="tab-certifications" role="tabpanel">
+    <pems-tab-pane fade="true" id="tab-certifications" role="tabpanel">
         <pems-content-card>
             <pems-flex justify="between" align="center" css="mb-3">
                 <p class="text-muted small mb-0">
@@ -242,9 +242,9 @@
             </pems-table>
             @if (!certifications.Any()) { <p class="text-muted text-center py-4">هنوز گواهینامه‌ای ساخته نشده.</p> }
         </pems-content-card>
-    </div>
+    </pems-tab-pane>
 
-    <div class="tab-pane fade" id="tab-maintenance-types" role="tabpanel">
+    <pems-tab-pane fade="true" id="tab-maintenance-types" role="tabpanel">
         <pems-content-card>
             <pems-flex justify="between" align="center" css="mb-3">
                 <p class="text-muted small mb-0">
@@ -278,9 +278,9 @@
             </pems-table>
             @if (!maintenanceTypes.Any()) { <p class="text-muted text-center py-4">هنوز Maintenance Type ای ساخته نشده.</p> }
         </pems-content-card>
-    </div>
+    </pems-tab-pane>
 
-    <div class="tab-pane fade" id="tab-strategy-types" role="tabpanel">
+    <pems-tab-pane fade="true" id="tab-strategy-types" role="tabpanel">
         <pems-content-card>
             <pems-flex justify="between" align="center" css="mb-3">
                 <p class="text-muted small mb-0">
@@ -314,9 +314,9 @@
             </pems-table>
             @if (!strategyTypes.Any()) { <p class="text-muted text-center py-4">هنوز Strategy Type ای ساخته نشده.</p> }
         </pems-content-card>
-    </div>
+    </pems-tab-pane>
 
-    <div class="tab-pane fade" id="tab-equipment-classes" role="tabpanel">
+    <pems-tab-pane fade="true" id="tab-equipment-classes" role="tabpanel">
         <pems-content-card>
             <pems-flex justify="between" align="center" css="mb-3">
                 <p class="text-muted small mb-0">
@@ -350,9 +350,9 @@
             </pems-table>
             @if (!equipmentClasses.Any()) { <p class="text-muted text-center py-4">هنوز Equipment Class ای ساخته نشده.</p> }
         </pems-content-card>
-    </div>
+    </pems-tab-pane>
 
-    <div class="tab-pane fade" id="tab-standards" role="tabpanel">
+    <pems-tab-pane fade="true" id="tab-standards" role="tabpanel">
         <pems-content-card>
             <pems-flex justify="between" align="center" css="mb-3">
                 <p class="text-muted small mb-0">
@@ -388,9 +388,9 @@
             </pems-table>
             @if (!standardReferences.Any()) { <p class="text-muted text-center py-4">هنوز Standard Reference ای ساخته نشده.</p> }
         </pems-content-card>
-    </div>
+    </pems-tab-pane>
 
-    <div class="tab-pane fade" id="tab-activities" role="tabpanel">
+    <pems-tab-pane fade="true" id="tab-activities" role="tabpanel">
         <pems-content-card>
             <pems-flex justify="between" align="center" css="mb-3">
                 <p class="text-muted small mb-0">
@@ -425,9 +425,9 @@
             </pems-table>
             @if (!maintenanceActivities.Any()) { <p class="text-muted text-center py-4">هنوز Activity ای ساخته نشده.</p> }
         </pems-content-card>
-    </div>
+    </pems-tab-pane>
 
-    <div class="tab-pane fade" id="tab-failure-modes" role="tabpanel">
+    <pems-tab-pane fade="true" id="tab-failure-modes" role="tabpanel">
         <pems-content-card>
             <p class="text-muted small mb-3">
                 طبق ISO 14224 - خط‌مبنای Failure Mode به‌ازای خانواده‌ی تجهیز (Equipment Class)؛
@@ -458,9 +458,9 @@
             </pems-table>
             @if (!failureModes.Any()) { <p class="text-muted text-center py-4">هنوز Failure Mode ای Seed نشده.</p> }
         </pems-content-card>
-    </div>
+    </pems-tab-pane>
 
-    <div class="tab-pane fade" id="tab-pm-templates" role="tabpanel">
+    <pems-tab-pane fade="true" id="tab-pm-templates" role="tabpanel">
         <pems-content-card>
             <p class="text-muted small mb-3">
                 قالب‌های نگهداری پیشگیرانه‌ی قابل‌استفاده‌ی مجدد، مقیاس‌بندی‌شده روی Equipment
@@ -491,9 +491,9 @@
             </pems-table>
             @if (!pmTemplates.Any()) { <p class="text-muted text-center py-4">هنوز PM Template ای Seed نشده.</p> }
         </pems-content-card>
-    </div>
+    </pems-tab-pane>
 
-    <div class="tab-pane fade" id="tab-evaluation-profiles" role="tabpanel">
+    <pems-tab-pane fade="true" id="tab-evaluation-profiles" role="tabpanel">
         <pems-content-card>
             <pems-flex justify="between" align="center" css="mb-3">
                 <p class="text-muted small mb-0">
@@ -548,9 +548,9 @@
             </pems-table>
             @if (!evaluationProfiles.Any()) { <p class="text-muted text-center py-4">@Localizer["هنوز Evaluation Profile ای ساخته نشده."]</p> }
         </pems-content-card>
-    </div>
+    </pems-tab-pane>
 
-    <div class="tab-pane fade" id="tab-priority-mappings" role="tabpanel">
+    <pems-tab-pane fade="true" id="tab-priority-mappings" role="tabpanel">
         <pems-content-card>
             <pems-flex justify="between" align="center" css="mb-3">
                 <p class="text-muted small mb-0">
@@ -592,8 +592,8 @@
             </pems-table>
             @if (!conditionPriorityMappings.Any()) { <p class="text-muted text-center py-4">@Localizer["هنوز نگاشتی ساخته نشده."]</p> }
         </pems-content-card>
-    </div>
-</div>
+    </pems-tab-pane>
+</pems-tab-content>
 
 <pems-modal id="createPriorityMappingModal" tabindex="-1">
         <form asp-action="CreateConditionPriorityMapping" method="post">

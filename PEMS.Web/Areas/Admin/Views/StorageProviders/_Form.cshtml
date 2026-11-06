@@ -49,22 +49,22 @@
             <pems-input asp-for="BaseUrl" />
         </pems-col>
         <pems-col md="3" css="ftp-field">
-            <div class="form-check mt-4"><pems-input kind="check" asp-for="UseSsl" /><label class="form-check-label" asp-for="UseSsl">Use SSL/TLS</label></div>
+            <pems-check-row css="mt-4"><pems-input kind="check" asp-for="UseSsl" /><label class="form-check-label" asp-for="UseSsl">Use SSL/TLS</label></pems-check-row>
         </pems-col>
         <pems-col md="3" css="ftp-field">
-            <div class="form-check mt-4"><pems-input kind="check" asp-for="UsePassiveMode" /><label class="form-check-label" asp-for="UsePassiveMode">@Localizer["Passive Mode"]</label></div>
+            <pems-check-row css="mt-4"><pems-input kind="check" asp-for="UsePassiveMode" /><label class="form-check-label" asp-for="UsePassiveMode">@Localizer["Passive Mode"]</label></pems-check-row>
         </pems-col>
         <pems-col md="2">
-            <div class="form-check mt-4"><pems-input kind="check" asp-for="AllowRead" /><label class="form-check-label" asp-for="AllowRead">@Localizer["Allow Read"]</label></div>
+            <pems-check-row css="mt-4"><pems-input kind="check" asp-for="AllowRead" /><label class="form-check-label" asp-for="AllowRead">@Localizer["Allow Read"]</label></pems-check-row>
         </pems-col>
         <pems-col md="2">
-            <div class="form-check mt-4"><pems-input kind="check" asp-for="AllowWrite" /><label class="form-check-label" asp-for="AllowWrite">Allow Write</label></div>
+            <pems-check-row css="mt-4"><pems-input kind="check" asp-for="AllowWrite" /><label class="form-check-label" asp-for="AllowWrite">Allow Write</label></pems-check-row>
         </pems-col>
         <pems-col md="2">
-            <div class="form-check mt-4"><pems-input kind="check" asp-for="AllowDelete" /><label class="form-check-label" asp-for="AllowDelete">Allow Delete</label></div>
+            <pems-check-row css="mt-4"><pems-input kind="check" asp-for="AllowDelete" /><label class="form-check-label" asp-for="AllowDelete">Allow Delete</label></pems-check-row>
         </pems-col>
         <pems-col md="3">
-            <div class="form-check mt-4"><pems-input kind="check" asp-for="IsEnabled" /><label class="form-check-label" asp-for="IsEnabled">@Localizer["Enabled"]</label></div>
+            <pems-check-row css="mt-4"><pems-input kind="check" asp-for="IsEnabled" /><label class="form-check-label" asp-for="IsEnabled">@Localizer["Enabled"]</label></pems-check-row>
         </pems-col>
     </pems-row>
     <pems-flex gap="2" css="mt-4">

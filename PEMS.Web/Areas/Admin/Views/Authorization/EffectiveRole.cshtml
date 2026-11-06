@@ -41,7 +41,7 @@
         else
         {
             <div class="admin-toolbar mb-2"><div class="admin-toolbar-main"><span class="text-body-secondary small">@Model.AllowedCount / @Model.Rows.Count @Localizer["permissions allowed"] - <strong>@Model.SelectedRole</strong></span></div></div>
-            <div class="table-responsive">
+            <pems-table-scroll>
                 <pems-table kind="enterprise">
                     <thead><tr><th>@Localizer["Resource"]</th><th>@Localizer["Action"]</th><th>@Localizer["Permission"]</th><th>@Localizer["Status"]</th><th>@Localizer["Destructive"]</th></tr></thead>
                     <tbody>
@@ -57,10 +57,10 @@
                     }
                     </tbody>
                 </pems-table>
-            </div>
+            </pems-table-scroll>
             <details class="mt-3">
                 <summary class="text-body-secondary small">@Localizer["Show not-granted permissions"] (@(Model.Rows.Count - Model.AllowedCount))</summary>
-                <div class="table-responsive mt-2">
+                <pems-table-scroll css="mt-2">
                     <pems-table kind="enterprise">
                         <thead><tr><th>@Localizer["Resource"]</th><th>@Localizer["Action"]</th><th>@Localizer["Permission"]</th><th>@Localizer["Status"]</th></tr></thead>
                         <tbody>
@@ -75,7 +75,7 @@
                         }
                         </tbody>
                     </pems-table>
-                </div>
+                </pems-table-scroll>
             </details>
         }
     </pems-content-card>

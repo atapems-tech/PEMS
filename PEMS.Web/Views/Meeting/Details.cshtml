@@ -43,7 +43,7 @@
 
 <pems-content-card css="mb-3">
     <h6 class="mb-3">@Localizer["Attendees"]</h6>
-    <div class="table-responsive table-scroll-area pems-s-8da1c6e6">
+    <pems-table-scroll css="table-scroll-area pems-s-8da1c6e6">
     <pems-table kind="enterprise">
         <thead><tr><th>@Localizer["Name"]</th><th>Required</th><th>Attended</th></tr></thead>
         <tbody>
@@ -66,7 +66,7 @@
             }
         </tbody>
     </pems-table>
-    </div>
+    </pems-table-scroll>
     @if (!Model.Attendees.Any()) { <p class="text-muted small">No attendees added yet.</p> }
 
     <form asp-action="AddAttendee" method="post"><pems-row gap="2" css="mt-2">
@@ -84,7 +84,7 @@
 
 <pems-content-card>
     <h6 class="mb-3">@Localizer["Action Items"]</h6>
-    <div class="table-responsive table-scroll-area pems-s-8da1c6e6">
+    <pems-table-scroll css="table-scroll-area pems-s-8da1c6e6">
     <pems-table kind="enterprise">
         <thead><tr><th>@Localizer["Title"]</th><th>@Localizer["Assigned To"]</th><th>@Localizer["Due"]</th><th>@Localizer["Status"]</th></tr></thead>
         <tbody>
@@ -99,7 +99,7 @@
             }
         </tbody>
     </pems-table>
-    </div>
+    </pems-table-scroll>
     @if (!Model.ActionItems.Any()) { <p class="text-muted small">No action items yet.</p> }
 
     <form asp-action="AddActionItem" method="post"><pems-row gap="2" css="mt-2">

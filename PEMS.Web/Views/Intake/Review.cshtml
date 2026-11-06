@@ -41,7 +41,7 @@
                     @foreach (var m in modules)
                     { <option value="@m" selected="@(m == Model.SuggestedTargetModule)">@m</option> }
                 </pems-select>
-                <div class="form-text">AI suggested: <strong>@Model.SuggestedTargetModule</strong></div>
+                <pems-help-text>AI suggested: <strong>@Model.SuggestedTargetModule</strong></pems-help-text>
             </pems-col>
             <pems-col md="4">
                 <pems-label>@Localizer["Category"]</pems-label>
@@ -59,7 +59,7 @@
                     { <option value="@p.ProjectId" selected="@(p.ProjectId == Model.ProjectId)">@p.ProjectName</option> }
                 </pems-select>
                 @if (!string.IsNullOrEmpty(Model.PredictedProjectHint))
-                { <div class="form-text">AI hint from document text: "@Model.PredictedProjectHint"</div> }
+                { <pems-help-text>AI hint from document text: "@Model.PredictedProjectHint"</pems-help-text> }
             </pems-col>
             <pems-col md="4">
                 <pems-label>@Localizer["Discipline"]</pems-label>

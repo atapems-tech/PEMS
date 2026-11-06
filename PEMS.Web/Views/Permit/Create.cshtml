@@ -50,7 +50,7 @@
                 <pems-label>Work Order (optional)</pems-label>
                 <pems-input type="text" placeholder="@Localizer["جستجوی شماره WorkOrder..."]" data-pems-search data-search-type="WorkOrder" data-search-hidden="#permitWorkOrderIdHidden" autocomplete="off" />
                 <input type="hidden" name="workOrderId" id="permitWorkOrderIdHidden" />
-                <div class="form-text small">@Localizer["اگر Permit به یک WorkOrder مشخص وصل نیست، خالی بگذار."]</div>
+                <pems-help-text css="small">@Localizer["اگر Permit به یک WorkOrder مشخص وصل نیست، خالی بگذار."]</pems-help-text>
             </pems-col>
             <pems-col md="6">
                 <pems-label>Permit Receiver (optional)</pems-label>
@@ -58,7 +58,7 @@
                     <option value="">@Localizer["-- None --"]</option>
                     @foreach (var r in receivers) { <option value="@r.EmployeeId">@r.Label</option> }
                 </pems-select>
-                <div class="form-text small">@Localizer["می‌تواند پرسنل Internal یا Contractor باشد."]</div>
+                <pems-help-text css="small">@Localizer["می‌تواند پرسنل Internal یا Contractor باشد."]</pems-help-text>
             </pems-col>
 
             <pems-col md="6"><pems-label>Valid From (optional)</pems-label><pems-date name="validFrom" /></pems-col>

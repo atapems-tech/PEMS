@@ -102,8 +102,8 @@
     <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-matrix2">Criticality × Maintenance/RCM</button></li>
 </pems-nav>
 
-<div class="tab-content">
-    <div class="tab-pane fade show active" id="tab-pm">
+<pems-tab-content>
+    <pems-tab-pane fade="true" active="true" id="tab-pm">
         <pems-content-card>
             <p class="text-muted small">
                 مخرج فقط WorkOrder هایی است که از یک Maintenance Plan تولید شده‌اند و DueDate واقعی
@@ -119,9 +119,9 @@
                 <pems-col md="1"><strong>Insufficient Data</strong><div>@pmCompliance.InsufficientDataCount</div></pems-col>
             </pems-row>
         </pems-content-card>
-    </div>
+    </pems-tab-pane>
 
-    <div class="tab-pane fade" id="tab-type">
+    <pems-tab-pane fade="true" id="tab-type">
         <pems-content-card>
             <pems-table kind="enterprise" scale="small" css="mb-0">
                 <thead><tr><th>@Localizer["Type"]</th><th class="text-end">@Localizer["Count"]</th><th class="text-end">%</th><th class="text-end">Hours</th><th class="text-end">@Localizer["Cost"]</th><th class="text-end">@Localizer["Downtime"]</th></tr></thead>
@@ -141,9 +141,9 @@
             </pems-table>
             @if (!breakdown.Items.Any()) { <p class="text-muted text-center py-4 mb-0">@Localizer["داده‌ای موجود نیست."]</p> }
         </pems-content-card>
-    </div>
+    </pems-tab-pane>
 
-    <div class="tab-pane fade" id="tab-repeat">
+    <pems-tab-pane fade="true" id="tab-repeat">
         <pems-content-card>
             <p class="text-muted small">قاعده: همان تجهیز + همان حالت‌خرابی، با حداقل یک زوج خرابی متوالی در پنجره‌ی زمانی مشخص.</p>
             <pems-table kind="enterprise" scale="small" css="mb-0">
@@ -164,9 +164,9 @@
             </pems-table>
             @if (!repeatFailures.Any()) { <p class="text-muted text-center py-4 mb-0">No Data Available - هیچ خرابی تکراری در این بازه تشخیص داده نشد.</p> }
         </pems-content-card>
-    </div>
+    </pems-tab-pane>
 
-    <div class="tab-pane fade" id="tab-effectiveness">
+    <pems-tab-pane fade="true" id="tab-effectiveness">
         <pems-content-card>
             <p class="text-muted small">
                 شواهد چندبعدی - نه یک امتیاز واحد. مقایسه‌ی @effectiveness.WindowDays روز اخیر
@@ -201,9 +201,9 @@
                 <pems-col md="4"><strong>Emergency Workload</strong><div>@(effectiveness.EmergencyWorkloadPercent.HasValue ? $"{effectiveness.EmergencyWorkloadPercent.Value:N1}%" : "N/A")</div></pems-col>
             </pems-row>
         </pems-content-card>
-    </div>
+    </pems-tab-pane>
 
-    <div class="tab-pane fade" id="tab-matrix">
+    <pems-tab-pane fade="true" id="tab-matrix">
         <pems-content-card>
             <p class="text-muted small">یافته‌های هوشمندی - نه تصمیم خودکار. هر یافته با مقایسه‌ی صریح با میانگین ناوگان تولید می‌شود.</p>
             <pems-table kind="enterprise" scale="small" css="mb-0">
@@ -232,10 +232,10 @@
             </pems-table>
             @if (!criticalityMatrix.Any()) { <p class="text-muted text-center py-4 mb-0">@Localizer["داده‌ای موجود نیست."]</p> }
         </pems-content-card>
-    </div>
+    </pems-tab-pane>
 
     @* ===================== Phase 9: Criticality × Failure × Maintenance/RCM ===================== *@
-    <div class="tab-pane fade" id="tab-matrix2">
+    <pems-tab-pane fade="true" id="tab-matrix2">
         <pems-content-card>
             <p class="text-muted small">
                 طبق «PEMS Phase 9» بند ۹: بُعد MaintenanceStrategy/RCM اضافه‌شده روی همان گروه‌بندی
@@ -279,5 +279,5 @@
                 <p class="text-muted text-center py-4 mb-0">@Localizer["داده‌ای موجود نیست."]</p>
             }
         </pems-content-card>
-    </div>
-</div>
+    </pems-tab-pane>
+</pems-tab-content>

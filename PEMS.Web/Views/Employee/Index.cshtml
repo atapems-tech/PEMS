@@ -164,12 +164,12 @@
 
                         <pems-col span="12"><hr /></pems-col>
                         <pems-col span="12">
-                            <div class="form-check">
+                            <pems-check-row>
                                 <pems-input kind="check" type="checkbox" name="createUser" value="true" id="createUserCheck" onclick="document.getElementById('createUserFields').hidden = !(this.checked);" />
                                 <label class="form-check-label fw-bold" for="createUserCheck">
                                     <pems-icon name="bi-person-badge" /> آیا نیاز است یوزر لاگین هم برای این کارمند ساخته بشه؟
                                 </label>
-                            </div>
+                            </pems-check-row>
                         </pems-col>
                         <pems-col span="12" id="createUserFields" hidden>
                             <pems-row gap="3">
@@ -186,10 +186,10 @@
                                         @foreach (var role in (IEnumerable<string>)ViewBag.AllRoles)
                                         {
                                             <pems-col span="6" md="4">
-                                                <div class="form-check">
+                                                <pems-check-row>
                                                     <pems-input kind="check" type="checkbox" name="selectedRoles" value="@role" id="empRole_@role" />
                                                     <label class="form-check-label small" for="empRole_@role">@role</label>
-                                                </div>
+                                                </pems-check-row>
                                             </pems-col>
                                         }
                                     </pems-row>

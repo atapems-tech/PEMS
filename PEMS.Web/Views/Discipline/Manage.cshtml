@@ -29,7 +29,7 @@
         <pems-col md="1"><pems-button tone="primary" size="small" css="w-100"><pems-icon name="bi-plus-lg" /></pems-button></pems-col>
     </pems-row></form>
 
-    <div class="table-responsive">
+    <pems-table-scroll>
         <pems-table kind="enterprise" scale="small" css="align-middle">
             <thead><tr><th>@Localizer["Code"]</th><th>@Localizer["Name"]</th><th>@Localizer["Description"]</th><th>@Localizer["Import aliases"]</th><th>@Localizer["Transmittal code"]</th><th>@Localizer["Employees"]</th><th>@Localizer["Documents"]</th><th>@Localizer["Active"]</th><th></th></tr></thead>
             <tbody>
@@ -59,5 +59,5 @@
             </tbody>
         </pems-table>
         @if (!Model.Any()) { <p class="text-muted text-center py-3">@Localizer["No disciplines configured yet."]</p> }
-    </div>
+    </pems-table-scroll>
 </pems-content-card>

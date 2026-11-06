@@ -10,7 +10,7 @@
 
 
 <pems-content-card css="pems-s-1d34c094">
-    <pems-alert tone="danger" css="py-2 px-3 small" asp-validation-summary="All" hidden="@(ViewData.ModelState.IsValid)"></pems-alert>
+    <pems-validation-summary css="py-2 px-3 small" asp-validation-summary="All" hidden="@(ViewData.ModelState.IsValid)"></pems-validation-summary>
 
     <form asp-action="Create" method="post">
         <pems-row gap="3">
@@ -49,11 +49,11 @@
                 </pems-select>
             </pems-col>
             <pems-col md="6" css="d-flex align-items-end">
-                <div class="form-check">
+                <pems-check-row>
                     <pems-input kind="check" type="checkbox" name="responseRequired" value="true" id="responseRequired" />
                     <label class="form-check-label" for="responseRequired">Response Required</label>
                     <input type="hidden" name="responseRequired" value="false" />
-                </div>
+                </pems-check-row>
             </pems-col>
             <pems-col span="12">
                 <pems-label>@Localizer["Description"]</pems-label>
@@ -78,7 +78,7 @@
                 <div class="border rounded p-2 pems-scroll-320" id="docPickerList">
                     @foreach (var d in documents)
                     {
-                        <div class="form-check doc-picker-row" data-project-id="@d.ProjectId" data-search="@($"{d.DocumentNo} {d.Title}".ToLower())">
+                        <pems-check-row css="doc-picker-row" data-project-id="@d.ProjectId" data-search="@($"{d.DocumentNo} {d.Title}".ToLower())">
                             <pems-input type="checkbox" name="documentIds" value="@d.DocumentId" id="doc_@d.DocumentId" disabled="@((bool)d.IsOnHold)" kind="check" css="doc-picker-checkbox" />
                             <label class="form-check-label" for="doc_@d.DocumentId">
                                 @d.DocumentNo - @d.Title
@@ -88,7 +88,7 @@
                                     <pems-badge tone="warning">@Localizer["On Hold"]</pems-badge>
                                 }
                             </label>
-                        </div>
+                        </pems-check-row>
                     }
                 </div>
                 @if (!documents.Any())

@@ -226,7 +226,7 @@
             @if (!history.Any()) { <p class="small text-muted mb-0">@Localizer["Tm_NoHistory"]</p> }
             else
             {
-                <div class="table-responsive">
+                <pems-table-scroll>
                     <pems-table scale="small" css="vs-dense mb-0">
                         <thead><tr><th>@Localizer["Tm_When"]</th><th>@Localizer["Tm_Who"]</th><th>@Localizer["Tm_Action"]</th><th>@Localizer["Tm_Changes"]</th></tr></thead>
                         <tbody>
@@ -241,7 +241,7 @@
                             }
                         </tbody>
                     </pems-table>
-                </div>
+                </pems-table-scroll>
             }
         </section>
     </pems-col>
@@ -297,7 +297,7 @@
                             </pems-select>
                             <pems-button tone="neutral" size="small" outline="true">@Localizer["Tm_Save"]</pems-button>
                         </pems-flex></form>
-                        @if (assignees.State != "RESOLVED") { <div id="as-help" class="form-text text-warning">@Localizer["Tm_Diag_" + assignees.State]</div> }
+                        @if (assignees.State != "RESOLVED") { <pems-help-text css="text-warning" id="as-help">@Localizer["Tm_Diag_" + assignees.State]</pems-help-text> }
                     }
                     else { @(i.AssigneeName ?? Localizer["Tm_Unassigned"].Value) }
                 </pems-info-item>

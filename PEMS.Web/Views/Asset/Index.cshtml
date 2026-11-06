@@ -130,7 +130,7 @@
                                 <option value="@e.EquipmentId">@e.Label</option>
                             }
                         </pems-select>
-                        <div class="form-text">Equipment not listed here already has an Asset, or doesn't exist yet.</div>
+                        <pems-help-text>Equipment not listed here already has an Asset, or doesn't exist yet.</pems-help-text>
                     </div>
 
                     <pems-row gap="3" css="mb-3">
@@ -154,7 +154,7 @@
                                     <option value="@fl.FunctionalLocationId">@fl.PathBreadcrumb</option>
                                 }
                             </pems-select>
-                            <div class="form-text">Real link to Functional Location. <a asp-controller="FunctionalLocation" asp-action="Index" target="_blank">@Localizer["Manage list"]</a></div>
+                            <pems-help-text>Real link to Functional Location. <a asp-controller="FunctionalLocation" asp-action="Index" target="_blank">@Localizer["Manage list"]</a></pems-help-text>
                         </pems-col>
                         <pems-col md="6">
                             <pems-label>@Localizer["Commissioning Date"]</pems-label>

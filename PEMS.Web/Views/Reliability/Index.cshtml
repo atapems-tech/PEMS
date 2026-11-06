@@ -56,8 +56,8 @@
     <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-trend">@Localizer["Trend"]</button></li>
 </pems-nav>
 
-<div class="tab-content">
-    <div class="tab-pane fade show active" id="tab-fleet">
+<pems-tab-content>
+    <pems-tab-pane fade="true" active="true" id="tab-fleet">
         <pems-content-card>
             <pems-table kind="enterprise" css="mb-0">
                 <thead>
@@ -93,9 +93,9 @@
             </pems-table>
             @if (!Model.Any()) { <p class="text-muted text-center py-4 mb-0">هنوز هیچ خرابی‌ای ثبت نشده - این لیست از روی WorkOrder های اصلاحی/اضطراری تکمیل‌شده ساخته می‌شود.</p> }
         </pems-content-card>
-    </div>
+    </pems-tab-pane>
 
-    <div class="tab-pane fade" id="tab-class">
+    <pems-tab-pane fade="true" id="tab-class">
         <pems-content-card>
             <p class="text-muted small">
                 میانگین مقادیر معتبر سطح-تجهیز درون هر کلاس (نه یک نرخ Pooled روی زمان
@@ -122,9 +122,9 @@
             </pems-table>
             @if (!classReliability.Any()) { <p class="text-muted text-center py-4 mb-0">@Localizer["هیچ کلاسی داده‌ی خرابی کافی ندارد."]</p> }
         </pems-content-card>
-    </div>
+    </pems-tab-pane>
 
-    <div class="tab-pane fade" id="tab-pareto">
+    <pems-tab-pane fade="true" id="tab-pareto">
         <pems-row gap="3">
             <pems-col md="6">
                 <pems-content-card css="h-100">
@@ -157,9 +157,9 @@
                 </pems-content-card>
             </pems-col>
         </pems-row>
-    </div>
+    </pems-tab-pane>
 
-    <div class="tab-pane fade" id="tab-badactors">
+    <pems-tab-pane fade="true" id="tab-badactors">
         <pems-content-card>
             <p class="text-muted small">هر رتبه با عوامل صریح توضیح داده می‌شود - نه یک امتیاز مبهم.</p>
             <pems-table kind="enterprise" scale="small" css="mb-0">
@@ -184,9 +184,9 @@
             </pems-table>
             @if (!badActors.Any()) { <p class="text-muted text-center py-4 mb-0">@Localizer["داده‌ای موجود نیست."]</p> }
         </pems-content-card>
-    </div>
+    </pems-tab-pane>
 
-    <div class="tab-pane fade" id="tab-trend">
+    <pems-tab-pane fade="true" id="tab-trend">
         <pems-content-card>
             <p class="text-muted small">هر نقطه تعداد رویداد واقعی (Observation Count) خودش را نشان می‌دهد - روندهای با نمونه‌ی کوچک باید با احتیاط تفسیر شوند.</p>
             <pems-table kind="enterprise" scale="small" css="mb-0">
@@ -200,5 +200,5 @@
             </pems-table>
             @if (!monthlyTrend.Any()) { <p class="text-muted text-center py-4 mb-0">@Localizer["داده‌ای موجود نیست."]</p> }
         </pems-content-card>
-    </div>
-</div>
+    </pems-tab-pane>
+</pems-tab-content>

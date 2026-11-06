@@ -315,10 +315,10 @@
 
             <section class="lc-card" aria-labelledby="lcRespTitle">
                 <h3 id="lcRespTitle"><pems-icon name="bi-reply" aria-hidden="true" /> @Localizer[isReferral ? "Ct_ReferralDeadline" : "Lc_Response"]</h3>
-                <div class="form-check">
+                <pems-check-row>
                     <pems-input type="checkbox" id="lcRespReq" checked="@input.ResponseRequired" kind="check" />
                     <label class="form-check-label" for="lcRespReq">@Localizer[isReferral ? "Ct_ReferralDeadlineSet" : "Lt_ResponseRequired"]</label>
-                </div>
+                </pems-check-row>
                 <div class="lc-field mt-2" id="lcRespWrap" @(input.ResponseRequired ? "" : "hidden")>
                     <label for="lcRespDue" class="lc-req">@Localizer["Lt_ResponseDueDate"]</label>
                     <pems-date id="lcRespDue" value="@dueDate" />
@@ -328,10 +328,10 @@
 
             <section class="lc-card" aria-labelledby="lcApprTitle" @(isReferral ? "hidden" : "")>
                 <h3 id="lcApprTitle"><pems-icon name="bi-diagram-3" aria-hidden="true" /> @Localizer["Lc_Approval"]</h3>
-                <div class="form-check">
+                <pems-check-row>
                     <pems-input type="checkbox" id="lcApprReq" checked="@input.ApprovalRequired" disabled="@isOutgoing" kind="check" />
                     <label class="form-check-label" for="lcApprReq">@Localizer["Lc_ApprovalRequired"]</label>
-                </div>
+                </pems-check-row>
                 @if (isOutgoing) { <div class="lc-help">@Localizer["Lc_OutgoingNeedsApproval"]</div> }
                 <div id="lcChainWrap" class="mt-2" @(input.ApprovalRequired || isOutgoing ? "" : "hidden")>
                     <ol class="lc-chain" id="lcChain" aria-label="@Localizer["Lc_ApprovalChain"]"></ol>

@@ -66,10 +66,10 @@
                         <div class="lp-checklist">
                             @for (var i = 0; i < disciplines.Count; i++)
                             {
-                                <div class="form-check">
+                                <pems-check-row>
                                     <pems-input type="checkbox" value="@disciplines[i]" id="drDisc@(i)" data-dr-discipline checked="@selectedDisciplines.Contains(disciplines[i])" kind="check" />
                                     <label class="form-check-label" for="drDisc@(i)">@disciplines[i]</label>
-                                </div>
+                                </pems-check-row>
                             }
                         </div>
                         <input type="hidden" name="disciplines" id="drDisciplines" value="@disciplinesQs" />
@@ -217,10 +217,10 @@
                     <pems-label css="small" for="saveFilterName">@Localizer["Dr_FilterName"]</pems-label>
                     <pems-input name="name" id="saveFilterName" required />
                     <input type="hidden" name="queryString" id="saveFilterQueryString" />
-                    <div class="form-check mt-2">
+                    <pems-check-row css="mt-2">
                         <pems-input kind="check" type="checkbox" name="isDefault" value="true" id="saveFilterDefault" />
                         <label class="form-check-label" for="saveFilterDefault">@Localizer["Dr_SetDefault"]</label>
-                    </div>
+                    </pems-check-row>
                 </div>
                 <div class="modal-footer">
                     <pems-button tone="primary" size="small" type="submit">@Localizer["Save"]</pems-button>

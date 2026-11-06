@@ -139,7 +139,7 @@ else if (view == "week")
     var noTeamItems = Model.Items.Where(x => !x.AssignedTeamId.HasValue).ToList();
 
     <pems-content-card css="mb-3">
-        <div class="table-responsive">
+        <pems-table-scroll>
             <pems-table kind="enterprise" scale="small" css="pems-cal-week" id="pemsCalWeekTable">
                 <thead>
                     <tr>
@@ -196,7 +196,7 @@ else if (view == "week")
                     }
                 </tbody>
             </pems-table>
-        </div>
+        </pems-table-scroll>
     </pems-content-card>
 }
 else

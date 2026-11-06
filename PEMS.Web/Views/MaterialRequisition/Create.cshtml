@@ -55,7 +55,7 @@
                 <pems-icon name="bi-journal-plus" /> @Localizer["Mr_RequestNewPart"]
             </a>
         </pems-flex>
-        <div class="form-text mb-2">@Localizer["Mr_PartLookupHint"]</div>
+        <pems-help-text css="mb-2">@Localizer["Mr_PartLookupHint"]</pems-help-text>
         <div id="itemsContainer" data-mr-items></div>
         @* SCRUM-428: one item row; the part number is a lookup over the registered parts (part catalogue and Material Master) that
            fills the description and unit; a typed part number is kept and marked "not catalogued" (the server decides the link). *@

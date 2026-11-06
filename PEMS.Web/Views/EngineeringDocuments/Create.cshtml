@@ -21,15 +21,15 @@
             </div>
             @if ((bool)(ViewBag.CanManualNumber ?? false))
             {
-                <div class="form-check mt-2">
+                <pems-check-row css="mt-2">
                     <pems-input kind="check" type="checkbox" name="useManualNumber" value="true" id="useManualNumberCheck" />
                     <label class="form-check-label small" for="useManualNumberCheck">@Localizer["Ed_ManualNumber"]</label>
-                </div>
-                <div class="form-text">@Localizer["Ed_ManualNumberHelp"]</div>
+                </pems-check-row>
+                <pems-help-text>@Localizer["Ed_ManualNumberHelp"]</pems-help-text>
             }
             else
             {
-                <div class="form-text">@Localizer["Ed_AutoNumberHelp"]</div>
+                <pems-help-text>@Localizer["Ed_AutoNumberHelp"]</pems-help-text>
             }
         </pems-col>
         <pems-col md="6">

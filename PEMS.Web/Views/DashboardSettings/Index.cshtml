@@ -10,7 +10,7 @@
     </p>
 
     <form asp-action="Save" method="post">
-        <div class="table-responsive table-scroll-area pems-s-8da1c6e6">
+        <pems-table-scroll css="table-scroll-area pems-s-8da1c6e6">
         <pems-table kind="enterprise">
             <thead><tr><th>Show</th><th>Widget</th><th>@Localizer["Order"]</th><th>@Localizer["Size"]</th></tr></thead>
             <tbody>
@@ -34,7 +34,7 @@
                 }
             </tbody>
         </pems-table>
-        </div>
+        </pems-table-scroll>
 
         <pems-flex gap="2" css="mt-3">
             <pems-button tone="primary" type="submit"><pems-icon name="bi-check-lg" /> Save Layout</pems-button>

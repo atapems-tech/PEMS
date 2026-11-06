@@ -29,7 +29,7 @@
 
 <pems-content-card css="mb-3">
     <h6 class="mb-3">@Localizer["Items"]</h6>
-    <div class="table-responsive table-scroll-area pems-s-8da1c6e6">
+    <pems-table-scroll css="table-scroll-area pems-s-8da1c6e6">
     <pems-table kind="enterprise">
         <thead><tr><th>@Localizer["Description"]</th><th>@Localizer["Part No"]</th><th>@Localizer["Qty"]</th><th>@Localizer["Unit"]</th></tr></thead>
         <tbody>
@@ -52,12 +52,12 @@
             }
         </tbody>
     </pems-table>
-    </div>
+    </pems-table-scroll>
 </pems-content-card>
 
 <pems-content-card css="mb-3">
     <h6 class="mb-3">Quotations (MRQ)</h6>
-    <div class="table-responsive table-scroll-area pems-s-8da1c6e6">
+    <pems-table-scroll css="table-scroll-area pems-s-8da1c6e6">
     <pems-table kind="enterprise">
         <thead>
             <tr>
@@ -100,7 +100,7 @@
             }
         </tbody>
     </pems-table>
-    </div>
+    </pems-table-scroll>
 
     @if (!Model.Quotations.Any())
     {
@@ -130,7 +130,7 @@
 {
     <pems-content-card css="mt-3">
         <h6 class="mb-3"><pems-icon name="bi-envelope-paper" /> Related Correspondence</h6>
-        <div class="table-responsive table-scroll-area pems-s-8da1c6e6">
+        <pems-table-scroll css="table-scroll-area pems-s-8da1c6e6">
         <pems-table kind="enterprise">
             <thead><tr><th>@Localizer["Type"]</th><th>@Localizer["Letter No"]</th><th>@Localizer["Subject"]</th><th>@Localizer["Date"]</th><th>@Localizer["Status"]</th><th></th></tr></thead>
             <tbody>
@@ -147,7 +147,7 @@
                 }
             </tbody>
         </pems-table>
-        </div>
+        </pems-table-scroll>
     </pems-content-card>
 }
 

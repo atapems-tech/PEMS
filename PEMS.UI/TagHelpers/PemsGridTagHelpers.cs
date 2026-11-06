@@ -137,3 +137,62 @@ public sealed class PemsFlexTagHelper(IPemsComponentRenderer renderer) : TagHelp
         await ListRender.Replace<PemsFlex>(renderer, output, new FlexOptions { As = As, Inline = Inline, Dir = Dir, Justify = Justify, Align = Align, Wrap = Wrap, Gap = Gap, Css = Css, PageClass = pageClass, Attributes = attrs }, await ListRender.Inner(output));
     }
 }
+
+/// <summary>The muted help line under a control: <c>&lt;pems-help-text&gt;text&lt;/pems-help-text&gt;</c> writes <c>&lt;div class="form-text"&gt;</c> (<c>as="small"</c> or <c>as="span"</c> for inline help).</summary>
+[HtmlTargetElement("pems-help-text")]
+[PemsFacade(UiKeys.HelpText)]
+public sealed class PemsHelpTextTagHelper(IPemsComponentRenderer renderer) : TagHelper
+{
+    [HtmlAttributeName("as")] public string As { get; set; } = "div";
+    [HtmlAttributeName("css")] public string? Css { get; set; }
+
+    public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
+    {
+        var (pageClass, attrs) = ListRender.Page(output);
+        await ListRender.Replace<PemsHelpText>(renderer, output, new HelpTextOptions { As = As, Css = Css, PageClass = pageClass, Attributes = attrs }, await ListRender.Inner(output));
+    }
+}
+
+/// <summary>The scroll wrapper of a wide table: <c>&lt;pems-table-scroll&gt;&lt;pems-table&gt;...&lt;/pems-table&gt;&lt;/pems-table-scroll&gt;</c> writes <c>&lt;div class="table-responsive"&gt;</c>.</summary>
+[HtmlTargetElement("pems-table-scroll")]
+[PemsFacade(UiKeys.TableScroll)]
+public sealed class PemsTableScrollTagHelper(IPemsComponentRenderer renderer) : TagHelper
+{
+    [HtmlAttributeName("css")] public string? Css { get; set; }
+
+    public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
+    {
+        var (pageClass, attrs) = ListRender.Page(output);
+        await ListRender.Replace<PemsTableScroll>(renderer, output, new TableScrollOptions { Css = Css, PageClass = pageClass, Attributes = attrs }, await ListRender.Inner(output));
+    }
+}
+
+/// <summary>The container of the panes of a tab strip: <c>&lt;pems-tab-content&gt;&lt;pems-tab-pane id="a" active="true" fade="true"&gt;...&lt;/pems-tab-pane&gt;&lt;/pems-tab-content&gt;</c> writes <c>&lt;div class="tab-content"&gt;</c>.</summary>
+[HtmlTargetElement("pems-tab-content")]
+[PemsFacade(UiKeys.TabContent)]
+public sealed class PemsTabContentTagHelper(IPemsComponentRenderer renderer) : TagHelper
+{
+    [HtmlAttributeName("css")] public string? Css { get; set; }
+
+    public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
+    {
+        var (pageClass, attrs) = ListRender.Page(output);
+        await ListRender.Replace<PemsTabContent>(renderer, output, new TabContentOptions { Css = Css, PageClass = pageClass, Attributes = attrs }, await ListRender.Inner(output));
+    }
+}
+
+/// <summary>One tab pane: <c>&lt;pems-tab-pane id="info" fade="true" active="true"&gt;</c> writes <c>&lt;div class="tab-pane fade show active" id="info"&gt;</c>; <c>role</c>, <c>aria-labelledby</c> and every other attribute are kept.</summary>
+[HtmlTargetElement("pems-tab-pane")]
+[PemsFacade(UiKeys.TabPane)]
+public sealed class PemsTabPaneTagHelper(IPemsComponentRenderer renderer) : TagHelper
+{
+    [HtmlAttributeName("fade")] public bool Fade { get; set; }
+    [HtmlAttributeName("active")] public bool Active { get; set; }
+    [HtmlAttributeName("css")] public string? Css { get; set; }
+
+    public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
+    {
+        var (pageClass, attrs) = ListRender.Page(output);
+        await ListRender.Replace<PemsTabPane>(renderer, output, new TabPaneOptions { Fade = Fade, Active = Active, Css = Css, PageClass = pageClass, Attributes = attrs }, await ListRender.Inner(output));
+    }
+}

@@ -61,7 +61,7 @@
                     <option value="@i.FailureModeId" selected>@(Model.SelectedFailureModeLabel ?? i.FailureModeId.ToString())</option>
                 }
             </pems-select>
-            <div class="form-text">@Localizer["Rcm_FailureModeHint"]</div>
+            <pems-help-text>@Localizer["Rcm_FailureModeHint"]</pems-help-text>
             <span class="text-danger small">@Html.ValidationMessage("FailureModeId")</span>
         </pems-col>
         <pems-col md="6">
@@ -80,18 +80,18 @@
             <pems-select name="ConsequenceCategory" id="consequenceSelect" required>
                 @foreach (var c in RcmCodes.Consequence.All) { <option value="@c" selected="@(i.ConsequenceCategory == c || (i.ConsequenceCategory == null && c == "Operational"))">@Localizer.Label("Consequence", c)</option> }
             </pems-select>
-            <div class="form-check mt-2">
+            <pems-check-row css="mt-2">
                 <pems-input type="checkbox" name="IsHiddenFailure" value="true" id="hiddenChk" checked="@i.IsHiddenFailure" kind="check" />
                 <label class="form-check-label small" for="hiddenChk">@Localizer["Rcm_HiddenFailure"]</label>
                 <input type="hidden" name="IsHiddenFailure" value="false" />
-            </div>
+            </pems-check-row>
         </pems-col>
         <pems-col md="4">
             <pems-label>@Localizer["Rcm_StrategyType"] <span class="text-danger">*</span></pems-label>
             <pems-select name="StrategyType" id="typeSelect" required>
                 @foreach (var t in RcmCodes.StrategyType.All) { <option value="@t" selected="@(i.StrategyType == t)">@Localizer.Label("StrategyType", t)</option> }
             </pems-select>
-            <div class="form-text text-warning" id="rtfWarning" hidden>@Localizer["Rcm_RtfWarning"]</div>
+            <pems-help-text css="text-warning" id="rtfWarning" hidden>@Localizer["Rcm_RtfWarning"]</pems-help-text>
             <span class="text-danger small">@Html.ValidationMessage("strategyType")</span>
         </pems-col>
         <pems-col md="4">
@@ -180,7 +180,7 @@
         <pems-col span="12">
             <pems-label>@Localizer["Rcm_Justification"] <span class="text-danger">*</span></pems-label>
             <pems-textarea name="Justification" rows="3" minlength="20" required placeholder="@Localizer["Rcm_JustificationPlaceholder"]">@i.Justification</pems-textarea>
-            <div class="form-text">@Localizer["Rcm_JustificationHint"]</div>
+            <pems-help-text>@Localizer["Rcm_JustificationHint"]</pems-help-text>
             <span class="text-danger small">@Html.ValidationMessage("justification")</span>
         </pems-col>
         <pems-col span="12">

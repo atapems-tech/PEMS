@@ -88,4 +88,8 @@ public static class UiKeys
     public const string ContentCard = "content-card";
     public const string PageShell = "page-shell";
     public const string Flex = "flex";
+    public const string HelpText = "help-text";
+    public const string TableScroll = "table-scroll";
+    public const string TabContent = "tab-content";
+    public const string TabPane = "tab-pane";
 }

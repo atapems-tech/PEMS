@@ -158,14 +158,14 @@
                         }
                     </pems-select>
                 </div>
-                <div class="form-check">
+                <pems-check-row>
                     <pems-input type="checkbox" name="permitRequired" value="true" id="editPermitRequired" checked="@Model.PermitRequired" kind="check" />
                     <label class="form-check-label small" for="editPermitRequired">@Localizer["Permit Required for execution"]</label>
-                </div>
-                <div class="form-check">
+                </pems-check-row>
+                <pems-check-row>
                     <pems-input type="checkbox" name="lotoRequired" value="true" id="editLotoRequired" checked="@Model.LOTORequired" kind="check" />
                     <label class="form-check-label small" for="editLotoRequired">@Localizer["LOTO (Isolation) Required for execution"]</label>
-                </div>
+                </pems-check-row>
             </div>
             <div class="modal-footer">
                 <pems-button tone="neutral" size="small" outline="true" type="button" data-bs-dismiss="modal">@Localizer["Cancel"]</pems-button>

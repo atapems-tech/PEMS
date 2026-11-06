@@ -82,4 +82,17 @@ public sealed class CheckRowPagerTests
         Assert.Equal("<h6 class=\"d-flex align-items-center mb-0\">x</h6>", Run(new PemsFlexTagHelper(UiTestRenderer.Instance) { As = "h6", Align = "center", Css = "mb-0" }, "pems-flex", [], "x"));
         Assert.Equal("<div class=\"d-flex\">x</div>", Run(new PemsFlexTagHelper(UiTestRenderer.Instance) { As = "script" }, "pems-flex", [], "x"));
     }
+
+    [Fact]
+    public void Help_text_scroll_wrapper_and_tab_parts_write_the_bootstrap_classes()
+    {
+        Assert.Equal("<div class=\"form-text mt-1\">x</div>", Run(new PemsHelpTextTagHelper(UiTestRenderer.Instance) { Css = "mt-1" }, "pems-help-text", [], "x"));
+        Assert.Equal("<small class=\"form-text\">x</small>", Run(new PemsHelpTextTagHelper(UiTestRenderer.Instance) { As = "small" }, "pems-help-text", [], "x"));
+        Assert.Equal("<p class=\"form-text\">x</p>", Run(new PemsHelpTextTagHelper(UiTestRenderer.Instance) { As = "p" }, "pems-help-text", [], "x"));
+        Assert.Equal("<div class=\"table-responsive mb-3\">x</div>", Run(new PemsTableScrollTagHelper(UiTestRenderer.Instance) { Css = "mb-3" }, "pems-table-scroll", [], "x"));
+        Assert.Equal("<div class=\"tab-content pt-3\">x</div>", Run(new PemsTabContentTagHelper(UiTestRenderer.Instance) { Css = "pt-3" }, "pems-tab-content", [], "x"));
+        Assert.Equal("<div class=\"tab-pane fade show active\" id=\"a\">x</div>", Run(new PemsTabPaneTagHelper(UiTestRenderer.Instance) { Fade = true, Active = true }, "pems-tab-pane", [new("id", "a")], "x"));
+        Assert.Equal("<div class=\"tab-pane active\">x</div>", Run(new PemsTabPaneTagHelper(UiTestRenderer.Instance) { Active = true }, "pems-tab-pane", [], "x"));
+        Assert.Equal("<div class=\"tab-pane fade\">x</div>", Run(new PemsTabPaneTagHelper(UiTestRenderer.Instance) { Fade = true }, "pems-tab-pane", [], "x"));
+    }
 }

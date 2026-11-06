@@ -256,3 +256,35 @@ public sealed record FlexOptions : FrameOptions
     public string? Gap { get; init; }
     public string? Css { get; init; }
 }
+
+// SCRUM-339 (slice 3): the form-page and detail-page parts.
+
+/// <summary>Inputs of <see cref="PemsHelpText"/>: the muted help line under a form control (<c>form-text</c>).</summary>
+public sealed record HelpTextOptions : FrameOptions
+{
+    /// <summary>The element: div (default), small, span or p.</summary>
+    public string As { get; init; } = "div";
+    public string? Css { get; init; }
+}
+
+/// <summary>Inputs of <see cref="PemsTableScroll"/>: the horizontal-scroll wrapper of a wide table (<c>table-responsive</c>); the table is the child content.</summary>
+public sealed record TableScrollOptions : FrameOptions
+{
+    public string? Css { get; init; }
+}
+
+/// <summary>Inputs of <see cref="PemsTabContent"/>: the container of the tab panes (<c>tab-content</c>); the panes are the child content.</summary>
+public sealed record TabContentOptions : FrameOptions
+{
+    public string? Css { get; init; }
+}
+
+/// <summary>Inputs of <see cref="PemsTabPane"/>: one tab pane (<c>tab-pane</c>, <c>fade</c>, <c>show active</c>); the pane's blocks are the child content.</summary>
+public sealed record TabPaneOptions : FrameOptions
+{
+    /// <summary>The pane fades in (<c>fade</c>).</summary>
+    public bool Fade { get; init; }
+    /// <summary>The visible pane (<c>active</c>, and <c>show</c> when it fades).</summary>
+    public bool Active { get; init; }
+    public string? Css { get; init; }
+}

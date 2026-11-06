@@ -10,7 +10,7 @@
 <h2>@Localizer["Administrator recovery"]</h2>
 <p class="subtitle">@Localizer["Use one of your printed recovery codes to set a new password. Each code works only once."]</p>
 
-<pems-alert tone="danger" css="py-2 px-3 small" asp-validation-summary="ModelOnly" hidden="@(ViewData.ModelState.ErrorCount == 0)"></pems-alert>
+<pems-validation-summary css="py-2 px-3 small" asp-validation-summary="ModelOnly" hidden="@(ViewData.ModelState.ErrorCount == 0)"></pems-validation-summary>
 
 <form asp-controller="AccountRecovery" asp-action="Index" method="post" autocomplete="off">
     <div class="mb-3">

@@ -27,11 +27,11 @@
             </pems-select>
         </pems-col>
         <pems-col md="3" css="d-flex align-items-end">
-            <div class="form-check">
+            <pems-check-row>
                 <pems-input type="checkbox" id="sp-active" name="IsActive" value="true" checked="@s.IsActive" kind="check" />
                 <input type="hidden" name="IsActive" value="false" />
                 <label class="form-check-label small" for="sp-active">@Localizer["Tm_Field_Active"]</label>
-            </div>
+            </pems-check-row>
         </pems-col>
         <pems-col md="10"><pems-label css="small" for="sp-desc">@Localizer["Tm_Field_Description"]</pems-label><pems-input scale="small" id="sp-desc" name="Description" value="@s.Description" maxlength="1000" /></pems-col>
         <pems-col md="2" css="d-flex align-items-end"><pems-button tone="primary" size="small" css="w-100">@Localizer["Tm_Save"]</pems-button></pems-col>
@@ -109,7 +109,7 @@
                 <pems-col md="3"><pems-label css="small" for="at-namefa">@Localizer["Tm_Field_NameFa"]</pems-label><pems-input scale="small" id="at-namefa" name="nameFa" maxlength="100" dir="rtl" /></pems-col>
                 <pems-col md="3"><pems-label css="small" for="at-icon">@Localizer["Tm_Field_Icon"]</pems-label><pems-input scale="small" id="at-icon" name="icon" value="bi-check2-square" required pattern="bi-[a-z0-9-]{1,40}" /></pems-col>
                 <pems-col md="3" css="d-flex align-items-end gap-2">
-                    <div class="form-check"><pems-input kind="check" type="checkbox" id="at-sub" name="isSubtask" value="true" /><label class="form-check-label small" for="at-sub">@Localizer["Tm_Subtask"]</label></div>
+                    <pems-check-row><pems-input kind="check" type="checkbox" id="at-sub" name="isSubtask" value="true" /><label class="form-check-label small" for="at-sub">@Localizer["Tm_Subtask"]</label></pems-check-row>
                     <pems-button tone="primary" size="small">@Localizer["Tm_Add"]</pems-button>
                 </pems-col>
             </pems-row></form>
@@ -155,7 +155,7 @@
         <section class="vs-panel mb-3" aria-labelledby="trTitle">
             <h3 class="h6" id="trTitle">@Localizer["Tm_Transitions"]</h3>
             <p class="small text-muted">@Localizer["Tm_TransitionsHint"]</p>
-            <div class="table-responsive">
+            <pems-table-scroll>
                 <pems-table scale="small" css="table-bordered vs-dense tm-matrix">
                     <thead>
                         <tr>
@@ -188,7 +188,7 @@
                         }
                     </tbody>
                 </pems-table>
-            </div>
+            </pems-table-scroll>
         </section>
     </pems-col>
 </pems-row>

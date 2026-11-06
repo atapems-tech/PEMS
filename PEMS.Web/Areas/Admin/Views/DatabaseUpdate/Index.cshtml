@@ -53,10 +53,10 @@
                 }
                 else
                 {
-                    <div class="form-check">
+                    <pems-check-row>
                         <pems-input kind="check" type="checkbox" name="backupConfirmed" value="true" id="backupConfirmed" />
                         <label class="form-check-label" for="backupConfirmed">@Localizer["A database backup has been taken"]</label>
-                    </div>
+                    </pems-check-row>
                 }
                 <pems-button tone="primary" type="submit"><pems-icon name="bi-database-up" css="me-1" /> @Localizer[applyText]</pems-button>
             </pems-flex></form>
@@ -71,7 +71,7 @@
         }
         else
         {
-            <div class="table-responsive">
+            <pems-table-scroll>
                 <pems-table kind="enterprise">
                     <thead><tr><th>@Localizer["Started (UTC)"]</th><th>@Localizer["Trigger"]</th><th>@Localizer["Mode"]</th><th>@Localizer["From"]</th><th>@Localizer["To"]</th><th>@Localizer["Applied"]</th><th>@Localizer["Seconds"]</th><th>@Localizer["Result"]</th><th>@Localizer["By"]</th><th>@Localizer["Backup file"]</th></tr></thead>
                     <tbody>
@@ -95,7 +95,7 @@
                     }
                     </tbody>
                 </pems-table>
-            </div>
+            </pems-table-scroll>
         }
     </pems-content-card>
 </pems-page-shell>

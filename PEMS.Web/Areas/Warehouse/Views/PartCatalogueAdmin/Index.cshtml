@@ -37,7 +37,7 @@
             <pems-col md="4">
                 <pems-label for="pc_partNoFormat">@Localizer["Pc_Adm_PartNoFormat"]</pems-label>
                 <pems-input scale="small" id="pc_partNoFormat" name="partNoFormat" maxlength="50" autocomplete="off" value="@Model.Settings.PartNoFormat" placeholder="PCR-YYYY-NNNN" />
-                <div class="form-text">@Localizer["Pc_Adm_PartNoFormatHelp"]</div>
+                <pems-help-text>@Localizer["Pc_Adm_PartNoFormatHelp"]</pems-help-text>
             </pems-col>
             <pems-col span="auto" css="pt-md-4">
                 <button type="submit" class="vs-btn vs-btn--sm vs-btn--primary mt-md-1"><pems-icon name="bi-check2" /> @Localizer["Save"]</button>
@@ -148,7 +148,7 @@
                                 @foreach (var p in ov.Positions) { <option value="@p.Id" selected="@(r.Positions.Any(x => x.PositionId == p.Id))">@p.Text</option> }
                             </pems-select>
                             <input type="hidden" name="PositionIds" id="@(fid)_posIds" value="@string.Join(",", r.Positions.Select(x => x.PositionId))" />
-                            <div class="form-text">@Localizer["Pc_Adm_PositionsHint"]</div>
+                            <pems-help-text>@Localizer["Pc_Adm_PositionsHint"]</pems-help-text>
                         </pems-col>
                         <pems-col md="6">
                             <pems-label css="small mb-0" for="@(fid)_role">@Localizer["Pc_Adm_Role"]</pems-label>
