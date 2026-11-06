@@ -17,15 +17,15 @@
 
 <pems-row gap="3" css="mb-3">
     <pems-col md="4">
-        <div class="content-card">
+        <pems-content-card>
             <pems-button as="a" tone="primary" size="small" outline="true" css="w-100 mb-2" asp-controller="MaterialItem" asp-action="Index"><pems-icon name="bi-box-seam" /> @Localizer["Material Master"]</pems-button>
             <pems-button as="a" tone="neutral" size="small" outline="true" css="w-100 mb-2" asp-controller="InventoryMasterData" asp-action="Index"><pems-icon name="bi-diagram-3" /> @Localizer["Master Data"]</pems-button>
             <pems-button as="a" tone="neutral" size="small" outline="true" css="w-100 mb-2" asp-controller="InventoryTransaction" asp-action="Index"><pems-icon name="bi-list-ul" /> @Localizer["Transaction Ledger"]</pems-button>
             <pems-button as="a" tone="neutral" size="small" outline="true" css="w-100 mb-2" asp-controller="StoreRequisition" asp-action="Index"><pems-icon name="bi-clipboard-check" /> @Localizer["Store Requisitions"]</pems-button>
-        </div>
+        </pems-content-card>
     </pems-col>
     <pems-col md="8">
-        <div class="content-card">
+        <pems-content-card>
             <h6 class="mb-3"><pems-icon name="bi-exclamation-triangle" css="text-danger" /> Low Stock</h6>
             <pems-table kind="enterprise" scale="small">
                 <thead><tr><th>@Localizer["Warehouse"]</th><th>@Localizer["On Hand"]</th><th>@Localizer["Available"]</th><th>@Localizer["Reorder Point"]</th></tr></thead>
@@ -42,11 +42,11 @@
                 </tbody>
             </pems-table>
             @if (!lowStockItems.Any()) { <p class="text-muted text-center py-3">@Localizer["فعلاً موجودی کمی ثبت نشده."]</p> }
-        </div>
+        </pems-content-card>
     </pems-col>
 </pems-row>
 
-<div class="content-card">
+<pems-content-card>
     <h6 class="mb-3">Recent Transactions</h6>
     <pems-table kind="enterprise" scale="small">
         <thead><tr><th>@Localizer["Date"]</th><th>@Localizer["Material"]</th><th>@Localizer["Type"]</th><th>@Localizer["Warehouse"]</th><th>@Localizer["Qty"]</th><th>@Localizer["Reference"]</th></tr></thead>
@@ -65,4 +65,4 @@
         </tbody>
     </pems-table>
     @if (!recentTransactions.Any()) { <p class="text-muted text-center py-3">@Localizer["هنوز تراکنشی ثبت نشده."]</p> }
-</div>
+</pems-content-card>

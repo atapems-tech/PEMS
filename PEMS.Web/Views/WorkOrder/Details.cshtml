@@ -65,19 +65,19 @@
 
 @if (wf != null)
 {
-    <div class="content-card mb-3">
+    <pems-content-card css="mb-3">
         <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
             <h6 class="mb-0">@Localizer["Workflow"] <span class="text-muted small">@wf.WorkflowName · @Localizer["Version"] @wf.VersionNumber · @Localizer[wf.Status]</span></h6>
             @foreach (var w in wf.Warnings) { <span class="small text-warning"><pems-icon name="bi-exclamation-triangle" /> @w</span> }
         </div>
         <partial name="_PemsStageDiagram" model="diagram" />
-    </div>
+    </pems-content-card>
 }
 else
 {
-<div class="content-card mb-3">
+<pems-content-card css="mb-3">
     <partial name="_WorkOrderStagesDiagram" model="@(( Model.Status, hasPendingReview ))" />
-</div>
+</pems-content-card>
 }
 
 @if (ViewBag.EquipmentIdentity is PEMS.Application.DTOs.EquipmentIdentityDto eqIdentity)
@@ -85,7 +85,7 @@ else
     <partial name="_EquipmentIdentity" model="eqIdentity" />
 }
 
-<div class="content-card mb-3">
+<pems-content-card css="mb-3">
     <div class="d-flex justify-content-between align-items-start flex-wrap gap-2">
         <div>
             <h5 class="mb-1">@Model.WorkOrderNumber</h5>
@@ -286,11 +286,11 @@ else
         }
         <pems-info-item label="@Localizer["Description"]" wide>@Model.Description</pems-info-item>
     </pems-info-grid>
-</div>
+</pems-content-card>
 
 @if (!isLegacy)
 {
-    <div class="content-card mb-3">
+    <pems-content-card css="mb-3">
         <h6 class="mb-3">@Localizer["Actions"]</h6>
         <div class="d-flex flex-wrap gap-2 align-items-start">
             @if (actions.Count > 0)
@@ -420,9 +420,9 @@ else
                 }
             </pems-row>
         }
-    </div>
+    </pems-content-card>
 
-    <div class="content-card mb-3">
+    <pems-content-card css="mb-3">
         <h6 class="mb-3">@Localizer["Workflow History"]</h6>
         <div class="table-responsive">
         <pems-related-table>
@@ -442,7 +442,7 @@ else
             </tbody>
         </pems-related-table>
         </div>
-    </div>
+    </pems-content-card>
 }
 
 @{
@@ -454,7 +454,7 @@ else
 
 @if (statusHistory.Any())
 {
-    <div class="content-card mb-3">
+    <pems-content-card css="mb-3">
         <h6 class="mb-3"><pems-icon name="bi-clock-history" /> @(isLegacy ? Localizer["Status History"] : Localizer["Business Audit"])</h6>
         <ul class="list-unstyled mb-0">
             @foreach (var h in statusHistory)
@@ -470,10 +470,10 @@ else
                 </li>
             }
         </ul>
-    </div>
+    </pems-content-card>
 }
 
-<div class="content-card mb-3">
+<pems-content-card css="mb-3">
     <h6 class="mb-3"><pems-icon name="bi-people" /> @Localizer["بازبینی چند-دیسیپلینه"]</h6>
     <p class="text-muted small">
         طبق رویه‌ی استاندارد هماهنگی چند-تخصصی (Multi-Craft Coordination، EN 13460): اگه این
@@ -596,7 +596,7 @@ else
             }
         </ul>
     }
-</div>
+</pems-content-card>
 
 @if (secPage != null && (secPage.Phase is WoPhase.Closed or WoPhase.Cancelled or WoPhase.Rejected))
 {
@@ -608,7 +608,7 @@ else
 
 @if (secPage != null && secPage.CanReopen)
 {
-    <div class="content-card mb-3 border-warning">
+    <pems-content-card css="mb-3 border-warning">
         <h6 class="mb-2"><pems-icon name="bi-unlock" /> @Localizer["Reopen Work Order"]</h6>
         <p class="text-muted small mb-2">@Localizer["A formal reopen requires a reason and is audited; the Work Order returns to the verification stage."]</p>
         <form asp-action="ReopenWorkOrder" method="post"><pems-row gap="2">
@@ -616,16 +616,16 @@ else
             <pems-col md="9"><pems-input scale="small" name="reason" maxlength="500" required placeholder="@Localizer["Reason for reopening (required)"]" /></pems-col>
             <pems-col md="3"><pems-button tone="warning" size="small" outline="true" css="w-100" type="submit"><pems-icon name="bi-unlock" /> @Localizer["Reopen"]</pems-button></pems-col>
         </pems-row></form>
-    </div>
+    </pems-content-card>
 }
 
 @if (Acc(WoSection.Labor) == SectionAccess.Hidden)
 {
-    <div class="content-card mb-3 text-muted small"><pems-icon name="bi-lock" /> @Localizer["Actual labor hours are not available until execution starts."]</div>
+    <pems-content-card css="mb-3 text-muted small"><pems-icon name="bi-lock" /> @Localizer["Actual labor hours are not available until execution starts."]</pems-content-card>
 }
 else
 {
-<div class="content-card mb-3">
+<pems-content-card css="mb-3">
     <h6 class="mb-3"><pems-icon name="bi-person-workspace" /> @Localizer["Labor (ساعت‌کار واقعی)"]</h6>
     @if (TempData.Peek("LaborRateEmployeeId") is int rateEmployeeId)
     {
@@ -699,16 +699,16 @@ else
         <pems-col span="4"><div class="fw-bold">@spareCost.ToString("N0")</div><div class="text-muted small">@Localizer["Spare Cost"]</div></pems-col>
         <pems-col span="4"><div class="fw-bold text-success">@((totalLaborCost + spareCost).ToString("N0"))</div><div class="text-muted small">@Localizer["Total Maintenance Cost"]</div></pems-col>
     </pems-row>
-</div>
+</pems-content-card>
 }
 
 @if (Acc(WoSection.SpareParts) == SectionAccess.Hidden)
 {
-    <div class="content-card text-muted small"><pems-icon name="bi-lock" /> @Localizer["Spare parts usage is not available until execution starts."]</div>
+    <pems-content-card css="text-muted small"><pems-icon name="bi-lock" /> @Localizer["Spare parts usage is not available until execution starts."]</pems-content-card>
 }
 else
 {
-<div class="content-card">
+<pems-content-card>
     <h6 class="mb-3">@Localizer["Spare Parts Used"]</h6>
     <div class="table-responsive table-scroll-area pems-s-8da1c6e6">
     <pems-related-table>
@@ -780,12 +780,12 @@ else
         <pems-col md="2"><pems-button tone="primary" size="small" css="w-100"><pems-icon name="bi-plus-lg" /> @Localizer["Add"]</pems-button></pems-col>
     </pems-row></form>
     }
-</div>
+</pems-content-card>
 }
 
 @if (tasks.Any())
 {
-    <div class="content-card mt-3">
+    <pems-content-card css="mt-3">
         <h6 class="mb-3"><pems-icon name="bi-list-ol" /> Tasks (@tasks.Count(t => t.IsCompleted)/@tasks.Count completed)</h6>
         <pems-related-table>
             <thead><tr><th class="pems-w-50"></th><th class="pems-w-60">#</th><th>@Localizer["Title"]</th><th>@Localizer["Description"]</th><th>@Localizer["Completed"]</th></tr></thead>
@@ -817,7 +817,7 @@ else
                 }
             </tbody>
         </pems-related-table>
-    </div>
+    </pems-content-card>
 }
 
 @{
@@ -825,7 +825,7 @@ else
     var totalActualHours = laborEntries.Sum(x => x.RegularHours + x.OvertimeHours);
 }
 
-<div class="content-card mt-3">
+<pems-content-card css="mt-3">
     <h6 class="mb-3"><pems-icon name="bi-mortarboard" /> @Localizer["Required Skills"]</h6>
     @if (totalPlannedHours > 0 || totalActualHours > 0)
     {
@@ -879,9 +879,9 @@ else
     {
         <p class="text-muted small mb-0"><pems-icon name="bi-lock" /> @Localizer["This section is read-only at the current stage or with your permissions."]</p>
     }
-</div>
+</pems-content-card>
 
-<div class="content-card mt-3">
+<pems-content-card css="mt-3">
     @{
         var requiredMaterials = (List<PEMS.Domain.Entities.WorkOrderMaterial>)ViewBag.RequiredMaterials;
         var intake = ViewBag.WarehouseIntake as PEMS.Application.Interfaces.WarehouseIntakeDto;   // SCRUM-472
@@ -1004,9 +1004,9 @@ else
         <pems-col md="3"><pems-button tone="primary" size="small" css="w-100"><pems-icon name="bi-plus-lg" /> @Localizer["Add"]</pems-button></pems-col>
     </pems-row></form>
     }
-</div>
+</pems-content-card>
 
-<div class="content-card mt-3">
+<pems-content-card css="mt-3">
     <h6 class="mb-3"><pems-icon name="bi-people-fill" /> Crew</h6>
     @{ var woCrews = (List<PEMS.Domain.Entities.Crew>)(ViewBag.Crews ?? new List<PEMS.Domain.Entities.Crew>()); }
     @if (woCrews.Any())
@@ -1033,7 +1033,7 @@ else
             <pems-col md="3"><pems-button tone="primary" size="small" outline="true" css="w-100"><pems-icon name="bi-plus-lg" /> @Localizer["ساخت Crew برای این WorkOrder"]</pems-button></pems-col>
         </pems-row></form>
     }
-</div>
+</pems-content-card>
 
 @section Styles {
     <link rel="stylesheet" href="~/_content/PEMS.UI/pems-list.css" asp-append-version="true" />

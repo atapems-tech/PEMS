@@ -74,7 +74,7 @@
     <link rel="stylesheet" href="~/_content/PEMS.UI/pems-list.css" asp-append-version="true" />
 }
 
-<div class="content-card mb-3">
+<pems-content-card css="mb-3">
     <div class="d-flex align-items-center gap-3 mb-2 flex-wrap">
         <div class="kpi-icon bg-icon-blue pems-s-792bd2d6"><pems-icon name="bi-shield-check" /></div>
         <div>
@@ -112,11 +112,11 @@
     {
         <pems-alert tone="success" css="py-2 px-3 small mt-2 mb-0">Closed on @Model.ClosedDate.Value.ToString("yyyy-MM-dd HH:mm")</pems-alert>
     }
-</div>
+</pems-content-card>
 
 @if (actionItems.Any())
 {
-    <div class="content-card mb-3 border-start border-4 border-warning">
+    <pems-content-card css="mb-3 border-start border-4 border-warning">
         <h6 class="mb-2"><pems-icon name="bi-exclamation-circle" css="text-warning" /> Action Required</h6>
         <ul class="list-unstyled mb-0">
             @foreach (var item in actionItems)
@@ -124,7 +124,7 @@
                 <li class="py-1"><a href="@item.Anchor">@item.Text</a></li>
             }
         </ul>
-    </div>
+    </pems-content-card>
 }
 
 @* طبق UI01-003: بنر عمومی فقط وقتی نمایش داده می‌شود که ErrorArea تعیین نشده باشد - در غیر این
@@ -145,7 +145,7 @@
     }
 }
 
-<div class="content-card mb-3" id="actions">
+<pems-content-card css="mb-3" id="actions">
     <h6 class="mb-3">@Localizer["Actions"]</h6>
     @if (errorArea == "Actions" && (pageMessage != null || pageError != null))
     {
@@ -214,7 +214,7 @@
             <span class="text-muted small">@Localizer["No further actions available."]</span>
         }
     </div>
-</div>
+</pems-content-card>
 
 @{
     var executionGate = (PEMS.Application.DTOs.ExecutionGateResultDto?)ViewBag.ExecutionGate;
@@ -224,7 +224,7 @@
 @if (executionGate != null)
 {
     var gateBadge = executionGate.Result == "Eligible" ? "success" : "danger";
-    <div class="content-card mb-3" id="executiongate">
+    <pems-content-card css="mb-3" id="executiongate">
         <h6 class="mb-3">
             <pems-icon name="bi-door-open" /> Execution Gate
             <pems-badge tone="@gateBadge">@executionGate.Result.ToUpper()</pems-badge>
@@ -295,12 +295,12 @@
                 </tbody>
             </pems-related-table>
         }
-    </div>
+    </pems-content-card>
 }
 
 @if (approvalInstance != null)
 {
-    <div class="content-card mb-3" id="approval">
+    <pems-content-card css="mb-3" id="approval">
         <h6 class="mb-3"><pems-icon name="bi-diagram-3" /> Approval Progress <pems-badge tone="@(approvalInstance.Status == "Completed" ? "success" : approvalInstance.Status == "Rejected" ? "danger" : "primary")">@approvalInstance.Status</pems-badge></h6>
         @if (errorArea == "Approval" && pageError != null && pageError.Contains(passkeyMissingMarker))
         {
@@ -401,14 +401,14 @@
                 </tbody>
             </pems-related-table>
         }
-    </div>
+    </pems-content-card>
 }
 
 @{
     var verifiedCount = isolationPoints.Count(p => p.Status is "Verified" or "Deisolated");
     var unverifiedCount = isolationPoints.Count(p => p.Status is "Requested" or "Isolated");
 }
-<div class="content-card mb-3" id="loto">
+<pems-content-card css="mb-3" id="loto">
     <h6 class="mb-3">
         <pems-icon name="bi-lock" /> Isolation Points (LOTO)
         @if (isolationPoints.Any())
@@ -507,12 +507,12 @@
             <pems-col md="1"><pems-button tone="primary" size="small" css="w-100" type="submit">@Localizer["Add"]</pems-button></pems-col>
         </pems-row></form>
     }
-</div>
+</pems-content-card>
 
 @{
     var passedGasTests = gasTests.Count(g => g.Status == "Passed" && !g.IsExpired);
 }
-<div class="content-card mb-3">
+<pems-content-card css="mb-3">
     <h6 class="mb-3">
         <pems-icon name="bi-clouds" /> Gas Testing
         @if (gasTests.Any())
@@ -604,13 +604,13 @@
             <pems-col md="1"><pems-button tone="primary" size="small" css="w-100" type="submit">Record</pems-button></pems-col>
         </pems-row></form>
     }
-</div>
+</pems-content-card>
 
 @{
     var handoverBacklinks = (IEnumerable<dynamic>)ViewBag.HandoverBacklinks;
     var unresolvedSimopsCount = simopsConflicts.Count(c => c.Status is "Potential" or "Confirmed");
 }
-<div class="content-card mb-3" id="simops">
+<pems-content-card css="mb-3" id="simops">
     <h6 class="mb-3">
         <pems-icon name="bi-arrows-angle-contract" /> SIMOPS
         @if (simopsConflicts.Any())
@@ -761,9 +761,9 @@
             }
         </p>
     }
-</div>
+</pems-content-card>
 
-<div class="content-card">
+<pems-content-card>
     <h6 class="mb-3">@Localizer["Status History"]</h6>
     <pems-related-table>
         <thead><tr><th>@Localizer["From"]</th><th>To</th><th>By</th><th>@Localizer["Date"]</th><th>@Localizer["Reason"]</th></tr></thead>
@@ -781,6 +781,6 @@
         </tbody>
     </pems-related-table>
     @if (!Model.StatusHistory.Any()) { <p class="text-muted text-center py-3 mb-0">@Localizer["هنوز تغییر وضعیتی ثبت نشده."]</p> }
-</div>
+</pems-content-card>
 
 <script src="~/js/webauthn.js"></script>

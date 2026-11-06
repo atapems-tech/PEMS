@@ -8,9 +8,9 @@
     <link rel="stylesheet" href="~/css/pems-workspace.css" asp-append-version="true" />
 }
 
-<div class="vs-page">
+<pems-page-shell kind="workspace">
     
-    <div class="content-card pems-s-b12974cb">
+    <pems-content-card css="pems-s-b12974cb">
         <form asp-action="Create" method="post">
             <pems-row gap="3">
                 <pems-col span="12"><pems-label>@Localizer["Vs_Name"]</pems-label><pems-input asp-for="Name" required /></pems-col>
@@ -25,5 +25,5 @@
                 <a asp-action="Index" class="vs-btn">@Localizer["Cancel"]</a>
             </div>
         </form>
-    </div>
-</div>
+    </pems-content-card>
+</pems-page-shell>

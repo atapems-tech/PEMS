@@ -12,7 +12,7 @@
     string NA(string? v) => string.IsNullOrWhiteSpace(v) ? "N/A" : v;
 }
 
-<div class="content-card mb-3 d-print-none">
+<pems-content-card css="mb-3 d-print-none">
     <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
         <div>
             <h4 class="mb-0">@Model.Equipment?.TagNumber <pems-badge tone="@badgeClass" css="ms-1">@status</pems-badge></h4>
@@ -27,9 +27,9 @@
             </form>
         </div>
     </div>
-</div>
+</pems-content-card>
 
-<div class="content-card mb-3">
+<pems-content-card css="mb-3">
     <h6 class="mb-3">@Localizer["Passport"]</h6>
     <pems-row gap="2" css="small">
         <pems-col md="3"><strong>@Localizer["Loop No."]</strong><div>@NA(Model.LoopNumber)</div></pems-col>
@@ -71,9 +71,9 @@
     {
         <div class="mt-2 small"><strong>@Localizer["Description"]</strong><div>@Model.Equipment.Description</div></div>
     }
-</div>
+</pems-content-card>
 
-<div class="content-card mb-3">
+<pems-content-card css="mb-3">
     <pems-row gap="3">
         <pems-col md="6">
             <h6>Latest Calibration</h6>
@@ -107,9 +107,9 @@
             }
         </pems-col>
     </pems-row>
-</div>
+</pems-content-card>
 
-<div class="content-card d-print-none">
+<pems-content-card css="d-print-none">
     <h6>Record New Calibration</h6>
     <form asp-action="AddCalibration" method="post"><pems-row gap="2" css="align-items-end mb-4">
         <input type="hidden" name="instrumentId" value="@Model.InstrumentId" />
@@ -152,7 +152,7 @@
             </tbody>
         </pems-table>
     </div>
-</div>
+</pems-content-card>
 
 @{
     var alarms = (List<Alarm>)ViewBag.Alarms;
@@ -162,7 +162,7 @@
 }
 
 @* ===================== I&C Integration (CMMS-09) ===================== *@
-<div class="content-card mb-3 d-print-none">
+<pems-content-card css="mb-3 d-print-none">
     <h6>Record New Alarm</h6>
     <form asp-action="AddAlarm" method="post"><pems-row gap="2" css="align-items-end mb-3">
         <input type="hidden" name="instrumentId" value="@Model.InstrumentId" />
@@ -242,11 +242,11 @@
             </pems-row></form>
         </div>
     }
-</div>
+</pems-content-card>
 
 <pems-row gap="3" css="mb-3">
     <pems-col md="6">
-        <div class="content-card h-100">
+        <pems-content-card css="h-100">
             <h6>Control Loop</h6>
             @if (controlLoop != null)
             {
@@ -274,10 +274,10 @@
                     <pems-col md="12"><pems-button tone="primary" size="small" css="w-100" type="submit">Assign Loop</pems-button></pems-col>
                 </pems-row></form>
             }
-        </div>
+        </pems-content-card>
     </pems-col>
     <pems-col md="6">
-        <div class="content-card h-100">
+        <pems-content-card css="h-100">
             <h6>I/O Points</h6>
             <pems-table kind="enterprise" scale="small" css="mb-0">
                 <thead><tr><th>@Localizer["Tag"]</th><th>@Localizer["Type"]</th><th>PLC / Rack / Slot / Channel</th></tr></thead>
@@ -293,6 +293,6 @@
                 </tbody>
             </pems-table>
             @if (!ioPoints.Any()) { <p class="text-muted small mb-0">هیچ I/O Point ای ثبت نشده (معمولاً از طریق AI Import پر می‌شود).</p> }
-        </div>
+        </pems-content-card>
     </pems-col>
 </pems-row>

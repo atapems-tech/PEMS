@@ -4,14 +4,14 @@
 @inject IStringLocalizer<SharedResource> Localizer
 @* SCRUM-473: OS&D (over, short and damaged) report of one goods receipt, for the vendor. Same print pattern as the passports. *@
 
-<div class="content-card mb-3 d-print-none">
+<pems-content-card css="mb-3 d-print-none">
     <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
         <pems-button as="a" tone="neutral" size="small" outline="true" asp-action="Details" asp-route-id="@Model.IrnReceiptId"><pems-icon name="bi-arrow-left" /> @Model.IrnNumber</pems-button>
         <pems-button tone="neutral" size="small" outline="true" onclick="window.print()"><pems-icon name="bi-printer" /> @Localizer["Print"]</pems-button>
     </div>
-</div>
+</pems-content-card>
 
-<div class="content-card mb-3">
+<pems-content-card css="mb-3">
     <h5 class="mb-1">@Localizer["Rcv_OsdTitle"]</h5>
     <div class="small text-muted mb-3">@Localizer["Rcv_OsdSubtitle"]</div>
     <pems-row gap="2" css="small">
@@ -22,9 +22,9 @@
         <pems-col span="6" md="3"><strong>@Localizer["Warehouse"]:</strong> @Model.WarehouseCode</pems-col>
         <pems-col span="6" md="3"><strong>@Localizer["Received By"]:</strong> @(Model.ReceivedBy ?? "-")</pems-col>
     </pems-row>
-</div>
+</pems-content-card>
 
-<div class="content-card mb-3">
+<pems-content-card css="mb-3">
     @if (!Model.HasDiscrepancy)
     {
         <pems-alert tone="success" css="py-2 px-3 small mb-3">@Localizer["Rcv_OsdClean"]</pems-alert>
@@ -65,4 +65,4 @@
         </tbody>
     </pems-table>
     <p class="small text-muted mb-0">@Localizer["Rcv_OsdNote"]</p>
-</div>
+</pems-content-card>

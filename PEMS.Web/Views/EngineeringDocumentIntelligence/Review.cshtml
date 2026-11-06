@@ -4,7 +4,7 @@
 @inject IStringLocalizer<SharedResource> Localizer
 
 
-<div class="content-card mb-3">
+<pems-content-card css="mb-3">
     <div class="d-flex justify-content-between align-items-center">
         <div>
             <h5 class="mb-0">@Model.DocumentNo &mdash; @Model.Title</h5>
@@ -41,9 +41,9 @@
             </form>
         }
     </div>
-</div>
+</pems-content-card>
 
-<div class="content-card mb-3">
+<pems-content-card css="mb-3">
     <h6 class="mb-3"><pems-icon name="bi-robot" /> AI Classification Suggestions</h6>
 
     @foreach (var c in Model.Classifications)
@@ -99,9 +99,9 @@
         </div>
     }
     @if (!Model.Classifications.Any()) { <p class="text-muted">No AI classification suggestions yet.</p> }
-</div>
+</pems-content-card>
 
-<div class="content-card mb-3">
+<pems-content-card css="mb-3">
     <h6 class="mb-3"><pems-icon name="bi-tags" /> Related Equipment Tags (AVEVA-style multi-tag linking)</h6>
     <div class="table-responsive table-scroll-area pems-s-8da1c6e6">
     <pems-table kind="enterprise">
@@ -139,9 +139,9 @@
     </pems-table>
     </div>
     @if (!Model.TagLinks.Any()) { <p class="text-muted">No equipment tags detected or linked yet.</p> }
-</div>
+</pems-content-card>
 
-<div class="content-card">
+<pems-content-card>
     <h6 class="mb-3"><pems-icon name="bi-chat-dots" /> Comment Management</h6>
     <div class="table-responsive table-scroll-area pems-s-8da1c6e6">
     <pems-table kind="enterprise">
@@ -191,4 +191,4 @@
         <pems-col md="9"><pems-input scale="small" name="commentText" placeholder="New comment..." required /></pems-col>
         <pems-col md="3"><pems-button tone="primary" size="small" css="w-100">@Localizer["Add Comment"]</pems-button></pems-col>
     </pems-row></form>
-</div>
+</pems-content-card>

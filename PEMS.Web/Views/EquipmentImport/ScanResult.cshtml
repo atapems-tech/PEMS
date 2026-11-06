@@ -6,7 +6,7 @@
     var existingTags = (List<string>)ViewBag.ExistingTags;
 }
 
-<div class="content-card mb-3">
+<pems-content-card css="mb-3">
     <h6 class="mb-2"><pems-icon name="bi-file-earmark-pdf" /> Scan result: @ViewBag.FileName</h6>
     <p class="text-muted small mb-0">
         This is a best-effort scan for tag-number-looking text (e.g. 80-PSH-601305, 88-B-9001) -
@@ -14,17 +14,17 @@
         number is recognized; review the list below, select the real equipment tags, then fill in
         the discipline. You'll need to edit each one afterward with the actual name/type/manufacturer.
     </p>
-</div>
+</pems-content-card>
 
 @if (!Model.Any())
 {
-    <div class="content-card">
+    <pems-content-card>
         <p class="text-muted text-center py-4">No tag-like patterns were found in this PDF.</p>
-    </div>
+    </pems-content-card>
 }
 else
 {
-    <div class="content-card">
+    <pems-content-card>
         <form asp-action="CreateFromTags" method="post">
             <input type="hidden" name="projectId" value="@ViewBag.ProjectId" />
 
@@ -64,7 +64,7 @@ else
                 </pems-row>
             </div>
         </form>
-    </div>
+    </pems-content-card>
 }
 
 @section Scripts {

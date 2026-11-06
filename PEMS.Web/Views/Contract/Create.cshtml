@@ -6,7 +6,7 @@
     var vendors = (IEnumerable<dynamic>)ViewBag.Vendors;
 }
 
-<div class="content-card pems-s-bcaa1805">
+<pems-content-card css="pems-s-bcaa1805">
     <form asp-action="Create" method="post">
         <pems-row gap="3">
             <pems-col md="6">@await Component.InvokeAsync("DocumentNumberField", new { documentType = "Contract", name = "contractNo", label = Localizer["Contract No"].Value })</pems-col>
@@ -35,4 +35,4 @@
             <pems-button tone="neutral" outline="true" as="a" asp-action="Index">@Localizer["Cancel"]</pems-button>
         </div>
     </form>
-</div>
+</pems-content-card>

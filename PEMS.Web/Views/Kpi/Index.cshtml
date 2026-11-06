@@ -59,24 +59,24 @@
 <h6 class="text-muted mb-2"><pems-icon name="bi-cash-coin" /> Cost KPIs</h6>
 <pems-row gap="3" css="mb-3">
     <pems-col lg="4">
-        <div class="content-card h-100">
+        <pems-content-card css="h-100">
             <h6 class="mb-2">Cost by Cost Type</h6>
             <pems-chart spec="@costSplit" />
-        </div>
+        </pems-content-card>
     </pems-col>
     <pems-col lg="8">
         <pems-row gap="3" css="h-100">
-            <pems-col sm="6"><div class="content-card text-center py-4 h-100"><div class="small text-muted">@Localizer["Total Maintenance Cost"]</div><div class="fs-4 fw-bold">@Model.Cost.TotalCost.ToString("N0")</div></div></pems-col>
-            <pems-col sm="6"><div class="content-card text-center py-4 h-100"><div class="small text-muted">@Localizer["Labor Cost"]</div><div class="fs-4 fw-bold">@Model.Cost.LaborCost.ToString("N0")</div></div></pems-col>
-            <pems-col sm="6"><div class="content-card text-center py-4 h-100"><div class="small text-muted">Material Cost</div><div class="fs-4 fw-bold">@Model.Cost.MaterialCost.ToString("N0")</div></div></pems-col>
-            <pems-col sm="6"><div class="content-card text-center py-4 h-100"><div class="small text-muted">Contractor Cost</div><div class="fs-4 fw-bold">@Model.Cost.ContractorCost.ToString("N0")</div></div></pems-col>
+            <pems-col sm="6"><pems-content-card css="text-center py-4 h-100"><div class="small text-muted">@Localizer["Total Maintenance Cost"]</div><div class="fs-4 fw-bold">@Model.Cost.TotalCost.ToString("N0")</div></pems-content-card></pems-col>
+            <pems-col sm="6"><pems-content-card css="text-center py-4 h-100"><div class="small text-muted">@Localizer["Labor Cost"]</div><div class="fs-4 fw-bold">@Model.Cost.LaborCost.ToString("N0")</div></pems-content-card></pems-col>
+            <pems-col sm="6"><pems-content-card css="text-center py-4 h-100"><div class="small text-muted">Material Cost</div><div class="fs-4 fw-bold">@Model.Cost.MaterialCost.ToString("N0")</div></pems-content-card></pems-col>
+            <pems-col sm="6"><pems-content-card css="text-center py-4 h-100"><div class="small text-muted">Contractor Cost</div><div class="fs-4 fw-bold">@Model.Cost.ContractorCost.ToString("N0")</div></pems-content-card></pems-col>
         </pems-row>
     </pems-col>
 </pems-row>
 
 <pems-row gap="3" css="mb-4">
     <pems-col lg="4">
-        <div class="content-card h-100">
+        <pems-content-card css="h-100">
             <h6 class="mb-2">Top Equipment by Cost</h6>
             <pems-chart spec="@topEquipment" />
             @if (Model.Cost.TopEquipmentByCost.Any())
@@ -94,48 +94,48 @@
                     </pems-table>
                 </details>
             }
-        </div>
+        </pems-content-card>
     </pems-col>
     <pems-col lg="4">
-        <div class="content-card h-100">
+        <pems-content-card css="h-100">
             <h6 class="mb-2">Cost by Functional Location</h6>
             <pems-chart spec="@byLocation" />
-        </div>
+        </pems-content-card>
     </pems-col>
     <pems-col lg="4">
-        <div class="content-card h-100">
+        <pems-content-card css="h-100">
             <h6 class="mb-2">Cost by Maintenance Type</h6>
             <pems-chart spec="@byType" />
-        </div>
+        </pems-content-card>
     </pems-col>
 </pems-row>
 
 <h6 class="text-muted mb-2"><pems-icon name="bi-tools" /> Maintenance KPIs</h6>
 <pems-row gap="3" css="mb-3">
     <pems-col lg="3" sm="6">
-        <div class="content-card h-100 text-center">
+        <pems-content-card css="h-100 text-center">
             <h6 class="mb-2">@Localizer["PM Compliance"]</h6>
             <pems-chart spec="@pmGauge" />
             <div class="small text-muted mt-1">PM Overdue: @Model.Maintenance.PmOverdueCount / @Model.Maintenance.PmActivePlanCount</div>
-        </div>
+        </pems-content-card>
     </pems-col>
     <pems-col lg="3" sm="6">
-        <div class="content-card h-100 text-center">
+        <pems-content-card css="h-100 text-center">
             <h6 class="mb-2">Completion Rate</h6>
             <pems-chart spec="@completionGauge" />
             <div class="small text-muted mt-1">WO Aging (avg days): @Num(Model.Maintenance.WorkOrderAgingDays)</div>
-        </div>
+        </pems-content-card>
     </pems-col>
     <pems-col lg="3" sm="6">
-        <div class="content-card h-100">
+        <pems-content-card css="h-100">
             <h6 class="mb-2">Work Mix</h6>
             <pems-chart spec="@workMix" />
-        </div>
+        </pems-content-card>
     </pems-col>
     <pems-col lg="3" sm="6">
         <pems-row gap="3" css="h-100">
-            <pems-col span="12"><div class="content-card text-center py-3 h-100"><div class="small text-muted">Backlog</div><div class="fs-4 fw-bold">@Model.Maintenance.BacklogCount</div></div></pems-col>
-            <pems-col span="12"><div class="content-card text-center py-3 h-100"><div class="small text-muted">Backlog Hours</div><div class="fs-4 fw-bold">@Model.Maintenance.BacklogHours.ToString("N0")</div></div></pems-col>
+            <pems-col span="12"><pems-content-card css="text-center py-3 h-100"><div class="small text-muted">Backlog</div><div class="fs-4 fw-bold">@Model.Maintenance.BacklogCount</div></pems-content-card></pems-col>
+            <pems-col span="12"><pems-content-card css="text-center py-3 h-100"><div class="small text-muted">Backlog Hours</div><div class="fs-4 fw-bold">@Model.Maintenance.BacklogHours.ToString("N0")</div></pems-content-card></pems-col>
         </pems-row>
     </pems-col>
 </pems-row>
@@ -143,13 +143,13 @@
 
 <h6 class="text-muted mb-2"><pems-icon name="bi-graph-up-arrow" /> Reliability Summary</h6>
 <pems-row gap="3">
-    <pems-col lg="3" sm="6"><div class="content-card text-center py-4 h-100"><div class="small text-muted">Equipment with Failures</div><div class="fs-4 fw-bold">@Model.Reliability.EquipmentWithFailuresCount</div></div></pems-col>
-    <pems-col lg="3" sm="6"><div class="content-card text-center py-4 h-100"><div class="small text-muted">@Localizer["Total Failures"]</div><div class="fs-4 fw-bold">@Model.Reliability.TotalFailureCount</div></div></pems-col>
+    <pems-col lg="3" sm="6"><pems-content-card css="text-center py-4 h-100"><div class="small text-muted">Equipment with Failures</div><div class="fs-4 fw-bold">@Model.Reliability.EquipmentWithFailuresCount</div></pems-content-card></pems-col>
+    <pems-col lg="3" sm="6"><pems-content-card css="text-center py-4 h-100"><div class="small text-muted">@Localizer["Total Failures"]</div><div class="fs-4 fw-bold">@Model.Reliability.TotalFailureCount</div></pems-content-card></pems-col>
     <pems-col lg="6">
-        <div class="content-card text-center h-100">
+        <pems-content-card css="text-center h-100">
             <h6 class="mb-2">Avg. Availability</h6>
             <pems-chart spec="@availabilityGauge" />
-        </div>
+        </pems-content-card>
     </pems-col>
 </pems-row>
 <p class="mt-2"><a asp-controller="Reliability" asp-action="Index" class="small">جزئیات کامل Reliability (MTBF/MTTR در سطح تجهیز) &rarr;</a></p>

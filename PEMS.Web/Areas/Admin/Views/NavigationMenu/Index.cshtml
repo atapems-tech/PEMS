@@ -5,7 +5,7 @@
 @using PEMS.Domain.Entities
 @inject IStringLocalizer<SharedResource> Localizer
 
-<div class="admin-page-shell">
+<pems-page-shell kind="admin">
     <div class="admin-hero">
         <div class="d-flex align-items-center justify-content-between gap-3 flex-wrap">
             <p class="mb-0">@Localizer["Nav_Admin_Intro"]</p>
@@ -13,7 +13,7 @@
         </div>
     </div>
 
-    <div class="content-card">
+    <pems-content-card>
         @if (TempData["Success"] != null)
         {
             <pems-alert tone="success" css="py-2">@TempData["Success"]</pems-alert>
@@ -104,5 +104,5 @@
                 </tbody>
             </pems-table>
         </div>
-    </div>
-</div>
+    </pems-content-card>
+</pems-page-shell>

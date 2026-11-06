@@ -11,7 +11,7 @@
     تا کیفیت هر معیار قابلیت‌اطمینان شفاف باشد.
 </p>
 
-<div class="content-card mb-3">
+<pems-content-card css="mb-3">
     <pems-row gap="3">
         <pems-col md="3">
             <pems-kpi-tile compact label="Equipment Reliability Coverage">@Model.EquipmentReliabilityCoveragePercent.ToString("N1")%</pems-kpi-tile>
@@ -26,9 +26,9 @@
             <pems-kpi-tile compact label="Total Failure Records">@Model.TotalFailureRecords</pems-kpi-tile>
         </pems-col>
     </pems-row>
-</div>
+</pems-content-card>
 
-<div class="content-card mb-3">
+<pems-content-card css="mb-3">
     <h6 class="mb-2">Maintenance Chain Coverage <pems-badge tone="light">Phase 7</pems-badge></h6>
     <pems-row gap="3">
         <pems-col md="2">
@@ -47,9 +47,9 @@
             <pems-kpi-tile compact label="Maintenance Plan Coverage">@Model.MaintenancePlanCoveragePercent.ToString("N1")%</pems-kpi-tile>
         </pems-col>
     </pems-row>
-</div>
+</pems-content-card>
 
-<div class="content-card">
+<pems-content-card>
     <pems-table kind="enterprise" scale="small" css="mb-0">
         <tbody>
             <tr><td>@Localizer["Total Active Equipment"]</td><td class="text-end">@Model.TotalActiveEquipment</td></tr>
@@ -69,4 +69,4 @@
             <tr><td>Completed/Closed Work Orders Missing Completion Date</td><td class="text-end">@Model.WorkOrdersMissingCompletionDate</td></tr>
         </tbody>
     </pems-table>
-</div>
+</pems-content-card>

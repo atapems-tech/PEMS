@@ -49,6 +49,8 @@ public sealed class AdoptionRatchetTests
         ("inline-style", new Regex(@"\sstyle=""", RegexOptions.Compiled), true, false),
         ("icon", new Regex(@"<i\b[^>]*\bclass=""[^""]*(?<![\w-])bi(?![\w-])", RegexOptions.Compiled), true, true),
         ("layout-grid", new Regex(@"class=""[^""]*(?<![\w@(.-])(row|col(-[a-z]+)?(-\d+)?)(?![\w.-])", RegexOptions.Compiled), true, false),   // not a Razor variable called row (row.Allowed, @row)
+        ("content-card", new Regex(@"class=""[^""]*(?<![\w-])content-card(?![\w-])", RegexOptions.Compiled), true, true),
+        ("page-shell", new Regex(@"class=""[^""]*(?<![\w-])(admin-page-shell|vs-page)(?![\w-])", RegexOptions.Compiled), true, true),
         ("pagination", new Regex(@"class=""[^""]*(?<![\w-])(pagination|page-link)(?![\w-])", RegexOptions.Compiled), true, true),
         ("bare-button", new Regex(@"class=""btn(?![\w-])", RegexOptions.Compiled), true, true),
         ("inline-script", new Regex(@"<script>", RegexOptions.Compiled), true, false),

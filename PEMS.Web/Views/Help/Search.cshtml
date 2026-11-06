@@ -8,14 +8,14 @@
     var results = (IReadOnlyList<PEMS.Application.DTOs.HelpArticleSummaryDto>)ViewBag.Results;
 }
 
-<div class="content-card mb-3">
+<pems-content-card css="mb-3">
     <form asp-action="Search" method="get" class="d-flex gap-2 pems-s-04391f08">
         <pems-input type="search" name="q" value="@query" placeholder="@L("Search Help...", "جستجو در راهنما...")" />
         <pems-button tone="primary" type="submit"><pems-icon name="bi-search" /> @L("Search", "جستجو")</pems-button>
     </form>
-</div>
+</pems-content-card>
 
-<div class="content-card">
+<pems-content-card>
     <h6 class="mb-3">
         @L("Search results for", "نتایج جستجو برای") "@query" (@results.Count)
     </h6>
@@ -41,4 +41,4 @@
             }
         </pems-list-group>
     }
-</div>
+</pems-content-card>

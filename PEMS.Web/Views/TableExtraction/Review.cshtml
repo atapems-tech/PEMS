@@ -10,7 +10,7 @@
     int Count(string status) => counts.TryGetValue(status, out var c) ? c : 0;
 }
 
-<div class="content-card mb-3">
+<pems-content-card css="mb-3">
     <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
         <div>
             <h5 class="mb-0">@Model.SourceFileName</h5>
@@ -18,7 +18,7 @@
         </div>
         <pems-button tone="neutral" size="small" outline="true" as="a" asp-action="Index"><pems-icon name="bi-arrow-left" /> Back</pems-button>
     </div>
-</div>
+</pems-content-card>
 
 @if (TempData["Message"] != null)
 {
@@ -29,7 +29,7 @@
     <pems-alert tone="danger" css="py-2 px-3 small">@TempData["Error"]</pems-alert>
 }
 
-<div class="content-card mb-3">
+<pems-content-card css="mb-3">
     <div class="admin-kpi-grid">
         <div class="admin-kpi"><div class="admin-kpi-label">@Localizer["Unmatched"]</div><div class="admin-kpi-value">@Count("Unmatched")</div></div>
         <div class="admin-kpi"><div class="admin-kpi-label">Matched - no Instrument yet</div><div class="admin-kpi-value">@Count("MatchedNoInstrument")</div></div>
@@ -37,13 +37,13 @@
         <div class="admin-kpi"><div class="admin-kpi-label">@Localizer["Confirmed"]</div><div class="admin-kpi-value">@Count("Confirmed")</div></div>
         <div class="admin-kpi"><div class="admin-kpi-label">@Localizer["Rejected"]</div><div class="admin-kpi-value">@Count("Rejected")</div></div>
     </div>
-</div>
+</pems-content-card>
 
 <form id="bulkConfirmForm" asp-action="BulkConfirm" method="post">
     <input type="hidden" name="batchId" value="@Model.TableExtractionBatchId" />
 </form>
 
-<div class="content-card mb-3">
+<pems-content-card css="mb-3">
     <div class="d-flex gap-2 flex-wrap align-items-center">
         <div class="input-group admin-search pems-s-2f3f7d77">
             <span class="input-group-text"><pems-icon name="bi-search" /></span>
@@ -62,9 +62,9 @@
             <pems-icon name="bi-link-45deg" /> Confirm Selected (<span id="selectedCount">0</span>)
         </pems-button>
     </div>
-</div>
+</pems-content-card>
 
-<div class="content-card">
+<pems-content-card>
     <div class="table-responsive table-scroll-area pems-s-a7ef6ffc">
         <pems-table kind="enterprise" scale="small">
             <thead>
@@ -146,7 +146,7 @@
             <p class="text-muted text-center py-4">@Localizer["No rows in this batch."]</p>
         }
     </div>
-</div>
+</pems-content-card>
 
 @section Scripts {
 <script src="~/js/views/tableextraction-review.js" asp-append-version="true"></script>

@@ -17,13 +17,13 @@
     var clearOverrideUrl = Url.Action("ClearOverride");
 }
 
-<div class="admin-page-shell">
+<pems-page-shell kind="admin">
     <div class="admin-hero">
         <div class="d-flex align-items-center gap-3">
             <div><p>@Localizer["Choose which sidebar sections a Role sees. This never changes what a Role is allowed to do - only what it sees by default."]</p></div>
         </div>
     </div>
-    <div class="content-card">
+    <pems-content-card>
         <pems-nav css="mb-3">
             <li class="nav-item"><a class="nav-link active" asp-action="Index">@Localizer["By Role"]</a></li>
             <li class="nav-item"><a class="nav-link" asp-action="EffectiveUser">@Localizer["By User"]</a></li>
@@ -203,7 +203,7 @@
                 }
             </details>
         }
-    </div>
-</div>
+    </pems-content-card>
+</pems-page-shell>
 
 @section Styles { <link rel="stylesheet" href="~/css/pems-navvis-index.css" asp-append-version="true" /> }

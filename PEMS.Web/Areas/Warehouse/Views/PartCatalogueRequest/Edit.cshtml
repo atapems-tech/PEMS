@@ -24,15 +24,7 @@
     <link rel="stylesheet" href="~/_content/PEMS.UI/pems-list.css" asp-append-version="true" />
 }
 
-<div class="vs-page pc-page"
-     data-pc-lookup-base="@lookupBase"
-     data-txt-no-results="@Localizer["Pc_Lookup_NoResults"]"
-     data-txt-search="@Localizer["Pc_Lookup_Search"]"
-     data-txt-local="@Localizer["Pc_Hint_LocalPartNo"]"
-     data-txt-yes="@Localizer["Pc_Yes"]"
-     data-txt-no="@Localizer["Pc_No"]"
-     data-txt-manufacturer-exists="@Localizer["Pc_Err_ManufacturerExists"]"
-     data-txt-manufacturer-similar="@Localizer["Pc_Warn_ManufacturerSimilar"]">
+<pems-page-shell kind="workspace" css="pc-page" data-pc-lookup-base="@lookupBase" data-txt-no-results="@Localizer["Pc_Lookup_NoResults"]" data-txt-search="@Localizer["Pc_Lookup_Search"]" data-txt-local="@Localizer["Pc_Hint_LocalPartNo"]" data-txt-yes="@Localizer["Pc_Yes"]" data-txt-no="@Localizer["Pc_No"]" data-txt-manufacturer-exists="@Localizer["Pc_Err_ManufacturerExists"]" data-txt-manufacturer-similar="@Localizer["Pc_Warn_ManufacturerSimilar"]">
 
     <div class="vs-doc-head">
         <div class="d-flex flex-wrap align-items-center gap-2">
@@ -466,7 +458,7 @@
             </section>
         </pems-col>
     </pems-row>
-</div>
+</pems-page-shell>
 
 @* شماره‌دهی (فرم مستقل - تودرتو نیست) *@
 <form id="pcNumberForm" asp-action="GenerateNumber" method="post">

@@ -27,7 +27,7 @@
 
 @if (canGenerate)
 {
-    <div class="content-card mb-3">
+    <pems-content-card css="mb-3">
         <form method="post" asp-action="GenerateAiInsights"><pems-row gap="2" css="align-items-end">
             @Html.AntiForgeryToken()
             <pems-col span="auto">
@@ -38,10 +38,10 @@
                 <pems-button tone="primary" size="small" type="submit">Generate Insights (Ollama, local)</pems-button>
             </pems-col>
         </pems-row></form>
-    </div>
+    </pems-content-card>
 }
 
-<div class="content-card mb-3">
+<pems-content-card css="mb-3">
     <form method="get"><pems-row gap="2">
         <pems-col span="auto">
             <pems-select scale="small" name="status" onchange="this.form.submit()">
@@ -52,9 +52,9 @@
             </pems-select>
         </pems-col>
     </pems-row></form>
-</div>
+</pems-content-card>
 
-<div class="content-card">
+<pems-content-card>
     <div class="table-scroll-area pems-s-0ddf068b">
     <pems-table kind="enterprise" scale="small" css="mb-0">
         <thead><tr><th>@Localizer["Scope"]</th><th>@Localizer["Type"]</th><th>Suggestion</th><th>Source Data</th><th>@Localizer["Model"]</th><th>@Localizer["Status"]</th><th>@Localizer["Reviewed By"]</th><th></th></tr></thead>
@@ -92,4 +92,4 @@
     </pems-table>
     </div>
     @if (!Model.Any()) { <p class="text-muted text-center py-4 mb-0">@Localizer["هیچ بینشی هنوز تولید نشده."]</p> }
-</div>
+</pems-content-card>

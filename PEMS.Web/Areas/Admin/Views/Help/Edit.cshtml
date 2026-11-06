@@ -4,7 +4,7 @@
 @inject IStringLocalizer<SharedResource> Localizer
 @{ ViewData["HidePageTitle"] = true; }
 
-<div class="content-card">
+<pems-content-card>
     <div class="d-flex justify-content-between align-items-center mb-3">
         <h5 class="mb-0"><pems-icon name="bi-pencil" /> @Localizer["Edit Help Article"]</h5>
         <pems-button as="a" tone="neutral" size="small" outline="true" asp-action="History" asp-route-id="@Model.HelpArticleId">
@@ -19,13 +19,13 @@
             <pems-button as="a" tone="neutral" outline="true" asp-action="Index">Back to list</pems-button>
         </div>
     </form>
-</div>
+</pems-content-card>
 
 @{
     var visuals = (IReadOnlyList<PEMS.Application.DTOs.HelpVisualAdminEditDto>)(ViewBag.Visuals ?? new List<PEMS.Application.DTOs.HelpVisualAdminEditDto>());
 }
 
-<div class="content-card mt-3">
+<pems-content-card css="mt-3">
     <div class="d-flex justify-content-between align-items-center mb-3">
         <h6 class="mb-0"><pems-icon name="bi-diagram-2" /> Visual Content (Phase 3)</h6>
         <pems-button as="a" tone="primary" size="small" asp-action="VisualCreate" asp-route-articleId="@Model.HelpArticleId">
@@ -66,4 +66,4 @@
             </tbody>
         </pems-table>
     }
-</div>
+</pems-content-card>

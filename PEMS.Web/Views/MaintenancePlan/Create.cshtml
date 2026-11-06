@@ -9,7 +9,7 @@
     var i = Model.Input;
 }
 
-<div class="content-card pems-s-09a5de31">
+<pems-content-card css="pems-s-09a5de31">
     @await Html.PartialAsync("_RcmErrors", Model.Errors)
 
     @if (ctx == null)
@@ -118,4 +118,4 @@
 
         <script src="~/js/views/maintenanceplan-create.js" asp-append-version="true"></script>
     }
-</div>
+</pems-content-card>

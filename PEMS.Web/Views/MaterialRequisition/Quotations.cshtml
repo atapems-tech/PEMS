@@ -3,7 +3,7 @@
 @using PEMS.Web.Resources
 @inject IStringLocalizer<SharedResource> Localizer
 
-<div class="content-card">
+<pems-content-card>
     <div class="d-flex justify-content-end mb-2">
         <pems-button tone="neutral" size="small" outline="true" type="button" onclick="PemsDataGrid.resetColumns('MaterialRequisitionQuotations')">
             <pems-icon name="bi-arrow-counterclockwise" /> @Localizer["Reset columns"]
@@ -58,7 +58,7 @@
         BaseUrl = Url.Action("Quotations") ?? "",
         ExistingQueryString = ""
     })
-</div>
+</pems-content-card>
 
 @section Scripts {
     <script src="~/js/views/materialrequisition-quotations.js" asp-append-version="true"></script>

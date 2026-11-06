@@ -14,7 +14,7 @@
     <link rel="stylesheet" href="~/_content/PEMS.UI/pems-list.css" asp-append-version="true" />
 }
 
-<div class="content-card mb-3">
+<pems-content-card css="mb-3">
     <div class="d-flex align-items-center gap-3 mb-2 flex-wrap">
         <div class="kpi-icon bg-icon-blue pems-s-792bd2d6"><pems-icon name="bi-list-check" /></div>
         <div>
@@ -32,7 +32,7 @@
             <pems-badge tone="@(Model.LOTORequired ? "warning" : "light")">LOTO @(Model.LOTORequired ? "Required" : "Not Required")</pems-badge>
         </pems-info-item>
     </pems-info-grid>
-</div>
+</pems-content-card>
 
 @if (TempData["Message"] != null)
 {
@@ -73,7 +73,7 @@
         <div class="pems-s-09277c18"><label class="lp-lbl" for="jpTaskMin">@Localizer["JpD_EstMin"]</label><pems-input scale="small" id="jpTaskMin" name="estimatedDurationMinutes" type="number" /></div>
     </pems-related-add>
 </pems-related-list>
-<div class="content-card mb-3">
+<pems-content-card css="mb-3">
     <h6 class="mb-3"><pems-icon name="bi-mortarboard" /> @Localizer["Required Skills"]</h6>
     <div class="d-flex flex-wrap gap-2 mb-3">
         @foreach (var rs in Model.RequiredSkills)
@@ -110,7 +110,7 @@
         <pems-col md="2"><pems-input scale="small" name="plannedHours" type="number" step="0.5" placeholder="@Localizer["Planned h"]" /></pems-col>
         <pems-col md="3"><pems-button tone="primary" size="small" css="w-100"><pems-icon name="bi-plus-lg" /> @Localizer["Add"]</pems-button></pems-col>
     </pems-row></form>
-</div>
+</pems-content-card>
 
 @* SCRUM-337 RelatedList: materials the job plan needs *@
 <pems-related-list id="jpMaterials" icon="bi-box-seam" title="@Localizer["Required Materials"]" count="@Model.RequiredMaterials.Count" empty="@(!Model.RequiredMaterials.Any())" empty-text="@Localizer["متریال موردنیازی ثبت نشده."]">

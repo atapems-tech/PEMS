@@ -18,7 +18,7 @@
 
 <pems-row gap="3">
     <pems-col lg="9">
-        <div class="content-card">
+        <pems-content-card>
             <div class="d-flex justify-content-between align-items-start flex-wrap gap-2 mb-2">
                 <h4 class="mb-0">@Model.Title</h4>
                 <pems-badge tone="light">@Model.ArticleType</pems-badge>
@@ -49,11 +49,11 @@
             <p class="text-muted small mt-3 mb-0">
                 <pems-icon name="bi-clock-history" /> @L("Last updated", "آخرین به‌روزرسانی"): @Model.ModifiedDate.ToString("yyyy-MM-dd")
             </p>
-        </div>
+        </pems-content-card>
 
         @if (Model.RelatedArticles.Any())
         {
-            <div class="content-card mt-3">
+            <pems-content-card css="mt-3">
                 <h6 class="mb-3">@L("Related Help", "راهنمای مرتبط")</h6>
                 <div class="d-flex flex-wrap gap-2">
                     @foreach (var r in Model.RelatedArticles)
@@ -61,12 +61,12 @@
                         <pems-button tone="neutral" size="small" outline="true" as="a" asp-action="Article" asp-route-code="@r.Code">@r.Title</pems-button>
                     }
                 </div>
-            </div>
+            </pems-content-card>
         }
     </pems-col>
 
     <pems-col lg="3">
-        <div class="content-card">
+        <pems-content-card>
             <h6 class="mb-3"><pems-icon name="bi-robot" /> @L("Ask PEMS AI", "پرسش از هوش مصنوعی PEMS")</h6>
             <p class="text-muted small">@L("Ask a question about this article - the answer is based only on its content.", "درباره‌ی همین مقاله سوال بپرسید - پاسخ فقط بر اساس محتوای همین مقاله است.")</p>
             <pems-textarea scale="small" css="mb-2" id="helpAiQuestion" rows="3" placeholder="@L("e.g. What happens if I don't respond to IDC?", "مثلاً اگر به IDC پاسخ ندهم چه می‌شود؟")"></pems-textarea>
@@ -74,7 +74,7 @@
                 <pems-icon name="bi-send" /> @L("Ask", "پرسیدن")
             </pems-button>
             <div id="helpAiAnswer" class="small mt-2" hidden></div>
-        </div>
+        </pems-content-card>
     </pems-col>
 </pems-row>
 

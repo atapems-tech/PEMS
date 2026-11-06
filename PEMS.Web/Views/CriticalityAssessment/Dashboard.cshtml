@@ -18,44 +18,44 @@
 
 <pems-row gap="3" css="mb-3">
     <pems-col md="2">
-        <div class="content-card h-100 text-center">
+        <pems-content-card css="h-100 text-center">
             <div class="fs-4 fw-bold">@Model.TotalActiveEquipment.ToString("N0")</div>
             <div class="text-muted small">@Localizer["Total Active Equipment"]</div>
-        </div>
+        </pems-content-card>
     </pems-col>
     <pems-col md="2">
-        <div class="content-card h-100 text-center">
+        <pems-content-card css="h-100 text-center">
             <div class="fs-4 fw-bold">@Model.Assessed.ToString("N0")</div>
             <div class="text-muted small">Assessed (any status)</div>
-        </div>
+        </pems-content-card>
     </pems-col>
     <pems-col md="2">
-        <div class="content-card h-100 text-center">
+        <pems-content-card css="h-100 text-center">
             <div class="fs-4 fw-bold text-success">@Model.Approved.ToString("N0")</div>
             <div class="text-muted small">@Localizer["Approved"]</div>
-        </div>
+        </pems-content-card>
     </pems-col>
     <pems-col md="2">
-        <div class="content-card h-100 text-center">
+        <pems-content-card css="h-100 text-center">
             <div class="fs-4 fw-bold text-warning">@Model.UnderReview.ToString("N0")</div>
             <div class="text-muted small">@Localizer["Under Review"]</div>
-        </div>
+        </pems-content-card>
     </pems-col>
     <pems-col md="2">
-        <div class="content-card h-100 text-center">
+        <pems-content-card css="h-100 text-center">
             <div class="fs-4 fw-bold">@Model.Draft.ToString("N0")</div>
             <div class="text-muted small">@Localizer["Draft"]</div>
-        </div>
+        </pems-content-card>
     </pems-col>
     <pems-col md="2">
-        <div class="content-card h-100 text-center">
+        <pems-content-card css="h-100 text-center">
             <div class="fs-4 fw-bold text-muted">@Model.Unassessed.ToString("N0")</div>
             <div class="text-muted small">Unassessed</div>
-        </div>
+        </pems-content-card>
     </pems-col>
 </pems-row>
 
-<div class="content-card">
+<pems-content-card>
     <h6 class="mb-2">Published Criticality Distribution <span class="text-muted small">(current authoritative EquipmentCriticality — not the same as "Assessed")</span></h6>
     <pems-table kind="enterprise" scale="small" css="mb-0">
         <tbody>
@@ -69,4 +69,4 @@
             <tr><td>Superseded (historical, excluded above)</td><td class="text-end">@Model.Superseded</td></tr>
         </tbody>
     </pems-table>
-</div>
+</pems-content-card>

@@ -21,7 +21,7 @@
     <pems-alert tone="danger">@TempData["Error"]</pems-alert>
 }
 
-<div class="content-card">
+<pems-content-card>
     <pems-info-grid>
         <pems-info-item label="@Localizer["Tender No"]" num>@Model.TenderNumber</pems-info-item>
         <pems-info-item label="@Localizer["Title"]">@Model.Title</pems-info-item>
@@ -64,7 +64,7 @@
             <pems-button tone="success" size="small" outline="true" as="a" asp-controller="Contract" asp-action="Details" asp-route-id="@Model.ContractId">@Localizer["View Contract"]</pems-button>
         }
     </div>
-</div>
+</pems-content-card>
 
 @if (Model.Status == "Draft" || Model.Status == "Issued")
 {

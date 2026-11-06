@@ -21,22 +21,22 @@
 
 <pems-row gap="3" css="row-cols-1 row-cols-md-2 mb-3">
     <pems-col span="">
-        <div class="content-card h-100">
+        <pems-content-card css="h-100">
             <div class="text-muted small">Today's Output Quantity</div>
             <div class="fs-3 fw-semibold">@Model.TodaysOutputQuantity.ToString("N3")</div>
-        </div>
+        </pems-content-card>
     </pems-col>
     <pems-col span="">
-        <div class="content-card h-100">
+        <pems-content-card css="h-100">
             <div class="text-muted small">Today's Loss Quantity</div>
             <div class="fs-3 fw-semibold text-danger">@Model.TodaysLossQuantity.ToString("N3")</div>
-        </div>
+        </pems-content-card>
     </pems-col>
 </pems-row>
 
 <pems-row gap="3" css="row-cols-1 row-cols-lg-2">
     <pems-col span="">
-        <div class="content-card">
+        <pems-content-card>
             <div class="d-flex justify-content-between align-items-center mb-2">
                 <h6 class="mb-0">Active Production Orders</h6>
                 <pems-button tone="neutral" size="small" outline="true" as="a" asp-controller="ProductionOrder" asp-action="Index">View all</pems-button>
@@ -59,10 +59,10 @@
                 </pems-table>
                 @if (!Model.ActiveOrders.Any()) { <p class="text-muted text-center py-3">No active production orders.</p> }
             </div>
-        </div>
+        </pems-content-card>
     </pems-col>
     <pems-col span="">
-        <div class="content-card">
+        <pems-content-card>
             <h6 class="mb-2">Recent Batches</h6>
             <div class="table-scroll-area pems-s-7bf38d03">
                 <pems-table kind="enterprise">
@@ -81,11 +81,11 @@
                 </pems-table>
                 @if (!Model.RecentBatches.Any()) { <p class="text-muted text-center py-3">No batches recorded yet.</p> }
             </div>
-        </div>
+        </pems-content-card>
     </pems-col>
 </pems-row>
 
-<div class="content-card mt-3">
+<pems-content-card css="mt-3">
     <h6 class="mb-2">Recent Production Losses</h6>
     <div class="table-scroll-area pems-s-f7dce87f">
         <pems-table kind="enterprise">
@@ -105,4 +105,4 @@
         </pems-table>
         @if (!Model.RecentLosses.Any()) { <p class="text-muted text-center py-3">No losses recorded yet.</p> }
     </div>
-</div>
+</pems-content-card>

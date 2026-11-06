@@ -2,8 +2,8 @@
 @using Microsoft.Extensions.Localization
 @using PEMS.Web.Resources
 @inject IStringLocalizer<SharedResource> Localizer
-<div class="admin-page-shell">
-    <div class="content-card">
+<pems-page-shell kind="admin">
+    <pems-content-card>
         <pems-alert tone="warning" css="mb-0"><pems-icon name="bi-shield-lock" /> @Model</pems-alert>
-    </div>
-</div>
+    </pems-content-card>
+</pems-page-shell>

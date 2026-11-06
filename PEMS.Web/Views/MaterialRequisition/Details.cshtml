@@ -4,7 +4,7 @@
 @inject IStringLocalizer<SharedResource> Localizer
 
 
-<div class="content-card mb-3">
+<pems-content-card css="mb-3">
     <pems-info-grid>
         <pems-info-item label="@Localizer["MR Number"]" num>@Model.MRNumber</pems-info-item>
         <pems-info-item label="@Localizer["Project"]">@Model.ProjectName</pems-info-item>
@@ -25,9 +25,9 @@
         </pems-info-item>
         <pems-info-item label="@Localizer["Description"]" wide>@Model.Description</pems-info-item>
     </pems-info-grid>
-</div>
+</pems-content-card>
 
-<div class="content-card mb-3">
+<pems-content-card css="mb-3">
     <h6 class="mb-3">@Localizer["Items"]</h6>
     <div class="table-responsive table-scroll-area pems-s-8da1c6e6">
     <pems-table kind="enterprise">
@@ -53,9 +53,9 @@
         </tbody>
     </pems-table>
     </div>
-</div>
+</pems-content-card>
 
-<div class="content-card mb-3">
+<pems-content-card css="mb-3">
     <h6 class="mb-3">Quotations (MRQ)</h6>
     <div class="table-responsive table-scroll-area pems-s-8da1c6e6">
     <pems-table kind="enterprise">
@@ -106,9 +106,9 @@
     {
         <p class="text-muted">No quotations added yet.</p>
     }
-</div>
+</pems-content-card>
 
-<div class="content-card">
+<pems-content-card>
     <h6 class="mb-3">Add New Quotation (MRQ)</h6>
     <form asp-action="AddQuotation" method="post"><pems-row gap="2" css="align-items-end">
         <input type="hidden" name="mrId" value="@Model.MRId" />
@@ -119,7 +119,7 @@
         <pems-col md="1"><pems-input scale="small" name="currency" value="USD" /></pems-col>
         <pems-col md="2"><pems-button tone="primary" size="small" css="w-100" type="submit">@Localizer["Add"]</pems-button></pems-col>
     </pems-row></form>
-</div>
+</pems-content-card>
 
 
 @{
@@ -128,7 +128,7 @@
 
 @if (relatedLettersMR != null && relatedLettersMR.Any())
 {
-    <div class="content-card mt-3">
+    <pems-content-card css="mt-3">
         <h6 class="mb-3"><pems-icon name="bi-envelope-paper" /> Related Correspondence</h6>
         <div class="table-responsive table-scroll-area pems-s-8da1c6e6">
         <pems-table kind="enterprise">
@@ -148,14 +148,14 @@
             </tbody>
         </pems-table>
         </div>
-    </div>
+    </pems-content-card>
 }
 
 @* SCRUM-470: purchase order from this MR (pre-procurement path) *@
 @if (ViewBag.CanCreatePo is true)
 {
     var poVendors = (IEnumerable<dynamic>)ViewBag.Vendors;
-    <form asp-controller="PurchaseOrder" asp-action="CreateFromRequisition" method="post" class="content-card mt-3">
+    <form asp-controller="PurchaseOrder" asp-action="CreateFromRequisition" method="post"><pems-content-card css="mt-3">
         <input type="hidden" name="mrId" value="@Model.MRId" />
         <h6 class="mb-2"><pems-icon name="bi-receipt" aria-hidden="true" /> @Localizer["Po_CreateFromMr"]</h6>
         <pems-row gap="2" css="align-items-end small">
@@ -166,5 +166,5 @@
             <pems-col md="auto"><pems-button tone="none" size="small" css="btn-primary" type="submit"><pems-icon name="bi-plus" aria-hidden="true" /> @Localizer["Po_Create"]</pems-button></pems-col>
             <pems-col span="12" css="text-muted">@Localizer["Po_CreateHint"]</pems-col>
         </pems-row>
-    </form>
+    </pems-content-card></form>
 }

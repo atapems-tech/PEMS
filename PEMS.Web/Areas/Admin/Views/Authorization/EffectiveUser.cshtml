@@ -4,13 +4,13 @@
 @inject IStringLocalizer<SharedResource> Localizer
 @{ }
 
-<div class="admin-page-shell">
+<pems-page-shell kind="admin">
     <div class="admin-hero">
         <div class="d-flex align-items-center gap-3">
             <div><p>@Localizer["See what a User can do, and which Role/Scope grants it."]</p></div>
         </div>
     </div>
-    <div class="content-card">
+    <pems-content-card>
         <pems-nav css="mb-3">
             <li class="nav-item"><a class="nav-link" asp-action="EffectiveRole">@Localizer["By Role"]</a></li>
             <li class="nav-item"><a class="nav-link active" asp-action="EffectiveUser">@Localizer["By User"]</a></li>
@@ -91,5 +91,5 @@
                 </div>
             }
         }
-    </div>
-</div>
+    </pems-content-card>
+</pems-page-shell>

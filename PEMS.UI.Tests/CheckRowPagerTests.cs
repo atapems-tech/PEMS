@@ -55,4 +55,20 @@ public sealed class CheckRowPagerTests
         Assert.Equal("<table class=\"ct-table\">r</table>", Run(new PemsTableFrameTagHelper(UiTestRenderer.Instance) { Kind = "plain", Css = "ct-table" }, "pems-table", [], "r"));
         Assert.Equal("<table class=\"table table-sm\">r</table>", Run(new PemsTableFrameTagHelper(UiTestRenderer.Instance) { Scale = "small" }, "pems-table", [], "r"));
     }
+
+    [Fact]
+    public void A_content_card_keeps_content_card_first_then_the_page_css_and_can_be_a_section_or_details()
+    {
+        Assert.Equal("<div class=\"content-card mb-3\">x</div>", Run(new PemsContentCardTagHelper(UiTestRenderer.Instance) { Css = "mb-3" }, "pems-content-card", [], "x"));
+        Assert.Equal("<section class=\"content-card\" id=\"p\">x</section>", Run(new PemsContentCardTagHelper(UiTestRenderer.Instance) { As = "section" }, "pems-content-card", [new("id", "p")], "x"));
+        Assert.Equal("<details class=\"content-card\">x</details>", Run(new PemsContentCardTagHelper(UiTestRenderer.Instance) { As = "details" }, "pems-content-card", [], "x"));
+        Assert.Equal("<div class=\"content-card\">x</div>", Run(new PemsContentCardTagHelper(UiTestRenderer.Instance) { As = "script" }, "pems-content-card", [], "x"));
+    }
+
+    [Theory]
+    [InlineData("admin", "admin-page-shell")]
+    [InlineData("workspace", "vs-page")]
+    [InlineData("", "vs-page")]
+    public void A_page_shell_is_the_admin_or_the_workspace_wrapper(string kind, string expected)
+        => Assert.Equal($"<div class=\"{expected} pc-page\">x</div>", Run(new PemsPageShellTagHelper(UiTestRenderer.Instance) { Kind = kind, Css = "pc-page" }, "pems-page-shell", [], "x"));
 }

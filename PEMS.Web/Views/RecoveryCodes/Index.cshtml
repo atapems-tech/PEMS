@@ -3,7 +3,7 @@
 @using PEMS.Web.Resources
 @inject IStringLocalizer<SharedResource> Localizer
 
-<div class="content-card pems-s-b12974cb">
+<pems-content-card css="pems-s-b12974cb">
     <h2 class="h5 mb-3"><pems-icon name="bi-shield-lock" css="me-1" /> @Localizer["Recovery codes"]</h2>
     <p>@Localizer["If you lose your password or MFA device, one recovery code lets you set a new password from the sign-in page. Each code works once."]</p>
 
@@ -24,4 +24,4 @@
         </pems-col>
     </pems-row></form>
     <p class="text-body-secondary small mt-2">@Localizer["Generating a new set invalidates every code you have not used yet."]</p>
-</div>
+</pems-content-card>

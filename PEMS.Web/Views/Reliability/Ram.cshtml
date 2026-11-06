@@ -28,23 +28,23 @@
 
 <pems-row gap="3" css="mb-3">
     <pems-col md="4">
-        <div class="content-card h-100">
+        <pems-content-card css="h-100">
             <h6>@Localizer["Reliability"]</h6>
             <pems-badge tone="@StatusBadge(Model.ReliabilityDataStatus)">@Model.ReliabilityDataStatus</pems-badge>
             <div class="small mt-2">MTBF: @(Model.MTBFHours.HasValue ? $"{Model.MTBFHours.Value:N1} h" : "N/A")</div>
             <div class="small">Failure Rate (λ): @(Model.FailureRateLambdaPerHour.HasValue ? Model.FailureRateLambdaPerHour.Value.ToString("E3") + "/h" : "N/A")</div>
             <div class="small">Sample Size: @Model.FailureSampleSize</div>
-        </div>
+        </pems-content-card>
     </pems-col>
     <pems-col md="4">
-        <div class="content-card h-100">
+        <pems-content-card css="h-100">
             <h6>Maintainability</h6>
             <pems-badge tone="@StatusBadge(Model.MaintainabilityDataStatus)">@Model.MaintainabilityDataStatus</pems-badge>
             <div class="small mt-2">MTTR: @(Model.MTTRHours.HasValue ? $"{Model.MTTRHours.Value:N1} h" : "N/A")</div>
-        </div>
+        </pems-content-card>
     </pems-col>
     <pems-col md="4">
-        <div class="content-card h-100">
+        <pems-content-card css="h-100">
             <h6>@Localizer["Availability"]</h6>
             <div class="small">Inherent: <pems-badge tone="@StatusBadge(Model.InherentAvailabilityDataStatus)">@Model.InherentAvailabilityDataStatus</pems-badge> @(Model.InherentAvailabilityPercent.HasValue ? $"{Model.InherentAvailabilityPercent.Value:N2}%" : "")</div>
             <div class="small mt-2">Operational: <pems-badge tone="@StatusBadge(Model.OperationalAvailabilityDataStatus)">@Model.OperationalAvailabilityDataStatus</pems-badge> @(Model.OperationalAvailabilityPercent.HasValue ? $"{Model.OperationalAvailabilityPercent.Value:N2}%" : "")</div>
@@ -52,11 +52,11 @@
             {
                 <div class="small text-muted">Window: @Model.CalendarWindowHoursConsidered.Value.ToString("N0")h, Downtime: @Model.TotalDowntimeHoursConsidered?.ToString("N1")h</div>
             }
-        </div>
+        </pems-content-card>
     </pems-col>
 </pems-row>
 
-<div class="content-card mb-3">
+<pems-content-card css="mb-3">
     <h6 class="mb-2">Weibull Analysis (2-parameter)</h6>
     <pems-badge tone="@StatusBadge(weibull.DataStatus)">@weibull.DataStatus</pems-badge>
     <span class="small text-muted ms-2">Sample: @weibull.SampleSize intervals (minimum required: @weibull.RequiredMinimumSample failure records)</span>
@@ -71,9 +71,9 @@
             <pems-col md="3"><strong>Interpretation</strong><div>@weibull.BetaInterpretation</div></pems-col>
         </pems-row>
     }
-</div>
+</pems-content-card>
 
-<div class="content-card">
+<pems-content-card>
     <h6 class="mb-2">Monte Carlo / RAM Simulation</h6>
     <p class="text-muted small mb-2">
         فقط وقتی Weibull و MTTR هر دو واقعاً آماده باشند اجرا می‌شود - Provenance همیشه SIMULATED است.
@@ -94,4 +94,4 @@
             </pems-col>
         </pems-row>
     </form>
-</div>
+</pems-content-card>

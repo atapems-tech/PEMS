@@ -45,7 +45,7 @@
     <link rel="stylesheet" href="~/css/pems-part-catalogue.css" asp-append-version="true" />
 }
 
-<div class="vs-page pc-page">
+<pems-page-shell kind="workspace" css="pc-page">
     <div class="vs-doc-head">
         <div class="d-flex flex-wrap align-items-center gap-2">
             <h2 class="pems-page-title mb-0">@(string.IsNullOrEmpty(d.RequestNumber) ? "#" + d.Id : d.RequestNumber)</h2>
@@ -285,4 +285,4 @@
             </section>
         </pems-col>
     </pems-row>
-</div>
+</pems-page-shell>

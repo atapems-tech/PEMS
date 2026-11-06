@@ -4,7 +4,7 @@
 @{
     var order = ViewBag.Order;
 }
-<div class="content-card pems-s-e2b01b0d">
+<pems-content-card css="pems-s-e2b01b0d">
     <h5 class="mb-1">New Production Run</h5>
     <div class="text-muted mb-3">Order: @order.OrderNumber - @order.MaterialItem.MaterialCode</div>
     <form asp-action="Create" method="post">
@@ -44,4 +44,4 @@
             <pems-button tone="neutral" outline="true" as="a" asp-controller="ProductionOrder" asp-action="Details" asp-route-id="@order.ProductionOrderId">Cancel</pems-button>
         </div>
     </form>
-</div>
+</pems-content-card>

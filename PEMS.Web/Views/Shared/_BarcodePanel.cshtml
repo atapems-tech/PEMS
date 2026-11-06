@@ -5,7 +5,7 @@
 @* طبق «PEMS — Enterprise Barcode System» بند «UI»: یک پارتیال مشترک برای تب Barcode - روی هر
    صفحه‌ی Details موجودی که ازش استفاده کند (Equipment/MaterialItem/...) بدون تکرار کد. *@
 
-<div class="content-card">
+<pems-content-card>
     @if (Model.ActiveBarcode == null)
     {
         <p class="text-muted small">No active barcode for this record yet.</p>
@@ -67,4 +67,4 @@
             </pems-col>
         </pems-row>
     }
-</div>
+</pems-content-card>

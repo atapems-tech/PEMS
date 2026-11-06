@@ -7,7 +7,7 @@
     var committed = Model.Committed;
 }
 
-<div class="admin-page-shell">
+<pems-page-shell kind="admin">
     <div class="d-flex gap-2 mb-3">
         <a class="vs-btn vs-btn--sm" asp-action="Index"><pems-icon name="bi-arrow-left" /> @Localizer["Org_Imp_Title"]</a>
     </div>
@@ -52,4 +52,4 @@
     {
         <a class="vs-btn vs-btn--primary" asp-controller="Organization" asp-action="Index"><pems-icon name="bi-diagram-3" /> @Localizer["Org_Title"]</a>
     }
-</div>
+</pems-page-shell>

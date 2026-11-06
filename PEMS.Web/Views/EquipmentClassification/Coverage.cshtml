@@ -3,7 +3,7 @@
 @using PEMS.Web.Resources
 @inject IStringLocalizer<SharedResource> Localizer
 
-<div class="content-card mb-3">
+<pems-content-card css="mb-3">
     <p class="text-muted small mb-3">
         هر بُعد به‌صورت مستقل نشان داده می‌شود (نه یک درصد ترکیبی مبهم) - درصدها فقط روی
         کلاس‌هایی محاسبه می‌شوند که واقعاً Equipment دارند (کلاس‌های بدون تجهیز کاندید عملی هوش
@@ -35,9 +35,9 @@
             <div class="text-muted small">Classes with Job Plans</div>
         </pems-col>
     </pems-row>
-</div>
+</pems-content-card>
 
-<div class="content-card">
+<pems-content-card>
     <div class="table-responsive">
         <pems-table kind="enterprise" scale="small">
             <thead>
@@ -78,4 +78,4 @@
             </tbody>
         </pems-table>
     </div>
-</div>
+</pems-content-card>

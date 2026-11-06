@@ -11,8 +11,8 @@
     var published = Model.Versions.Where(v => v.Status == "Published").ToList();
     string StatusBadge(string s) => s switch { "Published" => "bg-success", "Validated" => "bg-info text-dark", "Draft" => "bg-warning text-dark", "Retired" => "bg-secondary", _ => "bg-light text-dark border" };
 }
-<div class="admin-page-shell">
-    <div class="content-card mb-3">
+<pems-page-shell kind="admin">
+    <pems-content-card css="mb-3">
         <div class="d-flex justify-content-between align-items-start flex-wrap gap-2">
             <div>
                 <h5 class="mb-1">@display</h5>
@@ -25,11 +25,11 @@
             <pems-button as="a" tone="neutral" size="small" outline="true" asp-action="Index"><pems-icon name="bi-arrow-left" /> @Localizer["Workflow Management"]</pems-button>
         </div>
         <pems-alert tone="info" css="small mt-3 mb-0"><pems-icon name="bi-pin-angle" /> @Localizer["Editing or publishing a new workflow version does not alter existing pinned workflow instances."]</pems-alert>
-    </div>
+    </pems-content-card>
 
     @if (d.Editable && perms["Edit"])
     {
-        <div class="content-card mb-3">
+        <pems-content-card css="mb-3">
             <h6>@Localizer["Definition details"] <span class="small text-muted">(@Localizer["shared by all versions"])</span></h6>
             <form asp-action="UpdateDefinition" method="post"><pems-row gap="2">
                 <input type="hidden" name="id" value="@d.DefinitionId" />
@@ -38,10 +38,10 @@
                 <pems-col md="4"><pems-label css="small">@Localizer["Description"]</pems-label><pems-input scale="small" name="description" value="@Model.Description" /></pems-col>
                 <pems-col span="12"><pems-button tone="primary" size="small">@Localizer["Save"]</pems-button></pems-col>
             </pems-row></form>
-        </div>
+        </pems-content-card>
     }
 
-    <div class="content-card mb-3">
+    <pems-content-card css="mb-3">
         <h6>@Localizer["Versions"]</h6>
         <div class="table-responsive">
             <pems-table kind="enterprise" css="align-middle">
@@ -79,11 +79,11 @@
             </pems-table>
         </div>
         @if (openDraft != null) { <p class="small text-muted mb-0"><pems-icon name="bi-info-circle" /> @Localizer["One open draft per workflow: finish or discard v{0} before cloning again.", openDraft.VersionNumber]</p> }
-    </div>
+    </pems-content-card>
 
     <pems-row gap="3">
         <pems-col lg="6">
-            <div class="content-card h-100">
+            <pems-content-card css="h-100">
                 <h6>@Localizer["Binding"]</h6>
                 @if (Model.Bindings.Count == 0 || Model.Bindings.All(b => !b.IsActive))
                 {
@@ -105,10 +105,10 @@
                         }
                     </div>
                 }
-            </div>
+            </pems-content-card>
         </pems-col>
         <pems-col lg="6">
-            <div class="content-card h-100">
+            <pems-content-card css="h-100">
                 <h6>@Localizer["Usage"]</h6>
                 @if (Model.TotalInstances == 0) { <p class="small text-muted mb-0">@Localizer["No instances have used this workflow."]</p> }
                 else
@@ -118,11 +118,11 @@
                         <tbody>@foreach (var u in Model.Usage) { <tr><td>v@(u.VersionNumber)</td><td>@u.Running</td><td>@u.Completed</td><td>@u.Cancelled</td><td>@u.Rejected</td></tr> }</tbody>
                     </pems-table>
                 }
-            </div>
+            </pems-content-card>
         </pems-col>
     </pems-row>
 
-    <div class="content-card mt-3">
+    <pems-content-card css="mt-3">
         <h6>@Localizer["Configuration audit"]</h6>
         <div class="table-responsive pems-s-11017dde">
             <pems-table scale="small" css="align-middle mb-0">
@@ -138,5 +138,5 @@
                 </tbody>
             </pems-table>
         </div>
-    </div>
-</div>
+    </pems-content-card>
+</pems-page-shell>

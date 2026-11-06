@@ -16,12 +16,12 @@
 
 @if (!Model.Any())
 {
-    <div class="content-card"><p class="text-muted text-center py-4 mb-0">@Localizer["هیچ پیشنهاد تاییدنشده‌ای یافت نشد."]</p></div>
+    <pems-content-card><p class="text-muted text-center py-4 mb-0">@Localizer["هیچ پیشنهاد تاییدنشده‌ای یافت نشد."]</p></pems-content-card>
 }
 else
 {
     <form asp-action="BulkConfirm" method="post">
-        <div class="content-card mb-3 d-flex justify-content-between align-items-center">
+        <pems-content-card css="mb-3 d-flex justify-content-between align-items-center">
             <div>
                 <input type="checkbox" id="selectAll" onclick="document.querySelectorAll('.item-check').forEach(c => c.checked = this.checked);" />
                 <label for="selectAll" class="ms-1">انتخاب همه (@Model.Count مورد)</label>
@@ -29,9 +29,9 @@ else
             <pems-button tone="primary" size="small" type="submit" data-pems-confirm="موارد انتخاب‌شده رسماً وصل می‌شن. مطمئنی؟">
                 <pems-icon name="bi-check2-all" /> تایید موارد انتخاب‌شده
             </pems-button>
-        </div>
+        </pems-content-card>
 
-        <div class="content-card">
+        <pems-content-card>
             <pems-table kind="enterprise" css="mb-0">
                 <thead>
                     <tr><th></th><th>@Localizer["Equipment Tag"]</th><th>@Localizer["نوع"]</th><th>@Localizer["مقصد"]</th><th>@Localizer["طبق شماره‌ی خام"]</th></tr>
@@ -50,6 +50,6 @@ else
                     }
                 </tbody>
             </pems-table>
-        </div>
+        </pems-content-card>
     </form>
 }

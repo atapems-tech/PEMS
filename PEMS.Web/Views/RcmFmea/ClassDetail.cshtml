@@ -36,7 +36,7 @@
 @if (TempData["Message"] != null) { <pems-alert tone="success" css="py-2 px-3 small">@TempData["Message"]</pems-alert> }
 @if (TempData["Error"] != null) { <pems-alert tone="danger" css="py-2 px-3 small">@TempData["Error"]</pems-alert> }
 
-<div class="content-card mb-3">
+<pems-content-card css="mb-3">
     <div class="d-flex justify-content-between align-items-center">
         <h6 class="mb-0">@equipmentClass.Name <code class="small">@equipmentClass.Code</code></h6>
         <a asp-action="Index" class="small">← Coverage Matrix</a>
@@ -56,7 +56,7 @@
             </pems-alert>
         }
     }
-</div>
+</pems-content-card>
 
 <pems-nav css="mb-3">
     <li class="nav-item"><button class="nav-link active" data-bs-toggle="tab" data-bs-target="#tab-functional">@Localizer["Functional Requirements"]</button></li>
@@ -67,7 +67,7 @@
 <div class="tab-content">
     @* ===================== Functional Requirements ===================== *@
     <div class="tab-pane fade show active" id="tab-functional">
-        <div class="content-card mb-3">
+        <pems-content-card css="mb-3">
             <div class="d-flex justify-content-between align-items-center mb-2">
                 <h6 class="mb-0">@Localizer["Functional Requirements"]</h6>
                 @if (canEdit)
@@ -96,26 +96,26 @@
             {
                 <pems-button tone="neutral" size="small" outline="true" data-bs-toggle="modal" data-bs-target="#createFfModal"><pems-icon name="bi-plus-lg" /> New Functional Failure</pems-button>
             }
-        </div>
+        </pems-content-card>
     </div>
 
     @* ===================== FMEA ===================== *@
     <div class="tab-pane fade" id="tab-fmea">
         @if (canEdit)
         {
-            <div class="content-card mb-3">
+            <pems-content-card css="mb-3">
                 <form asp-action="CreateFmeaDraft" method="post"><pems-row gap="2">
                     <input type="hidden" name="equipmentClassId" value="@equipmentClass.EquipmentClassId" />
                     <pems-col md="4"><pems-input scale="small" name="title" placeholder="Analysis title" required /></pems-col>
                     <pems-col md="6"><pems-input scale="small" name="description" placeholder="@Localizer["Description"]" /></pems-col>
                     <pems-col md="2"><pems-button tone="primary" size="small" css="w-100" type="submit">New FMEA Draft</pems-button></pems-col>
                 </pems-row></form>
-            </div>
+            </pems-content-card>
         }
 
         @foreach (var fmea in fmeaAnalyses)
         {
-            <div class="content-card mb-3">
+            <pems-content-card css="mb-3">
                 <div class="d-flex justify-content-between align-items-center">
                     <h6 class="mb-0">@fmea.Title <span class="text-muted small">Rev. @fmea.Revision</span> <pems-badge tone="@StatusBadge(fmea.Status)">@fmea.Status</pems-badge></h6>
                     <div>
@@ -192,7 +192,7 @@
                         <pems-col span="12"><pems-button tone="neutral" size="small" outline="true" type="submit"><pems-icon name="bi-plus-lg" /> Add Item</pems-button></pems-col>
                     </pems-row></form>
                 }
-            </div>
+            </pems-content-card>
         }
         @if (!fmeaAnalyses.Any()) { <p class="text-muted small">@Localizer["هنوز هیچ تحلیل FMEA ای برای این کلاس ساخته نشده."]</p> }
     </div>
@@ -201,7 +201,7 @@
     <div class="tab-pane fade" id="tab-rcm">
         @if (canEdit && fmeaAnalyses.Any(x => x.Status == "APPROVED"))
         {
-            <div class="content-card mb-3">
+            <pems-content-card css="mb-3">
                 <form asp-action="CreateRcmDraft" method="post"><pems-row gap="2">
                     <input type="hidden" name="equipmentClassId" value="@equipmentClass.EquipmentClassId" />
                     <pems-col md="8">
@@ -212,7 +212,7 @@
                     </pems-col>
                     <pems-col md="4"><pems-button tone="primary" size="small" css="w-100" type="submit">New RCM Draft</pems-button></pems-col>
                 </pems-row></form>
-            </div>
+            </pems-content-card>
         }
         else if (canEdit)
         {
@@ -223,7 +223,7 @@
         {
             var sourceFmea = fmeaAnalyses.FirstOrDefault(x => x.FMEAAnalysisId == rcm.FMEAAnalysisId);
 
-            <div class="content-card mb-3">
+            <pems-content-card css="mb-3">
                 <div class="d-flex justify-content-between align-items-center">
                     <h6 class="mb-0">RCM Rev. @rcm.Revision <pems-badge tone="@StatusBadge(rcm.Status)">@rcm.Status</pems-badge></h6>
                     <div>
@@ -391,7 +391,7 @@
                         <pems-col md="2"><pems-button tone="neutral" size="small" outline="true" css="w-100" type="submit"><pems-icon name="bi-plus-lg" /> Add Decision</pems-button></pems-col>
                     </pems-row></form>
                 }
-            </div>
+            </pems-content-card>
         }
         @if (!rcmAnalyses.Any()) { <p class="text-muted small">@Localizer["هنوز هیچ تحلیل RCM ای برای این کلاس ساخته نشده."]</p> }
     </div>

@@ -56,7 +56,7 @@
     var actions = wf?.AvailableActions.Where(a => a.ActionType != "Complete").ToList() ?? new List<WorkflowAvailableAction>();
 }
 
-<div class="content-card mb-3">
+<pems-content-card css="mb-3">
     <div class="d-flex align-items-center gap-3 mb-2 flex-wrap">
         <div class="kpi-icon bg-icon-blue pems-s-792bd2d6"><pems-icon name="bi-clipboard-plus" /></div>
         <div>
@@ -107,11 +107,11 @@
             @Localizer["Converted to"] <a asp-controller="WorkOrder" asp-action="Details" asp-route-id="@Model.LinkedWorkOrderId">@Model.LinkedWorkOrderNumber</a>
         </pems-alert>
     }
-</div>
+</pems-content-card>
 
 @if (wf != null)
 {
-    <div class="content-card mb-3">
+    <pems-content-card css="mb-3">
         <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
             <h6 class="mb-0">@Localizer["Workflow"] <span class="text-muted small">@wf.WorkflowName · @Localizer["Version"] @wf.VersionNumber · @Localizer[wf.Status]</span></h6>
             @foreach (var w in wf.Warnings)
@@ -120,10 +120,10 @@
             }
         </div>
         <partial name="_PemsStageDiagram" model="diagram" />
-    </div>
+    </pems-content-card>
 }
 
-<div class="content-card mb-3">
+<pems-content-card css="mb-3">
     <h6 class="mb-3">@Localizer["Actions"]</h6>
     <div class="d-flex flex-wrap gap-2 align-items-center">
         @if (wf != null)
@@ -235,11 +235,11 @@
             <span class="text-muted small">@Localizer["No further actions available."]</span>
         }
     </div>
-</div>
+</pems-content-card>
 
 @if (wf != null)
 {
-    <div class="content-card mb-3">
+    <pems-content-card css="mb-3">
         <h6 class="mb-3">@Localizer["Workflow History"]</h6>
         <pems-table kind="enterprise" scale="small" css="mb-0">
             <thead><tr><th>@Localizer["Date"]</th><th>@Localizer["Action"]</th><th>@Localizer["From"]</th><th>@Localizer["To"]</th><th>@Localizer["By"]</th><th>@Localizer["Reason"]</th></tr></thead>
@@ -257,10 +257,10 @@
                 }
             </tbody>
         </pems-table>
-    </div>
+    </pems-content-card>
 }
 
-<details class="content-card" @(wf == null ? "open" : null)>
+<pems-content-card as="details" open="@(wf == null)">
     <summary class="h6 mb-0">@Localizer["Business Audit"]</summary>
     <pems-table kind="enterprise" scale="small" css="mb-0 mt-3">
         <thead><tr><th>@Localizer["From"]</th><th>@Localizer["To"]</th><th>@Localizer["By"]</th><th>@Localizer["Date"]</th><th>@Localizer["Reason"]</th></tr></thead>
@@ -278,4 +278,4 @@
         </tbody>
     </pems-table>
     @if (!Model.StatusHistory.Any()) { <p class="text-muted text-center py-3 mb-0">@Localizer["هنوز تغییر وضعیتی ثبت نشده."]</p> }
-</details>
+</pems-content-card>

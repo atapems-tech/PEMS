@@ -41,7 +41,7 @@
    از جهت معکوس نشان می‌دهد - نه یک FK تازه. *@
 @if (originatingTender != null)
 {
-    <div class="content-card mb-3">
+    <pems-content-card css="mb-3">
         <h6 class="text-muted small mb-2">@Localizer["Procurement Origin"]</h6>
         <pems-info-grid>
             <pems-info-item label="@Localizer["Package"]" num><a asp-controller="ProcurementPackage" asp-action="Details" asp-route-id="@originatingTender.ProcurementPackageId">@originatingTender.ProcurementPackage?.PackageNumber</a></pems-info-item>
@@ -49,11 +49,11 @@
             <pems-info-item label="@Localizer["Awarded Bid"]" num>@originatingTender.AwardedBid?.BidNumber</pems-info-item>
             <pems-info-item label="@Localizer["Awarded"]" num>@originatingTender.AwardedDate?.ToString("yyyy-MM-dd")</pems-info-item>
         </pems-info-grid>
-    </div>
+    </pems-content-card>
 }
 
 @* ================= CONTRACT INFORMATION ================= *@
-<div class="content-card">
+<pems-content-card>
     <div class="d-flex justify-content-end mb-2">
         <pems-button tone="neutral" size="small" outline="true" as="a" asp-controller="Relationship" asp-action="Contract" asp-route-id="@Model.ContractId"><pems-icon name="bi-diagram-3" /> @Localizer["Cm_Relationships"]</pems-button>
     </div>
@@ -125,12 +125,12 @@
             </form>
         }
     </div>
-</div>
+</pems-content-card>
 
 @* ================= DISCIPLINE REVIEWS & APPROVAL ================= *@
 @if (Model.Status == "UnderReview" && disciplineReviews.Any())
 {
-    <div class="content-card mt-3">
+    <pems-content-card css="mt-3">
         <h6>@Localizer["Multi-Discipline Review"]</h6>
         <pems-table scale="small">
             <thead><tr><th>@Localizer["Discipline"]</th><th>@Localizer["Reviewer"]</th><th>@Localizer["Decision"]</th><th>@Localizer["Comment"]</th><th>@Localizer["Date"]</th><th></th></tr></thead>
@@ -158,11 +158,11 @@
                 }
             </tbody>
         </pems-table>
-    </div>
+    </pems-content-card>
 }
 
 @* ================= DOCUMENTS & REVISIONS (Change Orders) ================= *@
-<div class="content-card mt-3">
+<pems-content-card css="mt-3">
     <h6>@Localizer["Contract Documents"]</h6>
     @if (contractDocuments.Any())
     {
@@ -190,11 +190,11 @@
         <pems-col md="3"><pems-input scale="small" type="text" name="clauseReference" placeholder="@Localizer["Clause Reference"]" /></pems-col>
         <pems-col md="2"><pems-button tone="none" size="small" css="btn-primary" type="submit">@Localizer["Add Document"]</pems-button></pems-col>
     </pems-row></form>
-</div>
+</pems-content-card>
 
 @if (Model.Status == "Signed" || Model.Status == "Effective")
 {
-    <div class="content-card mt-3">
+    <pems-content-card css="mt-3">
         <h6>@Localizer["Request Value Change (Variation / Change Order)"]</h6>
         <form asp-action="RequestRevision" method="post"><pems-row gap="2">
             <input type="hidden" name="contractId" value="@Model.ContractId" />
@@ -210,12 +210,12 @@
             <pems-col md="3"><pems-input scale="small" type="text" name="changeDescription" placeholder="@Localizer["Description"]" /></pems-col>
             <pems-col md="1"><pems-button tone="none" size="small" css="btn-primary" type="submit">@Localizer["Request"]</pems-button></pems-col>
         </pems-row></form>
-    </div>
+    </pems-content-card>
 }
 
 @if (revisions.Any())
 {
-    <div class="content-card mt-3">
+    <pems-content-card css="mt-3">
         <h6>@Localizer["Revision History (Original value never overwritten)"]</h6>
         <pems-table scale="small">
             <thead><tr><th>#</th><th>@Localizer["Type"]</th><th>@Localizer["Previous"]</th><th>@Localizer["New"]</th><th>@Localizer["Reason"]</th><th>@Localizer["Status"]</th><th></th></tr></thead>
@@ -243,11 +243,11 @@
                 }
             </tbody>
         </pems-table>
-    </div>
+    </pems-content-card>
 }
 
 @* ================= EXECUTION: NTP / KICK-OFF / ITP ================= *@
-<div class="content-card mt-3">
+<pems-content-card css="mt-3">
     <h6>@Localizer["Execution"]</h6>
     <pems-row gap="3">
         <pems-col md="6">
@@ -312,4 +312,4 @@
             }
         </pems-col>
     </pems-row>
-</div>
+</pems-content-card>

@@ -14,7 +14,7 @@
     };
 }
 
-<div class="content-card mb-3">
+<pems-content-card css="mb-3">
     <div class="d-flex flex-wrap gap-2 align-items-center justify-content-between mb-3">
         <div class="d-flex gap-2 align-items-center">
             <pems-button tone="neutral" size="small" outline="true" as="a" asp-action="MyWork" asp-route-date="@DateTime.Today.ToString("yyyy-MM-dd")">@Localizer["Today"]</pems-button>
@@ -47,7 +47,7 @@
             </a>
         }
     </div>
-</div>
+</pems-content-card>
 
 @section Styles {
     <link rel="stylesheet" href="~/css/pems-maintenance-calendar.css" asp-append-version="true" />

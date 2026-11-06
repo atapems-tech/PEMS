@@ -11,7 +11,7 @@
 
 @await Html.PartialAsync("_EquipmentIdentity", Model.Equipment)
 
-<div class="content-card mb-3">
+<pems-content-card css="mb-3">
     <h6 class="small fw-bold">@Localizer["Rcm_AssignedStrategies"]</h6>
     <pems-table scale="small" css="table-enterprise">
         <thead><tr><th>@Localizer["Rcm_Strategy"]</th><th>@Localizer["Rcm_Version"]</th><th>@Localizer["Rcm_Override"]</th><th>@Localizer["Rcm_Plans"]</th><th></th></tr></thead>
@@ -29,11 +29,11 @@
         </tbody>
     </pems-table>
     @if (!Model.Assignments.Any()) { <p class="text-muted small text-center py-2">@Localizer["Rcm_NoAssignments"]</p> }
-</div>
+</pems-content-card>
 
 <pems-row>
     <pems-col md="6">
-        <div class="content-card mb-3">
+        <pems-content-card css="mb-3">
             <h6 class="small fw-bold">@Localizer["Rcm_Plans"]</h6>
             <pems-table scale="small" css="table-enterprise">
                 <tbody>
@@ -44,10 +44,10 @@
                 </tbody>
             </pems-table>
             @if (!Model.Plans.Any()) { <p class="text-muted small text-center">@Localizer["Rcm_NoPlans"]</p> }
-        </div>
+        </pems-content-card>
     </pems-col>
     <pems-col md="6">
-        <div class="content-card mb-3">
+        <pems-content-card css="mb-3">
             <h6 class="small fw-bold">@Localizer["Rcm_OpenWorkOrders"]</h6>
             <pems-table scale="small" css="table-enterprise">
                 <tbody>
@@ -58,6 +58,6 @@
                 </tbody>
             </pems-table>
             @if (!Model.OpenWorkOrders.Any()) { <p class="text-muted small text-center">@Localizer["Rcm_NoOpenWorkOrders"]</p> }
-        </div>
+        </pems-content-card>
     </pems-col>
 </pems-row>

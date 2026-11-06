@@ -9,7 +9,7 @@
     var visualTypes = new[] { "WorkflowDiagram", "ProcessFlowchart", "LifecycleDiagram", "DecisionTree", "StepGuide", "EntityRelationship" };
 }
 
-<div class="content-card">
+<pems-content-card>
     <h5 class="mb-3"><pems-icon name="bi-diagram-2" /> @(isEdit ? "Edit" : "New") Help Visual</h5>
 
     @if (!ViewData.ModelState.IsValid)
@@ -114,6 +114,6 @@
             <pems-button as="a" tone="neutral" outline="true" asp-action="Edit" asp-route-id="@Model.HelpArticleId">Back to article</pems-button>
         </div>
     </form>
-</div>
+</pems-content-card>
 
 <script src="~/js/views/admin-help-visualcreate.js" asp-append-version="true"></script>

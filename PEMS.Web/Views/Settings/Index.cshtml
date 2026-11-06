@@ -1,7 +1,7 @@
 ﻿@using Microsoft.Extensions.Localization
 @using PEMS.Web.Resources
 @inject IStringLocalizer<SharedResource> Localizer
-<div class="content-card mb-3">
+<pems-content-card css="mb-3">
     <h6 class="mb-3"><pems-icon name="bi-person-gear" /> My Preferences</h6>
     <pems-row gap="3">
         <pems-col md="4">
@@ -32,11 +32,11 @@
             </div>
         </pems-col>
     </pems-row>
-</div>
+</pems-content-card>
 
 @if (ViewBag.CanManageUsers)
 {
-    <div class="content-card">
+    <pems-content-card>
         <h6 class="mb-3"><pems-icon name="bi-building-gear" /> System Administration</h6>
         <pems-row gap="3">
             <pems-col md="3" sm="6">
@@ -120,5 +120,5 @@
                 </div>
             </pems-col>
         </pems-row>
-    </div>
+    </pems-content-card>
 }

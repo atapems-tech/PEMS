@@ -6,7 +6,7 @@
     ViewData["Title"] = "Quick Setup";
 }
 
-<div class="content-card mb-4">
+<pems-content-card css="mb-4">
     <div class="d-flex justify-content-between align-items-start flex-wrap gap-2 mb-2">
         <div>
             <h5 class="mb-1"><pems-icon name="bi-rocket-takeoff" /> @Localizer["System Setup"]</h5>
@@ -31,7 +31,7 @@
             </div>
         </pems-alert>
     }
-</div>
+</pems-content-card>
 
 <pems-row gap="3" css="mb-4">
     @foreach (var step in Model.Steps)
@@ -44,7 +44,7 @@
         };
 
         <pems-col md="6" lg="4">
-            <div class="content-card h-100">
+            <pems-content-card css="h-100">
                 <div class="d-flex justify-content-between align-items-start mb-2">
                     <h6 class="mb-0">@step.Title</h6>
                     <pems-badge tone="@badgeClass"><pems-icon css="@icon" /> @statusText</pems-badge>
@@ -82,18 +82,18 @@
                 {
                     <span class="text-muted small"><pems-icon name="bi-lock" /> Requires SystemAdmin</span>
                 }
-            </div>
+            </pems-content-card>
         </pems-col>
     }
 </pems-row>
 
 @if ((bool)ViewBag.CanImportEquipment || (bool)ViewBag.CanImportMrs || (bool)ViewBag.CanImportMdr || (bool)ViewBag.CanImportVdr)
 {
-    <div class="content-card d-flex justify-content-between align-items-center flex-wrap gap-2">
+    <pems-content-card css="d-flex justify-content-between align-items-center flex-wrap gap-2">
         <div>
             <h6 class="mb-1"><pems-icon name="bi-cloud-arrow-up" /> @Localizer["IC_Title"]</h6>
             <p class="text-muted small mb-0">@Localizer["IC_QuickSetupPointer"]</p>
         </div>
         <pems-button tone="primary" size="small" as="a" asp-controller="ImportCenter" asp-action="Index">@Localizer["IC_Open"]</pems-button>
-    </div>
+    </pems-content-card>
 }

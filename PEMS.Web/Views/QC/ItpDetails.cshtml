@@ -20,7 +20,7 @@
     </div>
 </div>
 
-<div class="content-card mb-3">
+<pems-content-card css="mb-3">
     <pems-row>
         <pems-col md="4"><strong>Reference:</strong> @Model.ReferenceCodeStandard</pems-col>
         <pems-col md="4"><strong>Revision:</strong> @Model.Revision</pems-col>
@@ -38,9 +38,9 @@
     {
         <p class="mt-2 mb-0 text-muted small">@Model.Description</p>
     }
-</div>
+</pems-content-card>
 
-<div class="content-card mb-3">
+<pems-content-card css="mb-3">
     <h6 class="mb-3">Line Items</h6>
     <pems-table kind="enterprise" css="mb-0">
         <thead>
@@ -86,9 +86,9 @@
             }
         </tbody>
     </pems-table>
-</div>
+</pems-content-card>
 
-<div class="content-card">
+<pems-content-card>
     <h6 class="mb-3"><pems-icon name="bi-plus-lg" /> Add Line Item</h6>
     <form asp-action="ItpAddLineItem" method="post">
         <input type="hidden" name="itpId" value="@Model.InspectionTestPlanId" />
@@ -126,7 +126,7 @@
             <pems-button tone="primary" size="small" type="submit">@Localizer["Add"]</pems-button>
         </div>
     </form>
-</div>
+</pems-content-card>
 
     <pems-modal id="inspectModal" tabindex="-1">
     <form asp-action="ItpPerformInspection" method="post">

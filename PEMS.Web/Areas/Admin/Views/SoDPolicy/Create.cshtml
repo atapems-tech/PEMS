@@ -4,7 +4,7 @@
 @inject IStringLocalizer<SharedResource> Localizer
 @{ }
 
-<div class="content-card pems-s-765d57b5">
+<pems-content-card css="pems-s-765d57b5">
     <pems-alert tone="danger" css="py-2 px-3 small" asp-validation-summary="All" hidden="@(ViewData.ModelState.IsValid)"></pems-alert>
 
     <form asp-action="Create" method="post">
@@ -40,7 +40,7 @@
         <pems-button tone="primary" type="submit">@Localizer["Save"]</pems-button>
         <pems-button as="a" tone="neutral" outline="true" asp-action="Index">@Localizer["Cancel"]</pems-button>
     </form>
-</div>
+</pems-content-card>
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />

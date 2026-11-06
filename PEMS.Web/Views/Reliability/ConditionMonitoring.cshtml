@@ -42,32 +42,32 @@
 
 <pems-row gap="3" css="mb-3">
     <pems-col md="3">
-        <div class="content-card h-100 text-center">
+        <pems-content-card css="h-100 text-center">
             <div class="text-muted small">Foundation</div>
             <pems-badge tone="@StatusBadge(foundation.FoundationStatus)">@foundation.FoundationStatus</pems-badge>
-        </div>
+        </pems-content-card>
     </pems-col>
     <pems-col md="3">
-        <div class="content-card h-100 text-center">
+        <pems-content-card css="h-100 text-center">
             <div class="text-muted small">Live Telemetry</div>
             <pems-badge tone="@StatusBadge(foundation.LiveTelemetryStatus)">@foundation.LiveTelemetryStatus</pems-badge>
-        </div>
+        </pems-content-card>
     </pems-col>
     <pems-col md="3">
-        <div class="content-card h-100 text-center">
+        <pems-content-card css="h-100 text-center">
             <div class="fs-4 fw-bold">@foundation.MonitoringPointCount</div>
             <div class="text-muted small">Monitoring Points (Fleet)</div>
-        </div>
+        </pems-content-card>
     </pems-col>
     <pems-col md="3">
-        <div class="content-card h-100 text-center">
+        <pems-content-card css="h-100 text-center">
             <div class="fs-4 fw-bold">@foundation.ReadingCount</div>
             <div class="text-muted small">Readings Recorded (Fleet)</div>
-        </div>
+        </pems-content-card>
     </pems-col>
 </pems-row>
 
-<div class="content-card mb-3">
+<pems-content-card css="mb-3">
     <form method="get"><pems-row gap="2" css="align-items-end">
         <pems-col span="auto">
             <pems-label css="small mb-0">@Localizer["Equipment ID"]</pems-label>
@@ -75,11 +75,11 @@
         </pems-col>
         <pems-col span="auto"><pems-button tone="primary" size="small" type="submit">Load Points</pems-button></pems-col>
     </pems-row></form>
-</div>
+</pems-content-card>
 
 @if (equipmentId.HasValue)
 {
-    <div class="content-card mb-3">
+    <pems-content-card css="mb-3">
         <h6 class="mb-2">Monitoring Points — Equipment #@equipmentId</h6>
         <pems-table kind="enterprise" scale="small" css="mb-0">
             <thead><tr><th>@Localizer["Variable"]</th><th>@Localizer["Tag"]</th><th>@Localizer["Unit"]</th><th class="text-end">@Localizer["Alarm Range"]</th><th class="text-end">@Localizer["Readings"]</th><th>@Localizer["Last Reading"]</th><th>@Localizer["Evaluation"]</th><th>@Localizer["CBM Strategy"]</th></tr></thead>
@@ -161,11 +161,11 @@
             </tbody>
         </pems-table>
         @if (!Model.Any()) { <p class="text-muted text-center py-3 mb-0">@Localizer["هیچ نقطه‌ی پایشی برای این تجهیز تعریف نشده."]</p> }
-    </div>
+    </pems-content-card>
 
     <pems-row gap="3">
         <pems-col md="6">
-            <div class="content-card">
+            <pems-content-card>
                 <h6 class="mb-2">Add Monitoring Point</h6>
                 <form method="post" asp-action="CreateConditionMonitoringPoint">
                     @Html.AntiForgeryToken()
@@ -184,10 +184,10 @@
                     </pems-row>
                     <pems-button tone="primary" size="small" type="submit">Create Point</pems-button>
                 </form>
-            </div>
+            </pems-content-card>
         </pems-col>
         <pems-col md="6">
-            <div class="content-card">
+            <pems-content-card>
                 <h6 class="mb-2">Record Reading (Manual)</h6>
                 <form method="post" asp-action="RecordConditionReading">
                     @Html.AntiForgeryToken()
@@ -216,7 +216,7 @@
                     }
                     <pems-button tone="primary" size="small" type="submit">Record Reading</pems-button>
                 </form>
-            </div>
+            </pems-content-card>
         </pems-col>
     </pems-row>
 }

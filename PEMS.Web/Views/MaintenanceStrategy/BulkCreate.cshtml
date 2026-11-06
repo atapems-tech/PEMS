@@ -45,7 +45,7 @@
 </div>
 <p class="text-muted small">@Localizer["Rcm_BulkHint"]</p>
 
-<div class="content-card mb-3">
+<pems-content-card css="mb-3">
     <form method="get"><pems-row gap="2">
         <pems-col md="4">
             <pems-label css="small mb-0">@Localizer["Rcm_Strategy"] (@Localizer["Rcm_ApprovedOrActive"])</pems-label>
@@ -157,7 +157,7 @@
             </pems-col>
         }
     </pems-row></form>
-</div>
+</pems-content-card>
 
 @if (noFilterApplied)
 {
@@ -177,7 +177,7 @@ else if (matchingCount.HasValue && matchingCount.Value > maxResults)
 <form asp-action="BulkCreate" method="post">
     <pems-row>
         <pems-col md="5">
-            <div class="content-card">
+            <pems-content-card>
                 <div class="d-flex justify-content-between align-items-center mb-2">
                     <h6 class="mb-0 small fw-bold">انتخاب تجهیزات (@equipments.Count)</h6>
                     <div>
@@ -239,11 +239,11 @@ else if (matchingCount.HasValue && matchingCount.Value > maxResults)
                     }
                     @if (!equipments.Any() && !noFilterApplied) { <p class="text-muted small text-center py-3">@Localizer["تجهیزی با این فیلتر پیدا نشد."]</p> }
                 </pems-accordion></div>
-            </div>
+            </pems-content-card>
         </pems-col>
 
         <pems-col md="7">
-            <div class="content-card">
+            <pems-content-card>
                 <h6 class="small fw-bold mb-3">@Localizer["Rcm_AssignSummary"]</h6>
                 @if (!bulk.StrategyId.HasValue)
                 {
@@ -262,7 +262,7 @@ else if (matchingCount.HasValue && matchingCount.Value > maxResults)
                     <pems-button tone="primary" type="submit" data-pems-confirm="@Localizer["Rcm_ConfirmBulkAssign"]"><pems-icon name="bi-check2-all" /> @Localizer["Rcm_AssignSelected"]</pems-button>
                 }
                 <div class="small text-muted mt-3">@Localizer["Rcm_NeedTemplate"] <a asp-action="Create">@Localizer["Rcm_NewStrategy"]</a></div>
-            </div>
+            </pems-content-card>
         </pems-col>
     </pems-row>
 </form>

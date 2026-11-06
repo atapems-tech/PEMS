@@ -29,44 +29,44 @@
 
 <pems-row gap="3" css="mb-3">
     <pems-col md="3">
-        <div class="content-card h-100">
+        <pems-content-card css="h-100">
             <div class="small text-muted">Class / Discipline</div>
             <div class="fw-bold">@(Model.EquipmentClassName ?? "Unclassified")</div>
             <div class="small">@(Model.DisciplineName ?? "—")</div>
             @if (Model.ParentEquipmentTagNumber != null) { <div class="small text-muted">Parent: @Model.ParentEquipmentTagNumber</div> }
-        </div>
+        </pems-content-card>
     </pems-col>
     <pems-col md="3">
-        <div class="content-card h-100">
+        <pems-content-card css="h-100">
             <div class="small text-muted">@Localizer["Criticality"]</div>
             <div class="fw-bold fs-5">@(Model.CurrentCriticalityClass ?? "N/A")</div>
             <div class="small">Risk: @(Model.CurrentRiskLevel ?? "N/A")</div>
             <div class="small text-muted">Latest Assessment: @(Model.LatestAssessmentStatus ?? "None") (@Model.LatestAssessmentEvidenceCount evidence)</div>
-        </div>
+        </pems-content-card>
     </pems-col>
     <pems-col md="3">
-        <div class="content-card h-100">
+        <pems-content-card css="h-100">
             <div class="small text-muted">@Localizer["Reliability"]</div>
             <pems-badge tone="@StatusBadge(Model.ReliabilityDataStatus)">@Model.ReliabilityDataStatus</pems-badge>
             <div class="small mt-1">MTBF: @(Model.MTBFHours.HasValue ? $"{Model.MTBFHours.Value:N1}h" : "N/A")</div>
             <div class="small">MTTR: @(Model.MTTRHours.HasValue ? $"{Model.MTTRHours.Value:N1}h" : "N/A")</div>
             <div class="small">Availability: @(Model.AvailabilityPercent.HasValue ? $"{Model.AvailabilityPercent.Value:N1}%" : "N/A")</div>
-        </div>
+        </pems-content-card>
     </pems-col>
     <pems-col md="3">
-        <div class="content-card h-100">
+        <pems-content-card css="h-100">
             <div class="small text-muted">Intelligence Signals</div>
             <div class="small">Bad Actor: <pems-badge tone="@(Model.IsBadActor ? "danger" : "neutral")">@(Model.IsBadActor ? "Yes" : "No")</pems-badge></div>
             <div class="small">Weibull: <pems-badge tone="@StatusBadge(Model.WeibullDataStatus)">@Model.WeibullDataStatus</pems-badge></div>
             <div class="small">Predictive: <pems-badge tone="@StatusBadge(Model.PredictiveStatus)">@Model.PredictiveStatus</pems-badge></div>
             <div class="small">Condition Monitoring: <pems-badge tone="@StatusBadge(Model.ConditionMonitoringStatus)">@Model.ConditionMonitoringStatus</pems-badge></div>
-        </div>
+        </pems-content-card>
     </pems-col>
 </pems-row>
 
 <pems-row gap="3" css="mb-3">
     <pems-col md="6">
-        <div class="content-card h-100">
+        <pems-content-card css="h-100">
             <h6 class="mb-2">Maintenance</h6>
             <pems-table kind="enterprise" scale="small" css="mb-0">
                 <tbody>
@@ -78,10 +78,10 @@
                     <tr><td>Open Backlog</td><td class="text-end">@Model.OpenBacklogWorkOrderCount</td></tr>
                 </tbody>
             </pems-table>
-        </div>
+        </pems-content-card>
     </pems-col>
     <pems-col md="6">
-        <div class="content-card h-100">
+        <pems-content-card css="h-100">
             <h6 class="mb-2">Failure Intelligence &amp; Safety</h6>
             <div class="small text-muted mb-1">Top Failure Modes</div>
             @if (Model.TopFailureModes.Any())
@@ -97,17 +97,17 @@
             <div class="small">RCM (class-level): <pems-badge tone="@StatusBadge(Model.RCMReadiness)">@Model.RCMReadiness</pems-badge></div>
             <div class="small mt-1">Permit Required: @(Model.AnyLinkedJobPlanRequiresPermit ? "Yes" : "No / Unknown")</div>
             <div class="small">LOTO Required: @(Model.AnyLinkedJobPlanRequiresLOTO ? "Yes" : "No / Unknown")</div>
-        </div>
+        </pems-content-card>
     </pems-col>
 </pems-row>
 
 @if (Model.UnavailableMetricReasons.Any())
 {
-    <div class="content-card">
+    <pems-content-card>
         <h6 class="mb-2">Unavailable Metrics — Reasons</h6>
         @foreach (var reason in Model.UnavailableMetricReasons)
         {
             <div class="small text-muted">• @reason</div>
         }
-    </div>
+    </pems-content-card>
 }

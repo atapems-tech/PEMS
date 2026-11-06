@@ -6,7 +6,7 @@
     string? error = ViewBag.Error;
 }
 
-<div class="content-card pems-s-3f7efa5f">
+<pems-content-card css="pems-s-3f7efa5f">
     @if (!string.IsNullOrEmpty(error))
     {
         <pems-alert tone="danger"><pems-icon name="bi-exclamation-triangle" aria-hidden="true" /> @error</pems-alert>
@@ -82,6 +82,6 @@
             <pems-button tone="neutral" outline="true" as="a" asp-action="Index">@Localizer["Cancel"]</pems-button>
         </div>
     </form>
-</div>
+</pems-content-card>
 
 @await Html.PartialAsync("_RichTextEditorScripts", "tplBodyEditor")

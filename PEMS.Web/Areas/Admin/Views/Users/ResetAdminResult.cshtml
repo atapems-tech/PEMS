@@ -3,12 +3,12 @@
 @using PEMS.Web.Resources
 @inject IStringLocalizer<SharedResource> Localizer
 
-<div class="admin-page-shell">
+<pems-page-shell kind="admin">
     <div class="admin-hero">
         <div class="d-flex align-items-center gap-3"><div><p>@Localizer["The account was reset. The temporary password below is shown only now."]</p></div></div>
     </div>
 
-    <div class="content-card" data-pems-secret-reveal>
+    <pems-content-card data-pems-secret-reveal>
         <h2 class="h5 mb-3"><pems-icon name="bi-check-circle-fill" css="text-success me-1" /> @Localizer["Account reset"]: <strong>@Model.TargetUserName</strong></h2>
 
         <pems-alert tone="warning">
@@ -27,8 +27,8 @@
             <pems-button as="a" tone="primary" asp-action="Index">@Localizer["Back to users"]</pems-button>
             <pems-button as="a" tone="neutral" outline="true" asp-controller="SecurityEvents" asp-action="Index">@Localizer["Security Events"]</pems-button>
         </div>
-    </div>
-</div>
+    </pems-content-card>
+</pems-page-shell>
 
 @section Scripts {
     <script src="~/js/pems-secret-reveal.js" asp-append-version="true"></script>

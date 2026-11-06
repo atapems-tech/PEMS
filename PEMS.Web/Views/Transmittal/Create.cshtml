@@ -6,10 +6,10 @@
     var documents = (IEnumerable<dynamic>)ViewBag.Documents;
 }
 
-<div class="vs-page">
+<pems-page-shell kind="workspace">
 
 
-<div class="content-card pems-s-1d34c094">
+<pems-content-card css="pems-s-1d34c094">
     <pems-alert tone="danger" css="py-2 px-3 small" asp-validation-summary="All" hidden="@(ViewData.ModelState.IsValid)"></pems-alert>
 
     <form asp-action="Create" method="post">
@@ -103,7 +103,7 @@
             <pems-button tone="neutral" outline="true" as="a" asp-action="Index">@Localizer["Cancel"]</pems-button>
         </div>
     </form>
-</div>
+</pems-content-card>
 
 <template id="recipientRowTemplate">
     <pems-row gap="2" css="mb-2 recipient-row align-items-center">
@@ -129,7 +129,7 @@
     <script src="~/js/views/transmittal-create.js" asp-append-version="true"></script>
 }
 
-</div>
+</pems-page-shell>
 
 @{ ViewData["Title"] = Localizer["Vs_NewTransmittal"].Value; }
 @section Styles {

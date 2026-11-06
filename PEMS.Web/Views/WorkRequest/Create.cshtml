@@ -6,7 +6,7 @@
     var functionalLocations = (List<PEMS.Application.DTOs.FunctionalLocationPickerItemDto>)ViewBag.FunctionalLocations;
 }
 
-<div class="content-card pems-s-bcaa1805">
+<pems-content-card css="pems-s-bcaa1805">
     <form asp-action="Create" method="post">
         <pems-row gap="3">
             <pems-col span="12"><pems-label>@Localizer["Title"]</pems-label><pems-input name="title" placeholder="e.g. Pump P-101 unusual vibration" required /></pems-col>
@@ -79,4 +79,4 @@
             <pems-button tone="neutral" outline="true" as="a" asp-action="Index">@Localizer["Cancel"]</pems-button>
         </div>
     </form>
-</div>
+</pems-content-card>

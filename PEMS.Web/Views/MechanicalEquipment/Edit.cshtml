@@ -6,7 +6,7 @@
     ViewData["Title"] = "Edit Mechanical Equipment";
 }
 
-<div class="content-card">
+<pems-content-card>
     <h5 class="mb-3">@Model.TagNumber</h5>
     <form asp-action="Edit" method="post">
         <input type="hidden" name="mechanicalEquipmentId" value="@Model.MechanicalEquipmentId" />
@@ -56,4 +56,4 @@
             <pems-button tone="neutral" outline="true" as="a" asp-action="Passport" asp-route-id="@Model.MechanicalEquipmentId">@Localizer["انصراف"]</pems-button>
         </div>
     </form>
-</div>
+</pems-content-card>

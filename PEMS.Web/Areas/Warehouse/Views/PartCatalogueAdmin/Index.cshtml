@@ -15,7 +15,7 @@
     <link rel="stylesheet" href="~/css/pems-part-catalogue.css" asp-append-version="true" />
 }
 
-<div class="vs-page pc-page" data-pc-lookup-base="/Warehouse/PartCatalogueLookup" data-txt-no-results="@Localizer["Pc_Lookup_NoResults"]" data-txt-search="@Localizer["Pc_Lookup_Search"]">
+<pems-page-shell kind="workspace" css="pc-page" data-pc-lookup-base="/Warehouse/PartCatalogueLookup" data-txt-no-results="@Localizer["Pc_Lookup_NoResults"]" data-txt-search="@Localizer["Pc_Lookup_Search"]">
     <nav class="vs-subnav" aria-label="@Localizer["Pc_Menu"]">
         <a asp-area="Warehouse" asp-controller="PartCatalogueRequest" asp-action="Index">@Localizer["Pc_Menu"]</a>
         <a asp-area="Warehouse" asp-controller="PartCatalogueAdmin" asp-action="Index" class="active" aria-current="page">@Localizer["Pc_Title_Admin"]</a>
@@ -323,7 +323,7 @@
             @if (!ov.Group2Maps.Any()) { <div class="vs-empty py-2">@Localizer["Pc_Adm_AllGroups"]</div> }
         </div>
     </section>
-</div>
+</pems-page-shell>
 
 <form id="pcNoForm" onsubmit="return false"></form>
 

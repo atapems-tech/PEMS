@@ -55,7 +55,7 @@
 }
 
 <!-- Profile Header -->
-<div class="content-card mb-3 position-relative overflow-hidden">
+<pems-content-card css="mb-3 position-relative overflow-hidden">
     <div class="d-flex flex-column flex-md-row gap-4 align-items-start">
         @if (!string.IsNullOrEmpty(Model.PhotoPath))
         {
@@ -93,12 +93,12 @@
             </div>
         </div>
     </div>
-</div>
+</pems-content-card>
 
 <!-- Row 1: Employment Details (large) + Current Team (compact) -->
 <pems-row gap="3" css="mb-3 align-items-stretch">
     <pems-col lg="8">
-        <div class="content-card h-100">
+        <pems-content-card css="h-100">
             <h6 class="d-flex align-items-center gap-2 pb-2 mb-3 border-bottom">
                 <pems-icon name="bi-briefcase" css="text-warning" />
                 <span>@L("Employment Details", "جزئیات استخدام")</span>
@@ -174,11 +174,11 @@
                     <p class="mb-0 fw-semibold">@Dash(Model.Shift)</p>
                 </pems-col>
             </pems-row>
-        </div>
+        </pems-content-card>
     </pems-col>
 
     <pems-col lg="4">
-        <div class="content-card h-100">
+        <pems-content-card css="h-100">
             <h6 class="d-flex align-items-center gap-2 pb-2 mb-3 border-bottom">
                 <pems-icon name="bi-people" css="text-warning" />
                 <span>@L("Current Team", "تیم فعلی")</span>
@@ -196,14 +196,14 @@
             {
                 <p class="text-muted small text-center py-3 mb-0">@L("No active team membership.", "عضویت فعالی در تیمی ثبت نشده.")</p>
             }
-        </div>
+        </pems-content-card>
     </pems-col>
 </pems-row>
 
 <!-- System Account & Authorization (roles belong to the user account; managed in Administration -> Users) -->
 <pems-row gap="3" css="mb-3">
     <pems-col span="12">
-        <div class="content-card">
+        <pems-content-card>
             <h6 class="d-flex align-items-center gap-2 pb-2 mb-3 border-bottom">
                 <pems-icon name="bi-shield-lock" css="text-warning" />
                 <span>@L("System Account & Authorization", "حساب کاربری و دسترسی")</span>
@@ -241,12 +241,12 @@
                     </div>
                 }
             }
-        </div>
+        </pems-content-card>
     </pems-col>
 </pems-row>
 
 <!-- Row 2: Contact Information (full width, 3 tiles) -->
-<div class="content-card mb-3">
+<pems-content-card css="mb-3">
     <h6 class="d-flex align-items-center gap-2 pb-2 mb-3 border-bottom">
         <pems-icon name="bi-person-vcard" css="text-warning" />
         <span>@L("Contact Information", "اطلاعات تماس")</span>
@@ -293,12 +293,12 @@
             </div>
         </pems-col>
     </pems-row>
-</div>
+</pems-content-card>
 
 <!-- Row 3+: existing functionality (Labor Rate, Team History, Skills, Qualifications, Certifications) - preserved, restyled -->
 <pems-row gap="3">
     <pems-col md="6">
-        <div class="content-card h-100">
+        <pems-content-card css="h-100">
             <div class="d-flex justify-content-between align-items-center mb-3 pb-2 border-bottom">
                 <h6 class="mb-0 d-flex align-items-center gap-2"><pems-icon name="bi-cash-coin" css="text-warning" /> @L("Labor Rate", "نرخ دستمزد")</h6>
                 <pems-button tone="primary" size="small" outline="true" type="button" data-bs-toggle="modal" data-bs-target="#setRateModal">
@@ -325,11 +325,11 @@
                     "A new rate does not overwrite the previous one - it only closes it (EffectiveTo), preserving history. Past work order costs remain unchanged since the rate is snapshotted at time of use.",
                     "نرخ جدید، نرخ قبلی رو Overwrite نمی‌کنه - فقط می‌بندتش (EffectiveTo) و تاریخچه حفظ می‌شه. هزینه‌ی WorkOrderهای قدیمی هم تغییر نمی‌کنه چون نرخ موقع ثبت Snapshot می‌شه.")
             </p>
-        </div>
+        </pems-content-card>
     </pems-col>
 
     <pems-col md="6">
-        <div class="content-card h-100">
+        <pems-content-card css="h-100">
             <h6 class="mb-3 pb-2 border-bottom d-flex align-items-center gap-2"><pems-icon name="bi-diagram-3" css="text-warning" /> @L("Team Membership History", "تاریخچه‌ی عضویت تیم")</h6>
             <pems-table scale="small">
                 <thead><tr><th>@L("Team", "تیم")</th><th>@L("Role", "نقش")</th><th>@L("From", "از")</th><th>@L("To", "تا")</th></tr></thead>
@@ -346,11 +346,11 @@
                 </tbody>
             </pems-table>
             @if (!teamHistory.Any()) { <p class="text-muted small text-center py-2">@L("No membership recorded.", "عضویتی ثبت نشده.")</p> }
-        </div>
+        </pems-content-card>
     </pems-col>
 
     <pems-col md="6">
-        <div class="content-card h-100">
+        <pems-content-card css="h-100">
             <div class="d-flex justify-content-between align-items-center mb-3 pb-2 border-bottom">
                 <h6 class="mb-0 d-flex align-items-center gap-2"><pems-icon name="bi-mortarboard" css="text-warning" /> @L("Skills", "مهارت‌ها")</h6>
                 <pems-button tone="primary" size="small" outline="true" type="button" data-bs-toggle="modal" data-bs-target="#addSkillModal">
@@ -375,11 +375,11 @@
                 }
             </ul>
             @if (!employeeSkills.Any()) { <p class="text-muted small text-center py-2 mb-0">@L("No skills recorded.", "مهارتی ثبت نشده.")</p> }
-        </div>
+        </pems-content-card>
     </pems-col>
 
     <pems-col md="6">
-        <div class="content-card h-100">
+        <pems-content-card css="h-100">
             <div class="d-flex justify-content-between align-items-center mb-3 pb-2 border-bottom">
                 <h6 class="mb-0 d-flex align-items-center gap-2"><pems-icon name="bi-patch-check" css="text-warning" /> @L("Qualifications", "صلاحیت‌ها")</h6>
                 <pems-button tone="primary" size="small" outline="true" type="button" data-bs-toggle="modal" data-bs-target="#addQualificationModal">
@@ -405,11 +405,11 @@
                 }
             </ul>
             @if (!employeeQualifications.Any()) { <p class="text-muted small text-center py-2 mb-0">@L("No qualifications recorded.", "صلاحیتی ثبت نشده.")</p> }
-        </div>
+        </pems-content-card>
     </pems-col>
 
     <pems-col md="6">
-        <div class="content-card h-100">
+        <pems-content-card css="h-100">
             <div class="d-flex justify-content-between align-items-center mb-3 pb-2 border-bottom">
                 <h6 class="mb-0 d-flex align-items-center gap-2"><pems-icon name="bi-award" css="text-warning" /> @L("Certifications", "گواهینامه‌ها")</h6>
                 <pems-button tone="primary" size="small" outline="true" type="button" data-bs-toggle="modal" data-bs-target="#addCertificationModal">
@@ -435,7 +435,7 @@
                 }
             </ul>
             @if (!employeeCertifications.Any()) { <p class="text-muted small text-center py-2 mb-0">@L("No certifications recorded.", "گواهینامه‌ای ثبت نشده.")</p> }
-        </div>
+        </pems-content-card>
     </pems-col>
 </pems-row>
 

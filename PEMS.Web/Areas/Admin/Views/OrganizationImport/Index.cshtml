@@ -2,7 +2,7 @@
 @using PEMS.Web.Resources
 @inject IStringLocalizer<SharedResource> Localizer
 
-<div class="admin-page-shell">
+<pems-page-shell kind="admin">
     <div class="admin-hero">
         <p>@Localizer["Org_Imp_Intro"]</p>
     </div>
@@ -23,4 +23,4 @@
         </pems-row></form>
         <p class="small text-muted mt-2 mb-0">@Localizer["Org_Imp_Rules"]</p>
     </section>
-</div>
+</pems-page-shell>

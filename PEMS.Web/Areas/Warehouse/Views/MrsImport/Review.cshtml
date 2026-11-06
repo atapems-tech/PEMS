@@ -16,7 +16,7 @@
     };
 }
 
-<div class="content-card mb-3">
+<pems-content-card css="mb-3">
     <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
         <div>
             <h5 class="mb-0">
@@ -30,7 +30,7 @@
         </div>
         <pems-button as="a" tone="neutral" size="small" outline="true" asp-action="Index"><pems-icon name="bi-arrow-left" /> Back</pems-button>
     </div>
-</div>
+</pems-content-card>
 
 @if (TempData["Message"] != null)
 {
@@ -41,7 +41,7 @@
     <pems-alert tone="danger" css="py-2 px-3 small">@TempData["Error"]</pems-alert>
 }
 
-<div class="content-card mb-3">
+<pems-content-card css="mb-3">
     <div class="admin-kpi-grid">
         <div class="admin-kpi"><div class="admin-kpi-label">@Localizer["New"]</div><div class="admin-kpi-value">@Model.Batch.NewCount</div></div>
         <div class="admin-kpi"><div class="admin-kpi-label">Matched Existing</div><div class="admin-kpi-value">@Model.Batch.MatchedCount</div></div>
@@ -50,7 +50,7 @@
         <div class="admin-kpi"><div class="admin-kpi-label">@Localizer["Approved"]</div><div class="admin-kpi-value">@Model.Batch.ApprovedCount</div></div>
     </div>
     <p class="text-muted small mt-2 mb-0">فایل کامل را آپلود کنید - PEMS فایل‌های بزرگ را داخلی و خودکار پردازش می‌کند. این صفحه برای بازبینی، صفحه‌بندی شده است (@Model.Rows.TotalCount ردیف در این فیلتر)؛ همه‌ی ردیف‌ها - نه فقط صفحه‌ی جاری - از طریق فیلتر Match Status زیر و دکمه‌ی «Commit/Reject سراسر Batch» قابل‌دسترسی و قابل‌عمل‌اند.</p>
-</div>
+</pems-content-card>
 
 <form id="bulkCommitForm" asp-action="BulkCommit" method="post">
     <input type="hidden" name="batchId" value="@Model.Batch.MrsImportBatchId" />
@@ -59,7 +59,7 @@
     <input type="hidden" name="batchId" value="@Model.Batch.MrsImportBatchId" />
 </form>
 
-<div class="pems-filter-bar content-card mb-3">
+<pems-content-card css="pems-filter-bar mb-3">
     <span class="pems-filter-label">@Localizer["Filter"]</span>
     <pems-button as="a" tone="none" size="small" css="@(matchStatusFilter == null ? "btn-pems-solid" : "btn-outline-secondary")" asp-action="Review" asp-route-batchId="@Model.Batch.MrsImportBatchId">@Localizer["All"]</pems-button>
     @foreach (var s in filterOptions)
@@ -87,9 +87,9 @@
             </pems-button>
         </form>
     }
-</div>
+</pems-content-card>
 
-<div class="content-card mb-3">
+<pems-content-card css="mb-3">
     <div class="d-flex gap-2 flex-wrap align-items-center">
         <div class="input-group admin-search pems-s-2f3f7d77">
             <span class="input-group-text"><pems-icon name="bi-search" /></span>
@@ -103,9 +103,9 @@
             <pems-icon name="bi-x-circle" /> Reject Selected
         </pems-button>
     </div>
-</div>
+</pems-content-card>
 
-<div class="content-card">
+<pems-content-card>
     <div class="table-responsive table-scroll-area pems-s-a7ef6ffc">
         <pems-table kind="enterprise" scale="small">
             <thead>
@@ -224,7 +224,7 @@
         BaseUrl = Url.Action("Review") ?? "",
         ExistingQueryString = string.Join("&", qsParts)
     })
-</div>
+</pems-content-card>
 
 @section Scripts {
 <script src="~/js/views/warehouse-mrsimport-review.js" asp-append-version="true"></script>

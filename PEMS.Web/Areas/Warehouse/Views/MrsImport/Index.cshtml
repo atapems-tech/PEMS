@@ -12,7 +12,7 @@
     <pems-alert tone="danger" css="py-2 px-3 small">@TempData["Error"]</pems-alert>
 }
 
-<div class="content-card mb-3">
+<pems-content-card css="mb-3">
     <h6 class="mb-2"><pems-icon name="bi-file-earmark-excel" /> Upload MRS Excel File</h6>
     <p class="text-muted small">
         فایل خام MRS آپلود می‌شود، بدون هیچ نوشتنی در MaterialItem/InventoryTransaction - فقط بعد از
@@ -23,9 +23,9 @@
         <pems-col md="4"><pems-input scale="small" type="text" name="sheetName" placeholder="@Localizer["نام شیت (اختیاری - پیش‌فرض: بزرگ‌ترین شیت)"]" /></pems-col>
         <pems-col md="2"><pems-button tone="primary" size="small" css="w-100" type="submit"><pems-icon name="bi-upload" /> @Localizer["Stage"]</pems-button></pems-col>
     </pems-row></form>
-</div>
+</pems-content-card>
 
-<div class="content-card">
+<pems-content-card>
     <pems-table kind="enterprise">
         <thead><tr><th>@Localizer["File"]</th><th>@Localizer["Sheet"]</th><th>@Localizer["Status"]</th><th>@Localizer["Total"]</th><th>@Localizer["New"]</th><th>@Localizer["Matched"]</th><th>@Localizer["Duplicate"]</th><th>@Localizer["Invalid"]</th><th>@Localizer["Approved"]</th><th>@Localizer["Date"]</th><th></th></tr></thead>
         <tbody>
@@ -49,4 +49,4 @@
         </tbody>
     </pems-table>
     @if (!Model.Any()) { <p class="text-muted text-center py-4">@Localizer["هنوز فایلی Upload نشده."]</p> }
-</div>
+</pems-content-card>

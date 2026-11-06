@@ -3,7 +3,7 @@
 @using PEMS.Web.Resources
 @inject IStringLocalizer<SharedResource> Localizer
 
-<div class="content-card pems-s-e2b01b0d">
+<pems-content-card css="pems-s-e2b01b0d">
     <pems-alert tone="danger" css="py-2 px-3 small" asp-validation-summary="All" hidden="@(ViewData.ModelState.IsValid)"></pems-alert>
 
     <form asp-action="Create" method="post">
@@ -48,4 +48,4 @@
             <pems-button tone="neutral" outline="true" as="a" asp-action="Index">@Localizer["Cancel"]</pems-button>
         </div>
     </form>
-</div>
+</pems-content-card>

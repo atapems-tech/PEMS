@@ -3,7 +3,7 @@
 @using PEMS.Web.Resources
 @inject IStringLocalizer<SharedResource> Localizer
 
-<div class="content-card mb-3">
+<pems-content-card css="mb-3">
     <div class="d-flex justify-content-between align-items-start flex-wrap gap-3">
         <div>
             <div class="d-flex align-items-center gap-2 flex-wrap">
@@ -41,14 +41,14 @@
             }
         </div>
     </div>
-</div>
+</pems-content-card>
 
 @{
     var isInProgress = Model.Status == "InProgress";
     var reconciliation = Model.Reconciliation;
 }
 
-<div class="content-card mb-3">
+<pems-content-card css="mb-3">
     <h6 class="mb-2">Reconciliation</h6>
     @if (reconciliation.IsComparable)
     {
@@ -72,13 +72,13 @@
             <pems-col span=""><pems-kpi-tile compact label="Total Loss">@reconciliation.TotalLossQuantity.ToString("N3")</pems-kpi-tile></pems-col>
         </pems-row>
     }
-</div>
+</pems-content-card>
 
 @if (isInProgress)
 {
     <pems-row gap="3" css="row-cols-1 row-cols-lg-3 mb-3">
         <pems-col span="">
-            <div class="content-card h-100">
+            <pems-content-card css="h-100">
                 <h6 class="mb-2">@Localizer["Record Input"]</h6>
                 <form asp-action="RecordInput" method="post">
                     <input type="hidden" name="productionRunId" value="@Model.ProductionRunId" />
@@ -96,10 +96,10 @@
                     <div class="mb-2"><pems-input scale="small" type="text" name="notes" placeholder="@Localizer["Notes"]" /></div>
                     <pems-button tone="primary" size="small" outline="true" css="w-100" type="submit">@Localizer["Record Input"]</pems-button>
                 </form>
-            </div>
+            </pems-content-card>
         </pems-col>
         <pems-col span="">
-            <div class="content-card h-100">
+            <pems-content-card css="h-100">
                 <h6 class="mb-2">@Localizer["Record Output"]</h6>
                 <form asp-action="RecordOutput" method="post">
                     <input type="hidden" name="productionRunId" value="@Model.ProductionRunId" />
@@ -123,10 +123,10 @@
                     <div class="mb-2"><pems-input scale="small" type="text" name="notes" placeholder="@Localizer["Notes"]" /></div>
                     <pems-button tone="primary" size="small" outline="true" css="w-100" type="submit">@Localizer["Record Output"]</pems-button>
                 </form>
-            </div>
+            </pems-content-card>
         </pems-col>
         <pems-col span="">
-            <div class="content-card h-100">
+            <pems-content-card css="h-100">
                 <h6 class="mb-2">@Localizer["Record Loss"]</h6>
                 <form asp-action="RecordLoss" method="post">
                     <input type="hidden" name="productionRunId" value="@Model.ProductionRunId" />
@@ -143,14 +143,14 @@
                     <div class="mb-2"><pems-input scale="small" type="text" name="notes" placeholder="@Localizer["Notes"]" /></div>
                     <pems-button tone="warning" size="small" outline="true" css="w-100" type="submit">@Localizer["Record Loss"]</pems-button>
                 </form>
-            </div>
+            </pems-content-card>
         </pems-col>
     </pems-row>
 }
 
 <pems-row gap="3" css="row-cols-1 row-cols-lg-2">
     <pems-col span="">
-        <div class="content-card">
+        <pems-content-card>
             <h6 class="mb-2">Inputs</h6>
             <div class="table-scroll-area pems-s-f7dce87f">
                 <pems-table kind="enterprise" scale="small">
@@ -175,10 +175,10 @@
                 </pems-table>
             </div>
             @if (!Model.Inputs.Any()) { <p class="text-muted text-center py-2 small">No inputs recorded.</p> }
-        </div>
+        </pems-content-card>
     </pems-col>
     <pems-col span="">
-        <div class="content-card">
+        <pems-content-card>
             <h6 class="mb-2">Outputs</h6>
             <div class="table-scroll-area pems-s-f7dce87f">
                 <pems-table kind="enterprise" scale="small">
@@ -204,13 +204,13 @@
                 </pems-table>
             </div>
             @if (!Model.Outputs.Any()) { <p class="text-muted text-center py-2 small">No outputs recorded.</p> }
-        </div>
+        </pems-content-card>
     </pems-col>
 </pems-row>
 
 <pems-row gap="3" css="row-cols-1 row-cols-lg-2 mt-1">
     <pems-col span="">
-        <div class="content-card">
+        <pems-content-card>
             <h6 class="mb-2">Losses</h6>
             <pems-table kind="enterprise" scale="small">
                 <thead><tr><th>@Localizer["Qty"]</th><th>@Localizer["Category"]</th><th>@Localizer["Notes"]</th></tr></thead>
@@ -222,10 +222,10 @@
                 </tbody>
             </pems-table>
             @if (!Model.Losses.Any()) { <p class="text-muted text-center py-2 small">No losses recorded.</p> }
-        </div>
+        </pems-content-card>
     </pems-col>
     <pems-col span="">
-        <div class="content-card">
+        <pems-content-card>
             <h6 class="mb-2">Event History</h6>
             <div class="table-scroll-area pems-s-89e84480">
                 <pems-table kind="enterprise" scale="small">
@@ -238,7 +238,7 @@
                     </tbody>
                 </pems-table>
             </div>
-        </div>
+        </pems-content-card>
     </pems-col>
 </pems-row>
 

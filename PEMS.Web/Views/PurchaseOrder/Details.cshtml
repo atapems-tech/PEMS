@@ -26,7 +26,7 @@
 @if (TempData["Message"] != null) { <pems-alert tone="success" css="py-2 px-3 small">@TempData["Message"]</pems-alert> }
 @if (TempData["Error"] != null) { <pems-alert tone="danger" css="py-2 px-3 small">@TempData["Error"]</pems-alert> }
 
-<div class="content-card">
+<pems-content-card>
     <pems-info-grid>
         <pems-info-item label="@Localizer["PO Number"]" num>@Model.PoNumber</pems-info-item>
         <pems-info-item label="@Localizer["Project"]">@Model.ProjectName</pems-info-item>
@@ -46,11 +46,11 @@
             <pems-button tone="primary" size="small" type="submit"><pems-icon name="bi-send-check" /> @Localizer["Issue Purchase Order"]</pems-button>
         </form>
     }
-</div>
+</pems-content-card>
 
 @if (a != null)
 {
-    <div class="content-card mt-3">
+    <pems-content-card css="mt-3">
         <h6 class="mb-2"><pems-icon name="bi-list-ol" aria-hidden="true" /> @Localizer["Po_Lines"]</h6>
         @if (!string.IsNullOrEmpty(a.RejectionReason) && isDraft)
         {
@@ -135,9 +135,9 @@
                 <pems-button tone="primary" size="small" outline="true" type="submit"><pems-icon name="bi-plus" aria-hidden="true" /> @Localizer["Po_AddLines"]</pems-button>
             </form>
         }
-    </div>
+    </pems-content-card>
 
-    <div class="content-card mt-3">
+    <pems-content-card css="mt-3">
         <h6 class="mb-2"><pems-icon name="bi-shield-check" aria-hidden="true" /> @Localizer["Po_Approval"]</h6>
         <pems-info-grid layout="rows" class="small mb-2">
             @if (a.SubmittedAt.HasValue) { <pems-info-item label="@Localizer["Po_Submitted"]"><span dir="ltr">@a.SubmittedAt.Value.ToString("yyyy-MM-dd HH:mm")</span> @a.SubmittedBy</pems-info-item> }
@@ -177,12 +177,12 @@
                 <div class="flex-grow-1"><pems-label css="small" for="poReject">@Localizer["Po_RejectReason"]</pems-label><pems-input scale="small" id="poReject" name="reason" required /></div>
                 <pems-button tone="danger" size="small" outline="true" type="submit"><pems-icon name="bi-arrow-counterclockwise" aria-hidden="true" /> @Localizer["Po_Reject"]</pems-button></form>
         }
-    </div>
+    </pems-content-card>
 }
 
 @if (receivingLines?.Count > 0 && isIssued)
 {
-    <div class="content-card mt-3">
+    <pems-content-card css="mt-3">
         <h6 class="mb-2"><pems-icon name="bi-box-arrow-in-down" aria-hidden="true" /> @Localizer["Rcv_Receiving"]</h6>
         <p class="small text-muted">@Localizer["Rcv_ReceivingHelp"]</p>
         <div class="table-responsive">
@@ -230,5 +230,5 @@
                 </tbody>
             </pems-table>
         </div>
-    </div>
+    </pems-content-card>
 }

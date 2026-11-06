@@ -7,7 +7,7 @@
     string status = (string?)ViewBag.Status ?? "";
 }
 
-<div class="admin-page-shell">
+<pems-page-shell kind="admin">
     <div class="admin-hero">
         <p>@Localizer["Org_Positions_Intro"]</p>
     </div>
@@ -95,4 +95,4 @@
         </pems-table>
         @if (!Model.Any()) { <div class="vs-empty">@Localizer["Org_Empty"]</div> }
     </div>
-</div>
+</pems-page-shell>

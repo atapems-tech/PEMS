@@ -6,7 +6,7 @@
     var providers = (List<PEMS.Application.DTOs.StorageProviderDto>)ViewBag.Providers;
 }
 
-<div class="content-card admin-form-card">
+<pems-content-card css="admin-form-card">
     <pems-row gap="3">
         <pems-col md="4">
             <pems-label>Module <span class="text-muted small">e.g. EngineeringDocuments, VDR, Contracts</span></pems-label>
@@ -40,4 +40,4 @@
         <pems-button tone="primary" type="submit"><pems-icon name="bi-check2" css="me-1" /> @Localizer["Save"]</pems-button>
         <pems-button as="a" tone="neutral" outline="true" asp-action="Index">@Localizer["Cancel"]</pems-button>
     </div>
-</div>
+</pems-content-card>

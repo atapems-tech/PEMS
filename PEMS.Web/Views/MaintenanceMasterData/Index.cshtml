@@ -105,7 +105,7 @@
 
 <div class="tab-content">
     <div class="tab-pane fade show active" id="tab-groups" role="tabpanel">
-        <div class="content-card">
+        <pems-content-card>
             <div class="d-flex justify-content-between align-items-center mb-3">
                 <p class="text-muted small mb-0">
                     گروه‌بندی تعمیراتی دقیق‌تر از Discipline (مثلاً «Rotating Equipment» زیر «Mechanical») -
@@ -138,11 +138,11 @@
                 </tbody>
             </pems-table>
             @if (!Model.Any()) { <p class="text-muted text-center py-4">هنوز گروه تعمیراتی‌ای ساخته نشده.</p> }
-        </div>
+        </pems-content-card>
     </div>
 
     <div class="tab-pane fade" id="tab-skills" role="tabpanel">
-        <div class="content-card">
+        <pems-content-card>
             <div class="d-flex justify-content-between align-items-center mb-3">
                 <p class="text-muted small mb-0">
                     فهرست مشترک مهارت‌ها - از صفحه‌ی هر کارمند به او تخصیص داده می‌شود، یا به‌عنوان
@@ -173,11 +173,11 @@
                 </tbody>
             </pems-table>
             @if (!skills.Any()) { <p class="text-muted text-center py-4">@Localizer["هنوز مهارتی ساخته نشده."]</p> }
-        </div>
+        </pems-content-card>
     </div>
 
     <div class="tab-pane fade" id="tab-qualifications" role="tabpanel">
-        <div class="content-card">
+        <pems-content-card>
             <div class="d-flex justify-content-between align-items-center mb-3">
                 <p class="text-muted small mb-0">
                     فهرست مشترک انواع صلاحیت - نمونه‌ی هر کارمند از صفحه‌ی جزئیات همان کارمند ثبت می‌شود.
@@ -207,11 +207,11 @@
                 </tbody>
             </pems-table>
             @if (!qualifications.Any()) { <p class="text-muted text-center py-4">هنوز صلاحیتی ساخته نشده.</p> }
-        </div>
+        </pems-content-card>
     </div>
 
     <div class="tab-pane fade" id="tab-certifications" role="tabpanel">
-        <div class="content-card">
+        <pems-content-card>
             <div class="d-flex justify-content-between align-items-center mb-3">
                 <p class="text-muted small mb-0">
                     فهرست مشترک انواع گواهینامه - شماره‌ی گواهی و تاریخ انقضای هر کارمند از صفحه‌ی جزئیات همان کارمند ثبت می‌شود.
@@ -241,11 +241,11 @@
                 </tbody>
             </pems-table>
             @if (!certifications.Any()) { <p class="text-muted text-center py-4">هنوز گواهینامه‌ای ساخته نشده.</p> }
-        </div>
+        </pems-content-card>
     </div>
 
     <div class="tab-pane fade" id="tab-maintenance-types" role="tabpanel">
-        <div class="content-card">
+        <pems-content-card>
             <div class="d-flex justify-content-between align-items-center mb-3">
                 <p class="text-muted small mb-0">
                     طبقه‌بندی استاندارد «نوع کار» (Corrective/Preventive/Predictive/...) - مرجع
@@ -277,11 +277,11 @@
                 </tbody>
             </pems-table>
             @if (!maintenanceTypes.Any()) { <p class="text-muted text-center py-4">هنوز Maintenance Type ای ساخته نشده.</p> }
-        </div>
+        </pems-content-card>
     </div>
 
     <div class="tab-pane fade" id="tab-strategy-types" role="tabpanel">
-        <div class="content-card">
+        <pems-content-card>
             <div class="d-flex justify-content-between align-items-center mb-3">
                 <p class="text-muted small mb-0">
                     سیاست RCM («چرا این استراتژی انتخاب شد» - PM/PDM/CBM/CM/EM/RTF/RCM/...) - جدا از
@@ -313,11 +313,11 @@
                 </tbody>
             </pems-table>
             @if (!strategyTypes.Any()) { <p class="text-muted text-center py-4">هنوز Strategy Type ای ساخته نشده.</p> }
-        </div>
+        </pems-content-card>
     </div>
 
     <div class="tab-pane fade" id="tab-equipment-classes" role="tabpanel">
-        <div class="content-card">
+        <pems-content-card>
             <div class="d-flex justify-content-between align-items-center mb-3">
                 <p class="text-muted small mb-0">
                     طبقه‌بندی تجهیزات (مثلاً «Centrifugal Pump») - جدا از EquipmentType متنی روی
@@ -349,11 +349,11 @@
                 </tbody>
             </pems-table>
             @if (!equipmentClasses.Any()) { <p class="text-muted text-center py-4">هنوز Equipment Class ای ساخته نشده.</p> }
-        </div>
+        </pems-content-card>
     </div>
 
     <div class="tab-pane fade" id="tab-standards" role="tabpanel">
-        <div class="content-card">
+        <pems-content-card>
             <div class="d-flex justify-content-between align-items-center mb-3">
                 <p class="text-muted small mb-0">
                     فقط ابرداده‌ی استانداردهای صنعتی (سازمان/شماره/عنوان/دسته) - هیچ متن دارای
@@ -387,11 +387,11 @@
                 </tbody>
             </pems-table>
             @if (!standardReferences.Any()) { <p class="text-muted text-center py-4">هنوز Standard Reference ای ساخته نشده.</p> }
-        </div>
+        </pems-content-card>
     </div>
 
     <div class="tab-pane fade" id="tab-activities" role="tabpanel">
-        <div class="content-card">
+        <pems-content-card>
             <div class="d-flex justify-content-between align-items-center mb-3">
                 <p class="text-muted small mb-0">
                     کاتالوگ فعالیت‌های استاندارد تعمیراتی (مثلاً «Vibration Measurement») - زیر یک
@@ -424,11 +424,11 @@
                 </tbody>
             </pems-table>
             @if (!maintenanceActivities.Any()) { <p class="text-muted text-center py-4">هنوز Activity ای ساخته نشده.</p> }
-        </div>
+        </pems-content-card>
     </div>
 
     <div class="tab-pane fade" id="tab-failure-modes" role="tabpanel">
-        <div class="content-card">
+        <pems-content-card>
             <p class="text-muted small mb-3">
                 طبق ISO 14224 - خط‌مبنای Failure Mode به‌ازای خانواده‌ی تجهیز (Equipment Class)؛
                 این تب فقط از طریق Seed سیستمی ساخته می‌شود (نه فرم دستی) چون هر Mode به چند
@@ -457,11 +457,11 @@
                 </tbody>
             </pems-table>
             @if (!failureModes.Any()) { <p class="text-muted text-center py-4">هنوز Failure Mode ای Seed نشده.</p> }
-        </div>
+        </pems-content-card>
     </div>
 
     <div class="tab-pane fade" id="tab-pm-templates" role="tabpanel">
-        <div class="content-card">
+        <pems-content-card>
             <p class="text-muted small mb-3">
                 قالب‌های نگهداری پیشگیرانه‌ی قابل‌استفاده‌ی مجدد، مقیاس‌بندی‌شده روی Equipment
                 Class (نه یک تجهیز خاص) - تبدیل به یک MaintenancePlan واقعی هنوز نیازمند تأیید
@@ -490,11 +490,11 @@
                 </tbody>
             </pems-table>
             @if (!pmTemplates.Any()) { <p class="text-muted text-center py-4">هنوز PM Template ای Seed نشده.</p> }
-        </div>
+        </pems-content-card>
     </div>
 
     <div class="tab-pane fade" id="tab-evaluation-profiles" role="tabpanel">
-        <div class="content-card">
+        <pems-content-card>
             <div class="d-flex justify-content-between align-items-center mb-3">
                 <p class="text-muted small mb-0">
                     پروفایل ارزیابی نسخه‌دار برای نقاط پایش وضعیت (Condition Monitoring) - آستانه‌ها
@@ -547,11 +547,11 @@
                 </tbody>
             </pems-table>
             @if (!evaluationProfiles.Any()) { <p class="text-muted text-center py-4">@Localizer["هنوز Evaluation Profile ای ساخته نشده."]</p> }
-        </div>
+        </pems-content-card>
     </div>
 
     <div class="tab-pane fade" id="tab-priority-mappings" role="tabpanel">
-        <div class="content-card">
+        <pems-content-card>
             <div class="d-flex justify-content-between align-items-center mb-3">
                 <p class="text-muted small mb-0">
                     @Localizer["این نگاشت تعیین می‌کند که یافتن یک وضعیت (Condition) چه اولویتی (Priority) برای Work Request نتیجه‌شده دارد - قبلاً این نگاشت مستقیم در کد برنامه نوشته شده بود؛ حالا اینجا قابل‌مشاهده و قابل‌ویرایش است."]
@@ -591,7 +591,7 @@
                 </tbody>
             </pems-table>
             @if (!conditionPriorityMappings.Any()) { <p class="text-muted text-center py-4">@Localizer["هنوز نگاشتی ساخته نشده."]</p> }
-        </div>
+        </pems-content-card>
     </div>
 </div>
 

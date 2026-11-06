@@ -218,3 +218,20 @@ public sealed record PagerOptions : FrameOptions
     public string? Scale { get; init; }
     public string? Css { get; init; }
 }
+
+// SCRUM-339 (P1): the page-level wrappers.
+
+/// <summary>Inputs of <see cref="PemsContentCard"/>: the white content panel of a page (<c>content-card</c>); the page's blocks are the child content.</summary>
+public sealed record ContentCardOptions : FrameOptions
+{
+    /// <summary>The element: div (default), section, article or details.</summary>
+    public string As { get; init; } = "div";
+    public string? Css { get; init; }
+}
+
+/// <summary>Inputs of <see cref="PemsPageShell"/>: the outer wrapper of a page: <c>admin</c> (<c>admin-page-shell</c>, the Administration look) or <c>workspace</c> (<c>vs-page</c>, the workspace look).</summary>
+public sealed record PageShellOptions : FrameOptions
+{
+    public string Kind { get; init; } = "workspace";
+    public string? Css { get; init; }
+}

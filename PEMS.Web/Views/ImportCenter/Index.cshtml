@@ -11,7 +11,7 @@
 
 @if (!Model.Any())
 {
-    <div class="content-card text-muted text-center py-4">@Localizer["IC_Empty"]</div>
+    <pems-content-card css="text-muted text-center py-4">@Localizer["IC_Empty"]</pems-content-card>
 }
 
 @foreach (var category in ImportCatalog.CategoryOrder)
@@ -19,7 +19,7 @@
     var items = Model.Where(e => e.Category == category).ToList();
     if (!items.Any()) { continue; }
 
-    <div class="content-card mb-3">
+    <pems-content-card css="mb-3">
         <h6 class="mb-3">@Localizer["IC_Cat_" + category]</h6>
         <pems-row gap="3">
             @foreach (var e in items)
@@ -46,7 +46,7 @@
                 </pems-col>
             }
         </pems-row>
-    </div>
+    </pems-content-card>
 }
 
 @* Direct imports: the dialog lives here (the only place an import is started) and posts to the EXISTING import action of the owning module. *@

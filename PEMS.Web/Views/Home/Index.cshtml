@@ -20,14 +20,14 @@
 }
 @if (setupStatus != null && !setupStatus.IsFullyComplete)
 {
-    <div class="content-card mb-4">
+    <pems-content-card css="mb-4">
         <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-2">
             <h6 class="mb-0"><pems-icon name="bi-rocket-takeoff" /> @Localizer["System Setup"]</h6>
             <span class="text-muted small">@setupStatus.CompletedCount of @setupStatus.TotalCount setup areas ready</span>
         </div>
         <pems-progress value="@setupStatus.PercentComplete" height="18px" css="mb-3">@setupStatus.PercentComplete%</pems-progress>
         <pems-button as="a" tone="none" size="small" css="btn-primary" asp-controller="QuickSetup" asp-action="Index">@Localizer["Continue Setup"]</pems-button>
-    </div>
+    </pems-content-card>
 }
 
 @{
@@ -35,7 +35,7 @@
 }
 @if (myWork != null && myWork.HasAnyCategory)
 {
-    <div class="content-card mb-4">
+    <pems-content-card css="mb-4">
         <h6 class="mb-1"><pems-icon name="bi-check2-square" /> @Localizer["My Work"]</h6>
         <p class="text-muted small mb-3">@Localizer["What requires your attention"]</p>
 
@@ -121,7 +121,7 @@
                 }
             </pems-row>
         }
-    </div>
+    </pems-content-card>
 }
 
 
@@ -139,17 +139,17 @@
 <pems-row gap="3">
 
     <pems-col lg="6">
-        <div class="content-card">
+        <pems-content-card>
             <h6 class="mb-3">@Localizer["Documents by Status"]</h6>
             @* SCRUM-337 C3: the shared chart host (Bklit donut with its hover-linked legend) *@
             @{ var docsDonut = PEMS.Web.Models.BkChartSpec.Donut(Localizer["Documents by Status"].Value, Localizer["No documents to chart yet."].Value,
                    Localizer["Documents"].Value, Model.DocumentsByStatus.Select(kv => (kv.Key, (double)kv.Value))); }
             <pems-chart spec="@docsDonut" />
-        </div>
+        </pems-content-card>
     </pems-col>
 
     <pems-col lg="6">
-        <div class="content-card h-100">
+        <pems-content-card css="h-100">
             <h6 class="mb-3">@Localizer["Discipline Performance"]</h6>
             @{ var disciplineRows = (List<PEMS.Web.Models.DisciplinePerformanceRow>)(ViewBag.DisciplinePerformance ?? new List<PEMS.Web.Models.DisciplinePerformanceRow>()); }
             @if (disciplineRows.Count == 0)
@@ -176,7 +176,7 @@
                     </pems-table>
                 </div>
             }
-        </div>
+        </pems-content-card>
     </pems-col>
 
 </pems-row>
@@ -202,7 +202,7 @@
             var value = widgetData.TryGetValue(w.WidgetKey, out var v) ? v : null;
 
             <div class="@colClass">
-                <div class="content-card h-100">
+                <pems-content-card css="h-100">
                     <h6 class="mb-3">@w.DisplayName</h6>
                     @if (value is List<string> list)
                     {
@@ -215,7 +215,7 @@
                     {
                         <div class="kpi-value">@value</div>
                     }
-                </div>
+                </pems-content-card>
             </div>
         }
     </pems-row>

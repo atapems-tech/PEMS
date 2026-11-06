@@ -15,7 +15,7 @@
 
 @if (TempData["Error"] != null) { <pems-alert tone="danger" css="py-2 px-3 small">@TempData["Error"]</pems-alert> }
 
-<div class="content-card pems-s-cd90f7a7">
+<pems-content-card css="pems-s-cd90f7a7">
     <form asp-action="Create" method="post">
         <div class="mb-3">
             <pems-label css="small">@Localizer["Equipment"]</pems-label>
@@ -36,4 +36,4 @@
         </div>
         <pems-button tone="primary" size="small" type="submit">Create Draft</pems-button>
     </form>
-</div>
+</pems-content-card>

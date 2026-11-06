@@ -17,7 +17,7 @@
    انگار یک ادعای انطباقِ تاییدشده است - همیشه هر دو وضعیت (Verification/Implementation) با
    برچسب صریح کنار هم نشان داده می‌شوند، و اگر ComplianceEvidenceAvailable نباشد، یک یادداشت
    صریح «این تایید انطباق رسمی نیست» هم اضافه می‌شود. *@
-<div class="content-card mb-3" role="group" aria-label="@L("Standard reference summary", "خلاصه‌ی مرجع استاندارد")">
+<pems-content-card css="mb-3" role="group" aria-label="@L("Standard reference summary", "خلاصه‌ی مرجع استاندارد")">
     <div class="d-flex flex-wrap gap-2 align-items-center mb-2">
         <pems-badge tone="dark" css="fs-6">@Model.Identifier</pems-badge>
         <span class="text-muted small">@Model.IssuingOrganization@(string.IsNullOrWhiteSpace(Model.EditionOrYear) ? "" : $" · {Model.EditionOrYear}")</span>
@@ -48,4 +48,4 @@
             <pems-icon name="bi-box-arrow-up-right" /> @L("Official source", "منبع رسمی")
         </pems-button>
     }
-</div>
+</pems-content-card>

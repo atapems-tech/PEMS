@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="~/css/pems-workspace.css" asp-append-version="true" />
 }
 
-<div class="vs-page">
+<pems-page-shell kind="workspace">
 
     @* Stitch: vendor_performance_scorecard / supplier_directory detail pane - only fields that exist in PEMS (no invented scores) *@
     <div class="vs-header">
@@ -39,4 +39,4 @@
                 <button class="vs-btn vs-btn--sm"><pems-icon name="bi-arrow-repeat" /> @Localizer["Vs_RecalcRisk"]</button>
             </form>
         </div></div>
-</div>
+</pems-page-shell>
