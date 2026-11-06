@@ -113,12 +113,14 @@ public sealed class PemsTextAreaTagHelper(IHtmlGenerator generator, IPemsCompone
 public sealed class PemsLabelTagHelper(IHtmlGenerator generator, IPemsComponentRenderer renderer) : LabelTagHelper(generator)
 {
     [HtmlAttributeName("css")] public string? Css { get; set; }
+    /// <summary>label (default), span or legend.</summary>
+    [HtmlAttributeName("as")] public string As { get; set; } = "label";
 
     public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
     {
         if (For is not null) await base.ProcessAsync(context, output);
         var (css, attrs) = ListRender.Page(output);
-        await ListRender.Replace<PemsFormLabel>(renderer, output, new FormLabelOptions { Css = Css, PageClass = css, Attributes = attrs }, await ListRender.InnerAfterFramework(output));
+        await ListRender.Replace<PemsFormLabel>(renderer, output, new FormLabelOptions { As = As, Css = Css, PageClass = css, Attributes = attrs }, await ListRender.InnerAfterFramework(output));
     }
 }
 

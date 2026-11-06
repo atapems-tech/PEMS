@@ -20,11 +20,11 @@
     <td><code>@row.PermissionName</code></td>
     <td class="perm-status-cell">
         <div class="d-inline-flex align-items-center gap-2">
-            <div class="form-check form-switch m-0">
+            <pems-check-row switch css="m-0">
                 <pems-input type="checkbox" role="switch" kind="check" css="perm-toggle" checked="@row.Allowed" disabled="@locked"
                        aria-label="@string.Format(Localizer["PermAdmin_ToggleRow"].Value, row.PermissionName)"
                        title="@(locked ? lockedText : "")" />
-            </div>
+            </pems-check-row>
             <span class="perm-status-label admin-status @(row.Allowed ? "active" : "inactive")">
                 <pems-icon css="@(row.Allowed ? "bi-check2-circle" : "bi-dash-circle")" />
                 <span class="perm-status-text">@(row.Allowed ? Localizer["Allowed"] : Localizer["Not granted"])</span>

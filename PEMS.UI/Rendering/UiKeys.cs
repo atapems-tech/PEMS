@@ -83,4 +83,6 @@ public static class UiKeys
     public const string Icon = "icon";
     public const string Row = "row";
     public const string Col = "col";
+    public const string CheckRow = "check-row";
+    public const string Pager = "pager";
 }

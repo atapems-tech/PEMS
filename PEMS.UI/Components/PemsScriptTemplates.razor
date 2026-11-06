@@ -29,6 +29,8 @@
     case ScriptTemplateSet.LetterCompose:
         <template data-pems-template="lc-alert"><div class="alert" data-slot="root"><strong><i class="bi" aria-hidden="true" data-slot="icon"></i> <span data-slot="title"></span></strong><ul data-slot="items"></ul></div></template>
         <template data-pems-template="lc-icon-button"><button type="button" data-slot="root"><i class="bi" aria-hidden="true" data-slot="icon"></i></button></template>
+        <template data-pems-template="lc-icon-button-secondary"><button type="button" class="btn btn-sm btn-outline-secondary" data-slot="root"><i class="bi" aria-hidden="true" data-slot="icon"></i></button></template>
+        <template data-pems-template="lc-icon-button-danger"><button type="button" class="btn btn-sm btn-outline-danger" data-slot="root"><i class="bi" aria-hidden="true" data-slot="icon"></i></button></template>
         <template data-pems-template="lc-file-row"><li><i class="bi bi-file-earmark" aria-hidden="true"></i><span data-slot="name"></span><small class="text-muted" data-slot="size"></small></li></template>
         <template data-pems-template="lc-upload-row"><li><span data-slot="name"></span><progress max="100" value="0"></progress></li></template>
         break;
@@ -80,7 +82,25 @@
         <template data-pems-template="help-related-link"><a class="btn btn-sm btn-outline-secondary me-1 mb-1" data-slot="link"></a></template>
         break;
     case ScriptTemplateSet.Layout:
-        <template data-pems-template="toast-notif"><div class="toast align-items-center border-0" role="alert" data-slot="root"><div class="d-flex"><div class="toast-body"><i class="bi bi-bell-fill me-1"></i> <span class="toast-msg" data-slot="message"></span></div><button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button></div></div></template>
+        <template data-pems-template="toast-notif-error"><div class="toast align-items-center border-0 text-bg-danger" role="alert" data-slot="root"><div class="d-flex"><div class="toast-body"><i class="bi bi-bell-fill me-1"></i> <span class="toast-msg" data-slot="message"></span></div><button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button></div></div></template>
+        <template data-pems-template="toast-notif"><div class="toast align-items-center border-0 text-bg-primary" role="alert" data-slot="root"><div class="d-flex"><div class="toast-body"><i class="bi bi-bell-fill me-1"></i> <span class="toast-msg" data-slot="message"></span></div><button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button></div></div></template>
+        break;
+    case ScriptTemplateSet.CartableSettings:
+        <template data-pems-template="cs-input"><input class="form-control form-control-sm" /></template>
+        <template data-pems-template="cs-select"><select class="form-select form-select-sm"></select></template>
+        <template data-pems-template="cs-check"><input type="checkbox" class="form-check-input" /></template>
+        <template data-pems-template="cs-button"><button type="button" class="btn btn-sm"></button></template>
+        <template data-pems-template="cs-link-button"><a class="btn btn-sm btn-outline-secondary"></a></template>
+        <template data-pems-template="cs-chip"><span class="badge text-bg-secondary d-inline-flex align-items-center gap-1"><span data-slot="name"></span><button type="button" class="btn-close btn-close-white" style="font-size:.55rem" data-slot="remove"></button></span></template>
+        break;
+    case ScriptTemplateSet.PermissionMatrix:
+        <template data-pems-template="pm-retry-button"><button type="button" class="btn btn-sm btn-outline-primary"></button></template>
+        break;
+    case ScriptTemplateSet.UserPermissions:
+        <template data-pems-template="up-spinner"><span class="spinner-border spinner-border-sm text-secondary" aria-hidden="true"></span></template>
+        break;
+    case ScriptTemplateSet.PartCatalogue:
+        <template data-pems-template="pc-combobox-input"><input class="form-control form-control-sm" /></template>
         break;
 }
 @code {

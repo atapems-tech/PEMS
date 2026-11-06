@@ -26,13 +26,14 @@
         control.id = id;
         return el("div", { class: cls || "" }, [el("label", { class: "form-label small", for: id, text: label }), control]);
     }
-    function input(type, value, attrs) { return el("input", Object.assign({ type: type, class: "form-control form-control-sm", value: value == null ? "" : value }, attrs || {})); }
+    function tpl(name, attrs) { var n = PemsTemplate.clone(name); Object.keys(attrs || {}).forEach(function (k) { n.setAttribute(k, attrs[k]); }); return n; }
+    function input(type, value, attrs) { var n = tpl("cs-input", Object.assign({ type: type }, attrs || {})); n.value = value == null ? "" : value; return n; }
     function select(options, value, attrs) {
-        var s = el("select", Object.assign({ class: "form-select form-select-sm" }, attrs || {}));
+        var s = tpl("cs-select", attrs);
         options.forEach(function (o) { var op = el("option", { value: String(o.value), text: o.text }); if (String(o.value) === String(value)) op.selected = true; s.appendChild(op); });
         return s;
     }
-    function button(text, cls, onclick, extra) { return el("button", Object.assign({ type: "button", class: "btn btn-sm " + cls, text: text, onclick: onclick }, extra || {})); }
+    function button(text, cls, onclick, extra) { var b = tpl("cs-button", extra); b.classList.add(cls); b.textContent = text; b.onclick = onclick; return b; }
     function isoDay(d) { var p = function (n) { return (n < 10 ? "0" : "") + n; }; return d.getFullYear() + "-" + p(d.getMonth() + 1) + "-" + p(d.getDate()); }
     function dayText(s) { return String(s || "").slice(0, 10); }
 
@@ -174,7 +175,7 @@
                 });
                 host.appendChild(given);
 
-                var cand = el("select", { class: "form-select form-select-sm" });
+                var cand = tpl("cs-select");
                 [["Manager", d.candidates], ["Peer", d.candidates], ["Subordinate", d.candidates], ["Other", d.candidates]].forEach(function (g) {
                     var items = d.candidates.filter(function (c) { return c.relation === g[0]; });
                     if (!items.length) return;
@@ -220,7 +221,7 @@
                 data.rules.forEach(function (r) {
                     var cond = [r.matchLetterType, r.matchPriority, r.matchCategory, r.matchSenderContains && ("«" + r.matchSenderContains + "»"), r.matchSubjectContains && ("«" + r.matchSubjectContains + "»")].filter(Boolean).join(" · ");
                     var act = [r.applyTagName && ("# " + r.applyTagName), r.starLetter && "★", r.referToName && ("→ " + r.referToName)].filter(Boolean).join(" · ");
-                    var chk = el("input", { type: "checkbox", class: "form-check-input", "aria-label": t("enabled") }); chk.checked = r.isActive;
+                    var chk = tpl("cs-check", { "aria-label": t("enabled") }); chk.checked = r.isActive;
                     chk.addEventListener("change", function () { run(C.post(C.cfg.urls.ruleToggle, { id: r.letterRoutingRuleId, active: chk.checked }), reload); });
                     ul.appendChild(el("li", {}, [chk, el("div", { class: "ct-grow" }, [el("div", { class: "fw-semibold", text: r.name }),
                         el("div", { class: "ct-sub", text: t("ifLabel") + ": " + (cond || "—") }), el("div", { class: "ct-sub", text: t("thenLabel") + ": " + (act || "—") })]),
@@ -244,7 +245,7 @@
                 var sender = input("text", r.matchSenderContains || "", { maxlength: "120" });
                 var subject = input("text", r.matchSubjectContains || "", { maxlength: "120" });
                 var tag = select([{ value: "", text: t("none") }].concat(tags.map(function (x) { return { value: x.TagId, text: x.Name }; })), r.applyTagId || "");
-                var star = el("input", { type: "checkbox", class: "form-check-input", id: "ctRuleStar" }); star.checked = !!r.starLetter;
+                var star = tpl("cs-check", { id: "ctRuleStar" }); star.checked = !!r.starLetter;
                 var referTo = select([{ value: "", text: t("none") }], r.referToEmployeeId || "");
                 var referNote = input("text", r.referInstruction || "", { maxlength: "300" });
                 // ارجاع فقط به زیردستان سازمانی: همان فهرست «تفویض»، فیلترشده روی نسبت زیردست
@@ -312,8 +313,9 @@
             function drawChips() {
                 clear(chips);
                 Object.keys(chosen).forEach(function (k) {
-                    chips.appendChild(el("span", { class: "badge text-bg-secondary d-inline-flex align-items-center gap-1" }, [chosen[k].name,
-                        el("button", { type: "button", class: "btn-close btn-close-white", style: "font-size:.55rem", "aria-label": t("remove"), onclick: function () { delete chosen[k]; drawChips(); } })]));
+                    var chip = PemsTemplate.fill(PemsTemplate.clone("cs-chip"), { name: chosen[k].name });
+                    var rm = chip.querySelector('[data-slot="remove"]'); rm.setAttribute("aria-label", t("remove")); rm.onclick = function () { delete chosen[k]; drawChips(); };
+                    chips.appendChild(chip);
                 });
                 if (!Object.keys(chosen).length) chips.appendChild(el("span", { class: "ct-sub", text: t("members") + ": 0" }));
             }
@@ -359,7 +361,7 @@
                     ul.appendChild(el("li", {}, [el("div", { class: "ct-grow" }, [el("div", {}, [el("strong", { text: r.letterNumber }), " ", r.subject]),
                         el("div", { class: "ct-sub", text: String(r.remindAt).replace("T", " ").slice(0, 16) + (r.note ? " · " + r.note : "") })]),
                         r.isDue ? el("span", { class: "ct-badge-rel", text: t("due") }) : null,
-                        el("a", { class: "btn btn-sm btn-outline-secondary", href: "/Letter/Details/" + r.letterId, text: t("open") }),
+                        (function () { var a = tpl("cs-link-button", { href: "/Letter/Details/" + r.letterId }); a.textContent = t("open"); return a; })(),
                         button(t("done"), "btn-outline-secondary", function () { run(C.post(C.cfg.urls.reminderComplete, { id: r.letterReminderId }), load); }),
                         button(t("delete"), "btn-outline-danger", function () { run(C.post(C.cfg.urls.reminderDelete, { id: r.letterReminderId }), load); })]));
                 });

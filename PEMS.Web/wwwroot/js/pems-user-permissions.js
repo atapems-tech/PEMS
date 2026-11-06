@@ -62,7 +62,8 @@
             el.appendChild(document.createTextNode(' '));
         };
         if (kind === 'saving') {
-            icon('spinner-border spinner-border-sm text-secondary');
+            el.appendChild(PemsTemplate.clone('up-spinner'));
+            el.appendChild(document.createTextNode(' '));
             el.appendChild(document.createTextNode(t('saving')));
         } else if (kind === 'ok') {
             el.classList.add('text-success');

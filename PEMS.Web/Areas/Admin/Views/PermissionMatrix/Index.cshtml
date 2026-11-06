@@ -60,6 +60,7 @@
             ["UnknownModule"] = Localizer["PermMx_Error_UnknownModule"].Value
         })
     </script>
+    <pems-script-templates set="permission-matrix"></pems-script-templates>
     <script src="~/js/pems-permission-matrix.js" asp-append-version="true"></script>
 }
 
@@ -99,7 +100,7 @@
             @foreach (var role in roles)
             {
                 var count = ConfiguredCount(role);
-                <a href="#role-@role" class="badge text-decoration-none pm-chip @(count == 0 ? "text-bg-secondary" : "text-bg-light border")" data-role="@role">@role <span class="opacity-75 pm-chip-count">(@count/@modules.Length)</span></a>
+                <a href="#role-@role" class="text-decoration-none pm-chip" data-role="@role" data-empty="@(count == 0 ? "true" : "false")"><pems-badge tone="none">@role <span class="opacity-75 pm-chip-count">(@count/@modules.Length)</span></pems-badge></a>
             }
         </div>
         <pems-alert tone="secondary" css="py-2 small d-none" id="pmNoRole">@Localizer["PermMx_NoRoleMatch"]</pems-alert>

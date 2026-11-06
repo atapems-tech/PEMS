@@ -47,3 +47,37 @@ public sealed class PemsColTagHelper(IPemsComponentRenderer renderer) : TagHelpe
             new ColOptions { Span = Span, Sm = Sm, Md = Md, Lg = Lg, Xl = Xl, Xxl = Xxl, Css = Css, PageClass = pageClass, Attributes = attrs }, await ListRender.Inner(output));
     }
 }
+
+/// <summary>A check box / radio / switch with its label: <c>&lt;pems-check-row switch css="mb-0"&gt;&lt;pems-input kind="check" .../&gt;&lt;label class="form-check-label"&gt;...&lt;/label&gt;&lt;/pems-check-row&gt;</c>.</summary>
+[HtmlTargetElement("pems-check-row")]
+[PemsFacade(UiKeys.CheckRow)]
+public sealed class PemsCheckRowTagHelper(IPemsComponentRenderer renderer) : TagHelper
+{
+    [HtmlAttributeName("switch")] public bool Switch { get; set; }
+    [HtmlAttributeName("inline")] public bool Inline { get; set; }
+    [HtmlAttributeName("css")] public string? Css { get; set; }
+
+    public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
+    {
+        var (pageClass, attrs) = ListRender.Page(output);
+        await ListRender.Replace<PemsCheckRow>(renderer, output, new CheckRowOptions { Switch = Switch, Inline = Inline, Css = Css, PageClass = pageClass, Attributes = attrs }, await ListRender.Inner(output));
+    }
+}
+
+/// <summary>Page-number links: <c>&lt;pems-pager current="2" total="5" href="/items?page={page}" scale="small" css="mb-0" /&gt;</c> (<c>{page}</c> is replaced by each page number).</summary>
+[HtmlTargetElement("pems-pager")]
+[PemsFacade(UiKeys.Pager)]
+public sealed class PemsPagerTagHelper(IPemsComponentRenderer renderer) : TagHelper
+{
+    [HtmlAttributeName("current")] public int Current { get; set; } = 1;
+    [HtmlAttributeName("total")] public int Total { get; set; } = 1;
+    [HtmlAttributeName("href")] public string Href { get; set; } = "?page={page}";
+    [HtmlAttributeName("scale")] public string? Scale { get; set; }
+    [HtmlAttributeName("css")] public string? Css { get; set; }
+
+    public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
+    {
+        var (pageClass, attrs) = ListRender.Page(output);
+        await ListRender.Replace<PemsPager>(renderer, output, new PagerOptions { Current = Current, Total = Total, Href = Href, Scale = Scale, Css = Css, PageClass = pageClass, Attributes = attrs });
+    }
+}

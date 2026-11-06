@@ -55,7 +55,7 @@
         {
             <form asp-action="CreateContract" method="post" class="d-flex gap-1 align-items-center">
                 <input type="hidden" name="tenderId" value="@Model.TenderId" />
-                @await Component.InvokeAsync("DocumentNumberField", new { documentType = "Contract", name = "contractNo", label = Localizer["Contract No"].Value, inputCss = "form-control form-control-sm w-auto", compact = true })
+                @await Component.InvokeAsync("DocumentNumberField", new { documentType = "Contract", name = "contractNo", label = Localizer["Contract No"].Value, scale = "small", css = "w-auto", compact = true })
                 <pems-button tone="success" size="small" type="submit">@Localizer["Create Contract Draft"]</pems-button>
             </form>
         }

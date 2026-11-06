@@ -79,9 +79,7 @@
         el.appendChild(msg);
         var close = function () { if (el.parentNode) el.parentNode.removeChild(el); };
         if (retry) {
-            var rb = document.createElement('button');
-            rb.type = 'button';
-            rb.className = 'btn btn-sm btn-outline-primary';
+            var rb = PemsTemplate.clone('pm-retry-button');
             rb.textContent = t('retry');
             rb.addEventListener('click', function () { close(); retry(); });
             el.appendChild(rb);
@@ -125,9 +123,7 @@
         if (chip) {
             var c = chip.querySelector('.pm-chip-count');
             if (c) c.textContent = '(' + count + '/' + totalModules + ')';
-            chip.classList.toggle('text-bg-secondary', count === 0);
-            chip.classList.toggle('text-bg-light', count !== 0);
-            chip.classList.toggle('border', count !== 0);
+            chip.setAttribute('data-empty', count === 0 ? 'true' : 'false');
         }
     }
 

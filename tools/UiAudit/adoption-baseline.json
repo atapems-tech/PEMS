@@ -2,38 +2,17 @@
   "accordion": {},
   "alert": {},
   "alert-call": {},
-  "badge": {
-    "PEMS.Web/Areas/Admin/Views/Organization/Index.cshtml": 1,
-    "PEMS.Web/Areas/Admin/Views/PermissionMatrix/Index.cshtml": 3,
-    "PEMS.Web/wwwroot/js/pems-cartable-settings.js": 1,
-    "PEMS.Web/wwwroot/js/pems-permission-matrix.js": 2,
-    "PEMS.Web/wwwroot/js/views/shared-layout-1.js": 2
-  },
+  "badge": {},
   "bare-button": {},
   "breadcrumb": {},
-  "button": {
-    "PEMS.Web/wwwroot/js/letter-compose.js": 2,
-    "PEMS.Web/wwwroot/js/pems-cartable-settings.js": 2,
-    "PEMS.Web/wwwroot/js/pems-permission-matrix.js": 1
-  },
+  "button": {},
   "card": {},
   "chart": {},
-  "check-radio-switch": {
-    "PEMS.Web/Areas/Admin/Views/NavigationMenu/Edit.cshtml": 1,
-    "PEMS.Web/Areas/Admin/Views/Users/_EffectivePermissionRow.cshtml": 1,
-    "PEMS.Web/Views/Permit/Index.cshtml": 1,
-    "PEMS.Web/Views/SparePart/Index.cshtml": 1,
-    "PEMS.Web/Views/WorkOrder/Index.cshtml": 1,
-    "PEMS.Web/wwwroot/js/pems-cartable-settings.js": 2
-  },
+  "check-radio-switch": {},
   "confirm-call": {},
   "date-input": {},
   "dropdown": {},
-  "form-label": {
-    "PEMS.Web/Areas/Admin/Views/NavigationMenu/Create.cshtml": 1,
-    "PEMS.Web/Areas/Warehouse/Views/PartCatalogueRequest/Edit.cshtml": 3,
-    "PEMS.Web/Views/VDR/Details.cshtml": 1
-  },
+  "form-label": {},
   "icon": {
     "PEMS.Web/Areas/Admin/Views/StorageProviders/Index.cshtml": 1,
     "PEMS.Web/Areas/Admin/Views/StorageRouting/Index.cshtml": 1,
@@ -110,27 +89,12 @@
   "loading-text": {},
   "modal": {},
   "offcanvas": {},
-  "pagination": {
-    "PEMS.Web/Views/Report/Procurement.cshtml": 2
-  },
+  "pagination": {},
   "progress": {},
-  "select": {
-    "PEMS.Web/wwwroot/js/pems-cartable-settings.js": 4
-  },
-  "spinner": {
-    "PEMS.Web/wwwroot/js/pems-user-permissions.js": 2
-  },
-  "table": {
-    "PEMS.Web/Views/LetterCartable/Report.cshtml": 1
-  },
-  "tabs": {
-    "PEMS.Web/wwwroot/js/pems-ui.js": 1
-  },
-  "text-input": {
-    "PEMS.Web/Views/Tender/Details.cshtml": 2,
-    "PEMS.Web/Views/VDR/Details.cshtml": 1,
-    "PEMS.Web/wwwroot/js/pems-cartable-settings.js": 2,
-    "PEMS.Web/wwwroot/js/pems-part-catalogue.js": 2
-  },
+  "select": {},
+  "spinner": {},
+  "table": {},
+  "tabs": {},
+  "text-input": {},
   "textarea": {}
 }

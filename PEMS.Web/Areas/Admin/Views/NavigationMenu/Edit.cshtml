@@ -74,11 +74,11 @@
                 </div>
             }
 
-            <div class="form-check form-switch mb-4">
+            <pems-check-row switch css="mb-4">
                 <pems-input type="checkbox" id="IsActive" name="IsActive" value="true" checked="@input.IsActive" kind="check" />
                 <input type="hidden" name="IsActive" value="false" />
                 <label class="form-check-label" for="IsActive">@Localizer["Nav_Field_Visible"]</label>
-            </div>
+            </pems-check-row>
 
             <div class="d-flex gap-2">
                 <pems-button tone="none" css="btn-primary" type="submit">@Localizer["Save"]</pems-button>

@@ -12,9 +12,9 @@
     // markup comes from the page's registered templates (script-templates component, pems-template.js), never from a string in this file
     var Tpl = window.PemsTemplate;
     function tpl(name, values) { return Tpl.fill(Tpl.clone(name), values || {}); }
-    function iconButton(icon, className, label) {
-        var b = tpl('lc-icon-button', { icon: { addClass: icon } });
-        b.className = className; b.setAttribute('aria-label', label);
+    function iconButton(icon, tone, label) {
+        var b = tpl(tone ? 'lc-icon-button-' + tone : 'lc-icon-button', { icon: { addClass: icon } });
+        b.setAttribute('aria-label', label);
         return b;
     }
 
@@ -320,7 +320,7 @@
             var li = document.createElement('li');
             var name = document.createElement('span'); name.textContent = a.name; li.appendChild(name);
             function btn(label, icon, fn, disabled) {
-                var b = iconButton(icon, 'btn btn-sm btn-outline-secondary', label + ' ' + a.name); b.disabled = !!disabled;
+                var b = iconButton(icon, 'secondary', label + ' ' + a.name); b.disabled = !!disabled;
                 b.addEventListener('click', fn); li.appendChild(b);
             }
             btn(T.moveUp, 'bi-arrow-up', function () { swap(i, i - 1); }, i === 0);
@@ -445,7 +445,7 @@
     function addFileRow(info) {
         var li = tpl('lc-file-row', { name: info.name, size: Math.max(1, Math.round(info.size / 1024)) + ' KB' });
         li.setAttribute('data-id', info.id);
-        var b = iconButton('bi-x-lg', 'btn btn-sm btn-outline-danger', T.remove + ' ' + info.name);
+        var b = iconButton('bi-x-lg', 'danger', T.remove + ' ' + info.name);
         b.addEventListener('click', function () { removeAttachment(info.id, li); });
         li.appendChild(b); fileList.appendChild(li);
     }

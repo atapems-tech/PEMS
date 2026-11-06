@@ -61,10 +61,10 @@
                             { <option value="@s" selected="@(s == status)">@StatusText(s)</option> }
                         </pems-select>
                     </div>
-                    <div class="form-check form-switch mb-0">
+                    <pems-check-row switch css="mb-0">
                         <pems-input type="checkbox" role="switch" name="pendingMyApproval" value="true" id="ptPendingMine" checked="@pendingMyApproval" kind="check" />
                         <label class="form-check-label small" for="ptPendingMine">@Localizer["Pt_PendingMine"]</label>
-                    </div>
+                    </pems-check-row>
                 </pems-list-filters>
                 <pems-list-reset-columns grid-key="Permit" />
                 <pems-list-new href="@Url.Action("Create")" text="@Localizer["Pt_New"]" />

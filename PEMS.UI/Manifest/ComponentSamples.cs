@@ -86,6 +86,8 @@ public static class ComponentSamples
         ["icon"] = """{"name":"bi-gear","css":"me-1"}""",
         ["row"] = """{"gap":"2"}""",
         ["col"] = """{"span":"12","md":"6"}""",
+        ["check-row"] = """{"switch":true,"css":"mb-0"}""",
+        ["pager"] = """{"current":2,"total":5,"href":"/items?page={page}","scale":"small","css":"mb-0"}""",
         ["form"] = """{"definition":{"id":"item","title":{"en":"Item","fa":"مورد"},"action":"/items","fields":[{"name":"tag","label":{"en":"Tag","fa":"تگ"}}],"submitLabel":{"en":"Save","fa":"ذخیره"}}}"""
     };
 

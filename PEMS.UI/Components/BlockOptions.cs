@@ -124,6 +124,10 @@ public enum ScriptTemplateSet
     HelpArticle,
     HelpDrawer,
     Layout,
+    CartableSettings,
+    PermissionMatrix,
+    UserPermissions,
+    PartCatalogue,
 }
 
 /// <summary>Inputs of <see cref="PemsScriptTemplates"/>: which script's templates to render into the page.</summary>
