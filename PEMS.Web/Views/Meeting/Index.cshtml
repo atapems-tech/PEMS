@@ -69,8 +69,8 @@
 
 <pems-modal size="large" id="createMeetingModal" tabindex="-1">
             <form asp-controller="Meeting" asp-action="Create" method="post">
-                <div class="modal-header"><h6 class="modal-title">@Localizer["Schedule Meeting"]</h6></div>
-                <div class="modal-body">
+                <pems-modal-header>@Localizer["Schedule Meeting"]</pems-modal-header>
+                <pems-modal-body>
                     <pems-row gap="3">
                         <pems-col md="6"><pems-label>@Localizer["Title"]</pems-label><pems-input name="title" required /></pems-col>
                         <pems-col md="6"><pems-label>@Localizer["Date & Time"]</pems-label><pems-input name="meetingDate" type="datetime-local" required /></pems-col>
@@ -85,10 +85,10 @@
                         </pems-col>
                         <pems-col span="12"><pems-label>@Localizer["Agenda"]</pems-label><pems-textarea name="agenda" rows="4"></pems-textarea></pems-col>
                     </pems-row>
-                </div>
-                <div class="modal-footer">
+                </pems-modal-body>
+                <pems-modal-footer>
                     <pems-button tone="neutral" outline="true" type="button" data-bs-dismiss="modal">@Localizer["Cancel"]</pems-button>
                     <pems-button tone="primary" type="submit">@Localizer["Save"]</pems-button>
-                </div>
+                </pems-modal-footer>
             </form>
         </pems-modal>

@@ -224,8 +224,8 @@
 <pems-modal size="large" id="raiseFindingModal" tabindex="-1">
         <form asp-controller="Finding" asp-action="CreateFromReading" method="post">
             <input type="hidden" name="conditionReadingId" id="raiseFindingReadingId" />
-            <div class="modal-header"><h6 class="modal-title">@Localizer["Raise Finding"] — <span id="raiseFindingPointLabel"></span></h6></div>
-            <div class="modal-body">
+            <pems-modal-header>@Localizer["Raise Finding"] — <span id="raiseFindingPointLabel"></span></pems-modal-header>
+            <pems-modal-body>
                 <div class="mb-2">
                     <pems-label css="small">@Localizer["Description"]</pems-label>
                     <pems-textarea name="description" rows="2" required></pems-textarea>
@@ -250,11 +250,11 @@
                         </pems-select>
                     </pems-col>
                 </pems-row>
-            </div>
-            <div class="modal-footer">
+            </pems-modal-body>
+            <pems-modal-footer>
                 <pems-button tone="neutral" size="small" outline="true" type="button" data-bs-dismiss="modal">@Localizer["انصراف"]</pems-button>
                 <pems-button tone="danger" size="small" type="submit">@Localizer["Raise Finding"]</pems-button>
-            </div>
+            </pems-modal-footer>
         </form>
     </pems-modal>
 

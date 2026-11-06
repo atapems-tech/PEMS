@@ -96,8 +96,8 @@
 <pems-modal id="assignFoundationModal" tabindex="-1">
         <form asp-action="AssignFoundation" method="post">
             <input type="hidden" name="equipmentId" value="@eq.EquipmentId" />
-            <div class="modal-header"><h6 class="modal-title">@Localizer["Cm_AssignTitle"]</h6></div>
-            <div class="modal-body">
+            <pems-modal-header>@Localizer["Cm_AssignTitle"]</pems-modal-header>
+            <pems-modal-body>
                 <div class="mb-2">
                     <pems-label css="small">@Localizer["Functional Location"]</pems-label>
                     <pems-select scale="small" name="functionalLocationId">
@@ -132,11 +132,11 @@
                     <pems-label css="small">Installation Date</pems-label>
                     <pems-date name="installationDate" value="@eq.InstallationDate?.ToString("yyyy-MM-dd")" scale="small" />
                 </div>
-            </div>
-            <div class="modal-footer">
+            </pems-modal-body>
+            <pems-modal-footer>
                 <pems-button tone="neutral" size="small" outline="true" type="button" data-bs-dismiss="modal">@Localizer["Cancel"]</pems-button>
                 <pems-button tone="primary" size="small" type="submit">@Localizer["Save"]</pems-button>
-            </div>
+            </pems-modal-footer>
         </form>
     </pems-modal>
 
@@ -693,8 +693,8 @@
         <pems-modal id="newInspectionModal" tabindex="-1">
                 <form asp-controller="Inspection" asp-action="Create" method="post">
                     <input type="hidden" name="equipmentId" value="@eq.EquipmentId" />
-                    <div class="modal-header"><h6 class="modal-title">New Inspection</h6></div>
-                    <div class="modal-body">
+                    <pems-modal-header>New Inspection</pems-modal-header>
+                    <pems-modal-body>
                         <div class="mb-2"><pems-label css="small">Inspection Type</pems-label>
                             <pems-input scale="small" name="inspectionType" placeholder="Vibration, Thickness, Visual..." required /></div>
                         <div class="mb-2"><pems-label css="small">Inspection Date</pems-label>
@@ -719,11 +719,11 @@
                             <pems-textarea scale="small" name="recommendation" rows="2"></pems-textarea></div>
                         <div class="mb-2"><pems-label css="small">@Localizer["Description"]</pems-label>
                             <pems-textarea scale="small" name="description" rows="2"></pems-textarea></div>
-                    </div>
-                    <div class="modal-footer">
+                    </pems-modal-body>
+                    <pems-modal-footer>
                         <pems-button tone="neutral" size="small" outline="true" type="button" data-bs-dismiss="modal">@Localizer["Cancel"]</pems-button>
                         <pems-button tone="primary" size="small" type="submit">@Localizer["Save"]</pems-button>
-                    </div>
+                    </pems-modal-footer>
                 </form>
             </pems-modal>
     </pems-tab-pane>

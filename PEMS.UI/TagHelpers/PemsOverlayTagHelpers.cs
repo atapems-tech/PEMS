@@ -100,3 +100,54 @@ public sealed class PemsOffcanvasTagHelper(IPemsComponentRenderer renderer) : Ta
         }));
     }
 }
+
+/// <summary>
+/// The header of a modal: <c>&lt;pems-modal-header level="6" close="true" close-label="@Localizer["Close"]"&gt;Title&lt;/pems-modal-header&gt;</c> writes
+/// <c>&lt;div class="modal-header"&gt;&lt;h6 class="modal-title"&gt;Title&lt;/h6&gt;&lt;button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"&gt;&lt;/button&gt;&lt;/div&gt;</c>.
+/// </summary>
+[HtmlTargetElement("pems-modal-header")]
+[PemsFacade(UiKeys.ModalHeader)]
+public sealed class PemsModalHeaderTagHelper(IPemsComponentRenderer renderer) : TagHelper
+{
+    [HtmlAttributeName("level")] public int Level { get; set; } = 6;
+    [HtmlAttributeName("title-css")] public string? TitleCss { get; set; }
+    [HtmlAttributeName("title-id")] public string? TitleId { get; set; }
+    [HtmlAttributeName("close")] public bool Close { get; set; }
+    [HtmlAttributeName("close-label")] public string? CloseLabel { get; set; }
+    [HtmlAttributeName("close-css")] public string? CloseCss { get; set; }
+    [HtmlAttributeName("css")] public string? Css { get; set; }
+
+    public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
+    {
+        var (pageClass, attrs) = ListRender.Page(output);
+        await ListRender.Replace<PemsModalHeader>(renderer, output, new ModalHeaderOptions { Level = Level, TitleCss = TitleCss, TitleId = TitleId, Close = Close, CloseLabel = CloseLabel, CloseCss = CloseCss, Css = Css, PageClass = pageClass, Attributes = attrs }, await ListRender.Inner(output));
+    }
+}
+
+/// <summary>The body of a modal: <c>&lt;pems-modal-body css="pb-0"&gt;</c> writes <c>&lt;div class="modal-body pb-0"&gt;</c>.</summary>
+[HtmlTargetElement("pems-modal-body")]
+[PemsFacade(UiKeys.ModalBody)]
+public sealed class PemsModalBodyTagHelper(IPemsComponentRenderer renderer) : TagHelper
+{
+    [HtmlAttributeName("css")] public string? Css { get; set; }
+
+    public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
+    {
+        var (pageClass, attrs) = ListRender.Page(output);
+        await ListRender.Replace<PemsModalBody>(renderer, output, new ModalBodyOptions { Css = Css, PageClass = pageClass, Attributes = attrs }, await ListRender.Inner(output));
+    }
+}
+
+/// <summary>The footer of a modal: <c>&lt;pems-modal-footer&gt;buttons&lt;/pems-modal-footer&gt;</c> writes <c>&lt;div class="modal-footer"&gt;</c>.</summary>
+[HtmlTargetElement("pems-modal-footer")]
+[PemsFacade(UiKeys.ModalFooter)]
+public sealed class PemsModalFooterTagHelper(IPemsComponentRenderer renderer) : TagHelper
+{
+    [HtmlAttributeName("css")] public string? Css { get; set; }
+
+    public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
+    {
+        var (pageClass, attrs) = ListRender.Page(output);
+        await ListRender.Replace<PemsModalFooter>(renderer, output, new ModalFooterOptions { Css = Css, PageClass = pageClass, Attributes = attrs }, await ListRender.Inner(output));
+    }
+}

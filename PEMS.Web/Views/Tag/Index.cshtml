@@ -52,8 +52,8 @@
 <pems-modal id="createTagModal" tabindex="-1" aria-labelledby="createTagTitle">
         <form asp-action="Create" method="post">
             <input type="hidden" name="returnUrl" value="/Tag" />
-            <div class="modal-header"><h6 class="modal-title" id="createTagTitle">@Localizer["Tg_New"]</h6></div>
-            <div class="modal-body">
+            <pems-modal-header title-id="createTagTitle">@Localizer["Tg_New"]</pems-modal-header>
+            <pems-modal-body>
                 <div class="mb-2">
                     <pems-label css="small" for="tagName">@Localizer["Tg_Name"]</pems-label>
                     <pems-input scale="small" name="name" id="tagName" required />
@@ -65,11 +65,11 @@
                         { <option value="@c">@c</option> }
                     </pems-select>
                 </div>
-            </div>
-            <div class="modal-footer">
+            </pems-modal-body>
+            <pems-modal-footer>
                 <pems-button tone="neutral" size="small" outline="true" type="button" data-bs-dismiss="modal">@Localizer["Cancel"]</pems-button>
                 <pems-button tone="primary" size="small" type="submit">@Localizer["Create"]</pems-button>
-            </div>
+            </pems-modal-footer>
         </form>
     </pems-modal>
 

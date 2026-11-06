@@ -138,8 +138,8 @@
 <pems-modal id="receiveStockModal" tabindex="-1">
         <form asp-action="ReceiveStock" method="post">
             <input type="hidden" name="materialItemId" value="@Model.MaterialItemId" />
-            <div class="modal-header"><h6 class="modal-title">@Localizer["دریافت کالا به انبار"]</h6></div>
-            <div class="modal-body">
+            <pems-modal-header>@Localizer["دریافت کالا به انبار"]</pems-modal-header>
+            <pems-modal-body>
                 <div class="mb-2">
                     <pems-label css="small">@Localizer["اسکن بارکد انبار (اختیاری)"]</pems-label>
                     <div class="input-group input-group-sm">
@@ -156,11 +156,11 @@
                 </div>
                 <div class="mb-2"><pems-label css="small">@Localizer["مقدار"]</pems-label><pems-input scale="small" name="quantity" type="number" step="0.001" required /></div>
                 <div class="mb-2"><pems-label css="small">@Localizer["دلیل / مرجع (اختیاری)"]</pems-label><pems-input scale="small" name="reason" /></div>
-            </div>
-            <div class="modal-footer">
+            </pems-modal-body>
+            <pems-modal-footer>
                 <pems-button tone="neutral" size="small" outline="true" type="button" data-bs-dismiss="modal">@Localizer["انصراف"]</pems-button>
                 <pems-button tone="primary" size="small" type="submit">@Localizer["ثبت"]</pems-button>
-            </div>
+            </pems-modal-footer>
         </form>
     </pems-modal>
 
@@ -168,15 +168,15 @@
         <form asp-action="AdjustStock" method="post">
             <input type="hidden" name="materialItemId" value="@Model.MaterialItemId" />
             <input type="hidden" name="warehouseId" id="adjustWarehouseId" />
-            <div class="modal-header"><h6 class="modal-title">اصلاح موجودی <span id="adjustWarehouseLabel" class="text-muted small"></span></h6></div>
-            <div class="modal-body">
+            <pems-modal-header>اصلاح موجودی <span id="adjustWarehouseLabel" class="text-muted small"></span></pems-modal-header>
+            <pems-modal-body>
                 <div class="mb-2"><pems-label css="small">@Localizer["موجودی جدید (On Hand)"]</pems-label><pems-input scale="small" name="newOnHandQuantity" id="adjustNewOnHand" type="number" step="0.001" required /></div>
                 <div class="mb-2"><pems-label css="small">@Localizer["دلیل"]</pems-label><pems-input scale="small" name="reason" required /></div>
-            </div>
-            <div class="modal-footer">
+            </pems-modal-body>
+            <pems-modal-footer>
                 <pems-button tone="neutral" size="small" outline="true" type="button" data-bs-dismiss="modal">@Localizer["انصراف"]</pems-button>
                 <pems-button tone="primary" size="small" type="submit">@Localizer["ثبت"]</pems-button>
-            </div>
+            </pems-modal-footer>
         </form>
     </pems-modal>
 
@@ -184,8 +184,8 @@
         <form asp-action="TransferStock" method="post">
             <input type="hidden" name="materialItemId" value="@Model.MaterialItemId" />
             <input type="hidden" name="fromWarehouseId" id="transferFromWarehouseId" />
-            <div class="modal-header"><h6 class="modal-title">انتقال بین انبارها <span id="transferFromWarehouseLabel" class="text-muted small"></span></h6></div>
-            <div class="modal-body">
+            <pems-modal-header>انتقال بین انبارها <span id="transferFromWarehouseLabel" class="text-muted small"></span></pems-modal-header>
+            <pems-modal-body>
                 <div class="mb-2">
                     <pems-label css="small">@Localizer["انبار مقصد"]</pems-label>
                     <pems-select scale="small" name="toWarehouseId" required>
@@ -194,19 +194,19 @@
                 </div>
                 <div class="mb-2"><pems-label css="small">مقدار (حداکثر: <span id="transferAvailable"></span>)</pems-label><pems-input scale="small" name="quantity" type="number" step="0.001" required /></div>
                 <div class="mb-2"><pems-label css="small">@Localizer["دلیل / مرجع (اختیاری)"]</pems-label><pems-input scale="small" name="reason" /></div>
-            </div>
-            <div class="modal-footer">
+            </pems-modal-body>
+            <pems-modal-footer>
                 <pems-button tone="neutral" size="small" outline="true" type="button" data-bs-dismiss="modal">@Localizer["انصراف"]</pems-button>
                 <pems-button tone="primary" size="small" type="submit">@Localizer["ثبت"]</pems-button>
-            </div>
+            </pems-modal-footer>
         </form>
     </pems-modal>
 
 <pems-modal size="large" id="editMaterialModal" tabindex="-1">
         <form asp-action="Edit" method="post">
             <input type="hidden" name="materialItemId" value="@Model.MaterialItemId" />
-            <div class="modal-header"><h6 class="modal-title">Edit Material</h6></div>
-            <div class="modal-body">
+            <pems-modal-header>Edit Material</pems-modal-header>
+            <pems-modal-body>
                 <pems-row gap="3" css="mb-2">
                     <pems-col md="6"><pems-label>@Localizer["Material Code"]</pems-label><pems-input name="materialCode" value="@Model.MaterialCode" required /></pems-col>
                     <pems-col md="6"><pems-label>@Localizer["Material Type"]</pems-label><pems-input name="materialType" value="@Model.MaterialType" /></pems-col>
@@ -226,11 +226,11 @@
                     <pems-check-row><pems-input type="checkbox" name="isStockItem" value="true" checked="@Model.IsStockItem" id="editIsStockItem" kind="check" /><label class="form-check-label" for="editIsStockItem">@Localizer["Stock Item"]</label></pems-check-row>
                     <pems-check-row><pems-input type="checkbox" name="isCritical" value="true" checked="@Model.IsCritical" id="editIsCritical" kind="check" /><label class="form-check-label" for="editIsCritical">@Localizer["Critical Spare"]</label></pems-check-row>
                 </pems-flex>
-            </div>
-            <div class="modal-footer">
+            </pems-modal-body>
+            <pems-modal-footer>
                 <pems-button tone="neutral" outline="true" type="button" data-bs-dismiss="modal">@Localizer["Cancel"]</pems-button>
                 <pems-button tone="primary" type="submit">@Localizer["Save"]</pems-button>
-            </div>
+            </pems-modal-footer>
         </form>
     </pems-modal>
 

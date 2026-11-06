@@ -107,8 +107,8 @@ else
                     <pems-modal id="completeFailureModal" tabindex="-1">
                             <form asp-action="AdvanceStatus" method="post">
                                 <input type="hidden" name="id" value="@Model.WorkOrderId" />
-                                <div class="modal-header"><h6 class="modal-title"><pems-icon name="bi-clipboard-data" /> ثبت اطلاعات تکمیل</h6></div>
-                                <div class="modal-body">
+                                <pems-modal-header><pems-icon name="bi-clipboard-data" /> ثبت اطلاعات تکمیل</pems-modal-header>
+                                <pems-modal-body>
                                     @if (Model.WorkOrderType is "Corrective" or "Emergency")
                                     {
                                         <p class="text-muted small">برای کار اصلاحی/اضطراری، ثبت این اطلاعات برای تحلیل قابلیت‌اطمینان لازمه (ISO 14224).</p>
@@ -161,11 +161,11 @@ else
                                         <pems-label css="small">دلیل / یادداشت این تغییر وضعیت (اختیاری)</pems-label>
                                         <pems-input scale="small" name="reason" />
                                     </div>
-                                </div>
-                                <div class="modal-footer">
+                                </pems-modal-body>
+                                <pems-modal-footer>
                                     <pems-button tone="neutral" size="small" outline="true" type="button" data-bs-dismiss="modal">@Localizer["انصراف"]</pems-button>
                                     <pems-button tone="primary" size="small" type="submit">@Localizer["ثبت و تکمیل"]</pems-button>
-                                </div>
+                                </pems-modal-footer>
                             </form>
                         </pems-modal>
                 }
@@ -494,8 +494,8 @@ else
         <pems-modal id="requestReviewModal" tabindex="-1">
                 <form asp-action="RequestDisciplineReview" method="post">
                     <input type="hidden" name="workOrderId" value="@Model.WorkOrderId" />
-                    <div class="modal-header"><h6 class="modal-title">@Localizer["انتخاب دیسیپلین‌ها"]</h6></div>
-                    <div class="modal-body">
+                    <pems-modal-header>@Localizer["انتخاب دیسیپلین‌ها"]</pems-modal-header>
+                    <pems-modal-body>
                         @foreach (var d in (IEnumerable<dynamic>)ViewBag.Disciplines)
                         {
                             <pems-check-row>
@@ -503,11 +503,11 @@ else
                                 <label class="form-check-label small" for="woDisc_@d.DisciplineId">@d.Name</label>
                             </pems-check-row>
                         }
-                    </div>
-                    <div class="modal-footer">
+                    </pems-modal-body>
+                    <pems-modal-footer>
                         <pems-button tone="neutral" size="small" outline="true" type="button" data-bs-dismiss="modal">@Localizer["انصراف"]</pems-button>
                         <pems-button tone="primary" size="small" type="submit">@Localizer["شروع بازبینی"]</pems-button>
-                    </div>
+                    </pems-modal-footer>
                 </form>
             </pems-modal>
     }
@@ -531,8 +531,8 @@ else
             <pems-modal id="respondReviewModal" tabindex="-1">
                     <form asp-action="RespondDisciplineReview" method="post">
                         <input type="hidden" name="workOrderId" value="@Model.WorkOrderId" />
-                        <div class="modal-header"><h6 class="modal-title">@Localizer["ثبت نظر / یافته"]</h6></div>
-                        <div class="modal-body">
+                        <pems-modal-header>@Localizer["ثبت نظر / یافته"]</pems-modal-header>
+                        <pems-modal-body>
                             <div class="mb-2">
                                 <pems-label css="small">@Localizer["تصمیم"]</pems-label>
                                 <pems-select scale="small" name="decision" required>
@@ -563,11 +563,11 @@ else
                                     <option>@Localizer["Other"]</option>
                                 </pems-select>
                             </div>
-                        </div>
-                        <div class="modal-footer">
+                        </pems-modal-body>
+                        <pems-modal-footer>
                             <pems-button tone="neutral" size="small" outline="true" type="button" data-bs-dismiss="modal">@Localizer["انصراف"]</pems-button>
                             <pems-button tone="primary" size="small" type="submit">@Localizer["ثبت"]</pems-button>
-                        </div>
+                        </pems-modal-footer>
                     </form>
                 </pems-modal>
         }

@@ -114,8 +114,8 @@
 
 <pems-modal id="createPartModal" tabindex="-1">
             <form asp-action="Create" method="post">
-                <div class="modal-header"><h6 class="modal-title">@Localizer["Sp_New"]</h6></div>
-                <div class="modal-body">
+                <pems-modal-header>@Localizer["Sp_New"]</pems-modal-header>
+                <pems-modal-body>
                     <pems-row gap="3">
                         <pems-col md="6"><pems-label>@Localizer["Part Number"]</pems-label><pems-input name="partNumber" required /></pems-col>
                         <pems-col md="6"><pems-label>@Localizer["Part Name"]</pems-label><pems-input name="partName" required /></pems-col>
@@ -129,11 +129,11 @@
                         <pems-col md="4"><pems-label>@Localizer["Reorder Point"]</pems-label><pems-input name="reorderPoint" type="number" step="0.01" /></pems-col>
                         <pems-col span="12"><pems-label>@Localizer["Description"]</pems-label><pems-textarea name="description" rows="2"></pems-textarea></pems-col>
                     </pems-row>
-                </div>
-                <div class="modal-footer">
+                </pems-modal-body>
+                <pems-modal-footer>
                     <pems-button tone="neutral" outline="true" type="button" data-bs-dismiss="modal">@Localizer["Cancel"]</pems-button>
                     <pems-button tone="primary" type="submit">@Localizer["Save"]</pems-button>
-                </div>
+                </pems-modal-footer>
             </form>
         </pems-modal>
 
@@ -142,8 +142,8 @@
     <pems-modal id="editPartModal" tabindex="-1">
                 <form asp-action="Edit" method="post">
                     <input type="hidden" name="sparePartId" value="" />
-                    <div class="modal-header"><h6 class="modal-title">@Localizer["Sp_Edit"]</h6></div>
-                    <div class="modal-body">
+                    <pems-modal-header>@Localizer["Sp_Edit"]</pems-modal-header>
+                    <pems-modal-body>
                         <pems-row gap="3">
                             <pems-col md="6"><pems-label>@Localizer["Part Number"]</pems-label><pems-input name="partNumber" required /></pems-col>
                             <pems-col md="6"><pems-label>@Localizer["Part Name"]</pems-label><pems-input name="partName" required /></pems-col>
@@ -156,11 +156,11 @@
                             <pems-col md="4"><pems-label>@Localizer["Reorder Point"]</pems-label><pems-input name="reorderPoint" type="number" step="0.01" /></pems-col>
                             <pems-col span="12"><pems-label>@Localizer["Description"]</pems-label><pems-textarea name="description" rows="2"></pems-textarea></pems-col>
                         </pems-row>
-                    </div>
-                    <div class="modal-footer">
+                    </pems-modal-body>
+                    <pems-modal-footer>
                         <pems-button tone="neutral" outline="true" type="button" data-bs-dismiss="modal">@Localizer["Cancel"]</pems-button>
                         <pems-button tone="primary" type="submit">@Localizer["Save"]</pems-button>
-                    </div>
+                    </pems-modal-footer>
                 </form>
             </pems-modal>
 }

@@ -376,15 +376,12 @@
 </div>
 
 <pems-modal size="extralarge" dialog-css="modal-dialog-scrollable" id="lcPreviewModal" tabindex="-1" aria-labelledby="lcPreviewTitle" aria-hidden="true">
-            <div class="modal-header">
-                <h5 class="modal-title" id="lcPreviewTitle">@Localizer["Lc_Preview"]</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="@Localizer["Lc_Close"]"></button>
-            </div>
-            <div class="modal-body" id="lcPreviewBody"></div>
-            <div class="modal-footer">
+            <pems-modal-header level="5" title-id="lcPreviewTitle" close="true" close-label="@Localizer["Lc_Close"]">@Localizer["Lc_Preview"]</pems-modal-header>
+            <pems-modal-body id="lcPreviewBody"></pems-modal-body>
+            <pems-modal-footer>
                 <pems-button tone="neutral" outline="true" type="button" onclick="window.print()"><pems-icon name="bi-printer" aria-hidden="true" /> @Localizer["Lc_Print"]</pems-button>
                 <pems-button tone="neutral" type="button" data-bs-dismiss="modal">@Localizer["Lc_Close"]</pems-button>
-            </div>
+            </pems-modal-footer>
         </pems-modal>
 
 @await Html.PartialAsync("_RichTextEditorScripts", "composeBody")

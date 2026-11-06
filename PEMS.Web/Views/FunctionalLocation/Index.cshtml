@@ -84,8 +84,8 @@
 
 <pems-modal id="createFlModal" tabindex="-1">
         <form asp-action="Create" method="post">
-            <div class="modal-header"><h6 class="modal-title">@Localizer["Fl_New"]</h6></div>
-            <div class="modal-body">
+            <pems-modal-header>@Localizer["Fl_New"]</pems-modal-header>
+            <pems-modal-body>
                 <pems-row gap="2" css="mb-2">
                     <pems-col span="6"><pems-label css="small">@Localizer["Code"]</pems-label><pems-input scale="small" name="code" placeholder="U100-CW-PUMP" required /></pems-col>
                     <pems-col span="6"><pems-label css="small">@Localizer["Name"]</pems-label><pems-input scale="small" name="name" required /></pems-col>
@@ -106,19 +106,19 @@
                     <pems-col span="4"><pems-label css="small">@Localizer["Unit"]</pems-label><pems-input scale="small" name="unit" /></pems-col>
                 </pems-row>
                 <div class="mb-2"><pems-label css="small">@Localizer["Description"]</pems-label><pems-textarea scale="small" name="description" rows="2"></pems-textarea></div>
-            </div>
-            <div class="modal-footer">
+            </pems-modal-body>
+            <pems-modal-footer>
                 <pems-button tone="neutral" size="small" outline="true" type="button" data-bs-dismiss="modal">@Localizer["Cancel"]</pems-button>
                 <pems-button tone="primary" size="small" type="submit">@Localizer["Create"]</pems-button>
-            </div>
+            </pems-modal-footer>
         </form>
     </pems-modal>
 
 <pems-modal id="editFlModal" tabindex="-1">
         <form asp-action="Edit" method="post">
             <input type="hidden" name="id" id="editFlId" />
-            <div class="modal-header"><h6 class="modal-title">@Localizer["Fl_Edit"]</h6></div>
-            <div class="modal-body">
+            <pems-modal-header>@Localizer["Fl_Edit"]</pems-modal-header>
+            <pems-modal-body>
                 <pems-row gap="2" css="mb-2">
                     <pems-col span="6"><pems-label css="small">@Localizer["Code"]</pems-label><pems-input scale="small" name="code" id="editFlCode" required /></pems-col>
                     <pems-col span="6"><pems-label css="small">@Localizer["Name"]</pems-label><pems-input scale="small" name="name" id="editFlName" required /></pems-col>
@@ -138,11 +138,11 @@
                     <pems-col span="4"><pems-label css="small">@Localizer["Area"]</pems-label><pems-input scale="small" name="area" id="editFlArea" /></pems-col>
                     <pems-col span="4"><pems-label css="small">@Localizer["Unit"]</pems-label><pems-input scale="small" name="unit" id="editFlUnit" /></pems-col>
                 </pems-row>
-            </div>
-            <div class="modal-footer">
+            </pems-modal-body>
+            <pems-modal-footer>
                 <pems-button tone="neutral" size="small" outline="true" type="button" data-bs-dismiss="modal">@Localizer["Cancel"]</pems-button>
                 <pems-button tone="primary" size="small" type="submit">@Localizer["Save"]</pems-button>
-            </div>
+            </pems-modal-footer>
         </form>
     </pems-modal>
 

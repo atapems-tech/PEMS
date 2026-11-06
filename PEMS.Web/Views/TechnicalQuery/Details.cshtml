@@ -112,12 +112,12 @@
         <pems-modal id="reopenModal" tabindex="-1">
                 <form asp-action="Reopen" method="post">
                     <input type="hidden" name="technicalQueryId" value="@Model.TechnicalQueryId" />
-                    <div class="modal-header"><h6 class="modal-title">@Localizer["دلیل بازگشت"]</h6></div>
-                    <div class="modal-body"><pems-textarea name="reason" rows="3" required></pems-textarea></div>
-                    <div class="modal-footer">
+                    <pems-modal-header>@Localizer["دلیل بازگشت"]</pems-modal-header>
+                    <pems-modal-body><pems-textarea name="reason" rows="3" required></pems-textarea></pems-modal-body>
+                    <pems-modal-footer>
                         <pems-button tone="neutral" size="small" outline="true" type="button" data-bs-dismiss="modal">@Localizer["انصراف"]</pems-button>
                         <pems-button tone="danger" size="small" type="submit">@Localizer["بازگشت به دیسیپلین"]</pems-button>
-                    </div>
+                    </pems-modal-footer>
                 </form>
             </pems-modal>
     }

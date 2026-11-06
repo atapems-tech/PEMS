@@ -161,8 +161,8 @@
     <pems-modal id="scoresModal" tabindex="-1">
             <form asp-action="SetScores" method="post">
                 <input type="hidden" name="id" value="@Model.CriticalityAssessmentId" />
-                <div class="modal-header"><h6 class="modal-title">@Localizer["Set Dimension Scores"]</h6></div>
-                <div class="modal-body">
+                <pems-modal-header>@Localizer["Set Dimension Scores"]</pems-modal-header>
+                <pems-modal-body>
                     <p class="text-muted small">مقیاس ۱ (Negligible) تا ۵ (Severe) برای هر بُعد.</p>
                     <div class="mb-2">
                         <pems-label css="small">@Localizer["Safety"]</pems-label>
@@ -186,19 +186,19 @@
                         </pems-select>
                     </div>
                     <div class="mb-2"><pems-label css="small">@Localizer["Rationale"]</pems-label><pems-textarea scale="small" name="rationale" rows="2">@Model.Rationale</pems-textarea></div>
-                </div>
-                <div class="modal-footer">
+                </pems-modal-body>
+                <pems-modal-footer>
                     <pems-button tone="neutral" size="small" outline="true" type="button" data-bs-dismiss="modal">@Localizer["Cancel"]</pems-button>
                     <pems-button tone="primary" size="small" type="submit">@Localizer["Save"]</pems-button>
-                </div>
+                </pems-modal-footer>
             </form>
         </pems-modal>
 
     <pems-modal id="evidenceModal" tabindex="-1">
             <form asp-action="AddEvidence" method="post">
                 <input type="hidden" name="id" value="@Model.CriticalityAssessmentId" />
-                <div class="modal-header"><h6 class="modal-title">@Localizer["Add Evidence"]</h6></div>
-                <div class="modal-body">
+                <pems-modal-header>@Localizer["Add Evidence"]</pems-modal-header>
+                <pems-modal-body>
                     <div class="mb-2">
                         <pems-label css="small">@Localizer["Source Type"]</pems-label>
                         <pems-select scale="small" name="sourceType">
@@ -216,11 +216,11 @@
                     <div class="mb-2"><pems-label css="small">Source Identifier</pems-label><pems-input scale="small" name="sourceIdentifier" placeholder="e.g. document number, tag" /></div>
                     <div class="mb-2"><pems-label css="small">@Localizer["Reference"]</pems-label><pems-input scale="small" name="reference" placeholder="e.g. revision, path" /></div>
                     <div class="mb-2"><pems-label css="small">@Localizer["Description"]</pems-label><pems-textarea scale="small" name="description" rows="2" required></pems-textarea></div>
-                </div>
-                <div class="modal-footer">
+                </pems-modal-body>
+                <pems-modal-footer>
                     <pems-button tone="neutral" size="small" outline="true" type="button" data-bs-dismiss="modal">@Localizer["Cancel"]</pems-button>
                     <pems-button tone="primary" size="small" type="submit">@Localizer["Save"]</pems-button>
-                </div>
+                </pems-modal-footer>
             </form>
         </pems-modal>
 }

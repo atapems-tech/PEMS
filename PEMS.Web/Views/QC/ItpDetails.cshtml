@@ -132,8 +132,8 @@
     <form asp-action="ItpPerformInspection" method="post">
     <input type="hidden" name="lineItemId" value="" />
     <input type="hidden" name="itpId" value="@Model.InspectionTestPlanId" />
-    <div class="modal-header"><h6 class="modal-title">Perform Inspection - <span data-fill-text="activity"></span></h6></div>
-    <div class="modal-body">
+    <pems-modal-header>Perform Inspection - <span data-fill-text="activity"></span></pems-modal-header>
+    <pems-modal-body>
     <div class="mb-2">
     <pems-label css="small">@Localizer["Result"]</pems-label>
     <pems-select scale="small" name="result" required>
@@ -150,10 +150,10 @@
     <pems-label css="small">@Localizer["Notes"]</pems-label>
     <pems-textarea scale="small" name="description" rows="2"></pems-textarea>
     </div>
-    </div>
-    <div class="modal-footer">
+    </pems-modal-body>
+    <pems-modal-footer>
     <pems-button tone="neutral" size="small" outline="true" type="button" data-bs-dismiss="modal">@Localizer["Cancel"]</pems-button>
     <pems-button tone="primary" size="small" type="submit">Save Result</pems-button>
-    </div>
+    </pems-modal-footer>
     </form>
     </pems-modal>

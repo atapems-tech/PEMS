@@ -78,8 +78,8 @@
 
 <pems-modal id="createTeamModal" tabindex="-1">
         <form asp-action="CreateTeam" method="post">
-            <div class="modal-header"><h6 class="modal-title">@Localizer["تیم جدید"]</h6></div>
-            <div class="modal-body">
+            <pems-modal-header>@Localizer["تیم جدید"]</pems-modal-header>
+            <pems-modal-body>
                 <div class="mb-2">
                     <pems-label css="small">@Localizer["کد تیم"]</pems-label>
                     <pems-input scale="small" name="code" required placeholder="@Localizer["مثلاً MECH-A"]" />
@@ -106,11 +106,11 @@
                         @foreach (var e in (IEnumerable<dynamic>)ViewBag.Employees) { <option value="@e.EmployeeId">@e.FullName</option> }
                     </pems-select>
                 </div>
-            </div>
-            <div class="modal-footer">
+            </pems-modal-body>
+            <pems-modal-footer>
                 <pems-button tone="neutral" size="small" outline="true" type="button" data-bs-dismiss="modal">@Localizer["انصراف"]</pems-button>
                 <pems-button tone="primary" size="small" type="submit">@Localizer["ساخت"]</pems-button>
-            </div>
+            </pems-modal-footer>
         </form>
     </pems-modal>
 

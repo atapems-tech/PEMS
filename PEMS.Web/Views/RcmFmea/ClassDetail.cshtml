@@ -299,10 +299,8 @@
                                 <form asp-action="ApplyRcmDecision" method="post">
                                     <input type="hidden" name="equipmentClassId" value="@equipmentClass.EquipmentClassId" />
                                     <input type="hidden" name="rcmDecisionId" value="" />
-                                    <div class="modal-header">
-                                        <h6 class="modal-title">Apply RCM Decision — <span data-fill-text="failuremodename"></span></h6>
-                                    </div>
-                                    <div class="modal-body">
+                                    <pems-modal-header>Apply RCM Decision — <span data-fill-text="failuremodename"></span></pems-modal-header>
+                                    <pems-modal-body>
                                         <pems-row gap="2" css="small mb-2">
                                             <pems-col span="6"><strong>@Localizer["Status"]</strong><div data-fill-text="status"></div></pems-col>
                                             <pems-col span="6"><strong>Decision Type</strong><div data-fill-text="decisiontype"></div></pems-col>
@@ -329,14 +327,14 @@
                                         {
                                             <pems-alert tone="light" css="border small mb-0">این کلاس هنوز تجهیز فعالی ندارد - چیزی برای انتخاب نیست.</pems-alert>
                                         }
-                                    </div>
-                                    <div class="modal-footer">
+                                    </pems-modal-body>
+                                    <pems-modal-footer>
                                         <pems-button tone="neutral" size="small" outline="true" type="button" data-bs-dismiss="modal">@Localizer["Cancel"]</pems-button>
                                         @if (equipmentInClass.Any())
                                         {
                                             <pems-button tone="primary" size="small" type="submit">Apply RCM Decision</pems-button>
                                         }
-                                    </div>
+                                    </pems-modal-footer>
                                 </form>
                             </pems-modal>
 }
@@ -402,25 +400,25 @@
     <pems-modal id="createFrModal" tabindex="-1">
             <form asp-action="CreateFunctionalRequirement" method="post">
                 <input type="hidden" name="equipmentClassId" value="@equipmentClass.EquipmentClassId" />
-                <div class="modal-header"><h6 class="modal-title">@Localizer["Functional Requirement جدید"]</h6></div>
-                <div class="modal-body">
+                <pems-modal-header>@Localizer["Functional Requirement جدید"]</pems-modal-header>
+                <pems-modal-body>
                     <div class="mb-2"><pems-label css="small">@Localizer["Code"]</pems-label><pems-input scale="small" name="code" required /></div>
                     <div class="mb-2"><pems-label css="small">@Localizer["Title"]</pems-label><pems-input scale="small" name="title" required /></div>
                     <div class="mb-2"><pems-label css="small">@Localizer["Required Function"]</pems-label><pems-input scale="small" name="requiredFunction" /></div>
                     <div class="mb-2"><pems-label css="small">@Localizer["Description"]</pems-label><pems-textarea scale="small" name="description" rows="2"></pems-textarea></div>
-                </div>
-                <div class="modal-footer">
+                </pems-modal-body>
+                <pems-modal-footer>
                     <pems-button tone="neutral" size="small" outline="true" type="button" data-bs-dismiss="modal">@Localizer["Cancel"]</pems-button>
                     <pems-button tone="primary" size="small" type="submit">@Localizer["Save"]</pems-button>
-                </div>
+                </pems-modal-footer>
             </form>
         </pems-modal>
 
     <pems-modal id="createFfModal" tabindex="-1">
             <form asp-action="CreateFunctionalFailure" method="post">
                 <input type="hidden" name="equipmentClassId" value="@equipmentClass.EquipmentClassId" />
-                <div class="modal-header"><h6 class="modal-title">@Localizer["Functional Failure جدید"]</h6></div>
-                <div class="modal-body">
+                <pems-modal-header>@Localizer["Functional Failure جدید"]</pems-modal-header>
+                <pems-modal-body>
                     <div class="mb-2"><pems-label css="small">Functional Requirement</pems-label>
                         <pems-select scale="small" name="functionalRequirementId" required>
                             @foreach (var fr in functionalRequirements)
@@ -432,11 +430,11 @@
                     <div class="mb-2"><pems-label css="small">@Localizer["Code"]</pems-label><pems-input scale="small" name="code" required /></div>
                     <div class="mb-2"><pems-label css="small">@Localizer["Title"]</pems-label><pems-input scale="small" name="title" required /></div>
                     <div class="mb-2"><pems-label css="small">Failure Definition</pems-label><pems-textarea scale="small" name="failureDefinition" rows="2"></pems-textarea></div>
-                </div>
-                <div class="modal-footer">
+                </pems-modal-body>
+                <pems-modal-footer>
                     <pems-button tone="neutral" size="small" outline="true" type="button" data-bs-dismiss="modal">@Localizer["Cancel"]</pems-button>
                     <pems-button tone="primary" size="small" type="submit">@Localizer["Save"]</pems-button>
-                </div>
+                </pems-modal-footer>
             </form>
         </pems-modal>
 }

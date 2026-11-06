@@ -89,16 +89,16 @@
 
 <pems-modal id="holdOrderModal" tabindex="-1">
         <form asp-action="Hold" asp-route-id="@Model.ProductionOrderId" method="post">
-            <div class="modal-header"><h6 class="modal-title">Hold Production Order</h6><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div>
-            <div class="modal-body"><pems-label>@Localizer["Reason"]</pems-label><pems-textarea name="reason" required></pems-textarea></div>
-            <div class="modal-footer"><pems-button tone="warning" type="submit">@Localizer["Hold"]</pems-button></div>
+            <pems-modal-header close="true">Hold Production Order</pems-modal-header>
+            <pems-modal-body><pems-label>@Localizer["Reason"]</pems-label><pems-textarea name="reason" required></pems-textarea></pems-modal-body>
+            <pems-modal-footer><pems-button tone="warning" type="submit">@Localizer["Hold"]</pems-button></pems-modal-footer>
         </form>
     </pems-modal>
 
 <pems-modal id="cancelOrderModal" tabindex="-1">
         <form asp-action="Cancel" asp-route-id="@Model.ProductionOrderId" method="post">
-            <div class="modal-header"><h6 class="modal-title">Cancel Production Order</h6><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div>
-            <div class="modal-body"><pems-label>@Localizer["Reason"]</pems-label><pems-textarea name="reason" required></pems-textarea></div>
-            <div class="modal-footer"><pems-button tone="danger" type="submit">Cancel Order</pems-button></div>
+            <pems-modal-header close="true">Cancel Production Order</pems-modal-header>
+            <pems-modal-body><pems-label>@Localizer["Reason"]</pems-label><pems-textarea name="reason" required></pems-textarea></pems-modal-body>
+            <pems-modal-footer><pems-button tone="danger" type="submit">Cancel Order</pems-button></pems-modal-footer>
         </form>
     </pems-modal>

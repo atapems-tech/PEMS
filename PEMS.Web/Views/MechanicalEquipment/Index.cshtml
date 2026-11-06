@@ -118,8 +118,8 @@
 
 <pems-modal size="large" id="createMechanicalModal" tabindex="-1">
             <form asp-action="Create" method="post">
-                <div class="modal-header"><h6 class="modal-title">@Localizer["Me_New"]</h6></div>
-                <div class="modal-body">
+                <pems-modal-header>@Localizer["Me_New"]</pems-modal-header>
+                <pems-modal-body>
                     <p class="text-muted small">
                         @Localizer["Equipment link is optional - only fill it when this mechanical record represents an existing Equipment tag. Rotating/Static sub-type details are added afterwards from the Passport page."]
                     </p>
@@ -160,11 +160,11 @@
                         <pems-label>@Localizer["توضیحات (اختیاری)"]</pems-label>
                         <pems-textarea name="description" rows="2"></pems-textarea>
                     </div>
-                </div>
-                <div class="modal-footer">
+                </pems-modal-body>
+                <pems-modal-footer>
                     <pems-button tone="neutral" size="small" outline="true" type="button" data-bs-dismiss="modal">@Localizer["انصراف"]</pems-button>
                     <pems-button tone="primary" size="small" type="submit">@Localizer["ساخت"]</pems-button>
-                </div>
+                </pems-modal-footer>
             </form>
         </pems-modal>
 
