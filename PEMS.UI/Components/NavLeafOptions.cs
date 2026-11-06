@@ -122,9 +122,6 @@ internal static class FrameMarkup
 // SCRUM-507: the bare form controls (input, select, textarea, label, validation summary). The built-in ASP.NET Core helper still computes the
 // model-bound values (name, id, value, validation attributes, option list, message list); the component writes the element.
 
-/// <summary>Inputs of <see cref="PemsFormFrame"/>: the form element; fields and the antiforgery field are the child content.</summary>
-public sealed record FormFrameOptions : FrameOptions;
-
 /// <summary>Inputs of <see cref="PemsInput"/>: a text-like input or a check box / radio / switch input.</summary>
 public sealed record InputOptions : FrameOptions
 {

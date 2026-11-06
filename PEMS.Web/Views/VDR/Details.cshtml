@@ -446,7 +446,7 @@
                         <pems-form asp-action="SetCommentAction" method="post" class="d-inline">
                             <input type="hidden" name="vdrItemId" value="@Model.VDRItemId" />
                             <input type="hidden" name="commentId" value="@c.VDRCommentId" />
-                            <pems-select class="pems-w-170" scale="small" css="mt-1" name="actionStatus" onchange="this.form.submit()">
+                            <pems-select class="pems-w-170" scale="small" css="mt-1" name="actionStatus" data-pems-change="submit-form">
                                 @foreach (var s in new[] { "OpenComment", "VendorResponsePending", "Verified", "Closed", "NoActionRequired" })
                                 { <option value="@s" selected="@(s == c.ActionStatus)">@VdrUi.Loc(Localizer, "St_", s)</option> }
                             </pems-select>

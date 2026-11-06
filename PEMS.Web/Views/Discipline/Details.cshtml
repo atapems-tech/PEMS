@@ -13,7 +13,7 @@
     <pems-flex justify="between" align="center">
         <h5 class="mb-0">@s.Code &mdash; @s.Name Workspace</h5>
         <pems-form method="get"><pems-flex gap="2">
-            <pems-select scale="small" name="projectId" onchange="this.form.submit()">
+            <pems-select scale="small" name="projectId" data-pems-change="submit-form">
                 <option value="">@Localizer["All Projects"]</option>
                 @foreach (var p in projects) { <option value="@p.ProjectId" selected="@(p.ProjectId == (int?)ViewBag.SelectedProjectId)">@p.ProjectName</option> }
             </pems-select>
@@ -47,7 +47,7 @@
                         <pems-form asp-action="SetTaskStatus" method="post" class="d-inline">
                             <input type="hidden" name="disciplineId" value="@s.DisciplineId" />
                             <input type="hidden" name="taskId" value="@t.DisciplineTaskId" />
-                            <pems-select class="pems-w-120" scale="small" name="status" onchange="this.form.submit()">
+                            <pems-select class="pems-w-120" scale="small" name="status" data-pems-change="submit-form">
                                 @foreach (var opt in new[] { "Open", "InProgress", "Completed" })
                                 { <option value="@opt" selected="@(opt == t.Status)">@opt</option> }
                             </pems-select>

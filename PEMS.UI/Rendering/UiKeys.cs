@@ -74,7 +74,6 @@ public static class UiKeys
     public const string TableFrame = "table-frame";
     public const string ListGroupItem = "list-group-item";
     public const string Toast = "toast";
-    public const string FormFrame = "form-frame";
     public const string ScriptTemplates = "script-templates";
     public const string Input = "input";
     public const string Select = "select";
