@@ -992,10 +992,4 @@
         </form>
     </pems-modal>
 
-<script>
-    document.getElementById('addLimitModal')?.addEventListener('show.bs.modal', function (event) {
-        var button = event.relatedTarget;
-        document.getElementById('addLimitProfileId').value = button.getAttribute('data-profile-id');
-        document.getElementById('addLimitProfileLabel').textContent = button.getAttribute('data-profile-code');
-    });
-</script>
+<script src="~/js/views/maintenancemasterdata-index.js" asp-append-version="true"></script>

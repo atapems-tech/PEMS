@@ -84,11 +84,5 @@
 </div>
 
 @section Scripts {
-    <script>
-        function fillUom(select) {
-            var opt = select.options[select.selectedIndex];
-            var uomId = opt.getAttribute('data-uom');
-            if (uomId) document.getElementById('uomSelect').value = uomId;
-        }
-    </script>
+    <script src="~/js/views/productionorder-create.js" asp-append-version="true"></script>
 }

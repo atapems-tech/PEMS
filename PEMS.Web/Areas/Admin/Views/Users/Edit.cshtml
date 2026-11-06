@@ -109,15 +109,5 @@
 @section Scripts {
     <script src="~/js/pems-multiselect.js" asp-append-version="true"></script>
     <partial name="_ValidationScriptsPartial" />
-    <script>
-        var existingSelect = document.getElementById('existingEmployeeSelect');
-        var newFields = document.getElementById('newEmployeeFields');
-
-        function toggleNewEmployeeFields() {
-            newFields.style.display = existingSelect.value ? 'none' : '';
-        }
-
-        existingSelect.addEventListener('change', toggleNewEmployeeFields);
-        toggleNewEmployeeFields();
-    </script>
+    <script src="~/js/views/admin-users-edit.js" asp-append-version="true"></script>
 }

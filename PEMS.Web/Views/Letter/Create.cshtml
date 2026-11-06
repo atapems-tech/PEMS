@@ -96,13 +96,7 @@
                             <label class="form-check-label small" for="useManualNumberCheck">@Localizer["Lt_EnterManually"]</label>
                         </div>
                     }
-                    <script>
-                        var manualNumCheck = document.getElementById('useManualNumberCheck');
-                        var letterNoInput = document.querySelector('[name="letterNumber"]');
-                        if (manualNumCheck) {
-                            manualNumCheck.addEventListener('change', function () { letterNoInput.disabled = !this.checked; });
-                        }
-                    </script>
+                    <script src="~/js/views/letter-create-1.js" asp-append-version="true"></script>
                 </pems-col>
                 <pems-col md="4">
                     <pems-label for="letterPriority">@Localizer["Lt_Priority"]</pems-label>
@@ -156,22 +150,6 @@
     </form>
 </div>
 
-<script>
-    (function () {
-        var cb = document.getElementById('responseRequired');
-        var wrap = document.getElementById('responseDueWrap');
-        var due = document.getElementById('responseDueDate');
-        var letterDate = document.getElementById('letterDate');
-        function sync() {
-            wrap.hidden = !cb.checked;
-            due.required = cb.checked;
-            due.min = letterDate.value || '';
-            if (!cb.checked) due.value = '';
-        }
-        cb.addEventListener('change', sync);
-        letterDate.addEventListener('change', sync);
-        sync();
-    })();
-</script>
+<script src="~/js/views/letter-create-2.js" asp-append-version="true"></script>
 
 @await Html.PartialAsync("_RichTextEditorScripts", "letterBodyEditor")

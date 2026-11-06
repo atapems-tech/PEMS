@@ -16,28 +16,28 @@ public sealed class AdoptionRatchetTests
     // One entry per hand-written block that has (or will have) a PEMS.UI component. Views are scanned for all; scripts only for the script patterns.
     private static readonly (string Name, Regex Pattern, bool Views, bool Scripts)[] Patterns =
     [
-        ("alert", new Regex(@"class=""alert(?![\w-])|class=""[^""]*\balert alert-", RegexOptions.Compiled), true, false),
-        ("badge", new Regex(@"class=""[^""]*(?<![\w-])badge(?![\w-])|\btext-bg-[a-z]+", RegexOptions.Compiled), true, false),
-        ("button", new Regex(@"\bbtn btn-[a-z-]+", RegexOptions.Compiled), true, false),
-        ("text-input", new Regex(@"\bform-control\b", RegexOptions.Compiled), true, false),
-        ("select", new Regex(@"\bform-select\b", RegexOptions.Compiled), true, false),
-        ("date-input", new Regex(@"<input\b[^>]*\btype=""date""", RegexOptions.Compiled), true, false),   // SCRUM-225: <pems-date> (Jalali or Gregorian, posts the ISO date)
-        ("form-label", new Regex(@"class=""[^""]*(?<![\w-])form-label(?![\w-])", RegexOptions.Compiled), true, false),
-        ("textarea", new Regex(@"<textarea\b", RegexOptions.Compiled), true, false),
-        ("check-radio-switch", new Regex(@"\bform-check-input\b|\bform-switch\b", RegexOptions.Compiled), true, false),
-        ("modal", new Regex(@"class=""modal(?![\w-])", RegexOptions.Compiled), true, false),
-        ("offcanvas", new Regex(@"class=""offcanvas(?![\w-])", RegexOptions.Compiled), true, false),
-        ("tabs", new Regex(@"\bnav-tabs\b", RegexOptions.Compiled), true, false),
-        ("breadcrumb", new Regex(@"class=""breadcrumb(?![\w-])", RegexOptions.Compiled), true, false),
-        ("dropdown", new Regex(@"class=""dropdown-menu\b", RegexOptions.Compiled), true, false),
-        ("progress", new Regex(@"class=""progress(?![\w-])", RegexOptions.Compiled), true, false),
-        ("accordion", new Regex(@"(?<![\w-])accordion-item(?![\w-])", RegexOptions.Compiled), true, false),
-        ("list-group", new Regex(@"class=""list-group(?![\w-])", RegexOptions.Compiled), true, false),
-        ("card", new Regex(@"class=""card(?![\w-])", RegexOptions.Compiled), true, false),
-        ("spinner", new Regex(@"\bspinner-(border|grow)\b", RegexOptions.Compiled), true, false),
-        ("table", new Regex(@"<table\b", RegexOptions.Compiled), true, false),
-        ("info-grid", new Regex(@"\bvs-info__label\b|<dt\b", RegexOptions.Compiled), true, false),   // SCRUM-337 InfoGrid: <pems-info-grid>
-        ("kpi-tile", new Regex(@"class=""kpi-card\b", RegexOptions.Compiled), true, false),   // SCRUM-337 KpiTile: <pems-kpi-tile>
+        ("alert", new Regex(@"class=""alert(?![\w-])|class=""[^""]*\balert alert-", RegexOptions.Compiled), true, true),
+        ("badge", new Regex(@"class=""[^""]*(?<![\w-])badge(?![\w-])|\btext-bg-[a-z]+", RegexOptions.Compiled), true, true),
+        ("button", new Regex(@"\bbtn btn-[a-z-]+", RegexOptions.Compiled), true, true),
+        ("text-input", new Regex(@"\bform-control\b", RegexOptions.Compiled), true, true),
+        ("select", new Regex(@"\bform-select\b", RegexOptions.Compiled), true, true),
+        ("date-input", new Regex(@"<input\b[^>]*\btype=""date""", RegexOptions.Compiled), true, true),   // SCRUM-225: <pems-date> (Jalali or Gregorian, posts the ISO date)
+        ("form-label", new Regex(@"class=""[^""]*(?<![\w-])form-label(?![\w-])", RegexOptions.Compiled), true, true),
+        ("textarea", new Regex(@"<textarea\b", RegexOptions.Compiled), true, true),
+        ("check-radio-switch", new Regex(@"\bform-check-input\b|\bform-switch\b", RegexOptions.Compiled), true, true),
+        ("modal", new Regex(@"class=""modal(?![\w-])", RegexOptions.Compiled), true, true),
+        ("offcanvas", new Regex(@"class=""offcanvas(?![\w-])", RegexOptions.Compiled), true, true),
+        ("tabs", new Regex(@"\bnav-tabs\b", RegexOptions.Compiled), true, true),
+        ("breadcrumb", new Regex(@"class=""breadcrumb(?![\w-])", RegexOptions.Compiled), true, true),
+        ("dropdown", new Regex(@"class=""dropdown-menu\b", RegexOptions.Compiled), true, true),
+        ("progress", new Regex(@"class=""progress(?![\w-])", RegexOptions.Compiled), true, true),
+        ("accordion", new Regex(@"(?<![\w-])accordion-item(?![\w-])", RegexOptions.Compiled), true, true),
+        ("list-group", new Regex(@"class=""list-group(?![\w-])", RegexOptions.Compiled), true, true),
+        ("card", new Regex(@"class=""card(?![\w-])", RegexOptions.Compiled), true, true),
+        ("spinner", new Regex(@"\bspinner-(border|grow)\b", RegexOptions.Compiled), true, true),
+        ("table", new Regex(@"<table\b", RegexOptions.Compiled), true, true),
+        ("info-grid", new Regex(@"\bvs-info__label\b|<dt\b", RegexOptions.Compiled), true, true),   // SCRUM-337 InfoGrid: <pems-info-grid>
+        ("kpi-tile", new Regex(@"class=""kpi-card\b", RegexOptions.Compiled), true, true),   // SCRUM-337 KpiTile: <pems-kpi-tile>
         // SCRUM-337 Skeleton: "Loading..." text as a placeholder (<pems-skeleton> / PemsSkeleton.show); the skeleton's own label="..." is not counted
         ("loading-text", new Regex(@"(?<!label=""[^>]{0,80})(Loading\.\.\.|Loading…|در حال بارگذاری|در حال جستجو)", RegexOptions.Compiled), true, true),
         // SCRUM-337 Chart: a chart drawn by hand (Chart.js, a chart canvas, a hand-written Bklit host) instead of <pems-chart spec="...">
@@ -47,10 +47,10 @@ public sealed class AdoptionRatchetTests
         // SCRUM-508 (owner decision 2026-11-05: every piece of the UI is a component): the patterns that had no counter yet. A hand-written block of these is UI
         // that is not a registered component; the baseline starts at today's size and only goes down.
         ("inline-style", new Regex(@"\sstyle=""", RegexOptions.Compiled), true, false),
-        ("icon", new Regex(@"<i\b[^>]*\bclass=""[^""]*(?<![\w-])bi(?![\w-])", RegexOptions.Compiled), true, false),
+        ("icon", new Regex(@"<i\b[^>]*\bclass=""[^""]*(?<![\w-])bi(?![\w-])", RegexOptions.Compiled), true, true),
         ("layout-grid", new Regex(@"class=""[^""]*(?<![\w-])(row|col(-[a-z]+)?(-\d+)?)(?![\w-])", RegexOptions.Compiled), true, false),
-        ("pagination", new Regex(@"class=""[^""]*(?<![\w-])(pagination|page-link)(?![\w-])", RegexOptions.Compiled), true, false),
-        ("bare-button", new Regex(@"class=""btn(?![\w-])", RegexOptions.Compiled), true, false),
+        ("pagination", new Regex(@"class=""[^""]*(?<![\w-])(pagination|page-link)(?![\w-])", RegexOptions.Compiled), true, true),
+        ("bare-button", new Regex(@"class=""btn(?![\w-])", RegexOptions.Compiled), true, true),
         ("inline-script", new Regex(@"<script>", RegexOptions.Compiled), true, false),
         ("js-built-markup", new Regex(@"\.innerHTML\s*\+?=|insertAdjacentHTML\(", RegexOptions.Compiled), false, true),
     ];

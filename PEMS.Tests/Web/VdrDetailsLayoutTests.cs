@@ -159,10 +159,9 @@ public class VdrDetailsLayoutTests
         Assert.Matches(@"id=""vdrWhyDisabled""[^>]*\bhidden\b", html);
         Assert.Contains("Enter the vendor transmittal to enable this action.", html);
 
-        // the harness renders without a layout, so the Scripts section is checked in the source: enable/disable on input, summary on change
+        // the harness renders without a layout, so the page script is checked in its file: enable/disable on input, summary on change
         var root = Environment.GetEnvironmentVariable("PEMS_REPO_ROOT") ?? FindRoot();
-        var source = File.ReadAllText(Path.Combine(root, "PEMS.Web", "Views", "VDR", "Details.cshtml"));
-        var scripts = source.Substring(source.IndexOf("@section Scripts", StringComparison.Ordinal));
+        var scripts = File.ReadAllText(Path.Combine(root, "PEMS.Web", "wwwroot", "js", "views", "vdr-details.js"));    // the inline script moved to a file (SCRUM-508)
         Assert.Contains("getElementById('vdrStartBtn')", scripts);
         Assert.Contains("button.disabled = !ok", scripts);
         Assert.Contains("input.addEventListener('input', syncStart)", scripts);

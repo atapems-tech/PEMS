@@ -5,14 +5,19 @@
   "badge": {
     "PEMS.Web/Areas/Admin/Views/Organization/Index.cshtml": 1,
     "PEMS.Web/Areas/Admin/Views/PermissionMatrix/Index.cshtml": 3,
-    "PEMS.Web/Views/Shared/_Layout.cshtml": 2
+    "PEMS.Web/wwwroot/js/pems-cartable-settings.js": 1,
+    "PEMS.Web/wwwroot/js/pems-permission-matrix.js": 2,
+    "PEMS.Web/wwwroot/js/views/shared-layout-1.js": 2
   },
   "bare-button": {
-    "PEMS.Web/Views/Shared/_ContextualHelpDrawer.cshtml": 4
+    "PEMS.Web/wwwroot/js/views/shared-contextualhelpdrawer.js": 4
   },
   "breadcrumb": {},
   "button": {
-    "PEMS.Web/Views/Shared/_ContextualHelpDrawer.cshtml": 4
+    "PEMS.Web/wwwroot/js/letter-compose.js": 2,
+    "PEMS.Web/wwwroot/js/pems-cartable-settings.js": 2,
+    "PEMS.Web/wwwroot/js/pems-permission-matrix.js": 1,
+    "PEMS.Web/wwwroot/js/views/shared-contextualhelpdrawer.js": 4
   },
   "card": {},
   "chart": {},
@@ -21,7 +26,8 @@
     "PEMS.Web/Areas/Admin/Views/Users/_EffectivePermissionRow.cshtml": 1,
     "PEMS.Web/Views/Permit/Index.cshtml": 1,
     "PEMS.Web/Views/SparePart/Index.cshtml": 1,
-    "PEMS.Web/Views/WorkOrder/Index.cshtml": 1
+    "PEMS.Web/Views/WorkOrder/Index.cshtml": 1,
+    "PEMS.Web/wwwroot/js/pems-cartable-settings.js": 2
   },
   "confirm-call": {},
   "date-input": {},
@@ -54,62 +60,16 @@
     "PEMS.Web/Views/Permit/Details.cshtml": 2,
     "PEMS.Web/Views/PreProcurement/Details.cshtml": 5,
     "PEMS.Web/Views/Relationship/Index.cshtml": 1,
-    "PEMS.Web/Views/Shared/_ContextualHelpDrawer.cshtml": 2,
     "PEMS.Web/Views/Shared/_HelpNodeTree.cshtml": 2,
     "PEMS.Web/Views/Shared/_HelpVisual.cshtml": 1,
-    "PEMS.Web/Views/Shared/_Layout.cshtml": 1,
     "PEMS.Web/Views/Task/Details.cshtml": 1,
     "PEMS.Web/Views/TaskManager/Board.cshtml": 1,
-    "PEMS.Web/Views/TaskManager/_ItemRow.cshtml": 1
+    "PEMS.Web/Views/TaskManager/_ItemRow.cshtml": 1,
+    "PEMS.Web/wwwroot/js/views/shared-contextualhelpdrawer.js": 2,
+    "PEMS.Web/wwwroot/js/views/shared-layout-1.js": 1
   },
   "info-grid": {},
-  "inline-script": {
-    "PEMS.Web/Areas/Admin/Views/Authorization/Simulate.cshtml": 1,
-    "PEMS.Web/Areas/Admin/Views/Help/StandardCreate.cshtml": 1,
-    "PEMS.Web/Areas/Admin/Views/Help/VisualCreate.cshtml": 1,
-    "PEMS.Web/Areas/Admin/Views/NavigationMenu/Edit.cshtml": 1,
-    "PEMS.Web/Areas/Admin/Views/ProjectIntelligence/Index.cshtml": 1,
-    "PEMS.Web/Areas/Admin/Views/StorageProviders/_Form.cshtml": 1,
-    "PEMS.Web/Areas/Admin/Views/Users/Create.cshtml": 1,
-    "PEMS.Web/Areas/Admin/Views/Users/Edit.cshtml": 1,
-    "PEMS.Web/Areas/Warehouse/Views/MaterialItem/Details.cshtml": 1,
-    "PEMS.Web/Areas/Warehouse/Views/MrsImport/Review.cshtml": 1,
-    "PEMS.Web/Views/Account/Login.cshtml": 1,
-    "PEMS.Web/Views/Account/ManagePasskeys.cshtml": 1,
-    "PEMS.Web/Views/ChatAssistant/Index.cshtml": 1,
-    "PEMS.Web/Views/DocumentRegister/Index.cshtml": 1,
-    "PEMS.Web/Views/EngineeringDocuments/Create.cshtml": 1,
-    "PEMS.Web/Views/EngineeringDocuments/Details.cshtml": 2,
-    "PEMS.Web/Views/Equipment/Details.cshtml": 1,
-    "PEMS.Web/Views/Equipment/Index.cshtml": 1,
-    "PEMS.Web/Views/EquipmentImport/ScanResult.cshtml": 1,
-    "PEMS.Web/Views/FunctionalLocation/Index.cshtml": 1,
-    "PEMS.Web/Views/Help/Article.cshtml": 1,
-    "PEMS.Web/Views/Letter/Create.cshtml": 2,
-    "PEMS.Web/Views/Letter/Details.cshtml": 4,
-    "PEMS.Web/Views/Letter/Index.cshtml": 1,
-    "PEMS.Web/Views/MaintenanceMasterData/Index.cshtml": 1,
-    "PEMS.Web/Views/MaintenancePlan/Create.cshtml": 1,
-    "PEMS.Web/Views/MaintenanceStrategy/Details.cshtml": 1,
-    "PEMS.Web/Views/MaintenanceStrategy/Edit.cshtml": 1,
-    "PEMS.Web/Views/MaintenanceStrategy/Index.cshtml": 1,
-    "PEMS.Web/Views/MaterialRequisition/Quotations.cshtml": 1,
-    "PEMS.Web/Views/MyProfile/Index.cshtml": 1,
-    "PEMS.Web/Views/ProductionOrder/Create.cshtml": 1,
-    "PEMS.Web/Views/Reliability/ConditionMonitoring.cshtml": 1,
-    "PEMS.Web/Views/Shared/_ContextualHelpDrawer.cshtml": 1,
-    "PEMS.Web/Views/Shared/_DynamicSidebarMenu.cshtml": 1,
-    "PEMS.Web/Views/Shared/_Layout.cshtml": 2,
-    "PEMS.Web/Views/Shared/_LayoutEmbed.cshtml": 1,
-    "PEMS.Web/Views/Shared/_SidebarMenu.cshtml": 1,
-    "PEMS.Web/Views/TableExtraction/Index.cshtml": 1,
-    "PEMS.Web/Views/TableExtraction/Review.cshtml": 1,
-    "PEMS.Web/Views/Team/Index.cshtml": 1,
-    "PEMS.Web/Views/Transmittal/Create.cshtml": 1,
-    "PEMS.Web/Views/VDR/Details.cshtml": 1,
-    "PEMS.Web/Views/WorkOrder/Details.cshtml": 1,
-    "PEMS.Web/Views/WorkOrder/Index.cshtml": 1
-  },
+  "inline-script": {},
   "inline-style": {
     "PEMS.Web/Areas/Admin/Views/Authorization/Simulate.cshtml": 1,
     "PEMS.Web/Areas/Admin/Views/Help/StandardCreate.cshtml": 1,
@@ -120,7 +80,7 @@
     "PEMS.Web/Areas/Admin/Views/Users/Create.cshtml": 1,
     "PEMS.Web/Areas/Admin/Views/Users/Edit.cshtml": 1,
     "PEMS.Web/Views/Account/ChangePassword.cshtml": 1,
-    "PEMS.Web/Views/Account/Login.cshtml": 2,
+    "PEMS.Web/Views/Account/Login.cshtml": 1,
     "PEMS.Web/Views/AccountRecovery/Index.cshtml": 1,
     "PEMS.Web/Views/Barcode/BulkGenerate.cshtml": 1,
     "PEMS.Web/Views/CriticalityAssessment/Details.cshtml": 1,
@@ -148,7 +108,15 @@
     "PEMS.Web/Views/WorkOrder/Details.cshtml": 3,
     "PEMS.Web/Views/WorkRequest/Details.cshtml": 2
   },
-  "js-built-markup": {},
+  "js-built-markup": {
+    "PEMS.Web/wwwroot/js/views/account-login.js": 1,
+    "PEMS.Web/wwwroot/js/views/account-managepasskeys.js": 2,
+    "PEMS.Web/wwwroot/js/views/admin-projectintelligence-index.js": 1,
+    "PEMS.Web/wwwroot/js/views/help-article.js": 3,
+    "PEMS.Web/wwwroot/js/views/maintenancestrategy-edit.js": 2,
+    "PEMS.Web/wwwroot/js/views/shared-contextualhelpdrawer.js": 3,
+    "PEMS.Web/wwwroot/js/views/shared-layout-1.js": 2
+  },
   "kpi-tile": {},
   "layout-grid": {
     "PEMS.Web/Areas/Admin/Views/Authorization/Simulate.cshtml": 1,
@@ -223,17 +191,24 @@
     "PEMS.Web/Views/Report/Procurement.cshtml": 2
   },
   "progress": {},
-  "select": {},
+  "select": {
+    "PEMS.Web/wwwroot/js/pems-cartable-settings.js": 4
+  },
   "spinner": {
-    "PEMS.Web/Areas/Admin/Views/ProjectIntelligence/Index.cshtml": 2
+    "PEMS.Web/wwwroot/js/pems-user-permissions.js": 2,
+    "PEMS.Web/wwwroot/js/views/admin-projectintelligence-index.js": 2
   },
   "table": {
     "PEMS.Web/Views/LetterCartable/Report.cshtml": 1
   },
-  "tabs": {},
+  "tabs": {
+    "PEMS.Web/wwwroot/js/pems-ui.js": 1
+  },
   "text-input": {
     "PEMS.Web/Views/Tender/Details.cshtml": 2,
-    "PEMS.Web/Views/VDR/Details.cshtml": 1
+    "PEMS.Web/Views/VDR/Details.cshtml": 1,
+    "PEMS.Web/wwwroot/js/pems-cartable-settings.js": 2,
+    "PEMS.Web/wwwroot/js/pems-part-catalogue.js": 2
   },
   "textarea": {}
 }
