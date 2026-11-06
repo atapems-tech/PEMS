@@ -129,30 +129,14 @@
             <pems-col md="6">
                 <pems-content-card css="h-100">
                     <h6 class="mb-3">Failure Mode Pareto</h6>
-                    <pems-table kind="enterprise" scale="small" css="mb-0">
-                        <thead><tr><th>@Localizer["Failure Mode"]</th><th class="text-end">@Localizer["Count"]</th><th class="text-end">@Localizer["Downtime"]</th><th class="text-end">@Localizer["Cumulative %"]</th></tr></thead>
-                        <tbody>
-                            @foreach (var p in failureModePareto)
-                            {
-                                <tr><td>@p.Key</td><td class="text-end">@p.Count</td><td class="text-end">@p.DowntimeHours.ToString("N1")h</td><td class="text-end">@p.CumulativePercent.ToString("N1")%</td></tr>
-                            }
-                        </tbody>
-                    </pems-table>
+                    <pems-data-table data="@(DataRows.Of(failureModePareto, c_ => c_.Add(((Localizer["Failure Mode"])?.ToString() ?? ""), p => (object?)(p.Key)).Add(((Localizer["Count"])?.ToString() ?? ""), p => (object?)(p.Count), css: "text-end", headerCss: "text-end").Add(((Localizer["Downtime"])?.ToString() ?? ""), p => DataCell.Join((p.DowntimeHours.ToString("N1")), "h"), css: "text-end", headerCss: "text-end").Add(((Localizer["Cumulative %"])?.ToString() ?? ""), p => DataCell.Join((p.CumulativePercent.ToString("N1")), "%"), css: "text-end", headerCss: "text-end")))" dense="true" css="mb-0" />
                     @if (!failureModePareto.Any()) { <p class="text-muted small text-center py-3 mb-0">@Localizer["داده‌ای موجود نیست."]</p> }
                 </pems-content-card>
             </pems-col>
             <pems-col md="6">
                 <pems-content-card css="h-100">
                     <h6 class="mb-3">Failure Cause Pareto</h6>
-                    <pems-table kind="enterprise" scale="small" css="mb-0">
-                        <thead><tr><th>Failure Cause</th><th class="text-end">@Localizer["Count"]</th><th class="text-end">@Localizer["Downtime"]</th><th class="text-end">@Localizer["Cumulative %"]</th></tr></thead>
-                        <tbody>
-                            @foreach (var p in failureCausePareto)
-                            {
-                                <tr><td>@p.Key</td><td class="text-end">@p.Count</td><td class="text-end">@p.DowntimeHours.ToString("N1")h</td><td class="text-end">@p.CumulativePercent.ToString("N1")%</td></tr>
-                            }
-                        </tbody>
-                    </pems-table>
+                    <pems-data-table data="@(DataRows.Of(failureCausePareto, c_ => c_.Add("Failure Cause", p => (object?)(p.Key)).Add(((Localizer["Count"])?.ToString() ?? ""), p => (object?)(p.Count), css: "text-end", headerCss: "text-end").Add(((Localizer["Downtime"])?.ToString() ?? ""), p => DataCell.Join((p.DowntimeHours.ToString("N1")), "h"), css: "text-end", headerCss: "text-end").Add(((Localizer["Cumulative %"])?.ToString() ?? ""), p => DataCell.Join((p.CumulativePercent.ToString("N1")), "%"), css: "text-end", headerCss: "text-end")))" dense="true" css="mb-0" />
                     @if (!failureCausePareto.Any()) { <p class="text-muted small text-center py-3 mb-0">@Localizer["داده‌ای موجود نیست."]</p> }
                 </pems-content-card>
             </pems-col>
@@ -162,26 +146,7 @@
     <pems-tab-pane fade="true" id="tab-badactors">
         <pems-content-card>
             <p class="text-muted small">هر رتبه با عوامل صریح توضیح داده می‌شود - نه یک امتیاز مبهم.</p>
-            <pems-table kind="enterprise" scale="small" css="mb-0">
-                <thead><tr><th>@Localizer["Tag"]</th><th>@Localizer["Class"]</th><th>@Localizer["Criticality"]</th><th class="text-end">@Localizer["Failures"]</th><th class="text-end">@Localizer["Repeat"]</th><th class="text-end">@Localizer["Downtime"]</th><th class="text-end">@Localizer["MTTR"]</th><th class="text-end">Maint. Count</th><th>Primary Mode / Cause</th><th>Why Ranked Here</th></tr></thead>
-                <tbody>
-                    @foreach (var b in badActors)
-                    {
-                        <tr>
-                            <td class="fw-bold">@b.TagNumber</td>
-                            <td class="small text-muted">@(b.EquipmentClassName ?? "-")</td>
-                            <td class="small text-muted">@(b.CriticalityClass ?? "-")</td>
-                            <td class="text-end">@b.FailureCount</td>
-                            <td class="text-end">@(b.RepeatFailureCount ?? 0)</td>
-                            <td class="text-end">@b.TotalDowntimeHours.ToString("N1")h</td>
-                            <td class="text-end">@(b.MTTRHours.HasValue ? $"{b.MTTRHours.Value:N1}h" : "N/A")</td>
-                            <td class="text-end">@(b.MaintenanceCount ?? 0)</td>
-                            <td class="small text-muted">@(b.PrimaryFailureMode ?? "-") / @(b.PrimaryFailureCause ?? "-")</td>
-                            <td class="small text-muted">@string.Join(" · ", b.RankFactors)</td>
-                        </tr>
-                    }
-                </tbody>
-            </pems-table>
+            <pems-data-table data="@(DataRows.Of(badActors, c_ => c_.Add(((Localizer["Tag"])?.ToString() ?? ""), b => (object?)(b.TagNumber), css: "fw-bold").Add(((Localizer["Class"])?.ToString() ?? ""), b => (object?)(b.EquipmentClassName ?? "-"), css: "small text-muted").Add(((Localizer["Criticality"])?.ToString() ?? ""), b => (object?)(b.CriticalityClass ?? "-"), css: "small text-muted").Add(((Localizer["Failures"])?.ToString() ?? ""), b => (object?)(b.FailureCount), css: "text-end", headerCss: "text-end").Add(((Localizer["Repeat"])?.ToString() ?? ""), b => (object?)(b.RepeatFailureCount ?? 0), css: "text-end", headerCss: "text-end").Add(((Localizer["Downtime"])?.ToString() ?? ""), b => DataCell.Join((b.TotalDowntimeHours.ToString("N1")), "h"), css: "text-end", headerCss: "text-end").Add(((Localizer["MTTR"])?.ToString() ?? ""), b => (object?)(b.MTTRHours.HasValue ? $"{b.MTTRHours.Value:N1}h" : "N/A"), css: "text-end", headerCss: "text-end").Add("Maint. Count", b => (object?)(b.MaintenanceCount ?? 0), css: "text-end", headerCss: "text-end").Add("Primary Mode / Cause", b => DataCell.Join((b.PrimaryFailureMode ?? "-"), " / ", (b.PrimaryFailureCause ?? "-")), css: "small text-muted").Add("Why Ranked Here", b => (object?)(string.Join(" · ", b.RankFactors)), css: "small text-muted")))" dense="true" css="mb-0" />
             @if (!badActors.Any()) { <p class="text-muted text-center py-4 mb-0">@Localizer["داده‌ای موجود نیست."]</p> }
         </pems-content-card>
     </pems-tab-pane>
@@ -189,15 +154,7 @@
     <pems-tab-pane fade="true" id="tab-trend">
         <pems-content-card>
             <p class="text-muted small">هر نقطه تعداد رویداد واقعی (Observation Count) خودش را نشان می‌دهد - روندهای با نمونه‌ی کوچک باید با احتیاط تفسیر شوند.</p>
-            <pems-table kind="enterprise" scale="small" css="mb-0">
-                <thead><tr><th>Period</th><th class="text-end">Failures (Observations)</th><th class="text-end">@Localizer["Downtime"]</th></tr></thead>
-                <tbody>
-                    @foreach (var t in monthlyTrend)
-                    {
-                        <tr><td>@t.PeriodLabel</td><td class="text-end">@t.FailureCount</td><td class="text-end">@t.TotalDowntimeHours.ToString("N1")h</td></tr>
-                    }
-                </tbody>
-            </pems-table>
+            <pems-data-table data="@(DataRows.Of(monthlyTrend, c_ => c_.Add("Period", t => (object?)(t.PeriodLabel)).Add("Failures (Observations)", t => (object?)(t.FailureCount), css: "text-end", headerCss: "text-end").Add(((Localizer["Downtime"])?.ToString() ?? ""), t => DataCell.Join((t.TotalDowntimeHours.ToString("N1")), "h"), css: "text-end", headerCss: "text-end")))" dense="true" css="mb-0" />
             @if (!monthlyTrend.Any()) { <p class="text-muted text-center py-4 mb-0">@Localizer["داده‌ای موجود نیست."]</p> }
         </pems-content-card>
     </pems-tab-pane>

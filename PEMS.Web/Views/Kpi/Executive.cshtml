@@ -93,28 +93,12 @@
 
             @if (sec == KpiSections.Equipment && d.EquipmentByStatus.Count > 0)
             {
-                <pems-table scale="small" css="table-enterprise pems-kpi-table">
-                    <thead><tr><th>@Localizer["Kpi_Exec_Status"]</th><th class="text-end">@Localizer["Kpi_Exec_Count"]</th></tr></thead>
-                    <tbody>
-                    @foreach (var s in d.EquipmentByStatus)
-                    {
-                        <tr><td>@s.Name</td><td class="text-end">@s.Count.ToString("N0", inv)</td></tr>
-                    }
-                    </tbody>
-                </pems-table>
+                <pems-data-table data="@(DataRows.Of(d.EquipmentByStatus, c_ => c_.Add(((Localizer["Kpi_Exec_Status"])?.ToString() ?? ""), s => (object?)(s.Name)).Add(((Localizer["Kpi_Exec_Count"])?.ToString() ?? ""), s => (object?)(s.Count.ToString("N0", inv)), css: "text-end", headerCss: "text-end")))" enterprise="false" dense="true" css="table-enterprise pems-kpi-table" />
             }
 
             @if (sec == KpiSections.Cost && d.TopEquipmentByCost.Count > 0)
             {
-                <pems-table scale="small" css="table-enterprise pems-kpi-table">
-                    <thead><tr><th>@Localizer["Kpi_Exec_TopCost"]</th><th class="text-end">@Localizer["Kpi_Name_cost_total"]</th></tr></thead>
-                    <tbody>
-                    @foreach (var e in d.TopEquipmentByCost)
-                    {
-                        <tr><td>@e.TagNumber</td><td class="text-end">@e.Cost.ToString("N0", inv)</td></tr>
-                    }
-                    </tbody>
-                </pems-table>
+                <pems-data-table data="@(DataRows.Of(d.TopEquipmentByCost, c_ => c_.Add(((Localizer["Kpi_Exec_TopCost"])?.ToString() ?? ""), e => (object?)(e.TagNumber)).Add(((Localizer["Kpi_Name_cost_total"])?.ToString() ?? ""), e => (object?)(e.Cost.ToString("N0", inv)), css: "text-end", headerCss: "text-end")))" enterprise="false" dense="true" css="table-enterprise pems-kpi-table" />
             }
         </section>
     }

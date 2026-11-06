@@ -94,19 +94,5 @@
 
 <pems-content-card>
     <h6 class="mb-3">@Localizer["Status History"]</h6>
-    <pems-table kind="enterprise" scale="small" css="mb-0">
-        <thead><tr><th>@Localizer["From"]</th><th>To</th><th>By</th><th>@Localizer["Date"]</th><th>@Localizer["Reason"]</th></tr></thead>
-        <tbody>
-            @foreach (var h in Model.StatusHistory)
-            {
-                <tr>
-                    <td class="small">@h.FromStatus</td>
-                    <td class="small">@h.ToStatus</td>
-                    <td class="small">@(h.ChangedByName ?? "-")</td>
-                    <td class="small">@h.ChangedDate.ToString("yyyy-MM-dd HH:mm")</td>
-                    <td class="small text-muted">@h.Reason</td>
-                </tr>
-            }
-        </tbody>
-    </pems-table>
+    <pems-data-table data="@(DataRows.Of(Model.StatusHistory, c_ => c_.Add(((Localizer["From"])?.ToString() ?? ""), h => (object?)(h.FromStatus), css: "small").Add("To", h => (object?)(h.ToStatus), css: "small").Add("By", h => (object?)(h.ChangedByName ?? "-"), css: "small").Add(((Localizer["Date"])?.ToString() ?? ""), h => (object?)(h.ChangedDate.ToString("yyyy-MM-dd HH:mm")), css: "small").Add(((Localizer["Reason"])?.ToString() ?? ""), h => (object?)(h.Reason), css: "small text-muted")))" dense="true" css="mb-0" />
 </pems-content-card>

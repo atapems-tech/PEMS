@@ -99,4 +99,5 @@ public static class UiKeys
     public const string StatGrid = "stat-grid";
     public const string Metric = "metric";
     public const string PageHero = "page-hero";
+    public const string DataTable = "data-table";
 }

@@ -110,22 +110,7 @@
 
     <pems-tab-pane fade="true" id="tab-tx" role="tabpanel">
         <pems-content-card>
-            <pems-table kind="enterprise">
-                <thead><tr><th>@Localizer["Date"]</th><th>@Localizer["Type"]</th><th>@Localizer["Warehouse"]</th><th>@Localizer["Qty"]</th><th>@Localizer["Reference"]</th><th>By</th></tr></thead>
-                <tbody>
-                    @foreach (var t in Model.RecentTransactions)
-                    {
-                        <tr>
-                            <td class="small">@t.TransactionDate.ToString("yyyy-MM-dd HH:mm")</td>
-                            <td><pems-badge tone="light">@t.TransactionType</pems-badge></td>
-                            <td>@t.WarehouseCode</td>
-                            <td>@t.Quantity</td>
-                            <td class="small">@(t.ReferenceType ?? "-") @(t.ReferenceId?.ToString() ?? "")</td>
-                            <td class="small">@(t.EmployeeName ?? "-")</td>
-                        </tr>
-                    }
-                </tbody>
-            </pems-table>
+            <pems-data-table data="@(DataRows.Of(Model.RecentTransactions, c_ => c_.Add(((Localizer["Date"])?.ToString() ?? ""), t => (object?)(t.TransactionDate.ToString("yyyy-MM-dd HH:mm")), css: "small").Add(((Localizer["Type"])?.ToString() ?? ""), t => (object?)(t.TransactionType), kind: DataCellKind.Badge, tone: t => "light").Add(((Localizer["Warehouse"])?.ToString() ?? ""), t => (object?)(t.WarehouseCode)).Add(((Localizer["Qty"])?.ToString() ?? ""), t => (object?)(t.Quantity)).Add(((Localizer["Reference"])?.ToString() ?? ""), t => DataCell.Join((t.ReferenceType ?? "-"), " ", (t.ReferenceId?.ToString() ?? "")), css: "small").Add("By", t => (object?)(t.EmployeeName ?? "-"), css: "small")))" />
             @if (!Model.RecentTransactions.Any()) { <p class="text-muted text-center py-4">@Localizer["هنوز تراکنشی ثبت نشده."]</p> }
         </pems-content-card>
     </pems-tab-pane>

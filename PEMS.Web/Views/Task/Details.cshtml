@@ -227,20 +227,7 @@
             else
             {
                 <pems-table-scroll>
-                    <pems-table scale="small" css="vs-dense mb-0">
-                        <thead><tr><th>@Localizer["Tm_When"]</th><th>@Localizer["Tm_Who"]</th><th>@Localizer["Tm_Action"]</th><th>@Localizer["Tm_Changes"]</th></tr></thead>
-                        <tbody>
-                            @foreach (var h in history)
-                            {
-                                <tr>
-                                    <td class="small text-nowrap">@h.Timestamp.ToString("yyyy-MM-dd HH:mm", System.Globalization.CultureInfo.InvariantCulture)</td>
-                                    <td class="small">@h.UserName</td>
-                                    <td class="small">@TaskManagerUi.Localized(Localizer, "Tm_Audit_" + h.Action, h.Action)</td>
-                                    <td class="small tm-text">@h.Changes</td>
-                                </tr>
-                            }
-                        </tbody>
-                    </pems-table>
+                    <pems-data-table data="@(DataRows.Of(history, c_ => c_.Add(((Localizer["Tm_When"])?.ToString() ?? ""), h => (object?)(h.Timestamp.ToString("yyyy-MM-dd HH:mm", System.Globalization.CultureInfo.InvariantCulture)), css: "small text-nowrap").Add(((Localizer["Tm_Who"])?.ToString() ?? ""), h => (object?)(h.UserName), css: "small").Add(((Localizer["Tm_Action"])?.ToString() ?? ""), h => (object?)(TaskManagerUi.Localized(Localizer, "Tm_Audit_" + h.Action, h.Action)), css: "small").Add(((Localizer["Tm_Changes"])?.ToString() ?? ""), h => (object?)(h.Changes), css: "small tm-text")))" enterprise="false" dense="true" css="vs-dense mb-0" />
                 </pems-table-scroll>
             }
         </section>

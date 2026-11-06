@@ -112,22 +112,7 @@
 
     <pems-tab-pane fade="true" id="tab-evidence">
         <pems-content-card>
-            <pems-table kind="enterprise" scale="small" css="mb-0">
-                <thead><tr><th>@Localizer["Source Type"]</th><th>@Localizer["Identifier"]</th><th>@Localizer["Reference"]</th><th>@Localizer["Description"]</th><th>By</th><th>@Localizer["Date"]</th></tr></thead>
-                <tbody>
-                    @foreach (var e in Model.Evidence)
-                    {
-                        <tr>
-                            <td class="small">@e.SourceType</td>
-                            <td class="small">@(e.SourceIdentifier ?? "-")</td>
-                            <td class="small">@(e.Reference ?? "-")</td>
-                            <td class="small">@e.Description</td>
-                            <td class="small">@(e.CreatedBy ?? "-")</td>
-                            <td class="small">@e.CreatedDate.ToString("yyyy-MM-dd")</td>
-                        </tr>
-                    }
-                </tbody>
-            </pems-table>
+            <pems-data-table data="@(DataRows.Of(Model.Evidence, c_ => c_.Add(((Localizer["Source Type"])?.ToString() ?? ""), e => (object?)(e.SourceType), css: "small").Add(((Localizer["Identifier"])?.ToString() ?? ""), e => (object?)(e.SourceIdentifier ?? "-"), css: "small").Add(((Localizer["Reference"])?.ToString() ?? ""), e => (object?)(e.Reference ?? "-"), css: "small").Add(((Localizer["Description"])?.ToString() ?? ""), e => (object?)(e.Description), css: "small").Add("By", e => (object?)(e.CreatedBy ?? "-"), css: "small").Add(((Localizer["Date"])?.ToString() ?? ""), e => (object?)(e.CreatedDate.ToString("yyyy-MM-dd")), css: "small")))" dense="true" css="mb-0" />
             @if (!Model.Evidence.Any()) { <p class="text-muted text-center py-4 mb-0">@Localizer["هنوز هیچ شاهدی ثبت نشده - قبل از ارسال برای بازبینی، حداقل یکی الزامی است."]</p> }
         </pems-content-card>
     </pems-tab-pane>

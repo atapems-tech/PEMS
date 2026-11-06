@@ -275,22 +275,7 @@
     {
         <details class="mt-2 small">
             <summary class="text-muted">Hold History (@holdHistory.Count)</summary>
-            <pems-table scale="small" css="table-enterprise mt-1">
-                <thead><tr><th>@Localizer["Reason"]</th><th>Held</th><th>By</th><th>Released</th><th>By</th><th>Release Reason</th></tr></thead>
-                <tbody>
-                    @foreach (var h in holdHistory)
-                    {
-                        <tr>
-                            <td>@h.Reason</td>
-                            <td>@h.HoldDate.ToString("yyyy-MM-dd HH:mm")</td>
-                            <td>@h.HoldByName</td>
-                            <td>@(h.ReleaseDate?.ToString("yyyy-MM-dd HH:mm") ?? "-")</td>
-                            <td>@h.ReleaseByName</td>
-                            <td>@h.ReleaseReason</td>
-                        </tr>
-                    }
-                </tbody>
-            </pems-table>
+            <pems-data-table data="@(DataRows.Of(holdHistory, c_ => c_.Add(((Localizer["Reason"])?.ToString() ?? ""), h => (object?)(h.Reason)).Add("Held", h => (object?)(h.HoldDate.ToString("yyyy-MM-dd HH:mm"))).Add("By", h => (object?)(h.HoldByName)).Add("Released", h => (object?)(h.ReleaseDate?.ToString("yyyy-MM-dd HH:mm") ?? "-")).Add("By", h => (object?)(h.ReleaseByName)).Add("Release Reason", h => (object?)(h.ReleaseReason))))" enterprise="false" dense="true" css="table-enterprise mt-1" />
         </details>
     }
 
@@ -758,22 +743,7 @@
 
                 <details class="mt-3 small">
                     <summary class="text-muted">Full audit table (@orderedWorkflow.Count)</summary>
-                    <pems-table kind="enterprise" css="mt-2">
-                        <thead><tr><th>@Localizer["From"]</th><th>To</th><th>@Localizer["Action"]</th><th>@Localizer["Comment"]</th><th>@Localizer["Date"]</th><th>@Localizer["User"]</th></tr></thead>
-                        <tbody>
-                            @foreach (var item in orderedWorkflow)
-                            {
-                                <tr>
-                                    <td>@(item.FromStageName ?? "—")</td>
-                                    <td>@(item.ToStageName ?? "—")</td>
-                                    <td><pems-badge tone="neutral">@item.ActionType</pems-badge></td>
-                                    <td>@item.Comment</td>
-                                    <td class="small text-muted">@item.ActionDate.ToString("yyyy-MM-dd HH:mm")</td>
-                                    <td>@(item.ActorName ?? "System")</td>
-                                </tr>
-                            }
-                        </tbody>
-                    </pems-table>
+                    <pems-data-table data="@(DataRows.Of(orderedWorkflow, c_ => c_.Add(((Localizer["From"])?.ToString() ?? ""), item => (object?)(item.FromStageName ?? "—")).Add("To", item => (object?)(item.ToStageName ?? "—")).Add(((Localizer["Action"])?.ToString() ?? ""), item => (object?)(item.ActionType), kind: DataCellKind.Badge, tone: item => "neutral").Add(((Localizer["Comment"])?.ToString() ?? ""), item => (object?)(item.Comment)).Add(((Localizer["Date"])?.ToString() ?? ""), item => (object?)(item.ActionDate.ToString("yyyy-MM-dd HH:mm")), css: "small text-muted").Add(((Localizer["User"])?.ToString() ?? ""), item => (object?)(item.ActorName ?? "System"))))" css="mt-2" />
                 </details>
             }
             else

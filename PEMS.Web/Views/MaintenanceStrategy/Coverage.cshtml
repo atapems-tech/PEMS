@@ -29,30 +29,14 @@
     <pems-col md="5">
         <pems-content-card css="mb-3">
             <h6 class="small fw-bold">@Localizer["Rcm_ByCriticality"]</h6>
-            <pems-table scale="small" css="table-enterprise">
-                <thead><tr><th>@Localizer["Rcm_Criticality"]</th><th>@Localizer["Rcm_Total"]</th><th>@Localizer["Rcm_WithStrategy"]</th><th>@Localizer["Rcm_WithoutStrategy"]</th><th>%</th></tr></thead>
-                <tbody>
-                @foreach (var r in Model.ByCriticality)
-                {
-                    <tr><td><pems-badge tone="@RcmDisplay.CriticalityBadge(r.Key)">@Localizer.Label("Criticality", r.Key)</pems-badge></td><td>@r.TotalEquipment.ToString("N0")</td><td>@r.WithApprovedStrategy.ToString("N0")</td><td>@r.WithoutStrategy.ToString("N0")</td><td>@r.CoveragePercent</td></tr>
-                }
-                </tbody>
-            </pems-table>
+            <pems-data-table data="@(DataRows.Of(Model.ByCriticality, c_ => c_.Add(((Localizer["Rcm_Criticality"])?.ToString() ?? ""), r => (object?)(Localizer.Label("Criticality", r.Key)), kind: DataCellKind.Badge, tone: r => ((RcmDisplay.CriticalityBadge(r.Key))?.ToString())).Add(((Localizer["Rcm_Total"])?.ToString() ?? ""), r => (object?)(r.TotalEquipment.ToString("N0"))).Add(((Localizer["Rcm_WithStrategy"])?.ToString() ?? ""), r => (object?)(r.WithApprovedStrategy.ToString("N0"))).Add(((Localizer["Rcm_WithoutStrategy"])?.ToString() ?? ""), r => (object?)(r.WithoutStrategy.ToString("N0"))).Add("%", r => (object?)(r.CoveragePercent))))" enterprise="false" dense="true" css="table-enterprise" />
         </pems-content-card>
     </pems-col>
     <pems-col md="7">
         <pems-content-card css="mb-3">
             <h6 class="small fw-bold">@Localizer["Rcm_ByClass"]</h6>
             <div class="pems-s-5f8400ad">
-            <pems-table scale="small" css="table-enterprise">
-                <thead><tr><th>@Localizer["Rcm_EquipmentClass"]</th><th>@Localizer["Rcm_Total"]</th><th>@Localizer["Rcm_WithStrategy"]</th><th>@Localizer["Rcm_WithoutStrategy"]</th><th>%</th></tr></thead>
-                <tbody>
-                @foreach (var r in Model.ByClass)
-                {
-                    <tr><td>@(string.IsNullOrEmpty(r.Key) ? Localizer["Rcm_Unclassified"].Value : r.Key)</td><td>@r.TotalEquipment.ToString("N0")</td><td>@r.WithApprovedStrategy.ToString("N0")</td><td>@r.WithoutStrategy.ToString("N0")</td><td>@r.CoveragePercent</td></tr>
-                }
-                </tbody>
-            </pems-table>
+            <pems-data-table data="@(DataRows.Of(Model.ByClass, c_ => c_.Add(((Localizer["Rcm_EquipmentClass"])?.ToString() ?? ""), r => (object?)(string.IsNullOrEmpty(r.Key) ? Localizer["Rcm_Unclassified"].Value : r.Key)).Add(((Localizer["Rcm_Total"])?.ToString() ?? ""), r => (object?)(r.TotalEquipment.ToString("N0"))).Add(((Localizer["Rcm_WithStrategy"])?.ToString() ?? ""), r => (object?)(r.WithApprovedStrategy.ToString("N0"))).Add(((Localizer["Rcm_WithoutStrategy"])?.ToString() ?? ""), r => (object?)(r.WithoutStrategy.ToString("N0"))).Add("%", r => (object?)(r.CoveragePercent))))" enterprise="false" dense="true" css="table-enterprise" />
             </div>
         </pems-content-card>
     </pems-col>

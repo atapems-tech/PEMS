@@ -43,14 +43,7 @@
         </p>
         @if (dc.Any(r => r.Status != "CONSISTENT"))
         {
-            <pems-table-scroll><pems-table scale="small" css="table-enterprise">
-                <thead><tr><th>@Localizer["Org_Col_Holder"]</th><th>@Localizer["Org_Cons_EmpDept"]</th><th>@Localizer["Org_Col_Position"]</th><th>@Localizer["Org_Cons_PosDept"]</th><th></th></tr></thead>
-                <tbody>
-                @foreach (var r in dc.Where(r => r.Status != "CONSISTENT").Take(50))
-                {
-                    <tr><td>@r.EmployeeName</td><td>@(r.EmployeeDepartment ?? "—")</td><td>@r.PrimaryPositionTitle</td><td>@(r.PositionDepartment ?? "—")</td><td><code>@r.Status</code></td></tr>
-                }
-                </tbody></pems-table></pems-table-scroll>
+            <pems-table-scroll><pems-data-table data="@(DataRows.Of(dc.Where(r => r.Status != "CONSISTENT").Take(50), c_ => c_.Add(((Localizer["Org_Col_Holder"])?.ToString() ?? ""), r => (object?)(r.EmployeeName)).Add(((Localizer["Org_Cons_EmpDept"])?.ToString() ?? ""), r => (object?)(r.EmployeeDepartment ?? "—")).Add(((Localizer["Org_Col_Position"])?.ToString() ?? ""), r => (object?)(r.PrimaryPositionTitle)).Add(((Localizer["Org_Cons_PosDept"])?.ToString() ?? ""), r => (object?)(r.PositionDepartment ?? "—")).Add("", r => (object?)(r.Status), kind: DataCellKind.Code)))" enterprise="false" dense="true" css="table-enterprise" /></pems-table-scroll>
         }
         <h3 class="h6 mt-3">@Localizer["Org_Cons_Legacy"]</h3>
         <p class="small mb-1">

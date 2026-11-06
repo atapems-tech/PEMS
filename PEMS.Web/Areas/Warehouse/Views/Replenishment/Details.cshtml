@@ -140,23 +140,7 @@
 <pems-content-card>
     <h6>@Localizer["Repl_History"]</h6>
     <div class="pems-grid-scroll">
-        <pems-table kind="enterprise" css="mb-0">
-            <thead><tr><th>@Localizer["Date"]</th><th>@Localizer["Repl_Revision"]</th><th>@Localizer["Repl_Action"]</th><th>@Localizer["Status"]</th><th class="text-end">@Localizer["Repl_Shortage"]</th><th>@Localizer["Repl_By"]</th><th>@Localizer["Repl_Note"]</th></tr></thead>
-            <tbody>
-            @foreach (var h in Model.History)
-            {
-                <tr>
-                    <td class="small">@h.OccurredAt.ToString("yyyy-MM-dd HH:mm")</td>
-                    <td class="small">@h.Revision</td>
-                    <td class="small">@h.Action</td>
-                    <td class="small">@(h.FromStatus == null ? "" : h.FromStatus + " → ")@h.ToStatus</td>
-                    <td class="small text-end">@h.ShortageQuantity.ToString("0.###")</td>
-                    <td class="small">@(h.ActorName ?? Localizer["Repl_System"])</td>
-                    <td class="small">@h.Note</td>
-                </tr>
-            }
-            </tbody>
-        </pems-table>
+        <pems-data-table data="@(DataRows.Of(Model.History, c_ => c_.Add(((Localizer["Date"])?.ToString() ?? ""), h => (object?)(h.OccurredAt.ToString("yyyy-MM-dd HH:mm")), css: "small").Add(((Localizer["Repl_Revision"])?.ToString() ?? ""), h => (object?)(h.Revision), css: "small").Add(((Localizer["Repl_Action"])?.ToString() ?? ""), h => (object?)(h.Action), css: "small").Add(((Localizer["Status"])?.ToString() ?? ""), h => DataCell.Join((h.FromStatus == null ? "" : h.FromStatus + " → "), (h.ToStatus)), css: "small").Add(((Localizer["Repl_Shortage"])?.ToString() ?? ""), h => (object?)(h.ShortageQuantity.ToString("0.###")), css: "small text-end", headerCss: "text-end").Add(((Localizer["Repl_By"])?.ToString() ?? ""), h => (object?)(h.ActorName ?? Localizer["Repl_System"]), css: "small").Add(((Localizer["Repl_Note"])?.ToString() ?? ""), h => (object?)(h.Note), css: "small")))" css="mb-0" />
     </div>
 </pems-content-card>
 

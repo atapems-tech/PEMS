@@ -41,20 +41,6 @@
 
 <pems-content-card>
     <h6 class="mb-2">Defined Models (@readiness.ModelCount total, @readiness.ValidatedModelCount validated)</h6>
-    <pems-table kind="enterprise" scale="small" css="mb-0">
-        <thead><tr><th>@Localizer["Target"]</th><th>Algorithm</th><th>Training Data</th><th>@Localizer["Validation"]</th><th class="text-end">Results</th></tr></thead>
-        <tbody>
-            @foreach (var m in Model)
-            {
-                <tr>
-                    <td>@m.TargetName</td>
-                    <td class="small">@m.Algorithm</td>
-                    <td><pems-badge tone="@StatusBadge(m.TrainingDataStatus)">@m.TrainingDataStatus</pems-badge></td>
-                    <td class="small">@m.ValidationStatus</td>
-                    <td class="text-end">@m.ResultCount</td>
-                </tr>
-            }
-        </tbody>
-    </pems-table>
+    <pems-data-table data="@(DataRows.Of(Model, c_ => c_.Add(((Localizer["Target"])?.ToString() ?? ""), m => (object?)(m.TargetName)).Add("Algorithm", m => (object?)(m.Algorithm), css: "small").Add("Training Data", m => (object?)(m.TrainingDataStatus), kind: DataCellKind.Badge, tone: m => ((StatusBadge(m.TrainingDataStatus))?.ToString())).Add(((Localizer["Validation"])?.ToString() ?? ""), m => (object?)(m.ValidationStatus), css: "small").Add("Results", m => (object?)(m.ResultCount), css: "text-end", headerCss: "text-end")))" dense="true" css="mb-0" />
     @if (!Model.Any()) { <p class="text-muted text-center py-4 mb-0">هیچ مدل پیش‌بینانه‌ای هنوز تعریف نشده - هیچ داده‌ی جعلی برای پرکردن این صفحه درج نشده.</p> }
 </pems-content-card>

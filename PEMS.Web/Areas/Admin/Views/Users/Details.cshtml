@@ -279,23 +279,7 @@
                     {
                         <p class="text-body-secondary small">@Localizer["Rows for this user's own role(s) only, from the same matrix maintained on the full Permission Matrix page."] <a asp-controller="PermissionMatrix" asp-action="Index">@Localizer["Open full matrix"]</a></p>
                         <pems-table-scroll>
-                            <pems-table kind="enterprise">
-                                <thead><tr><th>@Localizer["Role"]</th><th>@Localizer["Module"]</th><th>@Localizer["View"]</th><th>@Localizer["Create"]</th><th>@Localizer["Edit"]</th><th>@Localizer["Delete"]</th><th>@Localizer["Approve"]</th></tr></thead>
-                                <tbody>
-                                @foreach (var m in Model.MatrixRows.OrderBy(r => r.RoleName).ThenBy(r => r.ModuleName))
-                                {
-                                    <tr>
-                                        <td>@m.RoleName</td>
-                                        <td>@m.ModuleName</td>
-                                        <td>@(m.CanView ? "✓" : "")</td>
-                                        <td>@(m.CanCreate ? "✓" : "")</td>
-                                        <td>@(m.CanEdit ? "✓" : "")</td>
-                                        <td>@(m.CanDelete ? "✓" : "")</td>
-                                        <td>@(m.CanApprove ? "✓" : "")</td>
-                                    </tr>
-                                }
-                                </tbody>
-                            </pems-table>
+                            <pems-data-table data="@(DataRows.Of(Model.MatrixRows.OrderBy(r => r.RoleName).ThenBy(r => r.ModuleName), c_ => c_.Add(((Localizer["Role"])?.ToString() ?? ""), m => (object?)(m.RoleName)).Add(((Localizer["Module"])?.ToString() ?? ""), m => (object?)(m.ModuleName)).Add(((Localizer["View"])?.ToString() ?? ""), m => (object?)(m.CanView ? "✓" : "")).Add(((Localizer["Create"])?.ToString() ?? ""), m => (object?)(m.CanCreate ? "✓" : "")).Add(((Localizer["Edit"])?.ToString() ?? ""), m => (object?)(m.CanEdit ? "✓" : "")).Add(((Localizer["Delete"])?.ToString() ?? ""), m => (object?)(m.CanDelete ? "✓" : "")).Add(((Localizer["Approve"])?.ToString() ?? ""), m => (object?)(m.CanApprove ? "✓" : ""))))" />
                         </pems-table-scroll>
                     }
                 </pems-content-card>

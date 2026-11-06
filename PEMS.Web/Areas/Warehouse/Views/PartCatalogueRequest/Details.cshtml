@@ -239,21 +239,7 @@
             <section class="vs-panel pc-card">
                 <h2 class="vs-section__title"><pems-icon name="bi-clock-history" /> @Localizer["Pc_Det_History"]</h2>
                 <div class="pc-table-scroll">
-                    <pems-table scale="small" css="table-enterprise vs-dense mb-0">
-                        <thead><tr><th>@Localizer["Pc_Col_Date"]</th><th>@Localizer["Pc_Col_Stage"]</th><th>@Localizer["Pc_Col_Action"]</th><th>@Localizer["Pc_Col_Person"]</th><th>@L("Comment")</th></tr></thead>
-                        <tbody>
-                        @foreach (var h in d.Approvals)
-                        {
-                            <tr>
-                                <td class="vs-num text-nowrap">@h.ActionDate.ToString("yyyy-MM-dd HH:mm")</td>
-                                <td>@(string.IsNullOrEmpty(h.StepKey) ? "" : Localizer["Pc_Step_" + h.StepKey].Value)</td>
-                                <td>@Localizer["Pc_Action_" + h.Action]</td>
-                                <td>@h.ActorName</td>
-                                <td>@h.Comment</td>
-                            </tr>
-                        }
-                        </tbody>
-                    </pems-table>
+                    <pems-data-table data="@(DataRows.Of(d.Approvals, c_ => c_.Add(((Localizer["Pc_Col_Date"])?.ToString() ?? ""), h => (object?)(h.ActionDate.ToString("yyyy-MM-dd HH:mm")), css: "vs-num text-nowrap").Add(((Localizer["Pc_Col_Stage"])?.ToString() ?? ""), h => (object?)(string.IsNullOrEmpty(h.StepKey) ? "" : Localizer["Pc_Step_" + h.StepKey].Value)).Add(((Localizer["Pc_Col_Action"])?.ToString() ?? ""), h => (object?)(Localizer["Pc_Action_" + h.Action])).Add(((Localizer["Pc_Col_Person"])?.ToString() ?? ""), h => (object?)(h.ActorName)).Add(((L("Comment"))?.ToString() ?? ""), h => (object?)(h.Comment))))" enterprise="false" dense="true" css="table-enterprise vs-dense mb-0" />
                     @if (!d.Approvals.Any()) { <div class="vs-empty py-2">@Localizer["Pc_Empty_History"]</div> }
                 </div>
             </section>
@@ -263,15 +249,7 @@
             <section class="vs-panel pc-card">
                 <h2 class="vs-section__title"><pems-icon name="bi-chat-left-text" /> @L("Notes")</h2>
                 <div class="pc-table-scroll mb-2">
-                    <pems-table scale="small" css="table-enterprise vs-dense mb-0">
-                        <thead><tr><th>@Localizer["Pc_Col_Date"]</th><th>@Localizer["Pc_Col_Person"]</th><th>@Localizer["Pc_Col_Stage"]</th><th>@L("Text")</th></tr></thead>
-                        <tbody>
-                        @foreach (var n in d.Notes)
-                        {
-                            <tr><td class="vs-num text-nowrap">@n.CreatedDate.ToString("yyyy-MM-dd HH:mm")</td><td>@n.AuthorName</td><td>@(string.IsNullOrEmpty(n.StepKey) ? "" : Localizer["Pc_Step_" + n.StepKey].Value)</td><td>@n.Text</td></tr>
-                        }
-                        </tbody>
-                    </pems-table>
+                    <pems-data-table data="@(DataRows.Of(d.Notes, c_ => c_.Add(((Localizer["Pc_Col_Date"])?.ToString() ?? ""), n => (object?)(n.CreatedDate.ToString("yyyy-MM-dd HH:mm")), css: "vs-num text-nowrap").Add(((Localizer["Pc_Col_Person"])?.ToString() ?? ""), n => (object?)(n.AuthorName)).Add(((Localizer["Pc_Col_Stage"])?.ToString() ?? ""), n => (object?)(string.IsNullOrEmpty(n.StepKey) ? "" : Localizer["Pc_Step_" + n.StepKey].Value)).Add(((L("Text"))?.ToString() ?? ""), n => (object?)(n.Text))))" enterprise="false" dense="true" css="table-enterprise vs-dense mb-0" />
                     @if (!d.Notes.Any()) { <div class="vs-empty py-2">@Localizer["Pc_Empty_Notes"]</div> }
                 </div>
                 @if (d.Status is "InApproval" or "Draft" or "Returned")
