@@ -69,6 +69,13 @@ public sealed class AdoptionRatchetTests
         ("bare-button", new Regex(@"class=""btn(?![\w-])", RegexOptions.Compiled), true, true),
         ("inline-script", new Regex(@"<script>", RegexOptions.Compiled), true, false),
         ("js-built-markup", new Regex(@"\.innerHTML\s*\+?=|insertAdjacentHTML\(", RegexOptions.Compiled), false, true),
+        // SCRUM-509 (round 2): what the counters above do not see. Each is driven to zero by the component named in the comment; the baseline starts at today's size.
+        ("form", new Regex(@"<form\b", RegexOptions.Compiled), true, false),   // SCRUM-510: <pems-form>
+        ("raw-button", new Regex(@"<button\b", RegexOptions.Compiled), true, false),   // SCRUM-511: <pems-button> / <pems-tabs> / <pems-menu>
+        ("on-handler", new Regex(@"\son(click|change|submit|input|keyup|keydown|focus|blur|load|mouseover)=""", RegexOptions.Compiled), true, false),   // SCRUM-347 / #333: data-action handled by pems-ui.js
+        ("style-block", new Regex(@"<style\b", RegexOptions.Compiled), true, false),   // #333: named classes in pems-ui.css
+        ("raw-input", new Regex(@"<input\b(?![^>]*\btype=""hidden"")", RegexOptions.Compiled), true, false),   // pems-input / pems-check / pems-date (hidden inputs are data, not counted)
+        ("dom-builder", new Regex(@"\bcreateElement\(", RegexOptions.Compiled), false, true),   // SCRUM-512: script-templates (pems-template.js)
     ];
 
     [Fact]
@@ -129,6 +136,13 @@ public sealed class AdoptionRatchetTests
         Assert.Equal(0, Hits("alert-call", "window.alert2(); PemsAlert(x);"));
         Assert.Equal(1, Hits("js-built-markup", "el.innerHTML = '<b>' + t + '</b>';"));
         Assert.Equal(0, Hits("js-built-markup", "el.textContent = t;"));
+        Assert.Equal(2, Hits("form", "<form method=\"post\"><form>"));
+        Assert.Equal(0, Hits("form", "<pems-form method=\"post\"><formula>"));
+        Assert.Equal(1, Hits("raw-button", "<button type=\"button\">x</button><pems-button label=\"y\"/>"));
+        Assert.Equal(2, Hits("on-handler", "<a onclick=\"go()\">x</a><select onchange=\"f()\"></select><div data-onclick=\"x\">"));
+        Assert.Equal(1, Hits("style-block", "<style>.a{}</style><pems-style>"));
+        Assert.Equal(2, Hits("raw-input", "<input type=\"text\" /><input name=\"q\" /><input type=\"hidden\" name=\"id\" /><pems-input name=\"z\" />"));
+        Assert.Equal(1, Hits("dom-builder", "var li = document.createElement('li'); var t = tpl('x');"));
         Assert.Equal(2, Hits("info-grid", "<div><p class=\"vs-info__label\">A</p></div><dl><dt>B</dt><dd>b</dd></dl>"));
         Assert.Equal(0, Hits("info-grid", "<pems-info-item label=\"A\">a</pems-info-item><dd>x</dd>"));
         Assert.Equal(2, Hits("kpi-tile", "<div class=\"kpi-card\">1</div><a class=\"kpi-card kpi-link\">2</a>"));
@@ -161,6 +175,7 @@ public sealed class AdoptionRatchetTests
         foreach (var f in Directory.EnumerateFiles(Path.Combine(root, "PEMS.Web", "Views"), "*.cshtml", SearchOption.AllDirectories)) Scan(f, true);
         foreach (var f in Directory.EnumerateFiles(Path.Combine(root, "PEMS.Web", "Areas"), "*.cshtml", SearchOption.AllDirectories)) Scan(f, true);
         foreach (var f in Directory.EnumerateFiles(Path.Combine(root, "PEMS.Web", "wwwroot", "js"), "*.js", SearchOption.AllDirectories)) Scan(f, false);
+        foreach (var f in Directory.EnumerateFiles(Path.Combine(root, "PEMS.UI", "wwwroot"), "*.js", SearchOption.TopDirectoryOnly)) Scan(f, false);   // SCRUM-509: the library scripts count too
         return result;
     }
 
