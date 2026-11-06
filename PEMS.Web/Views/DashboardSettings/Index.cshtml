@@ -9,7 +9,7 @@
         to hide it, or drag the order number to change its position.
     </p>
 
-    <form asp-action="Save" method="post">
+    <pems-form asp-action="Save" method="post">
         <pems-table-scroll css="table-scroll-area pems-s-8da1c6e6">
         <pems-table kind="enterprise">
             <pems-table-head><pems-table-row><pems-table-header>Show</pems-table-header><pems-table-header>Widget</pems-table-header><pems-table-header>@Localizer["Order"]</pems-table-header><pems-table-header>@Localizer["Size"]</pems-table-header></pems-table-row></pems-table-head>
@@ -40,11 +40,11 @@
             <pems-button tone="primary" type="submit"><pems-icon name="bi-check-lg" /> Save Layout</pems-button>
             <pems-button tone="neutral" outline="true" as="a" asp-controller="Home" asp-action="Index">@Localizer["Back to Dashboard"]</pems-button>
         </pems-flex>
-    </form>
+    </pems-form>
 
-    <form asp-action="Reset" method="post" class="mt-2">
+    <pems-form asp-action="Reset" method="post" class="mt-2">
         <pems-button tone="danger" size="small" outline="true" type="submit" data-pems-confirm="Reset to default dashboard layout?">
             <pems-icon name="bi-arrow-counterclockwise" /> Reset to Default
         </pems-button>
-    </form>
+    </pems-form>
 </pems-content-card>

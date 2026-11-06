@@ -76,31 +76,31 @@
         }
         @if (Model.CanEdit && s.Status == "Draft")
         {
-            <form asp-action="Submit" asp-route-id="@s.MaintenanceStrategyId" method="post" class="d-inline">
+            <pems-form asp-action="Submit" asp-route-id="@s.MaintenanceStrategyId" method="post" class="d-inline">
                 <pems-button tone="none" size="small" css="btn-primary"><pems-icon name="bi-send" /> @Localizer["Rcm_SubmitForReview"]</pems-button>
-            </form>
+            </pems-form>
         }
         @if (Model.CanApprove && s.Status == "InReview")
         {
-            <form asp-action="Review" asp-route-id="@s.MaintenanceStrategyId" method="post"><pems-flex inline="true" gap="2">
+            <pems-form asp-action="Review" asp-route-id="@s.MaintenanceStrategyId" method="post"><pems-flex inline="true" gap="2">
                 <pems-input class="pems-w-220" scale="small" name="comment" placeholder="@Localizer["Rcm_Comment"]" />
                 <pems-button tone="success" size="small" name="approve" value="true"><pems-icon name="bi-check2" /> @Localizer["Rcm_Approve"]</pems-button>
                 <pems-button tone="danger" size="small" outline="true" name="approve" value="false"><pems-icon name="bi-x" /> @Localizer["Rcm_Reject"]</pems-button>
-            </pems-flex></form>
+            </pems-flex></pems-form>
             @if (Model.IsAuthorOrSubmitter) { <span class="small text-muted align-self-center">@Localizer["Rcm_SodNotice"]</span> }
         }
         @if (Model.CanApprove && s.Status == "Approved")
         {
-            <form asp-action="Activate" asp-route-id="@s.MaintenanceStrategyId" method="post"><pems-flex inline="true" gap="2" align="center">
+            <pems-form asp-action="Activate" asp-route-id="@s.MaintenanceStrategyId" method="post"><pems-flex inline="true" gap="2" align="center">
                 <pems-check-row css="small mb-0"><pems-input kind="check" type="checkbox" name="moveAssignments" value="true" checked id="mv" /><label class="form-check-label" for="mv">@Localizer["Rcm_MoveAssignments"]</label></pems-check-row>
                 <pems-button tone="success" size="small"><pems-icon name="bi-lightning" /> @Localizer["Rcm_Activate"]</pems-button>
-            </pems-flex></form>
+            </pems-flex></pems-form>
         }
         @if (Model.CanApprove && live)
         {
-            <form asp-action="Retire" asp-route-id="@s.MaintenanceStrategyId" method="post" class="d-inline" data-pems-confirm="@Localizer["Rcm_ConfirmRetire"]">
+            <pems-form asp-action="Retire" asp-route-id="@s.MaintenanceStrategyId" method="post" class="d-inline" data-pems-confirm="@Localizer["Rcm_ConfirmRetire"]">
                 <pems-button tone="danger" size="small" outline="true"><pems-icon name="bi-slash-circle" /> @Localizer["Rcm_Retire"]</pems-button>
-            </form>
+            </pems-form>
         }
     </pems-flex>
 </pems-content-card>
@@ -126,11 +126,11 @@
         @if (Model.CanApprove && usable)
         {
             <pems-flex gap="2">
-                <form asp-action="Assign" asp-route-id="@s.MaintenanceStrategyId" method="post"><pems-flex gap="2">
+                <pems-form asp-action="Assign" asp-route-id="@s.MaintenanceStrategyId" method="post"><pems-flex gap="2">
                     <pems-input class="pems-w-260" scale="small" type="text" placeholder="@Localizer["Rcm_SearchEquipmentPlaceholder"]" data-pems-search data-search-type="Equipment" data-search-hidden="#assignEquipmentId" autocomplete="off" required />
                     <input type="hidden" name="equipmentIds" id="assignEquipmentId" />
                     <pems-button tone="primary" size="small" outline="true">@Localizer["Rcm_AssignTag"]</pems-button>
-                </pems-flex></form>
+                </pems-flex></pems-form>
                 <pems-button tone="primary" size="small" outline="true" as="a" asp-action="BulkCreate" asp-route-strategyId="@s.MaintenanceStrategyId" asp-route-classId="@i.EquipmentClassId"><pems-icon name="bi-collection" /> @Localizer["Rcm_BulkAssign"]</pems-button>
             </pems-flex>
         }
@@ -164,12 +164,12 @@
                             <div class="text-muted">@a.OverrideJustification</div>
                             @if (a.OverrideStatus == "Pending" && Model.CanApprove)
                             {
-                                <form class="mt-1" asp-action="DecideOverride" method="post"><pems-flex gap="1">
+                                <pems-form class="mt-1" asp-action="DecideOverride" method="post"><pems-flex gap="1">
                                     <input type="hidden" name="assignmentId" value="@a.AssignmentId" /><input type="hidden" name="strategyId" value="@s.MaintenanceStrategyId" />
                                     <pems-input scale="small" name="comment" placeholder="@Localizer["Rcm_Comment"]" />
                                     <pems-button tone="success" size="small" name="approve" value="true">✓</pems-button>
                                     <pems-button tone="danger" size="small" outline="true" name="approve" value="false">✗</pems-button>
-                                </pems-flex></form>
+                                </pems-flex></pems-form>
                             }
                         }
                         else if (Model.CanEdit && usable)
@@ -180,10 +180,10 @@
                     <pems-table-cell class="text-end">
                         @if (Model.CanApprove)
                         {
-                            <form asp-action="Unassign" method="post" class="d-inline" data-pems-confirm="@Localizer["Rcm_ConfirmUnassign"]">
+                            <pems-form asp-action="Unassign" method="post" class="d-inline" data-pems-confirm="@Localizer["Rcm_ConfirmUnassign"]">
                                 <input type="hidden" name="assignmentId" value="@a.AssignmentId" /><input type="hidden" name="strategyId" value="@s.MaintenanceStrategyId" />
                                 <pems-button tone="danger" size="small" outline="true" css="py-0"><pems-icon name="bi-x-lg" /></pems-button>
-                            </form>
+                            </pems-form>
                         }
                     </pems-table-cell>
                 </pems-table-row>
@@ -231,7 +231,7 @@
 </pems-content-card>
 
 <pems-modal id="overrideModal" tabindex="-1">
-            <form asp-action="RequestOverride" method="post">
+            <pems-form asp-action="RequestOverride" method="post">
                 <input type="hidden" name="strategyId" value="@s.MaintenanceStrategyId" />
                 <input type="hidden" name="assignmentId" id="overrideAssignmentId" />
                 <pems-modal-header>@Localizer["Rcm_RequestOverride"] — <span id="overrideTag"></span></pems-modal-header>
@@ -245,7 +245,7 @@
                     <pems-button tone="neutral" outline="true" type="button" data-bs-dismiss="modal">@Localizer["Cancel"]</pems-button>
                     <pems-button tone="primary" type="submit">@Localizer["Save"]</pems-button>
                 </pems-modal-footer>
-            </form>
+            </pems-form>
         </pems-modal>
 
 @section Scripts {

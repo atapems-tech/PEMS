@@ -83,7 +83,7 @@
 </pems-list-page>
 
 <pems-modal id="createFlModal" tabindex="-1">
-        <form asp-action="Create" method="post">
+        <pems-form asp-action="Create" method="post">
             <pems-modal-header>@Localizer["Fl_New"]</pems-modal-header>
             <pems-modal-body>
                 <pems-row gap="2" css="mb-2">
@@ -111,11 +111,11 @@
                 <pems-button tone="neutral" size="small" outline="true" type="button" data-bs-dismiss="modal">@Localizer["Cancel"]</pems-button>
                 <pems-button tone="primary" size="small" type="submit">@Localizer["Create"]</pems-button>
             </pems-modal-footer>
-        </form>
+        </pems-form>
     </pems-modal>
 
 <pems-modal id="editFlModal" tabindex="-1">
-        <form asp-action="Edit" method="post">
+        <pems-form asp-action="Edit" method="post">
             <input type="hidden" name="id" id="editFlId" />
             <pems-modal-header>@Localizer["Fl_Edit"]</pems-modal-header>
             <pems-modal-body>
@@ -143,7 +143,7 @@
                 <pems-button tone="neutral" size="small" outline="true" type="button" data-bs-dismiss="modal">@Localizer["Cancel"]</pems-button>
                 <pems-button tone="primary" size="small" type="submit">@Localizer["Save"]</pems-button>
             </pems-modal-footer>
-        </form>
+        </pems-form>
     </pems-modal>
 
 );

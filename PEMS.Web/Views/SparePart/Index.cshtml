@@ -86,10 +86,10 @@
                                 <button type="button" class="lp-act lp-act--always" data-bs-toggle="modal" data-bs-target="#editPartModal" data-fill-sparepartid="@p.SparePartId" data-fill-partnumber="@p.PartNumber" data-fill-partname="@p.PartName" data-fill-manufacturer="@p.Manufacturer" data-fill-model="@p.Model" data-fill-unit="@p.Unit" data-fill-storagelocation="@p.StorageLocation" data-fill-quantityonhand="@p.QuantityOnHand" data-fill-minstocklevel="@p.MinStockLevel" data-fill-reorderpoint="@p.ReorderPoint" data-fill-description="@p.Description" title="@Localizer["Edit"]" aria-label="@Localizer["Edit"]">
                                     <pems-icon name="bi-pencil" aria-hidden="true" />
                                 </button>
-                                <form asp-action="Deactivate" method="post" class="d-inline">
+                                <pems-form asp-action="Deactivate" method="post" class="d-inline">
                                     <input type="hidden" name="sparePartId" value="@p.SparePartId" />
                                     <button type="submit" class="lp-act lp-act--always" title="@Localizer["Sp_Deactivate"]" aria-label="@Localizer["Sp_Deactivate"]"><pems-icon name="bi-slash-circle" aria-hidden="true" /></button>
-                                </form>
+                                </pems-form>
                             </pems-table-cell>
                         </pems-table-row>
                     }
@@ -113,7 +113,7 @@
 </pems-list-page>
 
 <pems-modal id="createPartModal" tabindex="-1">
-            <form asp-action="Create" method="post">
+            <pems-form asp-action="Create" method="post">
                 <pems-modal-header>@Localizer["Sp_New"]</pems-modal-header>
                 <pems-modal-body>
                     <pems-row gap="3">
@@ -134,13 +134,13 @@
                     <pems-button tone="neutral" outline="true" type="button" data-bs-dismiss="modal">@Localizer["Cancel"]</pems-button>
                     <pems-button tone="primary" type="submit">@Localizer["Save"]</pems-button>
                 </pems-modal-footer>
-            </form>
+            </pems-form>
         </pems-modal>
 
 @if (Model.Items.Any())
 {
     <pems-modal id="editPartModal" tabindex="-1">
-                <form asp-action="Edit" method="post">
+                <pems-form asp-action="Edit" method="post">
                     <input type="hidden" name="sparePartId" value="" />
                     <pems-modal-header>@Localizer["Sp_Edit"]</pems-modal-header>
                     <pems-modal-body>
@@ -161,7 +161,7 @@
                         <pems-button tone="neutral" outline="true" type="button" data-bs-dismiss="modal">@Localizer["Cancel"]</pems-button>
                         <pems-button tone="primary" type="submit">@Localizer["Save"]</pems-button>
                     </pems-modal-footer>
-                </form>
+                </pems-form>
             </pems-modal>
 }
 

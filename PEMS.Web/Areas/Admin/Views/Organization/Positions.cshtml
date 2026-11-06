@@ -23,7 +23,7 @@
 
     <section class="vs-panel mb-3">
         <h2 class="vs-section__title"><pems-icon name="bi-plus-circle" /> @Localizer["Org_Positions_New"]</h2>
-        <form asp-action="CreatePosition" method="post"><pems-row gap="2" css="align-items-end">
+        <pems-form asp-action="CreatePosition" method="post"><pems-row gap="2" css="align-items-end">
             <pems-col md="3"><pems-label for="npTitle">@Localizer["Org_Col_Position"]</pems-label><pems-input scale="small" id="npTitle" name="title" maxlength="150" required /></pems-col>
             <pems-col md="2"><pems-label for="npCode">@Localizer["Org_Col_Code"]</pems-label><pems-input scale="small" id="npCode" name="positionCode" maxlength="50" /></pems-col>
             <pems-col md="3">
@@ -42,11 +42,11 @@
             </pems-col>
             <pems-col md="1"><button class="vs-btn vs-btn--primary vs-btn--sm w-100" aria-label="@Localizer["Org_Positions_New"]"><pems-icon name="bi-plus-lg" /></button></pems-col>
             <pems-col span="12"><pems-input scale="small" name="description" maxlength="500" placeholder="@Localizer["Description"]" aria-label="@Localizer["Description"]" /></pems-col>
-        </pems-row></form>
+        </pems-row></pems-form>
         <p class="small text-muted mt-2 mb-0">@Localizer["Org_Positions_Note"]</p>
     </section>
 
-    <form class="mb-3" method="get"><pems-flex gap="2" wrap="true">
+    <pems-form class="mb-3" method="get"><pems-flex gap="2" wrap="true">
         <pems-input class="pems-maxw-260" scale="small" name="q" value="@ViewBag.Query" placeholder="@Localizer["Org_Positions_Search"]" aria-label="@Localizer["Org_Positions_Search"]" />
         <pems-select class="pems-maxw-180" scale="small" name="status" aria-label="@Localizer["Org_Filter_Status"]">
             <option value="" selected="@(status == "")">@Localizer["Org_Filter_All"]</option>
@@ -55,7 +55,7 @@
             <option value="inactive" selected="@(status == "inactive")">@Localizer["Org_Inactive"]</option>
         </pems-select>
         <button class="vs-btn vs-btn--sm"><pems-icon name="bi-funnel" /> @Localizer["Org_Filter_Apply"]</button>
-    </pems-flex></form>
+    </pems-flex></pems-form>
 
     <pems-table-scroll>
         <pems-table scale="small" css="table-enterprise align-middle">
@@ -65,7 +65,7 @@
             {
                 <pems-table-row class="@(r.IsActive ? "" : "text-muted")">
                     <pems-table-cell colspan="3" class="p-1">
-                        <form asp-action="EditPosition" method="post"><pems-row gap="1" css="align-items-center">
+                        <pems-form asp-action="EditPosition" method="post"><pems-row gap="1" css="align-items-center">
                             <input type="hidden" name="positionId" value="@r.PositionId" />
                             <pems-col md="3"><pems-input scale="small" name="positionCode" value="@r.PositionCode" maxlength="50" aria-label="@Localizer["Org_Col_Code"]" /></pems-col>
                             <pems-col md="5"><pems-input scale="small" name="title" value="@r.Title" maxlength="150" required aria-label="@Localizer["Org_Col_Position"]" /></pems-col>
@@ -78,16 +78,16 @@
                             </pems-col>
                             <input type="hidden" name="description" value="@r.Description" />
                             <pems-col md="1"><button class="vs-btn vs-btn--sm" title="@Localizer["Org_Btn_Save"]" aria-label="@Localizer["Org_Btn_Save"]"><pems-icon name="bi-save" /></button></pems-col>
-                        </pems-row></form>
+                        </pems-row></pems-form>
                     </pems-table-cell>
                     <pems-table-cell class="small">@(r.ParentLabel ?? "—")</pems-table-cell>
                     <pems-table-cell class="small">@(r.IsVacant ? "—" : r.HolderName)</pems-table-cell>
                     <pems-table-cell><pems-badge tone="none" css="@(r.Lifecycle == "OCCUPIED" ? "bg-success" : r.Lifecycle == "VACANT" ? "bg-warning text-dark" : "bg-secondary")">@r.Lifecycle</pems-badge></pems-table-cell>
                     <pems-table-cell class="text-end">
-                        <form asp-action="SetPositionActive" method="post" class="d-inline">
+                        <pems-form asp-action="SetPositionActive" method="post" class="d-inline">
                             <input type="hidden" name="positionId" value="@r.PositionId" /><input type="hidden" name="isActive" value="@((!r.IsActive).ToString().ToLowerInvariant())" />
                             <pems-button tone="none" size="small" css="@(r.IsActive ? "btn-outline-danger" : "btn-outline-success")">@(r.IsActive ? Localizer["Deactivate"] : Localizer["Reactivate"])</pems-button>
-                        </form>
+                        </pems-form>
                     </pems-table-cell>
                 </pems-table-row>
             }

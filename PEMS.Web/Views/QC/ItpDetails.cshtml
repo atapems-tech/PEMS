@@ -12,10 +12,10 @@
         <pems-badge tone="none" css="@(Model.Status == "Active" ? "bg-success" : Model.Status == "Draft" ? "bg-secondary" : "bg-info") fs-6">@Model.Status</pems-badge>
         @if (Model.Status == "Draft")
         {
-            <form asp-action="ItpApprove" method="post">
+            <pems-form asp-action="ItpApprove" method="post">
                 <input type="hidden" name="id" value="@Model.InspectionTestPlanId" />
                 <pems-button tone="success" size="small"><pems-icon name="bi-check-lg" /> Approve &amp; Activate</pems-button>
-            </form>
+            </pems-form>
         }
     </pems-flex>
 </pems-flex>
@@ -68,11 +68,11 @@
                     <pems-table-cell><pems-flex dir="column" gap="1">
                         @if (li.InspectionCategory == "H" && li.Status == "Pending")
                         {
-                            <form asp-action="ItpNotifyHoldPoint" method="post">
+                            <pems-form asp-action="ItpNotifyHoldPoint" method="post">
                                 <input type="hidden" name="lineItemId" value="@li.ITPLineItemId" />
                                 <input type="hidden" name="itpId" value="@Model.InspectionTestPlanId" />
                                 <pems-button tone="warning" size="small" css="w-100"><pems-icon name="bi-bell" /> Notify Hold Point</pems-button>
-                            </form>
+                            </pems-form>
                         }
                         @if (li.Status != "Passed" && li.Status != "Failed")
                         {
@@ -90,7 +90,7 @@
 
 <pems-content-card>
     <h6 class="mb-3"><pems-icon name="bi-plus-lg" /> Add Line Item</h6>
-    <form asp-action="ItpAddLineItem" method="post">
+    <pems-form asp-action="ItpAddLineItem" method="post">
         <input type="hidden" name="itpId" value="@Model.InspectionTestPlanId" />
         <pems-row gap="3">
             <pems-col md="6"><pems-label css="small">@Localizer["Activity"]</pems-label><pems-input scale="small" name="activity" required /></pems-col>
@@ -125,11 +125,11 @@
         <div class="mt-3">
             <pems-button tone="primary" size="small" type="submit">@Localizer["Add"]</pems-button>
         </div>
-    </form>
+    </pems-form>
 </pems-content-card>
 
     <pems-modal id="inspectModal" tabindex="-1">
-    <form asp-action="ItpPerformInspection" method="post">
+    <pems-form asp-action="ItpPerformInspection" method="post">
     <input type="hidden" name="lineItemId" value="" />
     <input type="hidden" name="itpId" value="@Model.InspectionTestPlanId" />
     <pems-modal-header>Perform Inspection - <span data-fill-text="activity"></span></pems-modal-header>
@@ -155,5 +155,5 @@
     <pems-button tone="neutral" size="small" outline="true" type="button" data-bs-dismiss="modal">@Localizer["Cancel"]</pems-button>
     <pems-button tone="primary" size="small" type="submit">Save Result</pems-button>
     </pems-modal-footer>
-    </form>
+    </pems-form>
     </pems-modal>

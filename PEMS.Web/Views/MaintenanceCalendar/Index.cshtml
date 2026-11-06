@@ -52,7 +52,7 @@
         </div>
     </pems-flex>
 
-    <form class="mb-1" method="get"><pems-flex wrap="true" gap="2" align="end">
+    <pems-form class="mb-1" method="get"><pems-flex wrap="true" gap="2" align="end">
         <input type="hidden" name="view" value="@view" />
         <input type="hidden" name="date" value="@anchor.ToString("yyyy-MM-dd")" />
         <div><pems-label css="small mb-1">@Localizer["Maintenance Team"]</pems-label>
@@ -84,7 +84,7 @@
                 { <option value="@s" selected="@(s == (string?)ViewBag.Priority)">@s</option> }
             </pems-select></div>
         <pems-button tone="neutral" size="small" outline="true" as="a" href="@Url.Action("Index", new { view })">@Localizer["Reset"]</pems-button>
-    </pems-flex></form>
+    </pems-flex></pems-form>
 </pems-content-card>
 
 @if (view == "month")

@@ -13,7 +13,7 @@
         variants (Tag No., Item Name, EQ Type, Discipline, Area, P&amp;ID, MR/MRQ No.). Review the
         recognized rows before they are added to the live Equipment register.
     </p>
-    <form asp-action="Upload" method="post" enctype="multipart/form-data"><pems-row gap="2" css="align-items-end">
+    <pems-form asp-action="Upload" method="post" enctype="multipart/form-data"><pems-row gap="2" css="align-items-end">
         <pems-col md="5">
             <pems-label css="small">@Localizer["Project"]</pems-label>
             <pems-select name="projectId" required>
@@ -27,7 +27,7 @@
         <pems-col md="2">
             <pems-button tone="primary" css="w-100" type="submit"><pems-icon name="bi-cloud-upload" /> @Localizer["Upload"]</pems-button>
         </pems-col>
-    </pems-row></form>
+    </pems-row></pems-form>
 </pems-content-card>
 
 <pems-content-card css="mb-3">
@@ -35,7 +35,7 @@
         Or, scan a PDF for tag-number-looking text (best-effort recognition, not a full structured
         extraction - you'll review and pick which tags to add).
     </p>
-    <form asp-action="ScanPdf" method="post" enctype="multipart/form-data"><pems-row gap="2" css="align-items-end">
+    <pems-form asp-action="ScanPdf" method="post" enctype="multipart/form-data"><pems-row gap="2" css="align-items-end">
         <pems-col md="5">
             <pems-label css="small">@Localizer["Project"]</pems-label>
             <pems-select name="projectId" required>
@@ -49,7 +49,7 @@
         <pems-col md="2">
             <pems-button tone="primary" outline="true" css="w-100" type="submit"><pems-icon name="bi-file-earmark-pdf" /> Scan PDF</pems-button>
         </pems-col>
-    </pems-row></form>
+    </pems-row></pems-form>
 </pems-content-card>
 
 <pems-content-card>

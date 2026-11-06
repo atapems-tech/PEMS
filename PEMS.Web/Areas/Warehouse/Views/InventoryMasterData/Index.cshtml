@@ -55,10 +55,10 @@
                             <pems-table-cell>@(c.Parent?.Name ?? "-")</pems-table-cell>
                             <pems-table-cell class="small text-muted">@(c.Description ?? "-")</pems-table-cell>
                             <pems-table-cell class="text-end">
-                                <form asp-action="ToggleCategoryActive" method="post" class="d-inline">
+                                <pems-form asp-action="ToggleCategoryActive" method="post" class="d-inline">
                                     <input type="hidden" name="id" value="@c.MaterialCategoryId" />
                                     <pems-button tone="neutral" size="small" outline="true" type="submit" data-pems-confirm="این دسته‌بندی غیرفعال بشه؟"><pems-icon name="bi-x-circle" /></pems-button>
-                                </form>
+                                </pems-form>
                             </pems-table-cell>
                         </pems-table-row>
                     }
@@ -85,10 +85,10 @@
                             <pems-table-cell>@u.Name</pems-table-cell>
                             <pems-table-cell>@(u.ConversionFactor?.ToString() ?? "-")</pems-table-cell>
                             <pems-table-cell class="text-end">
-                                <form asp-action="ToggleUomActive" method="post" class="d-inline">
+                                <pems-form asp-action="ToggleUomActive" method="post" class="d-inline">
                                     <input type="hidden" name="id" value="@u.MaterialUOMId" />
                                     <pems-button tone="neutral" size="small" outline="true" type="submit" data-pems-confirm="این واحد غیرفعال بشه؟"><pems-icon name="bi-x-circle" /></pems-button>
-                                </form>
+                                </pems-form>
                             </pems-table-cell>
                         </pems-table-row>
                     }
@@ -121,10 +121,10 @@
                                 <pems-button tone="none" size="small" css="btn-link p-0" type="button" data-bs-toggle="modal" data-bs-target="#addLocationModal" data-fill-warehouseid="@w.WarehouseId" data-fill-warehousecode="@w.Code">+ محل</pems-button>
                             </pems-table-cell>
                             <pems-table-cell class="text-end">
-                                <form asp-action="ToggleWarehouseActive" method="post" class="d-inline">
+                                <pems-form asp-action="ToggleWarehouseActive" method="post" class="d-inline">
                                     <input type="hidden" name="id" value="@w.WarehouseId" />
                                     <pems-button tone="neutral" size="small" outline="true" type="submit" data-pems-confirm="این انبار غیرفعال بشه؟"><pems-icon name="bi-x-circle" /></pems-button>
-                                </form>
+                                </pems-form>
                             </pems-table-cell>
                         </pems-table-row>
                     }
@@ -135,7 +135,7 @@
 </pems-tab-content>
 
 <pems-modal id="createCategoryModal" tabindex="-1">
-        <form asp-action="CreateCategory" method="post">
+        <pems-form asp-action="CreateCategory" method="post">
             <pems-modal-header>@Localizer["دسته‌بندی جدید"]</pems-modal-header>
             <pems-modal-body>
                 <div class="mb-2"><pems-label css="small">@Localizer["کد"]</pems-label><pems-input scale="small" name="code" required /></div>
@@ -153,11 +153,11 @@
                 <pems-button tone="neutral" size="small" outline="true" type="button" data-bs-dismiss="modal">@Localizer["انصراف"]</pems-button>
                 <pems-button tone="primary" size="small" type="submit">@Localizer["ساخت"]</pems-button>
             </pems-modal-footer>
-        </form>
+        </pems-form>
     </pems-modal>
 
 <pems-modal id="createUomModal" tabindex="-1">
-        <form asp-action="CreateUom" method="post">
+        <pems-form asp-action="CreateUom" method="post">
             <pems-modal-header>@Localizer["واحد اندازه‌گیری جدید"]</pems-modal-header>
             <pems-modal-body>
                 <div class="mb-2"><pems-label css="small">@Localizer["کد"]</pems-label><pems-input scale="small" name="code" required placeholder="@Localizer["مثلاً KG"]" /></div>
@@ -169,11 +169,11 @@
                 <pems-button tone="neutral" size="small" outline="true" type="button" data-bs-dismiss="modal">@Localizer["انصراف"]</pems-button>
                 <pems-button tone="primary" size="small" type="submit">@Localizer["ساخت"]</pems-button>
             </pems-modal-footer>
-        </form>
+        </pems-form>
     </pems-modal>
 
 <pems-modal id="createWarehouseModal" tabindex="-1">
-        <form asp-action="CreateWarehouse" method="post">
+        <pems-form asp-action="CreateWarehouse" method="post">
             <pems-modal-header>@Localizer["انبار جدید"]</pems-modal-header>
             <pems-modal-body>
                 <div class="mb-2"><pems-label css="small">@Localizer["کد"]</pems-label><pems-input scale="small" name="code" required placeholder="مثلاً WH-EL" /></div>
@@ -184,13 +184,13 @@
                 <pems-button tone="neutral" size="small" outline="true" type="button" data-bs-dismiss="modal">@Localizer["انصراف"]</pems-button>
                 <pems-button tone="primary" size="small" type="submit">@Localizer["ساخت"]</pems-button>
             </pems-modal-footer>
-        </form>
+        </pems-form>
     </pems-modal>
 
 @if (Model.Any())
 {
     <pems-modal id="addLocationModal" tabindex="-1">
-            <form asp-action="CreateStorageLocation" method="post">
+            <pems-form asp-action="CreateStorageLocation" method="post">
                 <input type="hidden" name="warehouseId" value="" />
                 <pems-modal-header>محل نگهداری جدید در <span data-fill-text="warehousecode"></span></pems-modal-header>
                 <pems-modal-body>
@@ -201,6 +201,6 @@
                     <pems-button tone="neutral" size="small" outline="true" type="button" data-bs-dismiss="modal">@Localizer["انصراف"]</pems-button>
                     <pems-button tone="primary" size="small" type="submit">@Localizer["ساخت"]</pems-button>
                 </pems-modal-footer>
-            </form>
+            </pems-form>
         </pems-modal>
 }

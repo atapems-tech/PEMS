@@ -94,7 +94,7 @@
 </div>
 
 <pems-modal id="assignFoundationModal" tabindex="-1">
-        <form asp-action="AssignFoundation" method="post">
+        <pems-form asp-action="AssignFoundation" method="post">
             <input type="hidden" name="equipmentId" value="@eq.EquipmentId" />
             <pems-modal-header>@Localizer["Cm_AssignTitle"]</pems-modal-header>
             <pems-modal-body>
@@ -137,7 +137,7 @@
                 <pems-button tone="neutral" size="small" outline="true" type="button" data-bs-dismiss="modal">@Localizer["Cancel"]</pems-button>
                 <pems-button tone="primary" size="small" type="submit">@Localizer["Save"]</pems-button>
             </pems-modal-footer>
-        </form>
+        </pems-form>
     </pems-modal>
 
 @if (Model.SuggestedLinks.Any())
@@ -423,7 +423,7 @@
             else
             {
                 <p class="text-muted small">@Localizer["Cm_NoAsset"]</p>
-                <form asp-controller="Asset" asp-action="Create" method="post"><pems-row gap="2" css="align-items-end">
+                <pems-form asp-controller="Asset" asp-action="Create" method="post"><pems-row gap="2" css="align-items-end">
                     <input type="hidden" name="equipmentId" value="@eq.EquipmentId" />
                     <pems-col md="4">
                         <pems-label css="small">@Localizer["Asset Number"]</pems-label>
@@ -437,7 +437,7 @@
                         <input type="hidden" name="status" value="Active" />
                         <pems-button tone="primary" size="small" type="submit"><pems-icon name="bi-plus-lg" /> @Localizer["Cm_CreateAsset"]</pems-button>
                     </pems-col>
-                </pems-row></form>
+                </pems-row></pems-form>
             }
         </pems-content-card>
     </pems-tab-pane>
@@ -677,10 +677,10 @@
                             <pems-table-cell>
                                 @if (i.ConditionStatus == "Alert")
                                 {
-                                    <form asp-controller="Inspection" asp-action="RaiseWorkRequest" method="post" class="d-inline">
+                                    <pems-form asp-controller="Inspection" asp-action="RaiseWorkRequest" method="post" class="d-inline">
                                         <input type="hidden" name="inspectionRecordId" value="@i.InspectionRecordId" />
                                         <pems-button tone="danger" size="small" outline="true" type="submit"><pems-icon name="bi-exclamation-triangle" /> @Localizer["Cm_RaiseWr"]</pems-button>
-                                    </form>
+                                    </pems-form>
                                 }
                             </pems-table-cell>
                         </pems-table-row>
@@ -691,7 +691,7 @@
         </pems-content-card>
 
         <pems-modal id="newInspectionModal" tabindex="-1">
-                <form asp-controller="Inspection" asp-action="Create" method="post">
+                <pems-form asp-controller="Inspection" asp-action="Create" method="post">
                     <input type="hidden" name="equipmentId" value="@eq.EquipmentId" />
                     <pems-modal-header>New Inspection</pems-modal-header>
                     <pems-modal-body>
@@ -724,7 +724,7 @@
                         <pems-button tone="neutral" size="small" outline="true" type="button" data-bs-dismiss="modal">@Localizer["Cancel"]</pems-button>
                         <pems-button tone="primary" size="small" type="submit">@Localizer["Save"]</pems-button>
                     </pems-modal-footer>
-                </form>
+                </pems-form>
             </pems-modal>
     </pems-tab-pane>
 

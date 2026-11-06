@@ -114,7 +114,7 @@
 </pems-list-page>
 
 <pems-modal id="createAssetModal" tabindex="-1">
-            <form asp-action="Create" method="post">
+            <pems-form asp-action="Create" method="post">
                 <pems-modal-header>@Localizer["As_NewAsset"]</pems-modal-header>
                 <pems-modal-body>
                     <p class="text-muted small">
@@ -185,7 +185,7 @@
                     <pems-button tone="neutral" outline="true" type="button" data-bs-dismiss="modal">@Localizer["Cancel"]</pems-button>
                     <pems-button tone="primary" type="submit">@Localizer["Save"]</pems-button>
                 </pems-modal-footer>
-            </form>
+            </pems-form>
         </pems-modal>
 
 @section Scripts {

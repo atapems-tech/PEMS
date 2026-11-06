@@ -9,10 +9,10 @@
 }
 
 <pems-content-card css="mb-3">
-    <form class="pems-s-04391f08" asp-action="Search" method="get"><pems-flex gap="2">
+    <pems-form class="pems-s-04391f08" asp-action="Search" method="get"><pems-flex gap="2">
         <pems-input type="search" name="q" value="@query" placeholder="@L("Search Help...", "جستجو در راهنما...")" />
         <pems-button tone="primary" type="submit"><pems-icon name="bi-search" /> @L("Search", "جستجو")</pems-button>
-    </pems-flex></form>
+    </pems-flex></pems-form>
 </pems-content-card>
 
 <pems-content-card>

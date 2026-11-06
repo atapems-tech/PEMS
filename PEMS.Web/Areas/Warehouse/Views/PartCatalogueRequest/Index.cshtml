@@ -105,14 +105,14 @@
                 <pems-list-reset-columns grid-key="PartCatalogueRequests" />
                 @if (Model.CanCreate)
                 {
-                    <form asp-action="New" method="post" class="d-inline">
+                    <pems-form asp-action="New" method="post" class="d-inline">
                         <input type="hidden" name="type" value="Change" />
                         <button type="submit" class="vs-btn vs-btn--sm"><pems-icon name="bi-pencil-square" aria-hidden="true" /> <span class="lp-compose-label">@Localizer["Pc_Btn_NewChange"]</span></button>
-                    </form>
-                    <form asp-action="New" method="post" class="d-inline">
+                    </pems-form>
+                    <pems-form asp-action="New" method="post" class="d-inline">
                         <input type="hidden" name="type" value="Add" />
                         <button type="submit" class="vs-btn vs-btn--primary vs-btn--sm"><pems-icon name="bi-plus-lg" aria-hidden="true" /> <span class="lp-compose-label">@Localizer["Pc_Btn_NewAdd"]</span></button>
-                    </form>
+                    </pems-form>
                 }
             </pems-list-tools>
         </pems-list-toolbar>

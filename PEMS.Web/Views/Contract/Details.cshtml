@@ -79,50 +79,50 @@
     <pems-flex gap="2" wrap="true">
         @if (Model.Status == "Draft" || Model.Status == "Rejected")
         {
-            <form asp-action="SubmitForReview" method="post" class="d-inline">
+            <pems-form asp-action="SubmitForReview" method="post" class="d-inline">
                 <input type="hidden" name="contractId" value="@Model.ContractId" />
                 <pems-button tone="none" size="small" css="btn-primary" type="submit">@Localizer["Submit for Multi-Discipline Review"]</pems-button>
-            </form>
+            </pems-form>
         }
         @if (Model.Status == "UnderReview")
         {
-            <form asp-action="Approve" method="post" class="d-inline">
+            <pems-form asp-action="Approve" method="post" class="d-inline">
                 <input type="hidden" name="contractId" value="@Model.ContractId" />
                 <pems-button tone="success" size="small" type="submit">@Localizer["Final Approve"]</pems-button>
-            </form>
-            <form asp-action="Reject" method="post" class="d-inline">
+            </pems-form>
+            <pems-form asp-action="Reject" method="post" class="d-inline">
                 <input type="hidden" name="contractId" value="@Model.ContractId" />
                 <pems-button tone="danger" size="small" outline="true" type="submit">@Localizer["Reject (back to Draft)"]</pems-button>
-            </form>
+            </pems-form>
         }
         @if (Model.Status == "Approved")
         {
-            <form asp-action="Sign" method="post" class="d-inline">
+            <pems-form asp-action="Sign" method="post" class="d-inline">
                 <input type="hidden" name="contractId" value="@Model.ContractId" />
                 <pems-button tone="warning" size="small" type="submit">@Localizer["Sign Contract"]</pems-button>
-            </form>
+            </pems-form>
         }
         @if (Model.Status == "Signed")
         {
-            <form asp-action="MarkEffective" method="post" class="d-inline">
+            <pems-form asp-action="MarkEffective" method="post" class="d-inline">
                 <input type="hidden" name="contractId" value="@Model.ContractId" />
                 <pems-button tone="success" size="small" type="submit">@Localizer["Mark Effective"]</pems-button>
-            </form>
+            </pems-form>
         }
         @if (Model.Status == "Effective")
         {
-            <form asp-action="Complete" method="post" class="d-inline">
+            <pems-form asp-action="Complete" method="post" class="d-inline">
                 <input type="hidden" name="contractId" value="@Model.ContractId" />
                 <pems-button tone="dark" size="small" type="submit">@Localizer["Complete Contract"]</pems-button>
-            </form>
+            </pems-form>
         }
         @if (Model.Status != "Completed" && Model.Status != "Terminated")
         {
-            <form asp-action="Terminate" method="post"><pems-flex gap="1" align="center">
+            <pems-form asp-action="Terminate" method="post"><pems-flex gap="1" align="center">
                 <input type="hidden" name="contractId" value="@Model.ContractId" />
                 <pems-input class="pems-w-160" scale="small" type="text" name="reason" placeholder="@Localizer["Reason"]" />
                 <pems-button tone="danger" size="small" outline="true" type="submit">@Localizer["Terminate Contract"]</pems-button>
-            </pems-flex></form>
+            </pems-flex></pems-form>
         }
     </pems-flex>
 </pems-content-card>
@@ -146,12 +146,12 @@
                         <pems-table-cell>
                             @if (r.Decision == "Pending")
                             {
-                                <form asp-action="RecordDisciplineReview" method="post"><pems-flex gap="1">
+                                <pems-form asp-action="RecordDisciplineReview" method="post"><pems-flex gap="1">
                                     <input type="hidden" name="contractId" value="@Model.ContractId" />
                                     <input type="hidden" name="disciplineRole" value="@r.DisciplineRole" />
                                     <pems-button tone="success" size="small" type="submit" name="decision" value="Approve">@Localizer["Approve"]</pems-button>
                                     <pems-button tone="danger" size="small" type="submit" name="decision" value="Reject">@Localizer["Reject"]</pems-button>
-                                </pems-flex></form>
+                                </pems-flex></pems-form>
                             }
                         </pems-table-cell>
                     </pems-table-row>
@@ -168,21 +168,21 @@
     {
         <pems-data-table data="@(DataRows.Of(contractDocuments, c_ => c_.Add(((Localizer["Doc No"])?.ToString() ?? ""), d => (object?)(d.DocumentNo)).Add(((Localizer["Title"])?.ToString() ?? ""), d => (object?)(d.Title)).Add(((Localizer["Type"])?.ToString() ?? ""), d => (object?)(d.DocumentType)).Add(((Localizer["Clause Reference"])?.ToString() ?? ""), d => (object?)(d.ClauseReference)).Add(((Localizer["Status"])?.ToString() ?? ""), d => (object?)(d.Status))))" enterprise="false" dense="true" />
     }
-    <form asp-action="AddDocument" method="post"><pems-row gap="2">
+    <pems-form asp-action="AddDocument" method="post"><pems-row gap="2">
         <input type="hidden" name="contractId" value="@Model.ContractId" />
         <pems-col md="2"><pems-input scale="small" type="text" name="documentNo" placeholder="@Localizer["Doc No"]" required /></pems-col>
         <pems-col md="3"><pems-input scale="small" type="text" name="title" placeholder="@Localizer["Title"]" required /></pems-col>
         <pems-col md="2"><pems-input scale="small" type="text" name="documentType" placeholder="@Localizer["Type"]" required /></pems-col>
         <pems-col md="3"><pems-input scale="small" type="text" name="clauseReference" placeholder="@Localizer["Clause Reference"]" /></pems-col>
         <pems-col md="2"><pems-button tone="none" size="small" css="btn-primary" type="submit">@Localizer["Add Document"]</pems-button></pems-col>
-    </pems-row></form>
+    </pems-row></pems-form>
 </pems-content-card>
 
 @if (Model.Status == "Signed" || Model.Status == "Effective")
 {
     <pems-content-card css="mt-3">
         <h6>@Localizer["Request Value Change (Variation / Change Order)"]</h6>
-        <form asp-action="RequestRevision" method="post"><pems-row gap="2">
+        <pems-form asp-action="RequestRevision" method="post"><pems-row gap="2">
             <input type="hidden" name="contractId" value="@Model.ContractId" />
             <pems-col md="3">
                 <pems-select scale="small" name="changeType">
@@ -195,7 +195,7 @@
             <pems-col md="3"><pems-input scale="small" type="text" name="reason" placeholder="@Localizer["Reason"]" /></pems-col>
             <pems-col md="3"><pems-input scale="small" type="text" name="changeDescription" placeholder="@Localizer["Description"]" /></pems-col>
             <pems-col md="1"><pems-button tone="none" size="small" css="btn-primary" type="submit">@Localizer["Request"]</pems-button></pems-col>
-        </pems-row></form>
+        </pems-row></pems-form>
     </pems-content-card>
 }
 
@@ -218,11 +218,11 @@
                         <pems-table-cell>
                             @if (r.Status == "Pending")
                             {
-                                <form asp-action="ApproveRevision" method="post" class="d-inline">
+                                <pems-form asp-action="ApproveRevision" method="post" class="d-inline">
                                     <input type="hidden" name="contractId" value="@Model.ContractId" />
                                     <input type="hidden" name="contractRevisionId" value="@r.ContractRevisionId" />
                                     <pems-button tone="success" size="small" type="submit">@Localizer["Approve"]</pems-button>
-                                </form>
+                                </pems-form>
                             }
                         </pems-table-cell>
                     </pems-table-row>
@@ -249,11 +249,11 @@
             }
             @if (Model.Status == "Signed" || Model.Status == "Effective")
             {
-                <form asp-action="IssueNtp" method="post"><pems-flex gap="1">
+                <pems-form asp-action="IssueNtp" method="post"><pems-flex gap="1">
                     <input type="hidden" name="contractId" value="@Model.ContractId" />
                     <pems-input scale="small" type="text" name="reference" placeholder="@Localizer["Reference"]" />
                     <pems-button tone="primary" size="small" outline="true" type="submit">@Localizer["Issue NTP"]</pems-button>
-                </pems-flex></form>
+                </pems-flex></pems-form>
             }
         </pems-col>
         <pems-col md="6">
@@ -269,12 +269,12 @@
             }
             @if (Model.Status == "Signed" || Model.Status == "Effective")
             {
-                <form asp-action="ScheduleKickoff" method="post"><pems-flex gap="1">
+                <pems-form asp-action="ScheduleKickoff" method="post"><pems-flex gap="1">
                     <input type="hidden" name="contractId" value="@Model.ContractId" />
                     <pems-date name="meetingDate" scale="small" required />
                     <pems-input scale="small" type="text" name="location" placeholder="@Localizer["Location"]" />
                     <pems-button tone="primary" size="small" outline="true" type="submit">@Localizer["Schedule"]</pems-button>
-                </pems-flex></form>
+                </pems-flex></pems-form>
             }
         </pems-col>
         <pems-col span="12">

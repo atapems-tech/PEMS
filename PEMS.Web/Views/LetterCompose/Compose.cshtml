@@ -217,7 +217,7 @@
             {
                 <section class="lc-card">
                     <h3><pems-icon name="bi-file-earmark-text" aria-hidden="true" /> @Localizer["LtT_UseTemplate"]</h3>
-                    <form method="get" asp-action="Compose"><pems-flex gap="2">
+                    <pems-form method="get" asp-action="Compose"><pems-flex gap="2">
                         <input type="hidden" name="letterType" value="@input.LetterType" />
                         @if (Model.ParentLetterId.HasValue) { <input type="hidden" name="replyTo" value="@Model.ParentLetterId" /> }
                         <pems-select name="templateId" aria-label="@Localizer["LtT_UseTemplate"]">
@@ -228,7 +228,7 @@
                             }
                         </pems-select>
                         <pems-button tone="neutral" outline="true" type="submit">@Localizer["LtT_Apply"]</pems-button>
-                    </pems-flex></form>
+                    </pems-flex></pems-form>
                     <div class="lc-help">@Localizer["Lc_TemplateWarn"]</div>
                 </section>
             }
@@ -361,10 +361,10 @@
         <pems-button tone="neutral" outline="true" type="button" id="lcPreviewBtn"><pems-icon name="bi-eye" aria-hidden="true" /> @Localizer["Lc_Preview"]</pems-button>
         @if (input.LetterId.HasValue)
         {
-            <form asp-action="Discard" asp-controller="LetterCompose" method="post" id="lcDiscardForm" class="d-inline">
+            <pems-form asp-action="Discard" asp-controller="LetterCompose" method="post" id="lcDiscardForm" class="d-inline">
                 <input type="hidden" name="letterId" value="@input.LetterId" />
                 <pems-button tone="danger" outline="true" type="submit" id="lcDiscardBtn"><pems-icon name="bi-trash" aria-hidden="true" /> @Localizer["Lc_Discard"]</pems-button>
-            </form>
+            </pems-form>
         }
         <span class="lc-spacer"></span>
         <pems-button as="a" tone="none" css="btn-link" asp-controller="Letter" asp-action="Index">@Localizer["Lc_Cancel"]</pems-button>

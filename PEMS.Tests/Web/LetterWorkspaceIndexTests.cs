@@ -158,7 +158,10 @@ public class LetterWorkspaceIndexTests
     {
         var html = await Render(NoFilters(), new[] { Row(1) }, query: "pump");
 
-        Assert.Matches(@"<form method=""get"" class=""lp-search"" id=""lpSearchForm"" role=""search"" hidden>", html);
+        // the form element is written by the form-frame component: the same attributes (the class first), hidden written as hidden=""
+        var form = System.Text.RegularExpressions.Regex.Match(html, @"<form\b[^>]*\bid=""lpSearchForm""[^>]*>").Value;
+        Assert.NotEmpty(form);
+        foreach (var attribute in new[] { @"method=""get""", @"class=""lp-search""", @"role=""search""", @"hidden" }) Assert.Contains(attribute, form);
         Assert.Matches(@"<input type=""search"" name=""q"" id=""lpSearchInput"" value=""pump""[^>]*data-pems-search data-search-type=""Letter""", html);
         Assert.Matches(@"id=""lpSearchBtn""[^>]*aria-expanded=""false""", html);
     }

@@ -28,7 +28,7 @@
 
 <pems-content-card css="mb-3">
     <h6 class="mb-3">Minutes / Notes</h6>
-    <form asp-action="UpdateMinutes" method="post">
+    <pems-form asp-action="UpdateMinutes" method="post">
         <input type="hidden" name="meetingId" value="@m.MeetingId" />
         <pems-textarea name="minutesNotes" rows="5">@Model.MinutesNotes</pems-textarea>
         <pems-flex gap="2" css="mt-2">
@@ -38,7 +38,7 @@
             </pems-select>
             <pems-button tone="primary" size="small" type="submit">Save Minutes</pems-button>
         </pems-flex>
-    </form>
+    </pems-form>
 </pems-content-card>
 
 <pems-content-card css="mb-3">
@@ -53,14 +53,14 @@
                     <pems-table-cell>@a.DisplayName</pems-table-cell>
                     <pems-table-cell>@(a.IsRequired ? "Yes" : "Optional")</pems-table-cell>
                     <pems-table-cell>
-                        <form asp-action="MarkAttended" method="post">
+                        <pems-form asp-action="MarkAttended" method="post">
                             <input type="hidden" name="meetingAttendeeId" value="@a.MeetingAttendeeId" />
                             <input type="hidden" name="meetingId" value="@m.MeetingId" />
                             <input type="hidden" name="attended" value="@(!a.Attended)" />
                             <pems-button tone="none" size="small" css="@(a.Attended ? "btn-success" : "btn-outline-secondary")" type="submit">
                                 <pems-icon css="@(a.Attended ? "bi-check-lg" : "bi-x")" />
                             </pems-button>
-                        </form>
+                        </pems-form>
                     </pems-table-cell>
                 </pems-table-row>
             }
@@ -69,7 +69,7 @@
     </pems-table-scroll>
     @if (!Model.Attendees.Any()) { <p class="text-muted small">No attendees added yet.</p> }
 
-    <form asp-action="AddAttendee" method="post"><pems-row gap="2" css="mt-2">
+    <pems-form asp-action="AddAttendee" method="post"><pems-row gap="2" css="mt-2">
         <input type="hidden" name="meetingId" value="@m.MeetingId" />
         <pems-col md="5">
             <pems-select scale="small" name="employeeId">
@@ -79,7 +79,7 @@
         </pems-col>
         <pems-col md="4"><pems-input scale="small" name="externalName" placeholder="or external name" /></pems-col>
         <pems-col md="3"><pems-button tone="primary" size="small" css="w-100"><pems-icon name="bi-plus-lg" /> @Localizer["Add"]</pems-button></pems-col>
-    </pems-row></form>
+    </pems-row></pems-form>
 </pems-content-card>
 
 <pems-content-card>
@@ -89,7 +89,7 @@
     </pems-table-scroll>
     @if (!Model.ActionItems.Any()) { <p class="text-muted small">No action items yet.</p> }
 
-    <form asp-action="AddActionItem" method="post"><pems-row gap="2" css="mt-2">
+    <pems-form asp-action="AddActionItem" method="post"><pems-row gap="2" css="mt-2">
         <input type="hidden" name="meetingId" value="@m.MeetingId" />
         <pems-col md="5"><pems-input scale="small" name="title" placeholder="Action item" required /></pems-col>
         <pems-col md="4">
@@ -100,5 +100,5 @@
         </pems-col>
         <pems-col md="2"><pems-date name="dueDate" scale="small" /></pems-col>
         <pems-col md="1"><pems-button tone="primary" size="small" css="w-100"><pems-icon name="bi-plus-lg" /></pems-button></pems-col>
-    </pems-row></form>
+    </pems-row></pems-form>
 </pems-content-card>

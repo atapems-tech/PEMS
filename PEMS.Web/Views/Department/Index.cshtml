@@ -52,10 +52,10 @@
                             <pems-table-cell><span class="vs-pill @(d.IsActive ? "vs-pill--success" : "vs-pill--neutral")">@(d.IsActive ? Localizer["UsL_Active"] : Localizer["UsL_Inactive"])</span></pems-table-cell>
                             <pems-table-cell class="text-end text-nowrap">
                                 <button type="button" class="lp-act lp-act--always" data-bs-toggle="modal" data-bs-target="#editDeptModal" data-fill-departmentid="@d.DepartmentId" data-fill-code="@d.Code" data-fill-name="@d.Name" data-fill-description="@d.Description" title="@Localizer["Ed_Edit"]" aria-label="@Localizer["Ed_Edit"] @d.Name"><pems-icon name="bi-pencil" aria-hidden="true" /></button>
-                                <form asp-action="ToggleActive" method="post" class="d-inline">
+                                <pems-form asp-action="ToggleActive" method="post" class="d-inline">
                                     <input type="hidden" name="departmentId" value="@d.DepartmentId" />
                                     <button type="submit" class="lp-act lp-act--always @(d.IsActive ? "text-danger" : "text-success")" title="@(d.IsActive ? Localizer["DpL_Deactivate"] : Localizer["DpL_Activate"])" aria-label="@(d.IsActive ? Localizer["DpL_Deactivate"] : Localizer["DpL_Activate"]) @d.Name"><pems-icon css="@(d.IsActive ? "bi-slash-circle" : "bi-check-circle")" aria-hidden="true" /></button>
-                                </form>
+                                </pems-form>
                             </pems-table-cell>
                         </pems-table-row>
                     }
@@ -66,7 +66,7 @@
 </pems-list-page>
 
 <pems-modal id="createDeptModal" tabindex="-1">
-            <form asp-action="Create" method="post">
+            <pems-form asp-action="Create" method="post">
                 <pems-modal-header>@Localizer["New Department"]</pems-modal-header>
                 <pems-modal-body>
                     <pems-row gap="3">
@@ -79,13 +79,13 @@
                     <pems-button tone="neutral" outline="true" type="button" data-bs-dismiss="modal">@Localizer["Cancel"]</pems-button>
                     <pems-button tone="primary" type="submit">@Localizer["Save"]</pems-button>
                 </pems-modal-footer>
-            </form>
+            </pems-form>
         </pems-modal>
 
 @if (Model.Any())
 {
     <pems-modal id="editDeptModal" tabindex="-1">
-                <form asp-action="Edit" method="post">
+                <pems-form asp-action="Edit" method="post">
                     <input type="hidden" name="departmentId" value="" />
                     <pems-modal-header>@Localizer["Edit Department"]</pems-modal-header>
                     <pems-modal-body>
@@ -99,7 +99,7 @@
                         <pems-button tone="neutral" outline="true" type="button" data-bs-dismiss="modal">@Localizer["Cancel"]</pems-button>
                         <pems-button tone="primary" type="submit">@Localizer["Save"]</pems-button>
                     </pems-modal-footer>
-                </form>
+                </pems-form>
             </pems-modal>
 }
 

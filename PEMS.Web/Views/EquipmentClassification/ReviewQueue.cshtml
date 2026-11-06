@@ -58,18 +58,18 @@
                             @if (status == "PENDING")
                             {
                                 <pems-table-cell class="text-end text-nowrap">
-                                    <form asp-action="Accept" method="post" class="d-inline">
+                                    <pems-form asp-action="Accept" method="post" class="d-inline">
                                         <input type="hidden" name="id" value="@item.SuggestionId" />
                                         <input type="hidden" name="status" value="@status" />
                                         <input type="hidden" name="page" value="@Model.Page" />
                                         <pems-button tone="success" size="small" outline="true" type="submit" title="@Localizer["تایید"]"><pems-icon name="bi-check-lg" /></pems-button>
-                                    </form>
-                                    <form asp-action="Reject" method="post" class="d-inline">
+                                    </pems-form>
+                                    <pems-form asp-action="Reject" method="post" class="d-inline">
                                         <input type="hidden" name="id" value="@item.SuggestionId" />
                                         <input type="hidden" name="status" value="@status" />
                                         <input type="hidden" name="page" value="@Model.Page" />
                                         <pems-button tone="danger" size="small" outline="true" type="submit" title="رد"><pems-icon name="bi-x-lg" /></pems-button>
-                                    </form>
+                                    </pems-form>
                                 </pems-table-cell>
                             }
                         </pems-table-row>

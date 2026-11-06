@@ -60,19 +60,19 @@
     <pems-flex gap="2" wrap="true" align="center">
         @if (Model.Status == "Draft")
         {
-            <form asp-action="Submit" method="post" class="d-inline">
+            <pems-form asp-action="Submit" method="post" class="d-inline">
                 <input type="hidden" name="id" value="@Model.IrnReceiptId" />
                 <pems-button tone="primary" size="small" type="submit" data-pems-confirm="Submit this IRN for inspection?">
                     <pems-icon name="bi-send" /> @Localizer["Submit for Inspection"]
                 </pems-button>
-            </form>
+            </pems-form>
         }
         @if (Model.Status is "Draft" or "Submitted")
         {
-            <form asp-action="Cancel" method="post" class="d-inline">
+            <pems-form asp-action="Cancel" method="post" class="d-inline">
                 <input type="hidden" name="id" value="@Model.IrnReceiptId" />
                 <pems-button tone="neutral" size="small" outline="true" type="submit" data-pems-confirm="Cancel this IRN?">@Localizer["Cancel IRN"]</pems-button>
-            </form>
+            </pems-form>
         }
         @if (Model.Status == "Submitted")
         {
@@ -81,20 +81,20 @@
         @if (Model.Status == "PendingApproval")
         {
             <span class="small text-muted">@Localizer["Disposition recorded — awaiting independent QA approval before any accepted quantity is posted to stock."]</span>
-            <form asp-action="Approve" method="post" class="d-inline">
+            <pems-form asp-action="Approve" method="post" class="d-inline">
                 <input type="hidden" name="id" value="@Model.IrnReceiptId" />
                 <input type="hidden" name="decision" value="Approve" />
                 <pems-button tone="primary" size="small" type="submit" data-pems-confirm="Approve this disposition? The accepted quantity will be posted to stock.">
                     <pems-icon name="bi-check2-circle" /> @Localizer["QA Approve"]
                 </pems-button>
-            </form>
-            <form asp-action="Approve" method="post" class="d-inline">
+            </pems-form>
+            <pems-form asp-action="Approve" method="post" class="d-inline">
                 <input type="hidden" name="id" value="@Model.IrnReceiptId" />
                 <input type="hidden" name="decision" value="Reject" />
                 <pems-button tone="danger" size="small" outline="true" type="submit" data-pems-confirm="Reject this disposition? The inspector will need to re-record it.">
                     <pems-icon name="bi-x-circle" /> @Localizer["QA Reject"]
                 </pems-button>
-            </form>
+            </pems-form>
         }
         @if (Model.Status == "Closed")
         {
@@ -150,7 +150,7 @@
                                 <div class="small text-muted">@Localizer["Rcv_Decision"]: @Localizer["Rcv_Action_" + (l.RejectionAction ?? "Replace")]@(l.RejectionAction == null ? " (" + Localizer["Rcv_Default"].Value + ")" : "")</div>
                                 @if (canDecideRejection)
                                 {
-                                    <form class="mt-1" asp-action="DecideRejection" method="post"><pems-flex gap="1">
+                                    <pems-form class="mt-1" asp-action="DecideRejection" method="post"><pems-flex gap="1">
                                         <input type="hidden" name="id" value="@Model.IrnReceiptId" />
                                         <input type="hidden" name="lineId" value="@l.IrnReceiptLineId" />
                                         <pems-select scale="small" name="action">
@@ -160,7 +160,7 @@
                                             }
                                         </pems-select>
                                         <pems-button tone="neutral" size="small" outline="true" type="submit">@Localizer["Save"]</pems-button>
-                                    </pems-flex></form>
+                                    </pems-flex></pems-form>
                                 }
                             }
                         </pems-table-cell>
@@ -172,7 +172,7 @@
                             }
                             else if (Model.Status == "Closed" && l.HasOpenHold && canResolveHold)
                             {
-                                <form asp-action="ResolveHold" method="post" class="mt-1">
+                                <pems-form asp-action="ResolveHold" method="post" class="mt-1">
                                     <input type="hidden" name="id" value="@Model.IrnReceiptId" />
                                     <input type="hidden" name="lineId" value="@l.IrnReceiptLineId" />
                                     <pems-flex gap="1">
@@ -181,7 +181,7 @@
                                     </pems-flex>
                                     <pems-input scale="small" css="mt-1" name="notes" placeholder="@Localizer["Notes"]" />
                                     <pems-button tone="primary" size="small" css="mt-1" type="submit" data-pems-confirm="@Localizer["Rcv_ConfirmHold"]">@Localizer["Rcv_ResolveHold"]</pems-button>
-                                </form>
+                                </pems-form>
                             }
                             else if (Model.Status == "Closed" && l.HasOpenHold)
                             {
@@ -199,7 +199,7 @@
     {
         <div class="lp-rel-head"><h3>@Localizer["Rcv_ReceiveFromPo"] <span class="vs-num">@Model.PurchaseOrder?.PoNumber</span></h3></div>
         <p class="lp-rel-empty">@Localizer["Rcv_ReceiveHelp"]</p>
-        <form asp-action="ReceiveFromPo" method="post">
+        <pems-form asp-action="ReceiveFromPo" method="post">
             <input type="hidden" name="id" value="@Model.IrnReceiptId" />
             <pems-related-table>
                 <pems-table-head>
@@ -236,7 +236,7 @@
                 </pems-table-body>
             </pems-related-table>
             <div class="lp-rel-add"><pems-button tone="primary" size="small" type="submit"><pems-icon name="bi-box-arrow-in-down" aria-hidden="true" /> @Localizer["Rcv_AddPoLines"]</pems-button></div>
-        </form>
+        </pems-form>
     }
 
     @if (Model.Status == "Draft")
@@ -251,7 +251,7 @@
     {
         <div class="lp-rel-head"><h3>@Localizer["Record Disposition"]</h3></div>
         <p class="lp-rel-empty">@Localizer["Received ≠ Available: for each line, split the received quantity into Accepted / Rejected / Hold. The three must sum exactly to the received quantity. Only the Accepted portion will be posted to stock, and only after QA approval."]</p>
-        <form asp-action="Disposition" method="post">
+        <pems-form asp-action="Disposition" method="post">
             <input type="hidden" name="id" value="@Model.IrnReceiptId" />
             <pems-related-table>
                 <pems-table-head><pems-table-row><pems-table-header>@Localizer["Material"]</pems-table-header><pems-table-header>@Localizer["Received"]</pems-table-header><pems-table-header>@Localizer["Accepted"]</pems-table-header><pems-table-header>@Localizer["Rejected"]</pems-table-header><pems-table-header>@Localizer["Hold"]</pems-table-header></pems-table-row></pems-table-head>
@@ -277,7 +277,7 @@
                     <pems-icon name="bi-clipboard-check" aria-hidden="true" /> @Localizer["Record Disposition"]
                 </pems-button>
             </div>
-        </form>
+        </pems-form>
     }
 </pems-related-list>
 

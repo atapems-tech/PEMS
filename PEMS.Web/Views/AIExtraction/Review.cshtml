@@ -44,18 +44,18 @@
                     <pems-table-cell>
                         @if (tag.ReviewStatus == "Draft")
                         {
-                            <form asp-action="ApproveExtractedTag" method="post"><pems-flex gap="1">
+                            <pems-form asp-action="ApproveExtractedTag" method="post"><pems-flex gap="1">
                                 <input type="hidden" name="extractedTagId" value="@tag.ExtractedTagId" />
                                 <input type="hidden" name="attachmentId" value="@Model.AttachmentId" />
                                 <pems-input class="pems-w-160" scale="small" type="text" placeholder="@Localizer["جستجوی تجهیز..."]" data-pems-search data-search-type="Equipment" data-search-hidden="#extTagEq_@tag.ExtractedTagId" autocomplete="off" />
                                 <input type="hidden" name="equipmentId" id="extTagEq_@tag.ExtractedTagId" />
                                 <pems-button tone="success" size="small" type="submit">@Localizer["Approve"]</pems-button>
-                            </pems-flex></form>
-                            <form asp-action="RejectExtractedTag" method="post" class="d-inline mt-1">
+                            </pems-flex></pems-form>
+                            <pems-form asp-action="RejectExtractedTag" method="post" class="d-inline mt-1">
                                 <input type="hidden" name="extractedTagId" value="@tag.ExtractedTagId" />
                                 <input type="hidden" name="attachmentId" value="@Model.AttachmentId" />
                                 <pems-button tone="danger" size="small" outline="true" type="submit">@Localizer["Reject"]</pems-button>
-                            </form>
+                            </pems-form>
                         }
                     </pems-table-cell>
                 </pems-table-row>
@@ -90,16 +90,16 @@
                     <pems-table-cell>
                         @if (spec.ReviewStatus == "Draft")
                         {
-                            <form asp-action="ApproveExtractedSpecification" method="post" class="d-inline">
+                            <pems-form asp-action="ApproveExtractedSpecification" method="post" class="d-inline">
                                 <input type="hidden" name="extractedSpecificationId" value="@spec.ExtractedSpecificationId" />
                                 <input type="hidden" name="attachmentId" value="@Model.AttachmentId" />
                                 <pems-button tone="success" size="small" type="submit">@Localizer["Approve"]</pems-button>
-                            </form>
-                            <form asp-action="RejectExtractedSpecification" method="post" class="d-inline">
+                            </pems-form>
+                            <pems-form asp-action="RejectExtractedSpecification" method="post" class="d-inline">
                                 <input type="hidden" name="extractedSpecificationId" value="@spec.ExtractedSpecificationId" />
                                 <input type="hidden" name="attachmentId" value="@Model.AttachmentId" />
                                 <pems-button tone="danger" size="small" outline="true" type="submit">@Localizer["Reject"]</pems-button>
-                            </form>
+                            </pems-form>
                         }
                     </pems-table-cell>
                 </pems-table-row>

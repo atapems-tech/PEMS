@@ -12,7 +12,7 @@
 
 <pems-validation-summary css="py-2 px-3 small" asp-validation-summary="All" hidden="@(ViewData.ModelState.IsValid)"></pems-validation-summary>
 
-<form asp-controller="Account" asp-action="Login" method="post">
+<pems-form asp-controller="Account" asp-action="Login" method="post">
     <input type="hidden" asp-for="ReturnUrl" />
 
     <div class="mb-3">
@@ -41,7 +41,7 @@
         <a asp-controller="AccountRecovery" asp-action="Index">@Localizer["Use a recovery code"]</a>
         <span class="text-muted">PEMS v1.0</span>
     </div>
-</form>
+</pems-form>
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />

@@ -100,9 +100,9 @@
         </pems-flex>
 
         <div class="pems-search d-none d-md-block">
-            <form role="search" asp-controller="GlobalSearch" asp-action="Index" asp-area="" method="get"><pems-flex>
+            <pems-form role="search" asp-controller="GlobalSearch" asp-action="Index" asp-area="" method="get"><pems-flex>
                 <pems-input type="search" name="q" placeholder="@Localizer["Palette_OpenHint"]" aria-label="@Localizer["Palette_OpenHint"]" aria-keyshortcuts="Control+K" data-pems-command-palette-trigger />
-            </pems-flex></form>
+            </pems-flex></pems-form>
         </div>
         <pems-button tone="none" css="btn-link text-secondary d-md-none px-2" type="button" data-pems-command-palette-open title="@Localizer["Palette_OpenHint"]" aria-label="@Localizer["Palette_OpenHint"]" aria-keyshortcuts="Control+K">
             <pems-icon name="bi-search" aria-hidden="true" />
@@ -180,9 +180,9 @@
                     }
                     <li><hr class="dropdown-divider" /></li>
                     <li>
-                        <form asp-controller="Account" asp-action="Logout" asp-area="" method="post">
+                        <pems-form asp-controller="Account" asp-action="Logout" asp-area="" method="post">
                             <button type="submit" class="dropdown-item"><pems-icon name="bi-box-arrow-right" /> @Localizer["Logout"]</button>
-                        </form>
+                        </pems-form>
                     </li>
                 </pems-dropdown-menu>
             </div>

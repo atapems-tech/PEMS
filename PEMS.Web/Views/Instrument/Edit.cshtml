@@ -15,7 +15,7 @@
 </pems-content-card>
 
 <pems-content-card>
-    <form asp-action="Edit" method="post">
+    <pems-form asp-action="Edit" method="post">
         <input type="hidden" name="instrumentId" value="@Model.InstrumentId" />
 
         <h6 class="mb-2">General</h6>
@@ -79,5 +79,5 @@
 
         <pems-button tone="primary" type="submit">@Localizer["Save"]</pems-button>
         <pems-button tone="neutral" outline="true" as="a" asp-action="Passport" asp-route-id="@Model.InstrumentId">Cancel</pems-button>
-    </form>
+    </pems-form>
 </pems-content-card>

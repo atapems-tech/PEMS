@@ -77,7 +77,7 @@
         <pems-button tone="warning" size="small" outline="true" type="button" id="dcrDuplicateConfirm">@L("Dcc_RegisterAnyway")</pems-button>
     </div>
 
-    <form id="dcrForm" class="dcr-grid" novalidate autocomplete="off">
+    <pems-form id="dcrForm" class="dcr-grid" novalidate autocomplete="off">
         @Html.AntiForgeryToken()
 
         <div class="dcr-main">
@@ -337,7 +337,7 @@
                 <pems-button tone="primary" type="submit" id="dcrSubmit" data-mode="open"><pems-icon name="bi-check2-circle" aria-hidden="true" /> @L("Dcc_Register")</pems-button>
             </div>
         </footer>
-    </form>
+    </pems-form>
 
     <script type="application/json" id="dcrI18n">@Html.Raw(JsonSerializer.Serialize(i18n).Replace("<", "\\u003c"))</script>
 </div>

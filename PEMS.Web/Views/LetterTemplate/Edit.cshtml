@@ -31,7 +31,7 @@
         </ul>
     </details>
 
-    <form asp-action="Save" method="post">
+    <pems-form asp-action="Save" method="post">
         <input type="hidden" name="LetterTemplateId" value="@Model.LetterTemplateId" />
 
         <pems-row gap="3">
@@ -81,7 +81,7 @@
             <pems-button tone="primary" type="submit">@Localizer["Save"]</pems-button>
             <pems-button tone="neutral" outline="true" as="a" asp-action="Index">@Localizer["Cancel"]</pems-button>
         </div>
-    </form>
+    </pems-form>
 </pems-content-card>
 
 @await Html.PartialAsync("_RichTextEditorScripts", "tplBodyEditor")

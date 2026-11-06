@@ -57,7 +57,7 @@
     }
 
     @* فرم اصلی خالی است؛ همه‌ی فیلدها با attribute form="pcForm" به آن وصل‌اند تا فرم‌های فرعی (تجهیز/پیوست/شماره‌دهی) تودرتو نشوند *@
-    <form id="pcForm" method="post" asp-action="Edit"></form>
+    <pems-form id="pcForm" method="post" asp-action="Edit"></pems-form>
     <input type="hidden" form="pcForm" name="Id" value="@d.Id" />
     <input type="hidden" form="pcForm" name="RequestType" value="@d.RequestType" />
     @if (rowVersion != null) { <input type="hidden" form="pcForm" name="RowVersion" value="@rowVersion" /> }
@@ -76,11 +76,11 @@
             <a asp-action="Index" class="vs-btn vs-btn--sm">@Localizer["Pc_Btn_Back"]</a>
             @if (a.CanCancel)
             {
-                <form asp-action="Execute" method="post" class="d-inline" data-pems-confirm="@Localizer["Pc_Confirm_Cancel"]">
+                <pems-form asp-action="Execute" method="post" class="d-inline" data-pems-confirm="@Localizer["Pc_Confirm_Cancel"]">
                     <input type="hidden" name="id" value="@d.Id" />
                     <input type="hidden" name="action" value="Cancel" />
                     <button type="submit" class="vs-btn vs-btn--sm vs-btn--danger"><pems-icon name="bi-x-circle" /> @Localizer["Pc_Btn_Cancel"]</button>
-                </form>
+                </pems-form>
             }
         </div>
     </div>
@@ -364,10 +364,10 @@
                         <pems-flex as="li" align="center" justify="between" gap="2" css="border-bottom py-1">
                             <a asp-action="Download" asp-route-id="@d.Id" asp-route-attachmentId="@at.Id" class="text-truncate">@at.FileName</a>
                             <span class="text-muted">@Localizer["Pc_Kind_" + at.Kind]</span>
-                            <form asp-action="RemoveAttachment" method="post" class="d-inline">
+                            <pems-form asp-action="RemoveAttachment" method="post" class="d-inline">
                                 <input type="hidden" name="id" value="@d.Id" /><input type="hidden" name="attachmentId" value="@at.Id" />
                                 <button class="vs-icon-btn" title="@Localizer["Pc_Btn_Remove"]" aria-label="@Localizer["Pc_Btn_Remove"]"><pems-icon name="bi-trash" /></button>
-                            </form>
+                            </pems-form>
                         </pems-flex>
                     }
                 </ul>
@@ -448,23 +448,23 @@
                     </pems-related-table>
                     @if (!d.Notes.Any()) { <div class="vs-empty py-2">@Localizer["Pc_Empty_Notes"]</div> }
                 </div>
-                <form asp-action="AddNote" method="post"><pems-flex gap="2">
+                <pems-form asp-action="AddNote" method="post"><pems-flex gap="2">
                     <input type="hidden" name="id" value="@d.Id" /><input type="hidden" name="returnTo" value="edit" />
                     <pems-input scale="small" name="text" maxlength="2000" placeholder="@Localizer["Pc_Hint_NoteReply"]" aria-label="@L("Notes")" />
                     <button type="submit" class="vs-btn vs-btn--sm"><pems-icon name="bi-plus-lg" /> @Localizer["Pc_Btn_AddNote"]</button>
-                </pems-flex></form>
+                </pems-flex></pems-form>
             </section>
         </pems-col>
     </pems-row>
 </pems-page-shell>
 
 @* شماره‌دهی (فرم مستقل - تودرتو نیست) *@
-<form id="pcNumberForm" asp-action="GenerateNumber" method="post">
+<pems-form id="pcNumberForm" asp-action="GenerateNumber" method="post">
     <input type="hidden" name="id" value="@d.Id" />
     @if (rowVersion != null) { <input type="hidden" name="rowVersion" value="@rowVersion" /> }
-</form>
+</pems-form>
 
-<pems-modal id="pcEquipModal" tabindex="-1" aria-labelledby="pcEquipModalLabel" aria-hidden="true"><form asp-action="AddEquipment" method="post">
+<pems-modal id="pcEquipModal" tabindex="-1" aria-labelledby="pcEquipModalLabel" aria-hidden="true"><pems-form asp-action="AddEquipment" method="post">
             <input type="hidden" name="id" value="@d.Id" />
             <pems-modal-header level="5" title-id="pcEquipModalLabel" close="true" close-label="@Localizer["Pc_Btn_Close"]">@Localizer["Pc_Btn_AddEquipment"]</pems-modal-header>
             <pems-modal-body>
@@ -483,9 +483,9 @@
                 <pems-help-text>@Localizer["Pc_Hint_NewEquipment"]</pems-help-text>
             </pems-modal-body>
             <pems-modal-footer><button type="button" class="vs-btn vs-btn--sm" data-bs-dismiss="modal">@Localizer["Pc_Btn_Close"]</button><button type="submit" class="vs-btn vs-btn--primary vs-btn--sm">@Localizer["Pc_Btn_Save"]</button></pems-modal-footer>
-        </form></pems-modal>
+        </pems-form></pems-modal>
 
-<pems-modal id="pcAttachModal" tabindex="-1" aria-labelledby="pcAttachModalLabel" aria-hidden="true"><form asp-action="UploadAttachment" method="post" enctype="multipart/form-data">
+<pems-modal id="pcAttachModal" tabindex="-1" aria-labelledby="pcAttachModalLabel" aria-hidden="true"><pems-form asp-action="UploadAttachment" method="post" enctype="multipart/form-data">
             <input type="hidden" name="id" value="@d.Id" />
             <pems-modal-header level="5" title-id="pcAttachModalLabel" close="true" close-label="@Localizer["Pc_Btn_Close"]">@Localizer["Pc_Btn_Upload"]</pems-modal-header>
             <pems-modal-body>
@@ -498,7 +498,7 @@
                 </div>
             </pems-modal-body>
             <pems-modal-footer><button type="button" class="vs-btn vs-btn--sm" data-bs-dismiss="modal">@Localizer["Pc_Btn_Close"]</button><button type="submit" class="vs-btn vs-btn--primary vs-btn--sm">@Localizer["Pc_Btn_Upload"]</button></pems-modal-footer>
-        </form></pems-modal>
+        </pems-form></pems-modal>
 
 <template id="pcAttrTemplate">
     <pems-table-row class="pc-attr-row">

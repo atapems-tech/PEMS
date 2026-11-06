@@ -13,7 +13,7 @@
         میزان اطمینان، یا خودکار پردازش می‌کند یا برای بازبینی شما در صف می‌ماند.
     </p>
 
-    <form asp-controller="DocumentUpload" asp-action="Upload" method="post" enctype="multipart/form-data">
+    <pems-form asp-controller="DocumentUpload" asp-action="Upload" method="post" enctype="multipart/form-data">
         <pems-row gap="3">
             <pems-col md="6">
                 <pems-label>@Localizer["Project"]</pems-label>
@@ -33,5 +33,5 @@
                 <pems-icon name="bi-cloud-upload" /> Upload to AI Intake Queue
             </pems-button>
         </div>
-    </form>
+    </pems-form>
 </pems-content-card>

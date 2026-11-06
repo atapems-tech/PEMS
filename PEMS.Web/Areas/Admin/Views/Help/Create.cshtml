@@ -6,12 +6,12 @@
 
 <pems-content-card>
     <h5 class="mb-3"><pems-icon name="bi-plus-circle" /> @Localizer["New Help Article"]</h5>
-    <form asp-action="Create" method="post">
+    <pems-form asp-action="Create" method="post">
         @Html.AntiForgeryToken()
         @await Html.PartialAsync("_HelpArticleForm", Model)
         <pems-flex gap="2" css="mt-3">
             <pems-button tone="primary" type="submit">@Localizer["Create"]</pems-button>
             <pems-button as="a" tone="neutral" outline="true" asp-action="Index">@Localizer["Cancel"]</pems-button>
         </pems-flex>
-    </form>
+    </pems-form>
 </pems-content-card>

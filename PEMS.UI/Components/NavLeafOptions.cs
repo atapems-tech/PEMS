@@ -344,3 +344,11 @@ public sealed record PageHeroOptions : FrameOptions
 {
     public string? Css { get; init; }
 }
+
+// SCRUM-510: the form element of an MVC page. The built-in form tag helper still computes the action, the method and the antiforgery token; the component writes the element.
+
+/// <summary>Inputs of <see cref="PemsFormFrame"/>: the <c>form</c> element with the page's class and attributes (action, method, enctype, id, data-*); the controls and the antiforgery token are the child content. Not the descriptor-driven <c>form</c> component.</summary>
+public sealed record FormFrameOptions : FrameOptions
+{
+    public string? Css { get; init; }
+}

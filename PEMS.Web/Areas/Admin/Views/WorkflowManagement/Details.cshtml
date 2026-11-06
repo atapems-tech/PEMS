@@ -31,13 +31,13 @@
     {
         <pems-content-card css="mb-3">
             <h6>@Localizer["Definition details"] <span class="small text-muted">(@Localizer["shared by all versions"])</span></h6>
-            <form asp-action="UpdateDefinition" method="post"><pems-row gap="2">
+            <pems-form asp-action="UpdateDefinition" method="post"><pems-row gap="2">
                 <input type="hidden" name="id" value="@d.DefinitionId" />
                 <pems-col md="4"><pems-label css="small">@Localizer["Name"]</pems-label><pems-input scale="small" name="name" value="@d.Name" required maxlength="200" /></pems-col>
                 <pems-col md="4"><pems-label css="small">@Localizer["Persian name"]</pems-label><pems-input scale="small" name="nameFa" dir="rtl" value="@d.NameFa" maxlength="200" /></pems-col>
                 <pems-col md="4"><pems-label css="small">@Localizer["Description"]</pems-label><pems-input scale="small" name="description" value="@Model.Description" /></pems-col>
                 <pems-col span="12"><pems-button tone="primary" size="small">@Localizer["Save"]</pems-button></pems-col>
-            </pems-row></form>
+            </pems-row></pems-form>
         </pems-content-card>
     }
 
@@ -60,17 +60,17 @@
                             <pems-button as="a" tone="primary" size="small" outline="true" asp-action="Designer" asp-route-versionId="@v.VersionId">@Localizer[v.Status is "Draft" or "Validated" ? "Open" : "View"]</pems-button>
                             @if (d.Editable && perms["Edit"] && v.Status is "Published" or "Retired" && openDraft == null)
                             {
-                                <form asp-action="CloneVersion" method="post" class="d-inline">
+                                <pems-form asp-action="CloneVersion" method="post" class="d-inline">
                                     <input type="hidden" name="versionId" value="@v.VersionId" /><input type="hidden" name="definitionId" value="@d.DefinitionId" />
                                     <pems-button tone="neutral" size="small" outline="true" title="@Localizer["Clone into a new draft"]"><pems-icon name="bi-files" /> @Localizer["Clone"]</pems-button>
-                                </form>
+                                </pems-form>
                             }
                             @if (d.Editable && perms["Retire"] && v.Status == "Published" && !v.IsBound)
                             {
-                                <form asp-action="Retire" method="post" class="d-inline" data-pems-confirm="@Localizer["Retire this version? Running instances keep using it."]">
+                                <pems-form asp-action="Retire" method="post" class="d-inline" data-pems-confirm="@Localizer["Retire this version? Running instances keep using it."]">
                                     <input type="hidden" name="versionId" value="@v.VersionId" /><input type="hidden" name="definitionId" value="@d.DefinitionId" />
                                     <pems-button tone="danger" size="small" outline="true">@Localizer["Retire"]</pems-button>
-                                </form>
+                                </pems-form>
                             }
                         </pems-table-cell>
                     </pems-table-row>
@@ -95,13 +95,13 @@
                         <div class="small"><strong>@b.Module</strong> / @b.EntityType / @b.Context → <strong>@(b.PinnedVersionNumber.HasValue ? "v" + b.PinnedVersionNumber : Localizer["latest published"])</strong></div>
                         @if (d.Editable && perms["Bind"] && published.Any(p => p.VersionId != b.PinnedVersionId))
                         {
-                            <form class="mt-2" asp-action="BindingImpact" method="get"><pems-flex gap="2" align="center">
+                            <pems-form class="mt-2" asp-action="BindingImpact" method="get"><pems-flex gap="2" align="center">
                                 <input type="hidden" name="bindingId" value="@b.BindingId" />
                                 <pems-select scale="small" css="w-auto" name="targetVersionId">
                                     @foreach (var p in published.Where(p => p.VersionId != b.PinnedVersionId)) { <option value="@p.VersionId">v@(p.VersionNumber)</option> }
                                 </pems-select>
                                 <pems-button tone="primary" size="small" outline="true">@Localizer["Review binding change"]</pems-button>
-                            </pems-flex></form>
+                            </pems-flex></pems-form>
                         }
                     </div>
                 }

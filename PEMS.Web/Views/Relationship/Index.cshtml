@@ -18,10 +18,10 @@
             </pems-button>
         </pems-flex>
     </pems-flex>
-    <form class="mt-2" asp-action="Search" method="get"><pems-flex gap="2">
+    <pems-form class="mt-2" asp-action="Search" method="get"><pems-flex gap="2">
         <pems-input type="text" name="q" value="@ViewBag.Query" placeholder="e.g. P-101, or a vendor name, or a document number" />
         <pems-button tone="primary"><pems-icon name="bi-diagram-3" /> @Localizer["Explore"]</pems-button>
-    </pems-flex></form>
+    </pems-flex></pems-form>
 </pems-content-card>
 
 @if (TempData["Error"] != null)
@@ -30,7 +30,7 @@
         <p class="text-danger mb-2"><pems-icon name="bi-exclamation-triangle" /> @TempData["Error"]</p>
         @if (TempData["ConflictEquipmentId"] != null)
         {
-            <form asp-action="ConfirmSuggestedLink" method="post" class="d-inline">
+            <pems-form asp-action="ConfirmSuggestedLink" method="post" class="d-inline">
                 <input type="hidden" name="equipmentId" value="@TempData["ConflictEquipmentId"]" />
                 <input type="hidden" name="targetType" value="@TempData["ConflictTargetType"]" />
                 <input type="hidden" name="targetId" value="@TempData["ConflictTargetId"]" />
@@ -38,7 +38,7 @@
                 <pems-button tone="danger" size="small" type="submit" data-pems-confirm="مطمئنی؟ رابطه‌ی قبلی جایگزین می‌شه.">
                     <pems-icon name="bi-exclamation-octagon" /> بله، جایگزین کن (Force)
                 </pems-button>
-            </form>
+            </pems-form>
         }
     </pems-content-card>
 }
@@ -96,12 +96,12 @@ else
                             @suggestion.Label
                             <span class="text-muted small">@suggestion.SubLabel</span>
                         </span>
-                        <form asp-action="ConfirmSuggestedLink" method="post" class="d-inline">
+                        <pems-form asp-action="ConfirmSuggestedLink" method="post" class="d-inline">
                             <input type="hidden" name="equipmentId" value="@Model.RootId" />
                             <input type="hidden" name="targetType" value="@suggestion.NodeType" />
                             <input type="hidden" name="targetId" value="@suggestion.NodeId" />
                             <pems-button tone="success" size="small" type="submit"><pems-icon name="bi-check-lg" /> تایید اتصال</pems-button>
-                        </form>
+                        </pems-form>
                     </pems-flex>
                 }
             </ul>

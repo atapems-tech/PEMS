@@ -30,7 +30,7 @@
     @if (templates.Any())
     {
         @* قالب فقط فرم را پیش‌پر می‌کند (GET)، پس باید پیش از تایپ انتخاب شود *@
-        <form class="mb-3" method="get" asp-action="Create"><pems-flex wrap="true" align="end" gap="2">
+        <pems-form class="mb-3" method="get" asp-action="Create"><pems-flex wrap="true" align="end" gap="2">
             <input type="hidden" name="letterType" value="@letterType" />
             <div>
                 <pems-label css="small mb-1" for="letterTemplate">@Localizer["LtT_UseTemplate"]</pems-label>
@@ -43,10 +43,10 @@
                 </pems-select>
             </div>
             <pems-button tone="neutral" size="small" outline="true" type="submit"><pems-icon name="bi-file-earmark-text" aria-hidden="true" /> @Localizer["LtT_Apply"]</pems-button>
-        </pems-flex></form>
+        </pems-flex></pems-form>
     }
 
-    <form asp-action="Create" method="post">
+    <pems-form asp-action="Create" method="post">
         <input type="hidden" name="letterType" value="@letterType" />
 
         <pems-row gap="3">
@@ -147,7 +147,7 @@
             <pems-button tone="primary" type="submit">@saveLabel</pems-button>
             <pems-button tone="neutral" outline="true" as="a" asp-action="Index">@Localizer["Cancel"]</pems-button>
         </div>
-    </form>
+    </pems-form>
 </pems-content-card>
 
 <script src="~/js/views/letter-create-2.js" asp-append-version="true"></script>

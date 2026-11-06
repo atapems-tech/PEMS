@@ -157,7 +157,7 @@
 </pems-list-page>
 
 <pems-modal size="large" id="createEquipmentModal" tabindex="-1">
-            <form asp-controller="Equipment" asp-action="Create" method="post">
+            <pems-form asp-controller="Equipment" asp-action="Create" method="post">
                 <pems-modal-header>@Localizer["Eq_NewEquipment"]</pems-modal-header>
                 <pems-modal-body>
                     <pems-row gap="3">
@@ -186,7 +186,7 @@
                     <pems-button tone="neutral" outline="true" type="button" data-bs-dismiss="modal">@Localizer["Cancel"]</pems-button>
                     <pems-button tone="primary" type="submit">@Localizer["Save"]</pems-button>
                 </pems-modal-footer>
-            </form>
+            </pems-form>
         </pems-modal>
 
 @section Scripts {

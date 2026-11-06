@@ -366,11 +366,11 @@
                             <pems-badge tone="neutral">@es.ProficiencyLevel</pems-badge>
                             @if (es.CertifiedDate.HasValue) { <span class="text-muted small">— @es.CertifiedDate.Value.ToString("yyyy-MM-dd")</span> }
                         </span>
-                        <form asp-action="RemoveSkill" method="post" class="d-inline">
+                        <pems-form asp-action="RemoveSkill" method="post" class="d-inline">
                             <input type="hidden" name="employeeSkillId" value="@es.EmployeeSkillId" />
                             <input type="hidden" name="employeeId" value="@Model.EmployeeId" />
                             <pems-button tone="danger" size="small" outline="true" css="py-0 px-1" type="submit" data-pems-confirm="@L("Remove this skill?", "این مهارت حذف بشه؟")"><pems-icon name="bi-x" /></pems-button>
-                        </form>
+                        </pems-form>
                     </pems-flex>
                 }
             </ul>
@@ -396,11 +396,11 @@
                             @if (eq.ExpiryDate.HasValue) { <pems-badge tone="none" css="@ExpiryBadgeClass(status)">@status — @eq.ExpiryDate.Value.ToString("yyyy-MM-dd")</pems-badge> }
                             @if (!string.IsNullOrWhiteSpace(eq.Issuer)) { <span class="text-muted small">— @eq.Issuer</span> }
                         </span>
-                        <form asp-action="RemoveQualification" method="post" class="d-inline">
+                        <pems-form asp-action="RemoveQualification" method="post" class="d-inline">
                             <input type="hidden" name="employeeQualificationId" value="@eq.EmployeeQualificationId" />
                             <input type="hidden" name="employeeId" value="@Model.EmployeeId" />
                             <pems-button tone="danger" size="small" outline="true" css="py-0 px-1" type="submit" data-pems-confirm="@L("Remove this qualification?", "این صلاحیت حذف بشه؟")"><pems-icon name="bi-x" /></pems-button>
-                        </form>
+                        </pems-form>
                     </pems-flex>
                 }
             </ul>
@@ -426,11 +426,11 @@
                             @if (!string.IsNullOrWhiteSpace(ec.CertificateNumber)) { <span class="text-muted small">#@ec.CertificateNumber</span> }
                             @if (ec.ExpiryDate.HasValue) { <pems-badge tone="none" css="@ExpiryBadgeClass(status)">@status — @ec.ExpiryDate.Value.ToString("yyyy-MM-dd")</pems-badge> }
                         </span>
-                        <form asp-action="RemoveCertification" method="post" class="d-inline">
+                        <pems-form asp-action="RemoveCertification" method="post" class="d-inline">
                             <input type="hidden" name="employeeCertificationId" value="@ec.EmployeeCertificationId" />
                             <input type="hidden" name="employeeId" value="@Model.EmployeeId" />
                             <pems-button tone="danger" size="small" outline="true" css="py-0 px-1" type="submit" data-pems-confirm="@L("Remove this certification?", "این گواهینامه حذف بشه؟")"><pems-icon name="bi-x" /></pems-button>
-                        </form>
+                        </pems-form>
                     </pems-flex>
                 }
             </ul>
@@ -441,7 +441,7 @@
 
 <!-- Edit Profile Modal - posts to the same Edit action used by the Index grid -->
 <pems-modal size="large" id="editProfileModal" tabindex="-1">
-            <form asp-action="Edit" method="post">
+            <pems-form asp-action="Edit" method="post">
                 <input type="hidden" name="employeeId" value="@Model.EmployeeId" />
                 <input type="hidden" name="returnToDetails" value="true" />
                 <pems-modal-header>@L("Edit Profile", "ویرایش پروفایل")</pems-modal-header>
@@ -488,11 +488,11 @@
                     <pems-button tone="neutral" size="small" outline="true" type="button" data-bs-dismiss="modal">@L("Cancel", "انصراف")</pems-button>
                     <pems-button tone="primary" size="small" type="submit">@L("Save", "ذخیره")</pems-button>
                 </pems-modal-footer>
-            </form>
+            </pems-form>
         </pems-modal>
 
 <pems-modal id="addSkillModal" tabindex="-1">
-        <form asp-action="AddSkill" method="post">
+        <pems-form asp-action="AddSkill" method="post">
             <input type="hidden" name="employeeId" value="@Model.EmployeeId" />
             <pems-modal-header>@L("Add Skill", "افزودن مهارت")</pems-modal-header>
             <pems-modal-body>
@@ -520,11 +520,11 @@
                 <pems-button tone="neutral" size="small" outline="true" type="button" data-bs-dismiss="modal">@L("Cancel", "انصراف")</pems-button>
                 <pems-button tone="primary" size="small" type="submit">@L("Add", "افزودن")</pems-button>
             </pems-modal-footer>
-        </form>
+        </pems-form>
     </pems-modal>
 
 <pems-modal id="addQualificationModal" tabindex="-1">
-        <form asp-action="AddQualification" method="post">
+        <pems-form asp-action="AddQualification" method="post">
             <input type="hidden" name="employeeId" value="@Model.EmployeeId" />
             <pems-modal-header>@L("Add Qualification", "افزودن صلاحیت")</pems-modal-header>
             <pems-modal-body>
@@ -542,11 +542,11 @@
                 <pems-button tone="neutral" size="small" outline="true" type="button" data-bs-dismiss="modal">@L("Cancel", "انصراف")</pems-button>
                 <pems-button tone="primary" size="small" type="submit">@L("Add", "افزودن")</pems-button>
             </pems-modal-footer>
-        </form>
+        </pems-form>
     </pems-modal>
 
 <pems-modal id="addCertificationModal" tabindex="-1">
-        <form asp-action="AddCertification" method="post">
+        <pems-form asp-action="AddCertification" method="post">
             <input type="hidden" name="employeeId" value="@Model.EmployeeId" />
             <pems-modal-header>@L("Add Certification", "افزودن گواهینامه")</pems-modal-header>
             <pems-modal-body>
@@ -565,11 +565,11 @@
                 <pems-button tone="neutral" size="small" outline="true" type="button" data-bs-dismiss="modal">@L("Cancel", "انصراف")</pems-button>
                 <pems-button tone="primary" size="small" type="submit">@L("Add", "افزودن")</pems-button>
             </pems-modal-footer>
-        </form>
+        </pems-form>
     </pems-modal>
 
 <pems-modal id="setRateModal" tabindex="-1">
-        <form asp-action="SetLaborRate" method="post">
+        <pems-form asp-action="SetLaborRate" method="post">
             <input type="hidden" name="employeeId" value="@Model.EmployeeId" />
             <pems-modal-header>@L("Set New Labor Rate", "ثبت نرخ دستمزد جدید")</pems-modal-header>
             <pems-modal-body>
@@ -588,5 +588,5 @@
                 <pems-button tone="neutral" size="small" outline="true" type="button" data-bs-dismiss="modal">@L("Cancel", "انصراف")</pems-button>
                 <pems-button tone="primary" size="small" type="submit">@L("Save", "ثبت")</pems-button>
             </pems-modal-footer>
-        </form>
+        </pems-form>
     </pems-modal>

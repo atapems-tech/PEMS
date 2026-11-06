@@ -41,24 +41,24 @@
     <pems-flex gap="2" wrap="true">
         @if (Model.Status == "Draft" && isOutgoing)
         {
-            <form asp-action="Prepare" method="post" class="d-inline">
+            <pems-form asp-action="Prepare" method="post" class="d-inline">
                 <input type="hidden" name="id" value="@Model.ShiftHandoverId" />
                 <pems-button tone="warning" size="small" outline="true" type="submit">Prepare (snapshot current operational status)</pems-button>
-            </form>
+            </pems-form>
         }
         @if (Model.Status == "Prepared" && isIncoming)
         {
-            <form asp-action="Acknowledge" method="post" class="d-inline">
+            <pems-form asp-action="Acknowledge" method="post" class="d-inline">
                 <input type="hidden" name="id" value="@Model.ShiftHandoverId" />
                 <pems-button tone="info" size="small" outline="true" type="submit">Acknowledge</pems-button>
-            </form>
+            </pems-form>
         }
         @if (Model.Status == "Acknowledged" && isOutgoing)
         {
-            <form asp-action="Complete" method="post" class="d-inline">
+            <pems-form asp-action="Complete" method="post" class="d-inline">
                 <input type="hidden" name="id" value="@Model.ShiftHandoverId" />
                 <pems-button tone="success" size="small" outline="true" type="submit">Complete</pems-button>
-            </form>
+            </pems-form>
         }
         @if (Model.Status == "Prepared" && !isIncoming)
         {

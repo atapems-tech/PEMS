@@ -15,7 +15,7 @@
 </pems-flex>
 
 <pems-content-card css="mb-3">
-    <form method="get"><pems-row gap="2">
+    <pems-form method="get"><pems-row gap="2">
         <pems-col md="4">
             <pems-label css="small mb-0">@Localizer["Discipline"]</pems-label>
             <pems-select name="disciplineIds" multiple size="4">
@@ -41,7 +41,7 @@
         <pems-col md="1" css="d-flex align-items-end">
             <pems-button tone="primary" css="w-100" type="submit"><pems-icon name="bi-funnel" /></pems-button>
         </pems-col>
-    </pems-row></form>
+    </pems-row></pems-form>
 </pems-content-card>
 
 @if (noFilterApplied)
@@ -50,7 +50,7 @@
 }
 else
 {
-    <form asp-action="BulkGenerateCommit" method="post">
+    <pems-form asp-action="BulkGenerateCommit" method="post">
         <pems-content-card css="mb-3">
             <pems-flex justify="between" align="center" css="mb-2">
                 <span class="small text-muted">Showing @equipments.Count of @ViewBag.MatchingCount matching (capped at @maxResults)</span>
@@ -84,5 +84,5 @@ else
             </pems-table-scroll>
             @if (!equipments.Any()) { <p class="text-muted text-center py-4">No Equipment matches this filter.</p> }
         </pems-content-card>
-    </form>
+    </pems-form>
 }

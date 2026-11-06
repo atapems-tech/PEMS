@@ -36,32 +36,32 @@
     <pems-flex gap="2" wrap="true">
         @if (nextStatus != null && nextStatus != "Issued" && Can(nextAction) && !(isRequester && nextStatus is "Approved"))
         {
-            <form asp-action="AdvanceStatus" method="post" class="d-inline">
+            <pems-form asp-action="AdvanceStatus" method="post" class="d-inline">
                 <input type="hidden" name="id" value="@Model.StoreRequisitionId" />
                 <input type="hidden" name="requestKey" value="@Guid.NewGuid().ToString("N")" />
                 <pems-button tone="primary" size="small" type="submit" data-pems-confirm="وضعیت به @nextStatus تغییر کنه؟">@Localizer["SR_AdvanceTo"] @nextStatus</pems-button>
-            </form>
+            </pems-form>
         }
         @if (Model.Status is "Draft" or "Submitted" or "Approved" && Can("Reject"))
         {
-            <form asp-action="Reject" method="post" class="d-inline">
+            <pems-form asp-action="Reject" method="post" class="d-inline">
                 <input type="hidden" name="id" value="@Model.StoreRequisitionId" />
                 <pems-button tone="danger" size="small" outline="true" type="submit" data-pems-confirm="این درخواست رد بشه؟">@Localizer["Reject"]</pems-button>
-            </form>
+            </pems-form>
         }
         @if (Model.Status == "PartiallyIssued" && Can("CloseShort"))
         {
-            <form asp-action="CloseShort" method="post" class="d-inline">
+            <pems-form asp-action="CloseShort" method="post" class="d-inline">
                 <input type="hidden" name="id" value="@Model.StoreRequisitionId" />
                 <pems-button tone="warning" size="small" outline="true" type="submit" data-pems-confirm="درخواست با کسری بسته شود و باقی‌مانده‌ی رزرو آزاد شود؟">@Localizer["SR_CloseShort"]</pems-button>
-            </form>
+            </pems-form>
         }
         @if (Model.Status is "Draft" or "Submitted" or "Approved" or "Reserved" && Can("Cancel"))
         {
-            <form asp-action="Cancel" method="post" class="d-inline">
+            <pems-form asp-action="Cancel" method="post" class="d-inline">
                 <input type="hidden" name="id" value="@Model.StoreRequisitionId" />
                 <pems-button tone="neutral" size="small" outline="true" type="submit" data-pems-confirm="این درخواست لغو بشه؟">@Localizer["Cancel"]</pems-button>
-            </form>
+            </pems-form>
         }
     </pems-flex>
 </pems-content-card>
@@ -72,7 +72,7 @@
         var editApproved = Model.Status == "Submitted" && Can("SetApprovedQuantity") && !isRequester;
         var canIssue = Model.Status is "Reserved" or "PartiallyIssued" && Can("Issue") && !isRequester;
     }
-    <form id="srLinesForm" method="post" asp-action="@(editApproved ? "SetApprovedQuantities" : "Issue")">
+    <pems-form id="srLinesForm" method="post" asp-action="@(editApproved ? "SetApprovedQuantities" : "Issue")">
         <input type="hidden" name="id" value="@Model.StoreRequisitionId" />
         <input type="hidden" name="requestKey" value="@Guid.NewGuid().ToString("N")" />
     <pems-table kind="enterprise" scale="small">
@@ -96,12 +96,12 @@
     </pems-table>
     @if (editApproved) { <pems-button tone="primary" size="small" type="submit">@Localizer["Save"]</pems-button> }
     @if (canIssue) { <pems-button tone="primary" size="small" type="submit">@Localizer["SR_IssuePartialOrFull"]</pems-button> <span class="small text-muted">@Localizer["SR_IssueHint"]</span> }
-    </form>
+    </pems-form>
     @if (!Model.Lines.Any()) { <p class="text-muted text-center py-3">@Localizer["هنوز خطی اضافه نشده."]</p> }
 
     @if (Model.Status == "Draft")
     {
-        <form asp-action="AddLine" method="post"><pems-row gap="2" css="mt-2">
+        <pems-form asp-action="AddLine" method="post"><pems-row gap="2" css="mt-2">
             <input type="hidden" name="storeRequisitionId" value="@Model.StoreRequisitionId" />
             <pems-col md="6">
                 <pems-select scale="small" name="materialItemId" required>
@@ -110,7 +110,7 @@
             </pems-col>
             <pems-col md="3"><pems-input scale="small" name="requestedQuantity" type="number" step="0.001" placeholder="@Localizer["Quantity"]" required /></pems-col>
             <pems-col md="3"><pems-button tone="primary" size="small" css="w-100"><pems-icon name="bi-plus-lg" /> Add Line</pems-button></pems-col>
-        </pems-row></form>
+        </pems-row></pems-form>
     }
 </pems-content-card>
 
