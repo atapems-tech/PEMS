@@ -22,28 +22,28 @@
 
         <pems-list-grid>
             <pems-list-table empty="@(!Model.Any())" empty-text="@Localizer["Tg_Empty"]">
-                <thead>
-                    <tr>
-                        <th>@Localizer["Tg_Tag"]</th>
-                        <th>@Localizer["Tg_UsedOn"]</th>
-                        <th class="pems-w-60"><span class="visually-hidden">@Localizer["Ed_Actions"]</span></th>
-                    </tr>
-                </thead>
-                <tbody>
+                <pems-table-head>
+                    <pems-table-row>
+                        <pems-table-header>@Localizer["Tg_Tag"]</pems-table-header>
+                        <pems-table-header>@Localizer["Tg_UsedOn"]</pems-table-header>
+                        <pems-table-header class="pems-w-60"><span class="visually-hidden">@Localizer["Ed_Actions"]</span></pems-table-header>
+                    </pems-table-row>
+                </pems-table-head>
+                <pems-table-body>
                     @foreach (var t in Model)
                     {
-                        <tr class="lp-row">
-                            <td><pems-badge tone="none" css="bg-@t.Color">@t.Name</pems-badge></td>
-                            <td class="small">@string.Format(Localizer["Tg_LetterCount"].Value, t.LetterCount)</td>
-                            <td class="lp-actions">
+                        <pems-table-row class="lp-row">
+                            <pems-table-cell><pems-badge tone="none" css="bg-@t.Color">@t.Name</pems-badge></pems-table-cell>
+                            <pems-table-cell class="small">@string.Format(Localizer["Tg_LetterCount"].Value, t.LetterCount)</pems-table-cell>
+                            <pems-table-cell class="lp-actions">
                                 <form asp-action="Delete" method="post" class="d-inline" data-pems-confirm="@Localizer["Tg_DeleteConfirm"]">
                                     <input type="hidden" name="tagId" value="@t.TagId" />
                                     <button type="submit" class="lp-act lp-act--always" title="@Localizer["Delete"]" aria-label="@Localizer["Delete"]"><pems-icon name="bi-trash" aria-hidden="true" /></button>
                                 </form>
-                            </td>
-                        </tr>
+                            </pems-table-cell>
+                        </pems-table-row>
                     }
-                </tbody>
+                </pems-table-body>
             </pems-list-table>
         </pems-list-grid>
     </pems-list-panel>

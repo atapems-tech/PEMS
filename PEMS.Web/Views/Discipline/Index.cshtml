@@ -26,37 +26,37 @@
 
         <pems-list-grid>
             <pems-list-table grid-key="Discipline" empty="@(!Model.Any())" empty-text="@Localizer["DsL_Empty"]">
-                <thead>
-                    <tr>
-                        <th class="pems-w-90" data-col-key="code" data-resizable="true" data-min-width="70" data-max-width="140">@Localizer["MiL_Code"]</th>
-                        <th data-col-key="name" data-resizable="true" data-min-width="120" data-max-width="320">@Localizer["Ed_Discipline"]</th>
-                        <th data-col-key="documents" data-resizable="true" data-min-width="70" data-max-width="130" class="text-end pems-w-100">@Localizer["Ed_Documents"]</th>
-                        <th data-col-key="pending" data-resizable="true" data-min-width="70" data-max-width="130" class="text-end pems-w-100">@Localizer["Ed_Pending"]</th>
-                        <th data-col-key="equipment" data-resizable="true" data-min-width="70" data-max-width="130" class="text-end vs-hide-md pems-w-100">@Localizer["PcRpt_Kpi_Equipment"]</th>
-                        <th data-col-key="vdr" data-resizable="true" data-min-width="60" data-max-width="120" class="text-end vs-hide-md pems-w-80">@Localizer["DsL_Vdr"]</th>
-                        <th data-col-key="openTasks" data-resizable="true" data-min-width="70" data-max-width="130" class="text-end pems-w-100">@Localizer["DsL_OpenTasks"]</th>
-                        <th data-col-key="overdue" data-resizable="true" data-min-width="70" data-max-width="130" class="text-end pems-w-100">@Localizer["Overdue"]</th>
-                        <th class="pems-w-60" data-col-key="actions" data-resizable="false"><span class="visually-hidden">@Localizer["Ed_Actions"]</span></th>
-                    </tr>
-                </thead>
-                <tbody>
+                <pems-table-head>
+                    <pems-table-row>
+                        <pems-table-header class="pems-w-90" data-col-key="code" data-resizable="true" data-min-width="70" data-max-width="140">@Localizer["MiL_Code"]</pems-table-header>
+                        <pems-table-header data-col-key="name" data-resizable="true" data-min-width="120" data-max-width="320">@Localizer["Ed_Discipline"]</pems-table-header>
+                        <pems-table-header data-col-key="documents" data-resizable="true" data-min-width="70" data-max-width="130" class="text-end pems-w-100">@Localizer["Ed_Documents"]</pems-table-header>
+                        <pems-table-header data-col-key="pending" data-resizable="true" data-min-width="70" data-max-width="130" class="text-end pems-w-100">@Localizer["Ed_Pending"]</pems-table-header>
+                        <pems-table-header data-col-key="equipment" data-resizable="true" data-min-width="70" data-max-width="130" class="text-end vs-hide-md pems-w-100">@Localizer["PcRpt_Kpi_Equipment"]</pems-table-header>
+                        <pems-table-header data-col-key="vdr" data-resizable="true" data-min-width="60" data-max-width="120" class="text-end vs-hide-md pems-w-80">@Localizer["DsL_Vdr"]</pems-table-header>
+                        <pems-table-header data-col-key="openTasks" data-resizable="true" data-min-width="70" data-max-width="130" class="text-end pems-w-100">@Localizer["DsL_OpenTasks"]</pems-table-header>
+                        <pems-table-header data-col-key="overdue" data-resizable="true" data-min-width="70" data-max-width="130" class="text-end pems-w-100">@Localizer["Overdue"]</pems-table-header>
+                        <pems-table-header class="pems-w-60" data-col-key="actions" data-resizable="false"><span class="visually-hidden">@Localizer["Ed_Actions"]</span></pems-table-header>
+                    </pems-table-row>
+                </pems-table-head>
+                <pems-table-body>
                     @foreach (var d in Model)
                     {
-                        <tr class="lp-row">
-                            <td class="lp-no"><span class="vs-num">@d.Code</span></td>
-                            <td><a asp-action="Details" asp-route-id="@d.DisciplineId" class="lp-subject" title="@d.Name">@d.Name</a></td>
-                            <td class="text-end"><span class="vs-num">@d.DocumentsCount</span></td>
-                            <td class="text-end">@if (d.PendingDocumentsCount > 0) { <span class="vs-pill vs-pill--warning">@d.PendingDocumentsCount</span> } else { <span class="vs-num">0</span> }</td>
-                            <td class="text-end vs-hide-md"><span class="vs-num">@d.EquipmentCount</span></td>
-                            <td class="text-end vs-hide-md"><span class="vs-num">@d.VDRItemsCount</span></td>
-                            <td class="text-end"><span class="vs-num">@d.OpenTasksCount</span></td>
-                            <td class="text-end">@if (d.OverdueTasksCount > 0) { <span class="vs-pill vs-pill--danger">@d.OverdueTasksCount</span> } else { <span class="vs-num">0</span> }</td>
-                            <td class="text-end">
+                        <pems-table-row class="lp-row">
+                            <pems-table-cell class="lp-no"><span class="vs-num">@d.Code</span></pems-table-cell>
+                            <pems-table-cell><a asp-action="Details" asp-route-id="@d.DisciplineId" class="lp-subject" title="@d.Name">@d.Name</a></pems-table-cell>
+                            <pems-table-cell class="text-end"><span class="vs-num">@d.DocumentsCount</span></pems-table-cell>
+                            <pems-table-cell class="text-end">@if (d.PendingDocumentsCount > 0) { <span class="vs-pill vs-pill--warning">@d.PendingDocumentsCount</span> } else { <span class="vs-num">0</span> }</pems-table-cell>
+                            <pems-table-cell class="text-end vs-hide-md"><span class="vs-num">@d.EquipmentCount</span></pems-table-cell>
+                            <pems-table-cell class="text-end vs-hide-md"><span class="vs-num">@d.VDRItemsCount</span></pems-table-cell>
+                            <pems-table-cell class="text-end"><span class="vs-num">@d.OpenTasksCount</span></pems-table-cell>
+                            <pems-table-cell class="text-end">@if (d.OverdueTasksCount > 0) { <span class="vs-pill vs-pill--danger">@d.OverdueTasksCount</span> } else { <span class="vs-num">0</span> }</pems-table-cell>
+                            <pems-table-cell class="text-end">
                                 <a asp-action="Details" asp-route-id="@d.DisciplineId" class="lp-act lp-act--always" title="@Localizer["DsL_OpenWorkspace"]" aria-label="@Localizer["DsL_OpenWorkspace"] @d.Name"><pems-icon name="bi-box-arrow-in-right" aria-hidden="true" /></a>
-                            </td>
-                        </tr>
+                            </pems-table-cell>
+                        </pems-table-row>
                     }
-                </tbody>
+                </pems-table-body>
             </pems-list-table>
         </pems-list-grid>
     </pems-list-panel>

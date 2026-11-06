@@ -39,28 +39,28 @@
         <pems-list-grid>
             <pems-list-table grid-key="DocumentWorkflow" empty="@(!Model.Items.Any())" empty-text="@Localizer["Dw_Empty"]"
                              filtered="@(!string.IsNullOrWhiteSpace(selectedStatus))" clear-href="@Url.Action("Index")">
-                <thead>
-                    <tr>
-                        <th class="pems-w-150" data-col-key="docNo" data-resizable="true" data-min-width="100" data-max-width="220">@Localizer["Ed_DocNo"]</th>
-                        <th class="pems-w-240" data-col-key="title" data-resizable="true" data-min-width="140" data-max-width="400">@Localizer["Ed_Title"]</th>
-                        <th data-col-key="project" data-resizable="true" data-min-width="100" data-max-width="220" class="vs-hide-md pems-w-140">@Localizer["Project"]</th>
-                        <th data-col-key="discipline" data-resizable="true" data-min-width="90" data-max-width="200" class="vs-hide-md pems-w-120">@Localizer["Ed_Discipline"]</th>
-                        <th class="pems-w-150" data-col-key="status" data-resizable="true" data-min-width="100" data-max-width="220">@Localizer["Ed_Status"]</th>
-                        <th class="pems-w-70" data-col-key="rev" data-resizable="true" data-min-width="60" data-max-width="100">@Localizer["Ed_Rev"]</th>
-                        <th class="pems-w-220" data-col-key="actions" data-resizable="false"><span class="visually-hidden">@Localizer["Ed_Actions"]</span></th>
-                    </tr>
-                </thead>
-                <tbody>
+                <pems-table-head>
+                    <pems-table-row>
+                        <pems-table-header class="pems-w-150" data-col-key="docNo" data-resizable="true" data-min-width="100" data-max-width="220">@Localizer["Ed_DocNo"]</pems-table-header>
+                        <pems-table-header class="pems-w-240" data-col-key="title" data-resizable="true" data-min-width="140" data-max-width="400">@Localizer["Ed_Title"]</pems-table-header>
+                        <pems-table-header data-col-key="project" data-resizable="true" data-min-width="100" data-max-width="220" class="vs-hide-md pems-w-140">@Localizer["Project"]</pems-table-header>
+                        <pems-table-header data-col-key="discipline" data-resizable="true" data-min-width="90" data-max-width="200" class="vs-hide-md pems-w-120">@Localizer["Ed_Discipline"]</pems-table-header>
+                        <pems-table-header class="pems-w-150" data-col-key="status" data-resizable="true" data-min-width="100" data-max-width="220">@Localizer["Ed_Status"]</pems-table-header>
+                        <pems-table-header class="pems-w-70" data-col-key="rev" data-resizable="true" data-min-width="60" data-max-width="100">@Localizer["Ed_Rev"]</pems-table-header>
+                        <pems-table-header class="pems-w-220" data-col-key="actions" data-resizable="false"><span class="visually-hidden">@Localizer["Ed_Actions"]</span></pems-table-header>
+                    </pems-table-row>
+                </pems-table-head>
+                <pems-table-body>
                     @foreach (var d in Model.Items)
                     {
-                        <tr class="lp-row">
-                            <td class="lp-no"><a asp-controller="EngineeringDocuments" asp-action="Details" asp-route-id="@d.DocumentId" class="lp-subject" title="@d.DocumentNo">@d.DocumentNo</a></td>
-                            <td><span class="vs-title-cell" title="@d.Title">@d.Title</span></td>
-                            <td class="vs-hide-md small">@d.ProjectName</td>
-                            <td class="vs-hide-md small">@d.DisciplineName</td>
-                            <td><span class="vs-pill vs-pill--icon @DocumentStatusBadge.Tone(d.Status)"><pems-icon css="@DocumentStatusBadge.Icon(d.Status)" aria-hidden="true" /> @StatusText(d.Status)</span></td>
-                            <td><span class="vs-num">@d.RevisionNo</span></td>
-                            <td class="text-nowrap text-end">
+                        <pems-table-row class="lp-row">
+                            <pems-table-cell class="lp-no"><a asp-controller="EngineeringDocuments" asp-action="Details" asp-route-id="@d.DocumentId" class="lp-subject" title="@d.DocumentNo">@d.DocumentNo</a></pems-table-cell>
+                            <pems-table-cell><span class="vs-title-cell" title="@d.Title">@d.Title</span></pems-table-cell>
+                            <pems-table-cell class="vs-hide-md small">@d.ProjectName</pems-table-cell>
+                            <pems-table-cell class="vs-hide-md small">@d.DisciplineName</pems-table-cell>
+                            <pems-table-cell><span class="vs-pill vs-pill--icon @DocumentStatusBadge.Tone(d.Status)"><pems-icon css="@DocumentStatusBadge.Icon(d.Status)" aria-hidden="true" /> @StatusText(d.Status)</span></pems-table-cell>
+                            <pems-table-cell><span class="vs-num">@d.RevisionNo</span></pems-table-cell>
+                            <pems-table-cell class="text-nowrap text-end">
                                 @if (d.Status == "Submitted")
                                 {
                                     <form asp-action="Check" method="post" class="d-inline">
@@ -83,10 +83,10 @@
                                         <pems-button tone="danger" size="small" outline="true" type="submit"><pems-icon name="bi-x-lg" aria-hidden="true" /> @Localizer["Reject"]</pems-button>
                                     </form>
                                 }
-                            </td>
-                        </tr>
+                            </pems-table-cell>
+                        </pems-table-row>
                     }
-                </tbody>
+                </pems-table-body>
             </pems-list-table>
 
             <pems-list-footer>
@@ -108,31 +108,31 @@
         <pems-list-toolbar heading="@Localizer["Dw_History"]" />
         <pems-list-grid>
             <pems-list-table empty="@(!history.Any())" empty-text="@Localizer["Dw_HistoryEmpty"]">
-                <thead>
-                    <tr>
-                        <th>@Localizer["Rv_Document"]</th>
-                        <th>@Localizer["Dw_From"]</th>
-                        <th>@Localizer["Dw_To"]</th>
-                        <th>@Localizer["Dw_Action"]</th>
-                        <th>@Localizer["Dw_By"]</th>
-                        <th>@Localizer["Dw_Comment"]</th>
-                        <th>@Localizer["Rv_Date"]</th>
-                    </tr>
-                </thead>
-                <tbody>
+                <pems-table-head>
+                    <pems-table-row>
+                        <pems-table-header>@Localizer["Rv_Document"]</pems-table-header>
+                        <pems-table-header>@Localizer["Dw_From"]</pems-table-header>
+                        <pems-table-header>@Localizer["Dw_To"]</pems-table-header>
+                        <pems-table-header>@Localizer["Dw_Action"]</pems-table-header>
+                        <pems-table-header>@Localizer["Dw_By"]</pems-table-header>
+                        <pems-table-header>@Localizer["Dw_Comment"]</pems-table-header>
+                        <pems-table-header>@Localizer["Rv_Date"]</pems-table-header>
+                    </pems-table-row>
+                </pems-table-head>
+                <pems-table-body>
                     @foreach (var h in history)
                     {
-                        <tr class="lp-row">
-                            <td class="lp-no">@h.Document?.DocumentNo</td>
-                            <td class="small">@StatusText(h.FromStatus)</td>
-                            <td class="small">@StatusText(h.ToStatus)</td>
-                            <td class="small">@h.ActionType</td>
-                            <td class="small">@(h.ActionBy != null ? h.ActionBy.FirstName + " " + h.ActionBy.LastName : "—")</td>
-                            <td class="small">@h.Comment</td>
-                            <td class="small text-muted">@h.ActionDate.ToString("yyyy-MM-dd HH:mm")</td>
-                        </tr>
+                        <pems-table-row class="lp-row">
+                            <pems-table-cell class="lp-no">@h.Document?.DocumentNo</pems-table-cell>
+                            <pems-table-cell class="small">@StatusText(h.FromStatus)</pems-table-cell>
+                            <pems-table-cell class="small">@StatusText(h.ToStatus)</pems-table-cell>
+                            <pems-table-cell class="small">@h.ActionType</pems-table-cell>
+                            <pems-table-cell class="small">@(h.ActionBy != null ? h.ActionBy.FirstName + " " + h.ActionBy.LastName : "—")</pems-table-cell>
+                            <pems-table-cell class="small">@h.Comment</pems-table-cell>
+                            <pems-table-cell class="small text-muted">@h.ActionDate.ToString("yyyy-MM-dd HH:mm")</pems-table-cell>
+                        </pems-table-row>
                     }
-                </tbody>
+                </pems-table-body>
             </pems-list-table>
         </pems-list-grid>
     </pems-list-panel>

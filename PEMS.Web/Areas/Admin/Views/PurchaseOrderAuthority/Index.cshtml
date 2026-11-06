@@ -60,30 +60,30 @@
 
         <pems-list-grid>
             <pems-list-table empty="@(Model.Count == 0)" empty-text="@Localizer["Po_NoRules"]">
-                <thead>
-                    <tr>
-                        <th class="pems-w-70">@Localizer["Po_Level"]</th>
-                        <th class="pems-w-90">@Localizer["Po_Currency"]</th>
-                        <th class="text-end pems-w-140">@Localizer["Po_From"]</th>
-                        <th class="text-end pems-w-140">@Localizer["Po_To"]</th>
-                        <th class="pems-w-170">@Localizer["Po_ApproverRole"]</th>
-                        <th>@Localizer["Ed_Description"]</th>
-                        <th class="pems-w-110">@Localizer["Ed_Status"]</th>
-                        <th class="pems-w-60"><span class="visually-hidden">@Localizer["Ed_Actions"]</span></th>
-                    </tr>
-                </thead>
-                <tbody>
+                <pems-table-head>
+                    <pems-table-row>
+                        <pems-table-header class="pems-w-70">@Localizer["Po_Level"]</pems-table-header>
+                        <pems-table-header class="pems-w-90">@Localizer["Po_Currency"]</pems-table-header>
+                        <pems-table-header class="text-end pems-w-140">@Localizer["Po_From"]</pems-table-header>
+                        <pems-table-header class="text-end pems-w-140">@Localizer["Po_To"]</pems-table-header>
+                        <pems-table-header class="pems-w-170">@Localizer["Po_ApproverRole"]</pems-table-header>
+                        <pems-table-header>@Localizer["Ed_Description"]</pems-table-header>
+                        <pems-table-header class="pems-w-110">@Localizer["Ed_Status"]</pems-table-header>
+                        <pems-table-header class="pems-w-60"><span class="visually-hidden">@Localizer["Ed_Actions"]</span></pems-table-header>
+                    </pems-table-row>
+                </pems-table-head>
+                <pems-table-body>
                 @foreach (var r in Model)
                 {
-                    <tr class="lp-row">
-                        <td dir="ltr"><span class="vs-num">@r.Level</span></td>
-                        <td dir="ltr"><span class="vs-num">@r.Currency</span></td>
-                        <td class="text-end" dir="ltr"><span class="vs-num">@r.MinAmount.ToString("N0")</span></td>
-                        <td class="text-end" dir="ltr"><span class="vs-num">@(r.MaxAmount?.ToString("N0") ?? "∞")</span></td>
-                        <td dir="ltr" class="small">@r.ApproverRole</td>
-                        <td class="small"><span class="vs-title-cell" title="@r.Description">@r.Description</span></td>
-                        <td><span class="vs-pill @(r.IsActive ? "vs-pill--success" : "vs-pill--neutral")">@Localizer[r.IsActive ? "Po_Active" : "Po_Inactive"]</span></td>
-                        <td class="text-end">
+                    <pems-table-row class="lp-row">
+                        <pems-table-cell dir="ltr"><span class="vs-num">@r.Level</span></pems-table-cell>
+                        <pems-table-cell dir="ltr"><span class="vs-num">@r.Currency</span></pems-table-cell>
+                        <pems-table-cell class="text-end" dir="ltr"><span class="vs-num">@r.MinAmount.ToString("N0")</span></pems-table-cell>
+                        <pems-table-cell class="text-end" dir="ltr"><span class="vs-num">@(r.MaxAmount?.ToString("N0") ?? "∞")</span></pems-table-cell>
+                        <pems-table-cell dir="ltr" class="small">@r.ApproverRole</pems-table-cell>
+                        <pems-table-cell class="small"><span class="vs-title-cell" title="@r.Description">@r.Description</span></pems-table-cell>
+                        <pems-table-cell><span class="vs-pill @(r.IsActive ? "vs-pill--success" : "vs-pill--neutral")">@Localizer[r.IsActive ? "Po_Active" : "Po_Inactive"]</span></pems-table-cell>
+                        <pems-table-cell class="text-end">
                             <form asp-action="Save" method="post" class="d-inline">
                                 <input type="hidden" name="id" value="@r.Id" /><input type="hidden" name="level" value="@r.Level" />
                                 <input type="hidden" name="minAmount" value="@r.MinAmount.ToString(System.Globalization.CultureInfo.InvariantCulture)" />
@@ -92,10 +92,10 @@
                                 <input type="hidden" name="description" value="@r.Description" /><input type="hidden" name="isActive" value="@((!r.IsActive).ToString().ToLowerInvariant())" />
                                 <button type="submit" class="lp-act lp-act--always" title="@Localizer[r.IsActive ? "Po_Deactivate" : "Po_Activate"]" aria-label="@Localizer[r.IsActive ? "Po_Deactivate" : "Po_Activate"]"><pems-icon css="@(r.IsActive ? "bi-toggle-on" : "bi-toggle-off")" aria-hidden="true" /></button>
                             </form>
-                        </td>
-                    </tr>
+                        </pems-table-cell>
+                    </pems-table-row>
                 }
-                </tbody>
+                </pems-table-body>
             </pems-list-table>
         </pems-list-grid>
     </pems-list-panel>

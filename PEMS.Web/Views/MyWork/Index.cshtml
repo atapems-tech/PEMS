@@ -79,41 +79,41 @@
         <pems-list-grid>
             <pems-list-table grid-key="MyWork" empty="@(!Model.Page.Items.Any())" empty-text="@Localizer["MyWork_Empty"]"
                              filtered="@(filterCount > 0)" clear-href="@Url.Action("Index")">
-                <thead>
-                    <tr>
-                        <th>@Localizer["MyWork_Module"]</th>
-                        <th>@Localizer["MyWork_Stage"]</th>
-                        <th>@Localizer["MyWork_Record"]</th>
-                        <th>@Localizer["MyWork_Assigned"]</th>
-                        <th>@Localizer["MyWork_Due"]</th>
-                    </tr>
-                </thead>
-                <tbody>
+                <pems-table-head>
+                    <pems-table-row>
+                        <pems-table-header>@Localizer["MyWork_Module"]</pems-table-header>
+                        <pems-table-header>@Localizer["MyWork_Stage"]</pems-table-header>
+                        <pems-table-header>@Localizer["MyWork_Record"]</pems-table-header>
+                        <pems-table-header>@Localizer["MyWork_Assigned"]</pems-table-header>
+                        <pems-table-header>@Localizer["MyWork_Due"]</pems-table-header>
+                    </pems-table-row>
+                </pems-table-head>
+                <pems-table-body>
                 @foreach (var t in Model.Page.Items)
                 {
                     var path = WorkflowTaskLinks.TryGetPath(t.Module, t.BusinessObjectType, t.BusinessObjectId);
-                    <tr class="lp-row">
-                        <td>@ModuleLabel(t.Module)</td>
-                        <td>@StageLabel(t)
+                    <pems-table-row class="lp-row">
+                        <pems-table-cell>@ModuleLabel(t.Module)</pems-table-cell>
+                        <pems-table-cell>@StageLabel(t)
                             @if (t.IsPersonal) { <span class="vs-pill vs-pill--warning ms-1">@Localizer["MyWork_Personal"]</span> }
                             else { <span class="vs-pill vs-pill--neutral ms-1">@Localizer["MyWork_Queue"]</span> }
-                        </td>
-                        <td>
+                        </pems-table-cell>
+                        <pems-table-cell>
                             @if (path != null) { <a href="@path">#@t.BusinessObjectId <pems-icon name="bi-box-arrow-up-right" css="small" aria-hidden="true" /><span class="visually-hidden">@Localizer["MyWork_Open"]</span></a> }
                             else { <span>#@t.BusinessObjectId</span> }
-                        </td>
-                        <td dir="ltr" class="text-nowrap">@t.AssignedDate.ToString("yyyy-MM-dd HH:mm")</td>
-                        <td dir="ltr" class="text-nowrap">
+                        </pems-table-cell>
+                        <pems-table-cell dir="ltr" class="text-nowrap">@t.AssignedDate.ToString("yyyy-MM-dd HH:mm")</pems-table-cell>
+                        <pems-table-cell dir="ltr" class="text-nowrap">
                             @if (t.DueDate.HasValue)
                             {
                                 <span class="@(t.IsOverdue ? "text-danger fw-semibold" : "")">@t.DueDate.Value.ToString("yyyy-MM-dd HH:mm")</span>
                                 @if (t.IsOverdue) { <span class="vs-pill vs-pill--danger ms-1">@Localizer["MyWork_Overdue"]</span> }
                             }
                             else { <span class="text-muted">—</span> }
-                        </td>
-                    </tr>
+                        </pems-table-cell>
+                    </pems-table-row>
                 }
-                </tbody>
+                </pems-table-body>
             </pems-list-table>
             <pems-list-footer>
                 @await Html.PartialAsync("_Pagination", new PEMS.Web.ViewModels.PaginationViewModel

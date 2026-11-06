@@ -27,39 +27,39 @@
 
         <pems-list-grid>
             <pems-list-table grid-key="Vendor" empty="@(!Model.Items.Any())" empty-text="@Localizer["Vs_NoVendors"]">
-                <thead>
-                    <tr>
-                        <th data-col-key="name" data-resizable="true" data-min-width="100" data-max-width="320">@Localizer["Vs_Name"]</th>
-                        <th data-col-key="country" data-resizable="true" data-min-width="80" data-max-width="180" class="vs-hide-md pems-w-120">@Localizer["Vs_Country"]</th>
-                        <th data-col-key="contracts" data-resizable="true" data-min-width="70" data-max-width="140" class="text-end pems-w-100">@Localizer["Vs_Contracts"]</th>
-                        <th data-col-key="vdrItems" data-resizable="true" data-min-width="70" data-max-width="140" class="text-end pems-w-100">@Localizer["Vs_VdrItems"]</th>
-                        <th data-col-key="overdue" data-resizable="true" data-min-width="70" data-max-width="140" class="text-end pems-w-100">@Localizer["Vs_Overdue"]</th>
-                        <th class="pems-w-110" data-col-key="risk" data-resizable="true" data-min-width="70" data-max-width="140">@Localizer["Vs_Risk"]</th>
-                        <th class="pems-w-60" data-col-key="actions" data-resizable="false"><span class="visually-hidden">@Localizer["Ed_Actions"]</span></th>
-                    </tr>
-                </thead>
-                <tbody>
+                <pems-table-head>
+                    <pems-table-row>
+                        <pems-table-header data-col-key="name" data-resizable="true" data-min-width="100" data-max-width="320">@Localizer["Vs_Name"]</pems-table-header>
+                        <pems-table-header data-col-key="country" data-resizable="true" data-min-width="80" data-max-width="180" class="vs-hide-md pems-w-120">@Localizer["Vs_Country"]</pems-table-header>
+                        <pems-table-header data-col-key="contracts" data-resizable="true" data-min-width="70" data-max-width="140" class="text-end pems-w-100">@Localizer["Vs_Contracts"]</pems-table-header>
+                        <pems-table-header data-col-key="vdrItems" data-resizable="true" data-min-width="70" data-max-width="140" class="text-end pems-w-100">@Localizer["Vs_VdrItems"]</pems-table-header>
+                        <pems-table-header data-col-key="overdue" data-resizable="true" data-min-width="70" data-max-width="140" class="text-end pems-w-100">@Localizer["Vs_Overdue"]</pems-table-header>
+                        <pems-table-header class="pems-w-110" data-col-key="risk" data-resizable="true" data-min-width="70" data-max-width="140">@Localizer["Vs_Risk"]</pems-table-header>
+                        <pems-table-header class="pems-w-60" data-col-key="actions" data-resizable="false"><span class="visually-hidden">@Localizer["Ed_Actions"]</span></pems-table-header>
+                    </pems-table-row>
+                </pems-table-head>
+                <pems-table-body>
                     @foreach (var v in Model.Items)
                     {
-                        <tr class="lp-row">
-                            <td>
+                        <pems-table-row class="lp-row">
+                            <pems-table-cell>
                                 <a asp-action="Details" asp-route-id="@v.VendorId" class="lp-subject" title="@v.Name">@v.Name</a>
                                 @if (!string.IsNullOrEmpty(v.VendorCode)) { <div class="vs-mono small">@v.VendorCode</div> }
-                            </td>
-                            <td class="small vs-hide-md">@v.Country</td>
-                            <td class="text-end"><span class="vs-num">@v.ContractsCount</span></td>
-                            <td class="text-end"><span class="vs-num">@v.VDRItemsCount</span></td>
-                            <td class="text-end">
+                            </pems-table-cell>
+                            <pems-table-cell class="small vs-hide-md">@v.Country</pems-table-cell>
+                            <pems-table-cell class="text-end"><span class="vs-num">@v.ContractsCount</span></pems-table-cell>
+                            <pems-table-cell class="text-end"><span class="vs-num">@v.VDRItemsCount</span></pems-table-cell>
+                            <pems-table-cell class="text-end">
                                 @if (v.OverdueVDRItemsCount > 0) { <span class="vs-pill vs-pill--danger">@v.OverdueVDRItemsCount</span> }
                                 else { <span class="vs-num">0</span> }
-                            </td>
-                            <td><span class="vs-pill @VdrUi.RiskTone(v.RiskLevel)">@VdrUi.Loc(Localizer, "St_", v.RiskLevel)</span></td>
-                            <td class="text-end">
+                            </pems-table-cell>
+                            <pems-table-cell><span class="vs-pill @VdrUi.RiskTone(v.RiskLevel)">@VdrUi.Loc(Localizer, "St_", v.RiskLevel)</span></pems-table-cell>
+                            <pems-table-cell class="text-end">
                                 <a asp-action="Details" asp-route-id="@v.VendorId" class="lp-act lp-act--always" title="@Localizer["Vs_View"]" aria-label="@Localizer["Vs_View"]"><pems-icon name="bi-eye" aria-hidden="true" /></a>
-                            </td>
-                        </tr>
+                            </pems-table-cell>
+                        </pems-table-row>
                     }
-                </tbody>
+                </pems-table-body>
             </pems-list-table>
 
             <pems-list-footer>

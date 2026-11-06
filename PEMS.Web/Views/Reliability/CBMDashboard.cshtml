@@ -48,18 +48,18 @@
             else
             {
                 <pems-table scale="small">
-                    <thead><tr><th>@Localizer["Tag"]</th><th>@Localizer["Variable"]</th><th>@Localizer["Evaluation"]</th><th>@Localizer["Last Reading"]</th></tr></thead>
-                    <tbody>
+                    <pems-table-head><pems-table-row><pems-table-header>@Localizer["Tag"]</pems-table-header><pems-table-header>@Localizer["Variable"]</pems-table-header><pems-table-header>@Localizer["Evaluation"]</pems-table-header><pems-table-header>@Localizer["Last Reading"]</pems-table-header></pems-table-row></pems-table-head>
+                    <pems-table-body>
                         @foreach (var p in Model.AttentionPoints)
                         {
-                            <tr>
-                                <td><a asp-controller="Equipment" asp-action="Details" asp-route-id="@p.EquipmentId">@p.EquipmentTagNumber</a></td>
-                                <td class="small">@p.VariableType — @p.Tag</td>
-                                <td><pems-badge tone="none" css="@EvalBadge(p.EvaluationStatus)">@p.EvaluationStatus</pems-badge></td>
-                                <td class="small">@(p.LastReadingDate?.ToString("yyyy-MM-dd") ?? "-")</td>
-                            </tr>
+                            <pems-table-row>
+                                <pems-table-cell><a asp-controller="Equipment" asp-action="Details" asp-route-id="@p.EquipmentId">@p.EquipmentTagNumber</a></pems-table-cell>
+                                <pems-table-cell class="small">@p.VariableType — @p.Tag</pems-table-cell>
+                                <pems-table-cell><pems-badge tone="none" css="@EvalBadge(p.EvaluationStatus)">@p.EvaluationStatus</pems-badge></pems-table-cell>
+                                <pems-table-cell class="small">@(p.LastReadingDate?.ToString("yyyy-MM-dd") ?? "-")</pems-table-cell>
+                            </pems-table-row>
                         }
-                    </tbody>
+                    </pems-table-body>
                 </pems-table>
                 @if (Model.AttentionPointsTruncated)
                 {
@@ -78,18 +78,18 @@
             else
             {
                 <pems-table scale="small">
-                    <thead><tr><th>@Localizer["Tag"]</th><th>@Localizer["Variable"]</th><th>@Localizer["Next Due"]</th><th>@Localizer["Overdue"]</th></tr></thead>
-                    <tbody>
+                    <pems-table-head><pems-table-row><pems-table-header>@Localizer["Tag"]</pems-table-header><pems-table-header>@Localizer["Variable"]</pems-table-header><pems-table-header>@Localizer["Next Due"]</pems-table-header><pems-table-header>@Localizer["Overdue"]</pems-table-header></pems-table-row></pems-table-head>
+                    <pems-table-body>
                         @foreach (var o in Model.OverdueCbmPlans)
                         {
-                            <tr>
-                                <td><a asp-controller="Equipment" asp-action="Details" asp-route-id="@o.EquipmentId">@o.EquipmentTagNumber</a></td>
-                                <td class="small">@o.VariableType — @o.Tag</td>
-                                <td class="small">@o.NextDueDate.ToString("yyyy-MM-dd")</td>
-                                <td><pems-badge tone="danger">@o.DaysOverdue @Localizer["روز"]</pems-badge></td>
-                            </tr>
+                            <pems-table-row>
+                                <pems-table-cell><a asp-controller="Equipment" asp-action="Details" asp-route-id="@o.EquipmentId">@o.EquipmentTagNumber</a></pems-table-cell>
+                                <pems-table-cell class="small">@o.VariableType — @o.Tag</pems-table-cell>
+                                <pems-table-cell class="small">@o.NextDueDate.ToString("yyyy-MM-dd")</pems-table-cell>
+                                <pems-table-cell><pems-badge tone="danger">@o.DaysOverdue @Localizer["روز"]</pems-badge></pems-table-cell>
+                            </pems-table-row>
                         }
-                    </tbody>
+                    </pems-table-body>
                 </pems-table>
                 @if (Model.OverdueCbmPlansTruncated)
                 {

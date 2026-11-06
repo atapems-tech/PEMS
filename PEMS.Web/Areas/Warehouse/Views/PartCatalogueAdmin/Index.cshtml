@@ -84,17 +84,17 @@
         <h2 class="vs-section__title"><pems-icon name="bi-clipboard2-pulse" /> @Localizer["Pc_Adm_DataQuality"]</h2>
         <div class="pc-table-scroll">
             <pems-table scale="small" css="table-enterprise vs-dense mb-0">
-                <thead><tr><th>@Localizer["Pc_Adm_Severity"]</th><th>@Localizer["Pc_Adm_Responsibility"]</th><th>@Localizer["Pc_Adm_Finding"]</th></tr></thead>
-                <tbody>
+                <pems-table-head><pems-table-row><pems-table-header>@Localizer["Pc_Adm_Severity"]</pems-table-header><pems-table-header>@Localizer["Pc_Adm_Responsibility"]</pems-table-header><pems-table-header>@Localizer["Pc_Adm_Finding"]</pems-table-header></pems-table-row></pems-table-head>
+                <pems-table-body>
                 @foreach (var f in ov.Findings.OrderBy(x => x.Severity).ThenBy(x => x.ResponsibilityKey))
                 {
-                    <tr>
-                        <td><span class="vs-pill @(f.Severity == "P1" ? "vs-pill--danger" : f.Severity == "P2" ? "vs-pill--warning" : "vs-pill--neutral")">@f.Severity</span></td>
-                        <td><code>@f.ResponsibilityKey</code></td>
-                        <td>@f.Message <span class="text-muted small">(@f.Code)</span></td>
-                    </tr>
+                    <pems-table-row>
+                        <pems-table-cell><span class="vs-pill @(f.Severity == "P1" ? "vs-pill--danger" : f.Severity == "P2" ? "vs-pill--warning" : "vs-pill--neutral")">@f.Severity</span></pems-table-cell>
+                        <pems-table-cell><code>@f.ResponsibilityKey</code></pems-table-cell>
+                        <pems-table-cell>@f.Message <span class="text-muted small">(@f.Code)</span></pems-table-cell>
+                    </pems-table-row>
                 }
-                </tbody>
+                </pems-table-body>
             </pems-table>
             @if (!ov.Findings.Any()) { <div class="vs-empty py-2">@Localizer["Pc_Adm_NoFindings"]</div> }
         </div>
@@ -200,14 +200,14 @@
         </pems-row></form>
         <div class="pc-table-scroll">
             <pems-table scale="small" css="table-enterprise vs-dense mb-0">
-                <thead><tr><th>@Localizer["Pc_Adm_Responsibility"]</th><th>@Localizer["Pc_F_CommodityGroup1Id"]</th><th>@Localizer["Pc_Adm_Position"]</th><th>@Localizer["Pc_Adm_EmployeeOverride"]</th><th></th></tr></thead>
-                <tbody>
+                <pems-table-head><pems-table-row><pems-table-header>@Localizer["Pc_Adm_Responsibility"]</pems-table-header><pems-table-header>@Localizer["Pc_F_CommodityGroup1Id"]</pems-table-header><pems-table-header>@Localizer["Pc_Adm_Position"]</pems-table-header><pems-table-header>@Localizer["Pc_Adm_EmployeeOverride"]</pems-table-header><pems-table-header></pems-table-header></pems-table-row></pems-table-head>
+                <pems-table-body>
                 @foreach (var c in ov.CommodityResponsibles.Where(x => x.IsActive))
                 {
-                    <tr><td><code>@c.ResponsibilityKey</code></td><td>@c.GroupText</td><td>@c.PositionTitle</td><td>@c.EmployeeName</td>
-                        <td class="text-end"><form asp-action="RemoveCommodityResponsible" method="post" class="d-inline"><input type="hidden" name="id" value="@c.Id" /><button class="vs-icon-btn" title="@Localizer["Pc_Btn_Remove"]" aria-label="@Localizer["Pc_Btn_Remove"]"><pems-icon name="bi-trash" /></button></form></td></tr>
+                    <pems-table-row><pems-table-cell><code>@c.ResponsibilityKey</code></pems-table-cell><pems-table-cell>@c.GroupText</pems-table-cell><pems-table-cell>@c.PositionTitle</pems-table-cell><pems-table-cell>@c.EmployeeName</pems-table-cell>
+                        <pems-table-cell class="text-end"><form asp-action="RemoveCommodityResponsible" method="post" class="d-inline"><input type="hidden" name="id" value="@c.Id" /><button class="vs-icon-btn" title="@Localizer["Pc_Btn_Remove"]" aria-label="@Localizer["Pc_Btn_Remove"]"><pems-icon name="bi-trash" /></button></form></pems-table-cell></pems-table-row>
                 }
-                </tbody>
+                </pems-table-body>
             </pems-table>
             @if (!ov.CommodityResponsibles.Any(x => x.IsActive)) { <div class="vs-empty py-2">@Localizer["Pc_Adm_NoCommodityResp"]</div> }
         </div>
@@ -257,17 +257,17 @@
         <p class="small text-muted">@Localizer["Pc_Adm_SectionsHint"]</p>
         <div class="pc-table-scroll">
             <pems-table scale="small" css="table-enterprise vs-dense mb-0">
-                <thead><tr><th>@Localizer["Pc_F_SectionId"]</th><th>@Localizer["Pc_Adm_SpareReview"]</th><th>@Localizer["Pc_Col_Active"]</th><th></th><th>@Localizer["Pc_Adm_AllowedGroups"]</th></tr></thead>
-                <tbody>
+                <pems-table-head><pems-table-row><pems-table-header>@Localizer["Pc_F_SectionId"]</pems-table-header><pems-table-header>@Localizer["Pc_Adm_SpareReview"]</pems-table-header><pems-table-header>@Localizer["Pc_Col_Active"]</pems-table-header><pems-table-header></pems-table-header><pems-table-header>@Localizer["Pc_Adm_AllowedGroups"]</pems-table-header></pems-table-row></pems-table-head>
+                <pems-table-body>
                 @foreach (var s in ov.Sections)
                 {
                     var fid = "secForm" + s.SectionId;
-                    <tr>
-                        <td>@s.Code @if (!string.IsNullOrEmpty(s.NameFa)) { <span class="text-muted small">(@s.NameFa)</span> } @if (s.RoutingNeedsConfirmation) { <span class="vs-pill vs-pill--warning" title="@Localizer["Pc_Adm_NeedsConfirmation"]">@Localizer["Pc_Adm_NeedsConfirmationShort"]</span> }</td>
-                        <td><input form="@fid" type="checkbox" name="requiresSparePartsReview" value="true" checked="@s.RequiresSparePartsReview" aria-label="@Localizer["Pc_Adm_SpareReview"]" /><input form="@fid" type="hidden" name="requiresSparePartsReview" value="false" /></td>
-                        <td><input form="@fid" type="checkbox" name="isActive" value="true" checked="@s.IsActive" aria-label="@Localizer["Pc_Col_Active"]" /><input form="@fid" type="hidden" name="isActive" value="false" /></td>
-                        <td><form id="@fid" asp-action="SetSection" method="post"><input type="hidden" name="sectionId" value="@s.SectionId" /><button class="vs-btn vs-btn--sm"><pems-icon name="bi-save" /></button></form></td>
-                        <td>
+                    <pems-table-row>
+                        <pems-table-cell>@s.Code @if (!string.IsNullOrEmpty(s.NameFa)) { <span class="text-muted small">(@s.NameFa)</span> } @if (s.RoutingNeedsConfirmation) { <span class="vs-pill vs-pill--warning" title="@Localizer["Pc_Adm_NeedsConfirmation"]">@Localizer["Pc_Adm_NeedsConfirmationShort"]</span> }</pems-table-cell>
+                        <pems-table-cell><input form="@fid" type="checkbox" name="requiresSparePartsReview" value="true" checked="@s.RequiresSparePartsReview" aria-label="@Localizer["Pc_Adm_SpareReview"]" /><input form="@fid" type="hidden" name="requiresSparePartsReview" value="false" /></pems-table-cell>
+                        <pems-table-cell><input form="@fid" type="checkbox" name="isActive" value="true" checked="@s.IsActive" aria-label="@Localizer["Pc_Col_Active"]" /><input form="@fid" type="hidden" name="isActive" value="false" /></pems-table-cell>
+                        <pems-table-cell><form id="@fid" asp-action="SetSection" method="post"><input type="hidden" name="sectionId" value="@s.SectionId" /><button class="vs-btn vs-btn--sm"><pems-icon name="bi-save" /></button></form></pems-table-cell>
+                        <pems-table-cell>
                             @foreach (var g in s.Groups)
                             {
                                 <form asp-action="RemoveSectionGroup" method="post" class="d-inline"><input type="hidden" name="mapId" value="@g.MapId" />
@@ -279,10 +279,10 @@
                                 <div class="pc-lookup pc-lookup-sm" data-url="/Warehouse/PartCatalogueAdmin/CommodityGroups" data-name="commodityGroupId" data-input-id="@("grp_" + s.SectionId)"></div>
                                 <button class="vs-icon-btn" title="@Localizer["Pc_Btn_AddGroup"]" aria-label="@Localizer["Pc_Btn_AddGroup"]"><pems-icon name="bi-plus-lg" /></button>
                             </pems-flex></form>
-                        </td>
-                    </tr>
+                        </pems-table-cell>
+                    </pems-table-row>
                 }
-                </tbody>
+                </pems-table-body>
             </pems-table>
         </div>
     </section>
@@ -298,14 +298,14 @@
         </pems-row></form>
         <div class="pc-table-scroll">
             <pems-table scale="small" css="table-enterprise vs-dense mb-0">
-                <thead><tr><th>@Localizer["Pc_F_CommodityGroup1Id"]</th><th>@Localizer["Pc_F_CommodityGroup2Id"]</th><th></th></tr></thead>
-                <tbody>
+                <pems-table-head><pems-table-row><pems-table-header>@Localizer["Pc_F_CommodityGroup1Id"]</pems-table-header><pems-table-header>@Localizer["Pc_F_CommodityGroup2Id"]</pems-table-header><pems-table-header></pems-table-header></pems-table-row></pems-table-head>
+                <pems-table-body>
                 @foreach (var m in ov.Group2Maps)
                 {
-                    <tr><td>@m.Parent</td><td>@m.Child</td>
-                        <td class="text-end"><form asp-action="RemoveGroupChild" method="post" class="d-inline"><input type="hidden" name="mapId" value="@m.Id" /><button class="vs-icon-btn" title="@Localizer["Pc_Btn_Remove"]" aria-label="@Localizer["Pc_Btn_Remove"]"><pems-icon name="bi-trash" /></button></form></td></tr>
+                    <pems-table-row><pems-table-cell>@m.Parent</pems-table-cell><pems-table-cell>@m.Child</pems-table-cell>
+                        <pems-table-cell class="text-end"><form asp-action="RemoveGroupChild" method="post" class="d-inline"><input type="hidden" name="mapId" value="@m.Id" /><button class="vs-icon-btn" title="@Localizer["Pc_Btn_Remove"]" aria-label="@Localizer["Pc_Btn_Remove"]"><pems-icon name="bi-trash" /></button></form></pems-table-cell></pems-table-row>
                 }
-                </tbody>
+                </pems-table-body>
             </pems-table>
             @if (!ov.Group2Maps.Any()) { <div class="vs-empty py-2">@Localizer["Pc_Adm_AllGroups"]</div> }
         </div>

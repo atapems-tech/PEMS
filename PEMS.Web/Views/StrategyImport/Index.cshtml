@@ -59,17 +59,17 @@
         </pems-flex>
         <div class="pems-s-9687cbac">
         <pems-table scale="small" css="table-enterprise">
-            <thead><tr><th>#</th><th>@Localizer["Rcm_Reference"]</th><th>@Localizer["Rcm_Status"]</th><th>@Localizer["Rcm_Messages"]</th></tr></thead>
-            <tbody>
+            <pems-table-head><pems-table-row><pems-table-header>#</pems-table-header><pems-table-header>@Localizer["Rcm_Reference"]</pems-table-header><pems-table-header>@Localizer["Rcm_Status"]</pems-table-header><pems-table-header>@Localizer["Rcm_Messages"]</pems-table-header></pems-table-row></pems-table-head>
+            <pems-table-body>
             @foreach (var row in r.Rows)
             {
-                <tr class="@(row.Accepted ? "" : "table-danger")">
-                    <td>@row.RowNumber</td><td class="small">@row.Reference</td>
-                    <td>@(row.Accepted ? Localizer["Rcm_RowAccepted"].Value : Localizer["Rcm_RowRejected"].Value)</td>
-                    <td class="small">@string.Join(" | ", Model.Messages.TryGetValue(row.RowNumber, out var m) ? m : new List<string>())</td>
-                </tr>
+                <pems-table-row class="@(row.Accepted ? "" : "table-danger")">
+                    <pems-table-cell>@row.RowNumber</pems-table-cell><pems-table-cell class="small">@row.Reference</pems-table-cell>
+                    <pems-table-cell>@(row.Accepted ? Localizer["Rcm_RowAccepted"].Value : Localizer["Rcm_RowRejected"].Value)</pems-table-cell>
+                    <pems-table-cell class="small">@string.Join(" | ", Model.Messages.TryGetValue(row.RowNumber, out var m) ? m : new List<string>())</pems-table-cell>
+                </pems-table-row>
             }
-            </tbody>
+            </pems-table-body>
         </pems-table>
         </div>
     </pems-content-card>

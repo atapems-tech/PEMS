@@ -48,13 +48,13 @@
             else
             {
                 <pems-table scale="small" css="vs-dense">
-                    <thead><tr><th>@Localizer["Tm_Field_Name"]</th><th>@Localizer["Tm_Field_Role"]</th><th>@Localizer["Tm_Field_Active"]</th><th></th></tr></thead>
-                    <tbody>
+                    <pems-table-head><pems-table-row><pems-table-header>@Localizer["Tm_Field_Name"]</pems-table-header><pems-table-header>@Localizer["Tm_Field_Role"]</pems-table-header><pems-table-header>@Localizer["Tm_Field_Active"]</pems-table-header><pems-table-header></pems-table-header></pems-table-row></pems-table-head>
+                    <pems-table-body>
                         @foreach (var m in Model.Members)
                         {
-                            <tr class="@(m.IsActive ? "" : "text-muted")">
-                                <td>@m.Name</td>
-                                <td colspan="3">
+                            <pems-table-row class="@(m.IsActive ? "" : "text-muted")">
+                                <pems-table-cell>@m.Name</pems-table-cell>
+                                <pems-table-cell colspan="3">
                                     <form asp-action="SetMember" method="post"><pems-flex gap="2" align="center">
                                         <input type="hidden" name="workSpaceId" value="@s.Id" /><input type="hidden" name="memberId" value="@m.Id" />
                                         <pems-select scale="small" css="w-auto" name="role" aria-label="@Localizer["Tm_Field_Role"] @m.Name">
@@ -64,10 +64,10 @@
                                         <input type="hidden" name="isActive" value="false" />
                                         <pems-button tone="neutral" size="small" outline="true">@Localizer["Tm_Save"]</pems-button>
                                     </pems-flex></form>
-                                </td>
-                            </tr>
+                                </pems-table-cell>
+                            </pems-table-row>
                         }
-                    </tbody>
+                    </pems-table-body>
                 </pems-table>
             }
             <form asp-action="AddMember" method="post"><pems-flex gap="2" wrap="true">
@@ -88,20 +88,20 @@
         <section class="vs-panel mb-3" aria-labelledby="typeTitle">
             <h3 class="h6" id="typeTitle">@Localizer["Tm_Types"]</h3>
             <pems-table scale="small" css="vs-dense">
-                <tbody>
+                <pems-table-body>
                     @foreach (var t in Model.Types)
                     {
-                        <tr class="@(t.IsActive ? "" : "text-muted")">
-                            <td><pems-icon css="@t.Icon" aria-hidden="true" /> @TaskManagerUi.Name(t.Name, t.NameFa) @if (t.IsSubtask) { <pems-badge tone="light">@Localizer["Tm_Subtask"]</pems-badge> }</td>
-                            <td class="text-end">
+                        <pems-table-row class="@(t.IsActive ? "" : "text-muted")">
+                            <pems-table-cell><pems-icon css="@t.Icon" aria-hidden="true" /> @TaskManagerUi.Name(t.Name, t.NameFa) @if (t.IsSubtask) { <pems-badge tone="light">@Localizer["Tm_Subtask"]</pems-badge> }</pems-table-cell>
+                            <pems-table-cell class="text-end">
                                 <form asp-action="SetTypeActive" method="post">
                                     <input type="hidden" name="workSpaceId" value="@s.Id" /><input type="hidden" name="typeId" value="@t.Id" /><input type="hidden" name="isActive" value="@(t.IsActive ? "false" : "true")" />
                                     <pems-button tone="none" size="small" css="btn-link p-0">@(t.IsActive ? Localizer["Tm_Deactivate"] : Localizer["Tm_Activate"])</pems-button>
                                 </form>
-                            </td>
-                        </tr>
+                            </pems-table-cell>
+                        </pems-table-row>
                     }
-                </tbody>
+                </pems-table-body>
             </pems-table>
             <form asp-action="AddType" method="post"><pems-row gap="2">
                 <input type="hidden" name="workSpaceId" value="@s.Id" />
@@ -157,20 +157,20 @@
             <p class="small text-muted">@Localizer["Tm_TransitionsHint"]</p>
             <pems-table-scroll>
                 <pems-table scale="small" css="table-bordered vs-dense tm-matrix">
-                    <thead>
-                        <tr>
-                            <th scope="col">@Localizer["Tm_FromTo"]</th>
-                            @foreach (var to in Model.Statuses.Where(x => x.IsActive)) { <th scope="col" class="text-center">@TaskManagerUi.Name(to.Name, to.NameFa)</th> }
-                        </tr>
-                    </thead>
-                    <tbody>
+                    <pems-table-head>
+                        <pems-table-row>
+                            <pems-table-header scope="col">@Localizer["Tm_FromTo"]</pems-table-header>
+                            @foreach (var to in Model.Statuses.Where(x => x.IsActive)) { <pems-table-header scope="col" class="text-center">@TaskManagerUi.Name(to.Name, to.NameFa)</pems-table-header> }
+                        </pems-table-row>
+                    </pems-table-head>
+                    <pems-table-body>
                         @foreach (var from in Model.Statuses.Where(x => x.IsActive))
                         {
-                            <tr>
-                                <th scope="row">@TaskManagerUi.Name(from.Name, from.NameFa)</th>
+                            <pems-table-row>
+                                <pems-table-header scope="row">@TaskManagerUi.Name(from.Name, from.NameFa)</pems-table-header>
                                 @foreach (var to in Model.Statuses.Where(x => x.IsActive))
                                 {
-                                    <td class="text-center">
+                                    <pems-table-cell class="text-center">
                                         @if (from.Id != to.Id)
                                         {
                                             var allowed = Model.Transitions.Contains((from.Id, to.Id));
@@ -182,11 +182,11 @@
                                             </form>
                                         }
                                         else { <span class="text-muted" aria-hidden="true">—</span> }
-                                    </td>
+                                    </pems-table-cell>
                                 }
-                            </tr>
+                            </pems-table-row>
                         }
-                    </tbody>
+                    </pems-table-body>
                 </pems-table>
             </pems-table-scroll>
         </section>

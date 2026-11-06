@@ -33,21 +33,21 @@
         <pems-list-grid>
             <pems-list-table grid-key="Intake" empty="@(!Model.Items.Any())" empty-text="Intake Queue is empty."
                              filtered="@(filterCount > 0)" clear-href="@Url.Action("Index")">
-                <thead>
-                    <tr>
-                        <th data-col-key="file">@Localizer["File"]</th>
-                        <th data-col-key="project">@Localizer["Project"]</th>
-                        <th data-col-key="category">Predicted Category</th>
-                        <th data-col-key="module">Suggested Module</th>
-                        <th data-col-key="confidence">@Localizer["Confidence"]</th>
-                        <th data-col-key="aiStatus">@Localizer["AI Status"]</th>
-                        <th data-col-key="stage">@Localizer["Stage"]</th>
-                        <th data-col-key="routed">@Localizer["Routed"]</th>
-                        <th data-col-key="uploaded">@Localizer["Uploaded"]</th>
-                        <th data-col-key="actions"></th>
-                    </tr>
-                </thead>
-                <tbody>
+                <pems-table-head>
+                    <pems-table-row>
+                        <pems-table-header data-col-key="file">@Localizer["File"]</pems-table-header>
+                        <pems-table-header data-col-key="project">@Localizer["Project"]</pems-table-header>
+                        <pems-table-header data-col-key="category">Predicted Category</pems-table-header>
+                        <pems-table-header data-col-key="module">Suggested Module</pems-table-header>
+                        <pems-table-header data-col-key="confidence">@Localizer["Confidence"]</pems-table-header>
+                        <pems-table-header data-col-key="aiStatus">@Localizer["AI Status"]</pems-table-header>
+                        <pems-table-header data-col-key="stage">@Localizer["Stage"]</pems-table-header>
+                        <pems-table-header data-col-key="routed">@Localizer["Routed"]</pems-table-header>
+                        <pems-table-header data-col-key="uploaded">@Localizer["Uploaded"]</pems-table-header>
+                        <pems-table-header data-col-key="actions"></pems-table-header>
+                    </pems-table-row>
+                </pems-table-head>
+                <pems-table-body>
                     @foreach (var i in Model.Items)
                     {
                         var ab = i.AIStatus switch { "Completed" => "success", "Processing" => "info", "Failed" => "danger", _ => "neutral" };
@@ -59,25 +59,25 @@
                             "Rejected" => "dark",
                             _ => "neutral"
                         };
-                        <tr class="lp-row">
-                            <td>@i.FileName</td>
-                            <td>@i.ProjectName</td>
-                            <td>@i.PredictedCategory</td>
-                            <td>@i.SuggestedTargetModule</td>
-                            <td>@(i.AIConfidence.HasValue ? $"{i.AIConfidence:P0}" : "-")</td>
-                            <td><pems-badge tone="@ab">@i.AIStatus</pems-badge></td>
-                            <td><pems-badge tone="@sb">@i.IntakeStage</pems-badge></td>
-                            <td>@i.RoutedModule</td>
-                            <td>@i.UploadDate.ToString("yyyy-MM-dd HH:mm")</td>
-                            <td>
+                        <pems-table-row class="lp-row">
+                            <pems-table-cell>@i.FileName</pems-table-cell>
+                            <pems-table-cell>@i.ProjectName</pems-table-cell>
+                            <pems-table-cell>@i.PredictedCategory</pems-table-cell>
+                            <pems-table-cell>@i.SuggestedTargetModule</pems-table-cell>
+                            <pems-table-cell>@(i.AIConfidence.HasValue ? $"{i.AIConfidence:P0}" : "-")</pems-table-cell>
+                            <pems-table-cell><pems-badge tone="@ab">@i.AIStatus</pems-badge></pems-table-cell>
+                            <pems-table-cell><pems-badge tone="@sb">@i.IntakeStage</pems-badge></pems-table-cell>
+                            <pems-table-cell>@i.RoutedModule</pems-table-cell>
+                            <pems-table-cell>@i.UploadDate.ToString("yyyy-MM-dd HH:mm")</pems-table-cell>
+                            <pems-table-cell>
                                 @if (i.IntakeStage != "Routed" && i.IntakeStage != "Rejected")
                                 {
                                     <pems-button tone="primary" size="small" as="a" asp-action="Review" asp-route-id="@i.AttachmentId">Review</pems-button>
                                 }
-                            </td>
-                        </tr>
+                            </pems-table-cell>
+                        </pems-table-row>
                     }
-                </tbody>
+                </pems-table-body>
             </pems-list-table>
             <pems-list-footer>
                 @await Html.PartialAsync("_Pagination", new PEMS.Web.ViewModels.PaginationViewModel

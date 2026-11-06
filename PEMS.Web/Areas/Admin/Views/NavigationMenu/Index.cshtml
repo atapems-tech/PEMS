@@ -29,23 +29,23 @@
 
         <pems-table-scroll>
             <pems-table scale="small" css="align-middle">
-                <thead>
-                    <tr>
-                        <th scope="col">@Localizer["Nav_Col_Item"]</th>
-                        <th scope="col">@Localizer["Nav_Col_Route"]</th>
-                        <th scope="col">@Localizer["Nav_Col_Rule"]</th>
-                        <th scope="col">@Localizer["Nav_Col_Badge"]</th>
-                        <th scope="col">@Localizer["Nav_Col_Status"]</th>
-                        <th scope="col" class="text-end">@Localizer["Nav_Col_Actions"]</th>
-                    </tr>
-                </thead>
-                <tbody>
+                <pems-table-head>
+                    <pems-table-row>
+                        <pems-table-header scope="col">@Localizer["Nav_Col_Item"]</pems-table-header>
+                        <pems-table-header scope="col">@Localizer["Nav_Col_Route"]</pems-table-header>
+                        <pems-table-header scope="col">@Localizer["Nav_Col_Rule"]</pems-table-header>
+                        <pems-table-header scope="col">@Localizer["Nav_Col_Badge"]</pems-table-header>
+                        <pems-table-header scope="col">@Localizer["Nav_Col_Status"]</pems-table-header>
+                        <pems-table-header scope="col" class="text-end">@Localizer["Nav_Col_Actions"]</pems-table-header>
+                    </pems-table-row>
+                </pems-table-head>
+                <pems-table-body>
                     @foreach (var row in Model)
                     {
                         var i = row.Item;
                         var badge = NavigationBadges.Find(i.BadgeKey);
-                        <tr id="row-@i.Key" class="@(i.IsActive ? "" : "text-body-tertiary")">
-                            <td>
+                        <pems-table-row id="row-@i.Key" class="@(i.IsActive ? "" : "text-body-tertiary")">
+                            <pems-table-cell>
                                 <pems-flex align="center" gap="2" css="pems-indent-@Math.Min(row.Depth, 8)">
                                     @if (!string.IsNullOrEmpty(i.Icon))
                                     {
@@ -59,17 +59,17 @@
                                     }
                                 </pems-flex>
                                 <div class="small text-body-tertiary pems-indent-@Math.Min(row.Depth, 8)" dir="ltr">@i.Key</div>
-                            </td>
-                            <td class="small" dir="ltr">@row.Route</td>
-                            <td class="small">
+                            </pems-table-cell>
+                            <pems-table-cell class="small" dir="ltr">@row.Route</pems-table-cell>
+                            <pems-table-cell class="small">
                                 <code dir="ltr">@i.VisibilityRule</code>
                                 @if (row.NoPermissionSignal)
                                 {
                                     <div><pems-badge tone="warning">@Localizer["Nav_NoPermissionSignal"]</pems-badge></div>
                                 }
-                            </td>
-                            <td class="small">@(badge != null ? Localizer[badge.TitleKey].Value : "")</td>
-                            <td>
+                            </pems-table-cell>
+                            <pems-table-cell class="small">@(badge != null ? Localizer[badge.TitleKey].Value : "")</pems-table-cell>
+                            <pems-table-cell>
                                 @if (i.IsActive)
                                 {
                                     <pems-badge tone="success">@Localizer["Nav_Visible"]</pems-badge>
@@ -78,8 +78,8 @@
                                 {
                                     <pems-badge tone="neutral">@Localizer["Nav_Hidden"]</pems-badge>
                                 }
-                            </td>
-                            <td class="text-end text-nowrap">
+                            </pems-table-cell>
+                            <pems-table-cell class="text-end text-nowrap">
                                 <form method="post" asp-action="Move" class="d-inline">
                                     <input type="hidden" name="key" value="@i.Key" />
                                     <input type="hidden" name="up" value="true" />
@@ -98,10 +98,10 @@
                                         <pems-button tone="danger" size="small" outline="true" type="submit" aria-label="@Localizer["Delete"]: @row.Title"><pems-icon name="bi-trash" /></pems-button>
                                     </form>
                                 }
-                            </td>
-                        </tr>
+                            </pems-table-cell>
+                        </pems-table-row>
                     }
-                </tbody>
+                </pems-table-body>
             </pems-table>
         </pems-table-scroll>
     </pems-content-card>

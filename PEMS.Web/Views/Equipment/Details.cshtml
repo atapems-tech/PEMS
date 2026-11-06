@@ -375,15 +375,15 @@
                     <pems-col md="3"><strong>@Localizer["Findings"]:</strong> @cm.OpenFindingCount</pems-col>
                 </pems-row>
                 <pems-table kind="enterprise" scale="small" css="mb-0">
-                    <thead><tr><th>@Localizer["Variable"]</th><th>@Localizer["Tag"]</th><th>@Localizer["Last Reading"]</th><th>@Localizer["Evaluation"]</th></tr></thead>
-                    <tbody>
+                    <pems-table-head><pems-table-row><pems-table-header>@Localizer["Variable"]</pems-table-header><pems-table-header>@Localizer["Tag"]</pems-table-header><pems-table-header>@Localizer["Last Reading"]</pems-table-header><pems-table-header>@Localizer["Evaluation"]</pems-table-header></pems-table-row></pems-table-head>
+                    <pems-table-body>
                         @foreach (var p in cm.Points)
                         {
-                            <tr class="@(p.LastReadingIsAlarm ? "table-danger" : "")">
-                                <td>@p.VariableType</td>
-                                <td dir="ltr">@p.Tag</td>
-                                <td class="small">@(p.LastReadingDate.HasValue ? $"{p.LastValue} {p.Unit} @ {p.LastReadingDate.Value:yyyy-MM-dd}" : Localizer["No readings yet"])</td>
-                                <td>
+                            <pems-table-row class="@(p.LastReadingIsAlarm ? "table-danger" : "")">
+                                <pems-table-cell>@p.VariableType</pems-table-cell>
+                                <pems-table-cell dir="ltr">@p.Tag</pems-table-cell>
+                                <pems-table-cell class="small">@(p.LastReadingDate.HasValue ? $"{p.LastValue} {p.Unit} @ {p.LastReadingDate.Value:yyyy-MM-dd}" : Localizer["No readings yet"])</pems-table-cell>
+                                <pems-table-cell>
                                     @if (p.EvaluationProfileId.HasValue)
                                     {
                                         <pems-badge tone="none" css="@CmEvalBadge(p.LastReadingEvaluationStatus)">@p.LastReadingEvaluationStatus</pems-badge>
@@ -392,10 +392,10 @@
                                     {
                                         <pems-badge tone="neutral">@Localizer["NotEvaluated"]</pems-badge>
                                     }
-                                </td>
-                            </tr>
+                                </pems-table-cell>
+                            </pems-table-row>
                         }
-                    </tbody>
+                    </pems-table-body>
                 </pems-table>
             </pems-content-card>
         </pems-tab-pane>
@@ -448,17 +448,17 @@
             <h6 class="mb-3"><pems-icon name="bi-file-earmark-text" /> @Localizer["Cm_SecEngDocs"]</h6>
             <pems-table-scroll css="table-scroll-area pems-s-b4b96c72">
             <pems-table kind="enterprise">
-                <thead><tr><th>@Localizer["Cm_DocNo"]</th><th>@Localizer["Cm_Title"]</th><th>@Localizer["Cm_Type"]</th><th>@Localizer["Cm_Discipline"]</th><th>@Localizer["Cm_Rev"]</th><th>@Localizer["Cm_Status"]</th><th></th></tr></thead>
-                <tbody>
+                <pems-table-head><pems-table-row><pems-table-header>@Localizer["Cm_DocNo"]</pems-table-header><pems-table-header>@Localizer["Cm_Title"]</pems-table-header><pems-table-header>@Localizer["Cm_Type"]</pems-table-header><pems-table-header>@Localizer["Cm_Discipline"]</pems-table-header><pems-table-header>@Localizer["Cm_Rev"]</pems-table-header><pems-table-header>@Localizer["Cm_Status"]</pems-table-header><pems-table-header></pems-table-header></pems-table-row></pems-table-head>
+                <pems-table-body>
                     @foreach (var d in Model.Documents)
                     {
-                        <tr>
-                            <td>@d.DocumentNo</td><td>@d.Title</td><td>@d.DocumentType</td><td>@d.DisciplineName</td>
-                            <td>@d.RevisionNo</td><td><pems-badge tone="none" css="badge-status-@d.Status">@d.Status</pems-badge></td>
-                            <td><pems-button tone="neutral" size="small" outline="true" as="a" asp-controller="EngineeringDocuments" asp-action="Details" asp-route-id="@d.DocumentId"><pems-icon name="bi-eye" /></pems-button></td>
-                        </tr>
+                        <pems-table-row>
+                            <pems-table-cell>@d.DocumentNo</pems-table-cell><pems-table-cell>@d.Title</pems-table-cell><pems-table-cell>@d.DocumentType</pems-table-cell><pems-table-cell>@d.DisciplineName</pems-table-cell>
+                            <pems-table-cell>@d.RevisionNo</pems-table-cell><pems-table-cell><pems-badge tone="none" css="badge-status-@d.Status">@d.Status</pems-badge></pems-table-cell>
+                            <pems-table-cell><pems-button tone="neutral" size="small" outline="true" as="a" asp-controller="EngineeringDocuments" asp-action="Details" asp-route-id="@d.DocumentId"><pems-icon name="bi-eye" /></pems-button></pems-table-cell>
+                        </pems-table-row>
                     }
-                </tbody>
+                </pems-table-body>
             </pems-table>
             </pems-table-scroll>
             @if (!Model.Documents.Any()) { <p class="text-muted mb-0 small">@Localizer["Cm_NoDocs"]</p> }
@@ -468,18 +468,18 @@
             <h6 class="mb-3"><pems-icon name="bi-journal-check" /> @Localizer["Cm_SecVdr"]</h6>
             <pems-table-scroll css="table-scroll-area pems-s-b4b96c72">
             <pems-table kind="enterprise">
-                <thead><tr><th>@Localizer["Cm_DocNo"]</th><th>@Localizer["Cm_Description"]</th><th>@Localizer["Cm_Vendor"]</th><th>@Localizer["Cm_Rev"]</th><th>@Localizer["Cm_Category"]</th><th>@Localizer["Cm_Status"]</th><th></th></tr></thead>
-                <tbody>
+                <pems-table-head><pems-table-row><pems-table-header>@Localizer["Cm_DocNo"]</pems-table-header><pems-table-header>@Localizer["Cm_Description"]</pems-table-header><pems-table-header>@Localizer["Cm_Vendor"]</pems-table-header><pems-table-header>@Localizer["Cm_Rev"]</pems-table-header><pems-table-header>@Localizer["Cm_Category"]</pems-table-header><pems-table-header>@Localizer["Cm_Status"]</pems-table-header><pems-table-header></pems-table-header></pems-table-row></pems-table-head>
+                <pems-table-body>
                     @foreach (var v in Model.VDRItems)
                     {
-                        <tr>
-                            <td>@v.DocumentNumber</td><td>@v.DocumentDescription</td><td>@v.VendorName</td>
-                            <td>@v.LatestRevisionNo</td><td>@v.LatestReviewCategory</td>
-                            <td><pems-badge tone="neutral">@v.WorkflowStatus</pems-badge></td>
-                            <td><pems-button tone="neutral" size="small" outline="true" as="a" asp-controller="VDR" asp-action="Details" asp-route-id="@v.VDRItemId"><pems-icon name="bi-eye" /></pems-button></td>
-                        </tr>
+                        <pems-table-row>
+                            <pems-table-cell>@v.DocumentNumber</pems-table-cell><pems-table-cell>@v.DocumentDescription</pems-table-cell><pems-table-cell>@v.VendorName</pems-table-cell>
+                            <pems-table-cell>@v.LatestRevisionNo</pems-table-cell><pems-table-cell>@v.LatestReviewCategory</pems-table-cell>
+                            <pems-table-cell><pems-badge tone="neutral">@v.WorkflowStatus</pems-badge></pems-table-cell>
+                            <pems-table-cell><pems-button tone="neutral" size="small" outline="true" as="a" asp-controller="VDR" asp-action="Details" asp-route-id="@v.VDRItemId"><pems-icon name="bi-eye" /></pems-button></pems-table-cell>
+                        </pems-table-row>
                     }
-                </tbody>
+                </pems-table-body>
             </pems-table>
             </pems-table-scroll>
             @if (!Model.VDRItems.Any()) { <p class="text-muted mb-0 small">@Localizer["Cm_NoVdr"]</p> }
@@ -492,17 +492,17 @@
             <h6 class="mb-3"><pems-icon name="bi-cart-check" /> @Localizer["Cm_SecMr"]</h6>
             <pems-table-scroll css="table-scroll-area pems-s-a3f95238">
             <pems-table kind="enterprise">
-                <thead><tr><th>@Localizer["Cm_MrNumber"]</th><th>@Localizer["Cm_Project"]</th><th>@Localizer["Cm_Discipline"]</th><th>@Localizer["Cm_Description"]</th><th>@Localizer["Cm_Status"]</th><th></th></tr></thead>
-                <tbody>
+                <pems-table-head><pems-table-row><pems-table-header>@Localizer["Cm_MrNumber"]</pems-table-header><pems-table-header>@Localizer["Cm_Project"]</pems-table-header><pems-table-header>@Localizer["Cm_Discipline"]</pems-table-header><pems-table-header>@Localizer["Cm_Description"]</pems-table-header><pems-table-header>@Localizer["Cm_Status"]</pems-table-header><pems-table-header></pems-table-header></pems-table-row></pems-table-head>
+                <pems-table-body>
                     @foreach (var m in Model.RelatedMRs)
                     {
-                        <tr>
-                            <td>@m.MRNumber</td><td>@m.ProjectName</td><td>@m.DisciplineName</td><td>@m.Description</td>
-                            <td><pems-badge tone="neutral">@m.Status</pems-badge></td>
-                            <td><pems-button tone="neutral" size="small" outline="true" as="a" asp-controller="MaterialRequisition" asp-action="Details" asp-route-id="@m.MRId"><pems-icon name="bi-eye" /></pems-button></td>
-                        </tr>
+                        <pems-table-row>
+                            <pems-table-cell>@m.MRNumber</pems-table-cell><pems-table-cell>@m.ProjectName</pems-table-cell><pems-table-cell>@m.DisciplineName</pems-table-cell><pems-table-cell>@m.Description</pems-table-cell>
+                            <pems-table-cell><pems-badge tone="neutral">@m.Status</pems-badge></pems-table-cell>
+                            <pems-table-cell><pems-button tone="neutral" size="small" outline="true" as="a" asp-controller="MaterialRequisition" asp-action="Details" asp-route-id="@m.MRId"><pems-icon name="bi-eye" /></pems-button></pems-table-cell>
+                        </pems-table-row>
                     }
-                </tbody>
+                </pems-table-body>
             </pems-table>
             </pems-table-scroll>
             @if (!Model.RelatedMRs.Any()) { <p class="text-muted mb-0 small">@Localizer["Cm_NoMr"]</p> }
@@ -546,37 +546,37 @@
             {
                 <pems-table-scroll>
                 <pems-table kind="enterprise" css="mb-0">
-                    <thead><tr><th>@Localizer["Cm_Kind"]</th><th>@Localizer["Cm_Reference"]</th><th>@Localizer["Cm_Trigger"]</th><th>@Localizer["Cm_Interval"]</th><th>@Localizer["Cm_LastDone"]</th><th>@Localizer["Cm_NextDue"]</th></tr></thead>
-                    <tbody>
+                    <pems-table-head><pems-table-row><pems-table-header>@Localizer["Cm_Kind"]</pems-table-header><pems-table-header>@Localizer["Cm_Reference"]</pems-table-header><pems-table-header>@Localizer["Cm_Trigger"]</pems-table-header><pems-table-header>@Localizer["Cm_Interval"]</pems-table-header><pems-table-header>@Localizer["Cm_LastDone"]</pems-table-header><pems-table-header>@Localizer["Cm_NextDue"]</pems-table-header></pems-table-row></pems-table-head>
+                    <pems-table-body>
                         @foreach (var s in Model.Strategies)
                         {
-                            <tr>
-                                <td>@Localizer["Cm_Strategy"]</td>
-                                <td>@s.StrategyType <span class="vs-sub">@s.ConsequenceCategory</span></td>
-                                <td>@s.RecommendedTriggerType</td>
-                                <td class="vs-num">@(string.IsNullOrWhiteSpace(s.Frequency) ? "—" : s.Frequency)</td>
-                                <td>—</td><td>—</td>
-                            </tr>
+                            <pems-table-row>
+                                <pems-table-cell>@Localizer["Cm_Strategy"]</pems-table-cell>
+                                <pems-table-cell>@s.StrategyType <span class="vs-sub">@s.ConsequenceCategory</span></pems-table-cell>
+                                <pems-table-cell>@s.RecommendedTriggerType</pems-table-cell>
+                                <pems-table-cell class="vs-num">@(string.IsNullOrWhiteSpace(s.Frequency) ? "—" : s.Frequency)</pems-table-cell>
+                                <pems-table-cell>—</pems-table-cell><pems-table-cell>—</pems-table-cell>
+                            </pems-table-row>
                         }
                         @foreach (var p in Model.Plans)
                         {
-                            <tr>
-                                <td>@Localizer["Cm_PmPlan"]</td>
-                                <td><span class="vs-num">@p.PlanNumber</span> <span class="vs-sub">@p.Title</span></td>
-                                <td>@p.TriggerType</td>
-                                <td class="vs-num">@(p.IntervalDays.HasValue ? p.IntervalDays + " d" : "—")</td>
-                                <td class="vs-num">@(p.LastExecutionDate?.ToString("yyyy-MM-dd") ?? "—")</td>
-                                <td class="vs-num">
+                            <pems-table-row>
+                                <pems-table-cell>@Localizer["Cm_PmPlan"]</pems-table-cell>
+                                <pems-table-cell><span class="vs-num">@p.PlanNumber</span> <span class="vs-sub">@p.Title</span></pems-table-cell>
+                                <pems-table-cell>@p.TriggerType</pems-table-cell>
+                                <pems-table-cell class="vs-num">@(p.IntervalDays.HasValue ? p.IntervalDays + " d" : "—")</pems-table-cell>
+                                <pems-table-cell class="vs-num">@(p.LastExecutionDate?.ToString("yyyy-MM-dd") ?? "—")</pems-table-cell>
+                                <pems-table-cell class="vs-num">
                                     @if (p.NextDueDate.HasValue)
                                     {
                                         var overdue = p.NextDueDate.Value.Date < DateTime.Today;
                                         <span class="vs-pill vs-pill--icon @(overdue ? "vs-pill--danger" : "vs-pill--neutral")"><pems-icon css="@(overdue ? "bi-exclamation-triangle" : "bi-calendar-event")" aria-hidden="true" /> @p.NextDueDate.Value.ToString("yyyy-MM-dd")</span>
                                     }
                                     else { <span>—</span> }
-                                </td>
-                            </tr>
+                                </pems-table-cell>
+                            </pems-table-row>
                         }
-                    </tbody>
+                    </pems-table-body>
                 </pems-table>
                 </pems-table-scroll>
             }
@@ -594,20 +594,20 @@
             </pems-flex>
             <pems-table-scroll css="table-scroll-area pems-s-7bf38d03">
             <pems-table kind="enterprise">
-                <thead><tr><th>@Localizer["Cm_WrNumber"]</th><th>@Localizer["Cm_Title"]</th><th>@Localizer["Cm_Priority"]</th><th>@Localizer["Cm_Status"]</th><th>@Localizer["Cm_Requested"]</th><th>@Localizer["Cm_LinkedWo"]</th></tr></thead>
-                <tbody>
+                <pems-table-head><pems-table-row><pems-table-header>@Localizer["Cm_WrNumber"]</pems-table-header><pems-table-header>@Localizer["Cm_Title"]</pems-table-header><pems-table-header>@Localizer["Cm_Priority"]</pems-table-header><pems-table-header>@Localizer["Cm_Status"]</pems-table-header><pems-table-header>@Localizer["Cm_Requested"]</pems-table-header><pems-table-header>@Localizer["Cm_LinkedWo"]</pems-table-header></pems-table-row></pems-table-head>
+                <pems-table-body>
                     @foreach (var r in Model.WorkRequests)
                     {
-                        <tr>
-                            <td class="vs-num">@if (canViewWr) { <a asp-controller="WorkRequest" asp-action="Details" asp-route-id="@r.WorkRequestId">@r.RequestNumber</a> } else { @r.RequestNumber }</td>
-                            <td>@r.Title</td>
-                            <td><span class="vs-pill @PrioTone(r.Priority)">@r.Priority</span></td>
-                            <td><span class="vs-pill vs-pill--icon @WrTone(r.Status)"><pems-icon css="@WrIcon(r.Status)" aria-hidden="true" /> @r.Status</span></td>
-                            <td class="vs-num">@r.RequestedDate.ToString("yyyy-MM-dd")</td>
-                            <td class="vs-num">@if (r.LinkedWorkOrderId.HasValue) { if (canViewWo) { <a asp-controller="WorkOrder" asp-action="Details" asp-route-id="@r.LinkedWorkOrderId">@r.LinkedWorkOrderNo</a> } else { @r.LinkedWorkOrderNo } } else { <span class="text-muted">—</span> }</td>
-                        </tr>
+                        <pems-table-row>
+                            <pems-table-cell class="vs-num">@if (canViewWr) { <a asp-controller="WorkRequest" asp-action="Details" asp-route-id="@r.WorkRequestId">@r.RequestNumber</a> } else { @r.RequestNumber }</pems-table-cell>
+                            <pems-table-cell>@r.Title</pems-table-cell>
+                            <pems-table-cell><span class="vs-pill @PrioTone(r.Priority)">@r.Priority</span></pems-table-cell>
+                            <pems-table-cell><span class="vs-pill vs-pill--icon @WrTone(r.Status)"><pems-icon css="@WrIcon(r.Status)" aria-hidden="true" /> @r.Status</span></pems-table-cell>
+                            <pems-table-cell class="vs-num">@r.RequestedDate.ToString("yyyy-MM-dd")</pems-table-cell>
+                            <pems-table-cell class="vs-num">@if (r.LinkedWorkOrderId.HasValue) { if (canViewWo) { <a asp-controller="WorkOrder" asp-action="Details" asp-route-id="@r.LinkedWorkOrderId">@r.LinkedWorkOrderNo</a> } else { @r.LinkedWorkOrderNo } } else { <span class="text-muted">—</span> }</pems-table-cell>
+                        </pems-table-row>
                     }
-                </tbody>
+                </pems-table-body>
             </pems-table>
             </pems-table-scroll>
             @if (!Model.WorkRequests.Any()) { <p class="text-muted mb-0 small">@Localizer["Cm_NoWorkRequests"]</p> }
@@ -618,18 +618,18 @@
             <h6 class="mb-2"><pems-icon name="bi-tools" /> @Localizer["Cm_ExecutedWo"]</h6>
             <pems-table-scroll css="table-scroll-area pems-s-f7dce87f">
             <pems-table kind="enterprise">
-                <thead><tr><th>@Localizer["Cm_WoNumber"]</th><th>@Localizer["Cm_Description"]</th><th>@Localizer["Cm_Status"]</th><th>@Localizer["Cm_Date"]</th></tr></thead>
-                <tbody>
+                <pems-table-head><pems-table-row><pems-table-header>@Localizer["Cm_WoNumber"]</pems-table-header><pems-table-header>@Localizer["Cm_Description"]</pems-table-header><pems-table-header>@Localizer["Cm_Status"]</pems-table-header><pems-table-header>@Localizer["Cm_Date"]</pems-table-header></pems-table-row></pems-table-head>
+                <pems-table-body>
                     @foreach (var w in Model.WorkOrders)
                     {
-                        <tr>
-                            <td class="vs-num">@if (canViewWo) { <a asp-controller="WorkOrder" asp-action="Details" asp-route-id="@w.WorkOrderId">@w.WorkOrderNo</a> } else { @w.WorkOrderNo }</td>
-                            <td>@w.Description</td>
-                            <td><span class="vs-pill">@w.Status</span></td>
-                            <td class="vs-num">@(w.CreatedDate?.ToString("yyyy-MM-dd"))</td>
-                        </tr>
+                        <pems-table-row>
+                            <pems-table-cell class="vs-num">@if (canViewWo) { <a asp-controller="WorkOrder" asp-action="Details" asp-route-id="@w.WorkOrderId">@w.WorkOrderNo</a> } else { @w.WorkOrderNo }</pems-table-cell>
+                            <pems-table-cell>@w.Description</pems-table-cell>
+                            <pems-table-cell><span class="vs-pill">@w.Status</span></pems-table-cell>
+                            <pems-table-cell class="vs-num">@(w.CreatedDate?.ToString("yyyy-MM-dd"))</pems-table-cell>
+                        </pems-table-row>
                     }
-                </tbody>
+                </pems-table-body>
             </pems-table>
             </pems-table-scroll>
             @if (!Model.WorkOrders.Any()) { <p class="text-muted mb-0 small">@Localizer["Cm_NoWorkOrders"]</p> }
@@ -646,26 +646,26 @@
                 </pems-button>
             </pems-flex>
             <pems-table kind="enterprise" css="mb-0">
-                <thead>
-                    <tr><th>@Localizer["Cm_Type"]</th><th>@Localizer["Cm_Date"]</th><th>@Localizer["Cm_Measurement"]</th><th>@Localizer["Cm_Condition"]</th><th>@Localizer["Cm_NextDue"]</th><th>@Localizer["Cm_DueStatus"]</th><th></th></tr>
-                </thead>
-                <tbody>
+                <pems-table-head>
+                    <pems-table-row><pems-table-header>@Localizer["Cm_Type"]</pems-table-header><pems-table-header>@Localizer["Cm_Date"]</pems-table-header><pems-table-header>@Localizer["Cm_Measurement"]</pems-table-header><pems-table-header>@Localizer["Cm_Condition"]</pems-table-header><pems-table-header>@Localizer["Cm_NextDue"]</pems-table-header><pems-table-header>@Localizer["Cm_DueStatus"]</pems-table-header><pems-table-header></pems-table-header></pems-table-row>
+                </pems-table-head>
+                <pems-table-body>
                     @foreach (var i in inspections)
                     {
-                        <tr>
-                            <td class="small">@i.InspectionType</td>
-                            <td class="small">@i.InspectionDate.ToString("yyyy-MM-dd")</td>
-                            <td class="small">@(i.MeasurementValue.HasValue ? $"{i.MeasurementValue.Value:N2} {i.MeasurementUnit}" : "-")</td>
-                            <td class="small">
+                        <pems-table-row>
+                            <pems-table-cell class="small">@i.InspectionType</pems-table-cell>
+                            <pems-table-cell class="small">@i.InspectionDate.ToString("yyyy-MM-dd")</pems-table-cell>
+                            <pems-table-cell class="small">@(i.MeasurementValue.HasValue ? $"{i.MeasurementValue.Value:N2} {i.MeasurementUnit}" : "-")</pems-table-cell>
+                            <pems-table-cell class="small">
                                 @switch (i.ConditionStatus)
                                 {
                                     case "Alert": <pems-badge tone="danger">@Localizer["Alert"]</pems-badge> break;
                                     case "Normal": <pems-badge tone="success">@Localizer["Normal"]</pems-badge> break;
                                     default: <span class="text-muted">N/A</span> break;
                                 }
-                            </td>
-                            <td class="small">@(i.NextInspectionDate?.ToString("yyyy-MM-dd") ?? "-")</td>
-                            <td class="small">
+                            </pems-table-cell>
+                            <pems-table-cell class="small">@(i.NextInspectionDate?.ToString("yyyy-MM-dd") ?? "-")</pems-table-cell>
+                            <pems-table-cell class="small">
                                 @switch (i.DueStatus)
                                 {
                                     case "Overdue": <pems-badge tone="danger">@Localizer["Overdue"]</pems-badge> break;
@@ -673,8 +673,8 @@
                                     case "OK": <pems-badge tone="success">OK</pems-badge> break;
                                     default: <span class="text-muted">N/A</span> break;
                                 }
-                            </td>
-                            <td>
+                            </pems-table-cell>
+                            <pems-table-cell>
                                 @if (i.ConditionStatus == "Alert")
                                 {
                                     <form asp-controller="Inspection" asp-action="RaiseWorkRequest" method="post" class="d-inline">
@@ -682,10 +682,10 @@
                                         <pems-button tone="danger" size="small" outline="true" type="submit"><pems-icon name="bi-exclamation-triangle" /> @Localizer["Cm_RaiseWr"]</pems-button>
                                     </form>
                                 }
-                            </td>
-                        </tr>
+                            </pems-table-cell>
+                        </pems-table-row>
                     }
-                </tbody>
+                </pems-table-body>
             </pems-table>
             @if (!inspections.Any()) { <p class="text-muted mb-0 small">@Localizer["Cm_NoInspections"]</p> }
         </pems-content-card>

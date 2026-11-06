@@ -16,26 +16,26 @@ else
 {
     <pems-table-scroll>
         <pems-table scale="small" css="table-enterprise vs-dense mb-0 tm-table">
-            <thead>
-                <tr>
-                    @if (showBulk) { <th class="tm-col-check"><pems-input kind="check" type="checkbox" data-tm-bulk-all aria-label="@Localizer["Tm_SelectAll"]" /></th> }
-                    <th>@Localizer["Tm_Field_Key"]</th>
-                    @if (showSpace) { <th>@Localizer["Tm_Field_Space"]</th> }
-                    <th>@Localizer["Tm_Field_Title"]</th>
-                    <th>@Localizer["Tm_Field_Status"]</th>
-                    <th>@Localizer["Tm_Field_Priority"]</th>
-                    <th>@Localizer["Tm_Field_Assignee"]</th>
-                    <th>@Localizer["Tm_Field_DueDate"]</th>
-                    <th class="text-end">@Localizer["Tm_Field_StoryPointsShort"]</th>
-                    @if (canRank) { <th><span class="visually-hidden">@Localizer["Tm_Actions"]</span></th> }
-                </tr>
-            </thead>
-            <tbody data-tm-bucket="@bucket">
+            <pems-table-head>
+                <pems-table-row>
+                    @if (showBulk) { <pems-table-header class="tm-col-check"><pems-input kind="check" type="checkbox" data-tm-bulk-all aria-label="@Localizer["Tm_SelectAll"]" /></pems-table-header> }
+                    <pems-table-header>@Localizer["Tm_Field_Key"]</pems-table-header>
+                    @if (showSpace) { <pems-table-header>@Localizer["Tm_Field_Space"]</pems-table-header> }
+                    <pems-table-header>@Localizer["Tm_Field_Title"]</pems-table-header>
+                    <pems-table-header>@Localizer["Tm_Field_Status"]</pems-table-header>
+                    <pems-table-header>@Localizer["Tm_Field_Priority"]</pems-table-header>
+                    <pems-table-header>@Localizer["Tm_Field_Assignee"]</pems-table-header>
+                    <pems-table-header>@Localizer["Tm_Field_DueDate"]</pems-table-header>
+                    <pems-table-header class="text-end">@Localizer["Tm_Field_StoryPointsShort"]</pems-table-header>
+                    @if (canRank) { <pems-table-header><span class="visually-hidden">@Localizer["Tm_Actions"]</span></pems-table-header> }
+                </pems-table-row>
+            </pems-table-head>
+            <pems-table-body data-tm-bucket="@bucket">
                 @foreach (var i in Model)
                 {
                     <partial name="~/Views/TaskManager/_ItemRow.cshtml" model="i" view-data="ViewData" />
                 }
-            </tbody>
+            </pems-table-body>
         </pems-table>
     </pems-table-scroll>
 }

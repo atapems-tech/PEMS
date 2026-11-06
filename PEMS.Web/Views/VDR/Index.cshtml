@@ -118,42 +118,42 @@
         <pems-list-grid>
             <pems-list-table grid-key="VDR" empty="@(!Model.Items.Any())" empty-text="@Localizer["Vs_NoVdrItems"]"
                              filtered="@(activeFilters > 0 || !string.IsNullOrEmpty(search))" clear-href="@Url.Action("Index")">
-                    <thead>
-                        <tr>
-                            <th class="pems-w-170" data-col-key="docNo" data-resizable="true" data-min-width="110" data-max-width="260">@Localizer["Vs_DocNo"]</th>
-                            <th class="pems-w-280" data-col-key="description" data-resizable="true" data-min-width="180" data-max-width="500">@Localizer["Vs_Description"]</th>
-                            <th data-col-key="type" data-resizable="true" data-min-width="70" data-max-width="180" class="vs-hide-md pems-w-100">@Localizer["Type"]</th>
-                            <th class="pems-w-160" data-col-key="vendor" data-resizable="true" data-min-width="100" data-max-width="240">@Localizer["Vendor"]</th>
-                            <th class="pems-w-170" data-col-key="project" data-resizable="true" data-min-width="100" data-max-width="260">@Localizer["Vs_Project"]</th>
-                            <th class="pems-w-130" data-col-key="discipline" data-resizable="true" data-min-width="90" data-max-width="200">@Localizer["Vs_Discipline"]</th>
-                            <th class="pems-w-70" data-col-key="rev" data-resizable="true" data-min-width="56" data-max-width="110">@Localizer["Vs_Rev"]</th>
-                            <th data-col-key="latestCategory" data-resizable="true" data-min-width="90" data-max-width="180" class="vs-hide-md pems-w-120">@Localizer["Vs_LatestCategory"]</th>
-                            <th class="pems-w-160" data-col-key="status" data-resizable="true" data-min-width="110" data-max-width="220">@Localizer["Status"]</th>
-                            <th class="pems-w-80" data-col-key="actions" data-resizable="false"><span class="visually-hidden">@Localizer["Vs_View"]</span></th>
-                        </tr>
-                    </thead>
-                    <tbody>
+                    <pems-table-head>
+                        <pems-table-row>
+                            <pems-table-header class="pems-w-170" data-col-key="docNo" data-resizable="true" data-min-width="110" data-max-width="260">@Localizer["Vs_DocNo"]</pems-table-header>
+                            <pems-table-header class="pems-w-280" data-col-key="description" data-resizable="true" data-min-width="180" data-max-width="500">@Localizer["Vs_Description"]</pems-table-header>
+                            <pems-table-header data-col-key="type" data-resizable="true" data-min-width="70" data-max-width="180" class="vs-hide-md pems-w-100">@Localizer["Type"]</pems-table-header>
+                            <pems-table-header class="pems-w-160" data-col-key="vendor" data-resizable="true" data-min-width="100" data-max-width="240">@Localizer["Vendor"]</pems-table-header>
+                            <pems-table-header class="pems-w-170" data-col-key="project" data-resizable="true" data-min-width="100" data-max-width="260">@Localizer["Vs_Project"]</pems-table-header>
+                            <pems-table-header class="pems-w-130" data-col-key="discipline" data-resizable="true" data-min-width="90" data-max-width="200">@Localizer["Vs_Discipline"]</pems-table-header>
+                            <pems-table-header class="pems-w-70" data-col-key="rev" data-resizable="true" data-min-width="56" data-max-width="110">@Localizer["Vs_Rev"]</pems-table-header>
+                            <pems-table-header data-col-key="latestCategory" data-resizable="true" data-min-width="90" data-max-width="180" class="vs-hide-md pems-w-120">@Localizer["Vs_LatestCategory"]</pems-table-header>
+                            <pems-table-header class="pems-w-160" data-col-key="status" data-resizable="true" data-min-width="110" data-max-width="220">@Localizer["Status"]</pems-table-header>
+                            <pems-table-header class="pems-w-80" data-col-key="actions" data-resizable="false"><span class="visually-hidden">@Localizer["Vs_View"]</span></pems-table-header>
+                        </pems-table-row>
+                    </pems-table-head>
+                    <pems-table-body>
                         @foreach (var i in Model.Items)
                         {
-                            <tr class="lp-row @(i.IsOverdue ? "table-danger" : "")">
-                                <td class="lp-no"><a asp-action="Details" asp-route-id="@i.VDRItemId" class="lp-subject" title="@i.DocumentNumber">@i.DocumentNumber</a></td>
-                                <td><span class="vs-title-cell" title="@i.DocumentDescription">@i.DocumentDescription</span></td>
-                                <td class="vs-hide-md small" title="@i.DocumentTypeCode">@i.DocumentTypeCode</td>
-                                <td class="small" title="@i.VendorName">@i.VendorName</td>
-                                <td class="small" title="@i.ProjectName">@i.ProjectName</td>
-                                <td class="small" title="@i.DisciplineName">@(string.IsNullOrEmpty(i.DisciplineName) ? "—" : i.DisciplineName)</td>
-                                <td><span class="vs-num">@i.LatestRevisionNo</span></td>
-                                <td class="vs-hide-md small" title="@i.LatestReviewCategory">@i.LatestReviewCategory</td>
-                                <td>
+                            <pems-table-row class="lp-row @(i.IsOverdue ? "table-danger" : "")">
+                                <pems-table-cell class="lp-no"><a asp-action="Details" asp-route-id="@i.VDRItemId" class="lp-subject" title="@i.DocumentNumber">@i.DocumentNumber</a></pems-table-cell>
+                                <pems-table-cell><span class="vs-title-cell" title="@i.DocumentDescription">@i.DocumentDescription</span></pems-table-cell>
+                                <pems-table-cell class="vs-hide-md small" title="@i.DocumentTypeCode">@i.DocumentTypeCode</pems-table-cell>
+                                <pems-table-cell class="small" title="@i.VendorName">@i.VendorName</pems-table-cell>
+                                <pems-table-cell class="small" title="@i.ProjectName">@i.ProjectName</pems-table-cell>
+                                <pems-table-cell class="small" title="@i.DisciplineName">@(string.IsNullOrEmpty(i.DisciplineName) ? "—" : i.DisciplineName)</pems-table-cell>
+                                <pems-table-cell><span class="vs-num">@i.LatestRevisionNo</span></pems-table-cell>
+                                <pems-table-cell class="vs-hide-md small" title="@i.LatestReviewCategory">@i.LatestReviewCategory</pems-table-cell>
+                                <pems-table-cell>
                                     <span class="vs-pill @VdrUi.WorkflowTone(i.WorkflowStatus)">@VdrUi.Loc(Localizer, "St_", i.WorkflowStatus)</span>
                                     @if (i.IsOverdue) { <span class="vs-pill vs-pill--danger">@Localizer["Vs_Overdue"]</span> }
-                                </td>
-                                <td class="text-nowrap lp-actions">
+                                </pems-table-cell>
+                                <pems-table-cell class="text-nowrap lp-actions">
                                     <a asp-action="Details" asp-route-id="@i.VDRItemId" class="lp-act lp-act--always" title="@Localizer["Vs_View"]"><pems-icon name="bi-eye" aria-hidden="true" /><span class="visually-hidden">@Localizer["Vs_View"]: @i.DocumentNumber</span></a>
-                                </td>
-                            </tr>
+                                </pems-table-cell>
+                            </pems-table-row>
                         }
-                    </tbody>
+                    </pems-table-body>
             </pems-list-table>
 
             <pems-list-footer>

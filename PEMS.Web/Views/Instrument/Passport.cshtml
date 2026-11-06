@@ -189,24 +189,24 @@
             @if (!string.IsNullOrWhiteSpace(alarm.Description)) { <div class="small text-muted">@alarm.Description</div> }
 
             <pems-table kind="enterprise" scale="small" css="mt-2 mb-2">
-                <thead><tr><th>@Localizer["Cause"]</th><th>@Localizer["Effect"]</th><th>@Localizer["Action"]</th><th>@Localizer["Trip Signal"]</th><th></th></tr></thead>
-                <tbody>
+                <pems-table-head><pems-table-row><pems-table-header>@Localizer["Cause"]</pems-table-header><pems-table-header>@Localizer["Effect"]</pems-table-header><pems-table-header>@Localizer["Action"]</pems-table-header><pems-table-header>@Localizer["Trip Signal"]</pems-table-header><pems-table-header></pems-table-header></pems-table-row></pems-table-head>
+                <pems-table-body>
                     @foreach (var ce in ces)
                     {
-                        <tr>
-                            <td class="small">@ce.Cause</td>
-                            <td class="small">@ce.Effect</td>
-                            <td class="small">@(ce.ActionType ?? "-")</td>
-                            <td class="small">@(ce.TripSignal ?? "-")</td>
-                            <td>
+                        <pems-table-row>
+                            <pems-table-cell class="small">@ce.Cause</pems-table-cell>
+                            <pems-table-cell class="small">@ce.Effect</pems-table-cell>
+                            <pems-table-cell class="small">@(ce.ActionType ?? "-")</pems-table-cell>
+                            <pems-table-cell class="small">@(ce.TripSignal ?? "-")</pems-table-cell>
+                            <pems-table-cell>
                                 <form asp-action="RaiseWorkRequestFromCauseEffect" method="post" class="d-inline">
                                     <input type="hidden" name="causeEffectId" value="@ce.CauseEffectId" />
                                     <pems-button tone="danger" size="small" outline="true" type="submit"><pems-icon name="bi-exclamation-triangle" /> Raise Work Request</pems-button>
                                 </form>
-                            </td>
-                        </tr>
+                            </pems-table-cell>
+                        </pems-table-row>
                     }
-                </tbody>
+                </pems-table-body>
             </pems-table>
 
             <form asp-action="AddCauseEffect" method="post"><pems-row gap="2" css="align-items-end d-print-none">

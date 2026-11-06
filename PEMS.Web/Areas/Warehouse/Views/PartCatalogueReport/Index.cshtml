@@ -200,105 +200,105 @@
                 @if (tab == "people")
                 {
                     <pems-list-table grid-key="PcRptPeople" empty="@(!r.Activity.People.Any())" empty-text="@Localizer["PcRpt_Empty"]" filtered="@(activeFilters > 0)" clear-href="@Url.Action("Index", new { Tab = tab, Period = f.Period })">
-                        <thead><tr>
-                            <th>@Localizer["PcRpt_Col_Person"]</th><th class="text-end">@Localizer["PcRpt_Col_Created"]</th><th class="text-end">@Localizer["PcRpt_Col_Submitted"]</th>
-                            <th class="text-end">@Localizer["PcRpt_Col_Approved"]</th><th class="text-end">@Localizer["PcRpt_Col_Returned"]</th><th class="text-end">@Localizer["PcRpt_Col_Cancelled"]</th>
-                            <th class="text-end">@Localizer["PcRpt_Col_Registered"]</th><th class="text-end">@Localizer["PcRpt_Col_Total"]</th>
-                        </tr></thead>
-                        <tbody>
+                        <pems-table-head><pems-table-row>
+                            <pems-table-header>@Localizer["PcRpt_Col_Person"]</pems-table-header><pems-table-header class="text-end">@Localizer["PcRpt_Col_Created"]</pems-table-header><pems-table-header class="text-end">@Localizer["PcRpt_Col_Submitted"]</pems-table-header>
+                            <pems-table-header class="text-end">@Localizer["PcRpt_Col_Approved"]</pems-table-header><pems-table-header class="text-end">@Localizer["PcRpt_Col_Returned"]</pems-table-header><pems-table-header class="text-end">@Localizer["PcRpt_Col_Cancelled"]</pems-table-header>
+                            <pems-table-header class="text-end">@Localizer["PcRpt_Col_Registered"]</pems-table-header><pems-table-header class="text-end">@Localizer["PcRpt_Col_Total"]</pems-table-header>
+                        </pems-table-row></pems-table-head>
+                        <pems-table-body>
                             @foreach (var x in r.Activity.People)
                             {
-                                <tr class="lp-row">
-                                    <td><a href="@IndexUrl("activity", d => d["EmployeeId"] = x.EmployeeId.ToString())">@x.EmployeeName</a></td>
-                                    <td class="text-end">@x.Created</td><td class="text-end">@x.Submitted</td><td class="text-end">@x.Approved</td>
-                                    <td class="text-end">@x.Returned</td><td class="text-end">@x.Cancelled</td>
-                                    <td class="text-end fw-semibold">@x.PartNumbersRegistered</td><td class="text-end">@x.Total</td>
-                                </tr>
+                                <pems-table-row class="lp-row">
+                                    <pems-table-cell><a href="@IndexUrl("activity", d => d["EmployeeId"] = x.EmployeeId.ToString())">@x.EmployeeName</a></pems-table-cell>
+                                    <pems-table-cell class="text-end">@x.Created</pems-table-cell><pems-table-cell class="text-end">@x.Submitted</pems-table-cell><pems-table-cell class="text-end">@x.Approved</pems-table-cell>
+                                    <pems-table-cell class="text-end">@x.Returned</pems-table-cell><pems-table-cell class="text-end">@x.Cancelled</pems-table-cell>
+                                    <pems-table-cell class="text-end fw-semibold">@x.PartNumbersRegistered</pems-table-cell><pems-table-cell class="text-end">@x.Total</pems-table-cell>
+                                </pems-table-row>
                             }
-                        </tbody>
+                        </pems-table-body>
                     </pems-list-table>
                 }
                 else if (tab == "activity")
                 {
                     <pems-list-table grid-key="PcRptActivity" empty="@(!r.Activity.Rows.Any())" empty-text="@Localizer["PcRpt_Empty"]" filtered="@(activeFilters > 0)" clear-href="@Url.Action("Index", new { Tab = tab, Period = f.Period })">
-                        <thead><tr>
-                            <th>@Localizer["PcRpt_Col_Date"]</th><th>@Localizer["PcRpt_Col_Person"]</th><th>@Localizer["PcRpt_Col_Action"]</th><th>@Localizer["PcRpt_Col_Request"]</th>
-                            <th>@Localizer["PcRpt_Col_Type"]</th><th>@Localizer["PcRpt_Col_Mpn"]</th><th>@Localizer["PcRpt_Col_PartNumber"]</th><th>@Localizer["PcRpt_Col_TechClass"]</th><th>@Localizer["PcRpt_Col_Status"]</th>
-                        </tr></thead>
-                        <tbody>
+                        <pems-table-head><pems-table-row>
+                            <pems-table-header>@Localizer["PcRpt_Col_Date"]</pems-table-header><pems-table-header>@Localizer["PcRpt_Col_Person"]</pems-table-header><pems-table-header>@Localizer["PcRpt_Col_Action"]</pems-table-header><pems-table-header>@Localizer["PcRpt_Col_Request"]</pems-table-header>
+                            <pems-table-header>@Localizer["PcRpt_Col_Type"]</pems-table-header><pems-table-header>@Localizer["PcRpt_Col_Mpn"]</pems-table-header><pems-table-header>@Localizer["PcRpt_Col_PartNumber"]</pems-table-header><pems-table-header>@Localizer["PcRpt_Col_TechClass"]</pems-table-header><pems-table-header>@Localizer["PcRpt_Col_Status"]</pems-table-header>
+                        </pems-table-row></pems-table-head>
+                        <pems-table-body>
                             @foreach (var a in r.Activity.Rows.Take(PcReportViewModel.PageRows))
                             {
-                                <tr class="lp-row">
-                                    <td class="text-nowrap">@a.Date.ToString("yyyy-MM-dd HH:mm")</td><td>@a.EmployeeName</td><td>@t.Action(a.Action)</td>
-                                    <td><a asp-controller="PartCatalogueRequest" asp-action="Details" asp-route-id="@a.RequestId">@(a.RequestNumber ?? "#" + a.RequestId)</a></td>
-                                    <td>@t.Type(a.RequestType)</td><td>@a.ManufacturerPartNumber</td><td class="fw-semibold">@a.AssignedPartNumber</td><td>@a.TechnicalClass</td><td>@t.Status(a.Status)</td>
-                                </tr>
+                                <pems-table-row class="lp-row">
+                                    <pems-table-cell class="text-nowrap">@a.Date.ToString("yyyy-MM-dd HH:mm")</pems-table-cell><pems-table-cell>@a.EmployeeName</pems-table-cell><pems-table-cell>@t.Action(a.Action)</pems-table-cell>
+                                    <pems-table-cell><a asp-controller="PartCatalogueRequest" asp-action="Details" asp-route-id="@a.RequestId">@(a.RequestNumber ?? "#" + a.RequestId)</a></pems-table-cell>
+                                    <pems-table-cell>@t.Type(a.RequestType)</pems-table-cell><pems-table-cell>@a.ManufacturerPartNumber</pems-table-cell><pems-table-cell class="fw-semibold">@a.AssignedPartNumber</pems-table-cell><pems-table-cell>@a.TechnicalClass</pems-table-cell><pems-table-cell>@t.Status(a.Status)</pems-table-cell>
+                                </pems-table-row>
                             }
-                        </tbody>
+                        </pems-table-body>
                     </pems-list-table>
                 }
                 else if (tab == "equipment")
                 {
                     <pems-list-table grid-key="PcRptEquipment" empty="@(!r.Equipment.Equipment.Any())" empty-text="@Localizer["PcRpt_Empty"]" filtered="@(activeFilters > 0)" clear-href="@Url.Action("Index", new { Tab = tab, Period = f.Period })">
-                        <thead><tr>
-                            <th>@Localizer["PcRpt_Col_Tag"]</th><th>@Localizer["PcRpt_Col_EquipmentName"]</th><th>@Localizer["PcRpt_Col_InRegister"]</th>
-                            <th class="text-end">@Localizer["PcRpt_Col_Requests"]</th><th class="text-end">@Localizer["PcRpt_Col_RegisteredParts"]</th>
-                            <th class="text-end">@Localizer["PcRpt_Col_InProgress"]</th><th class="text-end">@Localizer["PcRpt_Col_Critical"]</th>
-                        </tr></thead>
-                        <tbody>
+                        <pems-table-head><pems-table-row>
+                            <pems-table-header>@Localizer["PcRpt_Col_Tag"]</pems-table-header><pems-table-header>@Localizer["PcRpt_Col_EquipmentName"]</pems-table-header><pems-table-header>@Localizer["PcRpt_Col_InRegister"]</pems-table-header>
+                            <pems-table-header class="text-end">@Localizer["PcRpt_Col_Requests"]</pems-table-header><pems-table-header class="text-end">@Localizer["PcRpt_Col_RegisteredParts"]</pems-table-header>
+                            <pems-table-header class="text-end">@Localizer["PcRpt_Col_InProgress"]</pems-table-header><pems-table-header class="text-end">@Localizer["PcRpt_Col_Critical"]</pems-table-header>
+                        </pems-table-row></pems-table-head>
+                        <pems-table-body>
                             @foreach (var e in r.Equipment.Equipment)
                             {
-                                <tr class="lp-row">
-                                    <td>
+                                <pems-table-row class="lp-row">
+                                    <pems-table-cell>
                                         @if (e.EquipmentId.HasValue) { <a href="@IndexUrl("parts", d => d["EquipmentId"] = e.EquipmentId.ToString())">@e.EquipmentTag</a> }
                                         else { @e.EquipmentTag }
-                                    </td>
-                                    <td>@e.EquipmentName</td><td>@t.YesNo(e.InRegister)</td>
-                                    <td class="text-end">@e.Requests</td><td class="text-end fw-semibold">@e.RegisteredPartNumbers</td>
-                                    <td class="text-end">@e.InProgress</td><td class="text-end">@e.Critical</td>
-                                </tr>
+                                    </pems-table-cell>
+                                    <pems-table-cell>@e.EquipmentName</pems-table-cell><pems-table-cell>@t.YesNo(e.InRegister)</pems-table-cell>
+                                    <pems-table-cell class="text-end">@e.Requests</pems-table-cell><pems-table-cell class="text-end fw-semibold">@e.RegisteredPartNumbers</pems-table-cell>
+                                    <pems-table-cell class="text-end">@e.InProgress</pems-table-cell><pems-table-cell class="text-end">@e.Critical</pems-table-cell>
+                                </pems-table-row>
                             }
-                        </tbody>
+                        </pems-table-body>
                     </pems-list-table>
                 }
                 else if (tab == "parts")
                 {
                     <pems-list-table grid-key="PcRptParts" empty="@(!r.Equipment.Parts.Any())" empty-text="@Localizer["PcRpt_Empty"]" filtered="@(activeFilters > 0)" clear-href="@Url.Action("Index", new { Tab = tab, Period = f.Period })">
-                        <thead><tr>
-                            <th>@Localizer["PcRpt_Col_Tag"]</th><th>@Localizer["PcRpt_Col_PartNumber"]</th><th>@Localizer["PcRpt_Col_Request"]</th><th>@Localizer["PcRpt_Col_Status"]</th>
-                            <th>@Localizer["PcRpt_Col_Manufacturer"]</th><th>@Localizer["PcRpt_Col_Mpn"]</th><th>@Localizer["PcRpt_Col_Supplier"]</th><th>@Localizer["PcRpt_Col_SupplierPn"]</th>
-                            <th>@Localizer["PcRpt_Col_TechClass"]</th><th>@Localizer["PcRpt_Col_Uom"]</th><th class="text-end">@Localizer["PcRpt_Col_InstalledQty"]</th>
-                            <th>@Localizer["PcRpt_Col_Critical"]</th><th>@Localizer["PcRpt_Col_Attributes"]</th>
-                        </tr></thead>
-                        <tbody>
+                        <pems-table-head><pems-table-row>
+                            <pems-table-header>@Localizer["PcRpt_Col_Tag"]</pems-table-header><pems-table-header>@Localizer["PcRpt_Col_PartNumber"]</pems-table-header><pems-table-header>@Localizer["PcRpt_Col_Request"]</pems-table-header><pems-table-header>@Localizer["PcRpt_Col_Status"]</pems-table-header>
+                            <pems-table-header>@Localizer["PcRpt_Col_Manufacturer"]</pems-table-header><pems-table-header>@Localizer["PcRpt_Col_Mpn"]</pems-table-header><pems-table-header>@Localizer["PcRpt_Col_Supplier"]</pems-table-header><pems-table-header>@Localizer["PcRpt_Col_SupplierPn"]</pems-table-header>
+                            <pems-table-header>@Localizer["PcRpt_Col_TechClass"]</pems-table-header><pems-table-header>@Localizer["PcRpt_Col_Uom"]</pems-table-header><pems-table-header class="text-end">@Localizer["PcRpt_Col_InstalledQty"]</pems-table-header>
+                            <pems-table-header>@Localizer["PcRpt_Col_Critical"]</pems-table-header><pems-table-header>@Localizer["PcRpt_Col_Attributes"]</pems-table-header>
+                        </pems-table-row></pems-table-head>
+                        <pems-table-body>
                             @foreach (var x in r.Equipment.Parts.Take(PcReportViewModel.PageRows))
                             {
-                                <tr class="lp-row">
-                                    <td>@x.EquipmentTag</td><td class="fw-semibold">@x.AssignedPartNumber</td>
-                                    <td><a asp-controller="PartCatalogueRequest" asp-action="Details" asp-route-id="@x.RequestId">@(x.RequestNumber ?? "#" + x.RequestId)</a></td>
-                                    <td>@t.Status(x.Status)</td><td>@x.ManufacturerName</td><td>@x.ManufacturerPartNumber</td><td>@x.SupplierName</td><td>@x.SupplierPartNumber</td>
-                                    <td>@x.TechnicalClass</td><td>@x.UnitOfMeasure</td><td class="text-end">@x.InstalledQuantity.ToString("0.##")</td>
-                                    <td>@t.YesNo(x.IsCritical)</td><td class="pc-rpt-attrs">@x.Attributes</td>
-                                </tr>
+                                <pems-table-row class="lp-row">
+                                    <pems-table-cell>@x.EquipmentTag</pems-table-cell><pems-table-cell class="fw-semibold">@x.AssignedPartNumber</pems-table-cell>
+                                    <pems-table-cell><a asp-controller="PartCatalogueRequest" asp-action="Details" asp-route-id="@x.RequestId">@(x.RequestNumber ?? "#" + x.RequestId)</a></pems-table-cell>
+                                    <pems-table-cell>@t.Status(x.Status)</pems-table-cell><pems-table-cell>@x.ManufacturerName</pems-table-cell><pems-table-cell>@x.ManufacturerPartNumber</pems-table-cell><pems-table-cell>@x.SupplierName</pems-table-cell><pems-table-cell>@x.SupplierPartNumber</pems-table-cell>
+                                    <pems-table-cell>@x.TechnicalClass</pems-table-cell><pems-table-cell>@x.UnitOfMeasure</pems-table-cell><pems-table-cell class="text-end">@x.InstalledQuantity.ToString("0.##")</pems-table-cell>
+                                    <pems-table-cell>@t.YesNo(x.IsCritical)</pems-table-cell><pems-table-cell class="pc-rpt-attrs">@x.Attributes</pems-table-cell>
+                                </pems-table-row>
                             }
-                        </tbody>
+                        </pems-table-body>
                     </pems-list-table>
                 }
                 else
                 {
                     <pems-list-table grid-key="PcRptStages" empty="@(p.Total == 0)" empty-text="@Localizer["PcRpt_Empty"]" filtered="@(activeFilters > 0)" clear-href="@Url.Action("Index", new { Tab = tab, Period = f.Period })">
-                        <thead><tr><th>@Localizer["PcRpt_Col_Group"]</th><th>@Localizer["PcRpt_Col_Item"]</th><th class="text-end">@Localizer["PcRpt_Col_Count"]</th></tr></thead>
-                        <tbody>
+                        <pems-table-head><pems-table-row><pems-table-header>@Localizer["PcRpt_Col_Group"]</pems-table-header><pems-table-header>@Localizer["PcRpt_Col_Item"]</pems-table-header><pems-table-header class="text-end">@Localizer["PcRpt_Col_Count"]</pems-table-header></pems-table-row></pems-table-head>
+                        <pems-table-body>
                             @foreach (var s in p.ByStatus)
-                            { <tr class="lp-row"><td>@Localizer["PcRpt_ByStatus"]</td><td>@t.Status(s.Key)</td><td class="text-end">@s.Count</td></tr> }
+                            { <pems-table-row class="lp-row"><pems-table-cell>@Localizer["PcRpt_ByStatus"]</pems-table-cell><pems-table-cell>@t.Status(s.Key)</pems-table-cell><pems-table-cell class="text-end">@s.Count</pems-table-cell></pems-table-row> }
                             @foreach (var s in p.ByStep)
-                            { <tr class="lp-row"><td>@Localizer["PcRpt_ByStep"]</td><td>@t.Step(s)</td><td class="text-end">@s.Count</td></tr> }
+                            { <pems-table-row class="lp-row"><pems-table-cell>@Localizer["PcRpt_ByStep"]</pems-table-cell><pems-table-cell>@t.Step(s)</pems-table-cell><pems-table-cell class="text-end">@s.Count</pems-table-cell></pems-table-row> }
                             @foreach (var a in p.OpenAge)
-                            { <tr class="lp-row"><td>@Localizer["PcRpt_OpenAge"]</td><td>@t.Days(a.Label)</td><td class="text-end">@a.Count</td></tr> }
-                            <tr class="lp-row"><td>@Localizer["PcRpt_Throughput"]</td><td>@Localizer["PcRpt_Kpi_Completed"]</td><td class="text-end">@p.CompletedInPeriod</td></tr>
-                            <tr class="lp-row"><td>@Localizer["PcRpt_Throughput"]</td><td>@Localizer["PcRpt_Kpi_AvgDays"]</td><td class="text-end">@(p.AverageDaysToComplete?.ToString("0.0") ?? "-")</td></tr>
-                            <tr class="lp-row"><td>@Localizer["PcRpt_Throughput"]</td><td>@Localizer["PcRpt_Kpi_MedianDays"]</td><td class="text-end">@(p.MedianDaysToComplete?.ToString("0.0") ?? "-")</td></tr>
-                        </tbody>
+                            { <pems-table-row class="lp-row"><pems-table-cell>@Localizer["PcRpt_OpenAge"]</pems-table-cell><pems-table-cell>@t.Days(a.Label)</pems-table-cell><pems-table-cell class="text-end">@a.Count</pems-table-cell></pems-table-row> }
+                            <pems-table-row class="lp-row"><pems-table-cell>@Localizer["PcRpt_Throughput"]</pems-table-cell><pems-table-cell>@Localizer["PcRpt_Kpi_Completed"]</pems-table-cell><pems-table-cell class="text-end">@p.CompletedInPeriod</pems-table-cell></pems-table-row>
+                            <pems-table-row class="lp-row"><pems-table-cell>@Localizer["PcRpt_Throughput"]</pems-table-cell><pems-table-cell>@Localizer["PcRpt_Kpi_AvgDays"]</pems-table-cell><pems-table-cell class="text-end">@(p.AverageDaysToComplete?.ToString("0.0") ?? "-")</pems-table-cell></pems-table-row>
+                            <pems-table-row class="lp-row"><pems-table-cell>@Localizer["PcRpt_Throughput"]</pems-table-cell><pems-table-cell>@Localizer["PcRpt_Kpi_MedianDays"]</pems-table-cell><pems-table-cell class="text-end">@(p.MedianDaysToComplete?.ToString("0.0") ?? "-")</pems-table-cell></pems-table-row>
+                        </pems-table-body>
                     </pems-list-table>
                 }
                 @if ((tab == "activity" && r.Activity.Rows.Count > PcReportViewModel.PageRows) || (tab == "parts" && r.Equipment.Parts.Count > PcReportViewModel.PageRows))

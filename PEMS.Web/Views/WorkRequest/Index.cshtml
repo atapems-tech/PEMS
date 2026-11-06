@@ -59,31 +59,31 @@
         <pems-list-grid>
             <pems-list-table grid-key="WorkRequest" empty="@(!Model.Items.Any())" empty-text="@Localizer["Wr_Empty"]"
                              filtered="@(filterCount > 0)" clear-href="@Url.Action("Index")">
-                <thead>
-                    <tr>
-                        <th class="pems-w-130" data-col-key="number" data-resizable="true" data-min-width="100" data-max-width="200">@Localizer["Cm_WrNumber"]</th>
-                        <th class="pems-w-260" data-col-key="title" data-resizable="true" data-min-width="160" data-max-width="400">@Localizer["Cm_Title"]</th>
-                        <th class="pems-w-140" data-col-key="equipment" data-resizable="true" data-min-width="100" data-max-width="220">@Localizer["Equipment"]</th>
-                        <th class="pems-w-100" data-col-key="priority" data-resizable="true" data-min-width="80" data-max-width="140">@Localizer["Cm_Priority"]</th>
-                        <th class="pems-w-140" data-col-key="status" data-resizable="true" data-min-width="90" data-max-width="180">@Localizer["Ed_Status"]</th>
-                        <th data-col-key="requestedBy" data-resizable="true" data-min-width="120" data-max-width="260" class="vs-hide-md pems-w-160">@Localizer["Wr_RequestedBy"]</th>
-                        <th class="pems-w-110" data-col-key="date" data-resizable="true" data-min-width="90" data-max-width="160">@Localizer["Ed_Date"]</th>
-                    </tr>
-                </thead>
-                <tbody>
+                <pems-table-head>
+                    <pems-table-row>
+                        <pems-table-header class="pems-w-130" data-col-key="number" data-resizable="true" data-min-width="100" data-max-width="200">@Localizer["Cm_WrNumber"]</pems-table-header>
+                        <pems-table-header class="pems-w-260" data-col-key="title" data-resizable="true" data-min-width="160" data-max-width="400">@Localizer["Cm_Title"]</pems-table-header>
+                        <pems-table-header class="pems-w-140" data-col-key="equipment" data-resizable="true" data-min-width="100" data-max-width="220">@Localizer["Equipment"]</pems-table-header>
+                        <pems-table-header class="pems-w-100" data-col-key="priority" data-resizable="true" data-min-width="80" data-max-width="140">@Localizer["Cm_Priority"]</pems-table-header>
+                        <pems-table-header class="pems-w-140" data-col-key="status" data-resizable="true" data-min-width="90" data-max-width="180">@Localizer["Ed_Status"]</pems-table-header>
+                        <pems-table-header data-col-key="requestedBy" data-resizable="true" data-min-width="120" data-max-width="260" class="vs-hide-md pems-w-160">@Localizer["Wr_RequestedBy"]</pems-table-header>
+                        <pems-table-header class="pems-w-110" data-col-key="date" data-resizable="true" data-min-width="90" data-max-width="160">@Localizer["Ed_Date"]</pems-table-header>
+                    </pems-table-row>
+                </pems-table-head>
+                <pems-table-body>
                     @foreach (var wr in Model.Items)
                     {
-                        <tr class="lp-row">
-                            <td class="lp-no"><a asp-action="Details" asp-route-id="@wr.WorkRequestId" class="lp-subject" title="@wr.RequestNumber">@wr.RequestNumber</a></td>
-                            <td><span class="vs-title-cell" title="@wr.Title">@wr.Title</span></td>
-                            <td class="small"><span class="vs-num">@(wr.EquipmentTagNumber ?? "-")</span></td>
-                            <td><span class="vs-pill @PriorityTone(wr.Priority)">@VdrUi.Loc(Localizer, "Pri_", wr.Priority)</span></td>
-                            <td><span class="vs-pill vs-pill--icon @StatusTone(wr.Status)"><pems-icon css="@StatusIcon(wr.Status)" aria-hidden="true" /> @StatusText(wr.Status)</span></td>
-                            <td class="small vs-hide-md">@wr.RequestedByName</td>
-                            <td class="small"><span class="vs-num">@wr.RequestedDate.ToString("yyyy-MM-dd")</span></td>
-                        </tr>
+                        <pems-table-row class="lp-row">
+                            <pems-table-cell class="lp-no"><a asp-action="Details" asp-route-id="@wr.WorkRequestId" class="lp-subject" title="@wr.RequestNumber">@wr.RequestNumber</a></pems-table-cell>
+                            <pems-table-cell><span class="vs-title-cell" title="@wr.Title">@wr.Title</span></pems-table-cell>
+                            <pems-table-cell class="small"><span class="vs-num">@(wr.EquipmentTagNumber ?? "-")</span></pems-table-cell>
+                            <pems-table-cell><span class="vs-pill @PriorityTone(wr.Priority)">@VdrUi.Loc(Localizer, "Pri_", wr.Priority)</span></pems-table-cell>
+                            <pems-table-cell><span class="vs-pill vs-pill--icon @StatusTone(wr.Status)"><pems-icon css="@StatusIcon(wr.Status)" aria-hidden="true" /> @StatusText(wr.Status)</span></pems-table-cell>
+                            <pems-table-cell class="small vs-hide-md">@wr.RequestedByName</pems-table-cell>
+                            <pems-table-cell class="small"><span class="vs-num">@wr.RequestedDate.ToString("yyyy-MM-dd")</span></pems-table-cell>
+                        </pems-table-row>
                     }
-                </tbody>
+                </pems-table-body>
             </pems-list-table>
 
             <pems-list-footer>

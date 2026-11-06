@@ -98,38 +98,38 @@
 
         <pems-list-grid>
             <pems-list-table grid-key="Replenishment" empty="@(!Model.Items.Any())" empty-text="@Localizer["Repl_NoItems"]">
-                <thead>
-                    <tr>
-                        <th data-col-key="material" data-resizable="true" data-min-width="140" data-max-width="420">@Localizer["Repl_Material"]</th>
-                        <th class="pems-w-100" data-col-key="warehouse" data-resizable="true" data-min-width="80" data-max-width="140">@Localizer["ItL_Warehouse"]</th>
-                        <th data-col-key="usable" data-resizable="true" data-min-width="70" data-max-width="140" class="text-end pems-w-100">@Localizer["Repl_Usable"]</th>
-                        <th data-col-key="demand" data-resizable="true" data-min-width="70" data-max-width="160" class="text-end vs-hide-md pems-w-120">@Localizer["Repl_UnreservedDemand"]</th>
-                        <th data-col-key="shortage" data-resizable="true" data-min-width="70" data-max-width="140" class="text-end pems-w-100">@Localizer["Repl_Shortage"]</th>
-                        <th class="pems-w-160" data-col-key="status" data-resizable="true" data-min-width="90" data-max-width="220">@Localizer["Ed_Status"]</th>
-                        <th data-col-key="evaluated" data-resizable="true" data-min-width="110" data-max-width="180" class="vs-hide-md pems-w-140">@Localizer["Repl_Evaluated"]</th>
-                        <th class="pems-w-60" data-col-key="actions" data-resizable="false"><span class="visually-hidden">@Localizer["Ed_Actions"]</span></th>
-                    </tr>
-                </thead>
-                <tbody>
+                <pems-table-head>
+                    <pems-table-row>
+                        <pems-table-header data-col-key="material" data-resizable="true" data-min-width="140" data-max-width="420">@Localizer["Repl_Material"]</pems-table-header>
+                        <pems-table-header class="pems-w-100" data-col-key="warehouse" data-resizable="true" data-min-width="80" data-max-width="140">@Localizer["ItL_Warehouse"]</pems-table-header>
+                        <pems-table-header data-col-key="usable" data-resizable="true" data-min-width="70" data-max-width="140" class="text-end pems-w-100">@Localizer["Repl_Usable"]</pems-table-header>
+                        <pems-table-header data-col-key="demand" data-resizable="true" data-min-width="70" data-max-width="160" class="text-end vs-hide-md pems-w-120">@Localizer["Repl_UnreservedDemand"]</pems-table-header>
+                        <pems-table-header data-col-key="shortage" data-resizable="true" data-min-width="70" data-max-width="140" class="text-end pems-w-100">@Localizer["Repl_Shortage"]</pems-table-header>
+                        <pems-table-header class="pems-w-160" data-col-key="status" data-resizable="true" data-min-width="90" data-max-width="220">@Localizer["Ed_Status"]</pems-table-header>
+                        <pems-table-header data-col-key="evaluated" data-resizable="true" data-min-width="110" data-max-width="180" class="vs-hide-md pems-w-140">@Localizer["Repl_Evaluated"]</pems-table-header>
+                        <pems-table-header class="pems-w-60" data-col-key="actions" data-resizable="false"><span class="visually-hidden">@Localizer["Ed_Actions"]</span></pems-table-header>
+                    </pems-table-row>
+                </pems-table-head>
+                <pems-table-body>
                     @foreach (var r in Model.Items)
                     {
-                        <tr class="lp-row">
-                            <td class="small"><a asp-action="Details" asp-route-id="@r.Id" class="lp-subject"><span class="vs-num">@r.MaterialCode</span></a> <span class="text-muted">@r.MaterialDescription</span></td>
-                            <td class="small"><span class="vs-num">@r.WarehouseCode</span></td>
-                            <td class="text-end"><span class="vs-num">@r.UsableQuantity.ToString("0.###")</span></td>
-                            <td class="text-end vs-hide-md"><span class="vs-num">@r.UnreservedDemand.ToString("0.###")</span></td>
-                            <td class="text-end fw-bold"><span class="vs-num">@r.ShortageQuantity.ToString("0.###")</span></td>
-                            <td>
+                        <pems-table-row class="lp-row">
+                            <pems-table-cell class="small"><a asp-action="Details" asp-route-id="@r.Id" class="lp-subject"><span class="vs-num">@r.MaterialCode</span></a> <span class="text-muted">@r.MaterialDescription</span></pems-table-cell>
+                            <pems-table-cell class="small"><span class="vs-num">@r.WarehouseCode</span></pems-table-cell>
+                            <pems-table-cell class="text-end"><span class="vs-num">@r.UsableQuantity.ToString("0.###")</span></pems-table-cell>
+                            <pems-table-cell class="text-end vs-hide-md"><span class="vs-num">@r.UnreservedDemand.ToString("0.###")</span></pems-table-cell>
+                            <pems-table-cell class="text-end fw-bold"><span class="vs-num">@r.ShortageQuantity.ToString("0.###")</span></pems-table-cell>
+                            <pems-table-cell>
                                 <span class="vs-pill @StatusTone(r.Status)">@StatusText(r.Status)</span>
                                 @if (!r.IsCurrentlyDefinitive) { <span class="vs-pill vs-pill--danger" title="@Localizer["Repl_NotDefinitiveHint"]">@Localizer["Repl_NotDefinitive"]</span> }
-                            </td>
-                            <td class="small vs-hide-md"><span class="vs-num">@r.LastEvaluatedAt.ToString("yyyy-MM-dd HH:mm")</span></td>
-                            <td class="text-end">
+                            </pems-table-cell>
+                            <pems-table-cell class="small vs-hide-md"><span class="vs-num">@r.LastEvaluatedAt.ToString("yyyy-MM-dd HH:mm")</span></pems-table-cell>
+                            <pems-table-cell class="text-end">
                                 <a asp-action="Details" asp-route-id="@r.Id" class="lp-act lp-act--always" title="@Localizer["Ed_View"]" aria-label="@Localizer["Ed_View"]"><pems-icon name="bi-card-text" aria-hidden="true" /></a>
-                            </td>
-                        </tr>
+                            </pems-table-cell>
+                        </pems-table-row>
                     }
-                </tbody>
+                </pems-table-body>
             </pems-list-table>
 
             <pems-list-footer>

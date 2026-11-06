@@ -26,33 +26,33 @@
     <h6 class="mb-3">@Localizer["Recent Import Batches"]</h6>
     <pems-table-scroll css="table-scroll-area pems-s-8da1c6e6">
     <pems-table kind="enterprise">
-        <thead>
-            <tr>
-                <th>@Localizer["File"]</th><th>@Localizer["Date"]</th><th>@Localizer["Imported By"]</th><th class="text-end">@Localizer["Total"]</th>
-                <th class="text-end">@Localizer["New"]</th><th class="text-end">@Localizer["Duplicate"]</th>
-                <th class="text-end">@Localizer["Unresolved"]</th><th class="text-end">@Localizer["Conflicts"]</th>
-                <th>@Localizer["Status"]</th><th></th>
-            </tr>
-        </thead>
-        <tbody>
+        <pems-table-head>
+            <pems-table-row>
+                <pems-table-header>@Localizer["File"]</pems-table-header><pems-table-header>@Localizer["Date"]</pems-table-header><pems-table-header>@Localizer["Imported By"]</pems-table-header><pems-table-header class="text-end">@Localizer["Total"]</pems-table-header>
+                <pems-table-header class="text-end">@Localizer["New"]</pems-table-header><pems-table-header class="text-end">@Localizer["Duplicate"]</pems-table-header>
+                <pems-table-header class="text-end">@Localizer["Unresolved"]</pems-table-header><pems-table-header class="text-end">@Localizer["Conflicts"]</pems-table-header>
+                <pems-table-header>@Localizer["Status"]</pems-table-header><pems-table-header></pems-table-header>
+            </pems-table-row>
+        </pems-table-head>
+        <pems-table-body>
             @foreach (var b in Model)
             {
-                <tr>
-                    <td>@b.FileName</td>
-                    <td>@b.ImportDate.ToString("yyyy-MM-dd HH:mm")</td>
-                    <td class="small">@b.ImportedByName</td>
-                    <td class="text-end">@b.TotalRows</td>
-                    <td class="text-end"><pems-badge tone="success">@b.NewCount</pems-badge></td>
-                    <td class="text-end">@if (b.DuplicateCount > 0) { <pems-badge tone="warning">@b.DuplicateCount</pems-badge> } else { @b.DuplicateCount }</td>
-                    <td class="text-end">@if (b.UnresolvedCount > 0) { <pems-badge tone="danger">@b.UnresolvedCount</pems-badge> } else { @b.UnresolvedCount }</td>
-                    <td class="text-end">@if (b.ConflictCount > 0) { <pems-badge tone="danger">@b.ConflictCount</pems-badge> } else { @b.ConflictCount }</td>
-                    <td><pems-badge tone="@(b.Status == "Committed" ? "success" : "neutral")">@b.Status</pems-badge></td>
-                    <td>
+                <pems-table-row>
+                    <pems-table-cell>@b.FileName</pems-table-cell>
+                    <pems-table-cell>@b.ImportDate.ToString("yyyy-MM-dd HH:mm")</pems-table-cell>
+                    <pems-table-cell class="small">@b.ImportedByName</pems-table-cell>
+                    <pems-table-cell class="text-end">@b.TotalRows</pems-table-cell>
+                    <pems-table-cell class="text-end"><pems-badge tone="success">@b.NewCount</pems-badge></pems-table-cell>
+                    <pems-table-cell class="text-end">@if (b.DuplicateCount > 0) { <pems-badge tone="warning">@b.DuplicateCount</pems-badge> } else { @b.DuplicateCount }</pems-table-cell>
+                    <pems-table-cell class="text-end">@if (b.UnresolvedCount > 0) { <pems-badge tone="danger">@b.UnresolvedCount</pems-badge> } else { @b.UnresolvedCount }</pems-table-cell>
+                    <pems-table-cell class="text-end">@if (b.ConflictCount > 0) { <pems-badge tone="danger">@b.ConflictCount</pems-badge> } else { @b.ConflictCount }</pems-table-cell>
+                    <pems-table-cell><pems-badge tone="@(b.Status == "Committed" ? "success" : "neutral")">@b.Status</pems-badge></pems-table-cell>
+                    <pems-table-cell>
                         <pems-button tone="primary" size="small" outline="true" as="a" asp-action="Review" asp-route-batchId="@b.ConditionReadingImportBatchId">@Localizer["Review"]</pems-button>
-                    </td>
-                </tr>
+                    </pems-table-cell>
+                </pems-table-row>
             }
-        </tbody>
+        </pems-table-body>
     </pems-table>
     </pems-table-scroll>
     @if (!Model.Any()) { <p class="text-muted text-center py-4">@Localizer["No Condition Reading import batches yet."]</p> }

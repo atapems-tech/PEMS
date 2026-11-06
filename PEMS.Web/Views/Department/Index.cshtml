@@ -30,36 +30,36 @@
 
         <pems-list-grid>
             <pems-list-table grid-key="Department" empty="@(!Model.Any())" empty-text="@Localizer["DpL_Empty"]">
-                <thead>
-                    <tr>
-                        <th class="pems-w-100" data-col-key="code" data-resizable="true" data-min-width="70" data-max-width="160">@Localizer["MiL_Code"]</th>
-                        <th class="pems-w-220" data-col-key="name" data-resizable="true" data-min-width="120" data-max-width="320">@Localizer["DpL_Name"]</th>
-                        <th data-col-key="description" data-resizable="true" data-min-width="160" data-max-width="520" class="vs-hide-md">@Localizer["Ed_Description"]</th>
-                        <th data-col-key="employees" data-resizable="true" data-min-width="80" data-max-width="140" class="text-end pems-w-100">@Localizer["DpL_Employees"]</th>
-                        <th class="pems-w-110" data-col-key="status" data-resizable="true" data-min-width="80" data-max-width="140">@Localizer["Ed_Status"]</th>
-                        <th class="pems-w-100" data-col-key="actions" data-resizable="false"><span class="visually-hidden">@Localizer["Ed_Actions"]</span></th>
-                    </tr>
-                </thead>
-                <tbody>
+                <pems-table-head>
+                    <pems-table-row>
+                        <pems-table-header class="pems-w-100" data-col-key="code" data-resizable="true" data-min-width="70" data-max-width="160">@Localizer["MiL_Code"]</pems-table-header>
+                        <pems-table-header class="pems-w-220" data-col-key="name" data-resizable="true" data-min-width="120" data-max-width="320">@Localizer["DpL_Name"]</pems-table-header>
+                        <pems-table-header data-col-key="description" data-resizable="true" data-min-width="160" data-max-width="520" class="vs-hide-md">@Localizer["Ed_Description"]</pems-table-header>
+                        <pems-table-header data-col-key="employees" data-resizable="true" data-min-width="80" data-max-width="140" class="text-end pems-w-100">@Localizer["DpL_Employees"]</pems-table-header>
+                        <pems-table-header class="pems-w-110" data-col-key="status" data-resizable="true" data-min-width="80" data-max-width="140">@Localizer["Ed_Status"]</pems-table-header>
+                        <pems-table-header class="pems-w-100" data-col-key="actions" data-resizable="false"><span class="visually-hidden">@Localizer["Ed_Actions"]</span></pems-table-header>
+                    </pems-table-row>
+                </pems-table-head>
+                <pems-table-body>
                     @foreach (var d in Model)
                     {
                         var empCount = counts.TryGetValue(d.DepartmentId, out var c) ? c : 0;
-                        <tr class="lp-row">
-                            <td class="lp-no"><span class="vs-num">@d.Code</span></td>
-                            <td><span class="vs-cell-strong">@d.Name</span></td>
-                            <td class="small text-muted vs-hide-md"><span class="vs-title-cell" title="@d.Description">@d.Description</span></td>
-                            <td class="text-end"><a asp-controller="Employee" asp-action="Index" asp-route-departmentId="@d.DepartmentId" class="lp-subject"><span class="vs-num">@empCount</span></a></td>
-                            <td><span class="vs-pill @(d.IsActive ? "vs-pill--success" : "vs-pill--neutral")">@(d.IsActive ? Localizer["UsL_Active"] : Localizer["UsL_Inactive"])</span></td>
-                            <td class="text-end text-nowrap">
+                        <pems-table-row class="lp-row">
+                            <pems-table-cell class="lp-no"><span class="vs-num">@d.Code</span></pems-table-cell>
+                            <pems-table-cell><span class="vs-cell-strong">@d.Name</span></pems-table-cell>
+                            <pems-table-cell class="small text-muted vs-hide-md"><span class="vs-title-cell" title="@d.Description">@d.Description</span></pems-table-cell>
+                            <pems-table-cell class="text-end"><a asp-controller="Employee" asp-action="Index" asp-route-departmentId="@d.DepartmentId" class="lp-subject"><span class="vs-num">@empCount</span></a></pems-table-cell>
+                            <pems-table-cell><span class="vs-pill @(d.IsActive ? "vs-pill--success" : "vs-pill--neutral")">@(d.IsActive ? Localizer["UsL_Active"] : Localizer["UsL_Inactive"])</span></pems-table-cell>
+                            <pems-table-cell class="text-end text-nowrap">
                                 <button type="button" class="lp-act lp-act--always" data-bs-toggle="modal" data-bs-target="#editDeptModal" data-fill-departmentid="@d.DepartmentId" data-fill-code="@d.Code" data-fill-name="@d.Name" data-fill-description="@d.Description" title="@Localizer["Ed_Edit"]" aria-label="@Localizer["Ed_Edit"] @d.Name"><pems-icon name="bi-pencil" aria-hidden="true" /></button>
                                 <form asp-action="ToggleActive" method="post" class="d-inline">
                                     <input type="hidden" name="departmentId" value="@d.DepartmentId" />
                                     <button type="submit" class="lp-act lp-act--always @(d.IsActive ? "text-danger" : "text-success")" title="@(d.IsActive ? Localizer["DpL_Deactivate"] : Localizer["DpL_Activate"])" aria-label="@(d.IsActive ? Localizer["DpL_Deactivate"] : Localizer["DpL_Activate"]) @d.Name"><pems-icon css="@(d.IsActive ? "bi-slash-circle" : "bi-check-circle")" aria-hidden="true" /></button>
                                 </form>
-                            </td>
-                        </tr>
+                            </pems-table-cell>
+                        </pems-table-row>
                     }
-                </tbody>
+                </pems-table-body>
             </pems-list-table>
         </pems-list-grid>
     </pems-list-panel>

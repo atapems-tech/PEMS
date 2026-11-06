@@ -45,18 +45,18 @@
         <h6>@Localizer["Versions"]</h6>
         <pems-table-scroll>
             <pems-table kind="enterprise" css="align-middle">
-                <thead><tr><th>@Localizer["Version"]</th><th>@Localizer["Status"]</th><th>@Localizer["Stages"]</th><th>@Localizer["Transitions"]</th><th>@Localizer["Published"]</th><th>@Localizer["Running instances"]</th><th>@Localizer["Change summary"]</th><th></th></tr></thead>
-                <tbody>
+                <pems-table-head><pems-table-row><pems-table-header>@Localizer["Version"]</pems-table-header><pems-table-header>@Localizer["Status"]</pems-table-header><pems-table-header>@Localizer["Stages"]</pems-table-header><pems-table-header>@Localizer["Transitions"]</pems-table-header><pems-table-header>@Localizer["Published"]</pems-table-header><pems-table-header>@Localizer["Running instances"]</pems-table-header><pems-table-header>@Localizer["Change summary"]</pems-table-header><pems-table-header></pems-table-header></pems-table-row></pems-table-head>
+                <pems-table-body>
                 @foreach (var v in Model.Versions)
                 {
-                    <tr>
-                        <td>v@(v.VersionNumber) @if (v.ClonedFromVersion.HasValue) { <span class="small text-muted">(← v@(v.ClonedFromVersion))</span> } @if (v.IsBound) { <pems-badge tone="success">@Localizer["Bound"]</pems-badge> }</td>
-                        <td><pems-badge tone="none" css="@StatusBadge(v.Status)">@Localizer[v.Status]</pems-badge></td>
-                        <td>@v.Stages</td><td>@v.Transitions</td>
-                        <td class="small text-nowrap">@(v.PublishedDate?.ToString("yyyy-MM-dd HH:mm") ?? "-")</td>
-                        <td>@v.RunningInstances / @v.TotalInstances</td>
-                        <td class="small">@v.ChangeSummary</td>
-                        <td class="text-end text-nowrap">
+                    <pems-table-row>
+                        <pems-table-cell>v@(v.VersionNumber) @if (v.ClonedFromVersion.HasValue) { <span class="small text-muted">(← v@(v.ClonedFromVersion))</span> } @if (v.IsBound) { <pems-badge tone="success">@Localizer["Bound"]</pems-badge> }</pems-table-cell>
+                        <pems-table-cell><pems-badge tone="none" css="@StatusBadge(v.Status)">@Localizer[v.Status]</pems-badge></pems-table-cell>
+                        <pems-table-cell>@v.Stages</pems-table-cell><pems-table-cell>@v.Transitions</pems-table-cell>
+                        <pems-table-cell class="small text-nowrap">@(v.PublishedDate?.ToString("yyyy-MM-dd HH:mm") ?? "-")</pems-table-cell>
+                        <pems-table-cell>@v.RunningInstances / @v.TotalInstances</pems-table-cell>
+                        <pems-table-cell class="small">@v.ChangeSummary</pems-table-cell>
+                        <pems-table-cell class="text-end text-nowrap">
                             <pems-button as="a" tone="primary" size="small" outline="true" asp-action="Designer" asp-route-versionId="@v.VersionId">@Localizer[v.Status is "Draft" or "Validated" ? "Open" : "View"]</pems-button>
                             @if (d.Editable && perms["Edit"] && v.Status is "Published" or "Retired" && openDraft == null)
                             {
@@ -72,10 +72,10 @@
                                     <pems-button tone="danger" size="small" outline="true">@Localizer["Retire"]</pems-button>
                                 </form>
                             }
-                        </td>
-                    </tr>
+                        </pems-table-cell>
+                    </pems-table-row>
                 }
-                </tbody>
+                </pems-table-body>
             </pems-table>
         </pems-table-scroll>
         @if (openDraft != null) { <p class="small text-muted mb-0"><pems-icon name="bi-info-circle" /> @Localizer["One open draft per workflow: finish or discard v{0} before cloning again.", openDraft.VersionNumber]</p> }
@@ -123,16 +123,16 @@
         <h6>@Localizer["Configuration audit"]</h6>
         <pems-table-scroll css="pems-s-11017dde">
             <pems-table scale="small" css="align-middle mb-0">
-                <thead><tr><th>@Localizer["Time"]</th><th>@Localizer["Action"]</th><th>@Localizer["Version"]</th><th>@Localizer["By"]</th><th>@Localizer["Change"]</th></tr></thead>
-                <tbody>
+                <pems-table-head><pems-table-row><pems-table-header>@Localizer["Time"]</pems-table-header><pems-table-header>@Localizer["Action"]</pems-table-header><pems-table-header>@Localizer["Version"]</pems-table-header><pems-table-header>@Localizer["By"]</pems-table-header><pems-table-header>@Localizer["Change"]</pems-table-header></pems-table-row></pems-table-head>
+                <pems-table-body>
                 @foreach (var a in Model.Audit)
                 {
-                    <tr>
-                        <td class="small text-nowrap">@a.Timestamp.ToString("yyyy-MM-dd HH:mm")</td><td class="small">@a.Action</td><td class="small">@(a.VersionNumber.HasValue ? "v" + a.VersionNumber : "-")</td><td class="small">@a.Actor</td>
-                        <td class="small">@(string.IsNullOrEmpty(a.Previous) ? "" : a.Previous + " → ")@a.Current @if (!string.IsNullOrEmpty(a.Details)) { <span class="text-muted">· @a.Details</span> }</td>
-                    </tr>
+                    <pems-table-row>
+                        <pems-table-cell class="small text-nowrap">@a.Timestamp.ToString("yyyy-MM-dd HH:mm")</pems-table-cell><pems-table-cell class="small">@a.Action</pems-table-cell><pems-table-cell class="small">@(a.VersionNumber.HasValue ? "v" + a.VersionNumber : "-")</pems-table-cell><pems-table-cell class="small">@a.Actor</pems-table-cell>
+                        <pems-table-cell class="small">@(string.IsNullOrEmpty(a.Previous) ? "" : a.Previous + " → ")@a.Current @if (!string.IsNullOrEmpty(a.Details)) { <span class="text-muted">· @a.Details</span> }</pems-table-cell>
+                    </pems-table-row>
                 }
-                </tbody>
+                </pems-table-body>
             </pems-table>
         </pems-table-scroll>
     </pems-content-card>

@@ -30,39 +30,39 @@
         <pems-alert tone="success" css="py-2 px-3 small mb-3">@Localizer["Rcv_OsdClean"]</pems-alert>
     }
     <pems-table kind="enterprise" scale="small">
-        <thead>
-            <tr>
-                <th>@Localizer["Rcv_PoLine"]</th>
-                <th>@Localizer["Material"]</th>
-                <th>@Localizer["Rcv_Ordered"]</th>
-                <th>@Localizer["Rcv_ReceivedBefore"]</th>
-                <th>@Localizer["Rcv_ThisReceipt"]</th>
-                <th>@Localizer["Rcv_Over"]</th>
-                <th>@Localizer["Rcv_Short"]</th>
-                <th>@Localizer["Accepted"]</th>
-                <th>@Localizer["Rcv_RejectedDamaged"]</th>
-                <th>@Localizer["Hold"]</th>
-                <th>@Localizer["Rcv_Decision"]</th>
-            </tr>
-        </thead>
-        <tbody>
+        <pems-table-head>
+            <pems-table-row>
+                <pems-table-header>@Localizer["Rcv_PoLine"]</pems-table-header>
+                <pems-table-header>@Localizer["Material"]</pems-table-header>
+                <pems-table-header>@Localizer["Rcv_Ordered"]</pems-table-header>
+                <pems-table-header>@Localizer["Rcv_ReceivedBefore"]</pems-table-header>
+                <pems-table-header>@Localizer["Rcv_ThisReceipt"]</pems-table-header>
+                <pems-table-header>@Localizer["Rcv_Over"]</pems-table-header>
+                <pems-table-header>@Localizer["Rcv_Short"]</pems-table-header>
+                <pems-table-header>@Localizer["Accepted"]</pems-table-header>
+                <pems-table-header>@Localizer["Rcv_RejectedDamaged"]</pems-table-header>
+                <pems-table-header>@Localizer["Hold"]</pems-table-header>
+                <pems-table-header>@Localizer["Rcv_Decision"]</pems-table-header>
+            </pems-table-row>
+        </pems-table-head>
+        <pems-table-body>
             @foreach (var l in Model.Lines)
             {
-                <tr>
-                    <td>@(l.WithoutPoLine ? Localizer["Rcv_NoPoLine"].Value : l.PoLineNo?.ToString())</td>
-                    <td class="small">@l.MaterialCode - @l.Description</td>
-                    <td>@(l.WithoutPoLine ? "-" : $"{l.Ordered:0.###}") @l.Unit</td>
-                    <td>@(l.WithoutPoLine ? "-" : $"{l.ReceivedBefore:0.###}")</td>
-                    <td>@l.ThisReceipt.ToString("0.###")</td>
-                    <td class="@(l.Over > 0 ? "text-danger fw-semibold" : "")">@l.Over.ToString("0.###")</td>
-                    <td class="@(l.Short > 0 ? "text-warning fw-semibold" : "")">@l.Short.ToString("0.###")</td>
-                    <td>@(l.Accepted?.ToString("0.###") ?? "-")</td>
-                    <td class="@(l.Rejected > 0 ? "text-danger fw-semibold" : "")">@l.Rejected.ToString("0.###")</td>
-                    <td>@l.Hold.ToString("0.###")</td>
-                    <td class="small">@(l.Rejected > 0 && !l.WithoutPoLine ? Localizer["Rcv_Action_" + (l.RejectionAction ?? "Replace")].Value : "-")</td>
-                </tr>
+                <pems-table-row>
+                    <pems-table-cell>@(l.WithoutPoLine ? Localizer["Rcv_NoPoLine"].Value : l.PoLineNo?.ToString())</pems-table-cell>
+                    <pems-table-cell class="small">@l.MaterialCode - @l.Description</pems-table-cell>
+                    <pems-table-cell>@(l.WithoutPoLine ? "-" : $"{l.Ordered:0.###}") @l.Unit</pems-table-cell>
+                    <pems-table-cell>@(l.WithoutPoLine ? "-" : $"{l.ReceivedBefore:0.###}")</pems-table-cell>
+                    <pems-table-cell>@l.ThisReceipt.ToString("0.###")</pems-table-cell>
+                    <pems-table-cell class="@(l.Over > 0 ? "text-danger fw-semibold" : "")">@l.Over.ToString("0.###")</pems-table-cell>
+                    <pems-table-cell class="@(l.Short > 0 ? "text-warning fw-semibold" : "")">@l.Short.ToString("0.###")</pems-table-cell>
+                    <pems-table-cell>@(l.Accepted?.ToString("0.###") ?? "-")</pems-table-cell>
+                    <pems-table-cell class="@(l.Rejected > 0 ? "text-danger fw-semibold" : "")">@l.Rejected.ToString("0.###")</pems-table-cell>
+                    <pems-table-cell>@l.Hold.ToString("0.###")</pems-table-cell>
+                    <pems-table-cell class="small">@(l.Rejected > 0 && !l.WithoutPoLine ? Localizer["Rcv_Action_" + (l.RejectionAction ?? "Replace")].Value : "-")</pems-table-cell>
+                </pems-table-row>
             }
-        </tbody>
+        </pems-table-body>
     </pems-table>
     <p class="small text-muted mb-0">@Localizer["Rcv_OsdNote"]</p>
 </pems-content-card>

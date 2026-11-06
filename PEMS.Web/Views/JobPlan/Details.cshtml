@@ -48,22 +48,22 @@
     @if (Model.Tasks.Any())
     {
         <pems-related-table>
-            <thead><tr><th class="pems-w-70">#</th><th>@Localizer["Title"]</th><th>@Localizer["Description"]</th><th class="pems-w-90">@Localizer["JpD_EstMin"]</th><th class="pems-w-50"><span class="visually-hidden">@Localizer["Ed_Actions"]</span></th></tr></thead>
-            <tbody>
+            <pems-table-head><pems-table-row><pems-table-header class="pems-w-70">#</pems-table-header><pems-table-header>@Localizer["Title"]</pems-table-header><pems-table-header>@Localizer["Description"]</pems-table-header><pems-table-header class="pems-w-90">@Localizer["JpD_EstMin"]</pems-table-header><pems-table-header class="pems-w-50"><span class="visually-hidden">@Localizer["Ed_Actions"]</span></pems-table-header></pems-table-row></pems-table-head>
+            <pems-table-body>
                 @foreach (var t in Model.Tasks)
                 {
-                    <tr>
-                        <td><span class="vs-num">@t.TaskNumber</span></td>
-                        <td>@t.Title</td>
-                        <td class="text-muted">@t.Description</td>
-                        <td><span class="vs-num">@t.EstimatedDurationMinutes</span></td>
-                        <td class="text-end">
+                    <pems-table-row>
+                        <pems-table-cell><span class="vs-num">@t.TaskNumber</span></pems-table-cell>
+                        <pems-table-cell>@t.Title</pems-table-cell>
+                        <pems-table-cell class="text-muted">@t.Description</pems-table-cell>
+                        <pems-table-cell><span class="vs-num">@t.EstimatedDurationMinutes</span></pems-table-cell>
+                        <pems-table-cell class="text-end">
                             <pems-related-remove action="@Url.Action("RemoveTask")" key-name="maintenanceTaskId" key-value="@t.MaintenanceTaskId.ToString()"
                                                  parent-name="jobPlanId" parent-value="@Model.JobPlanId.ToString()" label="@Localizer["حذف"]" />
-                        </td>
-                    </tr>
+                        </pems-table-cell>
+                    </pems-table-row>
                 }
-            </tbody>
+            </pems-table-body>
         </pems-related-table>
     }
     <pems-related-add action="@Url.Action("AddTask")" parent-name="jobPlanId" parent-value="@Model.JobPlanId.ToString()" submit-label="@Localizer["Add"]">
@@ -117,20 +117,20 @@
     @if (Model.RequiredMaterials.Any())
     {
         <pems-related-table>
-            <thead><tr><th>@Localizer["Material"]</th><th class="pems-w-130">@Localizer["Required Qty"]</th><th class="pems-w-50"><span class="visually-hidden">@Localizer["Ed_Actions"]</span></th></tr></thead>
-            <tbody>
+            <pems-table-head><pems-table-row><pems-table-header>@Localizer["Material"]</pems-table-header><pems-table-header class="pems-w-130">@Localizer["Required Qty"]</pems-table-header><pems-table-header class="pems-w-50"><span class="visually-hidden">@Localizer["Ed_Actions"]</span></pems-table-header></pems-table-row></pems-table-head>
+            <pems-table-body>
                 @foreach (var rm in Model.RequiredMaterials)
                 {
-                    <tr>
-                        <td><span class="vs-num">@rm.MaterialCode</span> - @rm.MaterialDescription</td>
-                        <td><span class="vs-num">@rm.RequiredQuantity</span></td>
-                        <td class="text-end">
+                    <pems-table-row>
+                        <pems-table-cell><span class="vs-num">@rm.MaterialCode</span> - @rm.MaterialDescription</pems-table-cell>
+                        <pems-table-cell><span class="vs-num">@rm.RequiredQuantity</span></pems-table-cell>
+                        <pems-table-cell class="text-end">
                             <pems-related-remove action="@Url.Action("RemoveRequiredMaterial")" key-name="jobPlanRequiredMaterialId" key-value="@rm.JobPlanRequiredMaterialId.ToString()"
                                                  parent-name="jobPlanId" parent-value="@Model.JobPlanId.ToString()" label="@Localizer["حذف"]" />
-                        </td>
-                    </tr>
+                        </pems-table-cell>
+                    </pems-table-row>
                 }
-            </tbody>
+            </pems-table-body>
         </pems-related-table>
     }
     <pems-related-add action="@Url.Action("AddRequiredMaterial")" parent-name="jobPlanId" parent-value="@Model.JobPlanId.ToString()" submit-label="@Localizer["Add"]">

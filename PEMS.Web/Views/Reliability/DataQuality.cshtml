@@ -51,22 +51,22 @@
 
 <pems-content-card>
     <pems-table kind="enterprise" scale="small" css="mb-0">
-        <tbody>
-            <tr><td>@Localizer["Total Active Equipment"]</td><td class="text-end">@Model.TotalActiveEquipment</td></tr>
-            <tr><td>@Localizer["Equipment with Failure History"]</td><td class="text-end">@Model.EquipmentWithFailureHistory</td></tr>
-            <tr><td>Equipment with Criticality</td><td class="text-end">@Model.EquipmentWithCriticality</td></tr>
-            <tr><td>Equipment with Maintenance Strategy</td><td class="text-end">@Model.EquipmentWithMaintenanceStrategy</td></tr>
-            <tr><td>Equipment with Maintenance Plan</td><td class="text-end">@Model.EquipmentWithMaintenancePlan</td></tr>
-            <tr><td>Failure Records without Failure Mode</td><td class="text-end">@Model.FailureRecordsWithoutFailureMode</td></tr>
-            <tr><td>Failure Records without Failure Cause</td><td class="text-end">@Model.FailureRecordsWithoutFailureCause</td></tr>
-            <tr><td>Failure Records without Downtime Hours</td><td class="text-end">@Model.FailureRecordsWithoutDowntimeHours</td></tr>
-            <tr><td>Failure Records with Invalid (Future) Date</td><td class="text-end">@Model.FailureRecordsWithInvalidDate</td></tr>
-            <tr><td>Failure Records Linked to WorkOrder Missing Start/Completion Date</td><td class="text-end">@Model.FailureRecordsLinkedToWorkOrderMissingDuration</td></tr>
-            <tr><td>Failure Records with Negative Repair Duration</td><td class="text-end">@Model.FailureRecordsWithNegativeDuration</td></tr>
-            <tr><td>Total Work Orders</td><td class="text-end">@Model.TotalWorkOrders</td></tr>
-            <tr><td>Work Orders Missing Work Order Type</td><td class="text-end">@Model.WorkOrdersMissingWorkOrderType</td></tr>
-            <tr><td>Completed/Closed Work Orders</td><td class="text-end">@Model.CompletedOrClosedWorkOrders</td></tr>
-            <tr><td>Completed/Closed Work Orders Missing Completion Date</td><td class="text-end">@Model.WorkOrdersMissingCompletionDate</td></tr>
-        </tbody>
+        <pems-table-body>
+            <pems-table-row><pems-table-cell>@Localizer["Total Active Equipment"]</pems-table-cell><pems-table-cell class="text-end">@Model.TotalActiveEquipment</pems-table-cell></pems-table-row>
+            <pems-table-row><pems-table-cell>@Localizer["Equipment with Failure History"]</pems-table-cell><pems-table-cell class="text-end">@Model.EquipmentWithFailureHistory</pems-table-cell></pems-table-row>
+            <pems-table-row><pems-table-cell>Equipment with Criticality</pems-table-cell><pems-table-cell class="text-end">@Model.EquipmentWithCriticality</pems-table-cell></pems-table-row>
+            <pems-table-row><pems-table-cell>Equipment with Maintenance Strategy</pems-table-cell><pems-table-cell class="text-end">@Model.EquipmentWithMaintenanceStrategy</pems-table-cell></pems-table-row>
+            <pems-table-row><pems-table-cell>Equipment with Maintenance Plan</pems-table-cell><pems-table-cell class="text-end">@Model.EquipmentWithMaintenancePlan</pems-table-cell></pems-table-row>
+            <pems-table-row><pems-table-cell>Failure Records without Failure Mode</pems-table-cell><pems-table-cell class="text-end">@Model.FailureRecordsWithoutFailureMode</pems-table-cell></pems-table-row>
+            <pems-table-row><pems-table-cell>Failure Records without Failure Cause</pems-table-cell><pems-table-cell class="text-end">@Model.FailureRecordsWithoutFailureCause</pems-table-cell></pems-table-row>
+            <pems-table-row><pems-table-cell>Failure Records without Downtime Hours</pems-table-cell><pems-table-cell class="text-end">@Model.FailureRecordsWithoutDowntimeHours</pems-table-cell></pems-table-row>
+            <pems-table-row><pems-table-cell>Failure Records with Invalid (Future) Date</pems-table-cell><pems-table-cell class="text-end">@Model.FailureRecordsWithInvalidDate</pems-table-cell></pems-table-row>
+            <pems-table-row><pems-table-cell>Failure Records Linked to WorkOrder Missing Start/Completion Date</pems-table-cell><pems-table-cell class="text-end">@Model.FailureRecordsLinkedToWorkOrderMissingDuration</pems-table-cell></pems-table-row>
+            <pems-table-row><pems-table-cell>Failure Records with Negative Repair Duration</pems-table-cell><pems-table-cell class="text-end">@Model.FailureRecordsWithNegativeDuration</pems-table-cell></pems-table-row>
+            <pems-table-row><pems-table-cell>Total Work Orders</pems-table-cell><pems-table-cell class="text-end">@Model.TotalWorkOrders</pems-table-cell></pems-table-row>
+            <pems-table-row><pems-table-cell>Work Orders Missing Work Order Type</pems-table-cell><pems-table-cell class="text-end">@Model.WorkOrdersMissingWorkOrderType</pems-table-cell></pems-table-row>
+            <pems-table-row><pems-table-cell>Completed/Closed Work Orders</pems-table-cell><pems-table-cell class="text-end">@Model.CompletedOrClosedWorkOrders</pems-table-cell></pems-table-row>
+            <pems-table-row><pems-table-cell>Completed/Closed Work Orders Missing Completion Date</pems-table-cell><pems-table-cell class="text-end">@Model.WorkOrdersMissingCompletionDate</pems-table-cell></pems-table-row>
+        </pems-table-body>
     </pems-table>
 </pems-content-card>

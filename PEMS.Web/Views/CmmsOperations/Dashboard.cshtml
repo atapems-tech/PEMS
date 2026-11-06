@@ -48,16 +48,16 @@
         <pems-content-card>
             <h6 class="mb-2">Work Request — by Status</h6>
             <pems-table kind="enterprise" scale="small" css="mb-0">
-                <tbody>
-                    <tr><td>@Localizer["Draft"]</td><td class="text-end">@Model.WorkRequestDraft.ToString("N0")</td></tr>
-                    <tr><td>@Localizer["Submitted"]</td><td class="text-end">@Model.WorkRequestSubmitted.ToString("N0")</td></tr>
-                    <tr><td>@Localizer["Under Review"]</td><td class="text-end">@Model.WorkRequestUnderReview.ToString("N0")</td></tr>
-                    <tr><td>@Localizer["Approved"]</td><td class="text-end">@Model.WorkRequestApproved.ToString("N0")</td></tr>
-                    <tr><td>Planned (ready to convert)</td><td class="text-end">@Model.WorkRequestPlanned.ToString("N0")</td></tr>
-                    <tr><td>Converted</td><td class="text-end">@Model.WorkRequestConverted.ToString("N0")</td></tr>
-                    <tr><td class="text-muted">@Localizer["Rejected"]</td><td class="text-end text-muted">@Model.WorkRequestRejected.ToString("N0")</td></tr>
-                    <tr><td class="text-muted">@Localizer["Cancelled"]</td><td class="text-end text-muted">@Model.WorkRequestCancelled.ToString("N0")</td></tr>
-                </tbody>
+                <pems-table-body>
+                    <pems-table-row><pems-table-cell>@Localizer["Draft"]</pems-table-cell><pems-table-cell class="text-end">@Model.WorkRequestDraft.ToString("N0")</pems-table-cell></pems-table-row>
+                    <pems-table-row><pems-table-cell>@Localizer["Submitted"]</pems-table-cell><pems-table-cell class="text-end">@Model.WorkRequestSubmitted.ToString("N0")</pems-table-cell></pems-table-row>
+                    <pems-table-row><pems-table-cell>@Localizer["Under Review"]</pems-table-cell><pems-table-cell class="text-end">@Model.WorkRequestUnderReview.ToString("N0")</pems-table-cell></pems-table-row>
+                    <pems-table-row><pems-table-cell>@Localizer["Approved"]</pems-table-cell><pems-table-cell class="text-end">@Model.WorkRequestApproved.ToString("N0")</pems-table-cell></pems-table-row>
+                    <pems-table-row><pems-table-cell>Planned (ready to convert)</pems-table-cell><pems-table-cell class="text-end">@Model.WorkRequestPlanned.ToString("N0")</pems-table-cell></pems-table-row>
+                    <pems-table-row><pems-table-cell>Converted</pems-table-cell><pems-table-cell class="text-end">@Model.WorkRequestConverted.ToString("N0")</pems-table-cell></pems-table-row>
+                    <pems-table-row><pems-table-cell class="text-muted">@Localizer["Rejected"]</pems-table-cell><pems-table-cell class="text-end text-muted">@Model.WorkRequestRejected.ToString("N0")</pems-table-cell></pems-table-row>
+                    <pems-table-row><pems-table-cell class="text-muted">@Localizer["Cancelled"]</pems-table-cell><pems-table-cell class="text-end text-muted">@Model.WorkRequestCancelled.ToString("N0")</pems-table-cell></pems-table-row>
+                </pems-table-body>
             </pems-table>
         </pems-content-card>
     </pems-col>
@@ -65,17 +65,17 @@
         <pems-content-card>
             <h6 class="mb-2">Work Order — by Status</h6>
             <pems-table kind="enterprise" scale="small" css="mb-0">
-                <tbody>
-                    <tr><td>@Localizer["Open"]</td><td class="text-end">@Model.WorkOrderOpen.ToString("N0")</td></tr>
-                    <tr><td>@Localizer["Assigned"]</td><td class="text-end">@Model.WorkOrderAssigned.ToString("N0")</td></tr>
-                    <tr><td>@Localizer["In Progress"]</td><td class="text-end">@Model.WorkOrderInProgress.ToString("N0")</td></tr>
-                    <tr><td>@Localizer["On Hold"]</td><td class="text-end">@Model.WorkOrderOnHold.ToString("N0")</td></tr>
-                    <tr><td>@Localizer["Completed"]</td><td class="text-end">@Model.WorkOrderCompleted.ToString("N0")</td></tr>
-                    <tr><td>@Localizer["Closed"]</td><td class="text-end">@Model.WorkOrderClosed.ToString("N0")</td></tr>
-                    <tr><td class="text-muted">@Localizer["Cancelled"]</td><td class="text-end text-muted">@Model.WorkOrderCancelled.ToString("N0")</td></tr>
-                    <tr><td class="text-muted">@Localizer["Rejected"]</td><td class="text-end text-muted">@Model.WorkOrderRejected.ToString("N0")</td></tr>
-                    <tr><td class="fw-bold">Critical &amp; Open</td><td class="text-end fw-bold">@Model.WorkOrderCriticalOpen.ToString("N0")</td></tr>
-                </tbody>
+                <pems-table-body>
+                    <pems-table-row><pems-table-cell>@Localizer["Open"]</pems-table-cell><pems-table-cell class="text-end">@Model.WorkOrderOpen.ToString("N0")</pems-table-cell></pems-table-row>
+                    <pems-table-row><pems-table-cell>@Localizer["Assigned"]</pems-table-cell><pems-table-cell class="text-end">@Model.WorkOrderAssigned.ToString("N0")</pems-table-cell></pems-table-row>
+                    <pems-table-row><pems-table-cell>@Localizer["In Progress"]</pems-table-cell><pems-table-cell class="text-end">@Model.WorkOrderInProgress.ToString("N0")</pems-table-cell></pems-table-row>
+                    <pems-table-row><pems-table-cell>@Localizer["On Hold"]</pems-table-cell><pems-table-cell class="text-end">@Model.WorkOrderOnHold.ToString("N0")</pems-table-cell></pems-table-row>
+                    <pems-table-row><pems-table-cell>@Localizer["Completed"]</pems-table-cell><pems-table-cell class="text-end">@Model.WorkOrderCompleted.ToString("N0")</pems-table-cell></pems-table-row>
+                    <pems-table-row><pems-table-cell>@Localizer["Closed"]</pems-table-cell><pems-table-cell class="text-end">@Model.WorkOrderClosed.ToString("N0")</pems-table-cell></pems-table-row>
+                    <pems-table-row><pems-table-cell class="text-muted">@Localizer["Cancelled"]</pems-table-cell><pems-table-cell class="text-end text-muted">@Model.WorkOrderCancelled.ToString("N0")</pems-table-cell></pems-table-row>
+                    <pems-table-row><pems-table-cell class="text-muted">@Localizer["Rejected"]</pems-table-cell><pems-table-cell class="text-end text-muted">@Model.WorkOrderRejected.ToString("N0")</pems-table-cell></pems-table-row>
+                    <pems-table-row><pems-table-cell class="fw-bold">Critical &amp; Open</pems-table-cell><pems-table-cell class="text-end fw-bold">@Model.WorkOrderCriticalOpen.ToString("N0")</pems-table-cell></pems-table-row>
+                </pems-table-body>
             </pems-table>
         </pems-content-card>
     </pems-col>
@@ -98,12 +98,12 @@
                     <div class="text-muted">N/A</div>
                 }
                 <pems-table kind="enterprise" scale="small" css="mb-0 mt-2">
-                    <tbody>
-                        <tr><td>@Localizer["Compliant"]</td><td class="text-end">@pm.CompliantCount</td></tr>
-                        <tr><td>@Localizer["Completed Late"]</td><td class="text-end">@pm.CompletedLateCount</td></tr>
-                        <tr><td>@Localizer["Overdue"]</td><td class="text-end">@pm.OverdueCount</td></tr>
-                        <tr><td>@Localizer["Not Yet Due"]</td><td class="text-end">@pm.NotYetDueCount</td></tr>
-                    </tbody>
+                    <pems-table-body>
+                        <pems-table-row><pems-table-cell>@Localizer["Compliant"]</pems-table-cell><pems-table-cell class="text-end">@pm.CompliantCount</pems-table-cell></pems-table-row>
+                        <pems-table-row><pems-table-cell>@Localizer["Completed Late"]</pems-table-cell><pems-table-cell class="text-end">@pm.CompletedLateCount</pems-table-cell></pems-table-row>
+                        <pems-table-row><pems-table-cell>@Localizer["Overdue"]</pems-table-cell><pems-table-cell class="text-end">@pm.OverdueCount</pems-table-cell></pems-table-row>
+                        <pems-table-row><pems-table-cell>@Localizer["Not Yet Due"]</pems-table-cell><pems-table-cell class="text-end">@pm.NotYetDueCount</pems-table-cell></pems-table-row>
+                    </pems-table-body>
                 </pems-table>
             }
         </pems-content-card>
@@ -115,12 +115,12 @@
             {
                 <pems-badge tone="@(tb.DataStatus == "READY" ? "success" : "neutral")" css="mb-2">@tb.DataStatus</pems-badge>
                 <pems-table kind="enterprise" scale="small" css="mb-0">
-                    <tbody>
+                    <pems-table-body>
                         @foreach (var item in tb.Items)
                         {
-                            <tr><td>@item.TypeName</td><td class="text-end">@item.Count</td></tr>
+                            <pems-table-row><pems-table-cell>@item.TypeName</pems-table-cell><pems-table-cell class="text-end">@item.Count</pems-table-cell></pems-table-row>
                         }
-                    </tbody>
+                    </pems-table-body>
                 </pems-table>
                 @if (tb.EmergencyWorkRatioPercent.HasValue)
                 {

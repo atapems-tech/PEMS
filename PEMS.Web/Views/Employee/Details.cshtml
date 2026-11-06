@@ -306,18 +306,18 @@
                 </pems-button>
             </pems-flex>
             <pems-table scale="small">
-                <thead><tr><th>@L("Type", "نوع")</th><th>@L("Rate", "نرخ")</th><th>@L("From", "از تاریخ")</th><th>@L("To", "تا تاریخ")</th></tr></thead>
-                <tbody>
+                <pems-table-head><pems-table-row><pems-table-header>@L("Type", "نوع")</pems-table-header><pems-table-header>@L("Rate", "نرخ")</pems-table-header><pems-table-header>@L("From", "از تاریخ")</pems-table-header><pems-table-header>@L("To", "تا تاریخ")</pems-table-header></pems-table-row></pems-table-head>
+                <pems-table-body>
                     @foreach (var r in laborRates)
                     {
-                        <tr class="@(r.EffectiveTo == null ? "table-success" : "")">
-                            <td>@r.RateType</td>
-                            <td>@r.Rate.ToString("N0") @r.Currency</td>
-                            <td class="small">@r.EffectiveFrom.ToString("yyyy-MM-dd")</td>
-                            <td class="small">@(r.EffectiveTo?.ToString("yyyy-MM-dd") ?? L("Current", "فعلی"))</td>
-                        </tr>
+                        <pems-table-row class="@(r.EffectiveTo == null ? "table-success" : "")">
+                            <pems-table-cell>@r.RateType</pems-table-cell>
+                            <pems-table-cell>@r.Rate.ToString("N0") @r.Currency</pems-table-cell>
+                            <pems-table-cell class="small">@r.EffectiveFrom.ToString("yyyy-MM-dd")</pems-table-cell>
+                            <pems-table-cell class="small">@(r.EffectiveTo?.ToString("yyyy-MM-dd") ?? L("Current", "فعلی"))</pems-table-cell>
+                        </pems-table-row>
                     }
-                </tbody>
+                </pems-table-body>
             </pems-table>
             @if (!laborRates.Any()) { <p class="text-muted small text-center py-2">@L("No rate recorded.", "نرخی ثبت نشده.")</p> }
             <p class="text-muted small mb-0">
@@ -332,18 +332,18 @@
         <pems-content-card css="h-100">
             <pems-flex as="h6" align="center" gap="2" css="mb-3 pb-2 border-bottom"><pems-icon name="bi-diagram-3" css="text-warning" /> @L("Team Membership History", "تاریخچه‌ی عضویت تیم")</pems-flex>
             <pems-table scale="small">
-                <thead><tr><th>@L("Team", "تیم")</th><th>@L("Role", "نقش")</th><th>@L("From", "از")</th><th>@L("To", "تا")</th></tr></thead>
-                <tbody>
+                <pems-table-head><pems-table-row><pems-table-header>@L("Team", "تیم")</pems-table-header><pems-table-header>@L("Role", "نقش")</pems-table-header><pems-table-header>@L("From", "از")</pems-table-header><pems-table-header>@L("To", "تا")</pems-table-header></pems-table-row></pems-table-head>
+                <pems-table-body>
                     @foreach (var m in teamHistory)
                     {
-                        <tr class="@(m.IsActive ? "table-success" : "")">
-                            <td>@m.Team?.Name</td>
-                            <td class="small">@m.Role?.Name</td>
-                            <td class="small">@m.JoinedDate.ToString("yyyy-MM-dd")</td>
-                            <td class="small">@(m.LeftDate?.ToString("yyyy-MM-dd") ?? (m.IsActive ? L("Current", "فعلی") : "-"))</td>
-                        </tr>
+                        <pems-table-row class="@(m.IsActive ? "table-success" : "")">
+                            <pems-table-cell>@m.Team?.Name</pems-table-cell>
+                            <pems-table-cell class="small">@m.Role?.Name</pems-table-cell>
+                            <pems-table-cell class="small">@m.JoinedDate.ToString("yyyy-MM-dd")</pems-table-cell>
+                            <pems-table-cell class="small">@(m.LeftDate?.ToString("yyyy-MM-dd") ?? (m.IsActive ? L("Current", "فعلی") : "-"))</pems-table-cell>
+                        </pems-table-row>
                     }
-                </tbody>
+                </pems-table-body>
             </pems-table>
             @if (!teamHistory.Any()) { <p class="text-muted small text-center py-2">@L("No membership recorded.", "عضویتی ثبت نشده.")</p> }
         </pems-content-card>

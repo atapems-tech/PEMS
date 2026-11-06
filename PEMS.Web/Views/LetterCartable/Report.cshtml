@@ -80,31 +80,31 @@
             <p class="small text-muted">@Localizer["Ct_SubordinatesHint"]</p>
             <pems-table-scroll>
                 <pems-table kind="plain" css="ct-table">
-                    <thead>
-                        <tr>
-                            <th>@Localizer["Ct_Employee"]</th>
-                            <th class="num">@Localizer["Ct_Received"]</th>
-                            <th class="num">@Localizer["Ct_Unread"]</th>
-                            <th class="num">@Localizer["Ct_OpenReferrals"]</th>
-                            <th class="num">@Localizer["Ct_OverdueReferrals"]</th>
-                            <th class="num">@Localizer["Ct_CompletedReferrals"]</th>
-                            <th class="num">@Localizer["Ct_AvgReferralDays"]</th>
-                        </tr>
-                    </thead>
-                    <tbody>
+                    <pems-table-head>
+                        <pems-table-row>
+                            <pems-table-header>@Localizer["Ct_Employee"]</pems-table-header>
+                            <pems-table-header class="num">@Localizer["Ct_Received"]</pems-table-header>
+                            <pems-table-header class="num">@Localizer["Ct_Unread"]</pems-table-header>
+                            <pems-table-header class="num">@Localizer["Ct_OpenReferrals"]</pems-table-header>
+                            <pems-table-header class="num">@Localizer["Ct_OverdueReferrals"]</pems-table-header>
+                            <pems-table-header class="num">@Localizer["Ct_CompletedReferrals"]</pems-table-header>
+                            <pems-table-header class="num">@Localizer["Ct_AvgReferralDays"]</pems-table-header>
+                        </pems-table-row>
+                    </pems-table-head>
+                    <pems-table-body>
                         @foreach (var s in Model.Subordinates)
                         {
-                            <tr>
-                                <td><div>@(new string('—', Math.Max(0, s.Depth - 1)))@(s.Depth > 1 ? " " : "")@s.Name</div><div class="small text-muted">@s.Position</div></td>
-                                <td class="num">@s.Received</td>
-                                <td class="num">@s.Unread</td>
-                                <td class="num">@s.OpenReferrals</td>
-                                <td class="num @(s.OverdueReferrals > 0 ? "bad" : "")">@s.OverdueReferrals</td>
-                                <td class="num">@s.CompletedReferrals</td>
-                                <td class="num">@Days(s.AvgReferralDays)</td>
-                            </tr>
+                            <pems-table-row>
+                                <pems-table-cell><div>@(new string('—', Math.Max(0, s.Depth - 1)))@(s.Depth > 1 ? " " : "")@s.Name</div><div class="small text-muted">@s.Position</div></pems-table-cell>
+                                <pems-table-cell class="num">@s.Received</pems-table-cell>
+                                <pems-table-cell class="num">@s.Unread</pems-table-cell>
+                                <pems-table-cell class="num">@s.OpenReferrals</pems-table-cell>
+                                <pems-table-cell class="num @(s.OverdueReferrals > 0 ? "bad" : "")">@s.OverdueReferrals</pems-table-cell>
+                                <pems-table-cell class="num">@s.CompletedReferrals</pems-table-cell>
+                                <pems-table-cell class="num">@Days(s.AvgReferralDays)</pems-table-cell>
+                            </pems-table-row>
                         }
-                    </tbody>
+                    </pems-table-body>
                 </pems-table>
             </pems-table-scroll>
         </section>

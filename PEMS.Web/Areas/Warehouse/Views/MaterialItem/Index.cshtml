@@ -81,38 +81,38 @@
 
         <pems-list-grid>
             <pems-list-table grid-key="MaterialItem" empty="@(!Model.Items.Any())" empty-text="@Localizer["MiL_Empty"]">
-                <thead>
-                    <tr>
-                        <th class="pems-w-150" data-col-key="code" data-resizable="true" data-min-width="100" data-max-width="220">@Localizer["MiL_Code"]</th>
-                        <th data-col-key="description" data-resizable="true" data-min-width="160" data-max-width="480">@Localizer["Ed_Description"]</th>
-                        <th data-col-key="category" data-resizable="true" data-min-width="90" data-max-width="220" class="vs-hide-md pems-w-140">@Localizer["MiL_Category"]</th>
-                        <th class="pems-w-80" data-col-key="uom" data-resizable="true" data-min-width="60" data-max-width="120">@Localizer["MiL_Uom"]</th>
-                        <th data-col-key="manufacturer" data-resizable="true" data-min-width="100" data-max-width="240" class="vs-hide-md pems-w-140">@Localizer["MiL_Manufacturer"]</th>
-                        <th data-col-key="onHand" data-resizable="true" data-min-width="70" data-max-width="140" class="text-end pems-w-100">@Localizer["MiL_OnHand"]</th>
-                        <th data-col-key="available" data-resizable="true" data-min-width="70" data-max-width="140" class="text-end pems-w-100">@Localizer["MiL_Available"]</th>
-                        <th class="pems-w-60" data-col-key="actions" data-resizable="false"><span class="visually-hidden">@Localizer["Ed_Actions"]</span></th>
-                    </tr>
-                </thead>
-                <tbody>
+                <pems-table-head>
+                    <pems-table-row>
+                        <pems-table-header class="pems-w-150" data-col-key="code" data-resizable="true" data-min-width="100" data-max-width="220">@Localizer["MiL_Code"]</pems-table-header>
+                        <pems-table-header data-col-key="description" data-resizable="true" data-min-width="160" data-max-width="480">@Localizer["Ed_Description"]</pems-table-header>
+                        <pems-table-header data-col-key="category" data-resizable="true" data-min-width="90" data-max-width="220" class="vs-hide-md pems-w-140">@Localizer["MiL_Category"]</pems-table-header>
+                        <pems-table-header class="pems-w-80" data-col-key="uom" data-resizable="true" data-min-width="60" data-max-width="120">@Localizer["MiL_Uom"]</pems-table-header>
+                        <pems-table-header data-col-key="manufacturer" data-resizable="true" data-min-width="100" data-max-width="240" class="vs-hide-md pems-w-140">@Localizer["MiL_Manufacturer"]</pems-table-header>
+                        <pems-table-header data-col-key="onHand" data-resizable="true" data-min-width="70" data-max-width="140" class="text-end pems-w-100">@Localizer["MiL_OnHand"]</pems-table-header>
+                        <pems-table-header data-col-key="available" data-resizable="true" data-min-width="70" data-max-width="140" class="text-end pems-w-100">@Localizer["MiL_Available"]</pems-table-header>
+                        <pems-table-header class="pems-w-60" data-col-key="actions" data-resizable="false"><span class="visually-hidden">@Localizer["Ed_Actions"]</span></pems-table-header>
+                    </pems-table-row>
+                </pems-table-head>
+                <pems-table-body>
                     @foreach (var m in Model.Items)
                     {
-                        <tr class="lp-row">
-                            <td class="lp-no">
+                        <pems-table-row class="lp-row">
+                            <pems-table-cell class="lp-no">
                                 <a asp-action="Details" asp-route-id="@m.MaterialItemId" class="lp-subject" title="@m.MaterialCode">@m.MaterialCode</a>
                                 @if (m.IsCritical) { <pems-icon name="bi-star-fill" css="text-warning" title="@Localizer["MiL_Critical"]" aria-label="@Localizer["MiL_Critical"]" /> }
-                            </td>
-                            <td class="small"><span class="vs-title-cell" title="@m.Description">@m.Description</span></td>
-                            <td class="small vs-hide-md">@(m.CategoryName ?? "-")</td>
-                            <td class="small"><span class="vs-num">@(m.UomCode ?? "-")</span></td>
-                            <td class="small vs-hide-md">@(m.Manufacturer ?? "-")</td>
-                            <td class="text-end"><span class="vs-num">@m.TotalOnHand</span></td>
-                            <td class="text-end"><span class="vs-pill @(m.IsLowStock ? "vs-pill--danger" : "vs-pill--success")">@m.TotalAvailable</span></td>
-                            <td class="text-end">
+                            </pems-table-cell>
+                            <pems-table-cell class="small"><span class="vs-title-cell" title="@m.Description">@m.Description</span></pems-table-cell>
+                            <pems-table-cell class="small vs-hide-md">@(m.CategoryName ?? "-")</pems-table-cell>
+                            <pems-table-cell class="small"><span class="vs-num">@(m.UomCode ?? "-")</span></pems-table-cell>
+                            <pems-table-cell class="small vs-hide-md">@(m.Manufacturer ?? "-")</pems-table-cell>
+                            <pems-table-cell class="text-end"><span class="vs-num">@m.TotalOnHand</span></pems-table-cell>
+                            <pems-table-cell class="text-end"><span class="vs-pill @(m.IsLowStock ? "vs-pill--danger" : "vs-pill--success")">@m.TotalAvailable</span></pems-table-cell>
+                            <pems-table-cell class="text-end">
                                 <a asp-action="Details" asp-route-id="@m.MaterialItemId" class="lp-act lp-act--always" title="@Localizer["Ed_View"]" aria-label="@Localizer["Ed_View"]"><pems-icon name="bi-card-text" aria-hidden="true" /></a>
-                            </td>
-                        </tr>
+                            </pems-table-cell>
+                        </pems-table-row>
                     }
-                </tbody>
+                </pems-table-body>
             </pems-list-table>
 
             <pems-list-footer>

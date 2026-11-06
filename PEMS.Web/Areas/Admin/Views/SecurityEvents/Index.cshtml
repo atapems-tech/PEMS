@@ -60,34 +60,34 @@
 
         <pems-list-grid>
             <pems-list-table grid-key="SecurityEvents" empty="@(Model.Items.Count == 0)" empty-text="@Localizer["No admin recovery has been attempted, or the filters match nothing."]">
-                <thead>
-                    <tr>
-                        <th class="pems-w-160" data-col-key="time" data-resizable="true" data-min-width="130" data-max-width="220">@Localizer["AlL_Time"] (UTC)</th>
-                        <th class="pems-w-180" data-col-key="method" data-resizable="true" data-min-width="120" data-max-width="260">@Localizer["Method"]</th>
-                        <th data-col-key="result" data-resizable="true" data-min-width="100" data-max-width="360">@Localizer["Result"]</th>
-                        <th class="pems-w-130" data-col-key="actor" data-resizable="true" data-min-width="90" data-max-width="200">@Localizer["Actor"]</th>
-                        <th class="pems-w-130" data-col-key="target" data-resizable="true" data-min-width="90" data-max-width="200">@Localizer["Target"]</th>
-                        <th data-col-key="ip" data-resizable="true" data-min-width="90" data-max-width="180" class="vs-hide-md pems-w-120">@Localizer["IP address"]</th>
-                        <th data-col-key="siem" data-resizable="true" data-min-width="70" data-max-width="140" class="vs-hide-md pems-w-90">SIEM</th>
-                    </tr>
-                </thead>
-                <tbody>
+                <pems-table-head>
+                    <pems-table-row>
+                        <pems-table-header class="pems-w-160" data-col-key="time" data-resizable="true" data-min-width="130" data-max-width="220">@Localizer["AlL_Time"] (UTC)</pems-table-header>
+                        <pems-table-header class="pems-w-180" data-col-key="method" data-resizable="true" data-min-width="120" data-max-width="260">@Localizer["Method"]</pems-table-header>
+                        <pems-table-header data-col-key="result" data-resizable="true" data-min-width="100" data-max-width="360">@Localizer["Result"]</pems-table-header>
+                        <pems-table-header class="pems-w-130" data-col-key="actor" data-resizable="true" data-min-width="90" data-max-width="200">@Localizer["Actor"]</pems-table-header>
+                        <pems-table-header class="pems-w-130" data-col-key="target" data-resizable="true" data-min-width="90" data-max-width="200">@Localizer["Target"]</pems-table-header>
+                        <pems-table-header data-col-key="ip" data-resizable="true" data-min-width="90" data-max-width="180" class="vs-hide-md pems-w-120">@Localizer["IP address"]</pems-table-header>
+                        <pems-table-header data-col-key="siem" data-resizable="true" data-min-width="70" data-max-width="140" class="vs-hide-md pems-w-90">SIEM</pems-table-header>
+                    </pems-table-row>
+                </pems-table-head>
+                <pems-table-body>
                     @foreach (var e in Model.Items)
                     {
-                        <tr class="lp-row">
-                            <td class="small" dir="ltr"><span class="vs-num">@e.OccurredAtUtc.ToString("yyyy-MM-dd HH:mm:ss")</span></td>
-                            <td class="small" title="@e.Method">@MethodLabel(e.Method)</td>
-                            <td>
+                        <pems-table-row class="lp-row">
+                            <pems-table-cell class="small" dir="ltr"><span class="vs-num">@e.OccurredAtUtc.ToString("yyyy-MM-dd HH:mm:ss")</span></pems-table-cell>
+                            <pems-table-cell class="small" title="@e.Method">@MethodLabel(e.Method)</pems-table-cell>
+                            <pems-table-cell>
                                 @if (e.Result == RecoveryResults.Success) { <span class="vs-pill vs-pill--icon vs-pill--success"><pems-icon name="bi-check-circle-fill" aria-hidden="true" /> @Localizer["Success"]</span> }
                                 else { <span class="vs-pill vs-pill--icon vs-pill--danger" title="@e.FailureReason"><pems-icon name="bi-x-circle-fill" aria-hidden="true" /> @Localizer["Failure"]</span> @if (!string.IsNullOrEmpty(e.FailureReason)) { <span class="vs-sub">@e.FailureReason</span> } }
-                            </td>
-                            <td class="small"><span class="vs-cell-strong">@(e.ActorUserName ?? "—")</span></td>
-                            <td class="small"><span class="vs-cell-strong">@(e.TargetUserName ?? "—")</span></td>
-                            <td class="small vs-hide-md" dir="ltr"><span class="vs-num">@(e.IpAddress ?? "—")</span></td>
-                            <td class="small vs-hide-md">@(e.Forwarded ? Localizer["Forwarded"] : Localizer["Pending"])</td>
-                        </tr>
+                            </pems-table-cell>
+                            <pems-table-cell class="small"><span class="vs-cell-strong">@(e.ActorUserName ?? "—")</span></pems-table-cell>
+                            <pems-table-cell class="small"><span class="vs-cell-strong">@(e.TargetUserName ?? "—")</span></pems-table-cell>
+                            <pems-table-cell class="small vs-hide-md" dir="ltr"><span class="vs-num">@(e.IpAddress ?? "—")</span></pems-table-cell>
+                            <pems-table-cell class="small vs-hide-md">@(e.Forwarded ? Localizer["Forwarded"] : Localizer["Pending"])</pems-table-cell>
+                        </pems-table-row>
                     }
-                </tbody>
+                </pems-table-body>
             </pems-list-table>
 
             <pems-list-footer>

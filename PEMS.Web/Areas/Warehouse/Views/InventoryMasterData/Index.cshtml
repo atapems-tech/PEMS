@@ -45,24 +45,24 @@
                 </pems-button>
             </pems-flex>
             <pems-table kind="enterprise">
-                <thead><tr><th>@Localizer["کد"]</th><th>@Localizer["نام"]</th><th>@Localizer["والد"]</th><th>@Localizer["توضیحات"]</th><th></th></tr></thead>
-                <tbody>
+                <pems-table-head><pems-table-row><pems-table-header>@Localizer["کد"]</pems-table-header><pems-table-header>@Localizer["نام"]</pems-table-header><pems-table-header>@Localizer["والد"]</pems-table-header><pems-table-header>@Localizer["توضیحات"]</pems-table-header><pems-table-header></pems-table-header></pems-table-row></pems-table-head>
+                <pems-table-body>
                     @foreach (var c in categories)
                     {
-                        <tr>
-                            <td>@c.Code</td>
-                            <td>@c.Name</td>
-                            <td>@(c.Parent?.Name ?? "-")</td>
-                            <td class="small text-muted">@(c.Description ?? "-")</td>
-                            <td class="text-end">
+                        <pems-table-row>
+                            <pems-table-cell>@c.Code</pems-table-cell>
+                            <pems-table-cell>@c.Name</pems-table-cell>
+                            <pems-table-cell>@(c.Parent?.Name ?? "-")</pems-table-cell>
+                            <pems-table-cell class="small text-muted">@(c.Description ?? "-")</pems-table-cell>
+                            <pems-table-cell class="text-end">
                                 <form asp-action="ToggleCategoryActive" method="post" class="d-inline">
                                     <input type="hidden" name="id" value="@c.MaterialCategoryId" />
                                     <pems-button tone="neutral" size="small" outline="true" type="submit" data-pems-confirm="این دسته‌بندی غیرفعال بشه؟"><pems-icon name="bi-x-circle" /></pems-button>
                                 </form>
-                            </td>
-                        </tr>
+                            </pems-table-cell>
+                        </pems-table-row>
                     }
-                </tbody>
+                </pems-table-body>
             </pems-table>
         </pems-content-card>
     </pems-tab-pane>
@@ -76,23 +76,23 @@
                 </pems-button>
             </pems-flex>
             <pems-table kind="enterprise">
-                <thead><tr><th>@Localizer["کد"]</th><th>@Localizer["نام"]</th><th>@Localizer["ضریب تبدیل"]</th><th></th></tr></thead>
-                <tbody>
+                <pems-table-head><pems-table-row><pems-table-header>@Localizer["کد"]</pems-table-header><pems-table-header>@Localizer["نام"]</pems-table-header><pems-table-header>@Localizer["ضریب تبدیل"]</pems-table-header><pems-table-header></pems-table-header></pems-table-row></pems-table-head>
+                <pems-table-body>
                     @foreach (var u in uoms)
                     {
-                        <tr>
-                            <td>@u.Code</td>
-                            <td>@u.Name</td>
-                            <td>@(u.ConversionFactor?.ToString() ?? "-")</td>
-                            <td class="text-end">
+                        <pems-table-row>
+                            <pems-table-cell>@u.Code</pems-table-cell>
+                            <pems-table-cell>@u.Name</pems-table-cell>
+                            <pems-table-cell>@(u.ConversionFactor?.ToString() ?? "-")</pems-table-cell>
+                            <pems-table-cell class="text-end">
                                 <form asp-action="ToggleUomActive" method="post" class="d-inline">
                                     <input type="hidden" name="id" value="@u.MaterialUOMId" />
                                     <pems-button tone="neutral" size="small" outline="true" type="submit" data-pems-confirm="این واحد غیرفعال بشه؟"><pems-icon name="bi-x-circle" /></pems-button>
                                 </form>
-                            </td>
-                        </tr>
+                            </pems-table-cell>
+                        </pems-table-row>
                     }
-                </tbody>
+                </pems-table-body>
             </pems-table>
         </pems-content-card>
     </pems-tab-pane>
@@ -106,29 +106,29 @@
                 </pems-button>
             </pems-flex>
             <pems-table kind="enterprise">
-                <thead><tr><th>@Localizer["کد"]</th><th>@Localizer["نام"]</th><th>@Localizer["محل‌های نگهداری"]</th><th></th></tr></thead>
-                <tbody>
+                <pems-table-head><pems-table-row><pems-table-header>@Localizer["کد"]</pems-table-header><pems-table-header>@Localizer["نام"]</pems-table-header><pems-table-header>@Localizer["محل‌های نگهداری"]</pems-table-header><pems-table-header></pems-table-header></pems-table-row></pems-table-head>
+                <pems-table-body>
                     @foreach (var w in Model)
                     {
-                        <tr>
-                            <td>@w.Code</td>
-                            <td>@w.Name</td>
-                            <td>
+                        <pems-table-row>
+                            <pems-table-cell>@w.Code</pems-table-cell>
+                            <pems-table-cell>@w.Name</pems-table-cell>
+                            <pems-table-cell>
                                 @foreach (var l in w.Locations.Where(x => x.IsActive))
                                 {
                                     <pems-badge tone="light" css="me-1">@l.Code</pems-badge>
                                 }
                                 <pems-button tone="none" size="small" css="btn-link p-0" type="button" data-bs-toggle="modal" data-bs-target="#addLocationModal" data-fill-warehouseid="@w.WarehouseId" data-fill-warehousecode="@w.Code">+ محل</pems-button>
-                            </td>
-                            <td class="text-end">
+                            </pems-table-cell>
+                            <pems-table-cell class="text-end">
                                 <form asp-action="ToggleWarehouseActive" method="post" class="d-inline">
                                     <input type="hidden" name="id" value="@w.WarehouseId" />
                                     <pems-button tone="neutral" size="small" outline="true" type="submit" data-pems-confirm="این انبار غیرفعال بشه؟"><pems-icon name="bi-x-circle" /></pems-button>
                                 </form>
-                            </td>
-                        </tr>
+                            </pems-table-cell>
+                        </pems-table-row>
                     }
-                </tbody>
+                </pems-table-body>
             </pems-table>
         </pems-content-card>
     </pems-tab-pane>

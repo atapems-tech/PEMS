@@ -131,18 +131,18 @@
                     @if (edit) { <pems-button as="a" tone="primary" size="small" outline="true" asp-action="Designer" asp-route-versionId="@Model.VersionId" asp-route-addStage="true"><pems-icon name="bi-plus-lg" /> @Localizer["Add stage"]</pems-button> }
                 </pems-flex>
                 <pems-table-scroll><pems-table scale="small" css="align-middle mb-0">
-                    <thead><tr><th>#</th><th>@Localizer["Name"]</th><th>@Localizer["Persian name"]</th><th>@Localizer["Business status"]</th><th>@Localizer["Responsible role"]</th><th>@Localizer["Responsible employee"]</th></tr></thead>
-                    <tbody>
+                    <pems-table-head><pems-table-row><pems-table-header>#</pems-table-header><pems-table-header>@Localizer["Name"]</pems-table-header><pems-table-header>@Localizer["Persian name"]</pems-table-header><pems-table-header>@Localizer["Business status"]</pems-table-header><pems-table-header>@Localizer["Responsible role"]</pems-table-header><pems-table-header>@Localizer["Responsible employee"]</pems-table-header></pems-table-row></pems-table-head>
+                    <pems-table-body>
                     @foreach (var s in Model.Stages)
                     {
-                        <tr class="@(selStage == s.StageId ? "table-primary" : "")">
-                            <td>@s.StageOrder</td>
-                            <td><a asp-action="Designer" asp-route-versionId="@Model.VersionId" asp-route-stage="@s.StageId">@s.Name</a></td>
-                            <td dir="rtl">@s.NameFa</td><td>@s.BusinessStatus</td><td class="small text-break pems-s-f1a31497">@s.ResponsibleRole</td>
-                            <td class="small">@(s.ResponsibleEmployeeId.HasValue ? (employeeMap.FirstOrDefault(e => e.Id == s.ResponsibleEmployeeId).Name ?? "#" + s.ResponsibleEmployeeId) : "")</td>
-                        </tr>
+                        <pems-table-row class="@(selStage == s.StageId ? "table-primary" : "")">
+                            <pems-table-cell>@s.StageOrder</pems-table-cell>
+                            <pems-table-cell><a asp-action="Designer" asp-route-versionId="@Model.VersionId" asp-route-stage="@s.StageId">@s.Name</a></pems-table-cell>
+                            <pems-table-cell dir="rtl">@s.NameFa</pems-table-cell><pems-table-cell>@s.BusinessStatus</pems-table-cell><pems-table-cell class="small text-break pems-s-f1a31497">@s.ResponsibleRole</pems-table-cell>
+                            <pems-table-cell class="small">@(s.ResponsibleEmployeeId.HasValue ? (employeeMap.FirstOrDefault(e => e.Id == s.ResponsibleEmployeeId).Name ?? "#" + s.ResponsibleEmployeeId) : "")</pems-table-cell>
+                        </pems-table-row>
                     }
-                    </tbody></pems-table></pems-table-scroll>
+                    </pems-table-body></pems-table></pems-table-scroll>
             </pems-content-card>
 
             <pems-content-card css="mt-3">
@@ -151,19 +151,19 @@
                     @if (edit) { <pems-button as="a" tone="primary" size="small" outline="true" asp-action="Designer" asp-route-versionId="@Model.VersionId" asp-route-addTransition="true"><pems-icon name="bi-plus-lg" /> @Localizer["Add transition"]</pems-button> }
                 </pems-flex>
                 <pems-table-scroll><pems-table scale="small" css="align-middle mb-0">
-                    <thead><tr><th>@Localizer["From"]</th><th>@Localizer["To"]</th><th>@Localizer["Action"]</th><th>@Localizer["Label"]</th><th>@Localizer["Required permission"]</th></tr></thead>
-                    <tbody>
+                    <pems-table-head><pems-table-row><pems-table-header>@Localizer["From"]</pems-table-header><pems-table-header>@Localizer["To"]</pems-table-header><pems-table-header>@Localizer["Action"]</pems-table-header><pems-table-header>@Localizer["Label"]</pems-table-header><pems-table-header>@Localizer["Required permission"]</pems-table-header></pems-table-row></pems-table-head>
+                    <pems-table-body>
                     @foreach (var t in Model.Transitions)
                     {
-                        <tr class="@(selTr == t.TransitionId ? "table-primary" : "")">
-                            <td>@(t.FromStageId.HasValue ? SName(t.FromStageId) : Localizer["(start)"].Value)</td>
-                            <td>@(t.ToStageId.HasValue ? SName(t.ToStageId) : Localizer["(end)"].Value)</td>
-                            <td><a asp-action="Designer" asp-route-versionId="@Model.VersionId" asp-route-transition="@t.TransitionId">@t.ActionType</a></td>
-                            <td class="small">@(fa && !string.IsNullOrWhiteSpace(t.LabelFa) ? t.LabelFa : t.Label)</td>
-                            <td class="small">@t.RequiredPermission</td>
-                        </tr>
+                        <pems-table-row class="@(selTr == t.TransitionId ? "table-primary" : "")">
+                            <pems-table-cell>@(t.FromStageId.HasValue ? SName(t.FromStageId) : Localizer["(start)"].Value)</pems-table-cell>
+                            <pems-table-cell>@(t.ToStageId.HasValue ? SName(t.ToStageId) : Localizer["(end)"].Value)</pems-table-cell>
+                            <pems-table-cell><a asp-action="Designer" asp-route-versionId="@Model.VersionId" asp-route-transition="@t.TransitionId">@t.ActionType</a></pems-table-cell>
+                            <pems-table-cell class="small">@(fa && !string.IsNullOrWhiteSpace(t.LabelFa) ? t.LabelFa : t.Label)</pems-table-cell>
+                            <pems-table-cell class="small">@t.RequiredPermission</pems-table-cell>
+                        </pems-table-row>
                     }
-                    </tbody></pems-table></pems-table-scroll>
+                    </pems-table-body></pems-table></pems-table-scroll>
             </pems-content-card>
         </pems-col>
 

@@ -278,21 +278,21 @@
         @if (executionGateDecisions.Any())
         {
             <pems-related-table>
-                <thead><tr><th>@Localizer["From"]</th><th>To</th><th>@Localizer["Result"]</th><th>By</th><th>@Localizer["Date"]</th><th>@Localizer["Emergency"]</th><th>@Localizer["Detail"]</th></tr></thead>
-                <tbody>
+                <pems-table-head><pems-table-row><pems-table-header>@Localizer["From"]</pems-table-header><pems-table-header>To</pems-table-header><pems-table-header>@Localizer["Result"]</pems-table-header><pems-table-header>By</pems-table-header><pems-table-header>@Localizer["Date"]</pems-table-header><pems-table-header>@Localizer["Emergency"]</pems-table-header><pems-table-header>@Localizer["Detail"]</pems-table-header></pems-table-row></pems-table-head>
+                <pems-table-body>
                     @foreach (var d in executionGateDecisions)
                     {
-                        <tr>
-                            <td class="small">@d.FromStatus</td>
-                            <td class="small">@d.ToStatus</td>
-                            <td><pems-badge tone="@(d.Result == "Eligible" ? "success" : "danger")">@d.Result</pems-badge></td>
-                            <td class="small">@(d.ActorName ?? "-")</td>
-                            <td class="small">@d.DecisionDate.ToString("yyyy-MM-dd HH:mm")</td>
-                            <td>@(d.IsEmergencyOverride ? "Yes" : "-")</td>
-                            <td class="small text-muted">@(d.IsEmergencyOverride ? d.EmergencyReason : d.BlockingReasonsSummary)</td>
-                        </tr>
+                        <pems-table-row>
+                            <pems-table-cell class="small">@d.FromStatus</pems-table-cell>
+                            <pems-table-cell class="small">@d.ToStatus</pems-table-cell>
+                            <pems-table-cell><pems-badge tone="@(d.Result == "Eligible" ? "success" : "danger")">@d.Result</pems-badge></pems-table-cell>
+                            <pems-table-cell class="small">@(d.ActorName ?? "-")</pems-table-cell>
+                            <pems-table-cell class="small">@d.DecisionDate.ToString("yyyy-MM-dd HH:mm")</pems-table-cell>
+                            <pems-table-cell>@(d.IsEmergencyOverride ? "Yes" : "-")</pems-table-cell>
+                            <pems-table-cell class="small text-muted">@(d.IsEmergencyOverride ? d.EmergencyReason : d.BlockingReasonsSummary)</pems-table-cell>
+                        </pems-table-row>
                     }
-                </tbody>
+                </pems-table-body>
             </pems-related-table>
         }
     </pems-content-card>
@@ -385,20 +385,20 @@
         @if (approvalHistory != null && approvalHistory.Any())
         {
             <pems-related-table>
-                <thead><tr><th>@Localizer["From"]</th><th>To</th><th>@Localizer["Action"]</th><th>By Role</th><th>@Localizer["Comment"]</th><th>@Localizer["Date"]</th></tr></thead>
-                <tbody>
+                <pems-table-head><pems-table-row><pems-table-header>@Localizer["From"]</pems-table-header><pems-table-header>To</pems-table-header><pems-table-header>@Localizer["Action"]</pems-table-header><pems-table-header>By Role</pems-table-header><pems-table-header>@Localizer["Comment"]</pems-table-header><pems-table-header>@Localizer["Date"]</pems-table-header></pems-table-row></pems-table-head>
+                <pems-table-body>
                     @foreach (var h in approvalHistory.OrderByDescending(h => h.ActionDate))
                     {
-                        <tr>
-                            <td class="small">@(h.FromStageName ?? "-")</td>
-                            <td class="small">@(h.ToStageName ?? "-")</td>
-                            <td class="small">@h.ActionType</td>
-                            <td class="small">@(h.Role ?? "-")</td>
-                            <td class="small text-muted">@h.Comment</td>
-                            <td class="small">@h.ActionDate.ToString("yyyy-MM-dd HH:mm")</td>
-                        </tr>
+                        <pems-table-row>
+                            <pems-table-cell class="small">@(h.FromStageName ?? "-")</pems-table-cell>
+                            <pems-table-cell class="small">@(h.ToStageName ?? "-")</pems-table-cell>
+                            <pems-table-cell class="small">@h.ActionType</pems-table-cell>
+                            <pems-table-cell class="small">@(h.Role ?? "-")</pems-table-cell>
+                            <pems-table-cell class="small text-muted">@h.Comment</pems-table-cell>
+                            <pems-table-cell class="small">@h.ActionDate.ToString("yyyy-MM-dd HH:mm")</pems-table-cell>
+                        </pems-table-row>
                     }
-                </tbody>
+                </pems-table-body>
             </pems-related-table>
         }
     </pems-content-card>
@@ -432,8 +432,8 @@
     }
 
     <pems-related-table>
-        <thead><tr><th>@Localizer["Energy Type"]</th><th>@Localizer["Location"]</th><th>Lock/Tag</th><th>@Localizer["Status"]</th><th>Isolated By</th><th>Verified By</th><th></th></tr></thead>
-        <tbody>
+        <pems-table-head><pems-table-row><pems-table-header>@Localizer["Energy Type"]</pems-table-header><pems-table-header>@Localizer["Location"]</pems-table-header><pems-table-header>Lock/Tag</pems-table-header><pems-table-header>@Localizer["Status"]</pems-table-header><pems-table-header>Isolated By</pems-table-header><pems-table-header>Verified By</pems-table-header><pems-table-header></pems-table-header></pems-table-row></pems-table-head>
+        <pems-table-body>
             @foreach (var p in isolationPoints)
             {
                 var isoBadge = p.Status switch
@@ -444,14 +444,14 @@
                     "Isolated" => "warning",
                     _ => "primary"
                 };
-                <tr>
-                    <td class="small">@p.EnergyType</td>
-                    <td class="small">@p.Location @(p.EquipmentTagNumber != null ? $"({p.EquipmentTagNumber})" : "")</td>
-                    <td class="small">@(p.LockNumber ?? "-") / @(p.TagNumber ?? "-")</td>
-                    <td><pems-badge tone="@isoBadge">@p.Status</pems-badge></td>
-                    <td class="small">@(p.IsolatedByName ?? "-")</td>
-                    <td class="small">@(p.VerifiedByName ?? "-")</td>
-                    <td class="text-nowrap">
+                <pems-table-row>
+                    <pems-table-cell class="small">@p.EnergyType</pems-table-cell>
+                    <pems-table-cell class="small">@p.Location @(p.EquipmentTagNumber != null ? $"({p.EquipmentTagNumber})" : "")</pems-table-cell>
+                    <pems-table-cell class="small">@(p.LockNumber ?? "-") / @(p.TagNumber ?? "-")</pems-table-cell>
+                    <pems-table-cell><pems-badge tone="@isoBadge">@p.Status</pems-badge></pems-table-cell>
+                    <pems-table-cell class="small">@(p.IsolatedByName ?? "-")</pems-table-cell>
+                    <pems-table-cell class="small">@(p.VerifiedByName ?? "-")</pems-table-cell>
+                    <pems-table-cell class="text-nowrap">
                         @if (p.Status == "Requested")
                         {
                             <form asp-controller="Isolation" asp-action="MarkIsolated" method="post" class="d-inline">
@@ -483,10 +483,10 @@
                                 <pems-button tone="neutral" size="small" outline="true" type="submit" data-pems-confirm="این ایزوله‌سازی برداشته شود (De-isolation)؟">De-isolate</pems-button>
                             </form>
                         }
-                    </td>
-                </tr>
+                    </pems-table-cell>
+                </pems-table-row>
             }
-        </tbody>
+        </pems-table-body>
     </pems-related-table>
     @if (!isolationPoints.Any()) { <p class="text-muted small mb-3">هنوز هیچ نقطه‌ی ایزوله‌سازی‌ای ثبت نشده.</p> }
 
@@ -550,19 +550,19 @@
                 }
             </pems-flex>
             <pems-related-table>
-                <thead><tr><th>Parameter</th><th>@Localizer["Value"]</th><th>@Localizer["Unit"]</th><th>@Localizer["Result"]</th></tr></thead>
-                <tbody>
+                <pems-table-head><pems-table-row><pems-table-header>Parameter</pems-table-header><pems-table-header>@Localizer["Value"]</pems-table-header><pems-table-header>@Localizer["Unit"]</pems-table-header><pems-table-header>@Localizer["Result"]</pems-table-header></pems-table-row></pems-table-head>
+                <pems-table-body>
                     @foreach (var r in g.Readings)
                     {
                         var resultBadge = r.Result switch { "Pass" => "success", "Fail" => "danger", _ => "neutral" };
-                        <tr>
-                            <td class="small">@r.Parameter</td>
-                            <td class="small">@r.Value</td>
-                            <td class="small">@r.Unit</td>
-                            <td><pems-badge tone="@resultBadge">@r.Result</pems-badge></td>
-                        </tr>
+                        <pems-table-row>
+                            <pems-table-cell class="small">@r.Parameter</pems-table-cell>
+                            <pems-table-cell class="small">@r.Value</pems-table-cell>
+                            <pems-table-cell class="small">@r.Unit</pems-table-cell>
+                            <pems-table-cell><pems-badge tone="@resultBadge">@r.Result</pems-badge></pems-table-cell>
+                        </pems-table-row>
                     }
-                </tbody>
+                </pems-table-body>
             </pems-related-table>
             @if (g.Status != "Invalidated")
             {
@@ -653,8 +653,8 @@
     @if (simopsConflicts.Any())
     {
         <pems-related-table>
-            <thead><tr><th>Other Permit</th><th>@Localizer["Basis"]</th><th>@Localizer["Severity"]</th><th>@Localizer["Status"]</th><th>@Localizer["Detail"]</th><th></th></tr></thead>
-            <tbody>
+            <pems-table-head><pems-table-row><pems-table-header>Other Permit</pems-table-header><pems-table-header>@Localizer["Basis"]</pems-table-header><pems-table-header>@Localizer["Severity"]</pems-table-header><pems-table-header>@Localizer["Status"]</pems-table-header><pems-table-header>@Localizer["Detail"]</pems-table-header><pems-table-header></pems-table-header></pems-table-row></pems-table-head>
+            <pems-table-body>
                 @foreach (var c in simopsConflicts)
                 {
                     var otherPermitId = c.PermitAId == Model.PermitId ? c.PermitBId : c.PermitAId;
@@ -667,17 +667,17 @@
                         _ => "danger"
                     };
                     var sevBadge = c.Severity switch { "High" => "danger", "Medium" => "warning", "Low" => "info", _ => "neutral" };
-                    <tr>
-                        <td class="small"><a asp-action="Details" asp-route-id="@otherPermitId">@otherPermitNumber</a></td>
-                        <td class="small">@c.ConflictBasis</td>
-                        <td><pems-badge tone="@sevBadge">@c.Severity</pems-badge></td>
-                        <td><pems-badge tone="@simopsBadge">@c.Status</pems-badge></td>
-                        <td class="small text-muted">
+                    <pems-table-row>
+                        <pems-table-cell class="small"><a asp-action="Details" asp-route-id="@otherPermitId">@otherPermitNumber</a></pems-table-cell>
+                        <pems-table-cell class="small">@c.ConflictBasis</pems-table-cell>
+                        <pems-table-cell><pems-badge tone="@sevBadge">@c.Severity</pems-badge></pems-table-cell>
+                        <pems-table-cell><pems-badge tone="@simopsBadge">@c.Status</pems-badge></pems-table-cell>
+                        <pems-table-cell class="small text-muted">
                             @if (c.Status == "Resolved") { <text>@c.ResolutionNotes</text> }
                             else if (c.Status == "AcceptedRisk") { <text>@c.AcceptanceJustification</text> }
                             else { <text>Raised by @c.RaisedByName</text> }
-                        </td>
-                        <td class="text-nowrap">
+                        </pems-table-cell>
+                        <pems-table-cell class="text-nowrap">
                             @if (c.Status == "Potential")
                             {
                                 <form asp-controller="Simops" asp-action="Confirm" method="post" class="d-inline">
@@ -704,10 +704,10 @@
                                     <pems-button tone="success" size="small" outline="true" type="button" disabled="@(simopsResolveElig != null && simopsResolveElig.Result != "Eligible")" onclick="pemsSubmitWithStepUp(this)">Resolve</pems-button>
                                 </pems-flex></form>
                             }
-                        </td>
-                    </tr>
+                        </pems-table-cell>
+                    </pems-table-row>
                 }
-            </tbody>
+            </pems-table-body>
         </pems-related-table>
     }
 
@@ -715,25 +715,25 @@
     {
         <p class="small text-muted mb-1">Other active Permits sharing equipment/location:</p>
         <pems-related-table>
-            <thead><tr><th>@Localizer["Permit"]</th><th>@Localizer["Type"]</th><th>@Localizer["Basis"]</th><th>Time Overlap</th><th></th></tr></thead>
-            <tbody>
+            <pems-table-head><pems-table-row><pems-table-header>@Localizer["Permit"]</pems-table-header><pems-table-header>@Localizer["Type"]</pems-table-header><pems-table-header>@Localizer["Basis"]</pems-table-header><pems-table-header>Time Overlap</pems-table-header><pems-table-header></pems-table-header></pems-table-row></pems-table-head>
+            <pems-table-body>
                 @foreach (var cand in simopsCandidates.Where(x => x.ExistingConflictId == null))
                 {
-                    <tr>
-                        <td class="small"><a asp-action="Details" asp-route-id="@cand.PermitId">@cand.PermitNumber</a> - @cand.Title</td>
-                        <td class="small">@cand.PermitType</td>
-                        <td class="small">@cand.MatchBasis</td>
-                        <td class="small">@(!cand.TimeWindowKnown ? "Unknown" : cand.TimeOverlapConfirmed ? "Yes" : "No")</td>
-                        <td>
+                    <pems-table-row>
+                        <pems-table-cell class="small"><a asp-action="Details" asp-route-id="@cand.PermitId">@cand.PermitNumber</a> - @cand.Title</pems-table-cell>
+                        <pems-table-cell class="small">@cand.PermitType</pems-table-cell>
+                        <pems-table-cell class="small">@cand.MatchBasis</pems-table-cell>
+                        <pems-table-cell class="small">@(!cand.TimeWindowKnown ? "Unknown" : cand.TimeOverlapConfirmed ? "Yes" : "No")</pems-table-cell>
+                        <pems-table-cell>
                             <form asp-controller="Simops" asp-action="Create" method="post" class="d-inline">
                                 <input type="hidden" name="permitId" value="@Model.PermitId" />
                                 <input type="hidden" name="otherPermitId" value="@cand.PermitId" />
                                 <pems-button tone="danger" size="small" outline="true" type="submit">Raise Conflict</pems-button>
                             </form>
-                        </td>
-                    </tr>
+                        </pems-table-cell>
+                    </pems-table-row>
                 }
-            </tbody>
+            </pems-table-body>
         </pems-related-table>
     }
     @if (simopsCandidateWorkOrders.Any())
@@ -766,19 +766,19 @@
 <pems-content-card>
     <h6 class="mb-3">@Localizer["Status History"]</h6>
     <pems-related-table>
-        <thead><tr><th>@Localizer["From"]</th><th>To</th><th>By</th><th>@Localizer["Date"]</th><th>@Localizer["Reason"]</th></tr></thead>
-        <tbody>
+        <pems-table-head><pems-table-row><pems-table-header>@Localizer["From"]</pems-table-header><pems-table-header>To</pems-table-header><pems-table-header>By</pems-table-header><pems-table-header>@Localizer["Date"]</pems-table-header><pems-table-header>@Localizer["Reason"]</pems-table-header></pems-table-row></pems-table-head>
+        <pems-table-body>
             @foreach (var h in Model.StatusHistory)
             {
-                <tr>
-                    <td class="small">@h.FromStatus</td>
-                    <td class="small">@h.ToStatus</td>
-                    <td class="small">@(h.ChangedByName ?? "-")</td>
-                    <td class="small">@h.ChangedDate.ToString("yyyy-MM-dd HH:mm")</td>
-                    <td class="small text-muted">@h.Reason</td>
-                </tr>
+                <pems-table-row>
+                    <pems-table-cell class="small">@h.FromStatus</pems-table-cell>
+                    <pems-table-cell class="small">@h.ToStatus</pems-table-cell>
+                    <pems-table-cell class="small">@(h.ChangedByName ?? "-")</pems-table-cell>
+                    <pems-table-cell class="small">@h.ChangedDate.ToString("yyyy-MM-dd HH:mm")</pems-table-cell>
+                    <pems-table-cell class="small text-muted">@h.Reason</pems-table-cell>
+                </pems-table-row>
             }
-        </tbody>
+        </pems-table-body>
     </pems-related-table>
     @if (!Model.StatusHistory.Any()) { <p class="text-muted text-center py-3 mb-0">@Localizer["هنوز تغییر وضعیتی ثبت نشده."]</p> }
 </pems-content-card>

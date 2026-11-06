@@ -120,13 +120,13 @@
                         <details>
                             <summary class="small text-primary pems-s-3b6a3a65">@Localizer["Evidence checklist"]</summary>
                             <pems-table scale="small" css="mb-0 mt-2">
-                                <tbody>
+                                <pems-table-body>
                                 @foreach (var kv in m.Evidence)
                                 {
                                     var valClass = kv.Value == "Present" || kv.Value == "Yes" ? "text-success" : (kv.Value == "Unknown" ? "text-body-secondary" : "text-danger");
-                                    <tr><td class="row-secondary py-1">@kv.Key</td><td class="py-1 @valClass">@kv.Value</td></tr>
+                                    <pems-table-row><pems-table-cell class="row-secondary py-1">@kv.Key</pems-table-cell><pems-table-cell class="py-1 @valClass">@kv.Value</pems-table-cell></pems-table-row>
                                 }
-                                </tbody>
+                                </pems-table-body>
                             </pems-table>
                             <div class="row-secondary small mt-1">
                                 Services: @(m.InjectedServices.Count > 0 ? string.Join(", ", m.InjectedServices) : "(none detected)")<br />

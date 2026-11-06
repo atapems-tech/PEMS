@@ -163,23 +163,23 @@
     else
     {
         <pems-table kind="enterprise" css="pems-responsive-table">
-            <thead>
-                <tr>
-                    <th>@Localizer["سمت"]</th>
-                    <th>@Localizer["کارمند"]</th>
-                    <th>@Localizer["وضعیت"]</th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody id="positionsTableBody">
+            <pems-table-head>
+                <pems-table-row>
+                    <pems-table-header>@Localizer["سمت"]</pems-table-header>
+                    <pems-table-header>@Localizer["کارمند"]</pems-table-header>
+                    <pems-table-header>@Localizer["وضعیت"]</pems-table-header>
+                    <pems-table-header></pems-table-header>
+                </pems-table-row>
+            </pems-table-head>
+            <pems-table-body id="positionsTableBody">
                 @foreach (var p in Model.Positions.OrderBy(x => x.SortOrder).ThenBy(x => x.Title))
                 {
                     var status = !p.IsActive ? "inactive" : (p.IsVacant ? "vacant" : "occupied");
-                    <tr data-status="@status">
-                        <td data-label="@Localizer["سمت"]">
+                    <pems-table-row data-status="@status">
+                        <pems-table-cell data-label="@Localizer["سمت"]">
                             @p.Title
-                        </td>
-                        <td data-label="@Localizer["کارمند"]">
+                        </pems-table-cell>
+                        <pems-table-cell data-label="@Localizer["کارمند"]">
                             @if (p.IsVacant)
                             {
                                 <span class="pems-vacant-badge"><pems-icon name="bi-person-dash" /> @Localizer["خالی (Vacant)"]</span>
@@ -188,8 +188,8 @@
                             {
                                 <span><pems-icon name="bi-person-check" /> @p.CurrentAssignment!.EmployeeName</span>
                             }
-                        </td>
-                        <td data-label="@Localizer["وضعیت"]">
+                        </pems-table-cell>
+                        <pems-table-cell data-label="@Localizer["وضعیت"]">
                             @if (p.IsActive)
                             {
                                 <pems-badge tone="success"><pems-icon name="bi-check-circle" /> @Localizer["فعال"]</pems-badge>
@@ -198,8 +198,8 @@
                             {
                                 <pems-badge tone="neutral"><pems-icon name="bi-dash-circle" /> @Localizer["غیرفعال"]</pems-badge>
                             }
-                        </td>
-                        <td class="text-end pems-actions-cell">
+                        </pems-table-cell>
+                        <pems-table-cell class="text-end pems-actions-cell">
                             @* طبق بند ۱۷ سند: یک منوی کشویی واحد به‌جای ردیفی از دکمه‌های پراکنده -
                                همان الگوی Bootstrap dropdown موجود در _Layout (تم/زبان). *@
                             <div class="dropdown">
@@ -264,10 +264,10 @@
                                     }
                                 </pems-dropdown-menu>
                             </div>
-                        </td>
-                    </tr>
+                        </pems-table-cell>
+                    </pems-table-row>
                 }
-            </tbody>
+            </pems-table-body>
         </pems-table>
         <p class="text-muted text-center py-3 mb-0" id="positionsFilterEmpty" hidden>@Localizer["هیچ سمتی با این فیلتر یافت نشد."]</p>
     }
@@ -283,24 +283,24 @@
     else
     {
         <pems-table kind="enterprise" css="pems-responsive-table">
-            <thead>
-                <tr>
-                    <th>@Localizer["سمت"]</th>
-                    <th>@Localizer["کارمند"]</th>
-                    <th>@Localizer["تاریخ شروع"]</th>
-                    <th>@Localizer["تاریخ پایان"]</th>
-                    <th>@Localizer["وضعیت"]</th>
-                </tr>
-            </thead>
-            <tbody>
+            <pems-table-head>
+                <pems-table-row>
+                    <pems-table-header>@Localizer["سمت"]</pems-table-header>
+                    <pems-table-header>@Localizer["کارمند"]</pems-table-header>
+                    <pems-table-header>@Localizer["تاریخ شروع"]</pems-table-header>
+                    <pems-table-header>@Localizer["تاریخ پایان"]</pems-table-header>
+                    <pems-table-header>@Localizer["وضعیت"]</pems-table-header>
+                </pems-table-row>
+            </pems-table-head>
+            <pems-table-body>
                 @foreach (var row in historyRows)
                 {
-                    <tr>
-                        <td data-label="@Localizer["سمت"]">@row.Position.Title</td>
-                        <td data-label="@Localizer["کارمند"]">@row.Assignment.EmployeeName</td>
-                        <td data-label="@Localizer["تاریخ شروع"]">@row.Assignment.StartDate.ToString("yyyy-MM-dd")</td>
-                        <td data-label="@Localizer["تاریخ پایان"]">@(row.Assignment.EndDate?.ToString("yyyy-MM-dd") ?? "—")</td>
-                        <td data-label="@Localizer["وضعیت"]">
+                    <pems-table-row>
+                        <pems-table-cell data-label="@Localizer["سمت"]">@row.Position.Title</pems-table-cell>
+                        <pems-table-cell data-label="@Localizer["کارمند"]">@row.Assignment.EmployeeName</pems-table-cell>
+                        <pems-table-cell data-label="@Localizer["تاریخ شروع"]">@row.Assignment.StartDate.ToString("yyyy-MM-dd")</pems-table-cell>
+                        <pems-table-cell data-label="@Localizer["تاریخ پایان"]">@(row.Assignment.EndDate?.ToString("yyyy-MM-dd") ?? "—")</pems-table-cell>
+                        <pems-table-cell data-label="@Localizer["وضعیت"]">
                             @if (row.Assignment.IsActive)
                             {
                                 <pems-badge tone="success"><pems-icon name="bi-play-circle" /> @Localizer["جاری"]</pems-badge>
@@ -309,10 +309,10 @@
                             {
                                 <pems-badge tone="neutral"><pems-icon name="bi-check2" /> @Localizer["پایان‌یافته"]</pems-badge>
                             }
-                        </td>
-                    </tr>
+                        </pems-table-cell>
+                    </pems-table-row>
                 }
-            </tbody>
+            </pems-table-body>
         </pems-table>
     }
 </pems-content-card>

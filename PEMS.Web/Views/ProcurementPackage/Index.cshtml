@@ -33,42 +33,42 @@
 
         <pems-list-grid>
             <pems-list-table grid-key="ProcurementPackage" empty="@(!Model.Items.Any())" empty-text="@Localizer["PkL_Empty"]">
-                <thead>
-                    <tr>
-                        <th class="pems-w-140" data-col-key="packageNo" data-resizable="true" data-min-width="100" data-max-width="200">@Localizer["PkL_No"]</th>
-                        <th data-col-key="title" data-resizable="true" data-min-width="140" data-max-width="420">@Localizer["Ed_Title"]</th>
-                        <th data-col-key="project" data-resizable="true" data-min-width="100" data-max-width="220" class="vs-hide-md pems-w-140">@Localizer["Ed_Project"]</th>
-                        <th data-col-key="discipline" data-resizable="true" data-min-width="90" data-max-width="200" class="vs-hide-md pems-w-120">@Localizer["Ed_Discipline"]</th>
-                        <th class="pems-w-120" data-col-key="stage" data-resizable="true" data-min-width="80" data-max-width="160">@Localizer["PkL_Stage"]</th>
-                        <th class="pems-w-110" data-col-key="status" data-resizable="true" data-min-width="80" data-max-width="160">@Localizer["Ed_Status"]</th>
-                        <th data-col-key="mrs" data-resizable="true" data-min-width="60" data-max-width="100" class="text-end pems-w-70">@Localizer["PkL_Mrs"]</th>
-                        <th data-col-key="mrqs" data-resizable="true" data-min-width="60" data-max-width="100" class="text-end pems-w-70">@Localizer["PkL_Mrqs"]</th>
-                        <th data-col-key="openComms" data-resizable="true" data-min-width="80" data-max-width="140" class="text-end pems-w-100">@Localizer["PkL_OpenComms"]</th>
-                        <th class="pems-w-60" data-col-key="actions" data-resizable="false"><span class="visually-hidden">@Localizer["Ed_Actions"]</span></th>
-                    </tr>
-                </thead>
-                <tbody>
+                <pems-table-head>
+                    <pems-table-row>
+                        <pems-table-header class="pems-w-140" data-col-key="packageNo" data-resizable="true" data-min-width="100" data-max-width="200">@Localizer["PkL_No"]</pems-table-header>
+                        <pems-table-header data-col-key="title" data-resizable="true" data-min-width="140" data-max-width="420">@Localizer["Ed_Title"]</pems-table-header>
+                        <pems-table-header data-col-key="project" data-resizable="true" data-min-width="100" data-max-width="220" class="vs-hide-md pems-w-140">@Localizer["Ed_Project"]</pems-table-header>
+                        <pems-table-header data-col-key="discipline" data-resizable="true" data-min-width="90" data-max-width="200" class="vs-hide-md pems-w-120">@Localizer["Ed_Discipline"]</pems-table-header>
+                        <pems-table-header class="pems-w-120" data-col-key="stage" data-resizable="true" data-min-width="80" data-max-width="160">@Localizer["PkL_Stage"]</pems-table-header>
+                        <pems-table-header class="pems-w-110" data-col-key="status" data-resizable="true" data-min-width="80" data-max-width="160">@Localizer["Ed_Status"]</pems-table-header>
+                        <pems-table-header data-col-key="mrs" data-resizable="true" data-min-width="60" data-max-width="100" class="text-end pems-w-70">@Localizer["PkL_Mrs"]</pems-table-header>
+                        <pems-table-header data-col-key="mrqs" data-resizable="true" data-min-width="60" data-max-width="100" class="text-end pems-w-70">@Localizer["PkL_Mrqs"]</pems-table-header>
+                        <pems-table-header data-col-key="openComms" data-resizable="true" data-min-width="80" data-max-width="140" class="text-end pems-w-100">@Localizer["PkL_OpenComms"]</pems-table-header>
+                        <pems-table-header class="pems-w-60" data-col-key="actions" data-resizable="false"><span class="visually-hidden">@Localizer["Ed_Actions"]</span></pems-table-header>
+                    </pems-table-row>
+                </pems-table-head>
+                <pems-table-body>
                     @foreach (var p in Model.Items)
                     {
-                        <tr class="lp-row">
-                            <td class="lp-no"><a asp-action="Details" asp-route-id="@p.ProcurementPackageId" class="lp-subject" title="@p.PackageNumber">@p.PackageNumber</a></td>
-                            <td><span class="vs-title-cell" title="@p.Title">@p.Title</span></td>
-                            <td class="small vs-hide-md">@p.ProjectName</td>
-                            <td class="small vs-hide-md">@p.DisciplineName</td>
-                            <td><span class="vs-pill vs-pill--info">@StageText(p.Stage)</span></td>
-                            <td><span class="vs-pill @StatusTone(p.Status)">@StatusText(p.Status)</span></td>
-                            <td class="text-end"><span class="vs-num">@p.MRCount</span></td>
-                            <td class="text-end"><span class="vs-num">@p.MRQCount</span></td>
-                            <td class="text-end">
+                        <pems-table-row class="lp-row">
+                            <pems-table-cell class="lp-no"><a asp-action="Details" asp-route-id="@p.ProcurementPackageId" class="lp-subject" title="@p.PackageNumber">@p.PackageNumber</a></pems-table-cell>
+                            <pems-table-cell><span class="vs-title-cell" title="@p.Title">@p.Title</span></pems-table-cell>
+                            <pems-table-cell class="small vs-hide-md">@p.ProjectName</pems-table-cell>
+                            <pems-table-cell class="small vs-hide-md">@p.DisciplineName</pems-table-cell>
+                            <pems-table-cell><span class="vs-pill vs-pill--info">@StageText(p.Stage)</span></pems-table-cell>
+                            <pems-table-cell><span class="vs-pill @StatusTone(p.Status)">@StatusText(p.Status)</span></pems-table-cell>
+                            <pems-table-cell class="text-end"><span class="vs-num">@p.MRCount</span></pems-table-cell>
+                            <pems-table-cell class="text-end"><span class="vs-num">@p.MRQCount</span></pems-table-cell>
+                            <pems-table-cell class="text-end">
                                 @if (p.OpenCommunicationsCount > 0) { <span class="vs-pill vs-pill--danger">@p.OpenCommunicationsCount</span> }
                                 else { <span class="vs-num">0</span> }
-                            </td>
-                            <td class="text-end">
+                            </pems-table-cell>
+                            <pems-table-cell class="text-end">
                                 <a asp-action="Details" asp-route-id="@p.ProcurementPackageId" class="lp-act lp-act--always" title="@Localizer["Ed_View"]" aria-label="@Localizer["Ed_View"]"><pems-icon name="bi-eye" aria-hidden="true" /></a>
-                            </td>
-                        </tr>
+                            </pems-table-cell>
+                        </pems-table-row>
                     }
-                </tbody>
+                </pems-table-body>
             </pems-list-table>
 
             <pems-list-footer>

@@ -72,38 +72,38 @@
         <pems-list-grid>
             <pems-list-table grid-key="Instrument" empty="@(!Model.Items.Any())" empty-text="@Localizer["In_Empty"]"
                              filtered="@(filterCount > 0 || !string.IsNullOrEmpty(q))" clear-href="@Url.Action("Index")">
-                <thead>
-                    <tr>
-                        <th class="pems-w-140" data-col-key="tag" data-resizable="true" data-min-width="100" data-max-width="220">@Localizer["Ins_Tag"]</th>
-                        <th data-col-key="mfr" data-resizable="true" data-min-width="140" data-max-width="320" class="vs-hide-md pems-w-200">@Localizer["Cm_ManufacturerModel"]</th>
-                        <th class="pems-w-110" data-col-key="type" data-resizable="true" data-min-width="80" data-max-width="180">@Localizer["Cm_Type"]</th>
-                        <th class="pems-w-100" data-col-key="loop" data-resizable="true" data-min-width="80" data-max-width="160">@Localizer["In_Loop"]</th>
-                        <th class="pems-w-100" data-col-key="system" data-resizable="true" data-min-width="80" data-max-width="160">@Localizer["System"]</th>
-                        <th data-col-key="lastCal" data-resizable="true" data-min-width="100" data-max-width="180" class="vs-hide-md pems-w-120">@Localizer["In_LastCal"]</th>
-                        <th class="pems-w-120" data-col-key="nextDue" data-resizable="true" data-min-width="100" data-max-width="180">@Localizer["Cm_NextDue"]</th>
-                        <th class="pems-w-110" data-col-key="status" data-resizable="true" data-min-width="90" data-max-width="160">@Localizer["In_CalStatus"]</th>
-                        <th class="pems-w-90" data-col-key="actions" data-resizable="false"><span class="visually-hidden">@Localizer["Ed_Actions"]</span></th>
-                    </tr>
-                </thead>
-                <tbody>
+                <pems-table-head>
+                    <pems-table-row>
+                        <pems-table-header class="pems-w-140" data-col-key="tag" data-resizable="true" data-min-width="100" data-max-width="220">@Localizer["Ins_Tag"]</pems-table-header>
+                        <pems-table-header data-col-key="mfr" data-resizable="true" data-min-width="140" data-max-width="320" class="vs-hide-md pems-w-200">@Localizer["Cm_ManufacturerModel"]</pems-table-header>
+                        <pems-table-header class="pems-w-110" data-col-key="type" data-resizable="true" data-min-width="80" data-max-width="180">@Localizer["Cm_Type"]</pems-table-header>
+                        <pems-table-header class="pems-w-100" data-col-key="loop" data-resizable="true" data-min-width="80" data-max-width="160">@Localizer["In_Loop"]</pems-table-header>
+                        <pems-table-header class="pems-w-100" data-col-key="system" data-resizable="true" data-min-width="80" data-max-width="160">@Localizer["System"]</pems-table-header>
+                        <pems-table-header data-col-key="lastCal" data-resizable="true" data-min-width="100" data-max-width="180" class="vs-hide-md pems-w-120">@Localizer["In_LastCal"]</pems-table-header>
+                        <pems-table-header class="pems-w-120" data-col-key="nextDue" data-resizable="true" data-min-width="100" data-max-width="180">@Localizer["Cm_NextDue"]</pems-table-header>
+                        <pems-table-header class="pems-w-110" data-col-key="status" data-resizable="true" data-min-width="90" data-max-width="160">@Localizer["In_CalStatus"]</pems-table-header>
+                        <pems-table-header class="pems-w-90" data-col-key="actions" data-resizable="false"><span class="visually-hidden">@Localizer["Ed_Actions"]</span></pems-table-header>
+                    </pems-table-row>
+                </pems-table-head>
+                <pems-table-body>
                     @foreach (var i in Model.Items)
                     {
-                        <tr class="lp-row">
-                            <td class="lp-no"><a asp-action="Passport" asp-route-id="@i.InstrumentId" class="lp-subject" title="@i.TagNumber">@i.TagNumber</a></td>
-                            <td class="small vs-hide-md">@i.Manufacturer / @i.Model</td>
-                            <td class="small">@i.InstrumentType</td>
-                            <td class="small"><span class="vs-num">@i.LoopNumber</span></td>
-                            <td class="small">@i.System</td>
-                            <td class="small vs-hide-md"><span class="vs-num">@(i.LastCalibrationDate?.ToString("yyyy-MM-dd") ?? "-")</span></td>
-                            <td class="small"><span class="vs-num">@(i.NextCalibrationDue?.ToString("yyyy-MM-dd") ?? "-")</span></td>
-                            <td><span class="vs-pill @StatusTone(i.CalibrationStatus)">@StatusText(i.CalibrationStatus)</span></td>
-                            <td class="lp-actions">
+                        <pems-table-row class="lp-row">
+                            <pems-table-cell class="lp-no"><a asp-action="Passport" asp-route-id="@i.InstrumentId" class="lp-subject" title="@i.TagNumber">@i.TagNumber</a></pems-table-cell>
+                            <pems-table-cell class="small vs-hide-md">@i.Manufacturer / @i.Model</pems-table-cell>
+                            <pems-table-cell class="small">@i.InstrumentType</pems-table-cell>
+                            <pems-table-cell class="small"><span class="vs-num">@i.LoopNumber</span></pems-table-cell>
+                            <pems-table-cell class="small">@i.System</pems-table-cell>
+                            <pems-table-cell class="small vs-hide-md"><span class="vs-num">@(i.LastCalibrationDate?.ToString("yyyy-MM-dd") ?? "-")</span></pems-table-cell>
+                            <pems-table-cell class="small"><span class="vs-num">@(i.NextCalibrationDue?.ToString("yyyy-MM-dd") ?? "-")</span></pems-table-cell>
+                            <pems-table-cell><span class="vs-pill @StatusTone(i.CalibrationStatus)">@StatusText(i.CalibrationStatus)</span></pems-table-cell>
+                            <pems-table-cell class="lp-actions">
                                 <a asp-action="Passport" asp-route-id="@i.InstrumentId" class="lp-act lp-act--always" title="@Localizer["In_Passport"]" aria-label="@Localizer["In_Passport"]"><pems-icon name="bi-card-text" aria-hidden="true" /></a>
                                 <a asp-action="Edit" asp-route-id="@i.InstrumentId" class="lp-act lp-act--always" title="@Localizer["Edit"]" aria-label="@Localizer["Edit"]"><pems-icon name="bi-pencil" aria-hidden="true" /></a>
-                            </td>
-                        </tr>
+                            </pems-table-cell>
+                        </pems-table-row>
                     }
-                </tbody>
+                </pems-table-body>
             </pems-list-table>
 
             <pems-list-footer>

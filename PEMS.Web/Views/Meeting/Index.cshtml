@@ -19,35 +19,35 @@
         <pems-list-grid>
             <pems-list-table grid-key="Meeting" empty="@(!Model.Items.Any())" empty-text="No meetings scheduled yet."
                              filtered="@false" clear-href="@Url.Action("Index")">
-                <thead>
-                    <tr>
-                        <th class="pems-w-200" data-col-key="title" data-resizable="true" data-min-width="120" data-max-width="320">@Localizer["Title"]</th>
-                        <th class="pems-w-150" data-col-key="date" data-resizable="true" data-min-width="100" data-max-width="180">@Localizer["Date"]</th>
-                        <th class="pems-w-130" data-col-key="location" data-resizable="true" data-min-width="80" data-max-width="200">@Localizer["Location"]</th>
-                        <th class="pems-w-130" data-col-key="organizer" data-resizable="true" data-min-width="80" data-max-width="200">@Localizer["Organizer"]</th>
-                        <th class="pems-w-140" data-col-key="project" data-resizable="true" data-min-width="100" data-max-width="220">@Localizer["Project"]</th>
-                        <th class="pems-w-90" data-col-key="attendees" data-resizable="true" data-min-width="70" data-max-width="120">@Localizer["Attendees"]</th>
-                        <th class="pems-w-100" data-col-key="actionItems" data-resizable="true" data-min-width="80" data-max-width="140">@Localizer["Action Items"]</th>
-                        <th class="pems-w-110" data-col-key="status" data-resizable="true" data-min-width="90" data-max-width="180">@Localizer["Status"]</th>
-                        <th class="pems-w-60" data-col-key="actions" data-resizable="false"></th>
-                    </tr>
-                </thead>
-                <tbody>
+                <pems-table-head>
+                    <pems-table-row>
+                        <pems-table-header class="pems-w-200" data-col-key="title" data-resizable="true" data-min-width="120" data-max-width="320">@Localizer["Title"]</pems-table-header>
+                        <pems-table-header class="pems-w-150" data-col-key="date" data-resizable="true" data-min-width="100" data-max-width="180">@Localizer["Date"]</pems-table-header>
+                        <pems-table-header class="pems-w-130" data-col-key="location" data-resizable="true" data-min-width="80" data-max-width="200">@Localizer["Location"]</pems-table-header>
+                        <pems-table-header class="pems-w-130" data-col-key="organizer" data-resizable="true" data-min-width="80" data-max-width="200">@Localizer["Organizer"]</pems-table-header>
+                        <pems-table-header class="pems-w-140" data-col-key="project" data-resizable="true" data-min-width="100" data-max-width="220">@Localizer["Project"]</pems-table-header>
+                        <pems-table-header class="pems-w-90" data-col-key="attendees" data-resizable="true" data-min-width="70" data-max-width="120">@Localizer["Attendees"]</pems-table-header>
+                        <pems-table-header class="pems-w-100" data-col-key="actionItems" data-resizable="true" data-min-width="80" data-max-width="140">@Localizer["Action Items"]</pems-table-header>
+                        <pems-table-header class="pems-w-110" data-col-key="status" data-resizable="true" data-min-width="90" data-max-width="180">@Localizer["Status"]</pems-table-header>
+                        <pems-table-header class="pems-w-60" data-col-key="actions" data-resizable="false"></pems-table-header>
+                    </pems-table-row>
+                </pems-table-head>
+                <pems-table-body>
                     @foreach (var m in Model.Items)
                     {
-                        <tr class="lp-row">
-                            <td class="lp-no"><a asp-action="Details" asp-route-id="@m.MeetingId" class="lp-subject">@m.Title</a></td>
-                            <td class="small">@m.MeetingDate.ToString("yyyy-MM-dd HH:mm")</td>
-                            <td class="small">@m.Location</td>
-                            <td class="small">@m.OrganizerName</td>
-                            <td class="small">@m.ProjectName</td>
-                            <td><pems-badge tone="neutral">@m.AttendeeCount</pems-badge></td>
-                            <td><pems-badge tone="info">@m.ActionItemCount</pems-badge></td>
-                            <td><pems-badge tone="@(m.Status == "Completed" ? "success" : m.Status == "Cancelled" ? "dark" : "warning")">@m.Status</pems-badge></td>
-                            <td><pems-button tone="neutral" size="small" outline="true" as="a" asp-action="Details" asp-route-id="@m.MeetingId"><pems-icon name="bi-eye" /></pems-button></td>
-                        </tr>
+                        <pems-table-row class="lp-row">
+                            <pems-table-cell class="lp-no"><a asp-action="Details" asp-route-id="@m.MeetingId" class="lp-subject">@m.Title</a></pems-table-cell>
+                            <pems-table-cell class="small">@m.MeetingDate.ToString("yyyy-MM-dd HH:mm")</pems-table-cell>
+                            <pems-table-cell class="small">@m.Location</pems-table-cell>
+                            <pems-table-cell class="small">@m.OrganizerName</pems-table-cell>
+                            <pems-table-cell class="small">@m.ProjectName</pems-table-cell>
+                            <pems-table-cell><pems-badge tone="neutral">@m.AttendeeCount</pems-badge></pems-table-cell>
+                            <pems-table-cell><pems-badge tone="info">@m.ActionItemCount</pems-badge></pems-table-cell>
+                            <pems-table-cell><pems-badge tone="@(m.Status == "Completed" ? "success" : m.Status == "Cancelled" ? "dark" : "warning")">@m.Status</pems-badge></pems-table-cell>
+                            <pems-table-cell><pems-button tone="neutral" size="small" outline="true" as="a" asp-action="Details" asp-route-id="@m.MeetingId"><pems-icon name="bi-eye" /></pems-button></pems-table-cell>
+                        </pems-table-row>
                     }
-                </tbody>
+                </pems-table-body>
             </pems-list-table>
             <pems-list-footer>
                 @await Html.PartialAsync("_Pagination", new PEMS.Web.ViewModels.PaginationViewModel

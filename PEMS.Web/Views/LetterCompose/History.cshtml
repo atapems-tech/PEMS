@@ -27,13 +27,13 @@
         {
             <pems-table-scroll>
                 <pems-table scale="small" css="lh-table">
-                    <thead><tr><th scope="col">@Localizer["Lc_Name"]</th><th scope="col">@Localizer["Lc_FirstViewed"]</th><th scope="col">@Localizer["Lc_LastViewed"]</th><th scope="col">@Localizer["Lc_ViewCount"]</th></tr></thead>
-                    <tbody>
+                    <pems-table-head><pems-table-row><pems-table-header scope="col">@Localizer["Lc_Name"]</pems-table-header><pems-table-header scope="col">@Localizer["Lc_FirstViewed"]</pems-table-header><pems-table-header scope="col">@Localizer["Lc_LastViewed"]</pems-table-header><pems-table-header scope="col">@Localizer["Lc_ViewCount"]</pems-table-header></pems-table-row></pems-table-head>
+                    <pems-table-body>
                         @foreach (var v in Model.Views)
                         {
-                            <tr><td>@v.UserName</td><td>@v.FirstViewedDate.ToString("yyyy-MM-dd HH:mm")</td><td>@v.LastViewedDate.ToString("yyyy-MM-dd HH:mm")</td><td>@v.ViewCount</td></tr>
+                            <pems-table-row><pems-table-cell>@v.UserName</pems-table-cell><pems-table-cell>@v.FirstViewedDate.ToString("yyyy-MM-dd HH:mm")</pems-table-cell><pems-table-cell>@v.LastViewedDate.ToString("yyyy-MM-dd HH:mm")</pems-table-cell><pems-table-cell>@v.ViewCount</pems-table-cell></pems-table-row>
                         }
-                    </tbody>
+                    </pems-table-body>
                 </pems-table>
             </pems-table-scroll>
         }
@@ -64,13 +64,13 @@
         <h3 id="lhAudit"><pems-icon name="bi-shield-check" aria-hidden="true" /> @Localizer["Lc_AuditTrail"]</h3>
         <pems-table-scroll>
             <pems-table scale="small" css="lh-table">
-                <thead><tr><th scope="col">@Localizer["Lc_When"]</th><th scope="col">@Localizer["Lc_Who"]</th><th scope="col">@Localizer["Lc_Category"]</th><th scope="col">@Localizer["Lc_Event"]</th><th scope="col">@Localizer["Lc_DetailCol"]</th></tr></thead>
-                <tbody>
+                <pems-table-head><pems-table-row><pems-table-header scope="col">@Localizer["Lc_When"]</pems-table-header><pems-table-header scope="col">@Localizer["Lc_Who"]</pems-table-header><pems-table-header scope="col">@Localizer["Lc_Category"]</pems-table-header><pems-table-header scope="col">@Localizer["Lc_Event"]</pems-table-header><pems-table-header scope="col">@Localizer["Lc_DetailCol"]</pems-table-header></pems-table-row></pems-table-head>
+                <pems-table-body>
                     @foreach (var r in Model.Report.Rows)
                     {
-                        <tr><td class="text-nowrap">@r.Timestamp.ToString("yyyy-MM-dd HH:mm")</td><td>@r.Actor</td><td>@r.Category</td><td>@r.Event</td><td>@r.Detail</td></tr>
+                        <pems-table-row><pems-table-cell class="text-nowrap">@r.Timestamp.ToString("yyyy-MM-dd HH:mm")</pems-table-cell><pems-table-cell>@r.Actor</pems-table-cell><pems-table-cell>@r.Category</pems-table-cell><pems-table-cell>@r.Event</pems-table-cell><pems-table-cell>@r.Detail</pems-table-cell></pems-table-row>
                     }
-                </tbody>
+                </pems-table-body>
             </pems-table>
         </pems-table-scroll>
     </section>

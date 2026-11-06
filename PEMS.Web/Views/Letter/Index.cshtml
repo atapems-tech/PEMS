@@ -575,34 +575,34 @@
 
             <pems-table-scroll css="pems-grid-scroll table-scroll-area lp-scroll">
                 <pems-table kind="enterprise" css="pems-grid-table pems-compact-rows mb-0 lp-table" data-grid-key="Letter">
-                    <thead>
-                        <tr>
-                            <th class="pems-w-34" data-col-key="select" data-resizable="false"><input type="checkbox" id="selectAllLetters" aria-label="@Localizer["Lt_SelectAll"]" /></th>
-                            <th class="pems-w-30" data-col-key="star" data-resizable="false"><span class="visually-hidden">@Localizer["Lt_QueueStarred"]</span></th>
-                            <th class="pems-w-38" data-col-key="type" data-resizable="false"><span class="visually-hidden">@Localizer["Type"]</span></th>
-                            <th data-col-key="subject" data-resizable="true" data-min-width="200" data-max-width="700" aria-sort="@AriaSort("subject")"><a class="ct-sort" href="@SortUrl("subject")">@Localizer["Subject"] <pems-icon css="@SortIcon("subject")" aria-hidden="true" /></a></th>
-                            <th class="pems-w-118" data-col-key="letterNo" data-resizable="true" data-min-width="90" data-max-width="200" aria-sort="@AriaSort("number")"><a class="ct-sort" href="@SortUrl("number")">@Localizer["Letter No"] <pems-icon css="@SortIcon("number")" aria-hidden="true" /></a></th>
-                            <th class="pems-w-150" data-col-key="senderReceiver" data-resizable="true" data-min-width="120" data-max-width="260" aria-sort="@AriaSort("sender")"><a class="ct-sort" href="@SortUrl("sender")">@Localizer["Sender / Receiver"] <pems-icon css="@SortIcon("sender")" aria-hidden="true" /></a></th>
-                            <th class="pems-w-104" data-col-key="status" data-resizable="true" data-min-width="90" data-max-width="180" aria-sort="@AriaSort("status")"><a class="ct-sort" href="@SortUrl("status")">@Localizer["Status"] <pems-icon css="@SortIcon("status")" aria-hidden="true" /></a></th>
-                            <th class="pems-w-88" data-col-key="priority" data-resizable="true" data-min-width="80" data-max-width="140" aria-sort="@AriaSort("priority")"><a class="ct-sort" href="@SortUrl("priority")">@Localizer["Lt_Priority"] <pems-icon css="@SortIcon("priority")" aria-hidden="true" /></a></th>
-                            <th class="pems-w-130" data-col-key="responseDue" data-resizable="true" data-min-width="100" data-max-width="180">@Localizer["Lt_ColResponseDue"]</th>
-                            <th class="pems-w-92" data-col-key="date" data-resizable="true" data-min-width="90" data-max-width="160" aria-sort="@AriaSort("date")"><a class="ct-sort" href="@SortUrl("date")">@Localizer["Date"] <pems-icon css="@SortIcon("date")" aria-hidden="true" /></a></th>
-                            <th class="pems-w-120" data-col-key="discipline" data-resizable="true" data-min-width="90" data-max-width="200">@Localizer["Lt_Discipline"]</th>
-                            <th class="pems-w-70" data-col-key="attachments" data-resizable="false"><pems-icon name="bi-paperclip" aria-hidden="true" /><span class="visually-hidden">@Localizer["Lt_ColAttachments"]</span></th>
-                            <th class="pems-w-110" data-col-key="lastActivity" data-resizable="true" data-min-width="100" data-max-width="180">@Localizer["Lt_ColLastActivity"]</th>
-                            <th class="pems-w-112" data-col-key="actions" data-resizable="false"></th>
-                        </tr>
-                    </thead>
-                    <tbody>
+                    <pems-table-head>
+                        <pems-table-row>
+                            <pems-table-header class="pems-w-34" data-col-key="select" data-resizable="false"><input type="checkbox" id="selectAllLetters" aria-label="@Localizer["Lt_SelectAll"]" /></pems-table-header>
+                            <pems-table-header class="pems-w-30" data-col-key="star" data-resizable="false"><span class="visually-hidden">@Localizer["Lt_QueueStarred"]</span></pems-table-header>
+                            <pems-table-header class="pems-w-38" data-col-key="type" data-resizable="false"><span class="visually-hidden">@Localizer["Type"]</span></pems-table-header>
+                            <pems-table-header data-col-key="subject" data-resizable="true" data-min-width="200" data-max-width="700" aria-sort="@AriaSort("subject")"><a class="ct-sort" href="@SortUrl("subject")">@Localizer["Subject"] <pems-icon css="@SortIcon("subject")" aria-hidden="true" /></a></pems-table-header>
+                            <pems-table-header class="pems-w-118" data-col-key="letterNo" data-resizable="true" data-min-width="90" data-max-width="200" aria-sort="@AriaSort("number")"><a class="ct-sort" href="@SortUrl("number")">@Localizer["Letter No"] <pems-icon css="@SortIcon("number")" aria-hidden="true" /></a></pems-table-header>
+                            <pems-table-header class="pems-w-150" data-col-key="senderReceiver" data-resizable="true" data-min-width="120" data-max-width="260" aria-sort="@AriaSort("sender")"><a class="ct-sort" href="@SortUrl("sender")">@Localizer["Sender / Receiver"] <pems-icon css="@SortIcon("sender")" aria-hidden="true" /></a></pems-table-header>
+                            <pems-table-header class="pems-w-104" data-col-key="status" data-resizable="true" data-min-width="90" data-max-width="180" aria-sort="@AriaSort("status")"><a class="ct-sort" href="@SortUrl("status")">@Localizer["Status"] <pems-icon css="@SortIcon("status")" aria-hidden="true" /></a></pems-table-header>
+                            <pems-table-header class="pems-w-88" data-col-key="priority" data-resizable="true" data-min-width="80" data-max-width="140" aria-sort="@AriaSort("priority")"><a class="ct-sort" href="@SortUrl("priority")">@Localizer["Lt_Priority"] <pems-icon css="@SortIcon("priority")" aria-hidden="true" /></a></pems-table-header>
+                            <pems-table-header class="pems-w-130" data-col-key="responseDue" data-resizable="true" data-min-width="100" data-max-width="180">@Localizer["Lt_ColResponseDue"]</pems-table-header>
+                            <pems-table-header class="pems-w-92" data-col-key="date" data-resizable="true" data-min-width="90" data-max-width="160" aria-sort="@AriaSort("date")"><a class="ct-sort" href="@SortUrl("date")">@Localizer["Date"] <pems-icon css="@SortIcon("date")" aria-hidden="true" /></a></pems-table-header>
+                            <pems-table-header class="pems-w-120" data-col-key="discipline" data-resizable="true" data-min-width="90" data-max-width="200">@Localizer["Lt_Discipline"]</pems-table-header>
+                            <pems-table-header class="pems-w-70" data-col-key="attachments" data-resizable="false"><pems-icon name="bi-paperclip" aria-hidden="true" /><span class="visually-hidden">@Localizer["Lt_ColAttachments"]</span></pems-table-header>
+                            <pems-table-header class="pems-w-110" data-col-key="lastActivity" data-resizable="true" data-min-width="100" data-max-width="180">@Localizer["Lt_ColLastActivity"]</pems-table-header>
+                            <pems-table-header class="pems-w-112" data-col-key="actions" data-resizable="false"></pems-table-header>
+                        </pems-table-row>
+                    </pems-table-head>
+                    <pems-table-body>
                         @foreach (var l in Model.Items)
                         {
                             var who = l.LetterType == "Incoming" || !string.IsNullOrEmpty(l.MyRecipientType) ? (l.SenderName ?? l.Sender) : l.Receiver;
                             var typeIcon = l.LetterType switch { "Incoming" => "bi-box-arrow-in-down", "Outgoing" => "bi-box-arrow-up", _ => "bi-arrow-left-right" };
                             var prIcon = l.Priority switch { "Urgent" => "bi-flag-fill", "High" => "bi-arrow-up-circle", "Low" => "bi-arrow-down-circle", _ => "bi-dash-circle" };
                             var veryConfidential = l.ConfidentialityLevel is "Restricted" or "Secret" or "VeryConfidential";
-                            <tr class="lp-row @(l.IsUnread ? "lp-unread" : "") @(l.HasOverdueReferral ? "table-danger" : "") @(l.IsTrashed ? "ct-trashed" : "")" data-letter-id="@l.LetterId" data-thread-count="@l.ThreadCount">
-                                <td><input type="checkbox" class="letter-select" value="@l.LetterId" aria-label="@Localizer["Lt_Select"] @l.LetterNumber" /></td>
-                                <td>
+                            <pems-table-row class="lp-row @(l.IsUnread ? "lp-unread" : "") @(l.HasOverdueReferral ? "table-danger" : "") @(l.IsTrashed ? "ct-trashed" : "")" data-letter-id="@l.LetterId" data-thread-count="@l.ThreadCount">
+                                <pems-table-cell><input type="checkbox" class="letter-select" value="@l.LetterId" aria-label="@Localizer["Lt_Select"] @l.LetterNumber" /></pems-table-cell>
+                                <pems-table-cell>
                                     <form asp-action="ToggleStar" method="post" class="d-inline">
                                         <input type="hidden" name="letterId" value="@l.LetterId" />
                                         <input type="hidden" name="returnUrl" value="@Context.Request.Path@Context.Request.QueryString" />
@@ -611,9 +611,9 @@
                                             <span class="visually-hidden">@Localizer["Lt_QueueStarred"]</span>
                                         </pems-button>
                                     </form>
-                                </td>
-                                <td><span class="lp-type lp-type--@l.LetterType.ToLowerInvariant()" title="@Localizer[l.LetterType]"><pems-icon css="@typeIcon" aria-hidden="true" /><span class="visually-hidden">@Localizer[l.LetterType]</span></span></td>
-                                <td class="lp-subject-cell">
+                                </pems-table-cell>
+                                <pems-table-cell><span class="lp-type lp-type--@l.LetterType.ToLowerInvariant()" title="@Localizer[l.LetterType]"><pems-icon css="@typeIcon" aria-hidden="true" /><span class="visually-hidden">@Localizer[l.LetterType]</span></span></pems-table-cell>
+                                <pems-table-cell class="lp-subject-cell">
                                     <div class="lp-subject-line">
                                         @if (l.AttachmentsCount > 0) { <pems-icon name="bi-paperclip" css="lp-att" aria-hidden="true" title="@Localizer["Lt_ColAttachments"]" /> }
                                         @if (l.IsUnread) { <span class="visually-hidden">@Localizer["Lp_Unread"]</span> }
@@ -645,12 +645,12 @@
                                             @foreach (var tag in l.Tags) { <pems-badge tone="none" css="bg-@tag.Color">@tag.Name</pems-badge> }
                                         </pems-flex>
                                     }
-                                </td>
-                                <td class="lp-no">@l.LetterNumber</td>
-                                <td><div class="lp-who"><span class="lp-av lp-av-@(l.LetterId % 7)" aria-hidden="true">@Initials(who)</span><span class="lp-who-name">@who</span></div></td>
-                                <td><pems-badge tone="none" css="ct-status @PEMS.Web.Helpers.LetterStatusBadge.CssClass(l.Status)" title="@StatusLabel(l.Status)">@StatusLabel(l.Status)</pems-badge></td>
-                                <td class="small"><span class="lp-pri lp-pri--@l.Priority.ToLowerInvariant()"><pems-icon css="@prIcon" aria-hidden="true" /> @Localizer["Lt_P_" + l.Priority]</span></td>
-                                <td class="small">
+                                </pems-table-cell>
+                                <pems-table-cell class="lp-no">@l.LetterNumber</pems-table-cell>
+                                <pems-table-cell><div class="lp-who"><span class="lp-av lp-av-@(l.LetterId % 7)" aria-hidden="true">@Initials(who)</span><span class="lp-who-name">@who</span></div></pems-table-cell>
+                                <pems-table-cell><pems-badge tone="none" css="ct-status @PEMS.Web.Helpers.LetterStatusBadge.CssClass(l.Status)" title="@StatusLabel(l.Status)">@StatusLabel(l.Status)</pems-badge></pems-table-cell>
+                                <pems-table-cell class="small"><span class="lp-pri lp-pri--@l.Priority.ToLowerInvariant()"><pems-icon css="@prIcon" aria-hidden="true" /> @Localizer["Lt_P_" + l.Priority]</span></pems-table-cell>
+                                <pems-table-cell class="small">
                                     @if (l.NextResponseDue.HasValue)
                                     {
                                         if (l.NextResponseDue.Value.Date < today)
@@ -660,12 +660,12 @@
                                         else { <span class="@((l.NextResponseDue.Value.Date - today).Days <= 2 ? "lp-due-soon" : "")" title="@l.NextResponseDue.Value.ToString("yyyy-MM-dd")">@DueText(l.NextResponseDue.Value)</span> }
                                     }
                                     else { <span class="text-muted">—</span> }
-                                </td>
-                                <td class="small text-muted">@l.LetterDate.ToString("yyyy-MM-dd")</td>
-                                <td class="small">@(string.IsNullOrEmpty(l.DisciplineName) ? "—" : l.DisciplineName)</td>
-                                <td class="small">@if (l.AttachmentsCount > 0) { <span title="@Localizer["Lt_ColAttachments"]"><pems-icon name="bi-paperclip" aria-hidden="true" /> @l.AttachmentsCount</span> } else { <span class="text-muted">—</span> }</td>
-                                <td class="small text-muted">@l.LastActivityDate.ToString("yyyy-MM-dd")</td>
-                                <td class="text-nowrap lp-actions">
+                                </pems-table-cell>
+                                <pems-table-cell class="small text-muted">@l.LetterDate.ToString("yyyy-MM-dd")</pems-table-cell>
+                                <pems-table-cell class="small">@(string.IsNullOrEmpty(l.DisciplineName) ? "—" : l.DisciplineName)</pems-table-cell>
+                                <pems-table-cell class="small">@if (l.AttachmentsCount > 0) { <span title="@Localizer["Lt_ColAttachments"]"><pems-icon name="bi-paperclip" aria-hidden="true" /> @l.AttachmentsCount</span> } else { <span class="text-muted">—</span> }</pems-table-cell>
+                                <pems-table-cell class="small text-muted">@l.LastActivityDate.ToString("yyyy-MM-dd")</pems-table-cell>
+                                <pems-table-cell class="text-nowrap lp-actions">
                                     @if (inTrash)
                                     {
                                         <button type="button" class="lp-act lp-act--always" data-row-op="restore" data-row-id="@l.LetterId" title="@Localizer["Ct_Restore"]"><pems-icon name="bi-arrow-counterclockwise" aria-hidden="true" /><span class="visually-hidden">@Localizer["Ct_Restore"]: @l.LetterNumber</span></button>
@@ -691,10 +691,10 @@
                                             </pems-dropdown-menu>
                                         </div>
                                     }
-                                </td>
-                            </tr>
+                                </pems-table-cell>
+                            </pems-table-row>
                         }
-                    </tbody>
+                    </pems-table-body>
                 </pems-table>
                 @if (!Model.Items.Any())
                 {

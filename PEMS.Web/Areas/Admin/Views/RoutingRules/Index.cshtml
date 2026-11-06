@@ -37,37 +37,37 @@
     <pems-list-panel>
         <pems-list-toolbar heading="@Localizer["RrL_Title"]" heading-title="@Localizer["RrL_Hint"]" total="@Model.Count" />
         <pems-related-table>
-            <thead>
-                <tr>
-                    <th class="pems-w-200">@Localizer["MiL_Category"]</th>
-                    <th class="pems-w-200">@Localizer["Target Module"]</th>
-                    <th class="text-center pems-w-110">@Localizer["Auto Route"]</th>
-                    <th>@Localizer["Ed_Description"]</th>
-                    <th class="pems-w-50"><span class="visually-hidden">@Localizer["Ed_Actions"]</span></th>
-                </tr>
-            </thead>
-            <tbody>
+            <pems-table-head>
+                <pems-table-row>
+                    <pems-table-header class="pems-w-200">@Localizer["MiL_Category"]</pems-table-header>
+                    <pems-table-header class="pems-w-200">@Localizer["Target Module"]</pems-table-header>
+                    <pems-table-header class="text-center pems-w-110">@Localizer["Auto Route"]</pems-table-header>
+                    <pems-table-header>@Localizer["Ed_Description"]</pems-table-header>
+                    <pems-table-header class="pems-w-50"><span class="visually-hidden">@Localizer["Ed_Actions"]</span></pems-table-header>
+                </pems-table-row>
+            </pems-table-head>
+            <pems-table-body>
                 @foreach (var r in Model)
                 {
                     var formId = $"rule_{r.RoutingRuleId}";
-                    <tr>
-                        <td>
+                    <pems-table-row>
+                        <pems-table-cell>
                             <span class="vs-cell-strong">@r.DocumentCategory</span>
                             <pems-related-row-form id="@formId" action="@Url.Action("SetRule")">
                                 <input type="hidden" name="category" value="@r.DocumentCategory" />
                             </pems-related-row-form>
-                        </td>
-                        <td>
+                        </pems-table-cell>
+                        <pems-table-cell>
                             <pems-select scale="small" form="@formId" name="targetModule" aria-label="@Localizer["Target Module"]">
                                 @foreach (var m in modules) { <option value="@m" selected="@(m == r.TargetModule)">@m</option> }
                             </pems-select>
-                        </td>
-                        <td class="text-center"><pems-input form="@formId" type="checkbox" name="allowAutoRouting" value="true" checked="@r.AllowAutoRouting" aria-label="@Localizer["Auto Route"]" kind="check" /></td>
-                        <td><pems-input scale="small" form="@formId" name="description" value="@r.Description" aria-label="@Localizer["Ed_Description"]" /></td>
-                        <td class="text-end"><pems-related-save form-id="@formId" label="@Localizer["Save"]" /></td>
-                    </tr>
+                        </pems-table-cell>
+                        <pems-table-cell class="text-center"><pems-input form="@formId" type="checkbox" name="allowAutoRouting" value="true" checked="@r.AllowAutoRouting" aria-label="@Localizer["Auto Route"]" kind="check" /></pems-table-cell>
+                        <pems-table-cell><pems-input scale="small" form="@formId" name="description" value="@r.Description" aria-label="@Localizer["Ed_Description"]" /></pems-table-cell>
+                        <pems-table-cell class="text-end"><pems-related-save form-id="@formId" label="@Localizer["Save"]" /></pems-table-cell>
+                    </pems-table-row>
                 }
-            </tbody>
+            </pems-table-body>
         </pems-related-table>
         @if (Model.Count == 0) { <p class="lp-rel-empty">@Localizer["RrL_Empty"]</p> }
     </pems-list-panel>

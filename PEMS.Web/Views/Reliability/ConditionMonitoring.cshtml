@@ -82,24 +82,24 @@
     <pems-content-card css="mb-3">
         <h6 class="mb-2">Monitoring Points — Equipment #@equipmentId</h6>
         <pems-table kind="enterprise" scale="small" css="mb-0">
-            <thead><tr><th>@Localizer["Variable"]</th><th>@Localizer["Tag"]</th><th>@Localizer["Unit"]</th><th class="text-end">@Localizer["Alarm Range"]</th><th class="text-end">@Localizer["Readings"]</th><th>@Localizer["Last Reading"]</th><th>@Localizer["Evaluation"]</th><th>@Localizer["CBM Strategy"]</th></tr></thead>
-            <tbody>
+            <pems-table-head><pems-table-row><pems-table-header>@Localizer["Variable"]</pems-table-header><pems-table-header>@Localizer["Tag"]</pems-table-header><pems-table-header>@Localizer["Unit"]</pems-table-header><pems-table-header class="text-end">@Localizer["Alarm Range"]</pems-table-header><pems-table-header class="text-end">@Localizer["Readings"]</pems-table-header><pems-table-header>@Localizer["Last Reading"]</pems-table-header><pems-table-header>@Localizer["Evaluation"]</pems-table-header><pems-table-header>@Localizer["CBM Strategy"]</pems-table-header></pems-table-row></pems-table-head>
+            <pems-table-body>
                 @foreach (var p in Model)
                 {
-                    <tr class="@(p.LastReadingIsAlarm ? "table-danger" : "")">
-                        <td>@p.VariableType</td>
-                        <td>@p.Tag</td>
-                        <td>@p.Unit</td>
-                        <td class="text-end small">@p.AlarmThresholdLow – @p.AlarmThresholdHigh</td>
-                        <td class="text-end">
+                    <pems-table-row class="@(p.LastReadingIsAlarm ? "table-danger" : "")">
+                        <pems-table-cell>@p.VariableType</pems-table-cell>
+                        <pems-table-cell>@p.Tag</pems-table-cell>
+                        <pems-table-cell>@p.Unit</pems-table-cell>
+                        <pems-table-cell class="text-end small">@p.AlarmThresholdLow – @p.AlarmThresholdHigh</pems-table-cell>
+                        <pems-table-cell class="text-end">
                             @p.ReadingCount
                             @if (p.ReadingCount > 0)
                             {
                                 <pems-button tone="neutral" size="small" outline="true" css="ms-1" as="a" asp-action="Trend" asp-route-pointId="@p.ConditionMonitoringPointId" title="@Localizer["Trend"]"><pems-icon name="bi-graph-up" /></pems-button>
                             }
-                        </td>
-                        <td class="small">@(p.LastReadingDate.HasValue ? $"{p.LastValue} @ {p.LastReadingDate.Value:yyyy-MM-dd}" : "No readings yet")</td>
-                        <td>
+                        </pems-table-cell>
+                        <pems-table-cell class="small">@(p.LastReadingDate.HasValue ? $"{p.LastValue} @ {p.LastReadingDate.Value:yyyy-MM-dd}" : "No readings yet")</pems-table-cell>
+                        <pems-table-cell>
                             @if (p.EvaluationProfileId.HasValue)
                             {
                                 <pems-badge tone="@EvalBadge(p.LastReadingEvaluationStatus)">@p.LastReadingEvaluationStatus</pems-badge>
@@ -138,8 +138,8 @@
                                     </pems-button>
                                 </form>
                             }
-                        </td>
-                        <td>
+                        </pems-table-cell>
+                        <pems-table-cell>
                             @if (pointsWithCbmStrategy.Contains(p.ConditionMonitoringPointId))
                             {
                                 <pems-badge tone="success">@Localizer["Linked"]</pems-badge>
@@ -155,10 +155,10 @@
                                     </pems-button>
                                 </form>
                             }
-                        </td>
-                    </tr>
+                        </pems-table-cell>
+                    </pems-table-row>
                 }
-            </tbody>
+            </pems-table-body>
         </pems-table>
         @if (!Model.Any()) { <p class="text-muted text-center py-3 mb-0">@Localizer["هیچ نقطه‌ی پایشی برای این تجهیز تعریف نشده."]</p> }
     </pems-content-card>

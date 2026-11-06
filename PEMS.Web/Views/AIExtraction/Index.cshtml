@@ -13,28 +13,28 @@
                            heading-title="فایل‌هایی که تحلیل هوش مصنوعی روی آن‌ها کامل شده‌اند. برای هرکدام تگ‌های تجهیز و مشخصات فنی استخراج‌شده را بازبینی و تایید/رد کنید." />
         <pems-list-grid>
             <pems-list-table empty="@(Model.Count == 0)" empty-text="No AI-analyzed documents yet. Try Document Upload or OCR Processing.">
-                <thead>
-                    <tr>
-                        <th>@Localizer["File"]</th><th>@Localizer["Document"]</th><th>@Localizer["Summary"]</th>
-                        <th>@Localizer["Confidence"]</th><th>@Localizer["Pending Tags"]</th><th>@Localizer["Pending Specs"]</th><th></th>
-                    </tr>
-                </thead>
-                <tbody>
+                <pems-table-head>
+                    <pems-table-row>
+                        <pems-table-header>@Localizer["File"]</pems-table-header><pems-table-header>@Localizer["Document"]</pems-table-header><pems-table-header>@Localizer["Summary"]</pems-table-header>
+                        <pems-table-header>@Localizer["Confidence"]</pems-table-header><pems-table-header>@Localizer["Pending Tags"]</pems-table-header><pems-table-header>@Localizer["Pending Specs"]</pems-table-header><pems-table-header></pems-table-header>
+                    </pems-table-row>
+                </pems-table-head>
+                <pems-table-body>
                     @foreach (var item in Model)
                     {
-                        <tr class="lp-row">
-                            <td>@item.Attachment.FileName</td>
-                            <td>@item.Attachment.Document?.DocumentNo</td>
-                            <td class="small text-muted pems-s-aef3df2a">@item.Attachment.AISummary</td>
-                            <td>@(item.Attachment.AIConfidence.HasValue ? $"{item.Attachment.AIConfidence:P0}" : "-")</td>
-                            <td><pems-badge tone="@(item.PendingTags > 0 ? "warning" : "success")">@item.PendingTags</pems-badge></td>
-                            <td><pems-badge tone="@(item.PendingSpecs > 0 ? "warning" : "success")">@item.PendingSpecs</pems-badge></td>
-                            <td>
+                        <pems-table-row class="lp-row">
+                            <pems-table-cell>@item.Attachment.FileName</pems-table-cell>
+                            <pems-table-cell>@item.Attachment.Document?.DocumentNo</pems-table-cell>
+                            <pems-table-cell class="small text-muted pems-s-aef3df2a">@item.Attachment.AISummary</pems-table-cell>
+                            <pems-table-cell>@(item.Attachment.AIConfidence.HasValue ? $"{item.Attachment.AIConfidence:P0}" : "-")</pems-table-cell>
+                            <pems-table-cell><pems-badge tone="@(item.PendingTags > 0 ? "warning" : "success")">@item.PendingTags</pems-badge></pems-table-cell>
+                            <pems-table-cell><pems-badge tone="@(item.PendingSpecs > 0 ? "warning" : "success")">@item.PendingSpecs</pems-badge></pems-table-cell>
+                            <pems-table-cell>
                                 <pems-button tone="primary" size="small" as="a" asp-action="Review" asp-route-attachmentId="@item.Attachment.AttachmentId">Review</pems-button>
-                            </td>
-                        </tr>
+                            </pems-table-cell>
+                        </pems-table-row>
                     }
-                </tbody>
+                </pems-table-body>
             </pems-list-table>
         </pems-list-grid>
     </pems-list-panel>

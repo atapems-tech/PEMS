@@ -50,31 +50,31 @@
 
         <pems-list-grid>
             <pems-list-table grid-key="Tender" empty="@(!rows.Any())" empty-text="@Localizer["Tn_Empty"]">
-                <thead>
-                    <tr>
-                        <th class="pems-w-150" data-col-key="no" data-resizable="true" data-min-width="100" data-max-width="220">@Localizer["Tn_No"]</th>
-                        <th data-col-key="title" data-resizable="true" data-min-width="140" data-max-width="600">@Localizer["Tn_TitleCol"]</th>
-                        <th data-col-key="package" data-resizable="true" data-min-width="100" data-max-width="220" class="vs-hide-md pems-w-150">@Localizer["Tn_Package"]</th>
-                        <th class="pems-w-120" data-col-key="status" data-resizable="true" data-min-width="90" data-max-width="160">@Localizer["Ed_Status"]</th>
-                        <th class="pems-w-120" data-col-key="deadline" data-resizable="true" data-min-width="90" data-max-width="160">@Localizer["Tn_Deadline"]</th>
-                        <th class="pems-w-60" data-col-key="actions" data-resizable="false"><span class="visually-hidden">@Localizer["Ed_Actions"]</span></th>
-                    </tr>
-                </thead>
-                <tbody>
+                <pems-table-head>
+                    <pems-table-row>
+                        <pems-table-header class="pems-w-150" data-col-key="no" data-resizable="true" data-min-width="100" data-max-width="220">@Localizer["Tn_No"]</pems-table-header>
+                        <pems-table-header data-col-key="title" data-resizable="true" data-min-width="140" data-max-width="600">@Localizer["Tn_TitleCol"]</pems-table-header>
+                        <pems-table-header data-col-key="package" data-resizable="true" data-min-width="100" data-max-width="220" class="vs-hide-md pems-w-150">@Localizer["Tn_Package"]</pems-table-header>
+                        <pems-table-header class="pems-w-120" data-col-key="status" data-resizable="true" data-min-width="90" data-max-width="160">@Localizer["Ed_Status"]</pems-table-header>
+                        <pems-table-header class="pems-w-120" data-col-key="deadline" data-resizable="true" data-min-width="90" data-max-width="160">@Localizer["Tn_Deadline"]</pems-table-header>
+                        <pems-table-header class="pems-w-60" data-col-key="actions" data-resizable="false"><span class="visually-hidden">@Localizer["Ed_Actions"]</span></pems-table-header>
+                    </pems-table-row>
+                </pems-table-head>
+                <pems-table-body>
                     @foreach (var t in rows)
                     {
-                        <tr class="lp-row">
-                            <td class="lp-no"><a asp-action="Details" asp-route-id="@t.TenderId" class="lp-subject" title="@t.TenderNumber">@t.TenderNumber</a></td>
-                            <td><span class="vs-title-cell" title="@t.Title">@t.Title</span></td>
-                            <td class="small vs-hide-md"><span class="vs-num">@t.ProcurementPackage?.PackageNumber</span></td>
-                            <td><span class="vs-pill @StatusTone(t.Status)">@StatusText(t.Status)</span></td>
-                            <td class="small"><span class="vs-num">@(t.ResponseDeadline?.ToString("yyyy-MM-dd") ?? "-")</span></td>
-                            <td class="text-end">
+                        <pems-table-row class="lp-row">
+                            <pems-table-cell class="lp-no"><a asp-action="Details" asp-route-id="@t.TenderId" class="lp-subject" title="@t.TenderNumber">@t.TenderNumber</a></pems-table-cell>
+                            <pems-table-cell><span class="vs-title-cell" title="@t.Title">@t.Title</span></pems-table-cell>
+                            <pems-table-cell class="small vs-hide-md"><span class="vs-num">@t.ProcurementPackage?.PackageNumber</span></pems-table-cell>
+                            <pems-table-cell><span class="vs-pill @StatusTone(t.Status)">@StatusText(t.Status)</span></pems-table-cell>
+                            <pems-table-cell class="small"><span class="vs-num">@(t.ResponseDeadline?.ToString("yyyy-MM-dd") ?? "-")</span></pems-table-cell>
+                            <pems-table-cell class="text-end">
                                 <a asp-action="Details" asp-route-id="@t.TenderId" class="lp-act lp-act--always" title="@Localizer["Ed_View"]" aria-label="@Localizer["Ed_View"]"><pems-icon name="bi-eye" aria-hidden="true" /></a>
-                            </td>
-                        </tr>
+                            </pems-table-cell>
+                        </pems-table-row>
                     }
-                </tbody>
+                </pems-table-body>
             </pems-list-table>
         </pems-list-grid>
     </pems-list-panel>

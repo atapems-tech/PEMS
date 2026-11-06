@@ -56,27 +56,27 @@
     <h6 class="mb-3">@Localizer["Recent Import Batches"]</h6>
     <pems-table-scroll css="table-scroll-area pems-s-8da1c6e6">
     <pems-table kind="enterprise">
-        <thead><tr><th>@Localizer["File"]</th><th>@Localizer["Project"]</th><th>@Localizer["Date"]</th><th>Rows</th><th>@Localizer["New"]</th><th>Updates</th><th>@Localizer["Status"]</th><th></th></tr></thead>
-        <tbody>
+        <pems-table-head><pems-table-row><pems-table-header>@Localizer["File"]</pems-table-header><pems-table-header>@Localizer["Project"]</pems-table-header><pems-table-header>@Localizer["Date"]</pems-table-header><pems-table-header>Rows</pems-table-header><pems-table-header>@Localizer["New"]</pems-table-header><pems-table-header>Updates</pems-table-header><pems-table-header>@Localizer["Status"]</pems-table-header><pems-table-header></pems-table-header></pems-table-row></pems-table-head>
+        <pems-table-body>
             @foreach (var b in Model)
             {
-                <tr>
-                    <td>@b.FileName</td>
-                    <td>@b.ProjectName</td>
-                    <td>@b.ImportDate.ToString("yyyy-MM-dd HH:mm")</td>
-                    <td>@b.Rows.Count</td>
-                    <td><pems-badge tone="success">@b.Rows.Count(x => !x.IsUpdate)</pems-badge></td>
-                    <td><pems-badge tone="info">@b.Rows.Count(x => x.IsUpdate)</pems-badge></td>
-                    <td><pems-badge tone="@(b.Status == "Committed" ? "success" : "neutral")">@b.Status</pems-badge></td>
-                    <td>
+                <pems-table-row>
+                    <pems-table-cell>@b.FileName</pems-table-cell>
+                    <pems-table-cell>@b.ProjectName</pems-table-cell>
+                    <pems-table-cell>@b.ImportDate.ToString("yyyy-MM-dd HH:mm")</pems-table-cell>
+                    <pems-table-cell>@b.Rows.Count</pems-table-cell>
+                    <pems-table-cell><pems-badge tone="success">@b.Rows.Count(x => !x.IsUpdate)</pems-badge></pems-table-cell>
+                    <pems-table-cell><pems-badge tone="info">@b.Rows.Count(x => x.IsUpdate)</pems-badge></pems-table-cell>
+                    <pems-table-cell><pems-badge tone="@(b.Status == "Committed" ? "success" : "neutral")">@b.Status</pems-badge></pems-table-cell>
+                    <pems-table-cell>
                         @if (b.Status == "Staging")
                         {
                             <pems-button tone="primary" size="small" outline="true" as="a" asp-action="Review" asp-route-batchId="@b.EquipmentImportBatchId">Review</pems-button>
                         }
-                    </td>
-                </tr>
+                    </pems-table-cell>
+                </pems-table-row>
             }
-        </tbody>
+        </pems-table-body>
     </pems-table>
     </pems-table-scroll>
     @if (!Model.Any()) { <p class="text-muted text-center py-4">No equipment imports yet.</p> }

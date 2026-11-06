@@ -62,43 +62,43 @@
 
         <pems-list-grid>
             <pems-list-table grid-key="Task" empty="@(!Model.Items.Any())" empty-text="@Localizer["Tm_EmptyList"]">
-                <thead>
-                    <tr>
-                        <th data-col-key="title">@Localizer["Title"]</th>
-                        <th data-col-key="assignedTo">@Localizer["Assigned To"]</th>
-                        <th data-col-key="due">@Localizer["Due"]</th>
-                        <th data-col-key="priority">@Localizer["Priority"]</th>
-                        <th data-col-key="status">@Localizer["Status"]</th>
-                        <th data-col-key="related">@Localizer["Tm_Related"]</th>
-                        <th><span class="visually-hidden">@Localizer["Tm_Actions"]</span></th>
-                    </tr>
-                </thead>
-                <tbody>
+                <pems-table-head>
+                    <pems-table-row>
+                        <pems-table-header data-col-key="title">@Localizer["Title"]</pems-table-header>
+                        <pems-table-header data-col-key="assignedTo">@Localizer["Assigned To"]</pems-table-header>
+                        <pems-table-header data-col-key="due">@Localizer["Due"]</pems-table-header>
+                        <pems-table-header data-col-key="priority">@Localizer["Priority"]</pems-table-header>
+                        <pems-table-header data-col-key="status">@Localizer["Status"]</pems-table-header>
+                        <pems-table-header data-col-key="related">@Localizer["Tm_Related"]</pems-table-header>
+                        <pems-table-header><span class="visually-hidden">@Localizer["Tm_Actions"]</span></pems-table-header>
+                    </pems-table-row>
+                </pems-table-head>
+                <pems-table-body>
                     @foreach (var t in Model.Items)
                     {
                         var closed = TaskItemStatuses.IsClosed(t.Status);
-                        <tr class="@(t.IsOverdue ? "lp-row table-danger" : "lp-row")">
-                            <td>
+                        <pems-table-row class="@(t.IsOverdue ? "lp-row table-danger" : "lp-row")">
+                            <pems-table-cell>
                                 @if (t.ItemKey != null) { <span class="tm-key me-1">@t.ItemKey</span> }
                                 <a asp-action="Details" asp-route-id="@t.TaskItemId" class="lp-subject">@t.Title</a>
                                 @if (!string.IsNullOrEmpty(t.Description)) { <div class="small text-muted text-truncate pems-s-b4a851bd">@t.Description</div> }
-                            </td>
-                            <td class="small">@t.AssignedToEmployeeName</td>
-                            <td class="small">@(t.DueDate?.ToString("yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture))</td>
-                            <td>
+                            </pems-table-cell>
+                            <pems-table-cell class="small">@t.AssignedToEmployeeName</pems-table-cell>
+                            <pems-table-cell class="small">@(t.DueDate?.ToString("yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture))</pems-table-cell>
+                            <pems-table-cell>
                                 @{
                                     var pb = TaskManagerUi.PriorityBadge(t.Priority);
                                 }
                                 <pems-badge tone="@pb">@TaskManagerUi.Priority(Localizer, t.Priority)</pems-badge>
-                            </td>
-                            <td>
+                            </pems-table-cell>
+                            <pems-table-cell>
                                 @{
                                     var sb = t.Status switch { "Completed" => "success", "InProgress" => "info", "Cancelled" => "dark", _ => "neutral" };
                                 }
                                 <pems-badge tone="@sb">@(t.WorkSpaceId != null ? TaskManagerUi.Name(t.StatusName, t.StatusNameFa) : TaskManagerUi.LegacyStatus(Localizer, t.Status))</pems-badge>
                                 @if (t.IsOverdue) { <pems-badge tone="danger">@Localizer["Overdue"]</pems-badge> }
-                            </td>
-                            <td class="small">
+                            </pems-table-cell>
+                            <pems-table-cell class="small">
                                 @if (!string.IsNullOrEmpty(t.RelatedType))
                                 {
                                     @if (t.RelatedType == "Letter")
@@ -108,8 +108,8 @@
                                     else
                                     { @($"{t.RelatedType} #{t.RelatedId}") }
                                 }
-                            </td>
-                            <td>
+                            </pems-table-cell>
+                            <pems-table-cell>
                                 @if (t.WorkSpaceId != null)
                                 {
                                     @* وضعیت وظیفه‌ی فضا از طرح وضعیت همان فضا تغییر می‌کند *@
@@ -132,10 +132,10 @@
                                 {
                                     @t.CompletionNote
                                 }
-                            </td>
-                        </tr>
+                            </pems-table-cell>
+                        </pems-table-row>
                     }
-                </tbody>
+                </pems-table-body>
             </pems-list-table>
             <pems-list-footer>
                 @await Html.PartialAsync("_Pagination", new PEMS.Web.ViewModels.PaginationViewModel

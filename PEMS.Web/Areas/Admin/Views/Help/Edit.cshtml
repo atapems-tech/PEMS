@@ -39,18 +39,18 @@
     else
     {
         <pems-table kind="enterprise">
-            <thead><tr><th>@Localizer["Type"]</th><th>Caption (EN)</th><th>@Localizer["Source"]</th><th>@Localizer["Status"]</th><th></th></tr></thead>
-            <tbody>
+            <pems-table-head><pems-table-row><pems-table-header>@Localizer["Type"]</pems-table-header><pems-table-header>Caption (EN)</pems-table-header><pems-table-header>@Localizer["Source"]</pems-table-header><pems-table-header>@Localizer["Status"]</pems-table-header><pems-table-header></pems-table-header></pems-table-row></pems-table-head>
+            <pems-table-body>
                 @foreach (var v in visuals)
                 {
-                    <tr>
-                        <td><pems-badge tone="light">@v.VisualType</pems-badge></td>
-                        <td><a asp-action="VisualEdit" asp-route-id="@v.HelpVisualId">@v.CaptionEn</a></td>
-                        <td class="small text-muted">
+                    <pems-table-row>
+                        <pems-table-cell><pems-badge tone="light">@v.VisualType</pems-badge></pems-table-cell>
+                        <pems-table-cell><a asp-action="VisualEdit" asp-route-id="@v.HelpVisualId">@v.CaptionEn</a></pems-table-cell>
+                        <pems-table-cell class="small text-muted">
                             @(v.VisualType == "WorkflowDiagram" ? $"{v.SourceWorkflowModule}/{v.SourceWorkflowCategory}" : "Manual")
-                        </td>
-                        <td><pems-badge tone="none" css="@(v.IsPublished ? "bg-success" : "bg-secondary")">@(v.IsPublished ? "Published" : "Draft")</pems-badge></td>
-                        <td class="text-end">
+                        </pems-table-cell>
+                        <pems-table-cell><pems-badge tone="none" css="@(v.IsPublished ? "bg-success" : "bg-secondary")">@(v.IsPublished ? "Published" : "Draft")</pems-badge></pems-table-cell>
+                        <pems-table-cell class="text-end">
                             <form asp-action="VisualSetPublished" asp-route-id="@v.HelpVisualId" asp-route-articleId="@Model.HelpArticleId" method="post" class="d-inline">
                                 <input type="hidden" name="isPublished" value="@(!v.IsPublished)" />
                                 <pems-button tone="none" size="small" css="btn-outline-@(v.IsPublished ? "secondary" : "success")" type="submit">
@@ -60,10 +60,10 @@
                             <form asp-action="VisualDelete" asp-route-id="@v.HelpVisualId" asp-route-articleId="@Model.HelpArticleId" method="post" class="d-inline" data-pems-confirm="Delete this visual?">
                                 <pems-button tone="danger" size="small" outline="true" type="submit"><pems-icon name="bi-trash" /></pems-button>
                             </form>
-                        </td>
-                    </tr>
+                        </pems-table-cell>
+                    </pems-table-row>
                 }
-            </tbody>
+            </pems-table-body>
         </pems-table>
     }
 </pems-content-card>

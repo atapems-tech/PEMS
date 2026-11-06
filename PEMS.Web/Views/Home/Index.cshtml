@@ -163,16 +163,16 @@
             {
                 <pems-table-scroll>
                     <pems-table kind="enterprise" scale="small" css="mb-0">
-                        <thead><tr><th>@Localizer["Discipline"]</th><th class="text-end">@Localizer["Documents"]</th><th class="text-end">@Localizer["Approved"]</th><th class="text-end">@Localizer["Pending Approval"]</th><th class="pems-w-30pct">%</th></tr></thead>
-                        <tbody>
+                        <pems-table-head><pems-table-row><pems-table-header>@Localizer["Discipline"]</pems-table-header><pems-table-header class="text-end">@Localizer["Documents"]</pems-table-header><pems-table-header class="text-end">@Localizer["Approved"]</pems-table-header><pems-table-header class="text-end">@Localizer["Pending Approval"]</pems-table-header><pems-table-header class="pems-w-30pct">%</pems-table-header></pems-table-row></pems-table-head>
+                        <pems-table-body>
                             @foreach (var row in disciplineRows)
                             {
-                                <tr>
-                                    <td>@row.Discipline</td><td class="text-end">@row.Total</td><td class="text-end">@row.Approved</td><td class="text-end">@row.PendingApproval</td>
-                                    <td><pems-progress value="@row.ApprovedPercent" tone="success" height="8px" title="@row.ApprovedPercent%"></pems-progress></td>
-                                </tr>
+                                <pems-table-row>
+                                    <pems-table-cell>@row.Discipline</pems-table-cell><pems-table-cell class="text-end">@row.Total</pems-table-cell><pems-table-cell class="text-end">@row.Approved</pems-table-cell><pems-table-cell class="text-end">@row.PendingApproval</pems-table-cell>
+                                    <pems-table-cell><pems-progress value="@row.ApprovedPercent" tone="success" height="8px" title="@row.ApprovedPercent%"></pems-progress></pems-table-cell>
+                                </pems-table-row>
                             }
-                        </tbody>
+                        </pems-table-body>
                     </pems-table>
                 </pems-table-scroll>
             }

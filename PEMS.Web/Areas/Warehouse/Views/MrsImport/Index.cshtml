@@ -27,26 +27,26 @@
 
 <pems-content-card>
     <pems-table kind="enterprise">
-        <thead><tr><th>@Localizer["File"]</th><th>@Localizer["Sheet"]</th><th>@Localizer["Status"]</th><th>@Localizer["Total"]</th><th>@Localizer["New"]</th><th>@Localizer["Matched"]</th><th>@Localizer["Duplicate"]</th><th>@Localizer["Invalid"]</th><th>@Localizer["Approved"]</th><th>@Localizer["Date"]</th><th></th></tr></thead>
-        <tbody>
+        <pems-table-head><pems-table-row><pems-table-header>@Localizer["File"]</pems-table-header><pems-table-header>@Localizer["Sheet"]</pems-table-header><pems-table-header>@Localizer["Status"]</pems-table-header><pems-table-header>@Localizer["Total"]</pems-table-header><pems-table-header>@Localizer["New"]</pems-table-header><pems-table-header>@Localizer["Matched"]</pems-table-header><pems-table-header>@Localizer["Duplicate"]</pems-table-header><pems-table-header>@Localizer["Invalid"]</pems-table-header><pems-table-header>@Localizer["Approved"]</pems-table-header><pems-table-header>@Localizer["Date"]</pems-table-header><pems-table-header></pems-table-header></pems-table-row></pems-table-head>
+        <pems-table-body>
             @foreach (var b in Model)
             {
                 var badgeClass = b.Status switch { "Committed" => "success", "InReview" => "info", "Cancelled" => "neutral", _ => "warning" };
-                <tr>
-                    <td class="small">@b.SourceFileName</td>
-                    <td class="small">@b.SourceSheet</td>
-                    <td><pems-badge tone="@badgeClass">@b.Status</pems-badge></td>
-                    <td>@b.TotalRows</td>
-                    <td>@b.NewCount</td>
-                    <td>@b.MatchedCount</td>
-                    <td>@b.DuplicateCount</td>
-                    <td class="text-danger">@b.InvalidCount</td>
-                    <td class="text-success">@b.ApprovedCount</td>
-                    <td class="small">@b.ImportDate.ToString("yyyy-MM-dd HH:mm")</td>
-                    <td class="text-end"><pems-button as="a" tone="neutral" size="small" outline="true" asp-action="Review" asp-route-batchId="@b.MrsImportBatchId"><pems-icon name="bi-card-text" /> @Localizer["Review"]</pems-button></td>
-                </tr>
+                <pems-table-row>
+                    <pems-table-cell class="small">@b.SourceFileName</pems-table-cell>
+                    <pems-table-cell class="small">@b.SourceSheet</pems-table-cell>
+                    <pems-table-cell><pems-badge tone="@badgeClass">@b.Status</pems-badge></pems-table-cell>
+                    <pems-table-cell>@b.TotalRows</pems-table-cell>
+                    <pems-table-cell>@b.NewCount</pems-table-cell>
+                    <pems-table-cell>@b.MatchedCount</pems-table-cell>
+                    <pems-table-cell>@b.DuplicateCount</pems-table-cell>
+                    <pems-table-cell class="text-danger">@b.InvalidCount</pems-table-cell>
+                    <pems-table-cell class="text-success">@b.ApprovedCount</pems-table-cell>
+                    <pems-table-cell class="small">@b.ImportDate.ToString("yyyy-MM-dd HH:mm")</pems-table-cell>
+                    <pems-table-cell class="text-end"><pems-button as="a" tone="neutral" size="small" outline="true" asp-action="Review" asp-route-batchId="@b.MrsImportBatchId"><pems-icon name="bi-card-text" /> @Localizer["Review"]</pems-button></pems-table-cell>
+                </pems-table-row>
             }
-        </tbody>
+        </pems-table-body>
     </pems-table>
     @if (!Model.Any()) { <p class="text-muted text-center py-4">@Localizer["هنوز فایلی Upload نشده."]</p> }
 </pems-content-card>

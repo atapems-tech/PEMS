@@ -74,30 +74,30 @@
         <pems-list-grid>
             <pems-list-table grid-key="MechanicalEquipment" empty="@(!Model.Items.Any())" empty-text="@Localizer["Me_Empty"]"
                              filtered="@(filterCount > 0 || !string.IsNullOrEmpty(q))" clear-href="@Url.Action("Index")">
-                <thead>
-                    <tr>
-                        <th class="pems-w-140" data-col-key="tag" data-resizable="true" data-min-width="100" data-max-width="220">@Localizer["Me_Tag"]</th>
-                        <th class="pems-w-220" data-col-key="mfr" data-resizable="true" data-min-width="140" data-max-width="320">@Localizer["Cm_ManufacturerModel"]</th>
-                        <th class="pems-w-140" data-col-key="type" data-resizable="true" data-min-width="80" data-max-width="200">@Localizer["Cm_Type"]</th>
-                        <th class="pems-w-120" data-col-key="subtype" data-resizable="true" data-min-width="90" data-max-width="160">@Localizer["Me_SubType"]</th>
-                        <th class="pems-w-90" data-col-key="actions" data-resizable="false"><span class="visually-hidden">@Localizer["Ed_Actions"]</span></th>
-                    </tr>
-                </thead>
-                <tbody>
+                <pems-table-head>
+                    <pems-table-row>
+                        <pems-table-header class="pems-w-140" data-col-key="tag" data-resizable="true" data-min-width="100" data-max-width="220">@Localizer["Me_Tag"]</pems-table-header>
+                        <pems-table-header class="pems-w-220" data-col-key="mfr" data-resizable="true" data-min-width="140" data-max-width="320">@Localizer["Cm_ManufacturerModel"]</pems-table-header>
+                        <pems-table-header class="pems-w-140" data-col-key="type" data-resizable="true" data-min-width="80" data-max-width="200">@Localizer["Cm_Type"]</pems-table-header>
+                        <pems-table-header class="pems-w-120" data-col-key="subtype" data-resizable="true" data-min-width="90" data-max-width="160">@Localizer["Me_SubType"]</pems-table-header>
+                        <pems-table-header class="pems-w-90" data-col-key="actions" data-resizable="false"><span class="visually-hidden">@Localizer["Ed_Actions"]</span></pems-table-header>
+                    </pems-table-row>
+                </pems-table-head>
+                <pems-table-body>
                     @foreach (var m in Model.Items)
                     {
-                        <tr class="lp-row">
-                            <td class="lp-no"><a asp-action="Passport" asp-route-id="@m.MechanicalEquipmentId" class="lp-subject"><span class="vs-num">@m.TagNumber</span></a></td>
-                            <td class="small"><span class="vs-title-cell" title="@m.Manufacturer / @m.Model">@m.Manufacturer / @m.Model</span></td>
-                            <td class="small">@m.EquipmentType</td>
-                            <td><span class="vs-pill @SubTypeTone(m.SubType)">@SubTypeText(m.SubType)</span></td>
-                            <td class="text-end text-nowrap">
+                        <pems-table-row class="lp-row">
+                            <pems-table-cell class="lp-no"><a asp-action="Passport" asp-route-id="@m.MechanicalEquipmentId" class="lp-subject"><span class="vs-num">@m.TagNumber</span></a></pems-table-cell>
+                            <pems-table-cell class="small"><span class="vs-title-cell" title="@m.Manufacturer / @m.Model">@m.Manufacturer / @m.Model</span></pems-table-cell>
+                            <pems-table-cell class="small">@m.EquipmentType</pems-table-cell>
+                            <pems-table-cell><span class="vs-pill @SubTypeTone(m.SubType)">@SubTypeText(m.SubType)</span></pems-table-cell>
+                            <pems-table-cell class="text-end text-nowrap">
                                 <a asp-action="Passport" asp-route-id="@m.MechanicalEquipmentId" class="lp-act lp-act--always" title="@Localizer["Me_Passport"]" aria-label="@Localizer["Me_Passport"]"><pems-icon name="bi-card-text" aria-hidden="true" /></a>
                                 <a asp-action="Edit" asp-route-id="@m.MechanicalEquipmentId" class="lp-act lp-act--always" title="@Localizer["Rcm_Edit"]" aria-label="@Localizer["Rcm_Edit"]"><pems-icon name="bi-pencil" aria-hidden="true" /></a>
-                            </td>
-                        </tr>
+                            </pems-table-cell>
+                        </pems-table-row>
                     }
-                </tbody>
+                </pems-table-body>
             </pems-list-table>
 
             <pems-list-footer>

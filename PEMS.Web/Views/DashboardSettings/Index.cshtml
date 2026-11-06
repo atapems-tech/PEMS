@@ -12,27 +12,27 @@
     <form asp-action="Save" method="post">
         <pems-table-scroll css="table-scroll-area pems-s-8da1c6e6">
         <pems-table kind="enterprise">
-            <thead><tr><th>Show</th><th>Widget</th><th>@Localizer["Order"]</th><th>@Localizer["Size"]</th></tr></thead>
-            <tbody>
+            <pems-table-head><pems-table-row><pems-table-header>Show</pems-table-header><pems-table-header>Widget</pems-table-header><pems-table-header>@Localizer["Order"]</pems-table-header><pems-table-header>@Localizer["Size"]</pems-table-header></pems-table-row></pems-table-head>
+            <pems-table-body>
                 @for (int i = 0; i < Model.Count; i++)
                 {
-                    <tr>
-                        <td>
+                    <pems-table-row>
+                        <pems-table-cell>
                             <input type="hidden" name="widgets[@i].WidgetKey" value="@Model[i].WidgetKey" />
                             <input type="hidden" name="widgets[@i].IsVisible" value="false" />
                             <input type="checkbox" name="widgets[@i].IsVisible" value="true" checked="@Model[i].IsVisible" />
-                        </td>
-                        <td>@Model[i].DisplayName</td>
-                        <td><pems-input class="pems-w-80" scale="small" type="number" name="widgets[@i].DisplayOrder" value="@Model[i].DisplayOrder" /></td>
-                        <td>
+                        </pems-table-cell>
+                        <pems-table-cell>@Model[i].DisplayName</pems-table-cell>
+                        <pems-table-cell><pems-input class="pems-w-80" scale="small" type="number" name="widgets[@i].DisplayOrder" value="@Model[i].DisplayOrder" /></pems-table-cell>
+                        <pems-table-cell>
                             <pems-select class="pems-w-120" scale="small" name="widgets[@i].Size">
                                 @foreach (var s in new[] { "Small", "Medium", "Large" })
                                 { <option value="@s" selected="@(s == Model[i].Size)">@s</option> }
                             </pems-select>
-                        </td>
-                    </tr>
+                        </pems-table-cell>
+                    </pems-table-row>
                 }
-            </tbody>
+            </pems-table-body>
         </pems-table>
         </pems-table-scroll>
 

@@ -37,13 +37,13 @@
         <pems-content-card css="mb-3">
             <h6 class="mb-3">Asset Info</h6>
             <pems-table scale="small">
-                <tr><th class="text-muted pems-w-40pct">@Localizer["Manufacturer / Model"]</th><td>@Model.Manufacturer / @Model.Model</td></tr>
-                <tr><th class="text-muted">@Localizer["Functional Location"]</th><td>@(Model.FunctionalLocationBreadcrumb ?? "not linked")</td></tr>
-                <tr><th class="text-muted">@Localizer["Functional Location (raw text, legacy)"]</th><td>@(Model.FunctionalLocation ?? "N/A")</td></tr>
-                <tr><th class="text-muted">@Localizer["Maintenance Class"]</th><td>@(Model.MaintenanceClass ?? "N/A")</td></tr>
-                <tr><th class="text-muted">@Localizer["Commissioning Date"]</th><td>@(Model.CommissioningDate?.ToString("yyyy-MM-dd") ?? "N/A")</td></tr>
-                <tr><th class="text-muted">@Localizer["Risk Level"]</th><td>@(Model.RiskLevel ?? "N/A")</td></tr>
-                <tr><th class="text-muted">@Localizer["Description"]</th><td>@(Model.Description ?? "N/A")</td></tr>
+                <pems-table-row><pems-table-header class="text-muted pems-w-40pct">@Localizer["Manufacturer / Model"]</pems-table-header><pems-table-cell>@Model.Manufacturer / @Model.Model</pems-table-cell></pems-table-row>
+                <pems-table-row><pems-table-header class="text-muted">@Localizer["Functional Location"]</pems-table-header><pems-table-cell>@(Model.FunctionalLocationBreadcrumb ?? "not linked")</pems-table-cell></pems-table-row>
+                <pems-table-row><pems-table-header class="text-muted">@Localizer["Functional Location (raw text, legacy)"]</pems-table-header><pems-table-cell>@(Model.FunctionalLocation ?? "N/A")</pems-table-cell></pems-table-row>
+                <pems-table-row><pems-table-header class="text-muted">@Localizer["Maintenance Class"]</pems-table-header><pems-table-cell>@(Model.MaintenanceClass ?? "N/A")</pems-table-cell></pems-table-row>
+                <pems-table-row><pems-table-header class="text-muted">@Localizer["Commissioning Date"]</pems-table-header><pems-table-cell>@(Model.CommissioningDate?.ToString("yyyy-MM-dd") ?? "N/A")</pems-table-cell></pems-table-row>
+                <pems-table-row><pems-table-header class="text-muted">@Localizer["Risk Level"]</pems-table-header><pems-table-cell>@(Model.RiskLevel ?? "N/A")</pems-table-cell></pems-table-row>
+                <pems-table-row><pems-table-header class="text-muted">@Localizer["Description"]</pems-table-header><pems-table-cell>@(Model.Description ?? "N/A")</pems-table-cell></pems-table-row>
             </pems-table>
             <pems-button tone="neutral" size="small" outline="true" type="button" data-bs-toggle="modal" data-bs-target="#editAssetModal"><pems-icon name="bi-pencil" /> @Localizer["Edit"]</pems-button>
         </pems-content-card>
@@ -53,10 +53,10 @@
             @if (Model.LatestMaintenance != null)
             {
                 <pems-table scale="small">
-                    <tr><th class="text-muted pems-w-40pct">@Localizer["Execution Date"]</th><td>@Model.LatestMaintenance.ExecutionDate.ToString("yyyy-MM-dd")</td></tr>
-                    <tr><th class="text-muted">@Localizer["Action Taken"]</th><td>@(Model.LatestMaintenance.ActionTaken ?? "N/A")</td></tr>
-                    <tr><th class="text-muted">@Localizer["Technician"]</th><td>@(Model.LatestMaintenance.Technician ?? "N/A")</td></tr>
-                    <tr><th class="text-muted">Duration (h)</th><td>@(Model.LatestMaintenance.DurationHours?.ToString("N1") ?? "N/A")</td></tr>
+                    <pems-table-row><pems-table-header class="text-muted pems-w-40pct">@Localizer["Execution Date"]</pems-table-header><pems-table-cell>@Model.LatestMaintenance.ExecutionDate.ToString("yyyy-MM-dd")</pems-table-cell></pems-table-row>
+                    <pems-table-row><pems-table-header class="text-muted">@Localizer["Action Taken"]</pems-table-header><pems-table-cell>@(Model.LatestMaintenance.ActionTaken ?? "N/A")</pems-table-cell></pems-table-row>
+                    <pems-table-row><pems-table-header class="text-muted">@Localizer["Technician"]</pems-table-header><pems-table-cell>@(Model.LatestMaintenance.Technician ?? "N/A")</pems-table-cell></pems-table-row>
+                    <pems-table-row><pems-table-header class="text-muted">Duration (h)</pems-table-header><pems-table-cell>@(Model.LatestMaintenance.DurationHours?.ToString("N1") ?? "N/A")</pems-table-cell></pems-table-row>
                 </pems-table>
             }
             else
@@ -72,18 +72,18 @@
             @if (Model.WorkOrders.Any())
             {
                 <pems-table scale="small">
-                    <thead><tr><th>No.</th><th>@Localizer["Description"]</th><th>@Localizer["Status"]</th><th>@Localizer["Created"]</th></tr></thead>
-                    <tbody>
+                    <pems-table-head><pems-table-row><pems-table-header>No.</pems-table-header><pems-table-header>@Localizer["Description"]</pems-table-header><pems-table-header>@Localizer["Status"]</pems-table-header><pems-table-header>@Localizer["Created"]</pems-table-header></pems-table-row></pems-table-head>
+                    <pems-table-body>
                         @foreach (var w in Model.WorkOrders.Take(10))
                         {
-                            <tr>
-                                <td><a asp-controller="WorkOrder" asp-action="Details" asp-route-id="@w.WorkOrderId">@w.WorkOrderNo</a></td>
-                                <td class="small">@(w.Description ?? "-")</td>
-                                <td><pems-badge tone="neutral">@w.Status</pems-badge></td>
-                                <td class="small">@(w.CreatedDate?.ToString("yyyy-MM-dd") ?? "-")</td>
-                            </tr>
+                            <pems-table-row>
+                                <pems-table-cell><a asp-controller="WorkOrder" asp-action="Details" asp-route-id="@w.WorkOrderId">@w.WorkOrderNo</a></pems-table-cell>
+                                <pems-table-cell class="small">@(w.Description ?? "-")</pems-table-cell>
+                                <pems-table-cell><pems-badge tone="neutral">@w.Status</pems-badge></pems-table-cell>
+                                <pems-table-cell class="small">@(w.CreatedDate?.ToString("yyyy-MM-dd") ?? "-")</pems-table-cell>
+                            </pems-table-row>
                         }
-                    </tbody>
+                    </pems-table-body>
                 </pems-table>
             }
             else

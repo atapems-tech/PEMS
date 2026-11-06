@@ -57,19 +57,19 @@
 <pems-content-card>
     <div class="table-scroll-area pems-s-0ddf068b">
     <pems-table kind="enterprise" scale="small" css="mb-0">
-        <thead><tr><th>@Localizer["Scope"]</th><th>@Localizer["Type"]</th><th>Suggestion</th><th>Source Data</th><th>@Localizer["Model"]</th><th>@Localizer["Status"]</th><th>@Localizer["Reviewed By"]</th><th></th></tr></thead>
-        <tbody>
+        <pems-table-head><pems-table-row><pems-table-header>@Localizer["Scope"]</pems-table-header><pems-table-header>@Localizer["Type"]</pems-table-header><pems-table-header>Suggestion</pems-table-header><pems-table-header>Source Data</pems-table-header><pems-table-header>@Localizer["Model"]</pems-table-header><pems-table-header>@Localizer["Status"]</pems-table-header><pems-table-header>@Localizer["Reviewed By"]</pems-table-header><pems-table-header></pems-table-header></pems-table-row></pems-table-head>
+        <pems-table-body>
             @foreach (var insight in Model)
             {
-                <tr>
-                    <td class="small">@(insight.EquipmentTagNumber ?? insight.EquipmentClassName ?? "Fleet")</td>
-                    <td class="small">@insight.InsightType</td>
-                    <td class="small">@insight.SuggestionText</td>
-                    <td class="small text-muted">@insight.SourceDataSummary</td>
-                    <td class="small">@insight.ModelName <pems-badge tone="light">AI_SUGGESTED</pems-badge></td>
-                    <td><pems-badge tone="@ReviewBadge(insight.ReviewStatus)">@insight.ReviewStatus</pems-badge></td>
-                    <td class="small">@insight.ReviewedByName</td>
-                    <td>
+                <pems-table-row>
+                    <pems-table-cell class="small">@(insight.EquipmentTagNumber ?? insight.EquipmentClassName ?? "Fleet")</pems-table-cell>
+                    <pems-table-cell class="small">@insight.InsightType</pems-table-cell>
+                    <pems-table-cell class="small">@insight.SuggestionText</pems-table-cell>
+                    <pems-table-cell class="small text-muted">@insight.SourceDataSummary</pems-table-cell>
+                    <pems-table-cell class="small">@insight.ModelName <pems-badge tone="light">AI_SUGGESTED</pems-badge></pems-table-cell>
+                    <pems-table-cell><pems-badge tone="@ReviewBadge(insight.ReviewStatus)">@insight.ReviewStatus</pems-badge></pems-table-cell>
+                    <pems-table-cell class="small">@insight.ReviewedByName</pems-table-cell>
+                    <pems-table-cell>
                         @if (canReview && insight.ReviewStatus == "Draft")
                         {
                             <form method="post" asp-action="ReviewAiInsight" class="d-inline">
@@ -85,10 +85,10 @@
                                 <pems-button tone="danger" size="small" outline="true" type="submit">@Localizer["Reject"]</pems-button>
                             </form>
                         }
-                    </td>
-                </tr>
+                    </pems-table-cell>
+                </pems-table-row>
             }
-        </tbody>
+        </pems-table-body>
     </pems-table>
     </div>
     @if (!Model.Any()) { <p class="text-muted text-center py-4 mb-0">@Localizer["هیچ بینشی هنوز تولید نشده."]</p> }

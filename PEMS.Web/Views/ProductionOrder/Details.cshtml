@@ -67,21 +67,21 @@
     <h6 class="mb-2">Production Runs</h6>
     <div class="table-scroll-area pems-s-7bf38d03">
         <pems-table kind="enterprise">
-            <thead><tr><th>Run #</th><th>@Localizer["Status"]</th><th>@Localizer["Start"]</th><th>@Localizer["End"]</th><th>Output Qty</th><th>Loss Qty</th><th></th></tr></thead>
-            <tbody>
+            <pems-table-head><pems-table-row><pems-table-header>Run #</pems-table-header><pems-table-header>@Localizer["Status"]</pems-table-header><pems-table-header>@Localizer["Start"]</pems-table-header><pems-table-header>@Localizer["End"]</pems-table-header><pems-table-header>Output Qty</pems-table-header><pems-table-header>Loss Qty</pems-table-header><pems-table-header></pems-table-header></pems-table-row></pems-table-head>
+            <pems-table-body>
                 @foreach (var r in Model.Runs)
                 {
-                    <tr>
-                        <td>@r.RunNumber</td>
-                        <td><pems-badge tone="neutral">@r.Status</pems-badge></td>
-                        <td class="small">@(r.StartDate?.ToString("yyyy-MM-dd HH:mm"))</td>
-                        <td class="small">@(r.EndDate?.ToString("yyyy-MM-dd HH:mm"))</td>
-                        <td>@r.TotalOutputQuantity.ToString("N3")</td>
-                        <td>@r.TotalLossQuantity.ToString("N3")</td>
-                        <td class="text-end"><pems-button tone="primary" size="small" outline="true" as="a" asp-controller="ProductionRun" asp-action="Details" asp-route-id="@r.ProductionRunId">Open</pems-button></td>
-                    </tr>
+                    <pems-table-row>
+                        <pems-table-cell>@r.RunNumber</pems-table-cell>
+                        <pems-table-cell><pems-badge tone="neutral">@r.Status</pems-badge></pems-table-cell>
+                        <pems-table-cell class="small">@(r.StartDate?.ToString("yyyy-MM-dd HH:mm"))</pems-table-cell>
+                        <pems-table-cell class="small">@(r.EndDate?.ToString("yyyy-MM-dd HH:mm"))</pems-table-cell>
+                        <pems-table-cell>@r.TotalOutputQuantity.ToString("N3")</pems-table-cell>
+                        <pems-table-cell>@r.TotalLossQuantity.ToString("N3")</pems-table-cell>
+                        <pems-table-cell class="text-end"><pems-button tone="primary" size="small" outline="true" as="a" asp-controller="ProductionRun" asp-action="Details" asp-route-id="@r.ProductionRunId">Open</pems-button></pems-table-cell>
+                    </pems-table-row>
                 }
-            </tbody>
+            </pems-table-body>
         </pems-table>
     </div>
     @if (!Model.Runs.Any()) { <p class="text-muted text-center py-3">No runs yet.</p> }

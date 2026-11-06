@@ -88,4 +88,24 @@ public sealed class DataTableTests
         Assert.Contains("<tr class=\"table-warning\">", html);
         Assert.Contains("<td><code>x</code></td>", html);
     }
+
+    [Theory]
+    [InlineData(typeof(PemsTableHeadTagHelper), "thead")]
+    [InlineData(typeof(PemsTableBodyTagHelper), "tbody")]
+    [InlineData(typeof(PemsTableFootTagHelper), "tfoot")]
+    [InlineData(typeof(PemsTableCaptionTagHelper), "caption")]
+    [InlineData(typeof(PemsTableRowTagHelper), "tr")]
+    [InlineData(typeof(PemsTableHeaderTagHelper), "th")]
+    [InlineData(typeof(PemsTableCellTagHelper), "td")]
+    public void A_table_part_writes_its_element_with_the_page_attributes_and_content_unchanged(Type helper, string element)
+    {
+        var tag = (TagHelper)Activator.CreateInstance(helper)!;
+        var context = new TagHelperContext("pems-table-x", new TagHelperAttributeList(), new Dictionary<object, object>(), "c");
+        var output = new TagHelperOutput("pems-table-x", [new("class", "text-end"), new("colspan", "3"), new("data-id", "7")], (_, _) => Task.FromResult<TagHelperContent>(new DefaultTagHelperContent()));
+        output.Content.SetHtmlContent("x &amp; <b>y</b>");
+        tag.ProcessAsync(context, output).GetAwaiter().GetResult();
+        using var writer = new StringWriter();
+        output.WriteTo(writer, HtmlEncoder.Default);
+        Assert.Equal($"<{element} class=\"text-end\" colspan=\"3\" data-id=\"7\">x &amp; <b>y</b></{element}>", writer.ToString());
+    }
 }

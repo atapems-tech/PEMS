@@ -58,24 +58,24 @@
         <pems-list-grid>
             <pems-list-table empty="@(!Model.Any())" empty-text="@Localizer["Rcm_NoFailureModes"]"
                              filtered="@(filterCount > 0 || !string.IsNullOrEmpty(q))" clear-href="@Url.Action("Index")">
-                <thead>
-                    <tr>
-                        <th class="pems-w-120">@Localizer["Rcm_Code"]</th>
-                        <th>@Localizer["Rcm_FailureMode"]</th>
-                        <th class="pems-w-180">@Localizer["Rcm_EquipmentClass"]</th>
-                        <th class="vs-hide-md">@Localizer["Rcm_FailureCauses"]</th>
-                        <th class="pems-w-90"><span class="visually-hidden">@Localizer["Ed_Actions"]</span></th>
-                    </tr>
-                </thead>
-                <tbody>
+                <pems-table-head>
+                    <pems-table-row>
+                        <pems-table-header class="pems-w-120">@Localizer["Rcm_Code"]</pems-table-header>
+                        <pems-table-header>@Localizer["Rcm_FailureMode"]</pems-table-header>
+                        <pems-table-header class="pems-w-180">@Localizer["Rcm_EquipmentClass"]</pems-table-header>
+                        <pems-table-header class="vs-hide-md">@Localizer["Rcm_FailureCauses"]</pems-table-header>
+                        <pems-table-header class="pems-w-90"><span class="visually-hidden">@Localizer["Ed_Actions"]</span></pems-table-header>
+                    </pems-table-row>
+                </pems-table-head>
+                <pems-table-body>
                     @foreach (var m in Model)
                     {
-                        <tr class="lp-row">
-                            <td class="lp-no"><span class="vs-num">@m.Code</span></td>
-                            <td><span class="vs-title-cell lp-subject" title="@RcmDisplay.Name(m.Name, m.NameFa)">@RcmDisplay.Name(m.Name, m.NameFa)</span></td>
-                            <td class="small">@(m.EquipmentClassName ?? Localizer["Rcm_AllClasses"].Value)</td>
-                            <td class="small vs-hide-md">@string.Join("، ", m.Causes.Select(c => RcmDisplay.Name(c.Name, c.NameFa)))</td>
-                            <td class="text-end text-nowrap">
+                        <pems-table-row class="lp-row">
+                            <pems-table-cell class="lp-no"><span class="vs-num">@m.Code</span></pems-table-cell>
+                            <pems-table-cell><span class="vs-title-cell lp-subject" title="@RcmDisplay.Name(m.Name, m.NameFa)">@RcmDisplay.Name(m.Name, m.NameFa)</span></pems-table-cell>
+                            <pems-table-cell class="small">@(m.EquipmentClassName ?? Localizer["Rcm_AllClasses"].Value)</pems-table-cell>
+                            <pems-table-cell class="small vs-hide-md">@string.Join("، ", m.Causes.Select(c => RcmDisplay.Name(c.Name, c.NameFa)))</pems-table-cell>
+                            <pems-table-cell class="text-end text-nowrap">
                                 @if (canEdit)
                                 {
                                     <a asp-action="Edit" asp-route-id="@m.FailureModeId" class="lp-act lp-act--always" title="@Localizer["Rcm_Edit"]" aria-label="@Localizer["Rcm_Edit"]"><pems-icon name="bi-pencil" aria-hidden="true" /></a>
@@ -84,10 +84,10 @@
                                         <button type="submit" class="lp-act lp-act--always" title="@Localizer["Rcm_Deactivate"]" aria-label="@Localizer["Rcm_Deactivate"]"><pems-icon name="bi-slash-circle" aria-hidden="true" /></button>
                                     </form>
                                 }
-                            </td>
-                        </tr>
+                            </pems-table-cell>
+                        </pems-table-row>
                     }
-                </tbody>
+                </pems-table-body>
             </pems-list-table>
         </pems-list-grid>
     </pems-list-panel>

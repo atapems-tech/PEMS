@@ -68,26 +68,26 @@
     <pems-content-card css="mb-3">
         <h6 class="mb-3">@label</h6>
         <pems-table kind="enterprise">
-            <thead><tr><th>@Localizer["Document No"]</th><th>@Localizer["Title"]</th><th>DVD Volume</th><th>N/A</th><th>@Localizer["Notes"]</th><th></th></tr></thead>
-            <tbody>
+            <pems-table-head><pems-table-row><pems-table-header>@Localizer["Document No"]</pems-table-header><pems-table-header>@Localizer["Title"]</pems-table-header><pems-table-header>DVD Volume</pems-table-header><pems-table-header>N/A</pems-table-header><pems-table-header>@Localizer["Notes"]</pems-table-header><pems-table-header></pems-table-header></pems-table-row></pems-table-head>
+            <pems-table-body>
                 @foreach (var d in docs)
                 {
-                    <tr>
-                        <td>@d.DocumentNo</td>
-                        <td>@d.Title</td>
-                        <td>@d.DvdVolumeNo</td>
-                        <td>@(d.IsNotApplicable ? "Not applicable" : "")</td>
-                        <td>@d.Notes</td>
-                        <td>
+                    <pems-table-row>
+                        <pems-table-cell>@d.DocumentNo</pems-table-cell>
+                        <pems-table-cell>@d.Title</pems-table-cell>
+                        <pems-table-cell>@d.DvdVolumeNo</pems-table-cell>
+                        <pems-table-cell>@(d.IsNotApplicable ? "Not applicable" : "")</pems-table-cell>
+                        <pems-table-cell>@d.Notes</pems-table-cell>
+                        <pems-table-cell>
                             <form asp-action="RemoveDocument" method="post">
                                 <input type="hidden" name="mdbId" value="@Model.MDBId" />
                                 <input type="hidden" name="mdbDocumentId" value="@d.MDBDocumentId" />
                                 <pems-button tone="danger" size="small" outline="true"><pems-icon name="bi-trash" /></pems-button>
                             </form>
-                        </td>
-                    </tr>
+                        </pems-table-cell>
+                    </pems-table-row>
                 }
-            </tbody>
+            </pems-table-body>
         </pems-table>
         @if (!docs.Any())
         {

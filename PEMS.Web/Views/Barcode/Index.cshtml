@@ -35,27 +35,27 @@
     <h6 class="mb-3">@Localizer["Recent Barcodes"]</h6>
     <pems-table-scroll css="table-scroll-area pems-s-8da1c6e6">
     <pems-table kind="enterprise">
-        <thead>
-            <tr>
-                <th>@Localizer["Code"]</th><th>@Localizer["Symbology"]</th><th>@Localizer["Target"]</th><th>@Localizer["Status"]</th><th class="text-end">@Localizer["Prints"]</th><th>@Localizer["Created"]</th>
-            </tr>
-        </thead>
-        <tbody>
+        <pems-table-head>
+            <pems-table-row>
+                <pems-table-header>@Localizer["Code"]</pems-table-header><pems-table-header>@Localizer["Symbology"]</pems-table-header><pems-table-header>@Localizer["Target"]</pems-table-header><pems-table-header>@Localizer["Status"]</pems-table-header><pems-table-header class="text-end">@Localizer["Prints"]</pems-table-header><pems-table-header>@Localizer["Created"]</pems-table-header>
+            </pems-table-row>
+        </pems-table-head>
+        <pems-table-body>
             @if (recent != null)
             {
                 @foreach (dynamic b in recent)
                 {
-                    <tr>
-                        <td dir="ltr"><code>@b.Code</code></td>
-                        <td>@b.Symbology</td>
-                        <td class="small">@b.TargetType #@b.TargetId</td>
-                        <td><pems-badge tone="@(b.Status == "Active" ? "success" : b.Status == "Disabled" ? "neutral" : "danger")">@b.Status</pems-badge></td>
-                        <td class="text-end">@b.PrintCount</td>
-                        <td class="small">@(((DateTime)b.CreatedDate).ToString("yyyy-MM-dd HH:mm"))</td>
-                    </tr>
+                    <pems-table-row>
+                        <pems-table-cell dir="ltr"><code>@b.Code</code></pems-table-cell>
+                        <pems-table-cell>@b.Symbology</pems-table-cell>
+                        <pems-table-cell class="small">@b.TargetType #@b.TargetId</pems-table-cell>
+                        <pems-table-cell><pems-badge tone="@(b.Status == "Active" ? "success" : b.Status == "Disabled" ? "neutral" : "danger")">@b.Status</pems-badge></pems-table-cell>
+                        <pems-table-cell class="text-end">@b.PrintCount</pems-table-cell>
+                        <pems-table-cell class="small">@(((DateTime)b.CreatedDate).ToString("yyyy-MM-dd HH:mm"))</pems-table-cell>
+                    </pems-table-row>
                 }
             }
-        </tbody>
+        </pems-table-body>
     </pems-table>
     </pems-table-scroll>
 </pems-content-card>

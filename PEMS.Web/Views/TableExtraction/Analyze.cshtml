@@ -84,31 +84,31 @@
     <h6 class="mb-2">Rows (@(table?.Rows.Count ?? 0))</h6>
     <pems-table-scroll css="table-scroll-area pems-s-8da1c6e6">
         <pems-table kind="enterprise" scale="small">
-            <thead>
-                <tr>
-                    <th>Tag No.</th><th>@Localizer["Description"]</th><th>Signal</th><th>JB / Terminal</th>
-                    <th>Cable</th><th>Marshalling</th><th>I/O Card / Ch</th><th>@Localizer["Loop"]</th>
-                    <th>@Localizer["System"]</th><th>Spare</th><th>@Localizer["Remarks"]</th><th>Raw Extra</th>
-                </tr>
-            </thead>
-            <tbody>
+            <pems-table-head>
+                <pems-table-row>
+                    <pems-table-header>Tag No.</pems-table-header><pems-table-header>@Localizer["Description"]</pems-table-header><pems-table-header>Signal</pems-table-header><pems-table-header>JB / Terminal</pems-table-header>
+                    <pems-table-header>Cable</pems-table-header><pems-table-header>Marshalling</pems-table-header><pems-table-header>I/O Card / Ch</pems-table-header><pems-table-header>@Localizer["Loop"]</pems-table-header>
+                    <pems-table-header>@Localizer["System"]</pems-table-header><pems-table-header>Spare</pems-table-header><pems-table-header>@Localizer["Remarks"]</pems-table-header><pems-table-header>Raw Extra</pems-table-header>
+                </pems-table-row>
+            </pems-table-head>
+            <pems-table-body>
                 @if (table != null)
                 {
                     @foreach (var row in table.Rows)
                     {
-                        <tr>
-                            <td class="fw-semibold">@(row.TagNumber ?? "-")</td>
-                            <td class="small">@(row.Description ?? row.Service ?? "-")</td>
-                            <td class="small">@(row.SignalType ?? "-") @(row.SignalClass != null ? $"({row.SignalClass})" : "")</td>
-                            <td class="small">@(row.JunctionBox ?? "-") / @(row.Terminal ?? "-")</td>
-                            <td class="small">@(row.CableNo ?? "-")</td>
-                            <td class="small">@(row.MarshallingCabinet ?? "-") / @(row.MarshallingTerminal ?? "-")</td>
-                            <td class="small">@(row.IoCard ?? "-") / @(row.IoChannel ?? "-")</td>
-                            <td class="small">@(row.LoopNo ?? "-")</td>
-                            <td class="small">@(row.System ?? "-")</td>
-                            <td class="small">@(row.SpareOrHotSpare == true ? "Yes" : "-")</td>
-                            <td class="small pems-s-27af8985">@(row.Remarks ?? "-")</td>
-                            <td class="small text-muted">
+                        <pems-table-row>
+                            <pems-table-cell class="fw-semibold">@(row.TagNumber ?? "-")</pems-table-cell>
+                            <pems-table-cell class="small">@(row.Description ?? row.Service ?? "-")</pems-table-cell>
+                            <pems-table-cell class="small">@(row.SignalType ?? "-") @(row.SignalClass != null ? $"({row.SignalClass})" : "")</pems-table-cell>
+                            <pems-table-cell class="small">@(row.JunctionBox ?? "-") / @(row.Terminal ?? "-")</pems-table-cell>
+                            <pems-table-cell class="small">@(row.CableNo ?? "-")</pems-table-cell>
+                            <pems-table-cell class="small">@(row.MarshallingCabinet ?? "-") / @(row.MarshallingTerminal ?? "-")</pems-table-cell>
+                            <pems-table-cell class="small">@(row.IoCard ?? "-") / @(row.IoChannel ?? "-")</pems-table-cell>
+                            <pems-table-cell class="small">@(row.LoopNo ?? "-")</pems-table-cell>
+                            <pems-table-cell class="small">@(row.System ?? "-")</pems-table-cell>
+                            <pems-table-cell class="small">@(row.SpareOrHotSpare == true ? "Yes" : "-")</pems-table-cell>
+                            <pems-table-cell class="small pems-s-27af8985">@(row.Remarks ?? "-")</pems-table-cell>
+                            <pems-table-cell class="small text-muted">
                                 @if (row.RawExtra != null && row.RawExtra.Any())
                                 {
                                     @string.Join("; ", row.RawExtra.Select(kv => $"{kv.Key}={kv.Value}"))
@@ -117,11 +117,11 @@
                                 {
                                     @:-
                                 }
-                            </td>
-                        </tr>
+                            </pems-table-cell>
+                        </pems-table-row>
                     }
                 }
-            </tbody>
+            </pems-table-body>
         </pems-table>
 
         @if (table == null || !table.Rows.Any())

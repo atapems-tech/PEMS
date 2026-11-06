@@ -49,33 +49,33 @@
         <pems-list-grid>
             <pems-list-table grid-key="OCRProcessing" empty="@(!Model.Items.Any())" empty-text="No files uploaded yet."
                              filtered="@(filterCount > 0)" clear-href="@Url.Action("Index")">
-                <thead>
-                    <tr>
-                        <th data-col-key="file">@Localizer["File"]</th>
-                        <th data-col-key="document">@Localizer["Document"]</th>
-                        <th data-col-key="type">@Localizer["Type"]</th>
-                        <th data-col-key="size">@Localizer["Size"]</th>
-                        <th data-col-key="status">@Localizer["Status"]</th>
-                        <th data-col-key="summary">Summary / Error</th>
-                        <th data-col-key="uploaded">@Localizer["Uploaded"]</th>
-                        <th data-col-key="actions"></th>
-                    </tr>
-                </thead>
-                <tbody>
+                <pems-table-head>
+                    <pems-table-row>
+                        <pems-table-header data-col-key="file">@Localizer["File"]</pems-table-header>
+                        <pems-table-header data-col-key="document">@Localizer["Document"]</pems-table-header>
+                        <pems-table-header data-col-key="type">@Localizer["Type"]</pems-table-header>
+                        <pems-table-header data-col-key="size">@Localizer["Size"]</pems-table-header>
+                        <pems-table-header data-col-key="status">@Localizer["Status"]</pems-table-header>
+                        <pems-table-header data-col-key="summary">Summary / Error</pems-table-header>
+                        <pems-table-header data-col-key="uploaded">@Localizer["Uploaded"]</pems-table-header>
+                        <pems-table-header data-col-key="actions"></pems-table-header>
+                    </pems-table-row>
+                </pems-table-head>
+                <pems-table-body>
                     @foreach (var a in Model.Items)
                     {
                         var tone = a.AIStatus switch { "Completed" => "success", "Processing" => "info", "Failed" => "danger", _ => "neutral" };
-                        <tr class="lp-row">
-                            <td>@a.FileName</td>
-                            <td>@a.DocumentNo</td>
-                            <td>@a.FileExtension</td>
-                            <td>@(a.FileSize / 1024) KB</td>
-                            <td><pems-badge tone="@tone">@a.AIStatus</pems-badge></td>
-                            <td class="small text-muted pems-s-55585d51">
+                        <pems-table-row class="lp-row">
+                            <pems-table-cell>@a.FileName</pems-table-cell>
+                            <pems-table-cell>@a.DocumentNo</pems-table-cell>
+                            <pems-table-cell>@a.FileExtension</pems-table-cell>
+                            <pems-table-cell>@(a.FileSize / 1024) KB</pems-table-cell>
+                            <pems-table-cell><pems-badge tone="@tone">@a.AIStatus</pems-badge></pems-table-cell>
+                            <pems-table-cell class="small text-muted pems-s-55585d51">
                                 @(a.AIStatus == "Failed" ? a.AIError : a.AISummary)
-                            </td>
-                            <td>@a.UploadDate.ToString("yyyy-MM-dd HH:mm")</td>
-                            <td>
+                            </pems-table-cell>
+                            <pems-table-cell>@a.UploadDate.ToString("yyyy-MM-dd HH:mm")</pems-table-cell>
+                            <pems-table-cell>
                                 <form asp-action="Retry" asp-route-id="@a.AttachmentId" method="post" class="d-inline">
                                     <pems-button tone="neutral" size="small" outline="true"><pems-icon name="bi-arrow-repeat" /></pems-button>
                                 </form>
@@ -83,10 +83,10 @@
                                 {
                                     <pems-button tone="warning" size="small" outline="true" as="a" asp-controller="AIExtraction" asp-action="Review" asp-route-attachmentId="@a.AttachmentId"><pems-icon name="bi-eye" /></pems-button>
                                 }
-                            </td>
-                        </tr>
+                            </pems-table-cell>
+                        </pems-table-row>
                     }
-                </tbody>
+                </pems-table-body>
             </pems-list-table>
             <pems-list-footer>
                 @await Html.PartialAsync("_Pagination", new PEMS.Web.ViewModels.PaginationViewModel

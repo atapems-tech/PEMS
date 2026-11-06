@@ -59,18 +59,18 @@
         {
             <pems-table-scroll>
                 <pems-table scale="small" css="table-enterprise">
-                    <thead><tr><th>@Localizer["Org_Diag_Request"]</th><th>@Localizer["Org_Diag_Requester"]</th><th>@Localizer["Org_Diag_Reason"]</th><th></th></tr></thead>
-                    <tbody>
+                    <pems-table-head><pems-table-row><pems-table-header>@Localizer["Org_Diag_Request"]</pems-table-header><pems-table-header>@Localizer["Org_Diag_Requester"]</pems-table-header><pems-table-header>@Localizer["Org_Diag_Reason"]</pems-table-header><pems-table-header></pems-table-header></pems-table-row></pems-table-head>
+                    <pems-table-body>
                     @foreach (var b in blocked)
                     {
-                        <tr>
-                            <td>@b.Module · @b.RequestNumber</td>
-                            <td>@b.RequesterName</td>
-                            <td><code>@b.Reason</code> <span class="small text-muted">@(b.Reason == null ? "" : Localizer["Org_Issue_" + b.Reason].Value)</span></td>
-                            <td class="text-end"><a class="vs-btn vs-btn--sm" asp-area="Warehouse" asp-controller="PartCatalogueRequest" asp-action="Details" asp-route-id="@b.RequestId">@Localizer["Org_Diag_Open"]</a></td>
-                        </tr>
+                        <pems-table-row>
+                            <pems-table-cell>@b.Module · @b.RequestNumber</pems-table-cell>
+                            <pems-table-cell>@b.RequesterName</pems-table-cell>
+                            <pems-table-cell><code>@b.Reason</code> <span class="small text-muted">@(b.Reason == null ? "" : Localizer["Org_Issue_" + b.Reason].Value)</span></pems-table-cell>
+                            <pems-table-cell class="text-end"><a class="vs-btn vs-btn--sm" asp-area="Warehouse" asp-controller="PartCatalogueRequest" asp-action="Details" asp-route-id="@b.RequestId">@Localizer["Org_Diag_Open"]</a></pems-table-cell>
+                        </pems-table-row>
                     }
-                    </tbody>
+                    </pems-table-body>
                 </pems-table>
             </pems-table-scroll>
         }
@@ -83,18 +83,18 @@
         {
             <pems-table-scroll>
                 <pems-table scale="small" css="table-enterprise">
-                    <thead><tr><th></th><th>@Localizer["Org_Diag_Code"]</th><th>@Localizer["Org_Diag_Subject"]</th><th>@Localizer["Org_Diag_Message"]</th></tr></thead>
-                    <tbody>
+                    <pems-table-head><pems-table-row><pems-table-header></pems-table-header><pems-table-header>@Localizer["Org_Diag_Code"]</pems-table-header><pems-table-header>@Localizer["Org_Diag_Subject"]</pems-table-header><pems-table-header>@Localizer["Org_Diag_Message"]</pems-table-header></pems-table-row></pems-table-head>
+                    <pems-table-body>
                     @foreach (var i in Model)
                     {
-                        <tr>
-                            <td><pems-badge tone="none" css="@Sev(i.Severity)">@i.Severity</pems-badge></td>
-                            <td><code>@i.Code</code></td>
-                            <td>@i.Subject</td>
-                            <td class="small">@i.Message</td>
-                        </tr>
+                        <pems-table-row>
+                            <pems-table-cell><pems-badge tone="none" css="@Sev(i.Severity)">@i.Severity</pems-badge></pems-table-cell>
+                            <pems-table-cell><code>@i.Code</code></pems-table-cell>
+                            <pems-table-cell>@i.Subject</pems-table-cell>
+                            <pems-table-cell class="small">@i.Message</pems-table-cell>
+                        </pems-table-row>
                     }
-                    </tbody>
+                    </pems-table-body>
                 </pems-table>
             </pems-table-scroll>
         }

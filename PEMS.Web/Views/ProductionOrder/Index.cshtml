@@ -38,28 +38,28 @@
         <pems-list-grid>
             <pems-list-table grid-key="ProductionOrder" empty="@(!Model.Items.Any())" empty-text="No production orders yet."
                              filtered="@(filterCount > 0 || !string.IsNullOrEmpty(search))" clear-href="@Url.Action("Index")">
-                <thead>
-                    <tr>
-                        <th>Order #</th><th>@Localizer["Material"]</th><th>Planned Qty</th><th>@Localizer["Status"]</th><th>@Localizer["Work Center"]</th>
-                        <th>@Localizer["Planned Start"]</th><th>@Localizer["Planned Finish"]</th><th>Runs</th><th></th>
-                    </tr>
-                </thead>
-                <tbody>
+                <pems-table-head>
+                    <pems-table-row>
+                        <pems-table-header>Order #</pems-table-header><pems-table-header>@Localizer["Material"]</pems-table-header><pems-table-header>Planned Qty</pems-table-header><pems-table-header>@Localizer["Status"]</pems-table-header><pems-table-header>@Localizer["Work Center"]</pems-table-header>
+                        <pems-table-header>@Localizer["Planned Start"]</pems-table-header><pems-table-header>@Localizer["Planned Finish"]</pems-table-header><pems-table-header>Runs</pems-table-header><pems-table-header></pems-table-header>
+                    </pems-table-row>
+                </pems-table-head>
+                <pems-table-body>
                     @foreach (var o in Model.Items)
                     {
-                        <tr class="lp-row">
-                            <td class="lp-no"><a asp-action="Details" asp-route-id="@o.ProductionOrderId" class="lp-subject">@o.OrderNumber</a></td>
-                            <td>@o.MaterialCode <div class="text-muted small">@o.MaterialDescription</div></td>
-                            <td>@o.PlannedQuantity.ToString("N3") @o.UomCode</td>
-                            <td><pems-badge tone="neutral">@o.Status</pems-badge></td>
-                            <td>@o.WorkCenterCode</td>
-                            <td class="small">@(o.PlannedStartDate?.ToString("yyyy-MM-dd"))</td>
-                            <td class="small">@(o.PlannedFinishDate?.ToString("yyyy-MM-dd"))</td>
-                            <td>@o.RunCount</td>
-                            <td class="text-end"><pems-button tone="primary" size="small" outline="true" as="a" asp-action="Details" asp-route-id="@o.ProductionOrderId">Open</pems-button></td>
-                        </tr>
+                        <pems-table-row class="lp-row">
+                            <pems-table-cell class="lp-no"><a asp-action="Details" asp-route-id="@o.ProductionOrderId" class="lp-subject">@o.OrderNumber</a></pems-table-cell>
+                            <pems-table-cell>@o.MaterialCode <div class="text-muted small">@o.MaterialDescription</div></pems-table-cell>
+                            <pems-table-cell>@o.PlannedQuantity.ToString("N3") @o.UomCode</pems-table-cell>
+                            <pems-table-cell><pems-badge tone="neutral">@o.Status</pems-badge></pems-table-cell>
+                            <pems-table-cell>@o.WorkCenterCode</pems-table-cell>
+                            <pems-table-cell class="small">@(o.PlannedStartDate?.ToString("yyyy-MM-dd"))</pems-table-cell>
+                            <pems-table-cell class="small">@(o.PlannedFinishDate?.ToString("yyyy-MM-dd"))</pems-table-cell>
+                            <pems-table-cell>@o.RunCount</pems-table-cell>
+                            <pems-table-cell class="text-end"><pems-button tone="primary" size="small" outline="true" as="a" asp-action="Details" asp-route-id="@o.ProductionOrderId">Open</pems-button></pems-table-cell>
+                        </pems-table-row>
                     }
-                </tbody>
+                </pems-table-body>
             </pems-list-table>
             <pems-list-footer>
                 @await Html.PartialAsync("_Pagination", new PEMS.Web.ViewModels.PaginationViewModel

@@ -43,29 +43,29 @@
 <pems-content-card css="mb-3">
     <h6 class="mb-3">Line Items</h6>
     <pems-table kind="enterprise" css="mb-0">
-        <thead>
-            <tr><th>#</th><th>@Localizer["Activity"]</th><th>@Localizer["Discipline"]</th><th>@Localizer["Category"]</th><th>@Localizer["Acceptance Criteria"]</th><th>@Localizer["Responsible"]</th><th>@Localizer["Status"]</th><th>@Localizer["Actions"]</th></tr>
-        </thead>
-        <tbody>
+        <pems-table-head>
+            <pems-table-row><pems-table-header>#</pems-table-header><pems-table-header>@Localizer["Activity"]</pems-table-header><pems-table-header>@Localizer["Discipline"]</pems-table-header><pems-table-header>@Localizer["Category"]</pems-table-header><pems-table-header>@Localizer["Acceptance Criteria"]</pems-table-header><pems-table-header>@Localizer["Responsible"]</pems-table-header><pems-table-header>@Localizer["Status"]</pems-table-header><pems-table-header>@Localizer["Actions"]</pems-table-header></pems-table-row>
+        </pems-table-head>
+        <pems-table-body>
             @foreach (var li in Model.LineItems.OrderBy(x => x.SequenceNo))
             {
-                <tr>
-                    <td>@li.SequenceNo</td>
-                    <td class="small">@li.Activity</td>
-                    <td class="small">@li.QCDiscipline?.Name</td>
-                    <td>
+                <pems-table-row>
+                    <pems-table-cell>@li.SequenceNo</pems-table-cell>
+                    <pems-table-cell class="small">@li.Activity</pems-table-cell>
+                    <pems-table-cell class="small">@li.QCDiscipline?.Name</pems-table-cell>
+                    <pems-table-cell>
                         <pems-badge tone="neutral" title="H=Hold, W=Witness, R=Review, S=Surveillance, M=Monitor">@li.InspectionCategory</pems-badge>
-                    </td>
-                    <td class="small">@li.AcceptanceCriteria</td>
-                    <td class="small">@li.ResponsibleParty</td>
-                    <td>
+                    </pems-table-cell>
+                    <pems-table-cell class="small">@li.AcceptanceCriteria</pems-table-cell>
+                    <pems-table-cell class="small">@li.ResponsibleParty</pems-table-cell>
+                    <pems-table-cell>
                         <pems-badge tone="none" css="@(li.Status == "Passed" ? "bg-success" : li.Status == "Failed" ? "bg-danger" : li.Status == "Notified" ? "bg-info" : "bg-light text-dark")">@li.Status</pems-badge>
                         @if (li.NotifiedDate.HasValue)
                         {
                             <div class="text-muted small">اعلان: @li.NotifiedDate.Value.ToString("yyyy-MM-dd HH:mm")</div>
                         }
-                    </td>
-                    <td><pems-flex dir="column" gap="1">
+                    </pems-table-cell>
+                    <pems-table-cell><pems-flex dir="column" gap="1">
                         @if (li.InspectionCategory == "H" && li.Status == "Pending")
                         {
                             <form asp-action="ItpNotifyHoldPoint" method="post">
@@ -80,11 +80,11 @@
                                 <pems-icon name="bi-clipboard-check" /> Perform Inspection
                             </pems-button>
                         }
-                    </pems-flex></td>
-                </tr>
+                    </pems-flex></pems-table-cell>
+                </pems-table-row>
 
             }
-        </tbody>
+        </pems-table-body>
     </pems-table>
 </pems-content-card>
 

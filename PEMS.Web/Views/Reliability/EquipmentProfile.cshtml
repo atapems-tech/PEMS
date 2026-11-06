@@ -69,14 +69,14 @@
         <pems-content-card css="h-100">
             <h6 class="mb-2">Maintenance</h6>
             <pems-table kind="enterprise" scale="small" css="mb-0">
-                <tbody>
-                    <tr><td>Active Strategies</td><td class="text-end">@Model.ActiveStrategyCount</td></tr>
-                    <tr><td>Active PM Plans</td><td class="text-end">@Model.ActiveMaintenancePlanCount</td></tr>
-                    <tr><td>Preventive WOs</td><td class="text-end">@Model.PreventiveWorkOrderCount</td></tr>
-                    <tr><td>Corrective WOs</td><td class="text-end">@Model.CorrectiveWorkOrderCount</td></tr>
-                    <tr><td>Emergency WOs</td><td class="text-end">@Model.EmergencyWorkOrderCount</td></tr>
-                    <tr><td>Open Backlog</td><td class="text-end">@Model.OpenBacklogWorkOrderCount</td></tr>
-                </tbody>
+                <pems-table-body>
+                    <pems-table-row><pems-table-cell>Active Strategies</pems-table-cell><pems-table-cell class="text-end">@Model.ActiveStrategyCount</pems-table-cell></pems-table-row>
+                    <pems-table-row><pems-table-cell>Active PM Plans</pems-table-cell><pems-table-cell class="text-end">@Model.ActiveMaintenancePlanCount</pems-table-cell></pems-table-row>
+                    <pems-table-row><pems-table-cell>Preventive WOs</pems-table-cell><pems-table-cell class="text-end">@Model.PreventiveWorkOrderCount</pems-table-cell></pems-table-row>
+                    <pems-table-row><pems-table-cell>Corrective WOs</pems-table-cell><pems-table-cell class="text-end">@Model.CorrectiveWorkOrderCount</pems-table-cell></pems-table-row>
+                    <pems-table-row><pems-table-cell>Emergency WOs</pems-table-cell><pems-table-cell class="text-end">@Model.EmergencyWorkOrderCount</pems-table-cell></pems-table-row>
+                    <pems-table-row><pems-table-cell>Open Backlog</pems-table-cell><pems-table-cell class="text-end">@Model.OpenBacklogWorkOrderCount</pems-table-cell></pems-table-row>
+                </pems-table-body>
             </pems-table>
         </pems-content-card>
     </pems-col>

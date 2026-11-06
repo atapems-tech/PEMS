@@ -237,32 +237,32 @@
 
                     <pems-table-scroll>
                         <pems-table kind="enterprise" id="permTableAllowed">
-                            <thead><tr>
-                                <th class="perm-select-cell"><pems-input type="checkbox" kind="check" css="perm-select-all" disabled="@(!canEditPermissions)" aria-label="@Localizer["PermAdmin_SelectAllInTable"]" /></th>
-                                <th>@Localizer["Resource"]</th><th>@Localizer["Action"]</th><th>@Localizer["Permission"]</th><th>@Localizer["Status"]</th><th>@Localizer["Destructive"]</th>
-                            </tr></thead>
-                            <tbody>
+                            <pems-table-head><pems-table-row>
+                                <pems-table-header class="perm-select-cell"><pems-input type="checkbox" kind="check" css="perm-select-all" disabled="@(!canEditPermissions)" aria-label="@Localizer["PermAdmin_SelectAllInTable"]" /></pems-table-header>
+                                <pems-table-header>@Localizer["Resource"]</pems-table-header><pems-table-header>@Localizer["Action"]</pems-table-header><pems-table-header>@Localizer["Permission"]</pems-table-header><pems-table-header>@Localizer["Status"]</pems-table-header><pems-table-header>@Localizer["Destructive"]</pems-table-header>
+                            </pems-table-row></pems-table-head>
+                            <pems-table-body>
                             @foreach (var row in Model.EffectivePermissions.Where(r => r.Allowed))
                             {
                                 <partial name="_EffectivePermissionRow" model="new PEMS.Web.Areas.Admin.Models.UserEffectivePermissionRowVm { Row = row, LockedReason = canEditPermissions ? RowLock(row) : (Model.RoleNames.Count == 0 ? PEMS.Application.DTOs.PermissionChangeReasons.NoRoles : PEMS.Application.DTOs.PermissionChangeReasons.SystemAdmin) }" />
                             }
-                            </tbody>
+                            </pems-table-body>
                         </pems-table>
                     </pems-table-scroll>
                     <details class="mt-3">
                         <summary class="text-body-secondary small">@Localizer["Show not-granted permissions"] (<span id="permNotGrantedCount">@(Model.EffectivePermissions.Count - Model.AllowedCount)</span>)</summary>
                         <pems-table-scroll css="mt-2">
                             <pems-table kind="enterprise" id="permTableDenied">
-                                <thead><tr>
-                                    <th class="perm-select-cell"><pems-input type="checkbox" kind="check" css="perm-select-all" disabled="@(!canEditPermissions)" aria-label="@Localizer["PermAdmin_SelectAllInTable"]" /></th>
-                                    <th>@Localizer["Resource"]</th><th>@Localizer["Action"]</th><th>@Localizer["Permission"]</th><th>@Localizer["Status"]</th><th>@Localizer["Destructive"]</th>
-                                </tr></thead>
-                                <tbody>
+                                <pems-table-head><pems-table-row>
+                                    <pems-table-header class="perm-select-cell"><pems-input type="checkbox" kind="check" css="perm-select-all" disabled="@(!canEditPermissions)" aria-label="@Localizer["PermAdmin_SelectAllInTable"]" /></pems-table-header>
+                                    <pems-table-header>@Localizer["Resource"]</pems-table-header><pems-table-header>@Localizer["Action"]</pems-table-header><pems-table-header>@Localizer["Permission"]</pems-table-header><pems-table-header>@Localizer["Status"]</pems-table-header><pems-table-header>@Localizer["Destructive"]</pems-table-header>
+                                </pems-table-row></pems-table-head>
+                                <pems-table-body>
                                 @foreach (var row in Model.EffectivePermissions.Where(r => !r.Allowed))
                                 {
                                     <partial name="_EffectivePermissionRow" model="new PEMS.Web.Areas.Admin.Models.UserEffectivePermissionRowVm { Row = row, LockedReason = canEditPermissions ? RowLock(row) : (Model.RoleNames.Count == 0 ? PEMS.Application.DTOs.PermissionChangeReasons.NoRoles : PEMS.Application.DTOs.PermissionChangeReasons.SystemAdmin) }" />
                                 }
-                                </tbody>
+                                </pems-table-body>
                             </pems-table>
                         </pems-table-scroll>
                     </details>
@@ -339,15 +339,15 @@
                     {
                         <pems-table-scroll>
                             <pems-table kind="enterprise">
-                                <thead><tr><th>@Localizer["Permission A"]</th><th>@Localizer["Permission B"]</th><th>@Localizer["Description"]</th><th>@Localizer["Status"]</th></tr></thead>
-                                <tbody>
+                                <pems-table-head><pems-table-row><pems-table-header>@Localizer["Permission A"]</pems-table-header><pems-table-header>@Localizer["Permission B"]</pems-table-header><pems-table-header>@Localizer["Description"]</pems-table-header><pems-table-header>@Localizer["Status"]</pems-table-header></pems-table-row></pems-table-head>
+                                <pems-table-body>
                                 @foreach (var s in Model.SoDExposure)
                                 {
-                                    <tr>
-                                        <td><code>@s.PermissionAName</code></td>
-                                        <td><code>@s.PermissionBName</code></td>
-                                        <td class="text-body-secondary small">@(s.PolicyDescription ?? "")</td>
-                                        <td>
+                                    <pems-table-row>
+                                        <pems-table-cell><code>@s.PermissionAName</code></pems-table-cell>
+                                        <pems-table-cell><code>@s.PermissionBName</code></pems-table-cell>
+                                        <pems-table-cell class="text-body-secondary small">@(s.PolicyDescription ?? "")</pems-table-cell>
+                                        <pems-table-cell>
                                             @if (s.UserHoldsBoth)
                                             {
                                                 <span class="admin-status inactive"><pems-icon name="bi-exclamation-triangle" /> @Localizer["Potential exposure"]</span>
@@ -356,10 +356,10 @@
                                             {
                                                 <span class="admin-status active"><pems-icon name="bi-check2-circle" /> @Localizer["Not exposed"]</span>
                                             }
-                                        </td>
-                                    </tr>
+                                        </pems-table-cell>
+                                    </pems-table-row>
                                 }
-                                </tbody>
+                                </pems-table-body>
                             </pems-table>
                         </pems-table-scroll>
                     }
@@ -423,15 +423,15 @@
             {
                 <pems-table-scroll>
                     <pems-table kind="enterprise">
-                        <thead><tr><th>@Localizer["Timestamp"]</th><th>@Localizer["Permission"]</th><th>@Localizer["Resource ID"]</th><th>@Localizer["Decision"]</th><th>@Localizer["Reason"]</th></tr></thead>
-                        <tbody>
+                        <pems-table-head><pems-table-row><pems-table-header>@Localizer["Timestamp"]</pems-table-header><pems-table-header>@Localizer["Permission"]</pems-table-header><pems-table-header>@Localizer["Resource ID"]</pems-table-header><pems-table-header>@Localizer["Decision"]</pems-table-header><pems-table-header>@Localizer["Reason"]</pems-table-header></pems-table-row></pems-table-head>
+                        <pems-table-body>
                         @foreach (var log in Model.RecentAuditLogs)
                         {
-                            <tr>
-                                <td class="vs-num">@log.Timestamp.ToString("yyyy-MM-dd HH:mm:ss")</td>
-                                <td><code>@($"{log.ResourceName}.{log.ActionName}")</code></td>
-                                <td class="text-body-secondary small">@(log.ResourceId ?? "")</td>
-                                <td>
+                            <pems-table-row>
+                                <pems-table-cell class="vs-num">@log.Timestamp.ToString("yyyy-MM-dd HH:mm:ss")</pems-table-cell>
+                                <pems-table-cell><code>@($"{log.ResourceName}.{log.ActionName}")</code></pems-table-cell>
+                                <pems-table-cell class="text-body-secondary small">@(log.ResourceId ?? "")</pems-table-cell>
+                                <pems-table-cell>
                                     @if (log.Decision == "Allow")
                                     {
                                         <span class="admin-status active"><pems-icon name="bi-check2-circle" /> @log.Decision</span>
@@ -440,11 +440,11 @@
                                     {
                                         <span class="admin-status inactive"><pems-icon name="bi-x-circle" /> @log.Decision</span>
                                     }
-                                </td>
-                                <td class="text-body-secondary small">@(log.Reason ?? "")</td>
-                            </tr>
+                                </pems-table-cell>
+                                <pems-table-cell class="text-body-secondary small">@(log.Reason ?? "")</pems-table-cell>
+                            </pems-table-row>
                         }
-                        </tbody>
+                        </pems-table-body>
                     </pems-table>
                 </pems-table-scroll>
             }

@@ -20,29 +20,29 @@
     {
         <pems-table-scroll>
             <pems-table kind="enterprise">
-                <thead>
-                    <tr>
-                        <th>@Localizer["Identifier"]</th><th>@Localizer["Title"]</th><th>@Localizer["Issuer"]</th><th>@Localizer["Related Module"]</th>
-                        <th>@Localizer["Applicability"]</th><th>@Localizer["Verification"]</th><th>@Localizer["PEMS Status"]</th><th>@Localizer["Status"]</th><th></th>
-                    </tr>
-                </thead>
-                <tbody>
+                <pems-table-head>
+                    <pems-table-row>
+                        <pems-table-header>@Localizer["Identifier"]</pems-table-header><pems-table-header>@Localizer["Title"]</pems-table-header><pems-table-header>@Localizer["Issuer"]</pems-table-header><pems-table-header>@Localizer["Related Module"]</pems-table-header>
+                        <pems-table-header>@Localizer["Applicability"]</pems-table-header><pems-table-header>@Localizer["Verification"]</pems-table-header><pems-table-header>@Localizer["PEMS Status"]</pems-table-header><pems-table-header>@Localizer["Status"]</pems-table-header><pems-table-header></pems-table-header>
+                    </pems-table-row>
+                </pems-table-head>
+                <pems-table-body>
                     @foreach (var s in Model)
                     {
-                        <tr>
-                            <td><strong>@s.Identifier</strong></td>
-                            <td><a asp-action="StandardEdit" asp-route-id="@s.HelpStandardReferenceId">@s.TitleEn</a></td>
-                            <td class="small text-muted">@s.IssuingOrganization</td>
-                            <td class="small text-muted">@s.RelatedModule</td>
-                            <td><pems-badge tone="light">@s.ApplicabilityStatus</pems-badge></td>
-                            <td><pems-badge tone="light">@s.VerificationStatus</pems-badge></td>
-                            <td>
+                        <pems-table-row>
+                            <pems-table-cell><strong>@s.Identifier</strong></pems-table-cell>
+                            <pems-table-cell><a asp-action="StandardEdit" asp-route-id="@s.HelpStandardReferenceId">@s.TitleEn</a></pems-table-cell>
+                            <pems-table-cell class="small text-muted">@s.IssuingOrganization</pems-table-cell>
+                            <pems-table-cell class="small text-muted">@s.RelatedModule</pems-table-cell>
+                            <pems-table-cell><pems-badge tone="light">@s.ApplicabilityStatus</pems-badge></pems-table-cell>
+                            <pems-table-cell><pems-badge tone="light">@s.VerificationStatus</pems-badge></pems-table-cell>
+                            <pems-table-cell>
                                 <pems-badge tone="none" css="@(s.PEMSImplementationStatus == "ComplianceEvidenceAvailable" ? "bg-success" : "bg-secondary")">
                                     @s.PEMSImplementationStatus
                                 </pems-badge>
-                            </td>
-                            <td><pems-badge tone="none" css="@(s.IsPublished ? "bg-success" : "bg-secondary")">@(s.IsPublished ? "Published" : "Draft")</pems-badge></td>
-                            <td class="text-end">
+                            </pems-table-cell>
+                            <pems-table-cell><pems-badge tone="none" css="@(s.IsPublished ? "bg-success" : "bg-secondary")">@(s.IsPublished ? "Published" : "Draft")</pems-badge></pems-table-cell>
+                            <pems-table-cell class="text-end">
                                 <form asp-action="StandardSetPublished" asp-route-id="@s.HelpStandardReferenceId" method="post" class="d-inline">
                                     <input type="hidden" name="isPublished" value="@(!s.IsPublished)" />
                                     <pems-button tone="none" size="small" css="btn-outline-@(s.IsPublished ? "secondary" : "success")" type="submit">
@@ -52,10 +52,10 @@
                                 <form asp-action="StandardDelete" asp-route-id="@s.HelpStandardReferenceId" method="post" class="d-inline" data-pems-confirm="Delete this standard reference?">
                                     <pems-button tone="danger" size="small" outline="true" type="submit"><pems-icon name="bi-trash" /></pems-button>
                                 </form>
-                            </td>
-                        </tr>
+                            </pems-table-cell>
+                        </pems-table-row>
                     }
-                </tbody>
+                </pems-table-body>
             </pems-table>
         </pems-table-scroll>
     }

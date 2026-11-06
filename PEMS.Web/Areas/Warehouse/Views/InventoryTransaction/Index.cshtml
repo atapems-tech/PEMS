@@ -65,33 +65,33 @@
 
         <pems-list-grid>
             <pems-list-table grid-key="InventoryTransaction" empty="@(!Model.Items.Any())" empty-text="@Localizer["ItL_Empty"]">
-                <thead>
-                    <tr>
-                        <th class="pems-w-140" data-col-key="date" data-resizable="true" data-min-width="120" data-max-width="200">@Localizer["Cm_Date"]</th>
-                        <th data-col-key="material" data-resizable="true" data-min-width="160" data-max-width="420">@Localizer["ItL_Material"]</th>
-                        <th class="pems-w-120" data-col-key="type" data-resizable="true" data-min-width="90" data-max-width="180">@Localizer["Cm_Type"]</th>
-                        <th class="pems-w-100" data-col-key="warehouse" data-resizable="true" data-min-width="80" data-max-width="160">@Localizer["ItL_Warehouse"]</th>
-                        <th data-col-key="qty" data-resizable="true" data-min-width="70" data-max-width="120" class="text-end pems-w-90">@Localizer["ItL_Qty"]</th>
-                        <th data-col-key="reference" data-resizable="true" data-min-width="100" data-max-width="220" class="vs-hide-md pems-w-140">@Localizer["ItL_Reference"]</th>
-                        <th data-col-key="by" data-resizable="true" data-min-width="100" data-max-width="220" class="vs-hide-md pems-w-140">@Localizer["ItL_By"]</th>
-                        <th data-col-key="reason" data-resizable="true" data-min-width="120" data-max-width="320" class="vs-hide-md">@Localizer["ItL_Reason"]</th>
-                    </tr>
-                </thead>
-                <tbody>
+                <pems-table-head>
+                    <pems-table-row>
+                        <pems-table-header class="pems-w-140" data-col-key="date" data-resizable="true" data-min-width="120" data-max-width="200">@Localizer["Cm_Date"]</pems-table-header>
+                        <pems-table-header data-col-key="material" data-resizable="true" data-min-width="160" data-max-width="420">@Localizer["ItL_Material"]</pems-table-header>
+                        <pems-table-header class="pems-w-120" data-col-key="type" data-resizable="true" data-min-width="90" data-max-width="180">@Localizer["Cm_Type"]</pems-table-header>
+                        <pems-table-header class="pems-w-100" data-col-key="warehouse" data-resizable="true" data-min-width="80" data-max-width="160">@Localizer["ItL_Warehouse"]</pems-table-header>
+                        <pems-table-header data-col-key="qty" data-resizable="true" data-min-width="70" data-max-width="120" class="text-end pems-w-90">@Localizer["ItL_Qty"]</pems-table-header>
+                        <pems-table-header data-col-key="reference" data-resizable="true" data-min-width="100" data-max-width="220" class="vs-hide-md pems-w-140">@Localizer["ItL_Reference"]</pems-table-header>
+                        <pems-table-header data-col-key="by" data-resizable="true" data-min-width="100" data-max-width="220" class="vs-hide-md pems-w-140">@Localizer["ItL_By"]</pems-table-header>
+                        <pems-table-header data-col-key="reason" data-resizable="true" data-min-width="120" data-max-width="320" class="vs-hide-md">@Localizer["ItL_Reason"]</pems-table-header>
+                    </pems-table-row>
+                </pems-table-head>
+                <pems-table-body>
                     @foreach (var t in Model.Items)
                     {
-                        <tr class="lp-row">
-                            <td class="small"><span class="vs-num">@t.TransactionDate.ToString("yyyy-MM-dd HH:mm")</span></td>
-                            <td class="small"><span class="vs-title-cell" title="@t.MaterialDescription"><span class="vs-num">@t.MaterialCode</span> - @t.MaterialDescription</span></td>
-                            <td><span class="vs-pill vs-pill--neutral">@TypeText(t.TransactionType)</span></td>
-                            <td class="small"><span class="vs-num">@t.WarehouseCode</span></td>
-                            <td class="text-end"><span class="vs-num">@t.Quantity</span></td>
-                            <td class="small vs-hide-md">@(t.ReferenceType ?? "-") <span class="vs-num">@(t.ReferenceId?.ToString() ?? "")</span></td>
-                            <td class="small vs-hide-md">@(t.EmployeeName ?? "-")</td>
-                            <td class="small text-muted vs-hide-md">@(t.Reason ?? "-")</td>
-                        </tr>
+                        <pems-table-row class="lp-row">
+                            <pems-table-cell class="small"><span class="vs-num">@t.TransactionDate.ToString("yyyy-MM-dd HH:mm")</span></pems-table-cell>
+                            <pems-table-cell class="small"><span class="vs-title-cell" title="@t.MaterialDescription"><span class="vs-num">@t.MaterialCode</span> - @t.MaterialDescription</span></pems-table-cell>
+                            <pems-table-cell><span class="vs-pill vs-pill--neutral">@TypeText(t.TransactionType)</span></pems-table-cell>
+                            <pems-table-cell class="small"><span class="vs-num">@t.WarehouseCode</span></pems-table-cell>
+                            <pems-table-cell class="text-end"><span class="vs-num">@t.Quantity</span></pems-table-cell>
+                            <pems-table-cell class="small vs-hide-md">@(t.ReferenceType ?? "-") <span class="vs-num">@(t.ReferenceId?.ToString() ?? "")</span></pems-table-cell>
+                            <pems-table-cell class="small vs-hide-md">@(t.EmployeeName ?? "-")</pems-table-cell>
+                            <pems-table-cell class="small text-muted vs-hide-md">@(t.Reason ?? "-")</pems-table-cell>
+                        </pems-table-row>
                     }
-                </tbody>
+                </pems-table-body>
             </pems-list-table>
 
             <pems-list-footer>

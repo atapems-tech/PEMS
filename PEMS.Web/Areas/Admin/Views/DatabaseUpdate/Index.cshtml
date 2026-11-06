@@ -73,27 +73,27 @@
         {
             <pems-table-scroll>
                 <pems-table kind="enterprise">
-                    <thead><tr><th>@Localizer["Started (UTC)"]</th><th>@Localizer["Trigger"]</th><th>@Localizer["Mode"]</th><th>@Localizer["From"]</th><th>@Localizer["To"]</th><th>@Localizer["Applied"]</th><th>@Localizer["Seconds"]</th><th>@Localizer["Result"]</th><th>@Localizer["By"]</th><th>@Localizer["Backup file"]</th></tr></thead>
-                    <tbody>
+                    <pems-table-head><pems-table-row><pems-table-header>@Localizer["Started (UTC)"]</pems-table-header><pems-table-header>@Localizer["Trigger"]</pems-table-header><pems-table-header>@Localizer["Mode"]</pems-table-header><pems-table-header>@Localizer["From"]</pems-table-header><pems-table-header>@Localizer["To"]</pems-table-header><pems-table-header>@Localizer["Applied"]</pems-table-header><pems-table-header>@Localizer["Seconds"]</pems-table-header><pems-table-header>@Localizer["Result"]</pems-table-header><pems-table-header>@Localizer["By"]</pems-table-header><pems-table-header>@Localizer["Backup file"]</pems-table-header></pems-table-row></pems-table-head>
+                    <pems-table-body>
                     @foreach (var r in Model.RecentRuns)
                     {
-                        <tr>
-                            <td class="small">@r.StartedAtUtc.ToString("yyyy-MM-dd HH:mm:ss")</td>
-                            <td>@r.Trigger</td>
-                            <td>@r.Mode</td>
-                            <td class="small"><code>@(r.FromMigration ?? "-")</code></td>
-                            <td class="small"><code>@(r.ToMigration ?? "-")</code></td>
-                            <td>@r.MigrationsApplied</td>
-                            <td>@r.DurationSeconds.ToString("0.0")</td>
-                            <td>
+                        <pems-table-row>
+                            <pems-table-cell class="small">@r.StartedAtUtc.ToString("yyyy-MM-dd HH:mm:ss")</pems-table-cell>
+                            <pems-table-cell>@r.Trigger</pems-table-cell>
+                            <pems-table-cell>@r.Mode</pems-table-cell>
+                            <pems-table-cell class="small"><code>@(r.FromMigration ?? "-")</code></pems-table-cell>
+                            <pems-table-cell class="small"><code>@(r.ToMigration ?? "-")</code></pems-table-cell>
+                            <pems-table-cell>@r.MigrationsApplied</pems-table-cell>
+                            <pems-table-cell>@r.DurationSeconds.ToString("0.0")</pems-table-cell>
+                            <pems-table-cell>
                                 @if (r.Succeeded) { <pems-badge tone="success">@Localizer["Succeeded"]</pems-badge> }
                                 else { <pems-badge tone="danger" title="@r.Error">@Localizer["Failed"]</pems-badge> }
-                            </td>
-                            <td class="small">@(r.PerformedBy ?? "-")</td>
-                            <td class="small"><code>@(r.BackupFile ?? "-")</code></td>
-                        </tr>
+                            </pems-table-cell>
+                            <pems-table-cell class="small">@(r.PerformedBy ?? "-")</pems-table-cell>
+                            <pems-table-cell class="small"><code>@(r.BackupFile ?? "-")</code></pems-table-cell>
+                        </pems-table-row>
                     }
-                    </tbody>
+                    </pems-table-body>
                 </pems-table>
             </pems-table-scroll>
         }

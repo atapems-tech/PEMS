@@ -84,14 +84,14 @@
             @if (Model.MaterialRequisitions.Any())
             {
             <pems-related-table>
-                <thead><tr><th>@Localizer["MrL_No"]</th><th>@Localizer["Description"]</th><th>@Localizer["Status"]</th></tr></thead>
-                <tbody>
+                <pems-table-head><pems-table-row><pems-table-header>@Localizer["MrL_No"]</pems-table-header><pems-table-header>@Localizer["Description"]</pems-table-header><pems-table-header>@Localizer["Status"]</pems-table-header></pems-table-row></pems-table-head>
+                <pems-table-body>
                     @foreach (var mr in Model.MaterialRequisitions)
                     {
-                        <tr><td><a asp-controller="MaterialRequisition" asp-action="Details" asp-route-id="@mr.MRId">@mr.MRNumber</a></td>
-                            <td class="small">@mr.Description</td><td><span class="vs-pill vs-pill--neutral">@VdrUi.Loc(Localizer, "MrL_St_", mr.Status)</span></td></tr>
+                        <pems-table-row><pems-table-cell><a asp-controller="MaterialRequisition" asp-action="Details" asp-route-id="@mr.MRId">@mr.MRNumber</a></pems-table-cell>
+                            <pems-table-cell class="small">@mr.Description</pems-table-cell><pems-table-cell><span class="vs-pill vs-pill--neutral">@VdrUi.Loc(Localizer, "MrL_St_", mr.Status)</span></pems-table-cell></pems-table-row>
                     }
-                </tbody>
+                </pems-table-body>
             </pems-related-table>
             }
             @if (s.Status != "Closed")
@@ -108,13 +108,13 @@
             @if (Model.Quotations.Any())
             {
             <pems-related-table>
-                <thead><tr><th>@Localizer["MRQ No"]</th><th>@Localizer["Vendor"]</th><th>@Localizer["Status"]</th></tr></thead>
-                <tbody>
+                <pems-table-head><pems-table-row><pems-table-header>@Localizer["MRQ No"]</pems-table-header><pems-table-header>@Localizer["Vendor"]</pems-table-header><pems-table-header>@Localizer["Status"]</pems-table-header></pems-table-row></pems-table-head>
+                <pems-table-body>
                     @foreach (var q in Model.Quotations)
                     {
-                        <tr><td><span class="vs-num">@q.MRQNumber</span></td><td>@q.VendorName</td><td><span class="vs-pill vs-pill--neutral">@q.QuotationStatus</span></td></tr>
+                        <pems-table-row><pems-table-cell><span class="vs-num">@q.MRQNumber</span></pems-table-cell><pems-table-cell>@q.VendorName</pems-table-cell><pems-table-cell><span class="vs-pill vs-pill--neutral">@q.QuotationStatus</span></pems-table-cell></pems-table-row>
                     }
-                </tbody>
+                </pems-table-body>
             </pems-related-table>
             }
         </pems-related-list>
@@ -125,17 +125,17 @@
     @if (Model.Communications.Any())
     {
     <pems-related-table>
-        <thead><tr><th>@Localizer["Type"]</th><th>@Localizer["Subject"]</th><th>@Localizer["Vendor"]</th><th>@Localizer["Raised By"]</th><th>@Localizer["Date"]</th><th>@Localizer["Status"]</th><th>@Localizer["Response"]</th></tr></thead>
-        <tbody>
+        <pems-table-head><pems-table-row><pems-table-header>@Localizer["Type"]</pems-table-header><pems-table-header>@Localizer["Subject"]</pems-table-header><pems-table-header>@Localizer["Vendor"]</pems-table-header><pems-table-header>@Localizer["Raised By"]</pems-table-header><pems-table-header>@Localizer["Date"]</pems-table-header><pems-table-header>@Localizer["Status"]</pems-table-header><pems-table-header>@Localizer["Response"]</pems-table-header></pems-table-row></pems-table-head>
+        <pems-table-body>
             @foreach (var c in Model.Communications)
             {
-                <tr>
-                    <td><pems-badge tone="neutral">@c.Type</pems-badge></td>
-                    <td>@c.Subject<div class="small text-muted">@c.Body</div></td>
-                    <td>@c.VendorName</td>
-                    <td>@c.RaisedByName</td>
-                    <td>@c.RaisedDate.ToString("yyyy-MM-dd")</td>
-                    <td>
+                <pems-table-row>
+                    <pems-table-cell><pems-badge tone="neutral">@c.Type</pems-badge></pems-table-cell>
+                    <pems-table-cell>@c.Subject<div class="small text-muted">@c.Body</div></pems-table-cell>
+                    <pems-table-cell>@c.VendorName</pems-table-cell>
+                    <pems-table-cell>@c.RaisedByName</pems-table-cell>
+                    <pems-table-cell>@c.RaisedDate.ToString("yyyy-MM-dd")</pems-table-cell>
+                    <pems-table-cell>
                         @{
                             var ab = c.ActionStatus switch { "Closed" => "success", "Answered" => "info", _ => "danger" };
                         }
@@ -148,8 +148,8 @@
                                 { <option value="@opt" selected="@(opt == c.ActionStatus)">@opt</option> }
                             </pems-select>
                         </form>
-                    </td>
-                    <td class="small">
+                    </pems-table-cell>
+                    <pems-table-cell class="small">
                         @c.ResponseText
                         @if (string.IsNullOrEmpty(c.ResponseText))
                         {
@@ -160,10 +160,10 @@
                                 <pems-button tone="primary" size="small" outline="true">@Localizer["Save"]</pems-button>
                             </pems-flex></form>
                         }
-                    </td>
-                </tr>
+                    </pems-table-cell>
+                </pems-table-row>
             }
-        </tbody>
+        </pems-table-body>
     </pems-related-table>
     }
     @if (s.Status != "Closed")
@@ -195,15 +195,15 @@
     @if (Model.Approvals.Any())
     {
     <pems-related-table>
-        <thead><tr><th>@Localizer["PkD_Approver"]</th><th>@Localizer["Decision"]</th><th>@Localizer["Comment"]</th><th>@Localizer["Date"]</th></tr></thead>
-        <tbody>
+        <pems-table-head><pems-table-row><pems-table-header>@Localizer["PkD_Approver"]</pems-table-header><pems-table-header>@Localizer["Decision"]</pems-table-header><pems-table-header>@Localizer["Comment"]</pems-table-header><pems-table-header>@Localizer["Date"]</pems-table-header></pems-table-row></pems-table-head>
+        <pems-table-body>
             @foreach (var a in Model.Approvals)
             {
-                <tr><td>@a.ApproverName</td>
-                    <td><pems-badge tone="@(a.Decision == "Approved" ? "success" : "danger")">@a.Decision</pems-badge></td>
-                    <td>@a.Comment</td><td>@a.ApprovalDate.ToString("yyyy-MM-dd")</td></tr>
+                <pems-table-row><pems-table-cell>@a.ApproverName</pems-table-cell>
+                    <pems-table-cell><pems-badge tone="@(a.Decision == "Approved" ? "success" : "danger")">@a.Decision</pems-badge></pems-table-cell>
+                    <pems-table-cell>@a.Comment</pems-table-cell><pems-table-cell>@a.ApprovalDate.ToString("yyyy-MM-dd")</pems-table-cell></pems-table-row>
             }
-        </tbody>
+        </pems-table-body>
     </pems-related-table>
     }
     @if (s.Status != "Closed")

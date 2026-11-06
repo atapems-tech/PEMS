@@ -29,41 +29,41 @@
 
         <pems-list-grid>
             <pems-list-table grid-key="FunctionalLocation" empty="@(!Model.Items.Any())" empty-text="@Localizer["Fl_Empty"]">
-                <thead>
-                    <tr>
-                        <th class="pems-w-150" data-col-key="code" data-resizable="true" data-min-width="100" data-max-width="200">@Localizer["Fl_Code"]</th>
-                        <th class="pems-w-180" data-col-key="name" data-resizable="true" data-min-width="120" data-max-width="280">@Localizer["Eq_Name"]</th>
-                        <th data-col-key="path" data-resizable="true" data-min-width="160" data-max-width="400" class="vs-hide-md pems-w-260">@Localizer["Fl_Path"]</th>
-                        <th class="pems-w-100" data-col-key="plant" data-resizable="true" data-min-width="80" data-max-width="140">@Localizer["Fl_Plant"]</th>
-                        <th class="pems-w-100" data-col-key="area" data-resizable="true" data-min-width="80" data-max-width="140">@Localizer["Area"]</th>
-                        <th class="pems-w-100" data-col-key="unit" data-resizable="true" data-min-width="80" data-max-width="140">@Localizer["Fl_Unit"]</th>
-                        <th class="pems-w-90" data-col-key="equipment" data-resizable="true" data-min-width="70" data-max-width="120">@Localizer["Equipment"]</th>
-                        <th class="pems-w-80" data-col-key="asset" data-resizable="true" data-min-width="60" data-max-width="100">@Localizer["Cm_TabAsset"]</th>
-                        <th class="pems-w-60" data-col-key="actions" data-resizable="false"><span class="visually-hidden">@Localizer["Ed_Actions"]</span></th>
-                    </tr>
-                </thead>
-                <tbody>
+                <pems-table-head>
+                    <pems-table-row>
+                        <pems-table-header class="pems-w-150" data-col-key="code" data-resizable="true" data-min-width="100" data-max-width="200">@Localizer["Fl_Code"]</pems-table-header>
+                        <pems-table-header class="pems-w-180" data-col-key="name" data-resizable="true" data-min-width="120" data-max-width="280">@Localizer["Eq_Name"]</pems-table-header>
+                        <pems-table-header data-col-key="path" data-resizable="true" data-min-width="160" data-max-width="400" class="vs-hide-md pems-w-260">@Localizer["Fl_Path"]</pems-table-header>
+                        <pems-table-header class="pems-w-100" data-col-key="plant" data-resizable="true" data-min-width="80" data-max-width="140">@Localizer["Fl_Plant"]</pems-table-header>
+                        <pems-table-header class="pems-w-100" data-col-key="area" data-resizable="true" data-min-width="80" data-max-width="140">@Localizer["Area"]</pems-table-header>
+                        <pems-table-header class="pems-w-100" data-col-key="unit" data-resizable="true" data-min-width="80" data-max-width="140">@Localizer["Fl_Unit"]</pems-table-header>
+                        <pems-table-header class="pems-w-90" data-col-key="equipment" data-resizable="true" data-min-width="70" data-max-width="120">@Localizer["Equipment"]</pems-table-header>
+                        <pems-table-header class="pems-w-80" data-col-key="asset" data-resizable="true" data-min-width="60" data-max-width="100">@Localizer["Cm_TabAsset"]</pems-table-header>
+                        <pems-table-header class="pems-w-60" data-col-key="actions" data-resizable="false"><span class="visually-hidden">@Localizer["Ed_Actions"]</span></pems-table-header>
+                    </pems-table-row>
+                </pems-table-head>
+                <pems-table-body>
                     @foreach (var fl in Model.Items)
                     {
-                        <tr class="lp-row">
-                            <td class="lp-no"><span class="vs-num">@fl.Code</span></td>
-                            <td class="small">@fl.Name</td>
-                            <td class="small text-muted vs-hide-md"><span class="vs-title-cell" title="@fl.PathBreadcrumb">@fl.PathBreadcrumb</span></td>
-                            <td class="small">@(fl.Plant ?? "-")</td>
-                            <td class="small">@(fl.Area ?? "-")</td>
-                            <td class="small">@(fl.Unit ?? "-")</td>
-                            <td><span class="vs-num">@fl.EquipmentCount</span></td>
-                            <td><span class="vs-num">@fl.AssetCount</span></td>
-                            <td class="lp-actions">
+                        <pems-table-row class="lp-row">
+                            <pems-table-cell class="lp-no"><span class="vs-num">@fl.Code</span></pems-table-cell>
+                            <pems-table-cell class="small">@fl.Name</pems-table-cell>
+                            <pems-table-cell class="small text-muted vs-hide-md"><span class="vs-title-cell" title="@fl.PathBreadcrumb">@fl.PathBreadcrumb</span></pems-table-cell>
+                            <pems-table-cell class="small">@(fl.Plant ?? "-")</pems-table-cell>
+                            <pems-table-cell class="small">@(fl.Area ?? "-")</pems-table-cell>
+                            <pems-table-cell class="small">@(fl.Unit ?? "-")</pems-table-cell>
+                            <pems-table-cell><span class="vs-num">@fl.EquipmentCount</span></pems-table-cell>
+                            <pems-table-cell><span class="vs-num">@fl.AssetCount</span></pems-table-cell>
+                            <pems-table-cell class="lp-actions">
                                 <button type="button" class="lp-act lp-act--always edit-fl-btn" title="@Localizer["Edit"]" aria-label="@Localizer["Edit"]"
                                         data-id="@fl.FunctionalLocationId" data-code="@fl.Code" data-name="@fl.Name"
                                         data-parentid="@fl.ParentId" data-plant="@fl.Plant" data-area="@fl.Area" data-unit="@fl.Unit">
                                     <pems-icon name="bi-pencil" aria-hidden="true" />
                                 </button>
-                            </td>
-                        </tr>
+                            </pems-table-cell>
+                        </pems-table-row>
                     }
-                </tbody>
+                </pems-table-body>
             </pems-list-table>
 
             <pems-list-footer>

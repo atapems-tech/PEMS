@@ -58,15 +58,15 @@
 <pems-content-card>
     <h6 class="mb-2">Published Criticality Distribution <span class="text-muted small">(current authoritative EquipmentCriticality — not the same as "Assessed")</span></h6>
     <pems-table kind="enterprise" scale="small" css="mb-0">
-        <tbody>
-            <tr><td>A (High)</td><td class="text-end">@Model.PublishedCriticalityA</td></tr>
-            <tr><td>B (Medium)</td><td class="text-end">@Model.PublishedCriticalityB</td></tr>
-            <tr><td>C (Low)</td><td class="text-end">@Model.PublishedCriticalityC</td></tr>
+        <pems-table-body>
+            <pems-table-row><pems-table-cell>A (High)</pems-table-cell><pems-table-cell class="text-end">@Model.PublishedCriticalityA</pems-table-cell></pems-table-row>
+            <pems-table-row><pems-table-cell>B (Medium)</pems-table-cell><pems-table-cell class="text-end">@Model.PublishedCriticalityB</pems-table-cell></pems-table-row>
+            <pems-table-row><pems-table-cell>C (Low)</pems-table-cell><pems-table-cell class="text-end">@Model.PublishedCriticalityC</pems-table-cell></pems-table-row>
             @if (Model.PublishedCriticalityOther > 0)
             {
-                <tr><td>Other / Legacy value</td><td class="text-end">@Model.PublishedCriticalityOther</td></tr>
+                <pems-table-row><pems-table-cell>Other / Legacy value</pems-table-cell><pems-table-cell class="text-end">@Model.PublishedCriticalityOther</pems-table-cell></pems-table-row>
             }
-            <tr><td>Superseded (historical, excluded above)</td><td class="text-end">@Model.Superseded</td></tr>
-        </tbody>
+            <pems-table-row><pems-table-cell>Superseded (historical, excluded above)</pems-table-cell><pems-table-cell class="text-end">@Model.Superseded</pems-table-cell></pems-table-row>
+        </pems-table-body>
     </pems-table>
 </pems-content-card>

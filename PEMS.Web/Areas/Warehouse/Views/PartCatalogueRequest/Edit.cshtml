@@ -168,20 +168,20 @@
 
                 <div class="pc-table-scroll">
                     <pems-related-table>
-                        <thead><tr><th>@L("EquipmentId")</th><th class="text-end">@L("InstalledQuantity")</th><th class="pems-w-50"><span class="visually-hidden">@Localizer["Ed_Actions"]</span></th></tr></thead>
-                        <tbody>
+                        <pems-table-head><pems-table-row><pems-table-header>@L("EquipmentId")</pems-table-header><pems-table-header class="text-end">@L("InstalledQuantity")</pems-table-header><pems-table-header class="pems-w-50"><span class="visually-hidden">@Localizer["Ed_Actions"]</span></pems-table-header></pems-table-row></pems-table-head>
+                        <pems-table-body>
                         @foreach (var q in d.Equipment)
                         {
-                            <tr>
-                                <td>@q.Text</td>
-                                <td class="text-end vs-num">@q.InstalledQuantity.ToString("0.####")</td>
-                                <td class="text-end">
+                            <pems-table-row>
+                                <pems-table-cell>@q.Text</pems-table-cell>
+                                <pems-table-cell class="text-end vs-num">@q.InstalledQuantity.ToString("0.####")</pems-table-cell>
+                                <pems-table-cell class="text-end">
                                     <pems-related-remove action="@Url.Action("RemoveEquipment")" key-name="lineId" key-value="@q.Id.ToString()"
                                                          parent-name="id" parent-value="@d.Id.ToString()" label="@Localizer["Pc_Btn_Remove"]" />
-                                </td>
-                            </tr>
+                                </pems-table-cell>
+                            </pems-table-row>
                         }
-                        </tbody>
+                        </pems-table-body>
                     </pems-related-table>
                     @if (!d.Equipment.Any()) { <div class="vs-empty py-2">@Localizer["Pc_Empty_Equipment"]</div> }
                 </div>
@@ -202,25 +202,25 @@
                 <pems-label>@L("Attributes") <span class="pc-req" aria-hidden="true">*</span></pems-label>
                 <div class="pc-table-scroll">
                     <pems-related-table id="pcAttrTable">
-                        <thead><tr><th class="pems-w-34pct">@L("AttributeName")</th><th>@L("AttributeValue")</th><th class="pems-w-40"></th></tr></thead>
-                        <tbody>
-                            <tr>
-                                <td><input type="hidden" form="pcForm" name="Attributes[0].Name" value="@FftName" /><strong>@FftName</strong></td>
-                                <td>
+                        <pems-table-head><pems-table-row><pems-table-header class="pems-w-34pct">@L("AttributeName")</pems-table-header><pems-table-header>@L("AttributeValue")</pems-table-header><pems-table-header class="pems-w-40"></pems-table-header></pems-table-row></pems-table-head>
+                        <pems-table-body>
+                            <pems-table-row>
+                                <pems-table-cell><input type="hidden" form="pcForm" name="Attributes[0].Name" value="@FftName" /><strong>@FftName</strong></pems-table-cell>
+                                <pems-table-cell>
                                     <pems-input scale="small" css="pc-fft" type="text" form="pcForm" name="Attributes[0].Value" id="pc_FreeFormatText" value="@(fft?.Value ?? " ")" aria-label="@FftName" autocomplete="off" />
-                                </td>
-                                <td></td>
-                            </tr>
+                                </pems-table-cell>
+                                <pems-table-cell></pems-table-cell>
+                            </pems-table-row>
                             @for (var i = 0; i < extraAttrs.Count; i++)
                             {
                                 var idx = i + 1;
-                                <tr class="pc-attr-row">
-                                    <td><pems-input scale="small" type="text" form="pcForm" name="Attributes[@idx].Name" value="@extraAttrs[i].Name" maxlength="100" /></td>
-                                    <td><pems-input scale="small" type="text" form="pcForm" name="Attributes[@idx].Value" value="@extraAttrs[i].Value" /></td>
-                                    <td><button type="button" class="vs-icon-btn pc-attr-remove" title="@Localizer["Pc_Btn_Remove"]" aria-label="@Localizer["Pc_Btn_Remove"]"><pems-icon name="bi-x-lg" /></button></td>
-                                </tr>
+                                <pems-table-row class="pc-attr-row">
+                                    <pems-table-cell><pems-input scale="small" type="text" form="pcForm" name="Attributes[@idx].Name" value="@extraAttrs[i].Name" maxlength="100" /></pems-table-cell>
+                                    <pems-table-cell><pems-input scale="small" type="text" form="pcForm" name="Attributes[@idx].Value" value="@extraAttrs[i].Value" /></pems-table-cell>
+                                    <pems-table-cell><button type="button" class="vs-icon-btn pc-attr-remove" title="@Localizer["Pc_Btn_Remove"]" aria-label="@Localizer["Pc_Btn_Remove"]"><pems-icon name="bi-x-lg" /></button></pems-table-cell>
+                                </pems-table-row>
                             }
-                        </tbody>
+                        </pems-table-body>
                     </pems-related-table>
                 </div>
                 <button type="button" class="vs-btn vs-btn--sm" id="pcAddAttr" data-next-index="@(extraAttrs.Count + 1)"><pems-icon name="bi-plus-lg" /> @Localizer["Pc_Btn_AddAttribute"]</button>
@@ -438,13 +438,13 @@
                 <h2 class="vs-section__title"><pems-icon name="bi-chat-left-text" /> @L("Notes")</h2>
                 <div class="pc-table-scroll mb-2">
                     <pems-related-table>
-                        <thead><tr><th>@Localizer["Pc_Col_Date"]</th><th>@Localizer["Pc_Col_Person"]</th><th>@Localizer["Pc_Col_Stage"]</th><th>@L("Text")</th></tr></thead>
-                        <tbody>
+                        <pems-table-head><pems-table-row><pems-table-header>@Localizer["Pc_Col_Date"]</pems-table-header><pems-table-header>@Localizer["Pc_Col_Person"]</pems-table-header><pems-table-header>@Localizer["Pc_Col_Stage"]</pems-table-header><pems-table-header>@L("Text")</pems-table-header></pems-table-row></pems-table-head>
+                        <pems-table-body>
                         @foreach (var n in d.Notes)
                         {
-                            <tr><td class="vs-num text-nowrap">@n.CreatedDate.ToString("yyyy-MM-dd HH:mm")</td><td>@n.AuthorName</td><td>@(string.IsNullOrEmpty(n.StepKey) ? "" : Localizer["Pc_Step_" + n.StepKey].Value)</td><td>@n.Text</td></tr>
+                            <pems-table-row><pems-table-cell class="vs-num text-nowrap">@n.CreatedDate.ToString("yyyy-MM-dd HH:mm")</pems-table-cell><pems-table-cell>@n.AuthorName</pems-table-cell><pems-table-cell>@(string.IsNullOrEmpty(n.StepKey) ? "" : Localizer["Pc_Step_" + n.StepKey].Value)</pems-table-cell><pems-table-cell>@n.Text</pems-table-cell></pems-table-row>
                         }
-                        </tbody>
+                        </pems-table-body>
                     </pems-related-table>
                     @if (!d.Notes.Any()) { <div class="vs-empty py-2">@Localizer["Pc_Empty_Notes"]</div> }
                 </div>
@@ -501,11 +501,11 @@
         </form></pems-modal>
 
 <template id="pcAttrTemplate">
-    <tr class="pc-attr-row">
-        <td><pems-input scale="small" type="text" form="pcForm" name="Attributes[__i__].Name" maxlength="100" /></td>
-        <td><pems-input scale="small" type="text" form="pcForm" name="Attributes[__i__].Value" /></td>
-        <td><button type="button" class="vs-icon-btn pc-attr-remove" title="@Localizer["Pc_Btn_Remove"]" aria-label="@Localizer["Pc_Btn_Remove"]"><pems-icon name="bi-x-lg" /></button></td>
-    </tr>
+    <pems-table-row class="pc-attr-row">
+        <pems-table-cell><pems-input scale="small" type="text" form="pcForm" name="Attributes[__i__].Name" maxlength="100" /></pems-table-cell>
+        <pems-table-cell><pems-input scale="small" type="text" form="pcForm" name="Attributes[__i__].Value" /></pems-table-cell>
+        <pems-table-cell><button type="button" class="vs-icon-btn pc-attr-remove" title="@Localizer["Pc_Btn_Remove"]" aria-label="@Localizer["Pc_Btn_Remove"]"><pems-icon name="bi-x-lg" /></button></pems-table-cell>
+    </pems-table-row>
 </template>
 
 @section Scripts {
