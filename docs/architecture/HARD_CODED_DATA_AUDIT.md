@@ -23,7 +23,7 @@ Rule of thumb: data says *what*, code says *how*. Code defines the vocabulary; d
 | # | Area | Where it is today | Size (measured) | Box | Target | Covered by | Verdict |
 |---|---|---|---|---|---|---|---|
 | 1 | Sidebar and menu | `NavigationMenuDefaults.cs` (code catalog, 119 entries) synced into the table `NavigationMenuItems`; Admin edits order, parent, icon, titles, visibility | 119 entries, 209 lines | Definitions | kind `menu`, shipped as System definitions | #20 (generated from the user's authority), #451, #448 | Owner 2026-11-06: generate from what each user may open; admin-owned fields kept |
-| 2 | Forms (screens and their fields) | hand-written Razor: 240 view files contain a `<form>`; 365 `.cshtml` in total | 240 files | Definitions | kind `form` (exists, stored forms are used only by the definitions API today, not by modules) | #518 (adoption, all forms, safely), #438, #439, #49, #458 | Biggest gap; all forms, per-form switch with fallback |
+| 2 | Forms (screens and their fields) | hand-written Razor: 240 view files contain a `<form>`; 365 `.cshtml` in total | 240 files | Definitions | kind `form` (exists, stored forms are used only by the definitions API today, not by modules) | #518 (adoption, all forms, safely), #438, #439, #49, #458 | Biggest gap; all forms in large batches, replaced in place after a parity test, no switch |
 | 3 | Form steps and field layout | inside those views | same | Definitions | kind `form` (steps) and `layout` | #518, #451 (layout) | Same as 2 |
 | 4 | List pages: columns, filters | 202 views use `pems-list-*` tag helpers; columns are written in the markup | 202 files | Definitions | kind `view` | #519 (adoption, all lists, safely), #451 (view), #57 | Large gap; value high |
 | 5 | Validations | DataAnnotations: 31 `[Required]`, 50 `[MaxLength]`, 2 `[EmailAddress]` (26 files); 47 `ModelState.AddModelError`; 7 thrown validation-style exceptions in Application/Infrastructure | about 140 spots | Registry (validator types) plus Definitions (which rule on which field) | form field constraints in the `form` kind; named code validators for complex rules | #355, #356, #365, #380, #518 | Small today; moves with the forms in #518 |
@@ -65,5 +65,5 @@ Left as they are: Registry items (rows 8, 9, 10), texts (11), settings (12, cove
 ## 7. Owner answers (2026-11-06)
 
 1. Reference data: "maybe both, I don't know": ownership is set per list and per row (#516), with a default per list for the owner to confirm.
-2. Pilot form: none; each task is done for all forms and lists, but safely (a switch per form or list, fallback to today's view, a parity test; #518, #519).
+2. Pilot form: none; each task is done for all forms and lists, but safely (each form or list replaced in place with its old view deleted, a parity test first, no switch and no fallback, large batches; #518, #519).
 3. Sidebar: generated from the authority of each user over the forms, lists and pages (#20), not a hand-kept table.
