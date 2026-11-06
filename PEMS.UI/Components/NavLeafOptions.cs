@@ -219,7 +219,7 @@ public sealed record PagerOptions : FrameOptions
     public string? Css { get; init; }
 }
 
-// SCRUM-339 (P1): the page-level wrappers.
+// SCRUM-339 (slice 1): the page-level wrappers.
 
 /// <summary>Inputs of <see cref="PemsContentCard"/>: the white content panel of a page (<c>content-card</c>); the page's blocks are the child content.</summary>
 public sealed record ContentCardOptions : FrameOptions
@@ -236,7 +236,7 @@ public sealed record PageShellOptions : FrameOptions
     public string? Css { get; init; }
 }
 
-// SCRUM-339 (P2): the flex layout primitive (toolbars, button rows, label + value rows).
+// SCRUM-339 (slice 2): the flex layout primitive (toolbars, button rows, label + value rows).
 
 /// <summary>Inputs of <see cref="PemsFlex"/>: a flex container (<c>d-flex</c>); the items are the child content. The page says "space between, centred, wrapping, gap 2", not the Bootstrap class names.</summary>
 public sealed record FlexOptions : FrameOptions

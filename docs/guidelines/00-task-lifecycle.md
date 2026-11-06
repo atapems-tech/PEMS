@@ -8,6 +8,29 @@ Field ownership between the plan files and Jira: [PLAN_TRACKER_WORKFLOW.md](../p
 
 A **work block** is everything done between one go-ahead and the hand-over of its issues to In Review. **Any go-ahead opens one**: "continue", "next", "yes", "do it", "go on", a named task or a list of tasks, a session that starts with a task. A question or a request to look something up is not a go-ahead. Run the four steps below **before the first edit of the block**, and say in your first message that you did (a line per step is enough). If the same session keeps going after a finished block and the owner says "continue" again, that is a new block: repeat the steps, they are cheap when nothing changed.
 
+### 0.0 The words we use for grouping work (owner decision 2026-11-06)
+
+One word, one meaning, from the biggest unit to the smallest. Use these words, and only these, in Jira comments, plan rows, pull requests, commit messages and chat; if a message needs a new grouping, add it here first.
+
+| Word | Means | Where it lives | Example |
+|---|---|---|---|
+| **milestone** | a product stage with a goal, M0 to M6 | an Epic in Jira (SCRUM-5 to SCRUM-12), `milestone-mN` label | M1 Dynamic core, components and licensing |
+| **sprint** | a time box of the Jira board; holds the issues started in it | Jira sprint field (`customfield_10020`) | Sprint 1 (id 5) |
+| **issue** | one unit of tracked work: one Jira key, one plan row, one definition of done | Jira + `plan/rows/NNNN.md` | SCRUM-339 |
+| **work block** | everything done between one go-ahead and the hand-over of its issues to In Review (section 0) | the session | "the page-level block" |
+| **batch** | issues (or the slices of issues) that share an area, files, a pattern or a dependency chain, done together on one branch | the first message of the work block | "icons + styles" |
+| **slice** | one safe, independently mergeable piece of one issue: its own branch or commit set, its own pull request, merged at once. An issue with more than one slice names them `slice 1`, `slice 2` ... in its Jira comment (not `P1`, `phase`, `part`) | a pull request | SCRUM-339 slice 1 = page wrappers, slice 2 = flex |
+| **wave** | a set of **pages** migrated together to the page templates; only for the page migration issues (SCRUM-342 to 346: W1 to W5). Never a name for a group of tasks or components | one issue per wave | W1 pilot: Admin area |
+| **family** | a group of related components or tag helpers converted or documented together | a UI component chapter | the list family (`pems-list-*`) |
+| **part** | a child tag of a component that has no meaning outside it (`FacadeKind.Part`, e.g. `pems-list-chip` in `pems-list-chips`). Not a piece of an issue (that is a slice) | the registry | `pems-related-add` |
+| **pattern** | one kind of hand-written markup the adoption ratchet counts and a component replaces | `AdoptionRatchetTests` | `flex`, `icon`, `content-card` |
+| **step** | one ordered action inside a procedure, a checklist or a slice | guidelines, plans | "step 3 of section 2" |
+| **phase** | a stage inside a design document or specification (an ADR, an RBAC spec). Not used to group tasks | ADRs, specs | "RBAC phase 3" |
+| **tier** | how often a test group runs: tier 1 every task, tier 2 every cross-cutting batch, tier 3 end of sprint (guideline 07) | guideline 07 | the Web family is tier 2 |
+| **follow-up** | work found while doing an issue that is not part of it: a named unchecked QA line or its own issue, never silently dropped | Jira, QA checklist | "add el()-builder counters" |
+
+How they nest: a **milestone** holds **issues**; a **sprint** holds the issues started in it; a **work block** takes **batches** of issues; an issue is delivered in one or more **slices**, each its own pull request. A **wave**, a **family** and a **pattern** are not levels of this nesting: they describe *what* is migrated (pages, components, markup kinds).
+
 ### 0.1 Pull `main`
 `git fetch origin`, then update `main` (an app worktree uses `sync_with_base_branch`; a checkout with local changes you did not make is left alone, you only report it). Look at what merged since your last block (`git log --oneline <last-seen>..origin/main`): other sessions change the pages and tests you are about to touch. Branch from the fresh `main`. Never plan from a stale checkout.
 
