@@ -12,7 +12,7 @@
 
 <pems-validation-summary css="py-2 px-3 small" asp-validation-summary="ModelOnly" hidden="@(ViewData.ModelState.ErrorCount == 0)"></pems-validation-summary>
 
-<form asp-controller="AccountRecovery" asp-action="Index" method="post" autocomplete="off">
+<pems-form asp-controller="AccountRecovery" asp-action="Index" method="post" autocomplete="off">
     <div class="mb-3">
         <pems-label asp-for="UserName">@Localizer["Username"]</pems-label>
         <pems-input asp-for="UserName" autocomplete="username" autofocus />
@@ -35,7 +35,7 @@
     </div>
 
     <pems-button tone="none" css="btn-pems" type="submit">@Localizer["Recover account"]</pems-button>
-</form>
+</pems-form>
 
 <p class="small text-muted mt-3">@Localizer["After recovery, all sessions of the account are signed out, every administrator is notified and MFA must be enrolled again."]</p>
 

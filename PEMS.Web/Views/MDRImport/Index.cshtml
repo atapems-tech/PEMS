@@ -17,9 +17,9 @@
                 discipline where it can now be recognized - no need to re-import anything.
             </p>
         </div>
-        <form asp-action="RematchDisciplines" method="post">
+        <pems-form asp-action="RematchDisciplines" method="post">
             <pems-button tone="primary" size="small" outline="true" type="submit"><pems-icon name="bi-arrow-repeat" /> Fix Discipline Matching</pems-button>
-        </form>
+        </pems-form>
     </pems-flex>
 </pems-content-card>
 
@@ -33,9 +33,9 @@
                 (Submitted / Rejected) so counts line up everywhere.
             </p>
         </div>
-        <form asp-action="FixLegacyStatuses" method="post">
+        <pems-form asp-action="FixLegacyStatuses" method="post">
             <pems-button tone="primary" size="small" outline="true" type="submit"><pems-icon name="bi-speedometer2" /> Fix Status Values</pems-button>
-        </form>
+        </pems-form>
     </pems-flex>
 </pems-content-card>
 
@@ -45,7 +45,7 @@
         شیت‌های داده‌ای (رجیستر اصلی، Freezed Docs، Not Issued Docs) را می‌خواند و شیت‌های خلاصه/گزارش
         را نادیده می‌گیرد. هیچ داده‌ای تا تایید شما در صفحه‌ی بعد وارد جداول اصلی نمی‌شود.
     </p>
-    <form asp-action="Upload" method="post" enctype="multipart/form-data"><pems-row gap="2" css="align-items-end">
+    <pems-form asp-action="Upload" method="post" enctype="multipart/form-data"><pems-row gap="2" css="align-items-end">
         <pems-col md="5">
             <pems-label css="small">@Localizer["Project"]</pems-label>
             <pems-select name="projectId" required>
@@ -59,7 +59,7 @@
         <pems-col md="2">
             <pems-button tone="primary" css="w-100" type="submit"><pems-icon name="bi-cloud-upload" /> @Localizer["Upload"]</pems-button>
         </pems-col>
-    </pems-row></form>
+    </pems-row></pems-form>
 </pems-content-card>
 
 <pems-content-card>

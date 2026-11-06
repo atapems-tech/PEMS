@@ -53,7 +53,7 @@
 @if (Model.Any(x => x.Mode == ImportCatalog.LaunchMode.Dialog))
 {
     <pems-modal id="icModal" tabindex="-1">
-                <form method="post" enctype="multipart/form-data">
+                <pems-form method="post" enctype="multipart/form-data">
                     <pems-modal-header><span data-fill-text="title"></span></pems-modal-header>
                     <pems-modal-body>
                         <p class="text-muted small" data-fill-text="hint"></p>
@@ -64,6 +64,6 @@
                         <pems-button tone="neutral" outline="true" type="button" data-bs-dismiss="modal">@Localizer["IC_Cancel"]</pems-button>
                         <pems-button tone="primary" type="submit">@Localizer["IC_Import"]</pems-button>
                     </pems-modal-footer>
-                </form>
+                </pems-form>
             </pems-modal>
 }

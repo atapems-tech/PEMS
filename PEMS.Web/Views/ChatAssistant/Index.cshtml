@@ -10,9 +10,9 @@
             بر اساس داده‌ی واقعی سیستم (تعداد مدارک، وضعیت‌ها، پروژه‌ها، MR ها و ...) پاسخ می‌دهد.
             مثال: «چند مدرک در انتظار تایید داریم؟» یا «آخرین مدارک ثبت‌شده کدامند؟»
         </p>
-        <form asp-action="Clear" method="post">
+        <pems-form asp-action="Clear" method="post">
             <pems-button tone="neutral" size="small" outline="true"><pems-icon name="bi-trash" /> @Localizer["Clear"]</pems-button>
-        </form>
+        </pems-form>
     </pems-flex>
 
     <div id="chatWindow" class="border rounded p-3 mb-3 pems-s-732b5bfd">
@@ -26,11 +26,11 @@
         }
     </div>
 
-    <form id="chatForm" data-ask-url="@Url.Action("Ask", "ChatAssistant")"><pems-flex gap="2">
+    <pems-form id="chatForm" data-ask-url="@Url.Action("Ask", "ChatAssistant")"><pems-flex gap="2">
         @Html.AntiForgeryToken()
         <pems-input type="text" id="messageInput" placeholder="Ask a question about the system..." autocomplete="off" />
         <pems-button tone="primary" type="submit"><pems-icon name="bi-send" /></pems-button>
-    </pems-flex></form>
+    </pems-flex></pems-form>
 </pems-content-card>
 
 @section Scripts {

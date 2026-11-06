@@ -79,7 +79,7 @@
 </pems-row>
 
 @* توکن ضد جعل برای درخواست fetch به AskAi - فرم واقعی وجود ندارد، فقط برای گرفتن توکن *@
-<form id="helpAiTokenForm" hidden>@Html.AntiForgeryToken()</form>
+<pems-form id="helpAiTokenForm" hidden>@Html.AntiForgeryToken()</pems-form>
 
 @section Scripts {
     <pems-script-templates set="help-article"></pems-script-templates>

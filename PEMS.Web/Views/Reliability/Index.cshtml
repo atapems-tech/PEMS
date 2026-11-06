@@ -32,7 +32,7 @@
 </p>
 
 <pems-content-card css="mb-3">
-    <form method="get"><pems-row gap="2" css="align-items-end">
+    <pems-form method="get"><pems-row gap="2" css="align-items-end">
         <pems-col md="3">
             <pems-label css="small">@Localizer["From"]</pems-label>
             <pems-date name="from" value="@(from?.ToString("yyyy-MM-dd"))" scale="small" />
@@ -45,7 +45,7 @@
         <pems-col md="4" css="text-muted small">
             Period: @(from?.ToString("yyyy-MM-dd") ?? "all history") → @(to?.ToString("yyyy-MM-dd") ?? "now")
         </pems-col>
-    </pems-row></form>
+    </pems-row></pems-form>
 </pems-content-card>
 
 <pems-nav css="mb-3">

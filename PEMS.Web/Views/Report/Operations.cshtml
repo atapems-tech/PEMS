@@ -14,7 +14,7 @@
 </pems-flex>
 
 <pems-content-card css="mb-3">
-    <form method="get"><pems-row gap="2">
+    <pems-form method="get"><pems-row gap="2">
         <pems-col md="2">
             <pems-select scale="small" name="periodType" onchange="this.form.submit()">
                 @foreach (var p in new[] { "Day", "Month", "CustomRange" })
@@ -50,7 +50,7 @@
             </pems-select>
         </pems-col>
         <pems-col span="12"><pems-button tone="primary" size="small"><pems-icon name="bi-funnel" /> @Localizer["Apply"]</pems-button></pems-col>
-    </pems-row></form>
+    </pems-row></pems-form>
 </pems-content-card>
 
 <div class="text-muted small mb-2">

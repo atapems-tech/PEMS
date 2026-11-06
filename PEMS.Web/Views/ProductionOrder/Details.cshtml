@@ -29,11 +29,11 @@
         <pems-flex dir="column" gap="1" css="pems-s-66dbd5d0">
             @if (Model.Status == "Draft")
             {
-                <form asp-action="Plan" asp-route-id="@Model.ProductionOrderId" method="post"><pems-button tone="primary" size="small" outline="true" css="w-100" type="submit"><pems-icon name="bi-calendar-check" /> Plan</pems-button></form>
+                <pems-form asp-action="Plan" asp-route-id="@Model.ProductionOrderId" method="post"><pems-button tone="primary" size="small" outline="true" css="w-100" type="submit"><pems-icon name="bi-calendar-check" /> Plan</pems-button></pems-form>
             }
             @if (Model.Status == "Planned")
             {
-                <form asp-action="Release" asp-route-id="@Model.ProductionOrderId" method="post"><pems-button tone="primary" size="small" css="w-100" type="submit"><pems-icon name="bi-send-check" /> Release</pems-button></form>
+                <pems-form asp-action="Release" asp-route-id="@Model.ProductionOrderId" method="post"><pems-button tone="primary" size="small" css="w-100" type="submit"><pems-icon name="bi-send-check" /> Release</pems-button></pems-form>
             }
             @if (Model.Status == "Released" || Model.Status == "InProgress")
             {
@@ -41,7 +41,7 @@
             }
             @if (Model.Status == "OnHold")
             {
-                <form asp-action="Resume" asp-route-id="@Model.ProductionOrderId" method="post"><pems-button tone="success" size="small" outline="true" css="w-100" type="submit"><pems-icon name="bi-play-circle" /> Resume</pems-button></form>
+                <pems-form asp-action="Resume" asp-route-id="@Model.ProductionOrderId" method="post"><pems-button tone="success" size="small" outline="true" css="w-100" type="submit"><pems-icon name="bi-play-circle" /> Resume</pems-button></pems-form>
             }
             @if (Model.Status is "Draft" or "Planned" or "Released" or "OnHold")
             {
@@ -49,11 +49,11 @@
             }
             @if (Model.Status == "InProgress")
             {
-                <form asp-action="Complete" asp-route-id="@Model.ProductionOrderId" method="post"><pems-button tone="primary" size="small" css="w-100" type="submit"><pems-icon name="bi-check2-circle" /> Complete</pems-button></form>
+                <pems-form asp-action="Complete" asp-route-id="@Model.ProductionOrderId" method="post"><pems-button tone="primary" size="small" css="w-100" type="submit"><pems-icon name="bi-check2-circle" /> Complete</pems-button></pems-form>
             }
             @if (Model.Status == "Completed")
             {
-                <form asp-action="Close" asp-route-id="@Model.ProductionOrderId" method="post"><pems-button tone="neutral" size="small" outline="true" css="w-100" type="submit"><pems-icon name="bi-lock" /> Close</pems-button></form>
+                <pems-form asp-action="Close" asp-route-id="@Model.ProductionOrderId" method="post"><pems-button tone="neutral" size="small" outline="true" css="w-100" type="submit"><pems-icon name="bi-lock" /> Close</pems-button></pems-form>
             }
             @if (Model.Status is "Released" or "InProgress")
             {
@@ -88,17 +88,17 @@
 </pems-content-card>
 
 <pems-modal id="holdOrderModal" tabindex="-1">
-        <form asp-action="Hold" asp-route-id="@Model.ProductionOrderId" method="post">
+        <pems-form asp-action="Hold" asp-route-id="@Model.ProductionOrderId" method="post">
             <pems-modal-header close="true">Hold Production Order</pems-modal-header>
             <pems-modal-body><pems-label>@Localizer["Reason"]</pems-label><pems-textarea name="reason" required></pems-textarea></pems-modal-body>
             <pems-modal-footer><pems-button tone="warning" type="submit">@Localizer["Hold"]</pems-button></pems-modal-footer>
-        </form>
+        </pems-form>
     </pems-modal>
 
 <pems-modal id="cancelOrderModal" tabindex="-1">
-        <form asp-action="Cancel" asp-route-id="@Model.ProductionOrderId" method="post">
+        <pems-form asp-action="Cancel" asp-route-id="@Model.ProductionOrderId" method="post">
             <pems-modal-header close="true">Cancel Production Order</pems-modal-header>
             <pems-modal-body><pems-label>@Localizer["Reason"]</pems-label><pems-textarea name="reason" required></pems-textarea></pems-modal-body>
             <pems-modal-footer><pems-button tone="danger" type="submit">Cancel Order</pems-button></pems-modal-footer>
-        </form>
+        </pems-form>
     </pems-modal>

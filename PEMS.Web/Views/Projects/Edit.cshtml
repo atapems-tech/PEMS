@@ -6,7 +6,7 @@
 <pems-content-card css="pems-s-e2b01b0d">
     <pems-validation-summary css="py-2 px-3 small" asp-validation-summary="All" hidden="@(ViewData.ModelState.IsValid)"></pems-validation-summary>
 
-    <form asp-action="Edit" method="post">
+    <pems-form asp-action="Edit" method="post">
         <input type="hidden" asp-for="ProjectId" />
         <input type="hidden" asp-for="CreatedDate" />
         <input type="hidden" asp-for="IsActive" />
@@ -63,5 +63,5 @@
             <pems-button tone="primary" type="submit">@Localizer["Save"]</pems-button>
             <pems-button tone="neutral" outline="true" as="a" asp-action="Index">@Localizer["Cancel"]</pems-button>
         </div>
-    </form>
+    </pems-form>
 </pems-content-card>

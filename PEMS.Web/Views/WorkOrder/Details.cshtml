@@ -105,7 +105,7 @@ else
                     </pems-button>
 
                     <pems-modal id="completeFailureModal" tabindex="-1">
-                            <form asp-action="AdvanceStatus" method="post">
+                            <pems-form asp-action="AdvanceStatus" method="post">
                                 <input type="hidden" name="id" value="@Model.WorkOrderId" />
                                 <pems-modal-header><pems-icon name="bi-clipboard-data" /> ثبت اطلاعات تکمیل</pems-modal-header>
                                 <pems-modal-body>
@@ -166,12 +166,12 @@ else
                                     <pems-button tone="neutral" size="small" outline="true" type="button" data-bs-dismiss="modal">@Localizer["انصراف"]</pems-button>
                                     <pems-button tone="primary" size="small" type="submit">@Localizer["ثبت و تکمیل"]</pems-button>
                                 </pems-modal-footer>
-                            </form>
+                            </pems-form>
                         </pems-modal>
                 }
                 else
                 {
-                    <form asp-action="AdvanceStatus" method="post" class="d-inline">
+                    <pems-form asp-action="AdvanceStatus" method="post" class="d-inline">
                         <input type="hidden" name="id" value="@Model.WorkOrderId" />
                         @if (nextStatus == "Assigned")
                         {
@@ -182,7 +182,7 @@ else
                         }
                         <pems-input class="pems-w-180" scale="small" css="d-inline-block" name="reason" placeholder="@Localizer["دلیل (اختیاری)"]" />
                         <pems-button tone="primary" size="small" type="submit">Advance to @nextStatus</pems-button>
-                    </form>
+                    </pems-form>
                 }
             }
             else if (Model.Status != "OnHold")
@@ -194,34 +194,34 @@ else
                مستقل از nextStatus خطی، چون این وضعیت‌ها در StatusFlow اصلی نیستند. *@
             @if (canEditWo && Model.Status is "Assigned" or "InProgress")
             {
-                <form asp-action="Hold" method="post" class="d-inline ms-1">
+                <pems-form asp-action="Hold" method="post" class="d-inline ms-1">
                     <input type="hidden" name="id" value="@Model.WorkOrderId" />
                     <pems-input class="pems-w-160" scale="small" css="d-inline-block" name="reason" required placeholder="@Localizer["Reason (required)"]" />
                     <pems-button tone="warning" size="small" outline="true" type="submit" data-legacy="hold"><pems-icon name="bi-pause-circle" /> @Localizer["Hold"]</pems-button>
-                </form>
+                </pems-form>
             }
             @if (canEditWo && Model.Status == "OnHold")
             {
-                <form asp-action="Resume" method="post" class="d-inline ms-1">
+                <pems-form asp-action="Resume" method="post" class="d-inline ms-1">
                     <input type="hidden" name="id" value="@Model.WorkOrderId" />
                     <pems-button tone="primary" size="small" type="submit"><pems-icon name="bi-play-circle" /> Resume</pems-button>
-                </form>
+                </pems-form>
             }
             @if (canApproveWo && Model.Status == "Open")
             {
-                <form asp-action="Reject" method="post" class="d-inline ms-1">
+                <pems-form asp-action="Reject" method="post" class="d-inline ms-1">
                     <input type="hidden" name="id" value="@Model.WorkOrderId" />
                     <pems-input class="pems-w-160" scale="small" css="d-inline-block" name="reason" required placeholder="@Localizer["Reason (required)"]" />
                     <pems-button tone="danger" size="small" outline="true" type="submit" data-pems-confirm="این WorkOrder رد شود؟">@Localizer["Reject"]</pems-button>
-                </form>
+                </pems-form>
             }
             @if (canApproveWo && Model.Status is "Open" or "Assigned" or "InProgress" or "OnHold")
             {
-                <form asp-action="Cancel" method="post" class="d-inline ms-1">
+                <pems-form asp-action="Cancel" method="post" class="d-inline ms-1">
                     <input type="hidden" name="id" value="@Model.WorkOrderId" />
                     <pems-input class="pems-w-160" scale="small" css="d-inline-block" name="reason" required placeholder="@Localizer["Reason (required)"]" />
                     <pems-button tone="neutral" size="small" outline="true" type="submit" data-legacy="cancel" data-pems-confirm="این WorkOrder لغو شود؟">@Localizer["Cancel"]</pems-button>
-                </form>
+                </pems-form>
             }
         </div>
         }
@@ -295,7 +295,7 @@ else
         <pems-flex wrap="true" gap="2" align="start">
             @if (actions.Count > 0)
             {
-                <form class="w-100" asp-action="WorkflowAction" method="post"><pems-flex dir="column" gap="2">
+                <pems-form class="w-100" asp-action="WorkflowAction" method="post"><pems-flex dir="column" gap="2">
                     <input type="hidden" name="id" value="@Model.WorkOrderId" />
                     <pems-flex wrap="true" gap="2" align="center">
                         <pems-input class="pems-w-300" scale="small" type="text" name="comment" placeholder="@Localizer["Comment (required for Reject / Cancel / Hold / Return)"]" />
@@ -346,7 +346,7 @@ else
                             </pems-row>
                         </details>
                     }
-                </pems-flex></form>
+                </pems-flex></pems-form>
                 @foreach (var denied in actions.Where(a => !a.IsAllowed && !string.IsNullOrWhiteSpace(a.DeniedReason)))
                 {
                     <div class="small text-muted w-100"><pems-icon name="bi-lock" /> @ActionLabel(denied): @denied.DeniedReason</div>
@@ -366,7 +366,7 @@ else
                 @if (Ctl(WoSection.ResponsibleDiscipline))
                 {
                 <pems-col md="6">
-                    <form asp-action="SetPlanning" method="post"><pems-flex gap="2" align="end" wrap="true">
+                    <pems-form asp-action="SetPlanning" method="post"><pems-flex gap="2" align="end" wrap="true">
                         <input type="hidden" name="id" value="@Model.WorkOrderId" />
                         <div><pems-label css="small mb-1">@Localizer["Responsible Maintenance Discipline"]</pems-label>
                             <pems-select scale="small" name="responsibleDisciplineId" required>
@@ -374,7 +374,7 @@ else
                                 @foreach (var d in (IEnumerable<dynamic>)ViewBag.Disciplines) { <option value="@d.DisciplineId" selected="@(Model.ResponsibleDisciplineId == (int)d.DisciplineId)">@d.Name</option> }
                             </pems-select></div>
                         <pems-button tone="primary" size="small" outline="true" type="submit">@Localizer["Save"]</pems-button>
-                    </pems-flex></form>
+                    </pems-flex></pems-form>
                 </pems-col>
                 }
                 @if (Ctl(WoSection.ExecutorAssignment))
@@ -389,7 +389,7 @@ else
                         </pems-col>
                     }
                     <pems-col md="6">
-                        <form asp-action="AssignExecutor" method="post"><pems-flex gap="2" align="end" wrap="true">
+                        <pems-form asp-action="AssignExecutor" method="post"><pems-flex gap="2" align="end" wrap="true">
                             <input type="hidden" name="id" value="@Model.WorkOrderId" />
                             <div><pems-label css="small mb-1">@Localizer["Team"]</pems-label>
                                 <pems-select scale="small" name="teamId"><option value="">--</option>
@@ -400,7 +400,7 @@ else
                                     @foreach (var e in (IEnumerable<dynamic>)ViewBag.Employees) { <option value="@e.EmployeeId">@e.FullName</option> }
                                 </pems-select></div>
                             <pems-button tone="primary" size="small" outline="true" type="submit">@Localizer["Assign"]</pems-button>
-                        </pems-flex></form>
+                        </pems-flex></pems-form>
                     </pems-col>
                 }
                 @if (Ctl(WoSection.Schedule))
@@ -408,14 +408,14 @@ else
                     <pems-col md="6">
                         @* طبق «PEMS — Work Request/Work Order Scheduling & Maintenance Calendar»: زمان‌بندی مستقل از
                            تخصیص تیم/کارمند است (ترتیب الزامی نیست) - همان مرحله/مجوز، فرم جدا. *@
-                        <form asp-action="SetSchedule" method="post"><pems-flex gap="2" align="end" wrap="true">
+                        <pems-form asp-action="SetSchedule" method="post"><pems-flex gap="2" align="end" wrap="true">
                             <input type="hidden" name="id" value="@Model.WorkOrderId" />
                             <div><pems-label css="small mb-1">@Localizer["Planned Start"]</pems-label>
                                 <pems-input type="datetime-local" name="plannedStart" value="@(Model.PlannedStart?.ToString("yyyy-MM-ddTHH:mm"))" required scale="small" /></div>
                             <div><pems-label css="small mb-1">@Localizer["Planned Finish"]</pems-label>
                                 <pems-input type="datetime-local" name="plannedFinish" value="@(Model.PlannedFinish?.ToString("yyyy-MM-ddTHH:mm"))" required scale="small" /></div>
                             <pems-button tone="primary" size="small" outline="true" type="submit">@Localizer["Save Schedule"]</pems-button>
-                        </pems-flex></form>
+                        </pems-flex></pems-form>
                     </pems-col>
                 }
             </pems-row>
@@ -492,7 +492,7 @@ else
         </pems-button>
 
         <pems-modal id="requestReviewModal" tabindex="-1">
-                <form asp-action="RequestDisciplineReview" method="post">
+                <pems-form asp-action="RequestDisciplineReview" method="post">
                     <input type="hidden" name="workOrderId" value="@Model.WorkOrderId" />
                     <pems-modal-header>@Localizer["انتخاب دیسیپلین‌ها"]</pems-modal-header>
                     <pems-modal-body>
@@ -508,7 +508,7 @@ else
                         <pems-button tone="neutral" size="small" outline="true" type="button" data-bs-dismiss="modal">@Localizer["انصراف"]</pems-button>
                         <pems-button tone="primary" size="small" type="submit">@Localizer["شروع بازبینی"]</pems-button>
                     </pems-modal-footer>
-                </form>
+                </pems-form>
             </pems-modal>
     }
     else
@@ -529,7 +529,7 @@ else
             </pems-button>
 
             <pems-modal id="respondReviewModal" tabindex="-1">
-                    <form asp-action="RespondDisciplineReview" method="post">
+                    <pems-form asp-action="RespondDisciplineReview" method="post">
                         <input type="hidden" name="workOrderId" value="@Model.WorkOrderId" />
                         <pems-modal-header>@Localizer["ثبت نظر / یافته"]</pems-modal-header>
                         <pems-modal-body>
@@ -568,7 +568,7 @@ else
                             <pems-button tone="neutral" size="small" outline="true" type="button" data-bs-dismiss="modal">@Localizer["انصراف"]</pems-button>
                             <pems-button tone="primary" size="small" type="submit">@Localizer["ثبت"]</pems-button>
                         </pems-modal-footer>
-                    </form>
+                    </pems-form>
                 </pems-modal>
         }
         else
@@ -611,11 +611,11 @@ else
     <pems-content-card css="mb-3 border-warning">
         <h6 class="mb-2"><pems-icon name="bi-unlock" /> @Localizer["Reopen Work Order"]</h6>
         <p class="text-muted small mb-2">@Localizer["A formal reopen requires a reason and is audited; the Work Order returns to the verification stage."]</p>
-        <form asp-action="ReopenWorkOrder" method="post"><pems-row gap="2">
+        <pems-form asp-action="ReopenWorkOrder" method="post"><pems-row gap="2">
             <input type="hidden" name="id" value="@Model.WorkOrderId" />
             <pems-col md="9"><pems-input scale="small" name="reason" maxlength="500" required placeholder="@Localizer["Reason for reopening (required)"]" /></pems-col>
             <pems-col md="3"><pems-button tone="warning" size="small" outline="true" css="w-100" type="submit"><pems-icon name="bi-unlock" /> @Localizer["Reopen"]</pems-button></pems-col>
-        </pems-row></form>
+        </pems-row></pems-form>
     </pems-content-card>
 }
 
@@ -664,7 +664,7 @@ else
 
     @if (Ctl(WoSection.Labor))
     {
-    <form asp-action="AddLaborEntry" method="post"><pems-row gap="2" css="mt-2">
+    <pems-form asp-action="AddLaborEntry" method="post"><pems-row gap="2" css="mt-2">
         <input type="hidden" name="workOrderId" value="@Model.WorkOrderId" />
         @if (Acc(WoSection.Labor) == SectionAccess.Correctable)
         {
@@ -686,7 +686,7 @@ else
         <pems-col md="1"><pems-input scale="small" name="overtimeHours" type="number" step="0.5" min="0" placeholder="OT" /></pems-col>
         <pems-col md="2"><pems-input scale="small" name="notes" placeholder="@Localizer["Notes (optional)"]" /></pems-col>
         <pems-col md="1"><pems-button tone="primary" size="small" css="w-100"><pems-icon name="bi-plus-lg" /></pems-button></pems-col>
-    </pems-row></form>
+    </pems-row></pems-form>
     }
     else
     {
@@ -727,7 +727,7 @@ else
                     <pems-table-cell>
                         @if (outstanding > 0 && Ctl(WoSection.SpareParts))
                         {
-                            <form asp-action="ReturnSpareUsage" method="post"><pems-flex gap="1">
+                            <pems-form asp-action="ReturnSpareUsage" method="post"><pems-flex gap="1">
                                 <input type="hidden" name="maintenanceSpareUsageId" value="@s.MaintenanceSpareUsageId" />
                                 <input type="hidden" name="workOrderId" value="@Model.WorkOrderId" />
                                 @if (Acc(WoSection.SpareParts) == SectionAccess.Correctable)
@@ -736,7 +736,7 @@ else
                                 }
                                 <pems-input class="pems-w-80" scale="small" type="number" name="returnQuantity" step="0.01" max="@outstanding" placeholder="@Localizer["Qty"]" required />
                                 <pems-button tone="neutral" size="small" outline="true" type="submit" title="Return"><pems-icon name="bi-arrow-return-left" /></pems-button>
-                            </pems-flex></form>
+                            </pems-flex></pems-form>
                         }
                     </pems-table-cell>
                 </pems-table-row>
@@ -764,7 +764,7 @@ else
         <pems-input type="text" id="spareUsageScanInput" dir="ltr" placeholder="@Localizer["Scan Material barcode..."]" />
         <pems-button tone="neutral" outline="true" type="button" id="spareUsageScanBtn">@Localizer["Resolve"]</pems-button>
     </div>
-    <form asp-action="AddSpareUsage" method="post"><pems-row gap="2" css="mt-2">
+    <pems-form asp-action="AddSpareUsage" method="post"><pems-row gap="2" css="mt-2">
         <input type="hidden" name="workOrderId" value="@Model.WorkOrderId" />
         @if (Acc(WoSection.SpareParts) == SectionAccess.Correctable)
         {
@@ -778,7 +778,7 @@ else
         <pems-col md="3"><pems-input scale="small" name="quantity" type="number" step="0.01" placeholder="@Localizer["Quantity"]" required /></pems-col>
         <pems-col md="3"><pems-input scale="small" name="unitCost" type="number" step="0.01" placeholder="@Localizer["Unit cost (optional)"]" /></pems-col>
         <pems-col md="2"><pems-button tone="primary" size="small" css="w-100"><pems-icon name="bi-plus-lg" /> @Localizer["Add"]</pems-button></pems-col>
-    </pems-row></form>
+    </pems-row></pems-form>
     }
 </pems-content-card>
 }
@@ -796,13 +796,13 @@ else
                         <pems-table-cell>
                             @if (Ctl(WoSection.JobPlanTasks))
                             {
-                                <form asp-action="@(t.IsCompleted ? "ReopenTask" : "CompleteTask")" method="post">
+                                <pems-form asp-action="@(t.IsCompleted ? "ReopenTask" : "CompleteTask")" method="post">
                                     <input type="hidden" name="workOrderTaskId" value="@t.WorkOrderTaskId" />
                                     <input type="hidden" name="workOrderId" value="@Model.WorkOrderId" />
                                     <pems-button tone="none" size="small" css="p-0 border-0" type="submit" title="@(t.IsCompleted ? "Reopen" : "Mark complete")">
                                         <pems-icon class="pems-fs-11rem" css="@(t.IsCompleted ? "bi-check-square-fill text-success" : "bi-square")" />
                                     </pems-button>
-                                </form>
+                                </pems-form>
                             }
                             else
                             {
@@ -842,11 +842,11 @@ else
                 @(rs.PlannedHours.HasValue ? $"[{rs.PlannedHours}h]" : "")
                 @if (Ctl(WoSection.RequiredSkills))
                 {
-                <form asp-action="RemoveRequiredSkill" method="post" class="d-inline">
+                <pems-form asp-action="RemoveRequiredSkill" method="post" class="d-inline">
                     <input type="hidden" name="requiredSkillId" value="@rs.RequiredSkillId" />
                     <input type="hidden" name="workOrderId" value="@Model.WorkOrderId" />
                     <pems-button class="lh-1" tone="none" size="small" css="p-0 border-0 text-white" type="submit" title="@Localizer["حذف"]"><pems-icon name="bi-x" /></pems-button>
-                </form>
+                </pems-form>
                 }
             </pems-badge>
         }
@@ -855,7 +855,7 @@ else
 
     @if (Ctl(WoSection.RequiredSkills))
     {
-    <form asp-action="AddRequiredSkill" method="post"><pems-row gap="2">
+    <pems-form asp-action="AddRequiredSkill" method="post"><pems-row gap="2">
         <input type="hidden" name="workOrderId" value="@Model.WorkOrderId" />
         <pems-col md="4">
             <pems-select scale="small" name="skillId" required>
@@ -873,7 +873,7 @@ else
         </pems-col>
         <pems-col md="2"><pems-input scale="small" name="plannedHours" type="number" step="0.5" placeholder="@Localizer["Planned h"]" /></pems-col>
         <pems-col md="3"><pems-button tone="primary" size="small" css="w-100"><pems-icon name="bi-plus-lg" /> @Localizer["Add"]</pems-button></pems-col>
-    </pems-row></form>
+    </pems-row></pems-form>
     }
     else
     {
@@ -900,7 +900,7 @@ else
                     <pems-table-cell class="small">
                         @if (Ctl(WoSection.RequiredMaterials) && !sourcedAlready)
                         {
-                        <form asp-action="SetMaterialSupplyCode" method="post"><pems-flex gap="1">
+                        <pems-form asp-action="SetMaterialSupplyCode" method="post"><pems-flex gap="1">
                             <input type="hidden" name="workOrderMaterialId" value="@rm.WorkOrderMaterialId" />
                             <input type="hidden" name="workOrderId" value="@Model.WorkOrderId" />
                             <pems-select scale="small" name="supplyCode" aria-label="@Localizer["Whi_SupplyCode"]" data-pems-select="off">
@@ -910,7 +910,7 @@ else
                                 }
                             </pems-select>
                             <pems-button tone="neutral" size="small" outline="true" type="submit" title="@Localizer["Whi_Save"]"><pems-icon name="bi-check2" /></pems-button>
-                        </pems-flex></form>
+                        </pems-flex></pems-form>
                         }
                         else
                         {
@@ -931,11 +931,11 @@ else
                     <pems-table-cell class="text-end">
                         @if (Ctl(WoSection.RequiredMaterials))
                         {
-                        <form asp-action="RemoveRequiredMaterial" method="post" class="d-inline">
+                        <pems-form asp-action="RemoveRequiredMaterial" method="post" class="d-inline">
                             <input type="hidden" name="workOrderMaterialId" value="@rm.WorkOrderMaterialId" />
                             <input type="hidden" name="workOrderId" value="@Model.WorkOrderId" />
                             <pems-button tone="danger" size="small" outline="true" type="submit" title="@Localizer["حذف"]"><pems-icon name="bi-x" /></pems-button>
-                        </form>
+                        </pems-form>
                         }
                     </pems-table-cell>
                 </pems-table-row>
@@ -965,10 +965,10 @@ else
                 <span class="vs-pill vs-pill--neutral">@Localizer["Whi_State_NotRequested"]</span>
                 @if (canEditWo)
                 {
-                    <form asp-action="RequestWarehouseMaterials" method="post" class="d-inline">
+                    <pems-form asp-action="RequestWarehouseMaterials" method="post" class="d-inline">
                         <input type="hidden" name="workOrderId" value="@Model.WorkOrderId" />
                         <pems-button tone="primary" size="small" outline="true" type="submit"><pems-icon name="bi-send" aria-hidden="true" /> @Localizer["Whi_Request"]</pems-button>
-                    </form>
+                    </pems-form>
                 }
                 <span class="text-muted">@Localizer["Whi_RequestHint"]</span>
             }
@@ -993,7 +993,7 @@ else
         <pems-input type="text" id="requiredMaterialScanInput" dir="ltr" placeholder="@Localizer["Scan Material barcode..."]" />
         <pems-button tone="neutral" outline="true" type="button" id="requiredMaterialScanBtn">@Localizer["Resolve"]</pems-button>
     </div>
-    <form asp-action="AddRequiredMaterial" method="post"><pems-row gap="2">
+    <pems-form asp-action="AddRequiredMaterial" method="post"><pems-row gap="2">
         <input type="hidden" name="workOrderId" value="@Model.WorkOrderId" />
         <pems-col md="6">
             <pems-select scale="small" name="materialItemId" id="requiredMaterialSelect" required>
@@ -1002,7 +1002,7 @@ else
         </pems-col>
         <pems-col md="3"><pems-input scale="small" name="requiredQuantity" type="number" step="0.001" placeholder="@Localizer["Quantity"]" required /></pems-col>
         <pems-col md="3"><pems-button tone="primary" size="small" css="w-100"><pems-icon name="bi-plus-lg" /> @Localizer["Add"]</pems-button></pems-col>
-    </pems-row></form>
+    </pems-row></pems-form>
     }
 </pems-content-card>
 
@@ -1026,12 +1026,12 @@ else
     }
     else
     {
-        <form asp-action="CreateCrewForWorkOrder" method="post"><pems-row gap="2">
+        <pems-form asp-action="CreateCrewForWorkOrder" method="post"><pems-row gap="2">
             <input type="hidden" name="workOrderId" value="@Model.WorkOrderId" />
             <pems-col md="4"><pems-input scale="small" name="code" placeholder="@Localizer["کد Crew"]" required /></pems-col>
             <pems-col md="5"><pems-input scale="small" name="name" placeholder="@Localizer["نام Crew"]" required /></pems-col>
             <pems-col md="3"><pems-button tone="primary" size="small" outline="true" css="w-100"><pems-icon name="bi-plus-lg" /> @Localizer["ساخت Crew برای این WorkOrder"]</pems-button></pems-col>
-        </pems-row></form>
+        </pems-row></pems-form>
     }
 </pems-content-card>
 

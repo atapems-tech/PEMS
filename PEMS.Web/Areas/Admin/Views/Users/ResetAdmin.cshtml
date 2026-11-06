@@ -21,10 +21,10 @@
         </ul>
         <p class="text-body-secondary small">@Localizer["You cannot reset your own account this way. Hand the temporary password to the administrator in person or over a trusted channel; it is not stored anywhere."]</p>
 
-        <form class="mt-3" asp-action="ResetAdmin" asp-route-id="@Model.Id" method="post"><pems-flex gap="2">
+        <pems-form class="mt-3" asp-action="ResetAdmin" asp-route-id="@Model.Id" method="post"><pems-flex gap="2">
             <input type="hidden" name="confirm" value="true" />
             <pems-button tone="danger" type="submit"><pems-icon name="bi-key" css="me-1" /> @Localizer["Reset account"]</pems-button>
             <pems-button as="a" tone="neutral" outline="true" asp-action="Index">@Localizer["Cancel"]</pems-button>
-        </pems-flex></form>
+        </pems-flex></pems-form>
     </pems-content-card>
 </pems-page-shell>

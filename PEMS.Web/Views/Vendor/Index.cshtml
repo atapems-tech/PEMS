@@ -80,7 +80,7 @@
 
 @* طبق درخواست: ثبت سریع بدون خروج از صفحه‌ی اصلی - Popup به‌جای صفحه‌ی جدا *@
 <pems-modal id="createVendorModal" tabindex="-1">
-            <form asp-controller="Vendor" asp-action="Create" method="post">
+            <pems-form asp-controller="Vendor" asp-action="Create" method="post">
                 <pems-modal-header>@Localizer["Vs_NewVendor"]</pems-modal-header>
                 <pems-modal-body>
                     <pems-row gap="3">
@@ -95,7 +95,7 @@
                     <button type="button" class="vs-btn" data-bs-dismiss="modal">@Localizer["Cancel"]</button>
                     <button type="submit" class="vs-btn vs-btn--primary">@Localizer["Save"]</button>
                 </pems-modal-footer>
-            </form>
+            </pems-form>
         </pems-modal>
 
 @section Scripts {

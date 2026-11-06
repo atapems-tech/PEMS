@@ -13,22 +13,22 @@
     <pems-col md="6">
         <pems-content-card>
             <h6 class="small fw-bold">@Localizer["Rcm_ImportStrategies"]</h6>
-            <form asp-action="Preview" method="post" enctype="multipart/form-data"><pems-flex gap="2">
+            <pems-form asp-action="Preview" method="post" enctype="multipart/form-data"><pems-flex gap="2">
                 <input type="hidden" name="kind" value="strategies" />
                 <pems-input scale="small" type="file" name="file" accept=".xlsx" required />
                 <pems-button tone="primary" size="small">@Localizer["Rcm_Validate"]</pems-button>
-            </pems-flex></form>
+            </pems-flex></pems-form>
             <a asp-action="Template" asp-route-kind="strategies" class="small">@Localizer["Rcm_DownloadTemplate"]</a>
         </pems-content-card>
     </pems-col>
     <pems-col md="6">
         <pems-content-card>
             <h6 class="small fw-bold">@Localizer["Rcm_ImportAssignments"]</h6>
-            <form asp-action="Preview" method="post" enctype="multipart/form-data"><pems-flex gap="2">
+            <pems-form asp-action="Preview" method="post" enctype="multipart/form-data"><pems-flex gap="2">
                 <input type="hidden" name="kind" value="assignments" />
                 <pems-input scale="small" type="file" name="file" accept=".xlsx" required />
                 <pems-button tone="primary" size="small">@Localizer["Rcm_Validate"]</pems-button>
-            </pems-flex></form>
+            </pems-flex></pems-form>
             <a asp-action="Template" asp-route-kind="assignments" class="small">@Localizer["Rcm_DownloadTemplate"]</a>
         </pems-content-card>
     </pems-col>
@@ -46,10 +46,10 @@
             <pems-flex gap="2">
                 @if (!r.Committed && !string.IsNullOrEmpty(Model.Token) && r.RowsAccepted > 0)
                 {
-                    <form asp-action="Commit" method="post" data-pems-confirm="@Localizer["Rcm_ConfirmImport"]">
+                    <pems-form asp-action="Commit" method="post" data-pems-confirm="@Localizer["Rcm_ConfirmImport"]">
                         <input type="hidden" name="token" value="@Model.Token" /><input type="hidden" name="kind" value="@Model.Kind" />
                         <pems-button tone="success" size="small"><pems-icon name="bi-check2-all" /> @Localizer["Rcm_CommitValidRows"]</pems-button>
-                    </form>
+                    </pems-form>
                 }
                 @if (r.RowsRejected > 0 && !string.IsNullOrEmpty(Model.Token))
                 {

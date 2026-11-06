@@ -12,7 +12,7 @@
 <pems-content-card css="pems-s-71e17938">
     <h6 class="mb-3">@Localizer["Rcm_FailureMode"]</h6>
     @await Html.PartialAsync("_RcmErrors", errors)
-    <form method="post" asp-action="Edit">
+    <pems-form method="post" asp-action="Edit">
         <input type="hidden" name="FailureModeId" value="@Model.FailureModeId" />
         <pems-row gap="3">
             <pems-col md="4"><pems-label>@Localizer["Rcm_Code"] *</pems-label><pems-input name="Code" value="@Model.Code" required /></pems-col>
@@ -44,5 +44,5 @@
             <pems-button tone="primary" type="submit">@Localizer["Save"]</pems-button>
             <pems-button tone="neutral" outline="true" as="a" asp-action="Index">@Localizer["Cancel"]</pems-button>
         </div>
-    </form>
+    </pems-form>
 </pems-content-card>

@@ -116,7 +116,7 @@
                         <span class="text-body-secondary small pm-role-count">@(configuredCount == 0 ? Localizer["No permissions configured"] : $"{configuredCount}/{modules.Length} " + Localizer["modules configured"])</span>
                     </pems-flex>
                 </summary>
-                <form asp-action="SetRole" method="post" class="pm-form">
+                <pems-form asp-action="SetRole" method="post" class="pm-form">
                     <input type="hidden" name="roleName" value="@role" />
                     <div class="permission-grid pm-grid">
                         <pems-table kind="enterprise" css="pm-table" data-role="@role">
@@ -159,7 +159,7 @@
                     <div class="text-end mt-2 pm-fallback-save">
                         <pems-button tone="primary" size="small" css="permission-save" type="submit"><pems-icon name="bi-check2" css="me-1" /> @Localizer["Save"] @role @Localizer["permissions"]</pems-button>
                     </div>
-                </form>
+                </pems-form>
             </details>
         }
         <div class="admin-footer mt-3"><span>&nbsp;</span><span>@roles.Length roles · @modules.Length modules</span></div>

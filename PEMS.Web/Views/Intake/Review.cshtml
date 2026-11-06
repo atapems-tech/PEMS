@@ -31,7 +31,7 @@
 <pems-content-card>
     <h6 class="mb-3"><pems-icon name="bi-robot" /> AI Suggestion &mdash; confirm or correct, then Route</h6>
 
-    <form asp-action="Route" method="post">
+    <pems-form asp-action="Route" method="post">
         <input type="hidden" name="attachmentId" value="@Model.AttachmentId" />
 
         <pems-row gap="3">
@@ -100,12 +100,12 @@
         <pems-flex gap="2" css="mt-4">
             <pems-button tone="primary" type="submit"><pems-icon name="bi-signpost-split" /> Confirm &amp; Route</pems-button>
         </pems-flex>
-    </form>
+    </pems-form>
 
-    <form asp-action="Reject" method="post" class="mt-2">
+    <pems-form asp-action="Reject" method="post" class="mt-2">
         <input type="hidden" name="attachmentId" value="@Model.AttachmentId" />
         <pems-button tone="danger" size="small" outline="true" type="submit" data-pems-confirm="Reject this file from the intake queue?">
             <pems-icon name="bi-x-lg" /> @Localizer["Reject"]
         </pems-button>
-    </form>
+    </pems-form>
 </pems-content-card>

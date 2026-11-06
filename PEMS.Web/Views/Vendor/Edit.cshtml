@@ -13,7 +13,7 @@
     <pems-content-card css="pems-s-b12974cb">
         <pems-validation-summary css="py-2 px-3 small" asp-validation-summary="All" hidden="@(ViewData.ModelState.IsValid)"></pems-validation-summary>
 
-        <form asp-action="Edit" method="post">
+        <pems-form asp-action="Edit" method="post">
             <input type="hidden" asp-for="VendorId" />
             <input type="hidden" asp-for="RiskLevel" />
             <input type="hidden" asp-for="RiskScore" />
@@ -33,6 +33,6 @@
                 <button type="submit" class="vs-btn vs-btn--primary">@Localizer["Save"]</button>
                 <a asp-action="Details" asp-route-id="@Model.VendorId" class="vs-btn">@Localizer["Cancel"]</a>
             </pems-flex>
-        </form>
+        </pems-form>
     </pems-content-card>
 </pems-page-shell>

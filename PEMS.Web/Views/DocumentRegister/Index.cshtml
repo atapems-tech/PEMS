@@ -99,10 +99,10 @@
                                     @if (sf.IsDefault) { <pems-icon name="bi-star-fill" aria-hidden="true" /> }
                                     @sf.Name
                                 </a>
-                                <form asp-action="DeleteFilter" method="post" data-pems-confirm="@Localizer["Dr_DeleteFilterConfirm"]">
+                                <pems-form asp-action="DeleteFilter" method="post" data-pems-confirm="@Localizer["Dr_DeleteFilterConfirm"]">
                                     <input type="hidden" name="id" value="@sf.SavedFilterId" />
                                     <button type="submit" class="lp-act lp-act--always" title="@Localizer["Dr_DeleteFilter"]"><pems-icon name="bi-x-lg" aria-hidden="true" /><span class="visually-hidden">@Localizer["Dr_DeleteFilter"]: @sf.Name</span></button>
-                                </form>
+                                </pems-form>
                             </li>
                         }
                     }
@@ -125,9 +125,9 @@
         </pems-list-chips>
 
         <pems-list-bulk count-text="@Localizer["Lp_SelectedCount"]">
-            <form asp-action="ExportSelected" method="post">
+            <pems-form asp-action="ExportSelected" method="post">
                 <pems-button tone="success" size="small" outline="true" type="submit"><pems-icon name="bi-file-earmark-excel" aria-hidden="true" /> @Localizer["Dr_ExportSelected"]</pems-button>
-            </form>
+            </pems-form>
         </pems-list-bulk>
 
         <pems-list-grid>
@@ -211,7 +211,7 @@
 </pems-list-page>
 
 <pems-modal id="saveFilterModal" tabindex="-1" aria-labelledby="saveFilterTitle" aria-hidden="true">
-            <form asp-action="SaveFilter" method="post">
+            <pems-form asp-action="SaveFilter" method="post">
                 <pems-modal-header title-id="saveFilterTitle">@Localizer["Dr_SaveFilterTitle"]</pems-modal-header>
                 <pems-modal-body>
                     <pems-label css="small" for="saveFilterName">@Localizer["Dr_FilterName"]</pems-label>
@@ -225,7 +225,7 @@
                 <pems-modal-footer>
                     <pems-button tone="primary" size="small" type="submit">@Localizer["Save"]</pems-button>
                 </pems-modal-footer>
-            </form>
+            </pems-form>
         </pems-modal>
 
 @section Scripts {

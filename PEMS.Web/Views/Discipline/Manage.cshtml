@@ -10,7 +10,7 @@
     <p class="text-muted small mb-2">@Localizer["Disc_Manage_Note"]</p>
     <pems-button tone="neutral" size="small" outline="true" css="mb-3" as="a" asp-action="Index"><pems-icon name="bi-arrow-left" /> @Localizer["Discipline Workspaces"]</pems-button>
 
-    <form class="mb-3" method="get"><pems-flex gap="2" wrap="true">
+    <pems-form class="mb-3" method="get"><pems-flex gap="2" wrap="true">
         <pems-input class="pems-maxw-260" scale="small" name="q" value="@ViewBag.Query" placeholder="@Localizer["Org_Positions_Search"]" aria-label="@Localizer["Org_Positions_Search"]" />
         <pems-select class="pems-maxw-180" scale="small" name="status" aria-label="@Localizer["Org_Filter_Status"]">
             <option value="" selected="@((string)ViewBag.Status == "")">@Localizer["Org_Filter_All"]</option>
@@ -18,16 +18,16 @@
             <option value="inactive" selected="@((string)ViewBag.Status == "inactive")">@Localizer["Org_Inactive"]</option>
         </pems-select>
         <pems-button tone="neutral" size="small" outline="true"><pems-icon name="bi-funnel" /> @Localizer["Org_Filter_Apply"]</pems-button>
-    </pems-flex></form>
+    </pems-flex></pems-form>
 
-    <form asp-action="CreateDiscipline" method="post"><pems-row gap="2" css="align-items-end mb-3">
+    <pems-form asp-action="CreateDiscipline" method="post"><pems-row gap="2" css="align-items-end mb-3">
         <pems-col md="2"><pems-label>@Localizer["Code"]</pems-label><pems-input scale="small" name="code" maxlength="20" required /></pems-col>
         <pems-col md="3"><pems-label>@Localizer["Name"]</pems-label><pems-input scale="small" name="name" maxlength="150" required /></pems-col>
         <pems-col md="3"><pems-label>@Localizer["Description"]</pems-label><pems-input scale="small" name="description" /></pems-col>
         <pems-col md="2"><pems-label>@Localizer["Import aliases"]</pems-label><pems-input scale="small" name="importAliases" placeholder="PR, PROC" /></pems-col>
         <pems-col md="1"><pems-label>@Localizer["Transmittal code"]</pems-label><pems-input scale="small" name="transmittalCode" maxlength="1" /></pems-col>
         <pems-col md="1"><pems-button tone="primary" size="small" css="w-100"><pems-icon name="bi-plus-lg" /></pems-button></pems-col>
-    </pems-row></form>
+    </pems-row></pems-form>
 
     <pems-table-scroll>
         <pems-table kind="enterprise" scale="small" css="align-middle">
@@ -37,7 +37,7 @@
             {
                 <pems-table-row class="@(d.IsActive ? "" : "text-muted")">
                     <pems-table-cell colspan="7" class="p-1">
-                        <form asp-action="EditDiscipline" method="post"><pems-row gap="1" css="align-items-center">
+                        <pems-form asp-action="EditDiscipline" method="post"><pems-row gap="1" css="align-items-center">
                             <input type="hidden" name="disciplineId" value="@d.DisciplineId" />
                             <pems-col md="1"><pems-input scale="small" name="code" value="@d.Code" maxlength="20" required aria-label="@Localizer["Code"]" /></pems-col>
                             <pems-col md="3"><pems-input scale="small" name="name" value="@d.Name" maxlength="150" required aria-label="@Localizer["Name"]" /></pems-col>
@@ -46,13 +46,13 @@
                             <pems-col md="1"><pems-input scale="small" name="transmittalCode" value="@d.TransmittalCode" maxlength="1" aria-label="@Localizer["Transmittal code"]" /></pems-col>
                             <pems-col md="1"><pems-badge tone="neutral">@d.EmployeeCount</pems-badge> <pems-badge tone="neutral">@d.DocumentCount</pems-badge></pems-col>
                             <pems-col md="1"><pems-button tone="neutral" size="small" outline="true" title="@Localizer["Save"]" aria-label="@Localizer["Save"]"><pems-icon name="bi-save" /></pems-button></pems-col>
-                        </pems-row></form>
+                        </pems-row></pems-form>
                     </pems-table-cell>
                     <pems-table-cell colspan="2" class="text-end">
-                        <form asp-action="SetDisciplineActive" method="post" class="d-inline">
+                        <pems-form asp-action="SetDisciplineActive" method="post" class="d-inline">
                             <input type="hidden" name="disciplineId" value="@d.DisciplineId" /><input type="hidden" name="isActive" value="@((!d.IsActive).ToString().ToLowerInvariant())" />
                             <pems-button tone="none" size="small" css="@(d.IsActive ? "btn-outline-danger" : "btn-outline-success")">@(d.IsActive ? Localizer["Deactivate"] : Localizer["Reactivate"])</pems-button>
-                        </form>
+                        </pems-form>
                     </pems-table-cell>
                 </pems-table-row>
             }

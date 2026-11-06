@@ -309,7 +309,7 @@
             </div>
 
             @* search opens over the title row (no extra row); the global quick-search suggestions stay attached to the input *@
-            <form method="get" class="lp-search" id="lpSearchForm" role="search" hidden>
+            <pems-form method="get" class="lp-search" id="lpSearchForm" role="search" hidden>
                 @foreach (var kv in Preserved("q"))
                 {
                     <input type="hidden" name="@kv.Key" value="@kv.Value" />
@@ -319,7 +319,7 @@
                        data-pems-search data-search-type="Letter" autocomplete="off" />
                 <pems-button tone="primary" size="small" type="submit">@Localizer["Search"]</pems-button>
                 <button type="button" class="lp-icon-btn" id="lpSearchClose" aria-label="@Localizer["Lp_SearchClose"]"><pems-icon name="bi-x-lg" aria-hidden="true" /></button>
-            </form>
+            </pems-form>
 
             <div class="lp-tools" id="lpTools">
                 <button type="button" class="lp-icon-btn" id="lpSearchBtn" aria-controls="lpSearchForm" aria-expanded="false" title="@Localizer["Lp_SearchOpen"]">
@@ -332,7 +332,7 @@
                         @if (filterCount > 0) { <span class="lp-badge">@filterCount<span class="visually-hidden"> @Localizer["Lp_ActiveFilters"]</span></span> }
                     </button>
                     <pems-dropdown-menu as="div" end="true" css="lp-filter-pop p-0">
-                        <form method="get">
+                        <pems-form method="get">
                             @foreach (var kv in Preserved(popoverKeys))
                             {
                                 <input type="hidden" name="@kv.Key" value="@kv.Value" />
@@ -402,7 +402,7 @@
                                 <pems-button as="a" tone="none" size="small" css="btn-link" href="@Without(filterKeys)">@Localizer["Reset"]</pems-button>
                                 <pems-button tone="primary" size="small" type="submit"><pems-icon name="bi-funnel" aria-hidden="true" /> @Localizer["Lt_ApplyFilters"]</pems-button>
                             </div>
-                        </form>
+                        </pems-form>
                     </pems-dropdown-menu>
                 </div>
 
@@ -481,15 +481,15 @@
                 <span>@Localizer["Ct_TrashHint"]</span>
                 @if (Model.TotalCount > 0)
                 {
-                    <form asp-action="EmptyTrash" method="post" class="ms-auto" data-pems-confirm="@Localizer["Ct_ConfirmEmptyTrash"]">
+                    <pems-form asp-action="EmptyTrash" method="post" class="ms-auto" data-pems-confirm="@Localizer["Ct_ConfirmEmptyTrash"]">
                         <pems-button tone="danger" size="small" outline="true" type="submit"><pems-icon name="bi-trash3" aria-hidden="true" /> @Localizer["Ct_EmptyTrash"]</pems-button>
-                    </form>
+                    </pems-form>
                 }
             </div>
         }
 
         <div class="lp-tablewrap">
-            <form id="letterBulkForm" method="post" asp-action="Bulk">
+            <pems-form id="letterBulkForm" method="post" asp-action="Bulk">
                 <input type="hidden" name="returnUrl" value="@Context.Request.Path@Context.Request.QueryString" />
                 <input type="hidden" name="tagId" id="ctBulkTagId" value="" />
                 <div id="letterBulkIds"></div>
@@ -571,7 +571,7 @@
                                 </pems-modal-footer>
                             </pems-modal>
                 }
-            </form>
+            </pems-form>
 
             <pems-table-scroll css="pems-grid-scroll table-scroll-area lp-scroll">
                 <pems-table kind="enterprise" css="pems-grid-table pems-compact-rows mb-0 lp-table" data-grid-key="Letter">
@@ -603,14 +603,14 @@
                             <pems-table-row class="lp-row @(l.IsUnread ? "lp-unread" : "") @(l.HasOverdueReferral ? "table-danger" : "") @(l.IsTrashed ? "ct-trashed" : "")" data-letter-id="@l.LetterId" data-thread-count="@l.ThreadCount">
                                 <pems-table-cell><input type="checkbox" class="letter-select" value="@l.LetterId" aria-label="@Localizer["Lt_Select"] @l.LetterNumber" /></pems-table-cell>
                                 <pems-table-cell>
-                                    <form asp-action="ToggleStar" method="post" class="d-inline">
+                                    <pems-form asp-action="ToggleStar" method="post" class="d-inline">
                                         <input type="hidden" name="letterId" value="@l.LetterId" />
                                         <input type="hidden" name="returnUrl" value="@Context.Request.Path@Context.Request.QueryString" />
                                         <pems-button tone="none" size="small" css="p-0 border-0 bg-transparent" type="submit" title="@Localizer["Lt_QueueStarred"]" aria-pressed="@(l.IsStarred ? "true" : "false")">
                                             <pems-icon css="@(l.IsStarred ? "bi-star-fill text-warning" : "bi-star text-muted")" aria-hidden="true" />
                                             <span class="visually-hidden">@Localizer["Lt_QueueStarred"]</span>
                                         </pems-button>
-                                    </form>
+                                    </pems-form>
                                 </pems-table-cell>
                                 <pems-table-cell><span class="lp-type lp-type--@l.LetterType.ToLowerInvariant()" title="@Localizer[l.LetterType]"><pems-icon css="@typeIcon" aria-hidden="true" /><span class="visually-hidden">@Localizer[l.LetterType]</span></span></pems-table-cell>
                                 <pems-table-cell class="lp-subject-cell">

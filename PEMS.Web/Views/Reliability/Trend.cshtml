@@ -25,7 +25,7 @@
 </pems-flex>
 
 <pems-content-card css="mb-3">
-    <form method="get"><pems-flex wrap="true" gap="2" align="end">
+    <pems-form method="get"><pems-flex wrap="true" gap="2" align="end">
         <input type="hidden" name="pointId" value="@Model.ConditionMonitoringPointId" />
         <div>
             <pems-label css="small mb-0">@Localizer["Range"]</pems-label>
@@ -43,7 +43,7 @@
             <div><pems-label css="small mb-0">@Localizer["To"]</pems-label><pems-date name="to" value="@Model.ToDate.ToString("yyyy-MM-dd")" scale="small" /></div>
             <pems-button tone="primary" size="small" outline="true" type="submit">@Localizer["Apply"]</pems-button>
         }
-    </pems-flex></form>
+    </pems-flex></pems-form>
     <div class="small text-muted mt-2">
         @Model.FromDate.ToString("yyyy-MM-dd") → @Model.ToDate.ToString("yyyy-MM-dd") · @Model.TotalInRange readings in range
         @if (Model.Truncated)

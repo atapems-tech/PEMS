@@ -9,10 +9,10 @@
 }
 
 <pems-content-card css="mb-3">
-    <form asp-action="Index" method="get" role="search"><pems-flex gap="2">
+    <pems-form asp-action="Index" method="get" role="search"><pems-flex gap="2">
         <pems-input type="search" name="q" value="@query" placeholder="@Localizer["GlobalSearch_Placeholder"]" aria-label="@Localizer["GlobalSearch_Placeholder"]" minlength="2" autofocus />
         <pems-button tone="primary"><pems-icon name="bi-search" aria-hidden="true" /> @Localizer["Search"]</pems-button>
-    </pems-flex></form>
+    </pems-flex></pems-form>
     <p class="text-muted small mt-2 mb-0">@Localizer["GlobalSearch_PaletteHint"]</p>
 </pems-content-card>
 

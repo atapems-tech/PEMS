@@ -4,7 +4,7 @@
 <pems-content-card css="pems-s-3f7efa5f">
     <h6 class="mb-3"><pems-icon name="bi-exclamation-triangle" /> Raise New NCR</h6>
 
-    <form asp-action="NcrCreate" method="post">
+    <pems-form asp-action="NcrCreate" method="post">
         <pems-row gap="3">
             <pems-col md="6">
                 <pems-label>NCR Number</pems-label>
@@ -46,5 +46,5 @@
             <pems-button tone="danger" type="submit">@Localizer["Raise NCR"]</pems-button>
             <pems-button tone="neutral" outline="true" as="a" asp-action="NcrIndex">@Localizer["Cancel"]</pems-button>
         </div>
-    </form>
+    </pems-form>
 </pems-content-card>

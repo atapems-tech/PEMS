@@ -13,7 +13,7 @@
     <a asp-controller="Reliability" asp-action="Index">صفحه‌ی Reliability</a> موجودند.
 </p>
 
-<form class="mb-3" method="get"><pems-flex gap="2" align="end">
+<pems-form class="mb-3" method="get"><pems-flex gap="2" align="end">
     <div>
         <pems-label css="small mb-0">@Localizer["From"]</pems-label>
         <pems-date name="fromDate" scale="small" value="@(Model.FromDate?.ToString("yyyy-MM-dd"))" />
@@ -24,7 +24,7 @@
     </div>
     <pems-button tone="primary" size="small" type="submit">@Localizer["Filter"]</pems-button>
     <pems-button tone="neutral" size="small" outline="true" as="a" asp-action="Index">@Localizer["Clear"]</pems-button>
-</pems-flex></form>
+</pems-flex></pems-form>
 
 @{
     string Pct(double? v) => v.HasValue ? $"{v.Value:N1}%" : "N/A";

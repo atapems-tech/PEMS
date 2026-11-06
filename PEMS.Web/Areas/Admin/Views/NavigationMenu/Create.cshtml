@@ -13,7 +13,7 @@
 
         <div asp-validation-summary="All" class="text-danger small mb-2" role="alert"></div>
 
-        <form method="post" asp-action="Create">
+        <pems-form method="post" asp-action="Create">
             <div class="mb-3">
                 <pems-label for="ParentKey">@Localizer["Nav_Field_Parent"] <span class="text-danger" aria-hidden="true">*</span></pems-label>
                 <pems-select id="ParentKey" name="ParentKey" required>
@@ -75,6 +75,6 @@
                 <pems-button tone="none" css="btn-primary" type="submit">@Localizer["Save"]</pems-button>
                 <pems-button as="a" tone="neutral" outline="true" asp-action="Index">@Localizer["Cancel"]</pems-button>
             </pems-flex>
-        </form>
+        </pems-form>
     </pems-content-card>
 </pems-page-shell>

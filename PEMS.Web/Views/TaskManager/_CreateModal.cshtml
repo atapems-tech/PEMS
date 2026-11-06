@@ -10,7 +10,7 @@
 }
 @if (Model.CanCreate)
 {
-<pems-modal size="large" id="tmCreateModal" tabindex="-1" aria-labelledby="tmCreateTitle" aria-hidden="true" data-tm-autoopen="@(Context.Request.Query["create"].ToString() == "1" ? "1" : "0")"><form asp-controller="TaskManager" asp-action="Create" method="post" data-tm-dirty-guard data-tm-ctrl-enter>
+<pems-modal size="large" id="tmCreateModal" tabindex="-1" aria-labelledby="tmCreateTitle" aria-hidden="true" data-tm-autoopen="@(Context.Request.Query["create"].ToString() == "1" ? "1" : "0")"><pems-form asp-controller="TaskManager" asp-action="Create" method="post" data-tm-dirty-guard data-tm-ctrl-enter>
             <pems-modal-header level="3" title-css="h6" title-id="tmCreateTitle" close="true" close-label="@Localizer["Tm_Close"]">@Localizer["Tm_Create"] · <span class="tm-key">@Model.Space.Key</span></pems-modal-header>
             <pems-modal-body>
                 <input type="hidden" name="WorkSpaceId" value="@Model.Space.Id" />
@@ -81,5 +81,5 @@
                     <pems-button tone="primary" size="small" type="submit">@Localizer["Tm_Create"]</pems-button>
                 </pems-flex>
             </pems-modal-footer>
-        </form></pems-modal>
+        </pems-form></pems-modal>
 }

@@ -34,23 +34,23 @@
     <pems-flex wrap="true" gap="2" css="mt-3">
         @if (Model.IndexOfContentsSubmittedDate == null)
         {
-            <form asp-action="MarkIndexSubmitted" method="post"><input type="hidden" name="mdbId" value="@Model.MDBId" /><pems-button tone="primary" size="small" outline="true">Mark Index Submitted</pems-button></form>
+            <pems-form asp-action="MarkIndexSubmitted" method="post"><input type="hidden" name="mdbId" value="@Model.MDBId" /><pems-button tone="primary" size="small" outline="true">Mark Index Submitted</pems-button></pems-form>
         }
         @if (Model.Status != "FinalIssued" && Model.Status != "Delivered")
         {
-            <form asp-action="MarkFinalIssued" method="post"><input type="hidden" name="mdbId" value="@Model.MDBId" /><pems-button tone="primary" size="small" outline="true">Mark Final Issued</pems-button></form>
+            <pems-form asp-action="MarkFinalIssued" method="post"><input type="hidden" name="mdbId" value="@Model.MDBId" /><pems-button tone="primary" size="small" outline="true">Mark Final Issued</pems-button></pems-form>
         }
         @if (!Model.HardCopyShippedDate.HasValue)
         {
-            <form asp-action="MarkHardCopyShipped" method="post"><pems-flex gap="1">
+            <pems-form asp-action="MarkHardCopyShipped" method="post"><pems-flex gap="1">
                 <input type="hidden" name="mdbId" value="@Model.MDBId" />
                 <pems-input class="pems-w-90" scale="small" type="number" name="hardCopyCount" placeholder="# volumes" />
                 <pems-button tone="primary" size="small" outline="true">Mark Hard Copy Shipped</pems-button>
-            </pems-flex></form>
+            </pems-flex></pems-form>
         }
         @if (!Model.SoftCopyDeliveredDate.HasValue)
         {
-            <form asp-action="MarkSoftCopyDelivered" method="post"><input type="hidden" name="mdbId" value="@Model.MDBId" /><pems-button tone="primary" size="small" outline="true">Mark Soft Copy Delivered</pems-button></form>
+            <pems-form asp-action="MarkSoftCopyDelivered" method="post"><input type="hidden" name="mdbId" value="@Model.MDBId" /><pems-button tone="primary" size="small" outline="true">Mark Soft Copy Delivered</pems-button></pems-form>
         }
     </pems-flex>
 </pems-content-card>
@@ -79,11 +79,11 @@
                         <pems-table-cell>@(d.IsNotApplicable ? "Not applicable" : "")</pems-table-cell>
                         <pems-table-cell>@d.Notes</pems-table-cell>
                         <pems-table-cell>
-                            <form asp-action="RemoveDocument" method="post">
+                            <pems-form asp-action="RemoveDocument" method="post">
                                 <input type="hidden" name="mdbId" value="@Model.MDBId" />
                                 <input type="hidden" name="mdbDocumentId" value="@d.MDBDocumentId" />
                                 <pems-button tone="danger" size="small" outline="true"><pems-icon name="bi-trash" /></pems-button>
-                            </form>
+                            </pems-form>
                         </pems-table-cell>
                     </pems-table-row>
                 }
@@ -94,7 +94,7 @@
             <p class="text-muted small mb-2">No documents in this part yet.</p>
         }
 
-        <form asp-action="AddDocument" method="post"><pems-row gap="2" css="mt-2">
+        <pems-form asp-action="AddDocument" method="post"><pems-row gap="2" css="mt-2">
             <input type="hidden" name="mdbId" value="@Model.MDBId" />
             <input type="hidden" name="part" value="@code" />
             <pems-col md="3">
@@ -113,6 +113,6 @@
                 <label class="form-check-label small" for="na_@code">Not applicable</label>
             </pems-col>
             <pems-col md="2"><pems-button tone="primary" size="small" outline="true" css="w-100"><pems-icon name="bi-plus-lg" /> @Localizer["Add"]</pems-button></pems-col>
-        </pems-row></form>
+        </pems-row></pems-form>
     </pems-content-card>
 }

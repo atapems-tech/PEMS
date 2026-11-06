@@ -20,7 +20,7 @@
 }
 else
 {
-    <form asp-action="BulkConfirm" method="post">
+    <pems-form asp-action="BulkConfirm" method="post">
         <pems-content-card css="mb-3 d-flex justify-content-between align-items-center">
             <div>
                 <input type="checkbox" id="selectAll" onclick="document.querySelectorAll('.item-check').forEach(c => c.checked = this.checked);" />
@@ -51,5 +51,5 @@ else
                 </pems-table-body>
             </pems-table>
         </pems-content-card>
-    </form>
+    </pems-form>
 }

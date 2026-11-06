@@ -32,7 +32,7 @@
     <p class="small text-muted mt-2 mb-0"><pems-icon name="bi-info-circle" aria-hidden="true" /> @Localizer["Whi_Hint"]</p>
 </pems-content-card>
 
-<form asp-action="Source" method="post"><pems-content-card>
+<pems-form asp-action="Source" method="post"><pems-content-card>
     <input type="hidden" name="workOrderId" value="@Model.WorkOrderId" />
     <pems-table-scroll>
         <pems-table kind="enterprise" scale="small" css="align-middle">
@@ -98,4 +98,4 @@
             <pems-col span="12" css="small text-muted">@Localizer["Whi_SourceHint"]</pems-col>
         </pems-row>
     }
-</pems-content-card></form>
+</pems-content-card></pems-form>

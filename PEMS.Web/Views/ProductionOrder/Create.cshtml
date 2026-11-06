@@ -2,7 +2,7 @@
 @using PEMS.Web.Resources
 @inject IStringLocalizer<SharedResource> Localizer
 <pems-content-card css="pems-s-b12974cb">
-    <form asp-action="Create" method="post">
+    <pems-form asp-action="Create" method="post">
         <pems-row gap="3">
             <pems-col md="8">
                 <pems-label>Product / Material</pems-label>
@@ -80,7 +80,7 @@
             <pems-button tone="primary" type="submit"><pems-icon name="bi-check-lg" /> Create (Draft)</pems-button>
             <pems-button tone="neutral" outline="true" as="a" asp-action="Index">@Localizer["Cancel"]</pems-button>
         </pems-flex>
-    </form>
+    </pems-form>
 </pems-content-card>
 
 @section Scripts {

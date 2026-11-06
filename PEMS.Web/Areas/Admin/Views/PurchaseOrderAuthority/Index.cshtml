@@ -24,7 +24,7 @@
         <pems-list-toolbar heading="@Localizer["Po_AuthorityTitle"]" heading-title="@Localizer["Po_AuthorityHint"]" total="@Model.Count">
             <pems-list-tools>
                 <pems-list-popover id="poRuleNew" icon="bi-plus-lg" label="@Localizer["Po_NewRule"]" primary="true">
-                    <form asp-action="Save" method="post">
+                    <pems-form asp-action="Save" method="post">
                         <div>
                             <label class="lp-lbl" for="rLevel">@Localizer["Po_Level"]</label>
                             <pems-input id="rLevel" name="level" type="number" min="1" value="1" dir="ltr" required />
@@ -53,7 +53,7 @@
                         <div class="lp-fp-foot px-0 pb-0">
                             <pems-button tone="primary" size="small" type="submit"><pems-icon name="bi-check2" aria-hidden="true" /> @Localizer["Po_SaveRule"]</pems-button>
                         </div>
-                    </form>
+                    </pems-form>
                 </pems-list-popover>
             </pems-list-tools>
         </pems-list-toolbar>
@@ -84,14 +84,14 @@
                         <pems-table-cell class="small"><span class="vs-title-cell" title="@r.Description">@r.Description</span></pems-table-cell>
                         <pems-table-cell><span class="vs-pill @(r.IsActive ? "vs-pill--success" : "vs-pill--neutral")">@Localizer[r.IsActive ? "Po_Active" : "Po_Inactive"]</span></pems-table-cell>
                         <pems-table-cell class="text-end">
-                            <form asp-action="Save" method="post" class="d-inline">
+                            <pems-form asp-action="Save" method="post" class="d-inline">
                                 <input type="hidden" name="id" value="@r.Id" /><input type="hidden" name="level" value="@r.Level" />
                                 <input type="hidden" name="minAmount" value="@r.MinAmount.ToString(System.Globalization.CultureInfo.InvariantCulture)" />
                                 <input type="hidden" name="maxAmount" value="@r.MaxAmount?.ToString(System.Globalization.CultureInfo.InvariantCulture)" />
                                 <input type="hidden" name="currency" value="@r.Currency" /><input type="hidden" name="approverRole" value="@r.ApproverRole" />
                                 <input type="hidden" name="description" value="@r.Description" /><input type="hidden" name="isActive" value="@((!r.IsActive).ToString().ToLowerInvariant())" />
                                 <button type="submit" class="lp-act lp-act--always" title="@Localizer[r.IsActive ? "Po_Deactivate" : "Po_Activate"]" aria-label="@Localizer[r.IsActive ? "Po_Deactivate" : "Po_Activate"]"><pems-icon css="@(r.IsActive ? "bi-toggle-on" : "bi-toggle-off")" aria-hidden="true" /></button>
-                            </form>
+                            </pems-form>
                         </pems-table-cell>
                     </pems-table-row>
                 }

@@ -43,15 +43,15 @@
                             </pems-table-cell>
                             <pems-table-cell><pems-badge tone="none" css="@(s.IsPublished ? "bg-success" : "bg-secondary")">@(s.IsPublished ? "Published" : "Draft")</pems-badge></pems-table-cell>
                             <pems-table-cell class="text-end">
-                                <form asp-action="StandardSetPublished" asp-route-id="@s.HelpStandardReferenceId" method="post" class="d-inline">
+                                <pems-form asp-action="StandardSetPublished" asp-route-id="@s.HelpStandardReferenceId" method="post" class="d-inline">
                                     <input type="hidden" name="isPublished" value="@(!s.IsPublished)" />
                                     <pems-button tone="none" size="small" css="btn-outline-@(s.IsPublished ? "secondary" : "success")" type="submit">
                                         @(s.IsPublished ? "Unpublish" : "Publish")
                                     </pems-button>
-                                </form>
-                                <form asp-action="StandardDelete" asp-route-id="@s.HelpStandardReferenceId" method="post" class="d-inline" data-pems-confirm="Delete this standard reference?">
+                                </pems-form>
+                                <pems-form asp-action="StandardDelete" asp-route-id="@s.HelpStandardReferenceId" method="post" class="d-inline" data-pems-confirm="Delete this standard reference?">
                                     <pems-button tone="danger" size="small" outline="true" type="submit"><pems-icon name="bi-trash" /></pems-button>
-                                </form>
+                                </pems-form>
                             </pems-table-cell>
                         </pems-table-row>
                     }

@@ -8,7 +8,7 @@
     var returnUrl = Context.Request.Path + Context.Request.QueryString;
 }
 @* هر مورد جداگانه در سرور مجوز می‌گیرد؛ این نوار فقط ورودی جمع می‌کند. مقادیر وضعیت/Sprint/مسئول فقط از همان فضا. *@
-<form class="tm-bulkbar" id="tmBulk" asp-controller="TaskManager" asp-action="Bulk" method="post" data-tm-bulkbar hidden><pems-flex wrap="true" gap="2" align="center">
+<pems-form class="tm-bulkbar" id="tmBulk" asp-controller="TaskManager" asp-action="Bulk" method="post" data-tm-bulkbar hidden><pems-flex wrap="true" gap="2" align="center">
     <input type="hidden" name="returnUrl" value="@returnUrl" />
     <span class="small"><strong data-tm-bulk-count>0</strong> @Localizer["Tm_Selected"]</span>
     <label class="visually-hidden" for="tm-bulk-action">@Localizer["Tm_BulkAction"]</label>
@@ -42,4 +42,4 @@
         }
     }
     <pems-button tone="primary" size="small" type="submit" data-pems-confirm="@Localizer["Tm_BulkConfirm"]">@Localizer["Tm_Apply"]</pems-button>
-</pems-flex></form>
+</pems-flex></pems-form>

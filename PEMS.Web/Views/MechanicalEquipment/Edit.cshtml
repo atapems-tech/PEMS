@@ -8,7 +8,7 @@
 
 <pems-content-card>
     <h5 class="mb-3">@Model.TagNumber</h5>
-    <form asp-action="Edit" method="post">
+    <pems-form asp-action="Edit" method="post">
         <input type="hidden" name="mechanicalEquipmentId" value="@Model.MechanicalEquipmentId" />
 
         <h6 class="text-muted mb-2">@Localizer["General"]</h6>
@@ -55,5 +55,5 @@
             <pems-button tone="primary" type="submit"><pems-icon name="bi-save" /> @Localizer["ذخیره"]</pems-button>
             <pems-button tone="neutral" outline="true" as="a" asp-action="Passport" asp-route-id="@Model.MechanicalEquipmentId">@Localizer["انصراف"]</pems-button>
         </pems-flex>
-    </form>
+    </pems-form>
 </pems-content-card>

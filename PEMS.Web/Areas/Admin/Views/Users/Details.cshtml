@@ -287,7 +287,7 @@
 
             <pems-tab-pane fade="true" css="@(activeAccessTab == "simulator" ? "show active" : "")" id="access-simulator" role="tabpanel">
                 <pems-content-card>
-                    <form class="pems-s-e2b01b0d" method="post" asp-action="Simulate" asp-route-id="@Model.UserId"><pems-row gap="3">
+                    <pems-form class="pems-s-e2b01b0d" method="post" asp-action="Simulate" asp-route-id="@Model.UserId"><pems-row gap="3">
                         @Html.AntiForgeryToken()
                         <pems-col md="6">
                             <pems-label>@Localizer["Resource"]</pems-label>
@@ -304,7 +304,7 @@
                         <pems-col span="12">
                             <pems-button tone="primary" type="submit">@Localizer["Run"]</pems-button>
                         </pems-col>
-                    </pems-row></form>
+                    </pems-row></pems-form>
                     <datalist id="permissionResourceList">
                         @foreach (var name in Model.Simulator.AllPermissionNames)
                         {

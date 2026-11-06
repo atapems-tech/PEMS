@@ -9,7 +9,7 @@
 }
 
 <pems-content-card css="pems-s-b93afc9b">
-    <form asp-action="Create" method="post">
+    <pems-form asp-action="Create" method="post">
         <pems-row gap="3">
             <pems-col md="6">
                 <pems-label>Permit Type</pems-label>
@@ -68,5 +68,5 @@
             <pems-button tone="primary" type="submit">Create Permit</pems-button>
             <pems-button tone="neutral" outline="true" as="a" asp-action="Index">@Localizer["Cancel"]</pems-button>
         </div>
-    </form>
+    </pems-form>
 </pems-content-card>

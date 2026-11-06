@@ -54,11 +54,11 @@
                                 <pems-button tone="neutral" size="small" outline="true" as="a" asp-action="Edit" asp-route-id="@p.ProjectId">
                                     <pems-icon name="bi-pencil" />
                                 </pems-button>
-                                <form asp-action="ToggleActive" asp-route-id="@p.ProjectId" method="post" class="d-inline">
+                                <pems-form asp-action="ToggleActive" asp-route-id="@p.ProjectId" method="post" class="d-inline">
                                     <pems-button tone="warning" size="small" outline="true" title="Activate/Deactivate">
                                         <pems-icon name="bi-power" />
                                     </pems-button>
-                                </form>
+                                </pems-form>
                             </pems-table-cell>
                         </pems-table-row>
                     }
@@ -69,7 +69,7 @@
 </pems-list-page>
 
 <pems-modal id="createProjectModal" tabindex="-1">
-            <form asp-controller="Projects" asp-action="Create" method="post">
+            <pems-form asp-controller="Projects" asp-action="Create" method="post">
                 <pems-modal-header>@Localizer["New Project"]</pems-modal-header>
                 <pems-modal-body>
                     <pems-row gap="3">
@@ -91,7 +91,7 @@
                     <pems-button tone="neutral" outline="true" type="button" data-bs-dismiss="modal">@Localizer["Cancel"]</pems-button>
                     <pems-button tone="primary" type="submit">@Localizer["Save"]</pems-button>
                 </pems-modal-footer>
-            </form>
+            </pems-form>
         </pems-modal>
 
 @section Scripts { <script src="~/_content/PEMS.UI/pems-list.js" asp-append-version="true"></script> }

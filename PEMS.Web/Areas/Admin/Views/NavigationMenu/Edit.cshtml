@@ -16,7 +16,7 @@
 
         <div asp-validation-summary="All" class="text-danger small mb-2" role="alert"></div>
 
-        <form method="post" asp-action="Edit">
+        <pems-form method="post" asp-action="Edit">
             <input type="hidden" name="Key" value="@i.Key" />
             <input type="hidden" name="RowVersion" value="@input.RowVersion" />
 
@@ -84,7 +84,7 @@
                 <pems-button tone="none" css="btn-primary" type="submit">@Localizer["Save"]</pems-button>
                 <pems-button as="a" tone="neutral" outline="true" asp-action="Index">@Localizer["Cancel"]</pems-button>
             </pems-flex>
-        </form>
+        </pems-form>
     </pems-content-card>
 </pems-page-shell>
 

@@ -28,7 +28,7 @@ else
 }
 else
 {
-    <form asp-controller="BreakGlass" asp-action="Index" method="post" autocomplete="off">
+    <pems-form asp-controller="BreakGlass" asp-action="Index" method="post" autocomplete="off">
         <div class="mb-3">
             <pems-label for="TargetUserId">@Localizer["Administrator account"]</pems-label>
             <pems-select id="TargetUserId" name="TargetUserId" required>
@@ -47,7 +47,7 @@ else
             </div>
         }
         <pems-button tone="danger" type="submit">@Localizer["Reset account"]</pems-button>
-    </form>
+    </pems-form>
 }
 
 <p class="small text-muted mt-3">@Localizer["The reset issues a temporary password shown once, forces a password change, resets MFA, signs the account out everywhere and notifies every administrator. The request can be used only once."]</p>

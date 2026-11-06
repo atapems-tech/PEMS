@@ -34,11 +34,11 @@
         }
         @foreach (var s in stages)
         {
-            <form asp-action="AdvanceStage" method="post" class="d-inline">
+            <pems-form asp-action="AdvanceStage" method="post" class="d-inline">
                 <input type="hidden" name="documentId" value="@Model.DocumentId" />
                 <input type="hidden" name="newStage" value="@s" />
                 <pems-button tone="none" size="small" css="@(s == Model.AIWorkflowStage ? "btn-pems-solid" : "btn-outline-secondary")" type="submit">@s</pems-button>
-            </form>
+            </pems-form>
         }
     </pems-flex>
 </pems-content-card>
@@ -59,7 +59,7 @@
 
             @if (c.ReviewStatus == "Draft")
             {
-                <form asp-action="ApproveClassification" method="post"><pems-row gap="2" css="mt-2">
+                <pems-form asp-action="ApproveClassification" method="post"><pems-row gap="2" css="mt-2">
                     <input type="hidden" name="documentId" value="@Model.DocumentId" />
                     <input type="hidden" name="classificationId" value="@c.AIDocumentClassificationId" />
 
@@ -88,13 +88,13 @@
                     <pems-col span="12" css="mt-2">
                         <pems-button tone="success" size="small" type="submit"><pems-icon name="bi-check-lg" /> Approve &amp; Apply</pems-button>
                     </pems-col>
-                </pems-row></form>
+                </pems-row></pems-form>
 
-                <form asp-action="RejectClassification" method="post" class="mt-1">
+                <pems-form asp-action="RejectClassification" method="post" class="mt-1">
                     <input type="hidden" name="documentId" value="@Model.DocumentId" />
                     <input type="hidden" name="classificationId" value="@c.AIDocumentClassificationId" />
                     <pems-button tone="danger" size="small" outline="true" type="submit">@Localizer["Reject"]</pems-button>
-                </form>
+                </pems-form>
             }
         </div>
     }
@@ -121,16 +121,16 @@
                     <pems-table-cell>
                         @if (t.IsAIProposed && t.ReviewStatus == "Draft")
                         {
-                            <form asp-action="ApproveTagLink" method="post" class="d-inline">
+                            <pems-form asp-action="ApproveTagLink" method="post" class="d-inline">
                                 <input type="hidden" name="documentId" value="@Model.DocumentId" />
                                 <input type="hidden" name="tagLinkId" value="@t.EngineeringDocumentTagLinkId" />
                                 <pems-button tone="success" size="small">@Localizer["Approve"]</pems-button>
-                            </form>
-                            <form asp-action="RejectTagLink" method="post" class="d-inline">
+                            </pems-form>
+                            <pems-form asp-action="RejectTagLink" method="post" class="d-inline">
                                 <input type="hidden" name="documentId" value="@Model.DocumentId" />
                                 <input type="hidden" name="tagLinkId" value="@t.EngineeringDocumentTagLinkId" />
                                 <pems-button tone="danger" size="small" outline="true">@Localizer["Reject"]</pems-button>
-                            </form>
+                            </pems-form>
                         }
                     </pems-table-cell>
                 </pems-table-row>
@@ -158,25 +158,25 @@
                             var ab = c.ActionStatus switch { "Closed" => "success", "Verified" => "info", "ResponsePending" => "warning", "NoActionRequired" => "neutral", _ => "danger" };
                         }
                         <pems-badge tone="@ab">@c.ActionStatus</pems-badge>
-                        <form asp-action="SetCommentAction" method="post" class="d-inline">
+                        <pems-form asp-action="SetCommentAction" method="post" class="d-inline">
                             <input type="hidden" name="documentId" value="@Model.DocumentId" />
                             <input type="hidden" name="commentId" value="@c.EngineeringDocumentCommentId" />
                             <pems-select class="pems-w-160" scale="small" css="mt-1" name="actionStatus" onchange="this.form.submit()">
                                 @foreach (var s in new[] { "OpenComment", "ResponsePending", "Verified", "Closed", "NoActionRequired" })
                                 { <option value="@s" selected="@(s == c.ActionStatus)">@s</option> }
                             </pems-select>
-                        </form>
+                        </pems-form>
                     </pems-table-cell>
                     <pems-table-cell class="small">
                         @c.ResponseText
                         @if (string.IsNullOrEmpty(c.ResponseText))
                         {
-                            <form class="mt-1" asp-action="RecordCommentResponse" method="post"><pems-flex gap="1">
+                            <pems-form class="mt-1" asp-action="RecordCommentResponse" method="post"><pems-flex gap="1">
                                 <input type="hidden" name="documentId" value="@Model.DocumentId" />
                                 <input type="hidden" name="commentId" value="@c.EngineeringDocumentCommentId" />
                                 <pems-input scale="small" name="responseText" placeholder="@Localizer["Response..."]" />
                                 <pems-button tone="primary" size="small" outline="true">@Localizer["Save"]</pems-button>
-                            </pems-flex></form>
+                            </pems-flex></pems-form>
                         }
                     </pems-table-cell>
                 </pems-table-row>
@@ -186,9 +186,9 @@
     </pems-table-scroll>
     @if (!Model.Comments.Any()) { <p class="text-muted">No comments yet.</p> }
 
-    <form asp-action="AddComment" method="post"><pems-row gap="2" css="mt-2">
+    <pems-form asp-action="AddComment" method="post"><pems-row gap="2" css="mt-2">
         <input type="hidden" name="documentId" value="@Model.DocumentId" />
         <pems-col md="9"><pems-input scale="small" name="commentText" placeholder="New comment..." required /></pems-col>
         <pems-col md="3"><pems-button tone="primary" size="small" css="w-100">@Localizer["Add Comment"]</pems-button></pems-col>
-    </pems-row></form>
+    </pems-row></pems-form>
 </pems-content-card>

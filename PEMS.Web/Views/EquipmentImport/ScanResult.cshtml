@@ -25,7 +25,7 @@
 else
 {
     <pems-content-card>
-        <form asp-action="CreateFromTags" method="post">
+        <pems-form asp-action="CreateFromTags" method="post">
             <input type="hidden" name="projectId" value="@ViewBag.ProjectId" />
 
             <pems-row gap="2" css="align-items-end mb-3">
@@ -63,7 +63,7 @@ else
                     }
                 </pems-row>
             </div>
-        </form>
+        </pems-form>
     </pems-content-card>
 }
 

@@ -6,7 +6,7 @@
 }
 
 <pems-content-card css="pems-s-bcaa1805">
-    <form asp-action="Create" method="post">
+    <pems-form asp-action="Create" method="post">
         <input type="hidden" name="procurementPackageId" value="@packageId" />
         <pems-row gap="3">
             <pems-col span="12"><pems-label>@Localizer["Title"]</pems-label><pems-input name="title" required /></pems-col>
@@ -25,5 +25,5 @@
             <pems-button tone="primary" type="submit">@Localizer["Save"]</pems-button>
             <pems-button tone="neutral" outline="true" as="a" asp-action="Index" asp-route-procurementPackageId="@packageId">@Localizer["Cancel"]</pems-button>
         </div>
-    </form>
+    </pems-form>
 </pems-content-card>

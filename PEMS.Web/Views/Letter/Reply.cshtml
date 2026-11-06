@@ -56,7 +56,7 @@
 
     @if (templates.Any())
     {
-        <form class="mb-3" method="get" asp-action="Reply"><pems-flex wrap="true" align="end" gap="2">
+        <pems-form class="mb-3" method="get" asp-action="Reply"><pems-flex wrap="true" align="end" gap="2">
             <input type="hidden" name="id" value="@parentLetterId" />
             <div>
                 <pems-label css="small mb-1" for="replyTemplate">@Localizer["LtT_UseTemplate"]</pems-label>
@@ -69,10 +69,10 @@
                 </pems-select>
             </div>
             <pems-button tone="neutral" size="small" outline="true" type="submit"><pems-icon name="bi-file-earmark-text" aria-hidden="true" /> @Localizer["LtT_Apply"]</pems-button>
-        </pems-flex></form>
+        </pems-flex></pems-form>
     }
 
-    <form asp-action="Reply" method="post">
+    <pems-form asp-action="Reply" method="post">
         <input type="hidden" name="parentLetterId" value="@parentLetterId" />
 
         <pems-row gap="3">
@@ -94,7 +94,7 @@
             <pems-button tone="primary" type="submit"><pems-icon name="bi-reply-fill" /> Send Reply</pems-button>
             <pems-button tone="neutral" outline="true" as="a" asp-action="Details" asp-route-id="@parentLetterId">Cancel</pems-button>
         </div>
-    </form>
+    </pems-form>
 </pems-content-card>
 
 @await Html.PartialAsync("_RichTextEditorScripts", "replyBodyEditor")

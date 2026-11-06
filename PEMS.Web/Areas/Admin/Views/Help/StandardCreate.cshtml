@@ -25,7 +25,7 @@
         </pems-alert>
     }
 
-    <form asp-action="@(isEdit ? "StandardEdit" : "StandardCreate")" asp-route-id="@(isEdit ? Model.HelpStandardReferenceId : (int?)null)" method="post">
+    <pems-form asp-action="@(isEdit ? "StandardEdit" : "StandardCreate")" asp-route-id="@(isEdit ? Model.HelpStandardReferenceId : (int?)null)" method="post">
         @Html.AntiForgeryToken()
         <input type="hidden" asp-for="HelpArticleId" />
 
@@ -171,7 +171,7 @@
             <pems-button tone="primary" type="submit">@Localizer["Save"]</pems-button>
             <pems-button as="a" tone="neutral" outline="true" asp-action="StandardMatrix">Back to matrix</pems-button>
         </pems-flex>
-    </form>
+    </pems-form>
 </pems-content-card>
 
 <script src="~/js/views/admin-help-standardcreate.js" asp-append-version="true"></script>

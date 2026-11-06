@@ -53,7 +53,7 @@
 
 @if (canDecide && !isMr)
 {
-    <form asp-action="Convert" method="post"><pems-content-card css="mb-3">
+    <pems-form asp-action="Convert" method="post"><pems-content-card css="mb-3">
         <input type="hidden" name="id" value="@d.ProcurementDemandId" />
         <h6 class="mb-2"><pems-icon name="bi-file-earmark-plus" aria-hidden="true" /> @Localizer["Ppr_ToMr"]</h6>
         <pems-check-row>
@@ -82,24 +82,24 @@
             </pems-col>
         }
         <pems-button tone="none" size="small" css="btn-primary" type="submit"><pems-icon name="bi-check2" aria-hidden="true" /> @Localizer["Ppr_Convert"]</pems-button>
-    </pems-content-card></form>
+    </pems-content-card></pems-form>
 }
 
 @if (canDecide && isMr)
 {
-    <form asp-action="Accept" method="post"><pems-content-card css="mb-3">
+    <pems-form asp-action="Accept" method="post"><pems-content-card css="mb-3">
         <input type="hidden" name="id" value="@d.ProcurementDemandId" />
         <p class="small mb-2">@Localizer["Ppr_AcceptHint"]</p>
         <pems-button tone="none" size="small" css="btn-primary" type="submit"><pems-icon name="bi-check2" aria-hidden="true" /> @Localizer["Ppr_Accept"]</pems-button>
-    </pems-content-card></form>
+    </pems-content-card></pems-form>
 }
 
 @if (canDecide)
 {
-    <form asp-action="Dismiss" method="post"><pems-content-card>
+    <pems-form asp-action="Dismiss" method="post"><pems-content-card>
         <input type="hidden" name="id" value="@d.ProcurementDemandId" />
         <pems-label css="small" for="pprReason">@Localizer[isMr ? "Ppr_ReturnReason" : "Ppr_DismissReason"]</pems-label>
         <pems-textarea scale="small" css="mb-2" id="pprReason" name="reason" rows="2" required></pems-textarea>
         <pems-button tone="danger" size="small" outline="true" type="submit"><pems-icon name="bi-x-circle" aria-hidden="true" /> @Localizer[isMr ? "Ppr_Return" : "Ppr_Dismiss"]</pems-button>
-    </pems-content-card></form>
+    </pems-content-card></pems-form>
 }

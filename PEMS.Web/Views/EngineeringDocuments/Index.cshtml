@@ -151,9 +151,9 @@
                                         <button type="button" class="lp-act lp-act--always" data-bs-toggle="dropdown" aria-expanded="false" title="@Localizer["Ed_MoreActions"]"><pems-icon name="bi-three-dots" aria-hidden="true" /><span class="visually-hidden">@Localizer["Ed_MoreActions"]: @item.DocumentNo</span></button>
                                         <pems-dropdown-menu end="true">
                                             <li>
-                                                <form asp-action="Delete" asp-route-id="@item.DocumentId" method="post" data-pems-confirm="@Localizer["Ed_DeleteConfirm"]">
+                                                <pems-form asp-action="Delete" asp-route-id="@item.DocumentId" method="post" data-pems-confirm="@Localizer["Ed_DeleteConfirm"]">
                                                     <button type="submit" class="dropdown-item text-danger"><pems-icon name="bi-trash" aria-hidden="true" /> @Localizer["Ed_Delete"]</button>
-                                                </form>
+                                                </pems-form>
                                             </li>
                                         </pems-dropdown-menu>
                                     </div>

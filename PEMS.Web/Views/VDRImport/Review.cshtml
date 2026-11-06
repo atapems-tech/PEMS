@@ -24,18 +24,18 @@
     @if (Model.Status == "Staged")
     {
         <pems-flex gap="2" css="mt-3">
-            <form asp-action="Commit" method="post">
+            <pems-form asp-action="Commit" method="post">
                 <input type="hidden" name="batchId" value="@Model.VDRImportBatchId" />
                 <pems-button tone="primary" type="submit" data-pems-confirm="Commit the selected rows into the live VDR register?">
                     <pems-icon name="bi-check-circle" /> Commit Selected Rows
                 </pems-button>
-            </form>
-            <form asp-action="Discard" method="post">
+            </pems-form>
+            <pems-form asp-action="Discard" method="post">
                 <input type="hidden" name="batchId" value="@Model.VDRImportBatchId" />
                 <pems-button tone="danger" outline="true" type="submit" data-pems-confirm="Discard this entire import batch?">
                     <pems-icon name="bi-trash" /> Discard Batch
                 </pems-button>
-            </form>
+            </pems-form>
         </pems-flex>
     }
 </pems-content-card>
@@ -56,14 +56,14 @@
                         <pems-table-cell>
                             @if (Model.Status == "Staged")
                             {
-                                <form asp-action="ToggleRow" method="post">
+                                <pems-form asp-action="ToggleRow" method="post">
                                     <input type="hidden" name="rowId" value="@r.VDRImportRowId" />
                                     <input type="hidden" name="batchId" value="@Model.VDRImportBatchId" />
                                     <input type="hidden" name="include" value="@(!r.IncludeInCommit)" />
                                     <pems-button class="pems-w-36" tone="none" size="small" css="@(r.IncludeInCommit ? "btn-success" : "btn-outline-secondary")" type="submit">
                                         <pems-icon css="@(r.IncludeInCommit ? "bi-check-lg" : "bi-x-lg")" />
                                     </pems-button>
-                                </form>
+                                </pems-form>
                             }
                             else
                             {

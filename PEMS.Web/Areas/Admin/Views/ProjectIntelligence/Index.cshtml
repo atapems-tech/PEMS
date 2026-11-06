@@ -15,11 +15,11 @@
                 <p>Evidence-based module scan - not a manually estimated progress number. Every bar below is computed from source, DbContext, migrations, views, sidebar nav, tests, docs and git history.</p>
             </div>
         </pems-flex>
-        <form asp-action="Refresh" method="post" id="refreshForm">
+        <pems-form asp-action="Refresh" method="post" id="refreshForm">
             <pems-button tone="primary" type="submit" id="refreshBtn">
                 <pems-icon name="bi-arrow-clockwise" /> @Localizer["Refresh scan"]
             </pems-button>
-        </form>
+        </pems-form>
     </pems-page-hero>
 
     @if (TempData["Message"] != null)

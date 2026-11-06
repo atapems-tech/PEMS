@@ -8,7 +8,7 @@
 }
 
 <pems-content-card css="pems-s-3f7efa5f">
-    <form asp-action="Create" method="post" id="mrForm">
+    <pems-form asp-action="Create" method="post" id="mrForm">
         <pems-row gap="3">
             <pems-col md="6">
                 @await Component.InvokeAsync("DocumentNumberField", new { documentType = "MaterialRequisition", name = "mrNumber", label = Localizer["MR Number"].Value })
@@ -80,7 +80,7 @@
             <pems-button tone="primary" type="submit">Save MR</pems-button>
             <pems-button tone="neutral" outline="true" as="a" asp-action="Index">@Localizer["Cancel"]</pems-button>
         </div>
-    </form>
+    </pems-form>
 </pems-content-card>
 
 @section Scripts {

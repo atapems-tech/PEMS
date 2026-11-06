@@ -40,18 +40,18 @@
     @if (Model.Status == "Staging")
     {
         <div class="pems-command-bar">
-            <form asp-action="Commit" method="post">
+            <pems-form asp-action="Commit" method="post">
                 <input type="hidden" name="batchId" value="@Model.ConditionReadingImportBatchId" />
                 <pems-button tone="primary" type="submit" data-pems-confirm="Commit the approved rows? New Condition Reading records will be created.">
                     <pems-icon name="bi-check-circle" /> @Localizer["Commit Approved Rows"]
                 </pems-button>
-            </form>
-            <form asp-action="Discard" method="post">
+            </pems-form>
+            <pems-form asp-action="Discard" method="post">
                 <input type="hidden" name="batchId" value="@Model.ConditionReadingImportBatchId" />
                 <pems-button tone="danger" outline="true" type="submit" data-pems-confirm="Discard this entire import batch?">
                     <pems-icon name="bi-trash" /> @Localizer["Discard Batch"]
                 </pems-button>
-            </form>
+            </pems-form>
         </div>
     }
 </pems-content-card>
@@ -93,7 +93,7 @@
                                 var canToggle = r.Status is "New" or "Duplicate";
                                 if (canToggle)
                                 {
-                                    <form asp-action="ToggleRow" method="post">
+                                    <pems-form asp-action="ToggleRow" method="post">
                                         <input type="hidden" name="rowId" value="@r.ConditionReadingImportRowId" />
                                         <input type="hidden" name="batchId" value="@Model.ConditionReadingImportBatchId" />
                                         <input type="hidden" name="page" value="@Model.Rows.Page" />
@@ -102,7 +102,7 @@
                                         <pems-button class="pems-w-36" tone="none" size="small" css="@(r.IncludeInCommit ? "btn-success" : "btn-outline-secondary")" type="submit" title="@(r.IncludeInCommit ? Localizer["Approved - click to exclude"] : Localizer["Excluded - click to approve"])">
                                             <pems-icon css="@(r.IncludeInCommit ? "bi-check-lg" : "bi-x-lg")" />
                                         </pems-button>
-                                    </form>
+                                    </pems-form>
                                 }
                                 else
                                 {

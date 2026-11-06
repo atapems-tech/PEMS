@@ -12,7 +12,7 @@
 <pems-content-card css="pems-s-1d34c094">
     <pems-validation-summary css="py-2 px-3 small" asp-validation-summary="All" hidden="@(ViewData.ModelState.IsValid)"></pems-validation-summary>
 
-    <form asp-action="Create" method="post">
+    <pems-form asp-action="Create" method="post">
         <pems-row gap="3">
             <pems-col md="6">
                 <pems-label>Transmittal No</pems-label>
@@ -102,7 +102,7 @@
             <pems-button tone="primary" type="submit">Create Transmittal</pems-button>
             <pems-button tone="neutral" outline="true" as="a" asp-action="Index">@Localizer["Cancel"]</pems-button>
         </div>
-    </form>
+    </pems-form>
 </pems-content-card>
 
 <template id="recipientRowTemplate">

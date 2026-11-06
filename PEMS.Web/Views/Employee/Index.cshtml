@@ -94,10 +94,10 @@
                             <pems-table-cell><span class="vs-pill @(e.IsActive ? "vs-pill--success" : "vs-pill--neutral")">@(e.IsActive ? Localizer["UsL_Active"] : Localizer["UsL_Inactive"])</span></pems-table-cell>
                             <pems-table-cell class="text-end text-nowrap">
                                 <button type="button" class="lp-act lp-act--always" data-bs-toggle="modal" data-bs-target="#editEmpModal_@e.EmployeeId" title="@Localizer["Ed_Edit"]" aria-label="@Localizer["Ed_Edit"] @e.FirstName @e.LastName"><pems-icon name="bi-pencil" aria-hidden="true" /></button>
-                                <form asp-action="ToggleActive" method="post" class="d-inline">
+                                <pems-form asp-action="ToggleActive" method="post" class="d-inline">
                                     <input type="hidden" name="employeeId" value="@e.EmployeeId" />
                                     <button type="submit" class="lp-act lp-act--always @(e.IsActive ? "text-danger" : "text-success")" title="@(e.IsActive ? Localizer["DpL_Deactivate"] : Localizer["DpL_Activate"])" aria-label="@(e.IsActive ? Localizer["DpL_Deactivate"] : Localizer["DpL_Activate"]) @e.FirstName @e.LastName"><pems-icon css="@(e.IsActive ? "bi-slash-circle" : "bi-check-circle")" aria-hidden="true" /></button>
-                                </form>
+                                </pems-form>
                             </pems-table-cell>
                         </pems-table-row>
                     }
@@ -121,7 +121,7 @@
 </pems-list-page>
 
 <pems-modal size="large" id="createEmpModal" tabindex="-1">
-            <form asp-action="Create" method="post">
+            <pems-form asp-action="Create" method="post">
                 <pems-modal-header>@Localizer["EmL_New"]</pems-modal-header>
                 <pems-modal-body>
                     <pems-row gap="3">
@@ -202,13 +202,13 @@
                     <pems-button tone="neutral" outline="true" type="button" data-bs-dismiss="modal">@Localizer["Cancel"]</pems-button>
                     <pems-button tone="primary" type="submit">@Localizer["Save"]</pems-button>
                 </pems-modal-footer>
-            </form>
+            </pems-form>
         </pems-modal>
 
 @foreach (var e in Model.Items)
 {
     <pems-modal size="large" id="editEmpModal_@e.EmployeeId" tabindex="-1">
-                <form asp-action="Edit" method="post">
+                <pems-form asp-action="Edit" method="post">
                     <input type="hidden" name="employeeId" value="@e.EmployeeId" />
                     <pems-modal-header>@Localizer["EmL_Edit"]</pems-modal-header>
                     <pems-modal-body>
@@ -257,7 +257,7 @@
                         <pems-button tone="neutral" outline="true" type="button" data-bs-dismiss="modal">@Localizer["Cancel"]</pems-button>
                         <pems-button tone="primary" type="submit">@Localizer["Save"]</pems-button>
                     </pems-modal-footer>
-                </form>
+                </pems-form>
             </pems-modal>
 }
 

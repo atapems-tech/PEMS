@@ -36,21 +36,21 @@
                 <pems-button as="a" tone="neutral" size="small" outline="true" asp-action="Details" asp-route-id="@Model.DefinitionId"><pems-icon name="bi-arrow-left" /> @Localizer["Back"]</pems-button>
                 @if (Model.CanEditStructure && perms["Validate"])
                 {
-                    <form asp-action="Validate" method="post" class="d-inline"><input type="hidden" name="versionId" value="@Model.VersionId" /><input type="hidden" name="rowVersion" value="@Model.RowVersion" /><pems-button tone="primary" size="small" outline="true"><pems-icon name="bi-check2-square" /> @Localizer["Validate"]</pems-button></form>
+                    <pems-form asp-action="Validate" method="post" class="d-inline"><input type="hidden" name="versionId" value="@Model.VersionId" /><input type="hidden" name="rowVersion" value="@Model.RowVersion" /><pems-button tone="primary" size="small" outline="true"><pems-icon name="bi-check2-square" /> @Localizer["Validate"]</pems-button></pems-form>
                 }
                 @if (Model.CanEditStructure && perms["Publish"])
                 {
-                    <form asp-action="Publish" method="post" class="d-inline" data-pems-confirm="@Localizer["Publish this version? Published versions are immutable."]">
+                    <pems-form asp-action="Publish" method="post" class="d-inline" data-pems-confirm="@Localizer["Publish this version? Published versions are immutable."]">
                         <input type="hidden" name="versionId" value="@Model.VersionId" /><input type="hidden" name="definitionId" value="@Model.DefinitionId" /><input type="hidden" name="rowVersion" value="@Model.RowVersion" />
                         <pems-button tone="primary" size="small" disabled="@(Model.Status != "Validated")" title="@(Model.Status != "Validated" ? Localizer["Validate the draft first."] : "")"><pems-icon name="bi-rocket-takeoff" /> @Localizer["Publish"]</pems-button>
-                    </form>
+                    </pems-form>
                 }
                 @if (Model.CanEditStructure && perms["Edit"])
                 {
-                    <form asp-action="DiscardDraft" method="post" class="d-inline" data-pems-confirm="@Localizer["Discard this draft? Its structure is kept for audit but it can no longer be edited."]">
+                    <pems-form asp-action="DiscardDraft" method="post" class="d-inline" data-pems-confirm="@Localizer["Discard this draft? Its structure is kept for audit but it can no longer be edited."]">
                         <input type="hidden" name="versionId" value="@Model.VersionId" /><input type="hidden" name="definitionId" value="@Model.DefinitionId" /><input type="hidden" name="rowVersion" value="@Model.RowVersion" />
                         <pems-button tone="danger" size="small" outline="true"><pems-icon name="bi-x-octagon" /> @Localizer["Discard draft"]</pems-button>
-                    </form>
+                    </pems-form>
                 }
             </pems-flex>
         </pems-flex>
@@ -176,7 +176,7 @@
             {
                 <pems-content-card css="wf-panel">
                     <h6>@(stageForm.StageId == 0 ? Localizer["Add stage"] : Localizer["Stage"])</h6>
-                    <form asp-action="SaveStage" method="post"><pems-row gap="2">
+                    <pems-form asp-action="SaveStage" method="post"><pems-row gap="2">
                         <input type="hidden" name="versionId" value="@Model.VersionId" /><input type="hidden" name="rowVersion" value="@Model.RowVersion" /><input type="hidden" name="stage.StageId" value="@stageForm.StageId" />
                         <fieldset class="m-0 p-0 border-0" disabled="@(!edit)"><pems-row gap="2">
                             <pems-col span="12"><label>@Localizer["Name"]</label><pems-input scale="small" name="stage.Name" value="@stageForm.Name" required maxlength="200" /></pems-col>
@@ -200,13 +200,13 @@
                             <pems-col span="12"><label>@Localizer["Description"]</label><pems-input scale="small" name="stage.Description" value="@stageForm.Description" /></pems-col>
                         </pems-row></fieldset>
                         @if (edit) { <pems-col span="12"><pems-button tone="primary" size="small">@Localizer["Save stage"]</pems-button></pems-col> }
-                    </pems-row></form>
+                    </pems-row></pems-form>
                     @if (edit && stageForm.StageId != 0)
                     {
-                        <form asp-action="DeleteStage" method="post" class="mt-2" data-pems-confirm="@Localizer["Remove this stage and its transitions?"]">
+                        <pems-form asp-action="DeleteStage" method="post" class="mt-2" data-pems-confirm="@Localizer["Remove this stage and its transitions?"]">
                             <input type="hidden" name="versionId" value="@Model.VersionId" /><input type="hidden" name="rowVersion" value="@Model.RowVersion" /><input type="hidden" name="stageId" value="@stageForm.StageId" />
                             <pems-button tone="danger" size="small" outline="true">@Localizer["Remove stage"]</pems-button>
-                        </form>
+                        </pems-form>
                     }
                 </pems-content-card>
             }
@@ -214,7 +214,7 @@
             {
                 <pems-content-card css="wf-panel">
                     <h6>@(trForm.TransitionId == 0 ? Localizer["Add transition"] : Localizer["Transition"])</h6>
-                    <form asp-action="SaveTransition" method="post"><pems-row gap="2">
+                    <pems-form asp-action="SaveTransition" method="post"><pems-row gap="2">
                         <input type="hidden" name="versionId" value="@Model.VersionId" /><input type="hidden" name="rowVersion" value="@Model.RowVersion" /><input type="hidden" name="transition.TransitionId" value="@trForm.TransitionId" />
                         <fieldset class="m-0 p-0 border-0" disabled="@(!edit)"><pems-row gap="2">
                             <pems-col span="6"><label>@Localizer["From"]</label>
@@ -234,13 +234,13 @@
                             <pems-col span="12"><pems-check-row><pems-input type="checkbox" name="transition.ForbidInitiator" value="true" checked="@trForm.ForbidInitiator" id="trForbid" kind="check" /><input type="hidden" name="transition.ForbidInitiator" value="false" /><label class="form-check-label" for="trForbid">@Localizer["Initiator cannot perform this action"]</label></pems-check-row></pems-col>
                         </pems-row></fieldset>
                         @if (edit) { <pems-col span="12"><pems-button tone="primary" size="small">@Localizer["Save transition"]</pems-button></pems-col> }
-                    </pems-row></form>
+                    </pems-row></pems-form>
                     @if (edit && trForm.TransitionId != 0)
                     {
-                        <form asp-action="DeleteTransition" method="post" class="mt-2" data-pems-confirm="@Localizer["Remove this transition?"]">
+                        <pems-form asp-action="DeleteTransition" method="post" class="mt-2" data-pems-confirm="@Localizer["Remove this transition?"]">
                             <input type="hidden" name="versionId" value="@Model.VersionId" /><input type="hidden" name="rowVersion" value="@Model.RowVersion" /><input type="hidden" name="transitionId" value="@trForm.TransitionId" />
                             <pems-button tone="danger" size="small" outline="true">@Localizer["Remove transition"]</pems-button>
-                        </form>
+                        </pems-form>
                     }
                 </pems-content-card>
             }

@@ -21,10 +21,10 @@
         <pems-flex gap="2">
             <pems-button tone="neutral" size="small" outline="true" as="a" asp-action="Edit" asp-route-id="@Model.InstrumentId"><pems-icon name="bi-pencil" /> @Localizer["Edit"]</pems-button>
             <pems-button tone="neutral" size="small" outline="true" onclick="window.print()"><pems-icon name="bi-printer" /> Print</pems-button>
-            <form asp-action="GenerateCalibrationWorkOrder" method="post" class="d-inline">
+            <pems-form asp-action="GenerateCalibrationWorkOrder" method="post" class="d-inline">
                 <input type="hidden" name="instrumentId" value="@Model.InstrumentId" />
                 <pems-button tone="primary" size="small" outline="true" type="submit"><pems-icon name="bi-clipboard-plus" /> Generate WO</pems-button>
-            </form>
+            </pems-form>
         </pems-flex>
     </pems-flex>
 </pems-content-card>
@@ -111,7 +111,7 @@
 
 <pems-content-card css="d-print-none">
     <h6>Record New Calibration</h6>
-    <form asp-action="AddCalibration" method="post"><pems-row gap="2" css="align-items-end mb-4">
+    <pems-form asp-action="AddCalibration" method="post"><pems-row gap="2" css="align-items-end mb-4">
         <input type="hidden" name="instrumentId" value="@Model.InstrumentId" />
         <pems-col md="2"><pems-label css="small">@Localizer["Date"]</pems-label><pems-date name="calibrationDate" scale="small" value="@DateTime.Today.ToString("yyyy-MM-dd")" required /></pems-col>
         <pems-col md="2"><pems-label css="small">@Localizer["Type"]</pems-label>
@@ -130,7 +130,7 @@
         <pems-col md="4"><pems-label css="small">Standard Reference</pems-label><pems-input scale="small" name="standardReference" /></pems-col>
         <pems-col md="4"><pems-label css="small">@Localizer["Remarks"]</pems-label><pems-input scale="small" name="remarks" /></pems-col>
         <pems-col md="4"><pems-button tone="primary" size="small" css="w-100" type="submit"><pems-icon name="bi-plus-lg" /> Record Calibration</pems-button></pems-col>
-    </pems-row></form>
+    </pems-row></pems-form>
 
     <h6>Calibration History</h6>
     <div class="table-scroll-area pems-s-f7dce87f">
@@ -148,7 +148,7 @@
 @* ===================== I&C Integration (CMMS-09) ===================== *@
 <pems-content-card css="mb-3 d-print-none">
     <h6>Record New Alarm</h6>
-    <form asp-action="AddAlarm" method="post"><pems-row gap="2" css="align-items-end mb-3">
+    <pems-form asp-action="AddAlarm" method="post"><pems-row gap="2" css="align-items-end mb-3">
         <input type="hidden" name="instrumentId" value="@Model.InstrumentId" />
         <pems-col md="2"><pems-label css="small">Alarm Tag</pems-label><pems-input scale="small" name="alarmTag" required /></pems-col>
         <pems-col md="2"><pems-label css="small">@Localizer["Type"]</pems-label>
@@ -166,7 +166,7 @@
         <pems-col md="3"><pems-label css="small">@Localizer["Action"]</pems-label><pems-input scale="small" name="action" /></pems-col>
         <pems-col md="6"><pems-label css="small">@Localizer["Description"]</pems-label><pems-input scale="small" name="description" /></pems-col>
         <pems-col md="3"><pems-button tone="primary" size="small" css="w-100" type="submit"><pems-icon name="bi-plus-lg" /> Add Alarm</pems-button></pems-col>
-    </pems-row></form>
+    </pems-row></pems-form>
 
     <h6>Alarms &amp; Cause / Effect</h6>
     @if (!alarms.Any())
@@ -199,17 +199,17 @@
                             <pems-table-cell class="small">@(ce.ActionType ?? "-")</pems-table-cell>
                             <pems-table-cell class="small">@(ce.TripSignal ?? "-")</pems-table-cell>
                             <pems-table-cell>
-                                <form asp-action="RaiseWorkRequestFromCauseEffect" method="post" class="d-inline">
+                                <pems-form asp-action="RaiseWorkRequestFromCauseEffect" method="post" class="d-inline">
                                     <input type="hidden" name="causeEffectId" value="@ce.CauseEffectId" />
                                     <pems-button tone="danger" size="small" outline="true" type="submit"><pems-icon name="bi-exclamation-triangle" /> Raise Work Request</pems-button>
-                                </form>
+                                </pems-form>
                             </pems-table-cell>
                         </pems-table-row>
                     }
                 </pems-table-body>
             </pems-table>
 
-            <form asp-action="AddCauseEffect" method="post"><pems-row gap="2" css="align-items-end d-print-none">
+            <pems-form asp-action="AddCauseEffect" method="post"><pems-row gap="2" css="align-items-end d-print-none">
                 <input type="hidden" name="alarmId" value="@alarm.AlarmId" />
                 <input type="hidden" name="instrumentId" value="@Model.InstrumentId" />
                 <pems-col md="2"><pems-input scale="small" name="cause" placeholder="@Localizer["Cause"]" required /></pems-col>
@@ -223,7 +223,7 @@
                 <pems-col md="2"><pems-input scale="small" name="tripSignal" placeholder="@Localizer["Trip Signal"]" /></pems-col>
                 <pems-col md="2"><pems-input scale="small" name="description" placeholder="@Localizer["Description"]" /></pems-col>
                 <pems-col md="2"><pems-button tone="primary" size="small" outline="true" css="w-100" type="submit">+ C&amp;E</pems-button></pems-col>
-            </pems-row></form>
+            </pems-row></pems-form>
         </div>
     }
 </pems-content-card>
@@ -243,7 +243,7 @@
             else
             {
                 <p class="text-muted small">این Instrument به هیچ Control Loop ای وصل نیست.</p>
-                <form asp-action="AssignControlLoop" method="post"><pems-row gap="2" css="align-items-end d-print-none">
+                <pems-form asp-action="AssignControlLoop" method="post"><pems-row gap="2" css="align-items-end d-print-none">
                     <input type="hidden" name="instrumentId" value="@Model.InstrumentId" />
                     <pems-col md="6"><pems-input scale="small" name="loopNumber" placeholder="@Localizer["Loop Number"]" required /></pems-col>
                     <pems-col md="6">
@@ -256,7 +256,7 @@
                     <pems-col md="6"><pems-input scale="small" name="processArea" placeholder="Process Area" /></pems-col>
                     <pems-col md="12"><pems-input scale="small" name="description" placeholder="@Localizer["Description"]" /></pems-col>
                     <pems-col md="12"><pems-button tone="primary" size="small" css="w-100" type="submit">Assign Loop</pems-button></pems-col>
-                </pems-row></form>
+                </pems-row></pems-form>
             }
         </pems-content-card>
     </pems-col>

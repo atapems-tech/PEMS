@@ -46,7 +46,7 @@
 <p class="text-muted small">@Localizer["Rcm_BulkHint"]</p>
 
 <pems-content-card css="mb-3">
-    <form method="get"><pems-row gap="2">
+    <pems-form method="get"><pems-row gap="2">
         <pems-col md="4">
             <pems-label css="small mb-0">@Localizer["Rcm_Strategy"] (@Localizer["Rcm_ApprovedOrActive"])</pems-label>
             <pems-select scale="small" name="strategyId">
@@ -156,7 +156,7 @@
                 </p>
             </pems-col>
         }
-    </pems-row></form>
+    </pems-row></pems-form>
 </pems-content-card>
 
 @if (noFilterApplied)
@@ -174,7 +174,7 @@ else if (matchingCount.HasValue && matchingCount.Value > maxResults)
     </pems-alert>
 }
 
-<form asp-action="BulkCreate" method="post">
+<pems-form asp-action="BulkCreate" method="post">
     <pems-row>
         <pems-col md="5">
             <pems-content-card>
@@ -265,4 +265,4 @@ else if (matchingCount.HasValue && matchingCount.Value > maxResults)
             </pems-content-card>
         </pems-col>
     </pems-row>
-</form>
+</pems-form>

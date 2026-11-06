@@ -51,7 +51,7 @@
 
     @if (Model.Status == "Draft")
     {
-        <form class="mt-2" asp-action="MarkSent" asp-route-id="@Model.TransmittalId" method="post"><pems-flex gap="2" align="end">
+        <pems-form class="mt-2" asp-action="MarkSent" asp-route-id="@Model.TransmittalId" method="post"><pems-flex gap="2" align="end">
             @if (Model.ResponseRequired)
             {
                 <div>
@@ -67,7 +67,7 @@
             {
                 <span class="text-muted small">@Localizer["Td_NoIssuePerm"]</span>
             }
-        </pems-flex></form>
+        </pems-flex></pems-form>
     }
 
     @if (Model.Status == "Sent" || Model.Status == "Acknowledged")
@@ -78,13 +78,13 @@
 
         @if ((bool)(ViewBag.CanCancel ?? false))
         {
-            <form class="mt-2" asp-action="Cancel" asp-route-id="@Model.TransmittalId" method="post"><pems-flex gap="2" align="end">
+            <pems-form class="mt-2" asp-action="Cancel" asp-route-id="@Model.TransmittalId" method="post"><pems-flex gap="2" align="end">
                 <div class="flex-grow-1">
                     <pems-label css="small mb-0">@Localizer["Td_CancelReason"]</pems-label>
                     <pems-input scale="small" name="reason" required />
                 </div>
                 <pems-button tone="danger" size="small" outline="true"><pems-icon name="bi-x-circle" /> @Localizer["Td_CancelBtn"]</pems-button>
-            </pems-flex></form>
+            </pems-flex></pems-form>
         }
 
         @if (Model.ResponseRequired)
@@ -102,12 +102,12 @@
                 }
                 else if ((bool)(ViewBag.CanRecordResponse ?? false))
                 {
-                    <form class="mt-1" asp-action="RecordResponse" asp-route-id="@Model.TransmittalId" method="post"><pems-flex gap="2" align="end">
+                    <pems-form class="mt-1" asp-action="RecordResponse" asp-route-id="@Model.TransmittalId" method="post"><pems-flex gap="2" align="end">
                         <div class="flex-grow-1">
                             <pems-input scale="small" name="responseNote" placeholder="@Localizer["Td_ResponseNotePh"]" />
                         </div>
                         <pems-button tone="primary" size="small" outline="true">@Localizer["Td_RecordResponse"]</pems-button>
-                    </pems-flex></form>
+                    </pems-flex></pems-form>
                 }
             </div>
         }
@@ -115,9 +115,9 @@
 
     @if (Model.Status == "Cancelled" && (bool)(ViewBag.CanReissue ?? false))
     {
-        <form asp-action="Reissue" asp-route-id="@Model.TransmittalId" method="post" class="mt-2">
+        <pems-form asp-action="Reissue" asp-route-id="@Model.TransmittalId" method="post" class="mt-2">
             <pems-button tone="primary" size="small" outline="true"><pems-icon name="bi-arrow-repeat" /> @Localizer["Td_Reissue"]</pems-button>
-        </form>
+        </pems-form>
     }
 </pems-content-card>
 
@@ -142,11 +142,11 @@
                         }
                         else if (Model.IsIssued && (bool)(ViewBag.CanRecordResponse ?? false))
                         {
-                            <form asp-action="Acknowledge" asp-route-id="@Model.TransmittalId" method="post"><pems-flex gap="1" align="center">
+                            <pems-form asp-action="Acknowledge" asp-route-id="@Model.TransmittalId" method="post"><pems-flex gap="1" align="center">
                                 <input type="hidden" name="recipientId" value="@r.TransmittalRecipientId" />
                                 <pems-input class="pems-minw-140" scale="small" name="note" placeholder="@Localizer["Td_NotePh"]" />
                                 <pems-button tone="success" size="small" outline="true" title="@Localizer["Td_RecordAck"]"><pems-icon name="bi-check2" /></pems-button>
-                            </pems-flex></form>
+                            </pems-flex></pems-form>
                         }
                         else
                         {

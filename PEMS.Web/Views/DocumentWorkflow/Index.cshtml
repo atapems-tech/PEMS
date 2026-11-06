@@ -63,25 +63,25 @@
                             <pems-table-cell class="text-nowrap text-end">
                                 @if (d.Status == "Submitted")
                                 {
-                                    <form asp-action="Check" method="post" class="d-inline">
+                                    <pems-form asp-action="Check" method="post" class="d-inline">
                                         <input type="hidden" name="documentId" value="@d.DocumentId" />
                                         <pems-button tone="info" size="small" outline="true" type="submit"><pems-icon name="bi-clipboard-check" aria-hidden="true" /> @Localizer["Dw_Check"]</pems-button>
-                                    </form>
-                                    <form asp-action="Reject" method="post" class="d-inline">
+                                    </pems-form>
+                                    <pems-form asp-action="Reject" method="post" class="d-inline">
                                         <input type="hidden" name="documentId" value="@d.DocumentId" />
                                         <pems-button tone="danger" size="small" outline="true" type="submit"><pems-icon name="bi-x-lg" aria-hidden="true" /> @Localizer["Reject"]</pems-button>
-                                    </form>
+                                    </pems-form>
                                 }
                                 else if (d.Status == "Checked")
                                 {
-                                    <form asp-action="Approve" method="post" class="d-inline">
+                                    <pems-form asp-action="Approve" method="post" class="d-inline">
                                         <input type="hidden" name="documentId" value="@d.DocumentId" />
                                         <pems-button tone="success" size="small" outline="true" type="submit"><pems-icon name="bi-check-lg" aria-hidden="true" /> @Localizer["Approve"]</pems-button>
-                                    </form>
-                                    <form asp-action="Reject" method="post" class="d-inline">
+                                    </pems-form>
+                                    <pems-form asp-action="Reject" method="post" class="d-inline">
                                         <input type="hidden" name="documentId" value="@d.DocumentId" />
                                         <pems-button tone="danger" size="small" outline="true" type="submit"><pems-icon name="bi-x-lg" aria-hidden="true" /> @Localizer["Reject"]</pems-button>
-                                    </form>
+                                    </pems-form>
                                 }
                             </pems-table-cell>
                         </pems-table-row>

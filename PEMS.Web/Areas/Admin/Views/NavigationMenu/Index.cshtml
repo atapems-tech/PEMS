@@ -80,23 +80,23 @@
                                 }
                             </pems-table-cell>
                             <pems-table-cell class="text-end text-nowrap">
-                                <form method="post" asp-action="Move" class="d-inline">
+                                <pems-form method="post" asp-action="Move" class="d-inline">
                                     <input type="hidden" name="key" value="@i.Key" />
                                     <input type="hidden" name="up" value="true" />
                                     <pems-button tone="neutral" size="small" outline="true" type="submit" disabled="@row.IsFirst" aria-label="@Localizer["Nav_MoveUp"]: @row.Title" title="@Localizer["Nav_MoveUp"]"><pems-icon name="bi-arrow-up" /></pems-button>
-                                </form>
-                                <form method="post" asp-action="Move" class="d-inline">
+                                </pems-form>
+                                <pems-form method="post" asp-action="Move" class="d-inline">
                                     <input type="hidden" name="key" value="@i.Key" />
                                     <input type="hidden" name="up" value="false" />
                                     <pems-button tone="neutral" size="small" outline="true" type="submit" disabled="@row.IsLast" aria-label="@Localizer["Nav_MoveDown"]: @row.Title" title="@Localizer["Nav_MoveDown"]"><pems-icon name="bi-arrow-down" /></pems-button>
-                                </form>
+                                </pems-form>
                                 <pems-button as="a" tone="primary" size="small" outline="true" asp-action="Edit" asp-route-key="@i.Key" aria-label="@Localizer["Edit"]: @row.Title"><pems-icon name="bi-pencil" /></pems-button>
                                 @if (!i.IsSystem)
                                 {
-                                    <form method="post" asp-action="Delete" class="d-inline" data-pems-confirm="@Localizer["Nav_ConfirmDelete"]">
+                                    <pems-form method="post" asp-action="Delete" class="d-inline" data-pems-confirm="@Localizer["Nav_ConfirmDelete"]">
                                         <input type="hidden" name="key" value="@i.Key" />
                                         <pems-button tone="danger" size="small" outline="true" type="submit" aria-label="@Localizer["Delete"]: @row.Title"><pems-icon name="bi-trash" /></pems-button>
-                                    </form>
+                                    </pems-form>
                                 }
                             </pems-table-cell>
                         </pems-table-row>

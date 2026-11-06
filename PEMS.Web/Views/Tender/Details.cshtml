@@ -39,25 +39,25 @@
     <pems-flex gap="2" wrap="true">
         @if (Model.Status == "Draft")
         {
-            <form asp-action="OpenForBidding" method="post" class="d-inline">
+            <pems-form asp-action="OpenForBidding" method="post" class="d-inline">
                 <input type="hidden" name="tenderId" value="@Model.TenderId" />
                 <pems-button tone="primary" size="small" type="submit">@Localizer["Open for Bidding"]</pems-button>
-            </form>
+            </pems-form>
         }
         @if (Model.Status == "Open")
         {
-            <form asp-action="CloseBidding" method="post" class="d-inline">
+            <pems-form asp-action="CloseBidding" method="post" class="d-inline">
                 <input type="hidden" name="tenderId" value="@Model.TenderId" />
                 <pems-button tone="warning" size="small" type="submit">@Localizer["Close Bidding"]</pems-button>
-            </form>
+            </pems-form>
         }
         @if (Model.Status == "Awarded" && Model.ContractId == null)
         {
-            <form asp-action="CreateContract" method="post"><pems-flex gap="1" align="center">
+            <pems-form asp-action="CreateContract" method="post"><pems-flex gap="1" align="center">
                 <input type="hidden" name="tenderId" value="@Model.TenderId" />
                 @await Component.InvokeAsync("DocumentNumberField", new { documentType = "Contract", name = "contractNo", label = Localizer["Contract No"].Value, scale = "small", css = "w-auto", compact = true })
                 <pems-button tone="success" size="small" type="submit">@Localizer["Create Contract Draft"]</pems-button>
-            </pems-flex></form>
+            </pems-flex></pems-form>
         }
         @if (Model.ContractId != null)
         {
@@ -97,10 +97,10 @@
     <pems-related-list id="tenderInvitations" icon="bi-envelope-paper" title="@Localizer["Tinv_Title"]" count="@invitationLog.Count">
         @if (canSend && emailEnabled)
         {
-            <form asp-action="SendInvitations" method="post" class="px-3 pt-2">
+            <pems-form asp-action="SendInvitations" method="post" class="px-3 pt-2">
                 <input type="hidden" name="tenderId" value="@Model.TenderId" />
                 <pems-button tone="primary" size="small" type="submit"><pems-icon name="bi-envelope-paper" aria-hidden="true" /> @Localizer["Tinv_SendAll"]</pems-button>
-            </form>
+            </pems-form>
         }
         @if (!emailEnabled)
         {
@@ -144,11 +144,11 @@
                                 <pems-table-cell>
                                     @if (canSend && emailEnabled && d.Status is "Failed" or "Skipped")
                                     {
-                                        <form asp-action="SendInvitations" method="post" class="d-inline">
+                                        <pems-form asp-action="SendInvitations" method="post" class="d-inline">
                                             <input type="hidden" name="tenderId" value="@Model.TenderId" />
                                             <input type="hidden" name="vendorIds" value="@d.VendorId" />
                                             <pems-button tone="neutral" size="small" outline="true" type="submit">@Localizer["Tinv_Resend"]</pems-button>
-                                        </form>
+                                        </pems-form>
                                     }
                                 </pems-table-cell>
                             </pems-table-row>
@@ -185,7 +185,7 @@
 
             @if (Model.Status == "Closed" || Model.Status == "Open")
             {
-                <form class="mt-2" asp-action="RecordEvaluation" method="post"><pems-flex gap="1" wrap="true" align="center">
+                <pems-form class="mt-2" asp-action="RecordEvaluation" method="post"><pems-flex gap="1" wrap="true" align="center">
                     <input type="hidden" name="tenderId" value="@Model.TenderId" />
                     <input type="hidden" name="bidId" value="@bid.BidId" />
                     <pems-select class="pems-w-130" scale="small" name="evaluationType">
@@ -198,36 +198,36 @@
                     </pems-select>
                     <pems-input class="pems-w-180" scale="small" type="text" name="comment" placeholder="@Localizer["Comment"]" />
                     <pems-button tone="primary" size="small" outline="true" type="submit">@Localizer["Record Evaluation"]</pems-button>
-                </pems-flex></form>
+                </pems-flex></pems-form>
             }
 
             @if (Model.Status == "Closed")
             {
-                <form class="mt-2" asp-action="RequestNegotiation" method="post"><pems-flex gap="1" wrap="true" align="center">
+                <pems-form class="mt-2" asp-action="RequestNegotiation" method="post"><pems-flex gap="1" wrap="true" align="center">
                     <input type="hidden" name="tenderId" value="@Model.TenderId" />
                     <input type="hidden" name="bidId" value="@bid.BidId" />
                     <pems-input class="pems-w-130" scale="small" type="number" step="0.01" name="negotiatedValue" placeholder="@Localizer["New value"]" required />
                     <pems-input class="pems-w-180" scale="small" type="text" name="justification" placeholder="@Localizer["Justification"]" />
                     <pems-button tone="warning" size="small" outline="true" type="submit">@Localizer["Propose Negotiation"]</pems-button>
-                </pems-flex></form>
+                </pems-flex></pems-form>
 
                 @if (bid.Negotiations.Any(n => n.Status == "Proposed"))
                 {
                     var pending = bid.Negotiations.First(n => n.Status == "Proposed");
-                    <form asp-action="ApproveNegotiation" method="post" class="d-inline mt-1">
+                    <pems-form asp-action="ApproveNegotiation" method="post" class="d-inline mt-1">
                         <input type="hidden" name="tenderId" value="@Model.TenderId" />
                         <input type="hidden" name="bidNegotiationId" value="@pending.BidNegotiationId" />
                         <pems-button tone="success" size="small" type="submit">@Localizer["Approve Negotiation"] (@pending.NegotiatedValue?.ToString("N0"))</pems-button>
-                    </form>
+                    </pems-form>
                 }
 
                 @if (Model.Status == "Closed" && technicalPassed && commercialPassed)
                 {
-                    <form asp-action="SelectWinner" method="post" class="d-inline mt-1">
+                    <pems-form asp-action="SelectWinner" method="post" class="d-inline mt-1">
                         <input type="hidden" name="tenderId" value="@Model.TenderId" />
                         <input type="hidden" name="bidId" value="@bid.BidId" />
                         <pems-button tone="success" size="small" type="submit">@Localizer["Select as Winner"]</pems-button>
-                    </form>
+                    </pems-form>
                 }
             }
         </div>
@@ -235,7 +235,7 @@
 
     @if (Model.Status == "Open")
     {
-        <form asp-action="SubmitBid" method="post"><pems-row gap="2" css="m-0 px-2 py-2 lp-rel-add">
+        <pems-form asp-action="SubmitBid" method="post"><pems-row gap="2" css="m-0 px-2 py-2 lp-rel-add">
             <input type="hidden" name="tenderId" value="@Model.TenderId" />
             <pems-col md="3">
                 <pems-select scale="small" name="vendorId" required>
@@ -247,7 +247,7 @@
             <pems-col md="2"><pems-input scale="small" type="text" name="technicalSubmissionReference" placeholder="@Localizer["Technical"]" /></pems-col>
             <pems-col md="2"><pems-input scale="small" type="text" name="commercialSubmissionReference" placeholder="@Localizer["Commercial"]" /></pems-col>
             <pems-col md="1"><pems-button tone="primary" size="small" type="submit">@Localizer["Submit Bid"]</pems-button></pems-col>
-        </pems-row></form>
+        </pems-row></pems-form>
     }
 </pems-related-list>
 
@@ -269,17 +269,17 @@
             }
             @if (c.ActionStatus != "Closed")
             {
-                <form class="mt-2" asp-action="RespondClarification" method="post"><pems-flex gap="1">
+                <pems-form class="mt-2" asp-action="RespondClarification" method="post"><pems-flex gap="1">
                     <input type="hidden" name="tenderId" value="@Model.TenderId" />
                     <input type="hidden" name="procurementPackageId" value="@Model.ProcurementPackageId" />
                     <input type="hidden" name="communicationId" value="@c.ProcurementCommunicationId" />
                     <pems-input scale="small" type="text" name="responseText" placeholder="@Localizer["Response"]" required />
                     <pems-button tone="primary" size="small" outline="true" type="submit">@Localizer["Respond"]</pems-button>
-                </pems-flex></form>
+                </pems-flex></pems-form>
             }
         </div>
     }
-    <form asp-action="RaiseClarification" method="post"><pems-row gap="2" css="m-0 px-2 py-2 lp-rel-add">
+    <pems-form asp-action="RaiseClarification" method="post"><pems-row gap="2" css="m-0 px-2 py-2 lp-rel-add">
         <input type="hidden" name="tenderId" value="@Model.TenderId" />
         <input type="hidden" name="procurementPackageId" value="@Model.ProcurementPackageId" />
         <pems-col md="2">
@@ -299,5 +299,5 @@
         <pems-col md="3"><pems-input scale="small" type="text" name="subject" placeholder="@Localizer["Subject"]" required /></pems-col>
         <pems-col md="3"><pems-input scale="small" type="text" name="body" placeholder="@Localizer["Question"]" required /></pems-col>
         <pems-col md="1"><pems-button tone="primary" size="small" type="submit">@Localizer["Raise"]</pems-button></pems-col>
-    </pems-row></form>
+    </pems-row></pems-form>
 </pems-related-list>
