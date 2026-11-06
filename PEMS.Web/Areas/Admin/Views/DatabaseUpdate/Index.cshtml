@@ -17,9 +17,9 @@
 }
 
 <pems-page-shell kind="admin">
-    <div class="admin-hero">
+    <pems-page-hero>
         <div><p>@Localizer["Database install and update: the schema is built and upgraded from code (migrations). Check the state, then apply."]</p></div>
-    </div>
+    </pems-page-hero>
 
     @if (TempData["Message"] != null) { <pems-alert tone="success">@TempData["Message"]</pems-alert> }
     @if (TempData["Error"] != null) { <pems-alert tone="danger">@TempData["Error"]</pems-alert> }
@@ -30,7 +30,7 @@
             <span>@Model.Summary</span>
         </pems-flex>
         <pems-row gap="3" css="mt-2">
-            <pems-col md="3" span="6"><div class="fs-4 fw-bold">@Model.AppliedMigrationCount / @Model.KnownMigrationCount</div><div class="text-muted small">@Localizer["Migrations applied"]</div></pems-col>
+            <pems-col md="3" span="6"><pems-metric>@Model.AppliedMigrationCount / @Model.KnownMigrationCount</pems-metric><div class="text-muted small">@Localizer["Migrations applied"]</div></pems-col>
             <pems-col md="4" span="12"><div class="small fw-bold">@(Model.LastAppliedMigration ?? "-")</div><div class="text-muted small">@Localizer["Last applied"]</div></pems-col>
             <pems-col md="5" span="12"><div class="small fw-bold">@(Model.LatestKnownMigration ?? "-")</div><div class="text-muted small">@Localizer["Latest in this application"]</div></pems-col>
         </pems-row>

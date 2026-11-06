@@ -30,13 +30,13 @@
 }
 
 <pems-content-card css="mb-3">
-    <div class="admin-kpi-grid">
-        <div class="admin-kpi"><div class="admin-kpi-label">@Localizer["Unmatched"]</div><div class="admin-kpi-value">@Count("Unmatched")</div></div>
-        <div class="admin-kpi"><div class="admin-kpi-label">Matched - no Instrument yet</div><div class="admin-kpi-value">@Count("MatchedNoInstrument")</div></div>
-        <div class="admin-kpi"><div class="admin-kpi-label">Matched - has Instrument</div><div class="admin-kpi-value">@Count("MatchedHasInstrument")</div></div>
-        <div class="admin-kpi"><div class="admin-kpi-label">@Localizer["Confirmed"]</div><div class="admin-kpi-value">@Count("Confirmed")</div></div>
-        <div class="admin-kpi"><div class="admin-kpi-label">@Localizer["Rejected"]</div><div class="admin-kpi-value">@Count("Rejected")</div></div>
-    </div>
+    <pems-stat-grid>
+        <pems-stat label="@Localizer["Unmatched"]">@Count("Unmatched")</pems-stat>
+        <pems-stat label="Matched - no Instrument yet">@Count("MatchedNoInstrument")</pems-stat>
+        <pems-stat label="Matched - has Instrument">@Count("MatchedHasInstrument")</pems-stat>
+        <pems-stat label="@Localizer["Confirmed"]">@Count("Confirmed")</pems-stat>
+        <pems-stat label="@Localizer["Rejected"]">@Count("Rejected")</pems-stat>
+    </pems-stat-grid>
 </pems-content-card>
 
 <form id="bulkConfirmForm" asp-action="BulkConfirm" method="post">

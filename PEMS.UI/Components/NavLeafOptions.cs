@@ -317,3 +317,30 @@ public sealed record ModalFooterOptions : FrameOptions
 {
     public string? Css { get; init; }
 }
+
+// SCRUM-339 (slice 5): the dashboard blocks.
+
+/// <summary>Inputs of <see cref="PemsStat"/>: a labelled number tile of the Administration look (<c>admin-kpi</c> with <c>admin-kpi-label</c> and <c>admin-kpi-value</c>); the value is the child content.</summary>
+public sealed record StatOptions : FrameOptions
+{
+    public string Label { get; init; } = "";
+    public string? Css { get; init; }
+}
+
+/// <summary>Inputs of <see cref="PemsStatGrid"/>: the responsive grid of stat tiles (<c>admin-kpi-grid</c>).</summary>
+public sealed record StatGridOptions : FrameOptions
+{
+    public string? Css { get; init; }
+}
+
+/// <summary>Inputs of <see cref="PemsMetric"/>: a big number (<c>fs-4 fw-bold</c>); the number is the child content.</summary>
+public sealed record MetricOptions : FrameOptions
+{
+    public string? Css { get; init; }
+}
+
+/// <summary>Inputs of <see cref="PemsPageHero"/>: the intro banner under a page title (<c>admin-hero</c>); its text and actions are the child content.</summary>
+public sealed record PageHeroOptions : FrameOptions
+{
+    public string? Css { get; init; }
+}

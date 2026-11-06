@@ -66,11 +66,11 @@
 
 <pems-page-shell kind="admin" id="pmRoot" data-url="@Url.Action("SetCells", "PermissionMatrix", new { area = "Admin" })" data-total-modules="@modules.Length">
     @Html.AntiForgeryToken()
-    <div class="admin-hero">
+    <pems-page-hero>
         <pems-flex align="center" gap="3">
             <div><p>@Localizer["PermMx_Intro"]</p></div>
         </pems-flex>
-    </div>
+    </pems-page-hero>
     <pems-content-card>
         <div class="permission-intro"><pems-icon name="bi-info-circle" css="me-1" /> <strong>SystemAdmin</strong> has full access and is intentionally excluded. All other roles follow deny-by-default when no permission record exists.</div>
 

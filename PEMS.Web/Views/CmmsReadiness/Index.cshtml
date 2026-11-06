@@ -23,25 +23,25 @@
 <pems-row gap="3" css="mb-3">
     <pems-col md="3">
         <pems-content-card css="h-100 text-center">
-            <div class="fs-4 fw-bold">@summary.TotalActiveEquipment.ToString("N0")</div>
+            <pems-metric>@summary.TotalActiveEquipment.ToString("N0")</pems-metric>
             <div class="text-muted small">@Localizer["Total Active Equipment"]</div>
         </pems-content-card>
     </pems-col>
     <pems-col md="3">
         <pems-content-card css="h-100 text-center">
-            <div class="fs-4 fw-bold">@summary.ClassifiedEquipment.ToString("N0")</div>
+            <pems-metric>@summary.ClassifiedEquipment.ToString("N0")</pems-metric>
             <div class="text-muted small">Classified (@summary.UnclassifiedEquipment.ToString("N0") unclassified)</div>
         </pems-content-card>
     </pems-col>
     <pems-col md="3">
         <pems-content-card css="h-100 text-center">
-            <div class="fs-4 fw-bold">@summary.CriticalityReadyEquipment.ToString("N0")</div>
+            <pems-metric>@summary.CriticalityReadyEquipment.ToString("N0")</pems-metric>
             <div class="text-muted small">Criticality Assessed</div>
         </pems-content-card>
     </pems-col>
     <pems-col md="3">
         <pems-content-card css="h-100 text-center">
-            <div class="fs-4 fw-bold text-success">@summary.ExecutionReadyEquipment.ToString("N0")</div>
+            <pems-metric css="text-success">@summary.ExecutionReadyEquipment.ToString("N0")</pems-metric>
             <div class="text-muted small">@Localizer["Execution Ready"]</div>
         </pems-content-card>
     </pems-col>

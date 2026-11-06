@@ -19,25 +19,25 @@
 <pems-row gap="3" css="mb-3">
     <pems-col md="3">
         <pems-content-card css="h-100 text-center">
-            <div class="fs-4 fw-bold">@Model.WorkRequestTotal.ToString("N0")</div>
+            <pems-metric>@Model.WorkRequestTotal.ToString("N0")</pems-metric>
             <div class="text-muted small">Work Requests (total active)</div>
         </pems-content-card>
     </pems-col>
     <pems-col md="3">
         <pems-content-card css="h-100 text-center">
-            <div class="fs-4 fw-bold @(Model.WorkRequestPendingAction > 0 ? "text-warning" : "")">@Model.WorkRequestPendingAction.ToString("N0")</div>
+            <pems-metric css="@(Model.WorkRequestPendingAction > 0 ? "text-warning" : "")">@Model.WorkRequestPendingAction.ToString("N0")</pems-metric>
             <div class="text-muted small">WR Pending Action (Submitted/UnderReview/Approved)</div>
         </pems-content-card>
     </pems-col>
     <pems-col md="3">
         <pems-content-card css="h-100 text-center">
-            <div class="fs-4 fw-bold">@Model.WorkOrderTotal.ToString("N0")</div>
+            <pems-metric>@Model.WorkOrderTotal.ToString("N0")</pems-metric>
             <div class="text-muted small">Work Orders (total active)</div>
         </pems-content-card>
     </pems-col>
     <pems-col md="3">
         <pems-content-card css="h-100 text-center">
-            <div class="fs-4 fw-bold @(Model.WorkOrderOverdue > 0 ? "text-danger" : "")">@Model.WorkOrderOverdue.ToString("N0")</div>
+            <pems-metric css="@(Model.WorkOrderOverdue > 0 ? "text-danger" : "")">@Model.WorkOrderOverdue.ToString("N0")</pems-metric>
             <div class="text-muted small">Work Orders Overdue (DueDate passed)</div>
         </pems-content-card>
     </pems-col>
@@ -91,7 +91,7 @@
                 <pems-badge tone="@(pm.DataStatus == "READY" ? "success" : pm.DataStatus == "PARTIAL" ? "warning" : "neutral")" css="mb-2">@pm.DataStatus</pems-badge>
                 @if (pm.CompliancePercent.HasValue)
                 {
-                    <div class="fs-4 fw-bold">@pm.CompliancePercent.Value.ToString("N1")%</div>
+                    <pems-metric>@pm.CompliancePercent.Value.ToString("N1")%</pems-metric>
                 }
                 else
                 {
