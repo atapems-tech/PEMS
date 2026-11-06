@@ -284,7 +284,7 @@
                             @foreach (var g in s.Groups)
                             {
                                 <form asp-action="RemoveSectionGroup" method="post" class="d-inline"><input type="hidden" name="mapId" value="@g.MapId" />
-                                    <button class="vs-pill vs-pill--neutral border-0" title="@Localizer["Pc_Btn_Remove"]">@g.GroupText @if (g.NeedsConfirmation) { <i class="bi bi-question-circle" aria-hidden="true"></i> } <pems-icon name="bi-x" aria-hidden="true" /></button></form>
+                                    <button class="vs-pill vs-pill--neutral border-0" title="@Localizer["Pc_Btn_Remove"]">@g.GroupText @if (g.NeedsConfirmation) { <pems-icon name="bi-question-circle" aria-hidden="true" /> } <pems-icon name="bi-x" aria-hidden="true" /></button></form>
                             }
                             @if (!s.Groups.Any()) { <span class="text-muted small">@Localizer["Pc_Adm_AllGroups"]</span> }
                             <form asp-action="AddSectionGroup" method="post" class="d-inline-flex gap-1 ms-2 align-items-start">

@@ -99,7 +99,7 @@
                             else { <span class="vs-pill vs-pill--neutral ms-1">@Localizer["MyWork_Queue"]</span> }
                         </td>
                         <td>
-                            @if (path != null) { <a href="@path">#@t.BusinessObjectId <i class="bi bi-box-arrow-up-right small" aria-hidden="true"></i><span class="visually-hidden">@Localizer["MyWork_Open"]</span></a> }
+                            @if (path != null) { <a href="@path">#@t.BusinessObjectId <pems-icon name="bi-box-arrow-up-right" css="small" aria-hidden="true" /><span class="visually-hidden">@Localizer["MyWork_Open"]</span></a> }
                             else { <span>#@t.BusinessObjectId</span> }
                         </td>
                         <td dir="ltr" class="text-nowrap">@t.AssignedDate.ToString("yyyy-MM-dd HH:mm")</td>

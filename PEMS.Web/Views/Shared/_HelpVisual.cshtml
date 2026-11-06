@@ -45,7 +45,7 @@
 
                         <li class="d-flex align-items-center gap-2 py-1 border-bottom">
                             <pems-badge class="pems-minw-70" tone="@badgeClass">@e.Label</pems-badge>
-                            <span>@fromLabel <i class="bi bi-arrow-@(isRtl ? "left" : "right")"></i> @toLabel</span>
+                            <span>@fromLabel <pems-icon name="@(isRtl ? "bi-arrow-left" : "bi-arrow-right")" /> @toLabel</span>
                         </li>
                     }
                 </ul>

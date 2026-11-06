@@ -17,7 +17,7 @@
         <td class="tm-col-check"><pems-input kind="check" type="checkbox" name="ids" value="@i.Id" form="tmBulk" aria-label="@Localizer["Tm_Select"] @(i.Key ?? "#" + i.Id)" data-tm-bulk-item /></td>
     }
     <td class="text-nowrap">
-        @if (!string.IsNullOrEmpty(i.TypeIcon)) { <i class="bi @i.TypeIcon me-1" title="@TaskManagerUi.Name(i.TypeName, i.TypeNameFa)" aria-hidden="true"></i><span class="visually-hidden">@TaskManagerUi.Name(i.TypeName, i.TypeNameFa)</span> }
+        @if (!string.IsNullOrEmpty(i.TypeIcon)) { <pems-icon css="@i.TypeIcon me-1" title="@TaskManagerUi.Name(i.TypeName, i.TypeNameFa)" aria-hidden="true" /><span class="visually-hidden">@TaskManagerUi.Name(i.TypeName, i.TypeNameFa)</span> }
         <a asp-controller="Task" asp-action="Details" asp-route-id="@i.Id" class="tm-key">@(i.Key ?? "#" + i.Id)</a>
     </td>
     @if (showSpace) { <td class="small">@(i.WorkSpaceKey ?? Localizer["Tm_Personal"].Value)</td> }

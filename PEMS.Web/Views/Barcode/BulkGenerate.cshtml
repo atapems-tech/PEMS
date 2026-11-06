@@ -55,7 +55,7 @@ else
             <div class="d-flex justify-content-between align-items-center mb-2">
                 <span class="small text-muted">Showing @equipments.Count of @ViewBag.MatchingCount matching (capped at @maxResults)</span>
                 <div class="d-flex gap-2 align-items-center">
-                    <pems-select scale="small" name="symbology" style="width:auto;">
+                    <pems-select class="w-auto" scale="small" name="symbology">
                         <option value="Code128">@Localizer["Code128"]</option>
                         <option value="QR">QR</option>
                     </pems-select>

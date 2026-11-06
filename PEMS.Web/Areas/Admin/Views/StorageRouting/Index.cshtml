@@ -46,7 +46,7 @@
                         <td class="small">@r.StorageProviderName</td>
                         <td class="small text-muted vs-hide-md"><span class="vs-num">@r.RelativeRootPath</span></td>
                         <td class="text-end"><span class="vs-num">@r.Priority</span></td>
-                        <td>@if (r.IsDefault) { <i class="bi bi-star-fill text-warning" title="@Localizer["Default"]" aria-label="@Localizer["Default"]"></i> }</td>
+                        <td>@if (r.IsDefault) { <pems-icon name="bi-star-fill" css="text-warning" title="@Localizer["Default"]" aria-label="@Localizer["Default"]" /> }</td>
                         <td><span class="vs-pill @(r.IsEnabled ? "vs-pill--success" : "vs-pill--neutral")">@(r.IsEnabled ? Localizer["Enabled"] : Localizer["Disabled"])</span></td>
                         <td class="text-end text-nowrap">
                             <a asp-action="Edit" asp-route-id="@r.StorageRouteId" class="lp-act lp-act--always" title="@Localizer["Ed_Edit"]" aria-label="@Localizer["Ed_Edit"]"><pems-icon name="bi-pencil" aria-hidden="true" /></a>

@@ -30,7 +30,7 @@
             <h5 class="mb-0">@Model.EquipmentTagNumber <span class="text-muted small">(@(Model.EquipmentClassName ?? "Unclassified"))</span></h5>
             <span class="text-muted small">Framework @Model.FrameworkVersion</span>
         </div>
-        <pems-badge tone="@StatusBadge(Model.Status)" css="ms-auto" style="font-size:1rem;">@Model.Status</pems-badge>
+        <pems-badge class="fs-6" tone="@StatusBadge(Model.Status)" css="ms-auto">@Model.Status</pems-badge>
     </div>
 
     <pems-row gap="2" css="small mt-2">

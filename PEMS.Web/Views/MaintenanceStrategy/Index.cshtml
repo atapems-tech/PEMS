@@ -133,7 +133,7 @@
                             <td><span class="vs-pill vs-pill--neutral">@Localizer.Label("StrategyType", s.StrategyType)</span></td>
                             <td class="small">
                                 @if (!string.IsNullOrEmpty(s.FailureModeName)) { @RcmDisplay.Name(s.FailureModeName, s.FailureModeNameFa) }
-                                else if (!string.IsNullOrEmpty(s.FailureModeCode)) { <span class="text-warning" title="@Localizer["Rcm_NotInCatalog"]">@s.FailureModeCode <i class="bi bi-exclamation-triangle" aria-hidden="true"></i></span> }
+                                else if (!string.IsNullOrEmpty(s.FailureModeCode)) { <span class="text-warning" title="@Localizer["Rcm_NotInCatalog"]">@s.FailureModeCode <pems-icon name="bi-exclamation-triangle" aria-hidden="true" /></span> }
                                 else { <span class="text-danger">@Localizer["Rcm_MissingFailureMode"]</span> }
                             </td>
                             <td>

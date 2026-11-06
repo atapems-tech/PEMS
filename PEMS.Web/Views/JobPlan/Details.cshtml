@@ -84,7 +84,7 @@
                 <form asp-action="RemoveRequiredSkill" method="post" class="d-inline">
                     <input type="hidden" name="jobPlanRequiredSkillId" value="@rs.JobPlanRequiredSkillId" />
                     <input type="hidden" name="jobPlanId" value="@Model.JobPlanId" />
-                    <pems-button tone="none" size="small" css="p-0 border-0 text-white" type="submit" style="line-height:1;" title="@Localizer["حذف"]"><pems-icon name="bi-x" /></pems-button>
+                    <pems-button class="lh-1" tone="none" size="small" css="p-0 border-0 text-white" type="submit" title="@Localizer["حذف"]"><pems-icon name="bi-x" /></pems-button>
                 </form>
             </pems-badge>
         }

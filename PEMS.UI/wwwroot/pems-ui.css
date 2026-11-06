@@ -200,3 +200,139 @@
 .pems-readonly-field { display: block; width: 100%; padding: .375rem .75rem; line-height: 1.5; background-color: var(--bs-secondary-bg); border: var(--bs-border-width) solid var(--bs-border-color); border-radius: var(--bs-border-radius); }   /* a read-only value shown in a form row (SCRUM-508) */
 .pm-chip[data-empty="true"] .badge { color: var(--bs-white); background-color: RGBA(var(--bs-secondary-rgb), 1); }   /* permission-matrix role chip with no module (SCRUM-508) */
 .pm-chip[data-empty="false"] .badge { color: var(--bs-black); background-color: RGBA(var(--bs-light-rgb), 1); border: var(--bs-border-width) solid var(--bs-border-color); }
+
+/* SCRUM-508: the last inline styles of the views, one named class per use */
+.pems-fs-11rem { font-size: 1.1rem; }
+.pems-fs-12 { font-size: 12px; }
+.pems-fs-26rem { font-size: 2.6rem; }
+.pems-h-fit { height: fit-content; }
+.pems-notif-menu { min-width: 320px; max-height: 400px; overflow-y: auto; }
+.pems-pdf-canvas { position: relative; border: 1px solid var(--pems-surface-border, var(--bs-border-color)); overflow: auto; max-height: 75vh; text-align: center; cursor: crosshair; }
+.pems-photo-150 { width: 150px; height: 150px; object-fit: cover; border: 2px solid var(--bs-border-color); }
+.pems-photo-96 { width: 96px; height: 96px; object-fit: cover; }
+.pems-scroll-320 { max-height: 320px; overflow-y: auto; }
+.pems-signature-pad { width: 100%; height: 200px; cursor: crosshair; }
+.pems-signature-small { height: 32px; vertical-align: middle; margin-inline-start: 8px; background: var(--bs-white); border: var(--bs-border-width) solid var(--bs-border-color-translucent); border-radius: 3px; }
+.pems-signature-view { max-height: 100px; border: 1px solid var(--bs-border-color); background: var(--bs-white); padding: 4px; border-radius: 4px; }
+.pems-size-24 { width: 24px; height: 24px; }
+.pems-wrap-start { white-space: normal; text-align: start; }
+.pems-indent-0 { padding-inline-start: 0.0rem; }
+.pems-indent-1 { padding-inline-start: 1.5rem; }
+.pems-indent-2 { padding-inline-start: 3.0rem; }
+.pems-indent-3 { padding-inline-start: 4.5rem; }
+.pems-indent-4 { padding-inline-start: 6.0rem; }
+.pems-indent-5 { padding-inline-start: 7.5rem; }
+.pems-indent-6 { padding-inline-start: 9.0rem; }
+.pems-indent-7 { padding-inline-start: 10.5rem; }
+.pems-indent-8 { padding-inline-start: 12.0rem; }
+.pems-tag-indent-0 { padding-inline-start: 0.75rem; }
+.pems-tag-indent-1 { padding-inline-start: 1.65rem; }
+.pems-tag-indent-2 { padding-inline-start: 2.55rem; }
+.pems-tag-indent-3 { padding-inline-start: 3.45rem; }
+.pems-tag-indent-4 { padding-inline-start: 4.35rem; }
+.pems-tag-indent-5 { padding-inline-start: 5.25rem; }
+.pems-tag-indent-6 { padding-inline-start: 6.15rem; }
+.pems-tag-indent-7 { padding-inline-start: 7.05rem; }
+.pems-tag-indent-8 { padding-inline-start: 7.95rem; }
+.pems-bar { width: 100%; min-height: 4px; }
+.pems-h-pct-0 { height: 0%; }
+.pems-h-pct-1 { height: 1%; }
+.pems-h-pct-2 { height: 2%; }
+.pems-h-pct-3 { height: 3%; }
+.pems-h-pct-4 { height: 4%; }
+.pems-h-pct-5 { height: 5%; }
+.pems-h-pct-6 { height: 6%; }
+.pems-h-pct-7 { height: 7%; }
+.pems-h-pct-8 { height: 8%; }
+.pems-h-pct-9 { height: 9%; }
+.pems-h-pct-10 { height: 10%; }
+.pems-h-pct-11 { height: 11%; }
+.pems-h-pct-12 { height: 12%; }
+.pems-h-pct-13 { height: 13%; }
+.pems-h-pct-14 { height: 14%; }
+.pems-h-pct-15 { height: 15%; }
+.pems-h-pct-16 { height: 16%; }
+.pems-h-pct-17 { height: 17%; }
+.pems-h-pct-18 { height: 18%; }
+.pems-h-pct-19 { height: 19%; }
+.pems-h-pct-20 { height: 20%; }
+.pems-h-pct-21 { height: 21%; }
+.pems-h-pct-22 { height: 22%; }
+.pems-h-pct-23 { height: 23%; }
+.pems-h-pct-24 { height: 24%; }
+.pems-h-pct-25 { height: 25%; }
+.pems-h-pct-26 { height: 26%; }
+.pems-h-pct-27 { height: 27%; }
+.pems-h-pct-28 { height: 28%; }
+.pems-h-pct-29 { height: 29%; }
+.pems-h-pct-30 { height: 30%; }
+.pems-h-pct-31 { height: 31%; }
+.pems-h-pct-32 { height: 32%; }
+.pems-h-pct-33 { height: 33%; }
+.pems-h-pct-34 { height: 34%; }
+.pems-h-pct-35 { height: 35%; }
+.pems-h-pct-36 { height: 36%; }
+.pems-h-pct-37 { height: 37%; }
+.pems-h-pct-38 { height: 38%; }
+.pems-h-pct-39 { height: 39%; }
+.pems-h-pct-40 { height: 40%; }
+.pems-h-pct-41 { height: 41%; }
+.pems-h-pct-42 { height: 42%; }
+.pems-h-pct-43 { height: 43%; }
+.pems-h-pct-44 { height: 44%; }
+.pems-h-pct-45 { height: 45%; }
+.pems-h-pct-46 { height: 46%; }
+.pems-h-pct-47 { height: 47%; }
+.pems-h-pct-48 { height: 48%; }
+.pems-h-pct-49 { height: 49%; }
+.pems-h-pct-50 { height: 50%; }
+.pems-h-pct-51 { height: 51%; }
+.pems-h-pct-52 { height: 52%; }
+.pems-h-pct-53 { height: 53%; }
+.pems-h-pct-54 { height: 54%; }
+.pems-h-pct-55 { height: 55%; }
+.pems-h-pct-56 { height: 56%; }
+.pems-h-pct-57 { height: 57%; }
+.pems-h-pct-58 { height: 58%; }
+.pems-h-pct-59 { height: 59%; }
+.pems-h-pct-60 { height: 60%; }
+.pems-h-pct-61 { height: 61%; }
+.pems-h-pct-62 { height: 62%; }
+.pems-h-pct-63 { height: 63%; }
+.pems-h-pct-64 { height: 64%; }
+.pems-h-pct-65 { height: 65%; }
+.pems-h-pct-66 { height: 66%; }
+.pems-h-pct-67 { height: 67%; }
+.pems-h-pct-68 { height: 68%; }
+.pems-h-pct-69 { height: 69%; }
+.pems-h-pct-70 { height: 70%; }
+.pems-h-pct-71 { height: 71%; }
+.pems-h-pct-72 { height: 72%; }
+.pems-h-pct-73 { height: 73%; }
+.pems-h-pct-74 { height: 74%; }
+.pems-h-pct-75 { height: 75%; }
+.pems-h-pct-76 { height: 76%; }
+.pems-h-pct-77 { height: 77%; }
+.pems-h-pct-78 { height: 78%; }
+.pems-h-pct-79 { height: 79%; }
+.pems-h-pct-80 { height: 80%; }
+.pems-h-pct-81 { height: 81%; }
+.pems-h-pct-82 { height: 82%; }
+.pems-h-pct-83 { height: 83%; }
+.pems-h-pct-84 { height: 84%; }
+.pems-h-pct-85 { height: 85%; }
+.pems-h-pct-86 { height: 86%; }
+.pems-h-pct-87 { height: 87%; }
+.pems-h-pct-88 { height: 88%; }
+.pems-h-pct-89 { height: 89%; }
+.pems-h-pct-90 { height: 90%; }
+.pems-h-pct-91 { height: 91%; }
+.pems-h-pct-92 { height: 92%; }
+.pems-h-pct-93 { height: 93%; }
+.pems-h-pct-94 { height: 94%; }
+.pems-h-pct-95 { height: 95%; }
+.pems-h-pct-96 { height: 96%; }
+.pems-h-pct-97 { height: 97%; }
+.pems-h-pct-98 { height: 98%; }
+.pems-h-pct-99 { height: 99%; }
+.pems-h-pct-100 { height: 100%; }

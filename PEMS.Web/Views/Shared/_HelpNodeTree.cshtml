@@ -15,9 +15,9 @@
             <pems-tree-label>
                 @if (!string.IsNullOrWhiteSpace(node.IncomingEdgeLabel))
                 {
-                    <span class="pems-help-tree-edge-label"><i class="bi bi-arrow-return-right" aria-hidden="true"></i> @node.IncomingEdgeLabel</span>
+                    <span class="pems-help-tree-edge-label"><pems-icon name="bi-arrow-return-right" aria-hidden="true" /> @node.IncomingEdgeLabel</span>
                 }
-                <i class="bi @node.IconCssClass" aria-hidden="true"></i> @node.Label
+                <pems-icon css="@node.IconCssClass" aria-hidden="true" /> @node.Label
             </pems-tree-label>
             @foreach (var child in node.Children) { await RenderNode(child, depth + 1); }
         </pems-tree-item>

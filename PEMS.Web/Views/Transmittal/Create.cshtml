@@ -10,7 +10,7 @@
 
 
 <div class="content-card pems-s-1d34c094">
-    <pems-alert tone="danger" css="py-2 px-3 small" asp-validation-summary="All" style="@(ViewData.ModelState.IsValid ? "display:none;" : "")"></pems-alert>
+    <pems-alert tone="danger" css="py-2 px-3 small" asp-validation-summary="All" hidden="@(ViewData.ModelState.IsValid)"></pems-alert>
 
     <form asp-action="Create" method="post">
         <pems-row gap="3">
@@ -75,7 +75,7 @@
                     Only showing documents from the selected project. Documents on Hold cannot be transmitted. Type to search by number or title.
                 </p>
                 <pems-input scale="small" css="mb-2" type="text" id="docPickerSearch" placeholder="Search by document number or title..." />
-                <div class="border rounded p-2" id="docPickerList" style="max-height:320px; overflow-y:auto;">
+                <div class="border rounded p-2 pems-scroll-320" id="docPickerList">
                     @foreach (var d in documents)
                     {
                         <div class="form-check doc-picker-row" data-project-id="@d.ProjectId" data-search="@($"{d.DocumentNo} {d.Title}".ToLower())">

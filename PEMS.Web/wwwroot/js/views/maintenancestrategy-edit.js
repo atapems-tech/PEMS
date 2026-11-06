@@ -50,8 +50,8 @@
             function syncRules() {
                 var c = consSel.value, t = typeSel.value;
                 var needsProactive = c === 'Safety' || c === 'Environmental' || c === 'Hidden' || hiddenChk.checked;
-                rtfWarn.style.display = (needsProactive && (t === 'RunToFailure' || t === 'Corrective')) ? '' : 'none';
-                cbm.style.display = (t === 'CBM' || t === 'Predictive') ? '' : 'none';
+                rtfWarn.hidden = !((needsProactive && (t === 'RunToFailure' || t === 'Corrective')));
+                cbm.hidden = !((t === 'CBM' || t === 'Predictive'));
             }
 
             classSel.addEventListener('change', function () { selectedMode = ''; loadModes(); });

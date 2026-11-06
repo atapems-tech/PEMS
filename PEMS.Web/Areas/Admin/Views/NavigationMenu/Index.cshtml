@@ -46,7 +46,7 @@
                         var badge = NavigationBadges.Find(i.BadgeKey);
                         <tr id="row-@i.Key" class="@(i.IsActive ? "" : "text-body-tertiary")">
                             <td>
-                                <div class="d-flex align-items-center gap-2" style="padding-inline-start:@(row.Depth * 1.5)rem">
+                                <div class="d-flex align-items-center gap-2 pems-indent-@Math.Min(row.Depth, 8)">
                                     @if (!string.IsNullOrEmpty(i.Icon))
                                     {
                                         <pems-icon css="@i.Icon" aria-hidden="true" />
@@ -58,7 +58,7 @@
                                         <pems-badge tone="info">@Localizer["Nav_Custom"]</pems-badge>
                                     }
                                 </div>
-                                <div class="small text-body-tertiary" style="padding-inline-start:@(row.Depth * 1.5)rem" dir="ltr">@i.Key</div>
+                                <div class="small text-body-tertiary pems-indent-@Math.Min(row.Depth, 8)" dir="ltr">@i.Key</div>
                             </td>
                             <td class="small" dir="ltr">@row.Route</td>
                             <td class="small">

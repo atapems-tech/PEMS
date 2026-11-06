@@ -59,7 +59,7 @@
     <div class="d-flex flex-column flex-md-row gap-4 align-items-start">
         @if (!string.IsNullOrEmpty(Model.PhotoPath))
         {
-            <img src="@Model.PhotoPath" class="rounded-4 flex-shrink-0" style="width:96px;height:96px;object-fit:cover;" alt="@Model.FirstName @Model.LastName" />
+            <img src="@Model.PhotoPath" class="rounded-4 flex-shrink-0 pems-photo-96" alt="@Model.FirstName @Model.LastName" />
         }
         else
         {
@@ -467,11 +467,11 @@
                         </pems-col>
                         <pems-col md="3">
                             <pems-label>@L("Personnel Type", "نوع پرسنل")</pems-label>
-                            <pems-select name="personnelType" onchange="document.getElementById('editProfileVendorField').style.display = this.value === 'Internal' ? 'none' : ''">
+                            <pems-select name="personnelType" onchange="document.getElementById('editProfileVendorField').hidden = this.value === 'Internal'">
                                 @foreach (var t in personnelTypes) { <option value="@t" selected="@(t == Model.PersonnelType)">@t</option> }
                             </pems-select>
                         </pems-col>
-                        <pems-col md="3" id="editProfileVendorField" style="display:@(Model.PersonnelType == "Internal" ? "none" : "")">
+                        <pems-col md="3" id="editProfileVendorField" hidden="@(Model.PersonnelType == "Internal")">
                             <pems-label>@L("Vendor", "فروشنده")</pems-label>
                             <pems-select name="vendorId">
                                 <option value="">-- @L("select", "انتخاب") --</option>

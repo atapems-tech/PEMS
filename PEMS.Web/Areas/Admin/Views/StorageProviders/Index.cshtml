@@ -71,7 +71,7 @@
                             @if (p.LastHealthCheckAt.HasValue) { <div class="vs-sub"><span class="vs-num">@p.LastHealthCheckAt.Value.ToString("yyyy-MM-dd HH:mm")</span></div> }
                         </td>
                         <td><span class="vs-pill @(p.IsEnabled ? "vs-pill--success" : "vs-pill--neutral")">@(p.IsEnabled ? Localizer["Enabled"] : Localizer["Disabled"])</span></td>
-                        <td>@if (p.IsDefault) { <i class="bi bi-star-fill text-warning" title="@Localizer["Default"]" aria-label="@Localizer["Default"]"></i> }</td>
+                        <td>@if (p.IsDefault) { <pems-icon name="bi-star-fill" css="text-warning" title="@Localizer["Default"]" aria-label="@Localizer["Default"]" /> }</td>
                         <td class="text-end text-nowrap">
                             <a asp-action="Edit" asp-route-id="@p.StorageProviderId" class="lp-act lp-act--always" title="@Localizer["Ed_Edit"]" aria-label="@Localizer["Ed_Edit"] @p.Name"><pems-icon name="bi-pencil" aria-hidden="true" /></a>
                             <form asp-action="TestConnection" asp-route-id="@p.StorageProviderId" method="post" class="d-inline">

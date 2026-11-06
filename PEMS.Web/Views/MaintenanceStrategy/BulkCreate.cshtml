@@ -97,7 +97,7 @@
         <pems-col md="3">
             <pems-label css="small mb-0">
                 Plant (چندانتخابی)
-                @if (!plants.Any()) { <i class="bi bi-info-circle text-muted" title="در حال حاضر هیچ Functional Location ای مقدار Plant ندارد."></i> }
+                @if (!plants.Any()) { <pems-icon name="bi-info-circle" css="text-muted" title="در حال حاضر هیچ Functional Location ای مقدار Plant ندارد." /> }
             </pems-label>
             <pems-select scale="small" name="plants" multiple size="3">
                 @foreach (var p in plants) { <option value="@p" selected="@selectedPlants.Contains(p)">@p</option> }
@@ -112,7 +112,7 @@
         <pems-col md="3">
             <pems-label css="small mb-0">
                 Unit (چندانتخابی)
-                @if (!units.Any()) { <i class="bi bi-info-circle text-muted" title="در حال حاضر هیچ Functional Location ای مقدار Unit ندارد."></i> }
+                @if (!units.Any()) { <pems-icon name="bi-info-circle" css="text-muted" title="در حال حاضر هیچ Functional Location ای مقدار Unit ندارد." /> }
             </pems-label>
             <pems-select scale="small" name="units" multiple size="3">
                 @foreach (var u in units) { <option value="@u" selected="@selectedUnits.Contains(u)">@u</option> }

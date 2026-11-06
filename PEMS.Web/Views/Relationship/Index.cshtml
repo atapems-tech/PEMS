@@ -72,7 +72,7 @@ else
             <div class="mt-2">
                 <span class="text-muted small">P&amp;ID:</span>
                 <a asp-controller="EngineeringDocuments" asp-action="Details" asp-route-id="@Model.PIDDocument.NodeId" class="fw-bold">
-                    @Model.PIDDocument.Label <i class="bi bi-box-arrow-up-right small"></i>
+                    @Model.PIDDocument.Label <pems-icon name="bi-box-arrow-up-right" css="small" />
                 </a>
                 <span class="text-muted small">@Model.PIDDocument.SubLabel</span>
             </div>

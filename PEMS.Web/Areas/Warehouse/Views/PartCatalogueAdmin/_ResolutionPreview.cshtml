@@ -19,7 +19,7 @@
                 @foreach (var c in Model.Candidates)
                 {
                     var selected = Model.SelectedEmployeeIds.Contains(c.EmployeeId);
-                    <li>@c.EmployeeName <span class="text-muted">- @c.Reason</span> @if (selected) { <i class="bi bi-check-circle text-success" aria-hidden="true"></i> }</li>
+                    <li>@c.EmployeeName <span class="text-muted">- @c.Reason</span> @if (selected) { <pems-icon name="bi-check-circle" css="text-success" aria-hidden="true" /> }</li>
                 }
                 @if (!Model.Candidates.Any()) { <li class="text-muted">-</li> }
             </ul>
