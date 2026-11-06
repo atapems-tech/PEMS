@@ -36,6 +36,11 @@
 .pems-skeleton__stack { display: block; flex: 1; }
 .pems-skeleton__line--value { block-size: 1.375rem; inline-size: 40%; }
 .pems-skeleton__row { display: flex; gap: 1rem; padding-block: .625rem; padding-inline: .75rem; border-block-end: 1px solid var(--pems-surface-border); }
+
+/* SCRUM-530 file preview: a stored file shown inline (Files/Preview). */
+.pems-file-preview { border: 1px solid var(--pems-surface-border); border-radius: 8px; overflow: hidden; background: var(--pems-surface); }
+.pems-file-preview__frame { display: block; width: 100%; height: min(75vh, 900px); border: 0; }
+.pems-file-preview--empty { padding: 2rem 1rem; text-align: center; color: var(--pems-text-muted); font-size: .875rem; }
 .pems-skeleton__row .pems-skeleton__line { flex: 1; block-size: .8rem; margin: 0; }
 .pems-skeleton__line--label { block-size: .75rem; inline-size: 30%; margin-block-end: .375rem; }
 .pems-skeleton__line--field { block-size: 2rem; margin-block-end: 1rem; }

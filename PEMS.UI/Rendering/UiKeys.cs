@@ -9,6 +9,7 @@ public static class UiKeys
     public const string Button = "button";
     public const string Badge = "badge";
     public const string Skeleton = "skeleton";
+    public const string FilePreview = "file-preview";
     public const string EmptyState = "empty-state";
     public const string ErrorState = "error-state";
     public const string LoadingState = "loading-state";

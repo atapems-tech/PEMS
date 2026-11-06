@@ -24,6 +24,7 @@ public sealed class PemsComponentRegistry : IPemsComponentRegistry
         Register(UiKeys.Button, typeof(PemsButton));
         Register(UiKeys.Badge, typeof(PemsBadge));
         Register(UiKeys.Skeleton, typeof(PemsSkeleton));
+        Register(UiKeys.FilePreview, typeof(PemsFilePreview));
         Register(UiKeys.EmptyState, typeof(PemsEmptyState));
         Register(UiKeys.ErrorState, typeof(PemsErrorState));
         Register(UiKeys.LoadingState, typeof(PemsLoadingState));

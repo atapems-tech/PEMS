@@ -4481,4 +4481,26 @@
   <data name="Status_Unavailable_Title" xml:space="preserve"><value>موقتاً در دسترس نیست</value></data>
   <data name="Status_Unavailable_Text" xml:space="preserve"><value>سرویس در حال حاضر شلوغ است یا در دسترس نیست. کمی بعد دوباره تلاش کنید؛ اگر تکرار شد، شناسه‌ی درخواست زیر را گزارش دهید.</value></data>
   <data name="Date_Invalid" xml:space="preserve"><value>این تاریخ در تقویم جلالی وجود ندارد. به‌صورت سال/ماه/روز بنویسید، مثلاً 1403/12/29.</value></data>
+  <data name="Num_Vdr_Title" xml:space="preserve"><value>شماره‌گذاری مدارک VDR</value></data>
+  <data name="Num_Vdr_Hint" xml:space="preserve"><value>یک مدرک VDR را پیدا کنید و سپس شماره‌ی رسمی آن به فرمت CONTRACTOR یا شماره‌ی فرمت SUB-CONTRACTOR (Vendor) را بسازید. کدهای مرجعی که وارد می‌کنید روی فروشنده، پروژه و همان مدرک ذخیره می‌شوند.</value></data>
+  <data name="Num_Vdr_Search" xml:space="preserve"><value>مدرک VDR</value></data>
+  <data name="Num_Vdr_SearchPlaceholder" xml:space="preserve"><value>شماره‌ی مدرک، شرح یا فروشنده</value></data>
+  <data name="Num_Vdr_Find" xml:space="preserve"><value>جستجو</value></data>
+  <data name="Num_Vdr_NoMatch" xml:space="preserve"><value>هیچ مدرک VDR با این جستجو پیدا نشد.</value></data>
+  <data name="Num_Vdr_Matches" xml:space="preserve"><value>{0} از {1} مدرک منطبق</value></data>
+  <data name="Num_Vdr_Pick" xml:space="preserve"><value>انتخاب</value></data>
+  <data name="Num_Vdr_Selected" xml:space="preserve"><value>مدرک VDR انتخاب‌شده</value></data>
+  <data name="Num_Vdr_OpenItem" xml:space="preserve"><value>باز کردن مدرک VDR</value></data>
+  <data name="Vd_NumbersInAdmin" xml:space="preserve"><value>ساخت شماره‌ی مدرک</value></data>
+  <data name="Vd_VendorFormatNo" xml:space="preserve"><value>شماره‌ی فرمت Vendor</value></data>
+  <data name="Vd_TabFiles" xml:space="preserve"><value>فایل‌ها</value></data>
+  <data name="Vd_NoFiles" xml:space="preserve"><value>هنوز فایلی برای این مدرک ارسال نشده است.</value></data>
+  <data name="Vd_FileName" xml:space="preserve"><value>فایل</value></data>
+  <data name="Vd_FileKind" xml:space="preserve"><value>نوع</value></data>
+  <data name="Vd_FileKind_Main" xml:space="preserve"><value>مدرک</value></data>
+  <data name="Vd_FileKind_CommentSheet" xml:space="preserve"><value>برگه‌ی کامنت</value></data>
+  <data name="Vd_FileKind_ReplySheet" xml:space="preserve"><value>برگه‌ی پاسخ</value></data>
+  <data name="Vd_Preview" xml:space="preserve"><value>پیش‌نمایش</value></data>
+  <data name="Vd_Download" xml:space="preserve"><value>دانلود</value></data>
+  <data name="Vd_NoPreview" xml:space="preserve"><value>هیچ‌کدام از این فایل‌ها در مرورگر نمایش داده نمی‌شود (فقط PDF، تصویر و متن). از دانلود استفاده کنید.</value></data>
 </root>

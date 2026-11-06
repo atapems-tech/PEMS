@@ -32,6 +32,11 @@
     var wfIsPendingResubmission = wfStatus == "PendingResubmission";
     // تب پیش‌فرض: گردش‌کار (شروع یا ادامه‌ی چرخه‌ی بازبینی)؛ مدرک بسته‌شده با نمای کلی باز می‌شود
     var vdrDefaultTab = wfStatus == "Closed" ? "overview" : "workflow";
+    // SCRUM-530: the Files tab (every submission file with a preview); ?tab=files&file={attachmentId} opens it on that file
+    var vdrFiles = VdrFiles.From(Model.Submissions);
+    var vdrPreviewFile = VdrFiles.Selected(vdrFiles, int.TryParse(Context.Request.Query["file"], out var requestedFileId) ? requestedFileId : null);
+    if (Context.Request.Query["tab"] == "files") vdrDefaultTab = "files";
+    var vdrPreviewUrl = vdrPreviewFile == null ? null : Url.Action("Preview", "Files", new { id = vdrPreviewFile.AttachmentId });
     // شماره‌ی بازنگری بعدی را سیستم پیشنهاد می‌کند (آخرین + ۱)؛ همین مقدار با فرم ارسال می‌شود
     var nextRevisionNo = (Model.LatestRevisionNo ?? -1) + 1;
 
@@ -111,6 +116,11 @@
         </pems-button>
     </li>
     <li class="nav-item" role="presentation">
+        <pems-button plain="true" css="nav-link @(vdrDefaultTab == "files" ? "active" : "")" data-bs-toggle="tab" data-bs-target="#tab-files" type="button">
+            <pems-icon name="bi-paperclip" /> @Localizer["Vd_TabFiles"] <pems-badge tone="neutral">@vdrFiles.Count</pems-badge>
+        </pems-button>
+    </li>
+    <li class="nav-item" role="presentation">
         <pems-button plain="true" css="nav-link" data-bs-toggle="tab" data-bs-target="#tab-comments" type="button">
             <pems-icon name="bi-chat-square-text" /> @Localizer["Vs_TabComments"]
         </pems-button>
@@ -147,55 +157,21 @@
             <pems-info-item label="@Localizer["Vs_Discipline"]">@Model.DisciplineCodeRaw @(Model.IsMultiDiscipline ? Localizer["Vs_MultiDiscipline"].Value : "")</pems-info-item>
             <pems-info-item label="@Localizer["Vs_Class"]">@Model.DocumentClass</pems-info-item>
             <pems-info-item label="@Localizer["Vs_PlannedFirstIssue"]">@(Model.PlannedFirstIssueDate?.ToString("yyyy-MM-dd"))</pems-info-item>
+            <pems-info-item label="@Localizer["Vd_VendorFormatNo"]" mono empty-text="-">@Model.VendorFormatDocumentNumber</pems-info-item>
             <pems-info-item label="@Localizer["Vs_Description"]" wide>@Model.DocumentDescription</pems-info-item>
         </pems-info-grid>
     </div>
 </div>
 
-@* طبق «VENDOR DOCUMENTATION MANAGEMENT PROCEDURE» بخش ۴.۳.۱: شماره‌ی رسمی مدرک به فرمت
-   CONTRACTOR. هر فیلد مرجع خالی این‌جا پر می‌شود و همزمان روی Vendor/Project/VDR Item ذخیره
-   می‌شود - دفعه‌ی بعد از قبل پرشده می‌آید. *@
-<pems-content-card css="mb-3">
-    <h6 class="mb-2">@Localizer["Vd_OfficialNoTitle"]</h6>
-    <p class="text-muted small mb-3">
-        @Localizer["Vd_OfficialNoHint"]
-    </p>
-    <pems-form asp-action="GenerateContractorNumber" method="post">
-        <input type="hidden" name="vdrItemId" value="@Model.VDRItemId" />
-        <pems-row gap="3">
-            <pems-col md="3"><pems-label>@Localizer["Vd_VendorCode"]</pems-label><pems-input name="vendorCode" placeholder="e.g. FSK" /></pems-col>
-            <pems-col md="3"><pems-label>@Localizer["Vd_PlantCode"]</pems-label><pems-input name="plantCode" placeholder="e.g. J" /></pems-col>
-            <pems-col md="3"><pems-label>@Localizer["Vd_UnitCode"]</pems-label><pems-input name="unitCode" placeholder="e.g. 85" /></pems-col>
-            <pems-col md="3"><pems-label>@Localizer["Vd_MaterialCode"]</pems-label><pems-input name="materialCode" value="@Model.MaterialCode" placeholder="e.g. 0611" /></pems-col>
-        </pems-row>
-        <pems-button tone="primary" size="small" outline="true" css="mt-3" type="submit">
-            <pems-icon name="bi-hash" /> @Localizer["Vd_GenOfficial"]
+@* SCRUM-529: the CONTRACTOR and SUB-CONTRACTOR number forms moved to Admin > Document numbering (same actions and logic). *@
+@if (User.IsInRole(PEMS.Persistence.Identity.SystemRoles.SystemAdmin))
+{
+    <pems-flex justify="end" css="mb-3">
+        <pems-button tone="neutral" size="small" outline="true" as="a" asp-area="Admin" asp-controller="Numbering" asp-action="Index" asp-route-vdrItemId="@Model.VDRItemId" asp-fragment="vdr-numbers">
+            <pems-icon name="bi-hash" /> @Localizer["Vd_NumbersInAdmin"]
         </pems-button>
-    </pems-form>
-</pems-content-card>
-
-@* طبق بخش ۴.۳.۲ همان سند: شماره‌ی موازی به فرمت SUB-CONTRACTOR/Vendor *@
-<pems-content-card css="mb-3">
-    <h6 class="mb-2">@Localizer["Vd_VendorNoTitle"]</h6>
-    <p class="text-muted small mb-3">
-        @Localizer["Vd_VendorNoHint"]
-        @if (!string.IsNullOrWhiteSpace(Model.VendorFormatDocumentNumber))
-        {
-            <span>@Localizer["Vd_Current"] <strong>@Model.VendorFormatDocumentNumber</strong></span>
-        }
-    </p>
-    <pems-form asp-action="GenerateVendorNumber" method="post">
-        <input type="hidden" name="vdrItemId" value="@Model.VDRItemId" />
-        <pems-row gap="3">
-            <pems-col md="4"><pems-label>@Localizer["Vd_JobNumber"]</pems-label><pems-input name="jobNumber" placeholder="e.g. 3863" /></pems-col>
-            <pems-col md="4"><pems-label>@Localizer["Vd_UnitCode"]</pems-label><pems-input name="unitCode" placeholder="e.g. 85" /></pems-col>
-            <pems-col md="4"><pems-label>@Localizer["Vd_TypologyCode"]</pems-label><pems-input name="typologyCode" value="@Model.TypologyCode" placeholder="e.g. GS, LG, IS ..." /></pems-col>
-        </pems-row>
-        <pems-button tone="primary" size="small" outline="true" css="mt-3" type="submit">
-            <pems-icon name="bi-hash" /> @Localizer["Vd_GenVendor"]
-        </pems-button>
-    </pems-form>
-</pems-content-card>
+    </pems-flex>
+}
 </pems-tab-pane>
 
 @* ===================== Submissions ===================== *@
@@ -293,6 +269,52 @@
     </pems-related-table>
     @if (!Model.Submissions.Any()) { <p class="text-muted">@Localizer["Vd_NoSubmissions"]</p> }
 </pems-content-card>
+</pems-tab-pane>
+
+@* ===================== Files (SCRUM-530) ===================== *@
+<pems-tab-pane fade="true" css="@(vdrDefaultTab == "files" ? "show active" : "")" id="tab-files" role="tabpanel">
+    @if (vdrFiles.Count == 0)
+    {
+        <p class="text-muted text-center py-4">@Localizer["Vd_NoFiles"]</p>
+    }
+    else
+    {
+        <pems-table kind="enterprise" css="mb-3">
+            <pems-table-head>
+                <pems-table-row>
+                    <pems-table-header>@Localizer["Vd_FileName"]</pems-table-header>
+                    <pems-table-header>@Localizer["Vs_Rev"]</pems-table-header>
+                    <pems-table-header>@Localizer["Vd_FileKind"]</pems-table-header>
+                    <pems-table-header class="text-end"><span class="visually-hidden">@Localizer["Ed_Actions"]</span></pems-table-header>
+                </pems-table-row>
+            </pems-table-head>
+            <pems-table-body>
+                @foreach (var f in vdrFiles)
+                {
+                    <pems-table-row class="@(vdrPreviewFile?.AttachmentId == f.AttachmentId ? "table-active" : "")">
+                        <pems-table-cell>@f.FileName</pems-table-cell>
+                        <pems-table-cell><span class="vs-num">@f.RevisionNo</span></pems-table-cell>
+                        <pems-table-cell>@Localizer["Vd_FileKind_" + f.Kind]</pems-table-cell>
+                        <pems-table-cell class="text-end">
+                            <pems-flex gap="1" justify="end">
+                                @if (f.CanPreview)
+                                {
+                                    <pems-button tone="neutral" size="small" outline="true" as="a" asp-action="Details" asp-route-id="@Model.VDRItemId" asp-route-tab="files" asp-route-file="@f.AttachmentId" asp-fragment="tab-files" aria-label="@Localizer["Vd_Preview"] @f.FileName"><pems-icon name="bi-eye" /> @Localizer["Vd_Preview"]</pems-button>
+                                }
+                                <pems-button tone="primary" size="small" outline="true" as="a" asp-controller="Files" asp-action="Download" asp-route-id="@f.AttachmentId" aria-label="@Localizer["Vd_Download"] @f.FileName"><pems-icon name="bi-download" /></pems-button>
+                            </pems-flex>
+                        </pems-table-cell>
+                    </pems-table-row>
+                }
+            </pems-table-body>
+        </pems-table>
+
+        @if (vdrPreviewFile != null)
+        {
+            <h6 class="mb-2"><pems-icon name="bi-eye" /> @vdrPreviewFile.FileName</h6>
+        }
+        <pems-file-preview id="vdrFilePreview" src="@vdrPreviewUrl" title="@vdrPreviewFile?.FileName" empty-text="@Localizer["Vd_NoPreview"]" />
+    }
 </pems-tab-pane>
 
 @* ===================== Comments (شامل PDF Viewer) ===================== *@

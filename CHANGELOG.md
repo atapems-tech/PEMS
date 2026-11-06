@@ -3,6 +3,15 @@
 All notable changes to PEMS. No system version is defined yet (plan row F_CI), so entries are grouped by date
 and theme and were reconstructed from the git history (initial import 2026-09-05). Newest first.
 
+## 2026-11-06 - VDR: number generation in Admin > Document numbering, Files tab with preview (SCRUM-529, 530)
+
+### Changed
+- SCRUM-529 (owner decision): the CONTRACTOR official number and SUB-CONTRACTOR vendor-format number forms left VDR Details > Overview. They now live in Admin > Document numbering, section "VDR document numbers": search an item (document number, description, vendor; 20 results), select it, and the same two forms appear, prefilled. They post to the same `VDRController.GenerateContractorNumber` / `GenerateVendorNumber` actions (same VDR Edit permission, same reference-data updates, same numbering service) with `returnTo=numbering`, so the user comes back to the Admin page. VDR details shows the vendor-format number in its info grid and, for a system administrator, a "Generate document numbers" link to the Admin section for that item.
+
+### Added
+- SCRUM-530: VDR details has a Files tab listing the main file, comment sheet and reply sheet of every submission (newest revision first) with Preview and Download. The preview uses the new PEMS.UI component `pems-file-preview` (registry key `file-preview`), which shows `Files/Preview/{id}` inline (SCRUM-202 rules: PDF, images and text only). `?tab=files&file={id}` opens the tab on a file. The comment-pin PDF viewer stays in the Comments tab.
+- Tests: `VdrNumberingAndFilesTests` (8), `FilePreviewTests` (3).
+
 ## 2026-11-06 - Sprint 1 review fixes: lost layout lines and link buttons (SCRUM-526, 527, 528)
 
 ### Fixed

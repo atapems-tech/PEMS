@@ -3696,4 +3696,26 @@
   <data name="Status_Unavailable_Title" xml:space="preserve"><value>Temporarily unavailable</value></data>
   <data name="Status_Unavailable_Text" xml:space="preserve"><value>The service is busy or not reachable right now. Try again in a moment; if it keeps happening, report the request ID below.</value></data>
   <data name="Date_Invalid" xml:space="preserve"><value>This date does not exist in the Jalali calendar. Use year/month/day, for example 1403/12/29.</value></data>
+  <data name="Num_Vdr_Title" xml:space="preserve"><value>VDR document numbers</value></data>
+  <data name="Num_Vdr_Hint" xml:space="preserve"><value>Find a VDR item, then generate its official CONTRACTOR number or its SUB-CONTRACTOR (vendor-format) number. The reference codes you enter are saved on the vendor, the project and the item.</value></data>
+  <data name="Num_Vdr_Search" xml:space="preserve"><value>VDR item</value></data>
+  <data name="Num_Vdr_SearchPlaceholder" xml:space="preserve"><value>Document number, description or vendor</value></data>
+  <data name="Num_Vdr_Find" xml:space="preserve"><value>Find</value></data>
+  <data name="Num_Vdr_NoMatch" xml:space="preserve"><value>No VDR item matches this search.</value></data>
+  <data name="Num_Vdr_Matches" xml:space="preserve"><value>{0} of {1} matching items</value></data>
+  <data name="Num_Vdr_Pick" xml:space="preserve"><value>Select</value></data>
+  <data name="Num_Vdr_Selected" xml:space="preserve"><value>Selected VDR item</value></data>
+  <data name="Num_Vdr_OpenItem" xml:space="preserve"><value>Open VDR item</value></data>
+  <data name="Vd_NumbersInAdmin" xml:space="preserve"><value>Generate document numbers</value></data>
+  <data name="Vd_VendorFormatNo" xml:space="preserve"><value>Vendor-format No.</value></data>
+  <data name="Vd_TabFiles" xml:space="preserve"><value>Files</value></data>
+  <data name="Vd_NoFiles" xml:space="preserve"><value>No files have been submitted for this item yet.</value></data>
+  <data name="Vd_FileName" xml:space="preserve"><value>File</value></data>
+  <data name="Vd_FileKind" xml:space="preserve"><value>Kind</value></data>
+  <data name="Vd_FileKind_Main" xml:space="preserve"><value>Document</value></data>
+  <data name="Vd_FileKind_CommentSheet" xml:space="preserve"><value>Comment sheet</value></data>
+  <data name="Vd_FileKind_ReplySheet" xml:space="preserve"><value>Reply sheet</value></data>
+  <data name="Vd_Preview" xml:space="preserve"><value>Preview</value></data>
+  <data name="Vd_Download" xml:space="preserve"><value>Download</value></data>
+  <data name="Vd_NoPreview" xml:space="preserve"><value>None of these files can be shown in the browser (only PDF, images and text can). Use Download.</value></data>
 </root>
