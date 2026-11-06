@@ -85,7 +85,7 @@
     }
 
     function buildGroupNode(group) {
-        var li = document.createElement("li");
+        var li = tpl("org-item");
         var hasChildren = (group.children && group.children.length) || (group.teams && group.teams.length);
 
         li.appendChild(buildToggle(hasChildren));
@@ -99,8 +99,7 @@
         li.appendChild(node);
 
         if (hasChildren) {
-            var ul = document.createElement("ul");
-            ul.setAttribute("role", "group");
+            var ul = tpl("org-group-list");
             (group.children || []).forEach(function (child) { ul.appendChild(buildGroupNode(child)); });
             (group.teams || []).forEach(function (team) { ul.appendChild(buildTeamNode(team)); });
             li.appendChild(ul);
@@ -118,7 +117,7 @@
     }
 
     function buildTeamNode(team) {
-        var li = document.createElement("li");
+        var li = tpl("org-item");
         var hasChildren = (team.children && team.children.length) || (team.positions && team.positions.length);
 
         li.appendChild(buildToggle(hasChildren));
@@ -135,8 +134,7 @@
         li.appendChild(node);
 
         if (hasChildren) {
-            var ul = document.createElement("ul");
-            ul.setAttribute("role", "group");
+            var ul = tpl("org-group-list");
             (team.children || []).forEach(function (child) { ul.appendChild(buildTeamNode(child)); });
             (team.positions || []).forEach(function (position) { ul.appendChild(buildPositionNode(position)); });
             li.appendChild(ul);
@@ -148,7 +146,7 @@
     }
 
     function buildPositionNode(position) {
-        var li = document.createElement("li");
+        var li = tpl("org-item");
         li.classList.add("pems-org-leaf");
 
         var node = nodeEl(position.isVacant ? "Position-Vacant" : "Position-Occupied", "bi-person-badge", "Position", position.title);
@@ -164,7 +162,7 @@
     }
 
     function buildToggle(hasChildren) {
-        if (!hasChildren) return document.createElement("span");
+        if (!hasChildren) return tpl("org-toggle-empty");
         var span = tpl("org-toggle"); span.setAttribute("aria-label", "Toggle");
         span.addEventListener("click", function (e) {
             e.stopPropagation();
@@ -379,9 +377,7 @@
             return;
         }
 
-        var ul = document.createElement("ul");
-        ul.className = "pems-org-tree";
-        ul.setAttribute("role", "tree");
+        var ul = tpl("org-tree");
         shown.forEach(function (group) { ul.appendChild(buildGroupNode(group)); });
         canvasEl.appendChild(ul);
 
@@ -450,9 +446,7 @@
         .map(function (o) { return { value: o.value, text: o.textContent }; });
 
     function addOption(value, text, disabled) {
-        var o = document.createElement("option");
-        o.value = value;
-        o.textContent = text;
+        var o = new Option(text, value);
         if (disabled) o.disabled = true;
         disciplineFilter.appendChild(o);
     }

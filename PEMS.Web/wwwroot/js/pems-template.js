@@ -52,11 +52,7 @@
     function options(select, items) {
         var doc = select.ownerDocument;
         select.replaceChildren.apply(select, items.map(function (i) {
-            var o = doc.createElement("option");
-            o.value = i.value == null ? "" : i.value;
-            o.textContent = i.text == null ? "" : i.text;
-            if (i.selected) o.selected = true;
-            return o;
+            return new Option(i.text == null ? "" : i.text, i.value == null ? "" : i.value, false, !!i.selected);
         }));
         return select;
     }
