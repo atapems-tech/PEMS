@@ -93,15 +93,7 @@
 <pems-content-card css="mb-3">
     <h6 class="mb-3">Classified — by Equipment Class (Top 20)</h6>
     <pems-table-scroll>
-        <pems-table kind="enterprise" scale="small">
-            <thead><tr><th>@Localizer["Equipment Class"]</th><th>@Localizer["Count"]</th></tr></thead>
-            <tbody>
-                @foreach (var item in Model.ByEquipmentClass)
-                {
-                    <tr><td>@item.Key</td><td>@item.Count.ToString("N0")</td></tr>
-                }
-            </tbody>
-        </pems-table>
+        <pems-data-table data="@(DataRows.Of(Model.ByEquipmentClass, c_ => c_.Add(((Localizer["Equipment Class"])?.ToString() ?? ""), item => (object?)(item.Key)).Add(((Localizer["Count"])?.ToString() ?? ""), item => (object?)(item.Count.ToString("N0")))))" dense="true" />
         @if (!Model.ByEquipmentClass.Any()) { <p class="text-muted small text-center py-3">@Localizer["داده‌ای موجود نیست."]</p> }
     </pems-table-scroll>
 </pems-content-card>

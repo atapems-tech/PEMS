@@ -97,33 +97,7 @@
 <pems-content-card css="mt-3">
     <h6 class="mb-3">@Localizer["Tender-to-Contract Pipeline"]</h6>
     <pems-table-scroll>
-        <pems-table kind="enterprise" scale="small">
-            <thead><tr>
-                <th>@Localizer["Package"]</th><th>@Localizer["Tender No"]</th><th>@Localizer["Status"]</th>
-                <th>@Localizer["Vendor"]</th><th>@Localizer["Technical"]</th><th>@Localizer["Commercial"]</th>
-                <th>@Localizer["Contract No"]</th><th>@Localizer["Status"]</th><th>@Localizer["Value"]</th>
-                <th>PO</th><th>NTP</th><th>@Localizer["Kick-off"]</th>
-            </tr></thead>
-            <tbody>
-                @foreach (var row in pipeline.Items)
-                {
-                    <tr>
-                        <td>@row.PackageNumber</td>
-                        <td>@row.TenderNumber</td>
-                        <td><pems-badge tone="neutral">@row.TenderStatus</pems-badge></td>
-                        <td>@row.WinnerVendorName</td>
-                        <td>@row.TechnicalEvaluationStatus</td>
-                        <td>@row.CommercialEvaluationStatus</td>
-                        <td>@row.ContractNo</td>
-                        <td>@row.ContractStatus</td>
-                        <td>@row.ContractValue?.ToString("N0")</td>
-                        <td>@row.PoNumber</td>
-                        <td>@row.NtpStatus</td>
-                        <td>@row.KickoffStatus</td>
-                    </tr>
-                }
-            </tbody>
-        </pems-table>
+        <pems-data-table data="@(DataRows.Of(pipeline.Items, c_ => c_.Add(((Localizer["Package"])?.ToString() ?? ""), row => (object?)(row.PackageNumber)).Add(((Localizer["Tender No"])?.ToString() ?? ""), row => (object?)(row.TenderNumber)).Add(((Localizer["Status"])?.ToString() ?? ""), row => (object?)(row.TenderStatus), kind: DataCellKind.Badge, tone: row => "neutral").Add(((Localizer["Vendor"])?.ToString() ?? ""), row => (object?)(row.WinnerVendorName)).Add(((Localizer["Technical"])?.ToString() ?? ""), row => (object?)(row.TechnicalEvaluationStatus)).Add(((Localizer["Commercial"])?.ToString() ?? ""), row => (object?)(row.CommercialEvaluationStatus)).Add(((Localizer["Contract No"])?.ToString() ?? ""), row => (object?)(row.ContractNo)).Add(((Localizer["Status"])?.ToString() ?? ""), row => (object?)(row.ContractStatus)).Add(((Localizer["Value"])?.ToString() ?? ""), row => (object?)(row.ContractValue?.ToString("N0"))).Add("PO", row => (object?)(row.PoNumber)).Add("NTP", row => (object?)(row.NtpStatus)).Add(((Localizer["Kick-off"])?.ToString() ?? ""), row => (object?)(row.KickoffStatus))))" dense="true" />
     </pems-table-scroll>
     @if (pipeline.Items.Count == 0)
     {

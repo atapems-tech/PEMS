@@ -33,19 +33,7 @@
 
 <pems-content-card>
     <h6 class="mb-3">@Localizer["Registered Passkeys"]</h6>
-    <pems-table kind="enterprise" scale="small" css="mb-0">
-        <thead><tr><th>@Localizer["Nickname"]</th><th>@Localizer["Registered"]</th><th>@Localizer["Last Used"]</th></tr></thead>
-        <tbody>
-            @foreach (var c in Model)
-            {
-                <tr>
-                    <td class="small">@(c.Nickname ?? "-")</td>
-                    <td class="small">@c.CreatedDate.ToString("yyyy-MM-dd HH:mm")</td>
-                    <td class="small">@(c.LastUsedDate?.ToString("yyyy-MM-dd HH:mm") ?? "Never")</td>
-                </tr>
-            }
-        </tbody>
-    </pems-table>
+    <pems-data-table data="@(DataRows.Of(Model, c_ => c_.Add(((Localizer["Nickname"])?.ToString() ?? ""), c => (object?)(c.Nickname ?? "-"), css: "small").Add(((Localizer["Registered"])?.ToString() ?? ""), c => (object?)(c.CreatedDate.ToString("yyyy-MM-dd HH:mm")), css: "small").Add(((Localizer["Last Used"])?.ToString() ?? ""), c => (object?)(c.LastUsedDate?.ToString("yyyy-MM-dd HH:mm") ?? "Never"), css: "small")))" dense="true" css="mb-0" />
     @if (!Model.Any()) { <p class="text-muted text-center py-3 mb-0">@Localizer["هنوز Passkey ای ثبت نشده."]</p> }
 </pems-content-card>
 

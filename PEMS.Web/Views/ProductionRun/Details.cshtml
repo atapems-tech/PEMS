@@ -212,15 +212,7 @@
     <pems-col span="">
         <pems-content-card>
             <h6 class="mb-2">Losses</h6>
-            <pems-table kind="enterprise" scale="small">
-                <thead><tr><th>@Localizer["Qty"]</th><th>@Localizer["Category"]</th><th>@Localizer["Notes"]</th></tr></thead>
-                <tbody>
-                    @foreach (var l in Model.Losses)
-                    {
-                        <tr><td>@l.Quantity.ToString("N3") @l.UomCode</td><td><pems-badge tone="warning">@l.LossCategory</pems-badge></td><td class="small text-muted">@l.Notes</td></tr>
-                    }
-                </tbody>
-            </pems-table>
+            <pems-data-table data="@(DataRows.Of(Model.Losses, c_ => c_.Add(((Localizer["Qty"])?.ToString() ?? ""), l => DataCell.Join((l.Quantity.ToString("N3")), " ", (l.UomCode))).Add(((Localizer["Category"])?.ToString() ?? ""), l => (object?)(l.LossCategory), kind: DataCellKind.Badge, tone: l => "warning").Add(((Localizer["Notes"])?.ToString() ?? ""), l => (object?)(l.Notes), css: "small text-muted")))" dense="true" />
             @if (!Model.Losses.Any()) { <p class="text-muted text-center py-2 small">No losses recorded.</p> }
         </pems-content-card>
     </pems-col>
@@ -228,15 +220,7 @@
         <pems-content-card>
             <h6 class="mb-2">Event History</h6>
             <div class="table-scroll-area pems-s-89e84480">
-                <pems-table kind="enterprise" scale="small">
-                    <thead><tr><th>@Localizer["Date"]</th><th>Event</th><th>By</th><th>@Localizer["Details"]</th></tr></thead>
-                    <tbody>
-                        @foreach (var e in Model.Events)
-                        {
-                            <tr><td class="small">@e.EventDate.ToString("yyyy-MM-dd HH:mm")</td><td>@e.EventType</td><td>@e.EmployeeName</td><td class="small text-muted">@e.Details</td></tr>
-                        }
-                    </tbody>
-                </pems-table>
+                <pems-data-table data="@(DataRows.Of(Model.Events, c_ => c_.Add(((Localizer["Date"])?.ToString() ?? ""), e => (object?)(e.EventDate.ToString("yyyy-MM-dd HH:mm")), css: "small").Add("Event", e => (object?)(e.EventType)).Add("By", e => (object?)(e.EmployeeName)).Add(((Localizer["Details"])?.ToString() ?? ""), e => (object?)(e.Details), css: "small text-muted")))" dense="true" />
             </div>
         </pems-content-card>
     </pems-col>

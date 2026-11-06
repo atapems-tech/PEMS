@@ -25,21 +25,7 @@
     <pems-col md="7">
         <pems-content-card css="h-100">
             <h6 class="mb-3">@Localizer["نرخ NCR به تفکیک دیسیپلین"]</h6>
-            <pems-table kind="enterprise" css="mb-0">
-                <thead><tr><th>@Localizer["دیسیپلین"]</th><th>@Localizer["کل"]</th><th>@Localizer["باز"]</th><th>@Localizer["بحرانی"]</th><th>@Localizer["میانگین روز تا بستن"]</th></tr></thead>
-                <tbody>
-                    @foreach (var d in (IEnumerable<dynamic>)ViewBag.ByDiscipline)
-                    {
-                        <tr>
-                            <td>@d.Discipline</td>
-                            <td>@d.Total</td>
-                            <td>@(d.Open > 0 ? (object)@d.Open : "0")</td>
-                            <td>@(d.Critical > 0 ? (object)@d.Critical : "0")</td>
-                            <td>@(Math.Round((double)d.AvgDaysToClose, 1))</td>
-                        </tr>
-                    }
-                </tbody>
-            </pems-table>
+            <pems-data-table data="@(DataRows.Of((IEnumerable<dynamic>)ViewBag.ByDiscipline, c_ => c_.Add(((Localizer["دیسیپلین"])?.ToString() ?? ""), d => (object?)(d.Discipline)).Add(((Localizer["کل"])?.ToString() ?? ""), d => (object?)(d.Total)).Add(((Localizer["باز"])?.ToString() ?? ""), d => (object?)(d.Open > 0 ? (object)@d.Open : "0")).Add(((Localizer["بحرانی"])?.ToString() ?? ""), d => (object?)(d.Critical > 0 ? (object)@d.Critical : "0")).Add(((Localizer["میانگین روز تا بستن"])?.ToString() ?? ""), d => (object?)(Math.Round((double)d.AvgDaysToClose, 1)))))" css="mb-0" />
         </pems-content-card>
     </pems-col>
 

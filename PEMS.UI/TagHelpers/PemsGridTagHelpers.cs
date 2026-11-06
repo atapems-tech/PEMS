@@ -278,7 +278,7 @@ public sealed class PemsDataTableTagHelper(IPemsComponentRenderer renderer) : Ta
         var (pageClass, attrs) = ListRender.Page(output);
         await ListRender.Replace<PemsDataTable>(renderer, output, new DataTableOptions
         {
-            Items = Data?.Items ?? Items?.Cast<object>(), Columns = Data?.Columns ?? Columns, Empty = Empty, Dense = Dense, Enterprise = Enterprise, RowCss = RowCss,
+            Items = Data?.Items ?? Items?.Cast<object>(), Columns = Data?.Columns ?? Columns, Empty = Empty, Dense = Dense, Enterprise = Enterprise, RowCss = RowCss, RowClass = Data?.RowClass,
             Css = string.IsNullOrWhiteSpace(pageClass) ? Css : string.Join(" ", new[] { Css, pageClass }.Where(x => !string.IsNullOrWhiteSpace(x))),
             Attributes = attrs
         });

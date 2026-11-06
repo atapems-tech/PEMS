@@ -85,20 +85,7 @@
 <pems-content-card>
     <h6 class="mb-3">@Localizer["Action Items"]</h6>
     <pems-table-scroll css="table-scroll-area pems-s-8da1c6e6">
-    <pems-table kind="enterprise">
-        <thead><tr><th>@Localizer["Title"]</th><th>@Localizer["Assigned To"]</th><th>@Localizer["Due"]</th><th>@Localizer["Status"]</th></tr></thead>
-        <tbody>
-            @foreach (var t in Model.ActionItems)
-            {
-                <tr>
-                    <td>@t.Title</td>
-                    <td class="small">@t.AssignedToEmployeeName</td>
-                    <td class="small">@(t.DueDate?.ToString("yyyy-MM-dd"))</td>
-                    <td><pems-badge tone="neutral">@t.Status</pems-badge></td>
-                </tr>
-            }
-        </tbody>
-    </pems-table>
+    <pems-data-table data="@(DataRows.Of(Model.ActionItems, c_ => c_.Add(((Localizer["Title"])?.ToString() ?? ""), t => (object?)(t.Title)).Add(((Localizer["Assigned To"])?.ToString() ?? ""), t => (object?)(t.AssignedToEmployeeName), css: "small").Add(((Localizer["Due"])?.ToString() ?? ""), t => (object?)(t.DueDate?.ToString("yyyy-MM-dd")), css: "small").Add(((Localizer["Status"])?.ToString() ?? ""), t => (object?)(t.Status), kind: DataCellKind.Badge, tone: t => "neutral")))" />
     </pems-table-scroll>
     @if (!Model.ActionItems.Any()) { <p class="text-muted small">No action items yet.</p> }
 

@@ -27,20 +27,7 @@
     <pems-col md="8">
         <pems-content-card>
             <h6 class="mb-3"><pems-icon name="bi-exclamation-triangle" css="text-danger" /> Low Stock</h6>
-            <pems-table kind="enterprise" scale="small">
-                <thead><tr><th>@Localizer["Warehouse"]</th><th>@Localizer["On Hand"]</th><th>@Localizer["Available"]</th><th>@Localizer["Reorder Point"]</th></tr></thead>
-                <tbody>
-                    @foreach (var s in lowStockItems)
-                    {
-                        <tr>
-                            <td>@s.WarehouseCode</td>
-                            <td>@s.OnHandQuantity</td>
-                            <td class="text-danger">@s.AvailableQuantity</td>
-                            <td>@s.ReorderPoint</td>
-                        </tr>
-                    }
-                </tbody>
-            </pems-table>
+            <pems-data-table data="@(DataRows.Of(lowStockItems, c_ => c_.Add(((Localizer["Warehouse"])?.ToString() ?? ""), s => (object?)(s.WarehouseCode)).Add(((Localizer["On Hand"])?.ToString() ?? ""), s => (object?)(s.OnHandQuantity)).Add(((Localizer["Available"])?.ToString() ?? ""), s => (object?)(s.AvailableQuantity), css: "text-danger").Add(((Localizer["Reorder Point"])?.ToString() ?? ""), s => (object?)(s.ReorderPoint))))" dense="true" />
             @if (!lowStockItems.Any()) { <p class="text-muted text-center py-3">@Localizer["فعلاً موجودی کمی ثبت نشده."]</p> }
         </pems-content-card>
     </pems-col>
@@ -48,21 +35,6 @@
 
 <pems-content-card>
     <h6 class="mb-3">Recent Transactions</h6>
-    <pems-table kind="enterprise" scale="small">
-        <thead><tr><th>@Localizer["Date"]</th><th>@Localizer["Material"]</th><th>@Localizer["Type"]</th><th>@Localizer["Warehouse"]</th><th>@Localizer["Qty"]</th><th>@Localizer["Reference"]</th></tr></thead>
-        <tbody>
-            @foreach (var t in recentTransactions)
-            {
-                <tr>
-                    <td class="small">@t.TransactionDate.ToString("yyyy-MM-dd HH:mm")</td>
-                    <td class="small">@t.MaterialItem?.MaterialCode</td>
-                    <td><pems-badge tone="light">@t.TransactionType</pems-badge></td>
-                    <td>@t.Warehouse?.Code</td>
-                    <td>@t.Quantity</td>
-                    <td class="small">@t.ReferenceType</td>
-                </tr>
-            }
-        </tbody>
-    </pems-table>
+    <pems-data-table data="@(DataRows.Of(recentTransactions, c_ => c_.Add(((Localizer["Date"])?.ToString() ?? ""), t => (object?)(t.TransactionDate.ToString("yyyy-MM-dd HH:mm")), css: "small").Add(((Localizer["Material"])?.ToString() ?? ""), t => (object?)(t.MaterialItem?.MaterialCode), css: "small").Add(((Localizer["Type"])?.ToString() ?? ""), t => (object?)(t.TransactionType), kind: DataCellKind.Badge, tone: t => "light").Add(((Localizer["Warehouse"])?.ToString() ?? ""), t => (object?)(t.Warehouse?.Code)).Add(((Localizer["Qty"])?.ToString() ?? ""), t => (object?)(t.Quantity)).Add(((Localizer["Reference"])?.ToString() ?? ""), t => (object?)(t.ReferenceType), css: "small")))" dense="true" />
     @if (!recentTransactions.Any()) { <p class="text-muted text-center py-3">@Localizer["هنوز تراکنشی ثبت نشده."]</p> }
 </pems-content-card>

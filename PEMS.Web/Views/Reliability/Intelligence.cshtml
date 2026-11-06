@@ -123,22 +123,7 @@
 
     <pems-tab-pane fade="true" id="tab-type">
         <pems-content-card>
-            <pems-table kind="enterprise" scale="small" css="mb-0">
-                <thead><tr><th>@Localizer["Type"]</th><th class="text-end">@Localizer["Count"]</th><th class="text-end">%</th><th class="text-end">Hours</th><th class="text-end">@Localizer["Cost"]</th><th class="text-end">@Localizer["Downtime"]</th></tr></thead>
-                <tbody>
-                    @foreach (var item in breakdown.Items)
-                    {
-                        <tr>
-                            <td>@item.TypeName</td>
-                            <td class="text-end">@item.Count</td>
-                            <td class="text-end">@(item.Percent.HasValue ? $"{item.Percent.Value:N1}%" : "N/A")</td>
-                            <td class="text-end">@(item.TotalHours.HasValue ? $"{item.TotalHours.Value:N1}" : "N/A")</td>
-                            <td class="text-end">@(item.TotalCost.HasValue ? item.TotalCost.Value.ToString("N0") : "N/A")</td>
-                            <td class="text-end">@(item.TotalDowntimeHours.HasValue ? $"{item.TotalDowntimeHours.Value:N1}h" : "No Recorded Downtime")</td>
-                        </tr>
-                    }
-                </tbody>
-            </pems-table>
+            <pems-data-table data="@(DataRows.Of(breakdown.Items, c_ => c_.Add(((Localizer["Type"])?.ToString() ?? ""), item => (object?)(item.TypeName)).Add(((Localizer["Count"])?.ToString() ?? ""), item => (object?)(item.Count), css: "text-end", headerCss: "text-end").Add("%", item => (object?)(item.Percent.HasValue ? $"{item.Percent.Value:N1}%" : "N/A"), css: "text-end", headerCss: "text-end").Add("Hours", item => (object?)(item.TotalHours.HasValue ? $"{item.TotalHours.Value:N1}" : "N/A"), css: "text-end", headerCss: "text-end").Add(((Localizer["Cost"])?.ToString() ?? ""), item => (object?)(item.TotalCost.HasValue ? item.TotalCost.Value.ToString("N0") : "N/A"), css: "text-end", headerCss: "text-end").Add(((Localizer["Downtime"])?.ToString() ?? ""), item => (object?)(item.TotalDowntimeHours.HasValue ? $"{item.TotalDowntimeHours.Value:N1}h" : "No Recorded Downtime"), css: "text-end", headerCss: "text-end")))" dense="true" css="mb-0" />
             @if (!breakdown.Items.Any()) { <p class="text-muted text-center py-4 mb-0">@Localizer["داده‌ای موجود نیست."]</p> }
         </pems-content-card>
     </pems-tab-pane>
@@ -146,22 +131,7 @@
     <pems-tab-pane fade="true" id="tab-repeat">
         <pems-content-card>
             <p class="text-muted small">قاعده: همان تجهیز + همان حالت‌خرابی، با حداقل یک زوج خرابی متوالی در پنجره‌ی زمانی مشخص.</p>
-            <pems-table kind="enterprise" scale="small" css="mb-0">
-                <thead><tr><th>@Localizer["Tag"]</th><th>@Localizer["Failure Mode"]</th><th class="text-end">Occurrences</th><th>First</th><th>Last</th><th class="text-end">Window (days)</th></tr></thead>
-                <tbody>
-                    @foreach (var g in repeatFailures)
-                    {
-                        <tr>
-                            <td class="fw-bold">@g.TagNumber</td>
-                            <td>@g.FailureModeKey</td>
-                            <td class="text-end">@g.OccurrenceCount</td>
-                            <td class="small">@g.FirstOccurrence.ToString("yyyy-MM-dd")</td>
-                            <td class="small">@g.LastOccurrence.ToString("yyyy-MM-dd")</td>
-                            <td class="text-end">@g.WindowDays</td>
-                        </tr>
-                    }
-                </tbody>
-            </pems-table>
+            <pems-data-table data="@(DataRows.Of(repeatFailures, c_ => c_.Add(((Localizer["Tag"])?.ToString() ?? ""), g => (object?)(g.TagNumber), css: "fw-bold").Add(((Localizer["Failure Mode"])?.ToString() ?? ""), g => (object?)(g.FailureModeKey)).Add("Occurrences", g => (object?)(g.OccurrenceCount), css: "text-end", headerCss: "text-end").Add("First", g => (object?)(g.FirstOccurrence.ToString("yyyy-MM-dd")), css: "small").Add("Last", g => (object?)(g.LastOccurrence.ToString("yyyy-MM-dd")), css: "small").Add("Window (days)", g => (object?)(g.WindowDays), css: "text-end", headerCss: "text-end")))" dense="true" css="mb-0" />
             @if (!repeatFailures.Any()) { <p class="text-muted text-center py-4 mb-0">No Data Available - هیچ خرابی تکراری در این بازه تشخیص داده نشد.</p> }
         </pems-content-card>
     </pems-tab-pane>

@@ -138,15 +138,7 @@
 
         <pems-content-card>
             <h6 class="mb-3">MR / MRQ</h6>
-            <pems-table kind="enterprise">
-                <thead><tr><th>MR No</th><th>@Localizer["Status"]</th></tr></thead>
-                <tbody>
-                    @foreach (var m in Model.MRs)
-                    {
-                        <tr><td>@m.MRNumber</td><td><pems-badge tone="neutral">@m.Status</pems-badge></td></tr>
-                    }
-                </tbody>
-            </pems-table>
+            <pems-data-table data="@(DataRows.Of(Model.MRs, c_ => c_.Add("MR No", m => (object?)(m.MRNumber)).Add(((Localizer["Status"])?.ToString() ?? ""), m => (object?)(m.Status), kind: DataCellKind.Badge, tone: m => "neutral")))" />
             @if (!Model.MRs.Any()) { <p class="text-muted small">No MR/MRQ.</p> }
         </pems-content-card>
     </pems-col>

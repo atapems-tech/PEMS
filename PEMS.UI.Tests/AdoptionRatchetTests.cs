@@ -64,6 +64,7 @@ public sealed class AdoptionRatchetTests
         ("stat", new Regex(@"class=""[^""]*(?<![\w-])admin-kpi(-grid|-label|-value)?(?![\w-])", RegexOptions.Compiled), true, false),
         ("metric", new Regex(@"class=""[^""]*(?<![\w-])fs-4[^""]*(?<![\w-])fw-bold", RegexOptions.Compiled), true, false),
         ("page-hero", new Regex(@"class=""[^""]*(?<![\w-])admin-hero(?![\w-])", RegexOptions.Compiled), true, false),
+        ("data-table", new Regex(@"<pems-table(?=[\s>])", RegexOptions.Compiled), true, false),
         ("pagination", new Regex(@"class=""[^""]*(?<![\w-])(pagination|page-link)(?![\w-])", RegexOptions.Compiled), true, true),
         ("bare-button", new Regex(@"class=""btn(?![\w-])", RegexOptions.Compiled), true, true),
         ("inline-script", new Regex(@"<script>", RegexOptions.Compiled), true, false),

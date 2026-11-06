@@ -166,21 +166,7 @@
     <h6>@Localizer["Contract Documents"]</h6>
     @if (contractDocuments.Any())
     {
-        <pems-table scale="small">
-            <thead><tr><th>@Localizer["Doc No"]</th><th>@Localizer["Title"]</th><th>@Localizer["Type"]</th><th>@Localizer["Clause Reference"]</th><th>@Localizer["Status"]</th></tr></thead>
-            <tbody>
-                @foreach (var d in contractDocuments)
-                {
-                    <tr>
-                        <td>@d.DocumentNo</td>
-                        <td>@d.Title</td>
-                        <td>@d.DocumentType</td>
-                        <td>@d.ClauseReference</td>
-                        <td>@d.Status</td>
-                    </tr>
-                }
-            </tbody>
-        </pems-table>
+        <pems-data-table data="@(DataRows.Of(contractDocuments, c_ => c_.Add(((Localizer["Doc No"])?.ToString() ?? ""), d => (object?)(d.DocumentNo)).Add(((Localizer["Title"])?.ToString() ?? ""), d => (object?)(d.Title)).Add(((Localizer["Type"])?.ToString() ?? ""), d => (object?)(d.DocumentType)).Add(((Localizer["Clause Reference"])?.ToString() ?? ""), d => (object?)(d.ClauseReference)).Add(((Localizer["Status"])?.ToString() ?? ""), d => (object?)(d.Status))))" enterprise="false" dense="true" />
     }
     <form asp-action="AddDocument" method="post"><pems-row gap="2">
         <input type="hidden" name="contractId" value="@Model.ContractId" />

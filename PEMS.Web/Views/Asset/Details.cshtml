@@ -96,20 +96,7 @@
             <h6 class="mb-3">Inspections (@Model.Inspections.Count)</h6>
             @if (Model.Inspections.Any())
             {
-                <pems-table scale="small">
-                    <thead><tr><th>@Localizer["Type"]</th><th>@Localizer["Date"]</th><th>@Localizer["Inspector"]</th><th>@Localizer["Result"]</th></tr></thead>
-                    <tbody>
-                        @foreach (var i in Model.Inspections.Take(10))
-                        {
-                            <tr>
-                                <td>@i.InspectionType</td>
-                                <td class="small">@(i.InspectionDate?.ToString("yyyy-MM-dd") ?? "-")</td>
-                                <td class="small">@(i.Inspector ?? "-")</td>
-                                <td>@(i.Result ?? "-")</td>
-                            </tr>
-                        }
-                    </tbody>
-                </pems-table>
+                <pems-data-table data="@(DataRows.Of(Model.Inspections.Take(10), c_ => c_.Add(((Localizer["Type"])?.ToString() ?? ""), i => (object?)(i.InspectionType)).Add(((Localizer["Date"])?.ToString() ?? ""), i => (object?)(i.InspectionDate?.ToString("yyyy-MM-dd") ?? "-"), css: "small").Add(((Localizer["Inspector"])?.ToString() ?? ""), i => (object?)(i.Inspector ?? "-"), css: "small").Add(((Localizer["Result"])?.ToString() ?? ""), i => (object?)(i.Result ?? "-"))))" enterprise="false" dense="true" />
             }
             else
             {
@@ -121,20 +108,7 @@
             <h6 class="mb-3">Failures (@Model.Failures.Count)</h6>
             @if (Model.Failures.Any())
             {
-                <pems-table scale="small">
-                    <thead><tr><th>@Localizer["Date"]</th><th>@Localizer["Mode"]</th><th>@Localizer["Cause"]</th><th>Downtime (h)</th></tr></thead>
-                    <tbody>
-                        @foreach (var f in Model.Failures.Take(10))
-                        {
-                            <tr>
-                                <td class="small">@f.FailureDate.ToString("yyyy-MM-dd")</td>
-                                <td>@f.FailureMode</td>
-                                <td class="small">@(f.FailureCause ?? "-")</td>
-                                <td>@(f.DowntimeHours?.ToString("N1") ?? "-")</td>
-                            </tr>
-                        }
-                    </tbody>
-                </pems-table>
+                <pems-data-table data="@(DataRows.Of(Model.Failures.Take(10), c_ => c_.Add(((Localizer["Date"])?.ToString() ?? ""), f => (object?)(f.FailureDate.ToString("yyyy-MM-dd")), css: "small").Add(((Localizer["Mode"])?.ToString() ?? ""), f => (object?)(f.FailureMode)).Add(((Localizer["Cause"])?.ToString() ?? ""), f => (object?)(f.FailureCause ?? "-"), css: "small").Add("Downtime (h)", f => (object?)(f.DowntimeHours?.ToString("N1") ?? "-"))))" enterprise="false" dense="true" />
             }
             else
             {

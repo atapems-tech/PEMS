@@ -74,20 +74,7 @@
         <h2 class="vs-section__title"><pems-icon name="bi-signpost-split" /> @Localizer["Pc_Adm_Steps"]</h2>
         <p class="small text-muted">@Localizer["Pc_Adm_StepsHint"] <a asp-area="Admin" asp-controller="WorkflowManagement" asp-action="Index">@Localizer["Pc_Adm_OpenWorkflowDesigner"]</a></p>
         <div class="pc-table-scroll">
-            <pems-table scale="small" css="table-enterprise vs-dense mb-0">
-                <thead><tr><th>@Localizer["Pc_Col_Order"]</th><th>@Localizer["Pc_Col_Step"]</th><th>@Localizer["Pc_Adm_Responsibility"]</th><th>@Localizer["Pc_Col_Condition"]</th></tr></thead>
-                <tbody>
-                @foreach (var st in ov.WorkflowStages)
-                {
-                    <tr>
-                        <td class="vs-num">@st.Order</td>
-                        <td>@Localizer["Pc_Step_" + st.Name]</td>
-                        <td><code>@st.ResponsibilityKey</code></td>
-                        <td>@(string.IsNullOrEmpty(st.EntryCondition) ? Localizer["Pc_Cond_Always"].Value : st.EntryCondition)</td>
-                    </tr>
-                }
-                </tbody>
-            </pems-table>
+            <pems-data-table data="@(DataRows.Of(ov.WorkflowStages, c_ => c_.Add(((Localizer["Pc_Col_Order"])?.ToString() ?? ""), st => (object?)(st.Order), css: "vs-num").Add(((Localizer["Pc_Col_Step"])?.ToString() ?? ""), st => (object?)(Localizer["Pc_Step_" + st.Name])).Add(((Localizer["Pc_Adm_Responsibility"])?.ToString() ?? ""), st => (object?)(st.ResponsibilityKey), kind: DataCellKind.Code).Add(((Localizer["Pc_Col_Condition"])?.ToString() ?? ""), st => (object?)(string.IsNullOrEmpty(st.EntryCondition) ? Localizer["Pc_Cond_Always"].Value : st.EntryCondition))))" enterprise="false" dense="true" css="table-enterprise vs-dense mb-0" />
             @if (!ov.WorkflowStages.Any()) { <div class="vs-empty py-2">@Localizer["Pc_Adm_NoWorkflow"]</div> }
         </div>
     </section>

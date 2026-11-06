@@ -35,19 +35,47 @@ public sealed record DataColumn
     public string? Css { get; init; }
     /// <summary>Extra classes on the header cell; null means the header has none.</summary>
     public string? HeaderCss { get; init; }
+    /// <summary>Wraps the value in one inline element (span, strong, small, em, bdi); null writes the value as is.</summary>
+    public CellElement? Element { get; init; }
+    /// <summary>Classes on the cell computed from the row (a Razor class expression); added after <see cref="Css"/>.</summary>
+    public Func<object, string?>? CssFor { get; init; }
     /// <summary>For <see cref="DataCellKind.Badge"/>: the tone name for a row (neutral, primary, success, danger, warning, info, light, dark); null shows neutral.</summary>
     public Func<object, string?>? Tone { get; init; }
 
     /// <summary>A typed column: <c>DataColumn.Of&lt;History&gt;(Localizer["Date"].Value, h =&gt; h.ActionDate, DataCellKind.DateTime)</c>.</summary>
-    public static DataColumn Of<T>(string header, Func<T, object?> value, DataCellKind kind = DataCellKind.Text, string? css = null, Func<T, string?>? tone = null, string? headerCss = null) => new()
+    public static DataColumn Of<T>(string header, Func<T, object?> value, DataCellKind kind = DataCellKind.Text, string? css = null, Func<T, string?>? tone = null, string? headerCss = null, CellElement? element = null, Func<T, string?>? cssFor = null) => new()
     {
         Header = header,
         Value = row => value((T)row),
         Kind = kind,
         Css = css,
         HeaderCss = headerCss,
+        Element = element,
+        CssFor = cssFor is null ? null : row => cssFor((T)row),
         Tone = tone is null ? null : row => tone((T)row),
     };
+}
+
+/// <summary>An inline element around a cell value: <c>new CellElement("span", "small text-muted")</c>.</summary>
+public sealed record CellElement(string Tag, string? Css = null, string? Dir = null);
+
+/// <summary>Builds a cell the way Razor writes mixed content: markup parts as they are, everything else HTML-encoded, <c>null</c> as nothing.</summary>
+public static class DataCell
+{
+    public static Microsoft.AspNetCore.Html.IHtmlContent Join(params object?[] parts)
+    {
+        var b = new Microsoft.AspNetCore.Html.HtmlContentBuilder();
+        foreach (var p in parts)
+        {
+            switch (p)
+            {
+                case null: break;
+                case Microsoft.AspNetCore.Html.IHtmlContent h: b.AppendHtml(h); break;
+                default: b.Append(p.ToString() ?? ""); break;
+            }
+        }
+        return b;
+    }
 }
 
 /// <summary>Inputs of <see cref="PemsDataTable"/>: the rows and the columns come from the page (code, not JSON); <see cref="Empty"/> shows in a single row when there are no rows.</summary>
@@ -63,6 +91,8 @@ public sealed record DataTableOptions : FrameOptions
     public bool Enterprise { get; init; } = true;
     /// <summary>Classes on every body row (<c>tr</c>).</summary>
     public string? RowCss { get; init; }
+    /// <summary>Classes on a body row computed from the row (a Razor class expression); added after <see cref="RowCss"/>.</summary>
+    [JsonIgnore] public Func<object, string?>? RowClass { get; init; }
     public string? Css { get; init; }
 }
 
@@ -72,10 +102,14 @@ public sealed class DataRows
     public required IEnumerable<object> Items { get; init; }
     public required IReadOnlyList<DataColumn> Columns { get; init; }
 
-    public static DataRows Of<T>(IEnumerable<T> items, Func<DataColumns<T>, DataColumns<T>> columns) where T : notnull => new()
+    /// <summary>Classes on a body row computed from the row.</summary>
+    public Func<object, string?>? RowClass { get; init; }
+
+    public static DataRows Of<T>(IEnumerable<T> items, Func<DataColumns<T>, DataColumns<T>> columns, Func<T, string?>? rowClass = null) where T : notnull => new()
     {
         Items = items.Cast<object>(),
-        Columns = columns(new DataColumns<T>())
+        Columns = columns(new DataColumns<T>()),
+        RowClass = rowClass is null ? null : row => rowClass((T)row)
     };
 }
 
@@ -90,9 +124,9 @@ public sealed class DataColumns<T> : IReadOnlyList<DataColumn>
 {
     private readonly List<DataColumn> _columns = [];
 
-    public DataColumns<T> Add(string header, Func<T, object?> value, DataCellKind kind = DataCellKind.Text, string? css = null, Func<T, string?>? tone = null, string? headerCss = null)
+    public DataColumns<T> Add(string header, Func<T, object?> value, DataCellKind kind = DataCellKind.Text, string? css = null, Func<T, string?>? tone = null, string? headerCss = null, CellElement? element = null, Func<T, string?>? cssFor = null)
     {
-        _columns.Add(DataColumn.Of(header, value, kind, css, tone, headerCss));
+        _columns.Add(DataColumn.Of(header, value, kind, css, tone, headerCss, element, cssFor));
         return this;
     }
 

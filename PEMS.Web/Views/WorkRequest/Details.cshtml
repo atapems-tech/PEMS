@@ -257,20 +257,6 @@
 
 <pems-content-card as="details" open="@(wf == null)">
     <summary class="h6 mb-0">@Localizer["Business Audit"]</summary>
-    <pems-table kind="enterprise" scale="small" css="mb-0 mt-3">
-        <thead><tr><th>@Localizer["From"]</th><th>@Localizer["To"]</th><th>@Localizer["By"]</th><th>@Localizer["Date"]</th><th>@Localizer["Reason"]</th></tr></thead>
-        <tbody>
-            @foreach (var h in Model.StatusHistory)
-            {
-                <tr>
-                    <td class="small">@h.FromStatus</td>
-                    <td class="small">@h.ToStatus</td>
-                    <td class="small">@(h.ChangedByName ?? "-")</td>
-                    <td class="small"><bdi dir="ltr">@h.ChangedDate.ToString("yyyy-MM-dd HH:mm")</bdi></td>
-                    <td class="small text-muted">@h.Reason</td>
-                </tr>
-            }
-        </tbody>
-    </pems-table>
+    <pems-data-table data="@(DataRows.Of(Model.StatusHistory, c_ => c_.Add(((Localizer["From"])?.ToString() ?? ""), h => (object?)(h.FromStatus), css: "small").Add(((Localizer["To"])?.ToString() ?? ""), h => (object?)(h.ToStatus), css: "small").Add(((Localizer["By"])?.ToString() ?? ""), h => (object?)(h.ChangedByName ?? "-"), css: "small").Add(((Localizer["Date"])?.ToString() ?? ""), h => (object?)(h.ChangedDate.ToString("yyyy-MM-dd HH:mm")), css: "small", element: new CellElement("bdi", null, "ltr")).Add(((Localizer["Reason"])?.ToString() ?? ""), h => (object?)(h.Reason), css: "small text-muted")))" dense="true" css="mb-0 mt-3" />
     @if (!Model.StatusHistory.Any()) { <p class="text-muted text-center py-3 mb-0">@Localizer["هنوز تغییر وضعیتی ثبت نشده."]</p> }
 </pems-content-card>

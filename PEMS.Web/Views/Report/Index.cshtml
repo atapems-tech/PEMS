@@ -92,15 +92,7 @@
 <pems-content-card>
     <h6 class="mb-3">Top Senders</h6>
     <pems-table-scroll css="table-scroll-area pems-s-8da1c6e6">
-    <pems-table kind="enterprise">
-        <thead><tr><th>Sender</th><th>@Localizer["Count"]</th></tr></thead>
-        <tbody>
-            @foreach (var s in Model.TopSenders)
-            {
-                <tr><td>@s.Sender</td><td>@s.Count</td></tr>
-            }
-        </tbody>
-    </pems-table>
+    <pems-data-table data="@(DataRows.Of(Model.TopSenders, c_ => c_.Add("Sender", s => (object?)(s.Sender)).Add(((Localizer["Count"])?.ToString() ?? ""), s => (object?)(s.Count))))" />
     </pems-table-scroll>
     @if (!Model.TopSenders.Any()) { <p class="text-muted text-center py-3">@Localizer["No data."]</p> }
 </pems-content-card>

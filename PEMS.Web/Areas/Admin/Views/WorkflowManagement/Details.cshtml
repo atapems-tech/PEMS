@@ -113,10 +113,7 @@
                 @if (Model.TotalInstances == 0) { <p class="small text-muted mb-0">@Localizer["No instances have used this workflow."]</p> }
                 else
                 {
-                    <pems-table scale="small" css="mb-0">
-                        <thead><tr><th>@Localizer["Version"]</th><th>@Localizer["Running"]</th><th>@Localizer["Completed"]</th><th>@Localizer["Cancelled"]</th><th>@Localizer["Rejected"]</th></tr></thead>
-                        <tbody>@foreach (var u in Model.Usage) { <tr><td>v@(u.VersionNumber)</td><td>@u.Running</td><td>@u.Completed</td><td>@u.Cancelled</td><td>@u.Rejected</td></tr> }</tbody>
-                    </pems-table>
+                    <pems-data-table data="@(DataRows.Of(Model.Usage, c_ => c_.Add(((Localizer["Version"])?.ToString() ?? ""), u => DataCell.Join("v", (u.VersionNumber))).Add(((Localizer["Running"])?.ToString() ?? ""), u => (object?)(u.Running)).Add(((Localizer["Completed"])?.ToString() ?? ""), u => (object?)(u.Completed)).Add(((Localizer["Cancelled"])?.ToString() ?? ""), u => (object?)(u.Cancelled)).Add(((Localizer["Rejected"])?.ToString() ?? ""), u => (object?)(u.Rejected))))" enterprise="false" dense="true" css="mb-0" />
                 }
             </pems-content-card>
         </pems-col>

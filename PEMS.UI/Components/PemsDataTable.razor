@@ -19,10 +19,10 @@
         }
         @foreach (var item in items)
         {
-            <tr class="@Options.RowCss">
+            <tr class="@Join(Options.RowCss, Options.RowClass?.Invoke(item))">
                 @foreach (var c in columns)
                 {
-                    <td class="@c.Css">@Cell(c, item)</td>
+                    <td class="@Join(c.Css, c.CssFor?.Invoke(item))">@Wrapped(c, item)</td>
                 }
             </tr>
         }
@@ -30,6 +30,19 @@
 </table>
 @code {
     [Parameter, EditorRequired] public DataTableOptions Options { get; set; } = default!;
+
+    private static string? Join(string? a, string? b) => string.IsNullOrWhiteSpace(b) ? a : string.IsNullOrWhiteSpace(a) ? b : a + " " + b;
+
+    private RenderFragment Wrapped(DataColumn c, object item) => b =>
+    {
+        if (c.Element is null) { b.AddContent(0, Cell(c, item)); return; }
+        var tag = c.Element.Tag is "span" or "strong" or "small" or "em" or "bdi" ? c.Element.Tag : "span";
+        b.OpenElement(1, tag);
+        if (!string.IsNullOrWhiteSpace(c.Element.Css)) b.AddAttribute(2, "class", c.Element.Css);
+        if (!string.IsNullOrWhiteSpace(c.Element.Dir)) b.AddAttribute(3, "dir", c.Element.Dir);
+        b.AddContent(4, Cell(c, item));
+        b.CloseElement();
+    };
 
     private RenderFragment Cell(DataColumn c, object item) => b =>
     {

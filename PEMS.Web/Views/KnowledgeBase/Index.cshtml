@@ -19,19 +19,7 @@
 {
     <pems-content-card>
         <pems-table-scroll css="table-scroll-area pems-s-8da1c6e6">
-        <pems-table kind="enterprise">
-            <thead><tr><th>@Localizer["Relevance"]</th><th>@Localizer["Source"]</th><th>Content</th></tr></thead>
-            <tbody>
-                @foreach (var r in Model)
-                {
-                    <tr>
-                        <td><pems-badge tone="info">@r.SimilarityScore.ToString("P0")</pems-badge></td>
-                        <td><pems-badge tone="neutral">@r.SourceType #@r.SourceId</pems-badge></td>
-                        <td class="small">@r.Content</td>
-                    </tr>
-                }
-            </tbody>
-        </pems-table>
+        <pems-data-table data="@(DataRows.Of(Model, c_ => c_.Add(((Localizer["Relevance"])?.ToString() ?? ""), r => (object?)(r.SimilarityScore.ToString("P0")), kind: DataCellKind.Badge, tone: r => "info").Add(((Localizer["Source"])?.ToString() ?? ""), r => DataCell.Join((r.SourceType), " #", (r.SourceId)), kind: DataCellKind.Badge, tone: r => "neutral").Add("Content", r => (object?)(r.Content), css: "small")))" />
         </pems-table-scroll>
     </pems-content-card>
 }

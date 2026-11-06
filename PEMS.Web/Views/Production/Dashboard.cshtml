@@ -88,21 +88,7 @@
 <pems-content-card css="mt-3">
     <h6 class="mb-2">Recent Production Losses</h6>
     <div class="table-scroll-area pems-s-f7dce87f">
-        <pems-table kind="enterprise">
-            <thead><tr><th>@Localizer["Date"]</th><th>@Localizer["Qty"]</th><th>@Localizer["Category"]</th><th>@Localizer["Employee"]</th><th>@Localizer["Notes"]</th></tr></thead>
-            <tbody>
-                @foreach (var l in Model.RecentLosses)
-                {
-                    <tr>
-                        <td class="small">@l.TransactionDate.ToString("yyyy-MM-dd HH:mm")</td>
-                        <td>@l.Quantity.ToString("N3") @l.UomCode</td>
-                        <td><pems-badge tone="warning">@l.LossCategory</pems-badge></td>
-                        <td>@l.EmployeeName</td>
-                        <td class="small text-muted">@l.Notes</td>
-                    </tr>
-                }
-            </tbody>
-        </pems-table>
+        <pems-data-table data="@(DataRows.Of(Model.RecentLosses, c_ => c_.Add(((Localizer["Date"])?.ToString() ?? ""), l => (object?)(l.TransactionDate.ToString("yyyy-MM-dd HH:mm")), css: "small").Add(((Localizer["Qty"])?.ToString() ?? ""), l => DataCell.Join((l.Quantity.ToString("N3")), " ", (l.UomCode))).Add(((Localizer["Category"])?.ToString() ?? ""), l => (object?)(l.LossCategory), kind: DataCellKind.Badge, tone: l => "warning").Add(((Localizer["Employee"])?.ToString() ?? ""), l => (object?)(l.EmployeeName)).Add(((Localizer["Notes"])?.ToString() ?? ""), l => (object?)(l.Notes), css: "small text-muted")))" />
         @if (!Model.RecentLosses.Any()) { <p class="text-muted text-center py-3">No losses recorded yet.</p> }
     </div>
 </pems-content-card>
