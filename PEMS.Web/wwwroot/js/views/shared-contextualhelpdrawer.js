@@ -17,28 +17,43 @@
                 .then(function (data) {
                     loadedForKey = helpKey;
                     if (!data.found) {
-                        body.innerHTML = '<p class="text-muted small text-center py-4">' + drawer.dataset.textNoContent + '</p>'
-                            + '<a class="btn btn-sm btn-outline-secondary w-100" href="' + drawer.dataset.helpIndexUrl + '">' + drawer.dataset.textBrowse + '</a>';
+                        var empty = PemsTemplate.fragment('help-nocontent');
+                        PemsTemplate.fill(empty.firstElementChild, { text: drawer.dataset.textNoContent });
+                        PemsTemplate.fill(empty.lastElementChild, { link: { text: drawer.dataset.textBrowse, attrs: { href: drawer.dataset.helpIndexUrl } } });
+                        body.replaceChildren(empty);
                         return;
                     }
-                    var related = (data.relatedArticles || []).map(function (r) {
-                        return '<a class="btn btn-sm btn-outline-secondary me-1 mb-1" href="/Help/Article/' + r.code + '">' + r.title + '</a>';
-                    }).join('');
-
-                    var visualHint = data.hasVisual
-                        ? '<a class="btn btn-sm btn-outline-primary w-100 mb-2" href="' + data.articleUrl + '"><i class="bi bi-diagram-3"></i> ' + drawer.dataset.textDiagram + '</a>'
-                        : '';
-
-                    body.innerHTML =
-                        '<h6>' + data.title + '</h6>' +
-                        '<p class="text-muted small">' + data.summary + '</p>' +
-                        visualHint +
-                        '<div class="pems-help-article-body small">' + data.content + '</div>' +
-                        (related ? '<hr/><p class="small text-muted mb-1">' + drawer.dataset.textRelated + '</p><div>' + related + '</div>' : '') +
-                        '<hr/><a class="btn btn-sm btn-pems-solid w-100" href="' + data.articleUrl + '"><i class="bi bi-box-arrow-up-right"></i> ' + drawer.dataset.textOpen + '</a>';
+                    // the title, summary and content come from the Help service as finished HTML: parsed inertly, never concatenated
+                    var article = PemsTemplate.fragment('help-article');
+                    var root = document.createElement('div');
+                    root.appendChild(article);
+                    PemsTemplate.html(root.querySelector('[data-slot="title"]'), data.title);
+                    PemsTemplate.html(root.querySelector('[data-slot="summary"]'), data.summary);
+                    PemsTemplate.html(root.querySelector('[data-slot="content"]'), data.content);
+                    PemsTemplate.fill(root, {
+                        diagram: data.hasVisual ? { attrs: { href: data.articleUrl } } : null,
+                        diagramText: drawer.dataset.textDiagram,
+                        open: { attrs: { href: data.articleUrl } },
+                        openText: drawer.dataset.textOpen,
+                        relatedLabel: drawer.dataset.textRelated
+                    });
+                    var relatedBox = root.querySelector('[data-slot="relatedBox"]');
+                    var relatedList = (data.relatedArticles || []);
+                    if (relatedList.length === 0) {
+                        if (relatedBox) relatedBox.remove();
+                    } else {
+                        var host = root.querySelector('[data-slot="related"]');
+                        relatedList.forEach(function (r) {
+                            var link = PemsTemplate.clone('help-related-link');
+                            PemsTemplate.html(link, r.title);
+                            link.setAttribute('href', '/Help/Article/' + r.code);
+                            host.appendChild(link);
+                        });
+                    }
+                    body.replaceChildren.apply(body, Array.prototype.slice.call(root.childNodes));
                 })
                 .catch(function () {
-                    body.innerHTML = '<p class="text-danger small text-center py-4">' + drawer.dataset.textError + '</p>';
+                    body.replaceChildren(PemsTemplate.fill(PemsTemplate.clone('help-load-error'), { text: drawer.dataset.textError }));
                 });
         });
     })();

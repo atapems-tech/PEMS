@@ -15,7 +15,13 @@
           "letterCompose",
           "globalSearch",
           "orgChart",
-          "orgPositionChart"
+          "orgPositionChart",
+          "accountLogin",
+          "managePasskeys",
+          "projectIntelligence",
+          "helpArticle",
+          "helpDrawer",
+          "layout"
         ]
       }
     },

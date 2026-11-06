@@ -9,15 +9,12 @@
     "PEMS.Web/wwwroot/js/pems-permission-matrix.js": 2,
     "PEMS.Web/wwwroot/js/views/shared-layout-1.js": 2
   },
-  "bare-button": {
-    "PEMS.Web/wwwroot/js/views/shared-contextualhelpdrawer.js": 4
-  },
+  "bare-button": {},
   "breadcrumb": {},
   "button": {
     "PEMS.Web/wwwroot/js/letter-compose.js": 2,
     "PEMS.Web/wwwroot/js/pems-cartable-settings.js": 2,
-    "PEMS.Web/wwwroot/js/pems-permission-matrix.js": 1,
-    "PEMS.Web/wwwroot/js/views/shared-contextualhelpdrawer.js": 4
+    "PEMS.Web/wwwroot/js/pems-permission-matrix.js": 1
   },
   "card": {},
   "chart": {},
@@ -64,9 +61,7 @@
     "PEMS.Web/Views/Shared/_HelpVisual.cshtml": 1,
     "PEMS.Web/Views/Task/Details.cshtml": 1,
     "PEMS.Web/Views/TaskManager/Board.cshtml": 1,
-    "PEMS.Web/Views/TaskManager/_ItemRow.cshtml": 1,
-    "PEMS.Web/wwwroot/js/views/shared-contextualhelpdrawer.js": 2,
-    "PEMS.Web/wwwroot/js/views/shared-layout-1.js": 1
+    "PEMS.Web/Views/TaskManager/_ItemRow.cshtml": 1
   },
   "info-grid": {},
   "inline-script": {},
@@ -108,15 +103,7 @@
     "PEMS.Web/Views/WorkOrder/Details.cshtml": 3,
     "PEMS.Web/Views/WorkRequest/Details.cshtml": 2
   },
-  "js-built-markup": {
-    "PEMS.Web/wwwroot/js/views/account-login.js": 1,
-    "PEMS.Web/wwwroot/js/views/account-managepasskeys.js": 2,
-    "PEMS.Web/wwwroot/js/views/admin-projectintelligence-index.js": 1,
-    "PEMS.Web/wwwroot/js/views/help-article.js": 3,
-    "PEMS.Web/wwwroot/js/views/maintenancestrategy-edit.js": 2,
-    "PEMS.Web/wwwroot/js/views/shared-contextualhelpdrawer.js": 3,
-    "PEMS.Web/wwwroot/js/views/shared-layout-1.js": 2
-  },
+  "js-built-markup": {},
   "kpi-tile": {},
   "layout-grid": {
     "PEMS.Web/Areas/Admin/Views/Authorization/Simulate.cshtml": 1,
@@ -195,8 +182,7 @@
     "PEMS.Web/wwwroot/js/pems-cartable-settings.js": 4
   },
   "spinner": {
-    "PEMS.Web/wwwroot/js/pems-user-permissions.js": 2,
-    "PEMS.Web/wwwroot/js/views/admin-projectintelligence-index.js": 2
+    "PEMS.Web/wwwroot/js/pems-user-permissions.js": 2
   },
   "table": {
     "PEMS.Web/Views/LetterCartable/Report.cshtml": 1

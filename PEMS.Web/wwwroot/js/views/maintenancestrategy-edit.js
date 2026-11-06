@@ -17,7 +17,7 @@
 
             function renderModes() {
                 var keep = modeSel.value || selectedMode;
-                modeSel.innerHTML = '';
+                PemsTemplate.clear(modeSel);
                 modes.forEach(function (m) {
                     var o = document.createElement('option');
                     o.value = m.failureModeId; o.textContent = label(m);
@@ -29,7 +29,7 @@
 
             function renderCauses() {
                 var m = modes.find(function (x) { return String(x.failureModeId) === String(modeSel.value); });
-                causeSel.innerHTML = '<option value="">—</option>';
+                PemsTemplate.options(causeSel, [{ value: '', text: '—' }]);
                 (m ? m.causes : []).forEach(function (c) {
                     var o = document.createElement('option');
                     o.value = c.failureCauseId; o.textContent = (isFa && c.nameFa ? c.nameFa : c.name);

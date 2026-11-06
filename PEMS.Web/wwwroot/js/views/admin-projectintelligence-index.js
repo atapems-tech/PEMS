@@ -3,7 +3,9 @@
     var btn = document.getElementById('refreshBtn');
     form && form.addEventListener('submit', function () {
         btn.disabled = true;
-        btn.innerHTML = '<span class="spinner-border spinner-border-sm"></span> Scanning...';
+        var busy = PemsTemplate.fragment('scan-busy');
+        busy.querySelector('[data-slot="text"]').textContent = 'Scanning...';
+        btn.replaceChildren(busy);
     });
 })();
 (function () {

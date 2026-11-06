@@ -4,7 +4,7 @@ askButton.addEventListener('click', async function () {
             if (!question) return;
             var answerBox = document.getElementById('helpAiAnswer');
             answerBox.hidden = false;
-            answerBox.innerHTML = '<span class="text-muted">' + askButton.dataset.thinking + '</span>';
+            answerBox.replaceChildren(PemsTemplate.fill(PemsTemplate.clone('help-thinking'), { text: askButton.dataset.thinking }));
 
             var form = new FormData();
             form.append('articleCode', askButton.dataset.code);
@@ -14,8 +14,8 @@ askButton.addEventListener('click', async function () {
             try {
                 var res = await fetch(askButton.dataset.url, { method: 'POST', body: form });
                 var data = await res.json();
-                answerBox.innerHTML = '<div class="p-2 rounded bg-body-tertiary">' + (data.answer || '').replace(/\n/g, '<br/>') + '</div>';
+                answerBox.replaceChildren(PemsTemplate.fill(PemsTemplate.clone('help-answer'), { text: data.answer || '' }));
             } catch (e) {
-                answerBox.innerHTML = '<span class="text-danger">' + askButton.dataset.error + '</span>';
+                answerBox.replaceChildren(PemsTemplate.fill(PemsTemplate.clone('help-error'), { text: askButton.dataset.error }));
             }
         });

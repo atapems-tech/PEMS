@@ -118,6 +118,12 @@ public enum ScriptTemplateSet
     GlobalSearch,
     OrgChart,
     OrgPositionChart,
+    AccountLogin,
+    ManagePasskeys,
+    ProjectIntelligence,
+    HelpArticle,
+    HelpDrawer,
+    Layout,
 }
 
 /// <summary>Inputs of <see cref="PemsScriptTemplates"/>: which script's templates to render into the page.</summary>
