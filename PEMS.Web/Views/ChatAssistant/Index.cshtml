@@ -5,7 +5,7 @@
 
 <pems-content-card css="pems-maxw-820">
 
-    <div class="d-flex justify-content-between align-items-center mb-3">
+    <pems-flex justify="between" align="center" css="mb-3">
         <p class="text-muted mb-0">
             بر اساس داده‌ی واقعی سیستم (تعداد مدارک، وضعیت‌ها، پروژه‌ها، MR ها و ...) پاسخ می‌دهد.
             مثال: «چند مدرک در انتظار تایید داریم؟» یا «آخرین مدارک ثبت‌شده کدامند؟»
@@ -13,24 +13,24 @@
         <form asp-action="Clear" method="post">
             <pems-button tone="neutral" size="small" outline="true"><pems-icon name="bi-trash" /> @Localizer["Clear"]</pems-button>
         </form>
-    </div>
+    </pems-flex>
 
     <div id="chatWindow" class="border rounded p-3 mb-3 pems-s-732b5bfd">
         @foreach (var m in Model)
         {
-            <div class="mb-3 d-flex @(m.Role == "User" ? "justify-content-end" : "justify-content-start")">
+            <pems-flex css="mb-3 @(m.Role == "User" ? "justify-content-end" : "justify-content-start")">
                 <div class="p-2 rounded @(m.Role == "User" ? "bg-primary text-white" : "bg-white border") pems-maxw-75pct">
                     @m.Content
                 </div>
-            </div>
+            </pems-flex>
         }
     </div>
 
-    <form id="chatForm" class="d-flex gap-2" data-ask-url="@Url.Action("Ask", "ChatAssistant")">
+    <form id="chatForm" data-ask-url="@Url.Action("Ask", "ChatAssistant")"><pems-flex gap="2">
         @Html.AntiForgeryToken()
         <pems-input type="text" id="messageInput" placeholder="Ask a question about the system..." autocomplete="off" />
         <pems-button tone="primary" type="submit"><pems-icon name="bi-send" /></pems-button>
-    </form>
+    </pems-flex></form>
 </pems-content-card>
 
 @section Scripts {

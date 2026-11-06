@@ -15,14 +15,14 @@
 }
 
 <pems-content-card css="mb-3">
-    <div class="d-flex flex-wrap gap-2 align-items-center justify-content-between mb-3">
-        <div class="d-flex gap-2 align-items-center">
+    <pems-flex wrap="true" gap="2" align="center" justify="between" css="mb-3">
+        <pems-flex gap="2" align="center">
             <pems-button tone="neutral" size="small" outline="true" as="a" asp-action="MyWork" asp-route-date="@DateTime.Today.ToString("yyyy-MM-dd")">@Localizer["Today"]</pems-button>
             <pems-button tone="neutral" size="small" outline="true" as="a" asp-action="MyWork" asp-route-date="@day.AddDays(-1).ToString("yyyy-MM-dd")"><pems-icon name="bi-chevron-left" /></pems-button>
             <pems-button tone="neutral" size="small" outline="true" as="a" asp-action="MyWork" asp-route-date="@day.AddDays(1).ToString("yyyy-MM-dd")"><pems-icon name="bi-chevron-right" /></pems-button>
-        </div>
+        </pems-flex>
         <h6 class="mb-0">@Localizer["My Work"] &mdash; @day.ToString("dddd, MMM d")</h6>
-    </div>
+    </pems-flex>
 
     @if (!Model.Any())
     {

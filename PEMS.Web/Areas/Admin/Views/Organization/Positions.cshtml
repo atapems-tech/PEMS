@@ -15,11 +15,11 @@
     @if (TempData["Message"] != null) { <pems-alert tone="success">@TempData["Message"]</pems-alert> }
     @if (TempData["Error"] != null) { <pems-alert tone="danger">@TempData["Error"]</pems-alert> }
 
-    <div class="d-flex gap-2 mb-3 flex-wrap">
+    <pems-flex gap="2" wrap="true" css="mb-3">
         <a class="vs-btn vs-btn--sm" asp-action="Index"><pems-icon name="bi-diagram-3" /> @Localizer["Org_Title"]</a>
         <a class="vs-btn vs-btn--sm" asp-action="Chart"><pems-icon name="bi-diagram-2" /> @Localizer["Org_Chart_Title"]</a>
         <a class="vs-btn vs-btn--sm" asp-controller="Discipline" asp-action="Manage" asp-area=""><pems-icon name="bi-sliders" /> @Localizer["Disc_Master_Nav"]</a>
-    </div>
+    </pems-flex>
 
     <section class="vs-panel mb-3">
         <h2 class="vs-section__title"><pems-icon name="bi-plus-circle" /> @Localizer["Org_Positions_New"]</h2>
@@ -46,7 +46,7 @@
         <p class="small text-muted mt-2 mb-0">@Localizer["Org_Positions_Note"]</p>
     </section>
 
-    <form method="get" class="d-flex gap-2 mb-3 flex-wrap">
+    <form class="mb-3" method="get"><pems-flex gap="2" wrap="true">
         <pems-input class="pems-maxw-260" scale="small" name="q" value="@ViewBag.Query" placeholder="@Localizer["Org_Positions_Search"]" aria-label="@Localizer["Org_Positions_Search"]" />
         <pems-select class="pems-maxw-180" scale="small" name="status" aria-label="@Localizer["Org_Filter_Status"]">
             <option value="" selected="@(status == "")">@Localizer["Org_Filter_All"]</option>
@@ -55,7 +55,7 @@
             <option value="inactive" selected="@(status == "inactive")">@Localizer["Org_Inactive"]</option>
         </pems-select>
         <button class="vs-btn vs-btn--sm"><pems-icon name="bi-funnel" /> @Localizer["Org_Filter_Apply"]</button>
-    </form>
+    </pems-flex></form>
 
     <div class="table-responsive">
         <pems-table scale="small" css="table-enterprise align-middle">

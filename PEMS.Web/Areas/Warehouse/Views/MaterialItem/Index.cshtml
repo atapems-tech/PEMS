@@ -182,10 +182,10 @@
                         <pems-col md="4"><pems-label>@Localizer["Material Grade"]</pems-label><pems-input name="materialGrade" /></pems-col>
                         <pems-col md="4"><pems-label>@Localizer["Specification"]</pems-label><pems-input name="specification" /></pems-col>
                     </pems-row>
-                    <div class="d-flex gap-3">
+                    <pems-flex gap="3">
                         <div class="form-check"><pems-input kind="check" type="checkbox" name="isStockItem" value="true" checked id="isStockItem" /><label class="form-check-label" for="isStockItem">@Localizer["Stock Item"]</label></div>
                         <div class="form-check"><pems-input kind="check" type="checkbox" name="isCritical" value="true" id="isCritical" /><label class="form-check-label" for="isCritical">@Localizer["Critical Spare"]</label></div>
-                    </div>
+                    </pems-flex>
                 </div>
                 <div class="modal-footer">
                     <pems-button tone="neutral" outline="true" type="button" data-bs-dismiss="modal">@Localizer["Cancel"]</pems-button>

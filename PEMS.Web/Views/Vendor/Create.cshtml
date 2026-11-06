@@ -20,10 +20,10 @@
                 <pems-col md="6"><pems-label>@Localizer["Vs_ContactEmail"]</pems-label><pems-input asp-for="ContactEmail" /></pems-col>
                 <pems-col md="6"><pems-label>@Localizer["Vs_ContactPhone"]</pems-label><pems-input asp-for="ContactPhone" /></pems-col>
             </pems-row>
-            <div class="mt-4 d-flex gap-2">
+            <pems-flex gap="2" css="mt-4">
                 <button type="submit" class="vs-btn vs-btn--primary">@Localizer["Save"]</button>
                 <a asp-action="Index" class="vs-btn">@Localizer["Cancel"]</a>
-            </div>
+            </pems-flex>
         </form>
     </pems-content-card>
 </pems-page-shell>

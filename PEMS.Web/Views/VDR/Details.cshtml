@@ -81,12 +81,12 @@
 
 <div class="vs-doc-head">
     <div class="vs-doc-identity">
-        <div class="d-flex align-items-center gap-2 flex-wrap">
+        <pems-flex align="center" gap="2" wrap="true">
             <h1 class="vs-doc-number vs-num">@Model.DocumentNumber</h1>
             <span class="vs-pill @VdrUi.WorkflowTone(Model.WorkflowStatus)">@VdrUi.Loc(Localizer, "St_", Model.WorkflowStatus)</span>
             @if (Model.IsOverdue) { <span class="vs-pill vs-pill--danger">@Localizer["Vs_Overdue"]</span> }
             <span class="vs-pill vs-pill--current">@Localizer["Vd_Rev"] <span class="vs-num">@(Model.LatestRevisionNo ?? 0)</span></span>
-        </div>
+        </pems-flex>
         <div class="vs-doc-meta">@Localizer["Vd_VendorLabel"] <a asp-controller="Vendor" asp-action="Details" asp-route-id="@Model.VendorId">@Model.VendorName</a> &middot; @Model.ProjectName@(string.IsNullOrEmpty(Model.DisciplineCodeRaw) ? "" : " · " + Model.DisciplineCodeRaw)</div>
     </div>
     <div class="vs-doc-actions">
@@ -239,12 +239,12 @@
                         }
                         else
                         {
-                            <form asp-action="UploadToFtp" method="post" enctype="multipart/form-data" class="d-flex gap-1">
+                            <form asp-action="UploadToFtp" method="post" enctype="multipart/form-data"><pems-flex gap="1">
                                 <input type="hidden" name="vdrItemId" value="@Model.VDRItemId" />
                                 <input type="hidden" name="submissionId" value="@s.VDRSubmissionId" />
                                 <pems-input class="pems-maxw-120" scale="small" type="file" name="file" required />
                                 <pems-button tone="primary" size="small" outline="true" title="@Localizer["Vd_UploadFtp"]"><pems-icon name="bi-cloud-upload" /></pems-button>
-                            </form>
+                            </pems-flex></form>
                         }
                     </td>
                     <td>@s.ClientCommentSheetNo</td>
@@ -258,12 +258,12 @@
                         }
                         else
                         {
-                            <form asp-action="UploadCommentSheet" method="post" enctype="multipart/form-data" class="d-flex gap-1">
+                            <form asp-action="UploadCommentSheet" method="post" enctype="multipart/form-data"><pems-flex gap="1">
                                 <input type="hidden" name="vdrItemId" value="@Model.VDRItemId" />
                                 <input type="hidden" name="submissionId" value="@s.VDRSubmissionId" />
                                 <pems-input class="pems-maxw-120" scale="small" type="file" name="file" required />
                                 <pems-button tone="primary" size="small" outline="true"><pems-icon name="bi-upload" /></pems-button>
-                            </form>
+                            </pems-flex></form>
                         }
                     </td>
                     <td>
@@ -273,12 +273,12 @@
                         }
                         else
                         {
-                            <form asp-action="UploadReplySheet" method="post" enctype="multipart/form-data" class="d-flex gap-1">
+                            <form asp-action="UploadReplySheet" method="post" enctype="multipart/form-data"><pems-flex gap="1">
                                 <input type="hidden" name="vdrItemId" value="@Model.VDRItemId" />
                                 <input type="hidden" name="submissionId" value="@s.VDRSubmissionId" />
                                 <pems-input class="pems-maxw-120" scale="small" type="file" name="file" required />
                                 <pems-button tone="primary" size="small" outline="true"><pems-icon name="bi-upload" /></pems-button>
-                            </form>
+                            </pems-flex></form>
                         }
                     </td>
                 </tr>
@@ -301,16 +301,16 @@
 @if (latestSubmissionWithFile != null)
 {
     <pems-content-card css="mb-3">
-        <div class="d-flex justify-content-between align-items-center mb-2">
+        <pems-flex justify="between" align="center" css="mb-2">
             <h6 class="mb-0"><pems-icon name="bi-file-earmark-pdf" /> @Localizer["Vd_DocViewer"] <span class="text-muted small">@Localizer["Vd_PinHint"]</span></h6>
-            <div class="d-flex align-items-center gap-2">
+            <pems-flex align="center" gap="2">
                 <pems-button tone="neutral" size="small" outline="true" type="button" id="pdfPrevPage"><pems-icon name="bi-chevron-left" /></pems-button>
                 <span class="small" id="pdfPageLabel">@Localizer["Vd_Page"] - / -</span>
                 <pems-button tone="neutral" size="small" outline="true" type="button" id="pdfNextPage"><pems-icon name="bi-chevron-right" /></pems-button>
                 <pems-button tone="neutral" size="small" outline="true" type="button" id="pdfZoomOut"><pems-icon name="bi-zoom-out" /></pems-button>
                 <pems-button tone="neutral" size="small" outline="true" type="button" id="pdfZoomIn"><pems-icon name="bi-zoom-in" /></pems-button>
-            </div>
-        </div>
+            </pems-flex>
+        </pems-flex>
         <div class="pems-pdf-canvas" id="pdfCanvasWrapper">
             <canvas id="pdfCanvas"></canvas>
         </div>
@@ -595,10 +595,10 @@
             <pems-col lg="8">
                 <section class="vs-panel mb-3" aria-labelledby="vdrStep1Title">
                     <div class="vs-panel__body">
-                        <div class="d-flex justify-content-between align-items-baseline gap-2 flex-wrap">
+                        <pems-flex justify="between" align="baseline" gap="2" wrap="true">
                             <h2 id="vdrStep1Title" class="vs-section__title mb-1">@Localizer["Vd_Step1Title"]</h2>
                             <span class="small text-muted">@Localizer["Vd_Step1Of"]</span>
-                        </div>
+                        </pems-flex>
                         <p class="small text-muted">@Localizer["Vd_Step1Hint"]</p>
                         <pems-row gap="3">
                             <pems-col md="6">
@@ -635,13 +635,13 @@
 
                 <section class="vs-panel mb-3" aria-labelledby="vdrStep2Title">
                     <div class="vs-panel__body">
-                        <div class="d-flex justify-content-between align-items-center gap-2 flex-wrap">
+                        <pems-flex justify="between" align="center" gap="2" wrap="true">
                             <div>
                                 <h2 id="vdrStep2Title" class="vs-section__title mb-1">@Localizer["Vd_Step2Title"] <span class="fw-normal text-muted small">(@Localizer["Vd_Optional"])</span></h2>
                                 <p class="small text-muted mb-0" id="vdrDiscSummary" aria-live="polite" data-none="@Localizer["Vd_NoDiscSelected"]" data-some="@Localizer["Vd_DiscSelected"]">@Localizer["Vd_NoDiscSelected"]</p>
                             </div>
                             <pems-button tone="neutral" size="small" outline="true" type="button" data-bs-toggle="collapse" data-bs-target="#vdrDiscPicker" aria-expanded="false" aria-controls="vdrDiscPicker">@Localizer["Vd_ChooseDisciplines"]</pems-button>
-                        </div>
+                        </pems-flex>
                         <div class="collapse mt-3" id="vdrDiscPicker">
                             <div class="small fw-bold mb-2">@Localizer["Vd_ReviewDisciplines"]</div>
                             <pems-row>
@@ -693,17 +693,17 @@ else
         var myPending = reviewStatus.FirstOrDefault(x => x.DisciplineId == myDisciplineId && x.Status == "Pending");
 
         <h6 class="small fw-bold">@Localizer["Vd_ParallelReview"]</h6>
-        <div class="d-flex flex-wrap gap-2 mb-3">
+        <pems-flex wrap="true" gap="2" css="mb-3">
             @foreach (var r in reviewStatus)
             {
                 var badgeClass = r.Status switch { "Approve" => "success", "Comment" => "warning", "Reject" => "danger", _ => "neutral" };
                 <pems-badge tone="@badgeClass">@r.DisciplineName: @VdrUi.Loc(Localizer, "St_", r.Status)</pems-badge>
             }
-        </div>
+        </pems-flex>
 
         @if (myPending != null)
         {
-            <div class="d-flex gap-2">
+            <pems-flex gap="2">
                 <form asp-action="DisciplineRespond" method="post" class="d-inline">
                     <input type="hidden" name="vdrItemId" value="@Model.VDRItemId" />
                     <input type="hidden" name="decision" value="Approve" />
@@ -711,7 +711,7 @@ else
                 </form>
                 <pems-button tone="warning" size="small" type="button" data-bs-toggle="modal" data-bs-target="#vdrCommentModal">@Localizer["Vd_CommentBtn"]</pems-button>
                 <pems-button tone="danger" size="small" type="button" data-bs-toggle="modal" data-bs-target="#vdrRejectModal">@Localizer["Vd_RejectBtn"]</pems-button>
-            </div>
+            </pems-flex>
 
             <pems-modal id="vdrCommentModal" tabindex="-1">
                     <form asp-action="DisciplineRespond" method="post">

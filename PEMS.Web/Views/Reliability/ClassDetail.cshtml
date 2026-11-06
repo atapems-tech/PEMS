@@ -3,10 +3,10 @@
 @using PEMS.Web.Resources
 @inject IStringLocalizer<SharedResource> Localizer
 
-<div class="d-flex justify-content-between align-items-center mb-3">
+<pems-flex justify="between" align="center" css="mb-3">
     <h5 class="mb-0">@Model.Name <code class="small">@Model.Code</code></h5>
     <a asp-action="Index" class="small">@Localizer["← Fleet Reliability"]</a>
-</div>
+</pems-flex>
 
 <pems-content-card>
     <pems-row gap="3" css="text-center">

@@ -1,11 +1,11 @@
 ﻿@using Microsoft.Extensions.Localization
 @using PEMS.Web.Resources
 @inject IStringLocalizer<SharedResource> Localizer
-<div class="d-flex justify-content-end align-items-center mb-2">
+<pems-flex justify="end" align="center" css="mb-2">
     <pems-button tone="primary" size="small" as="a" asp-action="RegisterIncoming">
         <pems-icon name="bi-envelope-plus" /> @Localizer["ثبت مکاتبه‌ی وارده"]
     </pems-button>
-</div>
+</pems-flex>
 
 <pems-row gap="3" css="mb-3">
     <pems-col md="4">
@@ -36,12 +36,12 @@
                 <ul class="list-unstyled mb-0">
                     @foreach (var d in pendingIssueDocs)
                     {
-                        <li class="d-flex justify-content-between border-bottom py-1">
+                        <pems-flex as="li" justify="between" css="border-bottom py-1">
                             <a asp-controller="EngineeringDocuments" asp-action="Details" asp-route-id="@d.DocumentId">
                                 @d.DocumentNo &mdash; @d.Title
                             </a>
                             <span class="text-muted small">@(((DateTime?)d.ModifiedDate)?.ToString("yyyy-MM-dd"))</span>
-                        </li>
+                        </pems-flex>
                     }
                 </ul>
             }
@@ -63,12 +63,12 @@
                 <ul class="list-unstyled mb-0">
                     @foreach (var l in unlinked)
                     {
-                        <li class="d-flex justify-content-between border-bottom py-1">
+                        <pems-flex as="li" justify="between" css="border-bottom py-1">
                             <a asp-controller="Letter" asp-action="Details" asp-route-id="@l.LetterId">
                                 @l.LetterNumber &mdash; @l.Subject
                             </a>
                             <span class="text-muted small">@l.Sender</span>
-                        </li>
+                        </pems-flex>
                     }
                 </ul>
                 <p class="text-muted small mt-2 mb-0">این‌ها هنوز به هیچ مدرک/MR وصل نشده‌اند - روی هرکدام برو و از Relationship Explorer یا ویرایش نامه، لینکش کن.</p>

@@ -15,7 +15,7 @@
 @if (TempData["Error"] != null) { <pems-alert tone="danger" css="py-2 px-3 small">@TempData["Error"]</pems-alert> }
 
 <pems-content-card css="mb-3">
-    <div class="d-flex justify-content-between align-items-start flex-wrap gap-2">
+    <pems-flex justify="between" align="start" wrap="true" gap="2">
         <div>
             <h5 class="mb-1"><pems-icon name="bi-inboxes" aria-hidden="true" /> @Localizer["Whi_Title"]</h5>
             <div class="small text-muted">
@@ -28,7 +28,7 @@
             else if (open.Count == 0) { <span class="vs-pill vs-pill--success">@Localizer["Whi_State_Sourced"]</span> }
             else { <span class="vs-pill vs-pill--neutral">@Localizer["Whi_State_NotRequested"]</span> }
         </div>
-    </div>
+    </pems-flex>
     <p class="small text-muted mt-2 mb-0"><pems-icon name="bi-info-circle" aria-hidden="true" /> @Localizer["Whi_Hint"]</p>
 </pems-content-card>
 

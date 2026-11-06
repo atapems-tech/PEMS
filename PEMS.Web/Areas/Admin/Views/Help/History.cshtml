@@ -5,10 +5,10 @@
 @{ ViewData["HidePageTitle"] = true; }
 
 <pems-content-card>
-    <div class="d-flex justify-content-between align-items-center mb-3">
+    <pems-flex justify="between" align="center" css="mb-3">
         <h5 class="mb-0"><pems-icon name="bi-clock-history" /> @Localizer["Change History"]</h5>
         <pems-button as="a" tone="neutral" size="small" outline="true" asp-action="Edit" asp-route-id="@ViewBag.HelpArticleId">Back to article</pems-button>
-    </div>
+    </pems-flex>
     @if (!Model.Any())
     {
         <p class="text-muted text-center py-4">No recorded changes yet.</p>

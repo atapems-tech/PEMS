@@ -10,15 +10,15 @@
 }
 
 <pems-content-card css="mb-3">
-    <div class="d-flex align-items-center gap-2 mb-1">
+    <pems-flex align="center" gap="2" css="mb-1">
         <pems-icon name="bi-life-preserver" css="fs-4 text-warning" />
         <h4 class="mb-0">@L("Help Center", "مرکز راهنما")</h4>
-    </div>
+    </pems-flex>
     <p class="text-muted mb-3">@L("Browse Help by module, or search across all articles in English and Persian.", "راهنما را بر اساس ماژول مرور کنید، یا در همه‌ی مقالات به انگلیسی و فارسی جستجو کنید.")</p>
-    <form asp-action="Search" method="get" class="d-flex gap-2 pems-s-04391f08">
+    <form class="pems-s-04391f08" asp-action="Search" method="get"><pems-flex gap="2">
         <pems-input type="search" name="q" placeholder="@L("Search Help... (e.g. \"work order\", \"IDC\", \"مجوز کار\")", "جستجو در راهنما... (مثلاً «دستور کار»، «IDC»، work order)")" />
         <pems-button tone="primary" type="submit"><pems-icon name="bi-search" /> @L("Search", "جستجو")</pems-button>
-    </form>
+    </pems-flex></form>
 </pems-content-card>
 
 <pems-row gap="3">
@@ -72,12 +72,12 @@
                         @foreach (var a in articles.OrderBy(a => a.DisplayOrder))
                         {
                             <pems-list-group-item action="true" asp-action="Article" asp-route-code="@a.Code">
-                                <div class="d-flex justify-content-between align-items-start">
+                                <pems-flex justify="between" align="start">
                                     <div>
                                         <span class="fw-semibold">@a.Title</span>
                                         <pems-badge tone="light" css="ms-1">@a.ArticleType</pems-badge>
                                     </div>
-                                </div>
+                                </pems-flex>
                                 <p class="text-muted small mb-0 mt-1">@a.Summary</p>
                             </pems-list-group-item>
                         }

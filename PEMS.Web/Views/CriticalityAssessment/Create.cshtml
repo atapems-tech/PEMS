@@ -9,9 +9,9 @@
 
 @await Html.PartialAsync("_PageHeader")
 
-<div class="d-flex justify-content-end align-items-center mb-2">
+<pems-flex justify="end" align="center" css="mb-2">
     <a asp-action="Index" class="small">← Assessment Queue</a>
-</div>
+</pems-flex>
 
 @if (TempData["Error"] != null) { <pems-alert tone="danger" css="py-2 px-3 small">@TempData["Error"]</pems-alert> }
 

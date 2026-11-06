@@ -9,10 +9,10 @@
 }
 
 <pems-content-card css="mb-3">
-    <form asp-action="Search" method="get" class="d-flex gap-2 pems-s-04391f08">
+    <form class="pems-s-04391f08" asp-action="Search" method="get"><pems-flex gap="2">
         <pems-input type="search" name="q" value="@query" placeholder="@L("Search Help...", "جستجو در راهنما...")" />
         <pems-button tone="primary" type="submit"><pems-icon name="bi-search" /> @L("Search", "جستجو")</pems-button>
-    </form>
+    </pems-flex></form>
 </pems-content-card>
 
 <pems-content-card>
@@ -32,10 +32,10 @@
             @foreach (var a in results)
             {
                 <pems-list-group-item action="true" asp-action="Article" asp-route-code="@a.Code">
-                    <div class="d-flex justify-content-between align-items-start">
+                    <pems-flex justify="between" align="start">
                         <span class="fw-semibold">@a.Title</span>
                         <pems-badge tone="light">@a.CategoryName</pems-badge>
-                    </div>
+                    </pems-flex>
                     <p class="text-muted small mb-0 mt-1">@a.Summary</p>
                 </pems-list-group-item>
             }

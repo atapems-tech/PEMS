@@ -3,13 +3,13 @@
 @using PEMS.Web.Resources
 @inject IStringLocalizer<SharedResource> Localizer
 
-<div class="d-flex justify-content-end align-items-center mb-2">
+<pems-flex justify="end" align="center" css="mb-2">
     <div>
         <pems-button tone="neutral" size="small" outline="true" as="a" asp-action="Index"><pems-icon name="bi-list-check" /> Assessment Queue</pems-button>
         <pems-button tone="neutral" size="small" outline="true" as="a" asp-controller="EquipmentCriticality" asp-action="Index"><pems-icon name="bi-clock-history" /> Published Criticality</pems-button>
         <pems-button tone="neutral" size="small" outline="true" as="a" asp-controller="CmmsReadiness" asp-action="Index"><pems-icon name="bi-clipboard-check" /> Activation Backlog</pems-button>
     </div>
-</div>
+</pems-flex>
 <p class="text-muted small">
     طبق «PEMS Phase 7.6»: روش‌شناسی پروژه‌ای @Model.FrameworkVersion (متاثر از رویه‌های رایج
     مهندسی ریسک/قابلیت‌اطمینان - نه ادعای انطباق با یک استاندارد بیرونی مشخص). هدف حداکثرسازی

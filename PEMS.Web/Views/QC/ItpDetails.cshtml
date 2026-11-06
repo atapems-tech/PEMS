@@ -3,12 +3,12 @@
 @using PEMS.Web.Resources
 @inject IStringLocalizer<SharedResource> Localizer
 
-<div class="d-flex justify-content-between align-items-center mb-3">
+<pems-flex justify="between" align="center" css="mb-3">
     <div>
         <h5 class="mb-0">@Model.ITPNumber &mdash; @Model.Title</h5>
         <span class="text-muted small">@Model.QCDiscipline?.Name @(Model.Equipment != null ? " | " + Model.Equipment.TagNumber : "")</span>
     </div>
-    <div class="d-flex align-items-center gap-2">
+    <pems-flex align="center" gap="2">
         <pems-badge tone="none" css="@(Model.Status == "Active" ? "bg-success" : Model.Status == "Draft" ? "bg-secondary" : "bg-info") fs-6">@Model.Status</pems-badge>
         @if (Model.Status == "Draft")
         {
@@ -17,8 +17,8 @@
                 <pems-button tone="success" size="small"><pems-icon name="bi-check-lg" /> Approve &amp; Activate</pems-button>
             </form>
         }
-    </div>
-</div>
+    </pems-flex>
+</pems-flex>
 
 <pems-content-card css="mb-3">
     <pems-row>
@@ -65,7 +65,7 @@
                             <div class="text-muted small">اعلان: @li.NotifiedDate.Value.ToString("yyyy-MM-dd HH:mm")</div>
                         }
                     </td>
-                    <td class="d-flex flex-column gap-1">
+                    <td><pems-flex dir="column" gap="1">
                         @if (li.InspectionCategory == "H" && li.Status == "Pending")
                         {
                             <form asp-action="ItpNotifyHoldPoint" method="post">
@@ -80,7 +80,7 @@
                                 <pems-icon name="bi-clipboard-check" /> Perform Inspection
                             </pems-button>
                         }
-                    </td>
+                    </pems-flex></td>
                 </tr>
 
             }

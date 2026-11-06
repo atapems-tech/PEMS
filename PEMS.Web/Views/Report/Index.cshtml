@@ -15,7 +15,7 @@
         new BkSeries("Letters", disciplineChartRows.Select(x => x.Value).ToList(), BkChartSpec.Accent));
 }
 
-<div class="d-flex flex-wrap gap-2 mb-3">
+<pems-flex wrap="true" gap="2" css="mb-3">
     <pems-button tone="primary" size="small" as="a" asp-action="Index"><pems-icon name="bi-envelope-paper" /> @Localizer["Correspondence"]</pems-button>
     <pems-button tone="neutral" size="small" outline="true" as="a" asp-action="Engineering"><pems-icon name="bi-file-earmark-text" /> @Localizer["Engineering Documents"]</pems-button>
     <pems-button tone="neutral" size="small" outline="true" as="a" asp-action="Vdr"><pems-icon name="bi-journal-check" /> @Localizer["VDR"]</pems-button>
@@ -23,7 +23,7 @@
     <pems-button tone="neutral" size="small" outline="true" as="a" asp-action="Cmms"><pems-icon name="bi-tools" /> CMMS</pems-button>
     <pems-button tone="neutral" size="small" outline="true" as="a" asp-action="Operations"><pems-icon name="bi-clipboard-data" /> @Localizer["Operations"]</pems-button>
     <pems-button tone="neutral" size="small" outline="true" as="a" asp-area="Warehouse" asp-controller="PartCatalogueReport" asp-action="Index"><pems-icon name="bi-journal-plus" /> @Localizer["Pc_Menu"]</pems-button>
-</div>
+</pems-flex>
 <pems-content-card css="mb-3">
     <form method="get"><pems-row gap="2">
         <pems-col md="3">
@@ -78,10 +78,10 @@
             <ul class="list-unstyled mb-0">
                 @foreach (var t in Model.TopTags)
                 {
-                    <li class="d-flex justify-content-between border-bottom py-1">
+                    <pems-flex as="li" justify="between" css="border-bottom py-1">
                         <pems-badge tone="none" css="bg-@t.Color">@t.TagName</pems-badge>
                         <span class="text-muted small">@t.Count</span>
-                    </li>
+                    </pems-flex>
                 }
             </ul>
             @if (!Model.TopTags.Any()) { <p class="text-muted small">No tags used yet.</p> }

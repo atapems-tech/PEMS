@@ -22,18 +22,18 @@
 }
 
 <pems-content-card css="mb-3">
-    <div class="d-flex justify-content-between align-items-start flex-wrap gap-2">
+    <pems-flex justify="between" align="start" wrap="true" gap="2">
         <div>
             <h5 class="mb-1">@Model.RequisitionNumber</h5>
             <div class="text-muted small">انبار: @Model.Warehouse?.Code - درخواست‌کننده: @(Model.RequestedBy?.FirstName) @(Model.RequestedBy?.LastName) - @Model.RequestedDate.ToString("yyyy-MM-dd")</div>
             @if (!string.IsNullOrWhiteSpace(Model.Purpose)) { <div class="small mt-1">@Model.Purpose</div> }
         </div>
-        <div class="d-flex gap-2">
+        <pems-flex gap="2">
             <pems-badge tone="none" css="fs-6 @(Model.Status is "Closed" or "Issued" ? "bg-success" : Model.Status == "PartiallyIssued" ? "bg-info text-dark" : Model.Status is "Rejected" or "Cancelled" ? "bg-secondary" : "bg-warning text-dark")">@Model.Status</pems-badge>
-        </div>
-    </div>
+        </pems-flex>
+    </pems-flex>
     <hr />
-    <div class="d-flex gap-2 flex-wrap">
+    <pems-flex gap="2" wrap="true">
         @if (nextStatus != null && nextStatus != "Issued" && Can(nextAction) && !(isRequester && nextStatus is "Approved"))
         {
             <form asp-action="AdvanceStatus" method="post" class="d-inline">
@@ -63,7 +63,7 @@
                 <pems-button tone="neutral" size="small" outline="true" type="submit" data-pems-confirm="این درخواست لغو بشه؟">@Localizer["Cancel"]</pems-button>
             </form>
         }
-    </div>
+    </pems-flex>
 </pems-content-card>
 
 <pems-content-card css="mb-3">

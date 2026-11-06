@@ -3,9 +3,9 @@
 @using PEMS.Web.Resources
 @inject IStringLocalizer<SharedResource> Localizer
 
-<div class="d-flex justify-content-end align-items-center mb-2">
+<pems-flex justify="end" align="center" css="mb-2">
     <a asp-action="Index" class="small">@Localizer["← Fleet Reliability"]</a>
-</div>
+</pems-flex>
 <p class="text-muted small">
     این صفحه هیچ رکوردی را تغییر نمی‌دهد - فقط نشان می‌دهد چه چیزی موجود است و چه چیزی غایب،
     تا کیفیت هر معیار قابلیت‌اطمینان شفاف باشد.

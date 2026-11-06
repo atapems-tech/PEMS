@@ -40,9 +40,9 @@
             <h6 class="mb-3">Classified — by Confidence</h6>
             @foreach (var item in Model.ByConfidence)
             {
-                <div class="d-flex justify-content-between small mb-1">
+                <pems-flex justify="between" css="small mb-1">
                     <span>@item.Key</span><span>@item.Count.ToString("N0")</span>
-                </div>
+                </pems-flex>
                 <pems-progress value="@item.Count" max="@Model.ClassifiedCount" height="6px" css="mb-2"></pems-progress>
             }
             @if (!Model.ByConfidence.Any()) { <p class="text-muted small">@Localizer["داده‌ای موجود نیست."]</p> }
@@ -53,9 +53,9 @@
             <h6 class="mb-3">Classified — by Source</h6>
             @foreach (var item in Model.BySource)
             {
-                <div class="d-flex justify-content-between small mb-1">
+                <pems-flex justify="between" css="small mb-1">
                     <span>@item.Key</span><span>@item.Count.ToString("N0")</span>
-                </div>
+                </pems-flex>
                 <pems-progress value="@item.Count" max="@Model.ClassifiedCount" tone="info" height="6px" css="mb-2"></pems-progress>
             }
             @if (!Model.BySource.Any()) { <p class="text-muted small">@Localizer["داده‌ای موجود نیست."]</p> }
@@ -69,9 +69,9 @@
             <h6 class="mb-3">Pending Suggestions — by Confidence</h6>
             @foreach (var item in Model.PendingSuggestionsByConfidence)
             {
-                <div class="d-flex justify-content-between small mb-1">
+                <pems-flex justify="between" css="small mb-1">
                     <span>@item.Key</span><span>@item.Count.ToString("N0")</span>
-                </div>
+                </pems-flex>
             }
             @if (!Model.PendingSuggestionsByConfidence.Any()) { <p class="text-muted small">@Localizer["هیچ پیشنهادی در انتظار بازبینی نیست."]</p> }
         </pems-content-card>
@@ -81,9 +81,9 @@
             <h6 class="mb-3">Unclassified — by Discipline</h6>
             @foreach (var item in Model.UnclassifiedByDiscipline)
             {
-                <div class="d-flex justify-content-between small mb-1">
+                <pems-flex justify="between" css="small mb-1">
                     <span>@item.Key</span><span>@item.Count.ToString("N0")</span>
-                </div>
+                </pems-flex>
             }
             @if (!Model.UnclassifiedByDiscipline.Any()) { <p class="text-muted small">@Localizer["داده‌ای موجود نیست."]</p> }
         </pems-content-card>

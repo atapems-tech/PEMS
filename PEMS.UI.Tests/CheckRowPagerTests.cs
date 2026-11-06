@@ -71,4 +71,15 @@ public sealed class CheckRowPagerTests
     [InlineData("", "vs-page")]
     public void A_page_shell_is_the_admin_or_the_workspace_wrapper(string kind, string expected)
         => Assert.Equal($"<div class=\"{expected} pc-page\">x</div>", Run(new PemsPageShellTagHelper(UiTestRenderer.Instance) { Kind = kind, Css = "pc-page" }, "pems-page-shell", [], "x"));
+
+    [Fact]
+    public void A_flex_container_writes_the_utility_classes_in_a_fixed_order_and_the_element_asked_for()
+    {
+        Assert.Equal("<div class=\"d-flex flex-wrap justify-content-between align-items-center gap-2 mb-3\">x</div>",
+            Run(new PemsFlexTagHelper(UiTestRenderer.Instance) { Justify = "between", Align = "center", Wrap = true, Gap = "2", Css = "mb-3" }, "pems-flex", [], "x"));
+        Assert.Equal("<div class=\"d-flex flex-column gap-1\">x</div>", Run(new PemsFlexTagHelper(UiTestRenderer.Instance) { Dir = "column", Gap = "1" }, "pems-flex", [], "x"));
+        Assert.Equal("<li class=\"d-inline-flex py-1\">x</li>", Run(new PemsFlexTagHelper(UiTestRenderer.Instance) { As = "li", Inline = true, Css = "py-1" }, "pems-flex", [], "x"));
+        Assert.Equal("<h6 class=\"d-flex align-items-center mb-0\">x</h6>", Run(new PemsFlexTagHelper(UiTestRenderer.Instance) { As = "h6", Align = "center", Css = "mb-0" }, "pems-flex", [], "x"));
+        Assert.Equal("<div class=\"d-flex\">x</div>", Run(new PemsFlexTagHelper(UiTestRenderer.Instance) { As = "script" }, "pems-flex", [], "x"));
+    }
 }

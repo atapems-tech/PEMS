@@ -5,7 +5,7 @@
 
 
 <pems-content-card css="mb-3">
-    <div class="d-flex justify-content-between align-items-center">
+    <pems-flex justify="between" align="center">
         <div>
             <h5 class="mb-0">@Model.DocumentNo &mdash; @Model.Title</h5>
             <pems-badge tone="info" css="mt-1">Stage: @Model.AIWorkflowStage</pems-badge>
@@ -26,9 +26,9 @@
         <pems-button tone="neutral" size="small" outline="true" as="a" asp-controller="EngineeringDocuments" asp-action="Details" asp-route-id="@Model.DocumentId">
             <pems-icon name="bi-file-earmark-text" /> Open Document
         </pems-button>
-    </div>
+    </pems-flex>
 
-    <div class="d-flex flex-wrap gap-2 mt-3">
+    <pems-flex wrap="true" gap="2" css="mt-3">
         @{
             var stages = new[] { "UnderReview", "CommentOpen", "Revision", "Approved", "KnowledgeBase" };
         }
@@ -40,7 +40,7 @@
                 <pems-button tone="none" size="small" css="@(s == Model.AIWorkflowStage ? "btn-pems-solid" : "btn-outline-secondary")" type="submit">@s</pems-button>
             </form>
         }
-    </div>
+    </pems-flex>
 </pems-content-card>
 
 <pems-content-card css="mb-3">
@@ -49,13 +49,13 @@
     @foreach (var c in Model.Classifications)
     {
         <div class="border rounded p-3 mb-2">
-            <div class="d-flex justify-content-between">
+            <pems-flex justify="between">
                 <strong>Confidence: @((c.ConfidenceScore).ToString("P0"))</strong>
                 @{
                     var cb = c.ReviewStatus switch { "Approved" => "success", "Rejected" => "danger", _ => "neutral" };
                 }
                 <pems-badge tone="@cb">@c.ReviewStatus</pems-badge>
-            </div>
+            </pems-flex>
 
             @if (c.ReviewStatus == "Draft")
             {
@@ -171,12 +171,12 @@
                         @c.ResponseText
                         @if (string.IsNullOrEmpty(c.ResponseText))
                         {
-                            <form asp-action="RecordCommentResponse" method="post" class="d-flex gap-1 mt-1">
+                            <form class="mt-1" asp-action="RecordCommentResponse" method="post"><pems-flex gap="1">
                                 <input type="hidden" name="documentId" value="@Model.DocumentId" />
                                 <input type="hidden" name="commentId" value="@c.EngineeringDocumentCommentId" />
                                 <pems-input scale="small" name="responseText" placeholder="@Localizer["Response..."]" />
                                 <pems-button tone="primary" size="small" outline="true">@Localizer["Save"]</pems-button>
-                            </form>
+                            </pems-flex></form>
                         }
                     </td>
                 </tr>

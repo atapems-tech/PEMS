@@ -3,17 +3,17 @@
 @using PEMS.Web.Resources
 @inject IStringLocalizer<SharedResource> Localizer
 
-<div class="d-flex justify-content-between align-items-center mb-3">
+<pems-flex justify="between" align="center" css="mb-3">
     <h5 class="mb-0"><pems-icon name="bi-speedometer2" /> Maintenance &amp; Cost KPI Dashboard</h5>
     <pems-button tone="neutral" size="small" outline="true" as="a" asp-action="Executive"><pems-icon name="bi-bar-chart-line" /> @Localizer["Kpi_Exec_Title"]</pems-button>
-</div>
+</pems-flex>
 <p class="text-muted small">
     طبق CMMS Production Baseline v1 - CMMS-08: از روی داده‌ی واقعی تراکنشی موجود محاسبه می‌شود
     (MaintenanceHistory، WorkOrder، MaintenancePlan). معیارهای Reliability تفصیلی در
     <a asp-controller="Reliability" asp-action="Index">صفحه‌ی Reliability</a> موجودند.
 </p>
 
-<form method="get" class="d-flex gap-2 align-items-end mb-3">
+<form class="mb-3" method="get"><pems-flex gap="2" align="end">
     <div>
         <pems-label css="small mb-0">@Localizer["From"]</pems-label>
         <pems-date name="fromDate" scale="small" value="@(Model.FromDate?.ToString("yyyy-MM-dd"))" />
@@ -24,7 +24,7 @@
     </div>
     <pems-button tone="primary" size="small" type="submit">@Localizer["Filter"]</pems-button>
     <pems-button tone="neutral" size="small" outline="true" as="a" asp-action="Index">@Localizer["Clear"]</pems-button>
-</form>
+</pems-flex></form>
 
 @{
     string Pct(double? v) => v.HasValue ? $"{v.Value:N1}%" : "N/A";

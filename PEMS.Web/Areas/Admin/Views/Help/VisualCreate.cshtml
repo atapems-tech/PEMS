@@ -109,10 +109,10 @@
             </pems-col>
         </pems-row>
 
-        <div class="mt-3 d-flex gap-2">
+        <pems-flex gap="2" css="mt-3">
             <pems-button tone="primary" type="submit">@Localizer["Save"]</pems-button>
             <pems-button as="a" tone="neutral" outline="true" asp-action="Edit" asp-route-id="@Model.HelpArticleId">Back to article</pems-button>
-        </div>
+        </pems-flex>
     </form>
 </pems-content-card>
 

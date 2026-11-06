@@ -55,7 +55,7 @@
                             <tr class="@(m.IsActive ? "" : "text-muted")">
                                 <td>@m.Name</td>
                                 <td colspan="3">
-                                    <form asp-action="SetMember" method="post" class="d-flex gap-2 align-items-center">
+                                    <form asp-action="SetMember" method="post"><pems-flex gap="2" align="center">
                                         <input type="hidden" name="workSpaceId" value="@s.Id" /><input type="hidden" name="memberId" value="@m.Id" />
                                         <pems-select scale="small" css="w-auto" name="role" aria-label="@Localizer["Tm_Field_Role"] @m.Name">
                                             @foreach (var r in PEMS.Domain.Entities.WorkSpaceMemberRoles.All) { <option value="@r" selected="@(r == m.Role)">@Localizer["Tm_Role_" + r]</option> }
@@ -63,14 +63,14 @@
                                         <pems-input type="checkbox" name="isActive" value="true" checked="@m.IsActive" aria-label="@Localizer["Tm_Field_Active"] @m.Name" kind="check" />
                                         <input type="hidden" name="isActive" value="false" />
                                         <pems-button tone="neutral" size="small" outline="true">@Localizer["Tm_Save"]</pems-button>
-                                    </form>
+                                    </pems-flex></form>
                                 </td>
                             </tr>
                         }
                     </tbody>
                 </pems-table>
             }
-            <form asp-action="AddMember" method="post" class="d-flex gap-2 flex-wrap">
+            <form asp-action="AddMember" method="post"><pems-flex gap="2" wrap="true">
                 <input type="hidden" name="workSpaceId" value="@s.Id" />
                 <label class="visually-hidden" for="am-emp">@Localizer["Tm_Employee"]</label>
                 <pems-select scale="small" css="w-auto flex-grow-1" id="am-emp" name="employeeId" required>
@@ -82,7 +82,7 @@
                     @foreach (var r in PEMS.Domain.Entities.WorkSpaceMemberRoles.All) { <option value="@r">@Localizer["Tm_Role_" + r]</option> }
                 </pems-select>
                 <pems-button tone="primary" size="small">@Localizer["Tm_Add"]</pems-button>
-            </form>
+            </pems-flex></form>
         </section>
 
         <section class="vs-panel mb-3" aria-labelledby="typeTitle">

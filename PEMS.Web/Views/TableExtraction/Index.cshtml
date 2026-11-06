@@ -12,11 +12,11 @@
 </pems-content-card>
 
 <pems-content-card>
-    <div class="d-flex justify-content-end mb-2">
+    <pems-flex justify="end" css="mb-2">
         <pems-button tone="neutral" size="small" outline="true" type="button" onclick="PemsDataGrid.resetColumns('TableExtraction')">
             <pems-icon name="bi-arrow-counterclockwise" /> @Localizer["Reset columns"]
         </pems-button>
-    </div>
+    </pems-flex>
     <div class="table-responsive pems-grid-scroll table-scroll-area pems-s-a7ef6ffc">
         <pems-table kind="enterprise" css="pems-grid-table" data-grid-key="TableExtraction">
             <thead>
@@ -46,7 +46,7 @@
                             </form>
                         </td>
                         <td>
-                            <div class="d-flex gap-2">
+                            <pems-flex gap="2">
                                 <pems-button tone="primary" size="small" css="text-nowrap" type="submit" form="aiForm_@attachment.AttachmentId">
                                     <pems-icon name="bi-stars" /> With AI
                                 </pems-button>
@@ -56,7 +56,7 @@
                                         <pems-icon name="bi-grid-3x3" /> No AI (PDF)
                                     </pems-button>
                                 </form>
-                            </div>
+                            </pems-flex>
                         </td>
                     </tr>
                 }

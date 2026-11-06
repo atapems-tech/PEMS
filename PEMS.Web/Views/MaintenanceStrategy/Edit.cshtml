@@ -10,13 +10,13 @@
     string Sel(string? current, string value) => string.Equals(current, value, StringComparison.Ordinal) ? "selected" : "";
 }
 
-<div class="d-flex justify-content-between align-items-center mb-3">
+<pems-flex justify="between" align="center" css="mb-3">
     <h5 class="mb-0"><pems-icon name="bi-diagram-3" />
         @(isEdit ? Localizer["Rcm_EditStrategy"] : Localizer["Rcm_NewStrategy"])
         @if (isEdit) { <pems-badge tone="@RcmDisplay.StatusBadge(Model.Status)" css="ms-2">@Localizer.Label("Status", Model.Status) · v@(Model.VersionNumber)</pems-badge> }
     </h5>
     <pems-button as="a" tone="neutral" size="small" outline="true" asp-action="@(isEdit ? "Details" : "Index")" asp-route-id="@Model.MaintenanceStrategyId">@Localizer["Rcm_Back"]</pems-button>
-</div>
+</pems-flex>
 
 @await Html.PartialAsync("_RcmErrors", Model.Errors)
 
@@ -189,10 +189,10 @@
         </pems-col>
     </pems-row>
 
-    <div class="mt-4 d-flex gap-2">
+    <pems-flex gap="2" css="mt-4">
         <pems-button tone="primary" type="submit">@(Model.WillCreateNewVersion ? Localizer["Rcm_SaveNewVersion"] : Localizer["Save"])</pems-button>
         <pems-button as="a" tone="neutral" outline="true" asp-action="@(isEdit ? "Details" : "Index")" asp-route-id="@Model.MaintenanceStrategyId">@Localizer["Cancel"]</pems-button>
-    </div>
+    </pems-flex>
 </pems-content-card></form>
 
 @section Scripts {

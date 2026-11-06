@@ -37,16 +37,16 @@
 }
 
 <div class="pems-kpi-page">
-    <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-2">
+    <pems-flex justify="between" align="center" wrap="true" gap="2" css="mb-2">
         <h5 class="mb-0"><pems-icon name="bi-bar-chart-line" /> @Localizer["Kpi_Exec_Title"]</h5>
         <pems-button tone="neutral" size="small" outline="true" as="a" asp-action="Index"><pems-icon name="bi-speedometer2" /> @Localizer["Kpi_Exec_ClassicLink"]</pems-button>
-    </div>
+    </pems-flex>
     <p class="text-muted small mb-3">@Localizer["Kpi_Exec_Intro"]</p>
 
     @if (!string.IsNullOrEmpty(message)) { <pems-alert tone="success" css="py-2 small">@Localizer[message]</pems-alert> }
     @if (!string.IsNullOrEmpty(error)) { <pems-alert tone="danger" css="py-2 small">@Localizer[error]</pems-alert> }
 
-    <form method="get" class="d-flex gap-2 align-items-end flex-wrap mb-3">
+    <form class="mb-3" method="get"><pems-flex gap="2" align="end" wrap="true">
         <div>
             <pems-label css="small mb-0" for="kpiFrom">@Localizer["From"]</pems-label>
             <pems-date id="kpiFrom" name="fromDate" scale="small" value="@Model.From.ToString("yyyy-MM-dd")" />
@@ -57,7 +57,7 @@
         </div>
         <pems-button tone="primary" size="small" type="submit">@Localizer["Filter"]</pems-button>
         <span class="small text-muted ms-auto">@Localizer["Kpi_Exec_Generated"]: @d.GeneratedAt.ToString("yyyy-MM-dd HH:mm")</span>
-    </form>
+    </pems-flex></form>
 
     @* خلاصه‌ی وضعیت نسبت به هدف: فقط شمارش شاخص‌هایی که هدف و مقدار دارند؛ «امتیاز کلی سلامت» جعلی ساخته نمی‌شود *@
     <div class="pems-kpi-overview" aria-label="@Localizer["Kpi_Exec_Overview"]">

@@ -27,14 +27,14 @@
     <partial name="_BkChartStyles" />
 }
 
-<div class="d-flex flex-wrap align-items-center gap-2 mb-3">
+<pems-flex wrap="true" align="center" gap="2" css="mb-3">
     <pems-button tone="neutral" size="small" outline="true" as="a" asp-controller="Letter" asp-action="Index"><pems-icon name="bi-arrow-left-right" aria-hidden="true" /> @Localizer["Correspondence"]</pems-button>
-    <form method="get" class="d-flex flex-wrap align-items-end gap-2 ms-auto">
+    <form class="ms-auto" method="get"><pems-flex wrap="true" align="end" gap="2">
         <div><pems-label css="small mb-0" for="rFrom">@Localizer["Lp_From"]</pems-label><pems-date id="rFrom" name="from" value="@Model.FromDate.ToString("yyyy-MM-dd")" scale="small" /></div>
         <div><pems-label css="small mb-0" for="rTo">@Localizer["Lp_To"]</pems-label><pems-date id="rTo" name="to" value="@Model.ToDate.ToString("yyyy-MM-dd")" scale="small" /></div>
         <pems-button tone="primary" size="small"><pems-icon name="bi-funnel" aria-hidden="true" /> @Localizer["Apply"]</pems-button>
-    </form>
-</div>
+    </pems-flex></form>
+</pems-flex>
 
 <div class="ct-report">
     <section aria-label="@Localizer["Ct_ReportPersonal"]">

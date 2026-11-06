@@ -13,20 +13,20 @@
 }
 
 <pems-content-card css="mb-3 d-print-none">
-    <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
+    <pems-flex justify="between" align="center" wrap="true" gap="2">
         <div>
             <h4 class="mb-0">@Model.Equipment?.TagNumber <pems-badge tone="@badgeClass" css="ms-1">@status</pems-badge></h4>
             <span class="text-muted small">@Model.InstrumentType - @Model.Equipment?.Name (@NA(Model.Equipment?.Manufacturer) / @NA(Model.Equipment?.Model))</span>
         </div>
-        <div class="d-flex gap-2">
+        <pems-flex gap="2">
             <pems-button tone="neutral" size="small" outline="true" as="a" asp-action="Edit" asp-route-id="@Model.InstrumentId"><pems-icon name="bi-pencil" /> @Localizer["Edit"]</pems-button>
             <pems-button tone="neutral" size="small" outline="true" onclick="window.print()"><pems-icon name="bi-printer" /> Print</pems-button>
             <form asp-action="GenerateCalibrationWorkOrder" method="post" class="d-inline">
                 <input type="hidden" name="instrumentId" value="@Model.InstrumentId" />
                 <pems-button tone="primary" size="small" outline="true" type="submit"><pems-icon name="bi-clipboard-plus" /> Generate WO</pems-button>
             </form>
-        </div>
-    </div>
+        </pems-flex>
+    </pems-flex>
 </pems-content-card>
 
 <pems-content-card css="mb-3">
@@ -195,13 +195,13 @@
         var ces = causeEffectsByAlarm.TryGetValue(alarm.AlarmId, out var list) ? list : new List<CauseEffect>();
 
         <div class="border rounded p-2 mb-3">
-            <div class="d-flex justify-content-between align-items-center">
+            <pems-flex justify="between" align="center">
                 <div class="small">
                     <strong>@alarm.AlarmTag</strong> - @alarm.AlarmType
                     <pems-badge tone="@alarmBadge">@alarm.Priority</pems-badge>
                     - SP: @(alarm.SetPoint?.ToString() ?? "N/A") @alarm.Unit
                 </div>
-            </div>
+            </pems-flex>
             @if (!string.IsNullOrWhiteSpace(alarm.Description)) { <div class="small text-muted">@alarm.Description</div> }
 
             <pems-table kind="enterprise" scale="small" css="mt-2 mb-2">

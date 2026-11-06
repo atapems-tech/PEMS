@@ -88,6 +88,7 @@ public static class ComponentSamples
         ["col"] = """{"span":"12","md":"6"}""",
         ["check-row"] = """{"switch":true,"css":"mb-0"}""",
         ["content-card"] = """{"css":"mb-3"}""",
+        ["flex"] = """{"justify":"between","align":"center","wrap":true,"gap":"2","css":"mb-3"}""",
         ["page-shell"] = """{"kind":"admin","css":"pb-3"}""",
         ["pager"] = """{"current":2,"total":5,"href":"/items?page={page}","scale":"small","css":"mb-0"}""",
         ["form"] = """{"definition":{"id":"item","title":{"en":"Item","fa":"مورد"},"action":"/items","fields":[{"name":"tag","label":{"en":"Tag","fa":"تگ"}}],"submitLabel":{"en":"Save","fa":"ذخیره"}}}"""

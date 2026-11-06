@@ -3,11 +3,11 @@
 @using PEMS.Web.Resources
 @inject IStringLocalizer<SharedResource> Localizer
 
-<div class="d-flex justify-content-end align-items-center mb-2">
+<pems-flex justify="end" align="center" css="mb-2">
     <pems-button tone="primary" size="small" type="button" data-bs-toggle="modal" data-bs-target="#createCrewModal">
         <pems-icon name="bi-plus-lg" /> @Localizer["Crew جدید"]
     </pems-button>
-</div>
+</pems-flex>
 
 @if (TempData["Message"] != null)
 {
@@ -23,7 +23,7 @@
     {
         <pems-col md="6">
             <pems-content-card css="h-100">
-                <div class="d-flex justify-content-between align-items-start">
+                <pems-flex justify="between" align="start">
                     <div>
                         <h6 class="mb-0">@crew.Code — @crew.Name</h6>
                         @if (crew.WorkOrder != null)
@@ -37,7 +37,7 @@
                             <pems-badge tone="neutral">@Localizer["مستقل / پایدار"]</pems-badge>
                         }
                     </div>
-                </div>
+                </pems-flex>
 
                 <hr class="my-2" />
 
@@ -45,20 +45,20 @@
                 <ul class="list-unstyled mb-2">
                     @foreach (var m in crew.Members.Where(m => m.IsActive))
                     {
-                        <li class="d-flex justify-content-between align-items-center border-bottom py-1">
+                        <pems-flex as="li" justify="between" align="center" css="border-bottom py-1">
                             <span class="small">@m.Employee?.FirstName @m.Employee?.LastName</span>
-                            <span class="d-flex align-items-center gap-2">
+                            <pems-flex as="span" align="center" gap="2">
                                 <pems-badge tone="neutral">@m.Role?.Name</pems-badge>
                                 <form asp-action="RemoveMember" method="post" class="d-inline">
                                     <input type="hidden" name="crewMemberId" value="@m.CrewMemberId" />
                                     <pems-button tone="danger" size="small" outline="true" css="py-0 px-1" type="submit" data-pems-confirm="این عضو از Crew خارج بشه؟"><pems-icon name="bi-x" /></pems-button>
                                 </form>
-                            </span>
-                        </li>
+                            </pems-flex>
+                        </pems-flex>
                     }
                 </ul>
 
-                <form asp-action="AddMember" method="post" class="d-flex gap-1">
+                <form asp-action="AddMember" method="post"><pems-flex gap="1">
                     <input type="hidden" name="crewId" value="@crew.CrewId" />
                     <pems-select scale="small" name="employeeId" required>
                         <option value="">@Localizer["کارمند..."]</option>
@@ -69,7 +69,7 @@
                         @foreach (var r in (IEnumerable<dynamic>)ViewBag.MaintenanceRoles) { <option value="@r.MaintenanceRoleId">@r.Name</option> }
                     </pems-select>
                     <pems-button tone="primary" size="small" outline="true" css="text-nowrap" type="submit"><pems-icon name="bi-plus-lg" /></pems-button>
-                </form>
+                </pems-flex></form>
             </pems-content-card>
         </pems-col>
     }

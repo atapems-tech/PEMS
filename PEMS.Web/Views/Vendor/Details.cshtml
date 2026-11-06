@@ -13,10 +13,10 @@
 
     @* Stitch: vendor_performance_scorecard / supplier_directory detail pane - only fields that exist in PEMS (no invented scores) *@
     <div class="vs-header">
-        <div class="d-flex flex-wrap align-items-center gap-2">
+        <pems-flex wrap="true" align="center" gap="2">
             <span class="vs-pill @(Model.IsActive ? "vs-pill--success" : "vs-pill--neutral")">@Localizer[Model.IsActive ? "Vs_Active" : "Vs_Inactive"]</span>
             <span class="vs-pill @VdrUi.RiskTone(Model.RiskLevel)">@Localizer["Vs_Risk"]: @VdrUi.Loc(Localizer, "St_", Model.RiskLevel)@(Model.RiskScore.HasValue ? " (" + Model.RiskScore.Value.ToString("P0") + ")" : "")</span>
-        </div>
+        </pems-flex>
         <div class="vs-actions">
             <a asp-controller="VDR" asp-action="Index" asp-route-vendorId="@Model.VendorId" class="vs-btn vs-btn--sm"><pems-icon name="bi-list" /> @Localizer["Vs_ViewVdrItems"]</a>
             <a asp-controller="Relationship" asp-action="Vendor" asp-route-id="@Model.VendorId" class="vs-btn vs-btn--sm"><pems-icon name="bi-diagram-3" /> @Localizer["Vs_ExploreRelationships"]</a>

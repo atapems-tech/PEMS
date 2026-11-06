@@ -68,11 +68,11 @@
                                         <span class="vs-pill vs-pill--info">@string.Format(Localizer["Mp_MeterEvery"].Value, p.MeterType, p.MeterInterval)</span>
                                         @if (p.NextDueMeterReading.HasValue) { <span class="text-muted">@string.Format(Localizer["Mp_DueAtReading"].Value, p.NextDueMeterReading)</span> }
                                     </div>
-                                    <form asp-action="RecordMeterReading" method="post" class="d-flex gap-1 mt-1">
+                                    <form class="mt-1" asp-action="RecordMeterReading" method="post"><pems-flex gap="1">
                                         <input type="hidden" name="planId" value="@p.MaintenancePlanId" />
                                         <pems-input class="pems-w-90" scale="small" type="number" step="0.01" name="currentReading" placeholder="@Localizer["Mp_CurrentReading"]" aria-label="@Localizer["Mp_CurrentReading"]" required />
                                         <pems-button tone="info" size="small" outline="true" type="submit">@Localizer["Mp_Record"]</pems-button>
-                                    </form>
+                                    </pems-flex></form>
                                 }
                             </td>
                             <td class="small vs-hide-md"><span class="vs-num">@(p.LastExecutionDate?.ToString("yyyy-MM-dd"))</span></td>

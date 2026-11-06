@@ -1,9 +1,9 @@
 ﻿@using Microsoft.Extensions.Localization
 @using PEMS.Web.Resources
 @inject IStringLocalizer<SharedResource> Localizer
-<div class="d-flex justify-content-end align-items-center mb-2">
+<pems-flex justify="end" align="center" css="mb-2">
     <pems-button tone="neutral" size="small" outline="true" as="a" asp-action="Index">@Localizer["Back to Dashboard"]</pems-button>
-</div>
+</pems-flex>
 
 <pems-row gap="3" css="mb-3">
     <pems-col md="4">
@@ -50,10 +50,10 @@
                 @foreach (var s in (IEnumerable<dynamic>)ViewBag.BySeverity)
                 {
                     var badgeClass = s.Severity == "Critical" ? "danger" : s.Severity == "Major" ? "warning" : "neutral";
-                    <li class="d-flex justify-content-between border-bottom py-1">
+                    <pems-flex as="li" justify="between" css="border-bottom py-1">
                         <pems-badge tone="@badgeClass">@s.Severity</pems-badge>
                         <strong>@s.Count</strong>
-                    </li>
+                    </pems-flex>
                 }
             </ul>
         </pems-content-card>
@@ -69,16 +69,16 @@
     }
     @if (byMonth.Any())
     {
-        <div class="d-flex align-items-end gap-2 pems-s-a2ed4726">
+        <pems-flex align="end" gap="2" css="pems-s-a2ed4726">
             @foreach (var m in byMonth)
             {
                 var heightPct = (int)((double)((int)m.Count) / maxCount * 100);
-                <div class="d-flex flex-column align-items-center pems-s-97445a8d">
+                <pems-flex dir="column" align="center" css="pems-s-97445a8d">
                     <div class="bg-primary pems-bar pems-h-pct-@Math.Clamp(heightPct, 0, 100)" title="@m.Count"></div>
                     <div class="text-muted small mt-1 pems-s-3e8135c8">@m.Month</div>
-                </div>
+                </pems-flex>
             }
-        </div>
+        </pems-flex>
     }
     else
     {

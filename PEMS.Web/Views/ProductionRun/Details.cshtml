@@ -4,12 +4,12 @@
 @inject IStringLocalizer<SharedResource> Localizer
 
 <pems-content-card css="mb-3">
-    <div class="d-flex justify-content-between align-items-start flex-wrap gap-3">
+    <pems-flex justify="between" align="start" wrap="true" gap="3">
         <div>
-            <div class="d-flex align-items-center gap-2 flex-wrap">
+            <pems-flex align="center" gap="2" wrap="true">
                 <h4 class="mb-0">@Model.RunNumber</h4>
                 <pems-badge tone="neutral">@Model.Status</pems-badge>
-            </div>
+            </pems-flex>
             <div class="text-muted">Order: <a asp-controller="ProductionOrder" asp-action="Details" asp-route-id="@Model.ProductionOrderId">@Model.OrderNumber</a> - @Model.MaterialCode (@Model.MaterialDescription)</div>
             <div class="text-muted small mt-1">
                 @(Model.StartDate?.ToString("yyyy-MM-dd HH:mm")) &rarr; @(Model.EndDate?.ToString("yyyy-MM-dd HH:mm"))
@@ -20,7 +20,7 @@
             </div>
             @if (Model.Status == "OnHold" && !string.IsNullOrEmpty(Model.HoldReason)) { <div class="text-warning small mt-1"><pems-icon name="bi-pause-circle" /> Held: @Model.HoldReason</div> }
         </div>
-        <div class="d-flex flex-column gap-1 pems-s-94253f99">
+        <pems-flex dir="column" gap="1" css="pems-s-94253f99">
             @if (Model.Status == "Planned")
             {
                 <form asp-action="Start" asp-route-id="@Model.ProductionRunId" method="post"><pems-button tone="primary" size="small" css="w-100" type="submit"><pems-icon name="bi-play-fill" /> @Localizer["Start"]</pems-button></form>
@@ -39,8 +39,8 @@
             {
                 <pems-button tone="danger" size="small" outline="true" css="w-100" type="button" data-bs-toggle="modal" data-bs-target="#cancelRunModal"><pems-icon name="bi-x-circle" /> @Localizer["Cancel"]</pems-button>
             }
-        </div>
-    </div>
+        </pems-flex>
+    </pems-flex>
 </pems-content-card>
 
 @{

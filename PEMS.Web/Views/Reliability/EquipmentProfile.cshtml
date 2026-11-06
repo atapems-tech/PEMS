@@ -14,14 +14,14 @@
     };
 }
 
-<div class="d-flex justify-content-between align-items-center mb-3">
+<pems-flex justify="between" align="center" css="mb-3">
     <h5 class="mb-0"><pems-icon name="bi-person-badge" /> Equipment Intelligence — @Model.TagNumber <span class="text-muted small">@Model.Name</span></h5>
     <div>
         <pems-button tone="neutral" size="small" outline="true" as="a" asp-action="Details" asp-route-id="@Model.EquipmentId">Reliability Detail</pems-button>
         <pems-button tone="primary" size="small" outline="true" as="a" asp-action="Ram" asp-route-id="@Model.EquipmentId">RAM / Weibull</pems-button>
         <pems-button tone="neutral" size="small" outline="true" as="a" asp-controller="EquipmentCriticality" asp-action="Index">@Localizer["Criticality"]</pems-button>
     </div>
-</div>
+</pems-flex>
 <p class="text-muted small">
     طبق «PEMS Phase 9» بند ۱۹: این صفحه چیزی محاسبه نمی‌کند - فقط داده‌ی واقعی از سرویس‌های
     موجود را کنار هم می‌گذارد. هر معیار در دسترس‌نبود، دلیل صریح دارد.

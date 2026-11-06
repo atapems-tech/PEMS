@@ -4,11 +4,11 @@
 @inject IStringLocalizer<SharedResource> Localizer
 
 <pems-content-card>
-    <div class="d-flex justify-content-end mb-2">
+    <pems-flex justify="end" css="mb-2">
         <pems-button tone="neutral" size="small" outline="true" type="button" onclick="PemsDataGrid.resetColumns('MaterialRequisitionQuotations')">
             <pems-icon name="bi-arrow-counterclockwise" /> @Localizer["Reset columns"]
         </pems-button>
-    </div>
+    </pems-flex>
     <div class="pems-grid-scroll">
     <pems-table kind="enterprise" css="pems-grid-table mb-0" data-grid-key="MaterialRequisitionQuotations">
         <thead>

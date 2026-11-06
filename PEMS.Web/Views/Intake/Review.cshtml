@@ -9,7 +9,7 @@
 }
 
 <pems-content-card css="mb-3">
-    <div class="d-flex justify-content-between align-items-center">
+    <pems-flex justify="between" align="center">
         <div>
             <h5 class="mb-0">@Model.FileName</h5>
             <span class="text-muted small">Project: @Model.ProjectName</span>
@@ -20,7 +20,7 @@
             }
             <pems-badge tone="@lb" css="fs-6">Confidence: @Model.ConfidenceLevel (@Model.ConfidenceScore.ToString("P0"))</pems-badge>
         </div>
-    </div>
+    </pems-flex>
 
     @if (Model.AIStatus == "Failed")
     {
@@ -97,9 +97,9 @@
             </pems-col>
         </pems-row>
 
-        <div class="mt-4 d-flex gap-2">
+        <pems-flex gap="2" css="mt-4">
             <pems-button tone="primary" type="submit"><pems-icon name="bi-signpost-split" /> Confirm &amp; Route</pems-button>
-        </div>
+        </pems-flex>
     </form>
 
     <form asp-action="Reject" method="post" class="mt-2">

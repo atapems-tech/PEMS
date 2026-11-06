@@ -128,12 +128,12 @@
 
         @if (isDraft && canEdit && requisitions?.Count > 0)
         {
-            <form asp-action="AddLinesFromRequisition" method="post" class="d-flex flex-wrap gap-2 align-items-end small mt-2">
+            <form class="small mt-2" asp-action="AddLinesFromRequisition" method="post"><pems-flex wrap="true" gap="2" align="end">
                 <input type="hidden" name="id" value="@Model.PoId" />
                 <div><pems-label for="poAddMr">@Localizer["Po_AddFromMr"]</pems-label>
                     <pems-select scale="small" id="poAddMr" name="mrId">@foreach (var m in requisitions.Where(m => m.ProjectId == Model.ProjectId)) { <option value="@m.Id">@m.Number - @m.Description</option> }</pems-select></div>
                 <pems-button tone="primary" size="small" outline="true" type="submit"><pems-icon name="bi-plus" aria-hidden="true" /> @Localizer["Po_AddLines"]</pems-button>
-            </form>
+            </pems-flex></form>
         }
     </pems-content-card>
 
@@ -173,9 +173,9 @@
         }
         @if (isSubmitted && (holdsRole || (a.ResponsibleNotSet && canEdit)))
         {
-            <form asp-action="Reject" method="post" class="mt-2 d-flex flex-wrap gap-2 align-items-end"><input type="hidden" name="id" value="@Model.PoId" />
+            <form class="mt-2" asp-action="Reject" method="post"><pems-flex wrap="true" gap="2" align="end"><input type="hidden" name="id" value="@Model.PoId" />
                 <div class="flex-grow-1"><pems-label css="small" for="poReject">@Localizer["Po_RejectReason"]</pems-label><pems-input scale="small" id="poReject" name="reason" required /></div>
-                <pems-button tone="danger" size="small" outline="true" type="submit"><pems-icon name="bi-arrow-counterclockwise" aria-hidden="true" /> @Localizer["Po_Reject"]</pems-button></form>
+                <pems-button tone="danger" size="small" outline="true" type="submit"><pems-icon name="bi-arrow-counterclockwise" aria-hidden="true" /> @Localizer["Po_Reject"]</pems-button></pems-flex></form>
         }
     </pems-content-card>
 }
@@ -213,11 +213,11 @@
                             }
                             else if (canRelease)
                             {
-                                <form asp-action="ReleaseInspection" method="post" class="d-flex gap-1">
+                                <form asp-action="ReleaseInspection" method="post"><pems-flex gap="1">
                                     <input type="hidden" name="id" value="@Model.PoId" /><input type="hidden" name="lineId" value="@r.PurchaseOrderLineId" />
                                     <pems-select scale="small" name="inspectionTestPlanId"><option value="">@Localizer["Rcv_NoItp"]</option>@foreach (var p in plans) { <option value="@p.InspectionTestPlanId">@p.ITPNumber</option> }</pems-select>
                                     <pems-button tone="neutral" size="small" outline="true" type="submit">@Localizer["Rcv_Release"]</pems-button>
-                                </form>
+                                </pems-flex></form>
                                 @if (r.InspectionRequired) { <div class="text-warning">@Localizer["Rcv_NotReleased"]</div> }
                             }
                             else

@@ -24,13 +24,13 @@
 
 <pems-content-card css="mb-3">
     <h6 class="mb-3">Documents by Workflow Stage</h6>
-    <div class="d-flex flex-wrap gap-2">
+    <pems-flex wrap="true" gap="2">
         @foreach (var s in new[] { "Uploaded", "AIProcessing", "Classified", "DisciplineAssigned", "UnderReview", "CommentOpen", "Revision", "Approved", "KnowledgeBase" })
         {
             var count = dash.ByStage.TryGetValue(s, out var c) ? c : 0;
             <pems-badge tone="neutral" css="p-2">@s: @count</pems-badge>
         }
-    </div>
+    </pems-flex>
 </pems-content-card>
 
 <pems-content-card>

@@ -9,10 +9,10 @@
 }
 
 <pems-content-card css="mb-3">
-    <form asp-action="Index" method="get" class="d-flex gap-2" role="search">
+    <form asp-action="Index" method="get" role="search"><pems-flex gap="2">
         <pems-input type="search" name="q" value="@query" placeholder="@Localizer["GlobalSearch_Placeholder"]" aria-label="@Localizer["GlobalSearch_Placeholder"]" minlength="2" autofocus />
         <pems-button tone="primary"><pems-icon name="bi-search" aria-hidden="true" /> @Localizer["Search"]</pems-button>
-    </form>
+    </pems-flex></form>
     <p class="text-muted small mt-2 mb-0">@Localizer["GlobalSearch_PaletteHint"]</p>
 </pems-content-card>
 
@@ -31,10 +31,10 @@
                 <ul class="list-unstyled mb-0">
                     @foreach (var item in g.Items)
                     {
-                        <li class="mb-1 d-flex justify-content-between gap-3 border-bottom pb-1">
+                        <pems-flex as="li" justify="between" gap="3" css="mb-1 border-bottom pb-1">
                             <a href="@item.Url">@item.Label</a>
                             <span class="text-muted small text-truncate">@item.Sub</span>
-                        </li>
+                        </pems-flex>
                     }
                 </ul>
             </pems-content-card>

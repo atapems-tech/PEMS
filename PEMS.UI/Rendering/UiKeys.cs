@@ -87,4 +87,5 @@ public static class UiKeys
     public const string Pager = "pager";
     public const string ContentCard = "content-card";
     public const string PageShell = "page-shell";
+    public const string Flex = "flex";
 }

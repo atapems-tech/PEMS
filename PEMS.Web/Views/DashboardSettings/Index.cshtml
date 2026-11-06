@@ -36,10 +36,10 @@
         </pems-table>
         </div>
 
-        <div class="d-flex gap-2 mt-3">
+        <pems-flex gap="2" css="mt-3">
             <pems-button tone="primary" type="submit"><pems-icon name="bi-check-lg" /> Save Layout</pems-button>
             <pems-button tone="neutral" outline="true" as="a" asp-controller="Home" asp-action="Index">@Localizer["Back to Dashboard"]</pems-button>
-        </div>
+        </pems-flex>
     </form>
 
     <form asp-action="Reset" method="post" class="mt-2">

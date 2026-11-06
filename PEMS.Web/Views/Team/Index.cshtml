@@ -3,26 +3,26 @@
 @using PEMS.Web.Resources
 @inject IStringLocalizer<SharedResource> Localizer
 
-<div class="d-flex justify-content-end align-items-center gap-2 mb-2">
+<pems-flex justify="end" align="center" gap="2" css="mb-2">
     <pems-button tone="neutral" size="small" outline="true" as="a" asp-action="OrganizationChart">
         <pems-icon name="bi-diagram-3" /> @Localizer["نمودار سازمانی"]
     </pems-button>
     <pems-button tone="primary" size="small" type="button" data-bs-toggle="modal" data-bs-target="#createTeamModal">
         <pems-icon name="bi-plus-lg" /> @Localizer["تیم جدید"]
     </pems-button>
-</div>
+</pems-flex>
 
 <pems-row gap="3">
     @foreach (var team in Model)
     {
         <pems-col md="6">
             <pems-content-card css="h-100" id="team-card-@team.TeamId">
-                <div class="d-flex justify-content-between align-items-start">
+                <pems-flex justify="between" align="start">
                     <div>
                         <h6 class="mb-0">@team.Code — @team.Name</h6>
                         <span class="text-muted small">@team.MaintenanceGroup?.Name (@team.MaintenanceGroup?.Discipline?.Name) @(string.IsNullOrEmpty(team.Shift) ? "" : $"— {team.Shift}")</span>
                     </div>
-                    <div class="d-flex align-items-center gap-2">
+                    <pems-flex align="center" gap="2">
                         @if (team.SupervisorEmployee != null)
                         {
                             <pems-badge tone="primary"><pems-icon name="bi-star" /> سرپرست: @team.SupervisorEmployee.FirstName @team.SupervisorEmployee.LastName</pems-badge>
@@ -30,8 +30,8 @@
                         <pems-button tone="neutral" size="small" outline="true" as="a" asp-action="TeamDetails" asp-route-teamId="@team.TeamId">
                             <pems-icon name="bi-diagram-2" /> @Localizer["جزئیات و نیروی انسانی"]
                         </pems-button>
-                    </div>
-                </div>
+                    </pems-flex>
+                </pems-flex>
 
                 <hr class="my-2" />
 
@@ -39,20 +39,20 @@
                 <ul class="list-unstyled mb-2">
                     @foreach (var m in team.Members.Where(m => m.IsActive))
                     {
-                        <li class="d-flex justify-content-between align-items-center border-bottom py-1">
+                        <pems-flex as="li" justify="between" align="center" css="border-bottom py-1">
                             <span class="small">@m.Employee?.FirstName @m.Employee?.LastName</span>
-                            <span class="d-flex align-items-center gap-2">
+                            <pems-flex as="span" align="center" gap="2">
                                 <pems-badge tone="neutral">@m.Role?.Name</pems-badge>
                                 <form asp-action="RemoveMember" method="post" class="d-inline">
                                     <input type="hidden" name="teamMemberId" value="@m.TeamMemberId" />
                                     <pems-button tone="danger" size="small" outline="true" css="py-0 px-1" type="submit" data-pems-confirm="این عضو از تیم خارج بشه؟"><pems-icon name="bi-x" /></pems-button>
                                 </form>
-                            </span>
-                        </li>
+                            </pems-flex>
+                        </pems-flex>
                     }
                 </ul>
 
-                <form asp-action="AddMember" method="post" class="d-flex gap-1">
+                <form asp-action="AddMember" method="post"><pems-flex gap="1">
                     <input type="hidden" name="teamId" value="@team.TeamId" />
                     <pems-select scale="small" name="employeeId" required>
                         <option value="">@Localizer["کارمند..."]</option>
@@ -66,7 +66,7 @@
                         }
                     </pems-select>
                     <pems-button tone="primary" size="small" outline="true" css="text-nowrap" type="submit"><pems-icon name="bi-plus-lg" /></pems-button>
-                </form>
+                </pems-flex></form>
             </pems-content-card>
         </pems-col>
     }

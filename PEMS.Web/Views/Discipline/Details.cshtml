@@ -10,15 +10,15 @@
 
 
 <pems-content-card css="mb-3">
-    <div class="d-flex justify-content-between align-items-center">
+    <pems-flex justify="between" align="center">
         <h5 class="mb-0">@s.Code &mdash; @s.Name Workspace</h5>
-        <form method="get" class="d-flex gap-2">
+        <form method="get"><pems-flex gap="2">
             <pems-select scale="small" name="projectId" onchange="this.form.submit()">
                 <option value="">@Localizer["All Projects"]</option>
                 @foreach (var p in projects) { <option value="@p.ProjectId" selected="@(p.ProjectId == (int?)ViewBag.SelectedProjectId)">@p.ProjectName</option> }
             </pems-select>
-        </form>
-    </div>
+        </pems-flex></form>
+    </pems-flex>
 </pems-content-card>
 
 <pems-row gap="3" css="mb-3">

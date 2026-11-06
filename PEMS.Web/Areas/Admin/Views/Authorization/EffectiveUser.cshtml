@@ -6,9 +6,9 @@
 
 <pems-page-shell kind="admin">
     <div class="admin-hero">
-        <div class="d-flex align-items-center gap-3">
+        <pems-flex align="center" gap="3">
             <div><p>@Localizer["See what a User can do, and which Role/Scope grants it."]</p></div>
-        </div>
+        </pems-flex>
     </div>
     <pems-content-card>
         <pems-nav css="mb-3">
@@ -16,7 +16,7 @@
             <li class="nav-item"><a class="nav-link active" asp-action="EffectiveUser">@Localizer["By User"]</a></li>
         </pems-nav>
 
-        <form method="get" class="d-flex gap-2 align-items-end mb-3 pems-s-0fd8744d">
+        <form class="mb-3 pems-s-0fd8744d" method="get"><pems-flex gap="2" align="end">
             <div class="flex-grow-1">
                 <pems-label>@Localizer["User"]</pems-label>
                 <pems-select name="userId" onchange="this.form.submit()">
@@ -28,7 +28,7 @@
                 </pems-select>
             </div>
             <pems-button tone="primary" type="submit">@Localizer["View"]</pems-button>
-        </form>
+        </pems-flex></form>
 
         @if (Model.SelectedUserId == null)
         {

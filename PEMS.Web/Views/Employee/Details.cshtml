@@ -56,25 +56,25 @@
 
 <!-- Profile Header -->
 <pems-content-card css="mb-3 position-relative overflow-hidden">
-    <div class="d-flex flex-column flex-md-row gap-4 align-items-start">
+    <pems-flex dir="column" gap="4" align="start" css="flex-md-row">
         @if (!string.IsNullOrEmpty(Model.PhotoPath))
         {
             <img src="@Model.PhotoPath" class="rounded-4 flex-shrink-0 pems-photo-96" alt="@Model.FirstName @Model.LastName" />
         }
         else
         {
-            <div class="rounded-4 d-flex align-items-center justify-content-center bg-secondary-subtle text-secondary-emphasis flex-shrink-0 pems-s-29328aea">
+            <pems-flex align="center" justify="center" css="rounded-4 bg-secondary-subtle text-secondary-emphasis flex-shrink-0 pems-s-29328aea">
                 @Initials(Model.FirstName, Model.LastName)
-            </div>
+            </pems-flex>
         }
         <div class="flex-grow-1">
-            <div class="d-flex align-items-center gap-2 flex-wrap mb-1">
+            <pems-flex align="center" gap="2" wrap="true" css="mb-1">
                 <h4 class="mb-0">@Model.FirstName @Model.LastName</h4>
                 <pems-badge tone="none" css="rounded-pill @(Model.IsActive ? "bg-success-subtle text-success-emphasis" : "bg-secondary-subtle text-secondary-emphasis") d-inline-flex align-items-center gap-1">
                     <pems-icon name="bi-circle-fill" css="pems-s-dec715c2" />
                     @L(Model.IsActive ? "Active" : "Inactive", Model.IsActive ? "فعال" : "غیرفعال")
                 </pems-badge>
-            </div>
+            </pems-flex>
             <p class="text-muted mb-1">
                 @Dash(Model.Position) &bull; @Dash(Model.Department?.Name)
                 @if (Model.Discipline != null) { <text>&bull; @Model.Discipline.Name</text> }
@@ -83,26 +83,26 @@
             {
                 <p class="small text-muted font-monospace mb-3">ID: @Model.PersonnelCode</p>
             }
-            <div class="d-flex gap-2 flex-wrap mt-2">
+            <pems-flex gap="2" wrap="true" css="mt-2">
                 <pems-button tone="primary" size="small" type="button" data-bs-toggle="modal" data-bs-target="#editProfileModal">
                     <pems-icon name="bi-pencil" /> @L("Edit Profile", "ویرایش پروفایل")
                 </pems-button>
                 <pems-button tone="neutral" size="small" outline="true" as="a" asp-action="Index">
                     <pems-icon name="bi-arrow-@(isRtl ? "right" : "left")" /> @L("Back to list", "بازگشت به فهرست")
                 </pems-button>
-            </div>
+            </pems-flex>
         </div>
-    </div>
+    </pems-flex>
 </pems-content-card>
 
 <!-- Row 1: Employment Details (large) + Current Team (compact) -->
 <pems-row gap="3" css="mb-3 align-items-stretch">
     <pems-col lg="8">
         <pems-content-card css="h-100">
-            <h6 class="d-flex align-items-center gap-2 pb-2 mb-3 border-bottom">
+            <pems-flex as="h6" align="center" gap="2" css="pb-2 mb-3 border-bottom">
                 <pems-icon name="bi-briefcase" css="text-warning" />
                 <span>@L("Employment Details", "جزئیات استخدام")</span>
-            </h6>
+            </pems-flex>
             <pems-row gap="3">
                 <pems-col sm="6">
                     <p class="text-uppercase text-muted small mb-1">@L("Organizational Position", "سمت سازمانی")</p>
@@ -124,12 +124,12 @@
                     <p class="text-uppercase text-muted small mb-1">@L("Team Supervisor", "سرپرست تیم")</p>
                     @if (manager != null)
                     {
-                        <div class="d-flex align-items-center gap-2">
-                            <div class="rounded-circle bg-secondary-subtle text-secondary-emphasis d-flex align-items-center justify-content-center small fw-bold pems-s-8fd988a7">
+                        <pems-flex align="center" gap="2">
+                            <pems-flex align="center" justify="center" css="rounded-circle bg-secondary-subtle text-secondary-emphasis small fw-bold pems-s-8fd988a7">
                                 @Initials(manager.FirstName, manager.LastName)
-                            </div>
+                            </pems-flex>
                             <a asp-action="Details" asp-route-id="@manager.EmployeeId" class="fw-semibold text-decoration-none">@manager.FirstName @manager.LastName</a>
-                        </div>
+                        </pems-flex>
                     }
                     else
                     {
@@ -179,10 +179,10 @@
 
     <pems-col lg="4">
         <pems-content-card css="h-100">
-            <h6 class="d-flex align-items-center gap-2 pb-2 mb-3 border-bottom">
+            <pems-flex as="h6" align="center" gap="2" css="pb-2 mb-3 border-bottom">
                 <pems-icon name="bi-people" css="text-warning" />
                 <span>@L("Current Team", "تیم فعلی")</span>
-            </h6>
+            </pems-flex>
             @if (currentMembership != null)
             {
                 <p class="text-uppercase text-muted small mb-1">@L("Team", "تیم")</p>
@@ -204,10 +204,10 @@
 <pems-row gap="3" css="mb-3">
     <pems-col span="12">
         <pems-content-card>
-            <h6 class="d-flex align-items-center gap-2 pb-2 mb-3 border-bottom">
+            <pems-flex as="h6" align="center" gap="2" css="pb-2 mb-3 border-bottom">
                 <pems-icon name="bi-shield-lock" css="text-warning" />
                 <span>@L("System Account & Authorization", "حساب کاربری و دسترسی")</span>
-            </h6>
+            </pems-flex>
             @if (linkedUser == null)
             {
                 <p class="text-muted mb-0">@L("No system account is linked to this employee.", "حساب کاربری به این کارمند متصل نیست.")</p>
@@ -247,27 +247,27 @@
 
 <!-- Row 2: Contact Information (full width, 3 tiles) -->
 <pems-content-card css="mb-3">
-    <h6 class="d-flex align-items-center gap-2 pb-2 mb-3 border-bottom">
+    <pems-flex as="h6" align="center" gap="2" css="pb-2 mb-3 border-bottom">
         <pems-icon name="bi-person-vcard" css="text-warning" />
         <span>@L("Contact Information", "اطلاعات تماس")</span>
-    </h6>
+    </pems-flex>
     <pems-row gap="3">
         <pems-col md="4">
-            <div class="d-flex align-items-start gap-3 p-3 rounded-3 bg-body-tertiary h-100">
-                <div class="rounded-circle bg-secondary-subtle d-flex align-items-center justify-content-center flex-shrink-0 pems-s-660e4429">
+            <pems-flex align="start" gap="3" css="p-3 rounded-3 bg-body-tertiary h-100">
+                <pems-flex align="center" justify="center" css="rounded-circle bg-secondary-subtle flex-shrink-0 pems-s-660e4429">
                     <pems-icon name="bi-phone" />
-                </div>
+                </pems-flex>
                 <div>
                     <p class="text-uppercase text-muted small mb-1">@L("Mobile Phone", "تلفن همراه")</p>
                     <p class="fw-semibold mb-0 font-monospace">@Dash(Model.Phone)</p>
                 </div>
-            </div>
+            </pems-flex>
         </pems-col>
         <pems-col md="4">
-            <div class="d-flex align-items-start gap-3 p-3 rounded-3 bg-body-tertiary h-100">
-                <div class="rounded-circle bg-secondary-subtle d-flex align-items-center justify-content-center flex-shrink-0 pems-s-660e4429">
+            <pems-flex align="start" gap="3" css="p-3 rounded-3 bg-body-tertiary h-100">
+                <pems-flex align="center" justify="center" css="rounded-circle bg-secondary-subtle flex-shrink-0 pems-s-660e4429">
                     <pems-icon name="bi-envelope" />
-                </div>
+                </pems-flex>
                 <div class="overflow-hidden">
                     <p class="text-uppercase text-muted small mb-1">@L("Work Email", "ایمیل کاری")</p>
                     @if (!string.IsNullOrWhiteSpace(Model.Email))
@@ -279,18 +279,18 @@
                         <p class="fw-semibold mb-0">—</p>
                     }
                 </div>
-            </div>
+            </pems-flex>
         </pems-col>
         <pems-col md="4">
-            <div class="d-flex align-items-start gap-3 p-3 rounded-3 bg-body-tertiary h-100">
-                <div class="rounded-circle bg-secondary-subtle d-flex align-items-center justify-content-center flex-shrink-0 pems-s-660e4429">
+            <pems-flex align="start" gap="3" css="p-3 rounded-3 bg-body-tertiary h-100">
+                <pems-flex align="center" justify="center" css="rounded-circle bg-secondary-subtle flex-shrink-0 pems-s-660e4429">
                     <pems-icon name="bi-house" />
-                </div>
+                </pems-flex>
                 <div>
                     <p class="text-uppercase text-muted small mb-1">@L("Home Address", "آدرس منزل")</p>
                     <p class="fw-semibold mb-0">@Dash(Model.HomeAddress)</p>
                 </div>
-            </div>
+            </pems-flex>
         </pems-col>
     </pems-row>
 </pems-content-card>
@@ -299,12 +299,12 @@
 <pems-row gap="3">
     <pems-col md="6">
         <pems-content-card css="h-100">
-            <div class="d-flex justify-content-between align-items-center mb-3 pb-2 border-bottom">
-                <h6 class="mb-0 d-flex align-items-center gap-2"><pems-icon name="bi-cash-coin" css="text-warning" /> @L("Labor Rate", "نرخ دستمزد")</h6>
+            <pems-flex justify="between" align="center" css="mb-3 pb-2 border-bottom">
+                <pems-flex as="h6" align="center" gap="2" css="mb-0"><pems-icon name="bi-cash-coin" css="text-warning" /> @L("Labor Rate", "نرخ دستمزد")</pems-flex>
                 <pems-button tone="primary" size="small" outline="true" type="button" data-bs-toggle="modal" data-bs-target="#setRateModal">
                     <pems-icon name="bi-plus-lg" /> @L("New Rate", "ثبت نرخ جدید")
                 </pems-button>
-            </div>
+            </pems-flex>
             <pems-table scale="small">
                 <thead><tr><th>@L("Type", "نوع")</th><th>@L("Rate", "نرخ")</th><th>@L("From", "از تاریخ")</th><th>@L("To", "تا تاریخ")</th></tr></thead>
                 <tbody>
@@ -330,7 +330,7 @@
 
     <pems-col md="6">
         <pems-content-card css="h-100">
-            <h6 class="mb-3 pb-2 border-bottom d-flex align-items-center gap-2"><pems-icon name="bi-diagram-3" css="text-warning" /> @L("Team Membership History", "تاریخچه‌ی عضویت تیم")</h6>
+            <pems-flex as="h6" align="center" gap="2" css="mb-3 pb-2 border-bottom"><pems-icon name="bi-diagram-3" css="text-warning" /> @L("Team Membership History", "تاریخچه‌ی عضویت تیم")</pems-flex>
             <pems-table scale="small">
                 <thead><tr><th>@L("Team", "تیم")</th><th>@L("Role", "نقش")</th><th>@L("From", "از")</th><th>@L("To", "تا")</th></tr></thead>
                 <tbody>
@@ -351,16 +351,16 @@
 
     <pems-col md="6">
         <pems-content-card css="h-100">
-            <div class="d-flex justify-content-between align-items-center mb-3 pb-2 border-bottom">
-                <h6 class="mb-0 d-flex align-items-center gap-2"><pems-icon name="bi-mortarboard" css="text-warning" /> @L("Skills", "مهارت‌ها")</h6>
+            <pems-flex justify="between" align="center" css="mb-3 pb-2 border-bottom">
+                <pems-flex as="h6" align="center" gap="2" css="mb-0"><pems-icon name="bi-mortarboard" css="text-warning" /> @L("Skills", "مهارت‌ها")</pems-flex>
                 <pems-button tone="primary" size="small" outline="true" type="button" data-bs-toggle="modal" data-bs-target="#addSkillModal">
                     <pems-icon name="bi-plus-lg" /> @L("Add", "افزودن")
                 </pems-button>
-            </div>
+            </pems-flex>
             <ul class="list-unstyled mb-0">
                 @foreach (var es in employeeSkills)
                 {
-                    <li class="d-flex justify-content-between align-items-center border-bottom py-2">
+                    <pems-flex as="li" justify="between" align="center" css="border-bottom py-2">
                         <span>
                             <span class="small">@es.Skill?.Name</span>
                             <pems-badge tone="neutral">@es.ProficiencyLevel</pems-badge>
@@ -371,7 +371,7 @@
                             <input type="hidden" name="employeeId" value="@Model.EmployeeId" />
                             <pems-button tone="danger" size="small" outline="true" css="py-0 px-1" type="submit" data-pems-confirm="@L("Remove this skill?", "این مهارت حذف بشه؟")"><pems-icon name="bi-x" /></pems-button>
                         </form>
-                    </li>
+                    </pems-flex>
                 }
             </ul>
             @if (!employeeSkills.Any()) { <p class="text-muted small text-center py-2 mb-0">@L("No skills recorded.", "مهارتی ثبت نشده.")</p> }
@@ -380,17 +380,17 @@
 
     <pems-col md="6">
         <pems-content-card css="h-100">
-            <div class="d-flex justify-content-between align-items-center mb-3 pb-2 border-bottom">
-                <h6 class="mb-0 d-flex align-items-center gap-2"><pems-icon name="bi-patch-check" css="text-warning" /> @L("Qualifications", "صلاحیت‌ها")</h6>
+            <pems-flex justify="between" align="center" css="mb-3 pb-2 border-bottom">
+                <pems-flex as="h6" align="center" gap="2" css="mb-0"><pems-icon name="bi-patch-check" css="text-warning" /> @L("Qualifications", "صلاحیت‌ها")</pems-flex>
                 <pems-button tone="primary" size="small" outline="true" type="button" data-bs-toggle="modal" data-bs-target="#addQualificationModal">
                     <pems-icon name="bi-plus-lg" /> @L("Add", "افزودن")
                 </pems-button>
-            </div>
+            </pems-flex>
             <ul class="list-unstyled mb-0">
                 @foreach (var eq in employeeQualifications)
                 {
                     var status = ExpiryStatus(eq.ExpiryDate);
-                    <li class="d-flex justify-content-between align-items-center border-bottom py-2">
+                    <pems-flex as="li" justify="between" align="center" css="border-bottom py-2">
                         <span>
                             <span class="small">@eq.Qualification?.Name</span>
                             @if (eq.ExpiryDate.HasValue) { <pems-badge tone="none" css="@ExpiryBadgeClass(status)">@status — @eq.ExpiryDate.Value.ToString("yyyy-MM-dd")</pems-badge> }
@@ -401,7 +401,7 @@
                             <input type="hidden" name="employeeId" value="@Model.EmployeeId" />
                             <pems-button tone="danger" size="small" outline="true" css="py-0 px-1" type="submit" data-pems-confirm="@L("Remove this qualification?", "این صلاحیت حذف بشه؟")"><pems-icon name="bi-x" /></pems-button>
                         </form>
-                    </li>
+                    </pems-flex>
                 }
             </ul>
             @if (!employeeQualifications.Any()) { <p class="text-muted small text-center py-2 mb-0">@L("No qualifications recorded.", "صلاحیتی ثبت نشده.")</p> }
@@ -410,17 +410,17 @@
 
     <pems-col md="6">
         <pems-content-card css="h-100">
-            <div class="d-flex justify-content-between align-items-center mb-3 pb-2 border-bottom">
-                <h6 class="mb-0 d-flex align-items-center gap-2"><pems-icon name="bi-award" css="text-warning" /> @L("Certifications", "گواهینامه‌ها")</h6>
+            <pems-flex justify="between" align="center" css="mb-3 pb-2 border-bottom">
+                <pems-flex as="h6" align="center" gap="2" css="mb-0"><pems-icon name="bi-award" css="text-warning" /> @L("Certifications", "گواهینامه‌ها")</pems-flex>
                 <pems-button tone="primary" size="small" outline="true" type="button" data-bs-toggle="modal" data-bs-target="#addCertificationModal">
                     <pems-icon name="bi-plus-lg" /> @L("Add", "افزودن")
                 </pems-button>
-            </div>
+            </pems-flex>
             <ul class="list-unstyled mb-0">
                 @foreach (var ec in employeeCertifications)
                 {
                     var status = ExpiryStatus(ec.ExpiryDate);
-                    <li class="d-flex justify-content-between align-items-center border-bottom py-2">
+                    <pems-flex as="li" justify="between" align="center" css="border-bottom py-2">
                         <span>
                             <span class="small">@ec.Certification?.Name</span>
                             @if (!string.IsNullOrWhiteSpace(ec.CertificateNumber)) { <span class="text-muted small">#@ec.CertificateNumber</span> }
@@ -431,7 +431,7 @@
                             <input type="hidden" name="employeeId" value="@Model.EmployeeId" />
                             <pems-button tone="danger" size="small" outline="true" css="py-0 px-1" type="submit" data-pems-confirm="@L("Remove this certification?", "این گواهینامه حذف بشه؟")"><pems-icon name="bi-x" /></pems-button>
                         </form>
-                    </li>
+                    </pems-flex>
                 }
             </ul>
             @if (!employeeCertifications.Any()) { <p class="text-muted small text-center py-2 mb-0">@L("No certifications recorded.", "گواهینامه‌ای ثبت نشده.")</p> }

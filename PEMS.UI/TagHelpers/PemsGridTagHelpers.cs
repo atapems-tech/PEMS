@@ -112,3 +112,28 @@ public sealed class PemsPageShellTagHelper(IPemsComponentRenderer renderer) : Ta
         await ListRender.Replace<PemsPageShell>(renderer, output, new PageShellOptions { Kind = Kind, Css = Css, PageClass = pageClass, Attributes = attrs }, await ListRender.Inner(output));
     }
 }
+
+/// <summary>
+/// A flex row or column: <c>&lt;pems-flex justify="between" align="center" wrap="true" gap="2" css="mb-3"&gt;</c> writes
+/// <c>&lt;div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-3"&gt;</c>. <c>dir="column"</c> stacks; <c>as</c> is div (default), span, li, header, footer, section, h5 or h6;
+/// <c>inline="true"</c> writes <c>d-inline-flex</c>. Every other attribute (id, data-*) is kept.
+/// </summary>
+[HtmlTargetElement("pems-flex")]
+[PemsFacade(UiKeys.Flex)]
+public sealed class PemsFlexTagHelper(IPemsComponentRenderer renderer) : TagHelper
+{
+    [HtmlAttributeName("as")] public string As { get; set; } = "div";
+    [HtmlAttributeName("inline")] public bool Inline { get; set; }
+    [HtmlAttributeName("dir")] public string? Dir { get; set; }
+    [HtmlAttributeName("justify")] public string? Justify { get; set; }
+    [HtmlAttributeName("align")] public string? Align { get; set; }
+    [HtmlAttributeName("wrap")] public bool Wrap { get; set; }
+    [HtmlAttributeName("gap")] public string? Gap { get; set; }
+    [HtmlAttributeName("css")] public string? Css { get; set; }
+
+    public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
+    {
+        var (pageClass, attrs) = ListRender.Page(output);
+        await ListRender.Replace<PemsFlex>(renderer, output, new FlexOptions { As = As, Inline = Inline, Dir = Dir, Justify = Justify, Align = Align, Wrap = Wrap, Gap = Gap, Css = Css, PageClass = pageClass, Attributes = attrs }, await ListRender.Inner(output));
+    }
+}

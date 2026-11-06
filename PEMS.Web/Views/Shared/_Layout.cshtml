@@ -89,7 +89,7 @@
       data-pems-rte-texts="@PEMS.Web.Helpers.RichTextEditorTexts.Json(Localizer)" data-pems-rte-lib="@Url.Content("~/lib/quill/")">
     <a class="pems-skip-link" href="#pemsMainContent">@Localizer["Shell_SkipToContent"]</a>
     <header class="pems-topbar">
-        <div class="d-flex align-items-center gap-2">
+        <pems-flex align="center" gap="2">
             <button class="sidebar-toggle-btn" id="sidebarToggleBtn" type="button" aria-label="@Localizer["Shell_ToggleMenu"]">
                 <pems-icon name="bi-list" />
             </button>
@@ -97,18 +97,18 @@
                 <span class="brand-icon"><pems-icon name="bi-diagram-3-fill" /></span>
                 <span class="d-none d-sm-inline">@Localizer["PEMS"]</span>
             </a>
-        </div>
+        </pems-flex>
 
         <div class="pems-search d-none d-md-block">
-            <form class="d-flex" role="search" asp-controller="GlobalSearch" asp-action="Index" asp-area="" method="get">
+            <form role="search" asp-controller="GlobalSearch" asp-action="Index" asp-area="" method="get"><pems-flex>
                 <pems-input type="search" name="q" placeholder="@Localizer["Palette_OpenHint"]" aria-label="@Localizer["Palette_OpenHint"]" aria-keyshortcuts="Control+K" data-pems-command-palette-trigger />
-            </form>
+            </pems-flex></form>
         </div>
         <pems-button tone="none" css="btn-link text-secondary d-md-none px-2" type="button" data-pems-command-palette-open title="@Localizer["Palette_OpenHint"]" aria-label="@Localizer["Palette_OpenHint"]" aria-keyshortcuts="Control+K">
             <pems-icon name="bi-search" aria-hidden="true" />
         </pems-button>
 
-        <div class="d-flex align-items-center gap-3">
+        <pems-flex align="center" gap="3">
             <div class="dropdown">
                 <a href="#" class="text-secondary dropdown-toggle" data-bs-toggle="dropdown" title="@Localizer["Shell_ChangeTheme"]">
                     <pems-icon name="bi-palette-fill" css="fs-5" />
@@ -186,7 +186,7 @@
                     </li>
                 </pems-dropdown-menu>
             </div>
-        </div>
+        </pems-flex>
     </header>
 
     @* پنل راهنما باید بیرون از <header> باشد (Stacking Context هدر z-index:1030 است؛ در RTL پنل زیر نوار کناری می‌رفت) *@
@@ -214,19 +214,19 @@
         @if (TempData["Message"] != null)
         {
             <pems-toast tone="success" role="alert" data-bs-delay="5000" data-bs-autohide="true">
-                <div class="d-flex">
+                <pems-flex>
                     <div class="toast-body"><pems-icon name="bi-check-circle-fill" css="me-1" /> @TempData["Message"]</div>
                     <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
-                </div>
+                </pems-flex>
             </pems-toast>
         }
         @if (TempData["Error"] != null)
         {
             <pems-toast tone="danger" role="alert" data-bs-delay="7000" data-bs-autohide="true">
-                <div class="d-flex">
+                <pems-flex>
                     <div class="toast-body"><pems-icon name="bi-exclamation-triangle-fill" css="me-1" /> @TempData["Error"]</div>
                     <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
-                </div>
+                </pems-flex>
             </pems-toast>
         }
         <div id="liveToastArea"></div>

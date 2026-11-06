@@ -636,7 +636,7 @@
                                     @if (l.ConfidentialityLevel != "Public" && l.ConfidentialityLevel != "Internal" || !string.IsNullOrEmpty(l.RelatedDocumentNo) || !string.IsNullOrEmpty(l.RelatedMRNumber) || l.OpenReferralsCount > 0 || l.Tags.Any()
                                         || l.Status == "ReturnedForRevision" || l.IsRevived || l.MyReminderAt.HasValue || (l.IsTrashed && !inTrash))
                                     {
-                                        <div class="lp-badges d-flex flex-wrap gap-1">
+                                        <pems-flex wrap="true" gap="1" css="lp-badges">
                                             @if (l.Status == "ReturnedForRevision") { <span class="ct-chip ct-chip--return"><pems-icon name="bi-arrow-return-left" aria-hidden="true" /> @Localizer["Ct_ReturnedChip"]</span> }
                                             @if (l.IsRevived) { <span class="ct-chip ct-chip--revived"><pems-icon name="bi-arrow-repeat" aria-hidden="true" /> @Localizer["Ct_RevivedChip"]</span> }
                                             @if (l.MyReminderAt.HasValue) { <span class="ct-chip ct-chip--remind" title="@l.MyReminderAt.Value.ToString("yyyy-MM-dd HH:mm")"><pems-icon name="bi-bell" aria-hidden="true" /> @l.MyReminderAt.Value.ToString("MM-dd")</span> }
@@ -646,7 +646,7 @@
                                             @if (!string.IsNullOrEmpty(l.RelatedMRNumber)) { <pems-badge tone="info"><pems-icon name="bi-cart-check" /> @l.RelatedMRNumber</pems-badge> }
                                             @if (l.OpenReferralsCount > 0) { <pems-badge tone="@(l.HasOverdueReferral ? "danger" : "warning")"><pems-icon name="bi-signpost-split" /> @l.OpenReferralsCount</pems-badge> }
                                             @foreach (var tag in l.Tags) { <pems-badge tone="none" css="bg-@tag.Color">@tag.Name</pems-badge> }
-                                        </div>
+                                        </pems-flex>
                                     }
                                 </td>
                                 <td class="lp-no">@l.LetterNumber</td>
@@ -739,7 +739,7 @@
         <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="@Localizer["Cancel"]"></button>
     </div>
     <div class="offcanvas-body">
-        <div class="d-flex flex-column gap-1">
+        <pems-flex dir="column" gap="1">
             <a asp-action="Index" class="pems-folder-link @(isDefaultView ? "active" : "")"><pems-icon name="bi-inboxes" /> All Correspondence</a>
             <a asp-action="Index" asp-route-status="Draft" class="pems-folder-link @(currentStatus == "Draft" ? "active" : "")"><pems-icon name="bi-file-earmark" /> Drafts</a>
             <a asp-action="Index" asp-route-status="PendingApproval" class="pems-folder-link @(currentStatus == "PendingApproval" ? "active" : "")"><pems-icon name="bi-hourglass-split" /> @Localizer["Under Review"]</a>
@@ -750,18 +750,18 @@
             <a asp-action="Index" asp-route-status="Sent" class="pems-folder-link @(currentStatus == "Sent" ? "active" : "")"><pems-icon name="bi-send" /> @Localizer["Lc_FolderSent"]</a>
             <a asp-action="Index" asp-route-status="Archived" class="pems-folder-link @(currentStatus == "Archived" ? "active" : "")"><pems-icon name="bi-box-seam" /> @Localizer["Lc_FolderArchived"]</a>
             <a asp-action="Index" asp-route-starred="true" class="pems-folder-link @(currentStarred ? "active" : "")"><pems-icon name="bi-star-fill" css="text-warning" /> Starred</a>
-        </div>
+        </pems-flex>
 
         @if (disciplines.Any())
         {
             <hr />
             <h2 class="h6 text-muted small text-uppercase mb-2">@Localizer["Discipline Shortcuts"]</h2>
-            <div class="d-flex flex-column gap-1">
+            <pems-flex dir="column" gap="1">
                 @foreach (var d in disciplines)
                 {
                     <pems-button tone="neutral" size="small" outline="true" css="text-start" as="a" asp-action="Index" asp-route-disciplineId="@d.DisciplineId">@d.Name</pems-button>
                 }
-            </div>
+            </pems-flex>
         }
     </div>
 </pems-offcanvas>

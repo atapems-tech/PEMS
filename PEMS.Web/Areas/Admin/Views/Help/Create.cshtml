@@ -9,9 +9,9 @@
     <form asp-action="Create" method="post">
         @Html.AntiForgeryToken()
         @await Html.PartialAsync("_HelpArticleForm", Model)
-        <div class="mt-3 d-flex gap-2">
+        <pems-flex gap="2" css="mt-3">
             <pems-button tone="primary" type="submit">@Localizer["Create"]</pems-button>
             <pems-button as="a" tone="neutral" outline="true" asp-action="Index">@Localizer["Cancel"]</pems-button>
-        </div>
+        </pems-flex>
     </form>
 </pems-content-card>

@@ -26,8 +26,8 @@
     <link rel="stylesheet" href="~/css/pems-team-details.css" asp-append-version="true" />
 }
 
-<div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-3">
-    <div class="d-flex align-items-center gap-2 flex-wrap">
+<pems-flex justify="between" align="center" wrap="true" gap="2" css="mb-3">
+    <pems-flex align="center" gap="2" wrap="true">
         <pems-button tone="neutral" size="small" outline="true" as="a" asp-action="OrganizationChart">
             <pems-icon name="bi-diagram-3" /> @Localizer["نمودار سازمانی"]
         </pems-button>
@@ -41,9 +41,9 @@
                 @Localizer["تیم والد"]
             </pems-button>
         }
-    </div>
+    </pems-flex>
 
-    <div class="d-flex align-items-center gap-2 flex-wrap">
+    <pems-flex align="center" gap="2" wrap="true">
         @if (!Model.IsActive)
         {
             <pems-badge tone="neutral">@Localizer["غیرفعال"]</pems-badge>
@@ -54,11 +54,11 @@
         <pems-button tone="primary" size="small" type="button" data-bs-toggle="modal" data-bs-target="#addPositionModal">
             <pems-icon name="bi-plus-lg" /> @Localizer["افزودن سمت"]
         </pems-button>
-    </div>
-</div>
+    </pems-flex>
+</pems-flex>
 
 <pems-content-card css="mb-3">
-    <div class="d-flex justify-content-between align-items-start flex-wrap gap-2">
+    <pems-flex justify="between" align="start" wrap="true" gap="2">
         <div>
             <h5 class="mb-0">@Model.Name</h5>
             <div class="text-muted small">
@@ -81,7 +81,7 @@
                 <pems-button tone="danger" size="small" outline="true" type="submit"><pems-icon name="bi-x-circle" /> @Localizer["غیرفعال کردن این گره"]</pems-button>
             </form>
         }
-    </div>
+    </pems-flex>
 
     <div class="pems-team-summary">
         <div class="pems-team-summary-item">
@@ -142,7 +142,7 @@
 
 @* ========================= Positions & Workforce ========================= *@
 <pems-content-card css="mb-3">
-    <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-3">
+    <pems-flex justify="between" align="center" wrap="true" gap="2" css="mb-3">
         <h6 class="fw-bold mb-0">@Localizer["سمت‌ها و نیروی انسانی"]</h6>
         @if (Model.Positions.Any())
         {
@@ -155,7 +155,7 @@
                 <pems-button tone="neutral" outline="true" type="button" data-filter="inactive">@Localizer["غیرفعال"]</pems-button>
             </div>
         }
-    </div>
+    </pems-flex>
     @if (!Model.Positions.Any())
     {
         <p class="text-muted text-center py-3 mb-0">@Localizer["هنوز سمتی برای این تیم تعریف نشده."]</p>

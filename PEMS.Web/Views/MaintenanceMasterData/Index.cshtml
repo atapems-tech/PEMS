@@ -106,7 +106,7 @@
 <div class="tab-content">
     <div class="tab-pane fade show active" id="tab-groups" role="tabpanel">
         <pems-content-card>
-            <div class="d-flex justify-content-between align-items-center mb-3">
+            <pems-flex justify="between" align="center" css="mb-3">
                 <p class="text-muted small mb-0">
                     گروه‌بندی تعمیراتی دقیق‌تر از Discipline (مثلاً «Rotating Equipment» زیر «Mechanical») -
                     Team ها زیر همین گروه‌ها تعریف می‌شوند.
@@ -114,7 +114,7 @@
                 <pems-button tone="primary" size="small" css="text-nowrap" type="button" data-bs-toggle="modal" data-bs-target="#createGroupModal">
                     <pems-icon name="bi-plus-lg" /> @Localizer["گروه جدید"]
                 </pems-button>
-            </div>
+            </pems-flex>
 
             <pems-table kind="enterprise">
                 <thead><tr><th>@Localizer["کد"]</th><th>@Localizer["نام"]</th><th>@Localizer["دیسیپلین"]</th><th>@Localizer["توضیحات"]</th><th>@Localizer["System Default"]</th><th></th></tr></thead>
@@ -143,7 +143,7 @@
 
     <div class="tab-pane fade" id="tab-skills" role="tabpanel">
         <pems-content-card>
-            <div class="d-flex justify-content-between align-items-center mb-3">
+            <pems-flex justify="between" align="center" css="mb-3">
                 <p class="text-muted small mb-0">
                     فهرست مشترک مهارت‌ها - از صفحه‌ی هر کارمند به او تخصیص داده می‌شود، یا به‌عنوان
                     پیش‌نیاز روی یک Work Order ثبت می‌شود.
@@ -151,7 +151,7 @@
                 <pems-button tone="primary" size="small" css="text-nowrap" type="button" data-bs-toggle="modal" data-bs-target="#createSkillModal">
                     <pems-icon name="bi-plus-lg" /> @Localizer["مهارت جدید"]
                 </pems-button>
-            </div>
+            </pems-flex>
 
             <pems-table kind="enterprise">
                 <thead><tr><th>@Localizer["نام"]</th><th>@Localizer["دیسیپلین"]</th><th>@Localizer["توضیحات"]</th><th></th></tr></thead>
@@ -178,14 +178,14 @@
 
     <div class="tab-pane fade" id="tab-qualifications" role="tabpanel">
         <pems-content-card>
-            <div class="d-flex justify-content-between align-items-center mb-3">
+            <pems-flex justify="between" align="center" css="mb-3">
                 <p class="text-muted small mb-0">
                     فهرست مشترک انواع صلاحیت - نمونه‌ی هر کارمند از صفحه‌ی جزئیات همان کارمند ثبت می‌شود.
                 </p>
                 <pems-button tone="primary" size="small" css="text-nowrap" type="button" data-bs-toggle="modal" data-bs-target="#createQualificationModal">
                     <pems-icon name="bi-plus-lg" /> @Localizer["صلاحیت جدید"]
                 </pems-button>
-            </div>
+            </pems-flex>
 
             <pems-table kind="enterprise">
                 <thead><tr><th>@Localizer["نام"]</th><th>@Localizer["دیسیپلین"]</th><th>@Localizer["توضیحات"]</th><th></th></tr></thead>
@@ -212,14 +212,14 @@
 
     <div class="tab-pane fade" id="tab-certifications" role="tabpanel">
         <pems-content-card>
-            <div class="d-flex justify-content-between align-items-center mb-3">
+            <pems-flex justify="between" align="center" css="mb-3">
                 <p class="text-muted small mb-0">
                     فهرست مشترک انواع گواهینامه - شماره‌ی گواهی و تاریخ انقضای هر کارمند از صفحه‌ی جزئیات همان کارمند ثبت می‌شود.
                 </p>
                 <pems-button tone="primary" size="small" css="text-nowrap" type="button" data-bs-toggle="modal" data-bs-target="#createCertificationModal">
                     <pems-icon name="bi-plus-lg" /> @Localizer["گواهینامه جدید"]
                 </pems-button>
-            </div>
+            </pems-flex>
 
             <pems-table kind="enterprise">
                 <thead><tr><th>@Localizer["نام"]</th><th>@Localizer["دیسیپلین"]</th><th>@Localizer["توضیحات"]</th><th></th></tr></thead>
@@ -246,7 +246,7 @@
 
     <div class="tab-pane fade" id="tab-maintenance-types" role="tabpanel">
         <pems-content-card>
-            <div class="d-flex justify-content-between align-items-center mb-3">
+            <pems-flex justify="between" align="center" css="mb-3">
                 <p class="text-muted small mb-0">
                     طبقه‌بندی استاندارد «نوع کار» (Corrective/Preventive/Predictive/...) - مرجع
                     داده‌محور برای Work Order و کاتالوگ Activity، طبق ISO 14224/SMRP.
@@ -254,7 +254,7 @@
                 <pems-button tone="primary" size="small" css="text-nowrap" type="button" data-bs-toggle="modal" data-bs-target="#createMaintenanceTypeModal">
                     <pems-icon name="bi-plus-lg" /> @Localizer["Maintenance Type جدید"]
                 </pems-button>
-            </div>
+            </pems-flex>
 
             <pems-table kind="enterprise">
                 <thead><tr><th>@Localizer["Code"]</th><th>@Localizer["Name"]</th><th>@Localizer["نام فارسی"]</th><th>@Localizer["System Default"]</th><th></th></tr></thead>
@@ -282,7 +282,7 @@
 
     <div class="tab-pane fade" id="tab-strategy-types" role="tabpanel">
         <pems-content-card>
-            <div class="d-flex justify-content-between align-items-center mb-3">
+            <pems-flex justify="between" align="center" css="mb-3">
                 <p class="text-muted small mb-0">
                     سیاست RCM («چرا این استراتژی انتخاب شد» - PM/PDM/CBM/CM/EM/RTF/RCM/...) - جدا از
                     Maintenance Type بالا (که «نوع کار» را طبقه‌بندی می‌کند).
@@ -290,7 +290,7 @@
                 <pems-button tone="primary" size="small" css="text-nowrap" type="button" data-bs-toggle="modal" data-bs-target="#createStrategyTypeModal">
                     <pems-icon name="bi-plus-lg" /> @Localizer["Strategy Type جدید"]
                 </pems-button>
-            </div>
+            </pems-flex>
 
             <pems-table kind="enterprise">
                 <thead><tr><th>@Localizer["Code"]</th><th>@Localizer["Name"]</th><th>@Localizer["نام فارسی"]</th><th>@Localizer["System Default"]</th><th></th></tr></thead>
@@ -318,7 +318,7 @@
 
     <div class="tab-pane fade" id="tab-equipment-classes" role="tabpanel">
         <pems-content-card>
-            <div class="d-flex justify-content-between align-items-center mb-3">
+            <pems-flex justify="between" align="center" css="mb-3">
                 <p class="text-muted small mb-0">
                     طبقه‌بندی تجهیزات (مثلاً «Centrifugal Pump») - جدا از EquipmentType متنی روی
                     خودِ Equipment؛ برای پیوند Activity ↔ تجهیز به‌صورت داده‌محور استفاده می‌شود.
@@ -326,7 +326,7 @@
                 <pems-button tone="primary" size="small" css="text-nowrap" type="button" data-bs-toggle="modal" data-bs-target="#createEquipmentClassModal">
                     <pems-icon name="bi-plus-lg" /> @Localizer["Equipment Class جدید"]
                 </pems-button>
-            </div>
+            </pems-flex>
 
             <pems-table kind="enterprise">
                 <thead><tr><th>@Localizer["Code"]</th><th>@Localizer["Name"]</th><th>@Localizer["نام فارسی"]</th><th>@Localizer["System Default"]</th><th></th></tr></thead>
@@ -354,7 +354,7 @@
 
     <div class="tab-pane fade" id="tab-standards" role="tabpanel">
         <pems-content-card>
-            <div class="d-flex justify-content-between align-items-center mb-3">
+            <pems-flex justify="between" align="center" css="mb-3">
                 <p class="text-muted small mb-0">
                     فقط ابرداده‌ی استانداردهای صنعتی (سازمان/شماره/عنوان/دسته) - هیچ متن دارای
                     Copyright خودِ استاندارد این‌جا ذخیره نمی‌شود.
@@ -362,7 +362,7 @@
                 <pems-button tone="primary" size="small" css="text-nowrap" type="button" data-bs-toggle="modal" data-bs-target="#createStandardModal">
                     <pems-icon name="bi-plus-lg" /> Standard Reference جدید
                 </pems-button>
-            </div>
+            </pems-flex>
 
             <pems-table kind="enterprise">
                 <thead><tr><th>@Localizer["Code"]</th><th>@Localizer["Organization"]</th><th>@Localizer["Number"]</th><th>@Localizer["Title"]</th><th>@Localizer["Category"]</th><th>@Localizer["System Default"]</th><th></th></tr></thead>
@@ -392,7 +392,7 @@
 
     <div class="tab-pane fade" id="tab-activities" role="tabpanel">
         <pems-content-card>
-            <div class="d-flex justify-content-between align-items-center mb-3">
+            <pems-flex justify="between" align="center" css="mb-3">
                 <p class="text-muted small mb-0">
                     کاتالوگ فعالیت‌های استاندارد تعمیراتی (مثلاً «Vibration Measurement») - زیر یک
                     Maintenance Group و Maintenance Type دسته‌بندی می‌شود.
@@ -400,7 +400,7 @@
                 <pems-button tone="primary" size="small" css="text-nowrap" type="button" data-bs-toggle="modal" data-bs-target="#createActivityModal">
                     <pems-icon name="bi-plus-lg" /> Activity جدید
                 </pems-button>
-            </div>
+            </pems-flex>
 
             <pems-table kind="enterprise">
                 <thead><tr><th>@Localizer["Code"]</th><th>@Localizer["Name"]</th><th>Group</th><th>@Localizer["Type"]</th><th>@Localizer["System Default"]</th><th></th></tr></thead>
@@ -495,7 +495,7 @@
 
     <div class="tab-pane fade" id="tab-evaluation-profiles" role="tabpanel">
         <pems-content-card>
-            <div class="d-flex justify-content-between align-items-center mb-3">
+            <pems-flex justify="between" align="center" css="mb-3">
                 <p class="text-muted small mb-0">
                     پروفایل ارزیابی نسخه‌دار برای نقاط پایش وضعیت (Condition Monitoring) - آستانه‌ها
                     (Normal/Warning/Alarm/Critical) جداگانه و فقط با مقدار واقعی مهندسی ثبت می‌شوند؛
@@ -504,7 +504,7 @@
                 <pems-button tone="primary" size="small" css="text-nowrap" type="button" data-bs-toggle="modal" data-bs-target="#createEvaluationProfileModal">
                     <pems-icon name="bi-plus-lg" /> @Localizer["Evaluation Profile جدید"]
                 </pems-button>
-            </div>
+            </pems-flex>
 
             <pems-table kind="enterprise">
                 <thead><tr><th>@Localizer["Code"]</th><th>@Localizer["Name"]</th><th>@Localizer["Variable Type"]</th><th>@Localizer["Equipment Class"]</th><th>@Localizer["Standard"]</th><th>@Localizer["Version"]</th><th>@Localizer["Limits"]</th><th></th></tr></thead>
@@ -552,14 +552,14 @@
 
     <div class="tab-pane fade" id="tab-priority-mappings" role="tabpanel">
         <pems-content-card>
-            <div class="d-flex justify-content-between align-items-center mb-3">
+            <pems-flex justify="between" align="center" css="mb-3">
                 <p class="text-muted small mb-0">
                     @Localizer["این نگاشت تعیین می‌کند که یافتن یک وضعیت (Condition) چه اولویتی (Priority) برای Work Request نتیجه‌شده دارد - قبلاً این نگاشت مستقیم در کد برنامه نوشته شده بود؛ حالا اینجا قابل‌مشاهده و قابل‌ویرایش است."]
                 </p>
                 <pems-button tone="primary" size="small" css="text-nowrap" type="button" data-bs-toggle="modal" data-bs-target="#createPriorityMappingModal">
                     <pems-icon name="bi-plus-lg" /> @Localizer["نگاشت جدید"]
                 </pems-button>
-            </div>
+            </pems-flex>
 
             <pems-table kind="enterprise">
                 <thead><tr><th>@Localizer["Condition"]</th><th>@Localizer["Priority"]</th><th>@Localizer["System Default"]</th><th></th></tr></thead>
@@ -569,7 +569,7 @@
                         <tr>
                             <td><code>@m.Condition</code></td>
                             <td>
-                                <form asp-action="UpdateConditionPriorityMapping" method="post" class="d-flex gap-1 align-items-center">
+                                <form asp-action="UpdateConditionPriorityMapping" method="post"><pems-flex gap="1" align="center">
                                     <input type="hidden" name="id" value="@m.ConditionPriorityMappingId" />
                                     <pems-select class="pems-maxw-140" scale="small" name="priority" onchange="this.form.submit()">
                                         @foreach (var p in new[] { "Low", "Medium", "High", "Critical" })
@@ -577,7 +577,7 @@
                                             <option value="@p" selected="@(p == m.Priority)">@p</option>
                                         }
                                     </pems-select>
-                                </form>
+                                </pems-flex></form>
                             </td>
                             <td>@if (m.IsSystemDefault) { <pems-badge tone="info">@Localizer["System"]</pems-badge> }</td>
                             <td class="text-end">

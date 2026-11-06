@@ -235,3 +235,24 @@ public sealed record PageShellOptions : FrameOptions
     public string Kind { get; init; } = "workspace";
     public string? Css { get; init; }
 }
+
+// SCRUM-339 (P2): the flex layout primitive (toolbars, button rows, label + value rows).
+
+/// <summary>Inputs of <see cref="PemsFlex"/>: a flex container (<c>d-flex</c>); the items are the child content. The page says "space between, centred, wrapping, gap 2", not the Bootstrap class names.</summary>
+public sealed record FlexOptions : FrameOptions
+{
+    /// <summary>The element: div (default), span, li, header, footer, section, h5 or h6.</summary>
+    public string As { get; init; } = "div";
+    /// <summary>An inline flex container (<c>d-inline-flex</c>).</summary>
+    public bool Inline { get; init; }
+    /// <summary>column or row (default, writes nothing).</summary>
+    public string? Dir { get; init; }
+    /// <summary>start, end, center, between or around (<c>justify-content-*</c>).</summary>
+    public string? Justify { get; init; }
+    /// <summary>start, end, center, baseline or stretch (<c>align-items-*</c>).</summary>
+    public string? Align { get; init; }
+    public bool Wrap { get; init; }
+    /// <summary>Gap between the items, 0 to 5 (<c>gap-N</c>).</summary>
+    public string? Gap { get; init; }
+    public string? Css { get; init; }
+}

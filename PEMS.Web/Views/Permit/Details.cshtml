@@ -75,13 +75,13 @@
 }
 
 <pems-content-card css="mb-3">
-    <div class="d-flex align-items-center gap-3 mb-2 flex-wrap">
+    <pems-flex align="center" gap="3" wrap="true" css="mb-2">
         <div class="kpi-icon bg-icon-blue pems-s-792bd2d6"><pems-icon name="bi-shield-check" /></div>
         <div>
             <h5 class="mb-0">@Model.PermitNumber &mdash; @Model.Title <pems-badge tone="@badgeClass">@Model.Status</pems-badge></h5>
             <span class="text-muted small">@Model.PermitType - Requested by @Model.RequestedByName on @Model.CreatedDate.ToString("yyyy-MM-dd")</span>
         </div>
-    </div>
+    </pems-flex>
     <pems-info-grid class="mt-2">
         <pems-info-item label="@Localizer["Equipment"]" num>@Model.EquipmentTagNumber</pems-info-item>
         <pems-info-item label="@Localizer["Functional Location"]">@Model.FunctionalLocationBreadcrumb</pems-info-item>
@@ -167,28 +167,28 @@
             </ul>
         </div>
     }
-    <div class="d-flex flex-wrap gap-2">
+    <pems-flex wrap="true" gap="2">
         @if (nextStatus != null && nextStatus != "Active")
         {
-            <form asp-action="AdvanceStatus" method="post" class="d-flex gap-2">
+            <form asp-action="AdvanceStatus" method="post"><pems-flex gap="2">
                 <input type="hidden" name="id" value="@Model.PermitId" />
                 <pems-button tone="primary" size="small" type="submit">Advance to @nextStatus</pems-button>
-            </form>
+            </pems-flex></form>
         }
         @if (Model.Status == "Submitted" && approvalInstance == null)
         {
-            <form asp-action="SubmitForApproval" method="post" class="d-flex gap-2">
+            <form asp-action="SubmitForApproval" method="post"><pems-flex gap="2">
                 <input type="hidden" name="id" value="@Model.PermitId" />
                 <pems-button tone="primary" size="small" type="submit"><pems-icon name="bi-signpost-split" /> Submit for Approval</pems-button>
-            </form>
+            </pems-flex></form>
         }
         @if (Model.Status == "Active")
         {
-            <form asp-action="Suspend" method="post" class="d-flex flex-wrap gap-2">
+            <form asp-action="Suspend" method="post"><pems-flex wrap="true" gap="2">
                 <input type="hidden" name="id" value="@Model.PermitId" />
                 <pems-input class="pems-minw-160 pems-maxw-280" scale="small" css="flex-grow-1" type="text" name="reason" placeholder="Suspend reason" />
                 <pems-button tone="warning" size="small" outline="true" type="submit">Suspend</pems-button>
-            </form>
+            </pems-flex></form>
             <form asp-action="Close" method="post">
                 <input type="hidden" name="id" value="@Model.PermitId" />
                 <pems-button tone="neutral" size="small" outline="true" type="button" disabled="@(closeElig != null && closeElig.Result != "Eligible")" data-pems-confirm="این Permit بسته شود؟" onclick="pemsSubmitWithStepUp(this)">Close</pems-button>
@@ -203,17 +203,17 @@
         }
         @if (Model.Status is "Approved" or "Issued" or "Active")
         {
-            <form asp-action="Revoke" method="post" class="d-flex flex-wrap gap-2">
+            <form asp-action="Revoke" method="post"><pems-flex wrap="true" gap="2">
                 <input type="hidden" name="id" value="@Model.PermitId" />
                 <pems-input class="pems-minw-160 pems-maxw-280" scale="small" css="flex-grow-1" type="text" name="reason" placeholder="Revocation reason" />
                 <pems-button tone="danger" size="small" outline="true" type="submit" data-pems-confirm="این Permit ابطال شود؟">@Localizer["Revoke"]</pems-button>
-            </form>
+            </pems-flex></form>
         }
         @if (nextStatus == null && Model.Status is not ("Active" or "Draft" or "Submitted" or "Approved" or "Issued"))
         {
             <span class="text-muted small">@Localizer["No further actions available."]</span>
         }
-    </div>
+    </pems-flex>
 </pems-content-card>
 
 @{
@@ -240,10 +240,10 @@
         <ul class="list-unstyled mb-2">
             @foreach (var c in executionGate.Checks)
             {
-                <li class="d-flex align-items-center gap-2 py-1">
+                <pems-flex as="li" align="center" gap="2" css="py-1">
                     @if (c.Passed) { <pems-icon name="bi-check-circle-fill" css="text-success" /> } else { <pems-icon name="bi-x-circle-fill" css="text-danger" /> }
                     <span class="small"><strong>[@c.Category]</strong> @c.Name — @c.Detail</span>
-                </li>
+                </pems-flex>
             }
         </ul>
         @if (executionGate.AdvisoryNotes.Any())
@@ -252,11 +252,11 @@
             <ul class="list-unstyled mb-2">
                 @foreach (var a in executionGate.AdvisoryNotes)
                 {
-                    <li class="d-flex align-items-center gap-2 py-1"><pems-icon name="bi-info-circle" css="text-warning" /> <span class="small">@a.Name — @a.Detail</span></li>
+                    <pems-flex as="li" align="center" gap="2" css="py-1"><pems-icon name="bi-info-circle" css="text-warning" /> <span class="small">@a.Name — @a.Detail</span></pems-flex>
                 }
             </ul>
         }
-        <div class="d-flex gap-2 flex-wrap border-top pt-3">
+        <pems-flex gap="2" wrap="true" css="border-top pt-3">
             <form asp-controller="ExecutionGate" asp-action="StartWork" method="post" class="d-inline">
                 <input type="hidden" name="permitId" value="@Model.PermitId" />
                 <pems-button tone="primary" size="small" type="button" disabled="@(executionGate.Result != "Eligible")" onclick="pemsSubmitWithStepUp(this)">
@@ -265,16 +265,16 @@
             </form>
             @if (canEmergencyOverride)
             {
-                <form asp-controller="ExecutionGate" asp-action="EmergencyOverride" method="post" class="d-flex flex-wrap gap-2">
+                <form asp-controller="ExecutionGate" asp-action="EmergencyOverride" method="post"><pems-flex wrap="true" gap="2">
                     <input type="hidden" name="permitId" value="@Model.PermitId" />
                     <pems-input class="pems-minw-160 pems-maxw-280" scale="small" css="flex-grow-1" type="text" name="reason" placeholder="Emergency reason (required)" required />
                     <pems-button tone="danger" size="small" outline="true" type="button"
                             data-pems-confirm="Emergency Override یک اقدام واقعاً استثنایی است. مطمئن هستید؟" onclick="pemsSubmitWithStepUp(this)">
                         <pems-icon name="bi-exclamation-triangle" /> Emergency Override
                     </pems-button>
-                </form>
+                </pems-flex></form>
             }
-        </div>
+        </pems-flex>
         @if (executionGateDecisions.Any())
         {
             <pems-related-table>
@@ -325,7 +325,7 @@
             {
                 var completedEntry = completedStages.FirstOrDefault(h => h.FromStageName == stageName);
                 var isCurrent = approvalInstance.CurrentStageName == stageName;
-                <li class="d-flex align-items-center gap-2 py-1">
+                <pems-flex as="li" align="center" gap="2" css="py-1">
                     @if (completedEntry != null)
                     {
                         <pems-icon name="bi-check-circle-fill" css="text-success" />
@@ -342,7 +342,7 @@
                         <pems-icon name="bi-circle" css="text-muted" />
                         <span class="text-muted">@stageName</span>
                     }
-                </li>
+                </pems-flex>
             }
         </ul>
 
@@ -365,17 +365,17 @@
                     }
                 </div>
             }
-            <form asp-action="RespondApproval" method="post" class="d-flex flex-wrap gap-2 align-items-center @(approveElig == null && rejectElig == null ? "border-top pt-3" : "")">
+            <form class="@(approveElig == null && rejectElig == null ? "border-top pt-3" : "")" asp-action="RespondApproval" method="post"><pems-flex wrap="true" gap="2" align="center">
                 <input type="hidden" name="id" value="@Model.PermitId" />
                 <pems-input class="pems-minw-160 pems-maxw-280" scale="small" css="flex-grow-1" type="text" name="comment" placeholder="@Localizer["Comment (optional)"]" />
                 <pems-button tone="success" size="small" type="button" disabled="@(approveElig != null && approveElig.Result != "Eligible")" onclick="pemsSubmitWithStepUp(this, 'decision', 'Approve')">Approve</pems-button>
                 <pems-button tone="danger" size="small" outline="true" type="button" disabled="@(rejectElig != null && rejectElig.Result != "Eligible")" data-pems-confirm="این مرحله رد شود؟ کل زنجیره‌ی تایید با نتیجه‌ی Rejected بسته می‌شود." onclick="pemsSubmitWithStepUp(this, 'decision', 'Reject')">Reject</pems-button>
-            </form>
-            <form asp-action="ReturnForRework" method="post" class="d-flex flex-wrap gap-2 align-items-center mt-2">
+            </pems-flex></form>
+            <form class="mt-2" asp-action="ReturnForRework" method="post"><pems-flex wrap="true" gap="2" align="center">
                 <input type="hidden" name="id" value="@Model.PermitId" />
                 <pems-input class="pems-minw-160 pems-maxw-280" scale="small" css="flex-grow-1" type="text" name="comment" placeholder="Rework instructions" />
                 <pems-button tone="warning" size="small" outline="true" type="submit" data-pems-confirm="Permit برای اصلاح به Draft برگردد؟">Return for Rework</pems-button>
-            </form>
+            </pems-flex></form>
         }
         else if (approvalInstance.Status == "Running")
         {
@@ -538,7 +538,7 @@
             _ => "neutral"
         };
         <div class="border rounded p-2 mb-2">
-            <div class="d-flex flex-wrap align-items-center gap-2 mb-2">
+            <pems-flex wrap="true" align="center" gap="2" css="mb-2">
                 <pems-badge tone="@gasBadge">@g.Status</pems-badge>
                 @if (g.IsExpired && g.Status != "Invalidated") { <pems-badge tone="neutral">Expired</pems-badge> }
                 <span class="small">@g.Location</span>
@@ -548,7 +548,7 @@
                 {
                     <span class="small text-muted">Instrument: @g.InstrumentTag <pems-badge tone="@calBadge">@g.InstrumentCalibrationStatus</pems-badge></span>
                 }
-            </div>
+            </pems-flex>
             <pems-related-table>
                 <thead><tr><th>Parameter</th><th>@Localizer["Value"]</th><th>@Localizer["Unit"]</th><th>@Localizer["Result"]</th></tr></thead>
                 <tbody>
@@ -567,12 +567,12 @@
             @if (g.Status != "Invalidated")
             {
                 @if (!string.IsNullOrWhiteSpace(g.InvalidationReason)) { <p class="small text-muted mb-2">Invalidation reason: @g.InvalidationReason</p> }
-                <form asp-controller="GasTest" asp-action="Invalidate" method="post" class="d-flex gap-2 align-items-center">
+                <form asp-controller="GasTest" asp-action="Invalidate" method="post"><pems-flex gap="2" align="center">
                     <input type="hidden" name="id" value="@g.GasTestId" />
                     <input type="hidden" name="permitId" value="@Model.PermitId" />
                     <pems-input class="pems-maxw-260" scale="small" type="text" name="reason" placeholder="Invalidation reason" required />
                     <pems-button tone="danger" size="small" outline="true" type="submit" data-pems-confirm="این تست گاز باطل شود؟">Invalidate</pems-button>
-                </form>
+                </pems-flex></form>
             }
             else
             {
@@ -688,21 +688,21 @@
                             }
                             @if (c.Status is "Potential" or "Confirmed")
                             {
-                                <form asp-controller="Simops" asp-action="AcceptRisk" method="post" class="d-inline-flex flex-wrap gap-1 align-items-center">
+                                <form asp-controller="Simops" asp-action="AcceptRisk" method="post"><pems-flex inline="true" wrap="true" gap="1" align="center">
                                     <input type="hidden" name="id" value="@c.SimopsConflictId" />
                                     <input type="hidden" name="permitId" value="@Model.PermitId" />
                                     <pems-input class="pems-minw-110 pems-maxw-180" scale="small" type="text" name="justification" placeholder="Justification" required />
                                     <pems-button tone="neutral" size="small" outline="true" type="button" disabled="@(simopsAcceptRiskElig != null && simopsAcceptRiskElig.Result != "Eligible")" onclick="pemsSubmitWithStepUp(this)">Accept Risk</pems-button>
-                                </form>
+                                </pems-flex></form>
                             }
                             @if (c.Status == "Confirmed")
                             {
-                                <form asp-controller="Simops" asp-action="Resolve" method="post" class="d-inline-flex flex-wrap gap-1 align-items-center">
+                                <form asp-controller="Simops" asp-action="Resolve" method="post"><pems-flex inline="true" wrap="true" gap="1" align="center">
                                     <input type="hidden" name="id" value="@c.SimopsConflictId" />
                                     <input type="hidden" name="permitId" value="@Model.PermitId" />
                                     <pems-input class="pems-minw-110 pems-maxw-180" scale="small" type="text" name="resolutionNotes" placeholder="Resolution notes" required />
                                     <pems-button tone="success" size="small" outline="true" type="button" disabled="@(simopsResolveElig != null && simopsResolveElig.Result != "Eligible")" onclick="pemsSubmitWithStepUp(this)">Resolve</pems-button>
-                                </form>
+                                </pems-flex></form>
                             }
                         </td>
                     </tr>

@@ -8,7 +8,7 @@
 
 
 <pems-content-card css="mb-3">
-    <div class="d-flex justify-content-between align-items-center">
+    <pems-flex justify="between" align="center">
         <div>
             <strong>Discipline not showing after import?</strong>
             <p class="text-muted small mb-0">
@@ -20,11 +20,11 @@
         <form asp-action="RematchDisciplines" method="post">
             <pems-button tone="primary" size="small" outline="true" type="submit"><pems-icon name="bi-arrow-repeat" /> Fix Discipline Matching</pems-button>
         </form>
-    </div>
+    </pems-flex>
 </pems-content-card>
 
 <pems-content-card css="mb-3">
-    <div class="d-flex justify-content-between align-items-center">
+    <pems-flex justify="between" align="center">
         <div>
             <strong>Dashboard counts not matching the register?</strong>
             <p class="text-muted small mb-0">
@@ -36,7 +36,7 @@
         <form asp-action="FixLegacyStatuses" method="post">
             <pems-button tone="primary" size="small" outline="true" type="submit"><pems-icon name="bi-speedometer2" /> Fix Status Values</pems-button>
         </form>
-    </div>
+    </pems-flex>
 </pems-content-card>
 
 <pems-content-card css="mb-3 pems-s-bcaa1805">

@@ -4,16 +4,16 @@
 @inject IStringLocalizer<SharedResource> Localizer
 
 <pems-content-card css="mb-3">
-    <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
+    <pems-flex justify="between" align="center" wrap="true" gap="2">
         <div>
             <h5 class="mb-0">@Model.AssetNumber</h5>
             <span class="text-muted small">@Model.EquipmentTagNumber - @Model.EquipmentName</span>
         </div>
-        <div class="d-flex gap-2">
+        <pems-flex gap="2">
             <pems-button tone="neutral" size="small" outline="true" as="a" asp-controller="Equipment" asp-action="Details" asp-route-id="@Model.EquipmentId"><pems-icon name="bi-box-arrow-up-right" /> @Localizer["Equipment"]</pems-button>
             <pems-button tone="neutral" size="small" outline="true" as="a" asp-action="Index"><pems-icon name="bi-arrow-left" /> Back</pems-button>
-        </div>
-    </div>
+        </pems-flex>
+    </pems-flex>
 </pems-content-card>
 
 @if (TempData["Message"] != null)
