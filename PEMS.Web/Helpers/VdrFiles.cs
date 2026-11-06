@@ -10,6 +10,18 @@ public sealed record VdrFile(int AttachmentId, string FileName, int RevisionNo, 
 /// <summary>SCRUM-530: the files of every submission of a VDR item (main file, comment sheet, reply sheet), newest revision first.</summary>
 public static class VdrFiles
 {
+    /// <summary>SCRUM-531: the kinds a file can be uploaded as in the Files tab, in the order of the kind list.</summary>
+    public static readonly string[] Kinds = ["Main", "CommentSheet", "ReplySheet"];
+
+    /// <summary>SCRUM-531: the storage folder under vdr/ for an upload kind; null for an unknown kind.</summary>
+    public static string? FolderOf(string? kind) => kind switch
+    {
+        "Main" => "documents",
+        "CommentSheet" => "comment-sheets",
+        "ReplySheet" => "reply-sheets",
+        _ => null
+    };
+
     public static IReadOnlyList<VdrFile> From(IEnumerable<VDRSubmissionDto> submissions)
     {
         var files = new List<VdrFile>();

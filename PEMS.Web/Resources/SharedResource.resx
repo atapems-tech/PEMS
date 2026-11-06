@@ -3718,4 +3718,9 @@
   <data name="Vd_Preview" xml:space="preserve"><value>Preview</value></data>
   <data name="Vd_Download" xml:space="preserve"><value>Download</value></data>
   <data name="Vd_NoPreview" xml:space="preserve"><value>None of these files can be shown in the browser (only PDF, images and text can). Use Download.</value></data>
+  <data name="Vd_Upload" xml:space="preserve"><value>Upload</value></data>
+  <data name="Vd_UploadTitle" xml:space="preserve"><value>Upload a file</value></data>
+  <data name="Vd_UploadHint" xml:space="preserve"><value>The file is stored in PEMS and linked to the chosen revision as its document, comment sheet or reply sheet. A new file replaces the current one of that kind. (Upload to FTP in the Submissions tab keeps no copy in PEMS.)</value></data>
+  <data name="Vd_UploadRevision" xml:space="preserve"><value>Revision</value></data>
+  <data name="Vd_UploadNeedsSubmission" xml:space="preserve"><value>Files belong to a submission. Start a review cycle (Workflow tab) to create the first submission, then upload its files here.</value></data>
 </root>

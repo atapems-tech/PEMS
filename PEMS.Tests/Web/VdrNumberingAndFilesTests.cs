@@ -105,6 +105,42 @@ public class VdrNumberingAndFilesTests
         Assert.DoesNotContain("<iframe", view);
     }
 
+    // ---- SCRUM-531: upload in the Files tab
+    [Theory]
+    [InlineData("Main", "documents")]
+    [InlineData("CommentSheet", "comment-sheets")]
+    [InlineData("ReplySheet", "reply-sheets")]
+    [InlineData("Other", null)]
+    [InlineData(null, null)]
+    public void UploadKinds_HaveTheirFolder(string? kind, string? folder) => Assert.Equal(folder, VdrFiles.FolderOf(kind));
+
+    [Fact]
+    public void UploadAction_KeepsTheUploadRules_AndOnlyTouchesASubmissionOfTheItem()
+    {
+        var source = Read("PEMS.Web", "Controllers", "VDRController.cs");
+        var start = source.IndexOf("public async Task<IActionResult> UploadSubmissionFile(", StringComparison.Ordinal);
+        Assert.True(start > 0);
+        var head = source[(start - 400)..start];
+        Assert.Contains("UploadPolicy(PEMS.Application.Uploads.UploadProfile.Attachment)]", head);
+        Assert.Contains("[ValidateAntiForgeryToken]", head);
+        var body = source[start..source.IndexOf("private async Task<bool> EnsurePermissionAsync", StringComparison.Ordinal)];
+        Assert.Contains("EnsurePermissionAsync(\"Edit\", vdrItemId", body);
+        Assert.Contains("x.VDRSubmissionId == submissionId && x.VDRItemId == vdrItemId", body);
+        Assert.Contains("VdrFiles.FolderOf(kind)", body);
+        Assert.Contains("SaveVdrFileAsync(file, folder)", body);
+    }
+
+    [Fact]
+    public void FilesTab_HasTheUploadForm()
+    {
+        var view = Read("PEMS.Web", "Views", "VDR", "Details.cshtml");
+        var pane = view[view.IndexOf("id=\"tab-files\"", StringComparison.Ordinal)..];
+        Assert.Contains("<pems-form asp-action=\"UploadSubmissionFile\" method=\"post\" enctype=\"multipart/form-data\"", pane);
+        foreach (var field in new[] { "name=\"vdrItemId\"", "name=\"submissionId\"", "name=\"kind\"", "type=\"file\" name=\"file\" required" })
+            Assert.Contains(field, pane);
+        Assert.Contains("@foreach (var k in VdrFiles.Kinds)", pane);
+    }
+
     private static int CountOf(string text, string part)
     {
         int n = 0, i = 0;

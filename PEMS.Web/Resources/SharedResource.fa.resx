@@ -4503,4 +4503,9 @@
   <data name="Vd_Preview" xml:space="preserve"><value>پیش‌نمایش</value></data>
   <data name="Vd_Download" xml:space="preserve"><value>دانلود</value></data>
   <data name="Vd_NoPreview" xml:space="preserve"><value>هیچ‌کدام از این فایل‌ها در مرورگر نمایش داده نمی‌شود (فقط PDF، تصویر و متن). از دانلود استفاده کنید.</value></data>
+  <data name="Vd_Upload" xml:space="preserve"><value>آپلود</value></data>
+  <data name="Vd_UploadTitle" xml:space="preserve"><value>آپلود فایل</value></data>
+  <data name="Vd_UploadHint" xml:space="preserve"><value>فایل در PEMS ذخیره و به‌عنوان مدرک، برگه‌ی کامنت یا برگه‌ی پاسخ به بازنگری انتخاب‌شده وصل می‌شود. فایل جدید جای فایل فعلی همان نوع را می‌گیرد. (آپلود روی FTP در تب ارسال‌ها نسخه‌ای در PEMS نگه نمی‌دارد.)</value></data>
+  <data name="Vd_UploadRevision" xml:space="preserve"><value>بازنگری</value></data>
+  <data name="Vd_UploadNeedsSubmission" xml:space="preserve"><value>فایل‌ها به یک ارسال تعلق دارند. ابتدا از تب گردش‌کار چرخه‌ی بازبینی را شروع کنید تا اولین ارسال ساخته شود، سپس فایل‌های آن را این‌جا آپلود کنید.</value></data>
 </root>

@@ -474,6 +474,41 @@ public class VDRController : Controller
         return RedirectToAction(nameof(Details), new { id = vdrItemId });
     }
 
+    // SCRUM-531: the upload of the Files tab. Same rules as the uploads above (upload policy, VDR Edit permission) and the
+    // submission must belong to the item. The file is stored in PEMS and linked to the submission as its document, comment
+    // sheet or reply sheet; a new file replaces the link of that kind (the old file stays stored).
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    [PEMS.Web.Security.Uploads.UploadPolicy(PEMS.Application.Uploads.UploadProfile.Attachment)]
+    public async Task<IActionResult> UploadSubmissionFile(int vdrItemId, int submissionId, string kind, IFormFile file)
+    {
+        if (!await EnsurePermissionAsync("Edit", vdrItemId, "شما مجاز به آپلود فایل برای این مدرک VDR نیستید."))
+            return RedirectToAction(nameof(Details), new { id = vdrItemId, tab = "files" });
+
+        var folder = PEMS.Web.Helpers.VdrFiles.FolderOf(kind);
+        var submission = await _context.VDRSubmissions.FirstOrDefaultAsync(x => x.VDRSubmissionId == submissionId && x.VDRItemId == vdrItemId);
+        if (folder == null || submission == null) return NotFound();
+
+        if (file == null || file.Length == 0)
+        {
+            TempData["Error"] = "فایلی انتخاب نشده.";
+            return RedirectToAction(nameof(Details), new { id = vdrItemId, tab = "files" });
+        }
+
+        var attachmentId = await SaveVdrFileAsync(file, folder);
+        if (attachmentId is not int id) return RedirectToAction(nameof(Details), new { id = vdrItemId, tab = "files" });
+
+        switch (kind)
+        {
+            case "Main": submission.AttachmentId = id; break;
+            case "CommentSheet": submission.CommentSheetAttachmentId = id; break;
+            default: submission.ReplySheetAttachmentId = id; break;
+        }
+        await _context.SaveChangesAsync();
+        TempData["Message"] = $"File uploaded: {file.FileName}";
+        return RedirectToAction(nameof(Details), null, new { id = vdrItemId, tab = "files", file = id }, "tab-files");
+    }
+
     // طبق «PEMS Phase 2B»: بررسی مجوز مشترک برای اکشن‌های تغییردهنده - در صورت رد، پیام دوستانه
     // + بازگشت به Details (نه Forbid خام) تا با سبک خطاهای موجود این کنترلر (TempData["Error"])
     // یکدست بماند
