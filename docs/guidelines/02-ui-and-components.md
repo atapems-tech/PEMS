@@ -173,6 +173,8 @@ Run the app, open the page in a browser, exercise the golden path and one edge c
 
 Form/module/workflow designers are embedded JavaScript components inside Razor pages [D1]. Anything the designers produce renders through the **same** components as hand-built pages. Therefore: any component you build today should accept data-driven configuration, not just compile-time Razor parameters.
 
+**Descriptor-driven navigation components** (owner/agent decision 2026-11-06, SCRUM-484 and SCRUM-485): `PemsTabs`, `PemsBreadcrumb`, `PemsMenu`, `PemsStepper` and `PemsSidePanelNav` are rendered from data through `PemsDescriptorHost`, for the BPMS renderer and the designers; they are registered, tested and kept even where no hand-written page calls them. Hand-written pages use the tag helpers `<pems-nav>`, `<pems-dropdown-menu>` and `<pems-crumb-trail>`. Do not delete a descriptor component because it has no page caller.
+
 ## 7. The UI component registry: one door, the registry key (ADR-0013, SCRUM-506)
 
 **Rule (owner decision 2026-11-05): every component is created, used, modified and removed through the registry.** Create = a component with a `UiKeys` constant, a registry row and a facade. Use = a `pems-*` tag (or a descriptor) that names the key; no view, controller or script instantiates a component type, writes a component's markup or renders it with a type of its own. Modify = change the component behind its key (default output unchanged, golden manifest and ratchet green) and never fork it under another name. Remove = unregister the key, remove its facade and rows in the same pull request. A component that is not in the registry does not exist for pages, descriptors, the designer or the graph.

@@ -507,21 +507,6 @@ html[dir="rtl"] .pems-sidebar .collapse .nav-link {
     background: var(--pems-bg);
 }
 
-.pems-breadcrumb {
-    font-size: 13px;
-    color: var(--pems-steel);
-    margin-bottom: 16px;
-}
-
-    .pems-breadcrumb a {
-        color: var(--pems-steel);
-        text-decoration: none;
-    }
-
-        .pems-breadcrumb a:hover {
-            color: var(--pems-accent-dark);
-        }
-
 .pems-page-title {
     font-size: 24px;
     font-weight: 700;
