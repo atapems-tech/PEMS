@@ -109,7 +109,7 @@
                 icon: { addClass: icon }, title: title
             });
             var ul = div.querySelector('[data-slot=items]');
-            items.forEach(function (i) { var li = document.createElement('li'); li.textContent = i.message; ul.appendChild(li); });
+            items.forEach(function (i) { ul.appendChild(tpl('lc-text-li', { text: i.message })); });
             alertsEl.appendChild(div);
         }
         block('danger', T.errorsTitle, errors, 'bi-x-octagon');
@@ -145,10 +145,8 @@
         var live = alertsEl.querySelector('.lc-live');
         if (live) live.remove();
         if (msgs.length) {
-            var div = document.createElement('div');
-            div.className = 'alert alert-warning lc-live';
-            div.setAttribute('role', 'status');
-            msgs.forEach(function (m) { var p = document.createElement('div'); p.textContent = m.message; div.appendChild(p); });
+            var div = tpl('lc-live');
+            msgs.forEach(function (m) { div.appendChild(tpl('lc-live-line', { text: m.message })); });
             alertsEl.insertBefore(div, alertsEl.firstChild);
         }
     }
@@ -158,11 +156,9 @@
         var input = box.querySelector('input');
         box.querySelectorAll('.lc-chip').forEach(function (c) { c.remove(); });
         state.recipients[field].forEach(function (r, idx) {
-            var chip = document.createElement('span');
-            chip.className = 'lc-chip';
+            var chip = tpl('lc-chip', { label: r.name + (r.isExternal ? ' · ' + T.external : '') });
             if (r.isExternal) chip.setAttribute('data-external', '1');
-            var label = document.createElement('span');
-            label.textContent = r.name + (r.isExternal ? ' · ' + T.external : '');
+            var label = chip.querySelector('[data-slot=label]');
             if (r.position) label.title = r.position;
             var rm = iconButton('bi-x', '', T.remove + ' ' + r.name);
             rm.removeAttribute('class');
@@ -212,14 +208,14 @@
         function render() {
             list.replaceChildren();
             if (!items.length) {
-                var empty = document.createElement('li'); empty.className = 'lc-empty'; empty.textContent = T.noResults; list.appendChild(empty);
+                list.appendChild(tpl('lc-empty', { text: T.noResults }));
             }
             items.forEach(function (it, i) {
-                var li = document.createElement('li');
-                li.id = 'lcOpt_' + field + '_' + i; li.setAttribute('role', 'option'); li.setAttribute('aria-selected', 'false');
-                var name = document.createElement('span'); name.textContent = it.name + (it.isExternal ? ' · ' + T.external : '');
-                var sub = document.createElement('small'); sub.textContent = [it.position, it.department].filter(Boolean).join(' — ');
-                li.appendChild(name); li.appendChild(sub);
+                var li = tpl('lc-option', {
+                    name: it.name + (it.isExternal ? ' · ' + T.external : ''),
+                    sub: [it.position, it.department].filter(Boolean).join(' — ')
+                });
+                li.id = 'lcOpt_' + field + '_' + i;
                 li.addEventListener('mousedown', function (e) { e.preventDefault(); choose(i); });
                 list.appendChild(li);
             });
@@ -287,14 +283,13 @@
         groupsLoaded = true;
         // SCRUM-337: a skeleton in the menu while the groups load
         text(groupMenu, '');
-        var waitLi = document.createElement('li'); waitLi.className = 'px-3 py-2'; groupMenu.appendChild(waitLi);
+        var waitLi = tpl('lc-menu-wait'); groupMenu.appendChild(waitLi);
         window.PemsSkeleton.show(waitLi, 'text', { lines: 3 });
         fetch(boot.urls.groups, { credentials: 'same-origin' }).then(function (r) { return r.ok ? r.json() : []; }).then(function (groups) {
             text(groupMenu, '');
-            if (!groups.length) { var empty = document.createElement('li'); var s = document.createElement('span'); s.className = 'dropdown-item-text small text-muted'; s.textContent = T.noGroups; empty.appendChild(s); groupMenu.appendChild(empty); return; }
+            if (!groups.length) { groupMenu.appendChild(tpl('lc-menu-note', { text: T.noGroups })); return; }
             groups.forEach(function (g) {
-                var li = document.createElement('li'), b = document.createElement('button');
-                b.type = 'button'; b.className = 'dropdown-item'; b.textContent = g.name + ' (' + g.members.length + ')';
+                var li = tpl('lc-menu-item', { button: g.name + ' (' + g.members.length + ')' }), b = li.querySelector('button');
                 b.addEventListener('click', function () {
                     var added = 0;
                     g.members.forEach(function (m) {
@@ -317,8 +312,7 @@
     function renderChain() {
         var ol = $('lcChain'); ol.replaceChildren();
         state.approvers.forEach(function (a, i) {
-            var li = document.createElement('li');
-            var name = document.createElement('span'); name.textContent = a.name; li.appendChild(name);
+            var li = tpl('lc-chain-item', { name: a.name });
             function btn(label, icon, fn, disabled) {
                 var b = iconButton(icon, 'secondary', label + ' ' + a.name); b.disabled = !!disabled;
                 b.addEventListener('click', fn); li.appendChild(b);

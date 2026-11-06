@@ -2,6 +2,8 @@
    Server is the authority; this only shows candidates. DOM is built with textContent (no innerHTML). */
 (function () {
     'use strict';
+    // markup comes from the page's registered templates (script-templates component, pems-template.js), never from a string in this file
+    function tpl(name, values) { return window.PemsTemplate.fill(window.PemsTemplate.clone(name), values || {}); }
 
     function init() {
         var root = document.getElementById('pcDedup');
@@ -24,34 +26,20 @@
         function waiting() { window.PemsSkeleton.show(out, 'text', { lines: 3 }); }
 
         function note(message, cls) {
-            var p = document.createElement('div');
-            p.className = cls || 'text-muted';
-            p.textContent = message;
+            var p = tpl('pcd-note', { text: message });
+            if (cls) p.className = cls;
             out.appendChild(p);
         }
 
         function render(hits) {
             if (!hits.length) { note(txt.none); return; }
-            var ul = document.createElement('ul');
-            ul.className = 'list-unstyled mb-0';
+            var ul = tpl('pcd-list');
             hits.forEach(function (h) {
-                var li = document.createElement('li');
-                li.className = 'border-bottom py-1';
-                var code = document.createElement('strong');
-                code.className = 'vs-num';
-                code.textContent = h.partNumber || '';
-                li.appendChild(code);
-                var meta = document.createElement('span');
-                meta.className = 'text-muted ms-2';
-                meta.textContent = [h.matchKind, h.matchedOn, h.manufacturerName, h.manufacturerPartNumber]
-                    .filter(Boolean).join(' · ');
-                li.appendChild(meta);
-                if (h.description) {
-                    var d = document.createElement('div');
-                    d.textContent = h.description;
-                    li.appendChild(d);
-                }
-                ul.appendChild(li);
+                ul.appendChild(tpl('pcd-item', {
+                    code: h.partNumber || '',
+                    meta: [h.matchKind, h.matchedOn, h.manufacturerName, h.manufacturerPartNumber].filter(Boolean).join(' · '),
+                    description: h.description ? h.description : null
+                }));
             });
             out.appendChild(ul);
         }

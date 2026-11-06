@@ -4,6 +4,11 @@
 @switch (Options.Set)
 {
     case ScriptTemplateSet.DccRegister:
+        <template data-pems-template="dcc-combo-option"><li role="option" aria-selected="false"></li></template>
+        <template data-pems-template="dcc-combo-create"><li role="option" aria-selected="false" class="dcr-opt-create"></li></template>
+        <template data-pems-template="dcc-combo-empty"><li class="dcr-opt-empty" data-slot="text"></li></template>
+        <template data-pems-template="dcc-summary-item"><li><button type="button" class="dcr-link" data-slot="button"></button></li></template>
+        <template data-pems-template="dcc-preview-item"><li><button type="button" data-slot="button"></button></li></template>
         <template data-pems-template="dcc-empty"><div class="dcr-empty"><i class="bi" aria-hidden="true" data-slot="icon"></i><span data-slot="text"></span><strong data-slot="name"></strong></div></template>
         <template data-pems-template="dcc-opt-person"><span class="dcr-opt-main" data-slot="main"></span><span class="dcr-opt-sub" data-slot="sub"></span></template>
         <template data-pems-template="dcc-opt-party"><span class="dcr-opt-main"><span data-slot="name"></span> <span class="dcr-badge" data-slot="badge"></span></span><span class="dcr-opt-sub" data-slot="sub"></span></template>
@@ -32,9 +37,21 @@
         <template data-pems-template="lc-icon-button-secondary"><button type="button" class="btn btn-sm btn-outline-secondary" data-slot="root"><i class="bi" aria-hidden="true" data-slot="icon"></i></button></template>
         <template data-pems-template="lc-icon-button-danger"><button type="button" class="btn btn-sm btn-outline-danger" data-slot="root"><i class="bi" aria-hidden="true" data-slot="icon"></i></button></template>
         <template data-pems-template="lc-file-row"><li><i class="bi bi-file-earmark" aria-hidden="true"></i><span data-slot="name"></span><small class="text-muted" data-slot="size"></small></li></template>
+        <template data-pems-template="lc-text-li"><li data-slot="text"></li></template>
+        <template data-pems-template="lc-live"><div class="alert alert-warning lc-live" role="status"></div></template>
+        <template data-pems-template="lc-live-line"><div data-slot="text"></div></template>
+        <template data-pems-template="lc-chip"><span class="lc-chip" data-slot="root"><span data-slot="label"></span></span></template>
+        <template data-pems-template="lc-empty"><li class="lc-empty" data-slot="text"></li></template>
+        <template data-pems-template="lc-option"><li role="option" aria-selected="false" data-slot="root"><span data-slot="name"></span><small data-slot="sub"></small></li></template>
+        <template data-pems-template="lc-menu-wait"><li class="px-3 py-2"></li></template>
+        <template data-pems-template="lc-menu-note"><li><span class="dropdown-item-text small text-muted" data-slot="text"></span></li></template>
+        <template data-pems-template="lc-menu-item"><li><button type="button" class="dropdown-item" data-slot="button"></button></li></template>
+        <template data-pems-template="lc-chain-item"><li><span data-slot="name"></span></li></template>
         <template data-pems-template="lc-upload-row"><li><span data-slot="name"></span><progress max="100" value="0"></progress></li></template>
         break;
     case ScriptTemplateSet.GlobalSearch:
+        <template data-pems-template="search-panel"><div class="pems-search-panel"></div></template>
+        <template data-pems-template="search-wrapper"><div class="pems-search-wrapper"></div></template>
         <template data-pems-template="search-loading"><div class="pems-search-loading"></div></template>
         <template data-pems-template="search-error"><div class="pems-search-error" data-slot="text"></div></template>
         <template data-pems-template="search-empty"><div class="pems-search-empty" data-slot="text"></div></template>
@@ -43,6 +60,10 @@
         break;
     case ScriptTemplateSet.OrgChart:
         <template data-pems-template="org-node"><div class="pems-org-node" tabindex="-1" role="treeitem" data-slot="root"><span class="pems-org-node-kind"><i class="bi" data-slot="icon"></i><span data-slot="kind"></span></span><span class="pems-org-node-name" data-slot="name"></span><span class="pems-org-node-meta" data-slot="meta"></span></div></template>
+        <template data-pems-template="org-item"><li></li></template>
+        <template data-pems-template="org-group-list"><ul role="group"></ul></template>
+        <template data-pems-template="org-tree"><ul class="pems-org-tree" role="tree"></ul></template>
+        <template data-pems-template="org-toggle-empty"><span></span></template>
         <template data-pems-template="org-meta-text"><span data-slot="text"></span></template>
         <template data-pems-template="org-badge-vacant"><span class="pems-org-badge-vacant"><i class="bi" data-slot="icon"></i> <span data-slot="text"></span></span></template>
         <template data-pems-template="org-occupant"><span><i class="bi bi-person-check"></i> <span data-slot="name"></span></span></template>
@@ -60,6 +81,7 @@
         <template data-pems-template="opc-detail-row"><dt data-slot="term"></dt><dd data-slot="value"></dd></template>
         <template data-pems-template="opc-note"><span class="text-muted" data-slot="text"></span></template>
         <template data-pems-template="opc-reports"><ul></ul></template>
+        <template data-pems-template="opc-report-item"><li data-slot="text"></li></template>
         break;
     case ScriptTemplateSet.AccountLogin:
         <template data-pems-template="login-busy"><span class="pems-inline-progress" style="color:#fff"><span class="pems-dot"></span><span class="pems-dot"></span><span class="pems-dot"></span></span></template>
@@ -101,6 +123,14 @@
         break;
     case ScriptTemplateSet.PartCatalogue:
         <template data-pems-template="pc-combobox-input"><input class="form-control form-control-sm" /></template>
+        <template data-pems-template="pc-hidden"><input type="hidden" /></template>
+        <template data-pems-template="pc-lookup-list"><ul class="pc-lookup-list pc-lookup-portal list-unstyled" role="listbox" hidden></ul></template>
+        <template data-pems-template="pc-lookup-empty"><li class="pc-lookup-empty" data-slot="text"></li></template>
+        <template data-pems-template="pc-lookup-item"><li role="option" class="pc-lookup-item" data-slot="text"></li></template>
+        <template data-pems-template="pc-tc-cand"><button type="button" class="pc-tc-cand" data-slot="text"></button></template>
+        <template data-pems-template="pcd-note"><div class="text-muted" data-slot="text"></div></template>
+        <template data-pems-template="pcd-list"><ul class="list-unstyled mb-0"></ul></template>
+        <template data-pems-template="pcd-item"><li class="border-bottom py-1"><strong class="vs-num" data-slot="code"></strong><span class="text-muted ms-2" data-slot="meta"></span><div data-slot="description"></div></li></template>
         break;
 }
 @code {
