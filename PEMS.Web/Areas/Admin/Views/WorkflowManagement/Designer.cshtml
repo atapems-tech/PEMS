@@ -24,8 +24,8 @@
     var displayName = fa && !string.IsNullOrWhiteSpace(Model.DefinitionNameFa) ? Model.DefinitionNameFa : Model.DefinitionName;
     var employeeMap = Model.Employees;
 }
-<div class="admin-page-shell">
-    <div class="content-card mb-3">
+<pems-page-shell kind="admin">
+    <pems-content-card css="mb-3">
         <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
             <div>
                 <span class="fw-semibold">@displayName</span> · <pems-badge tone="none" css="@StatusBadge(Model.Status)">v@(Model.VersionNumber) @Localizer[Model.Status]</pems-badge>
@@ -68,11 +68,11 @@
             @* SCRUM-103: what the module code needs from this definition (checked on Validate/Publish) *@
             <div class="small text-muted mt-1" data-contract-summary><pems-icon name="bi-shield-lock" /> @Model.DefinitionEditableReason</div>
         }
-    </div>
+    </pems-content-card>
 
     @if (validation != null && validation.Count > 0)
     {
-        <div class="content-card mb-3">
+        <pems-content-card css="mb-3">
             <h6 class="mb-2">@Localizer["Validation"]: <span class="text-danger">@validation.Count(v => v.Severity == "Error") @Localizer["errors"]</span>, <span class="text-warning">@validation.Count(v => v.Severity == "Warning") @Localizer["warnings"]</span></h6>
             <ul class="list-unstyled small mb-0">
                 @foreach (var v in validation)
@@ -83,12 +83,12 @@
                     </li>
                 }
             </ul>
-        </div>
+        </pems-content-card>
     }
 
     <pems-row gap="3">
         <pems-col xl="8">
-            <div class="content-card">
+            <pems-content-card>
                 <div class="d-flex justify-content-between align-items-center mb-2 flex-wrap gap-2">
                     <h6 class="mb-0">@Localizer["Workflow graph"] <span class="small text-muted">(@Model.Stages.Count @Localizer["stage(s)"], @Model.Transitions.Count @Localizer["transition(s)"])</span></h6>
                     <div class="small text-muted">
@@ -123,9 +123,9 @@
                     </svg>
                 </div>
                 @if (g.Nodes.Count == 0) { <p class="small text-muted mt-2 mb-0">@Localizer["This version has no stages yet."]</p> }
-            </div>
+            </pems-content-card>
 
-            <div class="content-card mt-3">
+            <pems-content-card css="mt-3">
                 <div class="d-flex justify-content-between align-items-center mb-1">
                     <h6 class="mb-0">@Localizer["Stages"]</h6>
                     @if (edit) { <pems-button as="a" tone="primary" size="small" outline="true" asp-action="Designer" asp-route-versionId="@Model.VersionId" asp-route-addStage="true"><pems-icon name="bi-plus-lg" /> @Localizer["Add stage"]</pems-button> }
@@ -143,9 +143,9 @@
                         </tr>
                     }
                     </tbody></pems-table></div>
-            </div>
+            </pems-content-card>
 
-            <div class="content-card mt-3">
+            <pems-content-card css="mt-3">
                 <div class="d-flex justify-content-between align-items-center mb-1">
                     <h6 class="mb-0">@Localizer["Transitions"]</h6>
                     @if (edit) { <pems-button as="a" tone="primary" size="small" outline="true" asp-action="Designer" asp-route-versionId="@Model.VersionId" asp-route-addTransition="true"><pems-icon name="bi-plus-lg" /> @Localizer["Add transition"]</pems-button> }
@@ -164,7 +164,7 @@
                         </tr>
                     }
                     </tbody></pems-table></div>
-            </div>
+            </pems-content-card>
         </pems-col>
 
         <pems-col xl="4">
@@ -174,7 +174,7 @@
             }
             @if (stageForm != null)
             {
-                <div class="content-card wf-panel">
+                <pems-content-card css="wf-panel">
                     <h6>@(stageForm.StageId == 0 ? Localizer["Add stage"] : Localizer["Stage"])</h6>
                     <form asp-action="SaveStage" method="post"><pems-row gap="2">
                         <input type="hidden" name="versionId" value="@Model.VersionId" /><input type="hidden" name="rowVersion" value="@Model.RowVersion" /><input type="hidden" name="stage.StageId" value="@stageForm.StageId" />
@@ -208,11 +208,11 @@
                             <pems-button tone="danger" size="small" outline="true">@Localizer["Remove stage"]</pems-button>
                         </form>
                     }
-                </div>
+                </pems-content-card>
             }
             else if (trForm != null)
             {
-                <div class="content-card wf-panel">
+                <pems-content-card css="wf-panel">
                     <h6>@(trForm.TransitionId == 0 ? Localizer["Add transition"] : Localizer["Transition"])</h6>
                     <form asp-action="SaveTransition" method="post"><pems-row gap="2">
                         <input type="hidden" name="versionId" value="@Model.VersionId" /><input type="hidden" name="rowVersion" value="@Model.RowVersion" /><input type="hidden" name="transition.TransitionId" value="@trForm.TransitionId" />
@@ -242,22 +242,22 @@
                             <pems-button tone="danger" size="small" outline="true">@Localizer["Remove transition"]</pems-button>
                         </form>
                     }
-                </div>
+                </pems-content-card>
             }
             else
             {
-                <div class="content-card">
+                <pems-content-card>
                     <p class="small text-muted mb-0"><pems-icon name="bi-cursor" /> @Localizer["Select a stage or a transition in the graph or the tables to inspect or edit it."]</p>
-                </div>
+                </pems-content-card>
             }
-            <div class="content-card mt-3">
+            <pems-content-card css="mt-3">
                 <h6>@Localizer["Recent changes"]</h6>
                 <ul class="list-unstyled small mb-0 pems-s-80c1414f">
                     @foreach (var a in Model.Audit) { <li class="mb-1"><span class="text-muted">@a.Timestamp.ToString("MM-dd HH:mm")</span> · @a.Action · @a.Actor @if (!string.IsNullOrEmpty(a.Details)) { <span class="text-muted">· @a.Details</span> }</li> }
                 </ul>
-            </div>
+            </pems-content-card>
         </pems-col>
     </pems-row>
-</div>
+</pems-page-shell>
 
 @section Styles { <link rel="stylesheet" href="~/css/pems-workflow-designer.css" asp-append-version="true" /> }

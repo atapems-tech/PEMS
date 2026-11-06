@@ -73,7 +73,7 @@
     <link rel="stylesheet" href="~/_content/PEMS.UI/pems-list.css" asp-append-version="true" />
 }
 
-<div class="vs-page">
+<pems-page-shell kind="workspace">
 
 <nav aria-label="@Localizer["Vd_Breadcrumb"]" class="small text-muted mb-2">
     <a asp-action="Index">VDR</a> / <a asp-controller="Vendor" asp-action="Details" asp-route-id="@Model.VendorId">@Model.VendorName</a> / <span>@Model.DocumentNumber</span>
@@ -149,7 +149,7 @@
 @* طبق «VENDOR DOCUMENTATION MANAGEMENT PROCEDURE» بخش ۴.۳.۱: شماره‌ی رسمی مدرک به فرمت
    CONTRACTOR. هر فیلد مرجع خالی این‌جا پر می‌شود و همزمان روی Vendor/Project/VDR Item ذخیره
    می‌شود - دفعه‌ی بعد از قبل پرشده می‌آید. *@
-<div class="content-card mb-3">
+<pems-content-card css="mb-3">
     <h6 class="mb-2">@Localizer["Vd_OfficialNoTitle"]</h6>
     <p class="text-muted small mb-3">
         @Localizer["Vd_OfficialNoHint"]
@@ -166,10 +166,10 @@
             <pems-icon name="bi-hash" /> @Localizer["Vd_GenOfficial"]
         </pems-button>
     </form>
-</div>
+</pems-content-card>
 
 @* طبق بخش ۴.۳.۲ همان سند: شماره‌ی موازی به فرمت SUB-CONTRACTOR/Vendor *@
-<div class="content-card mb-3">
+<pems-content-card css="mb-3">
     <h6 class="mb-2">@Localizer["Vd_VendorNoTitle"]</h6>
     <p class="text-muted small mb-3">
         @Localizer["Vd_VendorNoHint"]
@@ -189,12 +189,12 @@
             <pems-icon name="bi-hash" /> @Localizer["Vd_GenVendor"]
         </pems-button>
     </form>
-</div>
+</pems-content-card>
 </div>
 
 @* ===================== Submissions ===================== *@
 <div class="tab-pane fade" id="tab-submissions" role="tabpanel">
-<div class="content-card mb-3">
+<pems-content-card css="mb-3">
     <h6 class="mb-3">@Localizer["Vd_SubHistory"]</h6>
     <pems-related-table>
         <thead>
@@ -286,7 +286,7 @@
         </tbody>
     </pems-related-table>
     @if (!Model.Submissions.Any()) { <p class="text-muted">@Localizer["Vd_NoSubmissions"]</p> }
-</div>
+</pems-content-card>
 </div>
 
 @* ===================== Comments (شامل PDF Viewer) ===================== *@
@@ -300,7 +300,7 @@
 
 @if (latestSubmissionWithFile != null)
 {
-    <div class="content-card mb-3">
+    <pems-content-card css="mb-3">
         <div class="d-flex justify-content-between align-items-center mb-2">
             <h6 class="mb-0"><pems-icon name="bi-file-earmark-pdf" /> @Localizer["Vd_DocViewer"] <span class="text-muted small">@Localizer["Vd_PinHint"]</span></h6>
             <div class="d-flex align-items-center gap-2">
@@ -314,7 +314,7 @@
         <div class="pems-pdf-canvas" id="pdfCanvasWrapper">
             <canvas id="pdfCanvas"></canvas>
         </div>
-    </div>
+    </pems-content-card>
 
     <script type="module" src="~/js/pdfjs-loader.js"></script>
     <script type="module">
@@ -400,7 +400,7 @@
     </script>
 }
 
-<div class="content-card mb-3">
+<pems-content-card css="mb-3">
     <h6 class="mb-3">@Localizer["Vd_CommentMgmt"] <span class="text-muted small">@Localizer["Vd_ActionIndependent"]</span></h6>
 
     <pems-related-table>
@@ -475,7 +475,7 @@
             <pems-icon name="bi-plus-lg" /> @Localizer["Vd_AddComment"]
         </pems-button>
     }
-</div>
+</pems-content-card>
 </div>
 @* پایان تب Comments - مدال‌های زیر مستقل از تب فعال همیشه در دسترس‌اند *@
 
@@ -678,7 +678,7 @@
 }
 else
 {
-<div class="content-card mb-3">
+<pems-content-card css="mb-3">
     <h6 class="mb-3"><pems-icon name="bi-signpost-split" /> @Localizer["Vd_ReviewWorkflow"]</h6>
 
     @if (Model.Submissions.Any())
@@ -778,12 +778,12 @@ else
             </pems-col>
         </pems-row></form>
     }
-</div>
+</pems-content-card>
 }
 
 
 @* تاریخچه‌ی واقعی گردش‌کار از موتور عمومی (نه فقط رشته‌ی خلاصه‌ی وضعیت) *@
-<div class="content-card">
+<pems-content-card>
     <h6 class="mb-3"><pems-icon name="bi-clock-history" /> @Localizer["Vd_WorkflowHistory"]</h6>
     @if (workflowHistory.Any())
     {
@@ -808,12 +808,12 @@ else
     {
         <p class="text-muted text-center py-4 mb-0">@Localizer["Vd_NoWorkflowYet"]</p>
     }
-</div>
+</pems-content-card>
 </div>
 
 @* ===================== Correspondence ===================== *@
 <div class="tab-pane fade" id="tab-correspondence" role="tabpanel">
-<div class="content-card">
+<pems-content-card>
     <h6 class="mb-3"><pems-icon name="bi-envelope-paper" /> @Localizer["Vd_RelatedCorr"]</h6>
     @if (relatedLetters.Any())
     {
@@ -838,13 +838,13 @@ else
     {
         <p class="text-muted text-center py-4 mb-0">@Localizer["Vd_NoCorr"]</p>
     }
-</div>
+</pems-content-card>
 </div>
 
 </div>
 @* پایان tab-content *@
 
-</div>
+</pems-page-shell>
 @* پایان vs-page *@
 
 @section Scripts {

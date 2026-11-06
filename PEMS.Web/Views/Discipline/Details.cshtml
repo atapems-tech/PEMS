@@ -9,7 +9,7 @@
 }
 
 
-<div class="content-card mb-3">
+<pems-content-card css="mb-3">
     <div class="d-flex justify-content-between align-items-center">
         <h5 class="mb-0">@s.Code &mdash; @s.Name Workspace</h5>
         <form method="get" class="d-flex gap-2">
@@ -19,7 +19,7 @@
             </pems-select>
         </form>
     </div>
-</div>
+</pems-content-card>
 
 <pems-row gap="3" css="mb-3">
     <pems-col md="2" sm="6"><pems-kpi-tile icon="bi-file-earmark-text" color="slate" label="@Localizer["Documents"]">@s.DocumentsCount</pems-kpi-tile></pems-col>
@@ -30,7 +30,7 @@
     <pems-col md="2" sm="6"><pems-kpi-tile icon="bi-exclamation-triangle" color="red" label="Overdue Tasks">@s.OverdueTasksCount</pems-kpi-tile></pems-col>
 </pems-row>
 
-<div class="content-card mb-3">
+<pems-content-card css="mb-3">
     <h6 class="mb-3">Tasks / Activities / Deliverables</h6>
     <pems-table kind="enterprise">
         <thead><tr><th>@Localizer["Type"]</th><th>@Localizer["Title"]</th><th>@Localizer["Project"]</th><th>@Localizer["Responsible"]</th><th>@Localizer["Due"]</th><th>@Localizer["Status"]</th><th></th></tr></thead>
@@ -82,11 +82,11 @@
         <pems-col md="2"><pems-date name="dueDate" scale="small" /></pems-col>
         <pems-col md="1"><pems-button tone="primary" size="small" css="w-100"><pems-icon name="bi-plus-lg" /></pems-button></pems-col>
     </pems-row></form>
-</div>
+</pems-content-card>
 
 <pems-row gap="3">
     <pems-col lg="6">
-        <div class="content-card mb-3">
+        <pems-content-card css="mb-3">
             <h6 class="mb-3">@Localizer["Documents"]</h6>
             <div class="table-scroll-area pems-s-3a95d6b3">
                 <pems-table kind="enterprise">
@@ -100,9 +100,9 @@
                 </pems-table>
             </div>
             @if (!Model.Documents.Any()) { <p class="text-muted small">No documents.</p> }
-        </div>
+        </pems-content-card>
 
-        <div class="content-card">
+        <pems-content-card>
             <h6 class="mb-3">@Localizer["Equipment"]</h6>
             <div class="table-scroll-area pems-s-3a95d6b3">
                 <pems-table kind="enterprise">
@@ -116,11 +116,11 @@
                 </pems-table>
             </div>
             @if (!Model.Equipment.Any()) { <p class="text-muted small">No equipment.</p> }
-        </div>
+        </pems-content-card>
     </pems-col>
 
     <pems-col lg="6">
-        <div class="content-card mb-3">
+        <pems-content-card css="mb-3">
             <h6 class="mb-3">@Localizer["VDR Items"]</h6>
             <div class="table-scroll-area pems-s-3a95d6b3">
                 <pems-table kind="enterprise">
@@ -134,9 +134,9 @@
                 </pems-table>
             </div>
             @if (!Model.VDRItems.Any()) { <p class="text-muted small">No VDR items.</p> }
-        </div>
+        </pems-content-card>
 
-        <div class="content-card">
+        <pems-content-card>
             <h6 class="mb-3">MR / MRQ</h6>
             <pems-table kind="enterprise">
                 <thead><tr><th>MR No</th><th>@Localizer["Status"]</th></tr></thead>
@@ -148,6 +148,6 @@
                 </tbody>
             </pems-table>
             @if (!Model.MRs.Any()) { <p class="text-muted small">No MR/MRQ.</p> }
-        </div>
+        </pems-content-card>
     </pems-col>
 </pems-row>

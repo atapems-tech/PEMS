@@ -7,10 +7,10 @@
     var message = (string?)ViewBag.ErrorMessage;
 }
 
-<div class="content-card">
+<pems-content-card>
     <pems-alert tone="danger" css="mb-0">
         <h6 class="alert-heading"><pems-icon name="bi-exclamation-triangle-fill" /> @errorCode</h6>
         <p class="mb-0">@message</p>
     </pems-alert>
     <pems-button tone="neutral" size="small" outline="true" css="mt-3" as="a" asp-action="Index">@Localizer["← Back to Barcode"]</pems-button>
-</div>
+</pems-content-card>

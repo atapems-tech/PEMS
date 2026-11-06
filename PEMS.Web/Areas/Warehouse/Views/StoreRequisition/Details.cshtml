@@ -21,7 +21,7 @@
     <pems-alert tone="danger" css="py-2 px-3 small">@TempData["Error"]</pems-alert>
 }
 
-<div class="content-card mb-3">
+<pems-content-card css="mb-3">
     <div class="d-flex justify-content-between align-items-start flex-wrap gap-2">
         <div>
             <h5 class="mb-1">@Model.RequisitionNumber</h5>
@@ -64,9 +64,9 @@
             </form>
         }
     </div>
-</div>
+</pems-content-card>
 
-<div class="content-card mb-3">
+<pems-content-card css="mb-3">
     <h6 class="mb-3">Lines</h6>
     @{
         var editApproved = Model.Status == "Submitted" && Can("SetApprovedQuantity") && !isRequester;
@@ -112,9 +112,9 @@
             <pems-col md="3"><pems-button tone="primary" size="small" css="w-100"><pems-icon name="bi-plus-lg" /> Add Line</pems-button></pems-col>
         </pems-row></form>
     }
-</div>
+</pems-content-card>
 
-<div class="content-card">
+<pems-content-card>
     <h6 class="mb-3">@Localizer["Status History"]</h6>
     <pems-table kind="enterprise" scale="small">
         <thead><tr><th>@Localizer["From"]</th><th>To</th><th>By</th><th>@Localizer["Date"]</th><th>@Localizer["Reason"]</th></tr></thead>
@@ -131,4 +131,4 @@
             }
         </tbody>
     </pems-table>
-</div>
+</pems-content-card>

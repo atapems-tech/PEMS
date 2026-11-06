@@ -3,7 +3,7 @@
 @using PEMS.Web.Resources
 @inject IStringLocalizer<SharedResource> Localizer
 
-<div class="content-card mb-3">
+<pems-content-card css="mb-3">
     <form method="get"><pems-row gap="2" css="align-items-end">
         <pems-col md="4">
             <pems-label css="small">@Localizer["Search Query"]</pems-label>
@@ -37,9 +37,9 @@
             <pems-button tone="primary" size="small" css="w-100" type="submit"><pems-icon name="bi-search" /> @Localizer["Search"]</pems-button>
         </pems-col>
     </pems-row></form>
-</div>
+</pems-content-card>
 
-<div class="content-card">
+<pems-content-card>
     @if (!Model.Any())
     {
         <p class="text-muted text-center py-4">
@@ -72,4 +72,4 @@
         </pems-table>
         </div>
     }
-</div>
+</pems-content-card>

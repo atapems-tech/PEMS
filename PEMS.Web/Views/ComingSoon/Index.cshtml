@@ -6,7 +6,7 @@
     string? sectionName = ViewBag.Section as string;
 }
 
-<div class="content-card text-center py-5">
+<pems-content-card css="text-center py-5">
     <div class="pems-s-105f47a5">
         <pems-icon name="bi-cone-striped" />
     </div>
@@ -23,4 +23,4 @@
     <pems-button tone="neutral" size="small" outline="true" css="mt-2" as="a" asp-controller="Home" asp-action="Index">
         <pems-icon name="bi-arrow-right" /> @Localizer["بازگشت به داشبورد"]
     </pems-button>
-</div>
+</pems-content-card>

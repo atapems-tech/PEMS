@@ -9,8 +9,8 @@
     var input = Model.Input;
 }
 
-<div class="admin-page-shell">
-    <div class="content-card pems-s-71e17938">
+<pems-page-shell kind="admin">
+    <pems-content-card css="pems-s-71e17938">
         <h2 class="h5 mb-1">@Localizer["Nav_Admin_Edit"]</h2>
         <p class="small text-body-tertiary mb-3" dir="ltr">@i.Key · @i.VisibilityRule</p>
 
@@ -85,7 +85,7 @@
                 <pems-button as="a" tone="neutral" outline="true" asp-action="Index">@Localizer["Cancel"]</pems-button>
             </div>
         </form>
-    </div>
-</div>
+    </pems-content-card>
+</pems-page-shell>
 
 <script src="~/js/views/admin-navigationmenu-edit.js" asp-append-version="true"></script>

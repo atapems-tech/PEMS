@@ -10,7 +10,7 @@
     var myDisciplineId = ViewBag.MyDisciplineId as int?;
 }
 
-<div class="content-card mb-3">
+<pems-content-card css="mb-3">
     <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
         <div>
             <h5 class="mb-0">@Model.QueryNumber <pems-badge tone="neutral">@Model.QueryType</pems-badge></h5>
@@ -21,9 +21,9 @@
             @if (Model.IsOverdue) { <pems-badge tone="danger" css="fs-6"><pems-icon name="bi-clock-history" /> @Localizer["Overdue"]</pems-badge> }
         </div>
     </div>
-</div>
+</pems-content-card>
 
-<div class="content-card mb-3">
+<pems-content-card css="mb-3">
     <pems-row gap="3">
         <pems-col md="4"><strong>@Localizer["Priority:"]</strong> @Model.Priority</pems-col>
         <pems-col md="4"><strong>@Localizer["Raised:"]</strong> @Model.RaisedDate.ToString("yyyy-MM-dd")</pems-col>
@@ -45,18 +45,18 @@
         <pems-col span="12"><strong>Subject:</strong> @Model.Subject</pems-col>
         <pems-col span="12"><strong>@Localizer["Description:"]</strong> @Model.Description</pems-col>
     </pems-row>
-</div>
+</pems-content-card>
 
 @if (!string.IsNullOrEmpty(Model.ResponseText))
 {
-    <div class="content-card mb-3 border-info">
+    <pems-content-card css="mb-3 border-info">
         <h6 class="mb-2"><pems-icon name="bi-reply" /> @Localizer["Response"]</h6>
         <p class="mb-1">@Model.ResponseText</p>
         <p class="text-muted small mb-0">@(Model.RespondedDate?.ToString("yyyy-MM-dd HH:mm"))</p>
-    </div>
+    </pems-content-card>
 }
 
-<div class="content-card mb-3">
+<pems-content-card css="mb-3">
     <h6 class="mb-3"><pems-icon name="bi-paperclip" /> Attachments <pems-badge tone="neutral">@Model.Attachments.Count</pems-badge></h6>
     @if (Model.Attachments.Any())
     {
@@ -75,9 +75,9 @@
         <pems-input scale="small" type="file" name="file" required />
         <pems-button tone="primary" size="small" outline="true" css="text-nowrap" type="submit"><pems-icon name="bi-upload" /> افزودن</pems-button>
     </form>
-</div>
+</pems-content-card>
 
-<div class="content-card">
+<pems-content-card>
     <h6 class="mb-3"><pems-icon name="bi-signpost-split" /> Workflow</h6>
 
     @if (!workflowRunning)
@@ -121,4 +121,4 @@
                 </form>
             </pems-modal>
     }
-</div>
+</pems-content-card>

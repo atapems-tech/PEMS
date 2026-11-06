@@ -5,15 +5,15 @@
 
 @if (Model == null)
 {
-    <div class="content-card">
+    <pems-content-card>
         <p class="text-muted">کارمندی برای این حساب کاربری پیدا نشد.</p>
-    </div>
+    </pems-content-card>
 }
 else
 {
     <pems-row gap="3">
         <pems-col md="4">
-            <div class="content-card text-center">
+            <pems-content-card css="text-center">
                 <h6 class="mb-3"><pems-icon name="bi-person-circle" /> @Localizer["عکس پروفایل"]</h6>
 
                 @if (!string.IsNullOrEmpty(Model.PhotoPath))
@@ -34,11 +34,11 @@ else
                     <pems-input scale="small" css="mb-2" type="file" name="file" accept=".jpg,.jpeg,.png,.webp" required />
                     <pems-button tone="primary" size="small" css="w-100" type="submit"><pems-icon name="bi-upload" /> @Localizer["ذخیره عکس"]</pems-button>
                 </form>
-            </div>
+            </pems-content-card>
         </pems-col>
 
         <pems-col md="8">
-            <div class="content-card">
+            <pems-content-card>
                 <h6 class="mb-3"><pems-icon name="bi-pen" /> @Localizer["امضای دیجیتال (ترسیمی)"]</h6>
                 <p class="text-muted small">
                     با موس یا انگشت روی کادر زیر امضا کن. این امضا در جاهایی از سیستم که نیاز به
@@ -65,7 +65,7 @@ else
                 <form asp-action="SaveSignature" method="post" id="signatureForm" class="d-none">
                     <input type="hidden" name="signatureDataUrl" id="signatureDataUrl" />
                 </form>
-            </div>
+            </pems-content-card>
         </pems-col>
     </pems-row>
 

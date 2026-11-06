@@ -25,7 +25,7 @@
 @* طبق «PEMS Correspondence Workspace» بند ۲۳: تجربه‌ی Compose سبک Gmail - فیلدهای اصلی
    (گیرنده/فرستنده، موضوع، متن) مستقیم دیده می‌شوند؛ متادیتای ثانویه (اولویت، محرمانگی، پروژه،
    دیسیپلین، شماره‌ی دستی، مدرک/MR مرتبط) پشت «More Details» جمع می‌شود - نه یک فرم بزرگ یک‌جا *@
-<div class="content-card pems-s-3f7efa5f">
+<pems-content-card css="pems-s-3f7efa5f">
     <h2 class="vs-section__title">@Localizer[letterType == "Incoming" ? "Lt_NewIncoming" : letterType == "Outgoing" ? "Lt_NewOutgoing" : "Lt_NewInternal"]</h2>
     @if (templates.Any())
     {
@@ -148,7 +148,7 @@
             <pems-button tone="neutral" outline="true" as="a" asp-action="Index">@Localizer["Cancel"]</pems-button>
         </div>
     </form>
-</div>
+</pems-content-card>
 
 <script src="~/js/views/letter-create-2.js" asp-append-version="true"></script>
 

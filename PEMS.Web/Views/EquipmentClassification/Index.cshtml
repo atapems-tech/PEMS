@@ -6,7 +6,7 @@
 @{
 }
 
-<div class="content-card mb-3">
+<pems-content-card css="mb-3">
     <pems-row gap="3">
         <pems-col md="2">
             <pems-kpi-tile compact label="@Localizer["Total Active Equipment"]">@Model.TotalActiveEquipment.ToString("N0")</pems-kpi-tile>
@@ -32,11 +32,11 @@
             </pems-button>
         </pems-col>
     </pems-row>
-</div>
+</pems-content-card>
 
 <pems-row gap="3" css="mb-3">
     <pems-col md="6">
-        <div class="content-card h-100">
+        <pems-content-card css="h-100">
             <h6 class="mb-3">Classified — by Confidence</h6>
             @foreach (var item in Model.ByConfidence)
             {
@@ -46,10 +46,10 @@
                 <pems-progress value="@item.Count" max="@Model.ClassifiedCount" height="6px" css="mb-2"></pems-progress>
             }
             @if (!Model.ByConfidence.Any()) { <p class="text-muted small">@Localizer["داده‌ای موجود نیست."]</p> }
-        </div>
+        </pems-content-card>
     </pems-col>
     <pems-col md="6">
-        <div class="content-card h-100">
+        <pems-content-card css="h-100">
             <h6 class="mb-3">Classified — by Source</h6>
             @foreach (var item in Model.BySource)
             {
@@ -59,13 +59,13 @@
                 <pems-progress value="@item.Count" max="@Model.ClassifiedCount" tone="info" height="6px" css="mb-2"></pems-progress>
             }
             @if (!Model.BySource.Any()) { <p class="text-muted small">@Localizer["داده‌ای موجود نیست."]</p> }
-        </div>
+        </pems-content-card>
     </pems-col>
 </pems-row>
 
 <pems-row gap="3" css="mb-3">
     <pems-col md="6">
-        <div class="content-card h-100">
+        <pems-content-card css="h-100">
             <h6 class="mb-3">Pending Suggestions — by Confidence</h6>
             @foreach (var item in Model.PendingSuggestionsByConfidence)
             {
@@ -74,10 +74,10 @@
                 </div>
             }
             @if (!Model.PendingSuggestionsByConfidence.Any()) { <p class="text-muted small">@Localizer["هیچ پیشنهادی در انتظار بازبینی نیست."]</p> }
-        </div>
+        </pems-content-card>
     </pems-col>
     <pems-col md="6">
-        <div class="content-card h-100">
+        <pems-content-card css="h-100">
             <h6 class="mb-3">Unclassified — by Discipline</h6>
             @foreach (var item in Model.UnclassifiedByDiscipline)
             {
@@ -86,11 +86,11 @@
                 </div>
             }
             @if (!Model.UnclassifiedByDiscipline.Any()) { <p class="text-muted small">@Localizer["داده‌ای موجود نیست."]</p> }
-        </div>
+        </pems-content-card>
     </pems-col>
 </pems-row>
 
-<div class="content-card mb-3">
+<pems-content-card css="mb-3">
     <h6 class="mb-3">Classified — by Equipment Class (Top 20)</h6>
     <div class="table-responsive">
         <pems-table kind="enterprise" scale="small">
@@ -104,11 +104,11 @@
         </pems-table>
         @if (!Model.ByEquipmentClass.Any()) { <p class="text-muted small text-center py-3">@Localizer["داده‌ای موجود نیست."]</p> }
     </div>
-</div>
+</pems-content-card>
 
 <pems-row gap="3">
     <pems-col md="4">
-        <div class="content-card h-100">
+        <pems-content-card css="h-100">
             <h6 class="mb-3">Top Unclassified — EquipmentType</h6>
             <div class="table-responsive pems-s-f0787633">
                 <pems-table kind="enterprise" scale="small">
@@ -120,10 +120,10 @@
                     </tbody>
                 </pems-table>
             </div>
-        </div>
+        </pems-content-card>
     </pems-col>
     <pems-col md="4">
-        <div class="content-card h-100">
+        <pems-content-card css="h-100">
             <h6 class="mb-3">Top Unclassified — Name</h6>
             <div class="table-responsive pems-s-f0787633">
                 <pems-table kind="enterprise" scale="small">
@@ -135,10 +135,10 @@
                     </tbody>
                 </pems-table>
             </div>
-        </div>
+        </pems-content-card>
     </pems-col>
     <pems-col md="4">
-        <div class="content-card h-100">
+        <pems-content-card css="h-100">
             <h6 class="mb-3">Top Unclassified — Tag Pattern</h6>
             <div class="table-responsive pems-s-f0787633">
                 <pems-table kind="enterprise" scale="small">
@@ -150,6 +150,6 @@
                     </tbody>
                 </pems-table>
             </div>
-        </div>
+        </pems-content-card>
     </pems-col>
 </pems-row>

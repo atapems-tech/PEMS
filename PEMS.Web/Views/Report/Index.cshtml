@@ -24,7 +24,7 @@
     <pems-button tone="neutral" size="small" outline="true" as="a" asp-action="Operations"><pems-icon name="bi-clipboard-data" /> @Localizer["Operations"]</pems-button>
     <pems-button tone="neutral" size="small" outline="true" as="a" asp-area="Warehouse" asp-controller="PartCatalogueReport" asp-action="Index"><pems-icon name="bi-journal-plus" /> @Localizer["Pc_Menu"]</pems-button>
 </div>
-<div class="content-card mb-3">
+<pems-content-card css="mb-3">
     <form method="get"><pems-row gap="2">
         <pems-col md="3">
             <pems-select scale="small" name="disciplineId">
@@ -42,7 +42,7 @@
         <pems-col md="2"><pems-date name="toDate" value="@(((DateTime?)ViewBag.ToDate)?.ToString("yyyy-MM-dd"))" scale="small" /></pems-col>
         <pems-col md="2"><pems-button tone="primary" size="small" css="w-100"><pems-icon name="bi-funnel" /> @Localizer["Apply"]</pems-button></pems-col>
     </pems-row></form>
-</div>
+</pems-content-card>
 
 <pems-row gap="3" css="mb-3">
     <pems-col md="2" sm="6"><pems-kpi-tile icon="bi-envelope" color="slate" label="@Localizer["Total"]">@Model.TotalLetters</pems-kpi-tile></pems-col>
@@ -55,25 +55,25 @@
 
 <pems-row gap="3">
     <pems-col lg="8">
-        <div class="content-card mb-3">
+        <pems-content-card css="mb-3">
             <h6 class="mb-3">Correspondence Volume (last 12 months)</h6>
             <pems-chart spec="@volumeChart" />
-        </div>
+        </pems-content-card>
     </pems-col>
     <pems-col lg="4">
-        <div class="content-card mb-3">
+        <pems-content-card css="mb-3">
             <h6 class="mb-3">@Localizer["By Status"]</h6>
             <pems-chart spec="@statusChart" />
-        </div>
+        </pems-content-card>
     </pems-col>
     <pems-col lg="6">
-        <div class="content-card mb-3">
+        <pems-content-card css="mb-3">
             <h6 class="mb-3">@Localizer["By Discipline"]</h6>
             <pems-chart spec="@disciplineChart" />
-        </div>
+        </pems-content-card>
     </pems-col>
     <pems-col lg="6">
-        <div class="content-card mb-3">
+        <pems-content-card css="mb-3">
             <h6 class="mb-3">Top Tags</h6>
             <ul class="list-unstyled mb-0">
                 @foreach (var t in Model.TopTags)
@@ -85,11 +85,11 @@
                 }
             </ul>
             @if (!Model.TopTags.Any()) { <p class="text-muted small">No tags used yet.</p> }
-        </div>
+        </pems-content-card>
     </pems-col>
 </pems-row>
 
-<div class="content-card">
+<pems-content-card>
     <h6 class="mb-3">Top Senders</h6>
     <div class="table-responsive table-scroll-area pems-s-8da1c6e6">
     <pems-table kind="enterprise">
@@ -103,7 +103,7 @@
     </pems-table>
     </div>
     @if (!Model.TopSenders.Any()) { <p class="text-muted text-center py-3">@Localizer["No data."]</p> }
-</div>
+</pems-content-card>
 
 @section Styles {
     <partial name="_BkChartStyles" />

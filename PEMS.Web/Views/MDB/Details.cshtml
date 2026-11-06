@@ -6,7 +6,7 @@
     var documents = (IEnumerable<dynamic>)ViewBag.Documents;
 }
 
-<div class="content-card mb-3">
+<pems-content-card css="mb-3">
     <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
         <div>
             <h5 class="mb-0">MDB - @Model.EquipmentTagNumber</h5>
@@ -53,7 +53,7 @@
             <form asp-action="MarkSoftCopyDelivered" method="post"><input type="hidden" name="mdbId" value="@Model.MDBId" /><pems-button tone="primary" size="small" outline="true">Mark Soft Copy Delivered</pems-button></form>
         }
     </div>
-</div>
+</pems-content-card>
 
 @{
     var parts = new[] {
@@ -65,7 +65,7 @@
 
 @foreach (var (code, label, docs) in parts)
 {
-    <div class="content-card mb-3">
+    <pems-content-card css="mb-3">
         <h6 class="mb-3">@label</h6>
         <pems-table kind="enterprise">
             <thead><tr><th>@Localizer["Document No"]</th><th>@Localizer["Title"]</th><th>DVD Volume</th><th>N/A</th><th>@Localizer["Notes"]</th><th></th></tr></thead>
@@ -114,5 +114,5 @@
             </pems-col>
             <pems-col md="2"><pems-button tone="primary" size="small" outline="true" css="w-100"><pems-icon name="bi-plus-lg" /> @Localizer["Add"]</pems-button></pems-col>
         </pems-row></form>
-    </div>
+    </pems-content-card>
 }

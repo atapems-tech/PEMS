@@ -16,7 +16,7 @@
     var applyText = Model.State == DatabaseSetupState.FirstRun ? "Install database" : "Apply updates";
 }
 
-<div class="admin-page-shell">
+<pems-page-shell kind="admin">
     <div class="admin-hero">
         <div><p>@Localizer["Database install and update: the schema is built and upgraded from code (migrations). Check the state, then apply."]</p></div>
     </div>
@@ -24,7 +24,7 @@
     @if (TempData["Message"] != null) { <pems-alert tone="success">@TempData["Message"]</pems-alert> }
     @if (TempData["Error"] != null) { <pems-alert tone="danger">@TempData["Error"]</pems-alert> }
 
-    <div class="content-card mb-3">
+    <pems-content-card css="mb-3">
         <div class="d-flex align-items-center gap-3 flex-wrap">
             <pems-badge tone="none" css="fs-6 @badge">@Localizer[label]</pems-badge>
             <span>@Model.Summary</span>
@@ -34,11 +34,11 @@
             <pems-col md="4" span="12"><div class="small fw-bold">@(Model.LastAppliedMigration ?? "-")</div><div class="text-muted small">@Localizer["Last applied"]</div></pems-col>
             <pems-col md="5" span="12"><div class="small fw-bold">@(Model.LatestKnownMigration ?? "-")</div><div class="text-muted small">@Localizer["Latest in this application"]</div></pems-col>
         </pems-row>
-    </div>
+    </pems-content-card>
 
     @if (Model.CanApply)
     {
-        <div class="content-card mb-3">
+        <pems-content-card css="mb-3">
             <h6>@Localizer["Pending migrations"] (@Model.PendingMigrations.Count)</h6>
             <ul class="small text-muted pems-s-4cd5c0a7">
                 @foreach (var m in Model.PendingMigrations) { <li><code>@m</code></li> }
@@ -60,10 +60,10 @@
                 }
                 <pems-button tone="primary" type="submit"><pems-icon name="bi-database-up" css="me-1" /> @Localizer[applyText]</pems-button>
             </form>
-        </div>
+        </pems-content-card>
     }
 
-    <div class="content-card">
+    <pems-content-card>
         <h6>@Localizer["Recent runs"]</h6>
         @if (!Model.RecentRuns.Any())
         {
@@ -97,5 +97,5 @@
                 </pems-table>
             </div>
         }
-    </div>
-</div>
+    </pems-content-card>
+</pems-page-shell>

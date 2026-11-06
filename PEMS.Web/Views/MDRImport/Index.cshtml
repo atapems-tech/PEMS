@@ -7,7 +7,7 @@
 }
 
 
-<div class="content-card mb-3">
+<pems-content-card css="mb-3">
     <div class="d-flex justify-content-between align-items-center">
         <div>
             <strong>Discipline not showing after import?</strong>
@@ -21,9 +21,9 @@
             <pems-button tone="primary" size="small" outline="true" type="submit"><pems-icon name="bi-arrow-repeat" /> Fix Discipline Matching</pems-button>
         </form>
     </div>
-</div>
+</pems-content-card>
 
-<div class="content-card mb-3">
+<pems-content-card css="mb-3">
     <div class="d-flex justify-content-between align-items-center">
         <div>
             <strong>Dashboard counts not matching the register?</strong>
@@ -37,9 +37,9 @@
             <pems-button tone="primary" size="small" outline="true" type="submit"><pems-icon name="bi-speedometer2" /> Fix Status Values</pems-button>
         </form>
     </div>
-</div>
+</pems-content-card>
 
-<div class="content-card mb-3 pems-s-bcaa1805">
+<pems-content-card css="mb-3 pems-s-bcaa1805">
     <p class="text-muted">
         فایل اکسل MDR (Master/Engineering Document Register) سازمان را آپلود کنید. سیستم همه‌ی
         شیت‌های داده‌ای (رجیستر اصلی، Freezed Docs، Not Issued Docs) را می‌خواند و شیت‌های خلاصه/گزارش
@@ -60,9 +60,9 @@
             <pems-button tone="primary" css="w-100" type="submit"><pems-icon name="bi-cloud-upload" /> @Localizer["Upload"]</pems-button>
         </pems-col>
     </pems-row></form>
-</div>
+</pems-content-card>
 
-<div class="content-card">
+<pems-content-card>
     <h6 class="mb-3">@Localizer["Recent Import Batches"]</h6>
     <div class="table-responsive table-scroll-area pems-s-8da1c6e6">
     <pems-table kind="enterprise">
@@ -92,4 +92,4 @@
     </pems-table>
     </div>
     @if (!Model.Any()) { <p class="text-muted text-center py-4">No MDR imports yet.</p> }
-</div>
+</pems-content-card>

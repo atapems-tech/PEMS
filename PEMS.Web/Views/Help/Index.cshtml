@@ -9,7 +9,7 @@
     var articles = ViewBag.Articles as IReadOnlyList<PEMS.Application.DTOs.HelpArticleSummaryDto>;
 }
 
-<div class="content-card mb-3">
+<pems-content-card css="mb-3">
     <div class="d-flex align-items-center gap-2 mb-1">
         <pems-icon name="bi-life-preserver" css="fs-4 text-warning" />
         <h4 class="mb-0">@L("Help Center", "مرکز راهنما")</h4>
@@ -19,11 +19,11 @@
         <pems-input type="search" name="q" placeholder="@L("Search Help... (e.g. \"work order\", \"IDC\", \"مجوز کار\")", "جستجو در راهنما... (مثلاً «دستور کار»، «IDC»، work order)")" />
         <pems-button tone="primary" type="submit"><pems-icon name="bi-search" /> @L("Search", "جستجو")</pems-button>
     </form>
-</div>
+</pems-content-card>
 
 <pems-row gap="3">
     <pems-col md="3">
-        <div class="content-card">
+        <pems-content-card>
             <h6 class="mb-3">@L("Categories", "دسته‌ها")</h6>
             <pems-list-group flush="true">
                 <pems-list-group-item action="true" active="@(selectedCategoryId == null)" asp-action="Index">
@@ -37,7 +37,7 @@
                     </pems-list-group-item>
                 }
             </pems-list-group>
-        </div>
+        </pems-content-card>
     </pems-col>
 
     <pems-col md="9">
@@ -48,11 +48,11 @@
                 {
                     <pems-col md="4">
                         <a asp-action="Category" asp-route-id="@c.HelpCategoryId" class="text-decoration-none">
-                            <div class="content-card h-100">
+                            <pems-content-card css="h-100">
                                 <pems-icon css="@(c.IconCssClass ?? "bi-folder") fs-3 text-warning" />
                                 <h6 class="mt-2 mb-1 text-body">@c.Name</h6>
                                 <p class="text-muted small mb-0">@c.ArticleCount @L("articles", "مقاله")</p>
-                            </div>
+                            </pems-content-card>
                         </a>
                     </pems-col>
                 }
@@ -60,7 +60,7 @@
         }
         else if (articles != null)
         {
-            <div class="content-card">
+            <pems-content-card>
                 <h6 class="mb-3">@categories.FirstOrDefault(c => c.HelpCategoryId == selectedCategoryId)?.Name</h6>
                 @if (!articles.Any())
                 {
@@ -83,7 +83,7 @@
                         }
                     </pems-list-group>
                 }
-            </div>
+            </pems-content-card>
         }
     </pems-col>
 </pems-row>

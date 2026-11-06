@@ -3,12 +3,12 @@
 @using PEMS.Web.Resources
 @inject IStringLocalizer<SharedResource> Localizer
 
-<div class="admin-page-shell">
+<pems-page-shell kind="admin">
     <div class="admin-hero">
         <div class="d-flex align-items-center gap-3"><div><p>@Localizer["Reset the account of another administrator. This cannot be undone."]</p></div></div>
     </div>
 
-    <div class="content-card">
+    <pems-content-card>
         <h2 class="h5 mb-3"><pems-icon name="bi-shield-exclamation" css="me-1" /> @Localizer["Reset administrator account"]: <strong>@Model.UserName</strong> @(string.IsNullOrWhiteSpace(Model.FullName) ? "" : $"({Model.FullName})")</h2>
 
         <p class="mb-2">@Localizer["Confirming will:"]</p>
@@ -26,5 +26,5 @@
             <pems-button tone="danger" type="submit"><pems-icon name="bi-key" css="me-1" /> @Localizer["Reset account"]</pems-button>
             <pems-button as="a" tone="neutral" outline="true" asp-action="Index">@Localizer["Cancel"]</pems-button>
         </form>
-    </div>
-</div>
+    </pems-content-card>
+</pems-page-shell>

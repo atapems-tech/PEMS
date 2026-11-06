@@ -4,13 +4,13 @@
 @inject IStringLocalizer<SharedResource> Localizer
 @{ }
 
-<div class="admin-page-shell">
+<pems-page-shell kind="admin">
     <div class="admin-hero">
         <div class="d-flex align-items-center gap-3">
             <div><p>@Localizer["Run a real authorization decision for a hypothetical user and action."]</p></div>
         </div>
     </div>
-    <div class="content-card">
+    <pems-content-card>
         <form class="pems-s-b12974cb" asp-action="Simulate" method="post"><pems-row gap="3">
             <pems-alert tone="danger" css="py-2 px-3 small" asp-validation-summary="ModelOnly" hidden="@(ViewData.ModelState.IsValid)"></pems-alert>
 
@@ -72,8 +72,8 @@
             </div>
             <p class="text-body-secondary small mt-2"><pems-icon name="bi-info-circle" /> @Localizer["This was recorded in the Authorization Audit log."]</p>
         }
-    </div>
-</div>
+    </pems-content-card>
+</pems-page-shell>
 
 @section Scripts {
     <script src="~/js/views/admin-authorization-simulate.js" asp-append-version="true"></script>

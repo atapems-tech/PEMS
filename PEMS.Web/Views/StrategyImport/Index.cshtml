@@ -11,7 +11,7 @@
 
 <pems-row gap="3" css="mb-3">
     <pems-col md="6">
-        <div class="content-card">
+        <pems-content-card>
             <h6 class="small fw-bold">@Localizer["Rcm_ImportStrategies"]</h6>
             <form asp-action="Preview" method="post" enctype="multipart/form-data" class="d-flex gap-2">
                 <input type="hidden" name="kind" value="strategies" />
@@ -19,10 +19,10 @@
                 <pems-button tone="primary" size="small">@Localizer["Rcm_Validate"]</pems-button>
             </form>
             <a asp-action="Template" asp-route-kind="strategies" class="small">@Localizer["Rcm_DownloadTemplate"]</a>
-        </div>
+        </pems-content-card>
     </pems-col>
     <pems-col md="6">
-        <div class="content-card">
+        <pems-content-card>
             <h6 class="small fw-bold">@Localizer["Rcm_ImportAssignments"]</h6>
             <form asp-action="Preview" method="post" enctype="multipart/form-data" class="d-flex gap-2">
                 <input type="hidden" name="kind" value="assignments" />
@@ -30,14 +30,14 @@
                 <pems-button tone="primary" size="small">@Localizer["Rcm_Validate"]</pems-button>
             </form>
             <a asp-action="Template" asp-route-kind="assignments" class="small">@Localizer["Rcm_DownloadTemplate"]</a>
-        </div>
+        </pems-content-card>
     </pems-col>
 </pems-row>
 
 @if (Model.Result != null)
 {
     var r = Model.Result;
-    <div class="content-card">
+    <pems-content-card>
         <div class="d-flex justify-content-between align-items-center mb-2">
             <h6 class="small fw-bold mb-0">
                 @(r.Committed ? Localizer["Rcm_ImportCommitted"] : Localizer["Rcm_ImportPreview"]):
@@ -72,5 +72,5 @@
             </tbody>
         </pems-table>
         </div>
-    </div>
+    </pems-content-card>
 }

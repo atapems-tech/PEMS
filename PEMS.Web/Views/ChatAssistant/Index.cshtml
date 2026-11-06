@@ -3,7 +3,7 @@
 @using PEMS.Web.Resources
 @inject IStringLocalizer<SharedResource> Localizer
 
-<div class="content-card pems-maxw-820">
+<pems-content-card css="pems-maxw-820">
 
     <div class="d-flex justify-content-between align-items-center mb-3">
         <p class="text-muted mb-0">
@@ -31,7 +31,7 @@
         <pems-input type="text" id="messageInput" placeholder="Ask a question about the system..." autocomplete="off" />
         <pems-button tone="primary" type="submit"><pems-icon name="bi-send" /></pems-button>
     </form>
-</div>
+</pems-content-card>
 
 @section Scripts {
     <script src="~/js/views/chatassistant-index.js" asp-append-version="true"></script>

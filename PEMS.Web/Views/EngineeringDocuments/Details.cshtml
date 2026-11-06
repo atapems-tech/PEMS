@@ -99,7 +99,7 @@
     <link rel="stylesheet" href="~/css/pems-workspace.css" asp-append-version="true" />
 }
 
-<div class="vs-page">
+<pems-page-shell kind="workspace">
 
 <div class="vs-section">
     <div class="vs-doc-head">
@@ -850,7 +850,7 @@
     <div class="tab-pane fade" id="tab-comments" role="tabpanel">
 @if (latestPdfAttachment != null)
 {
-    <div class="content-card mb-3">
+    <pems-content-card css="mb-3">
         <div class="d-flex justify-content-between align-items-center mb-2">
             <h6 class="mb-0"><pems-icon name="bi-file-earmark-pdf" /> Document Viewer <span class="text-muted small">(click anywhere on the page to pin a comment)</span></h6>
             <div class="d-flex align-items-center gap-2">
@@ -864,7 +864,7 @@
         <div class="pems-pdf-canvas" id="pdfCanvasWrapper">
             <canvas id="pdfCanvas"></canvas>
         </div>
-    </div>
+    </pems-content-card>
 
     <script type="module" src="~/js/pdfjs-loader.js"></script>
     <script type="module">
@@ -948,7 +948,7 @@
     </script>
 }
 
-<div class="content-card mb-3">
+<pems-content-card css="mb-3">
     <h6 class="mb-3">Comment Management <span class="text-muted small">(Action Status is tracked independently from Review Status)</span></h6>
 
     <pems-table kind="enterprise">
@@ -1033,7 +1033,7 @@
     <pems-button tone="primary" size="small" type="button" data-bs-toggle="modal" data-bs-target="#addEngCommentModal">
         <pems-icon name="bi-plus-lg" /> @Localizer["Add Comment"]
     </pems-button>
-</div>
+</pems-content-card>
     </div>
 
 </div>
@@ -1439,7 +1439,7 @@
             </pems-modal>
 }
 
-</div> @* end .vs-page *@
+</pems-page-shell> @* end .vs-page *@
 
 @section Scripts {
     <script src="~/js/views/engineeringdocuments-details-2.js" asp-append-version="true"></script>

@@ -18,7 +18,7 @@
 <pems-button tone="neutral" outline="true" css="mb-3" as="a" asp-controller="EngineeringDocuments" asp-action="Details" asp-route-id="@Model.DocumentId"
   >&larr; Back to Document</pems-button>
 
-<div class="content-card mb-3">
+<pems-content-card css="mb-3">
     <h5 class="mb-3">Extracted Equipment Tags</h5>
 
     @if (!Model.ExtractedTags.Any())
@@ -63,9 +63,9 @@
         </pems-table>
         </div>
     }
-</div>
+</pems-content-card>
 
-<div class="content-card">
+<pems-content-card>
     <h5 class="mb-3">Extracted Specifications</h5>
 
     @if (!Model.ExtractedSpecifications.Any())
@@ -107,4 +107,4 @@
         </pems-table>
         </div>
     }
-</div>
+</pems-content-card>

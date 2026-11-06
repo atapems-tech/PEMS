@@ -3,7 +3,7 @@
 @using PEMS.Web.Resources
 @inject IStringLocalizer<SharedResource> Localizer
 
-<div class="content-card pems-s-3f7efa5f">
+<pems-content-card css="pems-s-3f7efa5f">
     <p class="text-muted small"><pems-icon name="bi-info-circle" aria-hidden="true" /> @Localizer["LtT_PreviewNote"]</p>
 
     <pems-info-grid layout="rows" class="small mb-3">
@@ -21,4 +21,4 @@
 
     <pems-button tone="neutral" outline="true" as="a" asp-action="Index">@Localizer["Cancel"]</pems-button>
     <pems-button tone="primary" as="a" asp-action="Edit" asp-route-id="@Model.LetterTemplateId"><pems-icon name="bi-pencil" aria-hidden="true" /> @Localizer["Edit"]</pems-button>
-</div>
+</pems-content-card>

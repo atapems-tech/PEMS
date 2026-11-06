@@ -7,7 +7,7 @@
 
 @await Html.PartialAsync("_PageHeader")
 
-<div class="content-card">
+<pems-content-card>
     @if (mismatch)
     {
         <pems-alert tone="danger">
@@ -33,4 +33,4 @@
         Barcode verification confirms the digital identity only - it cannot prove the physical label is
         attached to the correct physical object beyond what is checked here.
     </p>
-</div>
+</pems-content-card>

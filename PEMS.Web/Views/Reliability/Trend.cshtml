@@ -24,7 +24,7 @@
     </div>
 </div>
 
-<div class="content-card mb-3">
+<pems-content-card css="mb-3">
     <form method="get" class="d-flex flex-wrap gap-2 align-items-end">
         <input type="hidden" name="pointId" value="@Model.ConditionMonitoringPointId" />
         <div>
@@ -51,19 +51,19 @@
             <pems-badge tone="warning">Truncated — showing first @Model.Points.Count of @Model.TotalInRange; narrow the range to see all</pems-badge>
         }
     </div>
-</div>
+</pems-content-card>
 
 @if (Model.Points.Any())
 {
     @* SCRUM-337 C2: the shared chart host (Bklit line), not Chart.js *@
     var trend = BkChartSpec.Line($"{Model.VariableType} — {Model.Tag}", Localizer["هیچ قرائتی در این بازه ثبت نشده."], Model.Points.Select(p => p.ReadingDate), 2,
         BkSeries.Of($"{Model.VariableType} ({Model.Unit})", Model.Points.Select(p => p.Value), BkChartSpec.Primary));
-    <div class="content-card mb-3">
+    <pems-content-card css="mb-3">
         <pems-chart spec="@trend" />
-    </div>
+    </pems-content-card>
 }
 
-<div class="content-card">
+<pems-content-card>
     <pems-table kind="enterprise" scale="small">
         <thead><tr><th>@Localizer["Date"]</th><th class="text-end">@Localizer["Value"]</th><th>@Localizer["Evaluation"]</th></tr></thead>
         <tbody>
@@ -78,7 +78,7 @@
         </tbody>
     </pems-table>
     @if (!Model.Points.Any()) { <p class="text-muted text-center py-4">@Localizer["هیچ قرائتی در این بازه ثبت نشده."]</p> }
-</div>
+</pems-content-card>
 
 @section Styles {
     <partial name="_BkChartStyles" />

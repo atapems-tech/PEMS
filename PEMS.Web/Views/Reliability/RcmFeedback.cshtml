@@ -45,7 +45,7 @@
     موافق است؛ آن تغییر همچنان جدا و توسط خودِ مهندس (با ابزارهای موجود) انجام می‌شود.
 </p>
 
-<div class="content-card mb-3">
+<pems-content-card css="mb-3">
     <form method="get"><pems-row gap="2" css="align-items-end">
         <pems-col md="3">
             <pems-label css="small">@Localizer["Status"]</pems-label>
@@ -57,9 +57,9 @@
             </pems-select>
         </pems-col>
     </pems-row></form>
-</div>
+</pems-content-card>
 
-<div class="content-card">
+<pems-content-card>
     <pems-table kind="enterprise" scale="small" css="mb-0">
         <thead>
             <tr>
@@ -105,4 +105,4 @@
         </tbody>
     </pems-table>
     @if (!Model.Any()) { <p class="text-muted text-center py-4 mb-0">هیچ توصیه‌ای موجود نیست. @(canGenerate ? "برای تولید شواهد، دکمه‌ی Generate Evidence را بزنید." : "")</p> }
-</div>
+</pems-content-card>

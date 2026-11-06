@@ -22,7 +22,7 @@
     </pems-col>
 </pems-row>
 
-<div class="content-card mb-3">
+<pems-content-card css="mb-3">
     <h6 class="mb-3">Documents by Workflow Stage</h6>
     <div class="d-flex flex-wrap gap-2">
         @foreach (var s in new[] { "Uploaded", "AIProcessing", "Classified", "DisciplineAssigned", "UnderReview", "CommentOpen", "Revision", "Approved", "KnowledgeBase" })
@@ -31,9 +31,9 @@
             <pems-badge tone="neutral" css="p-2">@s: @count</pems-badge>
         }
     </div>
-</div>
+</pems-content-card>
 
-<div class="content-card">
+<pems-content-card>
     <p class="text-muted">
         مدارکی که تحلیل AI روی آن‌ها کامل شده و منتظر بازبینی مهندسی هستند (Discipline, Vendor, MR,
         Revision, Tag های پیشنهادی).
@@ -57,4 +57,4 @@
         </pems-table>
         @if (!Model.Any()) { <p class="text-muted text-center py-4">No documents pending AI classification review.</p> }
     </div>
-</div>
+</pems-content-card>

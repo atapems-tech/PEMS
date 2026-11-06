@@ -2,8 +2,8 @@
 @using Microsoft.Extensions.Localization
 @using PEMS.Web.Resources
 @inject IStringLocalizer<SharedResource> Localizer
-<div class="admin-page-shell">
-    <div class="content-card">
+<pems-page-shell kind="admin">
+    <pems-content-card>
         <div class="d-flex justify-content-between align-items-center mb-2">
             <span class="small text-muted">@Localizer["Explicit bindings resolve which published version new workflow instances use."]</span>
             <pems-button as="a" tone="neutral" size="small" outline="true" asp-action="Index"><pems-icon name="bi-arrow-left" /> @Localizer["Workflow Management"]</pems-button>
@@ -25,5 +25,5 @@
                 </tbody>
             </pems-table>
         </div>
-    </div>
-</div>
+    </pems-content-card>
+</pems-page-shell>

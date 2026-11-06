@@ -8,13 +8,13 @@
     var query = (string?)ViewBag.Query;
 }
 
-<div class="content-card mb-3">
+<pems-content-card css="mb-3">
     <form asp-action="Index" method="get" class="d-flex gap-2" role="search">
         <pems-input type="search" name="q" value="@query" placeholder="@Localizer["GlobalSearch_Placeholder"]" aria-label="@Localizer["GlobalSearch_Placeholder"]" minlength="2" autofocus />
         <pems-button tone="primary"><pems-icon name="bi-search" aria-hidden="true" /> @Localizer["Search"]</pems-button>
     </form>
     <p class="text-muted small mt-2 mb-0">@Localizer["GlobalSearch_PaletteHint"]</p>
-</div>
+</pems-content-card>
 
 @if (!string.IsNullOrWhiteSpace(query))
 {
@@ -26,7 +26,7 @@
     {
         foreach (var g in Model)
         {
-            <section class="content-card mb-3" aria-labelledby="gs-@g.Type">
+            <pems-content-card as="section" css="mb-3" aria-labelledby="gs-@g.Type">
                 <h2 class="h6 mb-3" id="gs-@g.Type"><pems-icon css="@g.Icon" aria-hidden="true" /> @g.Title <pems-badge tone="neutral">@g.Total</pems-badge></h2>
                 <ul class="list-unstyled mb-0">
                     @foreach (var item in g.Items)
@@ -37,7 +37,7 @@
                         </li>
                     }
                 </ul>
-            </section>
+            </pems-content-card>
         }
     }
 }

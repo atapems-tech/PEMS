@@ -81,3 +81,34 @@ public sealed class PemsPagerTagHelper(IPemsComponentRenderer renderer) : TagHel
         await ListRender.Replace<PemsPager>(renderer, output, new PagerOptions { Current = Current, Total = Total, Href = Href, Scale = Scale, Css = Css, PageClass = pageClass, Attributes = attrs });
     }
 }
+
+/// <summary>The white content panel of a page: <c>&lt;pems-content-card css="mb-3"&gt;...&lt;/pems-content-card&gt;</c> writes <c>&lt;div class="content-card mb-3"&gt;</c>.</summary>
+[HtmlTargetElement("pems-content-card")]
+[PemsFacade(UiKeys.ContentCard)]
+public sealed class PemsContentCardTagHelper(IPemsComponentRenderer renderer) : TagHelper
+{
+    /// <summary>div (default), section, article or details.</summary>
+    [HtmlAttributeName("as")] public string As { get; set; } = "div";
+    [HtmlAttributeName("css")] public string? Css { get; set; }
+
+    public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
+    {
+        var (pageClass, attrs) = ListRender.Page(output);
+        await ListRender.Replace<PemsContentCard>(renderer, output, new ContentCardOptions { As = As, Css = Css, PageClass = pageClass, Attributes = attrs }, await ListRender.Inner(output));
+    }
+}
+
+/// <summary>The outer wrapper of a page: <c>&lt;pems-page-shell kind="admin"&gt;</c> writes <c>&lt;div class="admin-page-shell"&gt;</c>, <c>kind="workspace"</c> (default) <c>&lt;div class="vs-page"&gt;</c>.</summary>
+[HtmlTargetElement("pems-page-shell")]
+[PemsFacade(UiKeys.PageShell)]
+public sealed class PemsPageShellTagHelper(IPemsComponentRenderer renderer) : TagHelper
+{
+    [HtmlAttributeName("kind")] public string Kind { get; set; } = "workspace";
+    [HtmlAttributeName("css")] public string? Css { get; set; }
+
+    public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
+    {
+        var (pageClass, attrs) = ListRender.Page(output);
+        await ListRender.Replace<PemsPageShell>(renderer, output, new PageShellOptions { Kind = Kind, Css = Css, PageClass = pageClass, Attributes = attrs }, await ListRender.Inner(output));
+    }
+}

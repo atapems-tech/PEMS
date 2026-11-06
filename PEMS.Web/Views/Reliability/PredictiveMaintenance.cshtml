@@ -25,21 +25,21 @@
 
 <pems-row gap="3" css="mb-3">
     <pems-col md="6">
-        <div class="content-card h-100 text-center">
+        <pems-content-card css="h-100 text-center">
             <div class="text-muted small">Engine (software/architecture)</div>
             <pems-badge tone="@StatusBadge(readiness.EngineStatus)" css="fs-6">@readiness.EngineStatus</pems-badge>
-        </div>
+        </pems-content-card>
     </pems-col>
     <pems-col md="6">
-        <div class="content-card h-100 text-center">
+        <pems-content-card css="h-100 text-center">
             <div class="text-muted small">Production Model (validated on real data)</div>
             <pems-badge tone="@StatusBadge(readiness.ProductionModelStatus)" css="fs-6">@readiness.ProductionModelStatus</pems-badge>
-        </div>
+        </pems-content-card>
     </pems-col>
 </pems-row>
 <p class="text-muted small">@readiness.Reason</p>
 
-<div class="content-card">
+<pems-content-card>
     <h6 class="mb-2">Defined Models (@readiness.ModelCount total, @readiness.ValidatedModelCount validated)</h6>
     <pems-table kind="enterprise" scale="small" css="mb-0">
         <thead><tr><th>@Localizer["Target"]</th><th>Algorithm</th><th>Training Data</th><th>@Localizer["Validation"]</th><th class="text-end">Results</th></tr></thead>
@@ -57,4 +57,4 @@
         </tbody>
     </pems-table>
     @if (!Model.Any()) { <p class="text-muted text-center py-4 mb-0">هیچ مدل پیش‌بینانه‌ای هنوز تعریف نشده - هیچ داده‌ی جعلی برای پرکردن این صفحه درج نشده.</p> }
-</div>
+</pems-content-card>

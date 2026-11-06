@@ -37,7 +37,7 @@
 }
 @Html.AntiForgeryToken()
 
-<div class="content-card mb-3">
+<pems-content-card css="mb-3">
     <div class="d-flex flex-wrap gap-2 align-items-center justify-content-between mb-3">
         <div class="d-flex gap-2 align-items-center">
             <pems-button tone="neutral" size="small" outline="true" as="a" href="@NavUrl(d: DateTime.Today)">@Localizer["Today"]</pems-button>
@@ -85,7 +85,7 @@
             </pems-select></div>
         <pems-button tone="neutral" size="small" outline="true" as="a" href="@Url.Action("Index", new { view })">@Localizer["Reset"]</pems-button>
     </form>
-</div>
+</pems-content-card>
 
 @if (view == "month")
 {
@@ -93,7 +93,7 @@
     var gridStart = firstOfMonth.AddDays(-(int)((7 + (firstOfMonth.DayOfWeek - DayOfWeek.Monday) % 7) % 7));
     var byDay = Model.Items.GroupBy(x => x.PlannedStart.Date).ToDictionary(g => g.Key, g => g.ToList());
 
-    <div class="content-card mb-3">
+    <pems-content-card css="mb-3">
         <div class="pems-cal-month">
             @for (var w = 0; w < 6; w++)
             {
@@ -129,7 +129,7 @@
                 </div>
             }
         </div>
-    </div>
+    </pems-content-card>
 }
 else if (view == "week")
 {
@@ -138,7 +138,7 @@ else if (view == "week")
         .OrderBy(x => x.Item2).ToList();
     var noTeamItems = Model.Items.Where(x => !x.AssignedTeamId.HasValue).ToList();
 
-    <div class="content-card mb-3">
+    <pems-content-card css="mb-3">
         <div class="table-responsive">
             <pems-table kind="enterprise" scale="small" css="pems-cal-week" id="pemsCalWeekTable">
                 <thead>
@@ -197,11 +197,11 @@ else if (view == "week")
                 </tbody>
             </pems-table>
         </div>
-    </div>
+    </pems-content-card>
 }
 else
 {
-    <div class="content-card mb-3">
+    <pems-content-card css="mb-3">
         <div class="pems-cal-day-timeline">
             @if (!Model.Items.Any())
             {
@@ -227,12 +227,12 @@ else
                 </a>
             }
         </div>
-    </div>
+    </pems-content-card>
 }
 
 @if (Model.Unscheduled.Any())
 {
-    <div class="content-card mb-3">
+    <pems-content-card css="mb-3">
         <h6 class="mb-3">@Localizer["Unscheduled Work"] <pems-badge tone="neutral">@Model.Unscheduled.Count</pems-badge></h6>
         <pems-row gap="2">
             @foreach (var u in Model.Unscheduled)
@@ -250,7 +250,7 @@ else
                 </pems-col>
             }
         </pems-row>
-    </div>
+    </pems-content-card>
 }
 
 @section Styles {

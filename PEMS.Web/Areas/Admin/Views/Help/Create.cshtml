@@ -4,7 +4,7 @@
 @inject IStringLocalizer<SharedResource> Localizer
 @{ ViewData["HidePageTitle"] = true; }
 
-<div class="content-card">
+<pems-content-card>
     <h5 class="mb-3"><pems-icon name="bi-plus-circle" /> @Localizer["New Help Article"]</h5>
     <form asp-action="Create" method="post">
         @Html.AntiForgeryToken()
@@ -14,4 +14,4 @@
             <pems-button as="a" tone="neutral" outline="true" asp-action="Index">@Localizer["Cancel"]</pems-button>
         </div>
     </form>
-</div>
+</pems-content-card>

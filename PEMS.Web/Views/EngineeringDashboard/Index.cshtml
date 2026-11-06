@@ -30,7 +30,7 @@
     var disciplinePerformance = Model.DisciplinePerformance;
 }
 
-<div class="content-card mb-3">
+<pems-content-card css="mb-3">
     <form method="get" asp-action="Index"><pems-row gap="2" css="align-items-end">
         <pems-col md="3">
             <pems-label css="small">@Localizer["Project"]</pems-label>
@@ -66,10 +66,10 @@
             @(Model.SelectedMinRevisionCount.HasValue ? $"Revision ≥ {Model.SelectedMinRevisionCount}" : "")
         </p>
     }
-</div>
+</pems-content-card>
 
 @* ===================== Section A: Executive Summary (GetSummaryCountsAsync, E-03) ===================== *@
-<div class="content-card mb-3">
+<pems-content-card css="mb-3">
     <div class="section-head d-flex align-items-center justify-content-between flex-wrap gap-2 mb-3">
         <div>
             <h6 class="section-title mb-1"><pems-icon name="bi-speedometer2" /> @Localizer["ExecutiveSummary"]</h6>
@@ -84,9 +84,9 @@
             </pems-col>
         }
     </pems-row>
-</div>
+</pems-content-card>
 
-<div class="content-card mb-3">
+<pems-content-card css="mb-3">
     <div class="d-flex justify-content-between align-items-center mb-3">
         <h6 class="mb-0"><pems-icon name="bi-shield-check" /> Engineering Health</h6>
         <pems-badge tone="primary" css="rounded-pill fs-6">@Model.EngineeringHealthScore / 100</pems-badge>
@@ -112,10 +112,10 @@
             </div>
         </pems-col>
     </pems-row>
-</div>
+</pems-content-card>
 
 @* ===================== Section B: Quality & Review (GetRevisionQualityAsync, E-05C) ===================== *@
-<div class="content-card mb-3">
+<pems-content-card css="mb-3">
     <h6 class="mb-1"><pems-icon name="bi-award" /> @Localizer["QualityAndReview"]</h6>
     <p class="text-muted small mb-3">@Localizer["FirstPassApprovalExplanation"]</p>
 
@@ -161,10 +161,10 @@
             </pems-table>
         </div>
     }
-</div>
+</pems-content-card>
 
 @* ===================== Section C: Revision & Resubmission Pressure (GetRevisionQualityAsync + MinRevisionCount, E-05C ADR-5) ===================== *@
-<div class="content-card mb-3">
+<pems-content-card css="mb-3">
     <h6 class="mb-1"><pems-icon name="bi-arrow-repeat" /> @Localizer["RevisionPressure"]</h6>
     <p class="text-muted small mb-3">@Localizer["RevisionPressureExplanation"]</p>
 
@@ -205,9 +205,9 @@
             <pems-button as="a" tone="neutral" size="small" outline="true" asp-controller="EngineeringDocuments" asp-action="Index" asp-route-MinRevisionCount="@(Model.SelectedMinRevisionCount ?? 1)"><pems-icon name="bi-list-ul" /> @Localizer["ViewAllInMdr"]</pems-button>
         </div>
     }
-</div>
+</pems-content-card>
 
-<div class="content-card mb-3">
+<pems-content-card css="mb-3">
    <h6 class="mb-3"><pems-icon name="bi-exclamation-triangle" /> Management Attention Queue</h6>
    @if (!attentionQueue.Any())
    {
@@ -259,9 +259,9 @@
            </pems-table>
        </div>
    }
-</div>
+</pems-content-card>
 
-<div class="content-card mb-3">
+<pems-content-card css="mb-3">
    <h6 class="mb-3"><pems-icon name="bi-diagram-3" /> Discipline Risk Overview</h6>
    @if (!disciplinePerformance.Any())
    {
@@ -304,4 +304,4 @@
            </pems-table>
        </div>
    }
-</div>
+</pems-content-card>

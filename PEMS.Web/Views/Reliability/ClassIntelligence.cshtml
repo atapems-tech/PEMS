@@ -24,34 +24,34 @@
 
 <pems-row gap="3" css="mb-3">
     <pems-col md="3">
-        <div class="content-card h-100 text-center">
+        <pems-content-card css="h-100 text-center">
             <div class="fs-4 fw-bold">@Model.EquipmentCount</div>
             <div class="text-muted small">Equipment in Class</div>
-        </div>
+        </pems-content-card>
     </pems-col>
     <pems-col md="3">
-        <div class="content-card h-100 text-center">
+        <pems-content-card css="h-100 text-center">
             <div class="fs-4 fw-bold">@(Model.AverageMTBFHours.HasValue ? $"{Model.AverageMTBFHours.Value:N1}h" : "N/A")</div>
             <div class="text-muted small">Average MTBF (n=@Model.MTBFSampleSize)</div>
-        </div>
+        </pems-content-card>
     </pems-col>
     <pems-col md="3">
-        <div class="content-card h-100 text-center">
+        <pems-content-card css="h-100 text-center">
             <div class="fs-4 fw-bold">@(Model.AverageAvailabilityPercent.HasValue ? $"{Model.AverageAvailabilityPercent.Value:N1}%" : "N/A")</div>
             <div class="text-muted small">Average Availability</div>
-        </div>
+        </pems-content-card>
     </pems-col>
     <pems-col md="3">
-        <div class="content-card h-100 text-center">
+        <pems-content-card css="h-100 text-center">
             <div class="fs-4 fw-bold">@Model.FailureCount</div>
             <div class="text-muted small">@Localizer["Total Failures"]</div>
-        </div>
+        </pems-content-card>
     </pems-col>
 </pems-row>
 
 <pems-row gap="3" css="mb-3">
     <pems-col md="6">
-        <div class="content-card h-100">
+        <pems-content-card css="h-100">
             <h6 class="mb-2">FMEA / RCM Coverage</h6>
             <div>FMEA: <pems-badge tone="@StatusBadge(Model.FMEAReadiness)">@Model.FMEAReadiness</pems-badge> (@Model.ApprovedFMEACount approved)</div>
             <div>RCM: <pems-badge tone="@StatusBadge(Model.RCMReadiness)">@Model.RCMReadiness</pems-badge> (@Model.ApprovedRCMCount approved)</div>
@@ -64,10 +64,10 @@
                     @foreach (var g in Model.CoverageGapReasons) { <div>• @g</div> }
                 </div>
             }
-        </div>
+        </pems-content-card>
     </pems-col>
     <pems-col md="6">
-        <div class="content-card h-100">
+        <pems-content-card css="h-100">
             <h6 class="mb-2">Criticality Distribution &amp; Intelligence</h6>
             @if (Model.CriticalityDistribution.Any())
             {
@@ -83,6 +83,6 @@
             <hr />
             <div class="small">Repeat Failure Groups: @Model.RepeatFailureGroupCount</div>
             <div class="small">Bad Actors in Class: @Model.BadActorCount</div>
-        </div>
+        </pems-content-card>
     </pems-col>
 </pems-row>

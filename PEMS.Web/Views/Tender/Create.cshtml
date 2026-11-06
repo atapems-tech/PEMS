@@ -5,7 +5,7 @@
     var packageId = (int)ViewBag.ProcurementPackageId;
 }
 
-<div class="content-card pems-s-bcaa1805">
+<pems-content-card css="pems-s-bcaa1805">
     <form asp-action="Create" method="post">
         <input type="hidden" name="procurementPackageId" value="@packageId" />
         <pems-row gap="3">
@@ -26,4 +26,4 @@
             <pems-button tone="neutral" outline="true" as="a" asp-action="Index" asp-route-procurementPackageId="@packageId">@Localizer["Cancel"]</pems-button>
         </div>
     </form>
-</div>
+</pems-content-card>

@@ -57,7 +57,7 @@
     </div>
 </div>
 
-<div class="content-card mb-3">
+<pems-content-card css="mb-3">
     <div class="d-flex justify-content-between align-items-start flex-wrap gap-2">
         <div>
             <h5 class="mb-0">@Model.Name</h5>
@@ -105,10 +105,10 @@
             <div class="pems-team-summary-label">@Localizer["زیرگره‌ها"]</div>
         </div>
     </div>
-</div>
+</pems-content-card>
 
 @* ========================= Organizational Units (child Team nodes / shifts) ========================= *@
-<div class="content-card mb-3">
+<pems-content-card css="mb-3">
     <h6 class="fw-bold mb-3">@Localizer["واحدهای سازمانی (زیرتیم/شیفت)"]</h6>
     @if (!Model.Children.Any())
     {
@@ -138,10 +138,10 @@
             }
         </pems-row>
     }
-</div>
+</pems-content-card>
 
 @* ========================= Positions & Workforce ========================= *@
-<div class="content-card mb-3">
+<pems-content-card css="mb-3">
     <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-3">
         <h6 class="fw-bold mb-0">@Localizer["سمت‌ها و نیروی انسانی"]</h6>
         @if (Model.Positions.Any())
@@ -271,10 +271,10 @@
         </pems-table>
         <p class="text-muted text-center py-3 mb-0" id="positionsFilterEmpty" hidden>@Localizer["هیچ سمتی با این فیلتر یافت نشد."]</p>
     }
-</div>
+</pems-content-card>
 
 @* ========================= Assignment History ========================= *@
-<div class="content-card">
+<pems-content-card>
     <h6 class="fw-bold mb-3">@Localizer["تاریخچه‌ی تخصیص"]</h6>
     @if (!historyRows.Any())
     {
@@ -315,7 +315,7 @@
             </tbody>
         </pems-table>
     }
-</div>
+</pems-content-card>
 
 @* ========================= Modals ========================= *@
 

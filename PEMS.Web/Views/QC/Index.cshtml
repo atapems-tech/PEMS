@@ -20,7 +20,7 @@
 
 <pems-row gap="3">
     <pems-col md="6">
-        <div class="content-card h-100">
+        <pems-content-card css="h-100">
             <div class="d-flex justify-content-between align-items-center mb-3">
                 <h6 class="mb-0">@Localizer["آخرین ITP ها"]</h6>
                 <a asp-action="ItpIndex" class="small">@Localizer["مشاهده همه"]</a>
@@ -37,11 +37,11 @@
                     </li>
                 }
             </ul>
-        </div>
+        </pems-content-card>
     </pems-col>
 
     <pems-col md="6">
-        <div class="content-card h-100 border-danger">
+        <pems-content-card css="h-100 border-danger">
             <div class="d-flex justify-content-between align-items-center mb-3">
                 <h6 class="mb-0">@Localizer["آخرین NCR ها"]</h6>
                 <a asp-action="NcrIndex" class="small">@Localizer["مشاهده همه"]</a>
@@ -58,6 +58,6 @@
                     </li>
                 }
             </ul>
-        </div>
+        </pems-content-card>
     </pems-col>
 </pems-row>

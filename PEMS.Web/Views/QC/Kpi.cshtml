@@ -23,7 +23,7 @@
 
 <pems-row gap="3">
     <pems-col md="7">
-        <div class="content-card h-100">
+        <pems-content-card css="h-100">
             <h6 class="mb-3">@Localizer["نرخ NCR به تفکیک دیسیپلین"]</h6>
             <pems-table kind="enterprise" css="mb-0">
                 <thead><tr><th>@Localizer["دیسیپلین"]</th><th>@Localizer["کل"]</th><th>@Localizer["باز"]</th><th>@Localizer["بحرانی"]</th><th>@Localizer["میانگین روز تا بستن"]</th></tr></thead>
@@ -40,11 +40,11 @@
                     }
                 </tbody>
             </pems-table>
-        </div>
+        </pems-content-card>
     </pems-col>
 
     <pems-col md="5">
-        <div class="content-card h-100">
+        <pems-content-card css="h-100">
             <h6 class="mb-3">@Localizer["نرخ NCR به تفکیک شدت"]</h6>
             <ul class="list-unstyled mb-0">
                 @foreach (var s in (IEnumerable<dynamic>)ViewBag.BySeverity)
@@ -56,11 +56,11 @@
                     </li>
                 }
             </ul>
-        </div>
+        </pems-content-card>
     </pems-col>
 </pems-row>
 
-<div class="content-card mt-3">
+<pems-content-card css="mt-3">
     <h6 class="mb-3">@Localizer["روند ماهانه NCR (۱۲ ماه اخیر)"]</h6>
     @{
         var byMonth = (IEnumerable<dynamic>)ViewBag.ByMonth;
@@ -84,4 +84,4 @@
     {
         <p class="text-muted small mb-0">@Localizer["داده‌ای برای ۱۲ ماه اخیر نیست."]</p>
     }
-</div>
+</pems-content-card>

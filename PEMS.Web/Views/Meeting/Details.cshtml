@@ -8,7 +8,7 @@
 }
 
 
-<div class="content-card mb-3">
+<pems-content-card css="mb-3">
     <div class="d-flex justify-content-between align-items-start">
         <div>
             <h5 class="mb-1">@m.Title</h5>
@@ -24,9 +24,9 @@
     {
         <div class="mt-2"><strong>Agenda:</strong><p class="mb-0">@Model.Agenda</p></div>
     }
-</div>
+</pems-content-card>
 
-<div class="content-card mb-3">
+<pems-content-card css="mb-3">
     <h6 class="mb-3">Minutes / Notes</h6>
     <form asp-action="UpdateMinutes" method="post">
         <input type="hidden" name="meetingId" value="@m.MeetingId" />
@@ -39,9 +39,9 @@
             <pems-button tone="primary" size="small" type="submit">Save Minutes</pems-button>
         </div>
     </form>
-</div>
+</pems-content-card>
 
-<div class="content-card mb-3">
+<pems-content-card css="mb-3">
     <h6 class="mb-3">@Localizer["Attendees"]</h6>
     <div class="table-responsive table-scroll-area pems-s-8da1c6e6">
     <pems-table kind="enterprise">
@@ -80,9 +80,9 @@
         <pems-col md="4"><pems-input scale="small" name="externalName" placeholder="or external name" /></pems-col>
         <pems-col md="3"><pems-button tone="primary" size="small" css="w-100"><pems-icon name="bi-plus-lg" /> @Localizer["Add"]</pems-button></pems-col>
     </pems-row></form>
-</div>
+</pems-content-card>
 
-<div class="content-card">
+<pems-content-card>
     <h6 class="mb-3">@Localizer["Action Items"]</h6>
     <div class="table-responsive table-scroll-area pems-s-8da1c6e6">
     <pems-table kind="enterprise">
@@ -114,4 +114,4 @@
         <pems-col md="2"><pems-date name="dueDate" scale="small" /></pems-col>
         <pems-col md="1"><pems-button tone="primary" size="small" css="w-100"><pems-icon name="bi-plus-lg" /></pems-button></pems-col>
     </pems-row></form>
-</div>
+</pems-content-card>

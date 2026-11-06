@@ -39,7 +39,7 @@
 
 <pems-row gap="3">
     <pems-col md="6">
-        <div class="content-card">
+        <pems-content-card>
             <h6 class="mb-2">@Localizer["Needs Attention"]</h6>
             @if (Model.AttentionPoints.Count == 0)
             {
@@ -66,10 +66,10 @@
                     <div class="small text-muted">@Localizer["فهرست به بالاترین ۵۰ مورد محدود شده است."]</div>
                 }
             }
-        </div>
+        </pems-content-card>
     </pems-col>
     <pems-col md="6">
-        <div class="content-card">
+        <pems-content-card>
             <h6 class="mb-2">@Localizer["Overdue CBM Plans"]</h6>
             @if (Model.OverdueCbmPlans.Count == 0)
             {
@@ -96,6 +96,6 @@
                     <div class="small text-muted">@Localizer["فهرست به بالاترین ۵۰ مورد محدود شده است."]</div>
                 }
             }
-        </div>
+        </pems-content-card>
     </pems-col>
 </pems-row>

@@ -6,7 +6,7 @@
 @if (TempData["Message"] != null) { <pems-alert tone="success" css="py-2 small">@TempData["Message"]</pems-alert> }
 @if (TempData["Error"] != null) { <pems-alert tone="danger" css="py-2 small">@TempData["Error"]</pems-alert> }
 
-<div class="content-card mb-3">
+<pems-content-card css="mb-3">
     <p class="text-muted small mb-2">@Localizer["Disc_Manage_Note"]</p>
     <pems-button tone="neutral" size="small" outline="true" css="mb-3" as="a" asp-action="Index"><pems-icon name="bi-arrow-left" /> @Localizer["Discipline Workspaces"]</pems-button>
 
@@ -60,4 +60,4 @@
         </pems-table>
         @if (!Model.Any()) { <p class="text-muted text-center py-3">@Localizer["No disciplines configured yet."]</p> }
     </div>
-</div>
+</pems-content-card>

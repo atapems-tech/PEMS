@@ -64,14 +64,14 @@
     <script src="~/js/pems-permission-matrix.js" asp-append-version="true"></script>
 }
 
-<div class="admin-page-shell" id="pmRoot" data-url="@Url.Action("SetCells", "PermissionMatrix", new { area = "Admin" })" data-total-modules="@modules.Length">
+<pems-page-shell kind="admin" id="pmRoot" data-url="@Url.Action("SetCells", "PermissionMatrix", new { area = "Admin" })" data-total-modules="@modules.Length">
     @Html.AntiForgeryToken()
     <div class="admin-hero">
         <div class="d-flex align-items-center gap-3">
             <div><p>@Localizer["PermMx_Intro"]</p></div>
         </div>
     </div>
-    <div class="content-card">
+    <pems-content-card>
         <div class="permission-intro"><pems-icon name="bi-info-circle" css="me-1" /> <strong>SystemAdmin</strong> has full access and is intentionally excluded. All other roles follow deny-by-default when no permission record exists.</div>
 
         <div class="pm-toolbar" role="search">
@@ -163,7 +163,7 @@
             </details>
         }
         <div class="admin-footer mt-3"><span>&nbsp;</span><span>@roles.Length roles · @modules.Length modules</span></div>
-    </div>
-</div>
+    </pems-content-card>
+</pems-page-shell>
 
 <div class="pm-toasts" id="pmToasts" aria-live="polite"></div>

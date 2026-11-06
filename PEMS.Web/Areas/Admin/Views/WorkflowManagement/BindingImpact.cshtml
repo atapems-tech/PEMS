@@ -5,8 +5,8 @@
 @{
     var targetId = (int)ViewBag.TargetVersionId;
 }
-<div class="admin-page-shell">
-    <div class="content-card">
+<pems-page-shell kind="admin">
+    <pems-content-card>
         <h6>@Model.Definition</h6>
         <pems-table scale="small" css="w-auto">
             <tr><th>@Localizer["Current version"]</th><td>@(Model.CurrentVersion.HasValue ? "v" + Model.CurrentVersion : "—")</td></tr>
@@ -19,5 +19,5 @@
             <div class="form-check"><pems-input kind="check" type="checkbox" name="confirmed" value="true" id="cfm" /><input type="hidden" name="confirmed" value="false" /><label class="form-check-label" for="cfm">@Localizer["I understand and confirm the binding change."]</label></div>
             <div><pems-button tone="primary" size="small">@Localizer["Change binding"]</pems-button> <pems-button as="a" tone="neutral" size="small" outline="true" asp-action="Index">@Localizer["Cancel"]</pems-button></div>
         </form>
-    </div>
-</div>
+    </pems-content-card>
+</pems-page-shell>

@@ -187,10 +187,10 @@
                     <pems-col xl="2" md="4" span="6"><pems-kpi-tile model="@Kpi("PcRpt_Kpi_People", r.Activity.People.Count, "bi-people", "bg-icon-teal", IndexUrl("people"), "PcRpt_Hint_People")" /></pems-col>
                 </pems-row>
                 <pems-row gap="3">
-                    <pems-col lg="8"><div class="content-card"><h6 class="mb-3">@Localizer["PcRpt_Chart_Trend"]</h6><pems-chart spec="@trendChart" /></div></pems-col>
-                    <pems-col lg="4"><div class="content-card"><h6 class="mb-3">@Localizer["PcRpt_ByStatus"]</h6><pems-chart spec="@statusChart" /></div></pems-col>
-                    <pems-col lg="6"><div class="content-card"><h6 class="mb-3">@Localizer["PcRpt_Chart_TopPeople"]</h6><pems-chart spec="@peopleChart" /></div></pems-col>
-                    <pems-col lg="6"><div class="content-card"><h6 class="mb-3">@Localizer["PcRpt_Chart_TopEquipment"]</h6><pems-chart spec="@equipmentChart" /></div></pems-col>
+                    <pems-col lg="8"><pems-content-card><h6 class="mb-3">@Localizer["PcRpt_Chart_Trend"]</h6><pems-chart spec="@trendChart" /></pems-content-card></pems-col>
+                    <pems-col lg="4"><pems-content-card><h6 class="mb-3">@Localizer["PcRpt_ByStatus"]</h6><pems-chart spec="@statusChart" /></pems-content-card></pems-col>
+                    <pems-col lg="6"><pems-content-card><h6 class="mb-3">@Localizer["PcRpt_Chart_TopPeople"]</h6><pems-chart spec="@peopleChart" /></pems-content-card></pems-col>
+                    <pems-col lg="6"><pems-content-card><h6 class="mb-3">@Localizer["PcRpt_Chart_TopEquipment"]</h6><pems-chart spec="@equipmentChart" /></pems-content-card></pems-col>
                 </pems-row>
             </div>
         }

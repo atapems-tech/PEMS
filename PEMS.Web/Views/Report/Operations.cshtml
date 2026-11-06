@@ -13,7 +13,7 @@
     <pems-button tone="neutral" size="small" outline="true" as="a" asp-area="Warehouse" asp-controller="PartCatalogueReport" asp-action="Index"><pems-icon name="bi-journal-plus" /> @Localizer["Pc_Menu"]</pems-button>
 </div>
 
-<div class="content-card mb-3">
+<pems-content-card css="mb-3">
     <form method="get"><pems-row gap="2">
         <pems-col md="2">
             <pems-select scale="small" name="periodType" onchange="this.form.submit()">
@@ -51,7 +51,7 @@
         </pems-col>
         <pems-col span="12"><pems-button tone="primary" size="small"><pems-icon name="bi-funnel" /> @Localizer["Apply"]</pems-button></pems-col>
     </pems-row></form>
-</div>
+</pems-content-card>
 
 <div class="text-muted small mb-2">
     Period: @Model.PeriodStart.ToString("yyyy-MM-dd") &rarr; @Model.PeriodEnd.AddDays(-1).ToString("yyyy-MM-dd")
@@ -68,7 +68,7 @@
     <pems-col md="2" sm="6"><pems-kpi-tile icon="bi-dash-circle" color="teal" label="@Localizer["Loss"]">@Model.TotalLossQuantity.ToString("N3")</pems-kpi-tile></pems-col>
 </pems-row>
 
-<div class="content-card">
+<pems-content-card>
     <h6 class="mb-2">Target vs. Actual</h6>
     @if (Model.TotalTargetQuantity == 0)
     {
@@ -82,4 +82,4 @@
             <pems-col span=""><div class="text-muted small">Variance</div><div class="fw-semibold @(Model.VarianceQuantity < 0 ? "text-danger" : "text-success")">@Model.VarianceQuantity?.ToString("N3")</div></pems-col>
         </pems-row>
     }
-</div>
+</pems-content-card>

@@ -3,7 +3,7 @@
 @using PEMS.Web.Resources
 @inject IStringLocalizer<SharedResource> Localizer
 
-<div class="content-card pems-s-e2b01b0d">
+<pems-content-card css="pems-s-e2b01b0d">
 
     <pems-alert tone="danger" css="py-2 px-3 small" asp-validation-summary="All" hidden="@(ViewData.ModelState.IsValid)"></pems-alert>
 
@@ -100,7 +100,7 @@
 
     </form>
 
-</div>
+</pems-content-card>
 
 @section Styles {
     <link rel="stylesheet" href="~/css/pems-multiselect.css" asp-append-version="true" />

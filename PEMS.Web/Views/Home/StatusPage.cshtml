@@ -17,7 +17,7 @@
     ViewData["HidePageTitle"] = true;
 }
 
-<section class="content-card text-center py-5 pems-status-page" aria-labelledby="statusTitle" data-status-code="@Model.Code">
+<pems-content-card as="section" css="text-center py-5 pems-status-page" aria-labelledby="statusTitle" data-status-code="@Model.Code">
     <div class="mb-3"><pems-icon class="pems-fs-26rem" css="@icon" aria-hidden="true" /></div>
     <h1 id="statusTitle" class="h4 mb-2">@Localizer[titleKey]</h1>
     <p class="text-muted mb-4">@Localizer[textKey]</p>
@@ -29,4 +29,4 @@
         @Localizer["Status_Code"]: <span dir="ltr">@Model.Code</span>
         @if (!string.IsNullOrEmpty(Model.RequestId)) { <text> &middot; @Localizer["Status_RequestId"]: <span dir="ltr">@Model.RequestId</span></text> }
     </p>
-</section>
+</pems-content-card>

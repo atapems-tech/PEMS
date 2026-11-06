@@ -17,7 +17,7 @@
     var error = TempData["Error"] as string;
 }
 
-<div class="admin-page-shell">
+<pems-page-shell kind="admin">
     <div class="admin-hero">
         <div><p>@Localizer["Lic_Intro"]</p></div>
     </div>
@@ -29,7 +29,7 @@
         <pems-alert tone="info">@Localizer["Lic_EnforceOff"]</pems-alert>
     }
 
-    <div class="content-card mb-3">
+    <pems-content-card css="mb-3">
         <div class="d-flex align-items-center gap-3 flex-wrap">
             <pems-badge tone="none" css="fs-6 @badge">@Localizer["Lic_State_" + s.State]</pems-badge>
             @foreach (var r in s.Reasons) { <pems-badge tone="light">@Localizer["Lic_Reason_" + r]</pems-badge> }
@@ -41,9 +41,9 @@
             <pems-col md="2" span="6"><div class="small fw-bold">@(s.ExpiresUtc is null ? Localizer["Lic_NoExpiry"].Value : LicenseDates.ToJalaliString(s.ExpiresUtc.Value.AddSeconds(-1)))</div><div class="text-muted small">@Localizer["Lic_ValidUntil"]</div></pems-col>
             <pems-col md="2" span="6"><div class="small fw-bold">@(s.UpdatesUntil is null ? "-" : LicenseDates.ToJalaliString(s.UpdatesUntil.Value.AddSeconds(-1)))</div><div class="text-muted small">@Localizer["Lic_UpdatesUntil"]</div></pems-col>
         </pems-row>
-    </div>
+    </pems-content-card>
 
-    <div class="content-card mb-3">
+    <pems-content-card css="mb-3">
         <h6>@Localizer["Lic_RequestTitle"]</h6>
         <p class="text-muted small">@Localizer["Lic_RequestHelp"]</p>
         <form asp-action="Request" method="post"><pems-row gap="2" css="align-items-end">
@@ -68,9 +68,9 @@
             </pems-col>
             <pems-col span="12"><pems-button tone="primary" type="submit"><pems-icon name="bi-download" css="me-1" /> @Localizer["Lic_DownloadRequest"]</pems-button></pems-col>
         </pems-row></form>
-    </div>
+    </pems-content-card>
 
-    <div class="content-card">
+    <pems-content-card>
         <h6>@Localizer["Lic_UploadTitle"]</h6>
         <p class="text-muted small">@Localizer["Lic_UploadHelp"]</p>
         <form asp-action="Upload" method="post" enctype="multipart/form-data" class="d-flex align-items-center gap-3 flex-wrap">
@@ -78,5 +78,5 @@
             <pems-input css="w-auto" type="file" name="file" accept=".pemslic,.zip" required aria-label="@Localizer["Lic_UploadTitle"]" />
             <pems-button tone="primary" type="submit"><pems-icon name="bi-upload" css="me-1" /> @Localizer["Lic_Upload"]</pems-button>
         </form>
-    </div>
-</div>
+    </pems-content-card>
+</pems-page-shell>

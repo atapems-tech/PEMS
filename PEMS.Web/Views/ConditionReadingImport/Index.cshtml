@@ -7,7 +7,7 @@
     <pems-button tone="neutral" size="small" outline="true" as="a" asp-controller="Reliability" asp-action="ConditionMonitoring">@Localizer["← Condition Monitoring"]</pems-button>
 </div>
 
-<div class="content-card mb-3">
+<pems-content-card css="mb-3">
     <p class="text-muted small">
         @Localizer["Upload an Excel file with Equipment Tag / Point Tag / Reading Date / Value columns (optional Source, Notes). Records are append-only - nothing is written to the live Condition Readings table until you review the staged rows and click Commit. A row whose monitoring point/reading-date combination already matches an existing reading is flagged as a duplicate and is never committed twice."]
     </p>
@@ -20,9 +20,9 @@
             <pems-button tone="primary" css="w-100" type="submit"><pems-icon name="bi-cloud-upload" /> @Localizer["Upload"]</pems-button>
         </pems-col>
     </pems-row></form>
-</div>
+</pems-content-card>
 
-<div class="content-card">
+<pems-content-card>
     <h6 class="mb-3">@Localizer["Recent Import Batches"]</h6>
     <div class="table-responsive table-scroll-area pems-s-8da1c6e6">
     <pems-table kind="enterprise">
@@ -56,4 +56,4 @@
     </pems-table>
     </div>
     @if (!Model.Any()) { <p class="text-muted text-center py-4">@Localizer["No Condition Reading import batches yet."]</p> }
-</div>
+</pems-content-card>

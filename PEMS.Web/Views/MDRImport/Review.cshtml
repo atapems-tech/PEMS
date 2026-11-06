@@ -3,7 +3,7 @@
 @using PEMS.Web.Resources
 @inject IStringLocalizer<SharedResource> Localizer
 
-<div class="content-card mb-3">
+<pems-content-card css="mb-3">
     <pems-row gap="3">
         <pems-col md="3"><strong>@Localizer["File:"]</strong> @Model.FileName</pems-col>
         <pems-col md="3"><strong>@Localizer["Project:"]</strong> @Model.ProjectName</pems-col>
@@ -42,9 +42,9 @@
             </form>
         </div>
     }
-</div>
+</pems-content-card>
 
-<div class="content-card">
+<pems-content-card>
     <div class="table-responsive table-scroll-area pems-s-8da1c6e6">
         <pems-table kind="enterprise">
             <thead>
@@ -100,4 +100,4 @@
             </tbody>
         </pems-table>
     </div>
-</div>
+</pems-content-card>

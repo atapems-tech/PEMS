@@ -25,7 +25,7 @@
     <pems-button tone="neutral" size="small" outline="true" as="a" asp-area="Warehouse" asp-controller="PartCatalogueReport" asp-action="Index"><pems-icon name="bi-journal-plus" /> @Localizer["Pc_Menu"]</pems-button>
 </div>
 
-<div class="content-card mb-3">
+<pems-content-card css="mb-3">
     <form method="get"><pems-row gap="2">
         <pems-col md="3">
             <pems-select scale="small" name="status">
@@ -45,7 +45,7 @@
         <pems-col md="2"><pems-date name="toDate" value="@(((DateTime?)ViewBag.ToDate)?.ToString("yyyy-MM-dd"))" scale="small" /></pems-col>
         <pems-col md="2"><pems-button tone="primary" size="small" css="w-100"><pems-icon name="bi-funnel" /> @Localizer["Apply"]</pems-button></pems-col>
     </pems-row></form>
-</div>
+</pems-content-card>
 
 <pems-row gap="3" css="mb-3">
     <pems-col md="2" sm="6"><pems-kpi-tile icon="bi-clipboard-check" color="slate" label="@Localizer["Total"]">@Model.TotalWorkOrders</pems-kpi-tile></pems-col>
@@ -58,25 +58,25 @@
 
 <pems-row gap="3">
     <pems-col lg="8">
-        <div class="content-card mb-3">
+        <pems-content-card css="mb-3">
             <h6 class="mb-3">Work Orders (last 12 months)</h6>
             <pems-chart spec="@volumeChart" />
-        </div>
+        </pems-content-card>
     </pems-col>
     <pems-col lg="4">
-        <div class="content-card mb-3">
+        <pems-content-card css="mb-3">
             <h6 class="mb-3">By Priority</h6>
             <pems-chart spec="@priorityChart" />
-        </div>
+        </pems-content-card>
     </pems-col>
     <pems-col lg="6">
-        <div class="content-card mb-3">
+        <pems-content-card css="mb-3">
             <h6 class="mb-3">By Type</h6>
             <pems-chart spec="@typeChart" />
-        </div>
+        </pems-content-card>
     </pems-col>
     <pems-col lg="6">
-        <div class="content-card mb-3">
+        <pems-content-card css="mb-3">
             <h6 class="mb-3">Top Equipment (by Work Order count)</h6>
             <ul class="list-unstyled mb-0">
                 @foreach (var e in Model.TopEquipment)
@@ -85,7 +85,7 @@
                 }
             </ul>
             @if (!Model.TopEquipment.Any()) { <p class="text-muted small">@Localizer["No data."]</p> }
-        </div>
+        </pems-content-card>
     </pems-col>
 </pems-row>
 

@@ -1,7 +1,7 @@
 ﻿@using Microsoft.Extensions.Localization
 @using PEMS.Web.Resources
 @inject IStringLocalizer<SharedResource> Localizer
-<div class="content-card pems-s-3f7efa5f">
+<pems-content-card css="pems-s-3f7efa5f">
     <h6 class="mb-3"><pems-icon name="bi-exclamation-triangle" /> Raise New NCR</h6>
 
     <form asp-action="NcrCreate" method="post">
@@ -47,4 +47,4 @@
             <pems-button tone="neutral" outline="true" as="a" asp-action="NcrIndex">@Localizer["Cancel"]</pems-button>
         </div>
     </form>
-</div>
+</pems-content-card>

@@ -3,7 +3,7 @@
 @using PEMS.Web.Resources
 @inject IStringLocalizer<SharedResource> Localizer
 
-<div class="content-card mb-3">
+<pems-content-card css="mb-3">
     <div class="d-flex justify-content-between align-items-start flex-wrap gap-2">
         <p class="text-muted mb-0">
             از یک شماره تگ تجهیز (مثل P-101 یا 80-P-6005)، شماره مدرک، یا نام Vendor شروع کنید تا کل زنجیره‌ی
@@ -22,11 +22,11 @@
         <pems-input type="text" name="q" value="@ViewBag.Query" placeholder="e.g. P-101, or a vendor name, or a document number" />
         <pems-button tone="primary"><pems-icon name="bi-diagram-3" /> @Localizer["Explore"]</pems-button>
     </form>
-</div>
+</pems-content-card>
 
 @if (TempData["Error"] != null)
 {
-    <div class="content-card mb-3 border-danger">
+    <pems-content-card css="mb-3 border-danger">
         <p class="text-danger mb-2"><pems-icon name="bi-exclamation-triangle" /> @TempData["Error"]</p>
         @if (TempData["ConflictEquipmentId"] != null)
         {
@@ -40,19 +40,19 @@
                 </pems-button>
             </form>
         }
-    </div>
+    </pems-content-card>
 }
 
 @if (Model == null)
 {
     @if (!string.IsNullOrEmpty((string?)ViewBag.Query))
     {
-        <div class="content-card"><p class="text-muted text-center py-4">No equipment, document, or vendor matched "@ViewBag.Query".</p></div>
+        <pems-content-card><p class="text-muted text-center py-4">No equipment, document, or vendor matched "@ViewBag.Query".</p></pems-content-card>
     }
 }
 else
 {
-    <div class="content-card mb-3">
+    <pems-content-card css="mb-3">
         <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
             <h5 class="mb-0"><pems-icon name="bi-bullseye" /> @Model.RootType: @Model.RootLabel</h5>
             <div class="d-flex align-items-center gap-2">
@@ -77,11 +77,11 @@ else
                 <span class="text-muted small">@Model.PIDDocument.SubLabel</span>
             </div>
         }
-    </div>
+    </pems-content-card>
 
     @if (Model.RootType == "Equipment" && Model.SuggestedLinks.Any())
     {
-        <div class="content-card mb-3 border-warning">
+        <pems-content-card css="mb-3 border-warning">
             <h6 class="mb-3"><pems-icon name="bi-lightbulb" /> پیشنهادهای اتصال (تاییدنشده)</h6>
             <p class="text-muted small">
                 این‌ها از روی شماره‌ی MRQ/PO خام ثبت‌شده روی تجهیز، با داده‌ی <strong>@Localizer["موجود"]</strong>
@@ -105,7 +105,7 @@ else
                     </li>
                 }
             </ul>
-        </div>
+        </pems-content-card>
     }
 
     <pems-row gap="3">
@@ -136,7 +136,7 @@ else
         @foreach (var s in sections)
         {
             <pems-col md="6">
-                <div class="content-card h-100">
+                <pems-content-card css="h-100">
                     <h6 class="mb-3"><pems-icon css="@s.Icon" /> @s.Title <pems-badge tone="neutral">@s.Items.Count</pems-badge></h6>
                     @if (s.Items.Any())
                     {
@@ -197,7 +197,7 @@ else
                     {
                         <p class="text-muted small mb-0">@Localizer["None found."]</p>
                     }
-                </div>
+                </pems-content-card>
             </pems-col>
         }
     </pems-row>

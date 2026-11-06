@@ -64,7 +64,7 @@
 
     <pems-row gap="3">
         <pems-col span="12" xl="9">
-            <div class="content-card pems-org-summary mb-3" id="orgChartSummary" hidden>
+            <pems-content-card css="pems-org-summary mb-3" id="orgChartSummary" hidden>
                 <div class="pems-org-summary-head">
                     <strong>@Localizer["خلاصه‌ی اشغال سمت‌ها"]</strong>
                     <div class="btn-group btn-group-sm" role="group" aria-label="@Localizer["نمایش سمت‌ها"]" id="orgChartVacancyFilter">
@@ -84,9 +84,9 @@
                     <span class="pems-org-progress-vacant" id="orgChartProgressVacant"></span>
                 </div>
                 <div class="small text-muted mt-1">@Localizer["سمت‌های غیرفعال در شمارش نیامده‌اند."]</div>
-            </div>
+            </pems-content-card>
 
-            <div class="content-card pems-orgchart-card">
+            <pems-content-card css="pems-orgchart-card">
                 <div id="orgChartLoading">
                     <pems-skeleton kind="card" label="@Localizer["در حال بارگذاری نمودار سازمانی..."]" />
                 </div>
@@ -104,7 +104,7 @@
                      role="tree" aria-label="@Localizer["نمودار سازمانی تعمیرونگهداری"]">
                     <div id="orgChartCanvas" class="pems-orgchart-canvas"></div>
                 </div>
-            </div>
+            </pems-content-card>
 
             <div class="pems-org-legend" aria-label="@Localizer["راهنمای نمودار"]">
                 <span class="pems-org-legend-title">@Localizer["راهنمای نمودار"]</span>
@@ -117,13 +117,13 @@
         </pems-col>
 
         <pems-col span="12" xl="3">
-            <div class="content-card pems-orgchart-detail" id="orgChartDetailPanel">
+            <pems-content-card css="pems-orgchart-detail" id="orgChartDetailPanel">
                 <div class="pems-orgchart-state" id="orgChartNoSelection">
                     <pems-icon name="bi-cursor" />
                     <span>@Localizer["روی یک گره کلیک کنید تا جزئیاتش را ببینید."]</span>
                 </div>
                 <div id="orgChartDetailContent" hidden></div>
-            </div>
+            </pems-content-card>
         </pems-col>
     </pems-row>
 </div>

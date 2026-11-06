@@ -5,14 +5,14 @@
 @using PEMS.Web.Helpers
 @{ ViewData["Title"] = Model.TransmittalNo; }
 
-<div class="vs-page">
+<pems-page-shell kind="workspace">
 
 <div class="vs-header">
     <span class="vs-pill @VdrUi.TransmittalTone(Model.Status)">@VdrUi.Loc(Localizer, "St_", Model.Status)</span>
     <a asp-action="Index" class="vs-btn vs-btn--sm"><pems-icon name="bi-arrow-left" /> @Localizer["Vs_Back"]</a>
 </div>
 
-<div class="content-card mb-3">
+<pems-content-card css="mb-3">
     <pems-info-grid>
         <pems-info-item label="@Localizer["Vs_Project"]">@Model.ProjectName</pems-info-item>
         <pems-info-item label="@Localizer["Vs_From"]">@Model.From</pems-info-item>
@@ -119,9 +119,9 @@
             <pems-button tone="primary" size="small" outline="true"><pems-icon name="bi-arrow-repeat" /> @Localizer["Td_Reissue"]</pems-button>
         </form>
     }
-</div>
+</pems-content-card>
 
-<div class="content-card mb-3">
+<pems-content-card css="mb-3">
     <h6 class="mb-3">@Localizer["Td_Recipients"]</h6>
     <pems-table kind="enterprise">
         <thead><tr><th>@Localizer["Td_Name"]</th><th>@Localizer["Td_Type"]</th><th>@Localizer["Td_Organization"]</th><th>@Localizer["Td_ResponseRequired"]</th><th>@Localizer["Td_Acknowledgement"]</th></tr></thead>
@@ -161,9 +161,9 @@
     {
         <p class="text-muted small mb-0">@Localizer["Td_NoRecipients"]</p>
     }
-</div>
+</pems-content-card>
 
-<div class="content-card">
+<pems-content-card>
     <h6 class="mb-3">@Localizer["Td_IncludedDocs"]</h6>
     <div class="table-responsive table-scroll-area pems-s-8da1c6e6">
     <pems-table kind="enterprise">
@@ -198,9 +198,9 @@
         </tbody>
     </pems-table>
     </div>
-</div>
+</pems-content-card>
 
-</div>
+</pems-page-shell>
 
 @{ ViewData["Title"] = Localizer["Vs_TransmittalRegistry"].Value; }
 @section Styles {

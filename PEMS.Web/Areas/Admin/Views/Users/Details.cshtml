@@ -58,7 +58,7 @@
     <script src="~/js/pems-user-permissions.js" asp-append-version="true"></script>
 }
 
-<div class="vs-page">
+<pems-page-shell kind="workspace">
 <div class="vs-section">
     <div class="vs-doc-head">
         <div class="vs-doc-identity">
@@ -108,18 +108,18 @@
 <div class="tab-content">
 
     <div class="tab-pane fade show active" id="tab-overview" role="tabpanel">
-        <div class="content-card">
+        <pems-content-card>
             <pems-info-grid>
                 <pems-info-item label="@Localizer["Username"]" num>@Model.UserName</pems-info-item>
                 <pems-info-item label="@Localizer["Full Name"]">@Model.FullName</pems-info-item>
                 <pems-info-item label="@Localizer["Email"]">@(Model.Email ?? Localizer["N/A"].Value)</pems-info-item>
                 <pems-info-item label="@Localizer["Status"]">@statusPill.Item3</pems-info-item>
             </pems-info-grid>
-        </div>
+        </pems-content-card>
     </div>
 
     <div class="tab-pane fade" id="tab-organization" role="tabpanel">
-        <div class="content-card">
+        <pems-content-card>
             @if (!Model.HasLinkedEmployee)
             {
                 <pems-alert tone="warning" css="py-2 px-3 small">@Localizer["This user has no linked employee - discipline-based document visibility, letter referrals, and task assignment will not work correctly for them until this is set."]</pems-alert>
@@ -129,11 +129,11 @@
                 <pems-info-item label="@Localizer["Discipline"]">@(Model.DisciplineName ?? Localizer["N/A"].Value)</pems-info-item>
                 <pems-info-item label="@Localizer["Position / Title"]">@(Model.Position ?? Localizer["N/A"].Value)</pems-info-item>
             </pems-info-grid>
-        </div>
+        </pems-content-card>
     </div>
 
     <div class="tab-pane fade" id="tab-roles" role="tabpanel">
-        <div class="content-card">
+        <pems-content-card>
             @if (Model.RoleNames.Count == 0)
             {
                 <div class="admin-empty"><pems-icon name="bi-people" /><strong>@Localizer["No roles assigned"]</strong></div>
@@ -148,7 +148,7 @@
                 </div>
             }
             <p class="text-body-secondary small mt-3 mb-0">@Localizer["Role assignment itself is changed from the Edit page."] <a asp-action="Edit" asp-route-id="@Model.UserId">@Localizer["Edit"]</a></p>
-        </div>
+        </pems-content-card>
     </div>
 
     <div class="tab-pane fade @(activeAccessTab != null ? "show active" : "")" id="tab-access" role="tabpanel">
@@ -185,9 +185,7 @@
         <div class="tab-content">
 
             <div class="tab-pane fade @(activeAccessTab is null or "effective" ? "show active" : "")" id="access-effective" role="tabpanel">
-                <div class="content-card" id="permAdmin"
-                     data-url="@Url.Action("SetPermissionAccess", "Users", new { area = "Admin", id = Model.UserId })"
-                     data-editable="@(canEditPermissions ? "1" : "0")">
+                <pems-content-card id="permAdmin" data-url="@Url.Action("SetPermissionAccess", "Users", new { area = "Admin", id = Model.UserId })" data-editable="@(canEditPermissions ? "1" : "0")">
                     @Html.AntiForgeryToken()
 
                     @if (canEditPermissions)
@@ -268,11 +266,11 @@
                             </pems-table>
                         </div>
                     </details>
-                </div>
+                </pems-content-card>
             </div>
 
             <div class="tab-pane fade" id="access-matrix" role="tabpanel">
-                <div class="content-card">
+                <pems-content-card>
                     @if (Model.MatrixRows.Count == 0)
                     {
                         <div class="admin-empty"><pems-icon name="bi-sliders" /><strong>@Localizer["No matrix rows for this user's roles"]</strong></div>
@@ -300,11 +298,11 @@
                             </pems-table>
                         </div>
                     }
-                </div>
+                </pems-content-card>
             </div>
 
             <div class="tab-pane fade @(activeAccessTab == "simulator" ? "show active" : "")" id="access-simulator" role="tabpanel">
-                <div class="content-card">
+                <pems-content-card>
                     <form class="pems-s-e2b01b0d" method="post" asp-action="Simulate" asp-route-id="@Model.UserId"><pems-row gap="3">
                         @Html.AntiForgeryToken()
                         <pems-col md="6">
@@ -343,11 +341,11 @@
                         </div>
                     }
                     <p class="text-body-secondary small mt-3 mb-0">@Localizer["This runs the real authorization engine for this user - it never writes or changes any permission."]</p>
-                </div>
+                </pems-content-card>
             </div>
 
             <div class="tab-pane fade" id="access-sod" role="tabpanel">
-                <div class="content-card">
+                <pems-content-card>
                     <div class="permission-intro mb-3"><pems-icon name="bi-info-circle" css="me-1" /> @Localizer["Separation of Duties in PEMS is checked dynamically, per record, at the moment of a real action - not as a standing status. The rows below show structural exposure only: this user's roles grant both permissions of an active policy. This is not the same as an actual violation, which can only happen on a specific record."]</div>
                     @if (Model.SoDExposure.Count == 0)
                     {
@@ -382,11 +380,11 @@
                         </div>
                     }
                     <p class="text-body-secondary small mt-3 mb-0"><a asp-controller="SoDPolicy" asp-action="Index">@Localizer["Manage SoD policies"]</a></p>
-                </div>
+                </pems-content-card>
             </div>
 
             <div class="tab-pane fade" id="access-navigation" role="tabpanel">
-                <div class="content-card">
+                <pems-content-card>
                     <div class="permission-intro mb-3"><pems-icon name="bi-diagram-3" css="me-1" /> @Localizer["This is a visualization only - it does not sign in as this user, and hidden items may still be reachable by direct URL if the user is actually authorized (Hidden is not the same as Unauthorized)."]</div>
                     @foreach (var module in Model.NavigationTree)
                     {
@@ -425,14 +423,14 @@
                         </details>
                     }
                     <p class="text-body-secondary small mt-3 mb-0"><a asp-controller="NavigationVisibility" asp-action="Index">@Localizer["Manage navigation visibility by role"]</a></p>
-                </div>
+                </pems-content-card>
             </div>
 
         </div>
     </div>
 
     <div class="tab-pane fade" id="tab-audit" role="tabpanel">
-        <div class="content-card">
+        <pems-content-card>
             @if (Model.RecentAuditLogs.Count == 0)
             {
                 <div class="admin-empty"><pems-icon name="bi-clock-history" /><strong>@Localizer["No authorization decisions recorded yet"]</strong></div>
@@ -467,9 +465,9 @@
                 </div>
             }
             <p class="text-body-secondary small mt-3 mb-0"><a asp-controller="AuthorizationAudit" asp-action="Index" asp-route-userId="@Model.UserId">@Localizer["Open full audit log for this user"]</a></p>
-        </div>
+        </pems-content-card>
     </div>
 
 </div>
-</div>
+</pems-page-shell>
 

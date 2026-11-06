@@ -6,7 +6,7 @@
     dynamic document = ViewBag.Document;
 }
 
-<div class="content-card pems-s-e2b01b0d">
+<pems-content-card css="pems-s-e2b01b0d">
     <p class="text-muted mb-3">Document: <strong>@document.DocumentNo - @document.Title</strong> (current revision: @document.RevisionNo)</p>
 
     <form asp-action="Create" method="post">
@@ -45,4 +45,4 @@
             <pems-button tone="neutral" outline="true" as="a" asp-action="Index" asp-route-documentId="@document.DocumentId">Cancel</pems-button>
         </div>
     </form>
-</div>
+</pems-content-card>

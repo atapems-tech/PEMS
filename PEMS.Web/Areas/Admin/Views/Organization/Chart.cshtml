@@ -5,15 +5,7 @@
     <link rel="stylesheet" href="~/css/pems-org-position-chart.css" asp-append-version="true" />
 }
 
-<div class="admin-page-shell" id="pemsOpcRoot"
-     data-url="@Url.Action("ChartData", "Organization", new { area = "Admin" })"
-     data-manage-url="@Url.Action("Index", "Organization", new { area = "Admin" })"
-     data-t-container="@Localizer["Org_Chart_Container"]" data-t-vacant="@Localizer["Org_Vacant"]" data-t-position="@Localizer["Org_Col_Position"]"
-     data-t-employee="@Localizer["Org_Col_Holder"]" data-t-secondary="@Localizer["Org_Chart_Secondary"]" data-t-assignment="@Localizer["Org_Chart_Assignment"]"
-     data-t-unit="@Localizer["Org_Col_Department"]" data-t-team="@Localizer["Org_Chart_Team"]" data-t-parent="@Localizer["Org_Col_Parent"]"
-     data-t-reports="@Localizer["Org_Chart_Reports"]" data-t-issues="@Localizer["Org_Diag_Issues"]" data-t-manage="@Localizer["Org_Chart_Manage"]"
-     data-t-validRoot="@Localizer["Org_Chart_ValidRoot"]" data-t-orphan="@Localizer["Org_Chart_Orphan"]" data-t-cycle="@Localizer["Org_Chart_Cycle"]" data-t-issue="@Localizer["Org_Chart_Issue"]"
-     data-t-select="@Localizer["Org_Chart_Select"]" data-t-empty="@Localizer["Org_Empty"]" data-t-loading="@Localizer["Org_Chart_Loading"]" data-t-error="@Localizer["Org_Chart_Error"]">
+<pems-page-shell kind="admin" id="pemsOpcRoot" data-url="@Url.Action("ChartData", "Organization", new { area = "Admin" })" data-manage-url="@Url.Action("Index", "Organization", new { area = "Admin" })" data-t-container="@Localizer["Org_Chart_Container"]" data-t-vacant="@Localizer["Org_Vacant"]" data-t-position="@Localizer["Org_Col_Position"]" data-t-employee="@Localizer["Org_Col_Holder"]" data-t-secondary="@Localizer["Org_Chart_Secondary"]" data-t-assignment="@Localizer["Org_Chart_Assignment"]" data-t-unit="@Localizer["Org_Col_Department"]" data-t-team="@Localizer["Org_Chart_Team"]" data-t-parent="@Localizer["Org_Col_Parent"]" data-t-reports="@Localizer["Org_Chart_Reports"]" data-t-issues="@Localizer["Org_Diag_Issues"]" data-t-manage="@Localizer["Org_Chart_Manage"]" data-t-validRoot="@Localizer["Org_Chart_ValidRoot"]" data-t-orphan="@Localizer["Org_Chart_Orphan"]" data-t-cycle="@Localizer["Org_Chart_Cycle"]" data-t-issue="@Localizer["Org_Chart_Issue"]" data-t-select="@Localizer["Org_Chart_Select"]" data-t-empty="@Localizer["Org_Empty"]" data-t-loading="@Localizer["Org_Chart_Loading"]" data-t-error="@Localizer["Org_Chart_Error"]">
 
     <div class="admin-hero"><p>@Localizer["Org_Chart_Intro"]</p></div>
 
@@ -35,7 +27,7 @@
         </div>
         <aside class="pems-opc-panel" id="pemsOpcPanel" aria-live="polite"><p class="text-muted small mb-0">@Localizer["Org_Chart_Select"]</p></aside>
     </div>
-</div>
+</pems-page-shell>
 
 @section Scripts {
     <pems-script-templates set="org-position-chart"></pems-script-templates>

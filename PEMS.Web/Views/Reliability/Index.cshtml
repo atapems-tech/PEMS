@@ -31,7 +31,7 @@
     جایی که داده‌ی کافی برای محاسبه نیست، N/A نمایش داده می‌شود - هرگز صفر جعلی.
 </p>
 
-<div class="content-card mb-3">
+<pems-content-card css="mb-3">
     <form method="get"><pems-row gap="2" css="align-items-end">
         <pems-col md="3">
             <pems-label css="small">@Localizer["From"]</pems-label>
@@ -46,7 +46,7 @@
             Period: @(from?.ToString("yyyy-MM-dd") ?? "all history") → @(to?.ToString("yyyy-MM-dd") ?? "now")
         </pems-col>
     </pems-row></form>
-</div>
+</pems-content-card>
 
 <pems-nav css="mb-3">
     <li class="nav-item"><button class="nav-link active" data-bs-toggle="tab" data-bs-target="#tab-fleet">Fleet</button></li>
@@ -58,7 +58,7 @@
 
 <div class="tab-content">
     <div class="tab-pane fade show active" id="tab-fleet">
-        <div class="content-card">
+        <pems-content-card>
             <pems-table kind="enterprise" css="mb-0">
                 <thead>
                     <tr>
@@ -92,11 +92,11 @@
                 </tbody>
             </pems-table>
             @if (!Model.Any()) { <p class="text-muted text-center py-4 mb-0">هنوز هیچ خرابی‌ای ثبت نشده - این لیست از روی WorkOrder های اصلاحی/اضطراری تکمیل‌شده ساخته می‌شود.</p> }
-        </div>
+        </pems-content-card>
     </div>
 
     <div class="tab-pane fade" id="tab-class">
-        <div class="content-card">
+        <pems-content-card>
             <p class="text-muted small">
                 میانگین مقادیر معتبر سطح-تجهیز درون هر کلاس (نه یک نرخ Pooled روی زمان
                 بهره‌برداری) - Sample Size نشان می‌دهد چند تجهیز واقعاً در میانگین سهیم بودند.
@@ -121,13 +121,13 @@
                 </tbody>
             </pems-table>
             @if (!classReliability.Any()) { <p class="text-muted text-center py-4 mb-0">@Localizer["هیچ کلاسی داده‌ی خرابی کافی ندارد."]</p> }
-        </div>
+        </pems-content-card>
     </div>
 
     <div class="tab-pane fade" id="tab-pareto">
         <pems-row gap="3">
             <pems-col md="6">
-                <div class="content-card h-100">
+                <pems-content-card css="h-100">
                     <h6 class="mb-3">Failure Mode Pareto</h6>
                     <pems-table kind="enterprise" scale="small" css="mb-0">
                         <thead><tr><th>@Localizer["Failure Mode"]</th><th class="text-end">@Localizer["Count"]</th><th class="text-end">@Localizer["Downtime"]</th><th class="text-end">@Localizer["Cumulative %"]</th></tr></thead>
@@ -139,10 +139,10 @@
                         </tbody>
                     </pems-table>
                     @if (!failureModePareto.Any()) { <p class="text-muted small text-center py-3 mb-0">@Localizer["داده‌ای موجود نیست."]</p> }
-                </div>
+                </pems-content-card>
             </pems-col>
             <pems-col md="6">
-                <div class="content-card h-100">
+                <pems-content-card css="h-100">
                     <h6 class="mb-3">Failure Cause Pareto</h6>
                     <pems-table kind="enterprise" scale="small" css="mb-0">
                         <thead><tr><th>Failure Cause</th><th class="text-end">@Localizer["Count"]</th><th class="text-end">@Localizer["Downtime"]</th><th class="text-end">@Localizer["Cumulative %"]</th></tr></thead>
@@ -154,13 +154,13 @@
                         </tbody>
                     </pems-table>
                     @if (!failureCausePareto.Any()) { <p class="text-muted small text-center py-3 mb-0">@Localizer["داده‌ای موجود نیست."]</p> }
-                </div>
+                </pems-content-card>
             </pems-col>
         </pems-row>
     </div>
 
     <div class="tab-pane fade" id="tab-badactors">
-        <div class="content-card">
+        <pems-content-card>
             <p class="text-muted small">هر رتبه با عوامل صریح توضیح داده می‌شود - نه یک امتیاز مبهم.</p>
             <pems-table kind="enterprise" scale="small" css="mb-0">
                 <thead><tr><th>@Localizer["Tag"]</th><th>@Localizer["Class"]</th><th>@Localizer["Criticality"]</th><th class="text-end">@Localizer["Failures"]</th><th class="text-end">@Localizer["Repeat"]</th><th class="text-end">@Localizer["Downtime"]</th><th class="text-end">@Localizer["MTTR"]</th><th class="text-end">Maint. Count</th><th>Primary Mode / Cause</th><th>Why Ranked Here</th></tr></thead>
@@ -183,11 +183,11 @@
                 </tbody>
             </pems-table>
             @if (!badActors.Any()) { <p class="text-muted text-center py-4 mb-0">@Localizer["داده‌ای موجود نیست."]</p> }
-        </div>
+        </pems-content-card>
     </div>
 
     <div class="tab-pane fade" id="tab-trend">
-        <div class="content-card">
+        <pems-content-card>
             <p class="text-muted small">هر نقطه تعداد رویداد واقعی (Observation Count) خودش را نشان می‌دهد - روندهای با نمونه‌ی کوچک باید با احتیاط تفسیر شوند.</p>
             <pems-table kind="enterprise" scale="small" css="mb-0">
                 <thead><tr><th>Period</th><th class="text-end">Failures (Observations)</th><th class="text-end">@Localizer["Downtime"]</th></tr></thead>
@@ -199,6 +199,6 @@
                 </tbody>
             </pems-table>
             @if (!monthlyTrend.Any()) { <p class="text-muted text-center py-4 mb-0">@Localizer["داده‌ای موجود نیست."]</p> }
-        </div>
+        </pems-content-card>
     </div>
 </div>

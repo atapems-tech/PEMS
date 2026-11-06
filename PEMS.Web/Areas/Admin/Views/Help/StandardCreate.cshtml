@@ -12,7 +12,7 @@
     var implementationStatuses = new[] { "NotImplemented", "PartiallyRelated", "ConceptuallyMapped", "ImplementedButNotComplianceVerified", "ComplianceEvidenceAvailable", "NotApplicable", "NotVerified" };
 }
 
-<div class="content-card">
+<pems-content-card>
     <h5 class="mb-3"><pems-icon name="bi-journal-bookmark" /> @(isEdit ? "Edit" : "New") Standard Reference</h5>
 
     @if (!ViewData.ModelState.IsValid)
@@ -172,6 +172,6 @@
             <pems-button as="a" tone="neutral" outline="true" asp-action="StandardMatrix">Back to matrix</pems-button>
         </div>
     </form>
-</div>
+</pems-content-card>
 
 <script src="~/js/views/admin-help-standardcreate.js" asp-append-version="true"></script>

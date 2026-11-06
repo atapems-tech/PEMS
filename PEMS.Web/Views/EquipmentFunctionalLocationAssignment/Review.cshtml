@@ -31,7 +31,7 @@
     var filterOptions = new[] { "Exact", "AlreadyAssigned", "NoChange", "UnresolvedEquipment", "UnresolvedFunctionalLocation", "ConflictEquipment", "ConflictFunctionalLocation", "ValidationError" };
 }
 
-<div class="content-card mb-3">
+<pems-content-card css="mb-3">
     <pems-row gap="3">
         <pems-col md="3"><strong>@Localizer["File:"]</strong> @Model.FileName</pems-col>
         <pems-col md="2"><strong>@Localizer["Total Rows:"]</strong> @Model.TotalRows</pems-col>
@@ -58,7 +58,7 @@
             </form>
         </div>
     }
-</div>
+</pems-content-card>
 
 <div class="pems-filter-bar mb-3">
     <span class="pems-filter-label">@Localizer["Filter"]</span>
@@ -78,7 +78,7 @@
     }
 </div>
 
-<div class="content-card">
+<pems-content-card>
     <div class="table-responsive table-scroll-area pems-s-8da1c6e6">
         <pems-table kind="enterprise">
             <thead>
@@ -166,4 +166,4 @@
         BaseUrl = Url.Action("Review") ?? "",
         ExistingQueryString = string.Join("&", qsParts)
     })
-</div>
+</pems-content-card>

@@ -23,7 +23,7 @@
 @if (TempData["Message"] != null) { <pems-alert tone="success" css="py-2 px-3 small">@TempData["Message"]</pems-alert> }
 @if (TempData["Error"] != null) { <pems-alert tone="danger" css="py-2 px-3 small">@TempData["Error"]</pems-alert> }
 
-<div class="content-card mb-3">
+<pems-content-card css="mb-3">
     <div class="d-flex align-items-center gap-3 mb-2 flex-wrap">
         <div class="kpi-icon bg-icon-blue pems-s-792bd2d6"><pems-icon name="bi-shield-exclamation" /></div>
         <div>
@@ -78,7 +78,7 @@
             </pems-col>
         }
     </pems-row>
-</div>
+</pems-content-card>
 
 <pems-nav css="mb-3">
     <li class="nav-item"><button class="nav-link active" data-bs-toggle="tab" data-bs-target="#tab-scores">Dimension Scores</button></li>
@@ -88,7 +88,7 @@
 
 <div class="tab-content">
     <div class="tab-pane fade show active" id="tab-scores">
-        <div class="content-card">
+        <pems-content-card>
             <p class="text-muted small">
                 طبق «PEMS Phase 7.6»: نتیجه از قاعده‌ی «بدترین بُعد حاکم است» (Max، نه میانگین)
                 محاسبه می‌شود - یک تجهیز با پیامد ایمنی شدید صرفاً به این دلیل که پیامد
@@ -107,11 +107,11 @@
             {
                 <div class="small text-muted mt-2"><strong>Rationale:</strong> @Model.Rationale</div>
             }
-        </div>
+        </pems-content-card>
     </div>
 
     <div class="tab-pane fade" id="tab-evidence">
-        <div class="content-card">
+        <pems-content-card>
             <pems-table kind="enterprise" scale="small" css="mb-0">
                 <thead><tr><th>@Localizer["Source Type"]</th><th>@Localizer["Identifier"]</th><th>@Localizer["Reference"]</th><th>@Localizer["Description"]</th><th>By</th><th>@Localizer["Date"]</th></tr></thead>
                 <tbody>
@@ -129,11 +129,11 @@
                 </tbody>
             </pems-table>
             @if (!Model.Evidence.Any()) { <p class="text-muted text-center py-4 mb-0">@Localizer["هنوز هیچ شاهدی ثبت نشده - قبل از ارسال برای بازبینی، حداقل یکی الزامی است."]</p> }
-        </div>
+        </pems-content-card>
     </div>
 
     <div class="tab-pane fade" id="tab-history">
-        <div class="content-card">
+        <pems-content-card>
             <p class="text-muted small">طبق بند ۱۳: نسخه‌های قبلی هرگز حذف نمی‌شوند - فقط SUPERSEDED علامت می‌خورند.</p>
             <pems-table kind="enterprise" scale="small" css="mb-0">
                 <thead><tr><th>@Localizer["Status"]</th><th>@Localizer["Proposed"]</th><th>@Localizer["Prepared By"]</th><th>@Localizer["Approved By"]</th><th>@Localizer["Created"]</th><th></th></tr></thead>
@@ -152,7 +152,7 @@
                 </tbody>
             </pems-table>
             @if (!Model.PriorAssessments.Any()) { <p class="text-muted text-center py-4 mb-0">@Localizer["این اولین ارزیابی این تجهیز است."]</p> }
-        </div>
+        </pems-content-card>
     </div>
 </div>
 

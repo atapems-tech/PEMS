@@ -31,7 +31,7 @@
 }
 
 
-<div class="content-card mb-3 letter-header">
+<pems-content-card css="mb-3 letter-header">
     <div class="d-flex justify-content-between align-items-start flex-wrap gap-2">
         <div>
             <div class="d-flex align-items-center flex-wrap gap-2">
@@ -220,11 +220,11 @@
             on @l.RejectedDate?.ToString("yyyy-MM-dd HH:mm") &mdash; <em>@l.RejectReason</em>
         </pems-alert>
     }
-</div>
+</pems-content-card>
 
 @if (Model.ApprovalSteps.Any())
 {
-    <div class="content-card mb-3" id="approvalChain">
+    <pems-content-card css="mb-3" id="approvalChain">
         <div class="section-title mb-2">@Localizer["Lc_ApprovalChain"]</div>
         <ol class="list-unstyled mb-0">
             @foreach (var step in Model.ApprovalSteps.OrderBy(x => x.StepOrder))
@@ -255,14 +255,14 @@
                 </li>
             }
         </ol>
-    </div>
+    </pems-content-card>
 }
 
 @* طبق بند ۱۴-۲۰: مکالمه/زنجیره‌ی پاسخ - محتوای رسمی به‌طور پیش‌فرض فقط-خواندنی؛ ویرایش فقط
    در حالت‌های مجاز و فقط توسط نویسنده‌ی اصلی، به‌صورت یک فرم صریح و مجزا (نه دکمه‌ی همیشه-حاضر) *@
 @if (conversation != null && conversation.Count > 1)
 {
-    <section class="content-card mb-3" id="conversationPanel" aria-labelledby="cvTitle">
+    <pems-content-card as="section" css="mb-3" id="conversationPanel" aria-labelledby="cvTitle">
         <div class="d-flex align-items-center gap-2 mb-2">
             <div class="section-title mb-0" id="cvTitle"><pems-icon name="bi-chat-left-text" css="me-1" aria-hidden="true" /> @Localizer["Ct_ConversationTitle"] (@conversation.Count)</div>
             <span class="ms-auto d-inline-flex gap-2">
@@ -300,10 +300,10 @@
                 }
             </article>
         }
-    </section>
+    </pems-content-card>
 }
 
-<div class="content-card mb-3">
+<pems-content-card css="mb-3">
     <div class="section-title mb-2">@Localizer["Message"]</div>
 
     @if (conversation == null && thread != null && thread.Count > 1)
@@ -393,12 +393,12 @@
     }
 
     <script src="~/js/views/letter-details-1.js" asp-append-version="true"></script>
-</div>
+</pems-content-card>
 
 @* طبق بند ۷/۱۲: بخش Review کاملاً جدا از Referral - «آیا نامه می‌تواند جلو برود» *@
 @if (Model.Reviews.Any())
 {
-    <div class="content-card mb-3">
+    <pems-content-card css="mb-3">
         <div class="section-title mb-2">Review Decisions</div>
         <ul class="list-unstyled mb-0">
             @foreach (var rv in Model.Reviews)
@@ -413,7 +413,7 @@
                 </li>
             }
         </ul>
-    </div>
+    </pems-content-card>
 }
 
 @if (!string.IsNullOrEmpty(l.SignedByName))
@@ -425,7 +425,7 @@
 
 @if ((l.RelatedDocumentId.HasValue || l.RelatedMRId.HasValue))
 {
-    <div class="content-card mb-3">
+    <pems-content-card css="mb-3">
         <div class="section-title mb-2">Related Records</div>
         <div class="d-flex flex-wrap gap-3 small">
             @if (l.RelatedDocumentId.HasValue)
@@ -437,7 +437,7 @@
                 <a asp-controller="MaterialRequisition" asp-action="Details" asp-route-id="@l.RelatedMRId"><pems-icon name="bi-cart" /> @l.RelatedMRNumber</a>
             }
         </div>
-    </div>
+    </pems-content-card>
 }
 
 <pems-accordion id="letterAccordion" css="mb-3">

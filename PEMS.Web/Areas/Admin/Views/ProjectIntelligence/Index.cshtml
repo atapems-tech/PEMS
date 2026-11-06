@@ -8,7 +8,7 @@
     var sorted = Model.Modules.OrderBy(m => m.EvidenceCoveragePct).ThenBy(m => m.Module).ToList();
 }
 
-<div class="admin-page-shell">
+<pems-page-shell kind="admin">
     <div class="admin-hero">
         <div class="d-flex align-items-center gap-3">
             <div>
@@ -33,7 +33,7 @@
 
     @if (reportMissing)
     {
-        <div class="content-card">
+        <pems-content-card>
             <div class="admin-empty">
                 <pems-icon name="bi-clipboard-x" />
                 <strong>No report found yet</strong>
@@ -47,11 +47,11 @@
                     <p class="text-body-secondary small mt-2">Expected file: <code>@ViewBag.ReportPath</code></p>
                 </div>
             </div>
-        </div>
+        </pems-content-card>
     }
     else
     {
-        <div class="content-card mb-3">
+        <pems-content-card css="mb-3">
             <div class="admin-kpi-grid">
                 <div class="admin-kpi"><div class="admin-kpi-label">Modules scanned</div><div class="admin-kpi-value">@Model.ModuleCount</div></div>
                 <div class="admin-kpi"><div class="admin-kpi-label">Redirect shims</div><div class="admin-kpi-value">@Model.StubShimCount</div></div>
@@ -62,9 +62,9 @@
                 <span>Branch <strong>@Model.Branch</strong> - last commit <code>@Model.LastCommit</code></span>
                 <span>Generated @(Model.GeneratedAtUtc?.ToString("yyyy-MM-dd HH:mm") ?? "-") UTC - @Model.NoTestCount / @Model.ModuleCount modules have no reference found in PEMS.Tests</span>
             </div>
-        </div>
+        </pems-content-card>
 
-        <div class="content-card mb-3">
+        <pems-content-card css="mb-3">
             <div class="admin-toolbar">
                 <div class="admin-toolbar-main">
                     <div class="input-group admin-search">
@@ -74,7 +74,7 @@
                     <span class="text-body-secondary small">Sorted by evidence coverage, lowest (needs the most attention) first.</span>
                 </div>
             </div>
-        </div>
+        </pems-content-card>
 
         <pems-row gap="3" id="moduleGrid">
             @foreach (var m in sorted)
@@ -85,7 +85,7 @@
                 var barColor = presentPct >= 75 ? "success" : (presentPct >= 45 ? "warning" : "danger");
 
                 <pems-col md="6" xl="4" css="module-card" data-module="@m.Module.ToLower()">
-                    <div class="content-card h-100 p-3">
+                    <pems-content-card css="h-100 p-3">
                         <div class="d-flex justify-content-between align-items-start mb-2">
                             <div>
                                 <div class="row-primary">
@@ -135,12 +135,12 @@
                                 Graphify connectivity: @m.GraphConnectivity edge(s)
                             </div>
                         </details>
-                    </div>
+                    </pems-content-card>
                 </pems-col>
             }
         </pems-row>
     }
-</div>
+</pems-page-shell>
 
 @section Scripts {
 <pems-script-templates set="project-intelligence"></pems-script-templates>

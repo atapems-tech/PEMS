@@ -11,7 +11,7 @@
     <pems-badge tone="none" css="@(Model.Status == "Closed" ? "bg-success" : Model.Status == "Dispositioned" ? "bg-info" : Model.Status == "PendingApproval" ? "bg-warning text-dark" : "bg-secondary") fs-6">@Model.Status</pems-badge>
 </div>
 
-<div class="content-card mb-3">
+<pems-content-card css="mb-3">
     <pems-row gap="2">
         <pems-col md="4"><strong>Severity:</strong> @Model.Severity</pems-col>
         <pems-col md="4"><strong>@Localizer["Raised:"]</strong> @Model.RaisedDate.ToString("yyyy-MM-dd")</pems-col>
@@ -19,21 +19,21 @@
     </pems-row>
     <hr />
     <p class="mb-0">@Model.Description</p>
-</div>
+</pems-content-card>
 
 @if (!string.IsNullOrWhiteSpace(Model.RootCause) || !string.IsNullOrWhiteSpace(Model.CorrectiveAction))
 {
-    <div class="content-card mb-3">
+    <pems-content-card css="mb-3">
         <h6 class="mb-2">Root Cause &amp; Corrective Action</h6>
         <p><strong>Root Cause:</strong> @Model.RootCause</p>
         <p><strong>Corrective Action:</strong> @Model.CorrectiveAction</p>
         <p class="mb-0"><strong>Preventive Action:</strong> @Model.PreventiveAction</p>
-    </div>
+    </pems-content-card>
 }
 
 @if (Model.Status == "Open" || Model.Status == "UnderReview")
 {
-    <div class="content-card mb-3">
+    <pems-content-card css="mb-3">
         <h6 class="mb-3">@Localizer["Disposition"]</h6>
         <form asp-action="NcrDisposition" method="post">
             <input type="hidden" name="id" value="@Model.NonConformanceReportId" />
@@ -60,11 +60,11 @@
                 <pems-button tone="primary" size="small" type="submit">Save Disposition</pems-button>
             </div>
         </form>
-    </div>
+    </pems-content-card>
 }
 else if (Model.Status == "PendingApproval")
 {
-    <div class="content-card mb-3 border-warning">
+    <pems-content-card css="mb-3 border-warning">
         <h6 class="mb-3"><pems-icon name="bi-hourglass-split" /> در انتظار تایید مدیر QA</h6>
         <p class="text-muted small">این NCR بحرانه و Disposition آن باید توسط مدیر QA تایید بشه قبل از بسته شدن.</p>
         <div class="d-flex gap-2">
@@ -75,7 +75,7 @@ else if (Model.Status == "PendingApproval")
             </form>
             <pems-button tone="danger" size="small" type="button" data-bs-toggle="modal" data-bs-target="#rejectDispositionModal">رد Disposition</pems-button>
         </div>
-    </div>
+    </pems-content-card>
 
     <pems-modal id="rejectDispositionModal" tabindex="-1">
                 <form asp-action="NcrApprove" method="post">

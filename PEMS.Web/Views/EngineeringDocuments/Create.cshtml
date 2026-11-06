@@ -8,7 +8,7 @@
 }
 
 @* Same fields, names, values and behaviour as before (numbering rules, manual-number permission, dropdowns) - only grouping, labels and hierarchy changed. *@
-<form asp-action="Create" method="post" class="content-card pems-s-0d3d737f">
+<form asp-action="Create" method="post"><pems-content-card css="pems-s-0d3d737f">
     <div asp-validation-summary="ModelOnly" class="text-danger small mb-2"></div>
 
     <h2 class="vs-section__title"><pems-icon name="bi-card-heading" /> @Localizer["Ed_FormIdentification"]</h2>
@@ -106,7 +106,7 @@
         <pems-button tone="neutral" outline="true" as="a" asp-action="Index">@Localizer["Cancel"]</pems-button>
         <pems-button tone="primary" type="submit">@Localizer["Save"]</pems-button>
     </div>
-</form>
+</pems-content-card></form>
 
 @section Scripts {
     <script src="~/js/views/engineeringdocuments-create.js" asp-append-version="true"></script>
