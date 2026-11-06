@@ -1,7 +1,7 @@
 @model PEMS.Application.DTOs.StorageRouteUpsertRequest
 
 <pems-page-shell kind="admin">
-    <div class="admin-hero"><pems-flex align="center" gap="3"><div><p>Route a module (and optionally a document type) to a Storage Provider.</p></div></pems-flex></div>
+    <pems-page-hero><pems-flex align="center" gap="3"><div><p>Route a module (and optionally a document type) to a Storage Provider.</p></div></pems-flex></pems-page-hero>
     @if (TempData["Error"] != null) { <pems-alert tone="danger">@TempData["Error"]</pems-alert> }
     <form asp-action="Create" method="post">
         @await Html.PartialAsync("_Form", Model)

@@ -6,12 +6,12 @@
 @inject IStringLocalizer<SharedResource> Localizer
 
 <pems-page-shell kind="admin">
-    <div class="admin-hero">
+    <pems-page-hero>
         <pems-flex align="center" justify="between" gap="3" wrap="true">
             <p class="mb-0">@Localizer["Nav_Admin_Intro"]</p>
             <pems-button as="a" tone="none" size="small" css="btn-primary" asp-action="Create"><pems-icon name="bi-plus-lg" css="me-1" />@Localizer["Nav_Admin_AddLink"]</pems-button>
         </pems-flex>
-    </div>
+    </pems-page-hero>
 
     <pems-content-card>
         @if (TempData["Success"] != null)

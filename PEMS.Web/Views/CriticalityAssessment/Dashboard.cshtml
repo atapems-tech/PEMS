@@ -19,37 +19,37 @@
 <pems-row gap="3" css="mb-3">
     <pems-col md="2">
         <pems-content-card css="h-100 text-center">
-            <div class="fs-4 fw-bold">@Model.TotalActiveEquipment.ToString("N0")</div>
+            <pems-metric>@Model.TotalActiveEquipment.ToString("N0")</pems-metric>
             <div class="text-muted small">@Localizer["Total Active Equipment"]</div>
         </pems-content-card>
     </pems-col>
     <pems-col md="2">
         <pems-content-card css="h-100 text-center">
-            <div class="fs-4 fw-bold">@Model.Assessed.ToString("N0")</div>
+            <pems-metric>@Model.Assessed.ToString("N0")</pems-metric>
             <div class="text-muted small">Assessed (any status)</div>
         </pems-content-card>
     </pems-col>
     <pems-col md="2">
         <pems-content-card css="h-100 text-center">
-            <div class="fs-4 fw-bold text-success">@Model.Approved.ToString("N0")</div>
+            <pems-metric css="text-success">@Model.Approved.ToString("N0")</pems-metric>
             <div class="text-muted small">@Localizer["Approved"]</div>
         </pems-content-card>
     </pems-col>
     <pems-col md="2">
         <pems-content-card css="h-100 text-center">
-            <div class="fs-4 fw-bold text-warning">@Model.UnderReview.ToString("N0")</div>
+            <pems-metric css="text-warning">@Model.UnderReview.ToString("N0")</pems-metric>
             <div class="text-muted small">@Localizer["Under Review"]</div>
         </pems-content-card>
     </pems-col>
     <pems-col md="2">
         <pems-content-card css="h-100 text-center">
-            <div class="fs-4 fw-bold">@Model.Draft.ToString("N0")</div>
+            <pems-metric>@Model.Draft.ToString("N0")</pems-metric>
             <div class="text-muted small">@Localizer["Draft"]</div>
         </pems-content-card>
     </pems-col>
     <pems-col md="2">
         <pems-content-card css="h-100 text-center">
-            <div class="fs-4 fw-bold text-muted">@Model.Unassessed.ToString("N0")</div>
+            <pems-metric css="text-muted">@Model.Unassessed.ToString("N0")</pems-metric>
             <div class="text-muted small">Unassessed</div>
         </pems-content-card>
     </pems-col>

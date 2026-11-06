@@ -25,25 +25,25 @@
 <pems-row gap="3" css="mb-3">
     <pems-col md="3">
         <pems-content-card css="h-100 text-center">
-            <div class="fs-4 fw-bold">@Model.EquipmentCount</div>
+            <pems-metric>@Model.EquipmentCount</pems-metric>
             <div class="text-muted small">Equipment in Class</div>
         </pems-content-card>
     </pems-col>
     <pems-col md="3">
         <pems-content-card css="h-100 text-center">
-            <div class="fs-4 fw-bold">@(Model.AverageMTBFHours.HasValue ? $"{Model.AverageMTBFHours.Value:N1}h" : "N/A")</div>
+            <pems-metric>@(Model.AverageMTBFHours.HasValue ? $"{Model.AverageMTBFHours.Value:N1}h" : "N/A")</pems-metric>
             <div class="text-muted small">Average MTBF (n=@Model.MTBFSampleSize)</div>
         </pems-content-card>
     </pems-col>
     <pems-col md="3">
         <pems-content-card css="h-100 text-center">
-            <div class="fs-4 fw-bold">@(Model.AverageAvailabilityPercent.HasValue ? $"{Model.AverageAvailabilityPercent.Value:N1}%" : "N/A")</div>
+            <pems-metric>@(Model.AverageAvailabilityPercent.HasValue ? $"{Model.AverageAvailabilityPercent.Value:N1}%" : "N/A")</pems-metric>
             <div class="text-muted small">Average Availability</div>
         </pems-content-card>
     </pems-col>
     <pems-col md="3">
         <pems-content-card css="h-100 text-center">
-            <div class="fs-4 fw-bold">@Model.FailureCount</div>
+            <pems-metric>@Model.FailureCount</pems-metric>
             <div class="text-muted small">@Localizer["Total Failures"]</div>
         </pems-content-card>
     </pems-col>

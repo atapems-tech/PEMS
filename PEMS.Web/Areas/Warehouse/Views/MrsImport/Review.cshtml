@@ -42,13 +42,13 @@
 }
 
 <pems-content-card css="mb-3">
-    <div class="admin-kpi-grid">
-        <div class="admin-kpi"><div class="admin-kpi-label">@Localizer["New"]</div><div class="admin-kpi-value">@Model.Batch.NewCount</div></div>
-        <div class="admin-kpi"><div class="admin-kpi-label">Matched Existing</div><div class="admin-kpi-value">@Model.Batch.MatchedCount</div></div>
-        <div class="admin-kpi"><div class="admin-kpi-label">Duplicate In Batch</div><div class="admin-kpi-value">@Model.Batch.DuplicateCount</div></div>
-        <div class="admin-kpi"><div class="admin-kpi-label">@Localizer["Invalid"]</div><div class="admin-kpi-value">@Model.Batch.InvalidCount</div></div>
-        <div class="admin-kpi"><div class="admin-kpi-label">@Localizer["Approved"]</div><div class="admin-kpi-value">@Model.Batch.ApprovedCount</div></div>
-    </div>
+    <pems-stat-grid>
+        <pems-stat label="@Localizer["New"]">@Model.Batch.NewCount</pems-stat>
+        <pems-stat label="Matched Existing">@Model.Batch.MatchedCount</pems-stat>
+        <pems-stat label="Duplicate In Batch">@Model.Batch.DuplicateCount</pems-stat>
+        <pems-stat label="@Localizer["Invalid"]">@Model.Batch.InvalidCount</pems-stat>
+        <pems-stat label="@Localizer["Approved"]">@Model.Batch.ApprovedCount</pems-stat>
+    </pems-stat-grid>
     <p class="text-muted small mt-2 mb-0">فایل کامل را آپلود کنید - PEMS فایل‌های بزرگ را داخلی و خودکار پردازش می‌کند. این صفحه برای بازبینی، صفحه‌بندی شده است (@Model.Rows.TotalCount ردیف در این فیلتر)؛ همه‌ی ردیف‌ها - نه فقط صفحه‌ی جاری - از طریق فیلتر Match Status زیر و دکمه‌ی «Commit/Reject سراسر Batch» قابل‌دسترسی و قابل‌عمل‌اند.</p>
 </pems-content-card>
 

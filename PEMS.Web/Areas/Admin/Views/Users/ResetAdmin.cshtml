@@ -4,9 +4,9 @@
 @inject IStringLocalizer<SharedResource> Localizer
 
 <pems-page-shell kind="admin">
-    <div class="admin-hero">
+    <pems-page-hero>
         <pems-flex align="center" gap="3"><div><p>@Localizer["Reset the account of another administrator. This cannot be undone."]</p></div></pems-flex>
-    </div>
+    </pems-page-hero>
 
     <pems-content-card>
         <h2 class="h5 mb-3"><pems-icon name="bi-shield-exclamation" css="me-1" /> @Localizer["Reset administrator account"]: <strong>@Model.UserName</strong> @(string.IsNullOrWhiteSpace(Model.FullName) ? "" : $"({Model.FullName})")</h2>

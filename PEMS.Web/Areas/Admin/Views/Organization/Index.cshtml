@@ -12,10 +12,10 @@
 }
 
 <pems-page-shell kind="admin">
-    <div class="admin-hero">
+    <pems-page-hero>
         <p>@Localizer["Org_Intro"]</p>
         <p class="small text-muted mb-0">@Localizer["Org_Team_Not_Manager"]</p>
-    </div>
+    </pems-page-hero>
 
     @if (TempData["Message"] != null) { <pems-alert tone="success">@TempData["Message"]</pems-alert> }
     @if (TempData["Error"] != null) { <pems-alert tone="danger">@TempData["Error"]</pems-alert> }

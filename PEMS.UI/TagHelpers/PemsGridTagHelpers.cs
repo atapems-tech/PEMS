@@ -196,3 +196,60 @@ public sealed class PemsTabPaneTagHelper(IPemsComponentRenderer renderer) : TagH
         await ListRender.Replace<PemsTabPane>(renderer, output, new TabPaneOptions { Fade = Fade, Active = Active, Css = Css, PageClass = pageClass, Attributes = attrs }, await ListRender.Inner(output));
     }
 }
+
+/// <summary>A labelled number tile: <c>&lt;pems-stat label="Modules scanned"&gt;@Model.Count&lt;/pems-stat&gt;</c> writes <c>&lt;div class="admin-kpi"&gt;&lt;div class="admin-kpi-label"&gt;...&lt;/div&gt;&lt;div class="admin-kpi-value"&gt;...&lt;/div&gt;&lt;/div&gt;</c>.</summary>
+[HtmlTargetElement("pems-stat")]
+[PemsFacade(UiKeys.Stat)]
+public sealed class PemsStatTagHelper(IPemsComponentRenderer renderer) : TagHelper
+{
+    [HtmlAttributeName("label")] public string Label { get; set; } = "";
+    [HtmlAttributeName("css")] public string? Css { get; set; }
+
+    public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
+    {
+        var (pageClass, attrs) = ListRender.Page(output);
+        await ListRender.Replace<PemsStat>(renderer, output, new StatOptions { Label = Label, Css = Css, PageClass = pageClass, Attributes = attrs }, await ListRender.Inner(output));
+    }
+}
+
+/// <summary>The grid of stat tiles: <c>&lt;pems-stat-grid&gt;&lt;pems-stat .../&gt;...&lt;/pems-stat-grid&gt;</c> writes <c>&lt;div class="admin-kpi-grid"&gt;</c>.</summary>
+[HtmlTargetElement("pems-stat-grid")]
+[PemsFacade(UiKeys.StatGrid)]
+public sealed class PemsStatGridTagHelper(IPemsComponentRenderer renderer) : TagHelper
+{
+    [HtmlAttributeName("css")] public string? Css { get; set; }
+
+    public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
+    {
+        var (pageClass, attrs) = ListRender.Page(output);
+        await ListRender.Replace<PemsStatGrid>(renderer, output, new StatGridOptions { Css = Css, PageClass = pageClass, Attributes = attrs }, await ListRender.Inner(output));
+    }
+}
+
+/// <summary>A big number: <c>&lt;pems-metric css="text-success"&gt;42&lt;/pems-metric&gt;</c> writes <c>&lt;div class="fs-4 fw-bold text-success"&gt;42&lt;/div&gt;</c>.</summary>
+[HtmlTargetElement("pems-metric")]
+[PemsFacade(UiKeys.Metric)]
+public sealed class PemsMetricTagHelper(IPemsComponentRenderer renderer) : TagHelper
+{
+    [HtmlAttributeName("css")] public string? Css { get; set; }
+
+    public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
+    {
+        var (pageClass, attrs) = ListRender.Page(output);
+        await ListRender.Replace<PemsMetric>(renderer, output, new MetricOptions { Css = Css, PageClass = pageClass, Attributes = attrs }, await ListRender.Inner(output));
+    }
+}
+
+/// <summary>The intro banner under a page title: <c>&lt;pems-page-hero&gt;text and actions&lt;/pems-page-hero&gt;</c> writes <c>&lt;div class="admin-hero"&gt;</c>.</summary>
+[HtmlTargetElement("pems-page-hero")]
+[PemsFacade(UiKeys.PageHero)]
+public sealed class PemsPageHeroTagHelper(IPemsComponentRenderer renderer) : TagHelper
+{
+    [HtmlAttributeName("css")] public string? Css { get; set; }
+
+    public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
+    {
+        var (pageClass, attrs) = ListRender.Page(output);
+        await ListRender.Replace<PemsPageHero>(renderer, output, new PageHeroOptions { Css = Css, PageClass = pageClass, Attributes = attrs }, await ListRender.Inner(output));
+    }
+}

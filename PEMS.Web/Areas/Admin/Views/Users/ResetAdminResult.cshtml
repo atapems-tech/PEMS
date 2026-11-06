@@ -4,9 +4,9 @@
 @inject IStringLocalizer<SharedResource> Localizer
 
 <pems-page-shell kind="admin">
-    <div class="admin-hero">
+    <pems-page-hero>
         <pems-flex align="center" gap="3"><div><p>@Localizer["The account was reset. The temporary password below is shown only now."]</p></div></pems-flex>
-    </div>
+    </pems-page-hero>
 
     <pems-content-card data-pems-secret-reveal>
         <h2 class="h5 mb-3"><pems-icon name="bi-check-circle-fill" css="text-success me-1" /> @Localizer["Account reset"]: <strong>@Model.TargetUserName</strong></h2>

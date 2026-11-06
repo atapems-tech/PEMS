@@ -110,6 +110,10 @@ public sealed class PemsComponentRegistry : IPemsComponentRegistry
         Register(UiKeys.ModalHeader, typeof(PemsModalHeader));
         Register(UiKeys.ModalBody, typeof(PemsModalBody));
         Register(UiKeys.ModalFooter, typeof(PemsModalFooter));
+        Register(UiKeys.Stat, typeof(PemsStat));
+        Register(UiKeys.StatGrid, typeof(PemsStatGrid));
+        Register(UiKeys.Metric, typeof(PemsMetric));
+        Register(UiKeys.PageHero, typeof(PemsPageHero));
     }
 
     public void Register(string key, Type componentType)

@@ -9,7 +9,7 @@
 }
 
 <pems-page-shell kind="admin">
-    <div class="admin-hero">
+    <pems-page-hero>
         <pems-flex align="center" gap="3">
             <div>
                 <p>Evidence-based module scan - not a manually estimated progress number. Every bar below is computed from source, DbContext, migrations, views, sidebar nav, tests, docs and git history.</p>
@@ -20,7 +20,7 @@
                 <pems-icon name="bi-arrow-clockwise" /> @Localizer["Refresh scan"]
             </pems-button>
         </form>
-    </div>
+    </pems-page-hero>
 
     @if (TempData["Message"] != null)
     {
@@ -52,12 +52,12 @@
     else
     {
         <pems-content-card css="mb-3">
-            <div class="admin-kpi-grid">
-                <div class="admin-kpi"><div class="admin-kpi-label">Modules scanned</div><div class="admin-kpi-value">@Model.ModuleCount</div></div>
-                <div class="admin-kpi"><div class="admin-kpi-label">Redirect shims</div><div class="admin-kpi-value">@Model.StubShimCount</div></div>
-                <div class="admin-kpi"><div class="admin-kpi-label">No Razor views found</div><div class="admin-kpi-value">@Model.NoUiCount</div></div>
-                <div class="admin-kpi"><div class="admin-kpi-label">Not in sidebar nav</div><div class="admin-kpi-value">@Model.NotInNavCount</div></div>
-            </div>
+            <pems-stat-grid>
+                <pems-stat label="Modules scanned">@Model.ModuleCount</pems-stat>
+                <pems-stat label="Redirect shims">@Model.StubShimCount</pems-stat>
+                <pems-stat label="No Razor views found">@Model.NoUiCount</pems-stat>
+                <pems-stat label="Not in sidebar nav">@Model.NotInNavCount</pems-stat>
+            </pems-stat-grid>
             <div class="admin-footer">
                 <span>Branch <strong>@Model.Branch</strong> - last commit <code>@Model.LastCommit</code></span>
                 <span>Generated @(Model.GeneratedAtUtc?.ToString("yyyy-MM-dd HH:mm") ?? "-") UTC - @Model.NoTestCount / @Model.ModuleCount modules have no reference found in PEMS.Tests</span>

@@ -11,27 +11,27 @@
 <pems-content-card>
     <pems-row gap="3" css="text-center">
         <pems-col md="2">
-            <div class="fs-4 fw-bold">@Model.EquipmentPopulation</div>
+            <pems-metric>@Model.EquipmentPopulation</pems-metric>
             <div class="text-muted small">@Localizer["Population"]</div>
         </pems-col>
         <pems-col md="2">
-            <div class="fs-4 fw-bold">@Model.EquipmentWithFailureHistory</div>
+            <pems-metric>@Model.EquipmentWithFailureHistory</pems-metric>
             <div class="text-muted small">With Failure History</div>
         </pems-col>
         <pems-col md="2">
-            <div class="fs-4 fw-bold">@Model.FailureCount</div>
+            <pems-metric>@Model.FailureCount</pems-metric>
             <div class="text-muted small">@Localizer["Total Failures"]</div>
         </pems-col>
         <pems-col md="2">
-            <div class="fs-4 fw-bold">@Model.TotalDowntimeHours.ToString("N1")h</div>
+            <pems-metric>@Model.TotalDowntimeHours.ToString("N1")h</pems-metric>
             <div class="text-muted small">@Localizer["Total Downtime"]</div>
         </pems-col>
         <pems-col md="2">
-            <div class="fs-4 fw-bold">@(Model.AverageMTBFHours.HasValue ? $"{Model.AverageMTBFHours.Value:N1}h" : "N/A")</div>
+            <pems-metric>@(Model.AverageMTBFHours.HasValue ? $"{Model.AverageMTBFHours.Value:N1}h" : "N/A")</pems-metric>
             <div class="text-muted small">Avg MTBF (n=@Model.MTBFSampleSize)</div>
         </pems-col>
         <pems-col md="2">
-            <div class="fs-4 fw-bold">@(Model.AverageMTTRHours.HasValue ? $"{Model.AverageMTTRHours.Value:N1}h" : "N/A")</div>
+            <pems-metric>@(Model.AverageMTTRHours.HasValue ? $"{Model.AverageMTTRHours.Value:N1}h" : "N/A")</pems-metric>
             <div class="text-muted small">Avg MTTR (n=@Model.MTTRSampleSize)</div>
         </pems-col>
     </pems-row>

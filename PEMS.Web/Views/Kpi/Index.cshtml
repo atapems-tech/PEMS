@@ -66,10 +66,10 @@
     </pems-col>
     <pems-col lg="8">
         <pems-row gap="3" css="h-100">
-            <pems-col sm="6"><pems-content-card css="text-center py-4 h-100"><div class="small text-muted">@Localizer["Total Maintenance Cost"]</div><div class="fs-4 fw-bold">@Model.Cost.TotalCost.ToString("N0")</div></pems-content-card></pems-col>
-            <pems-col sm="6"><pems-content-card css="text-center py-4 h-100"><div class="small text-muted">@Localizer["Labor Cost"]</div><div class="fs-4 fw-bold">@Model.Cost.LaborCost.ToString("N0")</div></pems-content-card></pems-col>
-            <pems-col sm="6"><pems-content-card css="text-center py-4 h-100"><div class="small text-muted">Material Cost</div><div class="fs-4 fw-bold">@Model.Cost.MaterialCost.ToString("N0")</div></pems-content-card></pems-col>
-            <pems-col sm="6"><pems-content-card css="text-center py-4 h-100"><div class="small text-muted">Contractor Cost</div><div class="fs-4 fw-bold">@Model.Cost.ContractorCost.ToString("N0")</div></pems-content-card></pems-col>
+            <pems-col sm="6"><pems-content-card css="text-center py-4 h-100"><div class="small text-muted">@Localizer["Total Maintenance Cost"]</div><pems-metric>@Model.Cost.TotalCost.ToString("N0")</pems-metric></pems-content-card></pems-col>
+            <pems-col sm="6"><pems-content-card css="text-center py-4 h-100"><div class="small text-muted">@Localizer["Labor Cost"]</div><pems-metric>@Model.Cost.LaborCost.ToString("N0")</pems-metric></pems-content-card></pems-col>
+            <pems-col sm="6"><pems-content-card css="text-center py-4 h-100"><div class="small text-muted">Material Cost</div><pems-metric>@Model.Cost.MaterialCost.ToString("N0")</pems-metric></pems-content-card></pems-col>
+            <pems-col sm="6"><pems-content-card css="text-center py-4 h-100"><div class="small text-muted">Contractor Cost</div><pems-metric>@Model.Cost.ContractorCost.ToString("N0")</pems-metric></pems-content-card></pems-col>
         </pems-row>
     </pems-col>
 </pems-row>
@@ -134,8 +134,8 @@
     </pems-col>
     <pems-col lg="3" sm="6">
         <pems-row gap="3" css="h-100">
-            <pems-col span="12"><pems-content-card css="text-center py-3 h-100"><div class="small text-muted">Backlog</div><div class="fs-4 fw-bold">@Model.Maintenance.BacklogCount</div></pems-content-card></pems-col>
-            <pems-col span="12"><pems-content-card css="text-center py-3 h-100"><div class="small text-muted">Backlog Hours</div><div class="fs-4 fw-bold">@Model.Maintenance.BacklogHours.ToString("N0")</div></pems-content-card></pems-col>
+            <pems-col span="12"><pems-content-card css="text-center py-3 h-100"><div class="small text-muted">Backlog</div><pems-metric>@Model.Maintenance.BacklogCount</pems-metric></pems-content-card></pems-col>
+            <pems-col span="12"><pems-content-card css="text-center py-3 h-100"><div class="small text-muted">Backlog Hours</div><pems-metric>@Model.Maintenance.BacklogHours.ToString("N0")</pems-metric></pems-content-card></pems-col>
         </pems-row>
     </pems-col>
 </pems-row>
@@ -143,8 +143,8 @@
 
 <h6 class="text-muted mb-2"><pems-icon name="bi-graph-up-arrow" /> Reliability Summary</h6>
 <pems-row gap="3">
-    <pems-col lg="3" sm="6"><pems-content-card css="text-center py-4 h-100"><div class="small text-muted">Equipment with Failures</div><div class="fs-4 fw-bold">@Model.Reliability.EquipmentWithFailuresCount</div></pems-content-card></pems-col>
-    <pems-col lg="3" sm="6"><pems-content-card css="text-center py-4 h-100"><div class="small text-muted">@Localizer["Total Failures"]</div><div class="fs-4 fw-bold">@Model.Reliability.TotalFailureCount</div></pems-content-card></pems-col>
+    <pems-col lg="3" sm="6"><pems-content-card css="text-center py-4 h-100"><div class="small text-muted">Equipment with Failures</div><pems-metric>@Model.Reliability.EquipmentWithFailuresCount</pems-metric></pems-content-card></pems-col>
+    <pems-col lg="3" sm="6"><pems-content-card css="text-center py-4 h-100"><div class="small text-muted">@Localizer["Total Failures"]</div><pems-metric>@Model.Reliability.TotalFailureCount</pems-metric></pems-content-card></pems-col>
     <pems-col lg="6">
         <pems-content-card css="text-center h-100">
             <h6 class="mb-2">Avg. Availability</h6>

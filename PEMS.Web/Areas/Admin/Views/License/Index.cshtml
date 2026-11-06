@@ -18,9 +18,9 @@
 }
 
 <pems-page-shell kind="admin">
-    <div class="admin-hero">
+    <pems-page-hero>
         <div><p>@Localizer["Lic_Intro"]</p></div>
-    </div>
+    </pems-page-hero>
 
     @if (message != null) { <pems-alert tone="success">@Localizer[message]</pems-alert> }
     @if (error != null) { <pems-alert tone="danger">@Localizer[error]</pems-alert> }

@@ -95,4 +95,8 @@ public static class UiKeys
     public const string ModalHeader = "modal-header";
     public const string ModalBody = "modal-body";
     public const string ModalFooter = "modal-footer";
+    public const string Stat = "stat";
+    public const string StatGrid = "stat-grid";
+    public const string Metric = "metric";
+    public const string PageHero = "page-hero";
 }

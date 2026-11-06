@@ -106,4 +106,14 @@ public sealed class CheckRowPagerTests
         Assert.Equal("<div class=\"modal-body pb-0\">x</div>", Run(new PemsModalBodyTagHelper(UiTestRenderer.Instance) { Css = "pb-0" }, "pems-modal-body", [], "x"));
         Assert.Equal("<div class=\"modal-footer justify-content-between\">x</div>", Run(new PemsModalFooterTagHelper(UiTestRenderer.Instance) { Css = "justify-content-between" }, "pems-modal-footer", [], "x"));
     }
+
+    [Fact]
+    public void Dashboard_blocks_write_the_admin_kpi_metric_and_hero_markup()
+    {
+        Assert.Equal("<div class=\"admin-kpi mb-2\"><div class=\"admin-kpi-label\">Modules</div><div class=\"admin-kpi-value\">7</div></div>",
+            Run(new PemsStatTagHelper(UiTestRenderer.Instance) { Label = "Modules", Css = "mb-2" }, "pems-stat", [], "7"));
+        Assert.Equal("<div class=\"admin-kpi-grid\">x</div>", Run(new PemsStatGridTagHelper(UiTestRenderer.Instance), "pems-stat-grid", [], "x"));
+        Assert.Equal("<div class=\"fs-4 fw-bold text-success\">42</div>", Run(new PemsMetricTagHelper(UiTestRenderer.Instance) { Css = "text-success" }, "pems-metric", [], "42"));
+        Assert.Equal("<div class=\"admin-hero mb-3\">x</div>", Run(new PemsPageHeroTagHelper(UiTestRenderer.Instance) { Css = "mb-3" }, "pems-page-hero", [], "x"));
+    }
 }
