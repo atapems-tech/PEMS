@@ -42,7 +42,7 @@
 }
 
 <pems-content-card css="mb-3">
-    <div class="d-flex justify-content-between align-items-start flex-wrap gap-2">
+    <pems-flex justify="between" align="start" wrap="true" gap="2">
         <div>
             <h5 class="mb-1">@Model.IrnNumber</h5>
             <div class="text-muted small">
@@ -55,9 +55,9 @@
             @if (!string.IsNullOrWhiteSpace(Model.Notes)) { <div class="small mt-1">@Model.Notes</div> }
         </div>
         <pems-badge tone="@badgeClass" css="fs-6">@Model.Status</pems-badge>
-    </div>
+    </pems-flex>
     <hr />
-    <div class="d-flex gap-2 flex-wrap align-items-center">
+    <pems-flex gap="2" wrap="true" align="center">
         @if (Model.Status == "Draft")
         {
             <form asp-action="Submit" method="post" class="d-inline">
@@ -106,7 +106,7 @@
                 <pems-icon name="bi-printer" /> @Localizer["Rcv_OsdReport"]
             </pems-button>
         }
-    </div>
+    </pems-flex>
 </pems-content-card>
 
 <pems-related-list id="irnLines" icon="bi-list-ul" title="@Localizer["Lines"]" count="@Model.Lines.Count" empty="@(!Model.Lines.Any())" empty-text="@Localizer["No lines added yet."]">
@@ -150,7 +150,7 @@
                                 <div class="small text-muted">@Localizer["Rcv_Decision"]: @Localizer["Rcv_Action_" + (l.RejectionAction ?? "Replace")]@(l.RejectionAction == null ? " (" + Localizer["Rcv_Default"].Value + ")" : "")</div>
                                 @if (canDecideRejection)
                                 {
-                                    <form asp-action="DecideRejection" method="post" class="d-flex gap-1 mt-1">
+                                    <form class="mt-1" asp-action="DecideRejection" method="post"><pems-flex gap="1">
                                         <input type="hidden" name="id" value="@Model.IrnReceiptId" />
                                         <input type="hidden" name="lineId" value="@l.IrnReceiptLineId" />
                                         <pems-select scale="small" name="action">
@@ -160,7 +160,7 @@
                                             }
                                         </pems-select>
                                         <pems-button tone="neutral" size="small" outline="true" type="submit">@Localizer["Save"]</pems-button>
-                                    </form>
+                                    </pems-flex></form>
                                 }
                             }
                         </td>
@@ -175,10 +175,10 @@
                                 <form asp-action="ResolveHold" method="post" class="mt-1">
                                     <input type="hidden" name="id" value="@Model.IrnReceiptId" />
                                     <input type="hidden" name="lineId" value="@l.IrnReceiptLineId" />
-                                    <div class="d-flex gap-1">
+                                    <pems-flex gap="1">
                                         <pems-input scale="small" name="accepted" type="number" step="0.001" min="0" value="@l.HoldQuantity" title="@Localizer["Accepted"]" required />
                                         <pems-input scale="small" name="rejected" type="number" step="0.001" min="0" value="0" title="@Localizer["Rejected"]" required />
-                                    </div>
+                                    </pems-flex>
                                     <pems-input scale="small" css="mt-1" name="notes" placeholder="@Localizer["Notes"]" />
                                     <pems-button tone="primary" size="small" css="mt-1" type="submit" data-pems-confirm="@Localizer["Rcv_ConfirmHold"]">@Localizer["Rcv_ResolveHold"]</pems-button>
                                 </form>

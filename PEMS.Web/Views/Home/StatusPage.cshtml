@@ -21,10 +21,10 @@
     <div class="mb-3"><pems-icon class="pems-fs-26rem" css="@icon" aria-hidden="true" /></div>
     <h1 id="statusTitle" class="h4 mb-2">@Localizer[titleKey]</h1>
     <p class="text-muted mb-4">@Localizer[textKey]</p>
-    <div class="d-flex justify-content-center gap-2 flex-wrap">
+    <pems-flex justify="center" gap="2" wrap="true">
         <pems-button tone="neutral" outline="true" type="button" onclick="history.back()"><pems-icon name="bi-arrow-left-short" /> @Localizer["Status_Back"]</pems-button>
         <pems-button tone="primary" as="a" asp-area="" asp-controller="Home" asp-action="Index"><pems-icon name="bi-house" /> @Localizer["Status_Home"]</pems-button>
-    </div>
+    </pems-flex>
     <p class="small text-muted mt-4 mb-0">
         @Localizer["Status_Code"]: <span dir="ltr">@Model.Code</span>
         @if (!string.IsNullOrEmpty(Model.RequestId)) { <text> &middot; @Localizer["Status_RequestId"]: <span dir="ltr">@Model.RequestId</span></text> }

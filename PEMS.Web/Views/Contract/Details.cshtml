@@ -54,9 +54,9 @@
 
 @* ================= CONTRACT INFORMATION ================= *@
 <pems-content-card>
-    <div class="d-flex justify-content-end mb-2">
+    <pems-flex justify="end" css="mb-2">
         <pems-button tone="neutral" size="small" outline="true" as="a" asp-controller="Relationship" asp-action="Contract" asp-route-id="@Model.ContractId"><pems-icon name="bi-diagram-3" /> @Localizer["Cm_Relationships"]</pems-button>
-    </div>
+    </pems-flex>
     <pems-info-grid>
         <pems-info-item label="@Localizer["Contract No"]" num>@Model.ContractNo</pems-info-item>
         <pems-info-item label="@Localizer["Project"]">@Model.ProjectName</pems-info-item>
@@ -76,7 +76,7 @@
 
     <hr />
 
-    <div class="d-flex gap-2 flex-wrap">
+    <pems-flex gap="2" wrap="true">
         @if (Model.Status == "Draft" || Model.Status == "Rejected")
         {
             <form asp-action="SubmitForReview" method="post" class="d-inline">
@@ -118,13 +118,13 @@
         }
         @if (Model.Status != "Completed" && Model.Status != "Terminated")
         {
-            <form asp-action="Terminate" method="post" class="d-flex gap-1 align-items-center">
+            <form asp-action="Terminate" method="post"><pems-flex gap="1" align="center">
                 <input type="hidden" name="contractId" value="@Model.ContractId" />
                 <pems-input class="pems-w-160" scale="small" type="text" name="reason" placeholder="@Localizer["Reason"]" />
                 <pems-button tone="danger" size="small" outline="true" type="submit">@Localizer["Terminate Contract"]</pems-button>
-            </form>
+            </pems-flex></form>
         }
-    </div>
+    </pems-flex>
 </pems-content-card>
 
 @* ================= DISCIPLINE REVIEWS & APPROVAL ================= *@
@@ -146,12 +146,12 @@
                         <td>
                             @if (r.Decision == "Pending")
                             {
-                                <form asp-action="RecordDisciplineReview" method="post" class="d-flex gap-1">
+                                <form asp-action="RecordDisciplineReview" method="post"><pems-flex gap="1">
                                     <input type="hidden" name="contractId" value="@Model.ContractId" />
                                     <input type="hidden" name="disciplineRole" value="@r.DisciplineRole" />
                                     <pems-button tone="success" size="small" type="submit" name="decision" value="Approve">@Localizer["Approve"]</pems-button>
                                     <pems-button tone="danger" size="small" type="submit" name="decision" value="Reject">@Localizer["Reject"]</pems-button>
-                                </form>
+                                </pems-flex></form>
                             }
                         </td>
                     </tr>
@@ -263,11 +263,11 @@
             }
             @if (Model.Status == "Signed" || Model.Status == "Effective")
             {
-                <form asp-action="IssueNtp" method="post" class="d-flex gap-1">
+                <form asp-action="IssueNtp" method="post"><pems-flex gap="1">
                     <input type="hidden" name="contractId" value="@Model.ContractId" />
                     <pems-input scale="small" type="text" name="reference" placeholder="@Localizer["Reference"]" />
                     <pems-button tone="primary" size="small" outline="true" type="submit">@Localizer["Issue NTP"]</pems-button>
-                </form>
+                </pems-flex></form>
             }
         </pems-col>
         <pems-col md="6">
@@ -283,12 +283,12 @@
             }
             @if (Model.Status == "Signed" || Model.Status == "Effective")
             {
-                <form asp-action="ScheduleKickoff" method="post" class="d-flex gap-1">
+                <form asp-action="ScheduleKickoff" method="post"><pems-flex gap="1">
                     <input type="hidden" name="contractId" value="@Model.ContractId" />
                     <pems-date name="meetingDate" scale="small" required />
                     <pems-input scale="small" type="text" name="location" placeholder="@Localizer["Location"]" />
                     <pems-button tone="primary" size="small" outline="true" type="submit">@Localizer["Schedule"]</pems-button>
-                </form>
+                </pems-flex></form>
             }
         </pems-col>
         <pems-col span="12">

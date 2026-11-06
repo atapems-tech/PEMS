@@ -3,9 +3,9 @@
 @using PEMS.Web.Resources
 @inject IStringLocalizer<SharedResource> Localizer
 
-<div class="d-flex justify-content-end align-items-center mb-2">
+<pems-flex justify="end" align="center" css="mb-2">
     <pems-button tone="neutral" size="small" outline="true" as="a" asp-controller="FunctionalLocation" asp-action="Index">← Functional Locations</pems-button>
-</div>
+</pems-flex>
 
 <pems-content-card css="mb-3">
     <p class="text-muted small">

@@ -104,13 +104,13 @@
 <div class="vs-section">
     <div class="vs-doc-head">
         <div class="vs-doc-identity">
-            <div class="d-flex align-items-center gap-2 flex-wrap">
+            <pems-flex align="center" gap="2" wrap="true">
                 <h1 class="vs-doc-number vs-num">@Model.DocumentNo</h1>
                 <span class="vs-pill vs-pill--icon @DocumentStatusBadge.Tone(Model.Status)"><pems-icon css="@DocumentStatusBadge.Icon(Model.Status)" aria-hidden="true" /> @StatusText(Model.Status)</span>
                 <span class="vs-pill vs-pill--current">@Localizer["Ed_CurrentRev"] <span class="vs-num">@Model.RevisionNo</span></span>
                 @if (Model.IsFrozen) { <span class="vs-pill vs-pill--icon vs-pill--info"><pems-icon name="bi-snow" aria-hidden="true" /> @Localizer["Ed_Frozen"]</span> }
                 @if (Model.IsOnHold) { <span class="vs-pill vs-pill--icon vs-pill--warning"><pems-icon name="bi-pause-circle" aria-hidden="true" /> @Localizer["Ed_OnHold"]</span> }
-            </div>
+            </pems-flex>
             <div class="vs-doc-title" title="@Model.Title">@Model.Title</div>
             <div class="vs-doc-meta">@Model.ProjectName &middot; @Model.DisciplineName@(!string.IsNullOrEmpty(Model.Area) ? " · " + Model.Area : "")</div>
         </div>
@@ -241,12 +241,12 @@
             </div>
             @if ((bool)(ViewBag.CanUnfreeze ?? false))
             {
-                <form asp-action="Unfreeze" asp-route-id="@Model.DocumentId" method="post" class="d-flex flex-wrap gap-2 align-items-center">
+                <form asp-action="Unfreeze" asp-route-id="@Model.DocumentId" method="post"><pems-flex wrap="true" gap="2" align="center">
                     <pems-input class="pems-maxw-240" scale="small" type="text" name="reason" placeholder="Unfreeze reason (required)" required />
                     <pems-button tone="dark" size="small" outline="true" type="submit" data-pems-confirm="انجماد این مدرک برداشته شود؟">
                         <pems-icon name="bi-sun" /> @Localizer["Unfreeze"]
                     </pems-button>
-                </form>
+                </pems-flex></form>
             }
         </pems-alert>
     }
@@ -258,12 +258,12 @@
             </div>
             @if ((bool)(ViewBag.CanReleaseHold ?? false))
             {
-                <form asp-action="ReleaseHold" asp-route-id="@Model.DocumentId" method="post" class="d-flex flex-wrap gap-2 align-items-center">
+                <form asp-action="ReleaseHold" asp-route-id="@Model.DocumentId" method="post"><pems-flex wrap="true" gap="2" align="center">
                     <pems-input class="pems-maxw-240" scale="small" type="text" name="reason" placeholder="Release reason (required)" required />
                     <pems-button tone="dark" size="small" outline="true" type="submit" data-pems-confirm="Hold این مدرک رفع شود؟">
                         <pems-icon name="bi-play-circle" /> @Localizer["Release Hold"]
                     </pems-button>
-                </form>
+                </pems-flex></form>
             }
         </pems-alert>
     }
@@ -468,24 +468,24 @@
                 {
                     <p class="small text-muted border rounded p-2 text-center mb-2">@Localizer["Ed_NoCommentsHint"]</p>
                 }
-                <div class="d-flex flex-wrap gap-2">
+                <pems-flex wrap="true" gap="2">
                     <pems-button tone="primary" size="small" outline="true" type="button" data-bs-toggle="modal" data-bs-target="#addEngCommentModal"><pems-icon name="bi-plus-lg" aria-hidden="true" /> @Localizer["Add Comment"]</pems-button>
                     @if (engComments.Any())
                     {
                         <pems-button tone="neutral" size="small" outline="true" type="button" data-bs-toggle="tab" data-bs-target="#tab-comments">@Localizer["Ed_ViewAll"]</pems-button>
                     }
-                </div>
+                </pems-flex>
             </div>
             <div class="vs-section">
                 <h2 class="vs-section__title"><pems-icon name="bi-paperclip" /> @Localizer["Ed_TabFiles"]</h2>
                 <p class="small text-muted mb-2">@((Model.Attachments?.Count ?? 0) == 0 ? Localizer["Ed_NoFilesHint"].Value : string.Format(Localizer["Ed_FilesCount"].Value, Model.Attachments!.Count))</p>
-                <div class="d-flex flex-wrap gap-2">
+                <pems-flex wrap="true" gap="2">
                     <pems-button tone="neutral" size="small" outline="true" as="a" asp-action="UploadAttachment" asp-route-id="@Model.DocumentId"><pems-icon name="bi-upload" aria-hidden="true" /> @Localizer["Ed_Upload"]</pems-button>
                     @if ((Model.Attachments?.Count ?? 0) > 0)
                     {
                         <pems-button tone="neutral" size="small" outline="true" type="button" data-bs-toggle="tab" data-bs-target="#tab-attachments">@Localizer["Ed_ViewAll"]</pems-button>
                     }
-                </div>
+                </pems-flex>
             </div>
         </pems-col>
         </pems-row>
@@ -494,12 +494,12 @@
     @* ===================== Attachments & AI ===================== *@
     <div class="tab-pane fade" id="tab-attachments" role="tabpanel">
         <div class="vs-section">
-            <div class="d-flex justify-content-between align-items-center mb-3">
+            <pems-flex justify="between" align="center" css="mb-3">
                 <h6 class="mb-0">@Localizer["Ed_SecFiles"]</h6>
                 <pems-button tone="primary" size="small" as="a" asp-action="UploadAttachment" asp-route-id="@Model.DocumentId">
                     <pems-icon name="bi-upload" /> @Localizer["Ed_Upload"]
                 </pems-button>
-            </div>
+            </pems-flex>
 
             @if (Model.Attachments != null && Model.Attachments.Any())
             {
@@ -553,7 +553,7 @@
                                 <td><pems-badge tone="@badgeClass">@file.AIStatus</pems-badge></td>
                                 <td class="small text-muted">@file.UploadDate.ToString("yyyy-MM-dd")</td>
                                 <td class="text-end">
-                                    <div class="d-flex gap-1 justify-content-end flex-wrap">
+                                    <pems-flex gap="1" justify="end" wrap="true">
                                         <pems-button tone="primary" size="small" outline="true" as="a" asp-action="DownloadAttachment" asp-route-id="@file.AttachmentId" data-bs-toggle="tooltip" title="Download attachment" aria-label="Download @file.FileName"><pems-icon name="bi-download" /></pems-button>
                                         @if (file.AIStatus == "Completed")
                                         {
@@ -566,7 +566,7 @@
                                         <form asp-action="DeleteAttachment" asp-route-id="@file.AttachmentId" method="post" class="d-inline" data-pems-confirm="Delete file?">
                                             <pems-button tone="danger" size="small" outline="true" data-bs-toggle="tooltip" title="Delete attachment" aria-label="Delete @file.FileName"><pems-icon name="bi-trash" /></pems-button>
                                         </form>
-                                    </div>
+                                    </pems-flex>
                                 </td>
                             </tr>
                         }
@@ -591,10 +591,10 @@
     {
         <div class="tab-pane fade" id="tab-idc" role="tabpanel">
             <div class="vs-section">
-                <div class="d-flex justify-content-between align-items-center mb-3">
+                <pems-flex justify="between" align="center" css="mb-3">
                     <h6 class="mb-0"><pems-icon name="bi-diagram-3" /> Inter-Discipline Check (IDC) — Discipline Review Summary</h6>
                     <span class="text-muted small">@idcApprovedCount / @idcStatusForPage.Count disciplines responded</span>
-                </div>
+                </pems-flex>
                 <p class="text-muted small">
                     <pems-icon name="bi-info-circle" /> نتایج زیر صرفاً مشورتی هستند و به‌تنهایی وضعیت رسمی مدرک را
                     تعیین نمی‌کنند - حتی اگر یک یا چند دیسیپلین «Reject» بدهند. تصمیم نهایی (Approve/Reject/Revise &amp;
@@ -629,7 +629,7 @@
                     var myPendingIdcTab = idcStatusForPage.FirstOrDefault(x => x.DisciplineId == myDisciplineIdForIdcTab && x.Status == "Pending");
                     @if (myPendingIdcTab != null)
                     {
-                        <div class="d-flex align-items-center gap-2 mt-3">
+                        <pems-flex align="center" gap="2" css="mt-3">
                             <span class="text-muted small">@Localizer["My IDC Review:"]</span>
                             <form asp-action="IdcRespond" method="post" class="d-inline">
                                 <input type="hidden" name="id" value="@Model.DocumentId" />
@@ -638,7 +638,7 @@
                             </form>
                             <button type="button" class="vs-btn" data-bs-toggle="modal" data-bs-target="#idcCommentModal">@Localizer["Approve with Comments"]</button>
                             <button type="button" class="vs-btn vs-btn--dangerline" data-bs-toggle="modal" data-bs-target="#idcRejectModal">@Localizer["Revision Required"]</button>
-                        </div>
+                        </pems-flex>
                     }
                 }
             </div>
@@ -739,13 +739,13 @@
                         <div class="pems-timeline-item">
                             <div class="pems-timeline-marker"><pems-icon css="@wfIcon" /></div>
                             <div class="pems-timeline-content">
-                                <div class="d-flex justify-content-between flex-wrap gap-2">
+                                <pems-flex justify="between" wrap="true" gap="2">
                                     <div>
                                         <pems-badge tone="neutral">@item.ActionType</pems-badge>
                                         <span class="small text-muted ms-1">@(item.FromStageName ?? "—") &rarr; @(item.ToStageName ?? "—")</span>
                                     </div>
                                     <span class="small text-muted">@item.ActionDate.ToString("yyyy-MM-dd HH:mm")</span>
-                                </div>
+                                </pems-flex>
                                 @if (!string.IsNullOrEmpty(item.Comment))
                                 {
                                     <div class="small mt-1">"@item.Comment"</div>
@@ -851,16 +851,16 @@
 @if (latestPdfAttachment != null)
 {
     <pems-content-card css="mb-3">
-        <div class="d-flex justify-content-between align-items-center mb-2">
+        <pems-flex justify="between" align="center" css="mb-2">
             <h6 class="mb-0"><pems-icon name="bi-file-earmark-pdf" /> Document Viewer <span class="text-muted small">(click anywhere on the page to pin a comment)</span></h6>
-            <div class="d-flex align-items-center gap-2">
+            <pems-flex align="center" gap="2">
                 <pems-button tone="neutral" size="small" outline="true" type="button" id="pdfPrevPage" data-bs-toggle="tooltip" title="@Localizer["Previous page"]" aria-label="@Localizer["Previous page"]"><pems-icon name="bi-chevron-left" /></pems-button>
                 <span class="small" id="pdfPageLabel">Page - / -</span>
                 <pems-button tone="neutral" size="small" outline="true" type="button" id="pdfNextPage" data-bs-toggle="tooltip" title="@Localizer["Next page"]" aria-label="@Localizer["Next page"]"><pems-icon name="bi-chevron-right" /></pems-button>
                 <pems-button tone="neutral" size="small" outline="true" type="button" id="pdfZoomOut" data-bs-toggle="tooltip" title="@Localizer["Zoom out"]" aria-label="@Localizer["Zoom out"]"><pems-icon name="bi-zoom-out" /></pems-button>
                 <pems-button tone="neutral" size="small" outline="true" type="button" id="pdfZoomIn" data-bs-toggle="tooltip" title="@Localizer["Zoom in"]" aria-label="@Localizer["Zoom in"]"><pems-icon name="bi-zoom-in" /></pems-button>
-            </div>
-        </div>
+            </pems-flex>
+        </pems-flex>
         <div class="pems-pdf-canvas" id="pdfCanvasWrapper">
             <canvas id="pdfCanvas"></canvas>
         </div>

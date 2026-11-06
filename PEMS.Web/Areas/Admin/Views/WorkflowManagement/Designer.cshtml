@@ -26,13 +26,13 @@
 }
 <pems-page-shell kind="admin">
     <pems-content-card css="mb-3">
-        <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
+        <pems-flex justify="between" align="center" wrap="true" gap="2">
             <div>
                 <span class="fw-semibold">@displayName</span> · <pems-badge tone="none" css="@StatusBadge(Model.Status)">v@(Model.VersionNumber) @Localizer[Model.Status]</pems-badge>
                 @if (!string.IsNullOrEmpty(Model.LastEditor) && Model.CanEditStructure) { <span class="small text-muted ms-2">@Localizer["Last editor"]: @Model.LastEditor</span> }
                 @if (Model.RunningInstances > 0) { <span class="small text-muted ms-2">@Localizer["Running instances"]: @Model.RunningInstances</span> }
             </div>
-            <div class="d-flex gap-1 flex-wrap">
+            <pems-flex gap="1" wrap="true">
                 <pems-button as="a" tone="neutral" size="small" outline="true" asp-action="Details" asp-route-id="@Model.DefinitionId"><pems-icon name="bi-arrow-left" /> @Localizer["Back"]</pems-button>
                 @if (Model.CanEditStructure && perms["Validate"])
                 {
@@ -52,8 +52,8 @@
                         <pems-button tone="danger" size="small" outline="true"><pems-icon name="bi-x-octagon" /> @Localizer["Discard draft"]</pems-button>
                     </form>
                 }
-            </div>
-        </div>
+            </pems-flex>
+        </pems-flex>
         @if (!Model.CanEditStructure)
         {
             <pems-alert tone="secondary" css="small mt-2 mb-0">
@@ -89,12 +89,12 @@
     <pems-row gap="3">
         <pems-col xl="8">
             <pems-content-card>
-                <div class="d-flex justify-content-between align-items-center mb-2 flex-wrap gap-2">
+                <pems-flex justify="between" align="center" wrap="true" gap="2" css="mb-2">
                     <h6 class="mb-0">@Localizer["Workflow graph"] <span class="small text-muted">(@Model.Stages.Count @Localizer["stage(s)"], @Model.Transitions.Count @Localizer["transition(s)"])</span></h6>
                     <div class="small text-muted">
                         <span class="pems-s-91d6b758">▬</span> @Localizer["Start"] &nbsp; <span class="pems-s-fb79543c">▬</span> @Localizer["forward"] &nbsp; <span class="pems-s-e34256e5">┅</span> @Localizer["return"] &nbsp; <span class="pems-s-4a8717b3">▬</span> @Localizer["End"]
                     </div>
-                </div>
+                </pems-flex>
                 <div class="wf-canvas" dir="ltr" id="wfCanvas" role="img" aria-label="@Localizer["Workflow graph"]">
                     <svg id="wfSvg" width="@Fmt(g.Width)" height="@Fmt(g.Height)" viewBox="0 0 @Fmt(g.Width) @Fmt(g.Height)" xmlns="http://www.w3.org/2000/svg">
                         <defs>
@@ -126,10 +126,10 @@
             </pems-content-card>
 
             <pems-content-card css="mt-3">
-                <div class="d-flex justify-content-between align-items-center mb-1">
+                <pems-flex justify="between" align="center" css="mb-1">
                     <h6 class="mb-0">@Localizer["Stages"]</h6>
                     @if (edit) { <pems-button as="a" tone="primary" size="small" outline="true" asp-action="Designer" asp-route-versionId="@Model.VersionId" asp-route-addStage="true"><pems-icon name="bi-plus-lg" /> @Localizer["Add stage"]</pems-button> }
-                </div>
+                </pems-flex>
                 <div class="table-responsive"><pems-table scale="small" css="align-middle mb-0">
                     <thead><tr><th>#</th><th>@Localizer["Name"]</th><th>@Localizer["Persian name"]</th><th>@Localizer["Business status"]</th><th>@Localizer["Responsible role"]</th><th>@Localizer["Responsible employee"]</th></tr></thead>
                     <tbody>
@@ -146,10 +146,10 @@
             </pems-content-card>
 
             <pems-content-card css="mt-3">
-                <div class="d-flex justify-content-between align-items-center mb-1">
+                <pems-flex justify="between" align="center" css="mb-1">
                     <h6 class="mb-0">@Localizer["Transitions"]</h6>
                     @if (edit) { <pems-button as="a" tone="primary" size="small" outline="true" asp-action="Designer" asp-route-versionId="@Model.VersionId" asp-route-addTransition="true"><pems-icon name="bi-plus-lg" /> @Localizer["Add transition"]</pems-button> }
-                </div>
+                </pems-flex>
                 <div class="table-responsive"><pems-table scale="small" css="align-middle mb-0">
                     <thead><tr><th>@Localizer["From"]</th><th>@Localizer["To"]</th><th>@Localizer["Action"]</th><th>@Localizer["Label"]</th><th>@Localizer["Required permission"]</th></tr></thead>
                     <tbody>

@@ -16,20 +16,20 @@
 }
 
 <pems-content-card css="mb-3">
-    <div class="d-flex justify-content-between align-items-start">
+    <pems-flex justify="between" align="start">
         <div>
             <h5 class="mb-1">@Model.MaterialCode @if (Model.IsCritical) { <pems-icon name="bi-star-fill" css="text-warning" title="@Localizer["Critical"]" /> }</h5>
             <div class="text-muted">@Model.Description</div>
         </div>
-        <div class="d-flex gap-2">
+        <pems-flex gap="2">
             <pems-button tone="neutral" size="small" outline="true" type="button" data-bs-toggle="modal" data-bs-target="#editMaterialModal"><pems-icon name="bi-pencil" /> @Localizer["Edit"]</pems-button>
             <pems-button tone="primary" size="small" outline="true" type="button" data-bs-toggle="modal" data-bs-target="#receiveStockModal"><pems-icon name="bi-box-arrow-in-down" /> Receive Stock</pems-button>
             <form asp-action="ToggleActive" method="post" class="d-inline">
                 <input type="hidden" name="id" value="@Model.MaterialItemId" />
                 <pems-button tone="danger" size="small" outline="true" type="submit" data-pems-confirm="وضعیت این متریال تغییر کنه؟"><pems-icon name="bi-slash-circle" /></pems-button>
             </form>
-        </div>
-    </div>
+        </pems-flex>
+    </pems-flex>
     <hr />
     <pems-info-grid>
         <pems-info-item label="@Localizer["Category"]">@Model.CategoryName</pems-info-item>
@@ -222,10 +222,10 @@
                     <pems-col md="4"><pems-label>@Localizer["Size"]</pems-label><pems-input name="size" value="@Model.Size" /></pems-col>
                     <pems-col md="4"><pems-label>@Localizer["Material Grade"]</pems-label><pems-input name="materialGrade" value="@Model.MaterialGrade" /></pems-col>
                 </pems-row>
-                <div class="d-flex gap-3">
+                <pems-flex gap="3">
                     <div class="form-check"><pems-input type="checkbox" name="isStockItem" value="true" checked="@Model.IsStockItem" id="editIsStockItem" kind="check" /><label class="form-check-label" for="editIsStockItem">@Localizer["Stock Item"]</label></div>
                     <div class="form-check"><pems-input type="checkbox" name="isCritical" value="true" checked="@Model.IsCritical" id="editIsCritical" kind="check" /><label class="form-check-label" for="editIsCritical">@Localizer["Critical Spare"]</label></div>
-                </div>
+                </pems-flex>
             </div>
             <div class="modal-footer">
                 <pems-button tone="neutral" outline="true" type="button" data-bs-dismiss="modal">@Localizer["Cancel"]</pems-button>

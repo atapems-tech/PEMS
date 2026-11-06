@@ -62,10 +62,10 @@
 <div class="vs-section">
     <div class="vs-doc-head">
         <div class="vs-doc-identity">
-            <div class="d-flex align-items-center gap-2 flex-wrap">
+            <pems-flex align="center" gap="2" wrap="true">
                 <h2 class="vs-doc-number vs-num">@Model.FullName</h2>
                 <span class="vs-pill vs-pill--icon @statusPill.Item1"><pems-icon css="@statusPill.Item2" aria-hidden="true" /> @statusPill.Item3</span>
-            </div>
+            </pems-flex>
             <div class="vs-doc-title">&#64;@Model.UserName</div>
             <div class="vs-doc-meta">
                 @(Model.DepartmentName ?? Localizer["N/A"])
@@ -140,12 +140,12 @@
             }
             else
             {
-                <div class="d-flex flex-wrap gap-2">
+                <pems-flex wrap="true" gap="2">
                     @foreach (var r in Model.RoleNames)
                     {
                         <span class="vs-chip vs-num">@r</span>
                     }
-                </div>
+                </pems-flex>
             }
             <p class="text-body-secondary small mt-3 mb-0">@Localizer["Role assignment itself is changed from the Edit page."] <a asp-action="Edit" asp-route-id="@Model.UserId">@Localizer["Edit"]</a></p>
         </pems-content-card>
@@ -208,7 +208,7 @@
                         </div>
                         @if (canEditPermissions)
                         {
-                            <div class="d-flex flex-wrap align-items-center gap-2" id="permToolbar">
+                            <pems-flex wrap="true" align="center" gap="2" id="permToolbar">
                                 @if (Model.RoleNames.Count > 1)
                                 {
                                     <label class="small text-body-secondary mb-0" for="permTargetRole">@Localizer["PermAdmin_TargetRole"]</label>
@@ -229,7 +229,7 @@
                                 </div>
                                 <span class="small text-body-secondary" id="permSelectedCount" aria-live="polite"></span>
                                 <pems-spinner size="small" tone="neutral" css="d-none" id="permBusy" aria-label="@Localizer["PermAdmin_Saving"]"></pems-spinner>
-                            </div>
+                            </pems-flex>
                         }
                     </div>
 

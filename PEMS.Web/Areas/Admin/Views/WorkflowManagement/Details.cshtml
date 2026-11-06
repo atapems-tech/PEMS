@@ -13,7 +13,7 @@
 }
 <pems-page-shell kind="admin">
     <pems-content-card css="mb-3">
-        <div class="d-flex justify-content-between align-items-start flex-wrap gap-2">
+        <pems-flex justify="between" align="start" wrap="true" gap="2">
             <div>
                 <h5 class="mb-1">@display</h5>
                 <div class="small text-muted">@d.Module · @d.Category @if (!d.IsActive) { <pems-badge tone="neutral">@Localizer["Archived"]</pems-badge> }</div>
@@ -23,7 +23,7 @@
                 </div>
             </div>
             <pems-button as="a" tone="neutral" size="small" outline="true" asp-action="Index"><pems-icon name="bi-arrow-left" /> @Localizer["Workflow Management"]</pems-button>
-        </div>
+        </pems-flex>
         <pems-alert tone="info" css="small mt-3 mb-0"><pems-icon name="bi-pin-angle" /> @Localizer["Editing or publishing a new workflow version does not alter existing pinned workflow instances."]</pems-alert>
     </pems-content-card>
 
@@ -95,13 +95,13 @@
                         <div class="small"><strong>@b.Module</strong> / @b.EntityType / @b.Context → <strong>@(b.PinnedVersionNumber.HasValue ? "v" + b.PinnedVersionNumber : Localizer["latest published"])</strong></div>
                         @if (d.Editable && perms["Bind"] && published.Any(p => p.VersionId != b.PinnedVersionId))
                         {
-                            <form asp-action="BindingImpact" method="get" class="d-flex gap-2 mt-2 align-items-center">
+                            <form class="mt-2" asp-action="BindingImpact" method="get"><pems-flex gap="2" align="center">
                                 <input type="hidden" name="bindingId" value="@b.BindingId" />
                                 <pems-select scale="small" css="w-auto" name="targetVersionId">
                                     @foreach (var p in published.Where(p => p.VersionId != b.PinnedVersionId)) { <option value="@p.VersionId">v@(p.VersionNumber)</option> }
                                 </pems-select>
                                 <pems-button tone="primary" size="small" outline="true">@Localizer["Review binding change"]</pems-button>
-                            </form>
+                            </pems-flex></form>
                         }
                     </div>
                 }

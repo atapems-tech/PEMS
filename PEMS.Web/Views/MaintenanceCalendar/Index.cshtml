@@ -38,21 +38,21 @@
 @Html.AntiForgeryToken()
 
 <pems-content-card css="mb-3">
-    <div class="d-flex flex-wrap gap-2 align-items-center justify-content-between mb-3">
-        <div class="d-flex gap-2 align-items-center">
+    <pems-flex wrap="true" gap="2" align="center" justify="between" css="mb-3">
+        <pems-flex gap="2" align="center">
             <pems-button tone="neutral" size="small" outline="true" as="a" href="@NavUrl(d: DateTime.Today)">@Localizer["Today"]</pems-button>
             <pems-button tone="neutral" size="small" outline="true" as="a" href="@NavUrl(d: StepPrev())"><pems-icon name="bi-chevron-left" /></pems-button>
             <pems-button tone="neutral" size="small" outline="true" as="a" href="@NavUrl(d: StepNext())"><pems-icon name="bi-chevron-right" /></pems-button>
             <strong class="ms-2" dir="@(view == "week" ? "ltr" : null)">@(view == "month" ? anchor.ToString("MMMM yyyy") : view == "week" ? $"{ViewBag.RangeStart:MMM d} - {((DateTime)ViewBag.RangeEnd).AddDays(-1):MMM d, yyyy}" : anchor.ToString("dddd, MMM d yyyy"))</strong>
-        </div>
+        </pems-flex>
         <div class="btn-group btn-group-sm">
             <pems-button as="a" tone="none" css="@(view == "day" ? "btn-pems-solid" : "btn-outline-secondary")" href="@NavUrl("day")">@Localizer["Day"]</pems-button>
             <pems-button as="a" tone="none" css="@(view == "week" ? "btn-pems-solid" : "btn-outline-secondary")" href="@NavUrl("week")">@Localizer["Week"]</pems-button>
             <pems-button as="a" tone="none" css="@(view == "month" ? "btn-pems-solid" : "btn-outline-secondary")" href="@NavUrl("month")">@Localizer["Month"]</pems-button>
         </div>
-    </div>
+    </pems-flex>
 
-    <form method="get" class="d-flex flex-wrap gap-2 align-items-end mb-1">
+    <form class="mb-1" method="get"><pems-flex wrap="true" gap="2" align="end">
         <input type="hidden" name="view" value="@view" />
         <input type="hidden" name="date" value="@anchor.ToString("yyyy-MM-dd")" />
         <div><pems-label css="small mb-1">@Localizer["Maintenance Team"]</pems-label>
@@ -84,7 +84,7 @@
                 { <option value="@s" selected="@(s == (string?)ViewBag.Priority)">@s</option> }
             </pems-select></div>
         <pems-button tone="neutral" size="small" outline="true" as="a" href="@Url.Action("Index", new { view })">@Localizer["Reset"]</pems-button>
-    </form>
+    </pems-flex></form>
 </pems-content-card>
 
 @if (view == "month")

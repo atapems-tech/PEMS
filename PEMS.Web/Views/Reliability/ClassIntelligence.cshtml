@@ -13,10 +13,10 @@
     };
 }
 
-<div class="d-flex justify-content-between align-items-center mb-3">
+<pems-flex justify="between" align="center" css="mb-3">
     <h5 class="mb-0"><pems-icon name="bi-diagram-3" /> Class Intelligence — @Model.Name <code class="small">@Model.Code</code></h5>
     <pems-button tone="neutral" size="small" outline="true" as="a" asp-controller="CmmsReadiness" asp-action="ClassDetail" asp-route-id="@Model.EquipmentClassId">CMMS Readiness</pems-button>
-</div>
+</pems-flex>
 <p class="text-muted small">
     طبق «PEMS Phase 9» بند ۲۱: ترکیب IEquipmentClassCoverageService + IReliabilityAnalyticsService +
     IRcmFmeaReadinessService - هیچ محاسبه‌ی موازی جدیدی.

@@ -26,8 +26,8 @@
      data-no-discipline-text="@Localizer["هیچ دیسیپلینی یافت نشد"]"
      data-all-disciplines-text="@Localizer["همه‌ی دیسیپلین‌ها"]">
 
-    <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-3">
-        <div class="d-flex align-items-center gap-2 flex-wrap">
+    <pems-flex justify="between" align="center" wrap="true" gap="2" css="mb-3">
+        <pems-flex align="center" gap="2" wrap="true">
             <pems-button tone="neutral" size="small" outline="true" as="a" asp-action="Index">
                 <pems-icon name="bi-arrow-return-@(System.Globalization.CultureInfo.CurrentUICulture.TextInfo.IsRightToLeft ? "right" : "left")" />
                 @Localizer["بازگشت به تیم‌ها"]
@@ -40,9 +40,9 @@
                     <option value="@d.DisciplineId" selected="@(selectedDisciplineId == (int)d.DisciplineId)">@d.Name</option>
                 }
             </pems-select>
-        </div>
+        </pems-flex>
 
-        <div class="d-flex align-items-center gap-1" role="toolbar" aria-label="@Localizer["ابزار نمودار سازمانی"]">
+        <pems-flex align="center" gap="1" role="toolbar" aria-label="@Localizer["ابزار نمودار سازمانی"]">
             <pems-button tone="neutral" size="small" outline="true" type="button" id="orgChartExpandAll" title="@Localizer["باز کردن همه"]">
                 <pems-icon name="bi-arrows-expand" />
             </pems-button>
@@ -59,8 +59,8 @@
             <pems-button tone="neutral" size="small" outline="true" type="button" id="orgChartFit" title="@Localizer["تناسب با صفحه"]">
                 <pems-icon name="bi-aspect-ratio" />
             </pems-button>
-        </div>
-    </div>
+        </pems-flex>
+    </pems-flex>
 
     <pems-row gap="3">
         <pems-col span="12" xl="9">

@@ -31,10 +31,10 @@
     };
 }
 
-<div class="d-flex justify-content-end align-items-center gap-2 mb-2">
+<pems-flex justify="end" align="center" gap="2" css="mb-2">
     <pems-button tone="danger" size="small" outline="true" as="a" asp-controller="Finding" asp-action="Index" asp-route-equipmentId="@equipmentId"><pems-icon name="bi-flag" /> @Localizer["Findings"]</pems-button>
     <pems-button tone="neutral" size="small" outline="true" as="a" asp-action="Index">@Localizer["← Reliability"]</pems-button>
-</div>
+</pems-flex>
 <p class="text-muted small">
     طبق «PEMS Phase 9» بند ۱۵: زیرساخت نرم‌افزاری همیشه آماده است - آنچه به داده‌ی واقعی نیاز
     دارد فقط تله‌متری زنده است. هیچ قرائتی هرگز شبیه‌سازی/جعل نمی‌شود.
@@ -113,7 +113,7 @@
                             }
                             else
                             {
-                                <form method="post" asp-action="AssignEvaluationProfile" class="d-flex gap-1">
+                                <form method="post" asp-action="AssignEvaluationProfile"><pems-flex gap="1">
                                     @Html.AntiForgeryToken()
                                     <input type="hidden" name="equipmentId" value="@equipmentId" />
                                     <input type="hidden" name="pointId" value="@p.ConditionMonitoringPointId" />
@@ -125,7 +125,7 @@
                                         }
                                     </pems-select>
                                     <pems-button tone="neutral" size="small" outline="true" type="submit" title="@Localizer["Assign evaluation profile"]"><pems-icon name="bi-link-45deg" /></pems-button>
-                                </form>
+                                </pems-flex></form>
                             }
                             @if (p.LastReadingId.HasValue && p.LastReadingEvaluationStatus != "RequiresEngineeringReview")
                             {

@@ -13,7 +13,7 @@
     DateTime? to = ViewBag.To;
 }
 
-<div class="d-flex justify-content-end align-items-center mb-2">
+<pems-flex justify="end" align="center" css="mb-2">
     <div>
         <pems-button tone="primary" size="small" outline="true" as="a" asp-action="Dashboard"><pems-icon name="bi-speedometer" /> Enterprise Dashboard</pems-button>
         <pems-button tone="neutral" size="small" outline="true" as="a" asp-action="Intelligence"><pems-icon name="bi-clipboard-data-fill" /> @Localizer["Maintenance Intelligence"]</pems-button>
@@ -23,7 +23,7 @@
         <pems-button tone="neutral" size="small" outline="true" as="a" asp-action="ConditionMonitoring"><pems-icon name="bi-activity" /> @Localizer["Condition Monitoring"]</pems-button>
         <pems-button tone="neutral" size="small" outline="true" as="a" asp-action="AiInsights"><pems-icon name="bi-stars" /> @Localizer["AI Insights"]</pems-button>
     </div>
-</div>
+</pems-flex>
 <p class="text-muted small">
     طبق CMMS Production Baseline v1 - CMMS-06: MTBF/MTTR/Availability محاسبه‌شده از روی
     FailureRecord های واقعی (خرابی‌های ثبت‌شده هنگام تکمیل WorkOrder های اصلاحی/اضطراری).

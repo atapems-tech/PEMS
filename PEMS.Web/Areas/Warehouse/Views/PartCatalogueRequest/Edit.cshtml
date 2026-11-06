@@ -27,13 +27,13 @@
 <pems-page-shell kind="workspace" css="pc-page" data-pc-lookup-base="@lookupBase" data-txt-no-results="@Localizer["Pc_Lookup_NoResults"]" data-txt-search="@Localizer["Pc_Lookup_Search"]" data-txt-local="@Localizer["Pc_Hint_LocalPartNo"]" data-txt-yes="@Localizer["Pc_Yes"]" data-txt-no="@Localizer["Pc_No"]" data-txt-manufacturer-exists="@Localizer["Pc_Err_ManufacturerExists"]" data-txt-manufacturer-similar="@Localizer["Pc_Warn_ManufacturerSimilar"]">
 
     <div class="vs-doc-head">
-        <div class="d-flex flex-wrap align-items-center gap-2">
+        <pems-flex wrap="true" align="center" gap="2">
             <h2 class="pems-page-title mb-0">@Localizer["Pc_Title_Edit"]</h2>
             <span class="vs-pill vs-pill--info">@Localizer["Pc_Type_" + d.RequestType]</span>
             <span class="vs-pill vs-pill--neutral">@Localizer["Pc_Status_" + d.Status]</span>
             @if (!string.IsNullOrEmpty(d.RequestNumber)) { <span class="vs-num vs-num--strong">@d.RequestNumber</span> }
             @if (f.Urgent) { <span class="vs-pill vs-pill--danger vs-pill--icon"><pems-icon name="bi-exclamation-triangle" aria-hidden="true" /> @Localizer["Pc_Urgent"]</span> }
-        </div>
+        </pems-flex>
         <div class="vs-info small text-muted mt-1">@Localizer["Pc_F_Requester"]: @d.RequesterName</div>
     </div>
 
@@ -363,14 +363,14 @@
                 <ul class="list-unstyled small mb-2">
                     @foreach (var at in d.Attachments)
                     {
-                        <li class="d-flex align-items-center justify-content-between gap-2 border-bottom py-1">
+                        <pems-flex as="li" align="center" justify="between" gap="2" css="border-bottom py-1">
                             <a asp-action="Download" asp-route-id="@d.Id" asp-route-attachmentId="@at.Id" class="text-truncate">@at.FileName</a>
                             <span class="text-muted">@Localizer["Pc_Kind_" + at.Kind]</span>
                             <form asp-action="RemoveAttachment" method="post" class="d-inline">
                                 <input type="hidden" name="id" value="@d.Id" /><input type="hidden" name="attachmentId" value="@at.Id" />
                                 <button class="vs-icon-btn" title="@Localizer["Pc_Btn_Remove"]" aria-label="@Localizer["Pc_Btn_Remove"]"><pems-icon name="bi-trash" /></button>
                             </form>
-                        </li>
+                        </pems-flex>
                     }
                 </ul>
                 @if (!d.Attachments.Any()) { <div class="text-muted small mb-2">@Localizer["Pc_Empty_Attachments"]</div> }
@@ -450,11 +450,11 @@
                     </pems-related-table>
                     @if (!d.Notes.Any()) { <div class="vs-empty py-2">@Localizer["Pc_Empty_Notes"]</div> }
                 </div>
-                <form asp-action="AddNote" method="post" class="d-flex gap-2">
+                <form asp-action="AddNote" method="post"><pems-flex gap="2">
                     <input type="hidden" name="id" value="@d.Id" /><input type="hidden" name="returnTo" value="edit" />
                     <pems-input scale="small" name="text" maxlength="2000" placeholder="@Localizer["Pc_Hint_NoteReply"]" aria-label="@L("Notes")" />
                     <button type="submit" class="vs-btn vs-btn--sm"><pems-icon name="bi-plus-lg" /> @Localizer["Pc_Btn_AddNote"]</button>
-                </form>
+                </pems-flex></form>
             </section>
         </pems-col>
     </pems-row>

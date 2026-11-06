@@ -30,12 +30,12 @@
     };
 }
 
-<div class="d-flex justify-content-end align-items-center mb-2">
+<pems-flex justify="end" align="center" css="mb-2">
     <div>
         <pems-button tone="neutral" size="small" outline="true" as="a" asp-action="Index"><pems-icon name="bi-graph-up-arrow" /> @Localizer["Reliability"]</pems-button>
         <pems-button tone="neutral" size="small" outline="true" as="a" asp-action="RcmFeedback"><pems-icon name="bi-arrow-repeat" /> @Localizer["RCM Feedback"]</pems-button>
     </div>
-</div>
+</pems-flex>
 <p class="text-muted small">
     طبق «PEMS Phase 7»: هیچ KPI ای جعل نمی‌شود - هرجا داده کافی نیست، وضعیت صریح (NOT_READY/
     INSUFFICIENT_DATA/PARTIAL/READY) نمایش داده می‌شود، نه یک صفر یا درصد ساختگی.

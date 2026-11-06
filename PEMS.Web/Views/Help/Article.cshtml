@@ -19,10 +19,10 @@
 <pems-row gap="3">
     <pems-col lg="9">
         <pems-content-card>
-            <div class="d-flex justify-content-between align-items-start flex-wrap gap-2 mb-2">
+            <pems-flex justify="between" align="start" wrap="true" gap="2" css="mb-2">
                 <h4 class="mb-0">@Model.Title</h4>
                 <pems-badge tone="light">@Model.ArticleType</pems-badge>
-            </div>
+            </pems-flex>
             <p class="text-muted">@Model.Summary</p>
 
             @if (standardReference != null)
@@ -55,12 +55,12 @@
         {
             <pems-content-card css="mt-3">
                 <h6 class="mb-3">@L("Related Help", "راهنمای مرتبط")</h6>
-                <div class="d-flex flex-wrap gap-2">
+                <pems-flex wrap="true" gap="2">
                     @foreach (var r in Model.RelatedArticles)
                     {
                         <pems-button tone="neutral" size="small" outline="true" as="a" asp-action="Article" asp-route-code="@r.Code">@r.Title</pems-button>
                     }
-                </div>
+                </pems-flex>
             </pems-content-card>
         }
     </pems-col>

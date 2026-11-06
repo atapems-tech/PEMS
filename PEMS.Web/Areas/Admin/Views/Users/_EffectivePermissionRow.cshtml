@@ -19,7 +19,7 @@
     <td>@row.ActionName</td>
     <td><code>@row.PermissionName</code></td>
     <td class="perm-status-cell">
-        <div class="d-inline-flex align-items-center gap-2">
+        <pems-flex inline="true" align="center" gap="2">
             <pems-check-row switch css="m-0">
                 <pems-input type="checkbox" role="switch" kind="check" css="perm-toggle" checked="@row.Allowed" disabled="@locked"
                        aria-label="@string.Format(Localizer["PermAdmin_ToggleRow"].Value, row.PermissionName)"
@@ -34,7 +34,7 @@
                 <pems-icon name="bi-lock" css="text-body-secondary" title="@lockedText" aria-hidden="true" />
             }
             <span class="perm-row-state small" role="status" aria-live="polite"></span>
-        </div>
+        </pems-flex>
     </td>
     <td class="perm-destructive-cell">@if (row.IsDestructive) { <span class="text-danger"><pems-icon name="bi-exclamation-triangle" /> @Localizer["Yes"]</span> } else { <span class="text-body-secondary">&mdash;</span> }</td>
 </tr>

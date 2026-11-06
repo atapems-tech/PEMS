@@ -24,14 +24,14 @@
 @if (TempData["Error"] != null) { <pems-alert tone="danger" css="py-2 px-3 small">@TempData["Error"]</pems-alert> }
 
 <pems-content-card css="mb-3">
-    <div class="d-flex align-items-center gap-3 mb-2 flex-wrap">
+    <pems-flex align="center" gap="3" wrap="true" css="mb-2">
         <div class="kpi-icon bg-icon-blue pems-s-792bd2d6"><pems-icon name="bi-shield-exclamation" /></div>
         <div>
             <h5 class="mb-0">@Model.EquipmentTagNumber <span class="text-muted small">(@(Model.EquipmentClassName ?? "Unclassified"))</span></h5>
             <span class="text-muted small">Framework @Model.FrameworkVersion</span>
         </div>
         <pems-badge class="fs-6" tone="@StatusBadge(Model.Status)" css="ms-auto">@Model.Status</pems-badge>
-    </div>
+    </pems-flex>
 
     <pems-row gap="2" css="small mt-2">
         <pems-col md="3"><strong>@Localizer["Prepared By"]</strong><div>@(Model.PreparedBy ?? "-")</div></pems-col>

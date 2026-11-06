@@ -22,9 +22,9 @@ else
                 }
                 else
                 {
-                    <div class="rounded-circle mb-3 mx-auto d-flex align-items-center justify-content-center bg-light pems-s-9bcde244">
+                    <pems-flex align="center" justify="center" css="rounded-circle mb-3 mx-auto bg-light pems-s-9bcde244">
                         <pems-icon name="bi-person" css="text-muted pems-s-2fe17263" />
-                    </div>
+                    </pems-flex>
                 }
 
                 <h6 class="mb-0">@Model.FirstName @Model.LastName</h6>
@@ -57,10 +57,10 @@ else
                     <canvas class="pems-signature-pad" id="signaturePad" width="600" height="200"></canvas>
                 </div>
 
-                <div class="d-flex gap-2 mt-2">
+                <pems-flex gap="2" css="mt-2">
                     <pems-button tone="neutral" size="small" outline="true" type="button" id="clearSignatureBtn"><pems-icon name="bi-eraser" /> @Localizer["پاک کردن"]</pems-button>
                     <pems-button tone="primary" size="small" type="button" id="saveSignatureBtn"><pems-icon name="bi-check-lg" /> @Localizer["ذخیره امضا"]</pems-button>
-                </div>
+                </pems-flex>
 
                 <form asp-action="SaveSignature" method="post" id="signatureForm" class="d-none">
                     <input type="hidden" name="signatureDataUrl" id="signatureDataUrl" />

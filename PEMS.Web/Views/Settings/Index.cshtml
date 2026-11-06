@@ -17,10 +17,10 @@
                 <pems-icon name="bi-translate" css="fs-4 text-muted" />
                 <h6 class="mt-2 mb-1">Language</h6>
                 <p class="text-muted small">Switch the interface between English and Persian (فارسی).</p>
-                <div class="d-flex gap-2">
+                <pems-flex gap="2">
                     <pems-button tone="neutral" size="small" outline="true" as="a" asp-controller="Culture" asp-action="SetCulture" asp-route-culture="en" asp-route-returnUrl="/Settings">@Localizer["English"]</pems-button>
                     <pems-button tone="neutral" size="small" outline="true" as="a" asp-controller="Culture" asp-action="SetCulture" asp-route-culture="fa" asp-route-returnUrl="/Settings">@Localizer["فارسی"]</pems-button>
-                </div>
+                </pems-flex>
             </div>
         </pems-col>
         <pems-col md="4">

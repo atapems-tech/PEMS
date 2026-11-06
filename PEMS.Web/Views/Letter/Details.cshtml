@@ -32,9 +32,9 @@
 
 
 <pems-content-card css="mb-3 letter-header">
-    <div class="d-flex justify-content-between align-items-start flex-wrap gap-2">
+    <pems-flex justify="between" align="start" wrap="true" gap="2">
         <div>
-            <div class="d-flex align-items-center flex-wrap gap-2">
+            <pems-flex align="center" wrap="true" gap="2">
                 <h5 class="mb-0">@l.LetterNumber</h5>
                 <pems-badge tone="none" css="@statusBadgeClass">@l.Status</pems-badge>
                 <pems-badge tone="light">@l.LetterType</pems-badge>
@@ -42,9 +42,9 @@
                 { <pems-badge tone="dark"><pems-icon name="bi-lock-fill" /> @l.ConfidentialityLevel</pems-badge> }
                 @if (l.RevisionCount > 0)
                 { <pems-badge tone="light">Rev. @l.RevisionCount</pems-badge> }
-            </div>
+            </pems-flex>
             <h6 class="mt-2 mb-1">@l.Subject</h6>
-            <div class="d-flex flex-wrap gap-3 small meta-item">
+            <pems-flex wrap="true" gap="3" css="small meta-item">
                 <span><strong>@(l.LetterType == "Incoming" ? "From" : "To"):</strong> @(l.LetterType == "Incoming" ? l.Sender : l.Receiver)</span>
                 <span><strong>Date:</strong> @l.LetterDate.ToString("yyyy-MM-dd")</span>
                 <span><strong>@Localizer["Priority:"]</strong> @l.Priority</span>
@@ -61,12 +61,12 @@
                         else { <pems-badge tone="neutral"><pems-icon name="bi-hourglass-split" aria-hidden="true" /> @Localizer["Lt_ResponsePending"]</pems-badge> }
                     </span>
                 }
-            </div>
+            </pems-flex>
             @if (canManageResponse)
             {
                 <details class="mt-2 small">
                     <summary>@Localizer["Lt_ResponseEdit"]</summary>
-                    <form asp-action="SetResponseDue" method="post" class="d-flex flex-wrap align-items-end gap-2 mt-2">
+                    <form class="mt-2" asp-action="SetResponseDue" method="post"><pems-flex wrap="true" align="end" gap="2">
                         <input type="hidden" name="letterId" value="@l.LetterId" />
                         <div class="form-check">
                             <pems-input type="checkbox" name="responseRequired" value="true" id="detResponseRequired" checked="@l.ResponseRequired" kind="check" />
@@ -78,12 +78,12 @@
                                    value="@(l.ResponseDueDate?.ToString("yyyy-MM-dd"))" min="@l.LetterDate.ToString("yyyy-MM-dd")" />
                         </div>
                         <pems-button tone="neutral" size="small" outline="true" type="submit">@Localizer["Save"]</pems-button>
-                    </form>
+                    </pems-flex></form>
                 </details>
             }
         </div>
 
-        <div class="d-flex align-items-center gap-2">
+        <pems-flex align="center" gap="2">
             @* طبق بند ۳۳: بدون دکمه‌ی وضعیت آزاد - فقط اقدامات کسب‌وکاری نام‌گذاری‌شده، هرکدام
                فقط زمانی نمایش داده می‌شوند که واقعاً از وضعیت فعلی مجاز باشند (سرویس هم دوباره
                اعتبارسنجی می‌کند - این‌جا فقط UX است) *@
@@ -164,12 +164,12 @@
                     <li><a class="dropdown-item" href="#" data-bs-toggle="collapse" data-bs-target="#addTagCollapse"><pems-icon name="bi-tag" css="me-1" /> Manage Tags</a></li>
                 </pems-dropdown-menu>
             </div>
-        </div>
-    </div>
+        </pems-flex>
+    </pems-flex>
 
     @if (l.Tags.Any())
     {
-        <div class="d-flex flex-wrap align-items-center gap-1 mt-2">
+        <pems-flex wrap="true" align="center" gap="1" css="mt-2">
             @foreach (var tag in l.Tags)
             {
                 <pems-badge tone="none" css="bg-@tag.Color">
@@ -181,20 +181,20 @@
                     </form>
                 </pems-badge>
             }
-        </div>
+        </pems-flex>
     }
 
     <div class="collapse mt-2" id="addTagCollapse">
-        <div class="d-flex flex-wrap gap-2">
-            <form asp-action="AttachTag" method="post" class="d-flex gap-1">
+        <pems-flex wrap="true" gap="2">
+            <form asp-action="AttachTag" method="post"><pems-flex gap="1">
                 <input type="hidden" name="letterId" value="@l.LetterId" />
                 <pems-select scale="small" name="tagId" onchange="this.form.submit()">
                     <option value="">-- existing tag --</option>
                     @foreach (var t in allTags.Where(t => !l.Tags.Any(lt => lt.TagId == t.TagId)))
                     { <option value="@t.TagId">@t.Name</option> }
                 </pems-select>
-            </form>
-            <form asp-action="AttachTag" method="post" class="d-flex gap-1">
+            </pems-flex></form>
+            <form asp-action="AttachTag" method="post"><pems-flex gap="1">
                 <input type="hidden" name="letterId" value="@l.LetterId" />
                 <pems-input scale="small" name="newTagName" placeholder="New tag..." />
                 <pems-select class="pems-w-90" scale="small" name="newTagColor">
@@ -202,8 +202,8 @@
                     { <option value="@c">@c</option> }
                 </pems-select>
                 <pems-button tone="primary" size="small">+</pems-button>
-            </form>
-        </div>
+            </pems-flex></form>
+        </pems-flex>
     </div>
 
     @if (l.Status == "ReturnedForRevision" && !string.IsNullOrEmpty(l.ReturnReason))
@@ -230,7 +230,7 @@
             @foreach (var step in Model.ApprovalSteps.OrderBy(x => x.StepOrder))
             {
                 var stepBadge = step.Status switch { "Approved" => "success", "Rejected" => "danger", "Returned" => "warning", _ => step.IsCurrent ? "primary" : "neutral" };
-                <li class="d-flex flex-wrap align-items-center gap-2 py-1 @(step.IsCurrent ? "fw-semibold" : "")">
+                <pems-flex as="li" wrap="true" align="center" gap="2" css="py-1 @(step.IsCurrent ? "fw-semibold" : "")">
                     <pems-badge tone="light" css="rounded-pill">@step.StepOrder</pems-badge>
                     <span>@step.ApproverName</span>
                     <pems-badge tone="@stepBadge">@(step.IsCurrent ? Localizer["Lc_StepCurrent"].Value : step.Status)</pems-badge>
@@ -238,7 +238,7 @@
                     @if (!string.IsNullOrWhiteSpace(step.Comment)) { <small class="text-muted">&mdash; @step.Comment</small> }
                     @if (isAdmin && step.Status == "Pending" && l.Status == "PendingApproval")
                     {
-                        <form asp-controller="LetterCompose" asp-action="ReassignApprover" method="post" class="d-flex gap-1 ms-auto">
+                        <form class="ms-auto" asp-controller="LetterCompose" asp-action="ReassignApprover" method="post"><pems-flex gap="1">
                             <input type="hidden" name="letterId" value="@l.LetterId" />
                             <input type="hidden" name="stepOrder" value="@step.StepOrder" />
                             <label class="visually-hidden" for="reassign@(step.StepOrder)">@Localizer["Lc_Reassign"]</label>
@@ -250,9 +250,9 @@
                                 }
                             </pems-select>
                             <pems-button tone="neutral" size="small" outline="true" type="submit">@Localizer["Lc_Reassign"]</pems-button>
-                        </form>
+                        </pems-flex></form>
                     }
-                </li>
+                </pems-flex>
             }
         </ol>
     </pems-content-card>
@@ -263,13 +263,13 @@
 @if (conversation != null && conversation.Count > 1)
 {
     <pems-content-card as="section" css="mb-3" id="conversationPanel" aria-labelledby="cvTitle">
-        <div class="d-flex align-items-center gap-2 mb-2">
+        <pems-flex align="center" gap="2" css="mb-2">
             <div class="section-title mb-0" id="cvTitle"><pems-icon name="bi-chat-left-text" css="me-1" aria-hidden="true" /> @Localizer["Ct_ConversationTitle"] (@conversation.Count)</div>
-            <span class="ms-auto d-inline-flex gap-2">
+            <pems-flex as="span" inline="true" gap="2" css="ms-auto">
                 <pems-button tone="neutral" size="small" outline="true" type="button" data-cv-toggle="open">@Localizer["Ct_ExpandAll"]</pems-button>
                 <pems-button tone="neutral" size="small" outline="true" type="button" data-cv-toggle="close">@Localizer["Ct_CollapseAll"]</pems-button>
-            </span>
-        </div>
+            </pems-flex>
+        </pems-flex>
         @foreach (var m in conversation)
         {
             var kindClass = m.Kind.ToLowerInvariant();
@@ -352,7 +352,7 @@
         @if (l.Status == "ReturnedForRevision")
         {
             var latestReturnReview = Model.Reviews.FirstOrDefault(r => r.Decision == "ReturnedForRevision");
-            <div class="d-flex align-items-center justify-content-between mt-2">
+            <pems-flex align="center" justify="between" css="mt-2">
                 <pems-badge tone="light">Revision @(l.RevisionCount + 1)</pems-badge>
                 @if (latestReturnReview?.PreviousBodySnapshot != null)
                 {
@@ -360,7 +360,7 @@
                         <pems-icon name="bi-clock-history" /> View previous version (as reviewed)
                     </pems-button>
                 }
-            </div>
+            </pems-flex>
             @if (latestReturnReview?.PreviousBodySnapshot != null)
             {
                 <div class="collapse mt-2" id="previousVersionPanel">
@@ -380,13 +380,13 @@
                 <pems-input type="text" name="subject" value="@l.Subject" required />
             </div>
             <pems-textarea name="body" id="letterBodyEditEditor">@Html.Raw(Model.Body)</pems-textarea>
-            <div class="mt-2 d-flex gap-2">
+            <pems-flex gap="2" css="mt-2">
                 <pems-button tone="primary" size="small" type="submit">@submitLabel</pems-button>
                 @if (!showEditFormByDefault)
                 {
                     <pems-button tone="neutral" size="small" outline="true" type="button" onclick="toggleBodyEdit()">@Localizer["Cancel"]</pems-button>
                 }
-            </div>
+            </pems-flex>
         </form>
 
         @await Html.PartialAsync("_RichTextEditorScripts", "letterBodyEditEditor")
@@ -404,13 +404,13 @@
             @foreach (var rv in Model.Reviews)
             {
                 var decColor = rv.Decision switch { "Approved" => "success", "Rejected" => "danger", _ => "warning" };
-                <li class="d-flex gap-2 pb-2 small">
+                <pems-flex as="li" gap="2" css="pb-2 small">
                     <pems-badge class="pems-h-fit" tone="none" css="bg-@decColor">@rv.Decision</pems-badge>
                     <div>
                         <div>by <strong>@rv.ReviewerName</strong> &middot; @rv.CreatedDate.ToString("yyyy-MM-dd HH:mm")</div>
                         @if (!string.IsNullOrEmpty(rv.Comment)) { <div class="text-muted">@rv.Comment</div> }
                     </div>
-                </li>
+                </pems-flex>
             }
         </ul>
     </pems-content-card>
@@ -427,7 +427,7 @@
 {
     <pems-content-card css="mb-3">
         <div class="section-title mb-2">Related Records</div>
-        <div class="d-flex flex-wrap gap-3 small">
+        <pems-flex wrap="true" gap="3" css="small">
             @if (l.RelatedDocumentId.HasValue)
             {
                 <a asp-controller="EngineeringDocuments" asp-action="Details" asp-route-id="@l.RelatedDocumentId"><pems-icon name="bi-file-earmark-text" /> @l.RelatedDocumentNo</a>
@@ -436,7 +436,7 @@
             {
                 <a asp-controller="MaterialRequisition" asp-action="Details" asp-route-id="@l.RelatedMRId"><pems-icon name="bi-cart" /> @l.RelatedMRNumber</a>
             }
-        </div>
+        </pems-flex>
     </pems-content-card>
 }
 
@@ -510,11 +510,11 @@
                 else
                 { <p class="text-muted small">No attachments yet.</p> }
 
-                <form asp-action="UploadAttachment" method="post" enctype="multipart/form-data" class="d-flex gap-2">
+                <form asp-action="UploadAttachment" method="post" enctype="multipart/form-data"><pems-flex gap="2">
                     <input type="hidden" name="letterId" value="@l.LetterId" />
                     <pems-input scale="small" type="file" name="file" required />
                     <pems-button tone="primary" size="small" outline="true"><pems-icon name="bi-upload" /> @Localizer["Upload"]</pems-button>
-                </form>
+                </pems-flex></form>
             </pems-accordion-item>
 
     <pems-accordion-item target="accReferrals" parent="letterAccordion">
@@ -553,12 +553,12 @@
                                     <td>
                                         @if (r.Status != "Completed")
                                         {
-                                            <form asp-action="CompleteReferral" method="post" class="d-flex gap-1">
+                                            <form asp-action="CompleteReferral" method="post"><pems-flex gap="1">
                                                 <input type="hidden" name="referralId" value="@r.LetterReferralId" />
                                                 <input type="hidden" name="letterId" value="@l.LetterId" />
                                                 <pems-input scale="small" name="responseNote" placeholder="@Localizer["Response"]" />
                                                 <pems-button tone="success" size="small">Done</pems-button>
-                                            </form>
+                                            </pems-flex></form>
                                         }
                                         else
                                         { @r.ResponseNote }
@@ -571,10 +571,10 @@
                 else
                 { <p class="text-muted small">No referrals yet.</p> }
 
-                <div class="d-flex align-items-center gap-2 mb-3">
+                <pems-flex align="center" gap="2" css="mb-3">
                     <pems-button tone="primary" size="small" as="a" asp-controller="LetterCompose" asp-action="Compose" asp-route-referTo="@l.LetterId"><pems-icon name="bi-signpost-split" aria-hidden="true" /> @Localizer["Ct_ReferToPerson"]</pems-button>
                     <span class="small text-muted">@Localizer["Ct_ReferToPersonHint"]</span>
-                </div>
+                </pems-flex>
                 <div class="small text-muted mb-1">@Localizer["Ct_ReferToDepartment"]</div>
                 <form asp-action="Refer" method="post"><pems-row gap="2">
                     <input type="hidden" name="letterId" value="@l.LetterId" />
@@ -593,7 +593,7 @@
     <pems-accordion-item target="accTimeline" parent="letterAccordion">
 <pems-accordion-header><pems-icon name="bi-diagram-3" css="me-2" /> Activity Timeline</pems-accordion-header>
                 @* workflow-history options: order and who acted (the manager / subordinates come from the organization chart) *@
-                <form method="get" target="_self" action="@Url.Action("Details", new { id = l.LetterId })#accTimeline" class="d-flex flex-wrap align-items-center gap-2 mb-3 small">
+                <form class="mb-3 small" method="get" target="_self" action="@Url.Action("Details", new { id = l.LetterId })#accTimeline"><pems-flex wrap="true" align="center" gap="2">
                     @if (embed) { <input type="hidden" name="embed" value="true" /> }
                     <label for="historyOrder" class="text-muted">@Localizer["Ct_HistoryOrder"]</label>
                     <pems-select scale="small" css="w-auto" id="historyOrder" name="historyOrder" onchange="this.form.submit()">
@@ -607,16 +607,16 @@
                         <option value="manager" selected="@(historyRole == "manager")">@Localizer["Ct_HistoryManager"]</option>
                         <option value="subordinates" selected="@(historyRole == "subordinates")">@Localizer["Ct_HistorySubordinates"]</option>
                     </pems-select>
-                </form>
+                </pems-flex></form>
                 @if (timeline != null && timeline.Any())
                 {
                     <ul class="list-unstyled mb-0">
                         @foreach (var ev in timeline)
                         {
-                            <li class="d-flex gap-2 pb-2 small">
-                                <span class="d-inline-flex align-items-center justify-content-center rounded-circle bg-@ev.Color text-white flex-shrink-0 pems-size-24">
+                            <pems-flex as="li" gap="2" css="pb-2 small">
+                                <pems-flex as="span" inline="true" align="center" justify="center" css="rounded-circle bg-@ev.Color text-white flex-shrink-0 pems-size-24">
                                     <pems-icon class="pems-fs-12" css="@ev.Icon" />
-                                </span>
+                                </pems-flex>
                                 <div>
                                     <div>@ev.Description</div>
                                     <div class="text-muted">
@@ -624,7 +624,7 @@
                                         @if (!string.IsNullOrEmpty(ev.ActorName)) { <span>&middot; by @ev.ActorName</span> }
                                     </div>
                                 </div>
-                            </li>
+                            </pems-flex>
                         }
                     </ul>
                 }

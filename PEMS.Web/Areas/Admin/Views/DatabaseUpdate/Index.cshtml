@@ -25,10 +25,10 @@
     @if (TempData["Error"] != null) { <pems-alert tone="danger">@TempData["Error"]</pems-alert> }
 
     <pems-content-card css="mb-3">
-        <div class="d-flex align-items-center gap-3 flex-wrap">
+        <pems-flex align="center" gap="3" wrap="true">
             <pems-badge tone="none" css="fs-6 @badge">@Localizer[label]</pems-badge>
             <span>@Model.Summary</span>
-        </div>
+        </pems-flex>
         <pems-row gap="3" css="mt-2">
             <pems-col md="3" span="6"><div class="fs-4 fw-bold">@Model.AppliedMigrationCount / @Model.KnownMigrationCount</div><div class="text-muted small">@Localizer["Migrations applied"]</div></pems-col>
             <pems-col md="4" span="12"><div class="small fw-bold">@(Model.LastAppliedMigration ?? "-")</div><div class="text-muted small">@Localizer["Last applied"]</div></pems-col>
@@ -43,7 +43,7 @@
             <ul class="small text-muted pems-s-4cd5c0a7">
                 @foreach (var m in Model.PendingMigrations) { <li><code>@m</code></li> }
             </ul>
-            <form asp-action="Apply" method="post" class="d-flex align-items-center gap-3 flex-wrap">
+            <form asp-action="Apply" method="post"><pems-flex align="center" gap="3" wrap="true">
                 @Html.AntiForgeryToken()
                 @if (Model.BackupBeforeUpdate && Model.State == DatabaseSetupState.UpdateAvailable)
                 {
@@ -59,7 +59,7 @@
                     </div>
                 }
                 <pems-button tone="primary" type="submit"><pems-icon name="bi-database-up" css="me-1" /> @Localizer[applyText]</pems-button>
-            </form>
+            </pems-flex></form>
         </pems-content-card>
     }
 

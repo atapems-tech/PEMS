@@ -66,10 +66,10 @@
 @if (wf != null)
 {
     <pems-content-card css="mb-3">
-        <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
+        <pems-flex justify="between" align="center" wrap="true" gap="2">
             <h6 class="mb-0">@Localizer["Workflow"] <span class="text-muted small">@wf.WorkflowName · @Localizer["Version"] @wf.VersionNumber · @Localizer[wf.Status]</span></h6>
             @foreach (var w in wf.Warnings) { <span class="small text-warning"><pems-icon name="bi-exclamation-triangle" /> @w</span> }
-        </div>
+        </pems-flex>
         <partial name="_PemsStageDiagram" model="diagram" />
     </pems-content-card>
 }
@@ -86,7 +86,7 @@ else
 }
 
 <pems-content-card css="mb-3">
-    <div class="d-flex justify-content-between align-items-start flex-wrap gap-2">
+    <pems-flex justify="between" align="start" wrap="true" gap="2">
         <div>
             <h5 class="mb-1">@Model.WorkOrderNumber</h5>
             <pems-badge tone="@statusClass">@Model.Status</pems-badge>
@@ -225,14 +225,14 @@ else
             }
         </div>
         }
-    </div>
+    </pems-flex>
 
     @if (!isLegacy)
     {
-        <div class="small mt-2 d-flex flex-wrap gap-3">
+        <pems-flex wrap="true" gap="3" css="small mt-2">
             <span><strong>@Localizer["Originating Discipline"]:</strong> <bdi>@(Model.OriginatingOrganization) / @(ViewBag.OriginatingDisciplineName ?? "-")</bdi></span>
             <span><strong>@Localizer["Responsible Maintenance Discipline"]:</strong> <bdi>@(ViewBag.ResponsibleDisciplineName != null ? Model.ResponsibleOrganization + " / " + ViewBag.ResponsibleDisciplineName : "-")</bdi></span>
-        </div>
+        </pems-flex>
     }
 
     @if (Model.SourceWorkRequestId.HasValue)
@@ -292,12 +292,12 @@ else
 {
     <pems-content-card css="mb-3">
         <h6 class="mb-3">@Localizer["Actions"]</h6>
-        <div class="d-flex flex-wrap gap-2 align-items-start">
+        <pems-flex wrap="true" gap="2" align="start">
             @if (actions.Count > 0)
             {
-                <form asp-action="WorkflowAction" method="post" class="d-flex flex-column gap-2 w-100">
+                <form class="w-100" asp-action="WorkflowAction" method="post"><pems-flex dir="column" gap="2">
                     <input type="hidden" name="id" value="@Model.WorkOrderId" />
-                    <div class="d-flex flex-wrap gap-2 align-items-center">
+                    <pems-flex wrap="true" gap="2" align="center">
                         <pems-input class="pems-w-300" scale="small" type="text" name="comment" placeholder="@Localizer["Comment (required for Reject / Cancel / Hold / Return)"]" />
                         @foreach (var a in actions)
                         {
@@ -307,7 +307,7 @@ else
                                 @ActionLabel(a)@if (!string.IsNullOrWhiteSpace(a.ToStageName)) { <span class="opacity-75"> → @StageByName(a.ToStageName)</span> }
                             </pems-button>
                         }
-                    </div>
+                    </pems-flex>
                     @if (Model.Status == "InProgress")
                     {
                         @* داده‌های تکمیل (قواعد دامنه‌ی Work Order؛ اعتبارسنجی نهایی سمت سرور) *@
@@ -346,7 +346,7 @@ else
                             </pems-row>
                         </details>
                     }
-                </form>
+                </pems-flex></form>
                 @foreach (var denied in actions.Where(a => !a.IsAllowed && !string.IsNullOrWhiteSpace(a.DeniedReason)))
                 {
                     <div class="small text-muted w-100"><pems-icon name="bi-lock" /> @ActionLabel(denied): @denied.DeniedReason</div>
@@ -356,7 +356,7 @@ else
             {
                 <span class="text-muted small">@Localizer["No further actions available."]</span>
             }
-        </div>
+        </pems-flex>
 
         @if (Ctl(WoSection.ResponsibleDiscipline) || Ctl(WoSection.ExecutorAssignment) || Ctl(WoSection.Schedule))
         {
@@ -366,7 +366,7 @@ else
                 @if (Ctl(WoSection.ResponsibleDiscipline))
                 {
                 <pems-col md="6">
-                    <form asp-action="SetPlanning" method="post" class="d-flex gap-2 align-items-end flex-wrap">
+                    <form asp-action="SetPlanning" method="post"><pems-flex gap="2" align="end" wrap="true">
                         <input type="hidden" name="id" value="@Model.WorkOrderId" />
                         <div><pems-label css="small mb-1">@Localizer["Responsible Maintenance Discipline"]</pems-label>
                             <pems-select scale="small" name="responsibleDisciplineId" required>
@@ -374,7 +374,7 @@ else
                                 @foreach (var d in (IEnumerable<dynamic>)ViewBag.Disciplines) { <option value="@d.DisciplineId" selected="@(Model.ResponsibleDisciplineId == (int)d.DisciplineId)">@d.Name</option> }
                             </pems-select></div>
                         <pems-button tone="primary" size="small" outline="true" type="submit">@Localizer["Save"]</pems-button>
-                    </form>
+                    </pems-flex></form>
                 </pems-col>
                 }
                 @if (Ctl(WoSection.ExecutorAssignment))
@@ -389,7 +389,7 @@ else
                         </pems-col>
                     }
                     <pems-col md="6">
-                        <form asp-action="AssignExecutor" method="post" class="d-flex gap-2 align-items-end flex-wrap">
+                        <form asp-action="AssignExecutor" method="post"><pems-flex gap="2" align="end" wrap="true">
                             <input type="hidden" name="id" value="@Model.WorkOrderId" />
                             <div><pems-label css="small mb-1">@Localizer["Team"]</pems-label>
                                 <pems-select scale="small" name="teamId"><option value="">--</option>
@@ -400,7 +400,7 @@ else
                                     @foreach (var e in (IEnumerable<dynamic>)ViewBag.Employees) { <option value="@e.EmployeeId">@e.FullName</option> }
                                 </pems-select></div>
                             <pems-button tone="primary" size="small" outline="true" type="submit">@Localizer["Assign"]</pems-button>
-                        </form>
+                        </pems-flex></form>
                     </pems-col>
                 }
                 @if (Ctl(WoSection.Schedule))
@@ -408,14 +408,14 @@ else
                     <pems-col md="6">
                         @* طبق «PEMS — Work Request/Work Order Scheduling & Maintenance Calendar»: زمان‌بندی مستقل از
                            تخصیص تیم/کارمند است (ترتیب الزامی نیست) - همان مرحله/مجوز، فرم جدا. *@
-                        <form asp-action="SetSchedule" method="post" class="d-flex gap-2 align-items-end flex-wrap">
+                        <form asp-action="SetSchedule" method="post"><pems-flex gap="2" align="end" wrap="true">
                             <input type="hidden" name="id" value="@Model.WorkOrderId" />
                             <div><pems-label css="small mb-1">@Localizer["Planned Start"]</pems-label>
                                 <pems-input type="datetime-local" name="plannedStart" value="@(Model.PlannedStart?.ToString("yyyy-MM-ddTHH:mm"))" required scale="small" /></div>
                             <div><pems-label css="small mb-1">@Localizer["Planned Finish"]</pems-label>
                                 <pems-input type="datetime-local" name="plannedFinish" value="@(Model.PlannedFinish?.ToString("yyyy-MM-ddTHH:mm"))" required scale="small" /></div>
                             <pems-button tone="primary" size="small" outline="true" type="submit">@Localizer["Save Schedule"]</pems-button>
-                        </form>
+                        </pems-flex></form>
                     </pems-col>
                 }
             </pems-row>
@@ -459,7 +459,7 @@ else
         <ul class="list-unstyled mb-0">
             @foreach (var h in statusHistory)
             {
-                <li class="d-flex justify-content-between border-bottom py-2 small">
+                <pems-flex as="li" justify="between" css="border-bottom py-2 small">
                     <span><pems-badge tone="neutral">@h.FromStatus</pems-badge> → <pems-badge tone="neutral">@h.ToStatus</pems-badge>
                         @if (!string.IsNullOrWhiteSpace(h.Reason)) { <span class="text-muted"> — @h.Reason</span> }
                     </span>
@@ -467,7 +467,7 @@ else
                         @(h.ChangedBy != null ? $"{h.ChangedBy.FirstName} {h.ChangedBy.LastName}" : "-")
                         · @h.ChangedDate.ToString("yyyy-MM-dd HH:mm")
                     </span>
-                </li>
+                </pems-flex>
             }
         </ul>
     </pems-content-card>
@@ -513,13 +513,13 @@ else
     }
     else
     {
-        <div class="d-flex flex-wrap gap-2 mb-3">
+        <pems-flex wrap="true" gap="2" css="mb-3">
             @foreach (var r in reviewStatus)
             {
                 var badgeClass = r.Status switch { "Approve" => "success", "Comment" => "warning", "Reject" => "danger", _ => "neutral" };
                 <pems-badge tone="@badgeClass">@r.DisciplineName: @r.Status</pems-badge>
             }
-        </div>
+        </pems-flex>
 
         var myPending = reviewStatus.FirstOrDefault(x => x.DisciplineId == myDisciplineId && x.Status == "Pending");
         @if (myPending != null)
@@ -585,10 +585,10 @@ else
             @foreach (var f in findings)
             {
                 <li class="border-bottom py-2">
-                    <div class="d-flex justify-content-between">
+                    <pems-flex justify="between">
                         <span class="fw-bold small">@f.Discipline?.Name</span>
                         <pems-badge tone="@(f.Decision == "Approve" ? "success" : f.Decision == "Comment" ? "warning" : "danger")">@f.Decision</pems-badge>
-                    </div>
+                    </pems-flex>
                     @if (!string.IsNullOrWhiteSpace(f.Findings)) { <p class="small mb-0">@f.Findings</p> }
                     @if (!string.IsNullOrWhiteSpace(f.FailureModeCode)) { <p class="small text-muted mb-0">@f.FailureModeCode / @f.FailureCauseCode</p> }
                     <span class="text-muted small">@f.RespondedDate.ToString("yyyy-MM-dd HH:mm")</span>
@@ -727,7 +727,7 @@ else
                     <td>
                         @if (outstanding > 0 && Ctl(WoSection.SpareParts))
                         {
-                            <form asp-action="ReturnSpareUsage" method="post" class="d-flex gap-1">
+                            <form asp-action="ReturnSpareUsage" method="post"><pems-flex gap="1">
                                 <input type="hidden" name="maintenanceSpareUsageId" value="@s.MaintenanceSpareUsageId" />
                                 <input type="hidden" name="workOrderId" value="@Model.WorkOrderId" />
                                 @if (Acc(WoSection.SpareParts) == SectionAccess.Correctable)
@@ -736,7 +736,7 @@ else
                                 }
                                 <pems-input class="pems-w-80" scale="small" type="number" name="returnQuantity" step="0.01" max="@outstanding" placeholder="@Localizer["Qty"]" required />
                                 <pems-button tone="neutral" size="small" outline="true" type="submit" title="Return"><pems-icon name="bi-arrow-return-left" /></pems-button>
-                            </form>
+                            </pems-flex></form>
                         }
                     </td>
                 </tr>
@@ -834,7 +834,7 @@ else
             &middot; Actual: <strong>@totalActualHours h</strong>
         </p>
     }
-    <div class="d-flex flex-wrap gap-2 mb-3">
+    <pems-flex wrap="true" gap="2" css="mb-3">
         @foreach (var rs in requiredSkills)
         {
             <pems-badge tone="neutral" css="d-flex align-items-center gap-1">
@@ -850,7 +850,7 @@ else
                 }
             </pems-badge>
         }
-    </div>
+    </pems-flex>
     @if (!requiredSkills.Any()) { <p class="text-muted small">@Localizer["مهارت موردنیازی ثبت نشده."]</p> }
 
     @if (Ctl(WoSection.RequiredSkills))
@@ -900,7 +900,7 @@ else
                     <td class="small">
                         @if (Ctl(WoSection.RequiredMaterials) && !sourcedAlready)
                         {
-                        <form asp-action="SetMaterialSupplyCode" method="post" class="d-flex gap-1">
+                        <form asp-action="SetMaterialSupplyCode" method="post"><pems-flex gap="1">
                             <input type="hidden" name="workOrderMaterialId" value="@rm.WorkOrderMaterialId" />
                             <input type="hidden" name="workOrderId" value="@Model.WorkOrderId" />
                             <pems-select scale="small" name="supplyCode" aria-label="@Localizer["Whi_SupplyCode"]" data-pems-select="off">
@@ -910,7 +910,7 @@ else
                                 }
                             </pems-select>
                             <pems-button tone="neutral" size="small" outline="true" type="submit" title="@Localizer["Whi_Save"]"><pems-icon name="bi-check2" /></pems-button>
-                        </form>
+                        </pems-flex></form>
                         }
                         else
                         {
@@ -949,7 +949,7 @@ else
     {
         var unsourced = intake.Lines.Where(l => l.UnsourcedQuantity > 0).ToList();
         var hasDirectPurchase = intake.Lines.Any(l => l.SupplyCode == PEMS.Domain.Entities.WorkOrderMaterialSupplyCodes.DirectPurchase);   // SCRUM-471
-        <div class="d-flex flex-wrap align-items-center gap-2 small mb-3">
+        <pems-flex wrap="true" align="center" gap="2" css="small mb-3">
             <span class="fw-semibold"><pems-icon name="bi-inboxes" aria-hidden="true" /> @Localizer["Whi_Title"]:</span>
             @if (intake.IsOpen)
             {
@@ -972,7 +972,7 @@ else
                 }
                 <span class="text-muted">@Localizer["Whi_RequestHint"]</span>
             }
-        </div>
+        </pems-flex>
     }
 
     @if (!Ctl(WoSection.RequiredMaterials))

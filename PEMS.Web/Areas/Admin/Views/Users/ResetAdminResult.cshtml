@@ -5,7 +5,7 @@
 
 <pems-page-shell kind="admin">
     <div class="admin-hero">
-        <div class="d-flex align-items-center gap-3"><div><p>@Localizer["The account was reset. The temporary password below is shown only now."]</p></div></div>
+        <pems-flex align="center" gap="3"><div><p>@Localizer["The account was reset. The temporary password below is shown only now."]</p></div></pems-flex>
     </div>
 
     <pems-content-card data-pems-secret-reveal>
@@ -15,18 +15,18 @@
             @Localizer["Copy or print this password now. It cannot be shown again; if it is lost, reset the account again."]
         </pems-alert>
 
-        <div class="d-flex align-items-center gap-2 mb-2">
+        <pems-flex align="center" gap="2" css="mb-2">
             <code id="tempPassword" dir="ltr" class="fs-5 px-3 py-2 border rounded user-select-all" data-secret-value>@Model.TemporaryPassword</code>
             <pems-button tone="neutral" size="small" outline="true" type="button" data-secret-copy data-copied-text="@Localizer["Copied"]"><pems-icon name="bi-clipboard" css="me-1" /> @Localizer["Copy"]</pems-button>
             <pems-button tone="neutral" size="small" outline="true" type="button" data-secret-print><pems-icon name="bi-printer" css="me-1" /> @Localizer["Print"]</pems-button>
-        </div>
+        </pems-flex>
         <p class="mb-1">@Localizer["Expires"]: <strong dir="ltr">@Model.ExpiresAtUtc?.ToString("yyyy-MM-dd HH:mm") UTC</strong></p>
         <p class="text-body-secondary small">@Localizer["The administrator must change it at the first sign-in and enroll MFA again. All of their sessions were signed out, and every active administrator was notified."]</p>
 
-        <div class="d-flex gap-2 mt-3">
+        <pems-flex gap="2" css="mt-3">
             <pems-button as="a" tone="primary" asp-action="Index">@Localizer["Back to users"]</pems-button>
             <pems-button as="a" tone="neutral" outline="true" asp-controller="SecurityEvents" asp-action="Index">@Localizer["Security Events"]</pems-button>
-        </div>
+        </pems-flex>
     </pems-content-card>
 </pems-page-shell>
 

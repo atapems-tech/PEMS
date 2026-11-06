@@ -3,10 +3,10 @@
 @using PEMS.Web.Resources
 @inject IStringLocalizer<SharedResource> Localizer
 
-<div class="d-flex justify-content-between align-items-center mb-3">
+<pems-flex justify="between" align="center" css="mb-3">
     <h5 class="mb-0"><pems-icon name="bi-clipboard-x" /> @Localizer["گزارش تحلیل شکاف - رابطه‌های ناقص تجهیزات"]</h5>
     <pems-button tone="neutral" size="small" outline="true" as="a" asp-action="Index">@Localizer["بازگشت به Explorer"]</pems-button>
-</div>
+</pems-flex>
 
 <p class="text-muted small">
     این گزارش برعکس Explorer عمل می‌کنه: به‌جای کاوش از یک تجهیز مشخص، همه‌ی تجهیزات رو بررسی

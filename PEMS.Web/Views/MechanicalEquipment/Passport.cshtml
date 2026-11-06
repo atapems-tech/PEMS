@@ -18,20 +18,20 @@
 }
 
 <pems-content-card css="mb-3">
-    <div class="d-flex justify-content-between align-items-start flex-wrap gap-2">
+    <pems-flex justify="between" align="start" wrap="true" gap="2">
         <div>
             <h5 class="mb-1">@Model.TagNumber</h5>
             <div class="text-muted small">@Model.EquipmentType @(Model.Equipment != null ? $"— {Model.Equipment.Name}" : "")</div>
         </div>
-        <div class="d-print-none d-flex gap-2">
+        <pems-flex gap="2" css="d-print-none">
             <pems-button tone="neutral" size="small" outline="true" as="a" asp-action="Edit" asp-route-id="@Model.MechanicalEquipmentId"><pems-icon name="bi-pencil" /> @Localizer["Edit"]</pems-button>
             <pems-button tone="neutral" size="small" outline="true" type="button" onclick="window.print()"><pems-icon name="bi-printer" /> @Localizer["Print"]</pems-button>
             @if (Model.EquipmentId.HasValue)
             {
                 <pems-button tone="neutral" size="small" outline="true" as="a" asp-controller="Equipment" asp-action="Details" asp-route-id="@Model.EquipmentId"><pems-icon name="bi-box-seam" /> @Localizer["Equipment"]</pems-button>
             }
-        </div>
-    </div>
+        </pems-flex>
+    </pems-flex>
 
     <hr />
     <pems-row gap="2" css="small">

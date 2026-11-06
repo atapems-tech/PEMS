@@ -34,9 +34,9 @@
     }
 }
 
-<div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-3">
+<pems-flex wrap="true" justify="between" align="center" gap="2" css="mb-3">
     <p class="text-muted small mb-0">@Localizer["Lt_Dash_Scope"]</p>
-    <div class="d-flex flex-wrap gap-2">
+    <pems-flex wrap="true" gap="2">
         @if (ViewBag.CanRunReminders == true)
         {
             <form asp-action="SendReminders" method="post" data-pems-confirm="@Localizer["Lt_RemindersConfirm"]">
@@ -44,8 +44,8 @@
             </form>
         }
         <pems-button tone="neutral" size="small" outline="true" as="a" asp-action="Index"><pems-icon name="bi-arrow-left-short" aria-hidden="true" /> @Localizer["Correspondence"]</pems-button>
-    </div>
-</div>
+    </pems-flex>
+</pems-flex>
 
 <section aria-label="@Localizer["Lt_Dash_Summary"]" class="vs-chips mb-3">
     @{

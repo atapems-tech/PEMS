@@ -37,10 +37,10 @@
 @if (TempData["Error"] != null) { <pems-alert tone="danger" css="py-2 px-3 small">@TempData["Error"]</pems-alert> }
 
 <pems-content-card css="mb-3">
-    <div class="d-flex justify-content-between align-items-center">
+    <pems-flex justify="between" align="center">
         <h6 class="mb-0">@equipmentClass.Name <code class="small">@equipmentClass.Code</code></h6>
         <a asp-action="Index" class="small">← Coverage Matrix</a>
-    </div>
+    </pems-flex>
     @if (readiness != null)
     {
         <pems-row gap="2" css="small mt-2">
@@ -68,13 +68,13 @@
     @* ===================== Functional Requirements ===================== *@
     <div class="tab-pane fade show active" id="tab-functional">
         <pems-content-card css="mb-3">
-            <div class="d-flex justify-content-between align-items-center mb-2">
+            <pems-flex justify="between" align="center" css="mb-2">
                 <h6 class="mb-0">@Localizer["Functional Requirements"]</h6>
                 @if (canEdit)
                 {
                     <pems-button tone="primary" size="small" data-bs-toggle="modal" data-bs-target="#createFrModal"><pems-icon name="bi-plus-lg" /> @Localizer["New"]</pems-button>
                 }
-            </div>
+            </pems-flex>
             @foreach (var fr in functionalRequirements)
             {
                 <div class="small text-muted">@fr.Code — @fr.Title</div>
@@ -116,7 +116,7 @@
         @foreach (var fmea in fmeaAnalyses)
         {
             <pems-content-card css="mb-3">
-                <div class="d-flex justify-content-between align-items-center">
+                <pems-flex justify="between" align="center">
                     <h6 class="mb-0">@fmea.Title <span class="text-muted small">Rev. @fmea.Revision</span> <pems-badge tone="@StatusBadge(fmea.Status)">@fmea.Status</pems-badge></h6>
                     <div>
                         @if (fmea.Status == "DRAFT" && canEdit)
@@ -141,7 +141,7 @@
                             </form>
                         }
                     </div>
-                </div>
+                </pems-flex>
                 <div class="small text-muted">Prepared by @fmea.PreparedBy @(fmea.ApprovedBy != null ? $"· Approved by {fmea.ApprovedBy} on {fmea.ApprovedAt:yyyy-MM-dd}" : "")</div>
 
                 <pems-related-table>
@@ -224,7 +224,7 @@
             var sourceFmea = fmeaAnalyses.FirstOrDefault(x => x.FMEAAnalysisId == rcm.FMEAAnalysisId);
 
             <pems-content-card css="mb-3">
-                <div class="d-flex justify-content-between align-items-center">
+                <pems-flex justify="between" align="center">
                     <h6 class="mb-0">RCM Rev. @rcm.Revision <pems-badge tone="@StatusBadge(rcm.Status)">@rcm.Status</pems-badge></h6>
                     <div>
                         @if (rcm.Status == "DRAFT" && canEdit)
@@ -249,7 +249,7 @@
                             </form>
                         }
                     </div>
-                </div>
+                </pems-flex>
 
                 <pems-related-table>
                     <thead><tr><th>@Localizer["Failure Mode"]</th><th>@Localizer["Decision"]</th><th>@Localizer["Strategy Type"]</th><th>PM Template</th><th>@Localizer["Consequence"]</th><th>@Localizer["Status"]</th><th></th></tr></thead>

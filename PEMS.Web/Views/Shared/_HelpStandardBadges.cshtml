@@ -18,15 +18,15 @@
    برچسب صریح کنار هم نشان داده می‌شوند، و اگر ComplianceEvidenceAvailable نباشد، یک یادداشت
    صریح «این تایید انطباق رسمی نیست» هم اضافه می‌شود. *@
 <pems-content-card css="mb-3" role="group" aria-label="@L("Standard reference summary", "خلاصه‌ی مرجع استاندارد")">
-    <div class="d-flex flex-wrap gap-2 align-items-center mb-2">
+    <pems-flex wrap="true" gap="2" align="center" css="mb-2">
         <pems-badge tone="dark" css="fs-6">@Model.Identifier</pems-badge>
         <span class="text-muted small">@Model.IssuingOrganization@(string.IsNullOrWhiteSpace(Model.EditionOrYear) ? "" : $" · {Model.EditionOrYear}")</span>
-    </div>
-    <div class="d-flex flex-wrap gap-3 small mb-2">
+    </pems-flex>
+    <pems-flex wrap="true" gap="3" css="small mb-2">
         <div><strong>@L("Applicability", "قابلیت‌اعمال")</strong>: <pems-badge tone="light">@Model.ApplicabilityStatus</pems-badge></div>
         <div><strong>@L("Verification", "تایید منبع")</strong>: <pems-badge tone="light">@Model.VerificationStatus</pems-badge></div>
         <div><strong>@L("PEMS status", "وضعیت در PEMS")</strong>: <pems-badge tone="none" css="@ImplBadgeClass(Model.PEMSImplementationStatus)">@Model.PEMSImplementationStatus</pems-badge></div>
-    </div>
+    </pems-flex>
 
     @if (Model.PEMSImplementationStatus != "ComplianceEvidenceAvailable")
     {

@@ -86,7 +86,7 @@
         <pems-alert tone="info" css="d-flex flex-wrap align-items-center gap-2 py-2" role="note">
             <pems-icon css="@(isReferral ? "bi-signpost-split" : "bi-reply")" aria-hidden="true" />
             <span>@Localizer[isReferral ? "Ct_ReferringTo" : "Lc_ReplyingTo"]: <strong>@Model.ParentNumber</strong> &mdash; @Model.ParentSubject</span>
-            <span class="ms-auto d-inline-flex gap-3">
+            <pems-flex as="span" inline="true" gap="3" css="ms-auto">
                 @if (isNew)
                 {
                     @* reply and referral are two modes of the same form: switch before writing anything *@
@@ -94,7 +94,7 @@
                     else if (input.LetterType == "Internal") { <a asp-action="Compose" asp-route-referTo="@Model.ParentLetterId">@Localizer["Ct_SwitchToReferral"]</a> }
                 }
                 <a asp-controller="Letter" asp-action="Details" asp-route-id="@Model.ParentLetterId" target="_blank" rel="noopener">@Localizer["Lc_ViewOriginal"]</a>
-            </span>
+            </pems-flex>
         </pems-alert>
     }
 
@@ -217,7 +217,7 @@
             {
                 <section class="lc-card">
                     <h3><pems-icon name="bi-file-earmark-text" aria-hidden="true" /> @Localizer["LtT_UseTemplate"]</h3>
-                    <form method="get" asp-action="Compose" class="d-flex gap-2">
+                    <form method="get" asp-action="Compose"><pems-flex gap="2">
                         <input type="hidden" name="letterType" value="@input.LetterType" />
                         @if (Model.ParentLetterId.HasValue) { <input type="hidden" name="replyTo" value="@Model.ParentLetterId" /> }
                         <pems-select name="templateId" aria-label="@Localizer["LtT_UseTemplate"]">
@@ -228,7 +228,7 @@
                             }
                         </pems-select>
                         <pems-button tone="neutral" outline="true" type="submit">@Localizer["LtT_Apply"]</pems-button>
-                    </form>
+                    </pems-flex></form>
                     <div class="lc-help">@Localizer["Lc_TemplateWarn"]</div>
                 </section>
             }
@@ -335,7 +335,7 @@
                 @if (isOutgoing) { <div class="lc-help">@Localizer["Lc_OutgoingNeedsApproval"]</div> }
                 <div id="lcChainWrap" class="mt-2" @(input.ApprovalRequired || isOutgoing ? "" : "hidden")>
                     <ol class="lc-chain" id="lcChain" aria-label="@Localizer["Lc_ApprovalChain"]"></ol>
-                    <div class="d-flex gap-2">
+                    <pems-flex gap="2">
                         <pems-select id="lcApproverPick" aria-label="@Localizer["Lc_AddApprover"]">
                             <option value="">@Localizer["Lc_AddApprover"]</option>
                             @foreach (var grp in new[] { ("Manager", "Ct_ApproverManagers"), ("Eligible", "Ct_ApproverEligible"), ("Other", "Ct_ApproverOthers") })
@@ -348,7 +348,7 @@
                             }
                         </pems-select>
                         <pems-button tone="neutral" outline="true" type="button" id="lcApproverAdd" aria-label="@Localizer["Lc_AddApprover"]"><pems-icon name="bi-plus-lg" aria-hidden="true" /></pems-button>
-                    </div>
+                    </pems-flex>
                     <div class="lc-help">@Localizer["Lc_ChainHelp"]</div>
                     <div class="lc-error" data-error-for="approvers" role="alert" hidden></div>
                 </div>

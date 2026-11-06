@@ -8,23 +8,23 @@
 }
 
 <pems-content-card>
-    <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-3">
+    <pems-flex wrap="true" justify="between" align="center" gap="2" css="mb-3">
         <pems-nav kind="pills">
             @foreach (var (key, label) in tabs)
             {
                 <li class="nav-item"><a class="nav-link py-1 @(filter == key ? "active" : "")" asp-action="Index" asp-route-filter="@key">@Localizer[label]</a></li>
             }
         </pems-nav>
-        <div class="d-flex gap-2">
+        <pems-flex gap="2">
             <form asp-action="MarkAllRead" method="post"><pems-button tone="neutral" size="small" outline="true">@Localizer["Notif_MarkAllRead"]</pems-button></form>
             <form asp-action="DismissAll" method="post"><pems-button tone="neutral" size="small" outline="true">@Localizer["Notif_DismissAll"]</pems-button></form>
-        </div>
-    </div>
+        </pems-flex>
+    </pems-flex>
 
     <ul class="list-unstyled">
         @foreach (var n in Model.Items)
         {
-            <li class="mb-2 p-2 border-bottom d-flex align-items-start gap-2 @(n.IsRead ? "" : "bg-light")">
+            <pems-flex as="li" align="start" gap="2" css="mb-2 p-2 border-bottom @(n.IsRead ? "" : "bg-light")">
                 <a href="@Url.Action("Open", "Notification", new { id = n.NotificationId })" class="text-decoration-none flex-grow-1">
                     @if (!n.IsRead) { <pems-icon name="bi-circle-fill" css="text-primary me-1 pems-s-3494e7ef" aria-hidden="true" /> }
                     <strong>@n.Title</strong>
@@ -37,7 +37,7 @@
                         <pems-button tone="none" size="small" css="btn-link text-muted" title="@Localizer["Notif_Dismiss"]" aria-label="@Localizer["Notif_Dismiss"]"><pems-icon name="bi-x-lg" /></pems-button>
                     </form>
                 }
-            </li>
+            </pems-flex>
         }
     </ul>
     @if (!Model.Items.Any()) { <p class="text-muted text-center py-4">@Localizer["Notif_Empty"]</p> }

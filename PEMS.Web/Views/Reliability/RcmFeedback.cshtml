@@ -28,7 +28,7 @@
 @if (TempData["Message"] != null) { <pems-alert tone="success" css="py-2 px-3 small">@TempData["Message"]</pems-alert> }
 @if (TempData["Error"] != null) { <pems-alert tone="danger" css="py-2 px-3 small">@TempData["Error"]</pems-alert> }
 
-<div class="d-flex justify-content-end align-items-center mb-2">
+<pems-flex justify="end" align="center" css="mb-2">
     <div>
         <pems-button tone="neutral" size="small" outline="true" as="a" asp-action="Intelligence"><pems-icon name="bi-clipboard-data-fill" /> @Localizer["Maintenance Intelligence"]</pems-button>
         @if (canGenerate)
@@ -38,7 +38,7 @@
             </form>
         }
     </div>
-</div>
+</pems-flex>
 <p class="text-muted small">
     طبق «PEMS Phase 7» بند ۲۰: این‌جا فقط شواهد و توصیه‌ی بازبینی تولید می‌شود - هیچ‌چیز خودکار
     تغییر نمی‌کند. پذیرفتن یک توصیه یعنی مهندس با تغییر دستی MaintenanceStrategy/MaintenancePlan

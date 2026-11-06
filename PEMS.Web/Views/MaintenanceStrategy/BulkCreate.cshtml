@@ -39,10 +39,10 @@
         .ToList();
 }
 
-<div class="d-flex justify-content-between align-items-center mb-3">
+<pems-flex justify="between" align="center" css="mb-3">
     <h5 class="mb-0"><pems-icon name="bi-collection" /> @Localizer["Rcm_BulkAssign"]</h5>
     <pems-button tone="neutral" size="small" outline="true" as="a" asp-action="Index">@Localizer["بازگشت"]</pems-button>
-</div>
+</pems-flex>
 <p class="text-muted small">@Localizer["Rcm_BulkHint"]</p>
 
 <pems-content-card css="mb-3">
@@ -120,7 +120,7 @@
         </pems-col>
         <pems-col md="3">
             <pems-label css="small mb-0">Functional Location Mode</pems-label>
-            <div class="d-flex gap-3 mt-1">
+            <pems-flex gap="3" css="mt-1">
                 <div class="form-check">
                     <pems-input type="radio" name="functionalLocationMode" value="Exact" id="flModeExact" checked="@(selectedFlMode == "Exact")" kind="check" />
                     <label class="form-check-label small" for="flModeExact" title="فقط خودِ Functional Location(های) انتخاب‌شده">@Localizer["Exact"]</label>
@@ -129,7 +129,7 @@
                     <pems-input type="radio" name="functionalLocationMode" value="Descendants" id="flModeDescendants" checked="@(selectedFlMode == "Descendants")" kind="check" />
                     <label class="form-check-label small" for="flModeDescendants" title="Functional Location(های) انتخاب‌شده + همه‌ی زیرشاخه‌های واقعی آن‌ها">Descendants</label>
                 </div>
-            </div>
+            </pems-flex>
         </pems-col>
         <pems-col md="6">
             <pems-label css="small mb-0">
@@ -178,13 +178,13 @@ else if (matchingCount.HasValue && matchingCount.Value > maxResults)
     <pems-row>
         <pems-col md="5">
             <pems-content-card>
-                <div class="d-flex justify-content-between align-items-center mb-2">
+                <pems-flex justify="between" align="center" css="mb-2">
                     <h6 class="mb-0 small fw-bold">انتخاب تجهیزات (@equipments.Count)</h6>
                     <div>
                         <pems-button tone="neutral" size="small" outline="true" type="button" onclick="document.querySelectorAll('.eq-check').forEach(c => c.checked = true)">همه</pems-button>
                         <pems-button tone="neutral" size="small" outline="true" type="button" onclick="document.querySelectorAll('.eq-check').forEach(c => c.checked = false)">هیچ‌کدام</pems-button>
                     </div>
-                </div>
+                </pems-flex>
 
                 <div class="pems-s-31c8162e"><pems-accordion id="areaAccordion">
                     @foreach (var areaGroup in byArea)
@@ -205,13 +205,13 @@ else if (matchingCount.HasValue && matchingCount.Value > maxResults)
                                         var typeSafeId = areaSafeId + "_" + Math.Abs(typeGroup.Key.GetHashCode());
 
                                         <div class="border rounded p-2 mb-2">
-                                            <div class="d-flex justify-content-between align-items-center mb-1">
+                                            <pems-flex justify="between" align="center" css="mb-1">
                                                 <span class="small fw-bold"><pems-icon name="bi-gear" /> @typeGroup.Key <pems-badge tone="none" css="bg-light text-dark">@typeGroup.Count()</pems-badge></span>
                                                 <pems-button tone="neutral" size="small" outline="true" css="py-0" type="button"
                                                         onclick="document.querySelectorAll('.type-@typeSafeId').forEach(c => c.checked = true)">
                                                     انتخاب این نوع
                                                 </pems-button>
-                                            </div>
+                                            </pems-flex>
                                             <pems-table scale="small" css="mb-0">
                                                 <tbody>
                                                     @foreach (var eq in typeGroup)

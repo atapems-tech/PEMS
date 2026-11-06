@@ -28,7 +28,7 @@
     var totalEquipmentWithFailures = Model.Count;
 }
 
-<div class="d-flex justify-content-end align-items-center mb-2">
+<pems-flex justify="end" align="center" css="mb-2">
     <div>
         <pems-button tone="neutral" size="small" outline="true" as="a" asp-action="Index">Fleet Reliability</pems-button>
         <pems-button tone="neutral" size="small" outline="true" as="a" asp-action="Intelligence">@Localizer["Maintenance Intelligence"]</pems-button>
@@ -37,7 +37,7 @@
         <pems-button tone="neutral" size="small" outline="true" as="a" asp-action="CBMDashboard">@Localizer["CBM Dashboard"]</pems-button>
         <pems-button tone="neutral" size="small" outline="true" as="a" asp-action="AiInsights">@Localizer["AI Insights"]</pems-button>
     </div>
-</div>
+</pems-flex>
 <p class="text-muted small">
     طبق «PEMS Phase 9» بند ۲۰/۳۱: هیچ درصد/KPI جعلی این‌جا نمایش داده نمی‌شود - هرجا داده کافی
     نیست، N/A یا وضعیت صریح (NOT_READY/INSUFFICIENT_DATA) نشان داده می‌شود.

@@ -23,7 +23,7 @@
 
     @if (Model.Status == "Staged")
     {
-        <div class="d-flex gap-2 mt-3">
+        <pems-flex gap="2" css="mt-3">
             <form asp-action="Commit" method="post">
                 <input type="hidden" name="batchId" value="@Model.VDRImportBatchId" />
                 <pems-button tone="primary" type="submit" data-pems-confirm="Commit the selected rows into the live VDR register?">
@@ -36,7 +36,7 @@
                     <pems-icon name="bi-trash" /> Discard Batch
                 </pems-button>
             </form>
-        </div>
+        </pems-flex>
     }
 </pems-content-card>
 

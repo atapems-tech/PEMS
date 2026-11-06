@@ -7,13 +7,13 @@
 }
 
 <pems-content-card css="mb-3">
-    <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
+    <pems-flex justify="between" align="center" wrap="true" gap="2">
         <div>
             <h5 class="mb-0">MDB - @Model.EquipmentTagNumber</h5>
             <span class="text-muted small">@Model.VendorName &middot; @Model.ProjectName @(Model.PoNumber != null ? $"· PO {Model.PoNumber}" : "")</span>
         </div>
         <pems-badge tone="neutral" css="fs-6">@Model.Status</pems-badge>
-    </div>
+    </pems-flex>
 
     <hr class="my-2" />
 
@@ -31,7 +31,7 @@
         <pems-col md="3"><strong>Soft Copy:</strong> @(Model.SoftCopyDeliveredDate.HasValue ? $"Delivered {Model.SoftCopyDeliveredDate:yyyy-MM-dd}" : "Not delivered")</pems-col>
     </pems-row>
 
-    <div class="d-flex flex-wrap gap-2 mt-3">
+    <pems-flex wrap="true" gap="2" css="mt-3">
         @if (Model.IndexOfContentsSubmittedDate == null)
         {
             <form asp-action="MarkIndexSubmitted" method="post"><input type="hidden" name="mdbId" value="@Model.MDBId" /><pems-button tone="primary" size="small" outline="true">Mark Index Submitted</pems-button></form>
@@ -42,17 +42,17 @@
         }
         @if (!Model.HardCopyShippedDate.HasValue)
         {
-            <form asp-action="MarkHardCopyShipped" method="post" class="d-flex gap-1">
+            <form asp-action="MarkHardCopyShipped" method="post"><pems-flex gap="1">
                 <input type="hidden" name="mdbId" value="@Model.MDBId" />
                 <pems-input class="pems-w-90" scale="small" type="number" name="hardCopyCount" placeholder="# volumes" />
                 <pems-button tone="primary" size="small" outline="true">Mark Hard Copy Shipped</pems-button>
-            </form>
+            </pems-flex></form>
         }
         @if (!Model.SoftCopyDeliveredDate.HasValue)
         {
             <form asp-action="MarkSoftCopyDelivered" method="post"><input type="hidden" name="mdbId" value="@Model.MDBId" /><pems-button tone="primary" size="small" outline="true">Mark Soft Copy Delivered</pems-button></form>
         }
-    </div>
+    </pems-flex>
 </pems-content-card>
 
 @{

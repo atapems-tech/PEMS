@@ -3,13 +3,13 @@
 @using PEMS.Web.Resources
 @inject IStringLocalizer<SharedResource> Localizer
 
-<div class="d-flex justify-content-between align-items-center mb-3">
+<pems-flex justify="between" align="center" css="mb-3">
     <div>
         <h5 class="mb-0">@Model.NCRNumber</h5>
         <span class="text-muted small">@Model.QCDiscipline?.Name @(Model.Equipment != null ? " | " + Model.Equipment.TagNumber : "")</span>
     </div>
     <pems-badge tone="none" css="@(Model.Status == "Closed" ? "bg-success" : Model.Status == "Dispositioned" ? "bg-info" : Model.Status == "PendingApproval" ? "bg-warning text-dark" : "bg-secondary") fs-6">@Model.Status</pems-badge>
-</div>
+</pems-flex>
 
 <pems-content-card css="mb-3">
     <pems-row gap="2">
@@ -67,14 +67,14 @@ else if (Model.Status == "PendingApproval")
     <pems-content-card css="mb-3 border-warning">
         <h6 class="mb-3"><pems-icon name="bi-hourglass-split" /> در انتظار تایید مدیر QA</h6>
         <p class="text-muted small">این NCR بحرانه و Disposition آن باید توسط مدیر QA تایید بشه قبل از بسته شدن.</p>
-        <div class="d-flex gap-2">
+        <pems-flex gap="2">
             <form asp-action="NcrApprove" method="post" class="d-inline">
                 <input type="hidden" name="id" value="@Model.NonConformanceReportId" />
                 <input type="hidden" name="decision" value="Approve" />
                 <pems-button tone="success" size="small"><pems-icon name="bi-check-lg" /> تایید Disposition</pems-button>
             </form>
             <pems-button tone="danger" size="small" type="button" data-bs-toggle="modal" data-bs-target="#rejectDispositionModal">رد Disposition</pems-button>
-        </div>
+        </pems-flex>
     </pems-content-card>
 
     <pems-modal id="rejectDispositionModal" tabindex="-1">

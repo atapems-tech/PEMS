@@ -38,12 +38,12 @@
 <div class="tab-content">
     <div class="tab-pane fade show active" id="tab-categories" role="tabpanel">
         <pems-content-card>
-            <div class="d-flex justify-content-between align-items-center mb-3">
+            <pems-flex justify="between" align="center" css="mb-3">
                 <p class="text-muted small mb-0">دسته‌بندی سلسله‌مراتبی متریال - مستقل از Discipline.</p>
                 <pems-button tone="primary" size="small" css="text-nowrap" type="button" data-bs-toggle="modal" data-bs-target="#createCategoryModal">
                     <pems-icon name="bi-plus-lg" /> @Localizer["دسته‌بندی جدید"]
                 </pems-button>
-            </div>
+            </pems-flex>
             <pems-table kind="enterprise">
                 <thead><tr><th>@Localizer["کد"]</th><th>@Localizer["نام"]</th><th>@Localizer["والد"]</th><th>@Localizer["توضیحات"]</th><th></th></tr></thead>
                 <tbody>
@@ -69,12 +69,12 @@
 
     <div class="tab-pane fade" id="tab-uoms" role="tabpanel">
         <pems-content-card>
-            <div class="d-flex justify-content-between align-items-center mb-3">
+            <pems-flex justify="between" align="center" css="mb-3">
                 <p class="text-muted small mb-0">واحد اندازه‌گیری پایه - مستقل نگه داشته می‌شود تا بین متریال‌های مختلف مشترک باشد.</p>
                 <pems-button tone="primary" size="small" css="text-nowrap" type="button" data-bs-toggle="modal" data-bs-target="#createUomModal">
                     <pems-icon name="bi-plus-lg" /> @Localizer["واحد جدید"]
                 </pems-button>
-            </div>
+            </pems-flex>
             <pems-table kind="enterprise">
                 <thead><tr><th>@Localizer["کد"]</th><th>@Localizer["نام"]</th><th>@Localizer["ضریب تبدیل"]</th><th></th></tr></thead>
                 <tbody>
@@ -99,12 +99,12 @@
 
     <div class="tab-pane fade" id="tab-warehouses" role="tabpanel">
         <pems-content-card>
-            <div class="d-flex justify-content-between align-items-center mb-3">
+            <pems-flex justify="between" align="center" css="mb-3">
                 <p class="text-muted small mb-0">انبارهای فیزیکی - طبق پیشوندهای واقعی MRS از قبل seed شده‌اند.</p>
                 <pems-button tone="primary" size="small" css="text-nowrap" type="button" data-bs-toggle="modal" data-bs-target="#createWarehouseModal">
                     <pems-icon name="bi-plus-lg" /> @Localizer["انبار جدید"]
                 </pems-button>
-            </div>
+            </pems-flex>
             <pems-table kind="enterprise">
                 <thead><tr><th>@Localizer["کد"]</th><th>@Localizer["نام"]</th><th>@Localizer["محل‌های نگهداری"]</th><th></th></tr></thead>
                 <tbody>

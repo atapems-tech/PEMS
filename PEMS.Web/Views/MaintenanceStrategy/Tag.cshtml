@@ -4,10 +4,10 @@
 @using PEMS.Web.Resources
 @inject IStringLocalizer<SharedResource> Localizer
 
-<div class="d-flex justify-content-between align-items-center mb-3">
+<pems-flex justify="between" align="center" css="mb-3">
     <h5 class="mb-0"><pems-icon name="bi-tag" /> @Localizer["Rcm_TagMaintenance"] — @Model.Equipment.Tag</h5>
     <pems-button tone="neutral" size="small" outline="true" as="a" asp-action="Index" asp-route-equipmentId="@Model.Equipment.EquipmentId">@Localizer["Rcm_Back"]</pems-button>
-</div>
+</pems-flex>
 
 @await Html.PartialAsync("_EquipmentIdentity", Model.Equipment)
 

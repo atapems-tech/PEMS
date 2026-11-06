@@ -7,12 +7,12 @@
     var summary = (CmmsOperationalReadinessDto)ViewBag.Summary;
 }
 
-<div class="d-flex justify-content-end align-items-center mb-2">
+<pems-flex justify="end" align="center" css="mb-2">
     <div>
         <pems-button tone="neutral" size="small" outline="true" as="a" asp-controller="EquipmentClassification" asp-action="Coverage"><pems-icon name="bi-diagram-3" /> @Localizer["Master Data Coverage"]</pems-button>
         <pems-button tone="neutral" size="small" outline="true" as="a" asp-controller="Reliability" asp-action="Intelligence"><pems-icon name="bi-clipboard-data-fill" /> @Localizer["Maintenance Intelligence"]</pems-button>
     </div>
-</div>
+</pems-flex>
 <p class="text-muted small">
     طبق «PEMS Phase 7.5»: این صفحه هیچ رکوردی نمی‌سازد - فقط نشان می‌دهد کدام تجهیز/کلاس با
     داده‌ی مرجع موجود واقعاً «آماده‌ی اجرا» است. فعال‌سازی واقعی (ساخت Strategy/Plan/JobPlan)

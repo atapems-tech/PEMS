@@ -7,10 +7,10 @@
 
 <pems-page-shell kind="admin">
     <div class="admin-hero">
-        <div class="d-flex align-items-center justify-content-between gap-3 flex-wrap">
+        <pems-flex align="center" justify="between" gap="3" wrap="true">
             <p class="mb-0">@Localizer["Nav_Admin_Intro"]</p>
             <pems-button as="a" tone="none" size="small" css="btn-primary" asp-action="Create"><pems-icon name="bi-plus-lg" css="me-1" />@Localizer["Nav_Admin_AddLink"]</pems-button>
-        </div>
+        </pems-flex>
     </div>
 
     <pems-content-card>
@@ -46,7 +46,7 @@
                         var badge = NavigationBadges.Find(i.BadgeKey);
                         <tr id="row-@i.Key" class="@(i.IsActive ? "" : "text-body-tertiary")">
                             <td>
-                                <div class="d-flex align-items-center gap-2 pems-indent-@Math.Min(row.Depth, 8)">
+                                <pems-flex align="center" gap="2" css="pems-indent-@Math.Min(row.Depth, 8)">
                                     @if (!string.IsNullOrEmpty(i.Icon))
                                     {
                                         <pems-icon css="@i.Icon" aria-hidden="true" />
@@ -57,7 +57,7 @@
                                     {
                                         <pems-badge tone="info">@Localizer["Nav_Custom"]</pems-badge>
                                     }
-                                </div>
+                                </pems-flex>
                                 <div class="small text-body-tertiary pems-indent-@Math.Min(row.Depth, 8)" dir="ltr">@i.Key</div>
                             </td>
                             <td class="small" dir="ltr">@row.Route</td>

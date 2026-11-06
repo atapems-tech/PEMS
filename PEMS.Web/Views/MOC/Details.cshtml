@@ -11,16 +11,16 @@
 }
 
 <pems-content-card css="mb-3">
-    <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
+    <pems-flex justify="between" align="center" wrap="true" gap="2">
         <div>
             <h5 class="mb-0">@Model.MOCNumber</h5>
             <span class="text-muted small">@Model.Project?.ProjectName &middot; @Model.Discipline?.Name &middot; @Model.ChangeType</span>
         </div>
-        <div class="d-flex align-items-center gap-2">
+        <pems-flex align="center" gap="2">
             <pems-badge tone="@(Model.RiskLevel == "High" ? "danger" : Model.RiskLevel == "Medium" ? "warning" : "neutral")" css="fs-6">Risk: @Model.RiskLevel</pems-badge>
             <pems-badge tone="@sb" css="fs-6">@Model.Status</pems-badge>
-        </div>
-    </div>
+        </pems-flex>
+    </pems-flex>
 </pems-content-card>
 
 <pems-content-card css="mb-3">
@@ -72,18 +72,18 @@
         <ul class="list-unstyled mb-3">
             @foreach (var a in Model.Attachments.Where(x => x.IsActive))
             {
-                <li class="d-flex justify-content-between align-items-center border-bottom py-1">
+                <pems-flex as="li" justify="between" align="center" css="border-bottom py-1">
                     <a href="@Url.Action("Download", "Files", new { id = a.AttachmentId })" target="_blank"><pems-icon name="bi-file-earmark" /> @a.FileName</a>
                     <span class="text-muted small">@a.UploadDate.ToString("yyyy-MM-dd")</span>
-                </li>
+                </pems-flex>
             }
         </ul>
     }
-    <form asp-action="UploadAttachment" method="post" enctype="multipart/form-data" class="d-flex gap-2">
+    <form asp-action="UploadAttachment" method="post" enctype="multipart/form-data"><pems-flex gap="2">
         <input type="hidden" name="mocId" value="@Model.MOCId" />
         <pems-input scale="small" type="file" name="file" required />
         <pems-button tone="primary" size="small" outline="true" css="text-nowrap" type="submit"><pems-icon name="bi-upload" /> افزودن</pems-button>
-    </form>
+    </pems-flex></form>
 </pems-content-card>
 
 <pems-content-card css="mb-3">
@@ -110,7 +110,7 @@
         <p class="text-muted small">
             در انتظار @(currentStageName == "SeniorApproval" ? "تایید ارشد (چون ریسک بالاست)" : "تایید")
         </p>
-        <div class="d-flex gap-2">
+        <pems-flex gap="2">
             <form asp-action="Approve" method="post">
                 <input type="hidden" name="mocId" value="@Model.MOCId" />
                 <pems-button tone="success" size="small" type="submit"><pems-icon name="bi-check-lg" /> @Localizer["Approve"]</pems-button>
@@ -118,7 +118,7 @@
             <pems-button tone="danger" size="small" type="button" data-bs-toggle="modal" data-bs-target="#rejectModal">
                 <pems-icon name="bi-x-lg" /> @Localizer["Reject"]
             </pems-button>
-        </div>
+        </pems-flex>
 
         <pems-modal id="rejectModal" tabindex="-1">
                 <form asp-action="Reject" method="post">
@@ -153,7 +153,7 @@
         <pems-row gap="3">
             <pems-col md="6">
                 <div class="border rounded p-2">
-                    <div class="d-flex justify-content-between align-items-center">
+                    <pems-flex justify="between" align="center">
                         <span class="small"><pems-icon name="bi-file-earmark-check" /> به‌روزرسانی مدارک متاثر</span>
                         @if (Model.DocumentsUpdated)
                         {
@@ -161,18 +161,18 @@
                         }
                         else
                         {
-                            <form asp-action="MarkDocumentsUpdated" method="post" class="d-flex gap-1">
+                            <form asp-action="MarkDocumentsUpdated" method="post"><pems-flex gap="1">
                                 <input type="hidden" name="mocId" value="@Model.MOCId" />
                                 <pems-input class="pems-maxw-150" scale="small" type="text" name="note" placeholder="@Localizer["یادداشت (اختیاری)"]" />
                                 <pems-button tone="success" size="small" outline="true" type="submit">@Localizer["تکمیل شد"]</pems-button>
-                            </form>
+                            </pems-flex></form>
                         }
-                    </div>
+                    </pems-flex>
                 </div>
             </pems-col>
             <pems-col md="6">
                 <div class="border rounded p-2">
-                    <div class="d-flex justify-content-between align-items-center">
+                    <pems-flex justify="between" align="center">
                         <span class="small"><pems-icon name="bi-mortarboard" /> آموزش @(Model.TrainingRequired ? "" : "(نیاز ندارد)")</span>
                         @if (!Model.TrainingRequired || Model.TrainingCompleted)
                         {
@@ -185,7 +185,7 @@
                                 <pems-button tone="success" size="small" outline="true" type="submit">@Localizer["تکمیل شد"]</pems-button>
                             </form>
                         }
-                    </div>
+                    </pems-flex>
                 </div>
             </pems-col>
         </pems-row>

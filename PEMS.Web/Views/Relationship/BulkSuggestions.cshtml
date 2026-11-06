@@ -3,7 +3,7 @@
 @using PEMS.Web.Resources
 @inject IStringLocalizer<SharedResource> Localizer
 
-<div class="d-flex justify-content-between align-items-center mb-3">
+<pems-flex justify="between" align="center" css="mb-3">
     <div>
         <p class="text-muted small mb-0">
             فقط تطبیق‌های کامل (Exact Match روی شماره‌ی خام ثبت‌شده) این‌جا نشون داده می‌شن -
@@ -12,7 +12,7 @@
         </p>
     </div>
     <pems-button tone="neutral" size="small" outline="true" as="a" asp-action="Index">@Localizer["بازگشت به Explorer"]</pems-button>
-</div>
+</pems-flex>
 
 @if (!Model.Any())
 {

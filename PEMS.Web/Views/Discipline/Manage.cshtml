@@ -10,7 +10,7 @@
     <p class="text-muted small mb-2">@Localizer["Disc_Manage_Note"]</p>
     <pems-button tone="neutral" size="small" outline="true" css="mb-3" as="a" asp-action="Index"><pems-icon name="bi-arrow-left" /> @Localizer["Discipline Workspaces"]</pems-button>
 
-    <form method="get" class="d-flex gap-2 mb-3 flex-wrap">
+    <form class="mb-3" method="get"><pems-flex gap="2" wrap="true">
         <pems-input class="pems-maxw-260" scale="small" name="q" value="@ViewBag.Query" placeholder="@Localizer["Org_Positions_Search"]" aria-label="@Localizer["Org_Positions_Search"]" />
         <pems-select class="pems-maxw-180" scale="small" name="status" aria-label="@Localizer["Org_Filter_Status"]">
             <option value="" selected="@((string)ViewBag.Status == "")">@Localizer["Org_Filter_All"]</option>
@@ -18,7 +18,7 @@
             <option value="inactive" selected="@((string)ViewBag.Status == "inactive")">@Localizer["Org_Inactive"]</option>
         </pems-select>
         <pems-button tone="neutral" size="small" outline="true"><pems-icon name="bi-funnel" /> @Localizer["Org_Filter_Apply"]</pems-button>
-    </form>
+    </pems-flex></form>
 
     <form asp-action="CreateDiscipline" method="post"><pems-row gap="2" css="align-items-end mb-3">
         <pems-col md="2"><pems-label>@Localizer["Code"]</pems-label><pems-input scale="small" name="code" maxlength="20" required /></pems-col>

@@ -67,10 +67,10 @@
             <div class="form-check mt-4"><pems-input kind="check" asp-for="IsEnabled" /><label class="form-check-label" asp-for="IsEnabled">@Localizer["Enabled"]</label></div>
         </pems-col>
     </pems-row>
-    <div class="mt-4 d-flex gap-2">
+    <pems-flex gap="2" css="mt-4">
         <pems-button tone="primary" type="submit"><pems-icon name="bi-check2" css="me-1" /> @Localizer["Save"]</pems-button>
         <pems-button as="a" tone="neutral" outline="true" asp-action="Index">@Localizer["Cancel"]</pems-button>
-    </div>
+    </pems-flex>
 </pems-content-card>
 
 <script src="~/js/views/admin-storageproviders-form.js" asp-append-version="true"></script>

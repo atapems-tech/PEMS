@@ -3,14 +3,14 @@
 @using PEMS.Web.Resources
 @inject IStringLocalizer<SharedResource> Localizer
 
-<div class="d-flex justify-content-end align-items-center mb-2">
+<pems-flex justify="end" align="center" css="mb-2">
     <div>
         <pems-button tone="primary" size="small" outline="true" as="a" asp-action="Backlog"><pems-icon name="bi-list-task" /> @Localizer["Maintenance Backlog"]</pems-button>
         <pems-button tone="neutral" size="small" outline="true" as="a" asp-controller="WorkRequest" asp-action="Index">@Localizer["Work Requests"]</pems-button>
         <pems-button tone="neutral" size="small" outline="true" as="a" asp-controller="WorkOrder" asp-action="Index">@Localizer["Work Orders"]</pems-button>
         <pems-button tone="neutral" size="small" outline="true" as="a" asp-controller="Reliability" asp-action="Intelligence">@Localizer["Maintenance Intelligence"]</pems-button>
     </div>
-</div>
+</pems-flex>
 <p class="text-muted small">
     طبق «PEMS Phase 8» بند ۲۱: تجمیع فقط‌خواندنی وضعیت WorkRequest/WorkOrder موجود - هیچ عددی
     محاسبه/جعل نمی‌شود، فقط COUNT روی داده‌ی واقعی. Generated @Model.GeneratedAt.ToString("yyyy-MM-dd HH:mm").

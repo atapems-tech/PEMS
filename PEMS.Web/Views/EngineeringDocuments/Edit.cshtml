@@ -22,7 +22,7 @@
    می‌شوند - Submit/Approve/Reject/Create Revision - نه ویرایش مستقیم اینجا). *@
 
 <pems-content-card css="mb-3">
-    <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
+    <pems-flex justify="between" align="center" wrap="true" gap="2">
         <div>
             <h5 class="mb-1">Editing: @Model.DocumentNo</h5>
             <pems-badge tone="@statusClass">@Model.Status</pems-badge>
@@ -32,7 +32,7 @@
         <pems-button tone="neutral" size="small" outline="true" as="a" asp-action="Details" asp-route-id="@Model.DocumentId">
             <pems-icon name="bi-arrow-return-left" /> Back to Details
         </pems-button>
-    </div>
+    </pems-flex>
     <p class="text-muted small mb-0 mt-2">
         Status, revision, and freeze are managed through the document workflow (Submit / Approve / Reject / Create Revision
         on the Details page), not edited directly here.

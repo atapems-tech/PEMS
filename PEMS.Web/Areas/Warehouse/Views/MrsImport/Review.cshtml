@@ -17,7 +17,7 @@
 }
 
 <pems-content-card css="mb-3">
-    <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
+    <pems-flex justify="between" align="center" wrap="true" gap="2">
         <div>
             <h5 class="mb-0">
                 @Model.Batch.SourceFileName
@@ -29,7 +29,7 @@
             <span class="text-muted small">Batch #@Model.Batch.MrsImportBatchId - شیت @Model.Batch.SourceSheet - @Model.Batch.TotalRows ردیف - @Model.Batch.ImportDate.ToString("yyyy-MM-dd HH:mm")</span>
         </div>
         <pems-button as="a" tone="neutral" size="small" outline="true" asp-action="Index"><pems-icon name="bi-arrow-left" /> Back</pems-button>
-    </div>
+    </pems-flex>
 </pems-content-card>
 
 @if (TempData["Message"] != null)
@@ -90,7 +90,7 @@
 </pems-content-card>
 
 <pems-content-card css="mb-3">
-    <div class="d-flex gap-2 flex-wrap align-items-center">
+    <pems-flex gap="2" wrap="true" align="center">
         <div class="input-group admin-search pems-s-2f3f7d77">
             <span class="input-group-text"><pems-icon name="bi-search" /></span>
             <pems-input type="search" id="rowSearch" placeholder="Filter this page by description..." autocomplete="off" />
@@ -102,7 +102,7 @@
         <pems-button tone="danger" size="small" outline="true" type="submit" form="bulkRejectForm" id="bulkRejectBtn" disabled="true" data-pems-confirm="ردیف‌های انتخاب‌شده (این صفحه) رد شوند؟">
             <pems-icon name="bi-x-circle" /> Reject Selected
         </pems-button>
-    </div>
+    </pems-flex>
 </pems-content-card>
 
 <pems-content-card>

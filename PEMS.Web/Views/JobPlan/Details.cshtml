@@ -15,14 +15,14 @@
 }
 
 <pems-content-card css="mb-3">
-    <div class="d-flex align-items-center gap-3 mb-2 flex-wrap">
+    <pems-flex align="center" gap="3" wrap="true" css="mb-2">
         <div class="kpi-icon bg-icon-blue pems-s-792bd2d6"><pems-icon name="bi-list-check" /></div>
         <div>
             <h5 class="mb-0">@Model.JobPlanNumber &mdash; @Model.Title</h5>
             <span class="text-muted small">@(Model.EstimatedDurationHours.HasValue ? Model.EstimatedDurationHours + " hours estimated" : "no duration estimate")</span>
         </div>
         <pems-button tone="neutral" size="small" outline="true" css="ms-auto" type="button" data-bs-toggle="modal" data-bs-target="#editJobPlanModal"><pems-icon name="bi-pencil" /> @Localizer["Edit"]</pems-button>
-    </div>
+    </pems-flex>
     <pems-info-grid class="mt-2">
         <pems-info-item label="@Localizer["Scope"]">@Model.Scope</pems-info-item>
         <pems-info-item label="@Localizer["Safety Requirements"]">@Model.SafetyRequirements</pems-info-item>
@@ -75,7 +75,7 @@
 </pems-related-list>
 <pems-content-card css="mb-3">
     <h6 class="mb-3"><pems-icon name="bi-mortarboard" /> @Localizer["Required Skills"]</h6>
-    <div class="d-flex flex-wrap gap-2 mb-3">
+    <pems-flex wrap="true" gap="2" css="mb-3">
         @foreach (var rs in Model.RequiredSkills)
         {
             <pems-badge tone="neutral" css="d-flex align-items-center gap-1">
@@ -88,7 +88,7 @@
                 </form>
             </pems-badge>
         }
-    </div>
+    </pems-flex>
     @if (!Model.RequiredSkills.Any()) { <p class="text-muted small">@Localizer["مهارت موردنیازی ثبت نشده."]</p> }
 
     <form asp-action="AddRequiredSkill" method="post"><pems-row gap="2">

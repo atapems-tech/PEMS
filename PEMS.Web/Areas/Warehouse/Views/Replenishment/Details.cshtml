@@ -19,7 +19,7 @@
 }
 
 <pems-content-card css="mb-3">
-    <div class="d-flex justify-content-between align-items-start flex-wrap gap-2">
+    <pems-flex justify="between" align="start" wrap="true" gap="2">
         <div>
             <h5 class="mb-1">@s.MaterialCode <span class="text-muted fw-normal">@s.MaterialDescription</span></h5>
             <div class="small text-muted">
@@ -31,7 +31,7 @@
             <pems-badge tone="none" css="@badge fs-6">@s.Status</pems-badge>
             @if (!s.IsCurrentlyDefinitive) { <pems-badge tone="danger" css="fs-6">@Localizer["Repl_NotDefinitive"]</pems-badge> }
         </div>
-    </div>
+    </pems-flex>
 
     <pems-alert tone="info" css="py-2 px-3 small mt-3 mb-2"><pems-icon name="bi-info-circle" /> @Localizer["Repl_StockOnlyNote"]</pems-alert>
 
@@ -89,7 +89,7 @@
     }
     @if (canReview && s.Status == "Open")
     {
-        <form asp-action="Dismiss" method="post" class="mt-3 d-flex gap-2 flex-wrap align-items-end">
+        <form class="mt-3" asp-action="Dismiss" method="post"><pems-flex gap="2" wrap="true" align="end">
             @Html.AntiForgeryToken()
             <input type="hidden" name="id" value="@s.Id" />
             <input type="hidden" name="rowVersion" value="@version" />
@@ -98,11 +98,11 @@
                 <pems-input scale="small" type="text" name="reason" maxlength="500" required />
             </div>
             <pems-button tone="neutral" size="small" outline="true" type="submit"><pems-icon name="bi-x-circle" /> @Localizer["Repl_Dismiss"]</pems-button>
-        </form>
+        </pems-flex></form>
     }
     @if (canReview && s.Status == "Dismissed")
     {
-        <form asp-action="Reopen" method="post" class="mt-3 d-flex gap-2 flex-wrap align-items-end">
+        <form class="mt-3" asp-action="Reopen" method="post"><pems-flex gap="2" wrap="true" align="end">
             @Html.AntiForgeryToken()
             <input type="hidden" name="id" value="@s.Id" />
             <input type="hidden" name="rowVersion" value="@version" />
@@ -111,7 +111,7 @@
                 <pems-input scale="small" type="text" name="note" maxlength="500" />
             </div>
             <pems-button tone="primary" size="small" type="submit"><pems-icon name="bi-arrow-counterclockwise" /> @Localizer["Repl_Reopen"]</pems-button>
-        </form>
+        </pems-flex></form>
     }
 </pems-content-card>
 

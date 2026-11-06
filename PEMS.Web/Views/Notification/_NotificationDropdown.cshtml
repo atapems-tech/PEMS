@@ -6,16 +6,16 @@
 @* شناسه‌ی Anti-forgery برای POSTهای AJAX (MarkRead/Dismiss/MarkAll) - همراه همین Partial بارگذاری می‌شود *@
 <div id="notifAf" class="d-none">@Html.AntiForgeryToken()</div>
 
-<div class="d-flex justify-content-between align-items-center px-3 py-2 border-bottom">
+<pems-flex justify="between" align="center" css="px-3 py-2 border-bottom">
     <strong class="small">@Localizer["Notifications"]</strong>
     <pems-button tone="none" size="small" css="btn-link p-0 text-decoration-none" type="button" data-notif-action="markAll">@Localizer["Notif_MarkAllRead"]</pems-button>
-</div>
+</pems-flex>
 
 @if (Model.Any())
 {
     foreach (var n in Model)
     {
-        <div class="d-flex align-items-start border-bottom @(n.IsRead ? "" : "bg-light")" data-notif-id="@n.NotificationId">
+        <pems-flex align="start" css="border-bottom @(n.IsRead ? "" : "bg-light")" data-notif-id="@n.NotificationId">
             <a href="@Url.Action("Open", "Notification", new { id = n.NotificationId })" class="dropdown-item small py-2 flex-grow-1 text-wrap">
                 @if (!n.IsRead) { <pems-icon name="bi-circle-fill" css="text-primary me-1 pems-s-3494e7ef" aria-hidden="true" /> }
                 <strong>@n.Title</strong>
@@ -23,7 +23,7 @@
                 <div class="text-muted pems-s-11a50812">@n.CreatedDate.ToString("yyyy-MM-dd HH:mm")</div>
             </a>
             <pems-button tone="none" size="small" css="btn-link text-muted px-2 py-2" type="button" data-notif-action="dismiss" data-notif-id="@n.NotificationId" title="@Localizer["Notif_Dismiss"]" aria-label="@Localizer["Notif_Dismiss"]"><pems-icon name="bi-x-lg" /></pems-button>
-        </div>
+        </pems-flex>
     }
 }
 else

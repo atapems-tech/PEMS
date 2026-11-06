@@ -5,13 +5,13 @@
 @{ ViewData["Title"] = "Edit Instrument - " + Model.Equipment?.TagNumber; }
 
 <pems-content-card css="mb-3">
-    <div class="d-flex justify-content-between align-items-center">
+    <pems-flex justify="between" align="center">
         <div>
             <h5 class="mb-0">@Model.Equipment?.TagNumber <span class="text-muted small">(@Model.Equipment?.Manufacturer / @Model.Equipment?.Model)</span></h5>
             <span class="text-muted small">Tag, manufacturer, model and description are edited on the Equipment record - <a asp-controller="Equipment" asp-action="Details" asp-route-id="@Model.EquipmentId">open Equipment</a>.</span>
         </div>
         <pems-button tone="neutral" size="small" outline="true" as="a" asp-action="Passport" asp-route-id="@Model.InstrumentId"><pems-icon name="bi-card-text" /> @Localizer["Passport"]</pems-button>
-    </div>
+    </pems-flex>
 </pems-content-card>
 
 <pems-content-card>

@@ -47,13 +47,13 @@
 
 <pems-page-shell kind="workspace" css="pc-page">
     <div class="vs-doc-head">
-        <div class="d-flex flex-wrap align-items-center gap-2">
+        <pems-flex wrap="true" align="center" gap="2">
             <h2 class="pems-page-title mb-0">@(string.IsNullOrEmpty(d.RequestNumber) ? "#" + d.Id : d.RequestNumber)</h2>
             <span class="vs-pill vs-pill--info">@Localizer["Pc_Type_" + d.RequestType]</span>
             <span class="vs-pill vs-pill--icon @StatusPill(d.Status)">@Localizer["Pc_Status_" + d.Status]</span>
             @if (f.Urgent) { <span class="vs-pill vs-pill--danger vs-pill--icon"><pems-icon name="bi-exclamation-triangle" aria-hidden="true" /> @Localizer["Pc_Urgent"]</span> }
             @if (!string.IsNullOrEmpty(d.AssignedPartNumber)) { <span class="vs-pill vs-pill--success">@Localizer["Pc_Col_PartNo"]: @d.AssignedPartNumber</span> }
-        </div>
+        </pems-flex>
         <div class="small text-muted mt-1">
             @L("Requester"): @d.RequesterName · @Localizer["Pc_Col_Created"]: @d.CreatedDate.ToString("yyyy-MM-dd")
             @if (d.SubmittedDate.HasValue) { <text> · @Localizer["Pc_Col_Submitted"]: @d.SubmittedDate.Value.ToString("yyyy-MM-dd")</text> }
@@ -226,10 +226,10 @@
                 <ul class="list-unstyled small mb-0">
                     @foreach (var at in d.Attachments)
                     {
-                        <li class="d-flex justify-content-between gap-2 border-bottom py-1">
+                        <pems-flex as="li" justify="between" gap="2" css="border-bottom py-1">
                             <a asp-action="Download" asp-route-id="@d.Id" asp-route-attachmentId="@at.Id" class="text-truncate">@at.FileName</a>
                             <span class="text-muted">@Localizer["Pc_Kind_" + at.Kind]</span>
-                        </li>
+                        </pems-flex>
                     }
                 </ul>
             </section>
@@ -276,11 +276,11 @@
                 </div>
                 @if (d.Status is "InApproval" or "Draft" or "Returned")
                 {
-                    <form asp-action="AddNote" method="post" class="d-flex gap-2">
+                    <form asp-action="AddNote" method="post"><pems-flex gap="2">
                         <input type="hidden" name="id" value="@d.Id" />
                         <pems-input scale="small" name="text" maxlength="2000" placeholder="@Localizer["Pc_Hint_NoteReply"]" aria-label="@L("Notes")" />
                         <button type="submit" class="vs-btn vs-btn--sm"><pems-icon name="bi-plus-lg" /> @Localizer["Pc_Btn_AddNote"]</button>
-                    </form>
+                    </pems-flex></form>
                 }
             </section>
         </pems-col>

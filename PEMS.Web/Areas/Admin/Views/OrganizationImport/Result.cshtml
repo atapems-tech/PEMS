@@ -8,9 +8,9 @@
 }
 
 <pems-page-shell kind="admin">
-    <div class="d-flex gap-2 mb-3">
+    <pems-flex gap="2" css="mb-3">
         <a class="vs-btn vs-btn--sm" asp-action="Index"><pems-icon name="bi-arrow-left" /> @Localizer["Org_Imp_Title"]</a>
-    </div>
+    </pems-flex>
 
     @if (committed) { <pems-alert tone="success">@Localizer["Org_Imp_Committed"]</pems-alert> }
     else if (Model.Errors.Count > 0) { <pems-alert tone="danger">@Localizer["Org_Imp_Rejected"]</pems-alert> }

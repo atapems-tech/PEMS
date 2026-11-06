@@ -30,10 +30,10 @@
     }
 
     <pems-content-card css="mb-3">
-        <div class="d-flex align-items-center gap-3 flex-wrap">
+        <pems-flex align="center" gap="3" wrap="true">
             <pems-badge tone="none" css="fs-6 @badge">@Localizer["Lic_State_" + s.State]</pems-badge>
             @foreach (var r in s.Reasons) { <pems-badge tone="light">@Localizer["Lic_Reason_" + r]</pems-badge> }
-        </div>
+        </pems-flex>
         <pems-row gap="3" css="mt-2">
             <pems-col md="4" span="12"><div class="small fw-bold"><code>@(s.InstallId ?? "-")</code></div><div class="text-muted small">@Localizer["Lic_InstallId"]</div></pems-col>
             <pems-col md="2" span="6"><div class="small fw-bold"><code>@(s.FingerprintShort ?? "-")</code></div><div class="text-muted small">@Localizer["Lic_Fingerprint"]</div></pems-col>
@@ -73,10 +73,10 @@
     <pems-content-card>
         <h6>@Localizer["Lic_UploadTitle"]</h6>
         <p class="text-muted small">@Localizer["Lic_UploadHelp"]</p>
-        <form asp-action="Upload" method="post" enctype="multipart/form-data" class="d-flex align-items-center gap-3 flex-wrap">
+        <form asp-action="Upload" method="post" enctype="multipart/form-data"><pems-flex align="center" gap="3" wrap="true">
             @Html.AntiForgeryToken()
             <pems-input css="w-auto" type="file" name="file" accept=".pemslic,.zip" required aria-label="@Localizer["Lic_UploadTitle"]" />
             <pems-button tone="primary" type="submit"><pems-icon name="bi-upload" css="me-1" /> @Localizer["Lic_Upload"]</pems-button>
-        </form>
+        </pems-flex></form>
     </pems-content-card>
 </pems-page-shell>

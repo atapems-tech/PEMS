@@ -74,7 +74,7 @@
                     <td>@(q.QuotedAmount.HasValue ? $"{q.QuotedAmount:N2} {q.Currency}" : "-")</td>
                     <td><pems-badge tone="neutral">@q.QuotationStatus</pems-badge></td>
                     <td colspan="4">
-                        <form asp-action="UpdateQuotationEvaluation" method="post" class="d-flex gap-1 align-items-center flex-wrap">
+                        <form asp-action="UpdateQuotationEvaluation" method="post"><pems-flex gap="1" align="center" wrap="true">
                             <input type="hidden" name="mrId" value="@Model.MRId" />
                             <input type="hidden" name="mrqId" value="@q.MRQId" />
 
@@ -94,7 +94,7 @@
                             </pems-select>
 
                             <pems-button tone="primary" size="small" outline="true" type="submit">@Localizer["Save"]</pems-button>
-                        </form>
+                        </pems-flex></form>
                     </td>
                 </tr>
             }

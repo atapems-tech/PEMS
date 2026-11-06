@@ -43,10 +43,10 @@
                         var fromLabel = Model.Nodes.FirstOrDefault(n => n.Id == e.FromNodeId)?.Label ?? e.FromNodeId;
                         var badgeClass = e.Kind == "reject" ? "danger" : (e.Kind == "terminal" ? "neutral" : "success");
 
-                        <li class="d-flex align-items-center gap-2 py-1 border-bottom">
+                        <pems-flex as="li" align="center" gap="2" css="py-1 border-bottom">
                             <pems-badge class="pems-minw-70" tone="@badgeClass">@e.Label</pems-badge>
                             <span>@fromLabel <pems-icon name="@(isRtl ? "bi-arrow-left" : "bi-arrow-right")" /> @toLabel</span>
-                        </li>
+                        </pems-flex>
                     }
                 </ul>
             </div>
