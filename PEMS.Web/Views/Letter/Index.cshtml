@@ -315,7 +315,7 @@
                     <input type="hidden" name="@kv.Key" value="@kv.Value" />
                 }
                 <pems-icon name="bi-search" aria-hidden="true" />
-                <input type="search" name="q" id="lpSearchInput" value="@searchQuery" placeholder="@Localizer["Lp_SearchPlaceholder"]" aria-label="@Localizer["Lp_SearchPlaceholder"]"
+                <pems-input plain="true" type="search" name="q" id="lpSearchInput" value="@searchQuery" placeholder="@Localizer["Lp_SearchPlaceholder"]" aria-label="@Localizer["Lp_SearchPlaceholder"]"
                        data-pems-search data-search-type="Letter" autocomplete="off" />
                 <pems-button tone="primary" size="small" type="submit">@Localizer["Search"]</pems-button>
                 <pems-button plain="true" type="button" css="lp-icon-btn" id="lpSearchClose" aria-label="@Localizer["Lp_SearchClose"]"><pems-icon name="bi-x-lg" aria-hidden="true" /></pems-button>
@@ -343,7 +343,7 @@
                                     <div class="lp-seg">
                                         @foreach (var (value, label) in new[] { ("", Localizer["Lt_TypeAll"].Value), ("Incoming", Localizer["Incoming"].Value), ("Outgoing", Localizer["Outgoing"].Value), ("Internal", Localizer["Internal"].Value) })
                                         {
-                                            <input type="radio" class="btn-check" name="letterType" id="fpType_@(value.Length == 0 ? "all" : value)" value="@value" checked="@(currentType == value)" />
+                                            <pems-input plain="true" type="radio" class="btn-check" name="letterType" id="fpType_@(value.Length == 0 ? "all" : value)" value="@value" checked="@(currentType == value)" />
                                             <pems-button as="label" tone="neutral" size="small" outline="true" for="fpType_@(value.Length == 0 ? "all" : value)">@label</pems-button>
                                         }
                                     </div>
@@ -351,11 +351,11 @@
                                 <fieldset>
                                     <legend class="lp-lbl">@Localizer["Lt_Priority"]</legend>
                                     <div class="lp-seg">
-                                        <input type="radio" class="btn-check" name="priority" id="fpPri_all" value="" checked="@(currentPriority == "")" />
+                                        <pems-input plain="true" type="radio" class="btn-check" name="priority" id="fpPri_all" value="" checked="@(currentPriority == "")" />
                                         <pems-button as="label" tone="neutral" size="small" outline="true" for="fpPri_all">@Localizer["Lt_Any"]</pems-button>
                                         @foreach (var pr in new[] { "Urgent", "High", "Normal", "Low" })
                                         {
-                                            <input type="radio" class="btn-check" name="priority" id="fpPri_@pr" value="@pr" checked="@(currentPriority == pr)" />
+                                            <pems-input plain="true" type="radio" class="btn-check" name="priority" id="fpPri_@pr" value="@pr" checked="@(currentPriority == pr)" />
                                             <pems-button as="label" tone="neutral" size="small" outline="true" for="fpPri_@pr">@Localizer["Lt_P_" + pr]</pems-button>
                                         }
                                     </div>
@@ -577,7 +577,7 @@
                 <pems-table kind="enterprise" css="pems-grid-table pems-compact-rows mb-0 lp-table" data-grid-key="Letter">
                     <pems-table-head>
                         <pems-table-row>
-                            <pems-table-header class="pems-w-34" data-col-key="select" data-resizable="false"><input type="checkbox" id="selectAllLetters" aria-label="@Localizer["Lt_SelectAll"]" /></pems-table-header>
+                            <pems-table-header class="pems-w-34" data-col-key="select" data-resizable="false"><pems-input plain="true" type="checkbox" id="selectAllLetters" aria-label="@Localizer["Lt_SelectAll"]" /></pems-table-header>
                             <pems-table-header class="pems-w-30" data-col-key="star" data-resizable="false"><span class="visually-hidden">@Localizer["Lt_QueueStarred"]</span></pems-table-header>
                             <pems-table-header class="pems-w-38" data-col-key="type" data-resizable="false"><span class="visually-hidden">@Localizer["Type"]</span></pems-table-header>
                             <pems-table-header data-col-key="subject" data-resizable="true" data-min-width="200" data-max-width="700" aria-sort="@AriaSort("subject")"><a class="ct-sort" href="@SortUrl("subject")">@Localizer["Subject"] <pems-icon css="@SortIcon("subject")" aria-hidden="true" /></a></pems-table-header>
@@ -601,7 +601,7 @@
                             var prIcon = l.Priority switch { "Urgent" => "bi-flag-fill", "High" => "bi-arrow-up-circle", "Low" => "bi-arrow-down-circle", _ => "bi-dash-circle" };
                             var veryConfidential = l.ConfidentialityLevel is "Restricted" or "Secret" or "VeryConfidential";
                             <pems-table-row class="lp-row @(l.IsUnread ? "lp-unread" : "") @(l.HasOverdueReferral ? "table-danger" : "") @(l.IsTrashed ? "ct-trashed" : "")" data-letter-id="@l.LetterId" data-thread-count="@l.ThreadCount">
-                                <pems-table-cell><input type="checkbox" class="letter-select" value="@l.LetterId" aria-label="@Localizer["Lt_Select"] @l.LetterNumber" /></pems-table-cell>
+                                <pems-table-cell><pems-input plain="true" type="checkbox" class="letter-select" value="@l.LetterId" aria-label="@Localizer["Lt_Select"] @l.LetterNumber" /></pems-table-cell>
                                 <pems-table-cell>
                                     <pems-form asp-action="ToggleStar" method="post" class="d-inline">
                                         <input type="hidden" name="letterId" value="@l.LetterId" />

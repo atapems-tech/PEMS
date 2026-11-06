@@ -280,7 +280,7 @@
                         <pems-label for="pc_NewManufacturerName">@L("IsNewManufacturer")</pems-label>
                         <div class="input-group input-group-sm">
                             <div class="input-group-text">
-                                <input type="checkbox" id="pc_IsNewManufacturer" form="pcForm" name="IsNewManufacturer" value="true" checked="@f.IsNewManufacturer" aria-label="@L("IsNewManufacturer")" />
+                                <pems-input plain="true" type="checkbox" id="pc_IsNewManufacturer" form="pcForm" name="IsNewManufacturer" value="true" checked="@f.IsNewManufacturer" aria-label="@L("IsNewManufacturer")" />
                                 <input type="hidden" form="pcForm" name="IsNewManufacturer" value="false" />
                             </div>
                             <pems-input id="pc_NewManufacturerName" form="pcForm" name="NewManufacturerName" value="@f.NewManufacturerName" maxlength="200" placeholder="@Localizer["Pc_Hint_NewManufacturer"]" disabled="@(!f.IsNewManufacturer)" css="text-uppercase" />

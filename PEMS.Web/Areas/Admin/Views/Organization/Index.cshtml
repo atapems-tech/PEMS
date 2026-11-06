@@ -75,7 +75,7 @@
                                     <pems-form asp-action="UpdateAssignment" method="post"><pems-flex gap="1" align="center" wrap="true">
                                         <input type="hidden" name="assignmentId" value="@r.AssignmentId" />
                                         <span class="small me-1">@r.HolderName</span>
-                                        <label class="small"><input type="checkbox" name="isPrimary" value="true" checked="@r.HolderIsPrimary" /> @Localizer["Org_Primary"]</label>
+                                        <label class="small"><pems-input plain="true" type="checkbox" name="isPrimary" value="true" checked="@r.HolderIsPrimary" /> @Localizer["Org_Primary"]</label>
                                         <input type="hidden" name="isPrimary" value="false" />
                                         <pems-date class="pems-w-130" name="startDate" value="@r.StartDate?.ToString("yyyy-MM-dd")" aria-label="@Localizer["Org_EffectiveFrom"]" required scale="small" />
                                         <pems-date class="pems-w-130" name="endDate" value="@r.EndDate?.ToString("yyyy-MM-dd")" aria-label="@Localizer["Org_EffectiveTo"]" scale="small" />
@@ -90,7 +90,7 @@
                                             <option value="">@Localizer["Org_SelectEmployee"]</option>
                                             @foreach (var e in employees) { <option value="@e.EmployeeId">@e.Label</option> }
                                         </pems-select>
-                                        <label class="small"><input type="checkbox" name="isPrimary" value="true" checked /> @Localizer["Org_Primary"]</label>
+                                        <label class="small"><pems-input plain="true" type="checkbox" name="isPrimary" value="true" checked /> @Localizer["Org_Primary"]</label>
                                         <input type="hidden" name="isPrimary" value="false" />
                                         <pems-date class="pems-w-130" name="startDate" scale="small" aria-label="@Localizer["Org_EffectiveFrom"]" />
                                         <pems-date class="pems-w-130" name="endDate" scale="small" aria-label="@Localizer["Org_EffectiveTo"]" />

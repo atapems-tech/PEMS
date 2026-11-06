@@ -162,7 +162,8 @@ public class LetterWorkspaceIndexTests
         var form = System.Text.RegularExpressions.Regex.Match(html, @"<form\b[^>]*\bid=""lpSearchForm""[^>]*>").Value;
         Assert.NotEmpty(form);
         foreach (var attribute in new[] { @"method=""get""", @"class=""lp-search""", @"role=""search""", @"hidden" }) Assert.Contains(attribute, form);
-        Assert.Matches(@"<input type=""search"" name=""q"" id=""lpSearchInput"" value=""pump""[^>]*data-pems-search data-search-type=""Letter""", html);
+        var input = System.Text.RegularExpressions.Regex.Match(html, @"<input\b[^>]*\bid=""lpSearchInput""[^>]*>").Value;
+        foreach (var attribute in new[] { @"type=""search""", @"name=""q""", @"value=""pump""", @"data-pems-search", @"data-search-type=""Letter""" }) Assert.Contains(attribute, input);
         Assert.Matches(@"id=""lpSearchBtn""[^>]*aria-expanded=""false""", html);
     }
 

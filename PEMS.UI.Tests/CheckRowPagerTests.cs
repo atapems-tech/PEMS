@@ -148,4 +148,20 @@ public sealed class CheckRowPagerTests
         Assert.DoesNotContain("class=", bare);
         Assert.Contains("disabled", bare);
     }
+
+    [Fact]
+    public async Task A_plain_input_writes_only_the_page_class_and_attributes()
+    {
+        var box = await UiTestRenderer.Instance.RenderAsync<PemsInput>(new Dictionary<string, object?>
+        {
+            [nameof(PemsInput.Options)] = new InputOptions { Plain = true, PageClass = "row-select", Attributes = new Dictionary<string, object> { ["type"] = "checkbox", ["name"] = "ids", ["value"] = "7" } }
+        });
+        Assert.Contains("<input class=\"row-select\" type=\"checkbox\" name=\"ids\" value=\"7\"", box);
+        Assert.DoesNotContain("form-", box);
+        var bare = await UiTestRenderer.Instance.RenderAsync<PemsInput>(new Dictionary<string, object?>
+        {
+            [nameof(PemsInput.Options)] = new InputOptions { Plain = true, Attributes = new Dictionary<string, object> { ["type"] = "file", ["id"] = "f" } }
+        });
+        Assert.DoesNotContain("class=", bare);
+    }
 }

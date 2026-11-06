@@ -128,7 +128,7 @@
                         <div class="dcr-seg" role="radiogroup" aria-labelledby="dcrChannelLabel" id="dcrChannel">
                             @foreach (var c in IncomingCorrespondenceRules.Channels)
                             {
-                                <label class="dcr-seg-item"><input type="radio" name="receiptChannel" value="@c" checked="@(c == "OfficialLetter")" /><span>@L("Dcc_Channel_" + c)</span></label>
+                                <label class="dcr-seg-item"><pems-input plain="true" type="radio" name="receiptChannel" value="@c" checked="@(c == "OfficialLetter")" /><span>@L("Dcc_Channel_" + c)</span></label>
                             }
                         </div>
                     </div>
@@ -219,7 +219,7 @@
                 <div class="dcr-row">
                     <div class="dcr-field dcr-span-2">
                         <label class="dcr-switch">
-                            <input type="checkbox" id="dcrRespReq" role="switch" />
+                            <pems-input plain="true" type="checkbox" id="dcrRespReq" role="switch" />
                             <span class="dcr-switch-track" aria-hidden="true"></span>
                             <span>@L("Dcc_ResponseRequired")</span>
                         </label>
@@ -279,7 +279,7 @@
                         <pems-icon name="bi-cloud-arrow-up" aria-hidden="true" />
                         <strong>@L("Dcc_DropTitle")</strong>
                         <span id="dcrDropHint" class="dcr-hint">@L("Dcc_DropHint")</span>
-                        <input type="file" id="dcrFileInput" multiple hidden accept="@string.Join(",", IncomingCorrespondenceRules.AllowedExtensions)" />
+                        <pems-input plain="true" type="file" id="dcrFileInput" multiple hidden accept="@string.Join(",", IncomingCorrespondenceRules.AllowedExtensions)" />
                     </div>
                     <ul class="dcr-files" id="dcrFiles" aria-live="polite"></ul>
                     <div class="dcr-error" data-error-for="files"></div>
@@ -326,7 +326,7 @@
 
         <footer class="dcr-foot">
             <label class="dcr-switch dcr-switch--small">
-                <input type="checkbox" id="dcrKeepSender" role="switch" checked />
+                <pems-input plain="true" type="checkbox" id="dcrKeepSender" role="switch" checked />
                 <span class="dcr-switch-track" aria-hidden="true"></span>
                 <span>@L("Dcc_KeepSender")</span>
             </label>

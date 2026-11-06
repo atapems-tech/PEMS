@@ -111,29 +111,13 @@
   "pagination": {},
   "progress": {},
   "raw-button": {},
-  "raw-input": {
-    "PEMS.Web/Areas/Admin/Views/Organization/Index.cshtml": 2,
-    "PEMS.Web/Areas/Warehouse/Views/MrsImport/Review.cshtml": 3,
-    "PEMS.Web/Areas/Warehouse/Views/PartCatalogueAdmin/Index.cshtml": 3,
-    "PEMS.Web/Areas/Warehouse/Views/PartCatalogueRequest/Edit.cshtml": 1,
-    "PEMS.Web/Views/Barcode/BulkGenerate.cshtml": 1,
-    "PEMS.Web/Views/DCC/RegisterIncoming.cshtml": 4,
-    "PEMS.Web/Views/DashboardSettings/Index.cshtml": 1,
-    "PEMS.Web/Views/Letter/Index.cshtml": 6,
-    "PEMS.Web/Views/LetterCompose/Compose.cshtml": 3,
-    "PEMS.Web/Views/MaintenanceStrategy/BulkCreate.cshtml": 1,
-    "PEMS.Web/Views/Relationship/BulkSuggestions.cshtml": 2,
-    "PEMS.Web/Views/TableExtraction/Review.cshtml": 2
-  },
+  "raw-input": {},
   "select": {
     "PEMS.UI/wwwroot/pems-select.js": 2
   },
   "spinner": {},
   "stat": {},
-  "style-block": {
-    "PEMS.Web/Views/Shared/_PemsStageDiagram.cshtml": 1,
-    "PEMS.Web/Views/Shared/_WorkOrderStagesDiagram.cshtml": 1
-  },
+  "style-block": {},
   "tab-content": {},
   "tab-pane": {},
   "table": {},

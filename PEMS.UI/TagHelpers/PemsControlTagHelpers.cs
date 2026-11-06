@@ -48,6 +48,8 @@ public sealed class PemsInputTagHelper(IHtmlGenerator generator, IPemsComponentR
     /// <summary>small or large; empty for the default size.</summary>
     [HtmlAttributeName("scale")] public string? Scale { get; set; }
     [HtmlAttributeName("css")] public string? Css { get; set; }
+    /// <summary>An input with no Bootstrap control classes (bare check boxes, radios, file and search inputs): only the page's own class is written.</summary>
+    [HtmlAttributeName("plain")] public bool Plain { get; set; }
     /// <summary>The state attributes a page decides with a condition (<c>checked="@x"</c>): written as the attribute when true, left out when false (a plain bool attribute value would print checked="False").</summary>
     [HtmlAttributeName("checked")] public bool Checked { get; set; }
     [HtmlAttributeName("disabled")] public bool Disabled { get; set; }
@@ -63,7 +65,7 @@ public sealed class PemsInputTagHelper(IHtmlGenerator generator, IPemsComponentR
         if (ReadOnly) output.Attributes.SetAttribute("readonly", "readonly");
         if (Required) output.Attributes.SetAttribute("required", "required");
         var (css, attrs) = ListRender.Page(output);
-        await ListRender.Replace<PemsInput>(renderer, output, new InputOptions { Kind = Kind, Scale = Scale, Css = Css, PageClass = css, Attributes = attrs });
+        await ListRender.Replace<PemsInput>(renderer, output, new InputOptions { Kind = Kind, Scale = Scale, Css = Css, Plain = Plain, PageClass = css, Attributes = attrs });
     }
 }
 

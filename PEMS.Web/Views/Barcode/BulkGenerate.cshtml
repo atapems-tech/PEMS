@@ -72,7 +72,7 @@ else
                         {
                             var already = alreadyBarcodedIds.Contains(eq.EquipmentId);
                             <pems-table-row>
-                                <pems-table-cell><input type="checkbox" name="equipmentIds" value="@eq.EquipmentId" checked="@(!already)" /></pems-table-cell>
+                                <pems-table-cell><pems-input plain="true" type="checkbox" name="equipmentIds" value="@eq.EquipmentId" checked="@(!already)" /></pems-table-cell>
                                 <pems-table-cell dir="ltr"><strong>@eq.TagNumber</strong></pems-table-cell>
                                 <pems-table-cell class="small">@eq.Name</pems-table-cell>
                                 <pems-table-cell class="small">@eq.EquipmentType</pems-table-cell>

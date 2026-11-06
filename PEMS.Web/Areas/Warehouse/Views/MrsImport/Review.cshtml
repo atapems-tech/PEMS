@@ -110,7 +110,7 @@
         <pems-table kind="enterprise" scale="small">
             <pems-table-head>
                 <pems-table-row>
-                    <pems-table-header class="pems-w-30"><input type="checkbox" id="selectAllPending" /></pems-table-header>
+                    <pems-table-header class="pems-w-30"><pems-input plain="true" type="checkbox" id="selectAllPending" /></pems-table-header>
                     <pems-table-header>@Localizer["MRS No"]</pems-table-header><pems-table-header>Item Code</pems-table-header><pems-table-header>@Localizer["Description"]</pems-table-header><pems-table-header>@Localizer["UOM"]</pems-table-header><pems-table-header>@Localizer["Vendor"]</pems-table-header><pems-table-header>PO No</pems-table-header><pems-table-header>Qty Recv</pems-table-header><pems-table-header>Qty Issued</pems-table-header>
                     <pems-table-header>@Localizer["Warehouse"]</pems-table-header><pems-table-header>Match Status</pems-table-header><pems-table-header>Matched Material</pems-table-header><pems-table-header>@Localizer["Review"]</pems-table-header><pems-table-header class="pems-w-40"></pems-table-header>
                 </pems-table-row>
@@ -132,8 +132,8 @@
                         <pems-table-cell>
                             @if (isSelectable)
                             {
-                                <input type="checkbox" class="row-select" form="bulkCommitForm" name="selectedRowIds" value="@row.MrsImportRowId" />
-                                <input type="checkbox" class="row-select-reject d-none" form="bulkRejectForm" name="selectedRowIds" value="@row.MrsImportRowId" />
+                                <pems-input plain="true" type="checkbox" class="row-select" form="bulkCommitForm" name="selectedRowIds" value="@row.MrsImportRowId" />
+                                <pems-input plain="true" type="checkbox" class="row-select-reject d-none" form="bulkRejectForm" name="selectedRowIds" value="@row.MrsImportRowId" />
                             }
                         </pems-table-cell>
                         <pems-table-cell class="small">@(row.RawMrsNo ?? "-")</pems-table-cell>

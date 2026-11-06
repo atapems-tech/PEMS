@@ -219,7 +219,7 @@ else if (matchingCount.HasValue && matchingCount.Value > maxResults)
                                                         var cls = criticalityByEquipment.GetValueOrDefault(eq.EquipmentId);
                                                         <pems-table-row>
                                                             <pems-table-cell class="pems-s-322e3f5e">
-                                                                <input type="checkbox" class="eq-check area-@areaSafeId type-@typeSafeId" name="equipmentIds" value="@eq.EquipmentId" disabled="@(bulk.Candidates.TryGetValue(eq.EquipmentId, out var cand0) && !cand0.WillReceive)" />
+                                                                <pems-input plain="true" type="checkbox" class="eq-check area-@areaSafeId type-@typeSafeId" name="equipmentIds" value="@eq.EquipmentId" disabled="@(bulk.Candidates.TryGetValue(eq.EquipmentId, out var cand0) && !cand0.WillReceive)" />
                                                             </pems-table-cell>
                                                             <pems-table-cell class="small">@eq.TagNumber — @eq.Name</pems-table-cell>
                                                             <pems-table-cell>

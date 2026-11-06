@@ -129,6 +129,8 @@ public sealed record InputOptions : FrameOptions
     /// <summary>small or large; empty for the default size.</summary>
     public string? Scale { get; init; }
     public string? Css { get; init; }
+    /// <summary>An input with no Bootstrap control classes: only the page's own class is written, none when there is none (bare check boxes, radios, file and search inputs).</summary>
+    public bool Plain { get; init; }
 }
 
 /// <summary>Inputs of <see cref="PemsSelect"/>: the select element; the option list (from the page or from asp-items) is the child content.</summary>
