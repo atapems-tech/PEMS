@@ -253,3 +253,34 @@ public sealed class PemsPageHeroTagHelper(IPemsComponentRenderer renderer) : Tag
         await ListRender.Replace<PemsPageHero>(renderer, output, new PageHeroOptions { Css = Css, PageClass = pageClass, Attributes = attrs }, await ListRender.Inner(output));
     }
 }
+
+/// <summary>
+/// A table of typed columns: <c>&lt;pems-data-table items="@Model.History" columns="@cols" empty="@Localizer["No history"]" dense="true" /&gt;</c> where <c>cols</c> is built with
+/// <c>DataColumn.Of&lt;Row&gt;(header, row =&gt; value, kind)</c>. The page supplies every text; the table writes <c>table table-enterprise</c>.
+/// </summary>
+[HtmlTargetElement("pems-data-table")]
+[PemsFacade(UiKeys.DataTable)]
+public sealed class PemsDataTableTagHelper(IPemsComponentRenderer renderer) : TagHelper
+{
+    [HtmlAttributeName("items")] public System.Collections.IEnumerable? Items { get; set; }
+    [HtmlAttributeName("columns")] public IReadOnlyList<DataColumn>? Columns { get; set; }
+    /// <summary>The rows and the columns together (<c>DataRows.Of(items, c =&gt; c.Add(...))</c>); used instead of <c>items</c> and <c>columns</c>.</summary>
+    [HtmlAttributeName("data")] public DataRows? Data { get; set; }
+    [HtmlAttributeName("empty")] public string? Empty { get; set; }
+    [HtmlAttributeName("dense")] public bool Dense { get; set; }
+    /// <summary>The enterprise look (default true); <c>enterprise="false"</c> writes the plain table.</summary>
+    [HtmlAttributeName("enterprise")] public bool Enterprise { get; set; } = true;
+    [HtmlAttributeName("row-css")] public string? RowCss { get; set; }
+    [HtmlAttributeName("css")] public string? Css { get; set; }
+
+    public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
+    {
+        var (pageClass, attrs) = ListRender.Page(output);
+        await ListRender.Replace<PemsDataTable>(renderer, output, new DataTableOptions
+        {
+            Items = Data?.Items ?? Items?.Cast<object>(), Columns = Data?.Columns ?? Columns, Empty = Empty, Dense = Dense, Enterprise = Enterprise, RowCss = RowCss,
+            Css = string.IsNullOrWhiteSpace(pageClass) ? Css : string.Join(" ", new[] { Css, pageClass }.Where(x => !string.IsNullOrWhiteSpace(x))),
+            Attributes = attrs
+        });
+    }
+}

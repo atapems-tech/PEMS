@@ -1,0 +1,81 @@
+@namespace PEMS.UI.Components
+@attribute [PEMS.UI.Rendering.PemsComponent("data-table", Category = "data", Icon = "bi-table")]
+@using System.Globalization
+@using PEMS.UI.Abstractions
+@{ var columns = Options.Columns ?? []; var items = (Options.Items ?? []).ToList(); }
+<table class="@PEMS.UI.TagHelpers.FrameState.Table(Options.Enterprise, Options.Dense, Options.Css)" @attributes="Options.Attributes">
+    <thead>
+        <tr>
+            @foreach (var c in columns)
+            {
+                <th scope="col" class="@c.HeaderCss">@c.Header</th>
+            }
+        </tr>
+    </thead>
+    <tbody>
+        @if (items.Count == 0 && !string.IsNullOrEmpty(Options.Empty))
+        {
+            <tr><td colspan="@Math.Max(columns.Count, 1)" class="text-muted small">@Options.Empty</td></tr>
+        }
+        @foreach (var item in items)
+        {
+            <tr class="@Options.RowCss">
+                @foreach (var c in columns)
+                {
+                    <td class="@c.Css">@Cell(c, item)</td>
+                }
+            </tr>
+        }
+    </tbody>
+</table>
+@code {
+    [Parameter, EditorRequired] public DataTableOptions Options { get; set; } = default!;
+
+    private RenderFragment Cell(DataColumn c, object item) => b =>
+    {
+        var v = c.Value(item);
+        switch (c.Kind)
+        {
+            case DataCellKind.Muted:
+                b.OpenElement(0, "span"); b.AddAttribute(1, "class", "text-muted"); b.AddContent(2, Text(v)); b.CloseElement();
+                break;
+            case DataCellKind.DateTime:
+            case DataCellKind.Date:
+                b.OpenElement(3, "bdi"); b.AddAttribute(4, "dir", "ltr"); b.AddContent(5, When(v, c.Kind == DataCellKind.DateTime)); b.CloseElement();
+                break;
+            case DataCellKind.Badge:
+                var toneName = c.Tone?.Invoke(item);
+                Tone? tone = string.IsNullOrWhiteSpace(toneName) ? Components.Tone.Neutral : toneName.Equals("none", StringComparison.OrdinalIgnoreCase) ? null : Enum.Parse<Tone>(toneName, true);
+                b.OpenComponent<PemsBadge>(6);
+                b.AddAttribute(7, nameof(PemsBadge.Options), new BadgeOptions { Label = TranslatableText.Literal(Text(v)), Tone = tone });
+                b.CloseComponent();
+                break;
+            case DataCellKind.Code:
+                b.OpenElement(12, "code"); b.AddContent(13, Text(v)); b.CloseElement();
+                break;
+            case DataCellKind.Pre:
+                b.OpenElement(8, "pre"); b.AddAttribute(9, "class", "mb-0 small"); b.AddContent(10, Text(v)); b.CloseElement();
+                break;
+            default:
+                if (v is Microsoft.AspNetCore.Html.IHtmlContent html) b.AddMarkupContent(11, Markup(html));   // like a Razor @expression: markup the page built is written as is
+                else b.AddContent(11, Text(v));
+                break;
+        }
+    };
+
+    // like a Razor @expression: ToString() in the current culture, null is empty
+    private static string Markup(Microsoft.AspNetCore.Html.IHtmlContent content)
+    {
+        using var writer = new StringWriter();
+        content.WriteTo(writer, System.Text.Encodings.Web.HtmlEncoder.Default);
+        return writer.ToString();
+    }
+
+    private static string Text(object? v) => v?.ToString() ?? "";
+    private static string When(object? v, bool withTime) => v switch
+    {
+        DateTime d => d.ToString(withTime ? "yyyy-MM-dd HH:mm" : "yyyy-MM-dd"),
+        DateTimeOffset d => d.ToString(withTime ? "yyyy-MM-dd HH:mm" : "yyyy-MM-dd"),
+        _ => Text(v)
+    };
+}

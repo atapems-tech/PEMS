@@ -241,22 +241,17 @@
 {
     <pems-content-card css="mb-3">
         <h6 class="mb-3">@Localizer["Workflow History"]</h6>
-        <pems-table kind="enterprise" scale="small" css="mb-0">
-            <thead><tr><th>@Localizer["Date"]</th><th>@Localizer["Action"]</th><th>@Localizer["From"]</th><th>@Localizer["To"]</th><th>@Localizer["By"]</th><th>@Localizer["Reason"]</th></tr></thead>
-            <tbody>
-                @foreach (var h in wf.HistorySummary.OrderByDescending(x => x.ActionDate))
-                {
-                    <tr>
-                        <td class="small"><bdi dir="ltr">@h.ActionDate.ToString("yyyy-MM-dd HH:mm")</bdi></td>
-                        <td class="small">@ActionText(h.ActionType)</td>
-                        <td class="small">@StageByName(h.FromStageName)</td>
-                        <td class="small">@StageByName(h.ToStageName)</td>
-                        <td class="small">@Who(h.UserId)</td>
-                        <td class="small text-muted">@h.Comment</td>
-                    </tr>
-                }
-            </tbody>
-        </pems-table>
+        @{
+            var history = wf.HistorySummary.OrderByDescending(x => x.ActionDate).ToList();
+            var historyColumns = DataColumns.For(history)
+                .Add(Localizer["Date"].Value, h => h.ActionDate, DataCellKind.DateTime, "small")
+                .Add(Localizer["Action"].Value, h => ActionText(h.ActionType), css: "small")
+                .Add(Localizer["From"].Value, h => StageByName(h.FromStageName), css: "small")
+                .Add(Localizer["To"].Value, h => StageByName(h.ToStageName), css: "small")
+                .Add(Localizer["By"].Value, h => Who(h.UserId), css: "small")
+                .Add(Localizer["Reason"].Value, h => h.Comment, DataCellKind.Muted, "small");
+        }
+        <pems-data-table items="@history" columns="@historyColumns" dense="true" css="mb-0" />
     </pems-content-card>
 }
 
