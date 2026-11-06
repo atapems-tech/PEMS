@@ -21,7 +21,7 @@ Every task: chapters **0, 1 (section "Definition of done"), 6**. Then add by tas
 
 | Chapter | Read it when |
 |---|---|
-| [00 Task lifecycle](00-task-lifecycle.md) | **every task** - Jira workflow, research, batching, closing; **section 0 on every go-ahead**: pull main, audit the whole backlog, batch related tasks, state the plan |
+| [00 Task lifecycle](00-task-lifecycle.md) | **every task** - **the words we use for grouping work (milestone, sprint, issue, work block, batch, slice, wave, family, part, pattern, step, phase, tier, follow-up: section 0.0)**, Jira workflow, research, batching, closing; **section 0 on every go-ahead**: pull main, audit the whole backlog, batch related tasks, state the plan |
 | [01 Engineering standards](01-engineering-standards.md) | **every task** - architecture, code, database, settings, security, tests, done |
 | [02 UI and components](02-ui-and-components.md) | any view, page, CSS, JS, form, table, modal, dashboard |
 | [03 Libraries, tools and research](03-libraries-tools-and-research.md) | adding/changing a package, tool, script; any new capability; design decisions |
