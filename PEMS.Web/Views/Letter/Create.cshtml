@@ -66,10 +66,10 @@
 
             @* پاسخ‌خواهی: «پاسخ‌داده‌شده» و «معوق» از نامه‌ی پاسخ صادرشده و تاریخ محاسبه می‌شوند، نه با تیک دستی *@
             <pems-col span="12">
-                <div class="form-check">
+                <pems-check-row>
                     <pems-input type="checkbox" name="responseRequired" value="true" id="responseRequired" checked="@respRequired" kind="check" />
                     <label class="form-check-label" for="responseRequired">@Localizer["Lt_ResponseRequired"]</label>
-                </div>
+                </pems-check-row>
                 <div class="mt-2 pems-maxw-260" id="responseDueWrap">
                     <pems-label css="small" for="responseDueDate">@Localizer["Lt_ResponseDueDate"]</pems-label>
                     <pems-date name="responseDueDate" id="responseDueDate" value="@respDue" aria-describedby="responseDueError" aria-invalid="@(respError != null ? "true" : "false")" />
@@ -91,10 +91,10 @@
                     <pems-input css="vs-num" name="letterNumber" id="letterNumber" placeholder="@Localizer["Lt_NumberHint"]" disabled />
                     @if ((bool)(ViewBag.CanManualNumber ?? false))
                     {
-                        <div class="form-check mt-1">
+                        <pems-check-row css="mt-1">
                             <pems-input kind="check" type="checkbox" name="useManualNumber" value="true" id="useManualNumberCheck" />
                             <label class="form-check-label small" for="useManualNumberCheck">@Localizer["Lt_EnterManually"]</label>
-                        </div>
+                        </pems-check-row>
                     }
                     <script src="~/js/views/letter-create-1.js" asp-append-version="true"></script>
                 </pems-col>

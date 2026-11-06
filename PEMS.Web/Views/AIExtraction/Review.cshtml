@@ -27,7 +27,7 @@
     }
     else
     {
-        <div class="table-responsive table-scroll-area pems-s-8da1c6e6">
+        <pems-table-scroll css="table-scroll-area pems-s-8da1c6e6">
         <pems-table kind="enterprise">
             <tr><th>@Localizer["Tag Number"]</th><th>@Localizer["Type"]</th><th>@Localizer["Area"]</th><th>Service</th><th>@Localizer["Description"]</th><th>@Localizer["Status"]</th><th>@Localizer["Action"]</th></tr>
             @foreach (var tag in Model.ExtractedTags)
@@ -61,7 +61,7 @@
                 </tr>
             }
         </pems-table>
-        </div>
+        </pems-table-scroll>
     }
 </pems-content-card>
 
@@ -74,7 +74,7 @@
     }
     else
     {
-        <div class="table-responsive table-scroll-area pems-s-8da1c6e6">
+        <pems-table-scroll css="table-scroll-area pems-s-8da1c6e6">
         <pems-table kind="enterprise">
             <tr><th>Related Tag</th><th>Field</th><th>@Localizer["Value"]</th><th>@Localizer["Unit"]</th><th>@Localizer["Status"]</th><th>@Localizer["Action"]</th></tr>
             @foreach (var spec in Model.ExtractedSpecifications)
@@ -105,6 +105,6 @@
                 </tr>
             }
         </pems-table>
-        </div>
+        </pems-table-scroll>
     }
 </pems-content-card>

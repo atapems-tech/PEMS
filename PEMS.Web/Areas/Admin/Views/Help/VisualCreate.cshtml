@@ -38,18 +38,18 @@
                 <pems-input asp-for="DisplayOrder" type="number" />
             </pems-col>
             <pems-col md="4">
-                <div class="form-check mt-4">
+                <pems-check-row css="mt-4">
                     <pems-input kind="check" asp-for="IsPublished" type="checkbox" />
                     <label asp-for="IsPublished" class="form-check-label">@Localizer["Published"]</label>
-                </div>
+                </pems-check-row>
             </pems-col>
 
             <pems-col span="12" id="workflowSourceFields">
                 <pems-label>Real Workflow Source (Module / Category)</pems-label>
-                <p class="form-text mt-0">
+                <pems-help-text as="p" css="mt-0">
                     Only actual workflows registered in the engine are listed - the diagram is generated live from
                     their real stages/transitions and can never go out of sync.
-                </p>
+                </pems-help-text>
                 <pems-select css="mb-2" id="workflowSourcePicker" onchange="applyWorkflowSource(this.value)">
                     <option value="">-- select a real workflow --</option>
                     @foreach (var s in workflowSources)
@@ -65,11 +65,11 @@
 
             <pems-col span="12" id="manualDefinitionField">
                 <pems-label>Diagram Definition (structured text, not raw HTML/script)</pems-label>
-                <p class="form-text mt-0">
+                <pems-help-text as="p" css="mt-0">
                     One line per item. Format:<br />
                     <code>NODE|id|Label (EN)|Label (FA)|optional-bootstrap-icon-class</code><br />
                     <code>EDGE|fromId|toIdOrEmptyForEnd|Label (EN)|Label (FA)|normal|reject|decision</code>
-                </p>
+                </pems-help-text>
                 <pems-textarea class="font-monospace" asp-for="ManualDefinitionText" rows="8"></pems-textarea>
             </pems-col>
 
@@ -96,7 +96,7 @@
             <pems-col md="6">
                 <pems-label>Accessibility Description (EN) <span class="text-danger">*</span></pems-label>
                 <pems-textarea asp-for="AccessibilityDescriptionEn" rows="2" required></pems-textarea>
-                <div class="form-text">Full text description for screen readers - the only way non-visual users understand this diagram.</div>
+                <pems-help-text>Full text description for screen readers - the only way non-visual users understand this diagram.</pems-help-text>
             </pems-col>
             <pems-col md="6" dir="rtl">
                 <pems-label>توضیح دسترس‌پذیری (فارسی) <span class="text-danger">*</span></pems-label>

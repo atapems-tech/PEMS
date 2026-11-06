@@ -43,7 +43,7 @@
 
     <pems-content-card css="mb-3">
         <h6>@Localizer["Versions"]</h6>
-        <div class="table-responsive">
+        <pems-table-scroll>
             <pems-table kind="enterprise" css="align-middle">
                 <thead><tr><th>@Localizer["Version"]</th><th>@Localizer["Status"]</th><th>@Localizer["Stages"]</th><th>@Localizer["Transitions"]</th><th>@Localizer["Published"]</th><th>@Localizer["Running instances"]</th><th>@Localizer["Change summary"]</th><th></th></tr></thead>
                 <tbody>
@@ -77,7 +77,7 @@
                 }
                 </tbody>
             </pems-table>
-        </div>
+        </pems-table-scroll>
         @if (openDraft != null) { <p class="small text-muted mb-0"><pems-icon name="bi-info-circle" /> @Localizer["One open draft per workflow: finish or discard v{0} before cloning again.", openDraft.VersionNumber]</p> }
     </pems-content-card>
 
@@ -124,7 +124,7 @@
 
     <pems-content-card css="mt-3">
         <h6>@Localizer["Configuration audit"]</h6>
-        <div class="table-responsive pems-s-11017dde">
+        <pems-table-scroll css="pems-s-11017dde">
             <pems-table scale="small" css="align-middle mb-0">
                 <thead><tr><th>@Localizer["Time"]</th><th>@Localizer["Action"]</th><th>@Localizer["Version"]</th><th>@Localizer["By"]</th><th>@Localizer["Change"]</th></tr></thead>
                 <tbody>
@@ -137,6 +137,6 @@
                 }
                 </tbody>
             </pems-table>
-        </div>
+        </pems-table-scroll>
     </pems-content-card>
 </pems-page-shell>

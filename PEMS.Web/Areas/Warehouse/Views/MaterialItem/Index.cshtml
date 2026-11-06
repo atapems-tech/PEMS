@@ -52,14 +52,14 @@
                     @if (!string.IsNullOrEmpty(q)) { <input type="hidden" name="q" value="@q" /> }
                     <pems-list-filter-select id="miFilterCategory" name="categoryId" label="@Localizer["MiL_Category"]" value="@categoryId?.ToString()"
                                              all-text="@Localizer["MiL_AllCategories"]" items="@categories.Select(c => new SelectListItem((string)c.Name, ((int)c.MaterialCategoryId).ToString()))" />
-                    <div class="form-check small mb-0">
+                    <pems-check-row css="small mb-0">
                         <pems-input type="checkbox" name="lowStockOnly" value="true" id="lowStockOnly" checked="@lowStockOnly" kind="check" />
                         <label class="form-check-label" for="lowStockOnly">@Localizer["MiL_LowStockOnly"]</label>
-                    </div>
-                    <div class="form-check small mb-0">
+                    </pems-check-row>
+                    <pems-check-row css="small mb-0">
                         <pems-input type="checkbox" name="criticalOnly" value="true" id="criticalOnly" checked="@criticalOnly" kind="check" />
                         <label class="form-check-label" for="criticalOnly">@Localizer["MiL_CriticalOnly"]</label>
-                    </div>
+                    </pems-check-row>
                 </pems-list-filters>
                 <pems-list-kpi-toggle target="miKpis" storage-key="pems.materialItem.kpis" />
                 <pems-list-reset-columns grid-key="MaterialItem" />
@@ -183,8 +183,8 @@
                         <pems-col md="4"><pems-label>@Localizer["Specification"]</pems-label><pems-input name="specification" /></pems-col>
                     </pems-row>
                     <pems-flex gap="3">
-                        <div class="form-check"><pems-input kind="check" type="checkbox" name="isStockItem" value="true" checked id="isStockItem" /><label class="form-check-label" for="isStockItem">@Localizer["Stock Item"]</label></div>
-                        <div class="form-check"><pems-input kind="check" type="checkbox" name="isCritical" value="true" id="isCritical" /><label class="form-check-label" for="isCritical">@Localizer["Critical Spare"]</label></div>
+                        <pems-check-row><pems-input kind="check" type="checkbox" name="isStockItem" value="true" checked id="isStockItem" /><label class="form-check-label" for="isStockItem">@Localizer["Stock Item"]</label></pems-check-row>
+                        <pems-check-row><pems-input kind="check" type="checkbox" name="isCritical" value="true" id="isCritical" /><label class="form-check-label" for="isCritical">@Localizer["Critical Spare"]</label></pems-check-row>
                     </pems-flex>
                 </div>
                 <div class="modal-footer">

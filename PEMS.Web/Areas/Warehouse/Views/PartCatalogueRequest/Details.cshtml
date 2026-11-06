@@ -89,7 +89,7 @@
                     <button type="submit" class="vs-btn vs-btn--primary vs-btn--sm"><pems-icon name="bi-arrow-repeat" /> @Localizer["Pc_Btn_RetryRouting"]</button>
                 </form>
             }
-            <div class="form-text">@Localizer["Pc_Org_Blocked_Hint"]</div>
+            <pems-help-text>@Localizer["Pc_Org_Blocked_Hint"]</pems-help-text>
         </section>
     }
 
@@ -110,13 +110,13 @@
                     <pems-col md="3">
                         <pems-label for="pc_partNumber">@L("PartNumber") <span class="pc-req" aria-hidden="true">*</span></pems-label>
                         <pems-input scale="small" id="pc_partNumber" name="partNumber" maxlength="50" autocomplete="off" />
-                        <div class="form-text">@Localizer["Pc_Hint_PartNumber"]</div>
+                        <pems-help-text>@Localizer["Pc_Hint_PartNumber"]</pems-help-text>
                     </pems-col>
                 }
                 <pems-col span="">
                     <pems-label for="pc_comment">@L("Comment")</pems-label>
                     <pems-input scale="small" id="pc_comment" name="comment" maxlength="2000" />
-                    <div class="form-text">@Localizer["Pc_Hint_CommentRequired"]</div>
+                    <pems-help-text>@Localizer["Pc_Hint_CommentRequired"]</pems-help-text>
                 </pems-col>
                 <pems-col span="auto" css="d-flex gap-2">
                     @if (a.CanApprove) { <button type="submit" name="action" value="Approve" class="vs-btn vs-btn--primary vs-btn--sm"><pems-icon name="bi-check-lg" /> @Localizer["Pc_Btn_Approve"]</button> }

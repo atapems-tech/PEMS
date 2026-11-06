@@ -34,7 +34,7 @@
 
 <form asp-action="Source" method="post"><pems-content-card>
     <input type="hidden" name="workOrderId" value="@Model.WorkOrderId" />
-    <div class="table-responsive">
+    <pems-table-scroll>
         <pems-table kind="enterprise" scale="small" css="align-middle">
             <thead>
                 <tr>
@@ -72,7 +72,7 @@
             }
             </tbody>
         </pems-table>
-    </div>
+    </pems-table-scroll>
 
     @if (!canSource)
     {

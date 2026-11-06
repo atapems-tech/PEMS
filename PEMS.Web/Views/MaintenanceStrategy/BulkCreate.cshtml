@@ -121,14 +121,14 @@
         <pems-col md="3">
             <pems-label css="small mb-0">Functional Location Mode</pems-label>
             <pems-flex gap="3" css="mt-1">
-                <div class="form-check">
+                <pems-check-row>
                     <pems-input type="radio" name="functionalLocationMode" value="Exact" id="flModeExact" checked="@(selectedFlMode == "Exact")" kind="check" />
                     <label class="form-check-label small" for="flModeExact" title="فقط خودِ Functional Location(های) انتخاب‌شده">@Localizer["Exact"]</label>
-                </div>
-                <div class="form-check">
+                </pems-check-row>
+                <pems-check-row>
                     <pems-input type="radio" name="functionalLocationMode" value="Descendants" id="flModeDescendants" checked="@(selectedFlMode == "Descendants")" kind="check" />
                     <label class="form-check-label small" for="flModeDescendants" title="Functional Location(های) انتخاب‌شده + همه‌ی زیرشاخه‌های واقعی آن‌ها">Descendants</label>
-                </div>
+                </pems-check-row>
             </pems-flex>
         </pems-col>
         <pems-col md="6">
@@ -139,7 +139,7 @@
             <pems-textarea scale="small" name="tagList" rows="2" placeholder="P-1001, P-1002, P-1003">@selectedTagList</pems-textarea>
             @if (requestedTagCount > 0)
             {
-                <div class="form-text">@matchedTagCount از @requestedTagCount Tag درخواست‌شده پیدا شد.</div>
+                <pems-help-text>@matchedTagCount از @requestedTagCount Tag درخواست‌شده پیدا شد.</pems-help-text>
             }
         </pems-col>
         <pems-col md="6" css="d-flex align-items-end">

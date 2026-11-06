@@ -103,7 +103,7 @@
 
 <pems-content-card css="mb-3">
     <h6 class="mb-3"><pems-icon name="bi-tags" /> Related Equipment Tags (AVEVA-style multi-tag linking)</h6>
-    <div class="table-responsive table-scroll-area pems-s-8da1c6e6">
+    <pems-table-scroll css="table-scroll-area pems-s-8da1c6e6">
     <pems-table kind="enterprise">
         <thead><tr><th>@Localizer["Tag Number"]</th><th>@Localizer["Source"]</th><th>@Localizer["Status"]</th><th></th></tr></thead>
         <tbody>
@@ -137,13 +137,13 @@
             }
         </tbody>
     </pems-table>
-    </div>
+    </pems-table-scroll>
     @if (!Model.TagLinks.Any()) { <p class="text-muted">No equipment tags detected or linked yet.</p> }
 </pems-content-card>
 
 <pems-content-card>
     <h6 class="mb-3"><pems-icon name="bi-chat-dots" /> Comment Management</h6>
-    <div class="table-responsive table-scroll-area pems-s-8da1c6e6">
+    <pems-table-scroll css="table-scroll-area pems-s-8da1c6e6">
     <pems-table kind="enterprise">
         <thead><tr><th>@Localizer["Comment"]</th><th>@Localizer["Raised By"]</th><th>@Localizer["Date"]</th><th>@Localizer["Action Status"]</th><th>@Localizer["Response"]</th></tr></thead>
         <tbody>
@@ -183,7 +183,7 @@
             }
         </tbody>
     </pems-table>
-    </div>
+    </pems-table-scroll>
     @if (!Model.Comments.Any()) { <p class="text-muted">No comments yet.</p> }
 
     <form asp-action="AddComment" method="post"><pems-row gap="2" css="mt-2">

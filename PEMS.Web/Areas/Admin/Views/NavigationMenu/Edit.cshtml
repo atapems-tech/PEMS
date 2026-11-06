@@ -34,7 +34,7 @@
                 </pems-select>
                 @if (i.Kind == NavigationMenuItemKinds.Section)
                 {
-                    <div class="form-text">@Localizer["Nav_SectionTopLevelOnly"]</div>
+                    <pems-help-text>@Localizer["Nav_SectionTopLevelOnly"]</pems-help-text>
                 }
             </div>
 
@@ -47,7 +47,7 @@
                     <pems-label for="TitleEn">@Localizer["Nav_Field_TitleEn"]</pems-label>
                     <pems-input id="TitleEn" name="TitleEn" value="@input.TitleEn" maxlength="200" dir="ltr" placeholder="@Model.DefaultTitle" aria-describedby="titleHelp" />
                 </pems-col>
-                <div id="titleHelp" class="form-text">@Localizer["Nav_TitleHelp"]</div>
+                <pems-help-text id="titleHelp">@Localizer["Nav_TitleHelp"]</pems-help-text>
             </pems-row>
 
             <div class="mb-3">
@@ -56,7 +56,7 @@
                     <span class="input-group-text"><pems-icon css="@input.Icon" id="iconPreview" aria-hidden="true" /></span>
                     <pems-input id="Icon" name="Icon" value="@input.Icon" maxlength="60" dir="ltr" pattern="bi-[a-z0-9-]{1,50}" aria-describedby="iconHelp" />
                 </div>
-                <div id="iconHelp" class="form-text">@Localizer["Nav_IconHelp"]</div>
+                <pems-help-text id="iconHelp">@Localizer["Nav_IconHelp"]</pems-help-text>
             </div>
 
             @if (i.Kind == NavigationMenuItemKinds.Link)
@@ -70,7 +70,7 @@
                             <option value="@b.Key" selected="@(input.BadgeKey == b.Key)">@Localizer[b.TitleKey]</option>
                         }
                     </pems-select>
-                    <div id="badgeHelp" class="form-text">@Localizer["Nav_BadgeHelp"]</div>
+                    <pems-help-text id="badgeHelp">@Localizer["Nav_BadgeHelp"]</pems-help-text>
                 </div>
             }
 

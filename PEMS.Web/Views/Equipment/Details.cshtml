@@ -115,9 +115,9 @@
                     {
                         var currentFl = ((List<PEMS.Application.DTOs.FunctionalLocationPickerItemDto>)ViewBag.FunctionalLocations)
                             .FirstOrDefault(x => x.FunctionalLocationId == eq.FunctionalLocationId);
-                        <div class="form-text">Currently: @(currentFl?.PathBreadcrumb ?? NA(eq.FunctionalLocationBreadcrumb))</div>
+                        <pems-help-text>Currently: @(currentFl?.PathBreadcrumb ?? NA(eq.FunctionalLocationBreadcrumb))</pems-help-text>
                     }
-                    <div class="form-text">Real link, distinct from the raw "@NA(eq.Area)" import value. <a asp-controller="FunctionalLocation" asp-action="Index" target="_blank">@Localizer["Manage list"]</a></div>
+                    <pems-help-text>Real link, distinct from the raw "@NA(eq.Area)" import value. <a asp-controller="FunctionalLocation" asp-action="Index" target="_blank">@Localizer["Manage list"]</a></pems-help-text>
                 </div>
                 <div class="mb-2">
                     <pems-label css="small">Parent Equipment</pems-label>
@@ -125,7 +125,7 @@
                     <input type="hidden" name="parentEquipmentId" id="parentEquipmentIdHidden" value="@eq.ParentEquipmentId" />
                     @if (eq.ParentEquipmentId.HasValue)
                     {
-                        <div class="form-text">Currently: @eq.ParentEquipmentTagNumber</div>
+                        <pems-help-text>Currently: @eq.ParentEquipmentTagNumber</pems-help-text>
                     }
                 </div>
                 <div class="mb-2">
@@ -238,10 +238,10 @@
     </li>
 </pems-nav>
 
-<div class="tab-content">
+<pems-tab-content>
 
     @* ===================== Overview ===================== *@
-    <div class="tab-pane fade show active" id="tab-overview" role="tabpanel">
+    <pems-tab-pane fade="true" active="true" id="tab-overview" role="tabpanel">
         @{ var pendingWr = Model.WorkRequests.Count(w => w.Status is "Draft" or "Submitted" or "UnderReview" or "Approved" or "Planned"); }
         <div class="vs-chips">
             <button type="button" class="vs-chip" data-goto-tab="#tab-documents"><pems-icon name="bi-file-earmark-text" /> @Localizer["Cm_EngDocs"] <strong>@Model.Documents.Count</strong></button>
@@ -269,12 +269,12 @@
                 </pems-row>
             </pems-content-card>
         }
-    </div>
+    </pems-tab-pane>
 
     @* ===================== Instrument Passport ===================== *@
     @if (inst != null)
     {
-        <div class="tab-pane fade" id="tab-instrument" role="tabpanel">
+        <pems-tab-pane fade="true" id="tab-instrument" role="tabpanel">
             <pems-content-card css="mb-3">
                 <pems-flex justify="between" align="center" css="mb-3">
                     <h6 class="mb-0">@Localizer["Cm_InstrumentPassport"]</h6>
@@ -309,13 +309,13 @@
                     <pems-col md="3"><strong>Next Maintenance Due</strong><div>@(inst.NextMaintenanceDue?.ToString("yyyy-MM-dd") ?? "N/A")</div></pems-col>
                 </pems-row>
             </pems-content-card>
-        </div>
+        </pems-tab-pane>
     }
 
     @* ===================== Mechanical Equipment Passport ===================== *@
     @if (mech != null)
     {
-        <div class="tab-pane fade" id="tab-mechanical" role="tabpanel">
+        <pems-tab-pane fade="true" id="tab-mechanical" role="tabpanel">
             <pems-content-card css="mb-3">
                 <pems-flex justify="between" align="center" css="mb-3">
                     <h6 class="mb-0">@Localizer["Mechanical Passport"]</h6>
@@ -349,13 +349,13 @@
                     }
                 </pems-row>
             </pems-content-card>
-        </div>
+        </pems-tab-pane>
     }
 
     @* ===================== Condition Monitoring ===================== *@
     @if (cm != null)
     {
-        <div class="tab-pane fade" id="tab-cm" role="tabpanel">
+        <pems-tab-pane fade="true" id="tab-cm" role="tabpanel">
             <pems-content-card css="mb-3">
                 <pems-flex justify="between" align="center" css="mb-3">
                     <h6 class="mb-0">@Localizer["Condition Monitoring"]</h6>
@@ -398,11 +398,11 @@
                     </tbody>
                 </pems-table>
             </pems-content-card>
-        </div>
+        </pems-tab-pane>
     }
 
     @* ===================== Asset ===================== *@
-    <div class="tab-pane fade" id="tab-asset" role="tabpanel">
+    <pems-tab-pane fade="true" id="tab-asset" role="tabpanel">
         <pems-content-card>
             @if (asset != null)
             {
@@ -440,13 +440,13 @@
                 </pems-row></form>
             }
         </pems-content-card>
-    </div>
+    </pems-tab-pane>
 
     @* ===================== Documents ===================== *@
-    <div class="tab-pane fade" id="tab-documents" role="tabpanel">
+    <pems-tab-pane fade="true" id="tab-documents" role="tabpanel">
         <pems-content-card css="mb-3">
             <h6 class="mb-3"><pems-icon name="bi-file-earmark-text" /> @Localizer["Cm_SecEngDocs"]</h6>
-            <div class="table-responsive table-scroll-area pems-s-b4b96c72">
+            <pems-table-scroll css="table-scroll-area pems-s-b4b96c72">
             <pems-table kind="enterprise">
                 <thead><tr><th>@Localizer["Cm_DocNo"]</th><th>@Localizer["Cm_Title"]</th><th>@Localizer["Cm_Type"]</th><th>@Localizer["Cm_Discipline"]</th><th>@Localizer["Cm_Rev"]</th><th>@Localizer["Cm_Status"]</th><th></th></tr></thead>
                 <tbody>
@@ -460,13 +460,13 @@
                     }
                 </tbody>
             </pems-table>
-            </div>
+            </pems-table-scroll>
             @if (!Model.Documents.Any()) { <p class="text-muted mb-0 small">@Localizer["Cm_NoDocs"]</p> }
         </pems-content-card>
 
         <pems-content-card>
             <h6 class="mb-3"><pems-icon name="bi-journal-check" /> @Localizer["Cm_SecVdr"]</h6>
-            <div class="table-responsive table-scroll-area pems-s-b4b96c72">
+            <pems-table-scroll css="table-scroll-area pems-s-b4b96c72">
             <pems-table kind="enterprise">
                 <thead><tr><th>@Localizer["Cm_DocNo"]</th><th>@Localizer["Cm_Description"]</th><th>@Localizer["Cm_Vendor"]</th><th>@Localizer["Cm_Rev"]</th><th>@Localizer["Cm_Category"]</th><th>@Localizer["Cm_Status"]</th><th></th></tr></thead>
                 <tbody>
@@ -481,16 +481,16 @@
                     }
                 </tbody>
             </pems-table>
-            </div>
+            </pems-table-scroll>
             @if (!Model.VDRItems.Any()) { <p class="text-muted mb-0 small">@Localizer["Cm_NoVdr"]</p> }
         </pems-content-card>
-    </div>
+    </pems-tab-pane>
 
     @* ===================== Procurement ===================== *@
-    <div class="tab-pane fade" id="tab-procurement" role="tabpanel">
+    <pems-tab-pane fade="true" id="tab-procurement" role="tabpanel">
         <pems-content-card>
             <h6 class="mb-3"><pems-icon name="bi-cart-check" /> @Localizer["Cm_SecMr"]</h6>
-            <div class="table-responsive table-scroll-area pems-s-a3f95238">
+            <pems-table-scroll css="table-scroll-area pems-s-a3f95238">
             <pems-table kind="enterprise">
                 <thead><tr><th>@Localizer["Cm_MrNumber"]</th><th>@Localizer["Cm_Project"]</th><th>@Localizer["Cm_Discipline"]</th><th>@Localizer["Cm_Description"]</th><th>@Localizer["Cm_Status"]</th><th></th></tr></thead>
                 <tbody>
@@ -504,13 +504,13 @@
                     }
                 </tbody>
             </pems-table>
-            </div>
+            </pems-table-scroll>
             @if (!Model.RelatedMRs.Any()) { <p class="text-muted mb-0 small">@Localizer["Cm_NoMr"]</p> }
         </pems-content-card>
-    </div>
+    </pems-tab-pane>
 
     @* ===================== Maintenance ===================== *@
-    <div class="tab-pane fade" id="tab-maintenance" role="tabpanel">
+    <pems-tab-pane fade="true" id="tab-maintenance" role="tabpanel">
         @{ var reliability = ViewBag.Reliability as PEMS.Application.DTOs.EquipmentReliabilityDto; }
         @if (reliability != null && reliability.FailureCount > 0)
         {
@@ -544,7 +544,7 @@
             }
             else
             {
-                <div class="table-responsive">
+                <pems-table-scroll>
                 <pems-table kind="enterprise" css="mb-0">
                     <thead><tr><th>@Localizer["Cm_Kind"]</th><th>@Localizer["Cm_Reference"]</th><th>@Localizer["Cm_Trigger"]</th><th>@Localizer["Cm_Interval"]</th><th>@Localizer["Cm_LastDone"]</th><th>@Localizer["Cm_NextDue"]</th></tr></thead>
                     <tbody>
@@ -578,7 +578,7 @@
                         }
                     </tbody>
                 </pems-table>
-                </div>
+                </pems-table-scroll>
             }
         </pems-content-card>
 
@@ -592,7 +592,7 @@
                     </a>
                 }
             </pems-flex>
-            <div class="table-responsive table-scroll-area pems-s-7bf38d03">
+            <pems-table-scroll css="table-scroll-area pems-s-7bf38d03">
             <pems-table kind="enterprise">
                 <thead><tr><th>@Localizer["Cm_WrNumber"]</th><th>@Localizer["Cm_Title"]</th><th>@Localizer["Cm_Priority"]</th><th>@Localizer["Cm_Status"]</th><th>@Localizer["Cm_Requested"]</th><th>@Localizer["Cm_LinkedWo"]</th></tr></thead>
                 <tbody>
@@ -609,14 +609,14 @@
                     }
                 </tbody>
             </pems-table>
-            </div>
+            </pems-table-scroll>
             @if (!Model.WorkRequests.Any()) { <p class="text-muted mb-0 small">@Localizer["Cm_NoWorkRequests"]</p> }
         </pems-content-card>
 
         @* Work Orderهای اجراشده: فقط خواندنی - ساخت Work Order از این بخش مجاز نیست؛ فقط از Work Request تاییدشده *@
         <pems-content-card>
             <h6 class="mb-2"><pems-icon name="bi-tools" /> @Localizer["Cm_ExecutedWo"]</h6>
-            <div class="table-responsive table-scroll-area pems-s-f7dce87f">
+            <pems-table-scroll css="table-scroll-area pems-s-f7dce87f">
             <pems-table kind="enterprise">
                 <thead><tr><th>@Localizer["Cm_WoNumber"]</th><th>@Localizer["Cm_Description"]</th><th>@Localizer["Cm_Status"]</th><th>@Localizer["Cm_Date"]</th></tr></thead>
                 <tbody>
@@ -631,13 +631,13 @@
                     }
                 </tbody>
             </pems-table>
-            </div>
+            </pems-table-scroll>
             @if (!Model.WorkOrders.Any()) { <p class="text-muted mb-0 small">@Localizer["Cm_NoWorkOrders"]</p> }
         </pems-content-card>
-    </div>
+    </pems-tab-pane>
 
     @* ===================== Inspections ===================== *@
-    <div class="tab-pane fade" id="tab-inspection" role="tabpanel">
+    <pems-tab-pane fade="true" id="tab-inspection" role="tabpanel">
         <pems-content-card>
             <pems-flex justify="between" align="center" css="mb-3">
                 <h6 class="mb-0"><pems-icon name="bi-clipboard-pulse" /> @Localizer["Cm_SecInspections"]</h6>
@@ -726,10 +726,10 @@
                     </div>
                 </form>
             </pems-modal>
-    </div>
+    </pems-tab-pane>
 
     @* ===================== Quality & Change ===================== *@
-    <div class="tab-pane fade" id="tab-quality" role="tabpanel">
+    <pems-tab-pane fade="true" id="tab-quality" role="tabpanel">
         <pems-row gap="3">
             <pems-col md="4">
                 <pems-content-card css="h-100">
@@ -777,10 +777,10 @@
                 </pems-content-card>
             </pems-col>
         </pems-row>
-    </div>
+    </pems-tab-pane>
 
     @* ===================== Classification & Maintenance Intelligence ===================== *@
-    <div class="tab-pane fade" id="tab-classification" role="tabpanel">
+    <pems-tab-pane fade="true" id="tab-classification" role="tabpanel">
         @{
             var intel = ViewBag.MaintenanceIntelligence as PEMS.Application.DTOs.EquipmentMaintenanceIntelligenceDto;
             var explanation = ViewBag.ClassificationExplanation as PEMS.Application.DTOs.ClassificationExplanationDto;
@@ -885,14 +885,14 @@
                 </pems-col>
             </pems-row>
         }
-    </div>
+    </pems-tab-pane>
 
     @* ===================== Barcode ===================== *@
-    <div class="tab-pane fade" id="tab-barcode" role="tabpanel">
+    <pems-tab-pane fade="true" id="tab-barcode" role="tabpanel">
         <partial name="_BarcodePanel" model="(PEMS.Web.Models.BarcodePanelViewModel)ViewBag.BarcodePanel" />
-    </div>
+    </pems-tab-pane>
 
-</div>
+</pems-tab-content>
 
 </pems-page-shell> @* end .vs-page *@
 

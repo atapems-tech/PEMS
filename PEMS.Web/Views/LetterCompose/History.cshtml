@@ -25,7 +25,7 @@
         }
         else
         {
-            <div class="table-responsive">
+            <pems-table-scroll>
                 <pems-table scale="small" css="lh-table">
                     <thead><tr><th scope="col">@Localizer["Lc_Name"]</th><th scope="col">@Localizer["Lc_FirstViewed"]</th><th scope="col">@Localizer["Lc_LastViewed"]</th><th scope="col">@Localizer["Lc_ViewCount"]</th></tr></thead>
                     <tbody>
@@ -35,7 +35,7 @@
                         }
                     </tbody>
                 </pems-table>
-            </div>
+            </pems-table-scroll>
         }
     </section>
 
@@ -62,7 +62,7 @@
 
     <section class="lc-card" aria-labelledby="lhAudit">
         <h3 id="lhAudit"><pems-icon name="bi-shield-check" aria-hidden="true" /> @Localizer["Lc_AuditTrail"]</h3>
-        <div class="table-responsive">
+        <pems-table-scroll>
             <pems-table scale="small" css="lh-table">
                 <thead><tr><th scope="col">@Localizer["Lc_When"]</th><th scope="col">@Localizer["Lc_Who"]</th><th scope="col">@Localizer["Lc_Category"]</th><th scope="col">@Localizer["Lc_Event"]</th><th scope="col">@Localizer["Lc_DetailCol"]</th></tr></thead>
                 <tbody>
@@ -72,6 +72,6 @@
                     }
                 </tbody>
             </pems-table>
-        </div>
+        </pems-table-scroll>
     </section>
 </div>

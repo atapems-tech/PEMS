@@ -42,7 +42,7 @@
                         </pems-select>
                         @if (assignees.State != "RESOLVED")
                         {
-                            <div id="tmc-assignee-help" class="form-text text-warning"><pems-icon name="bi-info-circle" aria-hidden="true" /> @Localizer["Tm_Diag_" + assignees.State]</div>
+                            <pems-help-text css="text-warning" id="tmc-assignee-help"><pems-icon name="bi-info-circle" aria-hidden="true" /> @Localizer["Tm_Diag_" + assignees.State]</pems-help-text>
                         }
                     </pems-col>
                     <pems-col md="4">
@@ -74,10 +74,10 @@
                 </pems-row>
             </div>
             <div class="modal-footer justify-content-between">
-                <div class="form-check">
+                <pems-check-row>
                     <pems-input kind="check" type="checkbox" name="createAnother" value="true" id="tmc-another" />
                     <label class="form-check-label small" for="tmc-another">@Localizer["Tm_CreateAnother"]</label>
-                </div>
+                </pems-check-row>
                 <pems-flex gap="2" align="center">
                     <span class="small text-muted d-none d-md-inline">@Localizer["Tm_CtrlEnterHint"]</span>
                     <pems-button tone="neutral" size="small" outline="true" type="button" data-bs-dismiss="modal">@Localizer["Tm_Cancel"]</pems-button>

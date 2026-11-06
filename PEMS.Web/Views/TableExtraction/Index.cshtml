@@ -17,7 +17,7 @@
             <pems-icon name="bi-arrow-counterclockwise" /> @Localizer["Reset columns"]
         </pems-button>
     </pems-flex>
-    <div class="table-responsive pems-grid-scroll table-scroll-area pems-s-a7ef6ffc">
+    <pems-table-scroll css="pems-grid-scroll table-scroll-area pems-s-a7ef6ffc">
         <pems-table kind="enterprise" css="pems-grid-table" data-grid-key="TableExtraction">
             <thead>
                 <tr>
@@ -67,7 +67,7 @@
         {
             <p class="text-muted text-center py-4">No uploaded attachments yet. Try Document Upload first.</p>
         }
-    </div>
+    </pems-table-scroll>
 
     @await Html.PartialAsync("_Pagination", new PEMS.Web.ViewModels.PaginationViewModel
     {

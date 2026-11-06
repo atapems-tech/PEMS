@@ -86,8 +86,8 @@
     <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-history">History (@Model.PriorAssessments.Count)</button></li>
 </pems-nav>
 
-<div class="tab-content">
-    <div class="tab-pane fade show active" id="tab-scores">
+<pems-tab-content>
+    <pems-tab-pane fade="true" active="true" id="tab-scores">
         <pems-content-card>
             <p class="text-muted small">
                 طبق «PEMS Phase 7.6»: نتیجه از قاعده‌ی «بدترین بُعد حاکم است» (Max، نه میانگین)
@@ -108,9 +108,9 @@
                 <div class="small text-muted mt-2"><strong>Rationale:</strong> @Model.Rationale</div>
             }
         </pems-content-card>
-    </div>
+    </pems-tab-pane>
 
-    <div class="tab-pane fade" id="tab-evidence">
+    <pems-tab-pane fade="true" id="tab-evidence">
         <pems-content-card>
             <pems-table kind="enterprise" scale="small" css="mb-0">
                 <thead><tr><th>@Localizer["Source Type"]</th><th>@Localizer["Identifier"]</th><th>@Localizer["Reference"]</th><th>@Localizer["Description"]</th><th>By</th><th>@Localizer["Date"]</th></tr></thead>
@@ -130,9 +130,9 @@
             </pems-table>
             @if (!Model.Evidence.Any()) { <p class="text-muted text-center py-4 mb-0">@Localizer["هنوز هیچ شاهدی ثبت نشده - قبل از ارسال برای بازبینی، حداقل یکی الزامی است."]</p> }
         </pems-content-card>
-    </div>
+    </pems-tab-pane>
 
-    <div class="tab-pane fade" id="tab-history">
+    <pems-tab-pane fade="true" id="tab-history">
         <pems-content-card>
             <p class="text-muted small">طبق بند ۱۳: نسخه‌های قبلی هرگز حذف نمی‌شوند - فقط SUPERSEDED علامت می‌خورند.</p>
             <pems-table kind="enterprise" scale="small" css="mb-0">
@@ -153,8 +153,8 @@
             </pems-table>
             @if (!Model.PriorAssessments.Any()) { <p class="text-muted text-center py-4 mb-0">@Localizer["این اولین ارزیابی این تجهیز است."]</p> }
         </pems-content-card>
-    </div>
-</div>
+    </pems-tab-pane>
+</pems-tab-content>
 
 @if (canEdit)
 {

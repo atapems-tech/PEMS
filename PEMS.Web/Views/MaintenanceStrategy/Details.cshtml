@@ -92,7 +92,7 @@
         @if (Model.CanApprove && s.Status == "Approved")
         {
             <form asp-action="Activate" asp-route-id="@s.MaintenanceStrategyId" method="post"><pems-flex inline="true" gap="2" align="center">
-                <div class="form-check small mb-0"><pems-input kind="check" type="checkbox" name="moveAssignments" value="true" checked id="mv" /><label class="form-check-label" for="mv">@Localizer["Rcm_MoveAssignments"]</label></div>
+                <pems-check-row css="small mb-0"><pems-input kind="check" type="checkbox" name="moveAssignments" value="true" checked id="mv" /><label class="form-check-label" for="mv">@Localizer["Rcm_MoveAssignments"]</label></pems-check-row>
                 <pems-button tone="success" size="small"><pems-icon name="bi-lightning" /> @Localizer["Rcm_Activate"]</pems-button>
             </pems-flex></form>
         }
@@ -136,7 +136,7 @@
         }
     </pems-flex>
     @if (!usable) { <p class="small text-muted">@Localizer["Rcm_AssignRequiresApproval"]</p> }
-    <div class="table-responsive">
+    <pems-table-scroll>
         <pems-table scale="small" css="table-enterprise align-middle">
             <thead><tr>
                 <th>@Localizer["Rcm_Tag"]</th><th>@Localizer["Rcm_EquipmentName"]</th><th>@Localizer["Rcm_EquipmentClass"]</th><th>@Localizer["Rcm_AreaUnit"]</th>
@@ -191,7 +191,7 @@
             </tbody>
         </pems-table>
         @if (!s.Assignments.Any()) { <p class="text-muted small text-center py-2">@Localizer["Rcm_NoAssignments"]</p> }
-    </div>
+    </pems-table-scroll>
 </pems-content-card>
 
 <pems-content-card css="mb-3">

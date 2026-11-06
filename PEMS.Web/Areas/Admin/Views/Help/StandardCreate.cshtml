@@ -69,9 +69,9 @@
                 <pems-select asp-for="PEMSImplementationStatus" id="implStatus">
                     @foreach (var s in implementationStatuses) { <option value="@s">@s</option> }
                 </pems-select>
-                <div class="form-text text-danger" id="complianceWarning" hidden>
+                <pems-help-text css="text-danger" id="complianceWarning" hidden>
                     "ComplianceEvidenceAvailable" requires a real Evidence Path below - it must never be used without one.
-                </div>
+                </pems-help-text>
             </pems-col>
 
             <pems-col md="6">
@@ -99,10 +99,10 @@
             </pems-col>
 
             <pems-col span="12">
-                <div class="form-check">
+                <pems-check-row>
                     <pems-input kind="check" asp-for="IsPublished" type="checkbox" />
                     <label asp-for="IsPublished" class="form-check-label">@Localizer["Published (visible to all users)"]</label>
-                </div>
+                </pems-check-row>
             </pems-col>
 
             <pems-col span="12"><hr /></pems-col>
@@ -112,8 +112,8 @@
                     <li class="nav-item"><button class="nav-link active" data-bs-toggle="tab" data-bs-target="#tab-en" type="button">@Localizer["English"]</button></li>
                     <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-fa" type="button">@Localizer["فارسی"]</button></li>
                 </pems-nav>
-                <div class="tab-content border border-top-0 p-3">
-                    <div class="tab-pane fade show active" id="tab-en">
+                <pems-tab-content css="border border-top-0 p-3">
+                    <pems-tab-pane fade="true" active="true" id="tab-en">
                         <div class="mb-2">
                             <pems-label>Title (EN) <span class="text-danger">*</span></pems-label>
                             <pems-input asp-for="TitleEn" required />
@@ -125,14 +125,14 @@
                         <div class="mb-2">
                             <pems-label>Content (EN, HTML) <span class="text-danger">*</span></pems-label>
                             <pems-textarea asp-for="ContentEn" rows="10" required></pems-textarea>
-                            <div class="form-text">Suggested sections: What it is / Why it matters / PEMS relevance / Current PEMS coverage / Outside current PEMS scope. Never copy official standard text.</div>
+                            <pems-help-text>Suggested sections: What it is / Why it matters / PEMS relevance / Current PEMS coverage / Outside current PEMS scope. Never copy official standard text.</pems-help-text>
                         </div>
                         <div class="mb-2">
                             <pems-label>@Localizer["Search Keywords (EN)"]</pems-label>
                             <pems-input asp-for="SearchKeywordsEn" />
                         </div>
-                    </div>
-                    <div class="tab-pane fade" id="tab-fa" dir="rtl">
+                    </pems-tab-pane>
+                    <pems-tab-pane fade="true" id="tab-fa" dir="rtl">
                         <div class="mb-2">
                             <pems-label>عنوان (فارسی) <span class="text-danger">*</span></pems-label>
                             <pems-input asp-for="TitleFa" required />
@@ -149,8 +149,8 @@
                             <pems-label>@Localizer["کلیدواژه‌های جستجو (فارسی)"]</pems-label>
                             <pems-input asp-for="SearchKeywordsFa" />
                         </div>
-                    </div>
-                </div>
+                    </pems-tab-pane>
+                </pems-tab-content>
             </pems-col>
 
             <pems-col span="12"><hr /></pems-col>

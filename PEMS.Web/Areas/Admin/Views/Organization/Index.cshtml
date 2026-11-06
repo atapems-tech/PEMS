@@ -31,9 +31,9 @@
         <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#orgTabTree" type="button" role="tab">@Localizer["Org_Tab_Tree"]</button></li>
     </pems-nav>
 
-    <div class="tab-content">
-        <div class="tab-pane fade show active" id="orgTabPositions" role="tabpanel">
-            <div class="table-responsive">
+    <pems-tab-content>
+        <pems-tab-pane fade="true" active="true" id="orgTabPositions" role="tabpanel">
+            <pems-table-scroll>
                 <pems-table scale="small" css="table-enterprise align-middle">
                     <thead>
                         <tr>
@@ -111,11 +111,11 @@
                     }
                     </tbody>
                 </pems-table>
-            </div>
+            </pems-table-scroll>
             @if (!Model.Any()) { <div class="vs-empty">@Localizer["Org_Empty"]</div> }
-        </div>
+        </pems-tab-pane>
 
-        <div class="tab-pane fade" id="orgTabTree" role="tabpanel">
+        <pems-tab-pane fade="true" id="orgTabTree" role="tabpanel">
             @{
                 async Task RenderNode(PEMS.Application.Organization.OrganizationPositionRow n, int depth, HashSet<int> seen)
                 {
@@ -139,6 +139,6 @@
                 @foreach (var root in roots) { await RenderNode(root, 0, seenNodes); }
             </pems-tree>
             @if (!Model.Any()) { <div class="vs-empty">@Localizer["Org_Empty"]</div> }
-        </div>
-    </div>
+        </pems-tab-pane>
+    </pems-tab-content>
 </pems-page-shell>

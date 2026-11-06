@@ -5,7 +5,7 @@
 @{ }
 
 <pems-content-card css="pems-s-765d57b5">
-    <pems-alert tone="danger" css="py-2 px-3 small" asp-validation-summary="All" hidden="@(ViewData.ModelState.IsValid)"></pems-alert>
+    <pems-validation-summary css="py-2 px-3 small" asp-validation-summary="All" hidden="@(ViewData.ModelState.IsValid)"></pems-validation-summary>
 
     <form asp-action="Create" method="post">
         <div class="mb-3">

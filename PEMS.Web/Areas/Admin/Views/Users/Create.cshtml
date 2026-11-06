@@ -5,7 +5,7 @@
 
 <pems-content-card css="pems-s-e2b01b0d">
 
-    <pems-alert tone="danger" css="py-2 px-3 small" asp-validation-summary="All" hidden="@(ViewData.ModelState.IsValid)"></pems-alert>
+    <pems-validation-summary css="py-2 px-3 small" asp-validation-summary="All" hidden="@(ViewData.ModelState.IsValid)"></pems-validation-summary>
 
     <form asp-action="Create" method="post">
 
@@ -82,17 +82,17 @@
                         <option value="@p.Id" selected="@(Model.PositionId == p.Id)">@p.Name</option>
                     }
                 </pems-select>
-                <div class="form-text">@Localizer["Only vacant active positions are listed. The assignment is created through the organization structure."]</div>
+                <pems-help-text>@Localizer["Only vacant active positions are listed. The assignment is created through the organization structure."]</pems-help-text>
             </pems-col>
         </pems-row>
 
         <hr />
         <partial name="_RoleSelect" model="Model" />
 
-        <div class="form-check mb-4">
+        <pems-check-row css="mb-4">
             <pems-input kind="check" asp-for="IsActive" />
             <label asp-for="IsActive" class="form-check-label">@Localizer["Active"]</label>
-        </div>
+        </pems-check-row>
 
         <pems-button tone="primary" type="submit">@Localizer["Save"]</pems-button>
         <pems-button as="a" tone="neutral" outline="true" asp-action="Index">@Localizer["Cancel"]</pems-button>

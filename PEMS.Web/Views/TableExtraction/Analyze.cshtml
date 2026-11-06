@@ -82,7 +82,7 @@
 
 <pems-content-card>
     <h6 class="mb-2">Rows (@(table?.Rows.Count ?? 0))</h6>
-    <div class="table-responsive table-scroll-area pems-s-8da1c6e6">
+    <pems-table-scroll css="table-scroll-area pems-s-8da1c6e6">
         <pems-table kind="enterprise" scale="small">
             <thead>
                 <tr>
@@ -128,5 +128,5 @@
         {
             <p class="text-muted text-center py-4">No rows extracted.</p>
         }
-    </div>
+    </pems-table-scroll>
 </pems-content-card>

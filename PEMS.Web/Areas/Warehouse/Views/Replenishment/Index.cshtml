@@ -58,10 +58,10 @@
                     @if (!string.IsNullOrEmpty(q)) { <input type="hidden" name="q" value="@q" /> }
                     <pems-list-filter-select id="replFilterStatus" name="status" label="@Localizer["Ed_Status"]" value="@status"
                                              all-text="@Localizer["Eq_AllStatuses"]" items="@statuses.Select(s => new SelectListItem(StatusText(s), s))" />
-                    <div class="form-check small mb-0">
+                    <pems-check-row css="small mb-0">
                         <pems-input type="checkbox" name="definitiveOnly" value="true" id="defOnly" checked="@definitiveOnly" kind="check" />
                         <label class="form-check-label" for="defOnly">@Localizer["Repl_DefinitiveOnly"]</label>
-                    </div>
+                    </pems-check-row>
                 </pems-list-filters>
                 <pems-list-reset-columns grid-key="Replenishment" />
                 @if (canRun)

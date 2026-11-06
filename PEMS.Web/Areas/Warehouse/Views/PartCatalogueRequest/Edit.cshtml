@@ -136,7 +136,7 @@
                                 <pems-input id="pc_ExistingPartNumber" form="pcForm" name="ExistingPartNumber" value="@f.ExistingPartNumber" maxlength="50" />
                                 <pems-button tone="neutral" outline="true" type="submit" form="pcForm" formaction="@Url.Action("LoadPart")"><pems-icon name="bi-box-arrow-in-down" /> @Localizer["Pc_Btn_Load"]</pems-button>
                             </div>
-                            <div class="form-text">@Localizer["Pc_Hint_Load"]</div>
+                            <pems-help-text>@Localizer["Pc_Hint_Load"]</pems-help-text>
                         </div>
                         <div class="mb-2">
                             <pems-label for="pc_ChangesMatchInventory">@L("ChangesMatchInventory") <span class="pc-req" aria-hidden="true">*</span></pems-label>
@@ -145,7 +145,7 @@
                                 <option value="true" selected="@(f.ChangesMatchInventory == true)">@Localizer["Pc_Yes"]</option>
                                 <option value="false" selected="@(f.ChangesMatchInventory == false)">@Localizer["Pc_No"]</option>
                             </pems-select>
-                            <div class="form-text">@Localizer["Pc_Hint_ChangesMatch"]</div>
+                            <pems-help-text>@Localizer["Pc_Hint_ChangesMatch"]</pems-help-text>
                         </div>
                         @if (!string.IsNullOrEmpty(d.Form.OldManufacturerName) || !string.IsNullOrEmpty(d.Form.OldManufacturerPartNumber))
                         {
@@ -160,11 +160,11 @@
         <pems-col lg="8">
             <section class="vs-panel pc-card">
                 <h2 class="vs-section__title"><pems-icon name="bi-gear-wide-connected" /> @Localizer["Pc_Sec_Equipment"]</h2>
-                <div class="form-check mb-2">
+                <pems-check-row css="mb-2">
                     <pems-input type="checkbox" id="pc_IsNewEquipment" form="pcForm" name="IsNewEquipment" value="true" checked="@f.IsNewEquipment" kind="check" />
                     <input type="hidden" form="pcForm" name="IsNewEquipment" value="false" />
                     <label class="form-check-label" for="pc_IsNewEquipment">@L("IsNewEquipment")</label>
-                </div>
+                </pems-check-row>
 
                 <div class="pc-table-scroll">
                     <pems-related-table>
@@ -195,10 +195,8 @@
                     <pems-label for="pc_TechnicalClassId_text">@L("TechnicalClassId") <span class="pc-req" aria-hidden="true">*</span></pems-label>
                     <div class="pc-lookup" data-url="@lookupBase/TechnicalClasses" data-detail-url="@lookupBase/TechnicalClass" data-name="TechnicalClassId" data-form="pcForm"
                          data-id="@f.TechnicalClassId" data-text="@Label("TechnicalClassId")" data-input-id="pc_TechnicalClassId_text"></div>
-                    <div class="form-text pc-tc-long" id="pc_TechnicalClassLong">@d.TechnicalClassLongDescription</div>
-                    <div class="form-text pc-tc-status" id="pc_TcResolveStatus" role="status" aria-live="polite"
-                         data-txt-resolved="@Localizer["Pc_Tc_Resolved"]" data-txt-ambiguous="@Localizer["Pc_Tc_Ambiguous"]" data-txt-none="@Localizer["Pc_Tc_None"]"
-                         data-txt-mismatch="@Localizer["Pc_Tc_Mismatch"]" data-txt-picked="@Localizer["Pc_Tc_Picked"]"></div>
+                    <pems-help-text css="pc-tc-long" id="pc_TechnicalClassLong">@d.TechnicalClassLongDescription</pems-help-text>
+                    <pems-help-text css="pc-tc-status" id="pc_TcResolveStatus" role="status" aria-live="polite" data-txt-resolved="@Localizer["Pc_Tc_Resolved"]" data-txt-ambiguous="@Localizer["Pc_Tc_Ambiguous"]" data-txt-none="@Localizer["Pc_Tc_None"]" data-txt-mismatch="@Localizer["Pc_Tc_Mismatch"]" data-txt-picked="@Localizer["Pc_Tc_Picked"]"></pems-help-text>
                 </div>
 
                 <pems-label>@L("Attributes") <span class="pc-req" aria-hidden="true">*</span></pems-label>
@@ -226,7 +224,7 @@
                     </pems-related-table>
                 </div>
                 <button type="button" class="vs-btn vs-btn--sm" id="pcAddAttr" data-next-index="@(extraAttrs.Count + 1)"><pems-icon name="bi-plus-lg" /> @Localizer["Pc_Btn_AddAttribute"]</button>
-                <div class="form-text">@Localizer["Pc_Hint_FreeFormat"]</div>
+                <pems-help-text>@Localizer["Pc_Hint_FreeFormat"]</pems-help-text>
             </section>
         </pems-col>
 
@@ -241,7 +239,7 @@
                             @foreach (var at in new[] { "None", "FixedAsset", "LowValueAsset" })
                             { <option value="@at" selected="@(f.AssetType == at)">@Localizer["Pc_Asset_" + at]</option> }
                         </pems-select>
-                        <div class="form-text">@Localizer["Pc_Hint_LowValue"]</div>
+                        <pems-help-text>@Localizer["Pc_Hint_LowValue"]</pems-help-text>
                     </pems-col>
                     <pems-col md="6">
                         <pems-label for="pc_CommodityGroup1Id">@L("CommodityGroup1Id") <span class="pc-req" aria-hidden="true">*</span></pems-label>
@@ -270,7 +268,7 @@
                             <option value=""></option>
                             @foreach (var u in Model.Units) { <option value="@u.Id" selected="@(f.UnitOfMeasureId == u.Id)">@u.Text@(string.IsNullOrEmpty(u.Extra) ? "" : " - " + u.Extra)</option> }
                         </pems-select>
-                        @if (isChange) { <div class="form-text">@Localizer["Pc_Hint_UomLocked"]</div> }
+                        @if (isChange) { <pems-help-text>@Localizer["Pc_Hint_UomLocked"]</pems-help-text> }
                     </pems-col>
 
                     <pems-col md="6">
@@ -287,7 +285,7 @@
                             </div>
                             <pems-input id="pc_NewManufacturerName" form="pcForm" name="NewManufacturerName" value="@f.NewManufacturerName" maxlength="200" placeholder="@Localizer["Pc_Hint_NewManufacturer"]" disabled="@(!f.IsNewManufacturer)" css="text-uppercase" />
                         </div>
-                        <div class="form-text" id="pc_ManufacturerCheck"></div>
+                        <pems-help-text id="pc_ManufacturerCheck"></pems-help-text>
                     </pems-col>
                     <pems-col md="6">
                         <pems-label for="pc_ManufacturerPartNumber">@L("ManufacturerPartNumber")@if (isChange) { <span class="pc-req" aria-hidden="true"> *</span> }</pems-label>
@@ -342,7 +340,7 @@
                      data-txt-inflight="@Localizer["Pc_Dedup_InFlight"]"
                      data-txt-error="@Localizer["Pc_Dedup_Error"]">
                 <h2 class="vs-section__title"><pems-icon name="bi-search" /> @Localizer["Pc_Dedup_Title"]</h2>
-                <p class="form-text">@Localizer["Pc_Dedup_Hint"]</p>
+                <pems-help-text as="p">@Localizer["Pc_Dedup_Hint"]</pems-help-text>
                 <pems-label for="pcDedupQuery">@Localizer["Pc_Dedup_SearchLabel"]</pems-label>
                 <div class="input-group input-group-sm mb-2">
                     <pems-input id="pcDedupQuery" type="search" maxlength="100" autocomplete="off" />
@@ -375,7 +373,7 @@
                 </ul>
                 @if (!d.Attachments.Any()) { <div class="text-muted small mb-2">@Localizer["Pc_Empty_Attachments"]</div> }
                 <button type="button" class="vs-btn vs-btn--sm" data-bs-toggle="modal" data-bs-target="#pcAttachModal"><pems-icon name="bi-upload" /> @Localizer["Pc_Btn_Upload"]</button>
-                <div class="form-text">@Localizer["Pc_Hint_PosItem"]</div>
+                <pems-help-text>@Localizer["Pc_Hint_PosItem"]</pems-help-text>
             </section>
         </pems-col>
 
@@ -430,7 +428,7 @@
                         <pems-input scale="small" id="pc_StorageVolume" form="pcForm" name="StorageVolume" value="@f.StorageVolume" maxlength="100" />
                     </pems-col>
                 </pems-row>
-                <div class="form-text">@Localizer["Pc_Hint_Planning"]</div>
+                <pems-help-text>@Localizer["Pc_Hint_Planning"]</pems-help-text>
             </section>
         </pems-col>
 
@@ -482,7 +480,7 @@
                     </div>
                 }
                 <div class="mb-2"><pems-label for="pc_equipQty">@L("InstalledQuantity")</pems-label><pems-input id="pc_equipQty" name="installedQuantity" type="number" step="0.0001" min="0" value="1" required /></div>
-                <div class="form-text">@Localizer["Pc_Hint_NewEquipment"]</div>
+                <pems-help-text>@Localizer["Pc_Hint_NewEquipment"]</pems-help-text>
             </div>
             <div class="modal-footer"><button type="button" class="vs-btn vs-btn--sm" data-bs-dismiss="modal">@Localizer["Pc_Btn_Close"]</button><button type="submit" class="vs-btn vs-btn--primary vs-btn--sm">@Localizer["Pc_Btn_Save"]</button></div>
         </form></pems-modal>

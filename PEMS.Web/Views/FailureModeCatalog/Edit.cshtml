@@ -33,11 +33,11 @@
             </pems-col>
             <pems-col span="12"><pems-label>@Localizer["Rcm_Description"]</pems-label><pems-textarea name="Description" rows="2">@Model.Description</pems-textarea></pems-col>
             <pems-col span="12">
-                <div class="form-check">
+                <pems-check-row>
                     <pems-input type="checkbox" name="IsActive" value="true" id="act" checked="@Model.IsActive" kind="check" />
                     <label class="form-check-label" for="act">@Localizer["Rcm_Active"]</label>
                     <input type="hidden" name="IsActive" value="false" />
-                </div>
+                </pems-check-row>
             </pems-col>
         </pems-row>
         <div class="mt-4">

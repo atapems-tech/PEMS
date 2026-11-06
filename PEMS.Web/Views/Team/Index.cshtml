@@ -93,7 +93,7 @@
                     <pems-select scale="small" name="maintenanceGroupId" required>
                         @foreach (var g in (IEnumerable<dynamic>)ViewBag.MaintenanceGroups) { <option value="@g.MaintenanceGroupId">@g.Name (@g.DisciplineName)</option> }
                     </pems-select>
-                    <div class="form-text">گروه‌های تعمیراتی از <a asp-controller="MaintenanceMasterData" asp-action="Index">@Localizer["Maintenance Master Data"]</a> مدیریت می‌شوند.</div>
+                    <pems-help-text>گروه‌های تعمیراتی از <a asp-controller="MaintenanceMasterData" asp-action="Index">@Localizer["Maintenance Master Data"]</a> مدیریت می‌شوند.</pems-help-text>
                 </div>
                 <div class="mb-2">
                     <pems-label css="small">@Localizer["شیفت (اختیاری)"]</pems-label>

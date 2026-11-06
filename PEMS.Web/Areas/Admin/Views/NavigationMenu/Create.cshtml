@@ -51,7 +51,7 @@
                         <pems-input id="Action" name="Action" value="@input.Action" maxlength="100" required />
                     </pems-col>
                 </pems-row>
-                <div class="form-text">@Localizer["Nav_RouteHelp"]</div>
+                <pems-help-text>@Localizer["Nav_RouteHelp"]</pems-help-text>
             </fieldset>
 
             <div class="mb-3">
@@ -63,7 +63,7 @@
                         <option value="@p" selected="@(input.RequiredPermission == p)">@p</option>
                     }
                 </pems-select>
-                <div id="permHelp" class="form-text">@Localizer["Nav_PermissionHelp"]</div>
+                <pems-help-text id="permHelp">@Localizer["Nav_PermissionHelp"]</pems-help-text>
             </div>
 
             <div class="mb-4">

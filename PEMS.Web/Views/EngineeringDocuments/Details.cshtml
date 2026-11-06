@@ -388,10 +388,10 @@
     </li>
 </pems-nav>
 
-<div class="tab-content">
+<pems-tab-content>
 
     @* ===================== Overview ===================== *@
-    <div class="tab-pane fade show active" id="tab-overview" role="tabpanel">
+    <pems-tab-pane fade="true" active="true" id="tab-overview" role="tabpanel">
         <pems-row gap="3">
         <pems-col lg="8">
         <div class="vs-section">
@@ -489,10 +489,10 @@
             </div>
         </pems-col>
         </pems-row>
-    </div>
+    </pems-tab-pane>
 
     @* ===================== Attachments & AI ===================== *@
-    <div class="tab-pane fade" id="tab-attachments" role="tabpanel">
+    <pems-tab-pane fade="true" id="tab-attachments" role="tabpanel">
         <div class="vs-section">
             <pems-flex justify="between" align="center" css="mb-3">
                 <h6 class="mb-0">@Localizer["Ed_SecFiles"]</h6>
@@ -578,7 +578,7 @@
                 <p class="text-muted text-center py-4">@Localizer["Ed_NoFiles"]</p>
             }
         </div>
-    </div>
+    </pems-tab-pane>
 
     @* ===================== IDC Review ===================== *@
     @* طبق «PEMS Engineering IDC Ownership Correction» (بخش ۹ - Originator Actions): این
@@ -589,7 +589,7 @@
        این فقط یک خلاصه‌ی اطلاعاتی است؛ تصمیم رسمی در مرحله‌ی Approval گرفته می‌شود. *@
     @if (idcStatusForPage.Any())
     {
-        <div class="tab-pane fade" id="tab-idc" role="tabpanel">
+        <pems-tab-pane fade="true" id="tab-idc" role="tabpanel">
             <div class="vs-section">
                 <pems-flex justify="between" align="center" css="mb-3">
                     <h6 class="mb-0"><pems-icon name="bi-diagram-3" /> Inter-Discipline Check (IDC) — Discipline Review Summary</h6>
@@ -642,11 +642,11 @@
                     }
                 }
             </div>
-        </div>
+        </pems-tab-pane>
     }
 
     @* ===================== Revisions ===================== *@
-    <div class="tab-pane fade" id="tab-revisions" role="tabpanel">
+    <pems-tab-pane fade="true" id="tab-revisions" role="tabpanel">
         <div class="vs-section">
             <h6 class="mb-3">@Localizer["Ed_SecRevisionHistory"]</h6>
             @if (Model.Revisions != null && Model.Revisions.Any())
@@ -707,7 +707,7 @@
                 <p class="text-muted text-center py-4">@Localizer["Ed_NoRevisions"]</p>
             }
         </div>
-    </div>
+    </pems-tab-pane>
 
     @* ===================== Workflow History ===================== *@
     @* طبق بخش ۳۳ ممیزی UX: جدول خام قبلی به Timeline تبدیل شد؛ خودِ جدول کامل هم برای Audit
@@ -717,7 +717,7 @@
        ردیف می‌گیرد و هیچ‌کدام از Submit/Check/IDC/Approve/Reject/Issue را ثبت نمی‌کند؛ یعنی
        این تب همیشه (نه فقط بعد از اصلاح مالکیت IDC) عملاً خالی/ناقص بود. حالا از
        WorkflowHistory واقعی (روی همه‌ی Instance های این مدرک، نه فقط چرخه‌ی جاری) می‌خواند. *@
-    <div class="tab-pane fade" id="tab-workflow" role="tabpanel">
+    <pems-tab-pane fade="true" id="tab-workflow" role="tabpanel">
         <div class="vs-section">
             <h6 class="mb-3">@Localizer["Ed_SecWorkflowHistory"]</h6>
             @if (workflowHistoryForPage.Any())
@@ -781,10 +781,10 @@
                 <p class="text-muted text-center py-4">@Localizer["Ed_NoWorkflow"]</p>
             }
         </div>
-    </div>
+    </pems-tab-pane>
 
     @* ===================== Correspondence ===================== *@
-    <div class="tab-pane fade" id="tab-correspondence" role="tabpanel">
+    <pems-tab-pane fade="true" id="tab-correspondence" role="tabpanel">
         <div class="vs-section">
             <h6 class="mb-3"><pems-icon name="bi-envelope-paper" /> @Localizer["Ed_SecCorrespondence"]</h6>
             @if (relatedLetters.Any())
@@ -812,10 +812,10 @@
             }
         </div>
 
-    </div>
+    </pems-tab-pane>
 
     @* ===================== Transmittals ===================== *@
-    <div class="tab-pane fade" id="tab-transmittals" role="tabpanel">
+    <pems-tab-pane fade="true" id="tab-transmittals" role="tabpanel">
         @* طبق «PEMS Phase 2A — EDMS Foundation» بخش ۲: قبلاً هیچ پیوند متقابلی با Transmittal
            روی این صفحه نبود - Service/Entity موجود، فقط یک بخش خلاصه‌ی جدید *@
         <div class="vs-section">
@@ -844,10 +844,10 @@
                 <p class="text-muted text-center py-4">@Localizer["Ed_NoTransmittals"]</p>
             }
         </div>
-    </div>
+    </pems-tab-pane>
 
     @* ===================== Comments (Document Viewer + Comment Management) ===================== *@
-    <div class="tab-pane fade" id="tab-comments" role="tabpanel">
+    <pems-tab-pane fade="true" id="tab-comments" role="tabpanel">
 @if (latestPdfAttachment != null)
 {
     <pems-content-card css="mb-3">
@@ -1034,9 +1034,9 @@
         <pems-icon name="bi-plus-lg" /> @Localizer["Add Comment"]
     </pems-button>
 </pems-content-card>
-    </div>
+    </pems-tab-pane>
 
-</div>
+</pems-tab-content>
 
 @* ==============================================================================
    پاپ‌آپ Submit/Resubmit با نمایش گرافیکی کل چرخه‌ی گردش‌کار - به‌جای یک دکمه‌ی تکی که
@@ -1069,10 +1069,10 @@
                             @foreach (var d in allDisciplinesForSubmit.Where(x => x.DisciplineId != Model.DisciplineId))
                             {
                                 <pems-col span="6" md="4">
-                                    <div class="form-check">
+                                    <pems-check-row>
                                         <pems-input kind="check" type="checkbox" name="idcDisciplineIds" value="@d.DisciplineId" id="idcDisc_@d.DisciplineId" />
                                         <label class="form-check-label small" for="idcDisc_@d.DisciplineId">@d.Name</label>
-                                    </div>
+                                    </pems-check-row>
                                 </pems-col>
                             }
                         </pems-row>
@@ -1196,18 +1196,18 @@
                     <div class="mb-3">
                         <pems-label css="small fw-bold">این مدرک به کدوم واحد تحویل داده می‌شه؟</pems-label>
 
-                        <div class="form-check">
+                        <pems-check-row>
                             <pems-input kind="check" type="radio" name="deliveryUnitType" id="dcc_internal" value="InternalDCC" checked onclick="pemsToggleIssueFields()" />
                             <label class="form-check-label small" for="dcc_internal">DCC داخلی (واحد کنترل مدارک خودمون)</label>
-                        </div>
-                        <div class="form-check">
+                        </pems-check-row>
+                        <pems-check-row>
                             <pems-input kind="check" type="radio" name="deliveryUnitType" id="dept_internal" value="InternalDepartment" onclick="pemsToggleIssueFields()" />
                             <label class="form-check-label small" for="dept_internal">یک واحد دیگه داخل شرکت</label>
-                        </div>
-                        <div class="form-check">
+                        </pems-check-row>
+                        <pems-check-row>
                             <pems-input kind="check" type="radio" name="deliveryUnitType" id="ext_unit" value="External" onclick="pemsToggleIssueFields()" />
                             <label class="form-check-label small" for="ext_unit">نهاد بیرونی (DCC کارفرما / پیمانکار)</label>
-                        </div>
+                        </pems-check-row>
                     </div>
 
                     <div class="mb-2" id="issueDeptField" hidden>

@@ -15,7 +15,7 @@
                 <pems-label>@Localizer["Equipment"] <span class="text-muted small">(@Localizer["Equipment, Asset or Functional Location is required"])</span></pems-label>
                 <pems-input type="text" placeholder="@Localizer["جستجوی تگ، نام..."]" data-pems-search data-search-type="Equipment" data-search-hidden="#wrEquipmentIdHidden" autocomplete="off" value="@ViewBag.PrefillEquipmentText" />
                 <input type="hidden" name="equipmentId" id="wrEquipmentIdHidden" value="@ViewBag.PrefillEquipmentId" />
-                <div class="form-text small">@Localizer["At least one of Equipment or Functional Location is required. If the problem is not tied to one equipment, leave this empty and choose a Functional Location."]</div>
+                <pems-help-text css="small">@Localizer["At least one of Equipment or Functional Location is required. If the problem is not tied to one equipment, leave this empty and choose a Functional Location."]</pems-help-text>
             </pems-col>
 
             <pems-col span="12">
@@ -51,7 +51,7 @@
             <pems-col span="12"><pems-label>@Localizer["Description"]</pems-label><pems-textarea name="description" rows="2"></pems-textarea></pems-col>
 
             <pems-col span="12"><hr class="my-1" /><h6 class="mb-0">@Localizer["Risk and HSE"]</h6>
-                <div class="form-text small">@Localizer["Priority is derived: the final priority is never lower than the declared priority or the risk matrix result; HSE-related requests are at least High; emergencies are always Critical."]</div></pems-col>
+                <pems-help-text css="small">@Localizer["Priority is derived: the final priority is never lower than the declared priority or the risk matrix result; HSE-related requests are at least High; emergencies are always Critical."]</pems-help-text></pems-col>
             <pems-col md="3">
                 <pems-label>@Localizer["Likelihood (1-5)"]</pems-label>
                 <pems-select name="riskLikelihood"><option value="">--</option>@for (var i = 1; i <= 5; i++) { <option value="@i">@i</option> }</pems-select>
@@ -60,8 +60,8 @@
                 <pems-label>@Localizer["Severity (1-5)"]</pems-label>
                 <pems-select name="riskSeverity"><option value="">--</option>@for (var i = 1; i <= 5; i++) { <option value="@i">@i</option> }</pems-select>
             </pems-col>
-            <pems-col md="3" css="d-flex align-items-end"><div class="form-check"><pems-input kind="check" type="checkbox" name="isHseRelated" value="true" id="wrHse" /><label class="form-check-label" for="wrHse">@Localizer["HSE related"]</label></div></pems-col>
-            <pems-col md="3" css="d-flex align-items-end"><div class="form-check"><pems-input kind="check" type="checkbox" name="isEmergency" value="true" id="wrEmergency" /><label class="form-check-label text-danger" for="wrEmergency">@Localizer["Emergency"]</label></div></pems-col>
+            <pems-col md="3" css="d-flex align-items-end"><pems-check-row><pems-input kind="check" type="checkbox" name="isHseRelated" value="true" id="wrHse" /><label class="form-check-label" for="wrHse">@Localizer["HSE related"]</label></pems-check-row></pems-col>
+            <pems-col md="3" css="d-flex align-items-end"><pems-check-row><pems-input kind="check" type="checkbox" name="isEmergency" value="true" id="wrEmergency" /><label class="form-check-label text-danger" for="wrEmergency">@Localizer["Emergency"]</label></pems-check-row></pems-col>
 
             <pems-col span="12"><hr class="my-1" /><h6 class="mb-0">@Localizer["Reported failure (ISO 14224)"]</h6></pems-col>
             <pems-col md="5">

@@ -92,7 +92,7 @@
 
 <pems-content-card css="mb-3">
     <h6 class="mb-3">Classified — by Equipment Class (Top 20)</h6>
-    <div class="table-responsive">
+    <pems-table-scroll>
         <pems-table kind="enterprise" scale="small">
             <thead><tr><th>@Localizer["Equipment Class"]</th><th>@Localizer["Count"]</th></tr></thead>
             <tbody>
@@ -103,14 +103,14 @@
             </tbody>
         </pems-table>
         @if (!Model.ByEquipmentClass.Any()) { <p class="text-muted small text-center py-3">@Localizer["داده‌ای موجود نیست."]</p> }
-    </div>
+    </pems-table-scroll>
 </pems-content-card>
 
 <pems-row gap="3">
     <pems-col md="4">
         <pems-content-card css="h-100">
             <h6 class="mb-3">Top Unclassified — EquipmentType</h6>
-            <div class="table-responsive pems-s-f0787633">
+            <pems-table-scroll css="pems-s-f0787633">
                 <pems-table kind="enterprise" scale="small">
                     <tbody>
                         @foreach (var item in Model.TopUnclassifiedEquipmentTypes)
@@ -119,13 +119,13 @@
                         }
                     </tbody>
                 </pems-table>
-            </div>
+            </pems-table-scroll>
         </pems-content-card>
     </pems-col>
     <pems-col md="4">
         <pems-content-card css="h-100">
             <h6 class="mb-3">Top Unclassified — Name</h6>
-            <div class="table-responsive pems-s-f0787633">
+            <pems-table-scroll css="pems-s-f0787633">
                 <pems-table kind="enterprise" scale="small">
                     <tbody>
                         @foreach (var item in Model.TopUnclassifiedEquipmentNames)
@@ -134,13 +134,13 @@
                         }
                     </tbody>
                 </pems-table>
-            </div>
+            </pems-table-scroll>
         </pems-content-card>
     </pems-col>
     <pems-col md="4">
         <pems-content-card css="h-100">
             <h6 class="mb-3">Top Unclassified — Tag Pattern</h6>
-            <div class="table-responsive pems-s-f0787633">
+            <pems-table-scroll css="pems-s-f0787633">
                 <pems-table kind="enterprise" scale="small">
                     <tbody>
                         @foreach (var item in Model.TopUnclassifiedTagPatterns)
@@ -149,7 +149,7 @@
                         }
                     </tbody>
                 </pems-table>
-            </div>
+            </pems-table-scroll>
         </pems-content-card>
     </pems-col>
 </pems-row>

@@ -18,10 +18,10 @@
         @if (current != null) { <option value="@current.Value.PositionId" selected>@current.Value.Label</option> }
         @foreach (var p in vacant) { <option value="@p.PositionId">@p.Label</option> }
     </pems-select>
-    <div class="form-text">@Localizer["Only vacant active positions are listed. The assignment is created through the organization structure."]</div>
+    <pems-help-text>@Localizer["Only vacant active positions are listed. The assignment is created through the organization structure."]</pems-help-text>
 }
 else
 {
     <pems-input value="@(current?.Label ?? "—")" disabled aria-label="@Localizer["Organizational position"]" />
-    <div class="form-text">@Localizer["Emp_PositionAdminOnly"]</div>
+    <pems-help-text>@Localizer["Emp_PositionAdminOnly"]</pems-help-text>
 }

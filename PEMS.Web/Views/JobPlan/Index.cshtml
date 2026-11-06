@@ -96,14 +96,14 @@
                         }
                     </pems-select>
                 </div>
-                <div class="form-check">
+                <pems-check-row>
                     <pems-input kind="check" type="checkbox" name="permitRequired" value="true" id="createPermitRequired" />
                     <label class="form-check-label small" for="createPermitRequired">@Localizer["Permit Required for execution"]</label>
-                </div>
-                <div class="form-check">
+                </pems-check-row>
+                <pems-check-row>
                     <pems-input kind="check" type="checkbox" name="lotoRequired" value="true" id="createLotoRequired" />
                     <label class="form-check-label small" for="createLotoRequired">@Localizer["LOTO (Isolation) Required for execution"]</label>
-                </div>
+                </pems-check-row>
             </div>
             <div class="modal-footer">
                 <pems-button tone="neutral" size="small" outline="true" type="button" data-bs-dismiss="modal">@Localizer["Cancel"]</pems-button>

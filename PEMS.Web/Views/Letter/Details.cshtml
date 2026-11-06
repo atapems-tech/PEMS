@@ -68,10 +68,10 @@
                     <summary>@Localizer["Lt_ResponseEdit"]</summary>
                     <form class="mt-2" asp-action="SetResponseDue" method="post"><pems-flex wrap="true" align="end" gap="2">
                         <input type="hidden" name="letterId" value="@l.LetterId" />
-                        <div class="form-check">
+                        <pems-check-row>
                             <pems-input type="checkbox" name="responseRequired" value="true" id="detResponseRequired" checked="@l.ResponseRequired" kind="check" />
                             <label class="form-check-label" for="detResponseRequired">@Localizer["Lt_ResponseRequired"]</label>
-                        </div>
+                        </pems-check-row>
                         <div>
                             <pems-label css="mb-1" for="detResponseDue">@Localizer["Lt_ResponseDueDate"]</pems-label>
                             <pems-date name="responseDueDate" id="detResponseDue" scale="small"
@@ -667,7 +667,7 @@
             <div class="modal-body">
                 <pems-label css="small">Type your full name to sign</pems-label>
                 <pems-input name="signedByName" required />
-                <div class="form-text small">Lightweight electronic acknowledgment (typed name + timestamp), not a PKI digital signature.</div>
+                <pems-help-text css="small">Lightweight electronic acknowledgment (typed name + timestamp), not a PKI digital signature.</pems-help-text>
             </div>
             <div class="modal-footer">
                 <pems-button tone="neutral" size="small" outline="true" type="button" data-bs-dismiss="modal">@Localizer["Cancel"]</pems-button>

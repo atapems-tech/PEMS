@@ -9,12 +9,14 @@
   "card": {},
   "chart": {},
   "check-radio-switch": {},
+  "check-row": {},
   "confirm-call": {},
   "content-card": {},
   "date-input": {},
   "dropdown": {},
   "flex": {},
   "form-label": {},
+  "help-text": {},
   "icon": {},
   "info-grid": {},
   "inline-script": {},
@@ -31,8 +33,12 @@
   "progress": {},
   "select": {},
   "spinner": {},
+  "tab-content": {},
+  "tab-pane": {},
   "table": {},
+  "table-scroll": {},
   "tabs": {},
   "text-input": {},
-  "textarea": {}
+  "textarea": {},
+  "validation-alert": {}
 }

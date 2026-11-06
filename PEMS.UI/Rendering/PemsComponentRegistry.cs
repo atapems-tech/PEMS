@@ -103,6 +103,10 @@ public sealed class PemsComponentRegistry : IPemsComponentRegistry
         Register(UiKeys.ContentCard, typeof(PemsContentCard));
         Register(UiKeys.PageShell, typeof(PemsPageShell));
         Register(UiKeys.Flex, typeof(PemsFlex));
+        Register(UiKeys.HelpText, typeof(PemsHelpText));
+        Register(UiKeys.TableScroll, typeof(PemsTableScroll));
+        Register(UiKeys.TabContent, typeof(PemsTabContent));
+        Register(UiKeys.TabPane, typeof(PemsTabPane));
     }
 
     public void Register(string key, Type componentType)

@@ -56,10 +56,10 @@
     <form asp-action="Convert" method="post"><pems-content-card css="mb-3">
         <input type="hidden" name="id" value="@d.ProcurementDemandId" />
         <h6 class="mb-2"><pems-icon name="bi-file-earmark-plus" aria-hidden="true" /> @Localizer["Ppr_ToMr"]</h6>
-        <div class="form-check">
+        <pems-check-row>
             <pems-input kind="check" type="radio" name="target" id="pprNew" value="new" checked />
             <label class="form-check-label" for="pprNew">@Localizer["Ppr_NewMr"]</label>
-        </div>
+        </pems-check-row>
         <pems-row gap="2" css="mb-2 ms-3">
             <pems-col md="3"><pems-label css="small" for="pprNumber">@Localizer["Ppr_MrNumber"]</pems-label><pems-input scale="small" id="pprNumber" name="mrNumber" dir="ltr" /></pems-col>
             <pems-col md="3"><pems-label css="small" for="pprProject">@Localizer["Ppr_Project"]</pems-label>
@@ -71,10 +71,10 @@
         </pems-row>
         @if (Model.DraftRequisitions.Count > 0)
         {
-            <div class="form-check">
+            <pems-check-row>
                 <pems-input kind="check" type="radio" name="target" id="pprExisting" value="existing" />
                 <label class="form-check-label" for="pprExisting">@Localizer["Ppr_ExistingMr"]</label>
-            </div>
+            </pems-check-row>
             <pems-col md="6" css="ms-3 mb-2">
                 <pems-select scale="small" name="existingMrId" aria-label="@Localizer["Ppr_ExistingMr"]">
                     @foreach (var m in Model.DraftRequisitions) { <option value="@m.Id">@m.Number - @m.Description</option> }

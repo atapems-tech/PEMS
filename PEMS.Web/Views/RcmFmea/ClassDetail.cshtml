@@ -64,9 +64,9 @@
     <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-rcm">@Localizer["RCM"]</button></li>
 </pems-nav>
 
-<div class="tab-content">
+<pems-tab-content>
     @* ===================== Functional Requirements ===================== *@
-    <div class="tab-pane fade show active" id="tab-functional">
+    <pems-tab-pane fade="true" active="true" id="tab-functional">
         <pems-content-card css="mb-3">
             <pems-flex justify="between" align="center" css="mb-2">
                 <h6 class="mb-0">@Localizer["Functional Requirements"]</h6>
@@ -97,10 +97,10 @@
                 <pems-button tone="neutral" size="small" outline="true" data-bs-toggle="modal" data-bs-target="#createFfModal"><pems-icon name="bi-plus-lg" /> New Functional Failure</pems-button>
             }
         </pems-content-card>
-    </div>
+    </pems-tab-pane>
 
     @* ===================== FMEA ===================== *@
-    <div class="tab-pane fade" id="tab-fmea">
+    <pems-tab-pane fade="true" id="tab-fmea">
         @if (canEdit)
         {
             <pems-content-card css="mb-3">
@@ -195,10 +195,10 @@
             </pems-content-card>
         }
         @if (!fmeaAnalyses.Any()) { <p class="text-muted small">@Localizer["هنوز هیچ تحلیل FMEA ای برای این کلاس ساخته نشده."]</p> }
-    </div>
+    </pems-tab-pane>
 
     @* ===================== RCM ===================== *@
-    <div class="tab-pane fade" id="tab-rcm">
+    <pems-tab-pane fade="true" id="tab-rcm">
         @if (canEdit && fmeaAnalyses.Any(x => x.Status == "APPROVED"))
         {
             <pems-content-card css="mb-3">
@@ -394,8 +394,8 @@
             </pems-content-card>
         }
         @if (!rcmAnalyses.Any()) { <p class="text-muted small">@Localizer["هنوز هیچ تحلیل RCM ای برای این کلاس ساخته نشده."]</p> }
-    </div>
-</div>
+    </pems-tab-pane>
+</pems-tab-content>
 
 @if (canEdit)
 {

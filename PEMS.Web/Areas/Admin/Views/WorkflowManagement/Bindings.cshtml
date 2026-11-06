@@ -8,7 +8,7 @@
             <span class="small text-muted">@Localizer["Explicit bindings resolve which published version new workflow instances use."]</span>
             <pems-button as="a" tone="neutral" size="small" outline="true" asp-action="Index"><pems-icon name="bi-arrow-left" /> @Localizer["Workflow Management"]</pems-button>
         </pems-flex>
-        <div class="table-responsive">
+        <pems-table-scroll>
             <pems-table kind="enterprise" css="align-middle">
                 <thead><tr><th>@Localizer["Module"]</th><th>@Localizer["Process type"]</th><th>@Localizer["Context"]</th><th>@Localizer["Workflow"]</th><th>@Localizer["Bound version"]</th><th>@Localizer["Status"]</th><th>@Localizer["Access"]</th><th></th></tr></thead>
                 <tbody>
@@ -24,6 +24,6 @@
                 }
                 </tbody>
             </pems-table>
-        </div>
+        </pems-table-scroll>
     </pems-content-card>
 </pems-page-shell>

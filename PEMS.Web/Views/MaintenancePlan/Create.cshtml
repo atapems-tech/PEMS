@@ -64,18 +64,18 @@
                 <pems-col md="4" id="intervalDaysWrap">
                     <pems-label>@Localizer["Rcm_IntervalDays"]</pems-label>
                     <pems-input name="IntervalDays" type="number" min="1" value="@i.IntervalDays" />
-                    @if (ctx.SuggestedIntervalDays.HasValue) { <div class="form-text">@Localizer["Rcm_SuggestedInterval", ctx.SuggestedIntervalDays.Value, ctx.Equipment.CriticalityClass ?? "-"]</div> }
+                    @if (ctx.SuggestedIntervalDays.HasValue) { <pems-help-text>@Localizer["Rcm_SuggestedInterval", ctx.SuggestedIntervalDays.Value, ctx.Equipment.CriticalityClass ?? "-"]</pems-help-text> }
                     <span class="text-danger small">@Html.ValidationMessage("intervalDays")</span>
                 </pems-col>
                 <pems-col md="4" id="nextDueDateWrap">
                     <pems-label>@Localizer["Rcm_NextDueDate"]</pems-label>
                     <pems-date name="NextDueDate" value="@i.NextDueDate?.ToString("yyyy-MM-dd")" />
                     <span class="text-danger small">@Html.ValidationMessage("nextDueDate")</span>
-                    <div class="form-check mt-1 small">
+                    <pems-check-row css="mt-1 small">
                         <pems-input kind="check" type="checkbox" name="AllowPastDueDate" value="true" id="allowPast" />
                         <label class="form-check-label" for="allowPast">@Localizer["Rcm_AllowPastDue"]</label>
                         <input type="hidden" name="AllowPastDueDate" value="false" />
-                    </div>
+                    </pems-check-row>
                 </pems-col>
                 <pems-col md="4" id="meterTypeWrap" hidden>
                     <pems-label>@Localizer["Rcm_MeterType"]</pems-label>
@@ -95,7 +95,7 @@
                         <option value="Fixed" selected="@(i.ScheduleMode != "Floating")">@Localizer.Label("ScheduleMode", "Fixed")</option>
                         <option value="Floating" selected="@(i.ScheduleMode == "Floating")">@Localizer.Label("ScheduleMode", "Floating")</option>
                     </pems-select>
-                    <div class="form-text">@Localizer["Rcm_ScheduleModeHint"]</div>
+                    <pems-help-text>@Localizer["Rcm_ScheduleModeHint"]</pems-help-text>
                 </pems-col>
 
                 <pems-col span="12">
@@ -104,7 +104,7 @@
                         <option value="">@Localizer["Rcm_SelectPlaceholder"]</option>
                         @foreach (var jp in Model.JobPlans) { <option value="@jp.Id" selected="@(i.JobPlanId == jp.Id)">@jp.Code &mdash; @jp.Text</option> }
                     </pems-select>
-                    <div class="form-text">@Localizer["Rcm_JobPlanHint"] <a asp-controller="JobPlan" asp-action="Index" target="_blank">@Localizer["Rcm_ManageJobPlans"]</a></div>
+                    <pems-help-text>@Localizer["Rcm_JobPlanHint"] <a asp-controller="JobPlan" asp-action="Index" target="_blank">@Localizer["Rcm_ManageJobPlans"]</a></pems-help-text>
                     <span class="text-danger small">@Html.ValidationMessage("jobPlanId")</span>
                 </pems-col>
 

@@ -32,8 +32,8 @@
             <pems-input asp-for="Priority" type="number" />
         </pems-col>
         <pems-col md="3">
-            <div class="form-check mt-4"><pems-input kind="check" asp-for="IsEnabled" /><label class="form-check-label" asp-for="IsEnabled">@Localizer["Enabled"]</label></div>
-            <div class="form-check"><pems-input kind="check" asp-for="IsDefault" /><label class="form-check-label" asp-for="IsDefault">@Localizer["Module Default"]</label></div>
+            <pems-check-row css="mt-4"><pems-input kind="check" asp-for="IsEnabled" /><label class="form-check-label" asp-for="IsEnabled">@Localizer["Enabled"]</label></pems-check-row>
+            <pems-check-row><pems-input kind="check" asp-for="IsDefault" /><label class="form-check-label" asp-for="IsDefault">@Localizer["Module Default"]</label></pems-check-row>
         </pems-col>
     </pems-row>
     <pems-flex gap="2" css="mt-4">
