@@ -23,8 +23,9 @@ ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
 TESTS = os.path.join(ROOT, 'PEMS.Tests')
 SLOW = re.compile(r'Sql|LiveDb|Concurrency|Migration|Numbering|Atomicity|Retry|RealSql|Hangfire|HttpTests|Smoke', re.I)
 # Measured on 2026-11-04 (one class per `dotnet test`, build done; each invocation also costs 8 to 16 s of start-up, so classes go into ONE invocation):
-# DynamicSidebarTests did not finish in 100 s, MrRegisteredPartTests took 18 s. Everything else the script picks was under 5 s. Add a class here when it measures over 10 s.
-SLOW_MEASURED = {'DynamicSidebarTests', 'MrRegisteredPartTests'}
+# MrRegisteredPartTests took 18 s. Everything else the script picks was under 5 s. Add a class here when it measures over 10 s.
+# (DynamicSidebarTests was here at over 100 s; since 2026-11-06 it copies one seeded baseline per test and takes 32 s, SCRUM-393.)
+SLOW_MEASURED = {'MrRegisteredPartTests'}
 
 # (path regex, label, guard test classes in PEMS.Tests, why)
 GUARDS = [

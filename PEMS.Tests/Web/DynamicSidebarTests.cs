@@ -8,6 +8,8 @@ using Microsoft.AspNetCore.Mvc.Abstractions;
 using Microsoft.AspNetCore.Mvc.Controllers;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.AspNetCore.Routing;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.DependencyInjection;
 using PEMS.Application.DTOs;
@@ -176,25 +178,54 @@ public class DynamicSidebarTests
         public AccessControlService Access = null!;
     }
 
-    private static async Task<Env> EnvAsync(string name)
+    /// <summary>
+    /// The seeded database (roles, permission defaults, access-control grants) is built once per test run and copied into a fresh in-memory database for every test:
+    /// the access-control seed walks every role-permission row one grant at a time (about 14 s), so seeding per test took 13 s each (measured 2026-11-06, 475 of the 576 s of the Web family).
+    /// </summary>
+    private static readonly Lazy<Task<(PEMSDbContext Ctx, List<(Type Type, PropertyValues Values)> Rows)>> Baseline = new(async () =>
     {
-        var ctx = PemsDbContextFactory.CreateInMemory("DynSidebar_" + name);
+        var ctx = PemsDbContextFactory.CreateInMemory("DynSidebar_baseline");
         foreach (var roleName in SystemRoles.All.Concat(new[] { "Test.Contracts", "Test.DiscMaster", "Test.Requester" }))
             ctx.Roles.Add(new ApplicationRole(roleName) { NormalizedName = roleName.ToUpperInvariant() });
         await ctx.SaveChangesAsync();
         var access = new AccessControlService(ctx);
-        var permissions = new PermissionService(ctx, access);
-        await permissions.SeedDefaultsAsync();
-        var roleActions = new RoleModuleActionService(ctx, access);
-        await roleActions.SeedDefaultsAsync();
+        await new PermissionService(ctx, access).SeedDefaultsAsync();
+        await new RoleModuleActionService(ctx, access).SeedDefaultsAsync();
         var services = new ServiceCollection();
         services.AddSingleton(ctx);
         await AccessControlSeeder.SeedFromLegacyAsync(services.BuildServiceProvider());
 
+        // read every table with tracking so the property values (shadow keys included) can be copied
+        ctx.ChangeTracker.Clear();
+        var set = typeof(DbContext).GetMethods().First(m => m.Name == nameof(DbContext.Set) && m.IsGenericMethodDefinition && m.GetParameters().Length == 0);
+        foreach (var entityType in ctx.Model.GetEntityTypes().Where(t => !t.IsOwned() && !t.HasSharedClrType && t.FindPrimaryKey() != null))
+        {
+            var query = (IQueryable)set.MakeGenericMethod(entityType.ClrType).Invoke(ctx, null)!;
+            foreach (var _ in query) { }
+        }
+        var rows = ctx.ChangeTracker.Entries().Select(e => (e.Metadata.ClrType, e.CurrentValues.Clone())).ToList();
+        return (ctx, rows);
+    });
+
+    private static async Task<Env> EnvAsync(string name)
+    {
+        var (_, rows) = await Baseline.Value;
+        var ctx = PemsDbContextFactory.CreateInMemory("DynSidebar_" + name);
+        foreach (var (type, values) in rows)
+        {
+            var copy = Activator.CreateInstance(type)!;
+            var entry = ctx.Entry(copy);
+            entry.CurrentValues.SetValues(values);
+            entry.State = EntityState.Added;
+        }
+        await ctx.SaveChangesAsync();
+        ctx.ChangeTracker.Clear();
+        var access = new AccessControlService(ctx);
+        var permissions = new PermissionService(ctx, access);
         var menu = new NavigationMenuService(ctx, new MemoryCache(new MemoryCacheOptions()));
         await menu.SyncDefaultsAsync(NavigationMenuDefaults.All);
         var builder = new DynamicSidebarBuilder(menu, new NavigationVisibilityResolver(new NavigationVisibilityOverrideService(ctx), access),
-            permissions, roleActions, new Repl());
+            permissions, new RoleModuleActionService(ctx, access), new Repl());
         return new Env { Ctx = ctx, Menu = menu, Builder = builder, Permissions = permissions, Access = access };
     }
 
@@ -204,8 +235,7 @@ public class DynamicSidebarTests
         flags(row);
         env.Ctx.RolePermissions.Add(row);
         await env.Ctx.SaveChangesAsync();
-        var services = new ServiceCollection(); services.AddSingleton(env.Ctx);
-        await AccessControlSeeder.SeedFromLegacyAsync(services.BuildServiceProvider());
+        await AccessControlSeeder.SyncModuleFromRolePermissionAsync(env.Ctx, role, module);   // the one row, not the whole table again
     }
 
     private static async Task<List<SidebarNode>> BuildAsync(Env env, string[] roles, string controller = "Home", string action = "Index", string? area = null)
