@@ -157,10 +157,10 @@ public class VDRController : Controller
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> GenerateContractorNumber(
-        int vdrItemId, string? vendorCode, string? plantCode, string? unitCode, string? materialCode)
+        int vdrItemId, string? vendorCode, string? plantCode, string? unitCode, string? materialCode, string? returnTo = null)
     {
         if (!await EnsurePermissionAsync("Edit", vdrItemId, "شما مجاز به ویرایش این مدرک VDR نیستید."))
-            return RedirectToAction(nameof(Details), new { id = vdrItemId });
+            return NumberGenerationResult(vdrItemId, returnTo);
 
         var item = await _context.VDRItems
             .Include(x => x.Vendor)
@@ -191,7 +191,7 @@ public class VDRController : Controller
             TempData["Error"] = ex.Message;
         }
 
-        return RedirectToAction(nameof(Details), new { id = vdrItemId });
+        return NumberGenerationResult(vdrItemId, returnTo);
     }
 
     // طبق بخش ۴.۳.۲ همان سند: تولید شماره‌ی رسمی مدرک به فرمت SUB-CONTRACTOR/Vendor - هم‌الگو
@@ -199,10 +199,10 @@ public class VDRController : Controller
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> GenerateVendorNumber(
-        int vdrItemId, string? jobNumber, string? unitCode, string? typologyCode)
+        int vdrItemId, string? jobNumber, string? unitCode, string? typologyCode, string? returnTo = null)
     {
         if (!await EnsurePermissionAsync("Edit", vdrItemId, "شما مجاز به ویرایش این مدرک VDR نیستید."))
-            return RedirectToAction(nameof(Details), new { id = vdrItemId });
+            return NumberGenerationResult(vdrItemId, returnTo);
 
         var item = await _context.VDRItems
             .Include(x => x.Project)
@@ -230,8 +230,14 @@ public class VDRController : Controller
             TempData["Error"] = ex.Message;
         }
 
-        return RedirectToAction(nameof(Details), new { id = vdrItemId });
+        return NumberGenerationResult(vdrItemId, returnTo);
     }
+
+    // SCRUM-529: the two number forms live on Admin > Document numbering; returnTo="numbering" brings the user back there.
+    private IActionResult NumberGenerationResult(int vdrItemId, string? returnTo) =>
+        returnTo == "numbering"
+            ? RedirectToAction("Index", "Numbering", new { area = "Admin", vdrItemId })
+            : RedirectToAction(nameof(Details), new { id = vdrItemId });
 
     // طبق بخش ۵.۲ همان سند: آپلود واقعی فایل روی FTP Server. طبق تصمیم کاربر بخش ایمیل حذف شده -
     // ثبت FtpUploadedDate این‌جا همان نقش تأییدیه را ایفا می‌کند.

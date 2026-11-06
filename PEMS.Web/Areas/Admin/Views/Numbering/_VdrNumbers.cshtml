@@ -1,0 +1,116 @@
+@model PEMS.Web.Areas.Admin.Models.VdrNumberingPanel
+@using Microsoft.Extensions.Localization
+@using PEMS.Web.Resources
+@inject IStringLocalizer<SharedResource> Localizer
+@* SCRUM-529: the two VDR number forms, moved here from VDR > Details > Overview. They post to the same VDR actions
+   (same permission check, same reference-data updates, same numbering service); returnTo brings the user back here. *@
+
+<pems-content-card css="mt-3" id="vdr-numbers">
+    <h6 class="mb-1">@Localizer["Num_Vdr_Title"]</h6>
+    <p class="text-muted small mb-3">@Localizer["Num_Vdr_Hint"]</p>
+
+    <pems-form asp-action="Index" method="get" class="mb-3">
+        <pems-flex gap="2" align="end" wrap="true">
+            <div class="flex-grow-1">
+                <pems-label for="vdrSearch">@Localizer["Num_Vdr_Search"]</pems-label>
+                <pems-input id="vdrSearch" name="vdrSearch" value="@Model.Search" placeholder="@Localizer["Num_Vdr_SearchPlaceholder"]" />
+            </div>
+            <pems-button tone="primary" outline="true" type="submit"><pems-icon name="bi-search" /> @Localizer["Num_Vdr_Find"]</pems-button>
+        </pems-flex>
+    </pems-form>
+
+    @if (!string.IsNullOrWhiteSpace(Model.Search))
+    {
+        @if (Model.Results.Count == 0)
+        {
+            <p class="text-muted small">@Localizer["Num_Vdr_NoMatch"]</p>
+        }
+        else
+        {
+            <p class="text-muted small mb-1">@string.Format(Localizer["Num_Vdr_Matches"].Value, Model.Results.Count, Model.TotalMatches)</p>
+            <pems-table kind="enterprise" css="mb-3">
+                <pems-table-head>
+                    <pems-table-row>
+                        <pems-table-header>@Localizer["Vs_DocNo"]</pems-table-header>
+                        <pems-table-header>@Localizer["Vs_Description"]</pems-table-header>
+                        <pems-table-header>@Localizer["Vs_Name"]</pems-table-header>
+                        <pems-table-header class="text-end"><span class="visually-hidden">@Localizer["Ed_Actions"]</span></pems-table-header>
+                    </pems-table-row>
+                </pems-table-head>
+                <pems-table-body>
+                    @foreach (var r in Model.Results)
+                    {
+                        <pems-table-row class="@(Model.Item?.VDRItemId == r.VDRItemId ? "table-active" : "")">
+                            <pems-table-cell><span class="vs-num">@r.DocumentNumber</span></pems-table-cell>
+                            <pems-table-cell>@r.DocumentDescription</pems-table-cell>
+                            <pems-table-cell>@r.VendorName</pems-table-cell>
+                            <pems-table-cell class="text-end">
+                                <pems-button tone="neutral" size="small" outline="true" as="a" asp-action="Index" asp-route-vdrSearch="@Model.Search" asp-route-vdrItemId="@r.VDRItemId" asp-fragment="vdr-numbers">@Localizer["Num_Vdr_Pick"]</pems-button>
+                            </pems-table-cell>
+                        </pems-table-row>
+                    }
+                </pems-table-body>
+            </pems-table>
+        }
+    }
+
+    @if (Model.Item is { } item)
+    {
+        <pems-flex justify="between" align="center" wrap="true" gap="2" css="border-top pt-3 mb-3">
+            <div>
+                <div class="small text-muted">@Localizer["Num_Vdr_Selected"]</div>
+                <strong class="vs-num">@item.DocumentNumber</strong> <span class="text-muted">· @item.VendorName · @item.ProjectName</span>
+            </div>
+            <pems-button tone="neutral" size="small" outline="true" as="a" asp-area="" asp-controller="VDR" asp-action="Details" asp-route-id="@item.VDRItemId">
+                <pems-icon name="bi-box-arrow-up-right" /> @Localizer["Num_Vdr_OpenItem"]
+            </pems-button>
+        </pems-flex>
+
+        @* طبق «VENDOR DOCUMENTATION MANAGEMENT PROCEDURE» بخش ۴.۳.۱: شماره‌ی رسمی مدرک به فرمت
+           CONTRACTOR. هر فیلد مرجع خالی این‌جا پر می‌شود و همزمان روی Vendor/Project/VDR Item ذخیره
+           می‌شود - دفعه‌ی بعد از قبل پرشده می‌آید. *@
+        <pems-content-card css="mb-3">
+            <h6 class="mb-2">@Localizer["Vd_OfficialNoTitle"]</h6>
+            <p class="text-muted small mb-3">
+                @Localizer["Vd_OfficialNoHint"]
+            </p>
+            <pems-form asp-area="" asp-controller="VDR" asp-action="GenerateContractorNumber" method="post">
+                <input type="hidden" name="vdrItemId" value="@item.VDRItemId" />
+                <input type="hidden" name="returnTo" value="numbering" />
+                <pems-row gap="3">
+                    <pems-col md="3"><pems-label>@Localizer["Vd_VendorCode"]</pems-label><pems-input name="vendorCode" placeholder="e.g. FSK" /></pems-col>
+                    <pems-col md="3"><pems-label>@Localizer["Vd_PlantCode"]</pems-label><pems-input name="plantCode" placeholder="e.g. J" /></pems-col>
+                    <pems-col md="3"><pems-label>@Localizer["Vd_UnitCode"]</pems-label><pems-input name="unitCode" placeholder="e.g. 85" /></pems-col>
+                    <pems-col md="3"><pems-label>@Localizer["Vd_MaterialCode"]</pems-label><pems-input name="materialCode" value="@item.MaterialCode" placeholder="e.g. 0611" /></pems-col>
+                </pems-row>
+                <pems-button tone="primary" size="small" outline="true" css="mt-3" type="submit">
+                    <pems-icon name="bi-hash" /> @Localizer["Vd_GenOfficial"]
+                </pems-button>
+            </pems-form>
+        </pems-content-card>
+
+        @* طبق بخش ۴.۳.۲ همان سند: شماره‌ی موازی به فرمت SUB-CONTRACTOR/Vendor *@
+        <pems-content-card css="mb-0">
+            <h6 class="mb-2">@Localizer["Vd_VendorNoTitle"]</h6>
+            <p class="text-muted small mb-3">
+                @Localizer["Vd_VendorNoHint"]
+                @if (!string.IsNullOrWhiteSpace(item.VendorFormatDocumentNumber))
+                {
+                    <span>@Localizer["Vd_Current"] <strong>@item.VendorFormatDocumentNumber</strong></span>
+                }
+            </p>
+            <pems-form asp-area="" asp-controller="VDR" asp-action="GenerateVendorNumber" method="post">
+                <input type="hidden" name="vdrItemId" value="@item.VDRItemId" />
+                <input type="hidden" name="returnTo" value="numbering" />
+                <pems-row gap="3">
+                    <pems-col md="4"><pems-label>@Localizer["Vd_JobNumber"]</pems-label><pems-input name="jobNumber" placeholder="e.g. 3863" /></pems-col>
+                    <pems-col md="4"><pems-label>@Localizer["Vd_UnitCode"]</pems-label><pems-input name="unitCode" placeholder="e.g. 85" /></pems-col>
+                    <pems-col md="4"><pems-label>@Localizer["Vd_TypologyCode"]</pems-label><pems-input name="typologyCode" value="@item.TypologyCode" placeholder="e.g. GS, LG, IS ..." /></pems-col>
+                </pems-row>
+                <pems-button tone="primary" size="small" outline="true" css="mt-3" type="submit">
+                    <pems-icon name="bi-hash" /> @Localizer["Vd_GenVendor"]
+                </pems-button>
+            </pems-form>
+        </pems-content-card>
+    }
+</pems-content-card>

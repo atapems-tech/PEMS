@@ -75,6 +75,9 @@
         </pems-related-table>
         <p class="small text-muted px-3 py-2 mb-0">@Localizer["Num_Footnote"]</p>
     </pems-list-panel>
+
+    @{ var vdrPanel = ViewData["VdrNumbering"] as PEMS.Web.Areas.Admin.Models.VdrNumberingPanel ?? new(); }
+    <partial name="_VdrNumbers" model="vdrPanel" />
 </pems-list-page>
 
 @section Scripts {

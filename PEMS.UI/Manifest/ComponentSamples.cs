@@ -13,6 +13,7 @@ public static class ComponentSamples
         ["button"] = """{"label":{"en":"Save","fa":"ذخیره"},"tone":"primary"}""",
         ["badge"] = """{"label":{"en":"Active","fa":"فعال"},"tone":"success"}""",
         ["skeleton"] = """{"lines":3}""",
+        ["file-preview"] = """{"src":"/Files/Preview/1","title":{"en":"Drawing.pdf","fa":"Drawing.pdf"}}""",
         ["empty-state"] = """{"title":{"en":"No records","fa":"رکوردی نیست"},"icon":"bi-inbox"}""",
         ["error-state"] = """{"title":{"en":"Could not load","fa":"بارگذاری نشد"}}""",
         ["loading-state"] = """{"title":{"en":"Loading","fa":"در حال بارگذاری"},"lines":2}""",
