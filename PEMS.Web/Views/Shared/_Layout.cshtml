@@ -51,7 +51,6 @@
     <link rel="stylesheet" href="~/_content/PEMS.UI/pems-date.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/pems-global-search.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/css/pems-stage-diagram.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/pems-data-grid.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/admin.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/pems-workspace.css" asp-append-version="true" />
@@ -91,7 +90,7 @@
     <a class="pems-skip-link" href="#pemsMainContent">@Localizer["Shell_SkipToContent"]</a>
     <header class="pems-topbar">
         <pems-flex align="center" gap="2">
-            <pems-button tone="bare" css="sidebar-toggle-btn" id="sidebarToggleBtn" type="button" aria-label="@Localizer["Shell_ToggleMenu"]">
+            <pems-button plain="true" css="sidebar-toggle-btn" id="sidebarToggleBtn" type="button" aria-label="@Localizer["Shell_ToggleMenu"]">
                 <pems-icon name="bi-list" />
             </pems-button>
             <a class="brand text-decoration-none" asp-controller="Home" asp-action="Index" asp-area="">
@@ -154,7 +153,7 @@
             </a>
 
             <div class="dropdown">
-                <a href="#" class="text-secondary position-relative dropdown-toggle" data-bs-toggle="dropdown" id="notifBell" title="@Localizer["Notifications"]" data-pems-click="call" data-pems-fn="loadNotifDropdown" data-pems-arg="none">
+                <a href="#" class="text-secondary position-relative dropdown-toggle" data-bs-toggle="dropdown" id="notifBell" title="@Localizer["Notifications"]" onclick="loadNotifDropdown()">
                     <pems-icon name="bi-bell" css="fs-5" />
                     <pems-badge tone="danger" css="rounded-pill position-absolute top-0 start-100 translate-middle @(unreadCount > 0 ? "" : "d-none")" id="notifBadge">@(unreadCount > 0 ? unreadCount.ToString() : "")</pems-badge>
                 </a>
@@ -164,7 +163,7 @@
             </div>
 
             <div class="dropdown pems-user-menu">
-                <pems-button tone="bare" css="dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                <pems-button plain="true" css="dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                     <span class="pems-user-avatar">@(string.IsNullOrEmpty(User.Identity?.Name) ? "?" : User.Identity!.Name!.Substring(0, 1).ToUpper())</span>
                     <span class="d-none d-md-flex flex-column text-start">
                         <span class="fw-semibold">@(User.FindFirst("FullName")?.Value ?? User.Identity?.Name)</span>
@@ -182,7 +181,7 @@
                     <li><hr class="dropdown-divider" /></li>
                     <li>
                         <pems-form asp-controller="Account" asp-action="Logout" asp-area="" method="post">
-                            <pems-button tone="bare" type="submit" css="dropdown-item"><pems-icon name="bi-box-arrow-right" /> @Localizer["Logout"]</pems-button>
+                            <pems-button plain="true" type="submit" css="dropdown-item"><pems-icon name="bi-box-arrow-right" /> @Localizer["Logout"]</pems-button>
                         </pems-form>
                     </li>
                 </pems-dropdown-menu>
@@ -217,7 +216,7 @@
             <pems-toast tone="success" role="alert" data-bs-delay="5000" data-bs-autohide="true">
                 <pems-flex>
                     <div class="toast-body"><pems-icon name="bi-check-circle-fill" css="me-1" /> @TempData["Message"]</div>
-                    <pems-button tone="bare" type="button" css="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></pems-button>
+                    <pems-button plain="true" type="button" css="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></pems-button>
                 </pems-flex>
             </pems-toast>
         }
@@ -226,7 +225,7 @@
             <pems-toast tone="danger" role="alert" data-bs-delay="7000" data-bs-autohide="true">
                 <pems-flex>
                     <div class="toast-body"><pems-icon name="bi-exclamation-triangle-fill" css="me-1" /> @TempData["Error"]</div>
-                    <pems-button tone="bare" type="button" css="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></pems-button>
+                    <pems-button plain="true" type="button" css="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></pems-button>
                 </pems-flex>
             </pems-toast>
         }
@@ -255,7 +254,6 @@
     <script src="~/js/pems-global-search.js" asp-append-version="true"></script>
     <script src="~/js/pems-data-grid.js" asp-append-version="true"></script>
     <script src="~/js/pems-ui.js" asp-append-version="true"></script>
-    <script src="~/js/pems-actions.js" asp-append-version="true"></script>
     <script src="~/js/pems-sidebar-search.js" asp-append-version="true"
             data-placeholder="@Localizer["Shell_SidebarSearch"]" data-results="@Localizer["Shell_SidebarSearchResults"]" data-empty="@Localizer["Shell_SidebarSearchEmpty"]"></script>
     <script src="~/_content/PEMS.UI/pems-command-palette.js" asp-append-version="true"
@@ -271,7 +269,6 @@
     <script src="~/js/notifications-hub.js" asp-append-version="true"></script>
 
     <pems-script-templates set="layout"></pems-script-templates>
-    <pems-script-templates set="shell"></pems-script-templates>
     <script src="~/js/views/shared-layout-1.js" asp-append-version="true"></script>
 
     <script src="~/js/views/shared-layout-2.js" asp-append-version="true"></script>

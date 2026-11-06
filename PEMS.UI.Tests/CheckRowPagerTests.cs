@@ -116,4 +116,36 @@ public sealed class CheckRowPagerTests
         Assert.Equal("<div class=\"fs-4 fw-bold text-success\">42</div>", Run(new PemsMetricTagHelper(UiTestRenderer.Instance) { Css = "text-success" }, "pems-metric", [], "42"));
         Assert.Equal("<div class=\"admin-hero mb-3\">x</div>", Run(new PemsPageHeroTagHelper(UiTestRenderer.Instance) { Css = "mb-3" }, "pems-page-hero", [], "x"));
     }
+
+    [Fact]
+    public async Task A_form_frame_keeps_the_page_attributes_and_content_and_has_no_empty_class()
+    {
+        var withClass = await UiTestRenderer.Instance.RenderAsync<PemsFormFrame>(new Dictionary<string, object?>
+        {
+            [nameof(PemsFormFrame.Options)] = new FormFrameOptions { PageClass = "row g-2", Attributes = new Dictionary<string, object> { ["action"] = "/x/save", ["method"] = "post", ["id"] = "f1" } },
+            [nameof(PemsFormFrame.ChildContent)] = (Microsoft.AspNetCore.Components.RenderFragment)(b => b.AddMarkupContent(0, "<input name=\"a\" />"))
+        });
+        Assert.Contains("<form", withClass);
+        Assert.Contains("class=\"row g-2\"", withClass);
+        Assert.Contains("action=\"/x/save\"", withClass);
+        Assert.Contains("id=\"f1\"", withClass);
+        Assert.Contains("<input name=\"a\" /></form>", withClass);
+        var plain = await UiTestRenderer.Instance.RenderAsync<PemsFormFrame>(new Dictionary<string, object?> { [nameof(PemsFormFrame.Options)] = new FormFrameOptions() });
+        Assert.DoesNotContain("class=", plain);
+    }
+
+    [Fact]
+    public async Task A_plain_button_writes_only_the_page_classes_and_attributes()
+    {
+        var tab = await UiTestRenderer.Instance.RenderAsync<PemsButtonFrame>(new Dictionary<string, object?>
+        {
+            [nameof(PemsButtonFrame.Options)] = new ButtonFrameOptions { Plain = true, Css = "nav-link active", Attributes = new Dictionary<string, object> { ["type"] = "button", ["data-bs-toggle"] = "tab" } },
+            [nameof(PemsButtonFrame.ChildContent)] = (Microsoft.AspNetCore.Components.RenderFragment)(b => b.AddContent(0, "Info"))
+        });
+        Assert.Contains("<button class=\"nav-link active\" type=\"button\" data-bs-toggle=\"tab\">Info</button>", tab);
+        Assert.DoesNotContain("btn", tab);
+        var bare = await UiTestRenderer.Instance.RenderAsync<PemsButtonFrame>(new Dictionary<string, object?> { [nameof(PemsButtonFrame.Options)] = new ButtonFrameOptions { Plain = true, Disabled = true } });
+        Assert.DoesNotContain("class=", bare);
+        Assert.Contains("disabled", bare);
+    }
 }

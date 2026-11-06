@@ -75,22 +75,22 @@
                         <pems-table-cell class="text-end text-nowrap">
                             <a asp-action="Edit" asp-route-id="@p.StorageProviderId" class="lp-act lp-act--always" title="@Localizer["Ed_Edit"]" aria-label="@Localizer["Ed_Edit"] @p.Name"><pems-icon name="bi-pencil" aria-hidden="true" /></a>
                             <pems-form asp-action="TestConnection" asp-route-id="@p.StorageProviderId" method="post" class="d-inline">
-                                <pems-button tone="bare" type="submit" css="lp-act lp-act--always" title="@Localizer["StpL_Test"]" aria-label="@Localizer["StpL_Test"] @p.Name"><pems-icon name="bi-broadcast" aria-hidden="true" /></pems-button>
+                                <pems-button plain="true" type="submit" css="lp-act lp-act--always" title="@Localizer["StpL_Test"]" aria-label="@Localizer["StpL_Test"] @p.Name"><pems-icon name="bi-broadcast" aria-hidden="true" /></pems-button>
                             </pems-form>
                             @if (!p.IsDefault)
                             {
                                 <pems-form asp-action="SetDefault" asp-route-id="@p.StorageProviderId" method="post" class="d-inline">
-                                    <pems-button tone="bare" type="submit" css="lp-act lp-act--always" title="@Localizer["StpL_SetDefault"]" aria-label="@Localizer["StpL_SetDefault"] @p.Name"><pems-icon name="bi-star" aria-hidden="true" /></pems-button>
+                                    <pems-button plain="true" type="submit" css="lp-act lp-act--always" title="@Localizer["StpL_SetDefault"]" aria-label="@Localizer["StpL_SetDefault"] @p.Name"><pems-icon name="bi-star" aria-hidden="true" /></pems-button>
                                 </pems-form>
                             }
                             <pems-form asp-action="SetEnabled" asp-route-id="@p.StorageProviderId" method="post" class="d-inline">
                                 <input type="hidden" name="enabled" value="@(!p.IsEnabled)" />
-                                <pems-button tone="bare" type="submit" css="lp-act lp-act--always" title="@(p.IsEnabled ? Localizer["Disable"] : Localizer["Enable"])" aria-label="@(p.IsEnabled ? Localizer["Disable"] : Localizer["Enable"]) @p.Name"><pems-icon css="@(p.IsEnabled ? "bi-toggle-on" : "bi-toggle-off")" aria-hidden="true" /></pems-button>
+                                <pems-button plain="true" type="submit" css="lp-act lp-act--always" title="@(p.IsEnabled ? Localizer["Disable"] : Localizer["Enable"])" aria-label="@(p.IsEnabled ? Localizer["Disable"] : Localizer["Enable"]) @p.Name"><pems-icon css="@(p.IsEnabled ? "bi-toggle-on" : "bi-toggle-off")" aria-hidden="true" /></pems-button>
                             </pems-form>
                             @if (p.ActiveRouteCount == 0 && !p.IsDefault)
                             {
                                 <pems-form asp-action="Delete" asp-route-id="@p.StorageProviderId" method="post" class="d-inline" data-pems-confirm="@Localizer["StpL_ConfirmDelete"]">
-                                    <pems-button tone="bare" type="submit" css="lp-act lp-act--always text-danger" title="@Localizer["Ed_Delete"]" aria-label="@Localizer["Ed_Delete"] @p.Name"><pems-icon name="bi-trash" aria-hidden="true" /></pems-button>
+                                    <pems-button plain="true" type="submit" css="lp-act lp-act--always text-danger" title="@Localizer["Ed_Delete"]" aria-label="@Localizer["Ed_Delete"] @p.Name"><pems-icon name="bi-trash" aria-hidden="true" /></pems-button>
                                 </pems-form>
                             }
                         </pems-table-cell>

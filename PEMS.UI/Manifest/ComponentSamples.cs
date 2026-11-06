@@ -89,6 +89,7 @@ public static class ComponentSamples
         ["col"] = """{"span":"12","md":"6"}""",
         ["check-row"] = """{"switch":true,"css":"mb-0"}""",
         ["content-card"] = """{"css":"mb-3"}""",
+        ["form-frame"] = """{"css":"row g-2"}""",
         ["data-table"] = """{"empty":"No rows","dense":true,"css":"mb-0"}""",
         ["stat"] = """{"label":"Modules scanned"}""",
         ["stat-grid"] = """{"css":"mb-3"}""",

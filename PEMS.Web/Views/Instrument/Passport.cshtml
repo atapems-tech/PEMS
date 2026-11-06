@@ -20,7 +20,7 @@
         </div>
         <pems-flex gap="2">
             <pems-button tone="neutral" size="small" outline="true" as="a" asp-action="Edit" asp-route-id="@Model.InstrumentId"><pems-icon name="bi-pencil" /> @Localizer["Edit"]</pems-button>
-            <pems-button tone="neutral" size="small" outline="true" data-pems-click="print"><pems-icon name="bi-printer" /> Print</pems-button>
+            <pems-button tone="neutral" size="small" outline="true" onclick="window.print()"><pems-icon name="bi-printer" /> Print</pems-button>
             <pems-form asp-action="GenerateCalibrationWorkOrder" method="post" class="d-inline">
                 <input type="hidden" name="instrumentId" value="@Model.InstrumentId" />
                 <pems-button tone="primary" size="small" outline="true" type="submit"><pems-icon name="bi-clipboard-plus" /> Generate WO</pems-button>

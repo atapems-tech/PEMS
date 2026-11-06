@@ -40,7 +40,7 @@
                     @foreach (var p in Model.Where(p => p.IsActive)) { <option value="@p.PositionId">@(string.IsNullOrWhiteSpace(p.PositionCode) ? p.Title : p.Title + " [" + p.PositionCode + "]")</option> }
                 </pems-select>
             </pems-col>
-            <pems-col md="1"><pems-button tone="bare" css="vs-btn vs-btn--primary vs-btn--sm w-100" aria-label="@Localizer["Org_Positions_New"]"><pems-icon name="bi-plus-lg" /></pems-button></pems-col>
+            <pems-col md="1"><pems-button plain="true" css="vs-btn vs-btn--primary vs-btn--sm w-100" aria-label="@Localizer["Org_Positions_New"]"><pems-icon name="bi-plus-lg" /></pems-button></pems-col>
             <pems-col span="12"><pems-input scale="small" name="description" maxlength="500" placeholder="@Localizer["Description"]" aria-label="@Localizer["Description"]" /></pems-col>
         </pems-row></pems-form>
         <p class="small text-muted mt-2 mb-0">@Localizer["Org_Positions_Note"]</p>
@@ -54,7 +54,7 @@
             <option value="vacant" selected="@(status == "vacant")">@Localizer["Org_Vacant"]</option>
             <option value="inactive" selected="@(status == "inactive")">@Localizer["Org_Inactive"]</option>
         </pems-select>
-        <pems-button tone="bare" css="vs-btn vs-btn--sm"><pems-icon name="bi-funnel" /> @Localizer["Org_Filter_Apply"]</pems-button>
+        <pems-button plain="true" css="vs-btn vs-btn--sm"><pems-icon name="bi-funnel" /> @Localizer["Org_Filter_Apply"]</pems-button>
     </pems-flex></pems-form>
 
     <pems-table-scroll>
@@ -77,7 +77,7 @@
                                 </pems-select>
                             </pems-col>
                             <input type="hidden" name="description" value="@r.Description" />
-                            <pems-col md="1"><pems-button tone="bare" css="vs-btn vs-btn--sm" title="@Localizer["Org_Btn_Save"]" aria-label="@Localizer["Org_Btn_Save"]"><pems-icon name="bi-save" /></pems-button></pems-col>
+                            <pems-col md="1"><pems-button plain="true" css="vs-btn vs-btn--sm" title="@Localizer["Org_Btn_Save"]" aria-label="@Localizer["Org_Btn_Save"]"><pems-icon name="bi-save" /></pems-button></pems-col>
                         </pems-row></pems-form>
                     </pems-table-cell>
                     <pems-table-cell class="small">@(r.ParentLabel ?? "—")</pems-table-cell>

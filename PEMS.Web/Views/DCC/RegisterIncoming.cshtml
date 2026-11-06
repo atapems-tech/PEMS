@@ -128,7 +128,7 @@
                         <div class="dcr-seg" role="radiogroup" aria-labelledby="dcrChannelLabel" id="dcrChannel">
                             @foreach (var c in IncomingCorrespondenceRules.Channels)
                             {
-                                <label class="dcr-seg-item"><pems-input kind="bare" type="radio" name="receiptChannel" value="@c" checked="@(c == "OfficialLetter")" /><span>@L("Dcc_Channel_" + c)</span></label>
+                                <label class="dcr-seg-item"><input type="radio" name="receiptChannel" value="@c" checked="@(c == "OfficialLetter")" /><span>@L("Dcc_Channel_" + c)</span></label>
                             }
                         </div>
                     </div>
@@ -149,7 +149,7 @@
                         <label class="dcr-label" for="dcrDocDate">@L("Dcc_DocumentDate") <span class="dcr-req" aria-hidden="true">*</span></label>
                         <div class="dcr-date" data-date-name="documentDate" id="dcrDocDateWrap">
                             <pems-input css="dcr-ltr" id="dcrDocDate" inputmode="numeric" placeholder="1405/01/01" aria-describedby="dcrDocDateIso" />
-                            <pems-button tone="bare" type="button" css="dcr-date-btn" aria-label="@L("Dcc_PickDate")"><pems-icon name="bi-calendar3" aria-hidden="true" /></pems-button>
+                            <pems-button plain="true" type="button" css="dcr-date-btn" aria-label="@L("Dcc_PickDate")"><pems-icon name="bi-calendar3" aria-hidden="true" /></pems-button>
                             <div class="dcr-cal" role="dialog" aria-label="@L("Dcc_PickDate")" hidden></div>
                         </div>
                         <div class="dcr-hint dcr-ltr" id="dcrDocDateIso"></div>
@@ -160,7 +160,7 @@
                         <label class="dcr-label" for="dcrRecvDate">@L("Dcc_ReceivedDate") <span class="dcr-req" aria-hidden="true">*</span></label>
                         <div class="dcr-date" data-date-name="receivedDate" id="dcrRecvDateWrap">
                             <pems-input css="dcr-ltr" id="dcrRecvDate" inputmode="numeric" placeholder="1405/01/01" aria-describedby="dcrRecvDateIso" />
-                            <pems-button tone="bare" type="button" css="dcr-date-btn" aria-label="@L("Dcc_PickDate")"><pems-icon name="bi-calendar3" aria-hidden="true" /></pems-button>
+                            <pems-button plain="true" type="button" css="dcr-date-btn" aria-label="@L("Dcc_PickDate")"><pems-icon name="bi-calendar3" aria-hidden="true" /></pems-button>
                             <div class="dcr-cal" role="dialog" aria-label="@L("Dcc_PickDate")" hidden></div>
                         </div>
                         <div class="dcr-hint dcr-ltr" id="dcrRecvDateIso"></div>
@@ -219,7 +219,7 @@
                 <div class="dcr-row">
                     <div class="dcr-field dcr-span-2">
                         <label class="dcr-switch">
-                            <pems-input kind="bare" type="checkbox" id="dcrRespReq" role="switch" />
+                            <input type="checkbox" id="dcrRespReq" role="switch" />
                             <span class="dcr-switch-track" aria-hidden="true"></span>
                             <span>@L("Dcc_ResponseRequired")</span>
                         </label>
@@ -231,12 +231,12 @@
                             <div class="dcr-presets" role="group" aria-labelledby="dcrDueLabel">
                                 @foreach (var days in new[] { 3, 7, 14, 30 })
                                 {
-                                    <pems-button tone="bare" type="button" css="dcr-chip" data-preset="@days">@days @L("Dcc_Days")</pems-button>
+                                    <pems-button plain="true" type="button" css="dcr-chip" data-preset="@days">@days @L("Dcc_Days")</pems-button>
                                 }
                             </div>
                             <div class="dcr-date" data-date-name="responseDueDate" id="dcrDueWrap">
                                 <pems-input css="dcr-ltr" id="dcrDue" inputmode="numeric" placeholder="1405/01/01" aria-labelledby="dcrDueLabel" aria-describedby="dcrDueIso" />
-                                <pems-button tone="bare" type="button" css="dcr-date-btn" aria-label="@L("Dcc_PickDate")"><pems-icon name="bi-calendar3" aria-hidden="true" /></pems-button>
+                                <pems-button plain="true" type="button" css="dcr-date-btn" aria-label="@L("Dcc_PickDate")"><pems-icon name="bi-calendar3" aria-hidden="true" /></pems-button>
                                 <div class="dcr-cal" role="dialog" aria-label="@L("Dcc_PickDate")" hidden></div>
                             </div>
                         </div>
@@ -279,7 +279,7 @@
                         <pems-icon name="bi-cloud-arrow-up" aria-hidden="true" />
                         <strong>@L("Dcc_DropTitle")</strong>
                         <span id="dcrDropHint" class="dcr-hint">@L("Dcc_DropHint")</span>
-                        <pems-input kind="bare" type="file" id="dcrFileInput" multiple hidden accept="@string.Join(",", IncomingCorrespondenceRules.AllowedExtensions)" />
+                        <input type="file" id="dcrFileInput" multiple hidden accept="@string.Join(",", IncomingCorrespondenceRules.AllowedExtensions)" />
                     </div>
                     <ul class="dcr-files" id="dcrFiles" aria-live="polite"></ul>
                     <div class="dcr-error" data-error-for="files"></div>
@@ -308,8 +308,8 @@
         @* ================================================================ پنل کناری *@
         <aside class="dcr-side" aria-label="@L("Dcc_SidePanel")">
             <div class="dcr-tabs" role="tablist">
-                <pems-button tone="bare" type="button" role="tab" id="dcrTabDocs" css="dcr-tab active" aria-selected="true" aria-controls="dcrPaneDocs">@L("Dcc_TabDocuments")</pems-button>
-                <pems-button tone="bare" type="button" role="tab" id="dcrTabThread" css="dcr-tab" aria-selected="false" aria-controls="dcrPaneThread" tabindex="-1">@L("Dcc_TabThread") <span class="dcr-count" id="dcrThreadCount" hidden>0</span></pems-button>
+                <pems-button plain="true" type="button" role="tab" id="dcrTabDocs" css="dcr-tab active" aria-selected="true" aria-controls="dcrPaneDocs">@L("Dcc_TabDocuments")</pems-button>
+                <pems-button plain="true" type="button" role="tab" id="dcrTabThread" css="dcr-tab" aria-selected="false" aria-controls="dcrPaneThread" tabindex="-1">@L("Dcc_TabThread") <span class="dcr-count" id="dcrThreadCount" hidden>0</span></pems-button>
             </div>
 
             <div class="dcr-pane" id="dcrPaneDocs" role="tabpanel" aria-labelledby="dcrTabDocs">
@@ -326,7 +326,7 @@
 
         <footer class="dcr-foot">
             <label class="dcr-switch dcr-switch--small">
-                <pems-input kind="bare" type="checkbox" id="dcrKeepSender" role="switch"="true" />
+                <input type="checkbox" id="dcrKeepSender" role="switch" checked />
                 <span class="dcr-switch-track" aria-hidden="true"></span>
                 <span>@L("Dcc_KeepSender")</span>
             </label>

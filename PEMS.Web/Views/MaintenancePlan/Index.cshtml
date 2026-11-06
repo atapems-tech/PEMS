@@ -17,7 +17,7 @@
         <pems-list-toolbar heading="@Localizer["Mp_Title"]" total="@Model.TotalCount">
             <pems-list-tools>
                 <pems-form asp-action="GenerateDueWorkOrders" method="post" class="d-inline" data-pems-confirm="@Localizer["Mp_GenerateDueConfirm"]">
-                    <pems-button tone="bare" type="submit" css="lp-icon-btn" title="@Localizer["Mp_GenerateDue"]"><pems-icon name="bi-lightning-charge" aria-hidden="true" /><span class="visually-hidden">@Localizer["Mp_GenerateDue"]</span></pems-button>
+                    <pems-button plain="true" type="submit" css="lp-icon-btn" title="@Localizer["Mp_GenerateDue"]"><pems-icon name="bi-lightning-charge" aria-hidden="true" /><span class="visually-hidden">@Localizer["Mp_GenerateDue"]</span></pems-button>
                 </pems-form>
                 <pems-list-reset-columns grid-key="MaintenancePlan" />
                 <pems-list-new href="@Url.Action("Create")" text="@Localizer["Rcm_NewPlan"]" />
@@ -87,7 +87,7 @@
                                 </pems-form>
                                 <pems-form asp-action="Deactivate" method="post" class="d-inline">
                                     <input type="hidden" name="planId" value="@p.MaintenancePlanId" />
-                                    <pems-button tone="bare" type="submit" css="lp-act lp-act--always" title="@Localizer["Mp_Deactivate"]" aria-label="@Localizer["Mp_Deactivate"]"><pems-icon name="bi-slash-circle" aria-hidden="true" /></pems-button>
+                                    <pems-button plain="true" type="submit" css="lp-act lp-act--always" title="@Localizer["Mp_Deactivate"]" aria-label="@Localizer["Mp_Deactivate"]"><pems-icon name="bi-slash-circle" aria-hidden="true" /></pems-button>
                                 </pems-form>
                             </pems-table-cell>
                         </pems-table-row>

@@ -120,7 +120,7 @@
                بدون تغییر در Route/Field/بررسی وضعیت سرور. *@
             @if (Model.Status == "Draft")
             {
-                <pems-button tone="bare" type="button" css="vs-btn vs-btn--primary" data-bs-toggle="modal" data-bs-target="#submitWorkflowModal">
+                <pems-button plain="true" type="button" css="vs-btn vs-btn--primary" data-bs-toggle="modal" data-bs-target="#submitWorkflowModal">
                     <pems-icon name="bi-send" /> Submit For Review
                 </pems-button>
             }
@@ -128,13 +128,13 @@
             {
                 <pems-form asp-action="Check" method="post" class="d-inline">
                     <input type="hidden" name="id" value="@Model.DocumentId" />
-                    <pems-button tone="bare" css="vs-btn vs-btn--primary"><pems-icon name="bi-clipboard-check" /> Check</pems-button>
+                    <pems-button plain="true" css="vs-btn vs-btn--primary"><pems-icon name="bi-clipboard-check" /> Check</pems-button>
                 </pems-form>
                 <pems-form asp-action="Reject" method="post" class="d-inline">
                     <input type="hidden" name="id" value="@Model.DocumentId" />
-                    <pems-button tone="bare" css="vs-btn vs-btn--dangerline">@Localizer["Reject"]</pems-button>
+                    <pems-button plain="true" css="vs-btn vs-btn--dangerline">@Localizer["Reject"]</pems-button>
                 </pems-form>
-                <pems-button tone="bare" type="button" css="vs-btn" data-bs-toggle="modal" data-bs-target="#reviseModal">
+                <pems-button plain="true" type="button" css="vs-btn" data-bs-toggle="modal" data-bs-target="#reviseModal">
                     <pems-icon name="bi-arrow-repeat" /> Revise &amp; Resubmit
                 </pems-button>
             }
@@ -153,10 +153,10 @@
                     <pems-form asp-action="IdcRespond" method="post" class="d-inline">
                         <input type="hidden" name="id" value="@Model.DocumentId" />
                         <input type="hidden" name="decision" value="Approve" />
-                        <pems-button tone="bare" css="vs-btn vs-btn--primary"><pems-icon name="bi-check-lg" /> No Comment</pems-button>
+                        <pems-button plain="true" css="vs-btn vs-btn--primary"><pems-icon name="bi-check-lg" /> No Comment</pems-button>
                     </pems-form>
-                    <pems-button tone="bare" type="button" css="vs-btn" data-bs-toggle="modal" data-bs-target="#idcCommentModal">@Localizer["Approve with Comments"]</pems-button>
-                    <pems-button tone="bare" type="button" css="vs-btn vs-btn--dangerline" data-bs-toggle="modal" data-bs-target="#idcRejectModal">@Localizer["Revision Required"]</pems-button>
+                    <pems-button plain="true" type="button" css="vs-btn" data-bs-toggle="modal" data-bs-target="#idcCommentModal">@Localizer["Approve with Comments"]</pems-button>
+                    <pems-button plain="true" type="button" css="vs-btn vs-btn--dangerline" data-bs-toggle="modal" data-bs-target="#idcRejectModal">@Localizer["Revision Required"]</pems-button>
                 }
                 else
                 {
@@ -167,19 +167,19 @@
             {
                 <pems-form asp-action="Approve" method="post" class="d-inline">
                     <input type="hidden" name="id" value="@Model.DocumentId" />
-                    <pems-button tone="bare" css="vs-btn vs-btn--primary">@Localizer["Approve"]</pems-button>
+                    <pems-button plain="true" css="vs-btn vs-btn--primary">@Localizer["Approve"]</pems-button>
                 </pems-form>
                 <pems-form asp-action="Reject" method="post" class="d-inline">
                     <input type="hidden" name="id" value="@Model.DocumentId" />
-                    <pems-button tone="bare" css="vs-btn vs-btn--dangerline">@Localizer["Reject"]</pems-button>
+                    <pems-button plain="true" css="vs-btn vs-btn--dangerline">@Localizer["Reject"]</pems-button>
                 </pems-form>
-                <pems-button tone="bare" type="button" css="vs-btn" data-bs-toggle="modal" data-bs-target="#reviseModal">
+                <pems-button plain="true" type="button" css="vs-btn" data-bs-toggle="modal" data-bs-target="#reviseModal">
                     <pems-icon name="bi-arrow-repeat" /> Revise &amp; Resubmit
                 </pems-button>
             }
             else if (Model.Status == "Approved")
             {
-                <pems-button tone="bare" type="button" css="vs-btn vs-btn--primary" data-bs-toggle="modal" data-bs-target="#issueModal">
+                <pems-button plain="true" type="button" css="vs-btn vs-btn--primary" data-bs-toggle="modal" data-bs-target="#issueModal">
                     <pems-icon name="bi-send-check" /> Issue
                 </pems-button>
             }
@@ -187,14 +187,14 @@
             {
                 @if (string.IsNullOrEmpty(Model.ClientApprovalStatus))
                 {
-                    <pems-button tone="bare" type="button" css="vs-btn vs-btn--primary" data-bs-toggle="modal" data-bs-target="#clientResponseModal">
+                    <pems-button plain="true" type="button" css="vs-btn vs-btn--primary" data-bs-toggle="modal" data-bs-target="#clientResponseModal">
                         <pems-icon name="bi-building" /> Record Client Response
                     </pems-button>
                 }
             }
             else if (Model.Status == "Rejected" || Model.Status == "Revise & Resubmit")
             {
-                <pems-button tone="bare" type="button" css="vs-btn vs-btn--primary" data-bs-toggle="modal" data-bs-target="#submitWorkflowModal">
+                <pems-button plain="true" type="button" css="vs-btn vs-btn--primary" data-bs-toggle="modal" data-bs-target="#submitWorkflowModal">
                     <pems-icon name="bi-arrow-repeat" /> Resubmit
                 </pems-button>
             }
@@ -202,28 +202,28 @@
             @* طبق بخش ۲۱ ممیزی UX: اکشن‌های کم‌تکرار این‌جا جمع شدند - نمایش هر آیتم دقیقاً همون
                شرط/مجوزی که قبلاً به‌صورت جداگانه روی صفحه داشت را حفظ می‌کند. *@
             <div class="dropdown">
-                <pems-button tone="bare" css="vs-btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                <pems-button plain="true" css="vs-btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                     @Localizer["Ed_MoreActions"]
                 </pems-button>
                 <pems-dropdown-menu end="true">
                     <li><a class="dropdown-item" asp-action="Edit" asp-route-id="@Model.DocumentId"><pems-icon name="bi-pencil" /> @Localizer["Edit"]</a></li>
                     @if (Model.Status == "Approved" || Model.Status == "Issued")
                     {
-                        <li><pems-button tone="bare" type="button" css="dropdown-item" data-bs-toggle="modal" data-bs-target="#newRevisionModal"><pems-icon name="bi-file-earmark-plus" /> Create New Revision</pems-button></li>
+                        <li><pems-button plain="true" type="button" css="dropdown-item" data-bs-toggle="modal" data-bs-target="#newRevisionModal"><pems-icon name="bi-file-earmark-plus" /> Create New Revision</pems-button></li>
                     }
                     <li><hr class="dropdown-divider" /></li>
                     <li>
                         <pems-form asp-action="AnalyzeRelationships" asp-route-id="@Model.DocumentId" method="post">
-                            <pems-button tone="bare" type="submit" css="dropdown-item"><pems-icon name="bi-stars" /> @Localizer["تحلیل روابط (AI)"]</pems-button>
+                            <pems-button plain="true" type="submit" css="dropdown-item"><pems-icon name="bi-stars" /> @Localizer["تحلیل روابط (AI)"]</pems-button>
                         </pems-form>
                     </li>
                     @if (!Model.IsFrozen && (bool)(ViewBag.CanFreeze ?? false))
                     {
-                        <li><pems-button tone="bare" type="button" css="dropdown-item" data-bs-toggle="modal" data-bs-target="#freezeModal"><pems-icon name="bi-snow" /> @Localizer["Freeze"]</pems-button></li>
+                        <li><pems-button plain="true" type="button" css="dropdown-item" data-bs-toggle="modal" data-bs-target="#freezeModal"><pems-icon name="bi-snow" /> @Localizer["Freeze"]</pems-button></li>
                     }
                     @if (!Model.IsOnHold && !Model.IsFrozen && Model.Status != "Issued" && (bool)(ViewBag.CanHold ?? false))
                     {
-                        <li><pems-button tone="bare" type="button" css="dropdown-item" data-bs-toggle="modal" data-bs-target="#holdModal"><pems-icon name="bi-pause-circle" /> @Localizer["Hold"]</pems-button></li>
+                        <li><pems-button plain="true" type="button" css="dropdown-item" data-bs-toggle="modal" data-bs-target="#holdModal"><pems-icon name="bi-pause-circle" /> @Localizer["Hold"]</pems-button></li>
                     }
                 </pems-dropdown-menu>
             </div>
@@ -323,12 +323,12 @@
 
 <pems-nav css="mb-3" id="docTabs" role="tablist">
     <li class="nav-item" role="presentation">
-        <pems-button tone="bare" css="nav-link active" data-bs-toggle="tab" data-bs-target="#tab-overview" type="button">
+        <pems-button plain="true" css="nav-link active" data-bs-toggle="tab" data-bs-target="#tab-overview" type="button">
             <pems-icon name="bi-info-circle" /> @Localizer["Ed_TabOverview"]
         </pems-button>
     </li>
     <li class="nav-item" role="presentation">
-        <pems-button tone="bare" css="nav-link" data-bs-toggle="tab" data-bs-target="#tab-attachments" type="button">
+        <pems-button plain="true" css="nav-link" data-bs-toggle="tab" data-bs-target="#tab-attachments" type="button">
             <pems-icon name="bi-paperclip" /> @Localizer["Ed_TabFiles"] <pems-badge tone="neutral">@(Model.Attachments?.Count ?? 0)</pems-badge>
         </pems-button>
     </li>
@@ -338,35 +338,35 @@
     @if (idcStatusForPage.Any())
     {
         <li class="nav-item" role="presentation">
-            <pems-button tone="bare" css="nav-link" data-bs-toggle="tab" data-bs-target="#tab-idc" type="button">
+            <pems-button plain="true" css="nav-link" data-bs-toggle="tab" data-bs-target="#tab-idc" type="button">
                 <pems-icon name="bi-diagram-3" /> @Localizer["Ed_TabIdc"] <pems-badge tone="neutral">@idcApprovedCount/@idcStatusForPage.Count</pems-badge>
             </pems-button>
         </li>
     }
     <li class="nav-item" role="presentation">
-        <pems-button tone="bare" css="nav-link" data-bs-toggle="tab" data-bs-target="#tab-revisions" type="button">
+        <pems-button plain="true" css="nav-link" data-bs-toggle="tab" data-bs-target="#tab-revisions" type="button">
             <pems-icon name="bi-clock-history" /> @Localizer["Ed_TabRevisions"] <pems-badge tone="neutral">@(Model.Revisions?.Count ?? 0)</pems-badge>
         </pems-button>
     </li>
     <li class="nav-item" role="presentation">
-        <pems-button tone="bare" css="nav-link" data-bs-toggle="tab" data-bs-target="#tab-transmittals" type="button">
+        <pems-button plain="true" css="nav-link" data-bs-toggle="tab" data-bs-target="#tab-transmittals" type="button">
             <pems-icon name="bi-truck" /> @Localizer["Ed_TabTransmittals"]
             @if (relatedTransmittals.Any()) { <pems-badge tone="neutral">@relatedTransmittals.Count</pems-badge> }
         </pems-button>
     </li>
     <li class="nav-item" role="presentation">
-        <pems-button tone="bare" css="nav-link" data-bs-toggle="tab" data-bs-target="#tab-comments" type="button">
+        <pems-button plain="true" css="nav-link" data-bs-toggle="tab" data-bs-target="#tab-comments" type="button">
             <pems-icon name="bi-chat-square-text" /> @Localizer["Ed_TabComments"]
             @if (engComments.Any()) { <pems-badge tone="@(commentsOpenCount > 0 ? "danger" : "neutral")">@commentsOpenCount<span class="visually-hidden"> @Localizer["Ed_OpenComments"]</span></pems-badge> }
         </pems-button>
     </li>
     <li class="nav-item" role="presentation">
-        <pems-button tone="bare" css="nav-link" data-bs-toggle="tab" data-bs-target="#tab-workflow" type="button">
+        <pems-button plain="true" css="nav-link" data-bs-toggle="tab" data-bs-target="#tab-workflow" type="button">
             <pems-icon name="bi-diagram-2" /> @Localizer["Ed_TabWorkflow"]
         </pems-button>
     </li>
     <li class="nav-item" role="presentation">
-        <pems-button tone="bare" css="nav-link" data-bs-toggle="tab" data-bs-target="#tab-correspondence" type="button">
+        <pems-button plain="true" css="nav-link" data-bs-toggle="tab" data-bs-target="#tab-correspondence" type="button">
             <pems-icon name="bi-envelope-paper" /> @Localizer["Ed_TabDistribution"]
             @if (relatedLetters.Any()) { <pems-badge tone="neutral">@relatedLetters.Count</pems-badge> }
         </pems-button>
@@ -619,10 +619,10 @@
                             <pems-form asp-action="IdcRespond" method="post" class="d-inline">
                                 <input type="hidden" name="id" value="@Model.DocumentId" />
                                 <input type="hidden" name="decision" value="Approve" />
-                                <pems-button tone="bare" css="vs-btn vs-btn--primary"><pems-icon name="bi-check-lg" /> No Comment</pems-button>
+                                <pems-button plain="true" css="vs-btn vs-btn--primary"><pems-icon name="bi-check-lg" /> No Comment</pems-button>
                             </pems-form>
-                            <pems-button tone="bare" type="button" css="vs-btn" data-bs-toggle="modal" data-bs-target="#idcCommentModal">@Localizer["Approve with Comments"]</pems-button>
-                            <pems-button tone="bare" type="button" css="vs-btn vs-btn--dangerline" data-bs-toggle="modal" data-bs-target="#idcRejectModal">@Localizer["Revision Required"]</pems-button>
+                            <pems-button plain="true" type="button" css="vs-btn" data-bs-toggle="modal" data-bs-target="#idcCommentModal">@Localizer["Approve with Comments"]</pems-button>
+                            <pems-button plain="true" type="button" css="vs-btn vs-btn--dangerline" data-bs-toggle="modal" data-bs-target="#idcRejectModal">@Localizer["Revision Required"]</pems-button>
                         </pems-flex>
                     }
                 }
@@ -975,7 +975,7 @@
                         <pems-form asp-action="SetCommentAction" method="post" class="d-inline">
                             <input type="hidden" name="documentId" value="@Model.DocumentId" />
                             <input type="hidden" name="commentId" value="@c.VDRCommentId" />
-                            <pems-select class="pems-w-170" scale="small" css="mt-1" name="actionStatus" data-pems-change="submit-form">
+                            <pems-select class="pems-w-170" scale="small" css="mt-1" name="actionStatus" onchange="this.form.submit()">
                                 @foreach (var s in new[] { "OpenComment", "VendorResponsePending", "Verified", "Closed", "NoActionRequired" })
                                 { <option value="@s" selected="@(s == c.ActionStatus)">@s</option> }
                             </pems-select>
@@ -1164,15 +1164,15 @@
                         <pems-label css="small fw-bold">این مدرک به کدوم واحد تحویل داده می‌شه؟</pems-label>
 
                         <pems-check-row>
-                            <pems-input kind="check" type="radio" name="deliveryUnitType" id="dcc_internal" value="InternalDCC" checked data-pems-click="call" data-pems-fn="pemsToggleIssueFields" data-pems-arg="none" />
+                            <pems-input kind="check" type="radio" name="deliveryUnitType" id="dcc_internal" value="InternalDCC" checked onclick="pemsToggleIssueFields()" />
                             <label class="form-check-label small" for="dcc_internal">DCC داخلی (واحد کنترل مدارک خودمون)</label>
                         </pems-check-row>
                         <pems-check-row>
-                            <pems-input kind="check" type="radio" name="deliveryUnitType" id="dept_internal" value="InternalDepartment" data-pems-click="call" data-pems-fn="pemsToggleIssueFields" data-pems-arg="none" />
+                            <pems-input kind="check" type="radio" name="deliveryUnitType" id="dept_internal" value="InternalDepartment" onclick="pemsToggleIssueFields()" />
                             <label class="form-check-label small" for="dept_internal">یک واحد دیگه داخل شرکت</label>
                         </pems-check-row>
                         <pems-check-row>
-                            <pems-input kind="check" type="radio" name="deliveryUnitType" id="ext_unit" value="External" data-pems-click="call" data-pems-fn="pemsToggleIssueFields" data-pems-arg="none" />
+                            <pems-input kind="check" type="radio" name="deliveryUnitType" id="ext_unit" value="External" onclick="pemsToggleIssueFields()" />
                             <label class="form-check-label small" for="ext_unit">نهاد بیرونی (DCC کارفرما / پیمانکار)</label>
                         </pems-check-row>
                     </div>

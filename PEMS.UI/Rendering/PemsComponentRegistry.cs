@@ -116,6 +116,7 @@ public sealed class PemsComponentRegistry : IPemsComponentRegistry
         Register(UiKeys.Metric, typeof(PemsMetric));
         Register(UiKeys.PageHero, typeof(PemsPageHero));
         Register(UiKeys.DataTable, typeof(PemsDataTable));
+        Register(UiKeys.FormFrame, typeof(PemsFormFrame));
     }
 
     public void Register(string key, Type componentType)

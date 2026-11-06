@@ -27,8 +27,8 @@
     </pems-flex>
 
     <pems-nav css="mb-3" role="tablist">
-        <li class="nav-item"><pems-button tone="bare" css="nav-link active" data-bs-toggle="tab" data-bs-target="#orgTabPositions" type="button" role="tab">@Localizer["Org_Tab_Positions"] <pems-badge tone="neutral">@Model.Count</pems-badge></pems-button></li>
-        <li class="nav-item"><pems-button tone="bare" css="nav-link" data-bs-toggle="tab" data-bs-target="#orgTabTree" type="button" role="tab">@Localizer["Org_Tab_Tree"]</pems-button></li>
+        <li class="nav-item"><pems-button plain="true" css="nav-link active" data-bs-toggle="tab" data-bs-target="#orgTabPositions" type="button" role="tab">@Localizer["Org_Tab_Positions"] <pems-badge tone="neutral">@Model.Count</pems-badge></pems-button></li>
+        <li class="nav-item"><pems-button plain="true" css="nav-link" data-bs-toggle="tab" data-bs-target="#orgTabTree" type="button" role="tab">@Localizer["Org_Tab_Tree"]</pems-button></li>
     </pems-nav>
 
     <pems-tab-content>
@@ -66,7 +66,7 @@
                                             <option value="@p.PositionId" selected="@(r.ParentPositionId == p.PositionId)">@Label(p)</option>
                                         }
                                     </pems-select>
-                                    <pems-button tone="bare" css="vs-btn vs-btn--sm" title="@Localizer["Org_Btn_Save"]" aria-label="@Localizer["Org_Btn_Save"]"><pems-icon name="bi-save" /></pems-button>
+                                    <pems-button plain="true" css="vs-btn vs-btn--sm" title="@Localizer["Org_Btn_Save"]" aria-label="@Localizer["Org_Btn_Save"]"><pems-icon name="bi-save" /></pems-button>
                                 </pems-flex></pems-form>
                             </pems-table-cell>
                             <pems-table-cell class="pems-s-de413461">
@@ -75,11 +75,11 @@
                                     <pems-form asp-action="UpdateAssignment" method="post"><pems-flex gap="1" align="center" wrap="true">
                                         <input type="hidden" name="assignmentId" value="@r.AssignmentId" />
                                         <span class="small me-1">@r.HolderName</span>
-                                        <label class="small"><pems-input kind="bare" type="checkbox" name="isPrimary" value="true" checked="@r.HolderIsPrimary" /> @Localizer["Org_Primary"]</label>
+                                        <label class="small"><input type="checkbox" name="isPrimary" value="true" checked="@r.HolderIsPrimary" /> @Localizer["Org_Primary"]</label>
                                         <input type="hidden" name="isPrimary" value="false" />
                                         <pems-date class="pems-w-130" name="startDate" value="@r.StartDate?.ToString("yyyy-MM-dd")" aria-label="@Localizer["Org_EffectiveFrom"]" required scale="small" />
                                         <pems-date class="pems-w-130" name="endDate" value="@r.EndDate?.ToString("yyyy-MM-dd")" aria-label="@Localizer["Org_EffectiveTo"]" scale="small" />
-                                        <pems-button tone="bare" css="vs-btn vs-btn--sm" title="@Localizer["Org_Btn_Save"]" aria-label="@Localizer["Org_Btn_Save"]"><pems-icon name="bi-save" /></pems-button>
+                                        <pems-button plain="true" css="vs-btn vs-btn--sm" title="@Localizer["Org_Btn_Save"]" aria-label="@Localizer["Org_Btn_Save"]"><pems-icon name="bi-save" /></pems-button>
                                     </pems-flex></pems-form>
                                 }
                                 else if (r.IsActive)
@@ -90,11 +90,11 @@
                                             <option value="">@Localizer["Org_SelectEmployee"]</option>
                                             @foreach (var e in employees) { <option value="@e.EmployeeId">@e.Label</option> }
                                         </pems-select>
-                                        <label class="small"><pems-input kind="bare" type="checkbox" name="isPrimary" value="true"="true" /> @Localizer["Org_Primary"]</label>
+                                        <label class="small"><input type="checkbox" name="isPrimary" value="true" checked /> @Localizer["Org_Primary"]</label>
                                         <input type="hidden" name="isPrimary" value="false" />
                                         <pems-date class="pems-w-130" name="startDate" scale="small" aria-label="@Localizer["Org_EffectiveFrom"]" />
                                         <pems-date class="pems-w-130" name="endDate" scale="small" aria-label="@Localizer["Org_EffectiveTo"]" />
-                                        <pems-button tone="bare" css="vs-btn vs-btn--sm vs-btn--primary" title="@Localizer["Org_Btn_Assign"]" aria-label="@Localizer["Org_Btn_Assign"]"><pems-icon name="bi-person-plus" /></pems-button>
+                                        <pems-button plain="true" css="vs-btn vs-btn--sm vs-btn--primary" title="@Localizer["Org_Btn_Assign"]" aria-label="@Localizer["Org_Btn_Assign"]"><pems-icon name="bi-person-plus" /></pems-button>
                                     </pems-flex></pems-form>
                                 }
                             </pems-table-cell>
@@ -103,7 +103,7 @@
                                 {
                                     <pems-form asp-action="EndAssignment" method="post" class="d-inline" data-pems-confirm="@Localizer["Org_Confirm_End"]">
                                         <input type="hidden" name="assignmentId" value="@r.AssignmentId" />
-                                        <pems-button tone="bare" css="vs-icon-btn" title="@Localizer["Org_Btn_End"]" aria-label="@Localizer["Org_Btn_End"]"><pems-icon name="bi-person-dash" /></pems-button>
+                                        <pems-button plain="true" css="vs-icon-btn" title="@Localizer["Org_Btn_End"]" aria-label="@Localizer["Org_Btn_End"]"><pems-icon name="bi-person-dash" /></pems-button>
                                     </pems-form>
                                 }
                             </pems-table-cell>

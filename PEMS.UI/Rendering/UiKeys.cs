@@ -101,4 +101,5 @@ public static class UiKeys
     public const string Metric = "metric";
     public const string PageHero = "page-hero";
     public const string DataTable = "data-table";
+    public const string FormFrame = "form-frame";
 }

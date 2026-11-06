@@ -81,7 +81,7 @@
                                     <a asp-action="Edit" asp-route-id="@m.FailureModeId" class="lp-act lp-act--always" title="@Localizer["Rcm_Edit"]" aria-label="@Localizer["Rcm_Edit"]"><pems-icon name="bi-pencil" aria-hidden="true" /></a>
                                     <pems-form asp-action="Toggle" method="post" class="d-inline">
                                         <input type="hidden" name="id" value="@m.FailureModeId" /><input type="hidden" name="active" value="false" />
-                                        <pems-button tone="bare" type="submit" css="lp-act lp-act--always" title="@Localizer["Rcm_Deactivate"]" aria-label="@Localizer["Rcm_Deactivate"]"><pems-icon name="bi-slash-circle" aria-hidden="true" /></pems-button>
+                                        <pems-button plain="true" type="submit" css="lp-act lp-act--always" title="@Localizer["Rcm_Deactivate"]" aria-label="@Localizer["Rcm_Deactivate"]"><pems-icon name="bi-slash-circle" aria-hidden="true" /></pems-button>
                                     </pems-form>
                                 }
                             </pems-table-cell>

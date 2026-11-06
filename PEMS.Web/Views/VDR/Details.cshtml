@@ -96,27 +96,27 @@
 
 <pems-nav css="mb-3" id="vdrTabs" role="tablist">
     <li class="nav-item" role="presentation">
-        <pems-button tone="bare" css="nav-link @(vdrDefaultTab == "overview" ? "active" : "")" data-bs-toggle="tab" data-bs-target="#tab-overview" type="button">
+        <pems-button plain="true" css="nav-link @(vdrDefaultTab == "overview" ? "active" : "")" data-bs-toggle="tab" data-bs-target="#tab-overview" type="button">
             <pems-icon name="bi-info-circle" /> @Localizer["Vs_TabOverview"]
         </pems-button>
     </li>
     <li class="nav-item" role="presentation">
-        <pems-button tone="bare" css="nav-link @(vdrDefaultTab == "workflow" ? "active" : "")" data-bs-toggle="tab" data-bs-target="#tab-workflow" type="button">
+        <pems-button plain="true" css="nav-link @(vdrDefaultTab == "workflow" ? "active" : "")" data-bs-toggle="tab" data-bs-target="#tab-workflow" type="button">
             <pems-icon name="bi-signpost-split" /> @Localizer["Vs_TabWorkflow"]
         </pems-button>
     </li>
     <li class="nav-item" role="presentation">
-        <pems-button tone="bare" css="nav-link" data-bs-toggle="tab" data-bs-target="#tab-submissions" type="button">
+        <pems-button plain="true" css="nav-link" data-bs-toggle="tab" data-bs-target="#tab-submissions" type="button">
             <pems-icon name="bi-clock-history" /> @Localizer["Vs_TabSubmissions"] <pems-badge tone="neutral">@Model.Submissions.Count</pems-badge>
         </pems-button>
     </li>
     <li class="nav-item" role="presentation">
-        <pems-button tone="bare" css="nav-link" data-bs-toggle="tab" data-bs-target="#tab-comments" type="button">
+        <pems-button plain="true" css="nav-link" data-bs-toggle="tab" data-bs-target="#tab-comments" type="button">
             <pems-icon name="bi-chat-square-text" /> @Localizer["Vs_TabComments"]
         </pems-button>
     </li>
     <li class="nav-item" role="presentation">
-        <pems-button tone="bare" css="nav-link" data-bs-toggle="tab" data-bs-target="#tab-correspondence" type="button">
+        <pems-button plain="true" css="nav-link" data-bs-toggle="tab" data-bs-target="#tab-correspondence" type="button">
             <pems-icon name="bi-envelope-paper" /> @Localizer["Vs_TabCorrespondence"]
             @if (relatedLetters.Any()) { <pems-badge tone="neutral">@relatedLetters.Count</pems-badge> }
         </pems-button>
@@ -446,7 +446,7 @@
                         <pems-form asp-action="SetCommentAction" method="post" class="d-inline">
                             <input type="hidden" name="vdrItemId" value="@Model.VDRItemId" />
                             <input type="hidden" name="commentId" value="@c.VDRCommentId" />
-                            <pems-select class="pems-w-170" scale="small" css="mt-1" name="actionStatus" data-pems-change="submit-form">
+                            <pems-select class="pems-w-170" scale="small" css="mt-1" name="actionStatus" onchange="this.form.submit()">
                                 @foreach (var s in new[] { "OpenComment", "VendorResponsePending", "Verified", "Closed", "NoActionRequired" })
                                 { <option value="@s" selected="@(s == c.ActionStatus)">@VdrUi.Loc(Localizer, "St_", s)</option> }
                             </pems-select>

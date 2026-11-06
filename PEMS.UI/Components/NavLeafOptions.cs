@@ -76,6 +76,8 @@ public sealed record ButtonFrameOptions : FrameOptions
     public bool Disabled { get; init; }
     /// <summary>button (default), a, label or span.</summary>
     public string As { get; init; } = "button";
+    /// <summary>A button with no Bootstrap button classes: only the page's own classes are written (tab links, icon buttons, menu items ...); tone, size and outline are ignored. No class attribute when there is none.</summary>
+    public bool Plain { get; init; }
 }
 
 /// <summary>Inputs of <see cref="PemsChart"/>: the chart host (drawn by the Bklit island from <c>data-bk-chart</c>) and its accessible copy of the numbers.</summary>
@@ -345,6 +347,14 @@ public sealed record MetricOptions : FrameOptions
 
 /// <summary>Inputs of <see cref="PemsPageHero"/>: the intro banner under a page title (<c>admin-hero</c>); its text and actions are the child content.</summary>
 public sealed record PageHeroOptions : FrameOptions
+{
+    public string? Css { get; init; }
+}
+
+// SCRUM-510: the form element of an MVC page. The built-in form tag helper still computes the action, the method and the antiforgery token; the component writes the element.
+
+/// <summary>Inputs of <see cref="PemsFormFrame"/>: the <c>form</c> element with the page's class and attributes (action, method, enctype, id, data-*); the controls and the antiforgery token are the child content. Not the descriptor-driven <c>form</c> component.</summary>
+public sealed record FormFrameOptions : FrameOptions
 {
     public string? Css { get; init; }
 }

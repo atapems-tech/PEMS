@@ -27,11 +27,13 @@ public sealed class PemsButtonTagHelper(IHtmlGenerator generator, IPemsComponent
     [HtmlAttributeName("disabled")] public bool Disabled { get; set; }
     /// <summary>The element to write: <c>button</c> (default), <c>a</c>, <c>label</c> or <c>span</c>.</summary>
     [HtmlAttributeName("as")] public string As { get; set; } = "button";
+    /// <summary>A button that carries only the page's own classes (no <c>btn</c> classes): tab links, icon buttons, menu items. Tone, size and outline are ignored.</summary>
+    [HtmlAttributeName("plain")] public bool Plain { get; set; }
 
     public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
     {
         var (css, attrs) = ListRender.Page(output);
         await ListRender.Replace<PemsButtonFrame>(renderer, output,
-            new ButtonFrameOptions { Tone = Tone, Size = Size, Outline = Outline, Css = Css, Disabled = Disabled, As = As, PageClass = css, Attributes = attrs }, await ListRender.Inner(output));
+            new ButtonFrameOptions { Tone = Tone, Size = Size, Outline = Outline, Css = Css, Disabled = Disabled, As = As, Plain = Plain, PageClass = css, Attributes = attrs }, await ListRender.Inner(output));
     }
 }

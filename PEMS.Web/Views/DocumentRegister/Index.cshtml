@@ -101,13 +101,13 @@
                                 </a>
                                 <pems-form asp-action="DeleteFilter" method="post" data-pems-confirm="@Localizer["Dr_DeleteFilterConfirm"]">
                                     <input type="hidden" name="id" value="@sf.SavedFilterId" />
-                                    <pems-button tone="bare" type="submit" css="lp-act lp-act--always" title="@Localizer["Dr_DeleteFilter"]"><pems-icon name="bi-x-lg" aria-hidden="true" /><span class="visually-hidden">@Localizer["Dr_DeleteFilter"]: @sf.Name</span></pems-button>
+                                    <pems-button plain="true" type="submit" css="lp-act lp-act--always" title="@Localizer["Dr_DeleteFilter"]"><pems-icon name="bi-x-lg" aria-hidden="true" /><span class="visually-hidden">@Localizer["Dr_DeleteFilter"]: @sf.Name</span></pems-button>
                                 </pems-form>
                             </li>
                         }
                     }
                     <li><hr class="dropdown-divider" /></li>
-                    <li><pems-button tone="bare" type="button" css="dropdown-item" data-bs-toggle="modal" data-bs-target="#saveFilterModal"><pems-icon name="bi-bookmark-plus" aria-hidden="true" /> @Localizer["Dr_SaveFilter"]</pems-button></li>
+                    <li><pems-button plain="true" type="button" css="dropdown-item" data-bs-toggle="modal" data-bs-target="#saveFilterModal"><pems-icon name="bi-bookmark-plus" aria-hidden="true" /> @Localizer["Dr_SaveFilter"]</pems-button></li>
                 </pems-list-menu>
 
                 <pems-list-export href="@Url.Action("ExportExcel", new { project, disciplines = disciplinesQs, status, q })" />

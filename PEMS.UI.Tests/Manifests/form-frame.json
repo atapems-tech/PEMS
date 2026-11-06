@@ -9,6 +9,12 @@
   "options": {
     "type": "object",
     "properties": {
+      "css": {
+        "type": [
+          "string",
+          "null"
+        ]
+      },
       "pageClass": {
         "type": [
           "string",
@@ -38,5 +44,7 @@
       "required": true
     }
   ],
-  "sample": {}
+  "sample": {
+    "css": "row g-2"
+  }
 }

@@ -1,7 +1,24 @@
 @namespace PEMS.UI.Components
 @attribute [PEMS.UI.Rendering.PemsComponent("button-frame", Category = "actions", Icon = "bi-hand-index-thumb")]
-@FrameMarkup.Element(Options.As, Css, null, Options.Attributes, ChildContent, Options.Disabled)
+@if (Options.Plain)
+{
+    @PlainElement
+}
+else
+{
+    @FrameMarkup.Element(Options.As, Css, null, Options.Attributes, ChildContent, Options.Disabled)
+}
 @code {
+    private RenderFragment PlainElement => b =>
+    {
+        b.OpenElement(0, Options.As);
+        if (!string.IsNullOrWhiteSpace(Options.Css)) b.AddAttribute(1, "class", Options.Css);
+        if (Options.Attributes is not null) b.AddMultipleAttributes(2, Options.Attributes);
+        if (Options.Disabled) b.AddAttribute(3, "disabled", "disabled");
+        if (ChildContent is not null) b.AddContent(4, ChildContent);
+        b.CloseElement();
+    };
+
     [Parameter, EditorRequired] public ButtonFrameOptions Options { get; set; } = default!;
     [Parameter] public RenderFragment? ChildContent { get; set; }
     // "bare": the page's own classes only (nav-link tabs, vs-btn, dropdown-item ...), no btn classes; the element still comes from the registry (SCRUM-511)

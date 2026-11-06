@@ -36,7 +36,7 @@
                 <pems-info-item label="@Localizer["Vs_ContactPhone"]" ltr>@(string.IsNullOrEmpty(Model.ContactPhone) ? "-" : Model.ContactPhone)</pems-info-item>
             </pems-info-grid>
             <pems-form asp-action="RecalculateRisk" asp-route-id="@Model.VendorId" method="post" class="mt-3">
-                <pems-button tone="bare" css="vs-btn vs-btn--sm"><pems-icon name="bi-arrow-repeat" /> @Localizer["Vs_RecalcRisk"]</pems-button>
+                <pems-button plain="true" css="vs-btn vs-btn--sm"><pems-icon name="bi-arrow-repeat" /> @Localizer["Vs_RecalcRisk"]</pems-button>
             </pems-form>
         </div></div>
 </pems-page-shell>
