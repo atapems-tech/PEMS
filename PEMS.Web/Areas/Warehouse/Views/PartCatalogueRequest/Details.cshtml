@@ -102,7 +102,7 @@
             </h2>
             @if (a.IsAdminOverride) { <pems-alert tone="warning" css="small py-1">@Localizer["Pc_Det_AdminOverride"]</pems-alert> }
 
-            <form asp-action="Execute" method="post" class="row g-2 align-items-end">
+            <form asp-action="Execute" method="post"><pems-row gap="2" css="align-items-end">
                 <input type="hidden" name="id" value="@d.Id" />
                 @if (rowVersion != null) { <input type="hidden" name="rowVersion" value="@rowVersion" /> }
                 @if (a.RequiresPartNumber)
@@ -123,7 +123,7 @@
                     @if (a.CanReturn) { <button type="submit" name="action" value="Return" class="vs-btn vs-btn--sm"><pems-icon name="bi-arrow-return-left" /> @Localizer["Pc_Btn_Return"]</button> }
                     @if (a.CanCancel) { <button type="submit" name="action" value="Cancel" class="vs-btn vs-btn--sm vs-btn--danger" data-pems-confirm="@Localizer["Pc_Confirm_Cancel"]"><pems-icon name="bi-x-circle" /> @Localizer["Pc_Btn_Cancel"]</button> }
                 </pems-col>
-            </form>
+            </pems-row></form>
         </section>
     }
     else if (a.CanCancel)

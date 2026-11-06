@@ -84,18 +84,18 @@
     }
     else
     {
-        <div class="row g-2 align-items-end">
-            <div class="col-md-5">
+        <pems-row gap="2" css="align-items-end">
+            <pems-col md="5">
                 <pems-label css="small" for="whiWarehouse">@Localizer["Whi_Warehouse"]</pems-label>
                 <pems-select scale="small" id="whiWarehouse" name="warehouseId" required>
                     <option value="">@Localizer["Whi_PickWarehouse"]</option>
                     @foreach (var w in warehouses) { <option value="@w.WarehouseId">@w.Code - @w.Name</option> }
                 </pems-select>
-            </div>
-            <div class="col-md-auto">
+            </pems-col>
+            <pems-col md="auto">
                 <pems-button tone="none" size="small" css="btn-primary" type="submit"><i class="bi bi-box-arrow-in-down" aria-hidden="true"></i> @Localizer["Whi_Source"]</pems-button>
-            </div>
-            <div class="col-12 small text-muted">@Localizer["Whi_SourceHint"]</div>
-        </div>
+            </pems-col>
+            <pems-col span="12" css="small text-muted">@Localizer["Whi_SourceHint"]</pems-col>
+        </pems-row>
     }
 </form>

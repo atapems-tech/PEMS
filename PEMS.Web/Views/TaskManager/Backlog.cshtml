@@ -67,14 +67,14 @@
         </div>
         @if (view.CanManageSprints)
         {
-            <form id="editSprint-@sprint.Id" asp-action="UpdateSprint" method="post" class="collapse row g-2 mb-2">
+            <form id="editSprint-@sprint.Id" asp-action="UpdateSprint" method="post"><pems-row gap="2" css="collapse mb-2">
                 <input type="hidden" name="sprintId" value="@sprint.Id" /><input type="hidden" name="returnUrl" value="@returnUrl" />
                 <pems-col md="3"><pems-label css="small" for="sn-@sprint.Id">@Localizer["Tm_Field_Name"]</pems-label><pems-input scale="small" id="sn-@sprint.Id" name="name" value="@sprint.Name" required maxlength="150" /></pems-col>
                 <pems-col md="4"><pems-label css="small" for="sg-@sprint.Id">@Localizer["Tm_Field_Goal"]</pems-label><pems-input scale="small" id="sg-@sprint.Id" name="goal" value="@sprint.Goal" maxlength="1000" /></pems-col>
                 <pems-col md="2"><pems-label css="small" for="ss-@sprint.Id">@Localizer["Tm_Field_StartDate"]</pems-label><pems-date id="ss-@sprint.Id" name="startDate" value="@TaskManagerUi.DateInput(sprint.StartDate)" scale="small" /></pems-col>
                 <pems-col md="2"><pems-label css="small" for="se-@sprint.Id">@Localizer["Tm_Field_EndDate"]</pems-label><pems-date id="se-@sprint.Id" name="endDate" value="@TaskManagerUi.DateInput(sprint.EndDate)" scale="small" /></pems-col>
                 <pems-col md="1" css="d-flex align-items-end"><pems-button tone="primary" size="small" css="w-100">@Localizer["Tm_Save"]</pems-button></pems-col>
-            </form>
+            </pems-row></form>
         }
         @{ ViewData["Bucket"] = $"{view.Space.Id}:{sprint.Id}"; }
         <partial name="_ItemTable" model="items" view-data="ViewData" />
@@ -91,14 +91,14 @@
     </div>
     @if (view.CanManageSprints)
     {
-        <form id="newSprint" asp-action="CreateSprint" method="post" class="collapse row g-2 mb-2">
+        <form id="newSprint" asp-action="CreateSprint" method="post"><pems-row gap="2" css="collapse mb-2">
             <input type="hidden" name="workSpaceId" value="@view.Space.Id" /><input type="hidden" name="returnUrl" value="@returnUrl" />
             <pems-col md="3"><pems-label css="small" for="ns-name">@Localizer["Tm_Field_Name"]</pems-label><pems-input scale="small" id="ns-name" name="name" required maxlength="150" /></pems-col>
             <pems-col md="4"><pems-label css="small" for="ns-goal">@Localizer["Tm_Field_Goal"]</pems-label><pems-input scale="small" id="ns-goal" name="goal" maxlength="1000" /></pems-col>
             <pems-col md="2"><pems-label css="small" for="ns-start">@Localizer["Tm_Field_StartDate"]</pems-label><pems-date id="ns-start" name="startDate" scale="small" /></pems-col>
             <pems-col md="2"><pems-label css="small" for="ns-end">@Localizer["Tm_Field_EndDate"]</pems-label><pems-date id="ns-end" name="endDate" scale="small" /></pems-col>
             <pems-col md="1" css="d-flex align-items-end"><pems-button tone="primary" size="small" css="w-100">@Localizer["Tm_Create"]</pems-button></pems-col>
-        </form>
+        </pems-row></form>
     }
     @{ ViewData["Bucket"] = $"{view.Space.Id}:"; }
     <partial name="_ItemTable" model="Model.BacklogItems" view-data="ViewData" />

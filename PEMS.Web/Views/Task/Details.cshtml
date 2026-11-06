@@ -60,7 +60,7 @@
             <h3 class="h6" id="descTitle">@Localizer["Tm_Field_Description"]</h3>
             @if (Model.CanEdit)
             {
-                <form asp-controller="TaskManager" asp-action="Update" method="post" class="row g-2" data-tm-dirty-guard data-tm-ctrl-enter>
+                <form asp-controller="TaskManager" asp-action="Update" method="post" data-tm-dirty-guard data-tm-ctrl-enter><pems-row gap="2">
                     <input type="hidden" name="Id" value="@i.Id" />
                     <input type="hidden" name="RowVersion" value="@i.RowVersion" />
                     <input type="hidden" name="ParentId" value="@i.ParentId" />
@@ -105,7 +105,7 @@
                         <pems-date id="e-due" name="DueDate" value="@TaskManagerUi.DateInput(i.DueDate)" scale="small" />
                     </pems-col>
                     <pems-col md="4" css="d-flex align-items-end"><pems-button tone="primary" size="small" css="w-100">@Localizer["Tm_Save"]</pems-button></pems-col>
-                </form>
+                </pems-row></form>
             }
             else
             {
@@ -170,7 +170,7 @@
             }
             @if (Model.CanLink)
             {
-                <form asp-controller="TaskManager" asp-action="AddLink" method="post" class="row g-2">
+                <form asp-controller="TaskManager" asp-action="AddLink" method="post"><pems-row gap="2">
                     <input type="hidden" name="id" value="@i.Id" /><input type="hidden" name="returnUrl" value="@returnUrl" />
                     <pems-col md="4">
                         <label class="visually-hidden" for="lk-type">@Localizer["Tm_LinkType"]</label>
@@ -183,7 +183,7 @@
                         <pems-input scale="small" id="lk-target" name="target" placeholder="@Localizer["Tm_LinkTargetPlaceholder"]" required maxlength="30" />
                     </pems-col>
                     <pems-col md="3"><pems-button tone="neutral" size="small" outline="true" css="w-100"><pems-icon name="bi-link-45deg" aria-hidden="true" /> @Localizer["Tm_AddLink"]</pems-button></pems-col>
-                </form>
+                </pems-row></form>
             }
         </section>
 

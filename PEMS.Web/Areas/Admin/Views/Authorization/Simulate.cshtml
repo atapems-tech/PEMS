@@ -11,7 +11,7 @@
         </div>
     </div>
     <div class="content-card">
-        <form asp-action="Simulate" method="post" class="row g-3 pems-s-b12974cb">
+        <form class="pems-s-b12974cb" asp-action="Simulate" method="post"><pems-row gap="3">
             <pems-alert tone="danger" css="py-2 px-3 small" asp-validation-summary="ModelOnly" style="@(ViewData.ModelState.IsValid ? "display:none;" : "")"></pems-alert>
 
             <pems-col md="6">
@@ -49,7 +49,7 @@
             <pems-col span="12">
                 <pems-button tone="primary" type="submit"><pems-icon name="bi-play-circle" css="me-1" /> @Localizer["Run"]</pems-button>
             </pems-col>
-        </form>
+        </pems-row></form>
 
         @if (Model.Result != null)
         {

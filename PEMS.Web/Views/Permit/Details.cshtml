@@ -492,7 +492,7 @@
 
     @if (Model.Status is not ("Closed" or "Cancelled" or "Rejected" or "Revoked"))
     {
-        <form asp-controller="Isolation" asp-action="Create" method="post" class="row g-2 align-items-end border-top pt-3">
+        <form asp-controller="Isolation" asp-action="Create" method="post"><pems-row gap="2" css="align-items-end border-top pt-3">
             <input type="hidden" name="permitId" value="@Model.PermitId" />
             <pems-col md="2">
                 <pems-label css="small">@Localizer["Energy Type"]</pems-label>
@@ -505,7 +505,7 @@
             <pems-col md="2"><pems-label css="small">Required Isolation State</pems-label><pems-input scale="small" name="requiredIsolationState" /></pems-col>
             <pems-col md="2"><pems-label css="small">Method</pems-label><pems-input scale="small" name="isolationMethod" /></pems-col>
             <pems-col md="1"><pems-button tone="primary" size="small" css="w-100" type="submit">@Localizer["Add"]</pems-button></pems-col>
-        </form>
+        </pems-row></form>
     }
 </div>
 
@@ -584,7 +584,7 @@
 
     @if (Model.Status is not ("Closed" or "Cancelled" or "Rejected" or "Revoked"))
     {
-        <form asp-controller="GasTest" asp-action="Create" method="post" class="row g-2 align-items-end border-top pt-3">
+        <form asp-controller="GasTest" asp-action="Create" method="post"><pems-row gap="2" css="align-items-end border-top pt-3">
             <input type="hidden" name="permitId" value="@Model.PermitId" />
             <pems-col md="3"><pems-label css="small">@Localizer["Location"]</pems-label><pems-input scale="small" name="location" required /></pems-col>
             <pems-col md="2"><pems-label css="small">Tested At</pems-label><pems-input type="datetime-local" name="testedAt" value="@DateTime.Now.ToString("yyyy-MM-ddTHH:mm")" required scale="small" /></pems-col>
@@ -602,7 +602,7 @@
             <pems-col md="1"><pems-label css="small">@Localizer["Other"]</pems-label><pems-input scale="small" type="number" step="0.01" name="otherValue" /></pems-col>
             <pems-col md="1"><pems-label css="small">@Localizer["Unit"]</pems-label><pems-input scale="small" type="text" name="otherUnit" placeholder="e.g. PPM" /></pems-col>
             <pems-col md="1"><pems-button tone="primary" size="small" css="w-100" type="submit">Record</pems-button></pems-col>
-        </form>
+        </pems-row></form>
     }
 </div>
 

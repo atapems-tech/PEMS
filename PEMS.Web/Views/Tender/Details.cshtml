@@ -235,7 +235,7 @@
 
     @if (Model.Status == "Open")
     {
-        <form asp-action="SubmitBid" method="post" class="row g-2 m-0 px-2 py-2 lp-rel-add">
+        <form asp-action="SubmitBid" method="post"><pems-row gap="2" css="m-0 px-2 py-2 lp-rel-add">
             <input type="hidden" name="tenderId" value="@Model.TenderId" />
             <pems-col md="3">
                 <pems-select scale="small" name="vendorId" required>
@@ -247,7 +247,7 @@
             <pems-col md="2"><pems-input scale="small" type="text" name="technicalSubmissionReference" placeholder="@Localizer["Technical"]" /></pems-col>
             <pems-col md="2"><pems-input scale="small" type="text" name="commercialSubmissionReference" placeholder="@Localizer["Commercial"]" /></pems-col>
             <pems-col md="1"><pems-button tone="primary" size="small" type="submit">@Localizer["Submit Bid"]</pems-button></pems-col>
-        </form>
+        </pems-row></form>
     }
 </pems-related-list>
 
@@ -279,7 +279,7 @@
             }
         </div>
     }
-    <form asp-action="RaiseClarification" method="post" class="row g-2 m-0 px-2 py-2 lp-rel-add">
+    <form asp-action="RaiseClarification" method="post"><pems-row gap="2" css="m-0 px-2 py-2 lp-rel-add">
         <input type="hidden" name="tenderId" value="@Model.TenderId" />
         <input type="hidden" name="procurementPackageId" value="@Model.ProcurementPackageId" />
         <pems-col md="2">
@@ -299,5 +299,5 @@
         <pems-col md="3"><pems-input scale="small" type="text" name="subject" placeholder="@Localizer["Subject"]" required /></pems-col>
         <pems-col md="3"><pems-input scale="small" type="text" name="body" placeholder="@Localizer["Question"]" required /></pems-col>
         <pems-col md="1"><pems-button tone="primary" size="small" type="submit">@Localizer["Raise"]</pems-button></pems-col>
-    </form>
+    </pems-row></form>
 </pems-related-list>

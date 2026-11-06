@@ -22,7 +22,7 @@
     <nav aria-label="breadcrumb" class="small mb-1"><a asp-action="Index">@Localizer["Tm_Title"]</a></nav>
     <h2 class="h5 mb-3"><pems-icon name="bi-collection" aria-hidden="true" /> @ViewData["Title"]</h2>
 
-    <form method="get" asp-action="AllWork" class="row g-2 align-items-end" role="search">
+    <form method="get" asp-action="AllWork" role="search"><pems-row gap="2" css="align-items-end">
         <pems-col md="3">
             <pems-label css="small" for="f-text">@Localizer["Tm_Search"]</pems-label>
             <pems-input scale="small" id="f-text" name="Text" value="@q.Text" maxlength="200" placeholder="@Localizer["Tm_SearchPlaceholder"]" />
@@ -83,7 +83,7 @@
             <pems-button tone="primary" size="small"><pems-icon name="bi-funnel" aria-hidden="true" /> @Localizer["Tm_Filter"]</pems-button>
             <pems-button tone="neutral" size="small" outline="true" as="a" asp-action="AllWork">@Localizer["Tm_Reset"]</pems-button>
         </pems-col>
-    </form>
+    </pems-row></form>
     <div class="small text-muted mt-2">
         @Localizer["Tm_SortBy"]:
         @foreach (var key in new[] { "updated", "rank", "due", "priority", "created", "key" })

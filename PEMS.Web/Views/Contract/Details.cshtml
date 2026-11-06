@@ -182,21 +182,21 @@
             </tbody>
         </pems-table>
     }
-    <form asp-action="AddDocument" method="post" class="row g-2">
+    <form asp-action="AddDocument" method="post"><pems-row gap="2">
         <input type="hidden" name="contractId" value="@Model.ContractId" />
         <pems-col md="2"><pems-input scale="small" type="text" name="documentNo" placeholder="@Localizer["Doc No"]" required /></pems-col>
         <pems-col md="3"><pems-input scale="small" type="text" name="title" placeholder="@Localizer["Title"]" required /></pems-col>
         <pems-col md="2"><pems-input scale="small" type="text" name="documentType" placeholder="@Localizer["Type"]" required /></pems-col>
         <pems-col md="3"><pems-input scale="small" type="text" name="clauseReference" placeholder="@Localizer["Clause Reference"]" /></pems-col>
         <pems-col md="2"><pems-button tone="none" size="small" css="btn-primary" type="submit">@Localizer["Add Document"]</pems-button></pems-col>
-    </form>
+    </pems-row></form>
 </div>
 
 @if (Model.Status == "Signed" || Model.Status == "Effective")
 {
     <div class="content-card mt-3">
         <h6>@Localizer["Request Value Change (Variation / Change Order)"]</h6>
-        <form asp-action="RequestRevision" method="post" class="row g-2">
+        <form asp-action="RequestRevision" method="post"><pems-row gap="2">
             <input type="hidden" name="contractId" value="@Model.ContractId" />
             <pems-col md="3">
                 <pems-select scale="small" name="changeType">
@@ -209,7 +209,7 @@
             <pems-col md="3"><pems-input scale="small" type="text" name="reason" placeholder="@Localizer["Reason"]" /></pems-col>
             <pems-col md="3"><pems-input scale="small" type="text" name="changeDescription" placeholder="@Localizer["Description"]" /></pems-col>
             <pems-col md="1"><pems-button tone="none" size="small" css="btn-primary" type="submit">@Localizer["Request"]</pems-button></pems-col>
-        </form>
+        </pems-row></form>
     </div>
 }
 

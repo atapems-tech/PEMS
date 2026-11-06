@@ -473,27 +473,27 @@
                 else
                 { <p class="text-muted small">No additional recipients yet.</p> }
 
-                <form asp-action="AddRecipient" method="post" class="row g-2 mt-1 add-recipient-form">
+                <form class="add-recipient-form" asp-action="AddRecipient" method="post"><pems-row gap="2" css="mt-1">
                     <input type="hidden" name="letterId" value="@l.LetterId" />
-                    <div class="col-md-3">
+                    <pems-col md="3">
                         <pems-select scale="small" name="recipientType">
                             <option value="To">To</option>
                             <option value="Cc">Cc</option>
                         </pems-select>
-                    </div>
-                    <div class="col-md-4">
+                    </pems-col>
+                    <pems-col md="4">
                         <pems-select scale="small" css="employee-picker" name="employeeId">
                             <option value="">@Localizer["-- Employee --"]</option>
                         </pems-select>
-                    </div>
-                    <div class="col-md-3">
+                    </pems-col>
+                    <pems-col md="3">
                         <pems-select scale="small" name="departmentId">
                             <option value="">@Localizer["-- or Department --"]</option>
                             @foreach (var d in departments) { <option value="@d.DepartmentId">@d.Name</option> }
                         </pems-select>
-                    </div>
-                    <div class="col-md-2"><pems-button tone="primary" size="small" css="w-100"><i class="bi bi-plus-lg"></i> @Localizer["Add"]</pems-button></div>
-                </form>
+                    </pems-col>
+                    <pems-col md="2"><pems-button tone="primary" size="small" css="w-100"><i class="bi bi-plus-lg"></i> @Localizer["Add"]</pems-button></pems-col>
+                </pems-row></form>
             </pems-accordion-item>
 
     <pems-accordion-item target="accAttachments" parent="letterAccordion">
@@ -576,18 +576,18 @@
                     <span class="small text-muted">@Localizer["Ct_ReferToPersonHint"]</span>
                 </div>
                 <div class="small text-muted mb-1">@Localizer["Ct_ReferToDepartment"]</div>
-                <form asp-action="Refer" method="post" class="row g-2">
+                <form asp-action="Refer" method="post"><pems-row gap="2">
                     <input type="hidden" name="letterId" value="@l.LetterId" />
-                    <div class="col-md-6">
+                    <pems-col md="6">
                         <pems-select scale="small" name="referredToDepartmentId" required>
                             <option value="">@Localizer["Ct_ChooseDepartment"]</option>
                             @foreach (var d in departments) { <option value="@d.DepartmentId">@d.Name</option> }
                         </pems-select>
-                    </div>
-                    <div class="col-md-3"><pems-input scale="small" name="instructions" placeholder="@Localizer["Instructions"]" /></div>
-                    <div class="col-md-2"><pems-date name="dueDate" scale="small" /></div>
-                    <div class="col-md-1"><pems-button tone="primary" size="small" css="w-100"><i class="bi bi-send"></i></pems-button></div>
-                </form>
+                    </pems-col>
+                    <pems-col md="3"><pems-input scale="small" name="instructions" placeholder="@Localizer["Instructions"]" /></pems-col>
+                    <pems-col md="2"><pems-date name="dueDate" scale="small" /></pems-col>
+                    <pems-col md="1"><pems-button tone="primary" size="small" css="w-100"><i class="bi bi-send"></i></pems-button></pems-col>
+                </pems-row></form>
             </pems-accordion-item>
 
     <pems-accordion-item target="accTimeline" parent="letterAccordion">

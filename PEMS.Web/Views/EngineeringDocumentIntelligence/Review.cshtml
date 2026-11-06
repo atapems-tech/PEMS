@@ -59,7 +59,7 @@
 
             @if (c.ReviewStatus == "Draft")
             {
-                <form asp-action="ApproveClassification" method="post" class="row g-2 mt-2">
+                <form asp-action="ApproveClassification" method="post"><pems-row gap="2" css="mt-2">
                     <input type="hidden" name="documentId" value="@Model.DocumentId" />
                     <input type="hidden" name="classificationId" value="@c.AIDocumentClassificationId" />
 
@@ -88,7 +88,7 @@
                     <pems-col span="12" css="mt-2">
                         <pems-button tone="success" size="small" type="submit"><pems-icon name="bi-check-lg" /> Approve &amp; Apply</pems-button>
                     </pems-col>
-                </form>
+                </pems-row></form>
 
                 <form asp-action="RejectClassification" method="post" class="mt-1">
                     <input type="hidden" name="documentId" value="@Model.DocumentId" />
@@ -186,9 +186,9 @@
     </div>
     @if (!Model.Comments.Any()) { <p class="text-muted">No comments yet.</p> }
 
-    <form asp-action="AddComment" method="post" class="row g-2 mt-2">
+    <form asp-action="AddComment" method="post"><pems-row gap="2" css="mt-2">
         <input type="hidden" name="documentId" value="@Model.DocumentId" />
         <pems-col md="9"><pems-input scale="small" name="commentText" placeholder="New comment..." required /></pems-col>
         <pems-col md="3"><pems-button tone="primary" size="small" css="w-100">@Localizer["Add Comment"]</pems-button></pems-col>
-    </form>
+    </pems-row></form>
 </div>

@@ -100,7 +100,7 @@
                         <tr>
                             <td></td>
                             <td colspan="6">
-                                <form asp-action="UpdateLine" method="post" class="row g-2 align-items-end small">
+                                <form asp-action="UpdateLine" method="post"><pems-row gap="2" css="align-items-end small">
                                     <input type="hidden" name="id" value="@Model.PoId" /><input type="hidden" name="lineId" value="@l.PurchaseOrderLineId" />
                                     <pems-col md="2"><pems-label>@Localizer["Po_Quantity"]</pems-label><pems-input scale="small" name="quantity" type="number" step="any" min="0" dir="ltr" value="@l.Quantity.ToString(System.Globalization.CultureInfo.InvariantCulture)" /></pems-col>
                                     <pems-col md="2"><pems-label>@Localizer["Po_UnitPrice"]</pems-label><pems-input scale="small" name="unitPrice" type="number" step="any" min="0" dir="ltr" value="@l.UnitPrice.ToString(System.Globalization.CultureInfo.InvariantCulture)" /></pems-col>
@@ -115,7 +115,7 @@
                                         <pems-col md="2"><pems-label>@Localizer["Po_FreeTextReason"]</pems-label><pems-input scale="small" name="freeTextReason" value="@l.FreeTextReason" /></pems-col>
                                     }
                                     <pems-col md="auto"><pems-button tone="neutral" size="small" outline="true" type="submit"><pems-icon name="bi-check2" aria-hidden="true" /> @Localizer["Po_SaveLine"]</pems-button></pems-col>
-                                </form>
+                                </pems-row></form>
                             </td>
                         </tr>
                     }

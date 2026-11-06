@@ -25,7 +25,7 @@
     <pems-button tone="neutral" size="small" outline="true" as="a" asp-area="Warehouse" asp-controller="PartCatalogueReport" asp-action="Index"><pems-icon name="bi-journal-plus" /> @Localizer["Pc_Menu"]</pems-button>
 </div>
 <div class="content-card mb-3">
-    <form method="get" class="row g-2">
+    <form method="get"><pems-row gap="2">
         <pems-col md="3">
             <pems-select scale="small" name="disciplineId">
                 <option value="">@Localizer["All Disciplines"]</option>
@@ -41,7 +41,7 @@
         <pems-col md="2"><pems-date name="fromDate" value="@(((DateTime?)ViewBag.FromDate)?.ToString("yyyy-MM-dd"))" scale="small" /></pems-col>
         <pems-col md="2"><pems-date name="toDate" value="@(((DateTime?)ViewBag.ToDate)?.ToString("yyyy-MM-dd"))" scale="small" /></pems-col>
         <pems-col md="2"><pems-button tone="primary" size="small" css="w-100"><pems-icon name="bi-funnel" /> @Localizer["Apply"]</pems-button></pems-col>
-    </form>
+    </pems-row></form>
 </div>
 
 <pems-row gap="3" css="mb-3">
