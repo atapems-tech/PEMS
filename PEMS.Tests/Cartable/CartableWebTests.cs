@@ -608,6 +608,21 @@ public class CartableWebTests
     }
 
     [Fact]
+    public void TrashConfirm_ArmsOnlyTheTrashButtons_NeverTheShell()
+    {
+        // SCRUM-537: "[data-confirm-trash]" also matched #ctShell (data-confirm-trash="1" is the setting flag), so the whole page
+        // became a confirm target and most clicks asked "1"
+        var script = Web("wwwroot", "js", "pems-cartable.js");
+        Assert.Contains("querySelectorAll(\"button[data-confirm-trash]\")", script);
+        Assert.DoesNotContain("querySelectorAll(\"[data-confirm-trash]\")", script);
+        var view = Web("Views", "Letter", "Index.cshtml");
+        var shellTag = view[view.IndexOf("id=\"ctShell\"", StringComparison.Ordinal)..];
+        shellTag = shellTag[..shellTag.IndexOf('>')];
+        Assert.Contains("data-confirm-trash=", shellTag);           // the flag the script reads
+        Assert.DoesNotContain("data-pems-confirm", shellTag);
+    }
+
+    [Fact]
     public void Stylesheet_UsesThemeTokens_AndOverridesThemesWithRootDataTheme()
     {
         var css = Web("wwwroot", "css", "pems-cartable.css");
