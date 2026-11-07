@@ -3,6 +3,11 @@
 All notable changes to PEMS. No system version is defined yet (plan row F_CI), so entries are grouped by date
 and theme and were reconstructed from the git history (initial import 2026-09-05). Newest first.
 
+## 2026-11-07 - Letters page: no more "1" confirm (SCRUM-537)
+
+### Fixed
+- On Letters (`/Letter`) most clicks opened a confirm dialog with the text "1" and were swallowed. `pems-cartable.js` armed every `[data-confirm-trash]` element with `data-pems-confirm`, which also matched the page container `#ctShell` (its `data-confirm-trash="1"` is the "confirm before trash" setting). It now arms only `button[data-confirm-trash]`. Test: `CartableWebTests.TrashConfirm_ArmsOnlyTheTrashButtons_NeverTheShell`.
+
 ## 2026-11-07 - Script templates before the scripts (SCRUM-536)
 
 ### Fixed

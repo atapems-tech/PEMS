@@ -179,7 +179,8 @@
             });
             // trash confirmation follows the user's setting; purge always confirms
             var confirmTrash = shell.getAttribute("data-confirm-trash") === "1";
-            Array.prototype.forEach.call(doc.querySelectorAll("[data-confirm-trash]"), function (b) { if (confirmTrash) b.setAttribute("data-pems-confirm", b.getAttribute("data-confirm-trash")); });
+            // SCRUM-537: only the trash buttons; the shell carries data-confirm-trash as the setting flag and must never become a confirm target
+            Array.prototype.forEach.call(doc.querySelectorAll("button[data-confirm-trash]"), function (b) { if (confirmTrash) b.setAttribute("data-pems-confirm", b.getAttribute("data-confirm-trash")); });
             Array.prototype.forEach.call(form.querySelectorAll("[data-row-submit='trash']"), function (b) { if (confirmTrash) b.setAttribute("data-pems-confirm", api.t("confirmTrash")); });
             Array.prototype.forEach.call(form.querySelectorAll("[data-row-submit='purge']"), function (b) { b.setAttribute("data-pems-confirm", api.t("confirmPurge")); });
 
