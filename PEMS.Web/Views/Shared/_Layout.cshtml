@@ -235,6 +235,10 @@
 
     <partial name="_PemsLoadingOverlay" />
 
+    @* SCRUM-536: the script templates come before every script; pems-errors, sidebar search and the palette clone them as they load *@
+    <pems-script-templates set="global-search"></pems-script-templates>
+    <pems-script-templates set="layout"></pems-script-templates>
+    <pems-script-templates set="shell"></pems-script-templates>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/_content/PEMS.UI/pems-overlay.js" asp-append-version="true"></script>
@@ -250,7 +254,6 @@
     <script src="~/_content/PEMS.UI/pems-select.js" asp-append-version="true"></script>
     <script src="~/_content/PEMS.UI/pems-rte.js" asp-append-version="true"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
-    <pems-script-templates set="global-search"></pems-script-templates>
     <script src="~/js/pems-template.js" asp-append-version="true"></script>
     <script src="~/js/pems-global-search.js" asp-append-version="true"></script>
     <script src="~/js/pems-data-grid.js" asp-append-version="true"></script>
@@ -270,8 +273,6 @@
     <script src="~/lib/signalr/signalr-8.0.7.min.js"></script>
     <script src="~/js/notifications-hub.js" asp-append-version="true"></script>
 
-    <pems-script-templates set="layout"></pems-script-templates>
-    <pems-script-templates set="shell"></pems-script-templates>
     <script src="~/js/views/shared-layout-1.js" asp-append-version="true"></script>
 
     <script src="~/js/views/shared-layout-2.js" asp-append-version="true"></script>

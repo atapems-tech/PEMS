@@ -46,6 +46,8 @@
 <body class="pems-embed" data-pems-date-invalid="@Localizer["Date_Invalid"]" data-pems-error-generic="@Localizer["Err_Generic"]" data-pems-error-offline="@Localizer["Err_Offline"]" data-pems-error-timeout="@Localizer["Err_Timeout"]" data-pems-error-signin="@Localizer["Err_SignIn"]" data-pems-error-forbidden="@Localizer["Err_Forbidden"]" data-pems-error-notfound="@Localizer["Err_NotFound"]" data-pems-error-conflict="@Localizer["Err_Conflict"]" data-pems-error-invalid="@Localizer["Err_Invalid"]" data-pems-error-toomany="@Localizer["Err_TooMany"]" data-pems-error-unavailable="@Localizer["Err_Unavailable"]" data-pems-error-server="@Localizer["Err_Server"]" data-pems-error-reference="@Localizer["Err_Reference"]" data-pems-error-copy="@Localizer["Err_Copy"]" data-pems-error-copied="@Localizer["Err_Copied"]" data-pems-error-close="@Localizer["Err_Close"]" data-pems-skeleton-label="@Localizer["Loading"]" data-pems-confirm-title="@Localizer["Confirm_Title"]" data-pems-confirm-ok="@Localizer["Confirm_Ok"]" data-pems-confirm-cancel="@Localizer["Confirm_Cancel"]">
     @RenderBody()
 
+    @* SCRUM-536: templates before every script *@
+    <pems-script-templates set="shell"></pems-script-templates>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/_content/PEMS.UI/pems-overlay.js" asp-append-version="true"></script>
@@ -57,7 +59,6 @@
     <script src="~/_content/PEMS.UI/pems-skeleton.js" asp-append-version="true"></script>
     <script src="~/_content/PEMS.UI/pems-tree.js" asp-append-version="true"></script>
     <script src="~/_content/PEMS.UI/pems-form.js" asp-append-version="true"></script>
-    <pems-script-templates set="shell"></pems-script-templates>
     <script src="~/js/pems-template.js" asp-append-version="true"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     <script src="~/js/pems-actions.js" asp-append-version="true"></script>

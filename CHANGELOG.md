@@ -3,6 +3,11 @@
 All notable changes to PEMS. No system version is defined yet (plan row F_CI), so entries are grouped by date
 and theme and were reconstructed from the git history (initial import 2026-09-05). Newest first.
 
+## 2026-11-07 - Script templates before the scripts (SCRUM-536)
+
+### Fixed
+- Every main-layout page threw `PemsTemplate: the page has no <template data-pems-template="sb-search">` and showed no sidebar search box: `pems-sidebar-search.js` starts as it loads, but the `shell` template set came after it (since SCRUM-511/512, kept by the SCRUM-527 restore); the global error handler then failed on `pems-error-toast` too. `_Layout` now renders the `global-search`, `layout` and `shell` sets before the first script, `_LayoutEmbed` its `shell` set too, and `_AuthLayout` loads `pems-template.js` (the login button's busy state threw `PemsTemplate is not defined`). Tests: `MainLayoutAssetsTests`.
+
 ## 2026-11-07 - Sprint 1 review QA, section B fixes (SCRUM-532, 533, 534, 535)
 
 ### Fixed
