@@ -496,6 +496,8 @@ public sealed class GateHost : IAsyncDisposable
         var services = builder.Services;
         services.AddLocalization(o => o.ResourcesPath = "");
         services.AddHttpContextAccessor();
+        // SCRUM-533: the sidebar renders <pems-icon> since SCRUM-508, which needs the component renderer as in Program.cs
+        PEMS.UI.ServiceCollectionExtensions.AddPemsUi(services);
         services.AddAuthentication("Test").AddScheme<AuthenticationSchemeOptions, HeaderAuthHandler>("Test", _ => { });
 
         services.AddSingleton(Ctx);

@@ -48,7 +48,7 @@ public class PermissionViewRenderTests
         Assert.Contains("pm-risk-danger", html);
         // one box per (role x module x action) and exactly one is checked (Engineer / WorkOrder / View)
         Assert.Equal(2 * 2 * 10, Regex.Matches(html, "class=\"form-check-input pm-box\"").Count);
-        Assert.Single(Regex.Matches(html, "data-action=\"View\" checked=\"checked\""));
+        Assert.Single(Regex.Matches(html, "<input[^>]*data-action=\"View\"[^>]*checked=\"checked\""));   // SCRUM-533: the component writes checked at the end of the tag
         // the no-JS fallback form and Save button are still rendered
         Assert.Contains("permission-save", html);
         Assert.Contains("name=\"permissions[0].CanView\"", html);
@@ -108,8 +108,8 @@ public class PermissionViewRenderTests
         // locked rows get disabled controls
         var lockedRow = allowed[allowed.IndexOf(locked, StringComparison.Ordinal)..];
         lockedRow = lockedRow[..lockedRow.IndexOf("</tr>", StringComparison.Ordinal)];
-        Assert.Contains("perm-select\" disabled", lockedRow);
-        Assert.Contains("perm-toggle\" checked disabled", lockedRow);
+        Assert.Matches("<input[^>]*class=\"[^\"]*perm-select\"[^>]*disabled=\"disabled\"", lockedRow);   // SCRUM-533: attribute order is the component's
+        Assert.Matches("<input(?=[^>]*perm-toggle)(?=[^>]*checked=\"checked\")[^>]*disabled=\"disabled\"", lockedRow);
     }
 
     [Fact]

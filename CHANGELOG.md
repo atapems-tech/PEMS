@@ -3,6 +3,15 @@
 All notable changes to PEMS. No system version is defined yet (plan row F_CI), so entries are grouped by date
 and theme and were reconstructed from the git history (initial import 2026-09-05). Newest first.
 
+## 2026-11-07 - Sprint 1 review QA, section B fixes (SCRUM-532, 533, 534, 535)
+
+### Fixed
+- SCRUM-532: `docker build` failed at `COPY . .` because the build context held the local graphify knowledge graph (2.6 GB). `.dockerignore` now also leaves out `graphify-out/`, `.claude/`, `.kilo/`, `**/logs/`, `tools/loadtest/results/` and `PEMS.Web/filestore/` (uploaded files are runtime data and are never baked into an image).
+- SCRUM-533: 9 tests failed on `main`. The replenishment sidebar test host now registers PEMS.UI like `Program.cs` (the sidebar uses `<pems-icon>` since SCRUM-508), and the two permission view tests check the checked/disabled input itself instead of the old attribute order. The pages themselves were not changed.
+- SCRUM-534: `.gitattributes` checks out `deploy/docker/*`, `deploy/tests/*.sh` and `deploy/tests/fakes/*` with LF, so a Windows checkout no longer carries CRLF to the Linux VM and the LF check passes. README "Local tests" no longer lists it as a known failure.
+- SCRUM-535: both k6 scripts (`pems-api-baseline.js`, `pems-baseline.js`) set `noCookiesReset: true`. They log in once per virtual user, and k6 had cleared the login cookie before every iteration, so 97% of the API calls got 401. The passing run (0% errors, p95 15-27 ms) is in `tools/loadtest/results/api_baseline_summary.json`.
+- Tests: `LinuxDeploymentArtifactsTests` (gitattributes, dockerignore, k6 cookie option).
+
 ## 2026-11-06 - VDR Files tab: upload (SCRUM-531)
 
 ### Added
