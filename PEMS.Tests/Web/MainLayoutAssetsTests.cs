@@ -26,6 +26,33 @@ public class MainLayoutAssetsTests
         Assert.True(layout.IndexOf("~/js/pems-actions.js", StringComparison.Ordinal) < layout.IndexOf("@await RenderSectionAsync(\"Scripts\"", StringComparison.Ordinal));
     }
 
+    [Theory]
+    [InlineData("_Layout.cshtml", "~/_content/PEMS.UI/pems-errors.js", "~/js/pems-sidebar-search.js", "~/_content/PEMS.UI/pems-command-palette.js", "~/js/pems-template.js")]
+    [InlineData("_LayoutEmbed.cshtml", "~/_content/PEMS.UI/pems-errors.js", "~/_content/PEMS.UI/pems-confirm.js", "~/js/pems-template.js")]
+    public void ScriptTemplates_ComeBeforeTheScriptsThatCloneThemAtStartUp(string layout, params string[] scripts)
+    {
+        // SCRUM-536: the shell set came after pems-sidebar-search.js, whose auto-start threw "no <template sb-search>" on every page
+        var text = File.ReadAllText(Path.Combine(RepoRoot(), "PEMS.Web", "Views", "Shared", layout));
+        var lastTemplate = text.LastIndexOf("<pems-script-templates", StringComparison.Ordinal);
+        Assert.True(lastTemplate > 0);
+        Assert.True(lastTemplate < text.IndexOf("<script", text.IndexOf("RenderBody()", StringComparison.Ordinal), StringComparison.Ordinal), "a script comes before the templates");
+        foreach (var script in scripts)
+        {
+            var at = text.IndexOf(script, StringComparison.Ordinal);
+            Assert.True(at > lastTemplate, script + " must come after the script templates");
+        }
+    }
+
+    [Fact]
+    public void AuthLayout_LoadsTheTemplateHelper_BeforeThePageScripts()
+    {
+        // SCRUM-536: account-login.js calls PemsTemplate.clone('login-busy'); _AuthLayout did not load pems-template.js
+        var text = File.ReadAllText(Path.Combine(RepoRoot(), "PEMS.Web", "Views", "Shared", "_AuthLayout.cshtml"));
+        var helper = text.IndexOf("~/js/pems-template.js", StringComparison.Ordinal);
+        Assert.True(helper > 0);
+        Assert.True(helper < text.IndexOf("RenderSectionAsync(\"Scripts\"", StringComparison.Ordinal));
+    }
+
     private static string RepoRoot()
     {
         var dir = new DirectoryInfo(AppContext.BaseDirectory);
