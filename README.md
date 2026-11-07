@@ -106,8 +106,8 @@ dotnet test PEMS.slnx                              # full suite
 ```
 
 Many tests need a real SQL Server and use the isolated database `PEMSDB_RegressionTest` (never `PEMSDB`). Set
-`PEMS_TEST_CONNECTION` to use another server, for example LocalDB. On a clean `main` three tests are known to fail (plan row #1):
-the LF check in `LinuxDeploymentArtifactsTests`, a SQLEXPRESS-only sidebar test and `ImportCenterNavigationTests`; any other red test is new.
+`PEMS_TEST_CONNECTION` to use another server, for example LocalDB. On a clean `main` two tests are known to fail (plan row #1):
+a SQLEXPRESS-only sidebar test and `ImportCenterNavigationTests` (the LF check was fixed by SCRUM-534); any other red test is new.
 Put the counts (passed, failed, skipped) in the Jira report.
 
 **In a session (AI agent or developer without SQL Server) run every test that fits, and leave the very large suites to the end-of-sprint QA (the tester runs them once for all the tasks In Review; each task still lists them as its own QA line); `python tools/test-gates/gates.py` prints the commands for your changed files. Do not run the slow lines above per task:** `dotnet test PEMS.slnx`, the whole `PEMS.Tests`, the whole `PEMS.Tests.Web` namespace (7 to 11 minutes) and any word filter that matches the SQL families. Run `dotnet build PEMS.Web`, `dotnet test PEMS.UI.Tests` and the exact test classes of what you touched (table "Test budget" in [guideline chapter 05](docs/guidelines/05-environment-and-commands.md)), and write every run you skipped as a `not done` line of the QA checklist ([chapter 07](docs/guidelines/07-qa-check-in-the-ui.md) section 2b). The tester runs the full suite here, on a machine with SQL Server, as line 1.

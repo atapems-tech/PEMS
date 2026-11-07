@@ -63,6 +63,9 @@ const auditLogTrend = new Trend('pems_audit_log_duration', true);
 const loginFailures = new Counter('pems_login_failures');
 
 export const options = {
+    // SCRUM-535: keep the login cookie across iterations; k6 clears the cookie jar on every iteration by default, which makes the
+    // one-login-per-VU session fail with 401 from the second iteration on.
+    noCookiesReset: true,
     scenarios: {
         general_users: {
             executor: 'ramping-vus',
