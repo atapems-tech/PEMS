@@ -127,6 +127,6 @@ Browser conventions for every browser line (call it **the matrix**): Persian (RT
 
 ## G. Close
 
-- [ ] G1. Every failed line has a bug issue in Sprint 1 (label `qa-failed`, area label, steps and expected result), linked from this task.
+- [ ] G1. Every failed line has a bug issue in Sprint 2, the next sprint (label `qa-failed`, area label, steps and expected result, plan row), linked from this task (guideline 07 section 7a step 6, decision of 2026-11-08).
 - [ ] G2. Write the summary in a comment: commit under test, counts of B1 to B5, number of lines Pass, Fail, Blocked, N/A.
 - [ ] G3. Tell the owner that this task is finished. When both QA tasks are finished and every bug is fixed and re-checked: the owner (or the agent on the owner's yes) marks every Sprint 1 issue Done, checks its checklist, and completes the sprint.
