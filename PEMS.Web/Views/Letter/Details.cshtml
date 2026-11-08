@@ -159,7 +159,7 @@
                     }
                     @if (string.IsNullOrEmpty(l.SignedByName))
                     {
-                        <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#signModal"><pems-icon name="bi-pen" css="me-1" /> Sign / Acknowledge</a></li>
+                        <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#signModal"><pems-icon name="bi-pen" css="me-1" /> @Localizer["Sign / Acknowledge"]</a></li>
                     }
                     <li><a class="dropdown-item" href="#" data-bs-toggle="collapse" data-bs-target="#addTagCollapse"><pems-icon name="bi-tag" css="me-1" /> Manage Tags</a></li>
                 </pems-dropdown-menu>
@@ -650,7 +650,7 @@
 
 <pems-modal id="rejectModal" tabindex="-1"><pems-form asp-action="Reject" method="post">
             <input type="hidden" name="letterId" value="@l.LetterId" />
-            <pems-modal-header close="true">Reject Letter</pems-modal-header>
+            <pems-modal-header close="true">@Localizer["Reject Letter"]</pems-modal-header>
             <pems-modal-body>
                 <pems-label css="small">@Localizer["Reason (required)"]</pems-label>
                 <pems-textarea name="reason" rows="3" required></pems-textarea>
@@ -663,7 +663,7 @@
 
 <pems-modal id="signModal" tabindex="-1"><pems-form asp-action="Sign" method="post">
             <input type="hidden" name="letterId" value="@l.LetterId" />
-            <pems-modal-header close="true">Sign / Acknowledge</pems-modal-header>
+            <pems-modal-header close="true">@Localizer["Sign / Acknowledge"]</pems-modal-header>
             <pems-modal-body>
                 <pems-label css="small">Type your full name to sign</pems-label>
                 <pems-input name="signedByName" required />

@@ -3723,4 +3723,42 @@
   <data name="Vd_UploadHint" xml:space="preserve"><value>The file is stored in PEMS and linked to the chosen revision as its document, comment sheet or reply sheet. A new file replaces the current one of that kind. (Upload to FTP in the Submissions tab keeps no copy in PEMS.)</value></data>
   <data name="Vd_UploadRevision" xml:space="preserve"><value>Revision</value></data>
   <data name="Vd_UploadNeedsSubmission" xml:space="preserve"><value>Files belong to a submission. Start a review cycle (Workflow tab) to create the first submission, then upload its files here.</value></data>
+  <data name="Tg_Deleted" xml:space="preserve"><value>The tag was deleted.</value></data>
+  <data name="Tg_Err_HasSubTags" xml:space="preserve"><value>This tag has sub-tags. Remove or move them first.</value></data>
+  <data name="Tg_Err_NotOwner" xml:space="preserve"><value>A personal tag can be deleted only by its owner.</value></data>
+  <data name="Tg_Err_NotFound" xml:space="preserve"><value>The tag was not found or is already deleted.</value></data>
+  <data name="Wo_Err_MaterialNotFound" xml:space="preserve"><value>The material item was not found or is inactive.</value></data>
+  <data name="Wo_RejectConfirm" xml:space="preserve"><value>Reject this work order?</value></data>
+  <data name="Matched Existing" xml:space="preserve"><value>Matched existing</value></data>
+  <data name="Duplicate In Batch" xml:space="preserve"><value>Duplicate in batch</value></data>
+  <data name="Mrs_ReviewHelp" xml:space="preserve"><value>Upload the whole file: PEMS processes large files internally. This page is paged for review ({0} rows in this filter); every row, not only this page, can be reached and acted on through the Match Status filter below and the batch-wide Commit / Reject buttons.</value></data>
+  <data name="Matched - no Instrument yet" xml:space="preserve"><value>Matched - no instrument yet</value></data>
+  <data name="Matched - has Instrument" xml:space="preserve"><value>Matched - has instrument</value></data>
+  <data name="Edit Asset" xml:space="preserve"><value>Edit asset</value></data>
+  <data name="Reject Letter" xml:space="preserve"><value>Reject letter</value></data>
+  <data name="Sign / Acknowledge" xml:space="preserve"><value>Sign / Acknowledge</value></data>
+  <data name="Freeze Document" xml:space="preserve"><value>Freeze document</value></data>
+  <data name="Create New Revision" xml:space="preserve"><value>Create new revision</value></data>
+  <data name="Record Client Response" xml:space="preserve"><value>Record client response</value></data>
+  <data name="Engineering Document Approval Workflow" xml:space="preserve"><value>Engineering document approval workflow</value></data>
+  <data name="Ed_ClientResponseIntro" xml:space="preserve"><value>This is the client's (owner's) response to the issued document, separate from the internal EPC review that already happened.</value></data>
+  <data name="Ed_IncomingLetterRequired" xml:space="preserve"><value>Incoming letter (required)</value></data>
+  <data name="Ed_NoIncomingLetter" xml:space="preserve"><value>No incoming letter is registered. First register the client's letter as Incoming in Correspondence, then select it here.</value></data>
+  <data name="Ed_ClientDecision" xml:space="preserve"><value>Client decision</value></data>
+  <data name="Ed_ClientComment" xml:space="preserve"><value>Client comment (optional, in addition to the letter text)</value></data>
+  <data name="Approved with Comments" xml:space="preserve"><value>Approved with comments</value></data>
+  <data name="Revise &amp; Resubmit" xml:space="preserve"><value>Revise &amp; resubmit</value></data>
+  <data name="Negligible" xml:space="preserve"><value>Negligible</value></data>
+  <data name="Minor" xml:space="preserve"><value>Minor</value></data>
+  <data name="Moderate" xml:space="preserve"><value>Moderate</value></data>
+  <data name="Major" xml:space="preserve"><value>Major</value></data>
+  <data name="Severe" xml:space="preserve"><value>Severe</value></data>
+  <data name="Not scored" xml:space="preserve"><value>Not scored</value></data>
+  <data name="Organization Structure" xml:space="preserve"><value>Organization structure</value></data>
+  <data name="Organization Diagnostics" xml:space="preserve"><value>Organization diagnostics</value></data>
+  <data name="Replenishment Recommendations" xml:space="preserve"><value>Replenishment recommendations</value></data>
+  <data name="Maintenance Strategy Type جدید" xml:space="preserve"><value>New maintenance strategy type</value></data>
+  <data name="Standard Reference جدید" xml:space="preserve"><value>New standard reference</value></data>
+  <data name="Maintenance Activity جدید" xml:space="preserve"><value>New maintenance activity</value></data>
+  <data name="Evaluation Profile جدید" xml:space="preserve"><value>New evaluation profile</value></data>
 </root>

@@ -341,3 +341,10 @@
 .pems-h-pct-98 { height: 98%; }
 .pems-h-pct-99 { height: 99%; }
 .pems-h-pct-100 { height: 100%; }
+/* Stat tiles <pems-stat-grid>/<pems-stat> (SCRUM-551): the grid and the label/value work on every page, not only inside .admin-page;
+ admin pages keep their own, more specific rules in administration-design-system.css. 4 columns, 2 below 992px, 1 below 576px. */
+.admin-kpi-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 1rem; margin-block-end: 1rem; }
+.admin-kpi-label { color: var(--pems-text-muted); font-size: .82rem; }
+.admin-kpi-value { font-size: 1.65rem; font-weight: 700; margin-block-start: .35rem; }
+@media (max-width: 992px) { .admin-kpi-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 576px) { .admin-kpi-grid { grid-template-columns: 1fr; } }

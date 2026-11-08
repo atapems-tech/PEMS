@@ -694,6 +694,13 @@ public class WorkOrderController : Controller
         var denied = await GuardChildAsync(workOrderId, WoSection.RequiredMaterials, WoSectionAction.Add, recordRef: materialItemId.ToString());
         if (denied != null) return denied;
 
+        // SCRUM-554: an unknown or inactive item (stale page, crafted post) is a message, not a foreign-key 500
+        if (!await _context.MaterialItems.AnyAsync(m => m.MaterialItemId == materialItemId && m.IsActive))
+        {
+            TempData["Error"] = Text("Wo_Err_MaterialNotFound");
+            return RedirectToAction(nameof(Details), new { id = workOrderId });
+        }
+
         if (await _context.WorkOrderMaterials.AnyAsync(x => x.WorkOrderId == workOrderId && x.MaterialItemId == materialItemId))
         {
             TempData["Error"] = "این متریال از قبل به‌عنوان نیاز این WorkOrder ثبت شده.";

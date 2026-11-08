@@ -188,7 +188,7 @@
                 @if (string.IsNullOrEmpty(Model.ClientApprovalStatus))
                 {
                     <pems-button plain="true" type="button" css="vs-btn vs-btn--primary" data-bs-toggle="modal" data-bs-target="#clientResponseModal">
-                        <pems-icon name="bi-building" /> Record Client Response
+                        <pems-icon name="bi-building" /> @Localizer["Record Client Response"]
                     </pems-button>
                 }
             }
@@ -209,7 +209,7 @@
                     <li><a class="dropdown-item" asp-action="Edit" asp-route-id="@Model.DocumentId"><pems-icon name="bi-pencil" /> @Localizer["Edit"]</a></li>
                     @if (Model.Status == "Approved" || Model.Status == "Issued")
                     {
-                        <li><pems-button plain="true" type="button" css="dropdown-item" data-bs-toggle="modal" data-bs-target="#newRevisionModal"><pems-icon name="bi-file-earmark-plus" /> Create New Revision</pems-button></li>
+                        <li><pems-button plain="true" type="button" css="dropdown-item" data-bs-toggle="modal" data-bs-target="#newRevisionModal"><pems-icon name="bi-file-earmark-plus" /> @Localizer["Create New Revision"]</pems-button></li>
                     }
                     <li><hr class="dropdown-divider" /></li>
                     <li>
@@ -1016,7 +1016,7 @@
 <pems-modal size="large" id="submitWorkflowModal" tabindex="-1">
             <pems-form asp-action="Submit" method="post">
                 <input type="hidden" name="id" value="@Model.DocumentId" />
-                <pems-modal-header close="true"><pems-icon name="bi-signpost-split" /> Engineering Document Approval Workflow</pems-modal-header>
+                <pems-modal-header close="true"><pems-icon name="bi-signpost-split" /> @Localizer["Engineering Document Approval Workflow"]</pems-modal-header>
                 <pems-modal-body>
                     <partial name="_PemsStageDiagram" model="wfStageDiagramModel" />
 
@@ -1112,7 +1112,7 @@
 {
     <pems-modal id="freezeModal" tabindex="-1">
                 <pems-form asp-action="Freeze" asp-route-id="@Model.DocumentId" method="post">
-                    <pems-modal-header><pems-icon name="bi-snow" /> Freeze Document</pems-modal-header>
+                    <pems-modal-header><pems-icon name="bi-snow" /> @Localizer["Freeze Document"]</pems-modal-header>
                     <pems-modal-body>
                         <p class="text-muted small">این مدرک منجمد (Frozen) شود؟ پس از آن دیگر قابل ویرایش یا رویژن جدید نخواهد بود.</p>
                         <pems-label css="small">Freeze reason (required)</pems-label>
@@ -1231,7 +1231,7 @@
 <pems-modal id="newRevisionModal" tabindex="-1">
             <pems-form asp-action="CreateRevision" method="post">
                 <input type="hidden" name="id" value="@Model.DocumentId" />
-                <pems-modal-header>Create New Revision</pems-modal-header>
+                <pems-modal-header>@Localizer["Create New Revision"]</pems-modal-header>
                 <pems-modal-body>
                     <div class="mb-2">
                         <pems-label css="small">@Localizer["Reason"]</pems-label>
@@ -1283,16 +1283,13 @@
 <pems-modal id="clientResponseModal" tabindex="-1">
             <pems-form asp-action="RecordClientResponse" method="post">
                 <input type="hidden" name="id" value="@Model.DocumentId" />
-                <pems-modal-header>Record Client Response</pems-modal-header>
+                <pems-modal-header>@Localizer["Record Client Response"]</pems-modal-header>
                 <pems-modal-body>
-                    <p class="text-muted small">
-                        This is the client's (owner's) response to the issued document, separate from the
-                        internal EPC review that already happened.
-                    </p>
+                    <p class="text-muted small">@Localizer["Ed_ClientResponseIntro"]</p>
 
 
                     <div class="mb-2">
-                        <pems-label css="small"><pems-icon name="bi-envelope-open" /> نامه‌ی وارده (الزامی)</pems-label>
+                        <pems-label css="small"><pems-icon name="bi-envelope-open" /> @Localizer["Ed_IncomingLetterRequired"]</pems-label>
                         @if (availableIncomingLetters.Any())
                         {
                             <pems-select scale="small" name="incomingLetterId" required>
@@ -1306,23 +1303,22 @@
                         else
                         {
                             <pems-alert tone="warning" css="py-2 px-3 small mb-0">
-                                هیچ نامه‌ی وارده‌ای ثبت نشده. اول باید نامه‌ی رسیده از کارفرما رو توی
-                                ماژول «نامه‌نگاری» به‌عنوان Incoming ثبت کنی، بعد این‌جا انتخابش کن.
+                                @Localizer["Ed_NoIncomingLetter"]
                             </pems-alert>
                         }
                     </div>
 
                     <div class="mb-2">
-                        <pems-label css="small">Client Decision</pems-label>
+                        <pems-label css="small">@Localizer["Ed_ClientDecision"]</pems-label>
                         <pems-select scale="small" name="clientStatus">
-                            <option value="A">A - Approved</option>
-                            <option value="B">B - Approved with Comments</option>
-                            <option value="C">C - Revise &amp; Resubmit</option>
-                            <option value="D">D - Rejected</option>
+                            <option value="A">A - @Localizer["Approved"]</option>
+                            <option value="B">B - @Localizer["Approved with Comments"]</option>
+                            <option value="C">C - @Localizer["Revise & Resubmit"]</option>
+                            <option value="D">D - @Localizer["Rejected"]</option>
                         </pems-select>
                     </div>
                     <div class="mb-2">
-                        <pems-label css="small">Client Comment (اختیاری - علاوه بر متن نامه)</pems-label>
+                        <pems-label css="small">@Localizer["Ed_ClientComment"]</pems-label>
                         <pems-textarea scale="small" name="clientComment" rows="3"></pems-textarea>
                     </div>
                 </pems-modal-body>

@@ -44,12 +44,12 @@
 <pems-content-card css="mb-3">
     <pems-stat-grid>
         <pems-stat label="@Localizer["New"]">@Model.Batch.NewCount</pems-stat>
-        <pems-stat label="Matched Existing">@Model.Batch.MatchedCount</pems-stat>
-        <pems-stat label="Duplicate In Batch">@Model.Batch.DuplicateCount</pems-stat>
+        <pems-stat label="@Localizer["Matched Existing"]">@Model.Batch.MatchedCount</pems-stat>
+        <pems-stat label="@Localizer["Duplicate In Batch"]">@Model.Batch.DuplicateCount</pems-stat>
         <pems-stat label="@Localizer["Invalid"]">@Model.Batch.InvalidCount</pems-stat>
         <pems-stat label="@Localizer["Approved"]">@Model.Batch.ApprovedCount</pems-stat>
     </pems-stat-grid>
-    <p class="text-muted small mt-2 mb-0">فایل کامل را آپلود کنید - PEMS فایل‌های بزرگ را داخلی و خودکار پردازش می‌کند. این صفحه برای بازبینی، صفحه‌بندی شده است (@Model.Rows.TotalCount ردیف در این فیلتر)؛ همه‌ی ردیف‌ها - نه فقط صفحه‌ی جاری - از طریق فیلتر Match Status زیر و دکمه‌ی «Commit/Reject سراسر Batch» قابل‌دسترسی و قابل‌عمل‌اند.</p>
+    <p class="text-muted small mt-2 mb-0">@string.Format(Localizer["Mrs_ReviewHelp"].Value, Model.Rows.TotalCount)</p>
 </pems-content-card>
 
 <pems-form id="bulkCommitForm" asp-action="BulkCommit" method="post">

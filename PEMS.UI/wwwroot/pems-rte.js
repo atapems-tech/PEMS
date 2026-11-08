@@ -157,7 +157,7 @@
                         var range = quill.getSelection(true);
                         quill.insertEmbed(range.index, 'image', res.url);
                     })
-                    .catch(function () { alert(t('uploadFailed')); });
+                    .catch(function () { if (window.PemsErrors) window.PemsErrors.show(t('uploadFailed')); });   // SCRUM-549: a toast, never a browser pop-up
             };
             input.click();
         };

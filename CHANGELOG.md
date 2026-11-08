@@ -3,6 +3,16 @@
 All notable changes to PEMS. No system version is defined yet (plan row F_CI), so entries are grouped by date
 and theme and were reconstructed from the git history (initial import 2026-09-05). Newest first.
 
+## 2026-11-07 - Sprint 1 review QA, sections D7 and D8 fixes (SCRUM-549, 550, 551, 552, 553, 554)
+
+### Fixed
+- SCRUM-549: the last browser pop-ups are gone. The task board (moving a card to a status it cannot reach, a failed move or reorder), the rich-text editor (failed image upload) and the maintenance calendar fallback show a PEMS toast (`PemsErrors.show`). Test `NoBrowserPopupScriptTests` fails if any of our scripts or views calls `alert(`, `confirm(` or `prompt(`.
+- SCRUM-550: deleting a letter tag that has sub-tags, or someone else's personal tag, reloaded the Tags page with the tag still there and no message. `ITagService.DeleteAsync` now returns why (`TagDeleteOutcome`) and the page shows it in Persian and English; the owner of a personal tag may delete it (the controller now passes the user). Tests: `TagDeleteOutcomeTests`.
+- SCRUM-551: `<pems-stat-grid>` was a grid only inside admin pages; on Warehouse > MRS import > Review the tiles stacked one per row. `pems-ui.css` now gives the grid and the tile label/value to every page (4 columns, 2 below 992 px, 1 below 576 px; admin pages keep their own rules). The MRS import and table extraction review labels and help text come from resources. Test: `StatGridAndModalTextsTests`.
+- SCRUM-552: English text on Persian pages: Letter (Reject, Sign / Acknowledge), Asset (Edit), Engineering Document (approval workflow, freeze, new revision, client response with its body), Maintenance master data (new strategy type, standard reference, activity, and four titles whose Persian value was still half English), Work order badges (status, priority, type) and its Reject confirm, Criticality score labels, and the Organization / Diagnostics / Replenishment page titles now use resource keys in both languages.
+- SCRUM-553: the audit log wrote EF's temporary key for a foreign key that points at a row inserted in the same save (definition rollback: `PublishedVersionId: 2 -> -2147482645`). Such values, and the field list of a newly inserted security record, are now written after the save with the real id. Test `AuditTemporaryKeySqlTests` (SQL Server). README M-25 now says that create-draft and rollback need `If-Match`.
+- SCRUM-554: adding a required material with an unknown or inactive material id to a work order answered 500 (foreign key); it now returns to the work order with a message. Test in `WorkOrderSectionGuardTests`.
+
 ## 2026-11-07 - Letters page: no more "1" confirm (SCRUM-537)
 
 ### Fixed
