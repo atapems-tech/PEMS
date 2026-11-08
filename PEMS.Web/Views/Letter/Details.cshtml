@@ -430,7 +430,7 @@
         <pems-flex wrap="true" gap="3" css="small">
             @if (l.RelatedDocumentId.HasValue)
             {
-                <a asp-controller="EngineeringDocuments" asp-action="Details" asp-route-id="@l.RelatedDocumentId"><pems-icon name="bi-file-earmark-text" /> @l.RelatedDocumentNo</a>
+                <a asp-controller="DocumentRegister" asp-action="Open" asp-route-id="@l.RelatedDocumentId"><pems-icon name="bi-file-earmark-text" /> @l.RelatedDocumentNo</a>
             }
             @if (l.RelatedMRId.HasValue)
             {
