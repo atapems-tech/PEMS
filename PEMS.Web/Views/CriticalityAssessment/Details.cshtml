@@ -16,7 +16,7 @@
 
     string ScoreLabel(int? score) => score switch
     {
-        1 => "1 — Negligible", 2 => "2 — Minor", 3 => "3 — Moderate", 4 => "4 — Major", 5 => "5 — Severe", _ => "Not scored"
+        1 => "1 — " + Localizer["Negligible"].Value, 2 => "2 — " + Localizer["Minor"].Value, 3 => "3 — " + Localizer["Moderate"].Value, 4 => "4 — " + Localizer["Major"].Value, 5 => "5 — " + Localizer["Severe"].Value, _ => Localizer["Not scored"].Value
     };
 }
 

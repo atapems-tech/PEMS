@@ -664,6 +664,10 @@ public class PEMSDbContext
         public string Action = string.Empty;
         public string? ChangedFieldsSummary;
         public string? KnownKeyValue;
+        // SCRUM-553: a changed foreign key that points at a row inserted in the same save holds EF's temporary key until the
+        // save; its new value is read after the save (name, old value). The values of an inserted security record likewise.
+        public List<(string Name, string Old)> AfterSave = new();
+        public bool ValuesAfterSave;
     }
 
 
@@ -696,6 +700,8 @@ public class PEMSDbContext
             };
 
             string? changedSummary = null;
+            var deferred = new List<(string Name, string Old)>();
+            var valuesAfterSave = false;
 
             if (entry.State == EntityState.Modified)
             {
@@ -708,6 +714,7 @@ public class PEMSDbContext
                     if (NeverAuditedProperties.Contains(prop.Metadata.Name)) continue;
 
                     var oldVal = prop.OriginalValue?.ToString() ?? "null";
+                    if (prop.IsTemporary) { deferred.Add((prop.Metadata.Name, oldVal)); continue; }
                     var newVal = prop.CurrentValue?.ToString() ?? "null";
 
                     if (oldVal == newVal) continue;
@@ -717,14 +724,16 @@ public class PEMSDbContext
                     changes.Add($"{prop.Metadata.Name}: {oldVal} -> {newVal}");
                 }
 
-                if (changes.Count == 0)
+                if (changes.Count == 0 && deferred.Count == 0)
                     continue; // چیزی واقعاً تغییر نکرده، نیازی به ثبت نیست
 
-                changedSummary = string.Join(" | ", changes);
+                changedSummary = changes.Count == 0 ? null : string.Join(" | ", changes);
             }
 
             // E24: ایجاد/حذف موجودیت‌های امنیتی (کاربر، نقش کاربر، تخصیص نقش، مجوز نقش) مقدار فیلدهای غیرمحرمانه را هم ثبت می‌کند (چه کسی/چه چیزی/چه زمانی)
-            if (entry.State != EntityState.Modified && SecuritySensitiveEntities.Contains(entityName))
+            if (entry.State == EntityState.Added && SecuritySensitiveEntities.Contains(entityName))
+                valuesAfterSave = true;   // SCRUM-553: keys and foreign keys are real only after the save
+            else if (entry.State != EntityState.Modified && SecuritySensitiveEntities.Contains(entityName))
             {
                 var values = entry.Properties
                     .Where(pr => pr.Metadata.ClrType.IsPrimitive || pr.Metadata.ClrType == typeof(string) || pr.Metadata.ClrType == typeof(int?) || pr.Metadata.ClrType == typeof(bool?) || pr.Metadata.ClrType == typeof(DateTime) || pr.Metadata.ClrType == typeof(DateTime?))
@@ -750,7 +759,9 @@ public class PEMSDbContext
                 EntityName = entityName,
                 Action = action,
                 ChangedFieldsSummary = changedSummary,
-                KnownKeyValue = knownKey
+                KnownKeyValue = knownKey,
+                AfterSave = deferred,
+                ValuesAfterSave = valuesAfterSave
             });
         }
 
@@ -772,12 +783,27 @@ public class PEMSDbContext
                     keyValue = p.Entry.Property(pk.Properties[0].Name).CurrentValue?.ToString();
             }
 
+            var summary = p.ChangedFieldsSummary;
+            if (p.AfterSave.Count > 0)
+            {
+                var resolved = p.AfterSave.Select(d => $"{d.Name}: {d.Old} -> {p.Entry.Property(d.Name).CurrentValue?.ToString() ?? "null"}");
+                summary = string.Join(" | ", (summary == null ? Enumerable.Empty<string>() : new[] { summary }).Concat(resolved));
+            }
+            if (p.ValuesAfterSave)
+            {
+                summary = string.Join("; ", p.Entry.Properties
+                    .Where(pr => pr.Metadata.ClrType.IsPrimitive || pr.Metadata.ClrType == typeof(string) || pr.Metadata.ClrType == typeof(int?) || pr.Metadata.ClrType == typeof(bool?) || pr.Metadata.ClrType == typeof(DateTime) || pr.Metadata.ClrType == typeof(DateTime?))
+                    .Where(pr => !NeverAuditedProperties.Contains(pr.Metadata.Name) && !MaskedAuditProperties.Contains(pr.Metadata.Name))
+                    .Select(pr => $"{pr.Metadata.Name}={pr.CurrentValue}"));
+                if (summary.Length > 1000) summary = summary[..1000];
+            }
+
             AuditLogs.Add(new AuditLog
             {
                 EntityName = p.EntityName,
                 EntityKeyValue = keyValue ?? "",
                 Action = p.Action,
-                ChangedFieldsSummary = p.ChangedFieldsSummary,
+                ChangedFieldsSummary = summary,
                 UserId = CurrentUserId,
                 UserName = CurrentUserName,
                 Timestamp = DateTime.Now

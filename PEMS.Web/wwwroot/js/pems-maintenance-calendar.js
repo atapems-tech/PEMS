@@ -14,7 +14,7 @@
 
     function showError(message) {
         var container = document.querySelector('.content-card');
-        if (!container) { window.alert(message); return; }
+        if (!container) { if (window.PemsErrors) window.PemsErrors.show(message); return; }   // SCRUM-549: never a browser pop-up
         var banner = window.PemsTemplate.fill(window.PemsTemplate.clone('mc-error'), { text: message });
         container.parentElement.insertBefore(banner, container);
     }

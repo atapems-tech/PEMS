@@ -5,6 +5,9 @@
 (function () {
     'use strict';
 
+    // SCRUM-549: messages are a PEMS toast (pems-errors.js), never a browser pop-up
+    function notify(message) { if (message && window.PemsErrors) window.PemsErrors.show(message); }
+
     function token() {
         var el = document.querySelector('input[name="__RequestVerificationToken"]');
         return el ? el.value : '';
@@ -150,7 +153,7 @@
             var from = card.getAttribute('data-tm-from');
             var to = zone.closest('[data-tm-status]').getAttribute('data-tm-status');
             zone.classList.remove('tm-drop-ok', 'tm-drop-no');
-            if (!allowed(from, to)) { window.alert(board.getAttribute('data-tm-msg-invalid')); return; }
+            if (!allowed(from, to)) { notify(board.getAttribute('data-tm-msg-invalid')); return; }
             var origin = card.parentElement;
             zone.appendChild(card);
             countUpdate();
@@ -159,12 +162,12 @@
                     if (r.ok) { window.location.reload(); return; }   // تازه‌سازی: RowVersion و گذارهای مجاز جدید
                     origin.appendChild(card);
                     countUpdate();
-                    window.alert(r.error || board.getAttribute('data-tm-msg-failed'));
+                    notify(r.error || board.getAttribute('data-tm-msg-failed'));
                 })
                 .catch(function () {
                     origin.appendChild(card);
                     countUpdate();
-                    window.alert(board.getAttribute('data-tm-msg-failed'));
+                    notify(board.getAttribute('data-tm-msg-failed'));
                 });
         });
     }
@@ -197,7 +200,7 @@
             var holder = document.querySelector('[data-tm-reorder-url]');
             if (!holder) return;
             post(holder.getAttribute('data-tm-reorder-url'), { workSpaceId: parts[0], sprintId: parts[1] || null, ids: ids })
-                .then(function (r) { if (!r.ok) window.alert(r.error || ''); window.location.reload(); })
+                .then(function (r) { if (!r.ok && r.error) { notify(r.error); setTimeout(function () { window.location.reload(); }, 2500); return; } window.location.reload(); })
                 .catch(function () { window.location.reload(); });
         });
     });

@@ -555,6 +555,30 @@ public class WorkOrderSectionGuardTests : WorkOrderGovernanceTestBase
         Assert.True(await Ctx.WorkOrderChangeLogs.CountAsync(l => l.WorkOrderId == id && l.Outcome == "Denied" && l.IsSecurityEvent && l.WorkOrderStatus == "Closed") >= 8);   // Executor و DisciplineHead × ۴ عمل؛ Manager پیش از دروازه به‌خاطر نبود WorkOrder.Edit Forbid می‌شود
     }
 
+    // SCRUM-554: an unknown or inactive material id is a message, not a foreign-key 500
+    [Fact]
+    public async Task Adding_an_unknown_or_inactive_material_gives_a_message_and_adds_nothing()
+    {
+        var id = await CreateAsync();
+        var catalog = await SeedCatalogAsync();
+        var inactive = new MaterialItem { MaterialCode = "MM-OFF-" + (++_seed), Description = "Old seal", IsStockItem = true, IsActive = false };
+        Ctx.MaterialItems.Add(inactive);
+        await Ctx.SaveChangesAsync();
+        var ctl = BuildController(DisciplineHead);
+
+        foreach (var bad in new[] { 999_999, inactive.MaterialItemId })
+        {
+            ctl.TempData.Clear();
+            var result = Assert.IsType<RedirectToActionResult>(await ctl.AddRequiredMaterial(id, bad, 1));
+            Assert.Equal("Details", result.ActionName);
+            Assert.Equal("Wo_Err_MaterialNotFound", ctl.TempData["Error"]);
+        }
+        Assert.Empty(Ctx.WorkOrderMaterials.Where(x => x.WorkOrderId == id));
+
+        await ctl.AddRequiredMaterial(id, catalog.MaterialId, 1);   // a real item is still added
+        Assert.Single(Ctx.WorkOrderMaterials.Where(x => x.WorkOrderId == id));
+    }
+
     [Fact]
     public async Task Labor_and_spare_on_a_created_work_order_fail_with_a_specific_message()
     {

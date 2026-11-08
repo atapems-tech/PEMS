@@ -89,9 +89,9 @@ else
     <pems-flex justify="between" align="start" wrap="true" gap="2">
         <div>
             <h5 class="mb-1">@Model.WorkOrderNumber</h5>
-            <pems-badge tone="@statusClass">@Model.Status</pems-badge>
-            <pems-badge tone="@(Model.Priority == "Critical" ? "danger" : "neutral")">@Model.Priority</pems-badge>
-            <pems-badge tone="neutral">@Model.WorkOrderType</pems-badge>
+            <pems-badge tone="@statusClass">@Localizer[Model.Status ?? ""]</pems-badge>
+            <pems-badge tone="@(Model.Priority == "Critical" ? "danger" : "neutral")">@Localizer[Model.Priority ?? ""]</pems-badge>
+            <pems-badge tone="neutral">@Localizer[Model.WorkOrderType ?? ""]</pems-badge>
         </div>
         @if (isLegacy)
         {
@@ -212,7 +212,7 @@ else
                 <pems-form asp-action="Reject" method="post" class="d-inline ms-1">
                     <input type="hidden" name="id" value="@Model.WorkOrderId" />
                     <pems-input class="pems-w-160" scale="small" css="d-inline-block" name="reason" required placeholder="@Localizer["Reason (required)"]" />
-                    <pems-button tone="danger" size="small" outline="true" type="submit" data-pems-confirm="این WorkOrder رد شود؟">@Localizer["Reject"]</pems-button>
+                    <pems-button tone="danger" size="small" outline="true" type="submit" data-pems-confirm="@Localizer["Wo_RejectConfirm"]">@Localizer["Reject"]</pems-button>
                 </pems-form>
             }
             @if (canApproveWo && Model.Status is "Open" or "Assigned" or "InProgress" or "OnHold")
@@ -460,7 +460,7 @@ else
             @foreach (var h in statusHistory)
             {
                 <pems-flex as="li" justify="between" css="border-bottom py-2 small">
-                    <span><pems-badge tone="neutral">@h.FromStatus</pems-badge> → <pems-badge tone="neutral">@h.ToStatus</pems-badge>
+                    <span><pems-badge tone="neutral">@Localizer[h.FromStatus ?? ""]</pems-badge> → <pems-badge tone="neutral">@Localizer[h.ToStatus ?? ""]</pems-badge>
                         @if (!string.IsNullOrWhiteSpace(h.Reason)) { <span class="text-muted"> — @h.Reason</span> }
                     </span>
                     <span class="text-muted">

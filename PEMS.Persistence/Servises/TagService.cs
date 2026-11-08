@@ -51,17 +51,18 @@ public class TagService : ITagService
         return tag.TagId;
     }
 
-    public async Task DeleteAsync(int tagId, int? actorUserId = null)
+    public async Task<TagDeleteOutcome> DeleteAsync(int tagId, int? actorUserId = null)
     {
         var tag = await _context.Tags.FirstOrDefaultAsync(x => x.TagId == tagId);
-        if (tag == null) return;
+        if (tag == null || !tag.IsActive) return TagDeleteOutcome.NotFound;
         // برچسب شخصی فقط توسط صاحبش غیرفعال می‌شود
-        if (tag.OwnerUserId.HasValue && tag.OwnerUserId != actorUserId) return;
+        if (tag.OwnerUserId.HasValue && tag.OwnerUserId != actorUserId) return TagDeleteOutcome.NotOwner;
         // برچسب دارای زیرمجموعه‌ی فعال غیرفعال نمی‌شود تا درخت یتیم نشود
-        if (await _context.Tags.AnyAsync(x => x.ParentTagId == tagId && x.IsActive)) return;
+        if (await _context.Tags.AnyAsync(x => x.ParentTagId == tagId && x.IsActive)) return TagDeleteOutcome.HasSubTags;
 
         tag.IsActive = false;
         await _context.SaveChangesAsync();
+        return TagDeleteOutcome.Deleted;
     }
 
     public async Task AttachToLetterAsync(int letterId, int tagId, int? actorUserId = null)
