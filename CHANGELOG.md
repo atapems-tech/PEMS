@@ -3,6 +3,10 @@
 All notable changes to PEMS. No system version is defined yet (plan row F_CI), so entries are grouped by date
 and theme and were reconstructed from the git history (initial import 2026-09-05). Newest first.
 
+## 2026-11-07 - Related-document links open the right page (SCRUM-538)
+
+### Fixed
+- The related document on Letter, MOC and Technical Query details always linked to the engineering document page, so a vendor (VDR) document gave 404. The links now go to the new `DocumentRegister/Open/{id}`, which redirects by the document type: engineering document, VDR item, the contract of a contract document, or the work order (else the equipment) of a maintenance document. The target page checks the permissions as before. Tests: `DocumentLinksTests`.
 ## 2026-11-07 - Sprint 1 review QA, sections D7 and D8 fixes (SCRUM-549, 550, 551, 552, 553, 554)
 
 ### Fixed

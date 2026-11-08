@@ -32,7 +32,7 @@
         {
             <pems-col md="6">
                 <strong>@Localizer["Related Document:"]</strong>
-                <a asp-controller="EngineeringDocuments" asp-action="Details" asp-route-id="@Model.RelatedDocumentId">@Model.RelatedDocument.DocumentNo</a>
+                <a asp-controller="DocumentRegister" asp-action="Open" asp-route-id="@Model.RelatedDocumentId">@Model.RelatedDocument.DocumentNo</a>
             </pems-col>
         }
         @if (Model.RelatedEquipment != null)
