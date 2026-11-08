@@ -3,6 +3,11 @@
 All notable changes to PEMS. No system version is defined yet (plan row F_CI), so entries are grouped by date
 and theme and were reconstructed from the git history (initial import 2026-09-05). Newest first.
 
+## 2026-11-08 - Deploy run shows why a site did not start (SCRUM-555, slice 1)
+
+### Fixed
+- When the staging or demo site answered 5xx after a deploy, the run log showed `sed: ... unknown option to `s'` instead of the error page text: the filter in `deploy-site.yml` used `/` as the sed delimiter while the pattern contains `</style>`. It now uses `#`, and the log step also lists the newest log file names, so a start that wrote no new log is visible. Test: `DeployWorkflowShellTests`. Staging itself still answers 500 (slice 2, needs the server logs in Plesk).
+
 ## 2026-11-07 - Related-document links open the right page (SCRUM-538)
 
 ### Fixed
