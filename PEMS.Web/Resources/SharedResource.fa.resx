@@ -4811,4 +4811,7 @@
   <data name="Vq_Saved" xml:space="preserve">
     <value>وضعیت صلاحیت فروشنده به‌روزرسانی شد.</value>
   </data>
+  <data name="Prj_Err_CodeExists" xml:space="preserve">
+    <value>کد پروژه‌ی {0} از قبل وجود دارد. کد دیگری انتخاب کنید.</value>
+  </data>
 </root>
