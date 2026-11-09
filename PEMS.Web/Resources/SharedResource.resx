@@ -3944,4 +3944,91 @@
   <data name="Unknown role(s):" xml:space="preserve">
     <value>Unknown role(s):</value>
   </data>
+  <data name="Po_Err_StockLineNoMaterial" xml:space="preserve">
+    <value>Line {0}: the part {1} has no material record, so it cannot be received into stock. Create the material record with this code, or mark the line as direct use / service.</value>
+  </data>
+  <data name="Po_Err_RuleRoleNoApprove" xml:space="preserve">
+    <value>This role has no purchase order approve permission, so it could not open or approve a purchase order routed to it.</value>
+  </data>
+  <data name="Po_Err_RuleOverlap" xml:space="preserve">
+    <value>The amount range overlaps the active level {0} ({1} - {2} {3}). Change that level or choose another range.</value>
+  </data>
+  <data name="Po_RouteInvalid" xml:space="preserve">
+    <value>The routed role can no longer approve this purchase order (its level was changed or removed, or the role lost the approve permission). Route it again.</value>
+  </data>
+  <data name="Vq_Title" xml:space="preserve">
+    <value>Qualification</value>
+  </data>
+  <data name="Vq_NoHistory" xml:space="preserve">
+    <value>No qualification change yet.</value>
+  </data>
+  <data name="Vq_Status" xml:space="preserve">
+    <value>Status</value>
+  </data>
+  <data name="Vq_NewStatus" xml:space="preserve">
+    <value>New status</value>
+  </data>
+  <data name="Vq_Category" xml:space="preserve">
+    <value>Category</value>
+  </data>
+  <data name="Vq_Effective" xml:space="preserve">
+    <value>Effective from</value>
+  </data>
+  <data name="Vq_Expiry" xml:space="preserve">
+    <value>Expires</value>
+  </data>
+  <data name="Vq_Evidence" xml:space="preserve">
+    <value>Evidence reference</value>
+  </data>
+  <data name="Vq_ChangedAt" xml:space="preserve">
+    <value>Changed at</value>
+  </data>
+  <data name="Vq_From" xml:space="preserve">
+    <value>From</value>
+  </data>
+  <data name="Vq_To" xml:space="preserve">
+    <value>To</value>
+  </data>
+  <data name="Vq_Validity" xml:space="preserve">
+    <value>Valid from / to</value>
+  </data>
+  <data name="Vq_Reason" xml:space="preserve">
+    <value>Reason</value>
+  </data>
+  <data name="Vq_ChangedBy" xml:space="preserve">
+    <value>Changed by</value>
+  </data>
+  <data name="Vq_Save" xml:space="preserve">
+    <value>Save qualification</value>
+  </data>
+  <data name="Vq_St_NotQualified" xml:space="preserve">
+    <value>Not qualified</value>
+  </data>
+  <data name="Vq_St_Pending" xml:space="preserve">
+    <value>Pending</value>
+  </data>
+  <data name="Vq_St_Qualified" xml:space="preserve">
+    <value>Qualified</value>
+  </data>
+  <data name="Vq_St_Suspended" xml:space="preserve">
+    <value>Suspended</value>
+  </data>
+  <data name="Vq_St_Expired" xml:space="preserve">
+    <value>Expired</value>
+  </data>
+  <data name="Vq_Err_Status" xml:space="preserve">
+    <value>The qualification status is not valid.</value>
+  </data>
+  <data name="Vq_Err_Dates" xml:space="preserve">
+    <value>The expiry date is before the effective date.</value>
+  </data>
+  <data name="Vq_Err_NotFound" xml:space="preserve">
+    <value>Vendor not found.</value>
+  </data>
+  <data name="Vq_Err_Forbidden" xml:space="preserve">
+    <value>You may not change the qualification of this vendor.</value>
+  </data>
+  <data name="Vq_Saved" xml:space="preserve">
+    <value>The vendor qualification was updated.</value>
+  </data>
 </root>

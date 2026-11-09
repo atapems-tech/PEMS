@@ -12,6 +12,7 @@
     var poLineNo = poLines?.ToDictionary(p => p.PurchaseOrderLineId, p => p.LineNo) ?? new Dictionary<int, int>();
     var canDecideRejection = ViewBag.CanDecideRejection == true;
     var canResolveHold = ViewBag.CanResolveHold == true;
+    var canApproveQa = ViewBag.CanApproveQa == true;   // SCRUM-547
     var anyPoLine = Model.Lines.Any(l => l.PurchaseOrderLineId.HasValue);
     var badgeClass = Model.Status switch
     {
@@ -81,6 +82,9 @@
         @if (Model.Status == "PendingApproval")
         {
             <span class="small text-muted">@Localizer["Disposition recorded — awaiting independent QA approval before any accepted quantity is posted to stock."]</span>
+        }
+        @if (Model.Status == "PendingApproval" && canApproveQa)
+        {
             <pems-form asp-action="Approve" method="post" class="d-inline">
                 <input type="hidden" name="id" value="@Model.IrnReceiptId" />
                 <input type="hidden" name="decision" value="Approve" />

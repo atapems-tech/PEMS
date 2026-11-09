@@ -105,7 +105,7 @@ public class InfoGridComponentTests
     [InlineData("Views/EngineeringDocuments/Details.cshtml", 2, 15)]
     [InlineData("Views/Equipment/Details.cshtml", 1, 7)]
     [InlineData("Views/VDR/Details.cshtml", 2, 10)]   // SCRUM-529: + the vendor-format number
-    [InlineData("Views/Vendor/Details.cshtml", 1, 8)]
+    [InlineData("Views/Vendor/Details.cshtml", 2, 13)]   // SCRUM-544: + the qualification grid (5 items)
     public void WaveI1_TakesItsLabelValueBlocksFromTheComponent(string view, int grids, int items)
     {
         var text = File.ReadAllText(Path.Combine(RepoRoot(), "PEMS.Web", view));

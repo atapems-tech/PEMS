@@ -3,6 +3,13 @@
 All notable changes to PEMS. No system version is defined yet (plan row F_CI), so entries are grouped by date
 and theme and were reconstructed from the git history (initial import 2026-09-05). Newest first.
 
+## 2026-11-09 - Sprint 2 bug batch C: vendor qualification, PO authority and re-routing, receiving with the default roles (SCRUM-544, 546, 547)
+
+### Fixed
+- SCRUM-544: a vendor could not be qualified in the UI, so a tender that requires qualification could invite no vendor. Vendor details has a qualification panel: the current status, category, validity and evidence, the history (newest first) and, with Vendor Edit, a form posting to the existing `SetQualification` action. Its messages are resource keys (`Vq_*`), and an expiry before the effective date is refused. Tests: `ProcurementDecisionPagesTests`.
+- SCRUM-546: the PO authority table accepted any role and overlapping levels, and a PO routed to a role that could not open it was stuck. An active rule now needs a role with PurchaseOrder Approve (the list offers only those; an old rule can still be switched off), and may not overlap another active rule of the same currency. A matching rule whose role lost Approve leaves the responsible not set. A submitted PO whose route is no longer valid shows a warning and "Route again" (owner decision 2026-11-09: only then). Routing again cancels the open approval task and routes by the current table, and the buyer may take such a PO back. Tests: `PurchaseOrderApprovalServiceTests`, `ProcurementDecisionPagesTests`.
+- SCRUM-547: receiving against PO lines could not be finished with the default roles. The Warehouse Manager gets IRN Edit (Hold resolution) and the Buyer IRN View (close short / replacement decision): this is in `RoleCatalog` for new databases, plus the one-time data migration `Scrum547IrnDefaultGrants` for existing ones (owner decision 2026-11-09). The IRN QA Approve / Reject buttons show only with IRN Approve. On PO submit, a stock line of a catalogued part without a material record is linked to an existing record with its part number or refused, naming the line and part. Tests: `RoleCatalogTests`, `PurchaseOrderApprovalServiceTests`, `ProcurementDecisionPagesTests`.
+
 ## 2026-11-09 - Sprint 2 bug batch B: Persian messages and titles, Jalali date and time, top bar at phone width (SCRUM-540, 542, 543)
 
 ### Fixed

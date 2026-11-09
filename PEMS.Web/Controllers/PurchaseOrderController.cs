@@ -152,7 +152,7 @@ public class PurchaseOrderController : Controller
     /// <summary>Success may still carry a notice key (for example "responsible not set").</summary>
     private IActionResult Done(int id, PoResult r, string successKey)
     {
-        if (!r.Success) TempData["Error"] = Text(r.Error!);
+        if (!r.Success) TempData["Error"] = r.Args is { Length: > 0 } ? string.Format(System.Globalization.CultureInfo.CurrentCulture, Text(r.Error!), r.Args) : Text(r.Error!);
         else TempData["Message"] = Text(r.Error ?? successKey);
         return RedirectToAction(nameof(Details), new { id });
     }

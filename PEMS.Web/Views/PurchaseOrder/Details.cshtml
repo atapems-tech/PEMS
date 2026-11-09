@@ -153,6 +153,16 @@
                     <pems-button tone="primary" size="small" outline="true" type="submit"><pems-icon name="bi-arrow-repeat" aria-hidden="true" /> @Localizer["Po_RouteAgain"]</pems-button></pems-form>
             }
         }
+        @if (a.RouteInvalid)
+        {
+            @* SCRUM-546: the routed role can no longer approve (rule changed or permission removed) *@
+            <pems-alert tone="warning" css="py-2 px-3 small mb-2"><pems-icon name="bi-exclamation-triangle" aria-hidden="true" /> @Localizer["Po_RouteInvalid"]</pems-alert>
+            @if (canEdit)
+            {
+                <pems-form asp-action="RouteAgain" method="post" class="d-inline"><input type="hidden" name="id" value="@Model.PoId" />
+                    <pems-button tone="primary" size="small" outline="true" type="submit"><pems-icon name="bi-arrow-repeat" aria-hidden="true" /> @Localizer["Po_RouteAgain"]</pems-button></pems-form>
+            }
+        }
         @if (isDraft && canEdit && a.Lines.Count > 0)
         {
             <pems-form asp-action="Submit" method="post" class="d-inline"><input type="hidden" name="id" value="@Model.PoId" />
@@ -171,7 +181,7 @@
                     <pems-button tone="none" size="small" css="btn-primary" type="submit"><pems-icon name="bi-check2-circle" aria-hidden="true" /> @Localizer["Po_Approve"]</pems-button></pems-form>
             }
         }
-        @if (isSubmitted && (holdsRole || (a.ResponsibleNotSet && canEdit)))
+        @if (isSubmitted && (holdsRole || ((a.ResponsibleNotSet || a.RouteInvalid) && canEdit)))
         {
             <pems-form class="mt-2" asp-action="Reject" method="post"><pems-flex wrap="true" gap="2" align="end"><input type="hidden" name="id" value="@Model.PoId" />
                 <div class="flex-grow-1"><pems-label css="small" for="poReject">@Localizer["Po_RejectReason"]</pems-label><pems-input scale="small" id="poReject" name="reason" required /></div>

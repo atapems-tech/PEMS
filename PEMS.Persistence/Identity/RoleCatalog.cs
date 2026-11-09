@@ -88,7 +88,7 @@ public static class RoleCatalog
                 new ModuleGrant("StoreRequisition", Approve: true),
                 new ModuleGrant("MaterialItem", Edit: true),
                 new ModuleGrant("InventoryMasterData", Edit: true),
-                new ModuleGrant("IRN"),
+                new ModuleGrant("IRN", Edit: true),   // SCRUM-547 owner decision 2026-11-09: resolves the Hold routed to this role (IRN QA approval stays with QAManager)
                 new ModuleGrant("Barcode"),
             },
             VisibleModules: new[] { "Inventory" }),
@@ -109,6 +109,7 @@ public static class RoleCatalog
                 new ModuleGrant("MaterialRequisition", Create: true, Edit: true),
                 new ModuleGrant("ProcurementPackage"),
                 new ModuleGrant("PurchaseOrder", Create: true, Edit: true),   // SCRUM-470: builds and submits POs (approval comes from the PO authority table)
+                new ModuleGrant("IRN"),   // SCRUM-547 owner decision 2026-11-09: opens the IRN to decide close short / replacement of a rejected PO line
             }),
         new(ProcurementManager, "Procurement Manager", "Heads procurement: oversees the pre-procurement queue and can decide its items. Approval of purchase orders by amount comes from the purchase-order authority table; this role issues approved purchase orders (SCRUM-470).", Domains.Contracts, Categories.Domain, 510,
             DefaultPermissions: new[]

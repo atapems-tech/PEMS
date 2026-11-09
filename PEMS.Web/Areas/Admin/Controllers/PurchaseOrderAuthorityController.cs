@@ -36,7 +36,7 @@ public class PurchaseOrderAuthorityController : Controller
     {
         ViewData["Title"] = _localizer["Po_AuthorityTitle"].Value;
         ViewData["Section"] = "Administration";
-        ViewBag.Roles = await _context.Roles.AsNoTracking().OrderBy(r => r.Name).Select(r => r.Name!).ToListAsync();
+        ViewBag.Roles = await _service.GetApproverRolesAsync();   // SCRUM-546: only roles with PurchaseOrder Approve
         return View(await _service.GetRulesAsync());
     }
 
@@ -47,7 +47,8 @@ public class PurchaseOrderAuthorityController : Controller
     {
         var r = await _service.SaveRuleAsync(new PoAuthorityRuleInput(id, level, minAmount, maxAmount, currency ?? string.Empty,
             approverRole ?? string.Empty, description, isActive), new PoActor(null, _currentUser.Roles, _currentUser.UserName));
-        TempData[r.Success ? "Message" : "Error"] = _localizer[r.Success ? "Po_RuleSaved" : r.Error!].Value;
+        TempData[r.Success ? "Message" : "Error"] = r.Success ? _localizer["Po_RuleSaved"].Value
+            : r.Args is { Length: > 0 } ? _localizer[r.Error!, r.Args].Value : _localizer[r.Error!].Value;
         return RedirectToAction(nameof(Index));
     }
 }

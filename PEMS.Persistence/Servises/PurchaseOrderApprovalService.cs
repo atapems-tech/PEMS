@@ -29,15 +29,17 @@ public class PurchaseOrderApprovalService : IPurchaseOrderApprovalService
     private readonly IPermissionService _permissions;
     private readonly IPurchaseOrderService _orders;
     private readonly ProcurementOptions _options;
+    private readonly IWorkflowInstanceControl? _control;
 
     public PurchaseOrderApprovalService(PEMSDbContext context, IWorkflowRuntime runtime, IPermissionService permissions,
-        IPurchaseOrderService orders, IOptions<ProcurementOptions>? options = null)
+        IPurchaseOrderService orders, IOptions<ProcurementOptions>? options = null, IWorkflowInstanceControl? control = null)
     {
         _context = context;
         _runtime = runtime;
         _permissions = permissions;
         _orders = orders;
         _options = options?.Value ?? new ProcurementOptions();
+        _control = control ?? runtime as IWorkflowInstanceControl;   // SCRUM-546: closes the open task of an invalid route
     }
 
     // ================================================================== sources
@@ -221,7 +223,7 @@ public class PurchaseOrderApprovalService : IPurchaseOrderApprovalService
             l.FreeTextReason, l.MaterialRequisitionItemId, l.TenderId, l.BidId, l.WarehouseId, l.Warehouse?.Code)).ToList();
         return new PoApprovalView(po.PoId, po.PoNumber, po.Status, po.Currency, lines.Sum(l => l.LineAmount), po.MaterialRequisitionId,
             po.MaterialRequisition?.MRNumber, po.ApproverRole, po.AuthorityRule?.Level, po.SubmittedAt, po.SubmittedByUserName, po.ApprovedAt,
-            po.ApprovedByUserName, po.RejectionReason, po.CreatedBy, lines);
+            po.ApprovedByUserName, po.RejectionReason, po.CreatedBy, lines, await RouteInvalidAsync(po));
     }
 
     // ================================================================== submit / route / approve / reject
@@ -234,6 +236,21 @@ public class PurchaseOrderApprovalService : IPurchaseOrderApprovalService
         if (po.Status != PurchaseOrderStatuses.Draft) return PoResult.Fail("Po_Err_NotDraft");
         if (po.Lines.Count == 0) return PoResult.Fail("Po_Err_NoLines");
         if (string.IsNullOrWhiteSpace(po.Currency)) return PoResult.Fail("Po_Err_Currency");
+
+        // SCRUM-547: receiving posts stock against the material record, so a stock line of a catalogued part needs one. An existing
+        // record whose code is the part's assigned (IFS) part number or the line's part number is linked; none means the submit is refused.
+        foreach (var l in po.Lines.Where(x => x.IsStockLine && x.MaterialItemId == null && x.PartCatalogueRequestId != null).OrderBy(x => x.LineNo))
+        {
+            var assigned = await _context.PartCatalogueRequests.AsNoTracking().Where(r => r.PartCatalogueRequestId == l.PartCatalogueRequestId)
+                .Select(r => r.AssignedPartNumber).FirstOrDefaultAsync();
+            var codes = new[] { assigned, l.PartNumber }.Where(c => !string.IsNullOrWhiteSpace(c)).Select(c => c!.Trim()).Distinct().ToList();
+            var materialId = codes.Count == 0 ? null : await _context.MaterialItems.AsNoTracking()
+                .Where(m => m.IsActive && m.IsStockItem && codes.Contains(m.MaterialCode)).OrderBy(m => m.MaterialItemId)
+                .Select(m => (int?)m.MaterialItemId).FirstOrDefaultAsync();
+            if (materialId == null)
+                return new PoResult(false, "Po_Err_StockLineNoMaterial", null, new object[] { l.LineNo, codes.FirstOrDefault() ?? l.Description });
+            l.MaterialItemId = materialId;
+        }
 
         foreach (var l in po.Lines)
         {
@@ -263,8 +280,46 @@ public class PurchaseOrderApprovalService : IPurchaseOrderApprovalService
         if (!await _permissions.HasPermissionAsync(actor.Roles, Module, "Edit")) return PoResult.Fail("Po_Err_Forbidden");
         var po = await _context.PurchaseOrders.FirstOrDefaultAsync(p => p.PoId == poId && p.IsActive);
         if (po == null) return PoResult.Fail("Po_Err_NotFound");
-        if (po.Status != PurchaseOrderStatuses.Submitted || !string.IsNullOrEmpty(po.ApproverRole)) return PoResult.Fail("Po_Err_AlreadyRouted");
+        if (po.Status != PurchaseOrderStatuses.Submitted) return PoResult.Fail("Po_Err_AlreadyRouted");
+        if (string.IsNullOrEmpty(po.ApproverRole)) return await RouteCoreAsync(po, actor, "Route");
+
+        // SCRUM-546 (owner decision 2026-11-09): a routed PO is routed again only when its route is no longer valid. The open approval
+        // task of the old role is cancelled first, then the current authority table decides.
+        if (!await RouteInvalidAsync(po)) return PoResult.Fail("Po_Err_AlreadyRouted");
+        var instance = await _runtime.GetInstanceAsync(PurchaseOrderApprovalWorkflowSeeder.BusinessObjectType, po.PoId);
+        if (instance?.Status == RunningInstance)
+        {
+            if (_control == null) return PoResult.Fail("Po_Err_Concurrent");
+            await _control.CancelInstanceAsync(instance.WorkflowInstanceId, actor.EmployeeId, $"Re-routed: role {po.ApproverRole} is no longer a valid approver");
+        }
+        Audit(po.PoId, "Reroute", $"Old route: {po.ApproverRole} (rule {po.AuthorityRuleId?.ToString(CultureInfo.InvariantCulture) ?? "-"}) is no longer valid", actor);
+        po.ApproverRole = null;
+        po.AuthorityRuleId = null;
         return await RouteCoreAsync(po, actor, "Route");
+    }
+
+    /// <summary>
+    /// SCRUM-546: a submitted, routed PO whose route no longer holds: its rule is gone, inactive or names another role now, or the role has
+    /// lost PurchaseOrder Approve (its holders could not even open the PO).
+    /// </summary>
+    private async Task<bool> RouteInvalidAsync(PurchaseOrder po)
+    {
+        if (po.Status != PurchaseOrderStatuses.Submitted || string.IsNullOrEmpty(po.ApproverRole)) return false;
+        var rule = po.AuthorityRuleId == null ? null
+            : await _context.PurchaseOrderAuthorityRules.AsNoTracking().FirstOrDefaultAsync(r => r.PurchaseOrderAuthorityRuleId == po.AuthorityRuleId.Value);
+        if (rule == null || !rule.IsActive || !string.Equals(rule.ApproverRole, po.ApproverRole, StringComparison.OrdinalIgnoreCase)) return true;
+        return !await RoleCanApproveAsync(po.ApproverRole);
+    }
+
+    private Task<bool> RoleCanApproveAsync(string role) => _permissions.HasPermissionAsync(new[] { role }, Module, "Approve");
+
+    public async Task<IReadOnlyList<string>> GetApproverRolesAsync()
+    {
+        var names = await _context.Roles.AsNoTracking().Where(r => r.Name != null).OrderBy(r => r.Name).Select(r => r.Name!).ToListAsync();
+        var result = new List<string>();
+        foreach (var n in names)
+            if (await RoleCanApproveAsync(n)) result.Add(n);
+        return result;
     }
 
     /// <summary>Lowest-level active rule of the PO currency whose amount range holds the value; none = responsible not set.</summary>
@@ -276,10 +331,18 @@ public class PurchaseOrderApprovalService : IPurchaseOrderApprovalService
             .Where(r => r.MaxAmount == null || value <= r.MaxAmount.Value)
             .OrderBy(r => r.Level).ThenBy(r => r.PurchaseOrderAuthorityRuleId).FirstOrDefault();
 
+        // SCRUM-546: a role that lost PurchaseOrder Approve after the rule was saved is not routed to (its holders could not open the PO)
+        var why = "no active PO authority rule matches";
+        if (rule != null && !await RoleCanApproveAsync(rule.ApproverRole))
+        {
+            why = $"the role {rule.ApproverRole} of level {rule.Level} has no PurchaseOrder Approve";
+            rule = null;
+        }
+
         po.AuthorityRuleId = rule?.PurchaseOrderAuthorityRuleId;
         po.ApproverRole = rule?.ApproverRole;
         Audit(po.PoId, action, rule == null
-            ? $"Value: {Money(value)} {currency}\nResponsible not set: no active PO authority rule matches"
+            ? $"Value: {Money(value)} {currency}\nResponsible not set: {why}"
             : $"Value: {Money(value)} {currency}\nRule: level {rule.Level} ({rule.ApproverRole})", actor);
 
         await _context.Database.CreateExecutionStrategy().ExecuteAsync(async () =>
@@ -317,10 +380,13 @@ public class PurchaseOrderApprovalService : IPurchaseOrderApprovalService
         var po = await _context.PurchaseOrders.FirstOrDefaultAsync(p => p.PoId == poId && p.IsActive);
         if (po == null) return PoResult.Fail("Po_Err_NotFound");
         if (po.Status != PurchaseOrderStatuses.Submitted) return PoResult.Fail("Po_Err_NotSubmitted");
-        // with a routed role only its holders reject; while the responsible is not set the buyer may take it back
-        if (!string.IsNullOrEmpty(po.ApproverRole) && !actor.Roles.Contains(po.ApproverRole, StringComparer.OrdinalIgnoreCase))
+        // with a routed role only its holders reject; while the responsible is not set, or the route is no longer valid (SCRUM-546),
+        // the buyer may take it back
+        var buyerMayTakeBack = string.IsNullOrEmpty(po.ApproverRole) || await RouteInvalidAsync(po);
+        if (!buyerMayTakeBack && !actor.Roles.Contains(po.ApproverRole!, StringComparer.OrdinalIgnoreCase))
             return PoResult.Fail("Po_Err_NotApprover");
-        if (string.IsNullOrEmpty(po.ApproverRole) && !await _permissions.HasPermissionAsync(actor.Roles, Module, "Edit"))
+        if (buyerMayTakeBack && !actor.Roles.Contains(po.ApproverRole ?? "", StringComparer.OrdinalIgnoreCase)
+            && !await _permissions.HasPermissionAsync(actor.Roles, Module, "Edit"))
             return PoResult.Fail("Po_Err_Forbidden");
 
         po.Status = PurchaseOrderStatuses.Draft;
@@ -363,6 +429,20 @@ public class PurchaseOrderApprovalService : IPurchaseOrderApprovalService
         if (string.IsNullOrWhiteSpace(input.ApproverRole) || string.IsNullOrWhiteSpace(input.Currency)) return PoResult.Fail("Po_Err_RuleIncomplete");
         if (input.MinAmount < 0 || (input.MaxAmount.HasValue && input.MaxAmount.Value < input.MinAmount)) return PoResult.Fail("Po_Err_RuleRange");
         if (!await _context.Roles.AnyAsync(r => r.Name == input.ApproverRole.Trim())) return PoResult.Fail("Po_Err_RuleRole");
+        // SCRUM-546: the approver of an active rule must be able to open and approve a PO, or a routed PO is stuck in that role's My
+        // Work. An inactive rule routes nothing, so the admin can still switch off an old rule whose role lost the permission.
+        if (input.IsActive && !await RoleCanApproveAsync(input.ApproverRole.Trim())) return PoResult.Fail("Po_Err_RuleRoleNoApprove");
+        // SCRUM-546: two active rules of one currency must not cover the same amount (which one routes would be undefined)
+        if (input.IsActive)
+        {
+            var cur = input.Currency.Trim().ToUpperInvariant();
+            var others = await _context.PurchaseOrderAuthorityRules.AsNoTracking()
+                .Where(r => r.IsActive && r.Currency == cur && (!input.Id.HasValue || r.PurchaseOrderAuthorityRuleId != input.Id.Value)).ToListAsync();
+            var clash = others.Where(r => r.MinAmount <= (input.MaxAmount ?? decimal.MaxValue) && input.MinAmount <= (r.MaxAmount ?? decimal.MaxValue))
+                .OrderBy(r => r.Level).FirstOrDefault();
+            if (clash != null)
+                return new PoResult(false, "Po_Err_RuleOverlap", null, new object[] { clash.Level, Money(clash.MinAmount), clash.MaxAmount.HasValue ? Money(clash.MaxAmount.Value) : "∞", clash.Currency });
+        }
 
         var rule = input.Id.HasValue
             ? await _context.PurchaseOrderAuthorityRules.FirstOrDefaultAsync(r => r.PurchaseOrderAuthorityRuleId == input.Id.Value)
