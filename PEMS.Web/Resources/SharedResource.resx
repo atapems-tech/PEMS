@@ -3761,4 +3761,187 @@
   <data name="Standard Reference جدید" xml:space="preserve"><value>New standard reference</value></data>
   <data name="Maintenance Activity جدید" xml:space="preserve"><value>New maintenance activity</value></data>
   <data name="Evaluation Profile جدید" xml:space="preserve"><value>New evaluation profile</value></data>
+  <data name="Tested At" xml:space="preserve">
+    <value>Tested At</value>
+  </data>
+  <data name="Id_DefaultError" xml:space="preserve">
+    <value>An unknown failure has occurred.</value>
+  </data>
+  <data name="Id_ConcurrencyFailure" xml:space="preserve">
+    <value>Optimistic concurrency failure, object has been modified.</value>
+  </data>
+  <data name="Id_PasswordMismatch" xml:space="preserve">
+    <value>Incorrect password.</value>
+  </data>
+  <data name="Id_InvalidToken" xml:space="preserve">
+    <value>Invalid token.</value>
+  </data>
+  <data name="Id_RecoveryCodeRedemptionFailed" xml:space="preserve">
+    <value>Recovery code redemption failed.</value>
+  </data>
+  <data name="Id_LoginAlreadyAssociated" xml:space="preserve">
+    <value>A user with this login already exists.</value>
+  </data>
+  <data name="Id_InvalidUserName" xml:space="preserve">
+    <value>Username '{0}' is invalid, can only contain letters or digits.</value>
+  </data>
+  <data name="Id_InvalidEmail" xml:space="preserve">
+    <value>Email '{0}' is invalid.</value>
+  </data>
+  <data name="Id_DuplicateUserName" xml:space="preserve">
+    <value>Username '{0}' is already taken.</value>
+  </data>
+  <data name="Id_DuplicateEmail" xml:space="preserve">
+    <value>Email '{0}' is already taken.</value>
+  </data>
+  <data name="Id_InvalidRoleName" xml:space="preserve">
+    <value>Role name '{0}' is invalid.</value>
+  </data>
+  <data name="Id_DuplicateRoleName" xml:space="preserve">
+    <value>Role name '{0}' is already taken.</value>
+  </data>
+  <data name="Id_UserAlreadyHasPassword" xml:space="preserve">
+    <value>User already has a password set.</value>
+  </data>
+  <data name="Id_UserLockoutNotEnabled" xml:space="preserve">
+    <value>Lockout is not enabled for this user.</value>
+  </data>
+  <data name="Id_UserAlreadyInRole" xml:space="preserve">
+    <value>User already in role '{0}'.</value>
+  </data>
+  <data name="Id_UserNotInRole" xml:space="preserve">
+    <value>User is not in role '{0}'.</value>
+  </data>
+  <data name="Id_PasswordTooShort" xml:space="preserve">
+    <value>Passwords must be at least {0} characters.</value>
+  </data>
+  <data name="Id_PasswordRequiresUniqueChars" xml:space="preserve">
+    <value>Passwords must use at least {0} different characters.</value>
+  </data>
+  <data name="Id_PasswordRequiresNonAlphanumeric" xml:space="preserve">
+    <value>Passwords must have at least one non alphanumeric character.</value>
+  </data>
+  <data name="Id_PasswordRequiresDigit" xml:space="preserve">
+    <value>Passwords must have at least one digit ('0'-'9').</value>
+  </data>
+  <data name="Id_PasswordRequiresLower" xml:space="preserve">
+    <value>Passwords must have at least one lowercase ('a'-'z').</value>
+  </data>
+  <data name="Id_PasswordRequiresUpper" xml:space="preserve">
+    <value>Passwords must have at least one uppercase ('A'-'Z').</value>
+  </data>
+  <data name="The {0} field is required." xml:space="preserve">
+    <value>The {0} field is required.</value>
+  </data>
+  <data name="The {0} field is not a valid e-mail address." xml:space="preserve">
+    <value>The {0} field is not a valid e-mail address.</value>
+  </data>
+  <data name="The {0} field is not a valid phone number." xml:space="preserve">
+    <value>The {0} field is not a valid phone number.</value>
+  </data>
+  <data name="The {0} field is not a valid fully-qualified http, https, or ftp URL." xml:space="preserve">
+    <value>The {0} field is not a valid fully-qualified http, https, or ftp URL.</value>
+  </data>
+  <data name="The field {0} must be a string with a minimum length of {2} and a maximum length of {1}." xml:space="preserve">
+    <value>The field {0} must be a string with a minimum length of {2} and a maximum length of {1}.</value>
+  </data>
+  <data name="The field {0} must be a string with a maximum length of {1}." xml:space="preserve">
+    <value>The field {0} must be a string with a maximum length of {1}.</value>
+  </data>
+  <data name="The field {0} must be a string or array type with a maximum length of '{1}'." xml:space="preserve">
+    <value>The field {0} must be a string or array type with a maximum length of '{1}'.</value>
+  </data>
+  <data name="The field {0} must be a string or array type with a minimum length of '{1}'." xml:space="preserve">
+    <value>The field {0} must be a string or array type with a minimum length of '{1}'.</value>
+  </data>
+  <data name="The field {0} must be between {1} and {2}." xml:space="preserve">
+    <value>The field {0} must be between {1} and {2}.</value>
+  </data>
+  <data name="'{0}' and '{1}' do not match." xml:space="preserve">
+    <value>'{0}' and '{1}' do not match.</value>
+  </data>
+  <data name="The field {0} must match the regular expression '{1}'." xml:space="preserve">
+    <value>The field {0} must match the regular expression '{1}'.</value>
+  </data>
+  <data name="Equipment, Vendor and Project are required." xml:space="preserve">
+    <value>Equipment, Vendor and Project are required.</value>
+  </data>
+  <data name="Please select at least one document." xml:space="preserve">
+    <value>Please select at least one document.</value>
+  </data>
+  <data name="Please add at least one recipient." xml:space="preserve">
+    <value>Please add at least one recipient.</value>
+  </data>
+  <data name="A valid, active discipline is required to create an employee." xml:space="preserve">
+    <value>A valid, active discipline is required to create an employee.</value>
+  </data>
+  <data name="Administrator Account Reset" xml:space="preserve">
+    <value>Administrator Account Reset</value>
+  </data>
+  <data name="Reset Administrator Account" xml:space="preserve">
+    <value>Reset Administrator Account</value>
+  </data>
+  <data name="Effective Navigation Visibility" xml:space="preserve">
+    <value>Effective Navigation Visibility</value>
+  </data>
+  <data name="New SoD Policy" xml:space="preserve">
+    <value>New SoD Policy</value>
+  </data>
+  <data name="OS&amp;D Report" xml:space="preserve">
+    <value>OS&amp;D Report</value>
+  </data>
+  <data name="Organization Chart" xml:space="preserve">
+    <value>Organization Chart</value>
+  </data>
+  <data name="Organization Import" xml:space="preserve">
+    <value>Organization Import</value>
+  </data>
+  <data name="Replenishment Recommendation" xml:space="preserve">
+    <value>Replenishment Recommendation</value>
+  </data>
+  <data name="Edit Instrument" xml:space="preserve">
+    <value>Edit Instrument</value>
+  </data>
+  <data name="Passport" xml:space="preserve">
+    <value>Passport</value>
+  </data>
+  <data name="My Profile" xml:space="preserve">
+    <value>My Profile</value>
+  </data>
+  <data name="Bulk Approve Bindings" xml:space="preserve">
+    <value>Bulk Approve Bindings</value>
+  </data>
+  <data name="Maintenance Teams" xml:space="preserve">
+    <value>Maintenance Teams</value>
+  </data>
+  <data name="Maintenance Organization Chart" xml:space="preserve">
+    <value>Maintenance Organization Chart</value>
+  </data>
+  <data name="Password is required for a new user." xml:space="preserve">
+    <value>Password is required for a new user.</value>
+  </data>
+  <data name="Select an existing employee or specify a department to create one." xml:space="preserve">
+    <value>Select an existing employee or specify a department to create one.</value>
+  </data>
+  <data name="The selected employee does not exist." xml:space="preserve">
+    <value>The selected employee does not exist.</value>
+  </data>
+  <data name="The selected employee is inactive." xml:space="preserve">
+    <value>The selected employee is inactive.</value>
+  </data>
+  <data name="This employee is already linked to another user account." xml:space="preserve">
+    <value>This employee is already linked to another user account.</value>
+  </data>
+  <data name="Select a valid, active department." xml:space="preserve">
+    <value>Select a valid, active department.</value>
+  </data>
+  <data name="Select a valid, active position." xml:space="preserve">
+    <value>Select a valid, active position.</value>
+  </data>
+  <data name="This position already has a holder." xml:space="preserve">
+    <value>This position already has a holder.</value>
+  </data>
+  <data name="Unknown role(s):" xml:space="preserve">
+    <value>Unknown role(s):</value>
+  </data>
 </root>

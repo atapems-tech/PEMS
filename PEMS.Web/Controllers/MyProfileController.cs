@@ -27,7 +27,7 @@ public class MyProfileController : Controller
 
     public async Task<IActionResult> Index()
     {
-        ViewData["Title"] = "پروفایل من";
+        ViewData["Title"] = "My Profile";
         ViewData["Section"] = "Account";
 
         var employee = await GetMyEmployeeAsync();

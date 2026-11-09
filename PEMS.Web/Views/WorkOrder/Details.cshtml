@@ -411,9 +411,9 @@ else
                         <pems-form asp-action="SetSchedule" method="post"><pems-flex gap="2" align="end" wrap="true">
                             <input type="hidden" name="id" value="@Model.WorkOrderId" />
                             <div><pems-label css="small mb-1">@Localizer["Planned Start"]</pems-label>
-                                <pems-input type="datetime-local" name="plannedStart" value="@(Model.PlannedStart?.ToString("yyyy-MM-ddTHH:mm"))" required scale="small" /></div>
+                                <pems-date time="true" name="plannedStart" value="@(Model.PlannedStart?.ToString("yyyy-MM-ddTHH:mm"))" required scale="small" /></div>
                             <div><pems-label css="small mb-1">@Localizer["Planned Finish"]</pems-label>
-                                <pems-input type="datetime-local" name="plannedFinish" value="@(Model.PlannedFinish?.ToString("yyyy-MM-ddTHH:mm"))" required scale="small" /></div>
+                                <pems-date time="true" name="plannedFinish" value="@(Model.PlannedFinish?.ToString("yyyy-MM-ddTHH:mm"))" required scale="small" /></div>
                             <pems-button tone="primary" size="small" outline="true" type="submit">@Localizer["Save Schedule"]</pems-button>
                         </pems-flex></pems-form>
                     </pems-col>

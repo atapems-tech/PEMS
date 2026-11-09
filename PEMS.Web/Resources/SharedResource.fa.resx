@@ -4547,4 +4547,181 @@
   <data name="InProgress" xml:space="preserve"><value>در حال انجام</value></data>
   <data name="OnHold" xml:space="preserve"><value>معلق</value></data>
   <data name="Released" xml:space="preserve"><value>آزادشده</value></data>
+  <data name="Tested At" xml:space="preserve">
+    <value>زمان آزمایش</value>
+  </data>
+  <data name="Id_DefaultError" xml:space="preserve">
+    <value>خطای ناشناخته‌ای رخ داد.</value>
+  </data>
+  <data name="Id_ConcurrencyFailure" xml:space="preserve">
+    <value>این رکورد هم‌زمان توسط کاربر دیگری تغییر کرده است؛ صفحه را دوباره باز کنید.</value>
+  </data>
+  <data name="Id_PasswordMismatch" xml:space="preserve">
+    <value>رمز عبور نادرست است.</value>
+  </data>
+  <data name="Id_InvalidToken" xml:space="preserve">
+    <value>توکن نامعتبر است.</value>
+  </data>
+  <data name="Id_RecoveryCodeRedemptionFailed" xml:space="preserve">
+    <value>استفاده از کد بازیابی ناموفق بود.</value>
+  </data>
+  <data name="Id_LoginAlreadyAssociated" xml:space="preserve">
+    <value>کاربری با این ورود از قبل وجود دارد.</value>
+  </data>
+  <data name="Id_InvalidUserName" xml:space="preserve">
+    <value>نام کاربری «{0}» نامعتبر است؛ فقط حروف و ارقام مجاز است.</value>
+  </data>
+  <data name="Id_InvalidEmail" xml:space="preserve">
+    <value>ایمیل «{0}» نامعتبر است.</value>
+  </data>
+  <data name="Id_DuplicateUserName" xml:space="preserve">
+    <value>نام کاربری «{0}» قبلاً استفاده شده است.</value>
+  </data>
+  <data name="Id_DuplicateEmail" xml:space="preserve">
+    <value>ایمیل «{0}» قبلاً استفاده شده است.</value>
+  </data>
+  <data name="Id_InvalidRoleName" xml:space="preserve">
+    <value>نام نقش «{0}» نامعتبر است.</value>
+  </data>
+  <data name="Id_DuplicateRoleName" xml:space="preserve">
+    <value>نام نقش «{0}» قبلاً استفاده شده است.</value>
+  </data>
+  <data name="Id_UserAlreadyHasPassword" xml:space="preserve">
+    <value>برای این کاربر قبلاً رمز عبور تعیین شده است.</value>
+  </data>
+  <data name="Id_UserLockoutNotEnabled" xml:space="preserve">
+    <value>قفل حساب برای این کاربر فعال نیست.</value>
+  </data>
+  <data name="Id_UserAlreadyInRole" xml:space="preserve">
+    <value>کاربر از قبل نقش «{0}» را دارد.</value>
+  </data>
+  <data name="Id_UserNotInRole" xml:space="preserve">
+    <value>کاربر نقش «{0}» را ندارد.</value>
+  </data>
+  <data name="Id_PasswordTooShort" xml:space="preserve">
+    <value>رمز عبور باید دست‌کم {0} نویسه باشد.</value>
+  </data>
+  <data name="Id_PasswordRequiresUniqueChars" xml:space="preserve">
+    <value>رمز عبور باید دست‌کم {0} نویسهٔ متفاوت داشته باشد.</value>
+  </data>
+  <data name="Id_PasswordRequiresNonAlphanumeric" xml:space="preserve">
+    <value>رمز عبور باید دست‌کم یک نویسهٔ غیر از حرف و رقم (مانند ! یا @) داشته باشد.</value>
+  </data>
+  <data name="Id_PasswordRequiresDigit" xml:space="preserve">
+    <value>رمز عبور باید دست‌کم یک رقم داشته باشد.</value>
+  </data>
+  <data name="Id_PasswordRequiresLower" xml:space="preserve">
+    <value>رمز عبور باید دست‌کم یک حرف کوچک لاتین داشته باشد.</value>
+  </data>
+  <data name="Id_PasswordRequiresUpper" xml:space="preserve">
+    <value>رمز عبور باید دست‌کم یک حرف بزرگ لاتین داشته باشد.</value>
+  </data>
+  <data name="The {0} field is required." xml:space="preserve">
+    <value>{0} الزامی است.</value>
+  </data>
+  <data name="The {0} field is not a valid e-mail address." xml:space="preserve">
+    <value>{0} یک نشانی ایمیل معتبر نیست.</value>
+  </data>
+  <data name="The {0} field is not a valid phone number." xml:space="preserve">
+    <value>{0} یک شماره تلفن معتبر نیست.</value>
+  </data>
+  <data name="The {0} field is not a valid fully-qualified http, https, or ftp URL." xml:space="preserve">
+    <value>{0} یک نشانی اینترنتی معتبر نیست.</value>
+  </data>
+  <data name="The field {0} must be a string with a minimum length of {2} and a maximum length of {1}." xml:space="preserve">
+    <value>طول {0} باید بین {2} و {1} نویسه باشد.</value>
+  </data>
+  <data name="The field {0} must be a string with a maximum length of {1}." xml:space="preserve">
+    <value>طول {0} باید حداکثر {1} نویسه باشد.</value>
+  </data>
+  <data name="The field {0} must be a string or array type with a maximum length of '{1}'." xml:space="preserve">
+    <value>طول {0} باید حداکثر {1} باشد.</value>
+  </data>
+  <data name="The field {0} must be a string or array type with a minimum length of '{1}'." xml:space="preserve">
+    <value>طول {0} باید دست‌کم {1} باشد.</value>
+  </data>
+  <data name="The field {0} must be between {1} and {2}." xml:space="preserve">
+    <value>{0} باید بین {1} و {2} باشد.</value>
+  </data>
+  <data name="'{0}' and '{1}' do not match." xml:space="preserve">
+    <value>«{0}» و «{1}» یکسان نیستند.</value>
+  </data>
+  <data name="The field {0} must match the regular expression '{1}'." xml:space="preserve">
+    <value>قالب {0} درست نیست.</value>
+  </data>
+  <data name="Equipment, Vendor and Project are required." xml:space="preserve">
+    <value>تجهیز، فروشنده و پروژه الزامی هستند.</value>
+  </data>
+  <data name="Please select at least one document." xml:space="preserve">
+    <value>دست‌کم یک سند انتخاب کنید.</value>
+  </data>
+  <data name="Please add at least one recipient." xml:space="preserve">
+    <value>دست‌کم یک گیرنده اضافه کنید.</value>
+  </data>
+  <data name="A valid, active discipline is required to create an employee." xml:space="preserve">
+    <value>برای ساخت کارمند، یک دیسیپلین معتبر و فعال لازم است.</value>
+  </data>
+  <data name="Administrator Account Reset" xml:space="preserve">
+    <value>بازنشانی حساب مدیر سیستم</value>
+  </data>
+  <data name="Reset Administrator Account" xml:space="preserve">
+    <value>بازنشانی حساب مدیر سیستم</value>
+  </data>
+  <data name="Effective Navigation Visibility" xml:space="preserve">
+    <value>نمایش مؤثر منوها</value>
+  </data>
+  <data name="New SoD Policy" xml:space="preserve">
+    <value>سیاست تفکیک وظایف جدید</value>
+  </data>
+  <data name="OS&amp;D Report" xml:space="preserve">
+    <value>گزارش کسری، مازاد و خسارت</value>
+  </data>
+  <data name="Organization Chart" xml:space="preserve">
+    <value>نمودار سازمانی</value>
+  </data>
+  <data name="Organization Import" xml:space="preserve">
+    <value>ورود اطلاعات سازمان</value>
+  </data>
+  <data name="Replenishment Recommendation" xml:space="preserve">
+    <value>پیشنهاد تأمین مجدد</value>
+  </data>
+  <data name="My Profile" xml:space="preserve">
+    <value>پروفایل من</value>
+  </data>
+  <data name="Bulk Approve Bindings" xml:space="preserve">
+    <value>تایید دسته‌جمعی اتصال‌ها</value>
+  </data>
+  <data name="Maintenance Teams" xml:space="preserve">
+    <value>تیم‌های تعمیرونگهداری</value>
+  </data>
+  <data name="Maintenance Organization Chart" xml:space="preserve">
+    <value>نمودار سازمانی تعمیرونگهداری</value>
+  </data>
+  <data name="Password is required for a new user." xml:space="preserve">
+    <value>برای کاربر جدید، رمز عبور الزامی است.</value>
+  </data>
+  <data name="Select an existing employee or specify a department to create one." xml:space="preserve">
+    <value>یک کارمند موجود را انتخاب کنید یا دپارتمان را برای ساخت کارمند جدید مشخص کنید.</value>
+  </data>
+  <data name="The selected employee does not exist." xml:space="preserve">
+    <value>کارمند انتخاب‌شده وجود ندارد.</value>
+  </data>
+  <data name="The selected employee is inactive." xml:space="preserve">
+    <value>کارمند انتخاب‌شده غیرفعال است.</value>
+  </data>
+  <data name="This employee is already linked to another user account." xml:space="preserve">
+    <value>این کارمند از قبل به حساب کاربری دیگری وصل است.</value>
+  </data>
+  <data name="Select a valid, active department." xml:space="preserve">
+    <value>یک دپارتمان معتبر و فعال انتخاب کنید.</value>
+  </data>
+  <data name="Select a valid, active position." xml:space="preserve">
+    <value>یک سمت معتبر و فعال انتخاب کنید.</value>
+  </data>
+  <data name="This position already has a holder." xml:space="preserve">
+    <value>این سمت از قبل متصدی دارد.</value>
+  </data>
+  <data name="Unknown role(s):" xml:space="preserve">
+    <value>نقش‌های ناشناخته:</value>
+  </data>
 </root>

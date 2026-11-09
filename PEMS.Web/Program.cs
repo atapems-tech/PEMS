@@ -136,6 +136,9 @@ builder.Services.AddControllersWithViews(options =>
     // SCRUM-421: numbers and dates bind the way a browser submits them in every culture (12.5 on a Persian page, Persian digits typed by a
     // Persian user); error messages and empty values behave as before.
     PEMS.UI.Binding.MvcOptionsExtensions.AddPemsInputBinding(options);
+
+    // SCRUM-540: the default validation messages ("The {0} field is required.") become resource keys, so they follow the page language.
+    options.ModelMetadataDetailsProviders.Add(new PEMS.Web.Configuration.ValidationMessageKeys());
 })
 .AddViewLocalization(Microsoft.AspNetCore.Mvc.Razor.LanguageViewLocationExpanderFormat.Suffix)
 // SCRUM-477: validation messages and display names are looked up in SharedResource (a text without a key is shown as written).
@@ -252,7 +255,9 @@ builder.Services
     .AddDefaultTokenProviders()
     // SCRUM-412: a new password must differ from the current one and the last N; PemsUserManager records the replaced hash
     .AddPasswordValidator<PEMS.Web.Security.PasswordHistoryValidator>()
-    .AddUserManager<PEMS.Web.Security.PemsUserManager>();
+    .AddUserManager<PEMS.Web.Security.PemsUserManager>()
+    // SCRUM-540: password-policy and other Identity messages follow the page language (Id_* resource keys)
+    .AddErrorDescriber<PEMS.Web.Security.LocalizedIdentityErrorDescriber>();
 
 
 // نقش‌های کاربر در Claim کوکی هستند؛ پیش‌فرض Identity فقط هر ۳۰ دقیقه آن‌ها را از دیتابیس تازه می‌کند و تغییر نقش/دسترسی

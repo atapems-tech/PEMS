@@ -4,7 +4,7 @@
 @using PEMS.Web.Resources
 @inject IStringLocalizer<SharedResource> Localizer
 @{
-    ViewData["Title"] = "Passport - " + Model.Equipment?.TagNumber;
+    ViewData["Title"] = Localizer["Passport"].Value + " - " + Model.Equipment?.TagNumber;
     var status = (string)ViewBag.CalibrationStatus;
     var badgeClass = status switch { "Overdue" => "danger", "DueSoon" => "warning", "OK" => "success", _ => "neutral" };
     var latestCal = (CalibrationHistory?)ViewBag.LatestCalibration;

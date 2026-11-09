@@ -786,7 +786,7 @@
             <pems-modal-header level="2" title-css="h6" title-id="ctReminderTitle" close="true" close-label="@Localizer["Cancel"]">@Localizer["Ct_AddReminder"] <span id="ctReminderLetter" class="text-muted"></span></pems-modal-header>
             <pems-modal-body>
                 <pems-label css="small" for="ctReminderAt">@Localizer["Ct_RemindAt"]</pems-label>
-                <pems-input type="datetime-local" id="ctReminderAt" scale="small" css="mb-2" />
+                <pems-date time="true" id="ctReminderAt" scale="small" css="mb-2" />
                 <pems-label css="small" for="ctReminderNote">@Localizer["Ct_Note"]</pems-label>
                 <pems-input scale="small" type="text" id="ctReminderNote" maxlength="300" />
                 <div class="ct-msg" id="ctReminderMsg" role="status"></div>

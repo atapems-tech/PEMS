@@ -3,6 +3,13 @@
 All notable changes to PEMS. No system version is defined yet (plan row F_CI), so entries are grouped by date
 and theme and were reconstructed from the git history (initial import 2026-09-05). Newest first.
 
+## 2026-11-09 - Sprint 2 bug batch B: Persian messages and titles, Jalali date and time, top bar at phone width (SCRUM-540, 542, 543)
+
+### Fixed
+- SCRUM-540: on Persian pages the validation, password-policy and Identity messages and several tab titles were English. Identity messages come from `Id_*` keys (`LocalizedIdentityErrorDescriber`); the default validation messages ("The {0} field is required." and similar) become resource keys (`ValidationMessageKeys`) so the data-annotation localizer translates them, also for the implicit [Required]; the messages the review found (MDB, Transmittal, Users) go through the localizer; `_AuthLayout` and `_LayoutEmbed` translate the title like `_Layout`; every literal page title has a Persian value and none is written in Persian in code. English pages read as before. Test: `PersianMessagesAndTitlesTests`.
+- SCRUM-543: the eight date-and-time fields (Letter reminder, Meeting, Permit gas test, condition monitoring reading, shift handover, work order planned start and finish) used the browser's Gregorian `datetime-local` picker. `<pems-date>` has a `time` mode: Jalali date and time with the picker's time panel on a Persian page (date-only fields keep their date-only picker), `datetime-local` elsewhere, posting `yyyy-MM-ddTHH:mm` either way. `PemsDate.value` / `PemsDate.setValue` let scripts read and write it (the Letter reminder uses them). Tests: `DateTagHelperTests` (time mode), `NoNativeDateTimeInputTests`.
+- SCRUM-542: at 375 px the top bar was 55 px wider than the window on pages with the Help button, so the page scrolled sideways and its title and pager were cut off. Below 576 px the top bar uses less padding and smaller gaps and the Help button shows its icon only. Test: `TopbarPhoneWidthTests`.
+
 ## 2026-11-08 - Sprint 2 bug batch A: material edit, help search links, project and vendor forms, sidebar marker (SCRUM-539, 541, 545, 548)
 
 ### Fixed

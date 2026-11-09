@@ -121,12 +121,70 @@ public sealed class DateTagHelperTests
     {
         var js = Read("PEMS.UI", "wwwroot", "pems-date.js");
         Assert.Contains("function fallback()", js);
-        Assert.Contains("setAttribute('type', 'date')", js);
+        Assert.Contains("setAttribute('type', isTime(visible) ? 'datetime-local' : 'date')", js);   // SCRUM-543: the date-time pair falls back to datetime-local
         Assert.Contains("Intl.DateTimeFormat('en-u-ca-persian-nu-latn'", js);   // the browser's own calendar, no calendar code of our own
         Assert.DoesNotContain("onclick=", js);
         Assert.DoesNotContain("innerHTML", js);
         Assert.DoesNotContain("https://", js.Replace("https://github.com", ""));  // offline
         Assert.DoesNotContain("#", Regex.Replace(Read("PEMS.UI", "wwwroot", "pems-date.css"), @"/\*.*?\*/", "", RegexOptions.Singleline));   // tokens only, no literal colours
         Assert.True(File.Exists(Path.Combine(Root(), "PEMS.Web", "wwwroot", "lib", "jalalidatepicker", "LICENSE")), "the vendored library keeps its licence file");
+    }
+
+    // ---- SCRUM-543: date and time (time="true")
+
+    [Fact]
+    public void Time_on_a_gregorian_page_is_the_native_datetime_local_input_the_pages_wrote()
+        => Assert.Equal("<input class=\"form-control form-control-sm\" required=\"required\" type=\"datetime-local\" name=\"plannedStart\" value=\"2025-03-20T14:30\" />",
+            Run(new PemsDateTagHelper(null!, UiTestRenderer.Instance) { Calendar = "gregorian", Time = true, Scale = "small", Name = "plannedStart", Value = "2025-03-20T14:30:45" }, new TagHelperAttribute("required", "required")));
+
+    [Fact]
+    public void Time_on_a_jalali_page_shows_the_jalali_date_and_time_and_posts_the_iso_date_time()
+    {
+        var html = Run(new PemsDateTagHelper(null!, UiTestRenderer.Instance) { Calendar = "jalali", Time = true, Name = "meetingDate", Value = "2025-03-20T14:30" }, new TagHelperAttribute("id", "md"));
+
+        Assert.Contains("type=\"text\"", html);
+        Assert.Contains("value=\"1403/12/30 14:30\"", html);
+        Assert.Contains("data-pems-date-time", html);
+        Assert.Contains("data-pems-date-target=\"#md-iso\"", html);
+        Assert.DoesNotContain("data-jdp-target-value-input", html);   // the script, not the picker, writes the hidden ISO value
+        var hidden = Regex.Match(html, "<input[^>]*type=\"hidden\"[^>]*>").Value;   // attribute order is not part of the contract
+        Assert.Contains("id=\"md-iso\"", hidden);
+        Assert.Contains("name=\"meetingDate\"", hidden);
+        Assert.Contains("value=\"2025-03-20T14:30\"", hidden);
+        Assert.Single(Regex.Matches(html, "name=\"meetingDate\""));         // only the hidden input is posted
+    }
+
+    [Fact]
+    public void Time_without_a_value_has_an_empty_pair_and_a_date_time_placeholder()
+    {
+        var html = Run(new PemsDateTagHelper(null!, UiTestRenderer.Instance) { Calendar = "jalali", Time = true, Name = "at" });
+        Assert.Contains("placeholder=\"1403/01/01 08:00\"", html);
+        Assert.DoesNotContain("value=\"1", html);
+    }
+
+    [Theory]
+    [InlineData("2025-03-20T14:30", "2025-03-20T14:30", "1403/12/30 14:30")]
+    [InlineData("2025-03-21 08:05:59", "2025-03-21T08:05", "1404/01/01 08:05")]
+    [InlineData("2025-03-21", "2025-03-21T00:00", "1404/01/01 00:00")]
+    [InlineData("2025-03-21T08:05:00.1234567", "2025-03-21T08:05", "1404/01/01 08:05")]
+    [InlineData("not a date", "", "")]
+    public void Date_times_convert_to_iso_and_jalali_text(string input, string iso, string jalali)
+    {
+        Assert.Equal(iso, PemsDateTagHelper.ToIsoDateTimeText(input));
+        Assert.Equal(jalali, PemsDateTagHelper.ToJalaliDateTimeText(input));
+    }
+
+    [Fact]
+    public void Without_time_the_date_only_output_is_unchanged()
+        => Assert.DoesNotContain("data-pems-date-time", Run(new PemsDateTagHelper(null!, UiTestRenderer.Instance) { Calendar = "jalali", Name = "due", Value = "2025-03-20T14:30" }));
+
+    [Fact]
+    public void The_script_turns_the_time_panel_on_only_for_date_time_fields_and_offers_value_helpers()
+    {
+        var js = Read("PEMS.UI", "wwwroot", "pems-date.js");
+        Assert.Contains("v.setAttribute('data-jdp-only-date', '')", js);   // date-only fields keep their date-only picker
+        Assert.Contains("time: anyTime", js);
+        Assert.Contains("function syncDateTime(", js);
+        Assert.Contains("value: value, setValue: setValue", js);
     }
 }

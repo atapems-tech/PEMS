@@ -125,25 +125,25 @@ public class UsersController : Controller
         {
             var emp = await _context.Employees.AsNoTracking().Where(e => e.EmployeeId == model.ExistingEmployeeId.Value)
                 .Select(e => new { e.EmployeeId, e.IsActive }).FirstOrDefaultAsync();
-            if (emp == null) { ModelState.AddModelError(nameof(model.ExistingEmployeeId), "The selected employee does not exist."); return; }
-            if (!emp.IsActive) ModelState.AddModelError(nameof(model.ExistingEmployeeId), "The selected employee is inactive.");
+            if (emp == null) { ModelState.AddModelError(nameof(model.ExistingEmployeeId), T("The selected employee does not exist.")); return; }
+            if (!emp.IsActive) ModelState.AddModelError(nameof(model.ExistingEmployeeId), T("The selected employee is inactive."));
             var linkedElsewhere = await _context.Users.AnyAsync(u => u.EmployeeId == emp.EmployeeId && (currentUserId == null || u.Id != currentUserId));
-            if (linkedElsewhere) ModelState.AddModelError(nameof(model.ExistingEmployeeId), "This employee is already linked to another user account.");
+            if (linkedElsewhere) ModelState.AddModelError(nameof(model.ExistingEmployeeId), T("This employee is already linked to another user account."));
             return;
         }
 
         if (!model.DepartmentId.HasValue) return;   // (Create) the "select employee or department" rule is enforced by the caller
 
         if (!await _context.Departments.AnyAsync(d => d.DepartmentId == model.DepartmentId.Value && d.IsActive))
-            ModelState.AddModelError(nameof(model.DepartmentId), "Select a valid, active department.");
+            ModelState.AddModelError(nameof(model.DepartmentId), T("Select a valid, active department."));
         if (!model.DisciplineId.HasValue || !await _context.Disciplines.AnyAsync(d => d.DisciplineId == model.DisciplineId.Value && d.IsActive))
-            ModelState.AddModelError(nameof(model.DisciplineId), "A valid, active discipline is required to create an employee.");
+            ModelState.AddModelError(nameof(model.DisciplineId), T("A valid, active discipline is required to create an employee."));
         if (model.PositionId.HasValue)
         {
             var pos = await _context.Positions.AsNoTracking().Where(p => p.PositionId == model.PositionId.Value).Select(p => new { p.IsActive }).FirstOrDefaultAsync();
-            if (pos == null || !pos.IsActive) ModelState.AddModelError(nameof(model.PositionId), "Select a valid, active position.");
+            if (pos == null || !pos.IsActive) ModelState.AddModelError(nameof(model.PositionId), T("Select a valid, active position."));
             else if (await _context.EmployeeAssignments.AnyAsync(a => a.PositionId == model.PositionId.Value && a.IsActive))
-                ModelState.AddModelError(nameof(model.PositionId), "This position already has a holder.");
+                ModelState.AddModelError(nameof(model.PositionId), T("This position already has a holder."));
         }
     }
 
@@ -163,7 +163,7 @@ public class UsersController : Controller
                 foreach (var e in r.Errors) ModelState.AddModelError(nameof(model.Password), e.Description);
             }
         var invalidRoles = model.SelectedRoles.Where(r => !model.AllRoles.Contains(r)).ToList();
-        if (invalidRoles.Count > 0) ModelState.AddModelError(string.Empty, "Unknown role(s): " + string.Join(", ", invalidRoles));
+        if (invalidRoles.Count > 0) ModelState.AddModelError(string.Empty, T("Unknown role(s):") + " " + string.Join(", ", invalidRoles));
     }
 
     private async Task RollbackCreatedEmployeeAsync(int? employeeId)
@@ -309,13 +309,13 @@ public class UsersController : Controller
         model.AllRoles = _roleManager.Roles.Select(x => x.Name!).ToList();
 
         if (string.IsNullOrWhiteSpace(model.Password))
-            ModelState.AddModelError(nameof(model.Password), "Password is required for a new user.");
+            ModelState.AddModelError(nameof(model.Password), T("Password is required for a new user."));
 
         // طبق بررسی: کاربر جدید باید یا به یک کارمند موجود وصل شود، یا دپارتمانش برای ساخت
         // کارمند جدید مشخص باشد - وگرنه محدودیت دیسیپلین، ارجاع نامه، تخصیص وظیفه و همه‌ی
         // چیزهایی که به Employee وابسته‌اند برای این کاربر کار نمی‌کنند
         if (!model.ExistingEmployeeId.HasValue && !model.DepartmentId.HasValue)
-            ModelState.AddModelError(nameof(model.DepartmentId), "Select an existing employee or specify a department to create one.");
+            ModelState.AddModelError(nameof(model.DepartmentId), T("Select an existing employee or specify a department to create one."));
 
         await ValidateEmployeeLinkAsync(model, null);
         // C16: سیاست رمز/یکتایی نام‌کاربری و ایمیل/نقش‌ها «قبل از» هر اثر جانبی بررسی می‌شود تا کارمند یتیم (و تکرار آن در ارسال مجدد فرم) ساخته نشود

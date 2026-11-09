@@ -287,18 +287,22 @@
         if (remModal && window.bootstrap) {
             var remLetter = null;
             var msg = doc.getElementById("ctReminderMsg");
+            // SCRUM-543: the reminder is a <pems-date time="true">; on a Persian page its ISO value lives in a hidden input, so read and write it through PemsDate
+            var remAt = doc.getElementById("ctReminderAt");
+            var setReminderAt = function (iso) { if (window.PemsDate && window.PemsDate.setValue) window.PemsDate.setValue(remAt, iso); else remAt.value = iso; };
+            var reminderAt = function () { return window.PemsDate && window.PemsDate.value ? window.PemsDate.value(remAt) : remAt.value; };
             doc.addEventListener("click", function (e) {
                 var b = e.target.closest ? e.target.closest("[data-reminder-letter]") : null;
                 if (!b) return;
                 remLetter = b.getAttribute("data-reminder-letter");
                 doc.getElementById("ctReminderLetter").textContent = b.getAttribute("data-reminder-title") || "";
-                doc.getElementById("ctReminderAt").value = defaultReminderValue(new Date());
+                setReminderAt(defaultReminderValue(new Date()));
                 doc.getElementById("ctReminderNote").value = "";
                 msg.textContent = ""; msg.className = "ct-msg";
                 window.bootstrap.Modal.getOrCreateInstance(remModal).show();
             });
             doc.getElementById("ctReminderSave").addEventListener("click", function () {
-                var at = doc.getElementById("ctReminderAt").value;
+                var at = reminderAt();
                 if (!at) { msg.textContent = api.t("pickDate"); msg.className = "ct-msg err"; return; }
                 api.post(cfg.urls.reminderAdd, { letterId: parseInt(remLetter, 10), remindAt: at, note: doc.getElementById("ctReminderNote").value })
                     .then(function (r) {

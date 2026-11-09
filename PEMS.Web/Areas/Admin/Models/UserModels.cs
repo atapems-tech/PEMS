@@ -32,6 +32,7 @@ public class UserFormViewModel
 
     [Required]
     [EmailAddress]
+    [Display(Name = "Email")]   // SCRUM-540: the message names the field in the page language
     public string Email { get; set; } = string.Empty;
 
     [Required]

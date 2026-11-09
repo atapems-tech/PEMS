@@ -9,7 +9,7 @@
     <pems-form asp-action="Create" method="post">
         <pems-row gap="3">
             <pems-col md="6"><pems-label>@Localizer["Title"]</pems-label><pems-input name="title" required /></pems-col>
-            <pems-col md="6"><pems-label>@Localizer["Date & Time"]</pems-label><pems-input name="meetingDate" type="datetime-local" required /></pems-col>
+            <pems-col md="6"><pems-label>@Localizer["Date & Time"]</pems-label><pems-date time="true" name="meetingDate" required /></pems-col>
             <pems-col md="6"><pems-label>@Localizer["Location"]</pems-label><pems-input name="location" /></pems-col>
             <pems-col md="6"><pems-label>@Localizer["Organizer"]</pems-label><pems-input name="organizerName" /></pems-col>
             <pems-col md="6">
