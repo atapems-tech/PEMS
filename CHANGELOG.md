@@ -3,6 +3,12 @@
 All notable changes to PEMS. No system version is defined yet (plan row F_CI), so entries are grouped by date
 and theme and were reconstructed from the git history (initial import 2026-09-05). Newest first.
 
+## 2026-11-09 - Sprint 2 bug batch D: the deploy runbook and the tracker rules match reality (SCRUM-556, 557)
+
+### Fixed
+- SCRUM-556: the deploy runbook said pushes to `staging` and `demo` are limited by GitHub branch rules, but neither branch is protected and the repository has no ruleset. Owner decision 2026-11-09: no ruleset; the runbook now says who may push by agreement (the owner and Hamid, never a force-push or a branch deletion), and the `plan-sync.yml` comment no longer mentions branch protection.
+- SCRUM-557: the guideline expected Jira to require *Parent* on the create screen and to have a *Plan ID* field; the team-managed project has neither. Owner decision 2026-11-09: the `plan-<n>` label and the `[#n]` title prefix are the Plan ID and `tracker-check` enforces Parent. Guideline 00 section 5d, guideline 06, `PLAN_TRACKER_WORKFLOW.md`, rule 25 of `plan/sheets/instructions.md` and line C7 of `SPRINT_1_REVIEW_QA.md` say so.
+
 ## 2026-11-09 - Sprint 2 bug batch C: vendor qualification, PO authority and re-routing, receiving with the default roles (SCRUM-544, 546, 547)
 
 ### Fixed

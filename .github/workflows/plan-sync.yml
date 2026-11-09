@@ -9,7 +9,7 @@
 #
 # What it does: lists the differences (reconcile), writes tracker statuses into the plan rows and opens a pull request when any row changed
 # (Jira owns status), then fails when the tracker has an issue without a Plan ID, a duplicate title, or a row/issue without its partner.
-# Branch protection applies to the pull request as to any other: a person merges it.
+# The repository has no branch protection (SCRUM-556): a person reviews and merges the pull request like any other.
 
 name: Plan sync (nightly)
 
