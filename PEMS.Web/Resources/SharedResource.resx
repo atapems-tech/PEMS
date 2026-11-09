@@ -4031,4 +4031,7 @@
   <data name="Vq_Saved" xml:space="preserve">
     <value>The vendor qualification was updated.</value>
   </data>
+  <data name="Prj_Err_CodeExists" xml:space="preserve">
+    <value>The project code {0} already exists. Choose another code.</value>
+  </data>
 </root>

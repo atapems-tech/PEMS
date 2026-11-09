@@ -1,5 +1,11 @@
 using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using PEMS.Application.Exceptions;
 using PEMS.Domain.Entities;
+using PEMS.Persistence.Context;
+using PEMS.Persistence.Services;
+using PEMS.Web.Controllers;
 
 namespace PEMS.Tests.Web;
 
@@ -48,4 +54,45 @@ public class ProjectAndVendorCreateValidationTests
     [Fact]
     public void VendorCreate_ShowsServerSideErrors()
         => Assert.Contains("<pems-validation-summary", View("Vendor", "Create.cshtml"));
+
+    // ------------------------------------------------------------ SCRUM-558: the project code is unique
+
+    private static PEMSDbContext NewDb() => new(new DbContextOptionsBuilder<PEMSDbContext>()
+        .UseInMemoryDatabase("prj_" + Guid.NewGuid().ToString("N")).Options);
+
+    [Fact]
+    public async Task SCRUM558_A_code_that_exists_is_refused_on_create_and_edit_ignoring_case_and_spaces()
+    {
+        await using var db = NewDb();
+        var service = new ProjectService(db);
+        await service.AddAsync(new Project { ProjectCode = "PRJ-1", ProjectName = "One" });
+        await service.AddAsync(new Project { ProjectCode = " PRJ-2 ", ProjectName = "Two" });
+
+        Assert.True(await service.CodeExistsAsync(" prj-1 "));
+        Assert.False(await service.CodeExistsAsync("PRJ-3"));
+        var dup = await Assert.ThrowsAsync<ConflictException>(() => service.AddAsync(new Project { ProjectCode = "prj-1 ", ProjectName = "Copy" }));
+        Assert.Equal("unique", dup.Code);
+        Assert.Equal("PRJ-2", db.Projects.Single(p => p.ProjectName == "Two").ProjectCode);   // saved trimmed
+
+        var two = db.Projects.Single(p => p.ProjectName == "Two");
+        Assert.False(await service.CodeExistsAsync("PRJ-2", two.ProjectId));            // its own code is fine
+        two.ProjectCode = "PRJ-1";
+        await Assert.ThrowsAsync<ConflictException>(() => service.UpdateAsync(two));
+        Assert.Equal(2, db.Projects.Count());
+    }
+
+    [Fact]
+    public async Task SCRUM558_The_form_shows_the_duplicate_code_in_its_validation_box_and_saves_nothing()
+    {
+        await using var db = NewDb();
+        var service = new ProjectService(db);
+        await service.AddAsync(new Project { ProjectCode = "PRJ-1", ProjectName = "One" });
+        var controller = new ProjectsController(service);
+
+        var result = await controller.Create(new Project { ProjectCode = "prj-1", ProjectName = "Copy" });
+
+        Assert.IsType<ViewResult>(result);
+        Assert.Contains("Prj_Err_CodeExists", controller.ModelState[nameof(Project.ProjectCode)]!.Errors.Select(x => x.ErrorMessage));
+        Assert.Equal(1, db.Projects.Count());
+    }
 }

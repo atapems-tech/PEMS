@@ -1,16 +1,27 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Localization;
 using PEMS.Application.Interfaces;
 using PEMS.Domain.Entities;
+using PEMS.Web.Resources;
 
 namespace PEMS.Web.Controllers;
 
 public class ProjectsController : Controller
 {
     private readonly IProjectService _service;
+    private readonly IStringLocalizer<SharedResource>? _localizer;
 
-    public ProjectsController(IProjectService service)
+    public ProjectsController(IProjectService service, IStringLocalizer<SharedResource>? localizer = null)
     {
         _service = service;
+        _localizer = localizer;
+    }
+
+    // SCRUM-558: a code another project already has goes to the form's validation box, like the required-field messages
+    private async Task CheckUniqueCodeAsync(Project project, int? exceptProjectId)
+    {
+        if (ModelState.IsValid && await _service.CodeExistsAsync(project.ProjectCode, exceptProjectId))
+            ModelState.AddModelError(nameof(Project.ProjectCode), _localizer?["Prj_Err_CodeExists", project.ProjectCode.Trim()].Value ?? "Prj_Err_CodeExists");
     }
 
     public async Task<IActionResult> Index()
@@ -34,6 +45,7 @@ public class ProjectsController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Create(Project project)
     {
+        await CheckUniqueCodeAsync(project, null);
         if (!ModelState.IsValid)
         {
             ViewData["Title"] = "New Project";
@@ -61,6 +73,7 @@ public class ProjectsController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Edit(Project project)
     {
+        await CheckUniqueCodeAsync(project, project.ProjectId);
         if (!ModelState.IsValid)
         {
             ViewData["Title"] = "Edit Project";

@@ -3,6 +3,10 @@
 All notable changes to PEMS. No system version is defined yet (plan row F_CI), so entries are grouped by date
 and theme and were reconstructed from the git history (initial import 2026-09-05). Newest first.
 
+## 2026-11-09 - The project code is unique (SCRUM-558)
+
+### Fixed
+- SCRUM-558 (follow-up of SCRUM-539, owner decision 2026-11-09): project create and edit accepted a code another project already had. `ProjectService` now refuses it (spaces trimmed, case ignored) with a `ConflictException` (`unique`), and the form shows `Prj_Err_CodeExists` in its validation box. `EngineeringRevisionQualityTests` cut its project codes so short that the random part was lost and left repeating codes in the shared database; it now makes unique codes. Existing databases still hold those leftover test projects, so the unique database index is a separate issue. Tests: `ProjectAndVendorCreateValidationTests`.
 ## 2026-11-09 - Sprint 2 bug batch D: the deploy runbook and the tracker rules match reality (SCRUM-556, 557)
 
 ### Fixed
