@@ -208,15 +208,12 @@ html[dir="rtl"][data-theme="turquoise"] .pems-sidebar { border-right: 0; border-
 [data-theme="turquoise"] .pems-sidebar .nav-link.active {
     background: linear-gradient(90deg, rgba(27, 197, 179, .16), rgba(27, 197, 179, .03) 75%);
     color: #fff;
-    border-left-color: var(--pems-turquoise);
-    border-right-color: transparent;
+    border-inline-start-color: var(--pems-turquoise);   /* SCRUM-541: logical start edge, no RTL swap needed */
     position: relative;
 }
 
 html[dir="rtl"][data-theme="turquoise"] .pems-sidebar .nav-link.active {
     background: linear-gradient(270deg, rgba(27, 197, 179, .16), rgba(27, 197, 179, .03) 75%);
-    border-left-color: transparent;
-    border-right-color: var(--pems-turquoise);
 }
 
 [data-theme="turquoise"] .pems-sidebar .nav-link.active i { color: var(--pems-turquoise-bright); opacity: 1; }

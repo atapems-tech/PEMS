@@ -455,13 +455,9 @@ html[dir="rtl"] @media (max-width: 991px) {
     display: flex;
     align-items: center;
     gap: 12px;
-    border-left: 3px solid transparent;
+    /* SCRUM-541: one marker on the start edge (left in LTR, right in RTL); admin.css must not add a second one */
+    border-inline-start: 3px solid transparent;
     transition: all 0.15s;
-}
-
-html[dir="rtl"] .pems-sidebar .nav-link {
-    border-left: none;
-    border-right: 3px solid transparent;
 }
 
 .pems-sidebar .nav-link:hover {
@@ -472,12 +468,7 @@ html[dir="rtl"] .pems-sidebar .nav-link {
 .pems-sidebar .nav-link.active {
     background: rgba(217,140,43,0.15);
     color: var(--pems-color-fff);
-    border-left-color: var(--pems-accent);
-}
-
-html[dir="rtl"] .pems-sidebar .nav-link.active {
-    border-left-color: transparent;
-    border-right-color: var(--pems-accent);
+    border-inline-start-color: var(--pems-accent);
 }
 
 .pems-sidebar .nav-link i {

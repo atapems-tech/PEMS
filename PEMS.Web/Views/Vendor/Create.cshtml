@@ -12,6 +12,8 @@
     
     <pems-content-card css="pems-s-b12974cb">
         <pems-form asp-action="Create" method="post">
+            @* SCRUM-539: server-side errors (ModelState) are shown like on the other create forms *@
+            <pems-validation-summary css="py-2 px-3 small" asp-validation-summary="All" hidden="@(ViewData.ModelState.IsValid)"></pems-validation-summary>
             <pems-row gap="3">
                 <pems-col span="12"><pems-label>@Localizer["Vs_Name"]</pems-label><pems-input asp-for="Name" required /></pems-col>
                 <pems-col md="6"><pems-label>@Localizer["Vs_VendorCode"] <span class="text-muted small">@Localizer["Vs_VendorCodeHint"]</span></pems-label><pems-input asp-for="VendorCode" /></pems-col>

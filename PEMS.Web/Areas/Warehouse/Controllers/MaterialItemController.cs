@@ -51,14 +51,7 @@ public class MaterialItemController : Controller
         ViewBag.LowStockOnly = lowStockOnly;
         ViewBag.CriticalOnly = criticalOnly;
 
-        ViewBag.Categories = await _context.MaterialCategories.Where(x => x.IsActive)
-            .OrderBy(x => x.Name).Select(x => new { x.MaterialCategoryId, x.Name }).ToListAsync();
-        ViewBag.Disciplines = await _context.Disciplines.Where(x => x.IsActive)
-            .OrderBy(x => x.Name).Select(x => new { x.DisciplineId, x.Name }).ToListAsync();
-        ViewBag.Uoms = await _context.MaterialUOMs.Where(x => x.IsActive)
-            .OrderBy(x => x.Code).Select(x => new { x.MaterialUOMId, x.Code }).ToListAsync();
-        ViewBag.Vendors = await _context.Vendors
-            .OrderBy(x => x.Name).Select(x => new { x.VendorId, x.Name }).ToListAsync();
+        await LoadLookupsAsync();
 
         return View(result);
     }
@@ -98,6 +91,7 @@ public class MaterialItemController : Controller
 
         ViewBag.Warehouses = await _context.Warehouses.Where(x => x.IsActive)
             .OrderBy(x => x.Code).Select(x => new { x.WarehouseId, x.Code }).ToListAsync();
+        await LoadLookupsAsync();   // SCRUM-545: the edit modal shows category, discipline, unit and vendor
 
         // طبق «PEMS — Enterprise Barcode System» بند «UI»: همون پارتیال مشترک _BarcodePanel
         // که Equipment/Details هم استفاده می‌کند.
@@ -199,5 +193,18 @@ public class MaterialItemController : Controller
     {
         if (!_currentUser.UserId.HasValue) return null;
         return await _context.Users.Where(u => u.Id == _currentUser.UserId.Value).Select(u => u.EmployeeId).FirstOrDefaultAsync();
+    }
+
+    /// <summary>Category, discipline, unit and vendor choices for the create form (Index) and the edit modal (Details).</summary>
+    private async Task LoadLookupsAsync()
+    {
+        ViewBag.Categories = await _context.MaterialCategories.Where(x => x.IsActive)
+            .OrderBy(x => x.Name).Select(x => new { x.MaterialCategoryId, x.Name }).ToListAsync();
+        ViewBag.Disciplines = await _context.Disciplines.Where(x => x.IsActive)
+            .OrderBy(x => x.Name).Select(x => new { x.DisciplineId, x.Name }).ToListAsync();
+        ViewBag.Uoms = await _context.MaterialUOMs.Where(x => x.IsActive)
+            .OrderBy(x => x.Code).Select(x => new { x.MaterialUOMId, x.Code }).ToListAsync();
+        ViewBag.Vendors = await _context.Vendors
+            .OrderBy(x => x.Name).Select(x => new { x.VendorId, x.Name }).ToListAsync();
     }
 }

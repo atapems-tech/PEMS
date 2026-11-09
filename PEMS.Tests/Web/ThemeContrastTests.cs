@@ -299,10 +299,10 @@ public class ThemeContrastTests
         var ltr = rules.Single(r => r.Selector == "[data-theme=\"turquoise\"] .pems-sidebar .nav-link.active");
         var rtl = rules.Single(r => r.Selector == "html[dir=\"rtl\"][data-theme=\"turquoise\"] .pems-sidebar .nav-link.active");
 
-        Assert.Contains("border-left-color: var(--pems-turquoise)", ltr.Body);
-        Assert.Contains("border-right-color: transparent", ltr.Body);
-        Assert.Contains("border-right-color: var(--pems-turquoise)", rtl.Body);
-        Assert.Contains("border-left-color: transparent", rtl.Body);
+        // SCRUM-541: the marker is the logical start edge (left in LTR, right in RTL) with no physical left/right swap.
+        Assert.Contains("border-inline-start-color: var(--pems-turquoise)", ltr.Body);
+        Assert.DoesNotMatch(@"border-(left|right)", ltr.Body);
+        Assert.DoesNotMatch(@"border-(left|right)", rtl.Body);
         Assert.DoesNotContain("background: var(--pems-turquoise)", ltr.Body);   // a thin edge, never a solid block
     }
 
