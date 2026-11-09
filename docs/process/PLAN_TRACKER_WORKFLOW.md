@@ -12,7 +12,7 @@ checked by a script in CI, not by memory.
 
 | Concept | Plan row field | Jira field | Owner | Direction |
 |---|---|---|---|---|
-| Identity | # (Plan ID) | custom field "Plan ID" (text, unique) | Plan | plan -> Jira |
+| Identity | # (Plan ID) | label `plan-<n>` and the `[#n]` summary prefix (no custom field: the team-managed project has none, owner decision 2026-11-09, SCRUM-557) | Plan | plan -> Jira |
 | Jira key | - (the plan stays tracker-free) | issue key | Jira | kept in Jira and in `plan/tracker-map.csv` written by `push` |
 | Title | Task | Summary | Plan | -> Jira |
 | What and why | Evidence, Prompt | Description | Plan | -> Jira |
