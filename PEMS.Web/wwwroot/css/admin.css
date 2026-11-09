@@ -195,6 +195,28 @@ body {
             justify-content: center;
         }
 
+/* SCRUM-542: at phone width the top bar must fit the screen. With the contextual Help button the action group was
+   55 px wider than a 375 px window, so the whole page scrolled sideways and the title and pager were cut off.
+   Below 576 px: smaller side padding, smaller gaps between the actions, and the Help button shows its icon only. */
+@media (max-width: 575.98px) {
+    .pems-topbar {
+        padding: 0 10px;
+    }
+
+    .pems-topbar > .d-flex.gap-3 {
+        gap: .5rem !important;
+    }
+
+    .pems-topbar .pems-contextual-help-btn {
+        font-size: 0;
+        padding-inline: .45rem;
+    }
+
+        .pems-topbar .pems-contextual-help-btn .bi {
+            font-size: 1rem;
+        }
+}
+
 .pems-search {
     max-width: 360px;
     width: 100%;

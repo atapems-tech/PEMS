@@ -2,7 +2,7 @@
 @using Microsoft.Extensions.Localization
 @using PEMS.Web.Resources
 @inject IStringLocalizer<SharedResource> Localizer
-@{ ViewData["Title"] = "Edit Instrument - " + Model.Equipment?.TagNumber; }
+@{ ViewData["Title"] = Localizer["Edit Instrument"].Value + " - " + Model.Equipment?.TagNumber; }
 
 <pems-content-card css="mb-3">
     <pems-flex justify="between" align="center">

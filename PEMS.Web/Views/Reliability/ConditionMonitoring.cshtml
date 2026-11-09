@@ -199,7 +199,7 @@
                         </pems-select>
                     </div>
                     <pems-row gap="2" css="mb-2">
-                        <pems-col span=""><pems-label css="small">@Localizer["Date"]</pems-label><pems-input type="datetime-local" name="readingDate" value="@DateTime.Now.ToString("yyyy-MM-ddTHH:mm")" scale="small" /></pems-col>
+                        <pems-col span=""><pems-label css="small">@Localizer["Date"]</pems-label><pems-date time="true" name="readingDate" value="@DateTime.Now.ToString("yyyy-MM-ddTHH:mm")" scale="small" /></pems-col>
                         <pems-col span=""><pems-label css="small">@Localizer["Value"]</pems-label><pems-input scale="small" type="number" step="0.01" name="value" required /></pems-col>
                     </pems-row>
                     <div class="mb-2"><pems-label css="small">@Localizer["Source"]</pems-label><pems-input scale="small" name="source" value="Manual" /></div>

@@ -59,7 +59,7 @@ public class TeamController : Controller
         if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "Team", "View"))
             return Forbid();
 
-        ViewData["Title"] = "تیم‌های تعمیرونگهداری";
+        ViewData["Title"] = "Maintenance Teams";
         ViewData["Section"] = "CMMS Integration";
 
         var teams = await _context.Teams
@@ -85,7 +85,7 @@ public class TeamController : Controller
         if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "Team", "View"))
             return Forbid();
 
-        ViewData["Title"] = "نمودار سازمانی تعمیرونگهداری";
+        ViewData["Title"] = "Maintenance Organization Chart";
         ViewData["Section"] = "CMMS Integration";
 
         ViewBag.Disciplines = await _context.Disciplines

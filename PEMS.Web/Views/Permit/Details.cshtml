@@ -587,7 +587,7 @@
         <pems-form asp-controller="GasTest" asp-action="Create" method="post"><pems-row gap="2" css="align-items-end border-top pt-3">
             <input type="hidden" name="permitId" value="@Model.PermitId" />
             <pems-col md="3"><pems-label css="small">@Localizer["Location"]</pems-label><pems-input scale="small" name="location" required /></pems-col>
-            <pems-col md="2"><pems-label css="small">Tested At</pems-label><pems-input type="datetime-local" name="testedAt" value="@DateTime.Now.ToString("yyyy-MM-ddTHH:mm")" required scale="small" /></pems-col>
+            <pems-col md="2"><pems-label css="small">@Localizer["Tested At"]</pems-label><pems-date time="true" name="testedAt" value="@DateTime.Now.ToString("yyyy-MM-ddTHH:mm")" required scale="small" /></pems-col>
             <pems-col md="2"><pems-label css="small">Instrument Tag</pems-label><pems-input scale="small" name="instrumentTag" /></pems-col>
             <pems-col md="2"><pems-label css="small">Instrument Cal. Due</pems-label><pems-date name="instrumentCalibrationDueDate" scale="small" /></pems-col>
             @foreach (var p in gasRequiredParameters)

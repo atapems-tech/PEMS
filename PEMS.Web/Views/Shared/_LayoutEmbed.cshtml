@@ -13,7 +13,8 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@(ViewData["Title"]?.ToString()) - PEMS</title>
+    @* SCRUM-540: the title is a resource key like in _Layout (a title without a key is shown as written) *@
+    <title>@(string.IsNullOrWhiteSpace(ViewData["Title"]?.ToString()) ? "" : Localizer[ViewData["Title"]!.ToString()!].Value) - PEMS</title>
     @if (isRtl)
     {
         <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.rtl.min.css" />

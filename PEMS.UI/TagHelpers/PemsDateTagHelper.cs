@@ -39,8 +39,27 @@ public sealed class PemsDateTagHelper(IHtmlGenerator generator, IPemsComponentRe
     [HtmlAttributeName("required")] public bool Required { get; set; }
     [HtmlAttributeName("disabled")] public bool Disabled { get; set; }
     [HtmlAttributeName("readonly")] public bool ReadOnly { get; set; }
+    /// <summary>SCRUM-543: a date and a time. Posts <c>yyyy-MM-ddTHH:mm</c>, the text the native datetime-local input posts, so binding does not change;
+    /// on a Persian page the person sees <c>1403/12/30 14:30</c> and picks it with the same Jalali picker. <c>min</c> and <c>max</c> are not used in this mode.
+    /// False (the default) keeps the date-only output exactly as before.</summary>
+    [HtmlAttributeName("time")] public bool Time { get; set; }
 
     private static readonly PersianCalendar Persian = new();
+    private static readonly string[] DateTimeFormats =
+        ["yyyy-MM-dd'T'HH:mm", "yyyy-MM-dd'T'HH:mm:ss", "yyyy-MM-dd'T'HH:mm:ss.FFFFFFF", "yyyy-MM-dd HH:mm", "yyyy-MM-dd HH:mm:ss", "yyyy-MM-dd"];
+
+    /// <summary>SCRUM-543: the ISO date-time text <c>yyyy-MM-ddTHH:mm</c> of a date or date-time given as ISO text, or empty.</summary>
+    public static string ToIsoDateTimeText(string? text) => ParseIsoDateTime(text)?.ToString("yyyy-MM-dd'T'HH:mm", CultureInfo.InvariantCulture) ?? "";
+
+    /// <summary>SCRUM-543: the Jalali text <c>yyyy/MM/dd HH:mm</c> of an ISO date-time, or empty when the text is not a date.</summary>
+    public static string ToJalaliDateTimeText(string? text)
+    {
+        var d = ParseIsoDateTime(text);
+        return d is null ? "" : $"{Persian.GetYear(d.Value):D4}/{Persian.GetMonth(d.Value):D2}/{Persian.GetDayOfMonth(d.Value):D2} {d.Value.ToString("HH:mm", CultureInfo.InvariantCulture)}";
+    }
+
+    private static DateTime? ParseIsoDateTime(string? text)
+        => !string.IsNullOrWhiteSpace(text) && DateTime.TryParseExact(text.Trim(), DateTimeFormats, CultureInfo.InvariantCulture, DateTimeStyles.None, out var d) ? d : null;
 
     /// <summary>The Jalali text <c>yyyy/MM/dd</c> of an ISO date, or empty when the text is not a date.</summary>
     public static string ToJalaliText(string? iso)
@@ -71,7 +90,7 @@ public sealed class PemsDateTagHelper(IHtmlGenerator generator, IPemsComponentRe
     {
         if (For is not null && ViewContext is not null)
         {
-            var box = generator.GenerateTextBox(ViewContext, For.ModelExplorer, For.Name, null, "{0:yyyy-MM-dd}", null);
+            var box = generator.GenerateTextBox(ViewContext, For.ModelExplorer, For.Name, null, Time ? "{0:yyyy-MM-ddTHH:mm}" : "{0:yyyy-MM-dd}", null);
             Name ??= box.Attributes.GetValueOrDefault("name");
             Value ??= box.Attributes.GetValueOrDefault("value");
             foreach (var attribute in box.Attributes)
@@ -88,6 +107,12 @@ public sealed class PemsDateTagHelper(IHtmlGenerator generator, IPemsComponentRe
         output.TagName = "input";
         output.TagMode = TagMode.SelfClosing;
         var id = output.Attributes.TryGetAttribute("id", out var idAttribute) ? idAttribute.Value?.ToString() : null;
+
+        if (Time)
+        {
+            await ProcessDateTime(output, css, id, jalali);
+            return;
+        }
 
         if (!jalali)
         {
@@ -111,6 +136,39 @@ public sealed class PemsDateTagHelper(IHtmlGenerator generator, IPemsComponentRe
         if (minText.Length > 0) { output.Attributes.Add("data-jdp-min-date", minText); output.Attributes.Add("data-pems-date-min", ToIsoText(Min)); }
         if (maxText.Length > 0) { output.Attributes.Add("data-jdp-max-date", maxText); output.Attributes.Add("data-pems-date-max", ToIsoText(Max)); }
         var text = ToJalaliText(iso);
+        if (text.Length > 0) output.Attributes.Add("value", text);
+
+        var hidden = new DateHidden
+        {
+            Id = hiddenId, Name = string.IsNullOrEmpty(Name) ? null : Name, Value = iso, Disabled = output.Attributes.ContainsName("disabled"),
+            Form = output.Attributes.TryGetAttribute("form", out var form) && form.Value is not null ? form.Value.ToString() : null
+        };
+        await Render(output, hidden);
+    }
+
+    /// <summary>
+    /// SCRUM-543: date and time. Gregorian: the native <c>datetime-local</c> input the pages wrote by hand. Jalali: a text input showing <c>yyyy/MM/dd HH:mm</c> with the picker's
+    /// time panel (<c>pems-date.js</c> turns the time on for inputs marked <c>data-pems-date-time</c>), and the hidden input with the posted name and the ISO date-time. The script,
+    /// not the picker, writes the hidden value (<c>data-pems-date-target</c>), so the posted text is always <c>yyyy-MM-ddTHH:mm</c>.
+    /// </summary>
+    private async Task ProcessDateTime(TagHelperOutput output, string css, string? id, bool jalali)
+    {
+        var iso = ToIsoDateTimeText(Value);
+        ControlTagHelper.PutClassFirst(output, css);
+        if (!jalali)
+        {
+            ControlTagHelper.Restore(output, ("type", "datetime-local"), ("name", Name), ("value", iso.Length > 0 ? iso : null));
+            await Render(output, null);
+            return;
+        }
+
+        var hiddenId = (string.IsNullOrEmpty(id) ? "pdt" + Guid.NewGuid().ToString("N")[..8] : id) + "-iso";
+        ControlTagHelper.Restore(output, ("type", "text"), ("dir", "ltr"), ("autocomplete", "off"));
+        if (!output.Attributes.ContainsName("placeholder")) output.Attributes.Add("placeholder", "1403/01/01 08:00");
+        output.Attributes.Add("data-jdp", "");
+        output.Attributes.Add("data-pems-date-time", "");
+        output.Attributes.Add("data-pems-date-target", "#" + hiddenId);
+        var text = ToJalaliDateTimeText(iso);
         if (text.Length > 0) output.Attributes.Add("value", text);
 
         var hidden = new DateHidden
