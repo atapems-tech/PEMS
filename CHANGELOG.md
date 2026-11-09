@@ -3,6 +3,14 @@
 All notable changes to PEMS. No system version is defined yet (plan row F_CI), so entries are grouped by date
 and theme and were reconstructed from the git history (initial import 2026-09-05). Newest first.
 
+## 2026-11-08 - Sprint 2 bug batch A: material edit, help search links, project and vendor forms, sidebar marker (SCRUM-539, 541, 545, 548)
+
+### Fixed
+- SCRUM-545: saving the Material Master edit modal cleared the unit, category, discipline, vendor and specification, because the modal did not post them and the service saves every field. The modal now shows the five fields, prefilled (a value that is no longer active stays selectable). Test: `MaterialItemEditKeepsFieldsTests` (every parameter of `Edit` has a field in the modal).
+- SCRUM-548: help article results in the Ctrl+K palette and global search linked to `/Help/Article/{code}` (404); they now link to `/Help/Article?code=...`. Test: `SearchProviderUrlTests` checks the URL of every search provider against its action.
+- SCRUM-539: an empty Projects form was saved as a project without code and name; code and name are now required on the server and in the browser (create and edit). Vendor create shows server-side errors in the validation box like the other create forms. Test: `ProjectAndVendorCreateValidationTests`. Open question for the owner: should the project code be unique?
+- SCRUM-541: the active sidebar link had an accent bar on both edges. The marker is now one `border-inline-start` rule in site.css (left in LTR, right in RTL); admin.css, admin.rtl.css and the turquoise theme no longer set left or right borders, and admin.css uses the colour token. Test: `SidebarActiveMarkerTests`; `ThemeContrastTests` and `PremiumGlassSystemTests` follow the logical edge.
+
 ## 2026-11-08 - Deploy run shows why a site did not start (SCRUM-555, slice 1)
 
 ### Fixed

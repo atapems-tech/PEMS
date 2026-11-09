@@ -69,7 +69,7 @@ public class PremiumGlassSystemTests
         var activeRuleEnd = css.IndexOf('}', activeRuleStart);
         var rule = css.Substring(activeRuleStart, activeRuleEnd - activeRuleStart);
         Assert.DoesNotContain("background: var(--pems-turquoise)", rule);
-        Assert.Contains("border-left-color: var(--pems-turquoise)", rule);
+        Assert.Contains("border-inline-start-color: var(--pems-turquoise)", rule);   // SCRUM-541: logical start edge
     }
 
     [Fact]

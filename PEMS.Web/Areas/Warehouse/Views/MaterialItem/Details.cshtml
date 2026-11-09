@@ -4,6 +4,16 @@
 @inject IStringLocalizer<SharedResource> Localizer
 @{
     var warehouses = (IEnumerable<dynamic>)ViewBag.Warehouses;
+    // SCRUM-545: the edit modal posts every field the service saves, so a save never clears them.
+    var categories = (IEnumerable<dynamic>)(ViewBag.Categories ?? Enumerable.Empty<object>());
+    var disciplines = (IEnumerable<dynamic>)(ViewBag.Disciplines ?? Enumerable.Empty<object>());
+    var uoms = (IEnumerable<dynamic>)(ViewBag.Uoms ?? Enumerable.Empty<object>());
+    var vendors = (IEnumerable<dynamic>)(ViewBag.Vendors ?? Enumerable.Empty<object>());
+    // A current value that is no longer active stays selectable, or saving would clear it.
+    bool categoryListed = Model.CategoryId == null || categories.Any(c => (int)c.MaterialCategoryId == Model.CategoryId);
+    bool disciplineListed = Model.DisciplineId == null || disciplines.Any(d => (int)d.DisciplineId == Model.DisciplineId);
+    bool uomListed = Model.UomId == null || uoms.Any(u => (int)u.MaterialUOMId == Model.UomId);
+    bool vendorListed = Model.VendorId == null || vendors.Any(v => (int)v.VendorId == Model.VendorId);
 }
 
 @if (TempData["Message"] != null)
@@ -198,6 +208,43 @@
                 </pems-row>
                 <div class="mb-2"><pems-label>@Localizer["Description"]</pems-label><pems-input name="description" value="@Model.Description" required /></div>
                 <div class="mb-2"><pems-label>@Localizer["Long Description"]</pems-label><pems-textarea name="longDescription" rows="2">@Model.LongDescription</pems-textarea></div>
+                <pems-row gap="3" css="mb-2">
+                    <pems-col md="4">
+                        <pems-label>@Localizer["Category"]</pems-label>
+                        <pems-select name="categoryId">
+                            <option value="">--</option>
+                            @if (!categoryListed) { <option value="@Model.CategoryId" selected>@Model.CategoryName</option> }
+                            @foreach (var c in categories) { <option value="@c.MaterialCategoryId" selected="@((int)c.MaterialCategoryId == Model.CategoryId)">@c.Name</option> }
+                        </pems-select>
+                    </pems-col>
+                    <pems-col md="4">
+                        <pems-label>@Localizer["Discipline"]</pems-label>
+                        <pems-select name="disciplineId">
+                            <option value="">--</option>
+                            @if (!disciplineListed) { <option value="@Model.DisciplineId" selected>@Model.DisciplineName</option> }
+                            @foreach (var d in disciplines) { <option value="@d.DisciplineId" selected="@((int)d.DisciplineId == Model.DisciplineId)">@d.Name</option> }
+                        </pems-select>
+                    </pems-col>
+                    <pems-col md="4">
+                        <pems-label>@Localizer["UOM"]</pems-label>
+                        <pems-select name="uomId">
+                            <option value="">--</option>
+                            @if (!uomListed) { <option value="@Model.UomId" selected>@Model.UomCode</option> }
+                            @foreach (var u in uoms) { <option value="@u.MaterialUOMId" selected="@((int)u.MaterialUOMId == Model.UomId)">@u.Code</option> }
+                        </pems-select>
+                    </pems-col>
+                </pems-row>
+                <pems-row gap="3" css="mb-2">
+                    <pems-col md="6">
+                        <pems-label>@Localizer["Vendor"]</pems-label>
+                        <pems-select name="vendorId">
+                            <option value="">--</option>
+                            @if (!vendorListed) { <option value="@Model.VendorId" selected>@Model.VendorName</option> }
+                            @foreach (var v in vendors) { <option value="@v.VendorId" selected="@((int)v.VendorId == Model.VendorId)">@v.Name</option> }
+                        </pems-select>
+                    </pems-col>
+                    <pems-col md="6"><pems-label>@Localizer["Specification"]</pems-label><pems-input name="specification" value="@Model.Specification" /></pems-col>
+                </pems-row>
                 <pems-row gap="3" css="mb-2">
                     <pems-col md="6"><pems-label>@Localizer["Manufacturer"]</pems-label><pems-input name="manufacturer" value="@Model.Manufacturer" /></pems-col>
                     <pems-col md="6"><pems-label>@Localizer["Manufacturer Part No."]</pems-label><pems-input name="manufacturerPartNumber" value="@Model.ManufacturerPartNumber" /></pems-col>

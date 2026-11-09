@@ -278,13 +278,12 @@ body {
         }
 
     .pems-sidebar .nav-link {
-        color: #cbd6e4;
+        color: var(--pems-color-cbd6e4);
         padding: 9px 20px;
         font-size: 13.5px;
         display: flex;
         align-items: center;
         gap: 10px;
-        border-right: 3px solid transparent;
     }
 
         .pems-sidebar .nav-link:hover {
@@ -295,7 +294,6 @@ body {
         .pems-sidebar .nav-link.active {
             background: rgba(217,140,43,0.12);
             color: #fff;
-            border-right-color: var(--pems-accent);
         }
 
         .pems-sidebar .nav-link i {
