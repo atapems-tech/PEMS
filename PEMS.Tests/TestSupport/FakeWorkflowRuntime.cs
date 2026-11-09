@@ -11,8 +11,27 @@ namespace PEMS.Tests.TestSupport;
 /// QCController) - با یک نمونه‌ی در-حافظه از وضعیت هر Instance، تا GetInstanceAsync بعد از
 /// StartInstanceAsync واقعاً چیزی برگرداند.
 /// </summary>
-public class FakeWorkflowRuntime : IWorkflowRuntime
+public class FakeWorkflowRuntime : IWorkflowRuntime, IWorkflowInstanceControl
 {
+    // SCRUM-546: administrative cancel / reopen of an instance, like WorkflowRuntimeService
+    public Task<bool> CancelInstanceAsync(int workflowInstanceId, int? actorEmployeeId, string? reason, CancellationToken ct = default)
+    {
+        var entry = _instances.Values.FirstOrDefault(x => x.WorkflowInstanceId == workflowInstanceId);
+        if (entry == null || entry.Status != "Running") return Task.FromResult(false);
+        entry.Status = "Cancelled";
+        entry.CompletionDate = DateTime.Now;
+        return Task.FromResult(true);
+    }
+
+    public Task<bool> ReopenInstanceAsync(int workflowInstanceId, int toStageId, int? actorEmployeeId, string reason, CancellationToken ct = default)
+    {
+        var entry = _instances.Values.FirstOrDefault(x => x.WorkflowInstanceId == workflowInstanceId);
+        if (entry == null || entry.Status != "Completed") return Task.FromResult(false);
+        entry.Status = "Running";
+        entry.CompletionDate = null;
+        return Task.FromResult(true);
+    }
+
     public HashSet<int> PendingPermitIds { get; set; } = new();
 
     /// <summary>

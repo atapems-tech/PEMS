@@ -353,4 +353,116 @@ public class PurchaseOrderApprovalServiceTests
         e.Perms.Denied.Add(("PurchaseOrder", "Edit"));
         Assert.Equal("Po_Err_Forbidden", (await e.Service.SubmitAsync(poId, Buyer)).Error);
     }
+
+    // ------------------------------------------------------------ SCRUM-546: authority rules and re-routing
+
+    [Fact]
+    public async Task SCRUM546_A_rule_refuses_a_role_without_purchase_order_approve_and_the_approver_list_leaves_it_out()
+    {
+        var e = await NewAsync();
+        e.Perms.DeniedForRole.Add(("DIR", "PurchaseOrder", "Approve"));
+
+        Assert.Equal("Po_Err_RuleRoleNoApprove", (await e.Service.SaveRuleAsync(new PoAuthorityRuleInput(null, 1, 0, null, "IRR", "DIR", null, true), Buyer)).Error);
+        Assert.Empty(await e.Service.GetRulesAsync());
+        Assert.Equal(new[] { "PRC.Manager" }, await e.Service.GetApproverRolesAsync());
+
+        // an inactive rule routes nothing: the admin can still switch off an old rule whose role lost the permission
+        Assert.True((await e.Service.SaveRuleAsync(new PoAuthorityRuleInput(null, 1, 0, null, "IRR", "DIR", null, false), Buyer)).Success);
+    }
+
+    [Fact]
+    public async Task SCRUM546_An_active_rule_may_not_overlap_another_active_rule_of_the_same_currency()
+    {
+        var e = await NewAsync();
+        await RulesAsync(e);   // level 1: 0 - 1000, level 2: 1000.01 - no limit (IRR)
+
+        var overlap = await e.Service.SaveRuleAsync(new PoAuthorityRuleInput(null, 2, 1000.01m, null, "irr", "PRC.Manager", null, true), Buyer);
+        Assert.Equal("Po_Err_RuleOverlap", overlap.Error);
+        Assert.Equal(2, overlap.Args![0]);
+        Assert.Equal("Po_Err_RuleOverlap", (await e.Service.SaveRuleAsync(new PoAuthorityRuleInput(null, 3, 500, 600, "IRR", "DIR", null, true), Buyer)).Error);
+        Assert.Equal(2, (await e.Service.GetRulesAsync()).Count);
+
+        // another currency, an inactive rule, and editing a rule in place are all fine
+        Assert.True((await e.Service.SaveRuleAsync(new PoAuthorityRuleInput(null, 1, 0, null, "USD", "DIR", null, true), Buyer)).Success);
+        Assert.True((await e.Service.SaveRuleAsync(new PoAuthorityRuleInput(null, 3, 500, 600, "IRR", "DIR", null, false), Buyer)).Success);
+        var level2 = (await e.Service.GetRulesAsync()).Single(r => r.Currency == "IRR" && r.Level == 2);
+        Assert.True((await e.Service.SaveRuleAsync(new PoAuthorityRuleInput(level2.Id, 2, 1000.01m, null, "IRR", "PRC.Manager", null, true), Buyer)).Success);
+    }
+
+    [Fact]
+    public async Task SCRUM546_A_PO_whose_role_lost_the_approve_permission_is_routed_again_and_the_old_task_is_cancelled()
+    {
+        var e = await NewAsync();
+        await RulesAsync(e);
+        var poId = await ReadyPoAsync(e, bearingPrice: 500m);   // 2,200 -> level 2 (DIR)
+        Assert.True((await e.Service.SubmitAsync(poId, Buyer)).Success);
+        Assert.False((await e.Service.GetAsync(poId))!.RouteInvalid);
+        Assert.Equal("Po_Err_AlreadyRouted", (await e.Service.RouteAsync(poId, Buyer)).Error);   // a valid route stays
+        var oldInstance = await e.Runtime.GetInstanceAsync(PurchaseOrderApprovalWorkflowSeeder.BusinessObjectType, poId);
+
+        // the admin moves level 2 to PRC.Manager: the PO still waits for DIR
+        var level2 = (await e.Service.GetRulesAsync()).Single(r => r.Level == 2);
+        Assert.True((await e.Service.SaveRuleAsync(new PoAuthorityRuleInput(level2.Id, 2, 1000.01m, null, "IRR", "PRC.Manager", null, true), Buyer)).Success);
+        e.Db.ChangeTracker.Clear();
+        Assert.True((await e.Service.GetAsync(poId))!.RouteInvalid);
+
+        var r = await e.Service.RouteAsync(poId, Buyer);
+
+        Assert.True(r.Success, r.Error);
+        Assert.Equal("Cancelled", oldInstance!.Status);
+        var view = (await e.Service.GetAsync(poId))!;
+        Assert.Equal(("PRC.Manager", false), (view.ApproverRole, view.RouteInvalid));
+        Assert.Equal("Running", (await e.Runtime.GetInstanceAsync(PurchaseOrderApprovalWorkflowSeeder.BusinessObjectType, poId))!.Status);
+        Assert.Contains(e.Db.AuditLogs, a => a.EntityName == nameof(PurchaseOrder) && a.Action == "Reroute");
+    }
+
+    [Fact]
+    public async Task SCRUM546_A_matching_rule_whose_role_lost_approve_leaves_the_responsible_not_set_and_the_buyer_may_take_the_PO_back()
+    {
+        var e = await NewAsync();
+        await RulesAsync(e);
+        var poId = await ReadyPoAsync(e);   // 600 -> level 1 (PRC.Manager)
+        e.Perms.DeniedForRole.Add(("PRC.Manager", "PurchaseOrder", "Approve"));
+
+        Assert.Equal("Po_ResponsibleNotSet", (await e.Service.SubmitAsync(poId, Buyer)).Error);
+        Assert.True((await e.Service.RejectAsync(poId, "wrong authority", Buyer)).Success);
+        Assert.Equal(PurchaseOrderStatuses.Draft, (await e.Service.GetAsync(poId))!.Status);
+    }
+
+    // ------------------------------------------------------------ SCRUM-547: a stock line needs its material record
+
+    [Fact]
+    public async Task SCRUM547_A_stock_line_of_a_catalogued_part_without_a_material_record_is_refused_naming_the_line_and_part()
+    {
+        var e = await NewAsync();
+        await RulesAsync(e);
+        var poId = await ReadyPoAsync(e);
+        var line = await e.Db.PurchaseOrderLines.SingleAsync(l => l.PoId == poId && l.LineNo == 1);
+        (line.MaterialItemId, line.PartCatalogueRequestId, line.PartNumber) = (null, 999, "LV-PN-0001");
+        await e.Db.SaveChangesAsync();
+        e.Db.ChangeTracker.Clear();
+
+        var r = await e.Service.SubmitAsync(poId, Buyer);
+
+        Assert.Equal("Po_Err_StockLineNoMaterial", r.Error);
+        Assert.Equal(new object[] { 1, "LV-PN-0001" }, r.Args);
+        Assert.Equal(PurchaseOrderStatuses.Draft, (await e.Service.GetAsync(poId))!.Status);
+    }
+
+    [Fact]
+    public async Task SCRUM547_An_existing_material_record_with_the_part_number_is_linked_on_submit()
+    {
+        var e = await NewAsync();
+        await RulesAsync(e);
+        var poId = await ReadyPoAsync(e);
+        var line = await e.Db.PurchaseOrderLines.SingleAsync(l => l.PoId == poId && l.LineNo == 1);
+        (line.MaterialItemId, line.PartCatalogueRequestId, line.PartNumber) = (null, 999, "M-1");
+        await e.Db.SaveChangesAsync();
+        e.Db.ChangeTracker.Clear();
+
+        var r = await e.Service.SubmitAsync(poId, Buyer);
+
+        Assert.True(r.Success, r.Error);
+        Assert.Equal(e.Db.MaterialItems.Single().MaterialItemId, (await e.Db.PurchaseOrderLines.AsNoTracking().SingleAsync(l => l.PoId == poId && l.LineNo == 1)).MaterialItemId);
+    }
 }

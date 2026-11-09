@@ -66,6 +66,9 @@ public class VendorController : Controller
 
         var vendor = await _service.GetByIdAsync(id);
         if (vendor == null) return NotFound();
+        // SCRUM-544: the qualification panel (form only with Vendor Edit, the history for every viewer)
+        ViewBag.Qualification = await _qualificationService.GetAsync(id);
+        ViewBag.CanEditVendor = await _permissionService.HasPermissionAsync(_currentUser.Roles, "Vendors", "Edit");
         return View(vendor);
     }
 
@@ -182,7 +185,7 @@ public class VendorController : Controller
         int id, string newStatus, string? category, DateTime? effectiveDate, DateTime? expiryDate,
         string? evidenceReference, string? reason)
     {
-        if (!await EnsurePermissionAsync("Edit", "شما مجاز به تغییر وضعیت صلاحیت این وندور نیستید."))
+        if (!await EnsurePermissionAsync("Edit", T("Vq_Err_Forbidden")))
             return RedirectToAction(nameof(Details), new { id });
 
         var employeeId = _currentUser.UserId.HasValue
@@ -192,9 +195,18 @@ public class VendorController : Controller
         var result = await _qualificationService.SetQualificationAsync(
             id, newStatus, category, effectiveDate, expiryDate, evidenceReference, reason, employeeId);
 
-        if (!result.Success) TempData["Error"] = result.Error;
-        else TempData["Message"] = "وضعیت صلاحیت فروشنده به‌روزرسانی شد.";
+        if (!result.Success) TempData["Error"] = T(result.Error!);
+        else TempData["Message"] = T("Vq_Saved");
 
         return RedirectToAction(nameof(Details), new { id });
+    }
+
+    // SCRUM-544: the texts of the qualification action in the page language (the key itself when no localizer is there, as in tests)
+    private string T(string key)
+    {
+        var localizer = HttpContext?.RequestServices?.GetService(typeof(Microsoft.Extensions.Localization.IStringLocalizer<PEMS.Web.Resources.SharedResource>))
+            as Microsoft.Extensions.Localization.IStringLocalizer<PEMS.Web.Resources.SharedResource>;
+        var l = localizer?[key];
+        return l == null || l.ResourceNotFound ? key : l.Value;
     }
 }

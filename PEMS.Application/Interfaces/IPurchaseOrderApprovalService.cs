@@ -11,7 +11,8 @@ public class ProcurementOptions
 public sealed record PoActor(int? EmployeeId, IReadOnlyList<string> Roles, string? UserName);
 
 /// <summary>Outcome of a PO command. <c>Error</c> is a resource key (<c>Po_Err_*</c>) or a message passed through from the PO service.</summary>
-public sealed record PoResult(bool Success, string? Error, int? Id = null)
+/// <param name="Args">SCRUM-547: values for the placeholders of the <paramref name="Error"/> text (e.g. the line number), or null.</param>
+public sealed record PoResult(bool Success, string? Error, int? Id = null, object[]? Args = null)
 {
     public static PoResult Fail(string error) => new(false, error);
 }
@@ -29,8 +30,10 @@ public sealed record PoLineView(
 public sealed record PoApprovalView(
     int PoId, string PoNumber, string Status, string? Currency, decimal Total, int? MaterialRequisitionId, string? MaterialRequisitionNumber,
     string? ApproverRole, int? AuthorityRuleLevel, DateTime? SubmittedAt, string? SubmittedBy, DateTime? ApprovedAt, string? ApprovedBy,
-    string? RejectionReason, string? CreatedBy, IReadOnlyList<PoLineView> Lines)
+    string? RejectionReason, string? CreatedBy, IReadOnlyList<PoLineView> Lines, bool RouteInvalid = false)
 {
+    // RouteInvalid (SCRUM-546): submitted and routed, but the rule is gone, inactive or names another role, or the role lost PurchaseOrder Approve.
+
     /// <summary>Submitted but no authority rule matched: the PO waits for the admin to add a rule.</summary>
     public bool ResponsibleNotSet => Status == "Submitted" && string.IsNullOrEmpty(ApproverRole);
 }
@@ -65,8 +68,12 @@ public interface IPurchaseOrderApprovalService
     /// <summary>Checks the lines, totals the value and routes the PO to the role of the matching authority rule (or leaves it "responsible not set").</summary>
     Task<PoResult> SubmitAsync(int poId, PoActor actor);
 
-    /// <summary>Retries the routing of a submitted PO whose responsible was not set (after the admin added a rule).</summary>
+    /// <summary>Retries the routing of a submitted PO whose responsible was not set (after the admin added a rule), or whose route is no
+    /// longer valid (SCRUM-546: the open task of the old role is cancelled first).</summary>
     Task<PoResult> RouteAsync(int poId, PoActor actor);
+
+    /// <summary>SCRUM-546: the roles that may be chosen as PO approver (those with PurchaseOrder Approve).</summary>
+    Task<IReadOnlyList<string>> GetApproverRolesAsync();
 
     /// <summary>Approval by a holder of the routed role who neither created nor submitted the PO.</summary>
     Task<PoResult> ApproveAsync(int poId, PoActor actor);

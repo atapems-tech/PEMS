@@ -39,4 +39,60 @@
                 <pems-button plain="true" css="vs-btn vs-btn--sm"><pems-icon name="bi-arrow-repeat" /> @Localizer["Vs_RecalcRisk"]</pems-button>
             </pems-form>
         </div></div>
+
+    @* SCRUM-544: qualification (a tender that requires it invites only a Qualified vendor); the form needs Vendor Edit *@
+    @{
+        var q = ViewBag.Qualification as PEMS.Application.Interfaces.VendorQualificationView;
+        var canEditVendor = ViewBag.CanEditVendor is true;
+        string QTone(string? s) => s switch { "Qualified" => "vs-pill--success", "Pending" => "vs-pill--warning", "Suspended" or "Expired" => "vs-pill--danger", _ => "vs-pill--neutral" };
+        string D(DateTime? d) => d.HasValue ? d.Value.ToString("yyyy-MM-dd") : "-";
+    }
+    @if (q != null)
+    {
+        <pems-related-list id="vendorQualification" icon="bi-patch-check" title="@Localizer["Vq_Title"]" count="@q.History.Count" empty="@(q.History.Count == 0)" empty-text="@Localizer["Vq_NoHistory"]">
+            <div class="px-3 pt-2">
+                <pems-info-grid>
+                    <pems-info-item label="@Localizer["Vq_Status"]"><span class="vs-pill @QTone(q.Status)">@VdrUi.Loc(Localizer, "Vq_St_", q.Status)</span></pems-info-item>
+                    <pems-info-item label="@Localizer["Vq_Category"]">@(string.IsNullOrEmpty(q.Category) ? "-" : q.Category)</pems-info-item>
+                    <pems-info-item label="@Localizer["Vq_Effective"]" ltr>@D(q.EffectiveDate)</pems-info-item>
+                    <pems-info-item label="@Localizer["Vq_Expiry"]" ltr>@D(q.ExpiryDate)</pems-info-item>
+                    <pems-info-item label="@Localizer["Vq_Evidence"]">@(string.IsNullOrEmpty(q.EvidenceReference) ? "-" : q.EvidenceReference)</pems-info-item>
+                </pems-info-grid>
+            </div>
+            <pems-related-table>
+                <pems-table-head><pems-table-row>
+                    <pems-table-header>@Localizer["Vq_ChangedAt"]</pems-table-header><pems-table-header>@Localizer["Vq_From"]</pems-table-header>
+                    <pems-table-header>@Localizer["Vq_To"]</pems-table-header><pems-table-header>@Localizer["Vq_Category"]</pems-table-header>
+                    <pems-table-header>@Localizer["Vq_Validity"]</pems-table-header><pems-table-header>@Localizer["Vq_Evidence"]</pems-table-header>
+                    <pems-table-header>@Localizer["Vq_Reason"]</pems-table-header><pems-table-header>@Localizer["Vq_ChangedBy"]</pems-table-header>
+                </pems-table-row></pems-table-head>
+                <pems-table-body>
+                    @foreach (var h in q.History)
+                    {
+                        <pems-table-row>
+                            <pems-table-cell><span dir="ltr">@h.ChangeDate.ToString("yyyy-MM-dd HH:mm")</span></pems-table-cell>
+                            <pems-table-cell>@VdrUi.Loc(Localizer, "Vq_St_", h.PreviousStatus)</pems-table-cell>
+                            <pems-table-cell>@VdrUi.Loc(Localizer, "Vq_St_", h.NewStatus)</pems-table-cell>
+                            <pems-table-cell>@h.Category</pems-table-cell>
+                            <pems-table-cell><span dir="ltr">@D(h.EffectiveDate) / @D(h.ExpiryDate)</span></pems-table-cell>
+                            <pems-table-cell>@h.EvidenceReference</pems-table-cell>
+                            <pems-table-cell>@h.Reason</pems-table-cell>
+                            <pems-table-cell>@h.ChangedBy</pems-table-cell>
+                        </pems-table-row>
+                    }
+                </pems-table-body>
+            </pems-related-table>
+            @if (canEditVendor)
+            {
+                <pems-related-add action="@Url.Action("SetQualification")" parent-name="id" parent-value="@Model.VendorId.ToString()" submit-label="@Localizer["Vq_Save"]">
+                    <pems-list-filter-select id="vqStatus" name="newStatus" label="@Localizer["Vq_NewStatus"]" value="@q.Status" items="@PEMS.Application.Interfaces.IVendorQualificationService.Statuses.Select(s => new SelectListItem(VdrUi.Loc(Localizer, "Vq_St_", s), s))" />
+                    <div><pems-label css="lp-lbl" for="vqCategory">@Localizer["Vq_Category"]</pems-label><pems-input scale="small" id="vqCategory" name="category" value="@q.Category" /></div>
+                    <div><pems-label css="lp-lbl" for="vqEffective">@Localizer["Vq_Effective"]</pems-label><pems-date scale="small" id="vqEffective" name="effectiveDate" value="@q.EffectiveDate?.ToString("yyyy-MM-dd")" /></div>
+                    <div><pems-label css="lp-lbl" for="vqExpiry">@Localizer["Vq_Expiry"]</pems-label><pems-date scale="small" id="vqExpiry" name="expiryDate" value="@q.ExpiryDate?.ToString("yyyy-MM-dd")" /></div>
+                    <div><pems-label css="lp-lbl" for="vqEvidence">@Localizer["Vq_Evidence"]</pems-label><pems-input scale="small" id="vqEvidence" name="evidenceReference" value="@q.EvidenceReference" /></div>
+                    <div class="flex-grow-1"><pems-label css="lp-lbl" for="vqReason">@Localizer["Vq_Reason"]</pems-label><pems-input scale="small" id="vqReason" name="reason" required /></div>
+                </pems-related-add>
+            }
+        </pems-related-list>
+    }
 </pems-page-shell>

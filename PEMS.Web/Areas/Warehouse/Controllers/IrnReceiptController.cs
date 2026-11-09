@@ -192,6 +192,8 @@ public class IrnReceiptController : Controller
         ViewBag.CanResolveHold = (_currentUser.Roles.Contains(PEMS.Persistence.Identity.RoleCatalog.WarehouseManager)
                                   || _currentUser.Roles.Contains(PEMS.Persistence.Identity.SystemRoles.SystemAdmin))
                                  && await _permissionService.HasPermissionAsync(_currentUser.Roles, "IRN", "Edit");
+        // SCRUM-547: the QA decision buttons only for a user the Approve action accepts (it answers 403 otherwise)
+        ViewBag.CanApproveQa = await _permissionService.HasPermissionAsync(_currentUser.Roles, "IRN", "Approve");
 
         return View(receipt);
     }
