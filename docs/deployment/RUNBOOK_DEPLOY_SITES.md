@@ -15,8 +15,8 @@ Only a push to `staging` or `demo` (or a manual *Run workflow*) deploys. Never p
 
 | Access | Held by | Where it lives | Used for |
 |---|---|---|---|
-| GitHub repository admin (branches, secrets, run workflows) | Owner | GitHub | protect `staging`/`demo`, set secrets, start rollbacks |
-| Push/merge to `staging` and `demo` | Owner, Hamid | GitHub branch rules | the only way a deploy starts |
+| GitHub repository admin (branches, secrets, run workflows) | Owner | GitHub | set secrets, start rollbacks |
+| Push/merge to `staging` and `demo` | Owner, Hamid | **agreement only**: the branches are not protected and the repository has no ruleset (owner decision 2026-11-09, SCRUM-556), so anyone with write access could push | the only way a deploy starts; only these two people push or merge, never a force-push or a branch deletion |
 | `STAGING_*` and `DEMO_*` secrets (`FTP_HOST`, `FTP_USER`, `FTP_PASSWORD`, `FTP_DIR`, `FTP_PROTOCOL`, `FTP_PORT`, `SQL_CONNECTION_STRING`, `ADMIN_PASSWORD`, `SITE_URL`, optional `BACKUP_DIR`) | Owner | GitHub Actions secrets | the pipeline; one FTP account and one database user per site |
 | Plesk panel (files, databases, certificates, backups) | Owner, Hamid | Plesk of `parmisata.ir` | reset, restore, delete `app_offline.htm`, read `logs/` |
 | FTP account of a site | the pipeline (secret) | Plesk > FTP | uploads only that site's folder |
@@ -24,7 +24,7 @@ Only a push to `staging` or `demo` (or a manual *Run workflow*) deploys. Never p
 | Administrator of the application (`admin`) | Owner of the environment | the database (password changed at first sign-in) | sign in, Admin > Database Update |
 | Landing: hosting folder, FTP account, `pems-landing` repository | Owner | Plesk, GitHub | manual landing deploy until #294 |
 
-Owner of each environment: demo and staging = Hamid (day to day); secrets and branch rules = the owner. Rotation of a leaked value: [CREDENTIAL_ROTATION_RUNBOOK.md](CREDENTIAL_ROTATION_RUNBOOK.md).
+Owner of each environment: demo and staging = Hamid (day to day); secrets = the owner. Who may push to `staging` and `demo` is the agreement in the table above, not a GitHub rule; if a ruleset is added later, update both rows. Rotation of a leaked value: [CREDENTIAL_ROTATION_RUNBOOK.md](CREDENTIAL_ROTATION_RUNBOOK.md).
 
 ## Demo and demo staging (same steps; replace `staging` by `demo`)
 
