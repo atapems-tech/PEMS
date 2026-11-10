@@ -96,8 +96,56 @@
     </div>
     <div class="vs-doc-actions">
         <a asp-action="Index" class="vs-btn"><pems-icon name="bi-arrow-left" aria-hidden="true" /> @Localizer["Vs_Back"]</a>
+        @* SCRUM-559: More actions, each item only with its permission (same menu as Engineering Documents) *@
+        @{
+            var vdrCanEdit = Model.IsActive && ViewBag.CanEditItem is true;
+            var vdrCanHold = Model.IsActive && !Model.IsOnHold && ViewBag.CanHold is true;
+            var vdrCanRelease = Model.IsOnHold && ViewBag.CanReleaseHold is true;
+            var vdrCanDeactivate = Model.IsActive && ViewBag.CanDeactivate is true;
+            var vdrCanNumbers = User.IsInRole(PEMS.Persistence.Identity.SystemRoles.SystemAdmin);   // SCRUM-529: numbers live in Admin
+        }
+        @if (vdrCanEdit || vdrCanHold || vdrCanRelease || vdrCanDeactivate || vdrCanNumbers)
+        {
+            <div class="dropdown" id="vdrMoreActions">
+                <pems-button plain="true" css="vs-btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    @Localizer["Ed_MoreActions"]
+                </pems-button>
+                <pems-dropdown-menu end="true">
+                    @if (vdrCanEdit)
+                    {
+                        <li><pems-button plain="true" type="button" css="dropdown-item" data-bs-toggle="modal" data-bs-target="#vdrEditModal"><pems-icon name="bi-pencil" /> @Localizer["Vdr_EditDetails"]</pems-button></li>
+                    }
+                    @if (vdrCanNumbers)
+                    {
+                        <li><a class="dropdown-item" asp-area="Admin" asp-controller="Numbering" asp-action="Index" asp-route-vdrItemId="@Model.VDRItemId" asp-fragment="vdr-numbers"><pems-icon name="bi-hash" /> @Localizer["Vd_NumbersInAdmin"]</a></li>
+                    }
+                    @if (vdrCanHold)
+                    {
+                        <li><pems-button plain="true" type="button" css="dropdown-item" data-bs-toggle="modal" data-bs-target="#vdrHoldModal"><pems-icon name="bi-pause-circle" /> @Localizer["Vdr_Hold"]</pems-button></li>
+                    }
+                    @if (vdrCanRelease)
+                    {
+                        <li><pems-button plain="true" type="button" css="dropdown-item" data-bs-toggle="modal" data-bs-target="#vdrReleaseModal"><pems-icon name="bi-play-circle" /> @Localizer["Vdr_ReleaseHold"]</pems-button></li>
+                    }
+                    @if (vdrCanDeactivate)
+                    {
+                        <li><hr class="dropdown-divider" /></li>
+                        <li><pems-button plain="true" type="button" css="dropdown-item text-danger" data-bs-toggle="modal" data-bs-target="#vdrDeactivateModal"><pems-icon name="bi-archive" /> @Localizer["Vdr_Deactivate"]</pems-button></li>
+                    }
+                </pems-dropdown-menu>
+            </div>
+        }
     </div>
 </div>
+
+@if (!Model.IsActive)
+{
+    <pems-alert tone="secondary" css="py-2 px-3 small mb-3"><pems-icon name="bi-archive" aria-hidden="true" /> @Localizer["Vdr_InactiveBanner"]</pems-alert>
+}
+@if (Model.IsOnHold)
+{
+    <pems-alert tone="warning" css="py-2 px-3 small mb-3"><pems-icon name="bi-pause-circle" aria-hidden="true" /> @Localizer["Vdr_OnHoldBanner"]@(string.IsNullOrEmpty(Model.HoldReason) ? "" : ": " + Model.HoldReason)@(Model.HoldDate.HasValue ? " (" + Model.HoldDate.Value.ToString("yyyy-MM-dd") + ")" : "")</pems-alert>
+}
 
 <pems-nav css="mb-3" id="vdrTabs" role="tablist">
     <li class="nav-item" role="presentation">
@@ -163,15 +211,7 @@
     </div>
 </div>
 
-@* SCRUM-529: the CONTRACTOR and SUB-CONTRACTOR number forms moved to Admin > Document numbering (same actions and logic). *@
-@if (User.IsInRole(PEMS.Persistence.Identity.SystemRoles.SystemAdmin))
-{
-    <pems-flex justify="end" css="mb-3">
-        <pems-button tone="neutral" size="small" outline="true" as="a" asp-area="Admin" asp-controller="Numbering" asp-action="Index" asp-route-vdrItemId="@Model.VDRItemId" asp-fragment="vdr-numbers">
-            <pems-icon name="bi-hash" /> @Localizer["Vd_NumbersInAdmin"]
-        </pems-button>
-    </pems-flex>
-}
+@* SCRUM-529: the CONTRACTOR and SUB-CONTRACTOR number forms are in Admin > Document numbering; SCRUM-559: the link is in More actions. *@
 </pems-tab-pane>
 
 @* ===================== Submissions ===================== *@
@@ -910,6 +950,56 @@ else
 
 </pems-page-shell>
 @* پایان vs-page *@
+
+@* ===================== SCRUM-559: More actions dialogs ===================== *@
+@if (Model.IsActive && ViewBag.CanEditItem is true)
+{
+    <pems-modal id="vdrEditModal" tabindex="-1">
+        <pems-form asp-action="UpdateDetails" method="post">
+            <input type="hidden" name="vdrItemId" value="@Model.VDRItemId" />
+            <pems-modal-header><pems-icon name="bi-pencil" /> @Localizer["Vdr_EditDetails"]</pems-modal-header>
+            <pems-modal-body>
+                <pems-label css="small" for="vdrEditDesc">@Localizer["Vs_Description"]</pems-label>
+                <pems-textarea scale="small" id="vdrEditDesc" name="documentDescription" rows="2">@Model.DocumentDescription</pems-textarea>
+                <pems-row gap="2" css="mt-2">
+                    <pems-col md="6"><pems-label css="small" for="vdrEditClass">@Localizer["Vdr_Class"]</pems-label><pems-input scale="small" type="number" min="1" id="vdrEditClass" name="documentClass" value="@Model.DocumentClass" /></pems-col>
+                    <pems-col md="6"><pems-label css="small" for="vdrEditPlanned">@Localizer["Vdr_PlannedFirstIssue"]</pems-label><pems-date scale="small" id="vdrEditPlanned" name="plannedFirstIssueDate" value="@Model.PlannedFirstIssueDate?.ToString("yyyy-MM-dd")" /></pems-col>
+                    <pems-col md="6"><pems-label css="small" for="vdrEditEquipment">@Localizer["Vdr_EquipmentTag"]</pems-label><pems-input scale="small" id="vdrEditEquipment" name="equipmentTag" value="@Model.EquipmentTagNumber" dir="ltr" /></pems-col>
+                    <pems-col md="6"><pems-label css="small" for="vdrEditDisc">@Localizer["Vdr_DisciplineCode"]</pems-label><pems-input scale="small" id="vdrEditDisc" name="disciplineCodeRaw" value="@Model.DisciplineCodeRaw" dir="ltr" /></pems-col>
+                    <pems-col md="12"><pems-label css="small" for="vdrEditVfn">@Localizer["Vd_VendorFormatNo"]</pems-label><pems-input scale="small" id="vdrEditVfn" name="vendorFormatDocumentNumber" value="@Model.VendorFormatDocumentNumber" dir="ltr" /></pems-col>
+                </pems-row>
+            </pems-modal-body>
+            <pems-modal-footer>
+                <pems-button tone="neutral" size="small" outline="true" type="button" data-bs-dismiss="modal">@Localizer["Cancel"]</pems-button>
+                <pems-button tone="primary" size="small" type="submit"><pems-icon name="bi-check2" /> @Localizer["Vdr_Save"]</pems-button>
+            </pems-modal-footer>
+        </pems-form>
+    </pems-modal>
+}
+@foreach (var (modalId, action, icon, title, hint, tone, show) in new[]
+{
+    ("vdrHoldModal", "Hold", "bi-pause-circle", "Vdr_Hold", "Vdr_HoldHint", "dark", Model.IsActive && !Model.IsOnHold && ViewBag.CanHold is true),
+    ("vdrReleaseModal", "ReleaseHold", "bi-play-circle", "Vdr_ReleaseHold", "Vdr_ReleaseHint", "primary", Model.IsOnHold && ViewBag.CanReleaseHold is true),
+    ("vdrDeactivateModal", "Deactivate", "bi-archive", "Vdr_Deactivate", "Vdr_DeactivateHint", "danger", Model.IsActive && ViewBag.CanDeactivate is true),
+})
+{
+    if (!show) { continue; }
+    <pems-modal id="@modalId" tabindex="-1">
+        <pems-form asp-action="@action" method="post">
+            <input type="hidden" name="vdrItemId" value="@Model.VDRItemId" />
+            <pems-modal-header><pems-icon name="@icon" /> @Localizer[title]</pems-modal-header>
+            <pems-modal-body>
+                <p class="text-muted small">@Localizer[hint]</p>
+                <pems-label css="small" for="@(modalId)Reason">@Localizer["Vdr_Reason"]</pems-label>
+                <pems-input scale="small" id="@(modalId)Reason" name="reason" required />
+            </pems-modal-body>
+            <pems-modal-footer>
+                <pems-button tone="neutral" size="small" outline="true" type="button" data-bs-dismiss="modal">@Localizer["Cancel"]</pems-button>
+                <pems-button tone="@tone" size="small" type="submit"><pems-icon name="@icon" /> @Localizer[title]</pems-button>
+            </pems-modal-footer>
+        </pems-form>
+    </pems-modal>
+}
 
 @section Scripts {
     <script src="~/js/views/vdr-details.js" asp-append-version="true"></script>

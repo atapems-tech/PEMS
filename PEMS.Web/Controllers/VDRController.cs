@@ -21,12 +21,17 @@ public class VDRController : Controller
     private readonly IFtpUploadService _ftpService;
     private readonly IFileStorageService _fileStorage;
     private readonly IPermissionService _permissionService;
+    private readonly IDocumentHoldService? _holdService;   // SCRUM-559
+    private readonly Microsoft.Extensions.Localization.IStringLocalizer<PEMS.Web.Resources.SharedResource>? _localizer;
 
     public VDRController(IVDRService service, IDocumentCommentService commentService,
         IVdrWorkflowService workflowService, ILetterService letterService, IWorkflowRuntime runtime,
         PEMSDbContext context, ICurrentUserService currentUser, IVdrDocumentNumberingService numberingService,
-        IFtpUploadService ftpService, IFileStorageService fileStorage, IPermissionService permissionService)
+        IFtpUploadService ftpService, IFileStorageService fileStorage, IPermissionService permissionService,
+        IDocumentHoldService? holdService = null, Microsoft.Extensions.Localization.IStringLocalizer<PEMS.Web.Resources.SharedResource>? localizer = null)
     {
+        _holdService = holdService;
+        _localizer = localizer;
         _service = service;
         _commentService = commentService;
         _workflowService = workflowService;
@@ -108,6 +113,11 @@ public class VDRController : Controller
 
         // طبق درخواست: تب نامه‌نگاری + تب تاریخچه‌ی واقعی گردش‌کار (از موتور، نه فقط رشته‌ی وضعیت)
         ViewBag.RelatedLetters = await _letterService.GetRelatedToDocumentAsync(id);
+        // SCRUM-559: the More actions menu shows each item only with its permission
+        ViewBag.CanEditItem = await _permissionService.HasPermissionAsync(_currentUser.Roles, "VDR", "Edit");
+        ViewBag.CanHold = await _permissionService.HasPermissionAsync(_currentUser.Roles, "VDR", "Hold");
+        ViewBag.CanReleaseHold = await _permissionService.HasPermissionAsync(_currentUser.Roles, "VDR", "ReleaseHold");
+        ViewBag.CanDeactivate = await _permissionService.HasPermissionAsync(_currentUser.Roles, "VDR", "Delete");
         ViewBag.WorkflowHistory = activeInstance != null
             ? await _runtime.GetHistoryAsync(activeInstance.WorkflowInstanceId)
             : new List<PEMS.WorkflowPlatform.Dtos.WorkflowHistoryDto>();
@@ -507,6 +517,76 @@ public class VDRController : Controller
         await _context.SaveChangesAsync();
         TempData["Message"] = $"File uploaded: {file.FileName}";
         return RedirectToAction(nameof(Details), null, new { id = vdrItemId, tab = "files", file = id }, "tab-files");
+    }
+
+    // ================================================================== SCRUM-559: More actions menu
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> UpdateDetails(int vdrItemId, string? documentDescription, int? documentClass, DateTime? plannedFirstIssueDate,
+        string? equipmentTag, string? disciplineCodeRaw, string? vendorFormatDocumentNumber)
+    {
+        if (!await EnsurePermissionAsync("Edit", vdrItemId, T("Vdr_Err_Forbidden")))
+            return RedirectToAction(nameof(Details), new { id = vdrItemId });
+        var r = await _service.UpdateDetailsAsync(vdrItemId,
+            new VdrItemEditInput(documentDescription, documentClass, plannedFirstIssueDate, equipmentTag, disciplineCodeRaw, vendorFormatDocumentNumber),
+            _currentUser.UserName);
+        TempData[r.Success ? "Message" : "Error"] = T(r.Error ?? "Vdr_Saved");
+        return RedirectToAction(nameof(Details), new { id = vdrItemId });
+    }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> Hold(int vdrItemId, string? reason)
+        => await HoldStepAsync(vdrItemId, "Hold", reason, (svc, emp) => svc.PlaceHoldAsync(vdrItemId, reason ?? "", null, emp), "Vdr_HoldPlaced");
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> ReleaseHold(int vdrItemId, string? reason)
+        => await HoldStepAsync(vdrItemId, "ReleaseHold", reason, (svc, emp) => svc.ReleaseHoldAsync(vdrItemId, reason ?? "", emp), "Vdr_HoldReleased");
+
+    private async Task<IActionResult> HoldStepAsync(int vdrItemId, string permission, string? reason,
+        Func<IDocumentHoldService, int?, Task> step, string successKey)
+    {
+        if (!await EnsurePermissionAsync(permission, vdrItemId, T("Vdr_Err_Forbidden")))
+            return RedirectToAction(nameof(Details), new { id = vdrItemId });
+        if (string.IsNullOrWhiteSpace(reason)) TempData["Error"] = T("Vdr_Err_ReasonRequired");
+        else if (_holdService == null) TempData["Error"] = T("Vdr_Err_NotFound");
+        else
+        {
+            try
+            {
+                await step(_holdService, await GetCurrentEmployeeIdAsync());
+                TempData["Message"] = T(successKey);
+            }
+            catch (InvalidOperationException ex)
+            {
+                TempData["Error"] = ex.Message;   // the hold service's own rule texts (frozen, already on hold, ...)
+            }
+        }
+        return RedirectToAction(nameof(Details), new { id = vdrItemId });
+    }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> Deactivate(int vdrItemId, string? reason)
+    {
+        if (!await EnsurePermissionAsync("Delete", vdrItemId, T("Vdr_Err_Forbidden")))
+            return RedirectToAction(nameof(Details), new { id = vdrItemId });
+        var r = await _service.DeactivateAsync(vdrItemId, reason, _currentUser.UserName);
+        if (!r.Success)
+        {
+            TempData["Error"] = T(r.Error!);
+            return RedirectToAction(nameof(Details), new { id = vdrItemId });
+        }
+        TempData["Message"] = T("Vdr_Deactivated");
+        return RedirectToAction(nameof(Index));
+    }
+
+    private string T(string key)
+    {
+        var l = _localizer?[key];
+        return l == null || l.ResourceNotFound ? key : l.Value;
     }
 
     // طبق «PEMS Phase 2B»: بررسی مجوز مشترک برای اکشن‌های تغییردهنده - در صورت رد، پیام دوستانه

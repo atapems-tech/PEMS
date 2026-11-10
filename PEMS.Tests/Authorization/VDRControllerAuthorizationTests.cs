@@ -87,6 +87,10 @@ public class VDRControllerAuthorizationTests
         }
 
         public Task<VDRDashboardDto> GetDashboardAsync(int? projectId = null) => Task.FromResult(new VDRDashboardDto());
+
+        // SCRUM-559
+        public Task<VdrActionResult> UpdateDetailsAsync(int vdrItemId, VdrItemEditInput input, string? userName) => Task.FromResult(VdrActionResult.Ok());
+        public Task<VdrActionResult> DeactivateAsync(int vdrItemId, string? reason, string? userName) => Task.FromResult(VdrActionResult.Ok());
     }
 
     private class ThrowingNumberingService : IVdrDocumentNumberingService

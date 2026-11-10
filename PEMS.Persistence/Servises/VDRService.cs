@@ -147,8 +147,96 @@ public class VDRService : IVDRService
                 .ThenInclude(x => x.ReplySheetAttachment)
             .FirstOrDefaultAsync(x => x.DocumentId == id);
 
-        return item == null ? null : MapToDto(item);
+        if (item == null) return null;
+        var dto = MapToDto(item);
+        if (item.IsOnHold)
+        {
+            // SCRUM-559: the open hold shown in the banner
+            var hold = await _context.DocumentHolds.AsNoTracking().Where(h => h.DocumentId == id && h.ReleaseDate == null)
+                .OrderByDescending(h => h.HoldDate).Select(h => new { h.Reason, h.HoldDate }).FirstOrDefaultAsync();
+            dto.HoldReason = hold?.Reason;
+            dto.HoldDate = hold?.HoldDate;
+        }
+        return dto;
     }
+
+    // ================================================================== SCRUM-559: More actions menu
+
+    private const string VdrBusinessObjectType = "VDRItem";   // same as VdrWorkflowService
+
+    public async Task<VdrActionResult> UpdateDetailsAsync(int vdrItemId, VdrItemEditInput input, string? userName)
+    {
+        var item = await _context.VDRItems.FirstOrDefaultAsync(x => x.DocumentId == vdrItemId);
+        if (item == null) return VdrActionResult.Fail("Vdr_Err_NotFound");
+        if (!item.IsActive) return VdrActionResult.Fail("Vdr_Err_Inactive");
+        if (input.DocumentClass is <= 0) return VdrActionResult.Fail("Vdr_Err_Class");
+        int? equipmentId = null;
+        var tag = Clean(input.EquipmentTag, 200);
+        if (tag != null)
+        {
+            var upperTag = tag.ToUpperInvariant();
+            equipmentId = await _context.Equipments.AsNoTracking().Where(e => e.TagNumber.ToUpper() == upperTag)
+                .OrderBy(e => e.ProjectId == item.ProjectId ? 0 : 1).ThenBy(e => e.EquipmentId).Select(e => (int?)e.EquipmentId).FirstOrDefaultAsync();
+            if (equipmentId == null) return VdrActionResult.Fail("Vdr_Err_Equipment");
+        }
+
+        var changes = new List<string>();
+        void Set<T>(string name, T current, T value, Action<T> apply)
+        {
+            if (EqualityComparer<T>.Default.Equals(current, value)) return;
+            changes.Add($"{name}: {Show(current)} -> {Show(value)}");
+            apply(value);
+        }
+        Set("Description", item.DocumentDescription, Clean(input.DocumentDescription, 1000), v => item.DocumentDescription = v);
+        Set("Class", item.DocumentClass, input.DocumentClass, v => { item.DocumentClass = v; item.DocumentClassRaw = v?.ToString(); });
+        Set("PlannedFirstIssue", item.PlannedFirstIssueDate?.Date, input.PlannedFirstIssueDate?.Date, v => item.PlannedFirstIssueDate = v);
+        Set("Equipment", item.EquipmentId, equipmentId, v => item.EquipmentId = v);
+        Set("Discipline", item.DisciplineCodeRaw, Clean(input.DisciplineCodeRaw, 50)?.ToUpperInvariant(), v => item.DisciplineCodeRaw = v);
+        Set("VendorFormatNo", item.VendorFormatDocumentNumber, Clean(input.VendorFormatDocumentNumber, 200), v => item.VendorFormatDocumentNumber = v);
+        if (changes.Count == 0) return VdrActionResult.Ok();
+
+        item.ModifiedDate = DateTime.Now;
+        Audit(vdrItemId, "Update", string.Join("\n", changes), userName);
+        await _context.SaveChangesAsync();
+        return VdrActionResult.Ok();
+    }
+
+    public async Task<VdrActionResult> DeactivateAsync(int vdrItemId, string? reason, string? userName)
+    {
+        if (string.IsNullOrWhiteSpace(reason)) return VdrActionResult.Fail("Vdr_Err_ReasonRequired");
+        var item = await _context.VDRItems.FirstOrDefaultAsync(x => x.DocumentId == vdrItemId);
+        if (item == null) return VdrActionResult.Fail("Vdr_Err_NotFound");
+        if (!item.IsActive) return VdrActionResult.Fail("Vdr_Err_Inactive");
+        if (await _context.WorkflowInstances.AnyAsync(w => w.BusinessObjectType == VdrBusinessObjectType && w.BusinessObjectId == vdrItemId && w.Status == "Running"))
+            return VdrActionResult.Fail("Vdr_Err_ReviewRunning");
+
+        item.IsActive = false;
+        item.ModifiedDate = DateTime.Now;
+        Audit(vdrItemId, "Deactivate", "Reason: " + Clean(reason, 1000), userName);
+        await _context.SaveChangesAsync();
+        return VdrActionResult.Ok();
+    }
+
+    private void Audit(int vdrItemId, string action, string summary, string? userName) =>
+        _context.AuditLogs.Add(new AuditLog
+        {
+            EntityName = nameof(VDRItem), EntityKeyValue = vdrItemId.ToString(System.Globalization.CultureInfo.InvariantCulture),
+            Action = action, ChangedFieldsSummary = summary, UserName = userName, Timestamp = DateTime.Now
+        });
+
+    private static string? Clean(string? s, int max)
+    {
+        if (string.IsNullOrWhiteSpace(s)) return null;
+        s = s.Trim();
+        return s.Length <= max ? s : s[..max];
+    }
+
+    private static string Show<T>(T value) => value switch
+    {
+        null => "-",
+        DateTime d => d.ToString("yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture),
+        _ => value.ToString() ?? "-"
+    };
 
     public async Task<int> CreateManualAsync(VDRItemDto dto)
     {
@@ -334,6 +422,8 @@ public class VDRService : IVDRService
             LatestReviewCategory = latest?.ReviewCategory,
             LatestVendorActualIssuedDate = latest?.VendorActualIssuedDate,
             IsOverdue = IsOverdue(item),
+            IsActive = item.IsActive,
+            IsOnHold = item.IsOnHold,
 
             Submissions = orderedSubmissions.Select(s => new VDRSubmissionDto
             {
