@@ -4814,4 +4814,82 @@
   <data name="Prj_Err_CodeExists" xml:space="preserve">
     <value>کد پروژه‌ی {0} از قبل وجود دارد. کد دیگری انتخاب کنید.</value>
   </data>
+  <data name="Vdr_EditDetails" xml:space="preserve">
+    <value>ویرایش مشخصات</value>
+  </data>
+  <data name="Vdr_Hold" xml:space="preserve">
+    <value>توقف</value>
+  </data>
+  <data name="Vdr_ReleaseHold" xml:space="preserve">
+    <value>رفع توقف</value>
+  </data>
+  <data name="Vdr_Deactivate" xml:space="preserve">
+    <value>غیرفعال‌کردن</value>
+  </data>
+  <data name="Vdr_InactiveBanner" xml:space="preserve">
+    <value>این مدرک VDR غیرفعال شده است: در فهرست‌ها دیده نمی‌شود و بازبینی آن ادامه پیدا نمی‌کند.</value>
+  </data>
+  <data name="Vdr_OnHoldBanner" xml:space="preserve">
+    <value>در توقف</value>
+  </data>
+  <data name="Vdr_Class" xml:space="preserve">
+    <value>کلاس مدرک</value>
+  </data>
+  <data name="Vdr_PlannedFirstIssue" xml:space="preserve">
+    <value>تاریخ برنامه‌ای اولین صدور</value>
+  </data>
+  <data name="Vdr_EquipmentTag" xml:space="preserve">
+    <value>شماره‌ی تگ تجهیز</value>
+  </data>
+  <data name="Vdr_DisciplineCode" xml:space="preserve">
+    <value>کد دیسیپلین</value>
+  </data>
+  <data name="Vdr_Save" xml:space="preserve">
+    <value>ذخیره</value>
+  </data>
+  <data name="Vdr_HoldHint" xml:space="preserve">
+    <value>تا رفع توقف، بازبینی این مدرک ادامه پیدا نمی‌کند.</value>
+  </data>
+  <data name="Vdr_ReleaseHint" xml:space="preserve">
+    <value>پس از رفع توقف، بازبینی می‌تواند ادامه پیدا کند.</value>
+  </data>
+  <data name="Vdr_DeactivateHint" xml:space="preserve">
+    <value>مدرک از فهرست‌های VDR بیرون می‌رود؛ سابقه و فایل‌هایش می‌ماند.</value>
+  </data>
+  <data name="Vdr_Reason" xml:space="preserve">
+    <value>دلیل (الزامی)</value>
+  </data>
+  <data name="Vdr_Saved" xml:space="preserve">
+    <value>مشخصات مدرک VDR ذخیره شد.</value>
+  </data>
+  <data name="Vdr_HoldPlaced" xml:space="preserve">
+    <value>مدرک VDR در توقف قرار گرفت.</value>
+  </data>
+  <data name="Vdr_HoldReleased" xml:space="preserve">
+    <value>توقف مدرک رفع شد.</value>
+  </data>
+  <data name="Vdr_Deactivated" xml:space="preserve">
+    <value>مدرک VDR غیرفعال شد.</value>
+  </data>
+  <data name="Vdr_Err_NotFound" xml:space="preserve">
+    <value>مدرک VDR یافت نشد.</value>
+  </data>
+  <data name="Vdr_Err_Inactive" xml:space="preserve">
+    <value>این مدرک VDR غیرفعال است.</value>
+  </data>
+  <data name="Vdr_Err_Class" xml:space="preserve">
+    <value>کلاس مدرک باید عدد مثبت باشد.</value>
+  </data>
+  <data name="Vdr_Err_Equipment" xml:space="preserve">
+    <value>تجهیزی با این شماره‌ی تگ وجود ندارد.</value>
+  </data>
+  <data name="Vdr_Err_ReasonRequired" xml:space="preserve">
+    <value>دلیل الزامی است.</value>
+  </data>
+  <data name="Vdr_Err_ReviewRunning" xml:space="preserve">
+    <value>بازبینی این مدرک در جریان است؛ اول آن را تمام کنید.</value>
+  </data>
+  <data name="Vdr_Err_Forbidden" xml:space="preserve">
+    <value>شما مجاز به این کار روی مدارک VDR نیستید.</value>
+  </data>
 </root>

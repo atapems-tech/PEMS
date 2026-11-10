@@ -4034,4 +4034,82 @@
   <data name="Prj_Err_CodeExists" xml:space="preserve">
     <value>The project code {0} already exists. Choose another code.</value>
   </data>
+  <data name="Vdr_EditDetails" xml:space="preserve">
+    <value>Edit item details</value>
+  </data>
+  <data name="Vdr_Hold" xml:space="preserve">
+    <value>Put on hold</value>
+  </data>
+  <data name="Vdr_ReleaseHold" xml:space="preserve">
+    <value>Release hold</value>
+  </data>
+  <data name="Vdr_Deactivate" xml:space="preserve">
+    <value>Deactivate</value>
+  </data>
+  <data name="Vdr_InactiveBanner" xml:space="preserve">
+    <value>This VDR item is deactivated: it is hidden from the lists and its review cannot continue.</value>
+  </data>
+  <data name="Vdr_OnHoldBanner" xml:space="preserve">
+    <value>On hold</value>
+  </data>
+  <data name="Vdr_Class" xml:space="preserve">
+    <value>Document class</value>
+  </data>
+  <data name="Vdr_PlannedFirstIssue" xml:space="preserve">
+    <value>Planned first issue</value>
+  </data>
+  <data name="Vdr_EquipmentTag" xml:space="preserve">
+    <value>Equipment tag number</value>
+  </data>
+  <data name="Vdr_DisciplineCode" xml:space="preserve">
+    <value>Discipline code</value>
+  </data>
+  <data name="Vdr_Save" xml:space="preserve">
+    <value>Save</value>
+  </data>
+  <data name="Vdr_HoldHint" xml:space="preserve">
+    <value>The review of this item cannot continue until the hold is released.</value>
+  </data>
+  <data name="Vdr_ReleaseHint" xml:space="preserve">
+    <value>After the hold is released the review can continue.</value>
+  </data>
+  <data name="Vdr_DeactivateHint" xml:space="preserve">
+    <value>The item leaves the VDR lists; its history and files stay.</value>
+  </data>
+  <data name="Vdr_Reason" xml:space="preserve">
+    <value>Reason (required)</value>
+  </data>
+  <data name="Vdr_Saved" xml:space="preserve">
+    <value>The VDR item was saved.</value>
+  </data>
+  <data name="Vdr_HoldPlaced" xml:space="preserve">
+    <value>The VDR item is on hold.</value>
+  </data>
+  <data name="Vdr_HoldReleased" xml:space="preserve">
+    <value>The hold was released.</value>
+  </data>
+  <data name="Vdr_Deactivated" xml:space="preserve">
+    <value>The VDR item was deactivated.</value>
+  </data>
+  <data name="Vdr_Err_NotFound" xml:space="preserve">
+    <value>VDR item not found.</value>
+  </data>
+  <data name="Vdr_Err_Inactive" xml:space="preserve">
+    <value>This VDR item is deactivated.</value>
+  </data>
+  <data name="Vdr_Err_Class" xml:space="preserve">
+    <value>The document class must be a positive number.</value>
+  </data>
+  <data name="Vdr_Err_Equipment" xml:space="preserve">
+    <value>No equipment has this tag number.</value>
+  </data>
+  <data name="Vdr_Err_ReasonRequired" xml:space="preserve">
+    <value>A reason is required.</value>
+  </data>
+  <data name="Vdr_Err_ReviewRunning" xml:space="preserve">
+    <value>A review is running on this item; finish it first.</value>
+  </data>
+  <data name="Vdr_Err_Forbidden" xml:space="preserve">
+    <value>You are not allowed to do this on VDR items.</value>
+  </data>
 </root>

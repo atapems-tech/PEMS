@@ -3,6 +3,17 @@
 All notable changes to PEMS. No system version is defined yet (plan row F_CI), so entries are grouped by date
 and theme and were reconstructed from the git history (initial import 2026-09-05). Newest first.
 
+## 2026-11-10 - VDR details: More actions menu (SCRUM-559)
+
+### Added
+- SCRUM-559 (owner decisions 2026-11-10): VDR details has a More actions menu like Engineering Documents. Each item shows only with its permission:
+  - **Edit item details** (VDR Edit): description, class, planned first issue, equipment by tag number, discipline code and vendor-format number, with an audit line.
+  - **Generate document numbers**: the existing link to Admin > Document numbering moved into the menu.
+  - **Put on hold / Release hold** (VDR Hold / ReleaseHold): uses the shared document hold, with a banner showing the reason.
+  - **Deactivate** (VDR Delete): a soft delete with a reason; the item leaves the lists and the page shows a banner.
+- Every review step is refused on a held or deactivated item.
+- VDR hold grants follow Engineering Documents: EngineeringManager, EngineeringSupervisor and DocumentController can hold and release, DisciplineEngineer can hold. They are in the `PermissionService` defaults and in the one-time data migration `Scrum559VdrHoldGrants`. Tests: `VdrMoreActionsTests`.
+
 ## 2026-11-09 - The project code is unique (SCRUM-558)
 
 ### Fixed

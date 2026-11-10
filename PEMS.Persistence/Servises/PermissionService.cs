@@ -291,9 +291,11 @@ public class PermissionService : IPermissionService
 
         await SeedMissingRolesAsync("VDR", new List<RolePermission>
         {
-            New(SystemRoles.EngineeringManager, "VDR", create: true, edit: true, del: true, approve: true),
-            New(SystemRoles.DocumentController, "VDR", create: true, edit: true),
-            New(SystemRoles.DisciplineEngineer, "VDR", edit: true, approve: true),
+            // SCRUM-559 owner decision 2026-11-10: VDR hold / release like Engineering Documents (existing databases: migration Scrum559VdrHoldGrants)
+            New(SystemRoles.EngineeringManager, "VDR", create: true, edit: true, del: true, approve: true, hold: true, releaseHold: true),
+            New(SystemRoles.EngineeringSupervisor, "VDR", hold: true, releaseHold: true),
+            New(SystemRoles.DocumentController, "VDR", create: true, edit: true, hold: true, releaseHold: true),
+            New(SystemRoles.DisciplineEngineer, "VDR", edit: true, approve: true, hold: true),
             // طبق بند ۱۰ ممیزی: Viewer روی MDR/EquipmentImport/MrsImport از قبل دید فقط‌خواندنی
             // دارد؛ برای این‌که لینک VDR Import هم زیر Administration > Import Center برای همون
             // نقش به یک صفحه‌ی 403 ختم نشود، همون سطح فقط‌خواندنی این‌جا هم اضافه شد.
