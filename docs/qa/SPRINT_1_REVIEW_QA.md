@@ -11,7 +11,7 @@ Browser conventions for every browser line (call it **the matrix**): Persian (RT
 ## A. Prepare the environment
 
 - [ ] A1. `git pull` on `main`; `dotnet build PEMS.slnx -c Release` -> 0 errors.
-- [ ] A2. SQL Server Express `.\SQLEXPRESS` is running with Integrated Security; the regression database `PEMSDB_RegressionTest` is created by the tests (README "Local tests"). `sqlcmd -S .\SQLEXPRESS -E -Q "SELECT 1"` answers. If it does not, mark every SQL line `Blocked (no SQL Server)` and ask the owner for a machine.
+- [ ] A2. SQL Server Express `.\SQLEXPRESS` is running with Integrated Security; the regression database `PEMSDB_RegressionTest` is created by the tests (README "Local tests"). `sqlcmd -S .\SQLEXPRESS -E -C -Q "SELECT 1"` answers (`-C` trusts the server certificate with ODBC Driver 18; if the instance is the default one use `-S .`, and set `PEMS_TEST_CONNECTION` for the tests). If it does not, mark every SQL line `Blocked (no SQL Server)` and ask the owner for a machine.
 - [ ] A3. Start the site: `dotnet run --project PEMS.Web`; sign in as the administrator; the setup page does not appear again.
 - [ ] A4. Fresh browser profile (no cache); developer tools open on Console and Network. Create (or reuse) test users: one SystemAdmin, one user with a normal module role (for permission checks), one user without roles.
 - [ ] A5. Write down the commit under test (`git rev-parse --short HEAD`) at the top of your result.
@@ -127,6 +127,6 @@ Browser conventions for every browser line (call it **the matrix**): Persian (RT
 
 ## G. Close
 
-- [ ] G1. Every failed line has a bug issue in Sprint 2, the next sprint (label `qa-failed`, area label, steps and expected result, plan row), linked from this task (guideline 07 section 7a step 6, decision of 2026-11-08).
+- [ ] G1. Every failed line has a Bug issue in the active sprint (label `qa-failed`, area label, steps and expected result, plan row), linked from this task (guideline 07 section 7a step 6, owner decision of 2026-11-08 and 2026-11-10).
 - [ ] G2. Write the summary in a comment: commit under test, counts of B1 to B5, number of lines Pass, Fail, Blocked, N/A.
 - [ ] G3. Tell the owner that this task is finished. When both QA tasks are finished and every bug is fixed and re-checked: the owner (or the agent on the owner's yes) marks every Sprint 1 issue Done, checks its checklist, and completes the sprint.
