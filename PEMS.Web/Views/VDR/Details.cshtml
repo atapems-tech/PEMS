@@ -770,7 +770,8 @@
                         <h2 id="vdrSummaryTitle" class="vs-section__title">@Localizer["Vd_ReviewSummary"]</h2>
                         <pems-info-grid class="small mb-3">
     <pems-info-item label="@Localizer["Vd_Reviewers"]">@Localizer["Vd_Role_Lead"], @Localizer["Vd_Role_DocControl"]</pems-info-item>
-    <pems-info-item label="@Localizer["Vd_Step2Title"]">@Localizer["Vd_None"]</pems-info-item>
+    @* SCRUM-560: vdr-details.js writes the chosen disciplines into this value *@
+    <pems-info-item label="@Localizer["Vd_Step2Title"]" value-id="vdrSummaryDisc">@Localizer["Vd_None"]</pems-info-item>
 </pems-info-grid>
                         <pems-button tone="primary" css="w-100" type="submit" id="vdrStartBtn" aria-describedby="vdrWhyDisabled"><pems-icon name="bi-play-fill" aria-hidden="true" /> @Localizer["Vd_StartReview"]</pems-button>
                         <p id="vdrWhyDisabled" class="small text-warning-emphasis mt-2 mb-0" hidden>@Localizer["Vd_EnterTransmittalToEnable"]</p>
