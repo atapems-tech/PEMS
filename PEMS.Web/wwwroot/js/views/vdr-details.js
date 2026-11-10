@@ -17,15 +17,16 @@
             var boxes = Array.prototype.slice.call(form.querySelectorAll('input[name="disciplineIds"]'));
             var summary = document.getElementById('vdrDiscSummary');
             var side = document.getElementById('vdrSummaryDisc');
+            // SCRUM-560: the side value's own first text is its "none" text; a missing element is skipped, never a script error
+            var sideNone = side ? (side.getAttribute('data-none') || side.textContent.trim()) : '';
             function syncDisciplines() {
                 var names = boxes.filter(function (b) { return b.checked; }).map(function (b) { return b.getAttribute('data-name'); });
-                if (!names.length) {
-                    summary.textContent = summary.getAttribute('data-none');
-                    side.textContent = side.getAttribute('data-none');
-                } else {
-                    summary.textContent = summary.getAttribute('data-some').replace('{0}', names.length).replace('{1}', names.join(', '));
-                    side.textContent = names.join(', ');
+                if (summary) {
+                    summary.textContent = names.length
+                        ? summary.getAttribute('data-some').replace('{0}', names.length).replace('{1}', names.join(', '))
+                        : summary.getAttribute('data-none');
                 }
+                if (side) side.textContent = names.length ? names.join(', ') : sideNone;
             }
             boxes.forEach(function (b) { b.addEventListener('change', syncDisciplines); });
             syncDisciplines();

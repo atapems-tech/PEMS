@@ -3,6 +3,11 @@
 All notable changes to PEMS. No system version is defined yet (plan row F_CI), so entries are grouped by date
 and theme and were reconstructed from the git history (initial import 2026-09-05). Newest first.
 
+## 2026-11-10 - VDR details: no error on load, discipline summary works again (SCRUM-560)
+
+### Fixed
+- SCRUM-560: every VDR details page with the start-review form showed "Something went wrong" on load, and ticking disciplines no longer updated the summary next to the start button. When the summary became a `pems-info-grid` (SCRUM-508), its value lost the id `vdrSummaryDisc` that `vdr-details.js` reads. The item has the id again (`value-id`), and the script uses the item's own text as its "none" text and skips a missing element. Test: `VdrDetailsScriptIdsTests` (every id the script reads exists in the view).
+
 ## 2026-11-10 - VDR details: More actions menu (SCRUM-559)
 
 ### Added
