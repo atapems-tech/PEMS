@@ -94,6 +94,7 @@ public static class UiKeys
     public const string TabContent = "tab-content";
     public const string TabPane = "tab-pane";
     public const string Tab = "tab";
+    public const string NavLink = "nav-link";
     public const string ModalHeader = "modal-header";
     public const string ModalBody = "modal-body";
     public const string ModalFooter = "modal-footer";

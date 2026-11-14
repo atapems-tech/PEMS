@@ -58,6 +58,7 @@ public sealed class AdoptionRatchetTests
         ("tab-content", new Regex(@"class=""[^""]*(?<![\w-])tab-content(?![\w-])", RegexOptions.Compiled), true, false),
         ("tab-pane", new Regex(@"class=""[^""]*(?<![\w-])tab-pane(?![\w-])", RegexOptions.Compiled), true, false),
         ("tab-strip", new Regex(@"<(?:pems-button|button)[^>]*(?:class|css)=""[^""]*(?<![\w-])nav-link(?![\w-])[^""]*""[^>]*data-bs-toggle=""tab""|<(?:pems-button|button)[^>]*data-bs-toggle=""tab""[^>]*(?:class|css)=""[^""]*(?<![\w-])nav-link(?![\w-])", RegexOptions.Compiled), true, false),   // SCRUM-521: <pems-tab>
+        ("nav-link", new Regex(@"<a[^>]*class=""[^""]*(?<![\w-])nav-link(?![\w-])", RegexOptions.Compiled), true, false),   // SCRUM-521: <pems-nav-link>
         ("validation-alert", new Regex(@"<pems-alert[^>]*asp-validation-summary", RegexOptions.Compiled), true, false),
         ("modal-header", new Regex(@"class=""[^""]*(?<![\w-])modal-header(?![\w-])", RegexOptions.Compiled), true, false),
         ("modal-body", new Regex(@"class=""[^""]*(?<![\w-])modal-body(?![\w-])", RegexOptions.Compiled), true, false),

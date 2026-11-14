@@ -12,8 +12,8 @@
     </pems-page-hero>
     <pems-content-card>
         <pems-nav css="mb-3">
-            <li class="nav-item"><a class="nav-link" asp-action="EffectiveRole">@Localizer["By Role"]</a></li>
-            <li class="nav-item"><a class="nav-link active" asp-action="EffectiveUser">@Localizer["By User"]</a></li>
+            <pems-nav-link asp-action="EffectiveRole">@Localizer["By Role"]</pems-nav-link>
+            <pems-nav-link active="true" asp-action="EffectiveUser">@Localizer["By User"]</pems-nav-link>
         </pems-nav>
 
         <pems-form class="mb-3 pems-s-0fd8744d" method="get"><pems-flex gap="2" align="end">
