@@ -27,8 +27,8 @@
     </pems-flex>
 
     <pems-nav css="mb-3" role="tablist">
-        <li class="nav-item"><pems-button plain="true" css="nav-link active" data-bs-toggle="tab" data-bs-target="#orgTabPositions" type="button" role="tab">@Localizer["Org_Tab_Positions"] <pems-badge tone="neutral">@Model.Count</pems-badge></pems-button></li>
-        <li class="nav-item"><pems-button plain="true" css="nav-link" data-bs-toggle="tab" data-bs-target="#orgTabTree" type="button" role="tab">@Localizer["Org_Tab_Tree"]</pems-button></li>
+        <pems-tab target="orgTabPositions" active="true" role="tab">@Localizer["Org_Tab_Positions"] <pems-badge tone="neutral">@Model.Count</pems-badge></pems-tab>
+        <pems-tab target="orgTabTree" role="tab">@Localizer["Org_Tab_Tree"]</pems-tab>
     </pems-nav>
 
     <pems-tab-content>

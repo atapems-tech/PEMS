@@ -197,6 +197,23 @@ public sealed class PemsTabPaneTagHelper(IPemsComponentRenderer renderer) : TagH
     }
 }
 
+/// <summary>One tab of a strip: <c>&lt;pems-tab target="tab-info" active="true"&gt;&lt;pems-icon .../&gt; Info&lt;/pems-tab&gt;</c> writes <c>&lt;li class="nav-item" role="presentation"&gt;&lt;button class="nav-link active" data-bs-toggle="tab" data-bs-target="#tab-info" type="button"&gt;...&lt;/button&gt;&lt;/li&gt;</c>; every other attribute (id, data-*) goes on the button.</summary>
+[HtmlTargetElement("pems-tab")]
+[PemsFacade(UiKeys.Tab)]
+public sealed class PemsTabTagHelper(IPemsComponentRenderer renderer) : TagHelper
+{
+    [HtmlAttributeName("target")] public string Target { get; set; } = "";
+    [HtmlAttributeName("active")] public bool Active { get; set; }
+    [HtmlAttributeName("disabled")] public bool Disabled { get; set; }
+    [HtmlAttributeName("css")] public string? Css { get; set; }
+
+    public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
+    {
+        var (pageClass, attrs) = ListRender.Page(output);
+        await ListRender.Replace<PemsTab>(renderer, output, new TabOptions { Target = Target, Active = Active, Disabled = Disabled, Css = Css, PageClass = pageClass, Attributes = attrs }, await ListRender.Inner(output));
+    }
+}
+
 /// <summary>A labelled number tile: <c>&lt;pems-stat label="Modules scanned"&gt;@Model.Count&lt;/pems-stat&gt;</c> writes <c>&lt;div class="admin-kpi"&gt;&lt;div class="admin-kpi-label"&gt;...&lt;/div&gt;&lt;div class="admin-kpi-value"&gt;...&lt;/div&gt;&lt;/div&gt;</c>.</summary>
 [HtmlTargetElement("pems-stat")]
 [PemsFacade(UiKeys.Stat)]

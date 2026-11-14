@@ -18,21 +18,15 @@
 }
 
 <pems-nav css="mb-3" id="imdTabs" role="tablist">
-    <li class="nav-item" role="presentation">
-        <pems-button plain="true" css="nav-link active" data-bs-toggle="tab" data-bs-target="#tab-categories" type="button">
+    <pems-tab target="tab-categories" active="true">
             <pems-icon name="bi-diagram-3" /> Categories <pems-badge tone="neutral">@categories.Count</pems-badge>
-        </pems-button>
-    </li>
-    <li class="nav-item" role="presentation">
-        <pems-button plain="true" css="nav-link" data-bs-toggle="tab" data-bs-target="#tab-uoms" type="button">
+        </pems-tab>
+    <pems-tab target="tab-uoms">
             <pems-icon name="bi-rulers" /> Units of Measure <pems-badge tone="neutral">@uoms.Count</pems-badge>
-        </pems-button>
-    </li>
-    <li class="nav-item" role="presentation">
-        <pems-button plain="true" css="nav-link" data-bs-toggle="tab" data-bs-target="#tab-warehouses" type="button">
+        </pems-tab>
+    <pems-tab target="tab-warehouses">
             <pems-icon name="bi-building" /> Warehouses <pems-badge tone="neutral">@Model.Count</pems-badge>
-        </pems-button>
-    </li>
+        </pems-tab>
 </pems-nav>
 
 <pems-tab-content>

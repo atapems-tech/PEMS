@@ -322,55 +322,39 @@
 </div>
 
 <pems-nav css="mb-3" id="docTabs" role="tablist">
-    <li class="nav-item" role="presentation">
-        <pems-button plain="true" css="nav-link active" data-bs-toggle="tab" data-bs-target="#tab-overview" type="button">
+    <pems-tab target="tab-overview" active="true">
             <pems-icon name="bi-info-circle" /> @Localizer["Ed_TabOverview"]
-        </pems-button>
-    </li>
-    <li class="nav-item" role="presentation">
-        <pems-button plain="true" css="nav-link" data-bs-toggle="tab" data-bs-target="#tab-attachments" type="button">
+        </pems-tab>
+    <pems-tab target="tab-attachments">
             <pems-icon name="bi-paperclip" /> @Localizer["Ed_TabFiles"] <pems-badge tone="neutral">@(Model.Attachments?.Count ?? 0)</pems-badge>
-        </pems-button>
-    </li>
+        </pems-tab>
     @* طبق بخش ۲۵ ممیزی UX: IDC حالا یک تب اختصاصی است، نه فقط چند Badge کوچک توی هدر -
        فقط وقتی داده‌ی IDC واقعاً وجود دارد نمایش داده می‌شود (سند هیچ‌وقت وارد IDC نشده باشد،
        تب اضافه‌ای نیست). *@
     @if (idcStatusForPage.Any())
     {
-        <li class="nav-item" role="presentation">
-            <pems-button plain="true" css="nav-link" data-bs-toggle="tab" data-bs-target="#tab-idc" type="button">
+        <pems-tab target="tab-idc">
                 <pems-icon name="bi-diagram-3" /> @Localizer["Ed_TabIdc"] <pems-badge tone="neutral">@idcApprovedCount/@idcStatusForPage.Count</pems-badge>
-            </pems-button>
-        </li>
+            </pems-tab>
     }
-    <li class="nav-item" role="presentation">
-        <pems-button plain="true" css="nav-link" data-bs-toggle="tab" data-bs-target="#tab-revisions" type="button">
+    <pems-tab target="tab-revisions">
             <pems-icon name="bi-clock-history" /> @Localizer["Ed_TabRevisions"] <pems-badge tone="neutral">@(Model.Revisions?.Count ?? 0)</pems-badge>
-        </pems-button>
-    </li>
-    <li class="nav-item" role="presentation">
-        <pems-button plain="true" css="nav-link" data-bs-toggle="tab" data-bs-target="#tab-transmittals" type="button">
+        </pems-tab>
+    <pems-tab target="tab-transmittals">
             <pems-icon name="bi-truck" /> @Localizer["Ed_TabTransmittals"]
             @if (relatedTransmittals.Any()) { <pems-badge tone="neutral">@relatedTransmittals.Count</pems-badge> }
-        </pems-button>
-    </li>
-    <li class="nav-item" role="presentation">
-        <pems-button plain="true" css="nav-link" data-bs-toggle="tab" data-bs-target="#tab-comments" type="button">
+        </pems-tab>
+    <pems-tab target="tab-comments">
             <pems-icon name="bi-chat-square-text" /> @Localizer["Ed_TabComments"]
             @if (engComments.Any()) { <pems-badge tone="@(commentsOpenCount > 0 ? "danger" : "neutral")">@commentsOpenCount<span class="visually-hidden"> @Localizer["Ed_OpenComments"]</span></pems-badge> }
-        </pems-button>
-    </li>
-    <li class="nav-item" role="presentation">
-        <pems-button plain="true" css="nav-link" data-bs-toggle="tab" data-bs-target="#tab-workflow" type="button">
+        </pems-tab>
+    <pems-tab target="tab-workflow">
             <pems-icon name="bi-diagram-2" /> @Localizer["Ed_TabWorkflow"]
-        </pems-button>
-    </li>
-    <li class="nav-item" role="presentation">
-        <pems-button plain="true" css="nav-link" data-bs-toggle="tab" data-bs-target="#tab-correspondence" type="button">
+        </pems-tab>
+    <pems-tab target="tab-correspondence">
             <pems-icon name="bi-envelope-paper" /> @Localizer["Ed_TabDistribution"]
             @if (relatedLetters.Any()) { <pems-badge tone="neutral">@relatedLetters.Count</pems-badge> }
-        </pems-button>
-    </li>
+        </pems-tab>
 </pems-nav>
 
 <pems-tab-content>
