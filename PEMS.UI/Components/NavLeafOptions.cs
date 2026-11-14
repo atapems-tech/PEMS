@@ -366,3 +366,15 @@ public sealed record FormFrameOptions : FrameOptions
 {
     public string? Css { get; init; }
 }
+
+/// <summary>Inputs of <see cref="PemsNavLink"/>: a link that goes to another page (<c>a.nav-link</c>), as a tab or pill of a server-side strip (inside <c>li.nav-item</c>) or as a sidebar entry (<c>Item</c> false, <c>Sub</c> for the indented entries). The href is the page's (<c>asp-action</c>, <c>href</c>); the label, icon and badge are the child content.</summary>
+public sealed record NavLinkOptions : FrameOptions
+{
+    /// <summary>Wrap the link in <c>li.nav-item</c> (a tab or pill strip). False for a sidebar entry.</summary>
+    public bool Item { get; init; } = true;
+    /// <summary>An indented sidebar entry (<c>nav-subitem</c>).</summary>
+    public bool Sub { get; init; }
+    /// <summary>The current page (<c>active</c>).</summary>
+    public bool Active { get; init; }
+    public string? Css { get; init; }
+}

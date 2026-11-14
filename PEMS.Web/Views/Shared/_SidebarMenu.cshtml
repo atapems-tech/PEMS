@@ -94,30 +94,30 @@
 
 <nav class="pems-sidebar" id="pemsSidebar">
 
-    <a class="nav-link @(IsActive("Home") ? "active" : "")" asp-controller="Home" asp-action="Index" asp-area="">
+    <pems-nav-link item="false" active="@(IsActive("Home"))" asp-controller="Home" asp-action="Index" asp-area="">
         <pems-icon name="bi-speedometer2" /> @Localizer["Dashboard"]
-    </a>
+    </pems-nav-link>
 
-    <a class="nav-link @(IsActive("ExecutiveDashboard") ? "active" : "")" asp-controller="ExecutiveDashboard" asp-action="Index" asp-area="">
+    <pems-nav-link item="false" active="@(IsActive("ExecutiveDashboard"))" asp-controller="ExecutiveDashboard" asp-action="Index" asp-area="">
         <pems-icon name="bi-graph-up-arrow" /> @Localizer["Exec_NavTitle"]
-    </a>
+    </pems-nav-link>
 
-    <a class="nav-link @(IsActive("MyWork") ? "active" : "")" asp-controller="MyWork" asp-action="Index" asp-area="">
+    <pems-nav-link item="false" active="@(IsActive("MyWork"))" asp-controller="MyWork" asp-action="Index" asp-area="">
         <pems-icon name="bi-list-check" /> @Localizer["My Work"]
-    </a>
+    </pems-nav-link>
 
     @if (canSeeQuickSetup)
     {
-        <a class="nav-link @(IsActive("QuickSetup") ? "active" : "")" asp-controller="QuickSetup" asp-action="Index" asp-area="">
+        <pems-nav-link item="false" active="@(IsActive("QuickSetup"))" asp-controller="QuickSetup" asp-action="Index" asp-area="">
             <pems-icon name="bi-rocket-takeoff" /> @Localizer["Quick Setup"]
-        </a>
+        </pems-nav-link>
     }
 
     @if (canSeeImportCenter)
     {
-        <a class="nav-link @(ContainsActive(ImportCatalog.StandaloneImportControllers) ? "active" : "")" asp-controller="ImportCenter" asp-action="Index" asp-area="">
+        <pems-nav-link item="false" active="@(ContainsActive(ImportCatalog.StandaloneImportControllers))" asp-controller="ImportCenter" asp-action="Index" asp-area="">
             <pems-icon name="bi-cloud-arrow-up" /> @Localizer["IC_Title"]
-        </a>
+        </pems-nav-link>
     }
 
 
@@ -131,46 +131,46 @@
         </div>
         <div class="@SectionClass(active)" id="sec-eng">
 
-            <a class="nav-link @(IsActive("EngineeringDashboard") ? "active" : "")" asp-controller="EngineeringDashboard" asp-action="Index" asp-area="">
+            <pems-nav-link item="false" active="@(IsActive("EngineeringDashboard"))" asp-controller="EngineeringDashboard" asp-action="Index" asp-area="">
                 <pems-icon name="bi-speedometer2" /> @Localizer["EngineeringDashboard"]
-            </a>
+            </pems-nav-link>
 
-            <a class="nav-link @(IsActive("Projects") ? "active" : "")" asp-controller="Projects" asp-action="Index" asp-area="">
+            <pems-nav-link item="false" active="@(IsActive("Projects"))" asp-controller="Projects" asp-action="Index" asp-area="">
                 <pems-icon name="bi-kanban" /> @Localizer["Projects"]
-            </a>
+            </pems-nav-link>
 
-            <a class="nav-link @(IsActive("EngineeringDocuments") ? "active" : "")"
+            <pems-nav-link item="false" active="@(IsActive("EngineeringDocuments"))"
                asp-controller="EngineeringDocuments" asp-action="Index" asp-area="">
                 <pems-icon name="bi-file-earmark-text" /> @Localizer["EngineeringDocuments"]
-            </a>
+            </pems-nav-link>
 
-            <a class="nav-link @(IsActive("DocumentRegister") ? "active" : "")" asp-controller="DocumentRegister" asp-action="Index" asp-area="">
+            <pems-nav-link item="false" active="@(IsActive("DocumentRegister"))" asp-controller="DocumentRegister" asp-action="Index" asp-area="">
                 <pems-icon name="bi-journal-bookmark" /> @Localizer["DocumentRegister"]
-            </a>
+            </pems-nav-link>
 
-            <a class="nav-link @(IsActive("DocumentRevisions") ? "active" : "")" asp-controller="DocumentRevisions" asp-action="Index" asp-area="">
+            <pems-nav-link item="false" active="@(IsActive("DocumentRevisions"))" asp-controller="DocumentRevisions" asp-action="Index" asp-area="">
                 <pems-icon name="bi-clock-history" /> @Localizer["Document Revision"]
-            </a>
+            </pems-nav-link>
 
-            <a class="nav-link @(IsActive("DocumentWorkflow") ? "active" : "")" asp-controller="DocumentWorkflow" asp-action="Index" asp-area="">
+            <pems-nav-link item="false" active="@(IsActive("DocumentWorkflow"))" asp-controller="DocumentWorkflow" asp-action="Index" asp-area="">
                 <pems-icon name="bi-diagram-2" /> @Localizer["Document Workflow"]
-            </a>
+            </pems-nav-link>
 
-            <a class="nav-link @(IsActive("VDR") ? "active" : "")" asp-controller="VDR" asp-action="Index" asp-area="">
+            <pems-nav-link item="false" active="@(IsActive("VDR"))" asp-controller="VDR" asp-action="Index" asp-area="">
                 <pems-icon name="bi-journal-check" /> @Localizer["VDR"]
-            </a>
+            </pems-nav-link>
 
-            <a class="nav-link @(IsActive("Transmittal") ? "active" : "")" asp-controller="Transmittal" asp-action="Index" asp-area="">
+            <pems-nav-link item="false" active="@(IsActive("Transmittal"))" asp-controller="Transmittal" asp-action="Index" asp-area="">
                 <pems-icon name="bi-send" /> @Localizer["Transmittal"]
-            </a>
+            </pems-nav-link>
 
-            <a class="nav-link @(IsActive("MDB") ? "active" : "")" asp-controller="MDB" asp-action="Index" asp-area="">
+            <pems-nav-link item="false" active="@(IsActive("MDB"))" asp-controller="MDB" asp-action="Index" asp-area="">
                 <pems-icon name="bi-collection" /> @Localizer["MDB"]
-            </a>
+            </pems-nav-link>
 
-            <a class="nav-link @(IsActive("Discipline") ? "active" : "")" asp-controller="Discipline" asp-action="Index" asp-area="">
+            <pems-nav-link item="false" active="@(IsActive("Discipline"))" asp-controller="Discipline" asp-action="Index" asp-area="">
                 <pems-icon name="bi-diagram-3" /> @Localizer["Disciplines"]
-            </a>
+            </pems-nav-link>
         </div>
     }
 
@@ -185,25 +185,25 @@
         </div>
         <div class="@SectionClass(active)" id="sec-ai">
 
-            <a class="nav-link @(IsActive("EngineeringDocumentIntelligence") ? "active" : "")" asp-controller="EngineeringDocumentIntelligence" asp-action="Index" asp-area="">
+            <pems-nav-link item="false" active="@(IsActive("EngineeringDocumentIntelligence"))" asp-controller="EngineeringDocumentIntelligence" asp-action="Index" asp-area="">
                 <pems-icon name="bi-diagram-3-fill" /> @Localizer["DocumentIntelligence"]
-            </a>
+            </pems-nav-link>
 
-            <a class="nav-link @(IsActive("KnowledgeBase") ? "active" : "")" asp-controller="KnowledgeBase" asp-action="Index" asp-area="">
+            <pems-nav-link item="false" active="@(IsActive("KnowledgeBase"))" asp-controller="KnowledgeBase" asp-action="Index" asp-area="">
                 <pems-icon name="bi-stars" /> @Localizer["KnowledgeBaseSearch"]
-            </a>
+            </pems-nav-link>
 
-            <a class="nav-link @(IsActive("AISearch") ? "active" : "")" asp-controller="AISearch" asp-action="Index" asp-area="">
+            <pems-nav-link item="false" active="@(IsActive("AISearch"))" asp-controller="AISearch" asp-action="Index" asp-area="">
                 <pems-icon name="bi-search-heart" /> @Localizer["AI Search"]
-            </a>
+            </pems-nav-link>
 
-            <a class="nav-link @(IsActive("ChatAssistant") ? "active" : "")" asp-controller="ChatAssistant" asp-action="Index" asp-area="">
+            <pems-nav-link item="false" active="@(IsActive("ChatAssistant"))" asp-controller="ChatAssistant" asp-action="Index" asp-area="">
                 <pems-icon name="bi-chat-dots" /> @Localizer["Engineering Chat Assistant"]
-            </a>
+            </pems-nav-link>
 
-            <a class="nav-link @(IsActive("AIInsights") ? "active" : "")" asp-controller="AIInsights" asp-action="Index" asp-area="">
+            <pems-nav-link item="false" active="@(IsActive("AIInsights"))" asp-controller="AIInsights" asp-action="Index" asp-area="">
                 <pems-icon name="bi-stars" /> @Localizer["Engineering Copilot"]
-            </a>
+            </pems-nav-link>
         </div>
     }
 
@@ -218,23 +218,23 @@
         </div>
         <div class="@SectionClass(active)" id="sec-correspondence">
 
-            <a class="nav-link @(IsActive("Letter") && ViewContext.RouteData.Values["action"]!.ToString() != "MyReferrals" ? "active" : "")"
+            <pems-nav-link item="false" active="@(IsActive("Letter") && ViewContext.RouteData.Values["action"]!.ToString() != "MyReferrals")"
                asp-controller="Letter" asp-action="Index" asp-area="">
                 <pems-icon name="bi-envelope-paper" /> @Localizer["Correspondence"]
-            </a>
+            </pems-nav-link>
 
-            <a class="nav-link @(IsActive("Letter") && ViewContext.RouteData.Values["action"]!.ToString() == "MyReferrals" ? "active" : "")"
+            <pems-nav-link item="false" active="@(IsActive("Letter") && ViewContext.RouteData.Values["action"]!.ToString() == "MyReferrals")"
                asp-controller="Letter" asp-action="MyReferrals" asp-area="">
                 <pems-icon name="bi-person-check" /> @Localizer["MyReferrals"]
-            </a>
+            </pems-nav-link>
 
-            <a class="nav-link @(IsActive("DCC") ? "active" : "")" asp-controller="DCC" asp-action="Index" asp-area="">
+            <pems-nav-link item="false" active="@(IsActive("DCC"))" asp-controller="DCC" asp-action="Index" asp-area="">
                 <pems-icon name="bi-building-gear" /> @Localizer["DCC"]
-            </a>
+            </pems-nav-link>
 
-            <a class="nav-link @(IsActive("TechnicalQuery") ? "active" : "")" asp-controller="TechnicalQuery" asp-action="Index" asp-area="">
+            <pems-nav-link item="false" active="@(IsActive("TechnicalQuery"))" asp-controller="TechnicalQuery" asp-action="Index" asp-area="">
                 <pems-icon name="bi-question-circle" /> @Localizer["TQ / TSR / RFI"]
-            </a>
+            </pems-nav-link>
         </div>
     }
 
@@ -249,13 +249,13 @@
         </div>
         <div class="@SectionClass(active)" id="sec-quality">
 
-            <a class="nav-link @(IsActive("QC") ? "active" : "")" asp-controller="QC" asp-action="Index" asp-area="">
+            <pems-nav-link item="false" active="@(IsActive("QC"))" asp-controller="QC" asp-action="Index" asp-area="">
                 <pems-icon name="bi-patch-check" /> @Localizer["QC / QA"]
-            </a>
+            </pems-nav-link>
 
-            <a class="nav-link @(IsActive("MOC") ? "active" : "")" asp-controller="MOC" asp-action="Index" asp-area="">
+            <pems-nav-link item="false" active="@(IsActive("MOC"))" asp-controller="MOC" asp-action="Index" asp-area="">
                 <pems-icon name="bi-arrow-repeat" /> @Localizer["MOC"]
-            </a>
+            </pems-nav-link>
         </div>
     }
 
@@ -280,9 +280,9 @@
 
             @if (contractVisible)
             {
-                <a class="nav-link @(IsActive("Vendor") ? "active" : "")" asp-controller="Vendor" asp-action="Index" asp-area="">
+                <pems-nav-link item="false" active="@(IsActive("Vendor"))" asp-controller="Vendor" asp-action="Index" asp-area="">
                     <pems-icon name="bi-building" /> @Localizer["Vendors"]
-                </a>
+                </pems-nav-link>
             }
 
             @if (engProcurementVisible || contractVisible || canSeePreProcurement)
@@ -291,43 +291,43 @@
             }
             @if (canSeePreProcurement)
             {
-                <a class="nav-link @(IsActive("PreProcurement") ? "active" : "")" asp-controller="PreProcurement" asp-action="Index" asp-area="">
+                <pems-nav-link item="false" active="@(IsActive("PreProcurement"))" asp-controller="PreProcurement" asp-action="Index" asp-area="">
                     <pems-icon name="bi-inbox" /> @Localizer["Ppr_Title"]
-                </a>
+                </pems-nav-link>
             }
             @if (engProcurementVisible)
             {
-                <a class="nav-link @(IsActive("MaterialRequisition") ? "active" : "")" asp-controller="MaterialRequisition" asp-action="Index" asp-area="">
+                <pems-nav-link item="false" active="@(IsActive("MaterialRequisition"))" asp-controller="MaterialRequisition" asp-action="Index" asp-area="">
                     <pems-icon name="bi-cart-check" /> @Localizer["Material Requisition"]
-                </a>
+                </pems-nav-link>
 
-                <a class="nav-link @(IsActive("ProcurementPackage") ? "active" : "")" asp-controller="ProcurementPackage" asp-action="Index" asp-area="">
+                <pems-nav-link item="false" active="@(IsActive("ProcurementPackage"))" asp-controller="ProcurementPackage" asp-action="Index" asp-area="">
                     <pems-icon name="bi-folder2-open" /> @Localizer["ProcurementPackage"]
-                </a>
+                </pems-nav-link>
 
-                <a class="nav-link @(IsActive("Tender") ? "active" : "")" asp-controller="Tender" asp-action="Index" asp-area="">
+                <pems-nav-link item="false" active="@(IsActive("Tender"))" asp-controller="Tender" asp-action="Index" asp-area="">
                     <pems-icon name="bi-clipboard-check" /> @Localizer["Tender"]
-                </a>
+                </pems-nav-link>
             }
             @if (contractVisible)
             {
-                <a class="nav-link @(IsActive("PurchaseOrder") ? "active" : "")" asp-controller="PurchaseOrder" asp-action="Index" asp-area="">
+                <pems-nav-link item="false" active="@(IsActive("PurchaseOrder"))" asp-controller="PurchaseOrder" asp-action="Index" asp-area="">
                     <pems-icon name="bi-receipt" /> @Localizer["Purchase Orders"]
-                </a>
+                </pems-nav-link>
 
                 <div class="nav-subheading">@Localizer["Contracts"]</div>
 
-                <a class="nav-link @(IsActive("Contract") ? "active" : "")" asp-controller="Contract" asp-action="Index" asp-area="">
+                <pems-nav-link item="false" active="@(IsActive("Contract"))" asp-controller="Contract" asp-action="Index" asp-area="">
                     <pems-icon name="bi-file-earmark-ruled" /> @Localizer["Contracts"]
-                </a>
+                </pems-nav-link>
 
-                <a class="nav-link" href="@ComingSoon("Contract Milestones", "Contract Management")">
+                <pems-nav-link item="false" href="@ComingSoon("Contract Milestones", "Contract Management")">
                     <pems-icon name="bi-flag" /> @Localizer["Contract Milestones"]
-                </a>
+                </pems-nav-link>
 
-                <a class="nav-link" href="@ComingSoon("Claims", "Contract Management")">
+                <pems-nav-link item="false" href="@ComingSoon("Claims", "Contract Management")">
                     <pems-icon name="bi-exclamation-diamond" /> @Localizer["Claims"]
-                </a>
+                </pems-nav-link>
             }
 
             @if (inventoryVisible || canSeePartCatalogue)
@@ -336,54 +336,54 @@
             }
             @if (inventoryVisible)
             {
-                <a class="nav-link @(IsActive("Inventory", "Warehouse") ? "active" : "")" asp-controller="Inventory" asp-action="Index" asp-area="Warehouse">
+                <pems-nav-link item="false" active="@(IsActive("Inventory", "Warehouse"))" asp-controller="Inventory" asp-action="Index" asp-area="Warehouse">
                     <pems-icon name="bi-speedometer2" /> @Localizer["Dashboard"]
-                </a>
+                </pems-nav-link>
 
-                <a class="nav-link @(IsActive("MaterialItem", "Warehouse") ? "active" : "")" asp-controller="MaterialItem" asp-action="Index" asp-area="Warehouse">
+                <pems-nav-link item="false" active="@(IsActive("MaterialItem", "Warehouse"))" asp-controller="MaterialItem" asp-action="Index" asp-area="Warehouse">
                     <pems-icon name="bi-box-seam" /> @Localizer["Material Master"]
-                </a>
+                </pems-nav-link>
 
-                <a class="nav-link @(IsActive("IrnReceipt", "Warehouse") ? "active" : "")" asp-controller="IrnReceipt" asp-action="Index" asp-area="Warehouse">
+                <pems-nav-link item="false" active="@(IsActive("IrnReceipt", "Warehouse"))" asp-controller="IrnReceipt" asp-action="Index" asp-area="Warehouse">
                     <pems-icon name="bi-truck" /> @Localizer["Incoming Receipts (IRN)"]
-                </a>
+                </pems-nav-link>
 
-                <a class="nav-link @(IsActive("InventoryTransaction", "Warehouse") ? "active" : "")" asp-controller="InventoryTransaction" asp-action="Index" asp-area="Warehouse">
+                <pems-nav-link item="false" active="@(IsActive("InventoryTransaction", "Warehouse"))" asp-controller="InventoryTransaction" asp-action="Index" asp-area="Warehouse">
                     <pems-icon name="bi-list-ul" /> @Localizer["Transaction Ledger"]
-                </a>
+                </pems-nav-link>
 
-                <a class="nav-link @(IsActive("StoreRequisition", "Warehouse") ? "active" : "")" asp-controller="StoreRequisition" asp-action="Index" asp-area="Warehouse">
+                <pems-nav-link item="false" active="@(IsActive("StoreRequisition", "Warehouse"))" asp-controller="StoreRequisition" asp-action="Index" asp-area="Warehouse">
                     <pems-icon name="bi-clipboard-check" /> @Localizer["Store Requisitions"]
-                </a>
+                </pems-nav-link>
 
                 @if (canSeeReplenishment)
                 {
-                    <a class="nav-link @(IsActive("Replenishment", "Warehouse") ? "active" : "")" asp-controller="Replenishment" asp-action="Index" asp-area="Warehouse">
+                    <pems-nav-link item="false" active="@(IsActive("Replenishment", "Warehouse"))" asp-controller="Replenishment" asp-action="Index" asp-area="Warehouse">
                         <pems-icon name="bi-cart-plus" /> @Localizer["Repl_Menu"]
-                    </a>
+                    </pems-nav-link>
                 }
 
-                <a class="nav-link @(IsActive("InventoryMasterData", "Warehouse") ? "active" : "")" asp-controller="InventoryMasterData" asp-action="Index" asp-area="Warehouse">
+                <pems-nav-link item="false" active="@(IsActive("InventoryMasterData", "Warehouse"))" asp-controller="InventoryMasterData" asp-action="Index" asp-area="Warehouse">
                     <pems-icon name="bi-collection" /> @Localizer["Master Data"]
-                </a>
+                </pems-nav-link>
             }
             @if (canSeePartCatalogue)
             {
-                <a class="nav-link @(IsActive("PartCatalogueRequest", "Warehouse") ? "active" : "")" asp-controller="PartCatalogueRequest" asp-action="Index" asp-area="Warehouse">
+                <pems-nav-link item="false" active="@(IsActive("PartCatalogueRequest", "Warehouse"))" asp-controller="PartCatalogueRequest" asp-action="Index" asp-area="Warehouse">
                     <pems-icon name="bi-journal-plus" /> @Localizer["Pc_Menu"]
-                </a>
+                </pems-nav-link>
             }
             @if (canSeePartCatalogueReports)
             {
-                <a class="nav-link @(IsActive("PartCatalogueReport", "Warehouse") ? "active" : "")" asp-controller="PartCatalogueReport" asp-action="Index" asp-area="Warehouse">
+                <pems-nav-link item="false" active="@(IsActive("PartCatalogueReport", "Warehouse"))" asp-controller="PartCatalogueReport" asp-action="Index" asp-area="Warehouse">
                     <pems-icon name="bi-bar-chart-line" /> @Localizer["PcRpt_Menu"]
-                </a>
+                </pems-nav-link>
             }
             @if (canAdminPartCatalogue)
             {
-                <a class="nav-link @(IsActive("PartCatalogueAdmin", "Warehouse") ? "active" : "")" asp-controller="PartCatalogueAdmin" asp-action="Index" asp-area="Warehouse">
+                <pems-nav-link item="false" active="@(IsActive("PartCatalogueAdmin", "Warehouse"))" asp-controller="PartCatalogueAdmin" asp-action="Index" asp-area="Warehouse">
                     <pems-icon name="bi-sliders" /> @Localizer["Pc_Title_Admin"]
-                </a>
+                </pems-nav-link>
             }
         </div>
     }
@@ -399,21 +399,21 @@
         </div>
         <div class="@SectionClass(active)" id="sec-projctrl">
 
-            <a class="nav-link @(IsActive("Task") ? "active" : "")" asp-controller="Task" asp-action="Index" asp-area="">
+            <pems-nav-link item="false" active="@(IsActive("Task"))" asp-controller="Task" asp-action="Index" asp-area="">
                 <pems-icon name="bi-check2-square" /> @Localizer["Tasks"]
-            </a>
+            </pems-nav-link>
 
-            <a class="nav-link @(IsActive("TaskManager") ? "active" : "")" asp-controller="TaskManager" asp-action="Index" asp-area="">
+            <pems-nav-link item="false" active="@(IsActive("TaskManager"))" asp-controller="TaskManager" asp-action="Index" asp-area="">
                 <pems-icon name="bi-kanban" /> @Localizer["Nav_TaskManager"]
-            </a>
+            </pems-nav-link>
 
-            <a class="nav-link @(IsActive("Meeting") ? "active" : "")" asp-controller="Meeting" asp-action="Index" asp-area="">
+            <pems-nav-link item="false" active="@(IsActive("Meeting"))" asp-controller="Meeting" asp-action="Index" asp-area="">
                 <pems-icon name="bi-people" /> @Localizer["Meetings"]
-            </a>
+            </pems-nav-link>
 
-            <a class="nav-link @(IsActive("Report") ? "active" : "")" asp-controller="Report" asp-action="Index" asp-area="">
+            <pems-nav-link item="false" active="@(IsActive("Report"))" asp-controller="Report" asp-action="Index" asp-area="">
                 <pems-icon name="bi-graph-up" /> @Localizer["Reports"]
-            </a>
+            </pems-nav-link>
         </div>
     }
 
@@ -430,23 +430,23 @@
 
             @if (navVisibility.IsCmmsItemVisible("Equipment"))
             {
-                <a class="nav-link @(IsActive("Equipment") ? "active" : "")" asp-controller="Equipment" asp-action="Index" asp-area="">
+                <pems-nav-link item="false" active="@(IsActive("Equipment"))" asp-controller="Equipment" asp-action="Index" asp-area="">
                     <pems-icon name="bi-gear" /> @Localizer["Equipment"]
-                </a>
+                </pems-nav-link>
             }
 
             @if (navVisibility.IsCmmsItemVisible("Instrument"))
             {
-                <a class="nav-link @(IsActive("Instrument") ? "active" : "")" asp-controller="Instrument" asp-action="Index" asp-area="">
+                <pems-nav-link item="false" active="@(IsActive("Instrument"))" asp-controller="Instrument" asp-action="Index" asp-area="">
                     <pems-icon name="bi-cpu" /> @Localizer["Instrument Passport"]
-                </a>
+                </pems-nav-link>
             }
 
             @if (navVisibility.IsCmmsItemVisible("Asset"))
             {
-                <a class="nav-link @(IsActive("Asset") ? "active" : "")" asp-controller="Asset" asp-action="Index" asp-area="">
+                <pems-nav-link item="false" active="@(IsActive("Asset"))" asp-controller="Asset" asp-action="Index" asp-area="">
                     <pems-icon name="bi-diagram-2" /> @Localizer["Assets"]
-                </a>
+                </pems-nav-link>
             }
 
             @* طبق «PEMS CMMS Sidebar Refactoring — Maintenance Planning»: سه آیتم زیر (که از قبل هر سه
@@ -463,74 +463,74 @@
 
                 @if (navVisibility.IsCmmsItemVisible("MaintenanceStrategy"))
                 {
-                    <a class="nav-link nav-subitem @(IsActive("MaintenanceStrategy") ? "active" : "")" asp-controller="MaintenanceStrategy" asp-action="Index" asp-area="">
+                    <pems-nav-link item="false" sub="true" active="@(IsActive("MaintenanceStrategy"))" asp-controller="MaintenanceStrategy" asp-action="Index" asp-area="">
                         <pems-icon name="bi-diagram-2" /> @Localizer["Maintenance Strategy"]
-                    </a>
+                    </pems-nav-link>
                 }
 
                 @if (navVisibility.IsCmmsItemVisible("MaintenancePlan"))
                 {
-                    <a class="nav-link nav-subitem @(IsActive("MaintenancePlan") ? "active" : "")" asp-controller="MaintenancePlan" asp-action="Index" asp-area="">
+                    <pems-nav-link item="false" sub="true" active="@(IsActive("MaintenancePlan"))" asp-controller="MaintenancePlan" asp-action="Index" asp-area="">
                         <pems-icon name="bi-calendar-check" /> @Localizer["Maintenance Plan"]
-                    </a>
+                    </pems-nav-link>
                 }
 
                 @if (navVisibility.IsCmmsItemVisible("CmmsOperations"))
                 {
-                    <a class="nav-link nav-subitem @(IsActive("CmmsOperations") && ViewContext.RouteData.Values["action"]!.ToString() == "Backlog" ? "active" : "")"
+                    <pems-nav-link item="false" sub="true" active="@(IsActive("CmmsOperations") && ViewContext.RouteData.Values["action"]!.ToString() == "Backlog")"
                        asp-controller="CmmsOperations" asp-action="Backlog" asp-area="">
                         <pems-icon name="bi-hourglass-split" /> @Localizer["Maintenance Backlog"]
-                    </a>
+                    </pems-nav-link>
                 }
 
                 @if (navVisibility.IsCmmsItemVisible("MaintenanceCalendar"))
                 {
-                    <a class="nav-link nav-subitem @(IsActive("MaintenanceCalendar") ? "active" : "")" asp-controller="MaintenanceCalendar" asp-action="Index" asp-area="">
+                    <pems-nav-link item="false" sub="true" active="@(IsActive("MaintenanceCalendar"))" asp-controller="MaintenanceCalendar" asp-action="Index" asp-area="">
                         <pems-icon name="bi-calendar3-week" /> @Localizer["Maintenance Calendar"]
-                    </a>
+                    </pems-nav-link>
                 }
             }
 
             @if (navVisibility.IsCmmsItemVisible("JobPlan"))
             {
-                <a class="nav-link @(IsActive("JobPlan") ? "active" : "")" asp-controller="JobPlan" asp-action="Index" asp-area="">
+                <pems-nav-link item="false" active="@(IsActive("JobPlan"))" asp-controller="JobPlan" asp-action="Index" asp-area="">
                     <pems-icon name="bi-list-check" /> @Localizer["Job Plans"]
-                </a>
+                </pems-nav-link>
             }
 
             @if (navVisibility.IsCmmsItemVisible("WorkRequest"))
             {
-                <a class="nav-link @(IsActive("WorkRequest") ? "active" : "")" asp-controller="WorkRequest" asp-action="Index" asp-area="">
+                <pems-nav-link item="false" active="@(IsActive("WorkRequest"))" asp-controller="WorkRequest" asp-action="Index" asp-area="">
                     <pems-icon name="bi-clipboard-plus" /> @Localizer["Work Requests"]
-                </a>
+                </pems-nav-link>
             }
 
             @if (navVisibility.IsCmmsItemVisible("WorkOrder"))
             {
-                <a class="nav-link @(IsActive("WorkOrder") ? "active" : "")" asp-controller="WorkOrder" asp-action="Index" asp-area="">
+                <pems-nav-link item="false" active="@(IsActive("WorkOrder"))" asp-controller="WorkOrder" asp-action="Index" asp-area="">
                     <pems-icon name="bi-clipboard-check" /> @Localizer["Work Order"]
-                </a>
+                </pems-nav-link>
             }
 
             @if (navVisibility.IsCmmsItemVisible("SparePart"))
             {
-                <a class="nav-link @(IsActive("SparePart") ? "active" : "")" asp-controller="SparePart" asp-action="Index" asp-area="">
+                <pems-nav-link item="false" active="@(IsActive("SparePart"))" asp-controller="SparePart" asp-action="Index" asp-area="">
                     <pems-icon name="bi-tools" /> @Localizer["Spare Parts"]
-                </a>
+                </pems-nav-link>
             }
 
             @if (navVisibility.IsCmmsItemVisible("Team"))
             {
-                <a class="nav-link @(IsActive("Team") ? "active" : "")" asp-controller="Team" asp-action="Index" asp-area="">
+                <pems-nav-link item="false" active="@(IsActive("Team"))" asp-controller="Team" asp-action="Index" asp-area="">
                     <pems-icon name="bi-people" /> @Localizer["Teams"]
-                </a>
+                </pems-nav-link>
             }
 
             @if (navVisibility.IsCmmsItemVisible("Crew"))
             {
-                <a class="nav-link @(IsActive("Crew") ? "active" : "")" asp-controller="Crew" asp-action="Index" asp-area="">
+                <pems-nav-link item="false" active="@(IsActive("Crew"))" asp-controller="Crew" asp-action="Index" asp-area="">
                     <pems-icon name="bi-people-fill" /> @Localizer["Crews"]
-                </a>
+                </pems-nav-link>
             }
 
             @* طبق «PEMS Phase 2C-1 — Navigation Integrity»: ShiftHandoverController یک ماژول واقعی و
@@ -540,93 +540,93 @@
                آیتم اکنون مجوزمحور است (Resource "ShiftHandover")، نه فقط گیت سطح‌بخش. *@
             @if (navVisibility.IsCmmsItemVisible("ShiftHandover"))
             {
-                <a class="nav-link @(IsActive("ShiftHandover") ? "active" : "")" asp-controller="ShiftHandover" asp-action="Index" asp-area="">
+                <pems-nav-link item="false" active="@(IsActive("ShiftHandover"))" asp-controller="ShiftHandover" asp-action="Index" asp-area="">
                     <pems-icon name="bi-arrow-left-right" /> @Localizer["Shift Handovers"]
-                </a>
+                </pems-nav-link>
             }
 
             @if (navVisibility.IsCmmsItemVisible("MaintenanceMasterData"))
             {
-                <a class="nav-link @(IsActive("MaintenanceMasterData") ? "active" : "")" asp-controller="MaintenanceMasterData" asp-action="Index" asp-area="">
+                <pems-nav-link item="false" active="@(IsActive("MaintenanceMasterData"))" asp-controller="MaintenanceMasterData" asp-action="Index" asp-area="">
                     <pems-icon name="bi-collection" /> @Localizer["Maintenance Master Data"]
-                </a>
+                </pems-nav-link>
             }
 
             @if (navVisibility.IsCmmsItemVisible("EquipmentClassification"))
             {
-                <a class="nav-link @(IsActive("EquipmentClassification") ? "active" : "")" asp-controller="EquipmentClassification" asp-action="Index" asp-area="">
+                <pems-nav-link item="false" active="@(IsActive("EquipmentClassification"))" asp-controller="EquipmentClassification" asp-action="Index" asp-area="">
                     <pems-icon name="bi-diagram-3-fill" /> @Localizer["Equipment Classification"]
-                </a>
+                </pems-nav-link>
             }
 
             @if (navVisibility.IsCmmsItemVisible("CmmsReadiness"))
             {
-                <a class="nav-link @(IsActive("CmmsReadiness") ? "active" : "")" asp-controller="CmmsReadiness" asp-action="Index" asp-area="">
+                <pems-nav-link item="false" active="@(IsActive("CmmsReadiness"))" asp-controller="CmmsReadiness" asp-action="Index" asp-area="">
                     <pems-icon name="bi-clipboard-check" /> @Localizer["CMMS Readiness"]
-                </a>
+                </pems-nav-link>
             }
 
             @if (navVisibility.IsCmmsItemVisible("CmmsOperations"))
             {
-                <a class="nav-link @(IsActive("CmmsOperations") && ViewContext.RouteData.Values["action"]!.ToString() != "Backlog" ? "active" : "")" asp-controller="CmmsOperations" asp-action="Dashboard" asp-area="">
+                <pems-nav-link item="false" active="@(IsActive("CmmsOperations") && ViewContext.RouteData.Values["action"]!.ToString() != "Backlog")" asp-controller="CmmsOperations" asp-action="Dashboard" asp-area="">
                     <pems-icon name="bi-speedometer2" /> @Localizer["CMMS Operations"]
-                </a>
+                </pems-nav-link>
             }
 
             @if (navVisibility.IsCmmsItemVisible("RcmFmea"))
             {
-                <a class="nav-link @(IsActive("RcmFmea") ? "active" : "")" asp-controller="RcmFmea" asp-action="Index" asp-area="">
+                <pems-nav-link item="false" active="@(IsActive("RcmFmea"))" asp-controller="RcmFmea" asp-action="Index" asp-area="">
                     <pems-icon name="bi-clipboard2-pulse" /> @Localizer["RCM / FMEA"]
-                </a>
+                </pems-nav-link>
             }
 
             @if (navVisibility.IsCmmsItemVisible("EquipmentCriticality"))
             {
-                <a class="nav-link @(IsActive("EquipmentCriticality") ? "active" : "")" asp-controller="EquipmentCriticality" asp-action="Index" asp-area="">
+                <pems-nav-link item="false" active="@(IsActive("EquipmentCriticality"))" asp-controller="EquipmentCriticality" asp-action="Index" asp-area="">
                     <pems-icon name="bi-shield-exclamation" /> @Localizer["Criticality Analysis"]
-                </a>
+                </pems-nav-link>
             }
 
             @if (navVisibility.IsCmmsItemVisible("CriticalityAssessment"))
             {
-                <a class="nav-link @(IsActive("CriticalityAssessment") ? "active" : "")" asp-controller="CriticalityAssessment" asp-action="Dashboard" asp-area="">
+                <pems-nav-link item="false" active="@(IsActive("CriticalityAssessment"))" asp-controller="CriticalityAssessment" asp-action="Dashboard" asp-area="">
                     <pems-icon name="bi-clipboard2-check" /> @Localizer["Criticality Assessment"]
-                </a>
+                </pems-nav-link>
             }
 
             @if (navVisibility.IsCmmsItemVisible("Reliability"))
             {
-                <a class="nav-link @(IsActive("Reliability") ? "active" : "")" asp-controller="Reliability" asp-action="Dashboard" asp-area="">
+                <pems-nav-link item="false" active="@(IsActive("Reliability"))" asp-controller="Reliability" asp-action="Dashboard" asp-area="">
                     <pems-icon name="bi-graph-up-arrow" /> @Localizer["Reliability"]
-                </a>
+                </pems-nav-link>
             }
 
             @if (navVisibility.IsCmmsItemVisible("Inspection"))
             {
-                <a class="nav-link @(IsActive("Inspection") ? "active" : "")" asp-controller="Inspection" asp-action="Index" asp-area="">
+                <pems-nav-link item="false" active="@(IsActive("Inspection"))" asp-controller="Inspection" asp-action="Index" asp-area="">
                     <pems-icon name="bi-clipboard-pulse" /> @Localizer["Inspections"]
-                </a>
+                </pems-nav-link>
             }
 
             @if (navVisibility.IsCmmsItemVisible("Kpi"))
             {
-                <a class="nav-link @(IsActive("Kpi") ? "active" : "")" asp-controller="Kpi" asp-action="Index" asp-area="">
+                <pems-nav-link item="false" active="@(IsActive("Kpi"))" asp-controller="Kpi" asp-action="Index" asp-area="">
                     <pems-icon name="bi-speedometer2" /> @Localizer["KPI Dashboard"]
-                </a>
+                </pems-nav-link>
             }
 
             @if (navVisibility.IsCmmsItemVisible("Permit"))
             {
-                <a class="nav-link @(IsActive("Permit") ? "active" : "")" asp-controller="Permit" asp-action="Index" asp-area="">
+                <pems-nav-link item="false" active="@(IsActive("Permit"))" asp-controller="Permit" asp-action="Index" asp-area="">
                     <pems-icon name="bi-shield-check" /> @Localizer["Permits"]
-                </a>
+                </pems-nav-link>
             }
 
             @if (navVisibility.IsCmmsItemVisible("FunctionalLocation"))
             {
-                <a class="nav-link @(IsActive("FunctionalLocation") ? "active" : "")" asp-controller="FunctionalLocation" asp-action="Index" asp-area="">
+                <pems-nav-link item="false" active="@(IsActive("FunctionalLocation"))" asp-controller="FunctionalLocation" asp-action="Index" asp-area="">
                     <pems-icon name="bi-diagram-3" /> @Localizer["Functional Locations"]
-                </a>
+                </pems-nav-link>
             }
 
             @* طبق فاز ۶: پیش‌فرض این آیتم اکنون از Resource واقعی "Barcode" (همان BarcodeController)
@@ -634,9 +634,9 @@
                CmmsIntegration قرار گرفت (دقیقاً هم‌الگو با بقیه‌ی آیتم‌های این بخش). *@
             @if (navVisibility.IsCmmsItemVisible("Barcode"))
             {
-                <a class="nav-link @(IsActive("Barcode") ? "active" : "")" asp-controller="Barcode" asp-action="Index" asp-area="">
+                <pems-nav-link item="false" active="@(IsActive("Barcode"))" asp-controller="Barcode" asp-action="Index" asp-area="">
                     <pems-icon name="bi-upc-scan" /> @Localizer["Barcode"]
-                </a>
+                </pems-nav-link>
             }
         </div>
     }
@@ -661,13 +661,13 @@
         </div>
         <div class="@SectionClass(active)" id="sec-operations">
 
-            <a class="nav-link @(IsActive("Production") ? "active" : "")" asp-controller="Production" asp-action="Dashboard" asp-area="">
+            <pems-nav-link item="false" active="@(IsActive("Production"))" asp-controller="Production" asp-action="Dashboard" asp-area="">
                 <pems-icon name="bi-speedometer2" /> @Localizer["Dashboard"]
-            </a>
+            </pems-nav-link>
 
-            <a class="nav-link @(IsActive("ProductionOrder") ? "active" : "")" asp-controller="ProductionOrder" asp-action="Index" asp-area="">
+            <pems-nav-link item="false" active="@(IsActive("ProductionOrder"))" asp-controller="ProductionOrder" asp-action="Index" asp-area="">
                 <pems-icon name="bi-clipboard-data" /> @Localizer["Production Orders"]
-            </a>
+            </pems-nav-link>
         </div>
     }
 
@@ -688,9 +688,9 @@
         </div>
         <div class="@SectionClass(activeOrg)" id="sec-admin-org">
             <div class="nav-subheading">@Localizer["Organization"]</div>
-            <a class="nav-link nav-subitem @(activeOrg ? "active" : "")" asp-controller="Discipline" asp-action="Manage" asp-area="">
+            <pems-nav-link item="false" sub="true" active="@(activeOrg)" asp-controller="Discipline" asp-action="Manage" asp-area="">
                 <pems-icon name="bi-sliders" /> @Localizer["Disc_Master_Nav"]
-            </a>
+            </pems-nav-link>
         </div>
     }
 
@@ -704,31 +704,31 @@
         </div>
         <div class="@SectionClass(active)" id="sec-admin">
 
-            <a class="nav-link @(IsActive("Settings") ? "active" : "")" asp-controller="Settings" asp-action="Index" asp-area="">
+            <pems-nav-link item="false" active="@(IsActive("Settings"))" asp-controller="Settings" asp-action="Index" asp-area="">
                 <pems-icon name="bi-gear" /> @Localizer["Settings"]
-            </a>
+            </pems-nav-link>
 
             @* SCRUM-40: الگوهای شماره‌گذاری اسناد تدارکات؛ همان نقش کنترلر (SystemAdmin) *@
             @if (canSeeAdminCore && User.IsInRole(PEMS.Persistence.Identity.SystemRoles.SystemAdmin))
             {
-                <a class="nav-link @(InArea("Admin") && IsActive("Numbering", "Admin") ? "active" : "")" asp-area="Admin" asp-controller="Numbering" asp-action="Index">
+                <pems-nav-link item="false" active="@(InArea("Admin") && IsActive("Numbering", "Admin"))" asp-area="Admin" asp-controller="Numbering" asp-action="Index">
                     <pems-icon name="bi-123" /> @Localizer["Num_Title"]
-                </a>
+                </pems-nav-link>
             }
 
             @if (canSeeAdminCore)
             {
                 <div class="nav-subheading">@Localizer["User & Access"]</div>
 
-                <a class="nav-link nav-subitem @(InArea("Admin") && IsActive("Users", "Admin") ? "active" : "")"
+                <pems-nav-link item="false" sub="true" active="@(InArea("Admin") && IsActive("Users", "Admin"))"
                    asp-area="Admin" asp-controller="Users" asp-action="Index">
                     <pems-icon name="bi-people" /> @Localizer["Users"]
-                </a>
+                </pems-nav-link>
 
-                <a class="nav-link nav-subitem @(InArea("Admin") && IsActive("Roles", "Admin") ? "active" : "")"
+                <pems-nav-link item="false" sub="true" active="@(InArea("Admin") && IsActive("Roles", "Admin"))"
                    asp-area="Admin" asp-controller="Roles" asp-action="Index">
                     <pems-icon name="bi-shield-check" /> @Localizer["Roles"]
-                </a>
+                </pems-nav-link>
 
                 @* طبق «PEMS — Enterprise User-Centric Authorization Workspace Consolidation»: چهار
                    لینک مستقل قبلی (Permission Matrix/Effective Permissions/Permission Simulator/
@@ -740,109 +740,109 @@
                    واقعیِ RolesController.Create است). Roles دست‌نخورده می‌ماند - نقش یک سازه‌ی
                    مستقل و قابل‌استفاده‌ی مجدد است، نه بخشی از این تجمیع. *@
 
-                <a class="nav-link nav-subitem @(InArea("Admin") && IsActive("WorkflowManagement", "Admin") ? "active" : "")"
+                <pems-nav-link item="false" sub="true" active="@(InArea("Admin") && IsActive("WorkflowManagement", "Admin"))"
                    asp-area="Admin" asp-controller="WorkflowManagement" asp-action="Index">
                     <pems-icon name="bi-diagram-3" /> @Localizer["Workflow Management"]
-                </a>
-                <a class="nav-link nav-subitem @(InArea("Admin") && IsActive("Help", "Admin") ? "active" : "")"
+                </pems-nav-link>
+                <pems-nav-link item="false" sub="true" active="@(InArea("Admin") && IsActive("Help", "Admin"))"
                    asp-area="Admin" asp-controller="Help" asp-action="Index">
                     <pems-icon name="bi-life-preserver" /> @Localizer["Help Administration"]
-                </a>
+                </pems-nav-link>
 
                 <div class="nav-subheading">@Localizer["Organization"]</div>
 
-                <a class="nav-link nav-subitem @(IsActive("Department") ? "active" : "")" asp-controller="Department" asp-action="Index" asp-area="">
+                <pems-nav-link item="false" sub="true" active="@(IsActive("Department"))" asp-controller="Department" asp-action="Index" asp-area="">
                     <pems-icon name="bi-building" /> @Localizer["Departments"]
-                </a>
+                </pems-nav-link>
 
-                <a class="nav-link nav-subitem @(IsActive("Employee") ? "active" : "")" asp-controller="Employee" asp-action="Index" asp-area="">
+                <pems-nav-link item="false" sub="true" active="@(IsActive("Employee"))" asp-controller="Employee" asp-action="Index" asp-area="">
                     <pems-icon name="bi-people" /> @Localizer["Employees"]
-                </a>
+                </pems-nav-link>
 
-                <a class="nav-link nav-subitem @(IsActive("Discipline") && currentAction == "Manage" ? "active" : "")" asp-controller="Discipline" asp-action="Manage" asp-area="">
+                <pems-nav-link item="false" sub="true" active="@(IsActive("Discipline") && currentAction == "Manage")" asp-controller="Discipline" asp-action="Manage" asp-area="">
                     <pems-icon name="bi-sliders" /> @Localizer["Disc_Master_Nav"]
-                </a>
+                </pems-nav-link>
 
-                <a class="nav-link nav-subitem @(InArea("Admin") && IsActive("Organization") && currentAction == "Positions" ? "active" : "")"
+                <pems-nav-link item="false" sub="true" active="@(InArea("Admin") && IsActive("Organization") && currentAction == "Positions")"
                    asp-area="Admin" asp-controller="Organization" asp-action="Positions">
                     <pems-icon name="bi-person-badge" /> @Localizer["Org_Positions_Nav"]
-                </a>
+                </pems-nav-link>
 
-                <a class="nav-link nav-subitem @(InArea("Admin") && IsActive("Organization") && currentAction != "Positions" ? "active" : "")"
+                <pems-nav-link item="false" sub="true" active="@(InArea("Admin") && IsActive("Organization") && currentAction != "Positions")"
                    asp-area="Admin" asp-controller="Organization" asp-action="Index">
                     <pems-icon name="bi-diagram-3" /> @Localizer["Org_Title"]
-                </a>
+                </pems-nav-link>
             }
 
             @if (canSeeAdminCore)
             {
                 <div class="nav-subheading">@Localizer["AI Administration"]</div>
 
-                <a class="nav-link nav-subitem @(IsActive("Intake") ? "active" : "")" asp-controller="Intake" asp-action="Index" asp-area="">
+                <pems-nav-link item="false" sub="true" active="@(IsActive("Intake"))" asp-controller="Intake" asp-action="Index" asp-area="">
                     <pems-icon name="bi-inboxes" /> @Localizer["AIIntakeQueue"]
-                </a>
+                </pems-nav-link>
 
-                <a class="nav-link nav-subitem @(IsActive("OCRProcessing") ? "active" : "")" asp-controller="OCRProcessing" asp-action="Index" asp-area="">
+                <pems-nav-link item="false" sub="true" active="@(IsActive("OCRProcessing"))" asp-controller="OCRProcessing" asp-action="Index" asp-area="">
                     <pems-icon name="bi-badge-ad" /> @Localizer["OCR Processing"]
-                </a>
+                </pems-nav-link>
 
-                <a class="nav-link nav-subitem @(IsActive("AIExtraction") ? "active" : "")" asp-controller="AIExtraction" asp-action="Index" asp-area="">
+                <pems-nav-link item="false" sub="true" active="@(IsActive("AIExtraction"))" asp-controller="AIExtraction" asp-action="Index" asp-area="">
                     <pems-icon name="bi-cpu" /> @Localizer["AI Extraction"]
-                </a>
+                </pems-nav-link>
 
-                <a class="nav-link nav-subitem @(IsActive("TableExtraction") ? "active" : "")" asp-controller="TableExtraction" asp-action="Index" asp-area="">
+                <pems-nav-link item="false" sub="true" active="@(IsActive("TableExtraction"))" asp-controller="TableExtraction" asp-action="Index" asp-area="">
                     <pems-icon name="bi-table" /> @Localizer["Table Extraction"]
-                </a>
+                </pems-nav-link>
 
-                <a class="nav-link nav-subitem @(IsActive("Relationship") ? "active" : "")" asp-controller="Relationship" asp-action="Index" asp-area="">
+                <pems-nav-link item="false" sub="true" active="@(IsActive("Relationship"))" asp-controller="Relationship" asp-action="Index" asp-area="">
                     <pems-icon name="bi-diagram-3" /> @Localizer["RelationshipExplorer"]
-                </a>
+                </pems-nav-link>
 
-                <a class="nav-link nav-subitem @(InArea("Admin") && IsActive("RoutingRules") ? "active" : "")"
+                <pems-nav-link item="false" sub="true" active="@(InArea("Admin") && IsActive("RoutingRules"))"
                    asp-area="Admin" asp-controller="RoutingRules" asp-action="Index">
                     <pems-icon name="bi-signpost-split" /> @Localizer["AI Routing Rules"]
-                </a>
+                </pems-nav-link>
 
-                <a class="nav-link nav-subitem @(InArea("Admin") && IsActive("ContractApprovalAuthority") ? "active" : "")"
+                <pems-nav-link item="false" sub="true" active="@(InArea("Admin") && IsActive("ContractApprovalAuthority"))"
                    asp-area="Admin" asp-controller="ContractApprovalAuthority" asp-action="Index">
                     <pems-icon name="bi-shield-check" /> @Localizer["Contract Approval Authority"]
-                </a>
+                </pems-nav-link>
 
-                <a class="nav-link nav-subitem @(InArea("Admin") && IsActive("PurchaseOrderAuthority") ? "active" : "")"
+                <pems-nav-link item="false" sub="true" active="@(InArea("Admin") && IsActive("PurchaseOrderAuthority"))"
                    asp-area="Admin" asp-controller="PurchaseOrderAuthority" asp-action="Index">
                     <pems-icon name="bi-receipt-cutoff" /> @Localizer["Po_AuthorityTitle"]
-                </a>
+                </pems-nav-link>
 
                 <div class="nav-subheading">@Localizer["System Monitoring"]</div>
 
-                <a class="nav-link nav-subitem @(InArea("Admin") && IsActive("AuditLog") ? "active" : "")"
+                <pems-nav-link item="false" sub="true" active="@(InArea("Admin") && IsActive("AuditLog"))"
                    asp-area="Admin" asp-controller="AuditLog" asp-action="Index">
                     <pems-icon name="bi-clock-history" /> @Localizer["AuditLog"]
-                </a>
+                </pems-nav-link>
 
-                <a class="nav-link nav-subitem @(InArea("Admin") && IsActive("AuthorizationAudit", "Admin") ? "active" : "")"
+                <pems-nav-link item="false" sub="true" active="@(InArea("Admin") && IsActive("AuthorizationAudit", "Admin"))"
                    asp-area="Admin" asp-controller="AuthorizationAudit" asp-action="Index">
                     <pems-icon name="bi-journal-check" /> @Localizer["Authorization Audit"]
-                </a>
+                </pems-nav-link>
 
-                <a class="nav-link nav-subitem @(InArea("Admin") && IsActive("DatabaseUpdate") ? "active" : "")"
+                <pems-nav-link item="false" sub="true" active="@(InArea("Admin") && IsActive("DatabaseUpdate"))"
                    asp-area="Admin" asp-controller="DatabaseUpdate" asp-action="Index">
                     <pems-icon name="bi-database-up" /> @Localizer["Database Update"]
-                </a>
+                </pems-nav-link>
 
-                <a class="nav-link nav-subitem @(IsActive("Performance") ? "active" : "")"
+                <pems-nav-link item="false" sub="true" active="@(IsActive("Performance"))"
                    asp-controller="Performance" asp-action="Index" asp-area="">
                    <pems-icon name="bi-speedometer2" /> @Localizer["Performance Testing"]
-                </a>
+                </pems-nav-link>
 
-                <a class="nav-link nav-subitem" href="/hangfire" target="_blank">
+                <pems-nav-link item="false" sub="true" href="/hangfire" target="_blank">
                    <pems-icon name="bi-hdd-stack" /> @Localizer["Background Jobs Dashboard"]
-                </a>
+                </pems-nav-link>
 
-                <a class="nav-link @(InArea("Admin") && IsActive("ProjectIntelligence") ? "active" : "")"
+                <pems-nav-link item="false" active="@(InArea("Admin") && IsActive("ProjectIntelligence"))"
                    asp-area="Admin" asp-controller="ProjectIntelligence" asp-action="Index">
                    <pems-icon name="bi-graph-up-arrow" /> @Localizer["Project Intelligence"]
-                </a>
+                </pems-nav-link>
             }
         </div>
     }

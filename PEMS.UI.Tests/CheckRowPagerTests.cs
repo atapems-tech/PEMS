@@ -95,6 +95,8 @@ public sealed class CheckRowPagerTests
         Assert.Equal("<div class=\"tab-pane active\">x</div>", Run(new PemsTabPaneTagHelper(UiTestRenderer.Instance) { Active = true }, "pems-tab-pane", [], "x"));
         Assert.Equal("<div class=\"tab-pane fade\">x</div>", Run(new PemsTabPaneTagHelper(UiTestRenderer.Instance) { Fade = true }, "pems-tab-pane", [], "x"));
         Assert.Equal("<li class=\"nav-item\" role=\"presentation\"><button class=\"nav-link active\" data-bs-toggle=\"tab\" data-bs-target=\"#tab-a\" type=\"button\">x</button></li>", Run(new PemsTabTagHelper(UiTestRenderer.Instance) { Target = "tab-a", Active = true }, "pems-tab", [], "x"));
+        Assert.Equal("<li class=\"nav-item\"><a class=\"nav-link active\" href=\"/x\">x</a></li>", Run(new PemsNavLinkTagHelper(null!, UiTestRenderer.Instance) { Active = true }, "pems-nav-link", [new("href", "/x")], "x"));
+        Assert.Equal("<a class=\"nav-link nav-subitem\" href=\"/x\" target=\"_blank\" rel=\"noopener\">x</a>", Run(new PemsNavLinkTagHelper(null!, UiTestRenderer.Instance) { Item = false, Sub = true, NewTab = true }, "pems-nav-link", [new("href", "/x")], "x"));
         Assert.Equal("<li class=\"nav-item\" role=\"presentation\"><button class=\"nav-link px-3\" id=\"t1\" data-bs-toggle=\"tab\" data-bs-target=\"#tab-b\" type=\"button\">x</button></li>", Run(new PemsTabTagHelper(UiTestRenderer.Instance) { Target = "#tab-b", Css = "px-3" }, "pems-tab", [new("id", "t1")], "x"));
     }
 

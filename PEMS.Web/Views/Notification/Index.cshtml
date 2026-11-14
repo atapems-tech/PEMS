@@ -12,7 +12,7 @@
         <pems-nav kind="pills">
             @foreach (var (key, label) in tabs)
             {
-                <li class="nav-item"><a class="nav-link py-1 @(filter == key ? "active" : "")" asp-action="Index" asp-route-filter="@key">@Localizer[label]</a></li>
+                <pems-nav-link active="@(filter == key)" css="py-1" asp-action="Index" asp-route-filter="@key">@Localizer[label]</pems-nav-link>
             }
         </pems-nav>
         <pems-flex gap="2">

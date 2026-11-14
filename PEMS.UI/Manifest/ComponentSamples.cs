@@ -101,6 +101,7 @@ public static class ComponentSamples
         ["help-text"] = """{"as":"div","css":"mt-1"}""",
         ["table-scroll"] = """{"css":"mb-3"}""",
         ["tab-content"] = """{"css":"pt-3"}""",
+        ["nav-link"] = """{"active":true,"sub":false,"css":"py-1"}""",
         ["tab"] = """{"target":"tab-info","active":true,"css":"px-3"}""",
         ["tab-pane"] = """{"fade":true,"active":true,"css":"pt-2"}""",
         ["flex"] = """{"justify":"between","align":"center","wrap":true,"gap":"2","css":"mb-3"}""",

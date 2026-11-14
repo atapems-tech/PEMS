@@ -138,3 +138,34 @@ public sealed class PemsToastTagHelper(IPemsComponentRenderer renderer) : TagHel
         await ListRender.Replace<PemsToast>(renderer, output, new ToastOptions { Tone = Tone, Css = Css, PageClass = css, Attributes = attrs }, await ListRender.Inner(output));
     }
 }
+
+/// <summary>
+/// MVC facade for a link that goes to another page: <c>&lt;pems-nav-link active="@(selected)" asp-action="Index"&gt;By Role&lt;/pems-nav-link&gt;</c> writes
+/// <c>&lt;li class="nav-item"&gt;&lt;a class="nav-link active" href="..."&gt;</c> (<c>item="false"</c> drops the li for a sidebar entry, <c>sub="true"</c> adds <c>nav-subitem</c>, <c>new-tab="true"</c> adds target and rel).
+/// The routing attributes of the anchor helper work: the built-in helper computes the link, the component writes the markup. For a tab that switches a pane use <c>pems-tab</c>.
+/// </summary>
+[HtmlTargetElement("pems-nav-link")]
+[PemsFacade(UiKeys.NavLink)]
+public sealed class PemsNavLinkTagHelper(IHtmlGenerator generator, IPemsComponentRenderer renderer) : AnchorTagHelper(generator)
+{
+    [HtmlAttributeName("item")] public bool Item { get; set; } = true;
+    [HtmlAttributeName("sub")] public bool Sub { get; set; }
+    [HtmlAttributeName("active")] public bool Active { get; set; }
+    [HtmlAttributeName("css")] public string? Css { get; set; }
+    /// <summary>Open in a new tab (<c>target="_blank" rel="noopener"</c>).</summary>
+    [HtmlAttributeName("new-tab")] public bool NewTab { get; set; }
+
+    public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
+    {
+        if (Action is not null || Controller is not null || Area is not null || Page is not null || PageHandler is not null || Route is not null || Host is not null || Protocol is not null || Fragment is not null)
+            base.Process(context, output);
+        var (css, attrs) = ListRender.Page(output);
+        if (NewTab)
+        {
+            var all = attrs is null ? new Dictionary<string, object>() : new Dictionary<string, object>(attrs, StringComparer.OrdinalIgnoreCase);
+            all["target"] = "_blank"; all["rel"] = "noopener";
+            attrs = all;
+        }
+        await ListRender.Replace<PemsNavLink>(renderer, output, new NavLinkOptions { Item = Item, Sub = Sub, Active = Active, Css = Css, PageClass = css, Attributes = attrs }, await ListRender.Inner(output));
+    }
+}
