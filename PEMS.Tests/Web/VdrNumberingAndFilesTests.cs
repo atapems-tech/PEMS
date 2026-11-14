@@ -97,7 +97,7 @@ public class VdrNumberingAndFilesTests
     public void VdrDetails_HasTheFilesTab_WithThePreviewComponent()
     {
         var view = Read("PEMS.Web", "Views", "VDR", "Details.cshtml");
-        Assert.Contains("data-bs-target=\"#tab-files\"", view);
+        Assert.Contains("<pems-tab target=\"tab-files\"", view);
         Assert.Contains("id=\"tab-files\" role=\"tabpanel\"", view);
         Assert.Contains("<pems-file-preview id=\"vdrFilePreview\" src=\"@vdrPreviewUrl\"", view);
         Assert.Contains("Url.Action(\"Preview\", \"Files\"", view);

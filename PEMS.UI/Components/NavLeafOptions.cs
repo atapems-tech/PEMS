@@ -282,6 +282,17 @@ public sealed record TabContentOptions : FrameOptions
     public string? Css { get; init; }
 }
 
+/// <summary>Inputs of <see cref="PemsTab"/>: one tab of a tab strip (<c>li.nav-item</c> and the <c>nav-link</c> button that switches the pane <c>Target</c>); the label, icon and badge are the child content.</summary>
+public sealed record TabOptions : FrameOptions
+{
+    /// <summary>The id of the pane this tab shows (without the #).</summary>
+    public string Target { get; init; } = "";
+    /// <summary>The selected tab (<c>active</c>).</summary>
+    public bool Active { get; init; }
+    public bool Disabled { get; init; }
+    public string? Css { get; init; }
+}
+
 /// <summary>Inputs of <see cref="PemsTabPane"/>: one tab pane (<c>tab-pane</c>, <c>fade</c>, <c>show active</c>); the pane's blocks are the child content.</summary>
 public sealed record TabPaneOptions : FrameOptions
 {
