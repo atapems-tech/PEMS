@@ -1,3 +1,4 @@
+using PEMS.Tests.TestSupport;
 using System.Runtime.CompilerServices;
 using PEMS.Web.Controllers;
 
@@ -14,7 +15,7 @@ public class ThemeSystemTests
 {
     private static string Root() => Path.GetFullPath(Path.Combine(Path.GetDirectoryName(Here())!, "..", ".."));
     private static string Here([CallerFilePath] string p = "") => p;
-    private static string Web(params string[] parts) => File.ReadAllText(Path.Combine(new[] { Root(), "PEMS.Web" }.Concat(parts).ToArray()));
+    private static string Web(params string[] parts) => SourceTree.Text(Path.Combine(new[] { Root(), "PEMS.Web" }.Concat(parts).ToArray()));
 
     [Fact]
     public void AllowedThemes_IsExactlyLightDarkTurquoise()
@@ -37,7 +38,7 @@ public class ThemeSystemTests
     }
 
     // Light/Dark token blocks moved from site.css to PEMS.UI/wwwroot/tokens.css (SCRUM-29)
-    private static string Tokens() => File.ReadAllText(Path.Combine(Root(), "PEMS.UI", "wwwroot", "tokens.css"));
+    private static string Tokens() => SourceTree.Text(Path.Combine(Root(), "PEMS.UI", "wwwroot", "tokens.css"));
 
     [Theory]
     [InlineData("pems-workspace.css")]
@@ -62,11 +63,11 @@ public class ThemeSystemTests
         const int allowed = 587;
         var root = Path.Combine(Root(), "PEMS.Web");
         var count = new[] { "Views", "Areas" }.Select(d => Path.Combine(root, d)).Where(Directory.Exists)
-            .SelectMany(d => Directory.EnumerateFiles(d, "*.cshtml", SearchOption.AllDirectories))
-            .Sum(f => System.Text.RegularExpressions.Regex.Matches(File.ReadAllText(f), "\\sstyle=\"").Count);
+            .SelectMany(d => SourceTree.Files(d, "*.cshtml"))
+            .Sum(f => System.Text.RegularExpressions.Regex.Matches(SourceTree.Text(f), "\\sstyle=\"").Count);
         Assert.True(count <= allowed, $"{count} inline style attributes in the views, the limit is {allowed}: use a component, a class or a stylesheet.");
         foreach (var layout in new[] { "_Layout.cshtml", "_LayoutEmbed.cshtml", "_AuthLayout.cshtml" })
-            Assert.Contains("~/css/pems-inline-styles.css", File.ReadAllText(Path.Combine(root, "Views", "Shared", layout)));
+            Assert.Contains("~/css/pems-inline-styles.css", SourceTree.Text(Path.Combine(root, "Views", "Shared", layout)));
     }
 
     [Fact]
@@ -74,9 +75,9 @@ public class ThemeSystemTests
     {
         // SCRUM-347 (strict Content-Security-Policy): page CSS lives in a stylesheet. The two diagram partials write Razor values into their rules.
         var allowed = Array.Empty<string>();   // SCRUM-486: both diagram partials became the pems-stage-diagram component
-        var offenders = Directory.EnumerateFiles(Path.Combine(Root(), "PEMS.Web"), "*.cshtml", SearchOption.AllDirectories)
+        var offenders = SourceTree.Files(Path.Combine(Root(), "PEMS.Web"), "*.cshtml")
             .Where(f => !f.Contains(Path.DirectorySeparatorChar + "obj" + Path.DirectorySeparatorChar) && !f.Contains(Path.DirectorySeparatorChar + "bin" + Path.DirectorySeparatorChar))
-            .Where(f => System.Text.RegularExpressions.Regex.IsMatch(File.ReadAllText(f), "<style[ >]"))
+            .Where(f => System.Text.RegularExpressions.Regex.IsMatch(SourceTree.Text(f), "<style[ >]"))
             .Select(Path.GetFileName).Where(n => !allowed.Contains(n)).ToList();
         Assert.True(offenders.Count == 0, "Move the <style> block to a stylesheet in: " + string.Join(", ", offenders));
     }

@@ -203,7 +203,7 @@ public class ImportCenterNavigationTests
     [Fact]
     public void Sidebar_HasNoScatteredImportLinks_AndExactlyOneImportCenterEntry()
     {
-        var sidebar = File.ReadAllText(RepoFile("PEMS.Web", "Views", "Shared", "_SidebarMenu.cshtml"));
+        var sidebar = SourceTree.Text(RepoFile("PEMS.Web", "Views", "Shared", "_SidebarMenu.cshtml"));
 
         foreach (var e in ImportCatalog.All.Where(x => x.Mode == ImportCatalog.LaunchMode.Page))
             Assert.DoesNotContain($"asp-controller=\"{e.Controller}\"", sidebar);
@@ -232,7 +232,7 @@ public class ImportCenterNavigationTests
         };
         var offenders = new List<string>();
 
-        foreach (var file in Directory.EnumerateFiles(viewsRoot, "*.cshtml", SearchOption.AllDirectories))
+        foreach (var file in SourceTree.Files(viewsRoot, "*.cshtml"))
         {
             var rel = Path.GetRelativePath(viewsRoot, file).Replace(Path.DirectorySeparatorChar, '/');
             var folder = rel.Split('/')[0];

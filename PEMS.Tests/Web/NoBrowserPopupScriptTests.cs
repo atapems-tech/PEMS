@@ -1,3 +1,4 @@
+using PEMS.Tests.TestSupport;
 using System.Runtime.CompilerServices;
 using System.Text.RegularExpressions;
 
@@ -17,9 +18,9 @@ public class NoBrowserPopupScriptTests
     {
         var root = Root();
         var scripts = new[] { Path.Combine(root, "PEMS.Web", "wwwroot", "js"), Path.Combine(root, "PEMS.UI", "wwwroot") }
-            .SelectMany(d => Directory.EnumerateFiles(d, "*.js", SearchOption.AllDirectories));
+            .SelectMany(d => SourceTree.Files(d, "*.js"));
         var views = new[] { Path.Combine(root, "PEMS.Web", "Views"), Path.Combine(root, "PEMS.Web", "Areas") }
-            .SelectMany(d => Directory.EnumerateFiles(d, "*.cshtml", SearchOption.AllDirectories));
+            .SelectMany(d => SourceTree.Files(d, "*.cshtml"));
         return scripts.Concat(views).Where(f => !f.Contains(Path.DirectorySeparatorChar + "lib" + Path.DirectorySeparatorChar) && !f.EndsWith(".min.js"));
     }
 
@@ -45,8 +46,8 @@ public class NoBrowserPopupScriptTests
     [Fact]
     public void TheTaskBoard_RichTextUpload_AndCalendar_ShowAToast()
     {
-        Assert.Contains("PemsErrors.show", File.ReadAllText(Path.Combine(Root(), "PEMS.Web", "wwwroot", "js", "pems-task-manager.js")));
-        Assert.Contains("PemsErrors.show(t('uploadFailed'))", File.ReadAllText(Path.Combine(Root(), "PEMS.UI", "wwwroot", "pems-rte.js")));
-        Assert.Contains("PemsErrors.show(message)", File.ReadAllText(Path.Combine(Root(), "PEMS.Web", "wwwroot", "js", "pems-maintenance-calendar.js")));
+        Assert.Contains("PemsErrors.show", SourceTree.Text(Path.Combine(Root(), "PEMS.Web", "wwwroot", "js", "pems-task-manager.js")));
+        Assert.Contains("PemsErrors.show(t('uploadFailed'))", SourceTree.Text(Path.Combine(Root(), "PEMS.UI", "wwwroot", "pems-rte.js")));
+        Assert.Contains("PemsErrors.show(message)", SourceTree.Text(Path.Combine(Root(), "PEMS.Web", "wwwroot", "js", "pems-maintenance-calendar.js")));
     }
 }

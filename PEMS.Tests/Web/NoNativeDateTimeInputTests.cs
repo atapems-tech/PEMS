@@ -1,3 +1,4 @@
+using PEMS.Tests.TestSupport;
 using System.Text.RegularExpressions;
 
 namespace PEMS.Tests.Web;
@@ -20,9 +21,9 @@ public class NoNativeDateTimeInputTests
     [Fact]
     public void NoView_WritesADatetimeLocalInput()
     {
-        var offenders = Directory.EnumerateFiles(Web(), "*.cshtml", SearchOption.AllDirectories)
+        var offenders = SourceTree.Files(Web(), "*.cshtml")
             .Where(f => !f.Contains(Path.Combine("bin", ""), StringComparison.OrdinalIgnoreCase) && !f.Contains(Path.Combine("obj", ""), StringComparison.OrdinalIgnoreCase))
-            .Where(f => Regex.IsMatch(File.ReadAllText(f), @"type=""datetime-local"""))
+            .Where(f => Regex.IsMatch(SourceTree.Text(f), @"type=""datetime-local"""))
             .Select(Path.GetFileName).ToList();
         Assert.Empty(offenders);
     }
@@ -37,12 +38,12 @@ public class NoNativeDateTimeInputTests
     [InlineData("WorkOrder", "Details.cshtml", "name=\"plannedStart\"")]
     [InlineData("WorkOrder", "Details.cshtml", "name=\"plannedFinish\"")]
     public void TheEightFields_UseTheDateTimeMode(string folder, string file, string field)
-        => Assert.Matches("<pems-date time=\"true\"[^>]*" + Regex.Escape(field), File.ReadAllText(Path.Combine(Web(), "Views", folder, file)));
+        => Assert.Matches("<pems-date time=\"true\"[^>]*" + Regex.Escape(field), SourceTree.Text(Path.Combine(Web(), "Views", folder, file)));
 
     [Fact]
     public void TheLetterReminderScript_ReadsAndWritesThroughPemsDate()
     {
-        var js = File.ReadAllText(Path.Combine(Web(), "wwwroot", "js", "pems-cartable.js"));
+        var js = SourceTree.Text(Path.Combine(Web(), "wwwroot", "js", "pems-cartable.js"));
         Assert.Contains("window.PemsDate.setValue(remAt, iso)", js);
         Assert.Contains("window.PemsDate.value(remAt)", js);
     }

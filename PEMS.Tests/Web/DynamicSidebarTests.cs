@@ -194,6 +194,7 @@ public class DynamicSidebarTests
         var services = new ServiceCollection();
         services.AddSingleton(ctx);
         await AccessControlSeeder.SeedFromLegacyAsync(services.BuildServiceProvider());
+        await new NavigationMenuService(ctx, new MemoryCache(new MemoryCacheOptions())).SyncDefaultsAsync(NavigationMenuDefaults.All);   // SCRUM-393: the default menu is part of the copied baseline, a test's own sync then finds nothing to add
 
         // read every table with tracking so the property values (shadow keys included) can be copied
         ctx.ChangeTracker.Clear();

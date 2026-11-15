@@ -1,3 +1,4 @@
+using PEMS.Tests.TestSupport;
 using System.Runtime.CompilerServices;
 using System.Text.RegularExpressions;
 using System.Xml.Linq;
@@ -34,7 +35,7 @@ public class LocalizationKeyCoverageTests
         var fa = XDocument.Load(Path.Combine(Web(), "Resources", "SharedResource.fa.resx")).Root!.Elements("data").Select(e => (string)e.Attribute("name")!).ToHashSet(StringComparer.Ordinal);
         var missing = new SortedDictionary<string, string>(StringComparer.Ordinal);
         foreach (var file in SourceFiles())
-            foreach (Match m in Key.Matches(File.ReadAllText(file)))
+            foreach (Match m in Key.Matches(SourceTree.Text(file)))
             {
                 var key = m.Groups[1].Value.Replace("\\\"", "\"");
                 if (!fa.Contains(key)) missing.TryAdd(key, Path.GetRelativePath(Web(), file));
