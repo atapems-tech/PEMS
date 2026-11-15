@@ -237,32 +237,16 @@
                 @foreach (var fo in folders)
                 {
                     var active = fo.Key.Length == 0 ? isDefaultView : currentFolder == fo.Key && !currentTagId.HasValue;
-                    <pems-link class="ct-folder @(active ? "active" : "")" href="@FolderUrl(fo.Key.Length == 0 ? null : fo.Key)" aria-current="@(active ? "page" : null)">
-                        <pems-icon css="@fo.Icon" aria-hidden="true" />
-                        <span class="ct-label">@fo.Label</span>
-                        @if (fo.Count > 0) { <span class="ct-count @fo.Hot">@fo.Count</span> }
-                    </pems-link>
+                    <pems-side-link active="@active" icon="@fo.Icon" count="@fo.Count" hot="@fo.Hot" href="@FolderUrl(fo.Key.Length == 0 ? null : fo.Key)">@fo.Label</pems-side-link>
                 }
             </nav>
 
             <div class="ct-sec"><span>@Localizer["Ct_Workflow"]</span></div>
             <nav aria-label="@Localizer["Ct_Workflow"]">
-                <pems-link class="ct-folder @(currentStatus == "PendingApproval" ? "active" : "")" aria-current="@(currentStatus == "PendingApproval" ? "page" : null)" href="@Url.Action("Index", new { status = "PendingApproval" })">
-                    <pems-icon name="bi-hourglass-split" aria-hidden="true" /><span class="ct-label">@Localizer["Lt_QueueReview"]</span>
-                    @if (folderCounts.PendingApproval > 0) { <span class="ct-count">@folderCounts.PendingApproval</span> }
-                </pems-link>
-                <pems-link class="ct-folder @(currentStatus == "ReturnedForRevision" ? "active" : "")" aria-current="@(currentStatus == "ReturnedForRevision" ? "page" : null)" href="@Url.Action("Index", new { status = "ReturnedForRevision" })">
-                    <pems-icon name="bi-arrow-return-left" aria-hidden="true" /><span class="ct-label">@Localizer["Lt_QueueReturned"]</span>
-                    @if (folderCounts.ReturnedForRevision > 0) { <span class="ct-count ct-count--alert">@folderCounts.ReturnedForRevision</span> }
-                </pems-link>
-                <pems-link class="ct-folder @(currentStatus == "Approved" ? "active" : "")" aria-current="@(currentStatus == "Approved" ? "page" : null)" href="@Url.Action("Index", new { status = "Approved" })">
-                    <pems-icon name="bi-check2-square" aria-hidden="true" /><span class="ct-label">@Localizer["Lt_QueueApproved"]</span>
-                    @if (folderCounts.Approved > 0) { <span class="ct-count">@folderCounts.Approved</span> }
-                </pems-link>
-                <pems-link class="ct-folder" href="@Url.Action("MyReferrals")">
-                    <pems-icon name="bi-person-lines-fill" aria-hidden="true" /><span class="ct-label">@Localizer["Lp_ReferredToMe"]</span>
-                    @if (dash.MyOpenReferrals > 0) { <span class="ct-count ct-count--alert">@dash.MyOpenReferrals</span> }
-                </pems-link>
+                <pems-side-link active="@(currentStatus == "PendingApproval")" icon="bi-hourglass-split" count="@folderCounts.PendingApproval" href="@Url.Action("Index", new { status = "PendingApproval" })">@Localizer["Lt_QueueReview"]</pems-side-link>
+                <pems-side-link active="@(currentStatus == "ReturnedForRevision")" icon="bi-arrow-return-left" count="@folderCounts.ReturnedForRevision" hot="ct-count--alert" href="@Url.Action("Index", new { status = "ReturnedForRevision" })">@Localizer["Lt_QueueReturned"]</pems-side-link>
+                <pems-side-link active="@(currentStatus == "Approved")" icon="bi-check2-square" count="@folderCounts.Approved" href="@Url.Action("Index", new { status = "Approved" })">@Localizer["Lt_QueueApproved"]</pems-side-link>
+                <pems-side-link icon="bi-person-lines-fill" count="@dash.MyOpenReferrals" hot="ct-count--alert" href="@Url.Action("MyReferrals")">@Localizer["Lp_ReferredToMe"]</pems-side-link>
             </nav>
 
             <div class="ct-sec">

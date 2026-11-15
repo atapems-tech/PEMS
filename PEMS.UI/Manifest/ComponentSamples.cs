@@ -107,6 +107,7 @@ public static class ComponentSamples
         ["bullet-list"] = """{"ordered":false,"css":"mb-0"}""",
         ["bullet"] = """{"css":"small"}""",
         ["stage-diagram"] = """{"variant":"wf","steps":[{"label":"Draft","icon":"bi-pencil","state":"done","role":"Author"},{"label":"Review","icon":"bi-eye","state":"current","role":"Reviewer"},{"label":"Approved","icon":"bi-check2","state":"pending"}]}""",
+        ["side-link"] = """{"look":"cartable","active":true,"icon":"bi-inbox","count":3,"hot":"ct-count--alert"}""",
         ["divider"] = """{"css":"my-3"}""",
         ["nav-link"] = """{"active":true,"sub":false,"css":"py-1"}""",
         ["tab"] = """{"target":"tab-info","active":true,"css":"px-3"}""",
