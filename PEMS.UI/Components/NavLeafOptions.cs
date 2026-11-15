@@ -201,6 +201,12 @@ public sealed record ColOptions : FrameOptions
 
 // SCRUM-508: the check / switch row and the page-number pager.
 
+/// <summary>Inputs of <see cref="PemsFormGroup"/> (SCRUM-501): the wrapper of one label, its control and its validation message in a form; they are the child content, the spacing is <see cref="Css"/> (<c>mb-3</c>).</summary>
+public sealed record FormGroupOptions : FrameOptions
+{
+    public string? Css { get; init; }
+}
+
 /// <summary>Inputs of <see cref="PemsCheckRow"/>: the wrapper of a check box, radio or switch and its label (<c>form-check</c>, <c>form-switch</c>); the input and label are the child content.</summary>
 public sealed record CheckRowOptions : FrameOptions
 {

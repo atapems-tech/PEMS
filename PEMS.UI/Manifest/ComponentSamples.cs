@@ -87,6 +87,7 @@ public static class ComponentSamples
         ["icon"] = """{"name":"bi-gear","css":"me-1"}""",
         ["row"] = """{"gap":"2"}""",
         ["col"] = """{"span":"12","md":"6"}""",
+        ["form-group"] = """{"css":"mb-3"}""",
         ["check-row"] = """{"switch":true,"css":"mb-0"}""",
         ["content-card"] = """{"css":"mb-3"}""",
         ["form-frame"] = """{"css":"row g-2"}""",
