@@ -7,7 +7,7 @@
     <pems-flex justify="between" align="start" wrap="true" gap="3">
         <div>
             <pems-flex align="center" gap="2" wrap="true">
-                <h4 class="mb-0">@Model.OrderNumber</h4>
+                <pems-heading level="4" class="mb-0">@Model.OrderNumber</pems-heading>
                 <pems-badge tone="neutral">@Model.Status</pems-badge>
             </pems-flex>
             <div class="text-muted">@Model.MaterialCode - @Model.MaterialDescription</div>
@@ -64,7 +64,7 @@
 </pems-content-card>
 
 <pems-content-card>
-    <h6 class="mb-2">Production Runs</h6>
+    <pems-heading level="6" class="mb-2">Production Runs</pems-heading>
     <div class="table-scroll-area pems-s-7bf38d03">
         <pems-data-table data="@(DataRows.Of(Model.Runs, c_ => c_.Add("Run #", r => (object?)(r.RunNumber)).Add(((Localizer["Status"])?.ToString() ?? ""), r => (object?)(DataCell.Badge("neutral", r.Status))).Add(((Localizer["Start"])?.ToString() ?? ""), r => (object?)((r.StartDate?.ToString("yyyy-MM-dd HH:mm"))), css: "small").Add(((Localizer["End"])?.ToString() ?? ""), r => (object?)((r.EndDate?.ToString("yyyy-MM-dd HH:mm"))), css: "small").Add("Output Qty", r => (object?)((r.TotalOutputQuantity.ToString("N3")))).Add("Loss Qty", r => (object?)((r.TotalLossQuantity.ToString("N3")))).Add("", r => (object?)(DataCell.ButtonLink(Url.Action("Details", "ProductionRun", new { id = r.ProductionRunId }), "primary", "small", true, null, "Open")), css: "text-end")))" />
     </div>

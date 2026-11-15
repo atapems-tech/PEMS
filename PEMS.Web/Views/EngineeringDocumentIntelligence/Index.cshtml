@@ -23,7 +23,7 @@
 </pems-row>
 
 <pems-content-card css="mb-3">
-    <h6 class="mb-3">Documents by Workflow Stage</h6>
+    <pems-heading level="6" class="mb-3">Documents by Workflow Stage</pems-heading>
     <pems-flex wrap="true" gap="2">
         @foreach (var s in new[] { "Uploaded", "AIProcessing", "Classified", "DisciplineAssigned", "UnderReview", "CommentOpen", "Revision", "Approved", "KnowledgeBase" })
         {

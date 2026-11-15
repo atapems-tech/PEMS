@@ -21,9 +21,9 @@
     @if (TempData["Error"] != null) { <pems-alert tone="danger">@TempData["Error"]</pems-alert> }
 
     <pems-flex gap="2" wrap="true" css="mb-3">
-        <a class="vs-btn vs-btn--sm" asp-action="Chart"><pems-icon name="bi-diagram-3" /> @Localizer["Org_Chart_Title"]</a>
-        <a class="vs-btn vs-btn--sm" asp-action="Diagnostics"><pems-icon name="bi-heart-pulse" /> @Localizer["Org_Diag_Title"]</a>
-        <a class="vs-btn vs-btn--sm" asp-area="Admin" asp-controller="OrganizationImport" asp-action="Index"><pems-icon name="bi-file-earmark-arrow-up" /> @Localizer["Org_Imp_Title"]</a>
+        <pems-link class="vs-btn vs-btn--sm" asp-action="Chart"><pems-icon name="bi-diagram-3" /> @Localizer["Org_Chart_Title"]</pems-link>
+        <pems-link class="vs-btn vs-btn--sm" asp-action="Diagnostics"><pems-icon name="bi-heart-pulse" /> @Localizer["Org_Diag_Title"]</pems-link>
+        <pems-link class="vs-btn vs-btn--sm" asp-area="Admin" asp-controller="OrganizationImport" asp-action="Index"><pems-icon name="bi-file-earmark-arrow-up" /> @Localizer["Org_Imp_Title"]</pems-link>
     </pems-flex>
 
     <pems-nav css="mb-3" role="tablist">
@@ -52,7 +52,7 @@
                                 <strong>@r.Title</strong>
                                 @if (!r.IsActive) { <pems-badge tone="neutral">@Localizer["Org_Inactive"]</pems-badge> }
                                 @if (r.IsActive && r.IsVacant) { <pems-badge tone="warning">@Localizer["Org_Vacant"]</pems-badge> }
-                                @if (r.IssueCount > 0) { <a asp-action="Diagnostics" class="text-decoration-none"><pems-badge tone="danger">@r.IssueCount</pems-badge></a> }
+                                @if (r.IssueCount > 0) { <pems-link asp-action="Diagnostics" class="text-decoration-none"><pems-badge tone="danger">@r.IssueCount</pems-badge></pems-link> }
                             </pems-table-cell>
                             <pems-table-cell class="small">@r.DepartmentName</pems-table-cell>
                             <pems-table-cell class="pems-s-bec7b1d5">

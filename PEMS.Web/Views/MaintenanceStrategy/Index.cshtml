@@ -71,11 +71,11 @@
                     </div>
                 </pems-list-filters>
                 <pems-list-menu id="msMoreBtn" icon="bi-three-dots" label="@Localizer["Lp_More"]">
-                    <li><a class="dropdown-item" asp-action="Coverage"><pems-icon name="bi-pie-chart" aria-hidden="true" /> @Localizer["Rcm_Coverage"]</a></li>
-                    <li><a class="dropdown-item" asp-controller="FailureModeCatalog" asp-action="Index"><pems-icon name="bi-journal-text" aria-hidden="true" /> @Localizer["Rcm_FailureModeCatalog"]</a></li>
+                    <li><pems-link class="dropdown-item" asp-action="Coverage"><pems-icon name="bi-pie-chart" aria-hidden="true" /> @Localizer["Rcm_Coverage"]</pems-link></li>
+                    <li><pems-link class="dropdown-item" asp-controller="FailureModeCatalog" asp-action="Index"><pems-icon name="bi-journal-text" aria-hidden="true" /> @Localizer["Rcm_FailureModeCatalog"]</pems-link></li>
                     @if (Model.CanApprove)
                     {
-                        <li><a class="dropdown-item" asp-action="BulkCreate"><pems-icon name="bi-collection" aria-hidden="true" /> @Localizer["Rcm_BulkAssign"]</a></li>
+                        <li><pems-link class="dropdown-item" asp-action="BulkCreate"><pems-icon name="bi-collection" aria-hidden="true" /> @Localizer["Rcm_BulkAssign"]</pems-link></li>
                     }
                 </pems-list-menu>
                 <pems-list-reset-columns grid-key="MaintenanceStrategy" />
@@ -126,7 +126,7 @@
                                 }
                                 @if (!string.IsNullOrEmpty(s.EquipmentTagNumber))
                                 {
-                                    <div class="text-muted"><a asp-controller="MaintenanceStrategy" asp-action="Tag" asp-route-equipmentId="@s.EquipmentId">@s.EquipmentTagNumber</a></div>
+                                    <div class="text-muted"><pems-link asp-controller="MaintenanceStrategy" asp-action="Tag" asp-route-equipmentId="@s.EquipmentId">@s.EquipmentTagNumber</pems-link></div>
                                 }
                                 @if (string.IsNullOrEmpty(s.EquipmentClassName) && string.IsNullOrEmpty(s.EquipmentTagNumber)) { <span class="text-muted">-</span> }
                             </pems-table-cell>
@@ -149,10 +149,10 @@
                             <pems-table-cell><span class="vs-num">@s.AssignedTagCount</span></pems-table-cell>
                             <pems-table-cell class="small text-muted vs-hide-md">@(string.IsNullOrWhiteSpace(s.Justification) ? "-" : (s.Justification!.Length > 140 ? s.Justification[..140] + "…" : s.Justification))</pems-table-cell>
                             <pems-table-cell class="lp-actions">
-                                <a asp-action="Details" asp-route-id="@s.MaintenanceStrategyId" class="lp-act lp-act--always" title="@Localizer["Lp_Details"]" aria-label="@Localizer["Lp_Details"]"><pems-icon name="bi-eye" aria-hidden="true" /></a>
+                                <pems-link asp-action="Details" asp-route-id="@s.MaintenanceStrategyId" class="lp-act lp-act--always" title="@Localizer["Lp_Details"]" aria-label="@Localizer["Lp_Details"]"><pems-icon name="bi-eye" aria-hidden="true" /></pems-link>
                                 @if (Model.CanEdit && s.Status != "Retired" && s.Status != "Superseded")
                                 {
-                                    <a asp-action="Edit" asp-route-id="@s.MaintenanceStrategyId" class="lp-act lp-act--always" title="@Localizer["Rcm_Edit"]" aria-label="@Localizer["Rcm_Edit"]"><pems-icon name="bi-pencil" aria-hidden="true" /></a>
+                                    <pems-link asp-action="Edit" asp-route-id="@s.MaintenanceStrategyId" class="lp-act lp-act--always" title="@Localizer["Rcm_Edit"]" aria-label="@Localizer["Rcm_Edit"]"><pems-icon name="bi-pencil" aria-hidden="true" /></pems-link>
                                 }
                             </pems-table-cell>
                         </pems-table-row>

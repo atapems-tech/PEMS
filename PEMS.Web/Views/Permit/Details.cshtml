@@ -78,14 +78,14 @@
     <pems-flex align="center" gap="3" wrap="true" css="mb-2">
         <div class="kpi-icon bg-icon-blue pems-s-792bd2d6"><pems-icon name="bi-shield-check" /></div>
         <div>
-            <h5 class="mb-0">@Model.PermitNumber &mdash; @Model.Title <pems-badge tone="@badgeClass">@Model.Status</pems-badge></h5>
+            <pems-heading level="5" class="mb-0">@Model.PermitNumber &mdash; @Model.Title <pems-badge tone="@badgeClass">@Model.Status</pems-badge></pems-heading>
             <span class="text-muted small">@Model.PermitType - Requested by @Model.RequestedByName on @Model.CreatedDate.ToString("yyyy-MM-dd")</span>
         </div>
     </pems-flex>
     <pems-info-grid class="mt-2">
         <pems-info-item label="@Localizer["Equipment"]" num>@Model.EquipmentTagNumber</pems-info-item>
         <pems-info-item label="@Localizer["Functional Location"]">@Model.FunctionalLocationBreadcrumb</pems-info-item>
-        <pems-info-item label="@Localizer["Work Order"]" num>@if (Model.WorkOrderId.HasValue) { <a asp-controller="WorkOrder" asp-action="Details" asp-route-id="@Model.WorkOrderId">@Model.WorkOrderNumber</a> }</pems-info-item>
+        <pems-info-item label="@Localizer["Work Order"]" num>@if (Model.WorkOrderId.HasValue) { <pems-link asp-controller="WorkOrder" asp-action="Details" asp-route-id="@Model.WorkOrderId">@Model.WorkOrderNumber</pems-link> }</pems-info-item>
         <pems-info-item label="@Localizer["Priority"]">@Model.Priority</pems-info-item>
         <pems-info-item label="@Localizer["Info_PermitIssuer"]">@Model.IssuerName</pems-info-item>
         <pems-info-item label="@Localizer["Info_PermitReceiver"]">
@@ -117,11 +117,11 @@
 @if (actionItems.Any())
 {
     <pems-content-card css="mb-3 border-start border-4 border-warning">
-        <h6 class="mb-2"><pems-icon name="bi-exclamation-circle" css="text-warning" /> Action Required</h6>
+        <pems-heading level="6" class="mb-2"><pems-icon name="bi-exclamation-circle" css="text-warning" /> Action Required</pems-heading>
         <ul class="list-unstyled mb-0">
             @foreach (var item in actionItems)
             {
-                <li class="py-1"><a href="@item.Anchor">@item.Text</a></li>
+                <li class="py-1"><pems-link href="@item.Anchor">@item.Text</pems-link></li>
             }
         </ul>
     </pems-content-card>
@@ -137,7 +137,7 @@
 {
     @if (pageError.Contains(passkeyMissingMarker))
     {
-        <pems-alert tone="danger" css="py-2 px-3 small">@pageError <a asp-controller="Account" asp-action="ManagePasskeys" class="alert-link">Manage Passkeys &rarr;</a></pems-alert>
+        <pems-alert tone="danger" css="py-2 px-3 small">@pageError <pems-link asp-controller="Account" asp-action="ManagePasskeys" class="alert-link">Manage Passkeys &rarr;</pems-link></pems-alert>
     }
     else
     {
@@ -146,12 +146,12 @@
 }
 
 <pems-content-card css="mb-3" id="actions">
-    <h6 class="mb-3">@Localizer["Actions"]</h6>
+    <pems-heading level="6" class="mb-3">@Localizer["Actions"]</pems-heading>
     @if (errorArea == "Actions" && (pageMessage != null || pageError != null))
     {
         @if (pageError != null && pageError.Contains(passkeyMissingMarker))
         {
-            <pems-alert tone="danger" css="py-2 px-3 small">@pageError <a asp-controller="Account" asp-action="ManagePasskeys" class="alert-link">Manage Passkeys &rarr;</a></pems-alert>
+            <pems-alert tone="danger" css="py-2 px-3 small">@pageError <pems-link asp-controller="Account" asp-action="ManagePasskeys" class="alert-link">Manage Passkeys &rarr;</pems-link></pems-alert>
         }
         else
         {
@@ -225,13 +225,13 @@
 {
     var gateBadge = executionGate.Result == "Eligible" ? "success" : "danger";
     <pems-content-card css="mb-3" id="executiongate">
-        <h6 class="mb-3">
+        <pems-heading level="6" class="mb-3">
             <pems-icon name="bi-door-open" /> Execution Gate
             <pems-badge tone="@gateBadge">@executionGate.Result.ToUpper()</pems-badge>
-        </h6>
+        </pems-heading>
         @if (errorArea == "ExecutionGate" && pageError != null && pageError.Contains(passkeyMissingMarker))
         {
-            <pems-alert tone="danger" css="py-2 px-3 small">@pageError <a asp-controller="Account" asp-action="ManagePasskeys" class="alert-link">Manage Passkeys &rarr;</a></pems-alert>
+            <pems-alert tone="danger" css="py-2 px-3 small">@pageError <pems-link asp-controller="Account" asp-action="ManagePasskeys" class="alert-link">Manage Passkeys &rarr;</pems-link></pems-alert>
         }
         else if (errorArea == "ExecutionGate" && (pageMessage != null || pageError != null))
         {
@@ -301,10 +301,10 @@
 @if (approvalInstance != null)
 {
     <pems-content-card css="mb-3" id="approval">
-        <h6 class="mb-3"><pems-icon name="bi-diagram-3" /> Approval Progress <pems-badge tone="@(approvalInstance.Status == "Completed" ? "success" : approvalInstance.Status == "Rejected" ? "danger" : "primary")">@approvalInstance.Status</pems-badge></h6>
+        <pems-heading level="6" class="mb-3"><pems-icon name="bi-diagram-3" /> Approval Progress <pems-badge tone="@(approvalInstance.Status == "Completed" ? "success" : approvalInstance.Status == "Rejected" ? "danger" : "primary")">@approvalInstance.Status</pems-badge></pems-heading>
         @if (errorArea == "Approval" && pageError != null && pageError.Contains(passkeyMissingMarker))
         {
-            <pems-alert tone="danger" css="py-2 px-3 small">@pageError <a asp-controller="Account" asp-action="ManagePasskeys" class="alert-link">Manage Passkeys &rarr;</a></pems-alert>
+            <pems-alert tone="danger" css="py-2 px-3 small">@pageError <pems-link asp-controller="Account" asp-action="ManagePasskeys" class="alert-link">Manage Passkeys &rarr;</pems-link></pems-alert>
         }
         else if (errorArea == "Approval" && (pageMessage != null || pageError != null))
         {
@@ -409,16 +409,16 @@
     var unverifiedCount = isolationPoints.Count(p => p.Status is "Requested" or "Isolated");
 }
 <pems-content-card css="mb-3" id="loto">
-    <h6 class="mb-3">
+    <pems-heading level="6" class="mb-3">
         <pems-icon name="bi-lock" /> Isolation Points (LOTO)
         @if (isolationPoints.Any())
         {
             <pems-badge tone="@(unverifiedCount == 0 ? "success" : "warning")">@verifiedCount / @isolationPoints.Count Verified</pems-badge>
         }
-    </h6>
+    </pems-heading>
     @if (errorArea == "LOTO" && pageError != null && pageError.Contains(passkeyMissingMarker))
     {
-        <pems-alert tone="danger" css="py-2 px-3 small">@pageError <a asp-controller="Account" asp-action="ManagePasskeys" class="alert-link">Manage Passkeys &rarr;</a></pems-alert>
+        <pems-alert tone="danger" css="py-2 px-3 small">@pageError <pems-link asp-controller="Account" asp-action="ManagePasskeys" class="alert-link">Manage Passkeys &rarr;</pems-link></pems-alert>
     }
     else if (errorArea == "LOTO" && (pageMessage != null || pageError != null))
     {
@@ -513,13 +513,13 @@
     var passedGasTests = gasTests.Count(g => g.Status == "Passed" && !g.IsExpired);
 }
 <pems-content-card css="mb-3">
-    <h6 class="mb-3">
+    <pems-heading level="6" class="mb-3">
         <pems-icon name="bi-clouds" /> Gas Testing
         @if (gasTests.Any())
         {
             <pems-badge tone="@(passedGasTests > 0 ? "success" : "warning")">@passedGasTests / @gasTests.Count Valid</pems-badge>
         }
-    </h6>
+    </pems-heading>
 
     @foreach (var g in gasTests)
     {
@@ -611,16 +611,16 @@
     var unresolvedSimopsCount = simopsConflicts.Count(c => c.Status is "Potential" or "Confirmed");
 }
 <pems-content-card css="mb-3" id="simops">
-    <h6 class="mb-3">
+    <pems-heading level="6" class="mb-3">
         <pems-icon name="bi-arrows-angle-contract" /> SIMOPS
         @if (simopsConflicts.Any())
         {
             <pems-badge tone="@(unresolvedSimopsCount == 0 ? "success" : "warning")">@unresolvedSimopsCount unresolved</pems-badge>
         }
-    </h6>
+    </pems-heading>
     @if (errorArea == "Simops" && pageError != null && pageError.Contains(passkeyMissingMarker))
     {
-        <pems-alert tone="danger" css="py-2 px-3 small">@pageError <a asp-controller="Account" asp-action="ManagePasskeys" class="alert-link">Manage Passkeys &rarr;</a></pems-alert>
+        <pems-alert tone="danger" css="py-2 px-3 small">@pageError <pems-link asp-controller="Account" asp-action="ManagePasskeys" class="alert-link">Manage Passkeys &rarr;</pems-link></pems-alert>
     }
     else if (errorArea == "Simops" && (pageMessage != null || pageError != null))
     {
@@ -668,7 +668,7 @@
                     };
                     var sevBadge = c.Severity switch { "High" => "danger", "Medium" => "warning", "Low" => "info", _ => "neutral" };
                     <pems-table-row>
-                        <pems-table-cell class="small"><a asp-action="Details" asp-route-id="@otherPermitId">@otherPermitNumber</a></pems-table-cell>
+                        <pems-table-cell class="small"><pems-link asp-action="Details" asp-route-id="@otherPermitId">@otherPermitNumber</pems-link></pems-table-cell>
                         <pems-table-cell class="small">@c.ConflictBasis</pems-table-cell>
                         <pems-table-cell><pems-badge tone="@sevBadge">@c.Severity</pems-badge></pems-table-cell>
                         <pems-table-cell><pems-badge tone="@simopsBadge">@c.Status</pems-badge></pems-table-cell>
@@ -720,7 +720,7 @@
                 @foreach (var cand in simopsCandidates.Where(x => x.ExistingConflictId == null))
                 {
                     <pems-table-row>
-                        <pems-table-cell class="small"><a asp-action="Details" asp-route-id="@cand.PermitId">@cand.PermitNumber</a> - @cand.Title</pems-table-cell>
+                        <pems-table-cell class="small"><pems-link asp-action="Details" asp-route-id="@cand.PermitId">@cand.PermitNumber</pems-link> - @cand.Title</pems-table-cell>
                         <pems-table-cell class="small">@cand.PermitType</pems-table-cell>
                         <pems-table-cell class="small">@cand.MatchBasis</pems-table-cell>
                         <pems-table-cell class="small">@(!cand.TimeWindowKnown ? "Unknown" : cand.TimeOverlapConfirmed ? "Yes" : "No")</pems-table-cell>
@@ -756,7 +756,7 @@
         <p class="small text-muted mt-2 mb-0">
             @foreach (var b in handoverBacklinks)
             {
-                <span>Included in <a asp-controller="ShiftHandover" asp-action="Details" asp-route-id="@b.ShiftHandoverId">Handover #@b.ShiftHandoverId</a> (@b.Status)</span>
+                <span>Included in <pems-link asp-controller="ShiftHandover" asp-action="Details" asp-route-id="@b.ShiftHandoverId">Handover #@b.ShiftHandoverId</pems-link> (@b.Status)</span>
                 <br />
             }
         </p>
@@ -764,7 +764,7 @@
 </pems-content-card>
 
 <pems-content-card>
-    <h6 class="mb-3">@Localizer["Status History"]</h6>
+    <pems-heading level="6" class="mb-3">@Localizer["Status History"]</pems-heading>
     <pems-related-table>
         <pems-table-head><pems-table-row><pems-table-header>@Localizer["From"]</pems-table-header><pems-table-header>To</pems-table-header><pems-table-header>By</pems-table-header><pems-table-header>@Localizer["Date"]</pems-table-header><pems-table-header>@Localizer["Reason"]</pems-table-header></pems-table-row></pems-table-head>
         <pems-table-body>

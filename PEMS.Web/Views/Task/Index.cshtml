@@ -30,7 +30,7 @@
                 </pems-list-filters>
                 <pems-list-reset-columns grid-key="Task" />
                 <pems-list-menu id="taskMoreBtn" icon="bi-three-dots" label="@Localizer["Lp_More"]">
-                    <li><a class="dropdown-item" asp-controller="TaskManager" asp-action="Index"><pems-icon name="bi-kanban" aria-hidden="true" /> @Localizer["Tm_Title"]</a></li>
+                    <li><pems-link class="dropdown-item" asp-controller="TaskManager" asp-action="Index"><pems-icon name="bi-kanban" aria-hidden="true" /> @Localizer["Tm_Title"]</pems-link></li>
                 </pems-list-menu>
                 @if (!followup && canCreate)
                 {
@@ -80,7 +80,7 @@
                         <pems-table-row class="@(t.IsOverdue ? "lp-row table-danger" : "lp-row")">
                             <pems-table-cell>
                                 @if (t.ItemKey != null) { <span class="tm-key me-1">@t.ItemKey</span> }
-                                <a asp-action="Details" asp-route-id="@t.TaskItemId" class="lp-subject">@t.Title</a>
+                                <pems-link asp-action="Details" asp-route-id="@t.TaskItemId" class="lp-subject">@t.Title</pems-link>
                                 @if (!string.IsNullOrEmpty(t.Description)) { <div class="small text-muted text-truncate pems-s-b4a851bd">@t.Description</div> }
                             </pems-table-cell>
                             <pems-table-cell class="small">@t.AssignedToEmployeeName</pems-table-cell>
@@ -102,9 +102,9 @@
                                 @if (!string.IsNullOrEmpty(t.RelatedType))
                                 {
                                     @if (t.RelatedType == "Letter")
-                                    { <a asp-controller="Letter" asp-action="Details" asp-route-id="@t.RelatedId">@Localizer["Tm_Related_Letter"] #@t.RelatedId</a> }
+                                    { <pems-link asp-controller="Letter" asp-action="Details" asp-route-id="@t.RelatedId">@Localizer["Tm_Related_Letter"] #@t.RelatedId</pems-link> }
                                     else if (t.RelatedType == "Meeting")
-                                    { <a asp-controller="Meeting" asp-action="Details" asp-route-id="@t.RelatedId">@Localizer["Tm_Related_Meeting"] #@t.RelatedId</a> }
+                                    { <pems-link asp-controller="Meeting" asp-action="Details" asp-route-id="@t.RelatedId">@Localizer["Tm_Related_Meeting"] #@t.RelatedId</pems-link> }
                                     else
                                     { @($"{t.RelatedType} #{t.RelatedId}") }
                                 }

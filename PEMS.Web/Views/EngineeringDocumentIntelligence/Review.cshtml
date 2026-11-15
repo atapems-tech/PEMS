@@ -7,7 +7,7 @@
 <pems-content-card css="mb-3">
     <pems-flex justify="between" align="center">
         <div>
-            <h5 class="mb-0">@Model.DocumentNo &mdash; @Model.Title</h5>
+            <pems-heading level="5" class="mb-0">@Model.DocumentNo &mdash; @Model.Title</pems-heading>
             <pems-badge tone="info" css="mt-1">Stage: @Model.AIWorkflowStage</pems-badge>
             <pems-badge tone="neutral" css="mt-1">Status: @Model.Status</pems-badge>
             @if (!string.IsNullOrWhiteSpace(Model.AIProcessingStatus))
@@ -44,7 +44,7 @@
 </pems-content-card>
 
 <pems-content-card css="mb-3">
-    <h6 class="mb-3"><pems-icon name="bi-robot" /> AI Classification Suggestions</h6>
+    <pems-heading level="6" class="mb-3"><pems-icon name="bi-robot" /> AI Classification Suggestions</pems-heading>
 
     @foreach (var c in Model.Classifications)
     {
@@ -102,7 +102,7 @@
 </pems-content-card>
 
 <pems-content-card css="mb-3">
-    <h6 class="mb-3"><pems-icon name="bi-tags" /> Related Equipment Tags (AVEVA-style multi-tag linking)</h6>
+    <pems-heading level="6" class="mb-3"><pems-icon name="bi-tags" /> Related Equipment Tags (AVEVA-style multi-tag linking)</pems-heading>
     <pems-table-scroll css="table-scroll-area pems-s-8da1c6e6">
     <pems-table kind="enterprise">
         <pems-table-head><pems-table-row><pems-table-header>@Localizer["Tag Number"]</pems-table-header><pems-table-header>@Localizer["Source"]</pems-table-header><pems-table-header>@Localizer["Status"]</pems-table-header><pems-table-header></pems-table-header></pems-table-row></pems-table-head>
@@ -142,7 +142,7 @@
 </pems-content-card>
 
 <pems-content-card>
-    <h6 class="mb-3"><pems-icon name="bi-chat-dots" /> Comment Management</h6>
+    <pems-heading level="6" class="mb-3"><pems-icon name="bi-chat-dots" /> Comment Management</pems-heading>
     <pems-table-scroll css="table-scroll-area pems-s-8da1c6e6">
     <pems-table kind="enterprise">
         <pems-table-head><pems-table-row><pems-table-header>@Localizer["Comment"]</pems-table-header><pems-table-header>@Localizer["Raised By"]</pems-table-header><pems-table-header>@Localizer["Date"]</pems-table-header><pems-table-header>@Localizer["Action Status"]</pems-table-header><pems-table-header>@Localizer["Response"]</pems-table-header></pems-table-row></pems-table-head>

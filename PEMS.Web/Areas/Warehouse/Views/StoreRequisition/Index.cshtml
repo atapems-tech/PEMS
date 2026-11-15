@@ -63,14 +63,14 @@
                     @foreach (var r in Model.Items)
                     {
                         <pems-table-row class="lp-row">
-                            <pems-table-cell class="lp-no"><a asp-action="Details" asp-route-id="@r.StoreRequisitionId" class="lp-subject" title="@r.RequisitionNumber">@r.RequisitionNumber</a></pems-table-cell>
+                            <pems-table-cell class="lp-no"><pems-link asp-action="Details" asp-route-id="@r.StoreRequisitionId" class="lp-subject" title="@r.RequisitionNumber">@r.RequisitionNumber</pems-link></pems-table-cell>
                             <pems-table-cell class="small"><span class="vs-num">@r.WarehouseCode</span></pems-table-cell>
                             <pems-table-cell class="small vs-hide-md">@r.RequestedByName</pems-table-cell>
                             <pems-table-cell class="small"><span class="vs-num">@r.RequestedDate.ToString("yyyy-MM-dd")</span></pems-table-cell>
                             <pems-table-cell class="small"><span class="vs-title-cell" title="@r.Purpose">@(r.Purpose ?? "-")</span></pems-table-cell>
                             <pems-table-cell><span class="vs-pill @StatusTone(r.Status)">@StatusText(r.Status)</span></pems-table-cell>
                             <pems-table-cell class="text-end">
-                                <a asp-action="Details" asp-route-id="@r.StoreRequisitionId" class="lp-act lp-act--always" title="@Localizer["Ed_View"]" aria-label="@Localizer["Ed_View"]"><pems-icon name="bi-card-text" aria-hidden="true" /></a>
+                                <pems-link asp-action="Details" asp-route-id="@r.StoreRequisitionId" class="lp-act lp-act--always" title="@Localizer["Ed_View"]" aria-label="@Localizer["Ed_View"]"><pems-icon name="bi-card-text" aria-hidden="true" /></pems-link>
                             </pems-table-cell>
                         </pems-table-row>
                     }

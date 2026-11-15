@@ -25,11 +25,11 @@
             <pems-content-card css="h-100">
                 <pems-flex justify="between" align="start">
                     <div>
-                        <h6 class="mb-0">@crew.Code — @crew.Name</h6>
+                        <pems-heading level="6" class="mb-0">@crew.Code — @crew.Name</pems-heading>
                         @if (crew.WorkOrder != null)
                         {
                             <pems-badge tone="info">
-                                <pems-icon name="bi-clipboard-check" /> اختصاصی <a asp-controller="WorkOrder" asp-action="Details" asp-route-id="@crew.WorkOrder.WorkOrderId" class="text-dark">@crew.WorkOrder.WorkOrderNumber</a>
+                                <pems-icon name="bi-clipboard-check" /> اختصاصی <pems-link asp-controller="WorkOrder" asp-action="Details" asp-route-id="@crew.WorkOrder.WorkOrderId" class="text-dark">@crew.WorkOrder.WorkOrderNumber</pems-link>
                             </pems-badge>
                         }
                         else
@@ -41,7 +41,7 @@
 
                 <hr class="my-2" />
 
-                <h6 class="small fw-bold mb-2">اعضا (@crew.Members.Count(m => m.IsActive))</h6>
+                <pems-heading level="6" class="small fw-bold mb-2">اعضا (@crew.Members.Count(m => m.IsActive))</pems-heading>
                 <ul class="list-unstyled mb-2">
                     @foreach (var m in crew.Members.Where(m => m.IsActive))
                     {

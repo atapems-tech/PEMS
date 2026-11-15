@@ -15,7 +15,7 @@
 }
 
 <pems-flex justify="between" align="center" css="mb-3">
-    <h5 class="mb-0"><pems-icon name="bi-person-badge" /> Equipment Intelligence — @Model.TagNumber <span class="text-muted small">@Model.Name</span></h5>
+    <pems-heading level="5" class="mb-0"><pems-icon name="bi-person-badge" /> Equipment Intelligence — @Model.TagNumber <span class="text-muted small">@Model.Name</span></pems-heading>
     <div>
         <pems-button tone="neutral" size="small" outline="true" as="a" asp-action="Details" asp-route-id="@Model.EquipmentId">Reliability Detail</pems-button>
         <pems-button tone="primary" size="small" outline="true" as="a" asp-action="Ram" asp-route-id="@Model.EquipmentId">RAM / Weibull</pems-button>
@@ -67,7 +67,7 @@
 <pems-row gap="3" css="mb-3">
     <pems-col md="6">
         <pems-content-card css="h-100">
-            <h6 class="mb-2">Maintenance</h6>
+            <pems-heading level="6" class="mb-2">Maintenance</pems-heading>
             <pems-table kind="enterprise" scale="small" css="mb-0">
                 <pems-table-body>
                     <pems-table-row><pems-table-cell>Active Strategies</pems-table-cell><pems-table-cell class="text-end">@Model.ActiveStrategyCount</pems-table-cell></pems-table-row>
@@ -82,7 +82,7 @@
     </pems-col>
     <pems-col md="6">
         <pems-content-card css="h-100">
-            <h6 class="mb-2">Failure Intelligence &amp; Safety</h6>
+            <pems-heading level="6" class="mb-2">Failure Intelligence &amp; Safety</pems-heading>
             <div class="small text-muted mb-1">Top Failure Modes</div>
             @if (Model.TopFailureModes.Any())
             {
@@ -104,7 +104,7 @@
 @if (Model.UnavailableMetricReasons.Any())
 {
     <pems-content-card>
-        <h6 class="mb-2">Unavailable Metrics — Reasons</h6>
+        <pems-heading level="6" class="mb-2">Unavailable Metrics — Reasons</pems-heading>
         @foreach (var reason in Model.UnavailableMetricReasons)
         {
             <div class="small text-muted">• @reason</div>

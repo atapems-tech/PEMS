@@ -6,7 +6,7 @@
 <pems-content-card css="mb-3">
     <pems-flex justify="between" align="center" wrap="true" gap="2">
         <div>
-            <h5 class="mb-0">@Model.AssetNumber</h5>
+            <pems-heading level="5" class="mb-0">@Model.AssetNumber</pems-heading>
             <span class="text-muted small">@Model.EquipmentTagNumber - @Model.EquipmentName</span>
         </div>
         <pems-flex gap="2">
@@ -35,7 +35,7 @@
 <pems-row gap="3">
     <pems-col md="6">
         <pems-content-card css="mb-3">
-            <h6 class="mb-3">Asset Info</h6>
+            <pems-heading level="6" class="mb-3">Asset Info</pems-heading>
             <pems-table scale="small">
                 <pems-table-row><pems-table-header class="text-muted pems-w-40pct">@Localizer["Manufacturer / Model"]</pems-table-header><pems-table-cell>@Model.Manufacturer / @Model.Model</pems-table-cell></pems-table-row>
                 <pems-table-row><pems-table-header class="text-muted">@Localizer["Functional Location"]</pems-table-header><pems-table-cell>@(Model.FunctionalLocationBreadcrumb ?? "not linked")</pems-table-cell></pems-table-row>
@@ -49,7 +49,7 @@
         </pems-content-card>
 
         <pems-content-card>
-            <h6 class="mb-3">@Localizer["Latest Maintenance"]</h6>
+            <pems-heading level="6" class="mb-3">@Localizer["Latest Maintenance"]</pems-heading>
             @if (Model.LatestMaintenance != null)
             {
                 <pems-table scale="small">
@@ -68,7 +68,7 @@
 
     <pems-col md="6">
         <pems-content-card css="mb-3">
-            <h6 class="mb-3">Work Orders (@Model.WorkOrders.Count)</h6>
+            <pems-heading level="6" class="mb-3">Work Orders (@Model.WorkOrders.Count)</pems-heading>
             @if (Model.WorkOrders.Any())
             {
                 <pems-data-table data="@(DataRows.Of(Model.WorkOrders.Take(10), c_ => c_.Add("No.", w => (object?)(DataCell.Link(Url.Action("Details", "WorkOrder", new { id = w.WorkOrderId }), w.WorkOrderNo))).Add(((Localizer["Description"])?.ToString() ?? ""), w => (object?)((w.Description ?? "-")), css: "small").Add(((Localizer["Status"])?.ToString() ?? ""), w => (object?)(DataCell.Badge("neutral", w.Status))).Add(((Localizer["Created"])?.ToString() ?? ""), w => (object?)((w.CreatedDate?.ToString("yyyy-MM-dd") ?? "-")), css: "small")))" dense="true" />
@@ -80,7 +80,7 @@
         </pems-content-card>
 
         <pems-content-card css="mb-3">
-            <h6 class="mb-3">Inspections (@Model.Inspections.Count)</h6>
+            <pems-heading level="6" class="mb-3">Inspections (@Model.Inspections.Count)</pems-heading>
             @if (Model.Inspections.Any())
             {
                 <pems-data-table data="@(DataRows.Of(Model.Inspections.Take(10), c_ => c_.Add(((Localizer["Type"])?.ToString() ?? ""), i => (object?)(i.InspectionType)).Add(((Localizer["Date"])?.ToString() ?? ""), i => (object?)(i.InspectionDate?.ToString("yyyy-MM-dd") ?? "-"), css: "small").Add(((Localizer["Inspector"])?.ToString() ?? ""), i => (object?)(i.Inspector ?? "-"), css: "small").Add(((Localizer["Result"])?.ToString() ?? ""), i => (object?)(i.Result ?? "-"))))" enterprise="false" dense="true" />
@@ -92,7 +92,7 @@
         </pems-content-card>
 
         <pems-content-card>
-            <h6 class="mb-3">Failures (@Model.Failures.Count)</h6>
+            <pems-heading level="6" class="mb-3">Failures (@Model.Failures.Count)</pems-heading>
             @if (Model.Failures.Any())
             {
                 <pems-data-table data="@(DataRows.Of(Model.Failures.Take(10), c_ => c_.Add(((Localizer["Date"])?.ToString() ?? ""), f => (object?)(f.FailureDate.ToString("yyyy-MM-dd")), css: "small").Add(((Localizer["Mode"])?.ToString() ?? ""), f => (object?)(f.FailureMode)).Add(((Localizer["Cause"])?.ToString() ?? ""), f => (object?)(f.FailureCause ?? "-"), css: "small").Add("Downtime (h)", f => (object?)(f.DowntimeHours?.ToString("N1") ?? "-"))))" enterprise="false" dense="true" />

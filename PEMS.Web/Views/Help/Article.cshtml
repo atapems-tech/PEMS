@@ -10,8 +10,8 @@
 
 <nav aria-label="breadcrumb" class="mb-2">
     <pems-crumb-trail css="mb-0 small">
-        <li class="breadcrumb-item"><a asp-action="Index">@L("Help Center", "مرکز راهنما")</a></li>
-        <li class="breadcrumb-item"><a asp-action="Category" asp-route-id="@Model.HelpCategoryId">@Model.CategoryName</a></li>
+        <li class="breadcrumb-item"><pems-link asp-action="Index">@L("Help Center", "مرکز راهنما")</pems-link></li>
+        <li class="breadcrumb-item"><pems-link asp-action="Category" asp-route-id="@Model.HelpCategoryId">@Model.CategoryName</pems-link></li>
         <li class="breadcrumb-item active">@Model.Title</li>
     </pems-crumb-trail>
 </nav>
@@ -20,7 +20,7 @@
     <pems-col lg="9">
         <pems-content-card>
             <pems-flex justify="between" align="start" wrap="true" gap="2" css="mb-2">
-                <h4 class="mb-0">@Model.Title</h4>
+                <pems-heading level="4" class="mb-0">@Model.Title</pems-heading>
                 <pems-badge tone="light">@Model.ArticleType</pems-badge>
             </pems-flex>
             <p class="text-muted">@Model.Summary</p>
@@ -54,7 +54,7 @@
         @if (Model.RelatedArticles.Any())
         {
             <pems-content-card css="mt-3">
-                <h6 class="mb-3">@L("Related Help", "راهنمای مرتبط")</h6>
+                <pems-heading level="6" class="mb-3">@L("Related Help", "راهنمای مرتبط")</pems-heading>
                 <pems-flex wrap="true" gap="2">
                     @foreach (var r in Model.RelatedArticles)
                     {
@@ -67,7 +67,7 @@
 
     <pems-col lg="3">
         <pems-content-card>
-            <h6 class="mb-3"><pems-icon name="bi-robot" /> @L("Ask PEMS AI", "پرسش از هوش مصنوعی PEMS")</h6>
+            <pems-heading level="6" class="mb-3"><pems-icon name="bi-robot" /> @L("Ask PEMS AI", "پرسش از هوش مصنوعی PEMS")</pems-heading>
             <p class="text-muted small">@L("Ask a question about this article - the answer is based only on its content.", "درباره‌ی همین مقاله سوال بپرسید - پاسخ فقط بر اساس محتوای همین مقاله است.")</p>
             <pems-textarea scale="small" css="mb-2" id="helpAiQuestion" rows="3" placeholder="@L("e.g. What happens if I don't respond to IDC?", "مثلاً اگر به IDC پاسخ ندهم چه می‌شود؟")"></pems-textarea>
             <pems-button tone="primary" size="small" css="w-100" type="button" id="helpAiAskBtn" data-code="@Model.Code" data-url="@Url.Action("AskAi", "Help")" data-thinking="@L("Thinking...", "در حال فکر کردن...")" data-error="@L("Could not reach the AI assistant.", "ارتباط با دستیار هوش مصنوعی برقرار نشد.")">

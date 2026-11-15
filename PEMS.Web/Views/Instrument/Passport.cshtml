@@ -15,7 +15,7 @@
 <pems-content-card css="mb-3 d-print-none">
     <pems-flex justify="between" align="center" wrap="true" gap="2">
         <div>
-            <h4 class="mb-0">@Model.Equipment?.TagNumber <pems-badge tone="@badgeClass" css="ms-1">@status</pems-badge></h4>
+            <pems-heading level="4" class="mb-0">@Model.Equipment?.TagNumber <pems-badge tone="@badgeClass" css="ms-1">@status</pems-badge></pems-heading>
             <span class="text-muted small">@Model.InstrumentType - @Model.Equipment?.Name (@NA(Model.Equipment?.Manufacturer) / @NA(Model.Equipment?.Model))</span>
         </div>
         <pems-flex gap="2">
@@ -30,7 +30,7 @@
 </pems-content-card>
 
 <pems-content-card css="mb-3">
-    <h6 class="mb-3">@Localizer["Passport"]</h6>
+    <pems-heading level="6" class="mb-3">@Localizer["Passport"]</pems-heading>
     <pems-row gap="2" css="small">
         <pems-col md="3"><strong>@Localizer["Loop No."]</strong><div>@NA(Model.LoopNumber)</div></pems-col>
         <pems-col md="3"><strong>@Localizer["System"]</strong><div>@NA(Model.System)</div></pems-col>
@@ -76,7 +76,7 @@
 <pems-content-card css="mb-3">
     <pems-row gap="3">
         <pems-col md="6">
-            <h6>Latest Calibration</h6>
+            <pems-heading level="6">Latest Calibration</pems-heading>
             @if (latestCal != null)
             {
                 <div class="small">
@@ -92,7 +92,7 @@
             }
         </pems-col>
         <pems-col md="6">
-            <h6>@Localizer["Latest Maintenance"]</h6>
+            <pems-heading level="6">@Localizer["Latest Maintenance"]</pems-heading>
             @if (latestMaint != null)
             {
                 <div class="small">
@@ -110,7 +110,7 @@
 </pems-content-card>
 
 <pems-content-card css="d-print-none">
-    <h6>Record New Calibration</h6>
+    <pems-heading level="6">Record New Calibration</pems-heading>
     <pems-form asp-action="AddCalibration" method="post"><pems-row gap="2" css="align-items-end mb-4">
         <input type="hidden" name="instrumentId" value="@Model.InstrumentId" />
         <pems-col md="2"><pems-label css="small">@Localizer["Date"]</pems-label><pems-date name="calibrationDate" scale="small" value="@DateTime.Today.ToString("yyyy-MM-dd")" required /></pems-col>
@@ -132,7 +132,7 @@
         <pems-col md="4"><pems-button tone="primary" size="small" css="w-100" type="submit"><pems-icon name="bi-plus-lg" /> Record Calibration</pems-button></pems-col>
     </pems-row></pems-form>
 
-    <h6>Calibration History</h6>
+    <pems-heading level="6">Calibration History</pems-heading>
     <div class="table-scroll-area pems-s-f7dce87f">
         <pems-data-table data="@(DataRows.Of((List<CalibrationHistory>)ViewBag.CalibrationHistoryList, c_ => c_.Add(((Localizer["Date"])?.ToString() ?? ""), c => (object?)(c.CalibrationDate.ToString("yyyy-MM-dd"))).Add(((Localizer["Type"])?.ToString() ?? ""), c => (object?)(c.CalibrationType)).Add("As Found / As Left", c => DataCell.Join((NA(c.AsFound)), " / ", (NA(c.AsLeft)))).Add(((Localizer["Result"])?.ToString() ?? ""), c => (object?)(c.Result)).Add(((Localizer["Technician"])?.ToString() ?? ""), c => (object?)(c.Technician != null ? c.Technician.FirstName + " " + c.Technician.LastName : "N/A")).Add("Certificate", c => (object?)(NA(c.CertificateNo))).Add(((Localizer["Next Due"])?.ToString() ?? ""), c => (object?)(c.NextDue?.ToString("yyyy-MM-dd") ?? "N/A"))))" dense="true" />
     </div>
@@ -147,7 +147,7 @@
 
 @* ===================== I&C Integration (CMMS-09) ===================== *@
 <pems-content-card css="mb-3 d-print-none">
-    <h6>Record New Alarm</h6>
+    <pems-heading level="6">Record New Alarm</pems-heading>
     <pems-form asp-action="AddAlarm" method="post"><pems-row gap="2" css="align-items-end mb-3">
         <input type="hidden" name="instrumentId" value="@Model.InstrumentId" />
         <pems-col md="2"><pems-label css="small">Alarm Tag</pems-label><pems-input scale="small" name="alarmTag" required /></pems-col>
@@ -168,7 +168,7 @@
         <pems-col md="3"><pems-button tone="primary" size="small" css="w-100" type="submit"><pems-icon name="bi-plus-lg" /> Add Alarm</pems-button></pems-col>
     </pems-row></pems-form>
 
-    <h6>Alarms &amp; Cause / Effect</h6>
+    <pems-heading level="6">Alarms &amp; Cause / Effect</pems-heading>
     @if (!alarms.Any())
     {
         <p class="text-muted small">هنوز هیچ آلارمی برای این Instrument ثبت نشده.</p>
@@ -231,7 +231,7 @@
 <pems-row gap="3" css="mb-3">
     <pems-col md="6">
         <pems-content-card css="h-100">
-            <h6>Control Loop</h6>
+            <pems-heading level="6">Control Loop</pems-heading>
             @if (controlLoop != null)
             {
                 <div class="small">
@@ -262,7 +262,7 @@
     </pems-col>
     <pems-col md="6">
         <pems-content-card css="h-100">
-            <h6>I/O Points</h6>
+            <pems-heading level="6">I/O Points</pems-heading>
             <pems-data-table data="@(DataRows.Of(ioPoints, c_ => c_.Add(((Localizer["Tag"])?.ToString() ?? ""), io => (object?)(io.TagNumber), css: "small").Add(((Localizer["Type"])?.ToString() ?? ""), io => (object?)(io.IOType), css: "small").Add("PLC / Rack / Slot / Channel", io => DataCell.Join((NA(io.PLCName)), " / ", (NA(io.Rack)), " / ", (NA(io.Slot)), " / ", (NA(io.Channel))), css: "small")))" dense="true" css="mb-0" />
             @if (!ioPoints.Any()) { <p class="text-muted small mb-0">هیچ I/O Point ای ثبت نشده (معمولاً از طریق AI Import پر می‌شود).</p> }
         </pems-content-card>

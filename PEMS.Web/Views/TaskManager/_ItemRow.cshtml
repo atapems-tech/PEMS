@@ -18,11 +18,11 @@
     }
     <pems-table-cell class="text-nowrap">
         @if (!string.IsNullOrEmpty(i.TypeIcon)) { <pems-icon css="@i.TypeIcon me-1" title="@TaskManagerUi.Name(i.TypeName, i.TypeNameFa)" aria-hidden="true" /><span class="visually-hidden">@TaskManagerUi.Name(i.TypeName, i.TypeNameFa)</span> }
-        <a asp-controller="Task" asp-action="Details" asp-route-id="@i.Id" class="tm-key">@(i.Key ?? "#" + i.Id)</a>
+        <pems-link asp-controller="Task" asp-action="Details" asp-route-id="@i.Id" class="tm-key">@(i.Key ?? "#" + i.Id)</pems-link>
     </pems-table-cell>
     @if (showSpace) { <pems-table-cell class="small">@(i.WorkSpaceKey ?? Localizer["Tm_Personal"].Value)</pems-table-cell> }
     <pems-table-cell class="tm-title-cell">
-        <a asp-controller="Task" asp-action="Details" asp-route-id="@i.Id" class="text-reset">@i.Title</a>
+        <pems-link asp-controller="Task" asp-action="Details" asp-route-id="@i.Id" class="text-reset">@i.Title</pems-link>
         @if (i.ParentKey != null) { <span class="small text-muted ms-1">↳ @i.ParentKey</span> }
         @if (!i.IsActive) { <pems-badge tone="light" css="ms-1">@Localizer["Tm_Archived"]</pems-badge> }
     </pems-table-cell>

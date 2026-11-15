@@ -18,9 +18,9 @@
             <span class="vs-pill @VdrUi.RiskTone(Model.RiskLevel)">@Localizer["Vs_Risk"]: @VdrUi.Loc(Localizer, "St_", Model.RiskLevel)@(Model.RiskScore.HasValue ? " (" + Model.RiskScore.Value.ToString("P0") + ")" : "")</span>
         </pems-flex>
         <div class="vs-actions">
-            <a asp-controller="VDR" asp-action="Index" asp-route-vendorId="@Model.VendorId" class="vs-btn vs-btn--sm"><pems-icon name="bi-list" /> @Localizer["Vs_ViewVdrItems"]</a>
-            <a asp-controller="Relationship" asp-action="Vendor" asp-route-id="@Model.VendorId" class="vs-btn vs-btn--sm"><pems-icon name="bi-diagram-3" /> @Localizer["Vs_ExploreRelationships"]</a>
-            <a asp-action="Edit" asp-route-id="@Model.VendorId" class="vs-btn vs-btn--primary vs-btn--sm"><pems-icon name="bi-pencil" /> @Localizer["Vs_EditVendor"]</a>
+            <pems-link asp-controller="VDR" asp-action="Index" asp-route-vendorId="@Model.VendorId" class="vs-btn vs-btn--sm"><pems-icon name="bi-list" /> @Localizer["Vs_ViewVdrItems"]</pems-link>
+            <pems-link asp-controller="Relationship" asp-action="Vendor" asp-route-id="@Model.VendorId" class="vs-btn vs-btn--sm"><pems-icon name="bi-diagram-3" /> @Localizer["Vs_ExploreRelationships"]</pems-link>
+            <pems-link asp-action="Edit" asp-route-id="@Model.VendorId" class="vs-btn vs-btn--primary vs-btn--sm"><pems-icon name="bi-pencil" /> @Localizer["Vs_EditVendor"]</pems-link>
         </div>
     </div>
 
@@ -32,7 +32,7 @@
                 <pems-info-item label="@Localizer["Vs_VdrItems"]">@Model.VDRItemsCount</pems-info-item>
                 <pems-info-item label="@Localizer["Vs_Overdue"]" tone="@(Model.OverdueVDRItemsCount > 0 ? "danger" : "")">@Model.OverdueVDRItemsCount</pems-info-item>
                 <pems-info-item label="@Localizer["Vs_ContactName"]">@(string.IsNullOrEmpty(Model.ContactName) ? "-" : Model.ContactName)</pems-info-item>
-                <pems-info-item label="@Localizer["Vs_ContactEmail"]">@if (!string.IsNullOrEmpty(Model.ContactEmail)) { <a href="mailto:@Model.ContactEmail">@Model.ContactEmail</a> } else { <span>-</span> }</pems-info-item>
+                <pems-info-item label="@Localizer["Vs_ContactEmail"]">@if (!string.IsNullOrEmpty(Model.ContactEmail)) { <pems-link href="mailto:@Model.ContactEmail">@Model.ContactEmail</pems-link> } else { <span>-</span> }</pems-info-item>
                 <pems-info-item label="@Localizer["Vs_ContactPhone"]" ltr>@(string.IsNullOrEmpty(Model.ContactPhone) ? "-" : Model.ContactPhone)</pems-info-item>
             </pems-info-grid>
             <pems-form asp-action="RecalculateRisk" asp-route-id="@Model.VendorId" method="post" class="mt-3">

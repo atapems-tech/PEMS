@@ -22,7 +22,7 @@
 {
     <pems-content-card css="mb-4">
         <pems-flex justify="between" align="center" wrap="true" gap="2" css="mb-2">
-            <h6 class="mb-0"><pems-icon name="bi-rocket-takeoff" /> @Localizer["System Setup"]</h6>
+            <pems-heading level="6" class="mb-0"><pems-icon name="bi-rocket-takeoff" /> @Localizer["System Setup"]</pems-heading>
             <span class="text-muted small">@setupStatus.CompletedCount of @setupStatus.TotalCount setup areas ready</span>
         </pems-flex>
         <pems-progress value="@setupStatus.PercentComplete" height="18px" css="mb-3">@setupStatus.PercentComplete%</pems-progress>
@@ -36,7 +36,7 @@
 @if (myWork != null && myWork.HasAnyCategory)
 {
     <pems-content-card css="mb-4">
-        <h6 class="mb-1"><pems-icon name="bi-check2-square" /> @Localizer["My Work"]</h6>
+        <pems-heading level="6" class="mb-1"><pems-icon name="bi-check2-square" /> @Localizer["My Work"]</pems-heading>
         <p class="text-muted small mb-3">@Localizer["What requires your attention"]</p>
 
         @if (!myWork.HasAnyActionable)
@@ -52,7 +52,7 @@
                 @if (myWork.ShowPermitApprovals)
                 {
                     <pems-col md="4">
-                        <a asp-controller="Permit" asp-action="Index" asp-route-pendingMyApproval="true"
+                        <pems-link asp-controller="Permit" asp-action="Index" asp-route-pendingMyApproval="true"
                            class="d-block p-2 rounded text-decoration-none"
                            aria-label="@myWork.PendingPermitApprovals Permit Approvals waiting for your approval"><pems-flex align="center" gap="3">
                             <div class="kpi-icon @(myWork.PendingPermitApprovals > 0 ? "bg-icon-red" : "bg-icon-slate")"><pems-icon name="bi-shield-check" /></div>
@@ -60,13 +60,13 @@
                                 <div class="kpi-value">@myWork.PendingPermitApprovals</div>
                                 <div class="small text-muted">Permit Approvals waiting for you</div>
                             </div>
-                        </pems-flex></a>
+                        </pems-flex></pems-link>
                     </pems-col>
                 }
                 @if (myWork.ShowWorkOrders)
                 {
                     <pems-col md="4">
-                        <a asp-controller="WorkOrder" asp-action="Index" asp-route-assignedToMe="true"
+                        <pems-link asp-controller="WorkOrder" asp-action="Index" asp-route-assignedToMe="true"
                            class="d-block p-2 rounded text-decoration-none"
                            aria-label="@myWork.MyWorkOrdersCount Work Orders assigned to you"><pems-flex align="center" gap="3">
                             <div class="kpi-icon @(myWork.MyWorkOrdersCount > 0 ? "bg-icon-orange" : "bg-icon-slate")"><pems-icon name="bi-clipboard-check" /></div>
@@ -74,13 +74,13 @@
                                 <div class="kpi-value">@myWork.MyWorkOrdersCount</div>
                                 <div class="small text-muted">Work Orders assigned to you</div>
                             </div>
-                        </pems-flex></a>
+                        </pems-flex></pems-link>
                     </pems-col>
                 }
                 @if (myWork.ShowReferrals)
                 {
                     <pems-col md="4">
-                        <a asp-controller="Letter" asp-action="MyReferrals"
+                        <pems-link asp-controller="Letter" asp-action="MyReferrals"
                            class="d-block p-2 rounded text-decoration-none"
                            aria-label="@myWork.MyReferralsCount Correspondence Referrals requiring your action"><pems-flex align="center" gap="3">
                             <div class="kpi-icon @(myWork.MyReferralsCount > 0 ? "bg-icon-blue" : "bg-icon-slate")"><pems-icon name="bi-envelope-paper" /></div>
@@ -88,13 +88,13 @@
                                 <div class="kpi-value">@myWork.MyReferralsCount</div>
                                 <div class="small text-muted">Referrals requiring your action</div>
                             </div>
-                        </pems-flex></a>
+                        </pems-flex></pems-link>
                     </pems-col>
                 }
                 @if (myWork.ShowOtherApprovals)
                 {
                     <pems-col md="4">
-                        <a asp-controller="MyWork" asp-action="Index"
+                        <pems-link asp-controller="MyWork" asp-action="Index"
                            class="d-block p-2 rounded text-decoration-none"
                            aria-label="@myWork.OtherApprovalsCount @Localizer["MyWork_Card_Other"]"><pems-flex align="center" gap="3">
                             <div class="kpi-icon bg-icon-teal"><pems-icon name="bi-list-check" /></div>
@@ -102,13 +102,13 @@
                                 <div class="kpi-value">@myWork.OtherApprovalsCount</div>
                                 <div class="small text-muted">@Localizer["MyWork_Card_Other"]</div>
                             </div>
-                        </pems-flex></a>
+                        </pems-flex></pems-link>
                     </pems-col>
                 }
                 @if (myWork.ShowDocumentReviews)
                 {
                     <pems-col md="4">
-                        <a asp-controller="EngineeringDocuments" asp-action="Index"
+                        <pems-link asp-controller="EngineeringDocuments" asp-action="Index"
                            class="d-block p-2 rounded text-decoration-none"
                            aria-label="@myWork.PendingDocumentReviewsCount Engineering Documents awaiting your review or approval"><pems-flex align="center" gap="3">
                             <div class="kpi-icon @(myWork.PendingDocumentReviewsCount > 0 ? "bg-icon-purple" : "bg-icon-slate")"><pems-icon name="bi-file-earmark-check" /></div>
@@ -116,7 +116,7 @@
                                 <div class="kpi-value">@myWork.PendingDocumentReviewsCount</div>
                                 <div class="small text-muted">Documents awaiting your review</div>
                             </div>
-                        </pems-flex></a>
+                        </pems-flex></pems-link>
                     </pems-col>
                 }
             </pems-row>
@@ -140,7 +140,7 @@
 
     <pems-col lg="6">
         <pems-content-card>
-            <h6 class="mb-3">@Localizer["Documents by Status"]</h6>
+            <pems-heading level="6" class="mb-3">@Localizer["Documents by Status"]</pems-heading>
             @* SCRUM-337 C3: the shared chart host (Bklit donut with its hover-linked legend) *@
             @{ var docsDonut = PEMS.Web.Models.BkChartSpec.Donut(Localizer["Documents by Status"].Value, Localizer["No documents to chart yet."].Value,
                    Localizer["Documents"].Value, Model.DocumentsByStatus.Select(kv => (kv.Key, (double)kv.Value))); }
@@ -150,7 +150,7 @@
 
     <pems-col lg="6">
         <pems-content-card css="h-100">
-            <h6 class="mb-3">@Localizer["Discipline Performance"]</h6>
+            <pems-heading level="6" class="mb-3">@Localizer["Discipline Performance"]</pems-heading>
             @{ var disciplineRows = (List<PEMS.Web.Models.DisciplinePerformanceRow>)(ViewBag.DisciplinePerformance ?? new List<PEMS.Web.Models.DisciplinePerformanceRow>()); }
             @if (disciplineRows.Count == 0)
             {
@@ -189,7 +189,7 @@
 @if (widgetLayout != null && widgetLayout.Any())
 {
     <pems-flex justify="between" align="center" css="mt-4 mb-2">
-        <h6 class="mb-0">@Localizer["My Dashboard"]</h6>
+        <pems-heading level="6" class="mb-0">@Localizer["My Dashboard"]</pems-heading>
         <pems-button tone="neutral" size="small" outline="true" as="a" asp-controller="DashboardSettings" asp-action="Index">
             <pems-icon name="bi-sliders" /> @Localizer["Customize"]
         </pems-button>
@@ -203,7 +203,7 @@
 
             <div class="@colClass">
                 <pems-content-card css="h-100">
-                    <h6 class="mb-3">@w.DisplayName</h6>
+                    <pems-heading level="6" class="mb-3">@w.DisplayName</pems-heading>
                     @if (value is List<string> list)
                     {
                         <ul class="list-unstyled small mb-0">

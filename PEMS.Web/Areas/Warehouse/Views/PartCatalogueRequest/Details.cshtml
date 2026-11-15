@@ -48,7 +48,7 @@
 <pems-page-shell kind="workspace" css="pc-page">
     <div class="vs-doc-head">
         <pems-flex wrap="true" align="center" gap="2">
-            <h2 class="pems-page-title mb-0">@(string.IsNullOrEmpty(d.RequestNumber) ? "#" + d.Id : d.RequestNumber)</h2>
+            <pems-heading level="2" class="pems-page-title mb-0">@(string.IsNullOrEmpty(d.RequestNumber) ? "#" + d.Id : d.RequestNumber)</pems-heading>
             <span class="vs-pill vs-pill--info">@Localizer["Pc_Type_" + d.RequestType]</span>
             <span class="vs-pill vs-pill--icon @StatusPill(d.Status)">@Localizer["Pc_Status_" + d.Status]</span>
             @if (f.Urgent) { <span class="vs-pill vs-pill--danger vs-pill--icon"><pems-icon name="bi-exclamation-triangle" aria-hidden="true" /> @Localizer["Pc_Urgent"]</span> }
@@ -63,11 +63,11 @@
     @if (!string.IsNullOrEmpty(warningTemp)) { <pems-alert tone="warning" css="small">@warningTemp</pems-alert> }
 
     <div class="vs-toolbar">
-        <a asp-action="Index" class="vs-btn vs-btn--sm"><pems-icon name="bi-arrow-left" /> @Localizer["Pc_Btn_Back"]</a>
-        @if (a.CanEdit) { <a asp-action="Edit" asp-route-id="@d.Id" class="vs-btn vs-btn--primary vs-btn--sm"><pems-icon name="bi-pencil" /> @Localizer["Pc_Btn_Edit"]</a> }
+        <pems-link asp-action="Index" class="vs-btn vs-btn--sm"><pems-icon name="bi-arrow-left" /> @Localizer["Pc_Btn_Back"]</pems-link>
+        @if (a.CanEdit) { <pems-link asp-action="Edit" asp-route-id="@d.Id" class="vs-btn vs-btn--primary vs-btn--sm"><pems-icon name="bi-pencil" /> @Localizer["Pc_Btn_Edit"]</pems-link> }
         <div class="vs-toolbar__end">
-            <a asp-action="ExportXlsx" asp-route-id="@d.Id" class="vs-btn vs-btn--sm"><pems-icon name="bi-file-earmark-excel" /> @Localizer["Pc_Btn_Export_Xlsx"]</a>
-            <a asp-action="ExportPdf" asp-route-id="@d.Id" class="vs-btn vs-btn--sm"><pems-icon name="bi-file-earmark-pdf" /> @Localizer["Pc_Btn_Export_Pdf"]</a>
+            <pems-link asp-action="ExportXlsx" asp-route-id="@d.Id" class="vs-btn vs-btn--sm"><pems-icon name="bi-file-earmark-excel" /> @Localizer["Pc_Btn_Export_Xlsx"]</pems-link>
+            <pems-link asp-action="ExportPdf" asp-route-id="@d.Id" class="vs-btn vs-btn--sm"><pems-icon name="bi-file-earmark-pdf" /> @Localizer["Pc_Btn_Export_Pdf"]</pems-link>
         </div>
     </div>
 
@@ -75,7 +75,7 @@
     @if (a.IsOrganizationBlocked)
     {
         <section class="vs-panel pc-card border-warning" role="alert">
-            <h2 class="vs-section__title"><pems-icon name="bi-diagram-3" /> @Localizer["Pc_Org_Blocked_Title"]</h2>
+            <pems-heading level="2" class="vs-section__title"><pems-icon name="bi-diagram-3" /> @Localizer["Pc_Org_Blocked_Title"]</pems-heading>
             <p class="mb-1">@Localizer["Pc_Org_Blocked_Body"]</p>
             @if (!string.IsNullOrEmpty(a.OrganizationBlockReason))
             {
@@ -97,9 +97,9 @@
     @if (a.CanApprove || a.CanReturn || a.CanCancel && d.Status == "InApproval")
     {
         <section class="vs-panel pc-card pc-action-panel">
-            <h2 class="vs-section__title"><pems-icon name="bi-check2-square" /> @Localizer["Pc_Det_ActionPanel"]
+            <pems-heading level="2" class="vs-section__title"><pems-icon name="bi-check2-square" /> @Localizer["Pc_Det_ActionPanel"]
                 @if (!string.IsNullOrEmpty(a.ActiveStepKey)) { <span class="vs-pill vs-pill--info ms-2">@Localizer["Pc_Step_" + a.ActiveStepKey]</span> }
-            </h2>
+            </pems-heading>
             @if (a.IsAdminOverride) { <pems-alert tone="warning" css="small py-1">@Localizer["Pc_Det_AdminOverride"]</pems-alert> }
 
             <pems-form asp-action="Execute" method="post"><pems-row gap="2" css="align-items-end">
@@ -138,7 +138,7 @@
     <pems-row gap="3">
         <pems-col lg="8">
             <section class="vs-panel pc-card">
-                <h2 class="vs-section__title"><pems-icon name="bi-card-checklist" /> @Localizer["Pc_Sec_PartInfo"]</h2>
+                <pems-heading level="2" class="vs-section__title"><pems-icon name="bi-card-checklist" /> @Localizer["Pc_Sec_PartInfo"]</pems-heading>
                 <pems-info-grid layout="rows">
                     <pems-info-item label="@L("SectionId")">@Label("SectionId")</pems-info-item>
                     <pems-info-item label="@L("TechnicalClassId")">@Label("TechnicalClassId")</pems-info-item>
@@ -170,7 +170,7 @@
             </section>
 
             <section class="vs-panel pc-card mt-3">
-                <h2 class="vs-section__title"><pems-icon name="bi-box-seam" /> @Localizer["Pc_Sec_Planning"]</h2>
+                <pems-heading level="2" class="vs-section__title"><pems-icon name="bi-box-seam" /> @Localizer["Pc_Sec_Planning"]</pems-heading>
                 <pems-info-grid layout="rows">
                     <pems-info-item label="@L("PlanningMethodId")">@Label("PlanningMethodId")</pems-info-item>
                     <pems-info-item label="@L("MinimumStock")">@f.MinimumStock</pems-info-item>
@@ -185,7 +185,7 @@
             </section>
 
             <section class="vs-panel pc-card mt-3">
-                <h2 class="vs-section__title"><pems-icon name="bi-diagram-3" /> @L("Attributes")</h2>
+                <pems-heading level="2" class="vs-section__title"><pems-icon name="bi-diagram-3" /> @L("Attributes")</pems-heading>
                 <pems-info-grid layout="rows">
                     <pems-info-item label="@FftName" value-class="pc-fft-view">@fft</pems-info-item>
                     @foreach (var at in f.Attributes.Where(x => !string.Equals(x.Name, FftName, StringComparison.OrdinalIgnoreCase)))
@@ -196,7 +196,7 @@
 
         <pems-col lg="4">
             <section class="vs-panel pc-card">
-                <h2 class="vs-section__title"><pems-icon name="bi-signpost-split" /> @Localizer["Pc_Det_Route"]</h2>
+                <pems-heading level="2" class="vs-section__title"><pems-icon name="bi-signpost-split" /> @Localizer["Pc_Det_Route"]</pems-heading>
                 @if (!d.Steps.Any()) { <div class="text-muted small">@Localizer["Pc_Det_NoRoute"]</div> }
                 <ol class="pc-route list-unstyled mb-0">
                     @foreach (var st in d.Steps)
@@ -213,7 +213,7 @@
             </section>
 
             <section class="vs-panel pc-card mt-3">
-                <h2 class="vs-section__title"><pems-icon name="bi-gear-wide-connected" /> @Localizer["Pc_Sec_Equipment"]</h2>
+                <pems-heading level="2" class="vs-section__title"><pems-icon name="bi-gear-wide-connected" /> @Localizer["Pc_Sec_Equipment"]</pems-heading>
                 @if (!d.Equipment.Any()) { <div class="text-muted small">@Localizer["Pc_Empty_Equipment"]</div> }
                 <ul class="list-unstyled small mb-0">
                     @foreach (var q in d.Equipment) { <li>@q.Text <span class="text-muted">× @q.InstalledQuantity.ToString("0.####")</span></li> }
@@ -221,13 +221,13 @@
             </section>
 
             <section class="vs-panel pc-card mt-3">
-                <h2 class="vs-section__title"><pems-icon name="bi-paperclip" /> @L("Attachments")</h2>
+                <pems-heading level="2" class="vs-section__title"><pems-icon name="bi-paperclip" /> @L("Attachments")</pems-heading>
                 @if (!d.Attachments.Any()) { <div class="text-muted small">@Localizer["Pc_Empty_Attachments"]</div> }
                 <ul class="list-unstyled small mb-0">
                     @foreach (var at in d.Attachments)
                     {
                         <pems-flex as="li" justify="between" gap="2" css="border-bottom py-1">
-                            <a asp-action="Download" asp-route-id="@d.Id" asp-route-attachmentId="@at.Id" class="text-truncate">@at.FileName</a>
+                            <pems-link asp-action="Download" asp-route-id="@d.Id" asp-route-attachmentId="@at.Id" class="text-truncate">@at.FileName</pems-link>
                             <span class="text-muted">@Localizer["Pc_Kind_" + at.Kind]</span>
                         </pems-flex>
                     }
@@ -237,7 +237,7 @@
 
         <pems-col span="12">
             <section class="vs-panel pc-card">
-                <h2 class="vs-section__title"><pems-icon name="bi-clock-history" /> @Localizer["Pc_Det_History"]</h2>
+                <pems-heading level="2" class="vs-section__title"><pems-icon name="bi-clock-history" /> @Localizer["Pc_Det_History"]</pems-heading>
                 <div class="pc-table-scroll">
                     <pems-data-table data="@(DataRows.Of(d.Approvals, c_ => c_.Add(((Localizer["Pc_Col_Date"])?.ToString() ?? ""), h => (object?)(h.ActionDate.ToString("yyyy-MM-dd HH:mm")), css: "vs-num text-nowrap").Add(((Localizer["Pc_Col_Stage"])?.ToString() ?? ""), h => (object?)(string.IsNullOrEmpty(h.StepKey) ? "" : Localizer["Pc_Step_" + h.StepKey].Value)).Add(((Localizer["Pc_Col_Action"])?.ToString() ?? ""), h => (object?)(Localizer["Pc_Action_" + h.Action])).Add(((Localizer["Pc_Col_Person"])?.ToString() ?? ""), h => (object?)(h.ActorName)).Add(((L("Comment"))?.ToString() ?? ""), h => (object?)(h.Comment))))" enterprise="false" dense="true" css="table-enterprise vs-dense mb-0" />
                     @if (!d.Approvals.Any()) { <div class="vs-empty py-2">@Localizer["Pc_Empty_History"]</div> }
@@ -247,7 +247,7 @@
 
         <pems-col span="12">
             <section class="vs-panel pc-card">
-                <h2 class="vs-section__title"><pems-icon name="bi-chat-left-text" /> @L("Notes")</h2>
+                <pems-heading level="2" class="vs-section__title"><pems-icon name="bi-chat-left-text" /> @L("Notes")</pems-heading>
                 <div class="pc-table-scroll mb-2">
                     <pems-data-table data="@(DataRows.Of(d.Notes, c_ => c_.Add(((Localizer["Pc_Col_Date"])?.ToString() ?? ""), n => (object?)(n.CreatedDate.ToString("yyyy-MM-dd HH:mm")), css: "vs-num text-nowrap").Add(((Localizer["Pc_Col_Person"])?.ToString() ?? ""), n => (object?)(n.AuthorName)).Add(((Localizer["Pc_Col_Stage"])?.ToString() ?? ""), n => (object?)(string.IsNullOrEmpty(n.StepKey) ? "" : Localizer["Pc_Step_" + n.StepKey].Value)).Add(((L("Text"))?.ToString() ?? ""), n => (object?)(n.Text))))" enterprise="false" dense="true" css="table-enterprise vs-dense mb-0" />
                     @if (!d.Notes.Any()) { <div class="vs-empty py-2">@Localizer["Pc_Empty_Notes"]</div> }

@@ -6,7 +6,7 @@
 
 <pems-content-card>
     <pems-flex justify="between" align="center" css="mb-3">
-        <h5 class="mb-0"><pems-icon name="bi-pencil" /> @Localizer["Edit Help Article"]</h5>
+        <pems-heading level="5" class="mb-0"><pems-icon name="bi-pencil" /> @Localizer["Edit Help Article"]</pems-heading>
         <pems-button as="a" tone="neutral" size="small" outline="true" asp-action="History" asp-route-id="@Model.HelpArticleId">
             <pems-icon name="bi-clock-history" /> @Localizer["Change History"]
         </pems-button>
@@ -27,7 +27,7 @@
 
 <pems-content-card css="mt-3">
     <pems-flex justify="between" align="center" css="mb-3">
-        <h6 class="mb-0"><pems-icon name="bi-diagram-2" /> Visual Content (Phase 3)</h6>
+        <pems-heading level="6" class="mb-0"><pems-icon name="bi-diagram-2" /> Visual Content (Phase 3)</pems-heading>
         <pems-button as="a" tone="primary" size="small" asp-action="VisualCreate" asp-route-articleId="@Model.HelpArticleId">
             <pems-icon name="bi-plus-lg" /> Add Visual
         </pems-button>
@@ -45,7 +45,7 @@
                 {
                     <pems-table-row>
                         <pems-table-cell><pems-badge tone="light">@v.VisualType</pems-badge></pems-table-cell>
-                        <pems-table-cell><a asp-action="VisualEdit" asp-route-id="@v.HelpVisualId">@v.CaptionEn</a></pems-table-cell>
+                        <pems-table-cell><pems-link asp-action="VisualEdit" asp-route-id="@v.HelpVisualId">@v.CaptionEn</pems-link></pems-table-cell>
                         <pems-table-cell class="small text-muted">
                             @(v.VisualType == "WorkflowDiagram" ? $"{v.SourceWorkflowModule}/{v.SourceWorkflowCategory}" : "Manual")
                         </pems-table-cell>

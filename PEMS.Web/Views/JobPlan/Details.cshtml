@@ -18,7 +18,7 @@
     <pems-flex align="center" gap="3" wrap="true" css="mb-2">
         <div class="kpi-icon bg-icon-blue pems-s-792bd2d6"><pems-icon name="bi-list-check" /></div>
         <div>
-            <h5 class="mb-0">@Model.JobPlanNumber &mdash; @Model.Title</h5>
+            <pems-heading level="5" class="mb-0">@Model.JobPlanNumber &mdash; @Model.Title</pems-heading>
             <span class="text-muted small">@(Model.EstimatedDurationHours.HasValue ? Model.EstimatedDurationHours + " hours estimated" : "no duration estimate")</span>
         </div>
         <pems-button tone="neutral" size="small" outline="true" css="ms-auto" type="button" data-bs-toggle="modal" data-bs-target="#editJobPlanModal"><pems-icon name="bi-pencil" /> @Localizer["Edit"]</pems-button>
@@ -74,7 +74,7 @@
     </pems-related-add>
 </pems-related-list>
 <pems-content-card css="mb-3">
-    <h6 class="mb-3"><pems-icon name="bi-mortarboard" /> @Localizer["Required Skills"]</h6>
+    <pems-heading level="6" class="mb-3"><pems-icon name="bi-mortarboard" /> @Localizer["Required Skills"]</pems-heading>
     <pems-flex wrap="true" gap="2" css="mb-3">
         @foreach (var rs in Model.RequiredSkills)
         {

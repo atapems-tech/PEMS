@@ -60,7 +60,7 @@
 <pems-content-card css="mb-3">
     <pems-flex justify="between" align="start" wrap="true" gap="2">
         <div>
-            <h5 class="mb-0">@Model.Name</h5>
+            <pems-heading level="5" class="mb-0">@Model.Name</pems-heading>
             <div class="text-muted small">
                 <code>@Model.Code</code> &middot; @Model.NodeKind
                 @if (!string.IsNullOrEmpty(Model.DisciplineName))
@@ -109,7 +109,7 @@
 
 @* ========================= Organizational Units (child Team nodes / shifts) ========================= *@
 <pems-content-card css="mb-3">
-    <h6 class="fw-bold mb-3">@Localizer["واحدهای سازمانی (زیرتیم/شیفت)"]</h6>
+    <pems-heading level="6" class="fw-bold mb-3">@Localizer["واحدهای سازمانی (زیرتیم/شیفت)"]</pems-heading>
     @if (!Model.Children.Any())
     {
         <p class="text-muted text-center py-3 mb-0">@Localizer["این گره هیچ زیرمجموعه‌ای (شیفت/زیرتیم) ندارد."]</p>
@@ -143,7 +143,7 @@
 @* ========================= Positions & Workforce ========================= *@
 <pems-content-card css="mb-3">
     <pems-flex justify="between" align="center" wrap="true" gap="2" css="mb-3">
-        <h6 class="fw-bold mb-0">@Localizer["سمت‌ها و نیروی انسانی"]</h6>
+        <pems-heading level="6" class="fw-bold mb-0">@Localizer["سمت‌ها و نیروی انسانی"]</pems-heading>
         @if (Model.Positions.Any())
         {
             @* طبق «Phase 6C» بند ۸: فیلتر سمت‌شمار سمت کلاینت روی همان داده‌ی از پیش رندرشده -
@@ -208,36 +208,36 @@
                                 </pems-button>
                                 <pems-dropdown-menu end="true">
                                     <li>
-                                        <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#editPositionModal"
+                                        <pems-link class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#editPositionModal"
                                            data-position-id="@p.PositionId" data-position-title="@p.Title"
                                            data-position-description="@p.Description" data-position-sortorder="@p.SortOrder">
                                             <pems-icon name="bi-pencil" /> @Localizer["ویرایش"]
-                                        </a>
+                                        </pems-link>
                                     </li>
                                     @if (p.IsActive && p.IsVacant)
                                     {
                                         <li>
-                                            <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#assignEmployeeModal"
+                                            <pems-link class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#assignEmployeeModal"
                                                data-position-id="@p.PositionId" data-position-title="@p.Title">
                                                 <pems-icon name="bi-person-plus" /> @Localizer["تخصیص کارمند"]
-                                            </a>
+                                            </pems-link>
                                         </li>
                                     }
                                     @if (!p.IsVacant)
                                     {
                                         <li>
-                                            <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#moveEmployeeModal"
+                                            <pems-link class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#moveEmployeeModal"
                                                data-position-id="@p.PositionId" data-position-title="@p.Title"
                                                data-employee-name="@p.CurrentAssignment!.EmployeeName">
                                                 <pems-icon name="bi-arrow-left-right" /> @Localizer["جابه‌جایی کارمند"]
-                                            </a>
+                                            </pems-link>
                                         </li>
                                     }
                                     <li>
-                                        <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#movePositionModal"
+                                        <pems-link class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#movePositionModal"
                                            data-position-id="@p.PositionId" data-position-title="@p.Title">
                                             <pems-icon name="bi-diagram-2" /> @Localizer["جابه‌جایی سمت"]
-                                        </a>
+                                        </pems-link>
                                     </li>
                                     @if (!p.IsVacant)
                                     {
@@ -275,7 +275,7 @@
 
 @* ========================= Assignment History ========================= *@
 <pems-content-card>
-    <h6 class="fw-bold mb-3">@Localizer["تاریخچه‌ی تخصیص"]</h6>
+    <pems-heading level="6" class="fw-bold mb-3">@Localizer["تاریخچه‌ی تخصیص"]</pems-heading>
     @if (!historyRows.Any())
     {
         <p class="text-muted text-center py-3 mb-0">@Localizer["هنوز تخصیصی برای سمت‌های این تیم ثبت نشده."]</p>

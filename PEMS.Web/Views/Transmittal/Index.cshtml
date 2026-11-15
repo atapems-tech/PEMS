@@ -15,10 +15,10 @@
 <pems-list-page texts="@ListPageTexts.From(Localizer)">
 
     <nav class="vs-subnav" aria-label="@Localizer["Ed_Documents"]">
-        <a asp-controller="EngineeringDocuments" asp-action="Index">@Localizer["Ed_Documents"]</a>
-        <a asp-controller="DocumentRegister" asp-action="Index">@Localizer["Ed_Register"]</a>
-        <a asp-controller="VDR" asp-action="Index">@Localizer["Ed_VendorDocs"]</a>
-        <a asp-controller="Transmittal" asp-action="Index" class="active" aria-current="page">@Localizer["Ed_Transmittals"]</a>
+        <pems-link asp-controller="EngineeringDocuments" asp-action="Index">@Localizer["Ed_Documents"]</pems-link>
+        <pems-link asp-controller="DocumentRegister" asp-action="Index">@Localizer["Ed_Register"]</pems-link>
+        <pems-link asp-controller="VDR" asp-action="Index">@Localizer["Ed_VendorDocs"]</pems-link>
+        <pems-link asp-controller="Transmittal" asp-action="Index" class="active" aria-current="page">@Localizer["Ed_Transmittals"]</pems-link>
     </nav>
 
     <pems-list-panel>
@@ -49,7 +49,7 @@
                     @foreach (var t in Model.Items)
                     {
                         <pems-table-row class="lp-row">
-                            <pems-table-cell class="lp-no"><a asp-action="Details" asp-route-id="@t.TransmittalId" class="lp-subject" title="@t.TransmittalNo">@t.TransmittalNo</a></pems-table-cell>
+                            <pems-table-cell class="lp-no"><pems-link asp-action="Details" asp-route-id="@t.TransmittalId" class="lp-subject" title="@t.TransmittalNo">@t.TransmittalNo</pems-link></pems-table-cell>
                             <pems-table-cell class="small">@t.ProjectName</pems-table-cell>
                             <pems-table-cell class="small">@t.From</pems-table-cell>
                             <pems-table-cell class="small">@t.To</pems-table-cell>
@@ -64,7 +64,7 @@
                             </pems-table-cell>
                             <pems-table-cell class="small text-muted">@t.TransmittalDate.ToString("yyyy-MM-dd")</pems-table-cell>
                             <pems-table-cell class="text-nowrap lp-actions">
-                                <a asp-action="Details" asp-route-id="@t.TransmittalId" class="lp-act lp-act--always" title="@Localizer["Vs_View"]"><pems-icon name="bi-eye" aria-hidden="true" /><span class="visually-hidden">@Localizer["Vs_View"]: @t.TransmittalNo</span></a>
+                                <pems-link asp-action="Details" asp-route-id="@t.TransmittalId" class="lp-act lp-act--always" title="@Localizer["Vs_View"]"><pems-icon name="bi-eye" aria-hidden="true" /><span class="visually-hidden">@Localizer["Vs_View"]: @t.TransmittalNo</span></pems-link>
                             </pems-table-cell>
                         </pems-table-row>
                     }

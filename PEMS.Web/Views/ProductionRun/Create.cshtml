@@ -5,7 +5,7 @@
     var order = ViewBag.Order;
 }
 <pems-content-card css="pems-s-e2b01b0d">
-    <h5 class="mb-1">New Production Run</h5>
+    <pems-heading level="5" class="mb-1">New Production Run</pems-heading>
     <div class="text-muted mb-3">Order: @order.OrderNumber - @order.MaterialItem.MaterialCode</div>
     <pems-form asp-action="Create" method="post">
         <input type="hidden" name="productionOrderId" value="@order.ProductionOrderId" />

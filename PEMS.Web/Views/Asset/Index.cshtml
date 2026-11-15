@@ -85,7 +85,7 @@
                     @foreach (var a in Model.Items)
                     {
                         <pems-table-row class="lp-row">
-                            <pems-table-cell class="lp-no"><a asp-action="Details" asp-route-id="@a.AssetId" class="lp-subject" title="@a.AssetNumber">@a.AssetNumber</a></pems-table-cell>
+                            <pems-table-cell class="lp-no"><pems-link asp-action="Details" asp-route-id="@a.AssetId" class="lp-subject" title="@a.AssetNumber">@a.AssetNumber</pems-link></pems-table-cell>
                             <pems-table-cell class="small"><span class="vs-title-cell" title="@a.EquipmentTagNumber - @a.EquipmentName"><span class="vs-num">@a.EquipmentTagNumber</span> - @a.EquipmentName</span></pems-table-cell>
                             <pems-table-cell class="small vs-hide-md">@(a.MaintenanceClass ?? "-")</pems-table-cell>
                             <pems-table-cell class="small">@(a.CriticalityClass ?? "-")</pems-table-cell>
@@ -154,7 +154,7 @@
                                     <option value="@fl.FunctionalLocationId">@fl.PathBreadcrumb</option>
                                 }
                             </pems-select>
-                            <pems-help-text>Real link to Functional Location. <a asp-controller="FunctionalLocation" asp-action="Index" target="_blank">@Localizer["Manage list"]</a></pems-help-text>
+                            <pems-help-text>Real link to Functional Location. <pems-link asp-controller="FunctionalLocation" asp-action="Index" target="_blank">@Localizer["Manage list"]</pems-link></pems-help-text>
                         </pems-col>
                         <pems-col md="6">
                             <pems-label>@Localizer["Commissioning Date"]</pems-label>

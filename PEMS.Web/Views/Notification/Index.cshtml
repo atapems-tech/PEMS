@@ -25,12 +25,12 @@
         @foreach (var n in Model.Items)
         {
             <pems-flex as="li" align="start" gap="2" css="mb-2 p-2 border-bottom @(n.IsRead ? "" : "bg-light")">
-                <a href="@Url.Action("Open", "Notification", new { id = n.NotificationId })" class="text-decoration-none flex-grow-1">
+                <pems-link href="@Url.Action("Open", "Notification", new { id = n.NotificationId })" class="text-decoration-none flex-grow-1">
                     @if (!n.IsRead) { <pems-icon name="bi-circle-fill" css="text-primary me-1 pems-s-3494e7ef" aria-hidden="true" /> }
                     <strong>@n.Title</strong>
                     <div class="small text-muted">@n.Message</div>
                     <div class="small text-muted">@n.CreatedDate.ToString("yyyy-MM-dd HH:mm")</div>
-                </a>
+                </pems-link>
                 @if (!n.DismissedDate.HasValue)
                 {
                     <pems-form asp-action="Dismiss" asp-route-id="@n.NotificationId" method="post">

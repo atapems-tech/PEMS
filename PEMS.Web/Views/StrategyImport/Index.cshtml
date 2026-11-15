@@ -4,7 +4,7 @@
 @inject IStringLocalizer<SharedResource> Localizer
 
 <pems-flex justify="between" align="center" css="mb-3">
-    <h5 class="mb-0"><pems-icon name="bi-file-earmark-excel" /> @Localizer["Rcm_Import"]</h5>
+    <pems-heading level="5" class="mb-0"><pems-icon name="bi-file-earmark-excel" /> @Localizer["Rcm_Import"]</pems-heading>
     <pems-button tone="neutral" size="small" outline="true" as="a" asp-controller="MaintenanceStrategy" asp-action="Index">@Localizer["Rcm_Back"]</pems-button>
 </pems-flex>
 <p class="text-muted small">@Localizer["Rcm_ImportHint"]</p>
@@ -12,24 +12,24 @@
 <pems-row gap="3" css="mb-3">
     <pems-col md="6">
         <pems-content-card>
-            <h6 class="small fw-bold">@Localizer["Rcm_ImportStrategies"]</h6>
+            <pems-heading level="6" class="small fw-bold">@Localizer["Rcm_ImportStrategies"]</pems-heading>
             <pems-form asp-action="Preview" method="post" enctype="multipart/form-data"><pems-flex gap="2">
                 <input type="hidden" name="kind" value="strategies" />
                 <pems-input scale="small" type="file" name="file" accept=".xlsx" required />
                 <pems-button tone="primary" size="small">@Localizer["Rcm_Validate"]</pems-button>
             </pems-flex></pems-form>
-            <a asp-action="Template" asp-route-kind="strategies" class="small">@Localizer["Rcm_DownloadTemplate"]</a>
+            <pems-link asp-action="Template" asp-route-kind="strategies" class="small">@Localizer["Rcm_DownloadTemplate"]</pems-link>
         </pems-content-card>
     </pems-col>
     <pems-col md="6">
         <pems-content-card>
-            <h6 class="small fw-bold">@Localizer["Rcm_ImportAssignments"]</h6>
+            <pems-heading level="6" class="small fw-bold">@Localizer["Rcm_ImportAssignments"]</pems-heading>
             <pems-form asp-action="Preview" method="post" enctype="multipart/form-data"><pems-flex gap="2">
                 <input type="hidden" name="kind" value="assignments" />
                 <pems-input scale="small" type="file" name="file" accept=".xlsx" required />
                 <pems-button tone="primary" size="small">@Localizer["Rcm_Validate"]</pems-button>
             </pems-flex></pems-form>
-            <a asp-action="Template" asp-route-kind="assignments" class="small">@Localizer["Rcm_DownloadTemplate"]</a>
+            <pems-link asp-action="Template" asp-route-kind="assignments" class="small">@Localizer["Rcm_DownloadTemplate"]</pems-link>
         </pems-content-card>
     </pems-col>
 </pems-row>
@@ -39,10 +39,10 @@
     var r = Model.Result;
     <pems-content-card>
         <pems-flex justify="between" align="center" css="mb-2">
-            <h6 class="small fw-bold mb-0">
+            <pems-heading level="6" class="small fw-bold mb-0">
                 @(r.Committed ? Localizer["Rcm_ImportCommitted"] : Localizer["Rcm_ImportPreview"]):
                 @Localizer["Rcm_RowsRead"] @r.RowsRead · @Localizer["Rcm_RowsAccepted"] @r.RowsAccepted · @Localizer["Rcm_RowsRejected"] @r.RowsRejected
-            </h6>
+            </pems-heading>
             <pems-flex gap="2">
                 @if (!r.Committed && !string.IsNullOrEmpty(Model.Token) && r.RowsAccepted > 0)
                 {

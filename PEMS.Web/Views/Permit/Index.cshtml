@@ -107,7 +107,7 @@
                     @foreach (var p in Model.Items)
                     {
                         <pems-table-row class="lp-row">
-                            <pems-table-cell class="lp-no"><a asp-action="Details" asp-route-id="@p.PermitId" class="lp-subject" title="@p.PermitNumber">@p.PermitNumber</a></pems-table-cell>
+                            <pems-table-cell class="lp-no"><pems-link asp-action="Details" asp-route-id="@p.PermitId" class="lp-subject" title="@p.PermitNumber">@p.PermitNumber</pems-link></pems-table-cell>
                             <pems-table-cell class="small">@p.PermitType</pems-table-cell>
                             <pems-table-cell><span class="vs-title-cell" title="@p.Title">@p.Title</span></pems-table-cell>
                             <pems-table-cell class="small"><span class="vs-num">@(p.EquipmentTagNumber ?? "-")</span></pems-table-cell>

@@ -80,7 +80,7 @@
 @if (equipmentId.HasValue)
 {
     <pems-content-card css="mb-3">
-        <h6 class="mb-2">Monitoring Points — Equipment #@equipmentId</h6>
+        <pems-heading level="6" class="mb-2">Monitoring Points — Equipment #@equipmentId</pems-heading>
         <pems-table kind="enterprise" scale="small" css="mb-0">
             <pems-table-head><pems-table-row><pems-table-header>@Localizer["Variable"]</pems-table-header><pems-table-header>@Localizer["Tag"]</pems-table-header><pems-table-header>@Localizer["Unit"]</pems-table-header><pems-table-header class="text-end">@Localizer["Alarm Range"]</pems-table-header><pems-table-header class="text-end">@Localizer["Readings"]</pems-table-header><pems-table-header>@Localizer["Last Reading"]</pems-table-header><pems-table-header>@Localizer["Evaluation"]</pems-table-header><pems-table-header>@Localizer["CBM Strategy"]</pems-table-header></pems-table-row></pems-table-head>
             <pems-table-body>
@@ -166,7 +166,7 @@
     <pems-row gap="3">
         <pems-col md="6">
             <pems-content-card>
-                <h6 class="mb-2">Add Monitoring Point</h6>
+                <pems-heading level="6" class="mb-2">Add Monitoring Point</pems-heading>
                 <pems-form method="post" asp-action="CreateConditionMonitoringPoint">
                     @Html.AntiForgeryToken()
                     <input type="hidden" name="equipmentId" value="@equipmentId" />
@@ -188,7 +188,7 @@
         </pems-col>
         <pems-col md="6">
             <pems-content-card>
-                <h6 class="mb-2">Record Reading (Manual)</h6>
+                <pems-heading level="6" class="mb-2">Record Reading (Manual)</pems-heading>
                 <pems-form method="post" asp-action="RecordConditionReading">
                     @Html.AntiForgeryToken()
                     <input type="hidden" name="equipmentId" value="@equipmentId" />

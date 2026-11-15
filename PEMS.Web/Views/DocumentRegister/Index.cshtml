@@ -34,10 +34,10 @@
 <pems-list-page texts="@ListPageTexts.From(Localizer)">
 
     <nav class="vs-subnav" aria-label="@Localizer["Ed_Documents"]">
-        <a asp-controller="EngineeringDocuments" asp-action="Index">@Localizer["Ed_Documents"]</a>
-        <a asp-controller="DocumentRegister" asp-action="Index" class="active" aria-current="page">@Localizer["Ed_Register"]</a>
-        <a asp-controller="VDR" asp-action="Index">@Localizer["Ed_VendorDocs"]</a>
-        <a asp-controller="Transmittal" asp-action="Index">@Localizer["Ed_Transmittals"]</a>
+        <pems-link asp-controller="EngineeringDocuments" asp-action="Index">@Localizer["Ed_Documents"]</pems-link>
+        <pems-link asp-controller="DocumentRegister" asp-action="Index" class="active" aria-current="page">@Localizer["Ed_Register"]</pems-link>
+        <pems-link asp-controller="VDR" asp-action="Index">@Localizer["Ed_VendorDocs"]</pems-link>
+        <pems-link asp-controller="Transmittal" asp-action="Index">@Localizer["Ed_Transmittals"]</pems-link>
     </nav>
 
     <pems-list-panel>
@@ -85,20 +85,20 @@
                 </pems-list-filters>
 
                 <pems-list-menu id="drViewsBtn" icon="bi-bookmark" label="@Localizer["Dr_Views"]">
-                    <li><h6 class="dropdown-header">@Localizer["Dr_QuickFilters"]</h6></li>
-                    <li><a class="dropdown-item" href="@Url.Action("Index", new { status = "Approved" })">@StatusText("Approved")</a></li>
-                    <li><a class="dropdown-item" href="@Url.Action("Index", new { status = "Submitted" })">@Localizer["Dr_PendingReview"]</a></li>
+                    <li><pems-heading level="6" class="dropdown-header">@Localizer["Dr_QuickFilters"]</pems-heading></li>
+                    <li><pems-link class="dropdown-item" href="@Url.Action("Index", new { status = "Approved" })">@StatusText("Approved")</pems-link></li>
+                    <li><pems-link class="dropdown-item" href="@Url.Action("Index", new { status = "Submitted" })">@Localizer["Dr_PendingReview"]</pems-link></li>
                     @if (savedFilters.Any())
                     {
                         <li><hr class="dropdown-divider" /></li>
-                        <li><h6 class="dropdown-header">@Localizer["Dr_SavedFilters"]</h6></li>
+                        <li><pems-heading level="6" class="dropdown-header">@Localizer["Dr_SavedFilters"]</pems-heading></li>
                         foreach (var sf in savedFilters)
                         {
                             <li class="lp-menu-row">
-                                <a class="dropdown-item" href="@(Url.Action("Index") + "?" + sf.QueryString)">
+                                <pems-link class="dropdown-item" href="@(Url.Action("Index") + "?" + sf.QueryString)">
                                     @if (sf.IsDefault) { <pems-icon name="bi-star-fill" aria-hidden="true" /> }
                                     @sf.Name
-                                </a>
+                                </pems-link>
                                 <pems-form asp-action="DeleteFilter" method="post" data-pems-confirm="@Localizer["Dr_DeleteFilterConfirm"]">
                                     <input type="hidden" name="id" value="@sf.SavedFilterId" />
                                     <pems-button plain="true" type="submit" css="lp-act lp-act--always" title="@Localizer["Dr_DeleteFilter"]"><pems-icon name="bi-x-lg" aria-hidden="true" /><span class="visually-hidden">@Localizer["Dr_DeleteFilter"]: @sf.Name</span></pems-button>
@@ -155,7 +155,7 @@
                     {
                         <pems-table-row class="lp-row">
                             <pems-table-cell class="lp-select"><pems-input kind="check" type="checkbox" value="@d.DocumentId" data-lp-select aria-label="@Localizer["Lp_SelectRow"]: @d.DocumentNo" /></pems-table-cell>
-                            <pems-table-cell class="lp-no"><a asp-controller="EngineeringDocuments" asp-action="Details" asp-route-id="@d.DocumentId" class="lp-subject" title="@d.DocumentNo">@d.DocumentNo</a></pems-table-cell>
+                            <pems-table-cell class="lp-no"><pems-link asp-controller="EngineeringDocuments" asp-action="Details" asp-route-id="@d.DocumentId" class="lp-subject" title="@d.DocumentNo">@d.DocumentNo</pems-link></pems-table-cell>
                             <pems-table-cell><span class="vs-title-cell" title="@d.Title">@d.Title</span></pems-table-cell>
                             <pems-table-cell class="vs-hide-md small" title="@d.DocumentType">@d.DocumentType</pems-table-cell>
                             <pems-table-cell class="vs-hide-md small" title="@d.Area">@d.Area</pems-table-cell>
@@ -179,7 +179,7 @@
                             </pems-table-cell>
                             <pems-table-cell class="vs-hide-md small text-muted">@d.CreatedDate.ToString("yyyy-MM-dd")</pems-table-cell>
                             <pems-table-cell class="text-nowrap lp-actions">
-                                <a asp-controller="EngineeringDocuments" asp-action="Details" asp-route-id="@d.DocumentId" class="lp-act lp-act--always" title="@Localizer["Ed_View"]"><pems-icon name="bi-eye" aria-hidden="true" /><span class="visually-hidden">@Localizer["Ed_View"]: @d.DocumentNo</span></a>
+                                <pems-link asp-controller="EngineeringDocuments" asp-action="Details" asp-route-id="@d.DocumentId" class="lp-act lp-act--always" title="@Localizer["Ed_View"]"><pems-icon name="bi-eye" aria-hidden="true" /><span class="visually-hidden">@Localizer["Ed_View"]: @d.DocumentNo</span></pems-link>
                             </pems-table-cell>
                         </pems-table-row>
                     }

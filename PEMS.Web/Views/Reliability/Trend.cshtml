@@ -17,7 +17,7 @@
 }
 
 <pems-flex justify="between" align="center" css="mb-3">
-    <h5 class="mb-0"><pems-icon name="bi-graph-up" /> @Model.VariableType — @Model.Tag</h5>
+    <pems-heading level="5" class="mb-0"><pems-icon name="bi-graph-up" /> @Model.VariableType — @Model.Tag</pems-heading>
     <pems-flex gap="2">
         <pems-button as="a" tone="neutral" size="small" outline="true" asp-action="ExportTrend" asp-route-pointId="@Model.ConditionMonitoringPointId" asp-route-range="@selectedRange" asp-route-from="@(selectedRange == "custom" ? Model.FromDate.ToString("yyyy-MM-dd") : null)" asp-route-to="@(selectedRange == "custom" ? Model.ToDate.ToString("yyyy-MM-dd") : null)"><pems-icon name="bi-download" /> @Localizer["Export"]</pems-button>
         <pems-button tone="neutral" size="small" outline="true" as="a" asp-action="ConditionMonitoring" asp-route-equipmentId="@equipmentId">← @Localizer["Condition Monitoring"]</pems-button>

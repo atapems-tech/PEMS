@@ -35,7 +35,7 @@
     <pems-flex justify="between" align="start" wrap="true" gap="2">
         <div>
             <pems-flex align="center" wrap="true" gap="2">
-                <h5 class="mb-0">@l.LetterNumber</h5>
+                <pems-heading level="5" class="mb-0">@l.LetterNumber</pems-heading>
                 <pems-badge tone="none" css="@statusBadgeClass">@l.Status</pems-badge>
                 <pems-badge tone="light">@l.LetterType</pems-badge>
                 @if (l.ConfidentialityLevel != "Public" && l.ConfidentialityLevel != "Internal")
@@ -43,7 +43,7 @@
                 @if (l.RevisionCount > 0)
                 { <pems-badge tone="light">Rev. @l.RevisionCount</pems-badge> }
             </pems-flex>
-            <h6 class="mt-2 mb-1">@l.Subject</h6>
+            <pems-heading level="6" class="mt-2 mb-1">@l.Subject</pems-heading>
             <pems-flex wrap="true" gap="3" css="small meta-item">
                 <span><strong>@(l.LetterType == "Incoming" ? "From" : "To"):</strong> @(l.LetterType == "Incoming" ? l.Sender : l.Receiver)</span>
                 <span><strong>Date:</strong> @l.LetterDate.ToString("yyyy-MM-dd")</span>
@@ -151,17 +151,17 @@
                     <pems-icon name="bi-three-dots-vertical" />
                 </pems-button>
                 <pems-dropdown-menu end="true">
-                    <li><a class="dropdown-item" asp-action="Reply" asp-route-id="@l.LetterId"><pems-icon name="bi-reply-fill" css="me-1" /> Reply</a></li>
-                    <li><a class="dropdown-item" asp-action="ExportPdf" asp-route-id="@l.LetterId"><pems-icon name="bi-file-earmark-pdf" css="me-1" /> Export PDF</a></li>
+                    <li><pems-link class="dropdown-item" asp-action="Reply" asp-route-id="@l.LetterId"><pems-icon name="bi-reply-fill" css="me-1" /> Reply</pems-link></li>
+                    <li><pems-link class="dropdown-item" asp-action="ExportPdf" asp-route-id="@l.LetterId"><pems-icon name="bi-file-earmark-pdf" css="me-1" /> Export PDF</pems-link></li>
                     @if (canAudit)
                     {
-                        <li><a class="dropdown-item" asp-controller="LetterCompose" asp-action="History" asp-route-id="@l.LetterId"><pems-icon name="bi-clock-history" css="me-1" aria-hidden="true" /> @Localizer["Lc_HistoryTitle"]</a></li>
+                        <li><pems-link class="dropdown-item" asp-controller="LetterCompose" asp-action="History" asp-route-id="@l.LetterId"><pems-icon name="bi-clock-history" css="me-1" aria-hidden="true" /> @Localizer["Lc_HistoryTitle"]</pems-link></li>
                     }
                     @if (string.IsNullOrEmpty(l.SignedByName))
                     {
-                        <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#signModal"><pems-icon name="bi-pen" css="me-1" /> @Localizer["Sign / Acknowledge"]</a></li>
+                        <li><pems-link class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#signModal"><pems-icon name="bi-pen" css="me-1" /> @Localizer["Sign / Acknowledge"]</pems-link></li>
                     }
-                    <li><a class="dropdown-item" href="#" data-bs-toggle="collapse" data-bs-target="#addTagCollapse"><pems-icon name="bi-tag" css="me-1" /> Manage Tags</a></li>
+                    <li><pems-link class="dropdown-item" href="#" data-bs-toggle="collapse" data-bs-target="#addTagCollapse"><pems-icon name="bi-tag" css="me-1" /> Manage Tags</pems-link></li>
                 </pems-dropdown-menu>
             </div>
         </pems-flex>
@@ -295,7 +295,7 @@
                         </summary>
                         @if (!string.IsNullOrWhiteSpace(m.CcSummary)) { <div class="small cv-to mt-1">@Localizer["Lc_Cc"]: @m.CcSummary</div> }
                         <div class="cv-body">@Html.Raw(m.Body)</div>
-                        <div class="small mt-2"><a asp-action="Details" asp-route-id="@m.LetterId">@Localizer["Lt_Open"]</a></div>
+                        <div class="small mt-2"><pems-link asp-action="Details" asp-route-id="@m.LetterId">@Localizer["Lt_Open"]</pems-link></div>
                     </details>
                 }
             </article>
@@ -430,11 +430,11 @@
         <pems-flex wrap="true" gap="3" css="small">
             @if (l.RelatedDocumentId.HasValue)
             {
-                <a asp-controller="DocumentRegister" asp-action="Open" asp-route-id="@l.RelatedDocumentId"><pems-icon name="bi-file-earmark-text" /> @l.RelatedDocumentNo</a>
+                <pems-link asp-controller="DocumentRegister" asp-action="Open" asp-route-id="@l.RelatedDocumentId"><pems-icon name="bi-file-earmark-text" /> @l.RelatedDocumentNo</pems-link>
             }
             @if (l.RelatedMRId.HasValue)
             {
-                <a asp-controller="MaterialRequisition" asp-action="Details" asp-route-id="@l.RelatedMRId"><pems-icon name="bi-cart" /> @l.RelatedMRNumber</a>
+                <pems-link asp-controller="MaterialRequisition" asp-action="Details" asp-route-id="@l.RelatedMRId"><pems-icon name="bi-cart" /> @l.RelatedMRNumber</pems-link>
             }
         </pems-flex>
     </pems-content-card>
@@ -503,7 +503,7 @@
                     <ul class="list-unstyled mb-2">
                         @foreach (var a in Model.Attachments)
                         {
-                            <li class="mb-1"><a href="@Url.Action("Download", "Files", new { id = a.AttachmentId })" target="_blank"><pems-icon name="bi-file-earmark" /> @a.FileName</a></li>
+                            <li class="mb-1"><pems-link href="@Url.Action("Download", "Files", new { id = a.AttachmentId })" target="_blank"><pems-icon name="bi-file-earmark" /> @a.FileName</pems-link></li>
                         }
                     </ul>
                 }

@@ -27,7 +27,7 @@
     <pems-flex align="center" gap="3" wrap="true" css="mb-2">
         <div class="kpi-icon bg-icon-blue pems-s-792bd2d6"><pems-icon name="bi-shield-exclamation" /></div>
         <div>
-            <h5 class="mb-0">@Model.EquipmentTagNumber <span class="text-muted small">(@(Model.EquipmentClassName ?? "Unclassified"))</span></h5>
+            <pems-heading level="5" class="mb-0">@Model.EquipmentTagNumber <span class="text-muted small">(@(Model.EquipmentClassName ?? "Unclassified"))</span></pems-heading>
             <span class="text-muted small">Framework @Model.FrameworkVersion</span>
         </div>
         <pems-badge class="fs-6" tone="@StatusBadge(Model.Status)" css="ms-auto">@Model.Status</pems-badge>

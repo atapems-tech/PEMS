@@ -12,10 +12,10 @@
 }
 
 <pems-flex justify="between" align="center" css="mb-3">
-    <h5 class="mb-0"><pems-icon name="bi-diagram-3" /> @(string.IsNullOrWhiteSpace(i.Title) ? Localizer["Rcm_Strategy"].Value : i.Title)
+    <pems-heading level="5" class="mb-0"><pems-icon name="bi-diagram-3" /> @(string.IsNullOrWhiteSpace(i.Title) ? Localizer["Rcm_Strategy"].Value : i.Title)
         <pems-badge tone="@RcmDisplay.StatusBadge(s.Status)" css="ms-2">@Localizer.Label("Status", s.Status)</pems-badge>
         <pems-badge tone="light">v@(s.VersionNumber)</pems-badge>
-    </h5>
+    </pems-heading>
     <pems-button tone="neutral" size="small" outline="true" as="a" asp-action="Index">@Localizer["Rcm_Back"]</pems-button>
 </pems-flex>
 
@@ -24,7 +24,7 @@
 @if (Model.AssignReport.Any())
 {
     <pems-content-card css="mb-3">
-        <h6 class="small fw-bold">@Localizer["Rcm_AssignReport"]</h6>
+        <pems-heading level="6" class="small fw-bold">@Localizer["Rcm_AssignReport"]</pems-heading>
         <pems-data-table data="@(DataRows.Of(Model.AssignReport, c_ => c_.Add(((Localizer["Rcm_Tag"])?.ToString() ?? ""), row => (object?)((row[0]))).Add(((Localizer["Rcm_SkipReason"])?.ToString() ?? ""), row => (object?)(DataCell.Group((row[1] == "NotFound" ? Localizer["Rcm_Bulk_NotFound"].Value : Localizer["Rcm_Bulk_" + row[1]].Value), " ", (row.Length > 2 && int.TryParse(row[2], out var otherId) ? (object?)DataCell.Link(Url.Action("Details", null, new { id = otherId }), "#", otherId) : null))), css: "small")))" dense="true" />
     </pems-content-card>
 }
@@ -53,7 +53,7 @@
         <pems-info-item label="@Localizer["Rcm_ApprovedBy"]">@(s.ApprovedBy) @(s.ApprovedAt?.ToString("yyyy-MM-dd"))</pems-info-item>
         @if (!string.IsNullOrEmpty(s.LegacyEquipmentTag))
         {
-            <pems-info-item label="@Localizer["Rcm_LegacyTag"]"><a asp-action="Tag" asp-route-equipmentId="@s.LegacyEquipmentId">@s.LegacyEquipmentTag</a></pems-info-item>
+            <pems-info-item label="@Localizer["Rcm_LegacyTag"]"><pems-link asp-action="Tag" asp-route-equipmentId="@s.LegacyEquipmentId">@s.LegacyEquipmentTag</pems-link></pems-info-item>
         }
     </pems-info-grid>
 
@@ -96,13 +96,13 @@
 @if (s.Versions.Count > 1)
 {
     <pems-content-card css="mb-3">
-        <h6 class="small fw-bold">@Localizer["Rcm_Versions"]</h6>
+        <pems-heading level="6" class="small fw-bold">@Localizer["Rcm_Versions"]</pems-heading>
         <pems-flex wrap="true" gap="2">
             @foreach (var v in s.Versions)
             {
-                <a asp-action="Details" asp-route-id="@v.MaintenanceStrategyId" class="text-decoration-none">
+                <pems-link asp-action="Details" asp-route-id="@v.MaintenanceStrategyId" class="text-decoration-none">
                     <pems-badge tone="@RcmDisplay.StatusBadge(v.Status)" css="@(v.MaintenanceStrategyId == s.MaintenanceStrategyId ? "border border-3 border-warning" : "")">v@(v.VersionNumber) · @Localizer.Label("Status", v.Status)</pems-badge>
-                </a>
+                </pems-link>
             }
         </pems-flex>
     </pems-content-card>
@@ -110,7 +110,7 @@
 
 <pems-content-card css="mb-3">
     <pems-flex justify="between" align="center" css="mb-2">
-        <h6 class="small fw-bold mb-0">@Localizer["Rcm_AssignedTags"] (@s.Assignments.Count)</h6>
+        <pems-heading level="6" class="small fw-bold mb-0">@Localizer["Rcm_AssignedTags"] (@s.Assignments.Count)</pems-heading>
         @if (Model.CanApprove && usable)
         {
             <pems-flex gap="2">
@@ -134,7 +134,7 @@
             @foreach (var a in s.Assignments)
             {
                 <pems-table-row>
-                    <pems-table-cell><a asp-action="Tag" asp-route-equipmentId="@a.Equipment.EquipmentId" class="fw-bold">@a.Equipment.Tag</a></pems-table-cell>
+                    <pems-table-cell><pems-link asp-action="Tag" asp-route-equipmentId="@a.Equipment.EquipmentId" class="fw-bold">@a.Equipment.Tag</pems-link></pems-table-cell>
                     <pems-table-cell class="small">@a.Equipment.Name</pems-table-cell>
                     <pems-table-cell class="small">@(a.Equipment.EquipmentClassName ?? "-")</pems-table-cell>
                     <pems-table-cell class="small">@(a.Equipment.Area ?? "-")</pems-table-cell>
@@ -142,7 +142,7 @@
                     <pems-table-cell class="small">@a.PlanCount
                         @if (usable && a.PlanCount == 0 && i.StrategyType is not ("RunToFailure" or "Corrective" or "Redesign"))
                         {
-                            <a asp-controller="MaintenancePlan" asp-action="Create" asp-route-assignmentId="@a.AssignmentId" class="ms-1"><pems-icon name="bi-calendar-plus" /></a>
+                            <pems-link asp-controller="MaintenancePlan" asp-action="Create" asp-route-assignmentId="@a.AssignmentId" class="ms-1"><pems-icon name="bi-calendar-plus" /></pems-link>
                         }
                     </pems-table-cell>
                     <pems-table-cell class="small">
@@ -183,7 +183,7 @@
 </pems-content-card>
 
 <pems-content-card css="mb-3">
-    <h6 class="small fw-bold">@Localizer["Rcm_PlansByVersion"]</h6>
+    <pems-heading level="6" class="small fw-bold">@Localizer["Rcm_PlansByVersion"]</pems-heading>
     <pems-table scale="small" css="table-enterprise">
         <pems-table-head><pems-table-row><pems-table-header>@Localizer["Rcm_PlanNumber"]</pems-table-header><pems-table-header>@Localizer["Rcm_Tag"]</pems-table-header><pems-table-header>@Localizer["Rcm_Title"]</pems-table-header><pems-table-header>@Localizer["Rcm_Version"]</pems-table-header></pems-table-row></pems-table-head>
         <pems-table-body>
@@ -200,7 +200,7 @@
 </pems-content-card>
 
 <pems-content-card>
-    <h6 class="small fw-bold">@Localizer["Rcm_History"]</h6>
+    <pems-heading level="6" class="small fw-bold">@Localizer["Rcm_History"]</pems-heading>
     <pems-data-table data="@(DataRows.Of(s.History, c_ => c_.Add(((Localizer["Rcm_When"])?.ToString() ?? ""), h => (object?)((h.Timestamp.ToString("yyyy-MM-dd HH:mm"))), css: "small text-nowrap").Add(((Localizer["Rcm_Who"])?.ToString() ?? ""), h => (object?)(h.ActorName), css: "small").Add(((Localizer["Rcm_Action"])?.ToString() ?? ""), h => (object?)(DataCell.Group((Localizer.Label("HistoryAction", h.Action)), " ", (h.FromStatus != null || h.ToStatus != null ? (object?)DataCell.Span("text-muted", "(", h.FromStatus, " → ", h.ToStatus, ")") : null))), css: "small").Add(((Localizer["Rcm_Version"])?.ToString() ?? ""), h => (object?)(DataCell.Group("v", h.VersionNumber)), css: "small").Add(((Localizer["Rcm_Changes"])?.ToString() ?? ""), h => (object?)(DataCell.Group(DataCell.Span("mb-0 pems-s-121f7751", h.ChangesSummary).WithTag("pre"), h.Comment)), css: "small")))" dense="true" />
 </pems-content-card>
 

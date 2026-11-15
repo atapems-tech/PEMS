@@ -7,7 +7,7 @@
     Layout = "_AuthLayout";
 }
 
-<h2>@Localizer["Break-glass recovery"]</h2>
+<pems-heading level="2">@Localizer["Break-glass recovery"]</pems-heading>
 @if (Model.Window.IsOpen)
 {
     <p class="subtitle">@Localizer["A recovery request file is present on the server. This page closes at"] <span dir="ltr">@Model.Window.ExpiresAtUtc?.ToString("HH:mm") UTC</span>.</p>

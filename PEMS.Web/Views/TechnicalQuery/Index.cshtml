@@ -96,7 +96,7 @@
                     @foreach (var t in Model.Items)
                     {
                         <pems-table-row class="lp-row">
-                            <pems-table-cell class="lp-no"><a asp-action="Details" asp-route-id="@t.TechnicalQueryId" class="lp-subject" title="@t.QueryNumber">@t.QueryNumber</a></pems-table-cell>
+                            <pems-table-cell class="lp-no"><pems-link asp-action="Details" asp-route-id="@t.TechnicalQueryId" class="lp-subject" title="@t.QueryNumber">@t.QueryNumber</pems-link></pems-table-cell>
                             <pems-table-cell><span class="vs-pill vs-pill--neutral">@t.QueryType</span></pems-table-cell>
                             <pems-table-cell><span class="vs-title-cell" title="@t.Subject">@t.Subject</span></pems-table-cell>
                             <pems-table-cell class="vs-hide-md small" title="@t.DisciplineName">@t.DisciplineName</pems-table-cell>

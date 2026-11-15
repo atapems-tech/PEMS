@@ -37,7 +37,7 @@
 <pems-row gap="3" css="mb-3">
     <pems-col md="6">
         <pems-content-card css="h-100">
-            <h6 class="mb-3">Classified — by Confidence</h6>
+            <pems-heading level="6" class="mb-3">Classified — by Confidence</pems-heading>
             @foreach (var item in Model.ByConfidence)
             {
                 <pems-flex justify="between" css="small mb-1">
@@ -50,7 +50,7 @@
     </pems-col>
     <pems-col md="6">
         <pems-content-card css="h-100">
-            <h6 class="mb-3">Classified — by Source</h6>
+            <pems-heading level="6" class="mb-3">Classified — by Source</pems-heading>
             @foreach (var item in Model.BySource)
             {
                 <pems-flex justify="between" css="small mb-1">
@@ -66,7 +66,7 @@
 <pems-row gap="3" css="mb-3">
     <pems-col md="6">
         <pems-content-card css="h-100">
-            <h6 class="mb-3">Pending Suggestions — by Confidence</h6>
+            <pems-heading level="6" class="mb-3">Pending Suggestions — by Confidence</pems-heading>
             @foreach (var item in Model.PendingSuggestionsByConfidence)
             {
                 <pems-flex justify="between" css="small mb-1">
@@ -78,7 +78,7 @@
     </pems-col>
     <pems-col md="6">
         <pems-content-card css="h-100">
-            <h6 class="mb-3">Unclassified — by Discipline</h6>
+            <pems-heading level="6" class="mb-3">Unclassified — by Discipline</pems-heading>
             @foreach (var item in Model.UnclassifiedByDiscipline)
             {
                 <pems-flex justify="between" css="small mb-1">
@@ -91,7 +91,7 @@
 </pems-row>
 
 <pems-content-card css="mb-3">
-    <h6 class="mb-3">Classified — by Equipment Class (Top 20)</h6>
+    <pems-heading level="6" class="mb-3">Classified — by Equipment Class (Top 20)</pems-heading>
     <pems-table-scroll>
         <pems-data-table data="@(DataRows.Of(Model.ByEquipmentClass, c_ => c_.Add(((Localizer["Equipment Class"])?.ToString() ?? ""), item => (object?)(item.Key)).Add(((Localizer["Count"])?.ToString() ?? ""), item => (object?)(item.Count.ToString("N0")))))" dense="true" />
         @if (!Model.ByEquipmentClass.Any()) { <p class="text-muted small text-center py-3">@Localizer["داده‌ای موجود نیست."]</p> }
@@ -101,7 +101,7 @@
 <pems-row gap="3">
     <pems-col md="4">
         <pems-content-card css="h-100">
-            <h6 class="mb-3">Top Unclassified — EquipmentType</h6>
+            <pems-heading level="6" class="mb-3">Top Unclassified — EquipmentType</pems-heading>
             <pems-table-scroll css="pems-s-f0787633">
                 <pems-table kind="enterprise" scale="small">
                     <pems-table-body>
@@ -116,7 +116,7 @@
     </pems-col>
     <pems-col md="4">
         <pems-content-card css="h-100">
-            <h6 class="mb-3">Top Unclassified — Name</h6>
+            <pems-heading level="6" class="mb-3">Top Unclassified — Name</pems-heading>
             <pems-table-scroll css="pems-s-f0787633">
                 <pems-table kind="enterprise" scale="small">
                     <pems-table-body>
@@ -131,7 +131,7 @@
     </pems-col>
     <pems-col md="4">
         <pems-content-card css="h-100">
-            <h6 class="mb-3">Top Unclassified — Tag Pattern</h6>
+            <pems-heading level="6" class="mb-3">Top Unclassified — Tag Pattern</pems-heading>
             <pems-table-scroll css="pems-s-f0787633">
                 <pems-table kind="enterprise" scale="small">
                     <pems-table-body>

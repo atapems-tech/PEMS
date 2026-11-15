@@ -29,10 +29,10 @@
     <section class="vs-panel mb-3 tm-sprint @(isActive ? "tm-sprint--active" : "")" aria-labelledby="sprint-@sprint.Id">
         <pems-flex wrap="true" justify="between" align="center" gap="2" css="mb-2">
             <div>
-                <h3 class="h6 mb-0" id="sprint-@sprint.Id">
+                <pems-heading level="3" class="h6 mb-0" id="sprint-@sprint.Id">
                     @sprint.Name
                     <pems-badge tone="@(isActive ? "success" : "neutral")" css="ms-1">@Localizer["Tm_SprintState_" + sprint.State]</pems-badge>
-                </h3>
+                </pems-heading>
                 <div class="small text-muted">
                     @TaskManagerUi.Date(sprint.StartDate) @(sprint.StartDate != null || sprint.EndDate != null ? "–" : "") @TaskManagerUi.Date(sprint.EndDate)
                     · @Localizer["Tm_SprintCounts", sprint.ToDoCount, sprint.InProgressCount, sprint.DoneCount]
@@ -83,7 +83,7 @@
 
 <section class="vs-panel mb-3" aria-labelledby="backlogTitle">
     <pems-flex wrap="true" justify="between" align="center" gap="2" css="mb-2">
-        <h3 class="h6 mb-0" id="backlogTitle">@Localizer["Tm_Backlog"] <pems-badge tone="light">@Model.BacklogItems.Count</pems-badge></h3>
+        <pems-heading level="3" class="h6 mb-0" id="backlogTitle">@Localizer["Tm_Backlog"] <pems-badge tone="light">@Model.BacklogItems.Count</pems-badge></pems-heading>
         @if (view.CanManageSprints)
         {
             <pems-button tone="neutral" size="small" outline="true" type="button" data-bs-toggle="collapse" data-bs-target="#newSprint" aria-expanded="false" aria-controls="newSprint"><pems-icon name="bi-plus-lg" aria-hidden="true" /> @Localizer["Tm_CreateSprint"]</pems-button>

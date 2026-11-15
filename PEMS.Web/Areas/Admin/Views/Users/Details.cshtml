@@ -63,7 +63,7 @@
     <div class="vs-doc-head">
         <div class="vs-doc-identity">
             <pems-flex align="center" gap="2" wrap="true">
-                <h2 class="vs-doc-number vs-num">@Model.FullName</h2>
+                <pems-heading level="2" class="vs-doc-number vs-num">@Model.FullName</pems-heading>
                 <span class="vs-pill vs-pill--icon @statusPill.Item1"><pems-icon css="@statusPill.Item2" aria-hidden="true" /> @statusPill.Item3</span>
             </pems-flex>
             <div class="vs-doc-title">&#64;@Model.UserName</div>
@@ -74,8 +74,8 @@
             </div>
         </div>
         <div class="vs-doc-actions">
-            <a asp-action="Edit" asp-route-id="@Model.UserId" class="vs-btn"><pems-icon name="bi-pencil" /> @Localizer["Edit"]</a>
-            <a asp-action="Index" class="vs-btn"><pems-icon name="bi-arrow-left" /> @Localizer["Users"]</a>
+            <pems-link asp-action="Edit" asp-route-id="@Model.UserId" class="vs-btn"><pems-icon name="bi-pencil" /> @Localizer["Edit"]</pems-link>
+            <pems-link asp-action="Index" class="vs-btn"><pems-icon name="bi-arrow-left" /> @Localizer["Users"]</pems-link>
         </div>
     </div>
     <pems-info-grid>
@@ -137,7 +137,7 @@
                     }
                 </pems-flex>
             }
-            <p class="text-body-secondary small mt-3 mb-0">@Localizer["Role assignment itself is changed from the Edit page."] <a asp-action="Edit" asp-route-id="@Model.UserId">@Localizer["Edit"]</a></p>
+            <p class="text-body-secondary small mt-3 mb-0">@Localizer["Role assignment itself is changed from the Edit page."] <pems-link asp-action="Edit" asp-route-id="@Model.UserId">@Localizer["Edit"]</pems-link></p>
         </pems-content-card>
     </pems-tab-pane>
 
@@ -257,7 +257,7 @@
                     }
                     else
                     {
-                        <p class="text-body-secondary small">@Localizer["Rows for this user's own role(s) only, from the same matrix maintained on the full Permission Matrix page."] <a asp-controller="PermissionMatrix" asp-action="Index">@Localizer["Open full matrix"]</a></p>
+                        <p class="text-body-secondary small">@Localizer["Rows for this user's own role(s) only, from the same matrix maintained on the full Permission Matrix page."] <pems-link asp-controller="PermissionMatrix" asp-action="Index">@Localizer["Open full matrix"]</pems-link></p>
                         <pems-table-scroll>
                             <pems-data-table data="@(DataRows.Of(Model.MatrixRows.OrderBy(r => r.RoleName).ThenBy(r => r.ModuleName), c_ => c_.Add(((Localizer["Role"])?.ToString() ?? ""), m => (object?)(m.RoleName)).Add(((Localizer["Module"])?.ToString() ?? ""), m => (object?)(m.ModuleName)).Add(((Localizer["View"])?.ToString() ?? ""), m => (object?)(m.CanView ? "✓" : "")).Add(((Localizer["Create"])?.ToString() ?? ""), m => (object?)(m.CanCreate ? "✓" : "")).Add(((Localizer["Edit"])?.ToString() ?? ""), m => (object?)(m.CanEdit ? "✓" : "")).Add(((Localizer["Delete"])?.ToString() ?? ""), m => (object?)(m.CanDelete ? "✓" : "")).Add(((Localizer["Approve"])?.ToString() ?? ""), m => (object?)(m.CanApprove ? "✓" : ""))))" />
                         </pems-table-scroll>
@@ -321,7 +321,7 @@
                             <pems-data-table data="@(DataRows.Of(Model.SoDExposure, c_ => c_.Add(((Localizer["Permission A"])?.ToString() ?? ""), s => (object?)(DataCell.Code(s.PermissionAName))).Add(((Localizer["Permission B"])?.ToString() ?? ""), s => (object?)(DataCell.Code(s.PermissionBName))).Add(((Localizer["Description"])?.ToString() ?? ""), s => (object?)((s.PolicyDescription ?? "")), css: "text-body-secondary small").Add(((Localizer["Status"])?.ToString() ?? ""), s => (object?)((s.UserHoldsBoth ? (object?)DataCell.Span("admin-status inactive", DataCell.Icon("bi-exclamation-triangle"), " ", Localizer["Potential exposure"]) : DataCell.Span("admin-status active", DataCell.Icon("bi-check2-circle"), " ", Localizer["Not exposed"]))))))" />
                         </pems-table-scroll>
                     }
-                    <p class="text-body-secondary small mt-3 mb-0"><a asp-controller="SoDPolicy" asp-action="Index">@Localizer["Manage SoD policies"]</a></p>
+                    <p class="text-body-secondary small mt-3 mb-0"><pems-link asp-controller="SoDPolicy" asp-action="Index">@Localizer["Manage SoD policies"]</pems-link></p>
                 </pems-content-card>
             </pems-tab-pane>
 
@@ -364,7 +364,7 @@
                             }
                         </details>
                     }
-                    <p class="text-body-secondary small mt-3 mb-0"><a asp-controller="NavigationVisibility" asp-action="Index">@Localizer["Manage navigation visibility by role"]</a></p>
+                    <p class="text-body-secondary small mt-3 mb-0"><pems-link asp-controller="NavigationVisibility" asp-action="Index">@Localizer["Manage navigation visibility by role"]</pems-link></p>
                 </pems-content-card>
             </pems-tab-pane>
 
@@ -383,7 +383,7 @@
                     <pems-data-table data="@(DataRows.Of(Model.RecentAuditLogs, c_ => c_.Add(((Localizer["Timestamp"])?.ToString() ?? ""), log => (object?)((log.Timestamp.ToString("yyyy-MM-dd HH:mm:ss"))), css: "vs-num").Add(((Localizer["Permission"])?.ToString() ?? ""), log => (object?)(DataCell.Code(($"{log.ResourceName}.{log.ActionName}")))).Add(((Localizer["Resource ID"])?.ToString() ?? ""), log => (object?)((log.ResourceId ?? "")), css: "text-body-secondary small").Add(((Localizer["Decision"])?.ToString() ?? ""), log => (object?)((log.Decision == "Allow" ? (object?)DataCell.Span("admin-status active", DataCell.Icon("bi-check2-circle"), " ", log.Decision) : DataCell.Span("admin-status inactive", DataCell.Icon("bi-x-circle"), " ", log.Decision)))).Add(((Localizer["Reason"])?.ToString() ?? ""), log => (object?)((log.Reason ?? "")), css: "text-body-secondary small")))" />
                 </pems-table-scroll>
             }
-            <p class="text-body-secondary small mt-3 mb-0"><a asp-controller="AuthorizationAudit" asp-action="Index" asp-route-userId="@Model.UserId">@Localizer["Open full audit log for this user"]</a></p>
+            <p class="text-body-secondary small mt-3 mb-0"><pems-link asp-controller="AuthorizationAudit" asp-action="Index" asp-route-userId="@Model.UserId">@Localizer["Open full audit log for this user"]</pems-link></p>
         </pems-content-card>
     </pems-tab-pane>
 

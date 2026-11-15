@@ -13,7 +13,7 @@
 <pems-content-card css="mb-3">
     <pems-flex justify="between" align="center" wrap="true" gap="2">
         <div>
-            <h5 class="mb-0">@Model.MOCNumber</h5>
+            <pems-heading level="5" class="mb-0">@Model.MOCNumber</pems-heading>
             <span class="text-muted small">@Model.Project?.ProjectName &middot; @Model.Discipline?.Name &middot; @Model.ChangeType</span>
         </div>
         <pems-flex align="center" gap="2">
@@ -32,14 +32,14 @@
         {
             <pems-col md="6">
                 <strong>@Localizer["Related Document:"]</strong>
-                <a asp-controller="DocumentRegister" asp-action="Open" asp-route-id="@Model.RelatedDocumentId">@Model.RelatedDocument.DocumentNo</a>
+                <pems-link asp-controller="DocumentRegister" asp-action="Open" asp-route-id="@Model.RelatedDocumentId">@Model.RelatedDocument.DocumentNo</pems-link>
             </pems-col>
         }
         @if (Model.RelatedEquipment != null)
         {
             <pems-col md="6">
                 <strong>@Localizer["Related Equipment:"]</strong>
-                <a asp-controller="Equipment" asp-action="Details" asp-route-id="@Model.RelatedEquipmentId">@Model.RelatedEquipment.TagNumber</a>
+                <pems-link asp-controller="Equipment" asp-action="Details" asp-route-id="@Model.RelatedEquipmentId">@Model.RelatedEquipment.TagNumber</pems-link>
             </pems-col>
         }
         @if (Model.ChangeType == "Temporary")
@@ -52,7 +52,7 @@
 @if (!string.IsNullOrEmpty(Model.RiskAssessmentText))
 {
     <pems-content-card css="mb-3">
-        <h6 class="mb-2"><pems-icon name="bi-shield-exclamation" /> Risk Assessment</h6>
+        <pems-heading level="6" class="mb-2"><pems-icon name="bi-shield-exclamation" /> Risk Assessment</pems-heading>
         <p class="mb-0">@Model.RiskAssessmentText</p>
     </pems-content-card>
 }
@@ -60,20 +60,20 @@
 @if (Model.Status == "Rejected")
 {
     <pems-content-card css="mb-3 border-danger">
-        <h6 class="mb-2 text-danger"><pems-icon name="bi-x-circle" /> @Localizer["Rejected"]</h6>
+        <pems-heading level="6" class="mb-2 text-danger"><pems-icon name="bi-x-circle" /> @Localizer["Rejected"]</pems-heading>
         <p class="mb-0">@Model.RejectionReason</p>
     </pems-content-card>
 }
 
 <pems-content-card css="mb-3">
-    <h6 class="mb-3"><pems-icon name="bi-paperclip" /> Attachments <pems-badge tone="neutral">@Model.Attachments.Count</pems-badge></h6>
+    <pems-heading level="6" class="mb-3"><pems-icon name="bi-paperclip" /> Attachments <pems-badge tone="neutral">@Model.Attachments.Count</pems-badge></pems-heading>
     @if (Model.Attachments.Any())
     {
         <ul class="list-unstyled mb-3">
             @foreach (var a in Model.Attachments.Where(x => x.IsActive))
             {
                 <pems-flex as="li" justify="between" align="center" css="border-bottom py-1">
-                    <a href="@Url.Action("Download", "Files", new { id = a.AttachmentId })" target="_blank"><pems-icon name="bi-file-earmark" /> @a.FileName</a>
+                    <pems-link href="@Url.Action("Download", "Files", new { id = a.AttachmentId })" target="_blank"><pems-icon name="bi-file-earmark" /> @a.FileName</pems-link>
                     <span class="text-muted small">@a.UploadDate.ToString("yyyy-MM-dd")</span>
                 </pems-flex>
             }
@@ -87,7 +87,7 @@
 </pems-content-card>
 
 <pems-content-card css="mb-3">
-    <h6 class="mb-3"><pems-icon name="bi-signpost-split" /> Workflow</h6>
+    <pems-heading level="6" class="mb-3"><pems-icon name="bi-signpost-split" /> Workflow</pems-heading>
 
     @if (!workflowRunning)
     {

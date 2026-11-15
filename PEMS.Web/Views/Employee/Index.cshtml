@@ -85,7 +85,7 @@
                     {
                         <pems-table-row class="lp-row">
                             <pems-table-cell class="lp-no"><span class="vs-num">@e.PersonnelCode</span></pems-table-cell>
-                            <pems-table-cell><a asp-action="Details" asp-route-id="@e.EmployeeId" class="lp-subject">@e.FirstName @e.LastName</a></pems-table-cell>
+                            <pems-table-cell><pems-link asp-action="Details" asp-route-id="@e.EmployeeId" class="lp-subject">@e.FirstName @e.LastName</pems-link></pems-table-cell>
                             <pems-table-cell class="small text-muted vs-hide-md">@e.Position</pems-table-cell>
                             <pems-table-cell class="small">@e.DepartmentName</pems-table-cell>
                             <pems-table-cell class="small vs-hide-md">@e.DisciplineName</pems-table-cell>

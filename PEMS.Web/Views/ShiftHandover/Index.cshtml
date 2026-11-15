@@ -64,7 +64,7 @@
                     @foreach (var h in Model)
                     {
                         <pems-table-row class="lp-row">
-                            <pems-table-cell class="lp-no"><a asp-action="Details" asp-route-id="@h.ShiftHandoverId" class="lp-subject"><span class="vs-num">#@h.ShiftHandoverId</span></a></pems-table-cell>
+                            <pems-table-cell class="lp-no"><pems-link asp-action="Details" asp-route-id="@h.ShiftHandoverId" class="lp-subject"><span class="vs-num">#@h.ShiftHandoverId</span></pems-link></pems-table-cell>
                             <pems-table-cell class="small">@(h.OutgoingName ?? "-")</pems-table-cell>
                             <pems-table-cell class="small">@(h.IncomingName ?? "-")</pems-table-cell>
                             <pems-table-cell class="small vs-hide-md">@(h.ShiftLabel ?? "-")</pems-table-cell>

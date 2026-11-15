@@ -9,7 +9,7 @@
 <pems-content-card css="mb-3">
     <pems-flex justify="between" align="center" wrap="true" gap="2">
         <div>
-            <h5 class="mb-0">MDB - @Model.EquipmentTagNumber</h5>
+            <pems-heading level="5" class="mb-0">MDB - @Model.EquipmentTagNumber</pems-heading>
             <span class="text-muted small">@Model.VendorName &middot; @Model.ProjectName @(Model.PoNumber != null ? $"· PO {Model.PoNumber}" : "")</span>
         </div>
         <pems-badge tone="neutral" css="fs-6">@Model.Status</pems-badge>
@@ -66,7 +66,7 @@
 @foreach (var (code, label, docs) in parts)
 {
     <pems-content-card css="mb-3">
-        <h6 class="mb-3">@label</h6>
+        <pems-heading level="6" class="mb-3">@label</pems-heading>
         <pems-table kind="enterprise">
             <pems-table-head><pems-table-row><pems-table-header>@Localizer["Document No"]</pems-table-header><pems-table-header>@Localizer["Title"]</pems-table-header><pems-table-header>DVD Volume</pems-table-header><pems-table-header>N/A</pems-table-header><pems-table-header>@Localizer["Notes"]</pems-table-header><pems-table-header></pems-table-header></pems-table-row></pems-table-head>
             <pems-table-body>

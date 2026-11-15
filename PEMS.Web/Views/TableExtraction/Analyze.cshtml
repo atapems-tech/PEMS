@@ -11,7 +11,7 @@
 <pems-content-card css="mb-3">
     <pems-flex justify="between" align="center" wrap="true" gap="2">
         <div>
-            <h5 class="mb-0">@attachment.FileName</h5>
+            <pems-heading level="5" class="mb-0">@attachment.FileName</pems-heading>
             <span class="text-muted small">Table extraction test result - nothing was saved to the database.</span>
         </div>
         <pems-flex gap="2">
@@ -66,7 +66,7 @@
 {
     var info = table.DocumentInfo;
     <pems-content-card css="mb-3">
-        <h6 class="mb-2">Document Info</h6>
+        <pems-heading level="6" class="mb-2">Document Info</pems-heading>
         <pems-row gap="2" css="small">
             <pems-col md="3"><strong>Document No.</strong><div>@(info.DocumentNo ?? "N/A")</div></pems-col>
             <pems-col md="3"><strong>@Localizer["Title"]</strong><div>@(info.Title ?? "N/A")</div></pems-col>
@@ -81,7 +81,7 @@
 }
 
 <pems-content-card>
-    <h6 class="mb-2">Rows (@(table?.Rows.Count ?? 0))</h6>
+    <pems-heading level="6" class="mb-2">Rows (@(table?.Rows.Count ?? 0))</pems-heading>
     <pems-table-scroll css="table-scroll-area pems-s-8da1c6e6">
         <pems-table kind="enterprise" scale="small">
             <pems-table-head>

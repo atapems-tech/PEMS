@@ -16,10 +16,10 @@
     </pems-col>
     <pems-col md="4">
         <pems-content-card css="text-center">
-            <a asp-controller="Relationship" asp-action="Index" class="text-decoration-none">
+            <pems-link asp-controller="Relationship" asp-action="Index" class="text-decoration-none">
                 <div class="fs-3 fw-bold text-info"><pems-icon name="bi-diagram-3" /></div>
                 <div class="text-muted small">@Localizer["Relationship Explorer"]</div>
-            </a>
+            </pems-link>
         </pems-content-card>
     </pems-col>
 </pems-row>
@@ -27,7 +27,7 @@
 <pems-row gap="3">
     <pems-col md="6">
         <pems-content-card css="h-100">
-            <h6 class="mb-3"><pems-icon name="bi-send-check" /> @Localizer["مدارک منتظر صدور"]</h6>
+            <pems-heading level="6" class="mb-3"><pems-icon name="bi-send-check" /> @Localizer["مدارک منتظر صدور"]</pems-heading>
             @{
                 var pendingIssueDocs = (IEnumerable<dynamic>)ViewBag.PendingIssueDocs;
             }
@@ -37,9 +37,9 @@
                     @foreach (var d in pendingIssueDocs)
                     {
                         <pems-flex as="li" justify="between" css="border-bottom py-1">
-                            <a asp-controller="EngineeringDocuments" asp-action="Details" asp-route-id="@d.DocumentId">
+                            <pems-link asp-controller="EngineeringDocuments" asp-action="Details" asp-route-id="@d.DocumentId">
                                 @d.DocumentNo &mdash; @d.Title
-                            </a>
+                            </pems-link>
                             <span class="text-muted small">@(((DateTime?)d.ModifiedDate)?.ToString("yyyy-MM-dd"))</span>
                         </pems-flex>
                     }
@@ -54,7 +54,7 @@
 
     <pems-col md="6">
         <pems-content-card css="h-100 border-warning">
-            <h6 class="mb-3"><pems-icon name="bi-envelope-exclamation" /> @Localizer["مکاتبات وارده‌ی وصل‌نشده"]</h6>
+            <pems-heading level="6" class="mb-3"><pems-icon name="bi-envelope-exclamation" /> @Localizer["مکاتبات وارده‌ی وصل‌نشده"]</pems-heading>
             @{
                 var unlinked = (IEnumerable<dynamic>)ViewBag.UnlinkedIncoming;
             }
@@ -64,9 +64,9 @@
                     @foreach (var l in unlinked)
                     {
                         <pems-flex as="li" justify="between" css="border-bottom py-1">
-                            <a asp-controller="Letter" asp-action="Details" asp-route-id="@l.LetterId">
+                            <pems-link asp-controller="Letter" asp-action="Details" asp-route-id="@l.LetterId">
                                 @l.LetterNumber &mdash; @l.Subject
-                            </a>
+                            </pems-link>
                             <span class="text-muted small">@l.Sender</span>
                         </pems-flex>
                     }
@@ -82,7 +82,7 @@
 </pems-row>
 
 <pems-content-card css="mt-3">
-    <h6 class="mb-3"><pems-icon name="bi-clock-history" /> @Localizer["آخرین مکاتبات وارده"]</h6>
+    <pems-heading level="6" class="mb-3"><pems-icon name="bi-clock-history" /> @Localizer["آخرین مکاتبات وارده"]</pems-heading>
     @{
         var recentIncoming = (IEnumerable<dynamic>)ViewBag.RecentIncoming;
     }
@@ -92,7 +92,7 @@
             @foreach (var l in recentIncoming)
             {
                 <pems-table-row>
-                    <pems-table-cell><a asp-controller="Letter" asp-action="Details" asp-route-id="@l.LetterId">@l.LetterNumber</a></pems-table-cell>
+                    <pems-table-cell><pems-link asp-controller="Letter" asp-action="Details" asp-route-id="@l.LetterId">@l.LetterNumber</pems-link></pems-table-cell>
                     <pems-table-cell class="small">@l.Sender</pems-table-cell>
                     <pems-table-cell class="small">@l.Subject</pems-table-cell>
                     <pems-table-cell class="small">@(((DateTime)l.LetterDate).ToString("yyyy-MM-dd"))</pems-table-cell>

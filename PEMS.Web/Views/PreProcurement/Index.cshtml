@@ -63,14 +63,14 @@
             @foreach (var d in Model)
             {
                 <pems-table-row class="lp-row">
-                    <pems-table-cell><a href="/PreProcurement/Details/@d.ProcurementDemandId" dir="ltr">#@d.ProcurementDemandId</a></pems-table-cell>
+                    <pems-table-cell><pems-link href="/PreProcurement/Details/@d.ProcurementDemandId" dir="ltr">#@d.ProcurementDemandId</pems-link></pems-table-cell>
                     <pems-table-cell class="small">@Localizer["Ppr_Source_" + d.SourceType] <span dir="ltr" class="text-muted">@d.SourceNumber</span></pems-table-cell>
                     <pems-table-cell class="small">@if (d.MaterialCode != null) { <span dir="ltr">@d.MaterialCode</span><text> - </text> }@d.Description</pems-table-cell>
                     <pems-table-cell class="text-end" dir="ltr">@(d.SourceType == ProcurementDemandSources.MaterialRequisition ? "—" : d.Quantity.ToString("0.###") + " " + d.UnitName)</pems-table-cell>
                     <pems-table-cell dir="ltr">@(d.WarehouseCode ?? "—")</pems-table-cell>
                     <pems-table-cell><span class="vs-pill @Pill(d.Status)">@Localizer["Ppr_Status_" + d.Status]</span></pems-table-cell>
                     <pems-table-cell class="small text-nowrap" dir="ltr">@d.RaisedAt.ToString("yyyy-MM-dd HH:mm")</pems-table-cell>
-                    <pems-table-cell>@if (d.MaterialRequisitionId.HasValue) { <a href="/MaterialRequisition/Details/@d.MaterialRequisitionId" dir="ltr">@d.MaterialRequisitionNumber</a> } else { <span class="text-muted">—</span> }</pems-table-cell>
+                    <pems-table-cell>@if (d.MaterialRequisitionId.HasValue) { <pems-link href="/MaterialRequisition/Details/@d.MaterialRequisitionId" dir="ltr">@d.MaterialRequisitionNumber</pems-link> } else { <span class="text-muted">—</span> }</pems-table-cell>
                 </pems-table-row>
             }
                 </pems-table-body>

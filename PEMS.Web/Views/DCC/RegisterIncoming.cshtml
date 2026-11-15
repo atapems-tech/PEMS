@@ -49,9 +49,9 @@
     <header class="dcr-head">
         <div>
             <nav class="dcr-crumbs" aria-label="breadcrumb">
-                <a asp-action="Index">@L("Dcc_Crumb")</a><pems-icon name="bi-chevron-right" aria-hidden="true" /><span>@L("Dcc_PageTitle")</span>
+                <pems-link asp-action="Index">@L("Dcc_Crumb")</pems-link><pems-icon name="bi-chevron-right" aria-hidden="true" /><span>@L("Dcc_PageTitle")</span>
             </nav>
-            <h1 class="dcr-title"><pems-icon name="bi-envelope-arrow-down" aria-hidden="true" /> @L("Dcc_PageTitle")</h1>
+            <pems-heading level="1" class="dcr-title"><pems-icon name="bi-envelope-arrow-down" aria-hidden="true" /> @L("Dcc_PageTitle")</pems-heading>
             <p class="dcr-sub">@L("Dcc_PageSubtitle")</p>
         </div>
         <div class="dcr-numchip" title="@L("Dcc_NumberHint")">
@@ -63,7 +63,7 @@
     <div class="dcr-banner dcr-banner--ok" id="dcrSaved" role="status" hidden>
         <pems-icon name="bi-check-circle-fill" aria-hidden="true" />
         <span id="dcrSavedText"></span>
-        <a id="dcrSavedLink" href="#" class="dcr-link">@L("Dcc_OpenLetter")</a>
+        <pems-link id="dcrSavedLink" href="#" class="dcr-link">@L("Dcc_OpenLetter")</pems-link>
     </div>
 
     <div class="dcr-banner dcr-banner--err" id="dcrSummary" role="alert" tabindex="-1" hidden>
@@ -73,7 +73,7 @@
 
     <div class="dcr-banner dcr-banner--warn" id="dcrDuplicate" role="alert" hidden>
         <pems-icon name="bi-exclamation-triangle-fill" aria-hidden="true" />
-        <div class="dcr-grow"><span id="dcrDuplicateText"></span> <a id="dcrDuplicateLink" href="#" target="_blank" rel="noopener" class="dcr-link">@L("Dcc_OpenLetter")</a></div>
+        <div class="dcr-grow"><span id="dcrDuplicateText"></span> <pems-link id="dcrDuplicateLink" href="#" target="_blank" rel="noopener" class="dcr-link">@L("Dcc_OpenLetter")</pems-link></div>
         <pems-button tone="warning" size="small" outline="true" type="button" id="dcrDuplicateConfirm">@L("Dcc_RegisterAnyway")</pems-button>
     </div>
 
@@ -83,7 +83,7 @@
         <div class="dcr-main">
             @* ---------------------------------------------------------------- ۱. فرستنده *@
             <section class="dcr-card" aria-labelledby="dcrSecSender">
-                <h2 class="dcr-card-title" id="dcrSecSender"><span class="dcr-step">1</span> @L("Dcc_SecSender")</h2>
+                <pems-heading level="2" class="dcr-card-title" id="dcrSecSender"><span class="dcr-step">1</span> @L("Dcc_SecSender")</pems-heading>
                 <div class="dcr-row">
                     <div class="dcr-field dcr-span-2" data-field="party">
                         <label class="dcr-label" for="dcrParty">@L("Dcc_Party") <span class="dcr-req" aria-hidden="true">*</span></label>
@@ -137,7 +137,7 @@
 
             @* ---------------------------------------------------------------- ۲. مشخصات نامه *@
             <section class="dcr-card" aria-labelledby="dcrSecLetter">
-                <h2 class="dcr-card-title" id="dcrSecLetter"><span class="dcr-step">2</span> @L("Dcc_SecLetter")</h2>
+                <pems-heading level="2" class="dcr-card-title" id="dcrSecLetter"><span class="dcr-step">2</span> @L("Dcc_SecLetter")</pems-heading>
                 <div class="dcr-row">
                     <div class="dcr-field dcr-span-2" data-field="subject">
                         <label class="dcr-label" for="dcrSubject">@L("Dcc_Subject") <span class="dcr-req" aria-hidden="true">*</span></label>
@@ -215,7 +215,7 @@
 
             @* ---------------------------------------------------------------- ۳. اقدام *@
             <section class="dcr-card" aria-labelledby="dcrSecAction">
-                <h2 class="dcr-card-title" id="dcrSecAction"><span class="dcr-step">3</span> @L("Dcc_SecAction")</h2>
+                <pems-heading level="2" class="dcr-card-title" id="dcrSecAction"><span class="dcr-step">3</span> @L("Dcc_SecAction")</pems-heading>
                 <div class="dcr-row">
                     <div class="dcr-field dcr-span-2">
                         <label class="dcr-switch">
@@ -273,7 +273,7 @@
 
             @* ---------------------------------------------------------------- ۴. فایل‌ها *@
             <section class="dcr-card" aria-labelledby="dcrSecFiles">
-                <h2 class="dcr-card-title" id="dcrSecFiles"><span class="dcr-step">4</span> @L("Dcc_SecFiles")</h2>
+                <pems-heading level="2" class="dcr-card-title" id="dcrSecFiles"><span class="dcr-step">4</span> @L("Dcc_SecFiles")</pems-heading>
                 <div class="dcr-field" data-field="files">
                     <div class="dcr-drop" id="dcrDrop" tabindex="0" role="button" aria-describedby="dcrDropHint">
                         <pems-icon name="bi-cloud-arrow-up" aria-hidden="true" />
@@ -288,7 +288,7 @@
 
             @* ---------------------------------------------------------------- ۵. پیوندها *@
             <section class="dcr-card" aria-labelledby="dcrSecLinks">
-                <h2 class="dcr-card-title" id="dcrSecLinks"><span class="dcr-step">5</span> @L("Dcc_SecLinks") <span class="dcr-opt">@L("Dcc_Optional")</span></h2>
+                <pems-heading level="2" class="dcr-card-title" id="dcrSecLinks"><span class="dcr-step">5</span> @L("Dcc_SecLinks") <span class="dcr-opt">@L("Dcc_Optional")</span></pems-heading>
                 <div class="dcr-field" data-field="links">
                     <div class="dcr-linkbar">
                         <pems-select scale="small" id="dcrLinkType" aria-label="@L("Dcc_LinkType")">

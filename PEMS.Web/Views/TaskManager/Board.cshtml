@@ -35,7 +35,7 @@
     {
         <section class="tm-col" data-tm-status="@col.Status.Id" aria-labelledby="col-@col.Status.Id">
             <header class="tm-col__head">
-                <h3 class="h6 mb-0" id="col-@col.Status.Id">@TaskManagerUi.Name(col.Status.Name, col.Status.NameFa)</h3>
+                <pems-heading level="3" class="h6 mb-0" id="col-@col.Status.Id">@TaskManagerUi.Name(col.Status.Name, col.Status.NameFa)</pems-heading>
                 <pems-badge tone="@TaskManagerUi.CategoryBadge(col.Status.Category)" data-tm-col-count>@col.Items.Count</pems-badge>
             </header>
             <div class="tm-col__body" data-tm-dropzone>
@@ -44,7 +44,7 @@
                     var targets = view.Transitions.TryGetValue(col.Status.Id, out var t) ? t : new List<int>();
                     <article class="tm-card @(i.IsOverdue ? "tm-card--overdue" : "")" draggable="@(i.CanTransition ? "true" : "false")" data-tm-card data-tm-id="@i.Id" data-tm-rv="@i.RowVersion" data-tm-from="@col.Status.Id">
                         <pems-flex justify="between" gap="2">
-                            <a asp-controller="Task" asp-action="Details" asp-route-id="@i.Id" class="tm-key">@i.Key</a>
+                            <pems-link asp-controller="Task" asp-action="Details" asp-route-id="@i.Id" class="tm-key">@i.Key</pems-link>
                             <span title="@TaskManagerUi.Priority(Localizer, i.Priority)"><pems-icon css="@TaskManagerUi.PriorityIcon(i.Priority)" aria-hidden="true" /><span class="visually-hidden">@TaskManagerUi.Priority(Localizer, i.Priority)</span></span>
                         </pems-flex>
                         <div class="tm-card__title">

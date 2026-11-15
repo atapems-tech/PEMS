@@ -44,7 +44,7 @@
 </p>
 
 @* ===================== Executive Reliability ===================== *@
-<h6 class="mt-4">Executive Reliability</h6>
+<pems-heading level="6" class="mt-4">Executive Reliability</pems-heading>
 <pems-row gap="3" css="mb-3">
     <pems-col md="2">
         <pems-content-card css="h-100 text-center">
@@ -86,7 +86,7 @@
 </pems-row>
 
 @* ===================== Criticality ===================== *@
-<h6 class="mt-4">@Localizer["Criticality"]</h6>
+<pems-heading level="6" class="mt-4">@Localizer["Criticality"]</pems-heading>
 <pems-content-card css="mb-3">
     <div class="table-scroll-area pems-s-0ddf068b">
     <pems-table kind="enterprise" scale="small" css="mb-0">
@@ -108,14 +108,14 @@
         </pems-table-body>
     </pems-table>
     </div>
-    <a asp-action="Intelligence" class="small">See full Criticality × Failure × Maintenance matrix with findings →</a>
+    <pems-link asp-action="Intelligence" class="small">See full Criticality × Failure × Maintenance matrix with findings →</pems-link>
 </pems-content-card>
 
 @* ===================== Maintenance / Failure ===================== *@
 <pems-row gap="3" css="mb-3">
     <pems-col md="6">
         <pems-content-card css="h-100">
-            <h6 class="mb-2">Top Failure Modes (Pareto)</h6>
+            <pems-heading level="6" class="mb-2">Top Failure Modes (Pareto)</pems-heading>
             <pems-table kind="enterprise" scale="small" css="mb-0">
                 <pems-table-body>
                     @foreach (var p in pareto)
@@ -129,13 +129,13 @@
     </pems-col>
     <pems-col md="6">
         <pems-content-card css="h-100">
-            <h6 class="mb-2">@Localizer["Bad Actors"]</h6>
+            <pems-heading level="6" class="mb-2">@Localizer["Bad Actors"]</pems-heading>
             <pems-table kind="enterprise" scale="small" css="mb-0">
                 <pems-table-body>
                     @foreach (var b in badActors)
                     {
                         <pems-table-row>
-                            <pems-table-cell><a asp-action="EquipmentProfile" asp-route-id="@b.EquipmentId">@b.TagNumber</a></pems-table-cell>
+                            <pems-table-cell><pems-link asp-action="EquipmentProfile" asp-route-id="@b.EquipmentId">@b.TagNumber</pems-link></pems-table-cell>
                             <pems-table-cell class="text-end">@b.FailureCount failures</pems-table-cell>
                             <pems-table-cell class="text-end small text-muted">@b.TotalDowntimeHours.ToString("N0")h</pems-table-cell>
                         </pems-table-row>
@@ -151,7 +151,7 @@
 <pems-row gap="3">
     <pems-col md="4">
         <pems-content-card css="h-100">
-            <h6 class="mb-2">Reliability Data Quality</h6>
+            <pems-heading level="6" class="mb-2">Reliability Data Quality</pems-heading>
             <div class="small">Equipment Reliability Coverage: @dataQuality.EquipmentReliabilityCoveragePercent.ToString("N1")%</div>
             <div class="small">Failure Taxonomy Coverage: @dataQuality.FailureTaxonomyCoveragePercent.ToString("N1")%</div>
             <div class="small">Repair Data Coverage: @dataQuality.RepairDataCoveragePercent.ToString("N1")%</div>
@@ -160,7 +160,7 @@
     </pems-col>
     <pems-col md="4">
         <pems-content-card css="h-100">
-            <h6 class="mb-2">Predictive Maintenance</h6>
+            <pems-heading level="6" class="mb-2">Predictive Maintenance</pems-heading>
             <div>Engine: <pems-badge tone="@StatusBadge(predictive.EngineStatus)">@predictive.EngineStatus</pems-badge></div>
             <div>Production Model: <pems-badge tone="@StatusBadge(predictive.ProductionModelStatus)">@predictive.ProductionModelStatus</pems-badge></div>
             <div class="small text-muted mt-1">@predictive.Reason</div>
@@ -168,7 +168,7 @@
     </pems-col>
     <pems-col md="4">
         <pems-content-card css="h-100">
-            <h6 class="mb-2">@Localizer["Condition Monitoring"]</h6>
+            <pems-heading level="6" class="mb-2">@Localizer["Condition Monitoring"]</pems-heading>
             <div>Foundation: <pems-badge tone="@StatusBadge(conditionMonitoring.FoundationStatus)">@conditionMonitoring.FoundationStatus</pems-badge></div>
             <div>Live Telemetry: <pems-badge tone="@StatusBadge(conditionMonitoring.LiveTelemetryStatus)">@conditionMonitoring.LiveTelemetryStatus</pems-badge></div>
             <div class="small text-muted mt-1">@conditionMonitoring.MonitoringPointCount points, @conditionMonitoring.ReadingCount readings</div>

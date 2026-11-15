@@ -48,7 +48,7 @@
                     @foreach (var o in Model.Items)
                     {
                         <pems-table-row class="lp-row">
-                            <pems-table-cell class="lp-no"><a asp-action="Details" asp-route-id="@o.ProductionOrderId" class="lp-subject">@o.OrderNumber</a></pems-table-cell>
+                            <pems-table-cell class="lp-no"><pems-link asp-action="Details" asp-route-id="@o.ProductionOrderId" class="lp-subject">@o.OrderNumber</pems-link></pems-table-cell>
                             <pems-table-cell>@o.MaterialCode <div class="text-muted small">@o.MaterialDescription</div></pems-table-cell>
                             <pems-table-cell>@o.PlannedQuantity.ToString("N3") @o.UomCode</pems-table-cell>
                             <pems-table-cell><pems-badge tone="neutral">@o.Status</pems-badge></pems-table-cell>

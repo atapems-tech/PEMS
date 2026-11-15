@@ -9,13 +9,13 @@
 @section Styles { <link rel="stylesheet" href="~/css/pems-task-manager.css" asp-append-version="true" /> }
 
 <section class="vs-panel mb-3">
-    <nav aria-label="breadcrumb" class="small mb-1"><a asp-action="Index">@Localizer["Tm_Title"]</a></nav>
-    <h2 class="h5 mb-1"><pems-icon name="bi-gear" aria-hidden="true" /> @Localizer["Tm_Admin_Title"]</h2>
+    <nav aria-label="breadcrumb" class="small mb-1"><pems-link asp-action="Index">@Localizer["Tm_Title"]</pems-link></nav>
+    <pems-heading level="2" class="h5 mb-1"><pems-icon name="bi-gear" aria-hidden="true" /> @Localizer["Tm_Admin_Title"]</pems-heading>
     <p class="small text-muted mb-0">@Localizer["Tm_Admin_Hint"]</p>
 </section>
 
 <section class="vs-panel mb-3">
-    <h3 class="h6">@Localizer["Tm_Spaces"]</h3>
+    <pems-heading level="3" class="h6">@Localizer["Tm_Spaces"]</pems-heading>
     @if (!Model.Any()) { <div class="vs-empty py-2 small">@Localizer["Tm_NoSpaces"]</div> }
     else
     {
@@ -26,7 +26,7 @@
 </section>
 
 <section class="vs-panel" aria-labelledby="newSpaceTitle">
-    <h3 class="h6" id="newSpaceTitle">@Localizer["Tm_Admin_CreateSpace"]</h3>
+    <pems-heading level="3" class="h6" id="newSpaceTitle">@Localizer["Tm_Admin_CreateSpace"]</pems-heading>
     <pems-form asp-action="SaveSpace" method="post"><pems-row gap="2">
         <input type="hidden" name="IsActive" value="true" />
         <pems-col md="2">

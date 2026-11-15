@@ -28,7 +28,7 @@
 </pems-content-card>
 
 <pems-content-card css="mb-3">
-    <h6 class="mb-3">@Localizer["Items"]</h6>
+    <pems-heading level="6" class="mb-3">@Localizer["Items"]</pems-heading>
     <pems-table-scroll css="table-scroll-area pems-s-8da1c6e6">
     <pems-table kind="enterprise">
         <pems-table-head><pems-table-row><pems-table-header>@Localizer["Description"]</pems-table-header><pems-table-header>@Localizer["Part No"]</pems-table-header><pems-table-header>@Localizer["Qty"]</pems-table-header><pems-table-header>@Localizer["Unit"]</pems-table-header></pems-table-row></pems-table-head>
@@ -56,7 +56,7 @@
 </pems-content-card>
 
 <pems-content-card css="mb-3">
-    <h6 class="mb-3">Quotations (MRQ)</h6>
+    <pems-heading level="6" class="mb-3">Quotations (MRQ)</pems-heading>
     <pems-table-scroll css="table-scroll-area pems-s-8da1c6e6">
     <pems-table kind="enterprise">
         <pems-table-head>
@@ -109,7 +109,7 @@
 </pems-content-card>
 
 <pems-content-card>
-    <h6 class="mb-3">Add New Quotation (MRQ)</h6>
+    <pems-heading level="6" class="mb-3">Add New Quotation (MRQ)</pems-heading>
     <pems-form asp-action="AddQuotation" method="post"><pems-row gap="2" css="align-items-end">
         <input type="hidden" name="mrId" value="@Model.MRId" />
         <pems-col md="2"><pems-input scale="small" name="mrqNumber" placeholder="@Localizer["MRQ No"]" required /></pems-col>
@@ -129,7 +129,7 @@
 @if (relatedLettersMR != null && relatedLettersMR.Any())
 {
     <pems-content-card css="mt-3">
-        <h6 class="mb-3"><pems-icon name="bi-envelope-paper" /> Related Correspondence</h6>
+        <pems-heading level="6" class="mb-3"><pems-icon name="bi-envelope-paper" /> Related Correspondence</pems-heading>
         <pems-table-scroll css="table-scroll-area pems-s-8da1c6e6">
         <pems-data-table data="@(DataRows.Of(relatedLettersMR, c_ => c_.Add(((Localizer["Type"])?.ToString() ?? ""), l => (object?)(DataCell.Badge("neutral", l.LetterType))).Add(((Localizer["Letter No"])?.ToString() ?? ""), l => (object?)(l.LetterNumber)).Add(((Localizer["Subject"])?.ToString() ?? ""), l => (object?)(l.Subject)).Add(((Localizer["Date"])?.ToString() ?? ""), l => (object?)((l.LetterDate.ToString("yyyy-MM-dd")))).Add(((Localizer["Status"])?.ToString() ?? ""), l => (object?)(DataCell.Badge("info", l.Status))).Add("", l => (object?)(DataCell.ButtonLink(Url.Action("Details", "Letter", new { id = l.LetterId }), "neutral", "small", true, null, DataCell.Icon("bi-eye"))))))" />
         </pems-table-scroll>
@@ -142,7 +142,7 @@
     var poVendors = (IEnumerable<dynamic>)ViewBag.Vendors;
     <pems-form asp-controller="PurchaseOrder" asp-action="CreateFromRequisition" method="post"><pems-content-card css="mt-3">
         <input type="hidden" name="mrId" value="@Model.MRId" />
-        <h6 class="mb-2"><pems-icon name="bi-receipt" aria-hidden="true" /> @Localizer["Po_CreateFromMr"]</h6>
+        <pems-heading level="6" class="mb-2"><pems-icon name="bi-receipt" aria-hidden="true" /> @Localizer["Po_CreateFromMr"]</pems-heading>
         <pems-row gap="2" css="align-items-end small">
             <pems-col md="4"><pems-label for="poVendor">@Localizer["Vendor"]</pems-label>
                 <pems-select scale="small" id="poVendor" name="vendorId" required><option value="">—</option>@foreach (var v in poVendors) { <option value="@v.VendorId">@v.Name</option> }</pems-select></pems-col>

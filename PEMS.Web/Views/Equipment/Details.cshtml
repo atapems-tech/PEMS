@@ -49,7 +49,7 @@
     <div class="vs-doc-head">
         <div class="vs-doc-identity">
             <pems-flex align="center" gap="2" wrap="true">
-                <h2 class="vs-doc-number vs-num">@eq.TagNumber</h2>
+                <pems-heading level="2" class="vs-doc-number vs-num">@eq.TagNumber</pems-heading>
                 <span class="vs-pill vs-pill--icon vs-pill--success"><pems-icon name="bi-check-circle" aria-hidden="true" /> @eq.Status</span>
                 @if (!string.IsNullOrWhiteSpace(eq.CriticalityClass))
                 {
@@ -64,7 +64,7 @@
             <div class="vs-doc-meta">@eq.EquipmentType &middot; @eq.ProjectName &middot; @eq.DisciplineName @(string.IsNullOrWhiteSpace(eq.Area) ? "" : "· " + eq.Area)</div>
         </div>
         <div class="vs-doc-actions">
-            <a asp-controller="Relationship" asp-action="Equipment" asp-route-id="@eq.EquipmentId" class="vs-btn"><pems-icon name="bi-diagram-3" /> @Localizer["Cm_Relationships"]</a>
+            <pems-link asp-controller="Relationship" asp-action="Equipment" asp-route-id="@eq.EquipmentId" class="vs-btn"><pems-icon name="bi-diagram-3" /> @Localizer["Cm_Relationships"]</pems-link>
             <pems-button plain="true" type="button" css="vs-btn" data-bs-toggle="modal" data-bs-target="#assignFoundationModal" title="Assign Functional Location / Parent Equipment"><pems-icon name="bi-pencil" /> @Localizer["Cm_AssignLocation"]</pems-button>
         </div>
     </div>
@@ -72,7 +72,7 @@
         <pems-info-item label="P&ID" num>
             @if (Model.PIDDocument != null)
             {
-                <a asp-controller="EngineeringDocuments" asp-action="Details" asp-route-id="@Model.PIDDocument.DocumentId">@eq.PIDNumber <pems-icon name="bi-box-arrow-up-right" css="small" /></a>
+                <pems-link asp-controller="EngineeringDocuments" asp-action="Details" asp-route-id="@Model.PIDDocument.DocumentId">@eq.PIDNumber <pems-icon name="bi-box-arrow-up-right" css="small" /></pems-link>
             }
             else if (!string.IsNullOrWhiteSpace(eq.PIDNumber)) { <span title="@Localizer["مدرکی با این شماره پیدا نشد"]">@eq.PIDNumber</span> }
             else { <span class="text-muted">N/A</span> }
@@ -80,14 +80,14 @@
         <pems-info-item label="@Localizer["Cm_ManufacturerModel"]" num>@NA(eq.Manufacturer) / @NA(eq.Model)</pems-info-item>
         <pems-info-item label="@Localizer["Cm_FunctionalLocation"]">@NA(eq.FunctionalLocationBreadcrumb)</pems-info-item>
         <pems-info-item label="@Localizer["Cm_ParentEquipment"]" num>
-            @if (eq.ParentEquipmentId.HasValue) { <a asp-action="Details" asp-route-id="@eq.ParentEquipmentId">@eq.ParentEquipmentTagNumber</a> } else { <span class="text-muted">N/A</span> }
+            @if (eq.ParentEquipmentId.HasValue) { <pems-link asp-action="Details" asp-route-id="@eq.ParentEquipmentId">@eq.ParentEquipmentTagNumber</pems-link> } else { <span class="text-muted">N/A</span> }
         </pems-info-item>
         <pems-info-item label="@Localizer["Cm_InstallationDate"]" num>@(eq.InstallationDate?.ToString("yyyy-MM-dd") ?? "N/A")</pems-info-item>
         <pems-info-item label="@Localizer["Cm_Description"]" wide>@NA(eq.Description)</pems-info-item>
         @if (eq.ChildEquipments.Any())
         {
             <pems-info-item label="@Localizer["Cm_ChildEquipment"] (@eq.ChildEquipmentCount)" wide>
-                @foreach (var c in eq.ChildEquipments) { <a asp-action="Details" asp-route-id="@c.EquipmentId" class="vs-chip text-decoration-none vs-num me-1">@c.TagNumber</a> }
+                @foreach (var c in eq.ChildEquipments) { <pems-link asp-action="Details" asp-route-id="@c.EquipmentId" class="vs-chip text-decoration-none vs-num me-1">@c.TagNumber</pems-link> }
             </pems-info-item>
         }
     </pems-info-grid>
@@ -117,7 +117,7 @@
                             .FirstOrDefault(x => x.FunctionalLocationId == eq.FunctionalLocationId);
                         <pems-help-text>Currently: @(currentFl?.PathBreadcrumb ?? NA(eq.FunctionalLocationBreadcrumb))</pems-help-text>
                     }
-                    <pems-help-text>Real link, distinct from the raw "@NA(eq.Area)" import value. <a asp-controller="FunctionalLocation" asp-action="Index" target="_blank">@Localizer["Manage list"]</a></pems-help-text>
+                    <pems-help-text>Real link, distinct from the raw "@NA(eq.Area)" import value. <pems-link asp-controller="FunctionalLocation" asp-action="Index" target="_blank">@Localizer["Manage list"]</pems-link></pems-help-text>
                 </div>
                 <div class="mb-2">
                     <pems-label css="small">Parent Equipment</pems-label>
@@ -143,10 +143,10 @@
 @if (Model.SuggestedLinks.Any())
 {
     <pems-content-card css="mb-3 border-warning">
-        <h6 class="mb-3"><pems-icon name="bi-lightbulb" /> پیشنهادهای اتصال (تاییدنشده)</h6>
+        <pems-heading level="6" class="mb-3"><pems-icon name="bi-lightbulb" /> پیشنهادهای اتصال (تاییدنشده)</pems-heading>
         <p class="text-muted small">
             این‌ها از روی شماره‌ی MRQ/PO خام ثبت‌شده روی تجهیز، با داده‌ی موجود منطبق شده‌اند.
-            برای تایید و برقراری رسمی رابطه، به <a asp-controller="Relationship" asp-action="Equipment" asp-route-id="@eq.EquipmentId">Relationship Explorer</a> برو.
+            برای تایید و برقراری رسمی رابطه، به <pems-link asp-controller="Relationship" asp-action="Equipment" asp-route-id="@eq.EquipmentId">Relationship Explorer</pems-link> برو.
         </p>
         <pems-flex wrap="true" gap="2">
             @foreach (var s in Model.SuggestedLinks)
@@ -234,7 +234,7 @@
         {
             <pems-content-card css="mt-3">
                 <pems-flex justify="between" align="center">
-                    <h6 class="mb-0"><pems-icon name="bi-card-text" /> @Localizer["Cm_InstrumentPassport"]</h6>
+                    <pems-heading level="6" class="mb-0"><pems-icon name="bi-card-text" /> @Localizer["Cm_InstrumentPassport"]</pems-heading>
                     <span class="small text-muted">See the "Instrument Passport" tab for full details, calibration history and print.</span>
                 </pems-flex>
                 <pems-row gap="2" css="small mt-2">
@@ -253,7 +253,7 @@
         <pems-tab-pane fade="true" id="tab-instrument" role="tabpanel">
             <pems-content-card css="mb-3">
                 <pems-flex justify="between" align="center" css="mb-3">
-                    <h6 class="mb-0">@Localizer["Cm_InstrumentPassport"]</h6>
+                    <pems-heading level="6" class="mb-0">@Localizer["Cm_InstrumentPassport"]</pems-heading>
                     <pems-button tone="primary" size="small" as="a" asp-controller="Instrument" asp-action="Passport" asp-route-id="@inst.InstrumentId">
                         <pems-icon name="bi-card-text" /> @Localizer["Cm_FullPassport"]
                     </pems-button>
@@ -294,7 +294,7 @@
         <pems-tab-pane fade="true" id="tab-mechanical" role="tabpanel">
             <pems-content-card css="mb-3">
                 <pems-flex justify="between" align="center" css="mb-3">
-                    <h6 class="mb-0">@Localizer["Mechanical Passport"]</h6>
+                    <pems-heading level="6" class="mb-0">@Localizer["Mechanical Passport"]</pems-heading>
                     <pems-button tone="primary" size="small" as="a" asp-controller="MechanicalEquipment" asp-action="Passport" asp-route-id="@mech.MechanicalEquipmentId">
                         <pems-icon name="bi-gear-wide-connected" /> @Localizer["Full Mechanical Passport"]
                     </pems-button>
@@ -334,7 +334,7 @@
         <pems-tab-pane fade="true" id="tab-cm" role="tabpanel">
             <pems-content-card css="mb-3">
                 <pems-flex justify="between" align="center" css="mb-3">
-                    <h6 class="mb-0">@Localizer["Condition Monitoring"]</h6>
+                    <pems-heading level="6" class="mb-0">@Localizer["Condition Monitoring"]</pems-heading>
                     <pems-flex gap="2">
                         <pems-button tone="danger" size="small" outline="true" as="a" asp-controller="Finding" asp-action="Index" asp-route-equipmentId="@eq.EquipmentId">
                             <pems-icon name="bi-flag" /> @Localizer["Findings"] @(cm.OpenFindingCount > 0 ? $"({cm.OpenFindingCount})" : "")
@@ -383,7 +383,7 @@
             @if (asset != null)
             {
                 <pems-flex justify="between" align="center" css="mb-3">
-                    <h6 class="mb-0">Asset - @asset.AssetNumber</h6>
+                    <pems-heading level="6" class="mb-0">Asset - @asset.AssetNumber</pems-heading>
                     <pems-button tone="primary" size="small" as="a" asp-controller="Asset" asp-action="Details" asp-route-id="@asset.AssetId">
                         <pems-icon name="bi-diagram-2" /> @Localizer["Cm_FullAsset"]
                     </pems-button>
@@ -421,7 +421,7 @@
     @* ===================== Documents ===================== *@
     <pems-tab-pane fade="true" id="tab-documents" role="tabpanel">
         <pems-content-card css="mb-3">
-            <h6 class="mb-3"><pems-icon name="bi-file-earmark-text" /> @Localizer["Cm_SecEngDocs"]</h6>
+            <pems-heading level="6" class="mb-3"><pems-icon name="bi-file-earmark-text" /> @Localizer["Cm_SecEngDocs"]</pems-heading>
             <pems-table-scroll css="table-scroll-area pems-s-b4b96c72">
             <pems-table kind="enterprise">
                 <pems-table-head><pems-table-row><pems-table-header>@Localizer["Cm_DocNo"]</pems-table-header><pems-table-header>@Localizer["Cm_Title"]</pems-table-header><pems-table-header>@Localizer["Cm_Type"]</pems-table-header><pems-table-header>@Localizer["Cm_Discipline"]</pems-table-header><pems-table-header>@Localizer["Cm_Rev"]</pems-table-header><pems-table-header>@Localizer["Cm_Status"]</pems-table-header><pems-table-header></pems-table-header></pems-table-row></pems-table-head>
@@ -441,7 +441,7 @@
         </pems-content-card>
 
         <pems-content-card>
-            <h6 class="mb-3"><pems-icon name="bi-journal-check" /> @Localizer["Cm_SecVdr"]</h6>
+            <pems-heading level="6" class="mb-3"><pems-icon name="bi-journal-check" /> @Localizer["Cm_SecVdr"]</pems-heading>
             <pems-table-scroll css="table-scroll-area pems-s-b4b96c72">
             <pems-data-table data="@(DataRows.Of(Model.VDRItems, c_ => c_.Add(((Localizer["Cm_DocNo"])?.ToString() ?? ""), v => (object?)(v.DocumentNumber)).Add(((Localizer["Cm_Description"])?.ToString() ?? ""), v => (object?)(v.DocumentDescription)).Add(((Localizer["Cm_Vendor"])?.ToString() ?? ""), v => (object?)(v.VendorName)).Add(((Localizer["Cm_Rev"])?.ToString() ?? ""), v => (object?)(v.LatestRevisionNo)).Add(((Localizer["Cm_Category"])?.ToString() ?? ""), v => (object?)(v.LatestReviewCategory)).Add(((Localizer["Cm_Status"])?.ToString() ?? ""), v => (object?)(DataCell.Badge("neutral", v.WorkflowStatus))).Add("", v => (object?)(DataCell.ButtonLink(Url.Action("Details", "VDR", new { id = v.VDRItemId }), "neutral", "small", true, null, DataCell.Icon("bi-eye"))))))" />
             </pems-table-scroll>
@@ -452,7 +452,7 @@
     @* ===================== Procurement ===================== *@
     <pems-tab-pane fade="true" id="tab-procurement" role="tabpanel">
         <pems-content-card>
-            <h6 class="mb-3"><pems-icon name="bi-cart-check" /> @Localizer["Cm_SecMr"]</h6>
+            <pems-heading level="6" class="mb-3"><pems-icon name="bi-cart-check" /> @Localizer["Cm_SecMr"]</pems-heading>
             <pems-table-scroll css="table-scroll-area pems-s-a3f95238">
             <pems-data-table data="@(DataRows.Of(Model.RelatedMRs, c_ => c_.Add(((Localizer["Cm_MrNumber"])?.ToString() ?? ""), m => (object?)(m.MRNumber)).Add(((Localizer["Cm_Project"])?.ToString() ?? ""), m => (object?)(m.ProjectName)).Add(((Localizer["Cm_Discipline"])?.ToString() ?? ""), m => (object?)(m.DisciplineName)).Add(((Localizer["Cm_Description"])?.ToString() ?? ""), m => (object?)(m.Description)).Add(((Localizer["Cm_Status"])?.ToString() ?? ""), m => (object?)(DataCell.Badge("neutral", m.Status))).Add("", m => (object?)(DataCell.ButtonLink(Url.Action("Details", "MaterialRequisition", new { id = m.MRId }), "neutral", "small", true, null, DataCell.Icon("bi-eye"))))))" />
             </pems-table-scroll>
@@ -467,7 +467,7 @@
         {
             <pems-content-card css="mb-3">
                 <pems-flex justify="between" align="center" css="mb-2">
-                    <h6 class="mb-0"><pems-icon name="bi-graph-up-arrow" /> @Localizer["Cm_Reliability"]</h6>
+                    <pems-heading level="6" class="mb-0"><pems-icon name="bi-graph-up-arrow" /> @Localizer["Cm_Reliability"]</pems-heading>
                     <pems-button tone="neutral" size="small" outline="true" as="a" asp-controller="Reliability" asp-action="Details" asp-route-id="@eq.EquipmentId">
                         <pems-icon name="bi-clock-history" /> @Localizer["Cm_FailureHistory"]
                     </pems-button>
@@ -483,10 +483,10 @@
         @* استراتژی و PM (فقط خواندنی) - از روابط موجود MaintenanceStrategy/MaintenancePlan.EquipmentId *@
         <pems-content-card css="mb-3">
             <pems-flex justify="between" align="center" css="mb-2">
-                <h6 class="mb-0"><pems-icon name="bi-diagram-2" /> @Localizer["Cm_StrategyPm"]</h6>
+                <pems-heading level="6" class="mb-0"><pems-icon name="bi-diagram-2" /> @Localizer["Cm_StrategyPm"]</pems-heading>
                 <pems-flex as="span" gap="2">
-                    @if (ViewBag.CanViewStrategy == true) { <a asp-controller="MaintenanceStrategy" asp-action="Index" asp-route-equipmentId="@eq.EquipmentId" class="vs-btn vs-btn--sm">@Localizer["Cm_Strategies"]</a> }
-                    @if (ViewBag.CanViewPlan == true) { <a asp-controller="MaintenancePlan" asp-action="Index" class="vs-btn vs-btn--sm">@Localizer["Cm_PmPlans"]</a> }
+                    @if (ViewBag.CanViewStrategy == true) { <pems-link asp-controller="MaintenanceStrategy" asp-action="Index" asp-route-equipmentId="@eq.EquipmentId" class="vs-btn vs-btn--sm">@Localizer["Cm_Strategies"]</pems-link> }
+                    @if (ViewBag.CanViewPlan == true) { <pems-link asp-controller="MaintenancePlan" asp-action="Index" class="vs-btn vs-btn--sm">@Localizer["Cm_PmPlans"]</pems-link> }
                 </pems-flex>
             </pems-flex>
             @if (!Model.Strategies.Any() && !Model.Plans.Any())
@@ -535,12 +535,12 @@
 
         <pems-content-card css="mb-3">
             <pems-flex justify="between" align="center" css="mb-2">
-                <h6 class="mb-0"><pems-icon name="bi-clipboard-plus" /> @Localizer["Cm_MaintHistoryWr"]</h6>
+                <pems-heading level="6" class="mb-0"><pems-icon name="bi-clipboard-plus" /> @Localizer["Cm_MaintHistoryWr"]</pems-heading>
                 @if (canCreateWr)
                 {
-                    <a asp-controller="WorkRequest" asp-action="Create" asp-route-equipmentId="@eq.EquipmentId" class="vs-btn vs-btn--primary vs-btn--sm">
+                    <pems-link asp-controller="WorkRequest" asp-action="Create" asp-route-equipmentId="@eq.EquipmentId" class="vs-btn vs-btn--primary vs-btn--sm">
                         <pems-icon name="bi-plus-lg" /> @Localizer["Cm_NewWorkRequest"]
-                    </a>
+                    </pems-link>
                 }
             </pems-flex>
             <pems-table-scroll css="table-scroll-area pems-s-7bf38d03">
@@ -550,12 +550,12 @@
                     @foreach (var r in Model.WorkRequests)
                     {
                         <pems-table-row>
-                            <pems-table-cell class="vs-num">@if (canViewWr) { <a asp-controller="WorkRequest" asp-action="Details" asp-route-id="@r.WorkRequestId">@r.RequestNumber</a> } else { @r.RequestNumber }</pems-table-cell>
+                            <pems-table-cell class="vs-num">@if (canViewWr) { <pems-link asp-controller="WorkRequest" asp-action="Details" asp-route-id="@r.WorkRequestId">@r.RequestNumber</pems-link> } else { @r.RequestNumber }</pems-table-cell>
                             <pems-table-cell>@r.Title</pems-table-cell>
                             <pems-table-cell><span class="vs-pill @PrioTone(r.Priority)">@r.Priority</span></pems-table-cell>
                             <pems-table-cell><span class="vs-pill vs-pill--icon @WrTone(r.Status)"><pems-icon css="@WrIcon(r.Status)" aria-hidden="true" /> @r.Status</span></pems-table-cell>
                             <pems-table-cell class="vs-num">@r.RequestedDate.ToString("yyyy-MM-dd")</pems-table-cell>
-                            <pems-table-cell class="vs-num">@if (r.LinkedWorkOrderId.HasValue) { if (canViewWo) { <a asp-controller="WorkOrder" asp-action="Details" asp-route-id="@r.LinkedWorkOrderId">@r.LinkedWorkOrderNo</a> } else { @r.LinkedWorkOrderNo } } else { <span class="text-muted">—</span> }</pems-table-cell>
+                            <pems-table-cell class="vs-num">@if (r.LinkedWorkOrderId.HasValue) { if (canViewWo) { <pems-link asp-controller="WorkOrder" asp-action="Details" asp-route-id="@r.LinkedWorkOrderId">@r.LinkedWorkOrderNo</pems-link> } else { @r.LinkedWorkOrderNo } } else { <span class="text-muted">—</span> }</pems-table-cell>
                         </pems-table-row>
                     }
                 </pems-table-body>
@@ -566,7 +566,7 @@
 
         @* Work Orderهای اجراشده: فقط خواندنی - ساخت Work Order از این بخش مجاز نیست؛ فقط از Work Request تاییدشده *@
         <pems-content-card>
-            <h6 class="mb-2"><pems-icon name="bi-tools" /> @Localizer["Cm_ExecutedWo"]</h6>
+            <pems-heading level="6" class="mb-2"><pems-icon name="bi-tools" /> @Localizer["Cm_ExecutedWo"]</pems-heading>
             <pems-table-scroll css="table-scroll-area pems-s-f7dce87f">
             <pems-data-table data="@(DataRows.Of(Model.WorkOrders, c_ => c_.Add(((Localizer["Cm_WoNumber"])?.ToString() ?? ""), w => (object?)((canViewWo ? (object?)DataCell.Link(Url.Action("Details", "WorkOrder", new { id = w.WorkOrderId }), w.WorkOrderNo) : w.WorkOrderNo)), css: "vs-num").Add(((Localizer["Cm_Description"])?.ToString() ?? ""), w => (object?)(w.Description)).Add(((Localizer["Cm_Status"])?.ToString() ?? ""), w => (object?)(DataCell.Span("vs-pill", w.Status))).Add(((Localizer["Cm_Date"])?.ToString() ?? ""), w => (object?)((w.CreatedDate?.ToString("yyyy-MM-dd"))), css: "vs-num")))" />
             </pems-table-scroll>
@@ -578,7 +578,7 @@
     <pems-tab-pane fade="true" id="tab-inspection" role="tabpanel">
         <pems-content-card>
             <pems-flex justify="between" align="center" css="mb-3">
-                <h6 class="mb-0"><pems-icon name="bi-clipboard-pulse" /> @Localizer["Cm_SecInspections"]</h6>
+                <pems-heading level="6" class="mb-0"><pems-icon name="bi-clipboard-pulse" /> @Localizer["Cm_SecInspections"]</pems-heading>
                 <pems-button tone="primary" size="small" outline="true" type="button" data-bs-toggle="modal" data-bs-target="#newInspectionModal">
                     <pems-icon name="bi-plus-lg" /> @Localizer["Cm_NewInspection"]
                 </pems-button>
@@ -671,12 +671,12 @@
         <pems-row gap="3">
             <pems-col md="4">
                 <pems-content-card css="h-100">
-                    <h6 class="mb-3"><pems-icon name="bi-exclamation-triangle" /> NCR <pems-badge tone="neutral">@Model.NonConformanceReports.Count</pems-badge></h6>
+                    <pems-heading level="6" class="mb-3"><pems-icon name="bi-exclamation-triangle" /> NCR <pems-badge tone="neutral">@Model.NonConformanceReports.Count</pems-badge></pems-heading>
                     <ul class="list-unstyled mb-0">
                         @foreach (var n in Model.NonConformanceReports)
                         {
                             <pems-flex as="li" justify="between" css="border-bottom py-1">
-                                <a asp-controller="QC" asp-action="NcrDetails" asp-route-id="@n.NodeId">@n.Label</a>
+                                <pems-link asp-controller="QC" asp-action="NcrDetails" asp-route-id="@n.NodeId">@n.Label</pems-link>
                                 <pems-badge tone="@(n.Priority == "Urgent" ? "danger" : "neutral")">@n.SubLabel</pems-badge>
                             </pems-flex>
                         }
@@ -686,12 +686,12 @@
             </pems-col>
             <pems-col md="4">
                 <pems-content-card css="h-100">
-                    <h6 class="mb-3"><pems-icon name="bi-arrow-repeat" /> MOC <pems-badge tone="neutral">@Model.MOCs.Count</pems-badge></h6>
+                    <pems-heading level="6" class="mb-3"><pems-icon name="bi-arrow-repeat" /> MOC <pems-badge tone="neutral">@Model.MOCs.Count</pems-badge></pems-heading>
                     <ul class="list-unstyled mb-0">
                         @foreach (var m in Model.MOCs)
                         {
                             <pems-flex as="li" justify="between" css="border-bottom py-1">
-                                <a asp-controller="MOC" asp-action="Details" asp-route-id="@m.NodeId">@m.Label</a>
+                                <pems-link asp-controller="MOC" asp-action="Details" asp-route-id="@m.NodeId">@m.Label</pems-link>
                                 <pems-badge tone="@(m.Priority == "Urgent" ? "danger" : "neutral")">@m.SubLabel</pems-badge>
                             </pems-flex>
                         }
@@ -701,12 +701,12 @@
             </pems-col>
             <pems-col md="4">
                 <pems-content-card css="h-100">
-                    <h6 class="mb-3"><pems-icon name="bi-question-circle" /> TQ / TSR / RFI <pems-badge tone="neutral">@Model.TechnicalQueries.Count</pems-badge></h6>
+                    <pems-heading level="6" class="mb-3"><pems-icon name="bi-question-circle" /> TQ / TSR / RFI <pems-badge tone="neutral">@Model.TechnicalQueries.Count</pems-badge></pems-heading>
                     <ul class="list-unstyled mb-0">
                         @foreach (var t in Model.TechnicalQueries)
                         {
                             <pems-flex as="li" justify="between" css="border-bottom py-1">
-                                <a asp-controller="TechnicalQuery" asp-action="Details" asp-route-id="@t.NodeId">@t.Label</a>
+                                <pems-link asp-controller="TechnicalQuery" asp-action="Details" asp-route-id="@t.NodeId">@t.Label</pems-link>
                                 <pems-badge tone="@(t.Priority == "Urgent" ? "danger" : "neutral")">@t.SubLabel</pems-badge>
                             </pems-flex>
                         }
@@ -724,7 +724,7 @@
             var explanation = ViewBag.ClassificationExplanation as PEMS.Application.DTOs.ClassificationExplanationDto;
         }
         <pems-content-card css="mb-3">
-            <h6 class="mb-3"><pems-icon name="bi-diagram-3-fill" /> @Localizer["Cm_SecClassification"]</h6>
+            <pems-heading level="6" class="mb-3"><pems-icon name="bi-diagram-3-fill" /> @Localizer["Cm_SecClassification"]</pems-heading>
             @if (intel?.EquipmentClassId != null)
             {
                 <pems-row gap="2" css="small">
@@ -753,7 +753,7 @@
                 <pems-alert tone="warning" css="small mt-3 mb-0">
                     <strong>پیشنهاد در انتظار بازبینی:</strong> @pendingSuggestion.SuggestedEquipmentClassName
                     (<pems-badge tone="warning">@pendingSuggestion.Confidence</pems-badge>) &mdash; @pendingSuggestion.Reason
-                    <a asp-controller="EquipmentClassification" asp-action="ReviewQueue" class="ms-2">بازبینی در صف →</a>
+                    <pems-link asp-controller="EquipmentClassification" asp-action="ReviewQueue" class="ms-2">بازبینی در صف →</pems-link>
                 </pems-alert>
             }
         </pems-content-card>
@@ -763,7 +763,7 @@
             <pems-row gap="3">
                 <pems-col md="6">
                     <pems-content-card css="h-100">
-                        <h6 class="mb-3">@Localizer["Cm_ApplicableActivities"] <pems-badge tone="neutral">@intel.ApplicableActivities.Count</pems-badge></h6>
+                        <pems-heading level="6" class="mb-3">@Localizer["Cm_ApplicableActivities"] <pems-badge tone="neutral">@intel.ApplicableActivities.Count</pems-badge></pems-heading>
                         <ul class="list-unstyled mb-0 small">
                             @foreach (var a in intel.ApplicableActivities)
                             {
@@ -778,7 +778,7 @@
                 </pems-col>
                 <pems-col md="6">
                     <pems-content-card css="h-100">
-                        <h6 class="mb-3">@Localizer["Cm_PmTemplates"] <pems-badge tone="neutral">@intel.CandidatePMTemplates.Count</pems-badge></h6>
+                        <pems-heading level="6" class="mb-3">@Localizer["Cm_PmTemplates"] <pems-badge tone="neutral">@intel.CandidatePMTemplates.Count</pems-badge></pems-heading>
                         <ul class="list-unstyled mb-0 small">
                             @foreach (var t in intel.CandidatePMTemplates)
                             {
@@ -793,7 +793,7 @@
                 </pems-col>
                 <pems-col md="6">
                     <pems-content-card css="h-100">
-                        <h6 class="mb-3">@Localizer["Cm_FailureModes"] <pems-badge tone="neutral">@intel.ApplicableFailureModes.Count</pems-badge></h6>
+                        <pems-heading level="6" class="mb-3">@Localizer["Cm_FailureModes"] <pems-badge tone="neutral">@intel.ApplicableFailureModes.Count</pems-badge></pems-heading>
                         <ul class="list-unstyled mb-0 small">
                             @foreach (var fm in intel.ApplicableFailureModes)
                             {
@@ -808,7 +808,7 @@
                 </pems-col>
                 <pems-col md="6">
                     <pems-content-card css="h-100">
-                        <h6 class="mb-3">@Localizer["Cm_StdRefs"] <pems-badge tone="neutral">@intel.ApplicableStandardReferences.Count</pems-badge></h6>
+                        <pems-heading level="6" class="mb-3">@Localizer["Cm_StdRefs"] <pems-badge tone="neutral">@intel.ApplicableStandardReferences.Count</pems-badge></pems-heading>
                         <ul class="list-unstyled mb-0 small">
                             @foreach (var s in intel.ApplicableStandardReferences)
                             {

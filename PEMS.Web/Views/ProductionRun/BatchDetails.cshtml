@@ -7,15 +7,15 @@
     <pems-flex justify="between" align="start" wrap="true" gap="3">
         <div>
             <pems-flex align="center" gap="2" wrap="true">
-                <h4 class="mb-0">@Model.BatchNumber</h4>
+                <pems-heading level="4" class="mb-0">@Model.BatchNumber</pems-heading>
                 <pems-badge tone="info">@Model.QualityStatus</pems-badge>
             </pems-flex>
             <div class="text-muted">@Model.MaterialCode - @Model.MaterialDescription</div>
             <div class="text-muted small mt-1">
                 Qty: @Model.Quantity.ToString("N3") @Model.UomCode &middot;
                 Produced: @Model.ProducedDate.ToString("yyyy-MM-dd HH:mm") &middot;
-                Order: <a asp-controller="ProductionOrder" asp-action="Details" asp-route-id="@Model.ProductionOrderId">@Model.OrderNumber</a> &middot;
-                Run: <a asp-action="Details" asp-route-id="@Model.ProductionRunId">@Model.RunNumber</a>
+                Order: <pems-link asp-controller="ProductionOrder" asp-action="Details" asp-route-id="@Model.ProductionOrderId">@Model.OrderNumber</pems-link> &middot;
+                Run: <pems-link asp-action="Details" asp-route-id="@Model.ProductionRunId">@Model.RunNumber</pems-link>
             </div>
             @if (!string.IsNullOrEmpty(Model.QualityStatusReason))
             {

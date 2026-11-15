@@ -12,8 +12,8 @@
 @section Styles { <link rel="stylesheet" href="~/css/pems-task-manager.css" asp-append-version="true" /> }
 
 <section class="vs-panel mb-3">
-    <nav aria-label="breadcrumb" class="small mb-1"><a asp-action="Admin">@Localizer["Tm_Admin_Title"]</a> / <span class="tm-key">@s.Key</span></nav>
-    <h2 class="h5 mb-3">@TaskManagerUi.Name(s.Name, s.NameFa)</h2>
+    <nav aria-label="breadcrumb" class="small mb-1"><pems-link asp-action="Admin">@Localizer["Tm_Admin_Title"]</pems-link> / <span class="tm-key">@s.Key</span></nav>
+    <pems-heading level="2" class="h5 mb-3">@TaskManagerUi.Name(s.Name, s.NameFa)</pems-heading>
     <pems-form asp-action="SaveSpace" method="post"><pems-row gap="2">
         <input type="hidden" name="Id" value="@s.Id" />
         <input type="hidden" name="Key" value="@s.Key" />
@@ -42,7 +42,7 @@
 <pems-row gap="3">
     <pems-col lg="6">
         <section class="vs-panel mb-3" aria-labelledby="memTitle">
-            <h3 class="h6" id="memTitle">@Localizer["Tm_Members"]</h3>
+            <pems-heading level="3" class="h6" id="memTitle">@Localizer["Tm_Members"]</pems-heading>
             <p class="small text-muted">@Localizer["Tm_MembersHint"]</p>
             @if (!Model.Members.Any()) { <div class="vs-empty py-2 small">@Localizer["Tm_NoMembers"]</div> }
             else
@@ -86,7 +86,7 @@
         </section>
 
         <section class="vs-panel mb-3" aria-labelledby="typeTitle">
-            <h3 class="h6" id="typeTitle">@Localizer["Tm_Types"]</h3>
+            <pems-heading level="3" class="h6" id="typeTitle">@Localizer["Tm_Types"]</pems-heading>
             <pems-table scale="small" css="vs-dense">
                 <pems-table-body>
                     @foreach (var t in Model.Types)
@@ -118,7 +118,7 @@
 
     <pems-col lg="6">
         <section class="vs-panel mb-3" aria-labelledby="stTitle">
-            <h3 class="h6" id="stTitle">@Localizer["Tm_Statuses"]</h3>
+            <pems-heading level="3" class="h6" id="stTitle">@Localizer["Tm_Statuses"]</pems-heading>
             <p class="small text-muted">@Localizer["Tm_StatusesHint"]</p>
             @foreach (var st in Model.Statuses)
             {
@@ -153,7 +153,7 @@
         </section>
 
         <section class="vs-panel mb-3" aria-labelledby="trTitle">
-            <h3 class="h6" id="trTitle">@Localizer["Tm_Transitions"]</h3>
+            <pems-heading level="3" class="h6" id="trTitle">@Localizer["Tm_Transitions"]</pems-heading>
             <p class="small text-muted">@Localizer["Tm_TransitionsHint"]</p>
             <pems-table-scroll>
                 <pems-table scale="small" css="table-bordered vs-dense tm-matrix">

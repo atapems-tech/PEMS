@@ -38,7 +38,7 @@
 
 <div class="pems-kpi-page">
     <pems-flex justify="between" align="center" wrap="true" gap="2" css="mb-2">
-        <h5 class="mb-0"><pems-icon name="bi-bar-chart-line" /> @Localizer["Kpi_Exec_Title"]</h5>
+        <pems-heading level="5" class="mb-0"><pems-icon name="bi-bar-chart-line" /> @Localizer["Kpi_Exec_Title"]</pems-heading>
         <pems-button tone="neutral" size="small" outline="true" as="a" asp-action="Index"><pems-icon name="bi-speedometer2" /> @Localizer["Kpi_Exec_ClassicLink"]</pems-button>
     </pems-flex>
     <p class="text-muted small mb-3">@Localizer["Kpi_Exec_Intro"]</p>
@@ -73,7 +73,7 @@
         var tiles = d.Tiles.Where(t => t.Section == sec).ToList();
         if (tiles.Count == 0) { continue; }
         <section class="pems-kpi-section" id="kpi-@sec.ToLowerInvariant()">
-            <h6 class="pems-kpi-section-title">@Localizer["Kpi_Section_" + sec]</h6>
+            <pems-heading level="6" class="pems-kpi-section-title">@Localizer["Kpi_Section_" + sec]</pems-heading>
             <div class="pems-kpi-grid">
                 @foreach (var t in tiles)
                 {
@@ -105,7 +105,7 @@
 
     @* بخش‌هایی از سند KPI که در PEMS داده‌ی منبع ندارند؛ عمداً بدون عدد *@
     <section class="pems-kpi-section pems-kpi-nottracked" id="kpi-nottracked">
-        <h6 class="pems-kpi-section-title"><pems-icon name="bi-hourglass-split" /> @Localizer["Kpi_Exec_NotTracked"]</h6>
+        <pems-heading level="6" class="pems-kpi-section-title"><pems-icon name="bi-hourglass-split" /> @Localizer["Kpi_Exec_NotTracked"]</pems-heading>
         <p class="small text-muted">@Localizer["Kpi_Exec_NotTrackedHint"]</p>
         <ul class="pems-kpi-nt-list">
             @foreach (var key in KpiCatalog.NotTracked)

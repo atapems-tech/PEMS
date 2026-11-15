@@ -70,7 +70,7 @@
     @if (!string.IsNullOrEmpty(statusFilter))
     {
         <span class="pems-command-bar-spacer"></span>
-        <a asp-action="Review" asp-route-batchId="@Model.ConditionReadingImportBatchId" class="pems-filter-clear-all">@Localizer["Clear All"]</a>
+        <pems-link asp-action="Review" asp-route-batchId="@Model.ConditionReadingImportBatchId" class="pems-filter-clear-all">@Localizer["Clear All"]</pems-link>
     }
 </div>
 

@@ -46,9 +46,9 @@
                                 }
                             </pems-table-cell>
                             <pems-table-cell>
-                                <a asp-controller="EngineeringDocuments" asp-action="Index" class="text-decoration-none">
+                                <pems-link asp-controller="EngineeringDocuments" asp-action="Index" class="text-decoration-none">
                                     @p.DocumentsCount
-                                </a>
+                                </pems-link>
                             </pems-table-cell>
                             <pems-table-cell class="text-end">
                                 <pems-button tone="neutral" size="small" outline="true" as="a" asp-action="Edit" asp-route-id="@p.ProjectId">

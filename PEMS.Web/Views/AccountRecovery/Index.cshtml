@@ -7,7 +7,7 @@
     Layout = "_AuthLayout";
 }
 
-<h2>@Localizer["Administrator recovery"]</h2>
+<pems-heading level="2">@Localizer["Administrator recovery"]</pems-heading>
 <p class="subtitle">@Localizer["Use one of your printed recovery codes to set a new password. Each code works only once."]</p>
 
 <pems-validation-summary css="py-2 px-3 small" asp-validation-summary="ModelOnly" hidden="@(ViewData.ModelState.ErrorCount == 0)"></pems-validation-summary>
@@ -40,7 +40,7 @@
 <p class="small text-muted mt-3">@Localizer["After recovery, all sessions of the account are signed out, every administrator is notified and MFA must be enrolled again."]</p>
 
 <div class="auth-links">
-    <a asp-controller="Account" asp-action="Login">&larr; @Localizer["Back to sign in"]</a>
+    <pems-link asp-controller="Account" asp-action="Login">&larr; @Localizer["Back to sign in"]</pems-link>
 </div>
 
 @section Scripts {

@@ -52,7 +52,7 @@
                 {
                     <pems-table-row class="lp-row">
                         <pems-table-cell>
-                            <a asp-action="Details" asp-route-id="@u.Id" class="lp-subject" title="@u.UserName">@u.UserName</a>
+                            <pems-link asp-action="Details" asp-route-id="@u.Id" class="lp-subject" title="@u.UserName">@u.UserName</pems-link>
                             <div class="vs-sub">@u.FullName</div>
                         </pems-table-cell>
                         <pems-table-cell class="small vs-hide-md">@u.Email</pems-table-cell>
@@ -64,11 +64,11 @@
                         </pems-table-cell>
                         <pems-table-cell class="small vs-hide-md"><span class="vs-num">@(u.LastLoginDate?.ToString("yyyy-MM-dd HH:mm") ?? Localizer["UsL_Never"].Value)</span></pems-table-cell>
                         <pems-table-cell class="text-end text-nowrap">
-                            <a asp-action="Details" asp-route-id="@u.Id" class="lp-act lp-act--always" title="@Localizer["Access & Authorization"]" aria-label="@Localizer["Access & Authorization"] @u.UserName"><pems-icon name="bi-shield-lock" aria-hidden="true" /></a>
-                            <a asp-action="Edit" asp-route-id="@u.Id" class="lp-act lp-act--always" title="@Localizer["Ed_Edit"]" aria-label="@Localizer["Ed_Edit"] @u.UserName"><pems-icon name="bi-pencil" aria-hidden="true" /></a>
+                            <pems-link asp-action="Details" asp-route-id="@u.Id" class="lp-act lp-act--always" title="@Localizer["Access & Authorization"]" aria-label="@Localizer["Access & Authorization"] @u.UserName"><pems-icon name="bi-shield-lock" aria-hidden="true" /></pems-link>
+                            <pems-link asp-action="Edit" asp-route-id="@u.Id" class="lp-act lp-act--always" title="@Localizer["Ed_Edit"]" aria-label="@Localizer["Ed_Edit"] @u.UserName"><pems-icon name="bi-pencil" aria-hidden="true" /></pems-link>
                             @if (u.Roles.Contains("SystemAdmin") && u.Id != currentUserId)
                             {
-                                <a asp-action="ResetAdmin" asp-route-id="@u.Id" class="lp-act lp-act--always text-danger" title="@Localizer["Reset administrator account"]" aria-label="@Localizer["Reset administrator account"] @u.UserName"><pems-icon name="bi-key" aria-hidden="true" /></a>
+                                <pems-link asp-action="ResetAdmin" asp-route-id="@u.Id" class="lp-act lp-act--always text-danger" title="@Localizer["Reset administrator account"]" aria-label="@Localizer["Reset administrator account"] @u.UserName"><pems-icon name="bi-key" aria-hidden="true" /></pems-link>
                             }
                             <pems-form asp-action="ToggleActive" asp-route-id="@u.Id" method="post" class="d-inline" data-pems-confirm="@Localizer[u.IsActive ? "UsL_ConfirmDeactivate" : "UsL_ConfirmActivate", u.UserName]">
                                 <pems-button plain="true" type="submit" css="lp-act lp-act--always" title="@Localizer["UsL_ToggleActive"]" aria-label="@Localizer["UsL_ToggleActive"] @u.UserName"><pems-icon name="bi-power" aria-hidden="true" /></pems-button>

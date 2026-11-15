@@ -20,7 +20,7 @@
 <pems-content-card css="mb-3">
     <pems-flex justify="between" align="center">
         <div>
-            <h5 class="mb-0">@s.PackageNumber &mdash; @s.Title</h5>
+            <pems-heading level="5" class="mb-0">@s.PackageNumber &mdash; @s.Title</pems-heading>
             <span class="text-muted small">@s.ProjectName @(s.DisciplineName != null ? " | " + s.DisciplineName : "")</span>
         </div>
         <pems-flex align="center" gap="2">
@@ -88,7 +88,7 @@
                 <pems-table-body>
                     @foreach (var mr in Model.MaterialRequisitions)
                     {
-                        <pems-table-row><pems-table-cell><a asp-controller="MaterialRequisition" asp-action="Details" asp-route-id="@mr.MRId">@mr.MRNumber</a></pems-table-cell>
+                        <pems-table-row><pems-table-cell><pems-link asp-controller="MaterialRequisition" asp-action="Details" asp-route-id="@mr.MRId">@mr.MRNumber</pems-link></pems-table-cell>
                             <pems-table-cell class="small">@mr.Description</pems-table-cell><pems-table-cell><span class="vs-pill vs-pill--neutral">@VdrUi.Loc(Localizer, "MrL_St_", mr.Status)</span></pems-table-cell></pems-table-row>
                     }
                 </pems-table-body>

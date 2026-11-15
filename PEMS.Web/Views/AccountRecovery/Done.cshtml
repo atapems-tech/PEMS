@@ -7,7 +7,7 @@
     Layout = "_AuthLayout";
 }
 
-<h2>@Localizer["Account recovered"]</h2>
+<pems-heading level="2">@Localizer["Account recovered"]</pems-heading>
 <pems-alert tone="success" css="small">
     @Localizer["The new password is set and the recovery code is used up. Sign in with the new password and enroll MFA again."]
 </pems-alert>
@@ -18,5 +18,5 @@
 }
 
 <div class="auth-links">
-    <a asp-controller="Account" asp-action="Login">@Localizer["Sign in"] &rarr;</a>
+    <pems-link asp-controller="Account" asp-action="Login">@Localizer["Sign in"] &rarr;</pems-link>
 </div>

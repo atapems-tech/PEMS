@@ -4,7 +4,7 @@
 @inject IStringLocalizer<SharedResource> Localizer
 
 <pems-content-card css="pems-s-b12974cb">
-    <h2 class="h5 mb-3"><pems-icon name="bi-shield-lock" css="me-1" /> @Localizer["Recovery codes"]</h2>
+    <pems-heading level="2" class="h5 mb-3"><pems-icon name="bi-shield-lock" css="me-1" /> @Localizer["Recovery codes"]</pems-heading>
     <p>@Localizer["If you lose your password or MFA device, one recovery code lets you set a new password from the sign-in page. Each code works once."]</p>
 
     <p class="mb-3">@Localizer["Recovery codes left"]: <strong>@Model.Remaining</strong></p>

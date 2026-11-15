@@ -40,7 +40,7 @@
 }
 
 <pems-flex justify="between" align="center" css="mb-3">
-    <h5 class="mb-0"><pems-icon name="bi-collection" /> @Localizer["Rcm_BulkAssign"]</h5>
+    <pems-heading level="5" class="mb-0"><pems-icon name="bi-collection" /> @Localizer["Rcm_BulkAssign"]</pems-heading>
     <pems-button tone="neutral" size="small" outline="true" as="a" asp-action="Index">@Localizer["بازگشت"]</pems-button>
 </pems-flex>
 <p class="text-muted small">@Localizer["Rcm_BulkHint"]</p>
@@ -179,7 +179,7 @@ else if (matchingCount.HasValue && matchingCount.Value > maxResults)
         <pems-col md="5">
             <pems-content-card>
                 <pems-flex justify="between" align="center" css="mb-2">
-                    <h6 class="mb-0 small fw-bold">انتخاب تجهیزات (@equipments.Count)</h6>
+                    <pems-heading level="6" class="mb-0 small fw-bold">انتخاب تجهیزات (@equipments.Count)</pems-heading>
                     <div>
                         <pems-button tone="neutral" size="small" outline="true" type="button" data-pems-click="check-all" data-pems-target=".eq-check" data-pems-check="true">همه</pems-button>
                         <pems-button tone="neutral" size="small" outline="true" type="button" data-pems-click="check-all" data-pems-target=".eq-check" data-pems-check="false">هیچ‌کدام</pems-button>
@@ -244,7 +244,7 @@ else if (matchingCount.HasValue && matchingCount.Value > maxResults)
 
         <pems-col md="7">
             <pems-content-card>
-                <h6 class="small fw-bold mb-3">@Localizer["Rcm_AssignSummary"]</h6>
+                <pems-heading level="6" class="small fw-bold mb-3">@Localizer["Rcm_AssignSummary"]</pems-heading>
                 @if (!bulk.StrategyId.HasValue)
                 {
                     <pems-alert tone="info" css="small">@Localizer["Rcm_PickStrategyFirst"]</pems-alert>
@@ -261,7 +261,7 @@ else if (matchingCount.HasValue && matchingCount.Value > maxResults)
                     <p class="small text-muted">@Localizer["Rcm_AssignAtomicNote"]</p>
                     <pems-button tone="primary" type="submit" data-pems-confirm="@Localizer["Rcm_ConfirmBulkAssign"]"><pems-icon name="bi-check2-all" /> @Localizer["Rcm_AssignSelected"]</pems-button>
                 }
-                <div class="small text-muted mt-3">@Localizer["Rcm_NeedTemplate"] <a asp-action="Create">@Localizer["Rcm_NewStrategy"]</a></div>
+                <div class="small text-muted mt-3">@Localizer["Rcm_NeedTemplate"] <pems-link asp-action="Create">@Localizer["Rcm_NewStrategy"]</pems-link></div>
             </pems-content-card>
         </pems-col>
     </pems-row>

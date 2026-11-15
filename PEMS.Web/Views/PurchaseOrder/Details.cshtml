@@ -36,7 +36,7 @@
         <pems-info-item label="@Localizer["Status"]"><pems-badge tone="info">@Localizer["Po_Status_" + Model.Status]</pems-badge></pems-info-item>
         @if (a?.MaterialRequisitionId != null)
         {
-            <pems-info-item label="MR" num><a href="/MaterialRequisition/Details/@a.MaterialRequisitionId">@a.MaterialRequisitionNumber</a></pems-info-item>
+            <pems-info-item label="MR" num><pems-link href="/MaterialRequisition/Details/@a.MaterialRequisitionId">@a.MaterialRequisitionNumber</pems-link></pems-info-item>
         }
         <pems-info-item label="@Localizer["Description"]" wide>@Model.Description</pems-info-item>
     </pems-info-grid>
@@ -51,7 +51,7 @@
 @if (a != null)
 {
     <pems-content-card css="mt-3">
-        <h6 class="mb-2"><pems-icon name="bi-list-ol" aria-hidden="true" /> @Localizer["Po_Lines"]</h6>
+        <pems-heading level="6" class="mb-2"><pems-icon name="bi-list-ol" aria-hidden="true" /> @Localizer["Po_Lines"]</pems-heading>
         @if (!string.IsNullOrEmpty(a.RejectionReason) && isDraft)
         {
             <pems-alert tone="warning" css="py-2 px-3 small"><strong>@Localizer["Po_RejectedBecause"]:</strong> @a.RejectionReason</pems-alert>
@@ -78,7 +78,7 @@
                         <pems-table-cell class="small">
                             @if (l.PartNumber != null) { <span dir="ltr">@l.PartNumber</span><text> - </text> }@l.Description
                             <span class="vs-pill @(l.IsCatalogued ? "vs-pill--success" : "vs-pill--warning") ms-1">@Localizer[l.IsCatalogued ? "Mr_PartCatalogued" : "Mr_PartNotCatalogued"]</span>
-                            @if (l.TenderId.HasValue) { <a class="ms-1 small" href="/Tender/Details/@l.TenderId">@Localizer["Po_FromAward"]</a> }
+                            @if (l.TenderId.HasValue) { <pems-link class="ms-1 small" href="/Tender/Details/@l.TenderId">@Localizer["Po_FromAward"]</pems-link> }
                             @if (!l.IsCatalogued && l.CommodityGroup != null) { <div class="text-muted">@l.CommodityGroup — @l.FreeTextReason</div> }
                         </pems-table-cell>
                         <pems-table-cell class="text-end" dir="ltr">@l.Quantity.ToString("0.###") @l.Unit</pems-table-cell>
@@ -138,7 +138,7 @@
     </pems-content-card>
 
     <pems-content-card css="mt-3">
-        <h6 class="mb-2"><pems-icon name="bi-shield-check" aria-hidden="true" /> @Localizer["Po_Approval"]</h6>
+        <pems-heading level="6" class="mb-2"><pems-icon name="bi-shield-check" aria-hidden="true" /> @Localizer["Po_Approval"]</pems-heading>
         <pems-info-grid layout="rows" class="small mb-2">
             @if (a.SubmittedAt.HasValue) { <pems-info-item label="@Localizer["Po_Submitted"]"><span dir="ltr">@a.SubmittedAt.Value.ToString("yyyy-MM-dd HH:mm")</span> @a.SubmittedBy</pems-info-item> }
             @if (a.ApproverRole != null) { <pems-info-item label="@Localizer["Po_ApproverRole"]"><span dir="ltr">@a.ApproverRole</span> (@Localizer["Po_Level"] @a.AuthorityRuleLevel)</pems-info-item> }
@@ -193,7 +193,7 @@
 @if (receivingLines?.Count > 0 && isIssued)
 {
     <pems-content-card css="mt-3">
-        <h6 class="mb-2"><pems-icon name="bi-box-arrow-in-down" aria-hidden="true" /> @Localizer["Rcv_Receiving"]</h6>
+        <pems-heading level="6" class="mb-2"><pems-icon name="bi-box-arrow-in-down" aria-hidden="true" /> @Localizer["Rcv_Receiving"]</pems-heading>
         <p class="small text-muted">@Localizer["Rcv_ReceivingHelp"]</p>
         <pems-table-scroll>
             <pems-table kind="enterprise" scale="small" css="align-middle">

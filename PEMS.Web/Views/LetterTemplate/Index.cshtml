@@ -12,7 +12,7 @@
         <pems-list-toolbar heading="@Localizer["LtT_Manage"]" heading-title="@Localizer["LtT_Help"]" total="@Model.Count">
             <pems-list-tools>
                 <pems-list-menu id="ltMoreBtn" icon="bi-three-dots" label="@Localizer["Lp_More"]">
-                    <li><a class="dropdown-item" asp-controller="Letter" asp-action="Index"><pems-icon name="bi-arrow-left-short" aria-hidden="true" /> @Localizer["Correspondence"]</a></li>
+                    <li><pems-link class="dropdown-item" asp-controller="Letter" asp-action="Index"><pems-icon name="bi-arrow-left-short" aria-hidden="true" /> @Localizer["Correspondence"]</pems-link></li>
                 </pems-list-menu>
                 <pems-list-new href="@Url.Action("Edit", new { id = 0 })" text="@Localizer["LtT_New"]" />
             </pems-list-tools>

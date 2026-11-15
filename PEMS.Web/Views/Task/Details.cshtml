@@ -17,13 +17,13 @@
     <nav aria-label="breadcrumb" class="small mb-1">
         @if (Model.IsLegacy)
         {
-            <a asp-controller="Task" asp-action="Index">@Localizer["Tasks"]</a>
+            <pems-link asp-controller="Task" asp-action="Index">@Localizer["Tasks"]</pems-link>
         }
         else
         {
-            <a asp-controller="TaskManager" asp-action="Index">@Localizer["Tm_Title"]</a> <span>/</span>
-            <a asp-controller="TaskManager" asp-action="Space" asp-route-key="@i.WorkSpaceKey">@TaskManagerUi.Name(Model.WorkSpaceName, Model.WorkSpaceNameFa)</a>
-            @if (i.ParentKey != null) { <span>/</span> <a asp-action="Details" asp-route-id="@i.ParentId">@i.ParentKey</a> }
+            <pems-link asp-controller="TaskManager" asp-action="Index">@Localizer["Tm_Title"]</pems-link> <span>/</span>
+            <pems-link asp-controller="TaskManager" asp-action="Space" asp-route-key="@i.WorkSpaceKey">@TaskManagerUi.Name(Model.WorkSpaceName, Model.WorkSpaceNameFa)</pems-link>
+            @if (i.ParentKey != null) { <span>/</span> <pems-link asp-action="Details" asp-route-id="@i.ParentId">@i.ParentKey</pems-link> }
         }
     </nav>
     <pems-flex wrap="true" justify="between" align="start" gap="2">
@@ -33,7 +33,7 @@
                 @if (i.TypeName != null) { <span>@TaskManagerUi.Name(i.TypeName, i.TypeNameFa)</span> } else { <span>@Localizer["Tm_Personal"]</span> }
                 · <span class="tm-key">@title</span>
             </div>
-            <h2 class="h5 mb-1">@i.Title</h2>
+            <pems-heading level="2" class="h5 mb-1">@i.Title</pems-heading>
             <pems-badge tone="@TaskManagerUi.CategoryBadge(i.StatusCategory)">@TaskManagerUi.StatusLabel(Localizer, i)</pems-badge>
             @if (i.IsOverdue) { <pems-badge tone="danger">@Localizer["Overdue"]</pems-badge> }
             @if (!i.IsActive) { <pems-badge tone="light">@Localizer["Tm_Archived"]</pems-badge> }
@@ -57,7 +57,7 @@
 <pems-row gap="3">
     <pems-col lg="8">
         <section class="vs-panel mb-3" aria-labelledby="descTitle">
-            <h3 class="h6" id="descTitle">@Localizer["Tm_Field_Description"]</h3>
+            <pems-heading level="3" class="h6" id="descTitle">@Localizer["Tm_Field_Description"]</pems-heading>
             @if (Model.CanEdit)
             {
                 <pems-form asp-controller="TaskManager" asp-action="Update" method="post" data-tm-dirty-guard data-tm-ctrl-enter><pems-row gap="2">
@@ -117,7 +117,7 @@
         @if (!Model.IsLegacy)
         {
             <section class="vs-panel mb-3" aria-labelledby="subTitle">
-                <h3 class="h6" id="subTitle">@Localizer["Tm_Subtasks"] <pems-badge tone="light">@Model.Subtasks.Count</pems-badge></h3>
+                <pems-heading level="3" class="h6" id="subTitle">@Localizer["Tm_Subtasks"] <pems-badge tone="light">@Model.Subtasks.Count</pems-badge></pems-heading>
                 <partial name="~/Views/TaskManager/_ItemTable.cshtml" model="Model.Subtasks" view-data='new ViewDataDictionary(ViewData) { ["ShowBulk"] = false, ["CanRank"] = false }' />
                 @if (Model.CanEdit && subtaskType != null && i.ParentId == null)
                 {
@@ -137,7 +137,7 @@
         }
 
         <section class="vs-panel mb-3" aria-labelledby="linkTitle">
-            <h3 class="h6" id="linkTitle">@Localizer["Tm_Links"]</h3>
+            <pems-heading level="3" class="h6" id="linkTitle">@Localizer["Tm_Links"]</pems-heading>
             @if (!Model.Links.Any()) { <p class="small text-muted">@Localizer["Tm_NoLinks"]</p> }
             else
             {
@@ -149,7 +149,7 @@
                                 <span class="small text-muted">@TaskManagerUi.LinkType(Localizer, l.LinkType, l.Outward)</span>
                                 @if (l.OtherVisible)
                                 {
-                                    <a asp-action="Details" asp-route-id="@l.OtherId" class="tm-key ms-1">@(l.OtherKey ?? "#" + l.OtherId)</a> <span>@l.OtherTitle</span>
+                                    <pems-link asp-action="Details" asp-route-id="@l.OtherId" class="tm-key ms-1">@(l.OtherKey ?? "#" + l.OtherId)</pems-link> <span>@l.OtherTitle</span>
                                     <pems-badge tone="@TaskManagerUi.CategoryBadge(l.OtherStatusCategory)">@Localizer["Tm_Category_" + l.OtherStatusCategory]</pems-badge>
                                 }
                                 else
@@ -188,7 +188,7 @@
         </section>
 
         <section class="vs-panel mb-3" aria-labelledby="commentTitle">
-            <h3 class="h6" id="commentTitle">@Localizer["Tm_Comments"] <pems-badge tone="light">@Model.Comments.Count(c => !c.IsDeleted)</pems-badge></h3>
+            <pems-heading level="3" class="h6" id="commentTitle">@Localizer["Tm_Comments"] <pems-badge tone="light">@Model.Comments.Count(c => !c.IsDeleted)</pems-badge></pems-heading>
             @if (Model.CanComment)
             {
                 <pems-form asp-controller="TaskManager" asp-action="Comment" method="post" class="mb-3" data-tm-dirty-guard data-tm-ctrl-enter>
@@ -222,7 +222,7 @@
         </section>
 
         <section class="vs-panel mb-3" aria-labelledby="histTitle">
-            <h3 class="h6" id="histTitle">@Localizer["Tm_History"]</h3>
+            <pems-heading level="3" class="h6" id="histTitle">@Localizer["Tm_History"]</pems-heading>
             @if (!history.Any()) { <p class="small text-muted mb-0">@Localizer["Tm_NoHistory"]</p> }
             else
             {
@@ -235,7 +235,7 @@
 
     <pems-col lg="4">
         <section class="vs-panel mb-3" aria-labelledby="statusTitle">
-            <h3 class="h6" id="statusTitle">@Localizer["Tm_Field_Status"]</h3>
+            <pems-heading level="3" class="h6" id="statusTitle">@Localizer["Tm_Field_Status"]</pems-heading>
             @if (Model.CanTransition && Model.AllowedTransitions.Any())
             {
                 <pems-form asp-controller="TaskManager" asp-action="Transition" method="post"><pems-flex dir="column" gap="2">
@@ -268,7 +268,7 @@
         </section>
 
         <section class="vs-panel mb-3" aria-labelledby="detailsTitle">
-            <h3 class="h6" id="detailsTitle">@Localizer["Tm_Details"]</h3>
+            <pems-heading level="3" class="h6" id="detailsTitle">@Localizer["Tm_Details"]</pems-heading>
             <pems-info-grid layout="rows" class="small mb-0">
                 <pems-info-item label="@Localizer["Tm_Field_Assignee"]">
                     @if (Model.CanAssign)
@@ -306,8 +306,8 @@
                         @* فقط برچسب و پیوند به ماژول مالک؛ داده‌ی ماژول اینجا خوانده نمی‌شود و دسترسی همان ماژول اعمال می‌شود *@
                         @switch (Model.RelatedType)
                         {
-                            case "Letter": <a asp-controller="Letter" asp-action="Details" asp-route-id="@Model.RelatedId">@Localizer["Tm_Related_Letter"] #@Model.RelatedId</a> break;
-                            case "Meeting": <a asp-controller="Meeting" asp-action="Details" asp-route-id="@Model.RelatedId">@Localizer["Tm_Related_Meeting"] #@Model.RelatedId</a> break;
+                            case "Letter": <pems-link asp-controller="Letter" asp-action="Details" asp-route-id="@Model.RelatedId">@Localizer["Tm_Related_Letter"] #@Model.RelatedId</pems-link> break;
+                            case "Meeting": <pems-link asp-controller="Meeting" asp-action="Details" asp-route-id="@Model.RelatedId">@Localizer["Tm_Related_Meeting"] #@Model.RelatedId</pems-link> break;
                             default: <span>@Model.RelatedType #@Model.RelatedId</span> break;
                         }
                     </pems-info-item>

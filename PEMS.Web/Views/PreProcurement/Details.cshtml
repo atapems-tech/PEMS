@@ -18,12 +18,12 @@
 <pems-content-card css="mb-3">
     <pems-flex justify="between" align="start" wrap="true" gap="2">
         <div>
-            <h5 class="mb-1"><pems-icon name="bi-cart-check" aria-hidden="true" /> @Localizer["Ppr_Item"] <span dir="ltr">#@d.ProcurementDemandId</span></h5>
+            <pems-heading level="5" class="mb-1"><pems-icon name="bi-cart-check" aria-hidden="true" /> @Localizer["Ppr_Item"] <span dir="ltr">#@d.ProcurementDemandId</span></pems-heading>
             <div class="small text-muted">
                 @Localizer["Ppr_Source"]: @Localizer["Ppr_Source_" + d.SourceType]
-                @if (d.SourceType == ProcurementDemandSources.Replenishment) { <a href="/Warehouse/Replenishment/Details/@d.SourceId" dir="ltr">@d.SourceNumber</a> }
-                else if (d.SourceType == ProcurementDemandSources.WorkOrderDirectPurchase && Model.WorkOrderId.HasValue) { <a href="/WorkOrder/Details/@Model.WorkOrderId" dir="ltr">@d.SourceNumber</a> }
-                else if (isMr) { <a href="/MaterialRequisition/Details/@d.SourceId" dir="ltr">@d.SourceNumber</a> }
+                @if (d.SourceType == ProcurementDemandSources.Replenishment) { <pems-link href="/Warehouse/Replenishment/Details/@d.SourceId" dir="ltr">@d.SourceNumber</pems-link> }
+                else if (d.SourceType == ProcurementDemandSources.WorkOrderDirectPurchase && Model.WorkOrderId.HasValue) { <pems-link href="/WorkOrder/Details/@Model.WorkOrderId" dir="ltr">@d.SourceNumber</pems-link> }
+                else if (isMr) { <pems-link href="/MaterialRequisition/Details/@d.SourceId" dir="ltr">@d.SourceNumber</pems-link> }
                 · @Localizer["Ppr_Raised"] <span dir="ltr">@d.RaisedAt.ToString("yyyy-MM-dd HH:mm")</span> @d.RaisedBy
             </div>
         </div>
@@ -41,7 +41,7 @@
         @if (d.WarehouseCode != null) { <pems-info-item label="@Localizer["Ppr_Warehouse"]" ltr>@d.WarehouseCode</pems-info-item> }
         @if (d.MaterialRequisitionId.HasValue)
         {
-            <pems-info-item label="MR"><a href="/MaterialRequisition/Details/@d.MaterialRequisitionId" dir="ltr">@d.MaterialRequisitionNumber</a></pems-info-item>
+            <pems-info-item label="MR"><pems-link href="/MaterialRequisition/Details/@d.MaterialRequisitionId" dir="ltr">@d.MaterialRequisitionNumber</pems-link></pems-info-item>
         }
         @if (Model.DecidedAt.HasValue)
         {
@@ -55,7 +55,7 @@
 {
     <pems-form asp-action="Convert" method="post"><pems-content-card css="mb-3">
         <input type="hidden" name="id" value="@d.ProcurementDemandId" />
-        <h6 class="mb-2"><pems-icon name="bi-file-earmark-plus" aria-hidden="true" /> @Localizer["Ppr_ToMr"]</h6>
+        <pems-heading level="6" class="mb-2"><pems-icon name="bi-file-earmark-plus" aria-hidden="true" /> @Localizer["Ppr_ToMr"]</pems-heading>
         <pems-check-row>
             <pems-input kind="check" type="radio" name="target" id="pprNew" value="new" checked />
             <label class="form-check-label" for="pprNew">@Localizer["Ppr_NewMr"]</label>

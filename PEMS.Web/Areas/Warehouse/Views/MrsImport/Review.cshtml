@@ -19,13 +19,13 @@
 <pems-content-card css="mb-3">
     <pems-flex justify="between" align="center" wrap="true" gap="2">
         <div>
-            <h5 class="mb-0">
+            <pems-heading level="5" class="mb-0">
                 @Model.Batch.SourceFileName
                 @if (!string.IsNullOrWhiteSpace(Model.Batch.SourceFileDownloadUrl))
                 {
-                    <a href="@Model.Batch.SourceFileDownloadUrl" class="small ms-2"><pems-icon name="bi-download" /> Download original file</a>
+                    <pems-link href="@Model.Batch.SourceFileDownloadUrl" class="small ms-2"><pems-icon name="bi-download" /> Download original file</pems-link>
                 }
-            </h5>
+            </pems-heading>
             <span class="text-muted small">Batch #@Model.Batch.MrsImportBatchId - شیت @Model.Batch.SourceSheet - @Model.Batch.TotalRows ردیف - @Model.Batch.ImportDate.ToString("yyyy-MM-dd HH:mm")</span>
         </div>
         <pems-button as="a" tone="neutral" size="small" outline="true" asp-action="Index"><pems-icon name="bi-arrow-left" /> Back</pems-button>

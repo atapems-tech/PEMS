@@ -16,7 +16,7 @@
 <div id="pems-passkey-alert"></div>
 
 <pems-content-card css="mb-3">
-    <h6 class="mb-3">@Localizer["Register New Passkey"]</h6>
+    <pems-heading level="6" class="mb-3">@Localizer["Register New Passkey"]</pems-heading>
     <pems-form id="registerForm" data-pems-submit="prevent"><pems-row gap="2" css="align-items-end">
         @Html.AntiForgeryToken()
         <pems-col md="4">
@@ -32,7 +32,7 @@
 </pems-content-card>
 
 <pems-content-card>
-    <h6 class="mb-3">@Localizer["Registered Passkeys"]</h6>
+    <pems-heading level="6" class="mb-3">@Localizer["Registered Passkeys"]</pems-heading>
     <pems-data-table data="@(DataRows.Of(Model, c_ => c_.Add(((Localizer["Nickname"])?.ToString() ?? ""), c => (object?)(c.Nickname ?? "-"), css: "small").Add(((Localizer["Registered"])?.ToString() ?? ""), c => (object?)(c.CreatedDate.ToString("yyyy-MM-dd HH:mm")), css: "small").Add(((Localizer["Last Used"])?.ToString() ?? ""), c => (object?)(c.LastUsedDate?.ToString("yyyy-MM-dd HH:mm") ?? "Never"), css: "small")))" dense="true" css="mb-0" />
     @if (!Model.Any()) { <p class="text-muted text-center py-3 mb-0">@Localizer["هنوز Passkey ای ثبت نشده."]</p> }
 </pems-content-card>

@@ -9,7 +9,7 @@
 
 <pems-content-card>
     <pems-alert tone="danger" css="mb-0">
-        <h6 class="alert-heading"><pems-icon name="bi-exclamation-triangle-fill" /> @errorCode</h6>
+        <pems-heading level="6" class="alert-heading"><pems-icon name="bi-exclamation-triangle-fill" /> @errorCode</pems-heading>
         <p class="mb-0">@message</p>
     </pems-alert>
     <pems-button tone="neutral" size="small" outline="true" css="mt-3" as="a" asp-action="Index">@Localizer["← Back to Barcode"]</pems-button>

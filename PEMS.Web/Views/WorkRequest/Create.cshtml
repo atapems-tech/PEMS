@@ -50,7 +50,7 @@
 
             <pems-col span="12"><pems-label>@Localizer["Description"]</pems-label><pems-textarea name="description" rows="2"></pems-textarea></pems-col>
 
-            <pems-col span="12"><hr class="my-1" /><h6 class="mb-0">@Localizer["Risk and HSE"]</h6>
+            <pems-col span="12"><hr class="my-1" /><pems-heading level="6" class="mb-0">@Localizer["Risk and HSE"]</pems-heading>
                 <pems-help-text css="small">@Localizer["Priority is derived: the final priority is never lower than the declared priority or the risk matrix result; HSE-related requests are at least High; emergencies are always Critical."]</pems-help-text></pems-col>
             <pems-col md="3">
                 <pems-label>@Localizer["Likelihood (1-5)"]</pems-label>
@@ -63,7 +63,7 @@
             <pems-col md="3" css="d-flex align-items-end"><pems-check-row><pems-input kind="check" type="checkbox" name="isHseRelated" value="true" id="wrHse" /><label class="form-check-label" for="wrHse">@Localizer["HSE related"]</label></pems-check-row></pems-col>
             <pems-col md="3" css="d-flex align-items-end"><pems-check-row><pems-input kind="check" type="checkbox" name="isEmergency" value="true" id="wrEmergency" /><label class="form-check-label text-danger" for="wrEmergency">@Localizer["Emergency"]</label></pems-check-row></pems-col>
 
-            <pems-col span="12"><hr class="my-1" /><h6 class="mb-0">@Localizer["Reported failure (ISO 14224)"]</h6></pems-col>
+            <pems-col span="12"><hr class="my-1" /><pems-heading level="6" class="mb-0">@Localizer["Reported failure (ISO 14224)"]</pems-heading></pems-col>
             <pems-col md="5">
                 <pems-label>@Localizer["Failure Mode"]</pems-label>
                 <pems-select name="failureModeId">

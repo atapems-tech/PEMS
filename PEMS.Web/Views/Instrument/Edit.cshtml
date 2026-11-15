@@ -7,8 +7,8 @@
 <pems-content-card css="mb-3">
     <pems-flex justify="between" align="center">
         <div>
-            <h5 class="mb-0">@Model.Equipment?.TagNumber <span class="text-muted small">(@Model.Equipment?.Manufacturer / @Model.Equipment?.Model)</span></h5>
-            <span class="text-muted small">Tag, manufacturer, model and description are edited on the Equipment record - <a asp-controller="Equipment" asp-action="Details" asp-route-id="@Model.EquipmentId">open Equipment</a>.</span>
+            <pems-heading level="5" class="mb-0">@Model.Equipment?.TagNumber <span class="text-muted small">(@Model.Equipment?.Manufacturer / @Model.Equipment?.Model)</span></pems-heading>
+            <span class="text-muted small">Tag, manufacturer, model and description are edited on the Equipment record - <pems-link asp-controller="Equipment" asp-action="Details" asp-route-id="@Model.EquipmentId">open Equipment</pems-link>.</span>
         </div>
         <pems-button tone="neutral" size="small" outline="true" as="a" asp-action="Passport" asp-route-id="@Model.InstrumentId"><pems-icon name="bi-card-text" /> @Localizer["Passport"]</pems-button>
     </pems-flex>
@@ -18,7 +18,7 @@
     <pems-form asp-action="Edit" method="post">
         <input type="hidden" name="instrumentId" value="@Model.InstrumentId" />
 
-        <h6 class="mb-2">General</h6>
+        <pems-heading level="6" class="mb-2">General</pems-heading>
         <pems-row gap="3" css="mb-3">
             <pems-col md="3"><pems-label>@Localizer["Instrument Type"]</pems-label><pems-input name="InstrumentType" value="@Model.InstrumentType" /></pems-col>
             <pems-col md="3"><pems-label>@Localizer["Loop Number"]</pems-label><pems-input name="LoopNumber" value="@Model.LoopNumber" /></pems-col>
@@ -34,7 +34,7 @@
             </pems-col>
         </pems-row>
 
-        <h6 class="mb-2">Process / Signal</h6>
+        <pems-heading level="6" class="mb-2">Process / Signal</pems-heading>
         <pems-row gap="3" css="mb-3">
             <pems-col md="3"><pems-label>@Localizer["Process Variable"]</pems-label><pems-input name="ProcessVariable" value="@Model.ProcessVariable" /></pems-col>
             <pems-col md="3"><pems-label>@Localizer["Accuracy"]</pems-label><pems-input name="Accuracy" value="@Model.Accuracy" /></pems-col>
@@ -49,7 +49,7 @@
             <pems-col md="3"><pems-label>Electrical Connection</pems-label><pems-input name="ElectricalConnection" value="@Model.ElectricalConnection" /></pems-col>
         </pems-row>
 
-        <h6 class="mb-2">Hazardous Area / Safety</h6>
+        <pems-heading level="6" class="mb-2">Hazardous Area / Safety</pems-heading>
         <pems-row gap="3" css="mb-3">
             <pems-col md="3"><pems-label>@Localizer["Hazardous Area"]</pems-label><pems-input name="HazardousArea" value="@Model.HazardousArea" /></pems-col>
             <pems-col md="3"><pems-label>@Localizer["Ex Protection"]</pems-label><pems-input name="ExProtection" value="@Model.ExProtection" /></pems-col>
@@ -62,7 +62,7 @@
             <pems-col md="3"><pems-label>@Localizer["SIL"]</pems-label><pems-input name="SIL" value="@Model.SIL" /></pems-col>
         </pems-row>
 
-        <h6 class="mb-2">Wiring / Location</h6>
+        <pems-heading level="6" class="mb-2">Wiring / Location</pems-heading>
         <pems-row gap="3" css="mb-3">
             <pems-col md="3"><pems-label>@Localizer["Junction Box"]</pems-label><pems-input name="JunctionBox" value="@Model.JunctionBox" /></pems-col>
             <pems-col md="3"><pems-label>@Localizer["Marshalling Cabinet"]</pems-label><pems-input name="MarshallingCabinet" value="@Model.MarshallingCabinet" /></pems-col>
@@ -72,7 +72,7 @@
             <pems-col md="3"><pems-label>@Localizer["System Cabinet"]</pems-label><pems-input name="SystemCabinet" value="@Model.SystemCabinet" /></pems-col>
         </pems-row>
 
-        <h6 class="mb-2">Calibration</h6>
+        <pems-heading level="6" class="mb-2">Calibration</pems-heading>
         <pems-row gap="3" css="mb-3">
             <pems-col md="4"><pems-label>@Localizer["Calibration Interval (days)"]</pems-label><pems-input name="CalibrationInterval" type="number" value="@Model.CalibrationInterval" /></pems-col>
         </pems-row>

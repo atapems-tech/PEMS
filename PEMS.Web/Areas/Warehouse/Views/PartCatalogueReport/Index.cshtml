@@ -82,11 +82,11 @@
         {
             var key = "PcRpt_Tab_" + char.ToUpperInvariant(tb[0]) + tb[1..];
             if (tb == tab)
-            { <a href="@IndexUrl(tb)" class="active" aria-current="page">@Localizer[key]</a> }
+            { <pems-link href="@IndexUrl(tb)" class="active" aria-current="page">@Localizer[key]</pems-link> }
             else
-            { <a href="@IndexUrl(tb)">@Localizer[key]</a> }
+            { <pems-link href="@IndexUrl(tb)">@Localizer[key]</pems-link> }
         }
-        <a asp-controller="PartCatalogueRequest" asp-action="Index" class="pc-rpt-back"><pems-icon name="bi-journal-plus" aria-hidden="true" /> @Localizer["Pc_Menu"]</a>
+        <pems-link asp-controller="PartCatalogueRequest" asp-action="Index" class="pc-rpt-back"><pems-icon name="bi-journal-plus" aria-hidden="true" /> @Localizer["Pc_Menu"]</pems-link>
     </nav>
 
     <pems-list-panel>
@@ -95,7 +95,7 @@
                 <pems-list-menu id="pcRptPeriodBtn" icon="bi-calendar3" label="@Localizer["PcRpt_Filter_Period"]">
                     @foreach (var per in PartCatalogueReportPeriods.Values.Where(v => v != PartCatalogueReportPeriods.Custom))
                     {
-                        <li><a class="dropdown-item @(per == f.Period ? "active" : "")" href="@IndexUrl(null, d => { d["Period"] = per; d["From"] = null; d["To"] = null; })">@t.PeriodName(per)</a></li>
+                        <li><pems-link class="dropdown-item @(per == f.Period ? "active" : "")" href="@IndexUrl(null, d => { d["Period"] = per; d["From"] = null; d["To"] = null; })">@t.PeriodName(per)</pems-link></li>
                     }
                 </pems-list-menu>
                 <pems-list-filters form-id="pcRptFilter" action="@Url.Action("Index")" count="@activeFilters" reset-href="@Url.Action("Index", new { Tab = tab, Period = f.Period })">
@@ -187,10 +187,10 @@
                     <pems-col xl="2" md="4" span="6"><pems-kpi-tile model="@Kpi("PcRpt_Kpi_People", r.Activity.People.Count, "bi-people", "bg-icon-teal", IndexUrl("people"), "PcRpt_Hint_People")" /></pems-col>
                 </pems-row>
                 <pems-row gap="3">
-                    <pems-col lg="8"><pems-content-card><h6 class="mb-3">@Localizer["PcRpt_Chart_Trend"]</h6><pems-chart spec="@trendChart" /></pems-content-card></pems-col>
-                    <pems-col lg="4"><pems-content-card><h6 class="mb-3">@Localizer["PcRpt_ByStatus"]</h6><pems-chart spec="@statusChart" /></pems-content-card></pems-col>
-                    <pems-col lg="6"><pems-content-card><h6 class="mb-3">@Localizer["PcRpt_Chart_TopPeople"]</h6><pems-chart spec="@peopleChart" /></pems-content-card></pems-col>
-                    <pems-col lg="6"><pems-content-card><h6 class="mb-3">@Localizer["PcRpt_Chart_TopEquipment"]</h6><pems-chart spec="@equipmentChart" /></pems-content-card></pems-col>
+                    <pems-col lg="8"><pems-content-card><pems-heading level="6" class="mb-3">@Localizer["PcRpt_Chart_Trend"]</pems-heading><pems-chart spec="@trendChart" /></pems-content-card></pems-col>
+                    <pems-col lg="4"><pems-content-card><pems-heading level="6" class="mb-3">@Localizer["PcRpt_ByStatus"]</pems-heading><pems-chart spec="@statusChart" /></pems-content-card></pems-col>
+                    <pems-col lg="6"><pems-content-card><pems-heading level="6" class="mb-3">@Localizer["PcRpt_Chart_TopPeople"]</pems-heading><pems-chart spec="@peopleChart" /></pems-content-card></pems-col>
+                    <pems-col lg="6"><pems-content-card><pems-heading level="6" class="mb-3">@Localizer["PcRpt_Chart_TopEquipment"]</pems-heading><pems-chart spec="@equipmentChart" /></pems-content-card></pems-col>
                 </pems-row>
             </div>
         }
@@ -209,7 +209,7 @@
                             @foreach (var x in r.Activity.People)
                             {
                                 <pems-table-row class="lp-row">
-                                    <pems-table-cell><a href="@IndexUrl("activity", d => d["EmployeeId"] = x.EmployeeId.ToString())">@x.EmployeeName</a></pems-table-cell>
+                                    <pems-table-cell><pems-link href="@IndexUrl("activity", d => d["EmployeeId"] = x.EmployeeId.ToString())">@x.EmployeeName</pems-link></pems-table-cell>
                                     <pems-table-cell class="text-end">@x.Created</pems-table-cell><pems-table-cell class="text-end">@x.Submitted</pems-table-cell><pems-table-cell class="text-end">@x.Approved</pems-table-cell>
                                     <pems-table-cell class="text-end">@x.Returned</pems-table-cell><pems-table-cell class="text-end">@x.Cancelled</pems-table-cell>
                                     <pems-table-cell class="text-end fw-semibold">@x.PartNumbersRegistered</pems-table-cell><pems-table-cell class="text-end">@x.Total</pems-table-cell>
@@ -230,7 +230,7 @@
                             {
                                 <pems-table-row class="lp-row">
                                     <pems-table-cell class="text-nowrap">@a.Date.ToString("yyyy-MM-dd HH:mm")</pems-table-cell><pems-table-cell>@a.EmployeeName</pems-table-cell><pems-table-cell>@t.Action(a.Action)</pems-table-cell>
-                                    <pems-table-cell><a asp-controller="PartCatalogueRequest" asp-action="Details" asp-route-id="@a.RequestId">@(a.RequestNumber ?? "#" + a.RequestId)</a></pems-table-cell>
+                                    <pems-table-cell><pems-link asp-controller="PartCatalogueRequest" asp-action="Details" asp-route-id="@a.RequestId">@(a.RequestNumber ?? "#" + a.RequestId)</pems-link></pems-table-cell>
                                     <pems-table-cell>@t.Type(a.RequestType)</pems-table-cell><pems-table-cell>@a.ManufacturerPartNumber</pems-table-cell><pems-table-cell class="fw-semibold">@a.AssignedPartNumber</pems-table-cell><pems-table-cell>@a.TechnicalClass</pems-table-cell><pems-table-cell>@t.Status(a.Status)</pems-table-cell>
                                 </pems-table-row>
                             }
@@ -250,7 +250,7 @@
                             {
                                 <pems-table-row class="lp-row">
                                     <pems-table-cell>
-                                        @if (e.EquipmentId.HasValue) { <a href="@IndexUrl("parts", d => d["EquipmentId"] = e.EquipmentId.ToString())">@e.EquipmentTag</a> }
+                                        @if (e.EquipmentId.HasValue) { <pems-link href="@IndexUrl("parts", d => d["EquipmentId"] = e.EquipmentId.ToString())">@e.EquipmentTag</pems-link> }
                                         else { @e.EquipmentTag }
                                     </pems-table-cell>
                                     <pems-table-cell>@e.EquipmentName</pems-table-cell><pems-table-cell>@t.YesNo(e.InRegister)</pems-table-cell>
@@ -275,7 +275,7 @@
                             {
                                 <pems-table-row class="lp-row">
                                     <pems-table-cell>@x.EquipmentTag</pems-table-cell><pems-table-cell class="fw-semibold">@x.AssignedPartNumber</pems-table-cell>
-                                    <pems-table-cell><a asp-controller="PartCatalogueRequest" asp-action="Details" asp-route-id="@x.RequestId">@(x.RequestNumber ?? "#" + x.RequestId)</a></pems-table-cell>
+                                    <pems-table-cell><pems-link asp-controller="PartCatalogueRequest" asp-action="Details" asp-route-id="@x.RequestId">@(x.RequestNumber ?? "#" + x.RequestId)</pems-link></pems-table-cell>
                                     <pems-table-cell>@t.Status(x.Status)</pems-table-cell><pems-table-cell>@x.ManufacturerName</pems-table-cell><pems-table-cell>@x.ManufacturerPartNumber</pems-table-cell><pems-table-cell>@x.SupplierName</pems-table-cell><pems-table-cell>@x.SupplierPartNumber</pems-table-cell>
                                     <pems-table-cell>@x.TechnicalClass</pems-table-cell><pems-table-cell>@x.UnitOfMeasure</pems-table-cell><pems-table-cell class="text-end">@x.InstalledQuantity.ToString("0.##")</pems-table-cell>
                                     <pems-table-cell>@t.YesNo(x.IsCritical)</pems-table-cell><pems-table-cell class="pc-rpt-attrs">@x.Attributes</pems-table-cell>

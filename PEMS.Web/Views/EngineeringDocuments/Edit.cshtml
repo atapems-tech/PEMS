@@ -24,7 +24,7 @@
 <pems-content-card css="mb-3">
     <pems-flex justify="between" align="center" wrap="true" gap="2">
         <div>
-            <h5 class="mb-1">Editing: @Model.DocumentNo</h5>
+            <pems-heading level="5" class="mb-1">Editing: @Model.DocumentNo</pems-heading>
             <pems-badge tone="@statusClass">@Model.Status</pems-badge>
             <span class="text-muted small ms-2">Rev @Model.RevisionNo</span>
             @if (Model.IsFrozen) { <pems-badge tone="info" css="ms-1"><pems-icon name="bi-snow" /> Frozen</pems-badge> }
@@ -45,7 +45,7 @@
     <pems-row gap="3">
         <pems-col lg="6">
             <pems-content-card css="h-100">
-                <h6 class="mb-3">Basic Information</h6>
+                <pems-heading level="6" class="mb-3">Basic Information</pems-heading>
                 <pems-row gap="3">
                     <pems-col md="6">
                         <pems-label>@Localizer["Document No"]</pems-label>
@@ -83,7 +83,7 @@
 
         <pems-col lg="6">
             <pems-content-card css="h-100">
-                <h6 class="mb-3">Engineering Information</h6>
+                <pems-heading level="6" class="mb-3">Engineering Information</pems-heading>
                 <pems-row gap="3">
                     <pems-col span="12">
                         <pems-label>@Localizer["Issue Purpose"]</pems-label>
@@ -115,7 +115,7 @@
                     </pems-col>
                 </pems-row>
 
-                <h6 class="mb-3 mt-4">Traceability</h6>
+                <pems-heading level="6" class="mb-3 mt-4">Traceability</pems-heading>
                 <pems-row gap="3">
                     <pems-col md="6">
                         <pems-label>Related Equipment <span class="text-muted small">@Localizer["(optional)"]</span></pems-label>

@@ -7,10 +7,10 @@
     <pems-flex justify="between" align="start" wrap="true" gap="3">
         <div>
             <pems-flex align="center" gap="2" wrap="true">
-                <h4 class="mb-0">@Model.RunNumber</h4>
+                <pems-heading level="4" class="mb-0">@Model.RunNumber</pems-heading>
                 <pems-badge tone="neutral">@Model.Status</pems-badge>
             </pems-flex>
-            <div class="text-muted">Order: <a asp-controller="ProductionOrder" asp-action="Details" asp-route-id="@Model.ProductionOrderId">@Model.OrderNumber</a> - @Model.MaterialCode (@Model.MaterialDescription)</div>
+            <div class="text-muted">Order: <pems-link asp-controller="ProductionOrder" asp-action="Details" asp-route-id="@Model.ProductionOrderId">@Model.OrderNumber</pems-link> - @Model.MaterialCode (@Model.MaterialDescription)</div>
             <div class="text-muted small mt-1">
                 @(Model.StartDate?.ToString("yyyy-MM-dd HH:mm")) &rarr; @(Model.EndDate?.ToString("yyyy-MM-dd HH:mm"))
                 @if (!string.IsNullOrEmpty(Model.WorkCenterCode)) { <text>&middot; Work Center: @Model.WorkCenterCode</text> }
@@ -49,7 +49,7 @@
 }
 
 <pems-content-card css="mb-3">
-    <h6 class="mb-2">Reconciliation</h6>
+    <pems-heading level="6" class="mb-2">Reconciliation</pems-heading>
     @if (reconciliation.IsComparable)
     {
         <pems-row gap="2" css="row-cols-2 row-cols-md-4">
@@ -79,7 +79,7 @@
     <pems-row gap="3" css="row-cols-1 row-cols-lg-3 mb-3">
         <pems-col span="">
             <pems-content-card css="h-100">
-                <h6 class="mb-2">@Localizer["Record Input"]</h6>
+                <pems-heading level="6" class="mb-2">@Localizer["Record Input"]</pems-heading>
                 <pems-form asp-action="RecordInput" method="post">
                     <input type="hidden" name="productionRunId" value="@Model.ProductionRunId" />
                     <div class="mb-2">
@@ -100,7 +100,7 @@
         </pems-col>
         <pems-col span="">
             <pems-content-card css="h-100">
-                <h6 class="mb-2">@Localizer["Record Output"]</h6>
+                <pems-heading level="6" class="mb-2">@Localizer["Record Output"]</pems-heading>
                 <pems-form asp-action="RecordOutput" method="post">
                     <input type="hidden" name="productionRunId" value="@Model.ProductionRunId" />
                     <div class="mb-2">
@@ -127,7 +127,7 @@
         </pems-col>
         <pems-col span="">
             <pems-content-card css="h-100">
-                <h6 class="mb-2">@Localizer["Record Loss"]</h6>
+                <pems-heading level="6" class="mb-2">@Localizer["Record Loss"]</pems-heading>
                 <pems-form asp-action="RecordLoss" method="post">
                     <input type="hidden" name="productionRunId" value="@Model.ProductionRunId" />
                     <div class="mb-2"><pems-input scale="small" type="number" step="0.001" min="0.001" name="quantity" placeholder="@Localizer["Quantity"]" required /></div>
@@ -151,7 +151,7 @@
 <pems-row gap="3" css="row-cols-1 row-cols-lg-2">
     <pems-col span="">
         <pems-content-card>
-            <h6 class="mb-2">Inputs</h6>
+            <pems-heading level="6" class="mb-2">Inputs</pems-heading>
             <div class="table-scroll-area pems-s-f7dce87f">
                 <pems-table kind="enterprise" scale="small">
                     <pems-table-head><pems-table-row><pems-table-header>@Localizer["Material"]</pems-table-header><pems-table-header>@Localizer["Qty"]</pems-table-header><pems-table-header>Source Batch</pems-table-header><pems-table-header>@Localizer["Inventory"]</pems-table-header><pems-table-header></pems-table-header></pems-table-row></pems-table-head>
@@ -179,7 +179,7 @@
     </pems-col>
     <pems-col span="">
         <pems-content-card>
-            <h6 class="mb-2">Outputs</h6>
+            <pems-heading level="6" class="mb-2">Outputs</pems-heading>
             <div class="table-scroll-area pems-s-f7dce87f">
                 <pems-table kind="enterprise" scale="small">
                     <pems-table-head><pems-table-row><pems-table-header>@Localizer["Material"]</pems-table-header><pems-table-header>@Localizer["Batch"]</pems-table-header><pems-table-header>@Localizer["Qty"]</pems-table-header><pems-table-header>@Localizer["Class"]</pems-table-header><pems-table-header>@Localizer["Inventory"]</pems-table-header><pems-table-header></pems-table-header></pems-table-row></pems-table-head>
@@ -188,7 +188,7 @@
                         {
                             <pems-table-row>
                                 <pems-table-cell>@o.MaterialCode</pems-table-cell>
-                                <pems-table-cell><a asp-action="BatchDetails" asp-route-id="@o.ProductionBatchId">@o.BatchNumber</a></pems-table-cell>
+                                <pems-table-cell><pems-link asp-action="BatchDetails" asp-route-id="@o.ProductionBatchId">@o.BatchNumber</pems-link></pems-table-cell>
                                 <pems-table-cell>@o.Quantity.ToString("N3") @o.UomCode</pems-table-cell>
                                 <pems-table-cell>@o.OutputClassification</pems-table-cell>
                                 <pems-table-cell>@(o.PostedToInventory ? "Posted" : "-")</pems-table-cell>
@@ -211,14 +211,14 @@
 <pems-row gap="3" css="row-cols-1 row-cols-lg-2 mt-1">
     <pems-col span="">
         <pems-content-card>
-            <h6 class="mb-2">Losses</h6>
+            <pems-heading level="6" class="mb-2">Losses</pems-heading>
             <pems-data-table data="@(DataRows.Of(Model.Losses, c_ => c_.Add(((Localizer["Qty"])?.ToString() ?? ""), l => DataCell.Join((l.Quantity.ToString("N3")), " ", (l.UomCode))).Add(((Localizer["Category"])?.ToString() ?? ""), l => (object?)(l.LossCategory), kind: DataCellKind.Badge, tone: l => "warning").Add(((Localizer["Notes"])?.ToString() ?? ""), l => (object?)(l.Notes), css: "small text-muted")))" dense="true" />
             @if (!Model.Losses.Any()) { <p class="text-muted text-center py-2 small">No losses recorded.</p> }
         </pems-content-card>
     </pems-col>
     <pems-col span="">
         <pems-content-card>
-            <h6 class="mb-2">Event History</h6>
+            <pems-heading level="6" class="mb-2">Event History</pems-heading>
             <div class="table-scroll-area pems-s-89e84480">
                 <pems-data-table data="@(DataRows.Of(Model.Events, c_ => c_.Add(((Localizer["Date"])?.ToString() ?? ""), e => (object?)(e.EventDate.ToString("yyyy-MM-dd HH:mm")), css: "small").Add("Event", e => (object?)(e.EventType)).Add("By", e => (object?)(e.EmployeeName)).Add(((Localizer["Details"])?.ToString() ?? ""), e => (object?)(e.Details), css: "small text-muted")))" dense="true" />
             </div>

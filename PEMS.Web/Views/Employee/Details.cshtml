@@ -69,7 +69,7 @@
         }
         <div class="flex-grow-1">
             <pems-flex align="center" gap="2" wrap="true" css="mb-1">
-                <h4 class="mb-0">@Model.FirstName @Model.LastName</h4>
+                <pems-heading level="4" class="mb-0">@Model.FirstName @Model.LastName</pems-heading>
                 <pems-badge tone="none" css="rounded-pill @(Model.IsActive ? "bg-success-subtle text-success-emphasis" : "bg-secondary-subtle text-secondary-emphasis") d-inline-flex align-items-center gap-1">
                     <pems-icon name="bi-circle-fill" css="pems-s-dec715c2" />
                     @L(Model.IsActive ? "Active" : "Inactive", Model.IsActive ? "فعال" : "غیرفعال")
@@ -128,7 +128,7 @@
                             <pems-flex align="center" justify="center" css="rounded-circle bg-secondary-subtle text-secondary-emphasis small fw-bold pems-s-8fd988a7">
                                 @Initials(manager.FirstName, manager.LastName)
                             </pems-flex>
-                            <a asp-action="Details" asp-route-id="@manager.EmployeeId" class="fw-semibold text-decoration-none">@manager.FirstName @manager.LastName</a>
+                            <pems-link asp-action="Details" asp-route-id="@manager.EmployeeId" class="fw-semibold text-decoration-none">@manager.FirstName @manager.LastName</pems-link>
                         </pems-flex>
                     }
                     else
@@ -142,7 +142,7 @@
                     {
                         @foreach (var dm in directManager.Managers)
                         {
-                            <a asp-action="Details" asp-route-id="@dm.EmployeeId" class="fw-semibold text-decoration-none d-block">@dm.Name</a>
+                            <pems-link asp-action="Details" asp-route-id="@dm.EmployeeId" class="fw-semibold text-decoration-none d-block">@dm.Name</pems-link>
                         }
                     }
                     else
@@ -272,7 +272,7 @@
                     <p class="text-uppercase text-muted small mb-1">@L("Work Email", "ایمیل کاری")</p>
                     @if (!string.IsNullOrWhiteSpace(Model.Email))
                     {
-                        <a href="mailto:@Model.Email" class="fw-semibold text-decoration-none text-truncate d-block">@Model.Email</a>
+                        <pems-link href="mailto:@Model.Email" class="fw-semibold text-decoration-none text-truncate d-block">@Model.Email</pems-link>
                     }
                     else
                     {

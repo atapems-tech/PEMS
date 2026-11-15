@@ -23,7 +23,7 @@
         <pems-list-toolbar heading="@Localizer["WfL_Title"]" heading-title="@Localizer["Workflow versions are immutable once published. Editing a workflow means cloning a version into a draft; running instances stay on the version they started with."]" total="@Model.Count">
             <pems-list-tools>
                 <pems-list-kpi-toggle target="wfKpis" storage-key="pems.workflowManagement.kpis" />
-                <a class="lp-icon-btn" asp-action="Bindings" title="@Localizer["Bindings"]" aria-label="@Localizer["Bindings"]"><pems-icon name="bi-link-45deg" aria-hidden="true" /></a>
+                <pems-link class="lp-icon-btn" asp-action="Bindings" title="@Localizer["Bindings"]" aria-label="@Localizer["Bindings"]"><pems-icon name="bi-link-45deg" aria-hidden="true" /></pems-link>
             </pems-list-tools>
         </pems-list-toolbar>
 
@@ -54,7 +54,7 @@
                     var display = fa && !string.IsNullOrWhiteSpace(r.NameFa) ? r.NameFa : r.Name;
                     <pems-table-row class="lp-row">
                         <pems-table-cell>
-                            <a asp-action="Details" asp-route-id="@r.DefinitionId" class="lp-subject">@display</a>
+                            <pems-link asp-action="Details" asp-route-id="@r.DefinitionId" class="lp-subject">@display</pems-link>
                             @if (fa && string.IsNullOrWhiteSpace(r.NameFa)) { <div class="vs-sub">@Localizer["No Persian name"]</div> }
                             else if (!fa && !string.IsNullOrWhiteSpace(r.NameFa)) { <div class="vs-sub" dir="rtl">@r.NameFa</div> }
                             @if (!r.IsActive) { <span class="vs-pill vs-pill--neutral">@Localizer["Archived"]</span> }
@@ -68,7 +68,7 @@
                         <pems-table-cell class="small text-nowrap vs-hide-md"><span class="vs-num">@(r.LastPublished?.ToString("yyyy-MM-dd HH:mm") ?? "-")</span></pems-table-cell>
                         <pems-table-cell class="small vs-hide-md">@(r.CreatedBy ?? "-")</pems-table-cell>
                         <pems-table-cell class="text-end">
-                            <a asp-action="Details" asp-route-id="@r.DefinitionId" class="lp-act lp-act--always" title="@Localizer["Open"]" aria-label="@Localizer["Open"] @display"><pems-icon name="bi-box-arrow-in-right" aria-hidden="true" /></a>
+                            <pems-link asp-action="Details" asp-route-id="@r.DefinitionId" class="lp-act lp-act--always" title="@Localizer["Open"]" aria-label="@Localizer["Open"] @display"><pems-icon name="bi-box-arrow-in-right" aria-hidden="true" /></pems-link>
                         </pems-table-cell>
                     </pems-table-row>
                 }

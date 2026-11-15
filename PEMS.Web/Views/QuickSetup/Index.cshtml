@@ -9,7 +9,7 @@
 <pems-content-card css="mb-4">
     <pems-flex justify="between" align="start" wrap="true" gap="2" css="mb-2">
         <div>
-            <h5 class="mb-1"><pems-icon name="bi-rocket-takeoff" /> @Localizer["System Setup"]</h5>
+            <pems-heading level="5" class="mb-1"><pems-icon name="bi-rocket-takeoff" /> @Localizer["System Setup"]</pems-heading>
             <p class="text-muted small mb-0">
                 How ready is PEMS for operational use? This page reads real data - nothing here is estimated.
             </p>
@@ -46,7 +46,7 @@
         <pems-col md="6" lg="4">
             <pems-content-card css="h-100">
                 <pems-flex justify="between" align="start" css="mb-2">
-                    <h6 class="mb-0">@step.Title</h6>
+                    <pems-heading level="6" class="mb-0">@step.Title</pems-heading>
                     <pems-badge tone="@badgeClass"><pems-icon css="@icon" /> @statusText</pems-badge>
                 </pems-flex>
                 <p class="text-muted small mb-2">@step.Description</p>
@@ -91,7 +91,7 @@
 {
     <pems-content-card css="d-flex justify-content-between align-items-center flex-wrap gap-2">
         <div>
-            <h6 class="mb-1"><pems-icon name="bi-cloud-arrow-up" /> @Localizer["IC_Title"]</h6>
+            <pems-heading level="6" class="mb-1"><pems-icon name="bi-cloud-arrow-up" /> @Localizer["IC_Title"]</pems-heading>
             <p class="text-muted small mb-0">@Localizer["IC_QuickSetupPointer"]</p>
         </div>
         <pems-button tone="primary" size="small" as="a" asp-controller="ImportCenter" asp-action="Index">@Localizer["IC_Open"]</pems-button>

@@ -15,7 +15,7 @@
 </p>
 
 <pems-content-card css="mb-3">
-    <h6 class="mb-3"><pems-icon name="bi-arrow-repeat" /> @Localizer["الگوهای تکراری NCR - پیشنهاد بررسی MOC"]</h6>
+    <pems-heading level="6" class="mb-3"><pems-icon name="bi-arrow-repeat" /> @Localizer["الگوهای تکراری NCR - پیشنهاد بررسی MOC"]</pems-heading>
     <p class="text-muted small">تجهیزاتی که در ۱۸۰ روز اخیر حداقل ۳ بار NCR گرفتن.</p>
 
     @if (ncrPatterns.Any())
@@ -29,7 +29,7 @@
 </pems-content-card>
 
 <pems-content-card>
-    <h6 class="mb-3"><pems-icon name="bi-graph-down-arrow" /> @Localizer["تحلیل ریشه‌ای تاخیر مدارک"]</h6>
+    <pems-heading level="6" class="mb-3"><pems-icon name="bi-graph-down-arrow" /> @Localizer["تحلیل ریشه‌ای تاخیر مدارک"]</pems-heading>
 
     <pems-row gap="3" css="mb-3">
         <pems-col md="6">
@@ -55,15 +55,15 @@
     {
         <pems-row gap="3">
             <pems-col md="4">
-                <h6 class="small fw-bold">@Localizer["به تفکیک دیسیپلین"]</h6>
+                <pems-heading level="6" class="small fw-bold">@Localizer["به تفکیک دیسیپلین"]</pems-heading>
                 <pems-data-table data="@(DataRows.Of(delay.ByDiscipline, c_ => c_.Add(((Localizer["دیسیپلین"])?.ToString() ?? ""), d => (object?)(d.GroupName), css: "small").Add(((Localizer["تعداد"])?.ToString() ?? ""), d => (object?)(d.Count)).Add(((Localizer["میانگین"])?.ToString() ?? ""), d => (object?)(d.AvgDelayDays))))" enterprise="false" dense="true" />
             </pems-col>
             <pems-col md="4">
-                <h6 class="small fw-bold">@Localizer["به تفکیک وضعیت"]</h6>
+                <pems-heading level="6" class="small fw-bold">@Localizer["به تفکیک وضعیت"]</pems-heading>
                 <pems-data-table data="@(DataRows.Of(delay.ByStage, c_ => c_.Add(((Localizer["وضعیت"])?.ToString() ?? ""), d => (object?)(d.GroupName), css: "small").Add(((Localizer["تعداد"])?.ToString() ?? ""), d => (object?)(d.Count)).Add(((Localizer["میانگین"])?.ToString() ?? ""), d => (object?)(d.AvgDelayDays))))" enterprise="false" dense="true" />
             </pems-col>
             <pems-col md="4">
-                <h6 class="small fw-bold">به تفکیک وندور (VDR)</h6>
+                <pems-heading level="6" class="small fw-bold">به تفکیک وندور (VDR)</pems-heading>
                 @if (delay.ByVendor.Any())
                 {
                     <pems-data-table data="@(DataRows.Of(delay.ByVendor, c_ => c_.Add(((Localizer["وندور"])?.ToString() ?? ""), d => (object?)(d.GroupName), css: "small").Add(((Localizer["تعداد"])?.ToString() ?? ""), d => (object?)(d.Count)).Add(((Localizer["میانگین"])?.ToString() ?? ""), d => (object?)(d.AvgDelayDays))))" enterprise="false" dense="true" />

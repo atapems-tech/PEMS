@@ -72,7 +72,7 @@
 <pems-content-card css="mb-3">
     <pems-flex align="center" justify="between" wrap="true" gap="2" css="section-head mb-3">
         <div>
-            <h6 class="section-title mb-1"><pems-icon name="bi-speedometer2" /> @Localizer["ExecutiveSummary"]</h6>
+            <pems-heading level="6" class="section-title mb-1"><pems-icon name="bi-speedometer2" /> @Localizer["ExecutiveSummary"]</pems-heading>
             <p class="section-subtitle mb-0">Live snapshot of engineering activity</p>
         </div>
     </pems-flex>
@@ -88,7 +88,7 @@
 
 <pems-content-card css="mb-3">
     <pems-flex justify="between" align="center" css="mb-3">
-        <h6 class="mb-0"><pems-icon name="bi-shield-check" /> Engineering Health</h6>
+        <pems-heading level="6" class="mb-0"><pems-icon name="bi-shield-check" /> Engineering Health</pems-heading>
         <pems-badge tone="primary" css="rounded-pill fs-6">@Model.EngineeringHealthScore / 100</pems-badge>
     </pems-flex>
     <p class="text-muted small mb-3">
@@ -116,7 +116,7 @@
 
 @* ===================== Section B: Quality & Review (GetRevisionQualityAsync, E-05C) ===================== *@
 <pems-content-card css="mb-3">
-    <h6 class="mb-1"><pems-icon name="bi-award" /> @Localizer["QualityAndReview"]</h6>
+    <pems-heading level="6" class="mb-1"><pems-icon name="bi-award" /> @Localizer["QualityAndReview"]</pems-heading>
     <p class="text-muted small mb-3">@Localizer["FirstPassApprovalExplanation"]</p>
 
     <pems-row gap="3" css="mb-3">
@@ -132,7 +132,7 @@
     @{
         var topRejected = Model.Quality.Where(x => x.RejectionCount > 0).OrderByDescending(x => x.RejectionCount).Take(10).ToList();
     }
-    <h6 class="small fw-bold mt-3">@Localizer["MostRejectedDocuments"]</h6>
+    <pems-heading level="6" class="small fw-bold mt-3">@Localizer["MostRejectedDocuments"]</pems-heading>
     @if (!topRejected.Any())
     {
         <div class="text-center text-muted py-4">
@@ -149,7 +149,7 @@
                     @foreach (var q in topRejected)
                     {
                         <pems-table-row>
-                            <pems-table-cell><a asp-controller="EngineeringDocuments" asp-action="Details" asp-route-id="@q.DocumentId">@q.DocumentNo</a></pems-table-cell>
+                            <pems-table-cell><pems-link asp-controller="EngineeringDocuments" asp-action="Details" asp-route-id="@q.DocumentId">@q.DocumentNo</pems-link></pems-table-cell>
                             <pems-table-cell class="small">@(q.DisciplineName ?? "-")</pems-table-cell>
                             <pems-table-cell class="small">@(q.VendorName ?? "-")</pems-table-cell>
                             <pems-table-cell><pems-badge tone="none" css="badge-status-@q.Status">@q.Status</pems-badge></pems-table-cell>
@@ -165,7 +165,7 @@
 
 @* ===================== Section C: Revision & Resubmission Pressure (GetRevisionQualityAsync + MinRevisionCount, E-05C ADR-5) ===================== *@
 <pems-content-card css="mb-3">
-    <h6 class="mb-1"><pems-icon name="bi-arrow-repeat" /> @Localizer["RevisionPressure"]</h6>
+    <pems-heading level="6" class="mb-1"><pems-icon name="bi-arrow-repeat" /> @Localizer["RevisionPressure"]</pems-heading>
     <p class="text-muted small mb-3">@Localizer["RevisionPressureExplanation"]</p>
 
     @{
@@ -187,7 +187,7 @@
                     @foreach (var q in highRevision)
                     {
                         <pems-table-row>
-                            <pems-table-cell><a asp-controller="EngineeringDocuments" asp-action="Details" asp-route-id="@q.DocumentId">@q.DocumentNo</a></pems-table-cell>
+                            <pems-table-cell><pems-link asp-controller="EngineeringDocuments" asp-action="Details" asp-route-id="@q.DocumentId">@q.DocumentNo</pems-link></pems-table-cell>
                             <pems-table-cell class="small">@(q.DisciplineName ?? "-")</pems-table-cell>
                             <pems-table-cell><pems-badge tone="none" css="badge-status-@q.Status">@q.Status</pems-badge></pems-table-cell>
                             <pems-table-cell><pems-badge tone="warning">@q.RevisionCount</pems-badge></pems-table-cell>
@@ -208,7 +208,7 @@
 </pems-content-card>
 
 <pems-content-card css="mb-3">
-   <h6 class="mb-3"><pems-icon name="bi-exclamation-triangle" /> Management Attention Queue</h6>
+   <pems-heading level="6" class="mb-3"><pems-icon name="bi-exclamation-triangle" /> Management Attention Queue</pems-heading>
    @if (!attentionQueue.Any())
    {
        <div class="text-center text-muted py-4">
@@ -234,7 +234,7 @@
                    @foreach (var item in attentionQueue)
                    {
                        <pems-table-row>
-                           <pems-table-cell><a asp-controller="EngineeringDocuments" asp-action="Details" asp-route-id="@item.DocumentId">@item.DocumentNo</a></pems-table-cell>
+                           <pems-table-cell><pems-link asp-controller="EngineeringDocuments" asp-action="Details" asp-route-id="@item.DocumentId">@item.DocumentNo</pems-link></pems-table-cell>
                            <pems-table-cell class="small">@item.DisciplineName</pems-table-cell>
                            <pems-table-cell class="small">@item.Reason</pems-table-cell>
                            <pems-table-cell>
@@ -262,7 +262,7 @@
 </pems-content-card>
 
 <pems-content-card css="mb-3">
-   <h6 class="mb-3"><pems-icon name="bi-diagram-3" /> Discipline Risk Overview</h6>
+   <pems-heading level="6" class="mb-3"><pems-icon name="bi-diagram-3" /> Discipline Risk Overview</pems-heading>
    @if (!disciplinePerformance.Any())
    {
        <div class="text-center text-muted py-4">

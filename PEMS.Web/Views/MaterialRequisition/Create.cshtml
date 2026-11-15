@@ -51,9 +51,9 @@
         <pems-flex align="center" justify="between">
             <pems-label css="mb-0">@Localizer["Items"]</pems-label>
             @* SCRUM-428: a part that is not in the catalogue yet can be requested from the part catalogue *@
-            <a class="small" asp-area="Warehouse" asp-controller="PartCatalogueRequest" asp-action="Index" target="_blank" rel="noopener">
+            <pems-link class="small" asp-area="Warehouse" asp-controller="PartCatalogueRequest" asp-action="Index" target="_blank" rel="noopener">
                 <pems-icon name="bi-journal-plus" /> @Localizer["Mr_RequestNewPart"]
-            </a>
+            </pems-link>
         </pems-flex>
         <pems-help-text css="mb-2">@Localizer["Mr_PartLookupHint"]</pems-help-text>
         <div id="itemsContainer" data-mr-items></div>

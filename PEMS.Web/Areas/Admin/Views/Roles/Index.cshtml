@@ -74,15 +74,15 @@
                                نه رنگ‌فقط (آیکون + متن)، و صفر به‌صراحت «پیکربندی‌نشده» است، نه یک خطا. *@
                             @if (r.PermissionCount < 0)
                             {
-                                <a href="@Url.Action("Index", "PermissionMatrix", new { area = "Admin" })" class="vs-pill vs-pill--icon vs-pill--success" title="@Localizer["SystemAdmin bypasses the permission matrix by design"]"><pems-icon name="bi-infinity" aria-hidden="true" /> @Localizer["Unrestricted"]</a>
+                                <pems-link href="@Url.Action("Index", "PermissionMatrix", new { area = "Admin" })" class="vs-pill vs-pill--icon vs-pill--success" title="@Localizer["SystemAdmin bypasses the permission matrix by design"]"><pems-icon name="bi-infinity" aria-hidden="true" /> @Localizer["Unrestricted"]</pems-link>
                             }
                             else if (r.PermissionCount == 0)
                             {
-                                <a href="@Url.Action("Index", "PermissionMatrix", new { area = "Admin" }, $"role-{r.Name}")" class="vs-pill vs-pill--icon vs-pill--warning" title="@Localizer["No permissions configured for this role yet - every action is denied by default"]"><pems-icon name="bi-exclamation-triangle" aria-hidden="true" /> @Localizer["Not configured"]</a>
+                                <pems-link href="@Url.Action("Index", "PermissionMatrix", new { area = "Admin" }, $"role-{r.Name}")" class="vs-pill vs-pill--icon vs-pill--warning" title="@Localizer["No permissions configured for this role yet - every action is denied by default"]"><pems-icon name="bi-exclamation-triangle" aria-hidden="true" /> @Localizer["Not configured"]</pems-link>
                             }
                             else
                             {
-                                <a href="@Url.Action("Index", "PermissionMatrix", new { area = "Admin" }, $"role-{r.Name}")" class="vs-pill vs-pill--icon vs-pill--info"><pems-icon name="bi-check2-circle" aria-hidden="true" /> @r.PermissionCount @Localizer["permissions"]</a>
+                                <pems-link href="@Url.Action("Index", "PermissionMatrix", new { area = "Admin" }, $"role-{r.Name}")" class="vs-pill vs-pill--icon vs-pill--info"><pems-icon name="bi-check2-circle" aria-hidden="true" /> @r.PermissionCount @Localizer["permissions"]</pems-link>
                             }
                         </pems-table-cell>
                         <pems-table-cell>

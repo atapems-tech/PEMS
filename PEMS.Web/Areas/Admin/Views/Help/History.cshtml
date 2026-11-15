@@ -6,7 +6,7 @@
 
 <pems-content-card>
     <pems-flex justify="between" align="center" css="mb-3">
-        <h5 class="mb-0"><pems-icon name="bi-clock-history" /> @Localizer["Change History"]</h5>
+        <pems-heading level="5" class="mb-0"><pems-icon name="bi-clock-history" /> @Localizer["Change History"]</pems-heading>
         <pems-button as="a" tone="neutral" size="small" outline="true" asp-action="Edit" asp-route-id="@ViewBag.HelpArticleId">Back to article</pems-button>
     </pems-flex>
     @if (!Model.Any())
