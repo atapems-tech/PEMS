@@ -107,9 +107,32 @@ public sealed class PemsDividerTagHelper(IPemsComponentRenderer renderer) : TagH
 public sealed class PemsStageDiagramTagHelper(IPemsComponentRenderer renderer) : TagHelper
 {
     [HtmlAttributeName("steps")] public IReadOnlyList<StageStep>? Steps { get; set; }
-    /// <summary>wf (default) or wo.</summary>
+    /// <summary>wf (default), wo or vs.</summary>
     [HtmlAttributeName("variant")] public string Variant { get; set; } = "wf";
 
     public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
         => await ListRender.Replace<PemsStageDiagram>(renderer, output, new StageDiagramOptions { Variant = Variant, Steps = Steps });
+}
+
+/// <summary>
+/// An entry of a side panel: <c>&lt;pems-side-link icon="bi-inbox" count="@n" active="@a" asp-action="Index"&gt;Inbox&lt;/pems-side-link&gt;</c> writes the icon, the label and the count in the
+/// <c>look</c> the page names (<c>cartable</c> default: <c>a.ct-folder</c>; <c>pems</c>: <c>a.pems-sidenav__item</c>). The anchor routing attributes work.
+/// </summary>
+[HtmlTargetElement("pems-side-link")]
+[PemsFacade(UiKeys.SideLink)]
+public sealed class PemsSideLinkTagHelper(IHtmlGenerator generator, IPemsComponentRenderer renderer) : AnchorTagHelper(generator)
+{
+    [HtmlAttributeName("look")] public string Look { get; set; } = "cartable";
+    [HtmlAttributeName("active")] public bool Active { get; set; }
+    [HtmlAttributeName("icon")] public string? Icon { get; set; }
+    [HtmlAttributeName("count")] public int? Count { get; set; }
+    [HtmlAttributeName("hot")] public string? Hot { get; set; }
+
+    public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
+    {
+        if (Action is not null || Controller is not null || Area is not null || Page is not null || PageHandler is not null || Route is not null || Host is not null || Protocol is not null || Fragment is not null || RouteValues.Count > 0)
+            base.Process(context, output);
+        var (pageClass, attrs) = ListRender.Page(output);
+        await ListRender.Replace<PemsSideLink>(renderer, output, new SideLinkOptions { Look = Look, Active = Active, Icon = Icon, Count = Count, Hot = Hot, PageClass = pageClass, Attributes = attrs }, await ListRender.Inner(output));
+    }
 }

@@ -655,17 +655,7 @@
 <section class="vs-panel mb-3" aria-labelledby="vdrStagesTitle">
     <div class="vs-panel__body">
         <pems-heading level="2" id="vdrStagesTitle" class="vs-section__title">@Localizer["Vd_ReviewStages"]</pems-heading>
-        <div class="vs-tracker">
-            @foreach (var st in wfStageDiagramModel.Stages)
-            {
-                var cls = st.State switch { StageItemState.Done => "vs-step--done", StageItemState.Current => "vs-step--current", StageItemState.Rejected => "vs-step--rejected", _ => "" };
-                <div class="vs-step @cls" aria-current="@(st.State == StageItemState.Current ? "step" : null)">
-                    <div class="vs-step__dot"><pems-icon css="@(st.State == StageItemState.Done ? "bi-check-lg" : st.IconCssClass)" aria-hidden="true" /></div>
-                    <div class="vs-step__label">@st.Label</div>
-                    <div class="vs-step__meta">@st.RoleLabel</div>
-                </div>
-            }
-        </div>
+        <pems-stage-diagram variant="vs" steps="@wfStageDiagramModel.Steps" />
     </div>
 </section>
 

@@ -51,10 +51,24 @@ public enum StageState { Pending, Current, Done, Rejected }
 /// <summary>One stage of a <see cref="PemsStageDiagram"/>: the text is already localized by the page.</summary>
 public sealed record StageStep(string Label, string Icon, StageState State, string? Role = null);
 
-/// <summary>Inputs of <see cref="PemsStageDiagram"/>.</summary>
+/// <summary>Inputs of <see cref="PemsStageDiagram"/>. Variants: wf (default), wo and vs (the tab tracker of the VDR details: dots with label and meta line).</summary>
 public sealed record StageDiagramOptions
 {
-    /// <summary>wf (default) or wo.</summary>
+    /// <summary>wf (default), wo or vs.</summary>
     public string Variant { get; init; } = "wf";
     public IReadOnlyList<StageStep>? Steps { get; init; }
+}
+
+/// <summary>Inputs of <see cref="PemsSideLink"/>: one entry of a side panel (icon, label, optional count). <see cref="Look"/> cartable (default, the mailbox rail <c>ct-folder</c>) or pems (the <c>pems-sidenav</c> item).</summary>
+public sealed record SideLinkOptions : FrameOptions
+{
+    /// <summary>cartable (default) or pems.</summary>
+    public string Look { get; init; } = "cartable";
+    public bool Active { get; init; }
+    /// <summary>The icon classes (<c>bi-inbox</c>); empty writes no icon.</summary>
+    public string? Icon { get; init; }
+    /// <summary>The count shown after the label when greater than 0.</summary>
+    public int? Count { get; init; }
+    /// <summary>Extra classes on the count (<c>ct-count--alert</c>).</summary>
+    public string? Hot { get; init; }
 }
