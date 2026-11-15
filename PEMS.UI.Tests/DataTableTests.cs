@@ -30,6 +30,15 @@ public sealed class DataTableTests
     ];
 
     [Fact]
+    public void A_table_without_kind_is_the_plain_bootstrap_table_when_enterprise_is_false()
+    {
+        // SCRUM-570: <pems-table scale="small"> (no kind) wrote "table table-sm"; its data-table replacement must say enterprise="false", or it silently gains table-enterprise
+        var html = Run(new PemsDataTableTagHelper(UiTestRenderer.Instance) { Items = Array.Empty<Row>(), Columns = Columns, Dense = true, Enterprise = false, Css = "align-middle mb-0" });
+        Assert.Contains("<table class=\"table table-sm align-middle mb-0\">", html);
+        Assert.DoesNotContain("table-enterprise", html);
+    }
+
+    [Fact]
     public void Headers_rows_and_cell_kinds_are_written_from_the_columns()
     {
         var html = Run(new PemsDataTableTagHelper(UiTestRenderer.Instance)

@@ -42,6 +42,8 @@ public sealed class SpikeController(IAntiforgery antiforgery) : Controller
     [HttpGet("/b/table-percell")] public IActionResult TableBPerCell() => View("TableBPerCell");
     [HttpGet("/b/descriptor-table")] public IActionResult DescriptorTable() => View("DescriptorTable");
     [HttpGet("/b/template-cell")] public IActionResult TemplateCell() => View("TemplateCell");   // SCRUM-570
+    [HttpGet("/b/perf-hand")] public IActionResult PerfHand() => View("PerfHand");   // SCRUM-570: the same 1000 rows as hand-written pems-table markup ...
+    [HttpGet("/b/perf-template")] public IActionResult PerfTemplate() => View("PerfTemplate");   // ... and as pems-data-table with a template cell
     [HttpGet("/b/antiforgery-probe")] public IActionResult AntiforgeryProbe() => View("AntiforgeryProbe");
 
     // Form through the Tag Helper facade: model binding + data-annotation validation + antiforgery by the MVC form

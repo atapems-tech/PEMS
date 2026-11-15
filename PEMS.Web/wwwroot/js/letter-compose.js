@@ -424,7 +424,7 @@
 
     $('lcSaveBtn').addEventListener('click', function () { save(false); });
     setInterval(function () { if (state.dirty && !state.submitting) save(true); }, boot.autoSaveSeconds * 1000);
-    window.PemsForm.guard(function () { return state.dirty && !state.submitting; });   // the shared leave guard (SCRUM-488)
+    if (window.PemsForm) window.PemsForm.guard(function () { return state.dirty && !state.submitting; });   // the shared leave guard (SCRUM-488)
 
     // ---------------------------------------------------------------- attachments
     var drop = $('lcDrop'), fileInput = $('lcFile'), fileList = $('lcFiles');

@@ -305,7 +305,7 @@
                     <pems-icon name="bi-plus-lg" /> @L("New Rate", "ثبت نرخ جدید")
                 </pems-button>
             </pems-flex>
-            <pems-data-table data="@(DataRows.Of(laborRates, c_ => c_.Add(((L("Type", "نوع"))?.ToString() ?? ""), r => (object?)(r.RateType)).Add(((L("Rate", "نرخ"))?.ToString() ?? ""), r => (object?)(DataCell.Group((r.Rate.ToString("N0")), " ", r.Currency))).Add(((L("From", "از تاریخ"))?.ToString() ?? ""), r => (object?)((r.EffectiveFrom.ToString("yyyy-MM-dd"))), css: "small").Add(((L("To", "تا تاریخ"))?.ToString() ?? ""), r => (object?)((r.EffectiveTo?.ToString("yyyy-MM-dd") ?? L("Current", "فعلی"))), css: "small"), rowClass: r => (r.EffectiveTo == null ? "table-success" : "")))" dense="true" />
+            <pems-data-table data="@(DataRows.Of(laborRates, c_ => c_.Add(((L("Type", "نوع"))?.ToString() ?? ""), r => (object?)(r.RateType)).Add(((L("Rate", "نرخ"))?.ToString() ?? ""), r => (object?)(DataCell.Group((r.Rate.ToString("N0")), " ", r.Currency))).Add(((L("From", "از تاریخ"))?.ToString() ?? ""), r => (object?)((r.EffectiveFrom.ToString("yyyy-MM-dd"))), css: "small").Add(((L("To", "تا تاریخ"))?.ToString() ?? ""), r => (object?)((r.EffectiveTo?.ToString("yyyy-MM-dd") ?? L("Current", "فعلی"))), css: "small"), rowClass: r => (r.EffectiveTo == null ? "table-success" : "")))" dense="true" enterprise="false" />
             @if (!laborRates.Any()) { <pems-text class="text-muted small text-center py-2">@L("No rate recorded.", "نرخی ثبت نشده.")</pems-text> }
             <pems-text class="text-muted small mb-0">
                 <pems-icon name="bi-info-circle" /> @L(
@@ -318,7 +318,7 @@
     <pems-col md="6">
         <pems-content-card css="h-100">
             <pems-flex as="h6" align="center" gap="2" css="mb-3 pb-2 border-bottom"><pems-icon name="bi-diagram-3" css="text-warning" /> @L("Team Membership History", "تاریخچه‌ی عضویت تیم")</pems-flex>
-            <pems-data-table data="@(DataRows.Of(teamHistory, c_ => c_.Add(((L("Team", "تیم"))?.ToString() ?? ""), m => (object?)(m.Team?.Name)).Add(((L("Role", "نقش"))?.ToString() ?? ""), m => (object?)(m.Role?.Name), css: "small").Add(((L("From", "از"))?.ToString() ?? ""), m => (object?)((m.JoinedDate.ToString("yyyy-MM-dd"))), css: "small").Add(((L("To", "تا"))?.ToString() ?? ""), m => (object?)((m.LeftDate?.ToString("yyyy-MM-dd") ?? (m.IsActive ? L("Current", "فعلی") : "-"))), css: "small"), rowClass: m => (m.IsActive ? "table-success" : "")))" dense="true" />
+            <pems-data-table data="@(DataRows.Of(teamHistory, c_ => c_.Add(((L("Team", "تیم"))?.ToString() ?? ""), m => (object?)(m.Team?.Name)).Add(((L("Role", "نقش"))?.ToString() ?? ""), m => (object?)(m.Role?.Name), css: "small").Add(((L("From", "از"))?.ToString() ?? ""), m => (object?)((m.JoinedDate.ToString("yyyy-MM-dd"))), css: "small").Add(((L("To", "تا"))?.ToString() ?? ""), m => (object?)((m.LeftDate?.ToString("yyyy-MM-dd") ?? (m.IsActive ? L("Current", "فعلی") : "-"))), css: "small"), rowClass: m => (m.IsActive ? "table-success" : "")))" dense="true" enterprise="false" />
             @if (!teamHistory.Any()) { <pems-text class="text-muted small text-center py-2">@L("No membership recorded.", "عضویتی ثبت نشده.")</pems-text> }
         </pems-content-card>
     </pems-col>
