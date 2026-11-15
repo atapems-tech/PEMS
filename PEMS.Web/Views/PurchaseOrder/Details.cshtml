@@ -104,7 +104,7 @@
                                     <input type="hidden" name="id" value="@Model.PoId" /><input type="hidden" name="lineId" value="@l.PurchaseOrderLineId" />
                                     <pems-col md="2"><pems-label>@Localizer["Po_Quantity"]</pems-label><pems-input scale="small" name="quantity" type="number" step="any" min="0" dir="ltr" value="@l.Quantity.ToString(System.Globalization.CultureInfo.InvariantCulture)" /></pems-col>
                                     <pems-col md="2"><pems-label>@Localizer["Po_UnitPrice"]</pems-label><pems-input scale="small" name="unitPrice" type="number" step="any" min="0" dir="ltr" value="@l.UnitPrice.ToString(System.Globalization.CultureInfo.InvariantCulture)" /></pems-col>
-                                    <pems-col md="2"><pems-label>@Localizer["Po_RequiredDate"]</pems-label><pems-date name="requiredDate" dir="ltr" value="@l.RequiredDate?.ToString("yyyy-MM-dd")" scale="small" /></pems-col>
+                                    <pems-col md="2"><pems-label>@Localizer["Po_RequiredDate"]</pems-label><pems-date name="requiredDate" dir="ltr" value="@PemsDates.Date(l.RequiredDate)" scale="small" /></pems-col>
                                     <pems-col md="2"><pems-check-row css="mt-4"><pems-input type="checkbox" name="isStockLine" value="true" id="stock_@l.PurchaseOrderLineId" checked="@l.IsStockLine" kind="check" /><label class="form-check-label" for="stock_@l.PurchaseOrderLineId">@Localizer["Po_StockLine"]</label></pems-check-row></pems-col>
                                     <pems-col md="2"><pems-label>@Localizer["Rcv_DeliveryWarehouse"]</pems-label>
                                         <pems-select scale="small" name="warehouseId"><option value="">—</option>@foreach (var w in warehouses) { <option value="@w.WarehouseId" selected="@(w.WarehouseId == l.WarehouseId)">@w.Code</option> }</pems-select></pems-col>
@@ -140,9 +140,9 @@
     <pems-content-card css="mt-3">
         <pems-heading level="6" class="mb-2"><pems-icon name="bi-shield-check" aria-hidden="true" /> @Localizer["Po_Approval"]</pems-heading>
         <pems-info-grid layout="rows" class="small mb-2">
-            @if (a.SubmittedAt.HasValue) { <pems-info-item label="@Localizer["Po_Submitted"]"><span dir="ltr">@a.SubmittedAt.Value.ToString("yyyy-MM-dd HH:mm")</span> @a.SubmittedBy</pems-info-item> }
+            @if (a.SubmittedAt.HasValue) { <pems-info-item label="@Localizer["Po_Submitted"]"><span dir="ltr">@PemsDates.DateTime(a.SubmittedAt.Value)</span> @a.SubmittedBy</pems-info-item> }
             @if (a.ApproverRole != null) { <pems-info-item label="@Localizer["Po_ApproverRole"]"><span dir="ltr">@a.ApproverRole</span> (@Localizer["Po_Level"] @a.AuthorityRuleLevel)</pems-info-item> }
-            @if (a.ApprovedAt.HasValue) { <pems-info-item label="@Localizer["Po_ApprovedBy"]"><span dir="ltr">@a.ApprovedAt.Value.ToString("yyyy-MM-dd HH:mm")</span> @a.ApprovedBy</pems-info-item> }
+            @if (a.ApprovedAt.HasValue) { <pems-info-item label="@Localizer["Po_ApprovedBy"]"><span dir="ltr">@PemsDates.DateTime(a.ApprovedAt.Value)</span> @a.ApprovedBy</pems-info-item> }
         </pems-info-grid>
         @if (a.ResponsibleNotSet)
         {
@@ -201,7 +201,7 @@
                 var cell_69_8 = DataCell.Template(rows_69, @<text>@{ var r = item; }
                             @if (r.InspectionReleasedAt != null)
                             {
-                                <span class="text-success">@Localizer["Rcv_Released"]</span> <span class="text-muted">@r.InspectionReleasedBy @r.InspectionReleasedAt?.ToString("yyyy-MM-dd") @r.InspectionTestPlanNumber</span>
+                                <span class="text-success">@Localizer["Rcv_Released"]</span> <span class="text-muted">@r.InspectionReleasedBy @PemsDates.Date(r.InspectionReleasedAt) @r.InspectionTestPlanNumber</span>
                             }
                             else if (canRelease)
                             {

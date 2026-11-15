@@ -79,7 +79,7 @@
                             <pems-table-cell>
                                 @if (wo.DueDate.HasValue)
                                 {
-                                    @wo.DueDate.Value.ToString("yyyy-MM-dd")
+                                    @PemsDates.Date(wo.DueDate.Value)
                                     @if (wo.IsOverdue) { <pems-badge tone="danger" css="ms-1">@Localizer["Overdue"]</pems-badge> }
                                 }
                                 else

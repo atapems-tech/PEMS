@@ -134,7 +134,7 @@
                     <pems-table-cell>@c.Subject<div class="small text-muted">@c.Body</div></pems-table-cell>
                     <pems-table-cell>@c.VendorName</pems-table-cell>
                     <pems-table-cell>@c.RaisedByName</pems-table-cell>
-                    <pems-table-cell>@c.RaisedDate.ToString("yyyy-MM-dd")</pems-table-cell>
+                    <pems-table-cell>@PemsDates.Date(c.RaisedDate)</pems-table-cell>
                     <pems-table-cell>
                         @{
                             var ab = c.ActionStatus switch { "Closed" => "success", "Answered" => "info", _ => "danger" };
@@ -201,7 +201,7 @@
             {
                 <pems-table-row><pems-table-cell>@a.ApproverName</pems-table-cell>
                     <pems-table-cell><pems-badge tone="@(a.Decision == "Approved" ? "success" : "danger")">@a.Decision</pems-badge></pems-table-cell>
-                    <pems-table-cell>@a.Comment</pems-table-cell><pems-table-cell>@a.ApprovalDate.ToString("yyyy-MM-dd")</pems-table-cell></pems-table-row>
+                    <pems-table-cell>@a.Comment</pems-table-cell><pems-table-cell>@PemsDates.Date(a.ApprovalDate)</pems-table-cell></pems-table-row>
             }
         </pems-table-body>
     </pems-related-table>

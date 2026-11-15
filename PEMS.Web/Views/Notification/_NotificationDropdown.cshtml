@@ -20,7 +20,7 @@
                 @if (!n.IsRead) { <pems-icon name="bi-circle-fill" css="text-primary me-1 pems-s-3494e7ef" aria-hidden="true" /> }
                 <strong>@n.Title</strong>
                 <div class="text-muted">@n.Message</div>
-                <div class="text-muted pems-s-11a50812">@n.CreatedDate.ToString("yyyy-MM-dd HH:mm")</div>
+                <div class="text-muted pems-s-11a50812">@PemsDates.DateTime(n.CreatedDate)</div>
             </pems-link>
             <pems-button tone="none" size="small" css="btn-link text-muted px-2 py-2" type="button" data-notif-action="dismiss" data-notif-id="@n.NotificationId" title="@Localizer["Notif_Dismiss"]" aria-label="@Localizer["Notif_Dismiss"]"><pems-icon name="bi-x-lg" /></pems-button>
         </pems-flex>

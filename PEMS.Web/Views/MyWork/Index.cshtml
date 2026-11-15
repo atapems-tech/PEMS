@@ -102,11 +102,11 @@
                             @if (path != null) { <pems-link href="@path">#@t.BusinessObjectId <pems-icon name="bi-box-arrow-up-right" css="small" aria-hidden="true" /><span class="visually-hidden">@Localizer["MyWork_Open"]</span></pems-link> }
                             else { <span>#@t.BusinessObjectId</span> }
                         </pems-table-cell>
-                        <pems-table-cell dir="ltr" class="text-nowrap">@t.AssignedDate.ToString("yyyy-MM-dd HH:mm")</pems-table-cell>
+                        <pems-table-cell dir="ltr" class="text-nowrap">@PemsDates.DateTime(t.AssignedDate)</pems-table-cell>
                         <pems-table-cell dir="ltr" class="text-nowrap">
                             @if (t.DueDate.HasValue)
                             {
-                                <span class="@(t.IsOverdue ? "text-danger fw-semibold" : "")">@t.DueDate.Value.ToString("yyyy-MM-dd HH:mm")</span>
+                                <span class="@(t.IsOverdue ? "text-danger fw-semibold" : "")">@PemsDates.DateTime(t.DueDate.Value)</span>
                                 @if (t.IsOverdue) { <span class="vs-pill vs-pill--danger ms-1">@Localizer["MyWork_Overdue"]</span> }
                             }
                             else { <span class="text-muted">—</span> }

@@ -89,7 +89,7 @@
                             <pems-table-cell class="small"><span class="vs-title-cell" title="@a.EquipmentTagNumber - @a.EquipmentName"><span class="vs-num">@a.EquipmentTagNumber</span> - @a.EquipmentName</span></pems-table-cell>
                             <pems-table-cell class="small vs-hide-md">@(a.MaintenanceClass ?? "-")</pems-table-cell>
                             <pems-table-cell class="small">@(a.CriticalityClass ?? "-")</pems-table-cell>
-                            <pems-table-cell class="small vs-hide-md"><span class="vs-num">@(a.CommissioningDate?.ToString("yyyy-MM-dd") ?? "-")</span></pems-table-cell>
+                            <pems-table-cell class="small vs-hide-md"><span class="vs-num">@(PemsDates.Date(a.CommissioningDate) ?? "-")</span></pems-table-cell>
                             <pems-table-cell><span class="vs-num">@a.OpenWorkOrderCount</span></pems-table-cell>
                             <pems-table-cell><span class="vs-pill @StatusTone(a.Status)">@StatusText(a.Status)</span></pems-table-cell>
                         </pems-table-row>

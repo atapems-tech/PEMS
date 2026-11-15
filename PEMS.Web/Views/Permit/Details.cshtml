@@ -79,7 +79,7 @@
         <div class="kpi-icon bg-icon-blue pems-s-792bd2d6"><pems-icon name="bi-shield-check" /></div>
         <div>
             <pems-heading level="5" class="mb-0">@Model.PermitNumber &mdash; @Model.Title <pems-badge tone="@badgeClass">@Model.Status</pems-badge></pems-heading>
-            <span class="text-muted small">@Model.PermitType - Requested by @Model.RequestedByName on @Model.CreatedDate.ToString("yyyy-MM-dd")</span>
+            <span class="text-muted small">@Model.PermitType - Requested by @Model.RequestedByName on @PemsDates.Date(Model.CreatedDate)</span>
         </div>
     </pems-flex>
     <pems-info-grid class="mt-2">
@@ -95,8 +95,8 @@
                 <pems-badge tone="light">@Model.ReceiverPersonnelType @(Model.ReceiverVendorName != null ? $"- {Model.ReceiverVendorName}" : "")</pems-badge>
             }
         </pems-info-item>
-        <pems-info-item label="@Localizer["Info_ValidFrom"]" num>@Model.ValidFrom?.ToString("yyyy-MM-dd")</pems-info-item>
-        <pems-info-item label="@Localizer["Info_ValidTo"]" num>@Model.ValidTo?.ToString("yyyy-MM-dd")</pems-info-item>
+        <pems-info-item label="@Localizer["Info_ValidFrom"]" num>@PemsDates.Date(Model.ValidFrom)</pems-info-item>
+        <pems-info-item label="@Localizer["Info_ValidTo"]" num>@PemsDates.Date(Model.ValidTo)</pems-info-item>
         <pems-info-item label="@Localizer["Description"]" wide>@Model.Description</pems-info-item>
     </pems-info-grid>
 
@@ -110,7 +110,7 @@
     }
     @if (Model.ClosedDate.HasValue)
     {
-        <pems-alert tone="success" css="py-2 px-3 small mt-2 mb-0">Closed on @Model.ClosedDate.Value.ToString("yyyy-MM-dd HH:mm")</pems-alert>
+        <pems-alert tone="success" css="py-2 px-3 small mt-2 mb-0">Closed on @PemsDates.DateTime(Model.ClosedDate.Value)</pems-alert>
     }
 </pems-content-card>
 
@@ -287,7 +287,7 @@
                             <pems-table-cell class="small">@d.ToStatus</pems-table-cell>
                             <pems-table-cell><pems-badge tone="@(d.Result == "Eligible" ? "success" : "danger")">@d.Result</pems-badge></pems-table-cell>
                             <pems-table-cell class="small">@(d.ActorName ?? "-")</pems-table-cell>
-                            <pems-table-cell class="small">@d.DecisionDate.ToString("yyyy-MM-dd HH:mm")</pems-table-cell>
+                            <pems-table-cell class="small">@PemsDates.DateTime(d.DecisionDate)</pems-table-cell>
                             <pems-table-cell>@(d.IsEmergencyOverride ? "Yes" : "-")</pems-table-cell>
                             <pems-table-cell class="small text-muted">@(d.IsEmergencyOverride ? d.EmergencyReason : d.BlockingReasonsSummary)</pems-table-cell>
                         </pems-table-row>
@@ -329,7 +329,7 @@
                     @if (completedEntry != null)
                     {
                         <pems-icon name="bi-check-circle-fill" css="text-success" />
-                        <span>@stageName - <strong>@completedEntry.Decision</strong> @(completedEntry.Role != null ? $"({completedEntry.Role})" : "") @completedEntry.ActionDate.ToString("yyyy-MM-dd HH:mm")</span>
+                        <span>@stageName - <strong>@completedEntry.Decision</strong> @(completedEntry.Role != null ? $"({completedEntry.Role})" : "") @PemsDates.DateTime(completedEntry.ActionDate)</span>
                     }
                     else if (isCurrent)
                     {
@@ -395,7 +395,7 @@
                             <pems-table-cell class="small">@h.ActionType</pems-table-cell>
                             <pems-table-cell class="small">@(h.Role ?? "-")</pems-table-cell>
                             <pems-table-cell class="small text-muted">@h.Comment</pems-table-cell>
-                            <pems-table-cell class="small">@h.ActionDate.ToString("yyyy-MM-dd HH:mm")</pems-table-cell>
+                            <pems-table-cell class="small">@PemsDates.DateTime(h.ActionDate)</pems-table-cell>
                         </pems-table-row>
                     }
                 </pems-table-body>
@@ -542,8 +542,8 @@
                 <pems-badge tone="@gasBadge">@g.Status</pems-badge>
                 @if (g.IsExpired && g.Status != "Invalidated") { <pems-badge tone="neutral">Expired</pems-badge> }
                 <span class="small">@g.Location</span>
-                <span class="small text-muted">Tested by @(g.TesterName ?? "-") @g.TestedAt.ToString("yyyy-MM-dd HH:mm")</span>
-                @if (g.ValidUntil.HasValue) { <span class="small text-muted">Valid Until @g.ValidUntil.Value.ToString("yyyy-MM-dd HH:mm")</span> }
+                <span class="small text-muted">Tested by @(g.TesterName ?? "-") @PemsDates.DateTime(g.TestedAt)</span>
+                @if (g.ValidUntil.HasValue) { <span class="small text-muted">Valid Until @PemsDates.DateTime(g.ValidUntil.Value)</span> }
                 @if (!string.IsNullOrWhiteSpace(g.InstrumentTag))
                 {
                     <span class="small text-muted">Instrument: @g.InstrumentTag <pems-badge tone="@calBadge">@g.InstrumentCalibrationStatus</pems-badge></span>
@@ -742,7 +742,7 @@
         <pems-bullet-list class="small text-muted mb-0">
             @foreach (var wo in simopsCandidateWorkOrders)
             {
-                <pems-bullet>@wo.WorkOrderNumber (@wo.EquipmentTagNumber) — @wo.StartDate?.ToString("yyyy-MM-dd") to @(wo.CompletionDate?.ToString("yyyy-MM-dd") ?? "ongoing")</pems-bullet>
+                <pems-bullet>@wo.WorkOrderNumber (@wo.EquipmentTagNumber) — @PemsDates.Date(wo.StartDate) to @(PemsDates.Date(wo.CompletionDate) ?? "ongoing")</pems-bullet>
             }
         </pems-bullet-list>
     }
@@ -774,7 +774,7 @@
                     <pems-table-cell class="small">@h.FromStatus</pems-table-cell>
                     <pems-table-cell class="small">@h.ToStatus</pems-table-cell>
                     <pems-table-cell class="small">@(h.ChangedByName ?? "-")</pems-table-cell>
-                    <pems-table-cell class="small">@h.ChangedDate.ToString("yyyy-MM-dd HH:mm")</pems-table-cell>
+                    <pems-table-cell class="small">@PemsDates.DateTime(h.ChangedDate)</pems-table-cell>
                     <pems-table-cell class="small text-muted">@h.Reason</pems-table-cell>
                 </pems-table-row>
             }

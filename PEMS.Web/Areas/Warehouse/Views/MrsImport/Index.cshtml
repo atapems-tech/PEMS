@@ -42,7 +42,7 @@
                     <pems-table-cell>@b.DuplicateCount</pems-table-cell>
                     <pems-table-cell class="text-danger">@b.InvalidCount</pems-table-cell>
                     <pems-table-cell class="text-success">@b.ApprovedCount</pems-table-cell>
-                    <pems-table-cell class="small">@b.ImportDate.ToString("yyyy-MM-dd HH:mm")</pems-table-cell>
+                    <pems-table-cell class="small">@PemsDates.DateTime(b.ImportDate)</pems-table-cell>
                     <pems-table-cell class="text-end"><pems-button as="a" tone="neutral" size="small" outline="true" asp-action="Review" asp-route-batchId="@b.MrsImportBatchId"><pems-icon name="bi-card-text" /> @Localizer["Review"]</pems-button></pems-table-cell>
                 </pems-table-row>
             }

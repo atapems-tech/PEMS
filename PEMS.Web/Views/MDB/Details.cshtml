@@ -18,15 +18,15 @@
     <pems-divider class="my-2" />
 
     <pems-row gap="3">
-        <pems-col md="3"><strong>Planned Final Issue:</strong> @(Model.PlannedFinalIssueDate?.ToString("yyyy-MM-dd") ?? "-")</pems-col>
+        <pems-col md="3"><strong>Planned Final Issue:</strong> @(PemsDates.Date(Model.PlannedFinalIssueDate) ?? "-")</pems-col>
         <pems-col md="3">
-            <strong>Index of Contents Due:</strong> @(Model.IndexOfContentsDueDate?.ToString("yyyy-MM-dd") ?? "-")
+            <strong>Index of Contents Due:</strong> @(PemsDates.Date(Model.IndexOfContentsDueDate) ?? "-")
             @if (Model.IsIndexOverdue)
             {
                 <pems-badge tone="danger">@Localizer["Overdue"]</pems-badge>
             }
         </pems-col>
-        <pems-col md="3"><strong>Index Submitted:</strong> @(Model.IndexOfContentsSubmittedDate?.ToString("yyyy-MM-dd") ?? "-")</pems-col>
+        <pems-col md="3"><strong>Index Submitted:</strong> @(PemsDates.Date(Model.IndexOfContentsSubmittedDate) ?? "-")</pems-col>
         <pems-col md="3"><strong>Hard Copy:</strong> @(Model.HardCopyShippedDate.HasValue ? $"Shipped {Model.HardCopyShippedDate:yyyy-MM-dd} ({Model.HardCopyCount} vol)" : "Not shipped")</pems-col>
         <pems-col md="3"><strong>Soft Copy:</strong> @(Model.SoftCopyDeliveredDate.HasValue ? $"Delivered {Model.SoftCopyDeliveredDate:yyyy-MM-dd}" : "Not delivered")</pems-col>
     </pems-row>

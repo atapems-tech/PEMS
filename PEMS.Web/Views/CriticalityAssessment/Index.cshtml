@@ -107,7 +107,7 @@
                             <pems-table-cell>@(a.ProposedCriticalityClass ?? "-")</pems-table-cell>
                             <pems-table-cell class="small vs-hide-md">@(a.PreparedBy ?? "-")</pems-table-cell>
                             <pems-table-cell class="small vs-hide-md">@(a.ApprovedBy ?? "-")</pems-table-cell>
-                            <pems-table-cell class="small"><span class="vs-num">@a.CreatedDate.ToString("yyyy-MM-dd")</span></pems-table-cell>
+                            <pems-table-cell class="small"><span class="vs-num">@PemsDates.Date(a.CreatedDate)</span></pems-table-cell>
                             <pems-table-cell class="text-end">
                                 <pems-link asp-action="Details" asp-route-id="@a.CriticalityAssessmentId" class="lp-act lp-act--always" title="@Localizer["Lp_Details"]" aria-label="@Localizer["Lp_Details"]"><pems-icon name="bi-eye" aria-hidden="true" /></pems-link>
                             </pems-table-cell>

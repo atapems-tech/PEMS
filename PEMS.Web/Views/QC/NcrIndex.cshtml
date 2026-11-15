@@ -28,7 +28,7 @@
                             <pems-table-cell class="small">@n.Equipment?.TagNumber</pems-table-cell>
                             <pems-table-cell><pems-badge tone="@(n.Severity == "Critical" ? "danger" : n.Severity == "Major" ? "warning" : "neutral")">@n.Severity</pems-badge></pems-table-cell>
                             <pems-table-cell><pems-badge tone="@(n.Status == "Closed" ? "success" : n.Status == "Dispositioned" ? "info" : n.Status == "PendingApproval" ? "warning" : "neutral")">@n.Status</pems-badge></pems-table-cell>
-                            <pems-table-cell class="small">@n.RaisedDate.ToString("yyyy-MM-dd")</pems-table-cell>
+                            <pems-table-cell class="small">@PemsDates.Date(n.RaisedDate)</pems-table-cell>
                         </pems-table-row>
                     }
                 </pems-table-body>

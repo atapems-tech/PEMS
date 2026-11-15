@@ -15,6 +15,6 @@
     }
     else
     {
-        <pems-data-table data="@(DataRows.Of(Model, c_ => c_.Add(((Localizer["When"])?.ToString() ?? ""), log => (object?)((log.Timestamp.ToString("yyyy-MM-dd HH:mm"))), css: "small text-muted").Add(((Localizer["Action"])?.ToString() ?? ""), log => (object?)(DataCell.Badge("light", log.Action))).Add("By", log => (object?)((log.UserName ?? "—")), css: "small").Add(((Localizer["Changed Fields"])?.ToString() ?? ""), log => (object?)(DataCell.Span("mb-0 small", log.ChangedFieldsSummary).WithTag("pre")), css: "small")))" />
+        <pems-data-table data="@(DataRows.Of(Model, c_ => c_.Add(((Localizer["When"])?.ToString() ?? ""), log => (object?)((PemsDates.DateTime(log.Timestamp))), css: "small text-muted").Add(((Localizer["Action"])?.ToString() ?? ""), log => (object?)(DataCell.Badge("light", log.Action))).Add("By", log => (object?)((log.UserName ?? "—")), css: "small").Add(((Localizer["Changed Fields"])?.ToString() ?? ""), log => (object?)(DataCell.Span("mb-0 small", log.ChangedFieldsSummary).WithTag("pre")), css: "small")))" />
     }
 </pems-content-card>

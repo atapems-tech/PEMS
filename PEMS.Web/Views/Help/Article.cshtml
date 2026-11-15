@@ -47,7 +47,7 @@
                 @Html.Raw(Model.Content)
             </div>
             <pems-text class="text-muted small mt-3 mb-0">
-                <pems-icon name="bi-clock-history" /> @L("Last updated", "آخرین به‌روزرسانی"): @Model.ModifiedDate.ToString("yyyy-MM-dd")
+                <pems-icon name="bi-clock-history" /> @L("Last updated", "آخرین به‌روزرسانی"): @PemsDates.Date(Model.ModifiedDate)
             </pems-text>
         </pems-content-card>
 

@@ -177,7 +177,7 @@
                                 else
                                 { <span class="text-muted">&mdash;</span> }
                             </pems-table-cell>
-                            <pems-table-cell class="vs-hide-md small text-muted">@d.CreatedDate.ToString("yyyy-MM-dd")</pems-table-cell>
+                            <pems-table-cell class="vs-hide-md small text-muted">@PemsDates.Date(d.CreatedDate)</pems-table-cell>
                             <pems-table-cell class="text-nowrap lp-actions">
                                 <pems-link asp-controller="EngineeringDocuments" asp-action="Details" asp-route-id="@d.DocumentId" class="lp-act lp-act--always" title="@Localizer["Ed_View"]"><pems-icon name="bi-eye" aria-hidden="true" /><span class="visually-hidden">@Localizer["Ed_View"]: @d.DocumentNo</span></pems-link>
                             </pems-table-cell>

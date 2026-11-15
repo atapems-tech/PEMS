@@ -778,7 +778,7 @@
                 </pems-form-group>
                 <pems-form-group css="mb-2">
                     <pems-label css="small">@Localizer["Effective From"]</pems-label>
-                    <pems-date name="effectiveFrom" scale="small" value="@DateTime.Now.ToString("yyyy-MM-dd")" />
+                    <pems-date name="effectiveFrom" scale="small" value="@PemsDates.Date(DateTime.Now)" />
                 </pems-form-group>
             </pems-modal-body>
             <pems-modal-footer>

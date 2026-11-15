@@ -62,7 +62,7 @@
                             else { <span class="vs-pill vs-pill--icon vs-pill--neutral"><pems-icon name="bi-dash-circle-fill" aria-hidden="true" /> @Localizer["UsL_Inactive"]</span> }
                             @if (u.LockedOut) { <span class="vs-pill vs-pill--icon vs-pill--danger ms-1"><pems-icon name="bi-lock-fill" aria-hidden="true" /> @Localizer["UsL_Locked"]</span> }
                         </pems-table-cell>
-                        <pems-table-cell class="small vs-hide-md"><span class="vs-num">@(u.LastLoginDate?.ToString("yyyy-MM-dd HH:mm") ?? Localizer["UsL_Never"].Value)</span></pems-table-cell>
+                        <pems-table-cell class="small vs-hide-md"><span class="vs-num">@(PemsDates.DateTime(u.LastLoginDate) ?? Localizer["UsL_Never"].Value)</span></pems-table-cell>
                         <pems-table-cell class="text-end text-nowrap">
                             <pems-link asp-action="Details" asp-route-id="@u.Id" class="lp-act lp-act--always" title="@Localizer["Access & Authorization"]" aria-label="@Localizer["Access & Authorization"] @u.UserName"><pems-icon name="bi-shield-lock" aria-hidden="true" /></pems-link>
                             <pems-link asp-action="Edit" asp-route-id="@u.Id" class="lp-act lp-act--always" title="@Localizer["Ed_Edit"]" aria-label="@Localizer["Ed_Edit"] @u.UserName"><pems-icon name="bi-pencil" aria-hidden="true" /></pems-link>

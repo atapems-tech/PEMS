@@ -62,7 +62,7 @@
                                     <span class="vs-pill vs-pill--icon vs-pill--danger"><pems-icon name="bi-clock-history" aria-hidden="true" /> @Localizer["Vs_ResponseOverdue"]</span>
                                 }
                             </pems-table-cell>
-                            <pems-table-cell class="small text-muted">@t.TransmittalDate.ToString("yyyy-MM-dd")</pems-table-cell>
+                            <pems-table-cell class="small text-muted">@PemsDates.Date(t.TransmittalDate)</pems-table-cell>
                             <pems-table-cell class="text-nowrap lp-actions">
                                 <pems-link asp-action="Details" asp-route-id="@t.TransmittalId" class="lp-act lp-act--always" title="@Localizer["Vs_View"]"><pems-icon name="bi-eye" aria-hidden="true" /><span class="visually-hidden">@Localizer["Vs_View"]: @t.TransmittalNo</span></pems-link>
                             </pems-table-cell>

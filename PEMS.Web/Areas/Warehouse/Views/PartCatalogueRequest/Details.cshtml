@@ -55,8 +55,8 @@
             @if (!string.IsNullOrEmpty(d.AssignedPartNumber)) { <span class="vs-pill vs-pill--success">@Localizer["Pc_Col_PartNo"]: @d.AssignedPartNumber</span> }
         </pems-flex>
         <div class="small text-muted mt-1">
-            @L("Requester"): @d.RequesterName · @Localizer["Pc_Col_Created"]: @d.CreatedDate.ToString("yyyy-MM-dd")
-            @if (d.SubmittedDate.HasValue) { <text> · @Localizer["Pc_Col_Submitted"]: @d.SubmittedDate.Value.ToString("yyyy-MM-dd")</text> }
+            @L("Requester"): @d.RequesterName · @Localizer["Pc_Col_Created"]: @PemsDates.Date(d.CreatedDate)
+            @if (d.SubmittedDate.HasValue) { <text> · @Localizer["Pc_Col_Submitted"]: @PemsDates.Date(d.SubmittedDate.Value)</text> }
         </div>
     </div>
 
@@ -179,7 +179,7 @@
                     <pems-info-item label="@L("PrimaryIssuedRequired")">@YesNo(f.PrimaryIssuedRequired)</pems-info-item>
                     <pems-info-item label="@L("IssuedQty")">@f.IssuedQty</pems-info-item>
                     <pems-info-item label="@L("StockGradeId")">@Label("StockGradeId")</pems-info-item>
-                    <pems-info-item label="@L("WantedReceiptDate")">@f.WantedReceiptDate?.ToString("yyyy-MM-dd")</pems-info-item>
+                    <pems-info-item label="@L("WantedReceiptDate")">@PemsDates.Date(f.WantedReceiptDate)</pems-info-item>
                     <pems-info-item label="@L("StorageVolume")">@f.StorageVolume</pems-info-item>
                 </pems-info-grid>
             </section>
@@ -206,7 +206,7 @@
                             <strong>@Localizer["Pc_Step_" + st.StepKey]</strong>
                             @if (!string.IsNullOrEmpty(st.AssignedName)) { <div class="small text-muted">@st.AssignedName</div> }
                             @if (st.Status == "Skipped") { <div class="small text-muted">@SkipText(st.SkipReason)</div> }
-                            @if (st.DecidedDate.HasValue) { <div class="small text-muted vs-num">@st.DecidedDate.Value.ToString("yyyy-MM-dd HH:mm")</div> }
+                            @if (st.DecidedDate.HasValue) { <div class="small text-muted vs-num">@PemsDates.DateTime(st.DecidedDate.Value)</div> }
                         </pems-bullet>
                     }
                 </pems-bullet-list>
@@ -239,7 +239,7 @@
             <section class="vs-panel pc-card">
                 <pems-heading level="2" class="vs-section__title"><pems-icon name="bi-clock-history" /> @Localizer["Pc_Det_History"]</pems-heading>
                 <div class="pc-table-scroll">
-                    <pems-data-table data="@(DataRows.Of(d.Approvals, c_ => c_.Add(((Localizer["Pc_Col_Date"])?.ToString() ?? ""), h => (object?)(h.ActionDate.ToString("yyyy-MM-dd HH:mm")), css: "vs-num text-nowrap").Add(((Localizer["Pc_Col_Stage"])?.ToString() ?? ""), h => (object?)(string.IsNullOrEmpty(h.StepKey) ? "" : Localizer["Pc_Step_" + h.StepKey].Value)).Add(((Localizer["Pc_Col_Action"])?.ToString() ?? ""), h => (object?)(Localizer["Pc_Action_" + h.Action])).Add(((Localizer["Pc_Col_Person"])?.ToString() ?? ""), h => (object?)(h.ActorName)).Add(((L("Comment"))?.ToString() ?? ""), h => (object?)(h.Comment))))" enterprise="false" dense="true" css="table-enterprise vs-dense mb-0" />
+                    <pems-data-table data="@(DataRows.Of(d.Approvals, c_ => c_.Add(((Localizer["Pc_Col_Date"])?.ToString() ?? ""), h => (object?)(PemsDates.DateTime(h.ActionDate)), css: "vs-num text-nowrap").Add(((Localizer["Pc_Col_Stage"])?.ToString() ?? ""), h => (object?)(string.IsNullOrEmpty(h.StepKey) ? "" : Localizer["Pc_Step_" + h.StepKey].Value)).Add(((Localizer["Pc_Col_Action"])?.ToString() ?? ""), h => (object?)(Localizer["Pc_Action_" + h.Action])).Add(((Localizer["Pc_Col_Person"])?.ToString() ?? ""), h => (object?)(h.ActorName)).Add(((L("Comment"))?.ToString() ?? ""), h => (object?)(h.Comment))))" enterprise="false" dense="true" css="table-enterprise vs-dense mb-0" />
                     @if (!d.Approvals.Any()) { <div class="vs-empty py-2">@Localizer["Pc_Empty_History"]</div> }
                 </div>
             </section>
@@ -249,7 +249,7 @@
             <section class="vs-panel pc-card">
                 <pems-heading level="2" class="vs-section__title"><pems-icon name="bi-chat-left-text" /> @L("Notes")</pems-heading>
                 <div class="pc-table-scroll mb-2">
-                    <pems-data-table data="@(DataRows.Of(d.Notes, c_ => c_.Add(((Localizer["Pc_Col_Date"])?.ToString() ?? ""), n => (object?)(n.CreatedDate.ToString("yyyy-MM-dd HH:mm")), css: "vs-num text-nowrap").Add(((Localizer["Pc_Col_Person"])?.ToString() ?? ""), n => (object?)(n.AuthorName)).Add(((Localizer["Pc_Col_Stage"])?.ToString() ?? ""), n => (object?)(string.IsNullOrEmpty(n.StepKey) ? "" : Localizer["Pc_Step_" + n.StepKey].Value)).Add(((L("Text"))?.ToString() ?? ""), n => (object?)(n.Text))))" enterprise="false" dense="true" css="table-enterprise vs-dense mb-0" />
+                    <pems-data-table data="@(DataRows.Of(d.Notes, c_ => c_.Add(((Localizer["Pc_Col_Date"])?.ToString() ?? ""), n => (object?)(PemsDates.DateTime(n.CreatedDate)), css: "vs-num text-nowrap").Add(((Localizer["Pc_Col_Person"])?.ToString() ?? ""), n => (object?)(n.AuthorName)).Add(((Localizer["Pc_Col_Stage"])?.ToString() ?? ""), n => (object?)(string.IsNullOrEmpty(n.StepKey) ? "" : Localizer["Pc_Step_" + n.StepKey].Value)).Add(((L("Text"))?.ToString() ?? ""), n => (object?)(n.Text))))" enterprise="false" dense="true" css="table-enterprise vs-dense mb-0" />
                     @if (!d.Notes.Any()) { <div class="vs-empty py-2">@Localizer["Pc_Empty_Notes"]</div> }
                 </div>
                 @if (d.Status is "InApproval" or "Draft" or "Returned")

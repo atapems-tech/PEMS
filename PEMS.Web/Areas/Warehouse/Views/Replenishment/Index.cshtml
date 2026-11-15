@@ -83,7 +83,7 @@
         @if (last != null)
         {
             <div class="small text-muted px-3 py-2">
-                @Localizer["Repl_LastRun"]: #@last.RunId · @Localizer["Repl_CalculatedAt"] @last.StartedAt.ToString("yyyy-MM-dd HH:mm") → @(last.CompletedAt?.ToString("yyyy-MM-dd HH:mm") ?? "-") · @last.Status ·
+                @Localizer["Repl_LastRun"]: #@last.RunId · @Localizer["Repl_CalculatedAt"] @PemsDates.DateTime(last.StartedAt) → @(PemsDates.DateTime(last.CompletedAt) ?? "-") · @last.Status ·
                 @last.ResultsEvaluated @Localizer["Repl_Evaluated"], @last.Created @Localizer["Repl_New"], @last.Updated @Localizer["Repl_Updated"],
                 @last.Closed @Localizer["Repl_ClosedCount"], @last.NotDefinitive @Localizer["Repl_NotDefinitiveCount"]
                 <div>@Localizer["Repl_FreshnessDisclaimer"]</div>
@@ -123,7 +123,7 @@
                                 <span class="vs-pill @StatusTone(r.Status)">@StatusText(r.Status)</span>
                                 @if (!r.IsCurrentlyDefinitive) { <span class="vs-pill vs-pill--danger" title="@Localizer["Repl_NotDefinitiveHint"]">@Localizer["Repl_NotDefinitive"]</span> }
                             </pems-table-cell>
-                            <pems-table-cell class="small vs-hide-md"><span class="vs-num">@r.LastEvaluatedAt.ToString("yyyy-MM-dd HH:mm")</span></pems-table-cell>
+                            <pems-table-cell class="small vs-hide-md"><span class="vs-num">@PemsDates.DateTime(r.LastEvaluatedAt)</span></pems-table-cell>
                             <pems-table-cell class="text-end">
                                 <pems-link asp-action="Details" asp-route-id="@r.Id" class="lp-act lp-act--always" title="@Localizer["Ed_View"]" aria-label="@Localizer["Ed_View"]"><pems-icon name="bi-card-text" aria-hidden="true" /></pems-link>
                             </pems-table-cell>

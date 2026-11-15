@@ -144,7 +144,7 @@
 }
 @if (Model.IsOnHold)
 {
-    <pems-alert tone="warning" css="py-2 px-3 small mb-3"><pems-icon name="bi-pause-circle" aria-hidden="true" /> @Localizer["Vdr_OnHoldBanner"]@(string.IsNullOrEmpty(Model.HoldReason) ? "" : ": " + Model.HoldReason)@(Model.HoldDate.HasValue ? " (" + Model.HoldDate.Value.ToString("yyyy-MM-dd") + ")" : "")</pems-alert>
+    <pems-alert tone="warning" css="py-2 px-3 small mb-3"><pems-icon name="bi-pause-circle" aria-hidden="true" /> @Localizer["Vdr_OnHoldBanner"]@(string.IsNullOrEmpty(Model.HoldReason) ? "" : ": " + Model.HoldReason)@(Model.HoldDate.HasValue ? " (" + PemsDates.Date(Model.HoldDate.Value) + ")" : "")</pems-alert>
 }
 
 <pems-nav css="mb-3" id="vdrTabs" role="tablist">
@@ -192,7 +192,7 @@
             </pems-info-item>
             <pems-info-item label="@Localizer["Vs_Discipline"]">@Model.DisciplineCodeRaw @(Model.IsMultiDiscipline ? Localizer["Vs_MultiDiscipline"].Value : "")</pems-info-item>
             <pems-info-item label="@Localizer["Vs_Class"]">@Model.DocumentClass</pems-info-item>
-            <pems-info-item label="@Localizer["Vs_PlannedFirstIssue"]">@(Model.PlannedFirstIssueDate?.ToString("yyyy-MM-dd"))</pems-info-item>
+            <pems-info-item label="@Localizer["Vs_PlannedFirstIssue"]">@(PemsDates.Date(Model.PlannedFirstIssueDate))</pems-info-item>
             <pems-info-item label="@Localizer["Vd_VendorFormatNo"]" mono empty-text="-">@Model.VendorFormatDocumentNumber</pems-info-item>
             <pems-info-item label="@Localizer["Vs_Description"]" wide>@Model.DocumentDescription</pems-info-item>
         </pems-info-grid>
@@ -226,26 +226,26 @@
                             @s.ClientTransmittalNo
                         }
                     </pems-table-cell>
-                    <pems-table-cell>@(s.VendorActualIssuedDate?.ToString("yyyy-MM-dd"))</pems-table-cell>
+                    <pems-table-cell>@(PemsDates.Date(s.VendorActualIssuedDate))</pems-table-cell>
                     <pems-table-cell>@s.PurposeOfIssueCode</pems-table-cell>
                     <pems-table-cell>
                         @if (s.ClientCommentDate == null && s.ContractorCommentDueDate.HasValue)
                         {
                             <pems-badge tone="@(s.IsContractorCommentOverdue ? "danger" : "info")">
-                                @Localizer["Vd_ContractorDue"] @s.ContractorCommentDueDate.Value.ToString("yyyy-MM-dd")@(s.IsContractorCommentOverdue ? " " + Localizer["Vd_OverdueParen"].Value : "")
+                                @Localizer["Vd_ContractorDue"] @PemsDates.Date(s.ContractorCommentDueDate.Value)@(s.IsContractorCommentOverdue ? " " + Localizer["Vd_OverdueParen"].Value : "")
                             </pems-badge>
                         }
                         else if (s.ReplySheetDate == null && s.VendorReturnDueDate.HasValue)
                         {
                             <pems-badge tone="@(s.IsVendorReturnOverdue ? "danger" : "info")">
-                                @Localizer["Vd_ReturnDue"] @s.VendorReturnDueDate.Value.ToString("yyyy-MM-dd")@(s.IsVendorReturnOverdue ? " " + Localizer["Vd_OverdueParen"].Value : "")
+                                @Localizer["Vd_ReturnDue"] @PemsDates.Date(s.VendorReturnDueDate.Value)@(s.IsVendorReturnOverdue ? " " + Localizer["Vd_OverdueParen"].Value : "")
                             </pems-badge>
                         }
                     </pems-table-cell>
                     <pems-table-cell>
                         @if (s.FtpUploadedDate.HasValue)
                         {
-                            <pems-badge tone="success" title="@s.FtpRemotePath"><pems-icon name="bi-check-circle" /> @s.FtpUploadedDate.Value.ToString("yyyy-MM-dd")</pems-badge>
+                            <pems-badge tone="success" title="@s.FtpRemotePath"><pems-icon name="bi-check-circle" /> @PemsDates.Date(s.FtpUploadedDate.Value)</pems-badge>
                         }
                         else
                         {
@@ -258,7 +258,7 @@
                         }
                     </pems-table-cell>
                     <pems-table-cell>@s.ClientCommentSheetNo</pems-table-cell>
-                    <pems-table-cell>@(s.ClientCommentDate?.ToString("yyyy-MM-dd"))</pems-table-cell>
+                    <pems-table-cell>@(PemsDates.Date(s.ClientCommentDate))</pems-table-cell>
                     <pems-table-cell><pems-badge tone="neutral">@s.ReviewCategory</pems-badge></pems-table-cell>
                     <pems-table-cell>@(s.RequiresResubmission ? Localizer["Vd_Yes"].Value : "")</pems-table-cell>
                     <pems-table-cell>
@@ -520,7 +520,7 @@
                         }
                     </pems-table-cell>
                     <pems-table-cell>@c.RaisedByName</pems-table-cell>
-                    <pems-table-cell>@c.RaisedDate.ToString("yyyy-MM-dd")</pems-table-cell>
+                    <pems-table-cell>@PemsDates.Date(c.RaisedDate)</pems-table-cell>
                     <pems-table-cell>
                         @{
                             var ab = c.ActionStatus switch
@@ -881,7 +881,7 @@ else
                         <pems-table-cell><pems-badge tone="neutral">@h.ActionType</pems-badge></pems-table-cell>
                         <pems-table-cell class="small">@h.Decision</pems-table-cell>
                         <pems-table-cell class="small">@h.Comment</pems-table-cell>
-                        <pems-table-cell class="small text-muted">@h.ActionDate.ToString("yyyy-MM-dd HH:mm")</pems-table-cell>
+                        <pems-table-cell class="small text-muted">@PemsDates.DateTime(h.ActionDate)</pems-table-cell>
                     </pems-table-row>
                 }
             </pems-table-body>
@@ -909,7 +909,7 @@ else
                         <pems-table-cell><pems-badge tone="neutral">@l.LetterType</pems-badge></pems-table-cell>
                         <pems-table-cell>@l.LetterNumber</pems-table-cell>
                         <pems-table-cell>@l.Subject</pems-table-cell>
-                        <pems-table-cell class="small text-muted">@l.LetterDate.ToString("yyyy-MM-dd")</pems-table-cell>
+                        <pems-table-cell class="small text-muted">@PemsDates.Date(l.LetterDate)</pems-table-cell>
                         <pems-table-cell><pems-badge tone="info">@l.Status</pems-badge></pems-table-cell>
                         <pems-table-cell><pems-button tone="neutral" size="small" outline="true" as="a" asp-controller="Letter" asp-action="Details" asp-route-id="@l.LetterId"><pems-icon name="bi-eye" /></pems-button></pems-table-cell>
                     </pems-table-row>
@@ -942,7 +942,7 @@ else
                 <pems-textarea scale="small" id="vdrEditDesc" name="documentDescription" rows="2">@Model.DocumentDescription</pems-textarea>
                 <pems-row gap="2" css="mt-2">
                     <pems-col md="6"><pems-label css="small" for="vdrEditClass">@Localizer["Vdr_Class"]</pems-label><pems-input scale="small" type="number" min="1" id="vdrEditClass" name="documentClass" value="@Model.DocumentClass" /></pems-col>
-                    <pems-col md="6"><pems-label css="small" for="vdrEditPlanned">@Localizer["Vdr_PlannedFirstIssue"]</pems-label><pems-date scale="small" id="vdrEditPlanned" name="plannedFirstIssueDate" value="@Model.PlannedFirstIssueDate?.ToString("yyyy-MM-dd")" /></pems-col>
+                    <pems-col md="6"><pems-label css="small" for="vdrEditPlanned">@Localizer["Vdr_PlannedFirstIssue"]</pems-label><pems-date scale="small" id="vdrEditPlanned" name="plannedFirstIssueDate" value="@PemsDates.Date(Model.PlannedFirstIssueDate)" /></pems-col>
                     <pems-col md="6"><pems-label css="small" for="vdrEditEquipment">@Localizer["Vdr_EquipmentTag"]</pems-label><pems-input scale="small" id="vdrEditEquipment" name="equipmentTag" value="@Model.EquipmentTagNumber" dir="ltr" /></pems-col>
                     <pems-col md="6"><pems-label css="small" for="vdrEditDisc">@Localizer["Vdr_DisciplineCode"]</pems-label><pems-input scale="small" id="vdrEditDisc" name="disciplineCodeRaw" value="@Model.DisciplineCodeRaw" dir="ltr" /></pems-col>
                     <pems-col md="12"><pems-label css="small" for="vdrEditVfn">@Localizer["Vd_VendorFormatNo"]</pems-label><pems-input scale="small" id="vdrEditVfn" name="vendorFormatDocumentNumber" value="@Model.VendorFormatDocumentNumber" dir="ltr" /></pems-col>

@@ -24,7 +24,7 @@
             <pems-heading level="5" class="mb-1">@s.MaterialCode <span class="text-muted fw-normal">@s.MaterialDescription</span></pems-heading>
             <div class="small text-muted">
                 @Localizer["Warehouse"]: <strong>@s.WarehouseCode</strong> · @Localizer["Repl_Revision"] @s.Revision ·
-                @Localizer["Repl_FirstDetected"] @Model.FirstDetectedAt.ToString("yyyy-MM-dd HH:mm") · @Localizer["Repl_Evaluated"] @s.LastEvaluatedAt.ToString("yyyy-MM-dd HH:mm")
+                @Localizer["Repl_FirstDetected"] @PemsDates.DateTime(Model.FirstDetectedAt) · @Localizer["Repl_Evaluated"] @PemsDates.DateTime(s.LastEvaluatedAt)
             </div>
         </div>
         <div>
@@ -54,9 +54,9 @@
     </pems-row>
     <div class="small mt-2">
         <strong>@Localizer["Repl_Freshness"]</strong>:
-        @Localizer["Repl_CalculatedAt"] @(Model.LastRunStartedAt?.ToString("yyyy-MM-dd HH:mm") ?? @Localizer["Repl_Unknown"]) → @(Model.LastRunCompletedAt?.ToString("yyyy-MM-dd HH:mm") ?? @Localizer["Repl_Unknown"]) ·
-        @Localizer["Repl_StockUpdated"] @(Model.StockLastUpdatedAt?.ToString("yyyy-MM-dd HH:mm") ?? @Localizer["Repl_Unknown"]) ·
-        @Localizer["Repl_DemandChanged"] @(Model.DemandLastChangedAt?.ToString("yyyy-MM-dd HH:mm") ?? @Localizer["Repl_Unknown"])
+        @Localizer["Repl_CalculatedAt"] @(PemsDates.DateTime(Model.LastRunStartedAt) ?? @Localizer["Repl_Unknown"]) → @(PemsDates.DateTime(Model.LastRunCompletedAt) ?? @Localizer["Repl_Unknown"]) ·
+        @Localizer["Repl_StockUpdated"] @(PemsDates.DateTime(Model.StockLastUpdatedAt) ?? @Localizer["Repl_Unknown"]) ·
+        @Localizer["Repl_DemandChanged"] @(PemsDates.DateTime(Model.DemandLastChangedAt) ?? @Localizer["Repl_Unknown"])
         <div class="text-muted">@Localizer["Repl_FreshnessDisclaimer"]</div>
     </div>
     @if (!string.IsNullOrEmpty(Model.NoticeCodes))
@@ -65,7 +65,7 @@
     }
     @if (s.Status == "Dismissed")
     {
-        <div class="small mt-2">@Localizer["Repl_DismissedAt"] @Model.DismissedAt?.ToString("yyyy-MM-dd HH:mm") — <em>@Model.DismissedReason</em>
+        <div class="small mt-2">@Localizer["Repl_DismissedAt"] @PemsDates.DateTime(Model.DismissedAt) — <em>@Model.DismissedReason</em>
             (@Localizer["Repl_ShortageAtDismissal"]: @Model.DismissedShortageQuantity?.ToString("0.###"))</div>
     }
     @if (s.Status == "Closed")
@@ -126,7 +126,7 @@
 <pems-content-card>
     <pems-heading level="6">@Localizer["Repl_History"]</pems-heading>
     <div class="pems-grid-scroll">
-        <pems-data-table data="@(DataRows.Of(Model.History, c_ => c_.Add(((Localizer["Date"])?.ToString() ?? ""), h => (object?)(h.OccurredAt.ToString("yyyy-MM-dd HH:mm")), css: "small").Add(((Localizer["Repl_Revision"])?.ToString() ?? ""), h => (object?)(h.Revision), css: "small").Add(((Localizer["Repl_Action"])?.ToString() ?? ""), h => (object?)(h.Action), css: "small").Add(((Localizer["Status"])?.ToString() ?? ""), h => DataCell.Join((h.FromStatus == null ? "" : h.FromStatus + " → "), (h.ToStatus)), css: "small").Add(((Localizer["Repl_Shortage"])?.ToString() ?? ""), h => (object?)(h.ShortageQuantity.ToString("0.###")), css: "small text-end", headerCss: "text-end").Add(((Localizer["Repl_By"])?.ToString() ?? ""), h => (object?)(h.ActorName ?? Localizer["Repl_System"]), css: "small").Add(((Localizer["Repl_Note"])?.ToString() ?? ""), h => (object?)(h.Note), css: "small")))" css="mb-0" />
+        <pems-data-table data="@(DataRows.Of(Model.History, c_ => c_.Add(((Localizer["Date"])?.ToString() ?? ""), h => (object?)(PemsDates.DateTime(h.OccurredAt)), css: "small").Add(((Localizer["Repl_Revision"])?.ToString() ?? ""), h => (object?)(h.Revision), css: "small").Add(((Localizer["Repl_Action"])?.ToString() ?? ""), h => (object?)(h.Action), css: "small").Add(((Localizer["Status"])?.ToString() ?? ""), h => DataCell.Join((h.FromStatus == null ? "" : h.FromStatus + " → "), (h.ToStatus)), css: "small").Add(((Localizer["Repl_Shortage"])?.ToString() ?? ""), h => (object?)(h.ShortageQuantity.ToString("0.###")), css: "small text-end", headerCss: "text-end").Add(((Localizer["Repl_By"])?.ToString() ?? ""), h => (object?)(h.ActorName ?? Localizer["Repl_System"]), css: "small").Add(((Localizer["Repl_Note"])?.ToString() ?? ""), h => (object?)(h.Note), css: "small")))" css="mb-0" />
     </div>
 </pems-content-card>
 

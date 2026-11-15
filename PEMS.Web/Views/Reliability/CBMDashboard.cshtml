@@ -49,7 +49,7 @@
             {
                 var rows_72 = Model.AttentionPoints;
                 var cell_72_2 = DataCell.Template(rows_72, @<text>@{ var p = item; }<pems-badge tone="none" css="@EvalBadge(p.EvaluationStatus)">@p.EvaluationStatus</pems-badge></text>);
-                <pems-data-table data="@(DataRows.Of(rows_72, c_ => c_.Add(((Localizer["Tag"])?.ToString() ?? ""), p => (object?)(DataCell.Link(Url.Action("Details", "Equipment", new { id = p.EquipmentId }), p.EquipmentTagNumber))).Add(((Localizer["Variable"])?.ToString() ?? ""), p => (object?)(DataCell.Group(p.VariableType, " — ", p.Tag)), css: "small").Add(((Localizer["Evaluation"])?.ToString() ?? ""), p => (object?)cell_72_2(p)).Add(((Localizer["Last Reading"])?.ToString() ?? ""), p => (object?)((p.LastReadingDate?.ToString("yyyy-MM-dd") ?? "-")), css: "small")))" dense="true" enterprise="false" />
+                <pems-data-table data="@(DataRows.Of(rows_72, c_ => c_.Add(((Localizer["Tag"])?.ToString() ?? ""), p => (object?)(DataCell.Link(Url.Action("Details", "Equipment", new { id = p.EquipmentId }), p.EquipmentTagNumber))).Add(((Localizer["Variable"])?.ToString() ?? ""), p => (object?)(DataCell.Group(p.VariableType, " — ", p.Tag)), css: "small").Add(((Localizer["Evaluation"])?.ToString() ?? ""), p => (object?)cell_72_2(p)).Add(((Localizer["Last Reading"])?.ToString() ?? ""), p => (object?)((PemsDates.Date(p.LastReadingDate) ?? "-")), css: "small")))" dense="true" enterprise="false" />
                 @if (Model.AttentionPointsTruncated)
                 {
                     <div class="small text-muted">@Localizer["فهرست به بالاترین ۵۰ مورد محدود شده است."]</div>
@@ -66,7 +66,7 @@
             }
             else
             {
-                <pems-data-table data="@(DataRows.Of(Model.OverdueCbmPlans, c_ => c_.Add(((Localizer["Tag"])?.ToString() ?? ""), o => (object?)(DataCell.Link(Url.Action("Details", "Equipment", new { id = o.EquipmentId }), o.EquipmentTagNumber))).Add(((Localizer["Variable"])?.ToString() ?? ""), o => (object?)(DataCell.Group(o.VariableType, " — ", o.Tag)), css: "small").Add(((Localizer["Next Due"])?.ToString() ?? ""), o => (object?)((o.NextDueDate.ToString("yyyy-MM-dd"))), css: "small").Add(((Localizer["Overdue"])?.ToString() ?? ""), o => (object?)(DataCell.Badge("danger", DataCell.Group(o.DaysOverdue, " ", Localizer["روز"]))))))" dense="true" enterprise="false" />
+                <pems-data-table data="@(DataRows.Of(Model.OverdueCbmPlans, c_ => c_.Add(((Localizer["Tag"])?.ToString() ?? ""), o => (object?)(DataCell.Link(Url.Action("Details", "Equipment", new { id = o.EquipmentId }), o.EquipmentTagNumber))).Add(((Localizer["Variable"])?.ToString() ?? ""), o => (object?)(DataCell.Group(o.VariableType, " — ", o.Tag)), css: "small").Add(((Localizer["Next Due"])?.ToString() ?? ""), o => (object?)((PemsDates.Date(o.NextDueDate))), css: "small").Add(((Localizer["Overdue"])?.ToString() ?? ""), o => (object?)(DataCell.Badge("danger", DataCell.Group(o.DaysOverdue, " ", Localizer["روز"]))))))" dense="true" enterprise="false" />
                 @if (Model.OverdueCbmPlansTruncated)
                 {
                     <div class="small text-muted">@Localizer["فهرست به بالاترین ۵۰ مورد محدود شده است."]</div>

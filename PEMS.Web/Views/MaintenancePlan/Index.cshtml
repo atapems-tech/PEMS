@@ -75,9 +75,9 @@
                                     </pems-flex></pems-form>
                                 }
                             </pems-table-cell>
-                            <pems-table-cell class="small vs-hide-md"><span class="vs-num">@(p.LastExecutionDate?.ToString("yyyy-MM-dd"))</span></pems-table-cell>
+                            <pems-table-cell class="small vs-hide-md"><span class="vs-num">@(PemsDates.Date(p.LastExecutionDate))</span></pems-table-cell>
                             <pems-table-cell class="small">
-                                <span class="vs-num">@(p.NextDueDate?.ToString("yyyy-MM-dd"))</span>
+                                <span class="vs-num">@(PemsDates.Date(p.NextDueDate))</span>
                                 @if (p.IsOverdue) { <div><span class="vs-pill vs-pill--icon vs-pill--danger"><pems-icon name="bi-clock-history" aria-hidden="true" /> @Localizer["Overdue"]</span></div> }
                             </pems-table-cell>
                             <pems-table-cell class="text-nowrap text-end">

@@ -69,7 +69,7 @@
                     <pems-table-cell class="text-end" dir="ltr">@(d.SourceType == ProcurementDemandSources.MaterialRequisition ? "—" : d.Quantity.ToString("0.###") + " " + d.UnitName)</pems-table-cell>
                     <pems-table-cell dir="ltr">@(d.WarehouseCode ?? "—")</pems-table-cell>
                     <pems-table-cell><span class="vs-pill @Pill(d.Status)">@Localizer["Ppr_Status_" + d.Status]</span></pems-table-cell>
-                    <pems-table-cell class="small text-nowrap" dir="ltr">@d.RaisedAt.ToString("yyyy-MM-dd HH:mm")</pems-table-cell>
+                    <pems-table-cell class="small text-nowrap" dir="ltr">@PemsDates.DateTime(d.RaisedAt)</pems-table-cell>
                     <pems-table-cell>@if (d.MaterialRequisitionId.HasValue) { <pems-link href="/MaterialRequisition/Details/@d.MaterialRequisitionId" dir="ltr">@d.MaterialRequisitionNumber</pems-link> } else { <span class="text-muted">—</span> }</pems-table-cell>
                 </pems-table-row>
             }

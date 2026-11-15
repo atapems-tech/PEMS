@@ -45,7 +45,7 @@
                 else
                 {
                     <pems-table-scroll>
-                        <pems-data-table data="@(DataRows.Of(Model.Assignments, c_ => c_.Add(((Localizer["Role"])?.ToString() ?? ""), a => (object?)(a.RoleName)).Add(((Localizer["Scope"])?.ToString() ?? ""), a => (object?)(DataCell.Group(a.ScopeType, (string.IsNullOrEmpty(a.ScopeValue) ? "" : $" = {a.ScopeValue}")))).Add(((Localizer["Type"])?.ToString() ?? ""), a => (object?)(a.AssignmentType)).Add(((Localizer["Effective"])?.ToString() ?? ""), a => (object?)((a.EffectiveFrom == null && a.EffectiveTo == null ? (object?)DataCell.Span("text-body-secondary", Localizer["Always"]) : DataCell.Span(null, (a.EffectiveFrom?.ToString("yyyy-MM-dd")), " – ", (a.EffectiveTo?.ToString("yyyy-MM-dd") ?? Localizer["Open"])))))))" dense="true" />
+                        <pems-data-table data="@(DataRows.Of(Model.Assignments, c_ => c_.Add(((Localizer["Role"])?.ToString() ?? ""), a => (object?)(a.RoleName)).Add(((Localizer["Scope"])?.ToString() ?? ""), a => (object?)(DataCell.Group(a.ScopeType, (string.IsNullOrEmpty(a.ScopeValue) ? "" : $" = {a.ScopeValue}")))).Add(((Localizer["Type"])?.ToString() ?? ""), a => (object?)(a.AssignmentType)).Add(((Localizer["Effective"])?.ToString() ?? ""), a => (object?)((a.EffectiveFrom == null && a.EffectiveTo == null ? (object?)DataCell.Span("text-body-secondary", Localizer["Always"]) : DataCell.Span(null, (PemsDates.Date(a.EffectiveFrom)), " – ", (PemsDates.Date(a.EffectiveTo) ?? Localizer["Open"])))))))" dense="true" />
                     </pems-table-scroll>
                 }
             </pems-form-group>

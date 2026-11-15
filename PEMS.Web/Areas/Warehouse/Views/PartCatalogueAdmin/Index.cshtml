@@ -46,7 +46,7 @@
         <pems-alert tone="info" css="small py-2 mt-3 mb-0"><pems-icon name="bi-info-circle" /> @Localizer["Pc_Adm_PartNoNote"]</pems-alert>
         @if (Model.Settings.IsPersisted && Model.Settings.ModifiedDate.HasValue)
         {
-            <div class="small text-muted mt-2">@Localizer["Pc_Adm_PartNoModified"]: @Model.Settings.ModifiedDate.Value.ToString("yyyy-MM-dd HH:mm")@(string.IsNullOrEmpty(Model.Settings.ModifiedBy) ? "" : " · " + Model.Settings.ModifiedBy)</div>
+            <div class="small text-muted mt-2">@Localizer["Pc_Adm_PartNoModified"]: @PemsDates.DateTime(Model.Settings.ModifiedDate.Value)@(string.IsNullOrEmpty(Model.Settings.ModifiedBy) ? "" : " · " + Model.Settings.ModifiedBy)</div>
         }
     </section>
 

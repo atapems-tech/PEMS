@@ -17,9 +17,9 @@
 <pems-content-card css="mb-3">
     <pems-flex wrap="true" gap="2" align="center" justify="between" css="mb-3">
         <pems-flex gap="2" align="center">
-            <pems-button tone="neutral" size="small" outline="true" as="a" asp-action="MyWork" asp-route-date="@DateTime.Today.ToString("yyyy-MM-dd")">@Localizer["Today"]</pems-button>
-            <pems-button tone="neutral" size="small" outline="true" as="a" asp-action="MyWork" asp-route-date="@day.AddDays(-1).ToString("yyyy-MM-dd")"><pems-icon name="bi-chevron-left" /></pems-button>
-            <pems-button tone="neutral" size="small" outline="true" as="a" asp-action="MyWork" asp-route-date="@day.AddDays(1).ToString("yyyy-MM-dd")"><pems-icon name="bi-chevron-right" /></pems-button>
+            <pems-button tone="neutral" size="small" outline="true" as="a" asp-action="MyWork" asp-route-date="@PemsDates.Date(DateTime.Today)">@Localizer["Today"]</pems-button>
+            <pems-button tone="neutral" size="small" outline="true" as="a" asp-action="MyWork" asp-route-date="@PemsDates.Date(day.AddDays(-1))"><pems-icon name="bi-chevron-left" /></pems-button>
+            <pems-button tone="neutral" size="small" outline="true" as="a" asp-action="MyWork" asp-route-date="@PemsDates.Date(day.AddDays(1))"><pems-icon name="bi-chevron-right" /></pems-button>
         </pems-flex>
         <pems-heading level="6" class="mb-0">@Localizer["My Work"] &mdash; @day.ToString("dddd, MMM d")</pems-heading>
     </pems-flex>
@@ -33,7 +33,7 @@
         {
             <pems-link class="pems-cal-day-card @TypeBadgeClass(it.WorkOrderType) @(it.HasEmployeeConflict ? "pems-cal-conflict" : "")"
                href="@Url.Action("Details", "WorkOrder", new { id = it.WorkOrderId })">
-                <div class="pems-cal-day-time" dir="ltr">@it.PlannedStart.ToString("HH:mm") &ndash; @it.PlannedFinish.ToString("HH:mm")</div>
+                <div class="pems-cal-day-time" dir="ltr">@PemsDates.Time(it.PlannedStart) &ndash; @PemsDates.Time(it.PlannedFinish)</div>
                 <div class="pems-cal-day-body">
                     <div class="fw-bold">@it.WorkOrderNumber &middot; @it.EquipmentTagNumber</div>
                     <div class="small">@it.EquipmentDescription</div>

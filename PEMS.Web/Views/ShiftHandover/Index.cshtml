@@ -68,7 +68,7 @@
                             <pems-table-cell class="small">@(h.OutgoingName ?? "-")</pems-table-cell>
                             <pems-table-cell class="small">@(h.IncomingName ?? "-")</pems-table-cell>
                             <pems-table-cell class="small vs-hide-md">@(h.ShiftLabel ?? "-")</pems-table-cell>
-                            <pems-table-cell class="small"><span class="vs-num">@h.HandoverDate.ToString("yyyy-MM-dd HH:mm")</span></pems-table-cell>
+                            <pems-table-cell class="small"><span class="vs-num">@PemsDates.DateTime(h.HandoverDate)</span></pems-table-cell>
                             <pems-table-cell><span class="vs-pill @StatusTone(h.Status)">@StatusText(h.Status)</span></pems-table-cell>
                             <pems-table-cell><span class="vs-num">@h.ItemCount</span></pems-table-cell>
                         </pems-table-row>

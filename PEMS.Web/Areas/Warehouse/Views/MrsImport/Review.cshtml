@@ -26,7 +26,7 @@
                     <pems-link href="@Model.Batch.SourceFileDownloadUrl" class="small ms-2"><pems-icon name="bi-download" /> Download original file</pems-link>
                 }
             </pems-heading>
-            <span class="text-muted small">Batch #@Model.Batch.MrsImportBatchId - شیت @Model.Batch.SourceSheet - @Model.Batch.TotalRows ردیف - @Model.Batch.ImportDate.ToString("yyyy-MM-dd HH:mm")</span>
+            <span class="text-muted small">Batch #@Model.Batch.MrsImportBatchId - شیت @Model.Batch.SourceSheet - @Model.Batch.TotalRows ردیف - @PemsDates.DateTime(Model.Batch.ImportDate)</span>
         </div>
         <pems-button as="a" tone="neutral" size="small" outline="true" asp-action="Index"><pems-icon name="bi-arrow-left" /> Back</pems-button>
     </pems-flex>

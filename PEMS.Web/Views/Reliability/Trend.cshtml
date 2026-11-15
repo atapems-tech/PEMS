@@ -19,7 +19,7 @@
 <pems-flex justify="between" align="center" css="mb-3">
     <pems-heading level="5" class="mb-0"><pems-icon name="bi-graph-up" /> @Model.VariableType — @Model.Tag</pems-heading>
     <pems-flex gap="2">
-        <pems-button as="a" tone="neutral" size="small" outline="true" asp-action="ExportTrend" asp-route-pointId="@Model.ConditionMonitoringPointId" asp-route-range="@selectedRange" asp-route-from="@(selectedRange == "custom" ? Model.FromDate.ToString("yyyy-MM-dd") : null)" asp-route-to="@(selectedRange == "custom" ? Model.ToDate.ToString("yyyy-MM-dd") : null)"><pems-icon name="bi-download" /> @Localizer["Export"]</pems-button>
+        <pems-button as="a" tone="neutral" size="small" outline="true" asp-action="ExportTrend" asp-route-pointId="@Model.ConditionMonitoringPointId" asp-route-range="@selectedRange" asp-route-from="@(selectedRange == "custom" ? PemsDates.Date(Model.FromDate) : null)" asp-route-to="@(selectedRange == "custom" ? PemsDates.Date(Model.ToDate) : null)"><pems-icon name="bi-download" /> @Localizer["Export"]</pems-button>
         <pems-button tone="neutral" size="small" outline="true" as="a" asp-action="ConditionMonitoring" asp-route-equipmentId="@equipmentId">← @Localizer["Condition Monitoring"]</pems-button>
     </pems-flex>
 </pems-flex>
@@ -39,13 +39,13 @@
         </div>
         @if (selectedRange == "custom")
         {
-            <div><pems-label css="small mb-0">@Localizer["From"]</pems-label><pems-date name="from" value="@Model.FromDate.ToString("yyyy-MM-dd")" scale="small" /></div>
-            <div><pems-label css="small mb-0">@Localizer["To"]</pems-label><pems-date name="to" value="@Model.ToDate.ToString("yyyy-MM-dd")" scale="small" /></div>
+            <div><pems-label css="small mb-0">@Localizer["From"]</pems-label><pems-date name="from" value="@PemsDates.Date(Model.FromDate)" scale="small" /></div>
+            <div><pems-label css="small mb-0">@Localizer["To"]</pems-label><pems-date name="to" value="@PemsDates.Date(Model.ToDate)" scale="small" /></div>
             <pems-button tone="primary" size="small" outline="true" type="submit">@Localizer["Apply"]</pems-button>
         }
     </pems-flex></pems-form>
     <div class="small text-muted mt-2">
-        @Model.FromDate.ToString("yyyy-MM-dd") → @Model.ToDate.ToString("yyyy-MM-dd") · @Model.TotalInRange readings in range
+        @PemsDates.Date(Model.FromDate) → @PemsDates.Date(Model.ToDate) · @Model.TotalInRange readings in range
         @if (Model.Truncated)
         {
             <pems-badge tone="warning">Truncated — showing first @Model.Points.Count of @Model.TotalInRange; narrow the range to see all</pems-badge>
@@ -68,7 +68,7 @@
         var rows_77 = Model.Points.AsEnumerable().Reverse();
         var cell_77_2 = DataCell.Template(rows_77, @<text>@{ var pt = item; }<pems-badge tone="none" css="@EvalBadge(pt.EvaluationStatus)">@pt.EvaluationStatus</pems-badge></text>);
     }
-    <pems-data-table data="@(DataRows.Of(rows_77, c_ => c_.Add(((Localizer["Date"])?.ToString() ?? ""), pt => (object?)((pt.ReadingDate.ToString("yyyy-MM-dd HH:mm"))), css: "small").Add(((Localizer["Value"])?.ToString() ?? ""), pt => (object?)(DataCell.Group(pt.Value, " ", Model.Unit)), css: "text-end", headerCss: "text-end").Add(((Localizer["Evaluation"])?.ToString() ?? ""), pt => (object?)cell_77_2(pt)), rowClass: pt => (pt.IsAlarm ? "table-danger" : "")))" dense="true" />
+    <pems-data-table data="@(DataRows.Of(rows_77, c_ => c_.Add(((Localizer["Date"])?.ToString() ?? ""), pt => (object?)((PemsDates.DateTime(pt.ReadingDate))), css: "small").Add(((Localizer["Value"])?.ToString() ?? ""), pt => (object?)(DataCell.Group(pt.Value, " ", Model.Unit)), css: "text-end", headerCss: "text-end").Add(((Localizer["Evaluation"])?.ToString() ?? ""), pt => (object?)cell_77_2(pt)), rowClass: pt => (pt.IsAlarm ? "table-danger" : "")))" dense="true" />
     @if (!Model.Points.Any()) { <pems-text class="text-muted text-center py-4">@Localizer["هیچ قرائتی در این بازه ثبت نشده."]</pems-text> }
 </pems-content-card>
 

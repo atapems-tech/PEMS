@@ -57,8 +57,8 @@
                             <pems-table-cell class="small vs-hide-md">@c.ProjectName</pems-table-cell>
                             <pems-table-cell class="small">@c.VendorName</pems-table-cell>
                             <pems-table-cell class="text-end"><span class="vs-num">@(c.ContractValue.HasValue ? $"{c.ContractValue:N0} {c.Currency}" : "-")</span></pems-table-cell>
-                            <pems-table-cell class="small vs-hide-md"><span class="vs-num">@(c.StartDate?.ToString("yyyy-MM-dd") ?? "-")</span></pems-table-cell>
-                            <pems-table-cell class="small"><span class="vs-num">@(c.EndDate?.ToString("yyyy-MM-dd") ?? "-")</span></pems-table-cell>
+                            <pems-table-cell class="small vs-hide-md"><span class="vs-num">@(PemsDates.Date(c.StartDate) ?? "-")</span></pems-table-cell>
+                            <pems-table-cell class="small"><span class="vs-num">@(PemsDates.Date(c.EndDate) ?? "-")</span></pems-table-cell>
                             <pems-table-cell><span class="vs-pill @StatusTone(c.Status)">@StatusText(c.Status)</span></pems-table-cell>
                             <pems-table-cell class="text-end">
                                 <pems-link asp-action="Details" asp-route-id="@c.ContractId" class="lp-act lp-act--always" title="@Localizer["Ed_View"]" aria-label="@Localizer["Ed_View"]"><pems-icon name="bi-eye" aria-hidden="true" /></pems-link>

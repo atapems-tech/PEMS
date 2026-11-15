@@ -421,7 +421,7 @@
                     </pems-col>
                     <pems-col md="3">
                         <pems-label for="pc_WantedReceiptDate">@L("WantedReceiptDate")</pems-label>
-                        <pems-date id="pc_WantedReceiptDate" form="pcForm" name="WantedReceiptDate" value="@f.WantedReceiptDate?.ToString("yyyy-MM-dd")" scale="small" />
+                        <pems-date id="pc_WantedReceiptDate" form="pcForm" name="WantedReceiptDate" value="@PemsDates.Date(f.WantedReceiptDate)" scale="small" />
                     </pems-col>
                     <pems-col md="3">
                         <pems-label for="pc_StorageVolume">@L("StorageVolume")</pems-label>
@@ -442,7 +442,7 @@
                         <pems-table-body>
                         @foreach (var n in d.Notes)
                         {
-                            <pems-table-row><pems-table-cell class="vs-num text-nowrap">@n.CreatedDate.ToString("yyyy-MM-dd HH:mm")</pems-table-cell><pems-table-cell>@n.AuthorName</pems-table-cell><pems-table-cell>@(string.IsNullOrEmpty(n.StepKey) ? "" : Localizer["Pc_Step_" + n.StepKey].Value)</pems-table-cell><pems-table-cell>@n.Text</pems-table-cell></pems-table-row>
+                            <pems-table-row><pems-table-cell class="vs-num text-nowrap">@PemsDates.DateTime(n.CreatedDate)</pems-table-cell><pems-table-cell>@n.AuthorName</pems-table-cell><pems-table-cell>@(string.IsNullOrEmpty(n.StepKey) ? "" : Localizer["Pc_Step_" + n.StepKey].Value)</pems-table-cell><pems-table-cell>@n.Text</pems-table-cell></pems-table-row>
                         }
                         </pems-table-body>
                     </pems-related-table>

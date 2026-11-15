@@ -46,7 +46,7 @@
             <pems-heading level="6" class="mt-2 mb-1">@l.Subject</pems-heading>
             <pems-flex wrap="true" gap="3" css="small meta-item">
                 <span><strong>@(l.LetterType == "Incoming" ? "From" : "To"):</strong> @(l.LetterType == "Incoming" ? l.Sender : l.Receiver)</span>
-                <span><strong>Date:</strong> @l.LetterDate.ToString("yyyy-MM-dd")</span>
+                <span><strong>Date:</strong> @PemsDates.Date(l.LetterDate)</span>
                 <span><strong>@Localizer["Priority:"]</strong> @l.Priority</span>
                 @if (!string.IsNullOrEmpty(l.Category)) { <span><strong>@Localizer["Lc_Category"]:</strong> @Localizer["Lc_Cat_" + l.Category]</span> }
                 @if (!string.IsNullOrEmpty(l.ReferenceNumber)) { <span><strong>@Localizer["Lc_Reference"]:</strong> @l.ReferenceNumber</span> }
@@ -55,7 +55,7 @@
                 @if (l.ResponseRequired && l.ResponseDueDate.HasValue)
                 {
                     <span>
-                        <strong>@Localizer["Lt_ResponseDueDate"]:</strong> @l.ResponseDueDate.Value.ToString("yyyy-MM-dd")
+                        <strong>@Localizer["Lt_ResponseDueDate"]:</strong> @PemsDates.Date(l.ResponseDueDate.Value)
                         @if (l.ResponseAnswered) { <pems-badge tone="success"><pems-icon name="bi-check-circle" aria-hidden="true" /> @Localizer["Lt_ResponseAnswered"]</pems-badge> }
                         else if (l.ResponseOverdue) { <pems-badge tone="danger"><pems-icon name="bi-exclamation-triangle" aria-hidden="true" /> @Localizer["Lt_Overdue"]</pems-badge> }
                         else { <pems-badge tone="neutral"><pems-icon name="bi-hourglass-split" aria-hidden="true" /> @Localizer["Lt_ResponsePending"]</pems-badge> }
@@ -75,7 +75,7 @@
                         <div>
                             <pems-label css="mb-1" for="detResponseDue">@Localizer["Lt_ResponseDueDate"]</pems-label>
                             <pems-date name="responseDueDate" id="detResponseDue" scale="small"
-                                   value="@(l.ResponseDueDate?.ToString("yyyy-MM-dd"))" min="@l.LetterDate.ToString("yyyy-MM-dd")" />
+                                   value="@(PemsDates.Date(l.ResponseDueDate))" min="@PemsDates.Date(l.LetterDate)" />
                         </div>
                         <pems-button tone="neutral" size="small" outline="true" type="submit">@Localizer["Save"]</pems-button>
                     </pems-flex></pems-form>
@@ -210,14 +210,14 @@
     {
         <pems-alert tone="warning" css="mt-3 mb-0 py-2 small">
             <pems-icon name="bi-arrow-return-left" /> Returned for revision by <strong>@l.ReturnedByName</strong>
-            on @l.ReturnedDate?.ToString("yyyy-MM-dd HH:mm") &mdash; <em>@l.ReturnReason</em>
+            on @PemsDates.DateTime(l.ReturnedDate) &mdash; <em>@l.ReturnReason</em>
         </pems-alert>
     }
     @if (l.Status == "Rejected" && !string.IsNullOrEmpty(l.RejectReason))
     {
         <pems-alert tone="danger" css="mt-3 mb-0 py-2 small">
             <pems-icon name="bi-x-circle" /> Rejected by <strong>@l.RejectedByName</strong>
-            on @l.RejectedDate?.ToString("yyyy-MM-dd HH:mm") &mdash; <em>@l.RejectReason</em>
+            on @PemsDates.DateTime(l.RejectedDate) &mdash; <em>@l.RejectReason</em>
         </pems-alert>
     }
 </pems-content-card>
@@ -234,7 +234,7 @@
                     <pems-badge tone="light" css="rounded-pill">@step.StepOrder</pems-badge>
                     <span>@step.ApproverName</span>
                     <pems-badge tone="@stepBadge">@(step.IsCurrent ? Localizer["Lc_StepCurrent"].Value : step.Status)</pems-badge>
-                    @if (step.DecidedDate.HasValue) { <small class="text-muted">@step.DecidedDate.Value.ToString("yyyy-MM-dd HH:mm")</small> }
+                    @if (step.DecidedDate.HasValue) { <small class="text-muted">@PemsDates.DateTime(step.DecidedDate.Value)</small> }
                     @if (!string.IsNullOrWhiteSpace(step.Comment)) { <small class="text-muted">&mdash; @step.Comment</small> }
                     @if (isAdmin && step.Status == "Pending" && l.Status == "PendingApproval")
                     {
@@ -279,7 +279,7 @@
                     <div class="cv-head">
                         <span class="cv-kind cv-kind--@kindClass"><pems-icon css="@(m.Kind == "Referral" ? "bi-signpost-split" : m.Kind == "Reply" ? "bi-reply" : "bi-envelope")" aria-hidden="true" /> @Localizer["Ct_Kind_" + m.Kind]</span>
                         <span class="cv-who">@m.SenderName</span>
-                        <span class="text-muted">@m.LetterNumber &middot; @m.LetterDate.ToString("yyyy-MM-dd")</span>
+                        <span class="text-muted">@m.LetterNumber &middot; @PemsDates.Date(m.LetterDate)</span>
                         <pems-badge tone="primary" css="ms-auto">@Localizer["Ct_ThisLetter"]</pems-badge>
                     </div>
                 }
@@ -290,7 +290,7 @@
                             <span class="cv-kind cv-kind--@kindClass"><pems-icon css="@(m.Kind == "Referral" ? "bi-signpost-split" : m.Kind == "Reply" ? "bi-reply" : "bi-envelope")" aria-hidden="true" /> @Localizer["Ct_Kind_" + m.Kind]</span>
                             <span class="cv-who">@m.SenderName</span>
                             @if (!string.IsNullOrWhiteSpace(m.RecipientsSummary)) { <span class="cv-to">&rarr; @m.RecipientsSummary</span> }
-                            <span class="text-muted ms-auto">@m.LetterNumber &middot; @m.LetterDate.ToString("yyyy-MM-dd")</span>
+                            <span class="text-muted ms-auto">@m.LetterNumber &middot; @PemsDates.Date(m.LetterDate)</span>
                             @if (m.AttachmentsCount > 0) { <pems-icon name="bi-paperclip" css="text-muted" aria-hidden="true" title="@Localizer["Lt_ColAttachments"]" /> }
                         </summary>
                         @if (!string.IsNullOrWhiteSpace(m.CcSummary)) { <div class="small cv-to mt-1">@Localizer["Lc_Cc"]: @m.CcSummary</div> }
@@ -315,12 +315,12 @@
             <div class="thread-message mb-2 @(isCurrent ? "current" : "")">
                 @if (isCurrent)
                 {
-                    <div class="small text-muted mb-1"><strong>@msg.SenderOrRegisteredByName</strong> &middot; @msg.LetterNumber &middot; @msg.LetterDate.ToString("yyyy-MM-dd")</div>
+                    <div class="small text-muted mb-1"><strong>@msg.SenderOrRegisteredByName</strong> &middot; @msg.LetterNumber &middot; @PemsDates.Date(msg.LetterDate)</div>
                 }
                 else
                 {
                     <div class="msg-summary small text-muted" data-bs-toggle="collapse" data-bs-target="#threadMsg@(i)">
-                        <pems-icon name="bi-chevron-right" /> <strong>@msg.SenderOrRegisteredByName</strong> &middot; @msg.LetterNumber &middot; @msg.LetterDate.ToString("yyyy-MM-dd") &mdash; @msg.Subject
+                        <pems-icon name="bi-chevron-right" /> <strong>@msg.SenderOrRegisteredByName</strong> &middot; @msg.LetterNumber &middot; @PemsDates.Date(msg.LetterDate) &mdash; @msg.Subject
                     </div>
                     <div class="collapse" id="threadMsg@(i)">
                         <div class="border rounded p-2 mt-1 small">@Html.Raw(msg.Body)</div>
@@ -407,7 +407,7 @@
                 <pems-flex as="li" gap="2" css="pb-2 small">
                     <pems-badge class="pems-h-fit" tone="none" css="bg-@decColor">@rv.Decision</pems-badge>
                     <div>
-                        <div>by <strong>@rv.ReviewerName</strong> &middot; @rv.CreatedDate.ToString("yyyy-MM-dd HH:mm")</div>
+                        <div>by <strong>@rv.ReviewerName</strong> &middot; @PemsDates.DateTime(rv.CreatedDate)</div>
                         @if (!string.IsNullOrEmpty(rv.Comment)) { <div class="text-muted">@rv.Comment</div> }
                     </div>
                 </pems-flex>
@@ -419,7 +419,7 @@
 @if (!string.IsNullOrEmpty(l.SignedByName))
 {
     <pems-alert tone="success" css="py-2 small mb-3">
-        <pems-icon name="bi-patch-check-fill" /> Electronically acknowledged by <strong>@l.SignedByName</strong> on @l.SignedDate?.ToString("yyyy-MM-dd HH:mm")
+        <pems-icon name="bi-patch-check-fill" /> Electronically acknowledged by <strong>@l.SignedByName</strong> on @PemsDates.DateTime(l.SignedDate)
     </pems-alert>
 }
 
@@ -448,7 +448,7 @@
                     var rows_45 = Model.Recipients;
                     var cell_45_2 = DataCell.Template(rows_45, @<text>@{ var r = item; }
                                         @if (r.IsRead)
-                                        { <span class="text-success small"><pems-icon name="bi-check2-all" /> @r.ReadDate?.ToString("yyyy-MM-dd")</span> }
+                                        { <span class="text-success small"><pems-icon name="bi-check2-all" /> @PemsDates.Date(r.ReadDate)</span> }
                                         else
                                         {
                                             <pems-form asp-action="MarkRecipientRead" method="post" class="d-inline">
@@ -531,7 +531,7 @@
                                             </pems-form>
                                         }
                                     </text>);
-                    var cell_46_5 = DataCell.Template(rows_46, @<text>@{ var r = item; }@r.ReferredByName<br />@r.ReferredDate.ToString("yyyy-MM-dd")</text>);
+                    var cell_46_5 = DataCell.Template(rows_46, @<text>@{ var r = item; }@r.ReferredByName<br />@PemsDates.Date(r.ReferredDate)</text>);
                     var cell_46_6 = DataCell.Template(rows_46, @<text>@{ var r = item; }
                                         @if (r.Status != "Completed")
                                         {
@@ -545,7 +545,7 @@
                                         else
                                         { @r.ResponseNote }
                                     </text>);
-                    <pems-data-table data="@(DataRows.Of(rows_46, c_ => c_.Add("Referred To", r => (object?)((r.ReferredToEmployeeName ?? r.ReferredToDepartmentName))).Add(((Localizer["Instructions"])?.ToString() ?? ""), r => (object?)(r.Instructions), css: "small").Add(((Localizer["Due"])?.ToString() ?? ""), r => (object?)((r.DueDate?.ToString("yyyy-MM-dd")))).Add(((Localizer["Status"])?.ToString() ?? ""), r => (object?)cell_46_3(r)).Add(((Localizer["Read"])?.ToString() ?? ""), r => (object?)cell_46_4(r)).Add("By / When", r => (object?)cell_46_5(r), css: "small text-muted").Add("", r => (object?)cell_46_6(r)), rowClass: r => (r.IsOverdue ? "table-danger" : "")))" dense="true" css="mb-2" />
+                    <pems-data-table data="@(DataRows.Of(rows_46, c_ => c_.Add("Referred To", r => (object?)((r.ReferredToEmployeeName ?? r.ReferredToDepartmentName))).Add(((Localizer["Instructions"])?.ToString() ?? ""), r => (object?)(r.Instructions), css: "small").Add(((Localizer["Due"])?.ToString() ?? ""), r => (object?)((PemsDates.Date(r.DueDate)))).Add(((Localizer["Status"])?.ToString() ?? ""), r => (object?)cell_46_3(r)).Add(((Localizer["Read"])?.ToString() ?? ""), r => (object?)cell_46_4(r)).Add("By / When", r => (object?)cell_46_5(r), css: "small text-muted").Add("", r => (object?)cell_46_6(r)), rowClass: r => (r.IsOverdue ? "table-danger" : "")))" dense="true" css="mb-2" />
                 }
                 else
                 { <pems-text class="text-muted small">No referrals yet.</pems-text> }
@@ -599,7 +599,7 @@
                                 <div>
                                     <div>@ev.Description</div>
                                     <div class="text-muted">
-                                        @ev.EventDate.ToString("yyyy-MM-dd HH:mm")
+                                        @PemsDates.DateTime(ev.EventDate)
                                         @if (!string.IsNullOrEmpty(ev.ActorName)) { <span>&middot; by @ev.ActorName</span> }
                                     </div>
                                 </div>

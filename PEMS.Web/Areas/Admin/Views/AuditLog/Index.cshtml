@@ -64,7 +64,7 @@
                     @foreach (var log in Model.Items)
                     {
                         <pems-table-row class="lp-row">
-                            <pems-table-cell class="small"><span class="vs-num">@log.Timestamp.ToString("yyyy-MM-dd HH:mm:ss")</span></pems-table-cell>
+                            <pems-table-cell class="small"><span class="vs-num">@PemsDates.DateTimeSeconds(log.Timestamp)</span></pems-table-cell>
                             <pems-table-cell class="small"><span class="vs-cell-strong">@(log.UserName ?? "system")</span></pems-table-cell>
                             <pems-table-cell class="small" title="@log.EntityName">@log.EntityName</pems-table-cell>
                             <pems-table-cell class="small vs-hide-md"><span class="vs-num" title="@log.EntityKeyValue">@log.EntityKeyValue</span></pems-table-cell>

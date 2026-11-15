@@ -70,7 +70,7 @@
                             <pems-table-cell class="small">@r.VendorName</pems-table-cell>
                             <pems-table-cell class="small"><span class="vs-num">@r.WarehouseCode</span></pems-table-cell>
                             <pems-table-cell class="small vs-hide-md">@r.ReceivedByName</pems-table-cell>
-                            <pems-table-cell class="small"><span class="vs-num">@r.ReceivingDate.ToString("yyyy-MM-dd")</span></pems-table-cell>
+                            <pems-table-cell class="small"><span class="vs-num">@PemsDates.Date(r.ReceivingDate)</span></pems-table-cell>
                             <pems-table-cell class="text-end"><span class="vs-num">@r.LineCount</span></pems-table-cell>
                             <pems-table-cell><span class="vs-pill @StatusTone(r.Status)">@StatusText(r.Status)</span></pems-table-cell>
                             <pems-table-cell class="text-end">
@@ -122,7 +122,7 @@
                 </pems-form-group>
                 <pems-form-group css="mb-2">
                     <pems-label css="small">@Localizer["Receiving Date"]</pems-label>
-                    <pems-date name="receivingDate" scale="small" value="@DateTime.Now.ToString("yyyy-MM-dd")" required />
+                    <pems-date name="receivingDate" scale="small" value="@PemsDates.Date(DateTime.Now)" required />
                 </pems-form-group>
                 <pems-form-group css="mb-2">
                     <pems-label css="small">@Localizer["Notes (optional)"]</pems-label>

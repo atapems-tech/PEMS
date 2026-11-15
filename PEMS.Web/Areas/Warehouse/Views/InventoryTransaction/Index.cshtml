@@ -45,11 +45,11 @@
                                              all-text="@Localizer["ItL_AllTypes"]" items="@types.Select(t => new SelectListItem(TypeText(t), t))" />
                     <div>
                         <label class="lp-lbl" for="itFilterFrom">@Localizer["ItL_From"]</label>
-                        <pems-date id="itFilterFrom" name="fromDate" value="@from?.ToString("yyyy-MM-dd")" />
+                        <pems-date id="itFilterFrom" name="fromDate" value="@PemsDates.Date(from)" />
                     </div>
                     <div>
                         <label class="lp-lbl" for="itFilterTo">@Localizer["ItL_To"]</label>
-                        <pems-date id="itFilterTo" name="toDate" value="@to?.ToString("yyyy-MM-dd")" />
+                        <pems-date id="itFilterTo" name="toDate" value="@PemsDates.Date(to)" />
                     </div>
                 </pems-list-filters>
                 <pems-list-reset-columns grid-key="InventoryTransaction" />
@@ -59,8 +59,8 @@
         <pems-list-chips reset-href="@Url.Action("Index")">
             @if (warehouseId.HasValue) { <pems-list-chip label="@Localizer["ItL_Warehouse"]" value="@(warehouseCode ?? warehouseId.ToString())" remove-href="@Without("warehouse")" /> }
             @if (!string.IsNullOrEmpty(type)) { <pems-list-chip label="@Localizer["Cm_Type"]" value="@TypeText(type)" remove-href="@Without("type")" /> }
-            @if (from.HasValue) { <pems-list-chip label="@Localizer["ItL_From"]" value="@from.Value.ToString("yyyy-MM-dd")" remove-href="@Without("from")" /> }
-            @if (to.HasValue) { <pems-list-chip label="@Localizer["ItL_To"]" value="@to.Value.ToString("yyyy-MM-dd")" remove-href="@Without("to")" /> }
+            @if (from.HasValue) { <pems-list-chip label="@Localizer["ItL_From"]" value="@PemsDates.Date(from.Value)" remove-href="@Without("from")" /> }
+            @if (to.HasValue) { <pems-list-chip label="@Localizer["ItL_To"]" value="@PemsDates.Date(to.Value)" remove-href="@Without("to")" /> }
         </pems-list-chips>
 
         <pems-list-grid>
@@ -81,7 +81,7 @@
                     @foreach (var t in Model.Items)
                     {
                         <pems-table-row class="lp-row">
-                            <pems-table-cell class="small"><span class="vs-num">@t.TransactionDate.ToString("yyyy-MM-dd HH:mm")</span></pems-table-cell>
+                            <pems-table-cell class="small"><span class="vs-num">@PemsDates.DateTime(t.TransactionDate)</span></pems-table-cell>
                             <pems-table-cell class="small"><span class="vs-title-cell" title="@t.MaterialDescription"><span class="vs-num">@t.MaterialCode</span> - @t.MaterialDescription</span></pems-table-cell>
                             <pems-table-cell><span class="vs-pill vs-pill--neutral">@TypeText(t.TransactionType)</span></pems-table-cell>
                             <pems-table-cell class="small"><span class="vs-num">@t.WarehouseCode</span></pems-table-cell>

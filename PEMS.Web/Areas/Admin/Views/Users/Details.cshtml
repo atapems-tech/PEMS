@@ -83,7 +83,7 @@
         <pems-info-item label="@Localizer["Effective Permissions"]" num><span id="permInfoAllowed">@Model.AllowedCount</span> <span class="text-muted small">/ @Model.EffectivePermissions.Count</span></pems-info-item>
         <pems-info-item label="@Localizer["Potential SoD conflicts"]" num>@Model.SoDExposureCount</pems-info-item>
         <pems-info-item label="@Localizer["Employee link"]">@(Model.HasLinkedEmployee ? Localizer["Linked"] : Localizer["Not linked"])</pems-info-item>
-        <pems-info-item label="@Localizer["Last Login"]" num>@(Model.LastLoginDate?.ToString("yyyy-MM-dd HH:mm") ?? Localizer["Never"].Value)</pems-info-item>
+        <pems-info-item label="@Localizer["Last Login"]" num>@(PemsDates.DateTime(Model.LastLoginDate) ?? Localizer["Never"].Value)</pems-info-item>
     </pems-info-grid>
 </div>
 
@@ -380,7 +380,7 @@
             else
             {
                 <pems-table-scroll>
-                    <pems-data-table data="@(DataRows.Of(Model.RecentAuditLogs, c_ => c_.Add(((Localizer["Timestamp"])?.ToString() ?? ""), log => (object?)((log.Timestamp.ToString("yyyy-MM-dd HH:mm:ss"))), css: "vs-num").Add(((Localizer["Permission"])?.ToString() ?? ""), log => (object?)(DataCell.Code(($"{log.ResourceName}.{log.ActionName}")))).Add(((Localizer["Resource ID"])?.ToString() ?? ""), log => (object?)((log.ResourceId ?? "")), css: "text-body-secondary small").Add(((Localizer["Decision"])?.ToString() ?? ""), log => (object?)((log.Decision == "Allow" ? (object?)DataCell.Span("admin-status active", DataCell.Icon("bi-check2-circle"), " ", log.Decision) : DataCell.Span("admin-status inactive", DataCell.Icon("bi-x-circle"), " ", log.Decision)))).Add(((Localizer["Reason"])?.ToString() ?? ""), log => (object?)((log.Reason ?? "")), css: "text-body-secondary small")))" />
+                    <pems-data-table data="@(DataRows.Of(Model.RecentAuditLogs, c_ => c_.Add(((Localizer["Timestamp"])?.ToString() ?? ""), log => (object?)((PemsDates.DateTimeSeconds(log.Timestamp))), css: "vs-num").Add(((Localizer["Permission"])?.ToString() ?? ""), log => (object?)(DataCell.Code(($"{log.ResourceName}.{log.ActionName}")))).Add(((Localizer["Resource ID"])?.ToString() ?? ""), log => (object?)((log.ResourceId ?? "")), css: "text-body-secondary small").Add(((Localizer["Decision"])?.ToString() ?? ""), log => (object?)((log.Decision == "Allow" ? (object?)DataCell.Span("admin-status active", DataCell.Icon("bi-check2-circle"), " ", log.Decision) : DataCell.Span("admin-status inactive", DataCell.Icon("bi-x-circle"), " ", log.Decision)))).Add(((Localizer["Reason"])?.ToString() ?? ""), log => (object?)((log.Reason ?? "")), css: "text-body-secondary small")))" />
                 </pems-table-scroll>
             }
             <pems-text class="text-body-secondary small mt-3 mb-0"><pems-link asp-controller="AuthorizationAudit" asp-action="Index" asp-route-userId="@Model.UserId">@Localizer["Open full audit log for this user"]</pems-link></pems-text>

@@ -10,7 +10,7 @@
 <pems-heading level="2">@Localizer["Break-glass recovery"]</pems-heading>
 @if (Model.Window.IsOpen)
 {
-    <pems-text class="subtitle">@Localizer["A recovery request file is present on the server. This page closes at"] <span dir="ltr">@Model.Window.ExpiresAtUtc?.ToString("HH:mm") UTC</span>.</pems-text>
+    <pems-text class="subtitle">@Localizer["A recovery request file is present on the server. This page closes at"] <span dir="ltr">@PemsDates.Time(Model.Window.ExpiresAtUtc) UTC</span>.</pems-text>
 }
 else
 {

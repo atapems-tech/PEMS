@@ -40,7 +40,7 @@
                             <pems-link asp-controller="EngineeringDocuments" asp-action="Details" asp-route-id="@d.DocumentId">
                                 @d.DocumentNo &mdash; @d.Title
                             </pems-link>
-                            <span class="text-muted small">@(((DateTime?)d.ModifiedDate)?.ToString("yyyy-MM-dd"))</span>
+                            <span class="text-muted small">@(PemsDates.Date(((DateTime?)d.ModifiedDate)))</span>
                         </pems-flex>
                     }
                 </pems-bullet-list>
@@ -103,5 +103,5 @@
                         }
                     </text>);
     }
-    <pems-data-table data="@(DataRows.Of(rows_24, c_ => c_.Add(((Localizer["شماره"])?.ToString() ?? ""), l => (object?)(DataCell.Link(Url.Action("Details", "Letter", new { id = l.LetterId }), l.LetterNumber))).Add(((Localizer["فرستنده"])?.ToString() ?? ""), l => (object?)(l.Sender), css: "small").Add(((Localizer["موضوع"])?.ToString() ?? ""), l => (object?)(l.Subject), css: "small").Add(((Localizer["تاریخ"])?.ToString() ?? ""), l => (object?)((((DateTime)l.LetterDate).ToString("yyyy-MM-dd"))), css: "small").Add(((Localizer["لینک"])?.ToString() ?? ""), l => (object?)cell_24_4(l))))" css="mb-0" />
+    <pems-data-table data="@(DataRows.Of(rows_24, c_ => c_.Add(((Localizer["شماره"])?.ToString() ?? ""), l => (object?)(DataCell.Link(Url.Action("Details", "Letter", new { id = l.LetterId }), l.LetterNumber))).Add(((Localizer["فرستنده"])?.ToString() ?? ""), l => (object?)(l.Sender), css: "small").Add(((Localizer["موضوع"])?.ToString() ?? ""), l => (object?)(l.Subject), css: "small").Add(((Localizer["تاریخ"])?.ToString() ?? ""), l => (object?)((PemsDates.Date(((DateTime)l.LetterDate)))), css: "small").Add(((Localizer["لینک"])?.ToString() ?? ""), l => (object?)cell_24_4(l))))" css="mb-0" />
 </pems-content-card>

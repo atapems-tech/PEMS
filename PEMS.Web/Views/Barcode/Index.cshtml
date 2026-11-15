@@ -51,7 +51,7 @@
                         <pems-table-cell class="small">@b.TargetType #@b.TargetId</pems-table-cell>
                         <pems-table-cell><pems-badge tone="@(b.Status == "Active" ? "success" : b.Status == "Disabled" ? "neutral" : "danger")">@b.Status</pems-badge></pems-table-cell>
                         <pems-table-cell class="text-end">@b.PrintCount</pems-table-cell>
-                        <pems-table-cell class="small">@(((DateTime)b.CreatedDate).ToString("yyyy-MM-dd HH:mm"))</pems-table-cell>
+                        <pems-table-cell class="small">@(PemsDates.DateTime(((DateTime)b.CreatedDate)))</pems-table-cell>
                     </pems-table-row>
                 }
             }

@@ -75,7 +75,7 @@
                     @foreach (var e in Model.Items)
                     {
                         <pems-table-row class="lp-row">
-                            <pems-table-cell class="small" dir="ltr"><span class="vs-num">@e.OccurredAtUtc.ToString("yyyy-MM-dd HH:mm:ss")</span></pems-table-cell>
+                            <pems-table-cell class="small" dir="ltr"><span class="vs-num">@PemsDates.DateTimeSeconds(e.OccurredAtUtc)</span></pems-table-cell>
                             <pems-table-cell class="small" title="@e.Method">@MethodLabel(e.Method)</pems-table-cell>
                             <pems-table-cell>
                                 @if (e.Result == RecoveryResults.Success) { <span class="vs-pill vs-pill--icon vs-pill--success"><pems-icon name="bi-check-circle-fill" aria-hidden="true" /> @Localizer["Success"]</span> }

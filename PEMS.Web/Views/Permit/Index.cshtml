@@ -121,7 +121,7 @@
                                 <pems-table-cell class="small">
                                     @if (task != null)
                                     {
-                                        <span class="vs-num">@task.AssignedDate.ToString("yyyy-MM-dd HH:mm")</span> <span class="text-muted">(@WaitingSince(task.AssignedDate))</span>
+                                        <span class="vs-num">@PemsDates.DateTime(task.AssignedDate)</span> <span class="text-muted">(@WaitingSince(task.AssignedDate))</span>
                                     }
                                     else { <text>-</text> }
                                 </pems-table-cell>
@@ -130,7 +130,7 @@
                             {
                                 <pems-table-cell class="small vs-hide-md">@(p.IssuerName ?? "-")</pems-table-cell>
                                 <pems-table-cell class="small vs-hide-md">@(p.ReceiverName ?? "-")</pems-table-cell>
-                                <pems-table-cell class="small"><span class="vs-num">@(p.ValidFrom?.ToString("yyyy-MM-dd") ?? "-") / @(p.ValidTo?.ToString("yyyy-MM-dd") ?? "-")</span></pems-table-cell>
+                                <pems-table-cell class="small"><span class="vs-num">@(PemsDates.Date(p.ValidFrom) ?? "-") / @(PemsDates.Date(p.ValidTo) ?? "-")</span></pems-table-cell>
                             }
                         </pems-table-row>
                     }

@@ -100,7 +100,7 @@
                             <pems-table-cell><span class="vs-pill @PriorityTone(w.Priority)">@VdrUi.Loc(Localizer, "Pri_", w.Priority)</span></pems-table-cell>
                             <pems-table-cell class="small vs-hide-md">@(w.AssignedTeamName ?? w.AssignedEmployeeName ?? w.AssignedTo ?? "-")</pems-table-cell>
                             <pems-table-cell><span class="vs-pill @StatusTone(w.Status)">@StatusText(w.Status)</span></pems-table-cell>
-                            <pems-table-cell class="small text-muted"><span class="vs-num">@w.CreatedDate.ToString("yyyy-MM-dd")</span></pems-table-cell>
+                            <pems-table-cell class="small text-muted"><span class="vs-num">@PemsDates.Date(w.CreatedDate)</span></pems-table-cell>
                         </pems-table-row>
                     }
                 </pems-table-body>

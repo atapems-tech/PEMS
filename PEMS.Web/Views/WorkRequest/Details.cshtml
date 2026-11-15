@@ -61,7 +61,7 @@
         <div class="kpi-icon bg-icon-blue pems-s-792bd2d6"><pems-icon name="bi-clipboard-plus" /></div>
         <div>
             <pems-heading level="5" class="mb-0">@Model.RequestNumber &mdash; @Model.Title <pems-badge tone="@badgeClass">@Model.Status</pems-badge></pems-heading>
-            <span class="text-muted small">@Localizer["Requested By"] @Model.RequestedByName @Localizer["on"] <bdi dir="ltr">@Model.RequestedDate.ToString("yyyy-MM-dd")</bdi></span>
+            <span class="text-muted small">@Localizer["Requested By"] @Model.RequestedByName @Localizer["on"] <bdi dir="ltr">@PemsDates.Date(Model.RequestedDate)</bdi></span>
         </div>
     </pems-flex>
     @if (Model.IsEmergency || Model.IsHseRelated || Model.RiskScore.HasValue)
@@ -84,8 +84,8 @@
                 <pems-badge tone="light" title="Equipment Criticality (context only, not auto-applied)">Crit: @Model.EquipmentCriticalityClass</pems-badge>
             }
         </pems-info-item>
-        @if (Model.ResponseDueDate.HasValue) { <pems-info-item label="@Localizer["Info_ResponseDue"]" num>@Model.ResponseDueDate.Value.ToString("yyyy-MM-dd HH:mm")</pems-info-item> }
-        @if (Model.ResolutionDueDate.HasValue) { <pems-info-item label="@Localizer["Info_ResolutionDue"]" num>@Model.ResolutionDueDate.Value.ToString("yyyy-MM-dd HH:mm")</pems-info-item> }
+        @if (Model.ResponseDueDate.HasValue) { <pems-info-item label="@Localizer["Info_ResponseDue"]" num>@PemsDates.DateTime(Model.ResponseDueDate.Value)</pems-info-item> }
+        @if (Model.ResolutionDueDate.HasValue) { <pems-info-item label="@Localizer["Info_ResolutionDue"]" num>@PemsDates.DateTime(Model.ResolutionDueDate.Value)</pems-info-item> }
         @if (!string.IsNullOrWhiteSpace(Model.FailureModeName) || !string.IsNullOrWhiteSpace(Model.FailureEffect) || Model.ReportedDowntimeHours.HasValue)
         {
             <pems-info-item label="@Localizer["Failure Mode"]">@Model.FailureModeName</pems-info-item>
@@ -257,6 +257,6 @@
 
 <pems-content-card as="details" open="@(wf == null)">
     <summary class="h6 mb-0">@Localizer["Business Audit"]</summary>
-    <pems-data-table data="@(DataRows.Of(Model.StatusHistory, c_ => c_.Add(((Localizer["From"])?.ToString() ?? ""), h => (object?)(h.FromStatus), css: "small").Add(((Localizer["To"])?.ToString() ?? ""), h => (object?)(h.ToStatus), css: "small").Add(((Localizer["By"])?.ToString() ?? ""), h => (object?)(h.ChangedByName ?? "-"), css: "small").Add(((Localizer["Date"])?.ToString() ?? ""), h => (object?)(h.ChangedDate.ToString("yyyy-MM-dd HH:mm")), css: "small", element: new CellElement("bdi", null, "ltr")).Add(((Localizer["Reason"])?.ToString() ?? ""), h => (object?)(h.Reason), css: "small text-muted")))" dense="true" css="mb-0 mt-3" />
+    <pems-data-table data="@(DataRows.Of(Model.StatusHistory, c_ => c_.Add(((Localizer["From"])?.ToString() ?? ""), h => (object?)(h.FromStatus), css: "small").Add(((Localizer["To"])?.ToString() ?? ""), h => (object?)(h.ToStatus), css: "small").Add(((Localizer["By"])?.ToString() ?? ""), h => (object?)(h.ChangedByName ?? "-"), css: "small").Add(((Localizer["Date"])?.ToString() ?? ""), h => (object?)(PemsDates.DateTime(h.ChangedDate)), css: "small", element: new CellElement("bdi", null, "ltr")).Add(((Localizer["Reason"])?.ToString() ?? ""), h => (object?)(h.Reason), css: "small text-muted")))" dense="true" css="mb-0 mt-3" />
     @if (!Model.StatusHistory.Any()) { <pems-text class="text-muted text-center py-3 mb-0">@Localizer["هنوز تغییر وضعیتی ثبت نشده."]</pems-text> }
 </pems-content-card>

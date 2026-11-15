@@ -20,7 +20,7 @@
             <pems-heading level="5" class="mb-1"><pems-icon name="bi-inboxes" aria-hidden="true" /> @Localizer["Whi_Title"]</pems-heading>
             <div class="small text-muted">
                 @Localizer["Work Order"]: <pems-link href="/WorkOrder/Details/@Model.WorkOrderId" dir="ltr">@Model.WorkOrderNumber</pems-link> · @Model.WorkOrderStatus
-                @if (Model.RequestedDate.HasValue) { <span> · @Localizer["Whi_RequestedOn"] <span dir="ltr">@Model.RequestedDate.Value.ToString("yyyy-MM-dd HH:mm")</span></span> }
+                @if (Model.RequestedDate.HasValue) { <span> · @Localizer["Whi_RequestedOn"] <span dir="ltr">@PemsDates.DateTime(Model.RequestedDate.Value)</span></span> }
             </div>
         </div>
         <div>

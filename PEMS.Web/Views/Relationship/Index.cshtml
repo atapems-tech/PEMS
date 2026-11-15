@@ -169,7 +169,7 @@ else
                                         }
                                         else if (item.PlannedOrDueDate.HasValue)
                                         {
-                                            <span class="text-muted small ms-1">(@item.PlannedOrDueDate.Value.ToString("yyyy-MM-dd"))</span>
+                                            <span class="text-muted small ms-1">(@PemsDates.Date(item.PlannedOrDueDate.Value))</span>
                                         }
                                     </span>
                                     <span class="text-end">

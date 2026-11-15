@@ -45,15 +45,15 @@
     <pems-form method="get"><pems-row gap="2" css="align-items-end">
         <pems-col md="3">
             <pems-label css="small">@Localizer["From"]</pems-label>
-            <pems-date name="from" value="@(from?.ToString("yyyy-MM-dd"))" scale="small" />
+            <pems-date name="from" value="@(PemsDates.Date(from))" scale="small" />
         </pems-col>
         <pems-col md="3">
             <pems-label css="small">To</pems-label>
-            <pems-date name="to" value="@(to?.ToString("yyyy-MM-dd"))" scale="small" />
+            <pems-date name="to" value="@(PemsDates.Date(to))" scale="small" />
         </pems-col>
         <pems-col md="2"><pems-button tone="primary" size="small" type="submit">@Localizer["Apply"]</pems-button></pems-col>
         <pems-col md="4" css="text-muted small">
-            Period: @(from?.ToString("yyyy-MM-dd") ?? "all history") → @(to?.ToString("yyyy-MM-dd") ?? "now")
+            Period: @(PemsDates.Date(from) ?? "all history") → @(PemsDates.Date(to) ?? "now")
         </pems-col>
     </pems-row></pems-form>
 </pems-content-card>
@@ -131,7 +131,7 @@
     <pems-tab-pane fade="true" id="tab-repeat">
         <pems-content-card>
             <pems-text class="text-muted small">قاعده: همان تجهیز + همان حالت‌خرابی، با حداقل یک زوج خرابی متوالی در پنجره‌ی زمانی مشخص.</pems-text>
-            <pems-data-table data="@(DataRows.Of(repeatFailures, c_ => c_.Add(((Localizer["Tag"])?.ToString() ?? ""), g => (object?)(g.TagNumber), css: "fw-bold").Add(((Localizer["Failure Mode"])?.ToString() ?? ""), g => (object?)(g.FailureModeKey)).Add("Occurrences", g => (object?)(g.OccurrenceCount), css: "text-end", headerCss: "text-end").Add("First", g => (object?)(g.FirstOccurrence.ToString("yyyy-MM-dd")), css: "small").Add("Last", g => (object?)(g.LastOccurrence.ToString("yyyy-MM-dd")), css: "small").Add("Window (days)", g => (object?)(g.WindowDays), css: "text-end", headerCss: "text-end")))" dense="true" css="mb-0" />
+            <pems-data-table data="@(DataRows.Of(repeatFailures, c_ => c_.Add(((Localizer["Tag"])?.ToString() ?? ""), g => (object?)(g.TagNumber), css: "fw-bold").Add(((Localizer["Failure Mode"])?.ToString() ?? ""), g => (object?)(g.FailureModeKey)).Add("Occurrences", g => (object?)(g.OccurrenceCount), css: "text-end", headerCss: "text-end").Add("First", g => (object?)(PemsDates.Date(g.FirstOccurrence)), css: "small").Add("Last", g => (object?)(PemsDates.Date(g.LastOccurrence)), css: "small").Add("Window (days)", g => (object?)(g.WindowDays), css: "text-end", headerCss: "text-end")))" dense="true" css="mb-0" />
             @if (!repeatFailures.Any()) { <pems-text class="text-muted text-center py-4 mb-0">No Data Available - هیچ خرابی تکراری در این بازه تشخیص داده نشد.</pems-text> }
         </pems-content-card>
     </pems-tab-pane>
@@ -140,7 +140,7 @@
         <pems-content-card>
             <pems-text class="text-muted small">
                 شواهد چندبعدی - نه یک امتیاز واحد. مقایسه‌ی @effectiveness.WindowDays روز اخیر
-                (از @effectiveness.CurrentPeriodStart.ToString("yyyy-MM-dd")) با @effectiveness.WindowDays روز پیش از آن.
+                (از @PemsDates.Date(effectiveness.CurrentPeriodStart)) با @effectiveness.WindowDays روز پیش از آن.
             </pems-text>
             <pems-table kind="enterprise" scale="small" css="mb-0">
                 <pems-table-head><pems-table-row><pems-table-header>Dimension</pems-table-header><pems-table-header>Current Period</pems-table-header><pems-table-header>Prior Period</pems-table-header><pems-table-header>@Localizer["Trend"]</pems-table-header></pems-table-row></pems-table-head>

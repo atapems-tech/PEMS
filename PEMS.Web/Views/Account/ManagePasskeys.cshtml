@@ -33,7 +33,7 @@
 
 <pems-content-card>
     <pems-heading level="6" class="mb-3">@Localizer["Registered Passkeys"]</pems-heading>
-    <pems-data-table data="@(DataRows.Of(Model, c_ => c_.Add(((Localizer["Nickname"])?.ToString() ?? ""), c => (object?)(c.Nickname ?? "-"), css: "small").Add(((Localizer["Registered"])?.ToString() ?? ""), c => (object?)(c.CreatedDate.ToString("yyyy-MM-dd HH:mm")), css: "small").Add(((Localizer["Last Used"])?.ToString() ?? ""), c => (object?)(c.LastUsedDate?.ToString("yyyy-MM-dd HH:mm") ?? "Never"), css: "small")))" dense="true" css="mb-0" />
+    <pems-data-table data="@(DataRows.Of(Model, c_ => c_.Add(((Localizer["Nickname"])?.ToString() ?? ""), c => (object?)(c.Nickname ?? "-"), css: "small").Add(((Localizer["Registered"])?.ToString() ?? ""), c => (object?)(PemsDates.DateTime(c.CreatedDate)), css: "small").Add(((Localizer["Last Used"])?.ToString() ?? ""), c => (object?)(PemsDates.DateTime(c.LastUsedDate) ?? "Never"), css: "small")))" dense="true" css="mb-0" />
     @if (!Model.Any()) { <pems-text class="text-muted text-center py-3 mb-0">@Localizer["هنوز Passkey ای ثبت نشده."]</pems-text> }
 </pems-content-card>
 

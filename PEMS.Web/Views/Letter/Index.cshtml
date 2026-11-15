@@ -79,8 +79,8 @@
         var disciplineName = disciplines.Where(d => d.DisciplineId == disciplineId).Select(d => (string)d.Name).FirstOrDefault() ?? ("#" + disciplineId);
         chips.Add((Localizer["Lt_Discipline"].Value + ": " + disciplineName, Without("disciplineId")));
     }
-    if (fromDate.HasValue) chips.Add((Localizer["Lp_From"].Value + ": " + fromDate.Value.ToString("yyyy-MM-dd"), Without("fromDate")));
-    if (toDate.HasValue) chips.Add((Localizer["Lp_To"].Value + ": " + toDate.Value.ToString("yyyy-MM-dd"), Without("toDate")));
+    if (fromDate.HasValue) chips.Add((Localizer["Lp_From"].Value + ": " + PemsDates.Date(fromDate.Value), Without("fromDate")));
+    if (toDate.HasValue) chips.Add((Localizer["Lp_To"].Value + ": " + PemsDates.Date(toDate.Value), Without("toDate")));
     if (!string.IsNullOrEmpty(currentPriority)) chips.Add((Localizer["Lt_Priority"].Value + ": " + Localizer["Lt_P_" + currentPriority].Value, Without("priority")));
     if (hasAtt.HasValue) chips.Add((Localizer["Lt_HasAttachments"].Value + ": " + Localizer[hasAtt.Value ? "Lt_Yes" : "Lt_No"].Value, Without("hasAttachments")));
     if (hasRef.HasValue) chips.Add((Localizer["Lt_HasReferrals"].Value + ": " + Localizer[hasRef.Value ? "Lt_Yes" : "Lt_No"].Value, Without("hasReferrals")));
@@ -355,8 +355,8 @@
                                     </pems-select>
                                 </div>
                                 <pems-row gap="2">
-                                    <pems-col span="6"><label class="lp-lbl" for="fpFrom">@Localizer["Lp_From"]</label><pems-date id="fpFrom" name="fromDate" value="@fromDate?.ToString("yyyy-MM-dd")" scale="small" /></pems-col>
-                                    <pems-col span="6"><label class="lp-lbl" for="fpTo">@Localizer["Lp_To"]</label><pems-date id="fpTo" name="toDate" value="@toDate?.ToString("yyyy-MM-dd")" scale="small" /></pems-col>
+                                    <pems-col span="6"><label class="lp-lbl" for="fpFrom">@Localizer["Lp_From"]</label><pems-date id="fpFrom" name="fromDate" value="@PemsDates.Date(fromDate)" scale="small" /></pems-col>
+                                    <pems-col span="6"><label class="lp-lbl" for="fpTo">@Localizer["Lp_To"]</label><pems-date id="fpTo" name="toDate" value="@PemsDates.Date(toDate)" scale="small" /></pems-col>
                                 </pems-row>
                                 <pems-row gap="2">
                                     <pems-col span="6">
@@ -620,7 +620,7 @@
                                         <pems-flex wrap="true" gap="1" css="lp-badges">
                                             @if (l.Status == "ReturnedForRevision") { <span class="ct-chip ct-chip--return"><pems-icon name="bi-arrow-return-left" aria-hidden="true" /> @Localizer["Ct_ReturnedChip"]</span> }
                                             @if (l.IsRevived) { <span class="ct-chip ct-chip--revived"><pems-icon name="bi-arrow-repeat" aria-hidden="true" /> @Localizer["Ct_RevivedChip"]</span> }
-                                            @if (l.MyReminderAt.HasValue) { <span class="ct-chip ct-chip--remind" title="@l.MyReminderAt.Value.ToString("yyyy-MM-dd HH:mm")"><pems-icon name="bi-bell" aria-hidden="true" /> @l.MyReminderAt.Value.ToString("MM-dd")</span> }
+                                            @if (l.MyReminderAt.HasValue) { <span class="ct-chip ct-chip--remind" title="@PemsDates.DateTime(l.MyReminderAt.Value)"><pems-icon name="bi-bell" aria-hidden="true" /> @l.MyReminderAt.Value.ToString("MM-dd")</span> }
                                             @if (l.IsTrashed && !inTrash) { <span class="ct-chip ct-chip--trash"><pems-icon name="bi-trash3" aria-hidden="true" /> @Localizer["Ct_FolderTrash"]</span> }
                                             @if (l.ConfidentialityLevel != "Public" && l.ConfidentialityLevel != "Internal") { <pems-badge tone="@(veryConfidential ? "ct-chip ct-chip--vconf" : "dark")"><pems-icon name="bi-lock-fill" /> @l.ConfidentialityLevel</pems-badge> }
                                             @if (!string.IsNullOrEmpty(l.RelatedDocumentNo)) { <pems-badge tone="info"><pems-icon name="bi-file-earmark-text" /> @l.RelatedDocumentNo</pems-badge> }
@@ -639,16 +639,16 @@
                                     {
                                         if (l.NextResponseDue.Value.Date < today)
                                         {
-                                            <span class="pems-due-overdue" title="@l.NextResponseDue.Value.ToString("yyyy-MM-dd")"><pems-icon name="bi-exclamation-triangle" aria-hidden="true" /> @DueText(l.NextResponseDue.Value)</span>
+                                            <span class="pems-due-overdue" title="@PemsDates.Date(l.NextResponseDue.Value)"><pems-icon name="bi-exclamation-triangle" aria-hidden="true" /> @DueText(l.NextResponseDue.Value)</span>
                                         }
-                                        else { <span class="@((l.NextResponseDue.Value.Date - today).Days <= 2 ? "lp-due-soon" : "")" title="@l.NextResponseDue.Value.ToString("yyyy-MM-dd")">@DueText(l.NextResponseDue.Value)</span> }
+                                        else { <span class="@((l.NextResponseDue.Value.Date - today).Days <= 2 ? "lp-due-soon" : "")" title="@PemsDates.Date(l.NextResponseDue.Value)">@DueText(l.NextResponseDue.Value)</span> }
                                     }
                                     else { <span class="text-muted">—</span> }
                                 </pems-table-cell>
-                                <pems-table-cell class="small text-muted">@l.LetterDate.ToString("yyyy-MM-dd")</pems-table-cell>
+                                <pems-table-cell class="small text-muted">@PemsDates.Date(l.LetterDate)</pems-table-cell>
                                 <pems-table-cell class="small">@(string.IsNullOrEmpty(l.DisciplineName) ? "—" : l.DisciplineName)</pems-table-cell>
                                 <pems-table-cell class="small">@if (l.AttachmentsCount > 0) { <span title="@Localizer["Lt_ColAttachments"]"><pems-icon name="bi-paperclip" aria-hidden="true" /> @l.AttachmentsCount</span> } else { <span class="text-muted">—</span> }</pems-table-cell>
-                                <pems-table-cell class="small text-muted">@l.LastActivityDate.ToString("yyyy-MM-dd")</pems-table-cell>
+                                <pems-table-cell class="small text-muted">@PemsDates.Date(l.LastActivityDate)</pems-table-cell>
                                 <pems-table-cell class="text-nowrap lp-actions">
                                     @if (inTrash)
                                     {

@@ -68,7 +68,7 @@
                             <pems-table-cell><pems-badge tone="@ab">@i.AIStatus</pems-badge></pems-table-cell>
                             <pems-table-cell><pems-badge tone="@sb">@i.IntakeStage</pems-badge></pems-table-cell>
                             <pems-table-cell>@i.RoutedModule</pems-table-cell>
-                            <pems-table-cell>@i.UploadDate.ToString("yyyy-MM-dd HH:mm")</pems-table-cell>
+                            <pems-table-cell>@PemsDates.DateTime(i.UploadDate)</pems-table-cell>
                             <pems-table-cell>
                                 @if (i.IntakeStage != "Routed" && i.IntakeStage != "Rejected")
                                 {

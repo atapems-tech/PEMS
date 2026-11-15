@@ -57,7 +57,7 @@
                     {
                         <pems-table-row class="lp-row">
                             <pems-table-cell><pems-link asp-action="Review" asp-route-batchId="@b.EquipmentFunctionalLocationAssignmentBatchId" class="lp-subject"><span class="vs-title-cell" title="@b.FileName">@b.FileName</span></pems-link></pems-table-cell>
-                            <pems-table-cell class="small"><span class="vs-num">@b.ImportDate.ToString("yyyy-MM-dd HH:mm")</span></pems-table-cell>
+                            <pems-table-cell class="small"><span class="vs-num">@PemsDates.DateTime(b.ImportDate)</span></pems-table-cell>
                             <pems-table-cell class="small vs-hide-md">@b.ImportedByName</pems-table-cell>
                             <pems-table-cell class="text-end"><span class="vs-num">@b.TotalRows</span></pems-table-cell>
                             <pems-table-cell class="text-end"><span class="vs-pill vs-pill--success">@b.ExactCount</span></pems-table-cell>

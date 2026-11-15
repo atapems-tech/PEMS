@@ -14,7 +14,7 @@
     <pems-flex justify="between" align="center" wrap="true" gap="2">
         <div>
             <pems-heading level="5" class="mb-0">@Model.SourceFileName</pems-heading>
-            <span class="text-muted small">Batch #@Model.TableExtractionBatchId - @Model.ExtractionMethod - @Model.TotalRows rows - @Model.CreatedDate.ToString("yyyy-MM-dd HH:mm")</span>
+            <span class="text-muted small">Batch #@Model.TableExtractionBatchId - @Model.ExtractionMethod - @Model.TotalRows rows - @PemsDates.DateTime(Model.CreatedDate)</span>
         </div>
         <pems-button tone="neutral" size="small" outline="true" as="a" asp-action="Index"><pems-icon name="bi-arrow-left" /> Back</pems-button>
     </pems-flex>

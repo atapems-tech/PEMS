@@ -35,7 +35,7 @@
                     <pems-table-row>
                         <pems-table-cell>@attachment.FileName</pems-table-cell>
                         <pems-table-cell>@attachment.FileExtension</pems-table-cell>
-                        <pems-table-cell class="small text-muted">@attachment.UploadDate.ToString("yyyy-MM-dd HH:mm")</pems-table-cell>
+                        <pems-table-cell class="small text-muted">@PemsDates.DateTime(attachment.UploadDate)</pems-table-cell>
                         <pems-table-cell>
                             <pems-badge tone="neutral">@attachment.AIStatus</pems-badge>
                         </pems-table-cell>

@@ -18,9 +18,9 @@
                 @if (!string.IsNullOrEmpty(Model.ResponsibleEmployeeName)) { <text>&middot; Responsible: @Model.ResponsibleEmployeeName</text> }
             </div>
             <div class="text-muted small">
-                Planned: @(Model.PlannedStartDate?.ToString("yyyy-MM-dd")) &rarr; @(Model.PlannedFinishDate?.ToString("yyyy-MM-dd"))
-                @if (Model.ActualStartDate.HasValue) { <text> &middot; Actual start: @Model.ActualStartDate?.ToString("yyyy-MM-dd")</text> }
-                @if (Model.ActualFinishDate.HasValue) { <text> &middot; Actual finish: @Model.ActualFinishDate?.ToString("yyyy-MM-dd")</text> }
+                Planned: @(PemsDates.Date(Model.PlannedStartDate)) &rarr; @(PemsDates.Date(Model.PlannedFinishDate))
+                @if (Model.ActualStartDate.HasValue) { <text> &middot; Actual start: @PemsDates.Date(Model.ActualStartDate)</text> }
+                @if (Model.ActualFinishDate.HasValue) { <text> &middot; Actual finish: @PemsDates.Date(Model.ActualFinishDate)</text> }
             </div>
             @if (!string.IsNullOrEmpty(Model.Notes)) { <div class="mt-1">@Model.Notes</div> }
             @if (Model.Status == "OnHold" && !string.IsNullOrEmpty(Model.HoldReason)) { <div class="text-warning small mt-1"><pems-icon name="bi-pause-circle" /> Held: @Model.HoldReason</div> }
@@ -66,7 +66,7 @@
 <pems-content-card>
     <pems-heading level="6" class="mb-2">Production Runs</pems-heading>
     <div class="table-scroll-area pems-s-7bf38d03">
-        <pems-data-table data="@(DataRows.Of(Model.Runs, c_ => c_.Add("Run #", r => (object?)(r.RunNumber)).Add(((Localizer["Status"])?.ToString() ?? ""), r => (object?)(DataCell.Badge("neutral", r.Status))).Add(((Localizer["Start"])?.ToString() ?? ""), r => (object?)((r.StartDate?.ToString("yyyy-MM-dd HH:mm"))), css: "small").Add(((Localizer["End"])?.ToString() ?? ""), r => (object?)((r.EndDate?.ToString("yyyy-MM-dd HH:mm"))), css: "small").Add("Output Qty", r => (object?)((r.TotalOutputQuantity.ToString("N3")))).Add("Loss Qty", r => (object?)((r.TotalLossQuantity.ToString("N3")))).Add("", r => (object?)(DataCell.ButtonLink(Url.Action("Details", "ProductionRun", new { id = r.ProductionRunId }), "primary", "small", true, null, "Open")), css: "text-end")))" />
+        <pems-data-table data="@(DataRows.Of(Model.Runs, c_ => c_.Add("Run #", r => (object?)(r.RunNumber)).Add(((Localizer["Status"])?.ToString() ?? ""), r => (object?)(DataCell.Badge("neutral", r.Status))).Add(((Localizer["Start"])?.ToString() ?? ""), r => (object?)((PemsDates.DateTime(r.StartDate))), css: "small").Add(((Localizer["End"])?.ToString() ?? ""), r => (object?)((PemsDates.DateTime(r.EndDate))), css: "small").Add("Output Qty", r => (object?)((r.TotalOutputQuantity.ToString("N3")))).Add("Loss Qty", r => (object?)((r.TotalLossQuantity.ToString("N3")))).Add("", r => (object?)(DataCell.ButtonLink(Url.Action("Details", "ProductionRun", new { id = r.ProductionRunId }), "primary", "small", true, null, "Open")), css: "text-end")))" />
     </div>
     @if (!Model.Runs.Any()) { <pems-text class="text-muted text-center py-3">No runs yet.</pems-text> }
 </pems-content-card>

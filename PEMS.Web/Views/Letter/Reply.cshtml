@@ -30,7 +30,7 @@
                 <div class="flex-grow-1">
                     <div class="fw-semibold">@msg.Subject</div>
                     <div class="small text-muted">
-                        @msg.SenderOrRegisteredByName &middot; @msg.LetterDate.ToString("yyyy-MM-dd HH:mm") &middot; @msg.LetterNumber
+                        @msg.SenderOrRegisteredByName &middot; @PemsDates.DateTime(msg.LetterDate) &middot; @msg.LetterNumber
                     </div>
                     @if (!string.IsNullOrEmpty(msg.RecipientsSummary))
                     {
@@ -49,7 +49,7 @@
         @* پاسخ‌خواهی نامه‌ی مادر: وضعیت هم متن و آیکون دارد، نه فقط رنگ *@
         <pems-alert tone="@(parent.ResponseOverdue ? "danger" : "info")" css="py-2" role="status">
             <pems-icon css="@(parent.ResponseOverdue ? "bi-exclamation-triangle" : "bi-reply")" aria-hidden="true" />
-            @Localizer["Lt_ReplyParentDue"] <strong>@parent.ResponseDueDate.Value.ToString("yyyy-MM-dd")</strong>
+            @Localizer["Lt_ReplyParentDue"] <strong>@PemsDates.Date(parent.ResponseDueDate.Value)</strong>
             @if (parent.ResponseOverdue) { <span>(@Localizer["Lt_Overdue"])</span> }
         </pems-alert>
     }
