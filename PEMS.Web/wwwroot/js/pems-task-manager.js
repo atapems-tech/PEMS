@@ -43,15 +43,7 @@
         });
     });
 
-    var dirty = new Set();
-    document.querySelectorAll('form[data-tm-dirty-guard]').forEach(function (form) {
-        form.addEventListener('input', function () { dirty.add(form); });
-        form.addEventListener('submit', function () { dirty.delete(form); });
-        form.addEventListener('reset', function () { dirty.delete(form); });
-    });
-    window.addEventListener('beforeunload', function (e) {
-        if (dirty.size > 0) { e.preventDefault(); e.returnValue = ''; }
-    });
+    // unsaved-changes guard: the forms carry data-pems-dirty-guard and the shared leave guard (pems-form.js) handles them (SCRUM-488)
     var createModal = document.getElementById('tmCreateModal');
     if (createModal && window.bootstrap) {
         createModal.addEventListener('shown.bs.modal', function () {

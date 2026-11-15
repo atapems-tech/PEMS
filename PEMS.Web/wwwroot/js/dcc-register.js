@@ -629,7 +629,7 @@
         doc.addEventListener("keydown", function (e) {
             if ((e.ctrlKey || e.metaKey) && e.key === "Enter") { e.preventDefault(); submit(e.shiftKey ? "next" : "open"); }
         });
-        window.addEventListener("beforeunload", function (e) { if (state.dirty && !state.submitting) { e.preventDefault(); e.returnValue = T("Dcc_Unsaved"); } });
+        window.PemsForm.guard(function () { return state.dirty && !state.submitting; });   // the shared leave guard (SCRUM-488)
 
         function finishNext(result) {
             var keep = $("dcrKeepSender").checked;
