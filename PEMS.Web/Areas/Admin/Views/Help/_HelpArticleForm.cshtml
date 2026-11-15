@@ -71,41 +71,41 @@
         </pems-nav>
         <pems-tab-content css="border border-top-0 p-3">
             <pems-tab-pane fade="true" active="true" id="tab-en">
-                <div class="mb-2">
+                <pems-form-group css="mb-2">
                     <pems-label>Title (EN) <span class="text-danger">*</span></pems-label>
                     <pems-input asp-for="TitleEn" required />
-                </div>
-                <div class="mb-2">
+                </pems-form-group>
+                <pems-form-group css="mb-2">
                     <pems-label>Summary (EN) <span class="text-danger">*</span></pems-label>
                     <pems-textarea asp-for="SummaryEn" rows="2" required></pems-textarea>
-                </div>
-                <div class="mb-2">
+                </pems-form-group>
+                <pems-form-group css="mb-2">
                     <pems-label>Content (EN, HTML) <span class="text-danger">*</span></pems-label>
                     <pems-textarea asp-for="ContentEn" rows="10" required></pems-textarea>
                     <pems-help-text>Basic HTML (headings, paragraphs, lists, tables, links) - sanitized automatically on save.</pems-help-text>
-                </div>
-                <div class="mb-2">
+                </pems-form-group>
+                <pems-form-group css="mb-2">
                     <pems-label>@Localizer["Search Keywords (EN)"]</pems-label>
                     <pems-input asp-for="SearchKeywordsEn" />
-                </div>
+                </pems-form-group>
             </pems-tab-pane>
             <pems-tab-pane fade="true" id="tab-fa" dir="rtl">
-                <div class="mb-2">
+                <pems-form-group css="mb-2">
                     <pems-label>عنوان (فارسی) <span class="text-danger">*</span></pems-label>
                     <pems-input asp-for="TitleFa" required />
-                </div>
-                <div class="mb-2">
+                </pems-form-group>
+                <pems-form-group css="mb-2">
                     <pems-label>خلاصه (فارسی) <span class="text-danger">*</span></pems-label>
                     <pems-textarea asp-for="SummaryFa" rows="2" required></pems-textarea>
-                </div>
-                <div class="mb-2">
+                </pems-form-group>
+                <pems-form-group css="mb-2">
                     <pems-label>متن (فارسی، HTML) <span class="text-danger">*</span></pems-label>
                     <pems-textarea asp-for="ContentFa" rows="10" required></pems-textarea>
-                </div>
-                <div class="mb-2">
+                </pems-form-group>
+                <pems-form-group css="mb-2">
                     <pems-label>@Localizer["کلیدواژه‌های جستجو (فارسی)"]</pems-label>
                     <pems-input asp-for="SearchKeywordsFa" />
-                </div>
+                </pems-form-group>
             </pems-tab-pane>
         </pems-tab-content>
     </pems-col>

@@ -14,7 +14,7 @@
         <div asp-validation-summary="All" class="text-danger small mb-2" role="alert"></div>
 
         <pems-form method="post" asp-action="Create">
-            <div class="mb-3">
+            <pems-form-group css="mb-3">
                 <pems-label for="ParentKey">@Localizer["Nav_Field_Parent"] <span class="text-danger" aria-hidden="true">*</span></pems-label>
                 <pems-select id="ParentKey" name="ParentKey" required>
                     @foreach (var (key, title) in Model.Parents)
@@ -22,7 +22,7 @@
                         <option value="@key" selected="@(input.ParentKey == key)">@title</option>
                     }
                 </pems-select>
-            </div>
+            </pems-form-group>
 
             <pems-row gap="3" css="mb-3">
                 <pems-col md="6">
@@ -54,7 +54,7 @@
                 <pems-help-text>@Localizer["Nav_RouteHelp"]</pems-help-text>
             </fieldset>
 
-            <div class="mb-3">
+            <pems-form-group css="mb-3">
                 <pems-label for="RequiredPermission">@Localizer["Nav_Field_Permission"]</pems-label>
                 <pems-select id="RequiredPermission" name="RequiredPermission" aria-describedby="permHelp" dir="ltr">
                     <option value="">@Localizer["Nav_NoPermission"]</option>
@@ -64,12 +64,12 @@
                     }
                 </pems-select>
                 <pems-help-text id="permHelp">@Localizer["Nav_PermissionHelp"]</pems-help-text>
-            </div>
+            </pems-form-group>
 
-            <div class="mb-4">
+            <pems-form-group css="mb-4">
                 <pems-label for="Icon">@Localizer["Nav_Field_Icon"]</pems-label>
                 <pems-input id="Icon" name="Icon" value="@input.Icon" maxlength="60" dir="ltr" pattern="bi-[a-z0-9-]{1,50}" placeholder="bi-link-45deg" />
-            </div>
+            </pems-form-group>
 
             <pems-flex gap="2">
                 <pems-button tone="none" css="btn-primary" type="submit">@Localizer["Save"]</pems-button>

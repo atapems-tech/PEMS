@@ -20,7 +20,7 @@
             <input type="hidden" name="Key" value="@i.Key" />
             <input type="hidden" name="RowVersion" value="@input.RowVersion" />
 
-            <div class="mb-3">
+            <pems-form-group css="mb-3">
                 <pems-label for="ParentKey">@Localizer["Nav_Field_Parent"]</pems-label>
                 <pems-select id="ParentKey" name="ParentKey" disabled="@(i.Kind == NavigationMenuItemKinds.Section)">
                     @if (i.Kind != NavigationMenuItemKinds.Subheading)
@@ -36,7 +36,7 @@
                 {
                     <pems-help-text>@Localizer["Nav_SectionTopLevelOnly"]</pems-help-text>
                 }
-            </div>
+            </pems-form-group>
 
             <pems-row gap="3" css="mb-3">
                 <pems-col md="6">
@@ -50,18 +50,18 @@
                 <pems-help-text id="titleHelp">@Localizer["Nav_TitleHelp"]</pems-help-text>
             </pems-row>
 
-            <div class="mb-3">
+            <pems-form-group css="mb-3">
                 <pems-label for="Icon">@Localizer["Nav_Field_Icon"]</pems-label>
                 <div class="input-group">
                     <span class="input-group-text"><pems-icon css="@input.Icon" id="iconPreview" aria-hidden="true" /></span>
                     <pems-input id="Icon" name="Icon" value="@input.Icon" maxlength="60" dir="ltr" pattern="bi-[a-z0-9-]{1,50}" aria-describedby="iconHelp" />
                 </div>
                 <pems-help-text id="iconHelp">@Localizer["Nav_IconHelp"]</pems-help-text>
-            </div>
+            </pems-form-group>
 
             @if (i.Kind == NavigationMenuItemKinds.Link)
             {
-                <div class="mb-3">
+                <pems-form-group css="mb-3">
                     <pems-label for="BadgeKey">@Localizer["Nav_Field_Badge"]</pems-label>
                     <pems-select id="BadgeKey" name="BadgeKey" aria-describedby="badgeHelp">
                         <option value="">@Localizer["Nav_NoBadge"]</option>
@@ -71,7 +71,7 @@
                         }
                     </pems-select>
                     <pems-help-text id="badgeHelp">@Localizer["Nav_BadgeHelp"]</pems-help-text>
-                </div>
+                </pems-form-group>
             }
 
             <pems-check-row switch css="mb-4">

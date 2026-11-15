@@ -9,21 +9,21 @@
 
     <pems-form asp-action="Create" method="post">
 
-        <div class="mb-3">
+        <pems-form-group css="mb-3">
             <pems-label>Role Name (English, no spaces)</pems-label>
             <pems-input asp-for="Name" placeholder="e.g. QualityInspector" />
             <span asp-validation-for="Name" class="text-danger small"></span>
-        </div>
+        </pems-form-group>
 
-        <div class="mb-3">
+        <pems-form-group css="mb-3">
             <pems-label>@Localizer["Display Name"]</pems-label>
             <pems-input asp-for="DisplayName" placeholder="e.g. Quality Inspector" />
-        </div>
+        </pems-form-group>
 
-        <div class="mb-3">
+        <pems-form-group css="mb-3">
             <pems-label>@Localizer["Description"]</pems-label>
             <pems-textarea asp-for="Description" rows="3"></pems-textarea>
-        </div>
+        </pems-form-group>
 
         <pems-button tone="primary" type="submit">@Localizer["Save"]</pems-button>
         <pems-button as="a" tone="neutral" outline="true" asp-action="Index">@Localizer["Cancel"]</pems-button>

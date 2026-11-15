@@ -29,7 +29,7 @@ else
 else
 {
     <pems-form asp-controller="BreakGlass" asp-action="Index" method="post" autocomplete="off">
-        <div class="mb-3">
+        <pems-form-group css="mb-3">
             <pems-label for="TargetUserId">@Localizer["Administrator account"]</pems-label>
             <pems-select id="TargetUserId" name="TargetUserId" required>
                 <option value="">-</option>
@@ -38,13 +38,13 @@ else
                     <option value="@a.UserId">@a.UserName @(string.IsNullOrWhiteSpace(a.FullName) ? "" : $"({a.FullName})")</option>
                 }
             </pems-select>
-        </div>
+        </pems-form-group>
         @if (!Model.Window.IsOpen)
         {
-            <div class="mb-3">
+            <pems-form-group css="mb-3">
                 <pems-label for="VendorToken">@Localizer["Vendor recovery token"]</pems-label>
                 <pems-textarea id="VendorToken" name="VendorToken" dir="ltr" rows="4" required spellcheck="false"></pems-textarea>
-            </div>
+            </pems-form-group>
         }
         <pems-button tone="danger" type="submit">@Localizer["Reset account"]</pems-button>
     </pems-form>

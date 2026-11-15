@@ -47,10 +47,10 @@ else
 
                 @if (!string.IsNullOrEmpty(Model.SignaturePath))
                 {
-                    <div class="mb-3">
+                    <pems-form-group css="mb-3">
                         <div class="text-muted small mb-1">امضای فعلی:</div>
                         <img class="pems-signature-view" src="@Model.SignaturePath" alt="Signature" />
-                    </div>
+                    </pems-form-group>
                 }
 
                 <div class="pems-s-39cdd266">

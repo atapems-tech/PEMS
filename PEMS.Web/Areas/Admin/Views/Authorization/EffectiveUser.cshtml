@@ -36,7 +36,7 @@
         }
         else
         {
-            <div class="mb-3">
+            <pems-form-group css="mb-3">
                 <div class="text-body-secondary small mb-1">@Localizer["Roles and scope"]</div>
                 @if (Model.Assignments.Count == 0)
                 {
@@ -48,7 +48,7 @@
                         <pems-data-table data="@(DataRows.Of(Model.Assignments, c_ => c_.Add(((Localizer["Role"])?.ToString() ?? ""), a => (object?)(a.RoleName)).Add(((Localizer["Scope"])?.ToString() ?? ""), a => (object?)(DataCell.Group(a.ScopeType, (string.IsNullOrEmpty(a.ScopeValue) ? "" : $" = {a.ScopeValue}")))).Add(((Localizer["Type"])?.ToString() ?? ""), a => (object?)(a.AssignmentType)).Add(((Localizer["Effective"])?.ToString() ?? ""), a => (object?)((a.EffectiveFrom == null && a.EffectiveTo == null ? (object?)DataCell.Span("text-body-secondary", Localizer["Always"]) : DataCell.Span(null, (a.EffectiveFrom?.ToString("yyyy-MM-dd")), " – ", (a.EffectiveTo?.ToString("yyyy-MM-dd") ?? Localizer["Open"])))))))" dense="true" />
                     </pems-table-scroll>
                 }
-            </div>
+            </pems-form-group>
 
             @if (Model.RoleNames.Contains("SystemAdmin"))
             {
