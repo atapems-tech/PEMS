@@ -302,7 +302,7 @@
     @if (!string.IsNullOrEmpty(Model.Status))
     {
         <pems-divider class="my-2" />
-        <partial name="_PemsStageDiagram" model="wfStageDiagramModel" />
+        <pems-stage-diagram steps="@wfStageDiagramModel.Steps" />
 
         @if (wfNextStep != null)
         {
@@ -1002,7 +1002,7 @@
                 <input type="hidden" name="id" value="@Model.DocumentId" />
                 <pems-modal-header close="true"><pems-icon name="bi-signpost-split" /> @Localizer["Engineering Document Approval Workflow"]</pems-modal-header>
                 <pems-modal-body>
-                    <partial name="_PemsStageDiagram" model="wfStageDiagramModel" />
+                    <pems-stage-diagram steps="@wfStageDiagramModel.Steps" />
 
                     <pems-divider />
 

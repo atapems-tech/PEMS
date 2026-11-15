@@ -101,6 +101,15 @@ public sealed class CheckRowPagerTests
         Assert.Equal("<ol></ol>", Run(new PemsBulletListTagHelper(UiTestRenderer.Instance) { Ordered = true }, "pems-bullet-list", [], ""));
         Assert.Equal("<li class=\"a\">x</li>", Run(new PemsBulletTagHelper(UiTestRenderer.Instance), "pems-bullet", [new("class", "a")], "x"));
         Assert.StartsWith("<hr class=\"my-3\"", Run(new PemsDividerTagHelper(UiTestRenderer.Instance), "pems-divider", [new("class", "my-3")]));
+        var wf = Run(new PemsStageDiagramTagHelper(UiTestRenderer.Instance) { Steps = [new("A", "bi-a", StageState.Done, "R"), new("B", "bi-b", StageState.Current), new("C", "bi-c", StageState.Pending), new("D", "bi-d", StageState.Rejected)] }, "pems-stage-diagram", []);
+        wf = System.Text.RegularExpressions.Regex.Replace(wf, @">\s+<", "><");   // whitespace between block elements does not show
+        Assert.StartsWith("<div class=\"pems-wf-diagram\"><div class=\"pems-wf-step done\"><div class=\"pems-wf-circle\"><i class=\"bi bi-check-lg\"></i></div><div class=\"pems-wf-label\">A</div><div class=\"pems-wf-role\">R</div></div><div class=\"pems-wf-connector done\"></div>", wf);
+        Assert.Contains("<div class=\"pems-wf-step current\"><div class=\"pems-wf-circle\"><i class=\"bi bi-b\"></i></div><div class=\"pems-wf-label\">B</div></div><div class=\"pems-wf-connector \"></div>", wf);
+        Assert.Contains("<div class=\"pems-wf-step \">", wf);
+        Assert.Contains("<div class=\"pems-wf-step rejected\"><div class=\"pems-wf-circle\"><i class=\"bi bi-x-lg\"></i>", wf);
+        var wo = Run(new PemsStageDiagramTagHelper(UiTestRenderer.Instance) { Variant = "wo", Steps = [new("A", "bi-a", StageState.Done), new("B", "bi-b", StageState.Current, "ignored")] }, "pems-stage-diagram", []);
+        wo = System.Text.RegularExpressions.Regex.Replace(wo, @">\s+<", "><");
+        Assert.Equal("<div class=\"pems-wo-diagram\"><div class=\"pems-wo-step done\"><div class=\"pems-wo-circle\"><i class=\"bi bi-check-lg\"></i></div><div class=\"pems-wo-label\">A</div></div><div class=\"pems-wo-connector done\"></div><div class=\"pems-wo-step current\"><div class=\"pems-wo-circle\"><i class=\"bi bi-b\"></i></div><div class=\"pems-wo-label\">B</div></div></div>", wo);
         Assert.Equal("<h2>x</h2>", Run(new PemsHeadingTagHelper(UiTestRenderer.Instance), "pems-heading", [], "x"));
         Assert.Equal("<a class=\"text-muted\" href=\"/x\" target=\"_blank\">x</a>", Run(new PemsLinkTagHelper(null!, UiTestRenderer.Instance), "pems-link", [new("class", "text-muted"), new("href", "/x"), new("target", "_blank")], "x"));
         Assert.Equal("<li class=\"nav-item\"><a class=\"nav-link active\" href=\"/x\">x</a></li>", Run(new PemsNavLinkTagHelper(null!, UiTestRenderer.Instance) { Active = true }, "pems-nav-link", [new("href", "/x")], "x"));

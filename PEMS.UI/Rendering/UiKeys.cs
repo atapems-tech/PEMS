@@ -101,6 +101,7 @@ public static class UiKeys
     public const string BulletList = "bullet-list";
     public const string Bullet = "bullet";
     public const string Divider = "divider";
+    public const string StageDiagram = "stage-diagram";
     public const string ModalHeader = "modal-header";
     public const string ModalBody = "modal-body";
     public const string ModalFooter = "modal-footer";

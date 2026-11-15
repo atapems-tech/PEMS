@@ -28,7 +28,7 @@
             }).ToList()
         };
 
-        @await Html.PartialAsync("_PemsStageDiagram", stageModel)
+        <pems-stage-diagram steps="@stageModel.Steps" />
 
         @if (Model.Edges.Any())
         {
