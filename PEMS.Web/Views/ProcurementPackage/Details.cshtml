@@ -56,10 +56,10 @@
             </pems-flex>
         </div>
     }
-    <div class="mt-2">
+    <pems-action-bar css="mt-2">
         <pems-button tone="primary" size="small" outline="true" as="a" asp-controller="Tender" asp-action="Index" asp-route-procurementPackageId="@s.ProcurementPackageId">@Localizer["Tenders"]</pems-button>
         <pems-button tone="primary" size="small" outline="true" as="a" asp-controller="Tender" asp-action="Create" asp-route-procurementPackageId="@s.ProcurementPackageId">@Localizer["New Tender"]</pems-button>
-    </div>
+    </pems-action-bar>
 
     <pems-flex wrap="true" gap="2" css="mt-3">
         @foreach (var st in stages.Where(x => x != "Closeout"))

@@ -48,6 +48,20 @@ public sealed class PemsColTagHelper(IPemsComponentRenderer renderer) : TagHelpe
     }
 }
 
+/// <summary>The buttons at the end of a form: <c>&lt;pems-action-bar css="mt-4"&gt;&lt;pems-button .../&gt;&lt;pems-button .../&gt;&lt;/pems-action-bar&gt;</c> writes <c>&lt;div class="mt-4"&gt;</c> around them (SCRUM-488).</summary>
+[HtmlTargetElement("pems-action-bar")]
+[PemsFacade(UiKeys.ActionBar)]
+public sealed class PemsActionBarTagHelper(IPemsComponentRenderer renderer) : TagHelper
+{
+    [HtmlAttributeName("css")] public string? Css { get; set; }
+
+    public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
+    {
+        var (pageClass, attrs) = ListRender.Page(output);
+        await ListRender.Replace<PemsActionBar>(renderer, output, new ActionBarOptions { Plain = true, Css = Css, PageClass = pageClass, Attributes = attrs }, await ListRender.Inner(output));
+    }
+}
+
 /// <summary>One label, control and validation message of a form: <c>&lt;pems-form-group css="mb-3"&gt;&lt;pems-label .../&gt;&lt;pems-input .../&gt;&lt;span asp-validation-for="X"&gt;&lt;/span&gt;&lt;/pems-form-group&gt;</c> writes <c>&lt;div class="mb-3"&gt;</c> around them (SCRUM-501).</summary>
 [HtmlTargetElement("pems-form-group")]
 [PemsFacade(UiKeys.FormGroup)]

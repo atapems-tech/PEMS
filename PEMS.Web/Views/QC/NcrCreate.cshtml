@@ -42,9 +42,9 @@
             <pems-col span="12"><pems-label>@Localizer["Description"]</pems-label><pems-textarea name="description" rows="4" required></pems-textarea></pems-col>
         </pems-row>
 
-        <div class="mt-4">
+        <pems-action-bar css="mt-4">
             <pems-button tone="danger" type="submit">@Localizer["Raise NCR"]</pems-button>
             <pems-button tone="neutral" outline="true" as="a" asp-action="NcrIndex">@Localizer["Cancel"]</pems-button>
-        </div>
+        </pems-action-bar>
     </pems-form>
 </pems-content-card>

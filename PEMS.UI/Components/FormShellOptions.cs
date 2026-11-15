@@ -11,8 +11,11 @@ public sealed record FormSectionOptions
 }
 
 /// <summary>Inputs of <see cref="PemsActionBar"/>: the buttons at the end of a form or page. Sticky keeps the bar visible at the bottom of the window.</summary>
-public sealed record ActionBarOptions
+public sealed record ActionBarOptions : FrameOptions
 {
-    public required IReadOnlyList<ButtonOptions> Actions { get; init; }
+    public IReadOnlyList<ButtonOptions> Actions { get; init; } = [];
     public bool Sticky { get; init; }
+    /// <summary>The page's own buttons (child content) in a plain <c>div</c> that carries only <see cref="Css"/> (SCRUM-488: <c>&lt;pems-action-bar css="mt-4"&gt;</c>); the descriptor bar keeps its classes.</summary>
+    public bool Plain { get; init; }
+    public string? Css { get; init; }
 }

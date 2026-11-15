@@ -20,6 +20,12 @@ public sealed class CheckRowPagerTests
     }
 
     [Fact]
+    public void An_action_bar_is_a_div_with_the_page_css_around_the_buttons()
+    {
+        Assert.Equal("<div class=\"mt-4\">x</div>", Run(new PemsActionBarTagHelper(UiTestRenderer.Instance) { Css = "mt-4" }, "pems-action-bar", [], "x"));
+    }
+
+    [Fact]
     public void A_form_group_is_a_div_with_the_page_css_around_its_content()
     {
         Assert.Equal("<div class=\"mb-3\">x</div>", Run(new PemsFormGroupTagHelper(UiTestRenderer.Instance) { Css = "mb-3" }, "pems-form-group", [], "x"));
