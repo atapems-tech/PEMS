@@ -110,10 +110,10 @@
                 <input type="hidden" name="assetId" value="@Model.AssetId" />
                 <pems-modal-header>@Localizer["Edit Asset"]</pems-modal-header>
                 <pems-modal-body>
-                    <div class="mb-3">
+                    <pems-form-group css="mb-3">
                         <pems-label>@Localizer["Asset Number"]</pems-label>
                         <pems-input name="assetNumber" value="@Model.AssetNumber" required />
-                    </div>
+                    </pems-form-group>
                     <pems-row gap="3" css="mb-3">
                         <pems-col md="6">
                             <pems-label>@Localizer["Functional Location"]</pems-label>
@@ -130,10 +130,10 @@
                             <pems-input name="maintenanceClass" value="@Model.MaintenanceClass" />
                         </pems-col>
                     </pems-row>
-                    <div class="mb-3">
+                    <pems-form-group css="mb-3">
                         <pems-label>@Localizer["Functional Location (raw text, legacy)"]</pems-label>
                         <pems-input name="functionalLocation" value="@Model.FunctionalLocation" />
-                    </div>
+                    </pems-form-group>
                     <pems-row gap="3" css="mb-3">
                         <pems-col md="6">
                             <pems-label>@Localizer["Commissioning Date"]</pems-label>
@@ -149,10 +149,10 @@
                             </pems-select>
                         </pems-col>
                     </pems-row>
-                    <div class="mb-3">
+                    <pems-form-group css="mb-3">
                         <pems-label>@Localizer["Description"]</pems-label>
                         <pems-textarea name="description" rows="2">@Model.Description</pems-textarea>
-                    </div>
+                    </pems-form-group>
                 </pems-modal-body>
                 <pems-modal-footer>
                     <pems-button tone="neutral" outline="true" type="button" data-bs-dismiss="modal">@Localizer["Cancel"]</pems-button>

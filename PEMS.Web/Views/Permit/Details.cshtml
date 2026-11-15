@@ -160,12 +160,12 @@
     }
     @if (closeElig != null && closeElig.Result != "Eligible")
     {
-        <div class="mb-2">
+        <pems-form-group css="mb-2">
             <pems-badge tone="danger">Not Eligible to Close</pems-badge>
             <pems-bullet-list class="small text-muted mb-0 mt-1">
                 @foreach (var c in closeElig.Checks.Where(c => !c.Passed)) { <pems-bullet>@c.Detail</pems-bullet> }
             </pems-bullet-list>
-        </div>
+        </pems-form-group>
     }
     <pems-flex wrap="true" gap="2">
         @if (nextStatus != null && nextStatus != "Active")
@@ -353,15 +353,15 @@
                 <div class="border-top pt-3 mb-0">
                     @if (approveElig != null && approveElig.Result != "Eligible")
                     {
-                        <div class="mb-1"><pems-badge tone="danger">Not Eligible to Approve</pems-badge>
+                        <pems-form-group css="mb-1"><pems-badge tone="danger">Not Eligible to Approve</pems-badge>
                             <pems-bullet-list class="small text-muted mb-0 mt-1">@foreach (var c in approveElig.Checks.Where(c => !c.Passed)) { <pems-bullet>@c.Detail</pems-bullet> }</pems-bullet-list>
-                        </div>
+                        </pems-form-group>
                     }
                     @if (rejectElig != null && rejectElig.Result != "Eligible")
                     {
-                        <div class="mb-1"><pems-badge tone="danger">Not Eligible to Reject</pems-badge>
+                        <pems-form-group css="mb-1"><pems-badge tone="danger">Not Eligible to Reject</pems-badge>
                             <pems-bullet-list class="small text-muted mb-0 mt-1">@foreach (var c in rejectElig.Checks.Where(c => !c.Passed)) { <pems-bullet>@c.Detail</pems-bullet> }</pems-bullet-list>
-                        </div>
+                        </pems-form-group>
                     }
                 </div>
             }
@@ -426,9 +426,9 @@
     }
     @if (lotoVerifyElig != null && lotoVerifyElig.Result != "Eligible")
     {
-        <div class="mb-2"><pems-badge tone="danger">Not Eligible to Verify</pems-badge>
+        <pems-form-group css="mb-2"><pems-badge tone="danger">Not Eligible to Verify</pems-badge>
             <pems-bullet-list class="small text-muted mb-0 mt-1">@foreach (var c in lotoVerifyElig.Checks.Where(c => !c.Passed)) { <pems-bullet>@c.Detail</pems-bullet> }</pems-bullet-list>
-        </div>
+        </pems-form-group>
     }
 
     <pems-related-table>
@@ -628,26 +628,26 @@
     }
     @if ((simopsConfirmElig != null && simopsConfirmElig.Result != "Eligible") || (simopsResolveElig != null && simopsResolveElig.Result != "Eligible") || (simopsAcceptRiskElig != null && simopsAcceptRiskElig.Result != "Eligible"))
     {
-        <div class="mb-2">
+        <pems-form-group css="mb-2">
             @if (simopsConfirmElig != null && simopsConfirmElig.Result != "Eligible")
             {
-                <div class="mb-1"><pems-badge tone="danger">Not Eligible to Confirm</pems-badge>
+                <pems-form-group css="mb-1"><pems-badge tone="danger">Not Eligible to Confirm</pems-badge>
                     <pems-bullet-list class="small text-muted mb-0 mt-1">@foreach (var c in simopsConfirmElig.Checks.Where(c => !c.Passed)) { <pems-bullet>@c.Detail</pems-bullet> }</pems-bullet-list>
-                </div>
+                </pems-form-group>
             }
             @if (simopsResolveElig != null && simopsResolveElig.Result != "Eligible")
             {
-                <div class="mb-1"><pems-badge tone="danger">Not Eligible to Resolve</pems-badge>
+                <pems-form-group css="mb-1"><pems-badge tone="danger">Not Eligible to Resolve</pems-badge>
                     <pems-bullet-list class="small text-muted mb-0 mt-1">@foreach (var c in simopsResolveElig.Checks.Where(c => !c.Passed)) { <pems-bullet>@c.Detail</pems-bullet> }</pems-bullet-list>
-                </div>
+                </pems-form-group>
             }
             @if (simopsAcceptRiskElig != null && simopsAcceptRiskElig.Result != "Eligible")
             {
-                <div class="mb-1"><pems-badge tone="danger">Not Eligible to Accept Risk</pems-badge>
+                <pems-form-group css="mb-1"><pems-badge tone="danger">Not Eligible to Accept Risk</pems-badge>
                     <pems-bullet-list class="small text-muted mb-0 mt-1">@foreach (var c in simopsAcceptRiskElig.Checks.Where(c => !c.Passed)) { <pems-bullet>@c.Detail</pems-bullet> }</pems-bullet-list>
-                </div>
+                </pems-form-group>
             }
-        </div>
+        </pems-form-group>
     }
 
     @if (simopsConflicts.Any())

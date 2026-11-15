@@ -130,7 +130,7 @@
                         Tag number, manufacturer, model and description come from the Equipment record itself -
                         pick the equipment that <em>is</em> this instrument. Only instrumentation-specific passport fields are entered here.
                     </pems-text>
-                    <div class="mb-3">
+                    <pems-form-group css="mb-3">
                         <pems-label>@Localizer["Equipment"]</pems-label>
                         <pems-select name="equipmentId" required>
                             <option value="">@Localizer["-- select equipment --"]</option>
@@ -140,7 +140,7 @@
                             }
                         </pems-select>
                         <pems-help-text>Equipment not listed here already has an instrument profile, or doesn't exist yet - create it under Equipment first.</pems-help-text>
-                    </div>
+                    </pems-form-group>
 
                     <pems-row gap="3" css="mb-3">
                         <pems-col md="6">

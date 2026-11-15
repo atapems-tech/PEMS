@@ -112,21 +112,21 @@ else
                                     @if (Model.WorkOrderType is "Corrective" or "Emergency")
                                     {
                                         <pems-text class="text-muted small">برای کار اصلاحی/اضطراری، ثبت این اطلاعات برای تحلیل قابلیت‌اطمینان لازمه (ISO 14224).</pems-text>
-                                        <div class="mb-2">
+                                        <pems-form-group css="mb-2">
                                             <pems-label css="small">حالت خرابی (Failure Mode)</pems-label>
                                             <pems-select scale="small" name="failureModeCode">
                                                 <option value="">@Localizer["-- انتخاب --"]</option>
                                                 @foreach (var fm in failureModeOptions) { <option value="@fm.Code" selected="@string.Equals(fm.Code, Model.FailureModeCode, StringComparison.OrdinalIgnoreCase)">@fm.Code - @fm.Name</option> }
                                             </pems-select>
-                                        </div>
-                                        <div class="mb-2">
+                                        </pems-form-group>
+                                        <pems-form-group css="mb-2">
                                             <pems-label css="small">علت خرابی (Failure Cause)</pems-label>
                                             <pems-select scale="small" name="failureCauseCode">
                                                 <option value="">@Localizer["-- انتخاب --"]</option>
                                                 @foreach (var fc in failureCauseOptions) { <option value="@fc.Code" selected="@string.Equals(fc.Code, Model.FailureCauseCode, StringComparison.OrdinalIgnoreCase)">@fc.Code - @fc.Name</option> }
                                             </pems-select>
-                                        </div>
-                                        <div class="mb-2">
+                                        </pems-form-group>
+                                        <pems-form-group css="mb-2">
                                             <pems-label css="small">اثر خرابی (Failure Effect)</pems-label>
                                             <pems-select scale="small" name="failureEffect">
                                                 <option value="">@Localizer["-- انتخاب --"]</option>
@@ -134,33 +134,33 @@ else
                                                 <option>Environmental Impact</option><option>Quality Impact</option><option>No Impact</option>
                                                 <option>@Localizer["Other"]</option>
                                             </pems-select>
-                                        </div>
-                                        <div class="mb-2">
+                                        </pems-form-group>
+                                        <pems-form-group css="mb-2">
                                             <pems-label css="small">ریشه‌ی مشکل (Root Cause)</pems-label>
                                             <pems-textarea scale="small" name="rootCause" rows="2"></pems-textarea>
-                                        </div>
-                                        <div class="mb-2">
+                                        </pems-form-group>
+                                        <pems-form-group css="mb-2">
                                             <pems-label css="small">اقدام اصلاحی (Corrective Action)</pems-label>
                                             <pems-textarea scale="small" name="correctiveAction" rows="2"></pems-textarea>
-                                        </div>
-                                        <div class="mb-2">
+                                        </pems-form-group>
+                                        <pems-form-group css="mb-2">
                                             <pems-label css="small">Downtime واقعی (ساعت)</pems-label>
                                             <pems-input scale="small" name="downtimeHours" type="number" step="0.1" value="@Model.DowntimeHours" />
-                                        </div>
+                                        </pems-form-group>
                                         <pems-divider />
                                     }
-                                    <div class="mb-2">
+                                    <pems-form-group css="mb-2">
                                         <pems-label css="small">هزینه پیمانکار (Contractor Cost)</pems-label>
                                         <pems-input scale="small" name="contractorCost" type="number" step="0.01" />
-                                    </div>
-                                    <div class="mb-2">
+                                    </pems-form-group>
+                                    <pems-form-group css="mb-2">
                                         <pems-label css="small">نام پیمانکار (Contractor Name)</pems-label>
                                         <pems-input scale="small" name="contractorName" />
-                                    </div>
-                                    <div class="mb-2">
+                                    </pems-form-group>
+                                    <pems-form-group css="mb-2">
                                         <pems-label css="small">دلیل / یادداشت این تغییر وضعیت (اختیاری)</pems-label>
                                         <pems-input scale="small" name="reason" />
-                                    </div>
+                                    </pems-form-group>
                                 </pems-modal-body>
                                 <pems-modal-footer>
                                     <pems-button tone="neutral" size="small" outline="true" type="button" data-bs-dismiss="modal">@Localizer["انصراف"]</pems-button>
@@ -533,19 +533,19 @@ else
                         <input type="hidden" name="workOrderId" value="@Model.WorkOrderId" />
                         <pems-modal-header>@Localizer["ثبت نظر / یافته"]</pems-modal-header>
                         <pems-modal-body>
-                            <div class="mb-2">
+                            <pems-form-group css="mb-2">
                                 <pems-label css="small">@Localizer["تصمیم"]</pems-label>
                                 <pems-select scale="small" name="decision" required>
                                     <option value="Approve">@Localizer["تایید (بدون ایراد)"]</option>
                                     <option value="Comment">@Localizer["تایید با یادداشت"]</option>
                                     <option value="Reject">@Localizer["ایراد جدی دارد"]</option>
                                 </pems-select>
-                            </div>
-                            <div class="mb-2">
+                            </pems-form-group>
+                            <pems-form-group css="mb-2">
                                 <pems-label css="small">@Localizer["یافته / توضیح"]</pems-label>
                                 <pems-textarea scale="small" name="findings" rows="3"></pems-textarea>
-                            </div>
-                            <div class="mb-2">
+                            </pems-form-group>
+                            <pems-form-group css="mb-2">
                                 <pems-label css="small">حالت خرابی (از دید این دیسیپلین - اختیاری)</pems-label>
                                 <pems-select scale="small" name="failureModeCode">
                                     <option value="">@Localizer["-- انتخاب --"]</option>
@@ -553,8 +553,8 @@ else
                                     <option>@Localizer["Overheating"]</option><option>@Localizer["Blockage"]</option><option>@Localizer["ElectricalFault"]</option>
                                     <option>@Localizer["Other"]</option>
                                 </pems-select>
-                            </div>
-                            <div class="mb-2">
+                            </pems-form-group>
+                            <pems-form-group css="mb-2">
                                 <pems-label css="small">علت خرابی (از دید این دیسیپلین - اختیاری)</pems-label>
                                 <pems-select scale="small" name="failureCauseCode">
                                     <option value="">@Localizer["-- انتخاب --"]</option>
@@ -562,7 +562,7 @@ else
                                     <option>@Localizer["OperatorError"]</option><option>@Localizer["DesignDeficiency"]</option><option>@Localizer["MaterialDefect"]</option>
                                     <option>@Localizer["Other"]</option>
                                 </pems-select>
-                            </div>
+                            </pems-form-group>
                         </pems-modal-body>
                         <pems-modal-footer>
                             <pems-button tone="neutral" size="small" outline="true" type="button" data-bs-dismiss="modal">@Localizer["انصراف"]</pems-button>
@@ -1013,11 +1013,11 @@ else
     {
         @foreach (var c in woCrews)
         {
-            <div class="mb-2">
+            <pems-form-group css="mb-2">
                 <span class="fw-bold small">@c.Code — @c.Name</span>
                 <span class="text-muted small">(@c.Members.Count(m => m.IsActive) عضو)</span>
                 @if (Ctl(WoSection.Crew)) { <pems-link asp-controller="Crew" asp-action="Index" class="small">@Localizer["مدیریت اعضا"]</pems-link> }
-            </div>
+            </pems-form-group>
         }
     }
     else if (!Ctl(WoSection.Crew))

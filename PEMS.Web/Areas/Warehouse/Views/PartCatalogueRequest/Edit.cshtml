@@ -91,7 +91,7 @@
             <section class="vs-panel pc-card">
                 <pems-heading level="2" class="vs-section__title"><pems-icon name="bi-info-circle" /> @Localizer["Pc_Sec_PartInfo"]</pems-heading>
 
-                <div class="mb-2">
+                <pems-form-group css="mb-2">
                     <pems-label for="pc_RequestNumber">@L("RequestNumber") <span class="pc-req" aria-hidden="true">*</span></pems-label>
                     <div class="input-group input-group-sm">
                         <pems-input id="pc_RequestNumber" value="@d.RequestNumber" readonly />
@@ -100,45 +100,45 @@
                             <pems-button tone="neutral" outline="true" type="submit" form="pcNumberForm" title="@Localizer["Pc_Btn_GenerateNumber"]"><pems-icon name="bi-123" /> @Localizer["Pc_Btn_GenerateNumber"]</pems-button>
                         }
                     </div>
-                </div>
+                </pems-form-group>
 
-                <div class="mb-2">
+                <pems-form-group css="mb-2">
                     <pems-label for="pc_Urgent">@L("Urgent") <span class="pc-req" aria-hidden="true">*</span></pems-label>
                     <pems-select scale="small" id="pc_Urgent" form="pcForm" name="Urgent">
                         <option value="false" selected="@(!f.Urgent)">@Localizer["Pc_No"]</option>
                         <option value="true" selected="@f.Urgent">@Localizer["Pc_Yes"]</option>
                     </pems-select>
-                </div>
+                </pems-form-group>
 
-                <div class="mb-2">
+                <pems-form-group css="mb-2">
                     <pems-label for="pc_SectionId">@L("SectionId") <span class="pc-req" aria-hidden="true">*</span></pems-label>
                     <pems-select scale="small" id="pc_SectionId" form="pcForm" name="SectionId" data-pc-section>
                         <option value=""></option>
                         @foreach (var s in Model.Sections) { <option value="@s.Id" selected="@(f.SectionId == s.Id)">@s.Text</option> }
                     </pems-select>
-                </div>
+                </pems-form-group>
 
-                <div class="mb-2"><pems-label as="span" css="d-block">@L("Requester")</pems-label><span>@d.RequesterName</span></div>
+                <pems-form-group css="mb-2"><pems-label as="span" css="d-block">@L("Requester")</pems-label><span>@d.RequesterName</span></pems-form-group>
 
                 @if (isChange)
                 {
                     <div class="pc-change-block mt-3 pt-2 border-top">
-                        <div class="mb-2">
+                        <pems-form-group css="mb-2">
                             <pems-label for="pc_IsRd">@L("IsRd")</pems-label>
                             <pems-select scale="small" id="pc_IsRd" form="pcForm" name="IsRd">
                                 <option value="false" selected="@(!f.IsRd)">@Localizer["Pc_No"]</option>
                                 <option value="true" selected="@f.IsRd">@Localizer["Pc_Yes"]</option>
                             </pems-select>
-                        </div>
-                        <div class="mb-2">
+                        </pems-form-group>
+                        <pems-form-group css="mb-2">
                             <pems-label for="pc_ExistingPartNumber">@L("ExistingPartNumber") <span class="pc-req" aria-hidden="true">*</span></pems-label>
                             <div class="input-group input-group-sm">
                                 <pems-input id="pc_ExistingPartNumber" form="pcForm" name="ExistingPartNumber" value="@f.ExistingPartNumber" maxlength="50" />
                                 <pems-button tone="neutral" outline="true" type="submit" form="pcForm" formaction="@Url.Action("LoadPart")"><pems-icon name="bi-box-arrow-in-down" /> @Localizer["Pc_Btn_Load"]</pems-button>
                             </div>
                             <pems-help-text>@Localizer["Pc_Hint_Load"]</pems-help-text>
-                        </div>
-                        <div class="mb-2">
+                        </pems-form-group>
+                        <pems-form-group css="mb-2">
                             <pems-label for="pc_ChangesMatchInventory">@L("ChangesMatchInventory") <span class="pc-req" aria-hidden="true">*</span></pems-label>
                             <pems-select scale="small" id="pc_ChangesMatchInventory" form="pcForm" name="ChangesMatchInventory">
                                 <option value=""></option>
@@ -146,7 +146,7 @@
                                 <option value="false" selected="@(f.ChangesMatchInventory == false)">@Localizer["Pc_No"]</option>
                             </pems-select>
                             <pems-help-text>@Localizer["Pc_Hint_ChangesMatch"]</pems-help-text>
-                        </div>
+                        </pems-form-group>
                         @if (!string.IsNullOrEmpty(d.Form.OldManufacturerName) || !string.IsNullOrEmpty(d.Form.OldManufacturerPartNumber))
                         {
                             <div class="small text-muted">@L("OldManufacturerName"): <strong>@d.Form.OldManufacturerName</strong> / @d.Form.OldManufacturerPartNumber</div>
@@ -191,13 +191,13 @@
             @* ------------------------------------------------ Class Info *@
             <section class="vs-panel pc-card mt-3">
                 <pems-heading level="2" class="vs-section__title"><pems-icon name="bi-diagram-3" /> @Localizer["Pc_Sec_ClassInfo"]</pems-heading>
-                <div class="mb-2">
+                <pems-form-group css="mb-2">
                     <pems-label for="pc_TechnicalClassId_text">@L("TechnicalClassId") <span class="pc-req" aria-hidden="true">*</span></pems-label>
                     <div class="pc-lookup" data-url="@lookupBase/TechnicalClasses" data-detail-url="@lookupBase/TechnicalClass" data-name="TechnicalClassId" data-form="pcForm"
                          data-id="@f.TechnicalClassId" data-text="@Label("TechnicalClassId")" data-input-id="pc_TechnicalClassId_text"></div>
                     <pems-help-text css="pc-tc-long" id="pc_TechnicalClassLong">@d.TechnicalClassLongDescription</pems-help-text>
                     <pems-help-text css="pc-tc-status" id="pc_TcResolveStatus" role="status" aria-live="polite" data-txt-resolved="@Localizer["Pc_Tc_Resolved"]" data-txt-ambiguous="@Localizer["Pc_Tc_Ambiguous"]" data-txt-none="@Localizer["Pc_Tc_None"]" data-txt-mismatch="@Localizer["Pc_Tc_Mismatch"]" data-txt-picked="@Localizer["Pc_Tc_Picked"]"></pems-help-text>
-                </div>
+                </pems-form-group>
 
                 <pems-label>@L("Attributes") <span class="pc-req" aria-hidden="true">*</span></pems-label>
                 <div class="pc-table-scroll">
@@ -352,10 +352,10 @@
 
             <section class="vs-panel pc-card">
                 <pems-heading level="2" class="vs-section__title"><pems-icon name="bi-paperclip" /> @Localizer["Pc_Sec_OtherInfo"]</pems-heading>
-                <div class="mb-2"><pems-label for="pc_SparePartSerialNo">@L("SparePartSerialNo")</pems-label><pems-input scale="small" id="pc_SparePartSerialNo" form="pcForm" name="SparePartSerialNo" value="@f.SparePartSerialNo" maxlength="100" /></div>
-                <div class="mb-2"><pems-label for="pc_EquipmentSerialNo">@L("EquipmentSerialNo")</pems-label><pems-input scale="small" id="pc_EquipmentSerialNo" form="pcForm" name="EquipmentSerialNo" value="@f.EquipmentSerialNo" maxlength="100" /></div>
-                <div class="mb-2"><pems-label for="pc_ManufacturerDrawingNo">@L("ManufacturerDrawingNo")</pems-label><pems-input scale="small" id="pc_ManufacturerDrawingNo" form="pcForm" name="ManufacturerDrawingNo" value="@f.ManufacturerDrawingNo" maxlength="100" /></div>
-                <div class="mb-2"><pems-label for="pc_DocumentNo">@L("DocumentNo")</pems-label><pems-input scale="small" id="pc_DocumentNo" form="pcForm" name="DocumentNo" value="@f.DocumentNo" maxlength="100" /></div>
+                <pems-form-group css="mb-2"><pems-label for="pc_SparePartSerialNo">@L("SparePartSerialNo")</pems-label><pems-input scale="small" id="pc_SparePartSerialNo" form="pcForm" name="SparePartSerialNo" value="@f.SparePartSerialNo" maxlength="100" /></pems-form-group>
+                <pems-form-group css="mb-2"><pems-label for="pc_EquipmentSerialNo">@L("EquipmentSerialNo")</pems-label><pems-input scale="small" id="pc_EquipmentSerialNo" form="pcForm" name="EquipmentSerialNo" value="@f.EquipmentSerialNo" maxlength="100" /></pems-form-group>
+                <pems-form-group css="mb-2"><pems-label for="pc_ManufacturerDrawingNo">@L("ManufacturerDrawingNo")</pems-label><pems-input scale="small" id="pc_ManufacturerDrawingNo" form="pcForm" name="ManufacturerDrawingNo" value="@f.ManufacturerDrawingNo" maxlength="100" /></pems-form-group>
+                <pems-form-group css="mb-2"><pems-label for="pc_DocumentNo">@L("DocumentNo")</pems-label><pems-input scale="small" id="pc_DocumentNo" form="pcForm" name="DocumentNo" value="@f.DocumentNo" maxlength="100" /></pems-form-group>
 
                 <pems-label>@L("Attachments")</pems-label>
                 <pems-bullet-list class="list-unstyled small mb-2">
@@ -470,16 +470,16 @@
             <pems-modal-body>
                 @if (f.IsNewEquipment)
                 {
-                    <div class="mb-2"><pems-label for="pc_equipText">@L("EquipmentText")</pems-label><pems-input id="pc_equipText" name="equipmentText" maxlength="300" required /></div>
+                    <pems-form-group css="mb-2"><pems-label for="pc_equipText">@L("EquipmentText")</pems-label><pems-input id="pc_equipText" name="equipmentText" maxlength="300" required /></pems-form-group>
                 }
                 else
                 {
-                    <div class="mb-2">
+                    <pems-form-group css="mb-2">
                         <pems-label for="pc_equipId_text">@L("EquipmentId")</pems-label>
                         <div class="pc-lookup" data-url="@lookupBase/Equipment" data-name="equipmentId" data-input-id="pc_equipId_text"></div>
-                    </div>
+                    </pems-form-group>
                 }
-                <div class="mb-2"><pems-label for="pc_equipQty">@L("InstalledQuantity")</pems-label><pems-input id="pc_equipQty" name="installedQuantity" type="number" step="0.0001" min="0" value="1" required /></div>
+                <pems-form-group css="mb-2"><pems-label for="pc_equipQty">@L("InstalledQuantity")</pems-label><pems-input id="pc_equipQty" name="installedQuantity" type="number" step="0.0001" min="0" value="1" required /></pems-form-group>
                 <pems-help-text>@Localizer["Pc_Hint_NewEquipment"]</pems-help-text>
             </pems-modal-body>
             <pems-modal-footer><pems-button plain="true" type="button" css="vs-btn vs-btn--sm" data-bs-dismiss="modal">@Localizer["Pc_Btn_Close"]</pems-button><pems-button plain="true" type="submit" css="vs-btn vs-btn--primary vs-btn--sm">@Localizer["Pc_Btn_Save"]</pems-button></pems-modal-footer>
@@ -489,13 +489,13 @@
             <input type="hidden" name="id" value="@d.Id" />
             <pems-modal-header level="5" title-id="pcAttachModalLabel" close="true" close-label="@Localizer["Pc_Btn_Close"]">@Localizer["Pc_Btn_Upload"]</pems-modal-header>
             <pems-modal-body>
-                <div class="mb-2"><pems-label for="pc_attFile">@L("File")</pems-label><pems-input id="pc_attFile" type="file" name="file" required /></div>
-                <div class="mb-2">
+                <pems-form-group css="mb-2"><pems-label for="pc_attFile">@L("File")</pems-label><pems-input id="pc_attFile" type="file" name="file" required /></pems-form-group>
+                <pems-form-group css="mb-2">
                     <pems-label for="pc_attKind">@L("AttachmentKind")</pems-label>
                     <pems-select id="pc_attKind" name="kind">
                         @foreach (var k in new[] { "Document", "Drawing", "Support" }) { <option value="@k">@Localizer["Pc_Kind_" + k]</option> }
                     </pems-select>
-                </div>
+                </pems-form-group>
             </pems-modal-body>
             <pems-modal-footer><pems-button plain="true" type="button" css="vs-btn vs-btn--sm" data-bs-dismiss="modal">@Localizer["Pc_Btn_Close"]</pems-button><pems-button plain="true" type="submit" css="vs-btn vs-btn--primary vs-btn--sm">@Localizer["Pc_Btn_Upload"]</pems-button></pems-modal-footer>
         </pems-form></pems-modal>

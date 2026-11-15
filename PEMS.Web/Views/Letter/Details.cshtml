@@ -375,10 +375,10 @@
         <pems-form id="bodyEditForm" asp-action="@editAction" method="post" class="mt-2 @(showEditFormByDefault ? "" : "d-none")">
             <input type="hidden" name="letterId" value="@l.LetterId" />
             <input type="hidden" name="rowVersion" value="@Convert.ToBase64String(l.RowVersion ?? Array.Empty<byte>())" id="rowVersionB64" />
-            <div class="mb-2">
+            <pems-form-group css="mb-2">
                 <pems-label css="small">@Localizer["Subject"]</pems-label>
                 <pems-input type="text" name="subject" value="@l.Subject" required />
-            </div>
+            </pems-form-group>
             <pems-textarea name="body" id="letterBodyEditEditor">@Html.Raw(Model.Body)</pems-textarea>
             <pems-flex gap="2" css="mt-2">
                 <pems-button tone="primary" size="small" type="submit">@submitLabel</pems-button>

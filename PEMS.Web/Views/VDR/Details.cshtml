@@ -633,14 +633,14 @@
                     <pems-modal-header>@Localizer["Vd_ReplyTo"] <span data-fill-text="commentno"></span></pems-modal-header>
                     <pems-modal-body>
                         <pems-text class="small text-muted" data-fill-text="commenttext"></pems-text>
-                        <div class="mb-2">
+                        <pems-form-group css="mb-2">
                             <pems-label css="small">@Localizer["Vd_VendorReply"] <span class="text-muted">@Localizer["Vd_OptionalIfFile"]</span></pems-label>
                             <pems-textarea scale="small" name="responseText" rows="3"></pems-textarea>
-                        </div>
-                        <div class="mb-2">
+                        </pems-form-group>
+                        <pems-form-group css="mb-2">
                             <pems-label css="small">@Localizer["Vd_OrAttachReply"]</pems-label>
                             <pems-input scale="small" type="file" name="replyAttachment" />
-                        </div>
+                        </pems-form-group>
                     </pems-modal-body>
                     <pems-modal-footer>
                         <pems-button tone="neutral" outline="true" type="button" data-bs-dismiss="modal">@Localizer["Vd_Cancel"]</pems-button>

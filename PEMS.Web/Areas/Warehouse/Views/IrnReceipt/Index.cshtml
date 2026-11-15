@@ -101,33 +101,33 @@
         <pems-form asp-action="Create" method="post">
             <pems-modal-header>@Localizer["New Incoming Receipt (IRN)"]</pems-modal-header>
             <pems-modal-body>
-                <div class="mb-2">
+                <pems-form-group css="mb-2">
                     <pems-label css="small">@Localizer["Vendor"]</pems-label>
                     <pems-select scale="small" name="vendorId" required>
                         @foreach (var v in vendors) { <option value="@v.VendorId">@v.Name</option> }
                     </pems-select>
-                </div>
-                <div class="mb-2">
+                </pems-form-group>
+                <pems-form-group css="mb-2">
                     <pems-label css="small">@Localizer["Warehouse"]</pems-label>
                     <pems-select scale="small" name="warehouseId" required>
                         @foreach (var w in warehouses) { <option value="@w.WarehouseId">@w.Code</option> }
                     </pems-select>
-                </div>
-                <div class="mb-2">
+                </pems-form-group>
+                <pems-form-group css="mb-2">
                     <pems-label css="small">@Localizer["Rcv_PurchaseOrderOptional"]</pems-label>
                     <pems-select scale="small" name="purchaseOrderId">
                         <option value="">-</option>
                         @foreach (var p in (IEnumerable<dynamic>)(ViewBag.PurchaseOrders ?? Array.Empty<object>())) { <option value="@p.PoId">@p.PoNumber - @p.VendorName</option> }
                     </pems-select>
-                </div>
-                <div class="mb-2">
+                </pems-form-group>
+                <pems-form-group css="mb-2">
                     <pems-label css="small">@Localizer["Receiving Date"]</pems-label>
                     <pems-date name="receivingDate" scale="small" value="@DateTime.Now.ToString("yyyy-MM-dd")" required />
-                </div>
-                <div class="mb-2">
+                </pems-form-group>
+                <pems-form-group css="mb-2">
                     <pems-label css="small">@Localizer["Notes (optional)"]</pems-label>
                     <pems-textarea scale="small" name="notes" rows="2"></pems-textarea>
-                </div>
+                </pems-form-group>
             </pems-modal-body>
             <pems-modal-footer>
                 <pems-button tone="neutral" size="small" outline="true" type="button" data-bs-dismiss="modal">@Localizer["Cancel"]</pems-button>

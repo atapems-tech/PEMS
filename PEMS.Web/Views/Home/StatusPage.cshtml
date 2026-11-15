@@ -18,7 +18,7 @@
 }
 
 <pems-content-card as="section" css="text-center py-5 pems-status-page" aria-labelledby="statusTitle" data-status-code="@Model.Code">
-    <div class="mb-3"><pems-icon class="pems-fs-26rem" css="@icon" aria-hidden="true" /></div>
+    <pems-form-group css="mb-3"><pems-icon class="pems-fs-26rem" css="@icon" aria-hidden="true" /></pems-form-group>
     <pems-heading level="1" id="statusTitle" class="h4 mb-2">@Localizer[titleKey]</pems-heading>
     <pems-text class="text-muted mb-4">@Localizer[textKey]</pems-text>
     <pems-flex justify="center" gap="2" wrap="true">
