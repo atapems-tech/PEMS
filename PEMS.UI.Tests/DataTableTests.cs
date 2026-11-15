@@ -108,4 +108,30 @@ public sealed class DataTableTests
         output.WriteTo(writer, HtmlEncoder.Default);
         Assert.Equal($"<{element} class=\"text-end\" colspan=\"3\" data-id=\"7\">x &amp; <b>y</b></{element}>", writer.ToString());
     }
+
+    private sealed record Item(int Id, string Name, bool Done);
+
+    [Fact]
+    public void Cell_builders_write_links_spans_icons_badges_buttons_and_column_attributes()
+    {
+        var items = new[] { new Item(7, "A <b>", true), new Item(8, "B", false) };
+        var data = DataRows.Of(items, c => c
+            .Add("Name", r => DataCell.Link("/x/" + r.Id, r.Name))
+            .Add("State", r => r.Done ? DataCell.Span("text-success", DataCell.Icon("bi-check"), " ", "Yes") : DataCell.Span("text-muted", "No").WithTitle("t" + r.Id).WithTag("small"), dir: "ltr", titleFor: r => "row" + r.Id)
+            .Add("Tag", r => DataCell.Badge("light", r.Name, "ms-1"))
+            .Add("Open", r => DataCell.ButtonLink("/d/" + r.Id, "primary", "small", true, null, "Open").WithAttr("title", "go"))
+            .Add("Code", r => DataCell.Group(DataCell.Code(r.Id), " / ", r.Name)),
+            r => r.Done ? "table-active" : null);
+        var html = Run(new PemsDataTableTagHelper(UiTestRenderer.Instance) { Data = data });
+        Assert.Contains("<a href=\"/x/7\">A &lt;b&gt;</a>", html);
+        Assert.Contains("<span class=\"text-success\"><i class=\"bi bi-check\"></i> Yes</span>", html);
+        Assert.Contains("<small class=\"text-muted\" title=\"t8\">No</small>", html);
+        Assert.Contains("dir=\"ltr\" title=\"row7\"", html);
+        Assert.Contains("ms-1", html);
+        Assert.Contains("href=\"/d/8\"", html);
+        Assert.Contains("btn-outline-primary", html);
+        Assert.Contains("title=\"go\"", html);
+        Assert.Contains("<code>7</code> / A &lt;b&gt;", html);
+        Assert.Contains("<tr class=\"table-active\">", html);
+    }
 }

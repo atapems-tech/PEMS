@@ -20,38 +20,7 @@
 
     @if (ncrPatterns.Any())
     {
-        <pems-table kind="enterprise" css="mb-0">
-            <pems-table-head><pems-table-row><pems-table-header>@Localizer["Equipment"]</pems-table-header><pems-table-header>@Localizer["تعداد NCR"]</pems-table-header><pems-table-header>@Localizer["دیسیپلین غالب"]</pems-table-header><pems-table-header>@Localizer["وضعیت MOC"]</pems-table-header><pems-table-header>@Localizer["پیشنهاد"]</pems-table-header><pems-table-header></pems-table-header></pems-table-row></pems-table-head>
-            <pems-table-body>
-                @foreach (var p in ncrPatterns)
-                {
-                    <pems-table-row>
-                        <pems-table-cell><a asp-controller="Equipment" asp-action="Details" asp-route-id="@p.EquipmentId">@p.EquipmentTagNumber</a></pems-table-cell>
-                        <pems-table-cell><pems-badge tone="danger">@p.NcrCount</pems-badge></pems-table-cell>
-                        <pems-table-cell class="small">@p.DominantQCDiscipline</pems-table-cell>
-                        <pems-table-cell>
-                            @if (p.HasOpenMOC)
-                            {
-                                <pems-badge tone="info">@Localizer["MOC باز دارد"]</pems-badge>
-                            }
-                            else
-                            {
-                                <pems-badge tone="warning">@Localizer["بدون MOC"]</pems-badge>
-                            }
-                        </pems-table-cell>
-                        <pems-table-cell class="small">@p.Suggestion</pems-table-cell>
-                        <pems-table-cell>
-                            @if (!p.HasOpenMOC)
-                            {
-                                <pems-button tone="primary" size="small" outline="true" as="a" asp-controller="MOC" asp-action="Raise" asp-route-relatedEquipmentId="@p.EquipmentId">
-                                    <pems-icon name="bi-plus-lg" /> ثبت MOC
-                                </pems-button>
-                            }
-                        </pems-table-cell>
-                    </pems-table-row>
-                }
-            </pems-table-body>
-        </pems-table>
+        <pems-data-table data="@(DataRows.Of(ncrPatterns, c_ => c_.Add(((Localizer["Equipment"])?.ToString() ?? ""), p => (object?)(DataCell.Link(Url.Action("Details", "Equipment", new { id = p.EquipmentId }), p.EquipmentTagNumber))).Add(((Localizer["تعداد NCR"])?.ToString() ?? ""), p => (object?)(DataCell.Badge("danger", p.NcrCount))).Add(((Localizer["دیسیپلین غالب"])?.ToString() ?? ""), p => (object?)(p.DominantQCDiscipline), css: "small").Add(((Localizer["وضعیت MOC"])?.ToString() ?? ""), p => (object?)((p.HasOpenMOC ? (object?)DataCell.Badge("info", Localizer["MOC باز دارد"]) : DataCell.Badge("warning", Localizer["بدون MOC"])))).Add(((Localizer["پیشنهاد"])?.ToString() ?? ""), p => (object?)(p.Suggestion), css: "small").Add("", p => (object?)((!p.HasOpenMOC ? (object?)DataCell.ButtonLink(Url.Action("Raise", "MOC", new { relatedEquipmentId = p.EquipmentId }), "primary", "small", true, null, DataCell.Icon("bi-plus-lg"), " ثبت MOC") : null)))))" css="mb-0" />
     }
     else
     {

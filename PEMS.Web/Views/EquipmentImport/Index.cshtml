@@ -55,29 +55,7 @@
 <pems-content-card>
     <h6 class="mb-3">@Localizer["Recent Import Batches"]</h6>
     <pems-table-scroll css="table-scroll-area pems-s-8da1c6e6">
-    <pems-table kind="enterprise">
-        <pems-table-head><pems-table-row><pems-table-header>@Localizer["File"]</pems-table-header><pems-table-header>@Localizer["Project"]</pems-table-header><pems-table-header>@Localizer["Date"]</pems-table-header><pems-table-header>Rows</pems-table-header><pems-table-header>@Localizer["New"]</pems-table-header><pems-table-header>Updates</pems-table-header><pems-table-header>@Localizer["Status"]</pems-table-header><pems-table-header></pems-table-header></pems-table-row></pems-table-head>
-        <pems-table-body>
-            @foreach (var b in Model)
-            {
-                <pems-table-row>
-                    <pems-table-cell>@b.FileName</pems-table-cell>
-                    <pems-table-cell>@b.ProjectName</pems-table-cell>
-                    <pems-table-cell>@b.ImportDate.ToString("yyyy-MM-dd HH:mm")</pems-table-cell>
-                    <pems-table-cell>@b.Rows.Count</pems-table-cell>
-                    <pems-table-cell><pems-badge tone="success">@b.Rows.Count(x => !x.IsUpdate)</pems-badge></pems-table-cell>
-                    <pems-table-cell><pems-badge tone="info">@b.Rows.Count(x => x.IsUpdate)</pems-badge></pems-table-cell>
-                    <pems-table-cell><pems-badge tone="@(b.Status == "Committed" ? "success" : "neutral")">@b.Status</pems-badge></pems-table-cell>
-                    <pems-table-cell>
-                        @if (b.Status == "Staging")
-                        {
-                            <pems-button tone="primary" size="small" outline="true" as="a" asp-action="Review" asp-route-batchId="@b.EquipmentImportBatchId">Review</pems-button>
-                        }
-                    </pems-table-cell>
-                </pems-table-row>
-            }
-        </pems-table-body>
-    </pems-table>
+    <pems-data-table data="@(DataRows.Of(Model, c_ => c_.Add(((Localizer["File"])?.ToString() ?? ""), b => (object?)(b.FileName)).Add(((Localizer["Project"])?.ToString() ?? ""), b => (object?)(b.ProjectName)).Add(((Localizer["Date"])?.ToString() ?? ""), b => (object?)((b.ImportDate.ToString("yyyy-MM-dd HH:mm")))).Add("Rows", b => (object?)(b.Rows.Count)).Add(((Localizer["New"])?.ToString() ?? ""), b => (object?)(DataCell.Badge("success", (b.Rows.Count(x => !x.IsUpdate))))).Add("Updates", b => (object?)(DataCell.Badge("info", (b.Rows.Count(x => x.IsUpdate))))).Add(((Localizer["Status"])?.ToString() ?? ""), b => (object?)(DataCell.Badge(b.Status == "Committed" ? "success" : "neutral", b.Status))).Add("", b => (object?)((b.Status == "Staging" ? (object?)DataCell.ButtonLink(Url.Action("Review", null, new { batchId = b.EquipmentImportBatchId }), "primary", "small", true, null, "Review") : null)))))" />
     </pems-table-scroll>
     @if (!Model.Any()) { <p class="text-muted text-center py-4">No equipment imports yet.</p> }
 </pems-content-card>

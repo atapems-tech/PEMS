@@ -20,23 +20,7 @@
     else
     {
         <pems-table-scroll>
-            <pems-table scale="small" css="table-enterprise vs-dense mb-0">
-                <pems-table-head><pems-table-row><pems-table-header>@Localizer["Tm_Field_Key"]</pems-table-header><pems-table-header>@Localizer["Tm_Field_Name"]</pems-table-header><pems-table-header>@Localizer["Tm_Field_Department"]</pems-table-header><pems-table-header>@Localizer["Tm_Members"]</pems-table-header><pems-table-header>@Localizer["Tm_OpenItems"]</pems-table-header><pems-table-header>@Localizer["Tm_Field_Active"]</pems-table-header><pems-table-header></pems-table-header></pems-table-row></pems-table-head>
-                <pems-table-body>
-                    @foreach (var s in Model)
-                    {
-                        <pems-table-row class="@(s.IsActive ? "" : "text-muted")">
-                            <pems-table-cell class="tm-key">@s.Key</pems-table-cell>
-                            <pems-table-cell>@TaskManagerUi.Name(s.Name, s.NameFa)</pems-table-cell>
-                            <pems-table-cell class="small">@(s.OwnerDepartmentName ?? "—")</pems-table-cell>
-                            <pems-table-cell>@s.MemberCount</pems-table-cell>
-                            <pems-table-cell>@s.OpenItemCount</pems-table-cell>
-                            <pems-table-cell>@(s.IsActive ? Localizer["Tm_Yes"] : Localizer["Tm_No"])</pems-table-cell>
-                            <pems-table-cell><pems-button tone="neutral" size="small" outline="true" as="a" asp-action="AdminSpace" asp-route-id="@s.Id">@Localizer["Tm_Configure"]</pems-button></pems-table-cell>
-                        </pems-table-row>
-                    }
-                </pems-table-body>
-            </pems-table>
+            <pems-data-table data="@(DataRows.Of(Model, c_ => c_.Add(((Localizer["Tm_Field_Key"])?.ToString() ?? ""), s => (object?)(s.Key), css: "tm-key").Add(((Localizer["Tm_Field_Name"])?.ToString() ?? ""), s => (object?)((TaskManagerUi.Name(s.Name, s.NameFa)))).Add(((Localizer["Tm_Field_Department"])?.ToString() ?? ""), s => (object?)((s.OwnerDepartmentName ?? "—")), css: "small").Add(((Localizer["Tm_Members"])?.ToString() ?? ""), s => (object?)(s.MemberCount)).Add(((Localizer["Tm_OpenItems"])?.ToString() ?? ""), s => (object?)(s.OpenItemCount)).Add(((Localizer["Tm_Field_Active"])?.ToString() ?? ""), s => (object?)((s.IsActive ? Localizer["Tm_Yes"] : Localizer["Tm_No"]))).Add("", s => (object?)(DataCell.ButtonLink(Url.Action("AdminSpace", null, new { id = s.Id }), "neutral", "small", true, null, Localizer["Tm_Configure"]))), rowClass: s => (s.IsActive ? "" : "text-muted")))" dense="true" css="vs-dense mb-0" />
         </pems-table-scroll>
     }
 </section>

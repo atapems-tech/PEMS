@@ -15,19 +15,6 @@
     }
     else
     {
-        <pems-table kind="enterprise">
-            <pems-table-head><pems-table-row><pems-table-header>@Localizer["When"]</pems-table-header><pems-table-header>@Localizer["Action"]</pems-table-header><pems-table-header>By</pems-table-header><pems-table-header>@Localizer["Changed Fields"]</pems-table-header></pems-table-row></pems-table-head>
-            <pems-table-body>
-                @foreach (var log in Model)
-                {
-                    <pems-table-row>
-                        <pems-table-cell class="small text-muted">@log.Timestamp.ToString("yyyy-MM-dd HH:mm")</pems-table-cell>
-                        <pems-table-cell><pems-badge tone="light">@log.Action</pems-badge></pems-table-cell>
-                        <pems-table-cell class="small">@(log.UserName ?? "—")</pems-table-cell>
-                        <pems-table-cell class="small"><pre class="mb-0 small">@log.ChangedFieldsSummary</pre></pems-table-cell>
-                    </pems-table-row>
-                }
-            </pems-table-body>
-        </pems-table>
+        <pems-data-table data="@(DataRows.Of(Model, c_ => c_.Add(((Localizer["When"])?.ToString() ?? ""), log => (object?)((log.Timestamp.ToString("yyyy-MM-dd HH:mm"))), css: "small text-muted").Add(((Localizer["Action"])?.ToString() ?? ""), log => (object?)(DataCell.Badge("light", log.Action))).Add("By", log => (object?)((log.UserName ?? "—")), css: "small").Add(((Localizer["Changed Fields"])?.ToString() ?? ""), log => (object?)(DataCell.Span("mb-0 small", log.ChangedFieldsSummary).WithTag("pre")), css: "small")))" />
     }
 </pems-content-card>

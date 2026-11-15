@@ -21,29 +21,5 @@
 
 <pems-content-card>
     <h6 class="mb-2"><pems-icon name="bi-clock-history" /> Failure History</h6>
-    <pems-table kind="enterprise" css="mb-0">
-        <pems-table-head>
-            <pems-table-row><pems-table-header>@Localizer["Date"]</pems-table-header><pems-table-header>@Localizer["Mode"]</pems-table-header><pems-table-header>@Localizer["Cause"]</pems-table-header><pems-table-header>@Localizer["Effect"]</pems-table-header><pems-table-header>@Localizer["Root Cause"]</pems-table-header><pems-table-header>@Localizer["Corrective Action"]</pems-table-header><pems-table-header>@Localizer["Downtime"]</pems-table-header><pems-table-header>@Localizer["Work Order"]</pems-table-header></pems-table-row>
-        </pems-table-head>
-        <pems-table-body>
-            @foreach (var f in Model.FailureHistory.OrderByDescending(x => x.FailureDate))
-            {
-                <pems-table-row>
-                    <pems-table-cell class="small">@f.FailureDate.ToString("yyyy-MM-dd")</pems-table-cell>
-                    <pems-table-cell class="small">@f.FailureMode</pems-table-cell>
-                    <pems-table-cell class="small">@f.FailureCause</pems-table-cell>
-                    <pems-table-cell class="small">@f.FailureEffect</pems-table-cell>
-                    <pems-table-cell class="small">@f.RootCause</pems-table-cell>
-                    <pems-table-cell class="small">@f.CorrectiveAction</pems-table-cell>
-                    <pems-table-cell class="small">@(f.DowntimeHours.HasValue ? $"{f.DowntimeHours.Value:N1} h" : "-")</pems-table-cell>
-                    <pems-table-cell class="small">
-                        @if (f.WorkOrderId.HasValue)
-                        {
-                            <a asp-controller="WorkOrder" asp-action="Details" asp-route-id="@f.WorkOrderId">@f.WorkOrderNumber</a>
-                        }
-                    </pems-table-cell>
-                </pems-table-row>
-            }
-        </pems-table-body>
-    </pems-table>
+    <pems-data-table data="@(DataRows.Of(Model.FailureHistory.OrderByDescending(x => x.FailureDate), c_ => c_.Add(((Localizer["Date"])?.ToString() ?? ""), f => (object?)((f.FailureDate.ToString("yyyy-MM-dd"))), css: "small").Add(((Localizer["Mode"])?.ToString() ?? ""), f => (object?)(f.FailureMode), css: "small").Add(((Localizer["Cause"])?.ToString() ?? ""), f => (object?)(f.FailureCause), css: "small").Add(((Localizer["Effect"])?.ToString() ?? ""), f => (object?)(f.FailureEffect), css: "small").Add(((Localizer["Root Cause"])?.ToString() ?? ""), f => (object?)(f.RootCause), css: "small").Add(((Localizer["Corrective Action"])?.ToString() ?? ""), f => (object?)(f.CorrectiveAction), css: "small").Add(((Localizer["Downtime"])?.ToString() ?? ""), f => (object?)((f.DowntimeHours.HasValue ? $"{f.DowntimeHours.Value:N1} h" : "-")), css: "small").Add(((Localizer["Work Order"])?.ToString() ?? ""), f => (object?)((f.WorkOrderId.HasValue ? (object?)DataCell.Link(Url.Action("Details", "WorkOrder", new { id = f.WorkOrderId }), f.WorkOrderNumber) : null)), css: "small")))" css="mb-0" />
 </pems-content-card>

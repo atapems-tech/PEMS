@@ -318,29 +318,7 @@
                     else
                     {
                         <pems-table-scroll>
-                            <pems-table kind="enterprise">
-                                <pems-table-head><pems-table-row><pems-table-header>@Localizer["Permission A"]</pems-table-header><pems-table-header>@Localizer["Permission B"]</pems-table-header><pems-table-header>@Localizer["Description"]</pems-table-header><pems-table-header>@Localizer["Status"]</pems-table-header></pems-table-row></pems-table-head>
-                                <pems-table-body>
-                                @foreach (var s in Model.SoDExposure)
-                                {
-                                    <pems-table-row>
-                                        <pems-table-cell><code>@s.PermissionAName</code></pems-table-cell>
-                                        <pems-table-cell><code>@s.PermissionBName</code></pems-table-cell>
-                                        <pems-table-cell class="text-body-secondary small">@(s.PolicyDescription ?? "")</pems-table-cell>
-                                        <pems-table-cell>
-                                            @if (s.UserHoldsBoth)
-                                            {
-                                                <span class="admin-status inactive"><pems-icon name="bi-exclamation-triangle" /> @Localizer["Potential exposure"]</span>
-                                            }
-                                            else
-                                            {
-                                                <span class="admin-status active"><pems-icon name="bi-check2-circle" /> @Localizer["Not exposed"]</span>
-                                            }
-                                        </pems-table-cell>
-                                    </pems-table-row>
-                                }
-                                </pems-table-body>
-                            </pems-table>
+                            <pems-data-table data="@(DataRows.Of(Model.SoDExposure, c_ => c_.Add(((Localizer["Permission A"])?.ToString() ?? ""), s => (object?)(DataCell.Code(s.PermissionAName))).Add(((Localizer["Permission B"])?.ToString() ?? ""), s => (object?)(DataCell.Code(s.PermissionBName))).Add(((Localizer["Description"])?.ToString() ?? ""), s => (object?)((s.PolicyDescription ?? "")), css: "text-body-secondary small").Add(((Localizer["Status"])?.ToString() ?? ""), s => (object?)((s.UserHoldsBoth ? (object?)DataCell.Span("admin-status inactive", DataCell.Icon("bi-exclamation-triangle"), " ", Localizer["Potential exposure"]) : DataCell.Span("admin-status active", DataCell.Icon("bi-check2-circle"), " ", Localizer["Not exposed"]))))))" />
                         </pems-table-scroll>
                     }
                     <p class="text-body-secondary small mt-3 mb-0"><a asp-controller="SoDPolicy" asp-action="Index">@Localizer["Manage SoD policies"]</a></p>
@@ -402,30 +380,7 @@
             else
             {
                 <pems-table-scroll>
-                    <pems-table kind="enterprise">
-                        <pems-table-head><pems-table-row><pems-table-header>@Localizer["Timestamp"]</pems-table-header><pems-table-header>@Localizer["Permission"]</pems-table-header><pems-table-header>@Localizer["Resource ID"]</pems-table-header><pems-table-header>@Localizer["Decision"]</pems-table-header><pems-table-header>@Localizer["Reason"]</pems-table-header></pems-table-row></pems-table-head>
-                        <pems-table-body>
-                        @foreach (var log in Model.RecentAuditLogs)
-                        {
-                            <pems-table-row>
-                                <pems-table-cell class="vs-num">@log.Timestamp.ToString("yyyy-MM-dd HH:mm:ss")</pems-table-cell>
-                                <pems-table-cell><code>@($"{log.ResourceName}.{log.ActionName}")</code></pems-table-cell>
-                                <pems-table-cell class="text-body-secondary small">@(log.ResourceId ?? "")</pems-table-cell>
-                                <pems-table-cell>
-                                    @if (log.Decision == "Allow")
-                                    {
-                                        <span class="admin-status active"><pems-icon name="bi-check2-circle" /> @log.Decision</span>
-                                    }
-                                    else
-                                    {
-                                        <span class="admin-status inactive"><pems-icon name="bi-x-circle" /> @log.Decision</span>
-                                    }
-                                </pems-table-cell>
-                                <pems-table-cell class="text-body-secondary small">@(log.Reason ?? "")</pems-table-cell>
-                            </pems-table-row>
-                        }
-                        </pems-table-body>
-                    </pems-table>
+                    <pems-data-table data="@(DataRows.Of(Model.RecentAuditLogs, c_ => c_.Add(((Localizer["Timestamp"])?.ToString() ?? ""), log => (object?)((log.Timestamp.ToString("yyyy-MM-dd HH:mm:ss"))), css: "vs-num").Add(((Localizer["Permission"])?.ToString() ?? ""), log => (object?)(DataCell.Code(($"{log.ResourceName}.{log.ActionName}")))).Add(((Localizer["Resource ID"])?.ToString() ?? ""), log => (object?)((log.ResourceId ?? "")), css: "text-body-secondary small").Add(((Localizer["Decision"])?.ToString() ?? ""), log => (object?)((log.Decision == "Allow" ? (object?)DataCell.Span("admin-status active", DataCell.Icon("bi-check2-circle"), " ", log.Decision) : DataCell.Span("admin-status inactive", DataCell.Icon("bi-x-circle"), " ", log.Decision)))).Add(((Localizer["Reason"])?.ToString() ?? ""), log => (object?)((log.Reason ?? "")), css: "text-body-secondary small")))" />
                 </pems-table-scroll>
             }
             <p class="text-body-secondary small mt-3 mb-0"><a asp-controller="AuthorizationAudit" asp-action="Index" asp-route-userId="@Model.UserId">@Localizer["Open full audit log for this user"]</a></p>

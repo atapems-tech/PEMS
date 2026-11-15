@@ -443,20 +443,7 @@
         <pems-content-card>
             <h6 class="mb-3"><pems-icon name="bi-journal-check" /> @Localizer["Cm_SecVdr"]</h6>
             <pems-table-scroll css="table-scroll-area pems-s-b4b96c72">
-            <pems-table kind="enterprise">
-                <pems-table-head><pems-table-row><pems-table-header>@Localizer["Cm_DocNo"]</pems-table-header><pems-table-header>@Localizer["Cm_Description"]</pems-table-header><pems-table-header>@Localizer["Cm_Vendor"]</pems-table-header><pems-table-header>@Localizer["Cm_Rev"]</pems-table-header><pems-table-header>@Localizer["Cm_Category"]</pems-table-header><pems-table-header>@Localizer["Cm_Status"]</pems-table-header><pems-table-header></pems-table-header></pems-table-row></pems-table-head>
-                <pems-table-body>
-                    @foreach (var v in Model.VDRItems)
-                    {
-                        <pems-table-row>
-                            <pems-table-cell>@v.DocumentNumber</pems-table-cell><pems-table-cell>@v.DocumentDescription</pems-table-cell><pems-table-cell>@v.VendorName</pems-table-cell>
-                            <pems-table-cell>@v.LatestRevisionNo</pems-table-cell><pems-table-cell>@v.LatestReviewCategory</pems-table-cell>
-                            <pems-table-cell><pems-badge tone="neutral">@v.WorkflowStatus</pems-badge></pems-table-cell>
-                            <pems-table-cell><pems-button tone="neutral" size="small" outline="true" as="a" asp-controller="VDR" asp-action="Details" asp-route-id="@v.VDRItemId"><pems-icon name="bi-eye" /></pems-button></pems-table-cell>
-                        </pems-table-row>
-                    }
-                </pems-table-body>
-            </pems-table>
+            <pems-data-table data="@(DataRows.Of(Model.VDRItems, c_ => c_.Add(((Localizer["Cm_DocNo"])?.ToString() ?? ""), v => (object?)(v.DocumentNumber)).Add(((Localizer["Cm_Description"])?.ToString() ?? ""), v => (object?)(v.DocumentDescription)).Add(((Localizer["Cm_Vendor"])?.ToString() ?? ""), v => (object?)(v.VendorName)).Add(((Localizer["Cm_Rev"])?.ToString() ?? ""), v => (object?)(v.LatestRevisionNo)).Add(((Localizer["Cm_Category"])?.ToString() ?? ""), v => (object?)(v.LatestReviewCategory)).Add(((Localizer["Cm_Status"])?.ToString() ?? ""), v => (object?)(DataCell.Badge("neutral", v.WorkflowStatus))).Add("", v => (object?)(DataCell.ButtonLink(Url.Action("Details", "VDR", new { id = v.VDRItemId }), "neutral", "small", true, null, DataCell.Icon("bi-eye"))))))" />
             </pems-table-scroll>
             @if (!Model.VDRItems.Any()) { <p class="text-muted mb-0 small">@Localizer["Cm_NoVdr"]</p> }
         </pems-content-card>
@@ -467,19 +454,7 @@
         <pems-content-card>
             <h6 class="mb-3"><pems-icon name="bi-cart-check" /> @Localizer["Cm_SecMr"]</h6>
             <pems-table-scroll css="table-scroll-area pems-s-a3f95238">
-            <pems-table kind="enterprise">
-                <pems-table-head><pems-table-row><pems-table-header>@Localizer["Cm_MrNumber"]</pems-table-header><pems-table-header>@Localizer["Cm_Project"]</pems-table-header><pems-table-header>@Localizer["Cm_Discipline"]</pems-table-header><pems-table-header>@Localizer["Cm_Description"]</pems-table-header><pems-table-header>@Localizer["Cm_Status"]</pems-table-header><pems-table-header></pems-table-header></pems-table-row></pems-table-head>
-                <pems-table-body>
-                    @foreach (var m in Model.RelatedMRs)
-                    {
-                        <pems-table-row>
-                            <pems-table-cell>@m.MRNumber</pems-table-cell><pems-table-cell>@m.ProjectName</pems-table-cell><pems-table-cell>@m.DisciplineName</pems-table-cell><pems-table-cell>@m.Description</pems-table-cell>
-                            <pems-table-cell><pems-badge tone="neutral">@m.Status</pems-badge></pems-table-cell>
-                            <pems-table-cell><pems-button tone="neutral" size="small" outline="true" as="a" asp-controller="MaterialRequisition" asp-action="Details" asp-route-id="@m.MRId"><pems-icon name="bi-eye" /></pems-button></pems-table-cell>
-                        </pems-table-row>
-                    }
-                </pems-table-body>
-            </pems-table>
+            <pems-data-table data="@(DataRows.Of(Model.RelatedMRs, c_ => c_.Add(((Localizer["Cm_MrNumber"])?.ToString() ?? ""), m => (object?)(m.MRNumber)).Add(((Localizer["Cm_Project"])?.ToString() ?? ""), m => (object?)(m.ProjectName)).Add(((Localizer["Cm_Discipline"])?.ToString() ?? ""), m => (object?)(m.DisciplineName)).Add(((Localizer["Cm_Description"])?.ToString() ?? ""), m => (object?)(m.Description)).Add(((Localizer["Cm_Status"])?.ToString() ?? ""), m => (object?)(DataCell.Badge("neutral", m.Status))).Add("", m => (object?)(DataCell.ButtonLink(Url.Action("Details", "MaterialRequisition", new { id = m.MRId }), "neutral", "small", true, null, DataCell.Icon("bi-eye"))))))" />
             </pems-table-scroll>
             @if (!Model.RelatedMRs.Any()) { <p class="text-muted mb-0 small">@Localizer["Cm_NoMr"]</p> }
         </pems-content-card>
@@ -593,20 +568,7 @@
         <pems-content-card>
             <h6 class="mb-2"><pems-icon name="bi-tools" /> @Localizer["Cm_ExecutedWo"]</h6>
             <pems-table-scroll css="table-scroll-area pems-s-f7dce87f">
-            <pems-table kind="enterprise">
-                <pems-table-head><pems-table-row><pems-table-header>@Localizer["Cm_WoNumber"]</pems-table-header><pems-table-header>@Localizer["Cm_Description"]</pems-table-header><pems-table-header>@Localizer["Cm_Status"]</pems-table-header><pems-table-header>@Localizer["Cm_Date"]</pems-table-header></pems-table-row></pems-table-head>
-                <pems-table-body>
-                    @foreach (var w in Model.WorkOrders)
-                    {
-                        <pems-table-row>
-                            <pems-table-cell class="vs-num">@if (canViewWo) { <a asp-controller="WorkOrder" asp-action="Details" asp-route-id="@w.WorkOrderId">@w.WorkOrderNo</a> } else { @w.WorkOrderNo }</pems-table-cell>
-                            <pems-table-cell>@w.Description</pems-table-cell>
-                            <pems-table-cell><span class="vs-pill">@w.Status</span></pems-table-cell>
-                            <pems-table-cell class="vs-num">@(w.CreatedDate?.ToString("yyyy-MM-dd"))</pems-table-cell>
-                        </pems-table-row>
-                    }
-                </pems-table-body>
-            </pems-table>
+            <pems-data-table data="@(DataRows.Of(Model.WorkOrders, c_ => c_.Add(((Localizer["Cm_WoNumber"])?.ToString() ?? ""), w => (object?)((canViewWo ? (object?)DataCell.Link(Url.Action("Details", "WorkOrder", new { id = w.WorkOrderId }), w.WorkOrderNo) : w.WorkOrderNo)), css: "vs-num").Add(((Localizer["Cm_Description"])?.ToString() ?? ""), w => (object?)(w.Description)).Add(((Localizer["Cm_Status"])?.ToString() ?? ""), w => (object?)(DataCell.Span("vs-pill", w.Status))).Add(((Localizer["Cm_Date"])?.ToString() ?? ""), w => (object?)((w.CreatedDate?.ToString("yyyy-MM-dd"))), css: "vs-num")))" />
             </pems-table-scroll>
             @if (!Model.WorkOrders.Any()) { <p class="text-muted mb-0 small">@Localizer["Cm_NoWorkOrders"]</p> }
         </pems-content-card>

@@ -77,20 +77,7 @@
             }
             else
             {
-                <pems-table scale="small">
-                    <pems-table-head><pems-table-row><pems-table-header>@Localizer["Tag"]</pems-table-header><pems-table-header>@Localizer["Variable"]</pems-table-header><pems-table-header>@Localizer["Next Due"]</pems-table-header><pems-table-header>@Localizer["Overdue"]</pems-table-header></pems-table-row></pems-table-head>
-                    <pems-table-body>
-                        @foreach (var o in Model.OverdueCbmPlans)
-                        {
-                            <pems-table-row>
-                                <pems-table-cell><a asp-controller="Equipment" asp-action="Details" asp-route-id="@o.EquipmentId">@o.EquipmentTagNumber</a></pems-table-cell>
-                                <pems-table-cell class="small">@o.VariableType — @o.Tag</pems-table-cell>
-                                <pems-table-cell class="small">@o.NextDueDate.ToString("yyyy-MM-dd")</pems-table-cell>
-                                <pems-table-cell><pems-badge tone="danger">@o.DaysOverdue @Localizer["روز"]</pems-badge></pems-table-cell>
-                            </pems-table-row>
-                        }
-                    </pems-table-body>
-                </pems-table>
+                <pems-data-table data="@(DataRows.Of(Model.OverdueCbmPlans, c_ => c_.Add(((Localizer["Tag"])?.ToString() ?? ""), o => (object?)(DataCell.Link(Url.Action("Details", "Equipment", new { id = o.EquipmentId }), o.EquipmentTagNumber))).Add(((Localizer["Variable"])?.ToString() ?? ""), o => (object?)(DataCell.Group(o.VariableType, " — ", o.Tag)), css: "small").Add(((Localizer["Next Due"])?.ToString() ?? ""), o => (object?)((o.NextDueDate.ToString("yyyy-MM-dd"))), css: "small").Add(((Localizer["Overdue"])?.ToString() ?? ""), o => (object?)(DataCell.Badge("danger", DataCell.Group(o.DaysOverdue, " ", Localizer["روز"]))))))" dense="true" />
                 @if (Model.OverdueCbmPlansTruncated)
                 {
                     <div class="small text-muted">@Localizer["فهرست به بالاترین ۵۰ مورد محدود شده است."]</div>

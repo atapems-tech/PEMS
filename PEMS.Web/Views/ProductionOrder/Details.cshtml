@@ -66,23 +66,7 @@
 <pems-content-card>
     <h6 class="mb-2">Production Runs</h6>
     <div class="table-scroll-area pems-s-7bf38d03">
-        <pems-table kind="enterprise">
-            <pems-table-head><pems-table-row><pems-table-header>Run #</pems-table-header><pems-table-header>@Localizer["Status"]</pems-table-header><pems-table-header>@Localizer["Start"]</pems-table-header><pems-table-header>@Localizer["End"]</pems-table-header><pems-table-header>Output Qty</pems-table-header><pems-table-header>Loss Qty</pems-table-header><pems-table-header></pems-table-header></pems-table-row></pems-table-head>
-            <pems-table-body>
-                @foreach (var r in Model.Runs)
-                {
-                    <pems-table-row>
-                        <pems-table-cell>@r.RunNumber</pems-table-cell>
-                        <pems-table-cell><pems-badge tone="neutral">@r.Status</pems-badge></pems-table-cell>
-                        <pems-table-cell class="small">@(r.StartDate?.ToString("yyyy-MM-dd HH:mm"))</pems-table-cell>
-                        <pems-table-cell class="small">@(r.EndDate?.ToString("yyyy-MM-dd HH:mm"))</pems-table-cell>
-                        <pems-table-cell>@r.TotalOutputQuantity.ToString("N3")</pems-table-cell>
-                        <pems-table-cell>@r.TotalLossQuantity.ToString("N3")</pems-table-cell>
-                        <pems-table-cell class="text-end"><pems-button tone="primary" size="small" outline="true" as="a" asp-controller="ProductionRun" asp-action="Details" asp-route-id="@r.ProductionRunId">Open</pems-button></pems-table-cell>
-                    </pems-table-row>
-                }
-            </pems-table-body>
-        </pems-table>
+        <pems-data-table data="@(DataRows.Of(Model.Runs, c_ => c_.Add("Run #", r => (object?)(r.RunNumber)).Add(((Localizer["Status"])?.ToString() ?? ""), r => (object?)(DataCell.Badge("neutral", r.Status))).Add(((Localizer["Start"])?.ToString() ?? ""), r => (object?)((r.StartDate?.ToString("yyyy-MM-dd HH:mm"))), css: "small").Add(((Localizer["End"])?.ToString() ?? ""), r => (object?)((r.EndDate?.ToString("yyyy-MM-dd HH:mm"))), css: "small").Add("Output Qty", r => (object?)((r.TotalOutputQuantity.ToString("N3")))).Add("Loss Qty", r => (object?)((r.TotalLossQuantity.ToString("N3")))).Add("", r => (object?)(DataCell.ButtonLink(Url.Action("Details", "ProductionRun", new { id = r.ProductionRunId }), "primary", "small", true, null, "Open")), css: "text-end")))" />
     </div>
     @if (!Model.Runs.Any()) { <p class="text-muted text-center py-3">No runs yet.</p> }
 </pems-content-card>
