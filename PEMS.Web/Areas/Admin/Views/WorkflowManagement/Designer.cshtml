@@ -73,13 +73,13 @@
     @if (validation != null && validation.Count > 0)
     {
         <pems-content-card css="mb-3">
-            <h6 class="mb-2">@Localizer["Validation"]: <span class="text-danger">@validation.Count(v => v.Severity == "Error") @Localizer["errors"]</span>, <span class="text-warning">@validation.Count(v => v.Severity == "Warning") @Localizer["warnings"]</span></h6>
+            <pems-heading level="6" class="mb-2">@Localizer["Validation"]: <span class="text-danger">@validation.Count(v => v.Severity == "Error") @Localizer["errors"]</span>, <span class="text-warning">@validation.Count(v => v.Severity == "Warning") @Localizer["warnings"]</span></pems-heading>
             <ul class="list-unstyled small mb-0">
                 @foreach (var v in validation)
                 {
                     <li class="mb-1"><pems-badge tone="none" css="@(v.Severity == "Error" ? "bg-danger" : "bg-warning text-dark")">@v.Severity</pems-badge> <code>@v.Code</code> @v.Message
-                        @if (v.StageId.HasValue) { <a asp-action="Designer" asp-route-versionId="@Model.VersionId" asp-route-stage="@v.StageId">@Localizer["Stage"]: @SName(v.StageId)</a> }
-                        @if (v.TransitionId.HasValue) { <a asp-action="Designer" asp-route-versionId="@Model.VersionId" asp-route-transition="@v.TransitionId">@Localizer["Transition"] #@v.TransitionId</a> }
+                        @if (v.StageId.HasValue) { <pems-link asp-action="Designer" asp-route-versionId="@Model.VersionId" asp-route-stage="@v.StageId">@Localizer["Stage"]: @SName(v.StageId)</pems-link> }
+                        @if (v.TransitionId.HasValue) { <pems-link asp-action="Designer" asp-route-versionId="@Model.VersionId" asp-route-transition="@v.TransitionId">@Localizer["Transition"] #@v.TransitionId</pems-link> }
                     </li>
                 }
             </ul>
@@ -90,7 +90,7 @@
         <pems-col xl="8">
             <pems-content-card>
                 <pems-flex justify="between" align="center" wrap="true" gap="2" css="mb-2">
-                    <h6 class="mb-0">@Localizer["Workflow graph"] <span class="small text-muted">(@Model.Stages.Count @Localizer["stage(s)"], @Model.Transitions.Count @Localizer["transition(s)"])</span></h6>
+                    <pems-heading level="6" class="mb-0">@Localizer["Workflow graph"] <span class="small text-muted">(@Model.Stages.Count @Localizer["stage(s)"], @Model.Transitions.Count @Localizer["transition(s)"])</span></pems-heading>
                     <div class="small text-muted">
                         <span class="pems-s-91d6b758">▬</span> @Localizer["Start"] &nbsp; <span class="pems-s-fb79543c">▬</span> @Localizer["forward"] &nbsp; <span class="pems-s-e34256e5">┅</span> @Localizer["return"] &nbsp; <span class="pems-s-4a8717b3">▬</span> @Localizer["End"]
                     </div>
@@ -103,22 +103,22 @@
                         @foreach (var e in g.Edges)
                         {
                             var cls = "wf-edge " + e.Kind.ToLowerInvariant() + (selTr == e.TransitionId ? " sel" : "");
-                            <a asp-action="Designer" asp-route-versionId="@Model.VersionId" asp-route-transition="@e.TransitionId" class="@cls" aria-label="@EdgeLabel(e)">
+                            <pems-link asp-action="Designer" asp-route-versionId="@Model.VersionId" asp-route-transition="@e.TransitionId" class="@cls" aria-label="@EdgeLabel(e)">
                                 <title>@EdgeLabel(e) (@e.ActionType)@(string.IsNullOrEmpty(e.RequiredPermission) ? "" : " · " + e.RequiredPermission)</title>
                                 <path d="@e.Path" marker-end="url(#wfArrow)" />
                                 <path d="@e.Path" stroke="transparent" stroke-width="12" marker-end="" />
                                 <text x="@Fmt(e.LabelX)" y="@Fmt(e.LabelY)">@Trunc(EdgeLabel(e), 22)</text>
-                            </a>
+                            </pems-link>
                         }
                         @foreach (var n in g.Nodes)
                         {
                             var nm = fa && !string.IsNullOrWhiteSpace(n.NameFa) ? n.NameFa! : n.Name;
-                            <a asp-action="Designer" asp-route-versionId="@Model.VersionId" asp-route-stage="@n.StageId" class="wf-node@(selStage == n.StageId ? " sel" : "")@(n.IsStart ? " start" : "")" aria-label="@nm">
+                            <pems-link asp-action="Designer" asp-route-versionId="@Model.VersionId" asp-route-stage="@n.StageId" class="wf-node@(selStage == n.StageId ? " sel" : "")@(n.IsStart ? " start" : "")" aria-label="@nm">
                                 <title>@nm@(string.IsNullOrEmpty(n.BusinessStatus) ? "" : " · " + n.BusinessStatus)</title>
                                 <rect x="@Fmt(n.X)" y="@Fmt(n.Y)" width="@Fmt(n.W)" height="@Fmt(n.H)" />
                                 <text x="@Fmt(n.X + n.W / 2)" y="@Fmt(n.Y + 21)" text-anchor="middle">@Trunc(nm, 25)</text>
                                 <text class="sub" x="@Fmt(n.X + n.W / 2)" y="@Fmt(n.Y + 38)" text-anchor="middle">@(string.IsNullOrEmpty(n.BusinessStatus) ? "" : n.BusinessStatus)</text>
-                            </a>
+                            </pems-link>
                         }
                     </svg>
                 </div>
@@ -127,7 +127,7 @@
 
             <pems-content-card css="mt-3">
                 <pems-flex justify="between" align="center" css="mb-1">
-                    <h6 class="mb-0">@Localizer["Stages"]</h6>
+                    <pems-heading level="6" class="mb-0">@Localizer["Stages"]</pems-heading>
                     @if (edit) { <pems-button as="a" tone="primary" size="small" outline="true" asp-action="Designer" asp-route-versionId="@Model.VersionId" asp-route-addStage="true"><pems-icon name="bi-plus-lg" /> @Localizer["Add stage"]</pems-button> }
                 </pems-flex>
                 <pems-table-scroll><pems-data-table data="@(DataRows.Of(Model.Stages, c_ => c_.Add("#", s => (object?)(s.StageOrder)).Add(((Localizer["Name"])?.ToString() ?? ""), s => (object?)(DataCell.Link(Url.Action("Designer", null, new { versionId = Model.VersionId, stage = s.StageId }), s.Name))).Add(((Localizer["Persian name"])?.ToString() ?? ""), s => (object?)(s.NameFa), dir: "rtl").Add(((Localizer["Business status"])?.ToString() ?? ""), s => (object?)(s.BusinessStatus)).Add(((Localizer["Responsible role"])?.ToString() ?? ""), s => (object?)(s.ResponsibleRole), css: "small text-break pems-s-f1a31497").Add(((Localizer["Responsible employee"])?.ToString() ?? ""), s => (object?)((s.ResponsibleEmployeeId.HasValue ? (employeeMap.FirstOrDefault(e => e.Id == s.ResponsibleEmployeeId).Name ?? "#" + s.ResponsibleEmployeeId) : "")), css: "small"), rowClass: s => (selStage == s.StageId ? "table-primary" : "")))" dense="true" css="align-middle mb-0" /></pems-table-scroll>
@@ -135,7 +135,7 @@
 
             <pems-content-card css="mt-3">
                 <pems-flex justify="between" align="center" css="mb-1">
-                    <h6 class="mb-0">@Localizer["Transitions"]</h6>
+                    <pems-heading level="6" class="mb-0">@Localizer["Transitions"]</pems-heading>
                     @if (edit) { <pems-button as="a" tone="primary" size="small" outline="true" asp-action="Designer" asp-route-versionId="@Model.VersionId" asp-route-addTransition="true"><pems-icon name="bi-plus-lg" /> @Localizer["Add transition"]</pems-button> }
                 </pems-flex>
                 <pems-table-scroll><pems-data-table data="@(DataRows.Of(Model.Transitions, c_ => c_.Add(((Localizer["From"])?.ToString() ?? ""), t => (object?)((t.FromStageId.HasValue ? SName(t.FromStageId) : Localizer["(start)"].Value))).Add(((Localizer["To"])?.ToString() ?? ""), t => (object?)((t.ToStageId.HasValue ? SName(t.ToStageId) : Localizer["(end)"].Value))).Add(((Localizer["Action"])?.ToString() ?? ""), t => (object?)(DataCell.Link(Url.Action("Designer", null, new { versionId = Model.VersionId, transition = t.TransitionId }), t.ActionType))).Add(((Localizer["Label"])?.ToString() ?? ""), t => (object?)((fa && !string.IsNullOrWhiteSpace(t.LabelFa) ? t.LabelFa : t.Label)), css: "small").Add(((Localizer["Required permission"])?.ToString() ?? ""), t => (object?)(t.RequiredPermission), css: "small"), rowClass: t => (selTr == t.TransitionId ? "table-primary" : "")))" dense="true" css="align-middle mb-0" /></pems-table-scroll>
@@ -150,7 +150,7 @@
             @if (stageForm != null)
             {
                 <pems-content-card css="wf-panel">
-                    <h6>@(stageForm.StageId == 0 ? Localizer["Add stage"] : Localizer["Stage"])</h6>
+                    <pems-heading level="6">@(stageForm.StageId == 0 ? Localizer["Add stage"] : Localizer["Stage"])</pems-heading>
                     <pems-form asp-action="SaveStage" method="post"><pems-row gap="2">
                         <input type="hidden" name="versionId" value="@Model.VersionId" /><input type="hidden" name="rowVersion" value="@Model.RowVersion" /><input type="hidden" name="stage.StageId" value="@stageForm.StageId" />
                         <fieldset class="m-0 p-0 border-0" disabled="@(!edit)"><pems-row gap="2">
@@ -188,7 +188,7 @@
             else if (trForm != null)
             {
                 <pems-content-card css="wf-panel">
-                    <h6>@(trForm.TransitionId == 0 ? Localizer["Add transition"] : Localizer["Transition"])</h6>
+                    <pems-heading level="6">@(trForm.TransitionId == 0 ? Localizer["Add transition"] : Localizer["Transition"])</pems-heading>
                     <pems-form asp-action="SaveTransition" method="post"><pems-row gap="2">
                         <input type="hidden" name="versionId" value="@Model.VersionId" /><input type="hidden" name="rowVersion" value="@Model.RowVersion" /><input type="hidden" name="transition.TransitionId" value="@trForm.TransitionId" />
                         <fieldset class="m-0 p-0 border-0" disabled="@(!edit)"><pems-row gap="2">
@@ -226,7 +226,7 @@
                 </pems-content-card>
             }
             <pems-content-card css="mt-3">
-                <h6>@Localizer["Recent changes"]</h6>
+                <pems-heading level="6">@Localizer["Recent changes"]</pems-heading>
                 <ul class="list-unstyled small mb-0 pems-s-80c1414f">
                     @foreach (var a in Model.Audit) { <li class="mb-1"><span class="text-muted">@a.Timestamp.ToString("MM-dd HH:mm")</span> · @a.Action · @a.Actor @if (!string.IsNullOrEmpty(a.Details)) { <span class="text-muted">· @a.Details</span> }</li> }
                 </ul>

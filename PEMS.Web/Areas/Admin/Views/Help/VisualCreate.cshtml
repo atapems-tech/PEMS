@@ -10,7 +10,7 @@
 }
 
 <pems-content-card>
-    <h5 class="mb-3"><pems-icon name="bi-diagram-2" /> @(isEdit ? "Edit" : "New") Help Visual</h5>
+    <pems-heading level="5" class="mb-3"><pems-icon name="bi-diagram-2" /> @(isEdit ? "Edit" : "New") Help Visual</pems-heading>
 
     @if (!ViewData.ModelState.IsValid)
     {

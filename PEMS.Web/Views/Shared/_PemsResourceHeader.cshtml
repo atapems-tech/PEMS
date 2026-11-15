@@ -23,13 +23,13 @@
 
 <pems-flex justify="between" align="center" wrap="true" gap="2">
     <div>
-        <h5 class="mb-0">
+        <pems-heading level="5" class="mb-0">
             <span dir="ltr">@Model.Identifier</span>
             @if (!string.IsNullOrEmpty(Model.SecondaryText))
             {
                 <span class="text-muted small">@Model.SecondaryText</span>
             }
-        </h5>
+        </pems-heading>
         <span class="text-muted small">@Model.MetaLine</span>
     </div>
     <pems-flex align="center" gap="2">

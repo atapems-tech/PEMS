@@ -136,7 +136,7 @@ public class ShellAccessibilityTests
     {
         var layout = Read("PEMS.Web/Views/Shared/_Layout.cshtml");
 
-        Assert.Matches(new Regex(@"<a class=""pems-skip-link"" href=""#pemsMainContent"">"), layout);
+        Assert.Matches(new Regex(@"<pems-link class=""pems-skip-link"" href=""#pemsMainContent"">"), layout);
         Assert.Contains("<main class=\"pems-content\" id=\"pemsMainContent\" tabindex=\"-1\">", layout);
         Assert.Matches(new Regex(@"class=""toast-container[^""]*""[^>]*aria-live=""polite"""), layout);
         Assert.Contains("~/js/pems-sidebar-search.js", layout);

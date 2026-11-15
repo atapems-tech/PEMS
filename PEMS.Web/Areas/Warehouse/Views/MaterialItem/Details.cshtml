@@ -28,7 +28,7 @@
 <pems-content-card css="mb-3">
     <pems-flex justify="between" align="start">
         <div>
-            <h5 class="mb-1">@Model.MaterialCode @if (Model.IsCritical) { <pems-icon name="bi-star-fill" css="text-warning" title="@Localizer["Critical"]" /> }</h5>
+            <pems-heading level="5" class="mb-1">@Model.MaterialCode @if (Model.IsCritical) { <pems-icon name="bi-star-fill" css="text-warning" title="@Localizer["Critical"]" /> }</pems-heading>
             <div class="text-muted">@Model.Description</div>
         </div>
         <pems-flex gap="2">

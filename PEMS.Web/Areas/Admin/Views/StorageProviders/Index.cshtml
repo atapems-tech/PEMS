@@ -28,7 +28,7 @@
         <pems-list-toolbar heading="@Localizer["StpL_Title"]" heading-title="@Localizer["StpL_Hint"]" total="@Model.Count">
             <pems-list-tools>
                 <pems-list-kpi-toggle target="stpKpis" storage-key="pems.storageProviders.kpis" open="true" />
-                <a class="lp-icon-btn" asp-controller="StorageRouting" asp-action="Index" title="@Localizer["SrtL_Title"]" aria-label="@Localizer["SrtL_Title"]"><pems-icon name="bi-signpost-2" aria-hidden="true" /></a>
+                <pems-link class="lp-icon-btn" asp-controller="StorageRouting" asp-action="Index" title="@Localizer["SrtL_Title"]" aria-label="@Localizer["SrtL_Title"]"><pems-icon name="bi-signpost-2" aria-hidden="true" /></pems-link>
                 <pems-list-new href="@Url.Action("Create")" text="@Localizer["StpL_New"]" />
             </pems-list-tools>
         </pems-list-toolbar>
@@ -61,7 +61,7 @@
                 @foreach (var p in Model)
                 {
                     <pems-table-row class="lp-row">
-                        <pems-table-cell><a asp-action="Edit" asp-route-id="@p.StorageProviderId" class="lp-subject">@p.Name</a></pems-table-cell>
+                        <pems-table-cell><pems-link asp-action="Edit" asp-route-id="@p.StorageProviderId" class="lp-subject">@p.Name</pems-link></pems-table-cell>
                         <pems-table-cell><code>@p.Code</code></pems-table-cell>
                         <pems-table-cell><span class="vs-pill vs-pill--neutral">@p.ProviderType</span></pems-table-cell>
                         <pems-table-cell class="small text-muted vs-hide-md"><span class="vs-num">@(string.IsNullOrEmpty(p.Host) ? p.RootPath : $"{p.Host}:{p.Port} → {p.RootPath}")</span></pems-table-cell>
@@ -73,7 +73,7 @@
                         <pems-table-cell><span class="vs-pill @(p.IsEnabled ? "vs-pill--success" : "vs-pill--neutral")">@(p.IsEnabled ? Localizer["Enabled"] : Localizer["Disabled"])</span></pems-table-cell>
                         <pems-table-cell>@if (p.IsDefault) { <pems-icon name="bi-star-fill" css="text-warning" title="@Localizer["Default"]" aria-label="@Localizer["Default"]" /> }</pems-table-cell>
                         <pems-table-cell class="text-end text-nowrap">
-                            <a asp-action="Edit" asp-route-id="@p.StorageProviderId" class="lp-act lp-act--always" title="@Localizer["Ed_Edit"]" aria-label="@Localizer["Ed_Edit"] @p.Name"><pems-icon name="bi-pencil" aria-hidden="true" /></a>
+                            <pems-link asp-action="Edit" asp-route-id="@p.StorageProviderId" class="lp-act lp-act--always" title="@Localizer["Ed_Edit"]" aria-label="@Localizer["Ed_Edit"] @p.Name"><pems-icon name="bi-pencil" aria-hidden="true" /></pems-link>
                             <pems-form asp-action="TestConnection" asp-route-id="@p.StorageProviderId" method="post" class="d-inline">
                                 <pems-button plain="true" type="submit" css="lp-act lp-act--always" title="@Localizer["StpL_Test"]" aria-label="@Localizer["StpL_Test"] @p.Name"><pems-icon name="bi-broadcast" aria-hidden="true" /></pems-button>
                             </pems-form>

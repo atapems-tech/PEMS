@@ -2,7 +2,7 @@
 @using PEMS.Web.Resources
 @inject IStringLocalizer<SharedResource> Localizer
 <pems-content-card css="pems-s-3f7efa5f">
-    <h6 class="mb-3"><pems-icon name="bi-exclamation-triangle" /> Raise New NCR</h6>
+    <pems-heading level="6" class="mb-3"><pems-icon name="bi-exclamation-triangle" /> Raise New NCR</pems-heading>
 
     <pems-form asp-action="NcrCreate" method="post">
         <pems-row gap="3">

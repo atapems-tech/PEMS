@@ -30,10 +30,10 @@
 <pems-list-page texts="@ListPageTexts.From(Localizer)">
 
     <nav class="vs-subnav" aria-label="@Localizer["Ed_Documents"]">
-        <a asp-controller="EngineeringDocuments" asp-action="Index">@Localizer["Ed_Documents"]</a>
-        <a asp-controller="DocumentRegister" asp-action="Index">@Localizer["Ed_Register"]</a>
-        <a asp-controller="VDR" asp-action="Index" class="active" aria-current="page">@Localizer["Ed_VendorDocs"]</a>
-        <a asp-controller="Transmittal" asp-action="Index">@Localizer["Ed_Transmittals"]</a>
+        <pems-link asp-controller="EngineeringDocuments" asp-action="Index">@Localizer["Ed_Documents"]</pems-link>
+        <pems-link asp-controller="DocumentRegister" asp-action="Index">@Localizer["Ed_Register"]</pems-link>
+        <pems-link asp-controller="VDR" asp-action="Index" class="active" aria-current="page">@Localizer["Ed_VendorDocs"]</pems-link>
+        <pems-link asp-controller="Transmittal" asp-action="Index">@Localizer["Ed_Transmittals"]</pems-link>
     </nav>
 
     <pems-list-panel>
@@ -136,7 +136,7 @@
                         @foreach (var i in Model.Items)
                         {
                             <pems-table-row class="lp-row @(i.IsOverdue ? "table-danger" : "")">
-                                <pems-table-cell class="lp-no"><a asp-action="Details" asp-route-id="@i.VDRItemId" class="lp-subject" title="@i.DocumentNumber">@i.DocumentNumber</a></pems-table-cell>
+                                <pems-table-cell class="lp-no"><pems-link asp-action="Details" asp-route-id="@i.VDRItemId" class="lp-subject" title="@i.DocumentNumber">@i.DocumentNumber</pems-link></pems-table-cell>
                                 <pems-table-cell><span class="vs-title-cell" title="@i.DocumentDescription">@i.DocumentDescription</span></pems-table-cell>
                                 <pems-table-cell class="vs-hide-md small" title="@i.DocumentTypeCode">@i.DocumentTypeCode</pems-table-cell>
                                 <pems-table-cell class="small" title="@i.VendorName">@i.VendorName</pems-table-cell>
@@ -149,7 +149,7 @@
                                     @if (i.IsOverdue) { <span class="vs-pill vs-pill--danger">@Localizer["Vs_Overdue"]</span> }
                                 </pems-table-cell>
                                 <pems-table-cell class="text-nowrap lp-actions">
-                                    <a asp-action="Details" asp-route-id="@i.VDRItemId" class="lp-act lp-act--always" title="@Localizer["Vs_View"]"><pems-icon name="bi-eye" aria-hidden="true" /><span class="visually-hidden">@Localizer["Vs_View"]: @i.DocumentNumber</span></a>
+                                    <pems-link asp-action="Details" asp-route-id="@i.VDRItemId" class="lp-act lp-act--always" title="@Localizer["Vs_View"]"><pems-icon name="bi-eye" aria-hidden="true" /><span class="visually-hidden">@Localizer["Vs_View"]: @i.DocumentNumber</span></pems-link>
                                 </pems-table-cell>
                             </pems-table-row>
                         }

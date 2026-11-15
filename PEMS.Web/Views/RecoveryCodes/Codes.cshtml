@@ -4,7 +4,7 @@
 @inject IStringLocalizer<SharedResource> Localizer
 
 <pems-content-card css="pems-maxw-720" data-pems-secret-reveal>
-    <h2 class="h5 mb-3"><pems-icon name="bi-check-circle-fill" css="text-success me-1" /> @Localizer["New recovery codes"]: <strong>@Model.UserName</strong></h2>
+    <pems-heading level="2" class="h5 mb-3"><pems-icon name="bi-check-circle-fill" css="text-success me-1" /> @Localizer["New recovery codes"]: <strong>@Model.UserName</strong></pems-heading>
 
     <pems-alert tone="warning">
         @Localizer["Print or download these codes now and keep them offline. They are shown only once; the previous codes no longer work."]

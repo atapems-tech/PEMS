@@ -14,7 +14,7 @@
 }
 
 <pems-flex justify="between" align="center" css="mb-3">
-    <h5 class="mb-0"><pems-icon name="bi-diagram-3" /> Class Intelligence — @Model.Name <code class="small">@Model.Code</code></h5>
+    <pems-heading level="5" class="mb-0"><pems-icon name="bi-diagram-3" /> Class Intelligence — @Model.Name <code class="small">@Model.Code</code></pems-heading>
     <pems-button tone="neutral" size="small" outline="true" as="a" asp-controller="CmmsReadiness" asp-action="ClassDetail" asp-route-id="@Model.EquipmentClassId">CMMS Readiness</pems-button>
 </pems-flex>
 <p class="text-muted small">
@@ -52,7 +52,7 @@
 <pems-row gap="3" css="mb-3">
     <pems-col md="6">
         <pems-content-card css="h-100">
-            <h6 class="mb-2">FMEA / RCM Coverage</h6>
+            <pems-heading level="6" class="mb-2">FMEA / RCM Coverage</pems-heading>
             <div>FMEA: <pems-badge tone="@StatusBadge(Model.FMEAReadiness)">@Model.FMEAReadiness</pems-badge> (@Model.ApprovedFMEACount approved)</div>
             <div>RCM: <pems-badge tone="@StatusBadge(Model.RCMReadiness)">@Model.RCMReadiness</pems-badge> (@Model.ApprovedRCMCount approved)</div>
             <hr />
@@ -68,7 +68,7 @@
     </pems-col>
     <pems-col md="6">
         <pems-content-card css="h-100">
-            <h6 class="mb-2">Criticality Distribution &amp; Intelligence</h6>
+            <pems-heading level="6" class="mb-2">Criticality Distribution &amp; Intelligence</pems-heading>
             @if (Model.CriticalityDistribution.Any())
             {
                 @foreach (var kv in Model.CriticalityDistribution)

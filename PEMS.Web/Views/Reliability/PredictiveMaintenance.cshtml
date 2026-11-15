@@ -40,7 +40,7 @@
 <p class="text-muted small">@readiness.Reason</p>
 
 <pems-content-card>
-    <h6 class="mb-2">Defined Models (@readiness.ModelCount total, @readiness.ValidatedModelCount validated)</h6>
+    <pems-heading level="6" class="mb-2">Defined Models (@readiness.ModelCount total, @readiness.ValidatedModelCount validated)</pems-heading>
     <pems-data-table data="@(DataRows.Of(Model, c_ => c_.Add(((Localizer["Target"])?.ToString() ?? ""), m => (object?)(m.TargetName)).Add("Algorithm", m => (object?)(m.Algorithm), css: "small").Add("Training Data", m => (object?)(m.TrainingDataStatus), kind: DataCellKind.Badge, tone: m => ((StatusBadge(m.TrainingDataStatus))?.ToString())).Add(((Localizer["Validation"])?.ToString() ?? ""), m => (object?)(m.ValidationStatus), css: "small").Add("Results", m => (object?)(m.ResultCount), css: "text-end", headerCss: "text-end")))" dense="true" css="mb-0" />
     @if (!Model.Any()) { <p class="text-muted text-center py-4 mb-0">هیچ مدل پیش‌بینانه‌ای هنوز تعریف نشده - هیچ داده‌ی جعلی برای پرکردن این صفحه درج نشده.</p> }
 </pems-content-card>

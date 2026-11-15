@@ -67,7 +67,7 @@
 {
     <pems-content-card css="mb-3">
         <pems-flex justify="between" align="center" wrap="true" gap="2">
-            <h6 class="mb-0">@Localizer["Workflow"] <span class="text-muted small">@wf.WorkflowName · @Localizer["Version"] @wf.VersionNumber · @Localizer[wf.Status]</span></h6>
+            <pems-heading level="6" class="mb-0">@Localizer["Workflow"] <span class="text-muted small">@wf.WorkflowName · @Localizer["Version"] @wf.VersionNumber · @Localizer[wf.Status]</span></pems-heading>
             @foreach (var w in wf.Warnings) { <span class="small text-warning"><pems-icon name="bi-exclamation-triangle" /> @w</span> }
         </pems-flex>
         <partial name="_PemsStageDiagram" model="diagram" />
@@ -88,7 +88,7 @@ else
 <pems-content-card css="mb-3">
     <pems-flex justify="between" align="start" wrap="true" gap="2">
         <div>
-            <h5 class="mb-1">@Model.WorkOrderNumber</h5>
+            <pems-heading level="5" class="mb-1">@Model.WorkOrderNumber</pems-heading>
             <pems-badge tone="@statusClass">@Localizer[Model.Status ?? ""]</pems-badge>
             <pems-badge tone="@(Model.Priority == "Critical" ? "danger" : "neutral")">@Localizer[Model.Priority ?? ""]</pems-badge>
             <pems-badge tone="neutral">@Localizer[Model.WorkOrderType ?? ""]</pems-badge>
@@ -238,7 +238,7 @@ else
     @if (Model.SourceWorkRequestId.HasValue)
     {
         <div class="small text-muted mt-1">
-            <pems-icon name="bi-clipboard-plus" /> Source: <a asp-controller="WorkRequest" asp-action="Details" asp-route-id="@Model.SourceWorkRequestId">Work Request</a>
+            <pems-icon name="bi-clipboard-plus" /> Source: <pems-link asp-controller="WorkRequest" asp-action="Details" asp-route-id="@Model.SourceWorkRequestId">Work Request</pems-link>
         </div>
     }
 
@@ -253,7 +253,7 @@ else
     }
 
     <pems-info-grid class="mt-3">
-        <pems-info-item label="@Localizer["Equipment"]" num><a asp-controller="Equipment" asp-action="Details" asp-route-id="@Model.EquipmentId">@Model.Equipment?.TagNumber</a></pems-info-item>
+        <pems-info-item label="@Localizer["Equipment"]" num><pems-link asp-controller="Equipment" asp-action="Details" asp-route-id="@Model.EquipmentId">@Model.Equipment?.TagNumber</pems-link></pems-info-item>
         <pems-info-item label="@Localizer["Assigned"]">
             @if (Model.AssignedTeam != null)
             {
@@ -291,7 +291,7 @@ else
 @if (!isLegacy)
 {
     <pems-content-card css="mb-3">
-        <h6 class="mb-3">@Localizer["Actions"]</h6>
+        <pems-heading level="6" class="mb-3">@Localizer["Actions"]</pems-heading>
         <pems-flex wrap="true" gap="2" align="start">
             @if (actions.Count > 0)
             {
@@ -384,7 +384,7 @@ else
                         <pems-col span="12">
                             <pems-alert tone="info" css="small py-2 mb-0">
                                 <pems-icon name="bi-info-circle" /> @Localizer["No teams exist for the responsible discipline yet; assign an individual executor or create a team first."]
-                                <a asp-controller="Team" asp-action="Index" class="alert-link">@Localizer["Go to Teams"]</a>
+                                <pems-link asp-controller="Team" asp-action="Index" class="alert-link">@Localizer["Go to Teams"]</pems-link>
                             </pems-alert>
                         </pems-col>
                     }
@@ -423,7 +423,7 @@ else
     </pems-content-card>
 
     <pems-content-card css="mb-3">
-        <h6 class="mb-3">@Localizer["Workflow History"]</h6>
+        <pems-heading level="6" class="mb-3">@Localizer["Workflow History"]</pems-heading>
         <pems-table-scroll>
         <pems-related-table>
             <pems-table-head><pems-table-row><pems-table-header>@Localizer["Date"]</pems-table-header><pems-table-header>@Localizer["Action"]</pems-table-header><pems-table-header>@Localizer["From"]</pems-table-header><pems-table-header>@Localizer["To"]</pems-table-header><pems-table-header>@Localizer["By"]</pems-table-header><pems-table-header>@Localizer["Reason"]</pems-table-header></pems-table-row></pems-table-head>
@@ -455,7 +455,7 @@ else
 @if (statusHistory.Any())
 {
     <pems-content-card css="mb-3">
-        <h6 class="mb-3"><pems-icon name="bi-clock-history" /> @(isLegacy ? Localizer["Status History"] : Localizer["Business Audit"])</h6>
+        <pems-heading level="6" class="mb-3"><pems-icon name="bi-clock-history" /> @(isLegacy ? Localizer["Status History"] : Localizer["Business Audit"])</pems-heading>
         <ul class="list-unstyled mb-0">
             @foreach (var h in statusHistory)
             {
@@ -474,7 +474,7 @@ else
 }
 
 <pems-content-card css="mb-3">
-    <h6 class="mb-3"><pems-icon name="bi-people" /> @Localizer["بازبینی چند-دیسیپلینه"]</h6>
+    <pems-heading level="6" class="mb-3"><pems-icon name="bi-people" /> @Localizer["بازبینی چند-دیسیپلینه"]</pems-heading>
     <p class="text-muted small">
         طبق رویه‌ی استاندارد هماهنگی چند-تخصصی (Multi-Craft Coordination، EN 13460): اگه این
         کار نیاز به تایید/یافته‌ی چند دیسیپلین تعمیراتی داره (مثلاً برق + مکانیک + ابزاردقیق)،
@@ -580,7 +580,7 @@ else
     @if (findings.Any())
     {
         <hr class="my-3" />
-        <h6 class="small fw-bold mb-2">@Localizer["یافته‌های ثبت‌شده"]</h6>
+        <pems-heading level="6" class="small fw-bold mb-2">@Localizer["یافته‌های ثبت‌شده"]</pems-heading>
         <ul class="list-unstyled mb-0">
             @foreach (var f in findings)
             {
@@ -609,7 +609,7 @@ else
 @if (secPage != null && secPage.CanReopen)
 {
     <pems-content-card css="mb-3 border-warning">
-        <h6 class="mb-2"><pems-icon name="bi-unlock" /> @Localizer["Reopen Work Order"]</h6>
+        <pems-heading level="6" class="mb-2"><pems-icon name="bi-unlock" /> @Localizer["Reopen Work Order"]</pems-heading>
         <p class="text-muted small mb-2">@Localizer["A formal reopen requires a reason and is audited; the Work Order returns to the verification stage."]</p>
         <pems-form asp-action="ReopenWorkOrder" method="post"><pems-row gap="2">
             <input type="hidden" name="id" value="@Model.WorkOrderId" />
@@ -626,12 +626,12 @@ else
 else
 {
 <pems-content-card css="mb-3">
-    <h6 class="mb-3"><pems-icon name="bi-person-workspace" /> @Localizer["Labor (ساعت‌کار واقعی)"]</h6>
+    <pems-heading level="6" class="mb-3"><pems-icon name="bi-person-workspace" /> @Localizer["Labor (ساعت‌کار واقعی)"]</pems-heading>
     @if (TempData.Peek("LaborRateEmployeeId") is int rateEmployeeId)
     {
         <pems-alert tone="warning" css="small py-2">
             <pems-icon name="bi-cash-coin" /> @Localizer["This employee has no hourly rate defined."]
-            <a asp-controller="Employee" asp-action="Details" asp-route-id="@rateEmployeeId" class="alert-link">@Localizer["Go to rate setup"]</a>
+            <pems-link asp-controller="Employee" asp-action="Details" asp-route-id="@rateEmployeeId" class="alert-link">@Localizer["Go to rate setup"]</pems-link>
         </pems-alert>
     }
     <p class="text-muted small">
@@ -709,7 +709,7 @@ else
 else
 {
 <pems-content-card>
-    <h6 class="mb-3">@Localizer["Spare Parts Used"]</h6>
+    <pems-heading level="6" class="mb-3">@Localizer["Spare Parts Used"]</pems-heading>
     <pems-table-scroll css="table-scroll-area pems-s-8da1c6e6">
     <pems-related-table>
         <pems-table-head><pems-table-row><pems-table-header>@Localizer["Material Code"]</pems-table-header><pems-table-header>@Localizer["Description"]</pems-table-header><pems-table-header>@Localizer["Qty"]</pems-table-header><pems-table-header>Returned</pems-table-header><pems-table-header>@Localizer["Unit Cost"]</pems-table-header><pems-table-header>@Localizer["Total"]</pems-table-header><pems-table-header></pems-table-header></pems-table-row></pems-table-head>
@@ -754,7 +754,7 @@ else
     {
         <pems-alert tone="info" css="small mb-0">
             @Localizer["No materials exist in the Material Master yet; define materials first."]
-            @if (!string.IsNullOrEmpty(materialMasterUrl)) { <a href="@materialMasterUrl" class="alert-link">@Localizer["Go to Material Master"]</a> }
+            @if (!string.IsNullOrEmpty(materialMasterUrl)) { <pems-link href="@materialMasterUrl" class="alert-link">@Localizer["Go to Material Master"]</pems-link> }
         </pems-alert>
     }
     else
@@ -786,7 +786,7 @@ else
 @if (tasks.Any())
 {
     <pems-content-card css="mt-3">
-        <h6 class="mb-3"><pems-icon name="bi-list-ol" /> Tasks (@tasks.Count(t => t.IsCompleted)/@tasks.Count completed)</h6>
+        <pems-heading level="6" class="mb-3"><pems-icon name="bi-list-ol" /> Tasks (@tasks.Count(t => t.IsCompleted)/@tasks.Count completed)</pems-heading>
         <pems-related-table>
             <pems-table-head><pems-table-row><pems-table-header class="pems-w-50"></pems-table-header><pems-table-header class="pems-w-60">#</pems-table-header><pems-table-header>@Localizer["Title"]</pems-table-header><pems-table-header>@Localizer["Description"]</pems-table-header><pems-table-header>@Localizer["Completed"]</pems-table-header></pems-table-row></pems-table-head>
             <pems-table-body>
@@ -826,7 +826,7 @@ else
 }
 
 <pems-content-card css="mt-3">
-    <h6 class="mb-3"><pems-icon name="bi-mortarboard" /> @Localizer["Required Skills"]</h6>
+    <pems-heading level="6" class="mb-3"><pems-icon name="bi-mortarboard" /> @Localizer["Required Skills"]</pems-heading>
     @if (totalPlannedHours > 0 || totalActualHours > 0)
     {
         <p class="small text-muted mb-2">
@@ -886,7 +886,7 @@ else
         var requiredMaterials = (List<PEMS.Domain.Entities.WorkOrderMaterial>)ViewBag.RequiredMaterials;
         var intake = ViewBag.WarehouseIntake as PEMS.Application.Interfaces.WarehouseIntakeDto;   // SCRUM-472
     }
-    <h6 class="mb-3"><pems-icon name="bi-box-seam" /> @Localizer["Required Materials"]</h6>
+    <pems-heading level="6" class="mb-3"><pems-icon name="bi-box-seam" /> @Localizer["Required Materials"]</pems-heading>
     <pems-related-table>
         <pems-table-head><pems-table-row><pems-table-header>@Localizer["Material"]</pems-table-header><pems-table-header>@Localizer["Required Qty"]</pems-table-header><pems-table-header>@Localizer["Whi_SupplyCode"]</pems-table-header><pems-table-header>@Localizer["Whi_Sourced"]</pems-table-header><pems-table-header></pems-table-header></pems-table-row></pems-table-head>
         <pems-table-body>
@@ -923,7 +923,7 @@ else
                             <span dir="ltr">@il.SourcedQuantity.ToString("0.###") / @il.RequiredQuantity.ToString("0.###")</span>
                             @foreach (var r in il.Requisitions)
                             {
-                                <a class="ms-1" href="/Warehouse/StoreRequisition/Details/@r.StoreRequisitionId" dir="ltr">@r.RequisitionNumber (@r.WarehouseCode)</a>
+                                <pems-link class="ms-1" href="/Warehouse/StoreRequisition/Details/@r.StoreRequisitionId" dir="ltr">@r.RequisitionNumber (@r.WarehouseCode)</pems-link>
                             }
                         }
                         else { <span class="text-muted">—</span> }
@@ -954,7 +954,7 @@ else
             @if (intake.IsOpen)
             {
                 <span class="vs-pill vs-pill--warning">@Localizer["Whi_State_Open"]</span>
-                <a href="/Warehouse/WarehouseIntake/Details/@Model.WorkOrderId">@Localizer["Whi_Open"]</a>
+                <pems-link href="/Warehouse/WarehouseIntake/Details/@Model.WorkOrderId">@Localizer["Whi_Open"]</pems-link>
             }
             else if (unsourced.Count == 0 && !hasDirectPurchase)
             {
@@ -983,7 +983,7 @@ else
     {
         <pems-alert tone="info" css="small mb-0">
             @Localizer["No materials exist in the Material Master yet; define materials first."]
-            @if (!string.IsNullOrEmpty(materialMasterUrl)) { <a href="@materialMasterUrl" class="alert-link">@Localizer["Go to Material Master"]</a> }
+            @if (!string.IsNullOrEmpty(materialMasterUrl)) { <pems-link href="@materialMasterUrl" class="alert-link">@Localizer["Go to Material Master"]</pems-link> }
         </pems-alert>
     }
     else
@@ -1007,7 +1007,7 @@ else
 </pems-content-card>
 
 <pems-content-card css="mt-3">
-    <h6 class="mb-3"><pems-icon name="bi-people-fill" /> Crew</h6>
+    <pems-heading level="6" class="mb-3"><pems-icon name="bi-people-fill" /> Crew</pems-heading>
     @{ var woCrews = (List<PEMS.Domain.Entities.Crew>)(ViewBag.Crews ?? new List<PEMS.Domain.Entities.Crew>()); }
     @if (woCrews.Any())
     {
@@ -1016,7 +1016,7 @@ else
             <div class="mb-2">
                 <span class="fw-bold small">@c.Code — @c.Name</span>
                 <span class="text-muted small">(@c.Members.Count(m => m.IsActive) عضو)</span>
-                @if (Ctl(WoSection.Crew)) { <a asp-controller="Crew" asp-action="Index" class="small">@Localizer["مدیریت اعضا"]</a> }
+                @if (Ctl(WoSection.Crew)) { <pems-link asp-controller="Crew" asp-action="Index" class="small">@Localizer["مدیریت اعضا"]</pems-link> }
             </div>
         }
     }

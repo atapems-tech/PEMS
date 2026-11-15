@@ -51,8 +51,8 @@
                 <pems-list-kpi-toggle target="mwKpis" storage-key="pems.mywork.kpis" />
                 <pems-list-reset-columns grid-key="MyWork" />
                 <pems-list-menu id="mwMoreBtn" icon="bi-three-dots" label="@Localizer["Lp_More"]">
-                    <li><a class="dropdown-item" asp-controller="Notification" asp-action="Index"><pems-icon name="bi-bell" aria-hidden="true" /> @Localizer["MyWork_Notifications"] (@unread)</a></li>
-                    <li><a class="dropdown-item" asp-controller="Task" asp-action="Index"><pems-icon name="bi-check2-square" aria-hidden="true" /> @Localizer["MyWork_ActionItems"] (@openItems)</a></li>
+                    <li><pems-link class="dropdown-item" asp-controller="Notification" asp-action="Index"><pems-icon name="bi-bell" aria-hidden="true" /> @Localizer["MyWork_Notifications"] (@unread)</pems-link></li>
+                    <li><pems-link class="dropdown-item" asp-controller="Task" asp-action="Index"><pems-icon name="bi-check2-square" aria-hidden="true" /> @Localizer["MyWork_ActionItems"] (@openItems)</pems-link></li>
                 </pems-list-menu>
             </pems-list-tools>
         </pems-list-toolbar>
@@ -99,7 +99,7 @@
                             else { <span class="vs-pill vs-pill--neutral ms-1">@Localizer["MyWork_Queue"]</span> }
                         </pems-table-cell>
                         <pems-table-cell>
-                            @if (path != null) { <a href="@path">#@t.BusinessObjectId <pems-icon name="bi-box-arrow-up-right" css="small" aria-hidden="true" /><span class="visually-hidden">@Localizer["MyWork_Open"]</span></a> }
+                            @if (path != null) { <pems-link href="@path">#@t.BusinessObjectId <pems-icon name="bi-box-arrow-up-right" css="small" aria-hidden="true" /><span class="visually-hidden">@Localizer["MyWork_Open"]</span></pems-link> }
                             else { <span>#@t.BusinessObjectId</span> }
                         </pems-table-cell>
                         <pems-table-cell dir="ltr" class="text-nowrap">@t.AssignedDate.ToString("yyyy-MM-dd HH:mm")</pems-table-cell>

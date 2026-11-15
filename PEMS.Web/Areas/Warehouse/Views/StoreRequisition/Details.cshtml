@@ -24,7 +24,7 @@
 <pems-content-card css="mb-3">
     <pems-flex justify="between" align="start" wrap="true" gap="2">
         <div>
-            <h5 class="mb-1">@Model.RequisitionNumber</h5>
+            <pems-heading level="5" class="mb-1">@Model.RequisitionNumber</pems-heading>
             <div class="text-muted small">انبار: @Model.Warehouse?.Code - درخواست‌کننده: @(Model.RequestedBy?.FirstName) @(Model.RequestedBy?.LastName) - @Model.RequestedDate.ToString("yyyy-MM-dd")</div>
             @if (!string.IsNullOrWhiteSpace(Model.Purpose)) { <div class="small mt-1">@Model.Purpose</div> }
         </div>
@@ -67,7 +67,7 @@
 </pems-content-card>
 
 <pems-content-card css="mb-3">
-    <h6 class="mb-3">Lines</h6>
+    <pems-heading level="6" class="mb-3">Lines</pems-heading>
     @{
         var editApproved = Model.Status == "Submitted" && Can("SetApprovedQuantity") && !isRequester;
         var canIssue = Model.Status is "Reserved" or "PartiallyIssued" && Can("Issue") && !isRequester;
@@ -115,6 +115,6 @@
 </pems-content-card>
 
 <pems-content-card>
-    <h6 class="mb-3">@Localizer["Status History"]</h6>
+    <pems-heading level="6" class="mb-3">@Localizer["Status History"]</pems-heading>
     <pems-data-table data="@(DataRows.Of(statusHistory, c_ => c_.Add(((Localizer["From"])?.ToString() ?? ""), h => (object?)(h.FromStatus)).Add("To", h => (object?)(h.ToStatus)).Add("By", h => (object?)(h.ChangedBy != null ? h.ChangedBy.FirstName + " " + h.ChangedBy.LastName : "-"), css: "small").Add(((Localizer["Date"])?.ToString() ?? ""), h => (object?)(h.ChangedDate.ToString("yyyy-MM-dd HH:mm")), css: "small").Add(((Localizer["Reason"])?.ToString() ?? ""), h => (object?)(h.Reason ?? "-"), css: "small text-muted")))" dense="true" />
 </pems-content-card>

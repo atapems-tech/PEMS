@@ -24,8 +24,8 @@
 
         <pems-list-toolbar heading="@Localizer["PkL_Title"]" heading-title="@Localizer["PkL_Hint"]" total="@Model.TotalCount">
             <pems-list-tools>
-                <a class="lp-icon-btn" asp-controller="MaterialRequisition" asp-action="Index" title="@Localizer["PkL_AllMrs"]" aria-label="@Localizer["PkL_AllMrs"]"><pems-icon name="bi-cart-check" aria-hidden="true" /></a>
-                <a class="lp-icon-btn" asp-controller="MaterialRequisition" asp-action="Quotations" title="@Localizer["PkL_AllMrqs"]" aria-label="@Localizer["PkL_AllMrqs"]"><pems-icon name="bi-file-earmark-spreadsheet" aria-hidden="true" /></a>
+                <pems-link class="lp-icon-btn" asp-controller="MaterialRequisition" asp-action="Index" title="@Localizer["PkL_AllMrs"]" aria-label="@Localizer["PkL_AllMrs"]"><pems-icon name="bi-cart-check" aria-hidden="true" /></pems-link>
+                <pems-link class="lp-icon-btn" asp-controller="MaterialRequisition" asp-action="Quotations" title="@Localizer["PkL_AllMrqs"]" aria-label="@Localizer["PkL_AllMrqs"]"><pems-icon name="bi-file-earmark-spreadsheet" aria-hidden="true" /></pems-link>
                 <pems-list-reset-columns grid-key="ProcurementPackage" />
                 <pems-list-new modal="createPackageModal" text="@Localizer["PkL_New"]" />
             </pems-list-tools>
@@ -51,7 +51,7 @@
                     @foreach (var p in Model.Items)
                     {
                         <pems-table-row class="lp-row">
-                            <pems-table-cell class="lp-no"><a asp-action="Details" asp-route-id="@p.ProcurementPackageId" class="lp-subject" title="@p.PackageNumber">@p.PackageNumber</a></pems-table-cell>
+                            <pems-table-cell class="lp-no"><pems-link asp-action="Details" asp-route-id="@p.ProcurementPackageId" class="lp-subject" title="@p.PackageNumber">@p.PackageNumber</pems-link></pems-table-cell>
                             <pems-table-cell><span class="vs-title-cell" title="@p.Title">@p.Title</span></pems-table-cell>
                             <pems-table-cell class="small vs-hide-md">@p.ProjectName</pems-table-cell>
                             <pems-table-cell class="small vs-hide-md">@p.DisciplineName</pems-table-cell>
@@ -64,7 +64,7 @@
                                 else { <span class="vs-num">0</span> }
                             </pems-table-cell>
                             <pems-table-cell class="text-end">
-                                <a asp-action="Details" asp-route-id="@p.ProcurementPackageId" class="lp-act lp-act--always" title="@Localizer["Ed_View"]" aria-label="@Localizer["Ed_View"]"><pems-icon name="bi-eye" aria-hidden="true" /></a>
+                                <pems-link asp-action="Details" asp-route-id="@p.ProcurementPackageId" class="lp-act lp-act--always" title="@Localizer["Ed_View"]" aria-label="@Localizer["Ed_View"]"><pems-icon name="bi-eye" aria-hidden="true" /></pems-link>
                             </pems-table-cell>
                         </pems-table-row>
                     }

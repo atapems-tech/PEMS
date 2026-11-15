@@ -52,14 +52,14 @@
                     @foreach (var po in rows)
                     {
                         <pems-table-row class="lp-row">
-                            <pems-table-cell class="lp-no"><a asp-action="Details" asp-route-id="@po.PoId" class="lp-subject" title="@po.PoNumber">@po.PoNumber</a></pems-table-cell>
+                            <pems-table-cell class="lp-no"><pems-link asp-action="Details" asp-route-id="@po.PoId" class="lp-subject" title="@po.PoNumber">@po.PoNumber</pems-link></pems-table-cell>
                             <pems-table-cell class="small vs-hide-md">@po.ProjectName</pems-table-cell>
                             <pems-table-cell class="small">@po.VendorName</pems-table-cell>
                             <pems-table-cell class="small vs-hide-md"><span class="vs-num">@po.ContractNo</span></pems-table-cell>
                             <pems-table-cell class="text-end"><span class="vs-num">@po.Value?.ToString("N0")</span></pems-table-cell>
                             <pems-table-cell><span class="vs-pill @StatusTone(po.Status)">@StatusText(po.Status)</span></pems-table-cell>
                             <pems-table-cell class="text-end">
-                                <a asp-action="Details" asp-route-id="@po.PoId" class="lp-act lp-act--always" title="@Localizer["Ed_View"]" aria-label="@Localizer["Ed_View"]"><pems-icon name="bi-eye" aria-hidden="true" /></a>
+                                <pems-link asp-action="Details" asp-route-id="@po.PoId" class="lp-act lp-act--always" title="@Localizer["Ed_View"]" aria-label="@Localizer["Ed_View"]"><pems-icon name="bi-eye" aria-hidden="true" /></pems-link>
                             </pems-table-cell>
                         </pems-table-row>
                     }

@@ -100,7 +100,7 @@
             @foreach (var role in roles)
             {
                 var count = ConfiguredCount(role);
-                <a href="#role-@role" class="text-decoration-none pm-chip" data-role="@role" data-empty="@(count == 0 ? "true" : "false")"><pems-badge tone="none">@role <span class="opacity-75 pm-chip-count">(@count/@modules.Length)</span></pems-badge></a>
+                <pems-link href="#role-@role" class="text-decoration-none pm-chip" data-role="@role" data-empty="@(count == 0 ? "true" : "false")"><pems-badge tone="none">@role <span class="opacity-75 pm-chip-count">(@count/@modules.Length)</span></pems-badge></pems-link>
             }
         </div>
         <pems-alert tone="secondary" css="py-2 small d-none" id="pmNoRole">@Localizer["PermMx_NoRoleMatch"]</pems-alert>

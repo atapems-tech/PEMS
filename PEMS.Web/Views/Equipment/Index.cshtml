@@ -126,7 +126,7 @@
                     @foreach (var e in Model.Items)
                     {
                         <pems-table-row class="lp-row">
-                            <pems-table-cell class="lp-no"><a asp-action="Details" asp-route-id="@e.EquipmentId" class="lp-subject" title="@e.TagNumber">@e.TagNumber</a></pems-table-cell>
+                            <pems-table-cell class="lp-no"><pems-link asp-action="Details" asp-route-id="@e.EquipmentId" class="lp-subject" title="@e.TagNumber">@e.TagNumber</pems-link></pems-table-cell>
                             <pems-table-cell><span class="vs-title-cell" title="@e.Name">@e.Name</span></pems-table-cell>
                             <pems-table-cell class="small">@e.EquipmentType</pems-table-cell>
                             <pems-table-cell class="small vs-hide-md">@e.ProjectName</pems-table-cell>

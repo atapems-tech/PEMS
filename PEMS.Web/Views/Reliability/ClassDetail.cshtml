@@ -4,8 +4,8 @@
 @inject IStringLocalizer<SharedResource> Localizer
 
 <pems-flex justify="between" align="center" css="mb-3">
-    <h5 class="mb-0">@Model.Name <code class="small">@Model.Code</code></h5>
-    <a asp-action="Index" class="small">@Localizer["← Fleet Reliability"]</a>
+    <pems-heading level="5" class="mb-0">@Model.Name <code class="small">@Model.Code</code></pems-heading>
+    <pems-link asp-action="Index" class="small">@Localizer["← Fleet Reliability"]</pems-link>
 </pems-flex>
 
 <pems-content-card>

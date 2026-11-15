@@ -11,10 +11,10 @@
 }
 
 <pems-flex justify="between" align="center" css="mb-3">
-    <h5 class="mb-0"><pems-icon name="bi-diagram-3" />
+    <pems-heading level="5" class="mb-0"><pems-icon name="bi-diagram-3" />
         @(isEdit ? Localizer["Rcm_EditStrategy"] : Localizer["Rcm_NewStrategy"])
         @if (isEdit) { <pems-badge tone="@RcmDisplay.StatusBadge(Model.Status)" css="ms-2">@Localizer.Label("Status", Model.Status) · v@(Model.VersionNumber)</pems-badge> }
-    </h5>
+    </pems-heading>
     <pems-button as="a" tone="neutral" size="small" outline="true" asp-action="@(isEdit ? "Details" : "Index")" asp-route-id="@Model.MaintenanceStrategyId">@Localizer["Rcm_Back"]</pems-button>
 </pems-flex>
 

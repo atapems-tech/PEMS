@@ -105,7 +105,7 @@
     <div class="vs-doc-head">
         <div class="vs-doc-identity">
             <pems-flex align="center" gap="2" wrap="true">
-                <h1 class="vs-doc-number vs-num">@Model.DocumentNo</h1>
+                <pems-heading level="1" class="vs-doc-number vs-num">@Model.DocumentNo</pems-heading>
                 <span class="vs-pill vs-pill--icon @DocumentStatusBadge.Tone(Model.Status)"><pems-icon css="@DocumentStatusBadge.Icon(Model.Status)" aria-hidden="true" /> @StatusText(Model.Status)</span>
                 <span class="vs-pill vs-pill--current">@Localizer["Ed_CurrentRev"] <span class="vs-num">@Model.RevisionNo</span></span>
                 @if (Model.IsFrozen) { <span class="vs-pill vs-pill--icon vs-pill--info"><pems-icon name="bi-snow" aria-hidden="true" /> @Localizer["Ed_Frozen"]</span> }
@@ -206,7 +206,7 @@
                     @Localizer["Ed_MoreActions"]
                 </pems-button>
                 <pems-dropdown-menu end="true">
-                    <li><a class="dropdown-item" asp-action="Edit" asp-route-id="@Model.DocumentId"><pems-icon name="bi-pencil" /> @Localizer["Edit"]</a></li>
+                    <li><pems-link class="dropdown-item" asp-action="Edit" asp-route-id="@Model.DocumentId"><pems-icon name="bi-pencil" /> @Localizer["Edit"]</pems-link></li>
                     @if (Model.Status == "Approved" || Model.Status == "Issued")
                     {
                         <li><pems-button plain="true" type="button" css="dropdown-item" data-bs-toggle="modal" data-bs-target="#newRevisionModal"><pems-icon name="bi-file-earmark-plus" /> @Localizer["Create New Revision"]</pems-button></li>
@@ -288,9 +288,9 @@
             <span class="text-muted small">این مدرک P&amp;ID تجهیزات زیر است:</span>
             @foreach (var e in equipmentUsingThisAsPID)
             {
-                <a asp-controller="Equipment" asp-action="Details" asp-route-id="@e.EquipmentId" class="text-decoration-none">
+                <pems-link asp-controller="Equipment" asp-action="Details" asp-route-id="@e.EquipmentId" class="text-decoration-none">
                     <pems-badge tone="info"><pems-icon name="bi-gear" /> @e.TagNumber</pems-badge>
-                </a>
+                </pems-link>
             }
         </div>
     }
@@ -364,7 +364,7 @@
         <pems-row gap="3">
         <pems-col lg="8">
         <div class="vs-section">
-            <h2 class="vs-section__title"><pems-icon name="bi-card-list" /> @Localizer["Ed_SecIdentification"]</h2>
+            <pems-heading level="2" class="vs-section__title"><pems-icon name="bi-card-list" /> @Localizer["Ed_SecIdentification"]</pems-heading>
             <pems-info-grid>
                 <pems-info-item label="@Localizer["Ed_DocType"]">@Model.DocumentType</pems-info-item>
                 <pems-info-item label="@Localizer["Ed_Project"]">@Model.ProjectName</pems-info-item>
@@ -377,14 +377,14 @@
         </div>
 
         <div class="vs-section">
-            <h2 class="vs-section__title"><pems-icon name="bi-patch-check" /> @Localizer["Ed_SecEngineering"]</h2>
+            <pems-heading level="2" class="vs-section__title"><pems-icon name="bi-patch-check" /> @Localizer["Ed_SecEngineering"]</pems-heading>
             <pems-info-grid>
                 <pems-info-item label="@Localizer["Ed_IssuePurpose"]">@(string.IsNullOrEmpty(Model.IssuePurpose) ? "—" : Model.IssuePurpose)</pems-info-item>
                 <pems-info-item label="@Localizer["Ed_PreparedBy"]">
                         @if (string.IsNullOrEmpty(Model.PreparedBy))
                         {
                             <span class="text-muted">@Localizer["Ed_NotSet"]</span>
-                            @if (canAssignSignoff) { <text> &middot; <a asp-action="Edit" asp-route-id="@Model.DocumentId">@Localizer["Ed_Assign"]</a></text> }
+                            @if (canAssignSignoff) { <text> &middot; <pems-link asp-action="Edit" asp-route-id="@Model.DocumentId">@Localizer["Ed_Assign"]</pems-link></text> }
                         }
                         else { @Model.PreparedBy }
                 </pems-info-item>
@@ -392,7 +392,7 @@
                         @if (string.IsNullOrEmpty(Model.CheckedBy))
                         {
                             <span class="text-muted">@Localizer["Ed_NotSet"]</span>
-                            @if (canAssignSignoff) { <text> &middot; <a asp-action="Edit" asp-route-id="@Model.DocumentId">@Localizer["Ed_Assign"]</a></text> }
+                            @if (canAssignSignoff) { <text> &middot; <pems-link asp-action="Edit" asp-route-id="@Model.DocumentId">@Localizer["Ed_Assign"]</pems-link></text> }
                         }
                         else { @Model.CheckedBy }
                         @(Model.CheckedDate.HasValue ? $"({Model.CheckedDate:yyyy-MM-dd})" : "")
@@ -418,12 +418,12 @@
                 }
                 <pems-info-item label="@Localizer["Ed_RelatedEquipment"]">
                         @if (Model.EquipmentId.HasValue)
-                        { <a asp-controller="Equipment" asp-action="Details" asp-route-id="@Model.EquipmentId">@Model.EquipmentTagNumber</a> }
+                        { <pems-link asp-controller="Equipment" asp-action="Details" asp-route-id="@Model.EquipmentId">@Model.EquipmentTagNumber</pems-link> }
                         else { <span class="text-muted">—</span> }
                 </pems-info-item>
                 <pems-info-item label="@Localizer["Ed_RelatedContract"]">
                         @if (Model.ContractId.HasValue)
-                        { <a asp-controller="Contract" asp-action="Details" asp-route-id="@Model.ContractId">@Model.ContractNo</a> }
+                        { <pems-link asp-controller="Contract" asp-action="Details" asp-route-id="@Model.ContractId">@Model.ContractNo</pems-link> }
                         else { <span class="text-muted">—</span> }
                 </pems-info-item>
             </pems-info-grid>
@@ -431,7 +431,7 @@
         </pems-col>
         <pems-col lg="4">
             <div class="vs-section">
-                <h2 class="vs-section__title"><pems-icon name="bi-chat-square-text" /> @Localizer["Ed_TabComments"]</h2>
+                <pems-heading level="2" class="vs-section__title"><pems-icon name="bi-chat-square-text" /> @Localizer["Ed_TabComments"]</pems-heading>
                 <p class="small text-muted mb-2">@string.Format(Localizer["Ed_OpenClosed"].Value, commentsOpenCount, commentsClosedCount)</p>
                 @if (!engComments.Any())
                 {
@@ -446,7 +446,7 @@
                 </pems-flex>
             </div>
             <div class="vs-section">
-                <h2 class="vs-section__title"><pems-icon name="bi-paperclip" /> @Localizer["Ed_TabFiles"]</h2>
+                <pems-heading level="2" class="vs-section__title"><pems-icon name="bi-paperclip" /> @Localizer["Ed_TabFiles"]</pems-heading>
                 <p class="small text-muted mb-2">@((Model.Attachments?.Count ?? 0) == 0 ? Localizer["Ed_NoFilesHint"].Value : string.Format(Localizer["Ed_FilesCount"].Value, Model.Attachments!.Count))</p>
                 <pems-flex wrap="true" gap="2">
                     <pems-button tone="neutral" size="small" outline="true" as="a" asp-action="UploadAttachment" asp-route-id="@Model.DocumentId"><pems-icon name="bi-upload" aria-hidden="true" /> @Localizer["Ed_Upload"]</pems-button>
@@ -464,7 +464,7 @@
     <pems-tab-pane fade="true" id="tab-attachments" role="tabpanel">
         <div class="vs-section">
             <pems-flex justify="between" align="center" css="mb-3">
-                <h6 class="mb-0">@Localizer["Ed_SecFiles"]</h6>
+                <pems-heading level="6" class="mb-0">@Localizer["Ed_SecFiles"]</pems-heading>
                 <pems-button tone="primary" size="small" as="a" asp-action="UploadAttachment" asp-route-id="@Model.DocumentId">
                     <pems-icon name="bi-upload" /> @Localizer["Ed_Upload"]
                 </pems-button>
@@ -561,7 +561,7 @@
         <pems-tab-pane fade="true" id="tab-idc" role="tabpanel">
             <div class="vs-section">
                 <pems-flex justify="between" align="center" css="mb-3">
-                    <h6 class="mb-0"><pems-icon name="bi-diagram-3" /> Inter-Discipline Check (IDC) — Discipline Review Summary</h6>
+                    <pems-heading level="6" class="mb-0"><pems-icon name="bi-diagram-3" /> Inter-Discipline Check (IDC) — Discipline Review Summary</pems-heading>
                     <span class="text-muted small">@idcApprovedCount / @idcStatusForPage.Count disciplines responded</span>
                 </pems-flex>
                 <p class="text-muted small">
@@ -617,7 +617,7 @@
     @* ===================== Revisions ===================== *@
     <pems-tab-pane fade="true" id="tab-revisions" role="tabpanel">
         <div class="vs-section">
-            <h6 class="mb-3">@Localizer["Ed_SecRevisionHistory"]</h6>
+            <pems-heading level="6" class="mb-3">@Localizer["Ed_SecRevisionHistory"]</pems-heading>
             @if (Model.Revisions != null && Model.Revisions.Any())
             {
                 <pems-table kind="enterprise">
@@ -688,7 +688,7 @@
        WorkflowHistory واقعی (روی همه‌ی Instance های این مدرک، نه فقط چرخه‌ی جاری) می‌خواند. *@
     <pems-tab-pane fade="true" id="tab-workflow" role="tabpanel">
         <div class="vs-section">
-            <h6 class="mb-3">@Localizer["Ed_SecWorkflowHistory"]</h6>
+            <pems-heading level="6" class="mb-3">@Localizer["Ed_SecWorkflowHistory"]</pems-heading>
             @if (workflowHistoryForPage.Any())
             {
                 var orderedWorkflow = workflowHistoryForPage.OrderByDescending(x => x.ActionDate).ToList();
@@ -740,7 +740,7 @@
     @* ===================== Correspondence ===================== *@
     <pems-tab-pane fade="true" id="tab-correspondence" role="tabpanel">
         <div class="vs-section">
-            <h6 class="mb-3"><pems-icon name="bi-envelope-paper" /> @Localizer["Ed_SecCorrespondence"]</h6>
+            <pems-heading level="6" class="mb-3"><pems-icon name="bi-envelope-paper" /> @Localizer["Ed_SecCorrespondence"]</pems-heading>
             @if (relatedLetters.Any())
             {
                 <pems-table kind="enterprise">
@@ -773,7 +773,7 @@
         @* طبق «PEMS Phase 2A — EDMS Foundation» بخش ۲: قبلاً هیچ پیوند متقابلی با Transmittal
            روی این صفحه نبود - Service/Entity موجود، فقط یک بخش خلاصه‌ی جدید *@
         <div class="vs-section">
-            <h6 class="mb-3"><pems-icon name="bi-truck" /> @Localizer["Ed_SecTransmittals"]</h6>
+            <pems-heading level="6" class="mb-3"><pems-icon name="bi-truck" /> @Localizer["Ed_SecTransmittals"]</pems-heading>
             @if (relatedTransmittals.Any())
             {
                 <pems-table kind="enterprise">
@@ -806,7 +806,7 @@
 {
     <pems-content-card css="mb-3">
         <pems-flex justify="between" align="center" css="mb-2">
-            <h6 class="mb-0"><pems-icon name="bi-file-earmark-pdf" /> Document Viewer <span class="text-muted small">(click anywhere on the page to pin a comment)</span></h6>
+            <pems-heading level="6" class="mb-0"><pems-icon name="bi-file-earmark-pdf" /> Document Viewer <span class="text-muted small">(click anywhere on the page to pin a comment)</span></pems-heading>
             <pems-flex align="center" gap="2">
                 <pems-button tone="neutral" size="small" outline="true" type="button" id="pdfPrevPage" data-bs-toggle="tooltip" title="@Localizer["Previous page"]" aria-label="@Localizer["Previous page"]"><pems-icon name="bi-chevron-left" /></pems-button>
                 <span class="small" id="pdfPageLabel">Page - / -</span>
@@ -903,7 +903,7 @@
 }
 
 <pems-content-card css="mb-3">
-    <h6 class="mb-3">Comment Management <span class="text-muted small">(Action Status is tracked independently from Review Status)</span></h6>
+    <pems-heading level="6" class="mb-3">Comment Management <span class="text-muted small">(Action Status is tracked independently from Review Status)</span></pems-heading>
 
     <pems-table kind="enterprise">
         <pems-table-head><pems-table-row><pems-table-header>No</pems-table-header><pems-table-header>@Localizer["Category"]</pems-table-header><pems-table-header>Sheet/Zone</pems-table-header><pems-table-header>@Localizer["Comment"]</pems-table-header><pems-table-header>@Localizer["Raised By"]</pems-table-header><pems-table-header>@Localizer["Raised"]</pems-table-header><pems-table-header>@Localizer["Action Status"]</pems-table-header><pems-table-header>@Localizer["Response"]</pems-table-header></pems-table-row></pems-table-head>
@@ -921,7 +921,7 @@
                         @c.CommentText
                         @if (!string.IsNullOrEmpty(c.AttachmentFilePath))
                         {
-                            <div><a href="@Url.Action("Download", "Files", new { id = c.AttachmentId })" target="_blank"><pems-icon name="bi-paperclip" /> @c.AttachmentFileName</a></div>
+                            <div><pems-link href="@Url.Action("Download", "Files", new { id = c.AttachmentId })" target="_blank"><pems-icon name="bi-paperclip" /> @c.AttachmentFileName</pems-link></div>
                         }
                         @if (!string.IsNullOrEmpty(c.RequiredAction))
                         {
@@ -969,7 +969,7 @@
                         @c.ResponseText
                         @if (!string.IsNullOrEmpty(c.ReplyAttachmentFilePath))
                         {
-                            <div><a href="@Url.Action("Download", "Files", new { id = c.ReplyAttachmentId })" target="_blank"><pems-icon name="bi-paperclip" /> @c.ReplyAttachmentFileName</a></div>
+                            <div><pems-link href="@Url.Action("Download", "Files", new { id = c.ReplyAttachmentId })" target="_blank"><pems-icon name="bi-paperclip" /> @c.ReplyAttachmentFileName</pems-link></div>
                         }
                         @if (string.IsNullOrEmpty(c.ResponseText) && string.IsNullOrEmpty(c.ReplyAttachmentFilePath))
                         {

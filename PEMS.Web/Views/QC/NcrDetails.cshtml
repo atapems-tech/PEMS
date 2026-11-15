@@ -5,7 +5,7 @@
 
 <pems-flex justify="between" align="center" css="mb-3">
     <div>
-        <h5 class="mb-0">@Model.NCRNumber</h5>
+        <pems-heading level="5" class="mb-0">@Model.NCRNumber</pems-heading>
         <span class="text-muted small">@Model.QCDiscipline?.Name @(Model.Equipment != null ? " | " + Model.Equipment.TagNumber : "")</span>
     </div>
     <pems-badge tone="none" css="@(Model.Status == "Closed" ? "bg-success" : Model.Status == "Dispositioned" ? "bg-info" : Model.Status == "PendingApproval" ? "bg-warning text-dark" : "bg-secondary") fs-6">@Model.Status</pems-badge>
@@ -24,7 +24,7 @@
 @if (!string.IsNullOrWhiteSpace(Model.RootCause) || !string.IsNullOrWhiteSpace(Model.CorrectiveAction))
 {
     <pems-content-card css="mb-3">
-        <h6 class="mb-2">Root Cause &amp; Corrective Action</h6>
+        <pems-heading level="6" class="mb-2">Root Cause &amp; Corrective Action</pems-heading>
         <p><strong>Root Cause:</strong> @Model.RootCause</p>
         <p><strong>Corrective Action:</strong> @Model.CorrectiveAction</p>
         <p class="mb-0"><strong>Preventive Action:</strong> @Model.PreventiveAction</p>
@@ -34,7 +34,7 @@
 @if (Model.Status == "Open" || Model.Status == "UnderReview")
 {
     <pems-content-card css="mb-3">
-        <h6 class="mb-3">@Localizer["Disposition"]</h6>
+        <pems-heading level="6" class="mb-3">@Localizer["Disposition"]</pems-heading>
         <pems-form asp-action="NcrDisposition" method="post">
             <input type="hidden" name="id" value="@Model.NonConformanceReportId" />
             <pems-row gap="3">
@@ -65,7 +65,7 @@
 else if (Model.Status == "PendingApproval")
 {
     <pems-content-card css="mb-3 border-warning">
-        <h6 class="mb-3"><pems-icon name="bi-hourglass-split" /> در انتظار تایید مدیر QA</h6>
+        <pems-heading level="6" class="mb-3"><pems-icon name="bi-hourglass-split" /> در انتظار تایید مدیر QA</pems-heading>
         <p class="text-muted small">این NCR بحرانه و Disposition آن باید توسط مدیر QA تایید بشه قبل از بسته شدن.</p>
         <pems-flex gap="2">
             <pems-form asp-action="NcrApprove" method="post" class="d-inline">

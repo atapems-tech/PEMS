@@ -19,7 +19,7 @@
 
 <pems-content-card as="section" css="text-center py-5 pems-status-page" aria-labelledby="statusTitle" data-status-code="@Model.Code">
     <div class="mb-3"><pems-icon class="pems-fs-26rem" css="@icon" aria-hidden="true" /></div>
-    <h1 id="statusTitle" class="h4 mb-2">@Localizer[titleKey]</h1>
+    <pems-heading level="1" id="statusTitle" class="h4 mb-2">@Localizer[titleKey]</pems-heading>
     <p class="text-muted mb-4">@Localizer[textKey]</p>
     <pems-flex justify="center" gap="2" wrap="true">
         <pems-button tone="neutral" outline="true" type="button" data-pems-click="back"><pems-icon name="bi-arrow-left-short" /> @Localizer["Status_Back"]</pems-button>

@@ -16,12 +16,12 @@
     foreach (var n in Model)
     {
         <pems-flex align="start" css="border-bottom @(n.IsRead ? "" : "bg-light")" data-notif-id="@n.NotificationId">
-            <a href="@Url.Action("Open", "Notification", new { id = n.NotificationId })" class="dropdown-item small py-2 flex-grow-1 text-wrap">
+            <pems-link href="@Url.Action("Open", "Notification", new { id = n.NotificationId })" class="dropdown-item small py-2 flex-grow-1 text-wrap">
                 @if (!n.IsRead) { <pems-icon name="bi-circle-fill" css="text-primary me-1 pems-s-3494e7ef" aria-hidden="true" /> }
                 <strong>@n.Title</strong>
                 <div class="text-muted">@n.Message</div>
                 <div class="text-muted pems-s-11a50812">@n.CreatedDate.ToString("yyyy-MM-dd HH:mm")</div>
-            </a>
+            </pems-link>
             <pems-button tone="none" size="small" css="btn-link text-muted px-2 py-2" type="button" data-notif-action="dismiss" data-notif-id="@n.NotificationId" title="@Localizer["Notif_Dismiss"]" aria-label="@Localizer["Notif_Dismiss"]"><pems-icon name="bi-x-lg" /></pems-button>
         </pems-flex>
     }
@@ -32,5 +32,5 @@ else
 }
 
 <div class="text-center border-top py-2">
-    <a asp-controller="Notification" asp-action="Index" class="small text-decoration-none">@Localizer["Notif_ViewAll"]</a>
+    <pems-link asp-controller="Notification" asp-action="Index" class="small text-decoration-none">@Localizer["Notif_ViewAll"]</pems-link>
 </div>

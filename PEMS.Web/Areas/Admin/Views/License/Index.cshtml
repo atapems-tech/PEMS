@@ -44,7 +44,7 @@
     </pems-content-card>
 
     <pems-content-card css="mb-3">
-        <h6>@Localizer["Lic_RequestTitle"]</h6>
+        <pems-heading level="6">@Localizer["Lic_RequestTitle"]</pems-heading>
         <p class="text-muted small">@Localizer["Lic_RequestHelp"]</p>
         <pems-form asp-action="Request" method="post"><pems-row gap="2" css="align-items-end">
             @Html.AntiForgeryToken()
@@ -71,7 +71,7 @@
     </pems-content-card>
 
     <pems-content-card>
-        <h6>@Localizer["Lic_UploadTitle"]</h6>
+        <pems-heading level="6">@Localizer["Lic_UploadTitle"]</pems-heading>
         <p class="text-muted small">@Localizer["Lic_UploadHelp"]</p>
         <pems-form asp-action="Upload" method="post" enctype="multipart/form-data"><pems-flex align="center" gap="3" wrap="true">
             @Html.AntiForgeryToken()

@@ -26,7 +26,7 @@
    (گیرنده/فرستنده، موضوع، متن) مستقیم دیده می‌شوند؛ متادیتای ثانویه (اولویت، محرمانگی، پروژه،
    دیسیپلین، شماره‌ی دستی، مدرک/MR مرتبط) پشت «More Details» جمع می‌شود - نه یک فرم بزرگ یک‌جا *@
 <pems-content-card css="pems-s-3f7efa5f">
-    <h2 class="vs-section__title">@Localizer[letterType == "Incoming" ? "Lt_NewIncoming" : letterType == "Outgoing" ? "Lt_NewOutgoing" : "Lt_NewInternal"]</h2>
+    <pems-heading level="2" class="vs-section__title">@Localizer[letterType == "Incoming" ? "Lt_NewIncoming" : letterType == "Outgoing" ? "Lt_NewOutgoing" : "Lt_NewInternal"]</pems-heading>
     @if (templates.Any())
     {
         @* قالب فقط فرم را پیش‌پر می‌کند (GET)، پس باید پیش از تایپ انتخاب شود *@

@@ -9,7 +9,7 @@
 
 <pems-page-shell kind="admin">
     <pems-flex gap="2" css="mb-3">
-        <a class="vs-btn vs-btn--sm" asp-action="Index"><pems-icon name="bi-arrow-left" /> @Localizer["Org_Imp_Title"]</a>
+        <pems-link class="vs-btn vs-btn--sm" asp-action="Index"><pems-icon name="bi-arrow-left" /> @Localizer["Org_Imp_Title"]</pems-link>
     </pems-flex>
 
     @if (committed) { <pems-alert tone="success">@Localizer["Org_Imp_Committed"]</pems-alert> }
@@ -29,14 +29,14 @@
     @if (Model.Errors.Count > 0)
     {
         <section class="vs-panel mb-3">
-            <h2 class="vs-section__title text-danger"><pems-icon name="bi-x-octagon" /> @Localizer["Org_Imp_Errors"] (@Model.Errors.Count)</h2>
+            <pems-heading level="2" class="vs-section__title text-danger"><pems-icon name="bi-x-octagon" /> @Localizer["Org_Imp_Errors"] (@Model.Errors.Count)</pems-heading>
             <ul class="small mb-0">@foreach (var e in Model.Errors) { <li>@e</li> }</ul>
         </section>
     }
     @if (Model.Warnings.Count > 0)
     {
         <section class="vs-panel mb-3">
-            <h2 class="vs-section__title"><pems-icon name="bi-exclamation-triangle" /> @Localizer["Org_Imp_Warnings"]</h2>
+            <pems-heading level="2" class="vs-section__title"><pems-icon name="bi-exclamation-triangle" /> @Localizer["Org_Imp_Warnings"]</pems-heading>
             <ul class="small mb-0">@foreach (var w in Model.Warnings) { <li>@w</li> }</ul>
         </section>
     }
@@ -50,6 +50,6 @@
     }
     @if (committed)
     {
-        <a class="vs-btn vs-btn--primary" asp-controller="Organization" asp-action="Index"><pems-icon name="bi-diagram-3" /> @Localizer["Org_Title"]</a>
+        <pems-link class="vs-btn vs-btn--primary" asp-controller="Organization" asp-action="Index"><pems-icon name="bi-diagram-3" /> @Localizer["Org_Title"]</pems-link>
     }
 </pems-page-shell>

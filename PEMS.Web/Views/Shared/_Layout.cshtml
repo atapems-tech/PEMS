@@ -88,16 +88,16 @@
       data-pems-confirm-title="@Localizer["Confirm_Title"]" data-pems-confirm-ok="@Localizer["Confirm_Ok"]" data-pems-confirm-cancel="@Localizer["Confirm_Cancel"]"
       data-pems-select-no-results="@Localizer["Sel_NoResults"]" data-pems-select-loading="@Localizer["Sel_Loading"]" data-pems-select-placeholder="@Localizer["Sel_Placeholder"]" data-pems-skeleton-label="@Localizer["Loading"]"
       data-pems-rte-texts="@PEMS.Web.Helpers.RichTextEditorTexts.Json(Localizer)" data-pems-rte-lib="@Url.Content("~/lib/quill/")">
-    <a class="pems-skip-link" href="#pemsMainContent">@Localizer["Shell_SkipToContent"]</a>
+    <pems-link class="pems-skip-link" href="#pemsMainContent">@Localizer["Shell_SkipToContent"]</pems-link>
     <header class="pems-topbar">
         <pems-flex align="center" gap="2">
             <pems-button plain="true" css="sidebar-toggle-btn" id="sidebarToggleBtn" type="button" aria-label="@Localizer["Shell_ToggleMenu"]">
                 <pems-icon name="bi-list" />
             </pems-button>
-            <a class="brand text-decoration-none" asp-controller="Home" asp-action="Index" asp-area="">
+            <pems-link class="brand text-decoration-none" asp-controller="Home" asp-action="Index" asp-area="">
                 <span class="brand-icon"><pems-icon name="bi-diagram-3-fill" /></span>
                 <span class="d-none d-sm-inline">@Localizer["PEMS"]</span>
-            </a>
+            </pems-link>
         </pems-flex>
 
         <div class="pems-search d-none d-md-block">
@@ -111,9 +111,9 @@
 
         <pems-flex align="center" gap="3">
             <div class="dropdown">
-                <a href="#" class="text-secondary dropdown-toggle" data-bs-toggle="dropdown" title="@Localizer["Shell_ChangeTheme"]">
+                <pems-link href="#" class="text-secondary dropdown-toggle" data-bs-toggle="dropdown" title="@Localizer["Shell_ChangeTheme"]">
                     <pems-icon name="bi-palette-fill" css="fs-5" />
-                </a>
+                </pems-link>
                 <pems-dropdown-menu end="true">
                     @* طبق «PEMS Global Three-Theme Design System»: محصول دقیقاً سه تم قابل‌انتخاب دارد -
                        ocean/warm/midnight از این منو حذف شدند (نه از CSS - همان‌جا دست‌نخورده مانده تا
@@ -124,40 +124,40 @@
                     })
                     {
                         <li>
-                            <a class="dropdown-item theme-switch @(currentTheme == themeValue ? "active" : "")"
+                            <pems-link class="dropdown-item theme-switch @(currentTheme == themeValue ? "active" : "")"
                                href="@Url.Action("SetTheme", "Theme", new { area = "", theme = themeValue, returnUrl = currentUrl })">
                                 <pems-icon css="@icon me-2" /> @label
-                            </a>
+                            </pems-link>
                         </li>
                     }
                 </pems-dropdown-menu>
             </div>
 
             <div class="dropdown">
-                <a href="#" class="text-secondary dropdown-toggle" data-bs-toggle="dropdown" title="@Localizer["Shell_Language"]">
+                <pems-link href="#" class="text-secondary dropdown-toggle" data-bs-toggle="dropdown" title="@Localizer["Shell_Language"]">
                     <pems-icon name="bi-translate" css="fs-5" />
-                </a>
+                </pems-link>
                 <pems-dropdown-menu end="true">
                     <li>
-                        <a class="dropdown-item @(!isRtl ? "active" : "") culture-switch" href="@Url.Action("SetCulture", "Culture", new { area = "", culture = "en", returnUrl = currentUrl })">English</a>
+                        <pems-link class="dropdown-item @(!isRtl ? "active" : "") culture-switch" href="@Url.Action("SetCulture", "Culture", new { area = "", culture = "en", returnUrl = currentUrl })">English</pems-link>
                     </li>
                     <li>
-                        <a class="dropdown-item @(isRtl ? "active" : "") culture-switch" href="@Url.Action("SetCulture", "Culture", new { area = "", culture = "fa", returnUrl = currentUrl })">فارسی</a>
+                        <pems-link class="dropdown-item @(isRtl ? "active" : "") culture-switch" href="@Url.Action("SetCulture", "Culture", new { area = "", culture = "fa", returnUrl = currentUrl })">فارسی</pems-link>
                     </li>
                 </pems-dropdown-menu>
             </div>
 
             @await Html.PartialAsync("_ContextualHelpButton")
 
-            <a asp-controller="Help" asp-action="Index" asp-area="" class="text-secondary" title="@(isRtl ? "مرکز راهنما" : "Help Center")">
+            <pems-link asp-controller="Help" asp-action="Index" asp-area="" class="text-secondary" title="@(isRtl ? "مرکز راهنما" : "Help Center")">
                 <pems-icon name="bi-question-circle" css="fs-5" />
-            </a>
+            </pems-link>
 
             <div class="dropdown">
-                <a href="#" class="text-secondary position-relative dropdown-toggle" data-bs-toggle="dropdown" id="notifBell" title="@Localizer["Notifications"]" data-pems-click="call" data-pems-fn="loadNotifDropdown" data-pems-arg="none">
+                <pems-link href="#" class="text-secondary position-relative dropdown-toggle" data-bs-toggle="dropdown" id="notifBell" title="@Localizer["Notifications"]" data-pems-click="call" data-pems-fn="loadNotifDropdown" data-pems-arg="none">
                     <pems-icon name="bi-bell" css="fs-5" />
                     <pems-badge tone="danger" css="rounded-pill position-absolute top-0 start-100 translate-middle @(unreadCount > 0 ? "" : "d-none")" id="notifBadge">@(unreadCount > 0 ? unreadCount.ToString() : "")</pems-badge>
-                </a>
+                </pems-link>
                 <pems-dropdown-menu class="pems-notif-menu" as="div" end="true" css="p-0" id="notifDropdownBody">
                     <span class="dropdown-item small text-muted">@Localizer["Loading"]</span>
                 </pems-dropdown-menu>
@@ -172,12 +172,12 @@
                     </span>
                 </pems-button>
                 <pems-dropdown-menu end="true">
-                    <li><h6 class="dropdown-header">@User.Identity?.Name</h6></li>
-                    <li><a class="dropdown-item" asp-controller="MyProfile" asp-action="Index" asp-area=""><pems-icon name="bi-person-badge" /> @Localizer["Shell_MyProfile"]</a></li>
-                    <li><a class="dropdown-item" asp-controller="Account" asp-action="ManagePasskeys" asp-area=""><pems-icon name="bi-key" /> @Localizer["Shell_Passkeys"]</a></li>
+                    <li><pems-heading level="6" class="dropdown-header">@User.Identity?.Name</pems-heading></li>
+                    <li><pems-link class="dropdown-item" asp-controller="MyProfile" asp-action="Index" asp-area=""><pems-icon name="bi-person-badge" /> @Localizer["Shell_MyProfile"]</pems-link></li>
+                    <li><pems-link class="dropdown-item" asp-controller="Account" asp-action="ManagePasskeys" asp-area=""><pems-icon name="bi-key" /> @Localizer["Shell_Passkeys"]</pems-link></li>
                     @if (User.IsInRole(PEMS.Persistence.Identity.SystemRoles.SystemAdmin))
                     {
-                        <li><a class="dropdown-item" asp-controller="RecoveryCodes" asp-action="Index" asp-area=""><pems-icon name="bi-shield-lock" /> @Localizer["Recovery codes"]</a></li>
+                        <li><pems-link class="dropdown-item" asp-controller="RecoveryCodes" asp-action="Index" asp-area=""><pems-icon name="bi-shield-lock" /> @Localizer["Recovery codes"]</pems-link></li>
                     }
                     <li><hr class="dropdown-divider" /></li>
                     <li>

@@ -42,7 +42,7 @@ else
                         var value = $"{item.EquipmentId}|{item.TargetType}|{item.TargetId}";
                         <pems-table-row>
                             <pems-table-cell><pems-input kind="bare" type="checkbox" class="item-check" name="selectedItems" value="@value" /></pems-table-cell>
-                            <pems-table-cell><a asp-action="Equipment" asp-route-id="@item.EquipmentId">@item.EquipmentTagNumber</a></pems-table-cell>
+                            <pems-table-cell><pems-link asp-action="Equipment" asp-route-id="@item.EquipmentId">@item.EquipmentTagNumber</pems-link></pems-table-cell>
                             <pems-table-cell><pems-badge tone="neutral">@item.TargetType</pems-badge></pems-table-cell>
                             <pems-table-cell>@item.TargetLabel</pems-table-cell>
                             <pems-table-cell class="text-muted small">@item.MatchedOnRawValue</pems-table-cell>

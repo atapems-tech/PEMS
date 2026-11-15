@@ -15,7 +15,7 @@
     <pems-content-card css="mb-3">
         <pems-flex justify="between" align="start" wrap="true" gap="2">
             <div>
-                <h5 class="mb-1">@display</h5>
+                <pems-heading level="5" class="mb-1">@display</pems-heading>
                 <div class="small text-muted">@d.Module · @d.Category @if (!d.IsActive) { <pems-badge tone="neutral">@Localizer["Archived"]</pems-badge> }</div>
                 <div class="mt-1">
                     <pems-badge tone="none" css="@(d.Editable ? "bg-primary" : "bg-secondary")">@Localizer[d.Editable ? "Editable" : "View Only"]</pems-badge>
@@ -30,7 +30,7 @@
     @if (d.Editable && perms["Edit"])
     {
         <pems-content-card css="mb-3">
-            <h6>@Localizer["Definition details"] <span class="small text-muted">(@Localizer["shared by all versions"])</span></h6>
+            <pems-heading level="6">@Localizer["Definition details"] <span class="small text-muted">(@Localizer["shared by all versions"])</span></pems-heading>
             <pems-form asp-action="UpdateDefinition" method="post"><pems-row gap="2">
                 <input type="hidden" name="id" value="@d.DefinitionId" />
                 <pems-col md="4"><pems-label css="small">@Localizer["Name"]</pems-label><pems-input scale="small" name="name" value="@d.Name" required maxlength="200" /></pems-col>
@@ -42,7 +42,7 @@
     }
 
     <pems-content-card css="mb-3">
-        <h6>@Localizer["Versions"]</h6>
+        <pems-heading level="6">@Localizer["Versions"]</pems-heading>
         <pems-table-scroll>
             <pems-table kind="enterprise" css="align-middle">
                 <pems-table-head><pems-table-row><pems-table-header>@Localizer["Version"]</pems-table-header><pems-table-header>@Localizer["Status"]</pems-table-header><pems-table-header>@Localizer["Stages"]</pems-table-header><pems-table-header>@Localizer["Transitions"]</pems-table-header><pems-table-header>@Localizer["Published"]</pems-table-header><pems-table-header>@Localizer["Running instances"]</pems-table-header><pems-table-header>@Localizer["Change summary"]</pems-table-header><pems-table-header></pems-table-header></pems-table-row></pems-table-head>
@@ -84,7 +84,7 @@
     <pems-row gap="3">
         <pems-col lg="6">
             <pems-content-card css="h-100">
-                <h6>@Localizer["Binding"]</h6>
+                <pems-heading level="6">@Localizer["Binding"]</pems-heading>
                 @if (Model.Bindings.Count == 0 || Model.Bindings.All(b => !b.IsActive))
                 {
                     <p class="mb-0"><pems-badge tone="light">@Localizer["No active binding"]</pems-badge> <span class="small text-muted">@Localizer["Valid state: legacy modules resolve this definition directly."]</span></p>
@@ -109,7 +109,7 @@
         </pems-col>
         <pems-col lg="6">
             <pems-content-card css="h-100">
-                <h6>@Localizer["Usage"]</h6>
+                <pems-heading level="6">@Localizer["Usage"]</pems-heading>
                 @if (Model.TotalInstances == 0) { <p class="small text-muted mb-0">@Localizer["No instances have used this workflow."]</p> }
                 else
                 {
@@ -120,7 +120,7 @@
     </pems-row>
 
     <pems-content-card css="mt-3">
-        <h6>@Localizer["Configuration audit"]</h6>
+        <pems-heading level="6">@Localizer["Configuration audit"]</pems-heading>
         <pems-table-scroll css="pems-s-11017dde">
             <pems-data-table data="@(DataRows.Of(Model.Audit, c_ => c_.Add(((Localizer["Time"])?.ToString() ?? ""), a => (object?)((a.Timestamp.ToString("yyyy-MM-dd HH:mm"))), css: "small text-nowrap").Add(((Localizer["Action"])?.ToString() ?? ""), a => (object?)(a.Action), css: "small").Add(((Localizer["Version"])?.ToString() ?? ""), a => (object?)((a.VersionNumber.HasValue ? "v" + a.VersionNumber : "-")), css: "small").Add(((Localizer["By"])?.ToString() ?? ""), a => (object?)(a.Actor), css: "small").Add(((Localizer["Change"])?.ToString() ?? ""), a => (object?)(DataCell.Group((string.IsNullOrEmpty(a.Previous) ? "" : a.Previous + " → "), a.Current, " ", (!string.IsNullOrEmpty(a.Details) ? (object?)DataCell.Span("text-muted", "· ", a.Details) : null))), css: "small")))" dense="true" css="align-middle mb-0" />
         </pems-table-scroll>

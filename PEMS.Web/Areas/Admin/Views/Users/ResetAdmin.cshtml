@@ -9,7 +9,7 @@
     </pems-page-hero>
 
     <pems-content-card>
-        <h2 class="h5 mb-3"><pems-icon name="bi-shield-exclamation" css="me-1" /> @Localizer["Reset administrator account"]: <strong>@Model.UserName</strong> @(string.IsNullOrWhiteSpace(Model.FullName) ? "" : $"({Model.FullName})")</h2>
+        <pems-heading level="2" class="h5 mb-3"><pems-icon name="bi-shield-exclamation" css="me-1" /> @Localizer["Reset administrator account"]: <strong>@Model.UserName</strong> @(string.IsNullOrWhiteSpace(Model.FullName) ? "" : $"({Model.FullName})")</pems-heading>
 
         <p class="mb-2">@Localizer["Confirming will:"]</p>
         <ul>

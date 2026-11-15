@@ -28,7 +28,7 @@
 
     <div class="vs-doc-head">
         <pems-flex wrap="true" align="center" gap="2">
-            <h2 class="pems-page-title mb-0">@Localizer["Pc_Title_Edit"]</h2>
+            <pems-heading level="2" class="pems-page-title mb-0">@Localizer["Pc_Title_Edit"]</pems-heading>
             <span class="vs-pill vs-pill--info">@Localizer["Pc_Type_" + d.RequestType]</span>
             <span class="vs-pill vs-pill--neutral">@Localizer["Pc_Status_" + d.Status]</span>
             @if (!string.IsNullOrEmpty(d.RequestNumber)) { <span class="vs-num vs-num--strong">@d.RequestNumber</span> }
@@ -73,7 +73,7 @@
             <span class="small text-muted">@Localizer["Pc_Hint_NumberFirst"]</span>
         }
         <div class="vs-toolbar__end">
-            <a asp-action="Index" class="vs-btn vs-btn--sm">@Localizer["Pc_Btn_Back"]</a>
+            <pems-link asp-action="Index" class="vs-btn vs-btn--sm">@Localizer["Pc_Btn_Back"]</pems-link>
             @if (a.CanCancel)
             {
                 <pems-form asp-action="Execute" method="post" class="d-inline" data-pems-confirm="@Localizer["Pc_Confirm_Cancel"]">
@@ -89,7 +89,7 @@
         @* ------------------------------------------------ Part Info *@
         <pems-col lg="4">
             <section class="vs-panel pc-card">
-                <h2 class="vs-section__title"><pems-icon name="bi-info-circle" /> @Localizer["Pc_Sec_PartInfo"]</h2>
+                <pems-heading level="2" class="vs-section__title"><pems-icon name="bi-info-circle" /> @Localizer["Pc_Sec_PartInfo"]</pems-heading>
 
                 <div class="mb-2">
                     <pems-label for="pc_RequestNumber">@L("RequestNumber") <span class="pc-req" aria-hidden="true">*</span></pems-label>
@@ -159,7 +159,7 @@
         @* ------------------------------------------------ Equipment/Object ID *@
         <pems-col lg="8">
             <section class="vs-panel pc-card">
-                <h2 class="vs-section__title"><pems-icon name="bi-gear-wide-connected" /> @Localizer["Pc_Sec_Equipment"]</h2>
+                <pems-heading level="2" class="vs-section__title"><pems-icon name="bi-gear-wide-connected" /> @Localizer["Pc_Sec_Equipment"]</pems-heading>
                 <pems-check-row css="mb-2">
                     <pems-input type="checkbox" id="pc_IsNewEquipment" form="pcForm" name="IsNewEquipment" value="true" checked="@f.IsNewEquipment" kind="check" />
                     <input type="hidden" form="pcForm" name="IsNewEquipment" value="false" />
@@ -190,7 +190,7 @@
 
             @* ------------------------------------------------ Class Info *@
             <section class="vs-panel pc-card mt-3">
-                <h2 class="vs-section__title"><pems-icon name="bi-diagram-3" /> @Localizer["Pc_Sec_ClassInfo"]</h2>
+                <pems-heading level="2" class="vs-section__title"><pems-icon name="bi-diagram-3" /> @Localizer["Pc_Sec_ClassInfo"]</pems-heading>
                 <div class="mb-2">
                     <pems-label for="pc_TechnicalClassId_text">@L("TechnicalClassId") <span class="pc-req" aria-hidden="true">*</span></pems-label>
                     <div class="pc-lookup" data-url="@lookupBase/TechnicalClasses" data-detail-url="@lookupBase/TechnicalClass" data-name="TechnicalClassId" data-form="pcForm"
@@ -231,7 +231,7 @@
         @* ------------------------------------------------ Part Classification *@
         <pems-col lg="8">
             <section class="vs-panel pc-card">
-                <h2 class="vs-section__title"><pems-icon name="bi-tags" /> @Localizer["Pc_Sec_Classification"]</h2>
+                <pems-heading level="2" class="vs-section__title"><pems-icon name="bi-tags" /> @Localizer["Pc_Sec_Classification"]</pems-heading>
                 <pems-row gap="2">
                     <pems-col md="6">
                         <pems-label for="pc_AssetType">@L("AssetType")</pems-label>
@@ -339,7 +339,7 @@
                      data-txt-ambiguous="@Localizer["Pc_Dedup_Ambiguous"]"
                      data-txt-inflight="@Localizer["Pc_Dedup_InFlight"]"
                      data-txt-error="@Localizer["Pc_Dedup_Error"]">
-                <h2 class="vs-section__title"><pems-icon name="bi-search" /> @Localizer["Pc_Dedup_Title"]</h2>
+                <pems-heading level="2" class="vs-section__title"><pems-icon name="bi-search" /> @Localizer["Pc_Dedup_Title"]</pems-heading>
                 <pems-help-text as="p">@Localizer["Pc_Dedup_Hint"]</pems-help-text>
                 <pems-label for="pcDedupQuery">@Localizer["Pc_Dedup_SearchLabel"]</pems-label>
                 <div class="input-group input-group-sm mb-2">
@@ -351,7 +351,7 @@
             </section>
 
             <section class="vs-panel pc-card">
-                <h2 class="vs-section__title"><pems-icon name="bi-paperclip" /> @Localizer["Pc_Sec_OtherInfo"]</h2>
+                <pems-heading level="2" class="vs-section__title"><pems-icon name="bi-paperclip" /> @Localizer["Pc_Sec_OtherInfo"]</pems-heading>
                 <div class="mb-2"><pems-label for="pc_SparePartSerialNo">@L("SparePartSerialNo")</pems-label><pems-input scale="small" id="pc_SparePartSerialNo" form="pcForm" name="SparePartSerialNo" value="@f.SparePartSerialNo" maxlength="100" /></div>
                 <div class="mb-2"><pems-label for="pc_EquipmentSerialNo">@L("EquipmentSerialNo")</pems-label><pems-input scale="small" id="pc_EquipmentSerialNo" form="pcForm" name="EquipmentSerialNo" value="@f.EquipmentSerialNo" maxlength="100" /></div>
                 <div class="mb-2"><pems-label for="pc_ManufacturerDrawingNo">@L("ManufacturerDrawingNo")</pems-label><pems-input scale="small" id="pc_ManufacturerDrawingNo" form="pcForm" name="ManufacturerDrawingNo" value="@f.ManufacturerDrawingNo" maxlength="100" /></div>
@@ -362,7 +362,7 @@
                     @foreach (var at in d.Attachments)
                     {
                         <pems-flex as="li" align="center" justify="between" gap="2" css="border-bottom py-1">
-                            <a asp-action="Download" asp-route-id="@d.Id" asp-route-attachmentId="@at.Id" class="text-truncate">@at.FileName</a>
+                            <pems-link asp-action="Download" asp-route-id="@d.Id" asp-route-attachmentId="@at.Id" class="text-truncate">@at.FileName</pems-link>
                             <span class="text-muted">@Localizer["Pc_Kind_" + at.Kind]</span>
                             <pems-form asp-action="RemoveAttachment" method="post" class="d-inline">
                                 <input type="hidden" name="id" value="@d.Id" /><input type="hidden" name="attachmentId" value="@at.Id" />
@@ -380,7 +380,7 @@
         @* ------------------------------------------------ Inventory Planning *@
         <pems-col span="12">
             <section class="vs-panel pc-card">
-                <h2 class="vs-section__title"><pems-icon name="bi-box-seam" /> @Localizer["Pc_Sec_Planning"]</h2>
+                <pems-heading level="2" class="vs-section__title"><pems-icon name="bi-box-seam" /> @Localizer["Pc_Sec_Planning"]</pems-heading>
                 <pems-row gap="2">
                     <pems-col md="3">
                         <pems-label for="pc_PlanningMethodId">@L("PlanningMethodId")</pems-label>
@@ -435,7 +435,7 @@
         @* ------------------------------------------------ Notes *@
         <pems-col span="12">
             <section class="vs-panel pc-card">
-                <h2 class="vs-section__title"><pems-icon name="bi-chat-left-text" /> @L("Notes")</h2>
+                <pems-heading level="2" class="vs-section__title"><pems-icon name="bi-chat-left-text" /> @L("Notes")</pems-heading>
                 <div class="pc-table-scroll mb-2">
                     <pems-related-table>
                         <pems-table-head><pems-table-row><pems-table-header>@Localizer["Pc_Col_Date"]</pems-table-header><pems-table-header>@Localizer["Pc_Col_Person"]</pems-table-header><pems-table-header>@Localizer["Pc_Col_Stage"]</pems-table-header><pems-table-header>@L("Text")</pems-table-header></pems-table-row></pems-table-head>

@@ -53,7 +53,7 @@
 </pems-content-card>
 
 <pems-content-card>
-    <h6 class="mb-3">@Localizer["Recent Import Batches"]</h6>
+    <pems-heading level="6" class="mb-3">@Localizer["Recent Import Batches"]</pems-heading>
     <pems-table-scroll css="table-scroll-area pems-s-8da1c6e6">
     <pems-data-table data="@(DataRows.Of(Model, c_ => c_.Add(((Localizer["File"])?.ToString() ?? ""), b => (object?)(b.FileName)).Add(((Localizer["Project"])?.ToString() ?? ""), b => (object?)(b.ProjectName)).Add(((Localizer["Date"])?.ToString() ?? ""), b => (object?)((b.ImportDate.ToString("yyyy-MM-dd HH:mm")))).Add("Rows", b => (object?)(b.Rows.Count)).Add(((Localizer["New"])?.ToString() ?? ""), b => (object?)(DataCell.Badge("success", (b.Rows.Count(x => !x.IsUpdate))))).Add("Updates", b => (object?)(DataCell.Badge("info", (b.Rows.Count(x => x.IsUpdate))))).Add(((Localizer["Status"])?.ToString() ?? ""), b => (object?)(DataCell.Badge(b.Status == "Committed" ? "success" : "neutral", b.Status))).Add("", b => (object?)((b.Status == "Staging" ? (object?)DataCell.ButtonLink(Url.Action("Review", null, new { batchId = b.EquipmentImportBatchId }), "primary", "small", true, null, "Review") : null)))))" />
     </pems-table-scroll>

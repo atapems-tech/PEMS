@@ -23,7 +23,7 @@
                     @foreach (var n in Model)
                     {
                         <pems-table-row class="lp-row">
-                            <pems-table-cell class="lp-no"><a asp-action="NcrDetails" asp-route-id="@n.NonConformanceReportId" class="lp-subject">@n.NCRNumber</a></pems-table-cell>
+                            <pems-table-cell class="lp-no"><pems-link asp-action="NcrDetails" asp-route-id="@n.NonConformanceReportId" class="lp-subject">@n.NCRNumber</pems-link></pems-table-cell>
                             <pems-table-cell class="small">@n.QCDiscipline?.Name</pems-table-cell>
                             <pems-table-cell class="small">@n.Equipment?.TagNumber</pems-table-cell>
                             <pems-table-cell><pems-badge tone="@(n.Severity == "Critical" ? "danger" : n.Severity == "Major" ? "warning" : "neutral")">@n.Severity</pems-badge></pems-table-cell>

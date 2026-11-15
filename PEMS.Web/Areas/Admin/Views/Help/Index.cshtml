@@ -70,7 +70,7 @@
                             <pems-table-cell class="small"><span class="vs-mono">@a.Code</span></pems-table-cell>
                             <pems-table-cell class="small vs-hide-md">@a.CategoryName</pems-table-cell>
                             <pems-table-cell><span class="vs-pill vs-pill--neutral">@a.ArticleType</span></pems-table-cell>
-                            <pems-table-cell><a asp-action="Edit" asp-route-id="@a.HelpArticleId" class="lp-subject">@a.Title</a></pems-table-cell>
+                            <pems-table-cell><pems-link asp-action="Edit" asp-route-id="@a.HelpArticleId" class="lp-subject">@a.Title</pems-link></pems-table-cell>
                             <pems-table-cell class="small text-muted vs-hide-md">@(a.HelpKey ?? "—")</pems-table-cell>
                             <pems-table-cell><span class="vs-pill @(a.IsPublished ? "vs-pill--success" : "vs-pill--neutral")">@PublishedText(a.IsPublished)</span></pems-table-cell>
                             <pems-table-cell class="text-end text-nowrap">

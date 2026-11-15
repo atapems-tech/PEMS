@@ -42,10 +42,10 @@
 @if (originatingTender != null)
 {
     <pems-content-card css="mb-3">
-        <h6 class="text-muted small mb-2">@Localizer["Procurement Origin"]</h6>
+        <pems-heading level="6" class="text-muted small mb-2">@Localizer["Procurement Origin"]</pems-heading>
         <pems-info-grid>
-            <pems-info-item label="@Localizer["Package"]" num><a asp-controller="ProcurementPackage" asp-action="Details" asp-route-id="@originatingTender.ProcurementPackageId">@originatingTender.ProcurementPackage?.PackageNumber</a></pems-info-item>
-            <pems-info-item label="@Localizer["Tender"]" num><a asp-controller="Tender" asp-action="Details" asp-route-id="@originatingTender.TenderId">@originatingTender.TenderNumber</a></pems-info-item>
+            <pems-info-item label="@Localizer["Package"]" num><pems-link asp-controller="ProcurementPackage" asp-action="Details" asp-route-id="@originatingTender.ProcurementPackageId">@originatingTender.ProcurementPackage?.PackageNumber</pems-link></pems-info-item>
+            <pems-info-item label="@Localizer["Tender"]" num><pems-link asp-controller="Tender" asp-action="Details" asp-route-id="@originatingTender.TenderId">@originatingTender.TenderNumber</pems-link></pems-info-item>
             <pems-info-item label="@Localizer["Awarded Bid"]" num>@originatingTender.AwardedBid?.BidNumber</pems-info-item>
             <pems-info-item label="@Localizer["Awarded"]" num>@originatingTender.AwardedDate?.ToString("yyyy-MM-dd")</pems-info-item>
         </pems-info-grid>
@@ -131,7 +131,7 @@
 @if (Model.Status == "UnderReview" && disciplineReviews.Any())
 {
     <pems-content-card css="mt-3">
-        <h6>@Localizer["Multi-Discipline Review"]</h6>
+        <pems-heading level="6">@Localizer["Multi-Discipline Review"]</pems-heading>
         <pems-table scale="small">
             <pems-table-head><pems-table-row><pems-table-header>@Localizer["Discipline"]</pems-table-header><pems-table-header>@Localizer["Reviewer"]</pems-table-header><pems-table-header>@Localizer["Decision"]</pems-table-header><pems-table-header>@Localizer["Comment"]</pems-table-header><pems-table-header>@Localizer["Date"]</pems-table-header><pems-table-header></pems-table-header></pems-table-row></pems-table-head>
             <pems-table-body>
@@ -163,7 +163,7 @@
 
 @* ================= DOCUMENTS & REVISIONS (Change Orders) ================= *@
 <pems-content-card css="mt-3">
-    <h6>@Localizer["Contract Documents"]</h6>
+    <pems-heading level="6">@Localizer["Contract Documents"]</pems-heading>
     @if (contractDocuments.Any())
     {
         <pems-data-table data="@(DataRows.Of(contractDocuments, c_ => c_.Add(((Localizer["Doc No"])?.ToString() ?? ""), d => (object?)(d.DocumentNo)).Add(((Localizer["Title"])?.ToString() ?? ""), d => (object?)(d.Title)).Add(((Localizer["Type"])?.ToString() ?? ""), d => (object?)(d.DocumentType)).Add(((Localizer["Clause Reference"])?.ToString() ?? ""), d => (object?)(d.ClauseReference)).Add(((Localizer["Status"])?.ToString() ?? ""), d => (object?)(d.Status))))" enterprise="false" dense="true" />
@@ -181,7 +181,7 @@
 @if (Model.Status == "Signed" || Model.Status == "Effective")
 {
     <pems-content-card css="mt-3">
-        <h6>@Localizer["Request Value Change (Variation / Change Order)"]</h6>
+        <pems-heading level="6">@Localizer["Request Value Change (Variation / Change Order)"]</pems-heading>
         <pems-form asp-action="RequestRevision" method="post"><pems-row gap="2">
             <input type="hidden" name="contractId" value="@Model.ContractId" />
             <pems-col md="3">
@@ -202,7 +202,7 @@
 @if (revisions.Any())
 {
     <pems-content-card css="mt-3">
-        <h6>@Localizer["Revision History (Original value never overwritten)"]</h6>
+        <pems-heading level="6">@Localizer["Revision History (Original value never overwritten)"]</pems-heading>
         <pems-table scale="small">
             <pems-table-head><pems-table-row><pems-table-header>#</pems-table-header><pems-table-header>@Localizer["Type"]</pems-table-header><pems-table-header>@Localizer["Previous"]</pems-table-header><pems-table-header>@Localizer["New"]</pems-table-header><pems-table-header>@Localizer["Reason"]</pems-table-header><pems-table-header>@Localizer["Status"]</pems-table-header><pems-table-header></pems-table-header></pems-table-row></pems-table-head>
             <pems-table-body>
@@ -234,7 +234,7 @@
 
 @* ================= EXECUTION: NTP / KICK-OFF / ITP ================= *@
 <pems-content-card css="mt-3">
-    <h6>@Localizer["Execution"]</h6>
+    <pems-heading level="6">@Localizer["Execution"]</pems-heading>
     <pems-row gap="3">
         <pems-col md="6">
             <div class="small text-muted mb-1">@Localizer["Notice to Proceed (NTP)"]</div>
@@ -263,7 +263,7 @@
                 <ul class="list-unstyled mb-2">
                     @foreach (var m in kickoffs)
                     {
-                        <li><a asp-controller="Meeting" asp-action="Details" asp-route-id="@m.MeetingId">@m.Title</a> — <pems-badge tone="neutral">@m.Status</pems-badge> (@m.MeetingDate.ToString("yyyy-MM-dd"))</li>
+                        <li><pems-link asp-controller="Meeting" asp-action="Details" asp-route-id="@m.MeetingId">@m.Title</pems-link> — <pems-badge tone="neutral">@m.Status</pems-badge> (@m.MeetingDate.ToString("yyyy-MM-dd"))</li>
                     }
                 </ul>
             }
@@ -284,7 +284,7 @@
                 <ul class="list-unstyled mb-0">
                     @foreach (var itp in linkedItps)
                     {
-                        <li><a asp-controller="QC" asp-action="ItpDetails" asp-route-id="@itp.InspectionTestPlanId">@itp.ITPNumber</a> — <pems-badge tone="neutral">@itp.Status</pems-badge></li>
+                        <li><pems-link asp-controller="QC" asp-action="ItpDetails" asp-route-id="@itp.InspectionTestPlanId">@itp.ITPNumber</pems-link> — <pems-badge tone="neutral">@itp.Status</pems-badge></li>
                     }
                 </ul>
             }

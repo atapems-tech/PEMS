@@ -21,7 +21,7 @@
 <pems-content-card css="mb-3">
     <pems-flex justify="between" align="start" wrap="true" gap="2">
         <div>
-            <h5 class="mb-1">@s.MaterialCode <span class="text-muted fw-normal">@s.MaterialDescription</span></h5>
+            <pems-heading level="5" class="mb-1">@s.MaterialCode <span class="text-muted fw-normal">@s.MaterialDescription</span></pems-heading>
             <div class="small text-muted">
                 @Localizer["Warehouse"]: <strong>@s.WarehouseCode</strong> · @Localizer["Repl_Revision"] @s.Revision ·
                 @Localizer["Repl_FirstDetected"] @Model.FirstDetectedAt.ToString("yyyy-MM-dd HH:mm") · @Localizer["Repl_Evaluated"] @s.LastEvaluatedAt.ToString("yyyy-MM-dd HH:mm")
@@ -85,7 +85,7 @@
     }
     @if (s.Status == "Converted")
     {
-        <div class="small mt-3"><pems-icon name="bi-cart-check" aria-hidden="true" /> @Localizer["Ppr_SentNote"] <a href="/PreProcurement?status=">@Localizer["Ppr_Title"]</a></div>
+        <div class="small mt-3"><pems-icon name="bi-cart-check" aria-hidden="true" /> @Localizer["Ppr_SentNote"] <pems-link href="/PreProcurement?status=">@Localizer["Ppr_Title"]</pems-link></div>
     }
     @if (canReview && s.Status == "Open")
     {
@@ -116,7 +116,7 @@
 </pems-content-card>
 
 <pems-content-card css="mb-3">
-    <h6>@Localizer["Repl_Sources"]</h6>
+    <pems-heading level="6">@Localizer["Repl_Sources"]</pems-heading>
     <div class="pems-grid-scroll">
         <pems-data-table data="@(DataRows.Of(Model.Sources, c_ => c_.Add(((Localizer["Repl_SourceType"])?.ToString() ?? ""), src => (object?)((src.SourceType == 1 ? Localizer["Repl_SourceSr"] : Localizer["Repl_SourceWo"])), css: "small").Add(((Localizer["Repl_SourceNumber"])?.ToString() ?? ""), src => (object?)((src.IsRestricted ? (object?)DataCell.Span("text-muted", Localizer["Repl_Restricted"]) : DataCell.Span(null, (src.ParentNumber ?? ("#" + src.SourceLineId))))), css: "small").Add(((Localizer["Repl_GrossDemand"])?.ToString() ?? ""), src => (object?)((src.GrossRemainingQuantity.ToString("0.###"))), css: "small text-end", headerCss: "text-end").Add(((Localizer["Repl_Covered"])?.ToString() ?? ""), src => (object?)((src.CoveredByReservation.ToString("0.###"))), css: "small text-end", headerCss: "text-end").Add(((Localizer["Repl_UnreservedDemand"])?.ToString() ?? ""), src => (object?)((src.UnreservedQuantity.ToString("0.###"))), css: "small text-end", headerCss: "text-end")))" css="mb-0" />
     </div>
@@ -124,7 +124,7 @@
 </pems-content-card>
 
 <pems-content-card>
-    <h6>@Localizer["Repl_History"]</h6>
+    <pems-heading level="6">@Localizer["Repl_History"]</pems-heading>
     <div class="pems-grid-scroll">
         <pems-data-table data="@(DataRows.Of(Model.History, c_ => c_.Add(((Localizer["Date"])?.ToString() ?? ""), h => (object?)(h.OccurredAt.ToString("yyyy-MM-dd HH:mm")), css: "small").Add(((Localizer["Repl_Revision"])?.ToString() ?? ""), h => (object?)(h.Revision), css: "small").Add(((Localizer["Repl_Action"])?.ToString() ?? ""), h => (object?)(h.Action), css: "small").Add(((Localizer["Status"])?.ToString() ?? ""), h => DataCell.Join((h.FromStatus == null ? "" : h.FromStatus + " → "), (h.ToStatus)), css: "small").Add(((Localizer["Repl_Shortage"])?.ToString() ?? ""), h => (object?)(h.ShortageQuantity.ToString("0.###")), css: "small text-end", headerCss: "text-end").Add(((Localizer["Repl_By"])?.ToString() ?? ""), h => (object?)(h.ActorName ?? Localizer["Repl_System"]), css: "small").Add(((Localizer["Repl_Note"])?.ToString() ?? ""), h => (object?)(h.Note), css: "small")))" css="mb-0" />
     </div>

@@ -11,7 +11,7 @@
 
 <pems-content-card css="mb-3">
     <pems-flex justify="between" align="center">
-        <h5 class="mb-0">@s.Code &mdash; @s.Name Workspace</h5>
+        <pems-heading level="5" class="mb-0">@s.Code &mdash; @s.Name Workspace</pems-heading>
         <pems-form method="get"><pems-flex gap="2">
             <pems-select scale="small" name="projectId" data-pems-change="submit-form">
                 <option value="">@Localizer["All Projects"]</option>
@@ -31,7 +31,7 @@
 </pems-row>
 
 <pems-content-card css="mb-3">
-    <h6 class="mb-3">Tasks / Activities / Deliverables</h6>
+    <pems-heading level="6" class="mb-3">Tasks / Activities / Deliverables</pems-heading>
     <pems-table kind="enterprise">
         <pems-table-head><pems-table-row><pems-table-header>@Localizer["Type"]</pems-table-header><pems-table-header>@Localizer["Title"]</pems-table-header><pems-table-header>@Localizer["Project"]</pems-table-header><pems-table-header>@Localizer["Responsible"]</pems-table-header><pems-table-header>@Localizer["Due"]</pems-table-header><pems-table-header>@Localizer["Status"]</pems-table-header><pems-table-header></pems-table-header></pems-table-row></pems-table-head>
         <pems-table-body>
@@ -87,14 +87,14 @@
 <pems-row gap="3">
     <pems-col lg="6">
         <pems-content-card css="mb-3">
-            <h6 class="mb-3">@Localizer["Documents"]</h6>
+            <pems-heading level="6" class="mb-3">@Localizer["Documents"]</pems-heading>
             <div class="table-scroll-area pems-s-3a95d6b3">
                 <pems-table kind="enterprise">
                     <pems-table-head><pems-table-row><pems-table-header>@Localizer["Doc No"]</pems-table-header><pems-table-header>@Localizer["Title"]</pems-table-header><pems-table-header>@Localizer["Status"]</pems-table-header></pems-table-row></pems-table-head>
                     <pems-table-body>
                         @foreach (var d in Model.Documents)
                         {
-                            <pems-table-row><pems-table-cell><a asp-controller="EngineeringDocuments" asp-action="Details" asp-route-id="@d.DocumentId">@d.DocumentNo</a></pems-table-cell><pems-table-cell>@d.Title</pems-table-cell><pems-table-cell><pems-badge tone="none" css="badge-status-@d.Status">@d.Status</pems-badge></pems-table-cell></pems-table-row>
+                            <pems-table-row><pems-table-cell><pems-link asp-controller="EngineeringDocuments" asp-action="Details" asp-route-id="@d.DocumentId">@d.DocumentNo</pems-link></pems-table-cell><pems-table-cell>@d.Title</pems-table-cell><pems-table-cell><pems-badge tone="none" css="badge-status-@d.Status">@d.Status</pems-badge></pems-table-cell></pems-table-row>
                         }
                     </pems-table-body>
                 </pems-table>
@@ -103,7 +103,7 @@
         </pems-content-card>
 
         <pems-content-card>
-            <h6 class="mb-3">@Localizer["Equipment"]</h6>
+            <pems-heading level="6" class="mb-3">@Localizer["Equipment"]</pems-heading>
             <div class="table-scroll-area pems-s-3a95d6b3">
                 <pems-data-table data="@(DataRows.Of(Model.Equipment, c_ => c_.Add(((Localizer["Tag"])?.ToString() ?? ""), e => (object?)(DataCell.Link(Url.Action("Details", "Equipment", new { id = e.EquipmentId }), e.TagNumber))).Add(((Localizer["Name"])?.ToString() ?? ""), e => (object?)(e.Name))))" />
             </div>
@@ -113,7 +113,7 @@
 
     <pems-col lg="6">
         <pems-content-card css="mb-3">
-            <h6 class="mb-3">@Localizer["VDR Items"]</h6>
+            <pems-heading level="6" class="mb-3">@Localizer["VDR Items"]</pems-heading>
             <div class="table-scroll-area pems-s-3a95d6b3">
                 <pems-data-table data="@(DataRows.Of(Model.VDRItems, c_ => c_.Add(((Localizer["Doc No"])?.ToString() ?? ""), v => (object?)(DataCell.Link(Url.Action("Details", "VDR", new { id = v.VDRItemId }), v.DocumentNumber))).Add(((Localizer["Vendor"])?.ToString() ?? ""), v => (object?)(v.VendorName)).Add(((Localizer["Status"])?.ToString() ?? ""), v => (object?)(DataCell.Badge("neutral", v.WorkflowStatus)))))" />
             </div>
@@ -121,7 +121,7 @@
         </pems-content-card>
 
         <pems-content-card>
-            <h6 class="mb-3">MR / MRQ</h6>
+            <pems-heading level="6" class="mb-3">MR / MRQ</pems-heading>
             <pems-data-table data="@(DataRows.Of(Model.MRs, c_ => c_.Add("MR No", m => (object?)(m.MRNumber)).Add(((Localizer["Status"])?.ToString() ?? ""), m => (object?)(m.Status), kind: DataCellKind.Badge, tone: m => "neutral")))" />
             @if (!Model.MRs.Any()) { <p class="text-muted small">No MR/MRQ.</p> }
         </pems-content-card>

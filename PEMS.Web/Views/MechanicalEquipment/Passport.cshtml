@@ -20,7 +20,7 @@
 <pems-content-card css="mb-3">
     <pems-flex justify="between" align="start" wrap="true" gap="2">
         <div>
-            <h5 class="mb-1">@Model.TagNumber</h5>
+            <pems-heading level="5" class="mb-1">@Model.TagNumber</pems-heading>
             <div class="text-muted small">@Model.EquipmentType @(Model.Equipment != null ? $"— {Model.Equipment.Name}" : "")</div>
         </div>
         <pems-flex gap="2" css="d-print-none">
@@ -50,7 +50,7 @@
 </pems-content-card>
 
 <pems-content-card css="mb-3">
-    <h6 class="mb-3"><pems-icon name="bi-gear-wide-connected" /> @Localizer["Rotating Equipment"]</h6>
+    <pems-heading level="6" class="mb-3"><pems-icon name="bi-gear-wide-connected" /> @Localizer["Rotating Equipment"]</pems-heading>
     @if (rotating != null)
     {
         <pems-row gap="2" css="small">
@@ -78,7 +78,7 @@
 </pems-content-card>
 
 <pems-content-card css="mb-3">
-    <h6 class="mb-3"><pems-icon name="bi-box" /> @Localizer["Static Equipment"]</h6>
+    <pems-heading level="6" class="mb-3"><pems-icon name="bi-box" /> @Localizer["Static Equipment"]</pems-heading>
     @if (staticEq != null)
     {
         <pems-row gap="2" css="small">

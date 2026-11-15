@@ -60,7 +60,7 @@
             @foreach (var s in subTypes)
             {
                 var count = s switch { "Rotating" => ViewBag.RotatingCount, "Static" => ViewBag.StaticCount, _ => ViewBag.UnclassifiedCount };
-                <a class="vs-chip" href="@Url.Action("Index", new { subType = s, q })">@SubTypeText(s) <strong>@count</strong></a>
+                <pems-link class="vs-chip" href="@Url.Action("Index", new { subType = s, q })">@SubTypeText(s) <strong>@count</strong></pems-link>
             }
         </pems-list-kpis>
 
@@ -87,13 +87,13 @@
                     @foreach (var m in Model.Items)
                     {
                         <pems-table-row class="lp-row">
-                            <pems-table-cell class="lp-no"><a asp-action="Passport" asp-route-id="@m.MechanicalEquipmentId" class="lp-subject"><span class="vs-num">@m.TagNumber</span></a></pems-table-cell>
+                            <pems-table-cell class="lp-no"><pems-link asp-action="Passport" asp-route-id="@m.MechanicalEquipmentId" class="lp-subject"><span class="vs-num">@m.TagNumber</span></pems-link></pems-table-cell>
                             <pems-table-cell class="small"><span class="vs-title-cell" title="@m.Manufacturer / @m.Model">@m.Manufacturer / @m.Model</span></pems-table-cell>
                             <pems-table-cell class="small">@m.EquipmentType</pems-table-cell>
                             <pems-table-cell><span class="vs-pill @SubTypeTone(m.SubType)">@SubTypeText(m.SubType)</span></pems-table-cell>
                             <pems-table-cell class="text-end text-nowrap">
-                                <a asp-action="Passport" asp-route-id="@m.MechanicalEquipmentId" class="lp-act lp-act--always" title="@Localizer["Me_Passport"]" aria-label="@Localizer["Me_Passport"]"><pems-icon name="bi-card-text" aria-hidden="true" /></a>
-                                <a asp-action="Edit" asp-route-id="@m.MechanicalEquipmentId" class="lp-act lp-act--always" title="@Localizer["Rcm_Edit"]" aria-label="@Localizer["Rcm_Edit"]"><pems-icon name="bi-pencil" aria-hidden="true" /></a>
+                                <pems-link asp-action="Passport" asp-route-id="@m.MechanicalEquipmentId" class="lp-act lp-act--always" title="@Localizer["Me_Passport"]" aria-label="@Localizer["Me_Passport"]"><pems-icon name="bi-card-text" aria-hidden="true" /></pems-link>
+                                <pems-link asp-action="Edit" asp-route-id="@m.MechanicalEquipmentId" class="lp-act lp-act--always" title="@Localizer["Rcm_Edit"]" aria-label="@Localizer["Rcm_Edit"]"><pems-icon name="bi-pencil" aria-hidden="true" /></pems-link>
                             </pems-table-cell>
                         </pems-table-row>
                     }

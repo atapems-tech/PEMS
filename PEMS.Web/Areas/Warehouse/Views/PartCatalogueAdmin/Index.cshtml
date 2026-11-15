@@ -17,13 +17,13 @@
 
 <pems-page-shell kind="workspace" css="pc-page" data-pc-lookup-base="/Warehouse/PartCatalogueLookup" data-txt-no-results="@Localizer["Pc_Lookup_NoResults"]" data-txt-search="@Localizer["Pc_Lookup_Search"]">
     <nav class="vs-subnav" aria-label="@Localizer["Pc_Menu"]">
-        <a asp-area="Warehouse" asp-controller="PartCatalogueRequest" asp-action="Index">@Localizer["Pc_Menu"]</a>
-        <a asp-area="Warehouse" asp-controller="PartCatalogueAdmin" asp-action="Index" class="active" aria-current="page">@Localizer["Pc_Title_Admin"]</a>
+        <pems-link asp-area="Warehouse" asp-controller="PartCatalogueRequest" asp-action="Index">@Localizer["Pc_Menu"]</pems-link>
+        <pems-link asp-area="Warehouse" asp-controller="PartCatalogueAdmin" asp-action="Index" class="active" aria-current="page">@Localizer["Pc_Title_Admin"]</pems-link>
     </nav>
 
     @* ---------------------------------------------------- Part No generation (فاز ۱: فقط پرچم تنظیمات) *@
     <section class="vs-panel pc-card" id="pc-partno-settings">
-        <h2 class="vs-section__title"><pems-icon name="bi-hash" /> @Localizer["Pc_Adm_PartNoTitle"]</h2>
+        <pems-heading level="2" class="vs-section__title"><pems-icon name="bi-hash" /> @Localizer["Pc_Adm_PartNoTitle"]</pems-heading>
         <p class="small text-muted">@Localizer["Pc_Adm_PartNoHint"]</p>
         <pems-form asp-action="SaveSettings" method="post"><pems-row gap="3" css="align-items-start">
             @if (Model.Settings.RowVersion != null) { <input type="hidden" name="rowVersion" value="@Convert.ToBase64String(Model.Settings.RowVersion)" /> }
@@ -52,7 +52,7 @@
 
     @* ---------------------------------------------------- Import *@
     <section class="vs-panel pc-card">
-        <h2 class="vs-section__title"><pems-icon name="bi-cloud-arrow-up" /> @Localizer["Pc_Adm_Import"]</h2>
+        <pems-heading level="2" class="vs-section__title"><pems-icon name="bi-cloud-arrow-up" /> @Localizer["Pc_Adm_Import"]</pems-heading>
         <p class="small text-muted">@Localizer["Pc_Adm_ImportHint"]</p>
         <pems-row gap="3">
             @foreach (var kind in new[] { "TechnicalClass", "CommodityGroup", "ProductFamily", "Manufacturer", "Supplier" })
@@ -71,8 +71,8 @@
 
     @* ---------------------------------------------------- Workflow (PEMS.WorkflowPlatform) *@
     <section class="vs-panel pc-card mt-3">
-        <h2 class="vs-section__title"><pems-icon name="bi-signpost-split" /> @Localizer["Pc_Adm_Steps"]</h2>
-        <p class="small text-muted">@Localizer["Pc_Adm_StepsHint"] <a asp-area="Admin" asp-controller="WorkflowManagement" asp-action="Index">@Localizer["Pc_Adm_OpenWorkflowDesigner"]</a></p>
+        <pems-heading level="2" class="vs-section__title"><pems-icon name="bi-signpost-split" /> @Localizer["Pc_Adm_Steps"]</pems-heading>
+        <p class="small text-muted">@Localizer["Pc_Adm_StepsHint"] <pems-link asp-area="Admin" asp-controller="WorkflowManagement" asp-action="Index">@Localizer["Pc_Adm_OpenWorkflowDesigner"]</pems-link></p>
         <div class="pc-table-scroll">
             <pems-data-table data="@(DataRows.Of(ov.WorkflowStages, c_ => c_.Add(((Localizer["Pc_Col_Order"])?.ToString() ?? ""), st => (object?)(st.Order), css: "vs-num").Add(((Localizer["Pc_Col_Step"])?.ToString() ?? ""), st => (object?)(Localizer["Pc_Step_" + st.Name])).Add(((Localizer["Pc_Adm_Responsibility"])?.ToString() ?? ""), st => (object?)(st.ResponsibilityKey), kind: DataCellKind.Code).Add(((Localizer["Pc_Col_Condition"])?.ToString() ?? ""), st => (object?)(string.IsNullOrEmpty(st.EntryCondition) ? Localizer["Pc_Cond_Always"].Value : st.EntryCondition))))" enterprise="false" dense="true" css="table-enterprise vs-dense mb-0" />
             @if (!ov.WorkflowStages.Any()) { <div class="vs-empty py-2">@Localizer["Pc_Adm_NoWorkflow"]</div> }
@@ -81,7 +81,7 @@
 
     @* ---------------------------------------------------- Data quality *@
     <section class="vs-panel pc-card mt-3">
-        <h2 class="vs-section__title"><pems-icon name="bi-clipboard2-pulse" /> @Localizer["Pc_Adm_DataQuality"]</h2>
+        <pems-heading level="2" class="vs-section__title"><pems-icon name="bi-clipboard2-pulse" /> @Localizer["Pc_Adm_DataQuality"]</pems-heading>
         <div class="pc-table-scroll">
             <pems-table scale="small" css="table-enterprise vs-dense mb-0">
                 <pems-table-head><pems-table-row><pems-table-header>@Localizer["Pc_Adm_Severity"]</pems-table-header><pems-table-header>@Localizer["Pc_Adm_Responsibility"]</pems-table-header><pems-table-header>@Localizer["Pc_Adm_Finding"]</pems-table-header></pems-table-row></pems-table-head>
@@ -102,7 +102,7 @@
 
     @* ---------------------------------------------------- Responsibilities *@
     <section class="vs-panel pc-card mt-3">
-        <h2 class="vs-section__title"><pems-icon name="bi-person-badge" /> @Localizer["Pc_Adm_Responsibilities"]</h2>
+        <pems-heading level="2" class="vs-section__title"><pems-icon name="bi-person-badge" /> @Localizer["Pc_Adm_Responsibilities"]</pems-heading>
         <p class="small text-muted">@Localizer["Pc_Adm_ResponsibilitiesHint"]</p>
         <pems-row gap="3">
         @foreach (var r in ov.Responsibilities)
@@ -175,7 +175,7 @@
         }
         </pems-row>
 
-        <h3 class="h6 mt-3">@Localizer["Pc_Adm_Diagnose"]</h3>
+        <pems-heading level="3" class="h6 mt-3">@Localizer["Pc_Adm_Diagnose"]</pems-heading>
         <pems-row gap="2" css="align-items-start">
             <pems-col md="4"><pems-label css="small mb-0" for="pcPrevKey">@Localizer["Pc_Adm_Responsibility"]</pems-label>
                 <pems-select scale="small" id="pcPrevKey">@foreach (var r in ov.Responsibilities) { <option value="@r.Key">@Localizer["Pc_Step_" + r.Key]</option> }</pems-select></pems-col>
@@ -187,7 +187,7 @@
 
     @* ---------------------------------------------------- Commodity responsibility *@
     <section class="vs-panel pc-card mt-3">
-        <h2 class="vs-section__title"><pems-icon name="bi-boxes" /> @Localizer["Pc_Adm_CommodityResp"]</h2>
+        <pems-heading level="2" class="vs-section__title"><pems-icon name="bi-boxes" /> @Localizer["Pc_Adm_CommodityResp"]</pems-heading>
         <p class="small text-muted">@Localizer["Pc_Adm_CommodityRespHint"]</p>
         <pems-form asp-action="AddCommodityResponsible" method="post"><pems-row gap="2" css="align-items-start mb-2">
             <pems-col md="3"><pems-label css="small mb-0" for="cr_key">@Localizer["Pc_Adm_Responsibility"]</pems-label>
@@ -215,7 +215,7 @@
 
     @* ---------------------------------------------------- Approvers *@
     <section class="vs-panel pc-card mt-3">
-        <h2 class="vs-section__title"><pems-icon name="bi-people" /> @Localizer["Pc_Adm_Approvers"] <span class="vs-pill vs-pill--neutral">@Localizer["Pc_Adm_Legacy"]</span></h2>
+        <pems-heading level="2" class="vs-section__title"><pems-icon name="bi-people" /> @Localizer["Pc_Adm_Approvers"] <span class="vs-pill vs-pill--neutral">@Localizer["Pc_Adm_Legacy"]</span></pems-heading>
         <p class="small text-muted">@Localizer["Pc_Adm_ApproversHint"]</p>
         <pems-row gap="3">
             @foreach (var st in poolSteps)
@@ -245,15 +245,15 @@
 
     @* ---------------------------------------------------- Direct Manager = Organization hierarchy (not module-local) *@
     <section class="vs-panel pc-card mt-3">
-        <h2 class="vs-section__title"><pems-icon name="bi-diagram-2" /> @Localizer["Pc_Adm_OrgHierarchyTitle"]</h2>
+        <pems-heading level="2" class="vs-section__title"><pems-icon name="bi-diagram-2" /> @Localizer["Pc_Adm_OrgHierarchyTitle"]</pems-heading>
         <p class="small text-muted mb-2">@Localizer["Pc_Adm_OrgHierarchyBody"]</p>
-        <a class="vs-btn vs-btn--sm" asp-area="Admin" asp-controller="Organization" asp-action="Index"><pems-icon name="bi-diagram-3" /> @Localizer["Org_Title"]</a>
-        <a class="vs-btn vs-btn--sm" asp-area="Admin" asp-controller="Organization" asp-action="Diagnostics"><pems-icon name="bi-heart-pulse" /> @Localizer["Org_Diag_Title"]</a>
+        <pems-link class="vs-btn vs-btn--sm" asp-area="Admin" asp-controller="Organization" asp-action="Index"><pems-icon name="bi-diagram-3" /> @Localizer["Org_Title"]</pems-link>
+        <pems-link class="vs-btn vs-btn--sm" asp-area="Admin" asp-controller="Organization" asp-action="Diagnostics"><pems-icon name="bi-heart-pulse" /> @Localizer["Org_Diag_Title"]</pems-link>
     </section>
 
     @* ---------------------------------------------------- Sections *@
     <section class="vs-panel pc-card mt-3">
-        <h2 class="vs-section__title"><pems-icon name="bi-ui-checks-grid" /> @Localizer["Pc_Adm_Sections"]</h2>
+        <pems-heading level="2" class="vs-section__title"><pems-icon name="bi-ui-checks-grid" /> @Localizer["Pc_Adm_Sections"]</pems-heading>
         <p class="small text-muted">@Localizer["Pc_Adm_SectionsHint"]</p>
         <div class="pc-table-scroll">
             <pems-table scale="small" css="table-enterprise vs-dense mb-0">
@@ -289,7 +289,7 @@
 
     @* ---------------------------------------------------- Group1 → Group2 *@
     <section class="vs-panel pc-card mt-3 mb-4">
-        <h2 class="vs-section__title"><pems-icon name="bi-diagram-3" /> @Localizer["Pc_Adm_Group2Maps"]</h2>
+        <pems-heading level="2" class="vs-section__title"><pems-icon name="bi-diagram-3" /> @Localizer["Pc_Adm_Group2Maps"]</pems-heading>
         <p class="small text-muted">@Localizer["Pc_Adm_Group2Hint"]</p>
         <pems-form asp-action="AddGroupChild" method="post"><pems-row gap="2" css="align-items-start mb-2">
             <pems-col md="5"><pems-label for="g2_parent_text">@Localizer["Pc_F_CommodityGroup1Id"]</pems-label><div class="pc-lookup" data-url="/Warehouse/PartCatalogueAdmin/CommodityGroups" data-name="parentGroupId" data-input-id="g2_parent_text"></div></pems-col>

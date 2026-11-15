@@ -81,21 +81,21 @@
 <pems-page-shell kind="workspace">
 
 <nav aria-label="@Localizer["Vd_Breadcrumb"]" class="small text-muted mb-2">
-    <a asp-action="Index">VDR</a> / <a asp-controller="Vendor" asp-action="Details" asp-route-id="@Model.VendorId">@Model.VendorName</a> / <span>@Model.DocumentNumber</span>
+    <pems-link asp-action="Index">VDR</pems-link> / <pems-link asp-controller="Vendor" asp-action="Details" asp-route-id="@Model.VendorId">@Model.VendorName</pems-link> / <span>@Model.DocumentNumber</span>
 </nav>
 
 <div class="vs-doc-head">
     <div class="vs-doc-identity">
         <pems-flex align="center" gap="2" wrap="true">
-            <h1 class="vs-doc-number vs-num">@Model.DocumentNumber</h1>
+            <pems-heading level="1" class="vs-doc-number vs-num">@Model.DocumentNumber</pems-heading>
             <span class="vs-pill @VdrUi.WorkflowTone(Model.WorkflowStatus)">@VdrUi.Loc(Localizer, "St_", Model.WorkflowStatus)</span>
             @if (Model.IsOverdue) { <span class="vs-pill vs-pill--danger">@Localizer["Vs_Overdue"]</span> }
             <span class="vs-pill vs-pill--current">@Localizer["Vd_Rev"] <span class="vs-num">@(Model.LatestRevisionNo ?? 0)</span></span>
         </pems-flex>
-        <div class="vs-doc-meta">@Localizer["Vd_VendorLabel"] <a asp-controller="Vendor" asp-action="Details" asp-route-id="@Model.VendorId">@Model.VendorName</a> &middot; @Model.ProjectName@(string.IsNullOrEmpty(Model.DisciplineCodeRaw) ? "" : " · " + Model.DisciplineCodeRaw)</div>
+        <div class="vs-doc-meta">@Localizer["Vd_VendorLabel"] <pems-link asp-controller="Vendor" asp-action="Details" asp-route-id="@Model.VendorId">@Model.VendorName</pems-link> &middot; @Model.ProjectName@(string.IsNullOrEmpty(Model.DisciplineCodeRaw) ? "" : " · " + Model.DisciplineCodeRaw)</div>
     </div>
     <div class="vs-doc-actions">
-        <a asp-action="Index" class="vs-btn"><pems-icon name="bi-arrow-left" aria-hidden="true" /> @Localizer["Vs_Back"]</a>
+        <pems-link asp-action="Index" class="vs-btn"><pems-icon name="bi-arrow-left" aria-hidden="true" /> @Localizer["Vs_Back"]</pems-link>
         @* SCRUM-559: More actions, each item only with its permission (same menu as Engineering Documents) *@
         @{
             var vdrCanEdit = Model.IsActive && ViewBag.CanEditItem is true;
@@ -117,7 +117,7 @@
                     }
                     @if (vdrCanNumbers)
                     {
-                        <li><a class="dropdown-item" asp-area="Admin" asp-controller="Numbering" asp-action="Index" asp-route-vdrItemId="@Model.VDRItemId" asp-fragment="vdr-numbers"><pems-icon name="bi-hash" /> @Localizer["Vd_NumbersInAdmin"]</a></li>
+                        <li><pems-link class="dropdown-item" asp-area="Admin" asp-controller="Numbering" asp-action="Index" asp-route-vdrItemId="@Model.VDRItemId" asp-fragment="vdr-numbers"><pems-icon name="bi-hash" /> @Localizer["Vd_NumbersInAdmin"]</pems-link></li>
                     }
                     @if (vdrCanHold)
                     {
@@ -186,7 +186,7 @@
             <pems-info-item label="@Localizer["Vs_Po"]">@Model.PoNumber</pems-info-item>
             <pems-info-item label="@Localizer["Vs_Equipment"]">
                     @if (Model.EquipmentId.HasValue)
-                    { <a asp-controller="Equipment" asp-action="Details" asp-route-id="@Model.EquipmentId">@Model.EquipmentTagNumber</a> }
+                    { <pems-link asp-controller="Equipment" asp-action="Details" asp-route-id="@Model.EquipmentId">@Model.EquipmentTagNumber</pems-link> }
                     else
                     { <span class="text-muted">-</span> }
             </pems-info-item>
@@ -205,7 +205,7 @@
 @* ===================== Submissions ===================== *@
 <pems-tab-pane fade="true" id="tab-submissions" role="tabpanel">
 <pems-content-card css="mb-3">
-    <h6 class="mb-3">@Localizer["Vd_SubHistory"]</h6>
+    <pems-heading level="6" class="mb-3">@Localizer["Vd_SubHistory"]</pems-heading>
     <pems-related-table>
         <pems-table-head>
             <pems-table-row><pems-table-header>@Localizer["Vd_Rev"]</pems-table-header><pems-table-header>@Localizer["Vd_VendorTransmittal"]</pems-table-header><pems-table-header>@Localizer["Vd_ClientTransmittal"]</pems-table-header><pems-table-header>@Localizer["Vd_VendorIssued"]</pems-table-header><pems-table-header>@Localizer["Vd_Poi"]</pems-table-header><pems-table-header>@Localizer["Vd_Sla"]</pems-table-header><pems-table-header>@Localizer["Vd_Ftp"]</pems-table-header><pems-table-header>@Localizer["Vd_CommentSheet"]</pems-table-header><pems-table-header>@Localizer["Vd_CommentDate"]</pems-table-header><pems-table-header>@Localizer["Vd_Category"]</pems-table-header><pems-table-header>@Localizer["Vd_Resubmit"]</pems-table-header><pems-table-header>@Localizer["Vd_CommentFile"]</pems-table-header><pems-table-header>@Localizer["Vd_ReplyFile"]</pems-table-header></pems-table-row>
@@ -219,7 +219,7 @@
                     <pems-table-cell>
                         @if (s.ClientTransmittalId.HasValue)
                         {
-                            <a asp-controller="Transmittal" asp-action="Details" asp-route-id="@s.ClientTransmittalId">@s.ClientTransmittalNo</a>
+                            <pems-link asp-controller="Transmittal" asp-action="Details" asp-route-id="@s.ClientTransmittalId">@s.ClientTransmittalNo</pems-link>
                         }
                         else
                         {
@@ -303,7 +303,7 @@
 <pems-tab-pane fade="true" css="@(vdrDefaultTab == "files" ? "show active" : "")" id="tab-files" role="tabpanel">
     @* SCRUM-531: upload a file to a submission; it is stored in PEMS and listed below (Upload to FTP keeps no copy in PEMS) *@
     <pems-content-card css="mb-3">
-        <h6 class="mb-2"><pems-icon name="bi-upload" /> @Localizer["Vd_UploadTitle"]</h6>
+        <pems-heading level="6" class="mb-2"><pems-icon name="bi-upload" /> @Localizer["Vd_UploadTitle"]</pems-heading>
         @if (Model.Submissions.Count == 0)
         {
             <p class="text-muted small mb-0">@Localizer["Vd_UploadNeedsSubmission"]</p>
@@ -379,7 +379,7 @@
 
         @if (vdrPreviewFile != null)
         {
-            <h6 class="mb-2"><pems-icon name="bi-eye" /> @vdrPreviewFile.FileName</h6>
+            <pems-heading level="6" class="mb-2"><pems-icon name="bi-eye" /> @vdrPreviewFile.FileName</pems-heading>
         }
         <pems-file-preview id="vdrFilePreview" src="@vdrPreviewUrl" title="@vdrPreviewFile?.FileName" empty-text="@Localizer["Vd_NoPreview"]" />
     }
@@ -394,7 +394,7 @@
 {
     <pems-content-card css="mb-3">
         <pems-flex justify="between" align="center" css="mb-2">
-            <h6 class="mb-0"><pems-icon name="bi-file-earmark-pdf" /> @Localizer["Vd_DocViewer"] <span class="text-muted small">@Localizer["Vd_PinHint"]</span></h6>
+            <pems-heading level="6" class="mb-0"><pems-icon name="bi-file-earmark-pdf" /> @Localizer["Vd_DocViewer"] <span class="text-muted small">@Localizer["Vd_PinHint"]</span></pems-heading>
             <pems-flex align="center" gap="2">
                 <pems-button tone="neutral" size="small" outline="true" type="button" id="pdfPrevPage"><pems-icon name="bi-chevron-left" /></pems-button>
                 <span class="small" id="pdfPageLabel">@Localizer["Vd_Page"] - / -</span>
@@ -493,7 +493,7 @@
 }
 
 <pems-content-card css="mb-3">
-    <h6 class="mb-3">@Localizer["Vd_CommentMgmt"] <span class="text-muted small">@Localizer["Vd_ActionIndependent"]</span></h6>
+    <pems-heading level="6" class="mb-3">@Localizer["Vd_CommentMgmt"] <span class="text-muted small">@Localizer["Vd_ActionIndependent"]</span></pems-heading>
 
     <pems-related-table>
         <pems-table-head><pems-table-row><pems-table-header>@Localizer["Vd_No"]</pems-table-header><pems-table-header>@Localizer["Vd_Rev"]</pems-table-header><pems-table-header>@Localizer["Vd_Category"]</pems-table-header><pems-table-header>@Localizer["Vd_SheetZone"]</pems-table-header><pems-table-header>@Localizer["Vd_Comment"]</pems-table-header><pems-table-header>@Localizer["Vd_RaisedBy"]</pems-table-header><pems-table-header>@Localizer["Vd_Raised"]</pems-table-header><pems-table-header>@Localizer["Vd_ActionStatus"]</pems-table-header><pems-table-header>@Localizer["Vd_Response"]</pems-table-header></pems-table-row></pems-table-head>
@@ -512,7 +512,7 @@
                         @c.CommentText
                         @if (!string.IsNullOrEmpty(c.AttachmentFilePath))
                         {
-                            <div><a href="@Url.Action("Download", "Files", new { id = c.AttachmentId })" target="_blank"><pems-icon name="bi-paperclip" /> @c.AttachmentFileName</a></div>
+                            <div><pems-link href="@Url.Action("Download", "Files", new { id = c.AttachmentId })" target="_blank"><pems-icon name="bi-paperclip" /> @c.AttachmentFileName</pems-link></div>
                         }
                         @if (!string.IsNullOrEmpty(c.RequiredAction))
                         {
@@ -546,7 +546,7 @@
                         @c.ResponseText
                         @if (!string.IsNullOrEmpty(c.ReplyAttachmentFilePath))
                         {
-                            <div><a href="@Url.Action("Download", "Files", new { id = c.ReplyAttachmentId })" target="_blank"><pems-icon name="bi-paperclip" /> @c.ReplyAttachmentFileName</a></div>
+                            <div><pems-link href="@Url.Action("Download", "Files", new { id = c.ReplyAttachmentId })" target="_blank"><pems-icon name="bi-paperclip" /> @c.ReplyAttachmentFileName</pems-link></div>
                         }
                         @if (string.IsNullOrEmpty(c.ResponseText) && string.IsNullOrEmpty(c.ReplyAttachmentFilePath))
                         {
@@ -654,7 +654,7 @@
 <pems-tab-pane fade="true" css="@(vdrDefaultTab == "workflow" ? "show active" : "")" id="tab-workflow" role="tabpanel">
 <section class="vs-panel mb-3" aria-labelledby="vdrStagesTitle">
     <div class="vs-panel__body">
-        <h2 id="vdrStagesTitle" class="vs-section__title">@Localizer["Vd_ReviewStages"]</h2>
+        <pems-heading level="2" id="vdrStagesTitle" class="vs-section__title">@Localizer["Vd_ReviewStages"]</pems-heading>
         <div class="vs-tracker">
             @foreach (var st in wfStageDiagramModel.Stages)
             {
@@ -688,7 +688,7 @@
                 <section class="vs-panel mb-3" aria-labelledby="vdrStep1Title">
                     <div class="vs-panel__body">
                         <pems-flex justify="between" align="baseline" gap="2" wrap="true">
-                            <h2 id="vdrStep1Title" class="vs-section__title mb-1">@Localizer["Vd_Step1Title"]</h2>
+                            <pems-heading level="2" id="vdrStep1Title" class="vs-section__title mb-1">@Localizer["Vd_Step1Title"]</pems-heading>
                             <span class="small text-muted">@Localizer["Vd_Step1Of"]</span>
                         </pems-flex>
                         <p class="small text-muted">@Localizer["Vd_Step1Hint"]</p>
@@ -729,7 +729,7 @@
                     <div class="vs-panel__body">
                         <pems-flex justify="between" align="center" gap="2" wrap="true">
                             <div>
-                                <h2 id="vdrStep2Title" class="vs-section__title mb-1">@Localizer["Vd_Step2Title"] <span class="fw-normal text-muted small">(@Localizer["Vd_Optional"])</span></h2>
+                                <pems-heading level="2" id="vdrStep2Title" class="vs-section__title mb-1">@Localizer["Vd_Step2Title"] <span class="fw-normal text-muted small">(@Localizer["Vd_Optional"])</span></pems-heading>
                                 <p class="small text-muted mb-0" id="vdrDiscSummary" aria-live="polite" data-none="@Localizer["Vd_NoDiscSelected"]" data-some="@Localizer["Vd_DiscSelected"]">@Localizer["Vd_NoDiscSelected"]</p>
                             </div>
                             <pems-button tone="neutral" size="small" outline="true" type="button" data-bs-toggle="collapse" data-bs-target="#vdrDiscPicker" aria-expanded="false" aria-controls="vdrDiscPicker">@Localizer["Vd_ChooseDisciplines"]</pems-button>
@@ -755,7 +755,7 @@
             <pems-col lg="4">
                 <section class="vs-panel" aria-labelledby="vdrSummaryTitle">
                     <div class="vs-panel__body">
-                        <h2 id="vdrSummaryTitle" class="vs-section__title">@Localizer["Vd_ReviewSummary"]</h2>
+                        <pems-heading level="2" id="vdrSummaryTitle" class="vs-section__title">@Localizer["Vd_ReviewSummary"]</pems-heading>
                         <pems-info-grid class="small mb-3">
     <pems-info-item label="@Localizer["Vd_Reviewers"]">@Localizer["Vd_Role_Lead"], @Localizer["Vd_Role_DocControl"]</pems-info-item>
     @* SCRUM-560: vdr-details.js writes the chosen disciplines into this value *@
@@ -772,7 +772,7 @@
 else
 {
 <pems-content-card css="mb-3">
-    <h6 class="mb-3"><pems-icon name="bi-signpost-split" /> @Localizer["Vd_ReviewWorkflow"]</h6>
+    <pems-heading level="6" class="mb-3"><pems-icon name="bi-signpost-split" /> @Localizer["Vd_ReviewWorkflow"]</pems-heading>
 
     @if (Model.Submissions.Any())
     {
@@ -785,7 +785,7 @@ else
         var myDisciplineId = ViewBag.MyDisciplineId as int?;
         var myPending = reviewStatus.FirstOrDefault(x => x.DisciplineId == myDisciplineId && x.Status == "Pending");
 
-        <h6 class="small fw-bold">@Localizer["Vd_ParallelReview"]</h6>
+        <pems-heading level="6" class="small fw-bold">@Localizer["Vd_ParallelReview"]</pems-heading>
         <pems-flex wrap="true" gap="2" css="mb-3">
             @foreach (var r in reviewStatus)
             {
@@ -838,7 +838,7 @@ else
     }
     else if (currentStageName == "LeadReview")
     {
-        <h6 class="small fw-bold">@Localizer["Vd_FinalDecision"]</h6>
+        <pems-heading level="6" class="small fw-bold">@Localizer["Vd_FinalDecision"]</pems-heading>
         <pems-form asp-action="LeadReview" method="post"><pems-row gap="2">
             <input type="hidden" name="vdrItemId" value="@Model.VDRItemId" />
             <pems-col md="3">
@@ -860,7 +860,7 @@ else
     }
     else if (currentStageName == "ReturnToVendor")
     {
-        <h6 class="small fw-bold">@Localizer["Vd_FormalReturn"]</h6>
+        <pems-heading level="6" class="small fw-bold">@Localizer["Vd_FormalReturn"]</pems-heading>
         <p class="text-muted small">@Localizer["Vd_ReturnHint"]</p>
         <pems-form asp-action="ReturnToVendor" method="post"><pems-row gap="2">
             <input type="hidden" name="vdrItemId" value="@Model.VDRItemId" />
@@ -877,7 +877,7 @@ else
 
 @* تاریخچه‌ی واقعی گردش‌کار از موتور عمومی (نه فقط رشته‌ی خلاصه‌ی وضعیت) *@
 <pems-content-card>
-    <h6 class="mb-3"><pems-icon name="bi-clock-history" /> @Localizer["Vd_WorkflowHistory"]</h6>
+    <pems-heading level="6" class="mb-3"><pems-icon name="bi-clock-history" /> @Localizer["Vd_WorkflowHistory"]</pems-heading>
     @if (workflowHistory.Any())
     {
         <pems-related-table>
@@ -907,7 +907,7 @@ else
 @* ===================== Correspondence ===================== *@
 <pems-tab-pane fade="true" id="tab-correspondence" role="tabpanel">
 <pems-content-card>
-    <h6 class="mb-3"><pems-icon name="bi-envelope-paper" /> @Localizer["Vd_RelatedCorr"]</h6>
+    <pems-heading level="6" class="mb-3"><pems-icon name="bi-envelope-paper" /> @Localizer["Vd_RelatedCorr"]</pems-heading>
     @if (relatedLetters.Any())
     {
         <pems-related-table>

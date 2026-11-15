@@ -36,10 +36,10 @@
 
     @* ناوبری ماژول: MDR/VDR/Transmittal زیرمجموعه‌ی همان هسته‌ی Document هستند - Import عمداً این‌جا نیست (فقط Import Center) *@
     <nav class="vs-subnav" aria-label="@Localizer["Ed_Documents"]">
-        <a asp-controller="EngineeringDocuments" asp-action="Index" class="active" aria-current="page">@Localizer["Ed_Documents"]</a>
-        <a asp-controller="DocumentRegister" asp-action="Index">@Localizer["Ed_Register"]</a>
-        <a asp-controller="VDR" asp-action="Index">@Localizer["Ed_VendorDocs"]</a>
-        <a asp-controller="Transmittal" asp-action="Index">@Localizer["Ed_Transmittals"]</a>
+        <pems-link asp-controller="EngineeringDocuments" asp-action="Index" class="active" aria-current="page">@Localizer["Ed_Documents"]</pems-link>
+        <pems-link asp-controller="DocumentRegister" asp-action="Index">@Localizer["Ed_Register"]</pems-link>
+        <pems-link asp-controller="VDR" asp-action="Index">@Localizer["Ed_VendorDocs"]</pems-link>
+        <pems-link asp-controller="Transmittal" asp-action="Index">@Localizer["Ed_Transmittals"]</pems-link>
     </nav>
 
     <pems-list-panel>
@@ -87,10 +87,10 @@
         @* شمارش‌ها از دیتابیس (GetSummaryCountsAsync) با همان محدودیت دیسیپلین، مستقل از فیلترها؛ پیش‌فرض پنهان (SCRUM-408).
            فقط مواردی که دقیقاً به یک مقدار فیلتر Status نگاشت می‌شوند کلیک‌پذیرند (Total/Approved/Rejected). *@
         <pems-list-kpis id="edKpis">
-            <a class="vs-chip text-decoration-none" href="@Url.Action("Index")">@Localizer["Ed_Total"] <strong>@summary.Total</strong></a>
-            <a class="vs-chip text-decoration-none" href="@Url.Action("Index", new { Status = "Approved" })">@StatusText("Approved") <strong>@summary.Approved</strong></a>
+            <pems-link class="vs-chip text-decoration-none" href="@Url.Action("Index")">@Localizer["Ed_Total"] <strong>@summary.Total</strong></pems-link>
+            <pems-link class="vs-chip text-decoration-none" href="@Url.Action("Index", new { Status = "Approved" })">@StatusText("Approved") <strong>@summary.Approved</strong></pems-link>
             <span class="vs-chip">@Localizer["Ed_Pending"] <strong>@summary.Pending</strong></span>
-            <a class="vs-chip text-decoration-none @(summary.Rejected > 0 ? "vs-chip--danger" : "")" href="@Url.Action("Index", new { Status = "Rejected" })">@StatusText("Rejected") <strong>@summary.Rejected</strong></a>
+            <pems-link class="vs-chip text-decoration-none @(summary.Rejected > 0 ? "vs-chip--danger" : "")" href="@Url.Action("Index", new { Status = "Rejected" })">@StatusText("Rejected") <strong>@summary.Rejected</strong></pems-link>
             <span class="vs-chip"><pems-icon name="bi-snow" aria-hidden="true" /> @Localizer["Ed_Frozen"] <strong>@summary.Frozen</strong></span>
             <span class="vs-chip @(summary.Overdue > 0 ? "vs-chip--danger" : "")">@Localizer["Ed_Overdue"] <strong>@summary.Overdue</strong></span>
         </pems-list-kpis>
@@ -125,7 +125,7 @@
                         @foreach (var item in Model.Items)
                         {
                             <pems-table-row class="lp-row">
-                                <pems-table-cell class="lp-no"><a asp-action="Details" asp-route-id="@item.DocumentId" class="lp-subject" title="@item.DocumentNo">@item.DocumentNo</a></pems-table-cell>
+                                <pems-table-cell class="lp-no"><pems-link asp-action="Details" asp-route-id="@item.DocumentId" class="lp-subject" title="@item.DocumentNo">@item.DocumentNo</pems-link></pems-table-cell>
                                 <pems-table-cell>
                                     <span class="vs-title-cell" title="@item.Title">@item.Title</span>
                                     <span class="vs-sub">@item.ProjectName@(!string.IsNullOrEmpty(item.Area) ? " · " + item.Area : "")@(!string.IsNullOrWhiteSpace(item.CommentStatus) ? " · " + item.CommentStatus : "")</span>
@@ -145,8 +145,8 @@
                                 </pems-table-cell>
                                 <pems-table-cell class="vs-hide-md small text-muted">@item.CreatedDate.ToString("yyyy-MM-dd")</pems-table-cell>
                                 <pems-table-cell class="text-nowrap lp-actions">
-                                    <a asp-action="Edit" asp-route-id="@item.DocumentId" class="lp-act" title="@Localizer["Ed_Edit"]"><pems-icon name="bi-pencil" aria-hidden="true" /><span class="visually-hidden">@Localizer["Ed_Edit"]: @item.DocumentNo</span></a>
-                                    <a asp-action="Details" asp-route-id="@item.DocumentId" class="lp-act lp-act--always" title="@Localizer["Ed_View"]"><pems-icon name="bi-eye" aria-hidden="true" /><span class="visually-hidden">@Localizer["Ed_View"]: @item.DocumentNo</span></a>
+                                    <pems-link asp-action="Edit" asp-route-id="@item.DocumentId" class="lp-act" title="@Localizer["Ed_Edit"]"><pems-icon name="bi-pencil" aria-hidden="true" /><span class="visually-hidden">@Localizer["Ed_Edit"]: @item.DocumentNo</span></pems-link>
+                                    <pems-link asp-action="Details" asp-route-id="@item.DocumentId" class="lp-act lp-act--always" title="@Localizer["Ed_View"]"><pems-icon name="bi-eye" aria-hidden="true" /><span class="visually-hidden">@Localizer["Ed_View"]: @item.DocumentNo</span></pems-link>
                                     <div class="dropdown d-inline">
                                         <pems-button plain="true" type="button" css="lp-act lp-act--always" data-bs-toggle="dropdown" aria-expanded="false" title="@Localizer["Ed_MoreActions"]"><pems-icon name="bi-three-dots" aria-hidden="true" /><span class="visually-hidden">@Localizer["Ed_MoreActions"]: @item.DocumentNo</span></pems-button>
                                         <pems-dropdown-menu end="true">

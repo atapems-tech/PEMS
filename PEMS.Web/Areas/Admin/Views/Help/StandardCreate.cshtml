@@ -13,7 +13,7 @@
 }
 
 <pems-content-card>
-    <h5 class="mb-3"><pems-icon name="bi-journal-bookmark" /> @(isEdit ? "Edit" : "New") Standard Reference</h5>
+    <pems-heading level="5" class="mb-3"><pems-icon name="bi-journal-bookmark" /> @(isEdit ? "Edit" : "New") Standard Reference</pems-heading>
 
     @if (!ViewData.ModelState.IsValid)
     {

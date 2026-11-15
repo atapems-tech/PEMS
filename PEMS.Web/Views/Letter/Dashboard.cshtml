@@ -7,13 +7,13 @@
     int total = Math.Max(1, Model.TotalActive);
 
     // یک کاشی عددی: شمارنده + برچسب (+ پیوند به فهرست فیلترشده). وضعیت «هشدار» با آیکون و متن هم نمایش داده می‌شود، نه فقط رنگ.
-    void Tile(string labelKey, int value, string icon, string? href = null, bool warn = false)
+    async Task Tile(string labelKey, int value, string icon, string? href = null, bool warn = false)
     {
         var inner = $"<i class=\"bi {icon}\" aria-hidden=\"true\"></i> <span class=\"vs-tile__label\">{System.Net.WebUtility.HtmlEncode(Localizer[labelKey].Value)}</span> <strong class=\"vs-tile__value\">{value}</strong>"
             + (warn && value > 0 ? $" <span class=\"badge bg-danger\"><i class=\"bi bi-exclamation-triangle\" aria-hidden=\"true\"></i> {System.Net.WebUtility.HtmlEncode(Localizer["Lt_Dash_NeedsAction"].Value)}</span>" : "");
         if (href != null)
         {
-            <a class="vs-chip text-decoration-none" href="@href">@Html.Raw(inner)</a>
+            <pems-link class="vs-chip text-decoration-none" href="@href">@Html.Raw(inner)</pems-link>
         }
         else
         {
@@ -25,7 +25,7 @@
     {
         var pct = (int)Math.Round(100.0 * value / total);
         <pems-table-row>
-            <pems-table-header scope="row" class="fw-normal">@if (href != null) { <a href="@href">@label</a> } else { @label }</pems-table-header>
+            <pems-table-header scope="row" class="fw-normal">@if (href != null) { <pems-link href="@href">@label</pems-link> } else { @label }</pems-table-header>
             <pems-table-cell class="pems-s-a9c5e7e4">
                 <pems-progress value="@pct" label="@label: @value (@pct%)"></pems-progress>
             </pems-table-cell>
@@ -49,24 +49,24 @@
 
 <section aria-label="@Localizer["Lt_Dash_Summary"]" class="vs-chips mb-3">
     @{
-        Tile("Lt_Dash_TotalActive", Model.TotalActive, "bi-envelope", Url.Action("Index"));
-        Tile("Lt_Dash_Open", Model.OpenLetters, "bi-envelope-open");
-        if (canReview) { Tile("Lt_Dash_AwaitingApproval", Model.AwaitingApproval, "bi-patch-check", Url.Action("Index", new { status = "PendingApproval" }), warn: false); }
-        Tile("Lt_Dash_MyDrafts", Model.MyDrafts, "bi-pencil-square", Url.Action("Index", new { status = "Draft" }));
-        Tile("Lt_Dash_MyReturned", Model.MyReturnedForRevision, "bi-arrow-counterclockwise", Url.Action("Index", new { status = "ReturnedForRevision" }), warn: true);
-        Tile("Lt_Dash_MyReferrals", Model.MyOpenReferrals, "bi-person-check", Url.Action("MyReferrals"));
-        Tile("Lt_Dash_OpenReferrals", Model.OpenReferrals, "bi-signpost-split", Url.Action("Index", new { hasReferrals = true }));
-        Tile("Lt_Dash_OverdueReferrals", Model.OverdueReferrals, "bi-clock-history", Url.Action("Index", new { overdueReferral = true }), warn: true);
-        Tile("Lt_Dash_OverdueResponses", Model.OverdueResponses, "bi-reply", Url.Action("Index", new { overdueResponse = true }), warn: true);
-        Tile("Lt_Dash_Received30", Model.ReceivedLast30Days, "bi-inbox-fill");
-        Tile("Lt_Dash_Issued30", Model.IssuedLast30Days, "bi-send-fill");
+        await Tile("Lt_Dash_TotalActive", Model.TotalActive, "bi-envelope", Url.Action("Index"));
+        await Tile("Lt_Dash_Open", Model.OpenLetters, "bi-envelope-open");
+        if (canReview) { await Tile("Lt_Dash_AwaitingApproval", Model.AwaitingApproval, "bi-patch-check", Url.Action("Index", new { status = "PendingApproval" }), warn: false); }
+        await Tile("Lt_Dash_MyDrafts", Model.MyDrafts, "bi-pencil-square", Url.Action("Index", new { status = "Draft" }));
+        await Tile("Lt_Dash_MyReturned", Model.MyReturnedForRevision, "bi-arrow-counterclockwise", Url.Action("Index", new { status = "ReturnedForRevision" }), warn: true);
+        await Tile("Lt_Dash_MyReferrals", Model.MyOpenReferrals, "bi-person-check", Url.Action("MyReferrals"));
+        await Tile("Lt_Dash_OpenReferrals", Model.OpenReferrals, "bi-signpost-split", Url.Action("Index", new { hasReferrals = true }));
+        await Tile("Lt_Dash_OverdueReferrals", Model.OverdueReferrals, "bi-clock-history", Url.Action("Index", new { overdueReferral = true }), warn: true);
+        await Tile("Lt_Dash_OverdueResponses", Model.OverdueResponses, "bi-reply", Url.Action("Index", new { overdueResponse = true }), warn: true);
+        await Tile("Lt_Dash_Received30", Model.ReceivedLast30Days, "bi-inbox-fill");
+        await Tile("Lt_Dash_Issued30", Model.IssuedLast30Days, "bi-send-fill");
     }
 </section>
 
 <pems-row gap="3">
     <pems-col lg="6">
         <pems-content-card css="h-100">
-            <h2 class="vs-section__title">@Localizer["Lt_Dash_NeedsAttention"]</h2>
+            <pems-heading level="2" class="vs-section__title">@Localizer["Lt_Dash_NeedsAttention"]</pems-heading>
             @if (!Model.NeedsAttention.Any())
             {
                 <p class="text-muted mb-0"><pems-icon name="bi-check-circle" aria-hidden="true" /> @Localizer["Lt_Dash_NothingOverdue"]</p>
@@ -88,7 +88,7 @@
                             {
                                 <pems-table-row>
                                     <pems-table-cell class="small">@item.LetterNumber</pems-table-cell>
-                                    <pems-table-cell><a asp-action="Details" asp-route-id="@item.LetterId">@item.Subject</a></pems-table-cell>
+                                    <pems-table-cell><pems-link asp-action="Details" asp-route-id="@item.LetterId">@item.Subject</pems-link></pems-table-cell>
                                     <pems-table-cell class="small">
                                         <pems-icon css="@(item.Reason == "OverdueReferral" ? "bi-signpost-split" : "bi-reply")" aria-hidden="true" />
                                         @Localizer[item.Reason == "OverdueReferral" ? "Lt_Dash_ReasonReferral" : "Lt_Dash_ReasonResponse"]
@@ -105,7 +105,7 @@
 
     <pems-col lg="6">
         <pems-content-card css="h-100">
-            <h2 class="vs-section__title">@Localizer["Lt_Dash_Aging"]</h2>
+            <pems-heading level="2" class="vs-section__title">@Localizer["Lt_Dash_Aging"]</pems-heading>
             <p class="text-muted small">@Localizer["Lt_Dash_AgingNote"]</p>
             <pems-table scale="small" css="mb-0">
                 <pems-table-body>
@@ -117,7 +117,7 @@
 
     <pems-col lg="4">
         <pems-content-card css="h-100">
-            <h2 class="vs-section__title">@Localizer["Lt_Dash_ByStatus"]</h2>
+            <pems-heading level="2" class="vs-section__title">@Localizer["Lt_Dash_ByStatus"]</pems-heading>
             <pems-table scale="small" css="mb-0"><pems-table-body>
                 @foreach (var kv in Model.ByStatus.OrderByDescending(x => x.Value)) { await BarRow(kv.Key, kv.Value, Url.Action("Index", new { status = kv.Key })); }
             </pems-table-body></pems-table>
@@ -125,7 +125,7 @@
     </pems-col>
     <pems-col lg="4">
         <pems-content-card css="h-100">
-            <h2 class="vs-section__title">@Localizer["Lt_Dash_ByType"]</h2>
+            <pems-heading level="2" class="vs-section__title">@Localizer["Lt_Dash_ByType"]</pems-heading>
             <pems-table scale="small" css="mb-0"><pems-table-body>
                 @foreach (var kv in Model.ByType.OrderByDescending(x => x.Value)) { await BarRow(kv.Key, kv.Value, Url.Action("Index", new { letterType = kv.Key })); }
             </pems-table-body></pems-table>
@@ -133,7 +133,7 @@
     </pems-col>
     <pems-col lg="4">
         <pems-content-card css="h-100">
-            <h2 class="vs-section__title">@Localizer["Lt_Dash_ByPriority"]</h2>
+            <pems-heading level="2" class="vs-section__title">@Localizer["Lt_Dash_ByPriority"]</pems-heading>
             <pems-table scale="small" css="mb-0"><pems-table-body>
                 @foreach (var kv in Model.ByPriority.OrderByDescending(x => x.Value)) { await BarRow(Localizer["Lt_P_" + kv.Key].Value, kv.Value, Url.Action("Index", new { priority = kv.Key })); }
             </pems-table-body></pems-table>

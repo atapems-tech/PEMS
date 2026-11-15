@@ -54,7 +54,7 @@ else
 {
     <pems-content-card css="mb-3">
         <pems-flex justify="between" align="center" wrap="true" gap="2">
-            <h5 class="mb-0"><pems-icon name="bi-bullseye" /> @Model.RootType: @Model.RootLabel</h5>
+            <pems-heading level="5" class="mb-0"><pems-icon name="bi-bullseye" /> @Model.RootType: @Model.RootLabel</pems-heading>
             <pems-flex align="center" gap="2">
                 @if (!string.IsNullOrWhiteSpace(Model.RootArea))
                 {
@@ -71,9 +71,9 @@ else
         {
             <div class="mt-2">
                 <span class="text-muted small">P&amp;ID:</span>
-                <a asp-controller="EngineeringDocuments" asp-action="Details" asp-route-id="@Model.PIDDocument.NodeId" class="fw-bold">
+                <pems-link asp-controller="EngineeringDocuments" asp-action="Details" asp-route-id="@Model.PIDDocument.NodeId" class="fw-bold">
                     @Model.PIDDocument.Label <pems-icon name="bi-box-arrow-up-right" css="small" />
-                </a>
+                </pems-link>
                 <span class="text-muted small">@Model.PIDDocument.SubLabel</span>
             </div>
         }
@@ -82,7 +82,7 @@ else
     @if (Model.RootType == "Equipment" && Model.SuggestedLinks.Any())
     {
         <pems-content-card css="mb-3 border-warning">
-            <h6 class="mb-3"><pems-icon name="bi-lightbulb" /> پیشنهادهای اتصال (تاییدنشده)</h6>
+            <pems-heading level="6" class="mb-3"><pems-icon name="bi-lightbulb" /> پیشنهادهای اتصال (تاییدنشده)</pems-heading>
             <p class="text-muted small">
                 این‌ها از روی شماره‌ی MRQ/PO خام ثبت‌شده روی تجهیز، با داده‌ی <strong>@Localizer["موجود"]</strong>
                 (نه ساخته‌شده) منطبق شده‌اند. تا تایید نکنی، هیچ رابطه‌ی رسمی برقرار نمی‌شه.
@@ -137,7 +137,7 @@ else
         {
             <pems-col md="6">
                 <pems-content-card css="h-100">
-                    <h6 class="mb-3"><pems-icon css="@s.Icon" /> @s.Title <pems-badge tone="neutral">@s.Items.Count</pems-badge></h6>
+                    <pems-heading level="6" class="mb-3"><pems-icon css="@s.Icon" /> @s.Title <pems-badge tone="neutral">@s.Items.Count</pems-badge></pems-heading>
                     @if (s.Items.Any())
                     {
                         <ul class="list-unstyled mb-0">
@@ -147,7 +147,7 @@ else
                                     <span>
                                         @if (s.Controller != null)
                                         {
-                                            <a asp-controller="@s.Controller" asp-action="@s.Action" asp-route-id="@item.NodeId">@item.Label</a>
+                                            <pems-link asp-controller="@s.Controller" asp-action="@s.Action" asp-route-id="@item.NodeId">@item.Label</pems-link>
                                         }
                                         else
                                         {

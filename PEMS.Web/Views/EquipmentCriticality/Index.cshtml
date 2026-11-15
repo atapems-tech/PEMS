@@ -39,9 +39,9 @@
         </pems-list-toolbar>
 
         <pems-list-kpis id="ecKpis">
-            <a class="vs-chip vs-chip--danger" href="@Url.Action("Index", new { criticalityClass = "A" })">@ClassText("A") <strong>@ViewBag.ClassACount</strong></a>
-            <a class="vs-chip" href="@Url.Action("Index", new { criticalityClass = "B" })">@ClassText("B") <strong>@ViewBag.ClassBCount</strong></a>
-            <a class="vs-chip" href="@Url.Action("Index", new { criticalityClass = "C" })">@ClassText("C") <strong>@ViewBag.ClassCCount</strong></a>
+            <pems-link class="vs-chip vs-chip--danger" href="@Url.Action("Index", new { criticalityClass = "A" })">@ClassText("A") <strong>@ViewBag.ClassACount</strong></pems-link>
+            <pems-link class="vs-chip" href="@Url.Action("Index", new { criticalityClass = "B" })">@ClassText("B") <strong>@ViewBag.ClassBCount</strong></pems-link>
+            <pems-link class="vs-chip" href="@Url.Action("Index", new { criticalityClass = "C" })">@ClassText("C") <strong>@ViewBag.ClassCCount</strong></pems-link>
             <span class="vs-chip"><pems-icon name="bi-question-circle" aria-hidden="true" /> @Localizer["Ec_Unassessed"] <strong>@ViewBag.UnassessedCount</strong></span>
         </pems-list-kpis>
 
@@ -67,7 +67,7 @@
                     @foreach (var c in Model.Items)
                     {
                         <pems-table-row class="lp-row">
-                            <pems-table-cell class="lp-no"><a asp-controller="Equipment" asp-action="Details" asp-route-id="@c.EquipmentId" class="lp-subject"><span class="vs-num">@c.EquipmentTagNumber</span></a></pems-table-cell>
+                            <pems-table-cell class="lp-no"><pems-link asp-controller="Equipment" asp-action="Details" asp-route-id="@c.EquipmentId" class="lp-subject"><span class="vs-num">@c.EquipmentTagNumber</span></pems-link></pems-table-cell>
                             <pems-table-cell><span class="vs-pill @ClassTone(c.CriticalityClass)">@ClassText(c.CriticalityClass)</span></pems-table-cell>
                             <pems-table-cell class="small">@VdrUi.Loc(Localizer, "Pri_", c.RiskLevel)</pems-table-cell>
                             <pems-table-cell class="small"><span class="vs-title-cell" title="@c.SafetyImpact">@c.SafetyImpact</span></pems-table-cell>

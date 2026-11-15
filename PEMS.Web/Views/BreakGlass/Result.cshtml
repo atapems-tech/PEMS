@@ -8,7 +8,7 @@
 }
 
 <div data-pems-secret-reveal>
-    <h2>@Localizer["Account reset"]: <strong>@Model.TargetUserName</strong></h2>
+    <pems-heading level="2">@Localizer["Account reset"]: <strong>@Model.TargetUserName</strong></pems-heading>
     <pems-alert tone="warning" css="small">
         @Localizer["Copy or print this password now. It cannot be shown again; if it is lost, reset the account again."]
     </pems-alert>
@@ -23,7 +23,7 @@
     <p class="small text-muted">@Localizer["The request was used up and the recovery page is closed."]</p>
 
     <div class="auth-links">
-        <a asp-controller="Account" asp-action="Login">@Localizer["Sign in"] &rarr;</a>
+        <pems-link asp-controller="Account" asp-action="Login">@Localizer["Sign in"] &rarr;</pems-link>
     </div>
 </div>
 

@@ -62,7 +62,7 @@
                     @foreach (var c in rows)
                     {
                         <pems-table-row class="lp-row">
-                            <pems-table-cell><a asp-action="ClassDetail" asp-route-id="@c.EquipmentClassId" class="lp-subject">@c.Name</a> <span class="vs-num text-muted small">@c.Code</span></pems-table-cell>
+                            <pems-table-cell><pems-link asp-action="ClassDetail" asp-route-id="@c.EquipmentClassId" class="lp-subject">@c.Name</pems-link> <span class="vs-num text-muted small">@c.Code</span></pems-table-cell>
                             <pems-table-cell class="text-end"><span class="vs-num">@c.EquipmentCount.ToString("N0")</span></pems-table-cell>
                             <pems-table-cell class="text-end vs-hide-md"><span class="vs-num">@c.FunctionalRequirementCount</span></pems-table-cell>
                             <pems-table-cell class="text-end"><span class="vs-num">@c.FailureModeCount</span></pems-table-cell>
@@ -73,7 +73,7 @@
                             <pems-table-cell><span class="vs-pill @ReadinessTone(c.FMEAReadiness)">@ReadinessText(c.FMEAReadiness)</span> <span class="small text-muted">@string.Format(Localizer["Rf_ApprovedCount"].Value, c.ApprovedFMEACount)</span></pems-table-cell>
                             <pems-table-cell><span class="vs-pill @ReadinessTone(c.RCMReadiness)">@ReadinessText(c.RCMReadiness)</span> <span class="small text-muted">@string.Format(Localizer["Rf_ApprovedCount"].Value, c.ApprovedRCMCount)</span></pems-table-cell>
                             <pems-table-cell class="text-end">
-                                <a asp-action="ClassDetail" asp-route-id="@c.EquipmentClassId" class="lp-act lp-act--always" title="@Localizer["Lp_Details"]" aria-label="@Localizer["Lp_Details"]"><pems-icon name="bi-box-arrow-up-right" aria-hidden="true" /></a>
+                                <pems-link asp-action="ClassDetail" asp-route-id="@c.EquipmentClassId" class="lp-act lp-act--always" title="@Localizer["Lp_Details"]" aria-label="@Localizer["Lp_Details"]"><pems-icon name="bi-box-arrow-up-right" aria-hidden="true" /></pems-link>
                             </pems-table-cell>
                         </pems-table-row>
                     }

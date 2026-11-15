@@ -40,7 +40,7 @@
 <pems-row gap="3">
     <pems-col md="6">
         <pems-content-card>
-            <h6 class="mb-2">@Localizer["Needs Attention"]</h6>
+            <pems-heading level="6" class="mb-2">@Localizer["Needs Attention"]</pems-heading>
             @if (Model.AttentionPoints.Count == 0)
             {
                 <p class="text-muted small mb-0">@Localizer["هیچ نقطه‌ی پایشی در حال حاضر نیاز به توجه ندارد."]</p>
@@ -53,7 +53,7 @@
                         @foreach (var p in Model.AttentionPoints)
                         {
                             <pems-table-row>
-                                <pems-table-cell><a asp-controller="Equipment" asp-action="Details" asp-route-id="@p.EquipmentId">@p.EquipmentTagNumber</a></pems-table-cell>
+                                <pems-table-cell><pems-link asp-controller="Equipment" asp-action="Details" asp-route-id="@p.EquipmentId">@p.EquipmentTagNumber</pems-link></pems-table-cell>
                                 <pems-table-cell class="small">@p.VariableType — @p.Tag</pems-table-cell>
                                 <pems-table-cell><pems-badge tone="none" css="@EvalBadge(p.EvaluationStatus)">@p.EvaluationStatus</pems-badge></pems-table-cell>
                                 <pems-table-cell class="small">@(p.LastReadingDate?.ToString("yyyy-MM-dd") ?? "-")</pems-table-cell>
@@ -70,7 +70,7 @@
     </pems-col>
     <pems-col md="6">
         <pems-content-card>
-            <h6 class="mb-2">@Localizer["Overdue CBM Plans"]</h6>
+            <pems-heading level="6" class="mb-2">@Localizer["Overdue CBM Plans"]</pems-heading>
             @if (Model.OverdueCbmPlans.Count == 0)
             {
                 <p class="text-muted small mb-0">@Localizer["هیچ طرح CBM معوقی وجود ندارد."]</p>

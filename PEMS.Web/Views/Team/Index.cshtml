@@ -19,7 +19,7 @@
             <pems-content-card css="h-100" id="team-card-@team.TeamId">
                 <pems-flex justify="between" align="start">
                     <div>
-                        <h6 class="mb-0">@team.Code — @team.Name</h6>
+                        <pems-heading level="6" class="mb-0">@team.Code — @team.Name</pems-heading>
                         <span class="text-muted small">@team.MaintenanceGroup?.Name (@team.MaintenanceGroup?.Discipline?.Name) @(string.IsNullOrEmpty(team.Shift) ? "" : $"— {team.Shift}")</span>
                     </div>
                     <pems-flex align="center" gap="2">
@@ -35,7 +35,7 @@
 
                 <hr class="my-2" />
 
-                <h6 class="small fw-bold mb-2">اعضا (@team.Members.Count(m => m.IsActive))</h6>
+                <pems-heading level="6" class="small fw-bold mb-2">اعضا (@team.Members.Count(m => m.IsActive))</pems-heading>
                 <ul class="list-unstyled mb-2">
                     @foreach (var m in team.Members.Where(m => m.IsActive))
                     {
@@ -93,7 +93,7 @@
                     <pems-select scale="small" name="maintenanceGroupId" required>
                         @foreach (var g in (IEnumerable<dynamic>)ViewBag.MaintenanceGroups) { <option value="@g.MaintenanceGroupId">@g.Name (@g.DisciplineName)</option> }
                     </pems-select>
-                    <pems-help-text>گروه‌های تعمیراتی از <a asp-controller="MaintenanceMasterData" asp-action="Index">@Localizer["Maintenance Master Data"]</a> مدیریت می‌شوند.</pems-help-text>
+                    <pems-help-text>گروه‌های تعمیراتی از <pems-link asp-controller="MaintenanceMasterData" asp-action="Index">@Localizer["Maintenance Master Data"]</pems-link> مدیریت می‌شوند.</pems-help-text>
                 </div>
                 <div class="mb-2">
                     <pems-label css="small">@Localizer["شیفت (اختیاری)"]</pems-label>

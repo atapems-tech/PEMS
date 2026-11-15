@@ -46,7 +46,7 @@
 <pems-row gap="3" css="mb-3">
     <pems-col md="6">
         <pems-content-card>
-            <h6 class="mb-2">Work Request — by Status</h6>
+            <pems-heading level="6" class="mb-2">Work Request — by Status</pems-heading>
             <pems-table kind="enterprise" scale="small" css="mb-0">
                 <pems-table-body>
                     <pems-table-row><pems-table-cell>@Localizer["Draft"]</pems-table-cell><pems-table-cell class="text-end">@Model.WorkRequestDraft.ToString("N0")</pems-table-cell></pems-table-row>
@@ -63,7 +63,7 @@
     </pems-col>
     <pems-col md="6">
         <pems-content-card>
-            <h6 class="mb-2">Work Order — by Status</h6>
+            <pems-heading level="6" class="mb-2">Work Order — by Status</pems-heading>
             <pems-table kind="enterprise" scale="small" css="mb-0">
                 <pems-table-body>
                     <pems-table-row><pems-table-cell>@Localizer["Open"]</pems-table-cell><pems-table-cell class="text-end">@Model.WorkOrderOpen.ToString("N0")</pems-table-cell></pems-table-row>
@@ -85,7 +85,7 @@
 <pems-row gap="3">
     <pems-col md="6">
         <pems-content-card css="h-100">
-            <h6 class="mb-2">PM Compliance <span class="text-muted small">@Localizer["(از IReliabilityIntelligenceService)"]</span></h6>
+            <pems-heading level="6" class="mb-2">PM Compliance <span class="text-muted small">@Localizer["(از IReliabilityIntelligenceService)"]</span></pems-heading>
             @if (Model.PmCompliance is { } pm)
             {
                 <pems-badge tone="@(pm.DataStatus == "READY" ? "success" : pm.DataStatus == "PARTIAL" ? "warning" : "neutral")" css="mb-2">@pm.DataStatus</pems-badge>
@@ -110,7 +110,7 @@
     </pems-col>
     <pems-col md="6">
         <pems-content-card css="h-100">
-            <h6 class="mb-2">Maintenance Type Breakdown <span class="text-muted small">@Localizer["(از IReliabilityIntelligenceService)"]</span></h6>
+            <pems-heading level="6" class="mb-2">Maintenance Type Breakdown <span class="text-muted small">@Localizer["(از IReliabilityIntelligenceService)"]</span></pems-heading>
             @if (Model.MaintenanceTypeBreakdown is { } tb)
             {
                 <pems-badge tone="@(tb.DataStatus == "READY" ? "success" : "neutral")" css="mb-2">@tb.DataStatus</pems-badge>

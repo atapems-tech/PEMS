@@ -18,7 +18,7 @@
 }
 
 <pems-flex justify="between" align="center" css="mb-3">
-    <h5 class="mb-0"><pems-icon name="bi-clipboard-check" /> Readiness — @equipmentClass.Name <code class="small">@equipmentClass.Code</code></h5>
+    <pems-heading level="5" class="mb-0"><pems-icon name="bi-clipboard-check" /> Readiness — @equipmentClass.Name <code class="small">@equipmentClass.Code</code></pems-heading>
     <div>
         <pems-button tone="neutral" size="small" outline="true" as="a" asp-action="Index">@Localizer["← Backlog"]</pems-button>
         <pems-button tone="primary" size="small" outline="true" as="a" asp-controller="MaintenanceStrategy" asp-action="BulkCreate"><pems-icon name="bi-diagram-3" /> @Localizer["Define Strategy"]</pems-button>

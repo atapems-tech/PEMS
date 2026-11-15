@@ -13,10 +13,10 @@
     <pems-info-item label="@Localizer["Lt_Confidentiality"]">@Model.ConfidentialityLevel</pems-info-item>
 </pems-info-grid>
 
-    <h2 class="vs-section__title">@Localizer["Lt_Subject"]</h2>
+    <pems-heading level="2" class="vs-section__title">@Localizer["Lt_Subject"]</pems-heading>
     <p class="fw-semibold">@ViewBag.Subject</p>
 
-    <h2 class="vs-section__title">@Localizer["Lt_Body"]</h2>
+    <pems-heading level="2" class="vs-section__title">@Localizer["Lt_Body"]</pems-heading>
     <div class="border rounded p-3 mb-3">@Html.Raw((string?)ViewBag.Body)</div>
 
     <pems-button tone="neutral" outline="true" as="a" asp-action="Index">@Localizer["Cancel"]</pems-button>

@@ -45,7 +45,7 @@
 <pems-content-card css="mb-3">
     <pems-flex justify="between" align="start" wrap="true" gap="2">
         <div>
-            <h5 class="mb-1">@Model.IrnNumber</h5>
+            <pems-heading level="5" class="mb-1">@Model.IrnNumber</pems-heading>
             <div class="text-muted small">
                 @Localizer["Vendor"]: @Model.Vendor?.Name &middot;
                 @Localizer["Warehouse"]: @Model.Warehouse?.Code &middot;
@@ -201,7 +201,7 @@
 
     @if (Model.Status == "Draft" && poLines != null)
     {
-        <div class="lp-rel-head"><h3>@Localizer["Rcv_ReceiveFromPo"] <span class="vs-num">@Model.PurchaseOrder?.PoNumber</span></h3></div>
+        <div class="lp-rel-head"><pems-heading level="3">@Localizer["Rcv_ReceiveFromPo"] <span class="vs-num">@Model.PurchaseOrder?.PoNumber</span></pems-heading></div>
         <p class="lp-rel-empty">@Localizer["Rcv_ReceiveHelp"]</p>
         <pems-form asp-action="ReceiveFromPo" method="post">
             <input type="hidden" name="id" value="@Model.IrnReceiptId" />
@@ -253,7 +253,7 @@
 
     @if (Model.Status == "Submitted")
     {
-        <div class="lp-rel-head"><h3>@Localizer["Record Disposition"]</h3></div>
+        <div class="lp-rel-head"><pems-heading level="3">@Localizer["Record Disposition"]</pems-heading></div>
         <p class="lp-rel-empty">@Localizer["Received ≠ Available: for each line, split the received quantity into Accepted / Rejected / Hold. The three must sum exactly to the received quantity. Only the Accepted portion will be posted to stock, and only after QA approval."]</p>
         <pems-form asp-action="Disposition" method="post">
             <input type="hidden" name="id" value="@Model.IrnReceiptId" />

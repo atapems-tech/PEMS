@@ -56,19 +56,19 @@
 <pems-row gap="3">
     <pems-col lg="8">
         <pems-content-card css="mb-3">
-            <h6 class="mb-3">Submissions (last 12 months)</h6>
+            <pems-heading level="6" class="mb-3">Submissions (last 12 months)</pems-heading>
             <pems-chart spec="@volumeChart" />
         </pems-content-card>
     </pems-col>
     <pems-col lg="4">
         <pems-content-card css="mb-3">
-            <h6 class="mb-3">By Workflow Status</h6>
+            <pems-heading level="6" class="mb-3">By Workflow Status</pems-heading>
             <pems-chart spec="@statusChart" />
         </pems-content-card>
     </pems-col>
     <pems-col lg="6">
         <pems-content-card css="mb-3">
-            <h6 class="mb-3">Top Vendors</h6>
+            <pems-heading level="6" class="mb-3">Top Vendors</pems-heading>
             <ul class="list-unstyled mb-0">
                 @foreach (var v in Model.ByVendor)
                 {
@@ -80,7 +80,7 @@
     </pems-col>
     <pems-col lg="6">
         <pems-content-card css="mb-3">
-            <h6 class="mb-3">By Review Category</h6>
+            <pems-heading level="6" class="mb-3">By Review Category</pems-heading>
             <pems-chart spec="@categoryChart" />
         </pems-content-card>
     </pems-col>

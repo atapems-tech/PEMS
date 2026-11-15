@@ -8,7 +8,7 @@
 
 <pems-content-card>
     <pems-flex justify="between" align="center" css="mb-3">
-        <h5 class="mb-0"><pems-icon name="bi-journal-bookmark" /> @Localizer["Standards Matrix"]</h5>
+        <pems-heading level="5" class="mb-0"><pems-icon name="bi-journal-bookmark" /> @Localizer["Standards Matrix"]</pems-heading>
         <pems-button as="a" tone="primary" size="small" asp-action="StandardCreate"><pems-icon name="bi-plus-lg" /> @Localizer["Add Standard"]</pems-button>
     </pems-flex>
 
@@ -31,7 +31,7 @@
                     {
                         <pems-table-row>
                             <pems-table-cell><strong>@s.Identifier</strong></pems-table-cell>
-                            <pems-table-cell><a asp-action="StandardEdit" asp-route-id="@s.HelpStandardReferenceId">@s.TitleEn</a></pems-table-cell>
+                            <pems-table-cell><pems-link asp-action="StandardEdit" asp-route-id="@s.HelpStandardReferenceId">@s.TitleEn</pems-link></pems-table-cell>
                             <pems-table-cell class="small text-muted">@s.IssuingOrganization</pems-table-cell>
                             <pems-table-cell class="small text-muted">@s.RelatedModule</pems-table-cell>
                             <pems-table-cell><pems-badge tone="light">@s.ApplicabilityStatus</pems-badge></pems-table-cell>

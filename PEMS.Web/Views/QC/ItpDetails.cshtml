@@ -5,7 +5,7 @@
 
 <pems-flex justify="between" align="center" css="mb-3">
     <div>
-        <h5 class="mb-0">@Model.ITPNumber &mdash; @Model.Title</h5>
+        <pems-heading level="5" class="mb-0">@Model.ITPNumber &mdash; @Model.Title</pems-heading>
         <span class="text-muted small">@Model.QCDiscipline?.Name @(Model.Equipment != null ? " | " + Model.Equipment.TagNumber : "")</span>
     </div>
     <pems-flex align="center" gap="2">
@@ -27,11 +27,11 @@
         <pems-col md="4"><strong>Approved:</strong> @(Model.ApprovedDate?.ToString("yyyy-MM-dd") ?? "-")</pems-col>
         @if (Model.ProcurementPackage != null)
         {
-            <pems-col md="4" css="mt-2"><strong>@Localizer["Package"]:</strong> <a asp-controller="ProcurementPackage" asp-action="Details" asp-route-id="@Model.ProcurementPackageId">@Model.ProcurementPackage.PackageNumber</a></pems-col>
+            <pems-col md="4" css="mt-2"><strong>@Localizer["Package"]:</strong> <pems-link asp-controller="ProcurementPackage" asp-action="Details" asp-route-id="@Model.ProcurementPackageId">@Model.ProcurementPackage.PackageNumber</pems-link></pems-col>
         }
         @if (Model.Contract != null)
         {
-            <pems-col md="4" css="mt-2"><strong>@Localizer["Contract"]:</strong> <a asp-controller="Contract" asp-action="Details" asp-route-id="@Model.ContractId">@Model.Contract.ContractNo</a></pems-col>
+            <pems-col md="4" css="mt-2"><strong>@Localizer["Contract"]:</strong> <pems-link asp-controller="Contract" asp-action="Details" asp-route-id="@Model.ContractId">@Model.Contract.ContractNo</pems-link></pems-col>
         }
     </pems-row>
     @if (!string.IsNullOrWhiteSpace(Model.Description))
@@ -41,7 +41,7 @@
 </pems-content-card>
 
 <pems-content-card css="mb-3">
-    <h6 class="mb-3">Line Items</h6>
+    <pems-heading level="6" class="mb-3">Line Items</pems-heading>
     <pems-table kind="enterprise" css="mb-0">
         <pems-table-head>
             <pems-table-row><pems-table-header>#</pems-table-header><pems-table-header>@Localizer["Activity"]</pems-table-header><pems-table-header>@Localizer["Discipline"]</pems-table-header><pems-table-header>@Localizer["Category"]</pems-table-header><pems-table-header>@Localizer["Acceptance Criteria"]</pems-table-header><pems-table-header>@Localizer["Responsible"]</pems-table-header><pems-table-header>@Localizer["Status"]</pems-table-header><pems-table-header>@Localizer["Actions"]</pems-table-header></pems-table-row>
@@ -89,7 +89,7 @@
 </pems-content-card>
 
 <pems-content-card>
-    <h6 class="mb-3"><pems-icon name="bi-plus-lg" /> Add Line Item</h6>
+    <pems-heading level="6" class="mb-3"><pems-icon name="bi-plus-lg" /> Add Line Item</pems-heading>
     <pems-form asp-action="ItpAddLineItem" method="post">
         <input type="hidden" name="itpId" value="@Model.InspectionTestPlanId" />
         <pems-row gap="3">

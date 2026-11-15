@@ -19,7 +19,7 @@
   >&larr; Back to Document</pems-button>
 
 <pems-content-card css="mb-3">
-    <h5 class="mb-3">Extracted Equipment Tags</h5>
+    <pems-heading level="5" class="mb-3">Extracted Equipment Tags</pems-heading>
 
     @if (!Model.ExtractedTags.Any())
     {
@@ -66,7 +66,7 @@
 </pems-content-card>
 
 <pems-content-card>
-    <h5 class="mb-3">Extracted Specifications</h5>
+    <pems-heading level="5" class="mb-3">Extracted Specifications</pems-heading>
 
     @if (!Model.ExtractedSpecifications.Any())
     {

@@ -110,6 +110,12 @@ public sealed class PemsComponentRegistry : IPemsComponentRegistry
         Register(UiKeys.TabPane, typeof(PemsTabPane));
         Register(UiKeys.Tab, typeof(PemsTab));
         Register(UiKeys.NavLink, typeof(PemsNavLink));
+        Register(UiKeys.Heading, typeof(PemsHeading));
+        Register(UiKeys.Text, typeof(PemsText));
+        Register(UiKeys.Link, typeof(PemsLink));
+        Register(UiKeys.BulletList, typeof(PemsBulletList));
+        Register(UiKeys.Bullet, typeof(PemsBullet));
+        Register(UiKeys.Divider, typeof(PemsDivider));
         Register(UiKeys.ModalHeader, typeof(PemsModalHeader));
         Register(UiKeys.ModalBody, typeof(PemsModalBody));
         Register(UiKeys.ModalFooter, typeof(PemsModalFooter));

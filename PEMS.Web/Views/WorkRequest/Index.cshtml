@@ -74,7 +74,7 @@
                     @foreach (var wr in Model.Items)
                     {
                         <pems-table-row class="lp-row">
-                            <pems-table-cell class="lp-no"><a asp-action="Details" asp-route-id="@wr.WorkRequestId" class="lp-subject" title="@wr.RequestNumber">@wr.RequestNumber</a></pems-table-cell>
+                            <pems-table-cell class="lp-no"><pems-link asp-action="Details" asp-route-id="@wr.WorkRequestId" class="lp-subject" title="@wr.RequestNumber">@wr.RequestNumber</pems-link></pems-table-cell>
                             <pems-table-cell><span class="vs-title-cell" title="@wr.Title">@wr.Title</span></pems-table-cell>
                             <pems-table-cell class="small"><span class="vs-num">@(wr.EquipmentTagNumber ?? "-")</span></pems-table-cell>
                             <pems-table-cell><span class="vs-pill @PriorityTone(wr.Priority)">@VdrUi.Loc(Localizer, "Pri_", wr.Priority)</span></pems-table-cell>

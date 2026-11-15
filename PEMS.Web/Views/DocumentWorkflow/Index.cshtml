@@ -54,7 +54,7 @@
                     @foreach (var d in Model.Items)
                     {
                         <pems-table-row class="lp-row">
-                            <pems-table-cell class="lp-no"><a asp-controller="EngineeringDocuments" asp-action="Details" asp-route-id="@d.DocumentId" class="lp-subject" title="@d.DocumentNo">@d.DocumentNo</a></pems-table-cell>
+                            <pems-table-cell class="lp-no"><pems-link asp-controller="EngineeringDocuments" asp-action="Details" asp-route-id="@d.DocumentId" class="lp-subject" title="@d.DocumentNo">@d.DocumentNo</pems-link></pems-table-cell>
                             <pems-table-cell><span class="vs-title-cell" title="@d.Title">@d.Title</span></pems-table-cell>
                             <pems-table-cell class="vs-hide-md small">@d.ProjectName</pems-table-cell>
                             <pems-table-cell class="vs-hide-md small">@d.DisciplineName</pems-table-cell>

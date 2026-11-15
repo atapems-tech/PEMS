@@ -24,14 +24,14 @@
 <pems-row gap="3">
     <pems-col md="7">
         <pems-content-card css="h-100">
-            <h6 class="mb-3">@Localizer["نرخ NCR به تفکیک دیسیپلین"]</h6>
+            <pems-heading level="6" class="mb-3">@Localizer["نرخ NCR به تفکیک دیسیپلین"]</pems-heading>
             <pems-data-table data="@(DataRows.Of((IEnumerable<dynamic>)ViewBag.ByDiscipline, c_ => c_.Add(((Localizer["دیسیپلین"])?.ToString() ?? ""), d => (object?)(d.Discipline)).Add(((Localizer["کل"])?.ToString() ?? ""), d => (object?)(d.Total)).Add(((Localizer["باز"])?.ToString() ?? ""), d => (object?)(d.Open > 0 ? (object)@d.Open : "0")).Add(((Localizer["بحرانی"])?.ToString() ?? ""), d => (object?)(d.Critical > 0 ? (object)@d.Critical : "0")).Add(((Localizer["میانگین روز تا بستن"])?.ToString() ?? ""), d => (object?)(Math.Round((double)d.AvgDaysToClose, 1)))))" css="mb-0" />
         </pems-content-card>
     </pems-col>
 
     <pems-col md="5">
         <pems-content-card css="h-100">
-            <h6 class="mb-3">@Localizer["نرخ NCR به تفکیک شدت"]</h6>
+            <pems-heading level="6" class="mb-3">@Localizer["نرخ NCR به تفکیک شدت"]</pems-heading>
             <ul class="list-unstyled mb-0">
                 @foreach (var s in (IEnumerable<dynamic>)ViewBag.BySeverity)
                 {
@@ -47,7 +47,7 @@
 </pems-row>
 
 <pems-content-card css="mt-3">
-    <h6 class="mb-3">@Localizer["روند ماهانه NCR (۱۲ ماه اخیر)"]</h6>
+    <pems-heading level="6" class="mb-3">@Localizer["روند ماهانه NCR (۱۲ ماه اخیر)"]</pems-heading>
     @{
         var byMonth = (IEnumerable<dynamic>)ViewBag.ByMonth;
         var maxCount = byMonth.Any() ? (int)byMonth.Max(x => (int)x.Count) : 1;

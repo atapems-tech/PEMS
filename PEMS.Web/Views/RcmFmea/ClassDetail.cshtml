@@ -38,8 +38,8 @@
 
 <pems-content-card css="mb-3">
     <pems-flex justify="between" align="center">
-        <h6 class="mb-0">@equipmentClass.Name <code class="small">@equipmentClass.Code</code></h6>
-        <a asp-action="Index" class="small">← Coverage Matrix</a>
+        <pems-heading level="6" class="mb-0">@equipmentClass.Name <code class="small">@equipmentClass.Code</code></pems-heading>
+        <pems-link asp-action="Index" class="small">← Coverage Matrix</pems-link>
     </pems-flex>
     @if (readiness != null)
     {
@@ -69,7 +69,7 @@
     <pems-tab-pane fade="true" active="true" id="tab-functional">
         <pems-content-card css="mb-3">
             <pems-flex justify="between" align="center" css="mb-2">
-                <h6 class="mb-0">@Localizer["Functional Requirements"]</h6>
+                <pems-heading level="6" class="mb-0">@Localizer["Functional Requirements"]</pems-heading>
                 @if (canEdit)
                 {
                     <pems-button tone="primary" size="small" data-bs-toggle="modal" data-bs-target="#createFrModal"><pems-icon name="bi-plus-lg" /> @Localizer["New"]</pems-button>
@@ -117,7 +117,7 @@
         {
             <pems-content-card css="mb-3">
                 <pems-flex justify="between" align="center">
-                    <h6 class="mb-0">@fmea.Title <span class="text-muted small">Rev. @fmea.Revision</span> <pems-badge tone="@StatusBadge(fmea.Status)">@fmea.Status</pems-badge></h6>
+                    <pems-heading level="6" class="mb-0">@fmea.Title <span class="text-muted small">Rev. @fmea.Revision</span> <pems-badge tone="@StatusBadge(fmea.Status)">@fmea.Status</pems-badge></pems-heading>
                     <div>
                         @if (fmea.Status == "DRAFT" && canEdit)
                         {
@@ -225,7 +225,7 @@
 
             <pems-content-card css="mb-3">
                 <pems-flex justify="between" align="center">
-                    <h6 class="mb-0">RCM Rev. @rcm.Revision <pems-badge tone="@StatusBadge(rcm.Status)">@rcm.Status</pems-badge></h6>
+                    <pems-heading level="6" class="mb-0">RCM Rev. @rcm.Revision <pems-badge tone="@StatusBadge(rcm.Status)">@rcm.Status</pems-badge></pems-heading>
                     <div>
                         @if (rcm.Status == "DRAFT" && canEdit)
                         {

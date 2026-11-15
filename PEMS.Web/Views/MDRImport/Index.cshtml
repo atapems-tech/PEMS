@@ -63,7 +63,7 @@
 </pems-content-card>
 
 <pems-content-card>
-    <h6 class="mb-3">@Localizer["Recent Import Batches"]</h6>
+    <pems-heading level="6" class="mb-3">@Localizer["Recent Import Batches"]</pems-heading>
     <pems-table-scroll css="table-scroll-area pems-s-8da1c6e6">
     <pems-data-table data="@(DataRows.Of(Model, c_ => c_.Add(((Localizer["File"])?.ToString() ?? ""), b => (object?)(b.FileName)).Add(((Localizer["Project"])?.ToString() ?? ""), b => (object?)(b.ProjectName)).Add(((Localizer["Date"])?.ToString() ?? ""), b => (object?)((b.ImportDate.ToString("yyyy-MM-dd HH:mm")))).Add(((Localizer["Total"])?.ToString() ?? ""), b => (object?)(b.RowsTotal)).Add(((Localizer["Valid"])?.ToString() ?? ""), b => (object?)(DataCell.Badge("success", b.RowsValid))).Add(((Localizer["Warning"])?.ToString() ?? ""), b => (object?)(DataCell.Badge("warning", b.RowsWarning))).Add("Error", b => (object?)(DataCell.Badge("danger", b.RowsError))).Add(((Localizer["Duplicate"])?.ToString() ?? ""), b => (object?)(DataCell.Badge("neutral", b.RowsDuplicate))).Add(((Localizer["Status"])?.ToString() ?? ""), b => (object?)(DataCell.Badge(b.Status == "Committed" ? "success" : "neutral", b.Status))).Add("", b => (object?)((b.Status == "Staged" ? (object?)DataCell.ButtonLink(Url.Action("Review", null, new { batchId = b.MDRImportBatchId }), "primary", "small", true, null, "Review") : null)))))" />
     </pems-table-scroll>

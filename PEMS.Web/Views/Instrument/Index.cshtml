@@ -89,7 +89,7 @@
                     @foreach (var i in Model.Items)
                     {
                         <pems-table-row class="lp-row">
-                            <pems-table-cell class="lp-no"><a asp-action="Passport" asp-route-id="@i.InstrumentId" class="lp-subject" title="@i.TagNumber">@i.TagNumber</a></pems-table-cell>
+                            <pems-table-cell class="lp-no"><pems-link asp-action="Passport" asp-route-id="@i.InstrumentId" class="lp-subject" title="@i.TagNumber">@i.TagNumber</pems-link></pems-table-cell>
                             <pems-table-cell class="small vs-hide-md">@i.Manufacturer / @i.Model</pems-table-cell>
                             <pems-table-cell class="small">@i.InstrumentType</pems-table-cell>
                             <pems-table-cell class="small"><span class="vs-num">@i.LoopNumber</span></pems-table-cell>
@@ -98,8 +98,8 @@
                             <pems-table-cell class="small"><span class="vs-num">@(i.NextCalibrationDue?.ToString("yyyy-MM-dd") ?? "-")</span></pems-table-cell>
                             <pems-table-cell><span class="vs-pill @StatusTone(i.CalibrationStatus)">@StatusText(i.CalibrationStatus)</span></pems-table-cell>
                             <pems-table-cell class="lp-actions">
-                                <a asp-action="Passport" asp-route-id="@i.InstrumentId" class="lp-act lp-act--always" title="@Localizer["In_Passport"]" aria-label="@Localizer["In_Passport"]"><pems-icon name="bi-card-text" aria-hidden="true" /></a>
-                                <a asp-action="Edit" asp-route-id="@i.InstrumentId" class="lp-act lp-act--always" title="@Localizer["Edit"]" aria-label="@Localizer["Edit"]"><pems-icon name="bi-pencil" aria-hidden="true" /></a>
+                                <pems-link asp-action="Passport" asp-route-id="@i.InstrumentId" class="lp-act lp-act--always" title="@Localizer["In_Passport"]" aria-label="@Localizer["In_Passport"]"><pems-icon name="bi-card-text" aria-hidden="true" /></pems-link>
+                                <pems-link asp-action="Edit" asp-route-id="@i.InstrumentId" class="lp-act lp-act--always" title="@Localizer["Edit"]" aria-label="@Localizer["Edit"]"><pems-icon name="bi-pencil" aria-hidden="true" /></pems-link>
                             </pems-table-cell>
                         </pems-table-row>
                     }

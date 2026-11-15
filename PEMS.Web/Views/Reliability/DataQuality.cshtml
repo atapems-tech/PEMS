@@ -4,7 +4,7 @@
 @inject IStringLocalizer<SharedResource> Localizer
 
 <pems-flex justify="end" align="center" css="mb-2">
-    <a asp-action="Index" class="small">@Localizer["← Fleet Reliability"]</a>
+    <pems-link asp-action="Index" class="small">@Localizer["← Fleet Reliability"]</pems-link>
 </pems-flex>
 <p class="text-muted small">
     این صفحه هیچ رکوردی را تغییر نمی‌دهد - فقط نشان می‌دهد چه چیزی موجود است و چه چیزی غایب،
@@ -29,7 +29,7 @@
 </pems-content-card>
 
 <pems-content-card css="mb-3">
-    <h6 class="mb-2">Maintenance Chain Coverage <pems-badge tone="light">Phase 7</pems-badge></h6>
+    <pems-heading level="6" class="mb-2">Maintenance Chain Coverage <pems-badge tone="light">Phase 7</pems-badge></pems-heading>
     <pems-row gap="3">
         <pems-col md="2">
             <pems-kpi-tile compact label="Maintenance Type Completeness">@Model.MaintenanceTypeCompletenessPercent.ToString("N1")%</pems-kpi-tile>

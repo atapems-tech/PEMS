@@ -69,7 +69,7 @@
 
         <pems-list-kpis id="miKpis">
             <span class="vs-chip">@Localizer["MiL_Total"] <strong>@Model.TotalCount</strong></span>
-            <a class="vs-chip vs-chip--danger" href="@Url.Action("Index", new { lowStockOnly = true })" title="@Localizer["MiL_LowStockPageHint"]">@Localizer["MiL_LowStockPage"] <strong>@Model.Items.Count(x => x.IsLowStock)</strong></a>
+            <pems-link class="vs-chip vs-chip--danger" href="@Url.Action("Index", new { lowStockOnly = true })" title="@Localizer["MiL_LowStockPageHint"]">@Localizer["MiL_LowStockPage"] <strong>@Model.Items.Count(x => x.IsLowStock)</strong></pems-link>
         </pems-list-kpis>
 
         <pems-list-chips reset-href="@Url.Action("Index")">
@@ -98,7 +98,7 @@
                     {
                         <pems-table-row class="lp-row">
                             <pems-table-cell class="lp-no">
-                                <a asp-action="Details" asp-route-id="@m.MaterialItemId" class="lp-subject" title="@m.MaterialCode">@m.MaterialCode</a>
+                                <pems-link asp-action="Details" asp-route-id="@m.MaterialItemId" class="lp-subject" title="@m.MaterialCode">@m.MaterialCode</pems-link>
                                 @if (m.IsCritical) { <pems-icon name="bi-star-fill" css="text-warning" title="@Localizer["MiL_Critical"]" aria-label="@Localizer["MiL_Critical"]" /> }
                             </pems-table-cell>
                             <pems-table-cell class="small"><span class="vs-title-cell" title="@m.Description">@m.Description</span></pems-table-cell>
@@ -108,7 +108,7 @@
                             <pems-table-cell class="text-end"><span class="vs-num">@m.TotalOnHand</span></pems-table-cell>
                             <pems-table-cell class="text-end"><span class="vs-pill @(m.IsLowStock ? "vs-pill--danger" : "vs-pill--success")">@m.TotalAvailable</span></pems-table-cell>
                             <pems-table-cell class="text-end">
-                                <a asp-action="Details" asp-route-id="@m.MaterialItemId" class="lp-act lp-act--always" title="@Localizer["Ed_View"]" aria-label="@Localizer["Ed_View"]"><pems-icon name="bi-card-text" aria-hidden="true" /></a>
+                                <pems-link asp-action="Details" asp-route-id="@m.MaterialItemId" class="lp-act lp-act--always" title="@Localizer["Ed_View"]" aria-label="@Localizer["Ed_View"]"><pems-icon name="bi-card-text" aria-hidden="true" /></pems-link>
                             </pems-table-cell>
                         </pems-table-row>
                     }

@@ -7,7 +7,7 @@
     Layout = "_AuthLayout";
 }
 
-<h2>@Localizer["Login_Welcome"]</h2>
+<pems-heading level="2">@Localizer["Login_Welcome"]</pems-heading>
 <p class="subtitle">@Localizer["Login_Subtitle"]</p>
 
 <pems-validation-summary css="py-2 px-3 small" asp-validation-summary="All" hidden="@(ViewData.ModelState.IsValid)"></pems-validation-summary>
@@ -37,8 +37,8 @@
     </pems-button>
 
     <div class="auth-links">
-        <a asp-action="ForgotPassword">@Localizer["Login_ForgotPassword"]</a>
-        <a asp-controller="AccountRecovery" asp-action="Index">@Localizer["Use a recovery code"]</a>
+        <pems-link asp-action="ForgotPassword">@Localizer["Login_ForgotPassword"]</pems-link>
+        <pems-link asp-controller="AccountRecovery" asp-action="Index">@Localizer["Use a recovery code"]</pems-link>
         <span class="text-muted">PEMS v1.0</span>
     </div>
 </pems-form>

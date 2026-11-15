@@ -59,25 +59,25 @@
 <pems-row gap="3">
     <pems-col lg="8">
         <pems-content-card css="mb-3">
-            <h6 class="mb-3">Work Orders (last 12 months)</h6>
+            <pems-heading level="6" class="mb-3">Work Orders (last 12 months)</pems-heading>
             <pems-chart spec="@volumeChart" />
         </pems-content-card>
     </pems-col>
     <pems-col lg="4">
         <pems-content-card css="mb-3">
-            <h6 class="mb-3">By Priority</h6>
+            <pems-heading level="6" class="mb-3">By Priority</pems-heading>
             <pems-chart spec="@priorityChart" />
         </pems-content-card>
     </pems-col>
     <pems-col lg="6">
         <pems-content-card css="mb-3">
-            <h6 class="mb-3">By Type</h6>
+            <pems-heading level="6" class="mb-3">By Type</pems-heading>
             <pems-chart spec="@typeChart" />
         </pems-content-card>
     </pems-col>
     <pems-col lg="6">
         <pems-content-card css="mb-3">
-            <h6 class="mb-3">Top Equipment (by Work Order count)</h6>
+            <pems-heading level="6" class="mb-3">Top Equipment (by Work Order count)</pems-heading>
             <ul class="list-unstyled mb-0">
                 @foreach (var e in Model.TopEquipment)
                 {

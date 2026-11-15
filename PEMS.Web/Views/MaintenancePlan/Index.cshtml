@@ -44,7 +44,7 @@
                         <pems-table-row class="lp-row">
                             <pems-table-cell class="lp-no"><span class="vs-num">@p.PlanNumber</span></pems-table-cell>
                             <pems-table-cell class="small">
-                                <a asp-controller="MaintenanceStrategy" asp-action="Tag" asp-route-equipmentId="@p.EquipmentId" class="lp-subject">@p.EquipmentTagNumber</a>
+                                <pems-link asp-controller="MaintenanceStrategy" asp-action="Tag" asp-route-equipmentId="@p.EquipmentId" class="lp-subject">@p.EquipmentTagNumber</pems-link>
                                 <div class="text-muted">@p.EquipmentName</div>
                                 <div class="text-muted">@(p.EquipmentClassName ?? Localizer["Rcm_Unclassified"].Value)
                                     <pems-badge tone="@RcmDisplay.CriticalityBadge(p.CriticalityClass ?? "Unrated")">@Localizer.Label("Criticality", p.CriticalityClass ?? "Unrated")</pems-badge></div>
@@ -52,7 +52,7 @@
                             <pems-table-cell><span class="vs-title-cell" title="@p.Title">@p.Title</span></pems-table-cell>
                             <pems-table-cell class="small">
                                 <span class="vs-pill vs-pill--neutral">@Localizer.Label("StrategyType", p.StrategyType)</span>
-                                @if (p.StrategyId.HasValue) { <a asp-controller="MaintenanceStrategy" asp-action="Details" asp-route-id="@p.StrategyId">v@(p.StrategyVersion)</a> }
+                                @if (p.StrategyId.HasValue) { <pems-link asp-controller="MaintenanceStrategy" asp-action="Details" asp-route-id="@p.StrategyId">v@(p.StrategyVersion)</pems-link> }
                                 <div class="text-muted">@RcmDisplay.Name(p.FailureModeName, p.FailureModeNameFa)</div>
                                 <div class="text-muted">@Localizer.Label("ScheduleMode", p.ScheduleMode)</div>
                                 @if (!p.HasAssignment) { <span class="vs-pill vs-pill--warning" title="@Localizer["Rcm_PlanNoAssignment"]">@Localizer["Rcm_NoAssignmentBadge"]</span> }

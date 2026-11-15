@@ -51,7 +51,7 @@
 
     <div class="ct-report-grid">
         <section class="ct-card" aria-labelledby="slaH">
-            <h2 id="slaH">@Localizer["Ct_SlaTitle"]</h2>
+            <pems-heading level="2" id="slaH">@Localizer["Ct_SlaTitle"]</pems-heading>
             <p class="small text-muted">@Localizer["Ct_SlaHint"]</p>
             <pems-row gap="3" css="align-items-center">
                 <pems-col sm="6"><pems-chart spec="@slaChart" /></pems-col>
@@ -64,11 +64,11 @@
             </div>
         </section>
         <section class="ct-card" aria-labelledby="monthH">
-            <h2 id="monthH">@Localizer["Ct_ByMonth"]</h2>
+            <pems-heading level="2" id="monthH">@Localizer["Ct_ByMonth"]</pems-heading>
             <pems-chart spec="@monthChart" />
         </section>
         <section class="ct-card" aria-labelledby="discH">
-            <h2 id="discH">@Localizer["Ct_ByDiscipline"]</h2>
+            <pems-heading level="2" id="discH">@Localizer["Ct_ByDiscipline"]</pems-heading>
             <pems-chart spec="@disciplineChart" />
         </section>
     </div>
@@ -76,7 +76,7 @@
     @if (Model.HasSubordinates)
     {
         <section class="ct-card" aria-labelledby="subH">
-            <h2 id="subH">@Localizer["Ct_SubordinatesTitle"]</h2>
+            <pems-heading level="2" id="subH">@Localizer["Ct_SubordinatesTitle"]</pems-heading>
             <p class="small text-muted">@Localizer["Ct_SubordinatesHint"]</p>
             <pems-table-scroll>
                 <pems-table kind="plain" css="ct-table">

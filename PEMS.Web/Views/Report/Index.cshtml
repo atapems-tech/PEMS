@@ -56,25 +56,25 @@
 <pems-row gap="3">
     <pems-col lg="8">
         <pems-content-card css="mb-3">
-            <h6 class="mb-3">Correspondence Volume (last 12 months)</h6>
+            <pems-heading level="6" class="mb-3">Correspondence Volume (last 12 months)</pems-heading>
             <pems-chart spec="@volumeChart" />
         </pems-content-card>
     </pems-col>
     <pems-col lg="4">
         <pems-content-card css="mb-3">
-            <h6 class="mb-3">@Localizer["By Status"]</h6>
+            <pems-heading level="6" class="mb-3">@Localizer["By Status"]</pems-heading>
             <pems-chart spec="@statusChart" />
         </pems-content-card>
     </pems-col>
     <pems-col lg="6">
         <pems-content-card css="mb-3">
-            <h6 class="mb-3">@Localizer["By Discipline"]</h6>
+            <pems-heading level="6" class="mb-3">@Localizer["By Discipline"]</pems-heading>
             <pems-chart spec="@disciplineChart" />
         </pems-content-card>
     </pems-col>
     <pems-col lg="6">
         <pems-content-card css="mb-3">
-            <h6 class="mb-3">Top Tags</h6>
+            <pems-heading level="6" class="mb-3">Top Tags</pems-heading>
             <ul class="list-unstyled mb-0">
                 @foreach (var t in Model.TopTags)
                 {
@@ -90,7 +90,7 @@
 </pems-row>
 
 <pems-content-card>
-    <h6 class="mb-3">Top Senders</h6>
+    <pems-heading level="6" class="mb-3">Top Senders</pems-heading>
     <pems-table-scroll css="table-scroll-area pems-s-8da1c6e6">
     <pems-data-table data="@(DataRows.Of(Model.TopSenders, c_ => c_.Add("Sender", s => (object?)(s.Sender)).Add(((Localizer["Count"])?.ToString() ?? ""), s => (object?)(s.Count))))" />
     </pems-table-scroll>

@@ -15,10 +15,10 @@
     @if (ctx == null)
     {
         @* انتخاب تخصیص (تگ + نسخه‌ی استراتژی) - برچسب‌ها متمایزند: تگ · نوع · حالت خرابی · نسخه *@
-        <h6 class="mb-3">@Localizer["Rcm_PickAssignment"]</h6>
+        <pems-heading level="6" class="mb-3">@Localizer["Rcm_PickAssignment"]</pems-heading>
         @if (!Model.Choices.Any())
         {
-            <p class="text-muted">@Localizer["Rcm_NoEligibleAssignments"] <a asp-controller="MaintenanceStrategy" asp-action="Index">@Localizer["Rcm_Strategies"]</a></p>
+            <p class="text-muted">@Localizer["Rcm_NoEligibleAssignments"] <pems-link asp-controller="MaintenanceStrategy" asp-action="Index">@Localizer["Rcm_Strategies"]</pems-link></p>
         }
         else
         {
@@ -39,7 +39,7 @@
         @await Html.PartialAsync("_EquipmentIdentity", ctx.Equipment)
         <div class="small mb-3">
             <span class="text-muted">@Localizer["Rcm_Strategy"]:</span>
-            <a asp-controller="MaintenanceStrategy" asp-action="Details" asp-route-id="@ctx.StrategyId">#@ctx.StrategyId · v@(ctx.StrategyVersion)</a>
+            <pems-link asp-controller="MaintenanceStrategy" asp-action="Details" asp-route-id="@ctx.StrategyId">#@ctx.StrategyId · v@(ctx.StrategyVersion)</pems-link>
             · <pems-badge tone="neutral">@Localizer.Label("StrategyType", ctx.StrategyType)</pems-badge>
             · @RcmDisplay.Name(ctx.FailureModeName, ctx.FailureModeNameFa)
             · <pems-badge tone="@RcmDisplay.ConsequenceBadge(ctx.ConsequenceCategory)">@Localizer.Label("Consequence", ctx.ConsequenceCategory)</pems-badge>
@@ -104,7 +104,7 @@
                         <option value="">@Localizer["Rcm_SelectPlaceholder"]</option>
                         @foreach (var jp in Model.JobPlans) { <option value="@jp.Id" selected="@(i.JobPlanId == jp.Id)">@jp.Code &mdash; @jp.Text</option> }
                     </pems-select>
-                    <pems-help-text>@Localizer["Rcm_JobPlanHint"] <a asp-controller="JobPlan" asp-action="Index" target="_blank">@Localizer["Rcm_ManageJobPlans"]</a></pems-help-text>
+                    <pems-help-text>@Localizer["Rcm_JobPlanHint"] <pems-link asp-controller="JobPlan" asp-action="Index" target="_blank">@Localizer["Rcm_ManageJobPlans"]</pems-link></pems-help-text>
                     <span class="text-danger small">@Html.ValidationMessage("jobPlanId")</span>
                 </pems-col>
 

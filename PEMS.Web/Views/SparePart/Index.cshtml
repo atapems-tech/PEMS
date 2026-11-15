@@ -45,7 +45,7 @@
         </pems-list-toolbar>
 
         <pems-list-kpis id="spKpis">
-            <a class="vs-chip text-decoration-none @(((int?)ViewBag.LowStockCount ?? 0) > 0 ? "vs-chip--danger" : "")" href="@Url.Action("Index", new { lowStockOnly = true })"><pems-icon name="bi-exclamation-triangle" aria-hidden="true" /> @Localizer["Sp_LowStockCount"] <strong>@ViewBag.LowStockCount</strong></a>
+            <pems-link class="vs-chip text-decoration-none @(((int?)ViewBag.LowStockCount ?? 0) > 0 ? "vs-chip--danger" : "")" href="@Url.Action("Index", new { lowStockOnly = true })"><pems-icon name="bi-exclamation-triangle" aria-hidden="true" /> @Localizer["Sp_LowStockCount"] <strong>@ViewBag.LowStockCount</strong></pems-link>
         </pems-list-kpis>
 
         <pems-list-chips reset-href="@Url.Action("Index")">

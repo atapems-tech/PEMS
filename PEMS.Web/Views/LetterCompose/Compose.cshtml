@@ -68,7 +68,7 @@
     <script type="application/json" id="lcBoot">@Html.Raw(JsonSerializer.Serialize(boot))</script>
 
     <div class="lc-header">
-        <h2 class="vs-section__title mb-0">@Localizer[isReferral ? "Ct_TitleReferral" : Model.ParentLetterId.HasValue ? "Lc_TitleReply" : isOutgoing ? "Lc_TitleOutgoing" : "Lc_TitleInternal"]</h2>
+        <pems-heading level="2" class="vs-section__title mb-0">@Localizer[isReferral ? "Ct_TitleReferral" : Model.ParentLetterId.HasValue ? "Lc_TitleReply" : isOutgoing ? "Lc_TitleOutgoing" : "Lc_TitleInternal"]</pems-heading>
         <span class="lc-number" id="lcNumber" title="@Localizer["Lt_Number"]">@(Model.LetterNumber ?? Localizer["Lc_NumberPending"].Value)</span>
         <pems-badge tone="neutral" id="lcStatus">@Model.Status</pems-badge>
         <span class="lc-savestate" id="lcSaveState" data-state="idle" role="status" aria-live="polite">
@@ -90,10 +90,10 @@
                 @if (isNew)
                 {
                     @* reply and referral are two modes of the same form: switch before writing anything *@
-                    if (isReferral) { <a asp-action="Compose" asp-route-replyTo="@Model.ParentLetterId">@Localizer["Ct_SwitchToReply"]</a> }
-                    else if (input.LetterType == "Internal") { <a asp-action="Compose" asp-route-referTo="@Model.ParentLetterId">@Localizer["Ct_SwitchToReferral"]</a> }
+                    if (isReferral) { <pems-link asp-action="Compose" asp-route-replyTo="@Model.ParentLetterId">@Localizer["Ct_SwitchToReply"]</pems-link> }
+                    else if (input.LetterType == "Internal") { <pems-link asp-action="Compose" asp-route-referTo="@Model.ParentLetterId">@Localizer["Ct_SwitchToReferral"]</pems-link> }
                 }
-                <a asp-controller="Letter" asp-action="Details" asp-route-id="@Model.ParentLetterId" target="_blank" rel="noopener">@Localizer["Lc_ViewOriginal"]</a>
+                <pems-link asp-controller="Letter" asp-action="Details" asp-route-id="@Model.ParentLetterId" target="_blank" rel="noopener">@Localizer["Lc_ViewOriginal"]</pems-link>
             </pems-flex>
         </pems-alert>
     }
@@ -104,7 +104,7 @@
         <div>
             @* ۱) فرستنده - فقط‌خواندنی، از اطلاعات کارمند پر می‌شود *@
             <section class="lc-card" aria-labelledby="lcSenderTitle">
-                <h3 id="lcSenderTitle"><pems-icon name="bi-person-badge" aria-hidden="true" /> @Localizer["Lc_Sender"]</h3>
+                <pems-heading level="3" id="lcSenderTitle"><pems-icon name="bi-person-badge" aria-hidden="true" /> @Localizer["Lc_Sender"]</pems-heading>
                 <pems-info-grid class="lc-sender mb-0">
     <pems-info-item label="@Localizer["Lc_Name"]">@(string.IsNullOrWhiteSpace(Model.Sender.FullName) ? "—" : Model.Sender.FullName)</pems-info-item>
     <pems-info-item label="@Localizer["Lc_JobTitle"]">@(Model.Sender.Title ?? "—")</pems-info-item>
@@ -120,7 +120,7 @@
 
             @* ۲) گیرندگان *@
             <section class="lc-card" aria-labelledby="lcRcptTitle">
-                <h3 id="lcRcptTitle"><pems-icon name="bi-people" aria-hidden="true" /> @Localizer["Lc_Recipients"]</h3>
+                <pems-heading level="3" id="lcRcptTitle"><pems-icon name="bi-people" aria-hidden="true" /> @Localizer["Lc_Recipients"]</pems-heading>
 
                 @if (isOutgoing)
                 {
@@ -172,7 +172,7 @@
 
             @* ۳) موضوع و متن *@
             <section class="lc-card" aria-labelledby="lcContentTitle">
-                <h3 id="lcContentTitle"><pems-icon name="bi-pencil-square" aria-hidden="true" /> @Localizer["Lc_Content"]</h3>
+                <pems-heading level="3" id="lcContentTitle"><pems-icon name="bi-pencil-square" aria-hidden="true" /> @Localizer["Lc_Content"]</pems-heading>
                 <div class="lc-field">
                     <label for="lcSubject" class="lc-req">@Localizer["Lt_Subject"]</label>
                     <pems-input id="lcSubject" maxlength="@(isReferral ? 500 : 200)" value="@input.Subject" autocomplete="off" aria-describedby="lcSubjectCount" readonly="@isReferral" />
@@ -190,7 +190,7 @@
 
             @* ۴) پیوست‌ها *@
             <section class="lc-card" aria-labelledby="lcAttTitle">
-                <h3 id="lcAttTitle"><pems-icon name="bi-paperclip" aria-hidden="true" /> @Localizer["Lc_Attachments"]</h3>
+                <pems-heading level="3" id="lcAttTitle"><pems-icon name="bi-paperclip" aria-hidden="true" /> @Localizer["Lc_Attachments"]</pems-heading>
                 <div class="lc-drop" id="lcDrop" tabindex="0" role="button" aria-describedby="lcDropHelp">
                     <pems-icon name="bi-cloud-arrow-up" css="fs-4" aria-hidden="true" />
                     <div>@Localizer["Lc_DropHere"]</div>
@@ -216,7 +216,7 @@
             @if (isNew && !isReferral && Model.Templates.Any())
             {
                 <section class="lc-card">
-                    <h3><pems-icon name="bi-file-earmark-text" aria-hidden="true" /> @Localizer["LtT_UseTemplate"]</h3>
+                    <pems-heading level="3"><pems-icon name="bi-file-earmark-text" aria-hidden="true" /> @Localizer["LtT_UseTemplate"]</pems-heading>
                     <pems-form method="get" asp-action="Compose"><pems-flex gap="2">
                         <input type="hidden" name="letterType" value="@input.LetterType" />
                         @if (Model.ParentLetterId.HasValue) { <input type="hidden" name="replyTo" value="@Model.ParentLetterId" /> }
@@ -234,7 +234,7 @@
             }
 
             <section class="lc-card" aria-labelledby="lcDetailsTitle">
-                <h3 id="lcDetailsTitle"><pems-icon name="bi-sliders" aria-hidden="true" /> @Localizer["Lc_Details"]</h3>
+                <pems-heading level="3" id="lcDetailsTitle"><pems-icon name="bi-sliders" aria-hidden="true" /> @Localizer["Lc_Details"]</pems-heading>
 
                 <div class="lc-field" @(isReferral ? "hidden" : "")>
                     <label for="lcCategory" class="lc-req">@Localizer["Lc_Category"]</label>
@@ -314,7 +314,7 @@
             </section>
 
             <section class="lc-card" aria-labelledby="lcRespTitle">
-                <h3 id="lcRespTitle"><pems-icon name="bi-reply" aria-hidden="true" /> @Localizer[isReferral ? "Ct_ReferralDeadline" : "Lc_Response"]</h3>
+                <pems-heading level="3" id="lcRespTitle"><pems-icon name="bi-reply" aria-hidden="true" /> @Localizer[isReferral ? "Ct_ReferralDeadline" : "Lc_Response"]</pems-heading>
                 <pems-check-row>
                     <pems-input type="checkbox" id="lcRespReq" checked="@input.ResponseRequired" kind="check" />
                     <label class="form-check-label" for="lcRespReq">@Localizer[isReferral ? "Ct_ReferralDeadlineSet" : "Lt_ResponseRequired"]</label>
@@ -327,7 +327,7 @@
             </section>
 
             <section class="lc-card" aria-labelledby="lcApprTitle" @(isReferral ? "hidden" : "")>
-                <h3 id="lcApprTitle"><pems-icon name="bi-diagram-3" aria-hidden="true" /> @Localizer["Lc_Approval"]</h3>
+                <pems-heading level="3" id="lcApprTitle"><pems-icon name="bi-diagram-3" aria-hidden="true" /> @Localizer["Lc_Approval"]</pems-heading>
                 <pems-check-row>
                     <pems-input type="checkbox" id="lcApprReq" checked="@input.ApprovalRequired" disabled="@isOutgoing" kind="check" />
                     <label class="form-check-label" for="lcApprReq">@Localizer["Lc_ApprovalRequired"]</label>
