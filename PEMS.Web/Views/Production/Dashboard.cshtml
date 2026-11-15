@@ -42,21 +42,7 @@
                 <pems-button tone="neutral" size="small" outline="true" as="a" asp-controller="ProductionOrder" asp-action="Index">View all</pems-button>
             </pems-flex>
             <div class="table-scroll-area pems-s-7bf38d03">
-                <pems-table kind="enterprise">
-                    <pems-table-head><pems-table-row><pems-table-header>@Localizer["Order"]</pems-table-header><pems-table-header>@Localizer["Material"]</pems-table-header><pems-table-header>@Localizer["Qty"]</pems-table-header><pems-table-header>@Localizer["Status"]</pems-table-header><pems-table-header>@Localizer["Work Center"]</pems-table-header></pems-table-row></pems-table-head>
-                    <pems-table-body>
-                        @foreach (var o in Model.ActiveOrders)
-                        {
-                            <pems-table-row>
-                                <pems-table-cell><a asp-controller="ProductionOrder" asp-action="Details" asp-route-id="@o.ProductionOrderId">@o.OrderNumber</a></pems-table-cell>
-                                <pems-table-cell>@o.MaterialCode</pems-table-cell>
-                                <pems-table-cell>@o.PlannedQuantity.ToString("N3") @o.UomCode</pems-table-cell>
-                                <pems-table-cell><pems-badge tone="neutral">@o.Status</pems-badge></pems-table-cell>
-                                <pems-table-cell>@o.WorkCenterCode</pems-table-cell>
-                            </pems-table-row>
-                        }
-                    </pems-table-body>
-                </pems-table>
+                <pems-data-table data="@(DataRows.Of(Model.ActiveOrders, c_ => c_.Add(((Localizer["Order"])?.ToString() ?? ""), o => (object?)(DataCell.Link(Url.Action("Details", "ProductionOrder", new { id = o.ProductionOrderId }), o.OrderNumber))).Add(((Localizer["Material"])?.ToString() ?? ""), o => (object?)(o.MaterialCode)).Add(((Localizer["Qty"])?.ToString() ?? ""), o => (object?)(DataCell.Group((o.PlannedQuantity.ToString("N3")), " ", o.UomCode))).Add(((Localizer["Status"])?.ToString() ?? ""), o => (object?)(DataCell.Badge("neutral", o.Status))).Add(((Localizer["Work Center"])?.ToString() ?? ""), o => (object?)(o.WorkCenterCode))))" />
                 @if (!Model.ActiveOrders.Any()) { <p class="text-muted text-center py-3">No active production orders.</p> }
             </div>
         </pems-content-card>
@@ -65,20 +51,7 @@
         <pems-content-card>
             <h6 class="mb-2">Recent Batches</h6>
             <div class="table-scroll-area pems-s-7bf38d03">
-                <pems-table kind="enterprise">
-                    <pems-table-head><pems-table-row><pems-table-header>@Localizer["Batch"]</pems-table-header><pems-table-header>@Localizer["Material"]</pems-table-header><pems-table-header>@Localizer["Qty"]</pems-table-header><pems-table-header>Quality Status</pems-table-header></pems-table-row></pems-table-head>
-                    <pems-table-body>
-                        @foreach (var b in Model.RecentBatches)
-                        {
-                            <pems-table-row>
-                                <pems-table-cell><a asp-controller="ProductionRun" asp-action="BatchDetails" asp-route-id="@b.ProductionBatchId">@b.BatchNumber</a></pems-table-cell>
-                                <pems-table-cell>@b.MaterialCode</pems-table-cell>
-                                <pems-table-cell>@b.Quantity.ToString("N3") @b.UomCode</pems-table-cell>
-                                <pems-table-cell><pems-badge tone="info">@b.QualityStatus</pems-badge></pems-table-cell>
-                            </pems-table-row>
-                        }
-                    </pems-table-body>
-                </pems-table>
+                <pems-data-table data="@(DataRows.Of(Model.RecentBatches, c_ => c_.Add(((Localizer["Batch"])?.ToString() ?? ""), b => (object?)(DataCell.Link(Url.Action("BatchDetails", "ProductionRun", new { id = b.ProductionBatchId }), b.BatchNumber))).Add(((Localizer["Material"])?.ToString() ?? ""), b => (object?)(b.MaterialCode)).Add(((Localizer["Qty"])?.ToString() ?? ""), b => (object?)(DataCell.Group((b.Quantity.ToString("N3")), " ", b.UomCode))).Add("Quality Status", b => (object?)(DataCell.Badge("info", b.QualityStatus)))))" />
                 @if (!Model.RecentBatches.Any()) { <p class="text-muted text-center py-3">No batches recorded yet.</p> }
             </div>
         </pems-content-card>

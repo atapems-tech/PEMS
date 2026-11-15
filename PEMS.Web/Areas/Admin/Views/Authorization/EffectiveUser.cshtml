@@ -45,23 +45,7 @@
                 else
                 {
                     <pems-table-scroll>
-                        <pems-table kind="enterprise" scale="small">
-                            <pems-table-head><pems-table-row><pems-table-header>@Localizer["Role"]</pems-table-header><pems-table-header>@Localizer["Scope"]</pems-table-header><pems-table-header>@Localizer["Type"]</pems-table-header><pems-table-header>@Localizer["Effective"]</pems-table-header></pems-table-row></pems-table-head>
-                            <pems-table-body>
-                            @foreach (var a in Model.Assignments)
-                            {
-                                <pems-table-row>
-                                    <pems-table-cell>@a.RoleName</pems-table-cell>
-                                    <pems-table-cell>@a.ScopeType@(string.IsNullOrEmpty(a.ScopeValue) ? "" : $" = {a.ScopeValue}")</pems-table-cell>
-                                    <pems-table-cell>@a.AssignmentType</pems-table-cell>
-                                    <pems-table-cell>
-                                        @if (a.EffectiveFrom == null && a.EffectiveTo == null) { <span class="text-body-secondary">@Localizer["Always"]</span> }
-                                        else { <span>@a.EffectiveFrom?.ToString("yyyy-MM-dd") &ndash; @(a.EffectiveTo?.ToString("yyyy-MM-dd") ?? Localizer["Open"])</span> }
-                                    </pems-table-cell>
-                                </pems-table-row>
-                            }
-                            </pems-table-body>
-                        </pems-table>
+                        <pems-data-table data="@(DataRows.Of(Model.Assignments, c_ => c_.Add(((Localizer["Role"])?.ToString() ?? ""), a => (object?)(a.RoleName)).Add(((Localizer["Scope"])?.ToString() ?? ""), a => (object?)(DataCell.Group(a.ScopeType, (string.IsNullOrEmpty(a.ScopeValue) ? "" : $" = {a.ScopeValue}")))).Add(((Localizer["Type"])?.ToString() ?? ""), a => (object?)(a.AssignmentType)).Add(((Localizer["Effective"])?.ToString() ?? ""), a => (object?)((a.EffectiveFrom == null && a.EffectiveTo == null ? (object?)DataCell.Span("text-body-secondary", Localizer["Always"]) : DataCell.Span(null, (a.EffectiveFrom?.ToString("yyyy-MM-dd")), " – ", (a.EffectiveTo?.ToString("yyyy-MM-dd") ?? Localizer["Open"])))))))" dense="true" />
                     </pems-table-scroll>
                 }
             </div>
@@ -74,20 +58,7 @@
             {
                 <div class="admin-toolbar mb-2"><div class="admin-toolbar-main"><span class="text-body-secondary small">@Model.AllowedCount / @Model.Rows.Count @Localizer["permissions allowed, via role membership"]</span></div></div>
                 <pems-table-scroll>
-                    <pems-table kind="enterprise">
-                        <pems-table-head><pems-table-row><pems-table-header>@Localizer["Resource"]</pems-table-header><pems-table-header>@Localizer["Action"]</pems-table-header><pems-table-header>@Localizer["Permission"]</pems-table-header><pems-table-header>@Localizer["Status"]</pems-table-header></pems-table-row></pems-table-head>
-                        <pems-table-body>
-                        @foreach (var row in Model.Rows.Where(r => r.Allowed))
-                        {
-                            <pems-table-row>
-                                <pems-table-cell>@row.ResourceName</pems-table-cell>
-                                <pems-table-cell>@row.ActionName</pems-table-cell>
-                                <pems-table-cell><code>@row.PermissionName</code></pems-table-cell>
-                                <pems-table-cell><span class="admin-status active"><pems-icon name="bi-check2-circle" /> @Localizer["Allowed"]</span></pems-table-cell>
-                            </pems-table-row>
-                        }
-                        </pems-table-body>
-                    </pems-table>
+                    <pems-data-table data="@(DataRows.Of(Model.Rows.Where(r => r.Allowed), c_ => c_.Add(((Localizer["Resource"])?.ToString() ?? ""), row => (object?)(row.ResourceName)).Add(((Localizer["Action"])?.ToString() ?? ""), row => (object?)(row.ActionName)).Add(((Localizer["Permission"])?.ToString() ?? ""), row => (object?)(DataCell.Code(row.PermissionName))).Add(((Localizer["Status"])?.ToString() ?? ""), row => (object?)(DataCell.Span("admin-status active", DataCell.Icon("bi-check2-circle"), " ", Localizer["Allowed"])))))" />
                 </pems-table-scroll>
             }
         }

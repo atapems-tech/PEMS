@@ -71,20 +71,7 @@
             <h6 class="mb-3">Work Orders (@Model.WorkOrders.Count)</h6>
             @if (Model.WorkOrders.Any())
             {
-                <pems-table scale="small">
-                    <pems-table-head><pems-table-row><pems-table-header>No.</pems-table-header><pems-table-header>@Localizer["Description"]</pems-table-header><pems-table-header>@Localizer["Status"]</pems-table-header><pems-table-header>@Localizer["Created"]</pems-table-header></pems-table-row></pems-table-head>
-                    <pems-table-body>
-                        @foreach (var w in Model.WorkOrders.Take(10))
-                        {
-                            <pems-table-row>
-                                <pems-table-cell><a asp-controller="WorkOrder" asp-action="Details" asp-route-id="@w.WorkOrderId">@w.WorkOrderNo</a></pems-table-cell>
-                                <pems-table-cell class="small">@(w.Description ?? "-")</pems-table-cell>
-                                <pems-table-cell><pems-badge tone="neutral">@w.Status</pems-badge></pems-table-cell>
-                                <pems-table-cell class="small">@(w.CreatedDate?.ToString("yyyy-MM-dd") ?? "-")</pems-table-cell>
-                            </pems-table-row>
-                        }
-                    </pems-table-body>
-                </pems-table>
+                <pems-data-table data="@(DataRows.Of(Model.WorkOrders.Take(10), c_ => c_.Add("No.", w => (object?)(DataCell.Link(Url.Action("Details", "WorkOrder", new { id = w.WorkOrderId }), w.WorkOrderNo))).Add(((Localizer["Description"])?.ToString() ?? ""), w => (object?)((w.Description ?? "-")), css: "small").Add(((Localizer["Status"])?.ToString() ?? ""), w => (object?)(DataCell.Badge("neutral", w.Status))).Add(((Localizer["Created"])?.ToString() ?? ""), w => (object?)((w.CreatedDate?.ToString("yyyy-MM-dd") ?? "-")), css: "small")))" dense="true" />
             }
             else
             {

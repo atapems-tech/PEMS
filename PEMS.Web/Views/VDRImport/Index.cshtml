@@ -37,31 +37,7 @@
 <pems-content-card>
     <h6 class="mb-3">@Localizer["Vs_RecentImports"]</h6>
     <pems-table-scroll css="table-scroll-area pems-s-8da1c6e6">
-    <pems-table kind="enterprise">
-        <pems-table-head><pems-table-row><pems-table-header>@Localizer["Vs_File"]</pems-table-header><pems-table-header>@Localizer["Vs_Project"]</pems-table-header><pems-table-header>@Localizer["Vs_Date"]</pems-table-header><pems-table-header>@Localizer["Total"]</pems-table-header><pems-table-header>@Localizer["Vs_Valid"]</pems-table-header><pems-table-header>@Localizer["Vs_Warning"]</pems-table-header><pems-table-header>@Localizer["Vs_Error"]</pems-table-header><pems-table-header>@Localizer["Vs_Duplicate"]</pems-table-header><pems-table-header>@Localizer["Status"]</pems-table-header><pems-table-header></pems-table-header></pems-table-row></pems-table-head>
-        <pems-table-body>
-            @foreach (var b in Model)
-            {
-                <pems-table-row>
-                    <pems-table-cell>@b.FileName</pems-table-cell>
-                    <pems-table-cell>@b.ProjectName</pems-table-cell>
-                    <pems-table-cell>@b.ImportDate.ToString("yyyy-MM-dd HH:mm")</pems-table-cell>
-                    <pems-table-cell>@b.RowsTotal</pems-table-cell>
-                    <pems-table-cell><pems-badge tone="success">@b.RowsValid</pems-badge></pems-table-cell>
-                    <pems-table-cell><pems-badge tone="warning">@b.RowsWarning</pems-badge></pems-table-cell>
-                    <pems-table-cell><pems-badge tone="danger">@b.RowsError</pems-badge></pems-table-cell>
-                    <pems-table-cell><pems-badge tone="neutral">@b.RowsDuplicate</pems-badge></pems-table-cell>
-                    <pems-table-cell><pems-badge tone="@(b.Status == "Committed" ? "success" : "neutral")">@b.Status</pems-badge></pems-table-cell>
-                    <pems-table-cell>
-                        @if (b.Status == "Staged")
-                        {
-                            <pems-button tone="primary" size="small" outline="true" as="a" asp-action="Review" asp-route-batchId="@b.VDRImportBatchId">Review</pems-button>
-                        }
-                    </pems-table-cell>
-                </pems-table-row>
-            }
-        </pems-table-body>
-    </pems-table>
+    <pems-data-table data="@(DataRows.Of(Model, c_ => c_.Add(((Localizer["Vs_File"])?.ToString() ?? ""), b => (object?)(b.FileName)).Add(((Localizer["Vs_Project"])?.ToString() ?? ""), b => (object?)(b.ProjectName)).Add(((Localizer["Vs_Date"])?.ToString() ?? ""), b => (object?)((b.ImportDate.ToString("yyyy-MM-dd HH:mm")))).Add(((Localizer["Total"])?.ToString() ?? ""), b => (object?)(b.RowsTotal)).Add(((Localizer["Vs_Valid"])?.ToString() ?? ""), b => (object?)(DataCell.Badge("success", b.RowsValid))).Add(((Localizer["Vs_Warning"])?.ToString() ?? ""), b => (object?)(DataCell.Badge("warning", b.RowsWarning))).Add(((Localizer["Vs_Error"])?.ToString() ?? ""), b => (object?)(DataCell.Badge("danger", b.RowsError))).Add(((Localizer["Vs_Duplicate"])?.ToString() ?? ""), b => (object?)(DataCell.Badge("neutral", b.RowsDuplicate))).Add(((Localizer["Status"])?.ToString() ?? ""), b => (object?)(DataCell.Badge(b.Status == "Committed" ? "success" : "neutral", b.Status))).Add("", b => (object?)((b.Status == "Staged" ? (object?)DataCell.ButtonLink(Url.Action("Review", null, new { batchId = b.VDRImportBatchId }), "primary", "small", true, null, "Review") : null)))))" />
     </pems-table-scroll>
     @if (!Model.Any()) { <p class="text-muted text-center py-4">@Localizer["Vs_NoImports"]</p> }
 </pems-content-card>

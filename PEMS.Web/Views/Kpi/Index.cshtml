@@ -83,15 +83,7 @@
             {
                 <details class="mt-2">
                     <summary class="small text-muted">@Localizer["Tag"] / @Localizer["Cost"]</summary>
-                    <pems-table kind="enterprise" scale="small" css="mb-0 mt-1">
-                        <pems-table-head><pems-table-row><pems-table-header>@Localizer["Tag"]</pems-table-header><pems-table-header class="text-end">@Localizer["Cost"]</pems-table-header></pems-table-row></pems-table-head>
-                        <pems-table-body>
-                            @foreach (var e in Model.Cost.TopEquipmentByCost)
-                            {
-                                <pems-table-row><pems-table-cell class="small"><a asp-controller="Equipment" asp-action="Details" asp-route-id="@e.EquipmentId">@e.TagNumber</a></pems-table-cell><pems-table-cell class="small text-end">@e.Cost.ToString("N0")</pems-table-cell></pems-table-row>
-                            }
-                        </pems-table-body>
-                    </pems-table>
+                    <pems-data-table data="@(DataRows.Of(Model.Cost.TopEquipmentByCost, c_ => c_.Add(((Localizer["Tag"])?.ToString() ?? ""), e => (object?)(DataCell.Link(Url.Action("Details", "Equipment", new { id = e.EquipmentId }), e.TagNumber)), css: "small").Add(((Localizer["Cost"])?.ToString() ?? ""), e => (object?)((e.Cost.ToString("N0"))), css: "small text-end", headerCss: "text-end")))" dense="true" css="mb-0 mt-1" />
                 </details>
             }
         </pems-content-card>

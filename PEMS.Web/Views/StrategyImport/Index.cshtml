@@ -58,19 +58,7 @@
             </pems-flex>
         </pems-flex>
         <div class="pems-s-9687cbac">
-        <pems-table scale="small" css="table-enterprise">
-            <pems-table-head><pems-table-row><pems-table-header>#</pems-table-header><pems-table-header>@Localizer["Rcm_Reference"]</pems-table-header><pems-table-header>@Localizer["Rcm_Status"]</pems-table-header><pems-table-header>@Localizer["Rcm_Messages"]</pems-table-header></pems-table-row></pems-table-head>
-            <pems-table-body>
-            @foreach (var row in r.Rows)
-            {
-                <pems-table-row class="@(row.Accepted ? "" : "table-danger")">
-                    <pems-table-cell>@row.RowNumber</pems-table-cell><pems-table-cell class="small">@row.Reference</pems-table-cell>
-                    <pems-table-cell>@(row.Accepted ? Localizer["Rcm_RowAccepted"].Value : Localizer["Rcm_RowRejected"].Value)</pems-table-cell>
-                    <pems-table-cell class="small">@string.Join(" | ", Model.Messages.TryGetValue(row.RowNumber, out var m) ? m : new List<string>())</pems-table-cell>
-                </pems-table-row>
-            }
-            </pems-table-body>
-        </pems-table>
+        <pems-data-table data="@(DataRows.Of(r.Rows, c_ => c_.Add("#", row => (object?)(row.RowNumber)).Add(((Localizer["Rcm_Reference"])?.ToString() ?? ""), row => (object?)(row.Reference), css: "small").Add(((Localizer["Rcm_Status"])?.ToString() ?? ""), row => (object?)((row.Accepted ? Localizer["Rcm_RowAccepted"].Value : Localizer["Rcm_RowRejected"].Value))).Add(((Localizer["Rcm_Messages"])?.ToString() ?? ""), row => (object?)((string.Join(" | ", Model.Messages.TryGetValue(row.RowNumber, out var m) ? m : new List<string>()))), css: "small"), rowClass: row => (row.Accepted ? "" : "table-danger")))" dense="true" />
         </div>
     </pems-content-card>
 }

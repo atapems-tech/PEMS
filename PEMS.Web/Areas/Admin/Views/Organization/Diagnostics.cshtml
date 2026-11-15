@@ -58,20 +58,7 @@
         else
         {
             <pems-table-scroll>
-                <pems-table scale="small" css="table-enterprise">
-                    <pems-table-head><pems-table-row><pems-table-header>@Localizer["Org_Diag_Request"]</pems-table-header><pems-table-header>@Localizer["Org_Diag_Requester"]</pems-table-header><pems-table-header>@Localizer["Org_Diag_Reason"]</pems-table-header><pems-table-header></pems-table-header></pems-table-row></pems-table-head>
-                    <pems-table-body>
-                    @foreach (var b in blocked)
-                    {
-                        <pems-table-row>
-                            <pems-table-cell>@b.Module · @b.RequestNumber</pems-table-cell>
-                            <pems-table-cell>@b.RequesterName</pems-table-cell>
-                            <pems-table-cell><code>@b.Reason</code> <span class="small text-muted">@(b.Reason == null ? "" : Localizer["Org_Issue_" + b.Reason].Value)</span></pems-table-cell>
-                            <pems-table-cell class="text-end"><a class="vs-btn vs-btn--sm" asp-area="Warehouse" asp-controller="PartCatalogueRequest" asp-action="Details" asp-route-id="@b.RequestId">@Localizer["Org_Diag_Open"]</a></pems-table-cell>
-                        </pems-table-row>
-                    }
-                    </pems-table-body>
-                </pems-table>
+                <pems-data-table data="@(DataRows.Of(blocked, c_ => c_.Add(((Localizer["Org_Diag_Request"])?.ToString() ?? ""), b => (object?)(DataCell.Group(b.Module, " · ", b.RequestNumber))).Add(((Localizer["Org_Diag_Requester"])?.ToString() ?? ""), b => (object?)(b.RequesterName)).Add(((Localizer["Org_Diag_Reason"])?.ToString() ?? ""), b => (object?)(DataCell.Group(DataCell.Code(b.Reason), " ", DataCell.Span("small text-muted", (b.Reason == null ? "" : Localizer["Org_Issue_" + b.Reason].Value))))).Add("", b => (object?)(DataCell.LinkClass(Url.Action("Details", "PartCatalogueRequest", new { area = "Warehouse", id = b.RequestId }), "vs-btn vs-btn--sm", Localizer["Org_Diag_Open"])), css: "text-end")))" dense="true" />
             </pems-table-scroll>
         }
     </section>

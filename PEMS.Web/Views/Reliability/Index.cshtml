@@ -59,38 +59,7 @@
 <pems-tab-content>
     <pems-tab-pane fade="true" active="true" id="tab-fleet">
         <pems-content-card>
-            <pems-table kind="enterprise" css="mb-0">
-                <pems-table-head>
-                    <pems-table-row>
-                        <pems-table-header>@Localizer["Tag Number"]</pems-table-header><pems-table-header>@Localizer["Type"]</pems-table-header><pems-table-header>@Localizer["Failures"]</pems-table-header><pems-table-header>@Localizer["MTBF"]</pems-table-header><pems-table-header>@Localizer["MTTR"]</pems-table-header>
-                        <pems-table-header>@Localizer["Availability"]</pems-table-header><pems-table-header>@Localizer["Total Downtime"]</pems-table-header><pems-table-header>Last Failure</pems-table-header><pems-table-header></pems-table-header>
-                    </pems-table-row>
-                </pems-table-head>
-                <pems-table-body>
-                    @foreach (var r in Model)
-                    {
-                        <pems-table-row>
-                            <pems-table-cell class="small fw-bold">@r.TagNumber</pems-table-cell>
-                            <pems-table-cell class="small">@r.EquipmentType</pems-table-cell>
-                            <pems-table-cell class="small">@r.FailureCount</pems-table-cell>
-                            <pems-table-cell class="small">@(r.MTBFHours.HasValue ? $"{r.MTBFHours.Value:N1} h" : "N/A")</pems-table-cell>
-                            <pems-table-cell class="small">@(r.MTTRHours.HasValue ? $"{r.MTTRHours.Value:N1} h" : "N/A")</pems-table-cell>
-                            <pems-table-cell class="small">
-                                @if (r.AvailabilityPercent.HasValue)
-                                {
-                                    <pems-badge tone="@(r.AvailabilityPercent >= 95 ? "success" : r.AvailabilityPercent >= 85 ? "warning" : "danger")">
-                                        @r.AvailabilityPercent.Value.ToString("N1")%
-                                    </pems-badge>
-                                }
-                                else { <span class="text-muted">N/A</span> }
-                            </pems-table-cell>
-                            <pems-table-cell class="small">@r.TotalDowntimeHours.ToString("N1") h</pems-table-cell>
-                            <pems-table-cell class="small">@(r.LastFailureDate?.ToString("yyyy-MM-dd") ?? "-")</pems-table-cell>
-                            <pems-table-cell><pems-button tone="neutral" size="small" outline="true" as="a" asp-action="Details" asp-route-id="@r.EquipmentId"><pems-icon name="bi-eye" /></pems-button></pems-table-cell>
-                        </pems-table-row>
-                    }
-                </pems-table-body>
-            </pems-table>
+            <pems-data-table data="@(DataRows.Of(Model, c_ => c_.Add(((Localizer["Tag Number"])?.ToString() ?? ""), r => (object?)(r.TagNumber), css: "small fw-bold").Add(((Localizer["Type"])?.ToString() ?? ""), r => (object?)(r.EquipmentType), css: "small").Add(((Localizer["Failures"])?.ToString() ?? ""), r => (object?)(r.FailureCount), css: "small").Add(((Localizer["MTBF"])?.ToString() ?? ""), r => (object?)((r.MTBFHours.HasValue ? $"{r.MTBFHours.Value:N1} h" : "N/A")), css: "small").Add(((Localizer["MTTR"])?.ToString() ?? ""), r => (object?)((r.MTTRHours.HasValue ? $"{r.MTTRHours.Value:N1} h" : "N/A")), css: "small").Add(((Localizer["Availability"])?.ToString() ?? ""), r => (object?)((r.AvailabilityPercent.HasValue ? (object?)DataCell.Badge(r.AvailabilityPercent >= 95 ? "success" : r.AvailabilityPercent >= 85 ? "warning" : "danger", DataCell.Group((r.AvailabilityPercent.Value.ToString("N1")), "%")) : DataCell.Span("text-muted", "N/A"))), css: "small").Add(((Localizer["Total Downtime"])?.ToString() ?? ""), r => (object?)(DataCell.Group((r.TotalDowntimeHours.ToString("N1")), " h")), css: "small").Add("Last Failure", r => (object?)((r.LastFailureDate?.ToString("yyyy-MM-dd") ?? "-")), css: "small").Add("", r => (object?)(DataCell.ButtonLink(Url.Action("Details", null, new { id = r.EquipmentId }), "neutral", "small", true, null, DataCell.Icon("bi-eye"))))))" css="mb-0" />
             @if (!Model.Any()) { <p class="text-muted text-center py-4 mb-0">هنوز هیچ خرابی‌ای ثبت نشده - این لیست از روی WorkOrder های اصلاحی/اضطراری تکمیل‌شده ساخته می‌شود.</p> }
         </pems-content-card>
     </pems-tab-pane>
@@ -101,25 +70,7 @@
                 میانگین مقادیر معتبر سطح-تجهیز درون هر کلاس (نه یک نرخ Pooled روی زمان
                 بهره‌برداری) - Sample Size نشان می‌دهد چند تجهیز واقعاً در میانگین سهیم بودند.
             </p>
-            <pems-table kind="enterprise" scale="small" css="mb-0">
-                <pems-table-head><pems-table-row><pems-table-header>@Localizer["Class"]</pems-table-header><pems-table-header>@Localizer["Population"]</pems-table-header><pems-table-header>@Localizer["With History"]</pems-table-header><pems-table-header>@Localizer["Failures"]</pems-table-header><pems-table-header>@Localizer["Downtime"]</pems-table-header><pems-table-header>Avg MTBF (n)</pems-table-header><pems-table-header>Avg MTTR (n)</pems-table-header><pems-table-header>Avg Availability</pems-table-header><pems-table-header></pems-table-header></pems-table-row></pems-table-head>
-                <pems-table-body>
-                    @foreach (var c in classReliability)
-                    {
-                        <pems-table-row>
-                            <pems-table-cell>@c.Name</pems-table-cell>
-                            <pems-table-cell class="text-end">@c.EquipmentPopulation</pems-table-cell>
-                            <pems-table-cell class="text-end">@c.EquipmentWithFailureHistory</pems-table-cell>
-                            <pems-table-cell class="text-end">@c.FailureCount</pems-table-cell>
-                            <pems-table-cell class="text-end">@c.TotalDowntimeHours.ToString("N1") h</pems-table-cell>
-                            <pems-table-cell class="text-end">@(c.AverageMTBFHours.HasValue ? $"{c.AverageMTBFHours.Value:N1}h (n={c.MTBFSampleSize})" : "N/A")</pems-table-cell>
-                            <pems-table-cell class="text-end">@(c.AverageMTTRHours.HasValue ? $"{c.AverageMTTRHours.Value:N1}h (n={c.MTTRSampleSize})" : "N/A")</pems-table-cell>
-                            <pems-table-cell class="text-end">@(c.AverageAvailabilityPercent.HasValue ? $"{c.AverageAvailabilityPercent.Value:N1}%" : "N/A")</pems-table-cell>
-                            <pems-table-cell><pems-button tone="neutral" size="small" outline="true" as="a" asp-action="ClassDetail" asp-route-id="@c.EquipmentClassId">Open</pems-button></pems-table-cell>
-                        </pems-table-row>
-                    }
-                </pems-table-body>
-            </pems-table>
+            <pems-data-table data="@(DataRows.Of(classReliability, c_ => c_.Add(((Localizer["Class"])?.ToString() ?? ""), c => (object?)(c.Name)).Add(((Localizer["Population"])?.ToString() ?? ""), c => (object?)(c.EquipmentPopulation), css: "text-end").Add(((Localizer["With History"])?.ToString() ?? ""), c => (object?)(c.EquipmentWithFailureHistory), css: "text-end").Add(((Localizer["Failures"])?.ToString() ?? ""), c => (object?)(c.FailureCount), css: "text-end").Add(((Localizer["Downtime"])?.ToString() ?? ""), c => (object?)(DataCell.Group((c.TotalDowntimeHours.ToString("N1")), " h")), css: "text-end").Add("Avg MTBF (n)", c => (object?)((c.AverageMTBFHours.HasValue ? $"{c.AverageMTBFHours.Value:N1}h (n={c.MTBFSampleSize})" : "N/A")), css: "text-end").Add("Avg MTTR (n)", c => (object?)((c.AverageMTTRHours.HasValue ? $"{c.AverageMTTRHours.Value:N1}h (n={c.MTTRSampleSize})" : "N/A")), css: "text-end").Add("Avg Availability", c => (object?)((c.AverageAvailabilityPercent.HasValue ? $"{c.AverageAvailabilityPercent.Value:N1}%" : "N/A")), css: "text-end").Add("", c => (object?)(DataCell.ButtonLink(Url.Action("ClassDetail", null, new { id = c.EquipmentClassId }), "neutral", "small", true, null, "Open")))))" dense="true" css="mb-0" />
             @if (!classReliability.Any()) { <p class="text-muted text-center py-4 mb-0">@Localizer["هیچ کلاسی داده‌ی خرابی کافی ندارد."]</p> }
         </pems-content-card>
     </pems-tab-pane>

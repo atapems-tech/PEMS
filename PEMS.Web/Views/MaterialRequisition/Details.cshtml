@@ -131,22 +131,7 @@
     <pems-content-card css="mt-3">
         <h6 class="mb-3"><pems-icon name="bi-envelope-paper" /> Related Correspondence</h6>
         <pems-table-scroll css="table-scroll-area pems-s-8da1c6e6">
-        <pems-table kind="enterprise">
-            <pems-table-head><pems-table-row><pems-table-header>@Localizer["Type"]</pems-table-header><pems-table-header>@Localizer["Letter No"]</pems-table-header><pems-table-header>@Localizer["Subject"]</pems-table-header><pems-table-header>@Localizer["Date"]</pems-table-header><pems-table-header>@Localizer["Status"]</pems-table-header><pems-table-header></pems-table-header></pems-table-row></pems-table-head>
-            <pems-table-body>
-                @foreach (var l in relatedLettersMR)
-                {
-                    <pems-table-row>
-                        <pems-table-cell><pems-badge tone="neutral">@l.LetterType</pems-badge></pems-table-cell>
-                        <pems-table-cell>@l.LetterNumber</pems-table-cell>
-                        <pems-table-cell>@l.Subject</pems-table-cell>
-                        <pems-table-cell>@l.LetterDate.ToString("yyyy-MM-dd")</pems-table-cell>
-                        <pems-table-cell><pems-badge tone="info">@l.Status</pems-badge></pems-table-cell>
-                        <pems-table-cell><pems-button tone="neutral" size="small" outline="true" as="a" asp-controller="Letter" asp-action="Details" asp-route-id="@l.LetterId"><pems-icon name="bi-eye" /></pems-button></pems-table-cell>
-                    </pems-table-row>
-                }
-            </pems-table-body>
-        </pems-table>
+        <pems-data-table data="@(DataRows.Of(relatedLettersMR, c_ => c_.Add(((Localizer["Type"])?.ToString() ?? ""), l => (object?)(DataCell.Badge("neutral", l.LetterType))).Add(((Localizer["Letter No"])?.ToString() ?? ""), l => (object?)(l.LetterNumber)).Add(((Localizer["Subject"])?.ToString() ?? ""), l => (object?)(l.Subject)).Add(((Localizer["Date"])?.ToString() ?? ""), l => (object?)((l.LetterDate.ToString("yyyy-MM-dd")))).Add(((Localizer["Status"])?.ToString() ?? ""), l => (object?)(DataCell.Badge("info", l.Status))).Add("", l => (object?)(DataCell.ButtonLink(Url.Action("Details", "Letter", new { id = l.LetterId }), "neutral", "small", true, null, DataCell.Icon("bi-eye"))))))" />
         </pems-table-scroll>
     </pems-content-card>
 }

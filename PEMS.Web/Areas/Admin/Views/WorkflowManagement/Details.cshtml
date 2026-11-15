@@ -122,18 +122,7 @@
     <pems-content-card css="mt-3">
         <h6>@Localizer["Configuration audit"]</h6>
         <pems-table-scroll css="pems-s-11017dde">
-            <pems-table scale="small" css="align-middle mb-0">
-                <pems-table-head><pems-table-row><pems-table-header>@Localizer["Time"]</pems-table-header><pems-table-header>@Localizer["Action"]</pems-table-header><pems-table-header>@Localizer["Version"]</pems-table-header><pems-table-header>@Localizer["By"]</pems-table-header><pems-table-header>@Localizer["Change"]</pems-table-header></pems-table-row></pems-table-head>
-                <pems-table-body>
-                @foreach (var a in Model.Audit)
-                {
-                    <pems-table-row>
-                        <pems-table-cell class="small text-nowrap">@a.Timestamp.ToString("yyyy-MM-dd HH:mm")</pems-table-cell><pems-table-cell class="small">@a.Action</pems-table-cell><pems-table-cell class="small">@(a.VersionNumber.HasValue ? "v" + a.VersionNumber : "-")</pems-table-cell><pems-table-cell class="small">@a.Actor</pems-table-cell>
-                        <pems-table-cell class="small">@(string.IsNullOrEmpty(a.Previous) ? "" : a.Previous + " → ")@a.Current @if (!string.IsNullOrEmpty(a.Details)) { <span class="text-muted">· @a.Details</span> }</pems-table-cell>
-                    </pems-table-row>
-                }
-                </pems-table-body>
-            </pems-table>
+            <pems-data-table data="@(DataRows.Of(Model.Audit, c_ => c_.Add(((Localizer["Time"])?.ToString() ?? ""), a => (object?)((a.Timestamp.ToString("yyyy-MM-dd HH:mm"))), css: "small text-nowrap").Add(((Localizer["Action"])?.ToString() ?? ""), a => (object?)(a.Action), css: "small").Add(((Localizer["Version"])?.ToString() ?? ""), a => (object?)((a.VersionNumber.HasValue ? "v" + a.VersionNumber : "-")), css: "small").Add(((Localizer["By"])?.ToString() ?? ""), a => (object?)(a.Actor), css: "small").Add(((Localizer["Change"])?.ToString() ?? ""), a => (object?)(DataCell.Group((string.IsNullOrEmpty(a.Previous) ? "" : a.Previous + " → "), a.Current, " ", (!string.IsNullOrEmpty(a.Details) ? (object?)DataCell.Span("text-muted", "· ", a.Details) : null))), css: "small")))" dense="true" css="align-middle mb-0" />
         </pems-table-scroll>
     </pems-content-card>
 </pems-page-shell>

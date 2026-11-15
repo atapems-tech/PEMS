@@ -118,21 +118,7 @@
 <pems-content-card css="mb-3">
     <h6>@Localizer["Repl_Sources"]</h6>
     <div class="pems-grid-scroll">
-        <pems-table kind="enterprise" css="mb-0">
-            <pems-table-head><pems-table-row><pems-table-header>@Localizer["Repl_SourceType"]</pems-table-header><pems-table-header>@Localizer["Repl_SourceNumber"]</pems-table-header><pems-table-header class="text-end">@Localizer["Repl_GrossDemand"]</pems-table-header><pems-table-header class="text-end">@Localizer["Repl_Covered"]</pems-table-header><pems-table-header class="text-end">@Localizer["Repl_UnreservedDemand"]</pems-table-header></pems-table-row></pems-table-head>
-            <pems-table-body>
-            @foreach (var src in Model.Sources)
-            {
-                <pems-table-row>
-                    <pems-table-cell class="small">@(src.SourceType == 1 ? Localizer["Repl_SourceSr"] : Localizer["Repl_SourceWo"])</pems-table-cell>
-                    <pems-table-cell class="small">@if (src.IsRestricted) { <span class="text-muted">@Localizer["Repl_Restricted"]</span> } else { <span>@(src.ParentNumber ?? ("#" + src.SourceLineId))</span> }</pems-table-cell>
-                    <pems-table-cell class="small text-end">@src.GrossRemainingQuantity.ToString("0.###")</pems-table-cell>
-                    <pems-table-cell class="small text-end">@src.CoveredByReservation.ToString("0.###")</pems-table-cell>
-                    <pems-table-cell class="small text-end">@src.UnreservedQuantity.ToString("0.###")</pems-table-cell>
-                </pems-table-row>
-            }
-            </pems-table-body>
-        </pems-table>
+        <pems-data-table data="@(DataRows.Of(Model.Sources, c_ => c_.Add(((Localizer["Repl_SourceType"])?.ToString() ?? ""), src => (object?)((src.SourceType == 1 ? Localizer["Repl_SourceSr"] : Localizer["Repl_SourceWo"])), css: "small").Add(((Localizer["Repl_SourceNumber"])?.ToString() ?? ""), src => (object?)((src.IsRestricted ? (object?)DataCell.Span("text-muted", Localizer["Repl_Restricted"]) : DataCell.Span(null, (src.ParentNumber ?? ("#" + src.SourceLineId))))), css: "small").Add(((Localizer["Repl_GrossDemand"])?.ToString() ?? ""), src => (object?)((src.GrossRemainingQuantity.ToString("0.###"))), css: "small text-end", headerCss: "text-end").Add(((Localizer["Repl_Covered"])?.ToString() ?? ""), src => (object?)((src.CoveredByReservation.ToString("0.###"))), css: "small text-end", headerCss: "text-end").Add(((Localizer["Repl_UnreservedDemand"])?.ToString() ?? ""), src => (object?)((src.UnreservedQuantity.ToString("0.###"))), css: "small text-end", headerCss: "text-end")))" css="mb-0" />
     </div>
     @if (!Model.Sources.Any()) { <p class="text-muted text-center py-3 mb-0 small">@Localizer["Repl_NoSources"]</p> }
 </pems-content-card>

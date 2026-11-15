@@ -30,35 +30,7 @@
 <pems-content-card>
     <h6 class="mb-3">@Localizer["Recent Import Batches"]</h6>
     <pems-table-scroll css="table-scroll-area pems-s-8da1c6e6">
-    <pems-table kind="enterprise">
-        <pems-table-head>
-            <pems-table-row>
-                <pems-table-header>@Localizer["File"]</pems-table-header><pems-table-header>@Localizer["Date"]</pems-table-header><pems-table-header>@Localizer["Imported By"]</pems-table-header><pems-table-header class="text-end">@Localizer["Total"]</pems-table-header>
-                <pems-table-header class="text-end">@Localizer["New"]</pems-table-header><pems-table-header class="text-end">@Localizer["Duplicate"]</pems-table-header>
-                <pems-table-header class="text-end">@Localizer["Unresolved"]</pems-table-header><pems-table-header class="text-end">@Localizer["Conflicts"]</pems-table-header>
-                <pems-table-header>@Localizer["Status"]</pems-table-header><pems-table-header></pems-table-header>
-            </pems-table-row>
-        </pems-table-head>
-        <pems-table-body>
-            @foreach (var b in Model)
-            {
-                <pems-table-row>
-                    <pems-table-cell>@b.FileName</pems-table-cell>
-                    <pems-table-cell>@b.ImportDate.ToString("yyyy-MM-dd HH:mm")</pems-table-cell>
-                    <pems-table-cell class="small">@b.ImportedByName</pems-table-cell>
-                    <pems-table-cell class="text-end">@b.TotalRows</pems-table-cell>
-                    <pems-table-cell class="text-end"><pems-badge tone="success">@b.NewCount</pems-badge></pems-table-cell>
-                    <pems-table-cell class="text-end">@if (b.DuplicateCount > 0) { <pems-badge tone="warning">@b.DuplicateCount</pems-badge> } else { @b.DuplicateCount }</pems-table-cell>
-                    <pems-table-cell class="text-end">@if (b.UnresolvedCount > 0) { <pems-badge tone="danger">@b.UnresolvedCount</pems-badge> } else { @b.UnresolvedCount }</pems-table-cell>
-                    <pems-table-cell class="text-end">@if (b.ConflictCount > 0) { <pems-badge tone="danger">@b.ConflictCount</pems-badge> } else { @b.ConflictCount }</pems-table-cell>
-                    <pems-table-cell><pems-badge tone="@(b.Status == "Committed" ? "success" : "neutral")">@b.Status</pems-badge></pems-table-cell>
-                    <pems-table-cell>
-                        <pems-button tone="primary" size="small" outline="true" as="a" asp-action="Review" asp-route-batchId="@b.MaintenanceHistoryImportBatchId">Review</pems-button>
-                    </pems-table-cell>
-                </pems-table-row>
-            }
-        </pems-table-body>
-    </pems-table>
+    <pems-data-table data="@(DataRows.Of(Model, c_ => c_.Add(((Localizer["File"])?.ToString() ?? ""), b => (object?)(b.FileName)).Add(((Localizer["Date"])?.ToString() ?? ""), b => (object?)((b.ImportDate.ToString("yyyy-MM-dd HH:mm")))).Add(((Localizer["Imported By"])?.ToString() ?? ""), b => (object?)(b.ImportedByName), css: "small").Add(((Localizer["Total"])?.ToString() ?? ""), b => (object?)(b.TotalRows), css: "text-end", headerCss: "text-end").Add(((Localizer["New"])?.ToString() ?? ""), b => (object?)(DataCell.Badge("success", b.NewCount)), css: "text-end", headerCss: "text-end").Add(((Localizer["Duplicate"])?.ToString() ?? ""), b => (object?)((b.DuplicateCount > 0 ? (object?)DataCell.Badge("warning", b.DuplicateCount) : b.DuplicateCount)), css: "text-end", headerCss: "text-end").Add(((Localizer["Unresolved"])?.ToString() ?? ""), b => (object?)((b.UnresolvedCount > 0 ? (object?)DataCell.Badge("danger", b.UnresolvedCount) : b.UnresolvedCount)), css: "text-end", headerCss: "text-end").Add(((Localizer["Conflicts"])?.ToString() ?? ""), b => (object?)((b.ConflictCount > 0 ? (object?)DataCell.Badge("danger", b.ConflictCount) : b.ConflictCount)), css: "text-end", headerCss: "text-end").Add(((Localizer["Status"])?.ToString() ?? ""), b => (object?)(DataCell.Badge(b.Status == "Committed" ? "success" : "neutral", b.Status))).Add("", b => (object?)(DataCell.ButtonLink(Url.Action("Review", null, new { batchId = b.MaintenanceHistoryImportBatchId }), "primary", "small", true, null, "Review")))))" />
     </pems-table-scroll>
     @if (!Model.Any()) { <p class="text-muted text-center py-4">No Maintenance History import batches yet.</p> }
 </pems-content-card>

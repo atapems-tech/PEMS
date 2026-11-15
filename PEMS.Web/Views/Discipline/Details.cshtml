@@ -105,15 +105,7 @@
         <pems-content-card>
             <h6 class="mb-3">@Localizer["Equipment"]</h6>
             <div class="table-scroll-area pems-s-3a95d6b3">
-                <pems-table kind="enterprise">
-                    <pems-table-head><pems-table-row><pems-table-header>@Localizer["Tag"]</pems-table-header><pems-table-header>@Localizer["Name"]</pems-table-header></pems-table-row></pems-table-head>
-                    <pems-table-body>
-                        @foreach (var e in Model.Equipment)
-                        {
-                            <pems-table-row><pems-table-cell><a asp-controller="Equipment" asp-action="Details" asp-route-id="@e.EquipmentId">@e.TagNumber</a></pems-table-cell><pems-table-cell>@e.Name</pems-table-cell></pems-table-row>
-                        }
-                    </pems-table-body>
-                </pems-table>
+                <pems-data-table data="@(DataRows.Of(Model.Equipment, c_ => c_.Add(((Localizer["Tag"])?.ToString() ?? ""), e => (object?)(DataCell.Link(Url.Action("Details", "Equipment", new { id = e.EquipmentId }), e.TagNumber))).Add(((Localizer["Name"])?.ToString() ?? ""), e => (object?)(e.Name))))" />
             </div>
             @if (!Model.Equipment.Any()) { <p class="text-muted small">No equipment.</p> }
         </pems-content-card>
@@ -123,15 +115,7 @@
         <pems-content-card css="mb-3">
             <h6 class="mb-3">@Localizer["VDR Items"]</h6>
             <div class="table-scroll-area pems-s-3a95d6b3">
-                <pems-table kind="enterprise">
-                    <pems-table-head><pems-table-row><pems-table-header>@Localizer["Doc No"]</pems-table-header><pems-table-header>@Localizer["Vendor"]</pems-table-header><pems-table-header>@Localizer["Status"]</pems-table-header></pems-table-row></pems-table-head>
-                    <pems-table-body>
-                        @foreach (var v in Model.VDRItems)
-                        {
-                            <pems-table-row><pems-table-cell><a asp-controller="VDR" asp-action="Details" asp-route-id="@v.VDRItemId">@v.DocumentNumber</a></pems-table-cell><pems-table-cell>@v.VendorName</pems-table-cell><pems-table-cell><pems-badge tone="neutral">@v.WorkflowStatus</pems-badge></pems-table-cell></pems-table-row>
-                        }
-                    </pems-table-body>
-                </pems-table>
+                <pems-data-table data="@(DataRows.Of(Model.VDRItems, c_ => c_.Add(((Localizer["Doc No"])?.ToString() ?? ""), v => (object?)(DataCell.Link(Url.Action("Details", "VDR", new { id = v.VDRItemId }), v.DocumentNumber))).Add(((Localizer["Vendor"])?.ToString() ?? ""), v => (object?)(v.VendorName)).Add(((Localizer["Status"])?.ToString() ?? ""), v => (object?)(DataCell.Badge("neutral", v.WorkflowStatus)))))" />
             </div>
             @if (!Model.VDRItems.Any()) { <p class="text-muted small">No VDR items.</p> }
         </pems-content-card>

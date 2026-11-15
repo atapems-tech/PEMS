@@ -25,19 +25,7 @@
 {
     <pems-content-card css="mb-3">
         <h6 class="small fw-bold">@Localizer["Rcm_AssignReport"]</h6>
-        <pems-table scale="small" css="table-enterprise">
-            <pems-table-head><pems-table-row><pems-table-header>@Localizer["Rcm_Tag"]</pems-table-header><pems-table-header>@Localizer["Rcm_SkipReason"]</pems-table-header></pems-table-row></pems-table-head>
-            <pems-table-body>
-            @foreach (var row in Model.AssignReport)
-            {
-                <pems-table-row>
-                    <pems-table-cell>@row[0]</pems-table-cell>
-                    <pems-table-cell class="small">@(row[1] == "NotFound" ? Localizer["Rcm_Bulk_NotFound"].Value : Localizer["Rcm_Bulk_" + row[1]].Value)
-                        @if (row.Length > 2 && int.TryParse(row[2], out var otherId)) { <a asp-action="Details" asp-route-id="@otherId">#@otherId</a> }</pems-table-cell>
-                </pems-table-row>
-            }
-            </pems-table-body>
-        </pems-table>
+        <pems-data-table data="@(DataRows.Of(Model.AssignReport, c_ => c_.Add(((Localizer["Rcm_Tag"])?.ToString() ?? ""), row => (object?)((row[0]))).Add(((Localizer["Rcm_SkipReason"])?.ToString() ?? ""), row => (object?)(DataCell.Group((row[1] == "NotFound" ? Localizer["Rcm_Bulk_NotFound"].Value : Localizer["Rcm_Bulk_" + row[1]].Value), " ", (row.Length > 2 && int.TryParse(row[2], out var otherId) ? (object?)DataCell.Link(Url.Action("Details", null, new { id = otherId }), "#", otherId) : null))), css: "small")))" dense="true" />
     </pems-content-card>
 }
 
@@ -213,21 +201,7 @@
 
 <pems-content-card>
     <h6 class="small fw-bold">@Localizer["Rcm_History"]</h6>
-    <pems-table scale="small" css="table-enterprise">
-        <pems-table-head><pems-table-row><pems-table-header>@Localizer["Rcm_When"]</pems-table-header><pems-table-header>@Localizer["Rcm_Who"]</pems-table-header><pems-table-header>@Localizer["Rcm_Action"]</pems-table-header><pems-table-header>@Localizer["Rcm_Version"]</pems-table-header><pems-table-header>@Localizer["Rcm_Changes"]</pems-table-header></pems-table-row></pems-table-head>
-        <pems-table-body>
-        @foreach (var h in s.History)
-        {
-            <pems-table-row>
-                <pems-table-cell class="small text-nowrap">@h.Timestamp.ToString("yyyy-MM-dd HH:mm")</pems-table-cell>
-                <pems-table-cell class="small">@h.ActorName</pems-table-cell>
-                <pems-table-cell class="small">@Localizer.Label("HistoryAction", h.Action) @if (h.FromStatus != null || h.ToStatus != null) { <span class="text-muted">(@h.FromStatus → @h.ToStatus)</span> }</pems-table-cell>
-                <pems-table-cell class="small">v@(h.VersionNumber)</pems-table-cell>
-                <pems-table-cell class="small"><pre class="mb-0 pems-s-121f7751">@h.ChangesSummary</pre>@h.Comment</pems-table-cell>
-            </pems-table-row>
-        }
-        </pems-table-body>
-    </pems-table>
+    <pems-data-table data="@(DataRows.Of(s.History, c_ => c_.Add(((Localizer["Rcm_When"])?.ToString() ?? ""), h => (object?)((h.Timestamp.ToString("yyyy-MM-dd HH:mm"))), css: "small text-nowrap").Add(((Localizer["Rcm_Who"])?.ToString() ?? ""), h => (object?)(h.ActorName), css: "small").Add(((Localizer["Rcm_Action"])?.ToString() ?? ""), h => (object?)(DataCell.Group((Localizer.Label("HistoryAction", h.Action)), " ", (h.FromStatus != null || h.ToStatus != null ? (object?)DataCell.Span("text-muted", "(", h.FromStatus, " → ", h.ToStatus, ")") : null))), css: "small").Add(((Localizer["Rcm_Version"])?.ToString() ?? ""), h => (object?)(DataCell.Group("v", h.VersionNumber)), css: "small").Add(((Localizer["Rcm_Changes"])?.ToString() ?? ""), h => (object?)(DataCell.Group(DataCell.Span("mb-0 pems-s-121f7751", h.ChangesSummary).WithTag("pre"), h.Comment)), css: "small")))" dense="true" />
 </pems-content-card>
 
 <pems-modal id="overrideModal" tabindex="-1">
