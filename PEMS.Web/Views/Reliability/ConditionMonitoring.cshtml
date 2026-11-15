@@ -81,25 +81,16 @@
 {
     <pems-content-card css="mb-3">
         <pems-heading level="6" class="mb-2">Monitoring Points — Equipment #@equipmentId</pems-heading>
-        <pems-table kind="enterprise" scale="small" css="mb-0">
-            <pems-table-head><pems-table-row><pems-table-header>@Localizer["Variable"]</pems-table-header><pems-table-header>@Localizer["Tag"]</pems-table-header><pems-table-header>@Localizer["Unit"]</pems-table-header><pems-table-header class="text-end">@Localizer["Alarm Range"]</pems-table-header><pems-table-header class="text-end">@Localizer["Readings"]</pems-table-header><pems-table-header>@Localizer["Last Reading"]</pems-table-header><pems-table-header>@Localizer["Evaluation"]</pems-table-header><pems-table-header>@Localizer["CBM Strategy"]</pems-table-header></pems-table-row></pems-table-head>
-            <pems-table-body>
-                @foreach (var p in Model)
-                {
-                    <pems-table-row class="@(p.LastReadingIsAlarm ? "table-danger" : "")">
-                        <pems-table-cell>@p.VariableType</pems-table-cell>
-                        <pems-table-cell>@p.Tag</pems-table-cell>
-                        <pems-table-cell>@p.Unit</pems-table-cell>
-                        <pems-table-cell class="text-end small">@p.AlarmThresholdLow – @p.AlarmThresholdHigh</pems-table-cell>
-                        <pems-table-cell class="text-end">
+        @{
+            var rows_73 = Model;
+            var cell_73_4 = DataCell.Template(rows_73, @<text>@{ var p = item; }
                             @p.ReadingCount
                             @if (p.ReadingCount > 0)
                             {
                                 <pems-button tone="neutral" size="small" outline="true" css="ms-1" as="a" asp-action="Trend" asp-route-pointId="@p.ConditionMonitoringPointId" title="@Localizer["Trend"]"><pems-icon name="bi-graph-up" /></pems-button>
                             }
-                        </pems-table-cell>
-                        <pems-table-cell class="small">@(p.LastReadingDate.HasValue ? $"{p.LastValue} @ {p.LastReadingDate.Value:yyyy-MM-dd}" : "No readings yet")</pems-table-cell>
-                        <pems-table-cell>
+                        </text>);
+            var cell_73_6 = DataCell.Template(rows_73, @<text>@{ var p = item; }
                             @if (p.EvaluationProfileId.HasValue)
                             {
                                 <pems-badge tone="@EvalBadge(p.LastReadingEvaluationStatus)">@p.LastReadingEvaluationStatus</pems-badge>
@@ -138,8 +129,8 @@
                                     </pems-button>
                                 </pems-form>
                             }
-                        </pems-table-cell>
-                        <pems-table-cell>
+                        </text>);
+            var cell_73_7 = DataCell.Template(rows_73, @<text>@{ var p = item; }
                             @if (pointsWithCbmStrategy.Contains(p.ConditionMonitoringPointId))
                             {
                                 <pems-badge tone="success">@Localizer["Linked"]</pems-badge>
@@ -155,11 +146,9 @@
                                     </pems-button>
                                 </pems-form>
                             }
-                        </pems-table-cell>
-                    </pems-table-row>
-                }
-            </pems-table-body>
-        </pems-table>
+                        </text>);
+        }
+        <pems-data-table data="@(DataRows.Of(rows_73, c_ => c_.Add(((Localizer["Variable"])?.ToString() ?? ""), p => (object?)(p.VariableType)).Add(((Localizer["Tag"])?.ToString() ?? ""), p => (object?)(p.Tag)).Add(((Localizer["Unit"])?.ToString() ?? ""), p => (object?)(p.Unit)).Add(((Localizer["Alarm Range"])?.ToString() ?? ""), p => (object?)(DataCell.Group(p.AlarmThresholdLow, " – ", p.AlarmThresholdHigh)), css: "text-end small", headerCss: "text-end").Add(((Localizer["Readings"])?.ToString() ?? ""), p => (object?)cell_73_4(p), css: "text-end", headerCss: "text-end").Add(((Localizer["Last Reading"])?.ToString() ?? ""), p => (object?)((p.LastReadingDate.HasValue ? $"{p.LastValue} @ {p.LastReadingDate.Value:yyyy-MM-dd}" : "No readings yet")), css: "small").Add(((Localizer["Evaluation"])?.ToString() ?? ""), p => (object?)cell_73_6(p)).Add(((Localizer["CBM Strategy"])?.ToString() ?? ""), p => (object?)cell_73_7(p)), rowClass: p => (p.LastReadingIsAlarm ? "table-danger" : "")))" dense="true" css="mb-0" />
         @if (!Model.Any()) { <pems-text class="text-muted text-center py-3 mb-0">@Localizer["هیچ نقطه‌ی پایشی برای این تجهیز تعریف نشده."]</pems-text> }
     </pems-content-card>
 

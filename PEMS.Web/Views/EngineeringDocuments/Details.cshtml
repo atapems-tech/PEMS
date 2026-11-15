@@ -743,22 +743,9 @@
             <pems-heading level="6" class="mb-3"><pems-icon name="bi-envelope-paper" /> @Localizer["Ed_SecCorrespondence"]</pems-heading>
             @if (relatedLetters.Any())
             {
-                <pems-table kind="enterprise">
-                    <pems-table-head><pems-table-row><pems-table-header>@Localizer["Ed_Letters_Type"]</pems-table-header><pems-table-header>@Localizer["Ed_LetterNo"]</pems-table-header><pems-table-header>@Localizer["Ed_Subject"]</pems-table-header><pems-table-header>@Localizer["Ed_Date"]</pems-table-header><pems-table-header>@Localizer["Ed_Status"]</pems-table-header><pems-table-header></pems-table-header></pems-table-row></pems-table-head>
-                    <pems-table-body>
-                        @foreach (var l in relatedLetters)
-                        {
-                            <pems-table-row>
-                                <pems-table-cell><pems-badge tone="neutral">@l.LetterType</pems-badge></pems-table-cell>
-                                <pems-table-cell>@l.LetterNumber</pems-table-cell>
-                                <pems-table-cell>@l.Subject</pems-table-cell>
-                                <pems-table-cell class="small text-muted">@l.LetterDate.ToString("yyyy-MM-dd")</pems-table-cell>
-                                <pems-table-cell><pems-badge tone="info">@l.Status</pems-badge></pems-table-cell>
-                                <pems-table-cell><pems-button tone="neutral" size="small" outline="true" as="a" asp-controller="Letter" asp-action="Details" asp-route-id="@l.LetterId" data-bs-toggle="tooltip" title="View letter" aria-label="View letter @l.LetterNumber"><pems-icon name="bi-eye" /></pems-button></pems-table-cell>
-                            </pems-table-row>
-                        }
-                    </pems-table-body>
-                </pems-table>
+                var rows_31 = relatedLetters;
+                var cell_31_5 = DataCell.Template(rows_31, @<text>@{ var l = item; }<pems-button tone="neutral" size="small" outline="true" as="a" asp-controller="Letter" asp-action="Details" asp-route-id="@l.LetterId" data-bs-toggle="tooltip" title="View letter" aria-label="View letter @l.LetterNumber"><pems-icon name="bi-eye" /></pems-button></text>);
+                <pems-data-table data="@(DataRows.Of(rows_31, c_ => c_.Add(((Localizer["Ed_Letters_Type"])?.ToString() ?? ""), l => (object?)(DataCell.Badge("neutral", l.LetterType))).Add(((Localizer["Ed_LetterNo"])?.ToString() ?? ""), l => (object?)(l.LetterNumber)).Add(((Localizer["Ed_Subject"])?.ToString() ?? ""), l => (object?)(l.Subject)).Add(((Localizer["Ed_Date"])?.ToString() ?? ""), l => (object?)((l.LetterDate.ToString("yyyy-MM-dd"))), css: "small text-muted").Add(((Localizer["Ed_Status"])?.ToString() ?? ""), l => (object?)(DataCell.Badge("info", l.Status))).Add("", l => (object?)cell_31_5(l))))" />
             }
             else
             {
@@ -776,22 +763,10 @@
             <pems-heading level="6" class="mb-3"><pems-icon name="bi-truck" /> @Localizer["Ed_SecTransmittals"]</pems-heading>
             @if (relatedTransmittals.Any())
             {
-                <pems-table kind="enterprise">
-                    <pems-table-head><pems-table-row><pems-table-header>@Localizer["Ed_TransmittalNo"]</pems-table-header><pems-table-header>@Localizer["Ed_RevSent"]</pems-table-header><pems-table-header>@Localizer["Ed_Purpose"]</pems-table-header><pems-table-header>@Localizer["Ed_Date"]</pems-table-header><pems-table-header>@Localizer["Ed_Status"]</pems-table-header><pems-table-header></pems-table-header></pems-table-row></pems-table-head>
-                    <pems-table-body>
-                        @foreach (var t in relatedTransmittals)
-                        {
-                            <pems-table-row>
-                                <pems-table-cell>@t.TransmittalNo</pems-table-cell>
-                                <pems-table-cell class="small text-muted">@Localizer["Ed_CurrentRev"] <span class="vs-num">@t.RevisionNoAtTransmittal</span></pems-table-cell>
-                                <pems-table-cell>@t.Purpose</pems-table-cell>
-                                <pems-table-cell class="small text-muted">@(t.SentDate?.ToString("yyyy-MM-dd") ?? t.TransmittalDate.ToString("yyyy-MM-dd"))</pems-table-cell>
-                                <pems-table-cell><span class="vs-pill @PEMS.Web.Helpers.VdrUi.TransmittalTone(t.Status)">@VdrUi.Loc(Localizer, "St_", t.Status)</span></pems-table-cell>
-                                <pems-table-cell><pems-button tone="neutral" size="small" outline="true" as="a" asp-controller="Transmittal" asp-action="Details" asp-route-id="@t.TransmittalId" data-bs-toggle="tooltip" title="View transmittal" aria-label="View transmittal @t.TransmittalNo"><pems-icon name="bi-eye" /></pems-button></pems-table-cell>
-                            </pems-table-row>
-                        }
-                    </pems-table-body>
-                </pems-table>
+                var rows_32 = relatedTransmittals;
+                var cell_32_4 = DataCell.Template(rows_32, @<text>@{ var t = item; }<span class="vs-pill @PEMS.Web.Helpers.VdrUi.TransmittalTone(t.Status)">@VdrUi.Loc(Localizer, "St_", t.Status)</span></text>);
+                var cell_32_5 = DataCell.Template(rows_32, @<text>@{ var t = item; }<pems-button tone="neutral" size="small" outline="true" as="a" asp-controller="Transmittal" asp-action="Details" asp-route-id="@t.TransmittalId" data-bs-toggle="tooltip" title="View transmittal" aria-label="View transmittal @t.TransmittalNo"><pems-icon name="bi-eye" /></pems-button></text>);
+                <pems-data-table data="@(DataRows.Of(rows_32, c_ => c_.Add(((Localizer["Ed_TransmittalNo"])?.ToString() ?? ""), t => (object?)(t.TransmittalNo)).Add(((Localizer["Ed_RevSent"])?.ToString() ?? ""), t => (object?)(DataCell.Group(Localizer["Ed_CurrentRev"], " ", DataCell.Span("vs-num", t.RevisionNoAtTransmittal))), css: "small text-muted").Add(((Localizer["Ed_Purpose"])?.ToString() ?? ""), t => (object?)(t.Purpose)).Add(((Localizer["Ed_Date"])?.ToString() ?? ""), t => (object?)((t.SentDate?.ToString("yyyy-MM-dd") ?? t.TransmittalDate.ToString("yyyy-MM-dd"))), css: "small text-muted").Add(((Localizer["Ed_Status"])?.ToString() ?? ""), t => (object?)cell_32_4(t)).Add("", t => (object?)cell_32_5(t))))" />
             }
             else
             {
@@ -905,19 +880,9 @@
 <pems-content-card css="mb-3">
     <pems-heading level="6" class="mb-3">Comment Management <span class="text-muted small">(Action Status is tracked independently from Review Status)</span></pems-heading>
 
-    <pems-table kind="enterprise">
-        <pems-table-head><pems-table-row><pems-table-header>No</pems-table-header><pems-table-header>@Localizer["Category"]</pems-table-header><pems-table-header>Sheet/Zone</pems-table-header><pems-table-header>@Localizer["Comment"]</pems-table-header><pems-table-header>@Localizer["Raised By"]</pems-table-header><pems-table-header>@Localizer["Raised"]</pems-table-header><pems-table-header>@Localizer["Action Status"]</pems-table-header><pems-table-header>@Localizer["Response"]</pems-table-header></pems-table-row></pems-table-head>
-        <pems-table-body>
-            @foreach (var c in engComments)
-            {
-                <pems-table-row>
-                    <pems-table-cell><strong>@c.CommentNo</strong></pems-table-cell>
-                    <pems-table-cell>
-                        @if (!string.IsNullOrEmpty(c.Category)) { <pems-badge tone="neutral">@c.Category</pems-badge> }
-                        @if (!string.IsNullOrEmpty(c.Severity)) { <pems-badge tone="dark">@c.Severity</pems-badge> }
-                    </pems-table-cell>
-                    <pems-table-cell class="small">@c.Sheet @c.Zone</pems-table-cell>
-                    <pems-table-cell class="small">
+    @{
+        var rows_33 = engComments;
+        var cell_33_3 = DataCell.Template(rows_33, @<text>@{ var c = item; }
                         @c.CommentText
                         @if (!string.IsNullOrEmpty(c.AttachmentFilePath))
                         {
@@ -941,10 +906,8 @@
                                 }
                             </div>
                         }
-                    </pems-table-cell>
-                    <pems-table-cell>@c.RaisedByName</pems-table-cell>
-                    <pems-table-cell>@c.RaisedDate.ToString("yyyy-MM-dd")</pems-table-cell>
-                    <pems-table-cell>
+                    </text>);
+        var cell_33_6 = DataCell.Template(rows_33, @<text>@{ var c = item; }
                         @{
                             var eab = c.ActionStatus switch
                             {
@@ -964,8 +927,8 @@
                                 { <option value="@s" selected="@(s == c.ActionStatus)">@s</option> }
                             </pems-select>
                         </pems-form>
-                    </pems-table-cell>
-                    <pems-table-cell class="small">
+                    </text>);
+        var cell_33_7 = DataCell.Template(rows_33, @<text>@{ var c = item; }
                         @c.ResponseText
                         @if (!string.IsNullOrEmpty(c.ReplyAttachmentFilePath))
                         {
@@ -977,11 +940,9 @@
                                 <pems-icon name="bi-reply" /> Reply
                             </pems-button>
                         }
-                    </pems-table-cell>
-                </pems-table-row>
-            }
-        </pems-table-body>
-    </pems-table>
+                    </text>);
+    }
+    <pems-data-table data="@(DataRows.Of(rows_33, c_ => c_.Add("No", c => (object?)(DataCell.Span(null, c.CommentNo).WithTag("strong"))).Add(((Localizer["Category"])?.ToString() ?? ""), c => (object?)(DataCell.Group((!string.IsNullOrEmpty(c.Category) ? (object?)DataCell.Badge("neutral", c.Category) : null), " ", (!string.IsNullOrEmpty(c.Severity) ? (object?)DataCell.Badge("dark", c.Severity) : null)))).Add("Sheet/Zone", c => (object?)(DataCell.Group(c.Sheet, " ", c.Zone)), css: "small").Add(((Localizer["Comment"])?.ToString() ?? ""), c => (object?)cell_33_3(c), css: "small").Add(((Localizer["Raised By"])?.ToString() ?? ""), c => (object?)(c.RaisedByName)).Add(((Localizer["Raised"])?.ToString() ?? ""), c => (object?)((c.RaisedDate.ToString("yyyy-MM-dd")))).Add(((Localizer["Action Status"])?.ToString() ?? ""), c => (object?)cell_33_6(c)).Add(((Localizer["Response"])?.ToString() ?? ""), c => (object?)cell_33_7(c), css: "small")))" />
     @if (!engComments.Any()) { <pems-text class="text-muted">No comments recorded yet.</pems-text> }
 
     <pems-button tone="primary" size="small" type="button" data-bs-toggle="modal" data-bs-target="#addEngCommentModal">

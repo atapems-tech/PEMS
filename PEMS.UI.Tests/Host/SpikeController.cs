@@ -41,6 +41,7 @@ public sealed class SpikeController(IAntiforgery antiforgery) : Controller
     [HttpGet("/b/table")] public IActionResult TableB() => View("TableB");
     [HttpGet("/b/table-percell")] public IActionResult TableBPerCell() => View("TableBPerCell");
     [HttpGet("/b/descriptor-table")] public IActionResult DescriptorTable() => View("DescriptorTable");
+    [HttpGet("/b/template-cell")] public IActionResult TemplateCell() => View("TemplateCell");   // SCRUM-570
     [HttpGet("/b/antiforgery-probe")] public IActionResult AntiforgeryProbe() => View("AntiforgeryProbe");
 
     // Form through the Tag Helper facade: model binding + data-annotation validation + antiforgery by the MVC form

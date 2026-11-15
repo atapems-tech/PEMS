@@ -47,20 +47,9 @@
             }
             else
             {
-                <pems-table scale="small">
-                    <pems-table-head><pems-table-row><pems-table-header>@Localizer["Tag"]</pems-table-header><pems-table-header>@Localizer["Variable"]</pems-table-header><pems-table-header>@Localizer["Evaluation"]</pems-table-header><pems-table-header>@Localizer["Last Reading"]</pems-table-header></pems-table-row></pems-table-head>
-                    <pems-table-body>
-                        @foreach (var p in Model.AttentionPoints)
-                        {
-                            <pems-table-row>
-                                <pems-table-cell><pems-link asp-controller="Equipment" asp-action="Details" asp-route-id="@p.EquipmentId">@p.EquipmentTagNumber</pems-link></pems-table-cell>
-                                <pems-table-cell class="small">@p.VariableType — @p.Tag</pems-table-cell>
-                                <pems-table-cell><pems-badge tone="none" css="@EvalBadge(p.EvaluationStatus)">@p.EvaluationStatus</pems-badge></pems-table-cell>
-                                <pems-table-cell class="small">@(p.LastReadingDate?.ToString("yyyy-MM-dd") ?? "-")</pems-table-cell>
-                            </pems-table-row>
-                        }
-                    </pems-table-body>
-                </pems-table>
+                var rows_72 = Model.AttentionPoints;
+                var cell_72_2 = DataCell.Template(rows_72, @<text>@{ var p = item; }<pems-badge tone="none" css="@EvalBadge(p.EvaluationStatus)">@p.EvaluationStatus</pems-badge></text>);
+                <pems-data-table data="@(DataRows.Of(rows_72, c_ => c_.Add(((Localizer["Tag"])?.ToString() ?? ""), p => (object?)(DataCell.Link(Url.Action("Details", "Equipment", new { id = p.EquipmentId }), p.EquipmentTagNumber))).Add(((Localizer["Variable"])?.ToString() ?? ""), p => (object?)(DataCell.Group(p.VariableType, " — ", p.Tag)), css: "small").Add(((Localizer["Evaluation"])?.ToString() ?? ""), p => (object?)cell_72_2(p)).Add(((Localizer["Last Reading"])?.ToString() ?? ""), p => (object?)((p.LastReadingDate?.ToString("yyyy-MM-dd") ?? "-")), css: "small")))" dense="true" />
                 @if (Model.AttentionPointsTruncated)
                 {
                     <div class="small text-muted">@Localizer["فهرست به بالاترین ۵۰ مورد محدود شده است."]</div>

@@ -30,14 +30,9 @@
 <pems-content-card css="mb-3">
     <pems-heading level="6" class="mb-3">@Localizer["Items"]</pems-heading>
     <pems-table-scroll css="table-scroll-area pems-s-8da1c6e6">
-    <pems-table kind="enterprise">
-        <pems-table-head><pems-table-row><pems-table-header>@Localizer["Description"]</pems-table-header><pems-table-header>@Localizer["Part No"]</pems-table-header><pems-table-header>@Localizer["Qty"]</pems-table-header><pems-table-header>@Localizer["Unit"]</pems-table-header></pems-table-row></pems-table-head>
-        <pems-table-body>
-            @foreach (var i in Model.Items)
-            {
-                <pems-table-row>
-                    <pems-table-cell>@i.ItemDescription</pems-table-cell>
-                    <pems-table-cell>
+    @{
+        var rows_65 = Model.Items;
+        var cell_65_1 = DataCell.Template(rows_65, @<text>@{ var i = item; }
                         @i.PartNumber
                         @* SCRUM-428: linked to a registered part, or typed and not catalogued yet *@
                         @if (!string.IsNullOrEmpty(i.PartNumber))
@@ -45,13 +40,9 @@
                             @if (i.IsCatalogued) { <span class="vs-pill vs-pill--success ms-1" title="@Localizer["Mr_PartCataloguedHint"]">@Localizer["Mr_PartCatalogued"]</span> }
                             else { <span class="vs-pill vs-pill--warning ms-1" title="@Localizer["Mr_PartNotCataloguedHint"]">@Localizer["Mr_PartNotCatalogued"]</span> }
                         }
-                    </pems-table-cell>
-                    <pems-table-cell>@i.Quantity</pems-table-cell>
-                    <pems-table-cell>@i.Unit</pems-table-cell>
-                </pems-table-row>
-            }
-        </pems-table-body>
-    </pems-table>
+                    </text>);
+    }
+    <pems-data-table data="@(DataRows.Of(rows_65, c_ => c_.Add(((Localizer["Description"])?.ToString() ?? ""), i => (object?)(i.ItemDescription)).Add(((Localizer["Part No"])?.ToString() ?? ""), i => (object?)cell_65_1(i)).Add(((Localizer["Qty"])?.ToString() ?? ""), i => (object?)(i.Quantity)).Add(((Localizer["Unit"])?.ToString() ?? ""), i => (object?)(i.Unit))))" />
     </pems-table-scroll>
 </pems-content-card>
 

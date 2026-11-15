@@ -42,18 +42,9 @@
 
 <pems-content-card>
     <pems-table-scroll css="table-scroll-area pems-s-8da1c6e6">
-        <pems-table kind="enterprise">
-            <pems-table-head>
-                <pems-table-row>
-                    <pems-table-header>@Localizer["Include"]</pems-table-header><pems-table-header>#</pems-table-header><pems-table-header>@Localizer["Document No"]</pems-table-header><pems-table-header>@Localizer["Vendor"]</pems-table-header><pems-table-header>@Localizer["Type"]</pems-table-header>
-                    <pems-table-header>@Localizer["Discipline"]</pems-table-header><pems-table-header>@Localizer["Revisions"]</pems-table-header><pems-table-header>@Localizer["Validation"]</pems-table-header><pems-table-header>@Localizer["Message"]</pems-table-header><pems-table-header>@Localizer["Duplicate"]</pems-table-header>
-                </pems-table-row>
-            </pems-table-head>
-            <pems-table-body>
-                @foreach (var r in Model.Rows)
-                {
-                    <pems-table-row class="@(r.ValidationStatus == "Error" ? "table-danger" : r.ValidationStatus == "Warning" ? "table-warning" : "")">
-                        <pems-table-cell>
+        @{
+            var rows_81 = Model.Rows;
+            var cell_81_0 = DataCell.Template(rows_81, @<text>@{ var r = item; }
                             @if (Model.Status == "Staged")
                             {
                                 <pems-form asp-action="ToggleRow" method="post">
@@ -69,25 +60,15 @@
                             {
                                 @(r.IncludeInCommit ? "Yes" : "No")
                             }
-                        </pems-table-cell>
-                        <pems-table-cell>@r.RowNumber</pems-table-cell>
-                        <pems-table-cell>@r.DocumentNumber</pems-table-cell>
-                        <pems-table-cell>@r.VendorNameRaw</pems-table-cell>
-                        <pems-table-cell>@r.Payload?.DocumentTypeCode</pems-table-cell>
-                        <pems-table-cell>@r.Payload?.DisciplineCodeRaw</pems-table-cell>
-                        <pems-table-cell><pems-badge tone="neutral">@(r.Payload?.Submissions.Count ?? 0)</pems-badge></pems-table-cell>
-                        <pems-table-cell>
+                        </text>);
+            var cell_81_7 = DataCell.Template(rows_81, @<text>@{ var r = item; }
                             @{
                                 var vb = r.ValidationStatus switch { "Error" => "danger", "Warning" => "warning", _ => "success" };
                             }
                             <pems-badge tone="@vb">@r.ValidationStatus</pems-badge>
-                        </pems-table-cell>
-                        <pems-table-cell class="small text-muted">@r.ValidationMessage</pems-table-cell>
-                        <pems-table-cell>@(r.IsDuplicate ? "Update existing" : "New")</pems-table-cell>
-                    </pems-table-row>
-                }
-            </pems-table-body>
-        </pems-table>
+                        </text>);
+        }
+        <pems-data-table data="@(DataRows.Of(rows_81, c_ => c_.Add(((Localizer["Include"])?.ToString() ?? ""), r => (object?)cell_81_0(r)).Add("#", r => (object?)(r.RowNumber)).Add(((Localizer["Document No"])?.ToString() ?? ""), r => (object?)(r.DocumentNumber)).Add(((Localizer["Vendor"])?.ToString() ?? ""), r => (object?)(r.VendorNameRaw)).Add(((Localizer["Type"])?.ToString() ?? ""), r => (object?)(r.Payload?.DocumentTypeCode)).Add(((Localizer["Discipline"])?.ToString() ?? ""), r => (object?)(r.Payload?.DisciplineCodeRaw)).Add(((Localizer["Revisions"])?.ToString() ?? ""), r => (object?)(DataCell.Badge("neutral", (r.Payload?.Submissions.Count ?? 0)))).Add(((Localizer["Validation"])?.ToString() ?? ""), r => (object?)cell_81_7(r)).Add(((Localizer["Message"])?.ToString() ?? ""), r => (object?)(r.ValidationMessage), css: "small text-muted").Add(((Localizer["Duplicate"])?.ToString() ?? ""), r => (object?)((r.IsDuplicate ? "Update existing" : "New"))), rowClass: r => (r.ValidationStatus == "Error" ? "table-danger" : r.ValidationStatus == "Warning" ? "table-warning" : "")))" />
     </pems-table-scroll>
 </pems-content-card>
 

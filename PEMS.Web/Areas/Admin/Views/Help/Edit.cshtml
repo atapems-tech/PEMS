@@ -38,19 +38,8 @@
     }
     else
     {
-        <pems-table kind="enterprise">
-            <pems-table-head><pems-table-row><pems-table-header>@Localizer["Type"]</pems-table-header><pems-table-header>Caption (EN)</pems-table-header><pems-table-header>@Localizer["Source"]</pems-table-header><pems-table-header>@Localizer["Status"]</pems-table-header><pems-table-header></pems-table-header></pems-table-row></pems-table-head>
-            <pems-table-body>
-                @foreach (var v in visuals)
-                {
-                    <pems-table-row>
-                        <pems-table-cell><pems-badge tone="light">@v.VisualType</pems-badge></pems-table-cell>
-                        <pems-table-cell><pems-link asp-action="VisualEdit" asp-route-id="@v.HelpVisualId">@v.CaptionEn</pems-link></pems-table-cell>
-                        <pems-table-cell class="small text-muted">
-                            @(v.VisualType == "WorkflowDiagram" ? $"{v.SourceWorkflowModule}/{v.SourceWorkflowCategory}" : "Manual")
-                        </pems-table-cell>
-                        <pems-table-cell><pems-badge tone="none" css="@(v.IsPublished ? "bg-success" : "bg-secondary")">@(v.IsPublished ? "Published" : "Draft")</pems-badge></pems-table-cell>
-                        <pems-table-cell class="text-end">
+        var rows_2 = visuals;
+        var cell_2_4 = DataCell.Template(rows_2, @<text>@{ var v = item; }
                             <pems-form asp-action="VisualSetPublished" asp-route-id="@v.HelpVisualId" asp-route-articleId="@Model.HelpArticleId" method="post" class="d-inline">
                                 <input type="hidden" name="isPublished" value="@(!v.IsPublished)" />
                                 <pems-button tone="none" size="small" css="btn-outline-@(v.IsPublished ? "secondary" : "success")" type="submit">
@@ -60,10 +49,7 @@
                             <pems-form asp-action="VisualDelete" asp-route-id="@v.HelpVisualId" asp-route-articleId="@Model.HelpArticleId" method="post" class="d-inline" data-pems-confirm="Delete this visual?">
                                 <pems-button tone="danger" size="small" outline="true" type="submit"><pems-icon name="bi-trash" /></pems-button>
                             </pems-form>
-                        </pems-table-cell>
-                    </pems-table-row>
-                }
-            </pems-table-body>
-        </pems-table>
+                        </text>);
+        <pems-data-table data="@(DataRows.Of(rows_2, c_ => c_.Add(((Localizer["Type"])?.ToString() ?? ""), v => (object?)(DataCell.Badge("light", v.VisualType))).Add("Caption (EN)", v => (object?)(DataCell.Link(Url.Action("VisualEdit", null, new { id = v.HelpVisualId }), v.CaptionEn))).Add(((Localizer["Source"])?.ToString() ?? ""), v => (object?)((v.VisualType == "WorkflowDiagram" ? $"{v.SourceWorkflowModule}/{v.SourceWorkflowCategory}" : "Manual")), css: "small text-muted").Add(((Localizer["Status"])?.ToString() ?? ""), v => (object?)(DataCell.Badge("none", (v.IsPublished ? "Published" : "Draft"), (v.IsPublished ? "bg-success" : "bg-secondary")))).Add("", v => (object?)cell_2_4(v), css: "text-end")))" />
     }
 </pems-content-card>

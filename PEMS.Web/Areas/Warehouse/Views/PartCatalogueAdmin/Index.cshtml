@@ -83,19 +83,11 @@
     <section class="vs-panel pc-card mt-3">
         <pems-heading level="2" class="vs-section__title"><pems-icon name="bi-clipboard2-pulse" /> @Localizer["Pc_Adm_DataQuality"]</pems-heading>
         <div class="pc-table-scroll">
-            <pems-table scale="small" css="table-enterprise vs-dense mb-0">
-                <pems-table-head><pems-table-row><pems-table-header>@Localizer["Pc_Adm_Severity"]</pems-table-header><pems-table-header>@Localizer["Pc_Adm_Responsibility"]</pems-table-header><pems-table-header>@Localizer["Pc_Adm_Finding"]</pems-table-header></pems-table-row></pems-table-head>
-                <pems-table-body>
-                @foreach (var f in ov.Findings.OrderBy(x => x.Severity).ThenBy(x => x.ResponsibilityKey))
-                {
-                    <pems-table-row>
-                        <pems-table-cell><span class="vs-pill @(f.Severity == "P1" ? "vs-pill--danger" : f.Severity == "P2" ? "vs-pill--warning" : "vs-pill--neutral")">@f.Severity</span></pems-table-cell>
-                        <pems-table-cell><code>@f.ResponsibilityKey</code></pems-table-cell>
-                        <pems-table-cell>@f.Message <span class="text-muted small">(@f.Code)</span></pems-table-cell>
-                    </pems-table-row>
-                }
-                </pems-table-body>
-            </pems-table>
+            @{
+                var rows_13 = ov.Findings.OrderBy(x => x.Severity).ThenBy(x => x.ResponsibilityKey);
+                var cell_13_0 = DataCell.Template(rows_13, @<text>@{ var f = item; }<span class="vs-pill @(f.Severity == "P1" ? "vs-pill--danger" : f.Severity == "P2" ? "vs-pill--warning" : "vs-pill--neutral")">@f.Severity</span></text>);
+            }
+            <pems-data-table data="@(DataRows.Of(rows_13, c_ => c_.Add(((Localizer["Pc_Adm_Severity"])?.ToString() ?? ""), f => (object?)cell_13_0(f)).Add(((Localizer["Pc_Adm_Responsibility"])?.ToString() ?? ""), f => (object?)(DataCell.Code(f.ResponsibilityKey))).Add(((Localizer["Pc_Adm_Finding"])?.ToString() ?? ""), f => (object?)(DataCell.Group(f.Message, " ", DataCell.Span("text-muted small", "(", f.Code, ")"))))))" dense="true" css="vs-dense mb-0" />
             @if (!ov.Findings.Any()) { <div class="vs-empty py-2">@Localizer["Pc_Adm_NoFindings"]</div> }
         </div>
     </section>
@@ -199,16 +191,11 @@
             <pems-col span="12"><pems-button plain="true" css="vs-btn vs-btn--sm vs-btn--primary"><pems-icon name="bi-plus-lg" /> @Localizer["Pc_Btn_AddGroup"]</pems-button></pems-col>
         </pems-row></pems-form>
         <div class="pc-table-scroll">
-            <pems-table scale="small" css="table-enterprise vs-dense mb-0">
-                <pems-table-head><pems-table-row><pems-table-header>@Localizer["Pc_Adm_Responsibility"]</pems-table-header><pems-table-header>@Localizer["Pc_F_CommodityGroup1Id"]</pems-table-header><pems-table-header>@Localizer["Pc_Adm_Position"]</pems-table-header><pems-table-header>@Localizer["Pc_Adm_EmployeeOverride"]</pems-table-header><pems-table-header></pems-table-header></pems-table-row></pems-table-head>
-                <pems-table-body>
-                @foreach (var c in ov.CommodityResponsibles.Where(x => x.IsActive))
-                {
-                    <pems-table-row><pems-table-cell><code>@c.ResponsibilityKey</code></pems-table-cell><pems-table-cell>@c.GroupText</pems-table-cell><pems-table-cell>@c.PositionTitle</pems-table-cell><pems-table-cell>@c.EmployeeName</pems-table-cell>
-                        <pems-table-cell class="text-end"><pems-form asp-action="RemoveCommodityResponsible" method="post" class="d-inline"><input type="hidden" name="id" value="@c.Id" /><pems-button plain="true" css="vs-icon-btn" title="@Localizer["Pc_Btn_Remove"]" aria-label="@Localizer["Pc_Btn_Remove"]"><pems-icon name="bi-trash" /></pems-button></pems-form></pems-table-cell></pems-table-row>
-                }
-                </pems-table-body>
-            </pems-table>
+            @{
+                var rows_14 = ov.CommodityResponsibles.Where(x => x.IsActive);
+                var cell_14_4 = DataCell.Template(rows_14, @<text>@{ var c = item; }<pems-form asp-action="RemoveCommodityResponsible" method="post" class="d-inline"><input type="hidden" name="id" value="@c.Id" /><pems-button plain="true" css="vs-icon-btn" title="@Localizer["Pc_Btn_Remove"]" aria-label="@Localizer["Pc_Btn_Remove"]"><pems-icon name="bi-trash" /></pems-button></pems-form></text>);
+            }
+            <pems-data-table data="@(DataRows.Of(rows_14, c_ => c_.Add(((Localizer["Pc_Adm_Responsibility"])?.ToString() ?? ""), c => (object?)(DataCell.Code(c.ResponsibilityKey))).Add(((Localizer["Pc_F_CommodityGroup1Id"])?.ToString() ?? ""), c => (object?)(c.GroupText)).Add(((Localizer["Pc_Adm_Position"])?.ToString() ?? ""), c => (object?)(c.PositionTitle)).Add(((Localizer["Pc_Adm_EmployeeOverride"])?.ToString() ?? ""), c => (object?)(c.EmployeeName)).Add("", c => (object?)cell_14_4(c), css: "text-end")))" dense="true" css="vs-dense mb-0" />
             @if (!ov.CommodityResponsibles.Any(x => x.IsActive)) { <div class="vs-empty py-2">@Localizer["Pc_Adm_NoCommodityResp"]</div> }
         </div>
     </section>
@@ -297,16 +284,11 @@
             <pems-col md="2" css="pt-4"><pems-button plain="true" css="vs-btn vs-btn--sm vs-btn--primary"><pems-icon name="bi-plus-lg" /> @Localizer["Pc_Btn_AddGroup"]</pems-button></pems-col>
         </pems-row></pems-form>
         <div class="pc-table-scroll">
-            <pems-table scale="small" css="table-enterprise vs-dense mb-0">
-                <pems-table-head><pems-table-row><pems-table-header>@Localizer["Pc_F_CommodityGroup1Id"]</pems-table-header><pems-table-header>@Localizer["Pc_F_CommodityGroup2Id"]</pems-table-header><pems-table-header></pems-table-header></pems-table-row></pems-table-head>
-                <pems-table-body>
-                @foreach (var m in ov.Group2Maps)
-                {
-                    <pems-table-row><pems-table-cell>@m.Parent</pems-table-cell><pems-table-cell>@m.Child</pems-table-cell>
-                        <pems-table-cell class="text-end"><pems-form asp-action="RemoveGroupChild" method="post" class="d-inline"><input type="hidden" name="mapId" value="@m.Id" /><pems-button plain="true" css="vs-icon-btn" title="@Localizer["Pc_Btn_Remove"]" aria-label="@Localizer["Pc_Btn_Remove"]"><pems-icon name="bi-trash" /></pems-button></pems-form></pems-table-cell></pems-table-row>
-                }
-                </pems-table-body>
-            </pems-table>
+            @{
+                var rows_15 = ov.Group2Maps;
+                var cell_15_2 = DataCell.Template(rows_15, @<text>@{ var m = item; }<pems-form asp-action="RemoveGroupChild" method="post" class="d-inline"><input type="hidden" name="mapId" value="@m.Id" /><pems-button plain="true" css="vs-icon-btn" title="@Localizer["Pc_Btn_Remove"]" aria-label="@Localizer["Pc_Btn_Remove"]"><pems-icon name="bi-trash" /></pems-button></pems-form></text>);
+            }
+            <pems-data-table data="@(DataRows.Of(rows_15, c_ => c_.Add(((Localizer["Pc_F_CommodityGroup1Id"])?.ToString() ?? ""), m => (object?)(m.Parent)).Add(((Localizer["Pc_F_CommodityGroup2Id"])?.ToString() ?? ""), m => (object?)(m.Child)).Add("", m => (object?)cell_15_2(m), css: "text-end")))" dense="true" css="vs-dense mb-0" />
             @if (!ov.Group2Maps.Any()) { <div class="vs-empty py-2">@Localizer["Pc_Adm_AllGroups"]</div> }
         </div>
     </section>

@@ -89,15 +89,11 @@
         <pems-content-card css="mb-3">
             <pems-heading level="6" class="mb-3">@Localizer["Documents"]</pems-heading>
             <div class="table-scroll-area pems-s-3a95d6b3">
-                <pems-table kind="enterprise">
-                    <pems-table-head><pems-table-row><pems-table-header>@Localizer["Doc No"]</pems-table-header><pems-table-header>@Localizer["Title"]</pems-table-header><pems-table-header>@Localizer["Status"]</pems-table-header></pems-table-row></pems-table-head>
-                    <pems-table-body>
-                        @foreach (var d in Model.Documents)
-                        {
-                            <pems-table-row><pems-table-cell><pems-link asp-controller="EngineeringDocuments" asp-action="Details" asp-route-id="@d.DocumentId">@d.DocumentNo</pems-link></pems-table-cell><pems-table-cell>@d.Title</pems-table-cell><pems-table-cell><pems-badge tone="none" css="badge-status-@d.Status">@d.Status</pems-badge></pems-table-cell></pems-table-row>
-                        }
-                    </pems-table-body>
-                </pems-table>
+                @{
+                    var rows_25 = Model.Documents;
+                    var cell_25_2 = DataCell.Template(rows_25, @<text>@{ var d = item; }<pems-badge tone="none" css="badge-status-@d.Status">@d.Status</pems-badge></text>);
+                }
+                <pems-data-table data="@(DataRows.Of(rows_25, c_ => c_.Add(((Localizer["Doc No"])?.ToString() ?? ""), d => (object?)(DataCell.Link(Url.Action("Details", "EngineeringDocuments", new { id = d.DocumentId }), d.DocumentNo))).Add(((Localizer["Title"])?.ToString() ?? ""), d => (object?)(d.Title)).Add(((Localizer["Status"])?.ToString() ?? ""), d => (object?)cell_25_2(d))))" />
             </div>
             @if (!Model.Documents.Any()) { <pems-text class="text-muted small">No documents.</pems-text> }
         </pems-content-card>

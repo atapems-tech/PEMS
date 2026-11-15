@@ -64,19 +64,11 @@
 }
 
 <pems-content-card>
-    <pems-table kind="enterprise" scale="small">
-        <pems-table-head><pems-table-row><pems-table-header>@Localizer["Date"]</pems-table-header><pems-table-header class="text-end">@Localizer["Value"]</pems-table-header><pems-table-header>@Localizer["Evaluation"]</pems-table-header></pems-table-row></pems-table-head>
-        <pems-table-body>
-            @foreach (var pt in Model.Points.AsEnumerable().Reverse())
-            {
-                <pems-table-row class="@(pt.IsAlarm ? "table-danger" : "")">
-                    <pems-table-cell class="small">@pt.ReadingDate.ToString("yyyy-MM-dd HH:mm")</pems-table-cell>
-                    <pems-table-cell class="text-end">@pt.Value @Model.Unit</pems-table-cell>
-                    <pems-table-cell><pems-badge tone="none" css="@EvalBadge(pt.EvaluationStatus)">@pt.EvaluationStatus</pems-badge></pems-table-cell>
-                </pems-table-row>
-            }
-        </pems-table-body>
-    </pems-table>
+    @{
+        var rows_77 = Model.Points.AsEnumerable().Reverse();
+        var cell_77_2 = DataCell.Template(rows_77, @<text>@{ var pt = item; }<pems-badge tone="none" css="@EvalBadge(pt.EvaluationStatus)">@pt.EvaluationStatus</pems-badge></text>);
+    }
+    <pems-data-table data="@(DataRows.Of(rows_77, c_ => c_.Add(((Localizer["Date"])?.ToString() ?? ""), pt => (object?)((pt.ReadingDate.ToString("yyyy-MM-dd HH:mm"))), css: "small").Add(((Localizer["Value"])?.ToString() ?? ""), pt => (object?)(DataCell.Group(pt.Value, " ", Model.Unit)), css: "text-end", headerCss: "text-end").Add(((Localizer["Evaluation"])?.ToString() ?? ""), pt => (object?)cell_77_2(pt)), rowClass: pt => (pt.IsAlarm ? "table-danger" : "")))" dense="true" />
     @if (!Model.Points.Any()) { <pems-text class="text-muted text-center py-4">@Localizer["هیچ قرائتی در این بازه ثبت نشده."]</pems-text> }
 </pems-content-card>
 

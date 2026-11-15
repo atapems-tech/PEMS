@@ -132,18 +132,9 @@
 {
     <pems-content-card css="mt-3">
         <pems-heading level="6">@Localizer["Multi-Discipline Review"]</pems-heading>
-        <pems-table scale="small">
-            <pems-table-head><pems-table-row><pems-table-header>@Localizer["Discipline"]</pems-table-header><pems-table-header>@Localizer["Reviewer"]</pems-table-header><pems-table-header>@Localizer["Decision"]</pems-table-header><pems-table-header>@Localizer["Comment"]</pems-table-header><pems-table-header>@Localizer["Date"]</pems-table-header><pems-table-header></pems-table-header></pems-table-row></pems-table-head>
-            <pems-table-body>
-                @foreach (var r in disciplineReviews)
-                {
-                    <pems-table-row>
-                        <pems-table-cell>@r.DisciplineRole</pems-table-cell>
-                        <pems-table-cell>@(r.Reviewer != null ? r.Reviewer.FirstName + " " + r.Reviewer.LastName : "-")</pems-table-cell>
-                        <pems-table-cell><pems-badge tone="@(r.Decision == "Approved" ? "success" : r.Decision == "Rejected" ? "danger" : "neutral")">@r.Decision</pems-badge></pems-table-cell>
-                        <pems-table-cell>@r.Comment</pems-table-cell>
-                        <pems-table-cell>@r.ReviewDate?.ToString("yyyy-MM-dd")</pems-table-cell>
-                        <pems-table-cell>
+        @{
+            var rows_22 = disciplineReviews;
+            var cell_22_5 = DataCell.Template(rows_22, @<text>@{ var r = item; }
                             @if (r.Decision == "Pending")
                             {
                                 <pems-form asp-action="RecordDisciplineReview" method="post"><pems-flex gap="1">
@@ -153,11 +144,9 @@
                                     <pems-button tone="danger" size="small" type="submit" name="decision" value="Reject">@Localizer["Reject"]</pems-button>
                                 </pems-flex></pems-form>
                             }
-                        </pems-table-cell>
-                    </pems-table-row>
-                }
-            </pems-table-body>
-        </pems-table>
+                        </text>);
+        }
+        <pems-data-table data="@(DataRows.Of(rows_22, c_ => c_.Add(((Localizer["Discipline"])?.ToString() ?? ""), r => (object?)(r.DisciplineRole)).Add(((Localizer["Reviewer"])?.ToString() ?? ""), r => (object?)((r.Reviewer != null ? r.Reviewer.FirstName + " " + r.Reviewer.LastName : "-"))).Add(((Localizer["Decision"])?.ToString() ?? ""), r => (object?)(DataCell.Badge(r.Decision == "Approved" ? "success" : r.Decision == "Rejected" ? "danger" : "neutral", r.Decision))).Add(((Localizer["Comment"])?.ToString() ?? ""), r => (object?)(r.Comment)).Add(((Localizer["Date"])?.ToString() ?? ""), r => (object?)((r.ReviewDate?.ToString("yyyy-MM-dd")))).Add("", r => (object?)cell_22_5(r))))" dense="true" />
     </pems-content-card>
 }
 
@@ -203,19 +192,9 @@
 {
     <pems-content-card css="mt-3">
         <pems-heading level="6">@Localizer["Revision History (Original value never overwritten)"]</pems-heading>
-        <pems-table scale="small">
-            <pems-table-head><pems-table-row><pems-table-header>#</pems-table-header><pems-table-header>@Localizer["Type"]</pems-table-header><pems-table-header>@Localizer["Previous"]</pems-table-header><pems-table-header>@Localizer["New"]</pems-table-header><pems-table-header>@Localizer["Reason"]</pems-table-header><pems-table-header>@Localizer["Status"]</pems-table-header><pems-table-header></pems-table-header></pems-table-row></pems-table-head>
-            <pems-table-body>
-                @foreach (var r in revisions)
-                {
-                    <pems-table-row>
-                        <pems-table-cell>@r.RevisionNo</pems-table-cell>
-                        <pems-table-cell>@r.ChangeType</pems-table-cell>
-                        <pems-table-cell>@r.PreviousValue?.ToString("N0")</pems-table-cell>
-                        <pems-table-cell>@r.NewValue?.ToString("N0")</pems-table-cell>
-                        <pems-table-cell>@r.Reason</pems-table-cell>
-                        <pems-table-cell><pems-badge tone="@(r.Status == "Approved" ? "success" : "neutral")">@r.Status</pems-badge></pems-table-cell>
-                        <pems-table-cell>
+        @{
+            var rows_23 = revisions;
+            var cell_23_6 = DataCell.Template(rows_23, @<text>@{ var r = item; }
                             @if (r.Status == "Pending")
                             {
                                 <pems-form asp-action="ApproveRevision" method="post" class="d-inline">
@@ -224,11 +203,9 @@
                                     <pems-button tone="success" size="small" type="submit">@Localizer["Approve"]</pems-button>
                                 </pems-form>
                             }
-                        </pems-table-cell>
-                    </pems-table-row>
-                }
-            </pems-table-body>
-        </pems-table>
+                        </text>);
+        }
+        <pems-data-table data="@(DataRows.Of(rows_23, c_ => c_.Add("#", r => (object?)(r.RevisionNo)).Add(((Localizer["Type"])?.ToString() ?? ""), r => (object?)(r.ChangeType)).Add(((Localizer["Previous"])?.ToString() ?? ""), r => (object?)((r.PreviousValue?.ToString("N0")))).Add(((Localizer["New"])?.ToString() ?? ""), r => (object?)((r.NewValue?.ToString("N0")))).Add(((Localizer["Reason"])?.ToString() ?? ""), r => (object?)(r.Reason)).Add(((Localizer["Status"])?.ToString() ?? ""), r => (object?)(DataCell.Badge(r.Status == "Approved" ? "success" : "neutral", r.Status))).Add("", r => (object?)cell_23_6(r))))" dense="true" />
     </pems-content-card>
 }
 

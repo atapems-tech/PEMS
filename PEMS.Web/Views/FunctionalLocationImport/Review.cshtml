@@ -44,17 +44,9 @@
 
 <pems-content-card>
     <pems-table-scroll css="table-scroll-area pems-s-8da1c6e6">
-        <pems-table kind="enterprise">
-            <pems-table-head>
-                <pems-table-row>
-                    <pems-table-header>@Localizer["Include"]</pems-table-header><pems-table-header>@Localizer["Src Row"]</pems-table-header><pems-table-header>@Localizer["Code"]</pems-table-header><pems-table-header>@Localizer["Name"]</pems-table-header><pems-table-header>Parent / Area</pems-table-header><pems-table-header>@Localizer["Status"]</pems-table-header><pems-table-header>@Localizer["Action"]</pems-table-header><pems-table-header>@Localizer["Note"]</pems-table-header>
-                </pems-table-row>
-            </pems-table-head>
-            <pems-table-body>
-                @foreach (var r in Model.Rows)
-                {
-                    <pems-table-row>
-                        <pems-table-cell>
+        @{
+            var rows_40 = Model.Rows;
+            var cell_40_0 = DataCell.Template(rows_40, @<text>@{ var r = item; }
                             @if (Model.Status == "Staging")
                             {
                                 <pems-form asp-action="ToggleRow" method="post">
@@ -70,23 +62,10 @@
                             {
                                 @(r.IncludeInCommit ? "Yes" : "No")
                             }
-                        </pems-table-cell>
-                        <pems-table-cell>@r.SourceRowNumber</pems-table-cell>
-                        <pems-table-cell><strong>@r.Code</strong>@if (r.Payload?.IsAreaParentRow == true) { <pems-badge tone="light" css="ms-1">Area parent</pems-badge> }</pems-table-cell>
-                        <pems-table-cell class="small">@r.Name</pems-table-cell>
-                        <pems-table-cell class="small">@(r.ParentAreaName ?? r.Name)</pems-table-cell>
-                        <pems-table-cell><pems-badge tone="none" css="@StatusBadge(r.Status)">@r.Status</pems-badge></pems-table-cell>
-                        <pems-table-cell class="small">@r.Action</pems-table-cell>
-                        <pems-table-cell class="small">
-                            @if (r.ValidationMessage != null)
-                            {
-                                <span class="text-muted pems-s-f8f979be">@r.ValidationMessage</span>
-                            }
-                        </pems-table-cell>
-                    </pems-table-row>
-                }
-            </pems-table-body>
-        </pems-table>
+                        </text>);
+            var cell_40_5 = DataCell.Template(rows_40, @<text>@{ var r = item; }<pems-badge tone="none" css="@StatusBadge(r.Status)">@r.Status</pems-badge></text>);
+        }
+        <pems-data-table data="@(DataRows.Of(rows_40, c_ => c_.Add(((Localizer["Include"])?.ToString() ?? ""), r => (object?)cell_40_0(r)).Add(((Localizer["Src Row"])?.ToString() ?? ""), r => (object?)(r.SourceRowNumber)).Add(((Localizer["Code"])?.ToString() ?? ""), r => (object?)(DataCell.Group(DataCell.Span(null, r.Code).WithTag("strong"), (r.Payload?.IsAreaParentRow == true ? (object?)DataCell.Badge("light", "Area parent", "ms-1") : null)))).Add(((Localizer["Name"])?.ToString() ?? ""), r => (object?)(r.Name), css: "small").Add("Parent / Area", r => (object?)((r.ParentAreaName ?? r.Name)), css: "small").Add(((Localizer["Status"])?.ToString() ?? ""), r => (object?)cell_40_5(r)).Add(((Localizer["Action"])?.ToString() ?? ""), r => (object?)(r.Action), css: "small").Add(((Localizer["Note"])?.ToString() ?? ""), r => (object?)((r.ValidationMessage != null ? (object?)DataCell.Span("text-muted pems-s-f8f979be", r.ValidationMessage) : null)), css: "small")))" />
     </pems-table-scroll>
     @if (!Model.Rows.Any()) { <pems-text class="text-muted text-center py-4">No Functional Location rows recognized in this file.</pems-text> }
 </pems-content-card>
