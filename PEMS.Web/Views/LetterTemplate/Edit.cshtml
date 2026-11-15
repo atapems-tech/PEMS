@@ -11,24 +11,24 @@
     {
         <pems-alert tone="danger"><pems-icon name="bi-exclamation-triangle" aria-hidden="true" /> @error</pems-alert>
     }
-    <p class="text-muted small">@Localizer["LtT_PrefillNote"]</p>
+    <pems-text class="text-muted small">@Localizer["LtT_PrefillNote"]</pems-text>
 
     <details class="small mb-3">
         <summary>@Localizer["LtT_PlaceholdersTitle"]</summary>
-        <p class="text-muted mt-2 mb-1">@Localizer["LtT_PlaceholdersHelp"]</p>
-        <ul class="mb-1">
+        <pems-text class="text-muted mt-2 mb-1">@Localizer["LtT_PlaceholdersHelp"]</pems-text>
+        <pems-bullet-list class="mb-1">
             @foreach (var token in PEMS.Application.Common.LetterTemplatePlaceholders.General)
             {
-                <li><code dir="ltr">{{@token}}</code> - @Localizer["LtT_Token_" + token]</li>
+                <pems-bullet><code dir="ltr">{{@token}}</code> - @Localizer["LtT_Token_" + token]</pems-bullet>
             }
-        </ul>
-        <p class="text-muted mb-1">@Localizer["LtT_PlaceholdersReply"]</p>
-        <ul class="mb-0">
+        </pems-bullet-list>
+        <pems-text class="text-muted mb-1">@Localizer["LtT_PlaceholdersReply"]</pems-text>
+        <pems-bullet-list class="mb-0">
             @foreach (var token in PEMS.Application.Common.LetterTemplatePlaceholders.Reply)
             {
-                <li><code dir="ltr">{{@token}}</code> - @Localizer["LtT_Token_" + token]</li>
+                <pems-bullet><code dir="ltr">{{@token}}</code> - @Localizer["LtT_Token_" + token]</pems-bullet>
             }
-        </ul>
+        </pems-bullet-list>
     </details>
 
     <pems-form asp-action="Save" method="post">

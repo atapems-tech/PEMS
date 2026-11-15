@@ -43,7 +43,7 @@
             </pems-flex>
             <div class="table-scroll-area pems-s-7bf38d03">
                 <pems-data-table data="@(DataRows.Of(Model.ActiveOrders, c_ => c_.Add(((Localizer["Order"])?.ToString() ?? ""), o => (object?)(DataCell.Link(Url.Action("Details", "ProductionOrder", new { id = o.ProductionOrderId }), o.OrderNumber))).Add(((Localizer["Material"])?.ToString() ?? ""), o => (object?)(o.MaterialCode)).Add(((Localizer["Qty"])?.ToString() ?? ""), o => (object?)(DataCell.Group((o.PlannedQuantity.ToString("N3")), " ", o.UomCode))).Add(((Localizer["Status"])?.ToString() ?? ""), o => (object?)(DataCell.Badge("neutral", o.Status))).Add(((Localizer["Work Center"])?.ToString() ?? ""), o => (object?)(o.WorkCenterCode))))" />
-                @if (!Model.ActiveOrders.Any()) { <p class="text-muted text-center py-3">No active production orders.</p> }
+                @if (!Model.ActiveOrders.Any()) { <pems-text class="text-muted text-center py-3">No active production orders.</pems-text> }
             </div>
         </pems-content-card>
     </pems-col>
@@ -52,7 +52,7 @@
             <pems-heading level="6" class="mb-2">Recent Batches</pems-heading>
             <div class="table-scroll-area pems-s-7bf38d03">
                 <pems-data-table data="@(DataRows.Of(Model.RecentBatches, c_ => c_.Add(((Localizer["Batch"])?.ToString() ?? ""), b => (object?)(DataCell.Link(Url.Action("BatchDetails", "ProductionRun", new { id = b.ProductionBatchId }), b.BatchNumber))).Add(((Localizer["Material"])?.ToString() ?? ""), b => (object?)(b.MaterialCode)).Add(((Localizer["Qty"])?.ToString() ?? ""), b => (object?)(DataCell.Group((b.Quantity.ToString("N3")), " ", b.UomCode))).Add("Quality Status", b => (object?)(DataCell.Badge("info", b.QualityStatus)))))" />
-                @if (!Model.RecentBatches.Any()) { <p class="text-muted text-center py-3">No batches recorded yet.</p> }
+                @if (!Model.RecentBatches.Any()) { <pems-text class="text-muted text-center py-3">No batches recorded yet.</pems-text> }
             </div>
         </pems-content-card>
     </pems-col>
@@ -62,6 +62,6 @@
     <pems-heading level="6" class="mb-2">Recent Production Losses</pems-heading>
     <div class="table-scroll-area pems-s-f7dce87f">
         <pems-data-table data="@(DataRows.Of(Model.RecentLosses, c_ => c_.Add(((Localizer["Date"])?.ToString() ?? ""), l => (object?)(l.TransactionDate.ToString("yyyy-MM-dd HH:mm")), css: "small").Add(((Localizer["Qty"])?.ToString() ?? ""), l => DataCell.Join((l.Quantity.ToString("N3")), " ", (l.UomCode))).Add(((Localizer["Category"])?.ToString() ?? ""), l => (object?)(l.LossCategory), kind: DataCellKind.Badge, tone: l => "warning").Add(((Localizer["Employee"])?.ToString() ?? ""), l => (object?)(l.EmployeeName)).Add(((Localizer["Notes"])?.ToString() ?? ""), l => (object?)(l.Notes), css: "small text-muted")))" />
-        @if (!Model.RecentLosses.Any()) { <p class="text-muted text-center py-3">No losses recorded yet.</p> }
+        @if (!Model.RecentLosses.Any()) { <pems-text class="text-muted text-center py-3">No losses recorded yet.</pems-text> }
     </div>
 </pems-content-card>

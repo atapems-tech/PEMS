@@ -24,7 +24,7 @@
 {
     <pems-alert tone="info" css="small"><pems-icon name="bi-info-circle" /> @Localizer["Rcm_NewVersionNotice"]</pems-alert>
 }
-<p class="text-muted small">@Localizer["Rcm_FormHint"]</p>
+<pems-text class="text-muted small">@Localizer["Rcm_FormHint"]</pems-text>
 
 <pems-form method="post" asp-action="@(isEdit ? "Edit" : "Create")" asp-route-id="@Model.MaintenanceStrategyId" id="strategyForm"><pems-content-card>
     @if (i.RowVersion != null)

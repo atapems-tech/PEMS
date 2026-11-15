@@ -22,9 +22,9 @@
 
     @if (!results.Any())
     {
-        <p class="text-muted text-center py-4">
+        <pems-text class="text-muted text-center py-4">
             @L("No Help articles matched your search.", "هیچ مقاله‌ی راهنمایی با جستجوی شما مطابقت نداشت.")
-        </p>
+        </pems-text>
     }
     else
     {
@@ -36,7 +36,7 @@
                         <span class="fw-semibold">@a.Title</span>
                         <pems-badge tone="light">@a.CategoryName</pems-badge>
                     </pems-flex>
-                    <p class="text-muted small mb-0 mt-1">@a.Summary</p>
+                    <pems-text class="text-muted small mb-0 mt-1">@a.Summary</pems-text>
                 </pems-list-group-item>
             }
         </pems-list-group>

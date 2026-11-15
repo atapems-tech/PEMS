@@ -113,24 +113,24 @@
                 <pems-dropdown-menu end="true">
                     @if (vdrCanEdit)
                     {
-                        <li><pems-button plain="true" type="button" css="dropdown-item" data-bs-toggle="modal" data-bs-target="#vdrEditModal"><pems-icon name="bi-pencil" /> @Localizer["Vdr_EditDetails"]</pems-button></li>
+                        <pems-bullet><pems-button plain="true" type="button" css="dropdown-item" data-bs-toggle="modal" data-bs-target="#vdrEditModal"><pems-icon name="bi-pencil" /> @Localizer["Vdr_EditDetails"]</pems-button></pems-bullet>
                     }
                     @if (vdrCanNumbers)
                     {
-                        <li><pems-link class="dropdown-item" asp-area="Admin" asp-controller="Numbering" asp-action="Index" asp-route-vdrItemId="@Model.VDRItemId" asp-fragment="vdr-numbers"><pems-icon name="bi-hash" /> @Localizer["Vd_NumbersInAdmin"]</pems-link></li>
+                        <pems-bullet><pems-link class="dropdown-item" asp-area="Admin" asp-controller="Numbering" asp-action="Index" asp-route-vdrItemId="@Model.VDRItemId" asp-fragment="vdr-numbers"><pems-icon name="bi-hash" /> @Localizer["Vd_NumbersInAdmin"]</pems-link></pems-bullet>
                     }
                     @if (vdrCanHold)
                     {
-                        <li><pems-button plain="true" type="button" css="dropdown-item" data-bs-toggle="modal" data-bs-target="#vdrHoldModal"><pems-icon name="bi-pause-circle" /> @Localizer["Vdr_Hold"]</pems-button></li>
+                        <pems-bullet><pems-button plain="true" type="button" css="dropdown-item" data-bs-toggle="modal" data-bs-target="#vdrHoldModal"><pems-icon name="bi-pause-circle" /> @Localizer["Vdr_Hold"]</pems-button></pems-bullet>
                     }
                     @if (vdrCanRelease)
                     {
-                        <li><pems-button plain="true" type="button" css="dropdown-item" data-bs-toggle="modal" data-bs-target="#vdrReleaseModal"><pems-icon name="bi-play-circle" /> @Localizer["Vdr_ReleaseHold"]</pems-button></li>
+                        <pems-bullet><pems-button plain="true" type="button" css="dropdown-item" data-bs-toggle="modal" data-bs-target="#vdrReleaseModal"><pems-icon name="bi-play-circle" /> @Localizer["Vdr_ReleaseHold"]</pems-button></pems-bullet>
                     }
                     @if (vdrCanDeactivate)
                     {
-                        <li><hr class="dropdown-divider" /></li>
-                        <li><pems-button plain="true" type="button" css="dropdown-item text-danger" data-bs-toggle="modal" data-bs-target="#vdrDeactivateModal"><pems-icon name="bi-archive" /> @Localizer["Vdr_Deactivate"]</pems-button></li>
+                        <pems-bullet><pems-divider class="dropdown-divider" /></pems-bullet>
+                        <pems-bullet><pems-button plain="true" type="button" css="dropdown-item text-danger" data-bs-toggle="modal" data-bs-target="#vdrDeactivateModal"><pems-icon name="bi-archive" /> @Localizer["Vdr_Deactivate"]</pems-button></pems-bullet>
                     }
                 </pems-dropdown-menu>
             </div>
@@ -295,7 +295,7 @@
             }
         </pems-table-body>
     </pems-related-table>
-    @if (!Model.Submissions.Any()) { <p class="text-muted">@Localizer["Vd_NoSubmissions"]</p> }
+    @if (!Model.Submissions.Any()) { <pems-text class="text-muted">@Localizer["Vd_NoSubmissions"]</pems-text> }
 </pems-content-card>
 </pems-tab-pane>
 
@@ -306,11 +306,11 @@
         <pems-heading level="6" class="mb-2"><pems-icon name="bi-upload" /> @Localizer["Vd_UploadTitle"]</pems-heading>
         @if (Model.Submissions.Count == 0)
         {
-            <p class="text-muted small mb-0">@Localizer["Vd_UploadNeedsSubmission"]</p>
+            <pems-text class="text-muted small mb-0">@Localizer["Vd_UploadNeedsSubmission"]</pems-text>
         }
         else
         {
-            <p class="text-muted small mb-3">@Localizer["Vd_UploadHint"]</p>
+            <pems-text class="text-muted small mb-3">@Localizer["Vd_UploadHint"]</pems-text>
             <pems-form asp-action="UploadSubmissionFile" method="post" enctype="multipart/form-data" id="vdrFileUpload">
                 <input type="hidden" name="vdrItemId" value="@Model.VDRItemId" />
                 <pems-row gap="2" css="align-items-end">
@@ -343,7 +343,7 @@
 
     @if (vdrFiles.Count == 0)
     {
-        <p class="text-muted text-center py-4">@Localizer["Vd_NoFiles"]</p>
+        <pems-text class="text-muted text-center py-4">@Localizer["Vd_NoFiles"]</pems-text>
     }
     else
     {
@@ -559,7 +559,7 @@
             }
         </pems-table-body>
     </pems-related-table>
-    @if (!comments.Any()) { <p class="text-muted">@Localizer["Vd_NoComments"]</p> }
+    @if (!comments.Any()) { <pems-text class="text-muted">@Localizer["Vd_NoComments"]</pems-text> }
 
     @if (Model.Submissions.Any())
     {
@@ -632,7 +632,7 @@
                     <input type="hidden" name="commentId" value="" />
                     <pems-modal-header>@Localizer["Vd_ReplyTo"] <span data-fill-text="commentno"></span></pems-modal-header>
                     <pems-modal-body>
-                        <p class="small text-muted" data-fill-text="commenttext"></p>
+                        <pems-text class="small text-muted" data-fill-text="commenttext"></pems-text>
                         <div class="mb-2">
                             <pems-label css="small">@Localizer["Vd_VendorReply"] <span class="text-muted">@Localizer["Vd_OptionalIfFile"]</span></pems-label>
                             <pems-textarea scale="small" name="responseText" rows="3"></pems-textarea>
@@ -691,7 +691,7 @@
                             <pems-heading level="2" id="vdrStep1Title" class="vs-section__title mb-1">@Localizer["Vd_Step1Title"]</pems-heading>
                             <span class="small text-muted">@Localizer["Vd_Step1Of"]</span>
                         </pems-flex>
-                        <p class="small text-muted">@Localizer["Vd_Step1Hint"]</p>
+                        <pems-text class="small text-muted">@Localizer["Vd_Step1Hint"]</pems-text>
                         <pems-row gap="3">
                             <pems-col md="6">
                                 <pems-label for="vdrTransmittal">@Localizer["Vd_VendorTransmittalReq"] <span class="text-danger" aria-hidden="true">*</span></pems-label>
@@ -730,7 +730,7 @@
                         <pems-flex justify="between" align="center" gap="2" wrap="true">
                             <div>
                                 <pems-heading level="2" id="vdrStep2Title" class="vs-section__title mb-1">@Localizer["Vd_Step2Title"] <span class="fw-normal text-muted small">(@Localizer["Vd_Optional"])</span></pems-heading>
-                                <p class="small text-muted mb-0" id="vdrDiscSummary" aria-live="polite" data-none="@Localizer["Vd_NoDiscSelected"]" data-some="@Localizer["Vd_DiscSelected"]">@Localizer["Vd_NoDiscSelected"]</p>
+                                <pems-text class="small text-muted mb-0" id="vdrDiscSummary" aria-live="polite" data-none="@Localizer["Vd_NoDiscSelected"]" data-some="@Localizer["Vd_DiscSelected"]">@Localizer["Vd_NoDiscSelected"]</pems-text>
                             </div>
                             <pems-button tone="neutral" size="small" outline="true" type="button" data-bs-toggle="collapse" data-bs-target="#vdrDiscPicker" aria-expanded="false" aria-controls="vdrDiscPicker">@Localizer["Vd_ChooseDisciplines"]</pems-button>
                         </pems-flex>
@@ -762,7 +762,7 @@
     <pems-info-item label="@Localizer["Vd_Step2Title"]" value-id="vdrSummaryDisc">@Localizer["Vd_None"]</pems-info-item>
 </pems-info-grid>
                         <pems-button tone="primary" css="w-100" type="submit" id="vdrStartBtn" aria-describedby="vdrWhyDisabled"><pems-icon name="bi-play-fill" aria-hidden="true" /> @Localizer["Vd_StartReview"]</pems-button>
-                        <p id="vdrWhyDisabled" class="small text-warning-emphasis mt-2 mb-0" hidden>@Localizer["Vd_EnterTransmittalToEnable"]</p>
+                        <pems-text id="vdrWhyDisabled" class="small text-warning-emphasis mt-2 mb-0" hidden>@Localizer["Vd_EnterTransmittalToEnable"]</pems-text>
                     </div>
                 </section>
             </pems-col>
@@ -776,7 +776,7 @@ else
 
     @if (Model.Submissions.Any())
     {
-        <p class="text-muted small">@Localizer["Vd_AlreadyRecorded"] @string.Join(", ", Model.Submissions.OrderBy(s => s.RevisionNo).Select(s => Localizer["Vd_Rev"].Value + " " + s.RevisionNo))</p>
+        <pems-text class="text-muted small">@Localizer["Vd_AlreadyRecorded"] @string.Join(", ", Model.Submissions.OrderBy(s => s.RevisionNo).Select(s => Localizer["Vd_Rev"].Value + " " + s.RevisionNo))</pems-text>
     }
 
     @if (currentStageName == "DisciplineReview")
@@ -861,7 +861,7 @@ else
     else if (currentStageName == "ReturnToVendor")
     {
         <pems-heading level="6" class="small fw-bold">@Localizer["Vd_FormalReturn"]</pems-heading>
-        <p class="text-muted small">@Localizer["Vd_ReturnHint"]</p>
+        <pems-text class="text-muted small">@Localizer["Vd_ReturnHint"]</pems-text>
         <pems-form asp-action="ReturnToVendor" method="post"><pems-row gap="2">
             <input type="hidden" name="vdrItemId" value="@Model.VDRItemId" />
             <pems-col md="4"><pems-label css="small">@Localizer["Vd_ReplySheetNo"]</pems-label><pems-input scale="small" name="replySheetNo" /></pems-col>
@@ -899,7 +899,7 @@ else
     }
     else
     {
-        <p class="text-muted text-center py-4 mb-0">@Localizer["Vd_NoWorkflowYet"]</p>
+        <pems-text class="text-muted text-center py-4 mb-0">@Localizer["Vd_NoWorkflowYet"]</pems-text>
     }
 </pems-content-card>
 </pems-tab-pane>
@@ -929,7 +929,7 @@ else
     }
     else
     {
-        <p class="text-muted text-center py-4 mb-0">@Localizer["Vd_NoCorr"]</p>
+        <pems-text class="text-muted text-center py-4 mb-0">@Localizer["Vd_NoCorr"]</pems-text>
     }
 </pems-content-card>
 </pems-tab-pane>
@@ -978,7 +978,7 @@ else
             <input type="hidden" name="vdrItemId" value="@Model.VDRItemId" />
             <pems-modal-header><pems-icon name="@icon" /> @Localizer[title]</pems-modal-header>
             <pems-modal-body>
-                <p class="text-muted small">@Localizer[hint]</p>
+                <pems-text class="text-muted small">@Localizer[hint]</pems-text>
                 <pems-label css="small" for="@(modalId)Reason">@Localizer["Vdr_Reason"]</pems-label>
                 <pems-input scale="small" id="@(modalId)Reason" name="reason" required />
             </pems-modal-body>

@@ -7,7 +7,7 @@
 
 <pems-content-card css="mt-3" id="vdr-numbers">
     <pems-heading level="6" class="mb-1">@Localizer["Num_Vdr_Title"]</pems-heading>
-    <p class="text-muted small mb-3">@Localizer["Num_Vdr_Hint"]</p>
+    <pems-text class="text-muted small mb-3">@Localizer["Num_Vdr_Hint"]</pems-text>
 
     <pems-form asp-action="Index" method="get" class="mb-3">
         <pems-flex gap="2" align="end" wrap="true">
@@ -23,11 +23,11 @@
     {
         @if (Model.Results.Count == 0)
         {
-            <p class="text-muted small">@Localizer["Num_Vdr_NoMatch"]</p>
+            <pems-text class="text-muted small">@Localizer["Num_Vdr_NoMatch"]</pems-text>
         }
         else
         {
-            <p class="text-muted small mb-1">@string.Format(Localizer["Num_Vdr_Matches"].Value, Model.Results.Count, Model.TotalMatches)</p>
+            <pems-text class="text-muted small mb-1">@string.Format(Localizer["Num_Vdr_Matches"].Value, Model.Results.Count, Model.TotalMatches)</pems-text>
             <pems-table kind="enterprise" css="mb-3">
                 <pems-table-head>
                     <pems-table-row>
@@ -71,9 +71,9 @@
            می‌شود - دفعه‌ی بعد از قبل پرشده می‌آید. *@
         <pems-content-card css="mb-3">
             <pems-heading level="6" class="mb-2">@Localizer["Vd_OfficialNoTitle"]</pems-heading>
-            <p class="text-muted small mb-3">
+            <pems-text class="text-muted small mb-3">
                 @Localizer["Vd_OfficialNoHint"]
-            </p>
+            </pems-text>
             <pems-form asp-area="" asp-controller="VDR" asp-action="GenerateContractorNumber" method="post">
                 <input type="hidden" name="vdrItemId" value="@item.VDRItemId" />
                 <input type="hidden" name="returnTo" value="numbering" />
@@ -92,13 +92,13 @@
         @* طبق بخش ۴.۳.۲ همان سند: شماره‌ی موازی به فرمت SUB-CONTRACTOR/Vendor *@
         <pems-content-card css="mb-0">
             <pems-heading level="6" class="mb-2">@Localizer["Vd_VendorNoTitle"]</pems-heading>
-            <p class="text-muted small mb-3">
+            <pems-text class="text-muted small mb-3">
                 @Localizer["Vd_VendorNoHint"]
                 @if (!string.IsNullOrWhiteSpace(item.VendorFormatDocumentNumber))
                 {
                     <span>@Localizer["Vd_Current"] <strong>@item.VendorFormatDocumentNumber</strong></span>
                 }
-            </p>
+            </pems-text>
             <pems-form asp-area="" asp-controller="VDR" asp-action="GenerateVendorNumber" method="post">
                 <input type="hidden" name="vdrItemId" value="@item.VDRItemId" />
                 <input type="hidden" name="returnTo" value="numbering" />

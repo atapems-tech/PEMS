@@ -98,7 +98,7 @@
             }
         </div>
     }
-    @if (!Model.Classifications.Any()) { <p class="text-muted">No AI classification suggestions yet.</p> }
+    @if (!Model.Classifications.Any()) { <pems-text class="text-muted">No AI classification suggestions yet.</pems-text> }
 </pems-content-card>
 
 <pems-content-card css="mb-3">
@@ -138,7 +138,7 @@
         </pems-table-body>
     </pems-table>
     </pems-table-scroll>
-    @if (!Model.TagLinks.Any()) { <p class="text-muted">No equipment tags detected or linked yet.</p> }
+    @if (!Model.TagLinks.Any()) { <pems-text class="text-muted">No equipment tags detected or linked yet.</pems-text> }
 </pems-content-card>
 
 <pems-content-card>
@@ -184,7 +184,7 @@
         </pems-table-body>
     </pems-table>
     </pems-table-scroll>
-    @if (!Model.Comments.Any()) { <p class="text-muted">No comments yet.</p> }
+    @if (!Model.Comments.Any()) { <pems-text class="text-muted">No comments yet.</pems-text> }
 
     <pems-form asp-action="AddComment" method="post"><pems-row gap="2" css="mt-2">
         <input type="hidden" name="documentId" value="@Model.DocumentId" />

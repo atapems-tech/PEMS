@@ -109,7 +109,7 @@
             }
             else
             {
-                @if (string.IsNullOrWhiteSpace(Model.Description)) { <p class="text-muted small mb-0">@Localizer["Tm_NoDescription"]</p> }
+                @if (string.IsNullOrWhiteSpace(Model.Description)) { <pems-text class="text-muted small mb-0">@Localizer["Tm_NoDescription"]</pems-text> }
                 else { <div class="tm-text">@Model.Description</div> }
             }
         </section>
@@ -138,10 +138,10 @@
 
         <section class="vs-panel mb-3" aria-labelledby="linkTitle">
             <pems-heading level="3" class="h6" id="linkTitle">@Localizer["Tm_Links"]</pems-heading>
-            @if (!Model.Links.Any()) { <p class="small text-muted">@Localizer["Tm_NoLinks"]</p> }
+            @if (!Model.Links.Any()) { <pems-text class="small text-muted">@Localizer["Tm_NoLinks"]</pems-text> }
             else
             {
-                <ul class="list-unstyled mb-2">
+                <pems-bullet-list class="list-unstyled mb-2">
                     @foreach (var l in Model.Links)
                     {
                         <pems-flex as="li" justify="between" align="center" gap="2" css="py-1 border-bottom">
@@ -166,7 +166,7 @@
                             }
                         </pems-flex>
                     }
-                </ul>
+                </pems-bullet-list>
             }
             @if (Model.CanLink)
             {
@@ -201,7 +201,7 @@
                     </pems-flex>
                 </pems-form>
             }
-            @if (!Model.Comments.Any()) { <p class="small text-muted mb-0">@Localizer["Tm_NoComments"]</p> }
+            @if (!Model.Comments.Any()) { <pems-text class="small text-muted mb-0">@Localizer["Tm_NoComments"]</pems-text> }
             @foreach (var c in Model.Comments)
             {
                 <article class="tm-comment">
@@ -223,7 +223,7 @@
 
         <section class="vs-panel mb-3" aria-labelledby="histTitle">
             <pems-heading level="3" class="h6" id="histTitle">@Localizer["Tm_History"]</pems-heading>
-            @if (!history.Any()) { <p class="small text-muted mb-0">@Localizer["Tm_NoHistory"]</p> }
+            @if (!history.Any()) { <pems-text class="small text-muted mb-0">@Localizer["Tm_NoHistory"]</pems-text> }
             else
             {
                 <pems-table-scroll>

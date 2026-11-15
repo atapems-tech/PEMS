@@ -32,7 +32,7 @@
             <pems-input asp-for="Password" type="password" />
         </div>
 
-        <hr />
+        <pems-divider />
         <pems-heading level="6" class="mb-2">@Localizer["Employee link"]</pems-heading>
         @if (!Model.ExistingEmployeeId.HasValue)
         {
@@ -84,7 +84,7 @@
             </pems-col>
         </pems-row>
 
-        <hr />
+        <pems-divider />
         <partial name="_RoleSelect" model="Model" />
 
         <pems-check-row css="mb-4">

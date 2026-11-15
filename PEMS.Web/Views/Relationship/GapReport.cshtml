@@ -8,11 +8,11 @@
     <pems-button tone="neutral" size="small" outline="true" as="a" asp-action="Index">@Localizer["بازگشت به Explorer"]</pems-button>
 </pems-flex>
 
-<p class="text-muted small">
+<pems-text class="text-muted small">
     این گزارش برعکس Explorer عمل می‌کنه: به‌جای کاوش از یک تجهیز مشخص، همه‌ی تجهیزات رو بررسی
     می‌کنه و نشون می‌ده کدوم‌ها هنوز به مدرک مهندسی، VDR، MR یا WorkOrder وصل نشدن - برای
     برنامه‌ریزی و پیگیری شکاف‌های داده.
-</p>
+</pems-text>
 
 <pems-row gap="3" css="mb-3">
     <pems-col md="3">
@@ -33,6 +33,6 @@
     <pems-data-table data="@(DataRows.Of(Model.Items, c_ => c_.Add(((Localizer["Tag"])?.ToString() ?? ""), item => (object?)(DataCell.Span(null, item.TagNumber).WithTag("strong"))).Add(((Localizer["Name"])?.ToString() ?? ""), item => (object?)(item.Name), css: "small").Add(((Localizer["Area"])?.ToString() ?? ""), item => (object?)(item.Area), css: "small").Add(((Localizer["Discipline"])?.ToString() ?? ""), item => (object?)(item.DisciplineName), css: "small").Add(((Localizer["مدارک"])?.ToString() ?? ""), item => (object?)((item.HasDocuments ? "✅" : "❌")), css: "text-center", headerCss: "text-center").Add(((Localizer["VDR"])?.ToString() ?? ""), item => (object?)((item.HasVdrItems ? "✅" : "❌")), css: "text-center", headerCss: "text-center").Add("MR", item => (object?)((item.HasMR ? "✅" : "❌")), css: "text-center", headerCss: "text-center").Add("WorkOrder", item => (object?)((item.HasWorkOrders ? "✅" : "❌")), css: "text-center", headerCss: "text-center").Add("", item => (object?)(DataCell.ButtonLink(Url.Action("Equipment", null, new { id = item.EquipmentId }), "primary", "small", true, null, DataCell.Icon("bi-diagram-3"))))))" css="mb-0" />
     @if (!Model.Items.Any())
     {
-        <p class="text-muted text-center py-4 mb-0">همه‌ی تجهیزات کاملاً وصل هستن - عالیه!</p>
+        <pems-text class="text-muted text-center py-4 mb-0">همه‌ی تجهیزات کاملاً وصل هستن - عالیه!</pems-text>
     }
 </pems-content-card>

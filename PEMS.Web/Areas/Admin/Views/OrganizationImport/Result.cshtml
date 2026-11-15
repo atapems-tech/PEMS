@@ -30,14 +30,14 @@
     {
         <section class="vs-panel mb-3">
             <pems-heading level="2" class="vs-section__title text-danger"><pems-icon name="bi-x-octagon" /> @Localizer["Org_Imp_Errors"] (@Model.Errors.Count)</pems-heading>
-            <ul class="small mb-0">@foreach (var e in Model.Errors) { <li>@e</li> }</ul>
+            <pems-bullet-list class="small mb-0">@foreach (var e in Model.Errors) { <pems-bullet>@e</pems-bullet> }</pems-bullet-list>
         </section>
     }
     @if (Model.Warnings.Count > 0)
     {
         <section class="vs-panel mb-3">
             <pems-heading level="2" class="vs-section__title"><pems-icon name="bi-exclamation-triangle" /> @Localizer["Org_Imp_Warnings"]</pems-heading>
-            <ul class="small mb-0">@foreach (var w in Model.Warnings) { <li>@w</li> }</ul>
+            <pems-bullet-list class="small mb-0">@foreach (var w in Model.Warnings) { <pems-bullet>@w</pems-bullet> }</pems-bullet-list>
         </section>
     }
 

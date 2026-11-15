@@ -2,11 +2,11 @@
 @if (Model != null && Model.Any())
 {
     <pems-alert tone="danger" css="small">
-        <ul class="mb-0">
+        <pems-bullet-list class="mb-0">
             @foreach (var e in Model)
             {
-                <li>@e</li>
+                <pems-bullet>@e</pems-bullet>
             }
-        </ul>
+        </pems-bullet-list>
     </pems-alert>
 }

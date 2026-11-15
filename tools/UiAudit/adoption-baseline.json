@@ -5,6 +5,7 @@
   "badge": {},
   "bare-button": {},
   "breadcrumb": {},
+  "bullet-list": {},
   "button": {},
   "card": {},
   "chart": {},
@@ -13,6 +14,7 @@
   "confirm-call": {},
   "content-card": {},
   "date-input": {},
+  "divider": {},
   "dom-builder": {},
   "dropdown": {},
   "flex": {},
@@ -228,6 +230,10 @@
   },
   "table-scroll": {},
   "tabs": {},
+  "text": {
+    "PEMS.Web/Views/EngineeringDocuments/Details.cshtml": 1,
+    "PEMS.Web/Views/VDR/Details.cshtml": 1
+  },
   "text-input": {},
   "textarea": {},
   "validation-alert": {}

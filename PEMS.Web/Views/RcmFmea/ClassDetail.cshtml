@@ -194,7 +194,7 @@
                 }
             </pems-content-card>
         }
-        @if (!fmeaAnalyses.Any()) { <p class="text-muted small">@Localizer["هنوز هیچ تحلیل FMEA ای برای این کلاس ساخته نشده."]</p> }
+        @if (!fmeaAnalyses.Any()) { <pems-text class="text-muted small">@Localizer["هنوز هیچ تحلیل FMEA ای برای این کلاس ساخته نشده."]</pems-text> }
     </pems-tab-pane>
 
     @* ===================== RCM ===================== *@
@@ -216,7 +216,7 @@
         }
         else if (canEdit)
         {
-            <p class="text-muted small">@Localizer["برای شروع RCM، ابتدا یک FMEA تاییدشده لازم است."]</p>
+            <pems-text class="text-muted small">@Localizer["برای شروع RCM، ابتدا یک FMEA تاییدشده لازم است."]</pems-text>
         }
 
         @foreach (var rcm in rcmAnalyses)
@@ -391,7 +391,7 @@
                 }
             </pems-content-card>
         }
-        @if (!rcmAnalyses.Any()) { <p class="text-muted small">@Localizer["هنوز هیچ تحلیل RCM ای برای این کلاس ساخته نشده."]</p> }
+        @if (!rcmAnalyses.Any()) { <pems-text class="text-muted small">@Localizer["هنوز هیچ تحلیل RCM ای برای این کلاس ساخته نشده."]</pems-text> }
     </pems-tab-pane>
 </pems-tab-content>
 

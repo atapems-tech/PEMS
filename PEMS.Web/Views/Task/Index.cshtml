@@ -30,7 +30,7 @@
                 </pems-list-filters>
                 <pems-list-reset-columns grid-key="Task" />
                 <pems-list-menu id="taskMoreBtn" icon="bi-three-dots" label="@Localizer["Lp_More"]">
-                    <li><pems-link class="dropdown-item" asp-controller="TaskManager" asp-action="Index"><pems-icon name="bi-kanban" aria-hidden="true" /> @Localizer["Tm_Title"]</pems-link></li>
+                    <pems-bullet><pems-link class="dropdown-item" asp-controller="TaskManager" asp-action="Index"><pems-icon name="bi-kanban" aria-hidden="true" /> @Localizer["Tm_Title"]</pems-link></pems-bullet>
                 </pems-list-menu>
                 @if (!followup && canCreate)
                 {

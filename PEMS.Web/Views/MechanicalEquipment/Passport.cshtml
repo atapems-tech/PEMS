@@ -33,7 +33,7 @@
         </pems-flex>
     </pems-flex>
 
-    <hr />
+    <pems-divider />
     <pems-row gap="2" css="small">
         <pems-col md="3"><strong>@Localizer["Manufacturer"]:</strong> @(Model.Manufacturer ?? "N/A")</pems-col>
         <pems-col md="3"><strong>@Localizer["Model"]:</strong> @(Model.Model ?? "N/A")</pems-col>
@@ -45,7 +45,7 @@
     </pems-row>
     @if (!string.IsNullOrWhiteSpace(Model.Description))
     {
-        <p class="small text-muted mt-2 mb-0">@Model.Description</p>
+        <pems-text class="small text-muted mt-2 mb-0">@Model.Description</pems-text>
     }
 </pems-content-card>
 
@@ -66,14 +66,14 @@
     }
     else if (staticEq == null)
     {
-        <p class="text-muted small mb-2">@Localizer["هنوز به‌عنوان Rotating طبقه‌بندی نشده."]</p>
+        <pems-text class="text-muted small mb-2">@Localizer["هنوز به‌عنوان Rotating طبقه‌بندی نشده."]</pems-text>
         <pems-button tone="primary" size="small" outline="true" css="d-print-none" type="button" data-bs-toggle="modal" data-bs-target="#classifyRotatingModal">
             <pems-icon name="bi-plus-lg" /> @Localizer["Classify as Rotating"]
         </pems-button>
     }
     else
     {
-        <p class="text-muted small mb-0">@Localizer["این تجهیز به‌عنوان Static طبقه‌بندی شده - یک تجهیز نمی‌تواند هم Rotating هم Static باشد."]</p>
+        <pems-text class="text-muted small mb-0">@Localizer["این تجهیز به‌عنوان Static طبقه‌بندی شده - یک تجهیز نمی‌تواند هم Rotating هم Static باشد."]</pems-text>
     }
 </pems-content-card>
 
@@ -93,14 +93,14 @@
     }
     else if (rotating == null)
     {
-        <p class="text-muted small mb-2">@Localizer["هنوز به‌عنوان Static طبقه‌بندی نشده."]</p>
+        <pems-text class="text-muted small mb-2">@Localizer["هنوز به‌عنوان Static طبقه‌بندی نشده."]</pems-text>
         <pems-button tone="info" size="small" outline="true" css="d-print-none" type="button" data-bs-toggle="modal" data-bs-target="#classifyStaticModal">
             <pems-icon name="bi-plus-lg" /> @Localizer["Classify as Static"]
         </pems-button>
     }
     else
     {
-        <p class="text-muted small mb-0">@Localizer["این تجهیز به‌عنوان Rotating طبقه‌بندی شده - یک تجهیز نمی‌تواند هم Rotating هم Static باشد."]</p>
+        <pems-text class="text-muted small mb-0">@Localizer["این تجهیز به‌عنوان Rotating طبقه‌بندی شده - یک تجهیز نمی‌تواند هم Rotating هم Static باشد."]</pems-text>
     }
 </pems-content-card>
 

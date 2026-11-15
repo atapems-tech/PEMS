@@ -16,12 +16,12 @@
     {
         <pems-alert tone="warning" css="mt-3 mb-0 small">
             <strong><pems-icon name="bi-exclamation-triangle" /> ستون‌های شناسایی‌نشده در فایل اکسل:</strong>
-            <ul class="mb-0 mt-1">
+            <pems-bullet-list class="mb-0 mt-1">
                 @foreach (var w in Model.HeaderWarnings)
                 {
-                    <li>@w</li>
+                    <pems-bullet>@w</pems-bullet>
                 }
-            </ul>
+            </pems-bullet-list>
         </pems-alert>
     }
 

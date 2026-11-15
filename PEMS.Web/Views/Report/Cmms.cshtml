@@ -78,13 +78,13 @@
     <pems-col lg="6">
         <pems-content-card css="mb-3">
             <pems-heading level="6" class="mb-3">Top Equipment (by Work Order count)</pems-heading>
-            <ul class="list-unstyled mb-0">
+            <pems-bullet-list class="list-unstyled mb-0">
                 @foreach (var e in Model.TopEquipment)
                 {
                     <pems-flex as="li" justify="between" css="border-bottom py-1"><span>@e.Equipment</span><span class="text-muted small">@e.Count</span></pems-flex>
                 }
-            </ul>
-            @if (!Model.TopEquipment.Any()) { <p class="text-muted small">@Localizer["No data."]</p> }
+            </pems-bullet-list>
+            @if (!Model.TopEquipment.Any()) { <pems-text class="text-muted small">@Localizer["No data."]</pems-text> }
         </pems-content-card>
     </pems-col>
 </pems-row>

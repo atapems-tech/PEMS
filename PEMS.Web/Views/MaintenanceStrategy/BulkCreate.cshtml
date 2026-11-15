@@ -43,7 +43,7 @@
     <pems-heading level="5" class="mb-0"><pems-icon name="bi-collection" /> @Localizer["Rcm_BulkAssign"]</pems-heading>
     <pems-button tone="neutral" size="small" outline="true" as="a" asp-action="Index">@Localizer["بازگشت"]</pems-button>
 </pems-flex>
-<p class="text-muted small">@Localizer["Rcm_BulkHint"]</p>
+<pems-text class="text-muted small">@Localizer["Rcm_BulkHint"]</pems-text>
 
 <pems-content-card css="mb-3">
     <pems-form method="get"><pems-row gap="2">
@@ -149,11 +149,11 @@
         @if (equipmentWithFlCount < 50)
         {
             <pems-col span="12">
-                <p class="text-muted small mb-0">
+                <pems-text class="text-muted small mb-0">
                     <pems-icon name="bi-info-circle" /> در حال حاضر فقط @equipmentWithFlCount تجهیز به Functional Location متصل شده -
                     فیلترهای Functional Location/Plant/Area/Unit آماده‌اند اما تا زمانی که تخصیص بیشتری از طریق
                     «Equipment ↔ FL Assignment» انجام نشود، نتیجه‌ی محدودی برمی‌گردانند. این یک محدودیت داده است، نه نقص این فرم.
-                </p>
+                </pems-text>
             </pems-col>
         }
     </pems-row></pems-form>
@@ -237,7 +237,7 @@ else if (matchingCount.HasValue && matchingCount.Value > maxResults)
                                     }
                                 </pems-accordion-item>
                     }
-                    @if (!equipments.Any() && !noFilterApplied) { <p class="text-muted small text-center py-3">@Localizer["تجهیزی با این فیلتر پیدا نشد."]</p> }
+                    @if (!equipments.Any() && !noFilterApplied) { <pems-text class="text-muted small text-center py-3">@Localizer["تجهیزی با این فیلتر پیدا نشد."]</pems-text> }
                 </pems-accordion></div>
             </pems-content-card>
         </pems-col>
@@ -254,11 +254,11 @@ else if (matchingCount.HasValue && matchingCount.Value > maxResults)
                     var willReceive = bulk.Candidates.Values.Count(c => c.WillReceive);
                     var conflicts = bulk.Candidates.Values.Count(c => !c.WillReceive);
                     <input type="hidden" name="strategyId" value="@bulk.StrategyId" />
-                    <ul class="small">
-                        <li>@Localizer["Rcm_WillReceive"]: <strong>@willReceive</strong></li>
-                        <li>@Localizer["Rcm_HasConflict"]: <strong>@conflicts</strong> <span class="text-muted">(@Localizer["Rcm_ConflictsSkipped"])</span></li>
-                    </ul>
-                    <p class="small text-muted">@Localizer["Rcm_AssignAtomicNote"]</p>
+                    <pems-bullet-list class="small">
+                        <pems-bullet>@Localizer["Rcm_WillReceive"]: <strong>@willReceive</strong></pems-bullet>
+                        <pems-bullet>@Localizer["Rcm_HasConflict"]: <strong>@conflicts</strong> <span class="text-muted">(@Localizer["Rcm_ConflictsSkipped"])</span></pems-bullet>
+                    </pems-bullet-list>
+                    <pems-text class="small text-muted">@Localizer["Rcm_AssignAtomicNote"]</pems-text>
                     <pems-button tone="primary" type="submit" data-pems-confirm="@Localizer["Rcm_ConfirmBulkAssign"]"><pems-icon name="bi-check2-all" /> @Localizer["Rcm_AssignSelected"]</pems-button>
                 }
                 <div class="small text-muted mt-3">@Localizer["Rcm_NeedTemplate"] <pems-link asp-action="Create">@Localizer["Rcm_NewStrategy"]</pems-link></div>

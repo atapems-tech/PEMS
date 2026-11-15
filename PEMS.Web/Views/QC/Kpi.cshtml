@@ -32,7 +32,7 @@
     <pems-col md="5">
         <pems-content-card css="h-100">
             <pems-heading level="6" class="mb-3">@Localizer["نرخ NCR به تفکیک شدت"]</pems-heading>
-            <ul class="list-unstyled mb-0">
+            <pems-bullet-list class="list-unstyled mb-0">
                 @foreach (var s in (IEnumerable<dynamic>)ViewBag.BySeverity)
                 {
                     var badgeClass = s.Severity == "Critical" ? "danger" : s.Severity == "Major" ? "warning" : "neutral";
@@ -41,7 +41,7 @@
                         <strong>@s.Count</strong>
                     </pems-flex>
                 }
-            </ul>
+            </pems-bullet-list>
         </pems-content-card>
     </pems-col>
 </pems-row>
@@ -68,6 +68,6 @@
     }
     else
     {
-        <p class="text-muted small mb-0">@Localizer["داده‌ای برای ۱۲ ماه اخیر نیست."]</p>
+        <pems-text class="text-muted small mb-0">@Localizer["داده‌ای برای ۱۲ ماه اخیر نیست."]</pems-text>
     }
 </pems-content-card>

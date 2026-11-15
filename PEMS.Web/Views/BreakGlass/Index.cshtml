@@ -10,11 +10,11 @@
 <pems-heading level="2">@Localizer["Break-glass recovery"]</pems-heading>
 @if (Model.Window.IsOpen)
 {
-    <p class="subtitle">@Localizer["A recovery request file is present on the server. This page closes at"] <span dir="ltr">@Model.Window.ExpiresAtUtc?.ToString("HH:mm") UTC</span>.</p>
+    <pems-text class="subtitle">@Localizer["A recovery request file is present on the server. This page closes at"] <span dir="ltr">@Model.Window.ExpiresAtUtc?.ToString("HH:mm") UTC</span>.</pems-text>
 }
 else
 {
-    <p class="subtitle">@Localizer["No recovery request file is present. Paste a vendor recovery token issued for this server."]</p>
+    <pems-text class="subtitle">@Localizer["No recovery request file is present. Paste a vendor recovery token issued for this server."]</pems-text>
 }
 
 @if (!string.IsNullOrEmpty(Model.Error))
@@ -50,4 +50,4 @@ else
     </pems-form>
 }
 
-<p class="small text-muted mt-3">@Localizer["The reset issues a temporary password shown once, forces a password change, resets MFA, signs the account out everywhere and notifies every administrator. The request can be used only once."]</p>
+<pems-text class="small text-muted mt-3">@Localizer["The reset issues a temporary password shown once, forces a password change, resets MFA, signs the account out everywhere and notifies every administrator. The request can be used only once."]</pems-text>

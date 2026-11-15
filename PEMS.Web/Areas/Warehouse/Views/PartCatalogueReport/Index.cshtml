@@ -95,7 +95,7 @@
                 <pems-list-menu id="pcRptPeriodBtn" icon="bi-calendar3" label="@Localizer["PcRpt_Filter_Period"]">
                     @foreach (var per in PartCatalogueReportPeriods.Values.Where(v => v != PartCatalogueReportPeriods.Custom))
                     {
-                        <li><pems-link class="dropdown-item @(per == f.Period ? "active" : "")" href="@IndexUrl(null, d => { d["Period"] = per; d["From"] = null; d["To"] = null; })">@t.PeriodName(per)</pems-link></li>
+                        <pems-bullet><pems-link class="dropdown-item @(per == f.Period ? "active" : "")" href="@IndexUrl(null, d => { d["Period"] = per; d["From"] = null; d["To"] = null; })">@t.PeriodName(per)</pems-link></pems-bullet>
                     }
                 </pems-list-menu>
                 <pems-list-filters form-id="pcRptFilter" action="@Url.Action("Index")" count="@activeFilters" reset-href="@Url.Action("Index", new { Tab = tab, Period = f.Period })">
@@ -117,7 +117,7 @@
                             <pems-date id="pcRptTo" name="To" scale="small" value="@(f.Period == PartCatalogueReportPeriods.Custom ? f.To?.ToString("yyyy-MM-dd") : null)" />
                         </div>
                     </div>
-                    <p class="lp-hint small text-muted mb-0">@Localizer["PcRpt_Filter_CustomHint"]</p>
+                    <pems-text class="lp-hint small text-muted mb-0">@Localizer["PcRpt_Filter_CustomHint"]</pems-text>
                     <div>
                         <label class="lp-lbl" for="pcRptSection">@Localizer["Pc_F_SectionId"]</label>
                         <pems-select scale="small" id="pcRptSection" name="SectionId">

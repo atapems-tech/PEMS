@@ -35,7 +35,7 @@
 
     @if (!string.IsNullOrWhiteSpace(Model.Notes))
     {
-        <p class="small mb-2"><strong>Notes:</strong> @Model.Notes</p>
+        <pems-text class="small mb-2"><strong>Notes:</strong> @Model.Notes</pems-text>
     }
 
     <pems-flex gap="2" wrap="true">
@@ -77,18 +77,18 @@
     {
         foreach (var group in Model.Items.GroupBy(x => x.ItemType))
         {
-            <p class="small fw-bold mb-1">@group.Key (@group.Count())</p>
-            <ul class="small mb-3">
+            <pems-text class="small fw-bold mb-1">@group.Key (@group.Count())</pems-text>
+            <pems-bullet-list class="small mb-3">
                 @foreach (var item in group)
                 {
-                    <li>@item.Description</li>
+                    <pems-bullet>@item.Description</pems-bullet>
                 }
-            </ul>
+            </pems-bullet-list>
         }
     }
     else
     {
-        <p class="text-muted small mb-0">هنوز آماده‌سازی (Prepare) انجام نشده - Snapshot موجود نیست.</p>
+        <pems-text class="text-muted small mb-0">هنوز آماده‌سازی (Prepare) انجام نشده - Snapshot موجود نیست.</pems-text>
     }
 </pems-content-card>
 

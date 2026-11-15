@@ -88,7 +88,7 @@
             }
             else
             {
-                <p class="text-muted small">No calibration recorded yet.</p>
+                <pems-text class="text-muted small">No calibration recorded yet.</pems-text>
             }
         </pems-col>
         <pems-col md="6">
@@ -103,7 +103,7 @@
             }
             else
             {
-                <p class="text-muted small">No maintenance history for this equipment yet.</p>
+                <pems-text class="text-muted small">No maintenance history for this equipment yet.</pems-text>
             }
         </pems-col>
     </pems-row>
@@ -171,7 +171,7 @@
     <pems-heading level="6">Alarms &amp; Cause / Effect</pems-heading>
     @if (!alarms.Any())
     {
-        <p class="text-muted small">هنوز هیچ آلارمی برای این Instrument ثبت نشده.</p>
+        <pems-text class="text-muted small">هنوز هیچ آلارمی برای این Instrument ثبت نشده.</pems-text>
     }
     @foreach (var alarm in alarms)
     {
@@ -242,7 +242,7 @@
             }
             else
             {
-                <p class="text-muted small">این Instrument به هیچ Control Loop ای وصل نیست.</p>
+                <pems-text class="text-muted small">این Instrument به هیچ Control Loop ای وصل نیست.</pems-text>
                 <pems-form asp-action="AssignControlLoop" method="post"><pems-row gap="2" css="align-items-end d-print-none">
                     <input type="hidden" name="instrumentId" value="@Model.InstrumentId" />
                     <pems-col md="6"><pems-input scale="small" name="loopNumber" placeholder="@Localizer["Loop Number"]" required /></pems-col>
@@ -264,7 +264,7 @@
         <pems-content-card css="h-100">
             <pems-heading level="6">I/O Points</pems-heading>
             <pems-data-table data="@(DataRows.Of(ioPoints, c_ => c_.Add(((Localizer["Tag"])?.ToString() ?? ""), io => (object?)(io.TagNumber), css: "small").Add(((Localizer["Type"])?.ToString() ?? ""), io => (object?)(io.IOType), css: "small").Add("PLC / Rack / Slot / Channel", io => DataCell.Join((NA(io.PLCName)), " / ", (NA(io.Rack)), " / ", (NA(io.Slot)), " / ", (NA(io.Channel))), css: "small")))" dense="true" css="mb-0" />
-            @if (!ioPoints.Any()) { <p class="text-muted small mb-0">هیچ I/O Point ای ثبت نشده (معمولاً از طریق AI Import پر می‌شود).</p> }
+            @if (!ioPoints.Any()) { <pems-text class="text-muted small mb-0">هیچ I/O Point ای ثبت نشده (معمولاً از طریق AI Import پر می‌شود).</pems-text> }
         </pems-content-card>
     </pems-col>
 </pems-row>

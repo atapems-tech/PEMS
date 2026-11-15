@@ -28,7 +28,7 @@
         <pems-content-card>
             <pems-heading level="6" class="mb-3"><pems-icon name="bi-exclamation-triangle" css="text-danger" /> Low Stock</pems-heading>
             <pems-data-table data="@(DataRows.Of(lowStockItems, c_ => c_.Add(((Localizer["Warehouse"])?.ToString() ?? ""), s => (object?)(s.WarehouseCode)).Add(((Localizer["On Hand"])?.ToString() ?? ""), s => (object?)(s.OnHandQuantity)).Add(((Localizer["Available"])?.ToString() ?? ""), s => (object?)(s.AvailableQuantity), css: "text-danger").Add(((Localizer["Reorder Point"])?.ToString() ?? ""), s => (object?)(s.ReorderPoint))))" dense="true" />
-            @if (!lowStockItems.Any()) { <p class="text-muted text-center py-3">@Localizer["فعلاً موجودی کمی ثبت نشده."]</p> }
+            @if (!lowStockItems.Any()) { <pems-text class="text-muted text-center py-3">@Localizer["فعلاً موجودی کمی ثبت نشده."]</pems-text> }
         </pems-content-card>
     </pems-col>
 </pems-row>
@@ -36,5 +36,5 @@
 <pems-content-card>
     <pems-heading level="6" class="mb-3">Recent Transactions</pems-heading>
     <pems-data-table data="@(DataRows.Of(recentTransactions, c_ => c_.Add(((Localizer["Date"])?.ToString() ?? ""), t => (object?)(t.TransactionDate.ToString("yyyy-MM-dd HH:mm")), css: "small").Add(((Localizer["Material"])?.ToString() ?? ""), t => (object?)(t.MaterialItem?.MaterialCode), css: "small").Add(((Localizer["Type"])?.ToString() ?? ""), t => (object?)(t.TransactionType), kind: DataCellKind.Badge, tone: t => "light").Add(((Localizer["Warehouse"])?.ToString() ?? ""), t => (object?)(t.Warehouse?.Code)).Add(((Localizer["Qty"])?.ToString() ?? ""), t => (object?)(t.Quantity)).Add(((Localizer["Reference"])?.ToString() ?? ""), t => (object?)(t.ReferenceType), css: "small")))" dense="true" />
-    @if (!recentTransactions.Any()) { <p class="text-muted text-center py-3">@Localizer["هنوز تراکنشی ثبت نشده."]</p> }
+    @if (!recentTransactions.Any()) { <pems-text class="text-muted text-center py-3">@Localizer["هنوز تراکنشی ثبت نشده."]</pems-text> }
 </pems-content-card>

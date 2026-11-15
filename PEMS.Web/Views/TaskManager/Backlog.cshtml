@@ -20,7 +20,7 @@
 
 <div class="vs-panel mb-2 py-2">
     <partial name="_BulkBar" />
-    <p class="small text-muted mb-0" data-tm-bulk-hint>@Localizer["Tm_BulkHint"]</p>
+    <pems-text class="small text-muted mb-0" data-tm-bulk-hint>@Localizer["Tm_BulkHint"]</pems-text>
 </div>
 
 @foreach (var (sprint, items) in Model.SprintPanels)
@@ -102,7 +102,7 @@
     }
     @{ ViewData["Bucket"] = $"{view.Space.Id}:"; }
     <partial name="_ItemTable" model="Model.BacklogItems" view-data="ViewData" />
-    @if (canRank) { <p class="small text-muted mt-2 mb-0"><pems-icon name="bi-arrows-move" aria-hidden="true" /> @Localizer["Tm_RankHint"]</p> }
+    @if (canRank) { <pems-text class="small text-muted mt-2 mb-0"><pems-icon name="bi-arrows-move" aria-hidden="true" /> @Localizer["Tm_RankHint"]</pems-text> }
 </section>
 
 <partial name="_CreateModal" model="view" />

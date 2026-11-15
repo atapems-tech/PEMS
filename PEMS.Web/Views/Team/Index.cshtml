@@ -33,10 +33,10 @@
                     </pems-flex>
                 </pems-flex>
 
-                <hr class="my-2" />
+                <pems-divider class="my-2" />
 
                 <pems-heading level="6" class="small fw-bold mb-2">اعضا (@team.Members.Count(m => m.IsActive))</pems-heading>
-                <ul class="list-unstyled mb-2">
+                <pems-bullet-list class="list-unstyled mb-2">
                     @foreach (var m in team.Members.Where(m => m.IsActive))
                     {
                         <pems-flex as="li" justify="between" align="center" css="border-bottom py-1">
@@ -50,7 +50,7 @@
                             </pems-flex>
                         </pems-flex>
                     }
-                </ul>
+                </pems-bullet-list>
 
                 <pems-form asp-action="AddMember" method="post"><pems-flex gap="1">
                     <input type="hidden" name="teamId" value="@team.TeamId" />
@@ -73,7 +73,7 @@
 </pems-row>
 @if (!Model.Any())
 {
-    <pems-content-card><p class="text-muted text-center py-4 mb-0">@Localizer["هنوز تیمی ساخته نشده."]</p></pems-content-card>
+    <pems-content-card><pems-text class="text-muted text-center py-4 mb-0">@Localizer["هنوز تیمی ساخته نشده."]</pems-text></pems-content-card>
 }
 
 <pems-modal id="createTeamModal" tabindex="-1">

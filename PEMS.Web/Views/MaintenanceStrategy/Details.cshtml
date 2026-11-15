@@ -123,7 +123,7 @@
             </pems-flex>
         }
     </pems-flex>
-    @if (!usable) { <p class="small text-muted">@Localizer["Rcm_AssignRequiresApproval"]</p> }
+    @if (!usable) { <pems-text class="small text-muted">@Localizer["Rcm_AssignRequiresApproval"]</pems-text> }
     <pems-table-scroll>
         <pems-table scale="small" css="table-enterprise align-middle">
             <pems-table-head><pems-table-row>
@@ -178,7 +178,7 @@
             }
             </pems-table-body>
         </pems-table>
-        @if (!s.Assignments.Any()) { <p class="text-muted small text-center py-2">@Localizer["Rcm_NoAssignments"]</p> }
+        @if (!s.Assignments.Any()) { <pems-text class="text-muted small text-center py-2">@Localizer["Rcm_NoAssignments"]</pems-text> }
     </pems-table-scroll>
 </pems-content-card>
 
@@ -196,7 +196,7 @@
         }
         </pems-table-body>
     </pems-table>
-    @if (!s.Plans.Any()) { <p class="text-muted small text-center py-2">@Localizer["Rcm_NoPlans"]</p> }
+    @if (!s.Plans.Any()) { <pems-text class="text-muted small text-center py-2">@Localizer["Rcm_NoPlans"]</pems-text> }
 </pems-content-card>
 
 <pems-content-card>
@@ -210,7 +210,7 @@
                 <input type="hidden" name="assignmentId" id="overrideAssignmentId" />
                 <pems-modal-header>@Localizer["Rcm_RequestOverride"] — <span id="overrideTag"></span></pems-modal-header>
                 <pems-modal-body>
-                    <p class="small text-muted">@Localizer["Rcm_OverrideHint"]</p>
+                    <pems-text class="small text-muted">@Localizer["Rcm_OverrideHint"]</pems-text>
                     <div class="mb-2"><pems-label>@Localizer["Rcm_OverrideInterval"]</pems-label><pems-input name="overrideIntervalDays" type="number" min="1" /></div>
                     <div class="mb-2"><pems-label>@Localizer["Rcm_OverrideTaskNote"]</pems-label><pems-textarea name="overrideTaskNote" rows="2" maxlength="1000"></pems-textarea></div>
                     <div class="mb-2"><pems-label>@Localizer["Rcm_Justification"] *</pems-label><pems-textarea name="overrideJustification" rows="2" minlength="20" required maxlength="1000"></pems-textarea></div>

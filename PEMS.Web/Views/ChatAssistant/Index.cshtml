@@ -6,10 +6,10 @@
 <pems-content-card css="pems-maxw-820">
 
     <pems-flex justify="between" align="center" css="mb-3">
-        <p class="text-muted mb-0">
+        <pems-text class="text-muted mb-0">
             بر اساس داده‌ی واقعی سیستم (تعداد مدارک، وضعیت‌ها، پروژه‌ها، MR ها و ...) پاسخ می‌دهد.
             مثال: «چند مدرک در انتظار تایید داریم؟» یا «آخرین مدارک ثبت‌شده کدامند؟»
-        </p>
+        </pems-text>
         <pems-form asp-action="Clear" method="post">
             <pems-button tone="neutral" size="small" outline="true"><pems-icon name="bi-trash" /> @Localizer["Clear"]</pems-button>
         </pems-form>

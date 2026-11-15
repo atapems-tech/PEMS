@@ -15,13 +15,13 @@
             <pems-button tone="primary" size="small" outline="true" as="a" asp-action="ComplianceExport" asp-route-id="@Model.Report.LetterId"><pems-icon name="bi-download" aria-hidden="true" /> @Localizer["Lc_ExportCsv"]</pems-button>
         </span>
     </div>
-    <p class="text-muted">@Model.Report.Subject</p>
+    <pems-text class="text-muted">@Model.Report.Subject</pems-text>
 
     <section class="lc-card" aria-labelledby="lhViews">
         <pems-heading level="3" id="lhViews"><pems-icon name="bi-eye" aria-hidden="true" /> @Localizer["Lc_WhoViewed"]</pems-heading>
         @if (!Model.Views.Any())
         {
-            <p class="text-muted mb-0">@Localizer["Lc_NobodyViewed"]</p>
+            <pems-text class="text-muted mb-0">@Localizer["Lc_NobodyViewed"]</pems-text>
         }
         else
         {
@@ -35,7 +35,7 @@
         <pems-heading level="3" id="lhVersions"><pems-icon name="bi-clock-history" aria-hidden="true" /> @Localizer["Lc_Versions"]</pems-heading>
         @if (!Model.Versions.Any())
         {
-            <p class="text-muted mb-0">@Localizer["Lc_NoVersions"]</p>
+            <pems-text class="text-muted mb-0">@Localizer["Lc_NoVersions"]</pems-text>
         }
         else
         {

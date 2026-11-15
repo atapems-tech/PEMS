@@ -89,7 +89,7 @@
 {
     <pems-form asp-action="Accept" method="post"><pems-content-card css="mb-3">
         <input type="hidden" name="id" value="@d.ProcurementDemandId" />
-        <p class="small mb-2">@Localizer["Ppr_AcceptHint"]</p>
+        <pems-text class="small mb-2">@Localizer["Ppr_AcceptHint"]</pems-text>
         <pems-button tone="none" size="small" css="btn-primary" type="submit"><pems-icon name="bi-check2" aria-hidden="true" /> @Localizer["Ppr_Accept"]</pems-button>
     </pems-content-card></pems-form>
 }

@@ -8,7 +8,7 @@
 }
 
 <pems-heading level="2">@Localizer["Administrator recovery"]</pems-heading>
-<p class="subtitle">@Localizer["Use one of your printed recovery codes to set a new password. Each code works only once."]</p>
+<pems-text class="subtitle">@Localizer["Use one of your printed recovery codes to set a new password. Each code works only once."]</pems-text>
 
 <pems-validation-summary css="py-2 px-3 small" asp-validation-summary="ModelOnly" hidden="@(ViewData.ModelState.ErrorCount == 0)"></pems-validation-summary>
 
@@ -37,7 +37,7 @@
     <pems-button tone="none" css="btn-pems" type="submit">@Localizer["Recover account"]</pems-button>
 </pems-form>
 
-<p class="small text-muted mt-3">@Localizer["After recovery, all sessions of the account are signed out, every administrator is notified and MFA must be enrolled again."]</p>
+<pems-text class="small text-muted mt-3">@Localizer["After recovery, all sessions of the account are signed out, every administrator is notified and MFA must be enrolled again."]</pems-text>
 
 <div class="auth-links">
     <pems-link asp-controller="Account" asp-action="Login">&larr; @Localizer["Back to sign in"]</pems-link>

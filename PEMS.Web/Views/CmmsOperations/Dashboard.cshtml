@@ -11,10 +11,10 @@
         <pems-button tone="neutral" size="small" outline="true" as="a" asp-controller="Reliability" asp-action="Intelligence">@Localizer["Maintenance Intelligence"]</pems-button>
     </div>
 </pems-flex>
-<p class="text-muted small">
+<pems-text class="text-muted small">
     طبق «PEMS Phase 8» بند ۲۱: تجمیع فقط‌خواندنی وضعیت WorkRequest/WorkOrder موجود - هیچ عددی
     محاسبه/جعل نمی‌شود، فقط COUNT روی داده‌ی واقعی. Generated @Model.GeneratedAt.ToString("yyyy-MM-dd HH:mm").
-</p>
+</pems-text>
 
 <pems-row gap="3" css="mb-3">
     <pems-col md="3">
@@ -124,7 +124,7 @@
                 </pems-table>
                 @if (tb.EmergencyWorkRatioPercent.HasValue)
                 {
-                    <p class="text-muted small mt-2 mb-0">Emergency work ratio: @tb.EmergencyWorkRatioPercent.Value.ToString("N1")%</p>
+                    <pems-text class="text-muted small mt-2 mb-0">Emergency work ratio: @tb.EmergencyWorkRatioPercent.Value.ToString("N1")%</pems-text>
                 }
             }
         </pems-content-card>

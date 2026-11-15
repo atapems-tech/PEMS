@@ -89,7 +89,7 @@
             </pems-badge>
         }
     </pems-flex>
-    @if (!Model.RequiredSkills.Any()) { <p class="text-muted small">@Localizer["مهارت موردنیازی ثبت نشده."]</p> }
+    @if (!Model.RequiredSkills.Any()) { <pems-text class="text-muted small">@Localizer["مهارت موردنیازی ثبت نشده."]</pems-text> }
 
     <pems-form asp-action="AddRequiredSkill" method="post"><pems-row gap="2">
         <input type="hidden" name="jobPlanId" value="@Model.JobPlanId" />

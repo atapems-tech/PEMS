@@ -58,7 +58,7 @@
         }
         @if (a.Lines.Count == 0)
         {
-            <p class="small text-muted">@Localizer["Po_NoLines"]</p>
+            <pems-text class="small text-muted">@Localizer["Po_NoLines"]</pems-text>
         }
         else
         {
@@ -173,7 +173,7 @@
         {
             @if (isOwnPo)
             {
-                <p class="small text-muted mb-0"><pems-icon name="bi-lock" aria-hidden="true" /> @Localizer["Po_Err_SoD"]</p>
+                <pems-text class="small text-muted mb-0"><pems-icon name="bi-lock" aria-hidden="true" /> @Localizer["Po_Err_SoD"]</pems-text>
             }
             else
             {
@@ -194,7 +194,7 @@
 {
     <pems-content-card css="mt-3">
         <pems-heading level="6" class="mb-2"><pems-icon name="bi-box-arrow-in-down" aria-hidden="true" /> @Localizer["Rcv_Receiving"]</pems-heading>
-        <p class="small text-muted">@Localizer["Rcv_ReceivingHelp"]</p>
+        <pems-text class="small text-muted">@Localizer["Rcv_ReceivingHelp"]</pems-text>
         <pems-table-scroll>
             <pems-table kind="enterprise" scale="small" css="align-middle">
                 <pems-table-head>

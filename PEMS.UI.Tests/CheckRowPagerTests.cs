@@ -96,6 +96,11 @@ public sealed class CheckRowPagerTests
         Assert.Equal("<div class=\"tab-pane fade\">x</div>", Run(new PemsTabPaneTagHelper(UiTestRenderer.Instance) { Fade = true }, "pems-tab-pane", [], "x"));
         Assert.Equal("<li class=\"nav-item\" role=\"presentation\"><button class=\"nav-link active\" data-bs-toggle=\"tab\" data-bs-target=\"#tab-a\" type=\"button\">x</button></li>", Run(new PemsTabTagHelper(UiTestRenderer.Instance) { Target = "tab-a", Active = true }, "pems-tab", [], "x"));
         Assert.Equal("<h6 class=\"mb-3\" id=\"t\">x</h6>", Run(new PemsHeadingTagHelper(UiTestRenderer.Instance) { Level = 6 }, "pems-heading", [new("class", "mb-3"), new("id", "t")], "x"));
+        Assert.Equal("<p class=\"small\">x</p>", Run(new PemsTextTagHelper(UiTestRenderer.Instance), "pems-text", [new("class", "small")], "x"));
+        Assert.Equal("<ul class=\"mb-0\"><li>x</li></ul>", Run(new PemsBulletListTagHelper(UiTestRenderer.Instance), "pems-bullet-list", [new("class", "mb-0")], "<li>x</li>"));
+        Assert.Equal("<ol></ol>", Run(new PemsBulletListTagHelper(UiTestRenderer.Instance) { Ordered = true }, "pems-bullet-list", [], ""));
+        Assert.Equal("<li class=\"a\">x</li>", Run(new PemsBulletTagHelper(UiTestRenderer.Instance), "pems-bullet", [new("class", "a")], "x"));
+        Assert.StartsWith("<hr class=\"my-3\"", Run(new PemsDividerTagHelper(UiTestRenderer.Instance), "pems-divider", [new("class", "my-3")]));
         Assert.Equal("<h2>x</h2>", Run(new PemsHeadingTagHelper(UiTestRenderer.Instance), "pems-heading", [], "x"));
         Assert.Equal("<a class=\"text-muted\" href=\"/x\" target=\"_blank\">x</a>", Run(new PemsLinkTagHelper(null!, UiTestRenderer.Instance), "pems-link", [new("class", "text-muted"), new("href", "/x"), new("target", "_blank")], "x"));
         Assert.Equal("<li class=\"nav-item\"><a class=\"nav-link active\" href=\"/x\">x</a></li>", Run(new PemsNavLinkTagHelper(null!, UiTestRenderer.Instance) { Active = true }, "pems-nav-link", [new("href", "/x")], "x"));

@@ -18,7 +18,7 @@
         <pems-heading level="6" class="mb-3">@Localizer["Rcm_PickAssignment"]</pems-heading>
         @if (!Model.Choices.Any())
         {
-            <p class="text-muted">@Localizer["Rcm_NoEligibleAssignments"] <pems-link asp-controller="MaintenanceStrategy" asp-action="Index">@Localizer["Rcm_Strategies"]</pems-link></p>
+            <pems-text class="text-muted">@Localizer["Rcm_NoEligibleAssignments"] <pems-link asp-controller="MaintenanceStrategy" asp-action="Index">@Localizer["Rcm_Strategies"]</pems-link></pems-text>
         }
         else
         {
@@ -35,7 +35,7 @@
     }
     else
     {
-        <p class="text-muted small">@Localizer["Rcm_PlanHint"]</p>
+        <pems-text class="text-muted small">@Localizer["Rcm_PlanHint"]</pems-text>
         @await Html.PartialAsync("_EquipmentIdentity", ctx.Equipment)
         <div class="small mb-3">
             <span class="text-muted">@Localizer["Rcm_Strategy"]:</span>

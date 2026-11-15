@@ -29,7 +29,7 @@
             else { <span class="vs-pill vs-pill--neutral">@Localizer["Whi_State_NotRequested"]</span> }
         </div>
     </pems-flex>
-    <p class="small text-muted mt-2 mb-0"><pems-icon name="bi-info-circle" aria-hidden="true" /> @Localizer["Whi_Hint"]</p>
+    <pems-text class="small text-muted mt-2 mb-0"><pems-icon name="bi-info-circle" aria-hidden="true" /> @Localizer["Whi_Hint"]</pems-text>
 </pems-content-card>
 
 <pems-form asp-action="Source" method="post"><pems-content-card>
@@ -76,11 +76,11 @@
 
     @if (!canSource)
     {
-        <p class="small text-muted mb-0"><pems-icon name="bi-lock" aria-hidden="true" /> @Localizer["Whi_NoPermission"]</p>
+        <pems-text class="small text-muted mb-0"><pems-icon name="bi-lock" aria-hidden="true" /> @Localizer["Whi_NoPermission"]</pems-text>
     }
     else if (open.Count == 0)
     {
-        <p class="small text-muted mb-0">@Localizer["Whi_NothingLeft"]</p>
+        <pems-text class="small text-muted mb-0">@Localizer["Whi_NothingLeft"]</pems-text>
     }
     else
     {

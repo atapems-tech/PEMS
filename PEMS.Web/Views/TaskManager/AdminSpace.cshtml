@@ -36,14 +36,14 @@
         <pems-col md="10"><pems-label css="small" for="sp-desc">@Localizer["Tm_Field_Description"]</pems-label><pems-input scale="small" id="sp-desc" name="Description" value="@s.Description" maxlength="1000" /></pems-col>
         <pems-col md="2" css="d-flex align-items-end"><pems-button tone="primary" size="small" css="w-100">@Localizer["Tm_Save"]</pems-button></pems-col>
     </pems-row></pems-form>
-    <p class="small text-muted mt-2 mb-0">@Localizer["Tm_KeyImmutable"]</p>
+    <pems-text class="small text-muted mt-2 mb-0">@Localizer["Tm_KeyImmutable"]</pems-text>
 </section>
 
 <pems-row gap="3">
     <pems-col lg="6">
         <section class="vs-panel mb-3" aria-labelledby="memTitle">
             <pems-heading level="3" class="h6" id="memTitle">@Localizer["Tm_Members"]</pems-heading>
-            <p class="small text-muted">@Localizer["Tm_MembersHint"]</p>
+            <pems-text class="small text-muted">@Localizer["Tm_MembersHint"]</pems-text>
             @if (!Model.Members.Any()) { <div class="vs-empty py-2 small">@Localizer["Tm_NoMembers"]</div> }
             else
             {
@@ -119,7 +119,7 @@
     <pems-col lg="6">
         <section class="vs-panel mb-3" aria-labelledby="stTitle">
             <pems-heading level="3" class="h6" id="stTitle">@Localizer["Tm_Statuses"]</pems-heading>
-            <p class="small text-muted">@Localizer["Tm_StatusesHint"]</p>
+            <pems-text class="small text-muted">@Localizer["Tm_StatusesHint"]</pems-text>
             @foreach (var st in Model.Statuses)
             {
                 <pems-form asp-action="EditStatus" method="post"><pems-row gap="1" css="mb-1 align-items-center @(st.IsActive ? "" : "text-muted")">
@@ -154,7 +154,7 @@
 
         <section class="vs-panel mb-3" aria-labelledby="trTitle">
             <pems-heading level="3" class="h6" id="trTitle">@Localizer["Tm_Transitions"]</pems-heading>
-            <p class="small text-muted">@Localizer["Tm_TransitionsHint"]</p>
+            <pems-text class="small text-muted">@Localizer["Tm_TransitionsHint"]</pems-text>
             <pems-table-scroll>
                 <pems-table scale="small" css="table-bordered vs-dense tm-matrix">
                     <pems-table-head>

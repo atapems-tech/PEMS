@@ -5,18 +5,18 @@
 
 <pems-flex justify="between" align="center" css="mb-3">
     <div>
-        <p class="text-muted small mb-0">
+        <pems-text class="text-muted small mb-0">
             فقط تطبیق‌های کامل (Exact Match روی شماره‌ی خام ثبت‌شده) این‌جا نشون داده می‌شن -
             همون سطح اطمینانی که برای P&amp;ID استفاده کردیم. با این حال چون تایید هرکدوم یک
             رابطه‌ی دائمی می‌سازه، هنوز یک تایید صریح (هرچند دسته‌جمعی) لازمه.
-        </p>
+        </pems-text>
     </div>
     <pems-button tone="neutral" size="small" outline="true" as="a" asp-action="Index">@Localizer["بازگشت به Explorer"]</pems-button>
 </pems-flex>
 
 @if (!Model.Any())
 {
-    <pems-content-card><p class="text-muted text-center py-4 mb-0">@Localizer["هیچ پیشنهاد تاییدنشده‌ای یافت نشد."]</p></pems-content-card>
+    <pems-content-card><pems-text class="text-muted text-center py-4 mb-0">@Localizer["هیچ پیشنهاد تاییدنشده‌ای یافت نشد."]</pems-text></pems-content-card>
 }
 else
 {

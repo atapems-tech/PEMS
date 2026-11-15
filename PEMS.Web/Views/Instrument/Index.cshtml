@@ -126,10 +126,10 @@
             <pems-form asp-action="Create" method="post">
                 <pems-modal-header>@Localizer["In_New"]</pems-modal-header>
                 <pems-modal-body>
-                    <p class="text-muted small">
+                    <pems-text class="text-muted small">
                         Tag number, manufacturer, model and description come from the Equipment record itself -
                         pick the equipment that <em>is</em> this instrument. Only instrumentation-specific passport fields are entered here.
-                    </p>
+                    </pems-text>
                     <div class="mb-3">
                         <pems-label>@Localizer["Equipment"]</pems-label>
                         <pems-select name="equipmentId" required>

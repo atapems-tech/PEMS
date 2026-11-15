@@ -68,7 +68,7 @@
     <div class="table-scroll-area pems-s-7bf38d03">
         <pems-data-table data="@(DataRows.Of(Model.Runs, c_ => c_.Add("Run #", r => (object?)(r.RunNumber)).Add(((Localizer["Status"])?.ToString() ?? ""), r => (object?)(DataCell.Badge("neutral", r.Status))).Add(((Localizer["Start"])?.ToString() ?? ""), r => (object?)((r.StartDate?.ToString("yyyy-MM-dd HH:mm"))), css: "small").Add(((Localizer["End"])?.ToString() ?? ""), r => (object?)((r.EndDate?.ToString("yyyy-MM-dd HH:mm"))), css: "small").Add("Output Qty", r => (object?)((r.TotalOutputQuantity.ToString("N3")))).Add("Loss Qty", r => (object?)((r.TotalLossQuantity.ToString("N3")))).Add("", r => (object?)(DataCell.ButtonLink(Url.Action("Details", "ProductionRun", new { id = r.ProductionRunId }), "primary", "small", true, null, "Open")), css: "text-end")))" />
     </div>
-    @if (!Model.Runs.Any()) { <p class="text-muted text-center py-3">No runs yet.</p> }
+    @if (!Model.Runs.Any()) { <pems-text class="text-muted text-center py-3">No runs yet.</pems-text> }
 </pems-content-card>
 
 <pems-modal id="holdOrderModal" tabindex="-1">

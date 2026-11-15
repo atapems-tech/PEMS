@@ -8,7 +8,7 @@
 <pems-content-card>
     @if (Model.ActiveBarcode == null)
     {
-        <p class="text-muted small">No active barcode for this record yet.</p>
+        <pems-text class="text-muted small">No active barcode for this record yet.</pems-text>
         @if (Model.CanManage)
         {
             <pems-form asp-controller="Barcode" asp-action="Generate" asp-area="" method="post"><pems-flex gap="2" align="end">

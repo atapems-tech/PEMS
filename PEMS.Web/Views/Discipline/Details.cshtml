@@ -57,7 +57,7 @@
             }
         </pems-table-body>
     </pems-table>
-    @if (!Model.Tasks.Any()) { <p class="text-muted">No tasks yet.</p> }
+    @if (!Model.Tasks.Any()) { <pems-text class="text-muted">No tasks yet.</pems-text> }
 
     <pems-form asp-action="AddTask" method="post"><pems-row gap="2" css="mt-2">
         <input type="hidden" name="disciplineId" value="@s.DisciplineId" />
@@ -99,7 +99,7 @@
                     </pems-table-body>
                 </pems-table>
             </div>
-            @if (!Model.Documents.Any()) { <p class="text-muted small">No documents.</p> }
+            @if (!Model.Documents.Any()) { <pems-text class="text-muted small">No documents.</pems-text> }
         </pems-content-card>
 
         <pems-content-card>
@@ -107,7 +107,7 @@
             <div class="table-scroll-area pems-s-3a95d6b3">
                 <pems-data-table data="@(DataRows.Of(Model.Equipment, c_ => c_.Add(((Localizer["Tag"])?.ToString() ?? ""), e => (object?)(DataCell.Link(Url.Action("Details", "Equipment", new { id = e.EquipmentId }), e.TagNumber))).Add(((Localizer["Name"])?.ToString() ?? ""), e => (object?)(e.Name))))" />
             </div>
-            @if (!Model.Equipment.Any()) { <p class="text-muted small">No equipment.</p> }
+            @if (!Model.Equipment.Any()) { <pems-text class="text-muted small">No equipment.</pems-text> }
         </pems-content-card>
     </pems-col>
 
@@ -117,13 +117,13 @@
             <div class="table-scroll-area pems-s-3a95d6b3">
                 <pems-data-table data="@(DataRows.Of(Model.VDRItems, c_ => c_.Add(((Localizer["Doc No"])?.ToString() ?? ""), v => (object?)(DataCell.Link(Url.Action("Details", "VDR", new { id = v.VDRItemId }), v.DocumentNumber))).Add(((Localizer["Vendor"])?.ToString() ?? ""), v => (object?)(v.VendorName)).Add(((Localizer["Status"])?.ToString() ?? ""), v => (object?)(DataCell.Badge("neutral", v.WorkflowStatus)))))" />
             </div>
-            @if (!Model.VDRItems.Any()) { <p class="text-muted small">No VDR items.</p> }
+            @if (!Model.VDRItems.Any()) { <pems-text class="text-muted small">No VDR items.</pems-text> }
         </pems-content-card>
 
         <pems-content-card>
             <pems-heading level="6" class="mb-3">MR / MRQ</pems-heading>
             <pems-data-table data="@(DataRows.Of(Model.MRs, c_ => c_.Add("MR No", m => (object?)(m.MRNumber)).Add(((Localizer["Status"])?.ToString() ?? ""), m => (object?)(m.Status), kind: DataCellKind.Badge, tone: m => "neutral")))" />
-            @if (!Model.MRs.Any()) { <p class="text-muted small">No MR/MRQ.</p> }
+            @if (!Model.MRs.Any()) { <pems-text class="text-muted small">No MR/MRQ.</pems-text> }
         </pems-content-card>
     </pems-col>
 </pems-row>

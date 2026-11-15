@@ -4,7 +4,7 @@
 @inject IStringLocalizer<SharedResource> Localizer
 
 <pems-content-card css="pems-s-3f7efa5f">
-    <p class="text-muted small"><pems-icon name="bi-info-circle" aria-hidden="true" /> @Localizer["LtT_PreviewNote"]</p>
+    <pems-text class="text-muted small"><pems-icon name="bi-info-circle" aria-hidden="true" /> @Localizer["LtT_PreviewNote"]</pems-text>
 
     <pems-info-grid layout="rows" class="small mb-3">
     <pems-info-item label="@Localizer["LtT_Name"]">@Model.Name</pems-info-item>
@@ -14,7 +14,7 @@
 </pems-info-grid>
 
     <pems-heading level="2" class="vs-section__title">@Localizer["Lt_Subject"]</pems-heading>
-    <p class="fw-semibold">@ViewBag.Subject</p>
+    <pems-text class="fw-semibold">@ViewBag.Subject</pems-text>
 
     <pems-heading level="2" class="vs-section__title">@Localizer["Lt_Body"]</pems-heading>
     <div class="border rounded p-3 mb-3">@Html.Raw((string?)ViewBag.Body)</div>

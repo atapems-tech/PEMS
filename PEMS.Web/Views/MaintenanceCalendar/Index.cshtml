@@ -205,7 +205,7 @@ else
         <div class="pems-cal-day-timeline">
             @if (!Model.Items.Any())
             {
-                <p class="text-muted text-center py-4">@Localizer["No scheduled work this day."]</p>
+                <pems-text class="text-muted text-center py-4">@Localizer["No scheduled work this day."]</pems-text>
             }
             @foreach (var it in Model.Items.OrderBy(x => x.PlannedStart))
             {

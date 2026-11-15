@@ -42,7 +42,7 @@
     {
         <pems-alert tone="warning" css="py-2 px-3 small">
             <pems-icon name="bi-exclamation-triangle" aria-hidden="true" /> <strong>@Localizer["Repl_RequiresAttribution"]</strong> — @Localizer["Repl_RequiresAttributionHelp"]
-            <ul class="mb-0 mt-1">@foreach (var a in attribution) { <li>@a</li> }</ul>
+            <pems-bullet-list class="mb-0 mt-1">@foreach (var a in attribution) { <pems-bullet>@a</pems-bullet> }</pems-bullet-list>
         </pems-alert>
     }
 
@@ -90,7 +90,7 @@
                 @if (last.NotDefinitiveSummary.Count > 0)
                 {
                     <details class="mt-1"><summary>@Localizer["Repl_NotRecommended"]</summary>
-                        <ul class="mb-0">@foreach (var s in last.NotDefinitiveSummary) { <li>@s</li> }</ul>
+                        <pems-bullet-list class="mb-0">@foreach (var s in last.NotDefinitiveSummary) { <pems-bullet>@s</pems-bullet> }</pems-bullet-list>
                     </details>
                 }
             </div>

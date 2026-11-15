@@ -34,12 +34,12 @@
 </pems-content-card>
 
 <pems-content-card>
-    <p class="text-muted">
+    <pems-text class="text-muted">
         مدارکی که تحلیل AI روی آن‌ها کامل شده و منتظر بازبینی مهندسی هستند (Discipline, Vendor, MR,
         Revision, Tag های پیشنهادی).
-    </p>
+    </pems-text>
     <pems-table-scroll css="table-scroll-area pems-s-8da1c6e6">
         <pems-data-table data="@(DataRows.Of(Model, c_ => c_.Add(((Localizer["Doc No"])?.ToString() ?? ""), d => (object?)(d.DocumentNo)).Add(((Localizer["Title"])?.ToString() ?? ""), d => (object?)(d.Title)).Add(((Localizer["Stage"])?.ToString() ?? ""), d => (object?)(DataCell.Badge("info", d.AIWorkflowStage))).Add("Pending Classifications", d => (object?)(DataCell.Badge("warning", (d.Classifications.Count(c => c.ReviewStatus == "Draft"))))).Add(((Localizer["Pending Tags"])?.ToString() ?? ""), d => (object?)(DataCell.Badge("warning", (d.TagLinks.Count(t => t.IsAIProposed && t.ReviewStatus == "Draft"))))).Add("", d => (object?)(DataCell.ButtonLink(Url.Action("Review", null, new { id = d.DocumentId }), "primary", "small", false, null, "Review")))))" />
-        @if (!Model.Any()) { <p class="text-muted text-center py-4">No documents pending AI classification review.</p> }
+        @if (!Model.Any()) { <pems-text class="text-muted text-center py-4">No documents pending AI classification review.</pems-text> }
     </pems-table-scroll>
 </pems-content-card>

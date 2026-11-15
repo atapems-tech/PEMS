@@ -8,10 +8,10 @@
 
 <pems-content-card css="pems-s-1cca82b5">
     <pems-heading level="4" class="text-danger"><pems-icon name="bi-exclamation-octagon" /> @Localizer["Error_Title"]</pems-heading>
-    <p>@Localizer["Error_Message"]</p>
+    <pems-text>@Localizer["Error_Message"]</pems-text>
     @if (Model.ShowRequestId)
     {
-        <p class="small text-muted">@Localizer["Error_RequestId"]: <code>@Model.RequestId</code></p>
+        <pems-text class="small text-muted">@Localizer["Error_RequestId"]: <code>@Model.RequestId</code></pems-text>
     }
     <pems-button tone="neutral" size="small" outline="true" as="a" href="javascript:history.back()">@Localizer["Rcm_Back"]</pems-button>
     <pems-button tone="primary" size="small" as="a" href="/">@Localizer["Error_Home"]</pems-button>

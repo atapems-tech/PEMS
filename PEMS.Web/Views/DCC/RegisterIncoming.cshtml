@@ -52,7 +52,7 @@
                 <pems-link asp-action="Index">@L("Dcc_Crumb")</pems-link><pems-icon name="bi-chevron-right" aria-hidden="true" /><span>@L("Dcc_PageTitle")</span>
             </nav>
             <pems-heading level="1" class="dcr-title"><pems-icon name="bi-envelope-arrow-down" aria-hidden="true" /> @L("Dcc_PageTitle")</pems-heading>
-            <p class="dcr-sub">@L("Dcc_PageSubtitle")</p>
+            <pems-text class="dcr-sub">@L("Dcc_PageSubtitle")</pems-text>
         </div>
         <div class="dcr-numchip" title="@L("Dcc_NumberHint")">
             <span class="dcr-numchip-label">@L("Dcc_NextNumber")</span>
@@ -68,7 +68,7 @@
 
     <div class="dcr-banner dcr-banner--err" id="dcrSummary" role="alert" tabindex="-1" hidden>
         <pems-icon name="bi-exclamation-octagon-fill" aria-hidden="true" />
-        <div><strong id="dcrSummaryTitle">@L("Dcc_FixErrors")</strong><ul id="dcrSummaryList"></ul></div>
+        <div><strong id="dcrSummaryTitle">@L("Dcc_FixErrors")</strong><pems-bullet-list id="dcrSummaryList"></pems-bullet-list></div>
     </div>
 
     <div class="dcr-banner dcr-banner--warn" id="dcrDuplicate" role="alert" hidden>
@@ -89,7 +89,7 @@
                         <label class="dcr-label" for="dcrParty">@L("Dcc_Party") <span class="dcr-req" aria-hidden="true">*</span></label>
                         <div class="dcr-combo">
                             <pems-input id="dcrParty" role="combobox" aria-expanded="false" aria-controls="dcrPartyList" aria-autocomplete="list" placeholder="@L("Dcc_PartyPlaceholder")" />
-                            <ul id="dcrPartyList" class="dcr-list" role="listbox" hidden></ul>
+                            <pems-bullet-list id="dcrPartyList" class="dcr-list" role="listbox" hidden></pems-bullet-list>
                         </div>
                         <div class="dcr-newparty" id="dcrNewParty" hidden>
                             <label class="dcr-label" for="dcrNewPartyType">@L("Dcc_PartyType")</label>
@@ -248,7 +248,7 @@
                         <label class="dcr-label" for="dcrOwner">@L("Dcc_Owner") <span class="dcr-req" id="dcrOwnerReq" aria-hidden="true" hidden>*</span></label>
                         <div class="dcr-combo">
                             <pems-input id="dcrOwner" role="combobox" aria-expanded="false" aria-controls="dcrOwnerList" aria-autocomplete="list" placeholder="@L("Dcc_OwnerPlaceholder")" />
-                            <ul id="dcrOwnerList" class="dcr-list" role="listbox" hidden></ul>
+                            <pems-bullet-list id="dcrOwnerList" class="dcr-list" role="listbox" hidden></pems-bullet-list>
                         </div>
                         <div class="dcr-error" data-error-for="ownerEmployeeId"></div>
                     </div>
@@ -257,7 +257,7 @@
                         <label class="dcr-label" for="dcrCc">@L("Dcc_Cc")</label>
                         <div class="dcr-combo">
                             <pems-input id="dcrCc" role="combobox" aria-expanded="false" aria-controls="dcrCcList" aria-autocomplete="list" placeholder="@L("Dcc_CcPlaceholder")" />
-                            <ul id="dcrCcList" class="dcr-list" role="listbox" hidden></ul>
+                            <pems-bullet-list id="dcrCcList" class="dcr-list" role="listbox" hidden></pems-bullet-list>
                         </div>
                         <div class="dcr-tags" id="dcrCcTags"></div>
                         <div class="dcr-error" data-error-for="ccEmployeeIds"></div>
@@ -281,7 +281,7 @@
                         <span id="dcrDropHint" class="dcr-hint">@L("Dcc_DropHint")</span>
                         <pems-input kind="bare" type="file" id="dcrFileInput" multiple hidden accept="@string.Join(",", IncomingCorrespondenceRules.AllowedExtensions)" />
                     </div>
-                    <ul class="dcr-files" id="dcrFiles" aria-live="polite"></ul>
+                    <pems-bullet-list class="dcr-files" id="dcrFiles" aria-live="polite"></pems-bullet-list>
                     <div class="dcr-error" data-error-for="files"></div>
                 </div>
             </section>
@@ -296,10 +296,10 @@
                         </pems-select>
                         <div class="dcr-combo dcr-grow">
                             <pems-input scale="small" id="dcrLinkSearch" role="combobox" aria-expanded="false" aria-controls="dcrLinkList" aria-autocomplete="list" placeholder="@L("Dcc_LinkSearch")" />
-                            <ul id="dcrLinkList" class="dcr-list" role="listbox" hidden></ul>
+                            <pems-bullet-list id="dcrLinkList" class="dcr-list" role="listbox" hidden></pems-bullet-list>
                         </div>
                     </div>
-                    <ul class="dcr-links" id="dcrLinks" aria-live="polite"></ul>
+                    <pems-bullet-list class="dcr-links" id="dcrLinks" aria-live="polite"></pems-bullet-list>
                     <div class="dcr-error" data-error-for="links"></div>
                 </div>
             </section>
@@ -316,7 +316,7 @@
                 <div class="dcr-preview" id="dcrPreview" data-empty="@L("Dcc_PreviewEmpty")">
                     <div class="dcr-empty"><pems-icon name="bi-file-earmark-text" aria-hidden="true" /><span>@L("Dcc_PreviewEmpty")</span></div>
                 </div>
-                <ul class="dcr-previewlist" id="dcrPreviewList"></ul>
+                <pems-bullet-list class="dcr-previewlist" id="dcrPreviewList"></pems-bullet-list>
             </div>
 
             <div class="dcr-pane" id="dcrPaneThread" role="tabpanel" aria-labelledby="dcrTabThread" hidden>

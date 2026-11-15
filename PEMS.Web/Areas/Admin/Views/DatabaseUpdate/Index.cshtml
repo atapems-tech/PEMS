@@ -18,7 +18,7 @@
 
 <pems-page-shell kind="admin">
     <pems-page-hero>
-        <div><p>@Localizer["Database install and update: the schema is built and upgraded from code (migrations). Check the state, then apply."]</p></div>
+        <div><pems-text>@Localizer["Database install and update: the schema is built and upgraded from code (migrations). Check the state, then apply."]</pems-text></div>
     </pems-page-hero>
 
     @if (TempData["Message"] != null) { <pems-alert tone="success">@TempData["Message"]</pems-alert> }
@@ -40,9 +40,9 @@
     {
         <pems-content-card css="mb-3">
             <pems-heading level="6">@Localizer["Pending migrations"] (@Model.PendingMigrations.Count)</pems-heading>
-            <ul class="small text-muted pems-s-4cd5c0a7">
-                @foreach (var m in Model.PendingMigrations) { <li><code>@m</code></li> }
-            </ul>
+            <pems-bullet-list class="small text-muted pems-s-4cd5c0a7">
+                @foreach (var m in Model.PendingMigrations) { <pems-bullet><code>@m</code></pems-bullet> }
+            </pems-bullet-list>
             <pems-form asp-action="Apply" method="post"><pems-flex align="center" gap="3" wrap="true">
                 @Html.AntiForgeryToken()
                 @if (Model.BackupBeforeUpdate && Model.State == DatabaseSetupState.UpdateAvailable)

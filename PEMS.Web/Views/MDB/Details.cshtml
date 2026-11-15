@@ -15,7 +15,7 @@
         <pems-badge tone="neutral" css="fs-6">@Model.Status</pems-badge>
     </pems-flex>
 
-    <hr class="my-2" />
+    <pems-divider class="my-2" />
 
     <pems-row gap="3">
         <pems-col md="3"><strong>Planned Final Issue:</strong> @(Model.PlannedFinalIssueDate?.ToString("yyyy-MM-dd") ?? "-")</pems-col>
@@ -91,7 +91,7 @@
         </pems-table>
         @if (!docs.Any())
         {
-            <p class="text-muted small mb-2">No documents in this part yet.</p>
+            <pems-text class="text-muted small mb-2">No documents in this part yet.</pems-text>
         }
 
         <pems-form asp-action="AddDocument" method="post"><pems-row gap="2" css="mt-2">

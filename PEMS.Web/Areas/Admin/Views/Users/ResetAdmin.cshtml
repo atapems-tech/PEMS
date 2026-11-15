@@ -5,21 +5,21 @@
 
 <pems-page-shell kind="admin">
     <pems-page-hero>
-        <pems-flex align="center" gap="3"><div><p>@Localizer["Reset the account of another administrator. This cannot be undone."]</p></div></pems-flex>
+        <pems-flex align="center" gap="3"><div><pems-text>@Localizer["Reset the account of another administrator. This cannot be undone."]</pems-text></div></pems-flex>
     </pems-page-hero>
 
     <pems-content-card>
         <pems-heading level="2" class="h5 mb-3"><pems-icon name="bi-shield-exclamation" css="me-1" /> @Localizer["Reset administrator account"]: <strong>@Model.UserName</strong> @(string.IsNullOrWhiteSpace(Model.FullName) ? "" : $"({Model.FullName})")</pems-heading>
 
-        <p class="mb-2">@Localizer["Confirming will:"]</p>
-        <ul>
-            <li>@Localizer["issue a random temporary password, shown once on the next page and valid for 24 hours;"]</li>
-            <li>@Localizer["force a password change at the next sign-in;"]</li>
-            <li>@Localizer["unlock the account and reset MFA (passkeys and authenticator key are removed; the administrator must enroll again);"]</li>
-            <li>@Localizer["sign the account out everywhere within about one minute;"]</li>
-            <li>@Localizer["record the reset (who, when, from which IP) and notify every active administrator."]</li>
-        </ul>
-        <p class="text-body-secondary small">@Localizer["You cannot reset your own account this way. Hand the temporary password to the administrator in person or over a trusted channel; it is not stored anywhere."]</p>
+        <pems-text class="mb-2">@Localizer["Confirming will:"]</pems-text>
+        <pems-bullet-list>
+            <pems-bullet>@Localizer["issue a random temporary password, shown once on the next page and valid for 24 hours;"]</pems-bullet>
+            <pems-bullet>@Localizer["force a password change at the next sign-in;"]</pems-bullet>
+            <pems-bullet>@Localizer["unlock the account and reset MFA (passkeys and authenticator key are removed; the administrator must enroll again);"]</pems-bullet>
+            <pems-bullet>@Localizer["sign the account out everywhere within about one minute;"]</pems-bullet>
+            <pems-bullet>@Localizer["record the reset (who, when, from which IP) and notify every active administrator."]</pems-bullet>
+        </pems-bullet-list>
+        <pems-text class="text-body-secondary small">@Localizer["You cannot reset your own account this way. Hand the temporary password to the administrator in person or over a trusted channel; it is not stored anywhere."]</pems-text>
 
         <pems-form class="mt-3" asp-action="ResetAdmin" asp-route-id="@Model.Id" method="post"><pems-flex gap="2">
             <input type="hidden" name="confirm" value="true" />

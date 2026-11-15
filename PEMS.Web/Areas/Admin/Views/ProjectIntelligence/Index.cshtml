@@ -12,7 +12,7 @@
     <pems-page-hero>
         <pems-flex align="center" gap="3">
             <div>
-                <p>Evidence-based module scan - not a manually estimated progress number. Every bar below is computed from source, DbContext, migrations, views, sidebar nav, tests, docs and git history.</p>
+                <pems-text>Evidence-based module scan - not a manually estimated progress number. Every bar below is computed from source, DbContext, migrations, views, sidebar nav, tests, docs and git history.</pems-text>
             </div>
         </pems-flex>
         <pems-form asp-action="Refresh" method="post" id="refreshForm">
@@ -40,11 +40,11 @@
                 <div class="mt-2">
                     @if (parseError)
                     {
-                        <p class="text-danger">A report file exists at this path but could not be parsed as JSON. Click "Refresh scan" above to regenerate it.</p>
+                        <pems-text class="text-danger">A report file exists at this path but could not be parsed as JSON. Click "Refresh scan" above to regenerate it.</pems-text>
                     }
-                    <p>Click "Refresh scan" above, or run the generator manually from the repository root:</p>
+                    <pems-text>Click "Refresh scan" above, or run the generator manually from the repository root:</pems-text>
                     <code>powershell -File scripts/project-intelligence/Generate-ProjectIntelligence.ps1</code>
-                    <p class="text-body-secondary small mt-2">Expected file: <code>@ViewBag.ReportPath</code></p>
+                    <pems-text class="text-body-secondary small mt-2">Expected file: <code>@ViewBag.ReportPath</code></pems-text>
                 </div>
             </div>
         </pems-content-card>

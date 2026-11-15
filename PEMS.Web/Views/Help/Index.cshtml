@@ -14,7 +14,7 @@
         <pems-icon name="bi-life-preserver" css="fs-4 text-warning" />
         <pems-heading level="4" class="mb-0">@L("Help Center", "مرکز راهنما")</pems-heading>
     </pems-flex>
-    <p class="text-muted mb-3">@L("Browse Help by module, or search across all articles in English and Persian.", "راهنما را بر اساس ماژول مرور کنید، یا در همه‌ی مقالات به انگلیسی و فارسی جستجو کنید.")</p>
+    <pems-text class="text-muted mb-3">@L("Browse Help by module, or search across all articles in English and Persian.", "راهنما را بر اساس ماژول مرور کنید، یا در همه‌ی مقالات به انگلیسی و فارسی جستجو کنید.")</pems-text>
     <pems-form class="pems-s-04391f08" asp-action="Search" method="get"><pems-flex gap="2">
         <pems-input type="search" name="q" placeholder="@L("Search Help... (e.g. \"work order\", \"IDC\", \"مجوز کار\")", "جستجو در راهنما... (مثلاً «دستور کار»، «IDC»، work order)")" />
         <pems-button tone="primary" type="submit"><pems-icon name="bi-search" /> @L("Search", "جستجو")</pems-button>
@@ -51,7 +51,7 @@
                             <pems-content-card css="h-100">
                                 <pems-icon css="@(c.IconCssClass ?? "bi-folder") fs-3 text-warning" />
                                 <pems-heading level="6" class="mt-2 mb-1 text-body">@c.Name</pems-heading>
-                                <p class="text-muted small mb-0">@c.ArticleCount @L("articles", "مقاله")</p>
+                                <pems-text class="text-muted small mb-0">@c.ArticleCount @L("articles", "مقاله")</pems-text>
                             </pems-content-card>
                         </pems-link>
                     </pems-col>
@@ -64,7 +64,7 @@
                 <pems-heading level="6" class="mb-3">@categories.FirstOrDefault(c => c.HelpCategoryId == selectedCategoryId)?.Name</pems-heading>
                 @if (!articles.Any())
                 {
-                    <p class="text-muted text-center py-4">@L("No articles in this category yet.", "هنوز مقاله‌ای در این دسته وجود ندارد.")</p>
+                    <pems-text class="text-muted text-center py-4">@L("No articles in this category yet.", "هنوز مقاله‌ای در این دسته وجود ندارد.")</pems-text>
                 }
                 else
                 {
@@ -78,7 +78,7 @@
                                         <pems-badge tone="light" css="ms-1">@a.ArticleType</pems-badge>
                                     </div>
                                 </pems-flex>
-                                <p class="text-muted small mb-0 mt-1">@a.Summary</p>
+                                <pems-text class="text-muted small mb-0 mt-1">@a.Summary</pems-text>
                             </pems-list-group-item>
                         }
                     </pems-list-group>

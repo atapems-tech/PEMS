@@ -4,10 +4,10 @@
 @using PEMS.Web.Resources
 @inject IStringLocalizer<SharedResource> Localizer
 
-<p class="text-muted">
+<pems-text class="text-muted">
     File: <strong>@Model.FileName</strong> &nbsp;|&nbsp;
     Confidence: <strong>@(Model.AIConfidence.HasValue ? $"{Model.AIConfidence:P0}" : "-")</strong>
-</p>
+</pems-text>
 
 @if (!string.IsNullOrEmpty(Model.AISummary))
 {
@@ -23,7 +23,7 @@
 
     @if (!Model.ExtractedTags.Any())
     {
-        <p class="text-muted">No equipment tags were extracted from this document.</p>
+        <pems-text class="text-muted">No equipment tags were extracted from this document.</pems-text>
     }
     else
     {
@@ -70,7 +70,7 @@
 
     @if (!Model.ExtractedSpecifications.Any())
     {
-        <p class="text-muted">No technical specifications were extracted from this document.</p>
+        <pems-text class="text-muted">No technical specifications were extracted from this document.</pems-text>
     }
     else
     {

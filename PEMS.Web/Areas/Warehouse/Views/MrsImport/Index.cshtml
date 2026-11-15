@@ -14,10 +14,10 @@
 
 <pems-content-card css="mb-3">
     <pems-heading level="6" class="mb-2"><pems-icon name="bi-file-earmark-excel" /> Upload MRS Excel File</pems-heading>
-    <p class="text-muted small">
+    <pems-text class="text-muted small">
         فایل خام MRS آپلود می‌شود، بدون هیچ نوشتنی در MaterialItem/InventoryTransaction - فقط بعد از
         بازبینی و تایید در صفحه‌ی Review، ردیف‌ها به کاتالوگ متریال و دفتر تراکنش تبدیل می‌شوند.
-    </p>
+    </pems-text>
     <pems-form asp-action="Upload" method="post" enctype="multipart/form-data"><pems-row gap="2">
         <pems-col md="6"><pems-input scale="small" type="file" name="file" accept=".xlsx,.xlsm" required /></pems-col>
         <pems-col md="4"><pems-input scale="small" type="text" name="sheetName" placeholder="@Localizer["نام شیت (اختیاری - پیش‌فرض: بزرگ‌ترین شیت)"]" /></pems-col>
@@ -48,5 +48,5 @@
             }
         </pems-table-body>
     </pems-table>
-    @if (!Model.Any()) { <p class="text-muted text-center py-4">@Localizer["هنوز فایلی Upload نشده."]</p> }
+    @if (!Model.Any()) { <pems-text class="text-muted text-center py-4">@Localizer["هنوز فایلی Upload نشده."]</pems-text> }
 </pems-content-card>

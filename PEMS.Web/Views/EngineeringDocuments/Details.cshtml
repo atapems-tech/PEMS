@@ -206,24 +206,24 @@
                     @Localizer["Ed_MoreActions"]
                 </pems-button>
                 <pems-dropdown-menu end="true">
-                    <li><pems-link class="dropdown-item" asp-action="Edit" asp-route-id="@Model.DocumentId"><pems-icon name="bi-pencil" /> @Localizer["Edit"]</pems-link></li>
+                    <pems-bullet><pems-link class="dropdown-item" asp-action="Edit" asp-route-id="@Model.DocumentId"><pems-icon name="bi-pencil" /> @Localizer["Edit"]</pems-link></pems-bullet>
                     @if (Model.Status == "Approved" || Model.Status == "Issued")
                     {
-                        <li><pems-button plain="true" type="button" css="dropdown-item" data-bs-toggle="modal" data-bs-target="#newRevisionModal"><pems-icon name="bi-file-earmark-plus" /> @Localizer["Create New Revision"]</pems-button></li>
+                        <pems-bullet><pems-button plain="true" type="button" css="dropdown-item" data-bs-toggle="modal" data-bs-target="#newRevisionModal"><pems-icon name="bi-file-earmark-plus" /> @Localizer["Create New Revision"]</pems-button></pems-bullet>
                     }
-                    <li><hr class="dropdown-divider" /></li>
-                    <li>
+                    <pems-bullet><pems-divider class="dropdown-divider" /></pems-bullet>
+                    <pems-bullet>
                         <pems-form asp-action="AnalyzeRelationships" asp-route-id="@Model.DocumentId" method="post">
                             <pems-button plain="true" type="submit" css="dropdown-item"><pems-icon name="bi-stars" /> @Localizer["تحلیل روابط (AI)"]</pems-button>
                         </pems-form>
-                    </li>
+                    </pems-bullet>
                     @if (!Model.IsFrozen && (bool)(ViewBag.CanFreeze ?? false))
                     {
-                        <li><pems-button plain="true" type="button" css="dropdown-item" data-bs-toggle="modal" data-bs-target="#freezeModal"><pems-icon name="bi-snow" /> @Localizer["Freeze"]</pems-button></li>
+                        <pems-bullet><pems-button plain="true" type="button" css="dropdown-item" data-bs-toggle="modal" data-bs-target="#freezeModal"><pems-icon name="bi-snow" /> @Localizer["Freeze"]</pems-button></pems-bullet>
                     }
                     @if (!Model.IsOnHold && !Model.IsFrozen && Model.Status != "Issued" && (bool)(ViewBag.CanHold ?? false))
                     {
-                        <li><pems-button plain="true" type="button" css="dropdown-item" data-bs-toggle="modal" data-bs-target="#holdModal"><pems-icon name="bi-pause-circle" /> @Localizer["Hold"]</pems-button></li>
+                        <pems-bullet><pems-button plain="true" type="button" css="dropdown-item" data-bs-toggle="modal" data-bs-target="#holdModal"><pems-icon name="bi-pause-circle" /> @Localizer["Hold"]</pems-button></pems-bullet>
                     }
                 </pems-dropdown-menu>
             </div>
@@ -301,7 +301,7 @@
        دیسیپلین به تب اختصاصی IDC Review منتقل شد. *@
     @if (!string.IsNullOrEmpty(Model.Status))
     {
-        <hr class="my-2" />
+        <pems-divider class="my-2" />
         <partial name="_PemsStageDiagram" model="wfStageDiagramModel" />
 
         @if (wfNextStep != null)
@@ -432,10 +432,10 @@
         <pems-col lg="4">
             <div class="vs-section">
                 <pems-heading level="2" class="vs-section__title"><pems-icon name="bi-chat-square-text" /> @Localizer["Ed_TabComments"]</pems-heading>
-                <p class="small text-muted mb-2">@string.Format(Localizer["Ed_OpenClosed"].Value, commentsOpenCount, commentsClosedCount)</p>
+                <pems-text class="small text-muted mb-2">@string.Format(Localizer["Ed_OpenClosed"].Value, commentsOpenCount, commentsClosedCount)</pems-text>
                 @if (!engComments.Any())
                 {
-                    <p class="small text-muted border rounded p-2 text-center mb-2">@Localizer["Ed_NoCommentsHint"]</p>
+                    <pems-text class="small text-muted border rounded p-2 text-center mb-2">@Localizer["Ed_NoCommentsHint"]</pems-text>
                 }
                 <pems-flex wrap="true" gap="2">
                     <pems-button tone="primary" size="small" outline="true" type="button" data-bs-toggle="modal" data-bs-target="#addEngCommentModal"><pems-icon name="bi-plus-lg" aria-hidden="true" /> @Localizer["Add Comment"]</pems-button>
@@ -447,7 +447,7 @@
             </div>
             <div class="vs-section">
                 <pems-heading level="2" class="vs-section__title"><pems-icon name="bi-paperclip" /> @Localizer["Ed_TabFiles"]</pems-heading>
-                <p class="small text-muted mb-2">@((Model.Attachments?.Count ?? 0) == 0 ? Localizer["Ed_NoFilesHint"].Value : string.Format(Localizer["Ed_FilesCount"].Value, Model.Attachments!.Count))</p>
+                <pems-text class="small text-muted mb-2">@((Model.Attachments?.Count ?? 0) == 0 ? Localizer["Ed_NoFilesHint"].Value : string.Format(Localizer["Ed_FilesCount"].Value, Model.Attachments!.Count))</pems-text>
                 <pems-flex wrap="true" gap="2">
                     <pems-button tone="neutral" size="small" outline="true" as="a" asp-action="UploadAttachment" asp-route-id="@Model.DocumentId"><pems-icon name="bi-upload" aria-hidden="true" /> @Localizer["Ed_Upload"]</pems-button>
                     @if ((Model.Attachments?.Count ?? 0) > 0)
@@ -544,7 +544,7 @@
             }
             else
             {
-                <p class="text-muted text-center py-4">@Localizer["Ed_NoFiles"]</p>
+                <pems-text class="text-muted text-center py-4">@Localizer["Ed_NoFiles"]</pems-text>
             }
         </div>
     </pems-tab-pane>
@@ -564,11 +564,11 @@
                     <pems-heading level="6" class="mb-0"><pems-icon name="bi-diagram-3" /> Inter-Discipline Check (IDC) — Discipline Review Summary</pems-heading>
                     <span class="text-muted small">@idcApprovedCount / @idcStatusForPage.Count disciplines responded</span>
                 </pems-flex>
-                <p class="text-muted small">
+                <pems-text class="text-muted small">
                     <pems-icon name="bi-info-circle" /> نتایج زیر صرفاً مشورتی هستند و به‌تنهایی وضعیت رسمی مدرک را
                     تعیین نمی‌کنند - حتی اگر یک یا چند دیسیپلین «Reject» بدهند. تصمیم نهایی (Approve/Reject/Revise &amp;
                     Resubmit) همیشه توسط سازنده/تأییدکننده‌ی مدرک، با در نظر گرفتن مجموع این نظرات، گرفته می‌شود.
-                </p>
+                </pems-text>
                 <pems-progress value="@idcApprovedCount" max="@idcStatusForPage.Count" tone="success" height="8px" css="mb-3"></pems-progress>
                 <pems-table kind="enterprise">
                     <pems-table-head><pems-table-row><pems-table-header>@Localizer["Discipline"]</pems-table-header><pems-table-header>@Localizer["Status"]</pems-table-header><pems-table-header>@Localizer["Comment"]</pems-table-header><pems-table-header>Responded By</pems-table-header><pems-table-header>Responded Date</pems-table-header></pems-table-row></pems-table-head>
@@ -673,7 +673,7 @@
             }
             else
             {
-                <p class="text-muted text-center py-4">@Localizer["Ed_NoRevisions"]</p>
+                <pems-text class="text-muted text-center py-4">@Localizer["Ed_NoRevisions"]</pems-text>
             }
         </div>
     </pems-tab-pane>
@@ -732,7 +732,7 @@
             }
             else
             {
-                <p class="text-muted text-center py-4">@Localizer["Ed_NoWorkflow"]</p>
+                <pems-text class="text-muted text-center py-4">@Localizer["Ed_NoWorkflow"]</pems-text>
             }
         </div>
     </pems-tab-pane>
@@ -762,7 +762,7 @@
             }
             else
             {
-                <p class="text-muted text-center py-4">@Localizer["Ed_NoCorrespondence"]</p>
+                <pems-text class="text-muted text-center py-4">@Localizer["Ed_NoCorrespondence"]</pems-text>
             }
         </div>
 
@@ -795,7 +795,7 @@
             }
             else
             {
-                <p class="text-muted text-center py-4">@Localizer["Ed_NoTransmittals"]</p>
+                <pems-text class="text-muted text-center py-4">@Localizer["Ed_NoTransmittals"]</pems-text>
             }
         </div>
     </pems-tab-pane>
@@ -982,7 +982,7 @@
             }
         </pems-table-body>
     </pems-table>
-    @if (!engComments.Any()) { <p class="text-muted">No comments recorded yet.</p> }
+    @if (!engComments.Any()) { <pems-text class="text-muted">No comments recorded yet.</pems-text> }
 
     <pems-button tone="primary" size="small" type="button" data-bs-toggle="modal" data-bs-target="#addEngCommentModal">
         <pems-icon name="bi-plus-lg" /> @Localizer["Add Comment"]
@@ -1004,7 +1004,7 @@
                 <pems-modal-body>
                     <partial name="_PemsStageDiagram" model="wfStageDiagramModel" />
 
-                    <hr />
+                    <pems-divider />
 
                     <div class="mb-2">
                         <pems-label css="small fw-bold">
@@ -1046,7 +1046,7 @@
                 <input type="hidden" name="decision" value="Comment" />
                 <pems-modal-header>@Localizer["ثبت کامنت بازبینی IDC (دیسیپلین شما)"]</pems-modal-header>
                 <pems-modal-body>
-                    <p class="text-muted small">این نظر به‌عنوان نتیجه‌ی بازبینی دیسیپلین شما ثبت می‌شود و مستقیماً روی وضعیت رسمی مدرک اثر نمی‌گذارد. بعد از پاسخ همه‌ی دیسیپلین‌های ارجاع‌شده، سازنده/تأییدکننده‌ی مدرک با دیدن مجموع نظرات IDC تصمیم نهایی را می‌گیرد.</p>
+                    <pems-text class="text-muted small">این نظر به‌عنوان نتیجه‌ی بازبینی دیسیپلین شما ثبت می‌شود و مستقیماً روی وضعیت رسمی مدرک اثر نمی‌گذارد. بعد از پاسخ همه‌ی دیسیپلین‌های ارجاع‌شده، سازنده/تأییدکننده‌ی مدرک با دیدن مجموع نظرات IDC تصمیم نهایی را می‌گیرد.</pems-text>
                     <pems-textarea scale="small" name="comment" rows="3" required></pems-textarea>
                 </pems-modal-body>
                 <pems-modal-footer>
@@ -1062,7 +1062,7 @@
                 <input type="hidden" name="decision" value="Reject" />
                 <pems-modal-header>@Localizer["اعلام نیاز به اصلاح (دیسیپلین شما)"]</pems-modal-header>
                 <pems-modal-body>
-                    <p class="text-muted small"><strong>این اقدام، مدرک را رد نمی‌کند و آن را به سازنده برنمی‌گرداند.</strong> فقط نتیجه‌ی بازبینی دیسیپلین شما را «نیازمند اصلاح» ثبت می‌کند. بعد از پاسخ همه‌ی دیسیپلین‌های ارجاع‌شده، مدرک برای تصمیم رسمی (تایید / رد / بازگشت برای اصلاح) به سازنده/تأییدکننده می‌رسد - با دیدن نظر شما در کنار سایر نظرات.</p>
+                    <pems-text class="text-muted small"><strong>این اقدام، مدرک را رد نمی‌کند و آن را به سازنده برنمی‌گرداند.</strong> فقط نتیجه‌ی بازبینی دیسیپلین شما را «نیازمند اصلاح» ثبت می‌کند. بعد از پاسخ همه‌ی دیسیپلین‌های ارجاع‌شده، مدرک برای تصمیم رسمی (تایید / رد / بازگشت برای اصلاح) به سازنده/تأییدکننده می‌رسد - با دیدن نظر شما در کنار سایر نظرات.</pems-text>
                     <pems-textarea scale="small" name="comment" rows="3" required></pems-textarea>
                 </pems-modal-body>
                 <pems-modal-footer>
@@ -1079,7 +1079,7 @@
                 <input type="hidden" name="id" value="@Model.DocumentId" />
                 <pems-modal-header>@Localizer["برگرداندن برای اصلاح"]</pems-modal-header>
                 <pems-modal-body>
-                    <p class="text-muted small">برخلاف رد قطعی، این یعنی سازنده باید اصلاح کند و دوباره Submit کند - نه رد نهایی.</p>
+                    <pems-text class="text-muted small">برخلاف رد قطعی، این یعنی سازنده باید اصلاح کند و دوباره Submit کند - نه رد نهایی.</pems-text>
                     <pems-textarea scale="small" name="comment" rows="3" placeholder="@Localizer["توضیح اصلاحات لازم"]" required></pems-textarea>
                 </pems-modal-body>
                 <pems-modal-footer>
@@ -1098,7 +1098,7 @@
                 <pems-form asp-action="Freeze" asp-route-id="@Model.DocumentId" method="post">
                     <pems-modal-header><pems-icon name="bi-snow" /> @Localizer["Freeze Document"]</pems-modal-header>
                     <pems-modal-body>
-                        <p class="text-muted small">این مدرک منجمد (Frozen) شود؟ پس از آن دیگر قابل ویرایش یا رویژن جدید نخواهد بود.</p>
+                        <pems-text class="text-muted small">این مدرک منجمد (Frozen) شود؟ پس از آن دیگر قابل ویرایش یا رویژن جدید نخواهد بود.</pems-text>
                         <pems-label css="small">Freeze reason (required)</pems-label>
                         <pems-input scale="small" type="text" name="reason" required />
                     </pems-modal-body>
@@ -1115,7 +1115,7 @@
                 <pems-form asp-action="Hold" asp-route-id="@Model.DocumentId" method="post">
                     <pems-modal-header><pems-icon name="bi-pause-circle" /> Hold Document</pems-modal-header>
                     <pems-modal-body>
-                        <p class="text-muted small">این مدرک در وضعیت Hold قرار بگیرد؟ تا رفع Hold، قابل تأیید (Approve) یا صدور (Issue) نخواهد بود.</p>
+                        <pems-text class="text-muted small">این مدرک در وضعیت Hold قرار بگیرد؟ تا رفع Hold، قابل تأیید (Approve) یا صدور (Issue) نخواهد بود.</pems-text>
                         <pems-label css="small">Hold reason (required)</pems-label>
                         <pems-input scale="small" type="text" name="reason" required />
                     </pems-modal-body>
@@ -1269,7 +1269,7 @@
                 <input type="hidden" name="id" value="@Model.DocumentId" />
                 <pems-modal-header>@Localizer["Record Client Response"]</pems-modal-header>
                 <pems-modal-body>
-                    <p class="text-muted small">@Localizer["Ed_ClientResponseIntro"]</p>
+                    <pems-text class="text-muted small">@Localizer["Ed_ClientResponseIntro"]</pems-text>
 
 
                     <div class="mb-2">
@@ -1370,7 +1370,7 @@
                     <input type="hidden" name="commentId" value="" />
                     <pems-modal-header>Reply to <span data-fill-text="commentno"></span></pems-modal-header>
                     <pems-modal-body>
-                        <p class="small text-muted" data-fill-text="commenttext"></p>
+                        <pems-text class="small text-muted" data-fill-text="commenttext"></pems-text>
                         <div class="mb-2">
                             <pems-label css="small">Reply <span class="text-muted">(optional if attaching a file)</span></pems-label>
                             <pems-textarea scale="small" name="responseText" rows="3"></pems-textarea>

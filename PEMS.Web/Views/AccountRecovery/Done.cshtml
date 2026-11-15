@@ -11,10 +11,10 @@
 <pems-alert tone="success" css="small">
     @Localizer["The new password is set and the recovery code is used up. Sign in with the new password and enroll MFA again."]
 </pems-alert>
-<p class="small">@Localizer["Recovery codes left"]: <strong>@Model.RemainingCodes</strong></p>
+<pems-text class="small">@Localizer["Recovery codes left"]: <strong>@Model.RemainingCodes</strong></pems-text>
 @if (Model.RemainingCodes <= 3)
 {
-    <p class="small text-warning">@Localizer["Few recovery codes are left. Generate a new set from your profile after signing in."]</p>
+    <pems-text class="small text-warning">@Localizer["Few recovery codes are left. Generate a new set from your profile after signing in."]</pems-text>
 }
 
 <div class="auth-links">

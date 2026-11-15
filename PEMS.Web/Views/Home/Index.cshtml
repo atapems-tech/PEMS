@@ -37,13 +37,13 @@
 {
     <pems-content-card css="mb-4">
         <pems-heading level="6" class="mb-1"><pems-icon name="bi-check2-square" /> @Localizer["My Work"]</pems-heading>
-        <p class="text-muted small mb-3">@Localizer["What requires your attention"]</p>
+        <pems-text class="text-muted small mb-3">@Localizer["What requires your attention"]</pems-text>
 
         @if (!myWork.HasAnyActionable)
         {
             <div class="text-center text-muted py-4">
                 <pems-icon name="bi-emoji-smile" css="pems-s-4361a2ff" />
-                <p class="mb-0 mt-2">You're all caught up. No items currently require your attention.</p>
+                <pems-text class="mb-0 mt-2">You're all caught up. No items currently require your attention.</pems-text>
             </div>
         }
         else
@@ -206,10 +206,10 @@
                     <pems-heading level="6" class="mb-3">@w.DisplayName</pems-heading>
                     @if (value is List<string> list)
                     {
-                        <ul class="list-unstyled small mb-0">
-                            @foreach (var item in list) { <li class="border-bottom py-1">@item</li> }
-                            @if (!list.Any()) { <li class="text-muted">Nothing to show</li> }
-                        </ul>
+                        <pems-bullet-list class="list-unstyled small mb-0">
+                            @foreach (var item in list) { <pems-bullet class="border-bottom py-1">@item</pems-bullet> }
+                            @if (!list.Any()) { <pems-bullet class="text-muted">Nothing to show</pems-bullet> }
+                        </pems-bullet-list>
                     }
                     else
                     {

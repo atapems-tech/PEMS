@@ -152,7 +152,7 @@
                             <pems-input kind="bare" id="lcIn_@f.Item1" type="text" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="lcList_@f.Item1"
                                    placeholder="@Localizer["Lc_SearchPeople"]" autocomplete="off" />
                         </div>
-                        <ul class="lc-list" id="lcList_@f.Item1" role="listbox" hidden></ul>
+                        <pems-bullet-list class="lc-list" id="lcList_@f.Item1" role="listbox" hidden></pems-bullet-list>
                         <div class="lc-error" data-error-for="@(f.Item1 == "to" ? "to" : "recipients")" role="alert" hidden></div>
                     </div>
                 }
@@ -197,17 +197,17 @@
                     <div class="lc-help" id="lcDropHelp">@Localizer["Lc_AttachmentRules"]</div>
                 </div>
                 <pems-input kind="bare" type="file" id="lcFile" multiple hidden />
-                <ul class="lc-files" id="lcFiles">
+                <pems-bullet-list class="lc-files" id="lcFiles">
                     @foreach (var a in Model.Attachments)
                     {
-                        <li data-id="@a.Id">
+                        <pems-bullet data-id="@a.Id">
                             <pems-icon name="bi-file-earmark" aria-hidden="true" />
                             <span>@a.Name</span>
                             <small class="text-muted">@(Math.Max(1, a.Size / 1024)) KB</small>
                             <pems-button tone="danger" size="small" outline="true" type="button" data-remove-attachment="@a.Id" aria-label="@Localizer["Lc_Remove"] @a.Name"><pems-icon name="bi-x-lg" aria-hidden="true" /></pems-button>
-                        </li>
+                        </pems-bullet>
                     }
-                </ul>
+                </pems-bullet-list>
                 <div class="lc-help" id="lcAttNeedSave" @(isNew ? "" : "hidden")>@Localizer["Lc_AttachNeedsDraft"]</div>
             </section>
         </div>
@@ -334,7 +334,7 @@
                 </pems-check-row>
                 @if (isOutgoing) { <div class="lc-help">@Localizer["Lc_OutgoingNeedsApproval"]</div> }
                 <div id="lcChainWrap" class="mt-2" @(input.ApprovalRequired || isOutgoing ? "" : "hidden")>
-                    <ol class="lc-chain" id="lcChain" aria-label="@Localizer["Lc_ApprovalChain"]"></ol>
+                    <pems-bullet-list ordered="true" class="lc-chain" id="lcChain" aria-label="@Localizer["Lc_ApprovalChain"]"></pems-bullet-list>
                     <pems-flex gap="2">
                         <pems-select id="lcApproverPick" aria-label="@Localizer["Lc_AddApprover"]">
                             <option value="">@Localizer["Lc_AddApprover"]</option>

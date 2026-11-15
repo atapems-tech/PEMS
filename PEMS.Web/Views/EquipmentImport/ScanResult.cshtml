@@ -8,18 +8,18 @@
 
 <pems-content-card css="mb-3">
     <pems-heading level="6" class="mb-2"><pems-icon name="bi-file-earmark-pdf" /> Scan result: @ViewBag.FileName</pems-heading>
-    <p class="text-muted small mb-0">
+    <pems-text class="text-muted small mb-0">
         This is a best-effort scan for tag-number-looking text (e.g. 80-PSH-601305, 88-B-9001) -
         it is <strong>not</strong> a full structured extraction like the Excel import. Only the tag
         number is recognized; review the list below, select the real equipment tags, then fill in
         the discipline. You'll need to edit each one afterward with the actual name/type/manufacturer.
-    </p>
+    </pems-text>
 </pems-content-card>
 
 @if (!Model.Any())
 {
     <pems-content-card>
-        <p class="text-muted text-center py-4">No tag-like patterns were found in this PDF.</p>
+        <pems-text class="text-muted text-center py-4">No tag-like patterns were found in this PDF.</pems-text>
     </pems-content-card>
 }
 else

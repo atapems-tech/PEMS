@@ -258,5 +258,5 @@
 <pems-content-card as="details" open="@(wf == null)">
     <summary class="h6 mb-0">@Localizer["Business Audit"]</summary>
     <pems-data-table data="@(DataRows.Of(Model.StatusHistory, c_ => c_.Add(((Localizer["From"])?.ToString() ?? ""), h => (object?)(h.FromStatus), css: "small").Add(((Localizer["To"])?.ToString() ?? ""), h => (object?)(h.ToStatus), css: "small").Add(((Localizer["By"])?.ToString() ?? ""), h => (object?)(h.ChangedByName ?? "-"), css: "small").Add(((Localizer["Date"])?.ToString() ?? ""), h => (object?)(h.ChangedDate.ToString("yyyy-MM-dd HH:mm")), css: "small", element: new CellElement("bdi", null, "ltr")).Add(((Localizer["Reason"])?.ToString() ?? ""), h => (object?)(h.Reason), css: "small text-muted")))" dense="true" css="mb-0 mt-3" />
-    @if (!Model.StatusHistory.Any()) { <p class="text-muted text-center py-3 mb-0">@Localizer["هنوز تغییر وضعیتی ثبت نشده."]</p> }
+    @if (!Model.StatusHistory.Any()) { <pems-text class="text-muted text-center py-3 mb-0">@Localizer["هنوز تغییر وضعیتی ثبت نشده."]</pems-text> }
 </pems-content-card>
