@@ -10,27 +10,27 @@
     <pems-form asp-action="Edit" method="post">
         <input type="hidden" asp-for="Id" />
 
-        <div class="mb-3">
+        <pems-form-group css="mb-3">
             <pems-label>@Localizer["Username"]</pems-label>
             <pems-input asp-for="UserName" readonly />
-        </div>
+        </pems-form-group>
 
-        <div class="mb-3">
+        <pems-form-group css="mb-3">
             <pems-label>@Localizer["Full Name"]</pems-label>
             <pems-input asp-for="FullName" />
             <span asp-validation-for="FullName" class="text-danger small"></span>
-        </div>
+        </pems-form-group>
 
-        <div class="mb-3">
+        <pems-form-group css="mb-3">
             <pems-label>@Localizer["Email"]</pems-label>
             <pems-input asp-for="Email" />
             <span asp-validation-for="Email" class="text-danger small"></span>
-        </div>
+        </pems-form-group>
 
-        <div class="mb-3">
+        <pems-form-group css="mb-3">
             <pems-label>New Password <span class="text-muted small">(leave empty to keep current password)</span></pems-label>
             <pems-input asp-for="Password" type="password" />
-        </div>
+        </pems-form-group>
 
         <pems-divider />
         <pems-heading level="6" class="mb-2">@Localizer["Employee link"]</pems-heading>
@@ -39,7 +39,7 @@
             <pems-alert tone="warning" css="py-2 px-3 small">@Localizer["This user has no linked employee - discipline-based document visibility, letter referrals, and task assignment will not work correctly for them until this is set."]</pems-alert>
         }
 
-        <div class="mb-3">
+        <pems-form-group css="mb-3">
             <pems-label>@Localizer["Link to existing employee"]</pems-label>
             <pems-select name="ExistingEmployeeId" id="existingEmployeeSelect">
                 <option value="">@Localizer["-- create a new employee record instead --"]</option>
@@ -48,7 +48,7 @@
                     <option value="@e.Id" selected="@(Model.ExistingEmployeeId == e.Id)">@e.Name</option>
                 }
             </pems-select>
-        </div>
+        </pems-form-group>
 
         <pems-row gap="3" css="mb-3" id="newEmployeeFields">
             <pems-col md="6">
