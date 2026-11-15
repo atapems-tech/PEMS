@@ -26,8 +26,8 @@
 <pems-content-card css="mb-3">
     <pems-row gap="3">
         <pems-col md="4"><strong>@Localizer["Priority:"]</strong> @Model.Priority</pems-col>
-        <pems-col md="4"><strong>@Localizer["Raised:"]</strong> @Model.RaisedDate.ToString("yyyy-MM-dd")</pems-col>
-        <pems-col md="4"><strong>Due:</strong> @(Model.RequiredResponseDate?.ToString("yyyy-MM-dd") ?? "-")</pems-col>
+        <pems-col md="4"><strong>@Localizer["Raised:"]</strong> @PemsDates.Date(Model.RaisedDate)</pems-col>
+        <pems-col md="4"><strong>Due:</strong> @(PemsDates.Date(Model.RequiredResponseDate) ?? "-")</pems-col>
         @if (Model.RelatedDocument != null)
         {
             <pems-col md="6">
@@ -52,7 +52,7 @@
     <pems-content-card css="mb-3 border-info">
         <pems-heading level="6" class="mb-2"><pems-icon name="bi-reply" /> @Localizer["Response"]</pems-heading>
         <pems-text class="mb-1">@Model.ResponseText</pems-text>
-        <pems-text class="text-muted small mb-0">@(Model.RespondedDate?.ToString("yyyy-MM-dd HH:mm"))</pems-text>
+        <pems-text class="text-muted small mb-0">@(PemsDates.DateTime(Model.RespondedDate))</pems-text>
     </pems-content-card>
 }
 
@@ -65,7 +65,7 @@
             {
                 <pems-flex as="li" justify="between" align="center" css="border-bottom py-1">
                     <pems-link href="@Url.Action("Download", "Files", new { id = a.AttachmentId })" target="_blank"><pems-icon name="bi-file-earmark" /> @a.FileName</pems-link>
-                    <span class="text-muted small">@a.UploadDate.ToString("yyyy-MM-dd")</span>
+                    <span class="text-muted small">@PemsDates.Date(a.UploadDate)</span>
                 </pems-flex>
             }
         </pems-bullet-list>

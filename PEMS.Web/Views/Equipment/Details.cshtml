@@ -82,7 +82,7 @@
         <pems-info-item label="@Localizer["Cm_ParentEquipment"]" num>
             @if (eq.ParentEquipmentId.HasValue) { <pems-link asp-action="Details" asp-route-id="@eq.ParentEquipmentId">@eq.ParentEquipmentTagNumber</pems-link> } else { <span class="text-muted">N/A</span> }
         </pems-info-item>
-        <pems-info-item label="@Localizer["Cm_InstallationDate"]" num>@(eq.InstallationDate?.ToString("yyyy-MM-dd") ?? "N/A")</pems-info-item>
+        <pems-info-item label="@Localizer["Cm_InstallationDate"]" num>@(PemsDates.Date(eq.InstallationDate) ?? "N/A")</pems-info-item>
         <pems-info-item label="@Localizer["Cm_Description"]" wide>@NA(eq.Description)</pems-info-item>
         @if (eq.ChildEquipments.Any())
         {
@@ -130,7 +130,7 @@
                 </pems-form-group>
                 <pems-form-group css="mb-2">
                     <pems-label css="small">Installation Date</pems-label>
-                    <pems-date name="installationDate" value="@eq.InstallationDate?.ToString("yyyy-MM-dd")" scale="small" />
+                    <pems-date name="installationDate" value="@PemsDates.Date(eq.InstallationDate)" scale="small" />
                 </pems-form-group>
             </pems-modal-body>
             <pems-modal-footer>
@@ -241,7 +241,7 @@
                     <pems-col md="3"><strong>@Localizer["Type"]</strong><div>@NA(inst.InstrumentType)</div></pems-col>
                     <pems-col md="3"><strong>@Localizer["Loop No."]</strong><div>@NA(inst.LoopNumber)</div></pems-col>
                     <pems-col md="3"><strong>System / Signal</strong><div>@NA(inst.System) / @NA(inst.SignalClass)</div></pems-col>
-                    <pems-col md="3"><strong>Next Calibration</strong><div>@(inst.NextCalibrationDue?.ToString("yyyy-MM-dd") ?? "N/A") <pems-badge tone="@calBadgeClass">@inst.CalibrationStatus</pems-badge></div></pems-col>
+                    <pems-col md="3"><strong>Next Calibration</strong><div>@(PemsDates.Date(inst.NextCalibrationDue) ?? "N/A") <pems-badge tone="@calBadgeClass">@inst.CalibrationStatus</pems-badge></div></pems-col>
                 </pems-row>
             </pems-content-card>
         }
@@ -280,9 +280,9 @@
                     <pems-col md="3"><strong>@Localizer["I/O Card / Channel"]</strong><div>@NA(inst.IOCardChannel)</div></pems-col>
 
                     <pems-col md="3"><strong>@Localizer["System Cabinet"]</strong><div>@NA(inst.SystemCabinet)</div></pems-col>
-                    <pems-col md="3"><strong>@Localizer["Last Calibration"]</strong><div>@(inst.LastCalibrationDate?.ToString("yyyy-MM-dd") ?? "N/A")</div></pems-col>
-                    <pems-col md="3"><strong>Next Calibration Due</strong><div>@(inst.NextCalibrationDue?.ToString("yyyy-MM-dd") ?? "N/A") <pems-badge tone="@calBadgeClass">@inst.CalibrationStatus</pems-badge></div></pems-col>
-                    <pems-col md="3"><strong>Next Maintenance Due</strong><div>@(inst.NextMaintenanceDue?.ToString("yyyy-MM-dd") ?? "N/A")</div></pems-col>
+                    <pems-col md="3"><strong>@Localizer["Last Calibration"]</strong><div>@(PemsDates.Date(inst.LastCalibrationDate) ?? "N/A")</div></pems-col>
+                    <pems-col md="3"><strong>Next Calibration Due</strong><div>@(PemsDates.Date(inst.NextCalibrationDue) ?? "N/A") <pems-badge tone="@calBadgeClass">@inst.CalibrationStatus</pems-badge></div></pems-col>
+                    <pems-col md="3"><strong>Next Maintenance Due</strong><div>@(PemsDates.Date(inst.NextMaintenanceDue) ?? "N/A")</div></pems-col>
                 </pems-row>
             </pems-content-card>
         </pems-tab-pane>
@@ -347,7 +347,7 @@
                 <pems-row gap="2" css="small mb-3">
                     <pems-col md="3"><strong>@Localizer["Monitoring Points"]:</strong> @cm.PointCount</pems-col>
                     <pems-col md="3"><strong>@Localizer["CBM Strategy"]:</strong> @(cm.HasCbmStrategy ? Localizer["Linked"] : Localizer["No"])</pems-col>
-                    <pems-col md="3"><strong>@Localizer["Next Due"]:</strong> @(cm.NextDueDate?.ToString("yyyy-MM-dd") ?? "N/A")</pems-col>
+                    <pems-col md="3"><strong>@Localizer["Next Due"]:</strong> @(PemsDates.Date(cm.NextDueDate) ?? "N/A")</pems-col>
                     <pems-col md="3"><strong>@Localizer["Findings"]:</strong> @cm.OpenFindingCount</pems-col>
                 </pems-row>
                 @{
@@ -384,7 +384,7 @@
                     <pems-col md="3"><strong>@Localizer["Criticality"]</strong><div>@NA(asset.CriticalityClass)</div></pems-col>
                     <pems-col md="3"><strong>@Localizer["Maintenance Class"]</strong><div>@NA(asset.MaintenanceClass)</div></pems-col>
                     <pems-col md="3"><strong>@Localizer["Functional Location"]</strong><div>@NA(asset.FunctionalLocation)</div></pems-col>
-                    <pems-col md="3"><strong>@Localizer["Commissioning Date"]</strong><div>@(asset.CommissioningDate?.ToString("yyyy-MM-dd") ?? "N/A")</div></pems-col>
+                    <pems-col md="3"><strong>@Localizer["Commissioning Date"]</strong><div>@(PemsDates.Date(asset.CommissioningDate) ?? "N/A")</div></pems-col>
                 </pems-row>
             }
             else
@@ -499,12 +499,12 @@
                                 <pems-table-cell><span class="vs-num">@p.PlanNumber</span> <span class="vs-sub">@p.Title</span></pems-table-cell>
                                 <pems-table-cell>@p.TriggerType</pems-table-cell>
                                 <pems-table-cell class="vs-num">@(p.IntervalDays.HasValue ? p.IntervalDays + " d" : "—")</pems-table-cell>
-                                <pems-table-cell class="vs-num">@(p.LastExecutionDate?.ToString("yyyy-MM-dd") ?? "—")</pems-table-cell>
+                                <pems-table-cell class="vs-num">@(PemsDates.Date(p.LastExecutionDate) ?? "—")</pems-table-cell>
                                 <pems-table-cell class="vs-num">
                                     @if (p.NextDueDate.HasValue)
                                     {
                                         var overdue = p.NextDueDate.Value.Date < DateTime.Today;
-                                        <span class="vs-pill vs-pill--icon @(overdue ? "vs-pill--danger" : "vs-pill--neutral")"><pems-icon css="@(overdue ? "bi-exclamation-triangle" : "bi-calendar-event")" aria-hidden="true" /> @p.NextDueDate.Value.ToString("yyyy-MM-dd")</span>
+                                        <span class="vs-pill vs-pill--icon @(overdue ? "vs-pill--danger" : "vs-pill--neutral")"><pems-icon css="@(overdue ? "bi-exclamation-triangle" : "bi-calendar-event")" aria-hidden="true" /> @PemsDates.Date(p.NextDueDate.Value)</span>
                                     }
                                     else { <span>—</span> }
                                 </pems-table-cell>
@@ -533,7 +533,7 @@
                 var cell_38_3 = DataCell.Template(rows_38, @<text>@{ var r = item; }<span class="vs-pill vs-pill--icon @WrTone(r.Status)"><pems-icon css="@WrIcon(r.Status)" aria-hidden="true" /> @r.Status</span></text>);
                 var cell_38_5 = DataCell.Template(rows_38, @<text>@{ var r = item; }@if (r.LinkedWorkOrderId.HasValue) { if (canViewWo) { <pems-link asp-controller="WorkOrder" asp-action="Details" asp-route-id="@r.LinkedWorkOrderId">@r.LinkedWorkOrderNo</pems-link> } else { @r.LinkedWorkOrderNo } } else { <span class="text-muted">—</span> }</text>);
             }
-            <pems-data-table data="@(DataRows.Of(rows_38, c_ => c_.Add(((Localizer["Cm_WrNumber"])?.ToString() ?? ""), r => (object?)((canViewWr ? (object?)DataCell.Link(Url.Action("Details", "WorkRequest", new { id = r.WorkRequestId }), r.RequestNumber) : r.RequestNumber)), css: "vs-num").Add(((Localizer["Cm_Title"])?.ToString() ?? ""), r => (object?)(r.Title)).Add(((Localizer["Cm_Priority"])?.ToString() ?? ""), r => (object?)cell_38_2(r)).Add(((Localizer["Cm_Status"])?.ToString() ?? ""), r => (object?)cell_38_3(r)).Add(((Localizer["Cm_Requested"])?.ToString() ?? ""), r => (object?)((r.RequestedDate.ToString("yyyy-MM-dd"))), css: "vs-num").Add(((Localizer["Cm_LinkedWo"])?.ToString() ?? ""), r => (object?)cell_38_5(r), css: "vs-num")))" />
+            <pems-data-table data="@(DataRows.Of(rows_38, c_ => c_.Add(((Localizer["Cm_WrNumber"])?.ToString() ?? ""), r => (object?)((canViewWr ? (object?)DataCell.Link(Url.Action("Details", "WorkRequest", new { id = r.WorkRequestId }), r.RequestNumber) : r.RequestNumber)), css: "vs-num").Add(((Localizer["Cm_Title"])?.ToString() ?? ""), r => (object?)(r.Title)).Add(((Localizer["Cm_Priority"])?.ToString() ?? ""), r => (object?)cell_38_2(r)).Add(((Localizer["Cm_Status"])?.ToString() ?? ""), r => (object?)cell_38_3(r)).Add(((Localizer["Cm_Requested"])?.ToString() ?? ""), r => (object?)((PemsDates.Date(r.RequestedDate))), css: "vs-num").Add(((Localizer["Cm_LinkedWo"])?.ToString() ?? ""), r => (object?)cell_38_5(r), css: "vs-num")))" />
             </pems-table-scroll>
             @if (!Model.WorkRequests.Any()) { <pems-text class="text-muted mb-0 small">@Localizer["Cm_NoWorkRequests"]</pems-text> }
         </pems-content-card>
@@ -542,7 +542,7 @@
         <pems-content-card>
             <pems-heading level="6" class="mb-2"><pems-icon name="bi-tools" /> @Localizer["Cm_ExecutedWo"]</pems-heading>
             <pems-table-scroll css="table-scroll-area pems-s-f7dce87f">
-            <pems-data-table data="@(DataRows.Of(Model.WorkOrders, c_ => c_.Add(((Localizer["Cm_WoNumber"])?.ToString() ?? ""), w => (object?)((canViewWo ? (object?)DataCell.Link(Url.Action("Details", "WorkOrder", new { id = w.WorkOrderId }), w.WorkOrderNo) : w.WorkOrderNo)), css: "vs-num").Add(((Localizer["Cm_Description"])?.ToString() ?? ""), w => (object?)(w.Description)).Add(((Localizer["Cm_Status"])?.ToString() ?? ""), w => (object?)(DataCell.Span("vs-pill", w.Status))).Add(((Localizer["Cm_Date"])?.ToString() ?? ""), w => (object?)((w.CreatedDate?.ToString("yyyy-MM-dd"))), css: "vs-num")))" />
+            <pems-data-table data="@(DataRows.Of(Model.WorkOrders, c_ => c_.Add(((Localizer["Cm_WoNumber"])?.ToString() ?? ""), w => (object?)((canViewWo ? (object?)DataCell.Link(Url.Action("Details", "WorkOrder", new { id = w.WorkOrderId }), w.WorkOrderNo) : w.WorkOrderNo)), css: "vs-num").Add(((Localizer["Cm_Description"])?.ToString() ?? ""), w => (object?)(w.Description)).Add(((Localizer["Cm_Status"])?.ToString() ?? ""), w => (object?)(DataCell.Span("vs-pill", w.Status))).Add(((Localizer["Cm_Date"])?.ToString() ?? ""), w => (object?)((PemsDates.Date(w.CreatedDate))), css: "vs-num")))" />
             </pems-table-scroll>
             @if (!Model.WorkOrders.Any()) { <pems-text class="text-muted mb-0 small">@Localizer["Cm_NoWorkOrders"]</pems-text> }
         </pems-content-card>
@@ -586,7 +586,7 @@
                                 }
                             </text>);
             }
-            <pems-data-table data="@(DataRows.Of(rows_39, c_ => c_.Add(((Localizer["Cm_Type"])?.ToString() ?? ""), i => (object?)(i.InspectionType), css: "small").Add(((Localizer["Cm_Date"])?.ToString() ?? ""), i => (object?)((i.InspectionDate.ToString("yyyy-MM-dd"))), css: "small").Add(((Localizer["Cm_Measurement"])?.ToString() ?? ""), i => (object?)((i.MeasurementValue.HasValue ? $"{i.MeasurementValue.Value:N2} {i.MeasurementUnit}" : "-")), css: "small").Add(((Localizer["Cm_Condition"])?.ToString() ?? ""), i => (object?)cell_39_3(i), css: "small").Add(((Localizer["Cm_NextDue"])?.ToString() ?? ""), i => (object?)((i.NextInspectionDate?.ToString("yyyy-MM-dd") ?? "-")), css: "small").Add(((Localizer["Cm_DueStatus"])?.ToString() ?? ""), i => (object?)cell_39_5(i), css: "small").Add("", i => (object?)cell_39_6(i))))" css="mb-0" />
+            <pems-data-table data="@(DataRows.Of(rows_39, c_ => c_.Add(((Localizer["Cm_Type"])?.ToString() ?? ""), i => (object?)(i.InspectionType), css: "small").Add(((Localizer["Cm_Date"])?.ToString() ?? ""), i => (object?)((PemsDates.Date(i.InspectionDate))), css: "small").Add(((Localizer["Cm_Measurement"])?.ToString() ?? ""), i => (object?)((i.MeasurementValue.HasValue ? $"{i.MeasurementValue.Value:N2} {i.MeasurementUnit}" : "-")), css: "small").Add(((Localizer["Cm_Condition"])?.ToString() ?? ""), i => (object?)cell_39_3(i), css: "small").Add(((Localizer["Cm_NextDue"])?.ToString() ?? ""), i => (object?)((PemsDates.Date(i.NextInspectionDate) ?? "-")), css: "small").Add(((Localizer["Cm_DueStatus"])?.ToString() ?? ""), i => (object?)cell_39_5(i), css: "small").Add("", i => (object?)cell_39_6(i))))" css="mb-0" />
             @if (!inspections.Any()) { <pems-text class="text-muted mb-0 small">@Localizer["Cm_NoInspections"]</pems-text> }
         </pems-content-card>
 
@@ -598,7 +598,7 @@
                         <pems-form-group css="mb-2"><pems-label css="small">Inspection Type</pems-label>
                             <pems-input scale="small" name="inspectionType" placeholder="Vibration, Thickness, Visual..." required /></pems-form-group>
                         <pems-form-group css="mb-2"><pems-label css="small">Inspection Date</pems-label>
-                            <pems-date name="inspectionDate" scale="small" value="@DateTime.Today.ToString("yyyy-MM-dd")" required /></pems-form-group>
+                            <pems-date name="inspectionDate" scale="small" value="@PemsDates.Date(DateTime.Today)" required /></pems-form-group>
                         <pems-form-group css="mb-2"><pems-label css="small">@Localizer["Inspector"]</pems-label>
                             <pems-input scale="small" name="inspector" /></pems-form-group>
                         <pems-row gap="2" css="mb-2">

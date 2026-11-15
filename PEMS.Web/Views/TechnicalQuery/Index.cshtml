@@ -102,7 +102,7 @@
                             <pems-table-cell class="vs-hide-md small" title="@t.DisciplineName">@t.DisciplineName</pems-table-cell>
                             <pems-table-cell><span class="vs-pill @(t.Priority is "High" or "Urgent" ? "vs-pill--danger" : "vs-pill--neutral")">@t.Priority</span></pems-table-cell>
                             <pems-table-cell class="small">
-                                @(t.RequiredResponseDate?.ToString("yyyy-MM-dd"))
+                                @(PemsDates.Date(t.RequiredResponseDate))
                                 @if (t.IsOverdue) { <span class="vs-pill vs-pill--icon vs-pill--danger ms-1"><pems-icon name="bi-clock-history" aria-hidden="true" /> @Localizer["Overdue"]</span> }
                             </pems-table-cell>
                             <pems-table-cell><span class="vs-pill @StatusTone(t.Status)">@StatusText(t.Status)</span></pems-table-cell>

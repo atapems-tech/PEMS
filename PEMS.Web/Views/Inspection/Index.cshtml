@@ -44,7 +44,7 @@
                         <pems-table-row class="lp-row">
                             <pems-table-cell class="lp-no"><pems-link asp-controller="Equipment" asp-action="Details" asp-route-id="@i.EquipmentId" class="lp-subject" title="@i.TagNumber">@i.TagNumber</pems-link></pems-table-cell>
                             <pems-table-cell class="small">@i.InspectionType</pems-table-cell>
-                            <pems-table-cell class="small"><span class="vs-num">@i.InspectionDate.ToString("yyyy-MM-dd")</span></pems-table-cell>
+                            <pems-table-cell class="small"><span class="vs-num">@PemsDates.Date(i.InspectionDate)</span></pems-table-cell>
                             <pems-table-cell class="small"><span class="vs-num">@(i.MeasurementValue.HasValue ? $"{i.MeasurementValue.Value:N2} {i.MeasurementUnit}" : "-")</span></pems-table-cell>
                             <pems-table-cell class="small vs-hide-md"><span class="vs-num">@(i.LowerLimit.HasValue || i.UpperLimit.HasValue ? $"{i.LowerLimit:N2} - {i.UpperLimit:N2}" : "-")</span></pems-table-cell>
                             <pems-table-cell>
@@ -55,7 +55,7 @@
                                     default: <span class="text-muted small">@Localizer["Ins_NotApplicable"]</span> break;
                                 }
                             </pems-table-cell>
-                            <pems-table-cell class="small"><span class="vs-num">@(i.NextInspectionDate?.ToString("yyyy-MM-dd") ?? "-")</span></pems-table-cell>
+                            <pems-table-cell class="small"><span class="vs-num">@(PemsDates.Date(i.NextInspectionDate) ?? "-")</span></pems-table-cell>
                             <pems-table-cell>
                                 @switch (i.DueStatus)
                                 {

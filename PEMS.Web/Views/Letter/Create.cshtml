@@ -8,9 +8,9 @@
     var prefill = ViewBag.Prefill as PEMS.Application.DTOs.LetterTemplateDto;
     var templates = (ViewBag.Templates as List<PEMS.Application.DTOs.LetterTemplateDto>) ?? new List<PEMS.Application.DTOs.LetterTemplateDto>();
     int? selectedTemplateId = ViewBag.SelectedTemplateId;
-    string prefillDate = ((DateTime?)ViewBag.PrefillDate ?? DateTime.Now).ToString("yyyy-MM-dd");
+    string prefillDate = PemsDates.Date(((DateTime?)ViewBag.PrefillDate ?? DateTime.Now));
     bool respRequired = ViewBag.PrefillResponseRequired == true;
-    string respDue = ((DateTime?)ViewBag.PrefillResponseDue)?.ToString("yyyy-MM-dd") ?? "";
+    string respDue = PemsDates.Date(((DateTime?)ViewBag.PrefillResponseDue)) ?? "";
     string? respError = ViewBag.ResponseError;
     string curPriority = prefill?.Priority ?? "Normal";
     string curConf = prefill?.ConfidentialityLevel ?? "Internal";

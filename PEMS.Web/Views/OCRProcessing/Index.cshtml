@@ -74,7 +74,7 @@
                             <pems-table-cell class="small text-muted pems-s-55585d51">
                                 @(a.AIStatus == "Failed" ? a.AIError : a.AISummary)
                             </pems-table-cell>
-                            <pems-table-cell>@a.UploadDate.ToString("yyyy-MM-dd HH:mm")</pems-table-cell>
+                            <pems-table-cell>@PemsDates.DateTime(a.UploadDate)</pems-table-cell>
                             <pems-table-cell>
                                 <pems-form asp-action="Retry" asp-route-id="@a.AttachmentId" method="post" class="d-inline">
                                     <pems-button tone="neutral" size="small" outline="true"><pems-icon name="bi-arrow-repeat" /></pems-button>

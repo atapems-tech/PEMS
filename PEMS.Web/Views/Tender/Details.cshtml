@@ -27,7 +27,7 @@
         <pems-info-item label="@Localizer["Title"]">@Model.Title</pems-info-item>
         <pems-info-item label="@Localizer["Package"]" num>@Model.ProcurementPackage?.PackageNumber</pems-info-item>
         <pems-info-item label="@Localizer["Status"]"><pems-badge tone="info">@Model.Status</pems-badge></pems-info-item>
-        <pems-info-item label="@Localizer["Deadline"]" num>@Model.ResponseDeadline?.ToString("yyyy-MM-dd")</pems-info-item>
+        <pems-info-item label="@Localizer["Deadline"]" num>@PemsDates.Date(Model.ResponseDeadline)</pems-info-item>
         <pems-info-item label="@Localizer["Requires Vendor Qualification"]">@(Model.RequiresVendorQualification ? Localizer["Yes"] : Localizer["No"])</pems-info-item>
         @if (Model.AwardedBid != null)
         {
@@ -139,8 +139,8 @@
                                     }
                                 </pems-table-cell>
                                 <pems-table-cell>@d.Attempts</pems-table-cell>
-                                <pems-table-cell>@d.QueuedBy<div class="small text-muted">@d.QueuedAt.ToString("yyyy-MM-dd HH:mm")</div></pems-table-cell>
-                                <pems-table-cell>@(d.SentAt?.ToString("yyyy-MM-dd HH:mm") ?? "-")</pems-table-cell>
+                                <pems-table-cell>@d.QueuedBy<div class="small text-muted">@PemsDates.DateTime(d.QueuedAt)</div></pems-table-cell>
+                                <pems-table-cell>@(PemsDates.DateTime(d.SentAt) ?? "-")</pems-table-cell>
                                 <pems-table-cell>
                                     @if (canSend && emailEnabled && d.Status is "Failed" or "Skipped")
                                     {
@@ -263,7 +263,7 @@
             @foreach (var r in c.Responses.OrderBy(r => r.ResponseDate))
             {
                 <div class="ps-3 border-start mt-1">
-                    <small class="text-muted">@r.ResponseDate.ToString("yyyy-MM-dd") — @r.RespondedByName</small>
+                    <small class="text-muted">@PemsDates.Date(r.ResponseDate) — @r.RespondedByName</small>
                     <div>@r.ResponseText</div>
                 </div>
             }

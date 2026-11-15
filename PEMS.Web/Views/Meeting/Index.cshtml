@@ -37,7 +37,7 @@
                     {
                         <pems-table-row class="lp-row">
                             <pems-table-cell class="lp-no"><pems-link asp-action="Details" asp-route-id="@m.MeetingId" class="lp-subject">@m.Title</pems-link></pems-table-cell>
-                            <pems-table-cell class="small">@m.MeetingDate.ToString("yyyy-MM-dd HH:mm")</pems-table-cell>
+                            <pems-table-cell class="small">@PemsDates.DateTime(m.MeetingDate)</pems-table-cell>
                             <pems-table-cell class="small">@m.Location</pems-table-cell>
                             <pems-table-cell class="small">@m.OrganizerName</pems-table-cell>
                             <pems-table-cell class="small">@m.ProjectName</pems-table-cell>

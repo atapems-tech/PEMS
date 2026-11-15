@@ -16,7 +16,7 @@
     <div class="small text-muted mb-3">@Localizer["Rcv_OsdSubtitle"]</div>
     <pems-row gap="2" css="small">
         <pems-col span="6" md="3"><strong>@Localizer["IRN"]:</strong> @Model.IrnNumber (@Model.IrnStatus)</pems-col>
-        <pems-col span="6" md="3"><strong>@Localizer["Date"]:</strong> @Model.ReceivingDate.ToString("yyyy-MM-dd")</pems-col>
+        <pems-col span="6" md="3"><strong>@Localizer["Date"]:</strong> @PemsDates.Date(Model.ReceivingDate)</pems-col>
         <pems-col span="6" md="3"><strong>@Localizer["Vendor"]:</strong> @Model.VendorName</pems-col>
         <pems-col span="6" md="3"><strong>@Localizer["PO"]:</strong> @(Model.PoNumber ?? "-")</pems-col>
         <pems-col span="6" md="3"><strong>@Localizer["Warehouse"]:</strong> @Model.WarehouseCode</pems-col>

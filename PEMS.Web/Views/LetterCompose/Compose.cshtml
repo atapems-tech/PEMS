@@ -9,8 +9,8 @@
     var isOutgoing = input.LetterType == "Outgoing";
     var isNew = !input.LetterId.HasValue;
     var isReferral = Model.IsReferral;
-    var inputDate = input.LetterDate.ToString("yyyy-MM-dd");
-    var dueDate = input.ResponseDueDate?.ToString("yyyy-MM-dd") ?? "";
+    var inputDate = PemsDates.Date(input.LetterDate);
+    var dueDate = PemsDates.Date(input.ResponseDueDate) ?? "";
     var boot = new
     {
         letterId = input.LetterId,

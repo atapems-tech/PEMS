@@ -80,7 +80,7 @@
                             <pems-table-cell><span class="vs-pill @PriorityTone(wr.Priority)">@VdrUi.Loc(Localizer, "Pri_", wr.Priority)</span></pems-table-cell>
                             <pems-table-cell><span class="vs-pill vs-pill--icon @StatusTone(wr.Status)"><pems-icon css="@StatusIcon(wr.Status)" aria-hidden="true" /> @StatusText(wr.Status)</span></pems-table-cell>
                             <pems-table-cell class="small vs-hide-md">@wr.RequestedByName</pems-table-cell>
-                            <pems-table-cell class="small"><span class="vs-num">@wr.RequestedDate.ToString("yyyy-MM-dd")</span></pems-table-cell>
+                            <pems-table-cell class="small"><span class="vs-num">@PemsDates.Date(wr.RequestedDate)</span></pems-table-cell>
                         </pems-table-row>
                     }
                 </pems-table-body>

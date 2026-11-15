@@ -13,7 +13,7 @@
             <div class="text-muted">@Model.MaterialCode - @Model.MaterialDescription</div>
             <div class="text-muted small mt-1">
                 Qty: @Model.Quantity.ToString("N3") @Model.UomCode &middot;
-                Produced: @Model.ProducedDate.ToString("yyyy-MM-dd HH:mm") &middot;
+                Produced: @PemsDates.DateTime(Model.ProducedDate) &middot;
                 Order: <pems-link asp-controller="ProductionOrder" asp-action="Details" asp-route-id="@Model.ProductionOrderId">@Model.OrderNumber</pems-link> &middot;
                 Run: <pems-link asp-action="Details" asp-route-id="@Model.ProductionRunId">@Model.RunNumber</pems-link>
             </div>

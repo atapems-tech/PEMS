@@ -271,15 +271,15 @@ else
         <pems-info-item label="@Localizer["Planned"]">
             @if (Model.PlannedStart.HasValue && Model.PlannedFinish.HasValue)
             {
-                <span dir="ltr">@Model.PlannedStart.Value.ToString("yyyy-MM-dd HH:mm") &rarr; @Model.PlannedFinish.Value.ToString("HH:mm")</span>
+                <span dir="ltr">@PemsDates.DateTime(Model.PlannedStart.Value) &rarr; @PemsDates.Time(Model.PlannedFinish.Value)</span>
             }
             else
             {
                 <span class="text-muted">@Localizer["Unscheduled"]</span>
             }
         </pems-info-item>
-        <pems-info-item label="@Localizer["Info_Started"]" num>@Model.StartDate?.ToString("yyyy-MM-dd")</pems-info-item>
-        <pems-info-item label="@Localizer["Info_Completed"]" num>@Model.CompletionDate?.ToString("yyyy-MM-dd")</pems-info-item>
+        <pems-info-item label="@Localizer["Info_Started"]" num>@PemsDates.Date(Model.StartDate)</pems-info-item>
+        <pems-info-item label="@Localizer["Info_Completed"]" num>@PemsDates.Date(Model.CompletionDate)</pems-info-item>
         @if (Model.MaintenancePlan != null)
         {
             <pems-info-item label="@Localizer["Info_FromPlan"]" wide><span dir="ltr">@Model.MaintenancePlan.PlanNumber</span> - @Model.MaintenancePlan.Title</pems-info-item>
@@ -431,7 +431,7 @@ else
                 @foreach (var h in wf!.HistorySummary.OrderByDescending(x => x.ActionDate))
                 {
                     <pems-table-row>
-                        <pems-table-cell class="small"><bdi dir="ltr">@h.ActionDate.ToString("yyyy-MM-dd HH:mm")</bdi></pems-table-cell>
+                        <pems-table-cell class="small"><bdi dir="ltr">@PemsDates.DateTime(h.ActionDate)</bdi></pems-table-cell>
                         <pems-table-cell class="small">@ActionText(h.ActionType)</pems-table-cell>
                         <pems-table-cell class="small">@StageByName(h.FromStageName)</pems-table-cell>
                         <pems-table-cell class="small">@StageByName(h.ToStageName)</pems-table-cell>
@@ -465,7 +465,7 @@ else
                     </span>
                     <span class="text-muted">
                         @(h.ChangedBy != null ? $"{h.ChangedBy.FirstName} {h.ChangedBy.LastName}" : "-")
-                        · @h.ChangedDate.ToString("yyyy-MM-dd HH:mm")
+                        · @PemsDates.DateTime(h.ChangedDate)
                     </span>
                 </pems-flex>
             }
@@ -591,7 +591,7 @@ else
                     </pems-flex>
                     @if (!string.IsNullOrWhiteSpace(f.Findings)) { <pems-text class="small mb-0">@f.Findings</pems-text> }
                     @if (!string.IsNullOrWhiteSpace(f.FailureModeCode)) { <pems-text class="small text-muted mb-0">@f.FailureModeCode / @f.FailureCauseCode</pems-text> }
-                    <span class="text-muted small">@f.RespondedDate.ToString("yyyy-MM-dd HH:mm")</span>
+                    <span class="text-muted small">@PemsDates.DateTime(f.RespondedDate)</span>
                 </pems-bullet>
             }
         </pems-bullet-list>
@@ -649,7 +649,7 @@ else
                     <pems-table-row>
                         <pems-table-cell>@l.Employee?.FirstName @l.Employee?.LastName</pems-table-cell>
                         <pems-table-cell class="small">@l.Team?.Name</pems-table-cell>
-                        <pems-table-cell class="small">@l.WorkDate.ToString("yyyy-MM-dd")</pems-table-cell>
+                        <pems-table-cell class="small">@PemsDates.Date(l.WorkDate)</pems-table-cell>
                         <pems-table-cell>@l.RegularHours</pems-table-cell>
                         <pems-table-cell>@l.OvertimeHours</pems-table-cell>
                         <pems-table-cell class="small">@l.Rate.ToString("N0")</pems-table-cell>

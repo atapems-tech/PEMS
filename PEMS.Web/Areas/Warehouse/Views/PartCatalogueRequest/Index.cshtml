@@ -76,8 +76,8 @@
                 @if (!string.IsNullOrEmpty(f.RequestType)) { <input type="hidden" name="RequestType" value="@f.RequestType" /> }
                 @if (f.Urgent.HasValue) { <input type="hidden" name="Urgent" value="@f.Urgent.Value.ToString().ToLowerInvariant()" /> }
                 @if (f.SectionId.HasValue) { <input type="hidden" name="SectionId" value="@f.SectionId" /> }
-                @if (f.FromDate.HasValue) { <input type="hidden" name="FromDate" value="@f.FromDate.Value.ToString("yyyy-MM-dd")" /> }
-                @if (f.ToDate.HasValue) { <input type="hidden" name="ToDate" value="@f.ToDate.Value.ToString("yyyy-MM-dd")" /> }
+                @if (f.FromDate.HasValue) { <input type="hidden" name="FromDate" value="@PemsDates.Date(f.FromDate.Value)" /> }
+                @if (f.ToDate.HasValue) { <input type="hidden" name="ToDate" value="@PemsDates.Date(f.ToDate.Value)" /> }
             </pems-list-search>
             <pems-list-tools search-for="pcSearch">
                 <pems-list-filters form-id="pcFilterForm" action="@Url.Action("Index")" count="@filterCount" reset-href="@Url.Action("Index")">
@@ -94,11 +94,11 @@
                                              all-text="@Localizer["Pc_Filter_All"]" items="@Model.Sections.Select(sec => new SelectListItem(sec.Text, sec.Id.ToString()))" />
                     <div>
                         <label class="lp-lbl" for="pcFFrom">@Localizer["Pc_Filter_From"]</label>
-                        <pems-date id="pcFFrom" name="FromDate" value="@f.FromDate?.ToString("yyyy-MM-dd")" />
+                        <pems-date id="pcFFrom" name="FromDate" value="@PemsDates.Date(f.FromDate)" />
                     </div>
                     <div>
                         <label class="lp-lbl" for="pcFTo">@Localizer["Pc_Filter_To"]</label>
-                        <pems-date id="pcFTo" name="ToDate" value="@f.ToDate?.ToString("yyyy-MM-dd")" />
+                        <pems-date id="pcFTo" name="ToDate" value="@PemsDates.Date(f.ToDate)" />
                     </div>
                 </pems-list-filters>
                 <pems-list-kpi-toggle target="pcKpis" storage-key="pems.partCatalogue.kpis" open="true" />
@@ -135,8 +135,8 @@
             @if (!string.IsNullOrEmpty(f.RequestType)) { <pems-list-chip label="@Localizer["Pc_Col_Type"]" value="@Localizer["Pc_Type_" + f.RequestType]" remove-href="@Without("type")" /> }
             @if (f.Urgent.HasValue) { <pems-list-chip label="@Localizer["Pc_Urgent"]" value="@(f.Urgent.Value ? Localizer["Pc_Yes"] : Localizer["Pc_No"])" remove-href="@Without("urgent")" /> }
             @if (f.SectionId.HasValue) { <pems-list-chip label="@Localizer["Pc_F_SectionId"]" value="@sectionText" remove-href="@Without("section")" /> }
-            @if (f.FromDate.HasValue) { <pems-list-chip label="@Localizer["Pc_Filter_From"]" value="@f.FromDate.Value.ToString("yyyy-MM-dd")" remove-href="@Without("from")" /> }
-            @if (f.ToDate.HasValue) { <pems-list-chip label="@Localizer["Pc_Filter_To"]" value="@f.ToDate.Value.ToString("yyyy-MM-dd")" remove-href="@Without("to")" /> }
+            @if (f.FromDate.HasValue) { <pems-list-chip label="@Localizer["Pc_Filter_From"]" value="@PemsDates.Date(f.FromDate.Value)" remove-href="@Without("from")" /> }
+            @if (f.ToDate.HasValue) { <pems-list-chip label="@Localizer["Pc_Filter_To"]" value="@PemsDates.Date(f.ToDate.Value)" remove-href="@Without("to")" /> }
         </pems-list-chips>
 
         <pems-list-grid>
@@ -173,7 +173,7 @@
                                 @if (!string.IsNullOrEmpty(r.CurrentStepKey)) { <span class="vs-sub">@Localizer["Pc_Step_" + r.CurrentStepKey]</span> }
                             </pems-table-cell>
                             <pems-table-cell class="small vs-hide-md"><span class="vs-num">@r.AssignedPartNumber</span></pems-table-cell>
-                            <pems-table-cell class="small vs-hide-md text-muted"><span class="vs-num">@r.CreatedDate.ToString("yyyy-MM-dd")</span></pems-table-cell>
+                            <pems-table-cell class="small vs-hide-md text-muted"><span class="vs-num">@PemsDates.Date(r.CreatedDate)</span></pems-table-cell>
                         </pems-table-row>
                     }
                 </pems-table-body>

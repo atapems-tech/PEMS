@@ -24,12 +24,12 @@
             </pems-select>
         </pems-col>
         <pems-col md="3">
-            <pems-date name="anchorOrFrom" value="@(((DateTime?)ViewBag.AnchorOrFrom)?.ToString("yyyy-MM-dd"))" scale="small"
+            <pems-date name="anchorOrFrom" value="@(PemsDates.Date(((DateTime?)ViewBag.AnchorOrFrom)))" scale="small"
                    placeholder="@(((string)ViewBag.PeriodType) == "CustomRange" ? "From date" : "Any date in period")" />
         </pems-col>
         @if (((string)ViewBag.PeriodType) == "CustomRange")
         {
-            <pems-col md="3"><pems-date name="toDate" value="@(((DateTime?)ViewBag.ToDate)?.ToString("yyyy-MM-dd"))" scale="small" placeholder="To date" /></pems-col>
+            <pems-col md="3"><pems-date name="toDate" value="@(PemsDates.Date(((DateTime?)ViewBag.ToDate)))" scale="small" placeholder="To date" /></pems-col>
         }
         <pems-col md="2">
             <pems-select scale="small" name="productionWorkCenterId">
@@ -54,7 +54,7 @@
 </pems-content-card>
 
 <div class="text-muted small mb-2">
-    Period: @Model.PeriodStart.ToString("yyyy-MM-dd") &rarr; @Model.PeriodEnd.AddDays(-1).ToString("yyyy-MM-dd")
+    Period: @PemsDates.Date(Model.PeriodStart) &rarr; @PemsDates.Date(Model.PeriodEnd.AddDays(-1))
     (server-local calendar day boundaries; not yet business-confirmed as the operational-day
     boundary - see docs/audits/PEMS_OPERATIONS_PHASE_2A_FOUNDATIONAL_HARDENING_REPORT.md)
 </div>

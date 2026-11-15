@@ -47,7 +47,7 @@
             <pems-info-item label="@Localizer["Package"]" num><pems-link asp-controller="ProcurementPackage" asp-action="Details" asp-route-id="@originatingTender.ProcurementPackageId">@originatingTender.ProcurementPackage?.PackageNumber</pems-link></pems-info-item>
             <pems-info-item label="@Localizer["Tender"]" num><pems-link asp-controller="Tender" asp-action="Details" asp-route-id="@originatingTender.TenderId">@originatingTender.TenderNumber</pems-link></pems-info-item>
             <pems-info-item label="@Localizer["Awarded Bid"]" num>@originatingTender.AwardedBid?.BidNumber</pems-info-item>
-            <pems-info-item label="@Localizer["Awarded"]" num>@originatingTender.AwardedDate?.ToString("yyyy-MM-dd")</pems-info-item>
+            <pems-info-item label="@Localizer["Awarded"]" num>@PemsDates.Date(originatingTender.AwardedDate)</pems-info-item>
         </pems-info-grid>
     </pems-content-card>
 }
@@ -62,8 +62,8 @@
         <pems-info-item label="@Localizer["Project"]">@Model.ProjectName</pems-info-item>
         <pems-info-item label="@Localizer["Vendor"]">@Model.VendorName</pems-info-item>
         <pems-info-item label="@Localizer["Value"]" num>@(Model.ContractValue.HasValue ? $"{Model.ContractValue:N0} {Model.Currency}" : "")</pems-info-item>
-        <pems-info-item label="@Localizer["Start Date"]" num>@Model.StartDate?.ToString("yyyy-MM-dd")</pems-info-item>
-        <pems-info-item label="@Localizer["End Date"]" num>@Model.EndDate?.ToString("yyyy-MM-dd")</pems-info-item>
+        <pems-info-item label="@Localizer["Start Date"]" num>@PemsDates.Date(Model.StartDate)</pems-info-item>
+        <pems-info-item label="@Localizer["End Date"]" num>@PemsDates.Date(Model.EndDate)</pems-info-item>
         <pems-info-item label="@Localizer["Status"]">
             <pems-badge tone="@statusBadge">@Model.Status</pems-badge>
             @if (Model.RequiresInspection)
@@ -146,7 +146,7 @@
                             }
                         </text>);
         }
-        <pems-data-table data="@(DataRows.Of(rows_22, c_ => c_.Add(((Localizer["Discipline"])?.ToString() ?? ""), r => (object?)(r.DisciplineRole)).Add(((Localizer["Reviewer"])?.ToString() ?? ""), r => (object?)((r.Reviewer != null ? r.Reviewer.FirstName + " " + r.Reviewer.LastName : "-"))).Add(((Localizer["Decision"])?.ToString() ?? ""), r => (object?)(DataCell.Badge(r.Decision == "Approved" ? "success" : r.Decision == "Rejected" ? "danger" : "neutral", r.Decision))).Add(((Localizer["Comment"])?.ToString() ?? ""), r => (object?)(r.Comment)).Add(((Localizer["Date"])?.ToString() ?? ""), r => (object?)((r.ReviewDate?.ToString("yyyy-MM-dd")))).Add("", r => (object?)cell_22_5(r))))" dense="true" enterprise="false" />
+        <pems-data-table data="@(DataRows.Of(rows_22, c_ => c_.Add(((Localizer["Discipline"])?.ToString() ?? ""), r => (object?)(r.DisciplineRole)).Add(((Localizer["Reviewer"])?.ToString() ?? ""), r => (object?)((r.Reviewer != null ? r.Reviewer.FirstName + " " + r.Reviewer.LastName : "-"))).Add(((Localizer["Decision"])?.ToString() ?? ""), r => (object?)(DataCell.Badge(r.Decision == "Approved" ? "success" : r.Decision == "Rejected" ? "danger" : "neutral", r.Decision))).Add(((Localizer["Comment"])?.ToString() ?? ""), r => (object?)(r.Comment)).Add(((Localizer["Date"])?.ToString() ?? ""), r => (object?)((PemsDates.Date(r.ReviewDate)))).Add("", r => (object?)cell_22_5(r))))" dense="true" enterprise="false" />
     </pems-content-card>
 }
 
@@ -220,7 +220,7 @@
                 <pems-bullet-list class="list-unstyled mb-2">
                     @foreach (var n in ntps)
                     {
-                        <pems-bullet>@n.NTPNumber — <pems-badge tone="neutral">@n.Status</pems-badge> (@n.IssuedDate.ToString("yyyy-MM-dd"))</pems-bullet>
+                        <pems-bullet>@n.NTPNumber — <pems-badge tone="neutral">@n.Status</pems-badge> (@PemsDates.Date(n.IssuedDate))</pems-bullet>
                     }
                 </pems-bullet-list>
             }
@@ -240,7 +240,7 @@
                 <pems-bullet-list class="list-unstyled mb-2">
                     @foreach (var m in kickoffs)
                     {
-                        <pems-bullet><pems-link asp-controller="Meeting" asp-action="Details" asp-route-id="@m.MeetingId">@m.Title</pems-link> — <pems-badge tone="neutral">@m.Status</pems-badge> (@m.MeetingDate.ToString("yyyy-MM-dd"))</pems-bullet>
+                        <pems-bullet><pems-link asp-controller="Meeting" asp-action="Details" asp-route-id="@m.MeetingId">@m.Title</pems-link> — <pems-badge tone="neutral">@m.Status</pems-badge> (@PemsDates.Date(m.MeetingDate))</pems-bullet>
                     }
                 </pems-bullet-list>
             }

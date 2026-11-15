@@ -45,7 +45,7 @@
         var q = ViewBag.Qualification as PEMS.Application.Interfaces.VendorQualificationView;
         var canEditVendor = ViewBag.CanEditVendor is true;
         string QTone(string? s) => s switch { "Qualified" => "vs-pill--success", "Pending" => "vs-pill--warning", "Suspended" or "Expired" => "vs-pill--danger", _ => "vs-pill--neutral" };
-        string D(DateTime? d) => d.HasValue ? d.Value.ToString("yyyy-MM-dd") : "-";
+        string D(DateTime? d) => d.HasValue ? PemsDates.Date(d.Value) : "-";
     }
     @if (q != null)
     {
@@ -70,7 +70,7 @@
                     @foreach (var h in q.History)
                     {
                         <pems-table-row>
-                            <pems-table-cell><span dir="ltr">@h.ChangeDate.ToString("yyyy-MM-dd HH:mm")</span></pems-table-cell>
+                            <pems-table-cell><span dir="ltr">@PemsDates.DateTime(h.ChangeDate)</span></pems-table-cell>
                             <pems-table-cell>@VdrUi.Loc(Localizer, "Vq_St_", h.PreviousStatus)</pems-table-cell>
                             <pems-table-cell>@VdrUi.Loc(Localizer, "Vq_St_", h.NewStatus)</pems-table-cell>
                             <pems-table-cell>@h.Category</pems-table-cell>
@@ -87,8 +87,8 @@
                 <pems-related-add action="@Url.Action("SetQualification")" parent-name="id" parent-value="@Model.VendorId.ToString()" submit-label="@Localizer["Vq_Save"]">
                     <pems-list-filter-select id="vqStatus" name="newStatus" label="@Localizer["Vq_NewStatus"]" value="@q.Status" items="@PEMS.Application.Interfaces.IVendorQualificationService.Statuses.Select(s => new SelectListItem(VdrUi.Loc(Localizer, "Vq_St_", s), s))" />
                     <div><pems-label css="lp-lbl" for="vqCategory">@Localizer["Vq_Category"]</pems-label><pems-input scale="small" id="vqCategory" name="category" value="@q.Category" /></div>
-                    <div><pems-label css="lp-lbl" for="vqEffective">@Localizer["Vq_Effective"]</pems-label><pems-date scale="small" id="vqEffective" name="effectiveDate" value="@q.EffectiveDate?.ToString("yyyy-MM-dd")" /></div>
-                    <div><pems-label css="lp-lbl" for="vqExpiry">@Localizer["Vq_Expiry"]</pems-label><pems-date scale="small" id="vqExpiry" name="expiryDate" value="@q.ExpiryDate?.ToString("yyyy-MM-dd")" /></div>
+                    <div><pems-label css="lp-lbl" for="vqEffective">@Localizer["Vq_Effective"]</pems-label><pems-date scale="small" id="vqEffective" name="effectiveDate" value="@PemsDates.Date(q.EffectiveDate)" /></div>
+                    <div><pems-label css="lp-lbl" for="vqExpiry">@Localizer["Vq_Expiry"]</pems-label><pems-date scale="small" id="vqExpiry" name="expiryDate" value="@PemsDates.Date(q.ExpiryDate)" /></div>
                     <div><pems-label css="lp-lbl" for="vqEvidence">@Localizer["Vq_Evidence"]</pems-label><pems-input scale="small" id="vqEvidence" name="evidenceReference" value="@q.EvidenceReference" /></div>
                     <div class="flex-grow-1"><pems-label css="lp-lbl" for="vqReason">@Localizer["Vq_Reason"]</pems-label><pems-input scale="small" id="vqReason" name="reason" required /></div>
                 </pems-related-add>

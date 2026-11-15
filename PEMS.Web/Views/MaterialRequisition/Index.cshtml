@@ -56,7 +56,7 @@
                             <pems-table-cell class="small vs-hide-md">@m.ProjectName</pems-table-cell>
                             <pems-table-cell class="small vs-hide-md">@m.DisciplineName</pems-table-cell>
                             <pems-table-cell class="small"><span class="vs-num">@m.EquipmentTagNumber</span></pems-table-cell>
-                            <pems-table-cell class="small"><span class="vs-num">@(m.RequiredDate?.ToString("yyyy-MM-dd") ?? "-")</span></pems-table-cell>
+                            <pems-table-cell class="small"><span class="vs-num">@(PemsDates.Date(m.RequiredDate) ?? "-")</span></pems-table-cell>
                             <pems-table-cell class="small vs-hide-md">@m.ResponsibleEngineerName</pems-table-cell>
                             <pems-table-cell><span class="vs-pill @StatusTone(m.Status)">@StatusText(m.Status)</span></pems-table-cell>
                             <pems-table-cell class="text-end"><span class="vs-num">@m.QuotationsCount</span></pems-table-cell>

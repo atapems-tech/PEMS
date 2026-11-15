@@ -29,7 +29,7 @@
                     @if (!n.IsRead) { <pems-icon name="bi-circle-fill" css="text-primary me-1 pems-s-3494e7ef" aria-hidden="true" /> }
                     <strong>@n.Title</strong>
                     <div class="small text-muted">@n.Message</div>
-                    <div class="small text-muted">@n.CreatedDate.ToString("yyyy-MM-dd HH:mm")</div>
+                    <div class="small text-muted">@PemsDates.DateTime(n.CreatedDate)</div>
                 </pems-link>
                 @if (!n.DismissedDate.HasValue)
                 {

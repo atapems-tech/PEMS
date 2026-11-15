@@ -39,8 +39,8 @@
                 @foreach (var d in disciplines) { <option value="@d.DisciplineId" selected="@(d.DisciplineId == (int?)ViewBag.SelectedDisciplineId)">@d.Name</option> }
             </pems-select>
         </pems-col>
-        <pems-col md="2"><pems-date name="fromDate" value="@(((DateTime?)ViewBag.FromDate)?.ToString("yyyy-MM-dd"))" scale="small" /></pems-col>
-        <pems-col md="2"><pems-date name="toDate" value="@(((DateTime?)ViewBag.ToDate)?.ToString("yyyy-MM-dd"))" scale="small" /></pems-col>
+        <pems-col md="2"><pems-date name="fromDate" value="@(PemsDates.Date(((DateTime?)ViewBag.FromDate)))" scale="small" /></pems-col>
+        <pems-col md="2"><pems-date name="toDate" value="@(PemsDates.Date(((DateTime?)ViewBag.ToDate)))" scale="small" /></pems-col>
         <pems-col md="2"><pems-button tone="primary" size="small" css="w-100"><pems-icon name="bi-funnel" /> @Localizer["Apply"]</pems-button></pems-col>
     </pems-row></pems-form>
 </pems-content-card>

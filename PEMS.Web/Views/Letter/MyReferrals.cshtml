@@ -20,7 +20,7 @@
                             <pems-table-cell><pems-badge tone="neutral">@l.LetterType</pems-badge></pems-table-cell>
                             <pems-table-cell class="lp-no">@l.LetterNumber</pems-table-cell>
                             <pems-table-cell>@l.Subject</pems-table-cell>
-                            <pems-table-cell>@l.LetterDate.ToString("yyyy-MM-dd")</pems-table-cell>
+                            <pems-table-cell>@PemsDates.Date(l.LetterDate)</pems-table-cell>
                             <pems-table-cell><pems-badge tone="none" css="@LetterStatusBadge.CssClass(l.Status)">@l.Status</pems-badge></pems-table-cell>
                             <pems-table-cell><pems-button tone="neutral" size="small" outline="true" as="a" asp-action="Details" asp-route-id="@l.LetterId"><pems-icon name="bi-eye" /></pems-button></pems-table-cell>
                         </pems-table-row>

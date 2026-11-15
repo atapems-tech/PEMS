@@ -145,7 +145,7 @@
         </pems-col>
         <pems-col md="2">
             <pems-label>@Localizer["Rcm_ReviewDate"]</pems-label>
-            <pems-date name="ReviewDate" value="@i.ReviewDate?.ToString("yyyy-MM-dd")" />
+            <pems-date name="ReviewDate" value="@PemsDates.Date(i.ReviewDate)" />
         </pems-col>
 
         <pems-col span="12" id="cbmSection">
@@ -174,7 +174,7 @@
 
         <pems-col md="3">
             <pems-label>@Localizer["Rcm_StartDate"]</pems-label>
-            <pems-date name="StartDate" value="@i.StartDate?.ToString("yyyy-MM-dd")" />
+            <pems-date name="StartDate" value="@PemsDates.Date(i.StartDate)" />
             <span class="text-danger small">@Html.ValidationMessage("startDate")</span>
         </pems-col>
         <pems-col span="12">

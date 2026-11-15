@@ -25,7 +25,7 @@
                 <pems-table-body>
                 @foreach (var p in Model.Plans)
                 {
-                    <pems-table-row><pems-table-cell>@p.PlanNumber</pems-table-cell><pems-table-cell class="small">@p.Title</pems-table-cell><pems-table-cell class="small">v@(p.StrategyVersion)</pems-table-cell><pems-table-cell class="small">@(p.NextDueDate?.ToString("yyyy-MM-dd"))</pems-table-cell></pems-table-row>
+                    <pems-table-row><pems-table-cell>@p.PlanNumber</pems-table-cell><pems-table-cell class="small">@p.Title</pems-table-cell><pems-table-cell class="small">v@(p.StrategyVersion)</pems-table-cell><pems-table-cell class="small">@(PemsDates.Date(p.NextDueDate))</pems-table-cell></pems-table-row>
                 }
                 </pems-table-body>
             </pems-table>

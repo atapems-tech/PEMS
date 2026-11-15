@@ -12,7 +12,7 @@
             </pems-flex>
             <div class="text-muted">Order: <pems-link asp-controller="ProductionOrder" asp-action="Details" asp-route-id="@Model.ProductionOrderId">@Model.OrderNumber</pems-link> - @Model.MaterialCode (@Model.MaterialDescription)</div>
             <div class="text-muted small mt-1">
-                @(Model.StartDate?.ToString("yyyy-MM-dd HH:mm")) &rarr; @(Model.EndDate?.ToString("yyyy-MM-dd HH:mm"))
+                @(PemsDates.DateTime(Model.StartDate)) &rarr; @(PemsDates.DateTime(Model.EndDate))
                 @if (!string.IsNullOrEmpty(Model.WorkCenterCode)) { <text>&middot; Work Center: @Model.WorkCenterCode</text> }
                 @if (!string.IsNullOrEmpty(Model.EquipmentTagNumber)) { <text>&middot; Equipment: @Model.EquipmentTagNumber</text> }
                 @if (!string.IsNullOrEmpty(Model.OperatorEmployeeName)) { <text>&middot; Operator: @Model.OperatorEmployeeName</text> }
@@ -199,7 +199,7 @@
         <pems-content-card>
             <pems-heading level="6" class="mb-2">Event History</pems-heading>
             <div class="table-scroll-area pems-s-89e84480">
-                <pems-data-table data="@(DataRows.Of(Model.Events, c_ => c_.Add(((Localizer["Date"])?.ToString() ?? ""), e => (object?)(e.EventDate.ToString("yyyy-MM-dd HH:mm")), css: "small").Add("Event", e => (object?)(e.EventType)).Add("By", e => (object?)(e.EmployeeName)).Add(((Localizer["Details"])?.ToString() ?? ""), e => (object?)(e.Details), css: "small text-muted")))" dense="true" />
+                <pems-data-table data="@(DataRows.Of(Model.Events, c_ => c_.Add(((Localizer["Date"])?.ToString() ?? ""), e => (object?)(PemsDates.DateTime(e.EventDate)), css: "small").Add("Event", e => (object?)(e.EventType)).Add("By", e => (object?)(e.EmployeeName)).Add(((Localizer["Details"])?.ToString() ?? ""), e => (object?)(e.Details), css: "small text-muted")))" dense="true" />
             </div>
         </pems-content-card>
     </pems-col>

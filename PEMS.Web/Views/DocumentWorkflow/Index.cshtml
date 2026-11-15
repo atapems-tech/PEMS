@@ -129,7 +129,7 @@
                             <pems-table-cell class="small">@h.ActionType</pems-table-cell>
                             <pems-table-cell class="small">@(h.ActionBy != null ? h.ActionBy.FirstName + " " + h.ActionBy.LastName : "—")</pems-table-cell>
                             <pems-table-cell class="small">@h.Comment</pems-table-cell>
-                            <pems-table-cell class="small text-muted">@h.ActionDate.ToString("yyyy-MM-dd HH:mm")</pems-table-cell>
+                            <pems-table-cell class="small text-muted">@PemsDates.DateTime(h.ActionDate)</pems-table-cell>
                         </pems-table-row>
                     }
                 </pems-table-body>

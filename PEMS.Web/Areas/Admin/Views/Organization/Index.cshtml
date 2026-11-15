@@ -77,8 +77,8 @@
                                         <span class="small me-1">@r.HolderName</span>
                                         <label class="small"><pems-input kind="bare" type="checkbox" name="isPrimary" value="true" checked="@r.HolderIsPrimary" /> @Localizer["Org_Primary"]</label>
                                         <input type="hidden" name="isPrimary" value="false" />
-                                        <pems-date class="pems-w-130" name="startDate" value="@r.StartDate?.ToString("yyyy-MM-dd")" aria-label="@Localizer["Org_EffectiveFrom"]" required scale="small" />
-                                        <pems-date class="pems-w-130" name="endDate" value="@r.EndDate?.ToString("yyyy-MM-dd")" aria-label="@Localizer["Org_EffectiveTo"]" scale="small" />
+                                        <pems-date class="pems-w-130" name="startDate" value="@PemsDates.Date(r.StartDate)" aria-label="@Localizer["Org_EffectiveFrom"]" required scale="small" />
+                                        <pems-date class="pems-w-130" name="endDate" value="@PemsDates.Date(r.EndDate)" aria-label="@Localizer["Org_EffectiveTo"]" scale="small" />
                                         <pems-button plain="true" css="vs-btn vs-btn--sm" title="@Localizer["Org_Btn_Save"]" aria-label="@Localizer["Org_Btn_Save"]"><pems-icon name="bi-save" /></pems-button>
                                     </pems-flex></pems-form>
                                 }

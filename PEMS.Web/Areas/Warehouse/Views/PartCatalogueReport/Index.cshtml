@@ -19,8 +19,8 @@
         var d = new Dictionary<string, string?>
         {
             ["Tab"] = tabOverride ?? tab, ["Period"] = f.Period,
-            ["From"] = f.Period == PartCatalogueReportPeriods.Custom ? f.From?.ToString("yyyy-MM-dd") : null,
-            ["To"] = f.Period == PartCatalogueReportPeriods.Custom ? f.To?.ToString("yyyy-MM-dd") : null,
+            ["From"] = f.Period == PartCatalogueReportPeriods.Custom ? PemsDates.Date(f.From) : null,
+            ["To"] = f.Period == PartCatalogueReportPeriods.Custom ? PemsDates.Date(f.To) : null,
             ["SectionId"] = f.SectionId?.ToString(), ["RequestType"] = f.RequestType, ["Status"] = f.Status,
             ["EmployeeId"] = f.EmployeeId?.ToString(), ["EquipmentId"] = f.EquipmentId?.ToString()
         };
@@ -110,11 +110,11 @@
                     <div class="pc-rpt-dates">
                         <div>
                             <label class="lp-lbl" for="pcRptFrom">@Localizer["PcRpt_Filter_From"]</label>
-                            <pems-date id="pcRptFrom" name="From" scale="small" value="@(f.Period == PartCatalogueReportPeriods.Custom ? f.From?.ToString("yyyy-MM-dd") : null)" />
+                            <pems-date id="pcRptFrom" name="From" scale="small" value="@(f.Period == PartCatalogueReportPeriods.Custom ? PemsDates.Date(f.From) : null)" />
                         </div>
                         <div>
                             <label class="lp-lbl" for="pcRptTo">@Localizer["PcRpt_Filter_To"]</label>
-                            <pems-date id="pcRptTo" name="To" scale="small" value="@(f.Period == PartCatalogueReportPeriods.Custom ? f.To?.ToString("yyyy-MM-dd") : null)" />
+                            <pems-date id="pcRptTo" name="To" scale="small" value="@(f.Period == PartCatalogueReportPeriods.Custom ? PemsDates.Date(f.To) : null)" />
                         </div>
                     </div>
                     <pems-text class="lp-hint small text-muted mb-0">@Localizer["PcRpt_Filter_CustomHint"]</pems-text>
@@ -229,7 +229,7 @@
                             @foreach (var a in r.Activity.Rows.Take(PcReportViewModel.PageRows))
                             {
                                 <pems-table-row class="lp-row">
-                                    <pems-table-cell class="text-nowrap">@a.Date.ToString("yyyy-MM-dd HH:mm")</pems-table-cell><pems-table-cell>@a.EmployeeName</pems-table-cell><pems-table-cell>@t.Action(a.Action)</pems-table-cell>
+                                    <pems-table-cell class="text-nowrap">@PemsDates.DateTime(a.Date)</pems-table-cell><pems-table-cell>@a.EmployeeName</pems-table-cell><pems-table-cell>@t.Action(a.Action)</pems-table-cell>
                                     <pems-table-cell><pems-link asp-controller="PartCatalogueRequest" asp-action="Details" asp-route-id="@a.RequestId">@(a.RequestNumber ?? "#" + a.RequestId)</pems-link></pems-table-cell>
                                     <pems-table-cell>@t.Type(a.RequestType)</pems-table-cell><pems-table-cell>@a.ManufacturerPartNumber</pems-table-cell><pems-table-cell class="fw-semibold">@a.AssignedPartNumber</pems-table-cell><pems-table-cell>@a.TechnicalClass</pems-table-cell><pems-table-cell>@t.Status(a.Status)</pems-table-cell>
                                 </pems-table-row>

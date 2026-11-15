@@ -237,7 +237,7 @@
         <pems-alert tone="info" css="d-flex justify-content-between align-items-center flex-wrap gap-2 mt-3 mb-0 py-2">
             <div class="small">
                 <pems-icon name="bi-snow" /> <strong>FROZEN</strong> — Revision @Model.RevisionNo is frozen and cannot be modified.
-                <div class="text-muted">Frozen by @(Model.FrozenByName ?? "-") on @(Model.FrozenDate?.ToString("yyyy-MM-dd HH:mm") ?? "-")@(!string.IsNullOrWhiteSpace(Model.FreezeReason) ? " — " + Model.FreezeReason : "")</div>
+                <div class="text-muted">Frozen by @(Model.FrozenByName ?? "-") on @(PemsDates.DateTime(Model.FrozenDate) ?? "-")@(!string.IsNullOrWhiteSpace(Model.FreezeReason) ? " — " + Model.FreezeReason : "")</div>
             </div>
             @if ((bool)(ViewBag.CanUnfreeze ?? false))
             {
@@ -275,7 +275,7 @@
     {
         <details class="mt-2 small">
             <summary class="text-muted">Hold History (@holdHistory.Count)</summary>
-            <pems-data-table data="@(DataRows.Of(holdHistory, c_ => c_.Add(((Localizer["Reason"])?.ToString() ?? ""), h => (object?)(h.Reason)).Add("Held", h => (object?)(h.HoldDate.ToString("yyyy-MM-dd HH:mm"))).Add("By", h => (object?)(h.HoldByName)).Add("Released", h => (object?)(h.ReleaseDate?.ToString("yyyy-MM-dd HH:mm") ?? "-")).Add("By", h => (object?)(h.ReleaseByName)).Add("Release Reason", h => (object?)(h.ReleaseReason))))" enterprise="false" dense="true" css="table-enterprise mt-1" />
+            <pems-data-table data="@(DataRows.Of(holdHistory, c_ => c_.Add(((Localizer["Reason"])?.ToString() ?? ""), h => (object?)(h.Reason)).Add("Held", h => (object?)(PemsDates.DateTime(h.HoldDate))).Add("By", h => (object?)(h.HoldByName)).Add("Released", h => (object?)(PemsDates.DateTime(h.ReleaseDate) ?? "-")).Add("By", h => (object?)(h.ReleaseByName)).Add("Release Reason", h => (object?)(h.ReleaseReason))))" enterprise="false" dense="true" css="table-enterprise mt-1" />
         </details>
     }
 
@@ -371,7 +371,7 @@
                 <pems-info-item label="@Localizer["Ed_Discipline"]">@Model.DisciplineName</pems-info-item>
                 <pems-info-item label="@Localizer["Ed_Area"]">@(string.IsNullOrEmpty(Model.Area) ? "—" : Model.Area)</pems-info-item>
                 <pems-info-item label="@Localizer["Ed_Revision"]" num>@Model.RevisionNo</pems-info-item>
-                <pems-info-item label="@Localizer["Ed_CreatedDate"]" num>@Model.CreatedDate.ToString("yyyy-MM-dd")</pems-info-item>
+                <pems-info-item label="@Localizer["Ed_CreatedDate"]" num>@PemsDates.Date(Model.CreatedDate)</pems-info-item>
                 <pems-info-item label="@Localizer["Ed_Description"]" wide>@(string.IsNullOrEmpty(Model.Description) ? "—" : Model.Description)</pems-info-item>
             </pems-info-grid>
         </div>
@@ -520,7 +520,7 @@
                                 <pems-table-cell>@file.FileExtension</pems-table-cell>
                                 <pems-table-cell>@(file.FileSize / 1024) KB</pems-table-cell>
                                 <pems-table-cell><pems-badge tone="@badgeClass">@file.AIStatus</pems-badge></pems-table-cell>
-                                <pems-table-cell class="small text-muted">@file.UploadDate.ToString("yyyy-MM-dd")</pems-table-cell>
+                                <pems-table-cell class="small text-muted">@PemsDates.Date(file.UploadDate)</pems-table-cell>
                                 <pems-table-cell class="text-end">
                                     <pems-flex gap="1" justify="end" wrap="true">
                                         <pems-button tone="primary" size="small" outline="true" as="a" asp-action="DownloadAttachment" asp-route-id="@file.AttachmentId" data-bs-toggle="tooltip" title="Download attachment" aria-label="Download @file.FileName"><pems-icon name="bi-download" /></pems-button>
@@ -587,7 +587,7 @@
                                 <pems-table-cell><pems-badge tone="none" css="@idcBadge"><pems-icon css="@idcIcon" /> @idcLabel</pems-badge></pems-table-cell>
                                 <pems-table-cell class="small">@(idc.Comment ?? "—")</pems-table-cell>
                                 <pems-table-cell class="small">@(idc.RespondedByName ?? "—")</pems-table-cell>
-                                <pems-table-cell class="small">@(idc.RespondedDate?.ToString("yyyy-MM-dd HH:mm") ?? "—")</pems-table-cell>
+                                <pems-table-cell class="small">@(PemsDates.DateTime(idc.RespondedDate) ?? "—")</pems-table-cell>
                             </pems-table-row>
                         }
                     </pems-table-body>
@@ -652,9 +652,9 @@
                                 <pems-table-cell class="small">@(rev.CreatedByName ?? "—")</pems-table-cell>
                                 <pems-table-cell>@rev.ReviewerName</pems-table-cell>
                                 <pems-table-cell>@rev.ApprovedBy</pems-table-cell>
-                                <pems-table-cell class="small text-muted">@rev.CreatedDate.ToString("yyyy-MM-dd")</pems-table-cell>
-                                <pems-table-cell class="small text-muted">@(rev.IssuedDate?.ToString("yyyy-MM-dd"))</pems-table-cell>
-                                <pems-table-cell class="small text-muted">@(rev.EffectiveDate?.ToString("yyyy-MM-dd"))</pems-table-cell>
+                                <pems-table-cell class="small text-muted">@PemsDates.Date(rev.CreatedDate)</pems-table-cell>
+                                <pems-table-cell class="small text-muted">@(PemsDates.Date(rev.IssuedDate))</pems-table-cell>
+                                <pems-table-cell class="small text-muted">@(PemsDates.Date(rev.EffectiveDate))</pems-table-cell>
                                 <pems-table-cell class="small">@rev.SupersededRevisionNo</pems-table-cell>
                             </pems-table-row>
                             @if (!string.IsNullOrEmpty(rev.ChangeDescription) || !string.IsNullOrEmpty(rev.AIRevisionSummary) || !string.IsNullOrEmpty(rev.VendorComment))
@@ -713,7 +713,7 @@
                                         <pems-badge tone="neutral">@item.ActionType</pems-badge>
                                         <span class="small text-muted ms-1">@(item.FromStageName ?? "—") &rarr; @(item.ToStageName ?? "—")</span>
                                     </div>
-                                    <span class="small text-muted">@item.ActionDate.ToString("yyyy-MM-dd HH:mm")</span>
+                                    <span class="small text-muted">@PemsDates.DateTime(item.ActionDate)</span>
                                 </pems-flex>
                                 @if (!string.IsNullOrEmpty(item.Comment))
                                 {
@@ -727,7 +727,7 @@
 
                 <details class="mt-3 small">
                     <summary class="text-muted">Full audit table (@orderedWorkflow.Count)</summary>
-                    <pems-data-table data="@(DataRows.Of(orderedWorkflow, c_ => c_.Add(((Localizer["From"])?.ToString() ?? ""), item => (object?)(item.FromStageName ?? "—")).Add("To", item => (object?)(item.ToStageName ?? "—")).Add(((Localizer["Action"])?.ToString() ?? ""), item => (object?)(item.ActionType), kind: DataCellKind.Badge, tone: item => "neutral").Add(((Localizer["Comment"])?.ToString() ?? ""), item => (object?)(item.Comment)).Add(((Localizer["Date"])?.ToString() ?? ""), item => (object?)(item.ActionDate.ToString("yyyy-MM-dd HH:mm")), css: "small text-muted").Add(((Localizer["User"])?.ToString() ?? ""), item => (object?)(item.ActorName ?? "System"))))" css="mt-2" />
+                    <pems-data-table data="@(DataRows.Of(orderedWorkflow, c_ => c_.Add(((Localizer["From"])?.ToString() ?? ""), item => (object?)(item.FromStageName ?? "—")).Add("To", item => (object?)(item.ToStageName ?? "—")).Add(((Localizer["Action"])?.ToString() ?? ""), item => (object?)(item.ActionType), kind: DataCellKind.Badge, tone: item => "neutral").Add(((Localizer["Comment"])?.ToString() ?? ""), item => (object?)(item.Comment)).Add(((Localizer["Date"])?.ToString() ?? ""), item => (object?)(PemsDates.DateTime(item.ActionDate)), css: "small text-muted").Add(((Localizer["User"])?.ToString() ?? ""), item => (object?)(item.ActorName ?? "System"))))" css="mt-2" />
                 </details>
             }
             else
@@ -745,7 +745,7 @@
             {
                 var rows_31 = relatedLetters;
                 var cell_31_5 = DataCell.Template(rows_31, @<text>@{ var l = item; }<pems-button tone="neutral" size="small" outline="true" as="a" asp-controller="Letter" asp-action="Details" asp-route-id="@l.LetterId" data-bs-toggle="tooltip" title="View letter" aria-label="View letter @l.LetterNumber"><pems-icon name="bi-eye" /></pems-button></text>);
-                <pems-data-table data="@(DataRows.Of(rows_31, c_ => c_.Add(((Localizer["Ed_Letters_Type"])?.ToString() ?? ""), l => (object?)(DataCell.Badge("neutral", l.LetterType))).Add(((Localizer["Ed_LetterNo"])?.ToString() ?? ""), l => (object?)(l.LetterNumber)).Add(((Localizer["Ed_Subject"])?.ToString() ?? ""), l => (object?)(l.Subject)).Add(((Localizer["Ed_Date"])?.ToString() ?? ""), l => (object?)((l.LetterDate.ToString("yyyy-MM-dd"))), css: "small text-muted").Add(((Localizer["Ed_Status"])?.ToString() ?? ""), l => (object?)(DataCell.Badge("info", l.Status))).Add("", l => (object?)cell_31_5(l))))" />
+                <pems-data-table data="@(DataRows.Of(rows_31, c_ => c_.Add(((Localizer["Ed_Letters_Type"])?.ToString() ?? ""), l => (object?)(DataCell.Badge("neutral", l.LetterType))).Add(((Localizer["Ed_LetterNo"])?.ToString() ?? ""), l => (object?)(l.LetterNumber)).Add(((Localizer["Ed_Subject"])?.ToString() ?? ""), l => (object?)(l.Subject)).Add(((Localizer["Ed_Date"])?.ToString() ?? ""), l => (object?)((PemsDates.Date(l.LetterDate))), css: "small text-muted").Add(((Localizer["Ed_Status"])?.ToString() ?? ""), l => (object?)(DataCell.Badge("info", l.Status))).Add("", l => (object?)cell_31_5(l))))" />
             }
             else
             {
@@ -766,7 +766,7 @@
                 var rows_32 = relatedTransmittals;
                 var cell_32_4 = DataCell.Template(rows_32, @<text>@{ var t = item; }<span class="vs-pill @PEMS.Web.Helpers.VdrUi.TransmittalTone(t.Status)">@VdrUi.Loc(Localizer, "St_", t.Status)</span></text>);
                 var cell_32_5 = DataCell.Template(rows_32, @<text>@{ var t = item; }<pems-button tone="neutral" size="small" outline="true" as="a" asp-controller="Transmittal" asp-action="Details" asp-route-id="@t.TransmittalId" data-bs-toggle="tooltip" title="View transmittal" aria-label="View transmittal @t.TransmittalNo"><pems-icon name="bi-eye" /></pems-button></text>);
-                <pems-data-table data="@(DataRows.Of(rows_32, c_ => c_.Add(((Localizer["Ed_TransmittalNo"])?.ToString() ?? ""), t => (object?)(t.TransmittalNo)).Add(((Localizer["Ed_RevSent"])?.ToString() ?? ""), t => (object?)(DataCell.Group(Localizer["Ed_CurrentRev"], " ", DataCell.Span("vs-num", t.RevisionNoAtTransmittal))), css: "small text-muted").Add(((Localizer["Ed_Purpose"])?.ToString() ?? ""), t => (object?)(t.Purpose)).Add(((Localizer["Ed_Date"])?.ToString() ?? ""), t => (object?)((t.SentDate?.ToString("yyyy-MM-dd") ?? t.TransmittalDate.ToString("yyyy-MM-dd"))), css: "small text-muted").Add(((Localizer["Ed_Status"])?.ToString() ?? ""), t => (object?)cell_32_4(t)).Add("", t => (object?)cell_32_5(t))))" />
+                <pems-data-table data="@(DataRows.Of(rows_32, c_ => c_.Add(((Localizer["Ed_TransmittalNo"])?.ToString() ?? ""), t => (object?)(t.TransmittalNo)).Add(((Localizer["Ed_RevSent"])?.ToString() ?? ""), t => (object?)(DataCell.Group(Localizer["Ed_CurrentRev"], " ", DataCell.Span("vs-num", t.RevisionNoAtTransmittal))), css: "small text-muted").Add(((Localizer["Ed_Purpose"])?.ToString() ?? ""), t => (object?)(t.Purpose)).Add(((Localizer["Ed_Date"])?.ToString() ?? ""), t => (object?)((PemsDates.Date(t.SentDate) ?? PemsDates.Date(t.TransmittalDate))), css: "small text-muted").Add(((Localizer["Ed_Status"])?.ToString() ?? ""), t => (object?)cell_32_4(t)).Add("", t => (object?)cell_32_5(t))))" />
             }
             else
             {
@@ -942,7 +942,7 @@
                         }
                     </text>);
     }
-    <pems-data-table data="@(DataRows.Of(rows_33, c_ => c_.Add("No", c => (object?)(DataCell.Span(null, c.CommentNo).WithTag("strong"))).Add(((Localizer["Category"])?.ToString() ?? ""), c => (object?)(DataCell.Group((!string.IsNullOrEmpty(c.Category) ? (object?)DataCell.Badge("neutral", c.Category) : null), " ", (!string.IsNullOrEmpty(c.Severity) ? (object?)DataCell.Badge("dark", c.Severity) : null)))).Add("Sheet/Zone", c => (object?)(DataCell.Group(c.Sheet, " ", c.Zone)), css: "small").Add(((Localizer["Comment"])?.ToString() ?? ""), c => (object?)cell_33_3(c), css: "small").Add(((Localizer["Raised By"])?.ToString() ?? ""), c => (object?)(c.RaisedByName)).Add(((Localizer["Raised"])?.ToString() ?? ""), c => (object?)((c.RaisedDate.ToString("yyyy-MM-dd")))).Add(((Localizer["Action Status"])?.ToString() ?? ""), c => (object?)cell_33_6(c)).Add(((Localizer["Response"])?.ToString() ?? ""), c => (object?)cell_33_7(c), css: "small")))" />
+    <pems-data-table data="@(DataRows.Of(rows_33, c_ => c_.Add("No", c => (object?)(DataCell.Span(null, c.CommentNo).WithTag("strong"))).Add(((Localizer["Category"])?.ToString() ?? ""), c => (object?)(DataCell.Group((!string.IsNullOrEmpty(c.Category) ? (object?)DataCell.Badge("neutral", c.Category) : null), " ", (!string.IsNullOrEmpty(c.Severity) ? (object?)DataCell.Badge("dark", c.Severity) : null)))).Add("Sheet/Zone", c => (object?)(DataCell.Group(c.Sheet, " ", c.Zone)), css: "small").Add(((Localizer["Comment"])?.ToString() ?? ""), c => (object?)cell_33_3(c), css: "small").Add(((Localizer["Raised By"])?.ToString() ?? ""), c => (object?)(c.RaisedByName)).Add(((Localizer["Raised"])?.ToString() ?? ""), c => (object?)((PemsDates.Date(c.RaisedDate)))).Add(((Localizer["Action Status"])?.ToString() ?? ""), c => (object?)cell_33_6(c)).Add(((Localizer["Response"])?.ToString() ?? ""), c => (object?)cell_33_7(c), css: "small")))" />
     @if (!engComments.Any()) { <pems-text class="text-muted">No comments recorded yet.</pems-text> }
 
     <pems-button tone="primary" size="small" type="button" data-bs-toggle="modal" data-bs-target="#addEngCommentModal">
@@ -1241,7 +1241,7 @@
                                 <option value="">@Localizer["-- انتخاب کنید --"]</option>
                                 @foreach (var l in availableIncomingLetters)
                                 {
-                                    <option value="@l.LetterId">@l.LetterNumber &mdash; @l.Subject (@l.LetterDate.ToString("yyyy-MM-dd"))</option>
+                                    <option value="@l.LetterId">@l.LetterNumber &mdash; @l.Subject (@PemsDates.Date(l.LetterDate))</option>
                                 }
                             </pems-select>
                         }

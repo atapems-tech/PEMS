@@ -90,7 +90,7 @@
                                 @if (f.WorkRequest != null)
                                 { <div class="small text-muted">@Localizer["Fn_WorkRequest"]: <span class="vs-num">@f.WorkRequest.RequestNumber</span></div> }
                             </pems-table-cell>
-                            <pems-table-cell class="small"><span class="vs-num">@f.ObservedAt.ToString("yyyy-MM-dd")</span></pems-table-cell>
+                            <pems-table-cell class="small"><span class="vs-num">@PemsDates.Date(f.ObservedAt)</span></pems-table-cell>
                             <pems-table-cell class="lp-actions text-nowrap">
                                 @if (f.Status == "Open")
                                 {

@@ -68,7 +68,7 @@
                             <pems-table-cell><span class="vs-title-cell" title="@t.Title">@t.Title</span></pems-table-cell>
                             <pems-table-cell class="small vs-hide-md"><span class="vs-num">@t.ProcurementPackage?.PackageNumber</span></pems-table-cell>
                             <pems-table-cell><span class="vs-pill @StatusTone(t.Status)">@StatusText(t.Status)</span></pems-table-cell>
-                            <pems-table-cell class="small"><span class="vs-num">@(t.ResponseDeadline?.ToString("yyyy-MM-dd") ?? "-")</span></pems-table-cell>
+                            <pems-table-cell class="small"><span class="vs-num">@(PemsDates.Date(t.ResponseDeadline) ?? "-")</span></pems-table-cell>
                             <pems-table-cell class="text-end">
                                 <pems-link asp-action="Details" asp-route-id="@t.TenderId" class="lp-act lp-act--always" title="@Localizer["Ed_View"]" aria-label="@Localizer["Ed_View"]"><pems-icon name="bi-eye" aria-hidden="true" /></pems-link>
                             </pems-table-cell>

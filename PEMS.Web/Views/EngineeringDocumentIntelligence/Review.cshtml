@@ -165,7 +165,7 @@
                         }
                     </text>);
     }
-    <pems-data-table data="@(DataRows.Of(rows_30, c_ => c_.Add(((Localizer["Comment"])?.ToString() ?? ""), c => (object?)(c.CommentText)).Add(((Localizer["Raised By"])?.ToString() ?? ""), c => (object?)(c.RaisedByName)).Add(((Localizer["Date"])?.ToString() ?? ""), c => (object?)((c.RaisedDate.ToString("yyyy-MM-dd")))).Add(((Localizer["Action Status"])?.ToString() ?? ""), c => (object?)cell_30_3(c)).Add(((Localizer["Response"])?.ToString() ?? ""), c => (object?)cell_30_4(c), css: "small")))" />
+    <pems-data-table data="@(DataRows.Of(rows_30, c_ => c_.Add(((Localizer["Comment"])?.ToString() ?? ""), c => (object?)(c.CommentText)).Add(((Localizer["Raised By"])?.ToString() ?? ""), c => (object?)(c.RaisedByName)).Add(((Localizer["Date"])?.ToString() ?? ""), c => (object?)((PemsDates.Date(c.RaisedDate)))).Add(((Localizer["Action Status"])?.ToString() ?? ""), c => (object?)cell_30_3(c)).Add(((Localizer["Response"])?.ToString() ?? ""), c => (object?)cell_30_4(c), css: "small")))" />
     </pems-table-scroll>
     @if (!Model.Comments.Any()) { <pems-text class="text-muted">No comments yet.</pems-text> }
 

@@ -80,10 +80,10 @@
             @if (latestCal != null)
             {
                 <div class="small">
-                    <div>Date: @latestCal.CalibrationDate.ToString("yyyy-MM-dd") - @latestCal.CalibrationType - Result: @latestCal.Result</div>
+                    <div>Date: @PemsDates.Date(latestCal.CalibrationDate) - @latestCal.CalibrationType - Result: @latestCal.Result</div>
                     <div>As Found / As Left: @NA(latestCal.AsFound) / @NA(latestCal.AsLeft)</div>
                     <div>Technician: @(latestCal.Technician != null ? latestCal.Technician.FirstName + " " + latestCal.Technician.LastName : "N/A") - Certificate: @NA(latestCal.CertificateNo)</div>
-                    <div>Next Due: @(latestCal.NextDue?.ToString("yyyy-MM-dd") ?? "N/A")</div>
+                    <div>Next Due: @(PemsDates.Date(latestCal.NextDue) ?? "N/A")</div>
                 </div>
             }
             else
@@ -96,7 +96,7 @@
             @if (latestMaint != null)
             {
                 <div class="small">
-                    <div>Date: @latestMaint.ExecutionDate.ToString("yyyy-MM-dd")</div>
+                    <div>Date: @PemsDates.Date(latestMaint.ExecutionDate)</div>
                     <div>Finding: @NA(latestMaint.Finding)</div>
                     <div>Action: @NA(latestMaint.ActionTaken)</div>
                 </div>
@@ -113,7 +113,7 @@
     <pems-heading level="6">Record New Calibration</pems-heading>
     <pems-form asp-action="AddCalibration" method="post"><pems-row gap="2" css="align-items-end mb-4">
         <input type="hidden" name="instrumentId" value="@Model.InstrumentId" />
-        <pems-col md="2"><pems-label css="small">@Localizer["Date"]</pems-label><pems-date name="calibrationDate" scale="small" value="@DateTime.Today.ToString("yyyy-MM-dd")" required /></pems-col>
+        <pems-col md="2"><pems-label css="small">@Localizer["Date"]</pems-label><pems-date name="calibrationDate" scale="small" value="@PemsDates.Date(DateTime.Today)" required /></pems-col>
         <pems-col md="2"><pems-label css="small">@Localizer["Type"]</pems-label>
             <pems-select scale="small" name="calibrationType">
                 <option>Routine</option><option>PostRepair</option><option>PreCommissioning</option>
@@ -134,7 +134,7 @@
 
     <pems-heading level="6">Calibration History</pems-heading>
     <div class="table-scroll-area pems-s-f7dce87f">
-        <pems-data-table data="@(DataRows.Of((List<CalibrationHistory>)ViewBag.CalibrationHistoryList, c_ => c_.Add(((Localizer["Date"])?.ToString() ?? ""), c => (object?)(c.CalibrationDate.ToString("yyyy-MM-dd"))).Add(((Localizer["Type"])?.ToString() ?? ""), c => (object?)(c.CalibrationType)).Add("As Found / As Left", c => DataCell.Join((NA(c.AsFound)), " / ", (NA(c.AsLeft)))).Add(((Localizer["Result"])?.ToString() ?? ""), c => (object?)(c.Result)).Add(((Localizer["Technician"])?.ToString() ?? ""), c => (object?)(c.Technician != null ? c.Technician.FirstName + " " + c.Technician.LastName : "N/A")).Add("Certificate", c => (object?)(NA(c.CertificateNo))).Add(((Localizer["Next Due"])?.ToString() ?? ""), c => (object?)(c.NextDue?.ToString("yyyy-MM-dd") ?? "N/A"))))" dense="true" />
+        <pems-data-table data="@(DataRows.Of((List<CalibrationHistory>)ViewBag.CalibrationHistoryList, c_ => c_.Add(((Localizer["Date"])?.ToString() ?? ""), c => (object?)(PemsDates.Date(c.CalibrationDate))).Add(((Localizer["Type"])?.ToString() ?? ""), c => (object?)(c.CalibrationType)).Add("As Found / As Left", c => DataCell.Join((NA(c.AsFound)), " / ", (NA(c.AsLeft)))).Add(((Localizer["Result"])?.ToString() ?? ""), c => (object?)(c.Result)).Add(((Localizer["Technician"])?.ToString() ?? ""), c => (object?)(c.Technician != null ? c.Technician.FirstName + " " + c.Technician.LastName : "N/A")).Add("Certificate", c => (object?)(NA(c.CertificateNo))).Add(((Localizer["Next Due"])?.ToString() ?? ""), c => (object?)(PemsDates.Date(c.NextDue) ?? "N/A"))))" dense="true" />
     </div>
 </pems-content-card>
 

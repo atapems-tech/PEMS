@@ -94,8 +94,8 @@
                             <pems-table-cell class="small">@i.InstrumentType</pems-table-cell>
                             <pems-table-cell class="small"><span class="vs-num">@i.LoopNumber</span></pems-table-cell>
                             <pems-table-cell class="small">@i.System</pems-table-cell>
-                            <pems-table-cell class="small vs-hide-md"><span class="vs-num">@(i.LastCalibrationDate?.ToString("yyyy-MM-dd") ?? "-")</span></pems-table-cell>
-                            <pems-table-cell class="small"><span class="vs-num">@(i.NextCalibrationDue?.ToString("yyyy-MM-dd") ?? "-")</span></pems-table-cell>
+                            <pems-table-cell class="small vs-hide-md"><span class="vs-num">@(PemsDates.Date(i.LastCalibrationDate) ?? "-")</span></pems-table-cell>
+                            <pems-table-cell class="small"><span class="vs-num">@(PemsDates.Date(i.NextCalibrationDue) ?? "-")</span></pems-table-cell>
                             <pems-table-cell><span class="vs-pill @StatusTone(i.CalibrationStatus)">@StatusText(i.CalibrationStatus)</span></pems-table-cell>
                             <pems-table-cell class="lp-actions">
                                 <pems-link asp-action="Passport" asp-route-id="@i.InstrumentId" class="lp-act lp-act--always" title="@Localizer["In_Passport"]" aria-label="@Localizer["In_Passport"]"><pems-icon name="bi-card-text" aria-hidden="true" /></pems-link>

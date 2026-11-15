@@ -24,7 +24,7 @@
                 @if (d.SourceType == ProcurementDemandSources.Replenishment) { <pems-link href="/Warehouse/Replenishment/Details/@d.SourceId" dir="ltr">@d.SourceNumber</pems-link> }
                 else if (d.SourceType == ProcurementDemandSources.WorkOrderDirectPurchase && Model.WorkOrderId.HasValue) { <pems-link href="/WorkOrder/Details/@Model.WorkOrderId" dir="ltr">@d.SourceNumber</pems-link> }
                 else if (isMr) { <pems-link href="/MaterialRequisition/Details/@d.SourceId" dir="ltr">@d.SourceNumber</pems-link> }
-                · @Localizer["Ppr_Raised"] <span dir="ltr">@d.RaisedAt.ToString("yyyy-MM-dd HH:mm")</span> @d.RaisedBy
+                · @Localizer["Ppr_Raised"] <span dir="ltr">@PemsDates.DateTime(d.RaisedAt)</span> @d.RaisedBy
             </div>
         </div>
         <span class="vs-pill @(d.Status == ProcurementDemandStatuses.Open ? "vs-pill--warning" : d.Status == ProcurementDemandStatuses.Dismissed ? "vs-pill--neutral" : "vs-pill--success")">@Localizer["Ppr_Status_" + d.Status]</span>
@@ -45,7 +45,7 @@
         }
         @if (Model.DecidedAt.HasValue)
         {
-            <pems-info-item label="@Localizer["Ppr_Decided"]"><span dir="ltr">@Model.DecidedAt.Value.ToString("yyyy-MM-dd HH:mm")</span> @Model.DecidedBy</pems-info-item>
+            <pems-info-item label="@Localizer["Ppr_Decided"]"><span dir="ltr">@PemsDates.DateTime(Model.DecidedAt.Value)</span> @Model.DecidedBy</pems-info-item>
         }
         @if (!string.IsNullOrWhiteSpace(Model.DecisionReason)) { <pems-info-item label="@Localizer["Ppr_Reason"]">@Model.DecisionReason</pems-info-item> }
     </pems-info-grid>

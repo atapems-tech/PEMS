@@ -60,7 +60,7 @@
             </pems-stat-grid>
             <div class="admin-footer">
                 <span>Branch <strong>@Model.Branch</strong> - last commit <code>@Model.LastCommit</code></span>
-                <span>Generated @(Model.GeneratedAtUtc?.ToString("yyyy-MM-dd HH:mm") ?? "-") UTC - @Model.NoTestCount / @Model.ModuleCount modules have no reference found in PEMS.Tests</span>
+                <span>Generated @(PemsDates.DateTime(Model.GeneratedAtUtc) ?? "-") UTC - @Model.NoTestCount / @Model.ModuleCount modules have no reference found in PEMS.Tests</span>
             </div>
         </pems-content-card>
 

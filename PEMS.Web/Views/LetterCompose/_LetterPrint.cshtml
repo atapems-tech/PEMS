@@ -18,7 +18,7 @@
         </div>
         <div class="lp-meta">
             <div>@Localizer["Lc_PrintNumber"]: <strong>@(Model.LetterNumber ?? Localizer["Lc_NumberPending"].Value)</strong></div>
-            <div>@Localizer["Lt_Date"]: <strong>@Model.LetterDate.ToString("yyyy-MM-dd")</strong></div>
+            <div>@Localizer["Lt_Date"]: <strong>@PemsDates.Date(Model.LetterDate)</strong></div>
             @if (!string.IsNullOrWhiteSpace(Model.ReferenceNumber)) { <div>@Localizer["Lc_Reference"]: <strong>@Model.ReferenceNumber</strong></div> }
             @if (!string.IsNullOrWhiteSpace(Model.Category)) { <div>@Localizer["Lc_Category"]: <strong>@Localizer["Lc_Cat_" + Model.Category]</strong></div> }
         </div>
@@ -46,7 +46,7 @@
         <div class="lp-foot">
             @if (!string.IsNullOrWhiteSpace(Model.Confidentiality)) { <span>@Localizer["Lt_Confidentiality"]: @Localizer["Lt_C_" + Model.Confidentiality]</span> }
             @if (!string.IsNullOrWhiteSpace(Model.Priority)) { <span>@Localizer["Lt_Priority"]: @Localizer["Lt_P_" + Model.Priority]</span> }
-            @if (Model.ResponseDueDate.HasValue) { <span>@Localizer["Lt_ResponseDueDate"]: @Model.ResponseDueDate.Value.ToString("yyyy-MM-dd")</span> }
+            @if (Model.ResponseDueDate.HasValue) { <span>@Localizer["Lt_ResponseDueDate"]: @PemsDates.Date(Model.ResponseDueDate.Value)</span> }
         </div>
     </footer>
 </article>

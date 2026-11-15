@@ -68,7 +68,7 @@
                         <pems-table-cell class="text-end"><span class="vs-num">@p.ActiveRouteCount</span></pems-table-cell>
                         <pems-table-cell>
                             <span class="vs-pill @HealthTone(p.LastHealthStatus)">@HealthText(p.LastHealthStatus)</span>
-                            @if (p.LastHealthCheckAt.HasValue) { <div class="vs-sub"><span class="vs-num">@p.LastHealthCheckAt.Value.ToString("yyyy-MM-dd HH:mm")</span></div> }
+                            @if (p.LastHealthCheckAt.HasValue) { <div class="vs-sub"><span class="vs-num">@PemsDates.DateTime(p.LastHealthCheckAt.Value)</span></div> }
                         </pems-table-cell>
                         <pems-table-cell><span class="vs-pill @(p.IsEnabled ? "vs-pill--success" : "vs-pill--neutral")">@(p.IsEnabled ? Localizer["Enabled"] : Localizer["Disabled"])</span></pems-table-cell>
                         <pems-table-cell>@if (p.IsDefault) { <pems-icon name="bi-star-fill" css="text-warning" title="@Localizer["Default"]" aria-label="@Localizer["Default"]" /> }</pems-table-cell>

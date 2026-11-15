@@ -153,7 +153,7 @@
                 </pems-col>
                 <pems-col sm="6">
                     <pems-text class="text-uppercase text-muted small mb-1">@L("Hire Date", "تاریخ استخدام")</pems-text>
-                    <pems-text class="mb-0 fw-semibold">@(Model.HireDate.HasValue ? Model.HireDate.Value.ToString("yyyy-MM-dd") : "—")</pems-text>
+                    <pems-text class="mb-0 fw-semibold">@(Model.HireDate.HasValue ? PemsDates.Date(Model.HireDate.Value) : "—")</pems-text>
                 </pems-col>
                 <pems-col sm="6">
                     <pems-text class="text-uppercase text-muted small mb-1">@L("Personnel Type", "نوع پرسنل")</pems-text>
@@ -190,7 +190,7 @@
                 <pems-text class="text-uppercase text-muted small mb-1">@L("Role in Team", "نقش در تیم")</pems-text>
                 <pems-text class="fw-semibold mb-2">@Dash(currentMembership.Role?.Name)</pems-text>
                 <pems-text class="text-uppercase text-muted small mb-1">@L("Member Since", "عضو از تاریخ")</pems-text>
-                <pems-text class="fw-semibold mb-0">@currentMembership.JoinedDate.ToString("yyyy-MM-dd")</pems-text>
+                <pems-text class="fw-semibold mb-0">@PemsDates.Date(currentMembership.JoinedDate)</pems-text>
             }
             else
             {
@@ -305,7 +305,7 @@
                     <pems-icon name="bi-plus-lg" /> @L("New Rate", "ثبت نرخ جدید")
                 </pems-button>
             </pems-flex>
-            <pems-data-table data="@(DataRows.Of(laborRates, c_ => c_.Add(((L("Type", "نوع"))?.ToString() ?? ""), r => (object?)(r.RateType)).Add(((L("Rate", "نرخ"))?.ToString() ?? ""), r => (object?)(DataCell.Group((r.Rate.ToString("N0")), " ", r.Currency))).Add(((L("From", "از تاریخ"))?.ToString() ?? ""), r => (object?)((r.EffectiveFrom.ToString("yyyy-MM-dd"))), css: "small").Add(((L("To", "تا تاریخ"))?.ToString() ?? ""), r => (object?)((r.EffectiveTo?.ToString("yyyy-MM-dd") ?? L("Current", "فعلی"))), css: "small"), rowClass: r => (r.EffectiveTo == null ? "table-success" : "")))" dense="true" enterprise="false" />
+            <pems-data-table data="@(DataRows.Of(laborRates, c_ => c_.Add(((L("Type", "نوع"))?.ToString() ?? ""), r => (object?)(r.RateType)).Add(((L("Rate", "نرخ"))?.ToString() ?? ""), r => (object?)(DataCell.Group((r.Rate.ToString("N0")), " ", r.Currency))).Add(((L("From", "از تاریخ"))?.ToString() ?? ""), r => (object?)((PemsDates.Date(r.EffectiveFrom))), css: "small").Add(((L("To", "تا تاریخ"))?.ToString() ?? ""), r => (object?)((PemsDates.Date(r.EffectiveTo) ?? L("Current", "فعلی"))), css: "small"), rowClass: r => (r.EffectiveTo == null ? "table-success" : "")))" dense="true" enterprise="false" />
             @if (!laborRates.Any()) { <pems-text class="text-muted small text-center py-2">@L("No rate recorded.", "نرخی ثبت نشده.")</pems-text> }
             <pems-text class="text-muted small mb-0">
                 <pems-icon name="bi-info-circle" /> @L(
@@ -318,7 +318,7 @@
     <pems-col md="6">
         <pems-content-card css="h-100">
             <pems-flex as="h6" align="center" gap="2" css="mb-3 pb-2 border-bottom"><pems-icon name="bi-diagram-3" css="text-warning" /> @L("Team Membership History", "تاریخچه‌ی عضویت تیم")</pems-flex>
-            <pems-data-table data="@(DataRows.Of(teamHistory, c_ => c_.Add(((L("Team", "تیم"))?.ToString() ?? ""), m => (object?)(m.Team?.Name)).Add(((L("Role", "نقش"))?.ToString() ?? ""), m => (object?)(m.Role?.Name), css: "small").Add(((L("From", "از"))?.ToString() ?? ""), m => (object?)((m.JoinedDate.ToString("yyyy-MM-dd"))), css: "small").Add(((L("To", "تا"))?.ToString() ?? ""), m => (object?)((m.LeftDate?.ToString("yyyy-MM-dd") ?? (m.IsActive ? L("Current", "فعلی") : "-"))), css: "small"), rowClass: m => (m.IsActive ? "table-success" : "")))" dense="true" enterprise="false" />
+            <pems-data-table data="@(DataRows.Of(teamHistory, c_ => c_.Add(((L("Team", "تیم"))?.ToString() ?? ""), m => (object?)(m.Team?.Name)).Add(((L("Role", "نقش"))?.ToString() ?? ""), m => (object?)(m.Role?.Name), css: "small").Add(((L("From", "از"))?.ToString() ?? ""), m => (object?)((PemsDates.Date(m.JoinedDate))), css: "small").Add(((L("To", "تا"))?.ToString() ?? ""), m => (object?)((PemsDates.Date(m.LeftDate) ?? (m.IsActive ? L("Current", "فعلی") : "-"))), css: "small"), rowClass: m => (m.IsActive ? "table-success" : "")))" dense="true" enterprise="false" />
             @if (!teamHistory.Any()) { <pems-text class="text-muted small text-center py-2">@L("No membership recorded.", "عضویتی ثبت نشده.")</pems-text> }
         </pems-content-card>
     </pems-col>
@@ -338,7 +338,7 @@
                         <span>
                             <span class="small">@es.Skill?.Name</span>
                             <pems-badge tone="neutral">@es.ProficiencyLevel</pems-badge>
-                            @if (es.CertifiedDate.HasValue) { <span class="text-muted small">— @es.CertifiedDate.Value.ToString("yyyy-MM-dd")</span> }
+                            @if (es.CertifiedDate.HasValue) { <span class="text-muted small">— @PemsDates.Date(es.CertifiedDate.Value)</span> }
                         </span>
                         <pems-form asp-action="RemoveSkill" method="post" class="d-inline">
                             <input type="hidden" name="employeeSkillId" value="@es.EmployeeSkillId" />
@@ -367,7 +367,7 @@
                     <pems-flex as="li" justify="between" align="center" css="border-bottom py-2">
                         <span>
                             <span class="small">@eq.Qualification?.Name</span>
-                            @if (eq.ExpiryDate.HasValue) { <pems-badge tone="none" css="@ExpiryBadgeClass(status)">@status — @eq.ExpiryDate.Value.ToString("yyyy-MM-dd")</pems-badge> }
+                            @if (eq.ExpiryDate.HasValue) { <pems-badge tone="none" css="@ExpiryBadgeClass(status)">@status — @PemsDates.Date(eq.ExpiryDate.Value)</pems-badge> }
                             @if (!string.IsNullOrWhiteSpace(eq.Issuer)) { <span class="text-muted small">— @eq.Issuer</span> }
                         </span>
                         <pems-form asp-action="RemoveQualification" method="post" class="d-inline">
@@ -398,7 +398,7 @@
                         <span>
                             <span class="small">@ec.Certification?.Name</span>
                             @if (!string.IsNullOrWhiteSpace(ec.CertificateNumber)) { <span class="text-muted small">#@ec.CertificateNumber</span> }
-                            @if (ec.ExpiryDate.HasValue) { <pems-badge tone="none" css="@ExpiryBadgeClass(status)">@status — @ec.ExpiryDate.Value.ToString("yyyy-MM-dd")</pems-badge> }
+                            @if (ec.ExpiryDate.HasValue) { <pems-badge tone="none" css="@ExpiryBadgeClass(status)">@status — @PemsDates.Date(ec.ExpiryDate.Value)</pems-badge> }
                         </span>
                         <pems-form asp-action="RemoveCertification" method="post" class="d-inline">
                             <input type="hidden" name="employeeCertificationId" value="@ec.EmployeeCertificationId" />
@@ -452,7 +452,7 @@
                                 @foreach (var v in vendors) { <option value="@v.VendorId" selected="@(v.VendorId == Model.VendorId)">@v.Name</option> }
                             </pems-select>
                         </pems-col>
-                        <pems-col md="3"><pems-label>@L("Hire Date", "تاریخ استخدام")</pems-label><pems-date name="hireDate" value="@(Model.HireDate?.ToString("yyyy-MM-dd"))" /></pems-col>
+                        <pems-col md="3"><pems-label>@L("Hire Date", "تاریخ استخدام")</pems-label><pems-date name="hireDate" value="@(PemsDates.Date(Model.HireDate))" /></pems-col>
                         <pems-col md="3"><pems-label>@L("Location / Site", "مکان")</pems-label><pems-input name="location" value="@Model.Location" /></pems-col>
                         <pems-col md="3"><pems-label>@L("Shift", "شیفت")</pems-label><pems-input name="shift" value="@Model.Shift" /></pems-col>
                         <pems-col md="3"><pems-label>@L("Home Address", "آدرس منزل")</pems-label><pems-input name="homeAddress" value="@Model.HomeAddress" /></pems-col>
@@ -509,7 +509,7 @@
                     </pems-select>
                 </pems-form-group>
                 <pems-form-group css="mb-2"><pems-label css="small">@L("Issuer (optional)", "صادرکننده (اختیاری)")</pems-label><pems-input scale="small" name="issuer" /></pems-form-group>
-                <pems-form-group css="mb-2"><pems-label css="small">@L("Issue Date", "تاریخ صدور")</pems-label><pems-date name="issueDate" scale="small" required value="@DateTime.Today.ToString("yyyy-MM-dd")" /></pems-form-group>
+                <pems-form-group css="mb-2"><pems-label css="small">@L("Issue Date", "تاریخ صدور")</pems-label><pems-date name="issueDate" scale="small" required value="@PemsDates.Date(DateTime.Today)" /></pems-form-group>
                 <pems-form-group css="mb-2"><pems-label css="small">@L("Expiry Date (optional)", "تاریخ انقضا (اختیاری)")</pems-label><pems-date name="expiryDate" scale="small" /></pems-form-group>
             </pems-modal-body>
             <pems-modal-footer>
@@ -532,7 +532,7 @@
                 </pems-form-group>
                 <pems-form-group css="mb-2"><pems-label css="small">@L("Certificate Number (optional)", "شماره گواهی (اختیاری)")</pems-label><pems-input scale="small" name="certificateNumber" /></pems-form-group>
                 <pems-form-group css="mb-2"><pems-label css="small">@L("Issuer (optional)", "صادرکننده (اختیاری)")</pems-label><pems-input scale="small" name="issuer" /></pems-form-group>
-                <pems-form-group css="mb-2"><pems-label css="small">@L("Issue Date", "تاریخ صدور")</pems-label><pems-date name="issueDate" scale="small" required value="@DateTime.Today.ToString("yyyy-MM-dd")" /></pems-form-group>
+                <pems-form-group css="mb-2"><pems-label css="small">@L("Issue Date", "تاریخ صدور")</pems-label><pems-date name="issueDate" scale="small" required value="@PemsDates.Date(DateTime.Today)" /></pems-form-group>
                 <pems-form-group css="mb-2"><pems-label css="small">@L("Expiry Date (optional)", "تاریخ انقضا (اختیاری)")</pems-label><pems-date name="expiryDate" scale="small" /></pems-form-group>
             </pems-modal-body>
             <pems-modal-footer>

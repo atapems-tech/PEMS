@@ -42,7 +42,7 @@
                     <pems-table-cell>@t.Title</pems-table-cell>
                     <pems-table-cell>@t.ProjectName</pems-table-cell>
                     <pems-table-cell>@t.ResponsibleName</pems-table-cell>
-                    <pems-table-cell>@(t.DueDate?.ToString("yyyy-MM-dd"))</pems-table-cell>
+                    <pems-table-cell>@(PemsDates.Date(t.DueDate))</pems-table-cell>
                     <pems-table-cell>
                         <pems-form asp-action="SetTaskStatus" method="post" class="d-inline">
                             <input type="hidden" name="disciplineId" value="@s.DisciplineId" />

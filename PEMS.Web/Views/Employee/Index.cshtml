@@ -247,7 +247,7 @@
                                 </pems-select>
                             </pems-col>
 
-                            <pems-col md="3"><pems-label>@Localizer["Hire Date"]</pems-label><pems-date name="hireDate" value="@(e.HireDate?.ToString("yyyy-MM-dd"))" /></pems-col>
+                            <pems-col md="3"><pems-label>@Localizer["Hire Date"]</pems-label><pems-date name="hireDate" value="@(PemsDates.Date(e.HireDate))" /></pems-col>
                             <pems-col md="3"><pems-label>@Localizer["Location / Site"]</pems-label><pems-input name="location" value="@e.Location" /></pems-col>
                             <pems-col md="3"><pems-label>@Localizer["Shift"]</pems-label><pems-input name="shift" value="@e.Shift" /></pems-col>
                             <pems-col md="3"><pems-label>@Localizer["Home Address"]</pems-label><pems-input name="homeAddress" value="@e.HomeAddress" /></pems-col>

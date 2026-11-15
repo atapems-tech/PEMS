@@ -50,7 +50,7 @@
                 @Localizer["Vendor"]: @Model.Vendor?.Name &middot;
                 @Localizer["Warehouse"]: @Model.Warehouse?.Code &middot;
                 @Localizer["Received By"]: @(Model.ReceivedBy?.FirstName) @(Model.ReceivedBy?.LastName) &middot;
-                @Model.ReceivingDate.ToString("yyyy-MM-dd")
+                @PemsDates.Date(Model.ReceivingDate)
                 @if (Model.PurchaseOrder != null) { <text>&middot; @Localizer["PO"]: @Model.PurchaseOrder.PoNumber</text> }
             </div>
             @if (!string.IsNullOrWhiteSpace(Model.Notes)) { <div class="small mt-1">@Model.Notes</div> }
@@ -172,7 +172,7 @@
                             @(l.HoldQuantity ?? 0)
                             @if (l.HoldResolvedAt != null)
                             {
-                                <div class="small text-muted">@Localizer["Rcv_HoldResolvedBy"] @l.HoldResolvedByUserName, @l.HoldResolvedAt?.ToString("yyyy-MM-dd")</div>
+                                <div class="small text-muted">@Localizer["Rcv_HoldResolvedBy"] @l.HoldResolvedByUserName, @PemsDates.Date(l.HoldResolvedAt)</div>
                             }
                             else if (Model.Status == "Closed" && l.HasOpenHold && canResolveHold)
                             {
@@ -296,7 +296,7 @@
                     <pems-table-row>
                         <pems-table-cell>@d.OverallResult</pems-table-cell>
                         <pems-table-cell class="small">@(d.DispositionedBy != null ? d.DispositionedBy.FirstName + " " + d.DispositionedBy.LastName : "-")</pems-table-cell>
-                        <pems-table-cell class="small">@d.DispositionedDate.ToString("yyyy-MM-dd HH:mm")</pems-table-cell>
+                        <pems-table-cell class="small">@PemsDates.DateTime(d.DispositionedDate)</pems-table-cell>
                         <pems-table-cell class="small">@d.WorkflowOutcome</pems-table-cell>
                         <pems-table-cell class="small text-muted">@(d.Notes ?? "-")</pems-table-cell>
                     </pems-table-row>
@@ -318,7 +318,7 @@
                     <pems-table-cell>@h.FromStatus</pems-table-cell>
                     <pems-table-cell>@h.ToStatus</pems-table-cell>
                     <pems-table-cell class="small">@(h.ChangedBy != null ? h.ChangedBy.FirstName + " " + h.ChangedBy.LastName : "-")</pems-table-cell>
-                    <pems-table-cell class="small">@h.ChangedDate.ToString("yyyy-MM-dd HH:mm")</pems-table-cell>
+                    <pems-table-cell class="small">@PemsDates.DateTime(h.ChangedDate)</pems-table-cell>
                     <pems-table-cell class="small text-muted">@(h.Reason ?? "-")</pems-table-cell>
                 </pems-table-row>
             }

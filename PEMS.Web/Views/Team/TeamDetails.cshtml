@@ -298,8 +298,8 @@
                     <pems-table-row>
                         <pems-table-cell data-label="@Localizer["سمت"]">@row.Position.Title</pems-table-cell>
                         <pems-table-cell data-label="@Localizer["کارمند"]">@row.Assignment.EmployeeName</pems-table-cell>
-                        <pems-table-cell data-label="@Localizer["تاریخ شروع"]">@row.Assignment.StartDate.ToString("yyyy-MM-dd")</pems-table-cell>
-                        <pems-table-cell data-label="@Localizer["تاریخ پایان"]">@(row.Assignment.EndDate?.ToString("yyyy-MM-dd") ?? "—")</pems-table-cell>
+                        <pems-table-cell data-label="@Localizer["تاریخ شروع"]">@PemsDates.Date(row.Assignment.StartDate)</pems-table-cell>
+                        <pems-table-cell data-label="@Localizer["تاریخ پایان"]">@(PemsDates.Date(row.Assignment.EndDate) ?? "—")</pems-table-cell>
                         <pems-table-cell data-label="@Localizer["وضعیت"]">
                             @if (row.Assignment.IsActive)
                             {

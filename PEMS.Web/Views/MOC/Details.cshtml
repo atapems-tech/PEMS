@@ -44,7 +44,7 @@
         }
         @if (Model.ChangeType == "Temporary")
         {
-            <pems-col md="6"><strong>Temporary Expiry:</strong> @(Model.TemporaryExpiryDate?.ToString("yyyy-MM-dd"))</pems-col>
+            <pems-col md="6"><strong>Temporary Expiry:</strong> @(PemsDates.Date(Model.TemporaryExpiryDate))</pems-col>
         }
     </pems-row>
 </pems-content-card>
@@ -74,7 +74,7 @@
             {
                 <pems-flex as="li" justify="between" align="center" css="border-bottom py-1">
                     <pems-link href="@Url.Action("Download", "Files", new { id = a.AttachmentId })" target="_blank"><pems-icon name="bi-file-earmark" /> @a.FileName</pems-link>
-                    <span class="text-muted small">@a.UploadDate.ToString("yyyy-MM-dd")</span>
+                    <span class="text-muted small">@PemsDates.Date(a.UploadDate)</span>
                 </pems-flex>
             }
         </pems-bullet-list>

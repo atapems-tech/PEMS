@@ -17,7 +17,7 @@
         <pems-button tone="neutral" size="small" outline="true" type="button" data-secret-print><pems-icon name="bi-printer" css="me-1" /> @Localizer["Print"]</pems-button>
         <pems-button tone="neutral" size="small" outline="true" type="button" data-secret-download="pems-recovery-codes-@(Model.UserName).txt"><pems-icon name="bi-download" css="me-1" /> @Localizer["Download"]</pems-button>
     </pems-flex>
-    <pems-text class="text-body-secondary small">@Localizer["Generated"]: <span dir="ltr">@Model.GeneratedAtUtc.ToString("yyyy-MM-dd HH:mm") UTC</span></pems-text>
+    <pems-text class="text-body-secondary small">@Localizer["Generated"]: <span dir="ltr">@PemsDates.DateTime(Model.GeneratedAtUtc) UTC</span></pems-text>
 
     <pems-button tone="primary" css="mt-2" as="a" asp-action="Index">@Localizer["Done"]</pems-button>
 </pems-content-card>

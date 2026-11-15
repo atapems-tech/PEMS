@@ -53,8 +53,8 @@
                             <pems-table-cell>@o.PlannedQuantity.ToString("N3") @o.UomCode</pems-table-cell>
                             <pems-table-cell><pems-badge tone="neutral">@o.Status</pems-badge></pems-table-cell>
                             <pems-table-cell>@o.WorkCenterCode</pems-table-cell>
-                            <pems-table-cell class="small">@(o.PlannedStartDate?.ToString("yyyy-MM-dd"))</pems-table-cell>
-                            <pems-table-cell class="small">@(o.PlannedFinishDate?.ToString("yyyy-MM-dd"))</pems-table-cell>
+                            <pems-table-cell class="small">@(PemsDates.Date(o.PlannedStartDate))</pems-table-cell>
+                            <pems-table-cell class="small">@(PemsDates.Date(o.PlannedFinishDate))</pems-table-cell>
                             <pems-table-cell>@o.RunCount</pems-table-cell>
                             <pems-table-cell class="text-end"><pems-button tone="primary" size="small" outline="true" as="a" asp-action="Details" asp-route-id="@o.ProductionOrderId">Open</pems-button></pems-table-cell>
                         </pems-table-row>
