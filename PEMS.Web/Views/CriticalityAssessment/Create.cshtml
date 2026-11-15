@@ -17,7 +17,7 @@
 
 <pems-content-card css="pems-s-cd90f7a7">
     <pems-form asp-action="Create" method="post">
-        <div class="mb-3">
+        <pems-form-group css="mb-3">
             <pems-label css="small">@Localizer["Equipment"]</pems-label>
             @if (preselectedEquipmentId.HasValue)
             {
@@ -29,11 +29,11 @@
                 <pems-input scale="small" type="number" name="equipmentId" required placeholder="@Localizer["Equipment ID"]" />
                 <pems-help-text>از صفحه‌ی جزئیات تجهیز یا Activation Backlog وارد شوید تا از قبل انتخاب شود.</pems-help-text>
             }
-        </div>
-        <div class="mb-3">
+        </pems-form-group>
+        <pems-form-group css="mb-3">
             <pems-label css="small">Rationale (optional)</pems-label>
             <pems-textarea scale="small" name="rationale" rows="2"></pems-textarea>
-        </div>
+        </pems-form-group>
         <pems-button tone="primary" size="small" type="submit">Create Draft</pems-button>
     </pems-form>
 </pems-content-card>

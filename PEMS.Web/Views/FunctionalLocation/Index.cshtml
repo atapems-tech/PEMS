@@ -90,7 +90,7 @@
                     <pems-col span="6"><pems-label css="small">@Localizer["Code"]</pems-label><pems-input scale="small" name="code" placeholder="U100-CW-PUMP" required /></pems-col>
                     <pems-col span="6"><pems-label css="small">@Localizer["Name"]</pems-label><pems-input scale="small" name="name" required /></pems-col>
                 </pems-row>
-                <div class="mb-2">
+                <pems-form-group css="mb-2">
                     <pems-label css="small">@Localizer["Parent"]</pems-label>
                     <pems-select scale="small" name="parentId">
                         <option value="">@Localizer["-- none (root) --"]</option>
@@ -99,13 +99,13 @@
                             <option value="@p.FunctionalLocationId">@p.PathBreadcrumb</option>
                         }
                     </pems-select>
-                </div>
+                </pems-form-group>
                 <pems-row gap="2" css="mb-2">
                     <pems-col span="4"><pems-label css="small">@Localizer["Plant"]</pems-label><pems-input scale="small" name="plant" /></pems-col>
                     <pems-col span="4"><pems-label css="small">@Localizer["Area"]</pems-label><pems-input scale="small" name="area" /></pems-col>
                     <pems-col span="4"><pems-label css="small">@Localizer["Unit"]</pems-label><pems-input scale="small" name="unit" /></pems-col>
                 </pems-row>
-                <div class="mb-2"><pems-label css="small">@Localizer["Description"]</pems-label><pems-textarea scale="small" name="description" rows="2"></pems-textarea></div>
+                <pems-form-group css="mb-2"><pems-label css="small">@Localizer["Description"]</pems-label><pems-textarea scale="small" name="description" rows="2"></pems-textarea></pems-form-group>
             </pems-modal-body>
             <pems-modal-footer>
                 <pems-button tone="neutral" size="small" outline="true" type="button" data-bs-dismiss="modal">@Localizer["Cancel"]</pems-button>
@@ -123,7 +123,7 @@
                     <pems-col span="6"><pems-label css="small">@Localizer["Code"]</pems-label><pems-input scale="small" name="code" id="editFlCode" required /></pems-col>
                     <pems-col span="6"><pems-label css="small">@Localizer["Name"]</pems-label><pems-input scale="small" name="name" id="editFlName" required /></pems-col>
                 </pems-row>
-                <div class="mb-2">
+                <pems-form-group css="mb-2">
                     <pems-label css="small">@Localizer["Parent"]</pems-label>
                     <pems-select scale="small" name="parentId" id="editFlParentId">
                         <option value="">@Localizer["-- none (root) --"]</option>
@@ -132,7 +132,7 @@
                             <option value="@p.FunctionalLocationId">@p.PathBreadcrumb</option>
                         }
                     </pems-select>
-                </div>
+                </pems-form-group>
                 <pems-row gap="2" css="mb-2">
                     <pems-col span="4"><pems-label css="small">@Localizer["Plant"]</pems-label><pems-input scale="small" name="plant" id="editFlPlant" /></pems-col>
                     <pems-col span="4"><pems-label css="small">@Localizer["Area"]</pems-label><pems-input scale="small" name="area" id="editFlArea" /></pems-col>

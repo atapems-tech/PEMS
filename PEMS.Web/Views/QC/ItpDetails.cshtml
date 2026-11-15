@@ -134,22 +134,22 @@
     <input type="hidden" name="itpId" value="@Model.InspectionTestPlanId" />
     <pems-modal-header>Perform Inspection - <span data-fill-text="activity"></span></pems-modal-header>
     <pems-modal-body>
-    <div class="mb-2">
+    <pems-form-group css="mb-2">
     <pems-label css="small">@Localizer["Result"]</pems-label>
     <pems-select scale="small" name="result" required>
     <option value="Acceptable">Acceptable</option>
     <option value="Reject">@Localizer["Reject"]</option>
     <option value="Warning">@Localizer["Warning"]</option>
     </pems-select>
-    </div>
-    <div class="mb-2">
+    </pems-form-group>
+    <pems-form-group css="mb-2">
     <pems-label css="small">@Localizer["Inspector"]</pems-label>
     <pems-input scale="small" name="inspector" />
-    </div>
-    <div class="mb-2">
+    </pems-form-group>
+    <pems-form-group css="mb-2">
     <pems-label css="small">@Localizer["Notes"]</pems-label>
     <pems-textarea scale="small" name="description" rows="2"></pems-textarea>
-    </div>
+    </pems-form-group>
     </pems-modal-body>
     <pems-modal-footer>
     <pems-button tone="neutral" size="small" outline="true" type="button" data-bs-dismiss="modal">@Localizer["Cancel"]</pems-button>

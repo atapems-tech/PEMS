@@ -324,18 +324,18 @@
             <pems-modal-header>@Localizer["افزودن سمت"]</pems-modal-header>
             <pems-modal-body>
                 <input type="hidden" name="teamId" value="@Model.TeamId" />
-                <div class="mb-2">
+                <pems-form-group css="mb-2">
                     <pems-label css="small">@Localizer["عنوان سمت"]</pems-label>
                     <pems-input scale="small" name="title" required placeholder="@Localizer["مثلاً سرگروه، تکنسین ارشد..."]" />
-                </div>
-                <div class="mb-2">
+                </pems-form-group>
+                <pems-form-group css="mb-2">
                     <pems-label css="small">@Localizer["توضیحات (اختیاری)"]</pems-label>
                     <pems-input scale="small" name="description" />
-                </div>
-                <div class="mb-2">
+                </pems-form-group>
+                <pems-form-group css="mb-2">
                     <pems-label css="small">@Localizer["ترتیب نمایش"]</pems-label>
                     <pems-input scale="small" name="sortOrder" type="number" value="0" />
-                </div>
+                </pems-form-group>
             </pems-modal-body>
             <pems-modal-footer>
                 <pems-button tone="neutral" size="small" outline="true" type="button" data-bs-dismiss="modal">@Localizer["انصراف"]</pems-button>
@@ -351,18 +351,18 @@
             <pems-modal-body>
                 <input type="hidden" name="positionId" id="editPositionId" />
                 <input type="hidden" name="returnTeamId" value="@Model.TeamId" />
-                <div class="mb-2">
+                <pems-form-group css="mb-2">
                     <pems-label css="small">@Localizer["عنوان سمت"]</pems-label>
                     <pems-input scale="small" name="title" id="editPositionTitle" required />
-                </div>
-                <div class="mb-2">
+                </pems-form-group>
+                <pems-form-group css="mb-2">
                     <pems-label css="small">@Localizer["توضیحات (اختیاری)"]</pems-label>
                     <pems-input scale="small" name="description" id="editPositionDescription" />
-                </div>
-                <div class="mb-2">
+                </pems-form-group>
+                <pems-form-group css="mb-2">
                     <pems-label css="small">@Localizer["ترتیب نمایش"]</pems-label>
                     <pems-input scale="small" name="sortOrder" id="editPositionSortOrder" type="number" />
-                </div>
+                </pems-form-group>
             </pems-modal-body>
             <pems-modal-footer>
                 <pems-button tone="neutral" size="small" outline="true" type="button" data-bs-dismiss="modal">@Localizer["انصراف"]</pems-button>
@@ -377,7 +377,7 @@
             <pems-modal-body>
                 <input type="hidden" name="maintenanceGroupId" value="@Model.MaintenanceGroupId" />
                 <input type="hidden" name="parentTeamId" value="@Model.TeamId" />
-                <div class="mb-2">
+                <pems-form-group css="mb-2">
                     <pems-label css="small">@Localizer["نوع گره"]</pems-label>
                     <pems-select scale="small" name="nodeKind">
                         <option value="SubTeam">SubTeam</option>
@@ -386,23 +386,23 @@
                         <option value="Team">Team</option>
                     </pems-select>
                     <pems-help-text>@Localizer["نمونه‌های رایج - می‌توانید در کد بعداً هر نام دیگری هم بسازید."]</pems-help-text>
-                </div>
-                <div class="mb-2">
+                </pems-form-group>
+                <pems-form-group css="mb-2">
                     <pems-label css="small">@Localizer["کد"]</pems-label>
                     <pems-input scale="small" name="code" required />
-                </div>
-                <div class="mb-2">
+                </pems-form-group>
+                <pems-form-group css="mb-2">
                     <pems-label css="small">@Localizer["نام"]</pems-label>
                     <pems-input scale="small" name="name" required placeholder="@Localizer["مثلاً Shift A"]" />
-                </div>
-                <div class="mb-2">
+                </pems-form-group>
+                <pems-form-group css="mb-2">
                     <pems-label css="small">@Localizer["سرپرست (اختیاری)"]</pems-label>
                     <pems-input scale="small" css="mb-1 pems-employee-search" type="search" data-target="#childNodeSupervisorSelect" placeholder="@Localizer["جستجوی کارمند..."]" />
                     <pems-select scale="small" name="supervisorEmployeeId" id="childNodeSupervisorSelect" size="1">
                         <option value="">@Localizer["-- ندارد --"]</option>
                         @foreach (var e in allEmployees) { <option value="@e.EmployeeId">@e.FullName</option> }
                     </pems-select>
-                </div>
+                </pems-form-group>
             </pems-modal-body>
             <pems-modal-footer>
                 <pems-button tone="neutral" size="small" outline="true" type="button" data-bs-dismiss="modal">@Localizer["انصراف"]</pems-button>
@@ -417,18 +417,18 @@
             <pems-modal-body>
                 <input type="hidden" name="positionId" id="assignPositionId" />
                 <input type="hidden" name="returnTeamId" value="@Model.TeamId" />
-                <div class="mb-2">
+                <pems-form-group css="mb-2">
                     <pems-label css="small">@Localizer["کارمند"]</pems-label>
                     <pems-input scale="small" css="mb-1 pems-employee-search" type="search" data-target="#assignEmployeeSelect" placeholder="@Localizer["جستجوی کارمند..."]" />
                     <pems-select scale="small" name="employeeId" id="assignEmployeeSelect" required>
                         <option value="">@Localizer["کارمند..."]</option>
                         @foreach (var e in allEmployees) { <option value="@e.EmployeeId">@e.FullName</option> }
                     </pems-select>
-                </div>
-                <div class="mb-2">
+                </pems-form-group>
+                <pems-form-group css="mb-2">
                     <pems-label css="small">@Localizer["توضیحات (اختیاری)"]</pems-label>
                     <pems-input scale="small" name="notes" />
-                </div>
+                </pems-form-group>
             </pems-modal-body>
             <pems-modal-footer>
                 <pems-button tone="neutral" size="small" outline="true" type="button" data-bs-dismiss="modal">@Localizer["انصراف"]</pems-button>
@@ -444,17 +444,17 @@
                 <input type="hidden" name="fromPositionId" id="moveEmployeeFromPositionId" />
                 <input type="hidden" name="returnTeamId" value="@Model.TeamId" />
                 <pems-text class="small text-muted" id="moveEmployeeCurrentOccupant"></pems-text>
-                <div class="mb-2">
+                <pems-form-group css="mb-2">
                     <pems-label css="small">@Localizer["سمت مقصد (خالی)"]</pems-label>
                     <pems-select scale="small" name="toPositionId" required>
                         <option value="">@Localizer["سمت مقصد..."]</option>
                         @foreach (var vp in vacantPositions) { <option value="@vp.PositionId">@vp.Label</option> }
                     </pems-select>
-                </div>
-                <div class="mb-2">
+                </pems-form-group>
+                <pems-form-group css="mb-2">
                     <pems-label css="small">@Localizer["توضیحات (اختیاری)"]</pems-label>
                     <pems-input scale="small" name="notes" />
-                </div>
+                </pems-form-group>
             </pems-modal-body>
             <pems-modal-footer>
                 <pems-button tone="neutral" size="small" outline="true" type="button" data-bs-dismiss="modal">@Localizer["انصراف"]</pems-button>
@@ -469,12 +469,12 @@
             <pems-modal-body>
                 <input type="hidden" name="positionId" id="movePositionPositionId" />
                 <input type="hidden" name="returnTeamId" value="@Model.TeamId" />
-                <div class="mb-2">
+                <pems-form-group css="mb-2">
                     <pems-label css="small">@Localizer["تیم مقصد"]</pems-label>
                     <pems-select scale="small" name="newTeamId" required>
                         @foreach (var t in allTeamNodes) { <option value="@t.TeamId">@t.Name (@t.NodeKind)</option> }
                     </pems-select>
-                </div>
+                </pems-form-group>
             </pems-modal-body>
             <pems-modal-footer>
                 <pems-button tone="neutral" size="small" outline="true" type="button" data-bs-dismiss="modal">@Localizer["انصراف"]</pems-button>

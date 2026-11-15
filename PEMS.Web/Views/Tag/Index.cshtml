@@ -54,17 +54,17 @@
             <input type="hidden" name="returnUrl" value="/Tag" />
             <pems-modal-header title-id="createTagTitle">@Localizer["Tg_New"]</pems-modal-header>
             <pems-modal-body>
-                <div class="mb-2">
+                <pems-form-group css="mb-2">
                     <pems-label css="small" for="tagName">@Localizer["Tg_Name"]</pems-label>
                     <pems-input scale="small" name="name" id="tagName" required />
-                </div>
-                <div class="mb-2">
+                </pems-form-group>
+                <pems-form-group css="mb-2">
                     <pems-label css="small" for="tagColor">@Localizer["Tg_Color"]</pems-label>
                     <pems-select scale="small" name="color" id="tagColor">
                         @foreach (var c in new[] { "secondary", "primary", "success", "danger", "warning", "info", "dark" })
                         { <option value="@c">@c</option> }
                     </pems-select>
-                </div>
+                </pems-form-group>
             </pems-modal-body>
             <pems-modal-footer>
                 <pems-button tone="neutral" size="small" outline="true" type="button" data-bs-dismiss="modal">@Localizer["Cancel"]</pems-button>

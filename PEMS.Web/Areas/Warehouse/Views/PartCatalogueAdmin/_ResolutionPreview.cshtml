@@ -4,13 +4,13 @@
 @inject IStringLocalizer<SharedResource> Localizer
 
 <div class="border rounded p-2">
-    <div class="mb-1">
+    <pems-form-group css="mb-1">
         <strong>@Localizer["Pc_Adm_ResolutionState"]:</strong>
         <span class="vs-pill @(Model.IsUsable ? "vs-pill--success" : Model.State == "NOT_APPLICABLE" ? "vs-pill--neutral" : "vs-pill--danger")">@Model.State</span>
         <span class="text-muted small ms-2">@Localizer["Pc_Adm_Strategy"]: @Model.Strategy</span>
         @if (!string.IsNullOrEmpty(Model.SkipReason)) { <span class="text-muted small ms-2">(@Model.SkipReason)</span> }
         @if (!string.IsNullOrEmpty(Model.Detail)) { <div class="small text-muted">@Model.Detail</div> }
-    </div>
+    </pems-form-group>
 
     <pems-row gap="2">
         <pems-col md="6">

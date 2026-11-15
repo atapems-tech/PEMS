@@ -121,7 +121,7 @@
                         Tag number, manufacturer and model come from the Equipment record itself - pick the
                         equipment this Asset represents the CMMS lifecycle for.
                     </pems-text>
-                    <div class="mb-3">
+                    <pems-form-group css="mb-3">
                         <pems-label>@Localizer["Equipment"]</pems-label>
                         <pems-select name="equipmentId" required>
                             <option value="">@Localizer["-- select equipment --"]</option>
@@ -131,7 +131,7 @@
                             }
                         </pems-select>
                         <pems-help-text>Equipment not listed here already has an Asset, or doesn't exist yet.</pems-help-text>
-                    </div>
+                    </pems-form-group>
 
                     <pems-row gap="3" css="mb-3">
                         <pems-col md="6">
@@ -162,24 +162,24 @@
                         </pems-col>
                     </pems-row>
 
-                    <div class="mb-3">
+                    <pems-form-group css="mb-3">
                         <pems-label>@Localizer["Functional Location (raw text, legacy)"]</pems-label>
                         <pems-input name="functionalLocation" placeholder="Unit-100 / Area-A" />
-                    </div>
+                    </pems-form-group>
 
-                    <div class="mb-3">
+                    <pems-form-group css="mb-3">
                         <pems-label>@Localizer["Status"]</pems-label>
                         <pems-select name="status">
                             <option value="Active" selected>@Localizer["Active"]</option>
                             <option value="Standby">Standby</option>
                             <option value="Retired">Retired</option>
                         </pems-select>
-                    </div>
+                    </pems-form-group>
 
-                    <div class="mb-3">
+                    <pems-form-group css="mb-3">
                         <pems-label>@Localizer["Description"]</pems-label>
                         <pems-textarea name="description" rows="2"></pems-textarea>
-                    </div>
+                    </pems-form-group>
                 </pems-modal-body>
                 <pems-modal-footer>
                     <pems-button tone="neutral" outline="true" type="button" data-bs-dismiss="modal">@Localizer["Cancel"]</pems-button>

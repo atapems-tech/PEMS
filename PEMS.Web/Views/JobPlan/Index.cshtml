@@ -82,11 +82,11 @@
         <pems-form asp-action="Create" method="post">
             <pems-modal-header>@Localizer["Jp_New"]</pems-modal-header>
             <pems-modal-body>
-                <div class="mb-2"><pems-label css="small">@Localizer["Title"]</pems-label><pems-input scale="small" name="title" required /></div>
-                <div class="mb-2"><pems-label css="small">@Localizer["Scope"]</pems-label><pems-textarea scale="small" name="scope" rows="2"></pems-textarea></div>
-                <div class="mb-2"><pems-label css="small">@Localizer["Estimated Duration (hours)"]</pems-label><pems-input scale="small" name="estimatedDurationHours" type="number" step="0.1" /></div>
-                <div class="mb-2"><pems-label css="small">@Localizer["Safety Requirements"]</pems-label><pems-textarea scale="small" name="safetyRequirements" rows="2"></pems-textarea></div>
-                <div class="mb-2">
+                <pems-form-group css="mb-2"><pems-label css="small">@Localizer["Title"]</pems-label><pems-input scale="small" name="title" required /></pems-form-group>
+                <pems-form-group css="mb-2"><pems-label css="small">@Localizer["Scope"]</pems-label><pems-textarea scale="small" name="scope" rows="2"></pems-textarea></pems-form-group>
+                <pems-form-group css="mb-2"><pems-label css="small">@Localizer["Estimated Duration (hours)"]</pems-label><pems-input scale="small" name="estimatedDurationHours" type="number" step="0.1" /></pems-form-group>
+                <pems-form-group css="mb-2"><pems-label css="small">@Localizer["Safety Requirements"]</pems-label><pems-textarea scale="small" name="safetyRequirements" rows="2"></pems-textarea></pems-form-group>
+                <pems-form-group css="mb-2">
                     <pems-label css="small">@Localizer["Equipment Class"]</pems-label>
                     <pems-select scale="small" name="equipmentClassId">
                         <option value="">@Localizer["Not linked..."]</option>
@@ -95,7 +95,7 @@
                             <option value="@ec.EquipmentClassId">@ec.Name (@ec.Code)</option>
                         }
                     </pems-select>
-                </div>
+                </pems-form-group>
                 <pems-check-row>
                     <pems-input kind="check" type="checkbox" name="permitRequired" value="true" id="createPermitRequired" />
                     <label class="form-check-label small" for="createPermitRequired">@Localizer["Permit Required for execution"]</label>

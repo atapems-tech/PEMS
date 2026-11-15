@@ -80,32 +80,32 @@
         <pems-form asp-action="CreateTeam" method="post">
             <pems-modal-header>@Localizer["تیم جدید"]</pems-modal-header>
             <pems-modal-body>
-                <div class="mb-2">
+                <pems-form-group css="mb-2">
                     <pems-label css="small">@Localizer["کد تیم"]</pems-label>
                     <pems-input scale="small" name="code" required placeholder="@Localizer["مثلاً MECH-A"]" />
-                </div>
-                <div class="mb-2">
+                </pems-form-group>
+                <pems-form-group css="mb-2">
                     <pems-label css="small">@Localizer["نام تیم"]</pems-label>
                     <pems-input scale="small" name="name" required placeholder="@Localizer["مثلاً Mechanical Maintenance - Shift A"]" />
-                </div>
-                <div class="mb-2">
+                </pems-form-group>
+                <pems-form-group css="mb-2">
                     <pems-label css="small">@Localizer["گروه تعمیراتی (Maintenance Group)"]</pems-label>
                     <pems-select scale="small" name="maintenanceGroupId" required>
                         @foreach (var g in (IEnumerable<dynamic>)ViewBag.MaintenanceGroups) { <option value="@g.MaintenanceGroupId">@g.Name (@g.DisciplineName)</option> }
                     </pems-select>
                     <pems-help-text>گروه‌های تعمیراتی از <pems-link asp-controller="MaintenanceMasterData" asp-action="Index">@Localizer["Maintenance Master Data"]</pems-link> مدیریت می‌شوند.</pems-help-text>
-                </div>
-                <div class="mb-2">
+                </pems-form-group>
+                <pems-form-group css="mb-2">
                     <pems-label css="small">@Localizer["شیفت (اختیاری)"]</pems-label>
                     <pems-input scale="small" name="shift" />
-                </div>
-                <div class="mb-2">
+                </pems-form-group>
+                <pems-form-group css="mb-2">
                     <pems-label css="small">@Localizer["سرپرست (اختیاری)"]</pems-label>
                     <pems-select scale="small" name="supervisorEmployeeId">
                         <option value="">@Localizer["-- ندارد --"]</option>
                         @foreach (var e in (IEnumerable<dynamic>)ViewBag.Employees) { <option value="@e.EmployeeId">@e.FullName</option> }
                     </pems-select>
-                </div>
+                </pems-form-group>
             </pems-modal-body>
             <pems-modal-footer>
                 <pems-button tone="neutral" size="small" outline="true" type="button" data-bs-dismiss="modal">@Localizer["انصراف"]</pems-button>

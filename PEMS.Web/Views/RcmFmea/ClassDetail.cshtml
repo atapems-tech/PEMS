@@ -402,10 +402,10 @@
                 <input type="hidden" name="equipmentClassId" value="@equipmentClass.EquipmentClassId" />
                 <pems-modal-header>@Localizer["Functional Requirement جدید"]</pems-modal-header>
                 <pems-modal-body>
-                    <div class="mb-2"><pems-label css="small">@Localizer["Code"]</pems-label><pems-input scale="small" name="code" required /></div>
-                    <div class="mb-2"><pems-label css="small">@Localizer["Title"]</pems-label><pems-input scale="small" name="title" required /></div>
-                    <div class="mb-2"><pems-label css="small">@Localizer["Required Function"]</pems-label><pems-input scale="small" name="requiredFunction" /></div>
-                    <div class="mb-2"><pems-label css="small">@Localizer["Description"]</pems-label><pems-textarea scale="small" name="description" rows="2"></pems-textarea></div>
+                    <pems-form-group css="mb-2"><pems-label css="small">@Localizer["Code"]</pems-label><pems-input scale="small" name="code" required /></pems-form-group>
+                    <pems-form-group css="mb-2"><pems-label css="small">@Localizer["Title"]</pems-label><pems-input scale="small" name="title" required /></pems-form-group>
+                    <pems-form-group css="mb-2"><pems-label css="small">@Localizer["Required Function"]</pems-label><pems-input scale="small" name="requiredFunction" /></pems-form-group>
+                    <pems-form-group css="mb-2"><pems-label css="small">@Localizer["Description"]</pems-label><pems-textarea scale="small" name="description" rows="2"></pems-textarea></pems-form-group>
                 </pems-modal-body>
                 <pems-modal-footer>
                     <pems-button tone="neutral" size="small" outline="true" type="button" data-bs-dismiss="modal">@Localizer["Cancel"]</pems-button>
@@ -419,17 +419,17 @@
                 <input type="hidden" name="equipmentClassId" value="@equipmentClass.EquipmentClassId" />
                 <pems-modal-header>@Localizer["Functional Failure جدید"]</pems-modal-header>
                 <pems-modal-body>
-                    <div class="mb-2"><pems-label css="small">Functional Requirement</pems-label>
+                    <pems-form-group css="mb-2"><pems-label css="small">Functional Requirement</pems-label>
                         <pems-select scale="small" name="functionalRequirementId" required>
                             @foreach (var fr in functionalRequirements)
                             {
                                 <option value="@fr.FunctionalRequirementId">@fr.Code — @fr.Title</option>
                             }
                         </pems-select>
-                    </div>
-                    <div class="mb-2"><pems-label css="small">@Localizer["Code"]</pems-label><pems-input scale="small" name="code" required /></div>
-                    <div class="mb-2"><pems-label css="small">@Localizer["Title"]</pems-label><pems-input scale="small" name="title" required /></div>
-                    <div class="mb-2"><pems-label css="small">Failure Definition</pems-label><pems-textarea scale="small" name="failureDefinition" rows="2"></pems-textarea></div>
+                    </pems-form-group>
+                    <pems-form-group css="mb-2"><pems-label css="small">@Localizer["Code"]</pems-label><pems-input scale="small" name="code" required /></pems-form-group>
+                    <pems-form-group css="mb-2"><pems-label css="small">@Localizer["Title"]</pems-label><pems-input scale="small" name="title" required /></pems-form-group>
+                    <pems-form-group css="mb-2"><pems-label css="small">Failure Definition</pems-label><pems-textarea scale="small" name="failureDefinition" rows="2"></pems-textarea></pems-form-group>
                 </pems-modal-body>
                 <pems-modal-footer>
                     <pems-button tone="neutral" size="small" outline="true" type="button" data-bs-dismiss="modal">@Localizer["Cancel"]</pems-button>

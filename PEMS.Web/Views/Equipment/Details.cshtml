@@ -98,7 +98,7 @@
             <input type="hidden" name="equipmentId" value="@eq.EquipmentId" />
             <pems-modal-header>@Localizer["Cm_AssignTitle"]</pems-modal-header>
             <pems-modal-body>
-                <div class="mb-2">
+                <pems-form-group css="mb-2">
                     <pems-label css="small">@Localizer["Functional Location"]</pems-label>
                     <pems-select scale="small" name="functionalLocationId">
                         <option value="">@Localizer["-- not linked --"]</option>
@@ -118,8 +118,8 @@
                         <pems-help-text>Currently: @(currentFl?.PathBreadcrumb ?? NA(eq.FunctionalLocationBreadcrumb))</pems-help-text>
                     }
                     <pems-help-text>Real link, distinct from the raw "@NA(eq.Area)" import value. <pems-link asp-controller="FunctionalLocation" asp-action="Index" target="_blank">@Localizer["Manage list"]</pems-link></pems-help-text>
-                </div>
-                <div class="mb-2">
+                </pems-form-group>
+                <pems-form-group css="mb-2">
                     <pems-label css="small">Parent Equipment</pems-label>
                     <pems-input scale="small" type="text" placeholder="Search tag, name..." data-pems-search data-search-type="Equipment" data-search-hidden="#parentEquipmentIdHidden" autocomplete="off" />
                     <input type="hidden" name="parentEquipmentId" id="parentEquipmentIdHidden" value="@eq.ParentEquipmentId" />
@@ -127,11 +127,11 @@
                     {
                         <pems-help-text>Currently: @eq.ParentEquipmentTagNumber</pems-help-text>
                     }
-                </div>
-                <div class="mb-2">
+                </pems-form-group>
+                <pems-form-group css="mb-2">
                     <pems-label css="small">Installation Date</pems-label>
                     <pems-date name="installationDate" value="@eq.InstallationDate?.ToString("yyyy-MM-dd")" scale="small" />
-                </div>
+                </pems-form-group>
             </pems-modal-body>
             <pems-modal-footer>
                 <pems-button tone="neutral" size="small" outline="true" type="button" data-bs-dismiss="modal">@Localizer["Cancel"]</pems-button>
@@ -633,12 +633,12 @@
                     <input type="hidden" name="equipmentId" value="@eq.EquipmentId" />
                     <pems-modal-header>New Inspection</pems-modal-header>
                     <pems-modal-body>
-                        <div class="mb-2"><pems-label css="small">Inspection Type</pems-label>
-                            <pems-input scale="small" name="inspectionType" placeholder="Vibration, Thickness, Visual..." required /></div>
-                        <div class="mb-2"><pems-label css="small">Inspection Date</pems-label>
-                            <pems-date name="inspectionDate" scale="small" value="@DateTime.Today.ToString("yyyy-MM-dd")" required /></div>
-                        <div class="mb-2"><pems-label css="small">@Localizer["Inspector"]</pems-label>
-                            <pems-input scale="small" name="inspector" /></div>
+                        <pems-form-group css="mb-2"><pems-label css="small">Inspection Type</pems-label>
+                            <pems-input scale="small" name="inspectionType" placeholder="Vibration, Thickness, Visual..." required /></pems-form-group>
+                        <pems-form-group css="mb-2"><pems-label css="small">Inspection Date</pems-label>
+                            <pems-date name="inspectionDate" scale="small" value="@DateTime.Today.ToString("yyyy-MM-dd")" required /></pems-form-group>
+                        <pems-form-group css="mb-2"><pems-label css="small">@Localizer["Inspector"]</pems-label>
+                            <pems-input scale="small" name="inspector" /></pems-form-group>
                         <pems-row gap="2" css="mb-2">
                             <pems-col span="6"><pems-label css="small">Measurement Value</pems-label>
                                 <pems-input scale="small" name="measurementValue" type="number" step="0.01" /></pems-col>
@@ -651,12 +651,12 @@
                             <pems-col span="6"><pems-label css="small">Upper Limit</pems-label>
                                 <pems-input scale="small" name="upperLimit" type="number" step="0.01" /></pems-col>
                         </pems-row>
-                        <div class="mb-2"><pems-label css="small">Next Inspection Date</pems-label>
-                            <pems-date name="nextInspectionDate" scale="small" /></div>
-                        <div class="mb-2"><pems-label css="small">Recommendation</pems-label>
-                            <pems-textarea scale="small" name="recommendation" rows="2"></pems-textarea></div>
-                        <div class="mb-2"><pems-label css="small">@Localizer["Description"]</pems-label>
-                            <pems-textarea scale="small" name="description" rows="2"></pems-textarea></div>
+                        <pems-form-group css="mb-2"><pems-label css="small">Next Inspection Date</pems-label>
+                            <pems-date name="nextInspectionDate" scale="small" /></pems-form-group>
+                        <pems-form-group css="mb-2"><pems-label css="small">Recommendation</pems-label>
+                            <pems-textarea scale="small" name="recommendation" rows="2"></pems-textarea></pems-form-group>
+                        <pems-form-group css="mb-2"><pems-label css="small">@Localizer["Description"]</pems-label>
+                            <pems-textarea scale="small" name="description" rows="2"></pems-textarea></pems-form-group>
                     </pems-modal-body>
                     <pems-modal-footer>
                         <pems-button tone="neutral" size="small" outline="true" type="button" data-bs-dismiss="modal">@Localizer["Cancel"]</pems-button>

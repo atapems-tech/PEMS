@@ -120,22 +120,22 @@
             <input type="hidden" name="materialItemId" value="@Model.MaterialItemId" />
             <pems-modal-header>@Localizer["دریافت کالا به انبار"]</pems-modal-header>
             <pems-modal-body>
-                <div class="mb-2">
+                <pems-form-group css="mb-2">
                     <pems-label css="small">@Localizer["اسکن بارکد انبار (اختیاری)"]</pems-label>
                     <div class="input-group input-group-sm">
                         <span class="input-group-text"><pems-icon name="bi-upc-scan" /></span>
                         <pems-input type="text" id="receiveWarehouseScanInput" dir="ltr" placeholder="Scan Warehouse barcode..." />
                         <pems-button tone="neutral" outline="true" type="button" id="receiveWarehouseScanBtn">@Localizer["Resolve"]</pems-button>
                     </div>
-                </div>
-                <div class="mb-2">
+                </pems-form-group>
+                <pems-form-group css="mb-2">
                     <pems-label css="small">@Localizer["انبار"]</pems-label>
                     <pems-select scale="small" name="warehouseId" id="receiveWarehouseSelect" required>
                         @foreach (var w in warehouses) { <option value="@w.WarehouseId">@w.Code</option> }
                     </pems-select>
-                </div>
-                <div class="mb-2"><pems-label css="small">@Localizer["مقدار"]</pems-label><pems-input scale="small" name="quantity" type="number" step="0.001" required /></div>
-                <div class="mb-2"><pems-label css="small">@Localizer["دلیل / مرجع (اختیاری)"]</pems-label><pems-input scale="small" name="reason" /></div>
+                </pems-form-group>
+                <pems-form-group css="mb-2"><pems-label css="small">@Localizer["مقدار"]</pems-label><pems-input scale="small" name="quantity" type="number" step="0.001" required /></pems-form-group>
+                <pems-form-group css="mb-2"><pems-label css="small">@Localizer["دلیل / مرجع (اختیاری)"]</pems-label><pems-input scale="small" name="reason" /></pems-form-group>
             </pems-modal-body>
             <pems-modal-footer>
                 <pems-button tone="neutral" size="small" outline="true" type="button" data-bs-dismiss="modal">@Localizer["انصراف"]</pems-button>
@@ -150,8 +150,8 @@
             <input type="hidden" name="warehouseId" id="adjustWarehouseId" />
             <pems-modal-header>اصلاح موجودی <span id="adjustWarehouseLabel" class="text-muted small"></span></pems-modal-header>
             <pems-modal-body>
-                <div class="mb-2"><pems-label css="small">@Localizer["موجودی جدید (On Hand)"]</pems-label><pems-input scale="small" name="newOnHandQuantity" id="adjustNewOnHand" type="number" step="0.001" required /></div>
-                <div class="mb-2"><pems-label css="small">@Localizer["دلیل"]</pems-label><pems-input scale="small" name="reason" required /></div>
+                <pems-form-group css="mb-2"><pems-label css="small">@Localizer["موجودی جدید (On Hand)"]</pems-label><pems-input scale="small" name="newOnHandQuantity" id="adjustNewOnHand" type="number" step="0.001" required /></pems-form-group>
+                <pems-form-group css="mb-2"><pems-label css="small">@Localizer["دلیل"]</pems-label><pems-input scale="small" name="reason" required /></pems-form-group>
             </pems-modal-body>
             <pems-modal-footer>
                 <pems-button tone="neutral" size="small" outline="true" type="button" data-bs-dismiss="modal">@Localizer["انصراف"]</pems-button>
@@ -166,14 +166,14 @@
             <input type="hidden" name="fromWarehouseId" id="transferFromWarehouseId" />
             <pems-modal-header>انتقال بین انبارها <span id="transferFromWarehouseLabel" class="text-muted small"></span></pems-modal-header>
             <pems-modal-body>
-                <div class="mb-2">
+                <pems-form-group css="mb-2">
                     <pems-label css="small">@Localizer["انبار مقصد"]</pems-label>
                     <pems-select scale="small" name="toWarehouseId" required>
                         @foreach (var w in warehouses) { <option value="@w.WarehouseId">@w.Code</option> }
                     </pems-select>
-                </div>
-                <div class="mb-2"><pems-label css="small">مقدار (حداکثر: <span id="transferAvailable"></span>)</pems-label><pems-input scale="small" name="quantity" type="number" step="0.001" required /></div>
-                <div class="mb-2"><pems-label css="small">@Localizer["دلیل / مرجع (اختیاری)"]</pems-label><pems-input scale="small" name="reason" /></div>
+                </pems-form-group>
+                <pems-form-group css="mb-2"><pems-label css="small">مقدار (حداکثر: <span id="transferAvailable"></span>)</pems-label><pems-input scale="small" name="quantity" type="number" step="0.001" required /></pems-form-group>
+                <pems-form-group css="mb-2"><pems-label css="small">@Localizer["دلیل / مرجع (اختیاری)"]</pems-label><pems-input scale="small" name="reason" /></pems-form-group>
             </pems-modal-body>
             <pems-modal-footer>
                 <pems-button tone="neutral" size="small" outline="true" type="button" data-bs-dismiss="modal">@Localizer["انصراف"]</pems-button>
@@ -191,8 +191,8 @@
                     <pems-col md="6"><pems-label>@Localizer["Material Code"]</pems-label><pems-input name="materialCode" value="@Model.MaterialCode" required /></pems-col>
                     <pems-col md="6"><pems-label>@Localizer["Material Type"]</pems-label><pems-input name="materialType" value="@Model.MaterialType" /></pems-col>
                 </pems-row>
-                <div class="mb-2"><pems-label>@Localizer["Description"]</pems-label><pems-input name="description" value="@Model.Description" required /></div>
-                <div class="mb-2"><pems-label>@Localizer["Long Description"]</pems-label><pems-textarea name="longDescription" rows="2">@Model.LongDescription</pems-textarea></div>
+                <pems-form-group css="mb-2"><pems-label>@Localizer["Description"]</pems-label><pems-input name="description" value="@Model.Description" required /></pems-form-group>
+                <pems-form-group css="mb-2"><pems-label>@Localizer["Long Description"]</pems-label><pems-textarea name="longDescription" rows="2">@Model.LongDescription</pems-textarea></pems-form-group>
                 <pems-row gap="3" css="mb-2">
                     <pems-col md="4">
                         <pems-label>@Localizer["Category"]</pems-label>

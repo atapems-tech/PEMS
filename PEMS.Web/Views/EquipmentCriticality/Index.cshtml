@@ -98,31 +98,31 @@
         <pems-form asp-action="Assess" method="post">
             <pems-modal-header>@Localizer["تحلیل بحرانی‌بودن تجهیز"]</pems-modal-header>
             <pems-modal-body>
-                <div class="mb-2">
+                <pems-form-group css="mb-2">
                     <pems-label css="small">@Localizer["تجهیز"]</pems-label>
                     <pems-input scale="small" type="text" placeholder="@Localizer["جستجوی تگ، نام..."]" data-pems-search data-search-type="Equipment" data-search-hidden="#criticalityEquipmentIdHidden" autocomplete="off" required />
                     <input type="hidden" name="equipmentId" id="criticalityEquipmentIdHidden" />
-                </div>
-                <div class="mb-2">
+                </pems-form-group>
+                <pems-form-group css="mb-2">
                     <pems-label css="small">@Localizer["کلاس بحرانی‌بودن"]</pems-label>
                     <pems-select scale="small" name="criticalityClass" required>
                         <option value="A">@Localizer["A - بحرانی"]</option>
                         <option value="B">@Localizer["B - مهم"]</option>
                         <option value="C">@Localizer["C - عادی"]</option>
                     </pems-select>
-                </div>
-                <div class="mb-2">
+                </pems-form-group>
+                <pems-form-group css="mb-2">
                     <pems-label css="small">@Localizer["سطح ریسک"]</pems-label>
                     <pems-select scale="small" name="riskLevel">
                         <option value="Low">@Localizer["Low"]</option>
                         <option value="Medium">@Localizer["Medium"]</option>
                         <option value="High">@Localizer["High"]</option>
                     </pems-select>
-                </div>
-                <div class="mb-2"><pems-label css="small">@Localizer["اثر ایمنی"]</pems-label><pems-input scale="small" name="safetyImpact" /></div>
-                <div class="mb-2"><pems-label css="small">@Localizer["اثر تولید"]</pems-label><pems-input scale="small" name="productionImpact" /></div>
-                <div class="mb-2"><pems-label css="small">@Localizer["اثر زیست‌محیطی"]</pems-label><pems-input scale="small" name="environmentImpact" /></div>
-                <div class="mb-2"><pems-label css="small">@Localizer["توضیحات"]</pems-label><pems-textarea scale="small" name="description" rows="2"></pems-textarea></div>
+                </pems-form-group>
+                <pems-form-group css="mb-2"><pems-label css="small">@Localizer["اثر ایمنی"]</pems-label><pems-input scale="small" name="safetyImpact" /></pems-form-group>
+                <pems-form-group css="mb-2"><pems-label css="small">@Localizer["اثر تولید"]</pems-label><pems-input scale="small" name="productionImpact" /></pems-form-group>
+                <pems-form-group css="mb-2"><pems-label css="small">@Localizer["اثر زیست‌محیطی"]</pems-label><pems-input scale="small" name="environmentImpact" /></pems-form-group>
+                <pems-form-group css="mb-2"><pems-label css="small">@Localizer["توضیحات"]</pems-label><pems-textarea scale="small" name="description" rows="2"></pems-textarea></pems-form-group>
             </pems-modal-body>
             <pems-modal-footer>
                 <pems-button tone="neutral" size="small" outline="true" type="button" data-bs-dismiss="modal">@Localizer["انصراف"]</pems-button>
