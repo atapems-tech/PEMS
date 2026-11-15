@@ -26,7 +26,7 @@
         else
         {
             <pems-table-scroll>
-                <pems-data-table data="@(DataRows.Of(Model.Views, c_ => c_.Add(((Localizer["Lc_Name"])?.ToString() ?? ""), v => (object?)(v.UserName)).Add(((Localizer["Lc_FirstViewed"])?.ToString() ?? ""), v => (object?)((v.FirstViewedDate.ToString("yyyy-MM-dd HH:mm")))).Add(((Localizer["Lc_LastViewed"])?.ToString() ?? ""), v => (object?)((v.LastViewedDate.ToString("yyyy-MM-dd HH:mm")))).Add(((Localizer["Lc_ViewCount"])?.ToString() ?? ""), v => (object?)(v.ViewCount))))" dense="true" css="lh-table" />
+                <pems-data-table data="@(DataRows.Of(Model.Views, c_ => c_.Add(((Localizer["Lc_Name"])?.ToString() ?? ""), v => (object?)(v.UserName)).Add(((Localizer["Lc_FirstViewed"])?.ToString() ?? ""), v => (object?)((v.FirstViewedDate.ToString("yyyy-MM-dd HH:mm")))).Add(((Localizer["Lc_LastViewed"])?.ToString() ?? ""), v => (object?)((v.LastViewedDate.ToString("yyyy-MM-dd HH:mm")))).Add(((Localizer["Lc_ViewCount"])?.ToString() ?? ""), v => (object?)(v.ViewCount))))" dense="true" css="lh-table" enterprise="false" />
             </pems-table-scroll>
         }
     </section>
@@ -55,7 +55,7 @@
     <section class="lc-card" aria-labelledby="lhAudit">
         <pems-heading level="3" id="lhAudit"><pems-icon name="bi-shield-check" aria-hidden="true" /> @Localizer["Lc_AuditTrail"]</pems-heading>
         <pems-table-scroll>
-            <pems-data-table data="@(DataRows.Of(Model.Report.Rows, c_ => c_.Add(((Localizer["Lc_When"])?.ToString() ?? ""), r => (object?)((r.Timestamp.ToString("yyyy-MM-dd HH:mm"))), css: "text-nowrap").Add(((Localizer["Lc_Who"])?.ToString() ?? ""), r => (object?)(r.Actor)).Add(((Localizer["Lc_Category"])?.ToString() ?? ""), r => (object?)(r.Category)).Add(((Localizer["Lc_Event"])?.ToString() ?? ""), r => (object?)(r.Event)).Add(((Localizer["Lc_DetailCol"])?.ToString() ?? ""), r => (object?)(r.Detail))))" dense="true" css="lh-table" />
+            <pems-data-table data="@(DataRows.Of(Model.Report.Rows, c_ => c_.Add(((Localizer["Lc_When"])?.ToString() ?? ""), r => (object?)((r.Timestamp.ToString("yyyy-MM-dd HH:mm"))), css: "text-nowrap").Add(((Localizer["Lc_Who"])?.ToString() ?? ""), r => (object?)(r.Actor)).Add(((Localizer["Lc_Category"])?.ToString() ?? ""), r => (object?)(r.Category)).Add(((Localizer["Lc_Event"])?.ToString() ?? ""), r => (object?)(r.Event)).Add(((Localizer["Lc_DetailCol"])?.ToString() ?? ""), r => (object?)(r.Detail))))" dense="true" css="lh-table" enterprise="false" />
         </pems-table-scroll>
     </section>
 </div>

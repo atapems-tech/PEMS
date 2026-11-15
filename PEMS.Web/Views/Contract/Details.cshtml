@@ -146,7 +146,7 @@
                             }
                         </text>);
         }
-        <pems-data-table data="@(DataRows.Of(rows_22, c_ => c_.Add(((Localizer["Discipline"])?.ToString() ?? ""), r => (object?)(r.DisciplineRole)).Add(((Localizer["Reviewer"])?.ToString() ?? ""), r => (object?)((r.Reviewer != null ? r.Reviewer.FirstName + " " + r.Reviewer.LastName : "-"))).Add(((Localizer["Decision"])?.ToString() ?? ""), r => (object?)(DataCell.Badge(r.Decision == "Approved" ? "success" : r.Decision == "Rejected" ? "danger" : "neutral", r.Decision))).Add(((Localizer["Comment"])?.ToString() ?? ""), r => (object?)(r.Comment)).Add(((Localizer["Date"])?.ToString() ?? ""), r => (object?)((r.ReviewDate?.ToString("yyyy-MM-dd")))).Add("", r => (object?)cell_22_5(r))))" dense="true" />
+        <pems-data-table data="@(DataRows.Of(rows_22, c_ => c_.Add(((Localizer["Discipline"])?.ToString() ?? ""), r => (object?)(r.DisciplineRole)).Add(((Localizer["Reviewer"])?.ToString() ?? ""), r => (object?)((r.Reviewer != null ? r.Reviewer.FirstName + " " + r.Reviewer.LastName : "-"))).Add(((Localizer["Decision"])?.ToString() ?? ""), r => (object?)(DataCell.Badge(r.Decision == "Approved" ? "success" : r.Decision == "Rejected" ? "danger" : "neutral", r.Decision))).Add(((Localizer["Comment"])?.ToString() ?? ""), r => (object?)(r.Comment)).Add(((Localizer["Date"])?.ToString() ?? ""), r => (object?)((r.ReviewDate?.ToString("yyyy-MM-dd")))).Add("", r => (object?)cell_22_5(r))))" dense="true" enterprise="false" />
     </pems-content-card>
 }
 
@@ -205,7 +205,7 @@
                             }
                         </text>);
         }
-        <pems-data-table data="@(DataRows.Of(rows_23, c_ => c_.Add("#", r => (object?)(r.RevisionNo)).Add(((Localizer["Type"])?.ToString() ?? ""), r => (object?)(r.ChangeType)).Add(((Localizer["Previous"])?.ToString() ?? ""), r => (object?)((r.PreviousValue?.ToString("N0")))).Add(((Localizer["New"])?.ToString() ?? ""), r => (object?)((r.NewValue?.ToString("N0")))).Add(((Localizer["Reason"])?.ToString() ?? ""), r => (object?)(r.Reason)).Add(((Localizer["Status"])?.ToString() ?? ""), r => (object?)(DataCell.Badge(r.Status == "Approved" ? "success" : "neutral", r.Status))).Add("", r => (object?)cell_23_6(r))))" dense="true" />
+        <pems-data-table data="@(DataRows.Of(rows_23, c_ => c_.Add("#", r => (object?)(r.RevisionNo)).Add(((Localizer["Type"])?.ToString() ?? ""), r => (object?)(r.ChangeType)).Add(((Localizer["Previous"])?.ToString() ?? ""), r => (object?)((r.PreviousValue?.ToString("N0")))).Add(((Localizer["New"])?.ToString() ?? ""), r => (object?)((r.NewValue?.ToString("N0")))).Add(((Localizer["Reason"])?.ToString() ?? ""), r => (object?)(r.Reason)).Add(((Localizer["Status"])?.ToString() ?? ""), r => (object?)(DataCell.Badge(r.Status == "Approved" ? "success" : "neutral", r.Status))).Add("", r => (object?)cell_23_6(r))))" dense="true" enterprise="false" />
     </pems-content-card>
 }
 

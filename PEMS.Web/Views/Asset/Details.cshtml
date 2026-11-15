@@ -71,7 +71,7 @@
             <pems-heading level="6" class="mb-3">Work Orders (@Model.WorkOrders.Count)</pems-heading>
             @if (Model.WorkOrders.Any())
             {
-                <pems-data-table data="@(DataRows.Of(Model.WorkOrders.Take(10), c_ => c_.Add("No.", w => (object?)(DataCell.Link(Url.Action("Details", "WorkOrder", new { id = w.WorkOrderId }), w.WorkOrderNo))).Add(((Localizer["Description"])?.ToString() ?? ""), w => (object?)((w.Description ?? "-")), css: "small").Add(((Localizer["Status"])?.ToString() ?? ""), w => (object?)(DataCell.Badge("neutral", w.Status))).Add(((Localizer["Created"])?.ToString() ?? ""), w => (object?)((w.CreatedDate?.ToString("yyyy-MM-dd") ?? "-")), css: "small")))" dense="true" />
+                <pems-data-table data="@(DataRows.Of(Model.WorkOrders.Take(10), c_ => c_.Add("No.", w => (object?)(DataCell.Link(Url.Action("Details", "WorkOrder", new { id = w.WorkOrderId }), w.WorkOrderNo))).Add(((Localizer["Description"])?.ToString() ?? ""), w => (object?)((w.Description ?? "-")), css: "small").Add(((Localizer["Status"])?.ToString() ?? ""), w => (object?)(DataCell.Badge("neutral", w.Status))).Add(((Localizer["Created"])?.ToString() ?? ""), w => (object?)((w.CreatedDate?.ToString("yyyy-MM-dd") ?? "-")), css: "small")))" dense="true" enterprise="false" />
             }
             else
             {
