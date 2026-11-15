@@ -21,9 +21,9 @@
             <pems-col span="12"><pems-label>@Localizer["Inspection Requirements"]</pems-label><pems-textarea name="inspectionRequirements" rows="2"></pems-textarea></pems-col>
             <pems-col span="12"><pems-label>@Localizer["Contractual Requirements"]</pems-label><pems-textarea name="contractualRequirements" rows="2"></pems-textarea></pems-col>
         </pems-row>
-        <div class="mt-4">
+        <pems-action-bar css="mt-4">
             <pems-button tone="primary" type="submit">@Localizer["Save"]</pems-button>
             <pems-button tone="neutral" outline="true" as="a" asp-action="Index" asp-route-procurementPackageId="@packageId">@Localizer["Cancel"]</pems-button>
-        </div>
+        </pems-action-bar>
     </pems-form>
 </pems-content-card>

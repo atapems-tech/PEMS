@@ -74,9 +74,9 @@
             <pems-col md="5"><pems-label>@Localizer["Failure Effect"]</pems-label><pems-input name="failureEffect" maxlength="500" /></pems-col>
             <pems-col md="2"><pems-label>@Localizer["Downtime Hours"]</pems-label><pems-input name="reportedDowntimeHours" type="number" min="0" step="0.1" /></pems-col>
         </pems-row>
-        <div class="mt-4">
+        <pems-action-bar css="mt-4">
             <pems-button tone="primary" type="submit">Submit Request</pems-button>
             <pems-button tone="neutral" outline="true" as="a" asp-action="Index">@Localizer["Cancel"]</pems-button>
-        </div>
+        </pems-action-bar>
     </pems-form>
 </pems-content-card>

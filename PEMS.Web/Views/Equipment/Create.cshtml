@@ -30,9 +30,9 @@
             <pems-col md="4"><pems-label>@Localizer["Serial Number"]</pems-label><pems-input asp-for="SerialNumber" /></pems-col>
             <pems-col span="12"><pems-label>@Localizer["Description"]</pems-label><pems-textarea asp-for="Description" rows="2"></pems-textarea></pems-col>
         </pems-row>
-        <div class="mt-4">
+        <pems-action-bar css="mt-4">
             <pems-button tone="primary" type="submit">@Localizer["Save"]</pems-button>
             <pems-button tone="neutral" outline="true" as="a" asp-action="Index">@Localizer["Cancel"]</pems-button>
-        </div>
+        </pems-action-bar>
     </pems-form>
 </pems-content-card>

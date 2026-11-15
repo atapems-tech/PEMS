@@ -110,10 +110,10 @@
 
                 <pems-col span="12"><pems-label>@Localizer["Description"]</pems-label><pems-textarea name="Description" rows="2">@i.Description</pems-textarea></pems-col>
             </pems-row>
-            <div class="mt-4">
+            <pems-action-bar css="mt-4">
                 <pems-button tone="primary" type="submit">@Localizer["Rcm_CreatePlan"]</pems-button>
                 <pems-button tone="neutral" outline="true" as="a" asp-action="Index">@Localizer["Cancel"]</pems-button>
-            </div>
+            </pems-action-bar>
         </pems-form>
 
         <script src="~/js/views/maintenanceplan-create.js" asp-append-version="true"></script>
