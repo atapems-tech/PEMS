@@ -35,10 +35,10 @@
     <pems-button tone="danger" size="small" outline="true" as="a" asp-controller="Finding" asp-action="Index" asp-route-equipmentId="@equipmentId"><pems-icon name="bi-flag" /> @Localizer["Findings"]</pems-button>
     <pems-button tone="neutral" size="small" outline="true" as="a" asp-action="Index">@Localizer["← Reliability"]</pems-button>
 </pems-flex>
-<p class="text-muted small">
+<pems-text class="text-muted small">
     طبق «PEMS Phase 9» بند ۱۵: زیرساخت نرم‌افزاری همیشه آماده است - آنچه به داده‌ی واقعی نیاز
     دارد فقط تله‌متری زنده است. هیچ قرائتی هرگز شبیه‌سازی/جعل نمی‌شود.
-</p>
+</pems-text>
 
 <pems-row gap="3" css="mb-3">
     <pems-col md="3">
@@ -160,7 +160,7 @@
                 }
             </pems-table-body>
         </pems-table>
-        @if (!Model.Any()) { <p class="text-muted text-center py-3 mb-0">@Localizer["هیچ نقطه‌ی پایشی برای این تجهیز تعریف نشده."]</p> }
+        @if (!Model.Any()) { <pems-text class="text-muted text-center py-3 mb-0">@Localizer["هیچ نقطه‌ی پایشی برای این تجهیز تعریف نشده."]</pems-text> }
     </pems-content-card>
 
     <pems-row gap="3">

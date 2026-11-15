@@ -6,12 +6,12 @@
     ViewData["Title"] = "Manage Passkeys";
 }
 
-<p class="text-muted small">
+<pems-text class="text-muted small">
     طبق سند PEMS-SEC-PERMIT-AUTH-001: تایید/رد Permit، تایید ایزوله‌سازی، اقدامات SIMOPS، و
     Execution Gate نیازمند Step-up Authentication با Passkey (اثر انگشت/Face ID/PIN دستگاه) هستند.
     بدون حداقل یک Passkey ثبت‌شده، این اقدامات مسدود می‌شوند. PEMS هرگز داده‌ی بیومتریک شما را
     نمی‌بیند یا ذخیره نمی‌کند - فقط دستگاه شما آن را تایید می‌کند.
-</p>
+</pems-text>
 
 <div id="pems-passkey-alert"></div>
 
@@ -34,7 +34,7 @@
 <pems-content-card>
     <pems-heading level="6" class="mb-3">@Localizer["Registered Passkeys"]</pems-heading>
     <pems-data-table data="@(DataRows.Of(Model, c_ => c_.Add(((Localizer["Nickname"])?.ToString() ?? ""), c => (object?)(c.Nickname ?? "-"), css: "small").Add(((Localizer["Registered"])?.ToString() ?? ""), c => (object?)(c.CreatedDate.ToString("yyyy-MM-dd HH:mm")), css: "small").Add(((Localizer["Last Used"])?.ToString() ?? ""), c => (object?)(c.LastUsedDate?.ToString("yyyy-MM-dd HH:mm") ?? "Never"), css: "small")))" dense="true" css="mb-0" />
-    @if (!Model.Any()) { <p class="text-muted text-center py-3 mb-0">@Localizer["هنوز Passkey ای ثبت نشده."]</p> }
+    @if (!Model.Any()) { <pems-text class="text-muted text-center py-3 mb-0">@Localizer["هنوز Passkey ای ثبت نشده."]</pems-text> }
 </pems-content-card>
 
 <pems-script-templates set="manage-passkeys"></pems-script-templates>

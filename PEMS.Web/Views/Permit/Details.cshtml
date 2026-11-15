@@ -118,12 +118,12 @@
 {
     <pems-content-card css="mb-3 border-start border-4 border-warning">
         <pems-heading level="6" class="mb-2"><pems-icon name="bi-exclamation-circle" css="text-warning" /> Action Required</pems-heading>
-        <ul class="list-unstyled mb-0">
+        <pems-bullet-list class="list-unstyled mb-0">
             @foreach (var item in actionItems)
             {
-                <li class="py-1"><pems-link href="@item.Anchor">@item.Text</pems-link></li>
+                <pems-bullet class="py-1"><pems-link href="@item.Anchor">@item.Text</pems-link></pems-bullet>
             }
-        </ul>
+        </pems-bullet-list>
     </pems-content-card>
 }
 
@@ -162,9 +162,9 @@
     {
         <div class="mb-2">
             <pems-badge tone="danger">Not Eligible to Close</pems-badge>
-            <ul class="small text-muted mb-0 mt-1">
-                @foreach (var c in closeElig.Checks.Where(c => !c.Passed)) { <li>@c.Detail</li> }
-            </ul>
+            <pems-bullet-list class="small text-muted mb-0 mt-1">
+                @foreach (var c in closeElig.Checks.Where(c => !c.Passed)) { <pems-bullet>@c.Detail</pems-bullet> }
+            </pems-bullet-list>
         </div>
     }
     <pems-flex wrap="true" gap="2">
@@ -237,7 +237,7 @@
         {
             <pems-alert tone="@(pageError != null ? "danger" : "success")" css="py-2 px-3 small">@(pageError ?? pageMessage)</pems-alert>
         }
-        <ul class="list-unstyled mb-2">
+        <pems-bullet-list class="list-unstyled mb-2">
             @foreach (var c in executionGate.Checks)
             {
                 <pems-flex as="li" align="center" gap="2" css="py-1">
@@ -245,16 +245,16 @@
                     <span class="small"><strong>[@c.Category]</strong> @c.Name — @c.Detail</span>
                 </pems-flex>
             }
-        </ul>
+        </pems-bullet-list>
         @if (executionGate.AdvisoryNotes.Any())
         {
-            <p class="small text-muted mb-2">Advisory (does not block):</p>
-            <ul class="list-unstyled mb-2">
+            <pems-text class="small text-muted mb-2">Advisory (does not block):</pems-text>
+            <pems-bullet-list class="list-unstyled mb-2">
                 @foreach (var a in executionGate.AdvisoryNotes)
                 {
                     <pems-flex as="li" align="center" gap="2" css="py-1"><pems-icon name="bi-info-circle" css="text-warning" /> <span class="small">@a.Name — @a.Detail</span></pems-flex>
                 }
-            </ul>
+            </pems-bullet-list>
         }
         <pems-flex gap="2" wrap="true" css="border-top pt-3">
             <pems-form asp-controller="ExecutionGate" asp-action="StartWork" method="post" class="d-inline">
@@ -320,7 +320,7 @@
                 .Where(h => h.FromStageName != null && h.Decision != null)
                 .ToList();
         }
-        <ul class="list-unstyled mb-3">
+        <pems-bullet-list class="list-unstyled mb-3">
             @foreach (var stageName in stageOrder)
             {
                 var completedEntry = completedStages.FirstOrDefault(h => h.FromStageName == stageName);
@@ -344,7 +344,7 @@
                     }
                 </pems-flex>
             }
-        </ul>
+        </pems-bullet-list>
 
         @if (approvalInstance.Status == "Running" && approvalInstance.PendingStages.Any(p => RoleMatchesMe(p.AssignedToRole)))
         {
@@ -354,13 +354,13 @@
                     @if (approveElig != null && approveElig.Result != "Eligible")
                     {
                         <div class="mb-1"><pems-badge tone="danger">Not Eligible to Approve</pems-badge>
-                            <ul class="small text-muted mb-0 mt-1">@foreach (var c in approveElig.Checks.Where(c => !c.Passed)) { <li>@c.Detail</li> }</ul>
+                            <pems-bullet-list class="small text-muted mb-0 mt-1">@foreach (var c in approveElig.Checks.Where(c => !c.Passed)) { <pems-bullet>@c.Detail</pems-bullet> }</pems-bullet-list>
                         </div>
                     }
                     @if (rejectElig != null && rejectElig.Result != "Eligible")
                     {
                         <div class="mb-1"><pems-badge tone="danger">Not Eligible to Reject</pems-badge>
-                            <ul class="small text-muted mb-0 mt-1">@foreach (var c in rejectElig.Checks.Where(c => !c.Passed)) { <li>@c.Detail</li> }</ul>
+                            <pems-bullet-list class="small text-muted mb-0 mt-1">@foreach (var c in rejectElig.Checks.Where(c => !c.Passed)) { <pems-bullet>@c.Detail</pems-bullet> }</pems-bullet-list>
                         </div>
                     }
                 </div>
@@ -379,7 +379,7 @@
         }
         else if (approvalInstance.Status == "Running")
         {
-            <p class="text-muted small mb-0">شما نقش لازم برای اقدام روی مرحله‌ی جاری این زنجیره را ندارید.</p>
+            <pems-text class="text-muted small mb-0">شما نقش لازم برای اقدام روی مرحله‌ی جاری این زنجیره را ندارید.</pems-text>
         }
 
         @if (approvalHistory != null && approvalHistory.Any())
@@ -427,7 +427,7 @@
     @if (lotoVerifyElig != null && lotoVerifyElig.Result != "Eligible")
     {
         <div class="mb-2"><pems-badge tone="danger">Not Eligible to Verify</pems-badge>
-            <ul class="small text-muted mb-0 mt-1">@foreach (var c in lotoVerifyElig.Checks.Where(c => !c.Passed)) { <li>@c.Detail</li> }</ul>
+            <pems-bullet-list class="small text-muted mb-0 mt-1">@foreach (var c in lotoVerifyElig.Checks.Where(c => !c.Passed)) { <pems-bullet>@c.Detail</pems-bullet> }</pems-bullet-list>
         </div>
     }
 
@@ -488,7 +488,7 @@
             }
         </pems-table-body>
     </pems-related-table>
-    @if (!isolationPoints.Any()) { <p class="text-muted small mb-3">هنوز هیچ نقطه‌ی ایزوله‌سازی‌ای ثبت نشده.</p> }
+    @if (!isolationPoints.Any()) { <pems-text class="text-muted small mb-3">هنوز هیچ نقطه‌ی ایزوله‌سازی‌ای ثبت نشده.</pems-text> }
 
     @if (Model.Status is not ("Closed" or "Cancelled" or "Rejected" or "Revoked"))
     {
@@ -566,7 +566,7 @@
             </pems-related-table>
             @if (g.Status != "Invalidated")
             {
-                @if (!string.IsNullOrWhiteSpace(g.InvalidationReason)) { <p class="small text-muted mb-2">Invalidation reason: @g.InvalidationReason</p> }
+                @if (!string.IsNullOrWhiteSpace(g.InvalidationReason)) { <pems-text class="small text-muted mb-2">Invalidation reason: @g.InvalidationReason</pems-text> }
                 <pems-form asp-controller="GasTest" asp-action="Invalidate" method="post"><pems-flex gap="2" align="center">
                     <input type="hidden" name="id" value="@g.GasTestId" />
                     <input type="hidden" name="permitId" value="@Model.PermitId" />
@@ -576,11 +576,11 @@
             }
             else
             {
-                <p class="small text-muted mb-0">Invalidated: @g.InvalidationReason</p>
+                <pems-text class="small text-muted mb-0">Invalidated: @g.InvalidationReason</pems-text>
             }
         </div>
     }
-    @if (!gasTests.Any()) { <p class="text-muted small mb-3">هنوز هیچ تست گازی ثبت نشده.</p> }
+    @if (!gasTests.Any()) { <pems-text class="text-muted small mb-3">هنوز هیچ تست گازی ثبت نشده.</pems-text> }
 
     @if (Model.Status is not ("Closed" or "Cancelled" or "Rejected" or "Revoked"))
     {
@@ -632,19 +632,19 @@
             @if (simopsConfirmElig != null && simopsConfirmElig.Result != "Eligible")
             {
                 <div class="mb-1"><pems-badge tone="danger">Not Eligible to Confirm</pems-badge>
-                    <ul class="small text-muted mb-0 mt-1">@foreach (var c in simopsConfirmElig.Checks.Where(c => !c.Passed)) { <li>@c.Detail</li> }</ul>
+                    <pems-bullet-list class="small text-muted mb-0 mt-1">@foreach (var c in simopsConfirmElig.Checks.Where(c => !c.Passed)) { <pems-bullet>@c.Detail</pems-bullet> }</pems-bullet-list>
                 </div>
             }
             @if (simopsResolveElig != null && simopsResolveElig.Result != "Eligible")
             {
                 <div class="mb-1"><pems-badge tone="danger">Not Eligible to Resolve</pems-badge>
-                    <ul class="small text-muted mb-0 mt-1">@foreach (var c in simopsResolveElig.Checks.Where(c => !c.Passed)) { <li>@c.Detail</li> }</ul>
+                    <pems-bullet-list class="small text-muted mb-0 mt-1">@foreach (var c in simopsResolveElig.Checks.Where(c => !c.Passed)) { <pems-bullet>@c.Detail</pems-bullet> }</pems-bullet-list>
                 </div>
             }
             @if (simopsAcceptRiskElig != null && simopsAcceptRiskElig.Result != "Eligible")
             {
                 <div class="mb-1"><pems-badge tone="danger">Not Eligible to Accept Risk</pems-badge>
-                    <ul class="small text-muted mb-0 mt-1">@foreach (var c in simopsAcceptRiskElig.Checks.Where(c => !c.Passed)) { <li>@c.Detail</li> }</ul>
+                    <pems-bullet-list class="small text-muted mb-0 mt-1">@foreach (var c in simopsAcceptRiskElig.Checks.Where(c => !c.Passed)) { <pems-bullet>@c.Detail</pems-bullet> }</pems-bullet-list>
                 </div>
             }
         </div>
@@ -713,7 +713,7 @@
 
     @if (simopsCandidates.Any(x => x.ExistingConflictId == null))
     {
-        <p class="small text-muted mb-1">Other active Permits sharing equipment/location:</p>
+        <pems-text class="small text-muted mb-1">Other active Permits sharing equipment/location:</pems-text>
         <pems-related-table>
             <pems-table-head><pems-table-row><pems-table-header>@Localizer["Permit"]</pems-table-header><pems-table-header>@Localizer["Type"]</pems-table-header><pems-table-header>@Localizer["Basis"]</pems-table-header><pems-table-header>Time Overlap</pems-table-header><pems-table-header></pems-table-header></pems-table-row></pems-table-head>
             <pems-table-body>
@@ -738,28 +738,28 @@
     }
     @if (simopsCandidateWorkOrders.Any())
     {
-        <p class="small text-muted mb-1">Work Orders on this Equipment with no linked Permit (verify manually):</p>
-        <ul class="small text-muted mb-0">
+        <pems-text class="small text-muted mb-1">Work Orders on this Equipment with no linked Permit (verify manually):</pems-text>
+        <pems-bullet-list class="small text-muted mb-0">
             @foreach (var wo in simopsCandidateWorkOrders)
             {
-                <li>@wo.WorkOrderNumber (@wo.EquipmentTagNumber) — @wo.StartDate?.ToString("yyyy-MM-dd") to @(wo.CompletionDate?.ToString("yyyy-MM-dd") ?? "ongoing")</li>
+                <pems-bullet>@wo.WorkOrderNumber (@wo.EquipmentTagNumber) — @wo.StartDate?.ToString("yyyy-MM-dd") to @(wo.CompletionDate?.ToString("yyyy-MM-dd") ?? "ongoing")</pems-bullet>
             }
-        </ul>
+        </pems-bullet-list>
     }
     @if (!simopsConflicts.Any() && !simopsCandidates.Any() && !simopsCandidateWorkOrders.Any())
     {
-        <p class="text-muted small mb-0">هیچ تعارض یا هم‌پوشانی احتمالی شناسایی نشد.</p>
+        <pems-text class="text-muted small mb-0">هیچ تعارض یا هم‌پوشانی احتمالی شناسایی نشد.</pems-text>
     }
 
     @if (handoverBacklinks.Any())
     {
-        <p class="small text-muted mt-2 mb-0">
+        <pems-text class="small text-muted mt-2 mb-0">
             @foreach (var b in handoverBacklinks)
             {
                 <span>Included in <pems-link asp-controller="ShiftHandover" asp-action="Details" asp-route-id="@b.ShiftHandoverId">Handover #@b.ShiftHandoverId</pems-link> (@b.Status)</span>
                 <br />
             }
-        </p>
+        </pems-text>
     }
 </pems-content-card>
 
@@ -780,7 +780,7 @@
             }
         </pems-table-body>
     </pems-related-table>
-    @if (!Model.StatusHistory.Any()) { <p class="text-muted text-center py-3 mb-0">@Localizer["هنوز تغییر وضعیتی ثبت نشده."]</p> }
+    @if (!Model.StatusHistory.Any()) { <pems-text class="text-muted text-center py-3 mb-0">@Localizer["هنوز تغییر وضعیتی ثبت نشده."]</pems-text> }
 </pems-content-card>
 
 <script src="~/js/webauthn.js"></script>

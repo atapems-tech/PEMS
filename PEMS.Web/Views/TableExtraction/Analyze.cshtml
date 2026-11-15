@@ -44,7 +44,7 @@
         <pems-stat label="Used OCR">@(Model.UsedOcr ? "Yes" : "No")</pems-stat>
         <pems-stat label="Warnings">@Model.Warnings.Count</pems-stat>
     </pems-stat-grid>
-    <p class="text-muted small mt-2 mb-0">@Model.Summary</p>
+    <pems-text class="text-muted small mt-2 mb-0">@Model.Summary</pems-text>
 </pems-content-card>
 
 @if (Model.Warnings.Any())
@@ -52,12 +52,12 @@
     <pems-content-card css="mb-3">
         <pems-alert tone="warning" css="mb-0">
             <strong>Warnings reported by the model:</strong>
-            <ul class="mb-0">
+            <pems-bullet-list class="mb-0">
                 @foreach (var w in Model.Warnings)
                 {
-                    <li>@w</li>
+                    <pems-bullet>@w</pems-bullet>
                 }
-            </ul>
+            </pems-bullet-list>
         </pems-alert>
     </pems-content-card>
 }
@@ -126,7 +126,7 @@
 
         @if (table == null || !table.Rows.Any())
         {
-            <p class="text-muted text-center py-4">No rows extracted.</p>
+            <pems-text class="text-muted text-center py-4">No rows extracted.</pems-text>
         }
     </pems-table-scroll>
 </pems-content-card>

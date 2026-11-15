@@ -111,7 +111,7 @@ else
                                 <pems-modal-body>
                                     @if (Model.WorkOrderType is "Corrective" or "Emergency")
                                     {
-                                        <p class="text-muted small">برای کار اصلاحی/اضطراری، ثبت این اطلاعات برای تحلیل قابلیت‌اطمینان لازمه (ISO 14224).</p>
+                                        <pems-text class="text-muted small">برای کار اصلاحی/اضطراری، ثبت این اطلاعات برای تحلیل قابلیت‌اطمینان لازمه (ISO 14224).</pems-text>
                                         <div class="mb-2">
                                             <pems-label css="small">حالت خرابی (Failure Mode)</pems-label>
                                             <pems-select scale="small" name="failureModeCode">
@@ -147,7 +147,7 @@ else
                                             <pems-label css="small">Downtime واقعی (ساعت)</pems-label>
                                             <pems-input scale="small" name="downtimeHours" type="number" step="0.1" value="@Model.DowntimeHours" />
                                         </div>
-                                        <hr />
+                                        <pems-divider />
                                     }
                                     <div class="mb-2">
                                         <pems-label css="small">هزینه پیمانکار (Contractor Cost)</pems-label>
@@ -361,7 +361,7 @@ else
         @if (Ctl(WoSection.ResponsibleDiscipline) || Ctl(WoSection.ExecutorAssignment) || Ctl(WoSection.Schedule))
         {
             @* برنامه‌ریزی/تخصیص: داده‌های دامنه‌ی Work Order؛ فقط وقتی ماتریس بخش + مجوز اجازه می‌دهد رندر می‌شود (سمت سرور هم همین اعمال می‌شود) *@
-            <hr class="my-3" />
+            <pems-divider class="my-3" />
             <pems-row gap="2">
                 @if (Ctl(WoSection.ResponsibleDiscipline))
                 {
@@ -456,7 +456,7 @@ else
 {
     <pems-content-card css="mb-3">
         <pems-heading level="6" class="mb-3"><pems-icon name="bi-clock-history" /> @(isLegacy ? Localizer["Status History"] : Localizer["Business Audit"])</pems-heading>
-        <ul class="list-unstyled mb-0">
+        <pems-bullet-list class="list-unstyled mb-0">
             @foreach (var h in statusHistory)
             {
                 <pems-flex as="li" justify="between" css="border-bottom py-2 small">
@@ -469,21 +469,21 @@ else
                     </span>
                 </pems-flex>
             }
-        </ul>
+        </pems-bullet-list>
     </pems-content-card>
 }
 
 <pems-content-card css="mb-3">
     <pems-heading level="6" class="mb-3"><pems-icon name="bi-people" /> @Localizer["بازبینی چند-دیسیپلینه"]</pems-heading>
-    <p class="text-muted small">
+    <pems-text class="text-muted small">
         طبق رویه‌ی استاندارد هماهنگی چند-تخصصی (Multi-Craft Coordination، EN 13460): اگه این
         کار نیاز به تایید/یافته‌ی چند دیسیپلین تعمیراتی داره (مثلاً برق + مکانیک + ابزاردقیق)،
         این‌جا ارجاع بده. تا همه پاسخ ندن، WorkOrder نمی‌تونه Completed بشه.
-    </p>
+    </pems-text>
 
     @if (!hasPendingReview && !Ctl(WoSection.DisciplineReview))
     {
-        <p class="text-muted small mb-2"><pems-icon name="bi-lock" /> @Localizer["Requesting a multi-discipline review is not available at this stage or with your permissions."]</p>
+        <pems-text class="text-muted small mb-2"><pems-icon name="bi-lock" /> @Localizer["Requesting a multi-discipline review is not available at this stage or with your permissions."]</pems-text>
     }
     else if (!hasPendingReview)
     {
@@ -579,22 +579,22 @@ else
 
     @if (findings.Any())
     {
-        <hr class="my-3" />
+        <pems-divider class="my-3" />
         <pems-heading level="6" class="small fw-bold mb-2">@Localizer["یافته‌های ثبت‌شده"]</pems-heading>
-        <ul class="list-unstyled mb-0">
+        <pems-bullet-list class="list-unstyled mb-0">
             @foreach (var f in findings)
             {
-                <li class="border-bottom py-2">
+                <pems-bullet class="border-bottom py-2">
                     <pems-flex justify="between">
                         <span class="fw-bold small">@f.Discipline?.Name</span>
                         <pems-badge tone="@(f.Decision == "Approve" ? "success" : f.Decision == "Comment" ? "warning" : "danger")">@f.Decision</pems-badge>
                     </pems-flex>
-                    @if (!string.IsNullOrWhiteSpace(f.Findings)) { <p class="small mb-0">@f.Findings</p> }
-                    @if (!string.IsNullOrWhiteSpace(f.FailureModeCode)) { <p class="small text-muted mb-0">@f.FailureModeCode / @f.FailureCauseCode</p> }
+                    @if (!string.IsNullOrWhiteSpace(f.Findings)) { <pems-text class="small mb-0">@f.Findings</pems-text> }
+                    @if (!string.IsNullOrWhiteSpace(f.FailureModeCode)) { <pems-text class="small text-muted mb-0">@f.FailureModeCode / @f.FailureCauseCode</pems-text> }
                     <span class="text-muted small">@f.RespondedDate.ToString("yyyy-MM-dd HH:mm")</span>
-                </li>
+                </pems-bullet>
             }
-        </ul>
+        </pems-bullet-list>
     }
 </pems-content-card>
 
@@ -610,7 +610,7 @@ else
 {
     <pems-content-card css="mb-3 border-warning">
         <pems-heading level="6" class="mb-2"><pems-icon name="bi-unlock" /> @Localizer["Reopen Work Order"]</pems-heading>
-        <p class="text-muted small mb-2">@Localizer["A formal reopen requires a reason and is audited; the Work Order returns to the verification stage."]</p>
+        <pems-text class="text-muted small mb-2">@Localizer["A formal reopen requires a reason and is audited; the Work Order returns to the verification stage."]</pems-text>
         <pems-form asp-action="ReopenWorkOrder" method="post"><pems-row gap="2">
             <input type="hidden" name="id" value="@Model.WorkOrderId" />
             <pems-col md="9"><pems-input scale="small" name="reason" maxlength="500" required placeholder="@Localizer["Reason for reopening (required)"]" /></pems-col>
@@ -634,11 +634,11 @@ else
             <pems-link asp-controller="Employee" asp-action="Details" asp-route-id="@rateEmployeeId" class="alert-link">@Localizer["Go to rate setup"]</pems-link>
         </pems-alert>
     }
-    <p class="text-muted small">
+    <pems-text class="text-muted small">
         <strong>Assigned Employee</strong> فقط نشون می‌ده مسئول اجرای این WorkOrder کیه؛ اینجا
         ثبت واقعی می‌شه که کدوم کارمندها، چند ساعت، با چه نرخی واقعاً کار کردن. نرخ موقع ثبت
         Snapshot می‌شه - تغییر نرخ آینده هزینه‌ی این رکورد رو تغییر نمی‌ده.
-    </p>
+    </pems-text>
 
     <pems-table-scroll css="pems-s-7bf38d03">
         <pems-related-table>
@@ -660,7 +660,7 @@ else
             </pems-table-body>
         </pems-related-table>
     </pems-table-scroll>
-    @if (!laborEntries.Any()) { <p class="text-muted small">@Localizer["ساعت‌کاری هنوز ثبت نشده."]</p> }
+    @if (!laborEntries.Any()) { <pems-text class="text-muted small">@Localizer["ساعت‌کاری هنوز ثبت نشده."]</pems-text> }
 
     @if (Ctl(WoSection.Labor))
     {
@@ -690,10 +690,10 @@ else
     }
     else
     {
-        <p class="text-muted small mb-0"><pems-icon name="bi-lock" /> @Localizer["This section is read-only at the current stage or with your permissions."]</p>
+        <pems-text class="text-muted small mb-0"><pems-icon name="bi-lock" /> @Localizer["This section is read-only at the current stage or with your permissions."]</pems-text>
     }
 
-    <hr class="my-3" />
+    <pems-divider class="my-3" />
     <pems-row gap="2" css="text-center">
         <pems-col span="4"><div class="fw-bold">@totalLaborCost.ToString("N0")</div><div class="text-muted small">@Localizer["Labor Cost"]</div></pems-col>
         <pems-col span="4"><div class="fw-bold">@spareCost.ToString("N0")</div><div class="text-muted small">@Localizer["Spare Cost"]</div></pems-col>
@@ -744,11 +744,11 @@ else
         </pems-table-body>
     </pems-related-table>
     </pems-table-scroll>
-    @if (!sparesUsed.Any()) { <p class="text-muted small">@Localizer["No spare parts recorded yet."]</p> }
+    @if (!sparesUsed.Any()) { <pems-text class="text-muted small">@Localizer["No spare parts recorded yet."]</pems-text> }
 
     @if (!Ctl(WoSection.SpareParts))
     {
-        <p class="text-muted small mb-0"><pems-icon name="bi-lock" /> @Localizer["This section is read-only at the current stage or with your permissions."]</p>
+        <pems-text class="text-muted small mb-0"><pems-icon name="bi-lock" /> @Localizer["This section is read-only at the current stage or with your permissions."]</pems-text>
     }
     else if (!hasMaterialItems)
     {
@@ -829,10 +829,10 @@ else
     <pems-heading level="6" class="mb-3"><pems-icon name="bi-mortarboard" /> @Localizer["Required Skills"]</pems-heading>
     @if (totalPlannedHours > 0 || totalActualHours > 0)
     {
-        <p class="small text-muted mb-2">
+        <pems-text class="small text-muted mb-2">
             <pems-icon name="bi-hourglass-split" /> Planned: <strong>@totalPlannedHours h</strong>
             &middot; Actual: <strong>@totalActualHours h</strong>
-        </p>
+        </pems-text>
     }
     <pems-flex wrap="true" gap="2" css="mb-3">
         @foreach (var rs in requiredSkills)
@@ -851,7 +851,7 @@ else
             </pems-badge>
         }
     </pems-flex>
-    @if (!requiredSkills.Any()) { <p class="text-muted small">@Localizer["مهارت موردنیازی ثبت نشده."]</p> }
+    @if (!requiredSkills.Any()) { <pems-text class="text-muted small">@Localizer["مهارت موردنیازی ثبت نشده."]</pems-text> }
 
     @if (Ctl(WoSection.RequiredSkills))
     {
@@ -877,7 +877,7 @@ else
     }
     else
     {
-        <p class="text-muted small mb-0"><pems-icon name="bi-lock" /> @Localizer["This section is read-only at the current stage or with your permissions."]</p>
+        <pems-text class="text-muted small mb-0"><pems-icon name="bi-lock" /> @Localizer["This section is read-only at the current stage or with your permissions."]</pems-text>
     }
 </pems-content-card>
 
@@ -942,7 +942,7 @@ else
             }
         </pems-table-body>
     </pems-related-table>
-    @if (!requiredMaterials.Any()) { <p class="text-muted small">@Localizer["متریال موردنیازی ثبت نشده."]</p> }
+    @if (!requiredMaterials.Any()) { <pems-text class="text-muted small">@Localizer["متریال موردنیازی ثبت نشده."]</pems-text> }
 
     @* SCRUM-472: warehouse intake of the stock lines *@
     @if (intake != null && intake.Lines.Count > 0)
@@ -977,7 +977,7 @@ else
 
     @if (!Ctl(WoSection.RequiredMaterials))
     {
-        <p class="text-muted small mb-0"><pems-icon name="bi-lock" /> @Localizer["This section is read-only at the current stage or with your permissions."]</p>
+        <pems-text class="text-muted small mb-0"><pems-icon name="bi-lock" /> @Localizer["This section is read-only at the current stage or with your permissions."]</pems-text>
     }
     else if (!hasMaterialItems)
     {
@@ -1022,7 +1022,7 @@ else
     }
     else if (!Ctl(WoSection.Crew))
     {
-        <p class="text-muted small mb-0"><pems-icon name="bi-lock" /> @Localizer["Creating a crew is not available at the current stage or with your permissions."]</p>
+        <pems-text class="text-muted small mb-0"><pems-icon name="bi-lock" /> @Localizer["Creating a crew is not available at the current stage or with your permissions."]</pems-text>
     }
     else
     {

@@ -49,7 +49,7 @@
         <pems-stat label="@Localizer["Invalid"]">@Model.Batch.InvalidCount</pems-stat>
         <pems-stat label="@Localizer["Approved"]">@Model.Batch.ApprovedCount</pems-stat>
     </pems-stat-grid>
-    <p class="text-muted small mt-2 mb-0">@string.Format(Localizer["Mrs_ReviewHelp"].Value, Model.Rows.TotalCount)</p>
+    <pems-text class="text-muted small mt-2 mb-0">@string.Format(Localizer["Mrs_ReviewHelp"].Value, Model.Rows.TotalCount)</pems-text>
 </pems-content-card>
 
 <pems-form id="bulkCommitForm" asp-action="BulkCommit" method="post">
@@ -206,7 +206,7 @@
                 }
             </pems-table-body>
         </pems-table>
-        @if (!rows.Any()) { <p class="text-muted text-center py-4">@Localizer["No rows in this batch."]</p> }
+        @if (!rows.Any()) { <pems-text class="text-muted text-center py-4">@Localizer["No rows in this batch."]</pems-text> }
     </pems-table-scroll>
 
     @{

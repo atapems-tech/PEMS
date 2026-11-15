@@ -74,15 +74,15 @@
     {
         <pems-content-card css="mb-3">
             <pems-heading level="6" class="mb-2">@Localizer["Validation"]: <span class="text-danger">@validation.Count(v => v.Severity == "Error") @Localizer["errors"]</span>, <span class="text-warning">@validation.Count(v => v.Severity == "Warning") @Localizer["warnings"]</span></pems-heading>
-            <ul class="list-unstyled small mb-0">
+            <pems-bullet-list class="list-unstyled small mb-0">
                 @foreach (var v in validation)
                 {
-                    <li class="mb-1"><pems-badge tone="none" css="@(v.Severity == "Error" ? "bg-danger" : "bg-warning text-dark")">@v.Severity</pems-badge> <code>@v.Code</code> @v.Message
+                    <pems-bullet class="mb-1"><pems-badge tone="none" css="@(v.Severity == "Error" ? "bg-danger" : "bg-warning text-dark")">@v.Severity</pems-badge> <code>@v.Code</code> @v.Message
                         @if (v.StageId.HasValue) { <pems-link asp-action="Designer" asp-route-versionId="@Model.VersionId" asp-route-stage="@v.StageId">@Localizer["Stage"]: @SName(v.StageId)</pems-link> }
                         @if (v.TransitionId.HasValue) { <pems-link asp-action="Designer" asp-route-versionId="@Model.VersionId" asp-route-transition="@v.TransitionId">@Localizer["Transition"] #@v.TransitionId</pems-link> }
-                    </li>
+                    </pems-bullet>
                 }
-            </ul>
+            </pems-bullet-list>
         </pems-content-card>
     }
 
@@ -122,7 +122,7 @@
                         }
                     </svg>
                 </div>
-                @if (g.Nodes.Count == 0) { <p class="small text-muted mt-2 mb-0">@Localizer["This version has no stages yet."]</p> }
+                @if (g.Nodes.Count == 0) { <pems-text class="small text-muted mt-2 mb-0">@Localizer["This version has no stages yet."]</pems-text> }
             </pems-content-card>
 
             <pems-content-card css="mt-3">
@@ -222,14 +222,14 @@
             else
             {
                 <pems-content-card>
-                    <p class="small text-muted mb-0"><pems-icon name="bi-cursor" /> @Localizer["Select a stage or a transition in the graph or the tables to inspect or edit it."]</p>
+                    <pems-text class="small text-muted mb-0"><pems-icon name="bi-cursor" /> @Localizer["Select a stage or a transition in the graph or the tables to inspect or edit it."]</pems-text>
                 </pems-content-card>
             }
             <pems-content-card css="mt-3">
                 <pems-heading level="6">@Localizer["Recent changes"]</pems-heading>
-                <ul class="list-unstyled small mb-0 pems-s-80c1414f">
-                    @foreach (var a in Model.Audit) { <li class="mb-1"><span class="text-muted">@a.Timestamp.ToString("MM-dd HH:mm")</span> · @a.Action · @a.Actor @if (!string.IsNullOrEmpty(a.Details)) { <span class="text-muted">· @a.Details</span> }</li> }
-                </ul>
+                <pems-bullet-list class="list-unstyled small mb-0 pems-s-80c1414f">
+                    @foreach (var a in Model.Audit) { <pems-bullet class="mb-1"><span class="text-muted">@a.Timestamp.ToString("MM-dd HH:mm")</span> · @a.Action · @a.Actor @if (!string.IsNullOrEmpty(a.Details)) { <span class="text-muted">· @a.Details</span> }</pems-bullet> }
+                </pems-bullet-list>
             </pems-content-card>
         </pems-col>
     </pems-row>

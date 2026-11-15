@@ -28,7 +28,7 @@
             @{
                 var itps = (IEnumerable<PEMS.Domain.Entities.InspectionTestPlan>)ViewBag.RecentITPs;
             }
-            <ul class="list-unstyled mb-0">
+            <pems-bullet-list class="list-unstyled mb-0">
                 @foreach (var i in itps)
                 {
                     <pems-flex as="li" justify="between" css="border-bottom py-1">
@@ -36,7 +36,7 @@
                         <pems-badge tone="none" css="@(i.Status == "Active" ? "bg-success" : i.Status == "Draft" ? "bg-secondary" : "bg-info")">@i.Status</pems-badge>
                     </pems-flex>
                 }
-            </ul>
+            </pems-bullet-list>
         </pems-content-card>
     </pems-col>
 
@@ -49,7 +49,7 @@
             @{
                 var ncrs = (IEnumerable<PEMS.Domain.Entities.NonConformanceReport>)ViewBag.RecentNCRs;
             }
-            <ul class="list-unstyled mb-0">
+            <pems-bullet-list class="list-unstyled mb-0">
                 @foreach (var n in ncrs)
                 {
                     <pems-flex as="li" justify="between" css="border-bottom py-1">
@@ -57,7 +57,7 @@
                         <pems-badge tone="@(n.Status == "Closed" ? "success" : n.Severity == "Critical" ? "danger" : "warning")">@n.Status</pems-badge>
                     </pems-flex>
                 }
-            </ul>
+            </pems-bullet-list>
         </pems-content-card>
     </pems-col>
 </pems-row>

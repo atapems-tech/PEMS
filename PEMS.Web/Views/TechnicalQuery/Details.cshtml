@@ -51,8 +51,8 @@
 {
     <pems-content-card css="mb-3 border-info">
         <pems-heading level="6" class="mb-2"><pems-icon name="bi-reply" /> @Localizer["Response"]</pems-heading>
-        <p class="mb-1">@Model.ResponseText</p>
-        <p class="text-muted small mb-0">@(Model.RespondedDate?.ToString("yyyy-MM-dd HH:mm"))</p>
+        <pems-text class="mb-1">@Model.ResponseText</pems-text>
+        <pems-text class="text-muted small mb-0">@(Model.RespondedDate?.ToString("yyyy-MM-dd HH:mm"))</pems-text>
     </pems-content-card>
 }
 
@@ -60,7 +60,7 @@
     <pems-heading level="6" class="mb-3"><pems-icon name="bi-paperclip" /> Attachments <pems-badge tone="neutral">@Model.Attachments.Count</pems-badge></pems-heading>
     @if (Model.Attachments.Any())
     {
-        <ul class="list-unstyled mb-3">
+        <pems-bullet-list class="list-unstyled mb-3">
             @foreach (var a in Model.Attachments.Where(x => x.IsActive))
             {
                 <pems-flex as="li" justify="between" align="center" css="border-bottom py-1">
@@ -68,7 +68,7 @@
                     <span class="text-muted small">@a.UploadDate.ToString("yyyy-MM-dd")</span>
                 </pems-flex>
             }
-        </ul>
+        </pems-bullet-list>
     }
     <pems-form asp-action="UploadAttachment" method="post" enctype="multipart/form-data"><pems-flex gap="2">
         <input type="hidden" name="technicalQueryId" value="@Model.TechnicalQueryId" />
@@ -82,11 +82,11 @@
 
     @if (!workflowRunning)
     {
-        <p class="text-muted small mb-0">این مورد گردش‌کار فعالی ندارد (بسته شده یا هنوز شروع نشده).</p>
+        <pems-text class="text-muted small mb-0">این مورد گردش‌کار فعالی ندارد (بسته شده یا هنوز شروع نشده).</pems-text>
     }
     else if (currentStageName == "PendingResponse")
     {
-        <p class="text-muted small">در انتظار پاسخ دیسیپلین <strong>@Model.Discipline?.Name</strong></p>
+        <pems-text class="text-muted small">در انتظار پاسخ دیسیپلین <strong>@Model.Discipline?.Name</strong></pems-text>
         @if (myDisciplineId == Model.DisciplineId)
         {
             <pems-form asp-action="Respond" method="post">
@@ -98,7 +98,7 @@
     }
     else if (currentStageName == "PendingConfirmation")
     {
-        <p class="text-muted small">پاسخ ثبت شده - در انتظار تایید ثبت‌کننده.</p>
+        <pems-text class="text-muted small">پاسخ ثبت شده - در انتظار تایید ثبت‌کننده.</pems-text>
         <pems-flex gap="2">
             <pems-form asp-action="Confirm" method="post">
                 <input type="hidden" name="technicalQueryId" value="@Model.TechnicalQueryId" />

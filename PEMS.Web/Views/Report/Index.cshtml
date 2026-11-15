@@ -75,7 +75,7 @@
     <pems-col lg="6">
         <pems-content-card css="mb-3">
             <pems-heading level="6" class="mb-3">Top Tags</pems-heading>
-            <ul class="list-unstyled mb-0">
+            <pems-bullet-list class="list-unstyled mb-0">
                 @foreach (var t in Model.TopTags)
                 {
                     <pems-flex as="li" justify="between" css="border-bottom py-1">
@@ -83,8 +83,8 @@
                         <span class="text-muted small">@t.Count</span>
                     </pems-flex>
                 }
-            </ul>
-            @if (!Model.TopTags.Any()) { <p class="text-muted small">No tags used yet.</p> }
+            </pems-bullet-list>
+            @if (!Model.TopTags.Any()) { <pems-text class="text-muted small">No tags used yet.</pems-text> }
         </pems-content-card>
     </pems-col>
 </pems-row>
@@ -94,7 +94,7 @@
     <pems-table-scroll css="table-scroll-area pems-s-8da1c6e6">
     <pems-data-table data="@(DataRows.Of(Model.TopSenders, c_ => c_.Add("Sender", s => (object?)(s.Sender)).Add(((Localizer["Count"])?.ToString() ?? ""), s => (object?)(s.Count))))" />
     </pems-table-scroll>
-    @if (!Model.TopSenders.Any()) { <p class="text-muted text-center py-3">@Localizer["No data."]</p> }
+    @if (!Model.TopSenders.Any()) { <pems-text class="text-muted text-center py-3">@Localizer["No data."]</pems-text> }
 </pems-content-card>
 
 @section Styles {

@@ -35,7 +35,7 @@
         }
     </pems-info-grid>
 
-    <hr />
+    <pems-divider />
     <pems-flex gap="2" wrap="true">
         @if (Model.Status == "Draft")
         {
@@ -108,11 +108,11 @@
         }
         else if (mayEditTender && !statusAllowsSend)
         {
-            <p class="lp-rel-empty">@Localizer["Tinv_StatusHint"]</p>
+            <pems-text class="lp-rel-empty">@Localizer["Tinv_StatusHint"]</pems-text>
         }
         else if (canSend)
         {
-            <p class="lp-rel-empty">@Localizer["Tinv_Hint"]</p>
+            <pems-text class="lp-rel-empty">@Localizer["Tinv_Hint"]</pems-text>
         }
 
         @if (invitationLog.Count > 0)
@@ -259,7 +259,7 @@
                 <div><pems-badge tone="neutral">@c.Type</pems-badge> <strong>@c.Subject</strong> @(c.Vendor != null ? "— " + c.Vendor.Name : "")</div>
                 <pems-badge tone="@(c.ActionStatus == "Answered" ? "success" : "warning")">@c.ActionStatus</pems-badge>
             </pems-flex>
-            <p class="mb-1 mt-1">@c.Body</p>
+            <pems-text class="mb-1 mt-1">@c.Body</pems-text>
             @foreach (var r in c.Responses.OrderBy(r => r.ResponseDate))
             {
                 <div class="ps-3 border-start mt-1">

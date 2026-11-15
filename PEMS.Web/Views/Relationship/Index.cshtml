@@ -5,10 +5,10 @@
 
 <pems-content-card css="mb-3">
     <pems-flex justify="between" align="start" wrap="true" gap="2">
-        <p class="text-muted mb-0">
+        <pems-text class="text-muted mb-0">
             از یک شماره تگ تجهیز (مثل P-101 یا 80-P-6005)، شماره مدرک، یا نام Vendor شروع کنید تا کل زنجیره‌ی
             روابط مهندسی مرتبط (مدارک، P&amp;ID، Vendor، قرارداد، PO، MR/MRQ، نگهداری و تعمیرات) نمایش داده شود.
-        </p>
+        </pems-text>
         <pems-flex gap="2">
             <pems-button tone="warning" size="small" outline="true" css="text-nowrap" as="a" asp-action="BulkSuggestions">
                 <pems-icon name="bi-check2-all" /> @Localizer["تایید دسته‌جمعی اتصال‌ها"]
@@ -27,7 +27,7 @@
 @if (TempData["Error"] != null)
 {
     <pems-content-card css="mb-3 border-danger">
-        <p class="text-danger mb-2"><pems-icon name="bi-exclamation-triangle" /> @TempData["Error"]</p>
+        <pems-text class="text-danger mb-2"><pems-icon name="bi-exclamation-triangle" /> @TempData["Error"]</pems-text>
         @if (TempData["ConflictEquipmentId"] != null)
         {
             <pems-form asp-action="ConfirmSuggestedLink" method="post" class="d-inline">
@@ -47,7 +47,7 @@
 {
     @if (!string.IsNullOrEmpty((string?)ViewBag.Query))
     {
-        <pems-content-card><p class="text-muted text-center py-4">No equipment, document, or vendor matched "@ViewBag.Query".</p></pems-content-card>
+        <pems-content-card><pems-text class="text-muted text-center py-4">No equipment, document, or vendor matched "@ViewBag.Query".</pems-text></pems-content-card>
     }
 }
 else
@@ -83,11 +83,11 @@ else
     {
         <pems-content-card css="mb-3 border-warning">
             <pems-heading level="6" class="mb-3"><pems-icon name="bi-lightbulb" /> پیشنهادهای اتصال (تاییدنشده)</pems-heading>
-            <p class="text-muted small">
+            <pems-text class="text-muted small">
                 این‌ها از روی شماره‌ی MRQ/PO خام ثبت‌شده روی تجهیز، با داده‌ی <strong>@Localizer["موجود"]</strong>
                 (نه ساخته‌شده) منطبق شده‌اند. تا تایید نکنی، هیچ رابطه‌ی رسمی برقرار نمی‌شه.
-            </p>
-            <ul class="list-unstyled mb-0">
+            </pems-text>
+            <pems-bullet-list class="list-unstyled mb-0">
                 @foreach (var suggestion in Model.SuggestedLinks)
                 {
                     <pems-flex as="li" justify="between" align="center" css="border-bottom py-2">
@@ -104,7 +104,7 @@ else
                         </pems-form>
                     </pems-flex>
                 }
-            </ul>
+            </pems-bullet-list>
         </pems-content-card>
     }
 
@@ -140,7 +140,7 @@ else
                     <pems-heading level="6" class="mb-3"><pems-icon css="@s.Icon" /> @s.Title <pems-badge tone="neutral">@s.Items.Count</pems-badge></pems-heading>
                     @if (s.Items.Any())
                     {
-                        <ul class="list-unstyled mb-0">
+                        <pems-bullet-list class="list-unstyled mb-0">
                             @foreach (var item in s.Items)
                             {
                                 <pems-flex as="li" justify="between" align="start" css="mb-1 border-bottom pb-1">
@@ -191,11 +191,11 @@ else
                                     </span>
                                 </pems-flex>
                             }
-                        </ul>
+                        </pems-bullet-list>
                     }
                     else
                     {
-                        <p class="text-muted small mb-0">@Localizer["None found."]</p>
+                        <pems-text class="text-muted small mb-0">@Localizer["None found."]</pems-text>
                     }
                 </pems-content-card>
             </pems-col>

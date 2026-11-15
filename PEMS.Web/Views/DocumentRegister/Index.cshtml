@@ -85,16 +85,16 @@
                 </pems-list-filters>
 
                 <pems-list-menu id="drViewsBtn" icon="bi-bookmark" label="@Localizer["Dr_Views"]">
-                    <li><pems-heading level="6" class="dropdown-header">@Localizer["Dr_QuickFilters"]</pems-heading></li>
-                    <li><pems-link class="dropdown-item" href="@Url.Action("Index", new { status = "Approved" })">@StatusText("Approved")</pems-link></li>
-                    <li><pems-link class="dropdown-item" href="@Url.Action("Index", new { status = "Submitted" })">@Localizer["Dr_PendingReview"]</pems-link></li>
+                    <pems-bullet><pems-heading level="6" class="dropdown-header">@Localizer["Dr_QuickFilters"]</pems-heading></pems-bullet>
+                    <pems-bullet><pems-link class="dropdown-item" href="@Url.Action("Index", new { status = "Approved" })">@StatusText("Approved")</pems-link></pems-bullet>
+                    <pems-bullet><pems-link class="dropdown-item" href="@Url.Action("Index", new { status = "Submitted" })">@Localizer["Dr_PendingReview"]</pems-link></pems-bullet>
                     @if (savedFilters.Any())
                     {
-                        <li><hr class="dropdown-divider" /></li>
-                        <li><pems-heading level="6" class="dropdown-header">@Localizer["Dr_SavedFilters"]</pems-heading></li>
+                        <pems-bullet><pems-divider class="dropdown-divider" /></pems-bullet>
+                        <pems-bullet><pems-heading level="6" class="dropdown-header">@Localizer["Dr_SavedFilters"]</pems-heading></pems-bullet>
                         foreach (var sf in savedFilters)
                         {
-                            <li class="lp-menu-row">
+                            <pems-bullet class="lp-menu-row">
                                 <pems-link class="dropdown-item" href="@(Url.Action("Index") + "?" + sf.QueryString)">
                                     @if (sf.IsDefault) { <pems-icon name="bi-star-fill" aria-hidden="true" /> }
                                     @sf.Name
@@ -103,11 +103,11 @@
                                     <input type="hidden" name="id" value="@sf.SavedFilterId" />
                                     <pems-button plain="true" type="submit" css="lp-act lp-act--always" title="@Localizer["Dr_DeleteFilter"]"><pems-icon name="bi-x-lg" aria-hidden="true" /><span class="visually-hidden">@Localizer["Dr_DeleteFilter"]: @sf.Name</span></pems-button>
                                 </pems-form>
-                            </li>
+                            </pems-bullet>
                         }
                     }
-                    <li><hr class="dropdown-divider" /></li>
-                    <li><pems-button plain="true" type="button" css="dropdown-item" data-bs-toggle="modal" data-bs-target="#saveFilterModal"><pems-icon name="bi-bookmark-plus" aria-hidden="true" /> @Localizer["Dr_SaveFilter"]</pems-button></li>
+                    <pems-bullet><pems-divider class="dropdown-divider" /></pems-bullet>
+                    <pems-bullet><pems-button plain="true" type="button" css="dropdown-item" data-bs-toggle="modal" data-bs-target="#saveFilterModal"><pems-icon name="bi-bookmark-plus" aria-hidden="true" /> @Localizer["Dr_SaveFilter"]</pems-button></pems-bullet>
                 </pems-list-menu>
 
                 <pems-list-export href="@Url.Action("ExportExcel", new { project, disciplines = disciplinesQs, status, q })" />

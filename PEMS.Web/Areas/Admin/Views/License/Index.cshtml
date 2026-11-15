@@ -19,7 +19,7 @@
 
 <pems-page-shell kind="admin">
     <pems-page-hero>
-        <div><p>@Localizer["Lic_Intro"]</p></div>
+        <div><pems-text>@Localizer["Lic_Intro"]</pems-text></div>
     </pems-page-hero>
 
     @if (message != null) { <pems-alert tone="success">@Localizer[message]</pems-alert> }
@@ -45,7 +45,7 @@
 
     <pems-content-card css="mb-3">
         <pems-heading level="6">@Localizer["Lic_RequestTitle"]</pems-heading>
-        <p class="text-muted small">@Localizer["Lic_RequestHelp"]</p>
+        <pems-text class="text-muted small">@Localizer["Lic_RequestHelp"]</pems-text>
         <pems-form asp-action="Request" method="post"><pems-row gap="2" css="align-items-end">
             @Html.AntiForgeryToken()
             <pems-col md="3" span="12">
@@ -72,7 +72,7 @@
 
     <pems-content-card>
         <pems-heading level="6">@Localizer["Lic_UploadTitle"]</pems-heading>
-        <p class="text-muted small">@Localizer["Lic_UploadHelp"]</p>
+        <pems-text class="text-muted small">@Localizer["Lic_UploadHelp"]</pems-text>
         <pems-form asp-action="Upload" method="post" enctype="multipart/form-data"><pems-flex align="center" gap="3" wrap="true">
             @Html.AntiForgeryToken()
             <pems-input css="w-auto" type="file" name="file" accept=".pemslic,.zip" required aria-label="@Localizer["Lic_UploadTitle"]" />

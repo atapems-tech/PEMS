@@ -10,9 +10,9 @@
 
 <nav aria-label="breadcrumb" class="mb-2">
     <pems-crumb-trail css="mb-0 small">
-        <li class="breadcrumb-item"><pems-link asp-action="Index">@L("Help Center", "مرکز راهنما")</pems-link></li>
-        <li class="breadcrumb-item"><pems-link asp-action="Category" asp-route-id="@Model.HelpCategoryId">@Model.CategoryName</pems-link></li>
-        <li class="breadcrumb-item active">@Model.Title</li>
+        <pems-bullet class="breadcrumb-item"><pems-link asp-action="Index">@L("Help Center", "مرکز راهنما")</pems-link></pems-bullet>
+        <pems-bullet class="breadcrumb-item"><pems-link asp-action="Category" asp-route-id="@Model.HelpCategoryId">@Model.CategoryName</pems-link></pems-bullet>
+        <pems-bullet class="breadcrumb-item active">@Model.Title</pems-bullet>
     </pems-crumb-trail>
 </nav>
 
@@ -23,7 +23,7 @@
                 <pems-heading level="4" class="mb-0">@Model.Title</pems-heading>
                 <pems-badge tone="light">@Model.ArticleType</pems-badge>
             </pems-flex>
-            <p class="text-muted">@Model.Summary</p>
+            <pems-text class="text-muted">@Model.Summary</pems-text>
 
             @if (standardReference != null)
             {
@@ -35,20 +35,20 @@
                رندر می‌شود - این بخش هیچ‌وقت خالی/شکسته نمایش داده نمی‌شود. *@
             @if (visuals.Any())
             {
-                <hr />
+                <pems-divider />
                 @foreach (var visual in visuals)
                 {
                     @await Html.PartialAsync("_HelpVisual", visual)
                 }
             }
 
-            <hr />
+            <pems-divider />
             <div class="pems-help-article-body">
                 @Html.Raw(Model.Content)
             </div>
-            <p class="text-muted small mt-3 mb-0">
+            <pems-text class="text-muted small mt-3 mb-0">
                 <pems-icon name="bi-clock-history" /> @L("Last updated", "آخرین به‌روزرسانی"): @Model.ModifiedDate.ToString("yyyy-MM-dd")
-            </p>
+            </pems-text>
         </pems-content-card>
 
         @if (Model.RelatedArticles.Any())
@@ -68,7 +68,7 @@
     <pems-col lg="3">
         <pems-content-card>
             <pems-heading level="6" class="mb-3"><pems-icon name="bi-robot" /> @L("Ask PEMS AI", "پرسش از هوش مصنوعی PEMS")</pems-heading>
-            <p class="text-muted small">@L("Ask a question about this article - the answer is based only on its content.", "درباره‌ی همین مقاله سوال بپرسید - پاسخ فقط بر اساس محتوای همین مقاله است.")</p>
+            <pems-text class="text-muted small">@L("Ask a question about this article - the answer is based only on its content.", "درباره‌ی همین مقاله سوال بپرسید - پاسخ فقط بر اساس محتوای همین مقاله است.")</pems-text>
             <pems-textarea scale="small" css="mb-2" id="helpAiQuestion" rows="3" placeholder="@L("e.g. What happens if I don't respond to IDC?", "مثلاً اگر به IDC پاسخ ندهم چه می‌شود؟")"></pems-textarea>
             <pems-button tone="primary" size="small" css="w-100" type="button" id="helpAiAskBtn" data-code="@Model.Code" data-url="@Url.Action("AskAi", "Help")" data-thinking="@L("Thinking...", "در حال فکر کردن...")" data-error="@L("Could not reach the AI assistant.", "ارتباط با دستیار هوش مصنوعی برقرار نشد.")">
                 <pems-icon name="bi-send" /> @L("Ask", "پرسیدن")

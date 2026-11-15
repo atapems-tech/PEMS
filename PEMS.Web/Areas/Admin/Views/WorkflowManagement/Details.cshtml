@@ -78,7 +78,7 @@
                 </pems-table-body>
             </pems-table>
         </pems-table-scroll>
-        @if (openDraft != null) { <p class="small text-muted mb-0"><pems-icon name="bi-info-circle" /> @Localizer["One open draft per workflow: finish or discard v{0} before cloning again.", openDraft.VersionNumber]</p> }
+        @if (openDraft != null) { <pems-text class="small text-muted mb-0"><pems-icon name="bi-info-circle" /> @Localizer["One open draft per workflow: finish or discard v{0} before cloning again.", openDraft.VersionNumber]</pems-text> }
     </pems-content-card>
 
     <pems-row gap="3">
@@ -87,7 +87,7 @@
                 <pems-heading level="6">@Localizer["Binding"]</pems-heading>
                 @if (Model.Bindings.Count == 0 || Model.Bindings.All(b => !b.IsActive))
                 {
-                    <p class="mb-0"><pems-badge tone="light">@Localizer["No active binding"]</pems-badge> <span class="small text-muted">@Localizer["Valid state: legacy modules resolve this definition directly."]</span></p>
+                    <pems-text class="mb-0"><pems-badge tone="light">@Localizer["No active binding"]</pems-badge> <span class="small text-muted">@Localizer["Valid state: legacy modules resolve this definition directly."]</span></pems-text>
                 }
                 @foreach (var b in Model.Bindings.Where(x => x.IsActive))
                 {
@@ -110,7 +110,7 @@
         <pems-col lg="6">
             <pems-content-card css="h-100">
                 <pems-heading level="6">@Localizer["Usage"]</pems-heading>
-                @if (Model.TotalInstances == 0) { <p class="small text-muted mb-0">@Localizer["No instances have used this workflow."]</p> }
+                @if (Model.TotalInstances == 0) { <pems-text class="small text-muted mb-0">@Localizer["No instances have used this workflow."]</pems-text> }
                 else
                 {
                     <pems-data-table data="@(DataRows.Of(Model.Usage, c_ => c_.Add(((Localizer["Version"])?.ToString() ?? ""), u => DataCell.Join("v", (u.VersionNumber))).Add(((Localizer["Running"])?.ToString() ?? ""), u => (object?)(u.Running)).Add(((Localizer["Completed"])?.ToString() ?? ""), u => (object?)(u.Completed)).Add(((Localizer["Cancelled"])?.ToString() ?? ""), u => (object?)(u.Cancelled)).Add(((Localizer["Rejected"])?.ToString() ?? ""), u => (object?)(u.Rejected))))" enterprise="false" dense="true" css="mb-0" />

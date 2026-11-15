@@ -97,7 +97,7 @@
     @if (canEdit)
     {
         <partial name="_BulkBar" />
-        <p class="small text-muted mb-2" data-tm-bulk-hint>@(ViewBag.SpaceView != null ? Localizer["Tm_BulkHint"] : Localizer["Tm_BulkHintNoSpace"])</p>
+        <pems-text class="small text-muted mb-2" data-tm-bulk-hint>@(ViewBag.SpaceView != null ? Localizer["Tm_BulkHint"] : Localizer["Tm_BulkHintNoSpace"])</pems-text>
     }
     <div class="small text-muted mb-2">@Localizer["Tm_ResultCount", Model.TotalCount]</div>
     <partial name="_ItemTable" model="Model.Items" view-data="ViewData" />

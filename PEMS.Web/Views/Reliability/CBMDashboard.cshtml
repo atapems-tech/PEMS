@@ -17,10 +17,10 @@
 <pems-flex justify="end" align="center" gap="2" css="mb-2">
     <pems-button tone="neutral" size="small" outline="true" as="a" asp-action="Index">@Localizer["← Reliability"]</pems-button>
 </pems-flex>
-<p class="text-muted small">
+<pems-text class="text-muted small">
     طبق «PEMS — Equipment Passport Audit & CBM» فاز ۱ ممیزی §3.8: این داشبورد فقط تجمیع
     (Aggregation) روی داده‌ی واقعی موجود است - هیچ KPI جعلی/شبیه‌سازی‌شده این‌جا نمایش داده نمی‌شود.
-</p>
+</pems-text>
 
 <pems-row gap="3" css="mb-3">
     <pems-col md="3">
@@ -43,7 +43,7 @@
             <pems-heading level="6" class="mb-2">@Localizer["Needs Attention"]</pems-heading>
             @if (Model.AttentionPoints.Count == 0)
             {
-                <p class="text-muted small mb-0">@Localizer["هیچ نقطه‌ی پایشی در حال حاضر نیاز به توجه ندارد."]</p>
+                <pems-text class="text-muted small mb-0">@Localizer["هیچ نقطه‌ی پایشی در حال حاضر نیاز به توجه ندارد."]</pems-text>
             }
             else
             {
@@ -73,7 +73,7 @@
             <pems-heading level="6" class="mb-2">@Localizer["Overdue CBM Plans"]</pems-heading>
             @if (Model.OverdueCbmPlans.Count == 0)
             {
-                <p class="text-muted small mb-0">@Localizer["هیچ طرح CBM معوقی وجود ندارد."]</p>
+                <pems-text class="text-muted small mb-0">@Localizer["هیچ طرح CBM معوقی وجود ندارد."]</pems-text>
             }
             else
             {

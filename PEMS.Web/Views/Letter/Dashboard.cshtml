@@ -35,7 +35,7 @@
 }
 
 <pems-flex wrap="true" justify="between" align="center" gap="2" css="mb-3">
-    <p class="text-muted small mb-0">@Localizer["Lt_Dash_Scope"]</p>
+    <pems-text class="text-muted small mb-0">@Localizer["Lt_Dash_Scope"]</pems-text>
     <pems-flex wrap="true" gap="2">
         @if (ViewBag.CanRunReminders == true)
         {
@@ -69,7 +69,7 @@
             <pems-heading level="2" class="vs-section__title">@Localizer["Lt_Dash_NeedsAttention"]</pems-heading>
             @if (!Model.NeedsAttention.Any())
             {
-                <p class="text-muted mb-0"><pems-icon name="bi-check-circle" aria-hidden="true" /> @Localizer["Lt_Dash_NothingOverdue"]</p>
+                <pems-text class="text-muted mb-0"><pems-icon name="bi-check-circle" aria-hidden="true" /> @Localizer["Lt_Dash_NothingOverdue"]</pems-text>
             }
             else
             {
@@ -106,7 +106,7 @@
     <pems-col lg="6">
         <pems-content-card css="h-100">
             <pems-heading level="2" class="vs-section__title">@Localizer["Lt_Dash_Aging"]</pems-heading>
-            <p class="text-muted small">@Localizer["Lt_Dash_AgingNote"]</p>
+            <pems-text class="text-muted small">@Localizer["Lt_Dash_AgingNote"]</pems-text>
             <pems-table scale="small" css="mb-0">
                 <pems-table-body>
                     @foreach (var b in Model.Aging) { await BarRow(Localizer["Lt_Dash_Age_" + b.Key].Value, b.Count); }

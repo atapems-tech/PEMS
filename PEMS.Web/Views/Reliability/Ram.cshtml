@@ -20,11 +20,11 @@
 <pems-flex justify="end" align="center" css="mb-2">
     <pems-button tone="neutral" size="small" outline="true" as="a" asp-action="Details" asp-route-id="@equipmentId">← Reliability Detail</pems-button>
 </pems-flex>
-<p class="text-muted small">
+<pems-text class="text-muted small">
     طبق «PEMS Phase 9» بند ۱۲/۱۳: MTBF/MTTR/Availability از IReliabilityService موجود
     بازخوانی می‌شوند (دوباره محاسبه نمی‌شوند). پارامترهای Weibull با Median Rank Regression
     از فاصله‌های واقعی بین خرابی برازش می‌شوند - @weibull.MethodologyVersion
-</p>
+</pems-text>
 
 <pems-row gap="3" css="mb-3">
     <pems-col md="4">
@@ -75,9 +75,9 @@
 
 <pems-content-card>
     <pems-heading level="6" class="mb-2">Monte Carlo / RAM Simulation</pems-heading>
-    <p class="text-muted small mb-2">
+    <pems-text class="text-muted small mb-2">
         فقط وقتی Weibull و MTTR هر دو واقعاً آماده باشند اجرا می‌شود - Provenance همیشه SIMULATED است.
-    </p>
+    </pems-text>
     <pems-form method="post" asp-action="Simulate" asp-route-id="@equipmentId">
         @Html.AntiForgeryToken()
         <pems-row gap="2" css="align-items-end">

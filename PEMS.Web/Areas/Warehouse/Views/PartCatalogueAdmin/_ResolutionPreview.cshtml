@@ -15,24 +15,24 @@
     <pems-row gap="2">
         <pems-col md="6">
             <pems-heading level="4" class="h6">@Localizer["Pc_Adm_Eligible"] (@Model.Candidates.Count)</pems-heading>
-            <ul class="list-unstyled small mb-0">
+            <pems-bullet-list class="list-unstyled small mb-0">
                 @foreach (var c in Model.Candidates)
                 {
                     var selected = Model.SelectedEmployeeIds.Contains(c.EmployeeId);
-                    <li>@c.EmployeeName <span class="text-muted">- @c.Reason</span> @if (selected) { <pems-icon name="bi-check-circle" css="text-success" aria-hidden="true" /> }</li>
+                    <pems-bullet>@c.EmployeeName <span class="text-muted">- @c.Reason</span> @if (selected) { <pems-icon name="bi-check-circle" css="text-success" aria-hidden="true" /> }</pems-bullet>
                 }
-                @if (!Model.Candidates.Any()) { <li class="text-muted">-</li> }
-            </ul>
+                @if (!Model.Candidates.Any()) { <pems-bullet class="text-muted">-</pems-bullet> }
+            </pems-bullet-list>
         </pems-col>
         <pems-col md="6">
             <pems-heading level="4" class="h6">@Localizer["Pc_Adm_Excluded"] (@Model.Excluded.Count)</pems-heading>
-            <ul class="list-unstyled small mb-0">
+            <pems-bullet-list class="list-unstyled small mb-0">
                 @foreach (var x in Model.Excluded)
                 {
-                    <li>@x.EmployeeName <span class="vs-pill vs-pill--warning">@x.Code</span> <span class="text-muted">@x.Detail</span></li>
+                    <pems-bullet>@x.EmployeeName <span class="vs-pill vs-pill--warning">@x.Code</span> <span class="text-muted">@x.Detail</span></pems-bullet>
                 }
-                @if (!Model.Excluded.Any()) { <li class="text-muted">-</li> }
-            </ul>
+                @if (!Model.Excluded.Any()) { <pems-bullet class="text-muted">-</pems-bullet> }
+            </pems-bullet-list>
         </pems-col>
     </pems-row>
 </div>

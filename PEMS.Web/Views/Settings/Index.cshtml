@@ -8,7 +8,7 @@
             <div class="border rounded p-3 h-100">
                 <pems-icon name="bi-grid-1x2" css="fs-4 text-muted" />
                 <pems-heading level="6" class="mt-2 mb-1">Dashboard Widgets</pems-heading>
-                <p class="text-muted small">Choose which widgets appear on your home dashboard.</p>
+                <pems-text class="text-muted small">Choose which widgets appear on your home dashboard.</pems-text>
                 <pems-button tone="primary" size="small" outline="true" as="a" asp-controller="DashboardSettings" asp-action="Index">@Localizer["Customize"]</pems-button>
             </div>
         </pems-col>
@@ -16,7 +16,7 @@
             <div class="border rounded p-3 h-100">
                 <pems-icon name="bi-translate" css="fs-4 text-muted" />
                 <pems-heading level="6" class="mt-2 mb-1">Language</pems-heading>
-                <p class="text-muted small">Switch the interface between English and Persian (فارسی).</p>
+                <pems-text class="text-muted small">Switch the interface between English and Persian (فارسی).</pems-text>
                 <pems-flex gap="2">
                     <pems-button tone="neutral" size="small" outline="true" as="a" asp-controller="Culture" asp-action="SetCulture" asp-route-culture="en" asp-route-returnUrl="/Settings">@Localizer["English"]</pems-button>
                     <pems-button tone="neutral" size="small" outline="true" as="a" asp-controller="Culture" asp-action="SetCulture" asp-route-culture="fa" asp-route-returnUrl="/Settings">@Localizer["فارسی"]</pems-button>
@@ -27,7 +27,7 @@
             <div class="border rounded p-3 h-100">
                 <pems-icon name="bi-moon-stars" css="fs-4 text-muted" />
                 <pems-heading level="6" class="mt-2 mb-1">Theme</pems-heading>
-                <p class="text-muted small">Toggle Dark / Light mode using the moon icon in the top bar.</p>
+                <pems-text class="text-muted small">Toggle Dark / Light mode using the moon icon in the top bar.</pems-text>
                 <pems-badge tone="neutral">Top bar shortcut</pems-badge>
             </div>
         </pems-col>
@@ -43,7 +43,7 @@
                 <div class="border rounded p-3 h-100">
                     <pems-icon name="bi-people" css="fs-4 text-muted" />
                     <pems-heading level="6" class="mt-2 mb-1">@Localizer["Users"]</pems-heading>
-                    <p class="text-muted small">Create logins and assign roles.</p>
+                    <pems-text class="text-muted small">Create logins and assign roles.</pems-text>
                     <pems-button tone="primary" size="small" outline="true" as="a" asp-area="Admin" asp-controller="Users" asp-action="Index">@Localizer["Open"]</pems-button>
                 </div>
             </pems-col>
@@ -51,7 +51,7 @@
                 <div class="border rounded p-3 h-100">
                     <pems-icon name="bi-person-badge" css="fs-4 text-muted" />
                     <pems-heading level="6" class="mt-2 mb-1">@Localizer["Employees"]</pems-heading>
-                    <p class="text-muted small">Manage employee records, department &amp; discipline.</p>
+                    <pems-text class="text-muted small">Manage employee records, department &amp; discipline.</pems-text>
                     <pems-button tone="primary" size="small" outline="true" as="a" asp-controller="Employee" asp-action="Index">@Localizer["Open"]</pems-button>
                 </div>
             </pems-col>
@@ -59,7 +59,7 @@
                 <div class="border rounded p-3 h-100">
                     <pems-icon name="bi-building" css="fs-4 text-muted" />
                     <pems-heading level="6" class="mt-2 mb-1">@Localizer["Departments"]</pems-heading>
-                    <p class="text-muted small">Organizational departments.</p>
+                    <pems-text class="text-muted small">Organizational departments.</pems-text>
                     <pems-button tone="primary" size="small" outline="true" as="a" asp-controller="Department" asp-action="Index">@Localizer["Open"]</pems-button>
                 </div>
             </pems-col>
@@ -67,7 +67,7 @@
                 <div class="border rounded p-3 h-100">
                     <pems-icon name="bi-diagram-3" css="fs-4 text-muted" />
                     <pems-heading level="6" class="mt-2 mb-1">@Localizer["Disciplines"]</pems-heading>
-                    <p class="text-muted small">Engineering discipline list &amp; import aliases.</p>
+                    <pems-text class="text-muted small">Engineering discipline list &amp; import aliases.</pems-text>
                     <pems-button tone="primary" size="small" outline="true" as="a" asp-controller="Discipline" asp-action="Index">@Localizer["Open"]</pems-button>
                 </div>
             </pems-col>
@@ -75,7 +75,7 @@
                 <div class="border rounded p-3 h-100">
                     <pems-icon name="bi-sliders" css="fs-4 text-muted" />
                     <pems-heading level="6" class="mt-2 mb-1">Permission Matrix</pems-heading>
-                    <p class="text-muted small">What each role can create, edit, and approve.</p>
+                    <pems-text class="text-muted small">What each role can create, edit, and approve.</pems-text>
                     <pems-button tone="primary" size="small" outline="true" as="a" asp-area="Admin" asp-controller="PermissionMatrix" asp-action="Index">@Localizer["Open"]</pems-button>
                 </div>
             </pems-col>
@@ -83,7 +83,7 @@
                 <div class="border rounded p-3 h-100">
                     <pems-icon name="bi-shield-check" css="fs-4 text-muted" />
                     <pems-heading level="6" class="mt-2 mb-1">@Localizer["Roles"]</pems-heading>
-                    <p class="text-muted small">System roles list.</p>
+                    <pems-text class="text-muted small">System roles list.</pems-text>
                     <pems-button tone="primary" size="small" outline="true" as="a" asp-area="Admin" asp-controller="Roles" asp-action="Index">@Localizer["Open"]</pems-button>
                 </div>
             </pems-col>
@@ -91,7 +91,7 @@
                 <div class="border rounded p-3 h-100">
                     <pems-icon name="bi-signpost-split" css="fs-4 text-muted" />
                     <pems-heading level="6" class="mt-2 mb-1">Routing Rules</pems-heading>
-                    <p class="text-muted small">AI Intake auto-routing configuration.</p>
+                    <pems-text class="text-muted small">AI Intake auto-routing configuration.</pems-text>
                     <pems-button tone="primary" size="small" outline="true" as="a" asp-area="Admin" asp-controller="RoutingRules" asp-action="Index">@Localizer["Open"]</pems-button>
                 </div>
             </pems-col>
@@ -99,7 +99,7 @@
                 <div class="border rounded p-3 h-100">
                     <pems-icon name="bi-clock-history" css="fs-4 text-muted" />
                     <pems-heading level="6" class="mt-2 mb-1">Audit Log</pems-heading>
-                    <p class="text-muted small">Full history of who changed what.</p>
+                    <pems-text class="text-muted small">Full history of who changed what.</pems-text>
                     <pems-button tone="primary" size="small" outline="true" as="a" asp-area="Admin" asp-controller="AuditLog" asp-action="Index">@Localizer["Open"]</pems-button>
                 </div>
             </pems-col>
@@ -107,7 +107,7 @@
                 <div class="border rounded p-3 h-100">
                     <pems-icon name="bi-hdd-network" css="fs-4 text-muted" />
                     <pems-heading level="6" class="mt-2 mb-1">Storage Providers</pems-heading>
-                    <p class="text-muted small">Local, Network Share, FTP &amp; SFTP storage destinations.</p>
+                    <pems-text class="text-muted small">Local, Network Share, FTP &amp; SFTP storage destinations.</pems-text>
                     <pems-button tone="primary" size="small" outline="true" as="a" asp-area="Admin" asp-controller="StorageProviders" asp-action="Index">@Localizer["Open"]</pems-button>
                 </div>
             </pems-col>
@@ -115,7 +115,7 @@
                 <div class="border rounded p-3 h-100">
                     <pems-icon name="bi-signpost-2" css="fs-4 text-muted" />
                     <pems-heading level="6" class="mt-2 mb-1">Storage Routing</pems-heading>
-                    <p class="text-muted small">Which module/document type saves to which provider.</p>
+                    <pems-text class="text-muted small">Which module/document type saves to which provider.</pems-text>
                     <pems-button tone="primary" size="small" outline="true" as="a" asp-area="Admin" asp-controller="StorageRouting" asp-action="Index">@Localizer["Open"]</pems-button>
                 </div>
             </pems-col>

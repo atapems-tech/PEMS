@@ -144,10 +144,10 @@
 {
     <pems-content-card css="mb-3 border-warning">
         <pems-heading level="6" class="mb-3"><pems-icon name="bi-lightbulb" /> پیشنهادهای اتصال (تاییدنشده)</pems-heading>
-        <p class="text-muted small">
+        <pems-text class="text-muted small">
             این‌ها از روی شماره‌ی MRQ/PO خام ثبت‌شده روی تجهیز، با داده‌ی موجود منطبق شده‌اند.
             برای تایید و برقراری رسمی رابطه، به <pems-link asp-controller="Relationship" asp-action="Equipment" asp-route-id="@eq.EquipmentId">Relationship Explorer</pems-link> برو.
-        </p>
+        </pems-text>
         <pems-flex wrap="true" gap="2">
             @foreach (var s in Model.SuggestedLinks)
             {
@@ -398,7 +398,7 @@
             }
             else
             {
-                <p class="text-muted small">@Localizer["Cm_NoAsset"]</p>
+                <pems-text class="text-muted small">@Localizer["Cm_NoAsset"]</pems-text>
                 <pems-form asp-controller="Asset" asp-action="Create" method="post"><pems-row gap="2" css="align-items-end">
                     <input type="hidden" name="equipmentId" value="@eq.EquipmentId" />
                     <pems-col md="4">
@@ -437,7 +437,7 @@
                 </pems-table-body>
             </pems-table>
             </pems-table-scroll>
-            @if (!Model.Documents.Any()) { <p class="text-muted mb-0 small">@Localizer["Cm_NoDocs"]</p> }
+            @if (!Model.Documents.Any()) { <pems-text class="text-muted mb-0 small">@Localizer["Cm_NoDocs"]</pems-text> }
         </pems-content-card>
 
         <pems-content-card>
@@ -445,7 +445,7 @@
             <pems-table-scroll css="table-scroll-area pems-s-b4b96c72">
             <pems-data-table data="@(DataRows.Of(Model.VDRItems, c_ => c_.Add(((Localizer["Cm_DocNo"])?.ToString() ?? ""), v => (object?)(v.DocumentNumber)).Add(((Localizer["Cm_Description"])?.ToString() ?? ""), v => (object?)(v.DocumentDescription)).Add(((Localizer["Cm_Vendor"])?.ToString() ?? ""), v => (object?)(v.VendorName)).Add(((Localizer["Cm_Rev"])?.ToString() ?? ""), v => (object?)(v.LatestRevisionNo)).Add(((Localizer["Cm_Category"])?.ToString() ?? ""), v => (object?)(v.LatestReviewCategory)).Add(((Localizer["Cm_Status"])?.ToString() ?? ""), v => (object?)(DataCell.Badge("neutral", v.WorkflowStatus))).Add("", v => (object?)(DataCell.ButtonLink(Url.Action("Details", "VDR", new { id = v.VDRItemId }), "neutral", "small", true, null, DataCell.Icon("bi-eye"))))))" />
             </pems-table-scroll>
-            @if (!Model.VDRItems.Any()) { <p class="text-muted mb-0 small">@Localizer["Cm_NoVdr"]</p> }
+            @if (!Model.VDRItems.Any()) { <pems-text class="text-muted mb-0 small">@Localizer["Cm_NoVdr"]</pems-text> }
         </pems-content-card>
     </pems-tab-pane>
 
@@ -456,7 +456,7 @@
             <pems-table-scroll css="table-scroll-area pems-s-a3f95238">
             <pems-data-table data="@(DataRows.Of(Model.RelatedMRs, c_ => c_.Add(((Localizer["Cm_MrNumber"])?.ToString() ?? ""), m => (object?)(m.MRNumber)).Add(((Localizer["Cm_Project"])?.ToString() ?? ""), m => (object?)(m.ProjectName)).Add(((Localizer["Cm_Discipline"])?.ToString() ?? ""), m => (object?)(m.DisciplineName)).Add(((Localizer["Cm_Description"])?.ToString() ?? ""), m => (object?)(m.Description)).Add(((Localizer["Cm_Status"])?.ToString() ?? ""), m => (object?)(DataCell.Badge("neutral", m.Status))).Add("", m => (object?)(DataCell.ButtonLink(Url.Action("Details", "MaterialRequisition", new { id = m.MRId }), "neutral", "small", true, null, DataCell.Icon("bi-eye"))))))" />
             </pems-table-scroll>
-            @if (!Model.RelatedMRs.Any()) { <p class="text-muted mb-0 small">@Localizer["Cm_NoMr"]</p> }
+            @if (!Model.RelatedMRs.Any()) { <pems-text class="text-muted mb-0 small">@Localizer["Cm_NoMr"]</pems-text> }
         </pems-content-card>
     </pems-tab-pane>
 
@@ -491,7 +491,7 @@
             </pems-flex>
             @if (!Model.Strategies.Any() && !Model.Plans.Any())
             {
-                <p class="text-muted mb-0 small">@Localizer["Cm_NoStrategy"]</p>
+                <pems-text class="text-muted mb-0 small">@Localizer["Cm_NoStrategy"]</pems-text>
             }
             else
             {
@@ -561,7 +561,7 @@
                 </pems-table-body>
             </pems-table>
             </pems-table-scroll>
-            @if (!Model.WorkRequests.Any()) { <p class="text-muted mb-0 small">@Localizer["Cm_NoWorkRequests"]</p> }
+            @if (!Model.WorkRequests.Any()) { <pems-text class="text-muted mb-0 small">@Localizer["Cm_NoWorkRequests"]</pems-text> }
         </pems-content-card>
 
         @* Work Orderهای اجراشده: فقط خواندنی - ساخت Work Order از این بخش مجاز نیست؛ فقط از Work Request تاییدشده *@
@@ -570,7 +570,7 @@
             <pems-table-scroll css="table-scroll-area pems-s-f7dce87f">
             <pems-data-table data="@(DataRows.Of(Model.WorkOrders, c_ => c_.Add(((Localizer["Cm_WoNumber"])?.ToString() ?? ""), w => (object?)((canViewWo ? (object?)DataCell.Link(Url.Action("Details", "WorkOrder", new { id = w.WorkOrderId }), w.WorkOrderNo) : w.WorkOrderNo)), css: "vs-num").Add(((Localizer["Cm_Description"])?.ToString() ?? ""), w => (object?)(w.Description)).Add(((Localizer["Cm_Status"])?.ToString() ?? ""), w => (object?)(DataCell.Span("vs-pill", w.Status))).Add(((Localizer["Cm_Date"])?.ToString() ?? ""), w => (object?)((w.CreatedDate?.ToString("yyyy-MM-dd"))), css: "vs-num")))" />
             </pems-table-scroll>
-            @if (!Model.WorkOrders.Any()) { <p class="text-muted mb-0 small">@Localizer["Cm_NoWorkOrders"]</p> }
+            @if (!Model.WorkOrders.Any()) { <pems-text class="text-muted mb-0 small">@Localizer["Cm_NoWorkOrders"]</pems-text> }
         </pems-content-card>
     </pems-tab-pane>
 
@@ -625,7 +625,7 @@
                     }
                 </pems-table-body>
             </pems-table>
-            @if (!inspections.Any()) { <p class="text-muted mb-0 small">@Localizer["Cm_NoInspections"]</p> }
+            @if (!inspections.Any()) { <pems-text class="text-muted mb-0 small">@Localizer["Cm_NoInspections"]</pems-text> }
         </pems-content-card>
 
         <pems-modal id="newInspectionModal" tabindex="-1">
@@ -672,7 +672,7 @@
             <pems-col md="4">
                 <pems-content-card css="h-100">
                     <pems-heading level="6" class="mb-3"><pems-icon name="bi-exclamation-triangle" /> NCR <pems-badge tone="neutral">@Model.NonConformanceReports.Count</pems-badge></pems-heading>
-                    <ul class="list-unstyled mb-0">
+                    <pems-bullet-list class="list-unstyled mb-0">
                         @foreach (var n in Model.NonConformanceReports)
                         {
                             <pems-flex as="li" justify="between" css="border-bottom py-1">
@@ -680,14 +680,14 @@
                                 <pems-badge tone="@(n.Priority == "Urgent" ? "danger" : "neutral")">@n.SubLabel</pems-badge>
                             </pems-flex>
                         }
-                    </ul>
-                    @if (!Model.NonConformanceReports.Any()) { <p class="text-muted small mb-0">@Localizer["Cm_NoneRecorded"]</p> }
+                    </pems-bullet-list>
+                    @if (!Model.NonConformanceReports.Any()) { <pems-text class="text-muted small mb-0">@Localizer["Cm_NoneRecorded"]</pems-text> }
                 </pems-content-card>
             </pems-col>
             <pems-col md="4">
                 <pems-content-card css="h-100">
                     <pems-heading level="6" class="mb-3"><pems-icon name="bi-arrow-repeat" /> MOC <pems-badge tone="neutral">@Model.MOCs.Count</pems-badge></pems-heading>
-                    <ul class="list-unstyled mb-0">
+                    <pems-bullet-list class="list-unstyled mb-0">
                         @foreach (var m in Model.MOCs)
                         {
                             <pems-flex as="li" justify="between" css="border-bottom py-1">
@@ -695,14 +695,14 @@
                                 <pems-badge tone="@(m.Priority == "Urgent" ? "danger" : "neutral")">@m.SubLabel</pems-badge>
                             </pems-flex>
                         }
-                    </ul>
-                    @if (!Model.MOCs.Any()) { <p class="text-muted small mb-0">@Localizer["Cm_NoneRecorded"]</p> }
+                    </pems-bullet-list>
+                    @if (!Model.MOCs.Any()) { <pems-text class="text-muted small mb-0">@Localizer["Cm_NoneRecorded"]</pems-text> }
                 </pems-content-card>
             </pems-col>
             <pems-col md="4">
                 <pems-content-card css="h-100">
                     <pems-heading level="6" class="mb-3"><pems-icon name="bi-question-circle" /> TQ / TSR / RFI <pems-badge tone="neutral">@Model.TechnicalQueries.Count</pems-badge></pems-heading>
-                    <ul class="list-unstyled mb-0">
+                    <pems-bullet-list class="list-unstyled mb-0">
                         @foreach (var t in Model.TechnicalQueries)
                         {
                             <pems-flex as="li" justify="between" css="border-bottom py-1">
@@ -710,8 +710,8 @@
                                 <pems-badge tone="@(t.Priority == "Urgent" ? "danger" : "neutral")">@t.SubLabel</pems-badge>
                             </pems-flex>
                         }
-                    </ul>
-                    @if (!Model.TechnicalQueries.Any()) { <p class="text-muted small mb-0">@Localizer["Cm_NoneRecorded"]</p> }
+                    </pems-bullet-list>
+                    @if (!Model.TechnicalQueries.Any()) { <pems-text class="text-muted small mb-0">@Localizer["Cm_NoneRecorded"]</pems-text> }
                 </pems-content-card>
             </pems-col>
         </pems-row>
@@ -745,7 +745,7 @@
             }
             else
             {
-                <p class="text-muted small mb-0">این تجهیز هنوز طبقه‌بندی نشده (EquipmentType: <code>@eq.EquipmentType</code>).</p>
+                <pems-text class="text-muted small mb-0">این تجهیز هنوز طبقه‌بندی نشده (EquipmentType: <code>@eq.EquipmentType</code>).</pems-text>
             }
 
             @if (pendingSuggestion != null)
@@ -764,7 +764,7 @@
                 <pems-col md="6">
                     <pems-content-card css="h-100">
                         <pems-heading level="6" class="mb-3">@Localizer["Cm_ApplicableActivities"] <pems-badge tone="neutral">@intel.ApplicableActivities.Count</pems-badge></pems-heading>
-                        <ul class="list-unstyled mb-0 small">
+                        <pems-bullet-list class="list-unstyled mb-0 small">
                             @foreach (var a in intel.ApplicableActivities)
                             {
                                 <pems-flex as="li" justify="between" css="border-bottom py-1">
@@ -772,14 +772,14 @@
                                     <span class="text-muted">@a.Source</span>
                                 </pems-flex>
                             }
-                        </ul>
-                        @if (!intel.ApplicableActivities.Any()) { <p class="text-muted small mb-0">@Localizer["Cm_NoneDefined"]</p> }
+                        </pems-bullet-list>
+                        @if (!intel.ApplicableActivities.Any()) { <pems-text class="text-muted small mb-0">@Localizer["Cm_NoneDefined"]</pems-text> }
                     </pems-content-card>
                 </pems-col>
                 <pems-col md="6">
                     <pems-content-card css="h-100">
                         <pems-heading level="6" class="mb-3">@Localizer["Cm_PmTemplates"] <pems-badge tone="neutral">@intel.CandidatePMTemplates.Count</pems-badge></pems-heading>
-                        <ul class="list-unstyled mb-0 small">
+                        <pems-bullet-list class="list-unstyled mb-0 small">
                             @foreach (var t in intel.CandidatePMTemplates)
                             {
                                 <pems-flex as="li" justify="between" css="border-bottom py-1">
@@ -787,14 +787,14 @@
                                     <span class="text-muted">@t.Source</span>
                                 </pems-flex>
                             }
-                        </ul>
-                        @if (!intel.CandidatePMTemplates.Any()) { <p class="text-muted small mb-0">@Localizer["Cm_NoneDefined"]</p> }
+                        </pems-bullet-list>
+                        @if (!intel.CandidatePMTemplates.Any()) { <pems-text class="text-muted small mb-0">@Localizer["Cm_NoneDefined"]</pems-text> }
                     </pems-content-card>
                 </pems-col>
                 <pems-col md="6">
                     <pems-content-card css="h-100">
                         <pems-heading level="6" class="mb-3">@Localizer["Cm_FailureModes"] <pems-badge tone="neutral">@intel.ApplicableFailureModes.Count</pems-badge></pems-heading>
-                        <ul class="list-unstyled mb-0 small">
+                        <pems-bullet-list class="list-unstyled mb-0 small">
                             @foreach (var fm in intel.ApplicableFailureModes)
                             {
                                 <pems-flex as="li" justify="between" css="border-bottom py-1">
@@ -802,14 +802,14 @@
                                     <span class="text-muted">@fm.Source</span>
                                 </pems-flex>
                             }
-                        </ul>
-                        @if (!intel.ApplicableFailureModes.Any()) { <p class="text-muted small mb-0">@Localizer["Cm_NoneDefined"]</p> }
+                        </pems-bullet-list>
+                        @if (!intel.ApplicableFailureModes.Any()) { <pems-text class="text-muted small mb-0">@Localizer["Cm_NoneDefined"]</pems-text> }
                     </pems-content-card>
                 </pems-col>
                 <pems-col md="6">
                     <pems-content-card css="h-100">
                         <pems-heading level="6" class="mb-3">@Localizer["Cm_StdRefs"] <pems-badge tone="neutral">@intel.ApplicableStandardReferences.Count</pems-badge></pems-heading>
-                        <ul class="list-unstyled mb-0 small">
+                        <pems-bullet-list class="list-unstyled mb-0 small">
                             @foreach (var s in intel.ApplicableStandardReferences)
                             {
                                 <pems-flex as="li" justify="between" css="border-bottom py-1">
@@ -817,8 +817,8 @@
                                     <code>@s.Code</code>
                                 </pems-flex>
                             }
-                        </ul>
-                        @if (!intel.ApplicableStandardReferences.Any()) { <p class="text-muted small mb-0">@Localizer["Cm_NoneDefined"]</p> }
+                        </pems-bullet-list>
+                        @if (!intel.ApplicableStandardReferences.Any()) { <pems-text class="text-muted small mb-0">@Localizer["Cm_NoneDefined"]</pems-text> }
                     </pems-content-card>
                 </pems-col>
             </pems-row>

@@ -20,7 +20,7 @@
 </pems-alert>
 
 <pems-badge tone="@StatusBadge(Model.DataStatus)">@Model.DataStatus</pems-badge>
-@if (Model.Reason != null) { <p class="text-muted small mt-2">@Model.Reason</p> }
+@if (Model.Reason != null) { <pems-text class="text-muted small mt-2">@Model.Reason</pems-text> }
 
 @if (Model.DataStatus == "READY")
 {
@@ -38,5 +38,5 @@
             <pems-kpi-tile label="Mean Failure Count">@Model.MeanFailureCount?.ToString("N1")</pems-kpi-tile>
         </pems-col>
     </pems-row>
-    <p class="text-muted small mt-3">Inputs: β=@Model.InputBeta?.ToString("N3"), η=@Model.InputEta?.ToString("N1")h, MTTR=@Model.InputMTTRHours?.ToString("N1")h — @Model.Iterations iterations.</p>
+    <pems-text class="text-muted small mt-3">Inputs: β=@Model.InputBeta?.ToString("N3"), η=@Model.InputEta?.ToString("N1")h, MTTR=@Model.InputMTTRHours?.ToString("N1")h — @Model.Iterations iterations.</pems-text>
 }

@@ -6,7 +6,7 @@
 @if (Model == null)
 {
     <pems-content-card>
-        <p class="text-muted">کارمندی برای این حساب کاربری پیدا نشد.</p>
+        <pems-text class="text-muted">کارمندی برای این حساب کاربری پیدا نشد.</pems-text>
     </pems-content-card>
 }
 else
@@ -28,7 +28,7 @@ else
                 }
 
                 <pems-heading level="6" class="mb-0">@Model.FirstName @Model.LastName</pems-heading>
-                <p class="text-muted small">@Model.Position &middot; @Model.PersonnelCode</p>
+                <pems-text class="text-muted small">@Model.Position &middot; @Model.PersonnelCode</pems-text>
 
                 <pems-form asp-action="UploadPhoto" method="post" enctype="multipart/form-data" class="mt-3">
                     <pems-input scale="small" css="mb-2" type="file" name="file" accept=".jpg,.jpeg,.png,.webp" required />
@@ -40,10 +40,10 @@ else
         <pems-col md="8">
             <pems-content-card>
                 <pems-heading level="6" class="mb-3"><pems-icon name="bi-pen" /> @Localizer["امضای دیجیتال (ترسیمی)"]</pems-heading>
-                <p class="text-muted small">
+                <pems-text class="text-muted small">
                     با موس یا انگشت روی کادر زیر امضا کن. این امضا در جاهایی از سیستم که نیاز به
                     نمایش امضای تاییدکننده دارند (مثلاً تاییدهای گردش‌کار) استفاده می‌شه.
-                </p>
+                </pems-text>
 
                 @if (!string.IsNullOrEmpty(Model.SignaturePath))
                 {

@@ -174,7 +174,7 @@
                     </pems-table-body>
                 </pems-table>
             </div>
-            @if (!Model.Inputs.Any()) { <p class="text-muted text-center py-2 small">No inputs recorded.</p> }
+            @if (!Model.Inputs.Any()) { <pems-text class="text-muted text-center py-2 small">No inputs recorded.</pems-text> }
         </pems-content-card>
     </pems-col>
     <pems-col span="">
@@ -203,7 +203,7 @@
                     </pems-table-body>
                 </pems-table>
             </div>
-            @if (!Model.Outputs.Any()) { <p class="text-muted text-center py-2 small">No outputs recorded.</p> }
+            @if (!Model.Outputs.Any()) { <pems-text class="text-muted text-center py-2 small">No outputs recorded.</pems-text> }
         </pems-content-card>
     </pems-col>
 </pems-row>
@@ -213,7 +213,7 @@
         <pems-content-card>
             <pems-heading level="6" class="mb-2">Losses</pems-heading>
             <pems-data-table data="@(DataRows.Of(Model.Losses, c_ => c_.Add(((Localizer["Qty"])?.ToString() ?? ""), l => DataCell.Join((l.Quantity.ToString("N3")), " ", (l.UomCode))).Add(((Localizer["Category"])?.ToString() ?? ""), l => (object?)(l.LossCategory), kind: DataCellKind.Badge, tone: l => "warning").Add(((Localizer["Notes"])?.ToString() ?? ""), l => (object?)(l.Notes), css: "small text-muted")))" dense="true" />
-            @if (!Model.Losses.Any()) { <p class="text-muted text-center py-2 small">No losses recorded.</p> }
+            @if (!Model.Losses.Any()) { <pems-text class="text-muted text-center py-2 small">No losses recorded.</pems-text> }
         </pems-content-card>
     </pems-col>
     <pems-col span="">

@@ -39,11 +39,11 @@
         }
     </div>
 </pems-flex>
-<p class="text-muted small">
+<pems-text class="text-muted small">
     طبق «PEMS Phase 7» بند ۲۰: این‌جا فقط شواهد و توصیه‌ی بازبینی تولید می‌شود - هیچ‌چیز خودکار
     تغییر نمی‌کند. پذیرفتن یک توصیه یعنی مهندس با تغییر دستی MaintenanceStrategy/MaintenancePlan
     موافق است؛ آن تغییر همچنان جدا و توسط خودِ مهندس (با ابزارهای موجود) انجام می‌شود.
-</p>
+</pems-text>
 
 <pems-content-card css="mb-3">
     <pems-form method="get"><pems-row gap="2" css="align-items-end">
@@ -104,5 +104,5 @@
             }
         </pems-table-body>
     </pems-table>
-    @if (!Model.Any()) { <p class="text-muted text-center py-4 mb-0">هیچ توصیه‌ای موجود نیست. @(canGenerate ? "برای تولید شواهد، دکمه‌ی Generate Evidence را بزنید." : "")</p> }
+    @if (!Model.Any()) { <pems-text class="text-muted text-center py-4 mb-0">هیچ توصیه‌ای موجود نیست. @(canGenerate ? "برای تولید شواهد، دکمه‌ی Generate Evidence را بزنید." : "")</pems-text> }
 </pems-content-card>

@@ -11,14 +11,14 @@
         <pems-icon name="bi-cone-striped" />
     </div>
 
-    <p class="text-muted">
+    <pems-text class="text-muted">
         این ماژول در فاز بعدی توسعه (تکمیل ماژول‌های Engineering) پیاده‌سازی می‌شود.
         @if (!string.IsNullOrEmpty(sectionName))
         {
             <br />
             <span>بخش: @sectionName</span>
         }
-    </p>
+    </pems-text>
 
     <pems-button tone="neutral" size="small" outline="true" css="mt-2" as="a" asp-controller="Home" asp-action="Index">
         <pems-icon name="bi-arrow-right" /> @Localizer["بازگشت به داشبورد"]

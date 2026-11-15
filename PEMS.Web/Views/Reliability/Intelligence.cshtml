@@ -36,10 +36,10 @@
         <pems-button tone="neutral" size="small" outline="true" as="a" asp-action="RcmFeedback"><pems-icon name="bi-arrow-repeat" /> @Localizer["RCM Feedback"]</pems-button>
     </div>
 </pems-flex>
-<p class="text-muted small">
+<pems-text class="text-muted small">
     طبق «PEMS Phase 7»: هیچ KPI ای جعل نمی‌شود - هرجا داده کافی نیست، وضعیت صریح (NOT_READY/
     INSUFFICIENT_DATA/PARTIAL/READY) نمایش داده می‌شود، نه یک صفر یا درصد ساختگی.
-</p>
+</pems-text>
 
 <pems-content-card css="mb-3">
     <pems-form method="get"><pems-row gap="2" css="align-items-end">
@@ -105,10 +105,10 @@
 <pems-tab-content>
     <pems-tab-pane fade="true" active="true" id="tab-pm">
         <pems-content-card>
-            <p class="text-muted small">
+            <pems-text class="text-muted small">
                 مخرج فقط WorkOrder هایی است که از یک Maintenance Plan تولید شده‌اند و DueDate واقعی
                 دارند. Not Yet Due/Cancelled/Insufficient Data هرگز به‌عنوان «عدم انطباق» شمرده نمی‌شوند.
-            </p>
+            </pems-text>
             <pems-row gap="2" css="small">
                 <pems-col md="2"><strong>Total in Scope</strong><div>@pmCompliance.TotalQualifyingWorkOrders</div></pems-col>
                 <pems-col md="2"><strong>@Localizer["Compliant"]</strong><div class="text-success">@pmCompliance.CompliantCount</div></pems-col>
@@ -124,24 +124,24 @@
     <pems-tab-pane fade="true" id="tab-type">
         <pems-content-card>
             <pems-data-table data="@(DataRows.Of(breakdown.Items, c_ => c_.Add(((Localizer["Type"])?.ToString() ?? ""), item => (object?)(item.TypeName)).Add(((Localizer["Count"])?.ToString() ?? ""), item => (object?)(item.Count), css: "text-end", headerCss: "text-end").Add("%", item => (object?)(item.Percent.HasValue ? $"{item.Percent.Value:N1}%" : "N/A"), css: "text-end", headerCss: "text-end").Add("Hours", item => (object?)(item.TotalHours.HasValue ? $"{item.TotalHours.Value:N1}" : "N/A"), css: "text-end", headerCss: "text-end").Add(((Localizer["Cost"])?.ToString() ?? ""), item => (object?)(item.TotalCost.HasValue ? item.TotalCost.Value.ToString("N0") : "N/A"), css: "text-end", headerCss: "text-end").Add(((Localizer["Downtime"])?.ToString() ?? ""), item => (object?)(item.TotalDowntimeHours.HasValue ? $"{item.TotalDowntimeHours.Value:N1}h" : "No Recorded Downtime"), css: "text-end", headerCss: "text-end")))" dense="true" css="mb-0" />
-            @if (!breakdown.Items.Any()) { <p class="text-muted text-center py-4 mb-0">@Localizer["داده‌ای موجود نیست."]</p> }
+            @if (!breakdown.Items.Any()) { <pems-text class="text-muted text-center py-4 mb-0">@Localizer["داده‌ای موجود نیست."]</pems-text> }
         </pems-content-card>
     </pems-tab-pane>
 
     <pems-tab-pane fade="true" id="tab-repeat">
         <pems-content-card>
-            <p class="text-muted small">قاعده: همان تجهیز + همان حالت‌خرابی، با حداقل یک زوج خرابی متوالی در پنجره‌ی زمانی مشخص.</p>
+            <pems-text class="text-muted small">قاعده: همان تجهیز + همان حالت‌خرابی، با حداقل یک زوج خرابی متوالی در پنجره‌ی زمانی مشخص.</pems-text>
             <pems-data-table data="@(DataRows.Of(repeatFailures, c_ => c_.Add(((Localizer["Tag"])?.ToString() ?? ""), g => (object?)(g.TagNumber), css: "fw-bold").Add(((Localizer["Failure Mode"])?.ToString() ?? ""), g => (object?)(g.FailureModeKey)).Add("Occurrences", g => (object?)(g.OccurrenceCount), css: "text-end", headerCss: "text-end").Add("First", g => (object?)(g.FirstOccurrence.ToString("yyyy-MM-dd")), css: "small").Add("Last", g => (object?)(g.LastOccurrence.ToString("yyyy-MM-dd")), css: "small").Add("Window (days)", g => (object?)(g.WindowDays), css: "text-end", headerCss: "text-end")))" dense="true" css="mb-0" />
-            @if (!repeatFailures.Any()) { <p class="text-muted text-center py-4 mb-0">No Data Available - هیچ خرابی تکراری در این بازه تشخیص داده نشد.</p> }
+            @if (!repeatFailures.Any()) { <pems-text class="text-muted text-center py-4 mb-0">No Data Available - هیچ خرابی تکراری در این بازه تشخیص داده نشد.</pems-text> }
         </pems-content-card>
     </pems-tab-pane>
 
     <pems-tab-pane fade="true" id="tab-effectiveness">
         <pems-content-card>
-            <p class="text-muted small">
+            <pems-text class="text-muted small">
                 شواهد چندبعدی - نه یک امتیاز واحد. مقایسه‌ی @effectiveness.WindowDays روز اخیر
                 (از @effectiveness.CurrentPeriodStart.ToString("yyyy-MM-dd")) با @effectiveness.WindowDays روز پیش از آن.
-            </p>
+            </pems-text>
             <pems-table kind="enterprise" scale="small" css="mb-0">
                 <pems-table-head><pems-table-row><pems-table-header>Dimension</pems-table-header><pems-table-header>Current Period</pems-table-header><pems-table-header>Prior Period</pems-table-header><pems-table-header>@Localizer["Trend"]</pems-table-header></pems-table-row></pems-table-head>
                 <pems-table-body>
@@ -175,7 +175,7 @@
 
     <pems-tab-pane fade="true" id="tab-matrix">
         <pems-content-card>
-            <p class="text-muted small">یافته‌های هوشمندی - نه تصمیم خودکار. هر یافته با مقایسه‌ی صریح با میانگین ناوگان تولید می‌شود.</p>
+            <pems-text class="text-muted small">یافته‌های هوشمندی - نه تصمیم خودکار. هر یافته با مقایسه‌ی صریح با میانگین ناوگان تولید می‌شود.</pems-text>
             <pems-table kind="enterprise" scale="small" css="mb-0">
                 <pems-table-head><pems-table-row><pems-table-header>@Localizer["Criticality"]</pems-table-header><pems-table-header class="text-end">@Localizer["Equipment"]</pems-table-header><pems-table-header class="text-end">@Localizer["With History"]</pems-table-header><pems-table-header class="text-end">@Localizer["Failures"]</pems-table-header><pems-table-header class="text-end">@Localizer["Downtime"]</pems-table-header><pems-table-header class="text-end">Repeat Groups</pems-table-header><pems-table-header class="text-end">@Localizer["PM Compliance"]</pems-table-header><pems-table-header>@Localizer["Findings"]</pems-table-header></pems-table-row></pems-table-head>
                 <pems-table-body>
@@ -200,18 +200,18 @@
                     }
                 </pems-table-body>
             </pems-table>
-            @if (!criticalityMatrix.Any()) { <p class="text-muted text-center py-4 mb-0">@Localizer["داده‌ای موجود نیست."]</p> }
+            @if (!criticalityMatrix.Any()) { <pems-text class="text-muted text-center py-4 mb-0">@Localizer["داده‌ای موجود نیست."]</pems-text> }
         </pems-content-card>
     </pems-tab-pane>
 
     @* ===================== Phase 9: Criticality × Failure × Maintenance/RCM ===================== *@
     <pems-tab-pane fade="true" id="tab-matrix2">
         <pems-content-card>
-            <p class="text-muted small">
+            <pems-text class="text-muted small">
                 طبق «PEMS Phase 9» بند ۹: بُعد MaintenanceStrategy/RCM اضافه‌شده روی همان گروه‌بندی
                 بحرانیت - آیا تجهیزات این کلاس بحرانیت واقعاً استراتژی نگهداری فعال دارند، و آیا
                 کلاس‌های تجهیز نماینده‌شان تحلیل RCM تاییدشده دارند.
-            </p>
+            </pems-text>
             @if (criticalityMaintenanceMatrix != null && criticalityMaintenanceMatrix.Any())
             {
                 <pems-table kind="enterprise" scale="small" css="mb-0">
@@ -246,7 +246,7 @@
             }
             else
             {
-                <p class="text-muted text-center py-4 mb-0">@Localizer["داده‌ای موجود نیست."]</p>
+                <pems-text class="text-muted text-center py-4 mb-0">@Localizer["داده‌ای موجود نیست."]</pems-text>
             }
         </pems-content-card>
     </pems-tab-pane>

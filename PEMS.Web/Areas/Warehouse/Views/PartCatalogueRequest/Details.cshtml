@@ -76,10 +76,10 @@
     {
         <section class="vs-panel pc-card border-warning" role="alert">
             <pems-heading level="2" class="vs-section__title"><pems-icon name="bi-diagram-3" /> @Localizer["Pc_Org_Blocked_Title"]</pems-heading>
-            <p class="mb-1">@Localizer["Pc_Org_Blocked_Body"]</p>
+            <pems-text class="mb-1">@Localizer["Pc_Org_Blocked_Body"]</pems-text>
             @if (!string.IsNullOrEmpty(a.OrganizationBlockReason))
             {
-                <p class="small text-muted mb-2"><strong>@a.OrganizationBlockReason</strong> — @Localizer["Org_Issue_" + a.OrganizationBlockReason]</p>
+                <pems-text class="small text-muted mb-2"><strong>@a.OrganizationBlockReason</strong> — @Localizer["Org_Issue_" + a.OrganizationBlockReason]</pems-text>
             }
             @if (a.CanRetryRouting)
             {
@@ -198,32 +198,32 @@
             <section class="vs-panel pc-card">
                 <pems-heading level="2" class="vs-section__title"><pems-icon name="bi-signpost-split" /> @Localizer["Pc_Det_Route"]</pems-heading>
                 @if (!d.Steps.Any()) { <div class="text-muted small">@Localizer["Pc_Det_NoRoute"]</div> }
-                <ol class="pc-route list-unstyled mb-0">
+                <pems-bullet-list ordered="true" class="pc-route list-unstyled mb-0">
                     @foreach (var st in d.Steps)
                     {
-                        <li class="pc-route-step @("pc-step-" + st.Status.ToLowerInvariant())">
+                        <pems-bullet class="pc-route-step @("pc-step-" + st.Status.ToLowerInvariant())">
                             <span class="vs-pill vs-pill--icon @StepPill(st.Status)">@Localizer["Pc_StepStatus_" + st.Status]</span>
                             <strong>@Localizer["Pc_Step_" + st.StepKey]</strong>
                             @if (!string.IsNullOrEmpty(st.AssignedName)) { <div class="small text-muted">@st.AssignedName</div> }
                             @if (st.Status == "Skipped") { <div class="small text-muted">@SkipText(st.SkipReason)</div> }
                             @if (st.DecidedDate.HasValue) { <div class="small text-muted vs-num">@st.DecidedDate.Value.ToString("yyyy-MM-dd HH:mm")</div> }
-                        </li>
+                        </pems-bullet>
                     }
-                </ol>
+                </pems-bullet-list>
             </section>
 
             <section class="vs-panel pc-card mt-3">
                 <pems-heading level="2" class="vs-section__title"><pems-icon name="bi-gear-wide-connected" /> @Localizer["Pc_Sec_Equipment"]</pems-heading>
                 @if (!d.Equipment.Any()) { <div class="text-muted small">@Localizer["Pc_Empty_Equipment"]</div> }
-                <ul class="list-unstyled small mb-0">
-                    @foreach (var q in d.Equipment) { <li>@q.Text <span class="text-muted">× @q.InstalledQuantity.ToString("0.####")</span></li> }
-                </ul>
+                <pems-bullet-list class="list-unstyled small mb-0">
+                    @foreach (var q in d.Equipment) { <pems-bullet>@q.Text <span class="text-muted">× @q.InstalledQuantity.ToString("0.####")</span></pems-bullet> }
+                </pems-bullet-list>
             </section>
 
             <section class="vs-panel pc-card mt-3">
                 <pems-heading level="2" class="vs-section__title"><pems-icon name="bi-paperclip" /> @L("Attachments")</pems-heading>
                 @if (!d.Attachments.Any()) { <div class="text-muted small">@Localizer["Pc_Empty_Attachments"]</div> }
-                <ul class="list-unstyled small mb-0">
+                <pems-bullet-list class="list-unstyled small mb-0">
                     @foreach (var at in d.Attachments)
                     {
                         <pems-flex as="li" justify="between" gap="2" css="border-bottom py-1">
@@ -231,7 +231,7 @@
                             <span class="text-muted">@Localizer["Pc_Kind_" + at.Kind]</span>
                         </pems-flex>
                     }
-                </ul>
+                </pems-bullet-list>
             </section>
         </pems-col>
 

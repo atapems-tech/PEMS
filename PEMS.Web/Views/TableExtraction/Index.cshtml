@@ -4,11 +4,11 @@
 @inject IStringLocalizer<SharedResource> Localizer
 
 <pems-content-card css="mb-3">
-    <p class="text-muted mb-0">
+    <pems-text class="text-muted mb-0">
         ابزار آزمایش پرامپت استخراج جدولی (Wiring Connection Diagram, Instrument Index, Marshalling List,
         I/O List, Loop Drawing) روی فایل‌های آپلودشده. این صفحه مستقل از خط پردازش خودکار AI Intake است و
         هیچ نتیجه‌ای را در پایگاه‌داده ذخیره نمی‌کند - فقط خروجی مدل را برای بررسی نمایش می‌دهد.
-    </p>
+    </pems-text>
 </pems-content-card>
 
 <pems-content-card>
@@ -65,7 +65,7 @@
 
         @if (!Model.Items.Any())
         {
-            <p class="text-muted text-center py-4">No uploaded attachments yet. Try Document Upload first.</p>
+            <pems-text class="text-muted text-center py-4">No uploaded attachments yet. Try Document Upload first.</pems-text>
         }
     </pems-table-scroll>
 

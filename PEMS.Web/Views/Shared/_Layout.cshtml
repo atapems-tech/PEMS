@@ -123,12 +123,12 @@
                         ("turquoise", "bi-gem", Localizer["Theme_Turquoise"].Value)
                     })
                     {
-                        <li>
+                        <pems-bullet>
                             <pems-link class="dropdown-item theme-switch @(currentTheme == themeValue ? "active" : "")"
                                href="@Url.Action("SetTheme", "Theme", new { area = "", theme = themeValue, returnUrl = currentUrl })">
                                 <pems-icon css="@icon me-2" /> @label
                             </pems-link>
-                        </li>
+                        </pems-bullet>
                     }
                 </pems-dropdown-menu>
             </div>
@@ -138,12 +138,12 @@
                     <pems-icon name="bi-translate" css="fs-5" />
                 </pems-link>
                 <pems-dropdown-menu end="true">
-                    <li>
+                    <pems-bullet>
                         <pems-link class="dropdown-item @(!isRtl ? "active" : "") culture-switch" href="@Url.Action("SetCulture", "Culture", new { area = "", culture = "en", returnUrl = currentUrl })">English</pems-link>
-                    </li>
-                    <li>
+                    </pems-bullet>
+                    <pems-bullet>
                         <pems-link class="dropdown-item @(isRtl ? "active" : "") culture-switch" href="@Url.Action("SetCulture", "Culture", new { area = "", culture = "fa", returnUrl = currentUrl })">فارسی</pems-link>
-                    </li>
+                    </pems-bullet>
                 </pems-dropdown-menu>
             </div>
 
@@ -172,19 +172,19 @@
                     </span>
                 </pems-button>
                 <pems-dropdown-menu end="true">
-                    <li><pems-heading level="6" class="dropdown-header">@User.Identity?.Name</pems-heading></li>
-                    <li><pems-link class="dropdown-item" asp-controller="MyProfile" asp-action="Index" asp-area=""><pems-icon name="bi-person-badge" /> @Localizer["Shell_MyProfile"]</pems-link></li>
-                    <li><pems-link class="dropdown-item" asp-controller="Account" asp-action="ManagePasskeys" asp-area=""><pems-icon name="bi-key" /> @Localizer["Shell_Passkeys"]</pems-link></li>
+                    <pems-bullet><pems-heading level="6" class="dropdown-header">@User.Identity?.Name</pems-heading></pems-bullet>
+                    <pems-bullet><pems-link class="dropdown-item" asp-controller="MyProfile" asp-action="Index" asp-area=""><pems-icon name="bi-person-badge" /> @Localizer["Shell_MyProfile"]</pems-link></pems-bullet>
+                    <pems-bullet><pems-link class="dropdown-item" asp-controller="Account" asp-action="ManagePasskeys" asp-area=""><pems-icon name="bi-key" /> @Localizer["Shell_Passkeys"]</pems-link></pems-bullet>
                     @if (User.IsInRole(PEMS.Persistence.Identity.SystemRoles.SystemAdmin))
                     {
-                        <li><pems-link class="dropdown-item" asp-controller="RecoveryCodes" asp-action="Index" asp-area=""><pems-icon name="bi-shield-lock" /> @Localizer["Recovery codes"]</pems-link></li>
+                        <pems-bullet><pems-link class="dropdown-item" asp-controller="RecoveryCodes" asp-action="Index" asp-area=""><pems-icon name="bi-shield-lock" /> @Localizer["Recovery codes"]</pems-link></pems-bullet>
                     }
-                    <li><hr class="dropdown-divider" /></li>
-                    <li>
+                    <pems-bullet><pems-divider class="dropdown-divider" /></pems-bullet>
+                    <pems-bullet>
                         <pems-form asp-controller="Account" asp-action="Logout" asp-area="" method="post">
                             <pems-button plain="true" type="submit" css="dropdown-item"><pems-icon name="bi-box-arrow-right" /> @Localizer["Logout"]</pems-button>
                         </pems-form>
-                    </li>
+                    </pems-bullet>
                 </pems-dropdown-menu>
             </div>
         </pems-flex>

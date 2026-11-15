@@ -7,11 +7,11 @@
     <pems-heading level="5" class="mb-0"><pems-icon name="bi-speedometer2" /> Maintenance &amp; Cost KPI Dashboard</pems-heading>
     <pems-button tone="neutral" size="small" outline="true" as="a" asp-action="Executive"><pems-icon name="bi-bar-chart-line" /> @Localizer["Kpi_Exec_Title"]</pems-button>
 </pems-flex>
-<p class="text-muted small">
+<pems-text class="text-muted small">
     طبق CMMS Production Baseline v1 - CMMS-08: از روی داده‌ی واقعی تراکنشی موجود محاسبه می‌شود
     (MaintenanceHistory، WorkOrder، MaintenancePlan). معیارهای Reliability تفصیلی در
     <pems-link asp-controller="Reliability" asp-action="Index">صفحه‌ی Reliability</pems-link> موجودند.
-</p>
+</pems-text>
 
 <pems-form class="mb-3" method="get"><pems-flex gap="2" align="end">
     <div>
@@ -131,7 +131,7 @@
         </pems-row>
     </pems-col>
 </pems-row>
-<p class="text-muted small mb-4">در بازه‌ی انتخاب‌شده، بر اساس @Model.Maintenance.TotalWorkOrdersInPeriod دستورکار.</p>
+<pems-text class="text-muted small mb-4">در بازه‌ی انتخاب‌شده، بر اساس @Model.Maintenance.TotalWorkOrdersInPeriod دستورکار.</pems-text>
 
 <pems-heading level="6" class="text-muted mb-2"><pems-icon name="bi-graph-up-arrow" /> Reliability Summary</pems-heading>
 <pems-row gap="3">
@@ -144,7 +144,7 @@
         </pems-content-card>
     </pems-col>
 </pems-row>
-<p class="mt-2"><pems-link asp-controller="Reliability" asp-action="Index" class="small">جزئیات کامل Reliability (MTBF/MTTR در سطح تجهیز) &rarr;</pems-link></p>
+<pems-text class="mt-2"><pems-link asp-controller="Reliability" asp-action="Index" class="small">جزئیات کامل Reliability (MTBF/MTTR در سطح تجهیز) &rarr;</pems-link></pems-text>
 
 @section Scripts {
     <partial name="_BkChartScripts" />

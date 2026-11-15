@@ -90,18 +90,18 @@
             {
                 <details class="lp-kpi-pop">
                     <summary class="vs-chip vs-chip--danger"><pems-icon name="bi-shield-exclamation" aria-hidden="true" /> @Localizer["Vs_VendorDelayRisk"] <strong>@dash.TopDelayedVendors.Count</strong></summary>
-                    <ul class="vs-list">
+                    <pems-bullet-list class="vs-list">
                         @foreach (var v in dash.TopDelayedVendors)
                         {
-                            <li>
+                            <pems-bullet>
                                 <div>
                                     <div class="vs-cell-strong">@v.VendorName</div>
                                     <div class="vs-cell-sub">@Localizer["Vs_OverdueItems"]: @v.OverdueCount &middot; @Localizer["Vs_AvgDelay"]: @v.AverageDelayDays</div>
                                 </div>
                                 <span class="vs-pill @VdrUi.RiskTone(v.RiskLevel)">@VdrUi.Loc(Localizer, "St_", v.RiskLevel)</span>
-                            </li>
+                            </pems-bullet>
                         }
-                    </ul>
+                    </pems-bullet-list>
                 </details>
             }
         </pems-list-kpis>

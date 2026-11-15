@@ -38,10 +38,10 @@
         <pems-button tone="neutral" size="small" outline="true" as="a" asp-action="AiInsights">@Localizer["AI Insights"]</pems-button>
     </div>
 </pems-flex>
-<p class="text-muted small">
+<pems-text class="text-muted small">
     طبق «PEMS Phase 9» بند ۲۰/۳۱: هیچ درصد/KPI جعلی این‌جا نمایش داده نمی‌شود - هرجا داده کافی
     نیست، N/A یا وضعیت صریح (NOT_READY/INSUFFICIENT_DATA) نشان داده می‌شود.
-</p>
+</pems-text>
 
 @* ===================== Executive Reliability ===================== *@
 <pems-heading level="6" class="mt-4">Executive Reliability</pems-heading>
@@ -124,7 +124,7 @@
                     }
                 </pems-table-body>
             </pems-table>
-            @if (!pareto.Any()) { <p class="text-muted text-center py-3 mb-0">@Localizer["داده‌ای موجود نیست."]</p> }
+            @if (!pareto.Any()) { <pems-text class="text-muted text-center py-3 mb-0">@Localizer["داده‌ای موجود نیست."]</pems-text> }
         </pems-content-card>
     </pems-col>
     <pems-col md="6">
@@ -142,7 +142,7 @@
                     }
                 </pems-table-body>
             </pems-table>
-            @if (!badActors.Any()) { <p class="text-muted text-center py-3 mb-0">@Localizer["داده‌ای موجود نیست."]</p> }
+            @if (!badActors.Any()) { <pems-text class="text-muted text-center py-3 mb-0">@Localizer["داده‌ای موجود نیست."]</pems-text> }
         </pems-content-card>
     </pems-col>
 </pems-row>

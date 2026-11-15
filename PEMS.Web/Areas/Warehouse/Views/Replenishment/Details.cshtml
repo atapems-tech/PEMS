@@ -120,7 +120,7 @@
     <div class="pems-grid-scroll">
         <pems-data-table data="@(DataRows.Of(Model.Sources, c_ => c_.Add(((Localizer["Repl_SourceType"])?.ToString() ?? ""), src => (object?)((src.SourceType == 1 ? Localizer["Repl_SourceSr"] : Localizer["Repl_SourceWo"])), css: "small").Add(((Localizer["Repl_SourceNumber"])?.ToString() ?? ""), src => (object?)((src.IsRestricted ? (object?)DataCell.Span("text-muted", Localizer["Repl_Restricted"]) : DataCell.Span(null, (src.ParentNumber ?? ("#" + src.SourceLineId))))), css: "small").Add(((Localizer["Repl_GrossDemand"])?.ToString() ?? ""), src => (object?)((src.GrossRemainingQuantity.ToString("0.###"))), css: "small text-end", headerCss: "text-end").Add(((Localizer["Repl_Covered"])?.ToString() ?? ""), src => (object?)((src.CoveredByReservation.ToString("0.###"))), css: "small text-end", headerCss: "text-end").Add(((Localizer["Repl_UnreservedDemand"])?.ToString() ?? ""), src => (object?)((src.UnreservedQuantity.ToString("0.###"))), css: "small text-end", headerCss: "text-end")))" css="mb-0" />
     </div>
-    @if (!Model.Sources.Any()) { <p class="text-muted text-center py-3 mb-0 small">@Localizer["Repl_NoSources"]</p> }
+    @if (!Model.Sources.Any()) { <pems-text class="text-muted text-center py-3 mb-0 small">@Localizer["Repl_NoSources"]</pems-text> }
 </pems-content-card>
 
 <pems-content-card>
@@ -130,4 +130,4 @@
     </div>
 </pems-content-card>
 
-<p class="mt-3"><pems-button as="a" tone="neutral" size="small" outline="true" asp-action="Index"><pems-icon name="bi-arrow-left" /> @Localizer["Repl_Back"]</pems-button></p>
+<pems-text class="mt-3"><pems-button as="a" tone="neutral" size="small" outline="true" asp-action="Index"><pems-icon name="bi-arrow-left" /> @Localizer["Repl_Back"]</pems-button></pems-text>

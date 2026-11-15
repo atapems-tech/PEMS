@@ -59,12 +59,12 @@
     </pems-row></pems-form>
     @if (Model.SelectedProjectId.HasValue || Model.SelectedDisciplineId.HasValue || Model.SelectedMinRevisionCount.HasValue)
     {
-        <p class="text-muted small mt-2 mb-0">
+        <pems-text class="text-muted small mt-2 mb-0">
             <pems-icon name="bi-funnel-fill" /> @Localizer["ActiveFilter"]:
             @(Model.SelectedProjectId.HasValue ? $"Project #{Model.SelectedProjectId} " : "")
             @(Model.SelectedDisciplineId.HasValue ? $"Discipline #{Model.SelectedDisciplineId} " : "")
             @(Model.SelectedMinRevisionCount.HasValue ? $"Revision ≥ {Model.SelectedMinRevisionCount}" : "")
-        </p>
+        </pems-text>
     }
 </pems-content-card>
 
@@ -73,7 +73,7 @@
     <pems-flex align="center" justify="between" wrap="true" gap="2" css="section-head mb-3">
         <div>
             <pems-heading level="6" class="section-title mb-1"><pems-icon name="bi-speedometer2" /> @Localizer["ExecutiveSummary"]</pems-heading>
-            <p class="section-subtitle mb-0">Live snapshot of engineering activity</p>
+            <pems-text class="section-subtitle mb-0">Live snapshot of engineering activity</pems-text>
         </div>
     </pems-flex>
     <pems-row gap="3">
@@ -91,9 +91,9 @@
         <pems-heading level="6" class="mb-0"><pems-icon name="bi-shield-check" /> Engineering Health</pems-heading>
         <pems-badge tone="primary" css="rounded-pill fs-6">@Model.EngineeringHealthScore / 100</pems-badge>
     </pems-flex>
-    <p class="text-muted small mb-3">
+    <pems-text class="text-muted small mb-3">
         Deterministic health score = weighted quality + backlog + overdue + risk. Values are computed from actual summary and revision data in the selected scope.
-    </p>
+    </pems-text>
     <pems-row gap="3" css="align-items-center">
         <pems-col md="3">
             <pems-kpi-tile class="h-100" icon="bi-graph-up-arrow" color="teal" label="Health Score">@Model.EngineeringHealthScore</pems-kpi-tile>
@@ -117,7 +117,7 @@
 @* ===================== Section B: Quality & Review (GetRevisionQualityAsync, E-05C) ===================== *@
 <pems-content-card css="mb-3">
     <pems-heading level="6" class="mb-1"><pems-icon name="bi-award" /> @Localizer["QualityAndReview"]</pems-heading>
-    <p class="text-muted small mb-3">@Localizer["FirstPassApprovalExplanation"]</p>
+    <pems-text class="text-muted small mb-3">@Localizer["FirstPassApprovalExplanation"]</pems-text>
 
     <pems-row gap="3" css="mb-3">
         <pems-col span="6" md="3">
@@ -126,7 +126,7 @@
     </pems-row>
     @if (!Model.FirstPassApprovalRate.HasValue)
     {
-        <p class="text-muted small">@Localizer["NoCompletedCyclesYet"]</p>
+        <pems-text class="text-muted small">@Localizer["NoCompletedCyclesYet"]</pems-text>
     }
 
     @{
@@ -137,7 +137,7 @@
     {
         <div class="text-center text-muted py-4">
             <pems-icon name="bi-emoji-smile" css="pems-s-4361a2ff" />
-            <p class="mb-0 mt-2">@Localizer["NoRejectedDocumentsInScope"]</p>
+            <pems-text class="mb-0 mt-2">@Localizer["NoRejectedDocumentsInScope"]</pems-text>
         </div>
     }
     else
@@ -166,7 +166,7 @@
 @* ===================== Section C: Revision & Resubmission Pressure (GetRevisionQualityAsync + MinRevisionCount, E-05C ADR-5) ===================== *@
 <pems-content-card css="mb-3">
     <pems-heading level="6" class="mb-1"><pems-icon name="bi-arrow-repeat" /> @Localizer["RevisionPressure"]</pems-heading>
-    <p class="text-muted small mb-3">@Localizer["RevisionPressureExplanation"]</p>
+    <pems-text class="text-muted small mb-3">@Localizer["RevisionPressureExplanation"]</pems-text>
 
     @{
         var highRevision = Model.Quality.Where(x => x.RevisionCount > 0).OrderByDescending(x => x.RevisionCount).Take(10).ToList();
@@ -175,7 +175,7 @@
     {
         <div class="text-center text-muted py-4">
             <pems-icon name="bi-emoji-smile" css="pems-s-4361a2ff" />
-            <p class="mb-0 mt-2">@Localizer["NoRevisedDocumentsInScope"]</p>
+            <pems-text class="mb-0 mt-2">@Localizer["NoRevisedDocumentsInScope"]</pems-text>
         </div>
     }
     else
@@ -213,7 +213,7 @@
    {
        <div class="text-center text-muted py-4">
            <pems-icon name="bi-check-circle" css="pems-s-4361a2ff" />
-           <p class="mb-0 mt-2">No high-risk documents were identified in the selected scope.</p>
+           <pems-text class="mb-0 mt-2">No high-risk documents were identified in the selected scope.</pems-text>
        </div>
    }
    else
@@ -267,7 +267,7 @@
    {
        <div class="text-center text-muted py-4">
            <pems-icon name="bi-slash-circle" css="pems-s-4361a2ff" />
-           <p class="mb-0 mt-2">No discipline data is available for the selected scope.</p>
+           <pems-text class="mb-0 mt-2">No discipline data is available for the selected scope.</pems-text>
        </div>
    }
    else

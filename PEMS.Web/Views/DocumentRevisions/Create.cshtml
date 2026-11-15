@@ -7,7 +7,7 @@
 }
 
 <pems-content-card css="pems-s-e2b01b0d">
-    <p class="text-muted mb-3">Document: <strong>@document.DocumentNo - @document.Title</strong> (current revision: @document.RevisionNo)</p>
+    <pems-text class="text-muted mb-3">Document: <strong>@document.DocumentNo - @document.Title</strong> (current revision: @document.RevisionNo)</pems-text>
 
     <pems-form asp-action="Create" method="post">
         <input type="hidden" asp-for="DocumentId" />

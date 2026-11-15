@@ -13,8 +13,8 @@
 
 <pems-page-shell kind="admin">
     <pems-page-hero>
-        <p>@Localizer["Org_Intro"]</p>
-        <p class="small text-muted mb-0">@Localizer["Org_Team_Not_Manager"]</p>
+        <pems-text>@Localizer["Org_Intro"]</pems-text>
+        <pems-text class="small text-muted mb-0">@Localizer["Org_Team_Not_Manager"]</pems-text>
     </pems-page-hero>
 
     @if (TempData["Message"] != null) { <pems-alert tone="success">@TempData["Message"]</pems-alert> }

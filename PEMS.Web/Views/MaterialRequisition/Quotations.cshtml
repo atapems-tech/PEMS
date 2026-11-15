@@ -45,7 +45,7 @@
 
     @if (!Model.Items.Any())
     {
-        <p class="text-muted text-center py-4 mb-0">No quotations (MRQ) have been added to any MR yet.</p>
+        <pems-text class="text-muted text-center py-4 mb-0">No quotations (MRQ) have been added to any MR yet.</pems-text>
     }
 
     @await Html.PartialAsync("_Pagination", new PEMS.Web.ViewModels.PaginationViewModel

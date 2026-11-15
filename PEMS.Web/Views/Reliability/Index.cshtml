@@ -24,12 +24,12 @@
         <pems-button tone="neutral" size="small" outline="true" as="a" asp-action="AiInsights"><pems-icon name="bi-stars" /> @Localizer["AI Insights"]</pems-button>
     </div>
 </pems-flex>
-<p class="text-muted small">
+<pems-text class="text-muted small">
     طبق CMMS Production Baseline v1 - CMMS-06: MTBF/MTTR/Availability محاسبه‌شده از روی
     FailureRecord های واقعی (خرابی‌های ثبت‌شده هنگام تکمیل WorkOrder های اصلاحی/اضطراری).
     تجهیزاتی که هیچ خرابی ثبت‌شده‌ای ندارند در این لیست نمی‌آیند. بدترین‌ها (کمترین Availability) بالای لیست‌اند.
     جایی که داده‌ی کافی برای محاسبه نیست، N/A نمایش داده می‌شود - هرگز صفر جعلی.
-</p>
+</pems-text>
 
 <pems-content-card css="mb-3">
     <pems-form method="get"><pems-row gap="2" css="align-items-end">
@@ -60,18 +60,18 @@
     <pems-tab-pane fade="true" active="true" id="tab-fleet">
         <pems-content-card>
             <pems-data-table data="@(DataRows.Of(Model, c_ => c_.Add(((Localizer["Tag Number"])?.ToString() ?? ""), r => (object?)(r.TagNumber), css: "small fw-bold").Add(((Localizer["Type"])?.ToString() ?? ""), r => (object?)(r.EquipmentType), css: "small").Add(((Localizer["Failures"])?.ToString() ?? ""), r => (object?)(r.FailureCount), css: "small").Add(((Localizer["MTBF"])?.ToString() ?? ""), r => (object?)((r.MTBFHours.HasValue ? $"{r.MTBFHours.Value:N1} h" : "N/A")), css: "small").Add(((Localizer["MTTR"])?.ToString() ?? ""), r => (object?)((r.MTTRHours.HasValue ? $"{r.MTTRHours.Value:N1} h" : "N/A")), css: "small").Add(((Localizer["Availability"])?.ToString() ?? ""), r => (object?)((r.AvailabilityPercent.HasValue ? (object?)DataCell.Badge(r.AvailabilityPercent >= 95 ? "success" : r.AvailabilityPercent >= 85 ? "warning" : "danger", DataCell.Group((r.AvailabilityPercent.Value.ToString("N1")), "%")) : DataCell.Span("text-muted", "N/A"))), css: "small").Add(((Localizer["Total Downtime"])?.ToString() ?? ""), r => (object?)(DataCell.Group((r.TotalDowntimeHours.ToString("N1")), " h")), css: "small").Add("Last Failure", r => (object?)((r.LastFailureDate?.ToString("yyyy-MM-dd") ?? "-")), css: "small").Add("", r => (object?)(DataCell.ButtonLink(Url.Action("Details", null, new { id = r.EquipmentId }), "neutral", "small", true, null, DataCell.Icon("bi-eye"))))))" css="mb-0" />
-            @if (!Model.Any()) { <p class="text-muted text-center py-4 mb-0">هنوز هیچ خرابی‌ای ثبت نشده - این لیست از روی WorkOrder های اصلاحی/اضطراری تکمیل‌شده ساخته می‌شود.</p> }
+            @if (!Model.Any()) { <pems-text class="text-muted text-center py-4 mb-0">هنوز هیچ خرابی‌ای ثبت نشده - این لیست از روی WorkOrder های اصلاحی/اضطراری تکمیل‌شده ساخته می‌شود.</pems-text> }
         </pems-content-card>
     </pems-tab-pane>
 
     <pems-tab-pane fade="true" id="tab-class">
         <pems-content-card>
-            <p class="text-muted small">
+            <pems-text class="text-muted small">
                 میانگین مقادیر معتبر سطح-تجهیز درون هر کلاس (نه یک نرخ Pooled روی زمان
                 بهره‌برداری) - Sample Size نشان می‌دهد چند تجهیز واقعاً در میانگین سهیم بودند.
-            </p>
+            </pems-text>
             <pems-data-table data="@(DataRows.Of(classReliability, c_ => c_.Add(((Localizer["Class"])?.ToString() ?? ""), c => (object?)(c.Name)).Add(((Localizer["Population"])?.ToString() ?? ""), c => (object?)(c.EquipmentPopulation), css: "text-end").Add(((Localizer["With History"])?.ToString() ?? ""), c => (object?)(c.EquipmentWithFailureHistory), css: "text-end").Add(((Localizer["Failures"])?.ToString() ?? ""), c => (object?)(c.FailureCount), css: "text-end").Add(((Localizer["Downtime"])?.ToString() ?? ""), c => (object?)(DataCell.Group((c.TotalDowntimeHours.ToString("N1")), " h")), css: "text-end").Add("Avg MTBF (n)", c => (object?)((c.AverageMTBFHours.HasValue ? $"{c.AverageMTBFHours.Value:N1}h (n={c.MTBFSampleSize})" : "N/A")), css: "text-end").Add("Avg MTTR (n)", c => (object?)((c.AverageMTTRHours.HasValue ? $"{c.AverageMTTRHours.Value:N1}h (n={c.MTTRSampleSize})" : "N/A")), css: "text-end").Add("Avg Availability", c => (object?)((c.AverageAvailabilityPercent.HasValue ? $"{c.AverageAvailabilityPercent.Value:N1}%" : "N/A")), css: "text-end").Add("", c => (object?)(DataCell.ButtonLink(Url.Action("ClassDetail", null, new { id = c.EquipmentClassId }), "neutral", "small", true, null, "Open")))))" dense="true" css="mb-0" />
-            @if (!classReliability.Any()) { <p class="text-muted text-center py-4 mb-0">@Localizer["هیچ کلاسی داده‌ی خرابی کافی ندارد."]</p> }
+            @if (!classReliability.Any()) { <pems-text class="text-muted text-center py-4 mb-0">@Localizer["هیچ کلاسی داده‌ی خرابی کافی ندارد."]</pems-text> }
         </pems-content-card>
     </pems-tab-pane>
 
@@ -81,14 +81,14 @@
                 <pems-content-card css="h-100">
                     <pems-heading level="6" class="mb-3">Failure Mode Pareto</pems-heading>
                     <pems-data-table data="@(DataRows.Of(failureModePareto, c_ => c_.Add(((Localizer["Failure Mode"])?.ToString() ?? ""), p => (object?)(p.Key)).Add(((Localizer["Count"])?.ToString() ?? ""), p => (object?)(p.Count), css: "text-end", headerCss: "text-end").Add(((Localizer["Downtime"])?.ToString() ?? ""), p => DataCell.Join((p.DowntimeHours.ToString("N1")), "h"), css: "text-end", headerCss: "text-end").Add(((Localizer["Cumulative %"])?.ToString() ?? ""), p => DataCell.Join((p.CumulativePercent.ToString("N1")), "%"), css: "text-end", headerCss: "text-end")))" dense="true" css="mb-0" />
-                    @if (!failureModePareto.Any()) { <p class="text-muted small text-center py-3 mb-0">@Localizer["داده‌ای موجود نیست."]</p> }
+                    @if (!failureModePareto.Any()) { <pems-text class="text-muted small text-center py-3 mb-0">@Localizer["داده‌ای موجود نیست."]</pems-text> }
                 </pems-content-card>
             </pems-col>
             <pems-col md="6">
                 <pems-content-card css="h-100">
                     <pems-heading level="6" class="mb-3">Failure Cause Pareto</pems-heading>
                     <pems-data-table data="@(DataRows.Of(failureCausePareto, c_ => c_.Add("Failure Cause", p => (object?)(p.Key)).Add(((Localizer["Count"])?.ToString() ?? ""), p => (object?)(p.Count), css: "text-end", headerCss: "text-end").Add(((Localizer["Downtime"])?.ToString() ?? ""), p => DataCell.Join((p.DowntimeHours.ToString("N1")), "h"), css: "text-end", headerCss: "text-end").Add(((Localizer["Cumulative %"])?.ToString() ?? ""), p => DataCell.Join((p.CumulativePercent.ToString("N1")), "%"), css: "text-end", headerCss: "text-end")))" dense="true" css="mb-0" />
-                    @if (!failureCausePareto.Any()) { <p class="text-muted small text-center py-3 mb-0">@Localizer["داده‌ای موجود نیست."]</p> }
+                    @if (!failureCausePareto.Any()) { <pems-text class="text-muted small text-center py-3 mb-0">@Localizer["داده‌ای موجود نیست."]</pems-text> }
                 </pems-content-card>
             </pems-col>
         </pems-row>
@@ -96,17 +96,17 @@
 
     <pems-tab-pane fade="true" id="tab-badactors">
         <pems-content-card>
-            <p class="text-muted small">هر رتبه با عوامل صریح توضیح داده می‌شود - نه یک امتیاز مبهم.</p>
+            <pems-text class="text-muted small">هر رتبه با عوامل صریح توضیح داده می‌شود - نه یک امتیاز مبهم.</pems-text>
             <pems-data-table data="@(DataRows.Of(badActors, c_ => c_.Add(((Localizer["Tag"])?.ToString() ?? ""), b => (object?)(b.TagNumber), css: "fw-bold").Add(((Localizer["Class"])?.ToString() ?? ""), b => (object?)(b.EquipmentClassName ?? "-"), css: "small text-muted").Add(((Localizer["Criticality"])?.ToString() ?? ""), b => (object?)(b.CriticalityClass ?? "-"), css: "small text-muted").Add(((Localizer["Failures"])?.ToString() ?? ""), b => (object?)(b.FailureCount), css: "text-end", headerCss: "text-end").Add(((Localizer["Repeat"])?.ToString() ?? ""), b => (object?)(b.RepeatFailureCount ?? 0), css: "text-end", headerCss: "text-end").Add(((Localizer["Downtime"])?.ToString() ?? ""), b => DataCell.Join((b.TotalDowntimeHours.ToString("N1")), "h"), css: "text-end", headerCss: "text-end").Add(((Localizer["MTTR"])?.ToString() ?? ""), b => (object?)(b.MTTRHours.HasValue ? $"{b.MTTRHours.Value:N1}h" : "N/A"), css: "text-end", headerCss: "text-end").Add("Maint. Count", b => (object?)(b.MaintenanceCount ?? 0), css: "text-end", headerCss: "text-end").Add("Primary Mode / Cause", b => DataCell.Join((b.PrimaryFailureMode ?? "-"), " / ", (b.PrimaryFailureCause ?? "-")), css: "small text-muted").Add("Why Ranked Here", b => (object?)(string.Join(" · ", b.RankFactors)), css: "small text-muted")))" dense="true" css="mb-0" />
-            @if (!badActors.Any()) { <p class="text-muted text-center py-4 mb-0">@Localizer["داده‌ای موجود نیست."]</p> }
+            @if (!badActors.Any()) { <pems-text class="text-muted text-center py-4 mb-0">@Localizer["داده‌ای موجود نیست."]</pems-text> }
         </pems-content-card>
     </pems-tab-pane>
 
     <pems-tab-pane fade="true" id="tab-trend">
         <pems-content-card>
-            <p class="text-muted small">هر نقطه تعداد رویداد واقعی (Observation Count) خودش را نشان می‌دهد - روندهای با نمونه‌ی کوچک باید با احتیاط تفسیر شوند.</p>
+            <pems-text class="text-muted small">هر نقطه تعداد رویداد واقعی (Observation Count) خودش را نشان می‌دهد - روندهای با نمونه‌ی کوچک باید با احتیاط تفسیر شوند.</pems-text>
             <pems-data-table data="@(DataRows.Of(monthlyTrend, c_ => c_.Add("Period", t => (object?)(t.PeriodLabel)).Add("Failures (Observations)", t => (object?)(t.FailureCount), css: "text-end", headerCss: "text-end").Add(((Localizer["Downtime"])?.ToString() ?? ""), t => DataCell.Join((t.TotalDowntimeHours.ToString("N1")), "h"), css: "text-end", headerCss: "text-end")))" dense="true" css="mb-0" />
-            @if (!monthlyTrend.Any()) { <p class="text-muted text-center py-4 mb-0">@Localizer["داده‌ای موجود نیست."]</p> }
+            @if (!monthlyTrend.Any()) { <pems-text class="text-muted text-center py-4 mb-0">@Localizer["داده‌ای موجود نیست."]</pems-text> }
         </pems-content-card>
     </pems-tab-pane>
 </pems-tab-content>

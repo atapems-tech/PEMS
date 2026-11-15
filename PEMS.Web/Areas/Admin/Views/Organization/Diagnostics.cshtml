@@ -12,7 +12,7 @@
 
 <pems-page-shell kind="admin">
     <pems-page-hero>
-        <p>@Localizer["Org_Diag_Intro"]</p>
+        <pems-text>@Localizer["Org_Diag_Intro"]</pems-text>
     </pems-page-hero>
     <pems-flex gap="2" css="mb-3">
         <pems-link class="vs-btn vs-btn--sm" asp-action="Index"><pems-icon name="bi-arrow-left" /> @Localizer["Org_Title"]</pems-link>
@@ -20,7 +20,7 @@
 
     <section class="vs-panel mb-3">
         <pems-heading level="2" class="vs-section__title"><pems-icon name="bi-clipboard-data" /> @Localizer["Org_Ready_Title"]</pems-heading>
-        <p class="small text-muted">@Localizer["Org_Ready_Note"]</p>
+        <pems-text class="small text-muted">@Localizer["Org_Ready_Note"]</pems-text>
         <pems-info-grid layout="rows" class="mb-0 small">
     <pems-info-item label="@Localizer["Org_Ready_ActivePositions"]">@rd.ActivePositions</pems-info-item>
     <pems-info-item label="@Localizer["Org_Ready_WithParent"]">@rd.PositionsWithParent</pems-info-item>
@@ -36,20 +36,20 @@
 
     <section class="vs-panel mb-3">
         <pems-heading level="2" class="vs-section__title"><pems-icon name="bi-intersect" /> @Localizer["Org_Cons_Title"]</pems-heading>
-        <p class="small text-muted">@Localizer["Org_Cons_Note"]</p>
-        <p class="small mb-1">
+        <pems-text class="small text-muted">@Localizer["Org_Cons_Note"]</pems-text>
+        <pems-text class="small mb-1">
             @foreach (var g in dc.GroupBy(r => r.Status).OrderBy(g => g.Key)) { <pems-badge tone="neutral" css="me-1">@g.Key: @g.Count()</pems-badge> }
             @if (!dc.Any()) { <span class="text-muted">@Localizer["Org_Cons_None"]</span> }
-        </p>
+        </pems-text>
         @if (dc.Any(r => r.Status != "CONSISTENT"))
         {
             <pems-table-scroll><pems-data-table data="@(DataRows.Of(dc.Where(r => r.Status != "CONSISTENT").Take(50), c_ => c_.Add(((Localizer["Org_Col_Holder"])?.ToString() ?? ""), r => (object?)(r.EmployeeName)).Add(((Localizer["Org_Cons_EmpDept"])?.ToString() ?? ""), r => (object?)(r.EmployeeDepartment ?? "—")).Add(((Localizer["Org_Col_Position"])?.ToString() ?? ""), r => (object?)(r.PrimaryPositionTitle)).Add(((Localizer["Org_Cons_PosDept"])?.ToString() ?? ""), r => (object?)(r.PositionDepartment ?? "—")).Add("", r => (object?)(r.Status), kind: DataCellKind.Code)))" enterprise="false" dense="true" css="table-enterprise" /></pems-table-scroll>
         }
         <pems-heading level="3" class="h6 mt-3">@Localizer["Org_Cons_Legacy"]</pems-heading>
-        <p class="small mb-1">
+        <pems-text class="small mb-1">
             @foreach (var g in lp.GroupBy(r => r.Status).OrderBy(g => g.Key)) { <pems-badge tone="neutral" css="me-1">@g.Key: @g.Count()</pems-badge> }
             @if (!lp.Any()) { <span class="text-muted">NO_CONFLICT (@Localizer["Org_Cons_LegacyNone"])</span> }
-        </p>
+        </pems-text>
     </section>
 
     <section class="vs-panel mb-3">

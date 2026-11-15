@@ -41,18 +41,18 @@
     {
         <pems-alert tone="danger" css="small">
             <strong>@Localizer["Pc_Msg_FixErrors"]</strong>
-            <ul class="mb-0">
-                @foreach (var m in PcMessages.FormatAll(Localizer, Model.Errors)) { <li>@m</li> }
-            </ul>
+            <pems-bullet-list class="mb-0">
+                @foreach (var m in PcMessages.FormatAll(Localizer, Model.Errors)) { <pems-bullet>@m</pems-bullet> }
+            </pems-bullet-list>
         </pems-alert>
     }
     @if (Model.Warnings.Any() || !string.IsNullOrEmpty(warningTemp))
     {
         <pems-alert tone="warning" css="small">
-            <ul class="mb-0">
-                @foreach (var m in PcMessages.FormatAll(Localizer, Model.Warnings)) { <li>@m</li> }
-                @if (!string.IsNullOrEmpty(warningTemp)) { <li>@warningTemp</li> }
-            </ul>
+            <pems-bullet-list class="mb-0">
+                @foreach (var m in PcMessages.FormatAll(Localizer, Model.Warnings)) { <pems-bullet>@m</pems-bullet> }
+                @if (!string.IsNullOrEmpty(warningTemp)) { <pems-bullet>@warningTemp</pems-bullet> }
+            </pems-bullet-list>
         </pems-alert>
     }
 
@@ -358,7 +358,7 @@
                 <div class="mb-2"><pems-label for="pc_DocumentNo">@L("DocumentNo")</pems-label><pems-input scale="small" id="pc_DocumentNo" form="pcForm" name="DocumentNo" value="@f.DocumentNo" maxlength="100" /></div>
 
                 <pems-label>@L("Attachments")</pems-label>
-                <ul class="list-unstyled small mb-2">
+                <pems-bullet-list class="list-unstyled small mb-2">
                     @foreach (var at in d.Attachments)
                     {
                         <pems-flex as="li" align="center" justify="between" gap="2" css="border-bottom py-1">
@@ -370,7 +370,7 @@
                             </pems-form>
                         </pems-flex>
                     }
-                </ul>
+                </pems-bullet-list>
                 @if (!d.Attachments.Any()) { <div class="text-muted small mb-2">@Localizer["Pc_Empty_Attachments"]</div> }
                 <pems-button plain="true" type="button" css="vs-btn vs-btn--sm" data-bs-toggle="modal" data-bs-target="#pcAttachModal"><pems-icon name="bi-upload" /> @Localizer["Pc_Btn_Upload"]</pems-button>
                 <pems-help-text>@Localizer["Pc_Hint_PosItem"]</pems-help-text>

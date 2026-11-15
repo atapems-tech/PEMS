@@ -81,10 +81,10 @@
     <pems-tab-pane fade="true" active="true" id="tab-groups" role="tabpanel">
         <pems-content-card>
             <pems-flex justify="between" align="center" css="mb-3">
-                <p class="text-muted small mb-0">
+                <pems-text class="text-muted small mb-0">
                     گروه‌بندی تعمیراتی دقیق‌تر از Discipline (مثلاً «Rotating Equipment» زیر «Mechanical») -
                     Team ها زیر همین گروه‌ها تعریف می‌شوند.
-                </p>
+                </pems-text>
                 <pems-button tone="primary" size="small" css="text-nowrap" type="button" data-bs-toggle="modal" data-bs-target="#createGroupModal">
                     <pems-icon name="bi-plus-lg" /> @Localizer["گروه جدید"]
                 </pems-button>
@@ -111,17 +111,17 @@
                     }
                 </pems-table-body>
             </pems-table>
-            @if (!Model.Any()) { <p class="text-muted text-center py-4">هنوز گروه تعمیراتی‌ای ساخته نشده.</p> }
+            @if (!Model.Any()) { <pems-text class="text-muted text-center py-4">هنوز گروه تعمیراتی‌ای ساخته نشده.</pems-text> }
         </pems-content-card>
     </pems-tab-pane>
 
     <pems-tab-pane fade="true" id="tab-skills" role="tabpanel">
         <pems-content-card>
             <pems-flex justify="between" align="center" css="mb-3">
-                <p class="text-muted small mb-0">
+                <pems-text class="text-muted small mb-0">
                     فهرست مشترک مهارت‌ها - از صفحه‌ی هر کارمند به او تخصیص داده می‌شود، یا به‌عنوان
                     پیش‌نیاز روی یک Work Order ثبت می‌شود.
-                </p>
+                </pems-text>
                 <pems-button tone="primary" size="small" css="text-nowrap" type="button" data-bs-toggle="modal" data-bs-target="#createSkillModal">
                     <pems-icon name="bi-plus-lg" /> @Localizer["مهارت جدید"]
                 </pems-button>
@@ -146,16 +146,16 @@
                     }
                 </pems-table-body>
             </pems-table>
-            @if (!skills.Any()) { <p class="text-muted text-center py-4">@Localizer["هنوز مهارتی ساخته نشده."]</p> }
+            @if (!skills.Any()) { <pems-text class="text-muted text-center py-4">@Localizer["هنوز مهارتی ساخته نشده."]</pems-text> }
         </pems-content-card>
     </pems-tab-pane>
 
     <pems-tab-pane fade="true" id="tab-qualifications" role="tabpanel">
         <pems-content-card>
             <pems-flex justify="between" align="center" css="mb-3">
-                <p class="text-muted small mb-0">
+                <pems-text class="text-muted small mb-0">
                     فهرست مشترک انواع صلاحیت - نمونه‌ی هر کارمند از صفحه‌ی جزئیات همان کارمند ثبت می‌شود.
-                </p>
+                </pems-text>
                 <pems-button tone="primary" size="small" css="text-nowrap" type="button" data-bs-toggle="modal" data-bs-target="#createQualificationModal">
                     <pems-icon name="bi-plus-lg" /> @Localizer["صلاحیت جدید"]
                 </pems-button>
@@ -180,16 +180,16 @@
                     }
                 </pems-table-body>
             </pems-table>
-            @if (!qualifications.Any()) { <p class="text-muted text-center py-4">هنوز صلاحیتی ساخته نشده.</p> }
+            @if (!qualifications.Any()) { <pems-text class="text-muted text-center py-4">هنوز صلاحیتی ساخته نشده.</pems-text> }
         </pems-content-card>
     </pems-tab-pane>
 
     <pems-tab-pane fade="true" id="tab-certifications" role="tabpanel">
         <pems-content-card>
             <pems-flex justify="between" align="center" css="mb-3">
-                <p class="text-muted small mb-0">
+                <pems-text class="text-muted small mb-0">
                     فهرست مشترک انواع گواهینامه - شماره‌ی گواهی و تاریخ انقضای هر کارمند از صفحه‌ی جزئیات همان کارمند ثبت می‌شود.
-                </p>
+                </pems-text>
                 <pems-button tone="primary" size="small" css="text-nowrap" type="button" data-bs-toggle="modal" data-bs-target="#createCertificationModal">
                     <pems-icon name="bi-plus-lg" /> @Localizer["گواهینامه جدید"]
                 </pems-button>
@@ -214,17 +214,17 @@
                     }
                 </pems-table-body>
             </pems-table>
-            @if (!certifications.Any()) { <p class="text-muted text-center py-4">هنوز گواهینامه‌ای ساخته نشده.</p> }
+            @if (!certifications.Any()) { <pems-text class="text-muted text-center py-4">هنوز گواهینامه‌ای ساخته نشده.</pems-text> }
         </pems-content-card>
     </pems-tab-pane>
 
     <pems-tab-pane fade="true" id="tab-maintenance-types" role="tabpanel">
         <pems-content-card>
             <pems-flex justify="between" align="center" css="mb-3">
-                <p class="text-muted small mb-0">
+                <pems-text class="text-muted small mb-0">
                     طبقه‌بندی استاندارد «نوع کار» (Corrective/Preventive/Predictive/...) - مرجع
                     داده‌محور برای Work Order و کاتالوگ Activity، طبق ISO 14224/SMRP.
-                </p>
+                </pems-text>
                 <pems-button tone="primary" size="small" css="text-nowrap" type="button" data-bs-toggle="modal" data-bs-target="#createMaintenanceTypeModal">
                     <pems-icon name="bi-plus-lg" /> @Localizer["Maintenance Type جدید"]
                 </pems-button>
@@ -250,17 +250,17 @@
                     }
                 </pems-table-body>
             </pems-table>
-            @if (!maintenanceTypes.Any()) { <p class="text-muted text-center py-4">هنوز Maintenance Type ای ساخته نشده.</p> }
+            @if (!maintenanceTypes.Any()) { <pems-text class="text-muted text-center py-4">هنوز Maintenance Type ای ساخته نشده.</pems-text> }
         </pems-content-card>
     </pems-tab-pane>
 
     <pems-tab-pane fade="true" id="tab-strategy-types" role="tabpanel">
         <pems-content-card>
             <pems-flex justify="between" align="center" css="mb-3">
-                <p class="text-muted small mb-0">
+                <pems-text class="text-muted small mb-0">
                     سیاست RCM («چرا این استراتژی انتخاب شد» - PM/PDM/CBM/CM/EM/RTF/RCM/...) - جدا از
                     Maintenance Type بالا (که «نوع کار» را طبقه‌بندی می‌کند).
-                </p>
+                </pems-text>
                 <pems-button tone="primary" size="small" css="text-nowrap" type="button" data-bs-toggle="modal" data-bs-target="#createStrategyTypeModal">
                     <pems-icon name="bi-plus-lg" /> @Localizer["Strategy Type جدید"]
                 </pems-button>
@@ -286,17 +286,17 @@
                     }
                 </pems-table-body>
             </pems-table>
-            @if (!strategyTypes.Any()) { <p class="text-muted text-center py-4">هنوز Strategy Type ای ساخته نشده.</p> }
+            @if (!strategyTypes.Any()) { <pems-text class="text-muted text-center py-4">هنوز Strategy Type ای ساخته نشده.</pems-text> }
         </pems-content-card>
     </pems-tab-pane>
 
     <pems-tab-pane fade="true" id="tab-equipment-classes" role="tabpanel">
         <pems-content-card>
             <pems-flex justify="between" align="center" css="mb-3">
-                <p class="text-muted small mb-0">
+                <pems-text class="text-muted small mb-0">
                     طبقه‌بندی تجهیزات (مثلاً «Centrifugal Pump») - جدا از EquipmentType متنی روی
                     خودِ Equipment؛ برای پیوند Activity ↔ تجهیز به‌صورت داده‌محور استفاده می‌شود.
-                </p>
+                </pems-text>
                 <pems-button tone="primary" size="small" css="text-nowrap" type="button" data-bs-toggle="modal" data-bs-target="#createEquipmentClassModal">
                     <pems-icon name="bi-plus-lg" /> @Localizer["Equipment Class جدید"]
                 </pems-button>
@@ -322,17 +322,17 @@
                     }
                 </pems-table-body>
             </pems-table>
-            @if (!equipmentClasses.Any()) { <p class="text-muted text-center py-4">هنوز Equipment Class ای ساخته نشده.</p> }
+            @if (!equipmentClasses.Any()) { <pems-text class="text-muted text-center py-4">هنوز Equipment Class ای ساخته نشده.</pems-text> }
         </pems-content-card>
     </pems-tab-pane>
 
     <pems-tab-pane fade="true" id="tab-standards" role="tabpanel">
         <pems-content-card>
             <pems-flex justify="between" align="center" css="mb-3">
-                <p class="text-muted small mb-0">
+                <pems-text class="text-muted small mb-0">
                     فقط ابرداده‌ی استانداردهای صنعتی (سازمان/شماره/عنوان/دسته) - هیچ متن دارای
                     Copyright خودِ استاندارد این‌جا ذخیره نمی‌شود.
-                </p>
+                </pems-text>
                 <pems-button tone="primary" size="small" css="text-nowrap" type="button" data-bs-toggle="modal" data-bs-target="#createStandardModal">
                     <pems-icon name="bi-plus-lg" /> @Localizer["Standard Reference جدید"]
                 </pems-button>
@@ -360,17 +360,17 @@
                     }
                 </pems-table-body>
             </pems-table>
-            @if (!standardReferences.Any()) { <p class="text-muted text-center py-4">هنوز Standard Reference ای ساخته نشده.</p> }
+            @if (!standardReferences.Any()) { <pems-text class="text-muted text-center py-4">هنوز Standard Reference ای ساخته نشده.</pems-text> }
         </pems-content-card>
     </pems-tab-pane>
 
     <pems-tab-pane fade="true" id="tab-activities" role="tabpanel">
         <pems-content-card>
             <pems-flex justify="between" align="center" css="mb-3">
-                <p class="text-muted small mb-0">
+                <pems-text class="text-muted small mb-0">
                     کاتالوگ فعالیت‌های استاندارد تعمیراتی (مثلاً «Vibration Measurement») - زیر یک
                     Maintenance Group و Maintenance Type دسته‌بندی می‌شود.
-                </p>
+                </pems-text>
                 <pems-button tone="primary" size="small" css="text-nowrap" type="button" data-bs-toggle="modal" data-bs-target="#createActivityModal">
                     <pems-icon name="bi-plus-lg" /> Activity جدید
                 </pems-button>
@@ -397,17 +397,17 @@
                     }
                 </pems-table-body>
             </pems-table>
-            @if (!maintenanceActivities.Any()) { <p class="text-muted text-center py-4">هنوز Activity ای ساخته نشده.</p> }
+            @if (!maintenanceActivities.Any()) { <pems-text class="text-muted text-center py-4">هنوز Activity ای ساخته نشده.</pems-text> }
         </pems-content-card>
     </pems-tab-pane>
 
     <pems-tab-pane fade="true" id="tab-failure-modes" role="tabpanel">
         <pems-content-card>
-            <p class="text-muted small mb-3">
+            <pems-text class="text-muted small mb-3">
                 طبق ISO 14224 - خط‌مبنای Failure Mode به‌ازای خانواده‌ی تجهیز (Equipment Class)؛
                 این تب فقط از طریق Seed سیستمی ساخته می‌شود (نه فرم دستی) چون هر Mode به چند
                 Cause/Effect/Consequence مرتبط است.
-            </p>
+            </pems-text>
             <pems-table kind="enterprise">
                 <pems-table-head><pems-table-row><pems-table-header>@Localizer["Code"]</pems-table-header><pems-table-header>@Localizer["Name"]</pems-table-header><pems-table-header>@Localizer["Equipment Class"]</pems-table-header><pems-table-header>@Localizer["Effect"]</pems-table-header><pems-table-header>@Localizer["Consequence"]</pems-table-header><pems-table-header>@Localizer["System Default"]</pems-table-header><pems-table-header></pems-table-header></pems-table-row></pems-table-head>
                 <pems-table-body>
@@ -430,17 +430,17 @@
                     }
                 </pems-table-body>
             </pems-table>
-            @if (!failureModes.Any()) { <p class="text-muted text-center py-4">هنوز Failure Mode ای Seed نشده.</p> }
+            @if (!failureModes.Any()) { <pems-text class="text-muted text-center py-4">هنوز Failure Mode ای Seed نشده.</pems-text> }
         </pems-content-card>
     </pems-tab-pane>
 
     <pems-tab-pane fade="true" id="tab-pm-templates" role="tabpanel">
         <pems-content-card>
-            <p class="text-muted small mb-3">
+            <pems-text class="text-muted small mb-3">
                 قالب‌های نگهداری پیشگیرانه‌ی قابل‌استفاده‌ی مجدد، مقیاس‌بندی‌شده روی Equipment
                 Class (نه یک تجهیز خاص) - تبدیل به یک MaintenancePlan واقعی هنوز نیازمند تأیید
                 انسانی/تخصیص JobPlan است.
-            </p>
+            </pems-text>
             <pems-table kind="enterprise">
                 <pems-table-head><pems-table-row><pems-table-header>@Localizer["Code"]</pems-table-header><pems-table-header>@Localizer["Name"]</pems-table-header><pems-table-header>@Localizer["Equipment Class"]</pems-table-header><pems-table-header>@Localizer["Trigger"]</pems-table-header><pems-table-header>Interval</pems-table-header><pems-table-header>@Localizer["System Default"]</pems-table-header><pems-table-header></pems-table-header></pems-table-row></pems-table-head>
                 <pems-table-body>
@@ -463,18 +463,18 @@
                     }
                 </pems-table-body>
             </pems-table>
-            @if (!pmTemplates.Any()) { <p class="text-muted text-center py-4">هنوز PM Template ای Seed نشده.</p> }
+            @if (!pmTemplates.Any()) { <pems-text class="text-muted text-center py-4">هنوز PM Template ای Seed نشده.</pems-text> }
         </pems-content-card>
     </pems-tab-pane>
 
     <pems-tab-pane fade="true" id="tab-evaluation-profiles" role="tabpanel">
         <pems-content-card>
             <pems-flex justify="between" align="center" css="mb-3">
-                <p class="text-muted small mb-0">
+                <pems-text class="text-muted small mb-0">
                     پروفایل ارزیابی نسخه‌دار برای نقاط پایش وضعیت (Condition Monitoring) - آستانه‌ها
                     (Normal/Warning/Alarm/Critical) جداگانه و فقط با مقدار واقعی مهندسی ثبت می‌شوند؛
                     نبودِ یک ردیف Limit یعنی «هنوز پیکربندی نشده»، نه صفر/عادی فرضی.
-                </p>
+                </pems-text>
                 <pems-button tone="primary" size="small" css="text-nowrap" type="button" data-bs-toggle="modal" data-bs-target="#createEvaluationProfileModal">
                     <pems-icon name="bi-plus-lg" /> @Localizer["Evaluation Profile جدید"]
                 </pems-button>
@@ -520,16 +520,16 @@
                     }
                 </pems-table-body>
             </pems-table>
-            @if (!evaluationProfiles.Any()) { <p class="text-muted text-center py-4">@Localizer["هنوز Evaluation Profile ای ساخته نشده."]</p> }
+            @if (!evaluationProfiles.Any()) { <pems-text class="text-muted text-center py-4">@Localizer["هنوز Evaluation Profile ای ساخته نشده."]</pems-text> }
         </pems-content-card>
     </pems-tab-pane>
 
     <pems-tab-pane fade="true" id="tab-priority-mappings" role="tabpanel">
         <pems-content-card>
             <pems-flex justify="between" align="center" css="mb-3">
-                <p class="text-muted small mb-0">
+                <pems-text class="text-muted small mb-0">
                     @Localizer["این نگاشت تعیین می‌کند که یافتن یک وضعیت (Condition) چه اولویتی (Priority) برای Work Request نتیجه‌شده دارد - قبلاً این نگاشت مستقیم در کد برنامه نوشته شده بود؛ حالا اینجا قابل‌مشاهده و قابل‌ویرایش است."]
-                </p>
+                </pems-text>
                 <pems-button tone="primary" size="small" css="text-nowrap" type="button" data-bs-toggle="modal" data-bs-target="#createPriorityMappingModal">
                     <pems-icon name="bi-plus-lg" /> @Localizer["نگاشت جدید"]
                 </pems-button>
@@ -564,7 +564,7 @@
                     }
                 </pems-table-body>
             </pems-table>
-            @if (!conditionPriorityMappings.Any()) { <p class="text-muted text-center py-4">@Localizer["هنوز نگاشتی ساخته نشده."]</p> }
+            @if (!conditionPriorityMappings.Any()) { <pems-text class="text-muted text-center py-4">@Localizer["هنوز نگاشتی ساخته نشده."]</pems-text> }
         </pems-content-card>
     </pems-tab-pane>
 </pems-tab-content>
@@ -766,7 +766,7 @@
         <pems-form asp-action="CreateStandardReference" method="post">
             <pems-modal-header>@Localizer["Standard Reference جدید"]</pems-modal-header>
             <pems-modal-body>
-                <p class="small text-muted">فقط ابرداده - هرگز متن دارای Copyright خودِ استاندارد را این‌جا وارد نکنید.</p>
+                <pems-text class="small text-muted">فقط ابرداده - هرگز متن دارای Copyright خودِ استاندارد را این‌جا وارد نکنید.</pems-text>
                 <div class="mb-2">
                     <pems-label css="small">@Localizer["Code"]</pems-label>
                     <pems-input scale="small" name="code" required placeholder="مثلاً API-579" />
@@ -871,7 +871,7 @@
         <pems-form asp-action="CreateEvaluationProfile" method="post">
             <pems-modal-header>@Localizer["Evaluation Profile جدید"]</pems-modal-header>
             <pems-modal-body>
-                <p class="small text-muted">@Localizer["فقط تعریف پروفایل - آستانه‌های واقعی را بعداً از دکمه‌ی «Add Limit» هر ردیف وارد کنید."]</p>
+                <pems-text class="small text-muted">@Localizer["فقط تعریف پروفایل - آستانه‌های واقعی را بعداً از دکمه‌ی «Add Limit» هر ردیف وارد کنید."]</pems-text>
                 <div class="mb-2">
                     <pems-label css="small">@Localizer["Code"]</pems-label>
                     <pems-input scale="small" name="code" required placeholder="@Localizer["مثلاً VIB-PUMP-ISO20816"]" />
@@ -927,7 +927,7 @@
         <pems-form asp-action="AddEvaluationLimit" method="post">
             <pems-modal-header>@Localizer["Add Limit"] — <span id="addLimitProfileLabel"></span></pems-modal-header>
             <pems-modal-body>
-                <p class="small text-muted">@Localizer["فقط مقدار واقعی مهندسی وارد کنید - هیچ مقداری حدس زده نمی‌شود؛ خالی گذاشتن هر دو فیلد رد می‌شود."]</p>
+                <pems-text class="small text-muted">@Localizer["فقط مقدار واقعی مهندسی وارد کنید - هیچ مقداری حدس زده نمی‌شود؛ خالی گذاشتن هر دو فیلد رد می‌شود."]</pems-text>
                 <input type="hidden" name="evaluationProfileId" id="addLimitProfileId" />
                 <div class="mb-2">
                     <pems-label css="small">@Localizer["Status"]</pems-label>

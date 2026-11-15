@@ -75,13 +75,13 @@
                     @L(Model.IsActive ? "Active" : "Inactive", Model.IsActive ? "فعال" : "غیرفعال")
                 </pems-badge>
             </pems-flex>
-            <p class="text-muted mb-1">
+            <pems-text class="text-muted mb-1">
                 @Dash(Model.Position) &bull; @Dash(Model.Department?.Name)
                 @if (Model.Discipline != null) { <text>&bull; @Model.Discipline.Name</text> }
-            </p>
+            </pems-text>
             @if (!string.IsNullOrWhiteSpace(Model.PersonnelCode))
             {
-                <p class="small text-muted font-monospace mb-3">ID: @Model.PersonnelCode</p>
+                <pems-text class="small text-muted font-monospace mb-3">ID: @Model.PersonnelCode</pems-text>
             }
             <pems-flex gap="2" wrap="true" css="mt-2">
                 <pems-button tone="primary" size="small" type="button" data-bs-toggle="modal" data-bs-target="#editProfileModal">
@@ -105,23 +105,23 @@
             </pems-flex>
             <pems-row gap="3">
                 <pems-col sm="6">
-                    <p class="text-uppercase text-muted small mb-1">@L("Organizational Position", "سمت سازمانی")</p>
-                    <p class="mb-0 fw-semibold">@Dash(orgCtx?.PrimaryPositionTitle)</p>
+                    <pems-text class="text-uppercase text-muted small mb-1">@L("Organizational Position", "سمت سازمانی")</pems-text>
+                    <pems-text class="mb-0 fw-semibold">@Dash(orgCtx?.PrimaryPositionTitle)</pems-text>
                     @if (!string.IsNullOrWhiteSpace(Model.Position) && Model.Position != orgCtx?.PrimaryPositionTitle)
                     {
-                        <p class="small text-muted mb-0">@L("Title on file", "عنوان ثبت‌شده"): @Model.Position</p>
+                        <pems-text class="small text-muted mb-0">@L("Title on file", "عنوان ثبت‌شده"): @Model.Position</pems-text>
                     }
                 </pems-col>
                 <pems-col sm="6">
-                    <p class="text-uppercase text-muted small mb-1">@L("Department", "بخش")</p>
-                    <p class="mb-0 fw-semibold">@Dash(Model.Department?.Name)</p>
+                    <pems-text class="text-uppercase text-muted small mb-1">@L("Department", "بخش")</pems-text>
+                    <pems-text class="mb-0 fw-semibold">@Dash(Model.Department?.Name)</pems-text>
                 </pems-col>
                 <pems-col sm="6">
-                    <p class="text-uppercase text-muted small mb-1">@L("Discipline", "رشته")</p>
-                    <p class="mb-0 fw-semibold">@Dash(Model.Discipline?.Name)</p>
+                    <pems-text class="text-uppercase text-muted small mb-1">@L("Discipline", "رشته")</pems-text>
+                    <pems-text class="mb-0 fw-semibold">@Dash(Model.Discipline?.Name)</pems-text>
                 </pems-col>
                 <pems-col sm="6">
-                    <p class="text-uppercase text-muted small mb-1">@L("Team Supervisor", "سرپرست تیم")</p>
+                    <pems-text class="text-uppercase text-muted small mb-1">@L("Team Supervisor", "سرپرست تیم")</pems-text>
                     @if (manager != null)
                     {
                         <pems-flex align="center" gap="2">
@@ -133,11 +133,11 @@
                     }
                     else
                     {
-                        <p class="mb-0 fw-semibold">—</p>
+                        <pems-text class="mb-0 fw-semibold">—</pems-text>
                     }
                 </pems-col>
                 <pems-col sm="6">
-                    <p class="text-uppercase text-muted small mb-1">@L("Direct Manager", "مدیر مستقیم")</p>
+                    <pems-text class="text-uppercase text-muted small mb-1">@L("Direct Manager", "مدیر مستقیم")</pems-text>
                     @if (directManager.IssueCode == null && directManager.Managers.Count > 0)
                     {
                         @foreach (var dm in directManager.Managers)
@@ -147,31 +147,31 @@
                     }
                     else
                     {
-                        <p class="mb-0 fw-semibold">—</p>
-                        <p class="small text-muted mb-0" title="@directManager.IssueCode">@(directManager.IssueCode == null ? "" : Localizer["Org_Issue_" + directManager.IssueCode].Value)</p>
+                        <pems-text class="mb-0 fw-semibold">—</pems-text>
+                        <pems-text class="small text-muted mb-0" title="@directManager.IssueCode">@(directManager.IssueCode == null ? "" : Localizer["Org_Issue_" + directManager.IssueCode].Value)</pems-text>
                     }
                 </pems-col>
                 <pems-col sm="6">
-                    <p class="text-uppercase text-muted small mb-1">@L("Hire Date", "تاریخ استخدام")</p>
-                    <p class="mb-0 fw-semibold">@(Model.HireDate.HasValue ? Model.HireDate.Value.ToString("yyyy-MM-dd") : "—")</p>
+                    <pems-text class="text-uppercase text-muted small mb-1">@L("Hire Date", "تاریخ استخدام")</pems-text>
+                    <pems-text class="mb-0 fw-semibold">@(Model.HireDate.HasValue ? Model.HireDate.Value.ToString("yyyy-MM-dd") : "—")</pems-text>
                 </pems-col>
                 <pems-col sm="6">
-                    <p class="text-uppercase text-muted small mb-1">@L("Personnel Type", "نوع پرسنل")</p>
-                    <p class="mb-0 fw-semibold">
+                    <pems-text class="text-uppercase text-muted small mb-1">@L("Personnel Type", "نوع پرسنل")</pems-text>
+                    <pems-text class="mb-0 fw-semibold">
                         @Model.PersonnelType
                         @if (Model.PersonnelType != "Internal" && Model.VendorRef != null)
                         {
                             <span class="text-muted fw-normal">(@Model.VendorRef.Name)</span>
                         }
-                    </p>
+                    </pems-text>
                 </pems-col>
                 <pems-col sm="6">
-                    <p class="text-uppercase text-muted small mb-1"><pems-icon name="bi-geo-alt" /> @L("Location", "مکان")</p>
-                    <p class="mb-0 fw-semibold">@Dash(Model.Location)</p>
+                    <pems-text class="text-uppercase text-muted small mb-1"><pems-icon name="bi-geo-alt" /> @L("Location", "مکان")</pems-text>
+                    <pems-text class="mb-0 fw-semibold">@Dash(Model.Location)</pems-text>
                 </pems-col>
                 <pems-col sm="6">
-                    <p class="text-uppercase text-muted small mb-1"><pems-icon name="bi-clock" /> @L("Shift", "شیفت")</p>
-                    <p class="mb-0 fw-semibold">@Dash(Model.Shift)</p>
+                    <pems-text class="text-uppercase text-muted small mb-1"><pems-icon name="bi-clock" /> @L("Shift", "شیفت")</pems-text>
+                    <pems-text class="mb-0 fw-semibold">@Dash(Model.Shift)</pems-text>
                 </pems-col>
             </pems-row>
         </pems-content-card>
@@ -185,16 +185,16 @@
             </pems-flex>
             @if (currentMembership != null)
             {
-                <p class="text-uppercase text-muted small mb-1">@L("Team", "تیم")</p>
-                <p class="fw-semibold mb-2">@Dash(currentMembership.Team?.Name)</p>
-                <p class="text-uppercase text-muted small mb-1">@L("Role in Team", "نقش در تیم")</p>
-                <p class="fw-semibold mb-2">@Dash(currentMembership.Role?.Name)</p>
-                <p class="text-uppercase text-muted small mb-1">@L("Member Since", "عضو از تاریخ")</p>
-                <p class="fw-semibold mb-0">@currentMembership.JoinedDate.ToString("yyyy-MM-dd")</p>
+                <pems-text class="text-uppercase text-muted small mb-1">@L("Team", "تیم")</pems-text>
+                <pems-text class="fw-semibold mb-2">@Dash(currentMembership.Team?.Name)</pems-text>
+                <pems-text class="text-uppercase text-muted small mb-1">@L("Role in Team", "نقش در تیم")</pems-text>
+                <pems-text class="fw-semibold mb-2">@Dash(currentMembership.Role?.Name)</pems-text>
+                <pems-text class="text-uppercase text-muted small mb-1">@L("Member Since", "عضو از تاریخ")</pems-text>
+                <pems-text class="fw-semibold mb-0">@currentMembership.JoinedDate.ToString("yyyy-MM-dd")</pems-text>
             }
             else
             {
-                <p class="text-muted small text-center py-3 mb-0">@L("No active team membership.", "عضویت فعالی در تیمی ثبت نشده.")</p>
+                <pems-text class="text-muted small text-center py-3 mb-0">@L("No active team membership.", "عضویت فعالی در تیمی ثبت نشده.")</pems-text>
             }
         </pems-content-card>
     </pems-col>
@@ -210,28 +210,28 @@
             </pems-flex>
             @if (linkedUser == null)
             {
-                <p class="text-muted mb-0">@L("No system account is linked to this employee.", "حساب کاربری به این کارمند متصل نیست.")</p>
+                <pems-text class="text-muted mb-0">@L("No system account is linked to this employee.", "حساب کاربری به این کارمند متصل نیست.")</pems-text>
             }
             else
             {
                 <pems-row gap="3">
                     <pems-col sm="4">
-                        <p class="text-uppercase text-muted small mb-1">@L("Username", "نام کاربری")</p>
-                        <p class="mb-0 fw-semibold">@linkedUser.UserName</p>
+                        <pems-text class="text-uppercase text-muted small mb-1">@L("Username", "نام کاربری")</pems-text>
+                        <pems-text class="mb-0 fw-semibold">@linkedUser.UserName</pems-text>
                     </pems-col>
                     <pems-col sm="2">
-                        <p class="text-uppercase text-muted small mb-1">@L("Status", "وضعیت")</p>
-                        <p class="mb-0"><pems-badge tone="@(linkedUser.IsActive ? "success" : "neutral")">@(linkedUser.IsActive ? L("Active", "فعال") : L("Inactive", "غیرفعال"))</pems-badge></p>
+                        <pems-text class="text-uppercase text-muted small mb-1">@L("Status", "وضعیت")</pems-text>
+                        <pems-text class="mb-0"><pems-badge tone="@(linkedUser.IsActive ? "success" : "neutral")">@(linkedUser.IsActive ? L("Active", "فعال") : L("Inactive", "غیرفعال"))</pems-badge></pems-text>
                     </pems-col>
                     <pems-col sm="6">
-                        <p class="text-uppercase text-muted small mb-1">@L("Roles", "نقش‌ها")</p>
-                        <p class="mb-0">
+                        <pems-text class="text-uppercase text-muted small mb-1">@L("Roles", "نقش‌ها")</pems-text>
+                        <pems-text class="mb-0">
                             @if (((IEnumerable<string>)linkedUser.Roles).Any())
                             {
                                 foreach (var role in (IEnumerable<string>)linkedUser.Roles) { <pems-badge tone="info" css="me-1">@role</pems-badge> }
                             }
                             else { <span class="text-muted">—</span> }
-                        </p>
+                        </pems-text>
                     </pems-col>
                 </pems-row>
                 @if (User.IsInRole(PEMS.Persistence.Identity.SystemRoles.SystemAdmin))
@@ -258,8 +258,8 @@
                     <pems-icon name="bi-phone" />
                 </pems-flex>
                 <div>
-                    <p class="text-uppercase text-muted small mb-1">@L("Mobile Phone", "تلفن همراه")</p>
-                    <p class="fw-semibold mb-0 font-monospace">@Dash(Model.Phone)</p>
+                    <pems-text class="text-uppercase text-muted small mb-1">@L("Mobile Phone", "تلفن همراه")</pems-text>
+                    <pems-text class="fw-semibold mb-0 font-monospace">@Dash(Model.Phone)</pems-text>
                 </div>
             </pems-flex>
         </pems-col>
@@ -269,14 +269,14 @@
                     <pems-icon name="bi-envelope" />
                 </pems-flex>
                 <div class="overflow-hidden">
-                    <p class="text-uppercase text-muted small mb-1">@L("Work Email", "ایمیل کاری")</p>
+                    <pems-text class="text-uppercase text-muted small mb-1">@L("Work Email", "ایمیل کاری")</pems-text>
                     @if (!string.IsNullOrWhiteSpace(Model.Email))
                     {
                         <pems-link href="mailto:@Model.Email" class="fw-semibold text-decoration-none text-truncate d-block">@Model.Email</pems-link>
                     }
                     else
                     {
-                        <p class="fw-semibold mb-0">—</p>
+                        <pems-text class="fw-semibold mb-0">—</pems-text>
                     }
                 </div>
             </pems-flex>
@@ -287,8 +287,8 @@
                     <pems-icon name="bi-house" />
                 </pems-flex>
                 <div>
-                    <p class="text-uppercase text-muted small mb-1">@L("Home Address", "آدرس منزل")</p>
-                    <p class="fw-semibold mb-0">@Dash(Model.HomeAddress)</p>
+                    <pems-text class="text-uppercase text-muted small mb-1">@L("Home Address", "آدرس منزل")</pems-text>
+                    <pems-text class="fw-semibold mb-0">@Dash(Model.HomeAddress)</pems-text>
                 </div>
             </pems-flex>
         </pems-col>
@@ -306,12 +306,12 @@
                 </pems-button>
             </pems-flex>
             <pems-data-table data="@(DataRows.Of(laborRates, c_ => c_.Add(((L("Type", "نوع"))?.ToString() ?? ""), r => (object?)(r.RateType)).Add(((L("Rate", "نرخ"))?.ToString() ?? ""), r => (object?)(DataCell.Group((r.Rate.ToString("N0")), " ", r.Currency))).Add(((L("From", "از تاریخ"))?.ToString() ?? ""), r => (object?)((r.EffectiveFrom.ToString("yyyy-MM-dd"))), css: "small").Add(((L("To", "تا تاریخ"))?.ToString() ?? ""), r => (object?)((r.EffectiveTo?.ToString("yyyy-MM-dd") ?? L("Current", "فعلی"))), css: "small"), rowClass: r => (r.EffectiveTo == null ? "table-success" : "")))" dense="true" />
-            @if (!laborRates.Any()) { <p class="text-muted small text-center py-2">@L("No rate recorded.", "نرخی ثبت نشده.")</p> }
-            <p class="text-muted small mb-0">
+            @if (!laborRates.Any()) { <pems-text class="text-muted small text-center py-2">@L("No rate recorded.", "نرخی ثبت نشده.")</pems-text> }
+            <pems-text class="text-muted small mb-0">
                 <pems-icon name="bi-info-circle" /> @L(
                     "A new rate does not overwrite the previous one - it only closes it (EffectiveTo), preserving history. Past work order costs remain unchanged since the rate is snapshotted at time of use.",
                     "نرخ جدید، نرخ قبلی رو Overwrite نمی‌کنه - فقط می‌بندتش (EffectiveTo) و تاریخچه حفظ می‌شه. هزینه‌ی WorkOrderهای قدیمی هم تغییر نمی‌کنه چون نرخ موقع ثبت Snapshot می‌شه.")
-            </p>
+            </pems-text>
         </pems-content-card>
     </pems-col>
 
@@ -319,7 +319,7 @@
         <pems-content-card css="h-100">
             <pems-flex as="h6" align="center" gap="2" css="mb-3 pb-2 border-bottom"><pems-icon name="bi-diagram-3" css="text-warning" /> @L("Team Membership History", "تاریخچه‌ی عضویت تیم")</pems-flex>
             <pems-data-table data="@(DataRows.Of(teamHistory, c_ => c_.Add(((L("Team", "تیم"))?.ToString() ?? ""), m => (object?)(m.Team?.Name)).Add(((L("Role", "نقش"))?.ToString() ?? ""), m => (object?)(m.Role?.Name), css: "small").Add(((L("From", "از"))?.ToString() ?? ""), m => (object?)((m.JoinedDate.ToString("yyyy-MM-dd"))), css: "small").Add(((L("To", "تا"))?.ToString() ?? ""), m => (object?)((m.LeftDate?.ToString("yyyy-MM-dd") ?? (m.IsActive ? L("Current", "فعلی") : "-"))), css: "small"), rowClass: m => (m.IsActive ? "table-success" : "")))" dense="true" />
-            @if (!teamHistory.Any()) { <p class="text-muted small text-center py-2">@L("No membership recorded.", "عضویتی ثبت نشده.")</p> }
+            @if (!teamHistory.Any()) { <pems-text class="text-muted small text-center py-2">@L("No membership recorded.", "عضویتی ثبت نشده.")</pems-text> }
         </pems-content-card>
     </pems-col>
 
@@ -331,7 +331,7 @@
                     <pems-icon name="bi-plus-lg" /> @L("Add", "افزودن")
                 </pems-button>
             </pems-flex>
-            <ul class="list-unstyled mb-0">
+            <pems-bullet-list class="list-unstyled mb-0">
                 @foreach (var es in employeeSkills)
                 {
                     <pems-flex as="li" justify="between" align="center" css="border-bottom py-2">
@@ -347,8 +347,8 @@
                         </pems-form>
                     </pems-flex>
                 }
-            </ul>
-            @if (!employeeSkills.Any()) { <p class="text-muted small text-center py-2 mb-0">@L("No skills recorded.", "مهارتی ثبت نشده.")</p> }
+            </pems-bullet-list>
+            @if (!employeeSkills.Any()) { <pems-text class="text-muted small text-center py-2 mb-0">@L("No skills recorded.", "مهارتی ثبت نشده.")</pems-text> }
         </pems-content-card>
     </pems-col>
 
@@ -360,7 +360,7 @@
                     <pems-icon name="bi-plus-lg" /> @L("Add", "افزودن")
                 </pems-button>
             </pems-flex>
-            <ul class="list-unstyled mb-0">
+            <pems-bullet-list class="list-unstyled mb-0">
                 @foreach (var eq in employeeQualifications)
                 {
                     var status = ExpiryStatus(eq.ExpiryDate);
@@ -377,8 +377,8 @@
                         </pems-form>
                     </pems-flex>
                 }
-            </ul>
-            @if (!employeeQualifications.Any()) { <p class="text-muted small text-center py-2 mb-0">@L("No qualifications recorded.", "صلاحیتی ثبت نشده.")</p> }
+            </pems-bullet-list>
+            @if (!employeeQualifications.Any()) { <pems-text class="text-muted small text-center py-2 mb-0">@L("No qualifications recorded.", "صلاحیتی ثبت نشده.")</pems-text> }
         </pems-content-card>
     </pems-col>
 
@@ -390,7 +390,7 @@
                     <pems-icon name="bi-plus-lg" /> @L("Add", "افزودن")
                 </pems-button>
             </pems-flex>
-            <ul class="list-unstyled mb-0">
+            <pems-bullet-list class="list-unstyled mb-0">
                 @foreach (var ec in employeeCertifications)
                 {
                     var status = ExpiryStatus(ec.ExpiryDate);
@@ -407,8 +407,8 @@
                         </pems-form>
                     </pems-flex>
                 }
-            </ul>
-            @if (!employeeCertifications.Any()) { <p class="text-muted small text-center py-2 mb-0">@L("No certifications recorded.", "گواهینامه‌ای ثبت نشده.")</p> }
+            </pems-bullet-list>
+            @if (!employeeCertifications.Any()) { <pems-text class="text-muted small text-center py-2 mb-0">@L("No certifications recorded.", "گواهینامه‌ای ثبت نشده.")</pems-text> }
         </pems-content-card>
     </pems-col>
 </pems-row>

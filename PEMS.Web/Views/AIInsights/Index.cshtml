@@ -8,15 +8,15 @@
 
 <pems-flex justify="end" align="center" css="mb-2">
 </pems-flex>
-<p class="text-muted small">
+<pems-text class="text-muted small">
     این صفحه از روی داده‌ی واقعی سیستم (نه فرضی) ساخته می‌شه - هر عدد این‌جا مستقیم از
     دیتابیس محاسبه شده. فقط خلاصه‌ی روایی پایین با کمک هوش مصنوعی محلی (Ollama) نوشته می‌شه،
     بدون اینکه هیچ عددی از خودش بسازه.
-</p>
+</pems-text>
 
 <pems-content-card css="mb-3">
     <pems-heading level="6" class="mb-3"><pems-icon name="bi-arrow-repeat" /> @Localizer["الگوهای تکراری NCR - پیشنهاد بررسی MOC"]</pems-heading>
-    <p class="text-muted small">تجهیزاتی که در ۱۸۰ روز اخیر حداقل ۳ بار NCR گرفتن.</p>
+    <pems-text class="text-muted small">تجهیزاتی که در ۱۸۰ روز اخیر حداقل ۳ بار NCR گرفتن.</pems-text>
 
     @if (ncrPatterns.Any())
     {
@@ -24,7 +24,7 @@
     }
     else
     {
-        <p class="text-muted text-center py-3 mb-0">@Localizer["الگوی تکراری قابل‌توجهی پیدا نشد."]</p>
+        <pems-text class="text-muted text-center py-3 mb-0">@Localizer["الگوی تکراری قابل‌توجهی پیدا نشد."]</pems-text>
     }
 </pems-content-card>
 
@@ -48,7 +48,7 @@
     }
     else if (delay.TotalDelayedDocuments > 0)
     {
-        <p class="text-muted small">خلاصه‌ی روایی در دسترس نیست (Ollama در دسترس نبود) - جدول‌های زیر مستقیم از دیتابیسه.</p>
+        <pems-text class="text-muted small">خلاصه‌ی روایی در دسترس نیست (Ollama در دسترس نبود) - جدول‌های زیر مستقیم از دیتابیسه.</pems-text>
     }
 
     @if (delay.TotalDelayedDocuments > 0)
@@ -70,7 +70,7 @@
                 }
                 else
                 {
-                    <p class="text-muted small">@Localizer["موردی نیست."]</p>
+                    <pems-text class="text-muted small">@Localizer["موردی نیست."]</pems-text>
                 }
             </pems-col>
         </pems-row>

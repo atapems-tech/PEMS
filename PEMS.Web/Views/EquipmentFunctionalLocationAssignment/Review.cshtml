@@ -149,7 +149,7 @@
             </pems-table-body>
         </pems-table>
     </pems-table-scroll>
-    @if (!Model.Rows.Items.Any()) { <p class="text-muted text-center py-4">@Localizer["No rows match this filter."]</p> }
+    @if (!Model.Rows.Items.Any()) { <pems-text class="text-muted text-center py-4">@Localizer["No rows match this filter."]</pems-text> }
 
     @{
         var qsParts = new List<string>();

@@ -4,15 +4,15 @@
 
 <pems-page-shell kind="admin">
     <pems-page-hero>
-        <p>@Localizer["Org_Imp_Intro"]</p>
+        <pems-text>@Localizer["Org_Imp_Intro"]</pems-text>
     </pems-page-hero>
     @if (TempData["Message"] != null) { <pems-alert tone="success">@TempData["Message"]</pems-alert> }
     @if (TempData["Error"] != null) { <pems-alert tone="danger">@TempData["Error"]</pems-alert> }
 
     <section class="vs-panel mb-3">
         <pems-heading level="2" class="vs-section__title"><pems-icon name="bi-file-earmark-arrow-up" /> @Localizer["Org_Imp_Title"]</pems-heading>
-        <p class="small text-muted">@Localizer["Org_Imp_Columns"]</p>
-        <p class="small"><code>Department, Position, PositionCode, PositionTitle, ParentPositionCode, EmployeePersonnelCode, IsPrimary, AssignmentType, EffectiveFrom, EffectiveTo</code></p>
+        <pems-text class="small text-muted">@Localizer["Org_Imp_Columns"]</pems-text>
+        <pems-text class="small"><code>Department, Position, PositionCode, PositionTitle, ParentPositionCode, EmployeePersonnelCode, IsPrimary, AssignmentType, EffectiveFrom, EffectiveTo</code></pems-text>
         <pems-form asp-action="Validate" method="post" enctype="multipart/form-data"><pems-row gap="2" css="align-items-end">
             <pems-col md="6">
                 <pems-label for="orgImpFile">@Localizer["IC_ChooseFile"]</pems-label>
@@ -21,6 +21,6 @@
             <pems-col span="auto"><pems-button plain="true" css="vs-btn vs-btn--primary vs-btn--sm"><pems-icon name="bi-check2-circle" /> @Localizer["Org_Imp_Validate"]</pems-button></pems-col>
             <pems-col span="auto"><pems-link class="vs-btn vs-btn--sm" asp-action="Template"><pems-icon name="bi-download" /> @Localizer["Org_Imp_Template"]</pems-link></pems-col>
         </pems-row></pems-form>
-        <p class="small text-muted mt-2 mb-0">@Localizer["Org_Imp_Rules"]</p>
+        <pems-text class="small text-muted mt-2 mb-0">@Localizer["Org_Imp_Rules"]</pems-text>
     </section>
 </pems-page-shell>

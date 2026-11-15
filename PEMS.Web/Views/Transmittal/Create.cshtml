@@ -71,9 +71,9 @@
                     <pems-label css="d-block mb-0">Documents to include</pems-label>
                     <span class="small text-muted" id="docPickerCounter"></span>
                 </pems-flex>
-                <p class="text-muted small mb-1">
+                <pems-text class="text-muted small mb-1">
                     Only showing documents from the selected project. Documents on Hold cannot be transmitted. Type to search by number or title.
-                </p>
+                </pems-text>
                 <pems-input scale="small" css="mb-2" type="text" id="docPickerSearch" placeholder="Search by document number or title..." />
                 <div class="border rounded p-2 pems-scroll-320" id="docPickerList">
                     @foreach (var d in documents)
@@ -93,7 +93,7 @@
                 </div>
                 @if (!documents.Any())
                 {
-                    <p class="text-muted small mb-0">No documents available.</p>
+                    <pems-text class="text-muted small mb-0">No documents available.</pems-text>
                 }
             </pems-col>
         </pems-row>

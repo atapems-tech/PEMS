@@ -9,7 +9,7 @@
 
 <pems-page-shell kind="admin">
     <pems-page-hero>
-        <p>@Localizer["Org_Positions_Intro"]</p>
+        <pems-text>@Localizer["Org_Positions_Intro"]</pems-text>
     </pems-page-hero>
 
     @if (TempData["Message"] != null) { <pems-alert tone="success">@TempData["Message"]</pems-alert> }
@@ -43,7 +43,7 @@
             <pems-col md="1"><pems-button plain="true" css="vs-btn vs-btn--primary vs-btn--sm w-100" aria-label="@Localizer["Org_Positions_New"]"><pems-icon name="bi-plus-lg" /></pems-button></pems-col>
             <pems-col span="12"><pems-input scale="small" name="description" maxlength="500" placeholder="@Localizer["Description"]" aria-label="@Localizer["Description"]" /></pems-col>
         </pems-row></pems-form>
-        <p class="small text-muted mt-2 mb-0">@Localizer["Org_Positions_Note"]</p>
+        <pems-text class="small text-muted mt-2 mb-0">@Localizer["Org_Positions_Note"]</pems-text>
     </section>
 
     <pems-form class="mb-3" method="get"><pems-flex gap="2" wrap="true">

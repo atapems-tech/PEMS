@@ -13,11 +13,11 @@
         <pems-button tone="neutral" size="small" outline="true" as="a" asp-controller="Reliability" asp-action="Intelligence"><pems-icon name="bi-clipboard-data-fill" /> @Localizer["Maintenance Intelligence"]</pems-button>
     </div>
 </pems-flex>
-<p class="text-muted small">
+<pems-text class="text-muted small">
     طبق «PEMS Phase 7.5»: این صفحه هیچ رکوردی نمی‌سازد - فقط نشان می‌دهد کدام تجهیز/کلاس با
     داده‌ی مرجع موجود واقعاً «آماده‌ی اجرا» است. فعال‌سازی واقعی (ساخت Strategy/Plan/JobPlan)
     از طریق صفحات موجود و با مجوز انسانی انجام می‌شود - هرگز خودکار (بند ۴۳).
-</p>
+</pems-text>
 
 @* ===================== Executive Summary ===================== *@
 <pems-row gap="3" css="mb-3">
@@ -61,10 +61,10 @@
 @* ===================== Class Activation Backlog ===================== *@
 <pems-content-card>
     <pems-heading level="6" class="mb-2">@Localizer["Class Activation Backlog"]</pems-heading>
-    <p class="text-muted small">
+    <pems-text class="text-muted small">
         رتبه‌بندی با عوامل صریح (بند ۸/۲۶): اول کلاس‌هایی که مبنای مدافعه‌پذیر (PM Template یا
         Failure Mode) دارند، بعد بر اساس جمعیت تجهیز - نه یک امتیاز مبهم.
-    </p>
+    </pems-text>
     <div class="table-scroll-area pems-s-0ddf068b">
     <pems-table kind="enterprise" scale="small" css="mb-0">
         <pems-table-head>
@@ -111,5 +111,5 @@
         </pems-table-body>
     </pems-table>
     </div>
-    @if (!Model.Any()) { <p class="text-muted text-center py-4 mb-0">@Localizer["هیچ کلاسی با تجهیز واقعی موجود نیست."]</p> }
+    @if (!Model.Any()) { <pems-text class="text-muted text-center py-4 mb-0">@Localizer["هیچ کلاسی با تجهیز واقعی موجود نیست."]</pems-text> }
 </pems-content-card>

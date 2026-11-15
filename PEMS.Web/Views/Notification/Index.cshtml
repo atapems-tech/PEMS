@@ -21,7 +21,7 @@
         </pems-flex>
     </pems-flex>
 
-    <ul class="list-unstyled">
+    <pems-bullet-list class="list-unstyled">
         @foreach (var n in Model.Items)
         {
             <pems-flex as="li" align="start" gap="2" css="mb-2 p-2 border-bottom @(n.IsRead ? "" : "bg-light")">
@@ -39,8 +39,8 @@
                 }
             </pems-flex>
         }
-    </ul>
-    @if (!Model.Items.Any()) { <p class="text-muted text-center py-4">@Localizer["Notif_Empty"]</p> }
+    </pems-bullet-list>
+    @if (!Model.Items.Any()) { <pems-text class="text-muted text-center py-4">@Localizer["Notif_Empty"]</pems-text> }
 
     @await Html.PartialAsync("_Pagination", new PEMS.Web.ViewModels.PaginationViewModel
     {

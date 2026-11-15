@@ -74,7 +74,7 @@
         <pems-info-item label="@Localizer["Scope of Work"]" wide>@Model.ScopeOfWork</pems-info-item>
     </pems-info-grid>
 
-    <hr />
+    <pems-divider />
 
     <pems-flex gap="2" wrap="true">
         @if (Model.Status == "Draft" || Model.Status == "Rejected")
@@ -240,12 +240,12 @@
             <div class="small text-muted mb-1">@Localizer["Notice to Proceed (NTP)"]</div>
             @if (ntps.Any())
             {
-                <ul class="list-unstyled mb-2">
+                <pems-bullet-list class="list-unstyled mb-2">
                     @foreach (var n in ntps)
                     {
-                        <li>@n.NTPNumber — <pems-badge tone="neutral">@n.Status</pems-badge> (@n.IssuedDate.ToString("yyyy-MM-dd"))</li>
+                        <pems-bullet>@n.NTPNumber — <pems-badge tone="neutral">@n.Status</pems-badge> (@n.IssuedDate.ToString("yyyy-MM-dd"))</pems-bullet>
                     }
-                </ul>
+                </pems-bullet-list>
             }
             @if (Model.Status == "Signed" || Model.Status == "Effective")
             {
@@ -260,12 +260,12 @@
             <div class="small text-muted mb-1">@Localizer["Kick-off Meeting"]</div>
             @if (kickoffs.Any())
             {
-                <ul class="list-unstyled mb-2">
+                <pems-bullet-list class="list-unstyled mb-2">
                     @foreach (var m in kickoffs)
                     {
-                        <li><pems-link asp-controller="Meeting" asp-action="Details" asp-route-id="@m.MeetingId">@m.Title</pems-link> — <pems-badge tone="neutral">@m.Status</pems-badge> (@m.MeetingDate.ToString("yyyy-MM-dd"))</li>
+                        <pems-bullet><pems-link asp-controller="Meeting" asp-action="Details" asp-route-id="@m.MeetingId">@m.Title</pems-link> — <pems-badge tone="neutral">@m.Status</pems-badge> (@m.MeetingDate.ToString("yyyy-MM-dd"))</pems-bullet>
                     }
-                </ul>
+                </pems-bullet-list>
             }
             @if (Model.Status == "Signed" || Model.Status == "Effective")
             {
@@ -281,16 +281,16 @@
             <div class="small text-muted mb-1">@Localizer["Inspection / ITP"]</div>
             @if (linkedItps.Any())
             {
-                <ul class="list-unstyled mb-0">
+                <pems-bullet-list class="list-unstyled mb-0">
                     @foreach (var itp in linkedItps)
                     {
-                        <li><pems-link asp-controller="QC" asp-action="ItpDetails" asp-route-id="@itp.InspectionTestPlanId">@itp.ITPNumber</pems-link> — <pems-badge tone="neutral">@itp.Status</pems-badge></li>
+                        <pems-bullet><pems-link asp-controller="QC" asp-action="ItpDetails" asp-route-id="@itp.InspectionTestPlanId">@itp.ITPNumber</pems-link> — <pems-badge tone="neutral">@itp.Status</pems-badge></pems-bullet>
                     }
-                </ul>
+                </pems-bullet-list>
             }
             else
             {
-                <p class="text-muted small mb-0">@Localizer["No data."]</p>
+                <pems-text class="text-muted small mb-0">@Localizer["No data."]</pems-text>
             }
             @if (Model.RequiresInspection)
             {

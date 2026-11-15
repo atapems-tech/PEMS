@@ -32,7 +32,7 @@
             <pems-badge tone="none" css="fs-6 @(Model.Status is "Closed" or "Issued" ? "bg-success" : Model.Status == "PartiallyIssued" ? "bg-info text-dark" : Model.Status is "Rejected" or "Cancelled" ? "bg-secondary" : "bg-warning text-dark")">@Model.Status</pems-badge>
         </pems-flex>
     </pems-flex>
-    <hr />
+    <pems-divider />
     <pems-flex gap="2" wrap="true">
         @if (nextStatus != null && nextStatus != "Issued" && Can(nextAction) && !(isRequester && nextStatus is "Approved"))
         {
@@ -97,7 +97,7 @@
     @if (editApproved) { <pems-button tone="primary" size="small" type="submit">@Localizer["Save"]</pems-button> }
     @if (canIssue) { <pems-button tone="primary" size="small" type="submit">@Localizer["SR_IssuePartialOrFull"]</pems-button> <span class="small text-muted">@Localizer["SR_IssueHint"]</span> }
     </pems-form>
-    @if (!Model.Lines.Any()) { <p class="text-muted text-center py-3">@Localizer["هنوز خطی اضافه نشده."]</p> }
+    @if (!Model.Lines.Any()) { <pems-text class="text-muted text-center py-3">@Localizer["هنوز خطی اضافه نشده."]</pems-text> }
 
     @if (Model.Status == "Draft")
     {

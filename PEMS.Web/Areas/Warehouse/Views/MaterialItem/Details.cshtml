@@ -40,7 +40,7 @@
             </pems-form>
         </pems-flex>
     </pems-flex>
-    <hr />
+    <pems-divider />
     <pems-info-grid>
         <pems-info-item label="@Localizer["Category"]">@Model.CategoryName</pems-info-item>
         <pems-info-item label="@Localizer["Discipline"]">@Model.DisciplineName</pems-info-item>
@@ -86,7 +86,7 @@
                     }
                 </pems-table-body>
             </pems-table>
-            @if (!Model.Stocks.Any()) { <p class="text-muted text-center py-4">هنوز موجودی‌ای در هیچ انباری ثبت نشده.</p> }
+            @if (!Model.Stocks.Any()) { <pems-text class="text-muted text-center py-4">هنوز موجودی‌ای در هیچ انباری ثبت نشده.</pems-text> }
         </pems-content-card>
     </pems-tab-pane>
 
@@ -94,10 +94,10 @@
     {
         <pems-tab-pane fade="true" id="tab-source" role="tabpanel">
             <pems-content-card>
-                <p class="text-muted small">
+                <pems-text class="text-muted small">
                     این متریال از این ردیف(های) Excel ساخته/به‌روزرسانی شده - طبق پایه‌ی Metadata، هر بار Import یک رکورد
                     جداگانه می‌ماند (رونویسی نمی‌شود).
-                </p>
+                </pems-text>
                 <pems-data-table data="@(DataRows.Of(Model.SourceImports, c_ => c_.Add("Source File", s => (object?)(s.SourceFileName), css: "small").Add("Import Date", s => (object?)((s.ImportDate.ToString("yyyy-MM-dd HH:mm"))), css: "small").Add(((Localizer["MRS No"])?.ToString() ?? ""), s => (object?)((s.RawMrsNo ?? "-")), css: "small").Add(((Localizer["Vendor"])?.ToString() ?? ""), s => (object?)((s.RawSupplier ?? "-")), css: "small").Add("PO No", s => (object?)((s.RawPoNo ?? "-")), css: "small").Add("", s => (object?)(DataCell.ButtonLink(Url.Action("Review", "MrsImport", new { batchId = s.MrsImportBatchId }), "neutral", "small", true, null, "Open Batch")), css: "text-end")))" />
             </pems-content-card>
         </pems-tab-pane>
@@ -106,7 +106,7 @@
     <pems-tab-pane fade="true" id="tab-tx" role="tabpanel">
         <pems-content-card>
             <pems-data-table data="@(DataRows.Of(Model.RecentTransactions, c_ => c_.Add(((Localizer["Date"])?.ToString() ?? ""), t => (object?)(t.TransactionDate.ToString("yyyy-MM-dd HH:mm")), css: "small").Add(((Localizer["Type"])?.ToString() ?? ""), t => (object?)(t.TransactionType), kind: DataCellKind.Badge, tone: t => "light").Add(((Localizer["Warehouse"])?.ToString() ?? ""), t => (object?)(t.WarehouseCode)).Add(((Localizer["Qty"])?.ToString() ?? ""), t => (object?)(t.Quantity)).Add(((Localizer["Reference"])?.ToString() ?? ""), t => DataCell.Join((t.ReferenceType ?? "-"), " ", (t.ReferenceId?.ToString() ?? "")), css: "small").Add("By", t => (object?)(t.EmployeeName ?? "-"), css: "small")))" />
-            @if (!Model.RecentTransactions.Any()) { <p class="text-muted text-center py-4">@Localizer["هنوز تراکنشی ثبت نشده."]</p> }
+            @if (!Model.RecentTransactions.Any()) { <pems-text class="text-muted text-center py-4">@Localizer["هنوز تراکنشی ثبت نشده."]</pems-text> }
         </pems-content-card>
     </pems-tab-pane>
 

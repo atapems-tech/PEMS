@@ -120,9 +120,9 @@
             <pems-form asp-action="Create" method="post">
                 <pems-modal-header>@Localizer["Me_New"]</pems-modal-header>
                 <pems-modal-body>
-                    <p class="text-muted small">
+                    <pems-text class="text-muted small">
                         @Localizer["Equipment link is optional - only fill it when this mechanical record represents an existing Equipment tag. Rotating/Static sub-type details are added afterwards from the Passport page."]
-                    </p>
+                    </pems-text>
                     <div class="mb-3">
                         <pems-label>@Localizer["Equipment (اختیاری)"]</pems-label>
                         <pems-select name="equipmentId">
