@@ -143,22 +143,11 @@
     else
     {
         <div class="table-scroll-area">
-            <pems-table kind="enterprise" scale="small" css="mb-0">
-                <pems-table-head><pems-table-row><pems-table-header>@Localizer["Document"]</pems-table-header><pems-table-header>@Localizer["Discipline"]</pems-table-header><pems-table-header>@Localizer["Vendor"]</pems-table-header><pems-table-header>@Localizer["Status"]</pems-table-header><pems-table-header>@Localizer["Rejections"]</pems-table-header><pems-table-header>@Localizer["Revisions"]</pems-table-header></pems-table-row></pems-table-head>
-                <pems-table-body>
-                    @foreach (var q in topRejected)
-                    {
-                        <pems-table-row>
-                            <pems-table-cell><pems-link asp-controller="EngineeringDocuments" asp-action="Details" asp-route-id="@q.DocumentId">@q.DocumentNo</pems-link></pems-table-cell>
-                            <pems-table-cell class="small">@(q.DisciplineName ?? "-")</pems-table-cell>
-                            <pems-table-cell class="small">@(q.VendorName ?? "-")</pems-table-cell>
-                            <pems-table-cell><pems-badge tone="none" css="badge-status-@q.Status">@q.Status</pems-badge></pems-table-cell>
-                            <pems-table-cell><pems-badge tone="danger">@q.RejectionCount</pems-badge></pems-table-cell>
-                            <pems-table-cell class="small">@q.RevisionCount</pems-table-cell>
-                        </pems-table-row>
-                    }
-                </pems-table-body>
-            </pems-table>
+            @{
+                var rows_26 = topRejected;
+                var cell_26_3 = DataCell.Template(rows_26, @<text>@{ var q = item; }<pems-badge tone="none" css="badge-status-@q.Status">@q.Status</pems-badge></text>);
+            }
+            <pems-data-table data="@(DataRows.Of(rows_26, c_ => c_.Add(((Localizer["Document"])?.ToString() ?? ""), q => (object?)(DataCell.Link(Url.Action("Details", "EngineeringDocuments", new { id = q.DocumentId }), q.DocumentNo))).Add(((Localizer["Discipline"])?.ToString() ?? ""), q => (object?)((q.DisciplineName ?? "-")), css: "small").Add(((Localizer["Vendor"])?.ToString() ?? ""), q => (object?)((q.VendorName ?? "-")), css: "small").Add(((Localizer["Status"])?.ToString() ?? ""), q => (object?)cell_26_3(q)).Add(((Localizer["Rejections"])?.ToString() ?? ""), q => (object?)(DataCell.Badge("danger", q.RejectionCount))).Add(((Localizer["Revisions"])?.ToString() ?? ""), q => (object?)(q.RevisionCount), css: "small")))" dense="true" css="mb-0" />
         </div>
     }
 </pems-content-card>
@@ -181,25 +170,16 @@
     else
     {
         <div class="table-scroll-area">
-            <pems-table kind="enterprise" scale="small" css="mb-0">
-                <pems-table-head><pems-table-row><pems-table-header>@Localizer["Document"]</pems-table-header><pems-table-header>@Localizer["Discipline"]</pems-table-header><pems-table-header>@Localizer["Status"]</pems-table-header><pems-table-header>@Localizer["Revisions"]</pems-table-header><pems-table-header>@Localizer["FirstPass"]</pems-table-header></pems-table-row></pems-table-head>
-                <pems-table-body>
-                    @foreach (var q in highRevision)
-                    {
-                        <pems-table-row>
-                            <pems-table-cell><pems-link asp-controller="EngineeringDocuments" asp-action="Details" asp-route-id="@q.DocumentId">@q.DocumentNo</pems-link></pems-table-cell>
-                            <pems-table-cell class="small">@(q.DisciplineName ?? "-")</pems-table-cell>
-                            <pems-table-cell><pems-badge tone="none" css="badge-status-@q.Status">@q.Status</pems-badge></pems-table-cell>
-                            <pems-table-cell><pems-badge tone="warning">@q.RevisionCount</pems-badge></pems-table-cell>
-                            <pems-table-cell class="small">
+            @{
+                var rows_27 = highRevision;
+                var cell_27_2 = DataCell.Template(rows_27, @<text>@{ var q = item; }<pems-badge tone="none" css="badge-status-@q.Status">@q.Status</pems-badge></text>);
+                var cell_27_4 = DataCell.Template(rows_27, @<text>@{ var q = item; }
                                 @if (q.FirstPassApproved == true) { <pems-icon name="bi-check-circle" css="text-success" title="@Localizer["FirstPass"]" aria-label="@Localizer["FirstPass"]" /> }
                                 else if (q.FirstPassApproved == false) { <pems-icon name="bi-x-circle" css="text-danger" title="@Localizer["NotFirstPass"]" aria-label="@Localizer["NotFirstPass"]" /> }
                                 else { <span class="text-muted">-</span> }
-                            </pems-table-cell>
-                        </pems-table-row>
-                    }
-                </pems-table-body>
-            </pems-table>
+                            </text>);
+            }
+            <pems-data-table data="@(DataRows.Of(rows_27, c_ => c_.Add(((Localizer["Document"])?.ToString() ?? ""), q => (object?)(DataCell.Link(Url.Action("Details", "EngineeringDocuments", new { id = q.DocumentId }), q.DocumentNo))).Add(((Localizer["Discipline"])?.ToString() ?? ""), q => (object?)((q.DisciplineName ?? "-")), css: "small").Add(((Localizer["Status"])?.ToString() ?? ""), q => (object?)cell_27_2(q)).Add(((Localizer["Revisions"])?.ToString() ?? ""), q => (object?)(DataCell.Badge("warning", q.RevisionCount))).Add(((Localizer["FirstPass"])?.ToString() ?? ""), q => (object?)cell_27_4(q), css: "small")))" dense="true" css="mb-0" />
         </div>
         <pems-action-bar css="mt-3">
             <pems-button as="a" tone="neutral" size="small" outline="true" asp-controller="EngineeringDocuments" asp-action="Index" asp-route-MinRevisionCount="@(Model.SelectedMinRevisionCount ?? 1)"><pems-icon name="bi-list-ul" /> @Localizer["ViewAllInMdr"]</pems-button>
@@ -219,25 +199,9 @@
    else
    {
        <div class="table-scroll-area">
-           <pems-table kind="enterprise" scale="small" css="mb-0">
-               <pems-table-head>
-                   <pems-table-row>
-                       <pems-table-header>@Localizer["Document"]</pems-table-header>
-                       <pems-table-header>@Localizer["Discipline"]</pems-table-header>
-                       <pems-table-header>@Localizer["Reason"]</pems-table-header>
-                       <pems-table-header>@Localizer["Severity"]</pems-table-header>
-                       <pems-table-header>@Localizer["Revisions"]</pems-table-header>
-                       <pems-table-header>@Localizer["Rejections"]</pems-table-header>
-                   </pems-table-row>
-               </pems-table-head>
-               <pems-table-body>
-                   @foreach (var item in attentionQueue)
-                   {
-                       <pems-table-row>
-                           <pems-table-cell><pems-link asp-controller="EngineeringDocuments" asp-action="Details" asp-route-id="@item.DocumentId">@item.DocumentNo</pems-link></pems-table-cell>
-                           <pems-table-cell class="small">@item.DisciplineName</pems-table-cell>
-                           <pems-table-cell class="small">@item.Reason</pems-table-cell>
-                           <pems-table-cell>
+           @{
+               var rows_28 = attentionQueue;
+               var cell_28_3 = DataCell.Template(rows_28, @<text>
                                @if (item.Severity == "Critical")
                                {
                                    <pems-badge tone="danger">@item.Severity</pems-badge>
@@ -250,13 +214,9 @@
                                {
                                    <pems-badge tone="neutral">@item.Severity</pems-badge>
                                }
-                           </pems-table-cell>
-                           <pems-table-cell><pems-badge tone="info">@item.RevisionCount</pems-badge></pems-table-cell>
-                           <pems-table-cell><pems-badge tone="danger">@item.RejectionCount</pems-badge></pems-table-cell>
-                       </pems-table-row>
-                   }
-               </pems-table-body>
-           </pems-table>
+                           </text>);
+           }
+           <pems-data-table data="@(DataRows.Of(rows_28, c_ => c_.Add(((Localizer["Document"])?.ToString() ?? ""), item => (object?)(DataCell.Link(Url.Action("Details", "EngineeringDocuments", new { id = item.DocumentId }), item.DocumentNo))).Add(((Localizer["Discipline"])?.ToString() ?? ""), item => (object?)(item.DisciplineName), css: "small").Add(((Localizer["Reason"])?.ToString() ?? ""), item => (object?)(item.Reason), css: "small").Add(((Localizer["Severity"])?.ToString() ?? ""), item => (object?)cell_28_3(item)).Add(((Localizer["Revisions"])?.ToString() ?? ""), item => (object?)(DataCell.Badge("info", item.RevisionCount))).Add(((Localizer["Rejections"])?.ToString() ?? ""), item => (object?)(DataCell.Badge("danger", item.RejectionCount)))))" dense="true" css="mb-0" />
        </div>
    }
 </pems-content-card>

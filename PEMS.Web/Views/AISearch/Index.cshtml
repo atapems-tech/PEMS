@@ -50,26 +50,13 @@
     else
     {
         <pems-table-scroll css="table-scroll-area pems-s-8da1c6e6">
-        <pems-table kind="enterprise">
-            <pems-table-head><pems-table-row><pems-table-header>@Localizer["Document No"]</pems-table-header><pems-table-header>@Localizer["Title"]</pems-table-header><pems-table-header>Match Reason</pems-table-header><pems-table-header>@Localizer["Relevance"]</pems-table-header><pems-table-header></pems-table-header></pems-table-row></pems-table-head>
-            <pems-table-body>
-                @foreach (var r in Model)
-                {
-                    <pems-table-row>
-                        <pems-table-cell>@r.DocumentNumber</pems-table-cell>
-                        <pems-table-cell>@r.Title</pems-table-cell>
-                        <pems-table-cell class="small text-muted">@r.Reason</pems-table-cell>
-                        <pems-table-cell>
+        @{
+            var rows_19 = Model;
+            var cell_19_3 = DataCell.Template(rows_19, @<text>@{ var r = item; }
                             <pems-progress class="pems-w-100" value="@((int)(r.SimilarityScore * 100))" tone="success" height="8px"></pems-progress>
-                        </pems-table-cell>
-                        <pems-table-cell>
-                            <pems-button tone="neutral" size="small" outline="true" as="a" asp-controller="EngineeringDocuments" asp-action="Details" asp-route-id="@r.DocumentId"
-                              ><pems-icon name="bi-eye" /></pems-button>
-                        </pems-table-cell>
-                    </pems-table-row>
-                }
-            </pems-table-body>
-        </pems-table>
+                        </text>);
+        }
+        <pems-data-table data="@(DataRows.Of(rows_19, c_ => c_.Add(((Localizer["Document No"])?.ToString() ?? ""), r => (object?)(r.DocumentNumber)).Add(((Localizer["Title"])?.ToString() ?? ""), r => (object?)(r.Title)).Add("Match Reason", r => (object?)(r.Reason), css: "small text-muted").Add(((Localizer["Relevance"])?.ToString() ?? ""), r => (object?)cell_19_3(r)).Add("", r => (object?)(DataCell.ButtonLink(Url.Action("Details", "EngineeringDocuments", new { id = r.DocumentId }), "neutral", "small", true, null, DataCell.Icon("bi-eye"))))))" />
         </pems-table-scroll>
     }
 </pems-content-card>

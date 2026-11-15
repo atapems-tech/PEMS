@@ -188,26 +188,16 @@
             </pems-flex>
             @if (!string.IsNullOrWhiteSpace(alarm.Description)) { <div class="small text-muted">@alarm.Description</div> }
 
-            <pems-table kind="enterprise" scale="small" css="mt-2 mb-2">
-                <pems-table-head><pems-table-row><pems-table-header>@Localizer["Cause"]</pems-table-header><pems-table-header>@Localizer["Effect"]</pems-table-header><pems-table-header>@Localizer["Action"]</pems-table-header><pems-table-header>@Localizer["Trip Signal"]</pems-table-header><pems-table-header></pems-table-header></pems-table-row></pems-table-head>
-                <pems-table-body>
-                    @foreach (var ce in ces)
-                    {
-                        <pems-table-row>
-                            <pems-table-cell class="small">@ce.Cause</pems-table-cell>
-                            <pems-table-cell class="small">@ce.Effect</pems-table-cell>
-                            <pems-table-cell class="small">@(ce.ActionType ?? "-")</pems-table-cell>
-                            <pems-table-cell class="small">@(ce.TripSignal ?? "-")</pems-table-cell>
-                            <pems-table-cell>
+            @{
+                var rows_42 = ces;
+                var cell_42_4 = DataCell.Template(rows_42, @<text>@{ var ce = item; }
                                 <pems-form asp-action="RaiseWorkRequestFromCauseEffect" method="post" class="d-inline">
                                     <input type="hidden" name="causeEffectId" value="@ce.CauseEffectId" />
                                     <pems-button tone="danger" size="small" outline="true" type="submit"><pems-icon name="bi-exclamation-triangle" /> Raise Work Request</pems-button>
                                 </pems-form>
-                            </pems-table-cell>
-                        </pems-table-row>
-                    }
-                </pems-table-body>
-            </pems-table>
+                            </text>);
+            }
+            <pems-data-table data="@(DataRows.Of(rows_42, c_ => c_.Add(((Localizer["Cause"])?.ToString() ?? ""), ce => (object?)(ce.Cause), css: "small").Add(((Localizer["Effect"])?.ToString() ?? ""), ce => (object?)(ce.Effect), css: "small").Add(((Localizer["Action"])?.ToString() ?? ""), ce => (object?)((ce.ActionType ?? "-")), css: "small").Add(((Localizer["Trip Signal"])?.ToString() ?? ""), ce => (object?)((ce.TripSignal ?? "-")), css: "small").Add("", ce => (object?)cell_42_4(ce))))" dense="true" css="mt-2 mb-2" />
 
             <pems-form asp-action="AddCauseEffect" method="post"><pems-row gap="2" css="align-items-end d-print-none">
                 <input type="hidden" name="alarmId" value="@alarm.AlarmId" />

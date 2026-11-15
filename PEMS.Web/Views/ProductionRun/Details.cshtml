@@ -153,26 +153,16 @@
         <pems-content-card>
             <pems-heading level="6" class="mb-2">Inputs</pems-heading>
             <div class="table-scroll-area pems-s-f7dce87f">
-                <pems-table kind="enterprise" scale="small">
-                    <pems-table-head><pems-table-row><pems-table-header>@Localizer["Material"]</pems-table-header><pems-table-header>@Localizer["Qty"]</pems-table-header><pems-table-header>Source Batch</pems-table-header><pems-table-header>@Localizer["Inventory"]</pems-table-header><pems-table-header></pems-table-header></pems-table-row></pems-table-head>
-                    <pems-table-body>
-                        @foreach (var i in Model.Inputs)
-                        {
-                            <pems-table-row>
-                                <pems-table-cell>@i.MaterialCode</pems-table-cell>
-                                <pems-table-cell>@i.Quantity.ToString("N3") @i.UomCode</pems-table-cell>
-                                <pems-table-cell>@i.SourceBatchNumber</pems-table-cell>
-                                <pems-table-cell>@(i.PostedToInventory ? "Posted" : "-")</pems-table-cell>
-                                <pems-table-cell>
+                @{
+                    var rows_67 = Model.Inputs;
+                    var cell_67_4 = DataCell.Template(rows_67, @<text>@{ var i = item; }
                                     @if (!i.PostedToInventory)
                                     {
                                         <pems-button tone="neutral" size="small" outline="true" type="button" data-bs-toggle="modal" data-bs-target="#postInputModal" data-fill-productioninputid="@i.ProductionInputId">Post</pems-button>
                                     }
-                                </pems-table-cell>
-                            </pems-table-row>
-                        }
-                    </pems-table-body>
-                </pems-table>
+                                </text>);
+                }
+                <pems-data-table data="@(DataRows.Of(rows_67, c_ => c_.Add(((Localizer["Material"])?.ToString() ?? ""), i => (object?)(i.MaterialCode)).Add(((Localizer["Qty"])?.ToString() ?? ""), i => (object?)(DataCell.Group((i.Quantity.ToString("N3")), " ", i.UomCode))).Add("Source Batch", i => (object?)(i.SourceBatchNumber)).Add(((Localizer["Inventory"])?.ToString() ?? ""), i => (object?)((i.PostedToInventory ? "Posted" : "-"))).Add("", i => (object?)cell_67_4(i))))" dense="true" />
             </div>
             @if (!Model.Inputs.Any()) { <pems-text class="text-muted text-center py-2 small">No inputs recorded.</pems-text> }
         </pems-content-card>
@@ -181,27 +171,16 @@
         <pems-content-card>
             <pems-heading level="6" class="mb-2">Outputs</pems-heading>
             <div class="table-scroll-area pems-s-f7dce87f">
-                <pems-table kind="enterprise" scale="small">
-                    <pems-table-head><pems-table-row><pems-table-header>@Localizer["Material"]</pems-table-header><pems-table-header>@Localizer["Batch"]</pems-table-header><pems-table-header>@Localizer["Qty"]</pems-table-header><pems-table-header>@Localizer["Class"]</pems-table-header><pems-table-header>@Localizer["Inventory"]</pems-table-header><pems-table-header></pems-table-header></pems-table-row></pems-table-head>
-                    <pems-table-body>
-                        @foreach (var o in Model.Outputs)
-                        {
-                            <pems-table-row>
-                                <pems-table-cell>@o.MaterialCode</pems-table-cell>
-                                <pems-table-cell><pems-link asp-action="BatchDetails" asp-route-id="@o.ProductionBatchId">@o.BatchNumber</pems-link></pems-table-cell>
-                                <pems-table-cell>@o.Quantity.ToString("N3") @o.UomCode</pems-table-cell>
-                                <pems-table-cell>@o.OutputClassification</pems-table-cell>
-                                <pems-table-cell>@(o.PostedToInventory ? "Posted" : "-")</pems-table-cell>
-                                <pems-table-cell>
+                @{
+                    var rows_68 = Model.Outputs;
+                    var cell_68_5 = DataCell.Template(rows_68, @<text>@{ var o = item; }
                                     @if (!o.PostedToInventory)
                                     {
                                         <pems-button tone="neutral" size="small" outline="true" type="button" data-bs-toggle="modal" data-bs-target="#postOutputModal" data-fill-productionoutputid="@o.ProductionOutputId">Post</pems-button>
                                     }
-                                </pems-table-cell>
-                            </pems-table-row>
-                        }
-                    </pems-table-body>
-                </pems-table>
+                                </text>);
+                }
+                <pems-data-table data="@(DataRows.Of(rows_68, c_ => c_.Add(((Localizer["Material"])?.ToString() ?? ""), o => (object?)(o.MaterialCode)).Add(((Localizer["Batch"])?.ToString() ?? ""), o => (object?)(DataCell.Link(Url.Action("BatchDetails", null, new { id = o.ProductionBatchId }), o.BatchNumber))).Add(((Localizer["Qty"])?.ToString() ?? ""), o => (object?)(DataCell.Group((o.Quantity.ToString("N3")), " ", o.UomCode))).Add(((Localizer["Class"])?.ToString() ?? ""), o => (object?)(o.OutputClassification)).Add(((Localizer["Inventory"])?.ToString() ?? ""), o => (object?)((o.PostedToInventory ? "Posted" : "-"))).Add("", o => (object?)cell_68_5(o))))" dense="true" />
             </div>
             @if (!Model.Outputs.Any()) { <pems-text class="text-muted text-center py-2 small">No outputs recorded.</pems-text> }
         </pems-content-card>

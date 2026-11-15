@@ -123,17 +123,9 @@
 
 <pems-content-card css="mb-3">
     <pems-heading level="6" class="mb-3">@Localizer["Td_Recipients"]</pems-heading>
-    <pems-table kind="enterprise">
-        <pems-table-head><pems-table-row><pems-table-header>@Localizer["Td_Name"]</pems-table-header><pems-table-header>@Localizer["Td_Type"]</pems-table-header><pems-table-header>@Localizer["Td_Organization"]</pems-table-header><pems-table-header>@Localizer["Td_ResponseRequired"]</pems-table-header><pems-table-header>@Localizer["Td_Acknowledgement"]</pems-table-header></pems-table-row></pems-table-head>
-        <pems-table-body>
-            @foreach (var r in Model.Recipients)
-            {
-                <pems-table-row>
-                    <pems-table-cell>@r.Name</pems-table-cell>
-                    <pems-table-cell>@r.RecipientType</pems-table-cell>
-                    <pems-table-cell>@r.Organization</pems-table-cell>
-                    <pems-table-cell>@(r.ResponseRequired ? Localizer["Td_Yes"].Value : "")</pems-table-cell>
-                    <pems-table-cell>
+    @{
+        var rows_79 = Model.Recipients;
+        var cell_79_4 = DataCell.Template(rows_79, @<text>@{ var r = item; }
                         @if (r.AcknowledgedAt.HasValue)
                         {
                             <pems-badge tone="success">@Localizer["Td_Acknowledged"] @r.AcknowledgedAt.Value.ToString("yyyy-MM-dd")</pems-badge>
@@ -152,11 +144,9 @@
                         {
                             <span class="text-muted small">@Localizer["Td_Pending"]</span>
                         }
-                    </pems-table-cell>
-                </pems-table-row>
-            }
-        </pems-table-body>
-    </pems-table>
+                    </text>);
+    }
+    <pems-data-table data="@(DataRows.Of(rows_79, c_ => c_.Add(((Localizer["Td_Name"])?.ToString() ?? ""), r => (object?)(r.Name)).Add(((Localizer["Td_Type"])?.ToString() ?? ""), r => (object?)(r.RecipientType)).Add(((Localizer["Td_Organization"])?.ToString() ?? ""), r => (object?)(r.Organization)).Add(((Localizer["Td_ResponseRequired"])?.ToString() ?? ""), r => (object?)((r.ResponseRequired ? Localizer["Td_Yes"].Value : ""))).Add(((Localizer["Td_Acknowledgement"])?.ToString() ?? ""), r => (object?)cell_79_4(r))))" />
     @if (!Model.Recipients.Any())
     {
         <pems-text class="text-muted small mb-0">@Localizer["Td_NoRecipients"]</pems-text>
@@ -166,18 +156,9 @@
 <pems-content-card>
     <pems-heading level="6" class="mb-3">@Localizer["Td_IncludedDocs"]</pems-heading>
     <pems-table-scroll css="table-scroll-area pems-s-8da1c6e6">
-    <pems-table kind="enterprise">
-        <pems-table-head>
-            <pems-table-row><pems-table-header>@Localizer["Td_DocNo"]</pems-table-header><pems-table-header>@Localizer["Td_Title"]</pems-table-header><pems-table-header>@Localizer["Td_RevAtSend"]</pems-table-header><pems-table-header>@Localizer["Td_FileAtSend"]</pems-table-header><pems-table-header>@Localizer["Td_Remarks"]</pems-table-header></pems-table-row>
-        </pems-table-head>
-        <pems-table-body>
-            @foreach (var item in Model.Items)
-            {
-                <pems-table-row>
-                    <pems-table-cell>@item.DocumentNo</pems-table-cell>
-                    <pems-table-cell>@item.DocumentTitle</pems-table-cell>
-                    <pems-table-cell><pems-badge tone="neutral">@item.RevisionNo</pems-badge></pems-table-cell>
-                    <pems-table-cell class="small">
+    @{
+        var rows_80 = Model.Items;
+        var cell_80_3 = DataCell.Template(rows_80, @<text>
                         @if (!string.IsNullOrEmpty(item.SnapshotFileName))
                         {
                             <pems-icon name="bi-file-earmark-lock" css="text-muted" title="@Localizer["Td_Snapshot"]" />
@@ -191,12 +172,9 @@
                         {
                             <span class="text-muted">@Localizer["Td_NoFile"]</span>
                         }
-                    </pems-table-cell>
-                    <pems-table-cell>@item.Remarks</pems-table-cell>
-                </pems-table-row>
-            }
-        </pems-table-body>
-    </pems-table>
+                    </text>);
+    }
+    <pems-data-table data="@(DataRows.Of(rows_80, c_ => c_.Add(((Localizer["Td_DocNo"])?.ToString() ?? ""), item => (object?)(item.DocumentNo)).Add(((Localizer["Td_Title"])?.ToString() ?? ""), item => (object?)(item.DocumentTitle)).Add(((Localizer["Td_RevAtSend"])?.ToString() ?? ""), item => (object?)(DataCell.Badge("neutral", item.RevisionNo))).Add(((Localizer["Td_FileAtSend"])?.ToString() ?? ""), item => (object?)cell_80_3(item), css: "small").Add(((Localizer["Td_Remarks"])?.ToString() ?? ""), item => (object?)(item.Remarks))))" />
     </pems-table-scroll>
 </pems-content-card>
 

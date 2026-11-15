@@ -76,18 +76,9 @@
 
 <pems-content-card>
     <pems-table-scroll css="table-scroll-area pems-s-8da1c6e6">
-        <pems-table kind="enterprise">
-            <pems-table-head>
-                <pems-table-row>
-                    <pems-table-header>@Localizer["Approve"]</pems-table-header><pems-table-header>@Localizer["Src Row"]</pems-table-header><pems-table-header>@Localizer["Equipment Tag"]</pems-table-header><pems-table-header>@Localizer["Equipment"]</pems-table-header>
-                    <pems-table-header>@Localizer["Execution Date"]</pems-table-header><pems-table-header>@Localizer["Work Order"]</pems-table-header><pems-table-header>@Localizer["Action Taken"]</pems-table-header><pems-table-header>@Localizer["Match Result"]</pems-table-header><pems-table-header>@Localizer["Note"]</pems-table-header>
-                </pems-table-row>
-            </pems-table-head>
-            <pems-table-body>
-                @foreach (var r in Model.Rows.Items)
-                {
-                    <pems-table-row>
-                        <pems-table-cell>
+        @{
+            var rows_49 = Model.Rows.Items;
+            var cell_49_0 = DataCell.Template(rows_49, @<text>@{ var r = item; }
                             @if (Model.Status == "Staging")
                             {
                                 var canToggle = r.Status is "New" or "Duplicate";
@@ -113,24 +104,10 @@
                             {
                                 @(r.CommittedMaintenanceHistoryId.HasValue ? "Created" : (r.IncludeInCommit ? "Approved" : "No"))
                             }
-                        </pems-table-cell>
-                        <pems-table-cell>@r.SourceRowNumber</pems-table-cell>
-                        <pems-table-cell><strong dir="ltr">@r.EquipmentTag</strong></pems-table-cell>
-                        <pems-table-cell class="small">@(r.EquipmentDescription ?? "-")</pems-table-cell>
-                        <pems-table-cell class="small" dir="ltr">@(r.ExecutionDate?.ToString("yyyy-MM-dd") ?? "-")</pems-table-cell>
-                        <pems-table-cell class="small" dir="ltr">@(r.WorkOrderNumber ?? "-")</pems-table-cell>
-                        <pems-table-cell class="small">@(r.ActionTaken ?? "-")</pems-table-cell>
-                        <pems-table-cell><pems-badge tone="none" css="@StatusBadge(r.Status)">@StatusLabel(r.Status)</pems-badge></pems-table-cell>
-                        <pems-table-cell class="small">
-                            @if (r.ValidationMessage != null)
-                            {
-                                <span class="text-muted pems-s-f8f979be">@r.ValidationMessage</span>
-                            }
-                        </pems-table-cell>
-                    </pems-table-row>
-                }
-            </pems-table-body>
-        </pems-table>
+                        </text>);
+            var cell_49_7 = DataCell.Template(rows_49, @<text>@{ var r = item; }<pems-badge tone="none" css="@StatusBadge(r.Status)">@StatusLabel(r.Status)</pems-badge></text>);
+        }
+        <pems-data-table data="@(DataRows.Of(rows_49, c_ => c_.Add(((Localizer["Approve"])?.ToString() ?? ""), r => (object?)cell_49_0(r)).Add(((Localizer["Src Row"])?.ToString() ?? ""), r => (object?)(r.SourceRowNumber)).Add(((Localizer["Equipment Tag"])?.ToString() ?? ""), r => (object?)(DataCell.Span(null, r.EquipmentTag).WithDir("ltr").WithTag("strong"))).Add(((Localizer["Equipment"])?.ToString() ?? ""), r => (object?)((r.EquipmentDescription ?? "-")), css: "small").Add(((Localizer["Execution Date"])?.ToString() ?? ""), r => (object?)((r.ExecutionDate?.ToString("yyyy-MM-dd") ?? "-")), css: "small", dir: "ltr").Add(((Localizer["Work Order"])?.ToString() ?? ""), r => (object?)((r.WorkOrderNumber ?? "-")), css: "small", dir: "ltr").Add(((Localizer["Action Taken"])?.ToString() ?? ""), r => (object?)((r.ActionTaken ?? "-")), css: "small").Add(((Localizer["Match Result"])?.ToString() ?? ""), r => (object?)cell_49_7(r)).Add(((Localizer["Note"])?.ToString() ?? ""), r => (object?)((r.ValidationMessage != null ? (object?)DataCell.Span("text-muted pems-s-f8f979be", r.ValidationMessage) : null)), css: "small")))" />
     </pems-table-scroll>
     @if (!Model.Rows.Items.Any()) { <pems-text class="text-muted text-center py-4">@Localizer["No rows match this filter."]</pems-text> }
 

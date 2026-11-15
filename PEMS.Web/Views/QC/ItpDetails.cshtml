@@ -42,30 +42,12 @@
 
 <pems-content-card css="mb-3">
     <pems-heading level="6" class="mb-3">Line Items</pems-heading>
-    <pems-table kind="enterprise" css="mb-0">
-        <pems-table-head>
-            <pems-table-row><pems-table-header>#</pems-table-header><pems-table-header>@Localizer["Activity"]</pems-table-header><pems-table-header>@Localizer["Discipline"]</pems-table-header><pems-table-header>@Localizer["Category"]</pems-table-header><pems-table-header>@Localizer["Acceptance Criteria"]</pems-table-header><pems-table-header>@Localizer["Responsible"]</pems-table-header><pems-table-header>@Localizer["Status"]</pems-table-header><pems-table-header>@Localizer["Actions"]</pems-table-header></pems-table-row>
-        </pems-table-head>
-        <pems-table-body>
-            @foreach (var li in Model.LineItems.OrderBy(x => x.SequenceNo))
-            {
-                <pems-table-row>
-                    <pems-table-cell>@li.SequenceNo</pems-table-cell>
-                    <pems-table-cell class="small">@li.Activity</pems-table-cell>
-                    <pems-table-cell class="small">@li.QCDiscipline?.Name</pems-table-cell>
-                    <pems-table-cell>
+    @{
+        var rows_70 = Model.LineItems.OrderBy(x => x.SequenceNo);
+        var cell_70_3 = DataCell.Template(rows_70, @<text>@{ var li = item; }
                         <pems-badge tone="neutral" title="H=Hold, W=Witness, R=Review, S=Surveillance, M=Monitor">@li.InspectionCategory</pems-badge>
-                    </pems-table-cell>
-                    <pems-table-cell class="small">@li.AcceptanceCriteria</pems-table-cell>
-                    <pems-table-cell class="small">@li.ResponsibleParty</pems-table-cell>
-                    <pems-table-cell>
-                        <pems-badge tone="none" css="@(li.Status == "Passed" ? "bg-success" : li.Status == "Failed" ? "bg-danger" : li.Status == "Notified" ? "bg-info" : "bg-light text-dark")">@li.Status</pems-badge>
-                        @if (li.NotifiedDate.HasValue)
-                        {
-                            <div class="text-muted small">اعلان: @li.NotifiedDate.Value.ToString("yyyy-MM-dd HH:mm")</div>
-                        }
-                    </pems-table-cell>
-                    <pems-table-cell><pems-flex dir="column" gap="1">
+                    </text>);
+        var cell_70_7 = DataCell.Template(rows_70, @<text>@{ var li = item; }<pems-flex dir="column" gap="1">
                         @if (li.InspectionCategory == "H" && li.Status == "Pending")
                         {
                             <pems-form asp-action="ItpNotifyHoldPoint" method="post">
@@ -80,12 +62,9 @@
                                 <pems-icon name="bi-clipboard-check" /> Perform Inspection
                             </pems-button>
                         }
-                    </pems-flex></pems-table-cell>
-                </pems-table-row>
-
-            }
-        </pems-table-body>
-    </pems-table>
+                    </pems-flex></text>);
+    }
+    <pems-data-table data="@(DataRows.Of(rows_70, c_ => c_.Add("#", li => (object?)(li.SequenceNo)).Add(((Localizer["Activity"])?.ToString() ?? ""), li => (object?)(li.Activity), css: "small").Add(((Localizer["Discipline"])?.ToString() ?? ""), li => (object?)(li.QCDiscipline?.Name), css: "small").Add(((Localizer["Category"])?.ToString() ?? ""), li => (object?)cell_70_3(li)).Add(((Localizer["Acceptance Criteria"])?.ToString() ?? ""), li => (object?)(li.AcceptanceCriteria), css: "small").Add(((Localizer["Responsible"])?.ToString() ?? ""), li => (object?)(li.ResponsibleParty), css: "small").Add(((Localizer["Status"])?.ToString() ?? ""), li => (object?)(DataCell.Group(DataCell.Badge("none", li.Status, (li.Status == "Passed" ? "bg-success" : li.Status == "Failed" ? "bg-danger" : li.Status == "Notified" ? "bg-info" : "bg-light text-dark")), " ", (li.NotifiedDate.HasValue ? (object?)DataCell.Span("text-muted small", "اعلان: ", (li.NotifiedDate.Value.ToString("yyyy-MM-dd HH:mm"))).WithTag("div") : null)))).Add(((Localizer["Actions"])?.ToString() ?? ""), li => (object?)cell_70_7(li))))" css="mb-0" />
 </pems-content-card>
 
 <pems-content-card>

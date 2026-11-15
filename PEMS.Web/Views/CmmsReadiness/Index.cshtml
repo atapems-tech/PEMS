@@ -66,50 +66,14 @@
         Failure Mode) دارند، بعد بر اساس جمعیت تجهیز - نه یک امتیاز مبهم.
     </pems-text>
     <div class="table-scroll-area pems-s-0ddf068b">
-    <pems-table kind="enterprise" scale="small" css="mb-0">
-        <pems-table-head>
-            <pems-table-row>
-                <pems-table-header>@Localizer["Class"]</pems-table-header>
-                <pems-table-header class="text-end">@Localizer["Equipment"]</pems-table-header>
-                <pems-table-header class="text-end">@Localizer["Criticality"]</pems-table-header>
-                <pems-table-header class="text-end">@Localizer["Strategy"]</pems-table-header>
-                <pems-table-header class="text-end">@Localizer["PM Plan"]</pems-table-header>
-                <pems-table-header class="text-end">@Localizer["Execution Ready"]</pems-table-header>
-                <pems-table-header>@Localizer["Basis"]</pems-table-header>
-                <pems-table-header>@Localizer["Missing"]</pems-table-header>
-                <pems-table-header></pems-table-header>
-            </pems-table-row>
-        </pems-table-head>
-        <pems-table-body>
-            @foreach (var c in Model)
-            {
-                <pems-table-row>
-                    <pems-table-cell class="fw-bold">@c.Name <code class="small">@c.Code</code></pems-table-cell>
-                    <pems-table-cell class="text-end">@c.EquipmentCount</pems-table-cell>
-                    <pems-table-cell class="text-end">@c.CriticalityReadyCount</pems-table-cell>
-                    <pems-table-cell class="text-end">@c.StrategyReadyCount</pems-table-cell>
-                    <pems-table-cell class="text-end">@c.PmPlanReadyCount</pems-table-cell>
-                    <pems-table-cell class="text-end">
-                        <pems-badge tone="@(c.ExecutionReadyCount > 0 ? "success" : "neutral")">@c.ExecutionReadyCount</pems-badge>
-                    </pems-table-cell>
-                    <pems-table-cell class="small">
-                        @if (c.HasDefensibleBasis)
-                        {
-                            <pems-badge tone="success">Defensible</pems-badge>
-                        }
-                        else
-                        {
-                            <pems-badge tone="neutral">None yet</pems-badge>
-                        }
-                    </pems-table-cell>
-                    <pems-table-cell class="small text-muted">
+    @{
+        var rows_20 = Model;
+        var cell_20_0 = DataCell.Template(rows_20, @<text>@{ var c = item; }@c.Name <code class="small">@c.Code</code></text>);
+        var cell_20_7 = DataCell.Template(rows_20, @<text>@{ var c = item; }
                         @foreach (var m in c.MissingRequirements) { <div>@m</div> }
-                    </pems-table-cell>
-                    <pems-table-cell><pems-button tone="neutral" size="small" outline="true" as="a" asp-action="ClassDetail" asp-route-id="@c.EquipmentClassId">Open</pems-button></pems-table-cell>
-                </pems-table-row>
-            }
-        </pems-table-body>
-    </pems-table>
+                    </text>);
+    }
+    <pems-data-table data="@(DataRows.Of(rows_20, c_ => c_.Add(((Localizer["Class"])?.ToString() ?? ""), c => (object?)cell_20_0(c), css: "fw-bold").Add(((Localizer["Equipment"])?.ToString() ?? ""), c => (object?)(c.EquipmentCount), css: "text-end", headerCss: "text-end").Add(((Localizer["Criticality"])?.ToString() ?? ""), c => (object?)(c.CriticalityReadyCount), css: "text-end", headerCss: "text-end").Add(((Localizer["Strategy"])?.ToString() ?? ""), c => (object?)(c.StrategyReadyCount), css: "text-end", headerCss: "text-end").Add(((Localizer["PM Plan"])?.ToString() ?? ""), c => (object?)(c.PmPlanReadyCount), css: "text-end", headerCss: "text-end").Add(((Localizer["Execution Ready"])?.ToString() ?? ""), c => (object?)(DataCell.Badge(c.ExecutionReadyCount > 0 ? "success" : "neutral", c.ExecutionReadyCount)), css: "text-end", headerCss: "text-end").Add(((Localizer["Basis"])?.ToString() ?? ""), c => (object?)((c.HasDefensibleBasis ? (object?)DataCell.Badge("success", "Defensible") : DataCell.Badge("neutral", "None yet"))), css: "small").Add(((Localizer["Missing"])?.ToString() ?? ""), c => (object?)cell_20_7(c), css: "small text-muted").Add("", c => (object?)(DataCell.ButtonLink(Url.Action("ClassDetail", null, new { id = c.EquipmentClassId }), "neutral", "small", true, null, "Open")))))" dense="true" css="mb-0" />
     </div>
     @if (!Model.Any()) { <pems-text class="text-muted text-center py-4 mb-0">@Localizer["هیچ کلاسی با تجهیز واقعی موجود نیست."]</pems-text> }
 </pems-content-card>

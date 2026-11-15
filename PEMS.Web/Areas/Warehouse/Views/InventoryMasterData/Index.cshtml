@@ -38,26 +38,16 @@
                     <pems-icon name="bi-plus-lg" /> @Localizer["دسته‌بندی جدید"]
                 </pems-button>
             </pems-flex>
-            <pems-table kind="enterprise">
-                <pems-table-head><pems-table-row><pems-table-header>@Localizer["کد"]</pems-table-header><pems-table-header>@Localizer["نام"]</pems-table-header><pems-table-header>@Localizer["والد"]</pems-table-header><pems-table-header>@Localizer["توضیحات"]</pems-table-header><pems-table-header></pems-table-header></pems-table-row></pems-table-head>
-                <pems-table-body>
-                    @foreach (var c in categories)
-                    {
-                        <pems-table-row>
-                            <pems-table-cell>@c.Code</pems-table-cell>
-                            <pems-table-cell>@c.Name</pems-table-cell>
-                            <pems-table-cell>@(c.Parent?.Name ?? "-")</pems-table-cell>
-                            <pems-table-cell class="small text-muted">@(c.Description ?? "-")</pems-table-cell>
-                            <pems-table-cell class="text-end">
+            @{
+                var rows_8 = categories;
+                var cell_8_4 = DataCell.Template(rows_8, @<text>@{ var c = item; }
                                 <pems-form asp-action="ToggleCategoryActive" method="post" class="d-inline">
                                     <input type="hidden" name="id" value="@c.MaterialCategoryId" />
                                     <pems-button tone="neutral" size="small" outline="true" type="submit" data-pems-confirm="این دسته‌بندی غیرفعال بشه؟"><pems-icon name="bi-x-circle" /></pems-button>
                                 </pems-form>
-                            </pems-table-cell>
-                        </pems-table-row>
-                    }
-                </pems-table-body>
-            </pems-table>
+                            </text>);
+            }
+            <pems-data-table data="@(DataRows.Of(rows_8, c_ => c_.Add(((Localizer["کد"])?.ToString() ?? ""), c => (object?)(c.Code)).Add(((Localizer["نام"])?.ToString() ?? ""), c => (object?)(c.Name)).Add(((Localizer["والد"])?.ToString() ?? ""), c => (object?)((c.Parent?.Name ?? "-"))).Add(((Localizer["توضیحات"])?.ToString() ?? ""), c => (object?)((c.Description ?? "-")), css: "small text-muted").Add("", c => (object?)cell_8_4(c), css: "text-end")))" />
         </pems-content-card>
     </pems-tab-pane>
 
@@ -69,25 +59,16 @@
                     <pems-icon name="bi-plus-lg" /> @Localizer["واحد جدید"]
                 </pems-button>
             </pems-flex>
-            <pems-table kind="enterprise">
-                <pems-table-head><pems-table-row><pems-table-header>@Localizer["کد"]</pems-table-header><pems-table-header>@Localizer["نام"]</pems-table-header><pems-table-header>@Localizer["ضریب تبدیل"]</pems-table-header><pems-table-header></pems-table-header></pems-table-row></pems-table-head>
-                <pems-table-body>
-                    @foreach (var u in uoms)
-                    {
-                        <pems-table-row>
-                            <pems-table-cell>@u.Code</pems-table-cell>
-                            <pems-table-cell>@u.Name</pems-table-cell>
-                            <pems-table-cell>@(u.ConversionFactor?.ToString() ?? "-")</pems-table-cell>
-                            <pems-table-cell class="text-end">
+            @{
+                var rows_9 = uoms;
+                var cell_9_3 = DataCell.Template(rows_9, @<text>@{ var u = item; }
                                 <pems-form asp-action="ToggleUomActive" method="post" class="d-inline">
                                     <input type="hidden" name="id" value="@u.MaterialUOMId" />
                                     <pems-button tone="neutral" size="small" outline="true" type="submit" data-pems-confirm="این واحد غیرفعال بشه؟"><pems-icon name="bi-x-circle" /></pems-button>
                                 </pems-form>
-                            </pems-table-cell>
-                        </pems-table-row>
-                    }
-                </pems-table-body>
-            </pems-table>
+                            </text>);
+            }
+            <pems-data-table data="@(DataRows.Of(rows_9, c_ => c_.Add(((Localizer["کد"])?.ToString() ?? ""), u => (object?)(u.Code)).Add(((Localizer["نام"])?.ToString() ?? ""), u => (object?)(u.Name)).Add(((Localizer["ضریب تبدیل"])?.ToString() ?? ""), u => (object?)((u.ConversionFactor?.ToString() ?? "-"))).Add("", u => (object?)cell_9_3(u), css: "text-end")))" />
         </pems-content-card>
     </pems-tab-pane>
 
@@ -99,31 +80,23 @@
                     <pems-icon name="bi-plus-lg" /> @Localizer["انبار جدید"]
                 </pems-button>
             </pems-flex>
-            <pems-table kind="enterprise">
-                <pems-table-head><pems-table-row><pems-table-header>@Localizer["کد"]</pems-table-header><pems-table-header>@Localizer["نام"]</pems-table-header><pems-table-header>@Localizer["محل‌های نگهداری"]</pems-table-header><pems-table-header></pems-table-header></pems-table-row></pems-table-head>
-                <pems-table-body>
-                    @foreach (var w in Model)
-                    {
-                        <pems-table-row>
-                            <pems-table-cell>@w.Code</pems-table-cell>
-                            <pems-table-cell>@w.Name</pems-table-cell>
-                            <pems-table-cell>
+            @{
+                var rows_10 = Model;
+                var cell_10_2 = DataCell.Template(rows_10, @<text>@{ var w = item; }
                                 @foreach (var l in w.Locations.Where(x => x.IsActive))
                                 {
                                     <pems-badge tone="light" css="me-1">@l.Code</pems-badge>
                                 }
                                 <pems-button tone="none" size="small" css="btn-link p-0" type="button" data-bs-toggle="modal" data-bs-target="#addLocationModal" data-fill-warehouseid="@w.WarehouseId" data-fill-warehousecode="@w.Code">+ محل</pems-button>
-                            </pems-table-cell>
-                            <pems-table-cell class="text-end">
+                            </text>);
+                var cell_10_3 = DataCell.Template(rows_10, @<text>@{ var w = item; }
                                 <pems-form asp-action="ToggleWarehouseActive" method="post" class="d-inline">
                                     <input type="hidden" name="id" value="@w.WarehouseId" />
                                     <pems-button tone="neutral" size="small" outline="true" type="submit" data-pems-confirm="این انبار غیرفعال بشه؟"><pems-icon name="bi-x-circle" /></pems-button>
                                 </pems-form>
-                            </pems-table-cell>
-                        </pems-table-row>
-                    }
-                </pems-table-body>
-            </pems-table>
+                            </text>);
+            }
+            <pems-data-table data="@(DataRows.Of(rows_10, c_ => c_.Add(((Localizer["کد"])?.ToString() ?? ""), w => (object?)(w.Code)).Add(((Localizer["نام"])?.ToString() ?? ""), w => (object?)(w.Name)).Add(((Localizer["محل‌های نگهداری"])?.ToString() ?? ""), w => (object?)cell_10_2(w)).Add("", w => (object?)cell_10_3(w), css: "text-end")))" />
         </pems-content-card>
     </pems-tab-pane>
 </pems-tab-content>

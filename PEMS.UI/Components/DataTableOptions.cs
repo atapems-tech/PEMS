@@ -96,6 +96,9 @@ public static class DataCell
         return list;
     }
 
+    /// <summary>A cell written as Razor markup (forms, inputs, any tag helper): <c>var act = DataCell.Template(rows, @&lt;text&gt;...@item...&lt;/text&gt;);</c> then <c>.Add(header, r =&gt; (object?)act(r))</c>. The rows are passed so the template knows the row type (SCRUM-570).</summary>
+    public static Func<T, Microsoft.AspNetCore.Html.IHtmlContent> Template<T>(IEnumerable<T> rows, Func<T, Microsoft.AspNetCore.Html.IHtmlContent> template) => template;
+
     /// <summary>Several parts in one cell: <c>DataCell.Group(a.Module, " - ", a.RequestNumber)</c>.</summary>
     public static CellNode Group(params object?[] parts) => new CellGroup(Parts(parts));
     /// <summary>A span: <c>DataCell.Span("text-danger", DataCell.Icon("bi-x"), " ", Localizer["Yes"])</c>; <see cref="WithTitle"/> and <see cref="WithDir"/> add the attributes.</summary>

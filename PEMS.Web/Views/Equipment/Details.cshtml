@@ -350,16 +350,9 @@
                     <pems-col md="3"><strong>@Localizer["Next Due"]:</strong> @(cm.NextDueDate?.ToString("yyyy-MM-dd") ?? "N/A")</pems-col>
                     <pems-col md="3"><strong>@Localizer["Findings"]:</strong> @cm.OpenFindingCount</pems-col>
                 </pems-row>
-                <pems-table kind="enterprise" scale="small" css="mb-0">
-                    <pems-table-head><pems-table-row><pems-table-header>@Localizer["Variable"]</pems-table-header><pems-table-header>@Localizer["Tag"]</pems-table-header><pems-table-header>@Localizer["Last Reading"]</pems-table-header><pems-table-header>@Localizer["Evaluation"]</pems-table-header></pems-table-row></pems-table-head>
-                    <pems-table-body>
-                        @foreach (var p in cm.Points)
-                        {
-                            <pems-table-row class="@(p.LastReadingIsAlarm ? "table-danger" : "")">
-                                <pems-table-cell>@p.VariableType</pems-table-cell>
-                                <pems-table-cell dir="ltr">@p.Tag</pems-table-cell>
-                                <pems-table-cell class="small">@(p.LastReadingDate.HasValue ? $"{p.LastValue} {p.Unit} @ {p.LastReadingDate.Value:yyyy-MM-dd}" : Localizer["No readings yet"])</pems-table-cell>
-                                <pems-table-cell>
+                @{
+                    var rows_36 = cm.Points;
+                    var cell_36_3 = DataCell.Template(rows_36, @<text>@{ var p = item; }
                                     @if (p.EvaluationProfileId.HasValue)
                                     {
                                         <pems-badge tone="none" css="@CmEvalBadge(p.LastReadingEvaluationStatus)">@p.LastReadingEvaluationStatus</pems-badge>
@@ -368,11 +361,9 @@
                                     {
                                         <pems-badge tone="neutral">@Localizer["NotEvaluated"]</pems-badge>
                                     }
-                                </pems-table-cell>
-                            </pems-table-row>
-                        }
-                    </pems-table-body>
-                </pems-table>
+                                </text>);
+                }
+                <pems-data-table data="@(DataRows.Of(rows_36, c_ => c_.Add(((Localizer["Variable"])?.ToString() ?? ""), p => (object?)(p.VariableType)).Add(((Localizer["Tag"])?.ToString() ?? ""), p => (object?)(p.Tag), dir: "ltr").Add(((Localizer["Last Reading"])?.ToString() ?? ""), p => (object?)((p.LastReadingDate.HasValue ? $"{p.LastValue} {p.Unit} @ {p.LastReadingDate.Value:yyyy-MM-dd}" : Localizer["No readings yet"])), css: "small").Add(((Localizer["Evaluation"])?.ToString() ?? ""), p => (object?)cell_36_3(p)), rowClass: p => (p.LastReadingIsAlarm ? "table-danger" : "")))" dense="true" css="mb-0" />
             </pems-content-card>
         </pems-tab-pane>
     }
@@ -423,19 +414,11 @@
         <pems-content-card css="mb-3">
             <pems-heading level="6" class="mb-3"><pems-icon name="bi-file-earmark-text" /> @Localizer["Cm_SecEngDocs"]</pems-heading>
             <pems-table-scroll css="table-scroll-area pems-s-b4b96c72">
-            <pems-table kind="enterprise">
-                <pems-table-head><pems-table-row><pems-table-header>@Localizer["Cm_DocNo"]</pems-table-header><pems-table-header>@Localizer["Cm_Title"]</pems-table-header><pems-table-header>@Localizer["Cm_Type"]</pems-table-header><pems-table-header>@Localizer["Cm_Discipline"]</pems-table-header><pems-table-header>@Localizer["Cm_Rev"]</pems-table-header><pems-table-header>@Localizer["Cm_Status"]</pems-table-header><pems-table-header></pems-table-header></pems-table-row></pems-table-head>
-                <pems-table-body>
-                    @foreach (var d in Model.Documents)
-                    {
-                        <pems-table-row>
-                            <pems-table-cell>@d.DocumentNo</pems-table-cell><pems-table-cell>@d.Title</pems-table-cell><pems-table-cell>@d.DocumentType</pems-table-cell><pems-table-cell>@d.DisciplineName</pems-table-cell>
-                            <pems-table-cell>@d.RevisionNo</pems-table-cell><pems-table-cell><pems-badge tone="none" css="badge-status-@d.Status">@d.Status</pems-badge></pems-table-cell>
-                            <pems-table-cell><pems-button tone="neutral" size="small" outline="true" as="a" asp-controller="EngineeringDocuments" asp-action="Details" asp-route-id="@d.DocumentId"><pems-icon name="bi-eye" /></pems-button></pems-table-cell>
-                        </pems-table-row>
-                    }
-                </pems-table-body>
-            </pems-table>
+            @{
+                var rows_37 = Model.Documents;
+                var cell_37_5 = DataCell.Template(rows_37, @<text>@{ var d = item; }<pems-badge tone="none" css="badge-status-@d.Status">@d.Status</pems-badge></text>);
+            }
+            <pems-data-table data="@(DataRows.Of(rows_37, c_ => c_.Add(((Localizer["Cm_DocNo"])?.ToString() ?? ""), d => (object?)(d.DocumentNo)).Add(((Localizer["Cm_Title"])?.ToString() ?? ""), d => (object?)(d.Title)).Add(((Localizer["Cm_Type"])?.ToString() ?? ""), d => (object?)(d.DocumentType)).Add(((Localizer["Cm_Discipline"])?.ToString() ?? ""), d => (object?)(d.DisciplineName)).Add(((Localizer["Cm_Rev"])?.ToString() ?? ""), d => (object?)(d.RevisionNo)).Add(((Localizer["Cm_Status"])?.ToString() ?? ""), d => (object?)cell_37_5(d)).Add("", d => (object?)(DataCell.ButtonLink(Url.Action("Details", "EngineeringDocuments", new { id = d.DocumentId }), "neutral", "small", true, null, DataCell.Icon("bi-eye"))))))" />
             </pems-table-scroll>
             @if (!Model.Documents.Any()) { <pems-text class="text-muted mb-0 small">@Localizer["Cm_NoDocs"]</pems-text> }
         </pems-content-card>
@@ -544,22 +527,13 @@
                 }
             </pems-flex>
             <pems-table-scroll css="table-scroll-area pems-s-7bf38d03">
-            <pems-table kind="enterprise">
-                <pems-table-head><pems-table-row><pems-table-header>@Localizer["Cm_WrNumber"]</pems-table-header><pems-table-header>@Localizer["Cm_Title"]</pems-table-header><pems-table-header>@Localizer["Cm_Priority"]</pems-table-header><pems-table-header>@Localizer["Cm_Status"]</pems-table-header><pems-table-header>@Localizer["Cm_Requested"]</pems-table-header><pems-table-header>@Localizer["Cm_LinkedWo"]</pems-table-header></pems-table-row></pems-table-head>
-                <pems-table-body>
-                    @foreach (var r in Model.WorkRequests)
-                    {
-                        <pems-table-row>
-                            <pems-table-cell class="vs-num">@if (canViewWr) { <pems-link asp-controller="WorkRequest" asp-action="Details" asp-route-id="@r.WorkRequestId">@r.RequestNumber</pems-link> } else { @r.RequestNumber }</pems-table-cell>
-                            <pems-table-cell>@r.Title</pems-table-cell>
-                            <pems-table-cell><span class="vs-pill @PrioTone(r.Priority)">@r.Priority</span></pems-table-cell>
-                            <pems-table-cell><span class="vs-pill vs-pill--icon @WrTone(r.Status)"><pems-icon css="@WrIcon(r.Status)" aria-hidden="true" /> @r.Status</span></pems-table-cell>
-                            <pems-table-cell class="vs-num">@r.RequestedDate.ToString("yyyy-MM-dd")</pems-table-cell>
-                            <pems-table-cell class="vs-num">@if (r.LinkedWorkOrderId.HasValue) { if (canViewWo) { <pems-link asp-controller="WorkOrder" asp-action="Details" asp-route-id="@r.LinkedWorkOrderId">@r.LinkedWorkOrderNo</pems-link> } else { @r.LinkedWorkOrderNo } } else { <span class="text-muted">—</span> }</pems-table-cell>
-                        </pems-table-row>
-                    }
-                </pems-table-body>
-            </pems-table>
+            @{
+                var rows_38 = Model.WorkRequests;
+                var cell_38_2 = DataCell.Template(rows_38, @<text>@{ var r = item; }<span class="vs-pill @PrioTone(r.Priority)">@r.Priority</span></text>);
+                var cell_38_3 = DataCell.Template(rows_38, @<text>@{ var r = item; }<span class="vs-pill vs-pill--icon @WrTone(r.Status)"><pems-icon css="@WrIcon(r.Status)" aria-hidden="true" /> @r.Status</span></text>);
+                var cell_38_5 = DataCell.Template(rows_38, @<text>@{ var r = item; }@if (r.LinkedWorkOrderId.HasValue) { if (canViewWo) { <pems-link asp-controller="WorkOrder" asp-action="Details" asp-route-id="@r.LinkedWorkOrderId">@r.LinkedWorkOrderNo</pems-link> } else { @r.LinkedWorkOrderNo } } else { <span class="text-muted">—</span> }</text>);
+            }
+            <pems-data-table data="@(DataRows.Of(rows_38, c_ => c_.Add(((Localizer["Cm_WrNumber"])?.ToString() ?? ""), r => (object?)((canViewWr ? (object?)DataCell.Link(Url.Action("Details", "WorkRequest", new { id = r.WorkRequestId }), r.RequestNumber) : r.RequestNumber)), css: "vs-num").Add(((Localizer["Cm_Title"])?.ToString() ?? ""), r => (object?)(r.Title)).Add(((Localizer["Cm_Priority"])?.ToString() ?? ""), r => (object?)cell_38_2(r)).Add(((Localizer["Cm_Status"])?.ToString() ?? ""), r => (object?)cell_38_3(r)).Add(((Localizer["Cm_Requested"])?.ToString() ?? ""), r => (object?)((r.RequestedDate.ToString("yyyy-MM-dd"))), css: "vs-num").Add(((Localizer["Cm_LinkedWo"])?.ToString() ?? ""), r => (object?)cell_38_5(r), css: "vs-num")))" />
             </pems-table-scroll>
             @if (!Model.WorkRequests.Any()) { <pems-text class="text-muted mb-0 small">@Localizer["Cm_NoWorkRequests"]</pems-text> }
         </pems-content-card>
@@ -583,27 +557,17 @@
                     <pems-icon name="bi-plus-lg" /> @Localizer["Cm_NewInspection"]
                 </pems-button>
             </pems-flex>
-            <pems-table kind="enterprise" css="mb-0">
-                <pems-table-head>
-                    <pems-table-row><pems-table-header>@Localizer["Cm_Type"]</pems-table-header><pems-table-header>@Localizer["Cm_Date"]</pems-table-header><pems-table-header>@Localizer["Cm_Measurement"]</pems-table-header><pems-table-header>@Localizer["Cm_Condition"]</pems-table-header><pems-table-header>@Localizer["Cm_NextDue"]</pems-table-header><pems-table-header>@Localizer["Cm_DueStatus"]</pems-table-header><pems-table-header></pems-table-header></pems-table-row>
-                </pems-table-head>
-                <pems-table-body>
-                    @foreach (var i in inspections)
-                    {
-                        <pems-table-row>
-                            <pems-table-cell class="small">@i.InspectionType</pems-table-cell>
-                            <pems-table-cell class="small">@i.InspectionDate.ToString("yyyy-MM-dd")</pems-table-cell>
-                            <pems-table-cell class="small">@(i.MeasurementValue.HasValue ? $"{i.MeasurementValue.Value:N2} {i.MeasurementUnit}" : "-")</pems-table-cell>
-                            <pems-table-cell class="small">
+            @{
+                var rows_39 = inspections;
+                var cell_39_3 = DataCell.Template(rows_39, @<text>@{ var i = item; }
                                 @switch (i.ConditionStatus)
                                 {
                                     case "Alert": <pems-badge tone="danger">@Localizer["Alert"]</pems-badge> break;
                                     case "Normal": <pems-badge tone="success">@Localizer["Normal"]</pems-badge> break;
                                     default: <span class="text-muted">N/A</span> break;
                                 }
-                            </pems-table-cell>
-                            <pems-table-cell class="small">@(i.NextInspectionDate?.ToString("yyyy-MM-dd") ?? "-")</pems-table-cell>
-                            <pems-table-cell class="small">
+                            </text>);
+                var cell_39_5 = DataCell.Template(rows_39, @<text>@{ var i = item; }
                                 @switch (i.DueStatus)
                                 {
                                     case "Overdue": <pems-badge tone="danger">@Localizer["Overdue"]</pems-badge> break;
@@ -611,8 +575,8 @@
                                     case "OK": <pems-badge tone="success">OK</pems-badge> break;
                                     default: <span class="text-muted">N/A</span> break;
                                 }
-                            </pems-table-cell>
-                            <pems-table-cell>
+                            </text>);
+                var cell_39_6 = DataCell.Template(rows_39, @<text>@{ var i = item; }
                                 @if (i.ConditionStatus == "Alert")
                                 {
                                     <pems-form asp-controller="Inspection" asp-action="RaiseWorkRequest" method="post" class="d-inline">
@@ -620,11 +584,9 @@
                                         <pems-button tone="danger" size="small" outline="true" type="submit"><pems-icon name="bi-exclamation-triangle" /> @Localizer["Cm_RaiseWr"]</pems-button>
                                     </pems-form>
                                 }
-                            </pems-table-cell>
-                        </pems-table-row>
-                    }
-                </pems-table-body>
-            </pems-table>
+                            </text>);
+            }
+            <pems-data-table data="@(DataRows.Of(rows_39, c_ => c_.Add(((Localizer["Cm_Type"])?.ToString() ?? ""), i => (object?)(i.InspectionType), css: "small").Add(((Localizer["Cm_Date"])?.ToString() ?? ""), i => (object?)((i.InspectionDate.ToString("yyyy-MM-dd"))), css: "small").Add(((Localizer["Cm_Measurement"])?.ToString() ?? ""), i => (object?)((i.MeasurementValue.HasValue ? $"{i.MeasurementValue.Value:N2} {i.MeasurementUnit}" : "-")), css: "small").Add(((Localizer["Cm_Condition"])?.ToString() ?? ""), i => (object?)cell_39_3(i), css: "small").Add(((Localizer["Cm_NextDue"])?.ToString() ?? ""), i => (object?)((i.NextInspectionDate?.ToString("yyyy-MM-dd") ?? "-")), css: "small").Add(((Localizer["Cm_DueStatus"])?.ToString() ?? ""), i => (object?)cell_39_5(i), css: "small").Add("", i => (object?)cell_39_6(i))))" css="mb-0" />
             @if (!inspections.Any()) { <pems-text class="text-muted mb-0 small">@Localizer["Cm_NoInspections"]</pems-text> }
         </pems-content-card>
 

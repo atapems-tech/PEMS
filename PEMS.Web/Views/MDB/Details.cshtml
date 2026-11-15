@@ -67,28 +67,17 @@
 {
     <pems-content-card css="mb-3">
         <pems-heading level="6" class="mb-3">@label</pems-heading>
-        <pems-table kind="enterprise">
-            <pems-table-head><pems-table-row><pems-table-header>@Localizer["Document No"]</pems-table-header><pems-table-header>@Localizer["Title"]</pems-table-header><pems-table-header>DVD Volume</pems-table-header><pems-table-header>N/A</pems-table-header><pems-table-header>@Localizer["Notes"]</pems-table-header><pems-table-header></pems-table-header></pems-table-row></pems-table-head>
-            <pems-table-body>
-                @foreach (var d in docs)
-                {
-                    <pems-table-row>
-                        <pems-table-cell>@d.DocumentNo</pems-table-cell>
-                        <pems-table-cell>@d.Title</pems-table-cell>
-                        <pems-table-cell>@d.DvdVolumeNo</pems-table-cell>
-                        <pems-table-cell>@(d.IsNotApplicable ? "Not applicable" : "")</pems-table-cell>
-                        <pems-table-cell>@d.Notes</pems-table-cell>
-                        <pems-table-cell>
+        @{
+            var rows_47 = docs;
+            var cell_47_5 = DataCell.Template(rows_47, @<text>@{ var d = item; }
                             <pems-form asp-action="RemoveDocument" method="post">
                                 <input type="hidden" name="mdbId" value="@Model.MDBId" />
                                 <input type="hidden" name="mdbDocumentId" value="@d.MDBDocumentId" />
                                 <pems-button tone="danger" size="small" outline="true"><pems-icon name="bi-trash" /></pems-button>
                             </pems-form>
-                        </pems-table-cell>
-                    </pems-table-row>
-                }
-            </pems-table-body>
-        </pems-table>
+                        </text>);
+        }
+        <pems-data-table data="@(DataRows.Of(rows_47, c_ => c_.Add(((Localizer["Document No"])?.ToString() ?? ""), d => (object?)(d.DocumentNo)).Add(((Localizer["Title"])?.ToString() ?? ""), d => (object?)(d.Title)).Add("DVD Volume", d => (object?)(d.DvdVolumeNo)).Add("N/A", d => (object?)((d.IsNotApplicable ? "Not applicable" : ""))).Add(((Localizer["Notes"])?.ToString() ?? ""), d => (object?)(d.Notes)).Add("", d => (object?)cell_47_5(d))))" />
         @if (!docs.Any())
         {
             <pems-text class="text-muted small mb-2">No documents in this part yet.</pems-text>

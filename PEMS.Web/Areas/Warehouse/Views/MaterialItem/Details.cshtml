@@ -66,26 +66,14 @@
 <pems-tab-content>
     <pems-tab-pane fade="true" active="true" id="tab-stock" role="tabpanel">
         <pems-content-card>
-            <pems-table kind="enterprise">
-                <pems-table-head><pems-table-row><pems-table-header>@Localizer["Warehouse"]</pems-table-header><pems-table-header>@Localizer["Location"]</pems-table-header><pems-table-header>@Localizer["On Hand"]</pems-table-header><pems-table-header>Reserved</pems-table-header><pems-table-header>@Localizer["Available"]</pems-table-header><pems-table-header>@Localizer["Reorder Point"]</pems-table-header><pems-table-header></pems-table-header></pems-table-row></pems-table-head>
-                <pems-table-body>
-                    @foreach (var s in Model.Stocks)
-                    {
-                        <pems-table-row class="@(s.IsOutOfStock ? "table-danger" : s.IsLowStock ? "table-warning" : "")">
-                            <pems-table-cell>@s.WarehouseCode</pems-table-cell>
-                            <pems-table-cell class="small">@(s.StorageLocationCode ?? "-")</pems-table-cell>
-                            <pems-table-cell>@s.OnHandQuantity</pems-table-cell>
-                            <pems-table-cell>@s.ReservedQuantity</pems-table-cell>
-                            <pems-table-cell>@s.AvailableQuantity</pems-table-cell>
-                            <pems-table-cell>@(s.ReorderPoint?.ToString() ?? "-")</pems-table-cell>
-                            <pems-table-cell class="text-end">
+            @{
+                var rows_12 = Model.Stocks;
+                var cell_12_6 = DataCell.Template(rows_12, @<text>@{ var s = item; }
                                 <pems-button tone="neutral" size="small" outline="true" css="adjust-stock-btn" type="button" data-warehouse-id="@s.WarehouseId" data-warehouse-code="@s.WarehouseCode" data-onhand="@s.OnHandQuantity" title="Adjust"><pems-icon name="bi-sliders" /></pems-button>
                                 <pems-button tone="neutral" size="small" outline="true" css="transfer-stock-btn" type="button" data-warehouse-id="@s.WarehouseId" data-warehouse-code="@s.WarehouseCode" data-available="@s.AvailableQuantity" title="Transfer"><pems-icon name="bi-arrow-left-right" /></pems-button>
-                            </pems-table-cell>
-                        </pems-table-row>
-                    }
-                </pems-table-body>
-            </pems-table>
+                            </text>);
+            }
+            <pems-data-table data="@(DataRows.Of(rows_12, c_ => c_.Add(((Localizer["Warehouse"])?.ToString() ?? ""), s => (object?)(s.WarehouseCode)).Add(((Localizer["Location"])?.ToString() ?? ""), s => (object?)((s.StorageLocationCode ?? "-")), css: "small").Add(((Localizer["On Hand"])?.ToString() ?? ""), s => (object?)(s.OnHandQuantity)).Add("Reserved", s => (object?)(s.ReservedQuantity)).Add(((Localizer["Available"])?.ToString() ?? ""), s => (object?)(s.AvailableQuantity)).Add(((Localizer["Reorder Point"])?.ToString() ?? ""), s => (object?)((s.ReorderPoint?.ToString() ?? "-"))).Add("", s => (object?)cell_12_6(s), css: "text-end"), rowClass: s => (s.IsOutOfStock ? "table-danger" : s.IsLowStock ? "table-warning" : "")))" />
             @if (!Model.Stocks.Any()) { <pems-text class="text-muted text-center py-4">هنوز موجودی‌ای در هیچ انباری ثبت نشده.</pems-text> }
         </pems-content-card>
     </pems-tab-pane>

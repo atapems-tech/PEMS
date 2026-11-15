@@ -86,17 +86,9 @@
     @{
         var recentIncoming = (IEnumerable<dynamic>)ViewBag.RecentIncoming;
     }
-    <pems-table kind="enterprise" css="mb-0">
-        <pems-table-head><pems-table-row><pems-table-header>@Localizer["شماره"]</pems-table-header><pems-table-header>@Localizer["فرستنده"]</pems-table-header><pems-table-header>@Localizer["موضوع"]</pems-table-header><pems-table-header>@Localizer["تاریخ"]</pems-table-header><pems-table-header>@Localizer["لینک"]</pems-table-header></pems-table-row></pems-table-head>
-        <pems-table-body>
-            @foreach (var l in recentIncoming)
-            {
-                <pems-table-row>
-                    <pems-table-cell><pems-link asp-controller="Letter" asp-action="Details" asp-route-id="@l.LetterId">@l.LetterNumber</pems-link></pems-table-cell>
-                    <pems-table-cell class="small">@l.Sender</pems-table-cell>
-                    <pems-table-cell class="small">@l.Subject</pems-table-cell>
-                    <pems-table-cell class="small">@(((DateTime)l.LetterDate).ToString("yyyy-MM-dd"))</pems-table-cell>
-                    <pems-table-cell>
+    @{
+        var rows_24 = recentIncoming;
+        var cell_24_4 = DataCell.Template(rows_24, @<text>@{ var l = item; }
                         @if (l.RelatedDocumentId != null)
                         {
                             <pems-badge tone="success">@Localizer["مدرک"]</pems-badge>
@@ -109,9 +101,7 @@
                         {
                             <pems-badge tone="warning">@Localizer["وصل‌نشده"]</pems-badge>
                         }
-                    </pems-table-cell>
-                </pems-table-row>
-            }
-        </pems-table-body>
-    </pems-table>
+                    </text>);
+    }
+    <pems-data-table data="@(DataRows.Of(rows_24, c_ => c_.Add(((Localizer["شماره"])?.ToString() ?? ""), l => (object?)(DataCell.Link(Url.Action("Details", "Letter", new { id = l.LetterId }), l.LetterNumber))).Add(((Localizer["فرستنده"])?.ToString() ?? ""), l => (object?)(l.Sender), css: "small").Add(((Localizer["موضوع"])?.ToString() ?? ""), l => (object?)(l.Subject), css: "small").Add(((Localizer["تاریخ"])?.ToString() ?? ""), l => (object?)((((DateTime)l.LetterDate).ToString("yyyy-MM-dd"))), css: "small").Add(((Localizer["لینک"])?.ToString() ?? ""), l => (object?)cell_24_4(l))))" css="mb-0" />
 </pems-content-card>

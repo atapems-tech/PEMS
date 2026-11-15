@@ -104,21 +104,15 @@
 <pems-content-card css="mb-3">
     <pems-heading level="6" class="mb-3"><pems-icon name="bi-tags" /> Related Equipment Tags (AVEVA-style multi-tag linking)</pems-heading>
     <pems-table-scroll css="table-scroll-area pems-s-8da1c6e6">
-    <pems-table kind="enterprise">
-        <pems-table-head><pems-table-row><pems-table-header>@Localizer["Tag Number"]</pems-table-header><pems-table-header>@Localizer["Source"]</pems-table-header><pems-table-header>@Localizer["Status"]</pems-table-header><pems-table-header></pems-table-header></pems-table-row></pems-table-head>
-        <pems-table-body>
-            @foreach (var t in Model.TagLinks)
-            {
-                <pems-table-row>
-                    <pems-table-cell>@t.TagNumber</pems-table-cell>
-                    <pems-table-cell>@(t.IsAIProposed ? "AI Proposed" : "Manual")</pems-table-cell>
-                    <pems-table-cell>
+    @{
+        var rows_29 = Model.TagLinks;
+        var cell_29_2 = DataCell.Template(rows_29, @<text>@{ var t = item; }
                         @{
                             var tb = t.ReviewStatus switch { "Approved" => "success", "Rejected" => "danger", _ => "neutral" };
                         }
                         <pems-badge tone="@tb">@t.ReviewStatus</pems-badge>
-                    </pems-table-cell>
-                    <pems-table-cell>
+                    </text>);
+        var cell_29_3 = DataCell.Template(rows_29, @<text>@{ var t = item; }
                         @if (t.IsAIProposed && t.ReviewStatus == "Draft")
                         {
                             <pems-form asp-action="ApproveTagLink" method="post" class="d-inline">
@@ -132,11 +126,9 @@
                                 <pems-button tone="danger" size="small" outline="true">@Localizer["Reject"]</pems-button>
                             </pems-form>
                         }
-                    </pems-table-cell>
-                </pems-table-row>
-            }
-        </pems-table-body>
-    </pems-table>
+                    </text>);
+    }
+    <pems-data-table data="@(DataRows.Of(rows_29, c_ => c_.Add(((Localizer["Tag Number"])?.ToString() ?? ""), t => (object?)(t.TagNumber)).Add(((Localizer["Source"])?.ToString() ?? ""), t => (object?)((t.IsAIProposed ? "AI Proposed" : "Manual"))).Add(((Localizer["Status"])?.ToString() ?? ""), t => (object?)cell_29_2(t)).Add("", t => (object?)cell_29_3(t))))" />
     </pems-table-scroll>
     @if (!Model.TagLinks.Any()) { <pems-text class="text-muted">No equipment tags detected or linked yet.</pems-text> }
 </pems-content-card>
@@ -144,16 +136,9 @@
 <pems-content-card>
     <pems-heading level="6" class="mb-3"><pems-icon name="bi-chat-dots" /> Comment Management</pems-heading>
     <pems-table-scroll css="table-scroll-area pems-s-8da1c6e6">
-    <pems-table kind="enterprise">
-        <pems-table-head><pems-table-row><pems-table-header>@Localizer["Comment"]</pems-table-header><pems-table-header>@Localizer["Raised By"]</pems-table-header><pems-table-header>@Localizer["Date"]</pems-table-header><pems-table-header>@Localizer["Action Status"]</pems-table-header><pems-table-header>@Localizer["Response"]</pems-table-header></pems-table-row></pems-table-head>
-        <pems-table-body>
-            @foreach (var c in Model.Comments)
-            {
-                <pems-table-row>
-                    <pems-table-cell>@c.CommentText</pems-table-cell>
-                    <pems-table-cell>@c.RaisedByName</pems-table-cell>
-                    <pems-table-cell>@c.RaisedDate.ToString("yyyy-MM-dd")</pems-table-cell>
-                    <pems-table-cell>
+    @{
+        var rows_30 = Model.Comments;
+        var cell_30_3 = DataCell.Template(rows_30, @<text>@{ var c = item; }
                         @{
                             var ab = c.ActionStatus switch { "Closed" => "success", "Verified" => "info", "ResponsePending" => "warning", "NoActionRequired" => "neutral", _ => "danger" };
                         }
@@ -166,8 +151,8 @@
                                 { <option value="@s" selected="@(s == c.ActionStatus)">@s</option> }
                             </pems-select>
                         </pems-form>
-                    </pems-table-cell>
-                    <pems-table-cell class="small">
+                    </text>);
+        var cell_30_4 = DataCell.Template(rows_30, @<text>@{ var c = item; }
                         @c.ResponseText
                         @if (string.IsNullOrEmpty(c.ResponseText))
                         {
@@ -178,11 +163,9 @@
                                 <pems-button tone="primary" size="small" outline="true">@Localizer["Save"]</pems-button>
                             </pems-flex></pems-form>
                         }
-                    </pems-table-cell>
-                </pems-table-row>
-            }
-        </pems-table-body>
-    </pems-table>
+                    </text>);
+    }
+    <pems-data-table data="@(DataRows.Of(rows_30, c_ => c_.Add(((Localizer["Comment"])?.ToString() ?? ""), c => (object?)(c.CommentText)).Add(((Localizer["Raised By"])?.ToString() ?? ""), c => (object?)(c.RaisedByName)).Add(((Localizer["Date"])?.ToString() ?? ""), c => (object?)((c.RaisedDate.ToString("yyyy-MM-dd")))).Add(((Localizer["Action Status"])?.ToString() ?? ""), c => (object?)cell_30_3(c)).Add(((Localizer["Response"])?.ToString() ?? ""), c => (object?)cell_30_4(c), css: "small")))" />
     </pems-table-scroll>
     @if (!Model.Comments.Any()) { <pems-text class="text-muted">No comments yet.</pems-text> }
 

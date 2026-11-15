@@ -44,19 +44,10 @@
     <pems-content-card css="mb-3">
         <pems-heading level="6">@Localizer["Versions"]</pems-heading>
         <pems-table-scroll>
-            <pems-table kind="enterprise" css="align-middle">
-                <pems-table-head><pems-table-row><pems-table-header>@Localizer["Version"]</pems-table-header><pems-table-header>@Localizer["Status"]</pems-table-header><pems-table-header>@Localizer["Stages"]</pems-table-header><pems-table-header>@Localizer["Transitions"]</pems-table-header><pems-table-header>@Localizer["Published"]</pems-table-header><pems-table-header>@Localizer["Running instances"]</pems-table-header><pems-table-header>@Localizer["Change summary"]</pems-table-header><pems-table-header></pems-table-header></pems-table-row></pems-table-head>
-                <pems-table-body>
-                @foreach (var v in Model.Versions)
-                {
-                    <pems-table-row>
-                        <pems-table-cell>v@(v.VersionNumber) @if (v.ClonedFromVersion.HasValue) { <span class="small text-muted">(← v@(v.ClonedFromVersion))</span> } @if (v.IsBound) { <pems-badge tone="success">@Localizer["Bound"]</pems-badge> }</pems-table-cell>
-                        <pems-table-cell><pems-badge tone="none" css="@StatusBadge(v.Status)">@Localizer[v.Status]</pems-badge></pems-table-cell>
-                        <pems-table-cell>@v.Stages</pems-table-cell><pems-table-cell>@v.Transitions</pems-table-cell>
-                        <pems-table-cell class="small text-nowrap">@(v.PublishedDate?.ToString("yyyy-MM-dd HH:mm") ?? "-")</pems-table-cell>
-                        <pems-table-cell>@v.RunningInstances / @v.TotalInstances</pems-table-cell>
-                        <pems-table-cell class="small">@v.ChangeSummary</pems-table-cell>
-                        <pems-table-cell class="text-end text-nowrap">
+            @{
+                var rows_7 = Model.Versions;
+                var cell_7_1 = DataCell.Template(rows_7, @<text>@{ var v = item; }<pems-badge tone="none" css="@StatusBadge(v.Status)">@Localizer[v.Status]</pems-badge></text>);
+                var cell_7_7 = DataCell.Template(rows_7, @<text>@{ var v = item; }
                             <pems-button as="a" tone="primary" size="small" outline="true" asp-action="Designer" asp-route-versionId="@v.VersionId">@Localizer[v.Status is "Draft" or "Validated" ? "Open" : "View"]</pems-button>
                             @if (d.Editable && perms["Edit"] && v.Status is "Published" or "Retired" && openDraft == null)
                             {
@@ -72,11 +63,9 @@
                                     <pems-button tone="danger" size="small" outline="true">@Localizer["Retire"]</pems-button>
                                 </pems-form>
                             }
-                        </pems-table-cell>
-                    </pems-table-row>
-                }
-                </pems-table-body>
-            </pems-table>
+                        </text>);
+            }
+            <pems-data-table data="@(DataRows.Of(rows_7, c_ => c_.Add(((Localizer["Version"])?.ToString() ?? ""), v => (object?)(DataCell.Group("v", v.VersionNumber, " ", (v.ClonedFromVersion.HasValue ? (object?)DataCell.Span("small text-muted", "(← v", v.ClonedFromVersion, ")") : null), " ", (v.IsBound ? (object?)DataCell.Badge("success", Localizer["Bound"]) : null)))).Add(((Localizer["Status"])?.ToString() ?? ""), v => (object?)cell_7_1(v)).Add(((Localizer["Stages"])?.ToString() ?? ""), v => (object?)(v.Stages)).Add(((Localizer["Transitions"])?.ToString() ?? ""), v => (object?)(v.Transitions)).Add(((Localizer["Published"])?.ToString() ?? ""), v => (object?)((v.PublishedDate?.ToString("yyyy-MM-dd HH:mm") ?? "-")), css: "small text-nowrap").Add(((Localizer["Running instances"])?.ToString() ?? ""), v => (object?)(DataCell.Group(v.RunningInstances, " / ", v.TotalInstances))).Add(((Localizer["Change summary"])?.ToString() ?? ""), v => (object?)(v.ChangeSummary), css: "small").Add("", v => (object?)cell_7_7(v), css: "text-end text-nowrap")))" css="align-middle" />
         </pems-table-scroll>
         @if (openDraft != null) { <pems-text class="small text-muted mb-0"><pems-icon name="bi-info-circle" /> @Localizer["One open draft per workflow: finish or discard v{0} before cloning again.", openDraft.VersionNumber]</pems-text> }
     </pems-content-card>

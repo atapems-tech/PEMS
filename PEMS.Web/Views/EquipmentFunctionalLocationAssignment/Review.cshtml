@@ -80,18 +80,9 @@
 
 <pems-content-card>
     <pems-table-scroll css="table-scroll-area pems-s-8da1c6e6">
-        <pems-table kind="enterprise">
-            <pems-table-head>
-                <pems-table-row>
-                    <pems-table-header>@Localizer["Approve"]</pems-table-header><pems-table-header>@Localizer["Src Row"]</pems-table-header><pems-table-header>@Localizer["Equipment Tag"]</pems-table-header><pems-table-header>@Localizer["Equipment"]</pems-table-header>
-                    <pems-table-header>Current FL</pems-table-header><pems-table-header>Proposed FL</pems-table-header><pems-table-header>@Localizer["Match Result"]</pems-table-header><pems-table-header>@Localizer["Note"]</pems-table-header>
-                </pems-table-row>
-            </pems-table-head>
-            <pems-table-body>
-                @foreach (var r in Model.Rows.Items)
-                {
-                    <pems-table-row>
-                        <pems-table-cell>
+        @{
+            var rows_34 = Model.Rows.Items;
+            var cell_34_0 = DataCell.Template(rows_34, @<text>@{ var r = item; }
                             @if (Model.Status == "Staging")
                             {
                                 var canToggle = r.Status is "Exact" or "AlreadyAssigned";
@@ -131,23 +122,10 @@
                             {
                                 @(r.CommittedAssignment ? "Assigned" : (r.IncludeInCommit ? "Approved" : "No"))
                             }
-                        </pems-table-cell>
-                        <pems-table-cell>@r.SourceRowNumber</pems-table-cell>
-                        <pems-table-cell><strong dir="ltr">@r.EquipmentTag</strong></pems-table-cell>
-                        <pems-table-cell class="small">@(r.EquipmentDescription ?? "-")</pems-table-cell>
-                        <pems-table-cell class="small" dir="ltr">@(r.CurrentFunctionalLocationBreadcrumb ?? "-")</pems-table-cell>
-                        <pems-table-cell class="small" dir="ltr">@(r.ProposedFunctionalLocationBreadcrumb ?? r.FunctionalLocationCode)</pems-table-cell>
-                        <pems-table-cell><pems-badge tone="none" css="@StatusBadge(r.Status)">@StatusLabel(r.Status)</pems-badge></pems-table-cell>
-                        <pems-table-cell class="small">
-                            @if (r.ValidationMessage != null)
-                            {
-                                <span class="text-muted pems-s-f8f979be">@r.ValidationMessage</span>
-                            }
-                        </pems-table-cell>
-                    </pems-table-row>
-                }
-            </pems-table-body>
-        </pems-table>
+                        </text>);
+            var cell_34_6 = DataCell.Template(rows_34, @<text>@{ var r = item; }<pems-badge tone="none" css="@StatusBadge(r.Status)">@StatusLabel(r.Status)</pems-badge></text>);
+        }
+        <pems-data-table data="@(DataRows.Of(rows_34, c_ => c_.Add(((Localizer["Approve"])?.ToString() ?? ""), r => (object?)cell_34_0(r)).Add(((Localizer["Src Row"])?.ToString() ?? ""), r => (object?)(r.SourceRowNumber)).Add(((Localizer["Equipment Tag"])?.ToString() ?? ""), r => (object?)(DataCell.Span(null, r.EquipmentTag).WithDir("ltr").WithTag("strong"))).Add(((Localizer["Equipment"])?.ToString() ?? ""), r => (object?)((r.EquipmentDescription ?? "-")), css: "small").Add("Current FL", r => (object?)((r.CurrentFunctionalLocationBreadcrumb ?? "-")), css: "small", dir: "ltr").Add("Proposed FL", r => (object?)((r.ProposedFunctionalLocationBreadcrumb ?? r.FunctionalLocationCode)), css: "small", dir: "ltr").Add(((Localizer["Match Result"])?.ToString() ?? ""), r => (object?)cell_34_6(r)).Add(((Localizer["Note"])?.ToString() ?? ""), r => (object?)((r.ValidationMessage != null ? (object?)DataCell.Span("text-muted pems-s-f8f979be", r.ValidationMessage) : null)), css: "small")))" />
     </pems-table-scroll>
     @if (!Model.Rows.Items.Any()) { <pems-text class="text-muted text-center py-4">@Localizer["No rows match this filter."]</pems-text> }
 

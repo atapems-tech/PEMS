@@ -72,29 +72,14 @@
         else
         {
             <pems-table-scroll>
-                <pems-table kind="enterprise">
-                    <pems-table-head><pems-table-row><pems-table-header>@Localizer["Started (UTC)"]</pems-table-header><pems-table-header>@Localizer["Trigger"]</pems-table-header><pems-table-header>@Localizer["Mode"]</pems-table-header><pems-table-header>@Localizer["From"]</pems-table-header><pems-table-header>@Localizer["To"]</pems-table-header><pems-table-header>@Localizer["Applied"]</pems-table-header><pems-table-header>@Localizer["Seconds"]</pems-table-header><pems-table-header>@Localizer["Result"]</pems-table-header><pems-table-header>@Localizer["By"]</pems-table-header><pems-table-header>@Localizer["Backup file"]</pems-table-header></pems-table-row></pems-table-head>
-                    <pems-table-body>
-                    @foreach (var r in Model.RecentRuns)
-                    {
-                        <pems-table-row>
-                            <pems-table-cell class="small">@r.StartedAtUtc.ToString("yyyy-MM-dd HH:mm:ss")</pems-table-cell>
-                            <pems-table-cell>@r.Trigger</pems-table-cell>
-                            <pems-table-cell>@r.Mode</pems-table-cell>
-                            <pems-table-cell class="small"><code>@(r.FromMigration ?? "-")</code></pems-table-cell>
-                            <pems-table-cell class="small"><code>@(r.ToMigration ?? "-")</code></pems-table-cell>
-                            <pems-table-cell>@r.MigrationsApplied</pems-table-cell>
-                            <pems-table-cell>@r.DurationSeconds.ToString("0.0")</pems-table-cell>
-                            <pems-table-cell>
+                @{
+                    var rows_1 = Model.RecentRuns;
+                    var cell_1_7 = DataCell.Template(rows_1, @<text>@{ var r = item; }
                                 @if (r.Succeeded) { <pems-badge tone="success">@Localizer["Succeeded"]</pems-badge> }
                                 else { <pems-badge tone="danger" title="@r.Error">@Localizer["Failed"]</pems-badge> }
-                            </pems-table-cell>
-                            <pems-table-cell class="small">@(r.PerformedBy ?? "-")</pems-table-cell>
-                            <pems-table-cell class="small"><code>@(r.BackupFile ?? "-")</code></pems-table-cell>
-                        </pems-table-row>
-                    }
-                    </pems-table-body>
-                </pems-table>
+                            </text>);
+                }
+                <pems-data-table data="@(DataRows.Of(rows_1, c_ => c_.Add(((Localizer["Started (UTC)"])?.ToString() ?? ""), r => (object?)((r.StartedAtUtc.ToString("yyyy-MM-dd HH:mm:ss"))), css: "small").Add(((Localizer["Trigger"])?.ToString() ?? ""), r => (object?)(r.Trigger)).Add(((Localizer["Mode"])?.ToString() ?? ""), r => (object?)(r.Mode)).Add(((Localizer["From"])?.ToString() ?? ""), r => (object?)(DataCell.Code((r.FromMigration ?? "-"))), css: "small").Add(((Localizer["To"])?.ToString() ?? ""), r => (object?)(DataCell.Code((r.ToMigration ?? "-"))), css: "small").Add(((Localizer["Applied"])?.ToString() ?? ""), r => (object?)(r.MigrationsApplied)).Add(((Localizer["Seconds"])?.ToString() ?? ""), r => (object?)((r.DurationSeconds.ToString("0.0")))).Add(((Localizer["Result"])?.ToString() ?? ""), r => (object?)cell_1_7(r)).Add(((Localizer["By"])?.ToString() ?? ""), r => (object?)((r.PerformedBy ?? "-")), css: "small").Add(((Localizer["Backup file"])?.ToString() ?? ""), r => (object?)(DataCell.Code((r.BackupFile ?? "-"))), css: "small")))" />
             </pems-table-scroll>
         }
     </pems-content-card>

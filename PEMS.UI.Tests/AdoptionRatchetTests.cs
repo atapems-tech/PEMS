@@ -65,7 +65,7 @@ public sealed class AdoptionRatchetTests
         ("text", new Regex(@"<p(?=[\s>])", RegexOptions.Compiled), true, false),   // SCRUM-522: <pems-text>
         ("bullet-list", new Regex(@"<(?:ul|ol|li)(?=[\s>])", RegexOptions.Compiled), true, false),   // SCRUM-522: <pems-bullet-list> and <pems-bullet>
         ("divider", new Regex(@"<hr(?=[\s>/])", RegexOptions.Compiled), true, false),   // SCRUM-522: <pems-divider />
-        ("table-row", new Regex(@"<pems-table-row(?=[\s>])", RegexOptions.Compiled), true, false),   // SCRUM-520: <pems-data-table> with DataCell builders; what stays has forms or inputs in its cells
+        ("table-row", new Regex(@"<pems-table(?=[\s>])(?:(?!</pems-table>).)*?@foreach", RegexOptions.Compiled | RegexOptions.Singleline), true, false),   // SCRUM-520/570: a <pems-table> with a row loop becomes <pems-data-table>; tables inside pems-list-table and pems-related-table are their own families (row classes, bulk and row-form hooks) and are not counted
         ("nav-link", new Regex(@"<a[^>]*class=""[^""]*(?<![\w-])nav-link(?![\w-])", RegexOptions.Compiled), true, false),   // SCRUM-521: <pems-nav-link>
         ("validation-alert", new Regex(@"<pems-alert[^>]*asp-validation-summary", RegexOptions.Compiled), true, false),
         ("modal-header", new Regex(@"class=""[^""]*(?<![\w-])modal-header(?![\w-])", RegexOptions.Compiled), true, false),

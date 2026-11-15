@@ -196,27 +196,9 @@
         <pems-heading level="6" class="mb-2"><pems-icon name="bi-box-arrow-in-down" aria-hidden="true" /> @Localizer["Rcv_Receiving"]</pems-heading>
         <pems-text class="small text-muted">@Localizer["Rcv_ReceivingHelp"]</pems-text>
         <pems-table-scroll>
-            <pems-table kind="enterprise" scale="small" css="align-middle">
-                <pems-table-head>
-                    <pems-table-row>
-                        <pems-table-header>#</pems-table-header><pems-table-header>@Localizer["Po_Item"]</pems-table-header><pems-table-header class="text-end">@Localizer["Rcv_Ordered"]</pems-table-header><pems-table-header class="text-end">@Localizer["Rcv_InQc"]</pems-table-header>
-                        <pems-table-header class="text-end">@Localizer["Accepted"]</pems-table-header><pems-table-header class="text-end">@Localizer["Hold"]</pems-table-header><pems-table-header class="text-end">@Localizer["Rejected"]</pems-table-header>
-                        <pems-table-header class="text-end">@Localizer["Rcv_Open"]</pems-table-header><pems-table-header>@Localizer["Rcv_Inspection"]</pems-table-header>
-                    </pems-table-row>
-                </pems-table-head>
-                <pems-table-body>
-                @foreach (var r in receivingLines)
-                {
-                    <pems-table-row>
-                        <pems-table-cell dir="ltr">@r.LineNo</pems-table-cell>
-                        <pems-table-cell class="small">@(r.MaterialCode ?? "-") - @r.Description @if (r.WarehouseCode != null) { <span class="text-muted" dir="ltr">(@r.WarehouseCode)</span> }</pems-table-cell>
-                        <pems-table-cell class="text-end" dir="ltr">@r.Ordered.ToString("0.###") @r.Unit</pems-table-cell>
-                        <pems-table-cell class="text-end" dir="ltr">@r.InQc.ToString("0.###")</pems-table-cell>
-                        <pems-table-cell class="text-end" dir="ltr">@r.Accepted.ToString("0.###")</pems-table-cell>
-                        <pems-table-cell class="text-end" dir="ltr">@r.OnHold.ToString("0.###")</pems-table-cell>
-                        <pems-table-cell class="text-end" dir="ltr">@((r.RejectedReplaced + r.RejectedClosedShort).ToString("0.###"))@if (r.RejectedClosedShort > 0) { <div class="small text-muted">@Localizer["Rcv_Action_CloseShort"]: @r.RejectedClosedShort.ToString("0.###")</div> }</pems-table-cell>
-                        <pems-table-cell class="text-end" dir="ltr">@r.Outstanding.ToString("0.###")@if (r.OverReceived > 0) { <div class="small text-danger">@Localizer["Rcv_Over"]: @r.OverReceived.ToString("0.###")</div> }</pems-table-cell>
-                        <pems-table-cell class="small">
+            @{
+                var rows_69 = receivingLines;
+                var cell_69_8 = DataCell.Template(rows_69, @<text>@{ var r = item; }
                             @if (r.InspectionReleasedAt != null)
                             {
                                 <span class="text-success">@Localizer["Rcv_Released"]</span> <span class="text-muted">@r.InspectionReleasedBy @r.InspectionReleasedAt?.ToString("yyyy-MM-dd") @r.InspectionTestPlanNumber</span>
@@ -234,11 +216,9 @@
                             {
                                 <span class="@(r.InspectionRequired ? "text-warning" : "text-muted")">@(r.InspectionRequired ? Localizer["Rcv_NotReleased"].Value : "-")</span>
                             }
-                        </pems-table-cell>
-                    </pems-table-row>
-                }
-                </pems-table-body>
-            </pems-table>
+                        </text>);
+            }
+            <pems-data-table data="@(DataRows.Of(rows_69, c_ => c_.Add("#", r => (object?)(r.LineNo), dir: "ltr").Add(((Localizer["Po_Item"])?.ToString() ?? ""), r => (object?)(DataCell.Group((r.MaterialCode ?? "-"), " - ", r.Description, " ", (r.WarehouseCode != null ? (object?)DataCell.Span("text-muted", "(", r.WarehouseCode, ")").WithDir("ltr") : null))), css: "small").Add(((Localizer["Rcv_Ordered"])?.ToString() ?? ""), r => (object?)(DataCell.Group((r.Ordered.ToString("0.###")), " ", r.Unit)), css: "text-end", headerCss: "text-end", dir: "ltr").Add(((Localizer["Rcv_InQc"])?.ToString() ?? ""), r => (object?)((r.InQc.ToString("0.###"))), css: "text-end", headerCss: "text-end", dir: "ltr").Add(((Localizer["Accepted"])?.ToString() ?? ""), r => (object?)((r.Accepted.ToString("0.###"))), css: "text-end", headerCss: "text-end", dir: "ltr").Add(((Localizer["Hold"])?.ToString() ?? ""), r => (object?)((r.OnHold.ToString("0.###"))), css: "text-end", headerCss: "text-end", dir: "ltr").Add(((Localizer["Rejected"])?.ToString() ?? ""), r => (object?)(DataCell.Group(((r.RejectedReplaced + r.RejectedClosedShort).ToString("0.###")), (r.RejectedClosedShort > 0 ? (object?)DataCell.Span("small text-muted", Localizer["Rcv_Action_CloseShort"], ": ", (r.RejectedClosedShort.ToString("0.###"))).WithTag("div") : null))), css: "text-end", headerCss: "text-end", dir: "ltr").Add(((Localizer["Rcv_Open"])?.ToString() ?? ""), r => (object?)(DataCell.Group((r.Outstanding.ToString("0.###")), (r.OverReceived > 0 ? (object?)DataCell.Span("small text-danger", Localizer["Rcv_Over"], ": ", (r.OverReceived.ToString("0.###"))).WithTag("div") : null))), css: "text-end", headerCss: "text-end", dir: "ltr").Add(((Localizer["Rcv_Inspection"])?.ToString() ?? ""), r => (object?)cell_69_8(r), css: "small")))" dense="true" css="align-middle" />
         </pems-table-scroll>
     </pems-content-card>
 }

@@ -28,20 +28,15 @@
     else
     {
         <pems-table-scroll css="table-scroll-area pems-s-8da1c6e6">
-        <pems-table kind="enterprise">
-            <pems-table-row><pems-table-header>@Localizer["Tag Number"]</pems-table-header><pems-table-header>@Localizer["Type"]</pems-table-header><pems-table-header>@Localizer["Area"]</pems-table-header><pems-table-header>Service</pems-table-header><pems-table-header>@Localizer["Description"]</pems-table-header><pems-table-header>@Localizer["Status"]</pems-table-header><pems-table-header>@Localizer["Action"]</pems-table-header></pems-table-row>
-            @foreach (var tag in Model.ExtractedTags)
-            {
-                <pems-table-row>
-                    <pems-table-cell>@tag.TagNumber</pems-table-cell><pems-table-cell>@tag.TagType</pems-table-cell><pems-table-cell>@tag.Area</pems-table-cell>
-                    <pems-table-cell>@tag.Service</pems-table-cell><pems-table-cell>@tag.Description</pems-table-cell>
-                    <pems-table-cell>
+        @{
+            var rows_17 = Model.ExtractedTags;
+            var cell_17_5 = DataCell.Template(rows_17, @<text>@{ var tag = item; }
                         @{
                             var tagBadge = tag.ReviewStatus switch { "Approved" => "success", "Rejected" => "danger", _ => "neutral" };
                         }
                         <pems-badge tone="@tagBadge">@tag.ReviewStatus</pems-badge>
-                    </pems-table-cell>
-                    <pems-table-cell>
+                    </text>);
+            var cell_17_6 = DataCell.Template(rows_17, @<text>@{ var tag = item; }
                         @if (tag.ReviewStatus == "Draft")
                         {
                             <pems-form asp-action="ApproveExtractedTag" method="post"><pems-flex gap="1">
@@ -57,10 +52,9 @@
                                 <pems-button tone="danger" size="small" outline="true" type="submit">@Localizer["Reject"]</pems-button>
                             </pems-form>
                         }
-                    </pems-table-cell>
-                </pems-table-row>
-            }
-        </pems-table>
+                    </text>);
+        }
+        <pems-data-table data="@(DataRows.Of(rows_17, c_ => c_.Add(((Localizer["Tag Number"])?.ToString() ?? ""), tag => (object?)(tag.TagNumber)).Add(((Localizer["Type"])?.ToString() ?? ""), tag => (object?)(tag.TagType)).Add(((Localizer["Area"])?.ToString() ?? ""), tag => (object?)(tag.Area)).Add("Service", tag => (object?)(tag.Service)).Add(((Localizer["Description"])?.ToString() ?? ""), tag => (object?)(tag.Description)).Add(((Localizer["Status"])?.ToString() ?? ""), tag => (object?)cell_17_5(tag)).Add(((Localizer["Action"])?.ToString() ?? ""), tag => (object?)cell_17_6(tag))))" />
         </pems-table-scroll>
     }
 </pems-content-card>
@@ -75,19 +69,15 @@
     else
     {
         <pems-table-scroll css="table-scroll-area pems-s-8da1c6e6">
-        <pems-table kind="enterprise">
-            <pems-table-row><pems-table-header>Related Tag</pems-table-header><pems-table-header>Field</pems-table-header><pems-table-header>@Localizer["Value"]</pems-table-header><pems-table-header>@Localizer["Unit"]</pems-table-header><pems-table-header>@Localizer["Status"]</pems-table-header><pems-table-header>@Localizer["Action"]</pems-table-header></pems-table-row>
-            @foreach (var spec in Model.ExtractedSpecifications)
-            {
-                <pems-table-row>
-                    <pems-table-cell>@spec.RelatedTagNumber</pems-table-cell><pems-table-cell>@spec.FieldName</pems-table-cell><pems-table-cell>@spec.FieldValue</pems-table-cell><pems-table-cell>@spec.Unit</pems-table-cell>
-                    <pems-table-cell>
+        @{
+            var rows_18 = Model.ExtractedSpecifications;
+            var cell_18_4 = DataCell.Template(rows_18, @<text>@{ var spec = item; }
                         @{
                             var specBadge = spec.ReviewStatus switch { "Approved" => "success", "Rejected" => "danger", _ => "neutral" };
                         }
                         <pems-badge tone="@specBadge">@spec.ReviewStatus</pems-badge>
-                    </pems-table-cell>
-                    <pems-table-cell>
+                    </text>);
+            var cell_18_5 = DataCell.Template(rows_18, @<text>@{ var spec = item; }
                         @if (spec.ReviewStatus == "Draft")
                         {
                             <pems-form asp-action="ApproveExtractedSpecification" method="post" class="d-inline">
@@ -101,10 +91,9 @@
                                 <pems-button tone="danger" size="small" outline="true" type="submit">@Localizer["Reject"]</pems-button>
                             </pems-form>
                         }
-                    </pems-table-cell>
-                </pems-table-row>
-            }
-        </pems-table>
+                    </text>);
+        }
+        <pems-data-table data="@(DataRows.Of(rows_18, c_ => c_.Add("Related Tag", spec => (object?)(spec.RelatedTagNumber)).Add("Field", spec => (object?)(spec.FieldName)).Add(((Localizer["Value"])?.ToString() ?? ""), spec => (object?)(spec.FieldValue)).Add(((Localizer["Unit"])?.ToString() ?? ""), spec => (object?)(spec.Unit)).Add(((Localizer["Status"])?.ToString() ?? ""), spec => (object?)cell_18_4(spec)).Add(((Localizer["Action"])?.ToString() ?? ""), spec => (object?)cell_18_5(spec))))" />
         </pems-table-scroll>
     }
 </pems-content-card>

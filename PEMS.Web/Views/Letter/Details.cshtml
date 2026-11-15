@@ -445,15 +445,8 @@
 <pems-accordion-header><pems-icon name="bi-people" css="me-2" /> Recipients (@Model.Recipients.Count)</pems-accordion-header>
                 @if (Model.Recipients.Any())
                 {
-                    <pems-table scale="small" css="table-enterprise mb-2">
-                        <pems-table-head><pems-table-row><pems-table-header>@Localizer["Type"]</pems-table-header><pems-table-header>@Localizer["Name"]</pems-table-header><pems-table-header>@Localizer["Read"]</pems-table-header></pems-table-row></pems-table-head>
-                        <pems-table-body>
-                            @foreach (var r in Model.Recipients)
-                            {
-                                <pems-table-row>
-                                    <pems-table-cell><pems-badge tone="@(r.RecipientType == "To" ? "primary" : "neutral")">@(r.RecipientType == "To" ? "To" : "Cc")</pems-badge></pems-table-cell>
-                                    <pems-table-cell>@r.DisplayName</pems-table-cell>
-                                    <pems-table-cell>
+                    var rows_45 = Model.Recipients;
+                    var cell_45_2 = DataCell.Template(rows_45, @<text>@{ var r = item; }
                                         @if (r.IsRead)
                                         { <span class="text-success small"><pems-icon name="bi-check2-all" /> @r.ReadDate?.ToString("yyyy-MM-dd")</span> }
                                         else
@@ -464,11 +457,8 @@
                                                 <pems-button tone="neutral" size="small" outline="true">@Localizer["Mark Read"]</pems-button>
                                             </pems-form>
                                         }
-                                    </pems-table-cell>
-                                </pems-table-row>
-                            }
-                        </pems-table-body>
-                    </pems-table>
+                                    </text>);
+                    <pems-data-table data="@(DataRows.Of(rows_45, c_ => c_.Add(((Localizer["Type"])?.ToString() ?? ""), r => (object?)(DataCell.Badge(r.RecipientType == "To" ? "primary" : "neutral", (r.RecipientType == "To" ? "To" : "Cc")))).Add(((Localizer["Name"])?.ToString() ?? ""), r => (object?)(r.DisplayName)).Add(((Localizer["Read"])?.ToString() ?? ""), r => (object?)cell_45_2(r))))" dense="true" css="mb-2" />
                 }
                 else
                 { <pems-text class="text-muted small">No additional recipients yet.</pems-text> }
@@ -521,23 +511,15 @@
 <pems-accordion-header><pems-icon name="bi-signpost-split" css="me-2" /> Referrals (@Model.Referrals.Count)</pems-accordion-header>
                 @if (Model.Referrals.Any())
                 {
-                    <pems-table scale="small" css="table-enterprise mb-2">
-                        <pems-table-head><pems-table-row><pems-table-header>Referred To</pems-table-header><pems-table-header>@Localizer["Instructions"]</pems-table-header><pems-table-header>@Localizer["Due"]</pems-table-header><pems-table-header>@Localizer["Status"]</pems-table-header><pems-table-header>@Localizer["Read"]</pems-table-header><pems-table-header>By / When</pems-table-header><pems-table-header></pems-table-header></pems-table-row></pems-table-head>
-                        <pems-table-body>
-                            @foreach (var r in Model.Referrals)
-                            {
-                                <pems-table-row class="@(r.IsOverdue ? "table-danger" : "")">
-                                    <pems-table-cell>@(r.ReferredToEmployeeName ?? r.ReferredToDepartmentName)</pems-table-cell>
-                                    <pems-table-cell class="small">@r.Instructions</pems-table-cell>
-                                    <pems-table-cell>@(r.DueDate?.ToString("yyyy-MM-dd"))</pems-table-cell>
-                                    <pems-table-cell>
+                    var rows_46 = Model.Referrals;
+                    var cell_46_3 = DataCell.Template(rows_46, @<text>@{ var r = item; }
                                         @{
                                             var sb = r.Status switch { "Completed" => "success", "InProgress" => "info", _ => "warning" };
                                         }
                                         <pems-badge tone="@sb">@r.Status</pems-badge>
                                         @if (r.IsOverdue) { <pems-badge tone="danger">@Localizer["Overdue"]</pems-badge> }
-                                    </pems-table-cell>
-                                    <pems-table-cell>
+                                    </text>);
+                    var cell_46_4 = DataCell.Template(rows_46, @<text>@{ var r = item; }
                                         @if (r.IsRead)
                                         { <span class="text-success"><pems-icon name="bi-check2-all" /> @Localizer["Read"]</span> }
                                         else
@@ -548,9 +530,9 @@
                                                 <pems-button tone="neutral" size="small" outline="true">@Localizer["Mark Read"]</pems-button>
                                             </pems-form>
                                         }
-                                    </pems-table-cell>
-                                    <pems-table-cell class="small text-muted">@r.ReferredByName<br />@r.ReferredDate.ToString("yyyy-MM-dd")</pems-table-cell>
-                                    <pems-table-cell>
+                                    </text>);
+                    var cell_46_5 = DataCell.Template(rows_46, @<text>@{ var r = item; }@r.ReferredByName<br />@r.ReferredDate.ToString("yyyy-MM-dd")</text>);
+                    var cell_46_6 = DataCell.Template(rows_46, @<text>@{ var r = item; }
                                         @if (r.Status != "Completed")
                                         {
                                             <pems-form asp-action="CompleteReferral" method="post"><pems-flex gap="1">
@@ -562,11 +544,8 @@
                                         }
                                         else
                                         { @r.ResponseNote }
-                                    </pems-table-cell>
-                                </pems-table-row>
-                            }
-                        </pems-table-body>
-                    </pems-table>
+                                    </text>);
+                    <pems-data-table data="@(DataRows.Of(rows_46, c_ => c_.Add("Referred To", r => (object?)((r.ReferredToEmployeeName ?? r.ReferredToDepartmentName))).Add(((Localizer["Instructions"])?.ToString() ?? ""), r => (object?)(r.Instructions), css: "small").Add(((Localizer["Due"])?.ToString() ?? ""), r => (object?)((r.DueDate?.ToString("yyyy-MM-dd")))).Add(((Localizer["Status"])?.ToString() ?? ""), r => (object?)cell_46_3(r)).Add(((Localizer["Read"])?.ToString() ?? ""), r => (object?)cell_46_4(r)).Add("By / When", r => (object?)cell_46_5(r), css: "small text-muted").Add("", r => (object?)cell_46_6(r)), rowClass: r => (r.IsOverdue ? "table-danger" : "")))" dense="true" css="mb-2" />
                 }
                 else
                 { <pems-text class="text-muted small">No referrals yet.</pems-text> }

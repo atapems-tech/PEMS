@@ -74,30 +74,15 @@
             else
             {
                 <pems-table-scroll>
-                    <pems-table kind="enterprise" css="mb-0">
-                        <pems-table-head>
-                            <pems-table-row>
-                                <pems-table-header scope="col">@Localizer["Letter No"]</pems-table-header>
-                                <pems-table-header scope="col">@Localizer["Subject"]</pems-table-header>
-                                <pems-table-header scope="col">@Localizer["Lt_Dash_Reason"]</pems-table-header>
-                                <pems-table-header scope="col">@Localizer["Lt_Dash_DaysOverdue"]</pems-table-header>
-                            </pems-table-row>
-                        </pems-table-head>
-                        <pems-table-body>
-                            @foreach (var item in Model.NeedsAttention)
-                            {
-                                <pems-table-row>
-                                    <pems-table-cell class="small">@item.LetterNumber</pems-table-cell>
-                                    <pems-table-cell><pems-link asp-action="Details" asp-route-id="@item.LetterId">@item.Subject</pems-link></pems-table-cell>
-                                    <pems-table-cell class="small">
+                    @{
+                        var rows_44 = Model.NeedsAttention;
+                        var cell_44_2 = DataCell.Template(rows_44, @<text>
                                         <pems-icon css="@(item.Reason == "OverdueReferral" ? "bi-signpost-split" : "bi-reply")" aria-hidden="true" />
                                         @Localizer[item.Reason == "OverdueReferral" ? "Lt_Dash_ReasonReferral" : "Lt_Dash_ReasonResponse"]
-                                    </pems-table-cell>
-                                    <pems-table-cell class="small pems-due-overdue"><pems-icon name="bi-exclamation-triangle" aria-hidden="true" /> @item.DaysOverdue <span class="text-muted fw-normal">(@item.DueDate.ToString("yyyy-MM-dd"))</span></pems-table-cell>
-                                </pems-table-row>
-                            }
-                        </pems-table-body>
-                    </pems-table>
+                                    </text>);
+                        var cell_44_3 = DataCell.Template(rows_44, @<text><pems-icon name="bi-exclamation-triangle" aria-hidden="true" /> @item.DaysOverdue <span class="text-muted fw-normal">(@item.DueDate.ToString("yyyy-MM-dd"))</span></text>);
+                    }
+                    <pems-data-table data="@(DataRows.Of(rows_44, c_ => c_.Add(((Localizer["Letter No"])?.ToString() ?? ""), item => (object?)(item.LetterNumber), css: "small").Add(((Localizer["Subject"])?.ToString() ?? ""), item => (object?)(DataCell.Link(Url.Action("Details", null, new { id = item.LetterId }), item.Subject))).Add(((Localizer["Lt_Dash_Reason"])?.ToString() ?? ""), item => (object?)cell_44_2(item), css: "small").Add(((Localizer["Lt_Dash_DaysOverdue"])?.ToString() ?? ""), item => (object?)cell_44_3(item), css: "small pems-due-overdue")))" css="mb-0" />
                 </pems-table-scroll>
             }
         </pems-content-card>

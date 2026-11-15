@@ -69,20 +69,11 @@
         else
         {
             <pems-table-scroll>
-                <pems-table scale="small" css="table-enterprise">
-                    <pems-table-head><pems-table-row><pems-table-header></pems-table-header><pems-table-header>@Localizer["Org_Diag_Code"]</pems-table-header><pems-table-header>@Localizer["Org_Diag_Subject"]</pems-table-header><pems-table-header>@Localizer["Org_Diag_Message"]</pems-table-header></pems-table-row></pems-table-head>
-                    <pems-table-body>
-                    @foreach (var i in Model)
-                    {
-                        <pems-table-row>
-                            <pems-table-cell><pems-badge tone="none" css="@Sev(i.Severity)">@i.Severity</pems-badge></pems-table-cell>
-                            <pems-table-cell><code>@i.Code</code></pems-table-cell>
-                            <pems-table-cell>@i.Subject</pems-table-cell>
-                            <pems-table-cell class="small">@i.Message</pems-table-cell>
-                        </pems-table-row>
-                    }
-                    </pems-table-body>
-                </pems-table>
+                @{
+                    var rows_5 = Model;
+                    var cell_5_0 = DataCell.Template(rows_5, @<text>@{ var i = item; }<pems-badge tone="none" css="@Sev(i.Severity)">@i.Severity</pems-badge></text>);
+                }
+                <pems-data-table data="@(DataRows.Of(rows_5, c_ => c_.Add("", i => (object?)cell_5_0(i)).Add(((Localizer["Org_Diag_Code"])?.ToString() ?? ""), i => (object?)(DataCell.Code(i.Code))).Add(((Localizer["Org_Diag_Subject"])?.ToString() ?? ""), i => (object?)(i.Subject)).Add(((Localizer["Org_Diag_Message"])?.ToString() ?? ""), i => (object?)(i.Message), css: "small")))" dense="true" />
             </pems-table-scroll>
         }
     </section>

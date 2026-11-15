@@ -44,15 +44,9 @@
 <pems-content-card css="mb-3">
     <pems-heading level="6" class="mb-3">@Localizer["Attendees"]</pems-heading>
     <pems-table-scroll css="table-scroll-area pems-s-8da1c6e6">
-    <pems-table kind="enterprise">
-        <pems-table-head><pems-table-row><pems-table-header>@Localizer["Name"]</pems-table-header><pems-table-header>Required</pems-table-header><pems-table-header>Attended</pems-table-header></pems-table-row></pems-table-head>
-        <pems-table-body>
-            @foreach (var a in Model.Attendees)
-            {
-                <pems-table-row>
-                    <pems-table-cell>@a.DisplayName</pems-table-cell>
-                    <pems-table-cell>@(a.IsRequired ? "Yes" : "Optional")</pems-table-cell>
-                    <pems-table-cell>
+    @{
+        var rows_66 = Model.Attendees;
+        var cell_66_2 = DataCell.Template(rows_66, @<text>@{ var a = item; }
                         <pems-form asp-action="MarkAttended" method="post">
                             <input type="hidden" name="meetingAttendeeId" value="@a.MeetingAttendeeId" />
                             <input type="hidden" name="meetingId" value="@m.MeetingId" />
@@ -61,11 +55,9 @@
                                 <pems-icon css="@(a.Attended ? "bi-check-lg" : "bi-x")" />
                             </pems-button>
                         </pems-form>
-                    </pems-table-cell>
-                </pems-table-row>
-            }
-        </pems-table-body>
-    </pems-table>
+                    </text>);
+    }
+    <pems-data-table data="@(DataRows.Of(rows_66, c_ => c_.Add(((Localizer["Name"])?.ToString() ?? ""), a => (object?)(a.DisplayName)).Add("Required", a => (object?)((a.IsRequired ? "Yes" : "Optional"))).Add("Attended", a => (object?)cell_66_2(a))))" />
     </pems-table-scroll>
     @if (!Model.Attendees.Any()) { <pems-text class="text-muted small">No attendees added yet.</pems-text> }
 
