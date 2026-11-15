@@ -70,13 +70,13 @@
             <pems-heading level="6" class="mb-0">@Localizer["Workflow"] <span class="text-muted small">@wf.WorkflowName · @Localizer["Version"] @wf.VersionNumber · @Localizer[wf.Status]</span></pems-heading>
             @foreach (var w in wf.Warnings) { <span class="small text-warning"><pems-icon name="bi-exclamation-triangle" /> @w</span> }
         </pems-flex>
-        <partial name="_PemsStageDiagram" model="diagram" />
+        <pems-stage-diagram steps="@diagram.Steps" />
     </pems-content-card>
 }
 else
 {
 <pems-content-card css="mb-3">
-    <partial name="_WorkOrderStagesDiagram" model="@(( Model.Status, hasPendingReview ))" />
+    <pems-stage-diagram variant="wo" steps="@WorkOrderStages.Build(Model.Status, hasPendingReview)" />
 </pems-content-card>
 }
 

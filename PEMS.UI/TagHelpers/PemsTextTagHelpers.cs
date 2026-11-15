@@ -100,3 +100,16 @@ public sealed class PemsDividerTagHelper(IPemsComponentRenderer renderer) : TagH
         await ListRender.Replace<PemsDivider>(renderer, output, new DividerOptions { Css = Css, PageClass = pageClass, Attributes = attrs });
     }
 }
+
+/// <summary>The stage diagram: <c>&lt;pems-stage-diagram steps="@steps" /&gt;</c> (variant <c>wo</c> for the work-order look) writes the circles and connectors; the page computes every state.</summary>
+[HtmlTargetElement("pems-stage-diagram")]
+[PemsFacade(UiKeys.StageDiagram)]
+public sealed class PemsStageDiagramTagHelper(IPemsComponentRenderer renderer) : TagHelper
+{
+    [HtmlAttributeName("steps")] public IReadOnlyList<StageStep>? Steps { get; set; }
+    /// <summary>wf (default) or wo.</summary>
+    [HtmlAttributeName("variant")] public string Variant { get; set; } = "wf";
+
+    public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
+        => await ListRender.Replace<PemsStageDiagram>(renderer, output, new StageDiagramOptions { Variant = Variant, Steps = Steps });
+}

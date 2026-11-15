@@ -41,3 +41,20 @@ public sealed record DividerOptions : FrameOptions
 {
     public string? Css { get; init; }
 }
+
+// SCRUM-486: the stage diagram (the graphic cycle of a record: circles joined by connectors) as one registered component. The page decides every state (done, current,
+// pending, rejected); the component only draws. "wf" is the workflow diagram (icon, label and role), "wo" the smaller work-order diagram (no role line, no rejected state).
+
+/// <summary>The state of one stage.</summary>
+public enum StageState { Pending, Current, Done, Rejected }
+
+/// <summary>One stage of a <see cref="PemsStageDiagram"/>: the text is already localized by the page.</summary>
+public sealed record StageStep(string Label, string Icon, StageState State, string? Role = null);
+
+/// <summary>Inputs of <see cref="PemsStageDiagram"/>.</summary>
+public sealed record StageDiagramOptions
+{
+    /// <summary>wf (default) or wo.</summary>
+    public string Variant { get; init; } = "wf";
+    public IReadOnlyList<StageStep>? Steps { get; init; }
+}
