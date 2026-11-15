@@ -48,6 +48,20 @@ public sealed class PemsColTagHelper(IPemsComponentRenderer renderer) : TagHelpe
     }
 }
 
+/// <summary>One label, control and validation message of a form: <c>&lt;pems-form-group css="mb-3"&gt;&lt;pems-label .../&gt;&lt;pems-input .../&gt;&lt;span asp-validation-for="X"&gt;&lt;/span&gt;&lt;/pems-form-group&gt;</c> writes <c>&lt;div class="mb-3"&gt;</c> around them (SCRUM-501).</summary>
+[HtmlTargetElement("pems-form-group")]
+[PemsFacade(UiKeys.FormGroup)]
+public sealed class PemsFormGroupTagHelper(IPemsComponentRenderer renderer) : TagHelper
+{
+    [HtmlAttributeName("css")] public string? Css { get; set; }
+
+    public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
+    {
+        var (pageClass, attrs) = ListRender.Page(output);
+        await ListRender.Replace<PemsFormGroup>(renderer, output, new FormGroupOptions { Css = Css, PageClass = pageClass, Attributes = attrs }, await ListRender.Inner(output));
+    }
+}
+
 /// <summary>A check box / radio / switch with its label: <c>&lt;pems-check-row switch css="mb-0"&gt;&lt;pems-input kind="check" .../&gt;&lt;label class="form-check-label"&gt;...&lt;/label&gt;&lt;/pems-check-row&gt;</c>.</summary>
 [HtmlTargetElement("pems-check-row")]
 [PemsFacade(UiKeys.CheckRow)]

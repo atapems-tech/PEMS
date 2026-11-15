@@ -52,6 +52,7 @@ public sealed class AdoptionRatchetTests
         ("content-card", new Regex(@"class=""[^""]*(?<![\w-])content-card(?![\w-])", RegexOptions.Compiled), true, true),
         ("page-shell", new Regex(@"class=""[^""]*(?<![\w-])(admin-page-shell|vs-page)(?![\w-])", RegexOptions.Compiled), true, true),
         ("flex", new Regex(@"class=""[^""]*(?<![\w-])d-(inline-)?flex(?![\w-])", RegexOptions.Compiled), true, true),
+        ("form-group", new Regex(@"<div\s+class=""mb-[1-5]""", RegexOptions.Compiled), true, false),   // SCRUM-501: <pems-form-group css="mb-3">
         ("check-row", new Regex(@"class=""[^""]*(?<![\w-])form-check(?![\w-])", RegexOptions.Compiled), true, false),
         ("help-text", new Regex(@"class=""[^""]*(?<![\w-])form-text(?![\w-])", RegexOptions.Compiled), true, false),
         ("table-scroll", new Regex(@"class=""[^""]*(?<![\w-])table-responsive(?![\w-])", RegexOptions.Compiled), true, false),

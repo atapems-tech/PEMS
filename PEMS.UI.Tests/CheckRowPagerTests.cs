@@ -20,6 +20,13 @@ public sealed class CheckRowPagerTests
     }
 
     [Fact]
+    public void A_form_group_is_a_div_with_the_page_css_around_its_content()
+    {
+        Assert.Equal("<div class=\"mb-3\">x</div>", Run(new PemsFormGroupTagHelper(UiTestRenderer.Instance) { Css = "mb-3" }, "pems-form-group", [], "x"));
+        Assert.Equal("<div>x</div>", Run(new PemsFormGroupTagHelper(UiTestRenderer.Instance), "pems-form-group", [], "x"));
+    }
+
+    [Fact]
     public void A_switch_row_is_form_check_form_switch_with_the_page_css()
         => Assert.Equal("<div class=\"form-check form-switch mb-0\">x</div>", Run(new PemsCheckRowTagHelper(UiTestRenderer.Instance) { Switch = true, Css = "mb-0" }, "pems-check-row", [], "x"));
 
