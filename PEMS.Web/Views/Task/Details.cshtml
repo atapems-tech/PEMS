@@ -60,7 +60,7 @@
             <pems-heading level="3" class="h6" id="descTitle">@Localizer["Tm_Field_Description"]</pems-heading>
             @if (Model.CanEdit)
             {
-                <pems-form asp-controller="TaskManager" asp-action="Update" method="post" data-tm-dirty-guard data-tm-ctrl-enter><pems-row gap="2">
+                <pems-form asp-controller="TaskManager" asp-action="Update" method="post" data-pems-dirty-guard data-tm-ctrl-enter><pems-row gap="2">
                     <input type="hidden" name="Id" value="@i.Id" />
                     <input type="hidden" name="RowVersion" value="@i.RowVersion" />
                     <input type="hidden" name="ParentId" value="@i.ParentId" />
@@ -191,7 +191,7 @@
             <pems-heading level="3" class="h6" id="commentTitle">@Localizer["Tm_Comments"] <pems-badge tone="light">@Model.Comments.Count(c => !c.IsDeleted)</pems-badge></pems-heading>
             @if (Model.CanComment)
             {
-                <pems-form asp-controller="TaskManager" asp-action="Comment" method="post" class="mb-3" data-tm-dirty-guard data-tm-ctrl-enter>
+                <pems-form asp-controller="TaskManager" asp-action="Comment" method="post" class="mb-3" data-pems-dirty-guard data-tm-ctrl-enter>
                     <input type="hidden" name="id" value="@i.Id" /><input type="hidden" name="returnUrl" value="@returnUrl" />
                     <label class="visually-hidden" for="c-body">@Localizer["Tm_AddComment"]</label>
                     <pems-textarea scale="small" css="mb-2" id="c-body" name="body" rows="3" maxlength="5000" required placeholder="@Localizer["Tm_AddComment"]"></pems-textarea>
