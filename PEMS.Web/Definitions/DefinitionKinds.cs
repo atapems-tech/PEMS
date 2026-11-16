@@ -65,6 +65,9 @@ public sealed class FormDefinitionKind : IDefinitionKind
 public sealed class PageDefinitionKind : IDefinitionKind
 {
     private static readonly HashSet<string> Allowed = new(StringComparer.Ordinal) { "layout", "regions", "route", "permission" };
+    /// <summary>The variables an expression of a page can read: the signed-in user, the request (culture, route values), the hydrated values of the page and the current item.</summary>
+    internal static readonly string[] PageExpressionRoots = ["user", "request", "values", "item"];
+
     private static readonly HashSet<string> AllowedInstance = new(StringComparer.Ordinal) { "id", "component", "options", "visible", "bindings" };
 
     private readonly IPemsComponentRegistry _registry;
@@ -109,6 +112,17 @@ public sealed class PageDefinitionKind : IDefinitionKind
                 var component = inst["component"] is JsonValue cv && cv.GetValueKind() == JsonValueKind.String ? (string?)cv : null;
                 if (string.IsNullOrWhiteSpace(component)) { errors.Add(new(at + "/component", "required", "Def_Err_Required", "An instance needs a component key.")); continue; }
                 if (!_registry.Keys.Contains(component, StringComparer.OrdinalIgnoreCase)) { errors.Add(new(at + "/component", "unknown-component", "Def_Err_UnknownComponent", $"'{component}' is not a registered component.")); continue; }
+
+                // visible is an expression (ADR-0015): it must parse and read only the variables a page offers; checked at load, not at run time
+                if (inst["visible"] is { } visible)
+                {
+                    if (visible is JsonValue vv && vv.GetValueKind() == JsonValueKind.String)
+                    {
+                        if (!PEMS.Application.Expressions.ExpressionCompiler.TryCompile((string)vv!, out _, out var ex, PageExpressionRoots))
+                            errors.Add(new(at + "/visible", ex!.Code, "Def_Err_Expression", ex.Message));
+                    }
+                    else errors.Add(new(at + "/visible", "wrong-type", "Def_Err_Type", "visible is an expression (text)."));
+                }
 
                 var options = inst["options"] ?? new JsonObject();
                 if (options is not JsonObject) { errors.Add(new(at + "/options", "wrong-type", "Def_Err_Type", "The options are an object.")); continue; }
