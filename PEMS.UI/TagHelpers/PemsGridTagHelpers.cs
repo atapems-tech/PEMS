@@ -96,6 +96,24 @@ public sealed class PemsTreeSelectTagHelper(IPemsComponentRenderer renderer) : T
     }
 }
 
+/// <summary>
+/// The enterprise data grid (SCRUM-54): <c>&lt;pems-data-grid options="@gridOptions" /&gt;</c>. The options say the endpoint, the columns and every text; the rows are read page by page and only the
+/// rows in view are written. The server side is <c>GridRequest</c> and <c>GridQueryExtensions</c> in PEMS.Application.
+/// </summary>
+[HtmlTargetElement("pems-data-grid")]
+[PemsFacade(UiKeys.DataGrid)]
+public sealed class PemsDataGridTagHelper(IPemsComponentRenderer renderer) : TagHelper
+{
+    [HtmlAttributeName("options")] public DataGridOptions? Options { get; set; }
+
+    public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
+    {
+        if (Options is null) throw new InvalidOperationException("pems-data-grid needs the options attribute.");
+        var (pageClass, attrs) = ListRender.Page(output);
+        await ListRender.Replace<PemsDataGrid>(renderer, output, Options with { PageClass = pageClass, Attributes = attrs });
+    }
+}
+
 /// <summary>One label, control and validation message of a form: <c>&lt;pems-form-group css="mb-3"&gt;&lt;pems-label .../&gt;&lt;pems-input .../&gt;&lt;span asp-validation-for="X"&gt;&lt;/span&gt;&lt;/pems-form-group&gt;</c> writes <c>&lt;div class="mb-3"&gt;</c> around them (SCRUM-501).</summary>
 [HtmlTargetElement("pems-form-group")]
 [PemsFacade(UiKeys.FormGroup)]

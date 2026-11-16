@@ -1,6 +1,8 @@
-# Sprint 2 programme: from components to engines that read the database (owner, 2026-11-16)
+# Sprint 2 programme: from components to the page engine and the form engine (owner, 2026-11-16)
 
-Sprint 2 ends 2026-11-28. By then the page engine and the form engine read their definitions from the database. Order (each step is an issue in Sprint 2; ADR-0014):
+Sprint 2 ends 2026-11-28. By then the page engine and the form engine read their definitions from the database (ADR-0014). **Owner order (2026-11-16, corrected):** (3) data grid, view types, workflow components (SCRUM-54, 55, 58); then (1 and 5 together) data sources/actions and the form engine (SCRUM-437, 578); then (2 and 4 together) page templates and the W1 pilot (SCRUM-339, 342, 106); then (6) the cutover into the database (SCRUM-579, 417, 52). Only (7) the optimisations and diagnostics (SCRUM-574 to 577) go to the backlog for later.
+
+Original order (each step is an issue; ADR-0014):
 
 | Step | Issue | What | Depends on |
 |---|---|---|---|
