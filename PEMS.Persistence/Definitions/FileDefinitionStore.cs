@@ -21,6 +21,7 @@ public sealed class FileDefinitionStore : IDefinitionStore, IDefinitionFiles, ID
 
     private readonly IReadOnlyDictionary<string, IDefinitionKind> _kinds;
     private readonly DefinitionLimits _limits;
+    private readonly DefinitionOwnership _ownership;
     private readonly ILogger<FileDefinitionStore>? _log;
     private readonly string _folder;
     private readonly object _gate = new();
@@ -31,10 +32,11 @@ public sealed class FileDefinitionStore : IDefinitionStore, IDefinitionFiles, ID
 
     private sealed record Snapshot(IReadOnlyDictionary<string, PublishedDefinition> ByKey, IReadOnlyList<PublishedDefinition> All, IReadOnlyList<DefinitionFileProblem> Problems);
 
-    public FileDefinitionStore(IEnumerable<IDefinitionKind> kinds, DefinitionLimits limits, DefinitionFileOptions options, ILogger<FileDefinitionStore>? log = null)
+    public FileDefinitionStore(IEnumerable<IDefinitionKind> kinds, DefinitionLimits limits, DefinitionFileOptions options, DefinitionOwnership? ownership = null, ILogger<FileDefinitionStore>? log = null)
     {
         _kinds = kinds.ToDictionary(k => k.Key, StringComparer.Ordinal);
         _limits = limits;
+        _ownership = ownership ?? new DefinitionOwnership();
         _log = log;
         _folder = string.IsNullOrWhiteSpace(options.Folder) ? Path.Combine(AppContext.BaseDirectory, "definitions") : Path.GetFullPath(options.Folder);
         Reload();
@@ -105,6 +107,7 @@ public sealed class FileDefinitionStore : IDefinitionStore, IDefinitionFiles, ID
         var parts = rel.Split('/');
         if (parts.Length != 3 || parts[0] != kind || parts[1] != appKey || Path.GetFileNameWithoutExtension(parts[2]) != key)
         { Bad("", $"The path must be {kind}/{appKey}/{key}.json."); return null; }
+        if (_ownership.OwnerOf(kind) != DefinitionOwner.Files) { Bad("/kind", $"\"{kind}\" is owned by {_ownership.OwnerOf(kind).ToString().ToLowerInvariant()}, not by the files (one owner per kind)."); return null; }
         if (!_kinds.TryGetValue(kind, out var handler)) { Bad("/kind", $"\"{kind}\" is not a registered definition kind."); return null; }
         if (root["title"] is null) Bad("/title", "title is required (fa and en).");
         if (root["payload"] is not JsonObject payload) { Bad("/payload", "payload must be an object."); return null; }

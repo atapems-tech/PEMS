@@ -20,6 +20,31 @@
 5. **One owner, no overlap (amended 2026-11-16).** A definition lives in exactly one place. Until Sprint 3 that place is the files: the runtime `IDefinitionStore` is the file store and reads nothing from the database. The database definition tables and the `/api/v1/definitions` service stay as they are but are dormant for the UI kinds (no seeder writes to them, no page host reads them). Sprint 3 moves the definitions wholesale into the tables and removes the files in the same change, never both at once.
 6. **New kind `layout`:** a tree of plain containers (div, section, header, main, aside, footer, nav, article; classes; `role`, `id`, `aria-*`, `data-*`) with named regions in it; no script, no inline style, no event handlers. Shipped: `list-page`, `form-page`, `detail-page`, `dashboard-page`.
 
+## Ownership and the run-time pipeline (amended 2026-11-16, owner)
+
+The file step is temporary: every new definition is born as a JSON file; definitions that are database data by nature are database-owned from the start; later the stable files move to the database.
+
+**Ownership list, per kind (one owner each, never two):**
+
+| Kind | Owner now | Owner after the Sprint 3 cutover | Notes |
+|---|---|---|---|
+| `layout`, `page`, `form` (and the next UI kinds: `view`, `dashboard`, `action`, `data-source`) | files | database | born as files; the cutover imports the files into the tables (the export/import package already exists) and deletes those files in the same change, one kind at a time |
+| `option-set` (managed value lists) | database | database | database data by nature; created by a seed or migration when missing, never as JSON |
+| `menu` | database (`NavigationMenuItems`, synced from code defaults) | database | the menu a user sees is built from the definition plus the user's authorizations (hydration, below) |
+| `entity` and field definitions | generated from the EF model | generated | read-only, produced at start-up |
+| `workflow-ref` | its own tables (`WorkflowDefinitions`) | same | the workflow tables stay as they are |
+
+`IDefinitionStore` routes by kind to the owner (`RoutedDefinitionStore`); a kind with no owner returns nothing. The map is configuration (`Definitions:Ownership:{kind}` = `files` | `database`), one value per kind, so two owners for a kind cannot be written.
+
+**Run-time pipeline** (every page and form, in this order):
+1. **Resolve** the definition (route or key to a published definition, from its owner; a missing or invalid one gives the static fallback page).
+2. **Authorize** the page or form permission before any data is read.
+3. **Hydrate** the definition for this request: option sets, lookups, current values, defaults, and the parts the user may see (for example the menu is rebuilt from the user's authorizations). Hydration is declared in the definition (data-source bindings, #437), is a pure step that never changes the cached definition, and returns a resolved definition.
+4. **Evaluate** conditions and expressions on the resolved definition (#15).
+5. **Render** through the engine: layout regions filled with component instances from the registry.
+
+The definition is cached by its content hash and shared by all users; the hydrated result is per user and request. Optimisations (caching hydrated results per permission set, rebuilding menus from authorizations, compiled definitions) are separate issues (SCRUM-574 and following), not part of the first pipeline.
+
 ## Alternatives considered
 
 | Option | Why not |

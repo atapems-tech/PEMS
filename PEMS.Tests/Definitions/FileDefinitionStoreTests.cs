@@ -67,7 +67,7 @@ public sealed class FileDefinitionStoreTests : IDisposable
         var all = string.Join("|", store.Problems.Select(p => p.File + p.Pointer + ":" + p.Message));
         Assert.Contains("layout/core/other.json", all);
         Assert.Contains("must be layout/core/demo.json", all);
-        Assert.Contains("not a registered definition kind", all);
+        Assert.Contains("one owner per kind", all);      // "widget" has no owner
         Assert.Contains("Not valid JSON", all);
         Assert.Empty(store.All);
     }
