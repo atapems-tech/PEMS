@@ -120,7 +120,7 @@ public sealed class FileDefinitionStore : IDefinitionStore, IDefinitionFiles, ID
         foreach (var e in handler.Validate(payloadJson, _limits)) Bad("/payload" + e.Pointer, e.Message);
 
         var hash = Convert.ToHexString(SHA256.HashData(Encoding.UTF8.GetBytes(payloadJson))).ToLowerInvariant();
-        return new PublishedDefinition(kind, key, appKey, version, payloadJson, hash);
+        return new PublishedDefinition(kind, key, appKey, version, payloadJson, hash, root["title"]?.ToJsonString());
     }
 
     /// <summary>A translatable text is an object whose keys are all language codes: it must carry both product languages, not empty.</summary>
