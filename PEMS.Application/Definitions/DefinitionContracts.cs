@@ -93,3 +93,29 @@ public interface IDefinitionStore
 {
     Task<PublishedDefinition?> GetPublishedAsync(string kind, string key, string appKey = "core", CancellationToken ct = default);
 }
+
+/// <summary>Where the definition files live and how they are read (SCRUM-572; settings Definitions:Files:* in env/*.env).</summary>
+public sealed class DefinitionFileOptions
+{
+    /// <summary>The folder with {kind}/{appKey}/{key}.json; empty means "definitions" next to the application.</summary>
+    public string? Folder { get; init; }
+    /// <summary>True: an invalid file stops the start-up (the default); false: it is skipped and listed in the problems.</summary>
+    public bool FailOnInvalid { get; init; } = true;
+    /// <summary>Watch the folder and reload on change (hot reload).</summary>
+    public bool Watch { get; init; } = true;
+}
+
+public sealed record DefinitionFileProblem(string File, string Pointer, string Message);
+
+/// <summary>The definitions that ship as JSON files in the data layer (ADR-0014): read once, validated, reloaded when a file changes.</summary>
+public interface IDefinitionFiles
+{
+    IReadOnlyList<PublishedDefinition> All { get; }
+    /// <summary>What is wrong with the files of the last load (empty when all are valid).</summary>
+    IReadOnlyList<DefinitionFileProblem> Problems { get; }
+    /// <summary>A number that grows with every reload (caches compare it).</summary>
+    long Generation { get; }
+    event Action? Reloaded;
+    /// <summary>Reads the folder again now (the watcher calls it after a short pause).</summary>
+    void Reload();
+}

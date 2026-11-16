@@ -109,7 +109,12 @@ builder.Services.AddSingleton<PEMS.Web.Api.ApiIdempotencyStore>();
 builder.Services.AddSingleton(builder.Configuration.GetSection("Definitions").Get<PEMS.Application.Definitions.DefinitionLimits>() ?? new PEMS.Application.Definitions.DefinitionLimits());
 PEMS.Web.Definitions.DefinitionKindExtensions.AddPemsDefinitionKinds(builder.Services);
 builder.Services.AddScoped<PEMS.Persistence.Services.DefinitionStore>();
-builder.Services.AddScoped<PEMS.Application.Definitions.IDefinitionStore>(sp => sp.GetRequiredService<PEMS.Persistence.Services.DefinitionStore>());
+// SCRUM-572 (ADR-0014): the shipped definitions are JSON files in the data layer, hot-reloaded; a published definition of the database wins over the file of the same key
+builder.Services.AddSingleton(builder.Configuration.GetSection("Definitions:Files").Get<PEMS.Application.Definitions.DefinitionFileOptions>() ?? new PEMS.Application.Definitions.DefinitionFileOptions());
+builder.Services.AddSingleton<PEMS.Persistence.Definitions.FileDefinitionStore>();
+builder.Services.AddSingleton<PEMS.Application.Definitions.IDefinitionFiles>(sp => sp.GetRequiredService<PEMS.Persistence.Definitions.FileDefinitionStore>());
+builder.Services.AddScoped<PEMS.Application.Definitions.IDefinitionStore>(sp => new PEMS.Persistence.Definitions.LayeredDefinitionStore(
+    sp.GetRequiredService<PEMS.Persistence.Services.DefinitionStore>(), sp.GetRequiredService<PEMS.Persistence.Definitions.FileDefinitionStore>()));
 builder.Services.AddScoped<PEMS.Application.Definitions.IDefinitionService, PEMS.Persistence.Services.DefinitionService>();
 
 // یک [Authorize] سراسری روی همه‌ی صفحات؛ فقط اکشن‌هایی که [AllowAnonymous] دارند
@@ -875,6 +880,8 @@ builder.Services.AddHttpClient<IOllamaService, OllamaService>(client =>
 
 
 var app = builder.Build();
+// SCRUM-572: read and check the definition files at start-up, so an invalid file stops the start here and not on the first request that needs it
+_ = app.Services.GetRequiredService<PEMS.Application.Definitions.IDefinitionFiles>();
 
 
 

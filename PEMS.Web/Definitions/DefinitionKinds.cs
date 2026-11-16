@@ -15,6 +15,7 @@ public static class DefinitionKindExtensions
     {
         services.AddSingleton<IDefinitionKind, FormDefinitionKind>();
         services.AddSingleton<IDefinitionKind, PageDefinitionKind>();
+        services.AddSingleton<IDefinitionKind, LayoutDefinitionKind>();
         // posted values of a stored form are cleaned before use: rich-text HTML sanitized, undeclared names dropped (SCRUM-59)
         services.AddScoped<FormValueSanitizer>();
         return services;

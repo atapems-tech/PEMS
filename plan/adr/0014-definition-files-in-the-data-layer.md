@@ -1,0 +1,39 @@
+# ADR-0014: Shipped definitions are JSON files in the data layer, hot-reloaded
+
+- **Status:** Accepted
+- **Date:** 2026-11-16
+- **Decided by:** Hamid Maleki (owner): files in the data layer with hot reload; texts inline as TranslatableText; page templates are components named by the definition (answers of 2026-11-16)
+- **Plan rows:** #572 (SCRUM-572); builds on ADR-0008, ADR-0010, ADR-0011, ADR-0013; Sprint 3 moves the files into database tables (SCRUM-417)
+- **Sources:** [METADATA_REGISTRY_DESIGN.md](../../docs/architecture/METADATA_REGISTRY_DESIGN.md), ADR-0011 points 3, 7 and 8
+
+## Context
+
+- The page and form engines must read everything that defines the UI (layouts, fields, validation rules and messages, conditions, exception texts) from data, so that editing the data changes the UI and nothing is left in code.
+- The database-backed definition store exists (ADR-0010, `IDefinitionStore`) but nothing ships in it; Sprint 2 keeps the data layer as JSON files, Sprint 3 moves it to tables.
+
+## Decision
+
+1. **A folder of files.** `PEMS.Persistence/Definitions/Files/{kind}/{appKey}/{key}.json` is copied next to the application as `definitions/` (build and publish). The setting `Definitions:Files:Folder` points elsewhere (for editing on a server); `Definitions:Files:FailOnInvalid` (default true) and `Definitions:Files:Watch` (default true).
+2. **One envelope per file:** `{ "kind", "key", "appKey", "version", "title": {fa, en}, "description"?, "payload" }`. The path must equal `kind/appKey/key.json`; unknown envelope properties are rejected.
+3. **Checked at start-up and at every reload:** the kind is registered and validates the payload (`IDefinitionKind`, the same code the REST API uses), size and depth limits, and **every translatable text carries both `fa` and `en`, not empty** (an object whose keys are all language codes is a translatable text, ADR-0008). An invalid file stops the start (`FailOnInvalid`); at a reload a broken edit keeps the last good version of that key and is listed in `IDefinitionFiles.Problems`.
+4. **Hot reload.** A file watcher reloads after 300 ms of quiet; `IDefinitionFiles.Generation` grows with every reload so caches can compare it.
+5. **Layering.** The runtime reads `IDefinitionStore`, which is `LayeredDefinitionStore`: a published definition of the database (a customer's edit or override, ADR-0011 point 7) wins, otherwise the shipped file. The REST API and designers keep writing to the database; nothing writes to the files at run time.
+6. **New kind `layout`:** a tree of plain containers (div, section, header, main, aside, footer, nav, article; classes; `role`, `id`, `aria-*`, `data-*`) with named regions in it; no script, no inline style, no event handlers. Shipped: `list-page`, `form-page`, `detail-page`, `dashboard-page`.
+
+## Alternatives considered
+
+| Option | Why not |
+|---|---|
+| Embedded resources | Editing needs a rebuild; not "edit the JSON, the UI changes". |
+| Database tables now | Skips the files step of the Sprint 2 goal; the admin editor comes with the designers (#439). |
+| Texts as resx keys | A JSON edit alone could not add a text; owner chose inline TranslatableText. |
+
+## Consequences
+
+- Good: one place defines the UI; a missing translation cannot start; the same kinds validate files and API writes; Sprint 3 only changes where `IDefinitionStore` reads from.
+- Cost: files are part of the deployment (the pipeline publishes the folder); a hand edit on a server is not audited until the files move to tables (#440).
+- Follow-up: expression engine (#15), PageHost and data sources and actions (#438, #437), page templates as components, W1 through JSON (#328), then the form engine.
+
+## Amendments
+
+None yet.
