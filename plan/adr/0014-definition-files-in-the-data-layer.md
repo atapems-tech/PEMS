@@ -17,7 +17,7 @@
 2. **One envelope per file:** `{ "kind", "key", "appKey", "version", "title": {fa, en}, "description"?, "payload" }`. The path must equal `kind/appKey/key.json`; unknown envelope properties are rejected.
 3. **Checked at start-up and at every reload:** the kind is registered and validates the payload (`IDefinitionKind`, the same code the REST API uses), size and depth limits, and **every translatable text carries both `fa` and `en`, not empty** (an object whose keys are all language codes is a translatable text, ADR-0008). An invalid file stops the start (`FailOnInvalid`); at a reload a broken edit keeps the last good version of that key and is listed in `IDefinitionFiles.Problems`.
 4. **Hot reload.** A file watcher reloads after 300 ms of quiet; `IDefinitionFiles.Generation` grows with every reload so caches can compare it.
-5. **Layering.** The runtime reads `IDefinitionStore`, which is `LayeredDefinitionStore`: a published definition of the database (a customer's edit or override, ADR-0011 point 7) wins, otherwise the shipped file. The REST API and designers keep writing to the database; nothing writes to the files at run time.
+5. **One owner, no overlap (amended 2026-11-16).** A definition lives in exactly one place. Until Sprint 3 that place is the files: the runtime `IDefinitionStore` is the file store and reads nothing from the database. The database definition tables and the `/api/v1/definitions` service stay as they are but are dormant for the UI kinds (no seeder writes to them, no page host reads them). Sprint 3 moves the definitions wholesale into the tables and removes the files in the same change, never both at once.
 6. **New kind `layout`:** a tree of plain containers (div, section, header, main, aside, footer, nav, article; classes; `role`, `id`, `aria-*`, `data-*`) with named regions in it; no script, no inline style, no event handlers. Shipped: `list-page`, `form-page`, `detail-page`, `dashboard-page`.
 
 ## Alternatives considered
@@ -30,10 +30,10 @@
 
 ## Consequences
 
-- Good: one place defines the UI; a missing translation cannot start; the same kinds validate files and API writes; Sprint 3 only changes where `IDefinitionStore` reads from.
+- Good: one place defines the UI; a missing translation cannot start; the same kinds validate files and API writes; no definition can exist in two places; Sprint 3 only changes where `IDefinitionStore` reads from.
 - Cost: files are part of the deployment (the pipeline publishes the folder); a hand edit on a server is not audited until the files move to tables (#440).
 - Follow-up: expression engine (#15), PageHost and data sources and actions (#438, #437), page templates as components, W1 through JSON (#328), then the form engine.
 
 ## Amendments
 
-None yet.
+- 2026-11-16 (owner): "nothing should overlap between the database and the JSON files". The first version layered a published database definition over the file of the same key; that layering was removed (point 5). Open question for the owner: whether the REST write API must refuse the file-owned kinds (layout, page, form) until Sprint 3.

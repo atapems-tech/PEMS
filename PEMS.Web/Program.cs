@@ -109,12 +109,11 @@ builder.Services.AddSingleton<PEMS.Web.Api.ApiIdempotencyStore>();
 builder.Services.AddSingleton(builder.Configuration.GetSection("Definitions").Get<PEMS.Application.Definitions.DefinitionLimits>() ?? new PEMS.Application.Definitions.DefinitionLimits());
 PEMS.Web.Definitions.DefinitionKindExtensions.AddPemsDefinitionKinds(builder.Services);
 builder.Services.AddScoped<PEMS.Persistence.Services.DefinitionStore>();
-// SCRUM-572 (ADR-0014): the shipped definitions are JSON files in the data layer, hot-reloaded; a published definition of the database wins over the file of the same key
+// SCRUM-572 (ADR-0014, amended): the definitions the runtime reads are the JSON files of the data layer, hot-reloaded; nothing is read from the database until Sprint 3 moves them (no overlap)
 builder.Services.AddSingleton(builder.Configuration.GetSection("Definitions:Files").Get<PEMS.Application.Definitions.DefinitionFileOptions>() ?? new PEMS.Application.Definitions.DefinitionFileOptions());
 builder.Services.AddSingleton<PEMS.Persistence.Definitions.FileDefinitionStore>();
 builder.Services.AddSingleton<PEMS.Application.Definitions.IDefinitionFiles>(sp => sp.GetRequiredService<PEMS.Persistence.Definitions.FileDefinitionStore>());
-builder.Services.AddScoped<PEMS.Application.Definitions.IDefinitionStore>(sp => new PEMS.Persistence.Definitions.LayeredDefinitionStore(
-    sp.GetRequiredService<PEMS.Persistence.Services.DefinitionStore>(), sp.GetRequiredService<PEMS.Persistence.Definitions.FileDefinitionStore>()));
+builder.Services.AddSingleton<PEMS.Application.Definitions.IDefinitionStore>(sp => sp.GetRequiredService<PEMS.Persistence.Definitions.FileDefinitionStore>());
 builder.Services.AddScoped<PEMS.Application.Definitions.IDefinitionService, PEMS.Persistence.Services.DefinitionService>();
 
 // یک [Authorize] سراسری روی همه‌ی صفحات؛ فقط اکشن‌هایی که [AllowAnonymous] دارند
