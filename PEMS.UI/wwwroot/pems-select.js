@@ -44,17 +44,32 @@
     // the option (tomselect.options[value]) for the page script, e.g. the description and unit of a part
     function urlOptions(select) {
         var url = select.getAttribute('data-pems-select-url');
+        function pageUrl(q, page) { return url + (url.indexOf('?') < 0 ? '?' : '&') + 'q=' + encodeURIComponent(q) + (page > 1 ? '&page=' + page : ''); }
+        return pagedOptions(1, pageUrl, function (data) { return (data.items || []); }, function (q) { return q.length >= 2; });
+    }
+
+    // SCRUM-513: results beyond the first page. Tom Select's virtual_scroll plugin asks for the next page when the list is scrolled to its end; the page
+    // endpoint says hasMore (the SearchApi and a page endpoint that sends { items, hasMore } both do), so a list of 200,000 rows is read 20 at a time.
+    function pagedOptions(startPage, pageUrl, toItems, shouldLoad) {
         return {
+            plugins: ['virtual_scroll'],
             valueField: 'value',
             labelField: 'text',
-            searchField: [],
+            searchField: [],                 // the server ranks; Tom Select must not filter the page again
             preload: false,
             loadThrottle: 300,
-            shouldLoad: function (q) { return q.length >= 2; },
+            shouldLoad: shouldLoad,
+            firstUrl: function (q) { return pageUrl(q, startPage); },
             load: function (q, callback) {
-                fetch(url + (url.indexOf('?') < 0 ? '?' : '&') + 'q=' + encodeURIComponent(q), { headers: { 'Accept': 'application/json' } })
+                var self = this;
+                var current = self.getUrl(q);
+                fetch(current, { headers: { 'Accept': 'application/json' } })
                     .then(function (r) { return r.ok ? r.json() : Promise.reject(r.status); })
-                    .then(function (data) { callback(data.items || []); })
+                    .then(function (data) {
+                        var page = Number(new URL(current, location.href).searchParams.get('page') || startPage);
+                        if (data.hasMore) self.setNextUrl(q, pageUrl(q, page + 1));
+                        callback(toItems(data));
+                    })
                     .catch(function () { callback(); });
             }
         };
@@ -64,26 +79,14 @@
         if (select.hasAttribute('data-pems-select-url')) return urlOptions(select);
         var type = select.getAttribute('data-pems-select-source');
         var project = select.getAttribute('data-pems-select-project');
-        return {
-            valueField: 'value',
-            labelField: 'text',
-            searchField: [],                 // the server ranks; Tom Select must not filter the page again
-            preload: false,
-            loadThrottle: 300,
-            shouldLoad: function (q) { return q.length >= 1; },
-            load: function (q, callback) {
-                var params = new URLSearchParams({ type: type, q: q, page: '1', pageSize: String(PAGE_SIZE) });
-                if (project) params.set('projectId', project);
-                fetch('/SearchApi?' + params.toString(), { headers: { 'Accept': 'application/json' } })
-                    .then(function (r) { return r.ok ? r.json() : Promise.reject(r.status); })
-                    .then(function (data) {
-                        callback((data.items || []).map(function (i) {
-                            return { value: String(i.id), text: i.label, sub: i.subLabel || '' };
-                        }));
-                    })
-                    .catch(function () { callback(); });
-            }
-        };
+        function pageUrl(q, page) {
+            var params = new URLSearchParams({ type: type, q: q, page: String(page), pageSize: String(PAGE_SIZE) });
+            if (project) params.set('projectId', project);
+            return '/SearchApi?' + params.toString();
+        }
+        return pagedOptions(1, pageUrl, function (data) {
+            return (data.items || []).map(function (i) { return { value: String(i.id), text: i.label, sub: i.subLabel || '' }; });
+        }, function (q) { return q.length >= 1; });
     }
 
     function init(select) {

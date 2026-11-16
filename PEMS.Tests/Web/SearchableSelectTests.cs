@@ -70,4 +70,25 @@ public class SearchableSelectTests
         Assert.Contains("var(--pems-surface", css);
         Assert.DoesNotMatch(@"(margin|padding)-(left|right)\s*:", css);   // logical properties only (RTL and LTR)
     }
+
+    [Fact]
+    public void A_large_server_list_is_read_one_page_at_a_time()
+    {
+        // tools/js-tests/pems-select-paging.test.js (SCRUM-513): virtual_scroll asks for page 2 only when the server says hasMore. Needs Node 18+ on the PATH;
+        // PEMS_REQUIRE_NODE=1 fails instead of skipping when it is missing.
+        var script = Path.Combine(Root(), "tools", "js-tests", "pems-select-paging.test.js");
+        System.Diagnostics.Process? process;
+        try { process = System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo("node", "\"" + script + "\"") { RedirectStandardOutput = true, RedirectStandardError = true, UseShellExecute = false }); }
+        catch (System.ComponentModel.Win32Exception)
+        {
+            Assert.False(Environment.GetEnvironmentVariable("PEMS_REQUIRE_NODE") == "1", "node is required on this machine");
+            return;
+        }
+        using (process!)
+        {
+            var output = process.StandardOutput.ReadToEnd() + process.StandardError.ReadToEnd();
+            Assert.True(process.WaitForExit(60000), "the script did not finish");
+            Assert.True(process.ExitCode == 0, output);
+        }
+    }
 }
