@@ -212,27 +212,21 @@ else if (matchingCount.HasValue && matchingCount.Value > maxResults)
                                                     انتخاب این نوع
                                                 </pems-button>
                                             </pems-flex>
-                                            <pems-table scale="small" css="mb-0">
-                                                <pems-table-body>
-                                                    @foreach (var eq in typeGroup)
-                                                    {
-                                                        var cls = criticalityByEquipment.GetValueOrDefault(eq.EquipmentId);
-                                                        <pems-table-row>
-                                                            <pems-table-cell class="pems-s-322e3f5e">
+                                            @{
+                                                var rows_19 = typeGroup;
+                                                var cell_19_0 = DataCell.Template(rows_19, @<text>@{ var eq = item; var cls = criticalityByEquipment.GetValueOrDefault(eq.EquipmentId); }
                                                                 <pems-input kind="bare" type="checkbox" class="eq-check area-@areaSafeId type-@typeSafeId" name="equipmentIds" value="@eq.EquipmentId" disabled="@(bulk.Candidates.TryGetValue(eq.EquipmentId, out var cand0) && !cand0.WillReceive)" />
-                                                            </pems-table-cell>
-                                                            <pems-table-cell class="small">@eq.TagNumber — @eq.Name</pems-table-cell>
-                                                            <pems-table-cell>
+                                                            </text>);
+                                                var cell_19_1 = DataCell.Template(rows_19, @<text>@{ var eq = item; var cls = criticalityByEquipment.GetValueOrDefault(eq.EquipmentId); }@eq.TagNumber — @eq.Name</text>);
+                                                var cell_19_2 = DataCell.Template(rows_19, @<text>@{ var eq = item; var cls = criticalityByEquipment.GetValueOrDefault(eq.EquipmentId); }
                                                                 <pems-badge tone="@RcmDisplay.CriticalityBadge(string.IsNullOrEmpty(cls) ? "Unrated" : cls)">@Localizer.Label("Criticality", string.IsNullOrEmpty(cls) ? "Unrated" : cls)</pems-badge>
                                                                 @if (bulk.Candidates.TryGetValue(eq.EquipmentId, out var cand) && !cand.WillReceive)
                                                                 {
                                                                     <pems-badge tone="warning" title="@Localizer["Rcm_Bulk_" + cand.Conflict]">@Localizer["Rcm_Bulk_" + cand.Conflict]</pems-badge>
                                                                 }
-                                                            </pems-table-cell>
-                                                        </pems-table-row>
-                                                    }
-                                                </pems-table-body>
-                                            </pems-table>
+                                                            </text>);
+                                            }
+                                            <pems-data-table data="@(DataRows.Of(rows_19, c_ => c_.Add("", eq => (object?)cell_19_0(eq), css: "pems-s-322e3f5e").Add("", eq => (object?)cell_19_1(eq), css: "small").Add("", eq => (object?)cell_19_2(eq))))" header="false" dense="true" enterprise="false" css="mb-0" />
                                         </div>
                                     }
                                 </pems-accordion-item>

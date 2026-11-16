@@ -21,28 +21,14 @@
     <pems-col md="6">
         <pems-content-card css="mb-3">
             <pems-heading level="6" class="small fw-bold">@Localizer["Rcm_Plans"]</pems-heading>
-            <pems-table scale="small" css="table-enterprise">
-                <pems-table-body>
-                @foreach (var p in Model.Plans)
-                {
-                    <pems-table-row><pems-table-cell>@p.PlanNumber</pems-table-cell><pems-table-cell class="small">@p.Title</pems-table-cell><pems-table-cell class="small">v@(p.StrategyVersion)</pems-table-cell><pems-table-cell class="small">@(PemsDates.Date(p.NextDueDate))</pems-table-cell></pems-table-row>
-                }
-                </pems-table-body>
-            </pems-table>
+            <pems-data-table data="@(DataRows.Of(Model.Plans, c_ => c_.Add("", p => (object?)(p.PlanNumber)).Add("", p => (object?)(p.Title), css: "small").Add("", p => (object?)(DataCell.Group("v", p.StrategyVersion)), css: "small").Add("", p => (object?)((PemsDates.Date(p.NextDueDate))), css: "small")))" header="false" dense="true" />
             @if (!Model.Plans.Any()) { <pems-text class="text-muted small text-center">@Localizer["Rcm_NoPlans"]</pems-text> }
         </pems-content-card>
     </pems-col>
     <pems-col md="6">
         <pems-content-card css="mb-3">
             <pems-heading level="6" class="small fw-bold">@Localizer["Rcm_OpenWorkOrders"]</pems-heading>
-            <pems-table scale="small" css="table-enterprise">
-                <pems-table-body>
-                @foreach (var w in Model.OpenWorkOrders)
-                {
-                    <pems-table-row><pems-table-cell><pems-link asp-controller="WorkOrder" asp-action="Details" asp-route-id="@w.WorkOrderId">@w.WorkOrderNumber</pems-link></pems-table-cell><pems-table-cell class="small">@w.Status</pems-table-cell><pems-table-cell class="small">@w.Priority</pems-table-cell></pems-table-row>
-                }
-                </pems-table-body>
-            </pems-table>
+            <pems-data-table data="@(DataRows.Of(Model.OpenWorkOrders, c_ => c_.Add("", w => (object?)(DataCell.Link(Url.Action("Details", "WorkOrder", new { id = w.WorkOrderId }), w.WorkOrderNumber))).Add("", w => (object?)(w.Status), css: "small").Add("", w => (object?)(w.Priority), css: "small")))" header="false" dense="true" />
             @if (!Model.OpenWorkOrders.Any()) { <pems-text class="text-muted small text-center">@Localizer["Rcm_NoOpenWorkOrders"]</pems-text> }
         </pems-content-card>
     </pems-col>

@@ -65,22 +65,15 @@ else
                 </pems-flex>
             </pems-flex>
             <pems-table-scroll css="table-scroll-area pems-s-b4b96c72">
-                <pems-table kind="enterprise">
-                    <pems-table-head><pems-table-row><pems-table-header></pems-table-header><pems-table-header>@Localizer["Tag"]</pems-table-header><pems-table-header>@Localizer["Name"]</pems-table-header><pems-table-header>@Localizer["Type"]</pems-table-header><pems-table-header>@Localizer["Barcode"]</pems-table-header></pems-table-row></pems-table-head>
-                    <pems-table-body>
-                        @foreach (var eq in equipments)
-                        {
-                            var already = alreadyBarcodedIds.Contains(eq.EquipmentId);
-                            <pems-table-row>
-                                <pems-table-cell><pems-input kind="bare" type="checkbox" name="equipmentIds" value="@eq.EquipmentId" checked="@(!already)" /></pems-table-cell>
-                                <pems-table-cell dir="ltr"><strong>@eq.TagNumber</strong></pems-table-cell>
-                                <pems-table-cell class="small">@eq.Name</pems-table-cell>
-                                <pems-table-cell class="small">@eq.EquipmentType</pems-table-cell>
-                                <pems-table-cell>@if (already) { <pems-badge tone="neutral">Already has barcode</pems-badge> }</pems-table-cell>
-                            </pems-table-row>
-                        }
-                    </pems-table-body>
-                </pems-table>
+                @{
+                    var rows_8 = equipments;
+                    var cell_8_0 = DataCell.Template(rows_8, @<text>@{ var eq = item; var already = alreadyBarcodedIds.Contains(eq.EquipmentId); }<pems-input kind="bare" type="checkbox" name="equipmentIds" value="@eq.EquipmentId" checked="@(!already)" /></text>);
+                    var cell_8_1 = DataCell.Template(rows_8, @<text>@{ var eq = item; var already = alreadyBarcodedIds.Contains(eq.EquipmentId); }<strong>@eq.TagNumber</strong></text>);
+                    var cell_8_2 = DataCell.Template(rows_8, @<text>@{ var eq = item; var already = alreadyBarcodedIds.Contains(eq.EquipmentId); }@eq.Name</text>);
+                    var cell_8_3 = DataCell.Template(rows_8, @<text>@{ var eq = item; var already = alreadyBarcodedIds.Contains(eq.EquipmentId); }@eq.EquipmentType</text>);
+                    var cell_8_4 = DataCell.Template(rows_8, @<text>@{ var eq = item; var already = alreadyBarcodedIds.Contains(eq.EquipmentId); }@if (already) { <pems-badge tone="neutral">Already has barcode</pems-badge> }</text>);
+                }
+                <pems-data-table data="@(DataRows.Of(rows_8, c_ => c_.Add("", eq => (object?)cell_8_0(eq)).Add(((Localizer["Tag"])?.ToString() ?? ""), eq => (object?)cell_8_1(eq), dir: "ltr").Add(((Localizer["Name"])?.ToString() ?? ""), eq => (object?)cell_8_2(eq), css: "small").Add(((Localizer["Type"])?.ToString() ?? ""), eq => (object?)cell_8_3(eq), css: "small").Add(((Localizer["Barcode"])?.ToString() ?? ""), eq => (object?)cell_8_4(eq))))" />
             </pems-table-scroll>
             @if (!equipments.Any()) { <pems-text class="text-muted text-center py-4">No Equipment matches this filter.</pems-text> }
         </pems-content-card>

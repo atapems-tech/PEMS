@@ -26,27 +26,20 @@
 </pems-content-card>
 
 <pems-content-card>
-    <pems-table kind="enterprise">
-        <pems-table-head><pems-table-row><pems-table-header>@Localizer["File"]</pems-table-header><pems-table-header>@Localizer["Sheet"]</pems-table-header><pems-table-header>@Localizer["Status"]</pems-table-header><pems-table-header>@Localizer["Total"]</pems-table-header><pems-table-header>@Localizer["New"]</pems-table-header><pems-table-header>@Localizer["Matched"]</pems-table-header><pems-table-header>@Localizer["Duplicate"]</pems-table-header><pems-table-header>@Localizer["Invalid"]</pems-table-header><pems-table-header>@Localizer["Approved"]</pems-table-header><pems-table-header>@Localizer["Date"]</pems-table-header><pems-table-header></pems-table-header></pems-table-row></pems-table-head>
-        <pems-table-body>
-            @foreach (var b in Model)
-            {
-                var badgeClass = b.Status switch { "Committed" => "success", "InReview" => "info", "Cancelled" => "neutral", _ => "warning" };
-                <pems-table-row>
-                    <pems-table-cell class="small">@b.SourceFileName</pems-table-cell>
-                    <pems-table-cell class="small">@b.SourceSheet</pems-table-cell>
-                    <pems-table-cell><pems-badge tone="@badgeClass">@b.Status</pems-badge></pems-table-cell>
-                    <pems-table-cell>@b.TotalRows</pems-table-cell>
-                    <pems-table-cell>@b.NewCount</pems-table-cell>
-                    <pems-table-cell>@b.MatchedCount</pems-table-cell>
-                    <pems-table-cell>@b.DuplicateCount</pems-table-cell>
-                    <pems-table-cell class="text-danger">@b.InvalidCount</pems-table-cell>
-                    <pems-table-cell class="text-success">@b.ApprovedCount</pems-table-cell>
-                    <pems-table-cell class="small">@PemsDates.DateTime(b.ImportDate)</pems-table-cell>
-                    <pems-table-cell class="text-end"><pems-button as="a" tone="neutral" size="small" outline="true" asp-action="Review" asp-route-batchId="@b.MrsImportBatchId"><pems-icon name="bi-card-text" /> @Localizer["Review"]</pems-button></pems-table-cell>
-                </pems-table-row>
-            }
-        </pems-table-body>
-    </pems-table>
+    @{
+        var rows_6 = Model;
+        var cell_6_0 = DataCell.Template(rows_6, @<text>@{ var b = item; var badgeClass = b.Status switch { "Committed" => "success", "InReview" => "info", "Cancelled" => "neutral", _ => "warning" }; }@b.SourceFileName</text>);
+        var cell_6_1 = DataCell.Template(rows_6, @<text>@{ var b = item; var badgeClass = b.Status switch { "Committed" => "success", "InReview" => "info", "Cancelled" => "neutral", _ => "warning" }; }@b.SourceSheet</text>);
+        var cell_6_2 = DataCell.Template(rows_6, @<text>@{ var b = item; var badgeClass = b.Status switch { "Committed" => "success", "InReview" => "info", "Cancelled" => "neutral", _ => "warning" }; }<pems-badge tone="@badgeClass">@b.Status</pems-badge></text>);
+        var cell_6_3 = DataCell.Template(rows_6, @<text>@{ var b = item; var badgeClass = b.Status switch { "Committed" => "success", "InReview" => "info", "Cancelled" => "neutral", _ => "warning" }; }@b.TotalRows</text>);
+        var cell_6_4 = DataCell.Template(rows_6, @<text>@{ var b = item; var badgeClass = b.Status switch { "Committed" => "success", "InReview" => "info", "Cancelled" => "neutral", _ => "warning" }; }@b.NewCount</text>);
+        var cell_6_5 = DataCell.Template(rows_6, @<text>@{ var b = item; var badgeClass = b.Status switch { "Committed" => "success", "InReview" => "info", "Cancelled" => "neutral", _ => "warning" }; }@b.MatchedCount</text>);
+        var cell_6_6 = DataCell.Template(rows_6, @<text>@{ var b = item; var badgeClass = b.Status switch { "Committed" => "success", "InReview" => "info", "Cancelled" => "neutral", _ => "warning" }; }@b.DuplicateCount</text>);
+        var cell_6_7 = DataCell.Template(rows_6, @<text>@{ var b = item; var badgeClass = b.Status switch { "Committed" => "success", "InReview" => "info", "Cancelled" => "neutral", _ => "warning" }; }@b.InvalidCount</text>);
+        var cell_6_8 = DataCell.Template(rows_6, @<text>@{ var b = item; var badgeClass = b.Status switch { "Committed" => "success", "InReview" => "info", "Cancelled" => "neutral", _ => "warning" }; }@b.ApprovedCount</text>);
+        var cell_6_9 = DataCell.Template(rows_6, @<text>@{ var b = item; var badgeClass = b.Status switch { "Committed" => "success", "InReview" => "info", "Cancelled" => "neutral", _ => "warning" }; }@PemsDates.DateTime(b.ImportDate)</text>);
+        var cell_6_10 = DataCell.Template(rows_6, @<text>@{ var b = item; var badgeClass = b.Status switch { "Committed" => "success", "InReview" => "info", "Cancelled" => "neutral", _ => "warning" }; }<pems-button as="a" tone="neutral" size="small" outline="true" asp-action="Review" asp-route-batchId="@b.MrsImportBatchId"><pems-icon name="bi-card-text" /> @Localizer["Review"]</pems-button></text>);
+    }
+    <pems-data-table data="@(DataRows.Of(rows_6, c_ => c_.Add(((Localizer["File"])?.ToString() ?? ""), b => (object?)cell_6_0(b), css: "small").Add(((Localizer["Sheet"])?.ToString() ?? ""), b => (object?)cell_6_1(b), css: "small").Add(((Localizer["Status"])?.ToString() ?? ""), b => (object?)cell_6_2(b)).Add(((Localizer["Total"])?.ToString() ?? ""), b => (object?)cell_6_3(b)).Add(((Localizer["New"])?.ToString() ?? ""), b => (object?)cell_6_4(b)).Add(((Localizer["Matched"])?.ToString() ?? ""), b => (object?)cell_6_5(b)).Add(((Localizer["Duplicate"])?.ToString() ?? ""), b => (object?)cell_6_6(b)).Add(((Localizer["Invalid"])?.ToString() ?? ""), b => (object?)cell_6_7(b), css: "text-danger").Add(((Localizer["Approved"])?.ToString() ?? ""), b => (object?)cell_6_8(b), css: "text-success").Add(((Localizer["Date"])?.ToString() ?? ""), b => (object?)cell_6_9(b), css: "small").Add("", b => (object?)cell_6_10(b), css: "text-end")))" />
     @if (!Model.Any()) { <pems-text class="text-muted text-center py-4">@Localizer["هنوز فایلی Upload نشده."]</pems-text> }
 </pems-content-card>

@@ -87,22 +87,17 @@
 
         <section class="vs-panel mb-3" aria-labelledby="typeTitle">
             <pems-heading level="3" class="h6" id="typeTitle">@Localizer["Tm_Types"]</pems-heading>
-            <pems-table scale="small" css="vs-dense">
-                <pems-table-body>
-                    @foreach (var t in Model.Types)
-                    {
-                        <pems-table-row class="@(t.IsActive ? "" : "text-muted")">
-                            <pems-table-cell><pems-icon css="@t.Icon" aria-hidden="true" /> @TaskManagerUi.Name(t.Name, t.NameFa) @if (t.IsSubtask) { <pems-badge tone="light">@Localizer["Tm_Subtask"]</pems-badge> }</pems-table-cell>
-                            <pems-table-cell class="text-end">
+            @{
+                var rows_26 = Model.Types;
+                var cell_26_0 = DataCell.Template(rows_26, @<text>@{ var t = item; }<pems-icon css="@t.Icon" aria-hidden="true" /> @TaskManagerUi.Name(t.Name, t.NameFa) @if (t.IsSubtask) { <pems-badge tone="light">@Localizer["Tm_Subtask"]</pems-badge> }</text>);
+                var cell_26_1 = DataCell.Template(rows_26, @<text>@{ var t = item; }
                                 <pems-form asp-action="SetTypeActive" method="post">
                                     <input type="hidden" name="workSpaceId" value="@s.Id" /><input type="hidden" name="typeId" value="@t.Id" /><input type="hidden" name="isActive" value="@(t.IsActive ? "false" : "true")" />
                                     <pems-button tone="none" size="small" css="btn-link p-0">@(t.IsActive ? Localizer["Tm_Deactivate"] : Localizer["Tm_Activate"])</pems-button>
                                 </pems-form>
-                            </pems-table-cell>
-                        </pems-table-row>
-                    }
-                </pems-table-body>
-            </pems-table>
+                            </text>);
+            }
+            <pems-data-table data="@(DataRows.Of(rows_26, c_ => c_.Add("", t => (object?)cell_26_0(t)).Add("", t => (object?)cell_26_1(t), css: "text-end"), rowClass: t => (t.IsActive ? "" : "text-muted")))" header="false" dense="true" enterprise="false" css="vs-dense" />
             <pems-form asp-action="AddType" method="post"><pems-row gap="2">
                 <input type="hidden" name="workSpaceId" value="@s.Id" />
                 <pems-col md="3"><pems-label css="small" for="at-name">@Localizer["Tm_Field_Name"]</pems-label><pems-input scale="small" id="at-name" name="name" required maxlength="100" /></pems-col>

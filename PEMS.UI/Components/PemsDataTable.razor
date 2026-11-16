@@ -4,14 +4,17 @@
 @using PEMS.UI.Abstractions
 @{ var columns = Options.Columns ?? []; var items = (Options.Items ?? []).ToList(); }
 <table class="@PEMS.UI.TagHelpers.FrameState.Table(Options.Enterprise, Options.Dense, Options.Css)" @attributes="Options.Attributes">
-    <thead>
-        <tr>
-            @foreach (var c in columns)
-            {
-                <th scope="col" class="@c.HeaderCss">@c.Header</th>
-            }
-        </tr>
-    </thead>
+    @if (Options.ShowHeader)
+    {
+        <thead>
+            <tr>
+                @foreach (var c in columns)
+                {
+                    <th scope="col" class="@c.HeaderCss">@c.Header</th>
+                }
+            </tr>
+        </thead>
+    }
     <tbody>
         @if (items.Count == 0 && !string.IsNullOrEmpty(Options.Empty))
         {
@@ -19,7 +22,7 @@
         }
         @foreach (var item in items)
         {
-            <tr class="@Join(Options.RowCss, Options.RowClass?.Invoke(item))">
+            <tr @attributes="Options.RowAttrs?.Invoke(item)" class="@Join(Options.RowCss, Options.RowClass?.Invoke(item))">
                 @foreach (var c in columns)
                 {
                     <td class="@Join(c.Css, c.CssFor?.Invoke(item))" dir="@c.Dir" title="@(c.TitleFor?.Invoke(item))">@Wrapped(c, item)</td>

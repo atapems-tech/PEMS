@@ -114,14 +114,7 @@
             @if (Model.MaintenanceTypeBreakdown is { } tb)
             {
                 <pems-badge tone="@(tb.DataStatus == "READY" ? "success" : "neutral")" css="mb-2">@tb.DataStatus</pems-badge>
-                <pems-table kind="enterprise" scale="small" css="mb-0">
-                    <pems-table-body>
-                        @foreach (var item in tb.Items)
-                        {
-                            <pems-table-row><pems-table-cell>@item.TypeName</pems-table-cell><pems-table-cell class="text-end">@item.Count</pems-table-cell></pems-table-row>
-                        }
-                    </pems-table-body>
-                </pems-table>
+                <pems-data-table data="@(DataRows.Of(tb.Items, c_ => c_.Add("", item => (object?)(item.TypeName)).Add("", item => (object?)(item.Count), css: "text-end")))" header="false" dense="true" css="mb-0" />
                 @if (tb.EmergencyWorkRatioPercent.HasValue)
                 {
                     <pems-text class="text-muted small mt-2 mb-0">Emergency work ratio: @tb.EmergencyWorkRatioPercent.Value.ToString("N1")%</pems-text>

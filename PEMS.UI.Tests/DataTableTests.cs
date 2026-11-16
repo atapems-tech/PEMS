@@ -30,6 +30,22 @@ public sealed class DataTableTests
     ];
 
     [Fact]
+    public void A_headerless_table_writes_no_thead_and_a_row_carries_its_own_attributes()
+    {
+        // SCRUM-570: key-value tables have no header row; a row can carry data-* attributes the page script reads
+        var data = DataRows.Of(new[] { new Row(DateTime.Today, "a", "x", null, "") }, c => c.Add("", r => (object?)r.Who),
+            rowClass: r => "row-" + r.Action, rowAttrs: r => new Dictionary<string, object> { ["data-key"] = r.Who, ["id"] = "r1" });
+        var html = Run(new PemsDataTableTagHelper(UiTestRenderer.Instance) { Data = data, Header = false, Enterprise = false });
+        Assert.DoesNotContain("<thead", html);
+        Assert.DoesNotContain("<th", html);
+        Assert.Contains("data-key=\"a\"", html);
+        Assert.Contains("id=\"r1\"", html);
+        Assert.Contains("class=\"row-x\"", html);
+        Assert.Contains("<table class=\"table\">", html);
+        Assert.Contains("<thead", Run(new PemsDataTableTagHelper(UiTestRenderer.Instance) { Data = data }));   // default: the header row is written
+    }
+
+    [Fact]
     public void A_table_without_kind_is_the_plain_bootstrap_table_when_enterprise_is_false()
     {
         // SCRUM-570: <pems-table scale="small"> (no kind) wrote "table table-sm"; its data-table replacement must say enterprise="false", or it silently gains table-enterprise
