@@ -113,7 +113,17 @@ builder.Services.AddScoped<PEMS.Persistence.Services.DefinitionStore>();
 builder.Services.AddSingleton(builder.Configuration.GetSection("Definitions:Files").Get<PEMS.Application.Definitions.DefinitionFileOptions>() ?? new PEMS.Application.Definitions.DefinitionFileOptions());
 builder.Services.AddSingleton<PEMS.Persistence.Definitions.FileDefinitionStore>();
 builder.Services.AddSingleton<PEMS.Application.Definitions.IDefinitionFiles>(sp => sp.GetRequiredService<PEMS.Persistence.Definitions.FileDefinitionStore>());
-builder.Services.AddSingleton<PEMS.Application.Definitions.IDefinitionStore>(sp => sp.GetRequiredService<PEMS.Persistence.Definitions.FileDefinitionStore>());
+builder.Services.AddSingleton(new PEMS.Application.Definitions.DefinitionOwnership(builder.Configuration.GetSection("Definitions:Ownership").Get<Dictionary<string, string>>()));
+// one owner per kind: the routed store serves each kind from its owner (files, database) and nothing for the others
+builder.Services.AddScoped<PEMS.Application.Definitions.IDefinitionStore>(sp => new PEMS.Application.Definitions.RoutedDefinitionStore(
+    sp.GetRequiredService<PEMS.Application.Definitions.DefinitionOwnership>(),
+    new Dictionary<PEMS.Application.Definitions.DefinitionOwner, PEMS.Application.Definitions.IDefinitionStore>
+    {
+        [PEMS.Application.Definitions.DefinitionOwner.Files] = sp.GetRequiredService<PEMS.Persistence.Definitions.FileDefinitionStore>(),
+        [PEMS.Application.Definitions.DefinitionOwner.Database] = sp.GetRequiredService<PEMS.Persistence.Services.DefinitionStore>()
+    }));
+builder.Services.AddScoped<PEMS.Application.Definitions.IDefinitionAccess, PEMS.Persistence.Definitions.PermissionDefinitionAccess>();
+builder.Services.AddScoped<PEMS.Application.Definitions.DefinitionPipeline>();
 builder.Services.AddScoped<PEMS.Application.Definitions.IDefinitionService, PEMS.Persistence.Services.DefinitionService>();
 
 // یک [Authorize] سراسری روی همه‌ی صفحات؛ فقط اکشن‌هایی که [AllowAnonymous] دارند
