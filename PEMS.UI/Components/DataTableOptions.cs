@@ -154,6 +154,10 @@ public sealed record DataTableOptions : FrameOptions
     public string? RowCss { get; init; }
     /// <summary>Classes on a body row computed from the row (a Razor class expression); added after <see cref="RowCss"/>.</summary>
     [JsonIgnore] public Func<object, string?>? RowClass { get; init; }
+    /// <summary>Extra attributes on a body row computed from the row (<c>data-*</c>, <c>id</c>, <c>title</c>); the row's class stays <see cref="RowClass"/>.</summary>
+    [JsonIgnore] public Func<object, IReadOnlyDictionary<string, object>?>? RowAttrs { get; init; }
+    /// <summary>False writes no <c>thead</c> (a key-value or top-N table that has no header row); default true.</summary>
+    public bool ShowHeader { get; init; } = true;
     public string? Css { get; init; }
 }
 
@@ -166,11 +170,15 @@ public sealed class DataRows
     /// <summary>Classes on a body row computed from the row.</summary>
     public Func<object, string?>? RowClass { get; init; }
 
-    public static DataRows Of<T>(IEnumerable<T> items, Func<DataColumns<T>, DataColumns<T>> columns, Func<T, string?>? rowClass = null) where T : notnull => new()
+    /// <summary>Attributes of a body row computed from the row (see <see cref="DataTableOptions.RowAttrs"/>).</summary>
+    public Func<object, IReadOnlyDictionary<string, object>?>? RowAttrs { get; init; }
+
+    public static DataRows Of<T>(IEnumerable<T> items, Func<DataColumns<T>, DataColumns<T>> columns, Func<T, string?>? rowClass = null, Func<T, IReadOnlyDictionary<string, object>?>? rowAttrs = null) where T : notnull => new()
     {
         Items = items.Cast<object>(),
         Columns = columns(new DataColumns<T>()),
-        RowClass = rowClass is null ? null : row => rowClass((T)row)
+        RowClass = rowClass is null ? null : row => rowClass((T)row),
+        RowAttrs = rowAttrs is null ? null : row => rowAttrs((T)row)
     };
 }
 

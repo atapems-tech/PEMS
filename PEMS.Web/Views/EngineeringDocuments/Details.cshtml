@@ -472,14 +472,8 @@
 
             @if (Model.Attachments != null && Model.Attachments.Any())
             {
-                <pems-table kind="enterprise">
-                    <pems-table-head>
-                        <pems-table-row><pems-table-header>@Localizer["Ed_FileName"]</pems-table-header><pems-table-header>@Localizer["Ed_Revision"]</pems-table-header><pems-table-header>@Localizer["Ed_Ext"]</pems-table-header><pems-table-header>@Localizer["Ed_Size"]</pems-table-header><pems-table-header>@Localizer["Ed_AiStatus"]</pems-table-header><pems-table-header>@Localizer["Ed_Date"]</pems-table-header><pems-table-header class="text-end">@Localizer["Ed_Actions"]</pems-table-header></pems-table-row>
-                    </pems-table-head>
-                    <pems-table-body>
-                        @foreach (var file in Model.Attachments)
-                        {
-                            var badgeClass = file.AIStatus switch
+                var rows_11 = Model.Attachments;
+                var cell_11_0 = DataCell.Template(rows_11, @<text>@{ var file = item; var badgeClass = file.AIStatus switch
                             {
                                 "Completed" => "success",
                                 "Processing" => "info",
@@ -488,16 +482,23 @@
                                 _ => "neutral"
                             };
                             var fileIsCurrentRev = file.DocumentRevisionId.HasValue && file.RevisionNo == Model.RevisionNo;
-                            var fileIsPreviousRev = file.DocumentRevisionId.HasValue && !fileIsCurrentRev;
-                            <pems-table-row class="@(fileIsPreviousRev ? "vs-rev-superseded" : "")">
-                                <pems-table-cell>
+                            var fileIsPreviousRev = file.DocumentRevisionId.HasValue && !fileIsCurrentRev; }
                                     @file.FileName
                                     @if (!string.IsNullOrEmpty(file.FileHash))
                                     {
                                         <pems-icon name="bi-shield-check" css="text-success ms-1" data-bs-toggle="tooltip" title="SHA-256: @file.FileHash" />
                                     }
-                                </pems-table-cell>
-                                <pems-table-cell>
+                                </text>);
+                var cell_11_1 = DataCell.Template(rows_11, @<text>@{ var file = item; var badgeClass = file.AIStatus switch
+                            {
+                                "Completed" => "success",
+                                "Processing" => "info",
+                                "Pending" => "neutral",
+                                "Failed" => "danger",
+                                _ => "neutral"
+                            };
+                            var fileIsCurrentRev = file.DocumentRevisionId.HasValue && file.RevisionNo == Model.RevisionNo;
+                            var fileIsPreviousRev = file.DocumentRevisionId.HasValue && !fileIsCurrentRev; }
                                     @if (file.DocumentRevisionId.HasValue)
                                     {
                                         <pems-badge tone="neutral">@Localizer["Ed_CurrentRev"] @file.RevisionNo</pems-badge>
@@ -516,12 +517,57 @@
                                     {
                                         <span class="text-muted small">@Localizer["Ed_DocLevelFile"]</span>
                                     }
-                                </pems-table-cell>
-                                <pems-table-cell>@file.FileExtension</pems-table-cell>
-                                <pems-table-cell>@(file.FileSize / 1024) KB</pems-table-cell>
-                                <pems-table-cell><pems-badge tone="@badgeClass">@file.AIStatus</pems-badge></pems-table-cell>
-                                <pems-table-cell class="small text-muted">@PemsDates.Date(file.UploadDate)</pems-table-cell>
-                                <pems-table-cell class="text-end">
+                                </text>);
+                var cell_11_2 = DataCell.Template(rows_11, @<text>@{ var file = item; var badgeClass = file.AIStatus switch
+                            {
+                                "Completed" => "success",
+                                "Processing" => "info",
+                                "Pending" => "neutral",
+                                "Failed" => "danger",
+                                _ => "neutral"
+                            };
+                            var fileIsCurrentRev = file.DocumentRevisionId.HasValue && file.RevisionNo == Model.RevisionNo;
+                            var fileIsPreviousRev = file.DocumentRevisionId.HasValue && !fileIsCurrentRev; }@file.FileExtension</text>);
+                var cell_11_3 = DataCell.Template(rows_11, @<text>@{ var file = item; var badgeClass = file.AIStatus switch
+                            {
+                                "Completed" => "success",
+                                "Processing" => "info",
+                                "Pending" => "neutral",
+                                "Failed" => "danger",
+                                _ => "neutral"
+                            };
+                            var fileIsCurrentRev = file.DocumentRevisionId.HasValue && file.RevisionNo == Model.RevisionNo;
+                            var fileIsPreviousRev = file.DocumentRevisionId.HasValue && !fileIsCurrentRev; }@(file.FileSize / 1024) KB</text>);
+                var cell_11_4 = DataCell.Template(rows_11, @<text>@{ var file = item; var badgeClass = file.AIStatus switch
+                            {
+                                "Completed" => "success",
+                                "Processing" => "info",
+                                "Pending" => "neutral",
+                                "Failed" => "danger",
+                                _ => "neutral"
+                            };
+                            var fileIsCurrentRev = file.DocumentRevisionId.HasValue && file.RevisionNo == Model.RevisionNo;
+                            var fileIsPreviousRev = file.DocumentRevisionId.HasValue && !fileIsCurrentRev; }<pems-badge tone="@badgeClass">@file.AIStatus</pems-badge></text>);
+                var cell_11_5 = DataCell.Template(rows_11, @<text>@{ var file = item; var badgeClass = file.AIStatus switch
+                            {
+                                "Completed" => "success",
+                                "Processing" => "info",
+                                "Pending" => "neutral",
+                                "Failed" => "danger",
+                                _ => "neutral"
+                            };
+                            var fileIsCurrentRev = file.DocumentRevisionId.HasValue && file.RevisionNo == Model.RevisionNo;
+                            var fileIsPreviousRev = file.DocumentRevisionId.HasValue && !fileIsCurrentRev; }@PemsDates.Date(file.UploadDate)</text>);
+                var cell_11_6 = DataCell.Template(rows_11, @<text>@{ var file = item; var badgeClass = file.AIStatus switch
+                            {
+                                "Completed" => "success",
+                                "Processing" => "info",
+                                "Pending" => "neutral",
+                                "Failed" => "danger",
+                                _ => "neutral"
+                            };
+                            var fileIsCurrentRev = file.DocumentRevisionId.HasValue && file.RevisionNo == Model.RevisionNo;
+                            var fileIsPreviousRev = file.DocumentRevisionId.HasValue && !fileIsCurrentRev; }
                                     <pems-flex gap="1" justify="end" wrap="true">
                                         <pems-button tone="primary" size="small" outline="true" as="a" asp-action="DownloadAttachment" asp-route-id="@file.AttachmentId" data-bs-toggle="tooltip" title="Download attachment" aria-label="Download @file.FileName"><pems-icon name="bi-download" /></pems-button>
                                         @if (file.AIStatus == "Completed")
@@ -536,11 +582,17 @@
                                             <pems-button tone="danger" size="small" outline="true" data-bs-toggle="tooltip" title="Delete attachment" aria-label="Delete @file.FileName"><pems-icon name="bi-trash" /></pems-button>
                                         </pems-form>
                                     </pems-flex>
-                                </pems-table-cell>
-                            </pems-table-row>
-                        }
-                    </pems-table-body>
-                </pems-table>
+                                </text>);
+                <pems-data-table data="@(DataRows.Of(rows_11, c_ => c_.Add(((Localizer["Ed_FileName"])?.ToString() ?? ""), file => (object?)cell_11_0(file)).Add(((Localizer["Ed_Revision"])?.ToString() ?? ""), file => (object?)cell_11_1(file)).Add(((Localizer["Ed_Ext"])?.ToString() ?? ""), file => (object?)cell_11_2(file)).Add(((Localizer["Ed_Size"])?.ToString() ?? ""), file => (object?)cell_11_3(file)).Add(((Localizer["Ed_AiStatus"])?.ToString() ?? ""), file => (object?)cell_11_4(file)).Add(((Localizer["Ed_Date"])?.ToString() ?? ""), file => (object?)cell_11_5(file), css: "small text-muted").Add(((Localizer["Ed_Actions"])?.ToString() ?? ""), file => (object?)cell_11_6(file), css: "text-end", headerCss: "text-end"), rowClass: file => { var badgeClass = file.AIStatus switch
+                            {
+                                "Completed" => "success",
+                                "Processing" => "info",
+                                "Pending" => "neutral",
+                                "Failed" => "danger",
+                                _ => "neutral"
+                            };
+                            var fileIsCurrentRev = file.DocumentRevisionId.HasValue && file.RevisionNo == Model.RevisionNo;
+                            var fileIsPreviousRev = file.DocumentRevisionId.HasValue && !fileIsCurrentRev; return (fileIsPreviousRev ? "vs-rev-superseded" : ""); }))" />
             }
             else
             {
@@ -570,28 +622,45 @@
                     Resubmit) همیشه توسط سازنده/تأییدکننده‌ی مدرک، با در نظر گرفتن مجموع این نظرات، گرفته می‌شود.
                 </pems-text>
                 <pems-progress value="@idcApprovedCount" max="@idcStatusForPage.Count" tone="success" height="8px" css="mb-3"></pems-progress>
-                <pems-table kind="enterprise">
-                    <pems-table-head><pems-table-row><pems-table-header>@Localizer["Discipline"]</pems-table-header><pems-table-header>@Localizer["Status"]</pems-table-header><pems-table-header>@Localizer["Comment"]</pems-table-header><pems-table-header>Responded By</pems-table-header><pems-table-header>Responded Date</pems-table-header></pems-table-row></pems-table-head>
-                    <pems-table-body>
-                        @foreach (var idc in idcStatusForPage)
-                        {
-                            var (idcIcon, idcBadge, idcLabel) = idc.Status switch
+                @{
+                    var rows_12 = idcStatusForPage;
+                    var cell_12_0 = DataCell.Template(rows_12, @<text>@{ var idc = item; var (idcIcon, idcBadge, idcLabel) = idc.Status switch
                             {
                                 "Approve" => ("bi-check-circle-fill", "bg-success", "Approved"),
                                 "Comment" => ("bi-chat-left-text-fill", "bg-warning text-dark", "Approved with Comments"),
                                 "Reject" => ("bi-x-circle-fill", "bg-danger", "Revision Required"),
                                 _ => ("bi-hourglass-split", "bg-secondary", "Pending")
-                            };
-                            <pems-table-row>
-                                <pems-table-cell>@idc.DisciplineName</pems-table-cell>
-                                <pems-table-cell><pems-badge tone="none" css="@idcBadge"><pems-icon css="@idcIcon" /> @idcLabel</pems-badge></pems-table-cell>
-                                <pems-table-cell class="small">@(idc.Comment ?? "—")</pems-table-cell>
-                                <pems-table-cell class="small">@(idc.RespondedByName ?? "—")</pems-table-cell>
-                                <pems-table-cell class="small">@(PemsDates.DateTime(idc.RespondedDate) ?? "—")</pems-table-cell>
-                            </pems-table-row>
-                        }
-                    </pems-table-body>
-                </pems-table>
+                            }; }@idc.DisciplineName</text>);
+                    var cell_12_1 = DataCell.Template(rows_12, @<text>@{ var idc = item; var (idcIcon, idcBadge, idcLabel) = idc.Status switch
+                            {
+                                "Approve" => ("bi-check-circle-fill", "bg-success", "Approved"),
+                                "Comment" => ("bi-chat-left-text-fill", "bg-warning text-dark", "Approved with Comments"),
+                                "Reject" => ("bi-x-circle-fill", "bg-danger", "Revision Required"),
+                                _ => ("bi-hourglass-split", "bg-secondary", "Pending")
+                            }; }<pems-badge tone="none" css="@idcBadge"><pems-icon css="@idcIcon" /> @idcLabel</pems-badge></text>);
+                    var cell_12_2 = DataCell.Template(rows_12, @<text>@{ var idc = item; var (idcIcon, idcBadge, idcLabel) = idc.Status switch
+                            {
+                                "Approve" => ("bi-check-circle-fill", "bg-success", "Approved"),
+                                "Comment" => ("bi-chat-left-text-fill", "bg-warning text-dark", "Approved with Comments"),
+                                "Reject" => ("bi-x-circle-fill", "bg-danger", "Revision Required"),
+                                _ => ("bi-hourglass-split", "bg-secondary", "Pending")
+                            }; }@(idc.Comment ?? "—")</text>);
+                    var cell_12_3 = DataCell.Template(rows_12, @<text>@{ var idc = item; var (idcIcon, idcBadge, idcLabel) = idc.Status switch
+                            {
+                                "Approve" => ("bi-check-circle-fill", "bg-success", "Approved"),
+                                "Comment" => ("bi-chat-left-text-fill", "bg-warning text-dark", "Approved with Comments"),
+                                "Reject" => ("bi-x-circle-fill", "bg-danger", "Revision Required"),
+                                _ => ("bi-hourglass-split", "bg-secondary", "Pending")
+                            }; }@(idc.RespondedByName ?? "—")</text>);
+                    var cell_12_4 = DataCell.Template(rows_12, @<text>@{ var idc = item; var (idcIcon, idcBadge, idcLabel) = idc.Status switch
+                            {
+                                "Approve" => ("bi-check-circle-fill", "bg-success", "Approved"),
+                                "Comment" => ("bi-chat-left-text-fill", "bg-warning text-dark", "Approved with Comments"),
+                                "Reject" => ("bi-x-circle-fill", "bg-danger", "Revision Required"),
+                                _ => ("bi-hourglass-split", "bg-secondary", "Pending")
+                            }; }@(PemsDates.DateTime(idc.RespondedDate) ?? "—")</text>);
+                }
+                <pems-data-table data="@(DataRows.Of(rows_12, c_ => c_.Add(((Localizer["Discipline"])?.ToString() ?? ""), idc => (object?)cell_12_0(idc)).Add(((Localizer["Status"])?.ToString() ?? ""), idc => (object?)cell_12_1(idc)).Add(((Localizer["Comment"])?.ToString() ?? ""), idc => (object?)cell_12_2(idc), css: "small").Add("Responded By", idc => (object?)cell_12_3(idc), css: "small").Add("Responded Date", idc => (object?)cell_12_4(idc), css: "small")))" />
                 @if (Model.Status == "IDC Review")
                 {
                     var myDisciplineIdForIdcTab = ViewBag.MyDisciplineId as int?;

@@ -233,35 +233,20 @@
    else
    {
        <div class="table-scroll-area">
-           <pems-table kind="enterprise" scale="small" css="mb-0">
-               <pems-table-head>
-                   <pems-table-row>
-                       <pems-table-header>@Localizer["Discipline"]</pems-table-header>
-                       <pems-table-header>@Localizer["Documents"]</pems-table-header>
-                       <pems-table-header>@Localizer["Rejections"]</pems-table-header>
-                       <pems-table-header>Avg Revisions</pems-table-header>
-                       <pems-table-header>@Localizer["Risk"]</pems-table-header>
-                   </pems-table-row>
-               </pems-table-head>
-               <pems-table-body>
-                   @foreach (var item in disciplinePerformance)
-                   {
-                       var avgRevisions = item.DocumentCount > 0 ? (double)item.RevisionCount / item.DocumentCount : 0d;
-                       <pems-table-row>
-                           <pems-table-cell class="fw-semibold">@item.DisciplineName</pems-table-cell>
-                           <pems-table-cell>@item.DocumentCount</pems-table-cell>
-                           <pems-table-cell>@item.RejectionCount</pems-table-cell>
-                           <pems-table-cell>@avgRevisions.ToString("0.0")</pems-table-cell>
-                           <pems-table-cell>
+           @{
+               var rows_10 = disciplinePerformance;
+               var cell_10_0 = DataCell.Template(rows_10, @<text>@{ var avgRevisions = item.DocumentCount > 0 ? (double)item.RevisionCount / item.DocumentCount : 0d; }@item.DisciplineName</text>);
+               var cell_10_1 = DataCell.Template(rows_10, @<text>@{ var avgRevisions = item.DocumentCount > 0 ? (double)item.RevisionCount / item.DocumentCount : 0d; }@item.DocumentCount</text>);
+               var cell_10_2 = DataCell.Template(rows_10, @<text>@{ var avgRevisions = item.DocumentCount > 0 ? (double)item.RevisionCount / item.DocumentCount : 0d; }@item.RejectionCount</text>);
+               var cell_10_3 = DataCell.Template(rows_10, @<text>@{ var avgRevisions = item.DocumentCount > 0 ? (double)item.RevisionCount / item.DocumentCount : 0d; }@avgRevisions.ToString("0.0")</text>);
+               var cell_10_4 = DataCell.Template(rows_10, @<text>@{ var avgRevisions = item.DocumentCount > 0 ? (double)item.RevisionCount / item.DocumentCount : 0d; }
                                <pems-flex align="center" gap="2">
                                    <pems-progress class="pems-minw-70" value="@item.RiskScore" tone="@(item.RiskScore >= 60 ? "danger" : item.RiskScore >= 35 ? "warning" : "success")" height="8px" css="flex-grow-1"></pems-progress>
                                    <span class="small text-muted">@item.RiskScore</span>
                                </pems-flex>
-                           </pems-table-cell>
-                       </pems-table-row>
-                   }
-               </pems-table-body>
-           </pems-table>
+                           </text>);
+           }
+           <pems-data-table data="@(DataRows.Of(rows_10, c_ => c_.Add(((Localizer["Discipline"])?.ToString() ?? ""), item => (object?)cell_10_0(item), css: "fw-semibold").Add(((Localizer["Documents"])?.ToString() ?? ""), item => (object?)cell_10_1(item)).Add(((Localizer["Rejections"])?.ToString() ?? ""), item => (object?)cell_10_2(item)).Add("Avg Revisions", item => (object?)cell_10_3(item)).Add(((Localizer["Risk"])?.ToString() ?? ""), item => (object?)cell_10_4(item))))" dense="true" css="mb-0" />
        </div>
    }
 </pems-content-card>

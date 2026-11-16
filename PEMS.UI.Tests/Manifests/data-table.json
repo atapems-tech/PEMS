@@ -27,6 +27,9 @@
           "null"
         ]
       },
+      "showHeader": {
+        "type": "boolean"
+      },
       "css": {
         "type": [
           "string",

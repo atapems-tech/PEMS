@@ -350,6 +350,8 @@ public sealed class PemsDataTableTagHelper(IPemsComponentRenderer renderer) : Ta
     /// <summary>The enterprise look (default true); <c>enterprise="false"</c> writes the plain table.</summary>
     [HtmlAttributeName("enterprise")] public bool Enterprise { get; set; } = true;
     [HtmlAttributeName("row-css")] public string? RowCss { get; set; }
+    /// <summary>False writes no header row (a table of key and value rows); default true.</summary>
+    [HtmlAttributeName("header")] public bool Header { get; set; } = true;
     [HtmlAttributeName("css")] public string? Css { get; set; }
 
     public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
@@ -357,7 +359,7 @@ public sealed class PemsDataTableTagHelper(IPemsComponentRenderer renderer) : Ta
         var (pageClass, attrs) = ListRender.Page(output);
         await ListRender.Replace<PemsDataTable>(renderer, output, new DataTableOptions
         {
-            Items = Data?.Items ?? Items?.Cast<object>(), Columns = Data?.Columns ?? Columns, Empty = Empty, Dense = Dense, Enterprise = Enterprise, RowCss = RowCss, RowClass = Data?.RowClass,
+            Items = Data?.Items ?? Items?.Cast<object>(), Columns = Data?.Columns ?? Columns, Empty = Empty, Dense = Dense, Enterprise = Enterprise, RowCss = RowCss, RowClass = Data?.RowClass, RowAttrs = Data?.RowAttrs, ShowHeader = Header,
             Css = string.IsNullOrWhiteSpace(pageClass) ? Css : string.Join(" ", new[] { Css, pageClass }.Where(x => !string.IsNullOrWhiteSpace(x))),
             Attributes = attrs
         });

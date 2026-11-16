@@ -32,24 +32,15 @@ else
         </pems-content-card>
 
         <pems-content-card>
-            <pems-table kind="enterprise" css="mb-0">
-                <pems-table-head>
-                    <pems-table-row><pems-table-header></pems-table-header><pems-table-header>@Localizer["Equipment Tag"]</pems-table-header><pems-table-header>@Localizer["نوع"]</pems-table-header><pems-table-header>@Localizer["مقصد"]</pems-table-header><pems-table-header>@Localizer["طبق شماره‌ی خام"]</pems-table-header></pems-table-row>
-                </pems-table-head>
-                <pems-table-body>
-                    @foreach (var item in Model)
-                    {
-                        var value = $"{item.EquipmentId}|{item.TargetType}|{item.TargetId}";
-                        <pems-table-row>
-                            <pems-table-cell><pems-input kind="bare" type="checkbox" class="item-check" name="selectedItems" value="@value" /></pems-table-cell>
-                            <pems-table-cell><pems-link asp-action="Equipment" asp-route-id="@item.EquipmentId">@item.EquipmentTagNumber</pems-link></pems-table-cell>
-                            <pems-table-cell><pems-badge tone="neutral">@item.TargetType</pems-badge></pems-table-cell>
-                            <pems-table-cell>@item.TargetLabel</pems-table-cell>
-                            <pems-table-cell class="text-muted small">@item.MatchedOnRawValue</pems-table-cell>
-                        </pems-table-row>
-                    }
-                </pems-table-body>
-            </pems-table>
+            @{
+                var rows_22 = Model;
+                var cell_22_0 = DataCell.Template(rows_22, @<text>@{ var value = $"{item.EquipmentId}|{item.TargetType}|{item.TargetId}"; }<pems-input kind="bare" type="checkbox" class="item-check" name="selectedItems" value="@value" /></text>);
+                var cell_22_1 = DataCell.Template(rows_22, @<text>@{ var value = $"{item.EquipmentId}|{item.TargetType}|{item.TargetId}"; }<pems-link asp-action="Equipment" asp-route-id="@item.EquipmentId">@item.EquipmentTagNumber</pems-link></text>);
+                var cell_22_2 = DataCell.Template(rows_22, @<text>@{ var value = $"{item.EquipmentId}|{item.TargetType}|{item.TargetId}"; }<pems-badge tone="neutral">@item.TargetType</pems-badge></text>);
+                var cell_22_3 = DataCell.Template(rows_22, @<text>@{ var value = $"{item.EquipmentId}|{item.TargetType}|{item.TargetId}"; }@item.TargetLabel</text>);
+                var cell_22_4 = DataCell.Template(rows_22, @<text>@{ var value = $"{item.EquipmentId}|{item.TargetType}|{item.TargetId}"; }@item.MatchedOnRawValue</text>);
+            }
+            <pems-data-table data="@(DataRows.Of(rows_22, c_ => c_.Add("", item => (object?)cell_22_0(item)).Add(((Localizer["Equipment Tag"])?.ToString() ?? ""), item => (object?)cell_22_1(item)).Add(((Localizer["نوع"])?.ToString() ?? ""), item => (object?)cell_22_2(item)).Add(((Localizer["مقصد"])?.ToString() ?? ""), item => (object?)cell_22_3(item)).Add(((Localizer["طبق شماره‌ی خام"])?.ToString() ?? ""), item => (object?)cell_22_4(item), css: "text-muted small")))" css="mb-0" />
         </pems-content-card>
     </pems-form>
 }

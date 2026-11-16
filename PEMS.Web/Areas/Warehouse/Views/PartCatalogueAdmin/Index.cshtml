@@ -243,18 +243,13 @@
         <pems-heading level="2" class="vs-section__title"><pems-icon name="bi-ui-checks-grid" /> @Localizer["Pc_Adm_Sections"]</pems-heading>
         <pems-text class="small text-muted">@Localizer["Pc_Adm_SectionsHint"]</pems-text>
         <div class="pc-table-scroll">
-            <pems-table scale="small" css="table-enterprise vs-dense mb-0">
-                <pems-table-head><pems-table-row><pems-table-header>@Localizer["Pc_F_SectionId"]</pems-table-header><pems-table-header>@Localizer["Pc_Adm_SpareReview"]</pems-table-header><pems-table-header>@Localizer["Pc_Col_Active"]</pems-table-header><pems-table-header></pems-table-header><pems-table-header>@Localizer["Pc_Adm_AllowedGroups"]</pems-table-header></pems-table-row></pems-table-head>
-                <pems-table-body>
-                @foreach (var s in ov.Sections)
-                {
-                    var fid = "secForm" + s.SectionId;
-                    <pems-table-row>
-                        <pems-table-cell>@s.Code @if (!string.IsNullOrEmpty(s.NameFa)) { <span class="text-muted small">(@s.NameFa)</span> } @if (s.RoutingNeedsConfirmation) { <span class="vs-pill vs-pill--warning" title="@Localizer["Pc_Adm_NeedsConfirmation"]">@Localizer["Pc_Adm_NeedsConfirmationShort"]</span> }</pems-table-cell>
-                        <pems-table-cell><pems-input kind="bare" form="@fid" type="checkbox" name="requiresSparePartsReview" value="true" checked="@s.RequiresSparePartsReview" aria-label="@Localizer["Pc_Adm_SpareReview"]" /><input form="@fid" type="hidden" name="requiresSparePartsReview" value="false" /></pems-table-cell>
-                        <pems-table-cell><pems-input kind="bare" form="@fid" type="checkbox" name="isActive" value="true" checked="@s.IsActive" aria-label="@Localizer["Pc_Col_Active"]" /><input form="@fid" type="hidden" name="isActive" value="false" /></pems-table-cell>
-                        <pems-table-cell><pems-form id="@fid" asp-action="SetSection" method="post"><input type="hidden" name="sectionId" value="@s.SectionId" /><pems-button plain="true" css="vs-btn vs-btn--sm"><pems-icon name="bi-save" /></pems-button></pems-form></pems-table-cell>
-                        <pems-table-cell>
+            @{
+                var rows_7 = ov.Sections;
+                var cell_7_0 = DataCell.Template(rows_7, @<text>@{ var s = item; var fid = "secForm" + s.SectionId; }@s.Code @if (!string.IsNullOrEmpty(s.NameFa)) { <span class="text-muted small">(@s.NameFa)</span> } @if (s.RoutingNeedsConfirmation) { <span class="vs-pill vs-pill--warning" title="@Localizer["Pc_Adm_NeedsConfirmation"]">@Localizer["Pc_Adm_NeedsConfirmationShort"]</span> }</text>);
+                var cell_7_1 = DataCell.Template(rows_7, @<text>@{ var s = item; var fid = "secForm" + s.SectionId; }<pems-input kind="bare" form="@fid" type="checkbox" name="requiresSparePartsReview" value="true" checked="@s.RequiresSparePartsReview" aria-label="@Localizer["Pc_Adm_SpareReview"]" /><input form="@fid" type="hidden" name="requiresSparePartsReview" value="false" /></text>);
+                var cell_7_2 = DataCell.Template(rows_7, @<text>@{ var s = item; var fid = "secForm" + s.SectionId; }<pems-input kind="bare" form="@fid" type="checkbox" name="isActive" value="true" checked="@s.IsActive" aria-label="@Localizer["Pc_Col_Active"]" /><input form="@fid" type="hidden" name="isActive" value="false" /></text>);
+                var cell_7_3 = DataCell.Template(rows_7, @<text>@{ var s = item; var fid = "secForm" + s.SectionId; }<pems-form id="@fid" asp-action="SetSection" method="post"><input type="hidden" name="sectionId" value="@s.SectionId" /><pems-button plain="true" css="vs-btn vs-btn--sm"><pems-icon name="bi-save" /></pems-button></pems-form></text>);
+                var cell_7_4 = DataCell.Template(rows_7, @<text>@{ var s = item; var fid = "secForm" + s.SectionId; }
                             @foreach (var g in s.Groups)
                             {
                                 <pems-form asp-action="RemoveSectionGroup" method="post" class="d-inline"><input type="hidden" name="mapId" value="@g.MapId" />
@@ -266,11 +261,9 @@
                                 <div class="pc-lookup pc-lookup-sm" data-url="/Warehouse/PartCatalogueAdmin/CommodityGroups" data-name="commodityGroupId" data-input-id="@("grp_" + s.SectionId)"></div>
                                 <pems-button plain="true" css="vs-icon-btn" title="@Localizer["Pc_Btn_AddGroup"]" aria-label="@Localizer["Pc_Btn_AddGroup"]"><pems-icon name="bi-plus-lg" /></pems-button>
                             </pems-flex></pems-form>
-                        </pems-table-cell>
-                    </pems-table-row>
-                }
-                </pems-table-body>
-            </pems-table>
+                        </text>);
+            }
+            <pems-data-table data="@(DataRows.Of(rows_7, c_ => c_.Add(((Localizer["Pc_F_SectionId"])?.ToString() ?? ""), s => (object?)cell_7_0(s)).Add(((Localizer["Pc_Adm_SpareReview"])?.ToString() ?? ""), s => (object?)cell_7_1(s)).Add(((Localizer["Pc_Col_Active"])?.ToString() ?? ""), s => (object?)cell_7_2(s)).Add("", s => (object?)cell_7_3(s)).Add(((Localizer["Pc_Adm_AllowedGroups"])?.ToString() ?? ""), s => (object?)cell_7_4(s))))" dense="true" css="vs-dense mb-0" />
         </div>
     </section>
 

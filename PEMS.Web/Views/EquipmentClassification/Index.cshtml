@@ -103,14 +103,7 @@
         <pems-content-card css="h-100">
             <pems-heading level="6" class="mb-3">Top Unclassified — EquipmentType</pems-heading>
             <pems-table-scroll css="pems-s-f0787633">
-                <pems-table kind="enterprise" scale="small">
-                    <pems-table-body>
-                        @foreach (var item in Model.TopUnclassifiedEquipmentTypes)
-                        {
-                            <pems-table-row><pems-table-cell class="small">@item.Key</pems-table-cell><pems-table-cell class="text-end">@item.Count.ToString("N0")</pems-table-cell></pems-table-row>
-                        }
-                    </pems-table-body>
-                </pems-table>
+                <pems-data-table data="@(DataRows.Of(Model.TopUnclassifiedEquipmentTypes, c_ => c_.Add("", item => (object?)(item.Key), css: "small").Add("", item => (object?)((item.Count.ToString("N0"))), css: "text-end")))" header="false" dense="true" />
             </pems-table-scroll>
         </pems-content-card>
     </pems-col>
@@ -118,14 +111,7 @@
         <pems-content-card css="h-100">
             <pems-heading level="6" class="mb-3">Top Unclassified — Name</pems-heading>
             <pems-table-scroll css="pems-s-f0787633">
-                <pems-table kind="enterprise" scale="small">
-                    <pems-table-body>
-                        @foreach (var item in Model.TopUnclassifiedEquipmentNames)
-                        {
-                            <pems-table-row><pems-table-cell class="small">@item.Key</pems-table-cell><pems-table-cell class="text-end">@item.Count.ToString("N0")</pems-table-cell></pems-table-row>
-                        }
-                    </pems-table-body>
-                </pems-table>
+                <pems-data-table data="@(DataRows.Of(Model.TopUnclassifiedEquipmentNames, c_ => c_.Add("", item => (object?)(item.Key), css: "small").Add("", item => (object?)((item.Count.ToString("N0"))), css: "text-end")))" header="false" dense="true" />
             </pems-table-scroll>
         </pems-content-card>
     </pems-col>
@@ -133,14 +119,7 @@
         <pems-content-card css="h-100">
             <pems-heading level="6" class="mb-3">Top Unclassified — Tag Pattern</pems-heading>
             <pems-table-scroll css="pems-s-f0787633">
-                <pems-table kind="enterprise" scale="small">
-                    <pems-table-body>
-                        @foreach (var item in Model.TopUnclassifiedTagPatterns)
-                        {
-                            <pems-table-row><pems-table-cell class="small"><code>@item.Key</code></pems-table-cell><pems-table-cell class="text-end">@item.Count.ToString("N0")</pems-table-cell></pems-table-row>
-                        }
-                    </pems-table-body>
-                </pems-table>
+                <pems-data-table data="@(DataRows.Of(Model.TopUnclassifiedTagPatterns, c_ => c_.Add("", item => (object?)(DataCell.Code(item.Key)), css: "small").Add("", item => (object?)((item.Count.ToString("N0"))), css: "text-end")))" header="false" dense="true" />
             </pems-table-scroll>
         </pems-content-card>
     </pems-col>
