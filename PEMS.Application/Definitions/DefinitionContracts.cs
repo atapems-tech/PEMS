@@ -86,7 +86,8 @@ public interface IDefinitionService
     Task<DefinitionOutcome<DefinitionImportResult>> ImportAsync(DefinitionPackage package, string actor, CancellationToken ct = default);
 }
 
-public sealed record PublishedDefinition(string Kind, string Key, string AppKey, int VersionNumber, string PayloadJson, string ContentHash);
+/// <param name="TitleJson">The title as TranslatableText JSON ({"fa": "...", "en": "..."}); null when the owner does not carry one.</param>
+public sealed record PublishedDefinition(string Kind, string Key, string AppKey, int VersionNumber, string PayloadJson, string ContentHash, string? TitleJson = null);
 
 /// <summary>Read side for the runtime (page host, renderers): the published version only, cached and refreshed by the per-kind stamp.</summary>
 public interface IDefinitionStore

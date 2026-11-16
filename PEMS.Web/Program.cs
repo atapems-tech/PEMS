@@ -124,6 +124,7 @@ builder.Services.AddScoped<PEMS.Application.Definitions.IDefinitionStore>(sp => 
     }));
 builder.Services.AddScoped<PEMS.Application.Definitions.IDefinitionAccess, PEMS.Persistence.Definitions.PermissionDefinitionAccess>();
 builder.Services.AddScoped<PEMS.Application.Definitions.DefinitionPipeline>();
+builder.Services.AddScoped<PEMS.Web.Definitions.PageRenderer>();
 builder.Services.AddScoped<PEMS.Application.Definitions.IDefinitionService, PEMS.Persistence.Services.DefinitionService>();
 
 // یک [Authorize] سراسری روی همه‌ی صفحات؛ فقط اکشن‌هایی که [AllowAnonymous] دارند
