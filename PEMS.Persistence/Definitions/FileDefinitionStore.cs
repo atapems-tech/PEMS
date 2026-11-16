@@ -152,12 +152,3 @@ public sealed class FileDefinitionStore : IDefinitionStore, IDefinitionFiles, ID
 
     public void Dispose() { _watcher?.Dispose(); _debounce?.Dispose(); }
 }
-
-/// <summary>
-/// The store the runtime reads (SCRUM-572): a published definition of the database (a customer edit or override, ADR-0011 point 7) wins; otherwise the shipped file.
-/// </summary>
-public sealed class LayeredDefinitionStore(IDefinitionStore database, IDefinitionStore files) : IDefinitionStore
-{
-    public async Task<PublishedDefinition?> GetPublishedAsync(string kind, string key, string appKey = "core", CancellationToken ct = default)
-        => await database.GetPublishedAsync(kind, key, appKey, ct) ?? await files.GetPublishedAsync(kind, key, appKey, ct);
-}

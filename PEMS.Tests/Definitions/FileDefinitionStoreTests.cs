@@ -6,7 +6,7 @@ using PEMS.Web.Definitions;
 
 namespace PEMS.Tests.Definitions;
 
-/// <summary>SCRUM-572 (ADR-0014): the definition files are checked at load, texts need both languages, a change is picked up, a broken edit keeps the last good version, the database wins.</summary>
+/// <summary>SCRUM-572 (ADR-0014): the definition files are checked at load, texts need both languages, a change is picked up, a broken edit keeps the last good version.</summary>
 public sealed class FileDefinitionStoreTests : IDisposable
 {
     private readonly string _folder = Path.Combine(Path.GetTempPath(), "defs-" + Guid.NewGuid());
@@ -115,17 +115,6 @@ public sealed class FileDefinitionStoreTests : IDisposable
     }
 
     [Fact]
-    public async Task A_database_definition_wins_over_the_file_of_the_same_key()
-    {
-        Write("layout", "demo", Layout());
-        using var files = Store();
-        var database = new Fixed(new PublishedDefinition("layout", "demo", "core", 7, "{\"root\":{}}", "h"));
-        var layered = new LayeredDefinitionStore(database, files);
-        Assert.Equal(7, (await layered.GetPublishedAsync("layout", "demo"))!.VersionNumber);
-        Assert.Equal(1, (await new LayeredDefinitionStore(new Fixed(null), files).GetPublishedAsync("layout", "demo"))!.VersionNumber);
-    }
-
-    [Fact]
     public void Every_shipped_file_is_valid_and_the_four_layouts_are_there()
     {
         var shipped = Path.Combine(AppContext.BaseDirectory, "definitions");
@@ -133,10 +122,5 @@ public sealed class FileDefinitionStoreTests : IDisposable
         using var store = new FileDefinitionStore(Kinds(), new DefinitionLimits(), new DefinitionFileOptions { Folder = shipped, Watch = false });
         Assert.Empty(store.Problems);
         Assert.Equal(new[] { "dashboard-page", "detail-page", "form-page", "list-page" }, store.All.Where(d => d.Kind == "layout").Select(d => d.Key));
-    }
-
-    private sealed class Fixed(PublishedDefinition? d) : IDefinitionStore
-    {
-        public Task<PublishedDefinition?> GetPublishedAsync(string kind, string key, string appKey = "core", CancellationToken ct = default) => Task.FromResult(d);
     }
 }
