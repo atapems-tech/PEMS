@@ -86,6 +86,7 @@ public static class UiKeys
     public const string Col = "col";
     public const string CheckRow = "check-row";
     public const string FormGroup = "form-group";
+    public const string TreeSelect = "tree-select";
     public const string Pager = "pager";
     public const string ContentCard = "content-card";
     public const string PageShell = "page-shell";

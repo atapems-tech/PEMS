@@ -62,6 +62,40 @@ public sealed class PemsActionBarTagHelper(IPemsComponentRenderer renderer) : Ta
     }
 }
 
+/// <summary>
+/// A field that picks one node of a large tree one level at a time (SCRUM-513): <c>&lt;pems-tree-select name="FunctionalLocationId" value="@Model.FunctionalLocationId" selected-text="@Model.FunctionalLocationName"
+/// url="@Url.Action("TreeNodes", "FunctionalLocation")" placeholder="@Localizer["Select"]" search-label="@Localizer["Search"]" /&gt;</c>. The value is posted as a hidden input with the name.
+/// </summary>
+[HtmlTargetElement("pems-tree-select")]
+[PemsFacade(UiKeys.TreeSelect)]
+public sealed class PemsTreeSelectTagHelper(IPemsComponentRenderer renderer) : TagHelper
+{
+    [HtmlAttributeName("name")] public string Name { get; set; } = "";
+    [HtmlAttributeName("id")] public string? Id { get; set; }
+    [HtmlAttributeName("value")] public string? Value { get; set; }
+    [HtmlAttributeName("selected-text")] public string? SelectedText { get; set; }
+    [HtmlAttributeName("url")] public string Url { get; set; } = "";
+    [HtmlAttributeName("placeholder")] public string? Placeholder { get; set; }
+    [HtmlAttributeName("search-label")] public string? SearchLabel { get; set; }
+    [HtmlAttributeName("loading-text")] public string? LoadingText { get; set; }
+    [HtmlAttributeName("no-results-text")] public string? NoResultsText { get; set; }
+    [HtmlAttributeName("more-text")] public string? MoreText { get; set; }
+    [HtmlAttributeName("clear-text")] public string? ClearText { get; set; }
+    [HtmlAttributeName("disabled")] public bool Disabled { get; set; }
+    [HtmlAttributeName("required")] public bool Required { get; set; }
+    [HtmlAttributeName("css")] public string? Css { get; set; }
+
+    public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
+    {
+        var (pageClass, attrs) = ListRender.Page(output);
+        await ListRender.Replace<PemsTreeSelect>(renderer, output, new TreeSelectOptions
+        {
+            Name = Name, Id = Id, Value = Value, SelectedText = SelectedText, Url = Url, Placeholder = Placeholder, SearchLabel = SearchLabel, LoadingText = LoadingText,
+            NoResultsText = NoResultsText, MoreText = MoreText, ClearText = ClearText, Disabled = Disabled, Required = Required, Css = Css, PageClass = pageClass, Attributes = attrs
+        });
+    }
+}
+
 /// <summary>One label, control and validation message of a form: <c>&lt;pems-form-group css="mb-3"&gt;&lt;pems-label .../&gt;&lt;pems-input .../&gt;&lt;span asp-validation-for="X"&gt;&lt;/span&gt;&lt;/pems-form-group&gt;</c> writes <c>&lt;div class="mb-3"&gt;</c> around them (SCRUM-501).</summary>
 [HtmlTargetElement("pems-form-group")]
 [PemsFacade(UiKeys.FormGroup)]

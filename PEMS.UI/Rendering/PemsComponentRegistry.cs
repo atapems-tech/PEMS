@@ -101,6 +101,7 @@ public sealed class PemsComponentRegistry : IPemsComponentRegistry
         Register(UiKeys.Col, typeof(PemsCol));
         Register(UiKeys.CheckRow, typeof(PemsCheckRow));
         Register(UiKeys.FormGroup, typeof(PemsFormGroup));
+        Register(UiKeys.TreeSelect, typeof(PemsTreeSelect));
         Register(UiKeys.Pager, typeof(PemsPager));
         Register(UiKeys.ContentCard, typeof(PemsContentCard));
         Register(UiKeys.PageShell, typeof(PemsPageShell));

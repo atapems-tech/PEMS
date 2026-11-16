@@ -87,6 +87,7 @@ public static class ComponentSamples
         ["icon"] = """{"name":"bi-gear","css":"me-1"}""",
         ["row"] = """{"gap":"2"}""",
         ["col"] = """{"span":"12","md":"6"}""",
+        ["tree-select"] = """{"name":"FunctionalLocationId","url":"/FunctionalLocation/TreeNodes","value":"2","selectedText":"U100-CW - Cooling water","placeholder":"Select a location","searchLabel":"Search locations","loadingText":"Loading","noResultsText":"No results","moreText":"More","clearText":"Clear"}""",
         ["form-group"] = """{"css":"mb-3"}""",
         ["check-row"] = """{"switch":true,"css":"mb-0"}""",
         ["content-card"] = """{"css":"mb-3"}""",
