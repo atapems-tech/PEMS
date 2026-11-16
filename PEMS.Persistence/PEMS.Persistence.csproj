@@ -29,6 +29,11 @@
   </ItemGroup>
 
   <ItemGroup>
+    <!-- SCRUM-572: the definition files ship next to the application as definitions/{kind}/{appKey}/{key}.json (hot-reloaded, ADR-0014) -->
+    <Content Include="Definitions\Files\**\*.json" Link="definitions\%(RecursiveDir)%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="PreserveNewest" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\PEMS.AI\PEMS.AI.csproj" />
     <ProjectReference Include="..\PEMS.Application\PEMS.Application.csproj" />
     <ProjectReference Include="..\PEMS.Domain\PEMS.Domain.csproj" />
