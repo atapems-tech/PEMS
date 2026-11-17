@@ -131,6 +131,7 @@ builder.Services.AddScoped<PEMS.Web.Definitions.ActionExecutor>();
 builder.Services.AddSingleton<PEMS.Web.Definitions.IDataSourceProvider, PEMS.Web.Definitions.DepartmentsDataSource>();
 builder.Services.AddSingleton<PEMS.Web.Definitions.IActionHandler, PEMS.Web.Definitions.DepartmentCreateAction>();
 builder.Services.AddScoped<PEMS.Application.Definitions.IDefinitionService, PEMS.Persistence.Services.DefinitionService>();
+builder.Services.AddScoped<PEMS.Application.Definitions.IDefinitionShipper>(sp => (PEMS.Persistence.Services.DefinitionService)sp.GetRequiredService<PEMS.Application.Definitions.IDefinitionService>());
 
 // یک [Authorize] سراسری روی همه‌ی صفحات؛ فقط اکشن‌هایی که [AllowAnonymous] دارند
 // (مثل صفحه‌ی Login) بدون ورود قابل دسترسی هستند.
@@ -912,6 +913,9 @@ await PEMS.Persistence.Initialization.DatabaseInitializer.MigrateAsync(app.Servi
 using (var scope = app.Services.CreateScope())
 {
     await IdentitySeeder.SeedAsync(scope.ServiceProvider);
+
+    // SCRUM-579: the definitions that ship with the product go into the definition tables (System origin); the engines read the database only. Idempotent: install and upgrade are the same code.
+    await PEMS.Persistence.Seed.SystemDefinitionSeeder.SeedAsync(scope.ServiceProvider);
 
     // طبق «PEMS Phase 6B Closure Validation» بند ۳: مکانیزم Development-only برای بازنشانی
     // رمز کاربر admin به مقدار پیش‌فرض مستندشده - فقط وقتی IsDevelopment() و

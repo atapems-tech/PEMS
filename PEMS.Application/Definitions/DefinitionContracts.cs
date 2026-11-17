@@ -108,6 +108,21 @@ public sealed class DefinitionFileOptions
 
 public sealed record DefinitionFileProblem(string File, string Pointer, string Message);
 
+/// <summary>A definition that ships with the product (SCRUM-579): read from the system package, written into the definition tables as a System definition.</summary>
+public sealed record ShippedDefinition(string Kind, string Key, string AppKey, string TitleJson, string? DescriptionJson, string PayloadJson);
+
+/// <summary>What shipping did: new definitions, upgraded ones, ones already current, ones a customer changed (kept as they are), keys a customer created themselves (never touched), and what could not be shipped.</summary>
+public sealed record DefinitionShipResult(int Created, int Upgraded, int Unchanged, int KeptCustomized, int CustomerOwned, IReadOnlyList<string> Problems)
+{
+    public bool Ok => Problems.Count == 0;
+}
+
+/// <summary>Writes the shipped definitions into the tables (ADR-0010 system origin, ADR-0014 cutover); idempotent, so a fresh install and every upgrade run the same code.</summary>
+public interface IDefinitionShipper
+{
+    Task<DefinitionShipResult> ShipAsync(IReadOnlyList<ShippedDefinition> items, string actor, CancellationToken ct = default);
+}
+
 /// <summary>The definitions that ship as JSON files in the data layer (ADR-0014): read once, validated, reloaded when a file changes.</summary>
 public interface IDefinitionFiles
 {

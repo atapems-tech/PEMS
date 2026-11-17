@@ -20,7 +20,7 @@ public sealed class FileDefinitionStoreTests : IDisposable
             new DataSourceDefinitionKind([new DepartmentsDataSource(null!)]), new ActionDefinitionKind([new DepartmentCreateAction(null!)])];
     }
 
-    private FileDefinitionStore Store(bool failOnInvalid = true) => new(Kinds(), new DefinitionLimits(), new DefinitionFileOptions { Folder = _folder, FailOnInvalid = failOnInvalid, Watch = false });
+    private FileDefinitionStore Store(bool failOnInvalid = true) => new(Kinds(), new DefinitionLimits(), new DefinitionFileOptions { Folder = _folder, FailOnInvalid = failOnInvalid, Watch = false }, FilesOwnership.For(Kinds()));
 
     private void Write(string kind, string key, string json, string appKey = "core")
     {
@@ -107,7 +107,7 @@ public sealed class FileDefinitionStoreTests : IDisposable
     public async Task The_watcher_reloads_by_itself()
     {
         Write("layout", "demo", Layout());
-        using var store = new FileDefinitionStore(Kinds(), new DefinitionLimits(), new DefinitionFileOptions { Folder = _folder, Watch = true });
+        using var store = new FileDefinitionStore(Kinds(), new DefinitionLimits(), new DefinitionFileOptions { Folder = _folder, Watch = true }, FilesOwnership.For(Kinds()));
         var reloaded = new TaskCompletionSource();
         store.Reloaded += () => reloaded.TrySetResult();
         Write("layout", "demo", Layout(root: "{\"tag\":\"div\",\"children\":[{\"region\":\"content\"},{\"region\":\"extra\"}]}"));
@@ -118,9 +118,9 @@ public sealed class FileDefinitionStoreTests : IDisposable
     [Fact]
     public void Every_shipped_file_is_valid_and_the_four_layouts_are_there()
     {
-        var shipped = Path.Combine(AppContext.BaseDirectory, "definitions");
+        var shipped = Path.Combine(AppContext.BaseDirectory, "definitions-system");
         Assert.True(Directory.Exists(shipped), "the definitions folder was not copied next to the application: " + shipped);
-        using var store = new FileDefinitionStore(Kinds(), new DefinitionLimits(), new DefinitionFileOptions { Folder = shipped, Watch = false });
+        using var store = new FileDefinitionStore(Kinds(), new DefinitionLimits(), new DefinitionFileOptions { Folder = shipped, Watch = false }, FilesOwnership.For(Kinds()));
         Assert.Empty(store.Problems);
         Assert.Equal(new[] { "dashboard-page", "detail-page", "form-page", "list-page" }, store.All.Where(d => d.Kind == "layout").Select(d => d.Key));
         // SCRUM-437/578 pilot: the department create form, its data source and its action

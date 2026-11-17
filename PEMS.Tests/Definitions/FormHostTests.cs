@@ -73,7 +73,7 @@ public sealed class FormHostTests : IDisposable
         var registry = provider.GetRequiredService<IPemsComponentRegistry>();
         var catalog = provider.GetRequiredService<ComponentManifestCatalog>();
         var kinds = new IDefinitionKind[] { new FormDefinitionKind(), new PageDefinitionKind(registry, catalog), new LayoutDefinitionKind(), new DataSourceDefinitionKind([new Departments()]), new ActionDefinitionKind([_handler]) };
-        _files = new FileDefinitionStore(kinds, new DefinitionLimits(), new DefinitionFileOptions { Folder = Path.Combine(AppContext.BaseDirectory, "definitions"), Watch = false });
+        _files = new FileDefinitionStore(kinds, new DefinitionLimits(), new DefinitionFileOptions { Folder = Path.Combine(AppContext.BaseDirectory, "definitions-system"), Watch = false }, FilesOwnership.For(kinds));
         _renderer = provider.GetRequiredService<IPemsComponentRenderer>();
     }
 

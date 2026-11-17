@@ -30,8 +30,10 @@ public sealed class DefinitionOwnership
 
     public static readonly IReadOnlyDictionary<string, DefinitionOwner> Defaults = new Dictionary<string, DefinitionOwner>(StringComparer.Ordinal)
     {
-        ["layout"] = DefinitionOwner.Files, ["page"] = DefinitionOwner.Files, ["form"] = DefinitionOwner.Files, ["view"] = DefinitionOwner.Files,
-        ["dashboard"] = DefinitionOwner.Files, ["action"] = DefinitionOwner.Files, ["data-source"] = DefinitionOwner.Files,
+        // SCRUM-579 (the cutover): every UI kind is read from the definition tables; the product's own definitions are installed there by SystemDefinitionSeeder. A kind can still be set to files for development
+        // (Definitions:Ownership:{kind}=files, hot reload of a folder); one owner per kind, never both.
+        ["layout"] = DefinitionOwner.Database, ["page"] = DefinitionOwner.Database, ["form"] = DefinitionOwner.Database, ["view"] = DefinitionOwner.Database,
+        ["dashboard"] = DefinitionOwner.Database, ["action"] = DefinitionOwner.Database, ["data-source"] = DefinitionOwner.Database,
         ["option-set"] = DefinitionOwner.Database, ["menu"] = DefinitionOwner.Database,
         ["entity"] = DefinitionOwner.Generated, ["workflow-ref"] = DefinitionOwner.Native
     };
