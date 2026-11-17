@@ -1,0 +1,64 @@
+using PEMS.UI.Components;
+using PEMS.WorkflowPlatform.Dtos;
+using PEMS.WorkflowPlatform.Interfaces;
+
+namespace PEMS.Web.Models;
+
+// SCRUM-58 (#58): the workflow runtime (stages, instance, history) mapped to the registered components, so every module draws the same stage diagram and history from the engine's data
+// and not from its own status strings. Pure functions: no service call, nothing to mock.
+
+public static class WorkflowComponents
+{
+    private static readonly Dictionary<string, (string En, string Fa, string Tone)> Actions = new(StringComparer.OrdinalIgnoreCase)
+    {
+        ["Approve"] = ("Approved", "تأیید شد", "success"),
+        ["Reject"] = ("Rejected", "رد شد", "danger"),
+        ["Return"] = ("Returned", "برگشت داده شد", "warning"),
+        ["Skip"] = ("Skipped", "رد شد (رفع نیاز)", "neutral"),
+        ["Submit"] = ("Submitted", "ارسال شد", "info"),
+        ["Cancel"] = ("Cancelled", "لغو شد", "danger"),
+        ["Reopen"] = ("Reopened", "بازگشایی شد", "warning"),
+        ["Start"] = ("Started", "شروع شد", "info"),
+    };
+
+    private static string StageIcon(string stageType) => stageType switch
+    {
+        "Parallel" => "bi-diagram-2", "Approval" => "bi-check2-square", "Review" => "bi-eye", "Notification" => "bi-bell", _ => "bi-circle"
+    };
+
+    /// <summary>The stages of a running instance for <c>pems-stage-diagram</c>: Completed and Skipped are done, Current is current, Rejected and Cancelled are rejected, the rest pending.</summary>
+    public static IReadOnlyList<StageStep> Steps(WorkflowRuntimeViewModel view, bool fa)
+        => view.Stages.OrderBy(s => s.Order).Select(s => new StageStep(
+            fa && !string.IsNullOrWhiteSpace(s.NameFa) ? s.NameFa! : s.Name,
+            StageIcon(s.StageType),
+            s.Status switch
+            {
+                "Completed" or "Skipped" => StageState.Done,
+                "Current" => StageState.Current,
+                "Rejected" or "Cancelled" => StageState.Rejected,
+                _ => StageState.Pending
+            },
+            s.ResponsibleRole)).ToList();
+
+    private static (string Title, string Tone) Describe(string actionType, bool fa)
+        => Actions.TryGetValue(actionType, out var a) ? (fa ? a.Fa : a.En, a.Tone) : (actionType, "neutral");
+
+    private static string? Route(string? from, string? to)
+        => from is null && to is null ? null : from is null ? to : to is null ? from : from + " → " + to;
+
+    /// <summary>The history entries of the engine (<see cref="WorkflowHistoryDto"/>) for <c>pems-workflow-history</c>; <paramref name="actor"/> turns a user id into a name.</summary>
+    public static IReadOnlyList<WorkflowHistoryEntry> History(IEnumerable<WorkflowHistoryDto> history, bool fa, Func<int?, string?>? actor = null)
+        => history.Select(h =>
+        {
+            var (title, tone) = Describe(h.ActionType, fa);
+            return new WorkflowHistoryEntry { Title = title, Tone = tone, Detail = Route(h.FromStageName, h.ToStageName), Actor = actor?.Invoke(h.UserId) ?? h.Role, Comment = h.Comment, When = h.ActionDate };
+        }).ToList();
+
+    /// <summary>The same for the compact summary of the runtime view.</summary>
+    public static IReadOnlyList<WorkflowHistoryEntry> History(IEnumerable<WorkflowHistorySummaryItem> history, bool fa, Func<int?, string?>? actor = null)
+        => history.Select(h =>
+        {
+            var (title, tone) = Describe(h.ActionType, fa);
+            return new WorkflowHistoryEntry { Title = title, Tone = tone, Detail = Route(h.FromStageName, h.ToStageName), Actor = actor?.Invoke(h.UserId), Comment = h.Comment, When = h.ActionDate };
+        }).ToList();
+}

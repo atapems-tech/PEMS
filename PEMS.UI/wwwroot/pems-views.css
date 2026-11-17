@@ -42,3 +42,16 @@
 .pems-view__tl-date { margin: 0 0 .35rem; font-size: .95rem; font-weight: 600; }
 .pems-view__tl-list { display: flex; flex-direction: column; gap: .5rem; }
 .pems-view__more { margin-block-start: .75rem; text-align: center; }
+
+/* SCRUM-58: the workflow history timeline. */
+.pems-wfh { list-style: none; margin: 0; padding-inline: 1rem 0; border-inline-start: 2px solid var(--pems-surface-border); display: flex; flex-direction: column; gap: .85rem; }
+.pems-wfh--empty { border: 0; padding: 1rem; text-align: center; }
+.pems-wfh__item { position: relative; padding-inline-start: .25rem; }
+.pems-wfh__item::before { content: ""; position: absolute; inset-inline-start: calc(-1rem - 6px); inset-block-start: .35rem; inline-size: 10px; block-size: 10px; border-radius: 50%; background: var(--pems-text-muted); }
+.pems-wfh__item--success::before { background: var(--bs-success, var(--pems-primary)); }
+.pems-wfh__item--danger::before { background: var(--bs-danger, var(--pems-primary)); }
+.pems-wfh__item--warning::before { background: var(--bs-warning, var(--pems-primary)); }
+.pems-wfh__item--info::before { background: var(--pems-primary); }
+.pems-wfh__head { display: flex; flex-wrap: wrap; gap: .5rem; justify-content: space-between; }
+.pems-wfh__when, .pems-wfh__actor, .pems-wfh__detail { font-size: .85rem; color: var(--pems-text-muted); }
+.pems-wfh__comment { margin: .25rem 0 0; padding-inline-start: .6rem; border-inline-start: 3px solid var(--pems-surface-border); }
