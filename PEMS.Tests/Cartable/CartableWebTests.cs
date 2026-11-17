@@ -614,6 +614,7 @@ public class CartableWebTests
         // became a confirm target and most clicks asked "1"
         var script = Web("wwwroot", "js", "pems-cartable.js");
         Assert.Contains("querySelectorAll(\"button[data-confirm-trash]\")", script);
+        Assert.Contains("querySelectorAll(\"button[data-row-op='trash']\")", script);
         Assert.DoesNotContain("querySelectorAll(\"[data-confirm-trash]\")", script);
         var view = Web("Views", "Letter", "Index.cshtml");
         var shellTag = view[view.IndexOf("id=\"ctShell\"", StringComparison.Ordinal)..];

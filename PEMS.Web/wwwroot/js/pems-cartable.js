@@ -181,8 +181,10 @@
             var confirmTrash = shell.getAttribute("data-confirm-trash") === "1";
             // SCRUM-537: only the trash buttons; the shell carries data-confirm-trash as the setting flag and must never become a confirm target
             Array.prototype.forEach.call(doc.querySelectorAll("button[data-confirm-trash]"), function (b) { if (confirmTrash) b.setAttribute("data-pems-confirm", b.getAttribute("data-confirm-trash")); });
-            Array.prototype.forEach.call(form.querySelectorAll("[data-row-submit='trash']"), function (b) { if (confirmTrash) b.setAttribute("data-pems-confirm", api.t("confirmTrash")); });
-            Array.prototype.forEach.call(form.querySelectorAll("[data-row-submit='purge']"), function (b) { b.setAttribute("data-pems-confirm", api.t("confirmPurge")); });
+            // Row actions are standalone buttons, not form submit controls.  They use data-row-op,
+            // so arm them from the document rather than searching the bulk-action form.
+            Array.prototype.forEach.call(doc.querySelectorAll("button[data-row-op='trash']"), function (b) { if (confirmTrash) b.setAttribute("data-pems-confirm", api.t("confirmTrash")); });
+            Array.prototype.forEach.call(doc.querySelectorAll("button[data-row-op='purge']"), function (b) { b.setAttribute("data-pems-confirm", api.t("confirmPurge")); });
 
             doc.addEventListener("click", function (e) {
                 var tagBtn = e.target.closest ? e.target.closest("[data-bulk-tag]") : null;
