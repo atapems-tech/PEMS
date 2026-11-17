@@ -74,6 +74,7 @@ and theme and were reconstructed from the git history (initial import 2026-09-05
 
 ### Fixed
 - On Letters (`/Letter`) most clicks opened a confirm dialog with the text "1" and were swallowed. `pems-cartable.js` armed every `[data-confirm-trash]` element with `data-pems-confirm`, which also matched the page container `#ctShell` (its `data-confirm-trash="1"` is the "confirm before trash" setting). It now arms only `button[data-confirm-trash]`. Test: `CartableWebTests.TrashConfirm_ArmsOnlyTheTrashButtons_NeverTheShell`.
+- Follow-up 2026-11-17: row-level Trash and purge actions use `data-row-op`, not the bulk form's submit marker. The cartable now arms those real buttons from the document, so the trash confirmation remains available without making the page shell or Archive a confirmation target.
 
 ## 2026-11-07 - Script templates before the scripts (SCRUM-536)
 
