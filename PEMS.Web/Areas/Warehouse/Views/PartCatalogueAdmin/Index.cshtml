@@ -61,7 +61,7 @@
                     <pems-form asp-action="Import" method="post" enctype="multipart/form-data" class="border rounded p-2 h-100">
                         <input type="hidden" name="kind" value="@kind" />
                         <pems-flex justify="between"><strong>@Localizer["Pc_Imp_" + kind]</strong><span class="vs-pill vs-pill--neutral">@(ov.Counts.TryGetValue(kind, out var c) ? c : 0)</span></pems-flex>
-                        <pems-input scale="small" css="my-2" type="file" name="file" accept=".xlsx" required aria-label="@Localizer["Pc_Imp_" + kind]" />
+                        <pems-uploader scale="small" css="my-2" name="file" accept=".xlsx" required aria-label="@Localizer["Pc_Imp_" + kind]" />
                         <pems-button plain="true" type="submit" css="vs-btn vs-btn--sm vs-btn--primary"><pems-icon name="bi-upload" /> @Localizer["Pc_Adm_ImportBtn"]</pems-button>
                     </pems-form>
                 </pems-col>

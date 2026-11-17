@@ -61,3 +61,14 @@
 .pems-wfa--none { padding: .5rem; }
 .pems-wfa__label { display: flex; flex-direction: column; gap: .25rem; font-weight: 600; }
 .pems-wfa__buttons { display: flex; flex-wrap: wrap; gap: .5rem; }
+
+/* SCRUM-580: the uploader. Without scripting only the file input shows; the script hides it behind the drop box and keeps it as the posting control. */
+.pems-upload.is-enhanced > input[type="file"] { position: absolute; inline-size: 1px; block-size: 1px; opacity: 0; overflow: hidden; }
+.pems-upload.is-enhanced { position: relative; }
+.pems-upload__zone { padding: .6rem .75rem; text-align: center; color: var(--pems-text-muted); border: 2px dashed var(--pems-surface-border); border-radius: .5rem; background: var(--pems-surface); }
+.pems-upload__zone.is-over { border-color: var(--pems-primary); background: var(--pems-hover, rgba(127, 127, 127, .08)); }
+.pems-upload.has-error .pems-upload__zone { border-color: var(--bs-danger, var(--pems-primary)); }
+.pems-upload__list { list-style: none; margin: .35rem 0 0; padding: 0; display: flex; flex-direction: column; gap: .25rem; }
+.pems-upload__file { display: flex; align-items: center; gap: .5rem; }
+.pems-upload__name { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.pems-upload__message:empty { display: none; }
