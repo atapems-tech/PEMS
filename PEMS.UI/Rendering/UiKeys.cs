@@ -90,6 +90,7 @@ public static class UiKeys
     public const string DataGrid = "data-grid";
     public const string DataView = "data-view";
     public const string WorkflowHistory = "workflow-history";
+    public const string WorkflowActionBar = "workflow-action-bar";
     public const string Pager = "pager";
     public const string ContentCard = "content-card";
     public const string PageShell = "page-shell";

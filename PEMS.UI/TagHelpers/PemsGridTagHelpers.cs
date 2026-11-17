@@ -416,3 +416,18 @@ public sealed class PemsWorkflowHistoryTagHelper(IPemsComponentRenderer renderer
         await ListRender.Replace<PemsWorkflowHistory>(renderer, output, Options with { PageClass = pageClass, Attributes = attrs });
     }
 }
+
+/// <summary>The workflow action bar (SCRUM-58): <c>&lt;pems-workflow-action-bar options="@bar" /&gt;</c>, one comment box and a button per action the engine offers; build the actions with <c>WorkflowComponents.Actions</c>.</summary>
+[HtmlTargetElement("pems-workflow-action-bar")]
+[PemsFacade(UiKeys.WorkflowActionBar)]
+public sealed class PemsWorkflowActionBarTagHelper(IPemsComponentRenderer renderer) : TagHelper
+{
+    [HtmlAttributeName("options")] public WorkflowActionBarOptions? Options { get; set; }
+
+    public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
+    {
+        if (Options is null) throw new InvalidOperationException("pems-workflow-action-bar needs the options attribute.");
+        var (pageClass, attrs) = ListRender.Page(output);
+        await ListRender.Replace<PemsWorkflowActionBar>(renderer, output, Options with { PageClass = pageClass, Attributes = attrs });
+    }
+}

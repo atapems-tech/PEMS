@@ -38,6 +38,20 @@ public sealed class WorkflowComponentsTests
     }
 
     [Fact]
+    public void Actions_map_label_tone_denial_and_confirmation()
+    {
+        var items = WorkflowComponents.Actions(
+        [
+            new WorkflowAvailableAction { ActionType = "Approve", Label = "Approve", LabelFa = "تأیید", IsAllowed = true },
+            new WorkflowAvailableAction { ActionType = "Reject", Label = "Reject", IsAllowed = false, DeniedReason = "Not your stage" },
+            new WorkflowAvailableAction { ActionType = "Custom" }
+        ], fa: true, "Sure?");
+        Assert.Equal(("تأیید", "success", true, null), (items[0].Label, items[0].Tone, items[0].Allowed, items[0].Confirm));
+        Assert.Equal(("Reject", "danger", false, "Not your stage", "Sure?"), (items[1].Label, items[1].Tone, items[1].Allowed, items[1].DeniedReason, items[1].Confirm));
+        Assert.Equal(("Custom", "primary"), (items[2].Label, items[2].Tone));
+    }
+
+    [Fact]
     public void History_maps_actions_to_localized_titles_tones_and_routes()
     {
         var h = new[]

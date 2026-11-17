@@ -55,3 +55,9 @@
 .pems-wfh__head { display: flex; flex-wrap: wrap; gap: .5rem; justify-content: space-between; }
 .pems-wfh__when, .pems-wfh__actor, .pems-wfh__detail { font-size: .85rem; color: var(--pems-text-muted); }
 .pems-wfh__comment { margin: .25rem 0 0; padding-inline-start: .6rem; border-inline-start: 3px solid var(--pems-surface-border); }
+
+/* SCRUM-58: the workflow action bar. */
+.pems-wfa { display: flex; flex-direction: column; gap: .5rem; }
+.pems-wfa--none { padding: .5rem; }
+.pems-wfa__label { display: flex; flex-direction: column; gap: .25rem; font-weight: 600; }
+.pems-wfa__buttons { display: flex; flex-wrap: wrap; gap: .5rem; }
