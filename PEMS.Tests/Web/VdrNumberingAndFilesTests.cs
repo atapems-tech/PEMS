@@ -136,7 +136,7 @@ public class VdrNumberingAndFilesTests
         var view = Read("PEMS.Web", "Views", "VDR", "Details.cshtml");
         var pane = view[view.IndexOf("id=\"tab-files\"", StringComparison.Ordinal)..];
         Assert.Contains("<pems-form asp-action=\"UploadSubmissionFile\" method=\"post\" enctype=\"multipart/form-data\"", pane);
-        foreach (var field in new[] { "name=\"vdrItemId\"", "name=\"submissionId\"", "name=\"kind\"", "type=\"file\" name=\"file\" required" })
+        foreach (var field in new[] { "name=\"vdrItemId\"", "name=\"submissionId\"", "name=\"kind\"", "<pems-uploader id=\"vdrUploadFile\" name=\"file\" required" })
             Assert.Contains(field, pane);
         Assert.Contains("@foreach (var k in VdrFiles.Kinds)", pane);
     }

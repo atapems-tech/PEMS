@@ -65,6 +65,15 @@
                 "string",
                 "null"
               ]
+            },
+            "target": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "requireComment": {
+              "type": "boolean"
             }
           },
           "required": [
@@ -75,6 +84,20 @@
         }
       },
       "commentLabel": {
+        "oneOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "object",
+            "minProperties": 1,
+            "additionalProperties": {
+              "type": "string"
+            }
+          }
+        ]
+      },
+      "commentHint": {
         "oneOf": [
           {
             "type": "string"
@@ -155,7 +178,9 @@
         "actionType": "Reject",
         "label": "Reject",
         "tone": "danger",
-        "confirm": "Reject this item?"
+        "confirm": "Reject this item?",
+        "requireComment": true,
+        "target": "Review"
       },
       {
         "actionType": "Return",

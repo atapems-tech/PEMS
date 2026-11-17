@@ -41,7 +41,7 @@ public static class WorkflowComponents
             s.ResponsibleRole)).ToList();
 
     /// <summary>The actions the engine offers (<see cref="WorkflowAvailableAction"/>) for <c>pems-workflow-action-bar</c>: the label in the language of the request, the tone by action, reject and cancel ask first.</summary>
-    public static IReadOnlyList<WorkflowActionItem> Actions(IEnumerable<WorkflowAvailableAction> actions, bool fa, string confirmText)
+    public static IReadOnlyList<WorkflowActionItem> Actions(IEnumerable<WorkflowAvailableAction> actions, bool fa, string confirmText, Func<string?, string?>? stage = null)
         => actions.Select(a => new WorkflowActionItem
         {
             ActionType = a.ActionType,
@@ -49,7 +49,9 @@ public static class WorkflowComponents
             Tone = a.ActionType.ToLowerInvariant() switch { "approve" or "submit" or "start" => "success", "reject" or "cancel" => "danger", "return" or "reopen" => "warning", _ => "primary" },
             Allowed = a.IsAllowed,
             DeniedReason = a.DeniedReason,
-            Confirm = a.ActionType.Equals("Reject", StringComparison.OrdinalIgnoreCase) || a.ActionType.Equals("Cancel", StringComparison.OrdinalIgnoreCase) ? confirmText : null
+            Confirm = a.ActionType.Equals("Reject", StringComparison.OrdinalIgnoreCase) || a.ActionType.Equals("Cancel", StringComparison.OrdinalIgnoreCase) ? confirmText : null,
+            Target = string.IsNullOrWhiteSpace(a.ToStageName) ? null : (stage?.Invoke(a.ToStageName) ?? a.ToStageName),
+            RequireComment = PEMS.Application.Common.WorkflowActionRules.ActionRequiresReason(a.ActionType)
         }).ToList();
 
     private static (string Title, string Tone) Describe(string actionType, bool fa)
@@ -59,11 +61,11 @@ public static class WorkflowComponents
         => from is null && to is null ? null : from is null ? to : to is null ? from : from + " → " + to;
 
     /// <summary>The history entries of the engine (<see cref="WorkflowHistoryDto"/>) for <c>pems-workflow-history</c>; <paramref name="actor"/> turns a user id into a name.</summary>
-    public static IReadOnlyList<WorkflowHistoryEntry> History(IEnumerable<WorkflowHistoryDto> history, bool fa, Func<int?, string?>? actor = null)
+    public static IReadOnlyList<WorkflowHistoryEntry> History(IEnumerable<WorkflowHistoryDto> history, bool fa, Func<int?, string?>? actor = null, Func<string?, string?>? stage = null)
         => history.Select(h =>
         {
             var (title, tone) = Describe(h.ActionType, fa);
-            return new WorkflowHistoryEntry { Title = title, Tone = tone, Detail = Route(h.FromStageName, h.ToStageName), Actor = actor?.Invoke(h.UserId) ?? h.Role, Comment = h.Comment, When = h.ActionDate };
+            return new WorkflowHistoryEntry { Title = string.IsNullOrWhiteSpace(h.Decision) || h.Decision.Equals(h.ActionType, StringComparison.OrdinalIgnoreCase) ? title : title + " (" + h.Decision + ")", Tone = tone, Detail = Route(stage is null ? h.FromStageName : stage(h.FromStageName), stage is null ? h.ToStageName : stage(h.ToStageName)), Actor = actor?.Invoke(h.UserId) ?? h.Role, Comment = h.Comment, When = h.ActionDate };
         }).ToList();
 
     /// <summary>The same for the compact summary of the runtime view.</summary>

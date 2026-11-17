@@ -10,13 +10,17 @@ else
     <form @attributes="Options.Attributes" action="@Options.Action" method="post" class="@Join("pems-wfa", Options.Css, Options.PageClass)">
         @if (Options.Antiforgery is not null) { <input type="hidden" name="@Options.Antiforgery.Name" value="@Options.Antiforgery.Token" /> }
         @foreach (var f in Options.Fields) { <input type="hidden" name="@f.Key" value="@f.Value" /> }
-        <label class="pems-wfa__label">@Locale.Text(Options.CommentLabel)<textarea name="comment" class="form-control" rows="2" maxlength="2000"></textarea></label>
+        <label class="pems-wfa__label">@Locale.Text(Options.CommentLabel)<textarea name="comment" class="form-control" rows="2" maxlength="2000" placeholder="@(Options.CommentHint is null ? null : Locale.Text(Options.CommentHint))"></textarea></label>
         <div class="pems-wfa__buttons" role="group">
             @foreach (var a in Options.Actions)
             {
-                <button type="submit" name="actionType" value="@a.ActionType" class="@("btn btn-" + (a.Tone == "secondary" ? "outline-secondary" : a.Tone))" disabled="@(!a.Allowed)" title="@(a.Allowed ? null : a.DeniedReason)" data-confirm="@(a.Confirm)" onclick="@(a.Confirm is null ? null : "return confirm(this.dataset.confirm)")">@a.Label</button>
+                <button type="submit" name="actionType" value="@a.ActionType" class="@("btn btn-" + (a.Tone == "secondary" ? "outline-secondary" : a.Tone))" disabled="@(!a.Allowed)" title="@(a.Allowed ? null : a.DeniedReason)" data-pems-require="@(a.RequireComment ? "comment" : null)" data-pems-confirm="@a.Confirm">@a.Label@if (!string.IsNullOrWhiteSpace(a.Target)) { <span class="opacity-75"> → @a.Target</span> }</button>
             }
         </div>
+        @foreach (var d in Options.Actions.Where(x => !x.Allowed && !string.IsNullOrWhiteSpace(x.DeniedReason)))
+        {
+            <div class="pems-wfa__denied small text-muted">@d.Label: @d.DeniedReason</div>
+        }
     </form>
 }
 @code {

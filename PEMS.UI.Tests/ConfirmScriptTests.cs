@@ -78,6 +78,8 @@ public sealed class ConfirmScriptTests
     public void The_lifecycle_buttons_declare_their_required_comment_and_question_without_inline_script(string folder)
     {
         var html = Read("PEMS.Web", "Views", folder, "Details.cshtml");
+        // SCRUM-58: the Work Request page uses <pems-workflow-action-bar>, which writes the same two attributes (the component's own test checks them)
+        if (folder == "WorkRequest") { Assert.Contains("<pems-workflow-action-bar", html); html += Read("PEMS.UI", "Components", "PemsWorkflowActionBar.razor"); }
         Assert.Contains("data-pems-require=", html);
         Assert.Contains("data-pems-confirm=", html);
         Assert.DoesNotContain("this.form.comment", html);
