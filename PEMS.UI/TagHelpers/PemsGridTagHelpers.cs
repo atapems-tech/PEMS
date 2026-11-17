@@ -401,3 +401,18 @@ public sealed class PemsDataTableTagHelper(IPemsComponentRenderer renderer) : Ta
         });
     }
 }
+
+/// <summary>The history of a workflow instance as a timeline (SCRUM-58): <c>&lt;pems-workflow-history options="@history" /&gt;</c>, newest first; the entries come localized from the page or from <c>WorkflowComponents</c>.</summary>
+[HtmlTargetElement("pems-workflow-history")]
+[PemsFacade(UiKeys.WorkflowHistory)]
+public sealed class PemsWorkflowHistoryTagHelper(IPemsComponentRenderer renderer) : TagHelper
+{
+    [HtmlAttributeName("options")] public WorkflowHistoryOptions? Options { get; set; }
+
+    public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
+    {
+        if (Options is null) throw new InvalidOperationException("pems-workflow-history needs the options attribute.");
+        var (pageClass, attrs) = ListRender.Page(output);
+        await ListRender.Replace<PemsWorkflowHistory>(renderer, output, Options with { PageClass = pageClass, Attributes = attrs });
+    }
+}
