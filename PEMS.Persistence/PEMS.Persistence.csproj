@@ -30,7 +30,7 @@
 
   <ItemGroup>
     <!-- SCRUM-572: the definition files ship next to the application as definitions/{kind}/{appKey}/{key}.json (hot-reloaded, ADR-0014) -->
-    <Content Include="Definitions\Files\**\*.json" Link="definitions\%(RecursiveDir)%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="PreserveNewest" />
+    <Content Include="Definitions\System\**\*.json" Link="definitions-system\%(RecursiveDir)%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="PreserveNewest" />
   </ItemGroup>
 
   <ItemGroup>

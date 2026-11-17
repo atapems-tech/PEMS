@@ -21,8 +21,7 @@ public sealed class DefinitionPipelineTests
     public void The_owner_list_of_the_owner_is_the_default_and_unknown_kinds_have_no_owner()
     {
         var o = new DefinitionOwnership();
-        foreach (var kind in new[] { "layout", "page", "form", "view", "dashboard", "action", "data-source" }) Assert.Equal(DefinitionOwner.Files, o.OwnerOf(kind));
-        Assert.Equal(DefinitionOwner.Database, o.OwnerOf("option-set"));
+        foreach (var kind in new[] { "layout", "page", "form", "view", "dashboard", "action", "data-source", "option-set" }) Assert.Equal(DefinitionOwner.Database, o.OwnerOf(kind));   // SCRUM-579: after the cutover
         Assert.Equal(DefinitionOwner.Database, o.OwnerOf("menu"));
         Assert.Equal(DefinitionOwner.Generated, o.OwnerOf("entity"));
         Assert.Equal(DefinitionOwner.Native, o.OwnerOf("workflow-ref"));
@@ -32,8 +31,8 @@ public sealed class DefinitionPipelineTests
     [Fact]
     public void The_cutover_of_one_kind_is_one_setting_and_a_bad_value_stops_the_start()
     {
-        var o = new DefinitionOwnership(new Dictionary<string, string> { ["form"] = "database" });
-        Assert.Equal((DefinitionOwner.Database, DefinitionOwner.Files), (o.OwnerOf("form"), o.OwnerOf("page")));
+        var o = new DefinitionOwnership(new Dictionary<string, string> { ["form"] = "files" });   // SCRUM-579: the database owns the UI kinds by default; one kind can be set to files for development
+        Assert.Equal((DefinitionOwner.Files, DefinitionOwner.Database), (o.OwnerOf("form"), o.OwnerOf("page")));
         Assert.Throws<InvalidOperationException>(() => new DefinitionOwnership(new Dictionary<string, string> { ["form"] = "both" }));
     }
 
@@ -42,7 +41,7 @@ public sealed class DefinitionPipelineTests
     {
         var files = new Stub("files", Def("page", "x"));
         var db = new Stub("db", Def("option-set", "y"));
-        var routed = new RoutedDefinitionStore(new DefinitionOwnership(), new Dictionary<DefinitionOwner, IDefinitionStore> { [DefinitionOwner.Files] = files, [DefinitionOwner.Database] = db });
+        var routed = new RoutedDefinitionStore(new DefinitionOwnership(new Dictionary<string, string> { ["page"] = "files" }), new Dictionary<DefinitionOwner, IDefinitionStore> { [DefinitionOwner.Files] = files, [DefinitionOwner.Database] = db });   // page set to files for development
 
         Assert.NotNull(await routed.GetPublishedAsync("page", "x"));
         Assert.NotNull(await routed.GetPublishedAsync("option-set", "y"));

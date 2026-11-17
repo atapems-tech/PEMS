@@ -18,3 +18,8 @@ Original order (each step is an issue; ADR-0014):
 | 10 | SCRUM-574 to 577 | optimisations and diagnostics (hydrated-result cache, menu from authorizations, compiled plans, timings) | 5 |
 
 Rules: new things only as definitions; no overlap between files and database; every text TranslatableText fa and en; browser QA stays as checklist lines on each issue.
+
+
+## Status 2026-11-18
+
+Done and merged: data grid, view types, workflow components (SCRUM-54 slice, 55, 58), uploader (SCRUM-580), form engine and data sources/actions slice (SCRUM-578, 437), the cutover (SCRUM-579, 417): the UI kinds are database-owned, the product's own definitions are the `Definitions/System` package installed by `SystemDefinitionSeeder` at every start (fresh install and upgrade are the same idempotent code; a customer's change is never overwritten). Still open: SCRUM-437 slices (workflow-action handler, entity-list providers, data-grid on a data source), SCRUM-339/342/106 (page templates, W1 pilot pages as JSON), SCRUM-52 (template library: needs an entity-backed action handler and the dynamic entities of #45/#67, so it is not started).

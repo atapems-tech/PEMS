@@ -33,7 +33,7 @@ public sealed class DefinitionStore : IDefinitionStore
 
         var row = await _db.Definitions.AsNoTracking()
             .Where(d => d.AppKey == appKey && d.Kind == kind && d.Key == key && d.PublishedVersionId != null)
-            .Select(d => new PublishedDefinition(d.Kind, d.Key, d.AppKey, d.PublishedVersion!.VersionNumber, d.PublishedVersion.PayloadJson, d.PublishedVersion.ContentHash))
+            .Select(d => new PublishedDefinition(d.Kind, d.Key, d.AppKey, d.PublishedVersion!.VersionNumber, d.PublishedVersion.PayloadJson, d.PublishedVersion.ContentHash, d.TitleJson))
             .FirstOrDefaultAsync(ct);
         _cache.Set(cacheKey, new Entry(stamp, row), TimeSpan.FromHours(1));
         return row;

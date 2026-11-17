@@ -14,7 +14,7 @@ namespace PEMS.Persistence.Services;
 /// The write path of the definition store (SCRUM-434, ADR-0010/0011): draft → validated → published → retired, rollback by republishing,
 /// optimistic concurrency by revision numbers, kind validation, references, per-kind cache stamps. The REST API is its only caller.
 /// </summary>
-public sealed class DefinitionService : IDefinitionService
+public sealed class DefinitionService : IDefinitionService, IDefinitionShipper
 {
     private static readonly Regex KeyPattern = new(@"^[a-z0-9]+([._-][a-z0-9]+)*$", RegexOptions.Compiled);
     private static readonly Regex AppKeyPattern = new(@"^[a-z0-9]+(-[a-z0-9]+)*$", RegexOptions.Compiled);
@@ -308,6 +308,82 @@ public sealed class DefinitionService : IDefinitionService
         }
         if (!await SaveAsync(ct)) return DefinitionOutcome<DefinitionImportResult>.Stale();
         return DefinitionOutcome<DefinitionImportResult>.Ok(new DefinitionImportResult(created, updated, pending.Select(d => d.DefinitionId).ToList()));
+    }
+
+    // ------------------------------------------------------------------ shipping (SCRUM-579)
+
+    /// <summary>
+    /// Writes the definitions that ship with the product as System definitions. A new key is created and published (version 1, also the shipped version); a key whose shipped content changed is upgraded to a new
+    /// published version unless a customer changed it (then the customer's version stays published and the new shipped version is kept as a retired version they can compare with or roll back to); a key a
+    /// customer created themselves is never touched. Running it twice changes nothing.
+    /// </summary>
+    public async Task<DefinitionShipResult> ShipAsync(IReadOnlyList<ShippedDefinition> items, string actor, CancellationToken ct = default)
+    {
+        int created = 0, upgraded = 0, unchanged = 0, kept = 0, customerOwned = 0;
+        var problems = new List<string>();
+        var touchedKinds = new HashSet<string>(StringComparer.Ordinal);
+        foreach (var item in items)
+        {
+            var at = $"{item.Kind}/{item.AppKey}/{item.Key}";
+            if (!_kinds.ContainsKey(item.Kind)) { problems.Add($"{at}: '{item.Kind}' is not a registered definition kind."); continue; }
+            if (!KeyPattern.IsMatch(item.Key) || !AppKeyPattern.IsMatch(item.AppKey)) { problems.Add($"{at}: the key is not valid."); continue; }
+            if (!IsJsonValue(item.TitleJson)) { problems.Add($"{at}: the title must be a string or a language map."); continue; }
+            var canonical = Canonicalize(item.PayloadJson, out var perr);
+            if (perr != null) { problems.Add($"{at}: {perr.Message}"); continue; }
+            var invalid = Check(item.Kind, canonical!);
+            if (invalid.Count > 0) { problems.Add($"{at}: {invalid[0].Pointer} {invalid[0].Message}"); continue; }
+            var hash = Hash(canonical!);
+            var now = DateTime.UtcNow;
+
+            var def = await _db.Definitions.Include(d => d.Versions).FirstOrDefaultAsync(d => d.AppKey == item.AppKey && d.Kind == item.Kind && d.Key == item.Key, ct);
+            if (def == null)
+            {
+                def = new Definition { Kind = item.Kind, Key = item.Key, AppKey = item.AppKey, Origin = DefinitionOrigin.System, TitleJson = item.TitleJson, DescriptionJson = item.DescriptionJson, CreatedAtUtc = now, CreatedBy = actor };
+                var first = NewVersion(1, canonical!, "Shipped with the product", now, actor, null);
+                def.Versions.Add(first);
+                _db.Definitions.Add(def);
+                await _db.SaveChangesAsync(ct);                       // the version needs its id before the definition can point at it
+                await ReplaceReferencesAsync(first, item.Kind, ct);
+                MarkValidated(first, actor);
+                await PublishVersionAsync(def, first, actor, ct, envelopeAlreadyTouched: true);
+                def.ShippedVersionId = first.DefinitionVersionId;
+                await _db.SaveChangesAsync(ct);
+                touchedKinds.Add(item.Kind);
+                created++;
+                continue;
+            }
+            if (def.Origin != DefinitionOrigin.System) { customerOwned++; continue; }
+
+            var shipped = def.Versions.FirstOrDefault(v => v.DefinitionVersionId == def.ShippedVersionId);
+            if (shipped?.ContentHash == hash) { unchanged++; continue; }
+
+            var next = NewVersion(def.Versions.Max(v => v.VersionNumber) + 1, canonical!, "Shipped with the product (upgrade)", now, actor, shipped?.DefinitionVersionId);
+            next.Definition = def;
+            _db.DefinitionVersions.Add(next);
+            await _db.SaveChangesAsync(ct);
+            await ReplaceReferencesAsync(next, item.Kind, ct);
+            MarkValidated(next, actor);
+            if (def.IsCustomized)
+            {
+                next.Status = DefinitionStatus.Retired;                // the customer's published version stays; the new shipped one is kept beside it
+                next.RetiredAtUtc = now;
+                def.ShippedVersionId = next.DefinitionVersionId;
+                Touch(def, def.Revision);
+                await _db.SaveChangesAsync(ct);
+                kept++;
+                continue;
+            }
+            def.TitleJson = item.TitleJson;
+            def.DescriptionJson = item.DescriptionJson;
+            await PublishVersionAsync(def, next, actor, ct);
+            def.ShippedVersionId = next.DefinitionVersionId;
+            def.IsCustomized = false;
+            await _db.SaveChangesAsync(ct);
+            touchedKinds.Add(item.Kind);
+            upgraded++;
+        }
+        foreach (var kind in touchedKinds) _store.Evict(kind);
+        return new DefinitionShipResult(created, upgraded, unchanged, kept, customerOwned, problems);
     }
 
     // ------------------------------------------------------------------ helpers
