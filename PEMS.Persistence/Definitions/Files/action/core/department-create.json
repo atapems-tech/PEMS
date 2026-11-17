@@ -1,0 +1,20 @@
+{
+  "kind": "action",
+  "key": "department-create",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "fa": "ایجاد دپارتمان",
+    "en": "Create department"
+  },
+  "description": {
+    "fa": "دپارتمان جدید را ثبت می‌کند",
+    "en": "Creates the department"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "department.create",
+    "success": { "fa": "دپارتمان ایجاد شد.", "en": "Department created." },
+    "redirect": "/Department"
+  }
+}

@@ -460,3 +460,19 @@ public sealed class PemsUploaderTagHelper(IPemsComponentRenderer renderer, IServ
         await ListRender.Replace<PemsUploader>(renderer, output, new UploaderOptions { Name = Name, Id = Id, Accept = Accept, Multiple = Multiple, Required = Required, Scale = Scale, MaxMb = max, Texts = Texts, Css = Css, PageClass = pageClass, Attributes = attrs });
     }
 }
+
+/// <summary>A button bound to a stored action definition (SCRUM-437): <c>&lt;pems-action-button options="@button" /&gt;</c> posts the values to <c>/a/{key}</c>; the antiforgery token is taken from the request.</summary>
+[HtmlTargetElement("pems-action-button")]
+[PemsFacade(UiKeys.ActionButton)]
+public sealed class PemsActionButtonTagHelper(IPemsComponentRenderer renderer) : TagHelper
+{
+    [HtmlAttributeName("options")] public ActionButtonOptions? Options { get; set; }
+    [ViewContext, HtmlAttributeNotBound] public ViewContext? ViewContext { get; set; }
+
+    public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
+    {
+        if (Options is null) throw new InvalidOperationException("pems-action-button needs the options attribute.");
+        var (pageClass, attrs) = ListRender.Page(output);
+        await ListRender.Replace<PemsActionButton>(renderer, output, Options with { Antiforgery = Options.Antiforgery ?? PemsRelated.Antiforgery(ViewContext), PageClass = pageClass, Attributes = attrs });
+    }
+}

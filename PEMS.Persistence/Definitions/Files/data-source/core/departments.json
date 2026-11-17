@@ -1,0 +1,18 @@
+{
+  "kind": "data-source",
+  "key": "departments",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "fa": "دپارتمان‌ها",
+    "en": "Departments"
+  },
+  "description": {
+    "fa": "فهرست دپارتمان‌ها برای انتخاب",
+    "en": "The departments as choices"
+  },
+  "payload": {
+    "kind": "provider",
+    "provider": "departments"
+  }
+}

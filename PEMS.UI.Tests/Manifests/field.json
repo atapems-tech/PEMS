@@ -131,6 +131,228 @@
                 }
               }
             ]
+          },
+          "visible": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "requiredWhen": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "readOnlyWhen": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "minLength": {
+            "type": [
+              "string",
+              "integer",
+              "null"
+            ],
+            "pattern": "^-?(?:0|[1-9]\\d*)$"
+          },
+          "min": {
+            "type": [
+              "string",
+              "number",
+              "null"
+            ],
+            "pattern": "^-?(?:0|[1-9]\\d*)(?:\\.\\d+)?$"
+          },
+          "max": {
+            "type": [
+              "string",
+              "number",
+              "null"
+            ],
+            "pattern": "^-?(?:0|[1-9]\\d*)(?:\\.\\d+)?$"
+          },
+          "pattern": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "rules": {
+            "type": [
+              "array",
+              "null"
+            ],
+            "items": {
+              "type": "object",
+              "properties": {
+                "expression": {
+                  "type": "string"
+                },
+                "message": {
+                  "oneOf": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "type": "object",
+                      "minProperties": 1,
+                      "additionalProperties": {
+                        "type": "string"
+                      }
+                    }
+                  ]
+                },
+                "field": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                }
+              },
+              "required": [
+                "expression",
+                "message"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "messages": {
+            "type": [
+              "object",
+              "null"
+            ],
+            "properties": {
+              "required": {
+                "oneOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "object",
+                    "minProperties": 1,
+                    "additionalProperties": {
+                      "type": "string"
+                    }
+                  }
+                ]
+              },
+              "maxLength": {
+                "oneOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "object",
+                    "minProperties": 1,
+                    "additionalProperties": {
+                      "type": "string"
+                    }
+                  }
+                ]
+              },
+              "minLength": {
+                "oneOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "object",
+                    "minProperties": 1,
+                    "additionalProperties": {
+                      "type": "string"
+                    }
+                  }
+                ]
+              },
+              "pattern": {
+                "oneOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "object",
+                    "minProperties": 1,
+                    "additionalProperties": {
+                      "type": "string"
+                    }
+                  }
+                ]
+              },
+              "min": {
+                "oneOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "object",
+                    "minProperties": 1,
+                    "additionalProperties": {
+                      "type": "string"
+                    }
+                  }
+                ]
+              },
+              "max": {
+                "oneOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "object",
+                    "minProperties": 1,
+                    "additionalProperties": {
+                      "type": "string"
+                    }
+                  }
+                ]
+              },
+              "invalid": {
+                "oneOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "object",
+                    "minProperties": 1,
+                    "additionalProperties": {
+                      "type": "string"
+                    }
+                  }
+                ]
+              },
+              "notAllowed": {
+                "oneOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "object",
+                    "minProperties": 1,
+                    "additionalProperties": {
+                      "type": "string"
+                    }
+                  }
+                ]
+              }
+            },
+            "additionalProperties": false
+          },
+          "optionsFrom": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "span": {
+            "type": [
+              "string",
+              "integer",
+              "null"
+            ],
+            "pattern": "^-?(?:0|[1-9]\\d*)$"
           }
         },
         "required": [
