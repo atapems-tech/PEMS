@@ -489,7 +489,7 @@
             <input type="hidden" name="id" value="@d.Id" />
             <pems-modal-header level="5" title-id="pcAttachModalLabel" close="true" close-label="@Localizer["Pc_Btn_Close"]">@Localizer["Pc_Btn_Upload"]</pems-modal-header>
             <pems-modal-body>
-                <pems-form-group css="mb-2"><pems-label for="pc_attFile">@L("File")</pems-label><pems-input id="pc_attFile" type="file" name="file" required /></pems-form-group>
+                <pems-form-group css="mb-2"><pems-label for="pc_attFile">@L("File")</pems-label><pems-uploader id="pc_attFile" name="file" required /></pems-form-group>
                 <pems-form-group css="mb-2">
                     <pems-label for="pc_attKind">@L("AttachmentKind")</pems-label>
                     <pems-select id="pc_attKind" name="kind">

@@ -252,7 +252,7 @@
                             <pems-form asp-action="UploadToFtp" method="post" enctype="multipart/form-data"><pems-flex gap="1">
                                 <input type="hidden" name="vdrItemId" value="@Model.VDRItemId" />
                                 <input type="hidden" name="submissionId" value="@s.VDRSubmissionId" />
-                                <pems-input class="pems-maxw-120" scale="small" type="file" name="file" required />
+                                <pems-uploader class="pems-maxw-120" scale="small" name="file" required />
                                 <pems-button tone="primary" size="small" outline="true" title="@Localizer["Vd_UploadFtp"]"><pems-icon name="bi-cloud-upload" /></pems-button>
                             </pems-flex></pems-form>
                         }
@@ -271,7 +271,7 @@
                             <pems-form asp-action="UploadCommentSheet" method="post" enctype="multipart/form-data"><pems-flex gap="1">
                                 <input type="hidden" name="vdrItemId" value="@Model.VDRItemId" />
                                 <input type="hidden" name="submissionId" value="@s.VDRSubmissionId" />
-                                <pems-input class="pems-maxw-120" scale="small" type="file" name="file" required />
+                                <pems-uploader class="pems-maxw-120" scale="small" name="file" required />
                                 <pems-button tone="primary" size="small" outline="true"><pems-icon name="bi-upload" /></pems-button>
                             </pems-flex></pems-form>
                         }
@@ -286,7 +286,7 @@
                             <pems-form asp-action="UploadReplySheet" method="post" enctype="multipart/form-data"><pems-flex gap="1">
                                 <input type="hidden" name="vdrItemId" value="@Model.VDRItemId" />
                                 <input type="hidden" name="submissionId" value="@s.VDRSubmissionId" />
-                                <pems-input class="pems-maxw-120" scale="small" type="file" name="file" required />
+                                <pems-uploader class="pems-maxw-120" scale="small" name="file" required />
                                 <pems-button tone="primary" size="small" outline="true"><pems-icon name="bi-upload" /></pems-button>
                             </pems-flex></pems-form>
                         }
@@ -331,7 +331,7 @@
                     </pems-col>
                     <pems-col md="4">
                         <pems-label for="vdrUploadFile">@Localizer["Vd_FileName"]</pems-label>
-                        <pems-input id="vdrUploadFile" type="file" name="file" required />
+                        <pems-uploader id="vdrUploadFile" name="file" required />
                     </pems-col>
                     <pems-col md="2">
                         <pems-button tone="primary" type="submit" css="w-100"><pems-icon name="bi-upload" /> @Localizer["Vd_Upload"]</pems-button>
@@ -612,7 +612,7 @@
                         <pems-col span="12"><pems-label css="small">@Localizer["Vd_Comment"]</pems-label><pems-textarea scale="small" name="commentText" rows="3" required></pems-textarea></pems-col>
                         <pems-col md="6"><pems-label css="small">@Localizer["Vd_RequiredAction"]</pems-label><pems-input scale="small" name="requiredAction" placeholder="e.g. Revise Drawing" /></pems-col>
                         <pems-col md="6"><pems-label css="small">@Localizer["Vd_DueDate"]</pems-label><pems-date name="dueDate" scale="small" /></pems-col>
-                        <pems-col span="12"><pems-label css="small">@Localizer["Vd_Attachment"] <span class="text-muted">@Localizer["Vd_Optional"]</span></pems-label><pems-input scale="small" type="file" name="attachment" /></pems-col>
+                        <pems-col span="12"><pems-label css="small">@Localizer["Vd_Attachment"] <span class="text-muted">@Localizer["Vd_Optional"]</span></pems-label><pems-uploader scale="small" name="attachment" /></pems-col>
                     </pems-row>
                 </pems-modal-body>
                 <pems-modal-footer>
@@ -639,7 +639,7 @@
                         </pems-form-group>
                         <pems-form-group css="mb-2">
                             <pems-label css="small">@Localizer["Vd_OrAttachReply"]</pems-label>
-                            <pems-input scale="small" type="file" name="replyAttachment" />
+                            <pems-uploader scale="small" name="replyAttachment" />
                         </pems-form-group>
                     </pems-modal-body>
                     <pems-modal-footer>

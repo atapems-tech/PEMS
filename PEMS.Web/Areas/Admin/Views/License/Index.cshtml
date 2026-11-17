@@ -75,7 +75,7 @@
         <pems-text class="text-muted small">@Localizer["Lic_UploadHelp"]</pems-text>
         <pems-form asp-action="Upload" method="post" enctype="multipart/form-data"><pems-flex align="center" gap="3" wrap="true">
             @Html.AntiForgeryToken()
-            <pems-input css="w-auto" type="file" name="file" accept=".pemslic,.zip" required aria-label="@Localizer["Lic_UploadTitle"]" />
+            <pems-uploader css="w-auto" name="file" accept=".pemslic,.zip" required aria-label="@Localizer["Lic_UploadTitle"]" />
             <pems-button tone="primary" type="submit"><pems-icon name="bi-upload" css="me-1" /> @Localizer["Lic_Upload"]</pems-button>
         </pems-flex></pems-form>
     </pems-content-card>

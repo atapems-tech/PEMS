@@ -431,3 +431,29 @@ public sealed class PemsWorkflowActionBarTagHelper(IPemsComponentRenderer render
         await ListRender.Replace<PemsWorkflowActionBar>(renderer, output, Options with { PageClass = pageClass, Attributes = attrs });
     }
 }
+
+/// <summary>
+/// The uploader (SCRUM-580): <c>&lt;pems-uploader name="file" accept=".xlsx" required /&gt;</c> writes a real file input that posts with the form, plus (with scripting) drag and drop, the list of chosen files and the
+/// size and type check. The size limit is the host's upload setting unless <c>max-mb</c> is given; every other attribute (<c>aria-label</c>, <c>form</c>) is kept on the input.
+/// </summary>
+[HtmlTargetElement("pems-uploader")]
+[PemsFacade(UiKeys.Uploader)]
+public sealed class PemsUploaderTagHelper(IPemsComponentRenderer renderer, IServiceProvider services) : TagHelper
+{
+    [HtmlAttributeName("name")] public string Name { get; set; } = "file";
+    [HtmlAttributeName("id")] public string? Id { get; set; }
+    [HtmlAttributeName("accept")] public string? Accept { get; set; }
+    [HtmlAttributeName("multiple")] public bool Multiple { get; set; }
+    [HtmlAttributeName("required")] public bool Required { get; set; }
+    [HtmlAttributeName("scale")] public string? Scale { get; set; }
+    [HtmlAttributeName("max-mb")] public int? MaxMb { get; set; }
+    [HtmlAttributeName("css")] public string? Css { get; set; }
+    [HtmlAttributeName("texts")] public UploaderTexts? Texts { get; set; }
+
+    public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
+    {
+        var (pageClass, attrs) = ListRender.Page(output);
+        var max = MaxMb ?? (services.GetService(typeof(IUploadLimits)) as IUploadLimits)?.MaxFileSizeMb;
+        await ListRender.Replace<PemsUploader>(renderer, output, new UploaderOptions { Name = Name, Id = Id, Accept = Accept, Multiple = Multiple, Required = Required, Scale = Scale, MaxMb = max, Texts = Texts, Css = Css, PageClass = pageClass, Attributes = attrs });
+    }
+}

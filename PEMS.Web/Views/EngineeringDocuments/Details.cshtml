@@ -1376,7 +1376,7 @@
                         <pems-col span="12"><pems-label css="small">@Localizer["Comment"]</pems-label><pems-textarea scale="small" name="commentText" rows="3" required></pems-textarea></pems-col>
                         <pems-col md="6"><pems-label css="small">Required Action</pems-label><pems-input scale="small" name="requiredAction" /></pems-col>
                         <pems-col md="6"><pems-label css="small">@Localizer["Due Date"]</pems-label><pems-date name="dueDate" scale="small" /></pems-col>
-                        <pems-col span="12"><pems-label css="small">Attachment <span class="text-muted">@Localizer["(optional)"]</span></pems-label><pems-input scale="small" type="file" name="attachment" /></pems-col>
+                        <pems-col span="12"><pems-label css="small">Attachment <span class="text-muted">@Localizer["(optional)"]</span></pems-label><pems-uploader scale="small" name="attachment" /></pems-col>
                         <pems-col span="12" css="form-check">
                             <pems-input kind="check" type="checkbox" name="marksRevisionRequired" value="true" id="marksRevisionRequired" />
                             <label class="form-check-label" for="marksRevisionRequired">
@@ -1407,7 +1407,7 @@
                         </pems-form-group>
                         <pems-form-group css="mb-2">
                             <pems-label css="small">Or attach the Reply Sheet file</pems-label>
-                            <pems-input scale="small" type="file" name="replyAttachment" />
+                            <pems-uploader scale="small" name="replyAttachment" />
                         </pems-form-group>
                     </pems-modal-body>
                     <pems-modal-footer>

@@ -18,7 +18,7 @@
     <pems-form asp-action="Upload" method="post" enctype="multipart/form-data"><pems-row gap="2" css="align-items-end">
         <pems-col md="8">
             <pems-label css="small">Functional Location Excel File</pems-label>
-            <pems-input type="file" name="file" accept=".xlsx" required />
+            <pems-uploader name="file" accept=".xlsx" required />
         </pems-col>
         <pems-col md="4">
             <pems-button tone="primary" css="w-100" type="submit"><pems-icon name="bi-cloud-upload" /> @Localizer["Upload"]</pems-button>

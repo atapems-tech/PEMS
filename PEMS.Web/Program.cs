@@ -814,6 +814,7 @@ else
 builder.Services.AddSingleton<PEMS.Application.Uploads.IUploadGuard, PEMS.Application.Uploads.UploadGuard>();
 // The request limits follow the setting, so a file the guard would accept is never cut off earlier by the server
 builder.WebHost.ConfigureKestrel(o => o.Limits.MaxRequestBodySize = uploadOptions.MaxRequestBytes);
+builder.Services.AddSingleton<PEMS.UI.Components.IUploadLimits>(new PEMS.Web.Configuration.UploadLimits(uploadOptions.MaxFileSizeMb));
 builder.Services.Configure<Microsoft.AspNetCore.Builder.IISServerOptions>(o => o.MaxRequestBodySize = uploadOptions.MaxRequestBytes);
 builder.Services.Configure<Microsoft.AspNetCore.Http.Features.FormOptions>(o => o.MultipartBodyLengthLimit = uploadOptions.MaxRequestBytes);
 
