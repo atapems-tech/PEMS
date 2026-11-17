@@ -16,6 +16,9 @@ public static class DefinitionKindExtensions
         services.AddSingleton<IDefinitionKind, FormDefinitionKind>();
         services.AddSingleton<IDefinitionKind, PageDefinitionKind>();
         services.AddSingleton<IDefinitionKind, LayoutDefinitionKind>();
+        // SCRUM-437: data sources and actions as definitions; the providers and handlers are registered code, named by the definitions
+        services.AddSingleton<IDefinitionKind, DataSourceDefinitionKind>();
+        services.AddSingleton<IDefinitionKind, ActionDefinitionKind>();
         // posted values of a stored form are cleaned before use: rich-text HTML sanitized, undeclared names dropped (SCRUM-59)
         services.AddScoped<FormValueSanitizer>();
         return services;
@@ -52,10 +55,22 @@ public sealed class FormDefinitionKind : IDefinitionKind
         for (var i = 0; i < form.Fields.Count; i++)
             if (!seen.Add(form.Fields[i].Name))
                 errors.Add(new($"/fields/{i}/name", "duplicate", "Def_Err_FormFieldDuplicate", $"The field name '{form.Fields[i].Name}' is used twice."));
+        errors.AddRange(FormEngine.CheckDefinition(form));   // SCRUM-578: conditions, rules, messages and options are checked when the definition is loaded
         return errors;
     }
 
-    public IReadOnlyList<DefinitionRef> References(string payloadJson) => Array.Empty<DefinitionRef>();
+    public IReadOnlyList<DefinitionRef> References(string payloadJson)
+    {
+        try
+        {
+            var form = JsonSerializer.Deserialize<FormDefinition>(payloadJson, Strict);
+            if (form is null) return Array.Empty<DefinitionRef>();
+            var refs = form.Fields.Where(f => !string.IsNullOrEmpty(f.OptionsFrom)).Select(f => new DefinitionRef("data-source", f.OptionsFrom!, "options")).ToList();
+            if (!string.IsNullOrEmpty(form.ActionKey)) refs.Add(new DefinitionRef("action", form.ActionKey, "submits"));
+            return refs;
+        }
+        catch (JsonException) { return Array.Empty<DefinitionRef>(); }
+    }
 }
 
 /// <summary>

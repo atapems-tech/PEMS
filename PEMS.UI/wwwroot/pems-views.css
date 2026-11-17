@@ -72,3 +72,10 @@
 .pems-upload__file { display: flex; align-items: center; gap: .5rem; }
 .pems-upload__name { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .pems-upload__message:empty { display: none; }
+
+/* SCRUM-578: the form engine: a grid of one or two columns, a cell that can span both, errors of the form as a whole. */
+.pems-form__grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 1rem; }
+.pems-form__cell--span { grid-column: 1 / -1; }
+.pems-form__cell[hidden] { display: none; }
+.pems-form__errors { margin-block-end: .75rem; padding: .5rem .75rem; color: var(--bs-danger, var(--pems-text)); border: 1px solid var(--bs-danger, var(--pems-surface-border)); border-radius: .35rem; }
+@media (max-width: 40rem) { .pems-form__grid { grid-template-columns: 1fr; } }

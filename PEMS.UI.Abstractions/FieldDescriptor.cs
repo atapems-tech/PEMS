@@ -54,4 +54,47 @@ public sealed record FieldDescriptor
     /// <summary>The columns of a <see cref="FieldKind.CheckboxMatrix"/>.</summary>
     public IReadOnlyList<FieldOption>? Columns { get; init; }
     public TranslatableText? Placeholder { get; init; }
+
+    // SCRUM-578 (form engine): what a stored form says about a field besides its look. Every condition is an expression (ADR-0015) that reads only the roots values, user and request.
+    /// <summary>The field is shown (and its value is used) only while this condition is true; no condition = always.</summary>
+    public string? Visible { get; init; }
+    /// <summary>The field is required while this condition is true (in addition to <see cref="Required"/>).</summary>
+    public string? RequiredWhen { get; init; }
+    /// <summary>The field is read only while this condition is true (in addition to <see cref="ReadOnly"/>); a read-only value posted by the browser is ignored.</summary>
+    public string? ReadOnlyWhen { get; init; }
+    public int? MinLength { get; init; }
+    public decimal? Min { get; init; }
+    public decimal? Max { get; init; }
+    /// <summary>A regular expression the whole value must match (checked with a time limit).</summary>
+    public string? Pattern { get; init; }
+    /// <summary>Extra rules: each expression must be true, else the message is the error of the field.</summary>
+    public IReadOnlyList<FieldRule>? Rules { get; init; }
+    /// <summary>Replaces the built-in message of a check (required, maxLength, ...), in both languages.</summary>
+    public FieldMessages? Messages { get; init; }
+    /// <summary>The key of a data-source definition that gives the options of a Select or Radio field (resolved for the request by the pipeline).</summary>
+    public string? OptionsFrom { get; init; }
+    /// <summary>Columns this field takes in the form grid (1 to the form's <c>columns</c>).</summary>
+    public int? Span { get; init; }
+}
+
+/// <summary>A rule of a field or of the whole form: <see cref="Expression"/> must be true, otherwise <see cref="Message"/> is shown (on <see cref="Field"/> of a form rule, else on the form).</summary>
+public sealed record FieldRule
+{
+    public required string Expression { get; init; }
+    public required TranslatableText Message { get; init; }
+    /// <summary>Form rules only: the field that shows the message.</summary>
+    public string? Field { get; init; }
+}
+
+/// <summary>Messages a field overrides; a missing one keeps the engine's built-in text.</summary>
+public sealed record FieldMessages
+{
+    public TranslatableText? Required { get; init; }
+    public TranslatableText? MaxLength { get; init; }
+    public TranslatableText? MinLength { get; init; }
+    public TranslatableText? Pattern { get; init; }
+    public TranslatableText? Min { get; init; }
+    public TranslatableText? Max { get; init; }
+    public TranslatableText? Invalid { get; init; }
+    public TranslatableText? NotAllowed { get; init; }
 }

@@ -125,6 +125,11 @@ builder.Services.AddScoped<PEMS.Application.Definitions.IDefinitionStore>(sp => 
 builder.Services.AddScoped<PEMS.Application.Definitions.IDefinitionAccess, PEMS.Persistence.Definitions.PermissionDefinitionAccess>();
 builder.Services.AddScoped<PEMS.Application.Definitions.DefinitionPipeline>();
 builder.Services.AddScoped<PEMS.Web.Definitions.PageRenderer>();
+builder.Services.AddScoped<PEMS.Application.Definitions.IDefinitionHydrator, PEMS.Web.Definitions.FormOptionsHydrator>();   // SCRUM-437: options of a form field from its data source
+builder.Services.AddScoped<PEMS.Web.Definitions.ActionExecutor>();
+// SCRUM-437/578 pilot: the registered providers and handlers a definition may name
+builder.Services.AddSingleton<PEMS.Web.Definitions.IDataSourceProvider, PEMS.Web.Definitions.DepartmentsDataSource>();
+builder.Services.AddSingleton<PEMS.Web.Definitions.IActionHandler, PEMS.Web.Definitions.DepartmentCreateAction>();
 builder.Services.AddScoped<PEMS.Application.Definitions.IDefinitionService, PEMS.Persistence.Services.DefinitionService>();
 
 // یک [Authorize] سراسری روی همه‌ی صفحات؛ فقط اکشن‌هایی که [AllowAnonymous] دارند

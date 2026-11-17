@@ -1,0 +1,103 @@
+{
+  "kind": "form",
+  "key": "department-create",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "fa": "ایجاد دپارتمان",
+    "en": "Create department"
+  },
+  "description": {
+    "fa": "فرم ایجاد دپارتمان جدید (فرم‌ساز، آزمایشی)",
+    "en": "Create a new department (form engine pilot)"
+  },
+  "payload": {
+    "id": "department-create",
+    "title": {
+      "fa": "ایجاد دپارتمان",
+      "en": "Create department"
+    },
+    "submitLabel": {
+      "fa": "ایجاد",
+      "en": "Create"
+    },
+    "actionKey": "department-create",
+    "columns": 2,
+    "warnOnLeave": true,
+    "fields": [
+      {
+        "name": "code",
+        "label": {
+          "fa": "کد",
+          "en": "Code"
+        },
+        "kind": "text",
+        "maxLength": 20,
+        "pattern": "[A-Za-z0-9_-]+",
+        "helpText": {
+          "fa": "حروف انگلیسی، عدد، خط تیره و زیرخط",
+          "en": "Letters, digits, hyphen and underscore"
+        },
+        "messages": {
+          "pattern": {
+            "fa": "کد فقط می‌تواند شامل حروف انگلیسی، عدد، خط تیره و زیرخط باشد.",
+            "en": "The code may only contain letters, digits, hyphen and underscore."
+          }
+        }
+      },
+      {
+        "name": "name",
+        "label": {
+          "fa": "نام",
+          "en": "Name"
+        },
+        "kind": "text",
+        "required": true,
+        "minLength": 2,
+        "maxLength": 100,
+        "messages": {
+          "required": {
+            "fa": "نام دپارتمان الزامی است.",
+            "en": "The department name is required."
+          }
+        }
+      },
+      {
+        "name": "parentDepartmentId",
+        "label": {
+          "fa": "دپارتمان والد",
+          "en": "Parent department"
+        },
+        "kind": "select",
+        "optionsFrom": "departments",
+        "visible": "values.isSubDepartment",
+        "requiredWhen": "values.isSubDepartment",
+        "messages": {
+          "required": {
+            "fa": "برای زیرمجموعه بودن، دپارتمان والد را انتخاب کنید.",
+            "en": "Choose the parent department of a sub-department."
+          }
+        }
+      },
+      {
+        "name": "isSubDepartment",
+        "label": {
+          "fa": "زیرمجموعه‌ی دپارتمان دیگر است",
+          "en": "Is a sub-department"
+        },
+        "kind": "switch",
+        "span": 2
+      },
+      {
+        "name": "description",
+        "label": {
+          "fa": "توضیحات",
+          "en": "Description"
+        },
+        "kind": "textArea",
+        "maxLength": 500,
+        "span": 2
+      }
+    ]
+  }
+}

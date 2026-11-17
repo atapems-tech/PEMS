@@ -22,7 +22,7 @@ public sealed class PageRendererTests : IDisposable
         var provider = PEMS.UI.ServiceCollectionExtensions.AddPemsUi(new ServiceCollection()).BuildServiceProvider().CreateScope().ServiceProvider;
         var registry = provider.GetRequiredService<IPemsComponentRegistry>();
         var catalog = provider.GetRequiredService<ComponentManifestCatalog>();
-        var kinds = new IDefinitionKind[] { new FormDefinitionKind(), new PageDefinitionKind(registry, catalog), new LayoutDefinitionKind() };
+        var kinds = new IDefinitionKind[] { new FormDefinitionKind(), new PageDefinitionKind(registry, catalog), new LayoutDefinitionKind(), new DataSourceDefinitionKind([new DepartmentsDataSource(null!)]), new ActionDefinitionKind([new DepartmentCreateAction(null!)]) };
         _files = new FileDefinitionStore(kinds, new DefinitionLimits(), new DefinitionFileOptions { Folder = Path.Combine(AppContext.BaseDirectory, "definitions"), Watch = false });
         _renderer = new PageRenderer(provider.GetRequiredService<IPemsComponentRenderer>(), catalog, _files);
     }
