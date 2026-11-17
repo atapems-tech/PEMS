@@ -52,6 +52,8 @@ public sealed class GridQueryTests
         Assert.Equal(new[] { 1, 4, 5 }, Ids("f.age=gte:30"));
         Assert.Equal(new[] { 2, 3 }, Ids("f.age=18"));                     // number: equals
         Assert.Equal(new[] { 4, 5 }, Ids("f.created=gt:2026-03-05"));
+        Assert.Equal(new[] { 2, 3 }, Ids("f.created=range:2026-02-01..2026-04-01"));   // from inclusive, to exclusive
+        Assert.Equal(new[] { 4, 5 }, Ids("f.created=range:2026-04-01.."));
         Assert.Equal(new[] { 2, 5 }, Ids("f.active=false"));
         Assert.Equal(new[] { 1, 5 }, Ids("f.id=in:1,5"));
         Assert.Equal(new[] { 1, 3, 4, 5 }, Ids("f.id=ne:2"));
@@ -89,6 +91,7 @@ public sealed class GridQueryTests
         Assert.Throws<GridQueryException>(() => Ids("sort=secret"));
         Assert.Throws<GridQueryException>(() => Ids("f.age=abc"));
         Assert.Throws<GridQueryException>(() => Ids("f.name=gt:a"));
+        Assert.Throws<GridQueryException>(() => Ids("f.created=range:2026-01-01"));
         Assert.Throws<GridQueryException>(() => Ids("f.created=gte:not-a-date"));
     }
 

@@ -1,0 +1,44 @@
+/* PEMS.UI view types (SCRUM-55): cards, kanban, calendar, timeline. Theme tokens only, logical properties only (one sheet for right-to-left and left-to-right). */
+.pems-view__toolbar { display: flex; flex-wrap: wrap; gap: .5rem; align-items: center; justify-content: space-between; margin-block-end: .5rem; }
+.pems-view__toolbar[hidden] { display: none; }
+.pems-view__nav, .pems-view__systems { display: flex; gap: .35rem; }
+.pems-view__title { flex: 1; text-align: center; }
+.pems-view__body { overflow: auto; }
+.pems-view__status:empty { display: none; }
+
+.pems-view__cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr)); gap: .75rem; }
+.pems-view__card { display: flex; flex-direction: column; gap: .35rem; padding: .6rem .75rem; color: var(--pems-text); text-decoration: none; background: var(--pems-surface); border: 1px solid var(--pems-surface-border); border-radius: .5rem; }
+.pems-view__card:hover { border-color: var(--pems-primary); }
+.pems-view__card:focus-visible { outline: 2px solid var(--pems-primary); outline-offset: 2px; }
+.pems-view__image { inline-size: 100%; max-block-size: 9rem; object-fit: cover; border-radius: .35rem; }
+.pems-view__card-body { display: flex; flex-direction: column; gap: .25rem; align-items: flex-start; }
+.pems-view__card-title { font-weight: 600; }
+.pems-view__card.is-dragging { opacity: .5; }
+
+.pems-view__board { display: flex; gap: .75rem; align-items: flex-start; padding-block-end: .5rem; }
+.pems-view__col { flex: 0 0 17rem; min-block-size: 8rem; display: flex; flex-direction: column; gap: .5rem; padding: .5rem; background: var(--pems-hover, rgba(127, 127, 127, .08)); border: 1px solid var(--pems-surface-border); border-radius: .5rem; border-block-start-width: 3px; }
+.pems-view__col.is-primary { border-block-start-color: var(--pems-primary); }
+.pems-view__col.is-success { border-block-start-color: var(--bs-success, var(--pems-primary)); }
+.pems-view__col.is-warning { border-block-start-color: var(--bs-warning, var(--pems-primary)); }
+.pems-view__col.is-danger { border-block-start-color: var(--bs-danger, var(--pems-primary)); }
+.pems-view__col.is-over { outline: 2px dashed var(--pems-primary); outline-offset: -4px; }
+.pems-view__col-head { display: flex; align-items: center; justify-content: space-between; font-weight: 600; }
+.pems-view__col-list { display: flex; flex-direction: column; gap: .5rem; min-block-size: 3rem; }
+
+.pems-view__cal { border: 1px solid var(--pems-surface-border); border-radius: .5rem; background: var(--pems-surface); color: var(--pems-text); }
+.pems-view__cal-week, .pems-view__cal-grid { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); }
+.pems-view__cal-wd { padding: .35rem .5rem; font-weight: 600; text-align: center; border-block-end: 1px solid var(--pems-surface-border); }
+.pems-view__cal-day { min-block-size: 6rem; padding: .25rem; border-inline-end: 1px solid var(--pems-surface-border); border-block-end: 1px solid var(--pems-surface-border); overflow: hidden; }
+.pems-view__cal-day:nth-child(7n) { border-inline-end: 0; }
+.pems-view__cal-day.is-other { background: var(--pems-hover, rgba(127, 127, 127, .08)); color: var(--pems-text-muted); }
+.pems-view__cal-day.is-today .pems-view__cal-num { background: var(--pems-primary); color: var(--pems-surface); border-radius: 999px; padding-inline: .45rem; }
+.pems-view__cal-num { display: inline-block; font-size: .8rem; margin-block-end: .15rem; }
+.pems-view__cal-items { display: flex; flex-direction: column; gap: .15rem; }
+.pems-view__chip { display: block; padding: .05rem .35rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: .8rem; color: var(--pems-text); text-decoration: none; background: var(--pems-hover, rgba(127, 127, 127, .15)); border-inline-start: 3px solid var(--pems-primary); border-radius: .25rem; }
+.pems-view__chip:hover { background: var(--pems-primary); color: var(--pems-surface); }
+.pems-view__more-items { padding: 0 .35rem; font-size: .75rem; color: var(--pems-text-muted); background: transparent; border: 0; text-align: start; }
+
+.pems-view__timeline { display: flex; flex-direction: column; gap: 1rem; padding-inline-start: 1rem; border-inline-start: 2px solid var(--pems-surface-border); }
+.pems-view__tl-date { margin: 0 0 .35rem; font-size: .95rem; font-weight: 600; }
+.pems-view__tl-list { display: flex; flex-direction: column; gap: .5rem; }
+.pems-view__more { margin-block-start: .75rem; text-align: center; }

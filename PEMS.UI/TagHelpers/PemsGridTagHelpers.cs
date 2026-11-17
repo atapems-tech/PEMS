@@ -114,6 +114,24 @@ public sealed class PemsDataGridTagHelper(IPemsComponentRenderer renderer) : Tag
     }
 }
 
+/// <summary>
+/// The view types of a record set (SCRUM-55): <c>&lt;pems-data-view options="@viewOptions" /&gt;</c> with <c>View</c> = cards, kanban, calendar (Jalali and Gregorian) or timeline. They read the endpoint of the
+/// data grid and are configured by the field names of the entity.
+/// </summary>
+[HtmlTargetElement("pems-data-view")]
+[PemsFacade(UiKeys.DataView)]
+public sealed class PemsDataViewTagHelper(IPemsComponentRenderer renderer) : TagHelper
+{
+    [HtmlAttributeName("options")] public DataViewOptions? Options { get; set; }
+
+    public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
+    {
+        if (Options is null) throw new InvalidOperationException("pems-data-view needs the options attribute.");
+        var (pageClass, attrs) = ListRender.Page(output);
+        await ListRender.Replace<PemsDataView>(renderer, output, Options with { PageClass = pageClass, Attributes = attrs });
+    }
+}
+
 /// <summary>One label, control and validation message of a form: <c>&lt;pems-form-group css="mb-3"&gt;&lt;pems-label .../&gt;&lt;pems-input .../&gt;&lt;span asp-validation-for="X"&gt;&lt;/span&gt;&lt;/pems-form-group&gt;</c> writes <c>&lt;div class="mb-3"&gt;</c> around them (SCRUM-501).</summary>
 [HtmlTargetElement("pems-form-group")]
 [PemsFacade(UiKeys.FormGroup)]
