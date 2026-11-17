@@ -9,7 +9,7 @@ namespace PEMS.Application.Grids;
 
 public sealed record GridSort(string Field, bool Descending);
 
-/// <summary>One column filter. <see cref="Op"/> is eq, ne, contains, startsWith, endsWith, gt, gte, lt, lte, in (a comma separated list) or empty (blank value).</summary>
+/// <summary>One column filter. <see cref="Op"/> is eq, ne, contains, startsWith, endsWith, gt, gte, lt, lte, in (a comma separated list), range (<c>from..to</c>: from inclusive, to exclusive; either side may be empty) or empty (blank value).</summary>
 public sealed record GridFilter(string Field, string Op, string Value);
 
 public sealed record GridRequest(int Page, int PageSize, IReadOnlyList<GridSort> Sort, IReadOnlyList<GridFilter> Filters, string? Search)
@@ -36,7 +36,7 @@ public sealed record GridRequest(int Page, int PageSize, IReadOnlyList<GridSort>
             if (!key.StartsWith("f.", StringComparison.OrdinalIgnoreCase) || string.IsNullOrEmpty(value)) continue;
             var field = key[2..];
             var colon = value.IndexOf(':');
-            if (colon > 0 && value[..colon] is "eq" or "ne" or "contains" or "startsWith" or "endsWith" or "gt" or "gte" or "lt" or "lte" or "in")
+            if (colon > 0 && value[..colon] is "eq" or "ne" or "contains" or "startsWith" or "endsWith" or "gt" or "gte" or "lt" or "lte" or "in" or "range")
                 filters.Add(new GridFilter(field, value[..colon], value[(colon + 1)..]));
             else filters.Add(new GridFilter(field, "", value));
             if (filters.Count >= 20) break;
@@ -141,6 +141,17 @@ public static class GridQueryExtensions
             var lowered = Expression.Call(member, nameof(string.ToLower), null);
             body = Expression.AndAlso(Expression.NotEqual(member, Expression.Constant(null, typeof(string))),
                 Expression.Call(lowered, method, null, Expression.Constant(f.Value.ToLowerInvariant())));
+        }
+        else if (f.Op == "range")
+        {
+            if (under == typeof(string) || under == typeof(bool)) throw new GridQueryException($"\"range\" cannot be used on the column \"{f.Field}\".");
+            var cut = f.Value.IndexOf("..", StringComparison.Ordinal);
+            if (cut < 0) throw new GridQueryException("A range is written from..to.");
+            var from = f.Value[..cut].Trim(); var to = f.Value[(cut + 2)..].Trim();
+            Expression? both = null;
+            if (from.Length > 0) both = Expression.GreaterThanOrEqual(member, Const(from));
+            if (to.Length > 0) { var upper = Expression.LessThan(member, Const(to)); both = both is null ? upper : Expression.AndAlso(both, upper); }
+            body = both ?? Expression.Constant(true);
         }
         else if (f.Op is "eq" or "ne")
         {
