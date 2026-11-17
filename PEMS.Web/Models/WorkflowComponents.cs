@@ -9,7 +9,7 @@ namespace PEMS.Web.Models;
 
 public static class WorkflowComponents
 {
-    private static readonly Dictionary<string, (string En, string Fa, string Tone)> Actions = new(StringComparer.OrdinalIgnoreCase)
+    private static readonly Dictionary<string, (string En, string Fa, string Tone)> Described = new(StringComparer.OrdinalIgnoreCase)
     {
         ["Approve"] = ("Approved", "تأیید شد", "success"),
         ["Reject"] = ("Rejected", "رد شد", "danger"),
@@ -40,8 +40,20 @@ public static class WorkflowComponents
             },
             s.ResponsibleRole)).ToList();
 
+    /// <summary>The actions the engine offers (<see cref="WorkflowAvailableAction"/>) for <c>pems-workflow-action-bar</c>: the label in the language of the request, the tone by action, reject and cancel ask first.</summary>
+    public static IReadOnlyList<WorkflowActionItem> Actions(IEnumerable<WorkflowAvailableAction> actions, bool fa, string confirmText)
+        => actions.Select(a => new WorkflowActionItem
+        {
+            ActionType = a.ActionType,
+            Label = (fa && !string.IsNullOrWhiteSpace(a.LabelFa) ? a.LabelFa : a.Label) ?? a.ActionType,
+            Tone = a.ActionType.ToLowerInvariant() switch { "approve" or "submit" or "start" => "success", "reject" or "cancel" => "danger", "return" or "reopen" => "warning", _ => "primary" },
+            Allowed = a.IsAllowed,
+            DeniedReason = a.DeniedReason,
+            Confirm = a.ActionType.Equals("Reject", StringComparison.OrdinalIgnoreCase) || a.ActionType.Equals("Cancel", StringComparison.OrdinalIgnoreCase) ? confirmText : null
+        }).ToList();
+
     private static (string Title, string Tone) Describe(string actionType, bool fa)
-        => Actions.TryGetValue(actionType, out var a) ? (fa ? a.Fa : a.En, a.Tone) : (actionType, "neutral");
+        => Described.TryGetValue(actionType, out var a) ? (fa ? a.Fa : a.En, a.Tone) : (actionType, "neutral");
 
     private static string? Route(string? from, string? to)
         => from is null && to is null ? null : from is null ? to : to is null ? from : from + " → " + to;

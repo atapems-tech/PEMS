@@ -32,6 +32,34 @@ public sealed class WorkflowHistoryTests
         Assert.Contains("هنوز تاریخچه‌ای نیست", System.Net.WebUtility.HtmlDecode(Render(o, "fa")));
     }
 
+    private static WorkflowActionBarOptions Bar() => System.Text.Json.JsonSerializer.Deserialize<WorkflowActionBarOptions>(ComponentSamples.Get("workflow-action-bar")!.ToJsonString(), PEMS.UI.Abstractions.PemsJson.Options)!;
+
+    private static string RenderBar(WorkflowActionBarOptions o, string culture)
+        => UiTestRenderer.Instance.RenderAsync("workflow-action-bar", new Dictionary<string, object?> { ["Options"] = o }, new System.Globalization.CultureInfo(culture)).GetAwaiter().GetResult();
+
+    [Fact]
+    public void The_action_bar_posts_the_action_type_and_comment_with_the_token_and_shows_denied_actions_disabled()
+    {
+        var html = System.Net.WebUtility.HtmlDecode(RenderBar(Bar(), "en"));
+        Assert.Contains("action=\"/Permit/WorkflowAction\"", html);
+        Assert.Contains("name=\"__RequestVerificationToken\"", html);
+        Assert.Contains("name=\"id\" value=\"12\"", html);
+        Assert.Contains("name=\"comment\"", html);
+        Assert.Contains("name=\"actionType\" value=\"Approve\"", html);
+        Assert.Contains("data-confirm=\"Reject this item?\"", html);
+        Assert.Matches("value=\"Return\"[^>]*disabled", html);
+        Assert.Contains("title=\"Not your stage\"", html);
+    }
+
+    [Fact]
+    public void Without_actions_the_bar_says_so_in_the_language_of_the_request()
+    {
+        var o = Bar() with { Actions = [] };
+        Assert.Contains("No action available", RenderBar(o, "en"));
+        Assert.Contains("اقدامی در دسترس نیست", System.Net.WebUtility.HtmlDecode(RenderBar(o, "fa")));
+        Assert.True(new PEMS.UI.Manifest.ComponentManifestCatalog(new PEMS.UI.Rendering.PemsComponentRegistry()).Validate("workflow-action-bar", ComponentSamples.Get("workflow-action-bar")!.ToJsonString()).IsValid);
+    }
+
     [Fact]
     public void The_options_are_checked_by_the_manifest()
     {
