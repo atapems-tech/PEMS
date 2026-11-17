@@ -46,7 +46,10 @@ public sealed class WorkflowHistoryTests
         Assert.Contains("name=\"id\" value=\"12\"", html);
         Assert.Contains("name=\"comment\"", html);
         Assert.Contains("name=\"actionType\" value=\"Approve\"", html);
-        Assert.Contains("data-confirm=\"Reject this item?\"", html);
+        Assert.Contains("data-pems-confirm=\"Reject this item?\"", html);
+        Assert.Matches("value=\"Reject\"[^>]*data-pems-require=\"comment\"", html);
+        Assert.Contains("Return: Not your stage", html);
+        Assert.Contains("→ Review", html);
         Assert.Matches("value=\"Return\"[^>]*disabled", html);
         Assert.Contains("title=\"Not your stage\"", html);
     }

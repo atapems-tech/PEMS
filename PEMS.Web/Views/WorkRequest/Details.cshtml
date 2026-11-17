@@ -131,18 +131,15 @@
             @* اکشن‌های گردش‌کار: کاملاً از مدل خواندنی مرکزی. مجوز واقعی سمت‌سرور اعمال می‌شود؛ دکمه‌ی غیرمجاز فقط برای نمایش است. *@
             @if (actions.Count > 0)
             {
-                <pems-form asp-action="WorkflowAction" method="post"><pems-flex wrap="true" gap="2" align="center">
-                    <input type="hidden" name="id" value="@Model.WorkRequestId" />
-                    <pems-input class="pems-w-300" scale="small" type="text" name="comment" placeholder="@Localizer["Comment (required for Reject / Cancel / Hold / Return)"]" />
-                    @foreach (var a in actions)
-                    {
-                        var cls = a.ActionType == "Approve" ? "btn-pems-solid" : a.ActionType is "Reject" or "Cancel" ? "btn-outline-danger" : "btn-outline-primary";
-                        var needsReason = PEMS.Application.Common.WorkflowActionRules.ActionRequiresReason(a.ActionType);
-                        <pems-button tone="none" size="small" css="@cls" type="submit" name="actionType" value="@a.ActionType" disabled="@(!a.IsAllowed)" title="@(a.IsAllowed ? "" : a.DeniedReason)" data-pems-require="@(needsReason ? "comment" : "")" data-pems-confirm="@(needsReason && (a.ActionType is "Reject" or "Cancel") ? Localizer["Are you sure?"].Value : "")">
-                            @ActionLabel(a)@if (!string.IsNullOrWhiteSpace(a.ToStageName)) { <span class="opacity-75"> → @StageByName(a.ToStageName)</span> }
-                        </pems-button>
-                    }
-                </pems-flex></pems-form>
+                <pems-workflow-action-bar options="@(new PEMS.UI.Components.WorkflowActionBarOptions
+                {
+                    Action = Url.Action("WorkflowAction")!,
+                    Fields = new Dictionary<string, string> { ["id"] = Model.WorkRequestId.ToString() },
+                    Actions = WorkflowComponents.Actions(actions, fa, Localizer["Are you sure?"].Value, StageByName),
+                    CommentLabel = PEMS.UI.Abstractions.TranslatableText.Of(("en", Localizer["Comment"].Value), ("fa", Localizer["Comment"].Value)),
+                    CommentHint = PEMS.UI.Abstractions.TranslatableText.Literal(Localizer["Comment (required for Reject / Cancel / Hold / Return)"].Value),
+                    None = PEMS.UI.Abstractions.TranslatableText.Literal(Localizer["No further actions available."].Value)
+                })" />
             }
             @* اکشن کسب‌وکاری Work Request (نه اکشن عمومی): تبدیل به WorkOrder؛ قواعد خودش را در سرویس Work Request دارد *@
             @if (Model.CanConvert)
@@ -164,10 +161,6 @@
                         <pems-icon name="bi-arrow-right-circle" /> @Localizer["Convert to Work Order"]
                     </pems-button>
                 </pems-flex></pems-form>
-            }
-            @foreach (var denied in actions.Where(a => !a.IsAllowed && !string.IsNullOrWhiteSpace(a.DeniedReason)))
-            {
-                <div class="small text-muted w-100"><pems-icon name="bi-lock" /> @ActionLabel(denied): @denied.DeniedReason</div>
             }
             @if (actions.Count == 0 && !Model.CanConvert)
             {

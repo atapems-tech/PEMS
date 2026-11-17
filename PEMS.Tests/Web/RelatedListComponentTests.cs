@@ -222,13 +222,14 @@ public class RelatedListComponentTests
     }
 
     [Fact]
-    public void Wave3cVdr_TakesItsFourTablesFromTheComponent()
+    public void Wave3cVdr_TakesItsThreeTablesFromTheComponent()
     {
         var dir = new DirectoryInfo(AppContext.BaseDirectory);
         while (dir != null && !File.Exists(Path.Combine(dir.FullName, "PEMS.Web", "PEMS.Web.csproj"))) dir = dir.Parent;
         Assert.NotNull(dir);
         var vdr = File.ReadAllText(Path.Combine(dir!.FullName, "PEMS.Web", "Views", "VDR", "Details.cshtml"));
-        Assert.Equal(4, System.Text.RegularExpressions.Regex.Matches(vdr, "<pems-related-table>").Count);
+        Assert.Equal(3, System.Text.RegularExpressions.Regex.Matches(vdr, "<pems-related-table>").Count);   // SCRUM-58: the fourth (workflow history) is now <pems-workflow-history>
+        Assert.Contains("<pems-workflow-history", vdr);
         Assert.DoesNotContain("<table", vdr);
         Assert.Contains("_content/PEMS.UI/pems-list.css", vdr);
     }

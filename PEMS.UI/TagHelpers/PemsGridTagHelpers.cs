@@ -1,3 +1,5 @@
+using Microsoft.AspNetCore.Mvc.ViewFeatures;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Razor.TagHelpers;
 using PEMS.UI.Components;
 using PEMS.UI.Rendering;
@@ -423,12 +425,13 @@ public sealed class PemsWorkflowHistoryTagHelper(IPemsComponentRenderer renderer
 public sealed class PemsWorkflowActionBarTagHelper(IPemsComponentRenderer renderer) : TagHelper
 {
     [HtmlAttributeName("options")] public WorkflowActionBarOptions? Options { get; set; }
+    [ViewContext, HtmlAttributeNotBound] public ViewContext? ViewContext { get; set; }
 
     public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
     {
         if (Options is null) throw new InvalidOperationException("pems-workflow-action-bar needs the options attribute.");
         var (pageClass, attrs) = ListRender.Page(output);
-        await ListRender.Replace<PemsWorkflowActionBar>(renderer, output, Options with { PageClass = pageClass, Attributes = attrs });
+        await ListRender.Replace<PemsWorkflowActionBar>(renderer, output, Options with { Antiforgery = Options.Antiforgery ?? PemsRelated.Antiforgery(ViewContext), PageClass = pageClass, Attributes = attrs });
     }
 }
 
