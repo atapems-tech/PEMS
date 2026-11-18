@@ -4,7 +4,7 @@ Admin,Authorization,Administration,"W1 admin, account, shell",Hamid,code-only,pr
 Admin,AuthorizationAudit,Administration,"W1 admin, account, shell",Hamid,code-only,proposed,"files, imports, integrations, machine endpoints or shell behaviour"
 Admin,ContractApprovalAuthority,Administration,"W1 admin, account, shell",Hamid,workflow-hybrid,proposed,own approval or routing tables; decide per module whether it moves to IWorkflowRuntime
 Admin,DatabaseUpdate,Administration,"W1 admin, account, shell",Hamid,code-only,proposed,"files, imports, integrations, machine endpoints or shell behaviour"
-Admin,Department,Administration,"W1 admin, account, shell",Hamid,code-only,converted-partly,converted (definitions): /p/departments and /f/department-create; edit and Excel export stay in the old page
+Admin,Department,Administration,"W1 admin, account, shell",Hamid,code-only,converted-partly,"converted (generic entity layer): /p/departments with create, edit and activate/deactivate; Excel export and import stay code"
 Admin,Employee,Administration,"W1 admin, account, shell",Hamid,code-only,proposed,no page actions
 Admin,Help,Administration,"W1 admin, account, shell",Hamid,code-only,proposed,"files, imports, integrations, machine endpoints or shell behaviour"
 Admin,License,Administration,"W1 admin, account, shell",Hamid,code-only,proposed,"files, imports, integrations, machine endpoints or shell behaviour"
@@ -16,9 +16,9 @@ Admin,OrganizationImport,Administration,"W1 admin, account, shell",Hamid,code-on
 Admin,PermissionMatrix,Administration,"W1 admin, account, shell",Hamid,form-definition,proposed,list and detail pages plus create/edit: page definitions and form definitions
 Admin,ProjectIntelligence,Administration,"W1 admin, account, shell",Hamid,form-definition,proposed,list and detail pages plus create/edit: page definitions and form definitions
 Admin,PurchaseOrderAuthority,Administration,"W1 admin, account, shell",Hamid,workflow-hybrid,proposed,own approval or routing tables; decide per module whether it moves to IWorkflowRuntime
-Admin,Roles,Administration,"W1 admin, account, shell",Hamid,form-definition,converted-partly,converted (definitions): /p/roles and /f/role-create; delete stays in the old page
+Admin,Roles,Administration,"W1 admin, account, shell",Hamid,form-definition,converted-partly,converted (generic entity layer): /p/roles with create and delete (system roles refused by a deny rule)
 Admin,RoutingRules,Administration,"W1 admin, account, shell",Hamid,code-only,proposed,"files, imports, integrations, machine endpoints or shell behaviour"
-Admin,SecurityEvents,Administration,"W1 admin, account, shell",Hamid,code-only,converted-partly,converted (definitions): /p/security-events (read only)
+Admin,SecurityEvents,Administration,"W1 admin, account, shell",Hamid,code-only,converted-partly,converted (generic entity layer): /p/security-events (read only)
 Admin,Settings,Administration,"W1 admin, account, shell",Hamid,code-only,proposed,"files, imports, integrations, machine endpoints or shell behaviour"
 Admin,SoDPolicy,Administration,"W1 admin, account, shell",Hamid,code-only,proposed,"files, imports, integrations, machine endpoints or shell behaviour"
 Admin,StorageProviders,Administration,"W1 admin, account, shell",Hamid,code-only,proposed,"files, imports, integrations, machine endpoints or shell behaviour"
@@ -41,7 +41,7 @@ Admin,WorkflowManagement,Administration,"W1 admin, account, shell",Hamid,workflo
 ,Inspection,Maintenance and reliability,"W2 CMMS, maintenance, reliability",Hamid,form-definition,proposed,list and detail pages plus create/edit: page definitions and form definitions
 ,MaintenanceCalendar,Maintenance and reliability,"W2 CMMS, maintenance, reliability",Hamid,code-only,proposed,"files, imports, integrations, machine endpoints or shell behaviour"
 ,MaintenanceHistoryImport,Maintenance and reliability,"W2 CMMS, maintenance, reliability",Hamid,code-only,proposed,"files, imports, integrations, machine endpoints or shell behaviour"
-,MaintenanceMasterData,Maintenance and reliability,"W2 CMMS, maintenance, reliability",Hamid,code-only,proposed,"files, imports, integrations, machine endpoints or shell behaviour"
+,MaintenanceMasterData,Maintenance and reliability,"W2 CMMS, maintenance, reliability",Hamid,code-only,converted-partly,"converted partly (generic entity layer): /p/maintenance-groups, /p/skills, /p/qualifications; the other tabs (types, templates) are still the old page"
 ,MaintenancePlan,Maintenance and reliability,"W2 CMMS, maintenance, reliability",Hamid,code-only,proposed,"files, imports, integrations, machine endpoints or shell behaviour"
 ,MaintenanceStrategy,Maintenance and reliability,"W2 CMMS, maintenance, reliability",Hamid,code-only,proposed,"files, imports, integrations, machine endpoints or shell behaviour"
 ,MechanicalEquipment,Maintenance and reliability,"W2 CMMS, maintenance, reliability",Hamid,form-definition,proposed,list and detail pages plus create/edit: page definitions and form definitions
@@ -90,7 +90,7 @@ Warehouse,MrsImport,Procurement and warehouse,"W3 engineering documents, letters
 ,ProcurementPackage,Procurement and warehouse,"W4 procurement, inventory, warehouse",Hamid,workflow-hybrid,proposed,own approval or routing tables; decide per module whether it moves to IWorkflowRuntime
 ,Vendor,Procurement and warehouse,"W4 procurement, inventory, warehouse",Hamid,form-definition,proposed,list and detail pages plus create/edit: page definitions and form definitions
 Warehouse,Inventory,Procurement and warehouse,"W4 procurement, inventory, warehouse",Hamid,page-definition,proposed,view-only pages: page definitions
-Warehouse,InventoryMasterData,Procurement and warehouse,"W4 procurement, inventory, warehouse",Hamid,form-definition,converted-partly,"converted (definitions): /p/uoms, /p/material-categories, /p/warehouses and their create forms; storage locations and the activate toggles stay in the old page"
+Warehouse,InventoryMasterData,Procurement and warehouse,"W4 procurement, inventory, warehouse",Hamid,form-definition,converted-partly,"converted (definitions, generic entity layer): /p/uoms, /p/material-categories, /p/warehouses, /p/storage-locations with create, edit and activate/deactivate"
 Warehouse,InventoryTransaction,Procurement and warehouse,"W4 procurement, inventory, warehouse",Hamid,page-definition,proposed,view-only pages: page definitions
 Warehouse,IrnReceipt,Procurement and warehouse,"W4 procurement, inventory, warehouse",Hamid,form-definition,proposed,list and detail pages plus create/edit: page definitions and form definitions
 Warehouse,MaterialItem,Procurement and warehouse,"W4 procurement, inventory, warehouse",Hamid,form-definition,proposed,list and detail pages plus create/edit: page definitions and form definitions
@@ -103,7 +103,7 @@ Warehouse,Replenishment,Procurement and warehouse,"W4 procurement, inventory, wa
 Warehouse,StoreRequisition,Procurement and warehouse,"W4 procurement, inventory, warehouse",Hamid,workflow-hybrid,proposed,own approval or routing tables; decide per module whether it moves to IWorkflowRuntime
 Warehouse,WarehouseIntake,Procurement and warehouse,"W4 procurement, inventory, warehouse",Hamid,form-definition,proposed,list and detail pages plus create/edit: page definitions and form definitions
 ,TechnicalQuery,Engineering documents,"W5 operations, production, organization, other",Hamid,workflow-hybrid,proposed,own approval or routing tables; decide per module whether it moves to IWorkflowRuntime
-,Department,Organization and people,"W5 operations, production, organization, other",Hamid,form-definition,converted-partly,converted (definitions): /p/departments and /f/department-create; edit and Excel export stay in the old page
+,Department,Organization and people,"W5 operations, production, organization, other",Hamid,form-definition,converted-partly,"converted (generic entity layer): /p/departments with create, edit and activate/deactivate; Excel export and import stay code"
 ,GasTest,Permit to work and safety,"W5 operations, production, organization, other",Hamid,code-only,proposed,no page actions
 ,Isolation,Permit to work and safety,"W5 operations, production, organization, other",Hamid,code-only,proposed,no page actions
 ,MOC,Permit to work and safety,"W5 operations, production, organization, other",Hamid,workflow-hybrid,proposed,own approval or routing tables; decide per module whether it moves to IWorkflowRuntime

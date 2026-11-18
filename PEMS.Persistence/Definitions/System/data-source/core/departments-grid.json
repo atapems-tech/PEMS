@@ -4,15 +4,42 @@
   "appKey": "core",
   "version": 1,
   "title": {
-    "fa": "ردیف‌های دپارتمان‌ها",
-    "en": "Department rows"
+    "en": "Departments rows",
+    "fa": "ردیف‌های دپارتمان‌ها"
   },
   "description": {
-    "fa": "ردیف‌های جدول دپارتمان‌ها (صفحه‌بندی، مرتب‌سازی، فیلتر)",
-    "en": "The rows of the department grid (paging, sorting, filters)"
+    "en": "The rows of the departments grid",
+    "fa": "ردیف‌های جدول دپارتمان‌ها"
   },
   "payload": {
     "kind": "grid",
-    "provider": "departments"
+    "provider": "entity",
+    "parameters": {
+      "entity": "Department",
+      "fields": [
+        "Code",
+        "Name",
+        "Description",
+        "IsActive"
+      ],
+      "search": [
+        "Code",
+        "Name",
+        "Description"
+      ],
+      "sort": [
+        "Name"
+      ],
+      "counts": [
+        {
+          "name": "employees",
+          "entity": "Employee",
+          "foreignKey": "DepartmentId",
+          "where": {
+            "IsActive": true
+          }
+        }
+      ]
+    }
   }
 }

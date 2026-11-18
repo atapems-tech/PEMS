@@ -51,3 +51,6 @@
 .is-pinned-start { border-inline-end: 1px solid var(--pems-surface-border); }
 .is-pinned-end { border-inline-start: 1px solid var(--pems-surface-border); }
 .pems-grid__scroller.is-compact .pems-grid__cell { padding-block: 0; font-size: .875rem; }
+
+/* SCRUM-437: the actions column of a row. */
+.pems-grid__actions { display: inline-flex; gap: .25rem; }

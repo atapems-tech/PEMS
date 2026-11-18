@@ -4,31 +4,17 @@
   "appKey": "core",
   "version": 1,
   "title": {
-    "fa": "دپارتمان‌ها",
-    "en": "Departments"
+    "en": "Departments",
+    "fa": "دپارتمان‌ها"
   },
   "description": {
-    "fa": "فهرست دپارتمان‌ها (صفحه‌ی آزمایشی W1 به‌صورت تعریف)",
-    "en": "The departments list (W1 pilot page as a definition)"
+    "en": "Departments list (page definition)",
+    "fa": "فهرست دپارتمان‌ها (تعریف صفحه)"
   },
   "payload": {
     "layout": "list-page",
     "route": "departments",
     "regions": {
-      "toolbar": [
-        {
-          "id": "new",
-          "component": "button",
-          "options": {
-            "label": {
-              "fa": "دپارتمان جدید",
-              "en": "New department"
-            },
-            "tone": "primary",
-            "href": "/f/department-create"
-          }
-        }
-      ],
       "content": [
         {
           "id": "grid",
@@ -36,7 +22,7 @@
           "options": {
             "id": "departments",
             "url": "/d/departments-grid",
-            "idField": "id",
+            "idField": "departmentId",
             "selectable": false,
             "columns": [
               {
@@ -45,7 +31,6 @@
                   "en": "Code",
                   "fa": "کد"
                 },
-                "type": "text",
                 "width": 140
               },
               {
@@ -70,17 +55,52 @@
                   "en": "Active employees",
                   "fa": "کارکنان فعال"
                 },
-                "type": "number",
-                "width": 140
+                "width": 140,
+                "type": "number"
               },
               {
-                "key": "created",
+                "key": "isActive",
                 "header": {
-                  "en": "Created",
-                  "fa": "ایجاد"
+                  "en": "Active",
+                  "fa": "فعال"
                 },
-                "type": "date",
-                "width": 140
+                "width": 100,
+                "type": "bool"
+              },
+              {
+                "key": "_actions",
+                "header": {
+                  "en": "Actions",
+                  "fa": "عملیات"
+                },
+                "type": "actions",
+                "width": 280,
+                "sortable": false,
+                "filterable": false,
+                "actions": [
+                  {
+                    "key": "edit",
+                    "label": {
+                      "en": "Edit",
+                      "fa": "ویرایش"
+                    },
+                    "url": "/f/departments-edit/{id}",
+                    "method": "get"
+                  },
+                  {
+                    "key": "toggle",
+                    "label": {
+                      "en": "Activate / deactivate",
+                      "fa": "فعال / غیرفعال"
+                    },
+                    "url": "/a/departments-toggle",
+                    "method": "post",
+                    "confirm": {
+                      "en": "Change the status?",
+                      "fa": "وضعیت تغییر کند؟"
+                    }
+                  }
+                ]
               }
             ],
             "texts": {
@@ -157,6 +177,20 @@
                 "fa": "حذف"
               }
             }
+          }
+        }
+      ],
+      "toolbar": [
+        {
+          "id": "new",
+          "component": "button",
+          "options": {
+            "label": {
+              "en": "New department",
+              "fa": "دپارتمان جدید"
+            },
+            "tone": "primary",
+            "href": "/f/departments-create"
           }
         }
       ]

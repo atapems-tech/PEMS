@@ -5,44 +5,78 @@ using System.Text.Json;
 using System.Text.Json.Nodes;
 using Microsoft.EntityFrameworkCore;
 using PEMS.Application.Definitions;
+using PEMS.Application.Expressions;
 using PEMS.Application.Grids;
 using PEMS.Persistence.Context;
 using PEMS.UI.Abstractions;
 
 namespace PEMS.Web.Definitions;
 
-// SCRUM-437 / SCRUM-342 (the waves): entity-backed definitions. A list, an option list and a create action for a plain master-data entity are JSON only: the entity is registered here once, with the
-// permissions that guard it and the properties a definition may read and write; the generic provider and handlers below do the rest. A definition can only reach what the catalog registers, and the
-// catalog's permissions are checked by the code, not by the definition (a definition cannot widen access).
+// The entity layer of the definitions (SCRUM-437, SCRUM-342, the waves). A list, an option list, a create, an edit, a delete and an activate/deactivate toggle of a master-data entity are JSON only: the
+// entity is registered once with the permissions and roles that guard it and the properties a definition may read and write, and the generic provider and handlers below do the rest. There are no
+// per-entity handlers: what differs between entities is data (the catalog entry and the definition files), not code. A definition can only reach what the catalog registers, and the catalog's permissions
+// and roles are checked by the code on every read and write (a definition cannot widen access).
 
-/// <summary>A registered entity: its CLR type, the permission to read and to create ("Module.Action", null = any signed-in user), and the properties a definition may use.</summary>
-public sealed record EntityRegistration(string Name, Type ClrType, string? ReadPermission, string? CreatePermission, IReadOnlySet<string> Readable, IReadOnlySet<string> Writable);
+/// <summary>A registered entity: its CLR type, who may read and write it, and the properties a definition may use.</summary>
+public sealed record EntityRegistration(string Name, Type ClrType, string KeyProperty, string? ReadPermission, string? CreatePermission, string? EditPermission, string? DeletePermission,
+    IReadOnlyCollection<string>? ReadRoles, IReadOnlyCollection<string>? WriteRoles, IReadOnlySet<string> Readable, IReadOnlySet<string> Writable, Action<object>? BeforeCreate);
+
+/// <summary>Fluent registration of one entity: <c>.Add&lt;Department&gt;("DepartmentId", e => e.Create("Module.Create").Roles(["Admin"]).Readable("Code","Name").Writable("Code","Name"))</c>.</summary>
+public sealed class EntityBuilder<T> where T : class
+{
+    internal string? ReadPermission, CreatePermission, EditPermission, DeletePermission;
+    internal IReadOnlyCollection<string>? ReadRoles, WriteRoles;
+    internal readonly List<string> ReadableNames = [], WritableNames = [];
+    internal Action<T>? Hook;
+
+    /// <summary>"Module.Action" needed to read; null = any signed-in user.</summary>
+    public EntityBuilder<T> Read(string? permission) { ReadPermission = permission; return this; }
+    public EntityBuilder<T> Create(string? permission) { CreatePermission = permission; return this; }
+    public EntityBuilder<T> Edit(string? permission) { EditPermission = permission; return this; }
+    public EntityBuilder<T> Delete(string? permission) { DeletePermission = permission; return this; }
+    /// <summary>Roles that may read (all), and roles that may write (create, edit, delete); null = no role restriction beyond the permission.</summary>
+    public EntityBuilder<T> Roles(string[]? read, string[]? write) { ReadRoles = read; WriteRoles = write; return this; }
+    public EntityBuilder<T> Readable(params string[] names) { ReadableNames.AddRange(names); return this; }
+    public EntityBuilder<T> Writable(params string[] names) { WritableNames.AddRange(names); return this; }
+    /// <summary>A technical step for a row before it is saved (a normalized name the framework needs); not a business rule.</summary>
+    public EntityBuilder<T> BeforeCreate(Action<T> hook) { Hook = hook; return this; }
+}
 
 public sealed class EntityCatalog
 {
     private readonly Dictionary<string, EntityRegistration> _entities = new(StringComparer.Ordinal);
 
-    /// <param name="readable">The property names a grid or an option list may expose.</param>
-    /// <param name="writable">The property names a create action may set.</param>
-    public EntityCatalog Add<T>(string? readPermission, string? createPermission, string[] readable, string[] writable) where T : class
+    public EntityCatalog Add<T>(string keyProperty, Action<EntityBuilder<T>> configure) where T : class
     {
+        var b = new EntityBuilder<T>();
+        configure(b);
         var props = typeof(T).GetProperties(BindingFlags.Public | BindingFlags.Instance).Select(p => p.Name).ToHashSet(StringComparer.Ordinal);
-        foreach (var name in readable.Concat(writable))
+        foreach (var name in b.ReadableNames.Concat(b.WritableNames).Append(keyProperty))
             if (!props.Contains(name)) throw new InvalidOperationException($"{typeof(T).Name} has no property '{name}'.");
-        _entities[typeof(T).Name] = new EntityRegistration(typeof(T).Name, typeof(T), readPermission, createPermission, readable.ToHashSet(StringComparer.Ordinal), writable.ToHashSet(StringComparer.Ordinal));
+        var readable = b.ReadableNames.Append(keyProperty).ToHashSet(StringComparer.Ordinal);
+        var entityName = typeof(T).Name.Split('`')[0];
+        _entities[entityName] = new EntityRegistration(entityName, typeof(T), keyProperty, b.ReadPermission, b.CreatePermission, b.EditPermission, b.DeletePermission, b.ReadRoles, b.WriteRoles,
+            readable, b.WritableNames.ToHashSet(StringComparer.Ordinal), b.Hook is null ? null : o => b.Hook((T)o));
         return this;
     }
 
     public EntityRegistration? Get(string? name) => name is not null && _entities.TryGetValue(name, out var e) ? e : null;
     public IReadOnlyCollection<string> Names => _entities.Keys;
 
-    /// <summary>The entities of the product that definitions may use. Add one line per master-data entity (and the permissions that guard it); the definition files do the rest.</summary>
-    public static EntityCatalog Default() => new EntityCatalog()
-        .Add<PEMS.Domain.Entities.MaterialUOM>(null, "InventoryMasterData.Create", ["MaterialUOMId", "Code", "Name", "Description", "ConversionFactor", "IsActive", "CreatedDate"], ["Code", "Name", "Description", "ConversionFactor", "IsActive", "CreatedDate"])
-        .Add<PEMS.Domain.Entities.MaterialCategory>(null, "InventoryMasterData.Create", ["MaterialCategoryId", "Code", "Name", "Description", "ParentCategoryId", "IsActive", "CreatedDate"], ["Code", "Name", "Description", "ParentCategoryId", "IsActive", "CreatedDate"])
-        .Add<PEMS.Domain.Entities.Warehouse>(null, "InventoryMasterData.Create", ["WarehouseId", "Code", "Name", "Description", "IsActive", "CreatedDate"], ["Code", "Name", "Description", "IsActive", "CreatedDate"]);
+    /// <summary>The entities of the product that definitions may use: one registration per entity; the definition files do the rest (see tools/definitions).</summary>
+    public static EntityCatalog Default() => EntityCatalogDefaults.Build();
 
     internal static string Camel(string name) => char.ToLowerInvariant(name[0]) + name[1..];
+}
+
+/// <summary>The access check shared by every generic provider and handler: the catalog's permission and roles, never the definition's say-so.</summary>
+internal static class EntityAccess
+{
+    public static async Task<bool> CanReadAsync(IServiceProvider scope, EntityRegistration e, IReadOnlyCollection<string> roles, CancellationToken ct)
+        => (e.ReadRoles is null || e.ReadRoles.Any(r => roles.Contains(r, StringComparer.OrdinalIgnoreCase))) && await scope.GetRequiredService<IDefinitionAccess>().CanOpenAsync(e.ReadPermission, roles, ct);
+
+    public static async Task<bool> CanWriteAsync(IServiceProvider scope, EntityRegistration e, string? permission, IReadOnlyCollection<string> roles, CancellationToken ct)
+        => (e.WriteRoles is null || e.WriteRoles.Any(r => roles.Contains(r, StringComparer.OrdinalIgnoreCase))) && await scope.GetRequiredService<IDefinitionAccess>().CanOpenAsync(permission, roles, ct);
 }
 
 internal static class EntityJson
@@ -56,9 +90,90 @@ internal static class EntityJson
         t = Nullable.GetUnderlyingType(t) ?? t;
         return t == typeof(string) || t == typeof(int) || t == typeof(long) || t == typeof(decimal) || t == typeof(double) || t == typeof(bool) || t == typeof(DateTime);
     }
+
+    public sealed class NotConvertible;
+
+    /// <summary>A form value or a default converted to the type of a property: null for empty, <see cref="NotConvertible"/> when it does not fit.</summary>
+    public static object? Convert(Type type, JsonNode? json) => json is null ? null : Convert(type, json is JsonValue v && v.GetValueKind() == JsonValueKind.String ? (string?)v : json.ToJsonString());
+
+    public static object? Convert(Type type, string? text)
+    {
+        var target = Nullable.GetUnderlyingType(type) ?? type;
+        if (target == typeof(string)) return string.IsNullOrWhiteSpace(text) ? (type == typeof(string) && Nullable.GetUnderlyingType(type) is null && !IsNullableReference(type) ? "" : null) : text.Trim();
+        if (text is "$now" && target == typeof(DateTime)) return DateTime.Now;
+        if (text is "$utcnow" && target == typeof(DateTime)) return DateTime.UtcNow;
+        if (string.IsNullOrWhiteSpace(text)) return Nullable.GetUnderlyingType(type) is null && type.IsValueType ? Activator.CreateInstance(type) : null;
+        if (target == typeof(bool)) return string.Equals(text, "true", StringComparison.OrdinalIgnoreCase) ? true : string.Equals(text, "false", StringComparison.OrdinalIgnoreCase) ? false : new NotConvertible();
+        if (target == typeof(DateTime)) return DateTime.TryParse(FormEngine.NormalizeDigits(text), CultureInfo.InvariantCulture, DateTimeStyles.None, out var dt) ? dt : new NotConvertible();
+        if (!FormEngine.TryNumber(text, out var n)) return new NotConvertible();
+        try { return System.Convert.ChangeType(n, target, CultureInfo.InvariantCulture); } catch (Exception ex) when (ex is OverflowException or InvalidCastException) { return new NotConvertible(); }
+    }
+
+    // string? properties are nullable reference types: an empty value is null for them, "" for a required string; the CLR cannot tell, so "required" in the definition decides and an empty string is stored as null
+    private static bool IsNullableReference(Type t) => true;
+
+    public static string Show(object? v) => v switch { null => "", DateTime d => d.ToString("s", CultureInfo.InvariantCulture), bool b => b ? "true" : "false", IFormattable f => f.ToString(null, CultureInfo.InvariantCulture), _ => v.ToString() ?? "" };
+
+    public static Expression<Func<T, bool>> KeyEquals<T>(string keyProperty, object key)
+    {
+        var x = Expression.Parameter(typeof(T), "x");
+        var pi = typeof(T).GetProperty(keyProperty)!;
+        return Expression.Lambda<Func<T, bool>>(Expression.Equal(Expression.Property(x, pi), Expression.Constant(System.Convert.ChangeType(key, Nullable.GetUnderlyingType(pi.PropertyType) ?? pi.PropertyType, CultureInfo.InvariantCulture), pi.PropertyType)), x);
+    }
+
+    private static readonly NullabilityInfoContext Nullability = new();
+
+    /// <summary>Sets a property; an empty text for a property that is not nullable becomes "" (the framework would refuse null).</summary>
+    public static void SetValue(PropertyInfo pi, object row, object? value)
+    {
+        if (value is null && pi.PropertyType == typeof(string) && Nullability.Create(pi).WriteState == NullabilityState.NotNull) value = "";
+        pi.SetValue(row, value);
+    }
+
+    public static IReadOnlyDictionary<string, object?> Row(object entity, EntityRegistration e)
+        => e.Readable.ToDictionary(n => n, n => entity.GetType().GetProperty(n)!.GetValue(entity), StringComparer.Ordinal);
+
+    public static readonly string[] RuleRoots = ["row", "values", "user"];
+
+    /// <summary>The <c>deny</c> rules of an action: <c>{ when: expression over row, values and user, message }</c>; the first that holds refuses.</summary>
+    public static IReadOnlyList<DefinitionFieldError> CheckDeny(JsonNode? deny, EntityRegistration e)
+    {
+        var errors = new List<DefinitionFieldError>();
+        if (deny is null) return errors;
+        if (deny is not JsonArray rules) return [new("/deny", "wrong-type", "Def_Err_Type", "deny is a list of rules.")];
+        for (var i = 0; i < rules.Count; i++)
+        {
+            if (rules[i] is not JsonObject r) { errors.Add(new($"/deny/{i}", "wrong-type", "Def_Err_Type", "A deny rule is an object.")); continue; }
+            var when = Str(r["when"]);
+            if (string.IsNullOrWhiteSpace(when)) errors.Add(new($"/deny/{i}/when", "required", "Def_Err_Required", "A deny rule needs a condition."));
+            else if (!ExpressionCompiler.TryCompile(when, out _, out var ex, RuleRoots)) errors.Add(new($"/deny/{i}/when", ex!.Code, "Def_Err_Expression", ex.Message));
+            DataSourceDefinitionKind.CheckLabel(r["message"], $"/deny/{i}/message", errors);
+        }
+        return errors;
+    }
+
+    /// <summary>The first deny rule that holds for this row, with its message; null when none does.</summary>
+    public static TranslatableText? Denied(JsonNode? deny, EntityRegistration e, object? entity, IReadOnlyDictionary<string, string?> values, string? userName, IReadOnlyCollection<string> roles)
+    {
+        if (deny is not JsonArray rules) return null;
+        var ctx = new ExpressionContext(new Dictionary<string, object?>
+        {
+            ["row"] = entity is null ? new Dictionary<string, object?>() : Row(entity, e).ToDictionary(p => p.Key, p => (object?)(p.Value is DateTime d ? d.ToString("s", CultureInfo.InvariantCulture) : p.Value is int i ? (double)i : p.Value is long l ? (double)l : p.Value is decimal m ? (double)m : p.Value)),
+            ["values"] = values.ToDictionary(p => p.Key, p => (object?)p.Value),
+            ["user"] = new Dictionary<string, object?> { ["name"] = userName, ["roles"] = roles.ToList() }
+        }, DateTime.Today);
+        foreach (var r in rules.OfType<JsonObject>())
+            if (ExpressionCompiler.Compile(Str(r["when"])!, RuleRoots).EvaluateCondition(ctx))
+                return r["message"]?.Deserialize<TranslatableText>(PemsJson.Options) ?? TranslatableText.Of(("en", "This is not allowed."), ("fa", "این کار مجاز نیست."));
+        return null;
+    }
 }
 
-/// <summary>Grid rows of a registered entity: <c>{ "kind": "grid", "provider": "entity", "parameters": { "entity": "MaterialUOM", "fields": ["Code", "Name"], "search": ["Code", "Name"] } }</c>.</summary>
+/// <summary>
+/// Grid rows of a registered entity: <c>{ "kind": "grid", "provider": "entity", "parameters": { "entity": "Department", "fields": ["Code", "Name"], "search": ["Code", "Name"], "sort": ["-Name"],
+/// "counts": [{ "name": "employees", "entity": "Employee", "foreignKey": "DepartmentId", "where": { "IsActive": true } }] } }</c>. <c>counts</c> adds a column with the number of related rows
+/// (the related entity is registered too and read with its own rules).
+/// </summary>
 public sealed class EntityGridProvider(IServiceScopeFactory scopes, EntityCatalog catalog) : IGridDataProvider
 {
     public string Key => "entity";
@@ -75,6 +190,32 @@ public sealed class EntityGridProvider(IServiceScopeFactory scopes, EntityCatalo
             if (!entity.Readable.Contains(f)) errors.Add(new("/fields", "not-readable", "Def_Err_NotReadable", $"'{f}' is not a readable property of {entity.Name}."));
         foreach (var s in EntityJson.Names(parameters["search"]))
             if (entity.ClrType.GetProperty(s)?.PropertyType != typeof(string)) errors.Add(new("/search", "not-text", "Def_Err_Type", $"'{s}' is not a text property; only text properties are searched."));
+        foreach (var s in EntityJson.Names(parameters["sort"]))
+            if (!fields.Contains(s.TrimStart('-'))) errors.Add(new("/sort", "not-exposed", "Def_Err_NotReadable", $"The default sort '{s}' must be one of the fields."));
+        if (parameters["counts"] is JsonArray counts)
+            for (var i = 0; i < counts.Count; i++)
+            {
+                if (counts[i] is not JsonObject c) { errors.Add(new($"/counts/{i}", "wrong-type", "Def_Err_Type", "A count is an object.")); continue; }
+                var related = catalog.Get(EntityJson.Str(c["entity"]));
+                var fk = EntityJson.Str(c["foreignKey"]);
+                if (string.IsNullOrWhiteSpace(EntityJson.Str(c["name"]))) errors.Add(new($"/counts/{i}/name", "required", "Def_Err_Required", "A count needs a name (the column key)."));
+                if (related is null) { errors.Add(new($"/counts/{i}/entity", "unknown-entity", "Def_Err_UnknownEntity", "The related entity is not registered.")); continue; }
+                if (fk is null || !related.Readable.Contains(fk)) errors.Add(new($"/counts/{i}/foreignKey", "not-readable", "Def_Err_NotReadable", $"'{fk}' is not a readable property of {related.Name}."));
+                if (c["where"] is JsonObject where)
+                    foreach (var (name, v) in where)
+                        if (!related.Readable.Contains(name) || EntityJson.Convert(related.ClrType.GetProperty(name)!.PropertyType, v) is EntityJson.NotConvertible) errors.Add(new($"/counts/{i}/where/{name}", "not-readable", "Def_Err_NotReadable", $"'{name}' is not a readable property of {related.Name} or the value does not fit."));
+            }
+        if (parameters["lookups"] is JsonArray lookups)
+            for (var i = 0; i < lookups.Count; i++)
+            {
+                if (lookups[i] is not JsonObject l) { errors.Add(new($"/lookups/{i}", "wrong-type", "Def_Err_Type", "A lookup is an object.")); continue; }
+                var target = catalog.Get(EntityJson.Str(l["entity"]));
+                var fk = EntityJson.Str(l["foreignKey"]);
+                if (string.IsNullOrWhiteSpace(EntityJson.Str(l["name"]))) errors.Add(new($"/lookups/{i}/name", "required", "Def_Err_Required", "A lookup needs a name (the column key)."));
+                if (target is null) { errors.Add(new($"/lookups/{i}/entity", "unknown-entity", "Def_Err_UnknownEntity", "The looked-up entity is not registered.")); continue; }
+                if (fk is null || !entity.Readable.Contains(fk)) errors.Add(new($"/lookups/{i}/foreignKey", "not-readable", "Def_Err_NotReadable", $"'{fk}' is not a readable property of {entity.Name}."));
+                if (!target.Readable.Contains(EntityJson.Str(l["label"]) ?? "")) errors.Add(new($"/lookups/{i}/label", "not-readable", "Def_Err_NotReadable", $"'{EntityJson.Str(l["label"])}' is not a readable property of {target.Name}."));
+            }
         return errors;
     }
 
@@ -82,36 +223,101 @@ public sealed class EntityGridProvider(IServiceScopeFactory scopes, EntityCatalo
     {
         var entity = catalog.Get(request.Parameters.GetValueOrDefault("entity")) ?? throw new GridQueryException("unknown entity");
         using var scope = scopes.CreateScope();
-        if (!await scope.ServiceProvider.GetRequiredService<IDefinitionAccess>().CanOpenAsync(entity.ReadPermission, request.Roles, ct)) throw new UnauthorizedAccessException();
+        if (!await EntityAccess.CanReadAsync(scope.ServiceProvider, entity, request.Roles, ct)) throw new UnauthorizedAccessException();
         var db = scope.ServiceProvider.GetRequiredService<PEMSDbContext>();
-        var fields = (JsonNode.Parse(request.Parameters.GetValueOrDefault("fields") ?? "[]") as JsonArray ?? []).Select(x => EntityJson.Str(x) ?? "").ToArray();
-        var search = (JsonNode.Parse(request.Parameters.GetValueOrDefault("search") ?? "[]") as JsonArray ?? []).Select(x => EntityJson.Str(x) ?? "").ToHashSet(StringComparer.Ordinal);
+        string[] Names(string key) => (JsonNode.Parse(request.Parameters.GetValueOrDefault(key) ?? "[]") as JsonArray ?? []).Select(x => EntityJson.Str(x) ?? "").ToArray();
+        var fields = Names("fields");
+        var grid = request.Grid.Sort.Count == 0 && Names("sort").Length > 0
+            ? request.Grid with { Sort = Names("sort").Select(s => new GridSort(EntityCatalog.Camel(s.TrimStart('-')), s.StartsWith('-'))).ToList() } : request.Grid;
         var method = typeof(EntityGridProvider).GetMethod(nameof(Query), BindingFlags.NonPublic | BindingFlags.Static)!.MakeGenericMethod(entity.ClrType);
-        return await (Task<(IReadOnlyList<object>, int)>)method.Invoke(null, [db, request.Grid, fields, search, entity, ct])!;
+        var (items, total) = await (Task<(List<Dictionary<string, object?>>, int)>)method.Invoke(null, [db, grid, fields, Names("search").ToHashSet(StringComparer.Ordinal), entity, ct])!;
+
+        // related counts: one grouped query per count for the rows of this page only
+        if (JsonNode.Parse(request.Parameters.GetValueOrDefault("counts") ?? "[]") is JsonArray counts && counts.Count > 0 && items.Count > 0)
+            foreach (var c in counts.OfType<JsonObject>())
+            {
+                var related = catalog.Get(EntityJson.Str(c["entity"]))!;
+                if (!await EntityAccess.CanReadAsync(scope.ServiceProvider, related, request.Roles, ct)) { foreach (var row in items) row[EntityJson.Str(c["name"])!] = null; continue; }
+                var keyName = EntityCatalog.Camel(entity.KeyProperty);
+                var keys = items.Select(r => r[keyName]!).ToList();
+                var cm = typeof(EntityGridProvider).GetMethod(nameof(Counts), BindingFlags.NonPublic | BindingFlags.Static)!.MakeGenericMethod(related.ClrType);
+                var map = await (Task<Dictionary<string, int>>)cm.Invoke(null, [db, keys, EntityJson.Str(c["foreignKey"])!, c["where"] as JsonObject, ct])!;
+                foreach (var row in items) row[EntityJson.Str(c["name"])!] = map.GetValueOrDefault(EntityJson.Show(row[keyName]));
+            }
+        // lookups: the label of a related row (a department name for a department id), one query per lookup for the ids of this page
+        if (JsonNode.Parse(request.Parameters.GetValueOrDefault("lookups") ?? "[]") is JsonArray lookups && lookups.Count > 0 && items.Count > 0)
+            foreach (var l in lookups.OfType<JsonObject>())
+            {
+                var target = catalog.Get(EntityJson.Str(l["entity"]))!;
+                var column = EntityJson.Str(l["name"])!;
+                if (!await EntityAccess.CanReadAsync(scope.ServiceProvider, target, request.Roles, ct)) { foreach (var row in items) row[column] = null; continue; }
+                var fkName = EntityCatalog.Camel(EntityJson.Str(l["foreignKey"])!);
+                var ids = items.Select(r => r.GetValueOrDefault(fkName)).Where(v => v is not null).Distinct().ToList();
+                var lm = typeof(EntityGridProvider).GetMethod(nameof(Labels), BindingFlags.NonPublic | BindingFlags.Static)!.MakeGenericMethod(target.ClrType);
+                var labels = await (Task<Dictionary<string, string>>)lm.Invoke(null, [db, ids!, target.KeyProperty, EntityJson.Str(l["label"])!, ct])!;
+                foreach (var row in items) row[column] = row.GetValueOrDefault(fkName) is { } v ? labels.GetValueOrDefault(EntityJson.Show(v)) : null;
+            }
+        return (items.Cast<object>().ToList(), total);
     }
 
-    private static async Task<(IReadOnlyList<object> Items, int Total)> Query<T>(PEMSDbContext db, GridRequest request, string[] fields, HashSet<string> search, EntityRegistration entity, CancellationToken ct) where T : class
+    private static async Task<Dictionary<string, string>> Labels<T>(PEMSDbContext db, List<object> ids, string keyProperty, string labelProperty, CancellationToken ct) where T : class
+    {
+        var x = Expression.Parameter(typeof(T), "x");
+        var key = typeof(T).GetProperty(keyProperty)!;
+        var keyType = Nullable.GetUnderlyingType(key.PropertyType) ?? key.PropertyType;
+        var list = (System.Collections.IList)Activator.CreateInstance(typeof(List<>).MakeGenericType(keyType))!;
+        foreach (var id in ids) list.Add(System.Convert.ChangeType(id, keyType, CultureInfo.InvariantCulture));
+        Expression member = Expression.Property(x, key);
+        if (key.PropertyType != keyType) member = Expression.Property(member, "Value");
+        var predicate = Expression.Call(typeof(Enumerable), nameof(Enumerable.Contains), [keyType], Expression.Constant(list), member);
+        var rows = await db.Set<T>().AsNoTracking().Where(Expression.Lambda<Func<T, bool>>(predicate, x)).ToListAsync(ct);
+        var label = typeof(T).GetProperty(labelProperty)!;
+        return rows.ToDictionary(r => EntityJson.Show(key.GetValue(r)), r => EntityJson.Show(label.GetValue(r)));
+    }
+
+    private static async Task<(List<Dictionary<string, object?>> Items, int Total)> Query<T>(PEMSDbContext db, GridRequest request, string[] fields, HashSet<string> search, EntityRegistration entity, CancellationToken ct) where T : class
     {
         var gridFields = new GridFields<T>();
         var add = typeof(GridFields<T>).GetMethod("Add")!;
-        foreach (var name in fields)
+        foreach (var name in fields.Append(entity.KeyProperty).Distinct())
         {
             var pi = typeof(T).GetProperty(name)!;
             var p = Expression.Parameter(typeof(T), "x");
-            var lambda = Expression.Lambda(Expression.Property(p, pi), p);
-            add.MakeGenericMethod(pi.PropertyType).Invoke(gridFields, [EntityCatalog.Camel(name), lambda, search.Contains(name)]);
+            add.MakeGenericMethod(pi.PropertyType).Invoke(gridFields, [EntityCatalog.Camel(name), Expression.Lambda(Expression.Property(p, pi), p), search.Contains(name)]);
         }
+        gridFields.TieBreak(EntityCatalog.Camel(entity.KeyProperty));
         var query = db.Set<T>().AsNoTracking();
         var total = await query.ApplyGridFilters(request, gridFields).CountAsync(ct);
         var rows = await query.ApplyGridFilters(request, gridFields).ApplyGridSort(request, gridFields).Paged(request).ToListAsync(ct);
-        var props = fields.Select(f => (Name: EntityCatalog.Camel(f), Prop: typeof(T).GetProperty(f)!)).ToList();
+        var props = fields.Append(entity.KeyProperty).Distinct().Select(f => (Name: EntityCatalog.Camel(f), Prop: typeof(T).GetProperty(f)!)).ToList();
         var items = rows.Select(r =>
         {
             var d = new Dictionary<string, object?>();
             foreach (var (name, prop) in props) d[name] = prop.GetValue(r) is DateTime dt ? dt.ToString("s", CultureInfo.InvariantCulture) : prop.GetValue(r);
-            return (object)d;
+            return d;
         }).ToList();
         return (items, total);
+    }
+
+    private static async Task<Dictionary<string, int>> Counts<T>(PEMSDbContext db, List<object> keys, string foreignKey, JsonObject? where, CancellationToken ct) where T : class
+    {
+        var x = Expression.Parameter(typeof(T), "x");
+        var fk = typeof(T).GetProperty(foreignKey)!;
+        var fkType = Nullable.GetUnderlyingType(fk.PropertyType) ?? fk.PropertyType;
+        var list = (System.Collections.IList)Activator.CreateInstance(typeof(List<>).MakeGenericType(fkType))!;
+        foreach (var k in keys) list.Add(System.Convert.ChangeType(k, fkType, CultureInfo.InvariantCulture));
+        Expression member = Expression.Property(x, fk);
+        if (fk.PropertyType != fkType) member = Expression.Property(member, "Value");
+        Expression predicate = Expression.Call(typeof(Enumerable), nameof(Enumerable.Contains), [fkType], Expression.Constant(list), member);
+        if (fk.PropertyType != fkType) predicate = Expression.AndAlso(Expression.Property(Expression.Property(x, fk), "HasValue"), predicate);
+        if (where is not null)
+            foreach (var (name, v) in where)
+            {
+                var pi = typeof(T).GetProperty(name)!;
+                predicate = Expression.AndAlso(predicate, Expression.Equal(Expression.Property(x, pi), Expression.Constant(EntityJson.Convert(pi.PropertyType, v), pi.PropertyType)));
+            }
+        var rows = await db.Set<T>().AsNoTracking().Where(Expression.Lambda<Func<T, bool>>(predicate, x)).Select(Expression.Lambda<Func<T, object>>(Expression.Convert(member, typeof(object)), x)).ToListAsync(ct);
+        return rows.GroupBy(r => EntityJson.Show(r)).ToDictionary(g => g.Key, g => g.Count());
     }
 }
 
@@ -136,7 +342,7 @@ public sealed class EntityOptionsProvider(IServiceScopeFactory scopes, EntityCat
     {
         var entity = catalog.Get(request.Parameters.GetValueOrDefault("entity")) ?? throw new InvalidOperationException("unknown entity");
         using var scope = scopes.CreateScope();
-        if (!await scope.ServiceProvider.GetRequiredService<IDefinitionAccess>().CanOpenAsync(entity.ReadPermission, request.Roles, ct)) return [];
+        if (!await EntityAccess.CanReadAsync(scope.ServiceProvider, entity, request.Roles, ct)) return [];
         var db = scope.ServiceProvider.GetRequiredService<PEMSDbContext>();
         var method = typeof(EntityOptionsProvider).GetMethod(nameof(Load), BindingFlags.NonPublic | BindingFlags.Static)!.MakeGenericMethod(entity.ClrType);
         return await (Task<IReadOnlyList<FieldOption>>)method.Invoke(null, [db, request.Parameters.GetValueOrDefault("value")!, request.Parameters.GetValueOrDefault("label")!, request.Parameters.GetValueOrDefault("active"), ct])!;
@@ -152,39 +358,76 @@ public sealed class EntityOptionsProvider(IServiceScopeFactory scopes, EntityCat
         }
         var vp = typeof(T).GetProperty(value)!; var lp = typeof(T).GetProperty(label)!;
         var rows = await query.Take(2000).ToListAsync(ct);
-        return rows.Select(r => new FieldOption { Value = Convert.ToString(vp.GetValue(r), CultureInfo.InvariantCulture) ?? "", Label = TranslatableText.Literal(Convert.ToString(lp.GetValue(r), CultureInfo.InvariantCulture)) })
+        return rows.Select(r => new FieldOption { Value = System.Convert.ToString(vp.GetValue(r), CultureInfo.InvariantCulture) ?? "", Label = TranslatableText.Literal(System.Convert.ToString(lp.GetValue(r), CultureInfo.InvariantCulture)) })
             .OrderBy(o => o.Label.ToString(), StringComparer.CurrentCultureIgnoreCase).ToList();
     }
 }
 
-/// <summary>
-/// <c>entity.create</c>: creates a row of a registered entity from the form values. Parameters: <c>entity</c>, <c>map</c> (form field to property), <c>required</c> (properties that must not be empty),
-/// <c>defaults</c> (property to a literal, <c>"$now"</c> or <c>"$utcnow"</c>), <c>unique</c> (a list of <c>{ fields, message }</c>: no row may have the same values, text compared without case).
-/// </summary>
-public sealed class EntityCreateAction(IServiceScopeFactory scopes, EntityCatalog catalog) : IActionHandler
+/// <summary>Loads the current values of one row for an edit form: the form's action names the entity and maps form fields to properties; the values come back by form field name.</summary>
+public sealed class EntityRecordLoader(IServiceScopeFactory scopes, EntityCatalog catalog)
 {
-    public string Key => "entity.create";
-    public IReadOnlyCollection<string>? AllowedRoles => null;
+    /// <summary>Null when the row does not exist or the user may not read it.</summary>
+    public async Task<IReadOnlyDictionary<string, string?>?> LoadAsync(JsonObject? actionParameters, string id, IReadOnlyCollection<string> roles, CancellationToken ct)
+    {
+        var entity = catalog.Get(EntityJson.Str(actionParameters?["entity"]));
+        if (entity is null || actionParameters!["map"] is not JsonObject map) return null;
+        using var scope = scopes.CreateScope();
+        if (!await EntityAccess.CanReadAsync(scope.ServiceProvider, entity, roles, ct)) return null;
+        var db = scope.ServiceProvider.GetRequiredService<PEMSDbContext>();
+        var method = typeof(EntityRecordLoader).GetMethod(nameof(Find), BindingFlags.NonPublic | BindingFlags.Static)!.MakeGenericMethod(entity.ClrType);
+        var row = await (Task<object?>)method.Invoke(null, [db, entity.KeyProperty, id, ct])!;
+        if (row is null) return null;
+        return map.ToDictionary(m => m.Key, m => (string?)EntityJson.Show(entity.ClrType.GetProperty(EntityJson.Str(m.Value)!)!.GetValue(row)), StringComparer.Ordinal);
+    }
 
-    public IReadOnlyList<DefinitionFieldError> ValidateParameters(JsonObject? parameters)
+    private static async Task<object?> Find<T>(PEMSDbContext db, string keyProperty, string id, CancellationToken ct) where T : class
+    {
+        if (!EntityJson.Supported(typeof(T).GetProperty(keyProperty)!.PropertyType) || EntityJson.Convert(typeof(T).GetProperty(keyProperty)!.PropertyType, id) is EntityJson.NotConvertible) return null;
+        return await db.Set<T>().AsNoTracking().FirstOrDefaultAsync(EntityJson.KeyEquals<T>(keyProperty, id), ct);
+    }
+}
+
+/// <summary>
+/// The write handlers of the entity layer: <c>entity.create</c>, <c>entity.update</c>, <c>entity.delete</c> and <c>entity.toggle</c> share one parameter vocabulary:
+/// <c>entity</c>; <c>map</c> (form field to property, create and update); <c>required</c>; <c>defaults</c> (create; a literal, <c>"$now"</c> or <c>"$utcnow"</c>); <c>unique</c> (<c>{ fields, message, ignoreEmpty }</c>: no other row
+/// may have the same values, text compared without case, an empty value skipped when <c>ignoreEmpty</c>); <c>deny</c> (<c>{ when, message }</c>: an expression over <c>row</c> (the current row), <c>values</c> and
+/// <c>user</c>; the first that holds refuses); <c>property</c> (toggle: the bool property); <c>deactivate</c> (delete: a bool property set to false instead of removing the row); <c>redirect</c> (create: a path with
+/// <c>{Property}</c> placeholders of the new row). The values of the form carry <c>id</c> for update, delete and toggle.
+/// </summary>
+public abstract class EntityWriteAction(IServiceScopeFactory scopes, EntityCatalog catalog, string key) : IActionHandler
+{
+    public string Key => key;
+    public IReadOnlyCollection<string>? AllowedRoles => null;
+    protected IServiceScopeFactory Scopes => scopes;
+    protected EntityCatalog Catalog => catalog;
+
+    protected abstract string? PermissionOf(EntityRegistration e);
+    protected virtual bool NeedsMap => true;
+
+    protected static TranslatableText Msg(string en, string fa) => TranslatableText.Of(("en", en), ("fa", fa));
+
+    public virtual IReadOnlyList<DefinitionFieldError> ValidateParameters(JsonObject? parameters)
     {
         var entity = catalog.Get(EntityJson.Str(parameters?["entity"]));
         if (entity is null) return [new("/entity", "unknown-entity", "Def_Err_UnknownEntity", $"parameters.entity must be one of: {string.Join(", ", catalog.Names)}.")];
         var errors = new List<DefinitionFieldError>();
-        if (parameters!["map"] is not JsonObject map || map.Count == 0) errors.Add(new("/map", "required", "Def_Err_Required", "map is required: form field to property."));
-        else foreach (var (field, prop) in map)
+        if (NeedsMap)
         {
-            var name = EntityJson.Str(prop) ?? "";
-            var pi = entity.ClrType.GetProperty(name);
-            if (!entity.Writable.Contains(name) || pi is null || !EntityJson.Supported(pi.PropertyType)) errors.Add(new("/map/" + field, "not-writable", "Def_Err_NotWritable", $"'{name}' is not a writable property of {entity.Name}."));
+            if (parameters!["map"] is not JsonObject map || map.Count == 0) errors.Add(new("/map", "required", "Def_Err_Required", "map is required: form field to property."));
+            else foreach (var (field, prop) in map)
+            {
+                var name = EntityJson.Str(prop) ?? "";
+                var pi = entity.ClrType.GetProperty(name);
+                if (!entity.Writable.Contains(name) || pi is null || !EntityJson.Supported(pi.PropertyType)) errors.Add(new("/map/" + field, "not-writable", "Def_Err_NotWritable", $"'{name}' is not a writable property of {entity.Name}."));
+            }
         }
-        foreach (var r in EntityJson.Names(parameters["required"])) if (!entity.Writable.Contains(r)) errors.Add(new("/required", "not-writable", "Def_Err_NotWritable", $"'{r}' is not a writable property."));
+        foreach (var r in EntityJson.Names(parameters!["required"])) if (!entity.Writable.Contains(r)) errors.Add(new("/required", "not-writable", "Def_Err_NotWritable", $"'{r}' is not a writable property."));
         if (parameters["defaults"] is JsonObject defaults)
             foreach (var (name, v) in defaults)
             {
                 var pi = entity.ClrType.GetProperty(name);
                 if (pi is null || !EntityJson.Supported(pi.PropertyType)) errors.Add(new("/defaults/" + name, "not-writable", "Def_Err_NotWritable", $"'{name}' is not a settable property of {entity.Name}."));
-                else if (Convert(pi.PropertyType, v) is NotConvertible) errors.Add(new("/defaults/" + name, "wrong-type", "Def_Err_Type", $"The default of '{name}' does not fit its type."));
+                else if (EntityJson.Convert(pi.PropertyType, v) is EntityJson.NotConvertible) errors.Add(new("/defaults/" + name, "wrong-type", "Def_Err_Type", $"The default of '{name}' does not fit its type."));
             }
         if (parameters["unique"] is JsonArray unique)
             for (var i = 0; i < unique.Count; i++)
@@ -193,28 +436,9 @@ public sealed class EntityCreateAction(IServiceScopeFactory scopes, EntityCatalo
                 foreach (var f in EntityJson.Names(u["fields"])) if (entity.ClrType.GetProperty(f) is null) errors.Add(new($"/unique/{i}/fields", "unknown-field", "Def_Err_UnknownField", $"'{f}' is not a property of {entity.Name}."));
                 DataSourceDefinitionKind.CheckLabel(u["message"], $"/unique/{i}/message", errors);
             }
+        errors.AddRange(EntityJson.CheckDeny(parameters["deny"], entity));
         return errors;
     }
-
-    private sealed class NotConvertible;
-
-    /// <summary>A form value or a default converted to the type of a property: null for empty, <see cref="NotConvertible"/> when it does not fit.</summary>
-    private static object? Convert(Type type, JsonNode? json) => json is null ? null : Convert(type, json is JsonValue v && v.GetValueKind() == JsonValueKind.String ? (string?)v : json.ToJsonString());
-
-    private static object? Convert(Type type, string? text)
-    {
-        var target = Nullable.GetUnderlyingType(type) ?? type;
-        if (target == typeof(string)) return string.IsNullOrWhiteSpace(text) ? (Nullable.GetUnderlyingType(type) is null && type == typeof(string) ? text?.Trim() ?? "" : null) : text.Trim();
-        if (text is "$now" && target == typeof(DateTime)) return DateTime.Now;
-        if (text is "$utcnow" && target == typeof(DateTime)) return DateTime.UtcNow;
-        if (string.IsNullOrWhiteSpace(text)) return Nullable.GetUnderlyingType(type) is null && type.IsValueType ? Activator.CreateInstance(type) : null;
-        if (target == typeof(bool)) return string.Equals(text, "true", StringComparison.OrdinalIgnoreCase) ? true : string.Equals(text, "false", StringComparison.OrdinalIgnoreCase) ? false : new NotConvertible();
-        if (target == typeof(DateTime)) return DateTime.TryParse(FormEngine.NormalizeDigits(text), CultureInfo.InvariantCulture, DateTimeStyles.None, out var dt) ? dt : new NotConvertible();
-        if (!FormEngine.TryNumber(text, out var n)) return new NotConvertible();
-        try { return System.Convert.ChangeType(n, target, CultureInfo.InvariantCulture); } catch (Exception ex) when (ex is OverflowException or InvalidCastException) { return new NotConvertible(); }
-    }
-
-    private static TranslatableText Msg(string en, string fa) => TranslatableText.Of(("en", en), ("fa", fa));
 
     public async Task<ActionOutcome> ExecuteAsync(ActionInvocation invocation, CancellationToken ct)
     {
@@ -222,47 +446,54 @@ public sealed class EntityCreateAction(IServiceScopeFactory scopes, EntityCatalo
         var entity = catalog.Get(EntityJson.Str(p?["entity"]));
         if (entity is null) return ActionOutcome.Refused(Msg("The action is not set up.", "کنش درست تنظیم نشده است."));
         using var scope = scopes.CreateScope();
-        if (!await scope.ServiceProvider.GetRequiredService<IDefinitionAccess>().CanOpenAsync(entity.CreatePermission, invocation.Roles, ct)) return ActionOutcome.Refused(Msg("You may not create this.", "اجازه‌ی ایجاد این مورد را ندارید."));
+        if (!await EntityAccess.CanWriteAsync(scope.ServiceProvider, entity, PermissionOf(entity), invocation.Roles, ct)) return ActionOutcome.Refused(Msg("You may not do this.", "اجازه‌ی انجام این کار را ندارید."));
         var db = scope.ServiceProvider.GetRequiredService<PEMSDbContext>();
+        return await RunAsync(db, entity, p!, invocation, ct);
+    }
 
-        var instance = Activator.CreateInstance(entity.ClrType)!;
-        var map = (JsonObject)p!["map"]!;
+    protected abstract Task<ActionOutcome> RunAsync(PEMSDbContext db, EntityRegistration entity, JsonObject p, ActionInvocation invocation, CancellationToken ct);
+
+    /// <summary>Applies the mapped form values to a row; the first value that does not fit refuses on its field.</summary>
+    protected static ActionOutcome? Apply(EntityRegistration entity, JsonObject p, ActionInvocation invocation, object row)
+    {
+        var map = (JsonObject)p["map"]!;
         foreach (var (field, prop) in map)
         {
             var pi = entity.ClrType.GetProperty(EntityJson.Str(prop)!)!;
-            var value = Convert(pi.PropertyType, invocation.Values.GetValueOrDefault(field));
-            if (value is NotConvertible) return ActionOutcome.Refused(field, Msg("The value is not valid.", "مقدار معتبر نیست."));
-            pi.SetValue(instance, value);
+            var value = EntityJson.Convert(pi.PropertyType, invocation.Values.GetValueOrDefault(field));
+            if (value is EntityJson.NotConvertible) return ActionOutcome.Refused(field, Msg("The value is not valid.", "مقدار معتبر نیست."));
+            EntityJson.SetValue(pi, row, value);
         }
         foreach (var name in EntityJson.Names(p["required"]))
         {
-            var pi = entity.ClrType.GetProperty(name)!;
-            var v = pi.GetValue(instance);
-            if (v is null || v is string s && string.IsNullOrWhiteSpace(s))
-                return ActionOutcome.Refused(map.FirstOrDefault(m => EntityJson.Str(m.Value) == name).Key ?? name, Msg("This field is required.", "این فیلد الزامی است."));
+            var field = map.FirstOrDefault(m => EntityJson.Str(m.Value) == name).Key;
+            var v = entity.ClrType.GetProperty(name)!.GetValue(row);
+            // a required value type (an int key) is missing when nothing was posted, not when it is 0
+            var missing = field is not null ? string.IsNullOrWhiteSpace(invocation.Values.GetValueOrDefault(field)) : v is null || v is string s && string.IsNullOrWhiteSpace(s);
+            if (missing) return ActionOutcome.Refused(field ?? name, Msg("This field is required.", "این فیلد الزامی است."));
         }
-        if (p["defaults"] is JsonObject defaults)
-            foreach (var (name, v) in defaults) { var pi = entity.ClrType.GetProperty(name)!; pi.SetValue(instance, Convert(pi.PropertyType, v)); }
-
-        if (p["unique"] is JsonArray unique)
-            foreach (var u in unique.OfType<JsonObject>())
-            {
-                var fields = EntityJson.Names(u["fields"]);
-                var exists = await (Task<bool>)typeof(EntityCreateAction).GetMethod(nameof(Exists), BindingFlags.NonPublic | BindingFlags.Static)!.MakeGenericMethod(entity.ClrType).Invoke(null, [db, instance, fields, ct])!;
-                if (exists)
-                {
-                    var message = u["message"]?.Deserialize<TranslatableText>(PemsJson.Options) ?? Msg("This already exists.", "این مورد از قبل وجود دارد.");
-                    var field = map.FirstOrDefault(m => fields.Contains(EntityJson.Str(m.Value) ?? "")).Key;
-                    return field is null ? ActionOutcome.Refused(message) : ActionOutcome.Refused(field, message);
-                }
-            }
-
-        db.Add(instance);
-        await db.SaveChangesAsync(ct);
-        return ActionOutcome.Done();
+        return null;
     }
 
-    private static async Task<bool> Exists<T>(PEMSDbContext db, object instance, IReadOnlyList<string> fields, CancellationToken ct) where T : class
+    protected static async Task<ActionOutcome?> CheckUniqueAsync(PEMSDbContext db, EntityRegistration entity, JsonObject p, object row, CancellationToken ct)
+    {
+        if (p["unique"] is not JsonArray unique) return null;
+        var map = p["map"] as JsonObject ?? [];
+        foreach (var u in unique.OfType<JsonObject>())
+        {
+            var fields = EntityJson.Names(u["fields"]);
+            if (u["ignoreEmpty"] is JsonValue ie && ie.TryGetValue<bool>(out var skip) && skip
+                && fields.Any(f => entity.ClrType.GetProperty(f)!.GetValue(row) is null or "")) continue;
+            var exists = await (Task<bool>)typeof(EntityWriteAction).GetMethod(nameof(Exists), BindingFlags.NonPublic | BindingFlags.Static)!.MakeGenericMethod(entity.ClrType).Invoke(null, [db, row, fields, entity.KeyProperty, ct])!;
+            if (!exists) continue;
+            var message = u["message"]?.Deserialize<TranslatableText>(PemsJson.Options) ?? Msg("This already exists.", "این مورد از قبل وجود دارد.");
+            var field = map.FirstOrDefault(m => fields.Contains(EntityJson.Str(m.Value) ?? "")).Key;
+            return field is null ? ActionOutcome.Refused(message) : ActionOutcome.Refused(field, message);
+        }
+        return null;
+    }
+
+    private static async Task<bool> Exists<T>(PEMSDbContext db, object row, IReadOnlyList<string> fields, string keyProperty, CancellationToken ct) where T : class
     {
         var x = Expression.Parameter(typeof(T), "x");
         Expression? all = null;
@@ -270,16 +501,137 @@ public sealed class EntityCreateAction(IServiceScopeFactory scopes, EntityCatalo
         {
             var pi = typeof(T).GetProperty(name)!;
             var left = Expression.Property(x, pi);
-            var value = pi.GetValue(instance);
-            Expression eq;
-            if (pi.PropertyType == typeof(string))
-            {
-                var lower = (value as string ?? "").Trim().ToLowerInvariant();
-                eq = Expression.Equal(Expression.Call(Expression.Coalesce(left, Expression.Constant("")), typeof(string).GetMethod(nameof(string.ToLower), Type.EmptyTypes)!), Expression.Constant(lower));
-            }
-            else eq = Expression.Equal(left, Expression.Constant(value, pi.PropertyType));
+            var value = pi.GetValue(row);
+            Expression eq = pi.PropertyType == typeof(string)
+                ? Expression.Equal(Expression.Call(Expression.Coalesce(left, Expression.Constant("")), typeof(string).GetMethod(nameof(string.ToLower), Type.EmptyTypes)!), Expression.Constant((value as string ?? "").Trim().ToLowerInvariant()))
+                : Expression.Equal(left, Expression.Constant(value, pi.PropertyType));
             all = all is null ? eq : Expression.AndAlso(all, eq);
         }
-        return all is not null && await db.Set<T>().AnyAsync(Expression.Lambda<Func<T, bool>>(all, x), ct);
+        if (all is null) return false;
+        // an edit must not collide with itself
+        var key = typeof(T).GetProperty(keyProperty)!;
+        var self = key.GetValue(row);
+        var isNew = self is null || System.Convert.ToDouble(self, CultureInfo.InvariantCulture) == 0;
+        if (!isNew) all = Expression.AndAlso(all, Expression.NotEqual(Expression.Property(x, key), Expression.Constant(self, key.PropertyType)));
+        return await db.Set<T>().AnyAsync(Expression.Lambda<Func<T, bool>>(all, x), ct);
+    }
+
+    protected static async Task<object?> FindAsync(PEMSDbContext db, EntityRegistration entity, string? id, CancellationToken ct)
+        => string.IsNullOrWhiteSpace(id) ? null : await (Task<object?>)typeof(EntityWriteAction).GetMethod(nameof(Find), BindingFlags.NonPublic | BindingFlags.Static)!.MakeGenericMethod(entity.ClrType).Invoke(null, [db, entity.KeyProperty, id, ct])!;
+
+    private static async Task<object?> Find<T>(PEMSDbContext db, string keyProperty, string id, CancellationToken ct) where T : class
+    {
+        var type = typeof(T).GetProperty(keyProperty)!.PropertyType;
+        return EntityJson.Convert(type, id) is EntityJson.NotConvertible or null ? null : await db.Set<T>().FirstOrDefaultAsync(EntityJson.KeyEquals<T>(keyProperty, id), ct);
+    }
+
+    protected static ActionOutcome NotFound() => ActionOutcome.Refused(Msg("The record no longer exists.", "رکورد دیگر وجود ندارد."));
+}
+
+public sealed class EntityCreateAction(IServiceScopeFactory scopes, EntityCatalog catalog) : EntityWriteAction(scopes, catalog, "entity.create")
+{
+    protected override string? PermissionOf(EntityRegistration e) => e.CreatePermission;
+
+    public override IReadOnlyList<DefinitionFieldError> ValidateParameters(JsonObject? parameters)
+    {
+        var errors = base.ValidateParameters(parameters).ToList();
+        if (parameters?["redirect"] is { } r && (EntityJson.Str(r) is not { } s || !s.StartsWith('/') || s.StartsWith("//"))) errors.Add(new("/redirect", "invalid-redirect", "Def_Err_Redirect", "redirect is a path of this site."));
+        return errors;
+    }
+
+    protected override async Task<ActionOutcome> RunAsync(PEMSDbContext db, EntityRegistration entity, JsonObject p, ActionInvocation invocation, CancellationToken ct)
+    {
+        var row = Activator.CreateInstance(entity.ClrType)!;
+        var applied = Apply(entity, p, invocation, row);
+        if (applied is not null) return applied;
+        if (p["defaults"] is JsonObject defaults)
+            foreach (var (name, v) in defaults) { var pi = entity.ClrType.GetProperty(name)!; EntityJson.SetValue(pi, row, EntityJson.Convert(pi.PropertyType, v)); }
+        var denied = EntityJson.Denied(p["deny"], entity, null, invocation.Values, invocation.UserName, invocation.Roles);
+        if (denied is not null) return ActionOutcome.Refused(denied);
+        var unique = await CheckUniqueAsync(db, entity, p, row, ct);
+        if (unique is not null) return unique;
+        entity.BeforeCreate?.Invoke(row);
+        db.Add(row);
+        await db.SaveChangesAsync(ct);
+        var redirect = EntityJson.Str(p["redirect"]);
+        if (redirect is not null)
+            foreach (var name in entity.Readable)
+                redirect = redirect.Replace("{" + name + "}", Uri.EscapeDataString(EntityJson.Show(entity.ClrType.GetProperty(name)!.GetValue(row))), StringComparison.Ordinal);
+        return ActionOutcome.Done(null, redirect);
+    }
+}
+
+public sealed class EntityUpdateAction(IServiceScopeFactory scopes, EntityCatalog catalog) : EntityWriteAction(scopes, catalog, "entity.update")
+{
+    protected override string? PermissionOf(EntityRegistration e) => e.EditPermission;
+
+    protected override async Task<ActionOutcome> RunAsync(PEMSDbContext db, EntityRegistration entity, JsonObject p, ActionInvocation invocation, CancellationToken ct)
+    {
+        var row = await FindAsync(db, entity, invocation.Values.GetValueOrDefault("id"), ct);
+        if (row is null) return NotFound();
+        var denied = EntityJson.Denied(p["deny"], entity, row, invocation.Values, invocation.UserName, invocation.Roles);
+        if (denied is not null) return ActionOutcome.Refused(denied);
+        var applied = Apply(entity, p, invocation, row);
+        if (applied is not null) { db.Entry(row).State = EntityState.Unchanged; return applied; }
+        var unique = await CheckUniqueAsync(db, entity, p, row, ct);
+        if (unique is not null) { db.Entry(row).Reload(); return unique; }
+        try { await db.SaveChangesAsync(ct); }
+        catch (DbUpdateConcurrencyException) { return ActionOutcome.Refused(Msg("Someone else changed this record at the same time; reload and try again.", "رکورد هم‌زمان توسط کاربر دیگری تغییر کرد؛ دوباره بارگذاری کنید.")); }
+        return ActionOutcome.Done();
+    }
+}
+
+public sealed class EntityDeleteAction(IServiceScopeFactory scopes, EntityCatalog catalog) : EntityWriteAction(scopes, catalog, "entity.delete")
+{
+    protected override string? PermissionOf(EntityRegistration e) => e.DeletePermission;
+    protected override bool NeedsMap => false;
+
+    public override IReadOnlyList<DefinitionFieldError> ValidateParameters(JsonObject? parameters)
+    {
+        var errors = base.ValidateParameters(parameters).ToList();
+        var entity = Catalog.Get(EntityJson.Str(parameters?["entity"]));
+        if (entity is not null && parameters!["deactivate"] is { } d && (!entity.Writable.Contains(EntityJson.Str(d) ?? "") || entity.ClrType.GetProperty(EntityJson.Str(d)!)?.PropertyType != typeof(bool)))
+            errors.Add(new("/deactivate", "not-writable", "Def_Err_NotWritable", "deactivate must be a writable bool property."));
+        return errors;
+    }
+
+    protected override async Task<ActionOutcome> RunAsync(PEMSDbContext db, EntityRegistration entity, JsonObject p, ActionInvocation invocation, CancellationToken ct)
+    {
+        var row = await FindAsync(db, entity, invocation.Values.GetValueOrDefault("id"), ct);
+        if (row is null) return NotFound();
+        var denied = EntityJson.Denied(p["deny"], entity, row, invocation.Values, invocation.UserName, invocation.Roles);
+        if (denied is not null) return ActionOutcome.Refused(denied);
+        if (EntityJson.Str(p["deactivate"]) is { } flag) entity.ClrType.GetProperty(flag)!.SetValue(row, false);
+        else db.Remove(row);
+        try { await db.SaveChangesAsync(ct); }
+        catch (DbUpdateException) { db.ChangeTracker.Clear(); return ActionOutcome.Refused(Msg("This record is in use and cannot be deleted.", "این رکورد در حال استفاده است و حذف نمی‌شود.")); }
+        return ActionOutcome.Done();
+    }
+}
+
+public sealed class EntityToggleAction(IServiceScopeFactory scopes, EntityCatalog catalog) : EntityWriteAction(scopes, catalog, "entity.toggle")
+{
+    protected override string? PermissionOf(EntityRegistration e) => e.EditPermission;
+    protected override bool NeedsMap => false;
+
+    public override IReadOnlyList<DefinitionFieldError> ValidateParameters(JsonObject? parameters)
+    {
+        var errors = base.ValidateParameters(parameters).ToList();
+        var entity = Catalog.Get(EntityJson.Str(parameters?["entity"]));
+        if (entity is not null && (!entity.Writable.Contains(EntityJson.Str(parameters!["property"]) ?? "") || entity.ClrType.GetProperty(EntityJson.Str(parameters["property"]) ?? "")?.PropertyType != typeof(bool)))
+            errors.Add(new("/property", "not-writable", "Def_Err_NotWritable", "property must be a writable bool property."));
+        return errors;
+    }
+
+    protected override async Task<ActionOutcome> RunAsync(PEMSDbContext db, EntityRegistration entity, JsonObject p, ActionInvocation invocation, CancellationToken ct)
+    {
+        var row = await FindAsync(db, entity, invocation.Values.GetValueOrDefault("id"), ct);
+        if (row is null) return NotFound();
+        var denied = EntityJson.Denied(p["deny"], entity, row, invocation.Values, invocation.UserName, invocation.Roles);
+        if (denied is not null) return ActionOutcome.Refused(denied);
+        var pi = entity.ClrType.GetProperty(EntityJson.Str(p["property"])!)!;
+        pi.SetValue(row, !(bool)pi.GetValue(row)!);
+        await db.SaveChangesAsync(ct);
+        return ActionOutcome.Done();
     }
 }

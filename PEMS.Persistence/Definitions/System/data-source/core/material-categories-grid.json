@@ -21,8 +21,7 @@
         "Name",
         "Description",
         "ParentCategoryId",
-        "IsActive",
-        "MaterialCategoryId"
+        "IsActive"
       ],
       "search": [
         "Code",

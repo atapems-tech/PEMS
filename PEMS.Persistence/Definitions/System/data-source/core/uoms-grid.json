@@ -21,8 +21,7 @@
         "Name",
         "Description",
         "ConversionFactor",
-        "IsActive",
-        "MaterialUOMId"
+        "IsActive"
       ],
       "search": [
         "Code",

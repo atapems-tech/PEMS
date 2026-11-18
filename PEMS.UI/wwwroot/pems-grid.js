@@ -30,7 +30,7 @@
         var stateKey = 'PemsGrid.state.' + root.id;
         var viewsKey = cfg.viewsKey ? 'PemsGrid.views.' + cfg.viewsKey : null;
 
-        var cols = cfg.columns.map(function (c) { return { key: c.key, header: c.header, type: c.type || 'text', width: c.width || 140, sortable: c.sortable !== false, filterable: c.filterable !== false, visible: !c.hidden, pinned: c.pinned || null, align: c.align || null }; });
+        var cols = cfg.columns.map(function (c) { return { key: c.key, actions: c.actions || [], header: c.header, type: c.type || 'text', width: c.width || 140, sortable: c.sortable !== false, filterable: c.filterable !== false, visible: !c.hidden, pinned: c.pinned || null, align: c.align || null }; });
         var state = { sort: [], filters: {}, search: '', density: cfg.density || 'comfortable' };
         var pages = {};                 // page number -> rows
         var inflight = {};
@@ -206,7 +206,38 @@
             var all = head.querySelector('[data-slot="check"]');
             if (all) { var n = Object.keys(selection).length; all.checked = allMatching || (n > 0 && n >= Math.min(total || 0, Object.keys(pages).length * cfg.pageSize)); all.indeterminate = !allMatching && n > 0 && !all.checked; }
         }
+        // ---- row actions: an "actions" column of links (get) and posts (post: the id goes to the action, the answer is JSON, the grid reloads)
+        function holds(expr, item) {
+            if (!expr || !window.PemsExpr) return true;
+            try { return window.PemsExpr.compile(expr, ['row']).condition({ row: item }); } catch (e) { return true; }
+        }
+        function runRowAction(a, url, id) {
+            var go = function () {
+                fetch(url, { method: 'POST', credentials: 'same-origin', headers: { 'Accept': 'application/json', 'Content-Type': 'application/x-www-form-urlencoded', 'RequestVerificationToken': token() }, body: 'id=' + encodeURIComponent(id) })
+                    .then(function (r) { return r.json().catch(function () { return {}; }).then(function (j) { return { ok: r.ok, body: j }; }); })
+                    .then(function (r) { if (r.ok) { reload(); if (r.body && r.body.message) statusEl.textContent = r.body.message; } else statusEl.textContent = (r.body && r.body.error) || T.error; })
+                    .catch(function () { statusEl.textContent = T.error; });
+            };
+            if (a.confirm && window.PemsDialog && typeof window.PemsDialog.confirm === 'function') window.PemsDialog.confirm(a.confirm).then(function (ok) { if (ok) go(); });
+            else go();
+        }
+        function actionsCell(c, item) {
+            var cell = tpl('dg-cell-actions'), box = slot(cell, 'actions');
+            if (item) (c.actions || []).forEach(function (a) {
+                if (!holds(a.showWhen, item)) return;
+                var id = String(item[cfg.idField]), url = a.url.split('{id}').join(encodeURIComponent(id));
+                var post = a.method === 'post', el = tpl(post ? 'dg-row-button' : 'dg-row-link'), node = slot(el, post ? 'button' : 'link');
+                node.textContent = a.label;
+                node.classList.add('btn-outline-' + (a.tone || 'secondary'));
+                if (post) node.addEventListener('click', function () { runRowAction(a, url, id); }); else node.setAttribute('href', url);
+                box.appendChild(el);
+            });
+            cell.classList.add('is-align-start');
+            pinCell(cell, c);
+            return cell;
+        }
         function cellFor(c, item) {
+            if (c.type === 'actions') return actionsCell(c, item);
             var v = item ? item[c.key] : null, cell;
             if (item && c.type === 'badge' && v != null && v !== '') { cell = tpl('dg-cell-badge', { text: String(v) }); }
             else {

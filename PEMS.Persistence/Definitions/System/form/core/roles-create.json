@@ -1,6 +1,6 @@
 {
   "kind": "form",
-  "key": "role-create",
+  "key": "roles-create",
   "appKey": "core",
   "version": 1,
   "title": {
@@ -8,11 +8,11 @@
     "fa": "ایجاد نقش"
   },
   "description": {
-    "en": "Create a new role (it starts with no permissions)",
-    "fa": "ایجاد نقش جدید (بدون مجوز شروع می‌شود)"
+    "en": "Create a new role",
+    "fa": "ایجاد نقش جدید"
   },
   "payload": {
-    "id": "role-create",
+    "id": "roles-create",
     "title": {
       "en": "New role",
       "fa": "نقش جدید"
@@ -21,7 +21,7 @@
       "en": "Create",
       "fa": "ایجاد"
     },
-    "actionKey": "role-create",
+    "actionKey": "roles-create",
     "columns": 2,
     "warnOnLeave": true,
     "fields": [
@@ -32,20 +32,20 @@
           "fa": "نام نقش (انگلیسی، بدون فاصله)"
         },
         "kind": "text",
-        "required": true,
-        "minLength": 2,
         "maxLength": 100,
+        "minLength": 2,
         "pattern": "[A-Za-z][A-Za-z0-9_]*",
         "messages": {
-          "required": {
-            "en": "The role name is required.",
-            "fa": "نام نقش الزامی است."
-          },
           "pattern": {
             "en": "Use English letters, digits and underscore, starting with a letter.",
             "fa": "فقط حروف انگلیسی، عدد و زیرخط؛ با حرف شروع شود."
+          },
+          "required": {
+            "en": "Role name (English, no spaces) is required.",
+            "fa": "نام نقش (انگلیسی، بدون فاصله) الزامی است."
           }
-        }
+        },
+        "required": true
       },
       {
         "name": "displayName",

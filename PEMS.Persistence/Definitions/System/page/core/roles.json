@@ -8,27 +8,13 @@
     "fa": "نقش‌ها"
   },
   "description": {
-    "en": "The roles list (W1 pilot page as a definition)",
-    "fa": "فهرست نقش‌ها (صفحه‌ی آزمایشی W1 به‌صورت تعریف)"
+    "en": "Roles list (page definition)",
+    "fa": "فهرست نقش‌ها (تعریف صفحه)"
   },
   "payload": {
     "layout": "list-page",
     "route": "roles",
     "regions": {
-      "toolbar": [
-        {
-          "id": "new",
-          "component": "button",
-          "options": {
-            "label": {
-              "en": "New role",
-              "fa": "نقش جدید"
-            },
-            "tone": "primary",
-            "href": "/f/role-create"
-          }
-        }
-      ],
       "content": [
         {
           "id": "grid",
@@ -80,13 +66,22 @@
                 "width": 120
               },
               {
+                "key": "isSystemRole",
+                "header": {
+                  "en": "System role",
+                  "fa": "نقش سیستمی"
+                },
+                "width": 110,
+                "type": "bool"
+              },
+              {
                 "key": "users",
                 "header": {
                   "en": "Users",
                   "fa": "کاربران"
                 },
-                "type": "number",
-                "width": 100
+                "width": 100,
+                "type": "number"
               },
               {
                 "key": "permissions",
@@ -94,8 +89,45 @@
                   "en": "Permissions",
                   "fa": "مجوزها"
                 },
-                "type": "number",
-                "width": 110
+                "width": 110,
+                "type": "number"
+              },
+              {
+                "key": "sortOrder",
+                "header": {
+                  "en": "Order",
+                  "fa": "ترتیب"
+                },
+                "width": 90,
+                "type": "number"
+              },
+              {
+                "key": "_actions",
+                "header": {
+                  "en": "Actions",
+                  "fa": "عملیات"
+                },
+                "type": "actions",
+                "width": 280,
+                "sortable": false,
+                "filterable": false,
+                "actions": [
+                  {
+                    "key": "delete",
+                    "label": {
+                      "en": "Delete",
+                      "fa": "حذف"
+                    },
+                    "url": "/a/roles-delete",
+                    "method": "post",
+                    "tone": "danger",
+                    "confirm": {
+                      "en": "Delete this record?",
+                      "fa": "این رکورد حذف شود؟"
+                    },
+                    "showWhen": "row.isSystemRole == false"
+                  }
+                ]
               }
             ],
             "texts": {
@@ -172,6 +204,20 @@
                 "fa": "حذف"
               }
             }
+          }
+        }
+      ],
+      "toolbar": [
+        {
+          "id": "new",
+          "component": "button",
+          "options": {
+            "label": {
+              "en": "New role",
+              "fa": "نقش جدید"
+            },
+            "tone": "primary",
+            "href": "/f/roles-create"
           }
         }
       ]

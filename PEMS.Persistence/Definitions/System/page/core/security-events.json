@@ -8,8 +8,8 @@
     "fa": "رویدادهای امنیتی"
   },
   "description": {
-    "en": "Administrator recovery events, read only (W1 pilot page as a definition)",
-    "fa": "رویدادهای بازیابی حساب مدیر، فقط خواندنی (صفحه‌ی آزمایشی W1 به‌صورت تعریف)"
+    "en": "Security events list (page definition)",
+    "fa": "فهرست رویدادهای امنیتی (تعریف صفحه)"
   },
   "payload": {
     "layout": "list-page",
@@ -22,17 +22,17 @@
           "options": {
             "id": "security-events",
             "url": "/d/security-events-grid",
-            "idField": "id",
+            "idField": "securityEventId",
             "selectable": false,
             "columns": [
               {
-                "key": "when",
+                "key": "occurredAtUtc",
                 "header": {
                   "en": "When (UTC)",
                   "fa": "زمان (UTC)"
                 },
-                "type": "datetime",
-                "width": 170
+                "width": 170,
+                "type": "datetime"
               },
               {
                 "key": "eventType",
@@ -59,7 +59,7 @@
                 "width": 100
               },
               {
-                "key": "reason",
+                "key": "failureReason",
                 "header": {
                   "en": "Failure reason",
                   "fa": "دلیل شکست"
@@ -67,7 +67,7 @@
                 "width": 180
               },
               {
-                "key": "actor",
+                "key": "actorUserName",
                 "header": {
                   "en": "Actor",
                   "fa": "انجام‌دهنده"
@@ -75,7 +75,7 @@
                 "width": 150
               },
               {
-                "key": "target",
+                "key": "targetUserName",
                 "header": {
                   "en": "Target account",
                   "fa": "حساب هدف"
@@ -83,7 +83,7 @@
                 "width": 150
               },
               {
-                "key": "ip",
+                "key": "ipAddress",
                 "header": {
                   "en": "IP address",
                   "fa": "نشانی IP"

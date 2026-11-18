@@ -16,8 +16,7 @@ public sealed class FileDefinitionStoreTests : IDisposable
     private static IDefinitionKind[] Kinds()
     {
         var registry = new PemsComponentRegistry();
-        return [new FormDefinitionKind(), new PageDefinitionKind(registry, new ComponentManifestCatalog(registry)), new LayoutDefinitionKind(),
-            new DataSourceDefinitionKind([new DepartmentsDataSource(null!), new EntityOptionsProvider(null!, EntityCatalog.Default())], [new DepartmentsGridProvider(null!), new RolesGridProvider(null!), new SecurityEventsGridProvider(null!), new EntityGridProvider(null!, EntityCatalog.Default())]), new ActionDefinitionKind([new DepartmentCreateAction(null!), new RoleCreateAction(null!), new EntityCreateAction(null!, EntityCatalog.Default())])];
+        return ShippedKinds.Build(registry, new ComponentManifestCatalog(registry));
     }
 
     private FileDefinitionStore Store(bool failOnInvalid = true) => new(Kinds(), new DefinitionLimits(), new DefinitionFileOptions { Folder = _folder, FailOnInvalid = failOnInvalid, Watch = false }, FilesOwnership.For(Kinds()));
@@ -124,8 +123,8 @@ public sealed class FileDefinitionStoreTests : IDisposable
         Assert.Empty(store.Problems);
         Assert.Equal(new[] { "dashboard-page", "detail-page", "form-page", "list-page" }, store.All.Where(d => d.Kind == "layout").Select(d => d.Key));
         // SCRUM-437/578 pilot: the department create form, its data source and its action
-        Assert.Contains(store.All, d => d.Kind == "form" && d.Key == "department-create");
-        Assert.Contains(store.All, d => d.Kind == "data-source" && d.Key == "departments");
-        Assert.Contains(store.All, d => d.Kind == "action" && d.Key == "department-create");
+        Assert.Contains(store.All, d => d.Kind == "form" && d.Key == "departments-create");
+        Assert.Contains(store.All, d => d.Kind == "data-source" && d.Key == "departments-grid");
+        Assert.Contains(store.All, d => d.Kind == "action" && d.Key == "departments-create");
     }
 }

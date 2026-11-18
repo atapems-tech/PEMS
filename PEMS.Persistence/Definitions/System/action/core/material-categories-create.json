@@ -4,12 +4,12 @@
   "appKey": "core",
   "version": 1,
   "title": {
-    "en": "Create Material category",
+    "en": "Create material category",
     "fa": "ایجاد دسته‌بندی مواد"
   },
   "description": {
-    "en": "Creates the row",
-    "fa": "ردیف را ثبت می‌کند"
+    "en": "Create material category",
+    "fa": "ایجاد دسته‌بندی مواد"
   },
   "payload": {
     "kind": "handler",
@@ -36,8 +36,8 @@
             "Code"
           ],
           "message": {
-            "en": "A category with this code already exists.",
-            "fa": "دسته‌بندی با همین کد از قبل وجود دارد."
+            "en": "This code already exists.",
+            "fa": "این کد از قبل وجود دارد."
           }
         }
       ]

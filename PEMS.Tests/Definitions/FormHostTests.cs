@@ -22,7 +22,7 @@ namespace PEMS.Tests.Definitions;
 /// <summary>SCRUM-578 and 437 end to end with the shipped pilot definitions: the host renders the form from its definition, validates the post, runs the action definition and hands the cleaned values to its handler.</summary>
 public sealed class FormHostTests : IDisposable
 {
-    private readonly FileDefinitionStore _files;
+    private readonly IDefinitionStore _files;
     private readonly IPemsComponentRenderer _renderer;
     private readonly Recording _handler = new();
 
@@ -70,14 +70,34 @@ public sealed class FormHostTests : IDisposable
     public FormHostTests()
     {
         var provider = PEMS.UI.ServiceCollectionExtensions.AddPemsUi(new ServiceCollection()).BuildServiceProvider().CreateScope().ServiceProvider;
-        var registry = provider.GetRequiredService<IPemsComponentRegistry>();
-        var catalog = provider.GetRequiredService<ComponentManifestCatalog>();
-        var kinds = new IDefinitionKind[] { new FormDefinitionKind(), new PageDefinitionKind(registry, catalog), new LayoutDefinitionKind(), new DataSourceDefinitionKind([new Departments(), new EntityOptionsProvider(null!, EntityCatalog.Default())], [new DepartmentsGridProvider(null!), new RolesGridProvider(null!), new SecurityEventsGridProvider(null!), new EntityGridProvider(null!, EntityCatalog.Default())]), new ActionDefinitionKind([_handler, new KeyedAction("role.create"), new EntityCreateAction(null!, EntityCatalog.Default())]) };
-        _files = new FileDefinitionStore(kinds, new DefinitionLimits(), new DefinitionFileOptions { Folder = Path.Combine(AppContext.BaseDirectory, "definitions-system"), Watch = false }, FilesOwnership.For(kinds));
+        _files = new InlineStore(Form, DataSource, ActionDef);
         _renderer = provider.GetRequiredService<IPemsComponentRenderer>();
     }
 
-    public void Dispose() => _files.Dispose();
+    public void Dispose() { }
+
+    // the form of this test is its own definition (conditions, a select from a data source, a handler by key), so the host is tested whatever the product ships
+    private sealed class InlineStore(params (string Kind, string Key, string Payload)[] items) : IDefinitionStore
+    {
+        public Task<PublishedDefinition?> GetPublishedAsync(string kind, string key, string appKey = "core", CancellationToken ct = default)
+        {
+            var hit = items.FirstOrDefault(i => i.Kind == kind && i.Key == key);
+            return Task.FromResult(hit.Key is null ? null : new PublishedDefinition(kind, key, appKey, 1, hit.Payload, "h", """{"fa":"ایجاد دپارتمان","en":"Create department"}"""));
+        }
+    }
+
+    private static readonly (string, string, string) Form = ("form", "department-create", """
+    {"id":"department-create","title":{"fa":"ایجاد دپارتمان","en":"Create department"},"submitLabel":{"fa":"ایجاد","en":"Create"},"actionKey":"department-create","columns":2,"warnOnLeave":true,
+     "fields":[
+      {"name":"code","label":{"fa":"کد","en":"Code"},"kind":"text","maxLength":20,"pattern":"[A-Za-z0-9_-]+","messages":{"pattern":{"fa":"کد نامعتبر است.","en":"The code is not valid."}}},
+      {"name":"name","label":{"fa":"نام","en":"Name"},"kind":"text","required":true,"minLength":2,"maxLength":100,"messages":{"required":{"fa":"نام دپارتمان الزامی است.","en":"The department name is required."}}},
+      {"name":"parentDepartmentId","label":{"fa":"دپارتمان والد","en":"Parent department"},"kind":"select","optionsFrom":"departments","visible":"values.isSubDepartment","requiredWhen":"values.isSubDepartment",
+       "messages":{"required":{"fa":"دپارتمان والد را انتخاب کنید.","en":"Choose the parent department of a sub-department."}}},
+      {"name":"isSubDepartment","label":{"fa":"زیرمجموعه‌ی دپارتمان دیگر است","en":"Is a sub-department"},"kind":"switch","span":2},
+      {"name":"description","label":{"fa":"توضیحات","en":"Description"},"kind":"textArea","maxLength":500,"span":2}]}
+    """);
+    private static readonly (string, string, string) DataSource = ("data-source", "departments", """{"kind":"provider","provider":"departments"}""");
+    private static readonly (string, string, string) ActionDef = ("action", "department-create", """{"kind":"handler","handler":"department.create","success":{"fa":"دپارتمان ایجاد شد.","en":"Department created."},"redirect":"/Department"}""");
 
     private FormHostController Host(bool allowed = true, Dictionary<string, string>? post = null, string? culture = null)
     {
@@ -106,7 +126,7 @@ public sealed class FormHostTests : IDisposable
     [Fact]
     public async Task The_form_is_rendered_from_its_definition_with_the_options_of_its_data_source_and_the_conditions_for_the_browser()
     {
-        var result = await Host(culture: "en").Index("department-create", CancellationToken.None);
+        var result = await Host(culture: "en").Index("department-create", null, CancellationToken.None);
         var html = System.Net.WebUtility.HtmlDecode(Html(result));
         Assert.Contains("Create department", html);
         Assert.Contains("class=\"pems-form\"", html);
@@ -123,7 +143,7 @@ public sealed class FormHostTests : IDisposable
     [Fact]
     public async Task The_form_follows_the_language_of_the_request()
     {
-        var fa = System.Net.WebUtility.HtmlDecode(Html(await Host(culture: "fa").Index("department-create", CancellationToken.None)));
+        var fa = System.Net.WebUtility.HtmlDecode(Html(await Host(culture: "fa").Index("department-create", null, CancellationToken.None)));
         Assert.Contains("ایجاد دپارتمان", fa);
         Assert.Contains("زیرمجموعه‌ی دپارتمان دیگر است", fa);
     }
@@ -131,10 +151,10 @@ public sealed class FormHostTests : IDisposable
     [Fact]
     public async Task An_unknown_form_a_bad_key_and_a_refused_user_get_404_and_403()
     {
-        Assert.IsType<NotFoundResult>(await Host().Index("nope", CancellationToken.None));
-        Assert.IsType<NotFoundResult>(await Host().Index("../x", CancellationToken.None));
-        Assert.IsType<NotFoundResult>(await Host(allowed: true).Index("departments", CancellationToken.None));   // a data source key is not a form
-        var form = await Host(allowed: false).Index("department-create", CancellationToken.None);
+        Assert.IsType<NotFoundResult>(await Host().Index("nope", null, CancellationToken.None));
+        Assert.IsType<NotFoundResult>(await Host().Index("../x", null, CancellationToken.None));
+        Assert.IsType<NotFoundResult>(await Host(allowed: true).Index("departments", null, CancellationToken.None));   // a data source key is not a form
+        var form = await Host(allowed: false).Index("department-create", null, CancellationToken.None);
         Assert.True(form is ForbidResult or NotFoundResult);
     }
 
@@ -142,20 +162,20 @@ public sealed class FormHostTests : IDisposable
     public async Task A_post_with_an_empty_name_shows_the_message_of_the_definition_and_runs_nothing()
     {
         var host = Host(post: new() { ["code"] = "ENG", ["name"] = "  " }, culture: "en");
-        var html = System.Net.WebUtility.HtmlDecode(Html(await host.Submit("department-create", CancellationToken.None)));
+        var html = System.Net.WebUtility.HtmlDecode(Html(await host.Submit("department-create", null, CancellationToken.None)));
         Assert.Contains("The department name is required.", html);
         Assert.Contains("value=\"ENG\"", html);                          // the typed values stay
         Assert.Null(_handler.Seen);
-        var fa = System.Net.WebUtility.HtmlDecode(Html(await Host(post: new() { ["name"] = "" }, culture: "fa").Submit("department-create", CancellationToken.None)));
+        var fa = System.Net.WebUtility.HtmlDecode(Html(await Host(post: new() { ["name"] = "" }, culture: "fa").Submit("department-create", null, CancellationToken.None)));
         Assert.Contains("نام دپارتمان الزامی است.", fa);
     }
 
     [Fact]
     public async Task The_conditions_decide_on_the_server_the_parent_is_required_only_for_a_sub_department()
     {
-        var missing = Html(await Host(post: new() { ["name"] = "Pumps", ["isSubDepartment"] = "true" }, culture: "en").Submit("department-create", CancellationToken.None));
+        var missing = Html(await Host(post: new() { ["name"] = "Pumps", ["isSubDepartment"] = "true" }, culture: "en").Submit("department-create", null, CancellationToken.None));
         Assert.Contains("Choose the parent department of a sub-department.", System.Net.WebUtility.HtmlDecode(missing));
-        var notListed = Html(await Host(post: new() { ["name"] = "Pumps", ["isSubDepartment"] = "true", ["parentDepartmentId"] = "999" }, culture: "en").Submit("department-create", CancellationToken.None));
+        var notListed = Html(await Host(post: new() { ["name"] = "Pumps", ["isSubDepartment"] = "true", ["parentDepartmentId"] = "999" }, culture: "en").Submit("department-create", null, CancellationToken.None));
         Assert.Contains("Choose one of the listed values.", System.Net.WebUtility.HtmlDecode(notListed));
         Assert.Null(_handler.Seen);
     }
@@ -165,7 +185,7 @@ public sealed class FormHostTests : IDisposable
     {
         // the parent is posted but the switch is off: the field is hidden, so its value is dropped
         var host = Host(post: new() { ["code"] = " ENG ", ["name"] = " Engineering ", ["description"] = "d", ["parentDepartmentId"] = "7" }, culture: "en");
-        var result = await host.Submit("department-create", CancellationToken.None);
+        var result = await host.Submit("department-create", null, CancellationToken.None);
         var redirect = Assert.IsType<LocalRedirectResult>(result);
         Assert.Equal("/Department", redirect.Url);
         Assert.Equal("Department created.", host.TempData["Message"]);
@@ -179,7 +199,7 @@ public sealed class FormHostTests : IDisposable
     public async Task A_sub_department_keeps_its_parent_and_a_refused_action_shows_its_error_on_the_field()
     {
         _handler.Outcome = ActionOutcome.Refused("name", TranslatableText.Of(("en", "Already exists."), ("fa", "تکراری است.")));
-        var refused = Html(await Host(post: new() { ["name"] = "Pumps", ["isSubDepartment"] = "true", ["parentDepartmentId"] = "7" }, culture: "en").Submit("department-create", CancellationToken.None));
+        var refused = Html(await Host(post: new() { ["name"] = "Pumps", ["isSubDepartment"] = "true", ["parentDepartmentId"] = "7" }, culture: "en").Submit("department-create", null, CancellationToken.None));
         Assert.Equal("7", _handler.Seen!.Values["parentDepartmentId"]);
         Assert.Contains("Already exists.", System.Net.WebUtility.HtmlDecode(refused));
     }
@@ -188,7 +208,7 @@ public sealed class FormHostTests : IDisposable
     public async Task Only_the_declared_fields_are_read_from_the_post()
     {
         var host = Host(post: new() { ["name"] = "Xy", ["isAdmin"] = "true", ["__RequestVerificationToken"] = "t" }, culture: "en");
-        await host.Submit("department-create", CancellationToken.None);
+        await host.Submit("department-create", null, CancellationToken.None);
         Assert.DoesNotContain("isAdmin", _handler.Seen!.Values.Keys);
         Assert.DoesNotContain("__RequestVerificationToken", _handler.Seen.Values.Keys);
     }

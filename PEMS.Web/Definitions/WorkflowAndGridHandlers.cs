@@ -13,44 +13,6 @@ namespace PEMS.Web.Definitions;
 // SCRUM-437 (#437): the two handlers that make "a list and a button on a page from stored definitions only" real: grid rows of the Departments (the first grid data source) and a button that runs a workflow
 // action. Both are registered code that a definition names; neither is reachable without the rights of the user.
 
-/// <summary>The rows of the department grid: the standard grid query over the departments with the count of active employees. Used by the data source <c>departments-grid</c> and by <c>DepartmentController.Grid</c>.</summary>
-public sealed class DepartmentsGridProvider(IServiceScopeFactory scopes) : IGridDataProvider
-{
-    public string Key => "departments";
-    public IReadOnlyCollection<string>? AllowedRoles => [SystemRoles.SystemAdmin, SystemRoles.EngineeringManager];
-
-    public async Task<(IReadOnlyList<object> Items, int Total)> QueryAsync(GridDataRequest request, CancellationToken ct)
-    {
-        using var scope = scopes.CreateScope();
-        return await QueryAsync(scope.ServiceProvider.GetRequiredService<PEMSDbContext>(), request.Grid, ct);
-    }
-
-    public static async Task<(IReadOnlyList<object> Items, int Total)> QueryAsync(PEMSDbContext db, GridRequest request, CancellationToken ct)
-    {
-        var counts = await db.Employees.Where(x => x.IsActive).GroupBy(x => x.DepartmentId).Select(g => new { g.Key, Count = g.Count() }).ToDictionaryAsync(x => x.Key, x => x.Count, ct);
-        var query = db.Departments.AsNoTracking().Select(d => new DepartmentRow { Id = d.DepartmentId, Code = d.Code, Name = d.Name, Description = d.Description, Active = d.IsActive, Created = d.CreatedDate });
-        var total = await query.ApplyGridFilters(request, DepartmentRow.Fields).CountAsync(ct);
-        var rows = await query.ApplyGridFilters(request, DepartmentRow.Fields).ApplyGridSort(request, DepartmentRow.Fields).Paged(request).ToListAsync(ct);
-        foreach (var r in rows) r.Employees = counts.TryGetValue(r.Id, out var n) ? n : 0;
-        return (rows.Cast<object>().ToList(), total);
-    }
-}
-
-public sealed class DepartmentRow
-{
-    public int Id { get; set; }
-    public string Code { get; set; } = "";
-    public string Name { get; set; } = "";
-    public string? Description { get; set; }
-    public bool Active { get; set; }
-    public DateTime Created { get; set; }
-    public int Employees { get; set; }
-
-    public static readonly GridFields<DepartmentRow> Fields = new GridFields<DepartmentRow>()
-        .Add("name", r => r.Name, searchable: true).Add("code", r => r.Code, searchable: true).Add("description", r => r.Description!, searchable: true)
-        .Add("active", r => r.Active).Add("created", r => r.Created).Add("id", r => r.Id).TieBreak("id");
-}
-
 /// <summary>
 /// <c>workflow.execute</c>: a button runs one action of a workflow instance (approve, reject, return ...). The action definition lists in <c>parameters.objectTypes</c> the business object types it may act on
 /// (a module that keeps its own status in step with the workflow keeps its own service and is simply not listed); the handler then checks that the engine offers this action to this user and that a reason is

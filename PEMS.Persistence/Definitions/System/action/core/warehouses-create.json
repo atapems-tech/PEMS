@@ -4,12 +4,12 @@
   "appKey": "core",
   "version": 1,
   "title": {
-    "en": "Create Warehouse",
+    "en": "Create warehouse",
     "fa": "ایجاد انبار"
   },
   "description": {
-    "en": "Creates the row",
-    "fa": "ردیف را ثبت می‌کند"
+    "en": "Create warehouse",
+    "fa": "ایجاد انبار"
   },
   "payload": {
     "kind": "handler",
@@ -35,8 +35,8 @@
             "Code"
           ],
           "message": {
-            "en": "A warehouse with this code already exists.",
-            "fa": "انباری با همین کد از قبل وجود دارد."
+            "en": "This code already exists.",
+            "fa": "این کد از قبل وجود دارد."
           }
         }
       ]

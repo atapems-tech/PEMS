@@ -67,7 +67,7 @@ public sealed class EntityDefinitionsTests
     {
         var (scopes, db) = Setup(permission => permission != "Secret.View");
         SeedUnits(db);
-        var catalog = new EntityCatalog().Add<MaterialUOM>("Secret.View", null, ["Code"], []);
+        var catalog = new EntityCatalog().Add<MaterialUOM>("MaterialUOMId", e => e.Read("Secret.View").Readable("Code"));
         await Assert.ThrowsAsync<UnauthorizedAccessException>(() => new EntityGridProvider(scopes, catalog).QueryAsync(Grid("MaterialUOM", """["Code"]""", "[]"), CancellationToken.None));
         Assert.Empty(await new EntityOptionsProvider(scopes, catalog).LoadAsync(new DataSourceRequest("en", ["x"], "x", new Dictionary<string, string?> { ["entity"] = "MaterialUOM", ["value"] = "Code", ["label"] = "Code" }), CancellationToken.None));
     }
@@ -162,7 +162,7 @@ public sealed class EntityDefinitionsTests
 
     [Fact]
     public void The_catalog_refuses_a_registration_of_a_property_that_does_not_exist()
-        => Assert.Throws<InvalidOperationException>(() => new EntityCatalog().Add<MaterialUOM>(null, null, ["Nope"], []));
+        => Assert.Throws<InvalidOperationException>(() => new EntityCatalog().Add<MaterialUOM>("MaterialUOMId", e => e.Readable("Nope")));
 
     [Fact]
     public void The_kinds_use_the_providers_to_refuse_a_bad_data_source_or_action_when_it_is_loaded()

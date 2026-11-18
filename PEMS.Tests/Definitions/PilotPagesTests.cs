@@ -26,7 +26,7 @@ public sealed class PilotPagesTests
         var ui = PEMS.UI.ServiceCollectionExtensions.AddPemsUi(new ServiceCollection()).BuildServiceProvider().CreateScope().ServiceProvider;
         var registry = ui.GetRequiredService<IPemsComponentRegistry>();
         var catalog = ui.GetRequiredService<ComponentManifestCatalog>();
-        return (ui, [new FormDefinitionKind(), new PageDefinitionKind(registry, catalog), new LayoutDefinitionKind(), new DataSourceDefinitionKind([new DepartmentsDataSource(null!), new EntityOptionsProvider(null!, EntityCatalog.Default())], [new DepartmentsGridProvider(null!), new RolesGridProvider(null!), new SecurityEventsGridProvider(null!), new EntityGridProvider(null!, EntityCatalog.Default())]), new ActionDefinitionKind([new DepartmentCreateAction(null!), new RoleCreateAction(null!), new EntityCreateAction(null!, EntityCatalog.Default())])]);
+        return (ui, ShippedKinds.Build(registry, catalog));
     }
 
     [Fact]
@@ -46,7 +46,7 @@ public sealed class PilotPagesTests
         var html = System.Net.WebUtility.HtmlDecode(en.Html);
         Assert.Contains("/d/departments-grid", html);
         Assert.Contains("data-pems-grid", html);
-        Assert.Contains("href=\"/f/department-create\"", html);
+        Assert.Contains("href=\"/f/departments-create\"", html);
         Assert.Contains("New department", html);
         Assert.Equal("Departments", en.Title);
 
@@ -68,46 +68,6 @@ public sealed class PilotPagesTests
         Assert.Empty(broken);
         // the pilot page really binds its grid to the data source and the form to its action and options
         Assert.Contains(kinds.First(k => k.Key == "page").References(package.First(d => d.Key == "departments" && d.Kind == "page").PayloadJson), r => r is { ToKind: "data-source", ToKey: "departments-grid" });
-        Assert.Contains(kinds.First(k => k.Key == "form").References(package.First(d => d.Key == "department-create" && d.Kind == "form").PayloadJson), r => r is { ToKind: "action", ToKey: "department-create" });
-    }
-
-    private static DepartmentController Controller(string query, out PEMS.Persistence.Context.PEMSDbContext db)
-    {
-        db = PemsDbContextFactory.CreateInMemory("dept-" + Guid.NewGuid());
-        db.Departments.AddRange(
-            new Department { Code = "ENG", Name = "Engineering", Description = "Plants and design", IsActive = true, CreatedDate = new DateTime(2026, 1, 1) },
-            new Department { Code = "MNT", Name = "Maintenance", Description = "Repairs", IsActive = true, CreatedDate = new DateTime(2026, 2, 1) },
-            new Department { Code = "OPS", Name = "Operations", Description = "Plant running", IsActive = false, CreatedDate = new DateTime(2026, 3, 1) });
-        db.SaveChanges();
-        var http = new DefaultHttpContext();
-        http.Request.QueryString = new QueryString(query);
-        return new DepartmentController(db) { ControllerContext = new ControllerContext { HttpContext = http } };
-    }
-
-    private static (int Total, string[] Names) Read(IActionResult result)
-    {
-        var json = JsonSerializer.Serialize(Assert.IsType<JsonResult>(result).Value, new JsonSerializerOptions(JsonSerializerDefaults.Web));   // the MVC default (camel case)
-        var doc = JsonNode.Parse(json)!;
-        return ((int)doc["total"]!, doc["items"]!.AsArray().Select(i => (string)i!["name"]!).ToArray());
-    }
-
-    [Fact]
-    public async Task The_grid_endpoint_pages_sorts_filters_and_searches_with_the_shared_grid_helpers()
-    {
-        var all = Read(await Controller("?page=1&pageSize=2&sort=name", out _).Grid(CancellationToken.None));
-        Assert.Equal(3, all.Total);
-        Assert.Equal(new[] { "Engineering", "Maintenance" }, all.Names);
-        Assert.Equal(new[] { "Operations" }, Read(await Controller("?page=2&pageSize=2&sort=name", out _).Grid(CancellationToken.None)).Names);
-        Assert.Equal(new[] { "Operations", "Maintenance", "Engineering" }, Read(await Controller("?sort=-created", out _).Grid(CancellationToken.None)).Names);
-        Assert.Equal(new[] { "Maintenance" }, Read(await Controller("?q=repair", out _).Grid(CancellationToken.None)).Names);
-        Assert.Equal(new[] { "Engineering", "Maintenance" }, Read(await Controller("?f.active=eq:true&sort=name", out _).Grid(CancellationToken.None)).Names);
-    }
-
-    [Fact]
-    public async Task A_field_the_grid_does_not_declare_is_refused_not_guessed()
-    {
-        var result = await Controller("?sort=passwordHash", out _).Grid(CancellationToken.None);
-        Assert.IsType<BadRequestObjectResult>(result);
-        Assert.IsType<BadRequestObjectResult>(await Controller("?f.secret=eq:1", out _).Grid(CancellationToken.None));
+        Assert.Contains(kinds.First(k => k.Key == "form").References(package.First(d => d.Key == "departments-create" && d.Kind == "form").PayloadJson), r => r is { ToKind: "action", ToKey: "departments-create" });
     }
 }

@@ -339,7 +339,6 @@ Warehouse,WarehouseIntake,Source,POST,,Task<IActionResult>,redirect,form post,ac
 ,Department,Create,POST,,Task<IActionResult>,redirect,form post,create,POST /departments,attribute,yes,no,yes,"W5 operations, production, organization, other",PEMS.Web/Controllers/DepartmentController.cs
 ,Department,Edit,POST,,Task<IActionResult>,json+redirect,JSON endpoint,update,PATCH /departments/{id},attribute,yes,no,yes,"W5 operations, production, organization, other",PEMS.Web/Controllers/DepartmentController.cs
 ,Department,Export,ANY,,Task<IActionResult>,file,download,download,GET /departments/{id}/export,attribute,no,no,no,"W5 operations, production, organization, other",PEMS.Web/Controllers/DepartmentController.cs
-,Department,Grid,GET,,Task<IActionResult>,json,JSON endpoint,query,GET /departments/grid,attribute,no,no,no,"W5 operations, production, organization, other",PEMS.Web/Controllers/DepartmentController.cs
 ,Department,Import,POST,,Task<IActionResult>,redirect,form post,action,POST /departments/{id}/actions/import,attribute,yes,no,yes,"W5 operations, production, organization, other",PEMS.Web/Controllers/DepartmentController.cs
 ,Department,Index,ANY,,Task<IActionResult>,page,view-only MVC,,page (stays MVC),attribute,no,no,no,"W5 operations, production, organization, other",PEMS.Web/Controllers/DepartmentController.cs
 ,Department,ToggleActive,POST,,Task<IActionResult>,json+redirect,JSON endpoint,action,POST /departments/{id}/actions/toggle-active,attribute,yes,no,yes,"W5 operations, production, organization, other",PEMS.Web/Controllers/DepartmentController.cs
@@ -462,9 +461,9 @@ Warehouse,WarehouseIntake,Source,POST,,Task<IActionResult>,redirect,form post,ac
 ,Finding,CreateFromReading,POST,,Task<IActionResult>,json+redirect,JSON endpoint,create,POST /findings,inline,yes,no,yes,"W2 CMMS, maintenance, reliability",PEMS.Web/Controllers/FindingController.cs
 ,Finding,Index,ANY,,Task<IActionResult>,page,view-only MVC,,page (stays MVC),inline,no,no,no,"W2 CMMS, maintenance, reliability",PEMS.Web/Controllers/FindingController.cs
 ,Finding,RaiseWorkRequest,POST,,Task<IActionResult>,json+redirect,JSON endpoint,action,POST /findings/{id}/actions/raise-work-request,inline,yes,no,no,"W2 CMMS, maintenance, reliability",PEMS.Web/Controllers/FindingController.cs
-,FormHost,Index,GET,,Task<IActionResult>,other,other,list,GET /form-hosts,none,no,no,no,"W5 operations, production, organization, other",PEMS.Web/Controllers/FormHostController.cs
+,FormHost,Index,GET,{id?},Task<IActionResult>,json,JSON endpoint,list,GET /form-hosts,none,no,no,no,"W5 operations, production, organization, other",PEMS.Web/Controllers/FormHostController.cs
 ,ActionHost,Run,POST,,Task<IActionResult>,json+redirect,JSON endpoint,action,POST /action-hosts/{id}/actions/run,inline,yes,no,no,"W5 operations, production, organization, other",PEMS.Web/Controllers/FormHostController.cs
-,FormHost,Submit,POST,,Task<IActionResult>,json+redirect,JSON endpoint,action,POST /form-hosts/{id}/actions/submit,inline,yes,no,yes,"W5 operations, production, organization, other",PEMS.Web/Controllers/FormHostController.cs
+,FormHost,Submit,POST,{id?},Task<IActionResult>,json+redirect,JSON endpoint,action,POST /form-hosts/{id}/actions/submit,inline,yes,no,yes,"W5 operations, production, organization, other",PEMS.Web/Controllers/FormHostController.cs
 ,FunctionalLocation,Create,POST,,Task<IActionResult>,redirect,form post,create,POST /functional-locations,inline,yes,no,yes,"W2 CMMS, maintenance, reliability",PEMS.Web/Controllers/FunctionalLocationController.cs
 ,FunctionalLocation,Edit,POST,,Task<IActionResult>,redirect,form post,update,PATCH /functional-locations/{id},inline,yes,no,yes,"W2 CMMS, maintenance, reliability",PEMS.Web/Controllers/FunctionalLocationController.cs
 ,FunctionalLocation,Index,ANY,,Task<IActionResult>,page,view-only MVC,,page (stays MVC),inline,no,no,no,"W2 CMMS, maintenance, reliability",PEMS.Web/Controllers/FunctionalLocationController.cs

@@ -4,7 +4,7 @@
   "appKey": "core",
   "version": 1,
   "title": {
-    "en": "Create Material category",
+    "en": "Create material category",
     "fa": "ایجاد دسته‌بندی مواد"
   },
   "description": {
@@ -14,7 +14,7 @@
   "payload": {
     "id": "material-categories-create",
     "title": {
-      "en": "New Material category",
+      "en": "New material category",
       "fa": "دسته‌بندی مواد جدید"
     },
     "submitLabel": {

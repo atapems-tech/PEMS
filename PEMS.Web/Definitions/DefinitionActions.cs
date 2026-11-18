@@ -166,6 +166,13 @@ public sealed class ActionExecutor(IDefinitionStore store, IDefinitionAccess acc
 {
     private readonly Dictionary<string, IActionHandler> _handlers = handlers.ToDictionary(h => h.Key, StringComparer.Ordinal);
 
+    /// <summary>The <c>parameters</c> of a published action (null when there is none): an edit form uses them to know which row to load and how its fields map to the row.</summary>
+    public async Task<JsonObject?> ParametersAsync(string key, string appKey = "core", CancellationToken ct = default)
+    {
+        var published = await store.GetPublishedAsync("action", key, appKey, ct);
+        return published is null ? null : (JsonNode.Parse(published.PayloadJson) as JsonObject)?["parameters"] as JsonObject;
+    }
+
     public async Task<ActionResult> RunAsync(string key, ActionInvocation invocation, string appKey = "core", CancellationToken ct = default)
     {
         var published = await store.GetPublishedAsync("action", key, appKey, ct);
