@@ -148,6 +148,14 @@ public sealed class PageDefinitionKind : IDefinitionKind
         return errors;
     }
 
+    private static IEnumerable<string> Strings(JsonNode? node) => node switch
+    {
+        JsonValue v when v.GetValueKind() == JsonValueKind.String => [(string)v!],
+        JsonObject o => o.SelectMany(p => Strings(p.Value)),
+        JsonArray a => a.SelectMany(Strings),
+        _ => []
+    };
+
     public IReadOnlyList<DefinitionRef> References(string payloadJson)
     {
         var refs = new List<DefinitionRef>();
@@ -156,8 +164,17 @@ public sealed class PageDefinitionKind : IDefinitionKind
             foreach (var (_, list) in regions)
                 if (list is JsonArray items)
                     foreach (var inst in items.OfType<JsonObject>())
+                    {
                         if (inst["component"] is JsonValue cv && cv.GetValueKind() == JsonValueKind.String)
                             refs.Add(new DefinitionRef("component", (string)cv!, "renders"));
+                        // SCRUM-437: the bindings of a component to stored definitions: an url "/d/{key}" reads a data source, an action-button runs an action
+                        if (inst["options"] is JsonObject options)
+                        {
+                            foreach (var text in Strings(options))
+                                if (System.Text.RegularExpressions.Regex.Match(text, "^/d/([a-z0-9][a-z0-9._-]*)(?:[?].*)?$") is { Success: true } m) refs.Add(new DefinitionRef("data-source", m.Groups[1].Value, "reads"));
+                            if ((string?)inst["component"] == "action-button" && options["action"] is JsonValue av && av.GetValueKind() == JsonValueKind.String) refs.Add(new DefinitionRef("action", (string)av!, "runs"));
+                        }
+                    }
         return refs;
     }
 }

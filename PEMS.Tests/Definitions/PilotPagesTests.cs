@@ -26,7 +26,7 @@ public sealed class PilotPagesTests
         var ui = PEMS.UI.ServiceCollectionExtensions.AddPemsUi(new ServiceCollection()).BuildServiceProvider().CreateScope().ServiceProvider;
         var registry = ui.GetRequiredService<IPemsComponentRegistry>();
         var catalog = ui.GetRequiredService<ComponentManifestCatalog>();
-        return (ui, [new FormDefinitionKind(), new PageDefinitionKind(registry, catalog), new LayoutDefinitionKind(), new DataSourceDefinitionKind([new DepartmentsDataSource(null!)]), new ActionDefinitionKind([new DepartmentCreateAction(null!)])]);
+        return (ui, [new FormDefinitionKind(), new PageDefinitionKind(registry, catalog), new LayoutDefinitionKind(), new DataSourceDefinitionKind([new DepartmentsDataSource(null!)], [new DepartmentsGridProvider(null!)]), new ActionDefinitionKind([new DepartmentCreateAction(null!)])]);
     }
 
     [Fact]
@@ -44,7 +44,7 @@ public sealed class PilotPagesTests
         var en = await renderer.RenderAsync(resolved, request, new CultureInfo("en"));
         Assert.Empty(en.Problems);
         var html = System.Net.WebUtility.HtmlDecode(en.Html);
-        Assert.Contains("/Department/Grid", html);
+        Assert.Contains("/d/departments-grid", html);
         Assert.Contains("data-pems-grid", html);
         Assert.Contains("href=\"/f/department-create\"", html);
         Assert.Contains("New department", html);
@@ -53,6 +53,22 @@ public sealed class PilotPagesTests
         var fa = await renderer.RenderAsync(resolved, request with { Culture = "fa" }, new CultureInfo("fa"));
         Assert.Contains("دپارتمان جدید", System.Net.WebUtility.HtmlDecode(fa.Html));
         Assert.Equal("دپارتمان‌ها", fa.Title);
+    }
+
+    [Fact]
+    public void Every_binding_of_the_shipped_definitions_points_at_a_definition_that_ships()
+    {
+        var (_, kinds) = Setup();
+        var package = SystemDefinitionSeeder.LoadPackage(kinds, new DefinitionLimits(), Package);
+        var shipped = package.Select(d => (d.Kind, d.Key)).ToHashSet();
+        var broken = new List<string>();
+        foreach (var d in package)
+            foreach (var r in kinds.First(k => k.Key == d.Kind).References(d.PayloadJson))
+                if (r.ToKind != "component" && !shipped.Contains((r.ToKind, r.ToKey))) broken.Add($"{d.Kind}/{d.Key} -> {r.ToKind}/{r.ToKey}");
+        Assert.Empty(broken);
+        // the pilot page really binds its grid to the data source and the form to its action and options
+        Assert.Contains(kinds.First(k => k.Key == "page").References(package.First(d => d.Key == "departments" && d.Kind == "page").PayloadJson), r => r is { ToKind: "data-source", ToKey: "departments-grid" });
+        Assert.Contains(kinds.First(k => k.Key == "form").References(package.First(d => d.Key == "department-create" && d.Kind == "form").PayloadJson), r => r is { ToKind: "action", ToKey: "department-create" });
     }
 
     private static DepartmentController Controller(string query, out PEMS.Persistence.Context.PEMSDbContext db)

@@ -1,0 +1,18 @@
+{
+  "kind": "data-source",
+  "key": "departments-grid",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "fa": "ردیف‌های دپارتمان‌ها",
+    "en": "Department rows"
+  },
+  "description": {
+    "fa": "ردیف‌های جدول دپارتمان‌ها (صفحه‌بندی، مرتب‌سازی، فیلتر)",
+    "en": "The rows of the department grid (paging, sorting, filters)"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "departments"
+  }
+}
