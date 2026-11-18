@@ -14,8 +14,10 @@ public sealed record ViewFields
     /// <summary>A short status or category text shown as a badge on the card.</summary>
     public string? Badge { get; init; }
     public string? Image { get; init; }
-    /// <summary>The date (or date and time, ISO) of a row: places it in the calendar and the timeline.</summary>
+    /// <summary>The date (or date and time, ISO) of a row: places it in the calendar and the timeline, and is the start of its bar in the gantt.</summary>
     public string? Date { get; init; }
+    /// <summary>Gantt: the end date of a row; a row without one is a one-day bar.</summary>
+    public string? End { get; init; }
     /// <summary>The field that says which board column a row belongs to (kanban).</summary>
     public string? Group { get; init; }
 }
@@ -44,7 +46,7 @@ public sealed record ViewTexts
     public required TranslatableText MoreItems { get; init; }
 }
 
-/// <summary>Inputs of <see cref="PemsDataView"/>. <see cref="View"/> is cards, kanban, calendar or timeline.</summary>
+/// <summary>Inputs of <see cref="PemsDataView"/>. <see cref="View"/> is cards, kanban, calendar, timeline or gantt.</summary>
 public sealed record DataViewOptions : FrameOptions
 {
     public required string Id { get; init; }

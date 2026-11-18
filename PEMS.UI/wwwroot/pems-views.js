@@ -9,6 +9,7 @@
     var DAY = 86400000;
     var MAX_PER_DAY = 3;
     var BOARD_LIMIT = 500;
+    var MAX_DAYS = 366;
 
     function tpl(name, values) { return window.PemsTemplate.fill(window.PemsTemplate.clone(name), values || {}); }
     function slot(el, name) { return el.matches('[data-slot="' + name + '"]') ? el : el.querySelector('[data-slot="' + name + '"]'); }
@@ -114,6 +115,50 @@
                     });
                 }
             }, F.date || null);
+        }
+
+        // ---- gantt: one request, a bar per row from its start to its end date on a shared day scale (at most MAX_DAYS wide)
+        function showGantt() {
+            var mine = ++generation; say(T.loading); body.textContent = '';
+            var q = { page: '1', pageSize: String(BOARD_LIMIT) };
+            if (F.date) q.sort = F.date;
+            request(q).then(function (data) {
+                if (mine !== generation) return;
+                var rows = [], lo = null, hi = null;
+                (data.items || []).forEach(function (it) {
+                    var s = dateKey(it[F.date]); if (!s) return;
+                    var e = dateKey(F.end ? it[F.end] : '') || s;
+                    var sd = new Date(s + 'T00:00:00Z'), ed = new Date(e + 'T00:00:00Z');
+                    if (isNaN(sd) || isNaN(ed)) return;
+                    if (ed < sd) ed = sd;
+                    rows.push({ item: it, s: sd, e: ed });
+                    if (lo === null || sd < lo) lo = sd;
+                    if (hi === null || ed > hi) hi = ed;
+                });
+                if (!rows.length) { say(T.empty); return; }
+                var days = Math.min(MAX_DAYS, Math.round((hi - lo) / DAY) + 1), end = addDays(lo, days);
+                var wrap = tpl('dv-gantt'), scale = slot(wrap, 'scale'), list = slot(wrap, 'rows');
+                var fmtTick = new Intl.DateTimeFormat(system(cfg, sys), { month: 'short', day: 'numeric', timeZone: 'UTC' });
+                var step = Math.max(1, Math.ceil(days / 8));
+                for (var d = 0; d < days; d += step) {
+                    var tick = tpl('dv-gantt-tick', { tick: fmtTick.format(addDays(lo, d)) });
+                    tick.style.setProperty('--from', String(d / days * 100));
+                    scale.appendChild(tick);
+                }
+                rows.forEach(function (r) {
+                    if (r.s >= end) return;
+                    var row = tpl('dv-gantt-row'), label = slot(row, 'label'), bar = slot(row, 'bar');
+                    label.textContent = String(r.item[F.title] == null ? '' : r.item[F.title]);
+                    var link = href(r.item); if (link) { label.setAttribute('href', link); bar.setAttribute('href', link); }
+                    var from = Math.round((r.s - lo) / DAY), span = Math.min(days - from, Math.round((r.e - r.s) / DAY) + 1);
+                    bar.style.setProperty('--from', String(from / days * 100));
+                    bar.style.setProperty('--span', String(span / days * 100));
+                    bar.setAttribute('title', label.textContent + ' (' + dateKey(r.item[F.date]) + (F.end && r.item[F.end] ? ' - ' + dateKey(r.item[F.end]) : '') + ')');
+                    list.appendChild(row);
+                });
+                body.appendChild(wrap);
+                say('');
+            }).catch(function () { fail(mine); });
         }
 
         // ---- kanban: one request for the board, grouped by the group field
@@ -257,8 +302,9 @@
         if (cfg.view === 'cards') showCards();
         else if (cfg.view === 'timeline') showTimeline();
         else if (cfg.view === 'kanban') showBoard();
+        else if (cfg.view === 'gantt') showGantt();
         else showCalendar();
-        root.pemsView = { reload: function () { if (cfg.view === 'calendar') showCalendar(); else if (cfg.view === 'kanban') showBoard(); else if (cfg.view === 'timeline') showTimeline(); else showCards(); } };
+        root.pemsView = { reload: function () { if (cfg.view === 'calendar') showCalendar(); else if (cfg.view === 'kanban') showBoard(); else if (cfg.view === 'timeline') showTimeline(); else if (cfg.view === 'gantt') showGantt(); else showCards(); } };
     }
 
     function scan(scope) { (scope || document).querySelectorAll('[data-pems-view]').forEach(init); }

@@ -51,6 +51,12 @@
               "null"
             ]
           },
+          "end": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
           "group": {
             "type": [
               "string",
