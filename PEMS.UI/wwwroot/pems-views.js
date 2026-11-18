@@ -161,6 +161,45 @@
             }).catch(function () { fail(mine); });
         }
 
+        // ---- tree: one request, rows nested by the parent field; a node with children has a toggle (collapsed below the first level)
+        function showTree() {
+            var mine = ++generation; say(T.loading); body.textContent = '';
+            var q = { page: '1', pageSize: String(BOARD_LIMIT) };
+            request(q).then(function (data) {
+                if (mine !== generation) return;
+                var items = data.items || [], byId = {}, kids = {}, roots = [];
+                items.forEach(function (it) { byId[String(it[F.id || 'id'])] = it; });
+                items.forEach(function (it) {
+                    var p = F.parent && it[F.parent] != null ? String(it[F.parent]) : '';
+                    if (p && byId[p] && p !== String(it[F.id || 'id'])) (kids[p] = kids[p] || []).push(it); else roots.push(it);
+                });
+                if (!items.length) { say(T.empty); return; }
+                var seen = {};
+                function node(it, level) {
+                    var id = String(it[F.id || 'id']);
+                    if (seen[id]) return null;                    // a cycle in the data is cut, never followed twice
+                    seen[id] = true;
+                    var li = tpl('dv-tree-node'), title = slot(li, 'title'), toggle = slot(li, 'toggle'), badge = slot(li, 'badge'), list = slot(li, 'children');
+                    title.textContent = String(it[F.title] == null ? '' : it[F.title]);
+                    var link = href(it); if (link) title.setAttribute('href', link);
+                    if (F.badge && it[F.badge] != null && it[F.badge] !== '') badge.textContent = String(it[F.badge]); else badge.hidden = true;
+                    li.setAttribute('aria-level', String(level));
+                    var children = (kids[id] || []).map(function (c) { return node(c, level + 1); }).filter(Boolean);
+                    if (!children.length) { toggle.hidden = true; list.hidden = true; return li; }
+                    children.forEach(function (c) { list.appendChild(c); });
+                    var open = level < 2;
+                    function set(v) { open = v; list.hidden = !v; li.setAttribute('aria-expanded', v ? 'true' : 'false'); toggle.textContent = v ? T.collapse : T.expand; toggle.setAttribute('aria-label', toggle.textContent); }
+                    toggle.addEventListener('click', function () { set(!open); });
+                    set(open);
+                    return li;
+                }
+                var tree = tpl('dv-tree');
+                roots.forEach(function (r) { var n = node(r, 1); if (n) tree.appendChild(n); });
+                body.appendChild(tree);
+                say('');
+            }).catch(function () { fail(mine); });
+        }
+
         // ---- kanban: one request for the board, grouped by the group field
         function showBoard() {
             var mine = ++generation; say(T.loading); body.textContent = '';
@@ -303,8 +342,9 @@
         else if (cfg.view === 'timeline') showTimeline();
         else if (cfg.view === 'kanban') showBoard();
         else if (cfg.view === 'gantt') showGantt();
+        else if (cfg.view === 'tree') showTree();
         else showCalendar();
-        root.pemsView = { reload: function () { if (cfg.view === 'calendar') showCalendar(); else if (cfg.view === 'kanban') showBoard(); else if (cfg.view === 'timeline') showTimeline(); else if (cfg.view === 'gantt') showGantt(); else showCards(); } };
+        root.pemsView = { reload: function () { if (cfg.view === 'calendar') showCalendar(); else if (cfg.view === 'kanban') showBoard(); else if (cfg.view === 'timeline') showTimeline(); else if (cfg.view === 'gantt') showGantt(); else if (cfg.view === 'tree') showTree(); else showCards(); } };
     }
 
     function scan(scope) { (scope || document).querySelectorAll('[data-pems-view]').forEach(init); }

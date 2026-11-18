@@ -21,7 +21,7 @@
             texts = new
             {
                 loading = T(t.Loading), empty = T(t.Empty), error = T(t.Error), more = T(t.More), today = T(t.Today), previous = T(t.Previous), next = T(t.Next),
-                jalali = T(t.Jalali), gregorian = T(t.Gregorian), uncategorized = T(t.Uncategorized), moreItems = T(t.MoreItems)
+                jalali = T(t.Jalali), gregorian = T(t.Gregorian), uncategorized = T(t.Uncategorized), moreItems = T(t.MoreItems), collapse = T(t.Collapse), expand = T(t.Expand)
             }
         };
         return JsonSerializer.Serialize(config, new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase, DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull });
