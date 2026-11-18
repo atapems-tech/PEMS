@@ -22,6 +22,9 @@ public interface IOpTestService
     [PemsOperation("Test", "Void")]
     Task DoAsync(string text, CancellationToken ct);
 
+    [PemsOperation("Test", "Trace")]
+    Task<(bool Success, string? Error)> TraceAsync(int id, IReadOnlyList<string> roles, string? ipAddress, string? userAgent);
+
     [PemsOperation("Test", "Boom")]
     Task BoomAsync();
 }
@@ -36,6 +39,8 @@ public sealed class OpTestService : IOpTestService
     }
     public Task<bool> FlagAsync(int id, bool on) { Last = $"flag {id} {on}"; return Task.FromResult(id != 0); }
     public Task DoAsync(string text, CancellationToken ct) { Last = "void " + text; return Task.CompletedTask; }
+    public Task<(bool Success, string? Error)> TraceAsync(int id, IReadOnlyList<string> roles, string? ipAddress, string? userAgent)
+    { Last = $"trace {id}|{string.Join(",", roles)}|{ipAddress}|{userAgent}"; return Task.FromResult((true, (string?)null)); }
     public Task BoomAsync() => throw new InvalidOperationException("Segregation of duties.");
 }
 
@@ -67,7 +72,7 @@ public sealed class OperationTests
         Assert.Contains("WorkRequest", product.Models);
         Assert.Equal(["Submit", "WorkflowAction"], product.Actions("WorkRequest"));
         Assert.Equal(["Test"], Catalog.Models);
-        Assert.Equal(["Boom", "Flag", "Run", "Void"], Catalog.Actions("Test"));
+        Assert.Equal(["Boom", "Flag", "Run", "Trace", "Void"], Catalog.Actions("Test"));
         Assert.Equal("Test.Run", Catalog.Get("Test", "Run")!.Permission);
         Assert.Null(Catalog.Get("Test", "Flag")!.Permission);
         Assert.Null(Catalog.Get("Test", "Nope"));
@@ -120,6 +125,17 @@ public sealed class OperationTests
         var refused = await handler.ExecuteAsync(Invoke("""{"model":"Test","action":"Run","args":{"id":"literal:1","kind":"literal:x"},"permission":null}"""), CancellationToken.None);
         Assert.False(refused.Ok);
         Assert.Equal("untouched", OpTestService.Last);
+    }
+
+    [Fact]
+    public async Task The_roles_the_address_and_the_browser_of_the_request_are_context_arguments()
+    {
+        var handler = Handler();
+        var invocation = new ActionInvocation(new Dictionary<string, string?>(), "en", ["Reviewer", "Admin"], "hamid",
+            JsonNode.Parse("""{"model":"Test","action":"Trace","args":{"id":"literal:4","roles":"context:roles","ipAddress":"context:ip","userAgent":"context:userAgent"}}""")!.AsObject(), "10.0.0.5", "UA/1");
+        Assert.True((await handler.ExecuteAsync(invocation, CancellationToken.None)).Ok);
+        Assert.Equal("trace 4|Reviewer,Admin|10.0.0.5|UA/1", OpTestService.Last);
+        Assert.Contains("wrong-source", handler.ValidateParameters(JsonNode.Parse("""{"model":"Test","action":"Trace","args":{"roles":"literal:Admin"}}""")!.AsObject()).Select(e => e.Code));
     }
 
     [Fact]

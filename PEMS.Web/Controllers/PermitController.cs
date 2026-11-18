@@ -333,18 +333,6 @@ public class PermitController : Controller
     // (PermitService.SubmitForApprovalAsync) - این جایگزین دکمه‌ی عمومی «Advance to
     // UnderReview» است.
     // ==============================================================================
-    [HttpPost]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> SubmitForApproval(int id)
-    {
-        if (!await _roleModuleActionService.HasActionAsync(_currentUser.Roles, "Permit", "Submit"))
-            return Forbid();
-
-        var (success, error) = await _service.SubmitForApprovalAsync(id, await GetCurrentEmployeeIdAsync());
-        TempData[success ? "Message" : "Error"] = success ? "زنجیره‌ی تایید شروع شد." : error;
-        return RedirectToAction(nameof(Details), new { id });
-    }
-
     // طبق CMMS-10b بند ۶: مجوز دو لایه - RoleModuleAction (لایه‌ی درشت: آیا این نقش اصلاً
     // مجاز به Approve/Reject روی Permit است) + IWorkflowRuntime.ExecuteActionAsync (لایه‌ی
     // ریز: آیا این نقش دقیقاً مسئول همین مرحله‌ی جاری است) - هر دو باید عبور کنند.
@@ -380,57 +368,6 @@ public class PermitController : Controller
 
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> ReturnForRework(int id, string? comment)
-    {
-        if (!await _roleModuleActionService.HasActionAsync(_currentUser.Roles, "Permit", "Reject"))
-            return Forbid();
-
-        var (success, error) = await _service.ReturnForReworkAsync(
-            id, comment, await GetCurrentEmployeeIdAsync(), _currentUser.Roles,
-            HttpContext.Connection.RemoteIpAddress?.ToString(), Request.Headers["User-Agent"].ToString());
-
-        TempData[success ? "Message" : "Error"] = success ? "Permit برای اصلاح بازگردانده شد." : error;
-        return RedirectToAction(nameof(Details), new { id });
-    }
-
-    [HttpPost]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Cancel(int id, string? reason)
-    {
-        if (!await _roleModuleActionService.HasActionAsync(_currentUser.Roles, "Permit", "Cancel"))
-            return Forbid();
-
-        var (success, error) = await _service.AdvanceStatusAsync(id, "Cancelled", reason, await GetCurrentEmployeeIdAsync());
-        TempData[success ? "Message" : "Error"] = success ? "Permit لغو شد." : error;
-        return RedirectToAction(nameof(Details), new { id });
-    }
-
-    [HttpPost]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Revoke(int id, string? reason)
-    {
-        if (!await _roleModuleActionService.HasActionAsync(_currentUser.Roles, "Permit", "Revoke"))
-            return Forbid();
-
-        var (success, error) = await _service.AdvanceStatusAsync(id, "Revoked", reason, await GetCurrentEmployeeIdAsync());
-        TempData[success ? "Message" : "Error"] = success ? "Permit ابطال شد." : error;
-        return RedirectToAction(nameof(Details), new { id });
-    }
-
-    [HttpPost]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Suspend(int id, string? reason)
-    {
-        if (!await _roleModuleActionService.HasActionAsync(_currentUser.Roles, "Permit", "Suspend"))
-            return Forbid();
-
-        var (success, error) = await _service.AdvanceStatusAsync(id, "Suspended", reason, await GetCurrentEmployeeIdAsync());
-        TempData[success ? "Message" : "Error"] = success ? "Permit معلق شد." : error;
-        return RedirectToAction(nameof(Details), new { id });
-    }
-
-    [HttpPost]
-    [ValidateAntiForgeryToken]
     public async Task<IActionResult> Close(int id, string? reason, string? webAuthnAssertionJson, string? webAuthnOptionsJson)
     {
         if (!await _roleModuleActionService.HasActionAsync(_currentUser.Roles, "Permit", "Close"))
@@ -452,6 +389,9 @@ public class PermitController : Controller
         if (!success) TempData["ErrorArea"] = "Actions";
         return RedirectToAction(nameof(Details), new { id });
     }
+
+    // SCRUM-437: Submit for approval, Return for rework, Cancel, Revoke and Suspend are action definitions (permit-*) that run the service operations Permit.SubmitForApproval,
+    // Permit.ReturnForRework and Permit.AdvanceStatus through operation.invoke, with the same permissions; Close and RespondApproval stay here until the step-up (WebAuthn) check is a generic step.
 
     private async Task<int?> GetCurrentEmployeeIdAsync()
     {
