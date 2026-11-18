@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PEMS.Application.Common;
 using PEMS.Application.DTOs;
@@ -144,34 +144,8 @@ public class WorkRequestController : Controller
         return View(wr);
     }
 
-    /// <summary>ارسال پیش‌نویس به گردش‌کار مرکزی (شروع Instance از طریق Binding صریح). مجوز سمت‌سرور در سرویس اعمال می‌شود.</summary>
-    [HttpPost]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Submit(int id)
-    {
-        if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "WorkRequest", "View"))
-            return Forbid();
-
-        var (success, error) = await _service.SubmitAsync(id, await BuildActorAsync());
-        TempData[success ? "Message" : "Error"] = success ? L("درخواست به گردش‌کار ارسال شد.", "The request was submitted to the workflow.") : error;
-        return RedirectToAction(nameof(Details), new { id });
-    }
-
-    /// <summary>
-    /// اجرای اکشن گردش‌کار. actionType از کاربر می‌آید اما «مجاز بودن» را سرور از مدل مرکزی تعیین می‌کند
-    /// (شرکت‌کننده + RequiredPermission + SoD + شرط‌ها)؛ نه مخفی‌بودن دکمه و نه هیچ وضعیتی که کلاینت بفرستد مرجع امنیت نیست.
-    /// </summary>
-    [HttpPost]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> WorkflowAction(int id, string actionType, string? comment)
-    {
-        if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "WorkRequest", "View"))
-            return Forbid();
-
-        var (success, error) = await _service.ExecuteWorkflowActionAsync(id, actionType, comment, await BuildActorAsync());
-        TempData[success ? "Message" : "Error"] = success ? L($"اقدام «{actionType}» انجام شد.", $"Action \"{actionType}\" completed.") : error;
-        return RedirectToAction(nameof(Details), new { id });
-    }
+    // SCRUM-437: Submit and WorkflowAction are action definitions (work-request-submit, work-request-workflow-action) that run the service operations WorkRequest.Submit and
+    // WorkRequest.WorkflowAction through the generic handler operation.invoke; the service keeps every rule.
 
     // --- مسیر Legacy: فقط برای رکوردهای بدون Instance گردش‌کار (سرویس رکوردهای تحت گردش‌کار را رد می‌کند) ---
     [HttpPost]
