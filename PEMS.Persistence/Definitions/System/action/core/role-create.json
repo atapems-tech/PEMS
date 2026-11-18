@@ -1,0 +1,19 @@
+{
+  "kind": "action",
+  "key": "role-create",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Create role",
+    "fa": "ایجاد نقش"
+  },
+  "description": {
+    "en": "Creates the role",
+    "fa": "نقش جدید را ثبت می‌کند"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "role.create",
+    "redirect": "/Admin/Roles"
+  }
+}

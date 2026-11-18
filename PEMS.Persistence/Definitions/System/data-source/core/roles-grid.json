@@ -1,0 +1,18 @@
+{
+  "kind": "data-source",
+  "key": "roles-grid",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "fa": "ردیف‌های نقش‌ها",
+    "en": "Role rows"
+  },
+  "description": {
+    "fa": "ردیف‌های جدول نقش‌ها",
+    "en": "The rows of the roles grid"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "roles"
+  }
+}
