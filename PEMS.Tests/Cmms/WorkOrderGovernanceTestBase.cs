@@ -202,6 +202,8 @@ public abstract class WorkOrderGovernanceTestBase : IDisposable
             .AddSingleton(Ctx)
             .AddSingleton<IDefinitionAccess>(new PEMS.Persistence.Definitions.PermissionDefinitionAccess(new PermissionService(Ctx, AccessControl)))
             .AddSingleton<IWorkOrderLifecycleService>(Svc)
+            .AddSingleton<ICrewService>(new CrewService(Ctx))
+            .AddSingleton<IWorkOrderReviewService>(new WorkOrderReviewService(Ctx, new PEMS.WorkflowPlatform.Services.WorkflowRuntimeService(Ctx)))
             .AddSingleton<IWorkOrderSectionGuard>(new WorkOrderSectionGuard(Ctx, AccessControl))
             .BuildServiceProvider();
         var handler = new PEMS.Web.Definitions.OperationInvokeAction(services.GetRequiredService<IServiceScopeFactory>(),

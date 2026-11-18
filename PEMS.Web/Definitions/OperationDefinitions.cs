@@ -285,7 +285,7 @@ public sealed class OperationInvokeAction(IServiceScopeFactory scopes, Operation
         if (outcome.Ok && sectionPlan is not null)
         {
             var arguments = op.Method.GetParameters().Zip(values, (p, v) => (p.Name!, v)).ToDictionary(x => x.Item1, x => x.v, StringComparer.OrdinalIgnoreCase);
-            await OperationSectionGuard.RecordAsync(scope.ServiceProvider, sectionPlan, caller, arguments);
+            await OperationSectionGuard.RecordAsync(scope.ServiceProvider, sectionPlan, caller, arguments, answer);
         }
         return outcome;
     }
