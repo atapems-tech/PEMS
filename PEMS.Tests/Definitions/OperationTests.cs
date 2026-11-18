@@ -9,6 +9,8 @@ using PEMS.Web.Definitions;
 
 namespace PEMS.Tests.Definitions;
 
+public sealed class OpTestData { public string? Code { get; set; } public decimal? Hours { get; set; } public int? By { get; set; } }
+
 public sealed record OpTestActor(int? EmployeeId, IReadOnlyList<string> Roles);
 
 public interface IOpTestService
@@ -24,6 +26,9 @@ public interface IOpTestService
 
     [PemsOperation("Test", "Trace")]
     Task<(bool Success, string? Error)> TraceAsync(int id, IReadOnlyList<string> roles, string? ipAddress, string? userAgent);
+
+    [PemsOperation("Test", "Bag")]
+    Task<bool> BagAsync(int id, OpTestData? data = null);
 
     [PemsOperation("Test", "Boom")]
     Task BoomAsync();
@@ -41,6 +46,7 @@ public sealed class OpTestService : IOpTestService
     public Task DoAsync(string text, CancellationToken ct) { Last = "void " + text; return Task.CompletedTask; }
     public Task<(bool Success, string? Error)> TraceAsync(int id, IReadOnlyList<string> roles, string? ipAddress, string? userAgent)
     { Last = $"trace {id}|{string.Join(",", roles)}|{ipAddress}|{userAgent}"; return Task.FromResult((true, (string?)null)); }
+    public Task<bool> BagAsync(int id, OpTestData? data = null) { Last = data is null ? "bag none" : $"bag {id}|{data.Code}|{data.Hours}|{data.By}"; return Task.FromResult(true); }
     public Task BoomAsync() => throw new InvalidOperationException("Segregation of duties.");
 }
 
@@ -72,7 +78,7 @@ public sealed class OperationTests
         Assert.Contains("WorkRequest", product.Models);
         Assert.Equal(["Submit", "WorkflowAction"], product.Actions("WorkRequest"));
         Assert.Equal(["Test"], Catalog.Models);
-        Assert.Equal(["Boom", "Flag", "Run", "Trace", "Void"], Catalog.Actions("Test"));
+        Assert.Equal(["Bag", "Boom", "Flag", "Run", "Trace", "Void"], Catalog.Actions("Test"));
         Assert.Equal("Test.Run", Catalog.Get("Test", "Run")!.Permission);
         Assert.Null(Catalog.Get("Test", "Flag")!.Permission);
         Assert.Null(Catalog.Get("Test", "Nope"));
@@ -136,6 +142,19 @@ public sealed class OperationTests
         Assert.True((await handler.ExecuteAsync(invocation, CancellationToken.None)).Ok);
         Assert.Equal("trace 4|Reviewer,Admin|10.0.0.5|UA/1", OpTestService.Last);
         Assert.Contains("wrong-source", handler.ValidateParameters(JsonNode.Parse("""{"model":"Test","action":"Trace","args":{"roles":"literal:Admin"}}""")!.AsObject()).Select(e => e.Code));
+    }
+
+    [Fact]
+    public async Task An_options_object_is_filled_from_form_values_of_the_same_name_or_the_listed_sources_and_is_null_when_not_named()
+    {
+        var handler = Handler();
+        Assert.True((await handler.ExecuteAsync(Invoke("""{"model":"Test","action":"Bag","args":{"id":"field:id"}}""", ("id", "2"), ("code", "x")), CancellationToken.None)).Ok);
+        Assert.Equal("bag none", OpTestService.Last);
+        Assert.True((await handler.ExecuteAsync(Invoke("""{"model":"Test","action":"Bag","args":{"id":"field:id","data":{"By":"context:employeeId","Hours":"literal:2.5"}}}""", ("id", "2"), ("code", "x")), CancellationToken.None)).Ok);
+        Assert.Equal("bag 2|x|2.5|7", OpTestService.Last);
+        Assert.Empty(handler.ValidateParameters(JsonNode.Parse("""{"model":"Test","action":"Bag","args":{"data":{}}}""")!.AsObject()));
+        Assert.Contains("unknown-parameter", handler.ValidateParameters(JsonNode.Parse("""{"model":"Test","action":"Bag","args":{"data":{"Nope":"field:x"}}}""")!.AsObject()).Select(e => e.Code));
+        Assert.Contains("wrong-source", handler.ValidateParameters(JsonNode.Parse("""{"model":"Test","action":"Bag","args":{"id":{"A":"field:x"}}}""")!.AsObject()).Select(e => e.Code));
     }
 
     [Fact]

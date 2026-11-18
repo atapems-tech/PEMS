@@ -683,19 +683,17 @@ public class WorkOrderSectionGuardTests : WorkOrderGovernanceTestBase
     }
 
     [Fact]
-    public async Task Reopen_post_without_permission_is_forbidden_and_with_permission_needs_a_reason()
+    public async Task Reopen_needs_a_reason_and_then_returns_the_work_order_to_verification()
     {
+        // SCRUM-437: the POST endpoint is the action definition work-order-reopen over WorkOrder.Reopen (the permission is checked by the operation catalog, see OperationTests);
+        // the rules stay in the service.
         var id = await CreateAsync("Corrective"); await RunToVerificationAsync(id); await Do(id, "Approve", Verifier); await Do(id, "Approve", Approver);
 
-        Assert.IsType<ForbidResult>(await BuildController(Executor).ReopenWorkOrder(id, "x"));
+        var noReason = await Svc.ReopenAsync(id, " ", Manager);
+        Assert.False(noReason.Success); Assert.Contains("reason", noReason.Error, StringComparison.OrdinalIgnoreCase);
         Assert.Equal("Closed", (await Wo(id)).Status);
 
-        var mgr = BuildController(Manager);
-        await mgr.ReopenWorkOrder(id, " ");
-        Assert.Equal("Closed", (await Wo(id)).Status);
-        Assert.Contains("reason", (string)mgr.TempData["Error"]!, StringComparison.OrdinalIgnoreCase);
-
-        await mgr.ReopenWorkOrder(id, "inspection found an error");
+        Assert.True((await Svc.ReopenAsync(id, "inspection found an error", Manager)).Success);
         Assert.Equal("Completed", (await Wo(id)).Status);
     }
 }

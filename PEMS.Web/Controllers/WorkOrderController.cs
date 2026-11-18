@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PEMS.Application.Common;
 using PEMS.Application.DTOs;
@@ -397,28 +397,6 @@ public class WorkOrderController : Controller
     // اعتبارسنجی واقعی گذار مجاز/غیرمجاز داخل WorkOrderLifecycleService انجام می‌شه.
     // ==============================================================================
 
-    /// <summary>
-    /// اجرای اکشن گردش‌کار (مرحله‌ی جاری از مدل مرکزی). actionType از کاربر می‌آید ولی «مجاز بودن» را سرور (Runtime + هوک Work Order:
-    /// مجوز، سازمان، دیسیپلین، SoD) تعیین می‌کند؛ دکمه‌ی مخفی/غیرفعال هیچ‌گاه مرجع امنیت نیست.
-    /// </summary>
-    [HttpPost]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> WorkflowAction(int id, string actionType, string? comment,
-        string? failureModeCode, string? failureCauseCode, string? rootCause, decimal? downtimeHours,
-        string? failureEffect, string? correctiveAction, decimal? contractorCost, string? contractorName)
-    {
-        if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "WorkOrder", "View")) return Forbid();
-
-        var (success, error) = await SafeAsync(async () => await _lifecycleService.ExecuteWorkflowActionAsync(id, actionType, comment, await BuildActorAsync(),
-            new WorkOrderCompletionData
-            {
-                FailureModeCode = failureModeCode, FailureCauseCode = failureCauseCode, RootCause = rootCause, DowntimeHours = downtimeHours,
-                FailureEffect = failureEffect, CorrectiveAction = correctiveAction, ContractorCost = contractorCost, ContractorName = contractorName
-            }));
-        TempData[success ? "Message" : "Error"] = success ? L("اقدام با موفقیت انجام شد.", "The action was completed.") : error;
-        return RedirectToAction(nameof(Details), new { id });
-    }
-
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> SetPlanning(int id, int responsibleDisciplineId)
@@ -455,72 +433,6 @@ public class WorkOrderController : Controller
         var (success, error) = await SafeAsync(async () => await _lifecycleService.ScheduleWorkOrderAsync(id, plannedStart, plannedFinish, await BuildActorAsync()));
         if (success) await RecordChildChangeAsync(id, WoSection.Schedule, WoSectionAction.Edit, null, null, null, $"PlannedStart={plannedStart:O}; PlannedFinish={plannedFinish:O}");
         TempData[success ? "Message" : "Error"] = success ? L("زمان‌بندی ثبت شد.", "Schedule saved.") : error;
-        return RedirectToAction(nameof(Details), new { id });
-    }
-
-    [HttpPost]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Hold(int id, string? reason)
-    {
-        if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "WorkOrder", "Edit")) return Forbid();
-
-        var (success, error) = await _lifecycleService.AdvanceStatusAsync(
-            id, "OnHold", reason, await GetCurrentEmployeeIdAsync(), null, null, null, null, null, null);
-
-        TempData[success ? "Message" : "Error"] = success ? "Work order put on hold" : error;
-        return RedirectToAction(nameof(Details), new { id });
-    }
-
-    [HttpPost]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Resume(int id, string? reason)
-    {
-        if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "WorkOrder", "Edit")) return Forbid();
-
-        var (success, error) = await _lifecycleService.AdvanceStatusAsync(
-            id, "InProgress", reason, await GetCurrentEmployeeIdAsync(), null, null, null, null, null, null);
-
-        TempData[success ? "Message" : "Error"] = success ? "Work order resumed" : error;
-        return RedirectToAction(nameof(Details), new { id });
-    }
-
-    [HttpPost]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Cancel(int id, string? reason)
-    {
-        if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "WorkOrder", "Approve")) return Forbid();
-
-        var (success, error) = await _lifecycleService.AdvanceStatusAsync(
-            id, "Cancelled", reason, await GetCurrentEmployeeIdAsync(), null, null, null, null, null, null);
-
-        TempData[success ? "Message" : "Error"] = success ? "Work order cancelled" : error;
-        return RedirectToAction(nameof(Details), new { id });
-    }
-
-    [HttpPost]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Reject(int id, string? reason)
-    {
-        if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "WorkOrder", "Approve")) return Forbid();
-
-        var (success, error) = await _lifecycleService.AdvanceStatusAsync(
-            id, "Rejected", reason, await GetCurrentEmployeeIdAsync(), null, null, null, null, null, null);
-
-        TempData[success ? "Message" : "Error"] = success ? "Work order rejected" : error;
-        return RedirectToAction(nameof(Details), new { id });
-    }
-
-    /// <summary>
-    /// H28: بازگشایی رسمی Work Order بسته‌شده. مجوز جدا (WorkOrder.Reopen)، دلیل الزامی و ممیزی کامل؛ Work Order به مرحله‌ی تأیید برمی‌گردد (نه ویرایش آزاد).
-    /// </summary>
-    [HttpPost]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> ReopenWorkOrder(int id, string? reason)
-    {
-        if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "WorkOrder", "Reopen")) return Forbid();
-
-        var (success, error) = await _lifecycleService.ReopenAsync(id, reason, await BuildActorAsync(), _currentUser.UserName, _currentUser.UserId, GetClientIp());
-        TempData[success ? "Message" : "Error"] = success ? L("Work Order بازگشایی شد و به مرحله‌ی تأیید برگشت.", "The Work Order was reopened and returned to verification.") : error;
         return RedirectToAction(nameof(Details), new { id });
     }
 
