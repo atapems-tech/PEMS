@@ -216,7 +216,7 @@ public class WorkOrderSectionGuardTests : WorkOrderGovernanceTestBase
             new WorkOrderLaborService(Ctx, accessControl), Svc, new CrewService(Ctx), null!, null!, _guard).WithTempData();
         controller.ControllerContext.HttpContext.Connection.RemoteIpAddress = System.Net.IPAddress.Parse("10.0.0.9");
         if (ajax) controller.ControllerContext.HttpContext.Request.Headers["X-Requested-With"] = "XMLHttpRequest";
-        return controller;
+        return controller.As(this, who);
     }
 
     private int _seed;
@@ -232,14 +232,14 @@ public class WorkOrderSectionGuardTests : WorkOrderGovernanceTestBase
         return (skill.SkillId, material.MaterialItemId);
     }
 
-    private sealed record Post(string Name, WoSection Section, Func<WorkOrderController, int, Task<IActionResult>> Run, Func<int, Task<int>> Count);
+    private sealed record Post(string Name, WoSection Section, Func<WorkOrderController, int, Task<IActionResult>> Run, Func<int, Task<int>> Count, bool Converted = false);
 
     private List<Post> Posts((int SkillId, int MaterialId) c) => new()
     {
-        new("AddRequiredSkill", WoSection.RequiredSkills, (ctl, id) => ctl.AddRequiredSkill(id, c.SkillId, "Basic", 2), id => Ctx.RequiredSkills.CountAsync(x => x.WorkOrderId == id)),
-        new("AddRequiredMaterial", WoSection.RequiredMaterials, (ctl, id) => ctl.AddRequiredMaterial(id, c.MaterialId, 3), id => Ctx.WorkOrderMaterials.CountAsync(x => x.WorkOrderId == id)),
+        new("AddRequiredSkill", WoSection.RequiredSkills, (ctl, id) => ctl.AddRequiredSkill(id, c.SkillId, "Basic", 2), id => Ctx.RequiredSkills.CountAsync(x => x.WorkOrderId == id), Converted: true),
+        new("AddRequiredMaterial", WoSection.RequiredMaterials, (ctl, id) => ctl.AddRequiredMaterial(id, c.MaterialId, 3), id => Ctx.WorkOrderMaterials.CountAsync(x => x.WorkOrderId == id), Converted: true),
         new("RequestDisciplineReview", WoSection.DisciplineReview, (ctl, id) => ctl.RequestDisciplineReview(id, new List<int> { Elec }), id => Ctx.WorkOrderDisciplineReferrals.CountAsync(x => x.WorkOrderId == id)),
-        new("AddSpareUsage", WoSection.SpareParts, (ctl, id) => ctl.AddSpareUsage(id, c.MaterialId, 1, 10, "reason"), id => Ctx.MaintenanceSpareUsages.CountAsync(x => x.WorkOrderId == id)),
+        new("AddSpareUsage", WoSection.SpareParts, (ctl, id) => ctl.AddSpareUsage(id, c.MaterialId, 1, 10, "reason"), id => Ctx.MaintenanceSpareUsages.CountAsync(x => x.WorkOrderId == id), Converted: true),
     };
 
     [Fact]
@@ -272,7 +272,7 @@ public class WorkOrderSectionGuardTests : WorkOrderGovernanceTestBase
                 }
 
                 // --- همان POST به‌صورت AJAX: وضعیت واقعی HTTP 400 با بدنه‌ی JSON (در موارد رد)
-                if (!mayChange)
+                if (!mayChange && !post.Converted)      // converted posts are definitions: the JSON answer of the action host is covered by its own tests
                 {
                     var ajax = await post.Run(BuildController(DisciplineHead, ajax: true), id);
                     var obj = Assert.IsType<ObjectResult>(ajax);
@@ -283,7 +283,8 @@ public class WorkOrderSectionGuardTests : WorkOrderGovernanceTestBase
                 // --- کاربر بدون مجوز: هرگز تغییری ایجاد نمی‌کند (Forbid یا 403)
                 var unauthorized = BuildController(Creator);                      // Create/Plan/Prepare، بدون WorkOrder.Edit
                 var denied = await post.Run(unauthorized, id);
-                Assert.IsType<ForbidResult>(denied);
+                if (post.Converted) Assert.NotNull(unauthorized.TempData["Error"]);          // a definition refuses with a message (the operation permission), not a Forbid
+                else Assert.IsType<ForbidResult>(denied);
                 Assert.Equal(after, await post.Count(id));
                 cells++;
             }
@@ -576,7 +577,7 @@ public class WorkOrderSectionGuardTests : WorkOrderGovernanceTestBase
             ctl.TempData.Clear();
             var result = Assert.IsType<RedirectToActionResult>(await ctl.AddRequiredMaterial(id, bad, 1));
             Assert.Equal("Details", result.ActionName);
-            Assert.Equal("Wo_Err_MaterialNotFound", ctl.TempData["Error"]);
+            Assert.Equal("The material item was not found or is inactive.", ctl.TempData["Error"]);      // the service answers in the request language (a definition shows it as is)
         }
         Assert.Empty(Ctx.WorkOrderMaterials.Where(x => x.WorkOrderId == id));
 

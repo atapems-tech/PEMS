@@ -727,7 +727,7 @@ else
                     <pems-table-cell>
                         @if (outstanding > 0 && Ctl(WoSection.SpareParts))
                         {
-                            <pems-form asp-action="ReturnSpareUsage" method="post"><pems-flex gap="1">
+                            <pems-form action="/a/work-order-return-spare-usage" method="post"><pems-flex gap="1">
                                 <input type="hidden" name="maintenanceSpareUsageId" value="@s.MaintenanceSpareUsageId" />
                                 <input type="hidden" name="workOrderId" value="@Model.WorkOrderId" />
                                 @if (Acc(WoSection.SpareParts) == SectionAccess.Correctable)
@@ -764,7 +764,7 @@ else
         <pems-input type="text" id="spareUsageScanInput" dir="ltr" placeholder="@Localizer["Scan Material barcode..."]" />
         <pems-button tone="neutral" outline="true" type="button" id="spareUsageScanBtn">@Localizer["Resolve"]</pems-button>
     </div>
-    <pems-form asp-action="AddSpareUsage" method="post"><pems-row gap="2" css="mt-2">
+    <pems-form action="/a/work-order-add-spare-usage" method="post"><pems-row gap="2" css="mt-2">
         <input type="hidden" name="workOrderId" value="@Model.WorkOrderId" />
         @if (Acc(WoSection.SpareParts) == SectionAccess.Correctable)
         {
@@ -842,7 +842,7 @@ else
                 @(rs.PlannedHours.HasValue ? $"[{rs.PlannedHours}h]" : "")
                 @if (Ctl(WoSection.RequiredSkills))
                 {
-                <pems-form asp-action="RemoveRequiredSkill" method="post" class="d-inline">
+                <pems-form action="/a/work-order-remove-required-skill" method="post" class="d-inline">
                     <input type="hidden" name="requiredSkillId" value="@rs.RequiredSkillId" />
                     <input type="hidden" name="workOrderId" value="@Model.WorkOrderId" />
                     <pems-button class="lh-1" tone="none" size="small" css="p-0 border-0 text-white" type="submit" title="@Localizer["حذف"]"><pems-icon name="bi-x" /></pems-button>
@@ -855,7 +855,7 @@ else
 
     @if (Ctl(WoSection.RequiredSkills))
     {
-    <pems-form asp-action="AddRequiredSkill" method="post"><pems-row gap="2">
+    <pems-form action="/a/work-order-add-required-skill" method="post"><pems-row gap="2">
         <input type="hidden" name="workOrderId" value="@Model.WorkOrderId" />
         <pems-col md="4">
             <pems-select scale="small" name="skillId" required>
@@ -931,7 +931,7 @@ else
                     <pems-table-cell class="text-end">
                         @if (Ctl(WoSection.RequiredMaterials))
                         {
-                        <pems-form asp-action="RemoveRequiredMaterial" method="post" class="d-inline">
+                        <pems-form action="/a/work-order-remove-required-material" method="post" class="d-inline">
                             <input type="hidden" name="workOrderMaterialId" value="@rm.WorkOrderMaterialId" />
                             <input type="hidden" name="workOrderId" value="@Model.WorkOrderId" />
                             <pems-button tone="danger" size="small" outline="true" type="submit" title="@Localizer["حذف"]"><pems-icon name="bi-x" /></pems-button>
@@ -993,7 +993,7 @@ else
         <pems-input type="text" id="requiredMaterialScanInput" dir="ltr" placeholder="@Localizer["Scan Material barcode..."]" />
         <pems-button tone="neutral" outline="true" type="button" id="requiredMaterialScanBtn">@Localizer["Resolve"]</pems-button>
     </div>
-    <pems-form asp-action="AddRequiredMaterial" method="post"><pems-row gap="2">
+    <pems-form action="/a/work-order-add-required-material" method="post"><pems-row gap="2">
         <input type="hidden" name="workOrderId" value="@Model.WorkOrderId" />
         <pems-col md="6">
             <pems-select scale="small" name="materialItemId" id="requiredMaterialSelect" required>

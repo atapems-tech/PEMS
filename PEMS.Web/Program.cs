@@ -415,6 +415,7 @@ builder.Services.AddScoped<IWorkOrderReviewService, WorkOrderReviewService>();
 // نشده بودن (باگ واقعی که موقع اولین درخواست به TeamController/WorkOrder Labor کرش می‌کرد)
 builder.Services.AddScoped<ITeamService, TeamService>();
 builder.Services.AddScoped<IWorkOrderLaborService, WorkOrderLaborService>();
+builder.Services.AddScoped<IWorkOrderChildService, WorkOrderChildService>();
 
 // طبق «PEMS Dynamic Maintenance Organization»
 builder.Services.AddScoped<IOrganizationStructureService, OrganizationStructureService>();
