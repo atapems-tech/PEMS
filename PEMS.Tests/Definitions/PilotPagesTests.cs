@@ -26,7 +26,7 @@ public sealed class PilotPagesTests
         var ui = PEMS.UI.ServiceCollectionExtensions.AddPemsUi(new ServiceCollection()).BuildServiceProvider().CreateScope().ServiceProvider;
         var registry = ui.GetRequiredService<IPemsComponentRegistry>();
         var catalog = ui.GetRequiredService<ComponentManifestCatalog>();
-        return (ui, [new FormDefinitionKind(), new PageDefinitionKind(registry, catalog), new LayoutDefinitionKind(), new DataSourceDefinitionKind([new DepartmentsDataSource(null!)], [new DepartmentsGridProvider(null!), new RolesGridProvider(null!), new SecurityEventsGridProvider(null!)]), new ActionDefinitionKind([new DepartmentCreateAction(null!), new RoleCreateAction(null!)])]);
+        return (ui, [new FormDefinitionKind(), new PageDefinitionKind(registry, catalog), new LayoutDefinitionKind(), new DataSourceDefinitionKind([new DepartmentsDataSource(null!), new EntityOptionsProvider(null!, EntityCatalog.Default())], [new DepartmentsGridProvider(null!), new RolesGridProvider(null!), new SecurityEventsGridProvider(null!), new EntityGridProvider(null!, EntityCatalog.Default())]), new ActionDefinitionKind([new DepartmentCreateAction(null!), new RoleCreateAction(null!), new EntityCreateAction(null!, EntityCatalog.Default())])]);
     }
 
     [Fact]

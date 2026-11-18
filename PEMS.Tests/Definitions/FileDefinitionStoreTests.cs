@@ -17,7 +17,7 @@ public sealed class FileDefinitionStoreTests : IDisposable
     {
         var registry = new PemsComponentRegistry();
         return [new FormDefinitionKind(), new PageDefinitionKind(registry, new ComponentManifestCatalog(registry)), new LayoutDefinitionKind(),
-            new DataSourceDefinitionKind([new DepartmentsDataSource(null!)], [new DepartmentsGridProvider(null!), new RolesGridProvider(null!), new SecurityEventsGridProvider(null!)]), new ActionDefinitionKind([new DepartmentCreateAction(null!), new RoleCreateAction(null!)])];
+            new DataSourceDefinitionKind([new DepartmentsDataSource(null!), new EntityOptionsProvider(null!, EntityCatalog.Default())], [new DepartmentsGridProvider(null!), new RolesGridProvider(null!), new SecurityEventsGridProvider(null!), new EntityGridProvider(null!, EntityCatalog.Default())]), new ActionDefinitionKind([new DepartmentCreateAction(null!), new RoleCreateAction(null!), new EntityCreateAction(null!, EntityCatalog.Default())])];
     }
 
     private FileDefinitionStore Store(bool failOnInvalid = true) => new(Kinds(), new DefinitionLimits(), new DefinitionFileOptions { Folder = _folder, FailOnInvalid = failOnInvalid, Watch = false }, FilesOwnership.For(Kinds()));

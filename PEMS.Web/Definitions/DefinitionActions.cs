@@ -19,6 +19,8 @@ public interface IDataSourceProvider
     /// <summary>Roles that may read it; null = any signed-in user (the data source definition may still name a permission).</summary>
     IReadOnlyCollection<string>? AllowedRoles { get; }
     Task<IReadOnlyList<FieldOption>> LoadAsync(DataSourceRequest request, CancellationToken ct);
+    /// <summary>Checks the <c>parameters</c> of a data source definition that names this provider; refused at load.</summary>
+    IReadOnlyList<DefinitionFieldError> ValidateParameters(JsonObject? parameters) => [];
 }
 
 /// <summary>The values an action works on and who runs it.</summary>
@@ -43,6 +45,8 @@ public interface IGridDataProvider
     IReadOnlyCollection<string>? AllowedRoles { get; }
     /// <summary>Items are anonymous or typed rows; they are written as JSON with the MVC defaults (camel case).</summary>
     Task<(IReadOnlyList<object> Items, int Total)> QueryAsync(GridDataRequest request, CancellationToken ct);
+    /// <summary>Checks the <c>parameters</c> of a data source definition that names this provider; refused at load.</summary>
+    IReadOnlyList<DefinitionFieldError> ValidateParameters(JsonObject? parameters) => [];
 }
 
 /// <summary>A registered action: the code a stored action definition may name.</summary>
@@ -64,8 +68,8 @@ public sealed record ActionResult(ActionStatus Status, ActionOutcome? Outcome, T
 public sealed class DataSourceDefinitionKind(IEnumerable<IDataSourceProvider> providers, IEnumerable<IGridDataProvider>? grids = null) : IDefinitionKind
 {
     private static readonly HashSet<string> Allowed = new(StringComparer.Ordinal) { "kind", "items", "provider", "parameters", "permission" };
-    private readonly HashSet<string> _providers = providers.Select(p => p.Key).ToHashSet(StringComparer.Ordinal);
-    private readonly HashSet<string> _grids = (grids ?? []).Select(p => p.Key).ToHashSet(StringComparer.Ordinal);
+    private readonly Dictionary<string, IDataSourceProvider> _providers = providers.ToDictionary(p => p.Key, StringComparer.Ordinal);
+    private readonly Dictionary<string, IGridDataProvider> _grids = (grids ?? []).ToDictionary(p => p.Key, StringComparer.Ordinal);
 
     public string Key => "data-source";
 
@@ -92,13 +96,15 @@ public sealed class DataSourceDefinitionKind(IEnumerable<IDataSourceProvider> pr
             case "provider":
                 var provider = Str(root["provider"]);
                 if (string.IsNullOrEmpty(provider)) errors.Add(new("/provider", "required", "Def_Err_Required", "A provider data source needs a provider key."));
-                else if (!_providers.Contains(provider)) errors.Add(new("/provider", "unknown-provider", "Def_Err_UnknownProvider", $"'{provider}' is not a registered data source provider."));
+                else if (!_providers.TryGetValue(provider, out var registered)) errors.Add(new("/provider", "unknown-provider", "Def_Err_UnknownProvider", $"'{provider}' is not a registered data source provider."));
+                else errors.AddRange(registered.ValidateParameters(root["parameters"] as JsonObject).Select(e => e with { Pointer = "/parameters" + e.Pointer }));
                 if (root["items"] is not null) errors.Add(new("/items", "overlap", "Def_Err_Overlap", "A provider data source has no inline items."));
                 break;
             case "grid":
                 var gridProvider = Str(root["provider"]);
                 if (string.IsNullOrEmpty(gridProvider)) errors.Add(new("/provider", "required", "Def_Err_Required", "A grid data source needs a provider key."));
-                else if (!_grids.Contains(gridProvider)) errors.Add(new("/provider", "unknown-provider", "Def_Err_UnknownProvider", $"'{gridProvider}' is not a registered grid data provider."));
+                else if (!_grids.TryGetValue(gridProvider, out var registeredGrid)) errors.Add(new("/provider", "unknown-provider", "Def_Err_UnknownProvider", $"'{gridProvider}' is not a registered grid data provider."));
+                else errors.AddRange(registeredGrid.ValidateParameters(root["parameters"] as JsonObject).Select(e => e with { Pointer = "/parameters" + e.Pointer }));
                 if (root["items"] is not null) errors.Add(new("/items", "overlap", "Def_Err_Overlap", "A grid data source has no inline items."));
                 break;
             default:
@@ -260,5 +266,6 @@ public sealed class DataSourceExecutor(IDefinitionStore store, IDefinitionAccess
             return new DataResult(DataStatus.Ok, items, total);
         }
         catch (PEMS.Application.Grids.GridQueryException ex) { return new DataResult(DataStatus.Invalid, Error: ex.Message); }
+        catch (UnauthorizedAccessException) { return new DataResult(DataStatus.Forbidden); }
     }
 }

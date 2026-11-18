@@ -1,0 +1,155 @@
+{
+  "kind": "page",
+  "key": "warehouses",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Warehouses",
+    "fa": "انبارها"
+  },
+  "description": {
+    "en": "Warehouses list (page definition)",
+    "fa": "فهرست انبارها (تعریف صفحه)"
+  },
+  "payload": {
+    "layout": "list-page",
+    "route": "warehouses",
+    "regions": {
+      "toolbar": [
+        {
+          "id": "new",
+          "component": "button",
+          "options": {
+            "label": {
+              "en": "New Warehouse",
+              "fa": "انبار جدید"
+            },
+            "tone": "primary",
+            "href": "/f/warehouses-create"
+          }
+        }
+      ],
+      "content": [
+        {
+          "id": "grid",
+          "component": "data-grid",
+          "options": {
+            "id": "warehouses",
+            "url": "/d/warehouses-grid",
+            "idField": "warehouseId",
+            "selectable": false,
+            "columns": [
+              {
+                "key": "code",
+                "header": {
+                  "en": "Code",
+                  "fa": "کد"
+                },
+                "width": 140
+              },
+              {
+                "key": "name",
+                "header": {
+                  "en": "Name",
+                  "fa": "نام"
+                },
+                "width": 260
+              },
+              {
+                "key": "description",
+                "header": {
+                  "en": "Description",
+                  "fa": "توضیحات"
+                },
+                "width": 320
+              },
+              {
+                "key": "isActive",
+                "header": {
+                  "en": "Active",
+                  "fa": "فعال"
+                },
+                "width": 100,
+                "type": "bool"
+              }
+            ],
+            "texts": {
+              "search": {
+                "en": "Search",
+                "fa": "جستجو"
+              },
+              "columns": {
+                "en": "Columns",
+                "fa": "ستون‌ها"
+              },
+              "density": {
+                "en": "Density",
+                "fa": "تراکم"
+              },
+              "compact": {
+                "en": "Compact",
+                "fa": "فشرده"
+              },
+              "comfortable": {
+                "en": "Comfortable",
+                "fa": "راحت"
+              },
+              "export": {
+                "en": "Export",
+                "fa": "خروجی"
+              },
+              "views": {
+                "en": "Views",
+                "fa": "نماها"
+              },
+              "saveView": {
+                "en": "Save view",
+                "fa": "ذخیره نما"
+              },
+              "viewName": {
+                "en": "View name",
+                "fa": "نام نما"
+              },
+              "loading": {
+                "en": "Loading",
+                "fa": "در حال بارگذاری"
+              },
+              "empty": {
+                "en": "No rows",
+                "fa": "ردیفی نیست"
+              },
+              "error": {
+                "en": "Could not load",
+                "fa": "بارگذاری نشد"
+              },
+              "rows": {
+                "en": "{0} rows",
+                "fa": "{0} ردیف"
+              },
+              "selected": {
+                "en": "{0} selected",
+                "fa": "{0} انتخاب شد"
+              },
+              "selectAllMatching": {
+                "en": "Select all {0}",
+                "fa": "انتخاب همه {0}"
+              },
+              "clearSelection": {
+                "en": "Clear",
+                "fa": "پاک کردن"
+              },
+              "filter": {
+                "en": "Filter",
+                "fa": "فیلتر"
+              },
+              "delete": {
+                "en": "Delete",
+                "fa": "حذف"
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

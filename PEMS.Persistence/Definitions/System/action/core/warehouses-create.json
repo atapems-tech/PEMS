@@ -1,0 +1,50 @@
+{
+  "kind": "action",
+  "key": "warehouses-create",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Create Warehouse",
+    "fa": "ایجاد انبار"
+  },
+  "description": {
+    "en": "Creates the row",
+    "fa": "ردیف را ثبت می‌کند"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "entity.create",
+    "parameters": {
+      "entity": "Warehouse",
+      "map": {
+        "code": "Code",
+        "name": "Name",
+        "description": "Description"
+      },
+      "required": [
+        "Code",
+        "Name"
+      ],
+      "defaults": {
+        "IsActive": true,
+        "CreatedDate": "$now"
+      },
+      "unique": [
+        {
+          "fields": [
+            "Code"
+          ],
+          "message": {
+            "en": "A warehouse with this code already exists.",
+            "fa": "انباری با همین کد از قبل وجود دارد."
+          }
+        }
+      ]
+    },
+    "success": {
+      "en": "Warehouse created.",
+      "fa": "انبار ایجاد شد."
+    },
+    "redirect": "/p/warehouses"
+  }
+}
