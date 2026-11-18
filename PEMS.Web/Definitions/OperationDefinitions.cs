@@ -56,7 +56,7 @@ public sealed class OperationCatalog
 
 /// <summary>
 /// <c>operation.invoke</c>: runs a registered service operation. Parameters: <c>model</c> and <c>action</c> (the pair the service method is marked with) and <c>args</c> (parameter name to source: <c>field:name</c> a value of the form or button, <c>literal:text</c>, or
-/// <c>context:employeeId|roles|userName|culture|ip|userAgent</c>; a parameter without an entry reads the field of the same name). A parameter that is a record (an "actor") is built from the context by the names of its
+/// <c>context:employeeId|roles|userName|culture|ip|userAgent|userId</c>; a parameter without an entry reads the field of the same name). A parameter that is a record (an "actor") is built from the context by the names of its
 /// constructor parameters. The method's answer <c>(bool Success, string? Error)</c>, <c>bool</c> or none is turned into the outcome of the action; a refusal shows the service's own message.
 /// </summary>
 public sealed class OperationInvokeAction(IServiceScopeFactory scopes, OperationCatalog catalog) : IActionHandler
@@ -70,7 +70,15 @@ public sealed class OperationInvokeAction(IServiceScopeFactory scopes, Operation
         return t == typeof(string) || t == typeof(int) || t == typeof(long) || t == typeof(decimal) || t == typeof(double) || t == typeof(bool) || t == typeof(DateTime) || t.IsEnum;
     }
 
-    private static readonly HashSet<string> ContextNames = new(StringComparer.OrdinalIgnoreCase) { "employeeId", "roles", "userName", "culture", "ip", "userAgent" };
+    private static readonly HashSet<string> ContextNames = new(StringComparer.OrdinalIgnoreCase) { "employeeId", "roles", "userName", "culture", "ip", "userAgent", "userId" };
+
+    /// <summary>A plain options object (settable simple properties, no constructor arguments), such as a completion-data record: its properties are bound from the form values of the same name (first letter lower-case), or from the sources the definition lists for them.</summary>
+    private static bool IsBag(Type t) => t.IsClass && t != typeof(string) && t.GetConstructor(Type.EmptyTypes) is not null
+        && t.GetProperties().Any(pr => pr.CanWrite && IsSimple(pr.PropertyType));
+
+    private static string CamelCase(string name) => char.ToLowerInvariant(name[0]) + name[1..];
+
+    private static bool IsSource(string s) => s.StartsWith("field:") && s.Length > 6 || s.StartsWith("literal:") || s.StartsWith("context:") && ContextNames.Contains(s[8..]);
 
     private static bool IsTextList(Type t) => t != typeof(string) && typeof(IEnumerable<string>).IsAssignableFrom(t);
 
@@ -89,7 +97,18 @@ public sealed class OperationInvokeAction(IServiceScopeFactory scopes, Operation
         {
             var s = EntityJson.Str(source) ?? "";
             if (!names.Contains(name)) errors.Add(new("/args/" + name, "unknown-parameter", "Def_Err_UnknownField", $"'{name}' is not a parameter of {op.Name}."));
-            else if (!(s.StartsWith("field:") && s.Length > 6 || s.StartsWith("literal:") || s.StartsWith("context:") && ContextNames.Contains(s[8..]))) errors.Add(new("/args/" + name, "wrong-source", "Def_Err_Type", "A source is field:name, literal:text or context:employeeId|roles|userName|culture."));
+            else if (source is JsonObject bag)
+            {
+                var type = op.Method.GetParameters().First(pp => pp.Name == name).ParameterType;
+                if (!IsBag(type)) errors.Add(new("/args/" + name, "wrong-source", "Def_Err_Type", $"'{name}' of {op.Name} is not an options object."));
+                else
+                    foreach (var (property, propertySource) in bag)
+                    {
+                        if (!type.GetProperties().Any(pr => pr.Name == property && pr.CanWrite && IsSimple(pr.PropertyType))) errors.Add(new($"/args/{name}/{property}", "unknown-parameter", "Def_Err_UnknownField", $"'{property}' is not a property of {name}."));
+                        else if (!IsSource(EntityJson.Str(propertySource) ?? "")) errors.Add(new($"/args/{name}/{property}", "wrong-source", "Def_Err_Type", "A source is field:name, literal:text or context:employeeId|roles|userName|culture."));
+                    }
+            }
+            else if (!IsSource(s)) errors.Add(new("/args/" + name, "wrong-source", "Def_Err_Type", "A source is field:name, literal:text or context:employeeId|roles|userName|culture."));
         }
         foreach (var p in op.Method.GetParameters())
         {
@@ -100,6 +119,7 @@ public sealed class OperationInvokeAction(IServiceScopeFactory scopes, Operation
                 if (EntityJson.Str(args[p.Name!]) is not "context:roles") errors.Add(new("/args/" + p.Name, "wrong-source", "Def_Err_Type", $"The list parameter '{p.Name}' of {op.Name} is the roles of the user: set it to context:roles."));
                 continue;
             }
+            if (IsBag(p.ParameterType)) continue;
             var ctor = p.ParameterType.GetConstructors().OrderByDescending(c => c.GetParameters().Length).FirstOrDefault();
             if (ctor is null || ctor.GetParameters().Any(cp => !ContextNames.Contains(cp.Name!)))
                 errors.Add(new("/operation", "unsupported-parameter", "Def_Err_Type", $"The parameter '{p.Name}' of {op.Name} is neither a simple value nor an object built from the context (employeeId, roles, userName, culture)."));
@@ -116,9 +136,10 @@ public sealed class OperationInvokeAction(IServiceScopeFactory scopes, Operation
             return ActionOutcome.Refused(TranslatableText.Of(("en", "You may not do this."), ("fa", "اجازه‌ی انجام این کار را ندارید.")));
 
         var db = scope.ServiceProvider.GetRequiredService<PEMSDbContext>();
-        var employeeId = invocation.UserName is null ? null : await db.Users.Where(u => u.UserName == invocation.UserName).Select(u => u.EmployeeId).FirstOrDefaultAsync(ct);
+        var identity = invocation.UserName is null ? null : await db.Users.Where(u => u.UserName == invocation.UserName).Select(u => new { u.Id, u.EmployeeId }).FirstOrDefaultAsync(ct);
+        var employeeId = identity?.EmployeeId;
         var context = new Dictionary<string, object?>(StringComparer.OrdinalIgnoreCase)
-            { ["employeeId"] = employeeId, ["roles"] = invocation.Roles.ToList(), ["userName"] = invocation.UserName, ["culture"] = invocation.Culture, ["ip"] = invocation.IpAddress, ["userAgent"] = invocation.UserAgent };
+            { ["employeeId"] = employeeId, ["roles"] = invocation.Roles.ToList(), ["userName"] = invocation.UserName, ["culture"] = invocation.Culture, ["userId"] = identity?.Id, ["ip"] = invocation.IpAddress, ["userAgent"] = invocation.UserAgent };
         var args = invocation.Parameters?["args"] as JsonObject ?? [];
 
         var values = new List<object?>();
@@ -140,6 +161,22 @@ public sealed class OperationInvokeAction(IServiceScopeFactory scopes, Operation
                 if (plainValue && !p.HasDefaultValue && string.IsNullOrWhiteSpace(text))
                     return ActionOutcome.Refused(TranslatableText.Of(("en", $"'{p.Name}' is required."), ("fa", $"«{p.Name}» الزامی است.")));
                 values.Add(converted);
+            }
+            else if (IsBag(p.ParameterType))
+            {
+                // only built when the definition names it: an optional options object stays null otherwise
+                if (!args.ContainsKey(p.Name!)) { values.Add(p.HasDefaultValue ? p.DefaultValue : null); continue; }
+                var bag = Activator.CreateInstance(p.ParameterType)!;
+                var map = args[p.Name!] as JsonObject ?? [];
+                foreach (var property in p.ParameterType.GetProperties().Where(pr => pr.CanWrite && IsSimple(pr.PropertyType)))
+                {
+                    var source = EntityJson.Str(map[property.Name]) ?? "field:" + CamelCase(property.Name);
+                    var text = source.StartsWith("literal:") ? source[8..] : source.StartsWith("context:") ? EntityJson.Show(context[source[8..]]) : invocation.Values.GetValueOrDefault(source[6..]);
+                    var converted = EntityJson.Convert(property.PropertyType, text);
+                    if (converted is EntityJson.NotConvertible) return ActionOutcome.Refused(TranslatableText.Of(("en", $"The value of '{property.Name}' is not valid."), ("fa", $"مقدار «{property.Name}» معتبر نیست.")));
+                    property.SetValue(bag, converted);
+                }
+                values.Add(bag);
             }
             else
             {

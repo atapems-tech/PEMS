@@ -1,4 +1,4 @@
-﻿@model PEMS.Domain.Entities.WorkOrder
+@model PEMS.Domain.Entities.WorkOrder
 @using Microsoft.Extensions.Localization
 @using PEMS.Web.Resources
 @using PEMS.Web.Models
@@ -194,7 +194,7 @@ else
                مستقل از nextStatus خطی، چون این وضعیت‌ها در StatusFlow اصلی نیستند. *@
             @if (canEditWo && Model.Status is "Assigned" or "InProgress")
             {
-                <pems-form asp-action="Hold" method="post" class="d-inline ms-1">
+                <pems-form action="/a/work-order-hold" method="post" class="d-inline ms-1">
                     <input type="hidden" name="id" value="@Model.WorkOrderId" />
                     <pems-input class="pems-w-160" scale="small" css="d-inline-block" name="reason" required placeholder="@Localizer["Reason (required)"]" />
                     <pems-button tone="warning" size="small" outline="true" type="submit" data-legacy="hold"><pems-icon name="bi-pause-circle" /> @Localizer["Hold"]</pems-button>
@@ -202,14 +202,14 @@ else
             }
             @if (canEditWo && Model.Status == "OnHold")
             {
-                <pems-form asp-action="Resume" method="post" class="d-inline ms-1">
+                <pems-form action="/a/work-order-resume" method="post" class="d-inline ms-1">
                     <input type="hidden" name="id" value="@Model.WorkOrderId" />
                     <pems-button tone="primary" size="small" type="submit"><pems-icon name="bi-play-circle" /> Resume</pems-button>
                 </pems-form>
             }
             @if (canApproveWo && Model.Status == "Open")
             {
-                <pems-form asp-action="Reject" method="post" class="d-inline ms-1">
+                <pems-form action="/a/work-order-reject" method="post" class="d-inline ms-1">
                     <input type="hidden" name="id" value="@Model.WorkOrderId" />
                     <pems-input class="pems-w-160" scale="small" css="d-inline-block" name="reason" required placeholder="@Localizer["Reason (required)"]" />
                     <pems-button tone="danger" size="small" outline="true" type="submit" data-pems-confirm="@Localizer["Wo_RejectConfirm"]">@Localizer["Reject"]</pems-button>
@@ -217,7 +217,7 @@ else
             }
             @if (canApproveWo && Model.Status is "Open" or "Assigned" or "InProgress" or "OnHold")
             {
-                <pems-form asp-action="Cancel" method="post" class="d-inline ms-1">
+                <pems-form action="/a/work-order-cancel" method="post" class="d-inline ms-1">
                     <input type="hidden" name="id" value="@Model.WorkOrderId" />
                     <pems-input class="pems-w-160" scale="small" css="d-inline-block" name="reason" required placeholder="@Localizer["Reason (required)"]" />
                     <pems-button tone="neutral" size="small" outline="true" type="submit" data-legacy="cancel" data-pems-confirm="این WorkOrder لغو شود؟">@Localizer["Cancel"]</pems-button>
@@ -295,7 +295,7 @@ else
         <pems-flex wrap="true" gap="2" align="start">
             @if (actions.Count > 0)
             {
-                <pems-form class="w-100" asp-action="WorkflowAction" method="post"><pems-flex dir="column" gap="2">
+                <pems-form class="w-100" action="/a/work-order-workflow-action" method="post"><pems-flex dir="column" gap="2">
                     <input type="hidden" name="id" value="@Model.WorkOrderId" />
                     <pems-flex wrap="true" gap="2" align="center">
                         <pems-input class="pems-w-300" scale="small" type="text" name="comment" placeholder="@Localizer["Comment (required for Reject / Cancel / Hold / Return)"]" />
@@ -611,7 +611,7 @@ else
     <pems-content-card css="mb-3 border-warning">
         <pems-heading level="6" class="mb-2"><pems-icon name="bi-unlock" /> @Localizer["Reopen Work Order"]</pems-heading>
         <pems-text class="text-muted small mb-2">@Localizer["A formal reopen requires a reason and is audited; the Work Order returns to the verification stage."]</pems-text>
-        <pems-form asp-action="ReopenWorkOrder" method="post"><pems-row gap="2">
+        <pems-form action="/a/work-order-reopen" method="post"><pems-row gap="2">
             <input type="hidden" name="id" value="@Model.WorkOrderId" />
             <pems-col md="9"><pems-input scale="small" name="reason" maxlength="500" required placeholder="@Localizer["Reason for reopening (required)"]" /></pems-col>
             <pems-col md="3"><pems-button tone="warning" size="small" outline="true" css="w-100" type="submit"><pems-icon name="bi-unlock" /> @Localizer["Reopen"]</pems-button></pems-col>
