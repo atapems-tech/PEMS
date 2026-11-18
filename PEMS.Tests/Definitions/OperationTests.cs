@@ -245,6 +245,17 @@ public sealed class OperationTests
     }
 
     [Fact]
+    public async Task A_posted_checkbox_value_in_either_case_is_a_bool_and_a_blank_optional_number_is_null()
+    {
+        var handler = Handler();
+        Assert.True((await handler.ExecuteAsync(Invoke("""{"model":"Test","action":"Flag","args":{"id":"field:id","on":"field:attended"}}""", ("id", "3"), ("attended", "True")), CancellationToken.None)).Ok);
+        Assert.Equal("flag 3 True", OpTestService.Last);
+        Assert.True((await handler.ExecuteAsync(Invoke("""{"model":"Test","action":"Flag","args":{"id":"field:id","on":"field:attended"}}""", ("id", "3"), ("attended", "False")), CancellationToken.None)).Ok);
+        Assert.Equal("flag 3 False", OpTestService.Last);
+        Assert.True((await handler.ExecuteAsync(Invoke("""{"model":"Test","action":"Bag","args":{"id":"field:id"}}""", ("id", "3"), ("by", "")), CancellationToken.None)).Ok);
+    }
+
+    [Fact]
     public void A_guard_is_checked_at_load()
     {
         var handler = Handler();

@@ -1,4 +1,4 @@
-﻿namespace PEMS.Application.Interfaces;
+namespace PEMS.Application.Interfaces;
 
 public interface ITechnicalQueryService
 {
@@ -8,15 +8,18 @@ public interface ITechnicalQueryService
         int? raisedByEmployeeId, IReadOnlyList<string> actorRoles,
         string? ipAddress = null, string? userAgent = null);
 
+    [PEMS.Application.Common.PemsOperation("TechnicalQuery", "Respond")]
     Task RespondAsync(
         int technicalQueryId, string responseText,
         int actorEmployeeId, int actorDisciplineId,
         string? ipAddress = null, string? userAgent = null);
 
+    [PEMS.Application.Common.PemsOperation("TechnicalQuery", "Confirm")]
     Task ConfirmAsync(
         int technicalQueryId, int? actorEmployeeId, IReadOnlyList<string> actorRoles,
         string? ipAddress = null, string? userAgent = null);
 
+    [PEMS.Application.Common.PemsOperation("TechnicalQuery", "Reopen")]
     Task ReopenAsync(
         int technicalQueryId, string reason, int? actorEmployeeId, IReadOnlyList<string> actorRoles,
         string? ipAddress = null, string? userAgent = null);

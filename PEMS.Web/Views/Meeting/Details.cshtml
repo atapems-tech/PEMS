@@ -1,4 +1,4 @@
-﻿@model PEMS.Application.DTOs.MeetingDetailDto
+@model PEMS.Application.DTOs.MeetingDetailDto
 @using Microsoft.Extensions.Localization
 @using PEMS.Web.Resources
 @inject IStringLocalizer<SharedResource> Localizer
@@ -28,7 +28,7 @@
 
 <pems-content-card css="mb-3">
     <pems-heading level="6" class="mb-3">Minutes / Notes</pems-heading>
-    <pems-form asp-action="UpdateMinutes" method="post">
+    <pems-form action="/a/meeting-update-minutes" method="post">
         <input type="hidden" name="meetingId" value="@m.MeetingId" />
         <pems-textarea name="minutesNotes" rows="5">@Model.MinutesNotes</pems-textarea>
         <pems-flex gap="2" css="mt-2">
@@ -47,7 +47,7 @@
     @{
         var rows_66 = Model.Attendees;
         var cell_66_2 = DataCell.Template(rows_66, @<text>@{ var a = item; }
-                        <pems-form asp-action="MarkAttended" method="post">
+                        <pems-form action="/a/meeting-mark-attended" method="post">
                             <input type="hidden" name="meetingAttendeeId" value="@a.MeetingAttendeeId" />
                             <input type="hidden" name="meetingId" value="@m.MeetingId" />
                             <input type="hidden" name="attended" value="@(!a.Attended)" />
@@ -61,7 +61,7 @@
     </pems-table-scroll>
     @if (!Model.Attendees.Any()) { <pems-text class="text-muted small">No attendees added yet.</pems-text> }
 
-    <pems-form asp-action="AddAttendee" method="post"><pems-row gap="2" css="mt-2">
+    <pems-form action="/a/meeting-add-attendee" method="post"><pems-row gap="2" css="mt-2">
         <input type="hidden" name="meetingId" value="@m.MeetingId" />
         <pems-col md="5">
             <pems-select scale="small" name="employeeId">

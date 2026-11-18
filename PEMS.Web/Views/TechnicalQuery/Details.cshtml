@@ -1,4 +1,4 @@
-﻿@model PEMS.Domain.Entities.TechnicalQuery
+@model PEMS.Domain.Entities.TechnicalQuery
 @using Microsoft.Extensions.Localization
 @using PEMS.Web.Resources
 @inject IStringLocalizer<SharedResource> Localizer
@@ -89,7 +89,7 @@
         <pems-text class="text-muted small">در انتظار پاسخ دیسیپلین <strong>@Model.Discipline?.Name</strong></pems-text>
         @if (myDisciplineId == Model.DisciplineId)
         {
-            <pems-form asp-action="Respond" method="post">
+            <pems-form action="/a/technical-query-respond" method="post">
                 <input type="hidden" name="technicalQueryId" value="@Model.TechnicalQueryId" />
                 <pems-textarea css="mb-2" name="responseText" rows="3" placeholder="@Localizer["متن پاسخ..."]" required></pems-textarea>
                 <pems-button tone="primary" size="small" type="submit"><pems-icon name="bi-reply" /> ثبت پاسخ</pems-button>
@@ -100,7 +100,7 @@
     {
         <pems-text class="text-muted small">پاسخ ثبت شده - در انتظار تایید ثبت‌کننده.</pems-text>
         <pems-flex gap="2">
-            <pems-form asp-action="Confirm" method="post">
+            <pems-form action="/a/technical-query-confirm" method="post">
                 <input type="hidden" name="technicalQueryId" value="@Model.TechnicalQueryId" />
                 <pems-button tone="success" size="small" type="submit"><pems-icon name="bi-check-lg" /> پاسخ کافیه - ببند</pems-button>
             </pems-form>
@@ -110,7 +110,7 @@
         </pems-flex>
 
         <pems-modal id="reopenModal" tabindex="-1">
-                <pems-form asp-action="Reopen" method="post">
+                <pems-form action="/a/technical-query-reopen" method="post">
                     <input type="hidden" name="technicalQueryId" value="@Model.TechnicalQueryId" />
                     <pems-modal-header>@Localizer["دلیل بازگشت"]</pems-modal-header>
                     <pems-modal-body><pems-textarea name="reason" rows="3" required></pems-textarea></pems-modal-body>
