@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using PEMS.Application.Definitions;
 using PEMS.Application.DTOs;
 using PEMS.Application.Interfaces;
 using PEMS.Domain.Common;
@@ -178,5 +179,37 @@ public abstract class WorkOrderGovernanceTestBase : IDisposable
         Ctx.Teams.Add(t);
         Ctx.SaveChanges();
         return t.TeamId;
+    }
+
+    /// <summary>
+    /// SCRUM-437: the child-section POSTs (SetPlanning, AssignExecutor, SetSchedule) are shipped action definitions (work-order-*.json) run by the generic operation.invoke handler.
+    /// This runs the real definition file for <paramref name="who"/> against this test database and mirrors the old controller outcome (a redirect plus a Message/Error toast).
+    /// </summary>
+    protected async Task<Microsoft.AspNetCore.Mvc.IActionResult> RunSectionActionAsync(Microsoft.AspNetCore.Mvc.Controller toast, WorkOrderActor who, string key, params (string Name, string? Value)[] values)
+    {
+        var userName = "section-" + who.EmployeeId;
+        if (!await Ctx.Users.AnyAsync(u => u.UserName == userName))
+        {
+            Ctx.Users.Add(new ApplicationUser { UserName = userName, NormalizedUserName = userName.ToUpperInvariant(), EmployeeId = who.EmployeeId });
+            await Ctx.SaveChangesAsync();
+        }
+        var dir = new DirectoryInfo(AppContext.BaseDirectory);
+        while (dir != null && !File.Exists(Path.Combine(dir.FullName, "PEMS.Persistence", "Definitions", "System", "action", "core", key + ".json"))) dir = dir.Parent;
+        var file = Path.Combine(dir!.FullName, "PEMS.Persistence", "Definitions", "System", "action", "core", key + ".json");
+        var parameters = System.Text.Json.Nodes.JsonNode.Parse(File.ReadAllText(file))!["payload"]!["parameters"]!.AsObject();
+
+        var services = new ServiceCollection()
+            .AddSingleton(Ctx)
+            .AddSingleton<IDefinitionAccess>(new PEMS.Persistence.Definitions.PermissionDefinitionAccess(new PermissionService(Ctx, AccessControl)))
+            .AddSingleton<IWorkOrderLifecycleService>(Svc)
+            .AddSingleton<IWorkOrderSectionGuard>(new WorkOrderSectionGuard(Ctx, AccessControl))
+            .BuildServiceProvider();
+        var handler = new PEMS.Web.Definitions.OperationInvokeAction(services.GetRequiredService<IServiceScopeFactory>(),
+            PEMS.Web.Definitions.OperationCatalog.Scan(typeof(PEMS.Application.Common.PemsOperationAttribute).Assembly));
+        var outcome = await handler.ExecuteAsync(new PEMS.Web.Definitions.ActionInvocation(
+            values.ToDictionary(v => v.Name, v => v.Value), "en", who.Roles.ToList(), userName, parameters, "10.0.0.9", null), CancellationToken.None);
+
+        toast.TempData[outcome.Ok ? "Message" : "Error"] = outcome.Ok ? "ok" : outcome.FormError?.Resolve(new System.Globalization.CultureInfo("en")) ?? "refused";
+        return new Microsoft.AspNetCore.Mvc.RedirectToActionResult("Details", "WorkOrder", new { id = values.FirstOrDefault(v => v.Name == "id").Value });
     }
 }

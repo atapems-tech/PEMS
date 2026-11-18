@@ -190,6 +190,60 @@ public sealed class OperationTests
         Assert.True((await Handler(access: new FakeAccess(PEMS.Application.DTOs.AccessDecision.Allow())).ExecuteAsync(Invoke(GuardedFlag.Replace("MODE", "strict"), ("id", "5")), CancellationToken.None)).Ok);
     }
 
+    private sealed class FakeSectionGuard(bool allowed) : PEMS.Application.Interfaces.IWorkOrderSectionGuard
+    {
+        public List<string> Recorded = [];
+        public Task<PEMS.Application.Interfaces.WoGuardResult> AuthorizeAsync(int workOrderId, WoSection section, WoSectionAction action, PEMS.Application.Interfaces.WoCaller caller, string? reason = null, string? recordRef = null)
+            => Task.FromResult(new PEMS.Application.Interfaces.WoGuardResult(allowed, allowed ? "OK" : "WO_PHASE", "فاز مجاز نیست", "Not allowed in this phase", default, allowed ? 200 : 400));
+        public Task RecordChangeAsync(int workOrderId, WoSection section, WoSectionAction action, PEMS.Application.Interfaces.WoCaller caller, string? recordRef, string? reason, string? before, string? after)
+        { Recorded.Add($"{workOrderId}|{section}|{action}|{caller.EmployeeId}|{after}"); return Task.CompletedTask; }
+        public Task<PEMS.Application.Interfaces.WoSectionPage?> GetPageAsync(int workOrderId, PEMS.Application.Interfaces.WoCaller caller) => Task.FromResult<PEMS.Application.Interfaces.WoSectionPage?>(null);
+    }
+
+    private static OperationInvokeAction HandlerWithSections(FakeSectionGuard sections)
+    {
+        var db = "op-" + Guid.NewGuid();
+        using (var ctx = PemsDbContextFactory.CreateInMemory(db)) { ctx.Users.Add(new ApplicationUser { UserName = "hamid", NormalizedUserName = "HAMID", EmployeeId = 7 }); ctx.SaveChanges(); }
+        var sp = new ServiceCollection().AddScoped(_ => PemsDbContextFactory.CreateInMemory(db)).AddSingleton<IDefinitionAccess>(new Access(_ => true)).AddScoped<IOpTestService, OpTestService>()
+            .AddSingleton<PEMS.Application.Interfaces.IWorkOrderSectionGuard>(sections).BuildServiceProvider();
+        return new OperationInvokeAction(sp.GetRequiredService<IServiceScopeFactory>(), Catalog);
+    }
+
+    private const string SectionFlag = """{"model":"Test","action":"Flag","sectionGuard":{"section":"Schedule","action":"Edit","workOrderId":"field:id","audit":"On={on}; Id={id}"},"args":{"id":"field:id","on":"literal:true"}}""";
+
+    [Fact]
+    public async Task The_section_guard_stops_the_action_before_the_service_with_its_own_message_and_records_the_change_after_a_success()
+    {
+        var denied = new FakeSectionGuard(false);
+        OpTestService.Last = "untouched";
+        var refused = await HandlerWithSections(denied).ExecuteAsync(Invoke(SectionFlag, ("id", "9")), CancellationToken.None);
+        Assert.False(refused.Ok);
+        Assert.Equal("Not allowed in this phase", refused.FormError!.Resolve(new System.Globalization.CultureInfo("en")));
+        Assert.Equal("untouched", OpTestService.Last);
+        Assert.Empty(denied.Recorded);
+
+        var allowed = new FakeSectionGuard(true);
+        Assert.True((await HandlerWithSections(allowed).ExecuteAsync(Invoke(SectionFlag, ("id", "9")), CancellationToken.None)).Ok);
+        Assert.Equal("flag 9 True", OpTestService.Last);
+        Assert.Equal(["9|Schedule|Edit|7|On=True; Id=9"], allowed.Recorded);           // the audit text is filled from the service arguments
+
+        var rule = new FakeSectionGuard(true);
+        Assert.False((await HandlerWithSections(rule).ExecuteAsync(Invoke(SectionFlag.Replace("\"id\":\"field:id\",\"on\"", "\"id\":\"literal:0\",\"on\""), ("id", "9")), CancellationToken.None)).Ok);
+        Assert.Empty(rule.Recorded);                                                    // a service refusal records nothing
+    }
+
+    [Fact]
+    public void A_section_guard_is_checked_at_load()
+    {
+        var handler = Handler();
+        JsonObject P(string json) => JsonNode.Parse(json)!.AsObject();
+        Assert.Empty(handler.ValidateParameters(P(SectionFlag)));
+        Assert.Contains("wrong-guard", handler.ValidateParameters(P("""{"model":"Test","action":"Flag","sectionGuard":{"section":"Nope","action":"Edit","workOrderId":"field:id"}}""")).Select(e => e.Code));
+        Assert.Contains("wrong-guard", handler.ValidateParameters(P("""{"model":"Test","action":"Flag","sectionGuard":{"section":"Schedule","action":"Fly","workOrderId":"field:id"}}""")).Select(e => e.Code));
+        Assert.Contains("wrong-source", handler.ValidateParameters(P("""{"model":"Test","action":"Flag","sectionGuard":{"section":"Schedule","action":"Edit","workOrderId":"7"}}""")).Select(e => e.Code));
+        Assert.Contains("unknown-parameter", handler.ValidateParameters(P("""{"model":"Test","action":"Flag","sectionGuard":{"section":"Schedule","action":"Edit","workOrderId":"field:id","skip":"yes"}}""")).Select(e => e.Code));
+    }
+
     [Fact]
     public void A_guard_is_checked_at_load()
     {

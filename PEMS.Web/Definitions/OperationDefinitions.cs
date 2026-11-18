@@ -107,6 +107,8 @@ public sealed class OperationInvokeAction(IServiceScopeFactory scopes, Operation
                 if (EntityJson.Str(g["mode"]) is { } mode && mode is not ("sod" or "strict")) errors.Add(new("/guard/mode", "wrong-guard", "Def_Err_Type", "mode is sod (only a separation-of-duties refusal stops the action) or strict (anything but an explicit allow stops it)."));
             }
         }
+        errors.AddRange(OperationSectionGuard.Validate(parameters["sectionGuard"] as JsonObject, IsSource));
+        if (parameters["sectionGuard"] is not null and not JsonObject) errors.Add(new("/sectionGuard", "wrong-guard", "Def_Err_Type", "sectionGuard is an object: { section, action, workOrderId, reason, recordRef, audit }."));
         var args = parameters["args"] as JsonObject ?? [];
         var names = op.Method.GetParameters().Select(p => p.Name!).ToHashSet(StringComparer.Ordinal);
         foreach (var (name, source) in args)
@@ -207,6 +209,16 @@ public sealed class OperationInvokeAction(IServiceScopeFactory scopes, Operation
             if (refusal is not null) return refusal;
         }
 
+        string? Resolve(string? source) => source is null ? null : source.StartsWith("literal:") ? source[8..] : source.StartsWith("context:") ? EntityJson.Show(context[source[8..]]) : invocation.Values.GetValueOrDefault(source[6..]);
+        var caller = new PEMS.Application.Interfaces.WoCaller(identity?.Id, invocation.UserName, employeeId, invocation.Roles.ToList(), invocation.IpAddress);
+        SectionGuardPlan? sectionPlan = null;
+        if (invocation.Parameters?["sectionGuard"] is JsonObject sectionGuard)
+        {
+            var (refusal, plan) = await OperationSectionGuard.AuthorizeAsync(scope.ServiceProvider, sectionGuard, Resolve, invocation.Culture, caller);
+            if (refusal is not null) return refusal;
+            sectionPlan = plan;
+        }
+
         var values = new List<object?>();
         foreach (var p in op.Method.GetParameters())
         {
@@ -264,11 +276,17 @@ public sealed class OperationInvokeAction(IServiceScopeFactory scopes, Operation
         }
 
         // (bool Success, string? Error) or bool; anything else is a success
-        switch (answer)
+        var outcome = answer switch
         {
-            case bool ok: return ok ? ActionOutcome.Done() : ActionOutcome.Refused(TranslatableText.Of(("en", "The operation was refused."), ("fa", "عملیات پذیرفته نشد.")));
-            case ITuple t when t.Length >= 2 && t[0] is bool success: return success ? ActionOutcome.Done() : ActionOutcome.Refused(TranslatableText.Literal(t[1] as string ?? "The operation was refused."));
-            default: return ActionOutcome.Done();
+            bool ok => ok ? ActionOutcome.Done() : ActionOutcome.Refused(TranslatableText.Of(("en", "The operation was refused."), ("fa", "عملیات پذیرفته نشد."))),
+            ITuple t when t.Length >= 2 && t[0] is bool success => success ? ActionOutcome.Done() : ActionOutcome.Refused(TranslatableText.Literal(t[1] as string ?? "The operation was refused.")),
+            _ => ActionOutcome.Done()
+        };
+        if (outcome.Ok && sectionPlan is not null)
+        {
+            var arguments = op.Method.GetParameters().Zip(values, (p, v) => (p.Name!, v)).ToDictionary(x => x.Item1, x => x.v, StringComparer.OrdinalIgnoreCase);
+            await OperationSectionGuard.RecordAsync(scope.ServiceProvider, sectionPlan, caller, arguments);
         }
+        return outcome;
     }
 }
