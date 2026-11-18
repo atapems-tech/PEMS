@@ -35,7 +35,7 @@
           "component": "data-grid",
           "options": {
             "id": "departments",
-            "url": "/Department/Grid",
+            "url": "/d/departments-grid",
             "idField": "id",
             "selectable": false,
             "columns": [
