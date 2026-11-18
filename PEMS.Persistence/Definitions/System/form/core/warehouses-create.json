@@ -4,7 +4,7 @@
   "appKey": "core",
   "version": 1,
   "title": {
-    "en": "Create Warehouse",
+    "en": "Create warehouse",
     "fa": "ایجاد انبار"
   },
   "description": {
@@ -14,7 +14,7 @@
   "payload": {
     "id": "warehouses-create",
     "title": {
-      "en": "New Warehouse",
+      "en": "New warehouse",
       "fa": "انبار جدید"
     },
     "submitLabel": {

@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using PEMS.Application.Grids;
 using PEMS.Domain.Entities;
 using PEMS.Persistence.Context;
 using PEMS.Persistence.Identity;
@@ -42,19 +41,6 @@ public class DepartmentController : Controller
         ViewBag.EmployeeCounts = employeeCounts.ToDictionary(x => x.DepartmentId, x => x.Count);
 
         return View(departments);
-    }
-
-    /// <summary>SCRUM-342 (W1 pilot): the rows of the department grid, the same query the data source <c>departments</c> serves at <c>/d/departments-grid</c>; same roles as the page.</summary>
-    [HttpGet]
-    public async Task<IActionResult> Grid(CancellationToken ct)
-    {
-        try
-        {
-            var request = GridRequest.FromQuery(Request.Query.Select(q => new KeyValuePair<string, string?>(q.Key, q.Value.ToString())));
-            var (items, total) = await PEMS.Web.Definitions.DepartmentsGridProvider.QueryAsync(_context, request, ct);
-            return Json(new { items, total });
-        }
-        catch (GridQueryException ex) { return BadRequest(new { error = ex.Message }); }
     }
 
     [HttpPost]

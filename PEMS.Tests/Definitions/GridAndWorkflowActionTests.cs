@@ -135,25 +135,6 @@ public sealed class GridAndWorkflowActionTests
         Assert.IsType<ForbidResult>(await Host(refused).Rows("p", CancellationToken.None));
     }
 
-    // ---- the first real grid provider
-
-    [Fact]
-    public async Task The_departments_provider_pages_sorts_and_counts_through_a_scope()
-    {
-        var name = "deps-" + Guid.NewGuid();
-        var services = new ServiceCollection().AddScoped(_ => PemsDbContextFactory.CreateInMemory(name)).BuildServiceProvider();
-        using (var db = PemsDbContextFactory.CreateInMemory(name))
-        {
-            db.Departments.AddRange(new Department { Code = "A", Name = "Alpha", IsActive = true, CreatedDate = new DateTime(2026, 1, 1) }, new Department { Code = "B", Name = "Beta", IsActive = true, CreatedDate = new DateTime(2026, 2, 1) }, new Department { Code = "C", Name = "Gamma", IsActive = false, CreatedDate = new DateTime(2026, 3, 1) });
-            db.SaveChanges();
-        }
-        var provider = new DepartmentsGridProvider(services.GetRequiredService<IServiceScopeFactory>());
-        var (items, total) = await provider.QueryAsync(new GridDataRequest(GridRequest.FromQuery(Q(("page", "1"), ("pageSize", "2"), ("sort", "-name"))), "en", ["SystemAdmin"], "x", new Dictionary<string, string?>()), CancellationToken.None);
-        Assert.Equal(3, total);
-        Assert.Equal(["Gamma", "Beta"], items.Cast<DepartmentRow>().Select(r => r.Name));
-        Assert.Equal(["SystemAdmin", "EngineeringManager"], provider.AllowedRoles!.OrderByDescending(r => r));
-    }
-
     // ---- the workflow action
 
     private sealed class Runtime(WorkflowInstanceDto? instance) : IWorkflowRuntime

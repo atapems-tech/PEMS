@@ -80,13 +80,45 @@ public sealed class DataGridTests
     }
 
     [Fact]
+    public void An_actions_column_carries_its_row_actions_in_the_configuration_in_the_language_of_the_render()
+    {
+        var sample = Sample();
+        var withActions = sample with
+        {
+            Columns = [.. sample.Columns, new GridColumn
+            {
+                Key = "_actions", Header = PEMS.UI.Abstractions.TranslatableText.Of(("en", "Actions"), ("fa", "عملیات")), Type = "actions", Sortable = false, Filterable = false,
+                Actions =
+                [
+                    new GridRowAction { Key = "edit", Label = PEMS.UI.Abstractions.TranslatableText.Of(("en", "Edit"), ("fa", "ویرایش")), Url = "/f/x-edit/{id}" },
+                    new GridRowAction { Key = "del", Label = PEMS.UI.Abstractions.TranslatableText.Of(("en", "Delete"), ("fa", "حذف")), Url = "/a/x-delete", Method = "post", Tone = "danger", ShowWhen = "row.system == false",
+                        Confirm = PEMS.UI.Abstractions.TranslatableText.Of(("en", "Delete?"), ("fa", "حذف شود؟")) }
+                ]
+            }]
+        };
+        var en = Config(Render(withActions));
+        var column = ((JsonArray)en["columns"]!).Last()!;
+        Assert.Equal("actions", (string?)column["type"]);
+        Assert.Equal(("Edit", "get", "/f/x-edit/{id}"), (((string?)column["actions"]![0]!["label"])!, ((string?)column["actions"]![0]!["method"])!, ((string?)column["actions"]![0]!["url"])!));
+        Assert.Equal(("post", "danger", "row.system == false", "Delete?"), (((string?)column["actions"]![1]!["method"])!, ((string?)column["actions"]![1]!["tone"])!, ((string?)column["actions"]![1]!["showWhen"])!, ((string?)column["actions"]![1]!["confirm"])!));
+        Assert.Equal("ویرایش", (string?)((JsonArray)Config(RenderIn(withActions, "fa"))["columns"]!).Last()!["actions"]![0]!["label"]);
+        var js = Read("PEMS.UI", "wwwroot", "pems-grid.js");
+        foreach (var feature in new[] { "runRowAction", "application/json", "showWhen", "dg-row-button" }) Assert.Contains(feature, js);
+        Assert.Contains("actions: c.actions", js);                                  // the column keeps its actions when the script copies the columns
+        Assert.True(new ComponentManifestCatalog(new PEMS.UI.Rendering.PemsComponentRegistry()).Validate("data-grid", System.Text.Json.JsonSerializer.Serialize(withActions, PEMS.UI.Abstractions.PemsJson.Options)).IsValid);
+    }
+
+    private static string RenderIn(DataGridOptions options, string culture)
+        => UiTestRenderer.Instance.RenderAsync("data-grid", new Dictionary<string, object?> { ["Options"] = options }, new System.Globalization.CultureInfo(culture)).GetAwaiter().GetResult();
+
+    [Fact]
     public void The_script_builds_markup_only_from_registered_templates_and_the_sheet_uses_logical_properties()
     {
         var js = Read("PEMS.UI", "wwwroot", "pems-grid.js");
         Assert.DoesNotContain("createElement", js);
         Assert.DoesNotContain("innerHTML", js);
         Assert.DoesNotMatch("https?://", js);
-        foreach (var name in new[] { "dg-root", "dg-hcell", "dg-fcell", "dg-row", "dg-cell", "dg-check", "dg-menu-item", "dg-view-item", "dg-bulk-action" })
+        foreach (var name in new[] { "dg-root", "dg-hcell", "dg-fcell", "dg-row", "dg-cell", "dg-check", "dg-menu-item", "dg-view-item", "dg-bulk-action", "dg-cell-actions", "dg-row-link", "dg-row-button" })
         {
             Assert.Contains("'" + name + "'", js);
             Assert.Contains($"data-pems-template=\"{name}\"", Read("PEMS.UI", "Components", "PemsScriptTemplates.razor"));

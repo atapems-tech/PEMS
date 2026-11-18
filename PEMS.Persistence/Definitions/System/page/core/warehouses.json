@@ -15,20 +15,6 @@
     "layout": "list-page",
     "route": "warehouses",
     "regions": {
-      "toolbar": [
-        {
-          "id": "new",
-          "component": "button",
-          "options": {
-            "label": {
-              "en": "New Warehouse",
-              "fa": "انبار جدید"
-            },
-            "tone": "primary",
-            "href": "/f/warehouses-create"
-          }
-        }
-      ],
       "content": [
         {
           "id": "grid",
@@ -53,7 +39,7 @@
                   "en": "Name",
                   "fa": "نام"
                 },
-                "width": 260
+                "width": 240
               },
               {
                 "key": "description",
@@ -61,7 +47,7 @@
                   "en": "Description",
                   "fa": "توضیحات"
                 },
-                "width": 320
+                "width": 300
               },
               {
                 "key": "isActive",
@@ -71,6 +57,41 @@
                 },
                 "width": 100,
                 "type": "bool"
+              },
+              {
+                "key": "_actions",
+                "header": {
+                  "en": "Actions",
+                  "fa": "عملیات"
+                },
+                "type": "actions",
+                "width": 280,
+                "sortable": false,
+                "filterable": false,
+                "actions": [
+                  {
+                    "key": "edit",
+                    "label": {
+                      "en": "Edit",
+                      "fa": "ویرایش"
+                    },
+                    "url": "/f/warehouses-edit/{id}",
+                    "method": "get"
+                  },
+                  {
+                    "key": "toggle",
+                    "label": {
+                      "en": "Activate / deactivate",
+                      "fa": "فعال / غیرفعال"
+                    },
+                    "url": "/a/warehouses-toggle",
+                    "method": "post",
+                    "confirm": {
+                      "en": "Change the status?",
+                      "fa": "وضعیت تغییر کند؟"
+                    }
+                  }
+                ]
               }
             ],
             "texts": {
@@ -147,6 +168,20 @@
                 "fa": "حذف"
               }
             }
+          }
+        }
+      ],
+      "toolbar": [
+        {
+          "id": "new",
+          "component": "button",
+          "options": {
+            "label": {
+              "en": "New warehouse",
+              "fa": "انبار جدید"
+            },
+            "tone": "primary",
+            "href": "/f/warehouses-create"
           }
         }
       ]

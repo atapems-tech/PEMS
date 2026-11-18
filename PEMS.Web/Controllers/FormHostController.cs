@@ -17,26 +17,33 @@ namespace PEMS.Web.Controllers;
 /// in code: a changed definition is a changed form.
 /// </summary>
 [Route("f/{key}")]
-public sealed class FormHostController(DefinitionPipeline pipeline, ActionExecutor actions, ICurrentUserService currentUser, IAntiforgery antiforgery, IPemsComponentRenderer renderer, ILogger<FormHostController> log) : Controller
+public sealed class FormHostController(DefinitionPipeline pipeline, ActionExecutor actions, ICurrentUserService currentUser, IAntiforgery antiforgery, IPemsComponentRenderer renderer, ILogger<FormHostController> log, EntityRecordLoader? records = null) : Controller
 {
     private static readonly Regex KeyShape = new("^[a-z0-9][a-z0-9._-]{0,80}$", RegexOptions.Compiled);
     private static readonly JsonSerializerOptions Strict = new(PemsJson.Options);
 
-    [HttpGet("")]
-    public async Task<IActionResult> Index(string key, CancellationToken ct)
+    /// <summary>An edit form is a form whose action names an entity: <c>/f/{key}/{id}</c> loads the row (with the rights of the user) into the fields the action maps, and the post carries the id to the action.</summary>
+    [HttpGet("{id?}")]
+    public async Task<IActionResult> Index(string key, string? id, CancellationToken ct)
     {
-        var loaded = await LoadAsync(key, ct);
+        var loaded = await LoadAsync(key, id, ct);
         if (loaded.Early is not null) return loaded.Early;
         var values = loaded.Form!.Fields.Where(f => !string.IsNullOrEmpty(f.Name)).ToDictionary(f => f.Name, f => (string?)null, StringComparer.Ordinal);
+        if (id is not null)
+        {
+            var current = loaded.Form.ActionKey is null || records is null ? null : await records.LoadAsync(await actions.ParametersAsync(loaded.Form.ActionKey, "core", ct), id, loaded.Context.Roles, ct);
+            if (current is null) return NotFound();
+            foreach (var (name, v) in current) if (values.ContainsKey(name)) values[name] = v;
+        }
         foreach (var (name, v) in Request.Query) if (values.ContainsKey(name)) values[name] = v.ToString();   // a link may pre-fill a field
         return await Show(key, loaded, values, new Dictionary<string, TranslatableText>(), []);
     }
 
-    [HttpPost("")]
+    [HttpPost("{id?}")]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Submit(string key, CancellationToken ct)
+    public async Task<IActionResult> Submit(string key, string? id, CancellationToken ct)
     {
-        var loaded = await LoadAsync(key, ct);
+        var loaded = await LoadAsync(key, id, ct);
         if (loaded.Early is not null) return loaded.Early;
         var form = loaded.Form!;
         var posted = form.Fields.ToDictionary(f => f.Name, f => (string?)(Request.Form.TryGetValue(f.Name, out var v) ? v.ToString() : null), StringComparer.Ordinal);   // only the declared names are read
@@ -46,7 +53,7 @@ public sealed class FormHostController(DefinitionPipeline pipeline, ActionExecut
         if (!validation.IsValid) return await Show(key, loaded, posted, validation.Errors, validation.FormErrors);
 
         if (string.IsNullOrEmpty(form.ActionKey)) return await Show(key, loaded, posted, validation.Errors, [TranslatableText.Of(("en", "This form has no action."), ("fa", "این فرم کنشی ندارد."))]);
-        var result = await actions.RunAsync(form.ActionKey, new ActionInvocation(validation.Values, CultureInfo.CurrentUICulture.TwoLetterISOLanguageName, loaded.Context.Roles, loaded.Context.UserName), "core", ct);
+        var result = await actions.RunAsync(form.ActionKey, new ActionInvocation(id is null ? validation.Values : new Dictionary<string, string?>(validation.Values) { ["id"] = id }, CultureInfo.CurrentUICulture.TwoLetterISOLanguageName, loaded.Context.Roles, loaded.Context.UserName), "core", ct);
         switch (result.Status)
         {
             case ActionStatus.Forbidden: return Forbid();
@@ -56,12 +63,12 @@ public sealed class FormHostController(DefinitionPipeline pipeline, ActionExecut
         }
         if (result.Message is { IsEmpty: false } message) TempData["Message"] = message.Resolve(CultureInfo.CurrentUICulture);
         var target = result.Redirect;
-        return target is not null && Url.IsLocalUrl(target) ? LocalRedirect(target) : RedirectToAction(nameof(Index), new { key });
+        return target is not null && Url.IsLocalUrl(target) ? LocalRedirect(target) : RedirectToAction(nameof(Index), new { key, id });
     }
 
     private sealed record Loaded(IActionResult? Early, FormDefinition? Form, FormRequestContext Context, IReadOnlyDictionary<string, IReadOnlyList<FieldOption>> Options, string? Title);
 
-    private async Task<Loaded> LoadAsync(string key, CancellationToken ct)
+    private async Task<Loaded> LoadAsync(string key, string? id, CancellationToken ct)
     {
         var context = new FormRequestContext(CultureInfo.CurrentUICulture.TwoLetterISOLanguageName, key,
             User.Claims.Where(c => c.Type == System.Security.Claims.ClaimTypes.Role).Select(c => c.Value).ToList(), currentUser.UserName);
@@ -76,7 +83,7 @@ public sealed class FormHostController(DefinitionPipeline pipeline, ActionExecut
         var options = result.Resolved.Hydrated.TryGetValue(FormOptionsHydrator.OptionsKey, out var o) && o is IReadOnlyDictionary<string, IReadOnlyList<FieldOption>> map ? map : new Dictionary<string, IReadOnlyList<FieldOption>>();
         if (result.Resolved.Hydrated.TryGetValue(FormOptionsHydrator.ProblemsKey, out var p) && p is IEnumerable<string> problems)
             foreach (var problem in problems) log.LogWarning("Form definition {Key}: {Problem}", key, problem);
-        return new Loaded(null, form with { Id = key, Action = Url.Action(nameof(Submit), new { key })! }, context, options, PageRenderer.TitleOf(result.Resolved.Source.TitleJson, CultureInfo.CurrentUICulture));
+        return new Loaded(null, form with { Id = key, Action = Url.Action(nameof(Submit), new { key, id })! }, context, options, PageRenderer.TitleOf(result.Resolved.Source.TitleJson, CultureInfo.CurrentUICulture));
     }
 
     private async Task<IActionResult> Show(string key, Loaded loaded, IReadOnlyDictionary<string, string?> values, IReadOnlyDictionary<string, TranslatableText> errors, IReadOnlyList<TranslatableText> formErrors)
@@ -112,6 +119,18 @@ public sealed class ActionHostController(ActionExecutor actions, ICurrentUserSer
         var values = Request.Form.Where(p => p.Key != "__RequestVerificationToken" && p.Key != "returnUrl").ToDictionary(p => p.Key, p => (string?)p.Value.ToString(), StringComparer.Ordinal);
         var roles = User.Claims.Where(c => c.Type == System.Security.Claims.ClaimTypes.Role).Select(c => c.Value).ToList();
         var result = await actions.RunAsync(key, new ActionInvocation(values, CultureInfo.CurrentUICulture.TwoLetterISOLanguageName, roles, currentUser.UserName), "core", ct);
+        if (Request.Headers.Accept.ToString().Contains("application/json", StringComparison.OrdinalIgnoreCase))
+        {
+            // a grid row action asks for JSON: the outcome and the text to show, no redirect
+            var text = (result.Status == ActionStatus.Ok ? result.Message : result.Outcome?.FormError ?? result.Outcome?.FieldErrors?.Values.FirstOrDefault())?.Resolve(CultureInfo.CurrentUICulture);
+            return result.Status switch
+            {
+                ActionStatus.Ok => Json(new { ok = true, message = text }),
+                ActionStatus.Refused => BadRequest(new { ok = false, error = text }),
+                ActionStatus.Forbidden => StatusCode(403, new { ok = false, error = (string?)null }),
+                _ => NotFound(new { ok = false, error = (string?)null })
+            };
+        }
         switch (result.Status)
         {
             case ActionStatus.NotFound: return NotFound();

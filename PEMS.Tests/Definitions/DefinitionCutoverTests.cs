@@ -44,7 +44,7 @@ public sealed class DefinitionCutoverTests
         {
             var registry = Ui.GetRequiredService<IPemsComponentRegistry>();
             var catalog = Ui.GetRequiredService<ComponentManifestCatalog>();
-            Kinds = [new FormDefinitionKind(), new PageDefinitionKind(registry, catalog), new LayoutDefinitionKind(), new DataSourceDefinitionKind([new Departments(), new EntityOptionsProvider(null!, EntityCatalog.Default())], [new DepartmentsGridProvider(null!), new RolesGridProvider(null!), new SecurityEventsGridProvider(null!), new EntityGridProvider(null!, EntityCatalog.Default())]), new ActionDefinitionKind([new Recording(), new KeyedAction("role.create"), new EntityCreateAction(null!, EntityCatalog.Default())])];
+            Kinds = ShippedKinds.Build(registry, catalog);
         }
 
         public PEMSDbContext NewDb() => PemsDbContextFactory.CreateInMemory(_database);
@@ -288,8 +288,8 @@ public sealed class DefinitionCutoverTests
         using var files = new FileDefinitionStore(f.Kinds, new DefinitionLimits(), new DefinitionFileOptions { Folder = Package, Watch = false }, FilesOwnership.For(f.Kinds));
         foreach (var culture in new[] { "en", "fa" })
         {
-            var a = Html(await Host(f, files, culture).Index("department-create", CancellationToken.None));
-            var b = Html(await Host(f, dbStore, culture).Index("department-create", CancellationToken.None));
+            var a = Html(await Host(f, files, culture).Index("departments-create", null, CancellationToken.None));
+            var b = Html(await Host(f, dbStore, culture).Index("departments-create", null, CancellationToken.None));
             Assert.Equal(a, b);
             Assert.Contains("data-pems-rules=", b);
         }
@@ -310,8 +310,8 @@ public sealed class DefinitionCutoverTests
         Assert.True(draft.Success);
         Assert.True((await service.PublishAsync(id, draft.Value!.Info.Revision, "designer")).Success);
 
-        var en = System.Net.WebUtility.HtmlDecode(Html(await Host(f, store, "en").Index("note", CancellationToken.None)));
-        var fa = System.Net.WebUtility.HtmlDecode(Html(await Host(f, store, "fa").Index("note", CancellationToken.None)));
+        var en = System.Net.WebUtility.HtmlDecode(Html(await Host(f, store, "en").Index("note", null, CancellationToken.None)));
+        var fa = System.Net.WebUtility.HtmlDecode(Html(await Host(f, store, "fa").Index("note", null, CancellationToken.None)));
         Assert.Contains("Text", en);
         Assert.Contains("متن", fa);
 
@@ -324,7 +324,7 @@ public sealed class DefinitionCutoverTests
         var validated = await service.ValidateAsync(row.DefinitionId, saved.Value!.Info.Revision, "designer");
         Assert.True((await service.PublishAsync(row.DefinitionId, validated.Value!.Info.Revision, "designer")).Success);
 
-        var after = System.Net.WebUtility.HtmlDecode(Html(await Host(f, store, "fa").Index("note", CancellationToken.None)));
+        var after = System.Net.WebUtility.HtmlDecode(Html(await Host(f, store, "fa").Index("note", null, CancellationToken.None)));
         Assert.Contains("متن یادداشت", after);
         Assert.DoesNotContain("متن یادداشت", fa);
     }

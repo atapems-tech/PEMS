@@ -4,15 +4,38 @@
   "appKey": "core",
   "version": 1,
   "title": {
-    "en": "Security event rows",
+    "en": "Security events rows",
     "fa": "ردیف‌های رویدادهای امنیتی"
   },
   "description": {
-    "en": "The rows of the security events grid (read only)",
-    "fa": "ردیف‌های جدول رویدادهای امنیتی (فقط خواندنی)"
+    "en": "The rows of the security events grid",
+    "fa": "ردیف‌های جدول رویدادهای امنیتی"
   },
   "payload": {
     "kind": "grid",
-    "provider": "security-events"
+    "provider": "entity",
+    "parameters": {
+      "entity": "SecurityEvent",
+      "fields": [
+        "OccurredAtUtc",
+        "EventType",
+        "Method",
+        "Result",
+        "FailureReason",
+        "ActorUserName",
+        "TargetUserName",
+        "IpAddress"
+      ],
+      "search": [
+        "EventType",
+        "Method",
+        "FailureReason",
+        "ActorUserName",
+        "TargetUserName"
+      ],
+      "sort": [
+        "-OccurredAtUtc"
+      ]
+    }
   }
 }

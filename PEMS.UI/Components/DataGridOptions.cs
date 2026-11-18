@@ -18,9 +18,26 @@ public sealed record GridColumn
     public string? Pinned { get; init; }
     /// <summary>start, center or end; empty: numbers end, the rest start.</summary>
     public string? Align { get; init; }
+    /// <summary>For a column of type <c>actions</c>: the buttons of every row.</summary>
+    public IReadOnlyList<GridRowAction> Actions { get; init; } = [];
 }
 
 /// <summary>A button of the bulk bar: it posts the selected ids (or "all matching" with the query) as JSON to <see cref="Url"/>.</summary>
+/// <summary>An action of a row (an "actions" column): a link (<c>get</c>, e.g. the edit form) or a post to an action (<c>post</c>, e.g. <c>/a/department-toggle</c>); <c>{id}</c> in the url is the row id.</summary>
+public sealed record GridRowAction
+{
+    public required string Key { get; init; }
+    public required TranslatableText Label { get; init; }
+    public required string Url { get; init; }
+    /// <summary>get (a link, the default) or post (the id is posted; the answer is JSON; the grid reloads on success).</summary>
+    public string Method { get; init; } = "get";
+    public TranslatableText? Confirm { get; init; }
+    /// <summary>primary, secondary, success, danger, warning.</summary>
+    public string Tone { get; init; } = "secondary";
+    /// <summary>An expression over <c>row</c> (the row as the grid has it): the action is shown only while it holds. The server decides again when the action runs.</summary>
+    public string? ShowWhen { get; init; }
+}
+
 public sealed record GridBulkAction
 {
     public required string Key { get; init; }

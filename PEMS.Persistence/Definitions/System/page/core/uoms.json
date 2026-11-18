@@ -15,20 +15,6 @@
     "layout": "list-page",
     "route": "uoms",
     "regions": {
-      "toolbar": [
-        {
-          "id": "new",
-          "component": "button",
-          "options": {
-            "label": {
-              "en": "New Unit of measure",
-              "fa": "واحد اندازه‌گیری جدید"
-            },
-            "tone": "primary",
-            "href": "/f/uoms-create"
-          }
-        }
-      ],
       "content": [
         {
           "id": "grid",
@@ -80,6 +66,41 @@
                 },
                 "width": 100,
                 "type": "bool"
+              },
+              {
+                "key": "_actions",
+                "header": {
+                  "en": "Actions",
+                  "fa": "عملیات"
+                },
+                "type": "actions",
+                "width": 280,
+                "sortable": false,
+                "filterable": false,
+                "actions": [
+                  {
+                    "key": "edit",
+                    "label": {
+                      "en": "Edit",
+                      "fa": "ویرایش"
+                    },
+                    "url": "/f/uoms-edit/{id}",
+                    "method": "get"
+                  },
+                  {
+                    "key": "toggle",
+                    "label": {
+                      "en": "Activate / deactivate",
+                      "fa": "فعال / غیرفعال"
+                    },
+                    "url": "/a/uoms-toggle",
+                    "method": "post",
+                    "confirm": {
+                      "en": "Change the status?",
+                      "fa": "وضعیت تغییر کند؟"
+                    }
+                  }
+                ]
               }
             ],
             "texts": {
@@ -156,6 +177,20 @@
                 "fa": "حذف"
               }
             }
+          }
+        }
+      ],
+      "toolbar": [
+        {
+          "id": "new",
+          "component": "button",
+          "options": {
+            "label": {
+              "en": "New unit of measure",
+              "fa": "واحد اندازه‌گیری جدید"
+            },
+            "tone": "primary",
+            "href": "/f/uoms-create"
           }
         }
       ]

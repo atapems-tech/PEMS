@@ -4,7 +4,7 @@
   "appKey": "core",
   "version": 1,
   "title": {
-    "en": "Create Unit of measure",
+    "en": "Create unit of measure",
     "fa": "ایجاد واحد اندازه‌گیری"
   },
   "description": {
@@ -14,7 +14,7 @@
   "payload": {
     "id": "uoms-create",
     "title": {
-      "en": "New Unit of measure",
+      "en": "New unit of measure",
       "fa": "واحد اندازه‌گیری جدید"
     },
     "submitLabel": {
@@ -56,14 +56,6 @@
             "fa": "نام الزامی است."
           }
         }
-      },
-      {
-        "name": "conversionFactor",
-        "label": {
-          "en": "Conversion factor",
-          "fa": "ضریب تبدیل"
-        },
-        "kind": "number"
       },
       {
         "name": "description",
