@@ -29,7 +29,7 @@
         <pems-flex dir="column" gap="1" css="pems-s-66dbd5d0">
             @if (Model.Status == "Draft")
             {
-                <pems-form asp-action="Plan" asp-route-id="@Model.ProductionOrderId" method="post"><pems-button tone="primary" size="small" outline="true" css="w-100" type="submit"><pems-icon name="bi-calendar-check" /> Plan</pems-button></pems-form>
+                <pems-form action="/a/production-order-plan" method="post"><input type="hidden" name="id" value="@Model.ProductionOrderId" /><pems-button tone="primary" size="small" outline="true" css="w-100" type="submit"><pems-icon name="bi-calendar-check" /> Plan</pems-button></pems-form>
             }
             @if (Model.Status == "Planned")
             {
@@ -41,7 +41,7 @@
             }
             @if (Model.Status == "OnHold")
             {
-                <pems-form asp-action="Resume" asp-route-id="@Model.ProductionOrderId" method="post"><pems-button tone="success" size="small" outline="true" css="w-100" type="submit"><pems-icon name="bi-play-circle" /> Resume</pems-button></pems-form>
+                <pems-form action="/a/production-order-resume" method="post"><input type="hidden" name="id" value="@Model.ProductionOrderId" /><pems-button tone="success" size="small" outline="true" css="w-100" type="submit"><pems-icon name="bi-play-circle" /> Resume</pems-button></pems-form>
             }
             @if (Model.Status is "Draft" or "Planned" or "Released" or "OnHold")
             {
@@ -72,7 +72,7 @@
 </pems-content-card>
 
 <pems-modal id="holdOrderModal" tabindex="-1">
-        <pems-form asp-action="Hold" asp-route-id="@Model.ProductionOrderId" method="post">
+        <pems-form action="/a/production-order-hold" method="post"><input type="hidden" name="id" value="@Model.ProductionOrderId" />
             <pems-modal-header close="true">Hold Production Order</pems-modal-header>
             <pems-modal-body><pems-label>@Localizer["Reason"]</pems-label><pems-textarea name="reason" required></pems-textarea></pems-modal-body>
             <pems-modal-footer><pems-button tone="warning" type="submit">@Localizer["Hold"]</pems-button></pems-modal-footer>
@@ -80,7 +80,7 @@
     </pems-modal>
 
 <pems-modal id="cancelOrderModal" tabindex="-1">
-        <pems-form asp-action="Cancel" asp-route-id="@Model.ProductionOrderId" method="post">
+        <pems-form action="/a/production-order-cancel" method="post"><input type="hidden" name="id" value="@Model.ProductionOrderId" />
             <pems-modal-header close="true">Cancel Production Order</pems-modal-header>
             <pems-modal-body><pems-label>@Localizer["Reason"]</pems-label><pems-textarea name="reason" required></pems-textarea></pems-modal-body>
             <pems-modal-footer><pems-button tone="danger" type="submit">Cancel Order</pems-button></pems-modal-footer>
