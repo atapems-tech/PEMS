@@ -21,14 +21,18 @@ public interface IProductionOrderService
         DateTime? plannedStartDate, DateTime? plannedFinishDate, int? equipmentId,
         int? responsibleEmployeeId, string? notes, int? createdByEmployeeId);
 
+    [PEMS.Application.Common.PemsOperation("ProductionOrder", "Plan", "Production.Edit")]
     Task<(bool Success, string? Error)> PlanAsync(int productionOrderId, int? actorEmployeeId);
 
     Task<(bool Success, string? Error)> ReleaseAsync(int productionOrderId, int? actorEmployeeId);
 
+    [PEMS.Application.Common.PemsOperation("ProductionOrder", "Hold", "Production.Hold")]
     Task<(bool Success, string? Error)> HoldAsync(int productionOrderId, string reason, int? actorEmployeeId);
 
+    [PEMS.Application.Common.PemsOperation("ProductionOrder", "Resume", "Production.ReleaseHold")]
     Task<(bool Success, string? Error)> ResumeAsync(int productionOrderId, int? actorEmployeeId);
 
+    [PEMS.Application.Common.PemsOperation("ProductionOrder", "Cancel", "Production.Delete")]
     Task<(bool Success, string? Error)> CancelAsync(int productionOrderId, string reason, int? actorEmployeeId);
 
     Task<(bool Success, string? Error)> CompleteAsync(int productionOrderId, int? actorEmployeeId);

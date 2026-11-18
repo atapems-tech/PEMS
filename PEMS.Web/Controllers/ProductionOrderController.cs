@@ -103,18 +103,6 @@ public class ProductionOrderController : Controller
 
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Plan(int id)
-    {
-        if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "Production", "Edit"))
-            return Forbid();
-
-        var (success, error) = await _orderService.PlanAsync(id, await GetCurrentEmployeeIdAsync());
-        TempData[success ? "Message" : "Error"] = success ? "سفارش برنامه‌ریزی شد." : error;
-        return RedirectToAction(nameof(Details), new { id });
-    }
-
-    [HttpPost]
-    [ValidateAntiForgeryToken]
     public async Task<IActionResult> Release(int id)
     {
         if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "Production", "Approve"))
@@ -125,42 +113,6 @@ public class ProductionOrderController : Controller
 
         var (success, error) = await _orderService.ReleaseAsync(id, await GetCurrentEmployeeIdAsync());
         TempData[success ? "Message" : "Error"] = success ? "سفارش Release شد." : error;
-        return RedirectToAction(nameof(Details), new { id });
-    }
-
-    [HttpPost]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Hold(int id, string reason)
-    {
-        if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "Production", "Hold"))
-            return Forbid();
-
-        var (success, error) = await _orderService.HoldAsync(id, reason, await GetCurrentEmployeeIdAsync());
-        TempData[success ? "Message" : "Error"] = success ? "سفارش معلق شد." : error;
-        return RedirectToAction(nameof(Details), new { id });
-    }
-
-    [HttpPost]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Resume(int id)
-    {
-        if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "Production", "ReleaseHold"))
-            return Forbid();
-
-        var (success, error) = await _orderService.ResumeAsync(id, await GetCurrentEmployeeIdAsync());
-        TempData[success ? "Message" : "Error"] = success ? "سفارش ازسرگیری شد." : error;
-        return RedirectToAction(nameof(Details), new { id });
-    }
-
-    [HttpPost]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Cancel(int id, string reason)
-    {
-        if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "Production", "Delete"))
-            return Forbid();
-
-        var (success, error) = await _orderService.CancelAsync(id, reason, await GetCurrentEmployeeIdAsync());
-        TempData[success ? "Message" : "Error"] = success ? "سفارش لغو شد." : error;
         return RedirectToAction(nameof(Details), new { id });
     }
 
@@ -193,6 +145,9 @@ public class ProductionOrderController : Controller
         TempData[success ? "Message" : "Error"] = success ? "سفارش بسته شد." : error;
         return RedirectToAction(nameof(Details), new { id });
     }
+
+    // SCRUM-437: Plan, Hold, Resume and Cancel are action definitions (production-order-*) over the ProductionOrder operations.
+    // Release, Complete and Close stay here until the separation-of-duties check (access-control decision) is a generic guard of an action definition.
 
     private async Task<string?> CheckSoDAsync(int productionOrderId, string action, string defaultMessage)
     {
