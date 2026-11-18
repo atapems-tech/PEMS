@@ -1,0 +1,18 @@
+{
+  "kind": "data-source",
+  "key": "security-events-grid",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Security event rows",
+    "fa": "ردیف‌های رویدادهای امنیتی"
+  },
+  "description": {
+    "en": "The rows of the security events grid (read only)",
+    "fa": "ردیف‌های جدول رویدادهای امنیتی (فقط خواندنی)"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "security-events"
+  }
+}

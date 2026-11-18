@@ -1,0 +1,71 @@
+{
+  "kind": "form",
+  "key": "role-create",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Create role",
+    "fa": "ایجاد نقش"
+  },
+  "description": {
+    "en": "Create a new role (it starts with no permissions)",
+    "fa": "ایجاد نقش جدید (بدون مجوز شروع می‌شود)"
+  },
+  "payload": {
+    "id": "role-create",
+    "title": {
+      "en": "New role",
+      "fa": "نقش جدید"
+    },
+    "submitLabel": {
+      "en": "Create",
+      "fa": "ایجاد"
+    },
+    "actionKey": "role-create",
+    "columns": 2,
+    "warnOnLeave": true,
+    "fields": [
+      {
+        "name": "name",
+        "label": {
+          "en": "Role name (English, no spaces)",
+          "fa": "نام نقش (انگلیسی، بدون فاصله)"
+        },
+        "kind": "text",
+        "required": true,
+        "minLength": 2,
+        "maxLength": 100,
+        "pattern": "[A-Za-z][A-Za-z0-9_]*",
+        "messages": {
+          "required": {
+            "en": "The role name is required.",
+            "fa": "نام نقش الزامی است."
+          },
+          "pattern": {
+            "en": "Use English letters, digits and underscore, starting with a letter.",
+            "fa": "فقط حروف انگلیسی، عدد و زیرخط؛ با حرف شروع شود."
+          }
+        }
+      },
+      {
+        "name": "displayName",
+        "label": {
+          "en": "Display name",
+          "fa": "نام نمایشی"
+        },
+        "kind": "text",
+        "maxLength": 200
+      },
+      {
+        "name": "description",
+        "label": {
+          "en": "Description",
+          "fa": "توضیحات"
+        },
+        "kind": "textArea",
+        "maxLength": 500,
+        "span": 2
+      }
+    ]
+  }
+}
