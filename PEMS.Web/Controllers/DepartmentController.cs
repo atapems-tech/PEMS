@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using PEMS.Application.Grids;
 using PEMS.Domain.Entities;
 using PEMS.Persistence.Context;
 using PEMS.Persistence.Identity;
@@ -41,6 +42,40 @@ public class DepartmentController : Controller
         ViewBag.EmployeeCounts = employeeCounts.ToDictionary(x => x.DepartmentId, x => x.Count);
 
         return View(departments);
+    }
+
+    /// <summary>SCRUM-342 (W1 pilot): the rows of the department grid of the page definition <c>departments</c>: paging, sorting, filtering and quick search by the shared grid helpers; same roles as the page.</summary>
+    [HttpGet]
+    public async Task<IActionResult> Grid(CancellationToken ct)
+    {
+        GridRequest request;
+        try { request = GridRequest.FromQuery(Request.Query.Select(q => new KeyValuePair<string, string?>(q.Key, q.Value.ToString()))); }
+        catch (GridQueryException ex) { return BadRequest(new { error = ex.Message }); }
+        var counts = await _context.Employees.Where(x => x.IsActive).GroupBy(x => x.DepartmentId).Select(g => new { g.Key, Count = g.Count() }).ToDictionaryAsync(x => x.Key, x => x.Count, ct);
+        var query = _context.Departments.AsNoTracking().Select(d => new DepartmentRow { Id = d.DepartmentId, Code = d.Code, Name = d.Name, Description = d.Description, Active = d.IsActive, Created = d.CreatedDate });
+        try
+        {
+            var total = await query.ApplyGridFilters(request, DepartmentRow.Fields).CountAsync(ct);
+            var rows = await query.ApplyGridFilters(request, DepartmentRow.Fields).ApplyGridSort(request, DepartmentRow.Fields).Paged(request).ToListAsync(ct);
+            foreach (var r in rows) r.Employees = counts.TryGetValue(r.Id, out var n) ? n : 0;
+            return Json(new { items = rows, total });
+        }
+        catch (GridQueryException ex) { return BadRequest(new { error = ex.Message }); }
+    }
+
+    public sealed class DepartmentRow
+    {
+        public int Id { get; set; }
+        public string Code { get; set; } = "";
+        public string Name { get; set; } = "";
+        public string? Description { get; set; }
+        public bool Active { get; set; }
+        public DateTime Created { get; set; }
+        public int Employees { get; set; }
+
+        public static readonly GridFields<DepartmentRow> Fields = new GridFields<DepartmentRow>()
+            .Add("name", r => r.Name, searchable: true).Add("code", r => r.Code, searchable: true).Add("description", r => r.Description!, searchable: true)
+            .Add("active", r => r.Active).Add("created", r => r.Created).Add("id", r => r.Id).TieBreak("id");
     }
 
     [HttpPost]

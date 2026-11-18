@@ -476,3 +476,33 @@ public sealed class PemsActionButtonTagHelper(IPemsComponentRenderer renderer) :
         await ListRender.Replace<PemsActionButton>(renderer, output, Options with { Antiforgery = Options.Antiforgery ?? PemsRelated.Antiforgery(ViewContext), PageClass = pageClass, Attributes = attrs });
     }
 }
+
+/// <summary>SCRUM-339: <c>&lt;pems-comments-thread options="@opts" /&gt;</c> draws the CommentsThread of a record from localized entries the page (or a hydrator) gives; the data stays in its own module.</summary>
+[HtmlTargetElement("pems-comments-thread")]
+[PemsFacade(UiKeys.CommentsThread)]
+public sealed class PemsCommentsThreadTagHelper(IPemsComponentRenderer renderer) : TagHelper
+{
+    [HtmlAttributeName("options")] public CommentsThreadOptions? Options { get; set; }
+
+    public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
+    {
+        if (Options is null) throw new InvalidOperationException("pems-comments-thread needs the options attribute.");
+        var (pageClass, attrs) = ListRender.Page(output);
+        await ListRender.Replace<PemsCommentsThread>(renderer, output, Options with { PageClass = pageClass, Attributes = attrs });
+    }
+}
+
+/// <summary>SCRUM-339: <c>&lt;pems-audit-trail options="@opts" /&gt;</c> draws the AuditTrail of a record from localized entries the page (or a hydrator) gives; the data stays in its own module.</summary>
+[HtmlTargetElement("pems-audit-trail")]
+[PemsFacade(UiKeys.AuditTrail)]
+public sealed class PemsAuditTrailTagHelper(IPemsComponentRenderer renderer) : TagHelper
+{
+    [HtmlAttributeName("options")] public AuditTrailOptions? Options { get; set; }
+
+    public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
+    {
+        if (Options is null) throw new InvalidOperationException("pems-audit-trail needs the options attribute.");
+        var (pageClass, attrs) = ListRender.Page(output);
+        await ListRender.Replace<PemsAuditTrail>(renderer, output, Options with { PageClass = pageClass, Attributes = attrs });
+    }
+}

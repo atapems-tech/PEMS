@@ -91,6 +91,8 @@ public static class UiKeys
     public const string DataView = "data-view";
     public const string WorkflowHistory = "workflow-history";
     public const string Uploader = "uploader";
+    public const string CommentsThread = "comments-thread";
+    public const string AuditTrail = "audit-trail";
     public const string ActionButton = "action-button";
     public const string WorkflowActionBar = "workflow-action-bar";
     public const string Pager = "pager";
