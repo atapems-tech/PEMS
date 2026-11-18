@@ -40,14 +40,14 @@ public interface IWorkRequestService
     // ---------------- Phase 2: گردش‌کار مرکزی ----------------
 
     /// <summary>Draft → شروع Instance گردش‌کار مرکزی از طریق Binding صریح. بدون Binding خطای شفاف می‌دهد (Fallback ندارد).</summary>
-    [PEMS.Application.Common.PemsOperation("WorkRequest.Submit", "WorkRequest.View")]
+    [PEMS.Application.Common.PemsOperation("WorkRequest", "Submit", "WorkRequest.View")]
     Task<(bool Success, string? Error)> SubmitAsync(int workRequestId, WorkRequestActor actor);
 
     /// <summary>
     /// اجرای یک اکشن گردش‌کار. مجوز سمت‌سرور از مدل مرکزی (شرکت‌کننده + RequiredPermission + SoD + شرط‌ها) گرفته می‌شود؛
     /// UI هرگز مرجع امنیت نیست. اکشن «Complete» فقط از مسیر ConvertToWorkOrder مجاز است.
     /// </summary>
-    [PEMS.Application.Common.PemsOperation("WorkRequest.WorkflowAction", "WorkRequest.View")]
+    [PEMS.Application.Common.PemsOperation("WorkRequest", "WorkflowAction", "WorkRequest.View")]
     Task<(bool Success, string? Error)> ExecuteWorkflowActionAsync(int workRequestId, string actionType, string? comment, WorkRequestActor actor);
 
     /// <summary>مدل خواندنی مرکزی؛ null اگر Instance ندارد.</summary>

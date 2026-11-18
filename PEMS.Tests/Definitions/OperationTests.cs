@@ -13,16 +13,16 @@ public sealed record OpTestActor(int? EmployeeId, IReadOnlyList<string> Roles);
 
 public interface IOpTestService
 {
-    [PemsOperation("Test.Run", "Test.Run")]
+    [PemsOperation("Test", "Run", "Test.Run")]
     Task<(bool Success, string? Error)> RunAsync(int id, string kind, string? note, OpTestActor actor);
 
-    [PemsOperation("Test.Flag")]
+    [PemsOperation("Test", "Flag")]
     Task<bool> FlagAsync(int id, bool on);
 
-    [PemsOperation("Test.Void")]
+    [PemsOperation("Test", "Void")]
     Task DoAsync(string text, CancellationToken ct);
 
-    [PemsOperation("Test.Boom")]
+    [PemsOperation("Test", "Boom")]
     Task BoomAsync();
 }
 
@@ -63,18 +63,24 @@ public sealed class OperationTests
     [Fact]
     public void Every_operation_of_the_product_is_found_by_its_attribute_and_a_key_cannot_be_declared_twice()
     {
-        Assert.Contains("WorkRequest.Submit", OperationCatalog.Scan(typeof(PemsOperationAttribute).Assembly).Keys);
-        Assert.Contains("WorkRequest.WorkflowAction", OperationCatalog.Scan(typeof(PemsOperationAttribute).Assembly).Keys);
-        Assert.Equal(["Test.Boom", "Test.Flag", "Test.Run", "Test.Void"], Catalog.Keys.OrderBy(k => k));
-        Assert.Equal("Test.Run", Catalog.Get("Test.Run")!.Permission);
-        Assert.Null(Catalog.Get("Test.Flag")!.Permission);
+        var product = OperationCatalog.Scan(typeof(PemsOperationAttribute).Assembly);
+        Assert.Contains("WorkRequest", product.Models);
+        Assert.Equal(["Submit", "WorkflowAction"], product.Actions("WorkRequest"));
+        Assert.Equal(["Test"], Catalog.Models);
+        Assert.Equal(["Boom", "Flag", "Run", "Void"], Catalog.Actions("Test"));
+        Assert.Equal("Test.Run", Catalog.Get("Test", "Run")!.Permission);
+        Assert.Null(Catalog.Get("Test", "Flag")!.Permission);
+        Assert.Null(Catalog.Get("Test", "Nope"));
+        Assert.Null(Catalog.Get(null, null));
+        var description = Catalog.Describe().Single(d => d.Action == "Run");
+        Assert.Equal(["id", "kind", "note"], description.Arguments);            // the actor and the cancellation token are supplied by the engine
     }
 
     [Fact]
     public async Task Arguments_come_from_the_form_a_literal_or_the_context_and_an_actor_record_is_built_from_the_user()
     {
         var handler = Handler();
-        var outcome = await handler.ExecuteAsync(Invoke("""{"operation":"Test.Run","args":{"id":"field:recordId","kind":"literal:approve"}}""", ("recordId", "5"), ("note", " hello ")), CancellationToken.None);
+        var outcome = await handler.ExecuteAsync(Invoke("""{"model":"Test","action":"Run","args":{"id":"field:recordId","kind":"literal:approve"}}""", ("recordId", "5"), ("note", " hello ")), CancellationToken.None);
         Assert.True(outcome.Ok);
         Assert.Equal("5|approve|hello|7|Reviewer", OpTestService.Last);     // note: the field of the same name; actor: employee id of the user (from the database) and the roles
     }
@@ -83,14 +89,14 @@ public sealed class OperationTests
     public async Task The_answer_of_the_service_becomes_the_outcome_and_a_refusal_shows_the_services_own_message()
     {
         var handler = Handler();
-        var refused = await handler.ExecuteAsync(Invoke("""{"operation":"Test.Run","args":{"id":"literal:1","kind":"literal:refuse"}}"""), CancellationToken.None);
+        var refused = await handler.ExecuteAsync(Invoke("""{"model":"Test","action":"Run","args":{"id":"literal:1","kind":"literal:refuse"}}"""), CancellationToken.None);
         Assert.False(refused.Ok);
         Assert.Equal("The service said no.", refused.FormError!.Resolve(new System.Globalization.CultureInfo("en")));
-        Assert.True((await handler.ExecuteAsync(Invoke("""{"operation":"Test.Flag","args":{"id":"field:id","on":"literal:true"}}""", ("id", "3")), CancellationToken.None)).Ok);
+        Assert.True((await handler.ExecuteAsync(Invoke("""{"model":"Test","action":"Flag","args":{"id":"field:id","on":"literal:true"}}""", ("id", "3")), CancellationToken.None)).Ok);
         Assert.Equal("flag 3 True", OpTestService.Last);
-        Assert.False((await handler.ExecuteAsync(Invoke("""{"operation":"Test.Flag","args":{"id":"literal:0","on":"literal:false"}}"""), CancellationToken.None)).Ok);    // a bool false answer
-        Assert.True((await handler.ExecuteAsync(Invoke("""{"operation":"Test.Void","args":{"text":"field:t"}}""", ("t", "x")), CancellationToken.None)).Ok);                  // no answer = done
-        var boom = await handler.ExecuteAsync(Invoke("""{"operation":"Test.Boom"}"""), CancellationToken.None);                                                            // a rule of the service that throws
+        Assert.False((await handler.ExecuteAsync(Invoke("""{"model":"Test","action":"Flag","args":{"id":"literal:0","on":"literal:false"}}"""), CancellationToken.None)).Ok);    // a bool false answer
+        Assert.True((await handler.ExecuteAsync(Invoke("""{"model":"Test","action":"Void","args":{"text":"field:t"}}""", ("t", "x")), CancellationToken.None)).Ok);                  // no answer = done
+        var boom = await handler.ExecuteAsync(Invoke("""{"model":"Test","action":"Boom"}"""), CancellationToken.None);                                                            // a rule of the service that throws
         Assert.Equal("Segregation of duties.", boom.FormError!.Resolve(new System.Globalization.CultureInfo("en")));
     }
 
@@ -99,10 +105,10 @@ public sealed class OperationTests
     {
         var handler = Handler();
         OpTestService.Last = "untouched";
-        Assert.False((await handler.ExecuteAsync(Invoke("""{"operation":"Test.Flag"}"""), CancellationToken.None)).Ok);                                   // id is a required number
-        Assert.False((await handler.ExecuteAsync(Invoke("""{"operation":"Test.Flag"}""", ("id", "abc"), ("on", "true")), CancellationToken.None)).Ok);      // not a number
-        Assert.False((await handler.ExecuteAsync(Invoke("""{"operation":"Test.Flag"}""", ("id", "1"), ("on", "perhaps")), CancellationToken.None)).Ok);    // not a bool
-        Assert.False((await handler.ExecuteAsync(Invoke("""{"operation":"Nope"}"""), CancellationToken.None)).Ok);
+        Assert.False((await handler.ExecuteAsync(Invoke("""{"model":"Test","action":"Flag"}"""), CancellationToken.None)).Ok);                                   // id is a required number
+        Assert.False((await handler.ExecuteAsync(Invoke("""{"model":"Test","action":"Flag"}""", ("id", "abc"), ("on", "true")), CancellationToken.None)).Ok);      // not a number
+        Assert.False((await handler.ExecuteAsync(Invoke("""{"model":"Test","action":"Flag"}""", ("id", "1"), ("on", "perhaps")), CancellationToken.None)).Ok);    // not a bool
+        Assert.False((await handler.ExecuteAsync(Invoke("""{"model":"Nope","action":"X"}"""), CancellationToken.None)).Ok);
         Assert.Equal("untouched", OpTestService.Last);
     }
 
@@ -111,7 +117,7 @@ public sealed class OperationTests
     {
         var handler = Handler(permission => permission != "Test.Run");
         OpTestService.Last = "untouched";
-        var refused = await handler.ExecuteAsync(Invoke("""{"operation":"Test.Run","args":{"id":"literal:1","kind":"literal:x"},"permission":null}"""), CancellationToken.None);
+        var refused = await handler.ExecuteAsync(Invoke("""{"model":"Test","action":"Run","args":{"id":"literal:1","kind":"literal:x"},"permission":null}"""), CancellationToken.None);
         Assert.False(refused.Ok);
         Assert.Equal("untouched", OpTestService.Last);
     }
@@ -121,18 +127,19 @@ public sealed class OperationTests
     {
         var handler = Handler();
         JsonObject P(string json) => JsonNode.Parse(json)!.AsObject();
-        Assert.Empty(handler.ValidateParameters(P("""{"operation":"Test.Run","args":{"id":"field:id","kind":"literal:a","note":"context:userName"}}""")));
-        Assert.Contains("unknown-operation", handler.ValidateParameters(P("""{"operation":"Drop.Database"}""")).Select(e => e.Code));
-        Assert.Contains("unknown-operation", handler.ValidateParameters(null).Select(e => e.Code));
-        Assert.Contains("unknown-parameter", handler.ValidateParameters(P("""{"operation":"Test.Run","args":{"secret":"field:x"}}""")).Select(e => e.Code));
-        Assert.Contains("wrong-source", handler.ValidateParameters(P("""{"operation":"Test.Run","args":{"id":"x"}}""")).Select(e => e.Code));
-        Assert.Contains("wrong-source", handler.ValidateParameters(P("""{"operation":"Test.Run","args":{"id":"context:password"}}""")).Select(e => e.Code));
+        Assert.Empty(handler.ValidateParameters(P("""{"model":"Test","action":"Run","args":{"id":"field:id","kind":"literal:a","note":"context:userName"}}""")));
+        Assert.Contains("unknown-model", handler.ValidateParameters(P("""{"model":"Drop","action":"Database"}""")).Select(e => e.Code));
+        Assert.Contains("unknown-action", handler.ValidateParameters(P("""{"model":"Test","action":"Nope"}""")).Select(e => e.Code));
+        Assert.Contains("unknown-model", handler.ValidateParameters(null).Select(e => e.Code));
+        Assert.Contains("unknown-parameter", handler.ValidateParameters(P("""{"model":"Test","action":"Run","args":{"secret":"field:x"}}""")).Select(e => e.Code));
+        Assert.Contains("wrong-source", handler.ValidateParameters(P("""{"model":"Test","action":"Run","args":{"id":"x"}}""")).Select(e => e.Code));
+        Assert.Contains("wrong-source", handler.ValidateParameters(P("""{"model":"Test","action":"Run","args":{"id":"context:password"}}""")).Select(e => e.Code));
     }
 
     [Fact]
     public async Task A_redirect_takes_its_placeholders_from_the_values_of_the_request()
     {
-        var store = new InlineStore("action", "go", """{"kind":"handler","handler":"operation.invoke","parameters":{"operation":"Test.Void","args":{"text":"field:id"}},"redirect":"/Thing/Details/{id}","success":{"en":"Done","fa":"شد"}}""");
+        var store = new InlineStore("action", "go", """{"kind":"handler","handler":"operation.invoke","parameters":{"model":"Test","action":"Void","args":{"text":"field:id"}},"redirect":"/Thing/Details/{id}","success":{"en":"Done","fa":"شد"}}""");
         var executor = new ActionExecutor(store, new Access(_ => true), [Handler()]);
         var result = await executor.RunAsync("go", Invoke("{}", ("id", "42")));
         Assert.Equal(ActionStatus.Ok, result.Status);

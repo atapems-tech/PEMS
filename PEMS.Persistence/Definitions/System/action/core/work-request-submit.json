@@ -15,7 +15,8 @@
     "kind": "handler",
     "handler": "operation.invoke",
     "parameters": {
-      "operation": "WorkRequest.Submit",
+      "model": "WorkRequest",
+      "action": "Submit",
       "args": {
         "workRequestId": "field:id"
       }

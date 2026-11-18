@@ -15,7 +15,8 @@
     "kind": "handler",
     "handler": "operation.invoke",
     "parameters": {
-      "operation": "WorkRequest.WorkflowAction",
+      "model": "WorkRequest",
+      "action": "WorkflowAction",
       "args": {
         "workRequestId": "field:id",
         "actionType": "field:actionType",
