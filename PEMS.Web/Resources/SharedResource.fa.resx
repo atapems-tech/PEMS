@@ -604,65 +604,65 @@
   <data name="Pc_Urgent" xml:space="preserve"><value>فوری</value></data>
   <data name="Pc_Yes" xml:space="preserve"><value>بله</value></data>
   <data name="Pc_No" xml:space="preserve"><value>خیر</value></data>
-  <data name="Pc_F_RequestNumber" xml:space="preserve"><value>شماره درخواست (Request Number)</value></data>
-  <data name="Pc_F_Urgent" xml:space="preserve"><value>فوری (Urgent)</value></data>
-  <data name="Pc_F_SectionId" xml:space="preserve"><value>بخش (Section)</value></data>
-  <data name="Pc_F_Requester" xml:space="preserve"><value>درخواست‌دهنده (Requester)</value></data>
-  <data name="Pc_F_RequestType" xml:space="preserve"><value>نوع درخواست (Request Type)</value></data>
-  <data name="Pc_F_IsNewEquipment" xml:space="preserve"><value>تجهیز جدید (New Equipment)</value></data>
-  <data name="Pc_F_TechnicalClassId" xml:space="preserve"><value>کلاس فنی (Technical Class)</value></data>
-  <data name="Pc_F_Attributes" xml:space="preserve"><value>مشخصات فنی (Technical Attributes)</value></data>
-  <data name="Pc_F_AttributeName" xml:space="preserve"><value>مشخصه (Attribute)</value></data>
-  <data name="Pc_F_AttributeValue" xml:space="preserve"><value>مقدار (Value)</value></data>
-  <data name="Pc_F_FreeFormatText" xml:space="preserve"><value>FREE FORMAT TEXT</value></data>
-  <data name="Pc_F_AssetType" xml:space="preserve"><value>نوع دارایی (Asset Type)</value></data>
-  <data name="Pc_F_CommodityGroup1Id" xml:space="preserve"><value>گروه کالایی ۱ (Commodity Group 1)</value></data>
-  <data name="Pc_F_CommodityGroup2Id" xml:space="preserve"><value>گروه کالایی ۲ (Commodity Group 2)</value></data>
-  <data name="Pc_F_ProductFamilyId" xml:space="preserve"><value>خانواده محصول (Product Family)</value></data>
-  <data name="Pc_F_UnitOfMeasureId" xml:space="preserve"><value>واحد اندازه‌گیری (Unit of Measure)</value></data>
-  <data name="Pc_F_ManufacturerId" xml:space="preserve"><value>سازنده (Manufacturer)</value></data>
-  <data name="Pc_F_IsNewManufacturer" xml:space="preserve"><value>سازنده جدید (New Manufacturer)</value></data>
-  <data name="Pc_F_NewManufacturerName" xml:space="preserve"><value>نام سازنده جدید (New Manufacturer Name)</value></data>
-  <data name="Pc_F_ManufacturerPartNumber" xml:space="preserve"><value>شماره قطعه سازنده (Manufacturer Part Number)</value></data>
-  <data name="Pc_F_SupplierId" xml:space="preserve"><value>تأمین‌کننده (Supplier)</value></data>
-  <data name="Pc_F_SupplierPartNumber" xml:space="preserve"><value>شماره قطعه تأمین‌کننده (Supplier Part Number)</value></data>
-  <data name="Pc_F_PartPrice" xml:space="preserve"><value>قیمت قطعه (Part Price)</value></data>
-  <data name="Pc_F_CurrencyId" xml:space="preserve"><value>ارز (Currency)</value></data>
-  <data name="Pc_F_TypeDesignationId" xml:space="preserve"><value>نوع تعیین‌شده (Type Designation)</value></data>
-  <data name="Pc_F_IsCritical" xml:space="preserve"><value>حیاتی (Critical)</value></data>
-  <data name="Pc_F_IsCapital" xml:space="preserve"><value>سرمایه‌ای (Capital)</value></data>
-  <data name="Pc_F_SparePartSerialNo" xml:space="preserve"><value>شماره سریال قطعه یدکی (Spare Part Serial No)</value></data>
-  <data name="Pc_F_EquipmentSerialNo" xml:space="preserve"><value>شماره سریال تجهیز (Equipment Serial No)</value></data>
-  <data name="Pc_F_ManufacturerDrawingNo" xml:space="preserve"><value>شماره نقشه سازنده (Manufacturer Drawing No)</value></data>
-  <data name="Pc_F_DocumentNo" xml:space="preserve"><value>شماره سند (Document No)</value></data>
-  <data name="Pc_F_MinimumStock" xml:space="preserve"><value>حداقل موجودی (Minimum Stock)</value></data>
-  <data name="Pc_F_MaxConsumptionRate" xml:space="preserve"><value>حداکثر نرخ مصرف (Max Consumption Rate)</value></data>
-  <data name="Pc_F_FirstPurchaseQuantity" xml:space="preserve"><value>مقدار خرید اولیه (First Purchase Quantity)</value></data>
-  <data name="Pc_F_PlanningMethodId" xml:space="preserve"><value>روش برنامه‌ریزی (Planning Method)</value></data>
-  <data name="Pc_F_PrimaryIssuedRequired" xml:space="preserve"><value>نیاز به تحویل اولیه (Primary Issued Required)</value></data>
-  <data name="Pc_F_IssuedQty" xml:space="preserve"><value>مقدار تحویل‌شده (Issued Quantity)</value></data>
-  <data name="Pc_F_StockGradeId" xml:space="preserve"><value>درجه موجودی (Stock Grade)</value></data>
-  <data name="Pc_F_WantedReceiptDate" xml:space="preserve"><value>تاریخ مورد نیاز دریافت (Wanted Receipt Date)</value></data>
-  <data name="Pc_F_StorageVolume" xml:space="preserve"><value>حجم انبارش (Storage Volume)</value></data>
-  <data name="Pc_F_IsRd" xml:space="preserve"><value>تحقیق و توسعه (R&amp;D)</value></data>
-  <data name="Pc_F_ExistingPartNumber" xml:space="preserve"><value>شماره قطعه موجود (Existing Part Number)</value></data>
-  <data name="Pc_F_ChangesMatchInventory" xml:space="preserve"><value>تغییرات با موجودی انبار منطبق است (Changes match inventory)</value></data>
-  <data name="Pc_F_OldManufacturerName" xml:space="preserve"><value>نام سازنده قبلی (Old Manufacturer Name)</value></data>
-  <data name="Pc_F_OldManufacturerPartNumber" xml:space="preserve"><value>شماره قطعه سازنده قبلی (Old Manufacturer Part Number)</value></data>
-  <data name="Pc_F_Attachments" xml:space="preserve"><value>پیوست‌ها (Attachments)</value></data>
-  <data name="Pc_F_AttachmentKind" xml:space="preserve"><value>نوع پیوست (Attachment Type)</value></data>
-  <data name="Pc_F_File" xml:space="preserve"><value>فایل (File)</value></data>
-  <data name="Pc_F_Notes" xml:space="preserve"><value>یادداشت‌ها (Notes)</value></data>
-  <data name="Pc_F_Text" xml:space="preserve"><value>متن (Text)</value></data>
-  <data name="Pc_F_Comment" xml:space="preserve"><value>توضیح (Comment)</value></data>
-  <data name="Pc_F_Equipment" xml:space="preserve"><value>تجهیز (Equipment)</value></data>
-  <data name="Pc_F_EquipmentId" xml:space="preserve"><value>تجهیز (Equipment)</value></data>
-  <data name="Pc_F_EquipmentText" xml:space="preserve"><value>تجهیز (متن) (Equipment (text))</value></data>
-  <data name="Pc_F_InstalledQuantity" xml:space="preserve"><value>تعداد نصب‌شده (Installed Quantity)</value></data>
-  <data name="Pc_F_PartNumber" xml:space="preserve"><value>شماره قطعه (Part Number)</value></data>
-  <data name="Pc_F_Order" xml:space="preserve"><value>ترتیب (Order)</value></data>
-  <data name="Pc_F_ConditionKey" xml:space="preserve"><value>شرط (Condition)</value></data>
-  <data name="Pc_F_ManagerEmployeeId" xml:space="preserve"><value>مدیر مستقیم (Direct Manager)</value></data>
+  <data name="Pc_F_RequestNumber" xml:space="preserve"><value>شماره درخواست</value></data>
+  <data name="Pc_F_Urgent" xml:space="preserve"><value>فوری</value></data>
+  <data name="Pc_F_SectionId" xml:space="preserve"><value>بخش</value></data>
+  <data name="Pc_F_Requester" xml:space="preserve"><value>درخواست‌دهنده</value></data>
+  <data name="Pc_F_RequestType" xml:space="preserve"><value>نوع درخواست</value></data>
+  <data name="Pc_F_IsNewEquipment" xml:space="preserve"><value>تجهیز جدید</value></data>
+  <data name="Pc_F_TechnicalClassId" xml:space="preserve"><value>کلاس فنی</value></data>
+  <data name="Pc_F_Attributes" xml:space="preserve"><value>مشخصات فنی</value></data>
+  <data name="Pc_F_AttributeName" xml:space="preserve"><value>مشخصه</value></data>
+  <data name="Pc_F_AttributeValue" xml:space="preserve"><value>مقدار</value></data>
+  <data name="Pc_F_FreeFormatText" xml:space="preserve"><value>متن آزاد</value></data>
+  <data name="Pc_F_AssetType" xml:space="preserve"><value>نوع دارایی</value></data>
+  <data name="Pc_F_CommodityGroup1Id" xml:space="preserve"><value>گروه کالایی ۱</value></data>
+  <data name="Pc_F_CommodityGroup2Id" xml:space="preserve"><value>گروه کالایی ۲</value></data>
+  <data name="Pc_F_ProductFamilyId" xml:space="preserve"><value>خانواده محصول</value></data>
+  <data name="Pc_F_UnitOfMeasureId" xml:space="preserve"><value>واحد اندازه‌گیری</value></data>
+  <data name="Pc_F_ManufacturerId" xml:space="preserve"><value>سازنده</value></data>
+  <data name="Pc_F_IsNewManufacturer" xml:space="preserve"><value>سازنده جدید</value></data>
+  <data name="Pc_F_NewManufacturerName" xml:space="preserve"><value>نام سازنده جدید</value></data>
+  <data name="Pc_F_ManufacturerPartNumber" xml:space="preserve"><value>شماره قطعه سازنده</value></data>
+  <data name="Pc_F_SupplierId" xml:space="preserve"><value>تأمین‌کننده</value></data>
+  <data name="Pc_F_SupplierPartNumber" xml:space="preserve"><value>شماره قطعه تأمین‌کننده</value></data>
+  <data name="Pc_F_PartPrice" xml:space="preserve"><value>قیمت قطعه</value></data>
+  <data name="Pc_F_CurrencyId" xml:space="preserve"><value>ارز</value></data>
+  <data name="Pc_F_TypeDesignationId" xml:space="preserve"><value>نوع تعیین‌شده</value></data>
+  <data name="Pc_F_IsCritical" xml:space="preserve"><value>حیاتی</value></data>
+  <data name="Pc_F_IsCapital" xml:space="preserve"><value>سرمایه‌ای</value></data>
+  <data name="Pc_F_SparePartSerialNo" xml:space="preserve"><value>شماره سریال قطعه یدکی</value></data>
+  <data name="Pc_F_EquipmentSerialNo" xml:space="preserve"><value>شماره سریال تجهیز</value></data>
+  <data name="Pc_F_ManufacturerDrawingNo" xml:space="preserve"><value>شماره نقشه سازنده</value></data>
+  <data name="Pc_F_DocumentNo" xml:space="preserve"><value>شماره سند</value></data>
+  <data name="Pc_F_MinimumStock" xml:space="preserve"><value>حداقل موجودی</value></data>
+  <data name="Pc_F_MaxConsumptionRate" xml:space="preserve"><value>حداکثر نرخ مصرف</value></data>
+  <data name="Pc_F_FirstPurchaseQuantity" xml:space="preserve"><value>مقدار خرید اولیه</value></data>
+  <data name="Pc_F_PlanningMethodId" xml:space="preserve"><value>روش برنامه‌ریزی</value></data>
+  <data name="Pc_F_PrimaryIssuedRequired" xml:space="preserve"><value>نیاز به تحویل اولیه</value></data>
+  <data name="Pc_F_IssuedQty" xml:space="preserve"><value>مقدار تحویل‌شده</value></data>
+  <data name="Pc_F_StockGradeId" xml:space="preserve"><value>درجه موجودی</value></data>
+  <data name="Pc_F_WantedReceiptDate" xml:space="preserve"><value>تاریخ مورد نیاز دریافت</value></data>
+  <data name="Pc_F_StorageVolume" xml:space="preserve"><value>حجم انبارش</value></data>
+  <data name="Pc_F_IsRd" xml:space="preserve"><value>تحقیق و توسعه</value></data>
+  <data name="Pc_F_ExistingPartNumber" xml:space="preserve"><value>شماره قطعه موجود</value></data>
+  <data name="Pc_F_ChangesMatchInventory" xml:space="preserve"><value>تغییرات با موجودی انبار منطبق است</value></data>
+  <data name="Pc_F_OldManufacturerName" xml:space="preserve"><value>نام سازنده قبلی</value></data>
+  <data name="Pc_F_OldManufacturerPartNumber" xml:space="preserve"><value>شماره قطعه سازنده قبلی</value></data>
+  <data name="Pc_F_Attachments" xml:space="preserve"><value>پیوست‌ها</value></data>
+  <data name="Pc_F_AttachmentKind" xml:space="preserve"><value>نوع پیوست</value></data>
+  <data name="Pc_F_File" xml:space="preserve"><value>فایل</value></data>
+  <data name="Pc_F_Notes" xml:space="preserve"><value>یادداشت‌ها</value></data>
+  <data name="Pc_F_Text" xml:space="preserve"><value>متن</value></data>
+  <data name="Pc_F_Comment" xml:space="preserve"><value>توضیح</value></data>
+  <data name="Pc_F_Equipment" xml:space="preserve"><value>تجهیز</value></data>
+  <data name="Pc_F_EquipmentId" xml:space="preserve"><value>تجهیز</value></data>
+  <data name="Pc_F_EquipmentText" xml:space="preserve"><value>تجهیز (متن)</value></data>
+  <data name="Pc_F_InstalledQuantity" xml:space="preserve"><value>تعداد نصب‌شده</value></data>
+  <data name="Pc_F_PartNumber" xml:space="preserve"><value>شماره قطعه</value></data>
+  <data name="Pc_F_Order" xml:space="preserve"><value>ترتیب</value></data>
+  <data name="Pc_F_ConditionKey" xml:space="preserve"><value>شرط</value></data>
+  <data name="Pc_F_ManagerEmployeeId" xml:space="preserve"><value>مدیر مستقیم</value></data>
   <data name="Pc_Sec_PartInfo" xml:space="preserve"><value>اطلاعات درخواست</value></data>
   <data name="Pc_Sec_Equipment" xml:space="preserve"><value>تجهیزات</value></data>
   <data name="Pc_Sec_ClassInfo" xml:space="preserve"><value>کلاس فنی</value></data>
