@@ -57,6 +57,12 @@
               "null"
             ]
           },
+          "parent": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
           "group": {
             "type": [
               "string",
@@ -213,6 +219,34 @@
             ]
           },
           "moreItems": {
+            "oneOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "object",
+                "minProperties": 1,
+                "additionalProperties": {
+                  "type": "string"
+                }
+              }
+            ]
+          },
+          "collapse": {
+            "oneOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "object",
+                "minProperties": 1,
+                "additionalProperties": {
+                  "type": "string"
+                }
+              }
+            ]
+          },
+          "expand": {
             "oneOf": [
               {
                 "type": "string"

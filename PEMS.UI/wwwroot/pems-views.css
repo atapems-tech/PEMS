@@ -106,3 +106,12 @@
 .pems-view__g-tick { position: absolute; inset-inline-start: calc(var(--from, 0) * 1%); padding-inline-start: .25rem; font-size: .75rem; color: var(--pems-text-muted); border-inline-start: 1px solid var(--pems-surface-border); block-size: 100%; line-height: 2rem; }
 .pems-view__bar { position: absolute; inset-block: .4rem; inset-inline-start: calc(var(--from, 0) * 1%); inline-size: max(calc(var(--span, 1) * 1%), .5rem); background: var(--pems-primary); border-radius: .25rem; opacity: .85; }
 .pems-view__bar:hover, .pems-view__bar:focus-visible { opacity: 1; outline: 2px solid var(--pems-primary); outline-offset: 1px; }
+
+/* SCRUM-55: the tree view: nested lists, indented by the reading direction. */
+.pems-view__tree, .pems-view__children { list-style: none; margin: 0; padding: 0; }
+.pems-view__children { padding-inline-start: 1.25rem; border-inline-start: 1px solid var(--pems-surface-border); margin-inline-start: .6rem; }
+.pems-view__node-row { display: flex; align-items: center; gap: .5rem; padding: .2rem .25rem; border-radius: .25rem; }
+.pems-view__node-row:hover { background: var(--pems-hover, rgba(127, 127, 127, .08)); }
+.pems-view__toggle { min-inline-size: 4.5rem; padding: .05rem .4rem; font-size: .8rem; color: var(--pems-text-muted); background: transparent; border: 1px solid var(--pems-surface-border); border-radius: .25rem; }
+.pems-view__node-title { color: var(--pems-text); text-decoration: none; }
+.pems-view__node-title:hover { color: var(--pems-primary); }

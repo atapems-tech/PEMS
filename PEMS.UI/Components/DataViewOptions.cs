@@ -18,6 +18,8 @@ public sealed record ViewFields
     public string? Date { get; init; }
     /// <summary>Gantt: the end date of a row; a row without one is a one-day bar.</summary>
     public string? End { get; init; }
+    /// <summary>Tree: the field that holds the id of the parent row; a row without a parent (or with a parent that is not in the result) is a root.</summary>
+    public string? Parent { get; init; }
     /// <summary>The field that says which board column a row belongs to (kanban).</summary>
     public string? Group { get; init; }
 }
@@ -44,9 +46,12 @@ public sealed record ViewTexts
     public required TranslatableText Uncategorized { get; init; }
     /// <summary>The "and {0} more" line of a crowded calendar day.</summary>
     public required TranslatableText MoreItems { get; init; }
+    /// <summary>The toggle of a tree node (collapse, expand): the text a screen reader hears.</summary>
+    public TranslatableText Collapse { get; init; } = TranslatableText.Of(("en", "Collapse"), ("fa", "بستن"));
+    public TranslatableText Expand { get; init; } = TranslatableText.Of(("en", "Expand"), ("fa", "باز کردن"));
 }
 
-/// <summary>Inputs of <see cref="PemsDataView"/>. <see cref="View"/> is cards, kanban, calendar, timeline or gantt.</summary>
+/// <summary>Inputs of <see cref="PemsDataView"/>. <see cref="View"/> is cards, kanban, calendar, timeline, gantt or tree.</summary>
 public sealed record DataViewOptions : FrameOptions
 {
     public required string Id { get; init; }
