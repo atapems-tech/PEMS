@@ -113,55 +113,23 @@ public class ContractControllerAuthorizationTests
         Assert.Equal(6, ctx.ContractDisciplineReviews.Count(x => x.ContractId == contract.ContractId));
     }
 
-    [Fact]
-    public async Task Approve_WithoutApprovePermission_ReturnsForbid()
+    // SCRUM-437: Approve, Sign, Complete (and the other workflow steps) are action definitions over Contract operations. Their permission is declared on the service
+    // method and checked by the operation catalog before the service is called (OperationTests proves the check); the transition rules stay in ContractWorkflowService.
+    [Theory]
+    [InlineData("Approve", "Contracts.Approve")]
+    [InlineData("Reject", "Contracts.Approve")]
+    [InlineData("Sign", "Contracts.Approve")]
+    [InlineData("MarkEffective", "Contracts.Approve")]
+    [InlineData("Complete", "Contracts.Approve")]
+    [InlineData("Terminate", "Contracts.Approve")]
+    [InlineData("ApproveRevision", "Contracts.Approve")]
+    [InlineData("SubmitForReview", "Contracts.Edit")]
+    [InlineData("RecordDisciplineReview", "Contracts.Edit")]
+    [InlineData("RequestRevision", "Contracts.Edit")]
+    public void The_workflow_operations_of_a_contract_require_the_same_permission_the_controller_checked(string action, string permission)
     {
-        var (controller, ctx, _) = await CreateController(nameof(Approve_WithoutApprovePermission_ReturnsForbid), role: SystemRoles.DisciplineEngineer);
-        var contract = SeedDraftContract(ctx);
-
-        var result = await controller.Approve(contract.ContractId, null);
-
-        Assert.IsType<ForbidResult>(result);
-    }
-
-    [Fact]
-    public async Task Sign_WithoutApprovePermission_ReturnsForbid_DoesNotSign()
-    {
-        var (controller, ctx, _) = await CreateController(nameof(Sign_WithoutApprovePermission_ReturnsForbid_DoesNotSign), role: SystemRoles.DisciplineEngineer);
-        var contract = SeedDraftContract(ctx);
-        contract.Status = "Approved";
-        ctx.SaveChanges();
-
-        var result = await controller.Sign(contract.ContractId);
-
-        Assert.IsType<ForbidResult>(result);
-        Assert.Equal("Approved", ctx.Contracts.Single().Status);
-    }
-
-    [Fact]
-    public async Task Complete_WithoutApprovePermission_ReturnsForbid_DoesNotComplete()
-    {
-        var (controller, ctx, _) = await CreateController(nameof(Complete_WithoutApprovePermission_ReturnsForbid_DoesNotComplete), role: SystemRoles.DisciplineEngineer);
-        var contract = SeedDraftContract(ctx);
-        contract.Status = "Effective";
-        ctx.SaveChanges();
-
-        var result = await controller.Complete(contract.ContractId);
-
-        Assert.IsType<ForbidResult>(result);
-        Assert.Equal("Effective", ctx.Contracts.Single().Status);
-    }
-
-    [Fact]
-    public async Task Complete_FromDraft_InvalidTransition_IsRejected()
-    {
-        var (controller, ctx, _) = await CreateController(nameof(Complete_FromDraft_InvalidTransition_IsRejected), role: SystemRoles.ContractManager);
-        var contract = SeedDraftContract(ctx);
-
-        var result = await controller.Complete(contract.ContractId);
-
-        Assert.IsType<RedirectToActionResult>(result);
-        Assert.Equal("Draft", ctx.Contracts.Single().Status);
+        var catalog = PEMS.Web.Definitions.OperationCatalog.Scan(typeof(PEMS.Application.Common.PemsOperationAttribute).Assembly);
+        Assert.Equal(permission, catalog.Get("Contract", action)!.Permission);
     }
 
     private static void SeedProjectAndVendor(PEMS.Persistence.Context.PEMSDbContext ctx)
