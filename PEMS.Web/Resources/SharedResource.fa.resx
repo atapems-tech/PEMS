@@ -682,8 +682,8 @@
   <data name="Pc_Btn_Export_Xlsx" xml:space="preserve"><value>اکسل</value></data>
   <data name="Pc_Btn_GenerateNumber" xml:space="preserve"><value>تولید شماره درخواست</value></data>
   <data name="Pc_Btn_Load" xml:space="preserve"><value>بارگذاری</value></data>
-  <data name="Pc_Btn_NewAdd" xml:space="preserve"><value>درخواست جدید (Add)</value></data>
-  <data name="Pc_Btn_NewChange" xml:space="preserve"><value>درخواست جدید (Change)</value></data>
+  <data name="Pc_Btn_NewAdd" xml:space="preserve"><value>درخواست جدید افزودن</value></data>
+  <data name="Pc_Btn_NewChange" xml:space="preserve"><value>درخواست جدید تغییر</value></data>
   <data name="Pc_Btn_Remove" xml:space="preserve"><value>حذف</value></data>
   <data name="Pc_Btn_Return" xml:space="preserve"><value>بازگشت برای اصلاح</value></data>
   <data name="Pc_Btn_Save" xml:space="preserve"><value>ذخیره</value></data>
@@ -694,8 +694,8 @@
   <data name="Pc_Status_Returned" xml:space="preserve"><value>بازگشتی</value></data>
   <data name="Pc_Status_Completed" xml:space="preserve"><value>تکمیل‌شده</value></data>
   <data name="Pc_Status_Cancelled" xml:space="preserve"><value>لغوشده</value></data>
-  <data name="Pc_Type_Add" xml:space="preserve"><value>افزودن (Add)</value></data>
-  <data name="Pc_Type_Change" xml:space="preserve"><value>تغییر (Change)</value></data>
+  <data name="Pc_Type_Add" xml:space="preserve"><value>افزودن</value></data>
+  <data name="Pc_Type_Change" xml:space="preserve"><value>تغییر</value></data>
   <data name="Pc_Kind_Document" xml:space="preserve"><value>سند</value></data>
   <data name="Pc_Kind_Drawing" xml:space="preserve"><value>نقشه</value></data>
   <data name="Pc_Kind_Support" xml:space="preserve"><value>مستند پشتیبان</value></data>
