@@ -366,7 +366,7 @@ else
                 @if (Ctl(WoSection.ResponsibleDiscipline))
                 {
                 <pems-col md="6">
-                    <pems-form asp-action="SetPlanning" method="post"><pems-flex gap="2" align="end" wrap="true">
+                    <pems-form action="/a/work-order-set-planning" method="post"><pems-flex gap="2" align="end" wrap="true">
                         <input type="hidden" name="id" value="@Model.WorkOrderId" />
                         <div><pems-label css="small mb-1">@Localizer["Responsible Maintenance Discipline"]</pems-label>
                             <pems-select scale="small" name="responsibleDisciplineId" required>
@@ -389,7 +389,7 @@ else
                         </pems-col>
                     }
                     <pems-col md="6">
-                        <pems-form asp-action="AssignExecutor" method="post"><pems-flex gap="2" align="end" wrap="true">
+                        <pems-form action="/a/work-order-assign-executor" method="post"><pems-flex gap="2" align="end" wrap="true">
                             <input type="hidden" name="id" value="@Model.WorkOrderId" />
                             <div><pems-label css="small mb-1">@Localizer["Team"]</pems-label>
                                 <pems-select scale="small" name="teamId"><option value="">--</option>
@@ -408,7 +408,7 @@ else
                     <pems-col md="6">
                         @* طبق «PEMS — Work Request/Work Order Scheduling & Maintenance Calendar»: زمان‌بندی مستقل از
                            تخصیص تیم/کارمند است (ترتیب الزامی نیست) - همان مرحله/مجوز، فرم جدا. *@
-                        <pems-form asp-action="SetSchedule" method="post"><pems-flex gap="2" align="end" wrap="true">
+                        <pems-form action="/a/work-order-set-schedule" method="post"><pems-flex gap="2" align="end" wrap="true">
                             <input type="hidden" name="id" value="@Model.WorkOrderId" />
                             <div><pems-label css="small mb-1">@Localizer["Planned Start"]</pems-label>
                                 <pems-date time="true" name="plannedStart" value="@(Model.PlannedStart?.ToString("yyyy-MM-ddTHH:mm"))" required scale="small" /></div>

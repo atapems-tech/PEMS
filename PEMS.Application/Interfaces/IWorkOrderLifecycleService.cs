@@ -28,12 +28,15 @@ public interface IWorkOrderLifecycleService
     Task<(bool Success, string? Error)> ExecuteWorkflowActionAsync(int workOrderId, string actionType, string? comment, WorkOrderActor actor, WorkOrderCompletionData? completion = null);
 
     /// <summary>دیسیپلین مسئول نگهداری (فقط برنامه‌ریزی نگهداری، فقط پیش از صدور). دیسیپلین مبدأ هرگز تغییر نمی‌کند.</summary>
+    [PEMS.Application.Common.PemsOperation("WorkOrder", "SetPlanning", "WorkOrder.View")]
     Task<(bool Success, string? Error)> SetPlanningAsync(int workOrderId, int responsibleDisciplineId, WorkOrderActor actor);
 
     /// <summary>تخصیص مجری (تیم/کارمند) توسط سرگروه/معاون همان دیسیپلین مسئول.</summary>
+    [PEMS.Application.Common.PemsOperation("WorkOrder", "AssignExecutor", "WorkOrder.View")]
     Task<(bool Success, string? Error)> AssignExecutorAsync(int workOrderId, int? teamId, int? employeeId, WorkOrderActor actor);
 
     /// <summary>زمان‌بندی برنامه‌ریزی‌شده (PlannedStart/PlannedFinish) برای تقویم نگهداری - همان مرحله/مجوز/اسکوپ دیسیپلینِ AssignExecutorAsync.</summary>
+    [PEMS.Application.Common.PemsOperation("WorkOrder", "Schedule", "WorkOrder.View")]
     Task<(bool Success, string? Error)> ScheduleWorkOrderAsync(int workOrderId, DateTime plannedStart, DateTime plannedFinish, WorkOrderActor actor);
 
     /// <summary>مدل خواندنی مرکزی؛ null برای Work Order Legacy (بدون Instance چرخه‌عمر).</summary>

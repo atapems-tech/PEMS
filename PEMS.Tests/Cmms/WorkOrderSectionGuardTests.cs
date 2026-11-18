@@ -362,9 +362,9 @@ public class WorkOrderSectionGuardTests : WorkOrderGovernanceTestBase
 
             // برنامه‌ریزی / تخصیص / زمان‌بندی: فقط Planning/Preparation (دیسیپلین) و Preparation (تخصیص/زمان‌بندی)
             var woBefore = await Ctx.WorkOrders.AsNoTracking().SingleAsync(w => w.WorkOrderId == id);
-            await Rejected(() => planner.SetPlanning(id, Elec), async () => (await Ctx.WorkOrders.AsNoTracking().SingleAsync(w => w.WorkOrderId == id)).ResponsibleDisciplineId == woBefore.ResponsibleDisciplineId, "SetPlanning");
-            await Rejected(() => ctl.AssignExecutor(id, null, Executor.EmployeeId), async () => (await Ctx.WorkOrders.AsNoTracking().SingleAsync(w => w.WorkOrderId == id)).AssignedEmployeeId == woBefore.AssignedEmployeeId, "AssignExecutor");
-            await Rejected(() => ctl.SetSchedule(id, DateTime.Today, DateTime.Today.AddDays(1)), async () => (await Ctx.WorkOrders.AsNoTracking().SingleAsync(w => w.WorkOrderId == id)).PlannedStart == woBefore.PlannedStart, "SetSchedule");
+            await Rejected(() => RunSectionActionAsync(planner, Planner, "work-order-set-planning", ("id", id.ToString()), ("responsibleDisciplineId", Elec.ToString())), async () => (await Ctx.WorkOrders.AsNoTracking().SingleAsync(w => w.WorkOrderId == id)).ResponsibleDisciplineId == woBefore.ResponsibleDisciplineId, "SetPlanning");
+            await Rejected(() => RunSectionActionAsync(ctl, DisciplineHead, "work-order-assign-executor", ("id", id.ToString()), ("employeeId", Executor.EmployeeId.ToString())), async () => (await Ctx.WorkOrders.AsNoTracking().SingleAsync(w => w.WorkOrderId == id)).AssignedEmployeeId == woBefore.AssignedEmployeeId, "AssignExecutor");
+            await Rejected(() => RunSectionActionAsync(ctl, DisciplineHead, "work-order-set-schedule", ("id", id.ToString()), ("plannedStart", DateTime.Today.ToString("O")), ("plannedFinish", DateTime.Today.AddDays(1).ToString("O"))), async () => (await Ctx.WorkOrders.AsNoTracking().SingleAsync(w => w.WorkOrderId == id)).PlannedStart == woBefore.PlannedStart, "SetSchedule");
             Assert.NotNull(ctl.TempData["Error"]);          // آخرین رد (SetSchedule) پیام مشخص دارد
         }
         Assert.True(cells >= 25, $"only {cells} rejected cells were exercised");

@@ -122,7 +122,7 @@ public class WorkOrderAuditFixTests : WorkOrderGovernanceTestBase
         foreach (var (team, emp) in new (int?, int?)[] { (null, null), (teamId, null), (null, Executor.EmployeeId), (teamId, Executor.EmployeeId), (999999, null), (null, 999999) })
         {
             ctl.TempData.Clear();
-            var result = await ctl.AssignExecutor(id, team, emp);
+            var result = await RunSectionActionAsync(ctl, DisciplineHead, "work-order-assign-executor", ("id", id.ToString()), ("teamId", team?.ToString()), ("employeeId", emp?.ToString()));
             Assert.IsType<RedirectToActionResult>(result);                                         // هرگز استثنا/صفحه‌ی خطا
             Assert.True(ctl.TempData.ContainsKey("Message") || ctl.TempData.ContainsKey("Error"), $"no toast for team={team} emp={emp}");
         }

@@ -399,45 +399,6 @@ public class WorkOrderController : Controller
 
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> SetPlanning(int id, int responsibleDisciplineId)
-    {
-        if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "WorkOrder", "View")) return Forbid();
-        var denied = await GuardChildAsync(id, WoSection.ResponsibleDiscipline, WoSectionAction.Edit);
-        if (denied != null) return denied;
-        var (success, error) = await SafeAsync(async () => await _lifecycleService.SetPlanningAsync(id, responsibleDisciplineId, await BuildActorAsync()));
-        if (success) await RecordChildChangeAsync(id, WoSection.ResponsibleDiscipline, WoSectionAction.Edit, null, null, null, "ResponsibleDisciplineId=" + responsibleDisciplineId);
-        TempData[success ? "Message" : "Error"] = success ? L("دیسیپلین مسئول نگهداری ثبت شد.", "Responsible maintenance discipline saved.") : error;
-        return RedirectToAction(nameof(Details), new { id });
-    }
-
-    [HttpPost]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> AssignExecutor(int id, int? teamId, int? employeeId)
-    {
-        if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "WorkOrder", "View")) return Forbid();
-        var denied = await GuardChildAsync(id, WoSection.ExecutorAssignment, WoSectionAction.Edit);
-        if (denied != null) return denied;
-        var (success, error) = await SafeAsync(async () => await _lifecycleService.AssignExecutorAsync(id, teamId, employeeId, await BuildActorAsync()));
-        if (success) await RecordChildChangeAsync(id, WoSection.ExecutorAssignment, WoSectionAction.Edit, null, null, null, $"TeamId={teamId}; EmployeeId={employeeId}");
-        TempData[success ? "Message" : "Error"] = success ? L("مجری تخصیص داده شد.", "Executor assigned.") : error;
-        return RedirectToAction(nameof(Details), new { id });
-    }
-
-    [HttpPost]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> SetSchedule(int id, DateTime plannedStart, DateTime plannedFinish)
-    {
-        if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "WorkOrder", "View")) return Forbid();
-        var denied = await GuardChildAsync(id, WoSection.Schedule, WoSectionAction.Edit);
-        if (denied != null) return denied;
-        var (success, error) = await SafeAsync(async () => await _lifecycleService.ScheduleWorkOrderAsync(id, plannedStart, plannedFinish, await BuildActorAsync()));
-        if (success) await RecordChildChangeAsync(id, WoSection.Schedule, WoSectionAction.Edit, null, null, null, $"PlannedStart={plannedStart:O}; PlannedFinish={plannedFinish:O}");
-        TempData[success ? "Message" : "Error"] = success ? L("زمان‌بندی ثبت شد.", "Schedule saved.") : error;
-        return RedirectToAction(nameof(Details), new { id });
-    }
-
-    [HttpPost]
-    [ValidateAntiForgeryToken]
     public async Task<IActionResult> AddLaborEntry(int workOrderId, int employeeId, int? teamId, DateTime workDate,
         decimal regularHours, decimal overtimeHours, string? notes, string? correctionReason = null)
     {
