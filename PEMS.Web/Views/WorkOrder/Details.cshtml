@@ -529,7 +529,7 @@ else
             </pems-button>
 
             <pems-modal id="respondReviewModal" tabindex="-1">
-                    <pems-form asp-action="RespondDisciplineReview" method="post">
+                    <pems-form action="/a/work-order-respond-discipline-review" method="post">
                         <input type="hidden" name="workOrderId" value="@Model.WorkOrderId" />
                         <pems-modal-header>@Localizer["ثبت نظر / یافته"]</pems-modal-header>
                         <pems-modal-body>
@@ -1026,7 +1026,7 @@ else
     }
     else
     {
-        <pems-form asp-action="CreateCrewForWorkOrder" method="post"><pems-row gap="2">
+        <pems-form action="/a/work-order-create-crew" method="post"><pems-row gap="2">
             <input type="hidden" name="workOrderId" value="@Model.WorkOrderId" />
             <pems-col md="4"><pems-input scale="small" name="code" placeholder="@Localizer["کد Crew"]" required /></pems-col>
             <pems-col md="5"><pems-input scale="small" name="name" placeholder="@Localizer["نام Crew"]" required /></pems-col>

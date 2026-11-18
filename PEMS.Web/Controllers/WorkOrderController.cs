@@ -685,19 +685,6 @@ public class WorkOrderController : Controller
     // طبق بخش ۱۴ سند: ساخت سریع یک Crew اختصاصی برای همین WorkOrder، بدون خروج از صفحه
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> CreateCrewForWorkOrder(int workOrderId, string code, string name)
-    {
-        if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "WorkOrder", "Edit")) return Forbid();
-        var denied = await GuardChildAsync(workOrderId, WoSection.Crew, WoSectionAction.Add, recordRef: code);
-        if (denied != null) return denied;
-        var (success, error, crewId) = await _crewService.CreateAsync(code, name, workOrderId);
-        if (success) await RecordChildChangeAsync(workOrderId, WoSection.Crew, WoSectionAction.Add, crewId?.ToString(), null, null, $"Code={code}; Name={name}");
-        TempData[success ? "Message" : "Error"] = success ? "Crew ساخته شد." : error;
-        return RedirectToAction(nameof(Details), new { id = workOrderId });
-    }
-
-    [HttpPost]
-    [ValidateAntiForgeryToken]
     public async Task<IActionResult> RequestDisciplineReview(int workOrderId, List<int> disciplineIds)
     {
         if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "WorkOrder", "Edit")) return Forbid();
@@ -709,19 +696,6 @@ public class WorkOrderController : Controller
             await RecordChildChangeAsync(workOrderId, WoSection.DisciplineReview, WoSectionAction.Add, null, null, null, "DisciplineIds=" + string.Join(",", disciplineIds ?? new List<int>()));
             TempData["Message"] = "بازبینی چند-دیسیپلینه شروع شد.";
         }
-        catch (Exception ex) { TempData["Error"] = ex.Message; }
-        return RedirectToAction(nameof(Details), new { id = workOrderId });
-    }
-
-    [HttpPost]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> RespondDisciplineReview(int workOrderId, string decision, string? findings, string? failureModeCode, string? failureCauseCode)
-    {
-        if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "WorkOrder", "View")) return Forbid();
-        var myDisciplineId = await GetCurrentEmployeeDisciplineIdAsync();
-        var myEmployeeId = await GetCurrentEmployeeIdAsync();
-        if (!myDisciplineId.HasValue || !myEmployeeId.HasValue) { TempData["Error"] = "کارمند مرتبط با این کاربر یا دیسیپلینش مشخص نیست."; return RedirectToAction(nameof(Details), new { id = workOrderId }); }
-        try { await _reviewService.RespondAsync(workOrderId, decision, findings, failureModeCode, failureCauseCode, myEmployeeId.Value, myDisciplineId.Value, GetClientIp(), GetUserAgent()); TempData["Message"] = "نظر شما ثبت شد."; }
         catch (Exception ex) { TempData["Error"] = ex.Message; }
         return RedirectToAction(nameof(Details), new { id = workOrderId });
     }

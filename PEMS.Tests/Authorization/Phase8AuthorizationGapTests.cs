@@ -41,31 +41,26 @@ public class Phase8AuthorizationGapTests
         return (controller, ctx);
     }
 
+    // SCRUM-437: CreateCrewForWorkOrder is the action definition work-order-create-crew over the operation Crew.Create; the permission is declared on the service
+    // method and checked by the operation catalog before the service is called.
     [Fact]
-    public async Task CreateCrewForWorkOrder_WithoutEditPermission_ReturnsForbid_AndCreatesNoCrew()
+    public void CreateCrew_operation_requires_WorkOrder_Edit()
     {
-        var (controller, ctx) = await CreateWorkOrderController(nameof(CreateCrewForWorkOrder_WithoutEditPermission_ReturnsForbid_AndCreatesNoCrew), role: null);
-        var workOrder = new WorkOrder { WorkOrderId = 1, EquipmentId = 1, WorkOrderNumber = "WO-1", WorkOrderType = "Corrective", Status = "Open", IsActive = true };
-        ctx.WorkOrders.Add(workOrder);
-        await ctx.SaveChangesAsync();
-
-        var result = await controller.CreateCrewForWorkOrder(workOrder.WorkOrderId, "CR-1", "Test Crew");
-
-        Assert.IsType<ForbidResult>(result);
-        Assert.Empty(ctx.Crews);
+        var catalog = PEMS.Web.Definitions.OperationCatalog.Scan(typeof(PEMS.Application.Common.PemsOperationAttribute).Assembly);
+        Assert.Equal("WorkOrder.Edit", catalog.Get("Crew", "Create")!.Permission);
     }
 
     [Fact]
-    public async Task CreateCrewForWorkOrder_WithEditPermission_CreatesCrew()
+    public async Task CreateCrew_service_creates_a_crew_for_the_work_order()
     {
-        var (controller, ctx) = await CreateWorkOrderController(nameof(CreateCrewForWorkOrder_WithEditPermission_CreatesCrew), role: SystemRoles.MaintenanceEngineer);
+        var (_, ctx) = await CreateWorkOrderController(nameof(CreateCrew_service_creates_a_crew_for_the_work_order), role: SystemRoles.MaintenanceEngineer);
         var workOrder = new WorkOrder { WorkOrderId = 1, EquipmentId = 1, WorkOrderNumber = "WO-1", WorkOrderType = "Corrective", Status = "Open", IsActive = true };
         ctx.WorkOrders.Add(workOrder);
         await ctx.SaveChangesAsync();
 
-        var result = await controller.CreateCrewForWorkOrder(workOrder.WorkOrderId, "CR-1", "Test Crew");
+        var (success, _, crewId) = await new CrewService(ctx).CreateAsync("CR-1", "Test Crew", workOrder.WorkOrderId);
 
-        Assert.IsType<RedirectToActionResult>(result);
+        Assert.True(success); Assert.NotNull(crewId);
         Assert.Single(ctx.Crews);
     }
 

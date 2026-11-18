@@ -14,11 +14,11 @@ namespace PEMS.Web.Definitions;
 /// after a successful call the change is recorded (who, when, status, before/after) best-effort, exactly as the controller did. <c>audit</c> is the "after" text with {argument} placeholders
 /// filled from the service arguments (a format can follow a colon, e.g. {plannedStart:O}). workOrderId, reason and recordRef are sources (field:name, literal:text, context:name).
 /// </summary>
-public sealed record SectionGuardPlan(int WorkOrderId, WoSection Section, WoSectionAction Action, string? Reason, string? RecordRef, string? Audit);
+public sealed record SectionGuardPlan(int WorkOrderId, WoSection Section, WoSectionAction Action, string? Reason, string? RecordRef, string? Audit, bool RecordRefFromResult = false);
 
 public static partial class OperationSectionGuard
 {
-    private static readonly HashSet<string> Keys = new(StringComparer.Ordinal) { "section", "action", "workOrderId", "reason", "recordRef", "audit" };
+    private static readonly HashSet<string> Keys = new(StringComparer.Ordinal) { "section", "action", "workOrderId", "reason", "recordRef", "audit", "recordRefFromResult" };
 
     [GeneratedRegex(@"\{(\w+)(?::(\w+))?\}")]
     private static partial Regex Placeholder();
@@ -48,7 +48,7 @@ public static partial class OperationSectionGuard
         if (!int.TryParse(resolve(EntityJson.Str(guard["workOrderId"])), NumberStyles.Integer, CultureInfo.InvariantCulture, out var workOrderId))
             return (ActionOutcome.Refused(TranslatableText.Of(("en", "The work order is missing."), ("fa", "Work Order مشخص نیست."))), null);
         var plan = new SectionGuardPlan(workOrderId, Enum.Parse<WoSection>(EntityJson.Str(guard["section"])!), Enum.Parse<WoSectionAction>(EntityJson.Str(guard["action"])!),
-            resolve(EntityJson.Str(guard["reason"])), resolve(EntityJson.Str(guard["recordRef"])), EntityJson.Str(guard["audit"]));
+            resolve(EntityJson.Str(guard["reason"])), resolve(EntityJson.Str(guard["recordRef"])), EntityJson.Str(guard["audit"]), guard["recordRefFromResult"]?.GetValue<bool>() == true);
 
         var result = await sectionGuard.AuthorizeAsync(plan.WorkOrderId, plan.Section, plan.Action, caller, plan.Reason, plan.RecordRef);
         if (result.Allowed) return (null, plan);
@@ -56,7 +56,7 @@ public static partial class OperationSectionGuard
     }
 
     /// <summary>Records the successful change; never throws (the change is already saved).</summary>
-    public static async Task RecordAsync(IServiceProvider services, SectionGuardPlan plan, WoCaller caller, IReadOnlyDictionary<string, object?> arguments)
+    public static async Task RecordAsync(IServiceProvider services, SectionGuardPlan plan, WoCaller caller, IReadOnlyDictionary<string, object?> arguments, object? answer = null)
     {
         var sectionGuard = services.GetService<IWorkOrderSectionGuard>();
         if (sectionGuard is null) return;
@@ -65,7 +65,10 @@ public static partial class OperationSectionGuard
             arguments.TryGetValue(m.Groups[1].Value, out var value);
             return value is IFormattable f && m.Groups[2].Success ? f.ToString(m.Groups[2].Value, CultureInfo.InvariantCulture) : Convert.ToString(value, CultureInfo.InvariantCulture) ?? "";
         });
-        try { await sectionGuard.RecordChangeAsync(plan.WorkOrderId, plan.Section, plan.Action, caller, plan.RecordRef, plan.Reason, null, after); }
+        var recordRef = plan.RecordRef;
+        if (plan.RecordRefFromResult)       // the id of the row the service created: the last number of a tuple answer, or an int answer
+            recordRef = answer switch { System.Runtime.CompilerServices.ITuple t when t.Length > 2 => Convert.ToString(t[t.Length - 1], CultureInfo.InvariantCulture), int or long => Convert.ToString(answer, CultureInfo.InvariantCulture), _ => recordRef };
+        try { await sectionGuard.RecordChangeAsync(plan.WorkOrderId, plan.Section, plan.Action, caller, recordRef, plan.Reason, null, after); }
         catch (Exception) { /* the audit is best-effort, as in the controller */ }
     }
 }

@@ -238,7 +238,6 @@ public class WorkOrderSectionGuardTests : WorkOrderGovernanceTestBase
     {
         new("AddRequiredSkill", WoSection.RequiredSkills, (ctl, id) => ctl.AddRequiredSkill(id, c.SkillId, "Basic", 2), id => Ctx.RequiredSkills.CountAsync(x => x.WorkOrderId == id)),
         new("AddRequiredMaterial", WoSection.RequiredMaterials, (ctl, id) => ctl.AddRequiredMaterial(id, c.MaterialId, 3), id => Ctx.WorkOrderMaterials.CountAsync(x => x.WorkOrderId == id)),
-        new("CreateCrewForWorkOrder", WoSection.Crew, (ctl, id) => ctl.CreateCrewForWorkOrder(id, "CR-" + id + "-" + (++_seed), "Crew"), id => Ctx.Crews.CountAsync(x => x.WorkOrderId == id)),
         new("RequestDisciplineReview", WoSection.DisciplineReview, (ctl, id) => ctl.RequestDisciplineReview(id, new List<int> { Elec }), id => Ctx.WorkOrderDisciplineReferrals.CountAsync(x => x.WorkOrderId == id)),
         new("AddSpareUsage", WoSection.SpareParts, (ctl, id) => ctl.AddSpareUsage(id, c.MaterialId, 1, 10, "reason"), id => Ctx.MaintenanceSpareUsages.CountAsync(x => x.WorkOrderId == id)),
     };
@@ -374,18 +373,24 @@ public class WorkOrderSectionGuardTests : WorkOrderGovernanceTestBase
     }
 
     [Fact]
-    public async Task Controller_rejection_shows_a_specific_localized_message_and_policy_code_instead_of_failing_silently()
+    public async Task Crew_action_is_refused_on_a_closed_work_order_with_the_policy_message_and_recorded_on_an_open_one()
     {
+        // SCRUM-437: CreateCrewForWorkOrder is the action definition work-order-create-crew (operation Crew.Create + sectionGuard Crew/Add), run here through the generic handler.
         var closed = await CreateAsync("Corrective"); await RunToVerificationAsync(closed); await Do(closed, "Approve", Verifier); await Do(closed, "Approve", Approver);
         var ctl = BuildController(DisciplineHead);
 
-        var result = await ctl.CreateCrewForWorkOrder(closed, "AUDITCREW", "Audit crew");
+        var result = await RunSectionActionAsync(ctl, DisciplineHead, "work-order-create-crew", ("workOrderId", closed.ToString()), ("code", "AUDITCREW"), ("name", "Audit crew"));
 
         Assert.IsType<RedirectToActionResult>(result);
         Assert.Contains("immutable", (string)ctl.TempData["Error"]!, StringComparison.OrdinalIgnoreCase);
-        Assert.Equal("WorkOrderImmutable", ctl.TempData["PolicyCode"]);
-        Assert.Equal("WorkOrderImmutable", ctl.Response.Headers["X-PEMS-Policy"].ToString());
         Assert.Empty(Ctx.Crews.Where(x => x.Code == "AUDITCREW"));
+
+        var open = await CreateAsync();
+        var ok = BuildController(DisciplineHead);
+        await RunSectionActionAsync(ok, DisciplineHead, "work-order-create-crew", ("workOrderId", open.ToString()), ("code", "OPENCREW"), ("name", "Open crew"));
+        var crew = await Ctx.Crews.SingleAsync(x => x.Code == "OPENCREW");
+        Assert.Equal(open, crew.WorkOrderId);
+        Assert.True(await Ctx.WorkOrderChangeLogs.AnyAsync(l => l.WorkOrderId == open && l.Outcome != "Denied" && l.RecordRef == crew.CrewId.ToString()));      // the audit row carries the id of the created crew
     }
 
     [Fact]
