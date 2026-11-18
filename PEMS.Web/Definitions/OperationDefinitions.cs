@@ -94,7 +94,20 @@ public sealed class OperationInvokeAction(IServiceScopeFactory scopes, Operation
             return [new("/action", "unknown-action", "Def_Err_UnknownOperation", $"parameters.action of {model} must be one of: {string.Join(", ", catalog.Actions(model))}.")];
         }
         var errors = new List<DefinitionFieldError>();
-        var args = parameters!["args"] as JsonObject ?? [];
+        if (parameters!["guard"] is { } guardNode)
+        {
+            if (guardNode is not JsonObject g) errors.Add(new("/guard", "wrong-guard", "Def_Err_Type", "guard is an object: { resource, action, resourceId, mode }."));
+            else
+            {
+                foreach (var key in g.Select(kv => kv.Key).Where(k => k is not ("resource" or "action" or "resourceId" or "mode" or "message")))
+                    errors.Add(new("/guard/" + key, "unknown-parameter", "Def_Err_UnknownField", $"'{key}' is not a guard setting (resource, action, resourceId, mode, message)."));
+                if (string.IsNullOrWhiteSpace(EntityJson.Str(g["resource"])) || string.IsNullOrWhiteSpace(EntityJson.Str(g["action"])))
+                    errors.Add(new("/guard", "wrong-guard", "Def_Err_Required", "A guard names the resource and the action of the access decision (for example Production and Approve)."));
+                if (g["resourceId"] is not null && !IsSource(EntityJson.Str(g["resourceId"]) ?? "")) errors.Add(new("/guard/resourceId", "wrong-source", "Def_Err_Type", "A source is field:name, literal:text or context:employeeId|roles|userName|culture."));
+                if (EntityJson.Str(g["mode"]) is { } mode && mode is not ("sod" or "strict")) errors.Add(new("/guard/mode", "wrong-guard", "Def_Err_Type", "mode is sod (only a separation-of-duties refusal stops the action) or strict (anything but an explicit allow stops it)."));
+            }
+        }
+        var args = parameters["args"] as JsonObject ?? [];
         var names = op.Method.GetParameters().Select(p => p.Name!).ToHashSet(StringComparer.Ordinal);
         foreach (var (name, source) in args)
         {
@@ -131,6 +144,47 @@ public sealed class OperationInvokeAction(IServiceScopeFactory scopes, Operation
         return errors;
     }
 
+    /// <summary>
+    /// The access-control decision of the old controllers, as a setting of the action: <c>guard: { resource, action, resourceId, mode }</c>. It asks IAccessControlService (scope + separation of duties,
+    /// one audit row) before the service is called. mode "sod" (default, the behaviour of the Production Order controller) stops only a separation-of-duties refusal; mode "strict" (the
+    /// ProtectedActionGuard of procurement) stops everything except an explicit allow, and a user without identity. Null = the action may go on.
+    /// </summary>
+    private static async Task<ActionOutcome?> EvaluateGuardAsync(IServiceProvider services, JsonObject guard, ActionInvocation invocation, Dictionary<string, object?> context, int? userId, CancellationToken ct)
+    {
+        var access = services.GetRequiredService<PEMS.Application.Interfaces.IAccessControlService>();
+        var resource = EntityJson.Str(guard["resource"])!;
+        var action = EntityJson.Str(guard["action"])!;
+        var strict = EntityJson.Str(guard["mode"]) == "strict";
+        var source = EntityJson.Str(guard["resourceId"]);
+        var resourceId = source is null ? null : source.StartsWith("literal:") ? source[8..] : source.StartsWith("context:") ? EntityJson.Show(context[source[8..]]) : invocation.Values.GetValueOrDefault(source[6..]);
+        var refused = TranslatableText.Of(("en", "You may not do this."), ("fa", "اجازه‌ی انجام این کار را ندارید."));
+
+        if (userId is null)
+        {
+            if (!strict) return null;                    // the old controller let an unidentified caller through to the permission check
+            try { await access.RecordDenialAsync(null, resource, action, resourceId, invocation.IpAddress, PEMS.Application.DTOs.AccessDecisionReason.DeniedByPolicy, "The signed-in user could not be identified."); } catch (Exception) { /* an audit failure never becomes an allow */ }
+            return ActionOutcome.Refused(refused);
+        }
+
+        PEMS.Application.DTOs.AccessDecision? decision;
+        try
+        {
+            decision = await access.AuthorizeAsync(new PEMS.Application.DTOs.AccessControlRequest { UserId = userId.Value, ResourceName = resource, ActionName = action, ResourceId = resourceId, IpAddress = invocation.IpAddress });
+        }
+        catch (Exception) when (strict) { return ActionOutcome.Refused(refused); }
+
+        if (decision is null) return strict ? ActionOutcome.Refused(refused) : null;
+        if (decision.Reason == PEMS.Application.DTOs.AccessDecisionReason.DeniedBySoD)
+        {
+            var message = string.IsNullOrWhiteSpace(decision.Detail)
+                ? TranslatableText.Of(("en", "Under the separation-of-duties policy you may not do this."), ("fa", "طبق سیاست تفکیک وظایف، این اقدام برای شما مجاز نیست."))
+                : TranslatableText.Literal(decision.Detail);
+            return ActionOutcome.Refused(message);
+        }
+        if (strict && !(decision.Allowed && decision.Reason == PEMS.Application.DTOs.AccessDecisionReason.Allow)) return ActionOutcome.Refused(refused);
+        return null;
+    }
+
     public async Task<ActionOutcome> ExecuteAsync(ActionInvocation invocation, CancellationToken ct)
     {
         var op = catalog.Get(EntityJson.Str(invocation.Parameters?["model"]), EntityJson.Str(invocation.Parameters?["action"]));
@@ -146,6 +200,12 @@ public sealed class OperationInvokeAction(IServiceScopeFactory scopes, Operation
         var context = new Dictionary<string, object?>(StringComparer.OrdinalIgnoreCase)
             { ["employeeId"] = employeeId, ["roles"] = invocation.Roles.ToList(), ["userName"] = invocation.UserName, ["culture"] = invocation.Culture, ["userId"] = identity?.Id, ["disciplineId"] = disciplineId, ["ip"] = invocation.IpAddress, ["userAgent"] = invocation.UserAgent };
         var args = invocation.Parameters?["args"] as JsonObject ?? [];
+
+        if (invocation.Parameters?["guard"] is JsonObject guard)
+        {
+            var refusal = await EvaluateGuardAsync(scope.ServiceProvider, guard, invocation, context, identity?.Id, ct);
+            if (refusal is not null) return refusal;
+        }
 
         var values = new List<object?>();
         foreach (var p in op.Method.GetParameters())

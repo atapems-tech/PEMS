@@ -33,7 +33,7 @@
             }
             @if (Model.Status == "Planned")
             {
-                <pems-form asp-action="Release" asp-route-id="@Model.ProductionOrderId" method="post"><pems-button tone="primary" size="small" css="w-100" type="submit"><pems-icon name="bi-send-check" /> Release</pems-button></pems-form>
+                <pems-form action="/a/production-order-release" method="post"><input type="hidden" name="id" value="@Model.ProductionOrderId" /><pems-button tone="primary" size="small" css="w-100" type="submit"><pems-icon name="bi-send-check" /> Release</pems-button></pems-form>
             }
             @if (Model.Status == "Released" || Model.Status == "InProgress")
             {
@@ -49,11 +49,11 @@
             }
             @if (Model.Status == "InProgress")
             {
-                <pems-form asp-action="Complete" asp-route-id="@Model.ProductionOrderId" method="post"><pems-button tone="primary" size="small" css="w-100" type="submit"><pems-icon name="bi-check2-circle" /> Complete</pems-button></pems-form>
+                <pems-form action="/a/production-order-complete" method="post"><input type="hidden" name="id" value="@Model.ProductionOrderId" /><pems-button tone="primary" size="small" css="w-100" type="submit"><pems-icon name="bi-check2-circle" /> Complete</pems-button></pems-form>
             }
             @if (Model.Status == "Completed")
             {
-                <pems-form asp-action="Close" asp-route-id="@Model.ProductionOrderId" method="post"><pems-button tone="neutral" size="small" outline="true" css="w-100" type="submit"><pems-icon name="bi-lock" /> Close</pems-button></pems-form>
+                <pems-form action="/a/production-order-close" method="post"><input type="hidden" name="id" value="@Model.ProductionOrderId" /><pems-button tone="neutral" size="small" outline="true" css="w-100" type="submit"><pems-icon name="bi-lock" /> Close</pems-button></pems-form>
             }
             @if (Model.Status is "Released" or "InProgress")
             {
