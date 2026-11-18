@@ -313,7 +313,10 @@ a:focus-visible, button:focus-visible, [role="button"]:focus-visible, .btn:focus
 /* Shell: topbar must fit on narrow phones (no horizontal page scroll) */
 @media (max-width: 575.98px) {
     .pems-topbar { padding-inline: 10px; gap: 6px; }
-    .pems-topbar > .d-flex.gap-3 { gap: .55rem !important; }
+    .pems-topbar > .d-flex.gap-3 { gap: .4rem !important; }
+    .pems-topbar > .d-flex.gap-3 > .dropdown > .dropdown-toggle::after {
+        display: none;
+    }
     .pems-topbar .fs-5 { font-size: 1.05rem !important; }
     .pems-content { padding: 12px 12px 24px; }
 }
