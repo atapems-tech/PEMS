@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PEMS.Application.Common;
 using PEMS.Application.Interfaces;
@@ -72,31 +72,6 @@ public class MeetingController : Controller
         var id = await _service.CreateAsync(title, meetingDate, location, organizerName, projectId, agenda);
         TempData["Message"] = "Meeting scheduled";
         return RedirectToAction(nameof(Details), new { id });
-    }
-
-    [HttpPost]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> UpdateMinutes(int meetingId, string minutesNotes, string status)
-    {
-        await _service.UpdateMinutesAsync(meetingId, minutesNotes, status);
-        TempData["Message"] = "Minutes updated";
-        return RedirectToAction(nameof(Details), new { id = meetingId });
-    }
-
-    [HttpPost]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> AddAttendee(int meetingId, int? employeeId, string? externalName, bool isRequired = true)
-    {
-        await _service.AddAttendeeAsync(meetingId, employeeId, externalName, isRequired);
-        return RedirectToAction(nameof(Details), new { id = meetingId });
-    }
-
-    [HttpPost]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> MarkAttended(int meetingAttendeeId, int meetingId, bool attended)
-    {
-        await _service.MarkAttendedAsync(meetingAttendeeId, attended);
-        return RedirectToAction(nameof(Details), new { id = meetingId });
     }
 
     [HttpPost]

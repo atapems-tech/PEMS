@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PEMS.Application.Common;
 using PEMS.Application.DTOs;
@@ -158,66 +158,6 @@ public class TechnicalQueryController : Controller
         return View(tq);
     }
 
-
-    [HttpPost]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Respond(int technicalQueryId, string responseText)
-    {
-        var myDisciplineId = await GetCurrentEmployeeDisciplineIdAsync();
-        var myEmployeeId = await GetCurrentEmployeeIdAsync();
-
-        if (!myDisciplineId.HasValue || !myEmployeeId.HasValue)
-        {
-            TempData["Error"] = "کارمند مرتبط با این کاربر یا دیسیپلینش مشخص نیست.";
-            return RedirectToAction(nameof(Details), new { id = technicalQueryId });
-        }
-
-        try
-        {
-            await _service.RespondAsync(technicalQueryId, responseText, myEmployeeId.Value, myDisciplineId.Value, GetClientIp(), GetUserAgent());
-            TempData["Message"] = "پاسخ ثبت شد.";
-        }
-        catch (Exception ex)
-        {
-            TempData["Error"] = ex.Message;
-        }
-
-        return RedirectToAction(nameof(Details), new { id = technicalQueryId });
-    }
-
-    [HttpPost]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Confirm(int technicalQueryId)
-    {
-        try
-        {
-            await _service.ConfirmAsync(technicalQueryId, await GetCurrentEmployeeIdAsync(), _currentUser.Roles, GetClientIp(), GetUserAgent());
-            TempData["Message"] = "بسته شد.";
-        }
-        catch (Exception ex)
-        {
-            TempData["Error"] = ex.Message;
-        }
-
-        return RedirectToAction(nameof(Details), new { id = technicalQueryId });
-    }
-
-    [HttpPost]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Reopen(int technicalQueryId, string reason)
-    {
-        try
-        {
-            await _service.ReopenAsync(technicalQueryId, reason, await GetCurrentEmployeeIdAsync(), _currentUser.Roles, GetClientIp(), GetUserAgent());
-            TempData["Message"] = "دوباره باز شد و به دیسیپلین مسئول برگشت.";
-        }
-        catch (Exception ex)
-        {
-            TempData["Error"] = ex.Message;
-        }
-
-        return RedirectToAction(nameof(Details), new { id = technicalQueryId });
-    }
 
 
     [HttpPost]
