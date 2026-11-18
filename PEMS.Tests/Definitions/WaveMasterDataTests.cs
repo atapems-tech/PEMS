@@ -115,3 +115,95 @@ public sealed class WaveMasterDataTests
         Assert.Contains("missing-translation", update.ValidateParameters(P("""{"entity":"Skill","map":{"name":"Name"},"deny":[{"when":"true","message":{"en":"a"}}]}""")).Select(e => e.Code));
     }
 }
+
+/// <summary>Generic capabilities added for the waves: time of day and enum values, fixed filters and presets (column against column) in a data source, and the spare parts pages that use them.</summary>
+public sealed class GenericCapabilityTests
+{
+    private static readonly EntityCatalog Catalog = EntityCatalog.Default();
+
+    private enum Level { Low, High }
+
+    private sealed class Shift
+    {
+        public int Id { get; set; }
+        public string Name { get; set; } = "";
+        public TimeSpan Start { get; set; }
+        public Level Level { get; set; }
+    }
+
+    private static (IServiceScopeFactory Scopes, string Db) Setup()
+    {
+        var db = "gen-" + Guid.NewGuid();
+        var sp = new ServiceCollection().AddScoped(_ => PemsDbContextFactory.CreateInMemory(db)).AddSingleton<IDefinitionAccess>(new AllowAll()).BuildServiceProvider();
+        return (sp.GetRequiredService<IServiceScopeFactory>(), db);
+    }
+
+    private sealed class AllowAll : IDefinitionAccess
+    {
+        public Task<bool> CanOpenAsync(string? permission, IReadOnlyCollection<string> roles, CancellationToken ct = default) => Task.FromResult(true);
+    }
+
+    private static JsonObject Shipped(string kind, string key)
+        => (JsonObject)JsonNode.Parse(File.ReadAllText(Path.Combine(AppContext.BaseDirectory, SystemDefinitionSeeder.FolderName, kind, "core", key + ".json")))!["payload"]!;
+
+    private static GridDataRequest Grid(string dataSource)
+        => new(GridRequest.FromQuery([]), "en", ["Engineer"], "x", Shipped("data-source", dataSource)["parameters"]!.AsObject().ToDictionary(x => x.Key, x => (string?)(x.Value is JsonValue v && v.TryGetValue<string>(out var s) ? s : x.Value!.ToJsonString())));
+
+    private static ActionInvocation Invoke(string action, params (string, string?)[] values)
+        => new(values.ToDictionary(v => v.Item1, v => v.Item2), "en", ["Engineer"], "x", Shipped("action", action)["parameters"]!.AsObject());
+
+    [Fact]
+    public void Time_of_day_and_enum_values_are_converted_shown_and_refused_when_they_do_not_fit()
+    {
+        var convert = typeof(EntityCatalog).Assembly.GetType("PEMS.Web.Definitions.EntityJson")!.GetMethod("Convert", [typeof(Type), typeof(string)])!;
+        object? C(Type t, string? v) => convert.Invoke(null, [t, v]);
+        Assert.Equal(new TimeSpan(6, 30, 0), C(typeof(TimeSpan), "06:30"));
+        Assert.Equal(new TimeSpan(6, 30, 0), C(typeof(TimeSpan), "۰۶:۳۰"));
+        Assert.Equal("NotConvertible", C(typeof(TimeSpan), "25:99")!.GetType().Name);
+        Assert.Equal(Level.High, C(typeof(Level), "high"));
+        Assert.Equal("NotConvertible", C(typeof(Level), "Nope")!.GetType().Name);
+        Assert.Equal("NotConvertible", C(typeof(Level), "7")!.GetType().Name);                   // a number that is not a defined value
+        var supported = typeof(EntityCatalog).Assembly.GetType("PEMS.Web.Definitions.EntityJson")!.GetMethod("Supported")!;
+        Assert.True((bool)supported.Invoke(null, [typeof(TimeSpan)])!);
+        Assert.True((bool)supported.Invoke(null, [typeof(Level?)])!);
+        Assert.False((bool)supported.Invoke(null, [typeof(byte[])])!);
+    }
+
+    [Fact]
+    public async Task Spare_parts_are_created_edited_and_deactivated_and_the_low_stock_page_applies_its_preset()
+    {
+        var (scopes, name) = Setup();
+        var create = new EntityCreateAction(scopes, Catalog);
+        Assert.True((await create.ExecuteAsync(Invoke("spare-parts-create", ("partNumber", " P-1 "), ("partName", "Bearing"), ("quantityOnHand", "2"), ("reorderPoint", "5")), CancellationToken.None)).Ok);   // low
+        Assert.True((await create.ExecuteAsync(Invoke("spare-parts-create", ("partNumber", "P-2"), ("partName", "Seal"), ("quantityOnHand", "10"), ("reorderPoint", "5")), CancellationToken.None)).Ok);       // fine
+        Assert.True((await create.ExecuteAsync(Invoke("spare-parts-create", ("partNumber", "P-3"), ("partName", "Gasket"), ("quantityOnHand", "1")), CancellationToken.None)).Ok);                           // no reorder point
+        Assert.Contains("partNumber", (await create.ExecuteAsync(Invoke("spare-parts-create", ("partNumber", " "), ("partName", "X")), CancellationToken.None)).FieldErrors!.Keys);
+
+        var grid = new EntityGridProvider(scopes, Catalog);
+        Assert.Equal(3, (await grid.QueryAsync(Grid("spare-parts-grid"), CancellationToken.None)).Total);
+        var low = (await grid.QueryAsync(Grid("spare-parts-low-stock-grid"), CancellationToken.None)).Items.Cast<Dictionary<string, object?>>().ToList();
+        Assert.Equal(["P-1"], low.Select(r => (string)r["partNumber"]!));                      // a missing reorder point never matches, as in the old query
+
+        int id;
+        using (var db = PemsDbContextFactory.CreateInMemory(name)) id = (await db.SpareParts.SingleAsync(p => p.PartNumber == "P-1")).SparePartId;
+        Assert.True((await new EntityUpdateAction(scopes, Catalog).ExecuteAsync(Invoke("spare-parts-edit", ("id", id.ToString()), ("partNumber", "P-1"), ("partName", "Bearing 6204"), ("quantityOnHand", "9"), ("reorderPoint", "5")), CancellationToken.None)).Ok);
+        Assert.Empty((await grid.QueryAsync(Grid("spare-parts-low-stock-grid"), CancellationToken.None)).Items);
+
+        Assert.True((await new EntityDeleteAction(scopes, Catalog).ExecuteAsync(Invoke("spare-parts-delete", ("id", id.ToString())), CancellationToken.None)).Ok);
+        using var after = PemsDbContextFactory.CreateInMemory(name);
+        Assert.False((await after.SpareParts.SingleAsync(p => p.SparePartId == id)).IsActive);   // deactivated, never removed
+        Assert.Equal(2, (await grid.QueryAsync(Grid("spare-parts-grid"), CancellationToken.None)).Total);   // and the list shows active rows only, like the old one
+    }
+
+    [Fact]
+    public void The_fixed_filters_and_presets_are_checked_at_load()
+    {
+        var grid = new EntityGridProvider(null!, Catalog);
+        JsonObject P(string json) => JsonNode.Parse(json)!.AsObject();
+        Assert.Empty(grid.ValidateParameters(P("""{"entity":"SparePart","fields":["PartNumber"],"where":{"IsActive":true},"presets":{"low":{"left":"QuantityOnHand","op":"lte","right":"ReorderPoint"}},"apply":["low"]}""")));
+        Assert.Contains("unknown-preset", grid.ValidateParameters(P("""{"entity":"SparePart","fields":["PartNumber"],"apply":["nope"]}""")).Select(e => e.Code));
+        Assert.Contains("wrong-op", grid.ValidateParameters(P("""{"entity":"SparePart","fields":["PartNumber"],"presets":{"x":{"left":"QuantityOnHand","op":"~","right":"ReorderPoint"}}}""")).Select(e => e.Code));
+        Assert.Contains("not-readable", grid.ValidateParameters(P("""{"entity":"SparePart","fields":["PartNumber"],"presets":{"x":{"left":"PartName","op":"lt","right":"ReorderPoint"}}}""")).Select(e => e.Code));   // text is not comparable
+        Assert.Contains("not-readable", grid.ValidateParameters(P("""{"entity":"SparePart","fields":["PartNumber"],"where":{"Secret":1}}""")).Select(e => e.Code));
+    }
+}

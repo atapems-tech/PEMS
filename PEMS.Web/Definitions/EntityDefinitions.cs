@@ -88,7 +88,7 @@ internal static class EntityJson
     public static bool Supported(Type t)
     {
         t = Nullable.GetUnderlyingType(t) ?? t;
-        return t == typeof(string) || t == typeof(int) || t == typeof(long) || t == typeof(decimal) || t == typeof(double) || t == typeof(bool) || t == typeof(DateTime);
+        return t.IsEnum || t == typeof(TimeSpan) || t == typeof(string) || t == typeof(int) || t == typeof(long) || t == typeof(decimal) || t == typeof(double) || t == typeof(bool) || t == typeof(DateTime);
     }
 
     public sealed class NotConvertible;
@@ -103,6 +103,8 @@ internal static class EntityJson
         if (text is "$now" && target == typeof(DateTime)) return DateTime.Now;
         if (text is "$utcnow" && target == typeof(DateTime)) return DateTime.UtcNow;
         if (string.IsNullOrWhiteSpace(text)) return Nullable.GetUnderlyingType(type) is null && type.IsValueType ? Activator.CreateInstance(type) : null;
+        if (target.IsEnum) return Enum.TryParse(target, text.Trim(), ignoreCase: true, out var e) && Enum.IsDefined(target, e!) ? e : new NotConvertible();
+        if (target == typeof(TimeSpan)) return TimeSpan.TryParseExact(FormEngine.NormalizeDigits(text.Trim()), ["hh\\:mm", "hh\\:mm\\:ss"], CultureInfo.InvariantCulture, out var ts) ? ts : new NotConvertible();
         if (target == typeof(bool)) return string.Equals(text, "true", StringComparison.OrdinalIgnoreCase) ? true : string.Equals(text, "false", StringComparison.OrdinalIgnoreCase) ? false : new NotConvertible();
         if (target == typeof(DateTime)) return DateTime.TryParse(FormEngine.NormalizeDigits(text), CultureInfo.InvariantCulture, DateTimeStyles.None, out var dt) ? dt : new NotConvertible();
         if (!FormEngine.TryNumber(text, out var n)) return new NotConvertible();
@@ -112,7 +114,7 @@ internal static class EntityJson
     // string? properties are nullable reference types: an empty value is null for them, "" for a required string; the CLR cannot tell, so "required" in the definition decides and an empty string is stored as null
     private static bool IsNullableReference(Type t) => true;
 
-    public static string Show(object? v) => v switch { null => "", DateTime d => d.ToString("s", CultureInfo.InvariantCulture), bool b => b ? "true" : "false", IFormattable f => f.ToString(null, CultureInfo.InvariantCulture), _ => v.ToString() ?? "" };
+    public static string Show(object? v) => v switch { null => "", DateTime d => d.ToString("s", CultureInfo.InvariantCulture), TimeSpan t => t.ToString("hh\\:mm", CultureInfo.InvariantCulture), bool b => b ? "true" : "false", IFormattable f => f.ToString(null, CultureInfo.InvariantCulture), _ => v.ToString() ?? "" };
 
     public static Expression<Func<T, bool>> KeyEquals<T>(string keyProperty, object key)
     {
@@ -192,6 +194,26 @@ public sealed class EntityGridProvider(IServiceScopeFactory scopes, EntityCatalo
             if (entity.ClrType.GetProperty(s)?.PropertyType != typeof(string)) errors.Add(new("/search", "not-text", "Def_Err_Type", $"'{s}' is not a text property; only text properties are searched."));
         foreach (var s in EntityJson.Names(parameters["sort"]))
             if (!fields.Contains(s.TrimStart('-'))) errors.Add(new("/sort", "not-exposed", "Def_Err_NotReadable", $"The default sort '{s}' must be one of the fields."));
+        if (parameters["where"] is JsonObject fixedWhere)
+            foreach (var (name, v) in fixedWhere)
+                if (!entity.Readable.Contains(name) || EntityJson.Convert(entity.ClrType.GetProperty(name)!.PropertyType, v) is EntityJson.NotConvertible) errors.Add(new($"/where/{name}", "not-readable", "Def_Err_NotReadable", $"'{name}' is not a readable property of {entity.Name} or the value does not fit."));
+        var presetNames = new HashSet<string>(StringComparer.Ordinal);
+        if (parameters["presets"] is JsonObject presets)
+            foreach (var (pname, pv) in presets)
+            {
+                presetNames.Add(pname);
+                if (pv is not JsonObject preset) { errors.Add(new($"/presets/{pname}", "wrong-type", "Def_Err_Type", "A preset is an object { left, op, right }.")); continue; }
+                foreach (var side in new[] { "left", "right" })
+                {
+                    var prop = entity.ClrType.GetProperty(EntityJson.Str(preset[side]) ?? "");
+                    var type = prop is null ? null : Nullable.GetUnderlyingType(prop.PropertyType) ?? prop.PropertyType;
+                    if (prop is null || !entity.Readable.Contains(prop.Name) || type is null || !(type == typeof(int) || type == typeof(long) || type == typeof(decimal) || type == typeof(double) || type == typeof(DateTime)))
+                        errors.Add(new($"/presets/{pname}/{side}", "not-readable", "Def_Err_NotReadable", $"preset {side} must be a readable number or date property of {entity.Name}."));
+                }
+                if (!(EntityJson.Str(preset["op"]) is "lt" or "lte" or "gt" or "gte" or "eq" or "ne")) errors.Add(new($"/presets/{pname}/op", "wrong-op", "Def_Err_Type", "op is lt, lte, gt, gte, eq or ne."));
+            }
+        foreach (var a in EntityJson.Names(parameters["apply"]))
+            if (!presetNames.Contains(a)) errors.Add(new("/apply", "unknown-preset", "Def_Err_Unknown", $"'{a}' is not a preset of this data source."));
         if (parameters["counts"] is JsonArray counts)
             for (var i = 0; i < counts.Count; i++)
             {
@@ -230,7 +252,7 @@ public sealed class EntityGridProvider(IServiceScopeFactory scopes, EntityCatalo
         var grid = request.Grid.Sort.Count == 0 && Names("sort").Length > 0
             ? request.Grid with { Sort = Names("sort").Select(s => new GridSort(EntityCatalog.Camel(s.TrimStart('-')), s.StartsWith('-'))).ToList() } : request.Grid;
         var method = typeof(EntityGridProvider).GetMethod(nameof(Query), BindingFlags.NonPublic | BindingFlags.Static)!.MakeGenericMethod(entity.ClrType);
-        var (items, total) = await (Task<(List<Dictionary<string, object?>>, int)>)method.Invoke(null, [db, grid, fields, Names("search").ToHashSet(StringComparer.Ordinal), entity, ct])!;
+        var (items, total) = await (Task<(List<Dictionary<string, object?>>, int)>)method.Invoke(null, [db, grid, fields, Names("search").ToHashSet(StringComparer.Ordinal), entity, request.Parameters.GetValueOrDefault("where"), request.Parameters.GetValueOrDefault("presets"), Names("apply"), ct])!;
 
         // related counts: one grouped query per count for the rows of this page only
         if (JsonNode.Parse(request.Parameters.GetValueOrDefault("counts") ?? "[]") is JsonArray counts && counts.Count > 0 && items.Count > 0)
@@ -275,7 +297,7 @@ public sealed class EntityGridProvider(IServiceScopeFactory scopes, EntityCatalo
         return rows.ToDictionary(r => EntityJson.Show(key.GetValue(r)), r => EntityJson.Show(label.GetValue(r)));
     }
 
-    private static async Task<(List<Dictionary<string, object?>> Items, int Total)> Query<T>(PEMSDbContext db, GridRequest request, string[] fields, HashSet<string> search, EntityRegistration entity, CancellationToken ct) where T : class
+    private static async Task<(List<Dictionary<string, object?>> Items, int Total)> Query<T>(PEMSDbContext db, GridRequest request, string[] fields, HashSet<string> search, EntityRegistration entity, string? whereJson, string? presetsJson, string[] apply, CancellationToken ct) where T : class
     {
         var gridFields = new GridFields<T>();
         var add = typeof(GridFields<T>).GetMethod("Add")!;
@@ -286,14 +308,37 @@ public sealed class EntityGridProvider(IServiceScopeFactory scopes, EntityCatalo
             add.MakeGenericMethod(pi.PropertyType).Invoke(gridFields, [EntityCatalog.Camel(name), Expression.Lambda(Expression.Property(p, pi), p), search.Contains(name)]);
         }
         gridFields.TieBreak(EntityCatalog.Camel(entity.KeyProperty));
-        var query = db.Set<T>().AsNoTracking();
+        IQueryable<T> query = db.Set<T>().AsNoTracking();
+        // fixed filters of the data source (where) and the presets it always applies (apply): both are definition data
+        var x = Expression.Parameter(typeof(T), "x");
+        Expression? fixedPredicate = null;
+        if (JsonNode.Parse(whereJson ?? "{}") is JsonObject where)
+            foreach (var (name, v) in where)
+            {
+                var pi = typeof(T).GetProperty(name)!;
+                var eq = Expression.Equal(Expression.Property(x, pi), Expression.Constant(EntityJson.Convert(pi.PropertyType, v), pi.PropertyType));
+                fixedPredicate = fixedPredicate is null ? eq : Expression.AndAlso(fixedPredicate, eq);
+            }
+        if (apply.Length > 0 && JsonNode.Parse(presetsJson ?? "{}") is JsonObject presets)
+            foreach (var name in apply)
+            {
+                var p = (JsonObject)presets[name]!;
+                var left = typeof(T).GetProperty(EntityJson.Str(p["left"])!)!; var right = typeof(T).GetProperty(EntityJson.Str(p["right"])!)!;
+                var common = typeof(Nullable<>).MakeGenericType(Nullable.GetUnderlyingType(left.PropertyType) ?? left.PropertyType);
+                Expression l = Expression.Convert(Expression.Property(x, left), common), r = Expression.Convert(Expression.Property(x, right), common);
+                Expression cmp = EntityJson.Str(p["op"]) switch { "lt" => Expression.LessThan(l, r), "lte" => Expression.LessThanOrEqual(l, r), "gt" => Expression.GreaterThan(l, r), "gte" => Expression.GreaterThanOrEqual(l, r), "eq" => Expression.Equal(l, r), _ => Expression.NotEqual(l, r) };
+                // a missing value on either side never matches (SQL comparison semantics, made explicit)
+                cmp = Expression.AndAlso(Expression.AndAlso(Expression.Property(l, "HasValue"), Expression.Property(r, "HasValue")), cmp);
+                fixedPredicate = fixedPredicate is null ? cmp : Expression.AndAlso(fixedPredicate, cmp);
+            }
+        if (fixedPredicate is not null) query = query.Where(Expression.Lambda<Func<T, bool>>(fixedPredicate, x));
         var total = await query.ApplyGridFilters(request, gridFields).CountAsync(ct);
         var rows = await query.ApplyGridFilters(request, gridFields).ApplyGridSort(request, gridFields).Paged(request).ToListAsync(ct);
         var props = fields.Append(entity.KeyProperty).Distinct().Select(f => (Name: EntityCatalog.Camel(f), Prop: typeof(T).GetProperty(f)!)).ToList();
         var items = rows.Select(r =>
         {
             var d = new Dictionary<string, object?>();
-            foreach (var (name, prop) in props) d[name] = prop.GetValue(r) is DateTime dt ? dt.ToString("s", CultureInfo.InvariantCulture) : prop.GetValue(r);
+            foreach (var (name, prop) in props) d[name] = prop.GetValue(r) switch { DateTime dt => dt.ToString("s", CultureInfo.InvariantCulture), TimeSpan ts => ts.ToString("hh\\:mm", CultureInfo.InvariantCulture), Enum en => en.ToString(), var v => v };
             return d;
         }).ToList();
         return (items, total);

@@ -42,6 +42,9 @@ internal static class EntityCatalogDefaults
             .Readable("Name", "DisciplineId", "Description", "IsActive", "CreatedDate").Writable("Name", "DisciplineId", "Description", "IsActive", "CreatedDate"))
         .Add<Qualification>("QualificationId", e => e.Read("MaintenanceMasterData.View").Create("MaintenanceMasterData.Create").Edit("MaintenanceMasterData.Edit")
             .Readable("Name", "DisciplineId", "Description", "IsActive", "CreatedDate").Writable("Name", "DisciplineId", "Description", "IsActive", "CreatedDate"))
+        // Spare parts (W2): the controller has no permission check beyond signing in
+        .Add<SparePart>("SparePartId", e => e.Readable("PartNumber", "PartName", "Manufacturer", "Model", "Unit", "Description", "QuantityOnHand", "MinStockLevel", "ReorderPoint", "StorageLocation", "IsActive", "CreatedDate")
+            .Writable("PartNumber", "PartName", "Manufacturer", "Model", "Unit", "Description", "QuantityOnHand", "MinStockLevel", "ReorderPoint", "StorageLocation", "IsActive", "CreatedDate"))
         .Add<Warehouse>("WarehouseId", e => e.Create("InventoryMasterData.Create").Edit("InventoryMasterData.Edit")
             .Readable("Code", "Name", "Description", "IsActive", "CreatedDate").Writable("Code", "Name", "Description", "IsActive", "CreatedDate"));
 }
