@@ -56,7 +56,7 @@ public sealed class OperationCatalog
 
 /// <summary>
 /// <c>operation.invoke</c>: runs a registered service operation. Parameters: <c>model</c> and <c>action</c> (the pair the service method is marked with) and <c>args</c> (parameter name to source: <c>field:name</c> a value of the form or button, <c>literal:text</c>, or
-/// <c>context:employeeId|roles|userName|culture</c>; a parameter without an entry reads the field of the same name). A parameter that is a record (an "actor") is built from the context by the names of its
+/// <c>context:employeeId|roles|userName|culture|ip|userAgent</c>; a parameter without an entry reads the field of the same name). A parameter that is a record (an "actor") is built from the context by the names of its
 /// constructor parameters. The method's answer <c>(bool Success, string? Error)</c>, <c>bool</c> or none is turned into the outcome of the action; a refusal shows the service's own message.
 /// </summary>
 public sealed class OperationInvokeAction(IServiceScopeFactory scopes, OperationCatalog catalog) : IActionHandler
@@ -70,7 +70,9 @@ public sealed class OperationInvokeAction(IServiceScopeFactory scopes, Operation
         return t == typeof(string) || t == typeof(int) || t == typeof(long) || t == typeof(decimal) || t == typeof(double) || t == typeof(bool) || t == typeof(DateTime) || t.IsEnum;
     }
 
-    private static readonly HashSet<string> ContextNames = new(StringComparer.OrdinalIgnoreCase) { "employeeId", "roles", "userName", "culture" };
+    private static readonly HashSet<string> ContextNames = new(StringComparer.OrdinalIgnoreCase) { "employeeId", "roles", "userName", "culture", "ip", "userAgent" };
+
+    private static bool IsTextList(Type t) => t != typeof(string) && typeof(IEnumerable<string>).IsAssignableFrom(t);
 
     public IReadOnlyList<DefinitionFieldError> ValidateParameters(JsonObject? parameters)
     {
@@ -92,7 +94,12 @@ public sealed class OperationInvokeAction(IServiceScopeFactory scopes, Operation
         foreach (var p in op.Method.GetParameters())
         {
             if (p.ParameterType == typeof(CancellationToken)) continue;
-            if (IsSimple(p.ParameterType)) { if (!args.ContainsKey(p.Name!) && !p.HasDefaultValue && false) errors.Add(new("/args", "missing", "Def_Err_Required", "")); continue; }
+            if (IsSimple(p.ParameterType)) continue;
+            if (IsTextList(p.ParameterType))
+            {
+                if (EntityJson.Str(args[p.Name!]) is not "context:roles") errors.Add(new("/args/" + p.Name, "wrong-source", "Def_Err_Type", $"The list parameter '{p.Name}' of {op.Name} is the roles of the user: set it to context:roles."));
+                continue;
+            }
             var ctor = p.ParameterType.GetConstructors().OrderByDescending(c => c.GetParameters().Length).FirstOrDefault();
             if (ctor is null || ctor.GetParameters().Any(cp => !ContextNames.Contains(cp.Name!)))
                 errors.Add(new("/operation", "unsupported-parameter", "Def_Err_Type", $"The parameter '{p.Name}' of {op.Name} is neither a simple value nor an object built from the context (employeeId, roles, userName, culture)."));
@@ -111,13 +118,18 @@ public sealed class OperationInvokeAction(IServiceScopeFactory scopes, Operation
         var db = scope.ServiceProvider.GetRequiredService<PEMSDbContext>();
         var employeeId = invocation.UserName is null ? null : await db.Users.Where(u => u.UserName == invocation.UserName).Select(u => u.EmployeeId).FirstOrDefaultAsync(ct);
         var context = new Dictionary<string, object?>(StringComparer.OrdinalIgnoreCase)
-            { ["employeeId"] = employeeId, ["roles"] = invocation.Roles.ToList(), ["userName"] = invocation.UserName, ["culture"] = invocation.Culture };
+            { ["employeeId"] = employeeId, ["roles"] = invocation.Roles.ToList(), ["userName"] = invocation.UserName, ["culture"] = invocation.Culture, ["ip"] = invocation.IpAddress, ["userAgent"] = invocation.UserAgent };
         var args = invocation.Parameters?["args"] as JsonObject ?? [];
 
         var values = new List<object?>();
         foreach (var p in op.Method.GetParameters())
         {
             if (p.ParameterType == typeof(CancellationToken)) { values.Add(ct); continue; }
+            if (IsTextList(p.ParameterType))
+            {
+                values.Add(invocation.Roles.ToList());
+                continue;
+            }
             if (IsSimple(p.ParameterType))
             {
                 var source = EntityJson.Str(args[p.Name!]) ?? "field:" + p.Name;
@@ -153,7 +165,7 @@ public sealed class OperationInvokeAction(IServiceScopeFactory scopes, Operation
         switch (answer)
         {
             case bool ok: return ok ? ActionOutcome.Done() : ActionOutcome.Refused(TranslatableText.Of(("en", "The operation was refused."), ("fa", "عملیات پذیرفته نشد.")));
-            case ITuple t when t.Length == 2 && t[0] is bool success: return success ? ActionOutcome.Done() : ActionOutcome.Refused(TranslatableText.Literal(t[1] as string ?? "The operation was refused."));
+            case ITuple t when t.Length >= 2 && t[0] is bool success: return success ? ActionOutcome.Done() : ActionOutcome.Refused(TranslatableText.Literal(t[1] as string ?? "The operation was refused."));
             default: return ActionOutcome.Done();
         }
     }

@@ -24,7 +24,7 @@ public interface IDataSourceProvider
 }
 
 /// <summary>The values an action works on and who runs it.</summary>
-public sealed record ActionInvocation(IReadOnlyDictionary<string, string?> Values, string Culture, IReadOnlyCollection<string> Roles, string? UserName, JsonObject? Parameters = null);
+public sealed record ActionInvocation(IReadOnlyDictionary<string, string?> Values, string Culture, IReadOnlyCollection<string> Roles, string? UserName, JsonObject? Parameters = null, string? IpAddress = null, string? UserAgent = null);
 
 /// <summary>What an action did. A refused action says why per field or for the form as a whole; a text is always in both languages.</summary>
 public sealed record ActionOutcome(bool Ok, TranslatableText? Message = null, IReadOnlyDictionary<string, TranslatableText>? FieldErrors = null, TranslatableText? FormError = null, string? Redirect = null)

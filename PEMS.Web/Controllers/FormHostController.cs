@@ -118,7 +118,7 @@ public sealed class ActionHostController(ActionExecutor actions, ICurrentUserSer
         if (!KeyShape.IsMatch(key)) return NotFound();
         var values = Request.Form.Where(p => p.Key != "__RequestVerificationToken" && p.Key != "returnUrl").ToDictionary(p => p.Key, p => (string?)p.Value.ToString(), StringComparer.Ordinal);
         var roles = User.Claims.Where(c => c.Type == System.Security.Claims.ClaimTypes.Role).Select(c => c.Value).ToList();
-        var result = await actions.RunAsync(key, new ActionInvocation(values, CultureInfo.CurrentUICulture.TwoLetterISOLanguageName, roles, currentUser.UserName), "core", ct);
+        var result = await actions.RunAsync(key, new ActionInvocation(values, CultureInfo.CurrentUICulture.TwoLetterISOLanguageName, roles, currentUser.UserName, null, HttpContext.Connection.RemoteIpAddress?.ToString(), Request.Headers.UserAgent.ToString()), "core", ct);
         if (Request.Headers.Accept.ToString().Contains("application/json", StringComparison.OrdinalIgnoreCase))
         {
             // a grid row action asks for JSON: the outcome and the text to show, no redirect
