@@ -31,37 +31,6 @@ public class IsolationController : Controller
 
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Create(
-        int permitId, string energyType, string location, string? normalState, string? requiredIsolationState,
-        string? isolationMethod, int? equipmentId)
-    {
-        if (!await _roleModuleActionService.HasActionAsync(_currentUser.Roles, "LOTO", "Create"))
-            return Forbid();
-
-        var (success, error, _) = await _service.CreateAsync(
-            permitId, energyType, location, normalState, requiredIsolationState, isolationMethod,
-            equipmentId, null, null);
-
-        TempData[success ? "Message" : "Error"] = success ? "نقطه‌ی ایزوله‌سازی ثبت شد." : error;
-        return RedirectToAction("Details", "Permit", new { id = permitId });
-    }
-
-    [HttpPost]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> MarkIsolated(int id, int permitId, string? lockNumber, string? tagNumber, string? reason)
-    {
-        if (!await _roleModuleActionService.HasActionAsync(_currentUser.Roles, "LOTO", "Isolate"))
-            return Forbid();
-
-        var (success, error) = await _service.AdvanceStatusAsync(
-            id, "Isolated", reason, await GetCurrentEmployeeIdAsync(), lockNumber, tagNumber);
-
-        TempData[success ? "Message" : "Error"] = success ? "نقطه ایزوله شد." : error;
-        return RedirectToAction("Details", "Permit", new { id = permitId });
-    }
-
-    [HttpPost]
-    [ValidateAntiForgeryToken]
     public async Task<IActionResult> Verify(int id, int permitId, string? reason, string? webAuthnAssertionJson, string? webAuthnOptionsJson)
     {
         if (!await _roleModuleActionService.HasActionAsync(_currentUser.Roles, "LOTO", "Verify"))
@@ -87,31 +56,7 @@ public class IsolationController : Controller
         return RedirectToAction("Details", "Permit", new { id = permitId });
     }
 
-    [HttpPost]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Deisolate(int id, int permitId, string? reason)
-    {
-        if (!await _roleModuleActionService.HasActionAsync(_currentUser.Roles, "LOTO", "Deisolate"))
-            return Forbid();
-
-        var (success, error) = await _service.AdvanceStatusAsync(id, "Deisolated", reason, await GetCurrentEmployeeIdAsync());
-
-        TempData[success ? "Message" : "Error"] = success ? "ایزوله‌سازی برداشته شد (De-isolation)." : error;
-        return RedirectToAction("Details", "Permit", new { id = permitId });
-    }
-
-    [HttpPost]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Cancel(int id, int permitId, string? reason)
-    {
-        if (!await _roleModuleActionService.HasActionAsync(_currentUser.Roles, "LOTO", "Cancel"))
-            return Forbid();
-
-        var (success, error) = await _service.AdvanceStatusAsync(id, "Cancelled", reason, await GetCurrentEmployeeIdAsync());
-
-        TempData[success ? "Message" : "Error"] = success ? "نقطه‌ی ایزوله‌سازی لغو شد." : error;
-        return RedirectToAction("Details", "Permit", new { id = permitId });
-    }
+    // SCRUM-437: Create, MarkIsolated, Deisolate and Cancel are action definitions (isolation-*) over the Isolation operations; Verify stays until the step-up check is a generic step.
 
     private async Task<int?> GetCurrentEmployeeIdAsync()
     {

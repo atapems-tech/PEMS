@@ -454,14 +454,14 @@
                     <pems-table-cell class="text-nowrap">
                         @if (p.Status == "Requested")
                         {
-                            <pems-form asp-controller="Isolation" asp-action="MarkIsolated" method="post" class="d-inline">
+                            <pems-form action="/a/isolation-mark-isolated" method="post" class="d-inline">
                                 <input type="hidden" name="id" value="@p.IsolationPointId" />
                                 <input type="hidden" name="permitId" value="@Model.PermitId" />
                                 <pems-input class="pems-w-90" scale="small" css="d-inline-block" type="text" name="lockNumber" placeholder="Lock #" />
                                 <pems-input class="pems-w-90" scale="small" css="d-inline-block" type="text" name="tagNumber" placeholder="Tag #" />
                                 <pems-button tone="warning" size="small" outline="true" type="submit"><pems-icon name="bi-lock-fill" /> Isolate</pems-button>
                             </pems-form>
-                            <pems-form asp-controller="Isolation" asp-action="Cancel" method="post" class="d-inline">
+                            <pems-form action="/a/isolation-cancel" method="post" class="d-inline">
                                 <input type="hidden" name="id" value="@p.IsolationPointId" />
                                 <input type="hidden" name="permitId" value="@Model.PermitId" />
                                 <pems-button tone="neutral" size="small" outline="true" type="submit" data-pems-confirm="این نقطه لغو شود؟">@Localizer["Cancel"]</pems-button>
@@ -477,7 +477,7 @@
                         }
                         @if (p.Status == "Verified")
                         {
-                            <pems-form asp-controller="Isolation" asp-action="Deisolate" method="post" class="d-inline">
+                            <pems-form action="/a/isolation-deisolate" method="post" class="d-inline">
                                 <input type="hidden" name="id" value="@p.IsolationPointId" />
                                 <input type="hidden" name="permitId" value="@Model.PermitId" />
                                 <pems-button tone="neutral" size="small" outline="true" type="submit" data-pems-confirm="این ایزوله‌سازی برداشته شود (De-isolation)؟">De-isolate</pems-button>
@@ -492,7 +492,7 @@
 
     @if (Model.Status is not ("Closed" or "Cancelled" or "Rejected" or "Revoked"))
     {
-        <pems-form asp-controller="Isolation" asp-action="Create" method="post"><pems-row gap="2" css="align-items-end border-top pt-3">
+        <pems-form action="/a/isolation-create" method="post"><pems-row gap="2" css="align-items-end border-top pt-3">
             <input type="hidden" name="permitId" value="@Model.PermitId" />
             <pems-col md="2">
                 <pems-label css="small">@Localizer["Energy Type"]</pems-label>

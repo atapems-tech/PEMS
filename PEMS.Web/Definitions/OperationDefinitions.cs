@@ -56,7 +56,7 @@ public sealed class OperationCatalog
 
 /// <summary>
 /// <c>operation.invoke</c>: runs a registered service operation. Parameters: <c>model</c> and <c>action</c> (the pair the service method is marked with) and <c>args</c> (parameter name to source: <c>field:name</c> a value of the form or button, <c>literal:text</c>, or
-/// <c>context:employeeId|roles|userName|culture|ip|userAgent|userId</c>; a parameter without an entry reads the field of the same name). A parameter that is a record (an "actor") is built from the context by the names of its
+/// <c>context:employeeId|roles|userName|culture|ip|userAgent|userId|disciplineId</c>; a parameter without an entry reads the field of the same name). A parameter that is a record (an "actor") is built from the context by the names of its
 /// constructor parameters. The method's answer <c>(bool Success, string? Error)</c>, <c>bool</c> or none is turned into the outcome of the action; a refusal shows the service's own message.
 /// </summary>
 public sealed class OperationInvokeAction(IServiceScopeFactory scopes, OperationCatalog catalog) : IActionHandler
@@ -70,7 +70,7 @@ public sealed class OperationInvokeAction(IServiceScopeFactory scopes, Operation
         return t == typeof(string) || t == typeof(int) || t == typeof(long) || t == typeof(decimal) || t == typeof(double) || t == typeof(bool) || t == typeof(DateTime) || t.IsEnum;
     }
 
-    private static readonly HashSet<string> ContextNames = new(StringComparer.OrdinalIgnoreCase) { "employeeId", "roles", "userName", "culture", "ip", "userAgent", "userId" };
+    private static readonly HashSet<string> ContextNames = new(StringComparer.OrdinalIgnoreCase) { "employeeId", "roles", "userName", "culture", "ip", "userAgent", "userId", "disciplineId" };
 
     /// <summary>A plain options object (settable simple properties, no constructor arguments), such as a completion-data record: its properties are bound from the form values of the same name (first letter lower-case), or from the sources the definition lists for them.</summary>
     private static bool IsBag(Type t) => t.IsClass && t != typeof(string) && t.GetConstructor(Type.EmptyTypes) is not null
@@ -138,8 +138,9 @@ public sealed class OperationInvokeAction(IServiceScopeFactory scopes, Operation
         var db = scope.ServiceProvider.GetRequiredService<PEMSDbContext>();
         var identity = invocation.UserName is null ? null : await db.Users.Where(u => u.UserName == invocation.UserName).Select(u => new { u.Id, u.EmployeeId }).FirstOrDefaultAsync(ct);
         var employeeId = identity?.EmployeeId;
+        var disciplineId = employeeId is null ? null : await db.Employees.Where(e => e.EmployeeId == employeeId).Select(e => (int?)e.DisciplineId).FirstOrDefaultAsync(ct);
         var context = new Dictionary<string, object?>(StringComparer.OrdinalIgnoreCase)
-            { ["employeeId"] = employeeId, ["roles"] = invocation.Roles.ToList(), ["userName"] = invocation.UserName, ["culture"] = invocation.Culture, ["userId"] = identity?.Id, ["ip"] = invocation.IpAddress, ["userAgent"] = invocation.UserAgent };
+            { ["employeeId"] = employeeId, ["roles"] = invocation.Roles.ToList(), ["userName"] = invocation.UserName, ["culture"] = invocation.Culture, ["userId"] = identity?.Id, ["disciplineId"] = disciplineId, ["ip"] = invocation.IpAddress, ["userAgent"] = invocation.UserAgent };
         var args = invocation.Parameters?["args"] as JsonObject ?? [];
 
         var values = new List<object?>();
@@ -193,7 +194,7 @@ public sealed class OperationInvokeAction(IServiceScopeFactory scopes, Operation
             await (Task)task;
             answer = task.GetType().IsGenericType ? task.GetType().GetProperty("Result")!.GetValue(task) : null;
         }
-        catch (TargetInvocationException ex) when (ex.InnerException is InvalidOperationException or UnauthorizedAccessException or DbUpdateConcurrencyException)
+        catch (TargetInvocationException ex) when (ex.InnerException is InvalidOperationException or UnauthorizedAccessException or DbUpdateConcurrencyException || ex.InnerException?.GetType() == typeof(Exception))   // a business rule thrown as a plain Exception (MOC) is shown; a crash is not
         {
             return ActionOutcome.Refused(TranslatableText.Literal(ex.InnerException.Message));
         }

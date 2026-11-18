@@ -1,4 +1,4 @@
-﻿@model PEMS.Domain.Entities.MOC
+@model PEMS.Domain.Entities.MOC
 @using Microsoft.Extensions.Localization
 @using PEMS.Web.Resources
 @inject IStringLocalizer<SharedResource> Localizer
@@ -98,7 +98,7 @@
         <pems-text class="text-muted small">در انتظار ارزیابی ریسک توسط دیسیپلین <strong>@Model.Discipline?.Name</strong></pems-text>
         @if (myDisciplineId == Model.DisciplineId)
         {
-            <pems-form asp-action="AssessRisk" method="post">
+            <pems-form action="/a/moc-assess-risk" method="post">
                 <input type="hidden" name="mocId" value="@Model.MOCId" />
                 <pems-textarea css="mb-2" name="riskAssessmentText" rows="3" placeholder="متن ارزیابی ریسک..." required></pems-textarea>
                 <pems-button tone="primary" size="small" type="submit">@Localizer["ثبت ارزیابی"]</pems-button>
@@ -111,7 +111,7 @@
             در انتظار @(currentStageName == "SeniorApproval" ? "تایید ارشد (چون ریسک بالاست)" : "تایید")
         </pems-text>
         <pems-flex gap="2">
-            <pems-form asp-action="Approve" method="post">
+            <pems-form action="/a/moc-approve" method="post">
                 <input type="hidden" name="mocId" value="@Model.MOCId" />
                 <pems-button tone="success" size="small" type="submit"><pems-icon name="bi-check-lg" /> @Localizer["Approve"]</pems-button>
             </pems-form>
@@ -121,7 +121,7 @@
         </pems-flex>
 
         <pems-modal id="rejectModal" tabindex="-1">
-                <pems-form asp-action="Reject" method="post">
+                <pems-form action="/a/moc-reject" method="post">
                     <input type="hidden" name="mocId" value="@Model.MOCId" />
                     <pems-modal-header>@Localizer["دلیل رد"]</pems-modal-header>
                     <pems-modal-body><pems-textarea name="reason" rows="3" required></pems-textarea></pems-modal-body>
@@ -138,7 +138,7 @@
 
         @if (string.IsNullOrEmpty(Model.ImplementationPlan))
         {
-            <pems-form asp-action="RecordImplementation" method="post" class="mb-3">
+            <pems-form action="/a/moc-record-implementation" method="post" class="mb-3">
                 <input type="hidden" name="mocId" value="@Model.MOCId" />
                 <pems-label css="small">Implementation Plan / نحوه‌ی اجرا</pems-label>
                 <pems-textarea scale="small" css="mb-2" name="implementationPlan" rows="2" required></pems-textarea>
@@ -161,7 +161,7 @@
                         }
                         else
                         {
-                            <pems-form asp-action="MarkDocumentsUpdated" method="post"><pems-flex gap="1">
+                            <pems-form action="/a/moc-mark-documents-updated" method="post"><pems-flex gap="1">
                                 <input type="hidden" name="mocId" value="@Model.MOCId" />
                                 <pems-input class="pems-maxw-150" scale="small" type="text" name="note" placeholder="@Localizer["یادداشت (اختیاری)"]" />
                                 <pems-button tone="success" size="small" outline="true" type="submit">@Localizer["تکمیل شد"]</pems-button>
@@ -180,7 +180,7 @@
                         }
                         else
                         {
-                            <pems-form asp-action="MarkTrainingCompleted" method="post">
+                            <pems-form action="/a/moc-mark-training-completed" method="post">
                                 <input type="hidden" name="mocId" value="@Model.MOCId" />
                                 <pems-button tone="success" size="small" outline="true" type="submit">@Localizer["تکمیل شد"]</pems-button>
                             </pems-form>
@@ -190,7 +190,7 @@
             </pems-col>
         </pems-row>
 
-        <pems-form asp-action="Close" method="post" class="mt-3">
+        <pems-form action="/a/moc-close" method="post" class="mt-3">
             <input type="hidden" name="mocId" value="@Model.MOCId" />
             <pems-button tone="primary" size="small" type="submit"><pems-icon name="bi-check-circle" /> بستن نهایی MOC</pems-button>
         </pems-form>
