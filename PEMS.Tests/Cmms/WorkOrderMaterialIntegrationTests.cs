@@ -28,7 +28,7 @@ public class WorkOrderMaterialIntegrationTests : WorkOrderGovernanceTestBase
         await Ctx.SaveChangesAsync();
 
         var ctl = new WorkOrderController(Ctx, null!, new FakeCurrentUserService { UserId = 90, Roles = Executor.Roles.ToList() }, new PermissionService(Ctx, AccessControl),
-            new WorkOrderLaborService(Ctx, AccessControl), Svc, new CrewService(Ctx), null!, null!, new WorkOrderSectionGuard(Ctx, AccessControl)).WithTempData();
+            new WorkOrderLaborService(Ctx, AccessControl), Svc, new CrewService(Ctx), null!, null!, new WorkOrderSectionGuard(Ctx, AccessControl)).WithTempData().As(this, Executor);
 
         decimal OnHand() => Ctx.MaterialStocks.AsNoTracking().Single().OnHandQuantity;
 

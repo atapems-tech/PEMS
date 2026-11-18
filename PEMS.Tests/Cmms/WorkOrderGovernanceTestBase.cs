@@ -11,6 +11,7 @@ using PEMS.Persistence.Seed;
 using PEMS.Persistence.Services;
 using PEMS.Persistence.Workflow;
 using PEMS.Tests.TestSupport;
+using PEMS.Web.Controllers;
 using PEMS.WorkflowPlatform.Entities;
 using PEMS.WorkflowPlatform.Services;
 
@@ -185,7 +186,7 @@ public abstract class WorkOrderGovernanceTestBase : IDisposable
     /// SCRUM-437: the child-section POSTs (SetPlanning, AssignExecutor, SetSchedule) are shipped action definitions (work-order-*.json) run by the generic operation.invoke handler.
     /// This runs the real definition file for <paramref name="who"/> against this test database and mirrors the old controller outcome (a redirect plus a Message/Error toast).
     /// </summary>
-    protected async Task<Microsoft.AspNetCore.Mvc.IActionResult> RunSectionActionAsync(Microsoft.AspNetCore.Mvc.Controller toast, WorkOrderActor who, string key, params (string Name, string? Value)[] values)
+    public async Task<Microsoft.AspNetCore.Mvc.IActionResult> RunSectionActionAsync(Microsoft.AspNetCore.Mvc.Controller toast, WorkOrderActor who, string key, params (string Name, string? Value)[] values)
     {
         var userName = "section-" + who.EmployeeId;
         if (!await Ctx.Users.AnyAsync(u => u.UserName == userName))
@@ -203,6 +204,7 @@ public abstract class WorkOrderGovernanceTestBase : IDisposable
             .AddSingleton<IDefinitionAccess>(new PEMS.Persistence.Definitions.PermissionDefinitionAccess(new PermissionService(Ctx, AccessControl)))
             .AddSingleton<IWorkOrderLifecycleService>(Svc)
             .AddSingleton<ICrewService>(new CrewService(Ctx))
+            .AddSingleton<IWorkOrderChildService>(new WorkOrderChildService(Ctx))
             .AddSingleton<IWorkOrderReviewService>(new WorkOrderReviewService(Ctx, new PEMS.WorkflowPlatform.Services.WorkflowRuntimeService(Ctx)))
             .AddSingleton<IWorkOrderSectionGuard>(new WorkOrderSectionGuard(Ctx, AccessControl))
             .BuildServiceProvider();
@@ -214,4 +216,45 @@ public abstract class WorkOrderGovernanceTestBase : IDisposable
         toast.TempData[outcome.Ok ? "Message" : "Error"] = outcome.Ok ? "ok" : outcome.FormError?.Resolve(new System.Globalization.CultureInfo("en")) ?? "refused";
         return new Microsoft.AspNetCore.Mvc.RedirectToActionResult("Details", "WorkOrder", new { id = values.FirstOrDefault(v => v.Name == "id").Value });
     }
+}
+
+/// <summary>
+/// SCRUM-437: the spare-part, required-skill and required-material POSTs are shipped action definitions (work-order-*.json). These extension methods keep the old call shape of the tests
+/// (<c>ctl.AddSpareUsage(...)</c>) and run the real definition for the user the controller was built for; the result is the redirect with the toast the controller used to give.
+/// </summary>
+public static class WorkOrderChildActionShims
+{
+    private sealed record Registration(WorkOrderGovernanceTestBase Owner, WorkOrderActor Who);
+
+    private static readonly System.Runtime.CompilerServices.ConditionalWeakTable<WorkOrderController, Registration> Owners = new();
+
+    public static WorkOrderController As(this WorkOrderController ctl, WorkOrderGovernanceTestBase owner, WorkOrderActor who)
+    {
+        Owners.Remove(ctl); Owners.Add(ctl, new Registration(owner, who));
+        return ctl;
+    }
+
+    private static Task<Microsoft.AspNetCore.Mvc.IActionResult> Run(WorkOrderController ctl, string key, params (string Name, string? Value)[] values)
+    {
+        Assert.True(Owners.TryGetValue(ctl, out var owner), "register the controller with .As(this, actor) in the test");
+        return owner.Owner.RunSectionActionAsync(ctl, owner.Who, key, values);
+    }
+
+    public static Task<Microsoft.AspNetCore.Mvc.IActionResult> AddSpareUsage(this WorkOrderController ctl, int workOrderId, int materialItemId, decimal quantity, decimal? unitCost, string? correctionReason = null)
+        => Run(ctl, "work-order-add-spare-usage", ("workOrderId", workOrderId.ToString()), ("materialItemId", materialItemId.ToString()), ("quantity", quantity.ToString(System.Globalization.CultureInfo.InvariantCulture)), ("unitCost", unitCost?.ToString(System.Globalization.CultureInfo.InvariantCulture)), ("correctionReason", correctionReason));
+
+    public static Task<Microsoft.AspNetCore.Mvc.IActionResult> ReturnSpareUsage(this WorkOrderController ctl, int maintenanceSpareUsageId, int workOrderId, decimal returnQuantity, string? reason)
+        => Run(ctl, "work-order-return-spare-usage", ("maintenanceSpareUsageId", maintenanceSpareUsageId.ToString()), ("workOrderId", workOrderId.ToString()), ("returnQuantity", returnQuantity.ToString(System.Globalization.CultureInfo.InvariantCulture)), ("reason", reason));
+
+    public static Task<Microsoft.AspNetCore.Mvc.IActionResult> AddRequiredSkill(this WorkOrderController ctl, int workOrderId, int skillId, string? minimumProficiencyLevel, decimal? plannedHours)
+        => Run(ctl, "work-order-add-required-skill", ("workOrderId", workOrderId.ToString()), ("skillId", skillId.ToString()), ("minimumProficiencyLevel", minimumProficiencyLevel), ("plannedHours", plannedHours?.ToString(System.Globalization.CultureInfo.InvariantCulture)));
+
+    public static Task<Microsoft.AspNetCore.Mvc.IActionResult> RemoveRequiredSkill(this WorkOrderController ctl, int requiredSkillId, int workOrderId)
+        => Run(ctl, "work-order-remove-required-skill", ("requiredSkillId", requiredSkillId.ToString()), ("workOrderId", workOrderId.ToString()));
+
+    public static Task<Microsoft.AspNetCore.Mvc.IActionResult> AddRequiredMaterial(this WorkOrderController ctl, int workOrderId, int materialItemId, decimal requiredQuantity)
+        => Run(ctl, "work-order-add-required-material", ("workOrderId", workOrderId.ToString()), ("materialItemId", materialItemId.ToString()), ("requiredQuantity", requiredQuantity.ToString(System.Globalization.CultureInfo.InvariantCulture)));
+
+    public static Task<Microsoft.AspNetCore.Mvc.IActionResult> RemoveRequiredMaterial(this WorkOrderController ctl, int workOrderMaterialId, int workOrderId)
+        => Run(ctl, "work-order-remove-required-material", ("workOrderMaterialId", workOrderMaterialId.ToString()), ("workOrderId", workOrderId.ToString()));
 }
