@@ -101,72 +101,8 @@ public class ProductionOrderController : Controller
         return RedirectToAction(nameof(Details), new { id = orderId });
     }
 
-    [HttpPost]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Release(int id)
-    {
-        if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "Production", "Approve"))
-            return Forbid();
-
-        var sodError = await CheckSoDAsync(id, "Approve", "این سفارش را که خودتان ایجاد/ویرایش کرده‌اید نمی‌توانید Release کنید.");
-        if (sodError != null) { TempData["Error"] = sodError; return RedirectToAction(nameof(Details), new { id }); }
-
-        var (success, error) = await _orderService.ReleaseAsync(id, await GetCurrentEmployeeIdAsync());
-        TempData[success ? "Message" : "Error"] = success ? "سفارش Release شد." : error;
-        return RedirectToAction(nameof(Details), new { id });
-    }
-
-    [HttpPost]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Complete(int id)
-    {
-        if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "Production", "Approve"))
-            return Forbid();
-
-        var sodError = await CheckSoDAsync(id, "Approve", "این سفارش را که خودتان ایجاد/ویرایش کرده‌اید نمی‌توانید Complete کنید.");
-        if (sodError != null) { TempData["Error"] = sodError; return RedirectToAction(nameof(Details), new { id }); }
-
-        var (success, error) = await _orderService.CompleteAsync(id, await GetCurrentEmployeeIdAsync());
-        TempData[success ? "Message" : "Error"] = success ? "سفارش تکمیل شد." : error;
-        return RedirectToAction(nameof(Details), new { id });
-    }
-
-    [HttpPost]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Close(int id)
-    {
-        if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "Production", "Approve"))
-            return Forbid();
-
-        var sodError = await CheckSoDAsync(id, "Approve", "این سفارش را که خودتان ایجاد/ویرایش کرده‌اید نمی‌توانید Close کنید.");
-        if (sodError != null) { TempData["Error"] = sodError; return RedirectToAction(nameof(Details), new { id }); }
-
-        var (success, error) = await _orderService.CloseAsync(id, await GetCurrentEmployeeIdAsync());
-        TempData[success ? "Message" : "Error"] = success ? "سفارش بسته شد." : error;
-        return RedirectToAction(nameof(Details), new { id });
-    }
-
-    // SCRUM-437: Plan, Hold, Resume and Cancel are action definitions (production-order-*) over the ProductionOrder operations.
-    // Release, Complete and Close stay here until the separation-of-duties check (access-control decision) is a generic guard of an action definition.
-
-    private async Task<string?> CheckSoDAsync(int productionOrderId, string action, string defaultMessage)
-    {
-        if (!_currentUser.UserId.HasValue) return null;
-
-        var decision = await _accessControlService.AuthorizeAsync(new AccessControlRequest
-        {
-            UserId = _currentUser.UserId.Value,
-            ResourceName = "Production",
-            ActionName = action,
-            ResourceId = productionOrderId.ToString(),
-            IpAddress = HttpContext.Connection.RemoteIpAddress?.ToString()
-        });
-
-        if (!decision.Allowed && decision.Reason == AccessDecisionReason.DeniedBySoD)
-            return string.IsNullOrWhiteSpace(decision.Detail) ? defaultMessage : decision.Detail;
-
-        return null;
-    }
+    // SCRUM-437: Plan, Hold, Resume, Cancel, Release, Complete and Close are action definitions (production-order-*) over the ProductionOrder operations;
+    // Release, Complete and Close carry the separation-of-duties access decision as the guard setting of operation.invoke.
 
     private async Task PopulateDropdownsAsync()
     {

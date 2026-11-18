@@ -24,6 +24,7 @@ public interface IProductionOrderService
     [PEMS.Application.Common.PemsOperation("ProductionOrder", "Plan", "Production.Edit")]
     Task<(bool Success, string? Error)> PlanAsync(int productionOrderId, int? actorEmployeeId);
 
+    [PEMS.Application.Common.PemsOperation("ProductionOrder", "Release", "Production.Approve")]
     Task<(bool Success, string? Error)> ReleaseAsync(int productionOrderId, int? actorEmployeeId);
 
     [PEMS.Application.Common.PemsOperation("ProductionOrder", "Hold", "Production.Hold")]
@@ -35,8 +36,10 @@ public interface IProductionOrderService
     [PEMS.Application.Common.PemsOperation("ProductionOrder", "Cancel", "Production.Delete")]
     Task<(bool Success, string? Error)> CancelAsync(int productionOrderId, string reason, int? actorEmployeeId);
 
+    [PEMS.Application.Common.PemsOperation("ProductionOrder", "Complete", "Production.Approve")]
     Task<(bool Success, string? Error)> CompleteAsync(int productionOrderId, int? actorEmployeeId);
 
+    [PEMS.Application.Common.PemsOperation("ProductionOrder", "Close", "Production.Approve")]
     Task<(bool Success, string? Error)> CloseAsync(int productionOrderId, int? actorEmployeeId);
 
     /// <summary>

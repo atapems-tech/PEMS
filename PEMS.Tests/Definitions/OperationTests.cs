@@ -60,11 +60,18 @@ public sealed class OperationTests
         public Task<bool> CanOpenAsync(string? permission, IReadOnlyCollection<string> roles, CancellationToken ct = default) => Task.FromResult(allow(permission));
     }
 
-    private static OperationInvokeAction Handler(Func<string?, bool>? allow = null)
+    private sealed class FakeAccess(PEMS.Application.DTOs.AccessDecision decision) : PEMS.Application.Interfaces.IAccessControlService
+    {
+        public PEMS.Application.DTOs.AccessControlRequest? Asked;
+        public Task<PEMS.Application.DTOs.AccessDecision> AuthorizeAsync(PEMS.Application.DTOs.AccessControlRequest request) { Asked = request; return Task.FromResult(decision); }
+        public Task<PEMS.Application.DTOs.AccessDecision> AuthorizeForRolesAsync(IEnumerable<string> roles, string resourceName, string actionName) => Task.FromResult(decision);
+    }
+
+    private static OperationInvokeAction Handler(Func<string?, bool>? allow = null, FakeAccess? access = null)
     {
         var db = "op-" + Guid.NewGuid();
         using (var ctx = PemsDbContextFactory.CreateInMemory(db)) { ctx.Users.Add(new ApplicationUser { UserName = "hamid", NormalizedUserName = "HAMID", EmployeeId = 7 }); ctx.SaveChanges(); }
-        var sp = new ServiceCollection().AddScoped(_ => PemsDbContextFactory.CreateInMemory(db)).AddSingleton<IDefinitionAccess>(new Access(allow ?? (_ => true))).AddScoped<IOpTestService, OpTestService>().BuildServiceProvider();
+        var sp = new ServiceCollection().AddScoped(_ => PemsDbContextFactory.CreateInMemory(db)).AddSingleton<IDefinitionAccess>(new Access(allow ?? (_ => true))).AddScoped<IOpTestService, OpTestService>().AddSingleton<PEMS.Application.Interfaces.IAccessControlService>(access ?? new FakeAccess(PEMS.Application.DTOs.AccessDecision.Allow())).BuildServiceProvider();
         return new OperationInvokeAction(sp.GetRequiredService<IServiceScopeFactory>(), Catalog);
     }
 
@@ -155,6 +162,44 @@ public sealed class OperationTests
         Assert.Empty(handler.ValidateParameters(JsonNode.Parse("""{"model":"Test","action":"Bag","args":{"data":{}}}""")!.AsObject()));
         Assert.Contains("unknown-parameter", handler.ValidateParameters(JsonNode.Parse("""{"model":"Test","action":"Bag","args":{"data":{"Nope":"field:x"}}}""")!.AsObject()).Select(e => e.Code));
         Assert.Contains("wrong-source", handler.ValidateParameters(JsonNode.Parse("""{"model":"Test","action":"Bag","args":{"id":{"A":"field:x"}}}""")!.AsObject()).Select(e => e.Code));
+    }
+
+    private const string GuardedFlag = """{"model":"Test","action":"Flag","guard":{"resource":"Production","action":"Approve","resourceId":"field:id","mode":"MODE"},"args":{"id":"field:id","on":"literal:true"}}""";
+
+    [Fact]
+    public async Task A_separation_of_duties_refusal_stops_the_action_before_the_service_and_shows_the_policys_own_message()
+    {
+        var access = new FakeAccess(PEMS.Application.DTOs.AccessDecision.Deny(PEMS.Application.DTOs.AccessDecisionReason.DeniedBySoD, "You created this order."));
+        var handler = Handler(access: access);
+        OpTestService.Last = "untouched";
+        var refused = await handler.ExecuteAsync(Invoke(GuardedFlag.Replace("MODE", "sod"), ("id", "5")), CancellationToken.None);
+        Assert.False(refused.Ok);
+        Assert.Equal("You created this order.", refused.FormError!.Resolve(new System.Globalization.CultureInfo("en")));
+        Assert.Equal("untouched", OpTestService.Last);
+        Assert.Equal(("Production", "Approve", "5"), (access.Asked!.ResourceName, access.Asked.ActionName, access.Asked.ResourceId));
+    }
+
+    [Fact]
+    public async Task In_sod_mode_only_a_separation_of_duties_refusal_stops_the_action_but_strict_mode_stops_everything_but_an_explicit_allow()
+    {
+        var other = PEMS.Application.DTOs.AccessDecision.Deny(PEMS.Application.DTOs.AccessDecisionReason.DeniedByRole, "role");
+        Assert.True((await Handler(access: new FakeAccess(other)).ExecuteAsync(Invoke(GuardedFlag.Replace("MODE", "sod"), ("id", "5")), CancellationToken.None)).Ok);
+        OpTestService.Last = "untouched";
+        Assert.False((await Handler(access: new FakeAccess(other)).ExecuteAsync(Invoke(GuardedFlag.Replace("MODE", "strict"), ("id", "5")), CancellationToken.None)).Ok);
+        Assert.Equal("untouched", OpTestService.Last);
+        Assert.True((await Handler(access: new FakeAccess(PEMS.Application.DTOs.AccessDecision.Allow())).ExecuteAsync(Invoke(GuardedFlag.Replace("MODE", "strict"), ("id", "5")), CancellationToken.None)).Ok);
+    }
+
+    [Fact]
+    public void A_guard_is_checked_at_load()
+    {
+        var handler = Handler();
+        JsonObject P(string json) => JsonNode.Parse(json)!.AsObject();
+        Assert.Empty(handler.ValidateParameters(P(GuardedFlag.Replace("MODE", "sod"))));
+        Assert.Contains("wrong-guard", handler.ValidateParameters(P("""{"model":"Test","action":"Flag","guard":{"action":"Approve"}}""")).Select(e => e.Code));
+        Assert.Contains("wrong-guard", handler.ValidateParameters(P(GuardedFlag.Replace("MODE", "maybe"))).Select(e => e.Code));
+        Assert.Contains("unknown-parameter", handler.ValidateParameters(P("""{"model":"Test","action":"Flag","guard":{"resource":"A","action":"B","bypass":"x"}}""")).Select(e => e.Code));
+        Assert.Contains("wrong-source", handler.ValidateParameters(P("""{"model":"Test","action":"Flag","guard":{"resource":"A","action":"B","resourceId":"x"}}""")).Select(e => e.Code));
     }
 
     [Fact]
