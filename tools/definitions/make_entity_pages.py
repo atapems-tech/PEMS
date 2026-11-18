@@ -79,6 +79,8 @@ def make(spec):
     if spec.get("sort"): params["sort"] = spec["sort"]
     if spec.get("counts"): params["counts"] = spec["counts"]
     if spec.get("lookups"): params["lookups"] = spec["lookups"]
+    for k in ("where", "presets", "apply"):
+        if spec.get(k): params[k] = spec[k]
     write("data-source", key + "-grid", envelope("data-source", key + "-grid", t(spec["title"][0] + " rows", "ردیف‌های " + spec["title"][1]), t("The rows of the " + spec["title"][0].lower() + " grid", "ردیف‌های جدول " + spec["title"][1]),
           {"kind": "grid", "provider": "entity", "parameters": params}))
 
@@ -114,12 +116,15 @@ def make(spec):
     if spec.get("toggle"):
         action(key + "-toggle", t("Activate or deactivate", "فعال یا غیرفعال کردن"), "entity.toggle", {"entity": entity, "property": spec["toggle"]}, "/p/" + key, t("Status updated.", "وضعیت به‌روز شد."))
         row_actions.append({"key": "toggle", "label": t("Activate / deactivate", "فعال / غیرفعال"), "url": "/a/" + key + "-toggle", "method": "post", "confirm": t("Change the status?", "وضعیت تغییر کند؟")})
+    if spec.get("deactivate") and not spec.get("delete"):
+        spec["delete"] = {"deactivate": spec["deactivate"], "label": ("Deactivate", "غیرفعال کردن")}
     if spec.get("delete"):
         d = spec["delete"]
         dp = {"entity": entity, "deny": d.get("deny", [])}
         if d.get("deactivate"): dp["deactivate"] = d["deactivate"]
-        action(key + "-delete", t("Delete", "حذف"), "entity.delete", dp, "/p/" + key, t(spec["singular"][0] + " deleted.", spec["singular"][1] + " حذف شد."))
-        ra = {"key": "delete", "label": t("Delete", "حذف"), "url": "/a/" + key + "-delete", "method": "post", "tone": "danger", "confirm": t("Delete this record?", "این رکورد حذف شود؟")}
+        verb = d.get("label", ("Delete", "حذف"))
+        action(key + "-delete", t(*verb), "entity.delete", dp, "/p/" + key, t(spec["singular"][0] + (" deactivated." if d.get("deactivate") else " deleted."), spec["singular"][1] + (" غیرفعال شد." if d.get("deactivate") else " حذف شد.")))
+        ra = {"key": "delete", "label": t(*verb), "url": "/a/" + key + "-delete", "method": "post", "tone": "danger", "confirm": t(verb[0] + " this record?", "این رکورد " + verb[1] + " شود؟")}
         if d.get("showWhen"): ra["showWhen"] = d["showWhen"]
         row_actions.append(ra)
     if row_actions:
@@ -128,6 +133,22 @@ def make(spec):
     regions = {"content": [{"id": "grid", "component": "data-grid", "options": grid}]}
     if toolbar: regions["toolbar"] = toolbar
     write("page", key, envelope("page", key, t(*spec["title"]), t(spec["title"][0] + " list (page definition)", "فهرست " + spec["title"][1] + " (تعریف صفحه)"), {"layout": "list-page", "route": key, "regions": regions}))
+
+
+def variant_page(spec, key, title, apply):
+    """A second page over the same rows with a preset always applied (the data source names it)."""
+    base = json.load(open(os.path.join(OUT, "data-source", "core", spec["key"] + "-grid.json"), encoding="utf-8"))
+    base["key"] = key + "-grid"
+    base["title"] = t(title[0] + " rows", "ردیف‌های " + title[1])
+    base["payload"]["parameters"]["apply"] = [apply]
+    write("data-source", key + "-grid", base)
+    page = json.load(open(os.path.join(OUT, "page", "core", spec["key"] + ".json"), encoding="utf-8"))
+    page["key"] = key
+    page["title"] = t(*title)
+    page["payload"]["route"] = key
+    page["payload"]["regions"]["content"][0]["options"]["id"] = key
+    page["payload"]["regions"]["content"][0]["options"]["url"] = "/d/" + key + "-grid"
+    write("page", key, page)
 
 
 def unique(fields, en, fa, ignore_empty=False):
@@ -181,8 +202,8 @@ SPECS = [
 ]
 
 
-def simple(key, entity, id_, title, singular, columns, form, unique_rules, lookups=None, edit=True, readonly_on_edit=None):
-    return {"key": key, "entity": entity, "id": id_, "title": title, "singular": singular, "columns": columns, "form": form, "edit": edit, "readonly_on_edit": readonly_on_edit or [], "toggle": "IsActive",
+def simple(key, entity, id_, title, singular, columns, form, unique_rules, lookups=None, edit=True, readonly_on_edit=None, toggle="IsActive", deactivate=None, where=None, presets=None):
+    return {"deactivate": deactivate, "where": where, "presets": presets, "key": key, "entity": entity, "id": id_, "title": title, "singular": singular, "columns": columns, "form": form, "edit": edit, "readonly_on_edit": readonly_on_edit or [], "toggle": toggle,
             "defaults": {"IsActive": True, "CreatedDate": "$now"}, "unique": unique_rules, "lookups": lookups or []}
 
 
@@ -221,7 +242,22 @@ SPECS += [
            lookups=[{"name": "warehouse", "entity": "Warehouse", "foreignKey": "WarehouseId", "label": "Name"}, {"name": "parent", "entity": "StorageLocation", "foreignKey": "ParentLocationId", "label": "Name"}], readonly_on_edit=["code", "warehouseId"]),
 ]
 
+SPECS += [
+    simple("spare-parts", "SparePart", "SparePartId", ("Spare parts", "قطعات یدکی"), ("Spare part", "قطعه‌ی یدکی"),
+           [("PartNumber", "Part number", "شماره‌ی قطعه", "text", 160, True), ("PartName", "Name", "نام", "text", 240, True), ("Manufacturer", "Manufacturer", "سازنده", "text", 160, True), ("Model", "Model", "مدل", "text", 140),
+            ("Unit", "Unit", "واحد", "text", 90), ("QuantityOnHand", "On hand", "موجودی", "number", 110), ("MinStockLevel", "Minimum", "حداقل", "number", 100), ("ReorderPoint", "Reorder point", "نقطه‌ی سفارش", "number", 120), ("StorageLocation", "Location", "محل نگهداری", "text", 160, True)],
+           [{"prop": "PartNumber", "en": "Part number", "fa": "شماره‌ی قطعه", "required": True, "maxLength": 100}, {"prop": "PartName", "en": "Name", "fa": "نام", "required": True, "maxLength": 200},
+            {"prop": "Manufacturer", "en": "Manufacturer", "fa": "سازنده", "maxLength": 200}, {"prop": "Model", "en": "Model", "fa": "مدل", "maxLength": 200}, {"prop": "Unit", "en": "Unit", "fa": "واحد", "maxLength": 30},
+            {"prop": "StorageLocation", "en": "Storage location", "fa": "محل نگهداری", "maxLength": 200}, {"prop": "QuantityOnHand", "kind": "number", "en": "Quantity on hand", "fa": "موجودی", "min": 0},
+            {"prop": "MinStockLevel", "kind": "number", "en": "Minimum stock level", "fa": "حداقل موجودی", "min": 0}, {"prop": "ReorderPoint", "kind": "number", "en": "Reorder point", "fa": "نقطه‌ی سفارش مجدد", "min": 0},
+            {"prop": "Description", "kind": "textArea", "en": "Description", "fa": "توضیحات", "maxLength": 1000, "span": 2}],
+           [], toggle=False, deactivate="IsActive", where={"IsActive": True}, presets={"lowStock": {"left": "QuantityOnHand", "op": "lte", "right": "ReorderPoint"}}),
+]
+
 if __name__ == "__main__":
     for s in SPECS:
         make(s)
         print("wrote", s["key"])
+        if s["key"] == "spare-parts":
+            variant_page(s, "spare-parts-low-stock", ("Spare parts at or below the reorder point", "قطعات در نقطه‌ی سفارش یا کمتر"), "lowStock")
+            print("wrote spare-parts-low-stock")
