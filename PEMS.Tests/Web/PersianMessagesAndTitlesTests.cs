@@ -2,6 +2,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Text.RegularExpressions;
 using Microsoft.Extensions.Localization;
 using PEMS.Web.Configuration;
+using PEMS.Web.Localization;
 using PEMS.Web.Resources;
 using PEMS.Web.Security;
 
@@ -34,6 +35,15 @@ public class PersianMessagesAndTitlesTests
     {
         public LocalizedString this[string name] => new(name, "fa:" + name);
         public LocalizedString this[string name, params object[] arguments] => new(name, "fa:" + name + ":" + string.Join(",", arguments));
+        public IEnumerable<LocalizedString> GetAllStrings(bool includeParentCultures) => [];
+    }
+
+    private sealed class SelectiveLocalizer : IStringLocalizer<SharedResource>
+    {
+        public LocalizedString this[string name] => name == "Known UI text"
+            ? new(name, "متن رابط کاربری")
+            : new(name, name, resourceNotFound: true);
+        public LocalizedString this[string name, params object[] arguments] => this[name];
         public IEnumerable<LocalizedString> GetAllStrings(bool includeParentCultures) => [];
     }
 
@@ -128,5 +138,16 @@ public class PersianMessagesAndTitlesTests
         Assert.Contains("T(\"Please select at least one document.\")", Read("PEMS.Web", "Controllers", "TransmittalController.cs"));
         Assert.Contains("T(\"A valid, active discipline is required to create an employee.\")", Read("PEMS.Web", "Areas", "Admin", "Controllers", "UsersController.cs"));
         Assert.Contains("@Localizer[\"This user has no linked employee", Read("PEMS.Web", "Areas", "Admin", "Views", "Users", "Edit.cshtml"));
+    }
+
+    [Fact]
+    public void LegacyHtmlSafetyNet_TranslatesOnlyKnownUiText_InTextAndAccessibleAttributes()
+    {
+        var localizer = new SelectiveLocalizer();
+        const string html = "<p>Known UI text</p><button title=\"Known UI text\">Known UI text</button><span>user-entered text</span>";
+
+        var result = HtmlLocalization.LocalizeLegacyHtml(html, localizer);
+
+        Assert.Equal("<p>متن رابط کاربری</p><button title=\"متن رابط کاربری\">متن رابط کاربری</button><span>user-entered text</span>", result);
     }
 }

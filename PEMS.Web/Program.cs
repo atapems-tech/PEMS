@@ -1228,6 +1228,11 @@ localizationOptions.RequestCultureProviders.Insert(0,
 
 app.UseRequestLocalization(localizationOptions);
 
+// SCRUM-540: older views still contain literal UI text.  Translate only exact, known resource
+// keys at the final HTML boundary so neither culture leaks legacy UI wording while those views
+// are migrated to explicit Localizer calls.
+app.UseMiddleware<PEMS.Web.Localization.LegacyHtmlLocalizationMiddleware>();
+
 
 app.UseRouting();
 
