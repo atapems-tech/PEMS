@@ -72,7 +72,7 @@ public sealed class FormHostTests : IDisposable
         var provider = PEMS.UI.ServiceCollectionExtensions.AddPemsUi(new ServiceCollection()).BuildServiceProvider().CreateScope().ServiceProvider;
         var registry = provider.GetRequiredService<IPemsComponentRegistry>();
         var catalog = provider.GetRequiredService<ComponentManifestCatalog>();
-        var kinds = new IDefinitionKind[] { new FormDefinitionKind(), new PageDefinitionKind(registry, catalog), new LayoutDefinitionKind(), new DataSourceDefinitionKind([new Departments()], [new DepartmentsGridProvider(null!), new RolesGridProvider(null!), new SecurityEventsGridProvider(null!)]), new ActionDefinitionKind([_handler, new KeyedAction("role.create")]) };
+        var kinds = new IDefinitionKind[] { new FormDefinitionKind(), new PageDefinitionKind(registry, catalog), new LayoutDefinitionKind(), new DataSourceDefinitionKind([new Departments(), new EntityOptionsProvider(null!, EntityCatalog.Default())], [new DepartmentsGridProvider(null!), new RolesGridProvider(null!), new SecurityEventsGridProvider(null!), new EntityGridProvider(null!, EntityCatalog.Default())]), new ActionDefinitionKind([_handler, new KeyedAction("role.create"), new EntityCreateAction(null!, EntityCatalog.Default())]) };
         _files = new FileDefinitionStore(kinds, new DefinitionLimits(), new DefinitionFileOptions { Folder = Path.Combine(AppContext.BaseDirectory, "definitions-system"), Watch = false }, FilesOwnership.For(kinds));
         _renderer = provider.GetRequiredService<IPemsComponentRenderer>();
     }

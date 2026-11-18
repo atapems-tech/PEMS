@@ -89,7 +89,7 @@ public sealed class RolesDefinitionsTests
         var registry = ui.GetRequiredService<IPemsComponentRegistry>();
         var catalog = ui.GetRequiredService<ComponentManifestCatalog>();
         var kinds = new IDefinitionKind[] { new FormDefinitionKind(), new PageDefinitionKind(registry, catalog), new LayoutDefinitionKind(),
-            new DataSourceDefinitionKind([new DepartmentsDataSource(null!)], [new DepartmentsGridProvider(null!), new RolesGridProvider(null!), new SecurityEventsGridProvider(null!)]), new ActionDefinitionKind([new DepartmentCreateAction(null!), new RoleCreateAction(null!)]) };
+            new DataSourceDefinitionKind([new DepartmentsDataSource(null!), new EntityOptionsProvider(null!, EntityCatalog.Default())], [new DepartmentsGridProvider(null!), new RolesGridProvider(null!), new SecurityEventsGridProvider(null!), new EntityGridProvider(null!, EntityCatalog.Default())]), new ActionDefinitionKind([new DepartmentCreateAction(null!), new RoleCreateAction(null!), new EntityCreateAction(null!, EntityCatalog.Default())]) };
         using var files = new FileDefinitionStore(kinds, new DefinitionLimits(), new DefinitionFileOptions { Folder = Path.Combine(AppContext.BaseDirectory, SystemDefinitionSeeder.FolderName), Watch = false }, FilesOwnership.For(kinds));
         var page = (await files.GetPublishedAsync("page", "roles"))!;
         var renderer = new PageRenderer(ui.GetRequiredService<IPemsComponentRenderer>(), catalog, files);

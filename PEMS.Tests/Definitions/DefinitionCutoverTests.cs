@@ -44,7 +44,7 @@ public sealed class DefinitionCutoverTests
         {
             var registry = Ui.GetRequiredService<IPemsComponentRegistry>();
             var catalog = Ui.GetRequiredService<ComponentManifestCatalog>();
-            Kinds = [new FormDefinitionKind(), new PageDefinitionKind(registry, catalog), new LayoutDefinitionKind(), new DataSourceDefinitionKind([new Departments()], [new DepartmentsGridProvider(null!), new RolesGridProvider(null!), new SecurityEventsGridProvider(null!)]), new ActionDefinitionKind([new Recording(), new KeyedAction("role.create")])];
+            Kinds = [new FormDefinitionKind(), new PageDefinitionKind(registry, catalog), new LayoutDefinitionKind(), new DataSourceDefinitionKind([new Departments(), new EntityOptionsProvider(null!, EntityCatalog.Default())], [new DepartmentsGridProvider(null!), new RolesGridProvider(null!), new SecurityEventsGridProvider(null!), new EntityGridProvider(null!, EntityCatalog.Default())]), new ActionDefinitionKind([new Recording(), new KeyedAction("role.create"), new EntityCreateAction(null!, EntityCatalog.Default())])];
         }
 
         public PEMSDbContext NewDb() => PemsDbContextFactory.CreateInMemory(_database);
