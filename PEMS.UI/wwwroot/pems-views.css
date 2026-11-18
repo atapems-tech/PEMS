@@ -79,3 +79,20 @@
 .pems-form__cell[hidden] { display: none; }
 .pems-form__errors { margin-block-end: .75rem; padding: .5rem .75rem; color: var(--bs-danger, var(--pems-text)); border: 1px solid var(--bs-danger, var(--pems-surface-border)); border-radius: .35rem; }
 @media (max-width: 40rem) { .pems-form__grid { grid-template-columns: 1fr; } }
+
+/* SCRUM-339: the comments thread and the audit trail. */
+.pems-thread, .pems-thread__replies { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: .75rem; }
+.pems-thread--empty, .pems-audit--empty { padding: 1rem; text-align: center; }
+.pems-thread__item { padding: .6rem .75rem; background: var(--pems-surface); border: 1px solid var(--pems-surface-border); border-radius: .5rem; }
+.pems-thread__item--reply { margin-block-start: .5rem; background: var(--pems-hover, rgba(127, 127, 127, .06)); }
+.pems-thread__replies { margin-block-start: .5rem; padding-inline-start: 1rem; border-inline-start: 2px solid var(--pems-surface-border); }
+.pems-thread__head { display: flex; flex-wrap: wrap; align-items: center; gap: .5rem; }
+.pems-thread__when { font-size: .85rem; color: var(--pems-text-muted); }
+.pems-thread__status { padding: .05rem .5rem; font-size: .8rem; border: 1px solid var(--pems-surface-border); border-radius: 999px; }
+.pems-thread__status--success { border-color: var(--bs-success, var(--pems-primary)); }
+.pems-thread__status--danger { border-color: var(--bs-danger, var(--pems-primary)); }
+.pems-thread__status--warning { border-color: var(--bs-warning, var(--pems-primary)); }
+.pems-thread__text { margin-block-start: .25rem; white-space: pre-wrap; }
+.pems-thread__action { display: inline-block; margin-block-start: .25rem; font-size: .85rem; }
+.pems-audit__old { color: var(--pems-text-muted); }
+.pems-audit__new { font-weight: 600; }

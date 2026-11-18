@@ -1,0 +1,165 @@
+{
+  "kind": "page",
+  "key": "departments",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "fa": "دپارتمان‌ها",
+    "en": "Departments"
+  },
+  "description": {
+    "fa": "فهرست دپارتمان‌ها (صفحه‌ی آزمایشی W1 به‌صورت تعریف)",
+    "en": "The departments list (W1 pilot page as a definition)"
+  },
+  "payload": {
+    "layout": "list-page",
+    "route": "departments",
+    "regions": {
+      "toolbar": [
+        {
+          "id": "new",
+          "component": "button",
+          "options": {
+            "label": {
+              "fa": "دپارتمان جدید",
+              "en": "New department"
+            },
+            "tone": "primary",
+            "href": "/f/department-create"
+          }
+        }
+      ],
+      "content": [
+        {
+          "id": "grid",
+          "component": "data-grid",
+          "options": {
+            "id": "departments",
+            "url": "/Department/Grid",
+            "idField": "id",
+            "selectable": false,
+            "columns": [
+              {
+                "key": "code",
+                "header": {
+                  "en": "Code",
+                  "fa": "کد"
+                },
+                "type": "text",
+                "width": 140
+              },
+              {
+                "key": "name",
+                "header": {
+                  "en": "Name",
+                  "fa": "نام"
+                },
+                "width": 260
+              },
+              {
+                "key": "description",
+                "header": {
+                  "en": "Description",
+                  "fa": "توضیحات"
+                },
+                "width": 320
+              },
+              {
+                "key": "employees",
+                "header": {
+                  "en": "Active employees",
+                  "fa": "کارکنان فعال"
+                },
+                "type": "number",
+                "width": 140
+              },
+              {
+                "key": "created",
+                "header": {
+                  "en": "Created",
+                  "fa": "ایجاد"
+                },
+                "type": "date",
+                "width": 140
+              }
+            ],
+            "texts": {
+              "search": {
+                "en": "Search",
+                "fa": "جستجو"
+              },
+              "columns": {
+                "en": "Columns",
+                "fa": "ستون‌ها"
+              },
+              "density": {
+                "en": "Density",
+                "fa": "تراکم"
+              },
+              "compact": {
+                "en": "Compact",
+                "fa": "فشرده"
+              },
+              "comfortable": {
+                "en": "Comfortable",
+                "fa": "راحت"
+              },
+              "export": {
+                "en": "Export",
+                "fa": "خروجی"
+              },
+              "views": {
+                "en": "Views",
+                "fa": "نماها"
+              },
+              "saveView": {
+                "en": "Save view",
+                "fa": "ذخیره نما"
+              },
+              "viewName": {
+                "en": "View name",
+                "fa": "نام نما"
+              },
+              "loading": {
+                "en": "Loading",
+                "fa": "در حال بارگذاری"
+              },
+              "empty": {
+                "en": "No rows",
+                "fa": "ردیفی نیست"
+              },
+              "error": {
+                "en": "Could not load",
+                "fa": "بارگذاری نشد"
+              },
+              "rows": {
+                "en": "{0} rows",
+                "fa": "{0} ردیف"
+              },
+              "selected": {
+                "en": "{0} selected",
+                "fa": "{0} انتخاب شد"
+              },
+              "selectAllMatching": {
+                "en": "Select all {0}",
+                "fa": "انتخاب همه {0}"
+              },
+              "clearSelection": {
+                "en": "Clear",
+                "fa": "پاک کردن"
+              },
+              "filter": {
+                "en": "Filter",
+                "fa": "فیلتر"
+              },
+              "delete": {
+                "en": "Delete",
+                "fa": "حذف"
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}
