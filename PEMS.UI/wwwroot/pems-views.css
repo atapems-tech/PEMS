@@ -96,3 +96,13 @@
 .pems-thread__action { display: inline-block; margin-block-start: .25rem; font-size: .85rem; }
 .pems-audit__old { color: var(--pems-text-muted); }
 .pems-audit__new { font-weight: 600; }
+
+/* SCRUM-55: the gantt view: a label column and a track per row; a bar is placed with two custom properties (percent from the start, percent of the span). */
+.pems-view__gantt { border: 1px solid var(--pems-surface-border); border-radius: .5rem; background: var(--pems-surface); color: var(--pems-text); }
+.pems-view__g-head, .pems-view__g-row { display: grid; grid-template-columns: 12rem minmax(0, 1fr); align-items: center; border-block-end: 1px solid var(--pems-surface-border); }
+.pems-view__g-row:last-child { border-block-end: 0; }
+.pems-view__g-label { padding: .35rem .6rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--pems-text); text-decoration: none; }
+.pems-view__g-scale, .pems-view__g-track { position: relative; block-size: 2rem; }
+.pems-view__g-tick { position: absolute; inset-inline-start: calc(var(--from, 0) * 1%); padding-inline-start: .25rem; font-size: .75rem; color: var(--pems-text-muted); border-inline-start: 1px solid var(--pems-surface-border); block-size: 100%; line-height: 2rem; }
+.pems-view__bar { position: absolute; inset-block: .4rem; inset-inline-start: calc(var(--from, 0) * 1%); inline-size: max(calc(var(--span, 1) * 1%), .5rem); background: var(--pems-primary); border-radius: .25rem; opacity: .85; }
+.pems-view__bar:hover, .pems-view__bar:focus-visible { opacity: 1; outline: 2px solid var(--pems-primary); outline-offset: 1px; }
