@@ -223,18 +223,7 @@ public class ContractController : Controller
         return RedirectToAction(nameof(Details), new { id = contractId });
     }
 
-    [HttpPost]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> SubmitForReview(int contractId)
-    {
-        if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "Contracts", "Edit"))
-            return Forbid();
-
-        var result = await SubmitForReviewInternalAsync(contractId);
-        if (!result.Success) TempData["Error"] = result.Error;
-        else TempData["Message"] = "قرارداد برای بازبینی چند-رشته‌ای ارسال شد.";
-        return RedirectToAction(nameof(Details), new { id = contractId });
-    }
+    // SCRUM-437: the workflow steps (submit, discipline review, approve, reject, sign, effective, complete, terminate, revision request and approval) are action definitions (contract-*) over the Contract operations.
 
     private const string WorkflowDenialMessage = "نقش شما در این مرحله‌ی گردش‌کار قرارداد مجاز نیست.";
 
@@ -244,163 +233,6 @@ public class ContractController : Controller
         // P0-10: ارسال‌کننده «ویرایشگر» قرارداد است و نباید همان را تأیید کند (رویداد Contracts.Edit در همان ذخیره)
         return await _workflowService.SubmitForReviewAsync(contractId, null, employeeId, _currentUser.Roles,
             _currentUser.UserId, HttpContext?.Connection.RemoteIpAddress?.ToString());
-    }
-
-    [HttpPost]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> RecordDisciplineReview(int contractId, string disciplineRole, string decision, string? comment)
-    {
-        if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "Contracts", "Edit"))
-            return Forbid();
-
-        var employeeId = await GetCurrentEmployeeIdAsync();
-        (bool Success, string? Error) result;
-        try
-        {
-            result = await _workflowService.RecordDisciplineReviewAsync(
-                contractId, disciplineRole, decision, comment, employeeId, _currentUser.Roles);
-        }
-        catch (UnauthorizedAccessException)
-        {
-            // P0: ردِ نقش/مرحله در موتور گردش‌کار باید Fail-Closed و با پیام قابل‌فهم باشد، نه HTTP 500
-            result = (false, WorkflowDenialMessage);
-        }
-
-        if (!result.Success) TempData["Error"] = result.Error;
-        else TempData["Message"] = "تصمیم بازبینی ثبت شد.";
-
-        return RedirectToAction(nameof(Details), new { id = contractId });
-    }
-
-    [HttpPost]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Approve(int contractId, string? comment)
-    {
-        if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "Contracts", "Approve"))
-            return Forbid();
-        if (!_currentUser.UserId.HasValue) return Forbid();
-
-        var employeeId = await GetCurrentEmployeeIdAsync();
-        (bool Success, string? Error) result;
-        try
-        {
-            result = await _workflowService.ApproveAsync(
-                contractId, comment, _currentUser.UserId.Value, employeeId, _currentUser.Roles, GetClientIp());
-        }
-        catch (UnauthorizedAccessException)
-        {
-            // P0: نقش کاربر مجاز به مرحله‌ی «تایید نهایی» گردش‌کار نیست (مثلاً SystemAdmin بدون نقش مرحله) - رد با پیام، بدون 500
-            result = (false, WorkflowDenialMessage);
-        }
-
-        if (!result.Success) TempData["Error"] = result.Error;
-        else TempData["Message"] = "قرارداد تایید شد.";
-
-        return RedirectToAction(nameof(Details), new { id = contractId });
-    }
-
-    [HttpPost]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Reject(int contractId, string? comment)
-    {
-        if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "Contracts", "Approve"))
-            return Forbid();
-
-        var employeeId = await GetCurrentEmployeeIdAsync();
-        (bool Success, string? Error) result;
-        try
-        {
-            result = await _workflowService.RejectAsync(contractId, comment, employeeId, _currentUser.Roles);
-        }
-        catch (UnauthorizedAccessException)
-        {
-            result = (false, WorkflowDenialMessage);
-        }
-
-        if (!result.Success) TempData["Error"] = result.Error;
-        else TempData["Message"] = "قرارداد رد شد و به Draft بازگشت.";
-
-        return RedirectToAction(nameof(Details), new { id = contractId });
-    }
-
-    [HttpPost]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Sign(int contractId)
-    {
-        if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "Contracts", "Approve"))
-            return Forbid();
-        if (!_currentUser.UserId.HasValue) return Forbid();
-
-        var employeeId = await GetCurrentEmployeeIdAsync();
-        var result = await _workflowService.SignAsync(
-            contractId, _currentUser.UserId.Value, employeeId, _currentUser.Roles, GetClientIp());
-
-        if (!result.Success) TempData["Error"] = result.Error;
-        else TempData["Message"] = "قرارداد امضا شد.";
-
-        return RedirectToAction(nameof(Details), new { id = contractId });
-    }
-
-    [HttpPost]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> MarkEffective(int contractId)
-    {
-        if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "Contracts", "Approve"))
-            return Forbid();
-
-        var result = await _workflowService.MarkEffectiveAsync(contractId, _currentUser.Roles);
-
-        if (!result.Success) TempData["Error"] = result.Error;
-        else TempData["Message"] = "قرارداد به وضعیت Effective رسید.";
-
-        return RedirectToAction(nameof(Details), new { id = contractId });
-    }
-
-    [HttpPost]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Complete(int contractId)
-    {
-        if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "Contracts", "Approve"))
-            return Forbid();
-
-        var result = await _workflowService.CompleteAsync(contractId, _currentUser.Roles);
-
-        if (!result.Success) TempData["Error"] = result.Error;
-        else TempData["Message"] = "قرارداد تکمیل شد.";
-
-        return RedirectToAction(nameof(Details), new { id = contractId });
-    }
-
-    [HttpPost]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Terminate(int contractId, string? reason)
-    {
-        if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "Contracts", "Approve"))
-            return Forbid();
-
-        var result = await _workflowService.TerminateAsync(contractId, reason, _currentUser.Roles);
-
-        if (!result.Success) TempData["Error"] = result.Error;
-        else TempData["Message"] = "قرارداد فسخ شد.";
-
-        return RedirectToAction(nameof(Details), new { id = contractId });
-    }
-
-    [HttpPost]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> RequestRevision(int contractId, string changeType, decimal? newValue, string? reason, string? changeDescription)
-    {
-        if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "Contracts", "Edit"))
-            return Forbid();
-
-        var employeeId = await GetCurrentEmployeeIdAsync();
-        var result = await _workflowService.RequestRevisionAsync(contractId, changeType, newValue, reason, changeDescription, employeeId,
-            _currentUser.UserId, HttpContext?.Connection.RemoteIpAddress?.ToString());
-
-        if (!result.Success) TempData["Error"] = result.Error;
-        else TempData["Message"] = "درخواست تغییر ارزش قرارداد ثبت شد (در انتظار تایید).";
-
-        return RedirectToAction(nameof(Details), new { id = contractId });
     }
 
     // طبق §D/§G (Phase 4.6): ContractDocument از قبل به‌عنوان یک نوع مدرک اسکلتی وجود داشت
@@ -432,27 +264,6 @@ public class ContractController : Controller
         await _context.SaveChangesAsync();
 
         TempData["Message"] = "سند قرارداد ثبت شد.";
-        return RedirectToAction(nameof(Details), new { id = contractId });
-    }
-
-    [HttpPost]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> ApproveRevision(int contractId, int contractRevisionId)
-    {
-        if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "Contracts", "Approve"))
-            return Forbid();
-
-        // P0-10: بدون شناسه‌ی کاربر، SoD قابل‌ارزیابی نیست (Fail-Closed، همان قاعده‌ی ProtectedActionGuard)
-        if (!_currentUser.UserId.HasValue)
-            return Forbid();
-
-        var employeeId = await GetCurrentEmployeeIdAsync();
-        var result = await _workflowService.ApproveRevisionAsync(contractRevisionId, employeeId, _currentUser.Roles,
-            _currentUser.UserId, HttpContext?.Connection.RemoteIpAddress?.ToString());
-
-        if (!result.Success) TempData["Error"] = result.Error;
-        else TempData["Message"] = "تغییر ارزش قرارداد تایید شد.";
-
         return RedirectToAction(nameof(Details), new { id = contractId });
     }
 

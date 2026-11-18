@@ -82,6 +82,9 @@ public sealed class OperationInvokeAction(IServiceScopeFactory scopes, Operation
 
     private static bool IsTextList(Type t) => t != typeof(string) && typeof(IEnumerable<string>).IsAssignableFrom(t);
 
+    /// <summary>A list of text named "...Roles" is the roles of the user (context:roles); any other optional list of text is not settable from a definition and is passed as null.</summary>
+    private static bool IsRoles(ParameterInfo p) => p.Name!.EndsWith("Roles", StringComparison.OrdinalIgnoreCase);
+
     public IReadOnlyList<DefinitionFieldError> ValidateParameters(JsonObject? parameters)
     {
         var model = EntityJson.Str(parameters?["model"]);
@@ -116,6 +119,7 @@ public sealed class OperationInvokeAction(IServiceScopeFactory scopes, Operation
             if (IsSimple(p.ParameterType)) continue;
             if (IsTextList(p.ParameterType))
             {
+                if (!IsRoles(p)) { if (args.ContainsKey(p.Name!)) errors.Add(new("/args/" + p.Name, "wrong-source", "Def_Err_Type", $"The list '{p.Name}' of {op.Name} cannot be set from a definition; leave it out.")); continue; }
                 if (EntityJson.Str(args[p.Name!]) is not "context:roles") errors.Add(new("/args/" + p.Name, "wrong-source", "Def_Err_Type", $"The list parameter '{p.Name}' of {op.Name} is the roles of the user: set it to context:roles."));
                 continue;
             }
@@ -149,7 +153,7 @@ public sealed class OperationInvokeAction(IServiceScopeFactory scopes, Operation
             if (p.ParameterType == typeof(CancellationToken)) { values.Add(ct); continue; }
             if (IsTextList(p.ParameterType))
             {
-                values.Add(invocation.Roles.ToList());
+                values.Add(IsRoles(p) ? invocation.Roles.ToList() : null);
                 continue;
             }
             if (IsSimple(p.ParameterType))
