@@ -14,19 +14,25 @@ public interface ITenderService
         bool requiresVendorQualification, string? technicalRequirements, string? commercialRequirements,
         string? inspectionRequirements, string? contractualRequirements);
 
+    [PEMS.Application.Common.PemsOperation("Tender", "InviteVendor", "Tender.Edit")]
     Task<(bool Success, string? Error)> InviteVendorAsync(int tenderId, int vendorId);
 
+    [PEMS.Application.Common.PemsOperation("Tender", "OpenForBidding", "Tender.Edit")]
     Task<(bool Success, string? Error)> OpenForBiddingAsync(int tenderId);
 
+    [PEMS.Application.Common.PemsOperation("Tender", "CloseBidding", "Tender.Edit")]
     Task<(bool Success, string? Error)> CloseBiddingAsync(int tenderId);
 
+    [PEMS.Application.Common.PemsOperation("Tender", "SubmitBid", "Tender.Edit")]
     Task<(bool Success, string? Error, int? BidId)> SubmitBidAsync(
         int tenderId, int vendorId, decimal originalValue, string currency,
         string? technicalSubmissionReference, string? commercialSubmissionReference);
 
+    [PEMS.Application.Common.PemsOperation("Tender", "RecordBidEvaluation", "Tender.Edit")]
     Task<(bool Success, string? Error)> RecordBidEvaluationAsync(
         int bidId, string evaluationType, int? evaluatorEmployeeId, string? disciplineRole, string decision, string? comment);
 
+    [PEMS.Application.Common.PemsOperation("Tender", "RequestNegotiation", "Tender.Edit")]
     Task<(bool Success, string? Error, int? NegotiationId)> RequestNegotiationAsync(
         int bidId, decimal negotiatedValue, string? participants, string? commercialChanges, string? technicalChanges,
         string? contractualChanges, string? justification, string? supportingDocumentReference, int? actorEmployeeId);
