@@ -39,14 +39,14 @@
     <pems-flex gap="2" wrap="true">
         @if (Model.Status == "Draft")
         {
-            <pems-form asp-action="OpenForBidding" method="post" class="d-inline">
+            <pems-form action="/a/tender-open-for-bidding" method="post" class="d-inline">
                 <input type="hidden" name="tenderId" value="@Model.TenderId" />
                 <pems-button tone="primary" size="small" type="submit">@Localizer["Open for Bidding"]</pems-button>
             </pems-form>
         }
         @if (Model.Status == "Open")
         {
-            <pems-form asp-action="CloseBidding" method="post" class="d-inline">
+            <pems-form action="/a/tender-close-bidding" method="post" class="d-inline">
                 <input type="hidden" name="tenderId" value="@Model.TenderId" />
                 <pems-button tone="warning" size="small" type="submit">@Localizer["Close Bidding"]</pems-button>
             </pems-form>
@@ -185,7 +185,7 @@
 
             @if (Model.Status == "Closed" || Model.Status == "Open")
             {
-                <pems-form class="mt-2" asp-action="RecordEvaluation" method="post"><pems-flex gap="1" wrap="true" align="center">
+                <pems-form class="mt-2" action="/a/tender-record-evaluation" method="post"><pems-flex gap="1" wrap="true" align="center">
                     <input type="hidden" name="tenderId" value="@Model.TenderId" />
                     <input type="hidden" name="bidId" value="@bid.BidId" />
                     <pems-select class="pems-w-130" scale="small" name="evaluationType">
@@ -203,7 +203,7 @@
 
             @if (Model.Status == "Closed")
             {
-                <pems-form class="mt-2" asp-action="RequestNegotiation" method="post"><pems-flex gap="1" wrap="true" align="center">
+                <pems-form class="mt-2" action="/a/tender-request-negotiation" method="post"><pems-flex gap="1" wrap="true" align="center">
                     <input type="hidden" name="tenderId" value="@Model.TenderId" />
                     <input type="hidden" name="bidId" value="@bid.BidId" />
                     <pems-input class="pems-w-130" scale="small" type="number" step="0.01" name="negotiatedValue" placeholder="@Localizer["New value"]" required />
@@ -235,7 +235,7 @@
 
     @if (Model.Status == "Open")
     {
-        <pems-form asp-action="SubmitBid" method="post"><pems-row gap="2" css="m-0 px-2 py-2 lp-rel-add">
+        <pems-form action="/a/tender-submit-bid" method="post"><pems-row gap="2" css="m-0 px-2 py-2 lp-rel-add">
             <input type="hidden" name="tenderId" value="@Model.TenderId" />
             <pems-col md="3">
                 <pems-select scale="small" name="vendorId" required>
