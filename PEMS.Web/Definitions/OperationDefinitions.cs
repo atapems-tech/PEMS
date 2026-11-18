@@ -15,12 +15,18 @@ namespace PEMS.Web.Definitions;
 // the catalog below finds every such method at start-up, and ONE generic handler (operation.invoke) runs it for an action definition. No adapter and no handler per operation: the service stays the only
 // place of its rules, the definition says which operation a button runs and where its arguments come from, and the code checks the operation's permission, not the definition.
 
-/// <summary>An operation found on a service interface: its key, the permission the code requires, and the method to call.</summary>
-public sealed record OperationRegistration(string Key, string? Permission, Type ServiceType, MethodInfo Method);
+/// <summary>An operation found on a service interface: its model and action, the permission the code requires, and the method to call.</summary>
+public sealed record OperationRegistration(string Model, string Action, string? Permission, Type ServiceType, MethodInfo Method)
+{
+    public string Name => Model + "." + Action;
+}
+
+/// <summary>What a designer sees of an operation: the pair, the permission and the arguments the method takes (the actor and the cancellation token are supplied by the engine).</summary>
+public sealed record OperationDescription(string Model, string Action, string? Permission, IReadOnlyList<string> Arguments);
 
 public sealed class OperationCatalog
 {
-    private readonly Dictionary<string, OperationRegistration> _operations = new(StringComparer.Ordinal);
+    private readonly Dictionary<(string Model, string Action), OperationRegistration> _operations = new();
 
     /// <summary>Scans the interfaces of the given assemblies for methods marked with <see cref="PemsOperationAttribute"/>.</summary>
     public static OperationCatalog Scan(params Assembly[] assemblies)
@@ -30,18 +36,26 @@ public sealed class OperationCatalog
             foreach (var method in type.GetMethods())
                 if (method.GetCustomAttribute<PemsOperationAttribute>() is { } attr)
                 {
-                    if (catalog._operations.ContainsKey(attr.Key)) throw new InvalidOperationException($"The operation '{attr.Key}' is declared twice.");
-                    catalog._operations[attr.Key] = new OperationRegistration(attr.Key, attr.Permission, type, method);
+                    if (catalog._operations.ContainsKey((attr.Model, attr.Action))) throw new InvalidOperationException($"The operation '{attr.Model}.{attr.Action}' is declared twice.");
+                    catalog._operations[(attr.Model, attr.Action)] = new OperationRegistration(attr.Model, attr.Action, attr.Permission, type, method);
                 }
         return catalog;
     }
 
-    public OperationRegistration? Get(string? key) => key is not null && _operations.TryGetValue(key, out var o) ? o : null;
-    public IReadOnlyCollection<string> Keys => _operations.Keys;
+    public OperationRegistration? Get(string? model, string? action) => model is not null && action is not null && _operations.TryGetValue((model, action), out var o) ? o : null;
+
+    /// <summary>The models that have operations, and the actions of one model: what a designer chooses from.</summary>
+    public IReadOnlyList<string> Models => _operations.Keys.Select(k => k.Model).Distinct(StringComparer.Ordinal).OrderBy(m => m, StringComparer.Ordinal).ToList();
+    public IReadOnlyList<string> Actions(string model) => _operations.Keys.Where(k => k.Model == model).Select(k => k.Action).OrderBy(a => a, StringComparer.Ordinal).ToList();
+
+    public IReadOnlyList<OperationDescription> Describe()
+        => _operations.Values.OrderBy(o => o.Model, StringComparer.Ordinal).ThenBy(o => o.Action, StringComparer.Ordinal)
+            .Select(o => new OperationDescription(o.Model, o.Action, o.Permission, o.Method.GetParameters().Where(p => p.ParameterType != typeof(CancellationToken) && (Nullable.GetUnderlyingType(p.ParameterType) ?? p.ParameterType) is { } t
+                && (t == typeof(string) || t.IsPrimitive || t == typeof(decimal) || t == typeof(DateTime) || t.IsEnum)).Select(p => p.Name!).ToList())).ToList();
 }
 
 /// <summary>
-/// <c>operation.invoke</c>: runs a registered service operation. Parameters: <c>operation</c> (the key) and <c>args</c> (parameter name to source: <c>field:name</c> a value of the form or button, <c>literal:text</c>, or
+/// <c>operation.invoke</c>: runs a registered service operation. Parameters: <c>model</c> and <c>action</c> (the pair the service method is marked with) and <c>args</c> (parameter name to source: <c>field:name</c> a value of the form or button, <c>literal:text</c>, or
 /// <c>context:employeeId|roles|userName|culture</c>; a parameter without an entry reads the field of the same name). A parameter that is a record (an "actor") is built from the context by the names of its
 /// constructor parameters. The method's answer <c>(bool Success, string? Error)</c>, <c>bool</c> or none is turned into the outcome of the action; a refusal shows the service's own message.
 /// </summary>
@@ -60,15 +74,19 @@ public sealed class OperationInvokeAction(IServiceScopeFactory scopes, Operation
 
     public IReadOnlyList<DefinitionFieldError> ValidateParameters(JsonObject? parameters)
     {
-        var op = catalog.Get(EntityJson.Str(parameters?["operation"]));
-        if (op is null) return [new("/operation", "unknown-operation", "Def_Err_UnknownOperation", $"parameters.operation must be one of: {string.Join(", ", catalog.Keys)}.")];
+        var model = EntityJson.Str(parameters?["model"]);
+        if (catalog.Get(model, EntityJson.Str(parameters?["action"])) is not { } op)
+        {
+            if (model is null || !catalog.Models.Contains(model)) return [new("/model", "unknown-model", "Def_Err_UnknownOperation", $"parameters.model must be one of: {string.Join(", ", catalog.Models)}.")];
+            return [new("/action", "unknown-action", "Def_Err_UnknownOperation", $"parameters.action of {model} must be one of: {string.Join(", ", catalog.Actions(model))}.")];
+        }
         var errors = new List<DefinitionFieldError>();
         var args = parameters!["args"] as JsonObject ?? [];
         var names = op.Method.GetParameters().Select(p => p.Name!).ToHashSet(StringComparer.Ordinal);
         foreach (var (name, source) in args)
         {
             var s = EntityJson.Str(source) ?? "";
-            if (!names.Contains(name)) errors.Add(new("/args/" + name, "unknown-parameter", "Def_Err_UnknownField", $"'{name}' is not a parameter of {op.Key}."));
+            if (!names.Contains(name)) errors.Add(new("/args/" + name, "unknown-parameter", "Def_Err_UnknownField", $"'{name}' is not a parameter of {op.Name}."));
             else if (!(s.StartsWith("field:") && s.Length > 6 || s.StartsWith("literal:") || s.StartsWith("context:") && ContextNames.Contains(s[8..]))) errors.Add(new("/args/" + name, "wrong-source", "Def_Err_Type", "A source is field:name, literal:text or context:employeeId|roles|userName|culture."));
         }
         foreach (var p in op.Method.GetParameters())
@@ -77,14 +95,14 @@ public sealed class OperationInvokeAction(IServiceScopeFactory scopes, Operation
             if (IsSimple(p.ParameterType)) { if (!args.ContainsKey(p.Name!) && !p.HasDefaultValue && false) errors.Add(new("/args", "missing", "Def_Err_Required", "")); continue; }
             var ctor = p.ParameterType.GetConstructors().OrderByDescending(c => c.GetParameters().Length).FirstOrDefault();
             if (ctor is null || ctor.GetParameters().Any(cp => !ContextNames.Contains(cp.Name!)))
-                errors.Add(new("/operation", "unsupported-parameter", "Def_Err_Type", $"The parameter '{p.Name}' of {op.Key} is neither a simple value nor an object built from the context (employeeId, roles, userName, culture)."));
+                errors.Add(new("/operation", "unsupported-parameter", "Def_Err_Type", $"The parameter '{p.Name}' of {op.Name} is neither a simple value nor an object built from the context (employeeId, roles, userName, culture)."));
         }
         return errors;
     }
 
     public async Task<ActionOutcome> ExecuteAsync(ActionInvocation invocation, CancellationToken ct)
     {
-        var op = catalog.Get(EntityJson.Str(invocation.Parameters?["operation"]));
+        var op = catalog.Get(EntityJson.Str(invocation.Parameters?["model"]), EntityJson.Str(invocation.Parameters?["action"]));
         if (op is null) return ActionOutcome.Refused(TranslatableText.Of(("en", "The action is not set up."), ("fa", "کنش درست تنظیم نشده است.")));
         using var scope = scopes.CreateScope();
         if (!await scope.ServiceProvider.GetRequiredService<IDefinitionAccess>().CanOpenAsync(op.Permission, invocation.Roles, ct))
