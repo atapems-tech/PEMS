@@ -133,7 +133,7 @@
             {
                 <pems-workflow-action-bar options="@(new PEMS.UI.Components.WorkflowActionBarOptions
                 {
-                    Action = Url.Action("WorkflowAction")!,
+                    Action = "/a/work-request-workflow-action",
                     Fields = new Dictionary<string, string> { ["id"] = Model.WorkRequestId.ToString() },
                     Actions = WorkflowComponents.Actions(actions, fa, Localizer["Are you sure?"].Value, StageByName),
                     CommentLabel = PEMS.UI.Abstractions.TranslatableText.Of(("en", Localizer["Comment"].Value), ("fa", Localizer["Comment"].Value)),
@@ -172,7 +172,7 @@
             @* پیش‌نویس هنوز وارد گردش‌کار نشده؛ «ارسال» همان نقطه‌ی شروع Instance است *@
             @if (canCreate)
             {
-                <pems-form asp-action="Submit" method="post">
+                <pems-form action="/a/work-request-submit" method="post">
                     <input type="hidden" name="id" value="@Model.WorkRequestId" />
                     <pems-button tone="primary" size="small" type="submit">@Localizer["Submit to Workflow"]</pems-button>
                 </pems-form>

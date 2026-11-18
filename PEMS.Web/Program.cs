@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 using PEMS.Application.Interfaces;
@@ -138,6 +138,9 @@ builder.Services.AddSingleton<PEMS.Web.Definitions.IActionHandler, PEMS.Web.Defi
 builder.Services.AddSingleton<PEMS.Web.Definitions.IActionHandler, PEMS.Web.Definitions.EntityDeleteAction>();
 builder.Services.AddSingleton<PEMS.Web.Definitions.IActionHandler, PEMS.Web.Definitions.EntityToggleAction>();
 builder.Services.AddSingleton<PEMS.Web.Definitions.EntityRecordLoader>();
+// SCRUM-437: service operations: the interface methods marked [PemsOperation] are runnable from action definitions through the one handler operation.invoke
+builder.Services.AddSingleton(PEMS.Web.Definitions.OperationCatalog.Scan(typeof(PEMS.Application.Common.PemsOperationAttribute).Assembly));
+builder.Services.AddSingleton<PEMS.Web.Definitions.IActionHandler, PEMS.Web.Definitions.OperationInvokeAction>();
 builder.Services.AddScoped<PEMS.Web.Definitions.DataSourceExecutor>();
 builder.Services.AddScoped<PEMS.Application.Definitions.IDefinitionService, PEMS.Persistence.Services.DefinitionService>();
 builder.Services.AddScoped<PEMS.Application.Definitions.IDefinitionShipper>(sp => (PEMS.Persistence.Services.DefinitionService)sp.GetRequiredService<PEMS.Application.Definitions.IDefinitionService>());

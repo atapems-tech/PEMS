@@ -189,7 +189,10 @@ public sealed class ActionExecutor(IDefinitionStore store, IDefinitionAccess acc
         var outcome = await handler.ExecuteAsync(invocation with { Parameters = root["parameters"] as JsonObject }, ct);
         if (!outcome.Ok) return new ActionResult(ActionStatus.Refused, outcome, null, null);
         var success = root["success"]?.Deserialize<TranslatableText>(PemsJson.Options);
-        return new ActionResult(ActionStatus.Ok, outcome, outcome.Message ?? success, outcome.Redirect ?? DataSourceDefinitionKind.Str(root["redirect"]));
+        var redirect = outcome.Redirect ?? DataSourceDefinitionKind.Str(root["redirect"]);
+        // {name} in a redirect is a value of the request (the id of the record the action ran on), so "back to the record" is data, not code
+        if (redirect is not null) redirect = System.Text.RegularExpressions.Regex.Replace(redirect, @"\{(\w+)\}", m => invocation.Values.TryGetValue(m.Groups[1].Value, out var v) ? Uri.EscapeDataString(v ?? "") : "");
+        return new ActionResult(ActionStatus.Ok, outcome, outcome.Message ?? success, redirect);
     }
 }
 
