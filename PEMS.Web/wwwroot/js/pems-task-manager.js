@@ -131,7 +131,9 @@
             var ok = allowed(dragged.getAttribute('data-tm-from'), to);
             zone.classList.toggle('tm-drop-ok', ok);
             zone.classList.toggle('tm-drop-no', !ok);
-            if (ok) { e.preventDefault(); e.dataTransfer.dropEffect = 'move'; }
+            // Chrome only dispatches drop on an accepted target. The drop handler validates the transition.
+            e.preventDefault();
+            e.dataTransfer.dropEffect = 'move';
         });
         board.addEventListener('dragleave', function (e) {
             var zone = e.target.closest('[data-tm-dropzone]');
