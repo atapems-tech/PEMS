@@ -89,6 +89,7 @@ public static class UiKeys
     public const string TreeSelect = "tree-select";
     public const string DataGrid = "data-grid";
     public const string DataView = "data-view";
+    public const string RecordView = "record-view";
     public const string WorkflowHistory = "workflow-history";
     public const string Uploader = "uploader";
     public const string CommentsThread = "comments-thread";

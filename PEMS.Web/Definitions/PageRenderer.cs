@@ -18,7 +18,7 @@ public sealed record RenderedPage(string Html, string? Title, IReadOnlyList<stri
 /// around the regions; every region holds component instances that are evaluated (<c>visible</c>, ADR-0015) and rendered by the component registry with the options of the
 /// definition. Nothing about the page lives in code: a changed definition is a changed page.
 /// </summary>
-public sealed class PageRenderer(IPemsComponentRenderer renderer, ComponentManifestCatalog catalog, IDefinitionStore store)
+public sealed class PageRenderer(IPemsComponentRenderer renderer, ComponentManifestCatalog catalog, IDefinitionStore store, DataSourceExecutor? data = null)
 {
     public async Task<RenderedPage> RenderAsync(ResolvedDefinition page, PipelineRequest request, CultureInfo culture, CancellationToken ct = default)
     {
@@ -38,7 +38,7 @@ public sealed class PageRenderer(IPemsComponentRenderer renderer, ComponentManif
 
         var expressions = BuildContext(page, request);
         var html = new StringBuilder();
-        await WriteNodeAsync(layoutRoot, regions, expressions, culture, html, problems, page.Source.AppKey, ct);
+        await WriteNodeAsync(layoutRoot, regions, expressions, culture, html, problems, page.Source.AppKey, request, ct);
         return new RenderedPage(html.ToString(), TitleOf(page.Source.TitleJson, culture), problems);
     }
 
@@ -48,12 +48,12 @@ public sealed class PageRenderer(IPemsComponentRenderer renderer, ComponentManif
         if (node["children"] is JsonArray c) foreach (var child in c.OfType<JsonObject>()) CollectRegions(child, into);
     }
 
-    private async Task WriteNodeAsync(JsonObject node, JsonObject regions, ExpressionContext ctx, CultureInfo culture, StringBuilder html, List<string> problems, string appKey, CancellationToken ct)
+    private async Task WriteNodeAsync(JsonObject node, JsonObject regions, ExpressionContext ctx, CultureInfo culture, StringBuilder html, List<string> problems, string appKey, PipelineRequest request, CancellationToken ct)
     {
         if (node["region"] is JsonValue regionName)
         {
             if (regions[(string)regionName!] is JsonArray instances)
-                foreach (var instance in instances.OfType<JsonObject>()) await WriteInstanceAsync(instance, ctx, culture, html, problems, appKey, 0, ct);
+                foreach (var instance in instances.OfType<JsonObject>()) await WriteInstanceAsync(instance, ctx, culture, html, problems, appKey, request, 0, ct);
             else if (node["required"] is JsonValue req && req.GetValueKind() == JsonValueKind.True)
                 problems.Add($"The required region \"{(string)regionName!}\" is empty.");
             return;
@@ -66,7 +66,7 @@ public sealed class PageRenderer(IPemsComponentRenderer renderer, ComponentManif
             foreach (var a in attrs) html.Append(' ').Append(a.Key).Append("=\"").Append(WebUtility.HtmlEncode((string?)a.Value ?? "")).Append('"');
         html.Append('>');
         if (node["children"] is JsonArray children)
-            foreach (var child in children.OfType<JsonObject>()) await WriteNodeAsync(child, regions, ctx, culture, html, problems, appKey, ct);
+            foreach (var child in children.OfType<JsonObject>()) await WriteNodeAsync(child, regions, ctx, culture, html, problems, appKey, request, ct);
         html.Append("</").Append(tag).Append('>');
     }
 
@@ -98,7 +98,7 @@ public sealed class PageRenderer(IPemsComponentRenderer renderer, ComponentManif
         return regions;
     }
 
-    private async Task WriteInstanceAsync(JsonObject instance, ExpressionContext ctx, CultureInfo culture, StringBuilder html, List<string> problems, string appKey, int depth, CancellationToken ct)
+    private async Task WriteInstanceAsync(JsonObject instance, ExpressionContext ctx, CultureInfo culture, StringBuilder html, List<string> problems, string appKey, PipelineRequest request, int depth, CancellationToken ct)
     {
         var id = (string?)instance["id"] ?? "?";
         try
@@ -114,15 +114,51 @@ public sealed class PageRenderer(IPemsComponentRenderer renderer, ComponentManif
                 var definition = await store.GetPublishedAsync("component", key, appKey, ct);
                 if (definition is null) { problems.Add($"Instance \"{id}\": the component definition \"{key}\" does not exist."); return; }
                 var children = ComponentTemplate.ExpandInstances((JsonObject)JsonNode.Parse(definition.PayloadJson)!, instance["options"] as JsonObject, id);
-                foreach (var child in children.OfType<JsonObject>()) await WriteInstanceAsync(child, ctx, culture, html, problems, appKey, depth + 1, ct);
+                foreach (var child in children.OfType<JsonObject>()) await WriteInstanceAsync(child, ctx, culture, html, problems, appKey, request, depth + 1, ct);
                 return;
             }
-            var parameters = catalog.ToParameters(component, (instance["options"] ?? new JsonObject()).ToJsonString());
+            var options = RuntimeValues.Substitute((instance["options"] ?? new JsonObject()).DeepClone(), request) as JsonObject ?? new JsonObject();
+            if (instance["bindings"] is JsonObject bindings && bindings["record"] is JsonObject record)
+            {
+                var values = await ReadRecordAsync(record, request, appKey, id, problems, ct);
+                if (values is null && problems.Any(p => p.StartsWith($"Instance \"{id}\": the record", StringComparison.Ordinal))) return;   // not allowed or invalid: the part is hidden
+                if (values is not null) options["values"] = values;
+            }
+            var parameters = catalog.ToParameters(component, options.ToJsonString());
             html.Append(await renderer.RenderAsync(component, parameters, culture));
         }
         catch (ExpressionException ex) { problems.Add($"Instance \"{id}\": {ex.Code}: {ex.Message}"); }
         catch (ComponentTemplateException ex) { problems.Add($"Instance \"{id}\": {ex.Message}"); }
         catch (ArgumentException ex) { problems.Add($"Instance \"{id}\": {ex.Message}"); }
+    }
+
+    /// <summary>
+    /// The record a details part shows (SCRUM-600): <c>{ "source": "/d/key", "idField": "workOrderId", "id": "{{params.id}}" }</c> reads one row of a grid data source through the same
+    /// resolve and authorize steps as the grid endpoint (so the user's permission and the row-level rules apply); null values mean the record was not found.
+    /// </summary>
+    private async Task<JsonObject?> ReadRecordAsync(JsonObject record, PipelineRequest request, string appKey, string id, List<string> problems, CancellationToken ct)
+    {
+        if (data is null) { problems.Add($"Instance \"{id}\": the record cannot be read here."); return null; }
+        var source = (string?)record["source"];
+        var idField = (string?)record["idField"];
+        var recordId = RuntimeValues.Substitute(record["id"]?.DeepClone(), request) is JsonValue v && v.GetValueKind() == JsonValueKind.String ? (string?)v : null;
+        var key = source is not null && System.Text.RegularExpressions.Regex.Match(source, "^/d/([a-z0-9][a-z0-9._-]*)$") is { Success: true } m ? m.Groups[1].Value : null;
+        if (key is null || string.IsNullOrWhiteSpace(idField)) { problems.Add($"Instance \"{id}\": the record binding needs a /d/ source and an idField."); return null; }
+        if (string.IsNullOrWhiteSpace(recordId)) return null;   // no id on the request: the part shows "not found"
+        var result = await data.QueryAsync(key, [new("page", "1"), new("pageSize", "1"), new("f." + idField, "eq:" + recordId)], request.Culture, request.Roles, request.UserName, appKey, ct);
+        switch (result.Status)
+        {
+            case DataStatus.Forbidden: problems.Add($"Instance \"{id}\": the record is not allowed for this user."); return null;
+            case DataStatus.NotFound: problems.Add($"Instance \"{id}\": the record source \"{key}\" does not exist."); return null;
+            case DataStatus.Invalid: problems.Add($"Instance \"{id}\": the record request is invalid: {result.Error}"); return null;
+        }
+        if (result.Items is not { Count: > 0 }) return null;
+        var row = JsonSerializer.SerializeToNode(result.Items[0]) as JsonObject;
+        if (row is null) return null;
+        var values = new JsonObject();
+        foreach (var (name, node) in row)
+            values[name] = node is null ? null : node is JsonValue jv && jv.GetValueKind() == JsonValueKind.String ? (string?)jv : node.ToJsonString().Trim('"');
+        return values;
     }
 
     private static ExpressionContext BuildContext(ResolvedDefinition page, PipelineRequest request)

@@ -151,6 +151,22 @@ public sealed class PageDefinitionKind : IDefinitionKind
                     else errors.Add(new(at + "/visible", "wrong-type", "Def_Err_Type", "visible is an expression (text)."));
                 }
 
+                // SCRUM-600: bindings.record reads one row of a grid data source for a details part
+                if (inst["bindings"] is { } bindings)
+                {
+                    if (bindings is not JsonObject bo) errors.Add(new(at + "/bindings", "wrong-type", "Def_Err_Type", "bindings is an object."));
+                    else
+                        foreach (var (bname, bnode) in bo)
+                        {
+                            if (bname != "record") { errors.Add(new(at + "/bindings/" + bname, "unknown-property", "Def_Err_UnknownProperty", $"'{bname}' is not a binding (record)." )); continue; }
+                            if (bnode is not JsonObject rec) { errors.Add(new(at + "/bindings/record", "wrong-type", "Def_Err_Type", "record is an object (source, idField, id).")); continue; }
+                            var src = rec["source"] is JsonValue sv && sv.GetValueKind() == JsonValueKind.String ? (string?)sv : null;
+                            if (src is null || !System.Text.RegularExpressions.Regex.IsMatch(src, "^/d/[a-z0-9][a-z0-9._-]*$")) errors.Add(new(at + "/bindings/record/source", "invalid", "Def_Err_Binding", "source is /d/{key} of a grid data source."));
+                            if (!(rec["idField"] is JsonValue iv && iv.GetValueKind() == JsonValueKind.String && !string.IsNullOrWhiteSpace((string?)iv))) errors.Add(new(at + "/bindings/record/idField", "required", "Def_Err_Required", "idField names the row property of the id."));
+                            if (!(rec["id"] is JsonValue idv2 && idv2.GetValueKind() == JsonValueKind.String)) errors.Add(new(at + "/bindings/record/id", "required", "Def_Err_Required", "id is text, usually {{params.id}}."));
+                        }
+                }
+
                 var options = inst["options"] ?? new JsonObject();
                 if (options is not JsonObject) { errors.Add(new(at + "/options", "wrong-type", "Def_Err_Type", "The options are an object.")); continue; }
                 foreach (var e in _catalog.Validate(component, options.ToJsonString()).Errors)
@@ -185,6 +201,8 @@ public sealed class PageDefinitionKind : IDefinitionKind
                         if (inst["component"] is JsonValue cv && cv.GetValueKind() == JsonValueKind.String)
                             refs.Add(ComponentTemplate.IsDefinitionRef((string)cv!) ? new DefinitionRef("component-definition", ComponentTemplate.KeyOf((string)cv!), "renders") : new DefinitionRef("component", (string)cv!, "renders"));
                         // SCRUM-437: the bindings of a component to stored definitions: an url "/d/{key}" reads a data source, an action-button runs an action
+                        if (inst["bindings"] is JsonObject bnd && bnd["record"] is JsonObject brec && brec["source"] is JsonValue bsv && bsv.GetValueKind() == JsonValueKind.String
+                            && System.Text.RegularExpressions.Regex.Match((string)bsv!, "^/d/([a-z0-9][a-z0-9._-]*)$") is { Success: true } bm) refs.Add(new DefinitionRef("data-source", bm.Groups[1].Value, "binds"));
                         if (inst["options"] is JsonObject options)
                         {
                             foreach (var text in Strings(options))
