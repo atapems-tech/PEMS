@@ -69,6 +69,7 @@ public class NavigationMenuService : INavigationMenuService
                     VisibilityRule = d.VisibilityRule, Area = d.Area, Controller = d.Controller, Action = d.Action, ExternalPath = d.ExternalPath,
                     OpenInNewTab = d.OpenInNewTab, IsDefaultForController = d.IsDefaultForController,
                     ExtraActiveControllers = d.ExtraActiveControllers, ActiveArea = d.ActiveArea, BadgeKey = d.BadgeKey,
+                    TitleEn = d.TitleEn, TitleFa = d.TitleFa,   // SCRUM-590: the titles a menu definition ships; an administrator's later change is never overwritten
                     IsActive = true, IsSystem = true, CreatedDate = DateTime.Now
                 });
                 changed++;

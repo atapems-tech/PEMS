@@ -536,6 +536,7 @@ public abstract class EntityWriteAction(IServiceScopeFactory scopes, EntityCatal
             var pi = entity.ClrType.GetProperty(EntityJson.Str(prop)!)!;
             var value = EntityJson.Convert(pi.PropertyType, invocation.Values.GetValueOrDefault(field));
             if (value is EntityJson.NotConvertible) return ActionOutcome.Refused(field, Msg("The value is not valid.", "مقدار معتبر نیست."));
+            if (EntityConstraints.Check(pi, field, invocation.Values.GetValueOrDefault(field)) is { } invalid) return invalid;   // SCRUM-373: the declared length and range, checked by the one validator
             EntityJson.SetValue(pi, row, value);
         }
         foreach (var name in EntityJson.Names(p["required"]))
