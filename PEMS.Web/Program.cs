@@ -157,6 +157,9 @@ builder.Services.AddSingleton<PEMS.Web.Definitions.EntityRecordLoader>();
 // SCRUM-437: service operations: the interface methods marked [PemsOperation] are runnable from action definitions through the one handler operation.invoke
 builder.Services.AddSingleton(PEMS.Web.Definitions.OperationCatalog.Scan(typeof(PEMS.Application.Common.PemsOperationAttribute).Assembly));
 builder.Services.AddSingleton<PEMS.Web.Definitions.IActionHandler, PEMS.Web.Definitions.OperationInvokeAction>();
+builder.Services.AddSingleton<PEMS.Web.Definitions.OperationReader>();   // SCRUM-775: read operations as grid rows and choices
+builder.Services.AddSingleton<PEMS.Web.Definitions.IGridDataProvider, PEMS.Web.Definitions.OperationGridProvider>();
+builder.Services.AddSingleton<PEMS.Web.Definitions.IDataSourceProvider, PEMS.Web.Definitions.OperationOptionsProvider>();
 builder.Services.AddScoped<PEMS.Web.Definitions.DataSourceExecutor>();
 builder.Services.AddScoped<PEMS.Application.Definitions.IDefinitionService, PEMS.Persistence.Services.DefinitionService>();
 builder.Services.AddScoped<PEMS.Application.Definitions.IDefinitionShipper>(sp => (PEMS.Persistence.Services.DefinitionService)sp.GetRequiredService<PEMS.Application.Definitions.IDefinitionService>());
