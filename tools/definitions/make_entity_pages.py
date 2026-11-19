@@ -99,6 +99,7 @@ def make(spec):
         create_params = {"entity": entity, "map": map_, "required": required, "defaults": spec.get("defaults", {}), "unique": spec.get("unique", [])}
         if spec.get("create_redirect"): create_params["redirect"] = spec["create_redirect"]
         if spec.get("create_deny"): create_params["deny"] = spec["create_deny"]
+        if spec.get("validate"): create_params["validate"] = {"model": spec["validate"]["model"], "action": spec["validate"]["action"], "args": spec["validate"]["args"]}
         write("form", key + "-create", envelope("form", key + "-create", t("Create " + spec["singular"][0].lower(), "ایجاد " + spec["singular"][1]), t("Create a new " + spec["singular"][0].lower(), "ایجاد " + spec["singular"][1] + " جدید"), {
             "id": key + "-create", "title": t("New " + spec["singular"][0].lower(), spec["singular"][1] + " جدید"), "submitLabel": t("Create", "ایجاد"), "actionKey": key + "-create", "columns": 2, "warnOnLeave": True, "fields": ff}))
         action(key + "-create", t("Create " + spec["singular"][0].lower(), "ایجاد " + spec["singular"][1]), "entity.create", create_params, "/p/" + key, t(spec["singular"][0] + " created.", spec["singular"][1] + " ایجاد شد."))
@@ -110,6 +111,7 @@ def make(spec):
         edit_map = {k: v for k, v in map_.items() if k not in ro}
         edit_required = [r for r in required if camel(r) not in ro]
         edit_params = {"entity": entity, "map": edit_map, "required": edit_required, "unique": spec.get("unique", [])}
+        if spec.get("validate"): edit_params["validate"] = {"model": spec["validate"]["model"], "action": spec["validate"]["action"], "args": {**spec["validate"]["args"], "ruleId": "field:id"}}
         write("form", key + "-edit", envelope("form", key + "-edit", t("Edit " + spec["singular"][0].lower(), "ویرایش " + spec["singular"][1]), t("Edit " + spec["singular"][0].lower(), "ویرایش " + spec["singular"][1]), {
             "id": key + "-edit", "title": t("Edit " + spec["singular"][0].lower(), "ویرایش " + spec["singular"][1]), "submitLabel": t("Save", "ذخیره"), "actionKey": key + "-edit", "columns": 2, "warnOnLeave": True, "fields": ff}))
         action(key + "-edit", t("Edit " + spec["singular"][0].lower(), "ویرایش " + spec["singular"][1]), "entity.update", edit_params, "/p/" + key, t(spec["singular"][0] + " saved.", spec["singular"][1] + " ذخیره شد."))
@@ -264,6 +266,18 @@ SPECS += [
                 [{"fields": ["PermissionAId", "PermissionBId"], "symmetric": True, "where": {"IsActive": True}, "message": t("An active policy for this permission pair already exists.", "برای این جفت مجوز از قبل سیاست فعالی وجود دارد.")}],
                 lookups=[{"name": "permissionA", "entity": "Permission", "foreignKey": "PermissionAId", "label": "Name"}, {"name": "permissionB", "entity": "Permission", "foreignKey": "PermissionBId", "label": "Name"}], edit=False),
          create_deny=[{"when": "values.permissionAId == values.permissionBId", "message": t("A permission cannot conflict with itself.", "یک مجوز نمی‌تواند با خودش تعارض داشته باشد.")}]),
+    # ---- W1 administration: contract approval authority (SCRUM-632): service rules run as the validation operation of the create and edit actions
+    dict(simple("contract-approval-authority", "ContractApprovalAuthorityRule", "ContractApprovalAuthorityRuleId", ("Contract approval authority", "اختیار تأیید قرارداد"), ("Approval rule", "قاعده‌ی تأیید"),
+                [("ContractApprovalAuthorityRuleId", "Id", "شناسه", "number", 70), ("Priority", "Priority", "اولویت", "number", 100), ("MinValue", "From value", "از مبلغ", "number", 140), ("MaxValue", "To value", "تا مبلغ", "number", 140), ("CriticalityClass", "Criticality", "بحرانی‌بودن", "text", 120),
+                 ("RequiredApproverRole", "Approver role", "نقش تأییدکننده", "text", 200, True), ("Description", "Description", "توضیحات", "text", 300, True), ("IsActive", "Active", "فعال", "bool", 100)],
+                [{"prop": "MinValue", "kind": "number", "en": "From value", "fa": "از مبلغ", "min": 0}, {"prop": "MaxValue", "kind": "number", "en": "To value", "fa": "تا مبلغ", "min": 0},
+                 {"prop": "CriticalityClass", "en": "Criticality class", "fa": "کلاس بحرانی‌بودن", "maxLength": 10},
+                 select("RequiredApproverRole", "Approver role", "نقش تأییدکننده", "ApplicationRole", "Name", "Name", True, active=None),
+                 {"prop": "Priority", "kind": "number", "en": "Priority (smaller is checked first)", "fa": "اولویت (کوچک‌تر اول بررسی می‌شود)", "min": 0},
+                 {"prop": "Description", "kind": "textArea", "en": "Description", "fa": "توضیحات", "maxLength": 500, "span": 2}],
+                []),
+         defaults={"IsActive": True}, sort=["Priority", "-ContractApprovalAuthorityRuleId"],
+         validate={"model": "ContractApprovalRule", "action": "Validate", "args": {"minValue": "field:minValue", "maxValue": "field:maxValue", "criticalityClass": "field:criticalityClass", "requiredApproverRole": "field:requiredApproverRole"}}),
     # ---- W4 storage locations (InventoryMasterData permissions)
     simple("storage-locations", "StorageLocation", "StorageLocationId", ("Storage locations", "محل‌های نگهداری"), ("Storage location", "محل نگهداری"),
            [("Code", "Code", "کد", "text", 140, True), ("Name", "Name", "نام", "text", 240, True), ("Warehouse", "Warehouse", "انبار", "lookup", 180), ("Parent", "Parent location", "محل والد", "lookup", 180), ("IsActive", "Active", "فعال", "bool", 100)],

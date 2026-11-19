@@ -58,6 +58,7 @@ public sealed class FormHostController(DefinitionPipeline pipeline, ActionExecut
         {
             case ActionStatus.Forbidden: return Forbid();
             case ActionStatus.NotFound: log.LogWarning("Form definition {Key}: the action \"{Action}\" does not exist.", key, form.ActionKey); return NotFound();
+            case ActionStatus.StepUpRequired:
             case ActionStatus.Refused:
                 return await Show(key, loaded, posted, result.Outcome!.FieldErrors ?? new Dictionary<string, TranslatableText>(), result.Outcome.FormError is { } fe ? [fe] : []);
         }
@@ -131,6 +132,7 @@ public sealed class ActionHostController(ActionExecutor actions, ICurrentUserSer
             {
                 ActionStatus.Ok => Json(new { ok = true, message = text }),
                 ActionStatus.Refused => BadRequest(new { ok = false, error = text }),
+                ActionStatus.StepUpRequired => StatusCode(428, new { ok = false, stepUp = true, options = result.StepUpOptionsJson, error = text }),   // SCRUM-595: run the security-key ceremony with these options, then post again with the answer
                 ActionStatus.Forbidden => StatusCode(403, new { ok = false, error = (string?)null }),
                 _ => NotFound(new { ok = false, error = (string?)null })
             };
@@ -139,6 +141,7 @@ public sealed class ActionHostController(ActionExecutor actions, ICurrentUserSer
         {
             case ActionStatus.NotFound: return NotFound();
             case ActionStatus.Forbidden: return Forbid();
+            case ActionStatus.StepUpRequired:
             case ActionStatus.Refused:
                 TempData["Error"] = (result.Outcome!.FormError ?? result.Outcome.FieldErrors?.Values.FirstOrDefault())?.Resolve(CultureInfo.CurrentUICulture);
                 break;

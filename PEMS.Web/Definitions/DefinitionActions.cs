@@ -27,9 +27,11 @@ public interface IDataSourceProvider
 public sealed record ActionInvocation(IReadOnlyDictionary<string, string?> Values, string Culture, IReadOnlyCollection<string> Roles, string? UserName, JsonObject? Parameters = null, string? IpAddress = null, string? UserAgent = null);
 
 /// <summary>What an action did. A refused action says why per field or for the form as a whole; a text is always in both languages.</summary>
-public sealed record ActionOutcome(bool Ok, TranslatableText? Message = null, IReadOnlyDictionary<string, TranslatableText>? FieldErrors = null, TranslatableText? FormError = null, string? Redirect = null)
+public sealed record ActionOutcome(bool Ok, TranslatableText? Message = null, IReadOnlyDictionary<string, TranslatableText>? FieldErrors = null, TranslatableText? FormError = null, string? Redirect = null,
+    IReadOnlyDictionary<string, string?>? Returned = null)
 {
-    public static ActionOutcome Done(TranslatableText? message = null, string? redirect = null) => new(true, message, null, null, redirect);
+    /// <summary>SCRUM-594: <paramref name="returned"/> are values the action produced (the id of a new row): later steps and the {name} placeholders of the redirect can use them.</summary>
+    public static ActionOutcome Done(TranslatableText? message = null, string? redirect = null, IReadOnlyDictionary<string, string?>? returned = null) => new(true, message, null, null, redirect, returned);
     public static ActionOutcome Refused(TranslatableText formError) => new(false, null, null, formError);
     public static ActionOutcome Refused(string field, TranslatableText error) => new(false, null, new Dictionary<string, TranslatableText> { [field] = error });
 }
@@ -60,9 +62,10 @@ public interface IActionHandler
     IReadOnlyList<DefinitionFieldError> ValidateParameters(JsonObject? parameters) => [];
 }
 
-public enum ActionStatus { Ok, NotFound, Forbidden, Refused }
+/// <summary><see cref="StepUpRequired"/> (SCRUM-595): the action needs a security-key confirmation first; <see cref="ActionResult.StepUpOptionsJson"/> is the challenge to run in the browser.</summary>
+public enum ActionStatus { Ok, NotFound, Forbidden, Refused, StepUpRequired }
 
-public sealed record ActionResult(ActionStatus Status, ActionOutcome? Outcome, TranslatableText? Message, string? Redirect);
+public sealed record ActionResult(ActionStatus Status, ActionOutcome? Outcome, TranslatableText? Message, string? Redirect, string? StepUpOptionsJson = null);
 
 /// <summary>The data source definition kind: <c>{ "kind": "static", "items": [...] }</c> or <c>{ "kind": "provider", "provider": "departments", "parameters": {...}, "permission": "Module.Action" }</c>.</summary>
 public sealed class DataSourceDefinitionKind(IEnumerable<IDataSourceProvider> providers, IEnumerable<IGridDataProvider>? grids = null) : IDefinitionKind
@@ -132,7 +135,7 @@ public sealed class DataSourceDefinitionKind(IEnumerable<IDataSourceProvider> pr
 /// <summary>The action definition kind: <c>{ "kind": "handler", "handler": "department.create", "permission": "Module.Action", "success": {fa,en}, "redirect": "/Department" }</c>.</summary>
 public sealed class ActionDefinitionKind(IEnumerable<IActionHandler> handlers) : IDefinitionKind
 {
-    private static readonly HashSet<string> Allowed = new(StringComparer.Ordinal) { "kind", "handler", "permission", "success", "redirect", "confirm", "parameters" };
+    private static readonly HashSet<string> Allowed = new(StringComparer.Ordinal) { "kind", "handler", "permission", "success", "redirect", "confirm", "parameters", "stepUp" };
     private readonly Dictionary<string, IActionHandler> _handlers = handlers.ToDictionary(h => h.Key, StringComparer.Ordinal);
 
     public string Key => "action";
@@ -151,6 +154,16 @@ public sealed class ActionDefinitionKind(IEnumerable<IActionHandler> handlers) :
             if (root["parameters"] is not null and not JsonObject) errors.Add(new("/parameters", "wrong-type", "Def_Err_Type", "parameters is an object."));
             else errors.AddRange(registered.ValidateParameters(root["parameters"] as JsonObject).Select(e => e with { Pointer = "/parameters" + e.Pointer }));
         }
+        if (root["stepUp"] is { } stepUp)
+        {
+            if (stepUp is not JsonObject su) errors.Add(new("/stepUp", "wrong-type", "Def_Err_Type", "stepUp is an object: { resource, action }."));
+            else
+            {
+                foreach (var p in su) if (p.Key is not ("resource" or "action")) errors.Add(new("/stepUp/" + p.Key, "unknown-property", "Def_Err_UnknownProperty", $"'{p.Key}' is not a stepUp setting (resource, action)."));
+                if (string.IsNullOrWhiteSpace(DataSourceDefinitionKind.Str(su["resource"])) || string.IsNullOrWhiteSpace(DataSourceDefinitionKind.Str(su["action"])))
+                    errors.Add(new("/stepUp", "required", "Def_Err_Required", "stepUp names the resource and the action that are audited when the confirmation is refused (for example Permit and Close)."));
+            }
+        }
         if (root["success"] is { } success) DataSourceDefinitionKind.CheckLabel(success, "/success", errors);
         if (root["confirm"] is { } confirm) DataSourceDefinitionKind.CheckLabel(confirm, "/confirm", errors);
         var redirect = DataSourceDefinitionKind.Str(root["redirect"]);
@@ -161,8 +174,11 @@ public sealed class ActionDefinitionKind(IEnumerable<IActionHandler> handlers) :
     public IReadOnlyList<DefinitionRef> References(string payloadJson) => [];
 }
 
-/// <summary>Runs a stored action: resolve the definition, authorize (the definition's permission and the handler's roles), run the handler, return what to tell the user and where to go.</summary>
-public sealed class ActionExecutor(IDefinitionStore store, IDefinitionAccess access, IEnumerable<IActionHandler> handlers)
+/// <summary>
+/// Runs a stored action: resolve the definition, authorize (the definition's permission and the handler's roles), confirm with a security key when the definition declares <c>stepUp</c> (SCRUM-595),
+/// run the handler, return what to tell the user and where to go. A redirect may use <c>{name}</c>: a value the handler returned (SCRUM-594), else a value of the request.
+/// </summary>
+public sealed class ActionExecutor(IDefinitionStore store, IDefinitionAccess access, IEnumerable<IActionHandler> handlers, IStepUpVerifier? stepUp = null)
 {
     private readonly Dictionary<string, IActionHandler> _handlers = handlers.ToDictionary(h => h.Key, StringComparer.Ordinal);
 
@@ -186,12 +202,29 @@ public sealed class ActionExecutor(IDefinitionStore store, IDefinitionAccess acc
             && (handler.AllowedRoles is null || handler.AllowedRoles.Any(r => invocation.Roles.Contains(r, StringComparer.OrdinalIgnoreCase)));
         if (!allowed) return new ActionResult(ActionStatus.Forbidden, null, null, null);
 
+        if (root["stepUp"] is JsonObject su)
+        {
+            var refused = ActionOutcome.Refused(TranslatableText.Of(("en", "Confirm with your security key to continue."), ("fa", "برای ادامه با کلید امنیتی خود تأیید کنید.")));
+            if (stepUp is null) return new ActionResult(ActionStatus.Refused, refused, null, null);      // a definition that needs a confirmation never runs without a verifier
+            var check = await stepUp.VerifyAsync(new StepUpRequest(invocation.UserName, DataSourceDefinitionKind.Str(su["resource"]) ?? "", DataSourceDefinitionKind.Str(su["action"]) ?? "",
+                invocation.Values.GetValueOrDefault("webAuthnAssertionJson"), invocation.Values.GetValueOrDefault("webAuthnOptionsJson"), invocation.IpAddress), ct);
+            if (check.Status == StepUpStatus.Challenge) return new ActionResult(ActionStatus.StepUpRequired, refused, null, null, check.OptionsJson);
+            if (check.Status == StepUpStatus.Denied)
+                return new ActionResult(ActionStatus.Refused, ActionOutcome.Refused(TranslatableText.Of(("en", "The security key confirmation was refused."), ("fa", "تأیید با کلید امنیتی پذیرفته نشد."))), null, null);
+        }
+
         var outcome = await handler.ExecuteAsync(invocation with { Parameters = root["parameters"] as JsonObject }, ct);
         if (!outcome.Ok) return new ActionResult(ActionStatus.Refused, outcome, null, null);
         var success = root["success"]?.Deserialize<TranslatableText>(PemsJson.Options);
         var redirect = outcome.Redirect ?? DataSourceDefinitionKind.Str(root["redirect"]);
-        // {name} in a redirect is a value of the request (the id of the record the action ran on), so "back to the record" is data, not code
-        if (redirect is not null) redirect = System.Text.RegularExpressions.Regex.Replace(redirect, @"\{(\w+)\}", m => invocation.Values.TryGetValue(m.Groups[1].Value, out var v) ? Uri.EscapeDataString(v ?? "") : "");
+        // {name} in a redirect is a value the action returned (the id it created, {step.id} of action.steps) or a value of the request (the id of the record it ran on), so "to the new record" is data, not code
+        if (redirect is not null)
+            redirect = System.Text.RegularExpressions.Regex.Replace(redirect, @"\{([\w.]+)\}", m =>
+            {
+                var name = m.Groups[1].Value;
+                var v = outcome.Returned is not null && outcome.Returned.TryGetValue(name, out var r) ? r : invocation.Values.GetValueOrDefault(name);
+                return Uri.EscapeDataString(v ?? "");
+            });
         return new ActionResult(ActionStatus.Ok, outcome, outcome.Message ?? success, redirect);
     }
 }
