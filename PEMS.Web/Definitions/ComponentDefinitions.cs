@@ -19,10 +19,10 @@ namespace PEMS.Web.Definitions;
 public sealed class ComponentDefinitionKind(IPemsComponentRegistry registry) : IDefinitionKind
 {
     private static readonly HashSet<string> Allowed = new(StringComparer.Ordinal) { "parameters", "regions", "instances" };
-    private static readonly HashSet<string> AllowedInstance = new(StringComparer.Ordinal) { "id", "component", "options", "visible", "bindings", "if" };
+    private static readonly HashSet<string> AllowedInstance = new(StringComparer.Ordinal) { "id", "component", "options", "visible", "bindings", "if", "each", "as" };
     private static readonly HashSet<string> AllowedParameter = new(StringComparer.Ordinal) { "type", "required", "default", "description" };
     public static readonly string[] Types = ["string", "number", "boolean", "object", "array", "text", "any"];
-    internal static readonly Regex Placeholder = new(@"\$\{([A-Za-z_][A-Za-z0-9_]*)\}", RegexOptions.Compiled);
+    internal static readonly Regex Placeholder = new(@"\$\{([A-Za-z_][A-Za-z0-9_]*(?:\.[A-Za-z_][A-Za-z0-9_]*)*)\}", RegexOptions.Compiled);
 
     public string Key => "component";
 
@@ -82,8 +82,18 @@ public sealed class ComponentDefinitionKind(IPemsComponentRegistry registry) : I
                 errors.Add(new(path + "/component", "unknown-component", "Def_Err_UnknownComponent", $"'{component}' is not a registered component (use def:key for a component definition)."));
             if (inst["options"] is { } o && o is not JsonObject) errors.Add(new(path + "/options", "wrong-type", "Def_Err_Type", "The options are an object."));
 
+            // `each`: "${list}" repeats the instance once per item of an array parameter, the item is ${as.property} (as defaults to item)
+            var inScope = new HashSet<string>(declared, StringComparer.Ordinal);
+            if (inst["each"] is { } each)
+            {
+                var m = each is JsonValue ev && ev.GetValueKind() == JsonValueKind.String ? Placeholder.Match((string)ev!) : null;
+                if (m is null || !m.Success || m.Length != ((string)each!).Length || m.Groups[1].Value.Contains('.') || !declared.Contains(m.Groups[1].Value))
+                    errors.Add(new(path + "/each", "invalid", "Def_Err_Each", "each is the placeholder of an array parameter, such as ${tiles}."));
+                inScope.Add(inst["as"] is JsonValue av && av.GetValueKind() == JsonValueKind.String ? (string)av! : "item");
+            }
+            else if (inst["as"] is not null) errors.Add(new(path + "/as", "overlap", "Def_Err_Overlap", "as needs each."));
             foreach (var (pointer, name) in Placeholders(inst, path))
-                if (!declared.Contains(name)) errors.Add(new(pointer, "unknown-parameter", "Def_Err_Parameter", $"'${{{name}}}' is not a declared parameter."));
+                if (!inScope.Contains(name.Split('.')[0]) && pointer != path + "/each") errors.Add(new(pointer, "unknown-parameter", "Def_Err_Parameter", $"'${{{name}}}' is not a declared parameter."));
         }
     }
 
@@ -175,10 +185,11 @@ public static class ComponentTemplate
             case JsonValue v when v.GetValueKind() == JsonValueKind.String:
                 var text = (string)v!;
                 var whole = ComponentDefinitionKind.Placeholder.Match(text);
-                if (whole.Success && whole.Length == text.Length) return values.TryGetValue(whole.Groups[1].Value, out var w) ? w?.DeepClone() : null;
+                if (whole.Success && whole.Length == text.Length) return Resolve(values, whole.Groups[1].Value)?.DeepClone();
                 return JsonValue.Create(ComponentDefinitionKind.Placeholder.Replace(text, m =>
                 {
-                    if (!values.TryGetValue(m.Groups[1].Value, out var x) || x is null) return "";
+                    var x = Resolve(values, m.Groups[1].Value);
+                    if (x is null) return "";
                     return x is JsonValue xv && xv.GetValueKind() == JsonValueKind.String ? (string)xv! : x is JsonValue ? x.ToJsonString().Trim('"') : throw new ComponentTemplateException($"'${{{m.Groups[1].Value}}}' is inside a text but is not a simple value.");
                 }));
             case JsonObject o:
@@ -194,6 +205,24 @@ public static class ComponentTemplate
                 var list = new JsonArray();
                 foreach (var child in a)
                 {
+                    // `"each": "${list}"` repeats the instance for every item of the array parameter; the id gets the position (SCRUM-601)
+                    if (child is JsonObject rep && rep.ContainsKey("each"))
+                    {
+                        var source = Substitute(rep["each"], values) as JsonArray;
+                        var name = rep["as"] is JsonValue nv && nv.GetValueKind() == JsonValueKind.String ? (string)nv! : "item";
+                        var template = (JsonObject)rep.DeepClone();
+                        template.Remove("each"); template.Remove("as");
+                        for (var i = 0; source is not null && i < source.Count; i++)
+                        {
+                            var scoped = new Dictionary<string, JsonNode?>(values, StringComparer.Ordinal) { [name] = source[i]?.DeepClone() };
+                            if (Substitute(template, scoped) is JsonObject made)
+                            {
+                                if (made["id"] is JsonValue idv && idv.GetValueKind() == JsonValueKind.String) made["id"] = (string)idv! + "-" + (i + 1);
+                                list.Add(made);
+                            }
+                        }
+                        continue;
+                    }
                     // `"if": "${name}"` on an instance keeps it only when the parameter is set (and not false, not empty): an optional part of a template
                     if (child is JsonObject inst && inst.ContainsKey("if"))
                     {
@@ -212,6 +241,15 @@ public static class ComponentTemplate
             default:
                 return node.DeepClone();
         }
+    }
+
+    /// <summary>A value by its name or a dotted path into an object value (tile.label).</summary>
+    private static JsonNode? Resolve(IReadOnlyDictionary<string, JsonNode?> values, string path)
+    {
+        var parts = path.Split('.');
+        if (!values.TryGetValue(parts[0], out var node)) return null;
+        for (var i = 1; i < parts.Length && node is not null; i++) node = (node as JsonObject)?[parts[i]];
+        return node;
     }
 
     /// <summary>The regions of a page template for the arguments.</summary>

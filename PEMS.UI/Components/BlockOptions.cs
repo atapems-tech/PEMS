@@ -103,6 +103,8 @@ public sealed record KpiTileOptions
     public string? Sub { get; init; }
     public string? Href { get; init; }
     public string? Hint { get; init; }
+    /// <summary>The number as text when the page writes no child content (a stored page sets it from a data source row, SCRUM-601).</summary>
+    public string? Value { get; init; }
     public bool Compact { get; init; }
     /// <summary>danger, success or warning colours the value.</summary>
     public string? Tone { get; init; }
