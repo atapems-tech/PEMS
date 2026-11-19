@@ -40,6 +40,7 @@ public sealed class FormHostController(DefinitionPipeline pipeline, ActionExecut
     }
 
     [HttpPost("{id?}")]
+    [PEMS.Web.Security.Uploads.DefinitionUploadPolicy]   // SCRUM-596: a file field of a form is checked by the file.upload action with the profile the definition names
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Submit(string key, string? id, CancellationToken ct)
     {
@@ -48,12 +49,14 @@ public sealed class FormHostController(DefinitionPipeline pipeline, ActionExecut
         var form = loaded.Form!;
         var posted = form.Fields.ToDictionary(f => f.Name, f => (string?)(Request.Form.TryGetValue(f.Name, out var v) ? v.ToString() : null), StringComparer.Ordinal);   // only the declared names are read
         // the choices a Select accepts are the ones the data source gave this user, so the post is checked against the form as it was shown
+        foreach (var fileField in form.Fields.Where(f => f.Kind == FieldKind.File))
+            if (Request.HasFormContentType && Request.Form.Files.GetFile(fileField.Name) is { } uploaded) posted[fileField.Name] = uploaded.FileName;   // SCRUM-596: a chosen file is the value of its field (required, rules)
         var shown = FormEngine.Effective(form, FormEngine.Evaluate(form, posted, loaded.Context), loaded.Options);
         var validation = FormEngine.Validate(shown, posted, loaded.Context);
         if (!validation.IsValid) return await Show(key, loaded, posted, validation.Errors, validation.FormErrors);
 
         if (string.IsNullOrEmpty(form.ActionKey)) return await Show(key, loaded, posted, validation.Errors, [TranslatableText.Of(("en", "This form has no action."), ("fa", "این فرم کنشی ندارد."))]);
-        var result = await actions.RunAsync(form.ActionKey, new ActionInvocation(id is null ? validation.Values : new Dictionary<string, string?>(validation.Values) { ["id"] = id }, CultureInfo.CurrentUICulture.TwoLetterISOLanguageName, loaded.Context.Roles, loaded.Context.UserName), "core", ct);
+        var result = await actions.RunAsync(form.ActionKey, new ActionInvocation(id is null ? validation.Values : new Dictionary<string, string?>(validation.Values) { ["id"] = id }, CultureInfo.CurrentUICulture.TwoLetterISOLanguageName, loaded.Context.Roles, loaded.Context.UserName, null, HttpContext.Connection.RemoteIpAddress?.ToString(), Request.Headers.UserAgent.ToString(), HostFiles.From(Request)), "core", ct);
         switch (result.Status)
         {
             case ActionStatus.Forbidden: return Forbid();
@@ -114,6 +117,7 @@ public sealed class ActionHostController(ActionExecutor actions, ICurrentUserSer
     private static readonly Regex KeyShape = new("^[a-z0-9][a-z0-9._-]{0,80}$", RegexOptions.Compiled);
 
     [HttpPost("")]
+    [PEMS.Web.Security.Uploads.DefinitionUploadPolicy]   // SCRUM-596: files of an action are checked by file.upload with the profile the definition names
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Run(string key, string? returnUrl, CancellationToken ct)
     {
@@ -123,7 +127,8 @@ public sealed class ActionHostController(ActionExecutor actions, ICurrentUserSer
             ? ActionValues.FromJson(await ReadJsonAsync(ct))
             : Request.Form.Where(p => p.Key != "__RequestVerificationToken" && p.Key != "returnUrl").ToDictionary(p => p.Key, p => (string?)p.Value.ToString(), StringComparer.Ordinal);
         var roles = User.Claims.Where(c => c.Type == System.Security.Claims.ClaimTypes.Role).Select(c => c.Value).ToList();
-        var result = await actions.RunAsync(key, new ActionInvocation(values, CultureInfo.CurrentUICulture.TwoLetterISOLanguageName, roles, currentUser.UserName, null, HttpContext.Connection.RemoteIpAddress?.ToString(), Request.Headers.UserAgent.ToString()), "core", ct);
+        var result = await actions.RunAsync(key, new ActionInvocation(values, CultureInfo.CurrentUICulture.TwoLetterISOLanguageName, roles, currentUser.UserName, null, HttpContext.Connection.RemoteIpAddress?.ToString(), Request.Headers.UserAgent.ToString(), HostFiles.From(Request)), "core", ct);
+        if (result.Status == ActionStatus.Ok && result.Outcome?.File is { } produced) return File(produced.Bytes, produced.ContentType, produced.FileName);   // SCRUM-615: an export or a download
         if (Request.Headers.Accept.ToString().Contains("application/json", StringComparison.OrdinalIgnoreCase))
         {
             // a grid row action asks for JSON: the outcome and the text to show, no redirect

@@ -5,6 +5,13 @@ and theme and were reconstructed from the git history (initial import 2026-09-05
 
 
 
+
+## 2026-11-19 - File upload and file export as settings of an action (SCRUM-596, 615)
+
+### Added
+- Handler `file.upload` (SCRUM-596): one uploaded file checked by the existing upload guard with the profile the action definition names (attachment, image, spreadsheet, csv, pdf), an optional smaller size limit, stored by the storage service; returns `key`, `fileName`, `size` and `contentType` for later steps. The generic hosts (`/f`, `/a`) accept files (`[DefinitionUploadPolicy]`), `ActionInvocation.Files` carries them, and a chosen file counts as the value of its form field.
+- Handler `file.export` (SCRUM-615): the rows of a grid data source as CSV (UTF-8 with BOM) or Excel, read with the rights of the user, paged, limited by `maxRows`, formula-safe; `ActionOutcome.Download` makes the host send the file.
+
 ## 2026-11-19 - Ratchet gate and pipeline diagnostics (SCRUM-611, 577)
 
 ### Added
