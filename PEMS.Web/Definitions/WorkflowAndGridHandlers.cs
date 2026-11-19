@@ -43,7 +43,7 @@ public sealed class WorkflowExecuteAction(IServiceScopeFactory scopes) : IAction
         var reasonError = WorkflowActionRules.ValidateAction(actionType, comment);
         if (reasonError is not null) return ActionOutcome.Refused("comment", TranslatableText.Literal(reasonError));
 
-        using var scope = scopes.CreateScope();
+        using var scope = ActionScope.Open(scopes);
         var runtime = scope.ServiceProvider.GetRequiredService<IWorkflowRuntime>();
         var readModel = scope.ServiceProvider.GetRequiredService<IWorkflowReadModelService>();
         var db = scope.ServiceProvider.GetRequiredService<PEMSDbContext>();

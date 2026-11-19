@@ -17,7 +17,7 @@ namespace PEMS.Web.Controllers;
 /// in code: a changed definition is a changed form.
 /// </summary>
 [Route("f/{key}")]
-public sealed class FormHostController(DefinitionPipeline pipeline, ActionExecutor actions, ICurrentUserService currentUser, IAntiforgery antiforgery, IPemsComponentRenderer renderer, ILogger<FormHostController> log, EntityRecordLoader? records = null) : Controller
+public sealed class FormHostController(DefinitionPipeline pipeline, ActionExecutor actions, ICurrentUserService currentUser, IAntiforgery antiforgery, IPemsComponentRenderer renderer, ILogger<FormHostController> log, EntityRecordLoader? records = null, PEMS.Application.Definitions.PipelineBudgets? budgets = null) : Controller
 {
     private static readonly Regex KeyShape = new("^[a-z0-9][a-z0-9._-]{0,80}$", RegexOptions.Compiled);
     private static readonly JsonSerializerOptions Strict = new(PemsJson.Options);
@@ -58,6 +58,7 @@ public sealed class FormHostController(DefinitionPipeline pipeline, ActionExecut
         {
             case ActionStatus.Forbidden: return Forbid();
             case ActionStatus.NotFound: log.LogWarning("Form definition {Key}: the action \"{Action}\" does not exist.", key, form.ActionKey); return NotFound();
+            case ActionStatus.StepUpRequired:
             case ActionStatus.Refused:
                 return await Show(key, loaded, posted, result.Outcome!.FieldErrors ?? new Dictionary<string, TranslatableText>(), result.Outcome.FormError is { } fe ? [fe] : []);
         }
@@ -79,6 +80,7 @@ public sealed class FormHostController(DefinitionPipeline pipeline, ActionExecut
         if (result.Status == PipelineStatus.NotFound) return new Loaded(NotFound(), null, context, new Dictionary<string, IReadOnlyList<FieldOption>>(), null);
         if (result.Status == PipelineStatus.Forbidden) return new Loaded(Forbid(), null, context, new Dictionary<string, IReadOnlyList<FieldOption>>(), null);
 
+        HostDiagnostics.Report(log, HttpContext.TraceIdentifier, "form", key, result.Timings, result.Counts, budgets);   // SCRUM-577
         var form = result.Resolved!.Payload.Deserialize<FormDefinition>(Strict)!;
         var options = result.Resolved.Hydrated.TryGetValue(FormOptionsHydrator.OptionsKey, out var o) && o is IReadOnlyDictionary<string, IReadOnlyList<FieldOption>> map ? map : new Dictionary<string, IReadOnlyList<FieldOption>>();
         if (result.Resolved.Hydrated.TryGetValue(FormOptionsHydrator.ProblemsKey, out var p) && p is IEnumerable<string> problems)
@@ -130,6 +132,7 @@ public sealed class ActionHostController(ActionExecutor actions, ICurrentUserSer
             {
                 ActionStatus.Ok => Json(new { ok = true, message = text }),
                 ActionStatus.Refused => BadRequest(new { ok = false, error = text }),
+                ActionStatus.StepUpRequired => StatusCode(428, new { ok = false, stepUp = true, options = result.StepUpOptionsJson, error = text }),   // SCRUM-595: run the security-key ceremony with these options, then post again with the answer
                 ActionStatus.Forbidden => StatusCode(403, new { ok = false, error = (string?)null }),
                 _ => NotFound(new { ok = false, error = (string?)null })
             };
@@ -138,6 +141,7 @@ public sealed class ActionHostController(ActionExecutor actions, ICurrentUserSer
         {
             case ActionStatus.NotFound: return NotFound();
             case ActionStatus.Forbidden: return Forbid();
+            case ActionStatus.StepUpRequired:
             case ActionStatus.Refused:
                 TempData["Error"] = (result.Outcome!.FormError ?? result.Outcome.FieldErrors?.Values.FirstOrDefault())?.Resolve(CultureInfo.CurrentUICulture);
                 break;

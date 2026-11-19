@@ -108,6 +108,7 @@ builder.Services.AddSingleton<PEMS.Web.Api.ApiIdempotencyStore>();
 // Definition store (SCRUM-434, ADR-0010/0011): write service, cached runtime read side, the registered kinds and the limits (Definitions:* settings).
 builder.Services.AddSingleton(builder.Configuration.GetSection("Definitions").Get<PEMS.Application.Definitions.DefinitionLimits>() ?? new PEMS.Application.Definitions.DefinitionLimits());
 builder.Services.AddSingleton(builder.Configuration.GetSection("Validation").Get<PEMS.Application.Validation.ValidationOptions>() ?? new PEMS.Application.Validation.ValidationOptions());
+builder.Services.AddSingleton(builder.Configuration.GetSection("Definitions:Budgets").Get<PEMS.Application.Definitions.PipelineBudgets>() ?? new PEMS.Application.Definitions.PipelineBudgets());
 PEMS.Web.Definitions.DefinitionKindExtensions.AddPemsDefinitionKinds(builder.Services);
 builder.Services.AddScoped<PEMS.Persistence.Services.DefinitionStore>();
 // SCRUM-572 (ADR-0014, amended): the definitions the runtime reads are the JSON files of the data layer, hot-reloaded; nothing is read from the database until Sprint 3 moves them (no overlap)
@@ -130,6 +131,10 @@ builder.Services.AddScoped<PEMS.Application.Definitions.IDefinitionHydrator, PEM
 builder.Services.AddScoped<PEMS.Web.Definitions.ActionExecutor>();
 // SCRUM-437/578 pilot: the registered providers and handlers a definition may name
 builder.Services.AddSingleton<PEMS.Web.Definitions.IActionHandler, PEMS.Web.Definitions.WorkflowExecuteAction>();
+// SCRUM-593 to 595: ordered steps in one transaction, result binding and the security-key step-up as settings of an action definition
+builder.Services.AddSingleton<PEMS.Web.Definitions.IActionHandler, PEMS.Web.Definitions.StepsAction>();
+builder.Services.AddSingleton<PEMS.Web.Definitions.IActionTransaction, PEMS.Web.Definitions.EfActionTransaction>();
+builder.Services.AddSingleton<PEMS.Web.Definitions.IStepUpVerifier, PEMS.Web.Definitions.WebAuthnStepUpVerifier>();
 // the entity catalog: the master-data entities a definition may list and create, with the permissions that guard them (the code checks them; a definition cannot widen access)
 builder.Services.AddSingleton(PEMS.Web.Definitions.EntityCatalog.Default());
 builder.Services.AddSingleton<PEMS.Web.Definitions.IGridDataProvider, PEMS.Web.Definitions.EntityGridProvider>();

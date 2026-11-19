@@ -28,6 +28,8 @@ Whoever moves the issue to In Review - the first time **and every time after a f
 
 ## 1b. Nothing that was not run lives only in a message (owner decision 2026-10-27)
 
+Since 2026-11-19 the author hands an issue over with the minimum tests that are really needed (chapter 00 section 0.3, chapter 05): everything else, the heavy end-of-batch run, the tier 3 suites and every extra check, is a line of this checklist.
+
 Jira is the only place a tester, or an agent that has no access to the chat, can read. Therefore:
 
 - **Every test, check or step the author did not run is a line of the QA checklist** with the result `not done - <reason>` (never a sentence only in the move comment, the PR or the chat). The line names the exact command or the README check ID, so it can be run without asking.
@@ -51,6 +53,9 @@ Owner decision 2026-10-26, until a CI gate exists (plan row #7): the local test 
 - An author in a cloud session installs the SDK first ([chapter 05](05-environment-and-commands.md) "Cloud sessions") and runs everything that does not need SQL Server (build, database-free tests, drift gate). Only the tests that need SQL Server may be reported as not run: the author lists their exact commands and the failure reason, merges, and moves the issue to In Review; line 1 then carries the first SQL run.
 - **Done needs both**: line 1 green (only the known failures of README.md "Local tests" may stay red) and all other lines Pass. A red test is a defect like any other: `qa-failed`, back to To Do, fix by a new PR.
 - When CI runs the tests on every merge, line 1 becomes "CI run on the merge commit is green" and this section is removed.
+
+## 2a. Batch handover: minimum tests, the rest on the checklist (owner decision 2026-11-19)
+An issue of a batch of 10 to 30 issues is handed to In Review with the minimum tests that are really needed (one per rule or branch that could silently break). Every other check goes onto the QA checklist as an unchecked line: "Local: the exact classes of the batch run (deferred to the batch or sprint end)", the second-language and edge cases, the broad suites, and the browser checks. The nearly repeated tests of the batch are merged into theories and shared fixtures at the end of the batch (guideline 05 test budget).
 
 ## 2b. Time-boxed tests in a session (owner decision 2026-11-03)
 

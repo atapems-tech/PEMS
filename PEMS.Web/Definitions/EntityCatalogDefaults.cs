@@ -29,6 +29,9 @@ internal static class EntityCatalogDefaults
             .Readable("UserId", "ResourceName", "ActionName", "ResourceId", "ScopeType", "ScopeValue", "Decision", "Reason", "Timestamp", "IpAddress"))
         .Add<SoDPolicy>("SoDPolicyId", e => e.Roles(AdminRoles, AdminRoles)
             .Readable("PermissionAId", "PermissionBId", "Description", "IsActive", "CreatedDate").Writable("PermissionAId", "PermissionBId", "Description", "IsActive", "CreatedDate"))
+        .Add<ContractApprovalAuthorityRule>("ContractApprovalAuthorityRuleId", e => e.Roles(AdminRoles, AdminRoles)
+            .Readable("MinValue", "MaxValue", "CriticalityClass", "RequiredApproverRole", "Description", "Priority", "IsActive")
+            .Writable("MinValue", "MaxValue", "CriticalityClass", "RequiredApproverRole", "Description", "Priority", "IsActive"))
         // read-only registrations used for related counts and labels
         .Add<ApplicationUser>("Id", e => e.Roles(AdminRoles, null).Readable("UserName"))
         .Add<Permission>("PermissionId", e => e.Roles(AdminRoles, null).Readable("Name", "IsActive"))

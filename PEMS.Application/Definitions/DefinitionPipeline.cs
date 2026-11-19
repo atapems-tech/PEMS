@@ -79,10 +79,13 @@ public sealed class ResolvedDefinition(PublishedDefinition source, JsonNode payl
     public JsonNode Payload { get; } = payload;
     /// <summary>What the hydrators resolved for this request (option lists, lookups, current values), by the id of the thing they belong to.</summary>
     public IDictionary<string, object?> Hydrated { get; } = new Dictionary<string, object?>(StringComparer.Ordinal);
+    /// <summary>What the hydrators loaded for this request (option lists, options, rows ...), reported next to the stage timings (SCRUM-577).</summary>
+    public IDictionary<string, int> Counts { get; } = new Dictionary<string, int>(StringComparer.Ordinal);
 }
 
-public sealed record PipelineResult(PipelineStatus Status, ResolvedDefinition? Resolved, IReadOnlyDictionary<string, TimeSpan> Timings)
+public sealed record PipelineResult(PipelineStatus Status, ResolvedDefinition? Resolved, IReadOnlyDictionary<string, TimeSpan> Timings, IReadOnlyDictionary<string, int>? CountsOrNull = null)
 {
+    public IReadOnlyDictionary<string, int> Counts => CountsOrNull ?? new Dictionary<string, int>();
     public bool Ok => Status == PipelineStatus.Ok;
 }
 
@@ -115,19 +118,20 @@ public sealed class DefinitionPipeline(IDefinitionStore store, IDefinitionAccess
 
         var published = await store.GetPublishedAsync(request.Kind, request.Key, request.AppKey, ct);
         timings["resolve"] = clock.Elapsed;
-        if (published is null) return new PipelineResult(PipelineStatus.NotFound, null, timings);
+        if (published is null) return new PipelineResult(PipelineStatus.NotFound, null, timings, new Dictionary<string, int> { ["definitions"] = 0 });
 
         var payload = JsonNode.Parse(published.PayloadJson)!;   // a private copy for this request
         clock.Restart();
         var permission = payload is JsonObject o && o["permission"] is JsonValue pv && pv.TryGetValue<string>(out var p) ? p : null;
         var allowed = await access.CanOpenAsync(permission, request.Roles, ct);
         timings["authorize"] = clock.Elapsed;
-        if (!allowed) return new PipelineResult(PipelineStatus.Forbidden, null, timings);
+        if (!allowed) return new PipelineResult(PipelineStatus.Forbidden, null, timings, new Dictionary<string, int> { ["definitions"] = 1 });
 
         clock.Restart();
         var resolved = new ResolvedDefinition(published, payload);
         foreach (var hydrator in _hydrators) await hydrator.HydrateAsync(resolved, request, ct);
         timings["hydrate"] = clock.Elapsed;
-        return new PipelineResult(PipelineStatus.Ok, resolved, timings);
+        var counts = new Dictionary<string, int>(resolved.Counts, StringComparer.Ordinal) { ["definitions"] = 1, ["hydrators"] = _hydrators.Count, ["payloadBytes"] = published.PayloadJson.Length };
+        return new PipelineResult(PipelineStatus.Ok, resolved, timings, counts);
     }
 }
